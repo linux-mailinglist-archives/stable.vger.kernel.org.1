@@ -1,281 +1,136 @@
-Return-Path: <stable+bounces-189079-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-189080-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2BC6BFFFC1
-	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 10:44:07 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id C12C8C000ED
+	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 11:01:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 86CAE3ACC9C
-	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 08:44:06 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C218A4F0524
+	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 09:01:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFDB72F3C26;
-	Thu, 23 Oct 2025 08:44:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C5422877FA;
+	Thu, 23 Oct 2025 09:01:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qx91cgvg"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ligD0437"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BB703019A1;
-	Thu, 23 Oct 2025 08:44:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 223FB37160;
+	Thu, 23 Oct 2025 09:01:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761209043; cv=none; b=XVOg19qCB5GNuGITnByqf1zdXSTWmTR8yOmRO1139PffYcb5O2oBDSqeI5dDyDvMnDpmxgX5i3NBnS8ThnZ81CLEaVS4lOasVe7xnjtZNkqgkdowX7BE1wsS8PJ05/0eUJQu4qN4aLoAIpgEouVsSAA5k0fU1/qlfs0iOBX8k/c=
+	t=1761210083; cv=none; b=TZiLQ5RvsJeGH9LopYgXObXmGoos93/NLXSHV1m2nEfZxtNG8XG6GrrhQg6XWBE9nI6beB9sghlebsltx+9GaR0xohlcBxD0QCQAgJUdc0ABJ23dj9p/j3fjILwlmPTC4WYAQts0s3Qocz4O7cIfrLLuhR1HU9+SpDoZhZwrB4U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761209043; c=relaxed/simple;
-	bh=kTu+yxrCVTXSPMrsilY136J3iqwH9zrgDwVA1u8FKHQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JxJ6TKv2kijhA6PVN0piVuEN7UyDg8IJRARpxcpstFFgoQEYYSj/gr/9ewRZjgOBqterk6/ERRgJoGczCMZ+XxIKEYGUJsa1ULaSv1rq36jOkxVobFv3Vi7xxKc59HhUcEaaa/rte8/NLOlXQ10HEmAzWlv/UmadI0y29KUWF/Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qx91cgvg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CD00C4CEE7;
-	Thu, 23 Oct 2025 08:44:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761209041;
-	bh=kTu+yxrCVTXSPMrsilY136J3iqwH9zrgDwVA1u8FKHQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=qx91cgvgPerasgn9C1RxqsAHGfm91ikzwr6SHlgRF5QYr97PA5q10bMNWjgoIvOXE
-	 b51gFCNXEZ+xpcDHvAQqLn1RzPvqinJ+/MMjgL3UTZJf/9nL5za8XcpJvZbR7QLLsn
-	 iA1gycyELtUE7SMyMhc2h7KetNjldMQTO2YQS0Wo=
-Date: Thu, 23 Oct 2025 10:43:58 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Li Lingfeng <lilingfeng3@huawei.com>
-Cc: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org,
-	Zheng Qixing <zhengqixing@huawei.com>,
-	Mikulas Patocka <mpatocka@redhat.com>, dm-devel@lists.linux.dev,
-	yangerkun <yangerkun@huawei.com>,
-	"zhangyi (F)" <yi.zhang@huawei.com>, Hou Tao <houtao1@huawei.com>
-Subject: Re: [PATCH 5.10.y] dm: fix NULL pointer dereference in __dm_suspend()
-Message-ID: <2025102323-fiction-subprime-ecec@gregkh>
-References: <20251014030334.3868139-1-sashal@kernel.org>
- <cdadc001-3c0e-4152-8b05-08eb79fb528b@huawei.com>
- <2025102252-abrasive-glamorous-465b@gregkh>
- <1767bec2-b660-42b2-b828-b221e0896eba@huawei.com>
- <2025102212-pouring-embellish-95fc@gregkh>
- <28a7f62d-ae81-4629-864c-a0c1ecf98ee9@huawei.com>
- <2025102231-outlying-lapel-6159@gregkh>
- <c8d7ae0f-bddd-41ff-bd93-ad340c8a20bc@huawei.com>
- <2025102310-blinked-handsaw-ade3@gregkh>
- <45a1c253-da13-4390-b2bb-7fdc56341edb@huawei.com>
+	s=arc-20240116; t=1761210083; c=relaxed/simple;
+	bh=0rHxZlVb4r0UgpfLdaBesxLORRE7B414DrFKN5P0h1I=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=iXTE7UCt5DFAKlDmYPYBH2bSqpWnQf2pXjMDcFYbvwbd86e71HtIQQKmPp+hkjWhaLcFEUQdYlahrtbvhAKwoZOWiinYADZPPyT8HgcawbnhXpose6W68ppD4KAAeax4mCV+NxqJBWL7dSu1ARFQexoe0UZfQIEtJB808W29WUc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ligD0437; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2D9AC4CEE7;
+	Thu, 23 Oct 2025 09:01:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761210082;
+	bh=0rHxZlVb4r0UgpfLdaBesxLORRE7B414DrFKN5P0h1I=;
+	h=Date:From:Subject:To:Cc:References:In-Reply-To:From;
+	b=ligD0437VBatDxah713Z2DHSB2oB5RKX8YLygmYaRa2XewqjILOencdpTu6rmOpiG
+	 zubN8LhlrJqszfJBjZmRDxaKLLsLHJj6DGFG5Ee0z2M2+lmzgNeF9z1HgXItjwQxqG
+	 qdOF0QhTbW2Y0RX0sx5kA1vwMppPSihxZyTKuqhbZdlXWZB8EJqcn0pkK0n5oIt1Iz
+	 thrWcO6jEXPB2NdGwGkfHydSsd00m/obsoe2ATwA+B2RdmupvFYF8gJJTzrrr+BDq8
+	 U8Yfv045SEcjwDl4zZtsWfParGe8aibRTAL0JtNNWZwNWOzO2yv87KeJyCAKnPfhJO
+	 FPFKv7BbWbQ5g==
+Message-ID: <9df0295d-418b-46ea-958a-a025de8b62e7@kernel.org>
+Date: Thu, 23 Oct 2025 11:01:18 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <45a1c253-da13-4390-b2bb-7fdc56341edb@huawei.com>
+User-Agent: Mozilla Thunderbird
+From: Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: Re: [PATCH v2] media: videobuf2: forbid remove_bufs when legacy
+ fileio is active
+To: Marek Szyprowski <m.szyprowski@samsung.com>, linux-media@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Cc: Tomasz Figa <tfiga@chromium.org>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>,
+ Guennadi Liakhovetski <g.liakhovetski@gmx.de>,
+ Benjamin Gaignard <benjamin.gaignard@collabora.com>,
+ Hans Verkuil <hverkuil@kernel.org>, stable@vger.kernel.org,
+ Shuangpeng Bai <SJB7183@psu.edu>
+References: <CGME20251020160135eucas1p29eb8517e240f188f102e77713f85e29d@eucas1p2.samsung.com>
+ <20251020160121.1985354-1-m.szyprowski@samsung.com>
+ <9996520a-fbad-4f02-9630-7de85f04c286@kernel.org>
+Content-Language: en-US, nl
+In-Reply-To: <9996520a-fbad-4f02-9630-7de85f04c286@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, Oct 23, 2025 at 03:07:28PM +0800, Li Lingfeng wrote:
+On 21/10/2025 11:56, Hans Verkuil wrote:
+> Hi Marek,
 > 
-> 在 2025/10/23 13:20, Greg KH 写道:
-> > On Thu, Oct 23, 2025 at 09:12:13AM +0800, Li Lingfeng wrote:
-> > > 在 2025/10/22 17:20, Greg KH 写道:
-> > > > On Wed, Oct 22, 2025 at 05:10:36PM +0800, Li Lingfeng wrote:
-> > > > > 在 2025/10/22 16:45, Greg KH 写道:
-> > > > > > On Wed, Oct 22, 2025 at 04:21:33PM +0800, Li Lingfeng wrote:
-> > > > > > > Hi,
-> > > > > > > 
-> > > > > > > 在 2025/10/22 16:10, Greg KH 写道:
-> > > > > > > > On Wed, Oct 22, 2025 at 04:01:04PM +0800, Li Lingfeng wrote:
-> > > > > > > > > Hi,
-> > > > > > > > > 
-> > > > > > > > > 在 2025/10/14 11:03, Sasha Levin 写道:
-> > > > > > > > > > From: Zheng Qixing <zhengqixing@huawei.com>
-> > > > > > > > > > 
-> > > > > > > > > > [ Upstream commit 8d33a030c566e1f105cd5bf27f37940b6367f3be ]
-> > > > > > > > > > 
-> > > > > > > > > > There is a race condition between dm device suspend and table load that
-> > > > > > > > > > can lead to null pointer dereference. The issue occurs when suspend is
-> > > > > > > > > > invoked before table load completes:
-> > > > > > > > > > 
-> > > > > > > > > > BUG: kernel NULL pointer dereference, address: 0000000000000054
-> > > > > > > > > > Oops: 0000 [#1] PREEMPT SMP PTI
-> > > > > > > > > > CPU: 6 PID: 6798 Comm: dmsetup Not tainted 6.6.0-g7e52f5f0ca9b #62
-> > > > > > > > > > Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.1-2.fc37 04/01/2014
-> > > > > > > > > > RIP: 0010:blk_mq_wait_quiesce_done+0x0/0x50
-> > > > > > > > > > Call Trace:
-> > > > > > > > > >        <TASK>
-> > > > > > > > > >        blk_mq_quiesce_queue+0x2c/0x50
-> > > > > > > > > >        dm_stop_queue+0xd/0x20
-> > > > > > > > > >        __dm_suspend+0x130/0x330
-> > > > > > > > > >        dm_suspend+0x11a/0x180
-> > > > > > > > > >        dev_suspend+0x27e/0x560
-> > > > > > > > > >        ctl_ioctl+0x4cf/0x850
-> > > > > > > > > >        dm_ctl_ioctl+0xd/0x20
-> > > > > > > > > >        vfs_ioctl+0x1d/0x50
-> > > > > > > > > >        __se_sys_ioctl+0x9b/0xc0
-> > > > > > > > > >        __x64_sys_ioctl+0x19/0x30
-> > > > > > > > > >        x64_sys_call+0x2c4a/0x4620
-> > > > > > > > > >        do_syscall_64+0x9e/0x1b0
-> > > > > > > > > > 
-> > > > > > > > > > The issue can be triggered as below:
-> > > > > > > > > > 
-> > > > > > > > > > T1 						T2
-> > > > > > > > > > dm_suspend					table_load
-> > > > > > > > > > __dm_suspend					dm_setup_md_queue
-> > > > > > > > > > 						dm_mq_init_request_queue
-> > > > > > > > > > 						blk_mq_init_allocated_queue
-> > > > > > > > > > 						=> q->mq_ops = set->ops; (1)
-> > > > > > > > > > dm_stop_queue / dm_wait_for_completion
-> > > > > > > > > > => q->tag_set NULL pointer!	(2)
-> > > > > > > > > > 						=> q->tag_set = set; (3)
-> > > > > > > > > > 
-> > > > > > > > > > Fix this by checking if a valid table (map) exists before performing
-> > > > > > > > > > request-based suspend and waiting for target I/O. When map is NULL,
-> > > > > > > > > > skip these table-dependent suspend steps.
-> > > > > > > > > > 
-> > > > > > > > > > Even when map is NULL, no I/O can reach any target because there is
-> > > > > > > > > > no table loaded; I/O submitted in this state will fail early in the
-> > > > > > > > > > DM layer. Skipping the table-dependent suspend logic in this case
-> > > > > > > > > > is safe and avoids NULL pointer dereferences.
-> > > > > > > > > > 
-> > > > > > > > > > Fixes: c4576aed8d85 ("dm: fix request-based dm's use of dm_wait_for_completion")
-> > > > > > > > > > Cc: stable@vger.kernel.org
-> > > > > > > > > > Signed-off-by: Zheng Qixing <zhengqixing@huawei.com>
-> > > > > > > > > > Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-> > > > > > > > > > [ omitted DMF_QUEUE_STOPPED flag setting and braces absent in 5.15 ]
-> > > > > > > > > > Signed-off-by: Sasha Levin <sashal@kernel.org>
-> > > > > > > > > > ---
-> > > > > > > > > >       drivers/md/dm.c | 7 ++++---
-> > > > > > > > > >       1 file changed, 4 insertions(+), 3 deletions(-)
-> > > > > > > > > > 
-> > > > > > > > > > diff --git a/drivers/md/dm.c b/drivers/md/dm.c
-> > > > > > > > > > index 0868358a7a8d2..b51281ce15d4c 100644
-> > > > > > > > > > --- a/drivers/md/dm.c
-> > > > > > > > > > +++ b/drivers/md/dm.c
-> > > > > > > > > > @@ -2457,7 +2457,7 @@ static int __dm_suspend(struct mapped_device *md, struct dm_table *map,
-> > > > > > > > > >       {
-> > > > > > > > > >       	bool do_lockfs = suspend_flags & DM_SUSPEND_LOCKFS_FLAG;
-> > > > > > > > > >       	bool noflush = suspend_flags & DM_SUSPEND_NOFLUSH_FLAG;
-> > > > > > > > > > -	int r;
-> > > > > > > > > > +	int r = 0;
-> > > > > > > > > >       	lockdep_assert_held(&md->suspend_lock);
-> > > > > > > > > > @@ -2509,7 +2509,7 @@ static int __dm_suspend(struct mapped_device *md, struct dm_table *map,
-> > > > > > > > > >       	 * Stop md->queue before flushing md->wq in case request-based
-> > > > > > > > > >       	 * dm defers requests to md->wq from md->queue.
-> > > > > > > > > >       	 */
-> > > > > > > > > > -	if (dm_request_based(md))
-> > > > > > > > > > +	if (map && dm_request_based(md))
-> > > > > > > > > >       		dm_stop_queue(md->queue);
-> > > > > > > > > It seems that before commit 80bd4a7aab4c ("blk-mq: move the srcu_struct
-> > > > > > > > > used for quiescing to the tagset") was merged, blk_mq_wait_quiesce_done()
-> > > > > > > > > would not attempt to access q->tag_set, so in dm_stop_queue() this kind
-> > > > > > > > > of race condition would not cause a null pointer dereference. The change
-> > > > > > > > > may not be necessary for 5.10, but adding it doesn’t appear to cause any
-> > > > > > > > > issues either.
-> > > > > > > > > >       	flush_workqueue(md->wq);
-> > > > > > > > > > @@ -2519,7 +2519,8 @@ static int __dm_suspend(struct mapped_device *md, struct dm_table *map,
-> > > > > > > > > >       	 * We call dm_wait_for_completion to wait for all existing requests
-> > > > > > > > > >       	 * to finish.
-> > > > > > > > > >       	 */
-> > > > > > > > > > -	r = dm_wait_for_completion(md, task_state);
-> > > > > > > > > > +	if (map)
-> > > > > > > > > > +		r = dm_wait_for_completion(md, task_state);
-> > > > > > > > > The fix tag c4576aed8d85 ("dm: fix request-based dm's use of
-> > > > > > > > > dm_wait_for_completion") seems to correspond to the modification of
-> > > > > > > > > dm_wait_for_completion().
-> > > > > > > > > >       	if (!r)
-> > > > > > > > > >       		set_bit(dmf_suspended_flag, &md->flags);
-> > > > > > > > > Perhaps adding another fix tag would be more appropriate?
-> > > > > > > > Those tags come directly from the original commit.
-> > > > > > > Thanks for the clarification. Since the patch has already been merged into
-> > > > > > > the mainline tree, we can't update the commit there. I was just wondering
-> > > > > > > if it would be acceptable to add an additional “Fixes” tag when applying
-> > > > > > > it to the stable branch, before merging.
-> > > > > > I can, if needed, can you please provide that line?
-> > > > > Fixes: 80bd4a7aab4c ("blk-mq: move the srcu_struct used for quiescing to the
-> > > > > tagset")
-> > > > This is odd, that is a 6.2 commit, yet this is being asked to be added
-> > > > to 5.10.y.  So what help is this going to provide?
-> > > > 
-> > > > confused,
-> > > > 
-> > > > greg k-h
-> > > Apologies, I didn't notice the version of this patch. Indeed, this patch
-> > > was not included in 5.10, and 5.10 is not affected by this issue.
-> > The original Fixes: tag points to a commit from 5.0, which is why this
-> > was queued up for here.
-> > 
-> > > Perhaps we could add the new fix tag to the stable branch patches
-> > > starting from 6.2?
-> > I do not understand, sorry.
-> > 
-> > Let's start over, should this patch be included in the 5.10.y tree?  The
-> > 5.4.y tree?  If not, why not?
-> > 
-> > And as this is already in the 5.15.y and 6.1.y releases, should it be
-> > reverted from there?
-> > 
-> > thanks,
-> > 
-> > greg k-h
-> The original patch made two changes:
-> 1.
-> @@ -2960,7 +2960,7 @@ static int __dm_suspend(struct mapped_device *md,
-> struct dm_table *map,
->          * Stop md->queue before flushing md->wq in case request-based
->          * dm defers requests to md->wq from md->queue.
->          */
-> -       if (dm_request_based(md)) {
-> +       if (map && dm_request_based(md)) {
->                 dm_stop_queue(md->queue);
->                 set_bit(DMF_QUEUE_STOPPED, &md->flags);
->         }
-> After commit 80bd4a7aab4c ("blk-mq: move the srcu_struct used for quiescing
-> to the tagset") was merged in v6.2, dm_request_based() started to trigger
-> access to tag_set, so a null check on map became necessary to avoid a
-> potential null pointer dereference.
-> The original patch merged into mainline was missing this Fixes tag.
+> On 20/10/2025 18:01, Marek Szyprowski wrote:
+>> vb2_ioctl_remove_bufs() call manipulates queue internal buffer list,
+>> potentially overwriting some pointers used by the legacy fileio access
+>> mode. Add a vb2_verify_memory_type() check symmetrical to
+>> vb2_ioctl_create_bufs() to forbid that ioctl when fileio is active to
+>> protect internal queue state between subsequent read/write calls.
+>>
+>> CC: stable@vger.kernel.org
+>> Fixes: a3293a85381e ("media: v4l2: Add REMOVE_BUFS ioctl")
+>> Reported-by: Shuangpeng Bai<SJB7183@psu.edu>
+>> Suggested-by: Benjamin Gaignard <benjamin.gaignard@collabora.com>
+>> Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
 > 
-> 2.
-> @@ -2972,7 +2972,8 @@ static int __dm_suspend(struct mapped_device *md,
-> struct dm_table *map,
->          * We call dm_wait_for_completion to wait for all existing requests
->          * to finish.
->          */
-> -       r = dm_wait_for_completion(md, task_state);
-> +       if (map)
-> +               r = dm_wait_for_completion(md, task_state);
->         if (!r)
->                 set_bit(dmf_suspended_flag, &md->flags);
-> After commit c4576aed8d85 ("dm: fix request-based dm's use of
-> dm_wait_for_completion")
-> was merged in v5.0, dm_wait_for_completion() started to access tag_set, so
-> the additional null check on map was also needed to prevent a null pointer
-> dereference.
-> 
-> In summary:
-> For kernels v6.2 and later, there should be two Fixes tags:
-> Fixes: 80bd4a7aab4c ("blk-mq: move the srcu_struct used for quiescing to the
-> tagset")
-> Fixes: c4576aed8d85 ("dm: fix request-based dm's use of
-> dm_wait_for_completion")
-> 
-> For kernels v5.0 to v6.2, only the second Fixes tag is needed:
-> Fixes: c4576aed8d85 ("dm: fix request-based dm's use of
-> dm_wait_for_completion")
-> 
-> Although the first change isn't actually required for kernels between v5.0
-> and v6.2, it doesn't introduce any new issues, so there's no need to
-> revert it.
-> 
-> My suggestion is:
-> For stable kernels v6.2 and later, if this patch hasn't been applied yet,
-> it would be better to include the extra Fixes tag for 80bd4a7aab4c when
-> merging.
+> I'll pick this up as a fix for v6.18. I think this is important enough to
+> not wait for v6.19.
 
-It has already been merged.
+Hmm, it's failing on v4l2-compliance. I'm debugging to see whether it is a
+kernel or v4l2-compliance problem.
 
-> If it has already been merged, there's no need to revert it, since the
-> first change is harmless anyway.
+Regards,
 
-Great, so there's nothing I need to do here, I like that :)
+	Hans
 
-thanks for spelling it all out, makes more sense now.
+> 
+> Regards,
+> 
+> 	Hans
+> 
+>> ---
+>> v2:
+>> - dropped a change to vb2_ioctl_create_bufs(), as it is already handled
+>>   by the vb2_verify_memory_type() call
+>> - replaced queue->type check in vb2_ioctl_remove_bufs() by a call to
+>>   vb2_verify_memory_type() which covers all cases
+>>
+>> v1: https://lore.kernel.org/all/20251016111154.993949-1-m.szyprowski@samsung.com/
+>> ---
+>>  drivers/media/common/videobuf2/videobuf2-v4l2.c | 6 ++++--
+>>  1 file changed, 4 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/drivers/media/common/videobuf2/videobuf2-v4l2.c b/drivers/media/common/videobuf2/videobuf2-v4l2.c
+>> index d911021c1bb0..0de7490292fe 100644
+>> --- a/drivers/media/common/videobuf2/videobuf2-v4l2.c
+>> +++ b/drivers/media/common/videobuf2/videobuf2-v4l2.c
+>> @@ -1000,9 +1000,11 @@ int vb2_ioctl_remove_bufs(struct file *file, void *priv,
+>>  			  struct v4l2_remove_buffers *d)
+>>  {
+>>  	struct video_device *vdev = video_devdata(file);
+>> +	int res;
+>>  
+>> -	if (vdev->queue->type != d->type)
+>> -		return -EINVAL;
+>> +	res = vb2_verify_memory_type(vdev->queue, vdev->queue->memory, d->type);
+>> +	if (res)
+>> +		return res;
+>>  
+>>  	if (d->count == 0)
+>>  		return 0;
+> 
+> 
 
-greg k-h
 
