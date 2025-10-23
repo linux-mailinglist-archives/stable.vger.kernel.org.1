@@ -1,129 +1,99 @@
-Return-Path: <stable+bounces-189154-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-189155-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4321EC02B8B
-	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 19:26:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44E11C02BEE
+	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 19:35:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E25C53B0A9D
-	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 17:25:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 46CBD1A68A11
+	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 17:35:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 951CA347BD7;
-	Thu, 23 Oct 2025 17:25:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E232F34AAE7;
+	Thu, 23 Oct 2025 17:34:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OSzrOFAd"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TQXFx07g"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ua1-f49.google.com (mail-ua1-f49.google.com [209.85.222.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 416AE346E7C;
-	Thu, 23 Oct 2025 17:25:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C96834A793
+	for <stable@vger.kernel.org>; Thu, 23 Oct 2025 17:34:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761240349; cv=none; b=A2ju6/QZBbOk9yTho3C03ZB628lO803Z7FV/wil7r5IW38XKXoQIxTWgyc6+yjxUsIZwVbn3jI71zi8KK8COrWvJY0pzmVQBch7ueVLVO//jeyfaxdSgPEfsLcvLb3WErKUrqujRkjBUT99Eiw52eG/zPmi/9mVPGv5MNU8YrWQ=
+	t=1761240894; cv=none; b=ZxWs/1TrOKGMj5jYUNXiv8qHZt5w6em+X30poZ+5RzD/v33yI9TcE2rp7qJ9K7+GW+1Sxgx7+PV0atjtWWLlvhctU43O1GxSf72RdaQYAqfVo7FezvosFc5EEvnRy3ub4NApj7Zl34FplZN25UVb7TzC2s2lLtn+e3mAhoZQHGM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761240349; c=relaxed/simple;
-	bh=p/dJ/vApunxA+s6QBIXAzaXcbKhQS7npxWsjnyA0BqE=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=Gc8hu6zO3wWs/7H+AyDjzWMFa+pkH7sj7AWzDy9ZjHpeCWwuen+I0A+eHANZapKjVDYUm0ktooYUbGCdzXN3C4xb7rgeYJEuoSwci8OD7Mexx6ze2rhKZbAsjRyWfyqltbvZnGu3wTLwjmmk3lFsDECPgAT1EMFID5wh0PC9YjA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OSzrOFAd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3073C4CEE7;
-	Thu, 23 Oct 2025 17:25:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761240349;
-	bh=p/dJ/vApunxA+s6QBIXAzaXcbKhQS7npxWsjnyA0BqE=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=OSzrOFAdUP2+iq21SXDJvO7gcOdJgs7IBoI58rESwucSX/8yODMGX20mkY1IDDj+0
-	 i2lYBECfK2uXw0n8gk9gR34ZAuntJK+Flw4POjd+ptdrCFntp5iO68sGdfG/1D8P6Y
-	 rbZ9MpUQU7LOaJP/s0c2DvqywAjrpY+j3OS/5Xd87HkZsHaB/nRK4jP4eB97AeR8Hr
-	 8zzqsnKUQtUxFRZFXF+oB7l5GD/La2IN5zZs5HmZ2EcpbTrESxx8NAv7K5jWd6PNc7
-	 uN33qIZoywxxKVHjqgkfhNju2vKaJrHQo6ePBZgeTHKlEOJUeQBAqCP/WtEUFnJ3sv
-	 8se7tyNt+mwQQ==
-Date: Thu, 23 Oct 2025 12:25:47 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Brian Norris <briannorris@chromium.org>
-Cc: Bjorn Helgaas <bhelgaas@google.com>, linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org, Brian Norris <briannorris@google.com>,
-	stable@vger.kernel.org,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>
-Subject: Re: [PATCH] PCI/PM: Ensure power-up succeeded before restoring MMIO
- state
-Message-ID: <20251023172547.GA1301778@bhelgaas>
+	s=arc-20240116; t=1761240894; c=relaxed/simple;
+	bh=VwKC0UFE/hSiQYJTMaM4Bls4thTgZXjxzl37/zt9MmM=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=ktXj8e0XgWXYQDHoTFkWFQ+inDwLGpvy4jh11cJ4s5s0pHthmAnV2JzI4w95jn3bpHkQPrr/8CKzBqtNzZYs6uYXR8fdLvzDkbSSl9A7nkBvK2c07JCKX0jkTdMqtutEk/FxdOZf5DWUquyxfbqBdjBauGxsyUfHwd1+oaaYRrE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TQXFx07g; arc=none smtp.client-ip=209.85.222.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ua1-f49.google.com with SMTP id a1e0cc1a2514c-932e88546a8so521835241.0
+        for <stable@vger.kernel.org>; Thu, 23 Oct 2025 10:34:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1761240892; x=1761845692; darn=vger.kernel.org;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=VwKC0UFE/hSiQYJTMaM4Bls4thTgZXjxzl37/zt9MmM=;
+        b=TQXFx07gUi7M3w6qqj1K+xEnYHhOPT4rmQwksSSqaXB4KYA54MDQCPbGaRCxisYqMo
+         zlWRRYjPXVNRP7oZZJQuiPg8m78oKkJCGDOiNGzXdkhjwVW+oYv6uDicoKHEnB19ycFY
+         MPdMHph+Ex02A+e/uRg0QV/Hpe+BhZfMMfFNuuS6zaihynvyrGzVv2mn2m1ARSrCv3nB
+         pTjC0Ysc0J6JRnAFw98Och7PpIj9DD3G/Ix7jeTTIeLVrSd0lc7joiWN055oJeZJY/s2
+         a9qsB+TkCQy8pzIj3HpgVOoxu4XY5Ag+23kpH3i4722kTFebf3pKTK2upQioqVBHchS3
+         LDxg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761240892; x=1761845692;
+        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=VwKC0UFE/hSiQYJTMaM4Bls4thTgZXjxzl37/zt9MmM=;
+        b=nE364V2eEtZ9PNv3ZPIDCG/Z1xg0QpwO9EfJmwdomJYvJQtIOIiQoaMKXrmj35t11l
+         7162ZTZd08kvZtSyR7akY0HehZM4kxjQsk5SZ3kYaPkXPv4U7C7b1wGffraSAUePRlgS
+         FUyj2yvTZQkWGffVDGWZghAsM+WFk/YBnxu0bRQkfFiOG0KTczPziI4s2OIZFani3b0C
+         i7OGCZIp3wMI1wp5luwTM2OwEo13RThAIsPe6LqJr5AkqUEouF+XyEwj1K63cuEKEA31
+         QRaqUj5aMdpfWAiJOCGOb1ba//6QWsWLLC8mZVB76R1wl6KZtBss3RVrNhXkT38TeliC
+         vNSw==
+X-Gm-Message-State: AOJu0YxCTgJ2a1EtdUVPXADPb4SJimU99ijHr7oDn5ks1Ylx+fleyEP5
+	bP8Fp2C5ZKiK4sbLS8M+F1ldJUfO9fkn4QH7DeisNZjYqEB0XRe1UCvnZAQVVcHpuDGVHtD3sS+
+	Rk68H/hMK8sq2aaANiWYMTzxza+bKxnE7aQ==
+X-Gm-Gg: ASbGncv6UjIbSeznm8HjX/r1Ojk6J9lnt69iuzWfSzkQBK+UFJXd02Ibiv9lN7WoX71
+	b6XC388ZmZAjSbb9QfMij2dhW4G9GxBc9M9zSTP882nJ2sBceq7S2/w1rI8qDFKICpYYgvwSGyS
+	FacNWKP+uSQaIdEOr8LR2bj0za+T6+8AqDpE5MZY9IbIDWZ/8G7N5osqrXls5pk3D4ipMopjxXL
+	v1PK1912w5Iwf2dXdTHUdv+96ZYCtwkoMDVhEcat12665TTXz57vnzTf9s4zqbkz90TZdpgWC8Z
+	e/aqUUF5EQGqVMtI75E=
+X-Google-Smtp-Source: AGHT+IHVFWpWJL7hBMbtcQlq1qWz/PgUQ7gjmgFhrbWS+lxQFwK4LbyaD7R169a60hu7dXt7vXlM65mlKh2O/u466wQ=
+X-Received: by 2002:a67:f40b:0:b0:5b8:e08f:eb38 with SMTP id
+ ada2fe7eead31-5db23848dcamr1913663137.14.1761240891865; Thu, 23 Oct 2025
+ 10:34:51 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250821075812.1.I2dbf483156c328bc4a89085816b453e436c06eb5@changeid>
+From: Micah Robert <micah.mypackagingpro@gmail.com>
+Date: Thu, 23 Oct 2025 10:34:40 -0700
+X-Gm-Features: AWmQ_bkAf6KWTjjSpEadTicYTnmufXQh8Z_xsM5X6ZP7BmlnQKjWhO-Pt2QrCPk
+Message-ID: <CAHb_yAEb6NYdOOzAjBEgCjv1ne6iQ_EBYv-RqN+WMqxdHL85dQ@mail.gmail.com>
+Subject: Custom Packaging Boxes and Labels
+To: stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-[+cc Mario, Rafael]
+Hi,
 
-On Thu, Aug 21, 2025 at 07:58:12AM -0700, Brian Norris wrote:
-> From: Brian Norris <briannorris@google.com>
-> 
-> As the comments in pci_pm_thaw_noirq() suggest, pci_restore_state() may
-> need to restore MSI-X state in MMIO space. This is only possible if we
-> reach D0; if we failed to power up, this might produce a fatal error
-> when touching memory space.
-> 
-> Check for errors (as the "verify" in "pci_pm_power_up_and_verify_state"
-> implies), and skip restoring if it fails.
-> 
-> This mitigates errors seen during resume_noirq, for example, when the
-> platform did not resume the link properly.
-> 
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Brian Norris <briannorris@google.com>
-> Signed-off-by: Brian Norris <briannorris@chromium.org>
-> ---
-> 
->  drivers/pci/pci-driver.c | 12 +++++++++---
->  drivers/pci/pci.c        | 13 +++++++++++--
->  drivers/pci/pci.h        |  2 +-
->  3 files changed, 21 insertions(+), 6 deletions(-)
-> 
-> diff --git a/drivers/pci/pci-driver.c b/drivers/pci/pci-driver.c
-> index 302d61783f6c..d66d95bd0ca2 100644
-> --- a/drivers/pci/pci-driver.c
-> +++ b/drivers/pci/pci-driver.c
-> @@ -557,7 +557,13 @@ static void pci_pm_default_resume(struct pci_dev *pci_dev)
->  
->  static void pci_pm_default_resume_early(struct pci_dev *pci_dev)
->  {
-> -	pci_pm_power_up_and_verify_state(pci_dev);
-> +	/*
-> +	 * If we failed to reach D0, we'd better not touch MSI-X state in MMIO
-> +	 * space.
-> +	 */
-> +	if (pci_pm_power_up_and_verify_state(pci_dev))
-> +		return;
+We provide custom packaging boxes and labels. We make boxes in
+different materials and styles such as Vape Boxe, Cigarette Boxes,
+Cartridge Boxes, Cardboard boxes, Rigid Boxes and Mailer boxes, etc.
 
-The MSI-X comment here seems oddly specific.
+Our benefits include quick turnaround time, free shipping and design
+support. Just send over your box or label specifications and quantity
+so I can give you an estimate on that.
 
-On most platforms, config/mem/io accesses to a device not in D0 result
-in an error being logged, writes being dropped, and reads returning ~0
-data.
+Let me know if you have any questions. Thanks
 
-I don't know the details, but I assume the fatal error is a problem
-specific to arm64.
 
-If the device is not in D0, we can avoid the problem here, but it
-seems like we're just leaving a landmine for somebody else to hit
-later.  The driver will surely access the device after resume, won't
-it?  Is it better to wait for a fatal error there?
-
-Even if we avoid errors here, aren't we effectively claiming to have
-restored the device state, which is now a lie?
-
-Even on other platforms, if the writes that are supposed to restore
-the state are dropped because the device isn't in D0, the result is
-also not what we expect, and something is probably broken.
-
-Bjorn
+Best Regards
+Micah Robert
+My Packaging Pro
 
