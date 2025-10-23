@@ -1,149 +1,199 @@
-Return-Path: <stable+bounces-189083-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-189084-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A480CC0012F
-	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 11:03:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A91CC00421
+	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 11:33:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5996B3A4CA5
-	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 09:03:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D3975188BF78
+	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 09:33:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 131872FB96A;
-	Thu, 23 Oct 2025 09:03:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 632F1308F2C;
+	Thu, 23 Oct 2025 09:32:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="TbbCE/yT"
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="gsrrqOcF";
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="gVtByQAA"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E9432FB988
-	for <stable@vger.kernel.org>; Thu, 23 Oct 2025 09:03:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0094A308F28
+	for <stable@vger.kernel.org>; Thu, 23 Oct 2025 09:32:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761210185; cv=none; b=ljG79XQLvZd1W7nyco1NjmL0WkTSGltxEcHn++04tRC6vPsAYXlQ4iLxoemnnHfMGaP5ganywhJ1ZDIpv1hPsXZ0Ul6Ugy6DOq4u9DrYZreTBZ5UJFtuXlz3z2iXAeFQsw9rDlA+bSdomOgmUHlsnPZ6QT/IJkR9zfJRDc5pxJE=
+	t=1761211970; cv=none; b=MudQFxAyS6dVxbkyuWftGblGtBmLzSejWlUbfoGQyTcCQf65D84kfjix8MU97YLDRlAUvwNYWOeAONGlMBanFgkIYJeh9sRsXCEOGn4ASZJV9eaH2mZZ6yY/wNXspvVBWpsLkVWBM6K1qKFhUugVKiO2L8v+VaEUcZz0mWgpQxQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761210185; c=relaxed/simple;
-	bh=RvB0QfII4NieHlSWxal5DHWC4pQUcZHC+PzTz/++OqI=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=fnfQOMirUg08CDXAlWbneZK403zR3TcmzTtVeuLZcRp7HH9UpP86khT8lMrsgwsRhSdFrNj4KkBkKRKz8N1F/yG6wkj9fjKjUBOFMgYokZxJWwkjEB0t/PsJWMQ6q0ndO2G74RcI5TUpPNok8Yrpr/N6j7ghAJUnBf4xWrOaItc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=TbbCE/yT; arc=none smtp.client-ip=209.85.128.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-47103531eeeso149975e9.1
-        for <stable@vger.kernel.org>; Thu, 23 Oct 2025 02:03:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1761210182; x=1761814982; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=B0lmo2gSK6dC5/iKwrS24Z1fB1vhkVWE57DPvqhuyE4=;
-        b=TbbCE/yTNL1Fyu0hWMxzS+f5RoV8ls2DrB4pC0p2xW75nNF4HUfRVDJWSOYePU9Ysm
-         6C5YqRso6lG6ZTJDZN51R6VnbJzPEe5Enthe9ZYK1v5fyD7dBLGPKDeUaZpVV0WTeB7Q
-         dgzqzdhCCTCseNMaETuVxidt6pcCIM3uu+j6XxpG3hZep9yryhPjzAPFjfYHbODoXQQl
-         S7gtIV1DQKDH3/e3iBjnifwFHI3A8t+2HXyuh+CXjPGScDuuWfRke1NU+x02OPtUN3Hg
-         2lANTJizQmy2YEHOg2Nu/C2NxnDqtZSI+BEMJWq/W4pmKSml4uBdGUeLGBtcmOraeP3U
-         P88w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761210182; x=1761814982;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=B0lmo2gSK6dC5/iKwrS24Z1fB1vhkVWE57DPvqhuyE4=;
-        b=FqThy+DDkopJo6kTdnz9gK0vKdUV4X44pmIzHTQG8nn+HNuXxsPDevl2KUyv6WrV5c
-         ykQo964UIDeFLLYB9F41Xtwd7CMvxesLa546A+p96XujSee4sa97jh28gV+VMO1FcO4C
-         2DV0ftxyEJfpKmm3ePl8tRkj1A1KEcrjyls2NpUnerNERKs+CMpR0dW11U8tYZXvigZC
-         yNXax11VDpG6UMJGuLBerKeJnOv5CPcBraGJUBjg0Uww2fa5B8jTIn0IukX746xV5PMh
-         9bZ46ZgqDFspcoVOEo/QD4ZLxn1h/uVW8AGgYT2Fj140UYIez6C64D31goIbgUSMqgQ/
-         Lrkg==
-X-Forwarded-Encrypted: i=1; AJvYcCXSpmVELlkTgOjBhtf5BO0kD0zDNADcphMacqZhMf7IvdwsN+qVv4jK1mBYxTgslIp5kKs61lk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzBpmh0BLSn/IWjldej3aEnaGR2P2/xnn9mnwuIcvFhjJTDOjVs
-	3QJYN6hZnlSSpUGmJPGZln0cctQn4/yxrZl3x/MeFLPGA1642tOj3Ew4DjH/9NC1FVk=
-X-Gm-Gg: ASbGncsk++QQxVk+4xISNPWQJJD6ZZWgmPaewQgvwK4sehijHg3G8Uz8E7T/uHeBTy+
-	SkunVzV0ko+iQnTscCIoDXpA1zFq4t30C0uhPP/c4CtHI2UPMZzvOAMxZhrmRAJONd13HE6kfJc
-	Ef9R3sVDsd+fXVWPy2kpq01q4OMW7e6i+YobSrvL8+7Z1hFWdPYJcmC6BVHGjbdDIqGFDzy2+eV
-	I9hq7RL45anYuWMKlvFSfSQ3A4TRWU7i+kdE/InGFYAayJrnjiMn7XkK+h+GjhLgNyhU8HwHp5a
-	0HGB5JgI4WxxRGRjFsGDJzNB5PfxlKI2fSqM3wQ2oh7N3ca3xYky2QYyY73Y+BQeufjOYOsTGAS
-	mMMESMpBOyKdB6GkXZUb4b1F7KJWVYRKC+mgI2O7emfMU2WTWk/nFhGa+pk45Hh6oGJHQHlEa1i
-	HYB4Wu3Ck7Z6bNV5piB0Abb5BiH/0=
-X-Google-Smtp-Source: AGHT+IED6vyXHphp1/qY9Tno4NQeRDekE0RdTtSCtP7Dt4LSJrXcGljAhWwqEXuSADOQSeczj7tsKg==
-X-Received: by 2002:a05:600c:3b02:b0:471:161b:4244 with SMTP id 5b1f17b1804b1-4749439ec9cmr42438295e9.5.1761210181644;
-        Thu, 23 Oct 2025 02:03:01 -0700 (PDT)
-Received: from [127.0.1.1] ([178.197.219.123])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-474949e0a3csm57557415e9.0.2025.10.23.02.02.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Oct 2025 02:03:01 -0700 (PDT)
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Date: Thu, 23 Oct 2025 11:02:51 +0200
-Subject: [PATCH RFC 2/2] ASoC: codecs: pm4125: Remove irq_chip on component
- unbind
+	s=arc-20240116; t=1761211970; c=relaxed/simple;
+	bh=Ky/VSEqGAXAkEnvNEK2NHD/qhCfcygP/YgzBCHIs/CM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=UuMT2kE7BVT7sMHbkEIdJidVcilH4+/CInyNwBPXpLOKbdSBQ8d1pbqdGSixk8tXz6ICt+cvpKVdCCp06GioZGZbHOAe7n1DQic4octsXIPRedIJPvhZe3LaRQ6BiTXsP7OKglnB7Y3VOBAT+ksX7yuBQho34Cw2m1hMhGxS69E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=gsrrqOcF; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=gVtByQAA; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id D638E1F388;
+	Thu, 23 Oct 2025 09:32:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1761211962; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=NPIvLe7IJwosnpvn0Us2PzDRMFbCqY83mlv0mt7RMt4=;
+	b=gsrrqOcFGMI+DXaSTvtY5E/zjjsMBxxXKhDy28jn7eSMdWpNG9S6CkU3gD2aiTDx6izsKe
+	RtxmBbEwur1CSAKwoKTUKwFRPlxDl0g5fp5c6JAGeL2CTnxpODt1STAdj6qAe4YDeHpESb
+	bpKxF+CsbGHwTgTFlTm77nP/PvNgEkw=
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1761211957; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=NPIvLe7IJwosnpvn0Us2PzDRMFbCqY83mlv0mt7RMt4=;
+	b=gVtByQAA1LPExW5mlO2gKN4H+y+CfcRgxDl1AFqlEjYtZurIHyknyubfBw+FPVOroEFUag
+	iocqUkcfuPOfCfcJMdto2KFdSslw9gAMDhzyQ0KZ8XWaY0e3jtZet91ScqaAPH+bhDifrd
+	9f+qULQdkMoIq39JoQ04eW1Zk20+7RM=
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id CC46513285;
+	Thu, 23 Oct 2025 09:32:36 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id IYVQIzT2+WhwQwAAD6G6ig
+	(envelope-from <wqu@suse.com>); Thu, 23 Oct 2025 09:32:36 +0000
+From: Qu Wenruo <wqu@suse.com>
+To: linux-btrfs@vger.kernel.org
+Cc: stable@vger.kernel.org
+Subject: [PATCH] btrfs: make sure no dirty metadata write is submitted after btrfs_stop_all_workers()
+Date: Thu, 23 Oct 2025 20:02:04 +1030
+Message-ID: <2059d92d64eb181f1d37538d1279ed5b191ce1ab.1761211916.git.wqu@suse.com>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251023-asoc-regmap-irq-chip-v1-2-17ad32680913@linaro.org>
-References: <20251023-asoc-regmap-irq-chip-v1-0-17ad32680913@linaro.org>
-In-Reply-To: <20251023-asoc-regmap-irq-chip-v1-0-17ad32680913@linaro.org>
-To: Srinivas Kandagatla <srini@kernel.org>, 
- Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
- Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
- Alexey Klimov <alexey.klimov@linaro.org>
-Cc: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>, 
- linux-sound@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1144;
- i=krzysztof.kozlowski@linaro.org; h=from:subject:message-id;
- bh=RvB0QfII4NieHlSWxal5DHWC4pQUcZHC+PzTz/++OqI=;
- b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBo+e8/GYFUijdJAKhixCgluMcrMSqaCUzWEFwMT
- hCKiKSlid6JAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCaPnvPwAKCRDBN2bmhouD
- 1zXxD/9SorjfLptnntRhhKS9ae8uP8iYdmgGaYBh++xUoDagGf60z/a0/ECNV7RHSNIp/ievlC8
- UH7q7SGN0HS9OkjQiD0atioUjpLpDfMIg2MoY4Q8BxDzG7MKFB2pC/vXDJW/tgL24rZmKjWevR2
- asW1KbgrTl2iuR56NbyDcfoT1cQ3HQUHk+gcgHtyi4MKElbcS2uyCbhe/4cevCpyeGPxOh8pKvz
- IkX3RwocFPza8PSe7egItdTLKsnKy5XBBFJaSox9kc0ErH0+ee13/vQHr7zLuAZnnymRJN/P3Dl
- WieCTZebuLgIHT6Plh6inXm7mk1j7WGhzdpSYoo5Etl9Tb+SWxBi5wYlGqTIY28TTm+tMCj1Vut
- n9M6aBnaodiyw5NHhY28HYmvBLonxHQMyu9aq1G7dIE3IotfR608K8hWGCsQa6ao0STrqzpOWUE
- ANsBjjBeSdNcShYtHxNl76GFqINCCDlfG9qjH5G7Kax4a4B7I2Q9bzmC5AuWurL9MwRbL/457OT
- 4aP+fZp2oZbi9xpQt5tb2BJHxtqJLhdhQ+Sw0DzsKgEkcq0Kr/MfnCSyGMB3L268D4T1QZ4LYzP
- uA7mrxWuk+iPgtz/5Cb7pru2gYoCJ2QxhsMYAT4HvxhrjL13/LosFZ5eTFQcZWmN7LG1HvelzpP
- Z7zVyu6HaBmXmLw==
-X-Developer-Key: i=krzysztof.kozlowski@linaro.org; a=openpgp;
- fpr=9BD07E0E0C51F8D59677B7541B93437D3B41629B
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-2.80 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	RCPT_COUNT_TWO(0.00)[2];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ARC_NA(0.00)[];
+	DKIM_SIGNED(0.00)[suse.com:s=susede1];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:mid,suse.com:email,imap1.dmz-prg2.suse.org:helo];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_EQ_ENVFROM(0.00)[];
+	TO_DN_NONE(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	RCVD_TLS_ALL(0.00)[]
+X-Spam-Flag: NO
+X-Spam-Score: -2.80
+X-Spam-Level: 
 
-Component bind uses devm_regmap_add_irq_chip() to add IRQ chip, so it
-will be removed only during driver unbind, not component unbind.
-A component unbind-bind cycle for the same Linux device lifetime would
-result in two chips added.  Fix this by manually removing the IRQ chip
-during component unbind.
+[BUG]
+During development of a minor feature (make sure all btrfs_bio::end_io()
+is called in task context), I noticed a crash in generic/388, where
+metadata writes triggered new works after btrfs_stop_all_workers().
 
-Fixes: 8ad529484937 ("ASoC: codecs: add new pm4125 audio codec driver")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+It turns out that it can even happen without any code modification, just
+using RAID5 for metadata and the same workload from generic/388 is going
+to trigger the use-after-free.
+
+[CAUSE]
+If btrfs hits an error, the fs is marked as error, no new
+transaction is allowed thus metadata is in a frozen state.
+
+But there are some metadata modification before that error, and they are
+still in the btree inode page cache.
+
+Since there will be no real transaction commitment, all those dirty
+folios are just kept as is in the page cache, and they can not be
+invalidated by invalidate_inode_pages2() call inside close_ctree(),
+because they are dirty.
+
+And finally after btrfs_stop_all_workers(), we call iput() on btree
+inode, which triggers writeback of those dirty metadata.
+
+And if the fs is using RAID56 metadata, this will trigger RMW and queue
+new works into rmw_workers, which is already stopped, causing warning
+from queue_work() and use-after-free.
+
+[FIX]
+Add a special handling for write_one_eb(), that if the fs is already in
+an error state immediately mark the bbio as failure, instead of really
+submitting them into the device.
+
+This means for test case like generic/388, at iput() those dirty folios
+will just be discarded without triggering IO.
+
+CC: stable@vger.kernel.org
+Signed-off-by: Qu Wenruo <wqu@suse.com>
 ---
- sound/soc/codecs/pm4125.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/btrfs/disk-io.c   | 12 ++++++++++++
+ fs/btrfs/extent_io.c | 11 +++++++++++
+ 2 files changed, 23 insertions(+)
 
-diff --git a/sound/soc/codecs/pm4125.c b/sound/soc/codecs/pm4125.c
-index 410b2fa5246e..c5ac2e6bb44d 100644
---- a/sound/soc/codecs/pm4125.c
-+++ b/sound/soc/codecs/pm4125.c
-@@ -1658,6 +1658,8 @@ static void pm4125_unbind(struct device *dev)
- 	struct pm4125_priv *pm4125 = dev_get_drvdata(dev);
+diff --git a/fs/btrfs/disk-io.c b/fs/btrfs/disk-io.c
+index 0aa7e5d1b05f..8b0fc2df85f1 100644
+--- a/fs/btrfs/disk-io.c
++++ b/fs/btrfs/disk-io.c
+@@ -4402,11 +4402,23 @@ void __cold close_ctree(struct btrfs_fs_info *fs_info)
  
- 	snd_soc_unregister_component(dev);
-+	devm_regmap_del_irq_chip(dev, irq_find_mapping(pm4125->virq, 0),
-+				 pm4125->irq_chip);
- 	device_link_remove(dev, pm4125->txdev);
- 	device_link_remove(dev, pm4125->rxdev);
- 	device_link_remove(pm4125->rxdev, pm4125->txdev);
-
+ 	btrfs_put_block_group_cache(fs_info);
+ 
++	/*
++	 * If the fs is already in trans aborted case, also trigger writeback of all
++	 * dirty metadata folios.
++	 * Those folios will not reach disk but dicarded directly.
++	 * This is to make sure no dirty folios before iput(), or iput() will
++	 * trigger writeback again, and may even cause extra works queued
++	 * into workqueue.
++	 */
++	if (unlikely(BTRFS_FS_ERROR(fs_info)))
++		filemap_write_and_wait(fs_info->btree_inode->i_mapping);
++
+ 	/*
+ 	 * we must make sure there is not any read request to
+ 	 * submit after we stopping all workers.
+ 	 */
+ 	invalidate_inode_pages2(fs_info->btree_inode->i_mapping);
++
+ 	btrfs_stop_all_workers(fs_info);
+ 
+ 	/* We shouldn't have any transaction open at this point */
+diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
+index 870584dde575..a8a53409bb3f 100644
+--- a/fs/btrfs/extent_io.c
++++ b/fs/btrfs/extent_io.c
+@@ -2246,6 +2246,17 @@ static noinline_for_stack void write_one_eb(struct extent_buffer *eb,
+ 		wbc_account_cgroup_owner(wbc, folio, range_len);
+ 		folio_unlock(folio);
+ 	}
++	/*
++	 * If the fs is already in error status, do not submit any writeback
++	 * but immediately finish it.
++	 * This is to avoid iput() triggering dirty folio writeback for
++	 * transaction aborted fses, which can cause extra works into
++	 * already stopped workqueues.
++	 */
++	if (unlikely(BTRFS_FS_ERROR(fs_info))) {
++		btrfs_bio_end_io(bbio, errno_to_blk_status(-EROFS));
++		return;
++	}
+ 	btrfs_submit_bbio(bbio, 0);
+ }
+ 
 -- 
-2.48.1
+2.51.0
 
 
