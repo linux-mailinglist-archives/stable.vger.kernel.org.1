@@ -1,99 +1,228 @@
-Return-Path: <stable+bounces-189155-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-189156-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44E11C02BEE
-	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 19:35:20 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 695D7C02C42
+	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 19:40:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 46CBD1A68A11
-	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 17:35:39 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4B3294E46FC
+	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 17:40:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E232F34AAE7;
-	Thu, 23 Oct 2025 17:34:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD63F34A76E;
+	Thu, 23 Oct 2025 17:40:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TQXFx07g"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eYjoycFg"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ua1-f49.google.com (mail-ua1-f49.google.com [209.85.222.49])
+Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C96834A793
-	for <stable@vger.kernel.org>; Thu, 23 Oct 2025 17:34:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A5EF347FC9
+	for <stable@vger.kernel.org>; Thu, 23 Oct 2025 17:40:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761240894; cv=none; b=ZxWs/1TrOKGMj5jYUNXiv8qHZt5w6em+X30poZ+5RzD/v33yI9TcE2rp7qJ9K7+GW+1Sxgx7+PV0atjtWWLlvhctU43O1GxSf72RdaQYAqfVo7FezvosFc5EEvnRy3ub4NApj7Zl34FplZN25UVb7TzC2s2lLtn+e3mAhoZQHGM=
+	t=1761241232; cv=none; b=KdX3HP0qQ/YJL5NR9xRdzcerCH337lZ+r6fuaZeDOOmkbOWhnZOzcZ8g3aZG/Y8+vEaWVuUV8lPEh+m772xVLKeJ5nNAsjF4XhDil32jFPxdcco0zWtq4/sZMParB3ZzG8GgdMrNpfAvGiDQGxgtpk5bRIjJyTKTy2eGIIbG9qw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761240894; c=relaxed/simple;
-	bh=VwKC0UFE/hSiQYJTMaM4Bls4thTgZXjxzl37/zt9MmM=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=ktXj8e0XgWXYQDHoTFkWFQ+inDwLGpvy4jh11cJ4s5s0pHthmAnV2JzI4w95jn3bpHkQPrr/8CKzBqtNzZYs6uYXR8fdLvzDkbSSl9A7nkBvK2c07JCKX0jkTdMqtutEk/FxdOZf5DWUquyxfbqBdjBauGxsyUfHwd1+oaaYRrE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TQXFx07g; arc=none smtp.client-ip=209.85.222.49
+	s=arc-20240116; t=1761241232; c=relaxed/simple;
+	bh=TTK6h6ml7y/22TB+D+/QTwGdPNuUZy3BGLD3gRDdYAM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=sPF8rZ289vfZ2tTxfK4eE4Kq9l+NjBbT2IGh3dSod5nSdAkCNs38dBVnhlGiVCVrx+yUpwkEqxosrJZnAvrjxDnWogxNGl7mPubg7QmOS8qttPkp2L+b59eVfjwuQuurOsHNlrkvP74fqKs03qx72ODbfsuEMjMsZOBy/vRHH8A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eYjoycFg; arc=none smtp.client-ip=209.85.208.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ua1-f49.google.com with SMTP id a1e0cc1a2514c-932e88546a8so521835241.0
-        for <stable@vger.kernel.org>; Thu, 23 Oct 2025 10:34:52 -0700 (PDT)
+Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-63e076e24f2so2327092a12.3
+        for <stable@vger.kernel.org>; Thu, 23 Oct 2025 10:40:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761240892; x=1761845692; darn=vger.kernel.org;
-        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=VwKC0UFE/hSiQYJTMaM4Bls4thTgZXjxzl37/zt9MmM=;
-        b=TQXFx07gUi7M3w6qqj1K+xEnYHhOPT4rmQwksSSqaXB4KYA54MDQCPbGaRCxisYqMo
-         zlWRRYjPXVNRP7oZZJQuiPg8m78oKkJCGDOiNGzXdkhjwVW+oYv6uDicoKHEnB19ycFY
-         MPdMHph+Ex02A+e/uRg0QV/Hpe+BhZfMMfFNuuS6zaihynvyrGzVv2mn2m1ARSrCv3nB
-         pTjC0Ysc0J6JRnAFw98Och7PpIj9DD3G/Ix7jeTTIeLVrSd0lc7joiWN055oJeZJY/s2
-         a9qsB+TkCQy8pzIj3HpgVOoxu4XY5Ag+23kpH3i4722kTFebf3pKTK2upQioqVBHchS3
-         LDxg==
+        d=gmail.com; s=20230601; t=1761241228; x=1761846028; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=smzdmE7oqDk8LuIhXOJODpEUrtL1Td6tLH8AoLayyPw=;
+        b=eYjoycFgUCk9GaDxqbRzoUj4IiltGk2u55V0kLa6PmdSHsBkiJJabBLYfDsp9VZrOq
+         0RmTBwNI7ijbhKKLAkd9+cAMhWaIgCVgmrTIkDBiiz2NndQxhn+/cSzIZXZe5c3AJPmS
+         uJ43YpR/1emzqFLJCeHzWleD5tEXIHhrSGy3h60K1GnEGmqIwufjNUBe8bE+ME4C4sPy
+         v8n0FvYa/WCYG/yCSbvwfuy/31wtcEZB5JAOOMhO0I1FDRSCrEjzyUcSeW9Sf8tHUAUo
+         naG85qzW4sXNmDCa4TjHcLx0/RsjDd7TshEIePFtpEG0Kw8OkPJgNPKuy1LmSnhpL8dk
+         wWCQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761240892; x=1761845692;
-        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=VwKC0UFE/hSiQYJTMaM4Bls4thTgZXjxzl37/zt9MmM=;
-        b=nE364V2eEtZ9PNv3ZPIDCG/Z1xg0QpwO9EfJmwdomJYvJQtIOIiQoaMKXrmj35t11l
-         7162ZTZd08kvZtSyR7akY0HehZM4kxjQsk5SZ3kYaPkXPv4U7C7b1wGffraSAUePRlgS
-         FUyj2yvTZQkWGffVDGWZghAsM+WFk/YBnxu0bRQkfFiOG0KTczPziI4s2OIZFani3b0C
-         i7OGCZIp3wMI1wp5luwTM2OwEo13RThAIsPe6LqJr5AkqUEouF+XyEwj1K63cuEKEA31
-         QRaqUj5aMdpfWAiJOCGOb1ba//6QWsWLLC8mZVB76R1wl6KZtBss3RVrNhXkT38TeliC
-         vNSw==
-X-Gm-Message-State: AOJu0YxCTgJ2a1EtdUVPXADPb4SJimU99ijHr7oDn5ks1Ylx+fleyEP5
-	bP8Fp2C5ZKiK4sbLS8M+F1ldJUfO9fkn4QH7DeisNZjYqEB0XRe1UCvnZAQVVcHpuDGVHtD3sS+
-	Rk68H/hMK8sq2aaANiWYMTzxza+bKxnE7aQ==
-X-Gm-Gg: ASbGncv6UjIbSeznm8HjX/r1Ojk6J9lnt69iuzWfSzkQBK+UFJXd02Ibiv9lN7WoX71
-	b6XC388ZmZAjSbb9QfMij2dhW4G9GxBc9M9zSTP882nJ2sBceq7S2/w1rI8qDFKICpYYgvwSGyS
-	FacNWKP+uSQaIdEOr8LR2bj0za+T6+8AqDpE5MZY9IbIDWZ/8G7N5osqrXls5pk3D4ipMopjxXL
-	v1PK1912w5Iwf2dXdTHUdv+96ZYCtwkoMDVhEcat12665TTXz57vnzTf9s4zqbkz90TZdpgWC8Z
-	e/aqUUF5EQGqVMtI75E=
-X-Google-Smtp-Source: AGHT+IHVFWpWJL7hBMbtcQlq1qWz/PgUQ7gjmgFhrbWS+lxQFwK4LbyaD7R169a60hu7dXt7vXlM65mlKh2O/u466wQ=
-X-Received: by 2002:a67:f40b:0:b0:5b8:e08f:eb38 with SMTP id
- ada2fe7eead31-5db23848dcamr1913663137.14.1761240891865; Thu, 23 Oct 2025
- 10:34:51 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1761241228; x=1761846028;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=smzdmE7oqDk8LuIhXOJODpEUrtL1Td6tLH8AoLayyPw=;
+        b=cC3nfe874AmQ8KIY4C1/zsU9ugbM+dsd9TAkDUwZklGjm2xfnKBhs3OFIOrYCWFabk
+         dFZrCMSOnTTJWjEYlAwAeOJQ9JrizYBaYebuSe9eNIPP1OWFndpq+rIwYn7NxEWU97Vw
+         ufnop8hzDHLNz5EJBCgM2fdv9Xf2yxXw4HB+rHS3bLhMuFVw18+b3Gxp7vcMnt8+QHtP
+         myxLiiKU9O/59tjQrmOlB3eedIux4yWeem3HlI2Yaonj4TmjNdZI4kK3efeyVI2IcGU6
+         rgsJOMTyOHIzrt9SU2zJ/1oK3zz/ObVV8N2XQRw9T93IGcaGYqaiNs13Iia1PD3yfIM9
+         LYzg==
+X-Forwarded-Encrypted: i=1; AJvYcCU0XSGWOmzrwdEJmCSboD8SHS/PT/hRkFTOUkW7fVmBerDE7JaFDZVfenxgkEqBYz41cbycyTM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxRwp76YIaCeZCPm7kg4DD+K4RyX2wdi2OnOGm5/CDsH4vSaaVp
+	o1l8USIGU+KbCe9aAU7WNG9A2rsfK0tNHyBHzYovaiXKXKOtDvd1LJ63623/axdtygieCv0kwPU
+	4T8yrML7gady0ZvKKSgWjVPHLtF7Kbdk=
+X-Gm-Gg: ASbGncuTL6ByBgVqyzIBRTtedVgVMFUOCcXakXOnX7vbd/1SXmnGABE5xbargmTESvf
+	FmU3mHOgr7H6kDiXmYARdZF85ZW8KahjSynoyNB3oz9xwfGNffZMbttR86PxFAj5wRz4IJ3653v
+	9n4UFXEm0L8AAj1AEoC68PXPRLDxhHYgb+wyrSwFVXn06N+gDOzpeYpF24gfEjhXL+tOqgTmP2M
+	5i7VOiSCGx9nU2wUJ4er2nCChbL1U9epYle8+khcbYnp9wCmKQwSKM4aajs3H7MIZ5pHJLXyg==
+X-Google-Smtp-Source: AGHT+IHow1VR8JQAE5q6qgDSicvmCI1LUGpLgKgoz/cgPgRgNpbdkUQD3/ZXHjoZ0VycRm0yeeZH7AQnSl5smGqMZo0=
+X-Received: by 2002:a17:907:3f87:b0:b3c:3c8e:1896 with SMTP id
+ a640c23a62f3a-b6473b52634mr2763877966b.42.1761241228124; Thu, 23 Oct 2025
+ 10:40:28 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Micah Robert <micah.mypackagingpro@gmail.com>
-Date: Thu, 23 Oct 2025 10:34:40 -0700
-X-Gm-Features: AWmQ_bkAf6KWTjjSpEadTicYTnmufXQh8Z_xsM5X6ZP7BmlnQKjWhO-Pt2QrCPk
-Message-ID: <CAHb_yAEb6NYdOOzAjBEgCjv1ne6iQ_EBYv-RqN+WMqxdHL85dQ@mail.gmail.com>
-Subject: Custom Packaging Boxes and Labels
-To: stable@vger.kernel.org
+References: <20251023030521.473097-1-ziy@nvidia.com>
+In-Reply-To: <20251023030521.473097-1-ziy@nvidia.com>
+From: Yang Shi <shy828301@gmail.com>
+Date: Thu, 23 Oct 2025 10:40:15 -0700
+X-Gm-Features: AWmQ_bn3zq0uDKg6ko2JiMC7FRwDGgYYe7WpkCFUwmKJwPnSL1F1mC_HQ9WgH9I
+Message-ID: <CAHbLzkqf37UpnFmQ_yZqZmWAa5X72JgFHsyUUBcyP6Pn9c3YyQ@mail.gmail.com>
+Subject: Re: [PATCH v4] mm/huge_memory: preserve PG_has_hwpoisoned if a folio
+ is split to >0 order
+To: Zi Yan <ziy@nvidia.com>
+Cc: linmiaohe@huawei.com, david@redhat.com, jane.chu@oracle.com, 
+	kernel@pankajraghav.com, akpm@linux-foundation.org, mcgrof@kernel.org, 
+	nao.horiguchi@gmail.com, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Wei Yang <richard.weiyang@gmail.com>, 
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi,
+On Wed, Oct 22, 2025 at 8:05=E2=80=AFPM Zi Yan <ziy@nvidia.com> wrote:
+>
+> folio split clears PG_has_hwpoisoned, but the flag should be preserved in
+> after-split folios containing pages with PG_hwpoisoned flag if the folio =
+is
+> split to >0 order folios. Scan all pages in a to-be-split folio to
+> determine which after-split folios need the flag.
+>
+> An alternatives is to change PG_has_hwpoisoned to PG_maybe_hwpoisoned to
+> avoid the scan and set it on all after-split folios, but resulting false
+> positive has undesirable negative impact. To remove false positive, calle=
+r
+> of folio_test_has_hwpoisoned() and folio_contain_hwpoisoned_page() needs =
+to
+> do the scan. That might be causing a hassle for current and future caller=
+s
+> and more costly than doing the scan in the split code. More details are
+> discussed in [1].
+>
+> This issue can be exposed via:
+> 1. splitting a has_hwpoisoned folio to >0 order from debugfs interface;
+> 2. truncating part of a has_hwpoisoned folio in
+>    truncate_inode_partial_folio().
+>
+> And later accesses to a hwpoisoned page could be possible due to the
+> missing has_hwpoisoned folio flag. This will lead to MCE errors.
+>
+> Link: https://lore.kernel.org/all/CAHbLzkoOZm0PXxE9qwtF4gKR=3DcpRXrSrJ9V9=
+Pm2DJexs985q4g@mail.gmail.com/ [1]
+> Fixes: c010d47f107f ("mm: thp: split huge page to any lower order pages")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Zi Yan <ziy@nvidia.com>
 
-We provide custom packaging boxes and labels. We make boxes in
-different materials and styles such as Vape Boxe, Cigarette Boxes,
-Cartridge Boxes, Cardboard boxes, Rigid Boxes and Mailer boxes, etc.
+Thanks for fixing this. Reviewed-by: Yang Shi <yang@os.amperecomputing.com>
 
-Our benefits include quick turnaround time, free shipping and design
-support. Just send over your box or label specifications and quantity
-so I can give you an estimate on that.
-
-Let me know if you have any questions. Thanks
-
-
-Best Regards
-Micah Robert
-My Packaging Pro
+> ---
+> From V3[1]:
+>
+> 1. Separated from the original series;
+> 2. Added Fixes tag and cc'd stable;
+> 3. Simplified page_range_has_hwpoisoned();
+> 4. Renamed check_poisoned_pages to handle_hwpoison, made it const, and
+>    shorten the statement;
+> 5. Removed poisoned_new_folio variable and checked the condition
+>    directly.
+>
+> [1] https://lore.kernel.org/all/20251022033531.389351-2-ziy@nvidia.com/
+>
+>  mm/huge_memory.c | 23 ++++++++++++++++++++---
+>  1 file changed, 20 insertions(+), 3 deletions(-)
+>
+> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> index fc65ec3393d2..5215bb6aecfc 100644
+> --- a/mm/huge_memory.c
+> +++ b/mm/huge_memory.c
+> @@ -3455,6 +3455,14 @@ bool can_split_folio(struct folio *folio, int call=
+er_pins, int *pextra_pins)
+>                                         caller_pins;
+>  }
+>
+> +static bool page_range_has_hwpoisoned(struct page *page, long nr_pages)
+> +{
+> +       for (; nr_pages; page++, nr_pages--)
+> +               if (PageHWPoison(page))
+> +                       return true;
+> +       return false;
+> +}
+> +
+>  /*
+>   * It splits @folio into @new_order folios and copies the @folio metadat=
+a to
+>   * all the resulting folios.
+> @@ -3462,17 +3470,24 @@ bool can_split_folio(struct folio *folio, int cal=
+ler_pins, int *pextra_pins)
+>  static void __split_folio_to_order(struct folio *folio, int old_order,
+>                 int new_order)
+>  {
+> +       /* Scan poisoned pages when split a poisoned folio to large folio=
+s */
+> +       const bool handle_hwpoison =3D folio_test_has_hwpoisoned(folio) &=
+& new_order;
+>         long new_nr_pages =3D 1 << new_order;
+>         long nr_pages =3D 1 << old_order;
+>         long i;
+>
+> +       folio_clear_has_hwpoisoned(folio);
+> +
+> +       /* Check first new_nr_pages since the loop below skips them */
+> +       if (handle_hwpoison &&
+> +           page_range_has_hwpoisoned(folio_page(folio, 0), new_nr_pages)=
+)
+> +               folio_set_has_hwpoisoned(folio);
+>         /*
+>          * Skip the first new_nr_pages, since the new folio from them hav=
+e all
+>          * the flags from the original folio.
+>          */
+>         for (i =3D new_nr_pages; i < nr_pages; i +=3D new_nr_pages) {
+>                 struct page *new_head =3D &folio->page + i;
+> -
+>                 /*
+>                  * Careful: new_folio is not a "real" folio before we cle=
+ared PageTail.
+>                  * Don't pass it around before clear_compound_head().
+> @@ -3514,6 +3529,10 @@ static void __split_folio_to_order(struct folio *f=
+olio, int old_order,
+>                                  (1L << PG_dirty) |
+>                                  LRU_GEN_MASK | LRU_REFS_MASK));
+>
+> +               if (handle_hwpoison &&
+> +                   page_range_has_hwpoisoned(new_head, new_nr_pages))
+> +                       folio_set_has_hwpoisoned(new_folio);
+> +
+>                 new_folio->mapping =3D folio->mapping;
+>                 new_folio->index =3D folio->index + i;
+>
+> @@ -3600,8 +3619,6 @@ static int __split_unmapped_folio(struct folio *fol=
+io, int new_order,
+>         int start_order =3D uniform_split ? new_order : old_order - 1;
+>         int split_order;
+>
+> -       folio_clear_has_hwpoisoned(folio);
+> -
+>         /*
+>          * split to new_order one order at a time. For uniform split,
+>          * folio is split to new_order directly.
+> --
+> 2.51.0
+>
 
