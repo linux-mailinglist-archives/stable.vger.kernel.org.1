@@ -1,168 +1,123 @@
-Return-Path: <stable+bounces-189120-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-189121-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1568CC01542
-	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 15:20:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7F87C0159C
+	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 15:25:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4668950859E
-	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 13:18:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 938B63AE3BA
+	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 13:25:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 606D1314B9D;
-	Thu, 23 Oct 2025 13:18:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 348E331576D;
+	Thu, 23 Oct 2025 13:25:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="j92iaoNz"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PoZCcD3j"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DDAD3128DC
-	for <stable@vger.kernel.org>; Thu, 23 Oct 2025 13:18:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0D0A314D3F;
+	Thu, 23 Oct 2025 13:25:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761225510; cv=none; b=BnlIu6utzqeEcfJyjWLdzRQwEW/3ZuUkK0x4xr4+cbK2hUf0u8SpAHWf0MEY+z2vh10GjZxCECKAtgjKoFRGakIN6rpA91VTBfffr3SUYcdImPUHXR18xAkwZCH7b75uH2kak+PEPA+a3XkaubZr5xxhE9cv8vqXUm2yYSa6eI4=
+	t=1761225932; cv=none; b=Zc82l2ShsIh2kZppI3IpnQi41jOvTOjySEMroMxIphUVlOxqOcCIkzM3L4QHBwBq3po/9gfYF5aylmUqqV3kbAM2kZUOqLHH1cE3lDYjUMomJ8tP0TMYNEbbxgJUeyqO+kB226vfeOpA6pGpmDBwE7N/VACUPGnKrxTGGEXL5oI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761225510; c=relaxed/simple;
-	bh=Io1p8sRPePbI/yYp7eF8xFBiYUfxl05DJQuwL9i9Yvk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=VCOmDdLZYy3Df8X4CPJ2u+1ZECQs2rNufXdeTonoEgkUvHln+Fc6wGQSlDKzAQlzuSuoBmhkrNxLnS/lqSkXmuXFffDIUrhu6+umc7wGvBxF0Kp/JV1S0jHBpbPYyDk6CXY/jfFd9bvfR93u08N9b+SLTVOoAUnijujm1CwX49Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=j92iaoNz; arc=none smtp.client-ip=209.85.208.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-378d50e1cccso9915721fa.0
-        for <stable@vger.kernel.org>; Thu, 23 Oct 2025 06:18:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761225506; x=1761830306; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2Gn0u6F4FcwNzytioOd4AYhSpwnJiVIhDhy5I+5Dm0E=;
-        b=j92iaoNzR+bkh5B+2ju2qto4umPie1qtKjZzigSL4zq48/OQXjS0aye6ay2Mq3Lu7P
-         B4Z5GgsDoOpzlwErlHStPa1TDQmqeLE8nqKCaxCTvtNdhONWOejUosWLj6RzrTc6t52g
-         EHauXdLZ+TG2MK5nhMWkJtH3IEXEExBxqZKsqfxJnyfvnsMkaXZy5TF6aLgvnxnCFR7f
-         KGN7obtEUTgt702sLDFXFdKAgxYmQbR427kfG7iH3ZJgpQMyFp/BqB0snIxJrETp/HPF
-         A/GBNWKEmIyz59NxiKqp2mOflTWGnE7R054P1O3PlnkQwGE9XvYjPMA2pADa28g2PIr9
-         roVA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761225506; x=1761830306;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=2Gn0u6F4FcwNzytioOd4AYhSpwnJiVIhDhy5I+5Dm0E=;
-        b=CrjQS+EbKKgLsH3u02TnJLEtXiTG3/UFqxKFrrPdjLT5jxKCKWekri48JkKqzA1EZv
-         dAXBWOuuBYAn7lTmZOfJo+zOy4KN4/+efPkDaM0BZXInUICfKzyUXHVBUXm7orYTDNIb
-         wDwxrwPDtDA1xfu6zZzHFcOsXJr8I81b2A09JBkMy1iwYYY8/I7VEM1bXy3qobhLMoRi
-         XDZ1liySIg5LJ6OXJbAuDVq6YsqkwnLyqQRKK8TL/trvqv9tNQ+bQZIXu++S8/pfYtti
-         tW09WxmEsTN0nEmMl26ov0vLzEK11SEpaEYXB37UoYwZDZ0vqi/iJSYkIq/wXwhd9JzW
-         YF3w==
-X-Forwarded-Encrypted: i=1; AJvYcCXd0Sg2Eg5mkMl/OCMecQvME9iHuOqbIz6uirma60eLxoVokom6z2oT5Y4rpSxObHsoEzQEa68=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyt8xJb6kPF9vmpNqcZAGSL3TvUbsCwhJjTS4YdCNw8o/yYtZlI
-	SwnmgH2A8NJhquLeb9HN9qANUWbTHRkUqlAXaW7ZL2Oblk6G9txsB82gV4Zu94oUv4YKQ1zW16J
-	EGplE0q/8AbzJnyQY88/JBQso6PDYBV4=
-X-Gm-Gg: ASbGnctnmLkziFFX7rYEL2++6p/GWx48Ip5voA2k+FHy9kT82GgWd8qceZGIg1c4iFg
-	At1DNx1DUdOkbxYfmmxjUQpTxLY9+gjftmyyy4U+gyXJL+4JI46bekiBMCvagEE45drhnWk3Koa
-	LI5vuKwMkInbHKZAatgHUCle25WrdB9EB5aELpZBd0AN8MbIYqgyVZO3yFmTRvi2Hd/xm7lQ2wU
-	6XncSpPinyLyweLTLimJx1HuonzoCcSwYW/N9mahApxel7VUsmFDIk2g1Lomuh2AWo9jw==
-X-Google-Smtp-Source: AGHT+IF9mkLH9nWY6msPEXtSzp21zHIILiGGoh+1t404Gr2SEQ44oMEc/FKkF7qZ2Yh4aplYXJXL04MuqXK8NskaD18=
-X-Received: by 2002:a05:651c:25cb:20b0:378:d312:52c0 with SMTP id
- 38308e7fff4ca-378d312536cmr9636841fa.5.1761225506011; Thu, 23 Oct 2025
- 06:18:26 -0700 (PDT)
+	s=arc-20240116; t=1761225932; c=relaxed/simple;
+	bh=Zlg/UQfIaIuf9IsruPRVzFlKEWA8F1iJyRojvd82SZ4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=BSjNJyVPfj7QxcetpRjP+Xwpfry+aCStTP39EqPyFxEBmnv6Y0i7OQGt07dra+mfsD4BQMEjEMYrb5Xa74BVWGPYhHykiP25FXKI4UgM+FknLlTTj1GzYWY0dmuygIsbWpK4D5NaF7mU3BQoXxwbxKPMTHe10tY03uxhgxAXbI8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PoZCcD3j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9CC5C4CEE7;
+	Thu, 23 Oct 2025 13:25:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761225931;
+	bh=Zlg/UQfIaIuf9IsruPRVzFlKEWA8F1iJyRojvd82SZ4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=PoZCcD3j6lpk6hGUA7zcWc4uqYSs8XX3435JYqTRvSMafzK3INIpVT+lhIczSBzVk
+	 mOf5MZcM+fmCN7UnBNGI4wtSMgFJ6PmzJEZu6SJhgpHc9HkYFKjnpJTcy7+rEISglu
+	 7NBdIVSY8VzE/p7qYxnyfwnT9pAmkT2YHIhddzU3emnbHPWdPuEteFxaYUa+3rt0ZI
+	 WE3vZuvoTGkwr5diZF379L4WBkqZspTGt5Hg0bSoui3a4csiP+7LQZ3Bf5AYOK1w1F
+	 LQ0zjSZlQ2f8Qbgjl5zb/fhfLSogt1fbOPOL4lXyUbN//TKwslAwM9i23MAgo32+SV
+	 GXZnmw9QyDu2w==
+Message-ID: <83852558-0fdc-493c-8f44-95356480c8aa@kernel.org>
+Date: Thu, 23 Oct 2025 15:25:27 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251020151255.1807712-1-Ilia.Gavrilov@infotecs.ru>
-In-Reply-To: <20251020151255.1807712-1-Ilia.Gavrilov@infotecs.ru>
-From: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
-Date: Thu, 23 Oct 2025 09:18:13 -0400
-X-Gm-Features: AS18NWAOr4vPXVJkPYtTy29M3zZKn1wN4ylPEGtp4Ibczfl2RaoyytNjp5Xysuc
-Message-ID: <CABBYNZKUNecJNPmrVFdkkOhG1A8C_32pUOdh0ZDWkCNkAugDdQ@mail.gmail.com>
-Subject: Re: [PATCH net] Bluetooth: MGMT: Fix OOB access in parse_adv_monitor_pattern()
-To: Ilia Gavrilov <Ilia.Gavrilov@infotecs.ru>
-Cc: Marcel Holtmann <marcel@holtmann.org>, Johan Hedberg <johan.hedberg@gmail.com>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	"linux-bluetooth@vger.kernel.org" <linux-bluetooth@vger.kernel.org>, 
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"lvc-project@linuxtesting.org" <lvc-project@linuxtesting.org>, 
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] ACPI: video: Fix use-after-free in
+ acpi_video_switch_brightness()
+To: Yuhao Jiang <danisjiang@gmail.com>, "Rafael J . Wysocki"
+ <rafael@kernel.org>
+Cc: Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20251022200704.2655507-1-danisjiang@gmail.com>
+From: Hans de Goede <hansg@kernel.org>
+Content-Language: en-US, nl
+In-Reply-To: <20251022200704.2655507-1-danisjiang@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi Ilia,
+Hi,
 
-On Mon, Oct 20, 2025 at 11:12=E2=80=AFAM Ilia Gavrilov
-<Ilia.Gavrilov@infotecs.ru> wrote:
->
-> In the parse_adv_monitor_pattern() function, the value of
-> the 'length' variable is currently limited to HCI_MAX_EXT_AD_LENGTH(251).
-> The size of the 'value' array in the mgmt_adv_pattern structure is 31.
-> If the value of 'pattern[i].length' is set in the user space
-> and exceeds 31, the 'patterns[i].value' array can be accessed
-> out of bound when copied.
->
-> Increasing the size of the 'value' array in
-> the 'mgmt_adv_pattern' structure will break the userspace.
-> Considering this, and to avoid OOB access revert the limits for 'offset'
-> and 'length' back to the value of HCI_MAX_AD_LENGTH.
->
-> Found by InfoTeCS on behalf of Linux Verification Center
-> (linuxtesting.org) with SVACE.
->
-> Fixes: db08722fc7d4 ("Bluetooth: hci_core: Fix missing instances using HC=
-I_MAX_AD_LENGTH")
+On 22-Oct-25 10:07 PM, Yuhao Jiang wrote:
+> The switch_brightness_work delayed work accesses device->brightness
+> and device->backlight, which are freed by
+> acpi_video_dev_unregister_backlight() during device removal.
+> 
+> If the work executes after acpi_video_bus_unregister_backlight()
+> frees these resources, it causes a use-after-free when
+> acpi_video_switch_brightness() dereferences device->brightness or
+> device->backlight.
+> 
+> Fix this by calling cancel_delayed_work_sync() for each device's
+> switch_brightness_work in acpi_video_bus_remove_notify_handler()
+> after removing the notify handler that queues the work. This ensures
+> the work completes before the memory is freed.
+> 
+> Fixes: 8ab58e8e7e097 ("ACPI / video: Fix backlight taking 2 steps on a brightness up/down keypress")
 > Cc: stable@vger.kernel.org
-> Signed-off-by: Ilia Gavrilov <Ilia.Gavrilov@infotecs.ru>
+> Signed-off-by: Yuhao Jiang <danisjiang@gmail.com>
 > ---
->  include/net/bluetooth/mgmt.h | 2 +-
->  net/bluetooth/mgmt.c         | 6 +++---
->  2 files changed, 4 insertions(+), 4 deletions(-)
->
-> diff --git a/include/net/bluetooth/mgmt.h b/include/net/bluetooth/mgmt.h
-> index 74edea06985b..4b07ce6dfd69 100644
-> --- a/include/net/bluetooth/mgmt.h
-> +++ b/include/net/bluetooth/mgmt.h
-> @@ -780,7 +780,7 @@ struct mgmt_adv_pattern {
->         __u8 ad_type;
->         __u8 offset;
->         __u8 length;
-> -       __u8 value[31];
-> +       __u8 value[HCI_MAX_AD_LENGTH];
+> Changes in v3:
+> - Move cancel_delayed_work_sync() to acpi_video_bus_remove_notify_handler()
+>   instead of acpi_video_bus_unregister_backlight() for better logic placement
+> - Link to v2: https://lore.kernel.org/all/20251022042514.2167599-1-danisjiang@gmail.com/
 
-Why not use HCI_MAX_EXT_AD_LENGTH above? Or perhaps even make it
-opaque since the actual size is defined by length - offset.
+Thanks, patch looks good to me:
 
->  } __packed;
->
->  #define MGMT_OP_ADD_ADV_PATTERNS_MONITOR       0x0052
-> diff --git a/net/bluetooth/mgmt.c b/net/bluetooth/mgmt.c
-> index a3d16eece0d2..500033b70a96 100644
-> --- a/net/bluetooth/mgmt.c
-> +++ b/net/bluetooth/mgmt.c
-> @@ -5391,9 +5391,9 @@ static u8 parse_adv_monitor_pattern(struct adv_moni=
-tor *m, u8 pattern_count,
->         for (i =3D 0; i < pattern_count; i++) {
->                 offset =3D patterns[i].offset;
->                 length =3D patterns[i].length;
-> -               if (offset >=3D HCI_MAX_EXT_AD_LENGTH ||
-> -                   length > HCI_MAX_EXT_AD_LENGTH ||
-> -                   (offset + length) > HCI_MAX_EXT_AD_LENGTH)
-> +               if (offset >=3D HCI_MAX_AD_LENGTH ||
-> +                   length > HCI_MAX_AD_LENGTH ||
-> +                   (offset + length) > HCI_MAX_AD_LENGTH)
->                         return MGMT_STATUS_INVALID_PARAMS;
->
->                 p =3D kmalloc(sizeof(*p), GFP_KERNEL);
-> --
-> 2.39.5
+Reviewed-by: Hans de Goede <hansg@kernel.org>
+
+Regards,
+
+Hans
 
 
 
---=20
-Luiz Augusto von Dentz
+> ---
+>  drivers/acpi/acpi_video.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/acpi/acpi_video.c b/drivers/acpi/acpi_video.c
+> index 103f29661576..be8e7e18abca 100644
+> --- a/drivers/acpi/acpi_video.c
+> +++ b/drivers/acpi/acpi_video.c
+> @@ -1959,8 +1959,10 @@ static void acpi_video_bus_remove_notify_handler(struct acpi_video_bus *video)
+>  	struct acpi_video_device *dev;
+>  
+>  	mutex_lock(&video->device_list_lock);
+> -	list_for_each_entry(dev, &video->video_device_list, entry)
+> +	list_for_each_entry(dev, &video->video_device_list, entry) {
+>  		acpi_video_dev_remove_notify_handler(dev);
+> +		cancel_delayed_work_sync(&dev->switch_brightness_work);
+> +	}
+>  	mutex_unlock(&video->device_list_lock);
+>  
+>  	acpi_video_bus_stop_devices(video);
+
 
