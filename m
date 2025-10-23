@@ -1,89 +1,139 @@
-Return-Path: <stable+bounces-189169-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-189170-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 756E3C039B4
-	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 23:47:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C82E5C03A49
+	for <lists+stable@lfdr.de>; Fri, 24 Oct 2025 00:10:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 227F6354EA5
-	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 21:47:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 603263ABD61
+	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 22:10:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5467A191F91;
-	Thu, 23 Oct 2025 21:47:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02F452727F3;
+	Thu, 23 Oct 2025 22:10:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="wNU57mIK"
 X-Original-To: stable@vger.kernel.org
-Received: from air.basealt.ru (air.basealt.ru [193.43.8.18])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3AAA13790B
-	for <stable@vger.kernel.org>; Thu, 23 Oct 2025 21:47:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.43.8.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A20318405C;
+	Thu, 23 Oct 2025 22:10:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761256073; cv=none; b=Ha2TDGmQXaZsVpHBbzsagbuflHqIECeXNuM+aDmdVnlbovSY9lzbauJ8saWDXOMEbRrLWowy97rhg/NIxYE79NF0btj8ulpdftPyr6WwwWQR0ej5Lx+t3724FHeui3NhlX1HKkFOecC00ruF3WGSzozGtX5L+fSW9a5whEPpweY=
+	t=1761257429; cv=none; b=GjKdoQluLFRsR7bZEmcc5LJPuqUlzUrv092Ut/Fq2pejP+mRVCvxUaw7skdGKCBcUw6f34uf+OqGvYV4smgg+tmxovK19J0gw0ecUWBWX/cSlt3DCnQdZpmIqe3bhAL/3zrU0YPdM1l54YqjBQr7FE5YJhidrQ3zTpG4ylqG7AE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761256073; c=relaxed/simple;
-	bh=mJpOqNCTvzTBHwdN370dGYMUzPzecvsrw4ANCkvgjtQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=bQhwUZkVgyc9ertR4WupGxG5bINcdtqTnECrnoU+mzYv1lNyWThZz3gZ3Y20NFC5PqpAce+dPWjQUwsji00jV25v2bumd2G44EDnuR/7UXAjXKdcCRIl85eXVNPv4SpC0Yy8PIu4zHaUC3gyMAQWqshO2tTU+e4pY/ddLDbfKLY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org; spf=pass smtp.mailfrom=altlinux.org; arc=none smtp.client-ip=193.43.8.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altlinux.org
-Received: from altlinux.ipa.basealt.ru (unknown [178.76.204.78])
-	(Authenticated sender: kovalevvv)
-	by air.basealt.ru (Postfix) with ESMTPSA id 5891623372;
-	Fri, 24 Oct 2025 00:47:40 +0300 (MSK)
-From: Vasiliy Kovalev <kovalev@altlinux.org>
-To: stable@vger.kernel.org
-Cc: Mark Brown <broonie@kernel.org>,
-	Heiko Stuebner <heiko@sntech.de>,
-	lvc-project@linuxtesting.org,
-	kovalev@altlinux.org
-Subject: [PATCH 6.1.y] spi-rockchip: Fix register out of bounds access
-Date: Fri, 24 Oct 2025 00:47:39 +0300
-Message-Id: <20251023214739.247289-1-kovalev@altlinux.org>
-X-Mailer: git-send-email 2.33.8
+	s=arc-20240116; t=1761257429; c=relaxed/simple;
+	bh=zVzi8JPFFKcdiVLrixflS8iwyGUm4h0mqx/TSW/q/yE=;
+	h=Date:To:From:Subject:Message-Id; b=lc5P2LpK3ooWl6WacAEYYwRp7/2yGhiqlku/AlA4MwqctnQlNcwh3CFcADb/6ZUDY45f5HuxcbaFP+wBixetaQSYKYXq3MD2VmMQJTpeRZAYvrrl8xN+PXEZcyGPvJt4LDGvnqgO0oEfnfb5BAe6xbdMWhL1hYQUuvJdEL6RKXk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=wNU57mIK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E49F9C4CEE7;
+	Thu, 23 Oct 2025 22:10:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1761257429;
+	bh=zVzi8JPFFKcdiVLrixflS8iwyGUm4h0mqx/TSW/q/yE=;
+	h=Date:To:From:Subject:From;
+	b=wNU57mIKtfOw+dSY6D1bju9vjM508osoqMyYLAaPwUvF7whCCLHNioD7G3J1qG9M0
+	 zBUduwowK93p3TLpe4Qg8HlGovf8xHdwqiIMBLS+NO9xFWYtnK6+z2E/70IzZSpX1f
+	 Y/XX9oDYouN1SIrO300UwCw9GDmcy2xQNQH98xYI=
+Date: Thu, 23 Oct 2025 15:10:28 -0700
+To: mm-commits@vger.kernel.org,ziy@nvidia.com,willy@infradead.org,stable@vger.kernel.org,ryan.roberts@arm.com,npache@redhat.com,lorenzo.stoakes@oracle.com,liam.howlett@oracle.com,hughd@google.com,dev.jain@arm.com,david@redhat.com,baolin.wang@linux.alibaba.com,baohua@kernel.org,kasong@tencent.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-shmem-fix-thp-allocation-and-fallback-loop-v3.patch added to mm-hotfixes-unstable branch
+Message-Id: <20251023221028.E49F9C4CEE7@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-From: Luis de Arquer <luis.dearquer@inertim.com>
 
-commit 7a874e8b54ea21094f7fd2d428b164394c6cb316 upstream.
+The patch titled
+     Subject: mm-shmem-fix-thp-allocation-and-fallback-loop-v3
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-shmem-fix-thp-allocation-and-fallback-loop-v3.patch
 
-Do not write native chip select stuff for GPIO chip selects.
-GPIOs can be numbered much higher than native CS.
-Also, it makes no sense.
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-shmem-fix-thp-allocation-and-fallback-loop-v3.patch
 
-Fixes: 736b81e07517 ("spi: rockchip: Support SPI_CS_HIGH")
-Signed-off-by: Luis de Arquer <luis.dearquer@inertim.com>
-Link: https://patch.msgid.link/365ccddfba110549202b3520f4401a6a936e82a8.camel@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-[ kovalev: bp to fix CVE-2025-38081; added Fixes tag ]
-Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Kairui Song <kasong@tencent.com>
+Subject: mm-shmem-fix-thp-allocation-and-fallback-loop-v3
+Date: Thu, 23 Oct 2025 14:59:13 +0800
+
+introduce a temporary variable to improve code
+
+Link: https://lkml.kernel.org/r/20251023065913.36925-1-ryncsn@gmail.com
+Link: https://lore.kernel.org/linux-mm/CAMgjq7DqgAmj25nDUwwu1U2cSGSn8n4-Hqpgottedy0S6YYeUw@mail.gmail.com/ [1]
+Fixes: e7a2ab7b3bb5d ("mm: shmem: add mTHP support for anonymous shmem")
+Signed-off-by: Kairui Song <kasong@tencent.com>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Barry Song <baohua@kernel.org>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Dev Jain <dev.jain@arm.com>
+Cc: Hugh Dickins <hughd@google.com>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Nico Pache <npache@redhat.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Zi Yan <ziy@nvidia.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- drivers/spi/spi-rockchip.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
-index dbefc7e77313..cba858a7b4f9 100644
---- a/drivers/spi/spi-rockchip.c
-+++ b/drivers/spi/spi-rockchip.c
-@@ -540,8 +540,8 @@ static int rockchip_spi_config(struct rockchip_spi *rs,
- 	cr0 |= (spi->mode & 0x3U) << CR0_SCPH_OFFSET;
- 	if (spi->mode & SPI_LSB_FIRST)
- 		cr0 |= CR0_FBM_LSB << CR0_FBM_OFFSET;
--	if (spi->mode & SPI_CS_HIGH)
--		cr0 |= BIT(spi->chip_select) << CR0_SOI_OFFSET;
-+	if ((spi->mode & SPI_CS_HIGH) && !(spi_get_csgpiod(spi, 0)))
-+		cr0 |= BIT(spi_get_chipselect(spi, 0)) << CR0_SOI_OFFSET;
+ mm/shmem.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+--- a/mm/shmem.c~mm-shmem-fix-thp-allocation-and-fallback-loop-v3
++++ a/mm/shmem.c
+@@ -1882,6 +1882,7 @@ static struct folio *shmem_alloc_and_add
+ 	struct shmem_inode_info *info = SHMEM_I(inode);
+ 	unsigned long suitable_orders = 0;
+ 	struct folio *folio = NULL;
++	pgoff_t aligned_index;
+ 	long pages;
+ 	int error, order;
  
- 	if (xfer->rx_buf && xfer->tx_buf)
- 		cr0 |= CR0_XFM_TR << CR0_XFM_OFFSET;
--- 
-2.50.1
+@@ -1895,9 +1896,10 @@ static struct folio *shmem_alloc_and_add
+ 		order = highest_order(suitable_orders);
+ 		while (suitable_orders) {
+ 			pages = 1UL << order;
+-			folio = shmem_alloc_folio(gfp, order, info, round_down(index, pages));
++			aligned_index = round_down(index, pages);
++			folio = shmem_alloc_folio(gfp, order, info, aligned_index);
+ 			if (folio) {
+-				index = round_down(index, pages);
++				index = aligned_index;
+ 				goto allocated;
+ 			}
+ 
+_
+
+Patches currently in -mm which might be from kasong@tencent.com are
+
+mm-shmem-fix-thp-allocation-and-fallback-loop.patch
+mm-shmem-fix-thp-allocation-and-fallback-loop-v3.patch
+mm-swap-do-not-perform-synchronous-discard-during-allocation.patch
+mm-swap-rename-helper-for-setup-bad-slots.patch
+mm-swap-cleanup-swap-entry-allocation-parameter.patch
+mm-migrate-swap-drop-usage-of-folio_index.patch
+mm-swap-remove-redundant-argument-for-isolating-a-cluster.patch
 
 
