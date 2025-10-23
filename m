@@ -1,196 +1,277 @@
-Return-Path: <stable+bounces-189112-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-189113-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 435DEC01236
-	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 14:30:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98AE6C01349
+	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 14:47:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EBA413A20B7
-	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 12:30:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB5E0189DC1E
+	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 12:47:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF250303A2B;
-	Thu, 23 Oct 2025 12:30:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 795D6BA3D;
+	Thu, 23 Oct 2025 12:47:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="EHeozfyc"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="xCpHMp+R";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="81mpbfL3";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="T0zqnMWK";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="mRn5gSNW"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 235461D555
-	for <stable@vger.kernel.org>; Thu, 23 Oct 2025 12:30:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71D157262D
+	for <stable@vger.kernel.org>; Thu, 23 Oct 2025 12:47:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761222622; cv=none; b=hvGj0I8K0+g9O9e5U7t+OKoZQ8NjxnQjPuzfnVll3NetxyY7MyEtOnmJ7hJKXg8NqtIewPrT9VJIed2Fjg68t3wbX7G/AHobcUhe30lKktZ5NKDAa5gaQFFGK87HkjiVV4ROQUfx2NM9uGj7MyM2oVijHmx7D937rfbbxC9QVRY=
+	t=1761223623; cv=none; b=VpV/tJ1GVZSFiKXRv8y1artwfpNIxlXapEkwBaBtabcD9NiUDyjao73Ads6+3fjEG2jd6Nxm2T0Omwz2fksvrh/Nw5Zn8ZI6SEY4N2P2VCDxsGlxP4Pq5ELYjWRLORVAgA+gRQLSuvVC11kIS12G2d1cMPbUFsBQS3zHB32Zbhk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761222622; c=relaxed/simple;
-	bh=Lf7YOQf8V02utUBN/f/dSt4noL1+fZx7zdhiTZo+kgk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YR86U/BL9k0xtD0kYJhesW5d0dRr9CXLjLN50WbM43/4L/fKGZf7xOPii2LbMu4Caa2Ci3cFR/madnJL1MDqopNJ4fa3lmDKgsWmXuJM+hcSUX4XplX1pnp7beirVmIJGenjtjL+Pi6I5IQAVNax3a76Kx7YtOdK5VpGiRsYhQE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=EHeozfyc; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59NARptB022111
-	for <stable@vger.kernel.org>; Thu, 23 Oct 2025 12:30:20 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=GbYU8m9RlIQsMrvs4
-	L2CEVuUmwo3QuB646bHShkynLY=; b=EHeozfycZ7CPFZGHv+9333bxlIICtHPf1
-	IisS05xfCkSH72c0Iifs3NtYcLLWB0Lmlrxc3XABTh97WhwmQDlN66ZbUrhDZt/p
-	PBp0K8pXTZ2PPJsetNtMKEmyOv64+2QpC92WewhRrdbcOWr71tMa7A/UGWLhfJIA
-	dUz5WGD6F4hc8iHwMC5mV5qkJS292i7SBiANlWoNr6ivGNyQuB8xtypKXza9rh6L
-	hprBAcN+KzleW4gHiv2nA8QT3xM9yCImt77eyqfJePRBxd3waHHmZZMXuOLopXpk
-	2sFo8WHtMKsglZxoaXOGIT2+KF0lQ4XML6VpHTmeYUhcgfMtK0OlQ==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49v30w0mdc-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <stable@vger.kernel.org>; Thu, 23 Oct 2025 12:30:19 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59NANSKA024687
-	for <stable@vger.kernel.org>; Thu, 23 Oct 2025 12:30:19 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 49vpqk5kn6-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <stable@vger.kernel.org>; Thu, 23 Oct 2025 12:30:19 +0000
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 59NCUF9261800910
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 23 Oct 2025 12:30:15 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5536B20043;
-	Thu, 23 Oct 2025 12:30:15 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3FF8020040;
-	Thu, 23 Oct 2025 12:30:15 +0000 (GMT)
-Received: from tuxmaker.lnxne.boe (unknown [9.152.85.9])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 23 Oct 2025 12:30:15 +0000 (GMT)
-From: Vineeth Vijayan <vneethv@linux.ibm.com>
-To: stable@vger.kernel.org
-Cc: hca@linux.ibm.com, oberpar@linux.ibm.com
-Subject: [PATCH 6.1.y] s390/cio: Update purge function to unregister the unused subchannels
-Date: Thu, 23 Oct 2025 14:30:15 +0200
-Message-ID: <20251023123015.2935403-1-vneethv@linux.ibm.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <2025101905-removal-wistful-dd49@gregkh>
-References: <2025101905-removal-wistful-dd49@gregkh>
+	s=arc-20240116; t=1761223623; c=relaxed/simple;
+	bh=M/KUn0pz0e34yZzDEgrZSDH668ekEqrUq491kghpSKk=;
+	h=Content-Type:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To; b=Yk3srvXPr1tY4TylVK22zskDps9Ny4dhY/mUVSE9sNcjpHZVVLgI7KRpFAh9si6xcKQnwFMIIh3kBpJFE+B6oJm9vsooqdabyXrMI26cE9XNFuPOPdbx+qwvwfyk0hxVTnjeHFJGVwrUxJRC8S2AE76VZ31PfNXa+mYVUikigCc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=xCpHMp+R; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=81mpbfL3; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=T0zqnMWK; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=mRn5gSNW; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 8293C1F79D;
+	Thu, 23 Oct 2025 12:46:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1761223615; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=66Z5CznZ7odjpwPMy4M1I/dek6aDfSMiPt+5W7PivNI=;
+	b=xCpHMp+RuAbppEodJeitpWmIaGDRA6rWHttqmKBCGTLcKOrejYcXS+tx2Rj/Mvd+BRjXER
+	Oj+vHDFDXZlq3i9yG+5gRO/jU/u96WVQgldJGyRF5FcCtWura/l9yjcML98Dhhc+KI5Cqh
+	2vVYU9oLbwpfsUJAxalhD469hRjzwcI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1761223615;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=66Z5CznZ7odjpwPMy4M1I/dek6aDfSMiPt+5W7PivNI=;
+	b=81mpbfL3PpOqyMoMpqNs13bqmkTHnCMEjAkz/kqsWDqcwJA3fvp7RdXk4s56IwItty6vqY
+	CUaoWnNgg8oczADA==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1761223611; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=66Z5CznZ7odjpwPMy4M1I/dek6aDfSMiPt+5W7PivNI=;
+	b=T0zqnMWKPN+hTPuXFrFPDXf4U34+Wu5qFmQHpGoFZiFvcj3hY+ksScfpGvbCNm0akoFBMC
+	o9ss9ONT+iE2cJcHgFa8UeHUgqK/mdaaFNcCFAqqNdiMu8c0JvGy8ZEQt99hnRfgEK1bDd
+	pExJ/SAAnEk6UR5JqsT4GYXgMBssD3M=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1761223611;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=66Z5CznZ7odjpwPMy4M1I/dek6aDfSMiPt+5W7PivNI=;
+	b=mRn5gSNWAE9kBZeXYIQsOWXxBYdArcF9jAuyKnH0XzoW8vZKNq/o1wXwvID3srjLzIfNPp
+	AEwwi2eCz3qvEiAA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 29EDC13285;
+	Thu, 23 Oct 2025 12:46:51 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id yjSYB7sj+mibAgAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Thu, 23 Oct 2025 12:46:51 +0000
+Content-Type: multipart/mixed; boundary="------------W3Z0M8wWf0unhfX0d2zFxBG1"
+Message-ID: <329a9f97-dd66-49c2-bc42-470566d01539@suse.de>
+Date: Thu, 23 Oct 2025 14:46:50 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [REGRESSION][BISECTED] Screen goes blank with ASpeed AST2300 in
+ 6.18-rc2
+To: Peter Schneider <pschneider1968@googlemail.com>,
+ regressions@lists.linux.dev, LKML <linux-kernel@vger.kernel.org>
+Cc: dri-devel@lists.freedesktop.org, stable@vger.kernel.org,
+ jfalempe@redhat.com, airlied@redhat.com, dianders@chromium.org,
+ nbowler@draconx.ca, Linus Torvalds <torvalds@linux-foundation.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Thorsten Leemhuis <regressions@leemhuis.info>
+References: <20251014084743.18242-1-tzimmermann@suse.de>
+ <a40caf8e-58ad-4f9c-af7f-54f6f69c29bb@googlemail.com>
+ <43992c88-3a3a-4855-9f46-27a7e5fdec2e@suse.de>
+ <798ba37a-41d0-4953-b8f5-8fe6c00f8dd3@googlemail.com>
+ <bf827c5c-c4dd-46f1-962d-3a8e2a0a7fdf@suse.de>
+ <5f8fba3b-2ee1-4a02-9b41-e6e1de1a507a@googlemail.com>
+ <e2462c92-4049-486b-92d7-e78aaec4b05d@suse.de>
+ <3ca10b2e-fb9c-4495-9219-5e8537314751@googlemail.com>
+Content-Language: en-US
+From: Thomas Zimmermann <tzimmermann@suse.de>
+Autocrypt: addr=tzimmermann@suse.de; keydata=
+ xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
+ XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
+ BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
+ hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
+ 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
+ AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
+ AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
+ AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
+ lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
+ U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
+ vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
+ 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
+ j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
+ T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
+ 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
+ GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
+ hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
+ EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
+ C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
+ yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
+ SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
+ Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
+ 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
+In-Reply-To: <3ca10b2e-fb9c-4495-9219-5e8537314751@googlemail.com>
+X-Spamd-Result: default: False [-3.19 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	MIME_BASE64_TEXT_BOGUS(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.19)[-0.953];
+	MIME_BASE64_TEXT(0.10)[];
+	MIME_GOOD(-0.10)[multipart/mixed,text/plain,text/x-patch];
+	ARC_NA(0.00)[];
+	FREEMAIL_TO(0.00)[googlemail.com,lists.linux.dev,vger.kernel.org];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	MIME_TRACE(0.00)[0:+,1:+,2:+];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FREEMAIL_ENVRCPT(0.00)[googlemail.com];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,suse.de:email,imap1.dmz-prg2.suse.org:helo];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	HAS_ATTACHMENT(0.00)[]
+X-Spam-Flag: NO
+X-Spam-Score: -3.19
+X-Spam-Level: 
+
+This is a multi-part message in MIME format.
+--------------W3Z0M8wWf0unhfX0d2zFxBG1
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: KeNwQpM6mt-x_BAN4Xo8xlNtZh1hZnK2
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDE4MDAyMiBTYWx0ZWRfX1Y/S+UF1Br+g
- 94Flj4S+mMbwPdHyKAcgEqjaRrGua70BDBnNSqbsx0MjMyx4GsQLLXfAmzWRsKf9bfYF93PN0TS
- SVyQEVUnZBLOP0rtrnB05egsYXGBGK24xO92g7+CewUGsjfLqZexWBDHVvFxFrThYYget42Pkeo
- bMoSnfO/GaB3JedilxKapHQE8YG4/UuSFO6a57xbUsIwCPicwpShfWepdnpdUkbn09uGmQgK1Mp
- fSsHcq4zlmyheEeDzxxcjCEF9OGyw0GCA60PpSX1uSKYv41cg/EENxlg/yZA5IbVd6gbI4JlmnV
- 9gv5CZoiFT1iv+M2KBjVUDvonn7LtxG1mLcKUdtrDXEuC91Njxmr4kUsCPssks9/UHSM1JhdBYB
- yaq7xO9vIAdxSznifrctSbz76FjOTQ==
-X-Authority-Analysis: v=2.4 cv=MIJtWcZl c=1 sm=1 tr=0 ts=68fa1fdb cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=VnNF1IyMAAAA:8
- a=qBIcWJXr8Lgkn95qcsUA:9
-X-Proofpoint-ORIG-GUID: KeNwQpM6mt-x_BAN4Xo8xlNtZh1hZnK2
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-10-22_08,2025-10-22_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 spamscore=0 phishscore=0 lowpriorityscore=0 adultscore=0
- clxscore=1015 impostorscore=0 bulkscore=0 priorityscore=1501 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510180022
 
-Starting with 'commit 2297791c92d0 ("s390/cio: dont unregister
-subchannel from child-drivers")', cio no longer unregisters
-subchannels when the attached device is invalid or unavailable.
+Hi
 
-As an unintended side-effect, the cio_ignore purge function no longer
-removes subchannels for devices on the cio_ignore list if no CCW device
-is attached. This situation occurs when a CCW device is non-operational
-or unavailable
+Am 22.10.25 um 13:23 schrieb Peter Schneider:
+> Am 22.10.2025 um 12:20 schrieb Thomas Zimmermann:
+>> Hi
+>>
+>> Am 22.10.25 um 11:16 schrieb Peter Schneider:
+>>> Am 22.10.2025 um 11:11 schrieb Thomas Zimmermann:
+>>>> Hi
+>>>>
+>>>> Am 22.10.25 um 10:08 schrieb Peter Schneider:
+>>>>>
+>>>>> Your patch applied cleanly against 6.18-rc2 and the kernel built 
+>>>>> fine, but unfortunately it did not solve the issue: my console 
+>>>>> screen stays blank after booting. This is regardless whether I do 
+>>>>> a soft reboot, press the reset button or power cycle and do a cold 
+>>>>> boot. They are all the same.
+>>>>
+>>>> Just to be sure: you do see output at the early boot stages (BIOS, 
+>>>> boot loader). It's at some later point during boot, the driver 
+>>>> loads and the display blanks out?
+>>>
+>>> Yes, that's correct.
+>>>
+>>>> There's another patch attached. does this make a difference?
+>>>
+>>> Do I have to apply that against base 6.18-rc2 or against 6.18-rc2 + 
+>>> your previous patch?
+>>
+>> Base 6.18-rc2. All the patches are against this.
+>
+> So with this new patch against 6.18-rc2, I first got this build error:
+>
+>   CC [M]  drivers/gpu/drm/ast/ast_mode.o
+> drivers/gpu/drm/ast/ast_mode.c: In function 
+> ‘ast_crtc_helper_atomic_disable’:
+> drivers/gpu/drm/ast/ast_mode.c:857:12: error: unused variable 
+> ‘vgacr17’ [-Werror=unused-variable]
+>   857 |         u8 vgacr17 = 0xff;
+>       |            ^~~~~~~
+> cc1: all warnings being treated as errors
+>
+>
+> because I always do my kernel builds with CONFIG_WERROR=y. So then I 
+> commented out the now superfluous declaration in line 857 and the 
+> build succeeded. However, unfortunately the issue still persists. The 
+> screen still gets blanked on reboot (as clarified before, after 
+> BIOS/POST messages, Grub boot menu, initial boot messages).
 
-To ensure the same outcome of the purge function as when the
-current cio_ignore list had been active during boot, update the purge
-function to remove I/O subchannels without working CCW devices if the
-associated device number is found on the cio_ignore list.
+I've been able to reproduce the problem with an AST2300 test system. The 
+attached patch fixes the problem for me. Can you please test and report 
+on the results?
 
-Fixes: 2297791c92d0 ("s390/cio: dont unregister subchannel from child-drivers")
-Suggested-by: Peter Oberparleiter <oberpar@linux.ibm.com>
-Reviewed-by: Peter Oberparleiter <oberpar@linux.ibm.com>
-Signed-off-by: Vineeth Vijayan <vneethv@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-(cherry picked from commit 9daa5a8795865f9a3c93d8d1066785b07ded6073)
----
- drivers/s390/cio/device.c | 37 ++++++++++++++++++++++++-------------
- 1 file changed, 24 insertions(+), 13 deletions(-)
+Best regards
+Thomas
 
-diff --git a/drivers/s390/cio/device.c b/drivers/s390/cio/device.c
-index bdf5a50bd931..1873c865b4d6 100644
---- a/drivers/s390/cio/device.c
-+++ b/drivers/s390/cio/device.c
-@@ -1309,23 +1309,34 @@ void ccw_device_schedule_recovery(void)
- 	spin_unlock_irqrestore(&recovery_lock, flags);
- }
- 
--static int purge_fn(struct device *dev, void *data)
-+static int purge_fn(struct subchannel *sch, void *data)
- {
--	struct ccw_device *cdev = to_ccwdev(dev);
--	struct ccw_dev_id *id = &cdev->private->dev_id;
--	struct subchannel *sch = to_subchannel(cdev->dev.parent);
-+	struct ccw_device *cdev;
- 
--	spin_lock_irq(cdev->ccwlock);
--	if (is_blacklisted(id->ssid, id->devno) &&
--	    (cdev->private->state == DEV_STATE_OFFLINE) &&
--	    (atomic_cmpxchg(&cdev->private->onoff, 0, 1) == 0)) {
--		CIO_MSG_EVENT(3, "ccw: purging 0.%x.%04x\n", id->ssid,
--			      id->devno);
-+	spin_lock_irq(sch->lock);
-+	if (sch->st != SUBCHANNEL_TYPE_IO || !sch->schib.pmcw.dnv)
-+		goto unlock;
-+
-+	if (!is_blacklisted(sch->schid.ssid, sch->schib.pmcw.dev))
-+		goto unlock;
-+
-+	cdev = sch_get_cdev(sch);
-+	if (cdev) {
-+		if (cdev->private->state != DEV_STATE_OFFLINE)
-+			goto unlock;
-+
-+		if (atomic_cmpxchg(&cdev->private->onoff, 0, 1) != 0)
-+			goto unlock;
- 		ccw_device_sched_todo(cdev, CDEV_TODO_UNREG);
--		css_sched_sch_todo(sch, SCH_TODO_UNREG);
- 		atomic_set(&cdev->private->onoff, 0);
- 	}
--	spin_unlock_irq(cdev->ccwlock);
-+
-+	css_sched_sch_todo(sch, SCH_TODO_UNREG);
-+	CIO_MSG_EVENT(3, "ccw: purging 0.%x.%04x%s\n", sch->schid.ssid,
-+		      sch->schib.pmcw.dev, cdev ? "" : " (no cdev)");
-+
-+unlock:
-+	spin_unlock_irq(sch->lock);
- 	/* Abort loop in case of pending signal. */
- 	if (signal_pending(current))
- 		return -EINTR;
-@@ -1341,7 +1352,7 @@ static int purge_fn(struct device *dev, void *data)
- int ccw_purge_blacklisted(void)
- {
- 	CIO_MSG_EVENT(2, "ccw: purging blacklisted devices\n");
--	bus_for_each_dev(&ccw_bus_type, NULL, NULL, purge_fn);
-+	for_each_subchannel_staged(purge_fn, NULL, NULL);
- 	return 0;
- }
- 
+
+>
+> Beste Grüße,
+> Peter Schneider
+>
+
 -- 
-2.48.1
+--
+Thomas Zimmermann
+Graphics Driver Developer
+SUSE Software Solutions Germany GmbH
+Frankenstrasse 146, 90461 Nuernberg, Germany
+GF: Ivo Totev, Andrew Myers, Andrew McDonald, Boudien Moerman
+HRB 36809 (AG Nuernberg)
 
+
+--------------W3Z0M8wWf0unhfX0d2zFxBG1
+Content-Type: text/x-patch; charset=UTF-8;
+ name="0001-ast-clear-preserved-bits-from-output-value.patch"
+Content-Disposition: attachment;
+ filename="0001-ast-clear-preserved-bits-from-output-value.patch"
+Content-Transfer-Encoding: base64
+
+RnJvbSBiOWE5MGQ5ZWYyNjZkNWY5ZDNhZWI5NzBhZTM1ZTEwYjcxNmZjNDY2IE1vbiBTZXAg
+MTcgMDA6MDA6MDAgMjAwMQpGcm9tOiBUaG9tYXMgWmltbWVybWFubiA8dHppbW1lcm1hbm5A
+c3VzZS5kZT4KRGF0ZTogVGh1LCAyMyBPY3QgMjAyNSAxNDozMDoyOSArMDIwMApTdWJqZWN0
+OiBbUEFUQ0hdIGFzdDogY2xlYXIgcHJlc2VydmVkIGJpdHMgZnJvbSBvdXRwdXQgdmFsdWUK
+Ci0tLQogZHJpdmVycy9ncHUvZHJtL2FzdC9hc3RfZHJ2LmggfCA5ICsrKysrLS0tLQogMSBm
+aWxlIGNoYW5nZWQsIDUgaW5zZXJ0aW9ucygrKSwgNCBkZWxldGlvbnMoLSkKCmRpZmYgLS1n
+aXQgYS9kcml2ZXJzL2dwdS9kcm0vYXN0L2FzdF9kcnYuaCBiL2RyaXZlcnMvZ3B1L2RybS9h
+c3QvYXN0X2Rydi5oCmluZGV4IDdiZTM2YTM1OGU3NC4uNjAyYmZmN2Y5OGQ5IDEwMDY0NAot
+LS0gYS9kcml2ZXJzL2dwdS9kcm0vYXN0L2FzdF9kcnYuaAorKysgYi9kcml2ZXJzL2dwdS9k
+cm0vYXN0L2FzdF9kcnYuaApAQCAtMjk4LDEzICsyOTgsMTQgQEAgc3RhdGljIGlubGluZSB2
+b2lkIF9fYXN0X3dyaXRlOF9pKHZvaWQgX19pb21lbSAqYWRkciwgdTMyIHJlZywgdTggaW5k
+ZXgsIHU4IHZhbCkKIAlfX2FzdF93cml0ZTgoYWRkciwgcmVnICsgMSwgdmFsKTsKIH0KIAot
+c3RhdGljIGlubGluZSB2b2lkIF9fYXN0X3dyaXRlOF9pX21hc2tlZCh2b2lkIF9faW9tZW0g
+KmFkZHIsIHUzMiByZWcsIHU4IGluZGV4LCB1OCByZWFkX21hc2ssCitzdGF0aWMgaW5saW5l
+IHZvaWQgX19hc3Rfd3JpdGU4X2lfbWFza2VkKHZvaWQgX19pb21lbSAqYWRkciwgdTMyIHJl
+ZywgdTggaW5kZXgsIHU4IHByZXNlcnZlX21hc2ssCiAJCQkJCSB1OCB2YWwpCiB7Ci0JdTgg
+dG1wID0gX19hc3RfcmVhZDhfaV9tYXNrZWQoYWRkciwgcmVnLCBpbmRleCwgcmVhZF9tYXNr
+KTsKKwl1OCB0bXAgPSBfX2FzdF9yZWFkOF9pX21hc2tlZChhZGRyLCByZWcsIGluZGV4LCBw
+cmVzZXJ2ZV9tYXNrKTsKIAotCXRtcCB8PSB2YWw7Ci0JX19hc3Rfd3JpdGU4X2koYWRkciwg
+cmVnLCBpbmRleCwgdG1wKTsKKwl2YWwgJj0gfnByZXNlcnZlX21hc2s7CisKKwlfX2FzdF93
+cml0ZThfaShhZGRyLCByZWcsIGluZGV4LCB0bXAgfCB2YWwpOwogfQogCiBzdGF0aWMgaW5s
+aW5lIHUzMiBhc3RfcmVhZDMyKHN0cnVjdCBhc3RfZGV2aWNlICphc3QsIHUzMiByZWcpCi0t
+IAoyLjUxLjAKCg==
+
+--------------W3Z0M8wWf0unhfX0d2zFxBG1--
 
