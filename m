@@ -1,199 +1,158 @@
-Return-Path: <stable+bounces-189084-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-189085-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A91CC00421
-	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 11:33:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EC27C0053B
+	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 11:43:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D3975188BF78
-	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 09:33:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 38381189B084
+	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 09:43:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 632F1308F2C;
-	Thu, 23 Oct 2025 09:32:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5736D30AACB;
+	Thu, 23 Oct 2025 09:40:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="gsrrqOcF";
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="gVtByQAA"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="k+kq5ORK"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0094A308F28
-	for <stable@vger.kernel.org>; Thu, 23 Oct 2025 09:32:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BCAF30AAAD
+	for <stable@vger.kernel.org>; Thu, 23 Oct 2025 09:40:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761211970; cv=none; b=MudQFxAyS6dVxbkyuWftGblGtBmLzSejWlUbfoGQyTcCQf65D84kfjix8MU97YLDRlAUvwNYWOeAONGlMBanFgkIYJeh9sRsXCEOGn4ASZJV9eaH2mZZ6yY/wNXspvVBWpsLkVWBM6K1qKFhUugVKiO2L8v+VaEUcZz0mWgpQxQ=
+	t=1761212459; cv=none; b=RfsQXBE8a0wL6OReKQ1+F8sO2+4gRSdUOmwQ4EUygeqbLC9RDxfA/FtriwfPMQXsVcNWQz5yUqQaHAe3XmpbhKZPS0ygErC3AcrcHsPym7aMSPaFUJXAjlKtlL4em5OqFh6Q6oLn6UZq364166UjgWsyii1h4y9WicpPaGICgf4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761211970; c=relaxed/simple;
-	bh=Ky/VSEqGAXAkEnvNEK2NHD/qhCfcygP/YgzBCHIs/CM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=UuMT2kE7BVT7sMHbkEIdJidVcilH4+/CInyNwBPXpLOKbdSBQ8d1pbqdGSixk8tXz6ICt+cvpKVdCCp06GioZGZbHOAe7n1DQic4octsXIPRedIJPvhZe3LaRQ6BiTXsP7OKglnB7Y3VOBAT+ksX7yuBQho34Cw2m1hMhGxS69E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=gsrrqOcF; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=gVtByQAA; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id D638E1F388;
-	Thu, 23 Oct 2025 09:32:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1761211962; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=NPIvLe7IJwosnpvn0Us2PzDRMFbCqY83mlv0mt7RMt4=;
-	b=gsrrqOcFGMI+DXaSTvtY5E/zjjsMBxxXKhDy28jn7eSMdWpNG9S6CkU3gD2aiTDx6izsKe
-	RtxmBbEwur1CSAKwoKTUKwFRPlxDl0g5fp5c6JAGeL2CTnxpODt1STAdj6qAe4YDeHpESb
-	bpKxF+CsbGHwTgTFlTm77nP/PvNgEkw=
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1761211957; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=NPIvLe7IJwosnpvn0Us2PzDRMFbCqY83mlv0mt7RMt4=;
-	b=gVtByQAA1LPExW5mlO2gKN4H+y+CfcRgxDl1AFqlEjYtZurIHyknyubfBw+FPVOroEFUag
-	iocqUkcfuPOfCfcJMdto2KFdSslw9gAMDhzyQ0KZ8XWaY0e3jtZet91ScqaAPH+bhDifrd
-	9f+qULQdkMoIq39JoQ04eW1Zk20+7RM=
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id CC46513285;
-	Thu, 23 Oct 2025 09:32:36 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id IYVQIzT2+WhwQwAAD6G6ig
-	(envelope-from <wqu@suse.com>); Thu, 23 Oct 2025 09:32:36 +0000
-From: Qu Wenruo <wqu@suse.com>
-To: linux-btrfs@vger.kernel.org
-Cc: stable@vger.kernel.org
-Subject: [PATCH] btrfs: make sure no dirty metadata write is submitted after btrfs_stop_all_workers()
-Date: Thu, 23 Oct 2025 20:02:04 +1030
-Message-ID: <2059d92d64eb181f1d37538d1279ed5b191ce1ab.1761211916.git.wqu@suse.com>
-X-Mailer: git-send-email 2.51.0
+	s=arc-20240116; t=1761212459; c=relaxed/simple;
+	bh=XFs6GYFcsW+Swxxh1r01dqycQAXpAky0WH44+J03lMw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=F5YhKK5Susxbbk58jKAiR/A8g8TFhzC5hSkjV/osLrb0rw9gKIhJXnz4o6JI94JPJkLdcgCgdj6MNilPI/DQmTDgSeBWX/DecIhTO0W2ap8Ul7xeQqtRIKpcz1gbrtBXXZHKozqbd5xPNPpqht00vC73i5gCfuR9lMD2UEBgMjU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=k+kq5ORK; arc=none smtp.client-ip=209.85.221.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-414507aa5e1so33182f8f.1
+        for <stable@vger.kernel.org>; Thu, 23 Oct 2025 02:40:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1761212455; x=1761817255; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=54eD926wH0mql4NxC+CJBCpNd7LiNPQ+SiCFUqnjFLY=;
+        b=k+kq5ORKm4xUhB4gdvAenM/YSUVBmfhoPunILSKzBKHFncG0VVj1kzyyPgb0nzZXmW
+         P2i74pU79vfj1aJGEbzty2MXcJfWPzWOGnW+MawljQfUPE8KdFdAVW1snfvRd7QOn3RA
+         bi6wYEI6jOomJ/4sAY3t47HNG9Es04Fc2VwhKPi+zu7WeFD6MwmbvtUrfSZD7MlJa5pX
+         W3LgGkQzHetrGEjowoBClBr+cwoyFOwUg2ZVQrO5BBJHIvCr4xKs8yolhsGVgFXmRYDf
+         W6Dqf4xLY+3AGapMd3xX6m5NvvVcdfti2iW5RzB1DFLB9DdzijSTj5NBlE1tfvFHcFqI
+         kwvw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761212455; x=1761817255;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=54eD926wH0mql4NxC+CJBCpNd7LiNPQ+SiCFUqnjFLY=;
+        b=dGwe4xBBrjZ7KKKM57XTIC2cxXlMVq0OuuN02OWlRvmR+r1totpoJK6DRfELsusgt8
+         Hp9ye5jk1N5Nk0s1w4NJ32s2tozFf5xZOLniWGBu4igN6gxZBOuFpxk1XlKqS++qaaAJ
+         Kn53lQl/Og3Y3N/OZr7SUe/BXHGQvJoK8pDUd2Iyq8hy0IdKH4pDGvT3Rhsk7YlrbL4I
+         FJNw9BQdaxgcp5+ib0Wwd/7BhsFRxGC5SEkXhgYr3DXu4xkq5e5q42FaJhXFrZS25gQb
+         OKqk9FQgwKQX9c/AWs/hPGCUb7/+MVWfi1bXZsobxlvyFEUMk2Q0mvKH05sGoZF+ZjVj
+         M6xA==
+X-Forwarded-Encrypted: i=1; AJvYcCXLGQFHz7nLKskh7UIJaSpmzxFM845vyfARYkHLEzMKjbgUgZApglbqrb/C0fqlklvTimgiGiw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzRbtT489MZtDHCrWIHlvkXQ8xcf+DKg1oonn3WRqdeaxoOhfPo
+	mCsZTaqpv9xlYcMy+nV5Ijm5McIV0Xr5ifzJW/xGdSh0hk4DZNRxmO3Kopyw39JZ7Qg=
+X-Gm-Gg: ASbGncv2rXnvETcFxY7QlrqCa74eF6z9nQ48WR3XvOH9VQKk+4H9C08C/3LejKXvqyl
+	1ayBh6EHOW9HQr2DSDVvaAzTdBWtjLd/FVhWYjAb8WiHs/dInQoA9XYqlesRnZ1JZFqXTFLN/Gp
+	WhyD5p8W9hn0OOV36QWCcKK4NiGOoayt3d4HO02LDqHD2sXr0cDgSYg1WgPx47vf500xvesIRtu
+	XTprDiS32J/8vA3bBOuJ4rSnTKcVXxr6xy+dEuvOZgkT/5X8TW+IpJ0+QE6v2wXUGL+39mEtNuf
+	A1IsYcYau2ZoxcipN8u9rPpCWbFmLzTScqSAdX9EIuWOyg24kyRgiuVlApcBM5MHQzb05MIDKXA
+	GiKsYzi9v1XV0+6tKVQWy6cqJbI9/QiRSatqZ/lmTI8oAMHJWYw4wgiY0/PHWT6cZnkBS8/kgYP
+	Kl79SK8foC0hV+6xwLLXKQMljsQcH21zI=
+X-Google-Smtp-Source: AGHT+IEOetk0z4M/6d9ebdfW5x8jDx4XZLzEvCka+bNwZq3unLJPpG99NlPBddRaMwqqPNkdl/9MpQ==
+X-Received: by 2002:a5d:5d0a:0:b0:426:f590:3cab with SMTP id ffacd0b85a97d-42704ca9e0amr8476968f8f.0.1761212455558;
+        Thu, 23 Oct 2025 02:40:55 -0700 (PDT)
+Received: from [192.168.1.29] ([178.197.219.123])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-429898acc63sm2973975f8f.27.2025.10.23.02.40.54
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 23 Oct 2025 02:40:55 -0700 (PDT)
+Message-ID: <72c4a0a6-3c5e-4cc1-bdd7-c4795a4218a6@linaro.org>
+Date: Thu, 23 Oct 2025 11:40:53 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.80 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	RCPT_COUNT_TWO(0.00)[2];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ARC_NA(0.00)[];
-	DKIM_SIGNED(0.00)[suse.com:s=susede1];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:mid,suse.com:email,imap1.dmz-prg2.suse.org:helo];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_EQ_ENVFROM(0.00)[];
-	TO_DN_NONE(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	RCVD_TLS_ALL(0.00)[]
-X-Spam-Flag: NO
-X-Spam-Score: -2.80
-X-Spam-Level: 
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC 0/2] ASoC: codecs: pm4125: Two minor fixes for
+ potential issues
+To: Srinivas Kandagatla <srini@kernel.org>,
+ Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
+ Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+ Alexey Klimov <alexey.klimov@linaro.org>
+Cc: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
+ linux-sound@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20251023-asoc-regmap-irq-chip-v1-0-17ad32680913@linaro.org>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Content-Language: en-US
+Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
+ 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
+ 2+47PN9NZAOyb771QoVr8A==
+In-Reply-To: <20251023-asoc-regmap-irq-chip-v1-0-17ad32680913@linaro.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-[BUG]
-During development of a minor feature (make sure all btrfs_bio::end_io()
-is called in task context), I noticed a crash in generic/388, where
-metadata writes triggered new works after btrfs_stop_all_workers().
+On 23/10/2025 11:02, Krzysztof Kozlowski wrote:
+> I marked these as fixes, but the issue is not likely to trigger in
+> normal conditions.
+> 
+> Not tested on hardware, please kindly provide tested-by, the best with
+> some probe bind/unbind cycle.
 
-It turns out that it can even happen without any code modification, just
-using RAID5 for metadata and the same workload from generic/388 is going
-to trigger the use-after-free.
+The email prefix should be "RFT", not "RFC". I miss here testing...
 
-[CAUSE]
-If btrfs hits an error, the fs is marked as error, no new
-transaction is allowed thus metadata is in a frozen state.
-
-But there are some metadata modification before that error, and they are
-still in the btree inode page cache.
-
-Since there will be no real transaction commitment, all those dirty
-folios are just kept as is in the page cache, and they can not be
-invalidated by invalidate_inode_pages2() call inside close_ctree(),
-because they are dirty.
-
-And finally after btrfs_stop_all_workers(), we call iput() on btree
-inode, which triggers writeback of those dirty metadata.
-
-And if the fs is using RAID56 metadata, this will trigger RMW and queue
-new works into rmw_workers, which is already stopped, causing warning
-from queue_work() and use-after-free.
-
-[FIX]
-Add a special handling for write_one_eb(), that if the fs is already in
-an error state immediately mark the bbio as failure, instead of really
-submitting them into the device.
-
-This means for test case like generic/388, at iput() those dirty folios
-will just be discarded without triggering IO.
-
-CC: stable@vger.kernel.org
-Signed-off-by: Qu Wenruo <wqu@suse.com>
----
- fs/btrfs/disk-io.c   | 12 ++++++++++++
- fs/btrfs/extent_io.c | 11 +++++++++++
- 2 files changed, 23 insertions(+)
-
-diff --git a/fs/btrfs/disk-io.c b/fs/btrfs/disk-io.c
-index 0aa7e5d1b05f..8b0fc2df85f1 100644
---- a/fs/btrfs/disk-io.c
-+++ b/fs/btrfs/disk-io.c
-@@ -4402,11 +4402,23 @@ void __cold close_ctree(struct btrfs_fs_info *fs_info)
- 
- 	btrfs_put_block_group_cache(fs_info);
- 
-+	/*
-+	 * If the fs is already in trans aborted case, also trigger writeback of all
-+	 * dirty metadata folios.
-+	 * Those folios will not reach disk but dicarded directly.
-+	 * This is to make sure no dirty folios before iput(), or iput() will
-+	 * trigger writeback again, and may even cause extra works queued
-+	 * into workqueue.
-+	 */
-+	if (unlikely(BTRFS_FS_ERROR(fs_info)))
-+		filemap_write_and_wait(fs_info->btree_inode->i_mapping);
-+
- 	/*
- 	 * we must make sure there is not any read request to
- 	 * submit after we stopping all workers.
- 	 */
- 	invalidate_inode_pages2(fs_info->btree_inode->i_mapping);
-+
- 	btrfs_stop_all_workers(fs_info);
- 
- 	/* We shouldn't have any transaction open at this point */
-diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
-index 870584dde575..a8a53409bb3f 100644
---- a/fs/btrfs/extent_io.c
-+++ b/fs/btrfs/extent_io.c
-@@ -2246,6 +2246,17 @@ static noinline_for_stack void write_one_eb(struct extent_buffer *eb,
- 		wbc_account_cgroup_owner(wbc, folio, range_len);
- 		folio_unlock(folio);
- 	}
-+	/*
-+	 * If the fs is already in error status, do not submit any writeback
-+	 * but immediately finish it.
-+	 * This is to avoid iput() triggering dirty folio writeback for
-+	 * transaction aborted fses, which can cause extra works into
-+	 * already stopped workqueues.
-+	 */
-+	if (unlikely(BTRFS_FS_ERROR(fs_info))) {
-+		btrfs_bio_end_io(bbio, errno_to_blk_status(-EROFS));
-+		return;
-+	}
- 	btrfs_submit_bbio(bbio, 0);
- }
- 
--- 
-2.51.0
-
+Best regards,
+Krzysztof
 
