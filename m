@@ -1,177 +1,179 @@
-Return-Path: <stable+bounces-189157-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-189158-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1143CC02C57
-	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 19:42:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90F08C02C84
+	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 19:45:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B9AB43AC00E
-	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 17:42:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DD2991AA55E2
+	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 17:46:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFD4034A76D;
-	Thu, 23 Oct 2025 17:42:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B6BA254AE4;
+	Thu, 23 Oct 2025 17:45:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SIztLfdL"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ToeDG3xJ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40E773112D5
-	for <stable@vger.kernel.org>; Thu, 23 Oct 2025 17:42:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6B321E25E3;
+	Thu, 23 Oct 2025 17:45:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761241366; cv=none; b=KFalaf+vwhzUfdprtfDZ+fY6RyJK9qySf/v+dqZMmEZOSVfS0s+BU3zHHQjYjAKDJk//MDqYvHTgdbhMBKK1sEu0FVzud9AVHCKoso1znZt7KdZ8/8JkH9pvhVT1Ane7vKgDsCkXQkPPKF6ygdkJW0n3RwZ9MUkg6y0Y2wBRQh0=
+	t=1761241543; cv=none; b=lasYhCZZ+w5BkZ0f7S9kqhnM/GBkbGUUGVbmERjCuUC2fk+1OJHxvM26QRGrUcn0YSPxN8KpNb/8pGxRIRZ4vbn+8ibzOD1NBn/NV5jbyoHyHnC6xB7nkgf1moxuCNmBYj4DkclREgdzK7qxnEuvsULnjd1txVlxgHob3t6hVZ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761241366; c=relaxed/simple;
-	bh=tN8Tb70+nrqsimQF3WIi1yTMIjN+5Om0ChlgLkRhs+A=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=SE+0pYEKjSHaInPiyxZIl+qENJd8xvYJ024UkZaEPIpo7ej78AQI/jasvwRIIdoAt8Lm9gUW0/ubb9nVrGdGBO6EghBaq6CucpysRuC0f74GEX5/QuM8xTsX5E4Ff0DZSR2T2Ua7gMhx8qwIKNUzVNlgKiGiB5pDA9J1cLd+kpM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SIztLfdL; arc=none smtp.client-ip=209.85.210.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-7a26dab3a97so687651b3a.0
-        for <stable@vger.kernel.org>; Thu, 23 Oct 2025 10:42:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761241364; x=1761846164; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=PPAtMguVYUjm2bPXdyPdBBsK+GKvEKPYmuqUzpm+2v0=;
-        b=SIztLfdLp598RQ3YFRGSDgX9PXgBp8nKYfl1jWbJ3X6v6+7xYJPp8tU+oUlsDlAuhU
-         YR1tqeEYla5kvVpZyy2OMSunZNoUuGfItKd/Rg/+8qOl90kNDLj/9EKANxCl/pX0IO/H
-         tRp8zS6SLOVHp4H4d1i5uFD3Vgf2yb+E5uZlv1f+9jwSzO5cKIR+/Ns8TvuiqLevA0Kq
-         IhGTUO7Jk7egOiaBOP9de7TOL3aV6fQPVWMmvh0i44z3pxJRR8IpGFAMxXWMzjsNBYbv
-         vGjjQr2SwPN+rMkF2/YDzkjVVTcC0LyTKGceq0SUjggVVaXlOnG71BkEcF0hCgbiwK2+
-         7luw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761241364; x=1761846164;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=PPAtMguVYUjm2bPXdyPdBBsK+GKvEKPYmuqUzpm+2v0=;
-        b=wFyCsAtwPI4+goJlOMtMX0KH+wE2mLhczxURoqz2Jk7glEN6uJBNVPpX9oyA3O0TRU
-         rHdP9pWk9APpK5FGXM7vuPrlnxZFqoE6Lv3Ik3okx+cz9DLWZqVPsYoRn5nklP+be2H5
-         sSKNJD5ucG7N9+g12yIbFFsGub6HfAo1LiXY1/JZ1R23qBJh0NePRBQHQnHz2urKW+UX
-         TA5wS8f6pJygrjF/rP/fcqSGVa3gFz3/Pa62lIZ6TcRI8A73q6odz+bYu0MscuDkNmW4
-         bSxDoa2O59Q9TAvWVADyKSC1TH97N1jRo8ObUcgsp1LOuwOjGZ1H4FGT9FmpBP8LlhO2
-         4i9Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVQYtkTZvikXCMDioaMZAwNCbaeH+qCERNE/0Nx/cADfFpqIEIEHEvBdiazfMWZtc4+3RFlEuM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy8tb3z9aemVDjfVBL/yX0GNpmq0mHC0aRyRTTcrATUv172wGcU
-	0e+zuZPJXa6v6yU8zkhX3qk/He9zxlxQiY+iJHJLjD98P0ZHkLk4g6UmiZqAWTRnVqCNR5q8WSM
-	NGX6rWdDM0p93uynvCpGi547dlxbwgCM=
-X-Gm-Gg: ASbGncvvMkbe8n9XCEI+sV1jEc74u9VfGYG/V2b7LyuIHMWV2Re+TKXt0Q30/RTU1Hh
-	9jeS9VI7SfA/uPf6Ig3wyC51kpT0xoM5n/jAHFKtb3bOJbwrrnGP4E1UUcQs1CmAKM6zf4E2htj
-	ivRTMjWUy1Gt8MAguZFC0kAFtCqyFQ2eCQZGBkf0BwO6QMHQHLm5j/5Y7sbP1e+vASsr37Eq2v3
-	aw2uKjtaUhGJ7J5KYDtRa0wdkY4LzqlZWvXDsVKjCCjpeZ94/ftTOoftHDI
-X-Google-Smtp-Source: AGHT+IGLmB1ebZNebWwSLNxI6zWpEV/Sv/pPIWfLfVFPhnIS1gTRgxcF5G/Ed1LOT26G5vAVRNngplSfykW+Lus7CTI=
-X-Received: by 2002:a17:903:94e:b0:27e:dc53:d222 with SMTP id
- d9443c01a7336-290cb278e97mr315093915ad.44.1761241364475; Thu, 23 Oct 2025
- 10:42:44 -0700 (PDT)
+	s=arc-20240116; t=1761241543; c=relaxed/simple;
+	bh=aupfyZ0dQEOMOU8f8kK1fbR1Wu40hd/sy7Db+739CTs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=izM0dtJe5uJwC7GGaXBcMlLYeA/qWxHPql98WVI5RCT3twBn6oxmGZoW4T4ranJiuX2fvCWeKfIELLtskBKPO3CEBVg9uZ0sDTfGzYT7o+6cRxO0tRMXIxjh6IgSMj0rCIerXHrfAR8WCat3LxL3xKq/affwWP6p384Fq6K5Xio=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ToeDG3xJ; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1761241542; x=1792777542;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=aupfyZ0dQEOMOU8f8kK1fbR1Wu40hd/sy7Db+739CTs=;
+  b=ToeDG3xJeFjwoH1rIHY1GG5MtAvqMxKUmgsNXUH8mA8OWk86W9OoQaX5
+   b585HuWYrksOA4LR+b4s1UGsAZ2crWweOgMplIyvz02V5iRWOQZ9W3D+Q
+   2jFrWbe95Z5LsYhZbEcOjXPwzHDzrGxliWJFziinBYIs2qDOyfDREUZ4v
+   BmzfmZYkXS+MPyohhjTVR4+eEIYUciJ4dwVtCRKImKfABaEssyC5tW1hN
+   fB1Hp4GAiLzqBpksoyhKAuhm4iRGa+l1GDs9bVK0bHj/s3xEnXQnz+a2a
+   CLp2aO4qA0VWX4KYxVPNTyvr6z/nA3xELhyofeq1Y+zKzeGwLDSmLXy1G
+   A==;
+X-CSE-ConnectionGUID: MHyi/qrpTvWkIsKXDLNx5w==
+X-CSE-MsgGUID: Q5GEh41PR/6AVLEEXRDHYA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="67258637"
+X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
+   d="scan'208";a="67258637"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Oct 2025 10:45:41 -0700
+X-CSE-ConnectionGUID: 0/pJMXcCSaqrx/OrHfkugg==
+X-CSE-MsgGUID: PtGFSRtAR6acHaWjz36QRg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,250,1754982000"; 
+   d="scan'208";a="183442050"
+Received: from unknown (HELO [10.241.241.181]) ([10.241.241.181])
+  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Oct 2025 10:45:41 -0700
+Message-ID: <400d2ef8-07bd-4620-ace8-6eaa05cd200b@intel.com>
+Date: Thu, 23 Oct 2025 10:45:40 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251023065913.36925-1-ryncsn@gmail.com> <774c443f-f12f-4d4f-93b1-8913734b62b2@redhat.com>
- <f0715f2c-ee27-4e13-84d0-5df156410527@redhat.com>
-In-Reply-To: <f0715f2c-ee27-4e13-84d0-5df156410527@redhat.com>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Fri, 24 Oct 2025 01:42:05 +0800
-X-Gm-Features: AS18NWCKbpYNUbtlmhqYan2nj3cCPEw88Vfgq-76wvP0ZxptePnkT4EeZPn3IR4
-Message-ID: <CAMgjq7Chg6e_xL4wxYJqMzmCRENawQ63KSABrZ9zVbR4ET=YFA@mail.gmail.com>
-Subject: Re: [PATCH v3] mm/shmem: fix THP allocation and fallback loop
-To: David Hildenbrand <david@redhat.com>, Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Hugh Dickins <hughd@google.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Liam Howlett <liam.howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	Mariano Pache <npache@redhat.com>, Matthew Wilcox <willy@infradead.org>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Zi Yan <ziy@nvidia.com>, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] perf/x86/intel: Fix KASAN global-out-of-bounds warning
+To: Dapeng Mi <dapeng1.mi@linux.intel.com>,
+ Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
+ Arnaldo Carvalho de Melo <acme@kernel.org>,
+ Namhyung Kim <namhyung@kernel.org>, Ian Rogers <irogers@google.com>,
+ Adrian Hunter <adrian.hunter@intel.com>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ Kan Liang <kan.liang@linux.intel.com>, Andi Kleen <ak@linux.intel.com>,
+ Eranian Stephane <eranian@google.com>
+Cc: linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org,
+ Dapeng Mi <dapeng1.mi@intel.com>, Xudong Hao <xudong.hao@intel.com>,
+ stable@vger.kernel.org
+References: <20250904012419.266400-1-dapeng1.mi@linux.intel.com>
+Content-Language: en-US
+From: "Chen, Zide" <zide.chen@intel.com>
+In-Reply-To: <20250904012419.266400-1-dapeng1.mi@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Fri, Oct 24, 2025 at 12:14=E2=80=AFAM David Hildenbrand <david@redhat.co=
-m> wrote:
->
-> On 23.10.25 18:13, David Hildenbrand wrote:
-> > On 23.10.25 08:59, Kairui Song wrote:
-> >> From: Kairui Song <kasong@tencent.com>
-> >>
-> >> The order check and fallback loop is updating the index value on every
-> >> loop, this will cause the index to be wrongly aligned by a larger valu=
-e
-> >> while the loop shrinks the order.
-> >>
-> >> This may result in inserting and returning a folio of the wrong index
-> >> and cause data corruption with some userspace workloads [1].
-> >>
-> >> Cc: stable@vger.kernel.org
-> >> Link: https://lore.kernel.org/linux-mm/CAMgjq7DqgAmj25nDUwwu1U2cSGSn8n=
-4-Hqpgottedy0S6YYeUw@mail.gmail.com/ [1]
-> >> Fixes: e7a2ab7b3bb5d ("mm: shmem: add mTHP support for anonymous shmem=
-")
-> >> Signed-off-by: Kairui Song <kasong@tencent.com>
-> >>
-> >> ---
-> >>
-> >> Changes from V2:
-> >> - Introduce a temporary variable to improve code,
-> >>     no behavior change, generated code is identical.
-> >> - Link to V2: https://lore.kernel.org/linux-mm/20251022105719.18321-1-=
-ryncsn@gmail.com/
-> >>
-> >> Changes from V1:
-> >> - Remove unnecessary cleanup and simplify the commit message.
-> >> - Link to V1: https://lore.kernel.org/linux-mm/20251021190436.81682-1-=
-ryncsn@gmail.com/
-> >>
-> >> ---
-> >>    mm/shmem.c | 9 ++++++---
-> >>    1 file changed, 6 insertions(+), 3 deletions(-)
-> >>
-> >> diff --git a/mm/shmem.c b/mm/shmem.c
-> >> index b50ce7dbc84a..e1dc2d8e939c 100644
-> >> --- a/mm/shmem.c
-> >> +++ b/mm/shmem.c
-> >> @@ -1882,6 +1882,7 @@ static struct folio *shmem_alloc_and_add_folio(s=
-truct vm_fault *vmf,
-> >>      struct shmem_inode_info *info =3D SHMEM_I(inode);
-> >>      unsigned long suitable_orders =3D 0;
-> >>      struct folio *folio =3D NULL;
-> >> +    pgoff_t aligned_index;
-> >>      long pages;
-> >>      int error, order;
-> >>
-> >> @@ -1895,10 +1896,12 @@ static struct folio *shmem_alloc_and_add_folio=
-(struct vm_fault *vmf,
-> >>              order =3D highest_order(suitable_orders);
-> >>              while (suitable_orders) {
-> >>                      pages =3D 1UL << order;
-> >> -                    index =3D round_down(index, pages);
-> >> -                    folio =3D shmem_alloc_folio(gfp, order, info, ind=
-ex);
-> >> -                    if (folio)
-> >> +                    aligned_index =3D round_down(index, pages);
-> >> +                    folio =3D shmem_alloc_folio(gfp, order, info, ali=
-gned_index);
-> >> +                    if (folio) {
-> >> +                            index =3D aligned_index;
-> >>                              goto allocated;
-> >> +                    }
-> >
-> > Was the found by code inspection or was there a report about this?
->
-> Answering my own question, the "Link:" above should be
->
-> Closes:
-> https://lore.kernel.org/linux-mm/CAMgjq7DqgAmj25nDUwwu1U2cSGSn8n4-Hqpgott=
-edy0S6YYeUw@mail.gmail.com/
->
 
-Thanks for the review. It's reported by and fixed by me, so I didn't
-include an extra Report-By & Closes, I thought that's kind of
-redundant. Do we need that? Maybe Andrew can help add it :) ?
+
+On 9/3/2025 6:24 PM, Dapeng Mi wrote:
+> When running "perf mem record" command on CWF, the below KASAN
+> global-out-of-bounds warning is seen.
+> 
+>   196.273657] ==================================================================
+> [  196.273662] BUG: KASAN: global-out-of-bounds in cmt_latency_data+0x176/0x1b0
+> [  196.273669] Read of size 4 at addr ffffffffb721d000 by task dtlb/9850
+> 
+> [  196.273676] CPU: 126 UID: 0 PID: 9850 Comm: dtlb Kdump: loaded Not tainted 6.17.0-rc3-2025-08-29-intel-next-34160-g316938187eb0 #1 PREEMPT(none)
+> [  196.273680] Hardware name: Intel Corporation AvenueCity/AvenueCity, BIOS BHSDCRB1.IPC.3544.P83.2507110208 07/11/2025
+> [  196.273682] Call Trace:
+> [  196.273683]  <NMI>
+> [  196.273684]  dump_stack_lvl+0x55/0x70
+> [  196.273689]  print_address_description.constprop.0+0x2c/0x3d0
+> [  196.273694]  ? cmt_latency_data+0x176/0x1b0
+> [  196.273696]  print_report+0xb4/0x270
+> [  196.273699]  ? kasan_addr_to_slab+0xd/0xa0
+> [  196.273702]  kasan_report+0xb8/0xf0
+> [  196.273705]  ? cmt_latency_data+0x176/0x1b0
+> [  196.273707]  cmt_latency_data+0x176/0x1b0
+> [  196.273710]  setup_arch_pebs_sample_data+0xf49/0x2560
+> [  196.273713]  intel_pmu_drain_arch_pebs+0x577/0xb00
+> [  196.273716]  ? __pfx_intel_pmu_drain_arch_pebs+0x10/0x10
+> [  196.273719]  ? perf_output_begin+0x3e4/0xa10
+> [  196.273724]  ? intel_pmu_drain_bts_buffer+0xc2/0x6a0
+> [  196.273727]  ? __pfx_intel_pmu_drain_bts_buffer+0x10/0x10
+> [  196.273730]  handle_pmi_common+0x6c4/0xc80
+> [  196.273734]  ? __pfx_handle_pmi_common+0x10/0x10
+> [  196.273738]  ? intel_bts_interrupt+0xd3/0x4d0
+> [  196.273740]  ? __pfx_intel_bts_interrupt+0x10/0x10
+> [  196.273742]  ? intel_pmu_lbr_enable_all+0x25/0x150
+> [  196.273745]  intel_pmu_handle_irq+0x388/0x700
+> [  196.273748]  perf_event_nmi_handler+0xff/0x150
+> [  196.273751]  nmi_handle.part.0+0xa8/0x2d0
+> [  196.273755]  ? perf_output_begin+0x3e9/0xa10
+> [  196.273757]  default_do_nmi+0x79/0x1a0
+> [  196.273760]  fred_exc_nmi+0x40/0x90
+> [  196.273762]  asm_fred_entrypoint_kernel+0x45/0x60
+> [  196.273765] RIP: 0010:perf_output_begin+0x3e9/0xa10
+> [  196.273768] Code: 54 24 1c 85 d2 0f 85 19 03 00 00 48 8b 44 24 18 48 c1 e8 03 42 0f b6 04 28 84 c0 74 08 3c 03 0f 8e 25 05 00 00 41 8b 44 24 18 <c1> e0 0c 48 98 48 83 e8 01 80 7c 24 2a 00 0f 85 f9 02 00 00 4c 29
+> [  196.273770] RSP: 0018:ffffc9001cf575e8 EFLAGS: 00000246
+> [  196.273774] RAX: 0000000000000080 RBX: ffff88c1a0f95028 RCX: 0000000000000004
+> [  196.273775] RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffff88c08c8f9408
+> 
+> [  196.273777] RBP: 0000000000000028 R08: 0000000000000000 R09: ffffed18341f2a05
+> [  196.273778] R10: ffff88c1a0f9502f R11: ffff88c1a0dbe1b8 R12: ffff88c1a0f95000
+> [  196.273779] R13: dffffc0000000000 R14: 0000000000000000 R15: ffffc9001cf577e0
+> [  196.273782]  </NMI>
+> 
+> The issue is caused by below code in __grt_latency_data(). The code
+> tries to access x86_hybrid_pmu structure which doesn't exist on
+> non-hybrid platform like CWF.
+> 
+>         WARN_ON_ONCE(hybrid_pmu(event->pmu)->pmu_type == hybrid_big)
+> 
+> So add is_hybrid() check before calling this WARN_ON_ONCE to fix the
+> global-out-of-bounds access issue.
+> 
+> Reported-by: Xudong Hao <xudong.hao@intel.com>
+> Cc: stable@vger.kernel.org
+> Fixes: 090262439f66 ("perf/x86/intel: Rename model-specific pebs_latency_data functions")
+> Signed-off-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
+> ---
+>  arch/x86/events/intel/ds.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/arch/x86/events/intel/ds.c b/arch/x86/events/intel/ds.c
+> index c0b7ac1c7594..d1ac1f1ceee9 100644
+> --- a/arch/x86/events/intel/ds.c
+> +++ b/arch/x86/events/intel/ds.c
+> @@ -317,7 +317,7 @@ static u64 __grt_latency_data(struct perf_event *event, u64 status,
+>  {
+>  	u64 val;
+>  
+> -	WARN_ON_ONCE(hybrid_pmu(event->pmu)->pmu_type == hybrid_big);
+> +	WARN_ON_ONCE(is_hybrid() && hybrid_pmu(event->pmu)->pmu_type == hybrid_big);
+
+BTW, this line has more than 80 characters.
+
+Reviewed-by: Zide Chen <zide.chen@intel.com>
+
+
+>  
+>  	dse &= PERF_PEBS_DATA_SOURCE_GRT_MASK;
+>  	val = hybrid_var(event->pmu, pebs_data_source)[dse];
+> 
+> base-commit: 16ed389227651330879e17bd83d43bd234006722
+
 
