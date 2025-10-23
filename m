@@ -1,163 +1,127 @@
-Return-Path: <stable+bounces-189122-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-189123-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51702C017C3
-	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 15:41:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80B12C0188B
+	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 15:50:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 65CF335AA6B
-	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 13:41:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 38BAA3AF997
+	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 13:50:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A347D2FFDC1;
-	Thu, 23 Oct 2025 13:39:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=draconx-ca.20230601.gappssmtp.com header.i=@draconx-ca.20230601.gappssmtp.com header.b="ZlVecIt1"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B386930ACE9;
+	Thu, 23 Oct 2025 13:50:07 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from air.basealt.ru (air.basealt.ru [193.43.8.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B3843148DB
-	for <stable@vger.kernel.org>; Thu, 23 Oct 2025 13:39:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0842312804
+	for <stable@vger.kernel.org>; Thu, 23 Oct 2025 13:50:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.43.8.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761226792; cv=none; b=bNMjT/54OAQqjevZEA1uI7EzZ9HErcq+Ksr6oHPYD6OBquDXYX/Qmb2nyuFOaPdXto7UU5OSwutQCU/I8Dk9jYXl8mXoUkGSWaWeEGfy/XimBHvDSH3zec3vwmtiXGD48I63hUGXfiii2fY2Py4jiuJjGRagbhbioZcTdwFwHzU=
+	t=1761227407; cv=none; b=UWo+cRcj2hA/j4SuOljq2r4VYRE7dQ8sZeiBWKDoXW85gmCeyRkoYFAhtEKOgFSG7PQDS68VffY92C6cq/ntwCttnme5io0lpHnHvdyhzlvdyo+6TyUGE/2R2XC7Q5EU98GkXl/m/nao9BZIgmZnUgrZYitkTdt6gjNOPuza+UM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761226792; c=relaxed/simple;
-	bh=VlZWQP2vRd5Et2IXN3Y2jcp3joaOd6hd/WT2Ydflim0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JdceRJ0y4K/ATnmpOB0Fo0M0M2XjwUXOVIRINtvn0MPKLcnVaJ6uRVFycztDBZbk4B9iEpxFOsKXIi6P9wVe128g8QzkbpmwwYqn34u6VayfnAKq+Gr103yWiHRUXhDTJ6xiKa/HdX1Ew7jCoGLw6k+iXGjE4JFhT6Q7YmoeFlo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=draconx.ca; spf=none smtp.mailfrom=draconx.ca; dkim=pass (2048-bit key) header.d=draconx-ca.20230601.gappssmtp.com header.i=@draconx-ca.20230601.gappssmtp.com header.b=ZlVecIt1; arc=none smtp.client-ip=209.85.222.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=draconx.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=draconx.ca
-Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-89c81839de7so35094985a.1
-        for <stable@vger.kernel.org>; Thu, 23 Oct 2025 06:39:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=draconx-ca.20230601.gappssmtp.com; s=20230601; t=1761226789; x=1761831589; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=OTdirufWMbJmlgZU7Yrv6nTsTJjgQ9dqEPOTcrYAzcQ=;
-        b=ZlVecIt1Va3KLH2xbaLHmrQQIxECKYgoUf2jDlJZxy8YVi3leweiFOghBeFkCoofae
-         bH0TOmoqf3fvT0+xJAJarpfPJ57PMPM4Dhe6dofB0JXc7a8OcUG2Un6bsSN+CTEBeXXl
-         HqcKF08VnXs2nsdPVxKuJ2j8tRSEpuP3OcsmahZCPPLDJ8JUlIokljyy+kHOI4FpTlzN
-         U9BD43Ey5Ntlv5DL3CsV9VuonKNE3hqMnX3vtlKJx6dD2pov1aSvrYCUg3uoEPLo2G77
-         +iDf+BkLUbWGWgYPDL9TclwSQLPkuH94dz/J7q51pM2rZWKsSdj2sl0zoXiq+rl1sfAh
-         b12Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761226789; x=1761831589;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=OTdirufWMbJmlgZU7Yrv6nTsTJjgQ9dqEPOTcrYAzcQ=;
-        b=jiNh5AGLeBAiHbDjs7attEPYZeulw/kSQ1FCW6TBuQDGRU8kStuZXkhccyKaZOIFHK
-         5l5KK+/EPcyeIRDU8TNzneKVMM/Y9NtJJIrq88t5/9Z3pq+eKioVJWHdZI3iaGcb+Fia
-         98yO7d+FZvwznPNEa1a9hldw9OeFSloPu03WnsOScD+w8QA8ttnpXaW5OIzR6/yxats8
-         AVKyPiK8yrC+WOCR1iuFiuQRdHjBBvCNdlY2QsdCXvSViUISYXo6TCYNpwgwnVi51uEN
-         Ouu4G9QMgJhRU8gGKa8PGtscCfW+uoOnagUg00zcRFxCtiRHM+IeJJga39MHlqP+Pw7f
-         br5A==
-X-Forwarded-Encrypted: i=1; AJvYcCW3jsrrfes6bDiuYZ30Woif60pvGX68JFklzbQCKFYiHYZxODLkOMerkjIjfGK5Ztztj+EeIcU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzKSsfo9MS0RwA1LPn7cHpBMQIsbEvX7UIBp+sq3UE34fCm/2tr
-	XrdnkRyZ8FddT2/D9Yh1MWTn939p9/sXzR78KCwEO3vZ0E0pslpSXOPPkaKcAgu2bIE=
-X-Gm-Gg: ASbGncvG9BQoVXAn2Y1DKkZdSdbWH00Dnjar7+34LfnQuQz5V1nEUaBYSxlj1dF809Q
-	dBMGzYXHCNcf9aR4YYck3qDr1AtQQn3/0cBEGVD4TJpG76jkGQGUhiWpkFP1qWn9imz23Rf070Q
-	/4MfoMet2rOyG2zhsOb4MU5FD9SfyGbmH4xdZvPS/QLdG4+3vLe7cxHwLCYW4tLfzhv2Ch0cwTO
-	XX2t/wINyj9b+YxO+PDzepsWxf+nnKYU5fgvj75ZEfIkeSAWoqLs+gtBHdWL5GYVazexQfYdGdm
-	NBeJl8I3mmhydU3ep6w96RvblL+ukHGXSk2v81EWmtLAbKMHfpcpsrBv/HJK895iWxCgMdUA56x
-	THW+HL9DxzEsqdVH3VcwPeI7n0yiWbpwCiQTWenyxL/hBxfSdcmHnBNbsJW6gsFxP18ntPZQQxV
-	XXPg+pM3DShBed7l2xdGkfdurQQnSbSg==
-X-Google-Smtp-Source: AGHT+IHv+2FoyHtgNqF1DBafNAWsqVheVNr/d4qFGe2fvEd3Bm7iU47UHmaCg3qy/u+cwC/1tQZFTA==
-X-Received: by 2002:a05:620a:2a0b:b0:892:dff8:2961 with SMTP id af79cd13be357-892dff8325amr2309221685a.50.1761226789166;
-        Thu, 23 Oct 2025 06:39:49 -0700 (PDT)
-Received: from localhost (ip-24-156-181-135.user.start.ca. [24.156.181.135])
-        by smtp.gmail.com with UTF8SMTPSA id af79cd13be357-89c0e97efa6sm160831585a.24.2025.10.23.06.39.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Oct 2025 06:39:48 -0700 (PDT)
-Date: Thu, 23 Oct 2025 09:39:47 -0400
-From: Nick Bowler <nbowler@draconx.ca>
-To: Esben Haabendal <esben@geanix.com>
-Cc: linux-kernel@vger.kernel.org, regressions@lists.linux.dev, 
-	linux-rtc@vger.kernel.org, stable@vger.kernel.org, sparclinux@vger.kernel.org
-Subject: Re: PROBLEM: hwclock busted w/ M48T59 RTC (regression)
-Message-ID: <ni6gdeax2itvzagwbqkw6oj5xsbx6vqsidop6cbj2oqneovjib@mrwzqakbla35>
-References: <krmiwpwogrvpehlqdrugb5glcmsu54qpw3mteonqeqymrvzz37@dzt7mes7qgxt>
- <DmLaDrfp-izPBqLjB9SAGPy3WVKOPNgg9FInsykhNO3WPEWgltKF5GoDknld3l5xoJxovduV8xn8ygSupvyIFOCCZl0Q0aTXwKT2XhPM1n8=@geanix.com>
+	s=arc-20240116; t=1761227407; c=relaxed/simple;
+	bh=oq6GNWq339VYM3GYA7Iwo9lM8rItP5RewA9Fb2xoe74=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=kSLjw0c+a84VK0US84q0gIDcpWB4BZ/uFFUYpIfWgrbAe8nJe9rY900w3bZfcFcJk+b4VTa+MvZit9nO1zuM6yYH4/19YZHePpEcfYtyJvDaVSSucWnr/xIqP9oEjfRmZkBee2A7gGn5HIH9fXj+B4jWMGr961p46TjeGtWxrow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org; spf=pass smtp.mailfrom=altlinux.org; arc=none smtp.client-ip=193.43.8.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altlinux.org
+Received: from altlinux.malta.altlinux.ru (obninsk.basealt.ru [217.15.195.17])
+	(Authenticated sender: kovalevvv)
+	by air.basealt.ru (Postfix) with ESMTPSA id D4BE723392;
+	Thu, 23 Oct 2025 16:49:58 +0300 (MSK)
+From: Vasiliy Kovalev <kovalev@altlinux.org>
+To: stable@vger.kernel.org
+Cc: Johannes Berg <johannes.berg@intel.com>,
+	Gregory Greenman <gregory.greenman@intel.com>,
+	Kalle Valo <kvalo@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	lvc-project@linuxtesting.org,
+	kovalev@altlinux.org
+Subject: [PATCH 6.1.y] wifi: iwlwifi: fix debug actions order
+Date: Thu, 23 Oct 2025 16:49:58 +0300
+Message-Id: <20251023134958.238678-1-kovalev@altlinux.org>
+X-Mailer: git-send-email 2.33.8
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DmLaDrfp-izPBqLjB9SAGPy3WVKOPNgg9FInsykhNO3WPEWgltKF5GoDknld3l5xoJxovduV8xn8ygSupvyIFOCCZl0Q0aTXwKT2XhPM1n8=@geanix.com>
+Content-Transfer-Encoding: 8bit
 
-On Thu, Oct 23, 2025 at 07:21:21AM +0000, Esben Haabendal wrote:
-> On Thursday, 23 October 2025 at 06:45, Nick Bowler <nbowler@draconx.ca> wrote:
-> 
-> > After a stable kernel update, the hwclock command seems no longer
-> > functional on my SPARC system with an ST M48T59Y-70PC1 RTC:
-> > 
-> > # hwclock
-> > [...long delay...]
-> 
-> I assume this is 10 seconds long.
+From: Johannes Berg <johannes.berg@intel.com>
 
-Yeah, about that.
+commit eb29b4ffafb20281624dcd2cbb768d6f30edf600 upstream.
 
-> > hwclock: select() to /dev/rtc0 to wait for clock tick timed out
-> 
-> And this is 100% reproducible, or does it sometimes work and sometimes fail?
+The order of actions taken for debug was implemented incorrectly.
+Now we implemented the dump split and do the FW reset only in the
+middle of the dump (rather than the FW killing itself on error.)
+As a result, some of the actions taken when applying the config
+will now crash the device, so we need to fix the order.
 
-It fails every time.
+Fixes: 1a5daead217c ("iwlwifi: yoyo: support for ROM usniffer")
+Fixes: f21baf244112 ("iwlwifi: yoyo: fw debug config from context info and preset")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20250308231427.6de7fa8e63ed.I40632c48e2a67a8aca05def572a934b88ce7934b@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+[ kovalev: bp to fix CVE-2025-38045; added Fixes tags ]
+Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
+---
+ drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-> Are you using the util-linux hwclock command? Which version?
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c b/drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c
+index ab80c79e35bc..d6d9f60839db 100644
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
+ /*
+- * Copyright (C) 2018-2022 Intel Corporation
++ * Copyright (C) 2018-2025 Intel Corporation
+  */
+ #include <linux/firmware.h>
+ #include "iwl-drv.h"
+@@ -1363,15 +1363,15 @@ void _iwl_dbg_tlv_time_point(struct iwl_fw_runtime *fwrt,
+ 	switch (tp_id) {
+ 	case IWL_FW_INI_TIME_POINT_EARLY:
+ 		iwl_dbg_tlv_init_cfg(fwrt);
+-		iwl_dbg_tlv_apply_config(fwrt, conf_list);
+ 		iwl_dbg_tlv_update_drams(fwrt);
+ 		iwl_dbg_tlv_tp_trigger(fwrt, sync, trig_list, tp_data, NULL);
++		iwl_dbg_tlv_apply_config(fwrt, conf_list);
+ 		break;
+ 	case IWL_FW_INI_TIME_POINT_AFTER_ALIVE:
+ 		iwl_dbg_tlv_apply_buffers(fwrt);
+ 		iwl_dbg_tlv_send_hcmds(fwrt, hcmd_list);
+-		iwl_dbg_tlv_apply_config(fwrt, conf_list);
+ 		iwl_dbg_tlv_tp_trigger(fwrt, sync, trig_list, tp_data, NULL);
++		iwl_dbg_tlv_apply_config(fwrt, conf_list);
+ 		break;
+ 	case IWL_FW_INI_TIME_POINT_PERIODIC:
+ 		iwl_dbg_tlv_set_periodic_trigs(fwrt);
+@@ -1381,14 +1381,14 @@ void _iwl_dbg_tlv_time_point(struct iwl_fw_runtime *fwrt,
+ 	case IWL_FW_INI_TIME_POINT_MISSED_BEACONS:
+ 	case IWL_FW_INI_TIME_POINT_FW_DHC_NOTIFICATION:
+ 		iwl_dbg_tlv_send_hcmds(fwrt, hcmd_list);
+-		iwl_dbg_tlv_apply_config(fwrt, conf_list);
+ 		iwl_dbg_tlv_tp_trigger(fwrt, sync, trig_list, tp_data,
+ 				       iwl_dbg_tlv_check_fw_pkt);
++		iwl_dbg_tlv_apply_config(fwrt, conf_list);
+ 		break;
+ 	default:
+ 		iwl_dbg_tlv_send_hcmds(fwrt, hcmd_list);
+-		iwl_dbg_tlv_apply_config(fwrt, conf_list);
+ 		iwl_dbg_tlv_tp_trigger(fwrt, sync, trig_list, tp_data, NULL);
++		iwl_dbg_tlv_apply_config(fwrt, conf_list);
+ 		break;
+ 	}
+ }
+-- 
+2.50.1
 
-hwclock from util-linux 2.40.2
-
-> Do you have CONFIG_RTC_INTF_DEV_UIE_EMUL enabled?
-
-No, this option is not enabled.
-
-> Can you run `hwclock --verbose`, both with and without the reverted commit,
-> and send the output from that?
-
-6.18-rc2 (broken):
-
-  # hwclock --verbose
-  hwclock from util-linux 2.40.2
-  System Time: 1761226454.799573
-  Trying to open: /dev/rtc0
-  Using the rtc interface to the clock.
-  Last drift adjustment done at 1657523820 seconds after 1969
-  Last calibration done at 1657523820 seconds after 1969
-  Hardware clock is on UTC time
-  Assuming hardware clock is kept in UTC time.
-  Waiting for clock tick...
-  hwclock: select() to /dev/rtc0 to wait for clock tick timed out
-  ...synchronization failed
-
-6.18-rc2 w/ revert (working):
-
-  # hwclock --verbose
-  hwclock from util-linux 2.40.2
-  System Time: 1761226685.238753
-  Trying to open: /dev/rtc0
-  Using the rtc interface to the clock.
-  Last drift adjustment done at 1657523820 seconds after 1969
-  Last calibration done at 1657523820 seconds after 1969
-  Hardware clock is on UTC time
-  Assuming hardware clock is kept in UTC time.
-  Waiting for clock tick...
-  ioctl(3, RTC_UIE_ON, 0): Input/output error
-  Waiting in loop for time from /dev/rtc0 to change
-  ...got clock tick
-  Time read from Hardware Clock: 2025/10/23 13:38:06
-  Hw clock time : 2025/10/23 13:38:06 = 1761226686 seconds since 1969
-  Time since last adjustment is 103702866 seconds
-  Calculated Hardware Clock drift is 0.000000 seconds
-  2025-10-23 09:38:05.239100-04:00
-
-Thanks,
-  Nick
 
