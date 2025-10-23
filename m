@@ -1,163 +1,102 @@
-Return-Path: <stable+bounces-189094-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-189095-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18E6EC00969
-	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 12:55:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA65FC0098A
+	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 12:58:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CA4CA3AD361
-	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 10:54:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 47BEC3AE390
+	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 10:58:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07F3A30BF63;
-	Thu, 23 Oct 2025 10:54:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 592F430AAB7;
+	Thu, 23 Oct 2025 10:58:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qO7hHRqm"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EhRmCHL9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE40C30ACF1;
-	Thu, 23 Oct 2025 10:54:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C44543054D3;
+	Thu, 23 Oct 2025 10:58:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761216877; cv=none; b=OprbZnS3IR+CQ4LXR9H6DgLwRenbyJ4ul2WEaMcxoA6+/3Uuk03YeHeFzV5VtY4N0wXFaZ9lIJfzDv4dBPdCbcFKJcbzOrLH1Cf0KtLOPloYGL7AzIMNlS6F63OUvIoL+0BSZKp4eAnlA4zJbjNH366BYiJNH84JqfKgPzDYFSY=
+	t=1761217132; cv=none; b=SOJSoI2v8uPO1BtNUaotPsp7Yq9NHfF/hIWsuaF3EaQXuLj0CMFDI6pz5+/2clM4PVb0sl5I31YLh0lBrioG5Q54YNviL3zygWdQOQl33oXwj5T1Zk11hOAR366oJ92FP5c1TQvQEVJmR6FJJHGIO8z3OptDN1y68NYYhHMicfI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761216877; c=relaxed/simple;
-	bh=dWQl6pU3dyRq8+1fnpMd8H6DB6WUbSvDKBPEwBJg1is=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=BDhmymndrSpE6Gdkz9P/jd2b41hth7gzaUO6qftUVuyYH7Zw4hyU+Xr9AwA++RcBlzjaBzyCq6dun60ozXWGvageRuV1KwjTPMMyN+rkYtHlatJd+mJpkw1mVazsm9My57NXUx6Ns6O1k8l/hABBYxVcWOuCo596P4ihe0erXyE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qO7hHRqm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92571C4CEF7;
-	Thu, 23 Oct 2025 10:54:35 +0000 (UTC)
+	s=arc-20240116; t=1761217132; c=relaxed/simple;
+	bh=R6UW0ZVQUKE/m2NNBlAe9KC9Lu26GRWU78BmPRkjRfQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AAA5DID/ZES5UFdRBAlo+zFQL/ouo4h0nWTWXFc5PB/VRAuCWrt6dDQbPFDx2p1+oU1sWDK1bqIg0Nq+4L4xhYZtxdtrd3h7fatq9mmgEW4ZUWbQHwe8HtqzU5zZAIA6TrcOT2JNIAgfDkTNZYOHfmAJofpOFyT3JMU3MOi3xHI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EhRmCHL9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE116C4CEE7;
+	Thu, 23 Oct 2025 10:58:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761216877;
-	bh=dWQl6pU3dyRq8+1fnpMd8H6DB6WUbSvDKBPEwBJg1is=;
-	h=Date:From:Subject:To:Cc:References:In-Reply-To:From;
-	b=qO7hHRqm5IdSVK/0UvC76xrF3aiLyb/jBVakmMSBurjt3nrO3AjrD52ImPew21SVa
-	 T7pRduPt/qOlqRnanksM0h5hzILAcwkXjt2qXcaEJLHnU4RuKdakEOTQLCFVWgaLFl
-	 kqasOSQGsBVabe4ddcyNN03cKf1Bhy9g2leaPB/QbxhBspJt4VBmoemiqQLaL1FUV6
-	 21YL09WMxq09ooqn46M9WcEbV8YuV4CRxv2YXvZOm6U2Bo85fsSR1DFkr2IsXkiA5F
-	 it6Idt04vnQjRO614R8+XCFXu+XC1TnEadyALfUdwmEKjQB6FOk/zNm1M2Zw6rUX4l
-	 PTh/v7Lnoeoeg==
-Message-ID: <138b53bd-8b89-4260-bfa1-ff88ae2c1050@kernel.org>
-Date: Thu, 23 Oct 2025 12:54:33 +0200
+	s=k20201202; t=1761217132;
+	bh=R6UW0ZVQUKE/m2NNBlAe9KC9Lu26GRWU78BmPRkjRfQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=EhRmCHL9MtHY2uK7BccTtMz3HJLasv6irs4GVrest4QPeIwY0nG0y4NJR2oDl1W/a
+	 Uztx+EAJpAJd0SyYMXWbc+TlL/PamoyQlCbpH1bW3Yr0ubJ9E70UuN+AvFOUJIY4Si
+	 RQ2aj4LSUCHcuSSLN4uTGuc/1p8B4Z5MsHQ0+i30rVS+SU+cR28thnYKGGtOrO+no4
+	 HmEF3ArxkJM7J6t/jkNuJygz47cbgWVZ0kijhXa7LTX5iEzQ+X2zH2gZaUh2rJL2LP
+	 9DHI3zLz9o7ayMbMbx3e00wbJTIVQDZZ+70d3mvK64mIio7NqLAw+jp342EPaZ0pld
+	 41tS0bLE7WQpA==
+Date: Thu, 23 Oct 2025 12:58:49 +0200
+From: Andi Shyti <andi.shyti@kernel.org>
+To: Ma Ke <make24@iscas.ac.cn>
+Cc: syniurge@gmail.com, shyam-sundar.s-k@amd.com, wsa@kernel.org, 
+	linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org, akpm@linux-foundation.org, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH v3] i2c: fix reference leak in MP2 PCI device
+Message-ID: <jlvcp2cb2cpdjzkfet5nosusjuvbzvil3zf7csbdfjan3pkidn@jdrneilgrmz7>
+References: <20251022095402.8846-1-make24@iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: Re: [PATCH v2] media: videobuf2: forbid remove_bufs when legacy
- fileio is active
-To: Marek Szyprowski <m.szyprowski@samsung.com>, linux-media@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Cc: Tomasz Figa <tfiga@chromium.org>,
- Mauro Carvalho Chehab <mchehab@kernel.org>,
- Guennadi Liakhovetski <g.liakhovetski@gmx.de>,
- Benjamin Gaignard <benjamin.gaignard@collabora.com>,
- Hans Verkuil <hverkuil@kernel.org>, stable@vger.kernel.org,
- Shuangpeng Bai <SJB7183@psu.edu>
-References: <CGME20251020160135eucas1p29eb8517e240f188f102e77713f85e29d@eucas1p2.samsung.com>
- <20251020160121.1985354-1-m.szyprowski@samsung.com>
- <9996520a-fbad-4f02-9630-7de85f04c286@kernel.org>
- <9df0295d-418b-46ea-958a-a025de8b62e7@kernel.org>
-Content-Language: en-US, nl
-In-Reply-To: <9df0295d-418b-46ea-958a-a025de8b62e7@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251022095402.8846-1-make24@iscas.ac.cn>
 
-On 23/10/2025 11:01, Hans Verkuil wrote:
-> On 21/10/2025 11:56, Hans Verkuil wrote:
->> Hi Marek,
->>
->> On 20/10/2025 18:01, Marek Szyprowski wrote:
->>> vb2_ioctl_remove_bufs() call manipulates queue internal buffer list,
->>> potentially overwriting some pointers used by the legacy fileio access
->>> mode. Add a vb2_verify_memory_type() check symmetrical to
->>> vb2_ioctl_create_bufs() to forbid that ioctl when fileio is active to
->>> protect internal queue state between subsequent read/write calls.
->>>
->>> CC: stable@vger.kernel.org
->>> Fixes: a3293a85381e ("media: v4l2: Add REMOVE_BUFS ioctl")
->>> Reported-by: Shuangpeng Bai<SJB7183@psu.edu>
->>> Suggested-by: Benjamin Gaignard <benjamin.gaignard@collabora.com>
->>> Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
->>
->> I'll pick this up as a fix for v6.18. I think this is important enough to
->> not wait for v6.19.
-> 
-> Hmm, it's failing on v4l2-compliance. I'm debugging to see whether it is a
-> kernel or v4l2-compliance problem.
-> 
-> Regards,
-> 
-> 	Hans
-> 
->>
->> Regards,
->>
->> 	Hans
->>
->>> ---
->>> v2:
->>> - dropped a change to vb2_ioctl_create_bufs(), as it is already handled
->>>   by the vb2_verify_memory_type() call
->>> - replaced queue->type check in vb2_ioctl_remove_bufs() by a call to
->>>   vb2_verify_memory_type() which covers all cases
->>>
->>> v1: https://lore.kernel.org/all/20251016111154.993949-1-m.szyprowski@samsung.com/
->>> ---
->>>  drivers/media/common/videobuf2/videobuf2-v4l2.c | 6 ++++--
->>>  1 file changed, 4 insertions(+), 2 deletions(-)
->>>
->>> diff --git a/drivers/media/common/videobuf2/videobuf2-v4l2.c b/drivers/media/common/videobuf2/videobuf2-v4l2.c
->>> index d911021c1bb0..0de7490292fe 100644
->>> --- a/drivers/media/common/videobuf2/videobuf2-v4l2.c
->>> +++ b/drivers/media/common/videobuf2/videobuf2-v4l2.c
->>> @@ -1000,9 +1000,11 @@ int vb2_ioctl_remove_bufs(struct file *file, void *priv,
->>>  			  struct v4l2_remove_buffers *d)
->>>  {
->>>  	struct video_device *vdev = video_devdata(file);
->>> +	int res;
->>>  
->>> -	if (vdev->queue->type != d->type)
->>> -		return -EINVAL;
->>> +	res = vb2_verify_memory_type(vdev->queue, vdev->queue->memory, d->type);
->>> +	if (res)
->>> +		return res;
->>>  
->>>  	if (d->count == 0)
->>>  		return 0;
+Hi,
 
-This is the problem. For the corner case where d->count == 0 it can be that
-vdev->queue->memory is VB2_MEMORY_UNKNOWN (that happens if no buffers were ever
-queued). But it should still return 0 in that case. Also the fileio test doesn't
-apply in that case, but that's not tested in v4l2-compliance.
+I'm sorry I didn't follow up on your last comment. Thanks a lot
+for resending it.
 
-I suggest this:
+...
 
-	if (d->count == 0)
-		return d->type == vdev->queue->type ? 0 : -EINVAL;
+> diff --git a/drivers/i2c/busses/i2c-amd-mp2-pci.c b/drivers/i2c/busses/i2c-amd-mp2-pci.c
+> index ef7370d3dbea..60edbabc2986 100644
+> --- a/drivers/i2c/busses/i2c-amd-mp2-pci.c
+> +++ b/drivers/i2c/busses/i2c-amd-mp2-pci.c
+> @@ -458,13 +458,16 @@ struct amd_mp2_dev *amd_mp2_find_device(void)
+>  {
+>  	struct device *dev;
+>  	struct pci_dev *pci_dev;
+> +	struct amd_mp2_dev *mp2_dev;
+>  
+>  	dev = driver_find_next_device(&amd_mp2_pci_driver.driver, NULL);
+>  	if (!dev)
+>  		return NULL;
+>  
+>  	pci_dev = to_pci_dev(dev);
+> -	return (struct amd_mp2_dev *)pci_get_drvdata(pci_dev);
+> +	mp2_dev = (struct amd_mp2_dev *)pci_get_drvdata(pci_dev);
+> +	put_device(dev);
+> +	return mp2_dev;
 
-	res = vb2_verify_memory_type(vdev->queue, vdev->queue->memory, d->type);
-	if (res)
-		return res;
+I still hold the same opinion, but, it's anyway a small change
+and the difference is trivial.
 
-I tested this and it passes v4l2-compliance.
+Applied to i2c/i2c-host-fixes. I will include this patch in the
+next week's pull request because I want to keep it a bit longer
+for testing.
 
-Marek, can you post a v3?
+Thanks,
+Andi
 
-Thank you,
-
-	Hans
-
->>
->>
-> 
-> 
-
+>  }
+>  EXPORT_SYMBOL_GPL(amd_mp2_find_device);
 
