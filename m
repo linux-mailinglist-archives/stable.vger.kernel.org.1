@@ -1,185 +1,150 @@
-Return-Path: <stable+bounces-189209-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-189217-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14D87C04FD4
-	for <lists+stable@lfdr.de>; Fri, 24 Oct 2025 10:11:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13177C05250
+	for <lists+stable@lfdr.de>; Fri, 24 Oct 2025 10:46:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E53131A61D46
-	for <lists+stable@lfdr.de>; Fri, 24 Oct 2025 08:11:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A53511884576
+	for <lists+stable@lfdr.de>; Fri, 24 Oct 2025 08:46:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CB603019A8;
-	Fri, 24 Oct 2025 08:10:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC7E72D640D;
+	Fri, 24 Oct 2025 08:45:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WovMKko5"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="aio7QwG9"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BC103016EE
-	for <stable@vger.kernel.org>; Fri, 24 Oct 2025 08:10:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4C943093A5;
+	Fri, 24 Oct 2025 08:45:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761293457; cv=none; b=UbhWB8V9ajVB8yqA5Jo1waf1pKusS+rTCxBP5tQ+cyCR+oXpKe544WXLXA49S6GR00RnmHGeCop+gAWCTgcR7TsKR4h1M3BRt5YStLS0op6xHD27va4SFo1inLpELf8DLWbt0JFJ3zofxZrmdgVCgyJaIyALItv5U8p/AvuLFA4=
+	t=1761295519; cv=none; b=n2TAf/tFNpCVcFfOVJgcC2khtipz70GFnDyaz6zQ6+u5NK+6z4/MT3bi8ZQFAwOW6SDA+/U5M9ePMW8jps9bytUHoGWJA44LBD6OwkEMeErkqLVoWWBbdR6cgrMeLi/MtVTDm7Zg34DKmlh1O4AqeAhXX6It9kYAUjc2u5HYwws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761293457; c=relaxed/simple;
-	bh=H6vcpfWsT9jOdGMVAd6E2A7Zv3njnxynCHfFnGjqBjU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=lZI2vWWDdPwtMmHkdpQewyXxBeUJMF5NjI2DqPOo1b0Uo+o94JXKr5KpmtiLv2cKPuBNQ5QJcxL0ky3mouLSxjFqV+/rC4/+P2tOmizITsuvepjGANAuozz0UYR8Tw55bWyG6TIx9tsAaKatw1SxByBCzK8bDgt/mr+gOCmbtt8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WovMKko5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D77DBC113D0
-	for <stable@vger.kernel.org>; Fri, 24 Oct 2025 08:10:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761293456;
-	bh=H6vcpfWsT9jOdGMVAd6E2A7Zv3njnxynCHfFnGjqBjU=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=WovMKko5rb8WFCDhBVK4WaFY5Ibl9H4VYUhYJkyqHgwPfzWdb80gLvMKtE53Fy4oo
-	 yPFjjBrZJwywD0BkMQfr82HP6SFRnJsrmKY9pEq38bngjyKa42H+eKuUo6wE06g04k
-	 9Lvlx6GmEhdM9AZOnvtrxDJmlAaYyv5rIBZ2tzgRdi97IenCGe4yCb03GjvP8Kg/FB
-	 iSfswROo+zsBYTd3CYkiQEzNYahvkaGcGkafFeUN3sPQjGLVDpaW+CrCSCVemJSCbY
-	 o9HJVOBfwctgm45BwtcQ7hRxSh9GJGLMffYhpILartIyfjmKXn3PHQv5/ydxPE9WG3
-	 /0ST/Snq/twlw==
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-afcb7ae6ed0so392428466b.3
-        for <stable@vger.kernel.org>; Fri, 24 Oct 2025 01:10:56 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCV6InTnz4wAXGM6dukWZzfOVk19z/KjGlhFyFFOlNVplMxPJohB6bInFxxxaMfldKDVIayInRo=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw3h+cBTGm0jopDPuRrXln+o9cynA9+aARrjvgpuFYuJXgvG/Wu
-	UQ3l2GRYEpPQ1iNL/ntm3l42LDwBnYcbuT3+tbRpc0ED1YzvjMFPPQ6A0aL33mc3AzB/Fxbznz9
-	5/ppW569LdKUlsh1PhP5En/Lb4LTy7As=
-X-Google-Smtp-Source: AGHT+IF5XuUd0/sW4aaPGxWUW3jmvEW65I9jlxu8ReiT1mf4Oy/9SI10wZuUsclY8KzzB6y0xGTcqIc+mOfDiNsApG8=
-X-Received: by 2002:a17:907:5ce:b0:b2d:830a:8c0a with SMTP id
- a640c23a62f3a-b6d6ffac084mr147711666b.35.1761293455276; Fri, 24 Oct 2025
- 01:10:55 -0700 (PDT)
+	s=arc-20240116; t=1761295519; c=relaxed/simple;
+	bh=XVE8HS8pLPjAPFJWJXLAavH7lu4ZWWXTbIrG9J2oUhE=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=SpYNpoxWRhhRTuzbP2yJtMow214hRB61F0XMhb1SId715iiHrToIPhbUobkG01i8nXr5fRGw7BxX8wXyqZwI95MqXyb3z/4g2gZlwJZYsff9mybzBXTcknz512edjRnKXBHxiMouFlaNvkKH5FoEpD3OdEJDmdPLnTqve/S3QbY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=aio7QwG9; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=SckvzvtqAlVsB0xWL+sj9UnbS0aJYxJfJMb2wF6gvDk=;
+	t=1761295518; x=1762505118; b=aio7QwG9zCvffTBk4RsAccSxMtUz3VFi1poFntmD8cWeJaf
+	AcNz4BhQaBRtLjyuaA7Abo4BVS/e0paYzNmhv/lwOMuhwbDV1cy/Wc1dfM4kEsu0Y2hkgo12B5on3
+	ofcNaxmuPleIwifqqFndcDQru4xG9GGfu2N1DtF4TslrKTQRdJunhJIintT4dM+7kYfi2wjT2dKtt
+	yx7sF0XZIp5sObkYDm0lRHv7nRsiCMcovY/VbIF7zRr8TqKNtE3hYNqqRbSMqkiAb0ad8kCzpNhJK
+	Ut1HlxVx5I156QoRVuxOcq/Y6zExSzbvc6S7iVvciDjd8zwGu92USgnfqUO3P0cw==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98.2)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1vCCuK-00000002NRR-1tjW;
+	Fri, 24 Oct 2025 10:12:20 +0200
+Message-ID: <e683355a9a9f700d98ae0a057063a975bb11fadc.camel@sipsolutions.net>
+Subject: Re: [PATCH] devcoredump: Fix circular locking dependency with
+ devcd->mutex.
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Maarten Lankhorst <dev@lankhorst.se>, linux-kernel@vger.kernel.org
+Cc: intel-xe@lists.freedesktop.org, Mukesh Ojha <quic_mojha@quicinc.com>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
+ <rafael@kernel.org>, Danilo Krummrich	 <dakr@kernel.org>,
+ stable@vger.kernel.org, Matthew Brost <matthew.brost@intel.com>
+Date: Fri, 24 Oct 2025 10:12:19 +0200
+In-Reply-To: <20250723142416.1020423-1-dev@lankhorst.se>
+References: <20250723142416.1020423-1-dev@lankhorst.se>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <bfc7d8db794cc39fa2909c0b38a69f1a1ae73b81.1761262682.git.wqu@suse.com>
-In-Reply-To: <bfc7d8db794cc39fa2909c0b38a69f1a1ae73b81.1761262682.git.wqu@suse.com>
-From: Filipe Manana <fdmanana@kernel.org>
-Date: Fri, 24 Oct 2025 09:10:17 +0100
-X-Gmail-Original-Message-ID: <CAL3q7H4+asCJg91QDwChQ-WFugswD6Ygi1fO_jJ9br4TamqYOA@mail.gmail.com>
-X-Gm-Features: AWmQ_bljeTl0OHOG_aVkaq3Smxi621keiVh4OpWEvRMtM9V7XsU2roWL7m-B3IA
-Message-ID: <CAL3q7H4+asCJg91QDwChQ-WFugswD6Ygi1fO_jJ9br4TamqYOA@mail.gmail.com>
-Subject: Re: [PATCH v2] btrfs: ensure no dirty metadata is written back for an
- fs with errors
-To: Qu Wenruo <wqu@suse.com>
-Cc: linux-btrfs@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-malware-bazaar: not-scanned
 
-On Fri, Oct 24, 2025 at 12:42=E2=80=AFAM Qu Wenruo <wqu@suse.com> wrote:
->
-> [BUG]
-> During development of a minor feature (make sure all btrfs_bio::end_io()
-> is called in task context), I noticed a crash in generic/388, where
-> metadata writes triggered new works after btrfs_stop_all_workers().
->
-> It turns out that it can even happen without any code modification, just
-> using RAID5 for metadata and the same workload from generic/388 is going
-> to trigger the use-after-free.
->
-> [CAUSE]
-> If btrfs hits an error, the fs is marked as error, no new
-> transaction is allowed thus metadata is in a frozen state.
->
-> But there are some metadata modifications before that error, and they are
-> still in the btree inode page cache.
->
-> Since there will be no real transaction commit, all those dirty folios
-> are just kept as is in the page cache, and they can not be invalidated
-> by invalidate_inode_pages2() call inside close_ctree(), because they are
-> dirty.
->
-> And finally after btrfs_stop_all_workers(), we call iput() on btree
-> inode, which triggers writeback of those dirty metadata.
->
-> And if the fs is using RAID56 metadata, this will trigger RMW and queue
-> new works into rmw_workers, which is already stopped, causing warning
-> from queue_work() and use-after-free.
->
-> [FIX]
-> Add a special handling for write_one_eb(), that if the fs is already in
-> an error state, immediately mark the bbio as failure, instead of really
-> submitting them.
->
-> Then during close_ctree(), iput() will just discard all those dirty
-> tree blocks without really writing them back, thus no more new jobs for
-> already stopped-and-freed workqueues.
->
-> The extra discard in write_one_eb() also acts as an extra safenet.
-> E.g. the transaction abort is triggered by some extent/free space
-> tree corruptions, and since extent/free space tree is already corrupted
-> some tree blocks may be allocated where they shouldn't be (overwriting
-> existing tree blocks). In that case writing them back will further
-> corrupting the fs.
->
-> CC: stable@vger.kernel.org #6.6
+On Wed, 2025-07-23 at 16:24 +0200, Maarten Lankhorst wrote:
+>=20
+> +static void __devcd_del(struct devcd_entry *devcd)
+> +{
+> +	devcd->deleted =3D true;
+> +	device_del(&devcd->devcd_dev);
+> +	put_device(&devcd->devcd_dev);
+> +}
+> +
+>  static void devcd_del(struct work_struct *wk)
+>  {
+>  	struct devcd_entry *devcd;
+> +	bool init_completed;
+> =20
+>  	devcd =3D container_of(wk, struct devcd_entry, del_wk.work);
+> =20
+> -	device_del(&devcd->devcd_dev);
+> -	put_device(&devcd->devcd_dev);
+> +	/* devcd->mutex serializes against dev_coredumpm_timeout */
+> +	mutex_lock(&devcd->mutex);
+> +	init_completed =3D devcd->init_completed;
+> +	mutex_unlock(&devcd->mutex);
+> +
+> +	if (init_completed)
+> +		__devcd_del(devcd);
 
-The correct syntax is:
+I'm not sure I understand this completely right now. I think you pull
+this out of the mutex because otherwise the unlock could/would be UAF,
+right?
 
-stable@vger.kernel.org # 6.6+
+But also we have this:
 
-> Signed-off-by: Qu Wenruo <wqu@suse.com>
-> ---
-> Changelog
-> v2:
-> - Various grammar and newline fixes
->
-> - A shorter title line
->
-> - Enhance the [FIX] part, explain the full fix
->
-> - Limit the backport for 6.6
->   v6.1 code base is very different compared to the current one, thus
->   backporting to v6.6 would be the limit.
->
-> - Explain more why discarding bios at write_one_eb() is safer
->
-> - Remove the extra flushing part inside close_ctree()
->   There is no difference flushing the dirty folios manually or by
->   iput(), as dirty folios are discarded anyway, no new job will be
->   created.
-> ---
->  fs/btrfs/extent_io.c | 8 ++++++++
->  1 file changed, 8 insertions(+)
->
-> diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
-> index 870584dde575..8f6b8baba003 100644
-> --- a/fs/btrfs/extent_io.c
-> +++ b/fs/btrfs/extent_io.c
-> @@ -2246,6 +2246,14 @@ static noinline_for_stack void write_one_eb(struct=
- extent_buffer *eb,
->                 wbc_account_cgroup_owner(wbc, folio, range_len);
->                 folio_unlock(folio);
->         }
-> +       /*
-> +        * If the fs is already in error status, do not submit any writeb=
-ack
-> +        * but immediately finish it.
-> +        */
-> +       if (unlikely(BTRFS_FS_ERROR(fs_info))) {
-> +               btrfs_bio_end_io(bbio, errno_to_blk_status(-EROFS));
+> @@ -151,11 +160,21 @@ static int devcd_free(struct device *dev, void *dat=
+a)
+>  {
+>  	struct devcd_entry *devcd =3D dev_to_devcd(dev);
+> =20
+> +	/*
+> +	 * To prevent a race with devcd_data_write(), disable work and
+> +	 * complete manually instead.
+> +	 *
+> +	 * We cannot rely on the return value of
+> +	 * disable_delayed_work_sync() here, because it might be in the
+> +	 * middle of a cancel_delayed_work + schedule_delayed_work pair.
+> +	 *
+> +	 * devcd->mutex here guards against multiple parallel invocations
+> +	 * of devcd_free().
+> +	 */
+> +	disable_delayed_work_sync(&devcd->del_wk);
+>  	mutex_lock(&devcd->mutex);
+> -	if (!devcd->delete_work)
+> -		devcd->delete_work =3D true;
+> -
+> -	flush_delayed_work(&devcd->del_wk);
+> +	if (!devcd->deleted)
+> +		__devcd_del(devcd);
+>  	mutex_unlock(&devcd->mutex);
 
-Btw, BTRFS_FS_ERROR() returns the error that has caused the
-transaction to abort.
-So instead of -EROFS we can pass BTRFS_FS_ERROR(fs_info).
+^^^^
 
-In the end it doesn't make any difference since the error is not
-returned to userspace.
+Which I _think_ is probably OK because devcd_free is only called with an
+extra reference held (for each/find device.)
 
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
+But ... doesn't that then still have unbalanced calls to __devcd_del()
+and thus device_del()/put_device()?
 
-> +               return;
-> +       }
->         btrfs_submit_bbio(bbio, 0);
->  }
->
-> --
-> 2.51.0
->
->
+CPU 0				CPU 1
+
+dev_coredump_put()		devcd_del()
+ -> devcd_free()
+   -> locked
+     -> !deleted
+     -> __devcd_del()
+				-> __devcd_del()
+
+no?
+
+johannes
 
