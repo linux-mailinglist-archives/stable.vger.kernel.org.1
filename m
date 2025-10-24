@@ -1,46 +1,47 @@
-Return-Path: <stable+bounces-189185-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-189186-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 916FEC0411A
-	for <lists+stable@lfdr.de>; Fri, 24 Oct 2025 04:00:54 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DF70C04123
+	for <lists+stable@lfdr.de>; Fri, 24 Oct 2025 04:02:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 505103A522E
-	for <lists+stable@lfdr.de>; Fri, 24 Oct 2025 02:00:53 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4223D4E703E
+	for <lists+stable@lfdr.de>; Fri, 24 Oct 2025 02:02:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2677224AEB;
-	Fri, 24 Oct 2025 02:00:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3217A1ACEAF;
+	Fri, 24 Oct 2025 02:02:19 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from air.basealt.ru (air.basealt.ru [193.43.8.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAE9D223702
-	for <stable@vger.kernel.org>; Fri, 24 Oct 2025 02:00:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFA821547C9
+	for <stable@vger.kernel.org>; Fri, 24 Oct 2025 02:02:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.43.8.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761271243; cv=none; b=Tz9qq5WzyAglI4UCJUT72ZpGVMYb6cS8i/7+x3DHEkI1Tfy3J38XimfltyVGupMYjOF12vdKOE+cTEIlz4dCGus6M+02FeJiJLMyyeam77RcfJ0bsRH6Fc551fQKIJ8pYAuzm1C2Q7cGNzdvkuk13ax5SnbHr/8whd9uZkTgJus=
+	t=1761271339; cv=none; b=RRUiref7zQwtFycTEQ173RiQjlW/bV7sksaNlO4l3ujgwYfhd2/ykQK3uyJVwHy8/guhrZn7grmNw0VftA5OKX0kT3B0BBX6Bn5wxqXB5/sIogM9IrxQLeXizC2t8H+Tt5NyUoanCwrCWlGu1RwiBIxAwC9DPDVdvzL3r2iVulI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761271243; c=relaxed/simple;
-	bh=+qNuCq7mYYjTGzPi2PPGi0x9pmgCWYWsfIJYggjwFm0=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=cVUi9TtHrh0idTuecszciQkmp1OwejKn1XPIrN7VlURX8Ff9c2hdqUz/nEqscQ6UBG+7ug4N7SIkCkpG0GKb1ZGKtXgzoxpAB1LL4w2lqMw7MUJirRHM2RX0Ky9uxGYjtqlPKppNLjQjJjEVftu9DCtUqh7yQlZieP3qk+6NxwE=
+	s=arc-20240116; t=1761271339; c=relaxed/simple;
+	bh=hrsKT+FPefZ4VxLZPFy7MYEaKNVdy1M7fSsXBW4UWh0=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=M1au+uThNktOxxsiEfwJmFMFytG2NKfcRcecG/GNyH3TYkewT1b7MBSJaHYJ4cEpYRWnqje7ZBGGxWUn7h/kfL2ypu2pS6DIp9IrzAXlje6CeYHOTLcui+QJfzY1Fu6XYIvDn88PstH90xbG7QZD/nxA+iiWq3ksxUMAZDsu+4M=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org; spf=pass smtp.mailfrom=altlinux.org; arc=none smtp.client-ip=193.43.8.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altlinux.org
 Received: from altlinux.ipa.basealt.ru (unknown [178.76.204.78])
 	(Authenticated sender: kovalevvv)
-	by air.basealt.ru (Postfix) with ESMTPSA id 4B25323383;
-	Fri, 24 Oct 2025 05:00:37 +0300 (MSK)
+	by air.basealt.ru (Postfix) with ESMTPSA id ACCA423383;
+	Fri, 24 Oct 2025 05:02:13 +0300 (MSK)
 From: Vasiliy Kovalev <kovalev@altlinux.org>
 To: stable@vger.kernel.org
 Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
 	Jose Abreu <joabreu@synopsys.com>,
 	Jakub Kicinski <kuba@kernel.org>,
+	lvc-project@linuxtesting.org,
 	kovalev@altlinux.org
-Subject: [PATCH 5.15.y] net: stmmac: make sure that ptp_rate is not 0 before configuring timestamping
-Date: Fri, 24 Oct 2025 05:00:36 +0300
-Message-Id: <20251024020036.252395-1-kovalev@altlinux.org>
+Subject: [PATCH 5.10.y] net: stmmac: make sure that ptp_rate is not 0 before configuring timestamping
+Date: Fri, 24 Oct 2025 05:02:13 +0300
+Message-Id: <20251024020213.252492-1-kovalev@altlinux.org>
 X-Mailer: git-send-email 2.33.8
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -92,26 +93,18 @@ Reviewed-by: Yanteng Si <si.yanteng@linux.dev>
 Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
 Link: https://patch.msgid.link/20250529-stmmac_tstamp_div-v4-1-d73340a794d5@bootlin.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ kovalev: bp to fix CVE-2025-38126 ]
+[ kovalev: bp to fix CVE-2025-38126; the duplicate check removal
+  in stmmac_ptp_register was skipped (function not present) ]
 Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
 diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index 21cc8cd9e023..468aeedf22eb 100644
+index b8581a711514..d793bcb1b444 100644
 --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
 +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -522,7 +522,7 @@ bool stmmac_eee_init(struct stmmac_priv *priv)
- static inline u32 stmmac_cdc_adjust(struct stmmac_priv *priv)
- {
- 	/* Correct the clk domain crossing(CDC) error */
--	if (priv->plat->has_gmac4 && priv->plat->clk_ptp_rate)
-+	if (priv->plat->has_gmac4)
- 		return (2 * NSEC_PER_SEC) / priv->plat->clk_ptp_rate;
- 	return 0;
- }
-@@ -848,6 +848,11 @@ int stmmac_init_tstamp_counter(struct stmmac_priv *priv, u32 systime_flags)
+@@ -742,6 +742,11 @@ int stmmac_init_tstamp_counter(struct stmmac_priv *priv, u32 systime_flags)
  	if (!(priv->dma_cap.time_stamp || priv->dma_cap.atime_stamp))
  		return -EOPNOTSUPP;
  
