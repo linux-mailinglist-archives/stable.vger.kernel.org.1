@@ -1,125 +1,138 @@
-Return-Path: <stable+bounces-189222-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-189223-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D740C05518
-	for <lists+stable@lfdr.de>; Fri, 24 Oct 2025 11:26:52 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B63CC0549A
+	for <lists+stable@lfdr.de>; Fri, 24 Oct 2025 11:17:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C2C12405D43
-	for <lists+stable@lfdr.de>; Fri, 24 Oct 2025 09:16:42 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D38B64E2ADE
+	for <lists+stable@lfdr.de>; Fri, 24 Oct 2025 09:17:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B127306B08;
-	Fri, 24 Oct 2025 09:16:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0F51309EEA;
+	Fri, 24 Oct 2025 09:17:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WA/KJcO9"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="SpXi2Dkb"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDAFC2749C4
-	for <stable@vger.kernel.org>; Fri, 24 Oct 2025 09:16:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 332A9308F39
+	for <stable@vger.kernel.org>; Fri, 24 Oct 2025 09:17:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761297399; cv=none; b=LlS3kjx7fuzjkmw4tQoXX2q2S4DnqAXFUYkh45Sx4XkFGeOHt1qVMISPF6ZaxdFYphWUORNtk9BeQYnUdfvrVOXINDa+64JZUWkF5RHAMS0C6A9cj32wSwy6ILARvItt/M+p19j3We9v00WIRWaitTSUo+eickrNM+cCWrD0WRQ=
+	t=1761297431; cv=none; b=ViDGdM2QWdfUWt8giC1esajAM1yDcV38t9lemmnhOExW2SbEEhai/BEMFf2ZH8+7qN/sANWd/CVnCRKULRSwHLbqLpiPe43MZ4GuGE1/+UoFOK5T9Y75KHUt6GkyqHpMU3jKwM6CXDmP+ntKeuJoal9Oz006cYljQhFJFx+v27Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761297399; c=relaxed/simple;
-	bh=DRavPNhPICFbrW8kBHinhTaqs0FvIw3GKydnT9Z0H9g=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=LeWGoqYxdAN+/bnn88MtdedCxyYDAgh1YWsZBJ94SvE/JfrlXxw/Zp+LtTpCwk2+wYLwsoxrHP0RPTwmNpk686FhstBmMvZsnqyes+qKYEoaGIKboSLU5PfQMYK25eNZNGDynou4slKBZ68pSnKoxbQp1PjaPBc99WB5FkFEL0o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WA/KJcO9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7818FC4CEF1
-	for <stable@vger.kernel.org>; Fri, 24 Oct 2025 09:16:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761297398;
-	bh=DRavPNhPICFbrW8kBHinhTaqs0FvIw3GKydnT9Z0H9g=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=WA/KJcO97k9/ITvq5E2jDifaeVHKS+dNVO44CmQxCMGg9guAYXPx092UBC7wl7UoN
-	 QeIMLhJv9Sh6EmvBALh788Rz+OMhBH6e+1mgBGX5GdKwGpBeKw8AFtdAAQtOxNzaU6
-	 y2qIjd0TsBK6FuF9a1JrfjbaTYGyA2BD58sBase7AUtrQrRijV19InUx6qoQF6sJrN
-	 IKfbnaj85ObMxeuOD142P7hWs6ilkyOGo5Ng/oaCGaKACLncoIqe1OOxE558CRqcnq
-	 HCMi+z5GH51akaGGM4n8594vCiEDs3k4itS1LhYQKI38+zsUxRx0wR4GF7rQjULCj+
-	 ZKzbhshbLUbEQ==
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-b3e234fcd4bso344123766b.3
-        for <stable@vger.kernel.org>; Fri, 24 Oct 2025 02:16:38 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXOwnr+3kRuc9d+elgFacrZgQWh9O6WyUYKIuqQgE5LS0VwnjKZjDI8Fo02CfpYMT1c33BQQao=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz1SsoNY2TklzTCEqtBw4OwBud5fj1j73WSEH8Y7BRh1zIzAAt9
-	EbpnxR8YcS6aA4hzWcDHJbHNZLl+cRriwqq/YWuDRCzg1wB8CTeFnrBWOOPkwCx240BcdShxuez
-	iJzn8WHAgrkUbzv+3eGdhgDKgNSzGZLg=
-X-Google-Smtp-Source: AGHT+IGTsChoahuZk2XWAKEyxkgvLFwDO4PLXjJgm3i/MY2vbmPjMYkCmzccsibRKhNP7DzGJ/RMNP3s75100J3SUug=
-X-Received: by 2002:a17:906:fd87:b0:b07:c5b1:b129 with SMTP id
- a640c23a62f3a-b647195b8c3mr3494052266b.1.1761297397005; Fri, 24 Oct 2025
- 02:16:37 -0700 (PDT)
+	s=arc-20240116; t=1761297431; c=relaxed/simple;
+	bh=xwC80kxgGjCA6aiKnh+Q15rnDabTdd9HOg02jhbKQmc=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=c1vDKetogeNzJCQ6Bo0AEZmJhgjW2rc3UiSTaL2fi2/wWb7EpRBIf6QJ0rQofi6iAFZz1JMk9nDdDZfRILq19W9cumrDGDejTxrNe/WSbOhmlQa8THStGN4m2/HN53jCcWJpf4JSWZh3cSa5zsLyeBU+/fp6K9MuPmSzCxJt1/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=SpXi2Dkb; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1761297425;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=TSq+81cUiZb8O293RwSjZvZpm0NekppDqE5YvfNwlF8=;
+	b=SpXi2DkbK8zgBP/FUXMRi3HJL7xTKr3jsTmrtHnqWnDPkggH+IdloHmK2JAmG67jGWvlBB
+	e9Ea8oLtohdkjxdNC+n+6mFObloI9DkWAj5c83pohpx15KIzd1Vnsn5hqtdjZGvYodbgWI
+	DbCoCHoQdHI27stpnylr4JJQCXckF20=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-316-6Nj1OIUMPB2girt-hQAedA-1; Fri, 24 Oct 2025 05:17:00 -0400
+X-MC-Unique: 6Nj1OIUMPB2girt-hQAedA-1
+X-Mimecast-MFC-AGG-ID: 6Nj1OIUMPB2girt-hQAedA_1761297419
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-471125c8bc1so21723105e9.3
+        for <stable@vger.kernel.org>; Fri, 24 Oct 2025 02:17:00 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761297419; x=1761902219;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=TSq+81cUiZb8O293RwSjZvZpm0NekppDqE5YvfNwlF8=;
+        b=nIeCysvoVTKWmeo3vOCK6mz3JWlu2jbgiLPunQQiRNHFVUb9NY/jgmOejiMVp7jXY+
+         Byirkx+/xnPXfF1bH22jYvvXEsiFD01N7H44+8cGec/5N0lnzDs3ob+GbfRGLmoKNXpP
+         aM7OCJMmUnOUqN6B5OMTJ4pCuksAfrbVT954sZeN3F/ULX2XcD/iE3PZmPDd37+5+xGR
+         h/JjaVkXP4wBOkpguRshCMNeNdWl6nC/7gHio2fngQ/Azj8rGSRN3PVV1whLEoCLW4l7
+         hzQOB29GZPZcGvsCBAHiKIIMszVeZ6PcgMvZ/WVifZu+KpDMFPbsTZ5lZ0HADbigLklv
+         oXTQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXTeg65EeBPYZQWOHlNnUirLXTeKSqXDQVzFeqP56x7wOvL1oULZJ1nvckhG+05lREbMna3VJQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyTWbbB1LI3M/q3bnTSv8GMCMpgUTNqmsIB8NloXi/pSVcDlHSo
+	j1HHgTM/iX2tNSFKlfa/pYpImWZufYS8FKcxCbfOt90fVVLpvgTXBeZae5fVqmiqCRJQ7ZSr6Vv
+	q6mXfuf6pdDhZNJUnTv/grK+pH5e5xne2tNHnzH4h8DG7a9uBXUIDwQgXMA==
+X-Gm-Gg: ASbGncvZTa2O9r0I+nXUaCU94IIGTEKIL8m4nAEtm94bIuzGylyCSp6LcdpMr6Ud6On
+	p8GpwVtZcL65R95Cp81TehofwTK/8ZP69UEub8KXjdfJ/hjekHC95CcC/MXueyYcBcrbnGaNru1
+	smwuuqJOzeFx7sye3NrcfIFPRxbZH/khv4MvIzXf+dNGJMPYOgZM9As/aNfyvEAmK1izZux0RBh
+	zkqOcUyHUhIypSB7MaB8/aJ9GaTI8Ozz6aWpNXGuO892RuJ/k6XhcXsq7v55EoQKpYWE/HB/vlN
+	XW4HVMD50HmrgJNxddTxQ61+zOM6XXZUe762RbeieZrx/GOJBSCKb5GMskQ6psJu5H4JP6SlBV/
+	9g5nwhNXYunDfcBJiTSq4PYrcLuUpJqZisIj4+RWUZgcG5Oa3qR/QUDCSmw==
+X-Received: by 2002:a05:600c:64cf:b0:46e:3b81:c3f9 with SMTP id 5b1f17b1804b1-471178a80f7mr195431065e9.17.1761297419457;
+        Fri, 24 Oct 2025 02:16:59 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFk/qqQN3PPoawELhMs1hXkX34drDe5aOw5h6yQ+0rtvBQM8acSA/lOqGGSqNXzCUZEDfaiuw==
+X-Received: by 2002:a05:600c:64cf:b0:46e:3b81:c3f9 with SMTP id 5b1f17b1804b1-471178a80f7mr195430815e9.17.1761297419046;
+        Fri, 24 Oct 2025 02:16:59 -0700 (PDT)
+Received: from localhost (62-151-111-63.jazzfree.ya.com. [62.151.111.63])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-474949f0312sm81594105e9.0.2025.10.24.02.16.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 24 Oct 2025 02:16:58 -0700 (PDT)
+From: Javier Martinez Canillas <javierm@redhat.com>
+To: Thomas Zimmermann <tzimmermann@suse.de>, dan.carpenter@linaro.org,
+ maarten.lankhorst@linux.intel.com, mripard@kernel.org
+Cc: dri-devel@lists.freedesktop.org, Thomas Zimmermann
+ <tzimmermann@suse.de>, Melissa Wen <melissa.srw@gmail.com>, David Airlie
+ <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ stable@vger.kernel.org
+Subject: Re: [PATCH] drm/sysfb: Do not dereference NULL pointer in plane reset
+In-Reply-To: <20251017091407.58488-1-tzimmermann@suse.de>
+References: <20251017091407.58488-1-tzimmermann@suse.de>
+Date: Fri, 24 Oct 2025 11:16:57 +0200
+Message-ID: <875xc4acc6.fsf@ocarina.mail-host-address-is-not-set>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <2059d92d64eb181f1d37538d1279ed5b191ce1ab.1761211916.git.wqu@suse.com>
- <CAL3q7H7KmObsE2JURpKLVRT_ufa_2v4M2KAFahUndq5Jqxwnow@mail.gmail.com>
- <6f36e8d0-630b-4cc3-a780-11be4aa0a65f@suse.com> <CAL3q7H4TcJNY7cYeYWoByOW0ek6BBEbtgSSFFOvc7aagarfFXQ@mail.gmail.com>
- <63aac204-5ea5-45b1-854e-6b3d78db99fd@gmx.com> <CAL3q7H4nO6TB66RhrrrC94GSrjLOb1tOQ1xPJqmZs=m82gX73g@mail.gmail.com>
- <1baa687a-22f6-4eaa-8de8-5096e8a29275@gmx.com>
-In-Reply-To: <1baa687a-22f6-4eaa-8de8-5096e8a29275@gmx.com>
-From: Filipe Manana <fdmanana@kernel.org>
-Date: Fri, 24 Oct 2025 10:16:00 +0100
-X-Gmail-Original-Message-ID: <CAL3q7H49m-qBM_QdxPhQ=-ByEOJWkrqBe=r9thm2fmGS=C6MnQ@mail.gmail.com>
-X-Gm-Features: AWmQ_bkigUKUHqZVVFXQNtunArct32b0Ll1KT6t347nOf6zgKGfSE8Pmjdu_nzE
-Message-ID: <CAL3q7H49m-qBM_QdxPhQ=-ByEOJWkrqBe=r9thm2fmGS=C6MnQ@mail.gmail.com>
-Subject: Re: [PATCH] btrfs: make sure no dirty metadata write is submitted
- after btrfs_stop_all_workers()
-To: Qu Wenruo <quwenruo.btrfs@gmx.com>
-Cc: Qu Wenruo <wqu@suse.com>, linux-btrfs@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 
-On Fri, Oct 24, 2025 at 10:10=E2=80=AFAM Qu Wenruo <quwenruo.btrfs@gmx.com>=
- wrote:
->
->
->
-> =E5=9C=A8 2025/10/24 19:25, Filipe Manana =E5=86=99=E9=81=93:
-> [...]
-> >
-> > If there's no backref in the extent tree and no delayed ref for tree
-> > block A then we already have a corrupted fs.
->
-> Yes I know.
->
-> >>>
-> >>> Even after a transaction aborts, it's ok, but pointless, to allocate
-> >>> extents and trigger writeback for them.
-> >>
-> >> Writeback can be triggered by a lot of other reasons, e.g. memory
-> >> pressure, and in that case if we try to writeback tree block B, it wil=
-l
-> >> overwrite tree block A even if it's after transaction abort.
-> >
-> > It doesn't matter why and when the writeback is triggered, that was
-> > not my point.
-> > My point was if a transaction was aborted, what matters is that we
-> > can't commit that transaction or start a new one, and can't override
-> > existing extents (either they are used or pinned).
->
-> My point is, your last point (can't override existing extents) is not
-> guaranteed especially after a transaction is aborted, which can be
-> caused by corrupted fs.
+Thomas Zimmermann <tzimmermann@suse.de> writes:
 
-If there's no backref for tree block A, or a delayed ref, then we
-already have a high risk of overwriting tree block A.
-The transaction abort is irrelevant... if there's no abort, we
-overwrite it (and silently) - so we're in a more bad situation if an
-abort happened.
+Hello Thomas,
 
-We can never guarantee a fs is healthy if it's already corrupted.
+> The plane state in __drm_gem_reset_shadow_plane) can be NULL. Do not
 
+That ) is off. I guess you meant either () or just the function name.
+
+> deref that pointer, but forward NULL to the other plane-reset helpers.
+> Clears plane->state to NULL.
 >
-> Yes, the initial fs can be corrupted, but it doesn't mean we're free to
-> make it more corrupted.
-
+> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+> Fixes: b71565022031 ("drm/gem: Export implementation of shadow-plane helpers")
+> Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+> Closes: https://lore.kernel.org/dri-devel/aPIDAsHIUHp_qSW4@stanley.mountain/
+> Cc: Thomas Zimmermann <tzimmermann@suse.de>
+> Cc: Melissa Wen <melissa.srw@gmail.com>
+> Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+> Cc: Maxime Ripard <mripard@kernel.org>
+> Cc: David Airlie <airlied@gmail.com>
+> Cc: Simona Vetter <simona@ffwll.ch>
+> Cc: dri-devel@lists.freedesktop.org
+> Cc: <stable@vger.kernel.org> # v5.15+
+> ---
+>  drivers/gpu/drm/drm_gem_atomic_helper.c | 8 ++++++--
+>  1 file changed, 6 insertions(+), 2 deletions(-)
 >
-> Thanks,
-> Qu
+
+Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+
+-- 
+Best regards,
+
+Javier Martinez Canillas
+Core Platforms
+Red Hat
+
 
