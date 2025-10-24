@@ -1,137 +1,114 @@
-Return-Path: <stable+bounces-189226-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-189227-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2BA3C0596A
-	for <lists+stable@lfdr.de>; Fri, 24 Oct 2025 12:31:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BCC4C05997
+	for <lists+stable@lfdr.de>; Fri, 24 Oct 2025 12:35:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F02993B4247
-	for <lists+stable@lfdr.de>; Fri, 24 Oct 2025 10:25:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 957383BC9BA
+	for <lists+stable@lfdr.de>; Fri, 24 Oct 2025 10:27:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA68F30FC2E;
-	Fri, 24 Oct 2025 10:25:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1F2630F93F;
+	Fri, 24 Oct 2025 10:27:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eDKhpq/W"
+	dkim=pass (2048-bit key) header.d=lankhorst.se header.i=@lankhorst.se header.b="CFyH7t4R"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from lankhorst.se (lankhorst.se [141.105.120.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E65930F934;
-	Fri, 24 Oct 2025 10:25:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 899A23043AF;
+	Fri, 24 Oct 2025 10:27:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=141.105.120.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761301525; cv=none; b=cA473g6xuMK8XUWNVVnE/k7j3+mIkGSqQybnTXUeUAXsIWD6Z/hocwjCiGug6naUh9ZViNQYj8l815lZSOSzTwWydLXxaA0TeR9JqsrwbxYAYczaAVq3A5zETOmkeguSi501Ou8CxepTGZ0/LogwJ2J4zWgtN78wK8jANV3MyJM=
+	t=1761301658; cv=none; b=PlZ3AHCGeUlhtNc/MPFDdkVeE+4yArTUl5jpENysji/iyXNg+LM93UnWF5X4CUOXwEXA7k7NyrNWaMVO7etWqKVdayVSYu96BU7ZtIl6F/fMk5dO5cVqPAVCrxiy1ddvLItTFHcejW0JfJS4zJL53vS+vSw/GexorTA7asScCnY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761301525; c=relaxed/simple;
-	bh=SpLZn7BSv4Vw3pFCms90Qtx52dcb5B/g42/myX03T7w=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=J4GWWet2cKoep2Wl/Q1UymywWY8CPK8FDqxlCzK+TR8jcc7859ZtrPOHDri3RK0bGrbHo9fHaa/oEBdphoSHAxj1mnLM1tBqXSyhPBtOYIOFa3kn4OQ4Aft7Y4cGdHXDGbCVTrMbLdCW4ckJxnhnUNicFrJMuAjZMhx29nebx1M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eDKhpq/W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90BD3C4CEF1;
-	Fri, 24 Oct 2025 10:25:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761301525;
-	bh=SpLZn7BSv4Vw3pFCms90Qtx52dcb5B/g42/myX03T7w=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=eDKhpq/Wujx7wo/wzDNrOp6rQ1OF933VW2NQJ9FoRNO6AF/Hc9Y6VMq8TbtZYI0hZ
-	 7n1Xg0gW4rOGSc9KDcP7ZViXFjOONGvsNnzmU+D/L+Ccq29fyqOolFTWwaZMTP8y5a
-	 bLF4FayRHyKwsYT7J/gpMnRo4KMIVKo2vXin7DwrKFdHJ9oyd/DYshop1Eq2fuOJ11
-	 ybGNTIYw78Cdpz1dWTRq2WtrjslFA5ecpdd3d6327Oo8/362bWsAYcy/OekdQe5kdA
-	 4W7hyBYLYlPMwnrkqnkTKFEYXojlS3i41POsstov9Lm31h6RMeF5IRidtwNXZ9HDYj
-	 HtsvyEQnhTyYg==
-From: Mark Brown <broonie@kernel.org>
-To: gregkh@linuxfoundation.org, srini@kernel.org, 
- Alexey Klimov <alexey.klimov@linaro.org>
-Cc: rafael@kernel.org, dakr@kernel.org, make24@iscas.ac.cn, steev@kali.org, 
- dmitry.baryshkov@oss.qualcomm.com, linux-kernel@vger.kernel.org, 
- linux-sound@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
- abel.vesa@linaro.org, stable@vger.kernel.org
-In-Reply-To: <20251022201013.1740211-1-alexey.klimov@linaro.org>
-References: <20251022201013.1740211-1-alexey.klimov@linaro.org>
-Subject: Re: [PATCH v2] regmap: slimbus: fix bus_context pointer in regmap
- init calls
-Message-Id: <176130152229.12682.10943579014725901124.b4-ty@kernel.org>
-Date: Fri, 24 Oct 2025 11:25:22 +0100
+	s=arc-20240116; t=1761301658; c=relaxed/simple;
+	bh=qYI6HDh9a/ugUn/uKgtP6q9Z/KM2Dh1Vcc3ewzPmDwY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Q+fRb4xJrWOtzvq4dXCxOgrf6gmRYTXGh7lSLEz0YCEc3GC/6okJ5H4L2ynCIHyKgrlSwOcKKPlm4AeyhGKEj5MhDb1JCP2WjPPxjJCOK0eh60zcA81M0avGa/NJKUntfS51sOcgs3Acel3rwBFQwuLkhyGV+nZZD9nW6JZLZQM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lankhorst.se; spf=pass smtp.mailfrom=lankhorst.se; dkim=pass (2048-bit key) header.d=lankhorst.se header.i=@lankhorst.se header.b=CFyH7t4R; arc=none smtp.client-ip=141.105.120.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lankhorst.se
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lankhorst.se
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=lankhorst.se;
+	s=default; t=1761301654;
+	bh=qYI6HDh9a/ugUn/uKgtP6q9Z/KM2Dh1Vcc3ewzPmDwY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=CFyH7t4REHmQ+bj3mjN5XCQGi82PIbBbGwpJw1gyGLMRiYuuPpxBE0uCte0wdRjkD
+	 IBhDCqyfZiYt0TSNFynmmbIl+wZSFTQmB+SjmJSyNHad81BeiFtztIdm5QHlYgkHpc
+	 dFp4sNCHhlfe5EKFk7YeLzJeUVDd+helbnrouh40vxloxHS9vg5rMKQGZVGZM6s2yk
+	 iahFeVjlN75UN9LpghgqPb9v2ZloO1Tus9r606xwRwMh3xivWnDZzMtzYuSXM/W9SM
+	 B3NNEL8KuUNL3mKiSYKbcpoCFGflhKz0JYjou+4PBpWnwmUsIet54ScleOY5mjFgr4
+	 qa4pdzgYZjNuA==
+Message-ID: <f3398dd1-0d69-4db6-9bfc-ed3c6fe92ab5@lankhorst.se>
+Date: Fri, 24 Oct 2025 12:27:33 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] devcoredump: Fix circular locking dependency with
+ devcd->mutex.
+To: Johannes Berg <johannes@sipsolutions.net>, linux-kernel@vger.kernel.org
+Cc: intel-xe@lists.freedesktop.org, Mukesh Ojha <quic_mojha@quicinc.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
+ stable@vger.kernel.org, Matthew Brost <matthew.brost@intel.com>
+References: <20250723142416.1020423-1-dev@lankhorst.se>
+ <e683355a9a9f700d98ae0a057063a975bb11fadc.camel@sipsolutions.net>
+ <c4bd0ddb-4104-4074-b04a-27577afeaa46@lankhorst.se>
+ <247568f47e1955be454e951e80a9063123f97c66.camel@sipsolutions.net>
+Content-Language: en-US
+From: Maarten Lankhorst <dev@lankhorst.se>
+In-Reply-To: <247568f47e1955be454e951e80a9063123f97c66.camel@sipsolutions.net>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.15-dev-88d78
 
-On Wed, 22 Oct 2025 21:10:12 +0100, Alexey Klimov wrote:
-> Commit 4e65bda8273c ("ASoC: wcd934x: fix error handling in
-> wcd934x_codec_parse_data()") revealed the problem in the slimbus regmap.
-> That commit breaks audio playback, for instance, on sdm845 Thundercomm
-> Dragonboard 845c board:
+Hey,
+
+Den 2025-10-24 kl. 10:39, skrev Johannes Berg:
+> On Fri, 2025-10-24 at 10:37 +0200, Maarten Lankhorst wrote:
+>>>
+>>> CPU 0				CPU 1
+>>>
+>>> dev_coredump_put()		devcd_del()
+>>>  -> devcd_free()
+>>>    -> locked
+>>>      -> !deleted
+>>>      -> __devcd_del()
+>>> 				-> __devcd_del()
+>>>
+>>> no?
+>>>
+>>> johannes
+>>
+>>
+>> Yeah don't you love the races in the design? All intricate and subtle.
 > 
->  Unable to handle kernel paging request at virtual address ffff8000847cbad4
->  ...
->  CPU: 5 UID: 0 PID: 776 Comm: aplay Not tainted 6.18.0-rc1-00028-g7ea30958b305 #11 PREEMPT
->  Hardware name: Thundercomm Dragonboard 845c (DT)
->  ...
->  Call trace:
->   slim_xfer_msg+0x24/0x1ac [slimbus] (P)
->   slim_read+0x48/0x74 [slimbus]
->   regmap_slimbus_read+0x18/0x24 [regmap_slimbus]
->   _regmap_raw_read+0xe8/0x174
->   _regmap_bus_read+0x44/0x80
->   _regmap_read+0x60/0xd8
->   _regmap_update_bits+0xf4/0x140
->   _regmap_select_page+0xa8/0x124
->   _regmap_raw_write_impl+0x3b8/0x65c
->   _regmap_bus_raw_write+0x60/0x80
->   _regmap_write+0x58/0xc0
->   regmap_write+0x4c/0x80
->   wcd934x_hw_params+0x494/0x8b8 [snd_soc_wcd934x]
->   snd_soc_dai_hw_params+0x3c/0x7c [snd_soc_core]
->   __soc_pcm_hw_params+0x22c/0x634 [snd_soc_core]
->   dpcm_be_dai_hw_params+0x1d4/0x38c [snd_soc_core]
->   dpcm_fe_dai_hw_params+0x9c/0x17c [snd_soc_core]
->   snd_pcm_hw_params+0x124/0x464 [snd_pcm]
->   snd_pcm_common_ioctl+0x110c/0x1820 [snd_pcm]
->   snd_pcm_ioctl+0x34/0x4c [snd_pcm]
->   __arm64_sys_ioctl+0xac/0x104
->   invoke_syscall+0x48/0x104
->   el0_svc_common.constprop.0+0x40/0xe0
->   do_el0_svc+0x1c/0x28
->   el0_svc+0x34/0xec
->   el0t_64_sync_handler+0xa0/0xf0
->   el0t_64_sync+0x198/0x19c
+> :)
 > 
-> [...]
+>> In this case it's handled by disable_delayed_work_sync(),
+>> which waits for devcd_del() to be completed. devcd_del is called from the workqueue,
+>> and the first step devcd_free does is calling disable_delayed_work_sync, which means
+>> devcd_del() either fully completed or was not run at all.
+> 
+> Oh... right, I totally missed the _sync. My bad, sorry.
+> 
+> I guess I really should say
+> 
+> Reviewed-by: Johannes Berg <johannes@sipsolutions.net>
+> 
+> since I finally _did_ review it carefully. Sorry it took forever.
+> 
+> johannes
+No worries. It's an extremely tricky and prone to races part of code especially with the various ways a coredump can be destroyed.
 
-Applied to
+I almost replied with another potential bug, calling read() after calling write(), but that's worked around by the reference
+kept on the devcd device.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/regmap.git for-next
-
-Thanks!
-
-[1/1] regmap: slimbus: fix bus_context pointer in regmap init calls
-      commit: 434f7349a1f00618a620b316f091bd13a12bc8d2
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
+Kind regards,
+~Maarten Lankhorst
 
