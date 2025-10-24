@@ -1,186 +1,203 @@
-Return-Path: <stable+bounces-189195-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-189196-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E14BC044C2
-	for <lists+stable@lfdr.de>; Fri, 24 Oct 2025 06:01:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25437C0466F
+	for <lists+stable@lfdr.de>; Fri, 24 Oct 2025 07:34:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EB2EE3B63F3
-	for <lists+stable@lfdr.de>; Fri, 24 Oct 2025 04:01:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D3D9A3AA32B
+	for <lists+stable@lfdr.de>; Fri, 24 Oct 2025 05:34:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0B5727D786;
-	Fri, 24 Oct 2025 04:01:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81A082144C9;
+	Fri, 24 Oct 2025 05:34:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Wv22Z3RW"
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="lToeua0w"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3B991FBEAC
-	for <stable@vger.kernel.org>; Fri, 24 Oct 2025 04:01:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 791FA224FA
+	for <stable@vger.kernel.org>; Fri, 24 Oct 2025 05:34:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761278469; cv=none; b=CPzhWrJuVfGuQbqDC/cH0k3/pkonBN0D6Hb6vyXtAqSOkxLbZ6k9PoTHYUUU0DhhLW5j+cQhLMm59lEzWzHoK3LV79o5HYYfkUkF9DDP1jb97AaD9mfIgly7OvU/kGF5rFL6xAaCNp89DrWX1+vGhTYjc35gSSMmwpz/+iYA0zM=
+	t=1761284049; cv=none; b=kYcPEyzJ959XgOwfoTDBSHCb2prgbv0L2FuNz1plWGGqx7Qjfd0h7tKum8UJ3+mnlhs4g4wCA9PwtX0sOU5TWcXTPUnVpHQC1cO9lJ9WE1k30/60GClUXzEwvobPrmQzbTA6FqU6GGFKOLUHKPjd2Hhwadkc9XvA1vxoUKFmpjs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761278469; c=relaxed/simple;
-	bh=V10J8FMQ/2czcpCw//K/+x+vSWrM+ulV22C6o6B0ctI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=H8iNEs3LyfhKPG/B2Bh0O3X3UpXHPcEEoyHkxwCQ54tpzTydbUL3Q0bd4hzrS503zv0fux3423QZ17lW7CifLZbm4jqJUPG/p9fsqKS4mvQ+YBVudKXfHkLVKOMawXzf6Q3v5rh3wHVEHuZexhBj9Mc8jUSaRmAGtcrkConu3Lc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Wv22Z3RW; arc=none smtp.client-ip=209.85.208.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-61feb87fe26so2742706a12.1
-        for <stable@vger.kernel.org>; Thu, 23 Oct 2025 21:01:05 -0700 (PDT)
+	s=arc-20240116; t=1761284049; c=relaxed/simple;
+	bh=UdeClZXIUWVGOl1GLOaOrjFt7x8K2F6/WYmVgfCof5o=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=DjfT8bTCmxH5xOd7mvsRpUhVf8Axw3dW5mCHyS9EGHidlQOX5tfNRwLV0mEPIKrxLkBRJA4sTUw1Jb/YjUCFhwyXXogTvlCszkZ9bjxajUK+YtTKmerkjFxPONJ1srzR8+5aLbnBddlusAifFdvJow1BMDm6Fqm2Jgj7UDN+xFw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=lToeua0w; arc=none smtp.client-ip=209.85.221.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-3f0ae439bc3so1043325f8f.1
+        for <stable@vger.kernel.org>; Thu, 23 Oct 2025 22:34:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761278464; x=1761883264; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=bX+AGT1PAEb2wRzHRL+8B92/Z4uxx2bE66SuwJSj7jg=;
-        b=Wv22Z3RWn9GAhWb+ereUD8xrek7UWUNZEA8rYX9psbY1+q1IvDaKWBReyP740V0QLY
-         oculeB54tOBrIy56+LajplQlhljD7vRu6QwRCedu6iNMewYzgnrKh/vMgfNrXaNSYL6S
-         HfQMRLE3bHQiyFR1/mjmjrg1os8qqCnJP4U5STKEkrIwwNSIErW8N8UmAmXTz5A8X/oQ
-         EqnoqdTndxDIsrySee8ba0ixuUFdBORWmCB5q1xKfCqBkGOPAwYCo3WHvP4IuzVl5VDB
-         RA80Wy4l5rx8/nHQTiVMZ0D1LofLwOejHMEVaxcTlb91GRWJmHIQsNJiK5ZrJRBqzOPC
-         x1Sw==
+        d=googlemail.com; s=20230601; t=1761284046; x=1761888846; darn=vger.kernel.org;
+        h=in-reply-to:autocrypt:references:cc:to:from:content-language
+         :subject:user-agent:mime-version:date:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=UdeClZXIUWVGOl1GLOaOrjFt7x8K2F6/WYmVgfCof5o=;
+        b=lToeua0wnKy2uWrwkX5USdh1nEn/oAy11qnt10CzODHFR4WFIyj+1M5dtM9SEyGn1g
+         18FTsudsX19Pw6HnPlgp/UDE7U2O6SzjpPfbDOyfD1kiUjCYeFj6NzgMapxSh/OTIJRB
+         J/Kzg5N5eEGrQARQvqBcvPFn9Y4OXL0iF68eum/7Gz8pMtxhddoBH+KYH7k65ioIvQht
+         TTOhlCMiFXdRG/V7ofqDO5WO8nx4HhbISKEAN/UQ7gDqWMeNQrVvqsLQnZMsltRRQv96
+         zeo9IjwlcBnGxRHMnDp5XeCHIaF73weNLJMF4V7Q+J4+km6KgVQOiGUtCHBuO0SNTdjt
+         bY5w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761278464; x=1761883264;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=bX+AGT1PAEb2wRzHRL+8B92/Z4uxx2bE66SuwJSj7jg=;
-        b=uqCbGSwGLIsWhwN8drTQFiGDQ01PlMFnnJYi4TPNeuS6qi0QZYjDV0Yuk2TgKhkfLG
-         ngx4DPi9WJuRPohEcLtmYycQjW5ZZmKumu8KUR9Y/mQz0PE4iPsE6D68ZGj4zfGCkcFH
-         aS/1fQWQx/XZWCif3f5NJ6A2SW9RDCDJS15TMB6sxB05kstQveKbmfyAnzm2ilRwn8fP
-         GQtTOZaCRfp2C2fmPIdAMckoMvQBiYLviZ2RD4fMpkmSsz7Rc9Geh77CSecHlxbrpBdV
-         tfkA23BTO7J1QFPKmYvExRXZiK+VxSDMHFqW4tLFhe7SU1W7IEuVL+k3CyG6QLK8AW7c
-         qHQw==
-X-Forwarded-Encrypted: i=1; AJvYcCVHfDlfn1FPt+iBe0GmJ1lsmhzXPTZ3XknvokZZ6BxMDoxlGYi9G9oSSzYdKiDcfeSCDwdxUkk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxbZmQJANqKISkHhv16VyXo3sTl6VEr+Ptwt3gJzbmhdb82XPGL
-	qC9UOsbBJH3pKcl8DiRmWBj9tUYwiCjMIR8kbjKFC9o/cv915ZcBmYb33Pfa0S4FtQyfqNl7Z7r
-	/XH23D2W/ixI9lvPrdRLFeXRJGPMTGq0=
-X-Gm-Gg: ASbGncvmJYodlHNOKwDl2vxEGRBTUWIvsPTEciMhLLjA+kO+EXlaubWgJwKtflGsyr1
-	RUCOS2nQv3TDW5LkCByczweNOfmbFPH+TBTIzPgdZy52//NaDiDabZScoFIxNuvWsFivy41u4B1
-	2x/4cupe7HsE8veojFnSQSu1uW8ZrplDy10hSPVQUwNt4Iz2Ex8BpGo5yiN0EbAKAwJJyXtMrdk
-	fgtV7PJhT3Eg7A1G7kIYKPza7iLw16kMZW5W7lDdcK92qOfYGOyJD5vn24=
-X-Google-Smtp-Source: AGHT+IHncX413Zw579qxe0Qf5NgqYwOEtK2z/nG3SfbdqAmW/ND46AejAhP+66pY1PNOOUa4grOi1M19bZwDtf3Z0pg=
-X-Received: by 2002:a05:6402:1449:b0:63c:2d72:56e3 with SMTP id
- 4fb4d7f45d1cf-63e6007c37cmr933871a12.23.1761278463985; Thu, 23 Oct 2025
- 21:01:03 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1761284046; x=1761888846;
+        h=in-reply-to:autocrypt:references:cc:to:from:content-language
+         :subject:user-agent:mime-version:date:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=UdeClZXIUWVGOl1GLOaOrjFt7x8K2F6/WYmVgfCof5o=;
+        b=K8We25K9ZQ/ZT2sx1+rxMT7nISz0LEIayul3+uN9cy74K7a5pK6JTRjoaKpg8QwcIW
+         jyLWfS7zOoJXSLF77kNda4t1bnQnd5b0UtmGFkWlfeDzd+s1DlOGYE9C3XLmth907sj7
+         Wbnz0J2GM+Vvv0SYGHXWrd/p7JtO13Qr0ef2WaE2Oh6q2ybBcdU5K51N//pO27hRJOjs
+         qCLhAUY2ukrMUw20PcZ/bY/uyNhBO/257GCiZsQnTonV2IapKvMC7DjRQTF/THsGfisU
+         jPMM0lPkKHkaSGU7mDftWVYyqDaG6E70Ea82Po0KpPbDNl5aG+UepfemvBOaOtc2hhiR
+         JOCg==
+X-Forwarded-Encrypted: i=1; AJvYcCUT24ps8fX+hSAvhnRBnXFvRvS7LLM4zcUQXCUCNwMpiGA28bwKLgOQBx8obdPXL4JCehJo5Po=@vger.kernel.org
+X-Gm-Message-State: AOJu0YziZCeTwJgd3z9dtgroyB32NsnZsG8t1xaAxRsdeuey6JgrPnJ4
+	mqH4mtV4PqCdWyVehUUthGTPBy2xzZ43xoPz5XS9xNvAvHWDLSmGZKQ=
+X-Gm-Gg: ASbGncuIAYIquzaYUBpJdXCpCt3+GAnJWKhL0tjDQi+zSBvcrehDO2Qg7traZvSccMJ
+	V7QjD4nSubHFvDhckcT+0xJCaaUx7O+CkkOXlNQ/WiCPcUoRHRVhiNxFaZd3Zq6ICvU647bZKhX
+	2SaNLfnJ8yPxTAdI5uP4VaLGOFbSNhs0Q7/92OnHTOR9XMBkd7GQZzg5OYtbcrG0hKgzeplvesU
+	zK0NobOJ4YJ7lA8j/eU0ueVh9E/KtOr1abug2gA9Z5wdhX/pgTXTU0Jm/RopuzZkIsa5v3s0qXE
+	NUZIjCmkYxwVBjVy7qMSdSg+Nf8pa5SooT7aqVVbquoRFV7Wn6IKJRYL/neDrCbZ/vRusf/jCrV
+	twoAcpdtLcf1N8BIBusmOMLuwROmXEZHhECMGSAQq44T1G/bV1IpvRL0HXrh1Cryl7dOKZy8nYT
+	iNpbKptp3cXravLnMSX7Tulldy1SQ80Eh7HpeZCb0Tbiujf6dXM/TWxc2Yh12h99Y=
+X-Google-Smtp-Source: AGHT+IGTb0BhNtLXZjL89zHnvhnrIYZlTtJyn9gLCubUjapXa+451SyphIYoQs9g+1Ce4F+c0arbCA==
+X-Received: by 2002:a05:6000:4011:b0:427:9d7:870f with SMTP id ffacd0b85a97d-4299070199dmr708125f8f.5.1761284045381;
+        Thu, 23 Oct 2025 22:34:05 -0700 (PDT)
+Received: from [192.168.1.3] (p5b2b41b7.dip0.t-ipconnect.de. [91.43.65.183])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-429898acc63sm7417423f8f.27.2025.10.23.22.34.04
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 23 Oct 2025 22:34:04 -0700 (PDT)
+Message-ID: <045e6362-01db-47f3-9a4f-8a86b2c15d00@googlemail.com>
+Date: Fri, 24 Oct 2025 07:34:03 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251007-swap-clean-after-swap-table-p1-v1-0-74860ef8ba74@tencent.com>
- <20251007-swap-clean-after-swap-table-p1-v1-1-74860ef8ba74@tencent.com>
- <CACePvbWs3hFWt0tZc4jbvFN1OXRR5wvNXiMjBBC4871wQjtqMw@mail.gmail.com>
- <CAMgjq7BD6SOgALj2jv2SVtNjWLJpT=1UhuaL=qxvDCMKUy68Hw@mail.gmail.com>
- <CACePvbVEGgtTqkMPqsf69C7qUD52yVcC56POed8Pdt674Pn68A@mail.gmail.com>
- <CACePvbWu0P+8Sv-sS7AnG+ESdnJdnFE_teC9NF9Rkn1HegQ9_Q@mail.gmail.com>
- <CAMgjq7BJcxGzrnr+EeO6_ZC7dAn0_WmWn8DX8gSPfyYiY4S3Ug@mail.gmail.com>
- <CAMgjq7CsYhEjvtN85XGkrONYAJxve7gG593TFeOGV-oax++kWA@mail.gmail.com> <aPc3lmbJEVTXoV6h@yjaykim-PowerEdge-T330>
-In-Reply-To: <aPc3lmbJEVTXoV6h@yjaykim-PowerEdge-T330>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Fri, 24 Oct 2025 12:00:27 +0800
-X-Gm-Features: AWmQ_bkc9YwuZtUhzw52MpHd91KHJZxGIdtGa9Ii8w-Tgx94sUw-dZLiUembJcI
-Message-ID: <CAMgjq7CELW_s5ok-2NHSFzK3SQKQKHB3VRLGnFaGGxe5c-eCvA@mail.gmail.com>
-Subject: Re: [PATCH 1/4] mm, swap: do not perform synchronous discard during allocation
-To: YoungJun Park <youngjun.park@lge.com>
-Cc: Chris Li <chrisl@kernel.org>, linux-mm@kvack.org, 
-	Andrew Morton <akpm@linux-foundation.org>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, David Hildenbrand <david@redhat.com>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Ying Huang <ying.huang@linux.alibaba.com>, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Betterbird (Windows)
+Subject: Re: [REGRESSION][BISECTED] Screen goes blank with ASpeed AST2300 in
+ 6.18-rc2
+Content-Language: de-DE
+From: Peter Schneider <pschneider1968@googlemail.com>
+To: Thomas Zimmermann <tzimmermann@suse.de>, regressions@lists.linux.dev,
+ LKML <linux-kernel@vger.kernel.org>
+Cc: dri-devel@lists.freedesktop.org, stable@vger.kernel.org,
+ jfalempe@redhat.com, airlied@redhat.com, dianders@chromium.org,
+ nbowler@draconx.ca, Linus Torvalds <torvalds@linux-foundation.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Thorsten Leemhuis <regressions@leemhuis.info>
+References: <20251014084743.18242-1-tzimmermann@suse.de>
+ <a40caf8e-58ad-4f9c-af7f-54f6f69c29bb@googlemail.com>
+ <43992c88-3a3a-4855-9f46-27a7e5fdec2e@suse.de>
+ <798ba37a-41d0-4953-b8f5-8fe6c00f8dd3@googlemail.com>
+ <bf827c5c-c4dd-46f1-962d-3a8e2a0a7fdf@suse.de>
+ <5f8fba3b-2ee1-4a02-9b41-e6e1de1a507a@googlemail.com>
+ <e2462c92-4049-486b-92d7-e78aaec4b05d@suse.de>
+ <3ca10b2e-fb9c-4495-9219-5e8537314751@googlemail.com>
+ <329a9f97-dd66-49c2-bc42-470566d01539@suse.de>
+ <270ce9a3-5067-4ef8-9205-414b5667cf3a@googlemail.com>
+Autocrypt: addr=pschneider1968@googlemail.com; keydata=
+ xjMEY58biBYJKwYBBAHaRw8BAQdADPnoGTrfCUCyH7SZVkFtnlzsFpeKANckofR4WVLMtMzN
+ L1BldGVyIFNjaG5laWRlciA8cHNjaG5laWRlcjE5NjhAZ29vZ2xlbWFpbC5jb20+wpwEExYK
+ AEQCGyMFCQW15qgFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4AWIQSjgovXlszhGoyt6IZu
+ OpLJLD/yRAUCY58b8AIZAQAKCRBuOpLJLD/yRIeIAQD0+/LMdKHM6AJdPCt+e9Z92BMybfnN
+ RtGqkdZWtvdhDQD9FJkGh/3PFtDinimB8UOB7Gi6AGxt9Nu9ne7PvHa0KQXOOARjnxuIEgor
+ BgEEAZdVAQUBAQdAw2GRwTf5HJlO6CCigzqH6GUKOjqR1xJ+3nR5EbBze0sDAQgHwn4EGBYK
+ ACYWIQSjgovXlszhGoyt6IZuOpLJLD/yRAUCY58biAIbDAUJBbXmqAAKCRBuOpLJLD/yRONS
+ AQCwB9qiEQoSnxHodu8kRuvUxXKIqN7701W+INXtFGtJygEAyPZH3/vSBJ4A7GUG7BZyQRcr
+ ryS0CUq77B7ZkcI1Nwo=
+In-Reply-To: <270ce9a3-5067-4ef8-9205-414b5667cf3a@googlemail.com>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------krXW3u9GCz73FBYeJPBWkLil"
 
-On Tue, Oct 21, 2025 at 3:34=E2=80=AFPM YoungJun Park <youngjun.park@lge.co=
-m> wrote:
->
-> > > Thanks, I was composing a reply on this and just saw your new comment=
-.
-> > > I agree with this.
-> >
-> > Hmm, it turns out modifying V1 to handle non-order 0 allocation
-> > failure also has some minor issues. Every mTHP SWAP allocation failure
-> > will have a slight higher overhead due to the discard check. V1 is
-> > fine since it only checks discard for order 0, and order 0 alloc
-> > failure is uncommon and usually means OOM already.
->
-> Looking at the original proposed patch.
->
->  +      spin_lock(&swap_avail_lock);
->  +      plist_for_each_entry_safe(si, next, &swap_avail_heads[nid], avail=
-_lists[nid]) {
->  +              spin_unlock(&swap_avail_lock);
->  +              if (get_swap_device_info(si)) {
->  +                      if (si->flags & SWP_PAGE_DISCARD)
->  +                              ret =3D swap_do_scheduled_discard(si);
->  +                      put_swap_device(si);
->  +              }
->  +              if (ret)
->  +                      break;
->
-> if ret is true and we break,
-> wouldn=E2=80=99t that cause spin_unlock to run without the lock being hel=
-d?
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------krXW3u9GCz73FBYeJPBWkLil
+Content-Type: multipart/mixed; boundary="------------sW3anxa1r6YezvSATKrGS7PM";
+ protected-headers="v1"
+From: Peter Schneider <pschneider1968@googlemail.com>
+To: Thomas Zimmermann <tzimmermann@suse.de>, regressions@lists.linux.dev,
+ LKML <linux-kernel@vger.kernel.org>
+Cc: dri-devel@lists.freedesktop.org, stable@vger.kernel.org,
+ jfalempe@redhat.com, airlied@redhat.com, dianders@chromium.org,
+ nbowler@draconx.ca, Linus Torvalds <torvalds@linux-foundation.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Thorsten Leemhuis <regressions@leemhuis.info>
+Message-ID: <045e6362-01db-47f3-9a4f-8a86b2c15d00@googlemail.com>
+Subject: Re: [REGRESSION][BISECTED] Screen goes blank with ASpeed AST2300 in
+ 6.18-rc2
+References: <20251014084743.18242-1-tzimmermann@suse.de>
+ <a40caf8e-58ad-4f9c-af7f-54f6f69c29bb@googlemail.com>
+ <43992c88-3a3a-4855-9f46-27a7e5fdec2e@suse.de>
+ <798ba37a-41d0-4953-b8f5-8fe6c00f8dd3@googlemail.com>
+ <bf827c5c-c4dd-46f1-962d-3a8e2a0a7fdf@suse.de>
+ <5f8fba3b-2ee1-4a02-9b41-e6e1de1a507a@googlemail.com>
+ <e2462c92-4049-486b-92d7-e78aaec4b05d@suse.de>
+ <3ca10b2e-fb9c-4495-9219-5e8537314751@googlemail.com>
+ <329a9f97-dd66-49c2-bc42-470566d01539@suse.de>
+ <270ce9a3-5067-4ef8-9205-414b5667cf3a@googlemail.com>
+In-Reply-To: <270ce9a3-5067-4ef8-9205-414b5667cf3a@googlemail.com>
 
-Thanks for catching this! Right, I need to return directly instead of
-break. I've fixed that.
+--------------sW3anxa1r6YezvSATKrGS7PM
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: base64
 
->
->  +              spin_lock(&swap_avail_lock);
->  +      }
->  +      spin_unlock(&swap_avail_lock); <- unlocked without lock grab.
->  +
->  +      return ret;
->  +}
->
-> > I'm not saying V1 is the final solution, but I think maybe we can just
-> > keep V1 as it is? That's easier for a stable backport too, and this is
-> > doing far better than what it was like. The sync discard was added in
-> > 2013 and the later added percpu cluster at the same year never treated
-> > it carefully. And the discard during allocation after recent swap
-> > allocator rework has been kind of broken for a while.
-> >
-> > To optimize it further in a clean way, we have to reverse the
-> > allocator's handling order of the plist and fast / slow path. Current
-> > order is local_lock -> fast -> slow (plist).
-> > We can walk the plist first, then do the fast / slow path: plist (or
-> > maybe something faster than plist but handles the priority) ->
-> > local_lock -> fast -> slow (bonus: this is more friendly to RT kernels
->
-> I think the idea is good, but when approaching it that way,
-> I am curious about rotation handling.
->
-> In the current code, rotation is always done when traversing the plist in=
- the slow path.
-> If we traverse the plist first, how should rotation be handled?
+SGkgVGhvbWFzLA0KDQoNCkFtIDIzLjEwLjIwMjUgdW0gMjE6MTEgc2NocmllYiBQZXRlciBT
+Y2huZWlkZXI6DQo+IEhpIFRob21hcywNCj4gDQo+IEFtIDIzLjEwLjIwMjUgdW0gMTQ6NDYg
+c2NocmllYiBUaG9tYXMgWmltbWVybWFubjoNCj4gWy4uLl0NCj4+IEkndmUgYmVlbiBhYmxl
+IHRvIHJlcHJvZHVjZSB0aGUgcHJvYmxlbSB3aXRoIGFuIEFTVDIzMDAgdGVzdCBzeXN0ZW0u
+IFRoZSBhdHRhY2hlZCBwYXRjaCBmaXhlcyB0aGUgcHJvYmxlbSBmb3IgbWUuIENhbiANCj4+
+IHlvdSBwbGVhc2UgdGVzdCBhbmQgcmVwb3J0IG9uIHRoZSByZXN1bHRzPw0KPiANCj4gR3Jl
+YXQhIC0gdGhpcyBwYXRjaCBvbiB0b3Agb2YgNi4xOC1yYzIgZml4ZXMgdGhlIGlzc3VlIGZv
+ciBtZSwgdG9vLiBUaGFua3MgdmVyeSBtdWNoIGZvciB5b3VyIGVmZm9ydCENCj4gDQo+IFRl
+c3RlZC1ieTogUGV0ZXIgU2NobmVpZGVyIDxwc2NobmVpZGVyMTk2OEBnb29nbGVtYWlsLmNv
+bT4NCg0KTWVhbndoaWxlLCBJIGhhdmUgYWxzbyB0ZXN0ZWQgdGhpcyBhZ2FpbnN0IHN0YWJs
+ZSA2LjEyLjU1IGFuZCA2LjE3LjUsIHdoZXJlIGluIC1yYzIsIEdyZWcgZHJvcHBlZCB5b3Vy
+IG9yaWdpbmFsIHBhdGNoIA0Kd2l0aCB1cHN0cmVhbSBjb21taXQtaWQgNmY3MTkzNzNiOTQz
+YTk1NWZlZTZmYzIwMTJhZWQyMDdiNjVlMjg1NCBiZWZvcmUgdGhlIGZpbmFsIHJlbGVhc2Ug
+YmVjYXVzZSBvZiBteSByZXBvcnQuDQoNClNvIGZvciBib3RoLCBJIGJ1aWx0IHRoZW0sIG1h
+ZGUgc3VyZSBpdCB3b3JrZWQgb2suIFRoZW4gSSBkaWQgImdpdCBjaGVycnktcGljayA2Zjcx
+OTM3M2I5NDNhOTU1ZmVlNmZjMjAxMmFlZDIwN2I2NWUyODU0IiANCmFuZCB0ZXN0ZWQgdGhh
+dCBpdCBpcyBicm9rZW4gYWdhaW4uIFRoZW4gSSBhcHBsaWVkIHlvdXIgbGFzdCBwYXRjaCBv
+biB0b3Agb2YgaXQsIGFuZCBpdCB3b3JrZWQgZmluZSwgc28gd2l0aCB0aGF0IHRoZSANCmlz
+c3VlIGlzIGZpeGVkIGluIGJvdGggc3RhYmxlIHZlcnNpb25zLCB0b28uDQoNCklmIHlvdSBz
+ZW5kIGEgY29tYmluZWQgcGF0Y2ggdG8gR3JlZyBmb3Igc3RhYmxlLCBwbGVhc2UgZmVlbCBm
+cmVlIHRvIGFkZCBteQ0KDQpUZXN0ZWQtYnk6IFBldGVyIFNjaG5laWRlciA8cHNjaG5laWRl
+cjE5NjhAZ29vZ2xlbWFpbC5jb20+DQoNCg0KVGhhbmtzIGFnYWluIQ0KDQpCZXN0ZSBHcsO8
+w59lLA0KUGV0ZXIgU2NobmVpZGVyDQoNCi0tIA0KQ2xpbWIgdGhlIG1vdW50YWluIG5vdCB0
+byBwbGFudCB5b3VyIGZsYWcsIGJ1dCB0byBlbWJyYWNlIHRoZSBjaGFsbGVuZ2UsDQplbmpv
+eSB0aGUgYWlyIGFuZCBiZWhvbGQgdGhlIHZpZXcuIENsaW1iIGl0IHNvIHlvdSBjYW4gc2Vl
+IHRoZSB3b3JsZCwNCm5vdCBzbyB0aGUgd29ybGQgY2FuIHNlZSB5b3UuICAgICAgICAgICAg
+ICAgICAgICAtLSBEYXZpZCBNY0N1bGxvdWdoIEpyLg0KDQpPcGVuUEdQOiAgMHhBMzgyOEJE
+Nzk2Q0NFMTFBOENBREU4ODY2RTNBOTJDOTJDM0ZGMjQ0DQpEb3dubG9hZDogaHR0cHM6Ly93
+d3cucGV0ZXJzLW5ldHpwbGF0ei5kZS9kb3dubG9hZC9wc2NobmVpZGVyMTk2OF9wdWIuYXNj
+DQpodHRwczovL2tleXMubWFpbHZlbG9wZS5jb20vcGtzL2xvb2t1cD9vcD1nZXQmc2VhcmNo
+PXBzY2huZWlkZXIxOTY4QGdvb2dsZW1haWwuY29tDQpodHRwczovL2tleXMubWFpbHZlbG9w
+ZS5jb20vcGtzL2xvb2t1cD9vcD1nZXQmc2VhcmNoPXBzY2huZWlkZXIxOTY4QGdtYWlsLmNv
+bQ0KDQo=
 
-That's a very good question, things always get tricky when it comes to
-the details...
+--------------sW3anxa1r6YezvSATKrGS7PM--
 
-> 1. Do a naive rotation at plist traversal time.
-> (But then fast path might allocate from an si we didn=E2=80=99t select.)
-> 2. Rotate when allocating in the slow path.
-> (But between releasing swap_avail_lock, we might access an si that wasn=
-=E2=80=99t rotated.)
->
-> Both cases could break rotation behavior =E2=80=94 what do you think?
+--------------krXW3u9GCz73FBYeJPBWkLil
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature.asc"
 
-I think cluster level rotating is better, it prevents things from
-going too fragmented and spreads the workload between devices in a
-helpful way, but just my guess.
+-----BEGIN PGP SIGNATURE-----
 
-We can change the rotation behavior if the test shows some other
-strategy is better.
+wnsEABYIACMWIQSjgovXlszhGoyt6IZuOpLJLD/yRAUCaPsPywUDAAAAAAAKCRBuOpLJLD/yRMTK
+AQDvnxYz2SoIs89+Y3maGD8FqHLRNa/qNgyLwgJi8LTPgAEAz53/dKzJ2V6mQEzWOU1q434RwUzW
+ArPxnqW9ZjujIwc=
+=oSt3
+-----END PGP SIGNATURE-----
 
-Maybe we'll need something with a better design, like a alloc counter
-for rotation. And if we look at the plist before the fast path we may
-need to do some optimization for the plist lock too...
+--------------krXW3u9GCz73FBYeJPBWkLil--
 
