@@ -1,197 +1,186 @@
-Return-Path: <stable+bounces-189194-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-189195-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B1E7C04476
-	for <lists+stable@lfdr.de>; Fri, 24 Oct 2025 05:47:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E14BC044C2
+	for <lists+stable@lfdr.de>; Fri, 24 Oct 2025 06:01:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 575F14E6628
-	for <lists+stable@lfdr.de>; Fri, 24 Oct 2025 03:47:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EB2EE3B63F3
+	for <lists+stable@lfdr.de>; Fri, 24 Oct 2025 04:01:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 175A827280E;
-	Fri, 24 Oct 2025 03:47:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0B5727D786;
+	Fri, 24 Oct 2025 04:01:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fyrt/D0z"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Wv22Z3RW"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-il1-f173.google.com (mail-il1-f173.google.com [209.85.166.173])
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 576E9202960
-	for <stable@vger.kernel.org>; Fri, 24 Oct 2025 03:47:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3B991FBEAC
+	for <stable@vger.kernel.org>; Fri, 24 Oct 2025 04:01:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761277628; cv=none; b=cyVFa+r7WZwo6/KBUer9TNYzTGfwJ0p3qXxY+FQMynFgN+1kgguJ2dU61p92n9BXMm0YnLaDHoRmNgdKdWgxI5C7bBpV17R0KVEv4jft3tlMIFT24vWDn8pc+jl6gQqWlEtxHn0G1A9yV+z46UWQdkPEDG6YymIgSe70sczFiFs=
+	t=1761278469; cv=none; b=CPzhWrJuVfGuQbqDC/cH0k3/pkonBN0D6Hb6vyXtAqSOkxLbZ6k9PoTHYUUU0DhhLW5j+cQhLMm59lEzWzHoK3LV79o5HYYfkUkF9DDP1jb97AaD9mfIgly7OvU/kGF5rFL6xAaCNp89DrWX1+vGhTYjc35gSSMmwpz/+iYA0zM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761277628; c=relaxed/simple;
-	bh=9cWnLkrLXqaPsJRM99oxt4vPCd7XWVuiMbIdFRMWzT8=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=mCFadjJxEpxq16UwktSi7SSAfrHDP2P+xUMv6ExjVSyWjtqE4Ch3xcz3VyqhEAkcQQGRBNTP3EAXmE29117yO+3vUtmPcpcqp/lPtFn+CU/r55Avz39yEu/kfGEWZTs9wLVcp7DmRf8i32CRq1iiJr780c+fIvdFGkPhW3Yzy9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fyrt/D0z; arc=none smtp.client-ip=209.85.166.173
+	s=arc-20240116; t=1761278469; c=relaxed/simple;
+	bh=V10J8FMQ/2czcpCw//K/+x+vSWrM+ulV22C6o6B0ctI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=H8iNEs3LyfhKPG/B2Bh0O3X3UpXHPcEEoyHkxwCQ54tpzTydbUL3Q0bd4hzrS503zv0fux3423QZ17lW7CifLZbm4jqJUPG/p9fsqKS4mvQ+YBVudKXfHkLVKOMawXzf6Q3v5rh3wHVEHuZexhBj9Mc8jUSaRmAGtcrkConu3Lc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Wv22Z3RW; arc=none smtp.client-ip=209.85.208.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-il1-f173.google.com with SMTP id e9e14a558f8ab-430bf3b7608so16248835ab.3
-        for <stable@vger.kernel.org>; Thu, 23 Oct 2025 20:47:06 -0700 (PDT)
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-61feb87fe26so2742706a12.1
+        for <stable@vger.kernel.org>; Thu, 23 Oct 2025 21:01:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761277625; x=1761882425; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=BTRPcVehq1ZOZm7xL/IWpW023usBfc4VwA4QLz9tUds=;
-        b=fyrt/D0zKKYB9AptfigPT9jUudDFhTxLRm/s44slHYhf48evjWiZG/hsyH1pWiUeBB
-         XrXer/sh/2uVAoUhVBD6B+Qb1DeoB9NEU1mkQg2h9EtGb/CzTJelN809Wb13SXOXy068
-         LO+LmrXtvALpqff3aYIrVoxGYup2/MSqlWwokwqyRiJjfhsslCRt/yu1FtP02ujhVzTP
-         0PKceafYEoSIxfI6BRp/5sioUMfyI48g/ReCOPYDduTf9kZ4j8xC66do3M6GW5WFuCpe
-         v6cVIJiA8SPdozJLbr9RJottJFQBahM5zlSzRJQdZoq5IhtQUAycWpPlxaCaGFWKd9MS
-         Avqw==
+        d=gmail.com; s=20230601; t=1761278464; x=1761883264; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=bX+AGT1PAEb2wRzHRL+8B92/Z4uxx2bE66SuwJSj7jg=;
+        b=Wv22Z3RWn9GAhWb+ereUD8xrek7UWUNZEA8rYX9psbY1+q1IvDaKWBReyP740V0QLY
+         oculeB54tOBrIy56+LajplQlhljD7vRu6QwRCedu6iNMewYzgnrKh/vMgfNrXaNSYL6S
+         HfQMRLE3bHQiyFR1/mjmjrg1os8qqCnJP4U5STKEkrIwwNSIErW8N8UmAmXTz5A8X/oQ
+         EqnoqdTndxDIsrySee8ba0ixuUFdBORWmCB5q1xKfCqBkGOPAwYCo3WHvP4IuzVl5VDB
+         RA80Wy4l5rx8/nHQTiVMZ0D1LofLwOejHMEVaxcTlb91GRWJmHIQsNJiK5ZrJRBqzOPC
+         x1Sw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761277625; x=1761882425;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=BTRPcVehq1ZOZm7xL/IWpW023usBfc4VwA4QLz9tUds=;
-        b=DJo0+rm9g2rpY/nO4V3aVH9dGW/t1Xjaa1rXIXn70Ke38KIQr68udXcyG0AKIYd1Xt
-         cA+Ve3u7UyqwASVIe2G4kbDuNqS5orJQT3VTx12SnwgIPrZ43T28hlkUKeilbh9NbnVQ
-         KtYGu7i0BWodHXyi5oFol0uJzuLHb/guMvEQVIMiX6OLwtax69VNp2xgQ12G0sV0gswD
-         eYrwfh7Dl2mUiLZZOCcZ4IsJpVmfLynQulkpzmCeVT3gZq2OoQWWq5QnaVtPXOon/fZc
-         nTaaf0F+0Rhgzdjyt8j9jtV8xUz77+ZVFFNjeGU6ClmR8txVo9dEp26Q//qfHjLpYSDx
-         nqQA==
-X-Forwarded-Encrypted: i=1; AJvYcCWMMXOHb4iAcbOuuin/5H0SJXX7mMEpdRMFYT/D+LXQYruw8ikHtPrP0AM4wB1uY1/qDiu7RKc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxoXg0P4/8pL1Lb40ZVJKHlBkXmSZBGjF0Sja/EIhBc51DNnEEL
-	o4GN09T1I8yMh4J43vP9yRaBqgNLBVn2MeL21RUvqg+G+7xlxaQl+iesLsG587UQFCo=
-X-Gm-Gg: ASbGncuqsVtORlrHPzOxkhHkTe00BFJwfzwHE0o4ztmXwZTQH8esE3Ey9FBWni4ow55
-	EOWEljvXmNNrGIEVpbF6TMaPtV+9xLwL/DtDZ5bcyZzxq/vYsZTs4jw94DwlTTZz7YJ1aIVJci3
-	HYZEByn8tlWCNAN/Mn5PDsJvgXwyXytX0XnFOi9SVrPKYScjZYJUnXwzOH9GT63UfvwKrs3cgxg
-	8qXA6khbbybnpzqt2XI5mLUoMA/Sj3D85XUqV8FBAdlggdDVSuT9dX+yOdCQ1wxvop21xJA5BSo
-	dRPU6FdaVJ2wGkdorvoQppb6mCgBhYqj79NjTgBo1ppiUoRu8QpnvTfJsDwKrSNHG2XzXBfgrRo
-	ze4f/yrGOlM2RR+BHCmp1BWdpBDPz3kzBgGCwsRNcbR7oh7yf91Xl05KIbI+8Cro2kAgargborU
-	XlxjoQQnmlyblQRELbJ73FrAwo8uzNoC7SvF/k/EZCQhE7JtDhZa0jOmXaZ5W1xqBZW6MwmfIB9
-	JAps0NN2yos5uk=
-X-Google-Smtp-Source: AGHT+IF4nK0dDcEQMxrByQtKSDL+Vtp/h2LVbn+x1BPoCFDYFALAcbNWnpX4PRVrQ+b7Q3SGYy2kzQ==
-X-Received: by 2002:a05:6e02:3e04:b0:430:c394:15a3 with SMTP id e9e14a558f8ab-430c528d628mr363410005ab.22.1761277625271;
-        Thu, 23 Oct 2025 20:47:05 -0700 (PDT)
-Received: from abc-virtual-machine.localdomain (c-76-150-86-52.hsd1.il.comcast.net. [76.150.86.52])
-        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-5abb4e4bbefsm1712310173.5.2025.10.23.20.47.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Oct 2025 20:47:04 -0700 (PDT)
-From: Yuhao Jiang <danisjiang@gmail.com>
-To: Richard Henderson <richard.henderson@linaro.org>,
-	Matt Turner <mattst88@gmail.com>,
-	David Airlie <airlied@redhat.com>
-Cc: linux-alpha@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	stable@vger.kernel.org,
-	Yuhao Jiang <danisjiang@gmail.com>
-Subject: [PATCH] agp/alpha: fix out-of-bounds write with negative pg_start
-Date: Thu, 23 Oct 2025 22:47:01 -0500
-Message-Id: <20251024034701.1673459-1-danisjiang@gmail.com>
-X-Mailer: git-send-email 2.34.1
+        d=1e100.net; s=20230601; t=1761278464; x=1761883264;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=bX+AGT1PAEb2wRzHRL+8B92/Z4uxx2bE66SuwJSj7jg=;
+        b=uqCbGSwGLIsWhwN8drTQFiGDQ01PlMFnnJYi4TPNeuS6qi0QZYjDV0Yuk2TgKhkfLG
+         ngx4DPi9WJuRPohEcLtmYycQjW5ZZmKumu8KUR9Y/mQz0PE4iPsE6D68ZGj4zfGCkcFH
+         aS/1fQWQx/XZWCif3f5NJ6A2SW9RDCDJS15TMB6sxB05kstQveKbmfyAnzm2ilRwn8fP
+         GQtTOZaCRfp2C2fmPIdAMckoMvQBiYLviZ2RD4fMpkmSsz7Rc9Geh77CSecHlxbrpBdV
+         tfkA23BTO7J1QFPKmYvExRXZiK+VxSDMHFqW4tLFhe7SU1W7IEuVL+k3CyG6QLK8AW7c
+         qHQw==
+X-Forwarded-Encrypted: i=1; AJvYcCVHfDlfn1FPt+iBe0GmJ1lsmhzXPTZ3XknvokZZ6BxMDoxlGYi9G9oSSzYdKiDcfeSCDwdxUkk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxbZmQJANqKISkHhv16VyXo3sTl6VEr+Ptwt3gJzbmhdb82XPGL
+	qC9UOsbBJH3pKcl8DiRmWBj9tUYwiCjMIR8kbjKFC9o/cv915ZcBmYb33Pfa0S4FtQyfqNl7Z7r
+	/XH23D2W/ixI9lvPrdRLFeXRJGPMTGq0=
+X-Gm-Gg: ASbGncvmJYodlHNOKwDl2vxEGRBTUWIvsPTEciMhLLjA+kO+EXlaubWgJwKtflGsyr1
+	RUCOS2nQv3TDW5LkCByczweNOfmbFPH+TBTIzPgdZy52//NaDiDabZScoFIxNuvWsFivy41u4B1
+	2x/4cupe7HsE8veojFnSQSu1uW8ZrplDy10hSPVQUwNt4Iz2Ex8BpGo5yiN0EbAKAwJJyXtMrdk
+	fgtV7PJhT3Eg7A1G7kIYKPza7iLw16kMZW5W7lDdcK92qOfYGOyJD5vn24=
+X-Google-Smtp-Source: AGHT+IHncX413Zw579qxe0Qf5NgqYwOEtK2z/nG3SfbdqAmW/ND46AejAhP+66pY1PNOOUa4grOi1M19bZwDtf3Z0pg=
+X-Received: by 2002:a05:6402:1449:b0:63c:2d72:56e3 with SMTP id
+ 4fb4d7f45d1cf-63e6007c37cmr933871a12.23.1761278463985; Thu, 23 Oct 2025
+ 21:01:03 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20251007-swap-clean-after-swap-table-p1-v1-0-74860ef8ba74@tencent.com>
+ <20251007-swap-clean-after-swap-table-p1-v1-1-74860ef8ba74@tencent.com>
+ <CACePvbWs3hFWt0tZc4jbvFN1OXRR5wvNXiMjBBC4871wQjtqMw@mail.gmail.com>
+ <CAMgjq7BD6SOgALj2jv2SVtNjWLJpT=1UhuaL=qxvDCMKUy68Hw@mail.gmail.com>
+ <CACePvbVEGgtTqkMPqsf69C7qUD52yVcC56POed8Pdt674Pn68A@mail.gmail.com>
+ <CACePvbWu0P+8Sv-sS7AnG+ESdnJdnFE_teC9NF9Rkn1HegQ9_Q@mail.gmail.com>
+ <CAMgjq7BJcxGzrnr+EeO6_ZC7dAn0_WmWn8DX8gSPfyYiY4S3Ug@mail.gmail.com>
+ <CAMgjq7CsYhEjvtN85XGkrONYAJxve7gG593TFeOGV-oax++kWA@mail.gmail.com> <aPc3lmbJEVTXoV6h@yjaykim-PowerEdge-T330>
+In-Reply-To: <aPc3lmbJEVTXoV6h@yjaykim-PowerEdge-T330>
+From: Kairui Song <ryncsn@gmail.com>
+Date: Fri, 24 Oct 2025 12:00:27 +0800
+X-Gm-Features: AWmQ_bkc9YwuZtUhzw52MpHd91KHJZxGIdtGa9Ii8w-Tgx94sUw-dZLiUembJcI
+Message-ID: <CAMgjq7CELW_s5ok-2NHSFzK3SQKQKHB3VRLGnFaGGxe5c-eCvA@mail.gmail.com>
+Subject: Re: [PATCH 1/4] mm, swap: do not perform synchronous discard during allocation
+To: YoungJun Park <youngjun.park@lge.com>
+Cc: Chris Li <chrisl@kernel.org>, linux-mm@kvack.org, 
+	Andrew Morton <akpm@linux-foundation.org>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, David Hildenbrand <david@redhat.com>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Ying Huang <ying.huang@linux.alibaba.com>, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The code contains an out-of-bounds write vulnerability due to insufficient
-bounds validation. Negative pg_start values and integer overflow in
-pg_start+pg_count can bypass the existing bounds check.
+On Tue, Oct 21, 2025 at 3:34=E2=80=AFPM YoungJun Park <youngjun.park@lge.co=
+m> wrote:
+>
+> > > Thanks, I was composing a reply on this and just saw your new comment=
+.
+> > > I agree with this.
+> >
+> > Hmm, it turns out modifying V1 to handle non-order 0 allocation
+> > failure also has some minor issues. Every mTHP SWAP allocation failure
+> > will have a slight higher overhead due to the discard check. V1 is
+> > fine since it only checks discard for order 0, and order 0 alloc
+> > failure is uncommon and usually means OOM already.
+>
+> Looking at the original proposed patch.
+>
+>  +      spin_lock(&swap_avail_lock);
+>  +      plist_for_each_entry_safe(si, next, &swap_avail_heads[nid], avail=
+_lists[nid]) {
+>  +              spin_unlock(&swap_avail_lock);
+>  +              if (get_swap_device_info(si)) {
+>  +                      if (si->flags & SWP_PAGE_DISCARD)
+>  +                              ret =3D swap_do_scheduled_discard(si);
+>  +                      put_swap_device(si);
+>  +              }
+>  +              if (ret)
+>  +                      break;
+>
+> if ret is true and we break,
+> wouldn=E2=80=99t that cause spin_unlock to run without the lock being hel=
+d?
 
-For example, pg_start=-1 with page_count=1 produces a sum of 0, passing
-the check `(pg_start + page_count) > num_entries`, but later writes to
-ptes[-1]. Similarly, pg_start=LONG_MAX-5 with pg_count=10 overflows,
-bypassing the check.
+Thanks for catching this! Right, I need to return directly instead of
+break. I've fixed that.
 
-Fix by explicitly rejecting negative pg_start and detecting overflow in
-alpha_core_agp_insert_memory, alpha_core_agp_remove_memory, iommu_release,
-iommu_bind, and iommu_unbind.
+>
+>  +              spin_lock(&swap_avail_lock);
+>  +      }
+>  +      spin_unlock(&swap_avail_lock); <- unlocked without lock grab.
+>  +
+>  +      return ret;
+>  +}
+>
+> > I'm not saying V1 is the final solution, but I think maybe we can just
+> > keep V1 as it is? That's easier for a stable backport too, and this is
+> > doing far better than what it was like. The sync discard was added in
+> > 2013 and the later added percpu cluster at the same year never treated
+> > it carefully. And the discard during allocation after recent swap
+> > allocator rework has been kind of broken for a while.
+> >
+> > To optimize it further in a clean way, we have to reverse the
+> > allocator's handling order of the plist and fast / slow path. Current
+> > order is local_lock -> fast -> slow (plist).
+> > We can walk the plist first, then do the fast / slow path: plist (or
+> > maybe something faster than plist but handles the priority) ->
+> > local_lock -> fast -> slow (bonus: this is more friendly to RT kernels
+>
+> I think the idea is good, but when approaching it that way,
+> I am curious about rotation handling.
+>
+> In the current code, rotation is always done when traversing the plist in=
+ the slow path.
+> If we traverse the plist first, how should rotation be handled?
 
-Reported-by: Yuhao Jiang <danisjiang@gmail.com>
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Signed-off-by: Yuhao Jiang <danisjiang@gmail.com>
----
- arch/alpha/kernel/pci_iommu.c | 17 ++++++++++++++++-
- drivers/char/agp/alpha-agp.c  | 13 ++++++++++++-
- 2 files changed, 28 insertions(+), 2 deletions(-)
+That's a very good question, things always get tricky when it comes to
+the details...
 
-diff --git a/arch/alpha/kernel/pci_iommu.c b/arch/alpha/kernel/pci_iommu.c
-index dc91de50f906..b6293dc66d45 100644
---- a/arch/alpha/kernel/pci_iommu.c
-+++ b/arch/alpha/kernel/pci_iommu.c
-@@ -859,6 +859,11 @@ iommu_release(struct pci_iommu_arena *arena, long pg_start, long pg_count)
- 
- 	if (!arena) return -EINVAL;
- 
-+	if (pg_start < 0 || pg_start + pg_count > (arena->size >> PAGE_SHIFT))
-+		return -EINVAL;
-+	if (pg_start + pg_count < pg_start)
-+		return -EINVAL;
-+
- 	ptes = arena->ptes;
- 
- 	/* Make sure they're all reserved first... */
-@@ -879,7 +884,12 @@ iommu_bind(struct pci_iommu_arena *arena, long pg_start, long pg_count,
- 	long i, j;
- 
- 	if (!arena) return -EINVAL;
--	
-+
-+	if (pg_start < 0 || pg_start + pg_count > (arena->size >> PAGE_SHIFT))
-+		return -EINVAL;
-+	if (pg_start + pg_count < pg_start)
-+		return -EINVAL;
-+
- 	spin_lock_irqsave(&arena->lock, flags);
- 
- 	ptes = arena->ptes;
-@@ -907,6 +917,11 @@ iommu_unbind(struct pci_iommu_arena *arena, long pg_start, long pg_count)
- 
- 	if (!arena) return -EINVAL;
- 
-+	if (pg_start < 0 || pg_start + pg_count > (arena->size >> PAGE_SHIFT))
-+		return -EINVAL;
-+	if (pg_start + pg_count < pg_start)
-+		return -EINVAL;
-+
- 	p = arena->ptes + pg_start;
- 	for(i = 0; i < pg_count; i++)
- 		p[i] = IOMMU_RESERVED_PTE;
-diff --git a/drivers/char/agp/alpha-agp.c b/drivers/char/agp/alpha-agp.c
-index e1763ecb8111..e2ab959662f3 100644
---- a/drivers/char/agp/alpha-agp.c
-+++ b/drivers/char/agp/alpha-agp.c
-@@ -93,7 +93,9 @@ static int alpha_core_agp_insert_memory(struct agp_memory *mem, off_t pg_start,
- 
- 	temp = agp_bridge->current_size;
- 	num_entries = A_SIZE_FIX(temp)->num_entries;
--	if ((pg_start + mem->page_count) > num_entries)
-+	if (pg_start < 0 || (pg_start + mem->page_count) > num_entries)
-+		return -EINVAL;
-+	if ((pg_start + mem->page_count) < pg_start)
- 		return -EINVAL;
- 
- 	status = agp->ops->bind(agp, pg_start, mem);
-@@ -107,8 +109,17 @@ static int alpha_core_agp_remove_memory(struct agp_memory *mem, off_t pg_start,
- 					int type)
- {
- 	alpha_agp_info *agp = agp_bridge->dev_private_data;
-+	int num_entries;
-+	void *temp;
- 	int status;
- 
-+	temp = agp_bridge->current_size;
-+	num_entries = A_SIZE_FIX(temp)->num_entries;
-+	if (pg_start < 0 || (pg_start + mem->page_count) > num_entries)
-+		return -EINVAL;
-+	if ((pg_start + mem->page_count) < pg_start)
-+		return -EINVAL;
-+
- 	status = agp->ops->unbind(agp, pg_start, mem);
- 	alpha_core_agp_tlbflush(mem);
- 	return status;
--- 
-2.34.1
+> 1. Do a naive rotation at plist traversal time.
+> (But then fast path might allocate from an si we didn=E2=80=99t select.)
+> 2. Rotate when allocating in the slow path.
+> (But between releasing swap_avail_lock, we might access an si that wasn=
+=E2=80=99t rotated.)
+>
+> Both cases could break rotation behavior =E2=80=94 what do you think?
 
+I think cluster level rotating is better, it prevents things from
+going too fragmented and spreads the workload between devices in a
+helpful way, but just my guess.
+
+We can change the rotation behavior if the test shows some other
+strategy is better.
+
+Maybe we'll need something with a better design, like a alloc counter
+for rotation. And if we look at the plist before the fast path we may
+need to do some optimization for the plist lock too...
 
