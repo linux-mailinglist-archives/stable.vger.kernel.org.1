@@ -1,102 +1,142 @@
-Return-Path: <stable+bounces-189187-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-189188-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21787C04156
-	for <lists+stable@lfdr.de>; Fri, 24 Oct 2025 04:08:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D94B6C041E1
+	for <lists+stable@lfdr.de>; Fri, 24 Oct 2025 04:30:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 71CB435416C
-	for <lists+stable@lfdr.de>; Fri, 24 Oct 2025 02:08:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CFEC51AA4775
+	for <lists+stable@lfdr.de>; Fri, 24 Oct 2025 02:31:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBECC221FCB;
-	Fri, 24 Oct 2025 02:08:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CD271D47B4;
+	Fri, 24 Oct 2025 02:30:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="vnECX4a6"
+	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="26BB4JSE"
 X-Original-To: stable@vger.kernel.org
-Received: from out30-131.freemail.mail.aliyun.com (out30-131.freemail.mail.aliyun.com [115.124.30.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FB311C860C;
-	Fri, 24 Oct 2025 02:08:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5991D132117
+	for <stable@vger.kernel.org>; Fri, 24 Oct 2025 02:30:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761271725; cv=none; b=CAnlbzvJdGAGJq7j92rBkptXYjbjJuxFBJ219pISQBoRtPQHDtLl/adXDUPDGJ5mxWugA40nc6ZgkJt/KrgzZh/e4JUGytNWLdlo/YXGDbCuefuSgClMeD33gP2NXv93Wy/6F7V2vOUzYg5fyQI2PxAz3Dr1NswJHmo1i12HqKM=
+	t=1761273041; cv=none; b=eANsZM7NKucFOF1/rwQIa+9w7xEO2LkWiqwM4yunT9fddeCgJMCIrfMDjxLkZZZOfnz0mkLbLG14PrusqAE9wTwiZ+0r+nP/07oShiYaDJbBHhTHuZO8kt7hj5rFSaoUnHDENa6Ugi/8ttiN/nikf/4s24UgAbHoSrlKeD69Dag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761271725; c=relaxed/simple;
-	bh=CCwFEhSOfS9NSfGrVzU2gOVUH5aKq2aEZss7tEoO70M=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=DXUA/TixKV+ZZy8a46l9bejEAXreN1CFX+psps/rfc1xrTszCFUtmg8VW11I7ER5a5GVqCBAxSHAYSnEoI/GyDluk/YHHx2SmUIwG2sqbfbwaUDlGBvrLNrb15LKHK9GQLccOSmXVLESDdTeVM9N4hpNgTdlAMVwYyoPwOfMU68=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=vnECX4a6; arc=none smtp.client-ip=115.124.30.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1761271714; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=9JVQ7GVWcIU2eIV2pPNnWqg43ppy0VbXuD3FPTad8F8=;
-	b=vnECX4a6XkGY0myW4ggcQfPzYwVGI8it2z4e9NTKYtc7WI8CUx+QA5xg5M5iqVtwNSO8CnmlZzvDzwV6wHvYIIwdlbjedysbvn0Ljz3xL1A2qwG3kYM3NtyahzBWVGPrHwvujPIAeEIs2qI/jJ0FGkgigUw3mrtx6GKOfvuK+i4=
-Received: from 30.74.144.122(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WqscYCq_1761271712 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Fri, 24 Oct 2025 10:08:32 +0800
-Message-ID: <b1d18017-548f-4219-8cba-351e7f8d29b9@linux.alibaba.com>
-Date: Fri, 24 Oct 2025 10:08:31 +0800
+	s=arc-20240116; t=1761273041; c=relaxed/simple;
+	bh=RvE7skZEGFvyhqQpzvekgaJr96gSgTG0kT6teYgzwkQ=;
+	h=Content-Type:MIME-Version:Subject:From:To:Cc:Date:Message-ID; b=qW7u98d9aP06sXmeOUe+Yg+VK/fWzwDDUQ1cNzo2WSVUR4rTNHpvjYkn3BtjVeF+aBzuGI0VB/aG9Lvs8yj0VVeirOU9y2Bt5LAlR1id+yLwlMHhGhFg+q18aahGiCLu0+Ww9hRLl1TcaaqBYhF8YCFHek9r+rG95yRkLGwzp3g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org; spf=none smtp.mailfrom=kernelci.org; dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b=26BB4JSE; arc=none smtp.client-ip=209.85.216.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kernelci.org
+Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-3304dd2f119so1303065a91.2
+        for <stable@vger.kernel.org>; Thu, 23 Oct 2025 19:30:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1761273038; x=1761877838; darn=vger.kernel.org;
+        h=message-id:date:reply-to:cc:to:from:subject
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=GhtrGQY7fzR4f0eHkODEED5Bp8SSeOBsRrLa+QxZdHY=;
+        b=26BB4JSEHgMmUzpWpaXSKUdZN+2AdRZwXl+sipKIih8Xqx0p3hXjvD/vz1UEX7QrSJ
+         fqhEmCAfR7GoOie2Nod/1jyiHICCOei0eIdtr2inN0Md9BgmyvetBV/vhxi9JKaeh5hE
+         iuPjh6T60e0jz5czZ5qyS6SuWhV6uGKzkCz7A80FsKpJOsEooUkw7ZYK/eoG0uOeruDY
+         ZOi1px2xIKlawMciEgkqqyrKihPtf0n7KlQG/nNdj4/74dM5SA++LMzg03am8AkFscCj
+         EDNzz+HOzvYajz9+MI8y493C58g3rOCtK/YCt+C1/6JdpwTKWD959seDpNw/It/+H+yE
+         b5Ag==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761273038; x=1761877838;
+        h=message-id:date:reply-to:cc:to:from:subject
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=GhtrGQY7fzR4f0eHkODEED5Bp8SSeOBsRrLa+QxZdHY=;
+        b=H+bOp5lIcqXviOwKTtzor15wXUMRMLn8p1OMth3nYKQnGTfaMUnpcQRfGF9nFFxQv+
+         dgLsQ8XUrIU+SvBDfluulTNGJEq9jTj/w2QEchpIhs4DsbW2qRb00I+/Xwf+k4oWj83+
+         3ygYeS/FPkqxq1nfuS5o95FXbughMHY+3ncvTaw5Lj3fjoMV+fDTWP+/w8SKZ3dudx9z
+         zgq3bBST5YwJPEh+aNHYxHO/5fF4A7122flz1wi1nvSHpjov4x/7Oe2l/xO+N4z8FoeX
+         3UqbGKzmIkUnqKeuNbpCGMCcsEW7w1YnR1g8KmRUiImhEH3lKen9qi+o3DHZNZbBqVgV
+         iqKg==
+X-Gm-Message-State: AOJu0YyEeBD+RI2F6NNHYeJ3Kv9v24x49hS86wTZm9VJ8E5Ffpi8J+zf
+	65S50Wy95t1d4oN9FpOsXn+3zcfTclRwfmL3aHBziPg0CkVdqscy5Wp9GaUEsJkKESEfFcEvV/u
+	zv9XvmIM=
+X-Gm-Gg: ASbGncubFZQTZgxGOZXmHvWs5KUPE7fFIycofWkTSCBtd5jTzHNLQOfvjSl4LWoJszr
+	keif2mq+yVbqpSuv+NxhwOs6klnvoO0hwAs2+WGEBbQvgiDlnxoDQAnd9uzwSaGaWm03OoAWi4d
+	9uHoOIC2N17fyndGa88aVcyvS0NtuFhUd6fD0L1kbOBZYxp8U1vYfJI+iHBmlgWi6V95YwsV5E8
+	oXHTgbwBmR1qOLN6Z+Y5bI2Ev65OWR1WFdSizn/6kQey2RIKini8mrUypNkdl79Vol2WVMRVJSk
+	E/sTRrwRm+ya4p27LZ4a55+4xXoTKpHX6juNqirm9B8nQDfHCIDa1ZvQJ9Kv7nBR1K/VUYK8vEz
+	KDf9OiAZp2F/COHEZ68AA1vM9iCiQP6ImWNdAO9mUt1YO9a47moAaql0s2qlKZb6D3BigZg==
+X-Google-Smtp-Source: AGHT+IFp97wHGUZQQTCDqi7JV9+gOo2NN0TpG34hmWkyeSJb27xvp4I3qnOQjEozAQVs/hHZdKuJYQ==
+X-Received: by 2002:a17:90b:5111:b0:33b:c5ce:3cb0 with SMTP id 98e67ed59e1d1-33bcf8e4560mr36723399a91.20.1761273038389;
+        Thu, 23 Oct 2025 19:30:38 -0700 (PDT)
+Received: from 15dd6324cc71 ([20.38.40.137])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-33faff37b0csm3990595a91.3.2025.10.23.19.30.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 23 Oct 2025 19:30:37 -0700 (PDT)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4] mm/huge_memory: preserve PG_has_hwpoisoned if a folio
- is split to >0 order
-To: Zi Yan <ziy@nvidia.com>, linmiaohe@huawei.com, david@redhat.com,
- jane.chu@oracle.com
-Cc: kernel@pankajraghav.com, akpm@linux-foundation.org, mcgrof@kernel.org,
- nao.horiguchi@gmail.com, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- Wei Yang <richard.weiyang@gmail.com>, Yang Shi <shy828301@gmail.com>,
- linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, stable@vger.kernel.org
-References: <20251023030521.473097-1-ziy@nvidia.com>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20251023030521.473097-1-ziy@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: [STATUS] stable/linux-6.6.y -
+ 4a243110dc884d8e1fe69eecbc2daef10d8e75d7
+From: KernelCI bot <bot@kernelci.org>
+To: kernelci-results@groups.io
+Cc: stable@vger.kernel.org
+Reply-To: kernelci@lists.linux.dev
+Date: Fri, 24 Oct 2025 02:30:37 -0000
+Message-ID: <176127303726.6187.8432386376299563136@15dd6324cc71>
 
 
 
-On 2025/10/23 11:05, Zi Yan wrote:
-> folio split clears PG_has_hwpoisoned, but the flag should be preserved in
-> after-split folios containing pages with PG_hwpoisoned flag if the folio is
-> split to >0 order folios. Scan all pages in a to-be-split folio to
-> determine which after-split folios need the flag.
-> 
-> An alternatives is to change PG_has_hwpoisoned to PG_maybe_hwpoisoned to
-> avoid the scan and set it on all after-split folios, but resulting false
-> positive has undesirable negative impact. To remove false positive, caller
-> of folio_test_has_hwpoisoned() and folio_contain_hwpoisoned_page() needs to
-> do the scan. That might be causing a hassle for current and future callers
-> and more costly than doing the scan in the split code. More details are
-> discussed in [1].
-> 
-> This issue can be exposed via:
-> 1. splitting a has_hwpoisoned folio to >0 order from debugfs interface;
-> 2. truncating part of a has_hwpoisoned folio in
->     truncate_inode_partial_folio().
-> 
-> And later accesses to a hwpoisoned page could be possible due to the
-> missing has_hwpoisoned folio flag. This will lead to MCE errors.
-> 
-> Link: https://lore.kernel.org/all/CAHbLzkoOZm0PXxE9qwtF4gKR=cpRXrSrJ9V9Pm2DJexs985q4g@mail.gmail.com/ [1]
-> Fixes: c010d47f107f ("mm: thp: split huge page to any lower order pages")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Zi Yan <ziy@nvidia.com>
-> ---
 
-LGTM.
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+
+Hello,
+
+Status summary for stable/linux-6.6.y
+
+Dashboard:
+https://d.kernelci.org/c/stable/linux-6.6.y/4a243110dc884d8e1fe69eecbc2daef10d8e75d7/
+
+giturl: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git
+branch: linux-6.6.y
+commit hash: 4a243110dc884d8e1fe69eecbc2daef10d8e75d7
+origin: maestro
+test start time: 2025-10-23 14:29:15.250000+00:00
+
+Builds:	   38 ✅    0 ❌    0 ⚠️
+Boots: 	   87 ✅    0 ❌    0 ⚠️
+Tests: 	 3955 ✅ 1454 ❌ 1053 ⚠️
+
+### POSSIBLE REGRESSIONS
+    
+Hardware: bcm2837-rpi-3-b-plus
+  > Config: defconfig+lab-setup+kselftest
+    - Architecture/compiler: arm64/gcc-12
+      - kselftest.ptrace
+      last run: https://d.kernelci.org/test/maestro:68fa5f798a79c348aff889c4
+      history:  > ✅  > ❌  > ❌  
+            
+
+
+### FIXED REGRESSIONS
+
+  No fixed regressions observed.
+
+
+### UNSTABLE TESTS
+
+  No unstable tests observed.
+
+
+Sent every day if there were changes in the past 24 hours.
+Legend: ✅ PASS   ❌ FAIL  ⚠️ INCONCLUSIVE
+
+--
+This is an experimental report format. Please send feedback in!
+Talk to us at kernelci@lists.linux.dev
+
+Made with love by the KernelCI team - https://kernelci.org
 
