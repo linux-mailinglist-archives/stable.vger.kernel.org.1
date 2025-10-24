@@ -1,134 +1,125 @@
-Return-Path: <stable+bounces-189221-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-189222-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE5D8C05463
-	for <lists+stable@lfdr.de>; Fri, 24 Oct 2025 11:13:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D740C05518
+	for <lists+stable@lfdr.de>; Fri, 24 Oct 2025 11:26:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 90D725047DE
-	for <lists+stable@lfdr.de>; Fri, 24 Oct 2025 09:12:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C2C12405D43
+	for <lists+stable@lfdr.de>; Fri, 24 Oct 2025 09:16:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E50D72853F2;
-	Fri, 24 Oct 2025 09:12:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B127306B08;
+	Fri, 24 Oct 2025 09:16:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WA/KJcO9"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.simonwunderlich.de (mail.simonwunderlich.de [23.88.38.48])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A276B308F23;
-	Fri, 24 Oct 2025 09:12:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.38.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDAFC2749C4
+	for <stable@vger.kernel.org>; Fri, 24 Oct 2025 09:16:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761297143; cv=none; b=Vr0jmmkT/wNLCItBEVnP2mB0+S5xj15nxC9sSQaPvDEyGjvam1WkCiE1m6zDhlNVd1ANGg/dqJSMJDnhSLxHfPp3mAv6go20rFa9jJnUHvFGPvrnoFlQNCkXXhzniZVyN0rYvnr/oC1DBrG1kiiqifwkIkTqGXlpthQbDl6OAjY=
+	t=1761297399; cv=none; b=LlS3kjx7fuzjkmw4tQoXX2q2S4DnqAXFUYkh45Sx4XkFGeOHt1qVMISPF6ZaxdFYphWUORNtk9BeQYnUdfvrVOXINDa+64JZUWkF5RHAMS0C6A9cj32wSwy6ILARvItt/M+p19j3We9v00WIRWaitTSUo+eickrNM+cCWrD0WRQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761297143; c=relaxed/simple;
-	bh=YSC6FsqlELdxKSyHLCQ02qgBDZHrh3li0uO739QAyYA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NkKGf42EjVQnL8gOGRTJh5lLrf7fZTywNbXFzqT6QaMCZC0al4SIBD57Wpr3X1kdTY9bCQBQ1kX3lduzM/TazWaVuZWT9bYChwnze29lzaPKqACcyzfRVv/B9nfbgdpydNNkCnAvcv4XGmhzCiaycr85GgpDE6+AmW3rTsB7Mqk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; arc=none smtp.client-ip=23.88.38.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=simonwunderlich.de
-Received: from kero.packetmixer.de (p200300c5970781D8b076411Bb4c554a3.dip0.t-ipconnect.de [IPv6:2003:c5:9707:81d8:b076:411b:b4c5:54a3])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.simonwunderlich.de (Postfix) with ESMTPSA id BEF03FA14B;
-	Fri, 24 Oct 2025 11:12:13 +0200 (CEST)
-From: Simon Wunderlich <sw@simonwunderlich.de>
-To: davem@davemloft.net,
-	kuba@kernel.org
-Cc: netdev@vger.kernel.org,
-	b.a.t.m.a.n@lists.open-mesh.org,
-	Sven Eckelmann <sven@narfation.org>,
-	stable@vger.kernel.org,
-	syzbot+881d65229ca4f9ae8c84@syzkaller.appspotmail.com,
-	Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
-	Simon Wunderlich <sw@simonwunderlich.de>
-Subject: [PATCH net 1/1] batman-adv: Release references to inactive interfaces
-Date: Fri, 24 Oct 2025 11:11:50 +0200
-Message-ID: <20251024091150.231141-2-sw@simonwunderlich.de>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20251024091150.231141-1-sw@simonwunderlich.de>
-References: <20251024091150.231141-1-sw@simonwunderlich.de>
+	s=arc-20240116; t=1761297399; c=relaxed/simple;
+	bh=DRavPNhPICFbrW8kBHinhTaqs0FvIw3GKydnT9Z0H9g=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=LeWGoqYxdAN+/bnn88MtdedCxyYDAgh1YWsZBJ94SvE/JfrlXxw/Zp+LtTpCwk2+wYLwsoxrHP0RPTwmNpk686FhstBmMvZsnqyes+qKYEoaGIKboSLU5PfQMYK25eNZNGDynou4slKBZ68pSnKoxbQp1PjaPBc99WB5FkFEL0o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WA/KJcO9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7818FC4CEF1
+	for <stable@vger.kernel.org>; Fri, 24 Oct 2025 09:16:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761297398;
+	bh=DRavPNhPICFbrW8kBHinhTaqs0FvIw3GKydnT9Z0H9g=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=WA/KJcO97k9/ITvq5E2jDifaeVHKS+dNVO44CmQxCMGg9guAYXPx092UBC7wl7UoN
+	 QeIMLhJv9Sh6EmvBALh788Rz+OMhBH6e+1mgBGX5GdKwGpBeKw8AFtdAAQtOxNzaU6
+	 y2qIjd0TsBK6FuF9a1JrfjbaTYGyA2BD58sBase7AUtrQrRijV19InUx6qoQF6sJrN
+	 IKfbnaj85ObMxeuOD142P7hWs6ilkyOGo5Ng/oaCGaKACLncoIqe1OOxE558CRqcnq
+	 HCMi+z5GH51akaGGM4n8594vCiEDs3k4itS1LhYQKI38+zsUxRx0wR4GF7rQjULCj+
+	 ZKzbhshbLUbEQ==
+Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-b3e234fcd4bso344123766b.3
+        for <stable@vger.kernel.org>; Fri, 24 Oct 2025 02:16:38 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXOwnr+3kRuc9d+elgFacrZgQWh9O6WyUYKIuqQgE5LS0VwnjKZjDI8Fo02CfpYMT1c33BQQao=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz1SsoNY2TklzTCEqtBw4OwBud5fj1j73WSEH8Y7BRh1zIzAAt9
+	EbpnxR8YcS6aA4hzWcDHJbHNZLl+cRriwqq/YWuDRCzg1wB8CTeFnrBWOOPkwCx240BcdShxuez
+	iJzn8WHAgrkUbzv+3eGdhgDKgNSzGZLg=
+X-Google-Smtp-Source: AGHT+IGTsChoahuZk2XWAKEyxkgvLFwDO4PLXjJgm3i/MY2vbmPjMYkCmzccsibRKhNP7DzGJ/RMNP3s75100J3SUug=
+X-Received: by 2002:a17:906:fd87:b0:b07:c5b1:b129 with SMTP id
+ a640c23a62f3a-b647195b8c3mr3494052266b.1.1761297397005; Fri, 24 Oct 2025
+ 02:16:37 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <2059d92d64eb181f1d37538d1279ed5b191ce1ab.1761211916.git.wqu@suse.com>
+ <CAL3q7H7KmObsE2JURpKLVRT_ufa_2v4M2KAFahUndq5Jqxwnow@mail.gmail.com>
+ <6f36e8d0-630b-4cc3-a780-11be4aa0a65f@suse.com> <CAL3q7H4TcJNY7cYeYWoByOW0ek6BBEbtgSSFFOvc7aagarfFXQ@mail.gmail.com>
+ <63aac204-5ea5-45b1-854e-6b3d78db99fd@gmx.com> <CAL3q7H4nO6TB66RhrrrC94GSrjLOb1tOQ1xPJqmZs=m82gX73g@mail.gmail.com>
+ <1baa687a-22f6-4eaa-8de8-5096e8a29275@gmx.com>
+In-Reply-To: <1baa687a-22f6-4eaa-8de8-5096e8a29275@gmx.com>
+From: Filipe Manana <fdmanana@kernel.org>
+Date: Fri, 24 Oct 2025 10:16:00 +0100
+X-Gmail-Original-Message-ID: <CAL3q7H49m-qBM_QdxPhQ=-ByEOJWkrqBe=r9thm2fmGS=C6MnQ@mail.gmail.com>
+X-Gm-Features: AWmQ_bkigUKUHqZVVFXQNtunArct32b0Ll1KT6t347nOf6zgKGfSE8Pmjdu_nzE
+Message-ID: <CAL3q7H49m-qBM_QdxPhQ=-ByEOJWkrqBe=r9thm2fmGS=C6MnQ@mail.gmail.com>
+Subject: Re: [PATCH] btrfs: make sure no dirty metadata write is submitted
+ after btrfs_stop_all_workers()
+To: Qu Wenruo <quwenruo.btrfs@gmx.com>
+Cc: Qu Wenruo <wqu@suse.com>, linux-btrfs@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Sven Eckelmann <sven@narfation.org>
+On Fri, Oct 24, 2025 at 10:10=E2=80=AFAM Qu Wenruo <quwenruo.btrfs@gmx.com>=
+ wrote:
+>
+>
+>
+> =E5=9C=A8 2025/10/24 19:25, Filipe Manana =E5=86=99=E9=81=93:
+> [...]
+> >
+> > If there's no backref in the extent tree and no delayed ref for tree
+> > block A then we already have a corrupted fs.
+>
+> Yes I know.
+>
+> >>>
+> >>> Even after a transaction aborts, it's ok, but pointless, to allocate
+> >>> extents and trigger writeback for them.
+> >>
+> >> Writeback can be triggered by a lot of other reasons, e.g. memory
+> >> pressure, and in that case if we try to writeback tree block B, it wil=
+l
+> >> overwrite tree block A even if it's after transaction abort.
+> >
+> > It doesn't matter why and when the writeback is triggered, that was
+> > not my point.
+> > My point was if a transaction was aborted, what matters is that we
+> > can't commit that transaction or start a new one, and can't override
+> > existing extents (either they are used or pinned).
+>
+> My point is, your last point (can't override existing extents) is not
+> guaranteed especially after a transaction is aborted, which can be
+> caused by corrupted fs.
 
-Trying to dump the originators or the neighbors via netlink for a meshif
-with an inactive primary interface is not allowed. The dump functions were
-checking this correctly but they didn't handle non-existing primary
-interfaces and existing _inactive_ interfaces differently.
+If there's no backref for tree block A, or a delayed ref, then we
+already have a high risk of overwriting tree block A.
+The transaction abort is irrelevant... if there's no abort, we
+overwrite it (and silently) - so we're in a more bad situation if an
+abort happened.
 
-(Primary) batadv_hard_ifaces hold a references to a net_device. And
-accessing them is only allowed when either being in a RCU/spinlock
-protected section or when holding a valid reference to them. The netlink
-dump functions use the latter.
+We can never guarantee a fs is healthy if it's already corrupted.
 
-But because the missing specific error handling for inactive primary
-interfaces, the reference was never dropped. This reference counting error
-was only detected when the interface should have been removed from the
-system:
+>
+> Yes, the initial fs can be corrupted, but it doesn't mean we're free to
+> make it more corrupted.
 
-  unregister_netdevice: waiting for batadv_slave_0 to become free. Usage count = 2
-
-Cc: stable@vger.kernel.org
-Fixes: 6ecc4fd6c2f4 ("batman-adv: netlink: reduce duplicate code by returning interfaces")
-Reported-by: syzbot+881d65229ca4f9ae8c84@syzkaller.appspotmail.com
-Reported-by: Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
----
- net/batman-adv/originator.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
-
-diff --git a/net/batman-adv/originator.c b/net/batman-adv/originator.c
-index a464ff96b9291..ed89d7fd1e7f4 100644
---- a/net/batman-adv/originator.c
-+++ b/net/batman-adv/originator.c
-@@ -764,11 +764,16 @@ int batadv_hardif_neigh_dump(struct sk_buff *msg, struct netlink_callback *cb)
- 	bat_priv = netdev_priv(mesh_iface);
- 
- 	primary_if = batadv_primary_if_get_selected(bat_priv);
--	if (!primary_if || primary_if->if_status != BATADV_IF_ACTIVE) {
-+	if (!primary_if) {
- 		ret = -ENOENT;
- 		goto out_put_mesh_iface;
- 	}
- 
-+	if (primary_if->if_status != BATADV_IF_ACTIVE) {
-+		ret = -ENOENT;
-+		goto out_put_primary_if;
-+	}
-+
- 	hard_iface = batadv_netlink_get_hardif(bat_priv, cb);
- 	if (IS_ERR(hard_iface) && PTR_ERR(hard_iface) != -ENONET) {
- 		ret = PTR_ERR(hard_iface);
-@@ -1333,11 +1338,16 @@ int batadv_orig_dump(struct sk_buff *msg, struct netlink_callback *cb)
- 	bat_priv = netdev_priv(mesh_iface);
- 
- 	primary_if = batadv_primary_if_get_selected(bat_priv);
--	if (!primary_if || primary_if->if_status != BATADV_IF_ACTIVE) {
-+	if (!primary_if) {
- 		ret = -ENOENT;
- 		goto out_put_mesh_iface;
- 	}
- 
-+	if (primary_if->if_status != BATADV_IF_ACTIVE) {
-+		ret = -ENOENT;
-+		goto out_put_primary_if;
-+	}
-+
- 	hard_iface = batadv_netlink_get_hardif(bat_priv, cb);
- 	if (IS_ERR(hard_iface) && PTR_ERR(hard_iface) != -ENONET) {
- 		ret = PTR_ERR(hard_iface);
--- 
-2.47.3
-
+>
+> Thanks,
+> Qu
 
