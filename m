@@ -1,77 +1,77 @@
-Return-Path: <stable+bounces-189188-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-189189-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D94B6C041E1
-	for <lists+stable@lfdr.de>; Fri, 24 Oct 2025 04:30:45 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B45EC041E4
+	for <lists+stable@lfdr.de>; Fri, 24 Oct 2025 04:30:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CFEC51AA4775
-	for <lists+stable@lfdr.de>; Fri, 24 Oct 2025 02:31:09 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E4D364EE111
+	for <lists+stable@lfdr.de>; Fri, 24 Oct 2025 02:30:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CD271D47B4;
-	Fri, 24 Oct 2025 02:30:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11E7914B06C;
+	Fri, 24 Oct 2025 02:30:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="26BB4JSE"
+	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="ExALIdZK"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
+Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5991D132117
-	for <stable@vger.kernel.org>; Fri, 24 Oct 2025 02:30:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75A8624E4C6
+	for <stable@vger.kernel.org>; Fri, 24 Oct 2025 02:30:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761273041; cv=none; b=eANsZM7NKucFOF1/rwQIa+9w7xEO2LkWiqwM4yunT9fddeCgJMCIrfMDjxLkZZZOfnz0mkLbLG14PrusqAE9wTwiZ+0r+nP/07oShiYaDJbBHhTHuZO8kt7hj5rFSaoUnHDENa6Ugi/8ttiN/nikf/4s24UgAbHoSrlKeD69Dag=
+	t=1761273043; cv=none; b=fWEHQAoNGonXcQOI4cru8ZLWK2JDmXRaUtsjdQdGf9y9mhHR+3VwGjvSrdRt+TVRQJ/9/1omlATiVxft1dpOqvLepKGVOeq5dyS9IaDilpJ3bPBIywnkXwfni+0YmZ1QtN21CKej00FvFi92gmlVX+lCPSRK/v1FX0YI31wFjAE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761273041; c=relaxed/simple;
-	bh=RvE7skZEGFvyhqQpzvekgaJr96gSgTG0kT6teYgzwkQ=;
-	h=Content-Type:MIME-Version:Subject:From:To:Cc:Date:Message-ID; b=qW7u98d9aP06sXmeOUe+Yg+VK/fWzwDDUQ1cNzo2WSVUR4rTNHpvjYkn3BtjVeF+aBzuGI0VB/aG9Lvs8yj0VVeirOU9y2Bt5LAlR1id+yLwlMHhGhFg+q18aahGiCLu0+Ww9hRLl1TcaaqBYhF8YCFHek9r+rG95yRkLGwzp3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org; spf=none smtp.mailfrom=kernelci.org; dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b=26BB4JSE; arc=none smtp.client-ip=209.85.216.52
+	s=arc-20240116; t=1761273043; c=relaxed/simple;
+	bh=szbmuMYt3jdpMXAfYeVf+V9lmtQjURi7oe5aHr7wM/c=;
+	h=Content-Type:MIME-Version:Subject:From:To:Cc:Date:Message-ID; b=S2Bus4GK8piH+bnEg/K52jJWxMkM4XM3MKG8iJZjSuO877prifi2T/kd8GuO7Z9MSYMrt90lUTM8ovo/y7b9JxX3WKwWS7OMtJwgXc9TnaCScStso/6/SeU/oY09LarHFAXzxUZwlCR8qPiZYk3y8n3uGtbxjubmu0w6LV35g7c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org; spf=none smtp.mailfrom=kernelci.org; dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b=ExALIdZK; arc=none smtp.client-ip=209.85.216.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kernelci.org
-Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-3304dd2f119so1303065a91.2
-        for <stable@vger.kernel.org>; Thu, 23 Oct 2025 19:30:39 -0700 (PDT)
+Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-33c4252c3c5so1517052a91.0
+        for <stable@vger.kernel.org>; Thu, 23 Oct 2025 19:30:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1761273038; x=1761877838; darn=vger.kernel.org;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1761273042; x=1761877842; darn=vger.kernel.org;
         h=message-id:date:reply-to:cc:to:from:subject
          :content-transfer-encoding:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=GhtrGQY7fzR4f0eHkODEED5Bp8SSeOBsRrLa+QxZdHY=;
-        b=26BB4JSEHgMmUzpWpaXSKUdZN+2AdRZwXl+sipKIih8Xqx0p3hXjvD/vz1UEX7QrSJ
-         fqhEmCAfR7GoOie2Nod/1jyiHICCOei0eIdtr2inN0Md9BgmyvetBV/vhxi9JKaeh5hE
-         iuPjh6T60e0jz5czZ5qyS6SuWhV6uGKzkCz7A80FsKpJOsEooUkw7ZYK/eoG0uOeruDY
-         ZOi1px2xIKlawMciEgkqqyrKihPtf0n7KlQG/nNdj4/74dM5SA++LMzg03am8AkFscCj
-         EDNzz+HOzvYajz9+MI8y493C58g3rOCtK/YCt+C1/6JdpwTKWD959seDpNw/It/+H+yE
-         b5Ag==
+        bh=yi+F4ucKsrSujWRZ2QDX9jnGyIvHoHyd83ZHmQldU0E=;
+        b=ExALIdZKIA6nFTy2JJNHDrAlhaC0PcnKAQxd9PSrvDyZVDwAS9qyBWj7TjKL7wjs5B
+         wUS78LpvrEPW9MjLDlie2tpq31r0TPp8Gh2LU7SufgjxOnsuyJH/SjElzkwNCt7LctBv
+         b1jvR5KUHj0fzrHSrfkZPwlSMnjSE4l1Bv5z+f8JDhKSESCIt9vw+d143C0SYbV/VMeB
+         IOt0N5R7BqfrSWOQSsFDW3l4PxhuP5ksw8fw0OfVJp/F+FRyRy8fc+J82owgyYXvprVE
+         5bW6wdC4OSuaNfb3t/y/4uk3XVGt2APdR28yuJpdM3a3z5DXuNmk2uXnCkOg7Rly4gRm
+         bS0Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761273038; x=1761877838;
+        d=1e100.net; s=20230601; t=1761273042; x=1761877842;
         h=message-id:date:reply-to:cc:to:from:subject
          :content-transfer-encoding:mime-version:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=GhtrGQY7fzR4f0eHkODEED5Bp8SSeOBsRrLa+QxZdHY=;
-        b=H+bOp5lIcqXviOwKTtzor15wXUMRMLn8p1OMth3nYKQnGTfaMUnpcQRfGF9nFFxQv+
-         dgLsQ8XUrIU+SvBDfluulTNGJEq9jTj/w2QEchpIhs4DsbW2qRb00I+/Xwf+k4oWj83+
-         3ygYeS/FPkqxq1nfuS5o95FXbughMHY+3ncvTaw5Lj3fjoMV+fDTWP+/w8SKZ3dudx9z
-         zgq3bBST5YwJPEh+aNHYxHO/5fF4A7122flz1wi1nvSHpjov4x/7Oe2l/xO+N4z8FoeX
-         3UqbGKzmIkUnqKeuNbpCGMCcsEW7w1YnR1g8KmRUiImhEH3lKen9qi+o3DHZNZbBqVgV
-         iqKg==
-X-Gm-Message-State: AOJu0YyEeBD+RI2F6NNHYeJ3Kv9v24x49hS86wTZm9VJ8E5Ffpi8J+zf
-	65S50Wy95t1d4oN9FpOsXn+3zcfTclRwfmL3aHBziPg0CkVdqscy5Wp9GaUEsJkKESEfFcEvV/u
-	zv9XvmIM=
-X-Gm-Gg: ASbGncubFZQTZgxGOZXmHvWs5KUPE7fFIycofWkTSCBtd5jTzHNLQOfvjSl4LWoJszr
-	keif2mq+yVbqpSuv+NxhwOs6klnvoO0hwAs2+WGEBbQvgiDlnxoDQAnd9uzwSaGaWm03OoAWi4d
-	9uHoOIC2N17fyndGa88aVcyvS0NtuFhUd6fD0L1kbOBZYxp8U1vYfJI+iHBmlgWi6V95YwsV5E8
-	oXHTgbwBmR1qOLN6Z+Y5bI2Ev65OWR1WFdSizn/6kQey2RIKini8mrUypNkdl79Vol2WVMRVJSk
-	E/sTRrwRm+ya4p27LZ4a55+4xXoTKpHX6juNqirm9B8nQDfHCIDa1ZvQJ9Kv7nBR1K/VUYK8vEz
-	KDf9OiAZp2F/COHEZ68AA1vM9iCiQP6ImWNdAO9mUt1YO9a47moAaql0s2qlKZb6D3BigZg==
-X-Google-Smtp-Source: AGHT+IFp97wHGUZQQTCDqi7JV9+gOo2NN0TpG34hmWkyeSJb27xvp4I3qnOQjEozAQVs/hHZdKuJYQ==
-X-Received: by 2002:a17:90b:5111:b0:33b:c5ce:3cb0 with SMTP id 98e67ed59e1d1-33bcf8e4560mr36723399a91.20.1761273038389;
-        Thu, 23 Oct 2025 19:30:38 -0700 (PDT)
+        bh=yi+F4ucKsrSujWRZ2QDX9jnGyIvHoHyd83ZHmQldU0E=;
+        b=f2HeqqkRJ/UIBM5RbrGrS+UdVFSLvDEvADlaYVNp4CgBfF0pjM/VUVNYBFg9PUYeRC
+         r+szA5lI61W/YwLZzUUJwaUKmj2VteaTo/lZS154luj1n+vhjuIuHwl5Zp9TvNc+1l/k
+         b+aSbI8KGjirxpaTFApxAj6rbAkGpQ24oqzsXyZSCf8jcBVi6cHM+xDsdQ2VEwxs+r7F
+         COBrPaN+RcVgBL4vtbRwtHrma6f/azyQAxVKK51LoUTywHnG0bGsILbDvcOYRdOo2Tve
+         lZIXHXunDkpW1rTfpap0gJgcE/jM1HmGe6/nEbPrZ+zW6nOAaB7VuQcFBOT+VFLkv5IY
+         gWRQ==
+X-Gm-Message-State: AOJu0YxkGnDHpbsoAzMcu1rCOCOR/jrFa0rNvOts5gyCqj5XVdWXuAFY
+	EzWoh4RZrdaSCm/AuZcR2ZxIWRygjjphg1tzM2lNaz7x1l9PYvVHQ0n0JO4JBMqDKoPaqq6wT63
+	SAitgSsg=
+X-Gm-Gg: ASbGnct+F7SoFb1BWgowO7Gy6a4R5hmJNSv9a1SdSmClThxrz/F0x8KeAHBgdASNogC
+	Xdwr1RMBuW1FlHjg8kkci1vo0jB/fsy4qPG72Aox0EJcnBssowKkAAyci4iDVvtbgS/a41Yk/fk
+	oYtg3im/q5TRzrr3FhqBmqZpWGe3gXoIrtPW1g+oc6Kxb03AahmQAXbYKrPiW1J8991L7rOq4y7
+	hIeU2G0+6wCTvpaWTMfgTOeHEM+CQGYcD94JSoUeXUK3rJT92X4fZCiMAiIarRB/yN1pm8r2mnP
+	4oHSyBFIKecGPFHv7Mx0U0kTP2tiCOzO1iH4hUCBytWaor4mKh74A0IThSLJMHQG+WpSUG3lJIM
+	WVOfSkQ5TeUJqJ4wMJmhkwr2NzaL7Ojcqt/ndYLgy+Cf4noEois4xoMkqY8r9pc0R2ANszQ==
+X-Google-Smtp-Source: AGHT+IE88QRVeKtUy2XvVBccDhBcNB6tPti5DvxDwQs0apBBj2rTiUzYKdbalgW9MXLr9qpQWKgy7g==
+X-Received: by 2002:a17:90b:1f89:b0:32e:3c57:8a9e with SMTP id 98e67ed59e1d1-33fafc8a0c9mr5498464a91.35.1761273041759;
+        Thu, 23 Oct 2025 19:30:41 -0700 (PDT)
 Received: from 15dd6324cc71 ([20.38.40.137])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-33faff37b0csm3990595a91.3.2025.10.23.19.30.37
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-33e2247a34esm7401019a91.15.2025.10.23.19.30.40
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Oct 2025 19:30:37 -0700 (PDT)
+        Thu, 23 Oct 2025 19:30:41 -0700 (PDT)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -80,14 +80,14 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [STATUS] stable/linux-6.6.y -
- 4a243110dc884d8e1fe69eecbc2daef10d8e75d7
+Subject: [STATUS] stable/linux-6.12.y -
+ 4fc43debf5047d2469bdef3b25c02121afa7ef3d
 From: KernelCI bot <bot@kernelci.org>
 To: kernelci-results@groups.io
 Cc: stable@vger.kernel.org
 Reply-To: kernelci@lists.linux.dev
-Date: Fri, 24 Oct 2025 02:30:37 -0000
-Message-ID: <176127303726.6187.8432386376299563136@15dd6324cc71>
+Date: Fri, 24 Oct 2025 02:30:40 -0000
+Message-ID: <176127304048.6187.7635196613052088404@15dd6324cc71>
 
 
 
@@ -95,35 +95,63 @@ Message-ID: <176127303726.6187.8432386376299563136@15dd6324cc71>
 
 Hello,
 
-Status summary for stable/linux-6.6.y
+Status summary for stable/linux-6.12.y
 
 Dashboard:
-https://d.kernelci.org/c/stable/linux-6.6.y/4a243110dc884d8e1fe69eecbc2daef10d8e75d7/
+https://d.kernelci.org/c/stable/linux-6.12.y/4fc43debf5047d2469bdef3b25c02121afa7ef3d/
 
 giturl: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git
-branch: linux-6.6.y
-commit hash: 4a243110dc884d8e1fe69eecbc2daef10d8e75d7
+branch: linux-6.12.y
+commit hash: 4fc43debf5047d2469bdef3b25c02121afa7ef3d
 origin: maestro
-test start time: 2025-10-23 14:29:15.250000+00:00
+test start time: 2025-10-23 14:29:15.692000+00:00
 
-Builds:	   38 ✅    0 ❌    0 ⚠️
-Boots: 	   87 ✅    0 ❌    0 ⚠️
-Tests: 	 3955 ✅ 1454 ❌ 1053 ⚠️
+Builds:	   37 ✅    0 ❌    0 ⚠️
+Boots: 	  169 ✅    0 ❌    0 ⚠️
+Tests: 	 9431 ✅ 5597 ❌ 2428 ⚠️
 
 ### POSSIBLE REGRESSIONS
     
-Hardware: bcm2837-rpi-3-b-plus
+Hardware: acer-chromebox-cxi4-puff
+  > Config: x86_64_defconfig+lab-setup+x86-board+kselftest
+    - Architecture/compiler: x86_64/gcc-12
+      - kselftest.cpufreq.hibernate
+      last run: https://d.kernelci.org/test/maestro:68fa48db8a79c348aff82bf9
+      history:  > ✅  > ❌  
+            
+      - kselftest.cpufreq.hibernate.cpufreq_main_sh
+      last run: https://d.kernelci.org/test/maestro:68fa4b9c8a79c348aff83bce
+      history:  > ✅  > ❌  
+            
+Hardware: k3-am625-verdin-wifi-mallow
   > Config: defconfig+lab-setup+kselftest
     - Architecture/compiler: arm64/gcc-12
-      - kselftest.ptrace
-      last run: https://d.kernelci.org/test/maestro:68fa5f798a79c348aff889c4
+      - kselftest.device_error_logs
+      last run: https://d.kernelci.org/test/maestro:68fa9d408a79c348aff8def7
       history:  > ✅  > ❌  > ❌  
             
 
 
 ### FIXED REGRESSIONS
-
-  No fixed regressions observed.
+    
+Hardware: dell-latitude-5400-8665U-sarien
+  > Config: x86_64_defconfig+lab-setup+x86-board+kselftest
+    - Architecture/compiler: x86_64/gcc-12
+      - kselftest.cpufreq.suspend
+      last run: https://d.kernelci.org/test/maestro:68fa48e58a79c348aff82c7d
+      history:  > ❌  > ✅  
+            
+      - kselftest.cpufreq.suspend.cpufreq_main_sh
+      last run: https://d.kernelci.org/test/maestro:68fa4c6c8a79c348aff8427e
+      history:  > ❌  > ✅  
+            
+Hardware: hp-x360-14-G1-sona
+  > Config: x86_64_defconfig+lab-setup+x86-board+kselftest
+    - Architecture/compiler: x86_64/gcc-12
+      - kselftest.iommu
+      last run: https://d.kernelci.org/test/maestro:68fa48fe8a79c348aff82d62
+      history:  > ❌  > ❌  > ✅  
+            
 
 
 ### UNSTABLE TESTS
