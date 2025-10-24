@@ -1,182 +1,111 @@
-Return-Path: <stable+bounces-189202-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-189203-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60BC6C04C0A
-	for <lists+stable@lfdr.de>; Fri, 24 Oct 2025 09:37:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C5EFC04D36
+	for <lists+stable@lfdr.de>; Fri, 24 Oct 2025 09:47:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 725114F9623
-	for <lists+stable@lfdr.de>; Fri, 24 Oct 2025 07:37:01 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 61F5E4F9D21
+	for <lists+stable@lfdr.de>; Fri, 24 Oct 2025 07:47:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6D572E7192;
-	Fri, 24 Oct 2025 07:36:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="D6tVIy6S";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="JOHy3KUp";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="VLE31Yl/";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="hqI9aCE7"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A63EB2FBE17;
+	Fri, 24 Oct 2025 07:44:16 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5EDC2E6CC3
-	for <stable@vger.kernel.org>; Fri, 24 Oct 2025 07:36:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 004E12FB091;
+	Fri, 24 Oct 2025 07:44:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.188
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761291411; cv=none; b=HzxmmAWsFBcQ/LXyK5KYIuQUNHcjPkomzaQihCsp1kxgJpG5yJsT3hNimp9F9rIIByP8zcqbiriUa+GKLqctprnGqBJ5SeQfN9rJV2vJZjFXGB1udzIjn/nGDwDe+AoFJFu65WA10SXzvHIlXmCHkNpN6//Aq6uW5TtYBUpzIOs=
+	t=1761291856; cv=none; b=rSLddcsiVTU1MJAtWkbu8Wgo2h2mECYROkQil3mH5SPqMZgIct/b4DaDVayOmOBmkUFoB2y3xY7ZeBT6VdgaVijVTE/EJKElJHI7dVsLNOPEodQWk5AjUmEot8Qi3DcX3wxhUKOAVFIDnLc1Wde01TmwOPFMBI2O4+w+chiBYIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761291411; c=relaxed/simple;
-	bh=xMwlcDFBTJfGSYctV6imgNJz6FPebb8n/LfgAtUigyY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=glEd3g1IpUPoI6HCoXFnQJPaekntTJ4Ov0dpRmiiw7s82vEFpPi/fMgTPQXao03dc+g4RHPQPPQPmg5q8ECCCC+LEyJ3uGTM2w4b+ga9NfEkAFQZPtXN10f/nPJioVx6EAC1IZH/9ACg3xf1A+gMoxm3MYngaI+WHG+zRBCa4XY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=D6tVIy6S; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=JOHy3KUp; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=VLE31Yl/; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=hqI9aCE7; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 73A8B211F4;
-	Fri, 24 Oct 2025 07:36:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1761291397; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=IIjyVjTsKmTM3DyV9c7Fg0rxyqu0hiuVFiYvD0dfXfE=;
-	b=D6tVIy6Sl+g47+arCAzMfoRHzEfFWsyPJlxy4xiJ7Nfxvx3HlAjZMxiD8f6k0/+0Sr3nz0
-	L4EVvMxUys6n6k5VypDIiHoz+ASwssnWsyyMxiu1oHOD60zwWUFZtiTl663xNyAm1+VJrp
-	UeiZy7h847B2I6oredjgWnJAVlPsZgk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1761291397;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=IIjyVjTsKmTM3DyV9c7Fg0rxyqu0hiuVFiYvD0dfXfE=;
-	b=JOHy3KUp8++ANrU0aEgAIxgK/MY4CBMahUtgAxF2G9OETtpqAVTSJ9SBClr6rc1/Hxn1xE
-	+VOy3BuQYkOMgKAg==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1761291393; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=IIjyVjTsKmTM3DyV9c7Fg0rxyqu0hiuVFiYvD0dfXfE=;
-	b=VLE31Yl/kUlNOdiCjxZQStbPyH9O9liLRgV66WFO3wI24Y1uDW8/IZhTGFEqOzx6AqiS6D
-	Goesecw+rQOxTPX+udBNvOHE6YSqX+hMJdj3uiepNAs24i662npBFUVpK5FlFehmsuRpHi
-	Il9TsudFwR+k10OJrV+39yZxTGaogRE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1761291393;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=IIjyVjTsKmTM3DyV9c7Fg0rxyqu0hiuVFiYvD0dfXfE=;
-	b=hqI9aCE7EEJplAXT4QORlZWHB9EbJggX2anJ866UAz7Np2Bv4cSWOJ1+InX5g/Vxp5Z+GW
-	HDokJdrR4xa3ZUAA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 2D625132C2;
-	Fri, 24 Oct 2025 07:36:33 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id rizmCYEs+2iAIAAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Fri, 24 Oct 2025 07:36:33 +0000
-From: Thomas Zimmermann <tzimmermann@suse.de>
-To: airlied@redhat.com,
-	jfalempe@redhat.com,
-	pschneider1968@googlemail.com,
-	airlied@gmail.com,
-	simona@ffwll.ch
-Cc: dri-devel@lists.freedesktop.org,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Nick Bowler <nbowler@draconx.ca>,
-	Douglas Anderson <dianders@chromium.org>,
-	stable@vger.kernel.org
-Subject: [PATCH] drm/ast: Clear preserved bits from register output value
-Date: Fri, 24 Oct 2025 09:35:53 +0200
-Message-ID: <20251024073626.129032-1-tzimmermann@suse.de>
-X-Mailer: git-send-email 2.51.0
+	s=arc-20240116; t=1761291856; c=relaxed/simple;
+	bh=8q3BodeZt7lgHPjebyaAnrcmLqOAj1I2FXahupw8yf0=;
+	h=Subject:To:CC:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=et4Fu7D+3WRMLZMGfJQ8deO9oxefQtjwBm5pg6yHik9bev30SwglgPnppOoI5ZOP8wloqLk/QA97juV5AsMCrvQlYGMpoRFB8NRkb9fz41Y9EHPZZIosbHRwotJYc8W5xLeWWk8Yq7A8BNNSYWHJ4LHoh2cqqPIcZl1uPZUOTk0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.188
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.163.252])
+	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4ctFCf6wB6zTh71;
+	Fri, 24 Oct 2025 15:39:26 +0800 (CST)
+Received: from dggemv706-chm.china.huawei.com (unknown [10.3.19.33])
+	by mail.maildlp.com (Postfix) with ESMTPS id 02B23180B62;
+	Fri, 24 Oct 2025 15:44:10 +0800 (CST)
+Received: from kwepemq500010.china.huawei.com (7.202.194.235) by
+ dggemv706-chm.china.huawei.com (10.3.19.33) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Fri, 24 Oct 2025 15:44:09 +0800
+Received: from [10.173.125.37] (10.173.125.37) by
+ kwepemq500010.china.huawei.com (7.202.194.235) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Fri, 24 Oct 2025 15:44:08 +0800
+Subject: Re: [PATCH v4] mm/huge_memory: preserve PG_has_hwpoisoned if a folio
+ is split to >0 order
+To: Zi Yan <ziy@nvidia.com>
+CC: <kernel@pankajraghav.com>, <akpm@linux-foundation.org>,
+	<mcgrof@kernel.org>, <nao.horiguchi@gmail.com>, Lorenzo Stoakes
+	<lorenzo.stoakes@oracle.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song
+	<baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, "Matthew Wilcox
+ (Oracle)" <willy@infradead.org>, Wei Yang <richard.weiyang@gmail.com>, "Yang
+ Shi" <shy828301@gmail.com>, <linux-fsdevel@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
+	<stable@vger.kernel.org>, <david@redhat.com>, <jane.chu@oracle.com>
+References: <20251023030521.473097-1-ziy@nvidia.com>
+From: Miaohe Lin <linmiaohe@huawei.com>
+Message-ID: <479c9b79-a8a3-6e14-9264-cda3e9851b43@huawei.com>
+Date: Fri, 24 Oct 2025 15:44:07 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.80 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_MISSING_CHARSET(0.50)[];
-	NEURAL_HAM_SHORT(-0.20)[-0.995];
-	MIME_GOOD(-0.10)[text/plain];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	ARC_NA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_TO(0.00)[redhat.com,googlemail.com,gmail.com,ffwll.ch];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	URIBL_BLOCKED(0.00)[imap1.dmz-prg2.suse.org:helo,suse.de:mid,suse.de:email,lists.freedesktop.org:email,draconx.ca:email,chromium.org:email];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.de:mid,suse.de:email];
-	RCVD_COUNT_TWO(0.00)[2];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com,googlemail.com]
-X-Spam-Flag: NO
-X-Spam-Score: -2.80
-X-Spam-Level: 
+In-Reply-To: <20251023030521.473097-1-ziy@nvidia.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
+ kwepemq500010.china.huawei.com (7.202.194.235)
 
-Preserve the I/O register bits in __ast_write8_i_masked() as specified
-by preserve_mask. Accidentally OR-ing the output value into these will
-overwrite the register's previous settings.
+On 2025/10/23 11:05, Zi Yan wrote:
+> folio split clears PG_has_hwpoisoned, but the flag should be preserved in
+> after-split folios containing pages with PG_hwpoisoned flag if the folio is
+> split to >0 order folios. Scan all pages in a to-be-split folio to
+> determine which after-split folios need the flag.
+> 
+> An alternatives is to change PG_has_hwpoisoned to PG_maybe_hwpoisoned to
+> avoid the scan and set it on all after-split folios, but resulting false
+> positive has undesirable negative impact. To remove false positive, caller
+> of folio_test_has_hwpoisoned() and folio_contain_hwpoisoned_page() needs to
+> do the scan. That might be causing a hassle for current and future callers
+> and more costly than doing the scan in the split code. More details are
+> discussed in [1].
+> 
+> This issue can be exposed via:
+> 1. splitting a has_hwpoisoned folio to >0 order from debugfs interface;
+> 2. truncating part of a has_hwpoisoned folio in
+>    truncate_inode_partial_folio().
+> 
+> And later accesses to a hwpoisoned page could be possible due to the
+> missing has_hwpoisoned folio flag. This will lead to MCE errors.
+> 
+> Link: https://lore.kernel.org/all/CAHbLzkoOZm0PXxE9qwtF4gKR=cpRXrSrJ9V9Pm2DJexs985q4g@mail.gmail.com/ [1]
+> Fixes: c010d47f107f ("mm: thp: split huge page to any lower order pages")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Zi Yan <ziy@nvidia.com>
 
-Fixes display output on the AST2300, where the screen can go blank at
-boot. The driver's original commit 312fec1405dd ("drm: Initial KMS
-driver for AST (ASpeed Technologies) 2000 series (v2)") already added
-the broken code. Commit 6f719373b943 ("drm/ast: Blank with VGACR17 sync
-enable, always clear VGACRB6 sync off") triggered the bug.
+Thanks for your patch. LGTM.
 
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Reported-by: Peter Schneider <pschneider1968@googlemail.com>
-Closes: https://lore.kernel.org/dri-devel/a40caf8e-58ad-4f9c-af7f-54f6f69c29bb@googlemail.com/
-Tested-by: Peter Schneider <pschneider1968@googlemail.com>
-Fixes: 6f719373b943 ("drm/ast: Blank with VGACR17 sync enable, always clear VGACRB6 sync off")
-Fixes: 312fec1405dd ("drm: Initial KMS driver for AST (ASpeed Technologies) 2000 series (v2)")
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Nick Bowler <nbowler@draconx.ca>
-Cc: Douglas Anderson <dianders@chromium.org>
-Cc: Dave Airlie <airlied@redhat.com>
-Cc: Jocelyn Falempe <jfalempe@redhat.com>
-Cc: dri-devel@lists.freedesktop.org
-Cc: <stable@vger.kernel.org> # v3.5+
----
- drivers/gpu/drm/ast/ast_drv.h | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+Reviewed-by: Miaohe Lin <linmiaohe@huawei.com>
 
-diff --git a/drivers/gpu/drm/ast/ast_drv.h b/drivers/gpu/drm/ast/ast_drv.h
-index 7be36a358e74..787e38c6c17d 100644
---- a/drivers/gpu/drm/ast/ast_drv.h
-+++ b/drivers/gpu/drm/ast/ast_drv.h
-@@ -298,13 +298,13 @@ static inline void __ast_write8_i(void __iomem *addr, u32 reg, u8 index, u8 val)
- 	__ast_write8(addr, reg + 1, val);
- }
- 
--static inline void __ast_write8_i_masked(void __iomem *addr, u32 reg, u8 index, u8 read_mask,
-+static inline void __ast_write8_i_masked(void __iomem *addr, u32 reg, u8 index, u8 preserve_mask,
- 					 u8 val)
- {
--	u8 tmp = __ast_read8_i_masked(addr, reg, index, read_mask);
-+	u8 tmp = __ast_read8_i_masked(addr, reg, index, preserve_mask);
- 
--	tmp |= val;
--	__ast_write8_i(addr, reg, index, tmp);
-+	val &= ~preserve_mask;
-+	__ast_write8_i(addr, reg, index, tmp | val);
- }
- 
- static inline u32 ast_read32(struct ast_device *ast, u32 reg)
--- 
-2.51.0
-
+Thanks.
+.
 
