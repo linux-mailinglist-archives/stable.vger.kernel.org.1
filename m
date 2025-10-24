@@ -1,188 +1,177 @@
-Return-Path: <stable+bounces-189218-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-189219-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0ECBFC05367
-	for <lists+stable@lfdr.de>; Fri, 24 Oct 2025 10:59:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E241C05379
+	for <lists+stable@lfdr.de>; Fri, 24 Oct 2025 11:00:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6B960504F8E
-	for <lists+stable@lfdr.de>; Fri, 24 Oct 2025 08:56:14 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E68AC5053D1
+	for <lists+stable@lfdr.de>; Fri, 24 Oct 2025 08:57:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BBF5307AC6;
-	Fri, 24 Oct 2025 08:56:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D03A5307AC6;
+	Fri, 24 Oct 2025 08:56:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N1KJNBOs"
+	dkim=pass (1024-bit key) header.d=infotecs.ru header.i=@infotecs.ru header.b="i3op79m3"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0.infotecs.ru (mx0.infotecs.ru [91.244.183.115])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D8673074A9
-	for <stable@vger.kernel.org>; Fri, 24 Oct 2025 08:56:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74519307AC4;
+	Fri, 24 Oct 2025 08:56:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.244.183.115
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761296170; cv=none; b=q9vWvLpheZXlwXol+Or1TejWb2cJuvhFJg8fpi0Y9trWKjAnlveFe0uEqFiz/sEYqC/e/DGNIZWz0Z2W1al0jM2lhbphQ5oWjXXtSN51cfi5aktz1HFFupT+74IQnVucZNSHngoqtLBhRpxcMIhTF5hoDqXxy7k2YV57lC4QDEw=
+	t=1761296218; cv=none; b=uC54VbCKtfATDfSBNfkvpvSJBxMfWzWyrYTEzhb+MzQQ8zltS2XGc5B3SS2cZrNf4bSjCMO+fIqaMxRvD7pxmp+3d0YoDyi1okH5a1uw4+NGHG9sqKWyl67OovJsx1ldeat4OEnq9c+xRwnmxOmkIu6M/FLLN/K9EjwPIluxsfo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761296170; c=relaxed/simple;
-	bh=fUCqAT82fiQ5ZDIRhGk+oxgUU7XhrZhv2TrCFQuns9o=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=E8TNDEeTHSHZi5h1vZQnAfybfTI/asp79nLf36bjhrP6npkPB/bwJ75Z2ZUDVsX+w8J1JVX3AxBbpE/FKfIVHjMsxDSuvNZ6k9M9XmvZ47KtDWUwsUMdPFhNXitC9+YThItASYNsCYNMK49GYsI81+ejvgxO4l1s0gcbbtaJwy0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N1KJNBOs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2614C4CEF1
-	for <stable@vger.kernel.org>; Fri, 24 Oct 2025 08:56:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761296169;
-	bh=fUCqAT82fiQ5ZDIRhGk+oxgUU7XhrZhv2TrCFQuns9o=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=N1KJNBOsMpA/9+xM7bFq7fNxOJHtOfcR34Z+0CVFRSXUGli1M7VLHjvvQrJY+T5BN
-	 0cG5112M5fZFkDpe2czEUkTphsiZU8Rqn/93/UqVPx0Iipfa9BWrDI20VYCIHuI1Qh
-	 Px8vX1zf1cV188ezuznlyblPkWQEfShwWwxrxXhGxLSbCwzQX/a+TBWA/7BDzypUXo
-	 UGN9m+OlKNwhuaznJUq/rJ7sYf7svf06aVsAvvD+OtdJaxtxuBchwEPsIF4WFfDQIv
-	 577PAwfwxwmrJg/tCwb8lM88VhUzydL8u+v2cKG7xX+JVo5nG9OHOMZXinXJi+/4Pl
-	 luZ2IJLlCesog==
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-b50645ecfbbso356179566b.1
-        for <stable@vger.kernel.org>; Fri, 24 Oct 2025 01:56:09 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXGA4V69yH5yMlGczuU9UoHw9VLT+MXX40XmRmMlgFfz96XdTiL8tOBte1c9rlxJjr8Sk4aDXk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyNwQhoon/CA709WoXAh0KdTvQOCZGU9FTLchw6YF7Se6g8+oOM
-	Ioj2PF2poaduUBuOGaLC5wMQns0zUzuUFrMRCNNBuWNlDQQf3AfY7g1VC+eAu4OTxZJ3uUeOR3t
-	BGO+xLVi8BOVKI9YGd4mXkGiAb0CSyAE=
-X-Google-Smtp-Source: AGHT+IF40SONrI7C4ELzcKu2as1WJQ3GzsbwtA128cS+KSz+uPJJwzPTSLqtxn1O+aYRM1KMDRzvr50OCYlHnsMvXcE=
-X-Received: by 2002:a17:906:ae5b:b0:b6d:3f8a:bda1 with SMTP id
- a640c23a62f3a-b6d3f8abee6mr616863466b.46.1761296168331; Fri, 24 Oct 2025
- 01:56:08 -0700 (PDT)
+	s=arc-20240116; t=1761296218; c=relaxed/simple;
+	bh=8MUGiBaLgC629PZoPqwQRzUuxycUZinfow4Niq33llo=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=uDIx0wgal9U6OfWs2fmb5cf1t9rCemrbAoU7cBlPIELrJHM8mnpVyDAX0CgwdQsXVpYJUF4/+bSBgsBPKGCkjvWiPyuQ/ImcXP2KuX48qF4crYsXbG5b3QjoQMMGMSLv84mOLyTyUSusQMIiFk0ExUHiQ0Vl6VDM0yZIkjca994=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=infotecs.ru; spf=pass smtp.mailfrom=infotecs.ru; dkim=pass (1024-bit key) header.d=infotecs.ru header.i=@infotecs.ru header.b=i3op79m3; arc=none smtp.client-ip=91.244.183.115
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=infotecs.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infotecs.ru
+Received: from mx0.infotecs-nt (localhost [127.0.0.1])
+	by mx0.infotecs.ru (Postfix) with ESMTP id 7045B10B8170;
+	Fri, 24 Oct 2025 11:56:51 +0300 (MSK)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx0.infotecs.ru 7045B10B8170
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=infotecs.ru; s=mx;
+	t=1761296211; bh=8MUGiBaLgC629PZoPqwQRzUuxycUZinfow4Niq33llo=;
+	h=From:To:CC:Subject:Date:References:In-Reply-To:From;
+	b=i3op79m30YlhF21BMWOcF04//FOFjasmpLuRwuYdCSadkntAdgZ/Wh/5KzdOasooy
+	 Mc+aqRdJ71OQQCuwHf7kro4KNQO55oDRkZLp0/BO3Wx1jHsHTiIASPEcM7eiN+DkJh
+	 BIlk2vsoSbVAP5I02kaPuFIJWzuId8KiJqKbKf6c=
+Received: from msk-exch-02.infotecs-nt (msk-exch-02.infotecs-nt [10.0.7.192])
+	by mx0.infotecs-nt (Postfix) with ESMTP id 6CB683109F02;
+	Fri, 24 Oct 2025 11:56:51 +0300 (MSK)
+From: Ilia Gavrilov <Ilia.Gavrilov@infotecs.ru>
+To: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
+CC: Marcel Holtmann <marcel@holtmann.org>, Johan Hedberg
+	<johan.hedberg@gmail.com>, "David S. Miller" <davem@davemloft.net>, "Eric
+ Dumazet" <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+	"linux-bluetooth@vger.kernel.org" <linux-bluetooth@vger.kernel.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"lvc-project@linuxtesting.org" <lvc-project@linuxtesting.org>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [PATCH net] Bluetooth: MGMT: Fix OOB access in
+ parse_adv_monitor_pattern()
+Thread-Topic: [PATCH net] Bluetooth: MGMT: Fix OOB access in
+ parse_adv_monitor_pattern()
+Thread-Index: AQHcQdQDH+4einvhvkqzls1fGNBfVLTPiQWAgAAe4ICAAAYDAIABJGoA
+Date: Fri, 24 Oct 2025 08:56:50 +0000
+Message-ID: <19f34b57-a7b7-41e5-8c6c-9e99d7607032@infotecs.ru>
+References: <20251020151255.1807712-1-Ilia.Gavrilov@infotecs.ru>
+ <CABBYNZKUNecJNPmrVFdkkOhG1A8C_32pUOdh0ZDWkCNkAugDdQ@mail.gmail.com>
+ <3935eaf3-3a58-4b2d-b0ee-4c6c641b5343@infotecs.ru>
+ <CABBYNZJLtTiFZ-1LchJ7Cy1JT=vuDmkkRHjrUY92jC740ihs5w@mail.gmail.com>
+In-Reply-To: <CABBYNZJLtTiFZ-1LchJ7Cy1JT=vuDmkkRHjrUY92jC740ihs5w@mail.gmail.com>
+Accept-Language: ru-RU, en-US
+Content-Language: ru-RU
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-exclaimer-md-config: 208ac3cd-1ed4-4982-a353-bdefac89ac0a
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <4EDD695305789B4F89E79E3ED00B420C@infotecs.ru>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <2059d92d64eb181f1d37538d1279ed5b191ce1ab.1761211916.git.wqu@suse.com>
- <CAL3q7H7KmObsE2JURpKLVRT_ufa_2v4M2KAFahUndq5Jqxwnow@mail.gmail.com>
- <6f36e8d0-630b-4cc3-a780-11be4aa0a65f@suse.com> <CAL3q7H4TcJNY7cYeYWoByOW0ek6BBEbtgSSFFOvc7aagarfFXQ@mail.gmail.com>
- <63aac204-5ea5-45b1-854e-6b3d78db99fd@gmx.com>
-In-Reply-To: <63aac204-5ea5-45b1-854e-6b3d78db99fd@gmx.com>
-From: Filipe Manana <fdmanana@kernel.org>
-Date: Fri, 24 Oct 2025 09:55:30 +0100
-X-Gmail-Original-Message-ID: <CAL3q7H4nO6TB66RhrrrC94GSrjLOb1tOQ1xPJqmZs=m82gX73g@mail.gmail.com>
-X-Gm-Features: AWmQ_bkDp8Joji_1OKIxRSUMkfJ93NBRjLCTCU8NrHHa_u28T2IE9AqSfg9WKhk
-Message-ID: <CAL3q7H4nO6TB66RhrrrC94GSrjLOb1tOQ1xPJqmZs=m82gX73g@mail.gmail.com>
-Subject: Re: [PATCH] btrfs: make sure no dirty metadata write is submitted
- after btrfs_stop_all_workers()
-To: Qu Wenruo <quwenruo.btrfs@gmx.com>
-Cc: Qu Wenruo <wqu@suse.com>, linux-btrfs@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-KLMS-Rule-ID: 5
+X-KLMS-Message-Action: clean
+X-KLMS-AntiSpam-Status: not scanned, disabled by settings
+X-KLMS-AntiSpam-Interceptor-Info: not scanned
+X-KLMS-AntiPhishing: Clean, bases: 2025/10/24 07:22:00
+X-KLMS-AntiVirus: Kaspersky Security for Linux Mail Server, version 8.0.3.30, bases: 2025/10/24 06:56:00 #27793616
+X-KLMS-AntiVirus-Status: Clean, skipped
 
-On Fri, Oct 24, 2025 at 9:37=E2=80=AFAM Qu Wenruo <quwenruo.btrfs@gmx.com> =
-wrote:
->
->
->
-> =E5=9C=A8 2025/10/24 18:37, Filipe Manana =E5=86=99=E9=81=93:
-> > On Thu, Oct 23, 2025 at 9:44=E2=80=AFPM Qu Wenruo <wqu@suse.com> wrote:
-> >>
-> >>
-> >>
-> >> =E5=9C=A8 2025/10/24 01:56, Filipe Manana =E5=86=99=E9=81=93:
-> >>> On Thu, Oct 23, 2025 at 10:33=E2=80=AFAM Qu Wenruo <wqu@suse.com> wro=
-te:
-> >> [...]
-> >>> So two suggestions:
-> >>>
-> >>> 1) Move this into btrfs_error_commit_super(), to have all code relate=
-d
-> >>> to fs in error state in one single place.
-> >>>
-> >>> 2) Instead of of calling filemap_write_and_wait(), make this simpler
-> >>> by doing the iput() of the btree inode right before calling
-> >>> btrfs_stop_all_workers() and removing the call to
-> >>> invalidate_inode_pages2() which is irrelevant since the final iput()
-> >>> removes everything from the page cache except dirty pages (but the
-> >>> iput() already triggered writeback of them).
-> >>>
-> >>> In fact for this scenario the call to invalidate_inode_pages2() must
-> >>> be returning -EBUSY due to the dirty pages, but we have always ignore=
-d
-> >>> its return value.
-> >>>
-> >>>   From a quick glance, it seems to me that suggestion 2 should work.
-> >>
-> >> Yes, that's the original workaround I went with, the problem is we're
-> >> still submitting metadata writes after a trans abort.
-> >>
-> >> I don't feel that comfort writing back metadata in that situation.
-> >> Maybe the trans abort is triggered because a corrupted extent/free spa=
-ce
-> >> tree which allows us to allocate new tree blocks where we shouldn't
-> >> (aka, metadata COW is already broken).
-> >
-> > Metadata COW is broken why??
->
-> Consider this situation, no free space cache, and extent tree by somehow
-> lacks the backref item for tree block A.
-
-If there's no backref in the extent tree and no delayed ref for tree
-block A then we already have a corrupted fs.
-
->
-> Then a new transaction is started, allocator choose the bytenr of tree
-> block A for a new tree block B.
->
-> At this stage, tree block B will overwrite tree block A, but no
-> writeback yet. And at this time transaction is not yet aborted.
->
-> Then by somehoe the tree block A got its reference dropped by one (e.g.
-> subvolume deletion), but extent tree is corrupted and failed to find the
-> backref item, and transaction is aborted.
->
-> >
-> > Even after a transaction aborts, it's ok, but pointless, to allocate
-> > extents and trigger writeback for them.
->
-> Writeback can be triggered by a lot of other reasons, e.g. memory
-> pressure, and in that case if we try to writeback tree block B, it will
-> overwrite tree block A even if it's after transaction abort.
-
-It doesn't matter why and when the writeback is triggered, that was
-not my point.
-My point was if a transaction was aborted, what matters is that we
-can't commit that transaction or start a new one, and can't override
-existing extents (either they are used or pinned).
-
->
-> Not to mention the final iput() in close_ctree().
-
-By the time of the final iput() we are not supposed to have dirty
-metadata, we have already committed any open transaction.
-The exception was here for transaction abort case, but other than the
-use-after-free, it can't cause any damage to the fs.
-
->
-> Thanks,
-> Qu
-> > As long as we don't allow the transaction to be committed and new
-> > transactions to be started, we are safe - in fact that's the only
-> > thing a transaction abort guarantees.
-> >
-> > We may have many places that could check if a transaction was aborted
-> > and avoid extent allocation and writeback, but that's ok, as long as
-> > we don't allow transaction commits.
-> >
-> >>
-> >> Thus I consider delaying btrfs_stop_all_workers() until iput() is only=
- a
-> >> workaround, it still allows us to submit unnecessary writes.
-> >>
-> >> I'd prefer the solution 1) in this case, still with the extra handling
-> >> in write_one_eb().
-> >>
-> >> Thanks for the review and suggestion, will follow the advice of the
-> >> remaining part.
-> >>
-> >> Thanks,
-> >> Qu
-> >>
-> >
->
+T24gMTAvMjMvMjUgMTg6MzAsIEx1aXogQXVndXN0byB2b24gRGVudHogd3JvdGU6DQo+IEhpIEls
+aWEsDQo+IA0KPiBPbiBUaHUsIE9jdCAyMywgMjAyNSBhdCAxMTowOOKAr0FNIElsaWEgR2F2cmls
+b3YNCj4gPElsaWEuR2F2cmlsb3ZAaW5mb3RlY3MucnU+IHdyb3RlOg0KPj4NCj4+IEhpLCBMdWl6
+LCB0aGFuayB5b3UgZm9yIHRoZSByZXZpZXcuDQo+Pg0KPj4gT24gMTAvMjMvMjUgMTY6MTgsIEx1
+aXogQXVndXN0byB2b24gRGVudHogd3JvdGU6DQo+Pj4gSGkgSWxpYSwNCj4+Pg0KPj4+IE9uIE1v
+biwgT2N0IDIwLCAyMDI1IGF0IDExOjEy4oCvQU0gSWxpYSBHYXZyaWxvdg0KPj4+IDxJbGlhLkdh
+dnJpbG92QGluZm90ZWNzLnJ1PiB3cm90ZToNCj4+Pj4NCj4+Pj4gSW4gdGhlIHBhcnNlX2Fkdl9t
+b25pdG9yX3BhdHRlcm4oKSBmdW5jdGlvbiwgdGhlIHZhbHVlIG9mDQo+Pj4+IHRoZSAnbGVuZ3Ro
+JyB2YXJpYWJsZSBpcyBjdXJyZW50bHkgbGltaXRlZCB0byBIQ0lfTUFYX0VYVF9BRF9MRU5HVEgo
+MjUxKS4NCj4+Pj4gVGhlIHNpemUgb2YgdGhlICd2YWx1ZScgYXJyYXkgaW4gdGhlIG1nbXRfYWR2
+X3BhdHRlcm4gc3RydWN0dXJlIGlzIDMxLg0KPj4+PiBJZiB0aGUgdmFsdWUgb2YgJ3BhdHRlcm5b
+aV0ubGVuZ3RoJyBpcyBzZXQgaW4gdGhlIHVzZXIgc3BhY2UNCj4+Pj4gYW5kIGV4Y2VlZHMgMzEs
+IHRoZSAncGF0dGVybnNbaV0udmFsdWUnIGFycmF5IGNhbiBiZSBhY2Nlc3NlZA0KPj4+PiBvdXQg
+b2YgYm91bmQgd2hlbiBjb3BpZWQuDQo+Pj4+DQo+Pj4+IEluY3JlYXNpbmcgdGhlIHNpemUgb2Yg
+dGhlICd2YWx1ZScgYXJyYXkgaW4NCj4+Pj4gdGhlICdtZ210X2Fkdl9wYXR0ZXJuJyBzdHJ1Y3R1
+cmUgd2lsbCBicmVhayB0aGUgdXNlcnNwYWNlLg0KPj4+PiBDb25zaWRlcmluZyB0aGlzLCBhbmQg
+dG8gYXZvaWQgT09CIGFjY2VzcyByZXZlcnQgdGhlIGxpbWl0cyBmb3IgJ29mZnNldCcNCj4+Pj4g
+YW5kICdsZW5ndGgnIGJhY2sgdG8gdGhlIHZhbHVlIG9mIEhDSV9NQVhfQURfTEVOR1RILg0KPj4+
+Pg0KPj4+PiBGb3VuZCBieSBJbmZvVGVDUyBvbiBiZWhhbGYgb2YgTGludXggVmVyaWZpY2F0aW9u
+IENlbnRlcg0KPj4+PiAobGludXh0ZXN0aW5nLm9yZykgd2l0aCBTVkFDRS4NCj4+Pj4NCj4+Pj4g
+Rml4ZXM6IGRiMDg3MjJmYzdkNCAoIkJsdWV0b290aDogaGNpX2NvcmU6IEZpeCBtaXNzaW5nIGlu
+c3RhbmNlcyB1c2luZyBIQ0lfTUFYX0FEX0xFTkdUSCIpDQo+Pj4+IENjOiBzdGFibGVAdmdlci5r
+ZXJuZWwub3JnDQo+Pj4+IFNpZ25lZC1vZmYtYnk6IElsaWEgR2F2cmlsb3YgPElsaWEuR2F2cmls
+b3ZAaW5mb3RlY3MucnU+DQo+Pj4+IC0tLQ0KPj4+PiAgaW5jbHVkZS9uZXQvYmx1ZXRvb3RoL21n
+bXQuaCB8IDIgKy0NCj4+Pj4gIG5ldC9ibHVldG9vdGgvbWdtdC5jICAgICAgICAgfCA2ICsrKy0t
+LQ0KPj4+PiAgMiBmaWxlcyBjaGFuZ2VkLCA0IGluc2VydGlvbnMoKyksIDQgZGVsZXRpb25zKC0p
+DQo+Pj4+DQo+Pj4+IGRpZmYgLS1naXQgYS9pbmNsdWRlL25ldC9ibHVldG9vdGgvbWdtdC5oIGIv
+aW5jbHVkZS9uZXQvYmx1ZXRvb3RoL21nbXQuaA0KPj4+PiBpbmRleCA3NGVkZWEwNjk4NWIuLjRi
+MDdjZTZkZmQ2OSAxMDA2NDQNCj4+Pj4gLS0tIGEvaW5jbHVkZS9uZXQvYmx1ZXRvb3RoL21nbXQu
+aA0KPj4+PiArKysgYi9pbmNsdWRlL25ldC9ibHVldG9vdGgvbWdtdC5oDQo+Pj4+IEBAIC03ODAs
+NyArNzgwLDcgQEAgc3RydWN0IG1nbXRfYWR2X3BhdHRlcm4gew0KPj4+PiAgICAgICAgIF9fdTgg
+YWRfdHlwZTsNCj4+Pj4gICAgICAgICBfX3U4IG9mZnNldDsNCj4+Pj4gICAgICAgICBfX3U4IGxl
+bmd0aDsNCj4+Pj4gLSAgICAgICBfX3U4IHZhbHVlWzMxXTsNCj4+Pj4gKyAgICAgICBfX3U4IHZh
+bHVlW0hDSV9NQVhfQURfTEVOR1RIXTsNCj4+Pg0KPj4+IFdoeSBub3QgdXNlIEhDSV9NQVhfRVhU
+X0FEX0xFTkdUSCBhYm92ZT8gT3IgcGVyaGFwcyBldmVuIG1ha2UgaXQNCj4+PiBvcGFxdWUgc2lu
+Y2UgdGhlIGFjdHVhbCBzaXplIGlzIGRlZmluZWQgYnkgbGVuZ3RoIC0gb2Zmc2V0Lg0KPj4+DQo+
+Pg0KPj4gQXMgSSBzZWUgaXQsIHVzZXIgcHJvZ3JhbXMgcmVseSBvbiB0aGlzIHNpemUgb2YgdGhl
+IHN0cnVjdHVyZSwgYW5kIGlmIHRoZSBzaXplIGlzIGNoYW5nZWQsIHRoZXkgd2lsbCBiZSBicm9r
+ZW4uDQo+PiBFeGNlcnB0IGZyb20gYmx1ZXogdG9vbHMgc291cmNlczoNCj4+IC4uLg0KPj4gc3Ry
+dWN0dXJlIG9mIG1nbXRfYWR2X3BhdHRlcm4gew0KPj4gdWludDhfdCBhZCB0eXBlOw0KPj4gICAg
+ICAgICB1aW50OF90IG9mZnNldDsNCj4+ICAgICAgICAgbGVuZ3RoIG9mIHVpbnQ4X3Q7DQo+PiAg
+ICAgICAgIHVpbnQ4X3QgdmFsdWVbMzFdOw0KPj4gfSBfX3BhY2tlZDsNCj4+IC4uLg0KPiANCj4g
+V2VsbCBpdCBpcyBicm9rZW4gZm9yIEVBIGFscmVhZHksIHNvIHRoZSBxdWVzdGlvbiBpcyBzaG91
+bGQgd2UgbGVhdmUNCj4gaXQgdG8ganVzdCBoYW5kbGUgbGVnYWN5IGFkdmVydGlzZW1lbnQgb3Ig
+bm90PyANCg0KRnJvbSBhIHNlY3VyaXR5IHBvaW50IG9mIHZpZXcsIGl0IGlzIGJldHRlciB0byBm
+aXggdGhlIHByb2JsZW0gb2YgT09CIGFjY2VzcyBvZiB0aGUgJ3ZhbHVlJyBhcnJheQ0KaW4gYWxs
+IGtlcm5lbHMgc3RhcnRpbmcgZnJvbSB2ZXJzaW9uIDYuNisuDQoNClRoZXJlIGFyZSB0d28gc29s
+dXRpb25zOiANCjEpIFRoZSBzaW1wbGVzdCBzb2x1dGlvbi4gSW5jcmVhc2UgdGhlIHNpemUgdG8g
+dGhlICd2YWx1ZScgYXJyYXkgaW4gdGhlICdtZ210X2Fkdl9wYXR0ZXJuJyBzdHJ1Y3R1cmUsDQpi
+dXQgdGhpcyB0eXBlIG9mIGNvbW1hbmQgd2lsbCBub3Qgd29yazoNCg0KJGJ0bWdtdA0KJG1lbnUg
+bW9uaXRvcg0KJGFkZC1wYXR0ZXJuIDE2OjA6MDEwMjAzMDQwNTA2MDcwODA5MDANCg0KMikgRG8g
+YXMgc3VnZ2VzdGVkIGluIHRoaXMgcGF0Y2gNCg0KIA0KPiBBdCBzb21lIHBvaW50IEkgd2FzDQo+
+IGFjdHVhbGx5IGp1c3QgY29uc2lkZXJpbmcgcmVtb3ZpbmcvZGVwcmVjYXRpbmcgdGhlIHN1cHBv
+cnQgb2YgdGhpcw0KPiBjb21tYW5kIGFsdG9nZXRoZXIgc2luY2UgdGhlcmUgZXhpc3RzIGEgc3Rh
+bmRhcmQgd2F5IHRvIGRvDQo+IGFkdmVydGlzZW1lbnQgbW9uaXRvcmluZyBjYWxsZWQgTW9uaXRv
+cmluZyBBZHZlcnRpc2VycyBpbnRyb2R1Y2VkIGluDQo+IDYuMDoNCj4gDQo+IGh0dHBzOi8vd3d3
+LmJsdWV0b290aC5jb20vY29yZS1zcGVjaWZpY2F0aW9uLTYtZmVhdHVyZS1vdmVydmlldy8/dXRt
+X3NvdXJjZT1pbnRlcm5hbCZ1dG1fbWVkaXVtPWJsb2cmdXRtX2NhbXBhaWduPXRlY2huaWNhbCZ1
+dG1fY29udGVudD1ub3ctYXZhaWxhYmxlLW5ldy12ZXJzaW9uLW9mLXRoZS1ibHVldG9vdGgtY29y
+ZS1zcGVjaWZpY2F0aW9uDQo+IA0KDQpJdCBzZWVtcyB0byBtZSB0aGF0IGl0J3MgYmV0dGVyIHRv
+IHJlbW92ZS9kZXByZWNhdGUgdGhlIHN1cHBvcnQgb2YgdGhlIGNvbW1hbmQNCmluIHRoZSBuZXh0
+IHZlcnNpb24gb2YgdGhlIGtlcm5lbC4NCg0KPiBUaGUgdGhlIHN0YW5kYXJkIG1vbml0b3Jpbmcg
+bGlzdCBkb2Vzbid0IHNlZW0gdG8gYmUgYWJsZSB0byBkbw0KPiBmaWx0ZXJpbmcgb24gdGhlIGRh
+dGEgaXRzZWxmLCB3aGljaCBJIHRoaW5rIHRoZSB3aGVyZSB0aGUgZGVjaXNpb24NCj4gYmFzZWQg
+ZmlsdGVyaW5nIHVzZWQsIHNvIGl0IGlzIG5vdCByZWFsbHkgY29tcGF0aWJsZSB3aXRoIHRoZSBN
+Uw0KPiB2ZW5kb3IgY29tbWFuZHMuDQo+IA0KPj4NCj4+Pj4gIH0gX19wYWNrZWQ7DQo+Pj4+DQo+
+Pj4+ICAjZGVmaW5lIE1HTVRfT1BfQUREX0FEVl9QQVRURVJOU19NT05JVE9SICAgICAgIDB4MDA1
+Mg0KPj4+PiBkaWZmIC0tZ2l0IGEvbmV0L2JsdWV0b290aC9tZ210LmMgYi9uZXQvYmx1ZXRvb3Ro
+L21nbXQuYw0KPj4+PiBpbmRleCBhM2QxNmVlY2UwZDIuLjUwMDAzM2I3MGE5NiAxMDA2NDQNCj4+
+Pj4gLS0tIGEvbmV0L2JsdWV0b290aC9tZ210LmMNCj4+Pj4gKysrIGIvbmV0L2JsdWV0b290aC9t
+Z210LmMNCj4+Pj4gQEAgLTUzOTEsOSArNTM5MSw5IEBAIHN0YXRpYyB1OCBwYXJzZV9hZHZfbW9u
+aXRvcl9wYXR0ZXJuKHN0cnVjdCBhZHZfbW9uaXRvciAqbSwgdTggcGF0dGVybl9jb3VudCwNCj4+
+Pj4gICAgICAgICBmb3IgKGkgPSAwOyBpIDwgcGF0dGVybl9jb3VudDsgaSsrKSB7DQo+Pj4+ICAg
+ICAgICAgICAgICAgICBvZmZzZXQgPSBwYXR0ZXJuc1tpXS5vZmZzZXQ7DQo+Pj4+ICAgICAgICAg
+ICAgICAgICBsZW5ndGggPSBwYXR0ZXJuc1tpXS5sZW5ndGg7DQo+Pj4+IC0gICAgICAgICAgICAg
+ICBpZiAob2Zmc2V0ID49IEhDSV9NQVhfRVhUX0FEX0xFTkdUSCB8fA0KPj4+PiAtICAgICAgICAg
+ICAgICAgICAgIGxlbmd0aCA+IEhDSV9NQVhfRVhUX0FEX0xFTkdUSCB8fA0KPj4+PiAtICAgICAg
+ICAgICAgICAgICAgIChvZmZzZXQgKyBsZW5ndGgpID4gSENJX01BWF9FWFRfQURfTEVOR1RIKQ0K
+Pj4+PiArICAgICAgICAgICAgICAgaWYgKG9mZnNldCA+PSBIQ0lfTUFYX0FEX0xFTkdUSCB8fA0K
+Pj4+PiArICAgICAgICAgICAgICAgICAgIGxlbmd0aCA+IEhDSV9NQVhfQURfTEVOR1RIIHx8DQo+
+Pj4+ICsgICAgICAgICAgICAgICAgICAgKG9mZnNldCArIGxlbmd0aCkgPiBIQ0lfTUFYX0FEX0xF
+TkdUSCkNCj4+Pj4gICAgICAgICAgICAgICAgICAgICAgICAgcmV0dXJuIE1HTVRfU1RBVFVTX0lO
+VkFMSURfUEFSQU1TOw0KPj4+Pg0KPj4+PiAgICAgICAgICAgICAgICAgcCA9IGttYWxsb2Moc2l6
+ZW9mKCpwKSwgR0ZQX0tFUk5FTCk7DQo+Pj4+IC0tDQo+Pj4+IDIuMzkuNQ0KPj4+DQo+Pj4NCj4+
+Pg0KPj4NCj4gDQo+IA0KDQo=
 
