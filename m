@@ -1,114 +1,173 @@
-Return-Path: <stable+bounces-189255-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-189256-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48D4EC08402
-	for <lists+stable@lfdr.de>; Sat, 25 Oct 2025 00:37:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9B9FC08411
+	for <lists+stable@lfdr.de>; Sat, 25 Oct 2025 00:44:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2D6371AA65F7
-	for <lists+stable@lfdr.de>; Fri, 24 Oct 2025 22:37:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 66AB6400935
+	for <lists+stable@lfdr.de>; Fri, 24 Oct 2025 22:44:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC3D42FFF8E;
-	Fri, 24 Oct 2025 22:37:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FA7230B514;
+	Fri, 24 Oct 2025 22:44:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NR+ba8cC"
 X-Original-To: stable@vger.kernel.org
-Received: from air.basealt.ru (air.basealt.ru [193.43.8.18])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5EA72EAB76
-	for <stable@vger.kernel.org>; Fri, 24 Oct 2025 22:37:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.43.8.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3355937160;
+	Fri, 24 Oct 2025 22:44:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761345432; cv=none; b=mjmJ3UQE+QUryzvtb2S/HHOQRN6TqD7f5lAG348JLToTMauuNMEkPr0/xqNFXZgETURgZZVtkGeVYcmicxfG6StDQ506KQrMErreNVIcsYwSLfNHph7NNH+WFws1Fi4u/QM2forLcpsobf4i2h37SuG8YJvjby6rYwL+aD/rGts=
+	t=1761345843; cv=none; b=rc63mRoHCD76O10V7oNWC7U6NmsHCv6PvKLQL8MMMV5GBuzVi36cqUs2hgCkLXK4Z5dxV1fJ0w5xmEICglmMuQD5BqRUQ64FdkLd66Rf5Dpg0PTMQjX9QFZ7TeqrqjLy3vSadA1bm9ivb0GXkrbtub06Ts9P+uRqxQXl1P+sKLU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761345432; c=relaxed/simple;
-	bh=CxtLgnZPhhlvWUm9osH2uLDx8ijMlXi1N9c44WJp2dA=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=kFS/lUpWfXhsmZQDYlWjEtr/k+2eAK8Tw5BC297hN94BHRMOCktSQA5nnmnsDBwKSm96r615l5nkz7KIdIc78KIJmt6hkVkmRGLmZTxauL1XBUYrDxjjHqt7ge+Q5l0sGQtsh4moxFpGPqL6PLs+Cwn7KjKdMbHDdfcm4+j/GM0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org; spf=pass smtp.mailfrom=altlinux.org; arc=none smtp.client-ip=193.43.8.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altlinux.org
-Received: from altlinux.ipa.basealt.ru (unknown [178.76.204.78])
-	(Authenticated sender: kovalevvv)
-	by air.basealt.ru (Postfix) with ESMTPSA id B7E9D23374;
-	Sat, 25 Oct 2025 01:36:57 +0300 (MSK)
-From: Vasiliy Kovalev <kovalev@altlinux.org>
-To: stable@vger.kernel.org
-Cc: Alex Deucher <alexander.deucher@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	"Pan, Xinhui" <Xinhui.Pan@amd.com>,
-	lvc-project@linuxtesting.org,
-	kovalev@altlinux.org
-Subject: [PATCH v2 6.1.y] drm/amdgpu: Fix potential out-of-bounds access in 'amdgpu_discovery_reg_base_init()'
-Date: Sat, 25 Oct 2025 01:36:56 +0300
-Message-Id: <20251024223656.272859-1-kovalev@altlinux.org>
-X-Mailer: git-send-email 2.33.8
+	s=arc-20240116; t=1761345843; c=relaxed/simple;
+	bh=tuvy+AqXN0ZLcAf47nDc5FvtJB/fct1wN56RWkZh0R4=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=uwkfF5UqG1ZQ16kxERWASrALw9cminBuspZv0BzNKIEujGXwqb0zbN5Riz0tQDDhOwa3l8caygbFbXTI0LSn32VnpvxgYQN0QxUw4S3APjBGDG/0vE65DJ5MfHQ1kEAeOSQwrMjLKoxRWeSod4FVYMwouHsuy6mTI7PO7rpoqf0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NR+ba8cC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95334C4CEF1;
+	Fri, 24 Oct 2025 22:44:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761345842;
+	bh=tuvy+AqXN0ZLcAf47nDc5FvtJB/fct1wN56RWkZh0R4=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=NR+ba8cC460oHiAtsdqg9ooDKlAjej23TdViOJivk9QUD0l2xkzVGuL2KFYYESyCG
+	 4phUWuErNaIFRfLE2/SZGhkGfvCBmvS8d8GCrsxiOAR4yOJJUL+6S0xMwpJUEV3b06
+	 C0MMmvU0w33dll58fsAMKaV2Jux2frnCSUFEbfEjjkIZnjzNYivojP9ECqLnyCijsf
+	 wkZPELw/UOLsaQ2a1PcLVE5uYpJX1GOhe5W+wg1CHE9hFWdj+qp8qZ6sH6+D2+7nuI
+	 fM8Z418uB3xMKtrFjs8ge3ms3lhOtj4VJnQlMLwr3sHcxH9GQdReJ5CWphMF7fMWZj
+	 EPi8SZXznJcDw==
+Date: Fri, 24 Oct 2025 17:44:01 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Lucas De Marchi <lucas.demarchi@intel.com>
+Cc: intel-xe@lists.freedesktop.org, linux-pci@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>,
+	Icenowy Zheng <uwu@icenowy.me>,
+	Vivian Wang <wangruikang@iscas.ac.cn>,
+	Thomas =?utf-8?Q?Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Simon Richter <Simon.Richter@hogyros.de>,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH 1/2] PCI: Release BAR0 of an integrated bridge to allow
+ GPU BAR resize
+Message-ID: <20251024224401.GA1371085@bhelgaas>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250918-xe-pci-rebar-2-v1-1-6c094702a074@intel.com>
 
-From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+On Thu, Sep 18, 2025 at 01:58:56PM -0700, Lucas De Marchi wrote:
+> From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+> 
+> Resizing BAR to a larger size has to release upstream bridge windows in
+> order make the bridge windows larger as well (and to potential relocate
+> them into a larger free block within iomem space). Some GPUs have an
+> integrated PCI switch that has BAR0. The resource allocation assigns
+> space for that BAR0 as it does for any resource.
+> 
+> An extra resource on a bridge will pin its upstream bridge window in
+> place which prevents BAR resize for anything beneath that bridge.
+> 
+> Nothing in the pcieport driver provided by PCI core, which typically is
+> the driver bound to these bridges, requires that BAR0. Because of that,
+> releasing the extra BAR does not seem to have notable downsides but
+> comes with a clear upside.
+> 
+> Therefore, release BAR0 of such switches using a quirk and clear its
+> flags to prevent any new invocation of the resource assignment
+> algorithm from assigning the resource again.
+> 
+> Due to other siblings within the PCI hierarchy of all the devices
+> integrated into the GPU, some other devices may still have to be
+> manually removed before the resize is free of any bridge window pins.
+> Such siblings can be released through sysfs to unpin windows while
+> leaving access to GPU's sysfs entries required for initiating the
+> resize operation, whereas removing the topmost bridge this quirk
+> targets would result in removing the GPU device as well so no manual
+> workaround for this problem exists.
+> 
+> Reported-by: Lucas De Marchi <lucas.demarchi@intel.com>
+> Link: https://lore.kernel.org/linux-pci/fl6tx5ztvttg7txmz2ps7oyd745wg3lwcp3h7esmvnyg26n44y@owo2ojiu2mov/
+> Link: https://lore.kernel.org/intel-xe/20250721173057.867829-1-uwu@icenowy.me/
+> Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+> Cc: <stable@vger.kernel.org> # v6.12+
+> Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+> ---
+> 
+> Remarks from Ilpo: this feels quite hacky to me and I'm working towards a
+> better solution which is to consider Resizable BAR maximum size the
+> resource fitting algorithm. But then, I don't expect the better solution
+> to be something we want to push into stable due to extremely invasive
+> dependencies. So maybe consider this an interim/legacy solution to the
+> resizing problem and remove it once the algorithmic approach works (or
+> more precisely retain it only in the old kernel versions).
+> ---
+>  drivers/pci/quirks.c | 23 +++++++++++++++++++++++
+>  1 file changed, 23 insertions(+)
+> 
+> diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
+> index d97335a401930..9b1c08de3aa89 100644
+> --- a/drivers/pci/quirks.c
+> +++ b/drivers/pci/quirks.c
+> @@ -6338,3 +6338,26 @@ static void pci_mask_replay_timer_timeout(struct pci_dev *pdev)
+>  DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_GLI, 0x9750, pci_mask_replay_timer_timeout);
+>  DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_GLI, 0x9755, pci_mask_replay_timer_timeout);
+>  #endif
+> +
+> +/*
+> + * PCI switches integrated into Intel Arc GPUs have BAR0 that prevents
+> + * resizing the BARs of the GPU device due to that bridge BAR0 pinning the
+> + * bridge window it's under in place. Nothing in pcieport requires that
+> + * BAR0.
+> + *
+> + * Release and disable BAR0 permanently by clearing its flags to prevent
+> + * anything from assigning it again.
 
-commit cdb637d339572398821204a1142d8d615668f1e9 upstream.
+Does "disabling BAR0" actually work?  This quirk keeps the PCI core
+from assigning resources to the BAR, but I don't think we have a way
+to actually disable an individual BAR, do we?
 
-The issue arises when the array 'adev->vcn.vcn_config' is accessed
-before checking if the index 'adev->vcn.num_vcn_inst' is within the
-bounds of the array.
+I think the only control is PCI_COMMAND_MEMORY, and the bridge must
+have PCI_COMMAND_MEMORY enabled so memory accesses to downstream
+devices work.
 
-The fix involves moving the bounds check before the array access. This
-ensures that 'adev->vcn.num_vcn_inst' is within the bounds of the array
-before it is used as an index.
+No matter what we do to the struct resource, the hardware BAR still
+contains some address, and the bridge will decode any accesses that
+match the address in the BAR.
 
-Fixes the below:
-drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c:1289 amdgpu_discovery_reg_base_init() error: testing array offset 'adev->vcn.num_vcn_inst' after use.
+Maybe we could effectively disable the BAR by setting it to some
+impossible address, i.e., something outside both the upstream and
+downstream bridge windows so memory accesses could never be routed to
+it?
 
-Fixes: a0ccc717c4ab ("drm/amdgpu/discovery: validate VCN and SDMA instances")
-Cc: Christian König <christian.koenig@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-[ kovalev: bp to fix CVE-2024-27042 ]
-Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
----
-v2: Added braces around the single statement in the `else` block
-    to comply with kernel coding style.
----
- drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c
-index d8441e273cb5..9274ac361203 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c
-@@ -1128,15 +1128,16 @@ static int amdgpu_discovery_reg_base_init(struct amdgpu_device *adev)
- 				 *     0b10 : encode is disabled
- 				 *     0b01 : decode is disabled
- 				 */
--				adev->vcn.vcn_config[adev->vcn.num_vcn_inst] =
--					ip->revision & 0xc0;
--				ip->revision &= ~0xc0;
--				if (adev->vcn.num_vcn_inst < AMDGPU_MAX_VCN_INSTANCES)
-+				if (adev->vcn.num_vcn_inst < AMDGPU_MAX_VCN_INSTANCES) {
-+					adev->vcn.vcn_config[adev->vcn.num_vcn_inst] =
-+						ip->revision & 0xc0;
- 					adev->vcn.num_vcn_inst++;
--				else
-+				} else {
- 					dev_err(adev->dev, "Too many VCN instances: %d vs %d\n",
- 						adev->vcn.num_vcn_inst + 1,
- 						AMDGPU_MAX_VCN_INSTANCES);
-+				}
-+				ip->revision &= ~0xc0;
- 			}
- 			if (le16_to_cpu(ip->hw_id) == SDMA0_HWID ||
- 			    le16_to_cpu(ip->hw_id) == SDMA1_HWID ||
--- 
-2.50.1
-
+> + */
+> +static void pci_release_bar0(struct pci_dev *pdev)
+> +{
+> +	struct resource *res = pci_resource_n(pdev, 0);
+> +
+> +	if (!res->parent)
+> +		return;
+> +
+> +	pci_release_resource(pdev, 0);
+> +	res->flags = 0;
+> +}
+> +DECLARE_PCI_FIXUP_ENABLE(PCI_VENDOR_ID_INTEL, 0x4fa0, pci_release_bar0);
+> +DECLARE_PCI_FIXUP_ENABLE(PCI_VENDOR_ID_INTEL, 0x4fa1, pci_release_bar0);
+> +DECLARE_PCI_FIXUP_ENABLE(PCI_VENDOR_ID_INTEL, 0xe2ff, pci_release_bar0);
+> 
+> -- 
+> 2.50.1
+> 
 
