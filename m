@@ -1,50 +1,56 @@
-Return-Path: <stable+bounces-189258-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-189259-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07DAEC088DC
-	for <lists+stable@lfdr.de>; Sat, 25 Oct 2025 04:20:31 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF7D1C08903
+	for <lists+stable@lfdr.de>; Sat, 25 Oct 2025 04:50:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DEA081C26F0C
-	for <lists+stable@lfdr.de>; Sat, 25 Oct 2025 02:20:54 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 152E63511A7
+	for <lists+stable@lfdr.de>; Sat, 25 Oct 2025 02:50:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C9CA23EA8B;
-	Sat, 25 Oct 2025 02:20:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38E1322FF22;
+	Sat, 25 Oct 2025 02:50:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uhAB9P0J"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="ZvtftmRN"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C702321CA02;
-	Sat, 25 Oct 2025 02:20:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 399B31FBC8C;
+	Sat, 25 Oct 2025 02:50:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.3
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761358826; cv=none; b=bxELtFkyiMa8g+QH+uFZ7/8+KydM0nsrK//zgq2fwYbwt6F4un15y5lPGFYjMjeOIReZXF1n2aVyPUqIuoIC/VKPGc8y10sHQTtBzbG23Q9Jrw5HaQEThAh9rCJCtXEK71bzrzjuHQJTYNGwa6Az2zeVb13SHEsxsws8nIltz5M=
+	t=1761360611; cv=none; b=VNEOb6Y44FHaGaAx0I11VgT3/FTKDjPeQYd+6zj74OVZviMBJiJXe7HLZRLQmvjaGlnIpXab9b1OUKjBu+4oVO0MveIwyaFfaGwDJPGXEm0pcBi0TzAAYIWBNdJVYJAKIkH8s8QPNYeWNKntrmVozsuoa/IfAz1qpBUQ6iTkwbU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761358826; c=relaxed/simple;
-	bh=2u14AvrNR3OwOhbGmZkvkBuYnL6qf3PH8DV9x9B7p+s=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=YzMZ0pf8PGUBbDLxciO+Aw3X73r9xBRA52uiikhrOgA7MSbv2KBCXCSy53zSJ6EAkTrJBbduB5RxRyB75haRSdN6KV2YVNzPolULbfNJ0bc7AEoxaBDgV1099fLmgQnu9q6C/XoKNbPQf5SoQs3BcuD/Uzu5ImGVJDoPp0EYWHY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uhAB9P0J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95F36C4CEF1;
-	Sat, 25 Oct 2025 02:20:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761358826;
-	bh=2u14AvrNR3OwOhbGmZkvkBuYnL6qf3PH8DV9x9B7p+s=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=uhAB9P0JDQhiUO45nX5sNjaC6NNsxcSFrnECJOPywHRVoemV0QSIJQmFxEdj4FAzz
-	 LVNpwo4ZgEVbF/gNv/BkIVCw6wgmLzN7QVngcXoJRZ2zkKGStnlaSXDRsPz/qafgMT
-	 nDWC2Nm4rYZtGdxA7zQpdGAWaPrHEvt0UWUaqWeH8Pou/dMy+Fpmzu6RBmRT+VRbN4
-	 iAxbHnsxaqdISg3p8Zh3LM/6nBnUakSlQ127lZ7fuNLMW7aCXZuDg/+PotGaQK9N2y
-	 +luOZpmcFO7Fq0xgLM5mbWtYlkOR24VSo6p994bkb4h4Tpav6K2/LwpvqJyU/bTMka
-	 NL/yXgq4qXbdg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 70D2C380AA5C;
-	Sat, 25 Oct 2025 02:20:07 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1761360611; c=relaxed/simple;
+	bh=IthRKqaXYla/GIkqCMwx+59tGaJNkOv0wDQqAyF/piY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hcDXG94TVKTMH6YaWLqGc4egR25p2qCNurGZhcKU1efhStjFToAzh0GMw/jP/CqY5mkHgmhU/3m9zZajKAhHE4NFmVrkqrwgPScrs6OWrPVYZhYrEslHGyeEgLDFU9cQa6DsvNc9hOP5ya2MrvWzCc3kuCMMq2GAmbUwYcRZp3c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=ZvtftmRN; arc=none smtp.client-ip=220.197.31.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=/J
+	5o70XA/obLpt91BZcECXr4vrBe6G5ePfm/spl+71w=; b=ZvtftmRN5u2bWYrP/X
+	zrSrAm1511uFYWF160nmSoEQFnyWfno5HgsC9OcWlxHevIFXGEPDk5QqUYdHNExr
+	X96T6PF2GDhGD5ZcpVTfnaG5OFWyArVBNnh8Fteqyi6qOKEn2QQaWOsY0zWVS0Hv
+	O1XyquM2og7/5taDm94IpbMpE=
+Received: from MS-CMFLBWVCLQRG.localdomain (unknown [])
+	by gzga-smtp-mtada-g0-1 (Coremail) with SMTP id _____wD3HzzAOvxoLsBsCg--.59453S2;
+	Sat, 25 Oct 2025 10:49:38 +0800 (CST)
+From: GuangFei Luo <luogf2025@163.com>
+To: viro@zeniv.linux.org.uk
+Cc: brauner@kernel.org,
+	jack@suse.cz,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	GuangFei Luo <luogf2025@163.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] mount: fix duplicate mounts using the new mount API
+Date: Sat, 25 Oct 2025 10:49:34 +0800
+Message-ID: <20251025024934.1350492-1-luogf2025@163.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -52,43 +58,57 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v1] net: phy: dp83867: Disable EEE support as not
- implemented
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <176135880628.4126724.4086948250041165094.git-patchwork-notify@kernel.org>
-Date: Sat, 25 Oct 2025 02:20:06 +0000
-References: <20251023144857.529566-1-ghidoliemanuele@gmail.com>
-In-Reply-To: <20251023144857.529566-1-ghidoliemanuele@gmail.com>
-To: Emanuele Ghidoli <ghidoliemanuele@gmail.com>
-Cc: andrew@lunn.ch, hkallweit1@gmail.com, emanuele.ghidoli@toradex.com,
- linux@armlinux.org.uk, o.rempel@pengutronix.de, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+X-CM-TRANSID:_____wD3HzzAOvxoLsBsCg--.59453S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7Zr1UKFy8Zw45GFWxGF4xXrb_yoW8XF1xpF
+	1FyF9xGrn3Gr43Xw4xZFZ5KrW3Ars5Z3Z0gF15uw1YyryIgF93Xas29F4SvF4UtFWUWF9r
+	ZF4xtr17C3sFgF7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0p_9a9rUUUUU=
+X-CM-SenderInfo: poxrwwisqskqqrwthudrp/1tbizQrxmWj8MyhzWgAAsJ
 
-Hello:
+When using the new mount API, invoking the same mount command multiple
+times such as:
+mount /dev/mapper/mydevice /mnt/mydisk2
+results in multiple identical mount entries being created:
+/dev/mapper/mydevice on /mnt/mydisk2 type ext4 (rw,relatime)
+/dev/mapper/mydevice on /mnt/mydisk2 type ext4 (rw,relatime)
+/dev/mapper/mydevice on /mnt/mydisk2 type ext4 (rw,relatime)
+...
 
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+Fixes: 2db154b3ea8e ("vfs: syscall: Add move_mount(2) to move mounts around")
+Signed-off-by: GuangFei Luo <luogf2025@163.com>
+Cc: <stable@vger.kernel.org> # 5.2+
+---
+ fs/namespace.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-On Thu, 23 Oct 2025 16:48:53 +0200 you wrote:
-> From: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
-> 
-> While the DP83867 PHYs report EEE capability through their feature
-> registers, the actual hardware does not support EEE (see Links).
-> When the connected MAC enables EEE, it causes link instability and
-> communication failures.
-> 
-> [...]
-
-Here is the summary with links:
-  - [v1] net: phy: dp83867: Disable EEE support as not implemented
-    https://git.kernel.org/netdev/net/c/84a905290cb4
-
-You are awesome, thank you!
+diff --git a/fs/namespace.c b/fs/namespace.c
+index d82910f33dc4..9436471955ce 100644
+--- a/fs/namespace.c
++++ b/fs/namespace.c
+@@ -4427,6 +4427,7 @@ SYSCALL_DEFINE5(move_mount,
+ {
+ 	struct path to_path __free(path_put) = {};
+ 	struct path from_path __free(path_put) = {};
++	struct path path __free(path_put) = {};
+ 	struct filename *to_name __free(putname) = NULL;
+ 	struct filename *from_name __free(putname) = NULL;
+ 	unsigned int lflags, uflags;
+@@ -4472,6 +4473,14 @@ SYSCALL_DEFINE5(move_mount,
+ 			return ret;
+ 	}
+ 
++	ret = user_path_at(AT_FDCWD, to_pathname, LOOKUP_FOLLOW, &path);
++	if (ret)
++		return ret;
++
++	/* Refuse the same filesystem on the same mount point */
++	if (path.mnt->mnt_sb == to_path.mnt->mnt_sb && path_mounted(&path))
++		return -EBUSY;
++
+ 	uflags = 0;
+ 	if (flags & MOVE_MOUNT_F_EMPTY_PATH)
+ 		uflags = AT_EMPTY_PATH;
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.43.0
 
 
