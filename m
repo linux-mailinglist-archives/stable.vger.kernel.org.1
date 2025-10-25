@@ -1,64 +1,58 @@
-Return-Path: <stable+bounces-189473-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-189475-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A71E8C0978B
-	for <lists+stable@lfdr.de>; Sat, 25 Oct 2025 18:28:46 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4F88C097FD
+	for <lists+stable@lfdr.de>; Sat, 25 Oct 2025 18:31:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C2601C80CE8
-	for <lists+stable@lfdr.de>; Sat, 25 Oct 2025 16:22:07 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C73A64E694E
+	for <lists+stable@lfdr.de>; Sat, 25 Oct 2025 16:21:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8C45308F13;
-	Sat, 25 Oct 2025 16:18:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8282130BF6A;
+	Sat, 25 Oct 2025 16:18:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FOc05IUi"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MyOzOI6Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74B23304BCD;
-	Sat, 25 Oct 2025 16:18:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DAB0308F15;
+	Sat, 25 Oct 2025 16:18:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761409083; cv=none; b=hHIIQIuyhu4CH+J0s7hUlUDazB24h8zfqgmi9qkCnvK3pVPTIMm+KDqOIjgkO5Y6gHsWjhLk8UNw28ye7xzgyauPnqPYif4wtZTwOqs1X0dJOab64ux1h4co6zsdELk+9ps+CXWBMRrEoC0XLKTKUPIA1XHTXe+8ed/NIcYVmwo=
+	t=1761409087; cv=none; b=SJN47hvVGUdOiWrhD9oc9CiDiP2EFMSXB0KGhfgL5Fibjs8C0u+wbGYilWZloLDyQ8i4Qo3w8rppi8iYAHlBd9MYP2krTH9NKE3ewa/lRLJiBJIX9c6ugAVyQTkSFTbMLk3P/Z4KmV5VWgjzqAHUcjHg683PKnHzyu4kp/fnqgw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761409083; c=relaxed/simple;
-	bh=AyNy1tlQLGAKwjtMvADfL8C+bUqQfeWSjDArGuoYiRM=;
+	s=arc-20240116; t=1761409087; c=relaxed/simple;
+	bh=dtRqBps7HNYjOjd7L3qSxUDDs2O4Z5CyFLs4nFhe+tU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YZrobiZJZU+LRdG3+TkE7vhnXFmz0FCwdgzBjdOlfuVMACIxsywHlttjzGlPyzdL587exSvUTpgkho99UtVgg5SGBQBnSiYHqPlRD+Q018OadTovqc9aaKTRTXZsdX74GpM9RdHFtdo4c1v6eITmBrEpFCQz7eBZEsxt38/ZH3I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FOc05IUi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D19A1C4CEFF;
-	Sat, 25 Oct 2025 16:18:01 +0000 (UTC)
+	 MIME-Version; b=SwNgYZ01m7WnsPscYw9BwwNie7qiakOjLUhcJJR04/RFT+sjHoFoCM4nDMy/0JaAgSZ6jxWWI6IMbs+g2NGTWRIpHonrWvppnJxv2oUsct65Sl7iWJVBmPct+/1Qe4tSLuBHTKu0aoqSA2+JX6fJWJSyzto4bnMtRl/RXoacTiw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MyOzOI6Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA9A9C4CEF5;
+	Sat, 25 Oct 2025 16:18:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761409083;
-	bh=AyNy1tlQLGAKwjtMvADfL8C+bUqQfeWSjDArGuoYiRM=;
+	s=k20201202; t=1761409084;
+	bh=dtRqBps7HNYjOjd7L3qSxUDDs2O4Z5CyFLs4nFhe+tU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FOc05IUi88N9CSd0dVsY1BamktuGF4oBisvZ0ZzudnvWSK9Msdw65ka0Z54FrF1OS
-	 LhIPS7QpVwQlvIH5T64RXTKsoyUS+mEujW5LjsH4zJ5GVdI8HaaANkLALUgE0JwneR
-	 LTNS11ZTu0z35QnKD0CicP+VI1N90kWfP7q7nfTaerrkD2qGzs+ofi82h3iw4gEyJi
-	 TJ2VcK8makDy3xKapXypgY2PL8VHlZR97TGFw7a5nVp7JK1sRyTV3OVlUsJsHAknGk
-	 yBgETYhsU5l0cL9On5kSYIs+9il0kIRUv1GQxCTbU31pIB5Eo9UNqOanzYd9Jl2jO2
-	 uxIem9iAE4gxw==
+	b=MyOzOI6QjC3qKxByz78um/XNs3zN8qPHSU/j82YQYe0qEMvNk6qkTNvLYjgrxvwJy
+	 omMeKSVnY5JNVDT4VanX5XKrk+NXdHnliYJTCRbw7eQwKZ3xO9FsLaKuaK4CLcnT3/
+	 LYAmLjFX+TSDA32Rmb5YB3p7BTOLQXj0VC/TpbyaNrkU7/SZag1tkGrH9PfWUExnWF
+	 6eljRisJkoOHPNX41+VyBk4mYZRJ1j/8QepdW1/WvTBcZ5fkoaZWBmSqz/ceTMZqQF
+	 3AJk3CeITh7Ubn8u/Q/eZ0mEVw8/0R5iD+zNHz49aFF8ZY2PgnODS48rjUDHU+oV62
+	 mBeJJ4ahjUGuA==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Marek Vasut <marek.vasut+renesas@mailbox.org>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Niklas Cassel <cassel@kernel.org>,
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	kwilczynski@kernel.org,
-	Frank.Li@nxp.com,
-	jiangwang@kylinos.cn,
-	khalfella@gmail.com,
-	alexandre.f.demers@gmail.com,
-	dlemoal@kernel.org,
-	shinichiro.kawasaki@wdc.com
-Subject: [PATCH AUTOSEL 6.17-6.12] PCI: endpoint: pci-epf-test: Limit PCIe BAR size for fixed BARs
-Date: Sat, 25 Oct 2025 11:57:06 -0400
-Message-ID: <20251025160905.3857885-195-sashal@kernel.org>
+	hkallweit1@gmail.com,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.17-6.6] net: phy: clear link parameters on admin link down
+Date: Sat, 25 Oct 2025 11:57:07 -0400
+Message-ID: <20251025160905.3857885-196-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251025160905.3857885-1-sashal@kernel.org>
 References: <20251025160905.3857885-1-sashal@kernel.org>
@@ -71,130 +65,88 @@ MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.17.5
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Marek Vasut <marek.vasut+renesas@mailbox.org>
+From: Oleksij Rempel <o.rempel@pengutronix.de>
 
-[ Upstream commit d5f6bd3ee3f5048f272182dc91675c082773999e ]
+[ Upstream commit 60f887b1290b43a4f5a3497982a725687b193fa4 ]
 
-Currently, the test allocates BAR sizes according to fixed table bar_size.
-This does not work with controllers which have fixed size BARs that are
-smaller than the requested BAR size. One such controller is Renesas R-Car
-V4H PCIe controller, which has BAR4 size limited to 256 bytes, which is
-much less than one of the BAR size, 131072 currently requested by this
-test. A lot of controllers drivers in-tree have fixed size BARs, and they
-do work perfectly fine, but it is only because their fixed size is larger
-than the size requested by pci-epf-test.c
+When a PHY is halted (e.g. `ip link set dev lan2 down`), several
+fields in struct phy_device may still reflect the last active
+connection. This leads to ethtool showing stale values even though
+the link is down.
 
-Adjust the test such that in case a fixed size BAR is detected, the fixed
-BAR size is used, as that is the only possible option.
+Reset selected fields in _phy_state_machine() when transitioning
+to PHY_HALTED and the link was previously up:
 
-This helps with test failures reported as follows:
+- speed/duplex -> UNKNOWN, but only in autoneg mode (in forced mode
+  these fields carry configuration, not status)
+- master_slave_state -> UNKNOWN if previously supported
+- mdix -> INVALID (state only, same meaning as "unknown")
+- lp_advertising -> always cleared
 
-  pci_epf_test pci_epf_test.0: requested BAR size is larger than fixed size
-  pci_epf_test pci_epf_test.0: Failed to allocate space for BAR4
+The cleanup is skipped if the PHY is in PHY_ERROR state, so the
+last values remain available for diagnostics.
 
-Signed-off-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
-[mani: reworded description]
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
-Link: https://patch.msgid.link/20250905184240.144431-1-marek.vasut+renesas@mailbox.org
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20250917094751.2101285-1-o.rempel@pengutronix.de
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
 YES
+- `_phy_state_machine()` now clears the runtime status fields (speed,
+  duplex, master/slave, MDI-X, partner advertising) when transitioning a
+  previously up PHY into `PHY_HALTED`, so administrative link-down stops
+  reporting stale values to ethtool (`drivers/net/phy/phy.c:1551-1561`).
+- These members are exactly what `phy_ethtool_ksettings_get()` surfaces
+  to user space, so leaving them stale makes `ethtool link`/`ip link`
+  misreport the link after an admin down; the new resets ensure the
+  user-visible API reflects that the link is unknown/down
+  (`drivers/net/phy/phy.c:273-296`).
+- The change is careful to leave forced-mode configurations intact
+  (`phydev->autoneg == AUTONEG_ENABLE` guard at
+  `drivers/net/phy/phy.c:1552-1555`) and avoids touching hardware
+  registers, which keeps the risk of behavioural regressions low.
+- Master/slave state is only reset when the feature is supported, while
+  diagnostics in `PHY_ERROR` still retain the last negotiated
+  information thanks to the guarded fall-through
+  (`drivers/net/phy/phy.c:1556-1569`).
+- The touched fields are long-standing members of `struct phy_device`
+  (`include/linux/phy.h:665-713`), so the patch is self-contained,
+  architecture-neutral, and aligns with an earlier mainline fix that
+  already clears EEE runtime flags on the same state transition.
 
-Explanation
-- Fixes a real test failure. The test function previously requested
-  hard-coded BAR sizes from `bar_size[]`, e.g., `BAR_4` = 131072 bytes
-  (128 KiB) in `drivers/pci/endpoint/functions/pci-epf-test.c:105`. On
-  controllers with smaller fixed-size BARs (e.g., Renesas R-Car V4H BAR4
-  = 256 bytes), `pci_epf_alloc_space()` rejected the request and the
-  test failed with:
-  - "requested BAR size is larger than fixed size"
-  - "Failed to allocate space for BAR4"
-  These messages originate from the fixed-size enforcement in
-`pci_epf_alloc_space()` (drivers/pci/endpoint/pci-epf-core.c:267 and
-error at drivers/pci/endpoint/pci-epf-core.c:282).
+ drivers/net/phy/phy.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-- Minimal, targeted change in the EPF test. The patch adjusts the
-  allocation loop so that for each non-register BAR it first checks if
-  the EPC declares the BAR as fixed-size and, if so, requests that exact
-  size instead of the hard-coded test size:
-  - Added fixed-size check and selection:
-    drivers/pci/endpoint/functions/pci-epf-test.c:1070
-  - Uses `fixed_size` for fixed BARs; otherwise falls back to
-    `bar_size[]`: drivers/pci/endpoint/functions/pci-epf-test.c:1071 and
-    drivers/pci/endpoint/functions/pci-epf-test.c:1073
-  - Passes the selected size into `pci_epf_alloc_space()`:
-    drivers/pci/endpoint/functions/pci-epf-test.c:1075
-
-- Aligns with existing EPC semantics. `pci_epf_alloc_space()` already
-  enforces fixed-size BARs by returning NULL when a request exceeds the
-  fixed size and coerces accepted requests to the hardware’s fixed size
-  (drivers/pci/endpoint/pci-epf-core.c:267 and drivers/pci/endpoint/pci-
-  epf-core.c:282). The change avoids over-sized requests up front,
-  preventing spurious failures, and is consistent with what
-  `pci_epf_alloc_space()` would have done anyway.
-
-- Does not alter critical behavior for the register BAR. The test still
-  computes the register BAR size as register space + optional MSI-X
-  table + PBA and allocates that for the chosen `test_reg_bar`
-  (drivers/pci/endpoint/functions/pci-epf-test.c:1046–1055). If a
-  controller’s register BAR itself is fixed and too small to hold the
-  required registers/MSI-X structures, failing is correct because the
-  test cannot run on such hardware.
-
-- Low regression risk:
-  - Scope-limited to a test EPF driver (`pci-epf-test`). No UAPI or ABI
-    changes.
-  - For controllers whose fixed size is larger than the test’s
-    `bar_size[]`, this change merely allocates the larger, correct fixed
-    size that hardware requires (previously `pci_epf_alloc_space()`
-    would coerce the result to fixed size anyway).
-  - If `fixed_size` is reported as zero (misconfigured or unsupported
-    case), `pci_epf_alloc_space()` still falls back to a minimum sane
-    allocation (128 bytes), preserving prior behavior.
-
-- Clear user impact: It addresses real-world failures on controllers
-  with smaller fixed BARs (e.g., Renesas R-Car Gen4 endpoints specify
-  fixed-size BARs such as BAR4=256 bytes:
-  drivers/pci/controller/dwc/pcie-rcar-gen4.c:426), allowing the EPF
-  test to run without allocation errors.
-
-- Meets stable backport criteria:
-  - Bug fix, not a feature.
-  - Small and contained.
-  - Minimal risk and no architectural changes.
-  - Confined to PCI endpoint test function code.
-
-Given the above, this is a solid candidate for stable backporting.
-
- drivers/pci/endpoint/functions/pci-epf-test.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/pci/endpoint/functions/pci-epf-test.c b/drivers/pci/endpoint/functions/pci-epf-test.c
-index 044f5ea0716d1..31617772ad516 100644
---- a/drivers/pci/endpoint/functions/pci-epf-test.c
-+++ b/drivers/pci/endpoint/functions/pci-epf-test.c
-@@ -1067,7 +1067,12 @@ static int pci_epf_test_alloc_space(struct pci_epf *epf)
- 		if (bar == test_reg_bar)
- 			continue;
- 
--		base = pci_epf_alloc_space(epf, bar_size[bar], bar,
-+		if (epc_features->bar[bar].type == BAR_FIXED)
-+			test_reg_size = epc_features->bar[bar].fixed_size;
-+		else
-+			test_reg_size = bar_size[bar];
-+
-+		base = pci_epf_alloc_space(epf, test_reg_size, bar,
- 					   epc_features, PRIMARY_INTERFACE);
- 		if (!base)
- 			dev_err(dev, "Failed to allocate space for BAR%d\n",
+diff --git a/drivers/net/phy/phy.c b/drivers/net/phy/phy.c
+index e046dd858f151..02da4a203ddd4 100644
+--- a/drivers/net/phy/phy.c
++++ b/drivers/net/phy/phy.c
+@@ -1548,6 +1548,19 @@ static enum phy_state_work _phy_state_machine(struct phy_device *phydev)
+ 		}
+ 		break;
+ 	case PHY_HALTED:
++		if (phydev->link) {
++			if (phydev->autoneg == AUTONEG_ENABLE) {
++				phydev->speed = SPEED_UNKNOWN;
++				phydev->duplex = DUPLEX_UNKNOWN;
++			}
++			if (phydev->master_slave_state !=
++						MASTER_SLAVE_STATE_UNSUPPORTED)
++				phydev->master_slave_state =
++						MASTER_SLAVE_STATE_UNKNOWN;
++			phydev->mdix = ETH_TP_MDI_INVALID;
++			linkmode_zero(phydev->lp_advertising);
++		}
++		fallthrough;
+ 	case PHY_ERROR:
+ 		if (phydev->link) {
+ 			phydev->link = 0;
 -- 
 2.51.0
 
