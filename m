@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-189432-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-189434-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06995C097D6
-	for <lists+stable@lfdr.de>; Sat, 25 Oct 2025 18:30:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AFC8C09665
+	for <lists+stable@lfdr.de>; Sat, 25 Oct 2025 18:24:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 78F654F62AE
-	for <lists+stable@lfdr.de>; Sat, 25 Oct 2025 16:19:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 419B21C251E2
+	for <lists+stable@lfdr.de>; Sat, 25 Oct 2025 16:19:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AB3F3054EA;
-	Sat, 25 Oct 2025 16:16:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4C3A2957B6;
+	Sat, 25 Oct 2025 16:16:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UPt3eEkQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b3j1aXHg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0037B306D58;
-	Sat, 25 Oct 2025 16:16:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98C86306D50;
+	Sat, 25 Oct 2025 16:16:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761408964; cv=none; b=pBQyUjeDSv0nhNBSkMHguDetOrbAAo5tXYd1hHXV1qCLyjCshCYIh7s8mcd3nd6Jc+AMe0TGsGvVNV0W2ip/JkUQ9AMO9LTLgFogDaZ5qyw1O7NJdDCP1HnxnXKwmJWqA6xH63HCm7eZ9+HSypMx+eluAlT8dOVRXQHghP/Pjk0=
+	t=1761408967; cv=none; b=EZP3remUQ6mnkZ1KuH6rDPfMJotbbOjCjfr29x/52bsxTC7NgOZaObhlbNdY3GLSJ1PvOAuMe11XBbtIDfXUDNjbpAu/fGcmGCdkQxoUw6LH2Rx/pJahhWJ4IRP0u5ilnggbLeDhNwUFxsUQXkB5Ccu9RUT0E/85ESSBn5VJtds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761408964; c=relaxed/simple;
-	bh=Z0gYjaT/pj2+kw/kJwmeS138tIDeq1u8T5VPhho6WXE=;
+	s=arc-20240116; t=1761408967; c=relaxed/simple;
+	bh=lyJh3iMHKiH1eHeVXb+VzrOsb7MZtUAcEgdXBjvlnZs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EbLhAF+FheJXR9SNI5cn6gbF8Smhp3ZyBA0/WbIcvBMW7n2KBkyNioCVpDDSZ0iIV0Kq4UgkgpysuoayhmyOWxu6GHcfPbBebM7/k4jumHbEqMwvnjertYfP09Ztj3amn+wVu18c33uUUQNRYVM37mKzoaBezEuY2k1yyRQ5aJA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UPt3eEkQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B97DC4CEFB;
-	Sat, 25 Oct 2025 16:16:02 +0000 (UTC)
+	 MIME-Version:Content-Type; b=d4RKqR4lNcpvs60Pup4detRHj8CeN+VSmHPlJc6+O0MDL5ZiylZtsDwngxorXW70N0l6uSOIUq5uuL9y967n+z1LUi9SBQqppuFzwb+gdV2WKIYc991lZnRVJIsQHU25reQIP7hOPWe+aHDajTdf0GL5madxHntbYcT4PyNLqt4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b3j1aXHg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2703C116B1;
+	Sat, 25 Oct 2025 16:16:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761408963;
-	bh=Z0gYjaT/pj2+kw/kJwmeS138tIDeq1u8T5VPhho6WXE=;
+	s=k20201202; t=1761408964;
+	bh=lyJh3iMHKiH1eHeVXb+VzrOsb7MZtUAcEgdXBjvlnZs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UPt3eEkQBmGbk+OQfd2k3C4yPVZzX3Ama4LeeNW0nbTFL+T5hk9FsmzfXP+3ruknk
-	 SK86pWjMMOhYibxXSBNDxGPL4megVe2jmUeZjHEX9Dfniri+bAjFKhmpYFALYY6V3i
-	 wcUSsCmian1kCCfo1fW4bXbbT1qnycWgn27H9Q+GPGtFaiWDca9pqnN1SUfFPfblG9
-	 wtk50+HwNie0rLksSHOoiJfacxExtjMtOWXmgocNmM9BAg46XEMDlb/Avp/kSg2r2Y
-	 8ArY/CmNzwut6Lp/nA5l7XGYWoDdaZf7fnl1raDHn2BEPLvsv8FCpOH2KVMUr8U5+N
-	 4eWH1aQH7MUYg==
+	b=b3j1aXHgf+dL4LbJI182kSSrNLDw5cizDOVSCsW0XPz+LudSb9ft6mARRDbJ6WyAa
+	 Wz9qwUvLBdkvn/zaG47IYXL7SwCJI3o7R+Ol2V+P+TvwhK2sFscdCuVBNG1kJKXVev
+	 9IW8hMgYH5ji0QxcIwFD+n8MbG4TUEAHnbhOdKcR62NZaulAt1+evYpBEW91+roIxV
+	 Ai8YA9V4Ld8Moz7Z284epSt7DaBoF9XsfjomGaLSAZt+pr7xQ+n5vANnugNibsX5JL
+	 tWADoYXctbW5TP8iyE5D0fwydEwT8ncOi+eQShuML3jJAYpq97S1EyWsEbGXyQdx7A
+	 yE9aSAUp2YakQ==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Kuniyuki Iwashima <kuniyu@google.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Jakub Kicinski <kuba@kernel.org>,
+Cc: Justin Tee <justin.tee@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>,
-	pabeni@redhat.com,
-	willemb@google.com
-Subject: [PATCH AUTOSEL 6.17-5.4] net: Call trace_sock_exceed_buf_limit() for memcg failure with SK_MEM_RECV.
-Date: Sat, 25 Oct 2025 11:56:25 -0400
-Message-ID: <20251025160905.3857885-154-sashal@kernel.org>
+	paul.ely@broadcom.com,
+	linux-scsi@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.17-6.12] scsi: lpfc: Clean up allocated queues when queue setup mbox commands fail
+Date: Sat, 25 Oct 2025 11:56:26 -0400
+Message-ID: <20251025160905.3857885-155-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251025160905.3857885-1-sashal@kernel.org>
 References: <20251025160905.3857885-1-sashal@kernel.org>
@@ -69,116 +67,69 @@ X-stable-base: Linux 6.17.5
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
+From: Justin Tee <justin.tee@broadcom.com>
 
-[ Upstream commit 9d85c565a7b7c78b732393c02bcaa4d5c275fe58 ]
+[ Upstream commit 803dfd83df33b7565f23aef597d5dd036adfa792 ]
 
-Initially, trace_sock_exceed_buf_limit() was invoked when
-__sk_mem_raise_allocated() failed due to the memcg limit or the
-global limit.
+lpfc_sli4_queue_setup() does not allocate memory and is used for
+submitting CREATE_QUEUE mailbox commands.  Thus, if such mailbox
+commands fail we should clean up by also freeing the memory allocated
+for the queues with lpfc_sli4_queue_destroy().  Change the intended
+clean up label for the lpfc_sli4_queue_setup() error case to
+out_destroy_queue.
 
-However, commit d6f19938eb031 ("net: expose sk wmem in
-sock_exceed_buf_limit tracepoint") somehow suppressed the event
-only when memcg failed to charge for SK_MEM_RECV, although the
-memcg failure for SK_MEM_SEND still triggers the event.
-
-Let's restore the event for SK_MEM_RECV.
-
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Shakeel Butt <shakeel.butt@linux.dev>
-Link: https://patch.msgid.link/20250815201712.1745332-5-kuniyu@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Justin Tee <justin.tee@broadcom.com>
+Message-ID: <20250915180811.137530-4-justintee8345@gmail.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
 YES
+- The failure path after `lpfc_sli4_queue_setup()` now jumps to
+  `out_destroy_queue` (`drivers/scsi/lpfc/lpfc_sli.c:8820`),
+  guaranteeing that any queues allocated by `lpfc_sli4_queue_create()`
+  are torn down before we bail out.
+- Those queues hold DMAable pages allocated in large batches
+  (`drivers/scsi/lpfc/lpfc_init.c:10420`), so skipping
+  `lpfc_sli4_queue_destroy()` leaked real memory whenever the mailbox
+  CREATE_QUEUE commands failed—precisely the scenario this fix covers.
+- `out_destroy_queue` already performs the paired cleanup
+  (`drivers/scsi/lpfc/lpfc_sli.c:9104`), invoking
+  `lpfc_sli4_queue_destroy()` which handles partial setups and releases
+  every queue resource (`drivers/scsi/lpfc/lpfc_init.c:10862`); we
+  simply make sure the queue-setup error uses the same, already-tested
+  path.
+- The change is tiny (one goto target), touches only the error path, and
+  aligns this branch with other existing failures that already call
+  `out_destroy_queue`, so regression risk is minimal while preventing a
+  concrete resource leak on failed probe/recovery attempts.
 
-- What it fixes
-  - Restores a missing tracepoint emission when memory cgroup charge
-    fails for receive allocations. Today, the tracepoint is not emitted
-    for SK_MEM_RECV on memcg charge failure, which breaks observability
-    for memory pressure on receive paths.
-  - The suppression was introduced by d6f19938eb031 (“net: expose sk
-    wmem in sock_exceed_buf_limit tracepoint”), as confirmed by blame on
-    the conditional emission at net/core/sock.c:3335-3336.
-
-- Change details
-  - Current code (before this patch) only emits the tracepoint if:
-    - send path: always, or
-    - receive path: only if memcg charge “succeeded” (`charged ==
-      true`):
-      - net/core/sock.c:3335-3336
-        if (kind == SK_MEM_SEND || (kind == SK_MEM_RECV && charged))
-        trace_sock_exceed_buf_limit(sk, prot, allocated, kind);
-  - The patch makes the emission unconditional in the suppression path:
-    - Effectively changes the above to:
-      - net/core/sock.c:3336
-        trace_sock_exceed_buf_limit(sk, prot, allocated, kind);
-  - No other logic or accounting is changed; the uncharge remains
-    correctly guarded by `if (memcg && charged)` (net/core/sock.c:3340),
-    preserving correct memcg accounting.
-
-- Scope and risk
-  - Small, contained one-line change in a well-defined path (the
-    suppress_allocation path of __sk_mem_raise_allocated()).
-  - Functional impact limited to tracing only; no behavior change in
-    networking or memory accounting.
-  - Tracepoints are nop when disabled (static branches), so overhead
-    impact is negligible; when enabled, this restores expected
-    visibility for memcg receive failures.
-
-- Historical/contextual analysis
-  - Originally, the tracepoint was intended to fire on allocation
-    suppression due to either global or memcg limits.
-  - d6f19938eb031 (blame at net/core/sock.c:3335-3336) unintentionally
-    gated the SK_MEM_RECV case on `charged`, suppressing the event
-    specifically when memcg charge failed (the exact condition users
-    need to observe).
-  - A related fix, 8542d6fac25c0 (“Fix sock_exceed_buf_limit not being
-    triggered in __sk_mem_raise_allocated”), already corrected a
-    different regression around default `charged` and uncharge gating,
-    and is present in this tree (net/core/sock.c:3340). This new change
-    complements that by fixing the SK_MEM_RECV/memcg-fail emission gap.
-
-- Stable backport criteria
-  - Important bugfix (restores a lost diagnostic signal used by
-    operators for memory pressure analysis and debugging).
-  - Minimal and localized change; no ABI/API or architectural changes.
-  - No side effects on core data path or memory accounting.
-  - Affects a core net tracepoint but only its emission conditions;
-    matches original intent and symmetry with SK_MEM_SEND.
-
-- Applicability/dependencies
-  - Applies cleanly to trees where the conditional exists (introduced by
-    d6f19938eb031). No additional dependencies beyond the already-
-    present tracepoint infrastructure.
-  - For older stable series also missing 8542d6fac25c0, consider
-    backporting that commit as well to avoid other missed events in non-
-    memcg scenarios.
-
-Conclusion: Backporting this commit is low risk and restores expected
-tracing semantics for a real-world observability regression.
-
- net/core/sock.c | 3 +--
+ drivers/scsi/lpfc/lpfc_sli.c | 3 +--
  1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/net/core/sock.c b/net/core/sock.c
-index e21348ead7e76..1382bddcbaff4 100644
---- a/net/core/sock.c
-+++ b/net/core/sock.c
-@@ -3336,8 +3336,7 @@ int __sk_mem_raise_allocated(struct sock *sk, int size, int amt, int kind)
- 		}
+diff --git a/drivers/scsi/lpfc/lpfc_sli.c b/drivers/scsi/lpfc/lpfc_sli.c
+index a8fbdf7119d88..d82ea9df098b8 100644
+--- a/drivers/scsi/lpfc/lpfc_sli.c
++++ b/drivers/scsi/lpfc/lpfc_sli.c
+@@ -8820,7 +8820,7 @@ lpfc_sli4_hba_setup(struct lpfc_hba *phba)
+ 	if (unlikely(rc)) {
+ 		lpfc_printf_log(phba, KERN_ERR, LOG_TRACE_EVENT,
+ 				"0381 Error %d during queue setup.\n", rc);
+-		goto out_stop_timers;
++		goto out_destroy_queue;
  	}
- 
--	if (kind == SK_MEM_SEND || (kind == SK_MEM_RECV && charged))
--		trace_sock_exceed_buf_limit(sk, prot, allocated, kind);
-+	trace_sock_exceed_buf_limit(sk, prot, allocated, kind);
- 
- 	sk_memory_allocated_sub(sk, amt);
- 
+ 	/* Initialize the driver internal SLI layer lists. */
+ 	lpfc_sli4_setup(phba);
+@@ -9103,7 +9103,6 @@ lpfc_sli4_hba_setup(struct lpfc_hba *phba)
+ 	lpfc_free_iocb_list(phba);
+ out_destroy_queue:
+ 	lpfc_sli4_queue_destroy(phba);
+-out_stop_timers:
+ 	lpfc_stop_hba_timers(phba);
+ out_free_mbox:
+ 	mempool_free(mboxq, phba->mbox_mem_pool);
 -- 
 2.51.0
 
