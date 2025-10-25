@@ -1,80 +1,68 @@
-Return-Path: <stable+bounces-189286-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-189288-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53849C092FD
-	for <lists+stable@lfdr.de>; Sat, 25 Oct 2025 18:10:02 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id D10A4C09336
+	for <lists+stable@lfdr.de>; Sat, 25 Oct 2025 18:11:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E369640646D
-	for <lists+stable@lfdr.de>; Sat, 25 Oct 2025 16:10:00 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id BC4514ED854
+	for <lists+stable@lfdr.de>; Sat, 25 Oct 2025 16:10:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61657302754;
-	Sat, 25 Oct 2025 16:09:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EEA730217F;
+	Sat, 25 Oct 2025 16:09:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eP6GeIMg"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RRqtLvNn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D905205AB6;
-	Sat, 25 Oct 2025 16:09:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC3DE205AB6;
+	Sat, 25 Oct 2025 16:09:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761408568; cv=none; b=NGwpreO5rxgPvhpIuVCC4AWIDVrqdaFuWia/h3Ztk70MyoZKKQ4GYYUCsL6MBwVENexaNScrwfIcvVPSVmlyVrhOstkY2fKdArwl/2OJJ2aKiQ97K+DlZ2mwyEGL+zUCLb1FuV3c5CeCFgdLyZ/6oXWQkluAhqxq6wkOdDpOf+g=
+	t=1761408574; cv=none; b=RSJZkc8wkt1ImmwPw6A0hFmeLlgqSkmwQtWU7rUQPIxhnWGyi5wwXIzWmJHrEp763QzeZqL/sq1nS8lsGVEH/CwSsTCz3/crRPNlKFUlGnNIN7NlcGkjVh52HJe2MyyPzmOcSE3JhCJM38NwTqCkd/4xIy/cZux5aO10vyjEHX8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761408568; c=relaxed/simple;
-	bh=2d7hUEiGhg9UfEShfuwiWA5RNuIZNt9wq3EFNmRce8k=;
+	s=arc-20240116; t=1761408574; c=relaxed/simple;
+	bh=GlLpGMADaZvuf4+FJmhokAYc5ZoXqan5EcarXq450wc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ao68ov1Dj8MFkX0N52H3+PXHklLOJZYxXQEJhHNqm42LD3Gm3f2OW5k9VGYeiOkRoOYvzHYQggXVJwLNBibAksfbNVxQeRNULKM5kted7R1IwcBTJmYJbaGCYDOJ7OuLRr9vx+E25Jldm+enOCOZCR0LW2neW8pf5+TgpPJH7WA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eP6GeIMg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E6C7C4AF09;
-	Sat, 25 Oct 2025 16:09:24 +0000 (UTC)
+	 MIME-Version:Content-Type; b=nQmSUyBjSQCJ+lcDa3aaN2It0BixrThR7e3iGi4pIvOHdfmFNwpxmVCoeu41GbfjVUZZCPqdXO2FjU4q/3l32tbUw2kclEcc3QRkq0TooaqI2hBcEh3OfavC9oDLinwciy0fekXr9BD/seGCQHCBzfJq7xZEbJOJtMQLtEZk0Ls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RRqtLvNn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15947C4CEFB;
+	Sat, 25 Oct 2025 16:09:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761408567;
-	bh=2d7hUEiGhg9UfEShfuwiWA5RNuIZNt9wq3EFNmRce8k=;
+	s=k20201202; t=1761408571;
+	bh=GlLpGMADaZvuf4+FJmhokAYc5ZoXqan5EcarXq450wc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eP6GeIMg3ssMpqmoGnpAQltBurH994gSf5jBUoukHAiS+INja8zNrBTsnApw9iqTn
-	 KxfzIIZDIVRK/ms9g6AVzfsOBePfajM1Ik5o9ft/Azoi2Q9C7DSQNhXFEOYuAOPODG
-	 eccrOoEcce4D5sZYrzk8cvMifJ3J6qdW8ed5pOMTJTiWq0r33KxQCZa0lmB3mC9yyg
-	 J0WhvrzeL9OCv8phiLEZk+cTk72LGB9wFRSV3iYN2LFqaqSHoRpDe0LFC25mMzFlk6
-	 rQyg/9m9zEVZ3uJR+gZ0AdIN0u9EyZlqr8QZZHEOGJKoloGn64C99D0Z68HbXXow83
-	 ExtD8jGIhc/qw==
+	b=RRqtLvNnC++mhTCvWPhsXy/KhixZOq9Gzbe3a8YqgQhYEqsoZtzMJACHtHCZq1uWn
+	 4MDDJMeaxAEpfjOFLlO2ol/9ggwizlVC5wAap08tL9edt4ghd7GQ1rdiP6Dtqe+Ibr
+	 57cDRVl39jInULbms11lPEwAn0DaY28oprYsk2c2oX7gHYguSmeTT5PC/84EGCB3Ad
+	 Kboz/dQ8g5IFg0wza7MMKZb67ov6DXlBtWvLcQdcXy51HBAH99G0UBcPqxPAp0xMs1
+	 RIBXZJG/1ZhGVMNLUfH1+EoVwvYxllYYI4O4zaY7P15vRHOb5KX1UHvqhi91GjvHgu
+	 hCOvWZuLHdMmQ==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Karthi Kandasamy <karthi.kandasamy@amd.com>,
-	Aric Cyr <aric.cyr@amd.com>,
-	Ivan Lipski <ivan.lipski@amd.com>,
-	Dan Wheeler <daniel.wheeler@amd.com>,
+Cc: Ostrowski Rafal <rostrows@amd.com>,
+	Alvin Lee <alvin.lee2@amd.com>,
+	Wayne Lin <wayne.lin@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
-	Wayne.Lin@amd.com,
-	roman.li@amd.com,
-	alvin.lee2@amd.com,
-	ray.wu@amd.com,
-	Dillon.Varone@amd.com,
-	PeiChen.Huang@amd.com,
-	Charlene.Liu@amd.com,
-	Sung.Lee@amd.com,
-	alexandre.f.demers@gmail.com,
-	Richard.Chiang@amd.com,
-	ryanseto@amd.com,
-	linux@treblig.org,
-	mario.limonciello@amd.com,
+	Alvin.Lee2@amd.com,
+	nicholas.kazlauskas@amd.com,
+	dillon.varone@amd.com,
 	alex.hung@amd.com,
-	chiahsuan.chung@amd.com,
-	harry.wentland@amd.com,
-	chris.park@amd.com,
-	make24@iscas.ac.cn,
-	rvojvodi@amd.com,
-	haoping.liu@amd.com,
-	siqueira@igalia.com,
-	mwen@igalia.com
-Subject: [PATCH AUTOSEL 6.17-6.6] drm/amd/display: Add AVI infoframe copy in copy_stream_update_to_stream
-Date: Sat, 25 Oct 2025 11:53:59 -0400
-Message-ID: <20251025160905.3857885-8-sashal@kernel.org>
+	okuzhyln@amd.com,
+	leo.chen@amd.com,
+	alexandre.f.demers@gmail.com,
+	Ovidiu.Bunea@amd.com,
+	peterson.guo@amd.com,
+	joshua.aberback@amd.com
+Subject: [PATCH AUTOSEL 6.17] drm/amd/display: Update tiled to tiled copy command
+Date: Sat, 25 Oct 2025 11:54:00 -0400
+Message-ID: <20251025160905.3857885-9-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251025160905.3857885-1-sashal@kernel.org>
 References: <20251025160905.3857885-1-sashal@kernel.org>
@@ -90,135 +78,107 @@ X-stable-base: Linux 6.17.5
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Karthi Kandasamy <karthi.kandasamy@amd.com>
+From: Ostrowski Rafal <rostrows@amd.com>
 
-[ Upstream commit c8bedab2d9a1a0daa49ac20f9928a943f7205582 ]
+[ Upstream commit 19f76f2390be5abe8d5ed986780b73564ba2baca ]
 
-[WHY]
-Ensure AVI infoframe updates from stream updates are applied to the active
-stream so OS overrides are not lost.
+[Why & How]
+Tiled command rect dimensions is 1 based, do rect_x/y - 1 internally
 
-[HOW]
-Copy avi_infopacket to stream when valid flag is set.
-Follow existing infopacket copy pattern and perform a basic validity check before assignment.
-
-Reviewed-by: Aric Cyr <aric.cyr@amd.com>
-Signed-off-by: Karthi Kandasamy <karthi.kandasamy@amd.com>
-Signed-off-by: Ivan Lipski <ivan.lipski@amd.com>
-Tested-by: Dan Wheeler <daniel.wheeler@amd.com>
+Reviewed-by: Alvin Lee <alvin.lee2@amd.com>
+Signed-off-by: Ostrowski Rafal <rostrows@amd.com>
+Signed-off-by: Wayne Lin <wayne.lin@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-YES. This change plugs a real bug: when userspace/OS pushes an AVI
-infoframe override through `dc_stream_update`, the override was never
-persisted into the active `dc_stream_state`, so the next
-`resource_build_info_frame()` rebuilt the packet from defaults and
-silently threw the override away. The fix mirrors the existing handling
-for other info packets: it copies the provided AVI packet into the
-stream state (`drivers/gpu/drm/amd/display/dc/core/dc.c:3313`) and adds
-storage for it in the stream/update structs
-(`drivers/gpu/drm/amd/display/dc/dc_stream.h:206` and
-`drivers/gpu/drm/amd/display/dc/dc_stream.h:339`). Once stored,
-`set_avi_info_frame()` now reuses the cached packet whenever it’s marked
-valid (`drivers/gpu/drm/amd/display/dc/core/dc_resource.c:4413`), so
-overrides survive later updates. The patch also hooks the new field into
-the existing update machinery—triggering info-frame reprogramming
-(`drivers/gpu/drm/amd/display/dc/core/dc.c:3611`) and forcing a full
-update when necessary
-(`drivers/gpu/drm/amd/display/dc/core/dc.c:5083`)—again matching the
-pattern used by the other infoframes.
+YES
 
-The change is tightly scoped to AMD DC, introduces no behavioural change
-unless an override is actually provided, and the new fields are zeroed
-via the existing `kzalloc`/`memset` initialisation paths
-(`drivers/gpu/drm/amd/display/dc/core/dc_stream.c:172` and e.g.
-`drivers/gpu/drm/amd/display/dc/link/link_dpms.c:144`), so there’s
-little regression risk. Given that losing AVI overrides breaks colour-
-space/format configuration for affected HDMI users, this is an
-appropriate, low-risk candidate for stable backport. Natural next step:
-queue it for the AMD display stable picks that cover HDMI infoframe
-fixes.
+Explanation
 
- drivers/gpu/drm/amd/display/dc/core/dc.c          | 7 ++++++-
- drivers/gpu/drm/amd/display/dc/core/dc_resource.c | 6 ++++++
- drivers/gpu/drm/amd/display/dc/dc_stream.h        | 3 +++
- 3 files changed, 15 insertions(+), 1 deletion(-)
+- What changed
+  - In `drivers/gpu/drm/amd/display/dc/dc_dmub_srv.c`, function
+    `dmub_lsdma_send_tiled_to_tiled_copy_command`, the fields `rect_x`
+    and `rect_y` are now encoded as `params.rect_x - 1` and
+    `params.rect_y - 1` instead of passing the values through
+    unmodified.
+  - The rest of the command payload remains unchanged, including the
+    existing “minus-one” encoding for dimensions:
+    - `src_width = params.src_width - 1`
+    - `dst_width = params.dst_width - 1`
+    - `src_height = params.src_height - 1`
+    - `dst_height = params.dst_height - 1`
 
-diff --git a/drivers/gpu/drm/amd/display/dc/core/dc.c b/drivers/gpu/drm/amd/display/dc/core/dc.c
-index 74efd50b7c23a..77a842cf84e08 100644
---- a/drivers/gpu/drm/amd/display/dc/core/dc.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
-@@ -3307,6 +3307,9 @@ static void copy_stream_update_to_stream(struct dc *dc,
- 	if (update->adaptive_sync_infopacket)
- 		stream->adaptive_sync_infopacket = *update->adaptive_sync_infopacket;
- 
-+	if (update->avi_infopacket)
-+		stream->avi_infopacket = *update->avi_infopacket;
-+
- 	if (update->dither_option)
- 		stream->dither_option = *update->dither_option;
- 
-@@ -3601,7 +3604,8 @@ static void commit_planes_do_stream_update(struct dc *dc,
- 					stream_update->vsp_infopacket ||
- 					stream_update->hfvsif_infopacket ||
- 					stream_update->adaptive_sync_infopacket ||
--					stream_update->vtem_infopacket) {
-+					stream_update->vtem_infopacket ||
-+					stream_update->avi_infopacket) {
- 				resource_build_info_frame(pipe_ctx);
- 				dc->hwss.update_info_frame(pipe_ctx);
- 
-@@ -5073,6 +5077,7 @@ static bool full_update_required(struct dc *dc,
- 			stream_update->hfvsif_infopacket ||
- 			stream_update->vtem_infopacket ||
- 			stream_update->adaptive_sync_infopacket ||
-+			stream_update->avi_infopacket ||
- 			stream_update->dpms_off ||
- 			stream_update->allow_freesync ||
- 			stream_update->vrr_active_variable ||
-diff --git a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
-index d712548b1927d..d37fc14e27dbf 100644
---- a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
-@@ -4417,8 +4417,14 @@ static void set_avi_info_frame(
- 	unsigned int fr_ind = pipe_ctx->stream->timing.fr_index;
- 	enum dc_timing_3d_format format;
- 
-+	if (stream->avi_infopacket.valid) {
-+		*info_packet = stream->avi_infopacket;
-+		return;
-+	}
-+
- 	memset(&hdmi_info, 0, sizeof(union hdmi_info_packet));
- 
-+
- 	color_space = pipe_ctx->stream->output_color_space;
- 	if (color_space == COLOR_SPACE_UNKNOWN)
- 		color_space = (stream->timing.pixel_encoding == PIXEL_ENCODING_RGB) ?
-diff --git a/drivers/gpu/drm/amd/display/dc/dc_stream.h b/drivers/gpu/drm/amd/display/dc/dc_stream.h
-index 5fc6fea211de3..76cf9fdedab0e 100644
---- a/drivers/gpu/drm/amd/display/dc/dc_stream.h
-+++ b/drivers/gpu/drm/amd/display/dc/dc_stream.h
-@@ -203,6 +203,7 @@ struct dc_stream_state {
- 	struct dc_info_packet hfvsif_infopacket;
- 	struct dc_info_packet vtem_infopacket;
- 	struct dc_info_packet adaptive_sync_infopacket;
-+	struct dc_info_packet avi_infopacket;
- 	uint8_t dsc_packed_pps[128];
- 	struct rect src; /* composition area */
- 	struct rect dst; /* stream addressable area */
-@@ -335,6 +336,8 @@ struct dc_stream_update {
- 	struct dc_info_packet *hfvsif_infopacket;
- 	struct dc_info_packet *vtem_infopacket;
- 	struct dc_info_packet *adaptive_sync_infopacket;
-+	struct dc_info_packet *avi_infopacket;
-+
- 	bool *dpms_off;
- 	bool integer_scaling_update;
- 	bool *allow_freesync;
+- Why it matters
+  - The commit message explicitly states that the “tiled command rect
+    dimensions is 1 based,” so the command fields must be encoded as N-1
+    before being sent to the LSDMA controller. Prior to this change,
+    `rect_x`/`rect_y` were not adjusted, creating an off-by-one error
+    relative to the hardware’s expected encoding.
+  - This bug would cause the copied rectangle to be shifted by one unit
+    (tile/element) in both X and Y, leading to incorrect or corrupted
+    copies. Near edges, it could also risk out-of-bounds accesses by the
+    DMA engine (a correctness and potential stability issue).
+  - The fix makes `rect_x`/`rect_y` consistent with the already-correct
+    “minus-one” encoding used for width and height fields in the same
+    command packet, aligning all rectangle-related fields with the LSDMA
+    protocol.
+
+- Scope and risk
+  - Change is minimal and fully localized to two assignments in a single
+    function that builds the DMUB LSDMA “tiled-to-tiled copy” command.
+  - No architectural changes, no new features, and no behavior changes
+    outside this specific command payload.
+  - The driver-side `params.rect_x/rect_y` are documented/assumed as
+    1-based in this path (consistent with the commit message);
+    subtracting 1 before writing the command field is the correct, low-
+    risk fix.
+  - Potential regression risk is low: the only hazard would be if any
+    caller had incorrectly pre-applied the minus-one encoding already,
+    which is unlikely given the commit rationale and the inconsistency
+    that previously existed only for rect_x/rect_y (while width/height
+    were already encoded as -1).
+
+- Stable backport considerations
+  - Fixes a real, user-visible bug (off-by-one in copy origin) that can
+    cause display corruption and possibly out-of-bounds DMA on edge
+    cases.
+  - The patch is simple, small, and self-contained with minimal
+    regression risk.
+  - No API or ABI changes; no dependencies on other changes.
+  - Although the commit message lacks a “Fixes:” or “Cc: stable” tag, it
+    squarely fits stable criteria.
+  - Practical applicability: Only relevant for stable branches that
+    already include `dmub_lsdma_send_tiled_to_tiled_copy_command` and
+    use the LSDMA tiled-to-tiled copy path. For branches without this
+    code path, the patch is not applicable.
+
+- Conclusion
+  - This is a straightforward, correctness fix for an off-by-one error
+    in the DMUB LSDMA tiled-to-tiled copy command encoding. It should be
+    backported to all stable kernels that contain this functionality.
+
+ drivers/gpu/drm/amd/display/dc/dc_dmub_srv.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/gpu/drm/amd/display/dc/dc_dmub_srv.c b/drivers/gpu/drm/amd/display/dc/dc_dmub_srv.c
+index f5ef1a07078e5..714c468c010d3 100644
+--- a/drivers/gpu/drm/amd/display/dc/dc_dmub_srv.c
++++ b/drivers/gpu/drm/amd/display/dc/dc_dmub_srv.c
+@@ -2072,8 +2072,8 @@ bool dmub_lsdma_send_tiled_to_tiled_copy_command(
+ 	lsdma_data->u.tiled_copy_data.dst_swizzle_mode = params.swizzle_mode;
+ 	lsdma_data->u.tiled_copy_data.src_element_size = params.element_size;
+ 	lsdma_data->u.tiled_copy_data.dst_element_size = params.element_size;
+-	lsdma_data->u.tiled_copy_data.rect_x           = params.rect_x;
+-	lsdma_data->u.tiled_copy_data.rect_y           = params.rect_y;
++	lsdma_data->u.tiled_copy_data.rect_x           = params.rect_x - 1;
++	lsdma_data->u.tiled_copy_data.rect_y           = params.rect_y - 1;
+ 	lsdma_data->u.tiled_copy_data.dcc              = params.dcc;
+ 	lsdma_data->u.tiled_copy_data.tmz              = params.tmz;
+ 	lsdma_data->u.tiled_copy_data.read_compress    = params.read_compress;
 -- 
 2.51.0
 
