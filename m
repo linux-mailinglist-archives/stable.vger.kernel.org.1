@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-189647-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-189649-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6108C09B18
-	for <lists+stable@lfdr.de>; Sat, 25 Oct 2025 18:46:12 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24DA1C09C30
+	for <lists+stable@lfdr.de>; Sat, 25 Oct 2025 18:53:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6A5ED3B7380
-	for <lists+stable@lfdr.de>; Sat, 25 Oct 2025 16:33:29 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 2CCF44FEC76
+	for <lists+stable@lfdr.de>; Sat, 25 Oct 2025 16:33:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7506030F94A;
-	Sat, 25 Oct 2025 16:26:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8163305E24;
+	Sat, 25 Oct 2025 16:26:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="auytd7Bg"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mLGd3odE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 314FC303A1E;
-	Sat, 25 Oct 2025 16:26:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90A333164C7;
+	Sat, 25 Oct 2025 16:26:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761409566; cv=none; b=jrtBGg94ATmGGWTLMjvVvlx+SYIQpRlFcJSs6bsLGpwVSNH1tCGrbQuxFh/e2rsqTxJXbuWQwrJjgUOcpTWKklHmcMMofxiInNVeP49yI/XbF7BJE4vT4M7dsmv+mBkw4rj8WzurZSl0Ie6+dNVIf2wF4dzuA5isA+AZj4QMGaI=
+	t=1761409567; cv=none; b=Bx8cxYXu9q3NzUHQ5NpAcv6xKgSCswFpcb7QwwX+I5L2+m/DT2WJLckfxgeAWkx8zwKQUyckO4GvGOr5FoCV3cvDHW+s5pbe3H9BeKOl6x/QesDjJxHwyato8/68tRRFg0ieP7CloPgMj9SooxBXLA+g9P5zASycCeJNjrq/PrU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761409566; c=relaxed/simple;
-	bh=KdCwY02XAI2rWBJxdnCMdyzWYd4+LCpAMiSnoQoCINQ=;
+	s=arc-20240116; t=1761409567; c=relaxed/simple;
+	bh=fg9xU9MkRdWjXARbYA25O47bgzYDbgXcg3MEtfG4mJI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IPj3Q8BO1eofbEYzSebaXvY3kDiURNNBTc1ENorJdlPTi6dPGQ09e3fs2dPF2gHBeRARBqpU2gW4bJKfXZy5x9sU5zVrJ8QueWkt/CMg6whiBQmzQS2T0r69SLM4eilgowOl2eaBgGOgf3tXq9C1lBI+FhR1BaZpzaX3dg/Ci0g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=auytd7Bg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9ED6C4CEF5;
-	Sat, 25 Oct 2025 16:26:02 +0000 (UTC)
+	 MIME-Version; b=Sx/5ZnU6ZKoE1IOkRFUBFMM6ka9lXi9PpKX6YwFOgg2kcrMd0lWn+qHKA0K/GzCc4BtnC/TvUdxKvYRtVjoTJ6uIIFgqpfw7WVusMaQ7VUtLeF8HbEkf7d3AUyR6dIb6fF1UkPBaU0VdL6BRnYNRob8v2p2sMuJ2mIsscLvuGIE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mLGd3odE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44E64C4CEFB;
+	Sat, 25 Oct 2025 16:26:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761409563;
-	bh=KdCwY02XAI2rWBJxdnCMdyzWYd4+LCpAMiSnoQoCINQ=;
+	s=k20201202; t=1761409565;
+	bh=fg9xU9MkRdWjXARbYA25O47bgzYDbgXcg3MEtfG4mJI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=auytd7Bge3hpP+ORabjZPpLV9tZCpqYLM5AlyRGNTameIS6m8L6TN/7anJQ2+9DFs
-	 4+yh1Dp2vo7ubULz2FDVF/n96QMl8zUhmicEIFa378+0PozPxvweyAIgQCcSSx3MKw
-	 QRhV9F2inngc4bNs0DmeYQulApTpBDWB+b0Pyei01h77bwgnkOCJAlH0vHQBVUZuED
-	 H+LAbQIxG48Kuc2jElpS605AviEMmWVUnZKRvyfaE14LSWbuOJv4vVXs8OiSMylbui
-	 yQAK548JYS918tCSJWIDAx1UNGfPGV8Vyl3rK18qdEH7HzZexmrlvi5Dp8lDzTDEBd
-	 iRI/C1+z7CDyQ==
+	b=mLGd3odEYpopEfv3acWnb7MEoVi7DuWXU41pJbH0oZSuLyR4vYhQUAoyjsHDwZkNh
+	 rxutlpYPVdG2H0ObZv28CKl4VVBn/79DBQ4PhGSAqaDDWqVfc7UUCn4+dRBThOG7kJ
+	 SU2O8Q8ij3SgG/hcgMa4e5ySiSfAnS2T4cm4EaHro/gfScnCqg8l/JlaVyMC7iZFeI
+	 vv7+8vhrdk986JWPhBO8mRcCRjJySjgKpV83XXkopFjteYeNKoiBa6OApmCV2GZwQh
+	 qAycSuWiVqlMrf50qqxLKtBFdCTpAxlhg2I8sLloxsVKFbqlzrQbB1oQ6PV5O9rc/0
+	 sg0m7kUnayMGg==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Olga Kornievskaia <okorniev@redhat.com>,
-	Anna Schumaker <anna.schumaker@oracle.com>,
+Cc: Alexander Usyskin <alexander.usyskin@intel.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>,
-	trondmy@kernel.org,
-	anna@kernel.org,
-	linux-nfs@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.17-5.4] NFSv4: handle ERR_GRACE on delegation recalls
-Date: Sat, 25 Oct 2025 11:59:59 -0400
-Message-ID: <20251025160905.3857885-368-sashal@kernel.org>
+	linux-kernel@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.17] mei: make a local copy of client uuid in connect
+Date: Sat, 25 Oct 2025 12:00:00 -0400
+Message-ID: <20251025160905.3857885-369-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251025160905.3857885-1-sashal@kernel.org>
 References: <20251025160905.3857885-1-sashal@kernel.org>
@@ -65,64 +63,113 @@ MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.17.5
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Olga Kornievskaia <okorniev@redhat.com>
+From: Alexander Usyskin <alexander.usyskin@intel.com>
 
-[ Upstream commit be390f95242785adbf37d7b8a5101dd2f2ba891b ]
+[ Upstream commit bb29fc32ae56393269d8fe775159fd59e45682d1 ]
 
-RFC7530 states that clients should be prepared for the return of
-NFS4ERR_GRACE errors for non-reclaim lock and I/O requests.
+Connect ioctl has the same memory for in and out parameters.
+Copy in parameter (client uuid) to the local stack to avoid it be
+overwritten by out parameters fill.
 
-Signed-off-by: Olga Kornievskaia <okorniev@redhat.com>
-Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
+Signed-off-by: Alexander Usyskin <alexander.usyskin@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/r/20250918130435.3327400-3-alexander.usyskin@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
 YES
-**Key Points**
-- The change at `fs/nfs/nfs4proc.c:7876-7880` extends the recall retry
-  loop so that `-NFS4ERR_GRACE` is treated exactly like
-  `-NFS4ERR_DELAY`, matching RFC 7530’s requirement that non-reclaim
-  requests retry during the server’s grace period; without it we
-  prematurely exit the loop.
-- When the old code bailed out on `-NFS4ERR_GRACE`, control returned up
-  the stack, causing `nfs_delegation_claim_locks()` to propagate
-  `-EAGAIN` (`fs/nfs/delegation.c:176-178`), which in turn made
-  `nfs_end_delegation_return()` fall into the client-recovery path or
-  abort the delegation (`fs/nfs/delegation.c:584-596`), disrupting
-  otherwise healthy delegations after a server restart.
-- Other lock paths already retry on `-NFS4ERR_GRACE` (see
-  `fs/nfs/nfs4proc.c:7594-7604`), so this patch simply aligns the
-  delegation-recall path with existing, well-tested behaviour and
-  prevents unnecessary recovery storms.
-- The fix is tiny, localized to the NFS client delegation logic, and
-  carries minimal regression risk while addressing a real-world failure
-  mode observed during grace periods; it is an ideal candidate for
-  stable backporting.
+- `struct mei_connect_client_data` and `_vtag` overlay input and output
+  fields in a union (`include/uapi/linux/mei.h:44`,
+  `include/uapi/linux/mei.h:90`), so once the driver fills
+  `out_client_properties` the original UUID bytes are lost.
+- `mei_ioctl_connect_client()` reuses the saved UUID pointer in its
+  retry loop at `drivers/misc/mei/main.c:426` while the same call path
+  overwrites the union with output data at
+  `drivers/misc/mei/main.c:452`, so during the second iteration
+  `mei_me_cl_by_uuid()` sees garbage and the ioctl fails with `-ENOTTY`.
+- The patch copies the UUID into a stack variable
+  (`drivers/misc/mei/main.c:672`, `drivers/misc/mei/main.c:700`) and
+  passes a pointer to that stable copy (`drivers/misc/mei/main.c:708`,
+  `drivers/misc/mei/main.c:750`), ensuring the retry logic added for
+  D3cold link-reset recovery actually succeeds.
+- Without this fix, user space cannot reconnect to the firmware client
+  after a link reset triggered by powering a discrete card back up, so
+  the bug is user-visible and regresses the very scenario the previous
+  retry change was meant to solve.
+- Risk is minimal: it is a self-contained stack copy with no API
+  changes. When backporting, pair it with the `mei: retry connect if
+  interrupted by link reset` commit so the recovery flow on stable
+  kernels works end-to-end.
 
- fs/nfs/nfs4proc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/misc/mei/main.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
-index 611e6283c194f..4de3e4bd724b7 100644
---- a/fs/nfs/nfs4proc.c
-+++ b/fs/nfs/nfs4proc.c
-@@ -7872,10 +7872,10 @@ int nfs4_lock_delegation_recall(struct file_lock *fl, struct nfs4_state *state,
- 		return err;
- 	do {
- 		err = _nfs4_do_setlk(state, F_SETLK, fl, NFS_LOCK_NEW);
--		if (err != -NFS4ERR_DELAY)
-+		if (err != -NFS4ERR_DELAY && err != -NFS4ERR_GRACE)
- 			break;
- 		ssleep(1);
--	} while (err == -NFS4ERR_DELAY);
-+	} while (err == -NFS4ERR_DELAY || err == -NFSERR_GRACE);
- 	return nfs4_handle_delegation_recall_error(server, state, stateid, fl, err);
- }
+diff --git a/drivers/misc/mei/main.c b/drivers/misc/mei/main.c
+index 8a149a15b8610..77e7b641b8e97 100644
+--- a/drivers/misc/mei/main.c
++++ b/drivers/misc/mei/main.c
+@@ -641,7 +641,7 @@ static long mei_ioctl(struct file *file, unsigned int cmd, unsigned long data)
+ 	struct mei_cl *cl = file->private_data;
+ 	struct mei_connect_client_data conn;
+ 	struct mei_connect_client_data_vtag conn_vtag;
+-	const uuid_le *cl_uuid;
++	uuid_le cl_uuid;
+ 	struct mei_client *props;
+ 	u8 vtag;
+ 	u32 notify_get, notify_req;
+@@ -669,18 +669,18 @@ static long mei_ioctl(struct file *file, unsigned int cmd, unsigned long data)
+ 			rets = -EFAULT;
+ 			goto out;
+ 		}
+-		cl_uuid = &conn.in_client_uuid;
++		cl_uuid = conn.in_client_uuid;
+ 		props = &conn.out_client_properties;
+ 		vtag = 0;
+ 
+-		rets = mei_vt_support_check(dev, cl_uuid);
++		rets = mei_vt_support_check(dev, &cl_uuid);
+ 		if (rets == -ENOTTY)
+ 			goto out;
+ 		if (!rets)
+-			rets = mei_ioctl_connect_vtag(file, cl_uuid, props,
++			rets = mei_ioctl_connect_vtag(file, &cl_uuid, props,
+ 						      vtag);
+ 		else
+-			rets = mei_ioctl_connect_client(file, cl_uuid, props);
++			rets = mei_ioctl_connect_client(file, &cl_uuid, props);
+ 		if (rets)
+ 			goto out;
+ 
+@@ -702,14 +702,14 @@ static long mei_ioctl(struct file *file, unsigned int cmd, unsigned long data)
+ 			goto out;
+ 		}
+ 
+-		cl_uuid = &conn_vtag.connect.in_client_uuid;
++		cl_uuid = conn_vtag.connect.in_client_uuid;
+ 		props = &conn_vtag.out_client_properties;
+ 		vtag = conn_vtag.connect.vtag;
+ 
+-		rets = mei_vt_support_check(dev, cl_uuid);
++		rets = mei_vt_support_check(dev, &cl_uuid);
+ 		if (rets == -EOPNOTSUPP)
+ 			cl_dbg(dev, cl, "FW Client %pUl does not support vtags\n",
+-				cl_uuid);
++				&cl_uuid);
+ 		if (rets)
+ 			goto out;
+ 
+@@ -719,7 +719,7 @@ static long mei_ioctl(struct file *file, unsigned int cmd, unsigned long data)
+ 			goto out;
+ 		}
+ 
+-		rets = mei_ioctl_connect_vtag(file, cl_uuid, props, vtag);
++		rets = mei_ioctl_connect_vtag(file, &cl_uuid, props, vtag);
+ 		if (rets)
+ 			goto out;
  
 -- 
 2.51.0
