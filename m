@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-189433-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-189435-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C296C09662
-	for <lists+stable@lfdr.de>; Sat, 25 Oct 2025 18:24:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 85E82C0966F
+	for <lists+stable@lfdr.de>; Sat, 25 Oct 2025 18:24:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D94F11C2516E
-	for <lists+stable@lfdr.de>; Sat, 25 Oct 2025 16:19:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B4D071C2546D
+	for <lists+stable@lfdr.de>; Sat, 25 Oct 2025 16:19:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFBAD309F00;
-	Sat, 25 Oct 2025 16:16:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8DB13043A4;
+	Sat, 25 Oct 2025 16:16:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pD+rQOS9"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="psQpycTY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98C01301701;
-	Sat, 25 Oct 2025 16:16:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 669D2309F1E;
+	Sat, 25 Oct 2025 16:16:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761408967; cv=none; b=jqiw7GZTlFVWbbclbEXTetMgkslANdEDzU3OACzwiSmkjjwxyCuhoKKd6ZopfU2pnm17fTyvBQkskpgibw82j3/x/V7DSK6hkRDjdnn9bu7jAsY4jNSOyzfy0ZEuYElrJgO8MtihAycftd4+6sOkQ8hCr6lZDgcf+Jfw3Hp9JcE=
+	t=1761408968; cv=none; b=jHOv08rMCw8uAraXTq6OPLMVMHrTKDVnHR++DdJu3Sm+xuIgrP4JQTqnRVE7+bHO/R+4tU5qFmYRZe/4FeLjhRW/kELV18V4biQktfUY5QMZOeKlGangyCOGZ5LKgeT5zetokwCriQkqp5GJtNhGBlTrpsf9KrSEu1MQs6EHyYM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761408967; c=relaxed/simple;
-	bh=QwO0iTE43pGFIY/hJQqlLOWK3XWSU6LqZkqpYUjdzOQ=;
+	s=arc-20240116; t=1761408968; c=relaxed/simple;
+	bh=rsWNTG25FhSE1nJRwlXwFhFi4xH/hL0IACkrwJQOo8U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oyPtJMNeCSUyMJl7CSnOeuaQFbq+A/2Upcbak5LWg4AyK/C03jc3azkjIXVrWhuEYXF2vKo3u1S2rXDHZOJhVhH5feSCDSZS0e2zSZYvJFHYgZp5ti0SyAkZeJ5q6IsSouEIYs5lT1vDxmzO+p2M8loEI2w7MgFBpxFV/Slks0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pD+rQOS9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32865C4CEFB;
-	Sat, 25 Oct 2025 16:16:05 +0000 (UTC)
+	 MIME-Version; b=lyvDOZSe6KFaerCES74NiKKWlhRIAoQUtKmPufqilpeE4ooZ0nByoLPWDkw3jv1ofzbe4BeYAlweATmdc6s5ack+0Ox4UeHmdIGXsxpN5GARJe3R/gogTi0XU9ZdvYo/qgjnxmx4Xnt/6EcYo3pVHzHA7NOe/bFo1WB/4vxNRA0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=psQpycTY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74076C113D0;
+	Sat, 25 Oct 2025 16:16:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761408966;
-	bh=QwO0iTE43pGFIY/hJQqlLOWK3XWSU6LqZkqpYUjdzOQ=;
+	s=k20201202; t=1761408968;
+	bh=rsWNTG25FhSE1nJRwlXwFhFi4xH/hL0IACkrwJQOo8U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pD+rQOS98ZIH6hyWS5FfnxwFB+lCHluS7lRzqKCsYr/e13EH1XgI5rlLImwCvn7uN
-	 UdLm8/YXx3c9GoF5Wxl73+GwKON0ZqPIw67XR46iGWr5Eojyf+Sm69NGVztFT5joLi
-	 o/KfyyzUt35SsRcZYCT/Y85QKIGi+RY22NUY+udXtwO0JRgLCfCHzXAWuAYU8dfXnE
-	 cm53nO/h+hWXZDBNEaD5i88N2re8mgtsutMYUe4iBF6M9mkMCkExH6Wu2rYK+vEQ+m
-	 9vYk+Owxf0czMEK3VomEPhWFlL2R8cuQgo8PACGbwjcYbVqZWQ+1rcoAy1uR6wRSkd
-	 y36vqvJqQeB3A==
+	b=psQpycTYgXF9sTWYosr/exFaNIkYHw19O+aHvZOPfiqhcIugAOsHxF7PtLthBx9dA
+	 UMDP7q4Z+WG673aS5tm2yGeXPGoL5XkivirOWbFGW0MP3MXopEDArjISTCTwrXNYQF
+	 LK2OpCYtvmk78WU1HY0QMcLW7sig9wV80ZS/IgrmfXLzHtNzERylNfDaUch0bj0NQM
+	 /lLzy0KXfruC5A2Ty4zNzfq9xlt9H5kFPLnfHMsDxa1JZyz6P9aHNZQk3OqAdj1rjL
+	 X8dGXoF5FaEemn3lpsfTaKyWkYGz10HKHzD+KxQazvrpZZIO78Ti1++qxtOJn4ju6P
+	 LIopo4lv6/2WA==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Chandrashekar Devegowda <chandrashekar.devegowda@intel.com>,
-	Kiran K <kiran.k@intel.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+Cc: Roy Vegard Ovesen <roy.vegard.ovesen@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>,
-	marcel@holtmann.org,
-	luiz.dentz@gmail.com,
-	linux-bluetooth@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.17] Bluetooth: btintel_pcie: Define hdev->wakeup() callback
-Date: Sat, 25 Oct 2025 11:56:27 -0400
-Message-ID: <20251025160905.3857885-156-sashal@kernel.org>
+	alexander.deucher@amd.com,
+	alexandre.f.demers@gmail.com
+Subject: [PATCH AUTOSEL 6.17-5.10] ALSA: usb-audio: add mono main switch to Presonus S1824c
+Date: Sat, 25 Oct 2025 11:56:28 -0400
+Message-ID: <20251025160905.3857885-157-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251025160905.3857885-1-sashal@kernel.org>
 References: <20251025160905.3857885-1-sashal@kernel.org>
@@ -66,86 +64,103 @@ MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.17.5
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Chandrashekar Devegowda <chandrashekar.devegowda@intel.com>
+From: Roy Vegard Ovesen <roy.vegard.ovesen@gmail.com>
 
-[ Upstream commit 3e94262921990e2884ff7a49064c12fb6d3a0733 ]
+[ Upstream commit 659169c4eb21f8d9646044a4f4e1bc314f6f9d0c ]
 
-Implement hdev->wakeup() callback to support Wake On BT feature.
+The 1824c does not have the A/B switch that the 1810c has,
+but instead it has a mono main switch that sums the two
+main output channels to mono.
 
-Test steps:
-1. echo enabled > /sys/bus/pci/devices/0000:00:14.7/power/wakeup
-2. connect bluetooth hid device
-3. put the system to suspend - rtcwake -m mem -s 300
-4. press any key on hid to wake up the system
-
-Signed-off-by: Kiran K <kiran.k@intel.com>
-Signed-off-by: Chandrashekar Devegowda <chandrashekar.devegowda@intel.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Roy Vegard Ovesen <roy.vegard.ovesen@gmail.com>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
 YES
-- `drivers/bluetooth/btintel_pcie.c:2350` introduces
-  `btintel_pcie_wakeup()`, which just calls
-  `device_may_wakeup(&data->pdev->dev)`; this mirrors the existing
-  pattern in other Bluetooth transports (for example
-  `drivers/bluetooth/btusb.c:3758`) and safely queries whether userspace
-  enabled PCIe wakeups for the device that is already stored at
-  `drivers/bluetooth/btintel_pcie.c:2411`.
-- Hooking that helper via `hdev->wakeup = btintel_pcie_wakeup;` at
-  `drivers/bluetooth/btintel_pcie.c:2382` lets the HCI core mark the
-  controller as remote‑wakeup capable (`net/bluetooth/hci_core.c:2661`)
-  and, during system suspend, actually run the wake-capable
-  configuration instead of bailing out early
-  (`net/bluetooth/hci_sync.c:6214`). Without this patch, the Intel PCIe
-  controller never programs accept lists/event masks for wake-on-
-  Bluetooth even when `/sys/bus/pci/.../power/wakeup` is set to
-  `enabled`, so Bluetooth HID devices cannot wake the machine—an obvious
-  user-visible regression for WoBT capable hardware.
-- The change is self-contained: it neither alters suspend/resume
-  sequencing nor touches shared subsystems beyond wiring the standard
-  callback, and it relies only on long-standing primitives
-  (`device_may_wakeup`, `hci_get_drvdata`) already present in stable
-  releases beginning with v6.10 where `btintel_pcie` first appeared.
-- Because it fixes a real functionality gap with minimal, well-
-  understood code and matches existing drivers’ behaviour, the risk of
-  regression is low while the benefit (restoring Wake-on-BT support) is
-  high, making this patch a strong candidate for stable backporting.
+- Adds device-specific control IDs and state slots for the 1824c mono
+  button so the driver can address the hardware selector correctly
+  (`sound/usb/mixer_s1810c.c:94` and `sound/usb/mixer_s1810c.c:124`).
+- Introduces a dedicated `Mono Main Out` control wired into the existing
+  switch helpers, replacing the bogus A/B selector previously shown to
+  1824c users and restoring the intended functionality
+  (`sound/usb/mixer_s1810c.c:542`).
+- Updates mixer initialisation to choose the mono switch only for USB ID
+  `0x194f:0x010d`, leaving the 1810c path unchanged, which confines the
+  behaviour change to the affected device and avoids regressions on
+  others (`sound/usb/mixer_s1810c.c:637`).
+- This is a hardware capability fix rather than a feature: without it,
+  1824c owners see an unusable control and cannot toggle the mono
+  summing from ALSA, so backporting improves correctness with minimal
+  code churn or architectural impact.
 
- drivers/bluetooth/btintel_pcie.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+Suggested next step: verify on an 1824c that `alsamixer` now exposes a
+working mono main switch.
 
-diff --git a/drivers/bluetooth/btintel_pcie.c b/drivers/bluetooth/btintel_pcie.c
-index 58cff211ec2c1..a91e768c0c4c0 100644
---- a/drivers/bluetooth/btintel_pcie.c
-+++ b/drivers/bluetooth/btintel_pcie.c
-@@ -2341,6 +2341,13 @@ static void btintel_pcie_hw_error(struct hci_dev *hdev, u8 code)
- 	btintel_pcie_reset(hdev);
+ sound/usb/mixer_s1810c.c | 26 +++++++++++++++++++++++---
+ 1 file changed, 23 insertions(+), 3 deletions(-)
+
+diff --git a/sound/usb/mixer_s1810c.c b/sound/usb/mixer_s1810c.c
+index fac4bbc6b2757..bd24556f6a7fb 100644
+--- a/sound/usb/mixer_s1810c.c
++++ b/sound/usb/mixer_s1810c.c
+@@ -93,6 +93,7 @@ struct s1810c_ctl_packet {
+ 
+ #define SC1810C_CTL_LINE_SW	0
+ #define SC1810C_CTL_MUTE_SW	1
++#define SC1824C_CTL_MONO_SW	2
+ #define SC1810C_CTL_AB_SW	3
+ #define SC1810C_CTL_48V_SW	4
+ 
+@@ -123,6 +124,7 @@ struct s1810c_state_packet {
+ #define SC1810C_STATE_48V_SW	58
+ #define SC1810C_STATE_LINE_SW	59
+ #define SC1810C_STATE_MUTE_SW	60
++#define SC1824C_STATE_MONO_SW	61
+ #define SC1810C_STATE_AB_SW	62
+ 
+ struct s1810_mixer_state {
+@@ -502,6 +504,15 @@ static const struct snd_kcontrol_new snd_s1810c_mute_sw = {
+ 	.private_value = (SC1810C_STATE_MUTE_SW | SC1810C_CTL_MUTE_SW << 8)
+ };
+ 
++static const struct snd_kcontrol_new snd_s1824c_mono_sw = {
++	.iface = SNDRV_CTL_ELEM_IFACE_MIXER,
++	.name = "Mono Main Out Switch",
++	.info = snd_ctl_boolean_mono_info,
++	.get = snd_s1810c_switch_get,
++	.put = snd_s1810c_switch_set,
++	.private_value = (SC1824C_STATE_MONO_SW | SC1824C_CTL_MONO_SW << 8)
++};
++
+ static const struct snd_kcontrol_new snd_s1810c_48v_sw = {
+ 	.iface = SNDRV_CTL_ELEM_IFACE_MIXER,
+ 	.name = "48V Phantom Power On Mic Inputs Switch",
+@@ -588,8 +599,17 @@ int snd_sc1810_init_mixer(struct usb_mixer_interface *mixer)
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	ret = snd_s1810c_switch_init(mixer, &snd_s1810c_ab_sw);
+-	if (ret < 0)
+-		return ret;
++	// The 1824c has a Mono Main switch instead of a
++	// A/B select switch.
++	if (mixer->chip->usb_id == USB_ID(0x194f, 0x010d)) {
++		ret = snd_s1810c_switch_init(mixer, &snd_s1824c_mono_sw);
++		if (ret < 0)
++			return ret;
++	} else if (mixer->chip->usb_id == USB_ID(0x194f, 0x010c)) {
++		ret = snd_s1810c_switch_init(mixer, &snd_s1810c_ab_sw);
++		if (ret < 0)
++			return ret;
++	}
++
+ 	return ret;
  }
- 
-+static bool btintel_pcie_wakeup(struct hci_dev *hdev)
-+{
-+	struct btintel_pcie_data *data = hci_get_drvdata(hdev);
-+
-+	return device_may_wakeup(&data->pdev->dev);
-+}
-+
- static int btintel_pcie_setup_hdev(struct btintel_pcie_data *data)
- {
- 	int err;
-@@ -2366,6 +2373,7 @@ static int btintel_pcie_setup_hdev(struct btintel_pcie_data *data)
- 	hdev->set_diag = btintel_set_diag;
- 	hdev->set_bdaddr = btintel_set_bdaddr;
- 	hdev->reset = btintel_pcie_reset;
-+	hdev->wakeup = btintel_pcie_wakeup;
- 
- 	err = hci_register_dev(hdev);
- 	if (err < 0) {
 -- 
 2.51.0
 
