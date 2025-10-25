@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-189406-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-189405-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7B51C09451
-	for <lists+stable@lfdr.de>; Sat, 25 Oct 2025 18:17:18 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A2FAC09692
+	for <lists+stable@lfdr.de>; Sat, 25 Oct 2025 18:25:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 6FE8F34D853
-	for <lists+stable@lfdr.de>; Sat, 25 Oct 2025 16:17:18 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 8C4174F1EDF
+	for <lists+stable@lfdr.de>; Sat, 25 Oct 2025 16:17:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DCDE238142;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DE0C2153D2;
 	Sat, 25 Oct 2025 16:15:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ej+8x8/Y"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Yb5xjoPm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14F6724DCE3;
-	Sat, 25 Oct 2025 16:15:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B11AE238142;
+	Sat, 25 Oct 2025 16:15:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761408915; cv=none; b=ahGXPoBz4XZydou/aFhp5FVGVzep2q5KFbAul87Aoa63cVUykW0onM/M943hozjH4Yx8IjGKPGh/dpCIUpaR2gGoM4QIJj9anH450r+LrO80RpKNY6w3GuG9vO6mj0BMJ4iJO0SpTpkGroEEBWdejUaZLcEnIuY5nr2z5LCfcV8=
+	t=1761408914; cv=none; b=p6RgtMuZMk6tY1WZf3nFkkLv6u4IB0fKm2r6yLeveCKA0YYuJOzaY8f3kBxNSdF7mV4KK3WdsO7iJ60eYcw3KnO7QnmcUCEVwBlmmeTRQ0SvnHq57pQhcHiKQwbEbFLmKARVxXDDhFXgBOGkg35tfaKk6UjXnGSe/mJXQ2IgxOA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761408915; c=relaxed/simple;
-	bh=78ERbFKaeO0h6PkzV58N49XWB06R/jyEXp38t/OS7tw=;
+	s=arc-20240116; t=1761408914; c=relaxed/simple;
+	bh=DBe2+Jht5iI3EKB/ylRG9TOBM76wBtbt2Pul9IeTvc8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=e7ub4rrJM1orV0PLRDvjCIlwE5E/P1It38tsgtOXsgiz+lOy7iN8FvfkP9VE1r1jWfAGPCasbHHV45QF6X0zl48IO2Y1/TjrYPUwnhwwcjc9z7EPigP+afitYTGfTWzzP7YfFthPiAxJoDX8RbpdtR5g/qUOqRGzkePuDRiqYVg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ej+8x8/Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EE70C4CEFB;
-	Sat, 25 Oct 2025 16:15:12 +0000 (UTC)
+	 MIME-Version:Content-Type; b=a0dE0nehUSklayRtTB5gOkehtW4CEnEkGAtut+CPqIbY5PgLB/n0tvJvf1mK9LFgYs7auCg5s/TZd7DBwVlzblQkQ9qljEl3s0Lx+8v8TBOHPcROVhDsYed14K6jRnTpQNGWAU6+1QDbMqy6QdG8yFtSWhKtyYs4QtGHXJeR9gQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Yb5xjoPm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFB5DC113D0;
+	Sat, 25 Oct 2025 16:15:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761408913;
-	bh=78ERbFKaeO0h6PkzV58N49XWB06R/jyEXp38t/OS7tw=;
+	s=k20201202; t=1761408914;
+	bh=DBe2+Jht5iI3EKB/ylRG9TOBM76wBtbt2Pul9IeTvc8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ej+8x8/Y8+G0SLKDGSSSod+6qKvBWEOz3JNDqH/DIsM4OPnegVAE8PHpdjv1gHESJ
-	 XFdIRfHD1qXBAn9fG/rcwE0awD57lxGNYWmmJmiPfJVaDLdJCp41WGWR7cJYqbu1fj
-	 w766HjEXF9kPUJkK5U9Iy2Zx0HWkHpwcf7yKdlhFjKADX5KBgCw01ekXx5bugyRI2A
-	 vLsm89iBpFzSze7iW9+D4iybCD3BYQfdC/ALTG573AS8A4/GgZxMr79nBETN+HI8Lw
-	 mVpdX8GPgueKWyedKOkhEbRumitCPGSgMzM/IlUXYIh6Rn2ylBkLOhxdOMFggOneeX
-	 vTWaUJnz5EfCg==
+	b=Yb5xjoPmxNfHOp9LDOR7VNKZYBv5jU3yRgeFjRhVTVkC2QID9Jvi03jVs6gt0aNPZ
+	 LubH9iP78DjcfjLXkh/pl/ah7IRa51YKu+XMWcFrQNG8WufaPcCuIKvaevVNYDhtFt
+	 l9F7bWjIE+UwboOqrnK5V90P9dc0gN9N0J3RDSrxylgIp17amkfKe+ZfF8o2ubl8B2
+	 n4ZYfFzIkAJZTXCAYjMIx8FYHChNwmb7m8Hr1z6EAUdhH4kZSVe5EmGW4/ZlvkMp7N
+	 DdbRk3ZuyE93q0lBSsZhH2eYUFmJWmDyY069Y6hDZCGFPAXpjKYUX5tnSeMymC+VAB
+	 APUTXXiLcr+CQ==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Antonino Maniscalco <antomani103@gmail.com>,
-	Akhil P Oommen <akhilpo@oss.qualcomm.com>,
-	Rob Clark <robin.clark@oss.qualcomm.com>,
-	Sasha Levin <sashal@kernel.org>,
-	linux-arm-msm@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	freedreno@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.17-5.15] drm/msm: make sure to not queue up recovery more than once
-Date: Sat, 25 Oct 2025 11:55:58 -0400
-Message-ID: <20251025160905.3857885-127-sashal@kernel.org>
+Cc: Marcus Folkesson <marcus.folkesson@gmail.com>,
+	Javier Martinez Canillas <javierm@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.17] drm/st7571-i2c: add support for inverted pixel format
+Date: Sat, 25 Oct 2025 11:55:59 -0400
+Message-ID: <20251025160905.3857885-128-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251025160905.3857885-1-sashal@kernel.org>
 References: <20251025160905.3857885-1-sashal@kernel.org>
@@ -69,22 +65,27 @@ X-stable-base: Linux 6.17.5
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Antonino Maniscalco <antomani103@gmail.com>
+From: Marcus Folkesson <marcus.folkesson@gmail.com>
 
-[ Upstream commit 10fb1b2fcaee5545a5e54db1ed4d7b15c2db50c8 ]
+[ Upstream commit e61c35157d32b4b422f0a4cbc3c40d04d883a9c9 ]
 
-If two fault IRQs arrive in short succession recovery work will be
-queued up twice.
+Depending on which display that is connected to the controller, an
+"1" means either a black or a white pixel.
 
-When recovery runs a second time it may end up killing an unrelated
-context.
+The supported formats (R1/R2/XRGB8888) expects the pixels
+to map against (4bit):
+    00 => Black
+    01 => Dark Gray
+    10 => Light Gray
+    11 => White
 
-Prevent this by masking off interrupts when triggering recovery.
+If this is not what the display map against, make it possible to invert
+the pixels.
 
-Signed-off-by: Antonino Maniscalco <antomani103@gmail.com>
-Reviewed-by: Akhil P Oommen <akhilpo@oss.qualcomm.com>
-Patchwork: https://patchwork.freedesktop.org/patch/670023/
-Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
+Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+Signed-off-by: Marcus Folkesson <marcus.folkesson@gmail.com>
+Link: https://lore.kernel.org/r/20250721-st7571-format-v2-4-159f4134098c@gmail.com
+Signed-off-by: Javier Martinez Canillas <javierm@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
@@ -92,64 +93,107 @@ LLM Generated explanations, may be completely bogus:
 
 YES
 
-- What it fixes: Two fault IRQs arriving back-to-back can queue
-  `recover_work` twice; the second recovery may kill an unrelated
-  context. The change masks interrupts before queuing recovery so
-  subsequent fault IRQs don’t re-queue recovery.
-- Core change: In `drivers/gpu/drm/msm/adreno/a6xx_gpu.c:1821-1824`,
-  `a6xx_fault_detect_irq()` adds:
-  - `gpu_write(gpu, REG_A6XX_RBBM_INT_0_MASK, 0);` to mask all RBBM
-    interrupts before `kthread_queue_work(gpu->worker,
-    &gpu->recover_work);`
-  - This follows the hangcheck timer being disabled, ensuring no further
-    spurious recovery triggers while the first recovery proceeds.
-- Call path impact: `a6xx_irq()` invokes `a6xx_fault_detect_irq()` on
-  hang detect (`drivers/gpu/drm/msm/adreno/a6xx_gpu.c:1891-1900`). With
-  the new mask, subsequent IRQs won’t retrigger recovery for the same
-  incident.
-- Interrupts are safely restored: During recovery, the GPU is
-  reinitialized and interrupts are re-enabled in `a6xx_hw_init()` via
-  `REG_A6XX_RBBM_INT_0_MASK` (sets `A6XX_INT_MASK`/`A7XX_INT_MASK`) at
-  `drivers/gpu/drm/msm/adreno/a6xx_gpu.c:1410-1413`. `a6xx_recover()`
-  calls `msm_gpu_hw_init(gpu)` to perform this re-init
-  (`drivers/gpu/drm/msm/adreno/a6xx_gpu.c:1614`). Additionally, the top-
-  level wrapper brackets `hw_init` with `disable_irq/enable_irq`
-  (`drivers/gpu/drm/msm/msm_gpu.c:168-174`), so the flow cleanly unmasks
-  after reset.
-- Consistency with existing patterns: A similar mask-on-fault pattern
-  already exists for a7xx SW fuse violations
-  (`drivers/gpu/drm/msm/adreno/a6xx_gpu.c:1831-1834`), indicating this
-  is the established approach to prevent repeated fault handling.
-- Stable suitability:
-  - User-visible bugfix: Prevents erroneous second recovery that can
-    kill unrelated contexts.
-  - Small and contained: One register write in an error path; no ABI or
-    feature changes.
-  - Low regression risk: Interrupts are restored during the normal
-    recovery/reinit path; only affects a6xx hang/fault handling.
-  - No architectural churn, limited to DRM/MSM Adreno a6xx driver.
+- Fixes a real user-visible bug: Many ST7571/ST7567-based panels wire
+  pixel polarity differently, so a “1” stored in display RAM can mean
+  black or white depending on the glass. Without a way to invert,
+  affected panels show inverted colors/gray levels. This change makes
+  that correctable in a board-specific, opt-in way via DT.
 
-Conclusion: This is a minimal, targeted fix for a real correctness issue
-with low risk and clear recovery restore points, making it a good
-candidate for backporting to all supported stable kernels that include
-the a6xx driver.
+- Small, contained change with default behavior unchanged: The driver
+  still programs “normal” mode unless explicitly told to invert. The
+  only behavior change is when the new DT boolean is present.
 
- drivers/gpu/drm/msm/adreno/a6xx_gpu.c | 3 +++
- 1 file changed, 3 insertions(+)
+- Specific code changes
+  - Adds per-device state to track inversion:
+    - `drivers/gpu/drm/sitronix/st7571-i2c.c:154` adds `bool inverted;`
+      to `struct st7571_device`.
+  - Parses an opt-in DT property for both variants:
+    - `drivers/gpu/drm/sitronix/st7571-i2c.c:796` reads
+      `sitronix,inverted` in `st7567_parse_dt()`.
+    - `drivers/gpu/drm/sitronix/st7571-i2c.c:824` reads
+      `sitronix,inverted` in `st7571_parse_dt()`.
+  - Applies inversion during controller initialization:
+    - Previously hardcoded to normal mode, i.e. `ST7571_SET_REVERSE(0)`.
+    - Now conditional:
+      - `drivers/gpu/drm/sitronix/st7571-i2c.c:879` uses
+        `ST7571_SET_REVERSE(st7567->inverted ? 1 : 0)` in the ST7567
+        init sequence.
+      - `drivers/gpu/drm/sitronix/st7571-i2c.c:923` uses
+        `ST7571_SET_REVERSE(st7571->inverted ? 1 : 0)` in the ST7571
+        init sequence.
+  - The command used is appropriate: `ST7571_SET_REVERSE(r)`
+    (`drivers/gpu/drm/sitronix/st7571-i2c.c:61`) toggles the
+    controller’s normal/inverse display mapping, which affects both
+    monochrome and 4-level grayscale mapping uniformly.
 
-diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gpu.c b/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
-index 45dd5fd1c2bfc..f8992a68df7fb 100644
---- a/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
-+++ b/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
-@@ -1727,6 +1727,9 @@ static void a6xx_fault_detect_irq(struct msm_gpu *gpu)
- 	/* Turn off the hangcheck timer to keep it from bothering us */
- 	timer_delete(&gpu->hangcheck_timer);
+- No architectural changes and minimal risk of regressions:
+  - Change is confined to a single driver and two init paths; no core
+    DRM impacts.
+  - Default remains normal (non-inverted), so existing systems are
+    unaffected unless they opt in via DT.
+  - No userspace ABI changes; the interface is device-tree only.
+  - The property is boolean and optional; absence preserves legacy
+    behavior.
+
+- Stable backport criteria fit:
+  - Addresses a correctness issue for real hardware (wrong polarity
+    makes displays appear inverted).
+  - Patch is small and straightforward, with clear, localized side
+    effects.
+  - No new features visible to userspace; it’s an optional DT quirk to
+    match panel wiring.
+
+Given the above, this is a low-risk, targeted fix enabling correct
+operation for affected panels and is suitable for stable backporting.
+
+ drivers/gpu/drm/sitronix/st7571-i2c.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/gpu/drm/sitronix/st7571-i2c.c b/drivers/gpu/drm/sitronix/st7571-i2c.c
+index 453eb7e045e5f..125e810df1391 100644
+--- a/drivers/gpu/drm/sitronix/st7571-i2c.c
++++ b/drivers/gpu/drm/sitronix/st7571-i2c.c
+@@ -151,6 +151,7 @@ struct st7571_device {
+ 	bool ignore_nak;
  
-+	/* Turn off interrupts to avoid triggering recovery again */
-+	gpu_write(gpu, REG_A6XX_RBBM_INT_0_MASK, 0);
-+
- 	kthread_queue_work(gpu->worker, &gpu->recover_work);
- }
+ 	bool grayscale;
++	bool inverted;
+ 	u32 height_mm;
+ 	u32 width_mm;
+ 	u32 startline;
+@@ -792,6 +793,7 @@ static int st7567_parse_dt(struct st7571_device *st7567)
+ 
+ 	of_property_read_u32(np, "width-mm", &st7567->width_mm);
+ 	of_property_read_u32(np, "height-mm", &st7567->height_mm);
++	st7567->inverted = of_property_read_bool(np, "sitronix,inverted");
+ 
+ 	st7567->pformat = &st7571_monochrome;
+ 	st7567->bpp = 1;
+@@ -819,6 +821,7 @@ static int st7571_parse_dt(struct st7571_device *st7571)
+ 	of_property_read_u32(np, "width-mm", &st7571->width_mm);
+ 	of_property_read_u32(np, "height-mm", &st7571->height_mm);
+ 	st7571->grayscale = of_property_read_bool(np, "sitronix,grayscale");
++	st7571->inverted = of_property_read_bool(np, "sitronix,inverted");
+ 
+ 	if (st7571->grayscale) {
+ 		st7571->pformat = &st7571_grayscale;
+@@ -873,7 +876,7 @@ static int st7567_lcd_init(struct st7571_device *st7567)
+ 		ST7571_SET_POWER(0x6),	/* Power Control, VC: ON, VR: ON, VF: OFF */
+ 		ST7571_SET_POWER(0x7),	/* Power Control, VC: ON, VR: ON, VF: ON */
+ 
+-		ST7571_SET_REVERSE(0),
++		ST7571_SET_REVERSE(st7567->inverted ? 1 : 0),
+ 		ST7571_SET_ENTIRE_DISPLAY_ON(0),
+ 	};
+ 
+@@ -917,7 +920,7 @@ static int st7571_lcd_init(struct st7571_device *st7571)
+ 		ST7571_SET_COLOR_MODE(st7571->pformat->mode),
+ 		ST7571_COMMAND_SET_NORMAL,
+ 
+-		ST7571_SET_REVERSE(0),
++		ST7571_SET_REVERSE(st7571->inverted ? 1 : 0),
+ 		ST7571_SET_ENTIRE_DISPLAY_ON(0),
+ 	};
  
 -- 
 2.51.0
