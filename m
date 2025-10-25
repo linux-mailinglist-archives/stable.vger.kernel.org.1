@@ -1,62 +1,71 @@
-Return-Path: <stable+bounces-189556-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-189558-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E035C0985D
-	for <lists+stable@lfdr.de>; Sat, 25 Oct 2025 18:33:16 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05607C09740
+	for <lists+stable@lfdr.de>; Sat, 25 Oct 2025 18:27:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D4F593B4080
-	for <lists+stable@lfdr.de>; Sat, 25 Oct 2025 16:27:16 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 5DA6034E6B4
+	for <lists+stable@lfdr.de>; Sat, 25 Oct 2025 16:27:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56D342F5B;
-	Sat, 25 Oct 2025 16:21:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F33CF3054D8;
+	Sat, 25 Oct 2025 16:22:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uVURN3Bs"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sw8MF0Jp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B945305065;
-	Sat, 25 Oct 2025 16:21:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AECD830BF59;
+	Sat, 25 Oct 2025 16:22:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761409316; cv=none; b=hN6H7NVl2qmNVDyeYruSPm1QGT6yCgklNskoy5bfwNm0JOeTvRNjMXFmm25e9O1eTmqgDl01DXcup08rxcnGGYfSIxKxxCR44pq3g0ouwX4JQMLQjLIpjhoEucObT9Zz1vR7JTkvP0yoJh2onANrwMKAFtrxudeD6JVMIrXq84I=
+	t=1761409323; cv=none; b=UEEEZXM9W2zMunYRobNGfS/APKkvp9tuOUVamDaR9XFJoidgOn0lZkzZTS10sXaWRp4TNgS0UbbOGc0seTozD2zV8cTlEu3bHMeqkXUR59HJbO8KyPregheZdsa6rnLMaqbv81LPKK3g7/VojtPgtBEYPuYmZa8/qkBeq+CYyVU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761409316; c=relaxed/simple;
-	bh=bAmc/lKD3RaEvDXfSaU7SpuBu+7bcVvlYIoOzd//ceQ=;
+	s=arc-20240116; t=1761409323; c=relaxed/simple;
+	bh=o2HNRES2Vt0e3qtSh7DFbwHRFuz1FTiaWtNCnqi58JE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WxDt/ug4MbWjQJMD2suf7Q7a9nfZeU4nv2rqq1JwP2lU8Dq4cGrmLcDL2Rc7k8SjJRlsbzQSZY6VoHpJ0ExZU6iFc46PS2vd0RHKEaXNaLEnDlPj2elx+2o5jGYZzthDok+uH0o2MN0b6vQMQIfOhjSjspJrmxPEqwq3+4d2r5s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uVURN3Bs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F9BCC2BCB7;
-	Sat, 25 Oct 2025 16:21:54 +0000 (UTC)
+	 MIME-Version:Content-Type; b=qj3ssvVImzbxlNj0HIt5t2gayfq2pkTtF4ar4bmop8o5nhArKE9GSX9BeE1AVVOO1mkhkHfjW8d/RI8+Uoac1M3kOITDghyDZz3gQ+4a0XwVDoPhZbwFnqxC06ZhL9MmN3UPOzL7mMpoU68JIo4l40xeQH7QHyCZLC2sZvG+Wgw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sw8MF0Jp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 246E4C2BCB5;
+	Sat, 25 Oct 2025 16:21:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761409315;
-	bh=bAmc/lKD3RaEvDXfSaU7SpuBu+7bcVvlYIoOzd//ceQ=;
+	s=k20201202; t=1761409321;
+	bh=o2HNRES2Vt0e3qtSh7DFbwHRFuz1FTiaWtNCnqi58JE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uVURN3BsiQlHXKPik0M4Qm1j8uGmuLwZUbIk2uT3diWbKwzMDVi7jNZecSFOzoSS5
-	 /3nAtMsyBAsPj/1GfyviGne8g67oXo66Ui6yTKbkXoTBum611LGkH6hQ+FzqejVSDL
-	 kGBpWao1w2OchTdRg4DtGJtfsHmoE5bb7DroF5xr0N7y34/H2qJU4FGRGWb+IozG0P
-	 8r20yU0y53aXV5x/SKVJnQrv86HDetOLxX6Vj0CUt5/JpJGDiTWEhSd2LgYg6xz9dr
-	 TKQ1S7zxxWHx4UaHbnF+9Ex2pBBRt2UfpxgdMhs7LpKVcSvD+7OwRf7d7Se4Z1OCoN
-	 fhJWA8S4dbL8w==
+	b=sw8MF0JpqSKI0C4Dhbrb51NMvIo9diCn+NoQEPNxwrjdo76YXahsRbvAlf00lGXA6
+	 pxuz+v/qJXul22DroN/2OpdKkLuNGaET0Ay9xyUoYCN9qEM/tvdlOfzGRIsCIGjkH5
+	 GoQnlsI84wvXADCgr78amZljjwt3hqT7/nkBzrJkVTQfxljyqMPH78sIRRQRoIEaZ2
+	 gzpafsemecs4SL3CjQrUdCYG7AHtJNjSjbm6vN3MmcRIs4kBq7r29CJrPWLQVFPaSD
+	 Ah01xsnVnMgiNz52P0qrpVfvpwk6Xz+rwEp152YqSHaOt2HvBmZ+gUoRJPMkaE3AzV
+	 pCBha9k/PCvWA==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Alice Chao <alice.chao@mediatek.com>,
-	Peter Wang <peter.wang@mediatek.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+Cc: Dillon Varone <Dillon.Varone@amd.com>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Ivan Lipski <ivan.lipski@amd.com>,
+	Dan Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
-	matthias.bgg@gmail.com,
-	angelogioacchino.delregno@collabora.com,
-	linux-scsi@vger.kernel.org,
-	linux-mediatek@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.17] scsi: ufs: host: mediatek: Fix adapt issue after PA_Init
-Date: Sat, 25 Oct 2025 11:58:28 -0400
-Message-ID: <20251025160905.3857885-277-sashal@kernel.org>
+	mario.limonciello@amd.com,
+	alex.hung@amd.com,
+	Wayne.Lin@amd.com,
+	chiahsuan.chung@amd.com,
+	alexandre.f.demers@gmail.com,
+	sunpeng.li@amd.com,
+	hamzamahfooz@linux.microsoft.com,
+	harry.wentland@amd.com,
+	mdaenzer@redhat.com,
+	kenneth.feng@amd.com,
+	mwen@igalia.com,
+	Jerry.Zuo@amd.com,
+	timur.kristof@gmail.com
+Subject: [PATCH AUTOSEL 6.17] drm/amd/display: Add missing post flip calls
+Date: Sat, 25 Oct 2025 11:58:29 -0400
+Message-ID: <20251025160905.3857885-278-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251025160905.3857885-1-sashal@kernel.org>
 References: <20251025160905.3857885-1-sashal@kernel.org>
@@ -72,114 +81,98 @@ X-stable-base: Linux 6.17.5
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Alice Chao <alice.chao@mediatek.com>
+From: Dillon Varone <Dillon.Varone@amd.com>
 
-[ Upstream commit d73836cb8535b3078e4d2a57913f301baec58a33 ]
+[ Upstream commit 54980f3c63ed3e5cca3d251416581193c90eae76 ]
 
-Address the issue where the host does not send adapt to the device after
-PA_Init success. Ensure the adapt process is correctly initiated for
-devices with IP version MT6899 and above, resolving communication issues
-between the host and device.
+[WHY&HOW]
+dc_post_update_surfaces_to_stream needs to be called after a full update
+completes in order to optimize clocks and watermarks for power. Add
+missing calls before idle entry is requested to ensure optimal power.
 
-Signed-off-by: Alice Chao <alice.chao@mediatek.com>
-Reviewed-by: Peter Wang <peter.wang@mediatek.com>
-Signed-off-by: Peter Wang <peter.wang@mediatek.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Reviewed-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Signed-off-by: Dillon Varone <Dillon.Varone@amd.com>
+Signed-off-by: Ivan Lipski <ivan.lipski@amd.com>
+Tested-by: Dan Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-YES
+YES — ensures AMD DC runs the pending post-flip optimization step after
+full updates so idle power isn’t stuck at high clocks.
 
-- What it fixes: The host wasn’t initiating the adaptation phase after a
-  successful PA_Init, causing communication/link reliability issues on
-  newer MediaTek UFS IPs. The patch explicitly triggers adapt for those
-  chips.
+- **Bug Fix**: `update_planes_and_stream_adapter()` now always calls
+  `dc_post_update_surfaces_to_stream()`
+  (`drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c:421`). That helper
+  clears `dc->optimized_required`, disables unused pipes, and re-
+  optimizes clocks/watermarks
+  (`drivers/gpu/drm/amd/display/dc/core/dc.c:2546-2579`), which
+  otherwise stay elevated and even block DRR timing adjustments while
+  the flag remains set
+  (`drivers/gpu/drm/amd/display/dc/core/dc.c:463-468`).
+- **Idle Paths**: The idle and vblank workers invoke the same hook
+  before allowing idle entry
+  (`drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_crtc.c:221-223` and
+  `:278-280`), guaranteeing that power-saving transitions don’t occur
+  while bandwidth optimizations are still pending.
+- **Scope & Risk**: Only adds calls to an existing guard-checked helper;
+  when no optimization is required it returns immediately, so the change
+  is contained, architecture-neutral, and low risk.
+- **Backport Fit**: Fixes a user-visible power regression (excess clocks
+  after full flips/PSR), touches only AMD display code, and stays well
+  within stable backport guidelines.
 
-- Where it changes code:
-  - Adds an adapt trigger in `ufs_mtk_post_link()` by setting
-    `VS_DEBUGOMC` bit `0x100` for IP versions MT6899 and newer:
-    `drivers/ufs/host/ufs-mediatek.c:1557-1566`.
-  - The adapt step runs in the post-link stage via
-    `ufs_mtk_link_startup_notify()` → `POST_CHANGE` →
-    `ufs_mtk_post_link()`: `drivers/ufs/host/ufs-mediatek.c:1576-1583`.
-  - The IP version gating this logic is well-defined in the platform
-    header: `drivers/ufs/host/ufs-mediatek.h:208-217`.
-  - The UniPro vendor attribute `VS_DEBUGOMC` is a standard symbol in
-    the tree: `include/ufs/unipro.h:176`.
+Next step: 1) Verify on target hardware that idle clocks drop after
+full-screen updates or PSR transitions.
 
-- How it works:
-  - After link startup, for `host->ip_ver >= IP_VER_MT6899`, it reads
-    `VS_DEBUGOMC`, ORs in `0x100`, and writes it back to trigger the
-    device adapt: `drivers/ufs/host/ufs-mediatek.c:1559-1565`.
-  - This is analogous to existing, targeted use of `VS_DEBUGOMC` for
-    MT6989 (bit `0x10`) already in the pre-link path, demonstrating
-    prior, chip-specific, safe use of the same attribute:
-    `drivers/ufs/host/ufs-mediatek.c:1543-1550`.
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c      | 3 +--
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_crtc.c | 8 ++++++--
+ 2 files changed, 7 insertions(+), 4 deletions(-)
 
-- Why it’s a good stable backport:
-  - Bugfix that affects users: Without adapt, devices on MT6899+ may
-    exhibit link/communication issues after PA_Init, which is a
-    functional defect rather than a new feature.
-  - Small, contained change: Touches a single driver file and one
-    function body in a guarded, post-link path.
-  - Minimal risk: Gated by `host->ip_ver >= IP_VER_MT6899` so it does
-    not affect older IPs; no API or architectural changes; leverages an
-    existing attribute already used safely for a nearby IP generation.
-  - Side effects are narrow and intended: It only sets a vendor-specific
-    UniPro debug attribute after link-up on specific SoCs, then proceeds
-    to the pre-existing UniPro clock gating enable, keeping previous
-    sequencing intact.
-
-- Notes on robustness:
-  - The new `ufshcd_dme_get()`/`set()` calls do not check return values
-    in `ufs_mtk_post_link()` (drivers/ufs/host/ufs-
-    mediatek.c:1559-1565). While typical for benign post-link tuning
-    where failures shouldn’t abort link-up, adding error checks would be
-    slightly safer. However, given this is vendor-guarded and called
-    post link-up, the practical risk is low and consistent with similar
-    driver patterns.
-
-- Stable criteria assessment:
-  - Important bugfix: Yes (link/communication reliability on MT6899+).
-  - Not a feature/No arch changes: Yes.
-  - Minimal regression risk: Yes (chip-gated, vendor-specific).
-  - Self-contained and small: Yes.
-  - Explicit stable tag: Not present, but merits backport based on
-    impact and scope.
-
-Conclusion: This is a focused, SoC-gated fix that addresses a real
-interoperability bug with minimal risk. It fits stable backporting
-guidelines well.
-
- drivers/ufs/host/ufs-mediatek.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
-
-diff --git a/drivers/ufs/host/ufs-mediatek.c b/drivers/ufs/host/ufs-mediatek.c
-index 3defb5f135e33..c0acbd3f8fc36 100644
---- a/drivers/ufs/host/ufs-mediatek.c
-+++ b/drivers/ufs/host/ufs-mediatek.c
-@@ -1503,8 +1503,19 @@ static int ufs_mtk_pre_link(struct ufs_hba *hba)
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index 57b46572fba27..d66c9609efd8d 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -427,8 +427,7 @@ static inline bool update_planes_and_stream_adapter(struct dc *dc,
+ 	/*
+ 	 * Previous frame finished and HW is ready for optimization.
+ 	 */
+-	if (update_type == UPDATE_TYPE_FAST)
+-		dc_post_update_surfaces_to_stream(dc);
++	dc_post_update_surfaces_to_stream(dc);
  
- 	return ret;
- }
-+
- static void ufs_mtk_post_link(struct ufs_hba *hba)
- {
-+	struct ufs_mtk_host *host = ufshcd_get_variant(hba);
-+	u32 tmp;
-+
-+	/* fix device PA_INIT no adapt */
-+	if (host->ip_ver >= IP_VER_MT6899) {
-+		ufshcd_dme_get(hba, UIC_ARG_MIB(VS_DEBUGOMC), &tmp);
-+		tmp |= 0x100;
-+		ufshcd_dme_set(hba, UIC_ARG_MIB(VS_DEBUGOMC), tmp);
+ 	return dc_update_planes_and_stream(dc,
+ 					   array_of_surface_update,
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_crtc.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_crtc.c
+index 466dccb355d7b..1ec9d03ad7474 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_crtc.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_crtc.c
+@@ -218,8 +218,10 @@ static void amdgpu_dm_idle_worker(struct work_struct *work)
+ 			break;
+ 		}
+ 
+-		if (idle_work->enable)
++		if (idle_work->enable) {
++			dc_post_update_surfaces_to_stream(idle_work->dm->dc);
+ 			dc_allow_idle_optimizations(idle_work->dm->dc, true);
++		}
+ 		mutex_unlock(&idle_work->dm->dc_lock);
+ 	}
+ 	idle_work->dm->idle_workqueue->running = false;
+@@ -273,8 +275,10 @@ static void amdgpu_dm_crtc_vblank_control_worker(struct work_struct *work)
+ 			vblank_work->acrtc->dm_irq_params.allow_sr_entry);
+ 	}
+ 
+-	if (dm->active_vblank_irq_count == 0)
++	if (dm->active_vblank_irq_count == 0) {
++		dc_post_update_surfaces_to_stream(dm->dc);
+ 		dc_allow_idle_optimizations(dm->dc, true);
 +	}
-+
- 	/* enable unipro clock gating feature */
- 	ufs_mtk_cfg_unipro_cg(hba, true);
- }
+ 
+ 	mutex_unlock(&dm->dc_lock);
+ 
 -- 
 2.51.0
 
