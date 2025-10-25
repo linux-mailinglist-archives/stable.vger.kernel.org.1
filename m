@@ -1,133 +1,275 @@
-Return-Path: <stable+bounces-189742-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-189743-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D944C09CCE
-	for <lists+stable@lfdr.de>; Sat, 25 Oct 2025 18:58:56 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E22AC09E53
+	for <lists+stable@lfdr.de>; Sat, 25 Oct 2025 20:24:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2AC6458597E
-	for <lists+stable@lfdr.de>; Sat, 25 Oct 2025 16:51:00 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 08CD74E525E
+	for <lists+stable@lfdr.de>; Sat, 25 Oct 2025 18:24:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C2B823C50F;
-	Sat, 25 Oct 2025 16:47:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 590722D3A6C;
+	Sat, 25 Oct 2025 18:24:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="B1yD3BpW"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Gbq/xTHF"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7110C1A5B9D
-	for <stable@vger.kernel.org>; Sat, 25 Oct 2025 16:47:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1217B255F31;
+	Sat, 25 Oct 2025 18:24:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761410870; cv=none; b=aH2h5ULUQ3BqOzYRSwv/y6/0R7wtRLhhlZLcyk5PYIicAeBnW/SpDNvy7S8LzKn2oNM3m6cz4hXbUKuxc4UPsAM2SEvrVuPfojHaT6ii1ZDbHRNH8FgebsLQN+qI52qIbtr4cQ53OJuD+fYOLQsjg6MRDSFkXu3QZdIjp8H74ag=
+	t=1761416691; cv=none; b=b0e89HEjQqsYZfWfeNx9qkTIMh9g8J2zwbgqMVkDDSyYkNjc0t/9OR1cNLQjRIoRDy7GHSjqPM5ceBYBoqJnIyudD3fgDq+bf62S9+DkmQlLI2suljaTEkUkxLhlocUDPB3cUXAAwivwnrGPbz2fnAC1oxhxBcW3Uqzj05hahVE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761410870; c=relaxed/simple;
-	bh=MjmsUVHr6NMRcRBnZl5oyGiiFbM8seOg1onkjxTlhSs=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=d6eftasaWNh4BqvDuBln9WG9PepFJSC7ci5ZcGnTjvn6vu6U30WUdAwJvm44mQl8YpTaTw7jJZSjB5NsI0JNQcMDSDjWAC+zR+qaTr0+FX9yy9NydfMRwN5ci6n+5hwTWdwl3Bvz9bQAYkSKmELn/LOmMgSlfPe8P32rbM2K1Ec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=B1yD3BpW; arc=none smtp.client-ip=209.85.167.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-57992ba129eso3983670e87.3
-        for <stable@vger.kernel.org>; Sat, 25 Oct 2025 09:47:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761410865; x=1762015665; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=zdq0pmLhJNTjhaDx3mb1Ru2H4viWHvHrb5MIRLM0trs=;
-        b=B1yD3BpWREInVsoFWsNdd5FGmLjZwzxHjQdIIkLxolP3DlslDdB9sZ9MPH0kwpFWkd
-         brwj1foCqFmcIWk3XYrWu2N89e3zOuOpSpKforui6TqHj/+iRPujvFEGxhs4k9jcem3n
-         asCwX8eWnl7FNs8muY8GJ/VDC0a5VzF2KJ/lqnR1/czbTMAj0sCWhg0uJA5oKnnlFYBT
-         0S6D1zuiU7ZdhNehW7h2hdTTEUklak06QYn0FN6Mk1dhby89zV8/fVHZWB6dGLb4aUNO
-         5bPJX6LYBHqF+HJN+dm2iLVhAsNsGxc5rKbyfn26CK5NYo8M5mkIlvdx0YTe9W6C7RH3
-         DL6g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761410865; x=1762015665;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=zdq0pmLhJNTjhaDx3mb1Ru2H4viWHvHrb5MIRLM0trs=;
-        b=ggoeJ6suHG3VacDoAsWcD+b92X790AT4Un3UwRXLxqrmoxLyB6B3ibLkJCcoDY9l3a
-         zZadTf4O14NQ6mLbuuIpevtiEVw0t08EzNFGP9LfJQpIWcrgqB7plB/H6wtVZQ7PBUcr
-         3+NwfszhuuQOKLQUMPp7AqAh55rQK82EQ2LOQIMhMbwTuKn1NYYhSxZwO7TyIQejEK4A
-         rWOqQeU0awMhId0CNlgLHk8tHx3XixuSaNF3/AsyZcxXUUwdQjAuTi7ndrRCuaWbTDSw
-         EEJLRk6DdKxnAJCLodJHfNRrEZXWR0s8njLkm5xz31yuPbGJXFmCBmfjQEZWa40Yd5u4
-         dFbQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWnm0BcXwL+a3XEehHnSaGGypw7Wj+GGcnkQ6MvAa4iNldfeuK2fKge9ycrT10gkrSdO4DlTBk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwJBRnDKpj7bKh9FMhwNtW71MTYGAsub9yvxrUtAiNfkdhqkRbJ
-	oPoJEJtS2Dpy/mBwdcNYzknXOkT0f/h3AoM/V7VRoH0I6p4R6Vj+vZoy
-X-Gm-Gg: ASbGnct6cw9hl/VUNBkCNXL+Ask5nJDHTJItkGSuYd8i4/kcYdQKt75RDmsm/z4z9Yz
-	A+ioXOWZiK3oNzFXUTctu+PXP/sk2w9eqFOGdtXuKMA/ea1dSSfVA0FAgD92HHr+zcMUr+NftIT
-	1e/6mCC2ew1OB9Ea/itx5AIQ4lRh8yF9G08LAJ18/P6s4CsMNt5BSj9X1mCELqkX52BKUiDw3aJ
-	V1xo60UOJzW1rf7GNRqHJldWQyJGjiOG6IRdiaEJ8varlLUubZuTdsvoidoNkHisglRT2vPWPYS
-	oTQULzuKPqXJvfxLdm1pTr9YAGuLYZC5QljqjhyFp5GOq+Xz8LRHFp8/VIpblUzE6lIbKdxuSDO
-	IQwJkBklsNzmn4uzHn/9SeUvnM04EpYo0wF3/nyNwW0f74dN2FfkuaeLgcHmR7Adj0EvtChGCEt
-	UHwoJweysLxpjWbiT4
-X-Google-Smtp-Source: AGHT+IHmiyWgOLaCOggvhZPPIwoORQ6P44GeIcmP22SsJkQdAGjOfRUpAYo47TvsrY1gKVuQYt2uuw==
-X-Received: by 2002:a05:6512:b95:b0:58b:25f:cbbd with SMTP id 2adb3069b0e04-592f590541amr2974425e87.2.1761410865269;
-        Sat, 25 Oct 2025 09:47:45 -0700 (PDT)
-Received: from foxbook (bey128.neoplus.adsl.tpnet.pl. [83.28.36.128])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-59301f74ba6sm792838e87.90.2025.10.25.09.47.42
-        (version=TLS1_2 cipher=AES128-SHA bits=128/128);
-        Sat, 25 Oct 2025 09:47:44 -0700 (PDT)
-Date: Sat, 25 Oct 2025 18:47:40 +0200
-From: Michal Pecio <michal.pecio@gmail.com>
-To: Sasha Levin <sashal@kernel.org>
-Cc: patches@lists.linux.dev, stable@vger.kernel.org, Niklas Neronin
- <niklas.neronin@linux.intel.com>, Nick Nielsen <nick.kainielsen@free.fr>,
- grm1 <grm1@mailbox.org>, Mathias Nyman <mathias.nyman@linux.intel.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, mathias.nyman@intel.com,
- linux-usb@vger.kernel.org
-Subject: Re: [PATCH AUTOSEL 6.17-6.12] usb: xhci-pci: add support for hosts
- with zero USB3 ports
-Message-ID: <20251025184740.15989ebe.michal.pecio@gmail.com>
-In-Reply-To: <20251025160905.3857885-36-sashal@kernel.org>
-References: <20251025160905.3857885-1-sashal@kernel.org>
-	<20251025160905.3857885-36-sashal@kernel.org>
+	s=arc-20240116; t=1761416691; c=relaxed/simple;
+	bh=UlEaNYv6J/Zde5KNqT5g3/DYC9K785oQCnkAH4vHwn0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=SgfA9nLjia/0yqfnaXpWc76eyBkjIPhZI4cN64tt7LY1D+cdJkttjKhOka86fJ0CtZ3OF9pw7GMLa5gQMGSTesTbBS9RSki+wBwaM5m8mtraRgiNiJZ8rP3wLVtEMpfbkvRw3wO08ELgMtqFnGrGwfrT0pqhurGl/qghuSQe9BA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Gbq/xTHF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 808D8C4CEF5;
+	Sat, 25 Oct 2025 18:24:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761416690;
+	bh=UlEaNYv6J/Zde5KNqT5g3/DYC9K785oQCnkAH4vHwn0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Gbq/xTHFqs06mnDXe5sQt5CFrriDcRmWLwjQViuYh4iKNx0zR7Ga5wkl1MmVPtM/3
+	 eF++VhqVNjQE3wULTtiGgPM5tdDpuyKRZIyuo0f18sVrxkIMBWbGtrtDTRIo/2Fjx7
+	 O/8zTK5Qg+mjKSWtOluCVjcH7xYVc1AxyxPGL5u1bzOAHR/5eOHCK5Ewcn8piaJHCt
+	 9SHrGX06AssRBHTzWjEeLGoZGoHvJJGSkwv+eLkNm/JQWHkR+F5sK/8SGTUIbtovhn
+	 MqN9fEIkuXR4k/1PQ1G+0xk3HAgy/9W+KR79ld6eVYFa4FVLlBu4iZT3AFXbt9YcpL
+	 n1CpmkUO4Hp+Q==
+Message-ID: <a1426a8b-85fb-4428-8d6b-540d3e0b1e33@kernel.org>
+Date: Sat, 25 Oct 2025 13:24:48 -0500
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH AUTOSEL 6.17-6.1] drm/amd/display: Set up pixel encoding
+ for YCBCR422
+To: Sasha Levin <sashal@kernel.org>, patches@lists.linux.dev,
+ stable@vger.kernel.org
+Cc: Mario Limonciello <Mario.Limonciello@amd.com>,
+ Mauri Carvalho <mcarvalho3@lenovo.com>, Wayne Lin <wayne.lin@amd.com>,
+ Ray Wu <ray.wu@amd.com>, Daniel Wheeler <daniel.wheeler@amd.com>,
+ Alex Deucher <alexander.deucher@amd.com>, alex.hung@amd.com,
+ aurabindo.pillai@amd.com, chiahsuan.chung@amd.com,
+ alexandre.f.demers@gmail.com
+References: <20251025160905.3857885-1-sashal@kernel.org>
+ <20251025160905.3857885-163-sashal@kernel.org>
+Content-Language: en-US
+From: Mario Limonciello <superm1@kernel.org>
+In-Reply-To: <20251025160905.3857885-163-sashal@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Sat, 25 Oct 2025 11:54:27 -0400, Sasha Levin wrote:
-> From: Niklas Neronin <niklas.neronin@linux.intel.com>
+
+
+On 10/25/25 10:56 AM, Sasha Levin wrote:
+> From: Mario Limonciello <Mario.Limonciello@amd.com>
 > 
-> [ Upstream commit 719de070f764e079cdcb4ddeeb5b19b3ddddf9c1 ]
+> [ Upstream commit 5e76bc677cb7c92b37d8bc66bb67a18922895be2 ]
 > 
-> Add xhci support for PCI hosts that have zero USB3 ports.
-> Avoid creating a shared Host Controller Driver (HCD) when there is only
-> one root hub. Additionally, all references to 'xhci->shared_hcd' are now
-> checked before use.
+> [Why]
+> fill_stream_properties_from_drm_display_mode() will not configure pixel
+> encoding to YCBCR422 when the DRM color format supports YCBCR422 but not
+> YCBCR420 or YCBCR4444.  Instead it will fallback to RGB.
 > 
-> Only xhci-pci.c requires modification to accommodate this change, as the
-> xhci core already supports configurations with zero USB3 ports. This
-> capability was introduced when xHCI Platform and MediaTek added support
-> for zero USB3 ports.
+> [How]
+> Add support for YCBCR422 in pixel encoding mapping.
 > 
-> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220181
-> Tested-by: Nick Nielsen <nick.kainielsen@free.fr>
-> Tested-by: grm1 <grm1@mailbox.org>
-> Signed-off-by: Niklas Neronin <niklas.neronin@linux.intel.com>
-> Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-> Link: https://lore.kernel.org/r/20250917210726.97100-4-mathias.nyman@linux.intel.com
-> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Suggested-by: Mauri Carvalho <mcarvalho3@lenovo.com>
+> Reviewed-by: Wayne Lin <wayne.lin@amd.com>
+> Signed-off-by: Mario Limonciello <Mario.Limonciello@amd.com>
+> Signed-off-by: Ray Wu <ray.wu@amd.com>
+> Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+> Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 > Signed-off-by: Sasha Levin <sashal@kernel.org>
 > ---
 
-Hi Sasha,
+Hi,
 
-This is completely broken, fix is pending in Greg's usb-linus branch.
-(Which is something autosel could perhaps check itself...)
+I don't have a problem with this commit being backported, but if you're 
+going to backport it please also backport the other one that came with 
+it: db291ed1732e02e79dca431838713bbf602bda1c
 
-8607edcd1748 usb: xhci-pci: Fix USB2-only root hub registration
+Thanks!
+> 
+> LLM Generated explanations, may be completely bogus:
+> 
+> ## **Backport Recommendation: CONDITIONAL YES**
+> 
+> **This commit should be backported ONLY as part of a series with commit
+> db291ed1732e0 "drm/amd/display: Add fallback path for YCBCR422".
+> Backporting this commit alone is NOT recommended.**
+> 
+> ---
+> 
+> ## Detailed Analysis
+> 
+> ### What the Commit Does
+> 
+> Commit `5e76bc677cb7c` adds YCBCR422 pixel encoding support to the
+> `fill_stream_properties_from_drm_display_mode()` function in
+> `/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c` (lines 6408-6410 in
+> the diff):
+> 
+> ```c
+> else if ((connector->display_info.color_formats &
+> DRM_COLOR_FORMAT_YCBCR422)
+>                  && stream->signal == SIGNAL_TYPE_HDMI_TYPE_A)
+>          timing_out->pixel_encoding = PIXEL_ENCODING_YCBCR422;
+> ```
+> 
+> **The Bug Being Fixed**: Before this commit, when a display supported
+> YCBCR422 color format but NOT YCBCR420 or YCBCR444, the driver would
+> incorrectly fall back to RGB encoding instead of using the supported
+> YCBCR422 encoding. This is a logic gap in the if-else chain that selects
+> pixel encoding.
+> 
+> ### Critical Discovery: Immediate Follow-up Commit
+> 
+> Through extensive git history analysis, I discovered that commit
+> `db291ed1732e0` "drm/amd/display: Add fallback path for YCBCR422" was
+> committed **the very next day** (Aug 27, 2025) and **directly modifies
+> the code added by this commit**:
+> 
+> **Original implementation (5e76bc677cb7c)**:
+> ```c
+> else if ((connector->display_info.color_formats &
+> DRM_COLOR_FORMAT_YCBCR422)
+>                  && stream->signal == SIGNAL_TYPE_HDMI_TYPE_A)  // Check
+> for HDMI
+>          timing_out->pixel_encoding = PIXEL_ENCODING_YCBCR422;
+> ```
+> 
+> **Modified by follow-up (db291ed1732e0)**:
+> ```c
+> else if ((connector->display_info.color_formats &
+> DRM_COLOR_FORMAT_YCBCR422)
+>                  && aconnector
+>                  && aconnector->force_yuv422_output)  // Changed to opt-
+> in flag
+>          timing_out->pixel_encoding = PIXEL_ENCODING_YCBCR422;
+> ```
+> 
+> ### Why This Matters
+> 
+> The follow-up commit `db291ed1732e0`:
+> 
+> 1. **Changes the behavior** from automatic YCBCR422 selection (when HDMI
+>     display supports it) to opt-in via `force_yuv422_output` flag
+> 2. **Adds a progressive fallback mechanism** for DisplayPort bandwidth
+>     validation failures:
+>     - First tries YUV422 8bpc (bandwidth efficient)
+>     - Then YUV422 6bpc (reduced color depth)
+>     - Finally YUV420 (last resort)
+> 3. **Fixes a serious issue**: "This resolves cases where displays would
+>     show no image due to insufficient DP link bandwidth for the requested
+>     RGB mode"
+> 4. **Adds the `force_yuv422_output` field** to `struct
+>     amdgpu_dm_connector` in `amdgpu_dm.h`
+> 
+> ### Evidence of Close Relationship
+> 
+> - **Same author**: Mario Limonciello (both commits)
+> - **Same suggested-by**: Mauri Carvalho (both commits)
+> - **Same reviewer**: Wayne Lin (both commits)
+> - **Same tester**: Daniel Wheeler (both commits)
+> - **Consecutive commits**: Aug 26 and Aug 27, 2025
+> - **No intervening commits**: These are back-to-back commits in the AMD
+>    display driver
+> 
+> ### Technical Analysis Using Semcode
+> 
+> Using the `mcp__semcode__find_function` tool, I confirmed that:
+> - YCBCR422 encoding (`PIXEL_ENCODING_YCBCR422`) is already well-
+>    established in the AMD display driver
+> - It's used in 13+ different locations across the driver subsystem for
+>    clock calculations, stream encoding, and bandwidth management
+> - The missing check in `fill_stream_properties_from_drm_display_mode()`
+>    was indeed a gap that needed to be filled
+> 
+> ### Backporting Criteria Assessment
+> 
+> **For commit 5e76bc677cb7c ALONE:**
+> 
+> ✅ **Fixes a bug**: Yes - incorrect pixel encoding selection
+> ✅ **Small and contained**: Yes - only 3 lines added
+> ❌ **Minimal risk**: Questionable - behavior was modified the next day
+> ✅ **No architectural changes**: Yes
+> ✅ **Confined to subsystem**: Yes - AMD display driver only
+> ❌ **Stable tag present**: No `Cc: stable@vger.kernel.org` tag
+> ⚠️ **Complete fix**: No - requires follow-up commit for full
+> functionality
+> 
+> **For BOTH commits as a series:**
+> 
+> ✅ All criteria above
+> ✅ **Complete feature**: Yes - implements both HDMI YCBCR422 support and
+> DP fallback
+> ✅ **Tested together**: Yes - same test cycle, same tester
+> ✅ **No known regressions**: No fixes or reverts found in subsequent
+> history
+> 
+> ### Risk Analysis
+> 
+> **Risk of backporting 5e76bc677cb7c alone**: MODERATE-HIGH
+> - Would enable automatic YCBCR422 for HDMI displays, which the follow-up
+>    commit changed to opt-in
+> - Would not include the DP bandwidth fallback mechanism that fixes "no
+>    image" issues
+> - Could introduce unexpected behavior changes that were corrected in
+>    db291ed1732e0
+> - Missing the `force_yuv422_output` field addition would cause
+>    compilation issues if the field is referenced elsewhere
+> 
+> **Risk of backporting both commits together**: LOW
+> - Represents the complete, tested implementation
+> - Small, focused changes to AMD display driver
+> - No subsequent fixes or reverts found
+> - Addresses both HDMI pixel encoding and DP bandwidth issues
+> 
+> ### Recommendation
+> 
+> **YES - Backport to stable trees, BUT ONLY as a two-commit series:**
+> 
+> 1. **5e76bc677cb7c** "drm/amd/display: Set up pixel encoding for
+>     YCBCR422"
+> 2. **db291ed1732e0** "drm/amd/display: Add fallback path for YCBCR422"
+> 
+> **These commits should be treated as a single logical changeset**
+> because:
+> - They implement a complete feature (YCBCR422 support + DP fallback)
+> - The second commit fundamentally modifies the first commit's behavior
+> - They were developed, reviewed, and tested together
+> - They fix related display issues (pixel encoding correctness and
+>    bandwidth management)
+> 
+> **DO NOT backport commit 5e76bc677cb7c alone** as it represents an
+> incomplete implementation that was refined the next day.
+> 
+>   drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 3 +++
+>   1 file changed, 3 insertions(+)
+> 
+> diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+> index 8eb2fc4133487..3762b3c0ef983 100644
+> --- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+> +++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+> @@ -6399,6 +6399,9 @@ static void fill_stream_properties_from_drm_display_mode(
+>   			&& aconnector
+>   			&& aconnector->force_yuv420_output)
+>   		timing_out->pixel_encoding = PIXEL_ENCODING_YCBCR420;
+> +	else if ((connector->display_info.color_formats & DRM_COLOR_FORMAT_YCBCR422)
+> +			&& stream->signal == SIGNAL_TYPE_HDMI_TYPE_A)
+> +		timing_out->pixel_encoding = PIXEL_ENCODING_YCBCR422;
+>   	else if ((connector->display_info.color_formats & DRM_COLOR_FORMAT_YCBCR444)
+>   			&& stream->signal == SIGNAL_TYPE_HDMI_TYPE_A)
+>   		timing_out->pixel_encoding = PIXEL_ENCODING_YCBCR444;
 
-Michal
 
