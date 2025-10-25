@@ -1,65 +1,71 @@
-Return-Path: <stable+bounces-189401-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-189403-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F34AC09430
-	for <lists+stable@lfdr.de>; Sat, 25 Oct 2025 18:17:05 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76C1FC096E9
+	for <lists+stable@lfdr.de>; Sat, 25 Oct 2025 18:26:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id E454934D784
-	for <lists+stable@lfdr.de>; Sat, 25 Oct 2025 16:17:03 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id EAF8B4EBC4F
+	for <lists+stable@lfdr.de>; Sat, 25 Oct 2025 16:17:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02452305960;
-	Sat, 25 Oct 2025 16:15:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 433DE305E28;
+	Sat, 25 Oct 2025 16:15:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bf6/Nfyk"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p8XXAM6h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B26EF2FBE03;
-	Sat, 25 Oct 2025 16:15:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0051C302747;
+	Sat, 25 Oct 2025 16:15:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761408905; cv=none; b=lS7rSbHmcPaGrfLkvQYK2QxXJnw7TNzuJsYBrhAtzzD8USkUahgGX6Wl7DPNuA12xwTK6yATrZ7U1L15NV9QJsRQggzfEUXpEaCv4WzNKV1sTTL0BQLhPxtar1MjFew44sCL66TKNa6ffkeDl9zuOiKyQ0O9vi7B6wYi9CpqeBo=
+	t=1761408911; cv=none; b=tFzwAna+bzPEbynTZ5QQn8TRn6h0hkglF7SP6hQrQHgLa5C9Fz5xvSENfpkHVReYxRvtNNwbc0JJLeTptqjxbG5wJ0MYZJiRvl+lyVMvoXXiGE61UOWXStsbAIWjjM+RQOlFYsW9zQquH/b2tmFrn6o8FLcrac4ScWvuJR/HGy8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761408905; c=relaxed/simple;
-	bh=5hAGcM9YPHs4sfHtcG2tXpU8bTWsuspuhliaIWPE444=;
+	s=arc-20240116; t=1761408911; c=relaxed/simple;
+	bh=j8yD5cqajyt8oHsVEUEfkhY+VtYIKmDymUlcKZ/9bbU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=H1WjVTiVXWaPHV+T35dG2u+ytPGszGM4wzELLmeDZDSYY5BVWbFzibKNR4N3yn7pp6Z1Tfaz810+h+dYKQLtrXN88OsVptLnh5hpYRnQKUdXLgObflBAO2ldGECxKwIGCs5Su1qAi/Fyk2Vz/uTq/sJVoWJY8zLTj6rdDh06Xuw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bf6/Nfyk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B3D0C4CEF5;
-	Sat, 25 Oct 2025 16:15:03 +0000 (UTC)
+	 MIME-Version:Content-Type; b=WmKc2mSf6U8WkY+Z6Qzsa8seZLe6oNLlWjvjO0ft2+uIpgkXYrRAxkawA9YaxhV095p2TreOmteTFa0FHcuXiXA2oKeG+cLqFToYUO9fw8+ICSkCAz9tVE8hkZ9V0ySRPLm2Zs3Sm9G9H06hC5a0U2VqdSaUKU7BqRDfX+NF6Rg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p8XXAM6h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 503F2C4CEF5;
+	Sat, 25 Oct 2025 16:15:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761408905;
-	bh=5hAGcM9YPHs4sfHtcG2tXpU8bTWsuspuhliaIWPE444=;
+	s=k20201202; t=1761408909;
+	bh=j8yD5cqajyt8oHsVEUEfkhY+VtYIKmDymUlcKZ/9bbU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bf6/Nfyk4nuplhuvGWUst50YEA/iBFTZp724BwO7vdNhHb26B4DhYo9aqMOqVzdji
-	 nieC2vkDLZmoLGLunwcaZrhomGatXfSvz5DLthntG/GufJ+INcvcsp6lAxmxtCRoaU
-	 68xk+bp4HEsRGanXi4spBvrYdUh9ujWGEX6l9qMVFCNhWg37Z7d/FjYEobeG4VAh0I
-	 C2E3eY2vz2KjcjLyLqDecumJQbcIivQ+v333Nj5lXH7gzkZmUoM1EGouUBYhUTotbm
-	 MwzIEzLmfE1OTXeMTmR86Ndq7oJXQbwbiqk7vjKXql9XXl8uvEf3es+X/GO9Wrwhec
-	 LfE31GfXnYSVw==
+	b=p8XXAM6hQ3hyQDByu7JgA4tX3JixhjA5IJAyf9nfs3ZHDEGcOQ96pqPoYRdwoDPSM
+	 5nfb1sDlSQQf1mVJvpKpfrPG/03MbzPTbAhjfxq1PhueBtARHGdohqC3Jf1paKF95N
+	 TToGZscEdZ0S8FJyht6qHrLbjghfmeErCwgE8v286ATG8qECQTRaNDjfGV3QvakxaV
+	 //wj9xV/vNsm32xFTJem8Eqmc1pyPUUa1Qy54VWzATdKC8mYwHoYPqnZikxftvbQEd
+	 q8h0i0SuT9O84+eV6w8b0vzd3WZAvjA9BUviH+BrPnNUrQDyc4yy6ETx8KxAvlbGmL
+	 6k8g6b4hfsXCg==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Ovidiu Bunea <ovidiu.bunea@amd.com>,
-	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
-	Ivan Lipski <ivan.lipski@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
+Cc: Ausef Yousof <Ausef.Yousof@amd.com>,
+	Alvin Lee <alvin.lee2@amd.com>,
+	Wayne Lin <wayne.lin@amd.com>,
+	Dan Wheeler <daniel.wheeler@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
-	Syed.Hassan@amd.com,
-	wayne.lin@amd.com,
-	chiahsuan.chung@amd.com,
-	Austin.Zheng@amd.com,
+	Wayne.Lin@amd.com,
+	roman.li@amd.com,
+	alex.hung@amd.com,
+	ray.wu@amd.com,
+	PeiChen.Huang@amd.com,
+	Dillon.Varone@amd.com,
+	Charlene.Liu@amd.com,
+	Sung.Lee@amd.com,
 	alexandre.f.demers@gmail.com,
-	gabe.teeger@amd.com,
-	aurabindo.pillai@amd.com
-Subject: [PATCH AUTOSEL 6.17] drm/amd/display: Fix dmub_cmd header alignment
-Date: Sat, 25 Oct 2025 11:55:54 -0400
-Message-ID: <20251025160905.3857885-123-sashal@kernel.org>
+	Richard.Chiang@amd.com,
+	ryanseto@amd.com,
+	linux@treblig.org,
+	mario.limonciello@amd.com
+Subject: [PATCH AUTOSEL 6.17] drm/amd/display: dont wait for pipe update during medupdate/highirq
+Date: Sat, 25 Oct 2025 11:55:55 -0400
+Message-ID: <20251025160905.3857885-124-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251025160905.3857885-1-sashal@kernel.org>
 References: <20251025160905.3857885-1-sashal@kernel.org>
@@ -75,21 +81,19 @@ X-stable-base: Linux 6.17.5
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Ovidiu Bunea <ovidiu.bunea@amd.com>
+From: Ausef Yousof <Ausef.Yousof@amd.com>
 
-[ Upstream commit 327aba7f558187e451636c77a1662a2858438dc9 ]
+[ Upstream commit 895b61395eefd28376250778a741f11e12715a39 ]
 
-[why & how]
-Header misalignment in struct dmub_cmd_replay_copy_settings_data and
-struct dmub_alpm_auxless_data causes incorrect data read between driver
-and dmub.
-Fix the misalignment and ensure that everything is aligned to 4-byte
-boundaries.
+[why&how]
+control flag for the wait during pipe update wait for vupdate should
+be set if update type is not fast or med to prevent an invalid sleep
+operation
 
-Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-Signed-off-by: Ovidiu Bunea <ovidiu.bunea@amd.com>
-Signed-off-by: Ivan Lipski <ivan.lipski@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Reviewed-by: Alvin Lee <alvin.lee2@amd.com>
+Signed-off-by: Ausef Yousof <Ausef.Yousof@amd.com>
+Signed-off-by: Wayne Lin <wayne.lin@amd.com>
+Tested-by: Dan Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
@@ -98,107 +102,79 @@ LLM Generated explanations, may be completely bogus:
 
 YES
 
-- What it fixes and why it matters
-  - The patch corrects structure layout so the driver and DMUB firmware
-    agree on field offsets. The commit message explicitly states that
-    header misalignment in the DMUB command payloads caused “incorrect
-    data read between driver and dmub,” which can lead to wrong
-    parameter values being consumed by firmware for Replay/ALPM
-    sequences — a real user-visible reliability/power bug.
-  - AMD’s DMUB command ABI uses strict 4‑byte alignment across command
-    headers and payloads; this patch brings the new Replay/ALPM-related
-    payloads back into conformance.
+- What it fixes: Prevents sleeping in interrupt/atomic context during
+  medium (MED) updates by avoiding a vupdate wait when the update is not
+  FULL. This addresses “invalid sleep” risks during medupdate/highirq
+  paths.
 
-- Specific code changes that address the bug
-  - drivers/gpu/drm/amd/display/dmub/inc/dmub_cmd.h
-    - struct dmub_alpm_auxless_data: add an explicit 1‑byte padding
-      field to enforce 4‑byte alignment.
-      - Added: `uint8_t pad[1];`
-      - Rationale: prior layout had a total size not divisible by 4
-        (several 16‑bit fields + an 8‑bit field), so the next field in
-        the containing payload could be misaligned.
-    - struct dmub_cmd_replay_copy_settings_data: reorder and align
-      fields and ensure 4‑byte boundary padding at the end.
-      - The two 8‑bit HPO instance fields were moved to follow the
-        `auxless_alpm_data` sub‑structure:
-        - Added here: `uint8_t hpo_stream_enc_inst;` and `uint8_t
-          hpo_link_enc_inst;`
-        - Removed from their earlier position near other `*_inst`
-          fields.
-      - The struct retains explicit padding at the end to maintain
-        4‑byte alignment: `uint8_t pad[2];`
-      - Net effect: the nested `auxless_alpm_data` is now 4‑byte aligned
-        itself, and the subsequent 8‑bit instance fields and final pad
-        keep the overall payload size and alignment consistent with the
-        DMUB ABI expectations.
-    - struct dmub_rb_cmd_replay_copy_settings remains the same, but now
-      wraps a correctly aligned payload.
+- Change summary: The wait decision flag passed to the hardware
+  sequencer changes from only FAST to FAST or MED:
+  - `drivers/gpu/drm/amd/display/dc/core/dc.c:4173` now passes
+    `update_type < UPDATE_TYPE_FULL` instead of `update_type ==
+    UPDATE_TYPE_FAST`.
 
-- Scope, risk, and stable suitability
-  - Scope is tightly confined to a single header (`dmub_cmd.h`) and to
-    DMUB command payload definitions for Replay/ALPM — no functional
-    logic changes and no architectural churn.
-  - The change follows existing patterns in `dmub_cmd.h`, which already
-    uses explicit “pad” members to guarantee 4‑byte alignment in many
-    payloads.
-  - Regression risk is low: it fixes a clear ABI/layout defect. The only
-    compatibility consideration is driver–firmware agreement; given the
-    commit message states the misalignment caused DMUB to read incorrect
-    data, the fix aligns the driver to firmware’s expected layout rather
-    than introducing a new protocol.
-  - No new features are introduced; this is a correctness fix with
-    minimal code delta.
+- Why this matters: The wait routine will sleep via `fsleep()` when it
+  decides to wait. Sleeping is not allowed at high IRQ levels or atomic
+  contexts. MED updates are documented as ISR‑safe (i.e., they can occur
+  in interrupt context), so they must not trigger sleeps.
+  - Update type semantics: `drivers/gpu/drm/amd/display/dc/dc.h:453`
+    (FAST “safe to execute in isr”),
+    `drivers/gpu/drm/amd/display/dc/dc.h:454` (MED “ISR safe”),
+    `drivers/gpu/drm/amd/display/dc/dc.h:455` (FULL “cannot be done at
+    ISR level”).
 
-- Backport guidance
-  - Good candidate for stable backporting to branches that already
-    contain:
-    - `struct dmub_alpm_auxless_data` and
-    - the `hpo_stream_enc_inst`/`hpo_link_enc_inst` fields in `struct
-      dmub_cmd_replay_copy_settings_data`.
-  - Branches that predate these fields (i.e., older DMUB interfaces
-    without AUX‑less ALPM/HPO support) don’t need this patch.
-  - As with all DMUB ABI fixes, ensure the target stable branch’s
-    expected DMUB firmware matches this layout (the fix exists precisely
-    because mismatch caused bad reads).
+- Actual wait behavior: The wait function only sleeps when it’s safe;
+  the third argument tells it to skip the sleep for ISR‑safe paths:
+  - Function definition:
+    `drivers/gpu/drm/amd/display/dc/hwss/dcn10/dcn10_hwseq.c:101`
+  - Core logic: If `is_surface_update_only` is true and the computed
+    wait is long, it returns early without sleeping, deferring the wait:
+    - Early return guard:
+      `drivers/gpu/drm/amd/display/dc/hwss/dcn10/dcn10_hwseq.c:157`
+    - Sleep call (which we avoid in ISR context):
+      `drivers/gpu/drm/amd/display/dc/hwss/dcn10/dcn10_hwseq.c:163`
 
-Given it fixes real misreads at the driver–firmware boundary with a
-minimal, alignment-only change confined to
-`drivers/gpu/drm/amd/display/dmub/inc/dmub_cmd.h`, it meets stable
-backport criteria.
+- Correctness and safety: For FULL updates, the code still treats the
+  path as non‑ISR and uses the wait normally. Example full‑update path
+  calls the wait with “false”:
+  - `drivers/gpu/drm/amd/display/dc/core/dc.c:2146`
+  - FULL updates explicitly set up the “wait required” state later when
+    appropriate:
+  - `drivers/gpu/drm/amd/display/dc/core/dc.c:4326`
 
- drivers/gpu/drm/amd/display/dmub/inc/dmub_cmd.h | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+- Side‑effects and risk: Minimal. This is a one‑line, scoped change
+  that:
+  - Avoids an invalid sleep during MED updates while preserving FULL
+    update behavior.
+  - Defers waiting by keeping `pipe_ctx->wait_is_required` set when
+    skipping, so the wait happens later in a safe context (per
+    `drivers/gpu/drm/amd/display/dc/hwss/dcn10/dcn10_hwseq.c:159`).
 
-diff --git a/drivers/gpu/drm/amd/display/dmub/inc/dmub_cmd.h b/drivers/gpu/drm/amd/display/dmub/inc/dmub_cmd.h
-index 6a69a788abe80..6fa25b0375858 100644
---- a/drivers/gpu/drm/amd/display/dmub/inc/dmub_cmd.h
-+++ b/drivers/gpu/drm/amd/display/dmub/inc/dmub_cmd.h
-@@ -4015,6 +4015,10 @@ struct dmub_alpm_auxless_data {
- 	uint16_t lfps_t1_t2_override_us;
- 	short lfps_t1_t2_offset_us;
- 	uint8_t lttpr_count;
-+	/*
-+	 * Padding to align structure to 4 byte boundary.
-+	 */
-+	uint8_t pad[1];
- };
+- Scope: Confined to AMD display DC commit path; no architectural/API
+  changes.
+
+- Stable backport criteria: Satisfies important bugfix (avoids sleeping
+  in IRQ), small and contained change, low regression risk, no new
+  features, and limited to a driver subsystem.
+
+Given the above, this is a solid candidate for stable backport.
+
+ drivers/gpu/drm/amd/display/dc/core/dc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/gpu/drm/amd/display/dc/core/dc.c b/drivers/gpu/drm/amd/display/dc/core/dc.c
+index 2d2f4c4bdc97e..74efd50b7c23a 100644
+--- a/drivers/gpu/drm/amd/display/dc/core/dc.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
+@@ -4163,7 +4163,7 @@ static void commit_planes_for_stream(struct dc *dc,
+ 	}
  
- /**
-@@ -4092,6 +4096,14 @@ struct dmub_cmd_replay_copy_settings_data {
- 	 */
- 	struct dmub_alpm_auxless_data auxless_alpm_data;
+ 	if (dc->hwseq->funcs.wait_for_pipe_update_if_needed)
+-		dc->hwseq->funcs.wait_for_pipe_update_if_needed(dc, top_pipe_to_program, update_type == UPDATE_TYPE_FAST);
++		dc->hwseq->funcs.wait_for_pipe_update_if_needed(dc, top_pipe_to_program, update_type < UPDATE_TYPE_FULL);
  
-+	/**
-+	 * @hpo_stream_enc_inst: HPO stream encoder instance
-+	 */
-+	uint8_t hpo_stream_enc_inst;
-+	/**
-+	 * @hpo_link_enc_inst: HPO link encoder instance
-+	 */
-+	uint8_t hpo_link_enc_inst;
- 	/**
- 	 * @pad: Align structure to 4 byte boundary.
- 	 */
+ 	if (should_lock_all_pipes && dc->hwss.interdependent_update_lock) {
+ 		if (dc->hwss.subvp_pipe_control_lock)
 -- 
 2.51.0
 
