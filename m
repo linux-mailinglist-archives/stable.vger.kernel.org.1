@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-189287-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-189289-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6A8CC09333
-	for <lists+stable@lfdr.de>; Sat, 25 Oct 2025 18:10:57 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70B03C09339
+	for <lists+stable@lfdr.de>; Sat, 25 Oct 2025 18:11:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C5131AA5626
-	for <lists+stable@lfdr.de>; Sat, 25 Oct 2025 16:10:28 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 19AF64E7959
+	for <lists+stable@lfdr.de>; Sat, 25 Oct 2025 16:10:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EF31303A1D;
-	Sat, 25 Oct 2025 16:09:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CCC7302CCD;
+	Sat, 25 Oct 2025 16:09:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i4lEsNUq"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IcywdgQb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC45D302CD6;
-	Sat, 25 Oct 2025 16:09:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34AF5205AB6;
+	Sat, 25 Oct 2025 16:09:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761408574; cv=none; b=O6C6Ru2Z+hukhrdxegcUpbTEdSTasGDpAYXwJO17BWJL+gO9+L0Xr2ufTKDe3qqSbGJhSOZnn7NxAqR3Rqi0EZJ+OaCpAnfeINnlGOtuEjb66dhd21PNxa+vuw7k7xXC7Knuc7M5RY2VSaPKP3TCMPeRqGVQcFyz10Jb0YIXNaw=
+	t=1761408575; cv=none; b=YjQro6N/EUICSSfv20s4WL/tCHIHfNvAqwoC0NU8U7XrmCyZm3KCHeAskoSOAxNFIh1yCRLlXOxoYboGaD0OiOknyuWZ7+CoUMq4r3GVqgZGCFPEh4dFTTiOczR89jzYo5HmiTJMgaPcNnkCQ/j/Vsu+qc3eYqDxkBPo/jhl7Q4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761408574; c=relaxed/simple;
-	bh=l2p8ytWrsCQMp25+omQ8DepULd7IcPVXRE79VUYC7ak=;
+	s=arc-20240116; t=1761408575; c=relaxed/simple;
+	bh=hP89qQmKZjwi7eCg302zpn3HWNE+6yuy0IrCw0HhMNk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MI4xjDp2dIheZ2pCkQYhVo+lMPcUVJUKDJOFgvTIs13fiSOH+YRqNbN319jzFqmFVQs4xlSAmJVMyqaTKKR1Q3mQV+EBiBC0ljSuAqpZiGu18EKI8EDSLAJA5Idc9djdj6auvyEyfsY2XwvPIGUBegSflmYjEA0HuNJITHlrl9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i4lEsNUq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B015C4CEF5;
-	Sat, 25 Oct 2025 16:09:32 +0000 (UTC)
+	 MIME-Version:Content-Type; b=agoxdffmAt/V8UHSbaqSVquaxaktHQSQEvNYr0YEgBexECVj6ORv9r8yqODk9IvQZGc6meWuPu4p++Rx/fCYW5PUVLKlfXegKaTGOQdVM5B+67SL0j4fsYLUX6YR0Xj4GhfgeCI2rcLzSyYMhAJIud8G0/X79IXUc4CNn0OamY8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IcywdgQb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 321BBC4CEF5;
+	Sat, 25 Oct 2025 16:09:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761408573;
-	bh=l2p8ytWrsCQMp25+omQ8DepULd7IcPVXRE79VUYC7ak=;
+	s=k20201202; t=1761408575;
+	bh=hP89qQmKZjwi7eCg302zpn3HWNE+6yuy0IrCw0HhMNk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i4lEsNUqjBPucKKBhvir4obMU3Cc8mAZrYUT/PRmEapvawVMtKIo88hVSuFjfRfby
-	 jYZOfVw9AlnVX963s4l49S3nKos7DEgOg8zVS3LzWTeTWJl3NTOYqvgI227F6e4LZ0
-	 uIkBVzwGZy5iQ3Naa92uOHIp8AOONRw2ps+ZUMi+Y9YNI7exCGEsnPKgQ3AYIaZ/To
-	 EI8FSiAs25fqSoOWG6g7jq18XgsbfJMex6TF804An+OML8GzedaNemLCRIuWIGWQC1
-	 i13iLYkmdoQOBBl6YzVpVgrFvH3PW6PH6DOmLHDhyuSZtDYn9MnHPPnnA1WfYDzZyb
-	 duZ2utQPKmOlw==
+	b=IcywdgQb6wtAydOACSGZHT/caOCVouixacZ1CkQFfSo5IX76qtT6CZNor8beBLFVY
+	 AW1fFNYSvSNK9tjSFXIYjco9oQ/Sr2hLZ6HkVnOjPjF9vrwSFlKYw2NIkun+Ow248z
+	 FPmCjUQo+KsF/S2VVqWhU2Qkt2py4OWA/iHkrCIAfLQip5i04MJ2QHvCi4nvlWXm51
+	 BmKyM+TUsFhGBe4EMCQZuhaKE7iCXNb9Jroq2hCdHsfPHpO/RHSpvBkcbZIpmU2DHa
+	 wvy2MRsGjSeB0LOtOKf5Wp/6kc7NlYsUSe1uUZTbjp3r2QBft4pdi8+f/kcdKPnNp4
+	 HzVcF3aZvHmFA==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Brahmajit Das <listout@listout.xyz>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+Cc: Anil S Keshavamurthy <anil.s.keshavamurthy@intel.com>,
+	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	przemyslaw.kitszel@intel.com,
-	intel-wired-lan@lists.osuosl.org
-Subject: [PATCH AUTOSEL 6.17-5.4] net: intel: fm10k: Fix parameter idx set but not used
-Date: Sat, 25 Oct 2025 11:54:01 -0400
-Message-ID: <20251025160905.3857885-10-sashal@kernel.org>
+	dmaengine@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.17] dmaengine: idxd: Add a new IAA device ID for Wildcat Lake family platforms
+Date: Sat, 25 Oct 2025 11:54:02 -0400
+Message-ID: <20251025160905.3857885-11-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251025160905.3857885-1-sashal@kernel.org>
 References: <20251025160905.3857885-1-sashal@kernel.org>
@@ -69,118 +68,98 @@ X-stable-base: Linux 6.17.5
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Brahmajit Das <listout@listout.xyz>
+From: Anil S Keshavamurthy <anil.s.keshavamurthy@intel.com>
 
-[ Upstream commit 99e9c5ffbbee0f258a1da4eadf602b943f8c8300 ]
+[ Upstream commit c937969a503ebf45e0bebafee4122db22b0091bd ]
 
-Variable idx is set in the loop, but is never used resulting in dead
-code. Building with GCC 16, which enables
--Werror=unused-but-set-parameter= by default results in build error.
-This patch removes the idx parameter, since all the callers of the
-fm10k_unbind_hw_stats_q as 0 as idx anyways.
+A new IAA device ID, 0xfd2d, is introduced across all Wildcat Lake
+family platforms. Add the device ID to the IDXD driver.
 
-Suggested-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Signed-off-by: Brahmajit Das <listout@listout.xyz>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Anil S Keshavamurthy <anil.s.keshavamurthy@intel.com>
+Signed-off-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Link: https://lore.kernel.org/r/20250801215936.188555-1-vinicius.gomes@intel.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-YES – dropping the unused `idx` argument fixes a real build break while
-leaving runtime behaviour unchanged.
+YES
 
-- `fm10k_unbind_hw_stats_q` now only walks the passed queue array and
-  clears the cached indices
-  (`drivers/net/ethernet/intel/fm10k/fm10k_common.c:455`), so the dead
-  `idx++` expression that triggered GCC 16’s default `-Werror=unused-
-  but-set-parameter` is gone; this restores the ability to build the
-  driver with upcoming toolchains.
-- The header signature is updated accordingly
-  (`drivers/net/ethernet/intel/fm10k/fm10k_common.h:43-46`), and the
-  only in-tree callers—PF/VF rebind paths—are adjusted to match
-  (`drivers/net/ethernet/intel/fm10k/fm10k_pf.c:1392`,
-  `drivers/net/ethernet/intel/fm10k/fm10k_vf.c:468`); all of them
-  already passed `0`, so no logic changes.
-- `fm10k_hw_stats_q` only carries the `rx_stats_idx`/`tx_stats_idx`
-  fields that this helper zeros
-  (`drivers/net/ethernet/intel/fm10k/fm10k_type.h:419-426`); no other
-  state depends on the removed parameter, and no additional callers
-  exist (confirmed by tree-wide search).
-- The patch is tiny, self-contained, and purely defensive: it keeps
-  released stable kernels buildable with newer GCC without touching live
-  datapaths, so regression risk is minimal and it meets the stable
-  backport guidelines for important build fixes.
+- User impact: This enables the IDXD (IAA/IAX) driver to bind to Wildcat
+  Lake (WCL) IAA devices (PCI ID 0xfd2d). Without it, systems with this
+  hardware won’t get driver support, which is a practical user-visible
+  gap for those platforms.
+- Change scope: Extremely small and contained. It only adds one PCI
+  device ID constant and one table entry to match that ID to the
+  existing IAA/IAX driver flow.
+  - `drivers/dma/idxd/registers.h`: Adds `#define
+    PCI_DEVICE_ID_INTEL_IAA_WCL 0xfd2d`, introducing the new PCI ID
+    without altering any logic.
+  - `drivers/dma/idxd/init.c`: Adds `{ PCI_DEVICE_DATA(INTEL, IAA_WCL,
+    &idxd_driver_data[IDXD_TYPE_IAX]) },` to `idxd_pci_tbl[]`, mapping
+    the new device ID to the already-existing IAA/IAX handling path
+    (`IDXD_TYPE_IAX`).
+- No architectural changes: The driver’s behavior, register handling,
+  and completion record layouts are unchanged. The new entry reuses the
+  same `idxd_driver_data[IDXD_TYPE_IAX]` path, which already sets
+  `cr_status_off`, `cr_result_off`, and `.load_device_defaults =
+  idxd_load_iaa_device_defaults` for IAA devices (see
+  `drivers/dma/idxd/init.c` context around `idxd_driver_data[]`). This
+  indicates the new device is expected to be compatible with the
+  existing IAA v1.0 programming model.
+- Minimal regression risk: The only effect is that the driver now binds
+  to devices reporting PCI ID 0xfd2d. No code paths for existing
+  supported devices change; IRQ/MSI-X setup and all other logic remain
+  untouched (the surrounding `idxd_setup_interrupts()` code is unchanged
+  in `drivers/dma/idxd/init.c`).
+- No side effects beyond enablement: No new kernel APIs, no user-visible
+  ABI changes, no feature additions beyond recognizing new hardware.
+- Stable policy fit: Even though the commit message doesn’t explicitly
+  Cc stable or carry a Fixes tag, adding a PCI ID to support a
+  compatible device is a common, low-risk backport to stable trees and
+  often accepted to support shipping hardware.
+- Preconditions for backport: The target stable series must already
+  include the IDXD IAA/IAX support path (e.g., existing `IDXD_TYPE_IAX`
+  infrastructure, IAA default loader, and related completion record
+  definitions). If those are present (as implied by existing entries
+  like `IAA_DMR` and `IAA_PTL` in `drivers/dma/idxd/init.c`), this is a
+  clean, standalone enablement.
 
- drivers/net/ethernet/intel/fm10k/fm10k_common.c | 5 ++---
- drivers/net/ethernet/intel/fm10k/fm10k_common.h | 2 +-
- drivers/net/ethernet/intel/fm10k/fm10k_pf.c     | 2 +-
- drivers/net/ethernet/intel/fm10k/fm10k_vf.c     | 2 +-
- 4 files changed, 5 insertions(+), 6 deletions(-)
+Conclusion: This is a classic, low-risk enablement-only change; it
+should be backported to stable so that WCL IAA hardware works out of the
+box.
 
-diff --git a/drivers/net/ethernet/intel/fm10k/fm10k_common.c b/drivers/net/ethernet/intel/fm10k/fm10k_common.c
-index f51a63fca513e..1f919a50c7653 100644
---- a/drivers/net/ethernet/intel/fm10k/fm10k_common.c
-+++ b/drivers/net/ethernet/intel/fm10k/fm10k_common.c
-@@ -447,17 +447,16 @@ void fm10k_update_hw_stats_q(struct fm10k_hw *hw, struct fm10k_hw_stats_q *q,
- /**
-  *  fm10k_unbind_hw_stats_q - Unbind the queue counters from their queues
-  *  @q: pointer to the ring of hardware statistics queue
-- *  @idx: index pointing to the start of the ring iteration
-  *  @count: number of queues to iterate over
-  *
-  *  Function invalidates the index values for the queues so any updates that
-  *  may have happened are ignored and the base for the queue stats is reset.
-  **/
--void fm10k_unbind_hw_stats_q(struct fm10k_hw_stats_q *q, u32 idx, u32 count)
-+void fm10k_unbind_hw_stats_q(struct fm10k_hw_stats_q *q, u32 count)
- {
- 	u32 i;
+ drivers/dma/idxd/init.c      | 2 ++
+ drivers/dma/idxd/registers.h | 1 +
+ 2 files changed, 3 insertions(+)
+
+diff --git a/drivers/dma/idxd/init.c b/drivers/dma/idxd/init.c
+index 8c4725ad1f648..2acc34b3daff8 100644
+--- a/drivers/dma/idxd/init.c
++++ b/drivers/dma/idxd/init.c
+@@ -80,6 +80,8 @@ static struct pci_device_id idxd_pci_tbl[] = {
+ 	{ PCI_DEVICE_DATA(INTEL, IAA_DMR, &idxd_driver_data[IDXD_TYPE_IAX]) },
+ 	/* IAA PTL platforms */
+ 	{ PCI_DEVICE_DATA(INTEL, IAA_PTL, &idxd_driver_data[IDXD_TYPE_IAX]) },
++	/* IAA WCL platforms */
++	{ PCI_DEVICE_DATA(INTEL, IAA_WCL, &idxd_driver_data[IDXD_TYPE_IAX]) },
+ 	{ 0, }
+ };
+ MODULE_DEVICE_TABLE(pci, idxd_pci_tbl);
+diff --git a/drivers/dma/idxd/registers.h b/drivers/dma/idxd/registers.h
+index 9c1c546fe443e..0d84bd7a680b7 100644
+--- a/drivers/dma/idxd/registers.h
++++ b/drivers/dma/idxd/registers.h
+@@ -10,6 +10,7 @@
+ #define PCI_DEVICE_ID_INTEL_DSA_DMR	0x1212
+ #define PCI_DEVICE_ID_INTEL_IAA_DMR	0x1216
+ #define PCI_DEVICE_ID_INTEL_IAA_PTL	0xb02d
++#define PCI_DEVICE_ID_INTEL_IAA_WCL	0xfd2d
  
--	for (i = 0; i < count; i++, idx++, q++) {
-+	for (i = 0; i < count; i++, q++) {
- 		q->rx_stats_idx = 0;
- 		q->tx_stats_idx = 0;
- 	}
-diff --git a/drivers/net/ethernet/intel/fm10k/fm10k_common.h b/drivers/net/ethernet/intel/fm10k/fm10k_common.h
-index 4c48fb73b3e78..13fca6a91a01b 100644
---- a/drivers/net/ethernet/intel/fm10k/fm10k_common.h
-+++ b/drivers/net/ethernet/intel/fm10k/fm10k_common.h
-@@ -43,6 +43,6 @@ u32 fm10k_read_hw_stats_32b(struct fm10k_hw *hw, u32 addr,
- void fm10k_update_hw_stats_q(struct fm10k_hw *hw, struct fm10k_hw_stats_q *q,
- 			     u32 idx, u32 count);
- #define fm10k_unbind_hw_stats_32b(s) ((s)->base_h = 0)
--void fm10k_unbind_hw_stats_q(struct fm10k_hw_stats_q *q, u32 idx, u32 count);
-+void fm10k_unbind_hw_stats_q(struct fm10k_hw_stats_q *q, u32 count);
- s32 fm10k_get_host_state_generic(struct fm10k_hw *hw, bool *host_ready);
- #endif /* _FM10K_COMMON_H_ */
-diff --git a/drivers/net/ethernet/intel/fm10k/fm10k_pf.c b/drivers/net/ethernet/intel/fm10k/fm10k_pf.c
-index b9dd7b7198324..3394645a18fe8 100644
---- a/drivers/net/ethernet/intel/fm10k/fm10k_pf.c
-+++ b/drivers/net/ethernet/intel/fm10k/fm10k_pf.c
-@@ -1389,7 +1389,7 @@ static void fm10k_rebind_hw_stats_pf(struct fm10k_hw *hw,
- 	fm10k_unbind_hw_stats_32b(&stats->nodesc_drop);
- 
- 	/* Unbind Queue Statistics */
--	fm10k_unbind_hw_stats_q(stats->q, 0, hw->mac.max_queues);
-+	fm10k_unbind_hw_stats_q(stats->q, hw->mac.max_queues);
- 
- 	/* Reinitialize bases for all stats */
- 	fm10k_update_hw_stats_pf(hw, stats);
-diff --git a/drivers/net/ethernet/intel/fm10k/fm10k_vf.c b/drivers/net/ethernet/intel/fm10k/fm10k_vf.c
-index 7fb1961f29210..6861a0bdc14e1 100644
---- a/drivers/net/ethernet/intel/fm10k/fm10k_vf.c
-+++ b/drivers/net/ethernet/intel/fm10k/fm10k_vf.c
-@@ -465,7 +465,7 @@ static void fm10k_rebind_hw_stats_vf(struct fm10k_hw *hw,
- 				     struct fm10k_hw_stats *stats)
- {
- 	/* Unbind Queue Statistics */
--	fm10k_unbind_hw_stats_q(stats->q, 0, hw->mac.max_queues);
-+	fm10k_unbind_hw_stats_q(stats->q, hw->mac.max_queues);
- 
- 	/* Reinitialize bases for all stats */
- 	fm10k_update_hw_stats_vf(hw, stats);
+ #define DEVICE_VERSION_1		0x100
+ #define DEVICE_VERSION_2		0x200
 -- 
 2.51.0
 
