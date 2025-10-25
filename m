@@ -1,63 +1,58 @@
-Return-Path: <stable+bounces-189557-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-189559-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AD11C09A10
-	for <lists+stable@lfdr.de>; Sat, 25 Oct 2025 18:42:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39ABAC098F6
+	for <lists+stable@lfdr.de>; Sat, 25 Oct 2025 18:36:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id AF2BF503D04
-	for <lists+stable@lfdr.de>; Sat, 25 Oct 2025 16:27:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 62DB51C83382
+	for <lists+stable@lfdr.de>; Sat, 25 Oct 2025 16:28:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80B9E30BBBF;
-	Sat, 25 Oct 2025 16:22:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4847130BF78;
+	Sat, 25 Oct 2025 16:22:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ccVn/F8P"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nxy8aLsR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 362973054D1;
-	Sat, 25 Oct 2025 16:22:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0492D30506C;
+	Sat, 25 Oct 2025 16:22:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761409323; cv=none; b=Yi3tQJ41peLDE+/i46JS6xrjJLLp4PZ1t3IJZG2uTE0ItWRPJDn5vgCPTfTj8EW3WHktnd6oB82MAsGq3q+o2scNNhgZIj0awwPiLXNDCaYN/AMO+83mEE7yLgRFJR4OQfB5AQ3UwKYvGa2AndZWdYtFX9GlvRxhufymYw8TURY=
+	t=1761409325; cv=none; b=kr7Vewi3YyipHWF81fI+KGJwNzMwSLOdCqdCSbOWEhx+eFWi+jKMSe0EohvUVFSN2T8c7idIHPR2r9kRmyXpzxVkU9KYCcCJMG9kjd6P0SLzsqs46DjvvHXO2fWSjWzDHqbvP8xUZ1E0I2edOHLT5BlnM6jlXrJV9sEW4owAyGQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761409323; c=relaxed/simple;
-	bh=BymGNPj82NaSFZQ2tSGRk2+TuheCQrfQdfZVGqDguuY=;
+	s=arc-20240116; t=1761409325; c=relaxed/simple;
+	bh=PDVVWw42kVC8LPT260SgqJWF/qgL6c3wPJmj4MRx5I0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=O2ybpPUV8ByqUZrbOMyvn3Wvnn8MlzZ92oerYa458eBv44FSo/ku2QTjJB0K8DONN9cwsH8pZuqPdDDcEpoweLBeZDKH7MFkqIVTQFtcvhvfWUSEvcpOH/zzHSqwnTqUunO+l0IXkuWmtCi+01xAOIn7TfS68ehne5+tOVtXAx4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ccVn/F8P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAB71C2BCB8;
-	Sat, 25 Oct 2025 16:22:01 +0000 (UTC)
+	 MIME-Version:Content-Type; b=f7or6Ry/2xVjwqDzKYQ8LVpak+hSs3bTcQkP4+6hthxb/6VhoOjngmMC6YldIyhPSM4Rp1QfeQ/t0BqXWVlsgaiHq0YgnJh6TSQ6FopeMaP/7VA3Vfbnxir6o/KmE+sk1o3jOBTKDMBxsRcvlCvrXK1DnCefIM8vZLhwAiZ4BPU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nxy8aLsR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A393C2BC9E;
+	Sat, 25 Oct 2025 16:22:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761409323;
-	bh=BymGNPj82NaSFZQ2tSGRk2+TuheCQrfQdfZVGqDguuY=;
+	s=k20201202; t=1761409324;
+	bh=PDVVWw42kVC8LPT260SgqJWF/qgL6c3wPJmj4MRx5I0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ccVn/F8PQLXJIvD5+umydTKp462BojBiCWfuj2KMaBBhsMIbRrNJDvSPsuTAhQZu/
-	 W0pmwom++rKoQxgeBWQIdx8FWBr6EyQMlb190mN4WgsHAJ8ogI13cE4n6cZZpcB/S0
-	 3Fx6UY2/aKpOVCvQCyEQ1St9XTu2ePzQ2laXthyPZc3A2i5HkkqGVZ5DMe2EkY2YSo
-	 yOXiDN9vRMm04fEH1X6+Xl5yPrAAiO1U7J7T8T3UvDnJ1WT8kjCBczKnWwWHwl+40C
-	 RYDR0CvLtrS9chl7DWIb/RcmSad7VWr1mz9ICqLY+5l7iRJl24qZkSwG8WNxj6wDjt
-	 ArfXXI+S8IE1A==
+	b=nxy8aLsRbKi6v2bKIP/YI06cgd0Iak/ZLJhrRIVLvyl5esjiHQDvuRFBXsDHZTKft
+	 fojEAcVgiO7QiIDOGES29XEDAaFtgefTWI6ssdNnV87G8LMYT7u1Dyv5WSU5z7K+5y
+	 QxeltO+f1ZwjHsq7OtcliawLYHmlNq7p1sppKuPoKYy9xqGYGtMX3tQ6mpoLEkKp/h
+	 l/hmcU4RYLojRvW3FKtsMY9ij6zgMQDwRLvNj42FbNH02Lb0oQ2r/WA0wzqeluIW0+
+	 51WTB6G3l+b4c3sEK4qbH2Ek6FXIVnBJseP2uzSaKwfCNEKWNEAVQIflYLphMBmEes
+	 Zu9NWSdWJQyIw==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Jianbo Liu <jianbol@nvidia.com>,
-	Cosmin Ratiu <cratiu@nvidia.com>,
-	Jiri Pirko <jiri@nvidia.com>,
-	Dragos Tatulea <dtatulea@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+Cc: Ping-Ke Shih <pkshih@realtek.com>,
+	Piotr Oniszczuk <piotr.oniszczuk@gmail.com>,
+	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
 	Sasha Levin <sashal@kernel.org>,
-	saeedm@nvidia.com,
-	mbloch@nvidia.com,
-	netdev@vger.kernel.org,
-	linux-rdma@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.17] net/mlx5e: Prevent entering switchdev mode with inconsistent netns
-Date: Sat, 25 Oct 2025 11:58:30 -0400
-Message-ID: <20251025160905.3857885-279-sashal@kernel.org>
+	linux-wireless@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.17-6.6] wifi: rtw88: sdio: use indirect IO for device registers before power-on
+Date: Sat, 25 Oct 2025 11:58:31 -0400
+Message-ID: <20251025160905.3857885-280-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251025160905.3857885-1-sashal@kernel.org>
 References: <20251025160905.3857885-1-sashal@kernel.org>
@@ -73,129 +68,164 @@ X-stable-base: Linux 6.17.5
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Jianbo Liu <jianbol@nvidia.com>
+From: Ping-Ke Shih <pkshih@realtek.com>
 
-[ Upstream commit 06fdc45f16c392dc3394c67e7c17ae63935715d3 ]
+[ Upstream commit 58de1f91e033b1fface8d8948984583125f93736 ]
 
-When a PF enters switchdev mode, its netdevice becomes the uplink
-representor but remains in its current network namespace. All other
-representors (VFs, SFs) are created in the netns of the devlink
-instance.
+The register REG_SYS_CFG1 is used to determine chip basic information
+as arguments of following flows, such as download firmware and load PHY
+parameters, so driver read the value early (before power-on).
 
-If the PF's netns has been moved and differs from the devlink's netns,
-enabling switchdev mode would create a state where the OVS control
-plane (ovs-vsctl) cannot manage the switch because the PF uplink
-representor and the other representors are split across different
-namespaces.
+However, the direct IO is disallowed before power-on, or it causes wrong
+values, which driver recognizes a chip as a wrong type RF_1T1R, but
+actually RF_2T2R, causing driver warns:
 
-To prevent this inconsistent configuration, block the request to enter
-switchdev mode if the PF netdevice's netns does not match the netns of
-its devlink instance.
+  rtw88_8822cs mmc1:0001:1: unsupported rf path (1)
 
-As part of this change, the PF's netns is first marked as immutable.
-This prevents race conditions where the netns could be changed after
-the check is performed but before the mode transition is complete, and
-it aligns the PF's behavior with that of the final uplink representor.
+Fix it by using indirect IO before power-on.
 
-Signed-off-by: Jianbo Liu <jianbol@nvidia.com>
-Reviewed-by: Cosmin Ratiu <cratiu@nvidia.com>
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/1759094723-843774-3-git-send-email-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reported-by: Piotr Oniszczuk <piotr.oniszczuk@gmail.com>
+Closes: https://lore.kernel.org/linux-wireless/699C22B4-A3E3-4206-97D0-22AB3348EBF6@gmail.com/T/#t
+Suggested-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Tested-by: Piotr Oniszczuk <piotr.oniszczuk@gmail.com>
+Reviewed-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20250724004815.7043-1-pkshih@realtek.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
 YES
-**Why Backport**
-- Rejects switchdev activation when the PF netdev sits in a different
-  netns than the devlink instance, avoiding the broken state where OVS
-  loses control of the split representors (`drivers/net/ethernet/mellano
-  x/mlx5/core/eswitch_offloads.c:3842-3847`).
-- New helper grabs the uplink netdev safely via the existing ref-counted
-  accessor and sets `netns_immutable` under RTNL so the PF behaves like
-  the eventual uplink representor, while immediately detecting namespace
-  divergence (`drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.
-  c:3777-3797`;
-  `drivers/net/ethernet/mellanox/mlx5/core/lib/mlx5.h:48-64`).
-- If the mode change later fails, the helper rolls the flag back to keep
-  legacy behavior untouched; successful transitions keep the flag set,
-  matching switchdev guidance to freeze port namespaces (`drivers/net/et
-  hernet/mellanox/mlx5/core/eswitch_offloads.c:3867-3869`;
-  `Documentation/networking/switchdev.rst:130-143`).
-- Locking the namespace leverages the core check that rejects moves of
-  immutable interfaces (`net/core/dev.c:12352-12355`), eliminating the
-  race window the commit message highlights without touching data-path
-  code.
-- The change is tightly scoped to the mode-set path, has no dependencies
-  on new infrastructure, and fixes a long-standing, user-visible bug
-  with minimal regression risk—strong fit for stable kernels that ship
-  mlx5 switchdev support.
 
- .../mellanox/mlx5/core/eswitch_offloads.c     | 33 +++++++++++++++++++
- 1 file changed, 33 insertions(+)
+Explanation
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c b/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
-index f358e8fe432cf..59a1a3a5fc8b5 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
-@@ -3739,6 +3739,29 @@ void mlx5_eswitch_unblock_mode(struct mlx5_core_dev *dev)
- 	up_write(&esw->mode_lock);
- }
+- Bug fixed and user impact:
+  - The driver reads `REG_SYS_CFG1` very early to determine chip RF
+    configuration before full power-on. In SDIO mode, doing this via
+    direct I/O before power-on can return wrong values, making 2T2R
+    chips look like 1T1R and leading to runtime warnings and
+    misconfiguration (e.g., “unsupported rf path (1)”).
+  - The early read is visible in
+    `drivers/net/wireless/realtek/rtw88/main.c:1861`, where
+    `hal->chip_version = rtw_read32(rtwdev, REG_SYS_CFG1);` happens
+    during core init, before the power-on flag is set.
+
+- What the change does:
+  - It updates the direct/indirect access decision so that device
+    register accesses use indirect I/O until the device is fully powered
+    on.
+  - Specifically, `rtw_sdio_use_direct_io()` now returns false (use
+    indirect) when the device is not yet powered on and the target is
+    not a bus address. This is the minimal and precise change that
+    addresses the wrong-value read issue.
+
+- Code path details and why it works:
+  - Current decision helper:
+    - `drivers/net/wireless/realtek/rtw88/sdio.c:145` defines
+      `rtw_sdio_use_direct_io()` and is used by all bus read/write entry
+      points (`read8/16/32`, `write8/16/32`) at
+      `drivers/net/wireless/realtek/rtw88/sdio.c:257`,
+      `drivers/net/wireless/realtek/rtw88/sdio.c:285`,
+      `drivers/net/wireless/realtek/rtw88/sdio.c:313`, and for writes
+      later in the file.
+  - Address translation:
+    - `drivers/net/wireless/realtek/rtw88/sdio.c:127`
+      `rtw_sdio_to_io_address()` adds `WLAN_IOREG_OFFSET` only for
+      direct I/O on device registers; indirect I/O passes the raw MAC
+      register address to the indirect engine. This ensures that with
+      the new condition pre-power-on device register accesses go through
+      the indirect mechanism as intended.
+  - Indirect engine:
+    - Indirect access is orchestrated via `REG_SDIO_INDIRECT_REG_CFG`
+      and `REG_SDIO_INDIRECT_REG_DATA`
+      (`drivers/net/wireless/realtek/rtw88/sdio.c:159`,
+      `drivers/net/wireless/realtek/rtw88/sdio.h:115`) and does not
+      depend on the device power-on state for correctness, as it uses
+      SDIO-local registers.
+  - Power state flag:
+    - The power-on flag used by the new check is already present and
+      managed in the core: see
+      `drivers/net/wireless/realtek/rtw88/main.h:371` for
+      `RTW_FLAG_POWERON`, and it is cleared/set in the generic power
+      flows (`drivers/net/wireless/realtek/rtw88/rtw88xxa.c:753`,
+      `drivers/net/wireless/realtek/rtw88/rtw88xxa.c:1233`) and in MAC
+      power flows (`drivers/net/wireless/realtek/rtw88/mac.c:309`,
+      `drivers/net/wireless/realtek/rtw88/mac.c:325`).
+  - Early read context:
+    - Because `REG_SYS_CFG1` is read before `RTW_FLAG_POWERON` is set
+      (`drivers/net/wireless/realtek/rtw88/main.c:1861`), the new guard
+      in `rtw_sdio_use_direct_io()` affects precisely this problematic
+      access, forcing indirect I/O and preventing the mis-detection of
+      RF path count.
+
+- Scope and risk:
+  - Scope: One small conditional addition in a single function in the
+    rtw88 SDIO HCI glue (`drivers/net/wireless/realtek/rtw88/sdio.c`).
+    No API changes, no architectural refactoring.
+  - Behavior change is intentionally limited to pre-power-on device
+    register accesses; bus addresses remain direct, and after power-on
+    existing direct/indirect policy remains unchanged.
+  - This reduces risk of wrong reads on SDIO 2.0 paths (where prior
+    logic allowed direct I/O pre-power-on) and aligns pre-power-on
+    behavior across SDIO versions, improving reliability.
+  - The indirect path is established and already used broadly (e.g.,
+    when SDIO 3.0 is supported or for unaligned accesses), so
+    coverage/risk is low.
+
+- Stable backport suitability:
+  - Fixes a real, user-visible problem (incorrect RF path detection and
+    warnings; potential malfunction).
+  - Change is small, contained, and conforms to stable rules (bug fix,
+    no new features or invasive changes).
+  - Only touches the rtw88 SDIO transport, not core kernel or unrelated
+    subsystems.
+  - The commit message references a report, suggested fix, and testing,
+    supporting its maturity.
+
+- Specific code references
+  - Decision point to force indirect before power-on:
+    drivers/net/wireless/realtek/rtw88/sdio.c:145
+  - Address mapping for direct I/O:
+    drivers/net/wireless/realtek/rtw88/sdio.c:127
+  - Indirect engine config/data registers:
+    drivers/net/wireless/realtek/rtw88/sdio.c:159,
+    drivers/net/wireless/realtek/rtw88/sdio.h:115
+  - Power-on flag declaration:
+    drivers/net/wireless/realtek/rtw88/main.h:371
+  - Power-on flag management:
+    drivers/net/wireless/realtek/rtw88/rtw88xxa.c:753,
+    drivers/net/wireless/realtek/rtw88/rtw88xxa.c:1233;
+    drivers/net/wireless/realtek/rtw88/mac.c:309,
+    drivers/net/wireless/realtek/rtw88/mac.c:325
+  - Early `REG_SYS_CFG1` read (bug trigger site):
+    drivers/net/wireless/realtek/rtw88/main.c:1861
+  - `WLAN_IOREG_OFFSET` definition:
+    drivers/net/wireless/realtek/rtw88/sdio.h:11
+
+Conclusion: This commit is a strong candidate for stable backport. It
+addresses a concrete and reported malfunction with a minimal, targeted
+change and low regression risk, confined to the rtw88 SDIO pre-power-on
+access path.
+
+ drivers/net/wireless/realtek/rtw88/sdio.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/drivers/net/wireless/realtek/rtw88/sdio.c b/drivers/net/wireless/realtek/rtw88/sdio.c
+index cc2d4fef35879..99d7c629eac6f 100644
+--- a/drivers/net/wireless/realtek/rtw88/sdio.c
++++ b/drivers/net/wireless/realtek/rtw88/sdio.c
+@@ -144,6 +144,10 @@ static u32 rtw_sdio_to_io_address(struct rtw_dev *rtwdev, u32 addr,
  
-+/* Returns false only when uplink netdev exists and its netns is different from
-+ * devlink's netns. True for all others so entering switchdev mode is allowed.
-+ */
-+static bool mlx5_devlink_netdev_netns_immutable_set(struct devlink *devlink,
-+						    bool immutable)
-+{
-+	struct mlx5_core_dev *mdev = devlink_priv(devlink);
-+	struct net_device *netdev;
-+	bool ret;
-+
-+	netdev = mlx5_uplink_netdev_get(mdev);
-+	if (!netdev)
-+		return true;
-+
-+	rtnl_lock();
-+	netdev->netns_immutable = immutable;
-+	ret = net_eq(dev_net(netdev), devlink_net(devlink));
-+	rtnl_unlock();
-+
-+	mlx5_uplink_netdev_put(mdev, netdev);
-+	return ret;
-+}
-+
- int mlx5_devlink_eswitch_mode_set(struct devlink *devlink, u16 mode,
- 				  struct netlink_ext_ack *extack)
+ static bool rtw_sdio_use_direct_io(struct rtw_dev *rtwdev, u32 addr)
  {
-@@ -3781,6 +3804,14 @@ int mlx5_devlink_eswitch_mode_set(struct devlink *devlink, u16 mode,
- 	esw->eswitch_operation_in_progress = true;
- 	up_write(&esw->mode_lock);
- 
-+	if (mode == DEVLINK_ESWITCH_MODE_SWITCHDEV &&
-+	    !mlx5_devlink_netdev_netns_immutable_set(devlink, true)) {
-+		NL_SET_ERR_MSG_MOD(extack,
-+				   "Can't change E-Switch mode to switchdev when netdev net namespace has diverged from the devlink's.");
-+		err = -EINVAL;
-+		goto skip;
-+	}
++	if (!test_bit(RTW_FLAG_POWERON, rtwdev->flags) &&
++	    !rtw_sdio_is_bus_addr(addr))
++		return false;
 +
- 	if (mode == DEVLINK_ESWITCH_MODE_LEGACY)
- 		esw->dev->priv.flags |= MLX5_PRIV_FLAGS_SWITCH_LEGACY;
- 	mlx5_eswitch_disable_locked(esw);
-@@ -3799,6 +3830,8 @@ int mlx5_devlink_eswitch_mode_set(struct devlink *devlink, u16 mode,
- 	}
- 
- skip:
-+	if (mode == DEVLINK_ESWITCH_MODE_SWITCHDEV && err)
-+		mlx5_devlink_netdev_netns_immutable_set(devlink, false);
- 	down_write(&esw->mode_lock);
- 	esw->eswitch_operation_in_progress = false;
- unlock:
+ 	return !rtw_sdio_is_sdio30_supported(rtwdev) ||
+ 		rtw_sdio_is_bus_addr(addr);
+ }
 -- 
 2.51.0
 
