@@ -1,138 +1,109 @@
-Return-Path: <stable+bounces-189261-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-189262-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02EA2C08A3E
-	for <lists+stable@lfdr.de>; Sat, 25 Oct 2025 05:39:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32FE4C08A59
+	for <lists+stable@lfdr.de>; Sat, 25 Oct 2025 05:41:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6EE1A4E9A13
-	for <lists+stable@lfdr.de>; Sat, 25 Oct 2025 03:39:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 92C7F403BCF
+	for <lists+stable@lfdr.de>; Sat, 25 Oct 2025 03:39:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 524F31CD15;
-	Sat, 25 Oct 2025 03:31:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36FA427055E;
+	Sat, 25 Oct 2025 03:36:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="gzFcust0"
+	dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b="Fub/+nVe"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CE9578F2F
-	for <stable@vger.kernel.org>; Sat, 25 Oct 2025 03:31:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E1AB215F6B;
+	Sat, 25 Oct 2025 03:36:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.89.141.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761363106; cv=none; b=edrx9s8MaJhG+oHJ/Exg7nKOtWMZxt2fEbiYB+XrmE4qMv8a0vruMoTPuTmmZjWu2Sg572pgw7Np9diRygjp5xGIsxfn8x64w/YBT7BCIEJ7Ns/Ep1tbJ1rNTVDsBnzubWI60lcIg8iHEC1GaXggc8FK6HpBAwQcFkibF5Ishks=
+	t=1761363370; cv=none; b=JICCbzV0tNo1WD7WebZ1osNVU/uDHRBZ/WuldBnYfb6ZfEg67VKmqPf9fk3muV2GHCjOj0dv6dldEgaydvB9T3gEFMaSM97c9PcXW3xUpdmNs6SD8Y+mKVJSHKGWBDrKVoNuOnw4mNINS6EfrPRUsIG5vw/hlvMuTSitFPvvQx8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761363106; c=relaxed/simple;
-	bh=NjEF5Ss4G57nzxhxDgz5MaE46uG/fiVF0ICE9nxzlac=;
+	s=arc-20240116; t=1761363370; c=relaxed/simple;
+	bh=KiON0OU+Y/RR/jXzP9+/gwwp+JIlFiRQgsnXLMPprwY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=V/yq/BD36nOrK0+OIRkoGg4zJqeQwnmAy4tbH4BmO4YuBBTsggHngbNbk2Xr6dyKU3ptbBzJV1c4x6ihrmEhBY2/ewKizmuq9ooLqny9eL10VSDytoE1HMuLgXerX+WNs6UVql6KXtTxZlRBjLJlIpb1rPPEuhYmDfj+CtsHVqU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=gzFcust0; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1761363103;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vrOROuAh2t0TxV1g/ZHhUSBmu1NMnGW6lj5cEu+eCAM=;
-	b=gzFcust0AuB045RLmgh/UIUwNd1XJ+/nN1H1aPL0J6duErc1NqnmJsyf9o8MXud04DOj3x
-	R5q/dHDXgJ+NhtPDlaWjJgFnZrU0nM1ldKwlAKhTq7WaeMob9LM575xc2CfSE6EwdruD52
-	9BS8PEk0xk9eW1fxgBuPwylpGII6gqo=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-370-a0_GJqOkP2-gwcGckHzPLQ-1; Fri,
- 24 Oct 2025 23:31:39 -0400
-X-MC-Unique: a0_GJqOkP2-gwcGckHzPLQ-1
-X-Mimecast-MFC-AGG-ID: a0_GJqOkP2-gwcGckHzPLQ_1761363097
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 0E2B41954197;
-	Sat, 25 Oct 2025 03:31:36 +0000 (UTC)
-Received: from localhost (unknown [10.72.112.41])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B7FA81800576;
-	Sat, 25 Oct 2025 03:31:33 +0000 (UTC)
-Date: Sat, 25 Oct 2025 11:31:29 +0800
-From: Baoquan He <bhe@redhat.com>
-To: Kairui Song <ryncsn@gmail.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, linux-mm@kvack.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
-	Chris Li <chrisl@kernel.org>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	David Hildenbrand <david@redhat.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	YoungJun Park <youngjun.park@lge.com>, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2 0/5] mm, swap: misc cleanup and bugfix
-Message-ID: <aPxEkSIUI5VAUXt0@MiWiFi-R3L-srv>
-References: <20251024-swap-clean-after-swap-table-p1-v2-0-a709469052e7@tencent.com>
- <178e2579-0208-4d40-8ab2-31392aa3f920@lucifer.local>
- <CAMgjq7DuJp_zyW4NLHPoA8iDYC+2PaVZT4XzETV-okVUPLNzSw@mail.gmail.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=MBxDA0DXt3MafxH+7qMYiDrmjCG1RZgi3yEltEscVqk8zBOEIT4QkO8URkTuFYSFtnddikjnK8rv3E1U0aSiC8L9HPrIpULF/00AQN4GoGHwNEpf7wi1s8ilkFB9kUcfRU80t0QqjwxaOYQFEy3/IsUcKKthiWuKTLC47S5/SJk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk; spf=none smtp.mailfrom=ftp.linux.org.uk; dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b=Fub/+nVe; arc=none smtp.client-ip=62.89.141.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ftp.linux.org.uk
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=cbugbZ+qcT/wMKq21rqYgDFNKpMW8Ujxzcq00HGBWCs=; b=Fub/+nVe73IoydgDcQfwiwEOT+
+	yVfeo1JMxWigGVonx9kafO5yX5RhmBeZzQ2np82JYDmOzBFCwd11Z9DHEDdM4nyw3awdDVX7yXv1/
+	T47wKmTOCQcN2NC1LhUTjIK8+HDdt5AiMZn4aYJq5O+MbYW/O4EC8MYoN8RIMnIUBiO9lApBMzDiN
+	3+An56UwxbaRLd4wYMRgPfwpWVJvNgvyg59j60IZjbNzHdEk4ZNbokaWPvEju35D+rL0V2UrN5rBH
+	4x8SAlJaF4iIUpxeRvyYZxxmF7Qlk2J6FdPfd6PNzJHMAer9wkKK9xWYxk+5LVurXBLx2gVyWbNIa
+	bK/cEZTw==;
+Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vCV4U-00000009yw1-08Ph;
+	Sat, 25 Oct 2025 03:36:02 +0000
+Date: Sat, 25 Oct 2025 04:36:01 +0100
+From: Al Viro <viro@zeniv.linux.org.uk>
+To: GuangFei Luo <luogf2025@163.com>
+Cc: brauner@kernel.org, jack@suse.cz, linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] mount: fix duplicate mounts using the new mount API
+Message-ID: <20251025033601.GJ2441659@ZenIV>
+References: <20251025024934.1350492-1-luogf2025@163.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAMgjq7DuJp_zyW4NLHPoA8iDYC+2PaVZT4XzETV-okVUPLNzSw@mail.gmail.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+In-Reply-To: <20251025024934.1350492-1-luogf2025@163.com>
+Sender: Al Viro <viro@ftp.linux.org.uk>
 
-On 10/24/25 at 09:26pm, Kairui Song wrote:
-> On Fri, Oct 24, 2025 at 9:18 PM Lorenzo Stoakes
-> <lorenzo.stoakes@oracle.com> wrote:
-> >
-> > On Fri, Oct 24, 2025 at 02:00:38AM +0800, Kairui Song wrote:
-> > > A few cleanups and a bugfix that are either suitable after the swap
-> > > table phase I or found during code review.
-> > >
-> > > Patch 1 is a bugfix and needs to be included in the stable branch,
-> > > the rest have no behavior change.
-> > >
-> > > ---
-> > > Changes in v2:
-> > > - Update commit message for patch 1, it's a sub-optimal fix and a better
-> > >   fix can be done later. [ Chris Li ]
-> > > - Fix a lock balance issue in patch 1. [ YoungJun Park ]
-> > > - Add a trivial cleanup patch to remove an unused argument,
-> > >   no behavior change.
-> > > - Update kernel doc.
-> > > - Fix minor issue with commit message [ Nhat Pham ]
-> > > - Link to v1: https://lore.kernel.org/r/20251007-swap-clean-after-swap-table-p1-v1-0-74860ef8ba74@tencent.com
-> > >
-> > > ---
-> > > Kairui Song (5):
-> > >       mm, swap: do not perform synchronous discard during allocation
-> >
-> > FYI For some reason this commit is not present on lore, see [0]
-> >
-> > [0]: https://lore.kernel.org/all/20251024-swap-clean-after-swap-table-p1-v2-0-a709469052e7@tencent.com/
-> 
-> Thanks for letting me know, strangely, it is here:
-> https://lkml.kernel.org/r/20251024-swap-clean-after-swap-table-p1-v2-1-c5b0e1092927@tencent.com
+On Sat, Oct 25, 2025 at 10:49:34AM +0800, GuangFei Luo wrote:
 
-I don't receive the patch 1/5, thanks to the link.
+> @@ -4427,6 +4427,7 @@ SYSCALL_DEFINE5(move_mount,
+>  {
+>  	struct path to_path __free(path_put) = {};
+>  	struct path from_path __free(path_put) = {};
+> +	struct path path __free(path_put) = {};
+>  	struct filename *to_name __free(putname) = NULL;
+>  	struct filename *from_name __free(putname) = NULL;
+>  	unsigned int lflags, uflags;
+> @@ -4472,6 +4473,14 @@ SYSCALL_DEFINE5(move_mount,
+>  			return ret;
+>  	}
+>  
+> +	ret = user_path_at(AT_FDCWD, to_pathname, LOOKUP_FOLLOW, &path);
+> +	if (ret)
+> +		return ret;
+> +
+> +	/* Refuse the same filesystem on the same mount point */
+> +	if (path.mnt->mnt_sb == to_path.mnt->mnt_sb && path_mounted(&path))
+> +		return -EBUSY;
 
-> 
-> But the In-reply-to id is wrong. I'm using b4 and somehow patch 1 was
-> blocked by gmail's SMTP so I had to try to resend patch 1 again,
-> something went wrong with that part. I'll try to find out the problem
-> and avoid that from happening again.
-> 
-> I'm seeing that patch 1 is being merged into mm tree just fine, I
-> guess that should be OK.
-> 
-> If anyone is reading the threads, this url above should be helpful.
-> 
+Races galore:
+	* who said that string pointed to by to_pathname will remain
+the same bothe for user_path_at() and getname_maybe_null()?
+	* assuming it is not changed, who said that it will resolve
+to the same location the second time around?
+	* not a race but... the fact that to_dfd does not affect anything
+in that check looks odd, doesn't it?  And if you try to pass it instead
+of AT_FDCWD... who said that descriptor will correspond to the same
+opened file for both?
 
+Besides... assuming that nothing's changing under you, your test is basically
+"we are not moving anything on top of existing mountpoint" - both path and
+to_path come from resolving to_pathname, after all.  It doesn't depend upon
+the thing you are asked to move over there - the check is done before you
+even look at from_pathname.
+
+What's more, you are breaking the case of mount --move, which had never had
+that constraint of plain mount.  Same for mount --bind, for that matter.
+
+I agree that it's a regression in mount(8) conversion to new API, but this
+is not a fix.
 
