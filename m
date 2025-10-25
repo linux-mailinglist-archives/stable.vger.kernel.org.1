@@ -1,109 +1,117 @@
-Return-Path: <stable+bounces-189262-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-189263-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32FE4C08A59
-	for <lists+stable@lfdr.de>; Sat, 25 Oct 2025 05:41:30 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11AD0C08BBA
+	for <lists+stable@lfdr.de>; Sat, 25 Oct 2025 08:03:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 92C7F403BCF
-	for <lists+stable@lfdr.de>; Sat, 25 Oct 2025 03:39:40 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 9F3B634EF20
+	for <lists+stable@lfdr.de>; Sat, 25 Oct 2025 06:03:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36FA427055E;
-	Sat, 25 Oct 2025 03:36:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D768C2D2490;
+	Sat, 25 Oct 2025 06:03:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b="Fub/+nVe"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="RICL+Pd+"
 X-Original-To: stable@vger.kernel.org
-Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E1AB215F6B;
-	Sat, 25 Oct 2025 03:36:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.89.141.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F3DF1F4C92;
+	Sat, 25 Oct 2025 06:03:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761363370; cv=none; b=JICCbzV0tNo1WD7WebZ1osNVU/uDHRBZ/WuldBnYfb6ZfEg67VKmqPf9fk3muV2GHCjOj0dv6dldEgaydvB9T3gEFMaSM97c9PcXW3xUpdmNs6SD8Y+mKVJSHKGWBDrKVoNuOnw4mNINS6EfrPRUsIG5vw/hlvMuTSitFPvvQx8=
+	t=1761372192; cv=none; b=X61jRvYGR+cuU4Y1s1WFfc3hCQfxGgD9WPF7Sfa5fNe55FXxQWqdtnOr8AgpT6B4oQUPOhUYJEhb8178lgz6kU+DFYGNa0Cscjdqk/XonhmaqAxAqmnSkdVexuSKlMa3KDs63yTClhI5oaV7oYwyi9rEWHYKgZHgNYdJ5BgS+xM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761363370; c=relaxed/simple;
-	bh=KiON0OU+Y/RR/jXzP9+/gwwp+JIlFiRQgsnXLMPprwY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MBxDA0DXt3MafxH+7qMYiDrmjCG1RZgi3yEltEscVqk8zBOEIT4QkO8URkTuFYSFtnddikjnK8rv3E1U0aSiC8L9HPrIpULF/00AQN4GoGHwNEpf7wi1s8ilkFB9kUcfRU80t0QqjwxaOYQFEy3/IsUcKKthiWuKTLC47S5/SJk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk; spf=none smtp.mailfrom=ftp.linux.org.uk; dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b=Fub/+nVe; arc=none smtp.client-ip=62.89.141.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ftp.linux.org.uk
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=cbugbZ+qcT/wMKq21rqYgDFNKpMW8Ujxzcq00HGBWCs=; b=Fub/+nVe73IoydgDcQfwiwEOT+
-	yVfeo1JMxWigGVonx9kafO5yX5RhmBeZzQ2np82JYDmOzBFCwd11Z9DHEDdM4nyw3awdDVX7yXv1/
-	T47wKmTOCQcN2NC1LhUTjIK8+HDdt5AiMZn4aYJq5O+MbYW/O4EC8MYoN8RIMnIUBiO9lApBMzDiN
-	3+An56UwxbaRLd4wYMRgPfwpWVJvNgvyg59j60IZjbNzHdEk4ZNbokaWPvEju35D+rL0V2UrN5rBH
-	4x8SAlJaF4iIUpxeRvyYZxxmF7Qlk2J6FdPfd6PNzJHMAer9wkKK9xWYxk+5LVurXBLx2gVyWbNIa
-	bK/cEZTw==;
-Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vCV4U-00000009yw1-08Ph;
-	Sat, 25 Oct 2025 03:36:02 +0000
-Date: Sat, 25 Oct 2025 04:36:01 +0100
-From: Al Viro <viro@zeniv.linux.org.uk>
-To: GuangFei Luo <luogf2025@163.com>
-Cc: brauner@kernel.org, jack@suse.cz, linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] mount: fix duplicate mounts using the new mount API
-Message-ID: <20251025033601.GJ2441659@ZenIV>
-References: <20251025024934.1350492-1-luogf2025@163.com>
+	s=arc-20240116; t=1761372192; c=relaxed/simple;
+	bh=joX0o5Lrl2JShvoKBqYfj933xypiwMqz1lDALZeTrzA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=qN8cBe6tTR4cIH4IJtQ/AfgtowhN7I1SqR/uM06+7XgKn2GptkGFnVaDbpmbI9T3PoRForQsAenK6dKsks5jtwGbngkiJrFYIkrfrptZ/kb5kUSOXIDVfJa+3XLXXPWS2SdEtQzVDkkwjiL4qOpq8Ilqh5uW5l4SHZ196yyMvCI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=RICL+Pd+; arc=none smtp.client-ip=220.197.31.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=Message-ID:Date:MIME-Version:Subject:To:From:
+	Content-Type; bh=fekQSLGB0ovepYdE7QuWcHq2DxkkaAo5JrQRK380pb0=;
+	b=RICL+Pd+rFCdO6Xzthl6j3sTcyl4hhQ5xP6OHzyg2XumJXV0riBtcvMF3bsIAU
+	LLJW4cBd2mwL+3AwcaDwgahUg5JvMMI6vzpJRYGDMvJUmIX/TQH+gH/kGhvy17jB
+	XX044oRqHmB0hytlaUdNmylkEfYHeWZ+cL/6WT4+zSHUg=
+Received: from [192.168.3.55] (unknown [])
+	by gzsmtp1 (Coremail) with SMTP id PCgvCgCXAt4MaPxoKdVhBQ--.2431S2;
+	Sat, 25 Oct 2025 14:02:52 +0800 (CST)
+Message-ID: <788d8763-0c2c-458a-9b0b-a5634e50c029@163.com>
+Date: Sat, 25 Oct 2025 14:02:51 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251025024934.1350492-1-luogf2025@163.com>
-Sender: Al Viro <viro@ftp.linux.org.uk>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mount: fix duplicate mounts using the new mount API
+To: Al Viro <viro@zeniv.linux.org.uk>
+Cc: brauner@kernel.org, jack@suse.cz, linux-fsdevel@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20251025024934.1350492-1-luogf2025@163.com>
+ <20251025033601.GJ2441659@ZenIV>
+From: GuangFei Luo <luogf2025@163.com>
+In-Reply-To: <20251025033601.GJ2441659@ZenIV>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:PCgvCgCXAt4MaPxoKdVhBQ--.2431S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7Ar1fGrW5ZrykAF1fXFyftFb_yoW8ZryDpF
+	Wrtw4DCrs7JwsxKry8Zr18u3yFyan5A3W5AFyYqr90y3ZIvFyIqF1IvFWUZas8Gw4Fgr9F
+	vF4rGryDua4YgFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07Uca9-UUUUU=
+X-CM-SenderInfo: poxrwwisqskqqrwthudrp/1tbizQTxmWj8V0TUEAAAsi
 
-On Sat, Oct 25, 2025 at 10:49:34AM +0800, GuangFei Luo wrote:
 
-> @@ -4427,6 +4427,7 @@ SYSCALL_DEFINE5(move_mount,
->  {
->  	struct path to_path __free(path_put) = {};
->  	struct path from_path __free(path_put) = {};
-> +	struct path path __free(path_put) = {};
->  	struct filename *to_name __free(putname) = NULL;
->  	struct filename *from_name __free(putname) = NULL;
->  	unsigned int lflags, uflags;
-> @@ -4472,6 +4473,14 @@ SYSCALL_DEFINE5(move_mount,
->  			return ret;
->  	}
->  
-> +	ret = user_path_at(AT_FDCWD, to_pathname, LOOKUP_FOLLOW, &path);
-> +	if (ret)
-> +		return ret;
-> +
-> +	/* Refuse the same filesystem on the same mount point */
-> +	if (path.mnt->mnt_sb == to_path.mnt->mnt_sb && path_mounted(&path))
-> +		return -EBUSY;
 
-Races galore:
-	* who said that string pointed to by to_pathname will remain
-the same bothe for user_path_at() and getname_maybe_null()?
-	* assuming it is not changed, who said that it will resolve
-to the same location the second time around?
-	* not a race but... the fact that to_dfd does not affect anything
-in that check looks odd, doesn't it?  And if you try to pass it instead
-of AT_FDCWD... who said that descriptor will correspond to the same
-opened file for both?
+On 10/25/2025 11:36 AM, Al Viro wrote:
+> On Sat, Oct 25, 2025 at 10:49:34AM +0800, GuangFei Luo wrote:
+>
+>> @@ -4427,6 +4427,7 @@ SYSCALL_DEFINE5(move_mount,
+>>   {
+>>   	struct path to_path __free(path_put) = {};
+>>   	struct path from_path __free(path_put) = {};
+>> +	struct path path __free(path_put) = {};
+>>   	struct filename *to_name __free(putname) = NULL;
+>>   	struct filename *from_name __free(putname) = NULL;
+>>   	unsigned int lflags, uflags;
+>> @@ -4472,6 +4473,14 @@ SYSCALL_DEFINE5(move_mount,
+>>   			return ret;
+>>   	}
+>>   
+>> +	ret = user_path_at(AT_FDCWD, to_pathname, LOOKUP_FOLLOW, &path);
+>> +	if (ret)
+>> +		return ret;
+>> +
+>> +	/* Refuse the same filesystem on the same mount point */
+>> +	if (path.mnt->mnt_sb == to_path.mnt->mnt_sb && path_mounted(&path))
+>> +		return -EBUSY;
+> Races galore:
+> 	* who said that string pointed to by to_pathname will remain
+> the same bothe for user_path_at() and getname_maybe_null()?
+> 	* assuming it is not changed, who said that it will resolve
+> to the same location the second time around?
+> 	* not a race but... the fact that to_dfd does not affect anything
+> in that check looks odd, doesn't it?  And if you try to pass it instead
+> of AT_FDCWD... who said that descriptor will correspond to the same
+> opened file for both?
+>
+> Besides... assuming that nothing's changing under you, your test is basically
+> "we are not moving anything on top of existing mountpoint" - both path and
+> to_path come from resolving to_pathname, after all.  It doesn't depend upon
+> the thing you are asked to move over there - the check is done before you
+> even look at from_pathname.
+>
+> What's more, you are breaking the case of mount --move, which had never had
+> that constraint of plain mount.  Same for mount --bind, for that matter.
+>
+> I agree that it's a regression in mount(8) conversion to new API, but this
+> is not a fix.
+Thanks for the review. Perhaps fixing this in |move_mount| isn't the 
+best approach, and I don’t have a good solution yet.
 
-Besides... assuming that nothing's changing under you, your test is basically
-"we are not moving anything on top of existing mountpoint" - both path and
-to_path come from resolving to_pathname, after all.  It doesn't depend upon
-the thing you are asked to move over there - the check is done before you
-even look at from_pathname.
-
-What's more, you are breaking the case of mount --move, which had never had
-that constraint of plain mount.  Same for mount --bind, for that matter.
-
-I agree that it's a regression in mount(8) conversion to new API, but this
-is not a fix.
 
