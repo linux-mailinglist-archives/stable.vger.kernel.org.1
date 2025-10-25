@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-189404-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-189406-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57752C0943F
-	for <lists+stable@lfdr.de>; Sat, 25 Oct 2025 18:17:10 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7B51C09451
+	for <lists+stable@lfdr.de>; Sat, 25 Oct 2025 18:17:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 69B4134D82F
-	for <lists+stable@lfdr.de>; Sat, 25 Oct 2025 16:17:09 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 6FE8F34D853
+	for <lists+stable@lfdr.de>; Sat, 25 Oct 2025 16:17:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9F123081D0;
-	Sat, 25 Oct 2025 16:15:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DCDE238142;
+	Sat, 25 Oct 2025 16:15:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cGALKVVf"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ej+8x8/Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 936AD3019DE;
-	Sat, 25 Oct 2025 16:15:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14F6724DCE3;
+	Sat, 25 Oct 2025 16:15:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761408912; cv=none; b=WOKYHjQVOr4lhR76tUt28p846T4Q6AwZJt/z4v6sO0GhGni4IfkOmxBAcK35eMLO0cQDH3XR2P2J8LJBjz7e32u+UpKmrJxFlamWhwT9bbkugV6Y+sRbEqP1c6kKCVUJmSg7314t59B7dn9AxiyggPTS3+O9aNXEwjL6xEZ44DY=
+	t=1761408915; cv=none; b=ahGXPoBz4XZydou/aFhp5FVGVzep2q5KFbAul87Aoa63cVUykW0onM/M943hozjH4Yx8IjGKPGh/dpCIUpaR2gGoM4QIJj9anH450r+LrO80RpKNY6w3GuG9vO6mj0BMJ4iJO0SpTpkGroEEBWdejUaZLcEnIuY5nr2z5LCfcV8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761408912; c=relaxed/simple;
-	bh=k8/4ps8OSedv+JB05M3ZP54FkmGycvsB9HQbCElcfRY=;
+	s=arc-20240116; t=1761408915; c=relaxed/simple;
+	bh=78ERbFKaeO0h6PkzV58N49XWB06R/jyEXp38t/OS7tw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iTGNVbOIwXzD5q89Ln0nuJq5m+hKweZq34pKQ3pjn/66qmLF2Xxz/Fboxwk4KESPUoLmEvR1mN8vVPwXucd3omA1ZOtBEY4TmzyysQkrXysTqFFAdPhH7x6BDeeWeUc5jcUF3+wXU2Z6iOyqAo/TeccKMfzWTPc8KAhropX+/3o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cGALKVVf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24986C4AF09;
-	Sat, 25 Oct 2025 16:15:11 +0000 (UTC)
+	 MIME-Version:Content-Type; b=e7ub4rrJM1orV0PLRDvjCIlwE5E/P1It38tsgtOXsgiz+lOy7iN8FvfkP9VE1r1jWfAGPCasbHHV45QF6X0zl48IO2Y1/TjrYPUwnhwwcjc9z7EPigP+afitYTGfTWzzP7YfFthPiAxJoDX8RbpdtR5g/qUOqRGzkePuDRiqYVg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ej+8x8/Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EE70C4CEFB;
+	Sat, 25 Oct 2025 16:15:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761408912;
-	bh=k8/4ps8OSedv+JB05M3ZP54FkmGycvsB9HQbCElcfRY=;
+	s=k20201202; t=1761408913;
+	bh=78ERbFKaeO0h6PkzV58N49XWB06R/jyEXp38t/OS7tw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cGALKVVf7Z+gYyMSrnV/bA8FcvFrDB/kYjtnRW6zFiScEZP1hE6ono+rBKG84dCt/
-	 ItmWrvTN5IIR2LwvorWJ4oLau/exvYvv300BWI7sFYJ3ft3+jX6bsBEa74E6yk3sfR
-	 +4vRNqC1uNej5VDbjmR3zCMKZc48ZdnAAPWvvaLyf5vupmgaf/1y+vpv3y3XipWPbu
-	 t25DuIyPaX8ffXw1RMLXVtVEYus8IVFyA55sFgtB7sKifFgbGwXxwUyjZf4bdHx+6J
-	 /ZZl4tzIBxbVG8BW1cbX+zQ8ICHRxaBnocL4Wa7QGSRIpJK5gzYtN0Rj/s02KbUfBN
-	 9aRc8QB4neBSA==
+	b=ej+8x8/Y8+G0SLKDGSSSod+6qKvBWEOz3JNDqH/DIsM4OPnegVAE8PHpdjv1gHESJ
+	 XFdIRfHD1qXBAn9fG/rcwE0awD57lxGNYWmmJmiPfJVaDLdJCp41WGWR7cJYqbu1fj
+	 w766HjEXF9kPUJkK5U9Iy2Zx0HWkHpwcf7yKdlhFjKADX5KBgCw01ekXx5bugyRI2A
+	 vLsm89iBpFzSze7iW9+D4iybCD3BYQfdC/ALTG573AS8A4/GgZxMr79nBETN+HI8Lw
+	 mVpdX8GPgueKWyedKOkhEbRumitCPGSgMzM/IlUXYIh6Rn2ylBkLOhxdOMFggOneeX
+	 vTWaUJnz5EfCg==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Alok Tiwari <alok.a.tiwari@oracle.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+Cc: Antonino Maniscalco <antomani103@gmail.com>,
+	Akhil P Oommen <akhilpo@oss.qualcomm.com>,
+	Rob Clark <robin.clark@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>,
-	davem@davemloft.net,
-	dsahern@kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.17-5.10] udp_tunnel: use netdev_warn() instead of netdev_WARN()
-Date: Sat, 25 Oct 2025 11:55:57 -0400
-Message-ID: <20251025160905.3857885-126-sashal@kernel.org>
+	linux-arm-msm@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	freedreno@lists.freedesktop.org
+Subject: [PATCH AUTOSEL 6.17-5.15] drm/msm: make sure to not queue up recovery more than once
+Date: Sat, 25 Oct 2025 11:55:58 -0400
+Message-ID: <20251025160905.3857885-127-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251025160905.3857885-1-sashal@kernel.org>
 References: <20251025160905.3857885-1-sashal@kernel.org>
@@ -69,221 +69,88 @@ X-stable-base: Linux 6.17.5
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+From: Antonino Maniscalco <antomani103@gmail.com>
 
-[ Upstream commit dc2f650f7e6857bf384069c1a56b2937a1ee370d ]
+[ Upstream commit 10fb1b2fcaee5545a5e54db1ed4d7b15c2db50c8 ]
 
-netdev_WARN() uses WARN/WARN_ON to print a backtrace along with
-file and line information. In this case, udp_tunnel_nic_register()
-returning an error is just a failed operation, not a kernel bug.
+If two fault IRQs arrive in short succession recovery work will be
+queued up twice.
 
-udp_tunnel_nic_register() can fail due to a memory allocation
-failure (kzalloc() or udp_tunnel_nic_alloc()).
-This is a normal runtime error and not a kernel bug.
+When recovery runs a second time it may end up killing an unrelated
+context.
 
-Replace netdev_WARN() with netdev_warn() accordingly.
+Prevent this by masking off interrupts when triggering recovery.
 
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250910195031.3784748-1-alok.a.tiwari@oracle.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Antonino Maniscalco <antomani103@gmail.com>
+Reviewed-by: Akhil P Oommen <akhilpo@oss.qualcomm.com>
+Patchwork: https://patchwork.freedesktop.org/patch/670023/
+Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-## Backport Recommendation: **YES**
+YES
 
-After conducting an exhaustive analysis of this commit, I strongly
-recommend backporting it to stable kernel trees.
+- What it fixes: Two fault IRQs arriving back-to-back can queue
+  `recover_work` twice; the second recovery may kill an unrelated
+  context. The change masks interrupts before queuing recovery so
+  subsequent fault IRQs don’t re-queue recovery.
+- Core change: In `drivers/gpu/drm/msm/adreno/a6xx_gpu.c:1821-1824`,
+  `a6xx_fault_detect_irq()` adds:
+  - `gpu_write(gpu, REG_A6XX_RBBM_INT_0_MASK, 0);` to mask all RBBM
+    interrupts before `kthread_queue_work(gpu->worker,
+    &gpu->recover_work);`
+  - This follows the hangcheck timer being disabled, ensuring no further
+    spurious recovery triggers while the first recovery proceeds.
+- Call path impact: `a6xx_irq()` invokes `a6xx_fault_detect_irq()` on
+  hang detect (`drivers/gpu/drm/msm/adreno/a6xx_gpu.c:1891-1900`). With
+  the new mask, subsequent IRQs won’t retrigger recovery for the same
+  incident.
+- Interrupts are safely restored: During recovery, the GPU is
+  reinitialized and interrupts are re-enabled in `a6xx_hw_init()` via
+  `REG_A6XX_RBBM_INT_0_MASK` (sets `A6XX_INT_MASK`/`A7XX_INT_MASK`) at
+  `drivers/gpu/drm/msm/adreno/a6xx_gpu.c:1410-1413`. `a6xx_recover()`
+  calls `msm_gpu_hw_init(gpu)` to perform this re-init
+  (`drivers/gpu/drm/msm/adreno/a6xx_gpu.c:1614`). Additionally, the top-
+  level wrapper brackets `hw_init` with `disable_irq/enable_irq`
+  (`drivers/gpu/drm/msm/msm_gpu.c:168-174`), so the flow cleanly unmasks
+  after reset.
+- Consistency with existing patterns: A similar mask-on-fault pattern
+  already exists for a7xx SW fuse violations
+  (`drivers/gpu/drm/msm/adreno/a6xx_gpu.c:1831-1834`), indicating this
+  is the established approach to prevent repeated fault handling.
+- Stable suitability:
+  - User-visible bugfix: Prevents erroneous second recovery that can
+    kill unrelated contexts.
+  - Small and contained: One register write in an error path; no ABI or
+    feature changes.
+  - Low regression risk: Interrupts are restored during the normal
+    recovery/reinit path; only affects a6xx hang/fault handling.
+  - No architectural churn, limited to DRM/MSM Adreno a6xx driver.
 
----
+Conclusion: This is a minimal, targeted fix for a real correctness issue
+with low risk and clear recovery restore points, making it a good
+candidate for backporting to all supported stable kernels that include
+the a6xx driver.
 
-## Detailed Technical Analysis
+ drivers/gpu/drm/msm/adreno/a6xx_gpu.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-### 1. Understanding the Code Change
-
-The commit changes a single line in `net/ipv4/udp_tunnel_nic.c` at line
-933 (in the `udp_tunnel_nic_netdevice_event()` function):
-
-**Before:**
-```c
-netdev_WARN(dev, "failed to register for UDP tunnel offloads: %d", err);
-```
-
-**After:**
-```c
-netdev_warn(dev, "failed to register for UDP tunnel offloads: %d", err);
-```
-
-### 2. Critical Difference Between netdev_WARN() and netdev_warn()
-
-Through my investigation of the kernel source:
-
-- **netdev_WARN()** (defined in `include/linux/netdevice.h:5559-5561`):
-  - Expands to `WARN(1, "netdevice: %s%s: " format, ...)`
-  - Unconditionally triggers a full kernel WARN with:
-    - Complete backtrace
-    - File and line information
-    - Treats the condition as a kernel bug
-
-- **netdev_warn()** (declared in `include/net/net_debug.h:22`):
-  - A regular logging function
-  - Prints a warning message at KERN_WARNING level
-  - No backtrace, no panic potential
-  - Appropriate for normal runtime errors
-
-### 3. Analysis of Failure Conditions
-
-Through semantic code analysis using `mcp__semcode__find_function`, I
-determined that `udp_tunnel_nic_register()` can fail with `-ENOMEM` in
-exactly two scenarios (lines 823-825 and 833-836):
-
-1. **Node allocation failure**: `kzalloc(sizeof(*node), GFP_KERNEL)`
-   returns NULL
-2. **State structure allocation failure**: `udp_tunnel_nic_alloc(info,
-   n_tables)` returns NULL
-
-Both failures are **normal runtime memory allocation failures**, not
-kernel bugs. The commit message correctly identifies this.
-
-### 4. Critical Issue: panic_on_warn Impact
-
-From `Documentation/admin-guide/sysctl/kernel.rst`:
-> panic_on_warn: Calls panic() in the WARN() path when set to 1. This is
-useful to avoid a kernel rebuild when attempting to kdump at the
-location of a WARN().
-
-**Problem**: Systems with `panic_on_warn=1` (commonly used in production
-environments for catching real kernel bugs) will **panic** when
-encountering a simple memory allocation failure during network device
-registration. This is clearly inappropriate behavior.
-
-### 5. Kernel Coding Standards Compliance
-
-From `Documentation/process/coding-style.rst`:
-
-> **WARN*() is intended for unexpected, this-should-never-happen
-situations.**
->
-> **WARN*() macros are not to be used for anything that is expected to
-happen during normal operation.**
-
-Memory allocation failures ARE expected during normal operation. The
-current code violates kernel coding standards.
-
-Additionally, the documentation states:
-> **These generic allocation functions all emit a stack dump on failure
-when used without __GFP_NOWARN so there is no use in emitting an
-additional failure message when NULL is returned.**
-
-The WARN() is redundant and inappropriate.
-
-### 6. Historical Precedent
-
-I found similar precedent in commit `abfb2a58a5377` ("ionic: remove
-WARN_ON to prevent panic_on_warn"):
-- Similar rationale: removing WARN for non-bug conditions
-- Had a Fixes: tag and was backported
-- Explicitly mentions preventing panic_on_warn issues
-
-### 7. Risk Assessment
-
-**Risk Level: MINIMAL**
-
-- **Functional Impact**: None - this is purely a logging change
-- **Error Handling**: Unchanged - error is still returned and propagated
-  via `notifier_from_errno(err)`
-- **Side Effects**: None - only changes log output format
-- **Dependencies**: None - netdev_warn() has existed since 2014
-- **Compatibility**: Full - change applies cleanly to all maintained
-  stable kernels
-
-### 8. Impact Analysis
-
-**Before the change:**
-- Memory allocation failure during NETDEV_REGISTER event triggers WARN()
-- Systems with panic_on_warn=1 will panic
-- Logs filled with unnecessary backtraces
-- False kernel bug reports generated
-
-**After the change:**
-- Memory allocation failure logged as simple warning
-- No panic on panic_on_warn=1 systems
-- Clean, appropriate log messages
-- Correct signal to users (runtime error, not kernel bug)
-
-### 9. Stable Tree Criteria Evaluation
-
-| Criterion | Met? | Analysis |
-|-----------|------|----------|
-| Important bugfix | ✅ YES | Prevents inappropriate panics on production
-systems |
-| Minimal risk | ✅ YES | Logging-only change, zero functional impact |
-| Small and contained | ✅ YES | Single line change in one file |
-| No architectural changes | ✅ YES | Pure logging modification |
-| No new features | ✅ YES | Only fixes incorrect behavior |
-| Obvious correctness | ✅ YES | Clearly aligns with kernel coding
-standards |
-
-### 10. Why Author Didn't Add Stable Tags
-
-The absence of `Fixes:` or `Cc: stable` tags is **not** a reason to
-reject backporting. This appears to be a coding standards fix that the
-author may not have considered critical enough for explicit stable
-tagging. However, the technical merits clearly support backporting:
-
-1. Fixes incorrect API usage
-2. Prevents panic_on_warn issues
-3. Reduces log noise
-4. Zero risk of regression
-
-### 11. User-Visible Benefit
-
-**Critical benefit**: Production systems using `panic_on_warn=1` for
-debugging will no longer inappropriately panic when network devices fail
-to allocate memory during registration. This is especially important in:
-- High-availability environments
-- Systems with memory pressure
-- Environments with many network devices
-- kdump configurations
-
----
-
-## Final Recommendation
-
-**YES - Strongly recommend backporting to all maintained stable trees.**
-
-**Rationale:**
-1. Fixes a clear violation of kernel coding standards (WARN used for
-   normal runtime condition)
-2. Prevents system panics on panic_on_warn=1 systems for expected errors
-3. Zero risk of regression (logging-only change)
-4. Small, contained, and obviously correct
-5. Improves user experience by reducing log noise
-6. Prevents false bug reports
-7. Has precedent in similar backported commits
-
-This commit should be backported despite lacking explicit stable tags,
-as the technical merits and user benefit clearly warrant inclusion in
-stable trees.
-
- net/ipv4/udp_tunnel_nic.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/net/ipv4/udp_tunnel_nic.c b/net/ipv4/udp_tunnel_nic.c
-index ff66db48453cf..944b3cf25468e 100644
---- a/net/ipv4/udp_tunnel_nic.c
-+++ b/net/ipv4/udp_tunnel_nic.c
-@@ -930,7 +930,7 @@ udp_tunnel_nic_netdevice_event(struct notifier_block *unused,
+diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gpu.c b/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
+index 45dd5fd1c2bfc..f8992a68df7fb 100644
+--- a/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
++++ b/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
+@@ -1727,6 +1727,9 @@ static void a6xx_fault_detect_irq(struct msm_gpu *gpu)
+ 	/* Turn off the hangcheck timer to keep it from bothering us */
+ 	timer_delete(&gpu->hangcheck_timer);
  
- 		err = udp_tunnel_nic_register(dev);
- 		if (err)
--			netdev_WARN(dev, "failed to register for UDP tunnel offloads: %d", err);
-+			netdev_warn(dev, "failed to register for UDP tunnel offloads: %d", err);
- 		return notifier_from_errno(err);
- 	}
- 	/* All other events will need the udp_tunnel_nic state */
++	/* Turn off interrupts to avoid triggering recovery again */
++	gpu_write(gpu, REG_A6XX_RBBM_INT_0_MASK, 0);
++
+ 	kthread_queue_work(gpu->worker, &gpu->recover_work);
+ }
+ 
 -- 
 2.51.0
 
