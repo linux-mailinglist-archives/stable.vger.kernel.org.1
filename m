@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-189674-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-189676-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AC60C09AB8
-	for <lists+stable@lfdr.de>; Sat, 25 Oct 2025 18:44:35 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9AECC09C86
+	for <lists+stable@lfdr.de>; Sat, 25 Oct 2025 18:56:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 907F8563D57
-	for <lists+stable@lfdr.de>; Sat, 25 Oct 2025 16:35:52 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C6CE7564091
+	for <lists+stable@lfdr.de>; Sat, 25 Oct 2025 16:36:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C5AE305976;
-	Sat, 25 Oct 2025 16:26:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E79631B803;
+	Sat, 25 Oct 2025 16:27:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i56wBvcw"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZUasmcCT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB17B3043C3;
-	Sat, 25 Oct 2025 16:26:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A32C306496;
+	Sat, 25 Oct 2025 16:26:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761409618; cv=none; b=o/6gv+J6K+u6Bk6paF3r0+HG2dDUTSfcXJYX7XBQxdG8Lf6ShiM5Jboo+5PeJ63qmfebEkksGsoRJEss8rEu2+gst7aI4eDX2n0E+S+2/iN7oiJZjg+eeIASDFL0byV4yzd/iHJFsyrVOB5asMYgUBXaC5GqQximjc2uWdmmvYQ=
+	t=1761409621; cv=none; b=sG4ZPgZct39q87TgaDnuxnUp+1d/2DCZW0Rg8FjQISkR5JqcuhO8ddU1n6S6X2tjMK0bc7x9hIjeuwJuv3P9UsY9dGaRC9B/PRDRY3m6KnCSLPfU2eWSl4Bdca0stopdeAvVeHDHNPYSNNsvT82dZdfgt3wW26CaZYwUUaoJAmM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761409618; c=relaxed/simple;
-	bh=3n8BZpDOXA+ibPk71eu3NoE5G7aCdVBnhyq9AX2N74o=;
+	s=arc-20240116; t=1761409621; c=relaxed/simple;
+	bh=lHXmSwpImaguJhdytnV4YsY9kThpja29e6/NdiB7iMI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mrxGQ6hyKx4IaS/jaY7FRsehgd+CSk8KvHxwIv433sbiFChJvft1w5GRlqQjYdMEZSj5Flq/QF/DIFcqBpvrDcm9rU/j3HMshoJiOYEWpwSnSq1IgVO4IG3pOTpEPaCkPLWwadyMoOG6LDWmPFFmZe7Egb3tvmvNPS3AsrPR4Po=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i56wBvcw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1681C4CEFF;
-	Sat, 25 Oct 2025 16:26:56 +0000 (UTC)
+	 MIME-Version:Content-Type; b=MpipLN6Mx2pE4QAXiUcTPdwzNEWunXfKSU2pUYPQ6xsZLhOmdO6woGogPCmuJWrvBc2Am3lKmlgX7RKvbihOxcJ6jMGRLmf9H26UpI6BdrPT2HNWf3foFX8svlyg6EkBIhRmnDBujPAG40ANGB8kYUXg9yfIdeduxbhLvPoV8fk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZUasmcCT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4ECAFC116D0;
+	Sat, 25 Oct 2025 16:26:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761409617;
-	bh=3n8BZpDOXA+ibPk71eu3NoE5G7aCdVBnhyq9AX2N74o=;
+	s=k20201202; t=1761409619;
+	bh=lHXmSwpImaguJhdytnV4YsY9kThpja29e6/NdiB7iMI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i56wBvcwAc0WyobevUeeFEBvvnhU1Yc/CKUm/p1NrrdTLmuakDlApDIY5TLMkyMD5
-	 e0M3PL6COejtMIYtoA5tO4IQvetc8pRAPD8oiog2KVxQg5h3Z3pL13YWItVqGRzi8T
-	 UoZQFD9WCOrcO0XLzJVk5wIaiHlKTqezo/hFJ/hc1geHHpvW6/X240+8fxywKMP/hu
-	 KLt9Sh5FqKRM9dMKRvy5gQItSK0+JUUbyhm1ULzvWXgL3ZpSK6XfF8GTc1i6pPHfqx
-	 WD9O3zDBZiwIGP+aVNiUQ3Vr7jE0Q45kvDfE6Gg2jukK88frLjCiMsHaVXkM5xi2h2
-	 aYfrjLwm0Y/6w==
+	b=ZUasmcCTXbIjeng+GBJyJ6uUiRjCpO8nbxm/mJsqTge0QDj2AFHmmgzNG6f/dQ0YL
+	 kr2ZpWnNRQwraeeeYleD4FaNzoJNVN5JfYAAPK8vNap5rl4GnQqMQWgOfb4E7WSFIh
+	 40WlsR57EggAL7csOK91Eb/J8IXcfukb5ZwgGfUpo9BxXmXghx562+Tnh0G6ZoUW22
+	 42KbxXV7lTBByQezDPdX/wxbizQspKAV2T3imEjQdF+/rFKSm9mtqjPsWY5NDbiCRM
+	 Dwt9ssXw4tgl5ur5D085hMXGeTIUY5ZvCISmBYAJ+1v6Yx1cwsgjKeU+9K0rftGeT6
+	 Vc+tXd1OdBhBA==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
-	"Russell King (Oracle)" <linux@armlinux.org.uk>,
-	Andrew Lunn <andrew@lunn.ch>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+Cc: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Geliang Tang <geliang@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	hkallweit1@gmail.com,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.17] net: phy: clear EEE runtime state in PHY_HALTED/PHY_ERROR
-Date: Sat, 25 Oct 2025 12:00:26 -0400
-Message-ID: <20251025160905.3857885-395-sashal@kernel.org>
+	martineau@kernel.org,
+	netdev@vger.kernel.org,
+	mptcp@lists.linux.dev
+Subject: [PATCH AUTOSEL 6.17-6.12] selftests: mptcp: join: allow more time to send ADD_ADDR
+Date: Sat, 25 Oct 2025 12:00:27 -0400
+Message-ID: <20251025160905.3857885-396-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251025160905.3857885-1-sashal@kernel.org>
 References: <20251025160905.3857885-1-sashal@kernel.org>
@@ -70,362 +69,110 @@ X-stable-base: Linux 6.17.5
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Oleksij Rempel <o.rempel@pengutronix.de>
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
 
-[ Upstream commit 0915cb22452723407ca9606b7e5cc3fe6ce767d5 ]
+[ Upstream commit e2cda6343bfe459c3331db5afcd675ab333112dd ]
 
-Clear EEE runtime flags when the PHY transitions to HALTED or ERROR
-and the state machine drops the link. This avoids stale EEE state being
-reported via ethtool after the PHY is stopped or hits an error.
+When many ADD_ADDR need to be sent, it can take some time to send each
+of them, and create new subflows. Some CIs seem to occasionally have
+issues with these tests, especially with "debug" kernels.
 
-This change intentionally only clears software runtime flags and avoids
-MDIO accesses in HALTED/ERROR. A follow-up patch will address other
-link state variables.
+Two subtests will now run for a slightly longer time: the last two where
+3 or more ADD_ADDR are sent during the test.
 
-Suggested-by: Russell King (Oracle) <linux@armlinux.org.uk>
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Link: https://patch.msgid.link/20250912132000.1598234-1-o.rempel@pengutronix.de
+Reviewed-by: Geliang Tang <geliang@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20250907-net-next-mptcp-add_addr-retrans-adapt-v1-3-824cc805772b@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-## Backport Analysis: net: phy: clear EEE runtime state in
-PHY_HALTED/PHY_ERROR
-
-**ANSWER: YES**
-
-This commit should be backported to stable kernel trees. Below is my
-comprehensive analysis based on extensive research.
-
----
-
-## Executive Summary
-
-This is a **2-line bugfix** that prevents stale Energy Efficient
-Ethernet (EEE) state from being reported to users via ethtool after a
-PHY is administratively stopped (`ip link set down`) or encounters an
-error. The fix is **extremely safe**, has **minimal regression risk**,
-and addresses a **user-visible inconsistency** in network interface
-state reporting.
-
----
-
-## Detailed Technical Analysis
-
-### 1. The Bug: Asymmetric State Clearing
-
-The Linux PHY state machine clears EEE runtime flags in **two different
-code paths**:
-
-**Path 1: Normal link down (PHY_RUNNING → PHY_NOLINK)** -
-drivers/net/phy/phy.c:1025-1030
-```c
-} else if (!phydev->link && phydev->state != PHY_NOLINK) {
-    phydev->state = PHY_NOLINK;
-    phydev->eee_active = false;      // ✓ Cleared correctly
-    phydev->enable_tx_lpi = false;   // ✓ Cleared correctly
-    phy_link_down(phydev);
-}
-```
-
-**Path 2: Administrative/error shutdown (PHY_HALTED/PHY_ERROR)** -
-Before this patch:
-```c
-case PHY_HALTED:
-case PHY_ERROR:
-    if (phydev->link) {
-        phydev->link = 0;
-        // ✗ eee_active NOT cleared - BUG!
-        // ✗ enable_tx_lpi NOT cleared - BUG!
-        phy_link_down(phydev);
-    }
-```
-
-This **asymmetry is a bug**. Both code paths drop the link
-(`phydev->link = 0`), but only the PHY_NOLINK path was clearing EEE
-state.
-
-### 2. How the Bug Manifests
-
-**Reproduction steps:**
-1. Bring up an Ethernet link with EEE successfully negotiated
-2. Run `ethtool --show-eee eth0` → Shows "EEE status: enabled - active"
-3. Run `ip link set dev eth0 down` → Triggers PHY_HALTED state
-4. Run `ethtool --show-eee eth0` → **Still shows "EEE status: enabled -
-   active"** ← WRONG!
-
-**Why it happens:**
-- `ethtool --show-eee` calls `phy_ethtool_get_eee()`
-  (drivers/net/phy/phy.c:1909)
-- Which calls `genphy_c45_ethtool_get_eee()`
-  (drivers/net/phy/phy-c45.c:1508)
-- Line 1517 sets: `data->eee_active = phydev->eee_active`
-- Since `phydev->eee_active` was never cleared in PHY_HALTED, it still
-  contains the stale value `true`
-
-**User impact:**
-- Misleading diagnostic information from ethtool
-- Network management tools may make incorrect decisions based on stale
-  EEE state
-- Confusing for users debugging network issues
-
-### 3. Historical Context: How These Fields Were Introduced
-
-My research revealed this bug was **inadvertently introduced** when the
-EEE state tracking fields were added:
-
-**`enable_tx_lpi` field (v6.10, commit e3b6876ab850):**
-- Introduced March 2024 by Andrew Lunn
-- Purpose: Tell MAC drivers whether to send Low Power Indications
-- Correctly cleared in PHY_NOLINK, but **forgot to clear in
-  PHY_HALTED/ERROR**
-
-**`eee_active` field (v6.13, commit e2668c34b7e1a):**
-- Introduced November 2024 by Russell King (Oracle)
-- Purpose: Track whether EEE was actually **negotiated** (not just
-  configured)
-- Fixes: 3e43b903da04 ("net: phy: Immediately call adjust_link if only
-  tx_lpi_enabled changes")
-- Also correctly cleared in PHY_NOLINK, but **forgot to clear in
-  PHY_HALTED/ERROR**
-
-When I examined commit e2668c34b7e1a (which introduced `eee_active`), I
-found it only modified the PHY_NOLINK path and **did not touch
-PHY_HALTED/ERROR**. This created an **inconsistent state machine**.
-
-### 4. The Fix: Symmetry Restoration
-
-This commit adds the two missing lines to
-drivers/net/phy/phy.c:1567-1568:
-
-```c
-case PHY_HALTED:
-case PHY_ERROR:
-    if (phydev->link) {
-        phydev->link = 0;
-        phydev->eee_active = false;      // ✓ NEW: Now cleared
-        phydev->enable_tx_lpi = false;   // ✓ NEW: Now cleared
-        phy_link_down(phydev);
-    }
-```
-
-This makes the PHY_HALTED/ERROR handler **symmetric** with the
-PHY_NOLINK handler, ensuring EEE state is cleared consistently whenever
-the link drops.
-
-**Important design decision noted in commit message:**
-> "This change intentionally only clears software runtime flags and
-avoids MDIO accesses in HALTED/ERROR."
-
-This is **critical for safety**: the fix only modifies software state,
-with **zero hardware interaction**. This eliminates risk of hardware
-lockups or MDIO bus errors during error conditions.
-
-### 5. Part of a Larger Cleanup Effort
-
-This commit is part of an ongoing effort by Oleksij Rempel to fix stale
-state issues in the PHY layer:
-
-1. **This commit (0915cb2245272)**: Clears EEE runtime state
-2. **Follow-up commit (60f887b1290b4)**: Clears other link parameters
-   (speed, duplex, master_slave_state, mdix, lp_advertising) in
-   PHY_HALTED
-
-Both commits address the **same root cause**: the PHY_HALTED/ERROR
-handler was not clearing link-related state, leading to stale values in
-ethtool output.
-
-From the mailing list discussion, Russell King (Oracle) **suggested this
-fix**, and both Andrew Lunn and Russell King **reviewed and approved**
-it. This indicates strong maintainer consensus.
-
----
-
-## Backporting Risk Assessment
-
-### Risk Level: **MINIMAL**
-
-**Why this is safe:**
-
-✅ **Only 2 lines added** - Trivial change size minimizes regression risk
-
-✅ **Software-only change** - No MDIO/hardware access, no timing
-dependencies
-
-✅ **Follows existing pattern** - Identical to PHY_NOLINK handler (lines
-1027-1028)
-
-✅ **Boolean assignments only** - No complex logic, control flow, or
-error handling
-
-✅ **Maintainer-approved** - Suggested by Russell King, reviewed by
-Andrew Lunn + Russell King
-
-✅ **No reported regressions** - In mainline since v6.18-rc1 with no
-fixes
-
-✅ **Self-contained** - No dependencies on uncommitted code or future
-patches
-
-**Potential risks (none identified):**
-
-- Could theoretically affect drivers that read these flags
-  asynchronously without locking
-  - **Mitigated**: All readers use `phydev->lock` mutex (line 1916 in
-    phy_ethtool_get_eee)
-
-- Could break drivers that expect stale values in HALTED state
-  - **Unlikely**: No legitimate use case for reading stale EEE state
-
-- Could interact poorly with concurrent state transitions
-  - **Mitigated**: PHY state machine runs under lock protection
-
----
-
-## Stable Tree Criteria Compliance
-
-| Criterion | Status | Evidence |
-|-----------|--------|----------|
-| **Fixes user-visible bug** | ✅ YES | Incorrect ethtool output after
-`ip link down` |
-| **Small and contained** | ✅ YES | Only 2 lines in a single function |
-| **No architectural changes** | ✅ YES | Simple state cleanup, no design
-changes |
-| **Minimal regression risk** | ✅ YES | Software-only, follows existing
-pattern |
-| **Affects real users** | ✅ YES | Any user running ethtool on EEE-
-capable PHYs |
-| **Important enough** | ✅ YES | Fixes data integrity in user-facing API
-|
-| **No Cc: stable tag** | ⚠️ NO | Not marked for stable, but should be
-considered |
-
----
-
-## Dependency Analysis
-
-**Required commits for proper backport:**
-
-1. **For v6.13+ stable trees:**
-   - Needs commit **e2668c34b7e1a** (introduces `eee_active` field)
-   - This commit is already in v6.13+
-
-2. **For v6.10-v6.12 stable trees:**
-   - Needs commit **e3b6876ab850** (introduces `enable_tx_lpi` field)
-   - This commit is already in v6.10+
-   - Could backport with only the `enable_tx_lpi` line if `eee_active`
-     doesn't exist
-
-3. **For v6.9 and older:**
-   - Not applicable - neither field exists
-
-**Recommendation**: Backport to **v6.13+ stable** trees (full fix), and
-consider backporting to **v6.10-v6.12** (partial fix for `enable_tx_lpi`
-only).
-
----
-
-## Code-Specific Analysis
-
-### Changed Location: drivers/net/phy/phy.c:1567-1568
-
-The modification is in `_phy_state_machine()`, the core PHY state
-machine function. This function is called from:
-- `phy_state_machine()` - The delayed work handler
-- Triggered by link state changes, timer expiry, or explicit requests
-
-The PHY_HALTED state is entered when:
-1. User runs `ip link set dev ethX down`
-2. Driver calls `phy_stop()` during interface shutdown
-3. Cable test fails and transitions to HALTED
-
-The PHY_ERROR state is entered when:
-1. MDIO bus errors occur
-2. PHY driver operations return errors
-3. `phy_error()` is called due to hardware failures
-
-In both cases, clearing EEE state is **correct behavior** - the link is
-down and EEE is no longer active.
-
-### Interaction with ethtool
-
-The `net/ethtool/eee.c` code shows that `ETHTOOL_A_EEE_ACTIVE` is
-reported directly from these cleared fields (line 98):
-
-```c
-if (nla_put_u8(skb, ETHTOOL_A_EEE_ACTIVE, eee->eee_active) || ...)
-```
-
-This means the fix **directly improves ethtool accuracy**.
-
----
-
-## Related Work and Context
-
-From my research, I found:
-
-1. **Linux Plumbers Conference 2024** had a presentation noting EEE
-   "looks broken" in various ways
-2. This commit is part of the **community response** to identified EEE
-   state management issues
-3. **No CVEs** associated with this specific issue (it's a data
-   reporting bug, not a security issue)
-4. The broader EEE subsystem underwent significant refactoring in
-   v6.9-v6.13 timeframe
-
----
-
-## Maintainer Intent
-
-The commit message states:
-> "A follow-up patch will address other link state variables."
-
-This was fulfilled by commit **60f887b1290b4** which clears speed,
-duplex, master_slave_state, mdix, and lp_advertising in PHY_HALTED.
-
-Both commits are part of a **deliberate cleanup campaign** to ensure PHY
-state is accurately reported to userspace.
-
----
-
-## Conclusion
-
-**This commit SHOULD be backported** because:
-
-1. ✅ Fixes a **real user-visible bug** (stale ethtool data)
-2. ✅ **Extremely small** (2 lines) and **safe** (software-only)
-3. ✅ **Zero regression risk** - follows established pattern
-4. ✅ **Maintainer consensus** - suggested and reviewed by PHY experts
-5. ✅ Improves **data integrity** in kernel→userspace API
-6. ✅ Part of **broader effort** to fix PHY state reporting
-7. ✅ Already in mainline with **no reported issues**
-
-**Recommended stable trees:** v6.13+ (full fix), v6.10-v6.12 (consider
-partial fix)
-
-The commit exemplifies an **ideal stable tree candidate**: small, safe,
-fixes a real bug, and has strong maintainer support.
-
- drivers/net/phy/phy.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/drivers/net/phy/phy.c b/drivers/net/phy/phy.c
-index c02da57a4da5e..e046dd858f151 100644
---- a/drivers/net/phy/phy.c
-+++ b/drivers/net/phy/phy.c
-@@ -1551,6 +1551,8 @@ static enum phy_state_work _phy_state_machine(struct phy_device *phydev)
- 	case PHY_ERROR:
- 		if (phydev->link) {
- 			phydev->link = 0;
-+			phydev->eee_active = false;
-+			phydev->enable_tx_lpi = false;
- 			phy_link_down(phydev);
- 		}
- 		state_work = PHY_STATE_WORK_SUSPEND;
+YES
+
+- What changed: The patch slows two MPTCP selftests that signal three
+  addresses to reduce flakiness. It injects `speed=slow` for the “signal
+  addresses” and “signal invalid addresses” subtests so `run_tests` runs
+  in slow mode:
+  - tools/testing/selftests/net/mptcp/mptcp_join.sh:2271-2272 sets
+    `speed=slow` before `run_tests` in the “signal addresses” block.
+  - tools/testing/selftests/net/mptcp/mptcp_join.sh:2284-2285 sets
+    `speed=slow` before `run_tests` in the “signal invalid addresses”
+    block.
+
+- How it works: `speed=slow` is consumed by `do_transfer()` which maps
+  it to `-r 50` for `mptcp_connect`:
+  - Default/dispatch:
+    tools/testing/selftests/net/mptcp/mptcp_join.sh:953 defines `local
+    speed=${speed:-"fast"}` and at 967-972 maps `fast`→`-j`, `slow`→`-r
+    50`, or numeric speed→`-r <num>`.
+  - mptcp_connect semantics: the `-r` option enables “slow mode,
+    limiting each write to num bytes,” giving the protocol time to
+    exchange ADD_ADDR and create subflows
+    (tools/testing/selftests/net/mptcp/mptcp_connect.c:132, parsed in
+    1426 and handled in the ‘r’ case 1444-1450).
+
+- Why it’s needed: With three or more ADD_ADDR to send, debug kernels
+  and slower CI runners can time out or not complete subflow setup
+  before data transfer finishes. Slowing writes increases the window for
+  address signaling and subflow establishment, improving determinism.
+  This aligns with existing practice elsewhere in the script where many
+  subtests already run with `speed=slow` for similar reasons (e.g.,
+  numerous `speed=slow` calls throughout the file).
+
+- Scope and risk:
+  - Test-only: Changes are confined to
+    `tools/testing/selftests/net/mptcp/mptcp_join.sh` and do not touch
+    kernel code paths or ABIs.
+  - Minimal and contained: Two call sites adjusted; no logic or
+    expectations changed, only pacing.
+  - Low regression risk: Only increases runtime slightly for two
+    subtests; expected counts remain the same (e.g., still `chk_join_nr
+    3 3 3` and `chk_add_nr 3 3` in
+    tools/testing/selftests/net/mptcp/mptcp_join.sh:2273-2274; and
+    unchanged checks after the invalid addresses case at 2286-2288).
+
+- Stable-policy fit:
+  - Fixes test flakiness affecting CI/users running stable selftests
+    (practical impact for validation).
+  - No new features or architectural changes; very small diff; conforms
+    to stable rules for low-risk test fixes.
+  - No “Cc: stable” tag, but the change is a clear reliability fix for
+    selftests, which stable trees commonly accept to keep test suites
+    meaningful.
+
+Given it’s a tiny, isolated selftest reliability improvement with no
+kernel-side risk and tangible benefit for CI stability, it is suitable
+for backporting.
+
+ tools/testing/selftests/net/mptcp/mptcp_join.sh | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/tools/testing/selftests/net/mptcp/mptcp_join.sh b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+index 8e92dfead43bf..fed14a281a6d9 100755
+--- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+@@ -2151,7 +2151,8 @@ signal_address_tests()
+ 		pm_nl_add_endpoint $ns1 10.0.3.1 flags signal
+ 		pm_nl_add_endpoint $ns1 10.0.4.1 flags signal
+ 		pm_nl_set_limits $ns2 3 3
+-		run_tests $ns1 $ns2 10.0.1.1
++		speed=slow \
++			run_tests $ns1 $ns2 10.0.1.1
+ 		chk_join_nr 3 3 3
+ 		chk_add_nr 3 3
+ 	fi
+@@ -2163,7 +2164,8 @@ signal_address_tests()
+ 		pm_nl_add_endpoint $ns1 10.0.3.1 flags signal
+ 		pm_nl_add_endpoint $ns1 10.0.14.1 flags signal
+ 		pm_nl_set_limits $ns2 3 3
+-		run_tests $ns1 $ns2 10.0.1.1
++		speed=slow \
++			run_tests $ns1 $ns2 10.0.1.1
+ 		join_syn_tx=3 \
+ 			chk_join_nr 1 1 1
+ 		chk_add_nr 3 3
 -- 
 2.51.0
 
