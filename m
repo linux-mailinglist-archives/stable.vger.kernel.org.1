@@ -1,89 +1,73 @@
-Return-Path: <stable+bounces-189267-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-189268-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A26CC08DCD
-	for <lists+stable@lfdr.de>; Sat, 25 Oct 2025 10:13:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26E07C08DF8
+	for <lists+stable@lfdr.de>; Sat, 25 Oct 2025 10:44:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 21C8D4E0F53
-	for <lists+stable@lfdr.de>; Sat, 25 Oct 2025 08:13:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7B4CA1C27C4C
+	for <lists+stable@lfdr.de>; Sat, 25 Oct 2025 08:45:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACE28252292;
-	Sat, 25 Oct 2025 08:13:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C58F28D82A;
+	Sat, 25 Oct 2025 08:44:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hOsplahc"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="O//m52DE"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C21E51FF1B5
-	for <stable@vger.kernel.org>; Sat, 25 Oct 2025 08:13:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEB1A23AE9B;
+	Sat, 25 Oct 2025 08:44:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761380013; cv=none; b=p4tpqTUNyBlB70+GVF+BOmbeOYt5F77bC1dlKmAu6zeKRynPX2lAb0+JJoOAc8lVyD7sT5ApyHKpfIsqn4qtT3XKp/IkoKaVBoHrdeu5bRmNJ3Ixs3o4wSwVTQHhNsaiNKOxrFAN9MFo4XhnNjRE2RRyO0hKiqsLluWvANGf6kk=
+	t=1761381881; cv=none; b=lvJBzGUjvmj2YZtuNjddd2vw6C0Pd+4PcUTFw86TUl3WD8aE/lvGC2ILFZoz3k3sfIJE7LurLIlCBAilD5UVig8sliX8P4sZp8Sj1gSB9X0jJ2a9l3/3g0Be5S4SlXJyViq++QWzaivHllO7PJ5NQm7ysabbXqctmYx6UfqFWZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761380013; c=relaxed/simple;
-	bh=wJwEoBt7y8yp0JIWrhZ6cO3RBa+f4zIHYZgGUeVG2N0=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=i+WBUmd1TAk6ddr3uFehq47/o0Zuu1WAyGM8mJNZZaa3CFbw5X5nGay7kXPEceZd9W3NAyvy8XAD9PrgQt4qux9Bymxlu3+jk/QnADwWQXGuBuOHWvF4NDvJFwV1XNkmgetEP+Roe4A/Yyw9qGST8dxcXlxNCA85bS5z50QnbCA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hOsplahc; arc=none smtp.client-ip=209.85.218.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-b6d5b756284so564111866b.1
-        for <stable@vger.kernel.org>; Sat, 25 Oct 2025 01:13:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761380010; x=1761984810; darn=vger.kernel.org;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=wJwEoBt7y8yp0JIWrhZ6cO3RBa+f4zIHYZgGUeVG2N0=;
-        b=hOsplahc1aYG9gXnkJEQTg3r2P464O/f/RdywVVrX3tDctH6dgrZG65FdolkrHHCSi
-         50kgppPfA8YNml0Yk4mQRr13Ylp/5hTIE9r4YBXY5nc3GovzXI3kC38h3AwYWNQRFlAY
-         psWkND1pbDOxMOVYHNtK+rS+Qyv3tXnBGXVNKPUyKxTxyGwgrcayfDKXLly6b8/ssQ0B
-         q5hJriUmXn2VagMkOTTnWXlXtPGe9hy6tOrcIZS2nLLRkLaIZvZCmTcXq68UW9iQ7dsx
-         Sls14EBj4cGQyulPFlyur1xzgs/KHLoy7ZpcrDUOXnKEwK5sjBuatnwHIYwLi0OjKYjT
-         EFuA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761380010; x=1761984810;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=wJwEoBt7y8yp0JIWrhZ6cO3RBa+f4zIHYZgGUeVG2N0=;
-        b=YQNDkJ9WwcBkNmcF94yAhnoHIF2wB4Z/jyByPVOSKINfT3VjRfIkWb03qEXjsqAnXy
-         eK5Wl81osAnHg9+v0Tl6zTdm7pIY1FG1cxX/vuLEx1U0BZ0Jui+jgfCxCahf2lpBfu7g
-         uqzWTWb8ry/EvWzq9Lqn2ukG1JE+HtEuWbEAvMZbJqFBpaSx9JhPP82XrpfSm+0IFCLf
-         QJ3YY2HeXxemwklHxLuyUDHlR1bg8KwoMLzeemYvKr74smiGKEaH7OGMBKofwIGkuYzT
-         TA9Ich3orhBpLUyJhJHucuXv8R0/9ZEOAtUPREnh1Iiu7C8lwB1zFv+XKeRg9FH/3pUm
-         HXCw==
-X-Gm-Message-State: AOJu0Yx/F/4RDNKosJt0Sm+WY8XX19DEmZmUPRFqBnTVOyjPLjtU5eoL
-	G2hHAh3V5wyrFVjPRjFwp5X/RXtp1NEA8RbKO4x6K53KlV0Id9iaN69FINSBNxhZ
-X-Gm-Gg: ASbGncupRW7LplrFlI1wU9K8j8qP1hdCpL0uIkzd7jh8sCWzF1QLyljss7Jv8xYrypj
-	rqmUScgVwCmUB/O+ucn7FX1r+qXEffiuQocKOfXGq9dDxE+FEXVg66yuH+VThi2xOIz/dsy6NC8
-	xaIN22heCfWZIacrnpKQO/vZyflvm+a0yc22PYzqthOTlYPx+Km6Uj2JXDu37uokRG9OzB6o734
-	w1B82u+fjnneSFhFeHgvj0VwZ2GnK0mNDTzCqtdgbsOkbwfmhq+Ws71bvP4GxWfrTyXOFvnWBoc
-	umfARSNJ0sA7h0Fng2Vv+bo9PdB1yfthS4gPVlc17/wIdr8UhEBU49lZFtyNI2jUolV1Cr3X8Ww
-	1ISgribZiVtDXl72N0SsTspGcYdXNBjgZLNSu4y3UBz3FOnmJOZcsaJHl/SD8GPEWMhwt8RP4Qw
-	eKHN8/I403PGW1qZzyldGJO4Ze+1E1trJEUIoXAdFIKG9M
-X-Google-Smtp-Source: AGHT+IFBFdJTUcEvIPmHvc6pWt9ouAnPWItwU6w3xhjwhZg1QBaXzwCAOgOdGX85b4xcUkuOig92Vg==
-X-Received: by 2002:a17:907:70d:b0:b42:9840:eac5 with SMTP id a640c23a62f3a-b647482e03cmr3829488866b.61.1761380010007;
-        Sat, 25 Oct 2025 01:13:30 -0700 (PDT)
-Received: from eldamar.lan (c-82-192-244-13.customer.ggaweb.ch. [82.192.244.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b6d853f3851sm139090066b.48.2025.10.25.01.13.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 25 Oct 2025 01:13:29 -0700 (PDT)
-Sender: Salvatore Bonaccorso <salvatore.bonaccorso@gmail.com>
-Received: by eldamar.lan (Postfix, from userid 1000)
-	id 8EB8BBE2EE7; Sat, 25 Oct 2025 10:13:28 +0200 (CEST)
-Date: Sat, 25 Oct 2025 10:13:28 +0200
-From: Salvatore Bonaccorso <carnil@debian.org>
-To: stable <stable@vger.kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Guido Berhoerster <guido+debian@berhoerster.name>
-Subject: Please apply commit d88a8bb8bbbe ("Bluetooth: btintel: Add DSBR
- support for BlazarIW, BlazarU and GaP") to 6.12.y
-Message-ID: <aPyGqPklZSrC7FJ2@eldamar.lan>
+	s=arc-20240116; t=1761381881; c=relaxed/simple;
+	bh=hg8W4EJP+POIDRg8RMaQL/+Ab8rHz5hHJNZwuQ/qqeQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XMb4F1JyJEmr/hNF3DekXxU2pUJImRi0swF56dzudNX7RYyI20y3yzxY4HzeEFo/R8tyGX4HsuMmKpqHALTzIb7rvvTgH6vEukABBaE4prsEs5zX6bBK2KrIoan2z0R1WOE6knZf7fIuwYnRAvsXAwbJbzZF+hLZ2N1b0THSKQs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=O//m52DE; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=sv53rsHLrJUFbnFVUbU9tXd6yZ3Hn0xkNMD9PLF8YI8=; b=O//m52DEWsSMKWfceMJzTo7StD
+	7Z0No+Acy4QNRAvjD2uGwvC9eXafo97kYmVn9sQKPL5acBfwBHyvrYR0yID379bk6MkxKXnufnClZ
+	vxQRpGAV25Z+lxnJ7X/3QrGGqJEMV620m5y06lZQzcVepXBiMtNYPyNLR9VqpdOyXUdoSl4fXsbUK
+	+6cKs9MNbgRi6whlJq+r8ziB8ytKCDUpERVzDcdVsZeNhsIJk2iPZEsuzfKcKRatfwd5Uw7Q7hw3w
+	x/h4hrIRsq6Lo5EmiLI93/FNqEmHo3OcSZQRelfJtYv7yPkCH6mnFqx4WRnzUI1vpJijap+cz+y3z
+	2uOcKpQw==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:44358)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1vCZt3-000000008Q7-29RK;
+	Sat, 25 Oct 2025 09:44:33 +0100
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1vCZt1-000000003Xn-28FH;
+	Sat, 25 Oct 2025 09:44:31 +0100
+Date: Sat, 25 Oct 2025 09:44:31 +0100
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Emanuele Ghidoli <ghidoliemanuele@gmail.com>
+Cc: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
+	Emanuele Ghidoli <emanuele.ghidoli@toradex.com>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v1] net: phy: dp83867: Disable EEE support as not
+ implemented
+Message-ID: <aPyN7z8Vk4EiS20b@shell.armlinux.org.uk>
+References: <20251023144857.529566-1-ghidoliemanuele@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -92,21 +76,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <20251023144857.529566-1-ghidoliemanuele@gmail.com>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-Hi
+On Thu, Oct 23, 2025 at 04:48:53PM +0200, Emanuele Ghidoli wrote:
+> While the DP83867 PHYs report EEE capability through their feature
+> registers, the actual hardware does not support EEE (see Links).
+> When the connected MAC enables EEE, it causes link instability and
+> communication failures.
+> 
+> The issue is reproducible with a iMX8MP and relevant stmmac ethernet port.
+> Since the introduction of phylink-managed EEE support in the stmmac driver,
+> EEE is now enabled by default, leading to issues on systems using the
+> DP83867 PHY.
 
-Guido Berhoerster asked in Debian (https://bugs.debian.org/1118660) to
-consider adding support for bluetooth device of BlazarIW, BlazarU and
-Gale Peak2 cores, which landed in 6.13-rc1, via d88a8bb8bbbe
-("Bluetooth: btintel: Add DSBR support for BlazarIW, BlazarU and
-GaP").
+Wasn't it enabled before? See commit 4218647d4556 ("net: stmmac:
+convert to phylink managed EEE support").
 
-While it is not exactly a bugfix, as things were not working
-beforehand as well, this type of hardware might be very common during
-the lifecycle of users for 6.12.y stable series.
+stmmac's mac_link_up() was:
 
-Can you consider picking the commit for 6.12.y?
+-       if (phy && priv->dma_cap.eee) {
+-               phy_eee_rx_clock_stop(phy, !(priv->plat->flags &
+-                                            STMMAC_FLAG_RX_CLK_RUNS_IN_LPI));
+-               priv->tx_lpi_timer = phy->eee_cfg.tx_lpi_timer;
+-               stmmac_eee_init(priv, phy->enable_tx_lpi);
+                stmmac_set_eee_pls(priv, priv->hw, true);
+-       }
 
-Regards,
-Salvatore
+So, if EEE is enabled in the core synthesis, then EEE will be
+configured depending on what phylib says.
+
+In stmmac_init_phy(), there was this:
+
+-               if (priv->dma_cap.eee)
+-                       phy_support_eee(phydev);
+-
+                ret = phylink_connect_phy(priv->phylink, phydev);
+
+So phylib was told to enable EEE support on the PHY if the dwmac
+core supports EEE.
+
+So, from what I can see, converting to phylink managed EEE didn't
+change this. So what really did change?
+
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
 
