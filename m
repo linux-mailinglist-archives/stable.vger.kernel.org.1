@@ -1,159 +1,148 @@
-Return-Path: <stable+bounces-189900-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-189901-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4F81C0B7ED
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 00:50:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EE79CC0B821
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 00:58:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 8FB484ED1A1
-	for <lists+stable@lfdr.de>; Sun, 26 Oct 2025 23:50:41 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D81044E84A0
+	for <lists+stable@lfdr.de>; Sun, 26 Oct 2025 23:56:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B81012D2495;
-	Sun, 26 Oct 2025 23:50:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57F5C301484;
+	Sun, 26 Oct 2025 23:56:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TAK++Ewd"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Hr5ZMmsp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71EAC3016F7
-	for <stable@vger.kernel.org>; Sun, 26 Oct 2025 23:50:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F054A2F656B;
+	Sun, 26 Oct 2025 23:56:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761522639; cv=none; b=Btr4d8kv50apy6FPS5wGIa7zaEHmi89HaV4k9VDgN1iQ+PZUm/btRBPZCZi9z0TG9ikoYB8iYqDj56LDO75IxP4+AhCjbX6lh8YKkm3qkTiOKgWd/XhC9jodX8DFpH0Yq8WNf+z5yxTbF+8m+D0D5Srww6l12V8VBVHEVIh5z9c=
+	t=1761522993; cv=none; b=dQX2kmz7kjqMXcI/vk+PfZnALN1ti+rkWLouEKjc9A/qi1hdPeTS3lnfQ2UizmAdOZEaz+t9il2ZIycr9Vj6Rg5Gni6JkgL5SLY/wQTD5eqVCV81ZoC/YNOu+gGm+Jku1+PoYKr6iprOhIOLZhMSDrRb9N6bGJRZn4rGQ3Hn6Ao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761522639; c=relaxed/simple;
-	bh=qKfPeZrLeIQT3zL6u1if18AJg5d/3IKa6uwIDUrzDZ8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gOvp/tOort+UzJNdroLZ+6Cg1TYujiCfa2yb+hzchNxrBVjTmLEp+7RwvmDcDl/G9Nax0/twYI76/RgO8WoGGz/xrhUaGBBXGRBRzJI7oh0jDQ2i8G2hLt5DslhgJvX43tfzKvq9RuqcHF6MLe0FR2BxElgEgltNq01WOrGJlmo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TAK++Ewd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13A4EC4CEF7;
-	Sun, 26 Oct 2025 23:50:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761522639;
-	bh=qKfPeZrLeIQT3zL6u1if18AJg5d/3IKa6uwIDUrzDZ8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TAK++EwdDBN9VJAl8AS6eMC9SXgqpkfMA5aZBdclAF2pQX85rcwvXHc7gMsSLcJ+Y
-	 v9G9pZBbHdlACb8bYzY/0qkZUYV6HR3lb1Kd58A9mmccqNc96AaC+gsipM2yf3cSNe
-	 05a6EihpmsUJ8wgdAKgQjAV29GHMlb2MPG2SNn6PcP7XAe3jEtqrH3FtlFezanxZNc
-	 N7HVhinyhjF0nNkX18IRc2LUYHuwFzibh/is2hetJdaQpeekLpN7saKpSnDGpZRbrt
-	 W5v+N630INI6pyC4TAEB4hGLtBpR/rvbikbafaN/Lvs/y9EO963QBT0MD1ePrXsKd+
-	 h4fj4niMdNFrg==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: David Hildenbrand <david@redhat.com>,
-	Jerrin Shaji George <jerrin.shaji-george@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17.y 3/3] vmw_balloon: indicate success when effectively deflating during migration
-Date: Sun, 26 Oct 2025 19:50:28 -0400
-Message-ID: <20251026235028.289288-3-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251026235028.289288-1-sashal@kernel.org>
-References: <2025102655-unequal-disown-9615@gregkh>
- <20251026235028.289288-1-sashal@kernel.org>
+	s=arc-20240116; t=1761522993; c=relaxed/simple;
+	bh=w2EViOQ6CP6uAtzoo4LkqoEClWWci4dIHlu1CegL8fU=;
+	h=Date:To:From:Subject:Message-Id; b=AtLX3ZKf0A7QPCRVN5V46hGg9HDI5TVEaoq7qVDBAydzoqIWrACImSXjdIgdvQRnaCJs7Fh0HmNH+hFxmDkbf3KiSpFEujcnJIriI71AXduFjcuki8RCxvHYAnrjm+LKjscbnGQQ6Kk2tafD6ASPaAWpyx4M1DmkcZ1bp6oyHik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Hr5ZMmsp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E245C4CEE7;
+	Sun, 26 Oct 2025 23:56:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1761522992;
+	bh=w2EViOQ6CP6uAtzoo4LkqoEClWWci4dIHlu1CegL8fU=;
+	h=Date:To:From:Subject:From;
+	b=Hr5ZMmspqAsS1ULQl/ZToGbbs1T6/LxO3gfClJHQYgedhNAs88kXHwRTIFMp80iPn
+	 tbPNHVwEvkOhSoKhUKAjqnpeokGt0HLsdR0qIeA2/ofWfzMBnhZnT9lHS816x7pEAv
+	 QTir2KVADENZE4jUUjJeBdJ4hAMs9X94ercU+rjY=
+Date: Sun, 26 Oct 2025 16:56:30 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,kees@kernel.org,gustavoars@kernel.org,david.hunter.linux@gmail.com,arnd@arndb.de,hannelotta@gmail.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + headers-add-check-for-c-standard-version.patch added to mm-hotfixes-unstable branch
+Message-Id: <20251026235632.6E245C4CEE7@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-From: David Hildenbrand <david@redhat.com>
 
-[ Upstream commit 4ba5a8a7faa647ada8eae61a36517cf369f5bbe4 ]
+The patch titled
+     Subject: headers: add check for C standard version
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     headers-add-check-for-c-standard-version.patch
 
-When migrating a balloon page, we first deflate the old page to then
-inflate the new page.
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/headers-add-check-for-c-standard-version.patch
 
-However, if inflating the new page succeeded, we effectively deflated the
-old page, reducing the balloon size.
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-In that case, the migration actually worked: similar to migrating+
-immediately deflating the new page.  The old page will be freed back to
-the buddy.
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
 
-Right now, the core will leave the page be marked as isolated (as we
-returned an error).  When later trying to putback that page, we will run
-into the WARN_ON_ONCE() in balloon_page_putback().
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
 
-That handling was changed in commit 3544c4faccb8 ("mm/balloon_compaction:
-stop using __ClearPageMovable()"); before that change, we would have
-tolerated that way of handling it.
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
 
-To fix it, let's just return 0 in that case, making the core effectively
-just clear the "isolated" flag + freeing it back to the buddy as if the
-migration succeeded.  Note that the new page will also get freed when the
-core puts the last reference.
+------------------------------------------------------
+From: Hanne-Lotta Mäenpää <hannelotta@gmail.com>
+Subject: headers: add check for C standard version
+Date: Sun, 26 Oct 2025 21:58:46 +0200
 
-Note that this also makes it all be more consistent: we will no longer
-unisolate the page in the balloon driver while keeping it marked as being
-isolated in migration core.
+Compiling the kernel with GCC 15 results in errors, as with GCC 15 the
+default language version for C compilation has been changed from
+-std=gnu17 to -std=gnu23 - unless the language version has been changed
+using
 
-This was found by code inspection.
+    KBUILD_CFLAGS += -std=gnu17
 
-Link: https://lkml.kernel.org/r/20251014124455.478345-1-david@redhat.com
-Fixes: 3544c4faccb8 ("mm/balloon_compaction: stop using __ClearPageMovable()")
-Signed-off-by: David Hildenbrand <david@redhat.com>
-Cc: Jerrin Shaji George <jerrin.shaji-george@broadcom.com>
-Cc: Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>
+or earlier.
+
+C23 includes new keywords 'bool', 'true' and 'false', which cause
+compilation errors in Linux headers:
+
+    ./include/linux/types.h:30:33: error: `bool' cannot be defined
+        via `typedef'
+
+    ./include/linux/stddef.h:11:9: error: cannot use keyword `false'
+        as enumeration constant
+
+Add check for C Standard's version in the header files to be able to
+compile the kernel with C23.
+
+Link: https://lkml.kernel.org/r/20251026195846.69740-1-hannelotta@gmail.com
+Signed-off-by: Hanne-Lotta Mäenpää <hannelotta@gmail.com>
+Cc: David Hunter <david.hunter.linux@gmail.com>
+Cc: "Gustavo A. R. Silva" <gustavoars@kernel.org>
+Cc: Kees Cook <kees@kernel.org>
 Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/vmw_balloon.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/misc/vmw_balloon.c b/drivers/misc/vmw_balloon.c
-index 6df51ee8db621..cc1d18b3df5ca 100644
---- a/drivers/misc/vmw_balloon.c
-+++ b/drivers/misc/vmw_balloon.c
-@@ -1737,7 +1737,7 @@ static int vmballoon_migratepage(struct balloon_dev_info *b_dev_info,
- {
- 	unsigned long status, flags;
- 	struct vmballoon *b;
--	int ret;
-+	int ret = 0;
+ include/linux/stddef.h |    2 ++
+ include/linux/types.h  |    2 ++
+ 2 files changed, 4 insertions(+)
+
+--- a/include/linux/stddef.h~headers-add-check-for-c-standard-version
++++ a/include/linux/stddef.h
+@@ -7,10 +7,12 @@
+ #undef NULL
+ #define NULL ((void *)0)
  
- 	b = container_of(b_dev_info, struct vmballoon, b_dev_info);
++#if !defined(__STDC_VERSION__) || __STDC_VERSION__ < 202311L
+ enum {
+ 	false	= 0,
+ 	true	= 1
+ };
++#endif
  
-@@ -1796,17 +1796,15 @@ static int vmballoon_migratepage(struct balloon_dev_info *b_dev_info,
- 		 * A failure happened. While we can deflate the page we just
- 		 * inflated, this deflation can also encounter an error. Instead
- 		 * we will decrease the size of the balloon to reflect the
--		 * change and report failure.
-+		 * change.
- 		 */
- 		atomic64_dec(&b->size);
--		ret = -EBUSY;
- 	} else {
- 		/*
- 		 * Success. Take a reference for the page, and we will add it to
- 		 * the list after acquiring the lock.
- 		 */
- 		get_page(newpage);
--		ret = 0;
- 	}
+ #undef offsetof
+ #define offsetof(TYPE, MEMBER)	__builtin_offsetof(TYPE, MEMBER)
+--- a/include/linux/types.h~headers-add-check-for-c-standard-version
++++ a/include/linux/types.h
+@@ -32,7 +32,9 @@ typedef __kernel_timer_t	timer_t;
+ typedef __kernel_clockid_t	clockid_t;
+ typedef __kernel_mqd_t		mqd_t;
  
- 	/* Update the balloon list under the @pages_lock */
-@@ -1817,7 +1815,7 @@ static int vmballoon_migratepage(struct balloon_dev_info *b_dev_info,
- 	 * If we succeed just insert it to the list and update the statistics
- 	 * under the lock.
- 	 */
--	if (!ret) {
-+	if (status == VMW_BALLOON_SUCCESS) {
- 		balloon_page_insert(&b->b_dev_info, newpage);
- 		__count_vm_event(BALLOON_MIGRATE);
- 	}
--- 
-2.51.0
++#if !defined(__STDC_VERSION__) || __STDC_VERSION__ < 202311L
+ typedef _Bool			bool;
++#endif
+ 
+ typedef __kernel_uid32_t	uid_t;
+ typedef __kernel_gid32_t	gid_t;
+_
+
+Patches currently in -mm which might be from hannelotta@gmail.com are
+
+headers-add-check-for-c-standard-version.patch
 
 
