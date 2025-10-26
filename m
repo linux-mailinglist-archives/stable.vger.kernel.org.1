@@ -1,120 +1,198 @@
-Return-Path: <stable+bounces-189765-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-189766-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D551FC0A59A
-	for <lists+stable@lfdr.de>; Sun, 26 Oct 2025 10:44:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C4908C0A5A0
+	for <lists+stable@lfdr.de>; Sun, 26 Oct 2025 10:45:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 251693A9910
-	for <lists+stable@lfdr.de>; Sun, 26 Oct 2025 09:44:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7EAAB3A9B5D
+	for <lists+stable@lfdr.de>; Sun, 26 Oct 2025 09:45:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B731288505;
-	Sun, 26 Oct 2025 09:44:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10DFC1917CD;
+	Sun, 26 Oct 2025 09:45:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ovp5fpfj"
+	dkim=pass (1024-bit key) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.b="rT+dnhsp"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FE0E17BA6;
-	Sun, 26 Oct 2025 09:44:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
+Received: from zg8tmja2lje4os4yms4ymjma.icoremail.net (zg8tmja2lje4os4yms4ymjma.icoremail.net [206.189.21.223])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32D27BA3D;
+	Sun, 26 Oct 2025 09:45:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=206.189.21.223
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761471847; cv=none; b=d1FO2hNYHTu0wV89Fsn6THtb1UnsMMFuGTT8vHBEXG9jZZE/VkBc4AEUtIzu9tzYnolzqOafVesfYXuiClsYpo70pLWQtkaI7mp1XeiyQQ7AuadFHVyWgD6BRmovwY9lDz+078+SZgoFWssXPdzLUviZHB0VczA+bl2JhNZaSX4=
+	t=1761471935; cv=none; b=FFU44P0cZscC0ik9/aBEm04XDhGl8xLaAB/o25hma776xULcor1/67BC2ab+RkYuaawdn8GmOw5SoHM/yNwxRFtoToW1L4B6uxTFyGirKbAESRyQ6pvwimuhVP7MMrAJzRABT+cGucBWpQ1utx0upLo4/izpipcvwjobN+NJxyw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761471847; c=relaxed/simple;
-	bh=MyRDkkeM1WniRrNwIECJAWX6rR/HsGtbFOS5K7hsaLo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IyUTwQgb9ZM7c5nXnk8B8epmnlGi54Sum6Q6thMSduA7TqhC7UzmPVkcLzVyuMn7vN0iw2r5yJHYVmwVgm0EMEfWnmqWuFUOaT5Pfiyi4nQcibL/b4Kg6ccJErE2tehm60zBb9mevI7jHxZwQWzPg4PUX1yaAlY6kuGeQdXuLdE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ovp5fpfj; arc=none smtp.client-ip=198.175.65.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1761471846; x=1793007846;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=MyRDkkeM1WniRrNwIECJAWX6rR/HsGtbFOS5K7hsaLo=;
-  b=Ovp5fpfjKoj+Go/AhTv9LrRreDjFLLLAKWKxcFGrEonSqX4Y82zz4+Ol
-   syh1m0Wkzmi14i5+R6twZ8uIpUZI5Dm63aM2f8lMJHgfCNEu+wuELgXZL
-   y+4dVWyS/nvVK6V2LR08M6S6gke/3pdBWaN5ndvS4pEfoUFKmisQww65q
-   XBpgAKybvLDu3zyBvkx3ZEvtJACf8feb6f8HP2LO3WHSZNwl7koDTakFs
-   W8Us4FnV6mMOSFijmoki6UOmdArevFpeGa25S7GhbZ4I1+wh99LslNbA0
-   HyFq717/VzwnQiJBNhqn0BwYXp4+PFam8v9lzlqNPLPDfVIx0/Z/xpXzr
-   Q==;
-X-CSE-ConnectionGUID: rU81IqelQ6OQupZgFBx7uA==
-X-CSE-MsgGUID: xt7tB2iTQn2Ftk3k8LX/ZA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="63730916"
-X-IronPort-AV: E=Sophos;i="6.19,256,1754982000"; 
-   d="scan'208";a="63730916"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Oct 2025 02:43:52 -0700
-X-CSE-ConnectionGUID: RJXJrLBXRruANBTCQE/mPQ==
-X-CSE-MsgGUID: sgB1CLxGQzyoEeuxq8N8/Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,256,1754982000"; 
-   d="scan'208";a="184877434"
-Received: from lkp-server02.sh.intel.com (HELO 66d7546c76b2) ([10.239.97.151])
-  by orviesa008.jf.intel.com with ESMTP; 26 Oct 2025 02:43:46 -0700
-Received: from kbuild by 66d7546c76b2 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1vCxHr-000G1x-2v;
-	Sun, 26 Oct 2025 09:43:43 +0000
-Date: Sun, 26 Oct 2025 17:43:09 +0800
-From: kernel test robot <lkp@intel.com>
-To: Coia Prant <coiaprant@gmail.com>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Heiko Stuebner <heiko@sntech.de>, Dragan Simic <dsimic@manjaro.org>,
-	Jonas Karlman <jonas@kwiboo.se>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org, Coia Prant <coiaprant@gmail.com>
-Subject: Re: [PATCH] arm64: dts: rockchip: Add devicetree for the X3568 v4
-Message-ID: <202510261750.glZ5VRca-lkp@intel.com>
-References: <20251025203711.3859240-1-coiaprant@gmail.com>
+	s=arc-20240116; t=1761471935; c=relaxed/simple;
+	bh=xBnkMbU5LPW/ByA6yBUTuR5R4BJYX1dWFXFSbs1kEY8=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=KAw2Glc/qS5lPUZb8lWAuGo+BB8uZNG8bHn4nPBqCtLW+FYzWemKqzvLbCllea3g7M6gjkib5ZJTAFFxaSyXqaRNA5gtbXQ0GiTh+fa9aFWPd/PwVaAEB6sjvFRNO0orsskRiA7RnVAMTL5gS40fYjFtcF1+utZB2q0xgsGzsXQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mails.tsinghua.edu.cn; spf=pass smtp.mailfrom=mails.tsinghua.edu.cn; dkim=pass (1024-bit key) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.b=rT+dnhsp; arc=none smtp.client-ip=206.189.21.223
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mails.tsinghua.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mails.tsinghua.edu.cn
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=mails.tsinghua.edu.cn; s=dkim; h=Received:From:To:Cc:Subject:
+	Date:Message-Id:In-Reply-To:References:MIME-Version:
+	Content-Transfer-Encoding; bh=9YIt7ruUm8P8zHlzSMb4xWNgs3nRvcOTja
+	H9d6uRHzg=; b=rT+dnhsp5wx2i7ZgOxfME6H54Ud+IuKIQHTXkZKBDHRJThQ7Pc
+	jhpmM29FcgUMj4zxdhm1PrEoKvsv5ADKdSfmSzPVAuaYBfptWtnizlq+a3d+dmN8
+	1eYsYiGNDrq+QlhTSdAvCigwvisDzIjBrfkcqpptGwc3PRl3mxIQq6fAM=
+Received: from estar-Super-Server.. (unknown [103.233.162.254])
+	by web3 (Coremail) with SMTP id ygQGZQBHAtmI7f1oDaI5BQ--.55062S2;
+	Sun, 26 Oct 2025 17:44:57 +0800 (CST)
+From: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
+To: zhaoyz24@mails.tsinghua.edu.cn
+Cc: netdev@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH RESEND v3] net/dccp: validate Reset/Close/CloseReq in DCCP_REQUESTING
+Date: Sun, 26 Oct 2025 17:44:23 +0800
+Message-Id: <20251026094423.941754-1-zhaoyz24@mails.tsinghua.edu.cn>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250929062609.3771416-1-zhaoyz24@mails.tsinghua.edu.cn>
+References: <20250929062609.3771416-1-zhaoyz24@mails.tsinghua.edu.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251025203711.3859240-1-coiaprant@gmail.com>
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:ygQGZQBHAtmI7f1oDaI5BQ--.55062S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxAF17tryfJryrAF1DKw1rJFb_yoWrWF4fpF
+	y7KrW5Kr4DJryxtFnayw4kXr15Cr48AryfGFnFqrW8Z3WDZryfu39IkFWjvry5CFZak342
+	g3y2qFZ5Gr47Za7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUvq14x267AKxVWUJVW8JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26F1j6w1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
+	6r4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
+	Cq3wAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC
+	0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr
+	1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IE
+	rcIFxwCY02Avz4vE14v_GFWl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr
+	1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE
+	14v26r1Y6r17MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7
+	IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E
+	87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU0x
+	ZFpf9x0JU4mhwUUUUU=
+X-CM-SenderInfo: 52kd05r2suqzpdlo2hxwvl0wxkxdhvlgxou0/1tbiAQEFAWj67Ia3TAABsG
 
-Hi Coia,
+This is a resend with a clarified commit message based on earlier feedback.
+The code change is the same; only the description is improved to better
+explain the issue, impact and rationale. I appreciate your time.
 
-kernel test robot noticed the following build errors:
+This patch should be applied to stable versions *only* before Linux 6.16,
+since DCCP implementation is removed in Linux 6.16.
 
-[auto build test ERROR on krzk/for-next]
-[also build test ERROR on krzk-dt/for-next linus/master v6.18-rc2]
-[cannot apply to rockchip/for-next next-20251024]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Affected versions include:
+- 3.1-3.19
+- 4.0-4.20
+- 5.0-5.19
+- 6.0-6.15
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Coia-Prant/arm64-dts-rockchip-Add-devicetree-for-the-X3568-v4/20251026-043855
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/krzk/linux.git for-next
-patch link:    https://lore.kernel.org/r/20251025203711.3859240-1-coiaprant%40gmail.com
-patch subject: [PATCH] arm64: dts: rockchip: Add devicetree for the X3568 v4
-config: arm64-randconfig-002-20251026 (https://download.01.org/0day-ci/archive/20251026/202510261750.glZ5VRca-lkp@intel.com/config)
-compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project e1ae12640102fd2b05bc567243580f90acb1135f)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251026/202510261750.glZ5VRca-lkp@intel.com/reproduce)
+DCCP sockets in DCCP_REQUESTING state do not check the sequence number
+or acknowledgment number for incoming Reset, CloseReq, and Close packets.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202510261750.glZ5VRca-lkp@intel.com/
+As a result, an attacker can send a spoofed Reset packet while the client
+is in the requesting state. The client will accept the packet without
+verification and immediately close the connection, causing a denial of
+service (DoS) attack.
 
-All errors (new ones prefixed by >>):
+This patch moves the processing of Reset, Close, and CloseReq packets
+into dccp_rcv_request_sent_state_process() and validates the ack number
+before accepting them.
 
->> Error: missing overlay file(s)
+We tested it on Ubuntu 24.04 LTS (Linux 6.8) and it worked as expected.
 
+Fixes: c0c2015056d7b ("dccp: Clean up slow-path input processing")
+Signed-off-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
+Cc: stable@vger.kernel.org
+---
+ net/dccp/input.c | 54 ++++++++++++++++++++++++++++--------------------
+ 1 file changed, 32 insertions(+), 22 deletions(-)
+
+diff --git a/net/dccp/input.c b/net/dccp/input.c
+index 2cbb757a8..0b1ffb044 100644
+--- a/net/dccp/input.c
++++ b/net/dccp/input.c
+@@ -397,21 +397,22 @@ static int dccp_rcv_request_sent_state_process(struct sock *sk,
+ 	 *	     / * Response processing continues in Step 10; Reset
+ 	 *		processing continues in Step 9 * /
+ 	*/
++	struct dccp_sock *dp = dccp_sk(sk);
++
++	if (!between48(DCCP_SKB_CB(skb)->dccpd_ack_seq,
++				dp->dccps_awl, dp->dccps_awh)) {
++		dccp_pr_debug("invalid ackno: S.AWL=%llu, "
++					"P.ackno=%llu, S.AWH=%llu\n",
++					(unsigned long long)dp->dccps_awl,
++			(unsigned long long)DCCP_SKB_CB(skb)->dccpd_ack_seq,
++					(unsigned long long)dp->dccps_awh);
++		goto out_invalid_packet;
++	}
++
+ 	if (dh->dccph_type == DCCP_PKT_RESPONSE) {
+ 		const struct inet_connection_sock *icsk = inet_csk(sk);
+-		struct dccp_sock *dp = dccp_sk(sk);
+-		long tstamp = dccp_timestamp();
+-
+-		if (!between48(DCCP_SKB_CB(skb)->dccpd_ack_seq,
+-			       dp->dccps_awl, dp->dccps_awh)) {
+-			dccp_pr_debug("invalid ackno: S.AWL=%llu, "
+-				      "P.ackno=%llu, S.AWH=%llu\n",
+-				      (unsigned long long)dp->dccps_awl,
+-			   (unsigned long long)DCCP_SKB_CB(skb)->dccpd_ack_seq,
+-				      (unsigned long long)dp->dccps_awh);
+-			goto out_invalid_packet;
+-		}
+ 
++		long tstamp = dccp_timestamp();
+ 		/*
+ 		 * If option processing (Step 8) failed, return 1 here so that
+ 		 * dccp_v4_do_rcv() sends a Reset. The Reset code depends on
+@@ -496,6 +497,13 @@ static int dccp_rcv_request_sent_state_process(struct sock *sk,
+ 		}
+ 		dccp_send_ack(sk);
+ 		return -1;
++	} else if (dh->dccph_type == DCCP_PKT_RESET) {
++		dccp_rcv_reset(sk, skb);
++		return 0;
++	} else if (dh->dccph_type == DCCP_PKT_CLOSEREQ) {
++		return dccp_rcv_closereq(sk, skb);
++	} else if (dh->dccph_type == DCCP_PKT_CLOSE) {
++		return dccp_rcv_close(sk, skb);
+ 	}
+ 
+ out_invalid_packet:
+@@ -658,17 +666,19 @@ int dccp_rcv_state_process(struct sock *sk, struct sk_buff *skb,
+ 	 *		Set TIMEWAIT timer
+ 	 *		Drop packet and return
+ 	 */
+-	if (dh->dccph_type == DCCP_PKT_RESET) {
+-		dccp_rcv_reset(sk, skb);
+-		return 0;
+-	} else if (dh->dccph_type == DCCP_PKT_CLOSEREQ) {	/* Step 13 */
+-		if (dccp_rcv_closereq(sk, skb))
+-			return 0;
+-		goto discard;
+-	} else if (dh->dccph_type == DCCP_PKT_CLOSE) {		/* Step 14 */
+-		if (dccp_rcv_close(sk, skb))
++	if (sk->sk_state != DCCP_REQUESTING) {
++		if (dh->dccph_type == DCCP_PKT_RESET) {
++			dccp_rcv_reset(sk, skb);
+ 			return 0;
+-		goto discard;
++		} else if (dh->dccph_type == DCCP_PKT_CLOSEREQ) {	/* Step 13 */
++			if (dccp_rcv_closereq(sk, skb))
++				return 0;
++			goto discard;
++		} else if (dh->dccph_type == DCCP_PKT_CLOSE) {		/* Step 14 */
++			if (dccp_rcv_close(sk, skb))
++				return 0;
++			goto discard;
++		}
+ 	}
+ 
+ 	switch (sk->sk_state) {
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.34.1
+
 
