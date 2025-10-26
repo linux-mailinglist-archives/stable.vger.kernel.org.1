@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-189760-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-189761-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C57DAC0A4A9
-	for <lists+stable@lfdr.de>; Sun, 26 Oct 2025 09:35:44 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68D9EC0A4B2
+	for <lists+stable@lfdr.de>; Sun, 26 Oct 2025 09:37:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2ECC73ADA8A
-	for <lists+stable@lfdr.de>; Sun, 26 Oct 2025 08:35:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7AD0B18A0706
+	for <lists+stable@lfdr.de>; Sun, 26 Oct 2025 08:37:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E65BA271456;
-	Sun, 26 Oct 2025 08:35:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3646726D4C2;
+	Sun, 26 Oct 2025 08:36:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BeZN8h/W"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XZ8fER3V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 988EE1A9FB8;
-	Sun, 26 Oct 2025 08:35:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDE8C16132F;
+	Sun, 26 Oct 2025 08:36:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761467739; cv=none; b=fwFRClBMDs4iU/S1K312l80b3JU6zk6bzIaqodwsg77cVkzwD+qtia0SAx+2PJI/D/7zsa6Fimk3TN6w5R9sqQWVSMu9S8pu6Bo6rOpA6ksppPeyqUrMoCW4w8/5b7Vp/moaggFabqv6t5P8YkT5VldSme5x4hrHV+j1F0j46K8=
+	t=1761467818; cv=none; b=L9kOYkT0NQmKNzAuUTIYNYs4jMRPDCnipblnfMBE112teSxKJeT5kUDyrSMHt2MI6IW3h7Sht6EEIvUReyY5iDWlnPA0Fp/zmpwmdbRUDWPV3q02U6pWoFHqN6t7cCQ7UFSgOTyZqx7W5Fmp5Oad9L1OF2Z0tnUMNl1pAtQs0TI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761467739; c=relaxed/simple;
-	bh=rzxJTNoSOeK7VNGYumqIb4DOxnBQhT9we9NoIaaK07o=;
+	s=arc-20240116; t=1761467818; c=relaxed/simple;
+	bh=Zim3qGKsCpC2JYTbatO+MU+Eu3vnLSQRr1CABozWbcM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=UChCAj/H4sj6o83iKluUi1YBuNx8kc7hU0WhpN52crosIdPLQnMSVJkQT0XeXxVBtI7NxJkeelkyjV03ZB1+3BYakA6g5T8A8+ga+Eee+2Mn7Abz8pF+IoieWvkYQbVyOspPYu4fAaxDSmFr1JJmPQO8houC8da8DQUJkvDNOew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BeZN8h/W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54824C4CEE7;
-	Sun, 26 Oct 2025 08:35:36 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=rUEz8rZh+620A0QT63Yc64WfjxyVyN5FRIMf5DGig7s7eMD/4kEB3VykfwulAVx5rXNqWwz3P+Xv4kHpD/ltvEtUALXek/qMHVIUC8H1sWclRF9gjJjbVTyAxuwLuOcXz3FFv6PdMeuZ4LkJ1uyHPxDr7nWALkpvTMa+/arhfIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XZ8fER3V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B15A8C4CEE7;
+	Sun, 26 Oct 2025 08:36:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761467739;
-	bh=rzxJTNoSOeK7VNGYumqIb4DOxnBQhT9we9NoIaaK07o=;
+	s=k20201202; t=1761467817;
+	bh=Zim3qGKsCpC2JYTbatO+MU+Eu3vnLSQRr1CABozWbcM=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=BeZN8h/WuGf9UdFvLhwi25+qrZW9fazEHdDdD8MZsFo/Rj2iLsTv+mLReMs/RGbHH
-	 Gdocozotplr+wWvgUEucfti9d9T9Y5hF9PTnDKKMohctpC+VTeKsTtfKBB2zBS2aFX
-	 83xV58yUHs51uQ3/kvB4bl2r6Q5fjbVy8C7reiV5FVHENfTMrPqy5NMlB1mNKmUiDI
-	 XR516/n8izQJUkeYaYezKnbMcwM7lE+qlTip1qqNY1bIaLC8FXmzYGuMrJ1vJsIDNH
-	 TtG/3CCi0dISme7goXKS4Kq+2JVP8fXfV1wiMPfk5ZEeKMbtTaobci081rt9s6nidl
-	 6mRajpX24eLKg==
-Message-ID: <84082a2a-c5ef-499a-8374-58f9a063f862@kernel.org>
-Date: Sun, 26 Oct 2025 09:35:34 +0100
+	b=XZ8fER3VQro4Ggyjf1AxjtI4qhktJF7hl645sn4jiLi+1xu3Rb9pzKp/rIr97TiHP
+	 BXANLH2pvo21B8amxi23knLJGukH5FivnQCN4NQ4i25bcawBkJ1L0whBCZtKrVCW1N
+	 51JGD5K3vtuFWAGAJ2A9CzHXQqBddNEwJbaHV+JqfzHCEZJO8E0ORSpAxy4kunFnCL
+	 K0x0UouQeLhvVStmfrDr43WLhjhmDHV3JMupBziOky08nQAMsUxnhpg6lO/4J/hzL9
+	 BKN621dXHnwBGryWBmLsvgoTz8CMc2IabBNX55YRnpxHbj8uCk+JNilSRrryrOMoYJ
+	 Vy49jOFYQ+0eg==
+Message-ID: <b4395d23-9004-4a01-942f-060876312317@kernel.org>
+Date: Sun, 26 Oct 2025 09:36:51 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,8 +50,8 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/3] dt-bindings: arm: rockchip: Add NineTripod X3568
- series
+Subject: Re: [PATCH v2 3/3] arm64: dts: rockchip: Add devicetree for the
+ NineTripod X3568 v4
 To: Coia Prant <coiaprant@gmail.com>, Rob Herring <robh@kernel.org>,
  Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
  <conor+dt@kernel.org>, Heiko Stuebner <heiko@sntech.de>,
@@ -60,7 +60,7 @@ Cc: devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
  linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org,
  stable@vger.kernel.org
 References: <20251026062831.4045083-3-coiaprant@gmail.com>
- <20251026062831.4045083-5-coiaprant@gmail.com>
+ <20251026062831.4045083-7-coiaprant@gmail.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -106,21 +106,78 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
  zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
  XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
-In-Reply-To: <20251026062831.4045083-5-coiaprant@gmail.com>
+In-Reply-To: <20251026062831.4045083-7-coiaprant@gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
 On 26/10/2025 07:28, Coia Prant wrote:
-> This documents NineTripod X3568 v4 which is a SBC based on RK3568 SoC.
+> The NineTripod X3568 v4 is an RK3568-based SBC, just like the RK3568-EVB.
+> It always uses soldered connections between the X3568CV2 core board and the X3568bv4 IO board.
 > 
-> Link: http://www.9tripod.com/showpro.php?id=117
-> Link: https://appletsapi.52solution.com/media/X3568V4%E5%BC%80%E5%8F%91%E6%9D%BF%E7%A1%AC%E4%BB%B6%E6%89%8B%E5%86%8C.pdf
+> The X3568 board has multiple hardware revisions, and we currently support v4.
+> 
+> Specification:
+> - SoC: RockChip RK3568 ARM64 (4 cores)
+> - eMMC: 16-128 GB
+> - RAM: 2-8 GB
+> - Power: DC 12V 2A
+> - Ethernet: 2x YT8521SC RGMII (10/100/1000 Mbps)
+> - Wireless radio: 802.11b/g/n/ac/ax dual-band
+> - LED:
+>   Power: AlwaysOn
+>   User: GPIO
+> - Button:
+>   VOL+: SARADC/0 <35k µV>
+>   VOL-: SARADC/0 <450k µV>
+>   Power/Reset: PMIC RK809
+> - CAN
+>   CAN/1: 4-pin (PH 2.0)
+> - PWM
+>   PWM/4: Backlight DSI/0 DSI/1
+>   PWM/7: IR Receiver [may not install]
+> - UART:
+>   UART/2: Debug TTL - 1500000 8N1 (1.25mm)
+>   UART/3: TTL (PH 2.0)
+>   UART/4: TTL (PH 2.0)
+>   UART/8: AP6275S Bluetooth
+>   UART/9: TTL (PH 2.0)
+> - I2C:
+>   I2C/0: PMIC RK809
+>   I2C/1: Touchscreen DSI/0 DSI/1
+>   I2C/4: Camera
+>   I2C/5: RTC@51 PCF8563
+> - I2S:
+>   I2S/0: miniHDMI Sound
+>   I2S/1: RK809 Audio Codec
+>   I2S/3: AP6275S Bluetooth Sound
+> - SDMMC:
+>   SDMMC/0: microSD (TF) slot
+>   SDMMC/2: AP6275S SDIO WiFi card
+> - Camera: 1x CSI
+> - Video: miniHDMI / DSI0 (MIPI/LVDS) / DSI1 (MIPI/EDP)
+> - Audio: miniHDMI / MIC on-board / Speaker / SPDIF / 3.5mm Headphones / AP6275S Bluetooth
+> - USB:
+>   USB 2.0 HOST x2
+>   USB 2.0 HOST x3 (4-pin)
+>   USB 2.0 OTG x1 (shared with USB 3.0 OTG/HOST) [slot may not install]
+>   USB 3.0 HOST x1
+>   USB 3.0 OTG/HOST x1
+> - SATA: 1x SATA 3.0 with Power/4-pin [slot may not install]
+> - PCIe: 1x PCIe 3.0 x2 (x4 connecter) [clock/slot may not install]
+> 
+> Link:
+> - https://appletsapi.52solution.com/media/X3568V4%E5%BC%80%E5%8F%91%E6%9D%BF%E7%A1%AC%E4%BB%B6%E6%89%8B%E5%86%8C.pdf
+> - https://blog.gov.cooking/archives/research-ninetripod-x3568-v4-and-flash.html
 > 
 > Signed-off-by: Coia Prant <coiaprant@gmail.com>
 > Cc: stable@vger.kernel.org
 
 
-No, not a stable commit.
+While adding vendor prefix could fall into adding quirks (it's not...),
+but how is new support supposed to be bugfix or quirk?
+
+That's definitely not right.
+
 
 Best regards,
 Krzysztof
