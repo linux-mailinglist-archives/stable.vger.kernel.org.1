@@ -1,114 +1,114 @@
-Return-Path: <stable+bounces-189866-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-189867-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DC0CC0ACDF
-	for <lists+stable@lfdr.de>; Sun, 26 Oct 2025 16:43:24 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C325C0AD12
+	for <lists+stable@lfdr.de>; Sun, 26 Oct 2025 17:04:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 98B1C18A0641
-	for <lists+stable@lfdr.de>; Sun, 26 Oct 2025 15:42:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C3BB63B2831
+	for <lists+stable@lfdr.de>; Sun, 26 Oct 2025 16:04:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 538C0222575;
-	Sun, 26 Oct 2025 15:42:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB9B147F77;
+	Sun, 26 Oct 2025 16:04:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JxxPjn8Q"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZvAFYHdK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1019327713
-	for <stable@vger.kernel.org>; Sun, 26 Oct 2025 15:42:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B18B45C0B
+	for <stable@vger.kernel.org>; Sun, 26 Oct 2025 16:04:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761493325; cv=none; b=o0dZFrbQfXhWeEU2U+WTGlnM9Dc6ZdFFIgrAWjV+zNN6xAkbZ1TUqm3c+Nx6f2BdX/L4HNmEZOCaMINMiQYpbBlprtGDY1r4x2A6FyBuEOm48L/fG1icfb+e6Xpv1rGa9a3b5/hWaQH854niTdys8k8N5C8oEEbvI+/WaLG2MW8=
+	t=1761494653; cv=none; b=NwnvwyROzOMabDv7d9uBMq/+j2068jAH74qO54WjsBxyLCgkiQbIRGc59cvklLqLC3FTjUfEKkPmP9OmBMxBjNNzWvyuFGJ8UKhZcsH6fqR8OwbpkIKGolPQcIaWPAJLrY8uVH/yfbqWsc2JdbrtVM1q8isHxE+mbSgk7zZAqxY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761493325; c=relaxed/simple;
-	bh=F2p8WzjOy+iH1uiJAkloS7IdMrZcLiGtKBNhmNZ5vxY=;
-	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XXh23A3+wnYfxaFkK9RXmHVdeYUpluvZ5QVDKRZmgmf7RK7RCEJm3BU1lkctgabM5QxkbYvr99+ho8E++Wzr9hK0H95XtxmHlOf8wseR7hvvPnfhNfGIqA/oVHNmNtRy/q/Yx5WwZJhzH8bjRW67CYSRLlfv9o3cWYO5lutBoVU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JxxPjn8Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AFE3C4CEE7;
-	Sun, 26 Oct 2025 15:42:03 +0000 (UTC)
+	s=arc-20240116; t=1761494653; c=relaxed/simple;
+	bh=GBLghVRIk7l7XF07Ryix04tAB0/j3SJzUcDb9bWfjs4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=r/Mcpe7PksPcflTJoOGrPf5BWTMF25XlWw/WU9J76r9VDkmH5YbN+u/rI2eU37U1VcUrl+a/ZOW8czT4abq4DBV3HkB2GseyLOqvCgeQHRzFJcsnza2ZVGTypsqaj8mhviD12OaEYAVHmN5EEz0HF18kEmhHo1PJmIosfm4l3Hc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZvAFYHdK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 201A2C4CEE7;
+	Sun, 26 Oct 2025 16:04:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761493324;
-	bh=F2p8WzjOy+iH1uiJAkloS7IdMrZcLiGtKBNhmNZ5vxY=;
-	h=Date:From:To:Subject:References:In-Reply-To:From;
-	b=JxxPjn8QlXiQwD4WVG/2eE8YIFjQAlYJ2rcyEC0OOftMDo+uJGZdSZ6UANi0QeuKA
-	 2yVhZaIYViUZTA6N6oYxkQCF+IcTIejSg4K9pjldeAF7Ht2dZdqeM/f4nRe5c/pJWt
-	 Za5lODk/4uhiAcSQ7Kqem2hm7bAmldkikUPhEYB/LIw+F9wkeWoiubIehQRtsTGjXs
-	 JHsMLejYuDaSh3j8tS17I5BAQ7gjLB+FPJ4Pm4oYO5uQqGcjf0XwTvIHe+eZ4T9LF8
-	 oZ3e/ARuLMRt4tnXAGWSEuNCPU7Z9qaN5u7aFSOZSInNtwH3Tf9Lc8ijLfsg7D8RnZ
-	 ieikp1Xrgddsw==
-Date: Mon, 27 Oct 2025 00:42:00 +0900
-From: William Breathitt Gray <wbg@kernel.org>
-To: stable@vger.kernel.org, Mark Cave-Ayland <mark.caveayland@nutanix.com>,
-	Michael Walle <mwalle@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: Re: [PATCH 6.6.y] gpio: idio-16: Define fixed direction of the GPIO
- lines
-Message-ID: <aP5BSHnMw3Bn10vD@emerald>
-References: <2025102619-plaster-sitting-ed2e@gregkh>
- <N8Hj-zRacZQc6SSWrj2lLT1upcInj9PrAH81Xc2M4mozVsSUj92ofp9fJOsPqS22yl_CdmdkM1Phj5z86hNpdg==@protonmail.internalid>
- <20251026152950.44505-1-wbg@kernel.org>
+	s=k20201202; t=1761494651;
+	bh=GBLghVRIk7l7XF07Ryix04tAB0/j3SJzUcDb9bWfjs4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=ZvAFYHdK/RUIaai7hd3CAQ8Gus+CAMR2mW7sG9UZG7N27cbbGJ68++Ari23PwF8Py
+	 By4EOc+4Angd+BssDMFrf2wBFzUcy0Ti2m6aWw7QqDmQIacwj4Hgu3CgTxyti6tyWS
+	 DoD1V1kW04DT6/8R12ggmt9C3ZQKrZM6rZXK6DSa/OENJRG7dUGokoCzyzgFUjw5JD
+	 7ZDoivDEeF/kVL/yHQGVQ2lEsu+M0MSgWA5+4GATXDDT9GXld+oZcVuzDapWsKDpQB
+	 /TUahts2Tb2CMsYEzi+vVbCzztuVxt/tYPWv4y9uDBeHhzchwr2V5ENHpceFVESWsu
+	 sR971Z1/3HECQ==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Kaushlendra Kumar <kaushlendra.kumar@intel.com>,
+	stable <stable@kernel.org>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1.y] arch_topology: Fix incorrect error check in topology_parse_cpu_capacity()
+Date: Sun, 26 Oct 2025 12:04:08 -0400
+Message-ID: <20251026160408.99204-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2025102641-derail-shine-9dd5@gregkh>
+References: <2025102641-derail-shine-9dd5@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="WuZxbwSFlSIHlS5x"
-Content-Disposition: inline
-In-Reply-To: <20251026152950.44505-1-wbg@kernel.org>
+Content-Transfer-Encoding: 8bit
 
+From: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
 
---WuZxbwSFlSIHlS5x
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+[ Upstream commit 2eead19334516c8e9927c11b448fbe512b1f18a1 ]
 
-On Mon, Oct 27, 2025 at 12:29:43AM +0900, William Breathitt Gray wrote:
-> The direction of the IDIO-16 GPIO lines is fixed with the first 16 lines
-> as output and the remaining 16 lines as input. Set the gpio_config
-> fixed_direction_output member to represent the fixed direction of the
-> GPIO lines.
->=20
-> Fixes: db02247827ef ("gpio: idio-16: Migrate to the regmap API")
-> Reported-by: Mark Cave-Ayland <mark.caveayland@nutanix.com>
-> Closes: https://lore.kernel.org/r/9b0375fd-235f-4ee1-a7fa-daca296ef6bf@nu=
-tanix.com
-> Suggested-by: Michael Walle <mwalle@kernel.org>
-> Cc: stable@vger.kernel.org # ae495810cffe: gpio: regmap: add the .fixed_d=
-irection_output configuration parameter
-> Cc: stable@vger.kernel.org
-> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> Signed-off-by: William Breathitt Gray <wbg@kernel.org>
-> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-> Link: https://lore.kernel.org/r/20251020-fix-gpio-idio-16-regmap-v2-3-ebe=
-b50e93c33@kernel.org
-> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-> (cherry picked from commit 2ba5772e530f73eb847fb96ce6c4017894869552)
-> Signed-off-by: William Breathitt Gray <wbg@kernel.org>
+Fix incorrect use of PTR_ERR_OR_ZERO() in topology_parse_cpu_capacity()
+which causes the code to proceed with NULL clock pointers. The current
+logic uses !PTR_ERR_OR_ZERO(cpu_clk) which evaluates to true for both
+valid pointers and NULL, leading to potential NULL pointer dereference
+in clk_get_rate().
 
-Sorry, I didn't mean to send this. I don't think this will compile
-without backporting the dependencies.
+Per include/linux/err.h documentation, PTR_ERR_OR_ZERO(ptr) returns:
+"The error code within @ptr if it is an error pointer; 0 otherwise."
 
-William Breathitt Gray
+This means PTR_ERR_OR_ZERO() returns 0 for both valid pointers AND NULL
+pointers. Therefore !PTR_ERR_OR_ZERO(cpu_clk) evaluates to true (proceed)
+when cpu_clk is either valid or NULL, causing clk_get_rate(NULL) to be
+called when of_clk_get() returns NULL.
 
---WuZxbwSFlSIHlS5x
-Content-Type: application/pgp-signature; name=signature.asc
+Replace with !IS_ERR_OR_NULL(cpu_clk) which only proceeds for valid
+pointers, preventing potential NULL pointer dereference in clk_get_rate().
 
------BEGIN PGP SIGNATURE-----
+Cc: stable <stable@kernel.org>
+Signed-off-by: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
+Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
+Fixes: b8fe128dad8f ("arch_topology: Adjust initial CPU capacities with current freq")
+Link: https://patch.msgid.link/20250923174308.1771906-1-kaushlendra.kumar@intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[ Adjust context ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/base/arch_topology.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCaP5BSAAKCRC1SFbKvhIj
-K/4JAQCPk7xw1LCyvU71WmmNQvcRFmEvMUljRsc3RuaLbHK0UAEA2UIGslFpbcKq
-t+WJm4sJKPt8UrewAaTJnHBkTJ2sPwM=
-=oj8M
------END PGP SIGNATURE-----
+diff --git a/drivers/base/arch_topology.c b/drivers/base/arch_topology.c
+index e7d6e6657ffa0..b97c5a240cc90 100644
+--- a/drivers/base/arch_topology.c
++++ b/drivers/base/arch_topology.c
+@@ -327,7 +327,7 @@ bool __init topology_parse_cpu_capacity(struct device_node *cpu_node, int cpu)
+ 		 * frequency (by keeping the initial freq_factor value).
+ 		 */
+ 		cpu_clk = of_clk_get(cpu_node, 0);
+-		if (!PTR_ERR_OR_ZERO(cpu_clk)) {
++		if (!IS_ERR_OR_NULL(cpu_clk)) {
+ 			per_cpu(freq_factor, cpu) =
+ 				clk_get_rate(cpu_clk) / 1000;
+ 			clk_put(cpu_clk);
+-- 
+2.51.0
 
---WuZxbwSFlSIHlS5x--
 
