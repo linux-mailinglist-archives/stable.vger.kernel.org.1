@@ -1,63 +1,63 @@
-Return-Path: <stable+bounces-189898-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-189899-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EEB8C0B7E3
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 00:50:40 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5B46C0B7E7
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 00:50:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6DCBE19C0813
-	for <lists+stable@lfdr.de>; Sun, 26 Oct 2025 23:51:04 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 1CF4F34A4EB
+	for <lists+stable@lfdr.de>; Sun, 26 Oct 2025 23:50:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 855A4301011;
-	Sun, 26 Oct 2025 23:50:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 827FE302173;
+	Sun, 26 Oct 2025 23:50:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N4LTeqSH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J1K6buwI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 428262F7444
-	for <stable@vger.kernel.org>; Sun, 26 Oct 2025 23:50:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 402172D2495
+	for <stable@vger.kernel.org>; Sun, 26 Oct 2025 23:50:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761522634; cv=none; b=uoFK3UCYZd0I9YwVGuZdCIeC76W7Pw3NnB+DhzWcG/Q0PC5TCu+MCb5zMvYemmeNj9R51zDGDVmSUpjUekegFXyTXAkYf0KmB8mCl0R7pZq3815JAMxBBYGoLT52VfsB0LjfNPvTG4GbFZ2VLXN8+1gn/D7R3a+O5fUCzAjj1GE=
+	t=1761522638; cv=none; b=lEXb4o0yZkDzOWWMjIreRDXzwrcO8Fa2VxG8srzzt587webwxSh4oMMZ8Iyi1o/+K6wlaGMTSTFAKIvWjAAytsD7j17G7XFPsqYXvTtAuaCbO1evv9aR8XgAusOqo6Ime8xrYVNV1PuQfYJGA4H1nyukiH/YYOWICG81BOlDnxY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761522634; c=relaxed/simple;
-	bh=Rvi+/itkwYCPMs6mJEMa2/X3sMfGbOYx1gVGRJZObpk=;
+	s=arc-20240116; t=1761522638; c=relaxed/simple;
+	bh=qnKSB9P/NAHjtArqJ0IhktL8PhlJHaNGfoPcIOw4s28=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=O/799OebyCNiUjkc0jqHin7VFea1+6enkKmfKArL8rYKRXRMCy2xZNxhGqFNbOT/xfUhhEPbHRbwZQ9Pel3g3jO037wl41wG9qHFSBIMuAwxYVVqy9K0iKVBqTD7jmUqOtZcAmKNo5cWCTRjqQ0kpAMrJDxvNpLXZqd/8XmuQUU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N4LTeqSH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F9E4C4CEE7;
-	Sun, 26 Oct 2025 23:50:30 +0000 (UTC)
+	 MIME-Version:Content-Type; b=OJorhCxJlUkEzHM+UXmMMIlBd2VvmBdi8NAit0Ano8EXPxdHsKIBGMVsQzlBg8l4QCAqn8vuagZlADIvLYo05E6zcLmjhDOLrs19IUw9eNZ8ysG7Y+mSM5ThcijDSJLtQ7QoYYYPWumihiCA6cf2o06Pry2OoOYDClvSFoLNjqk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J1K6buwI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24A40C113D0;
+	Sun, 26 Oct 2025 23:50:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761522633;
-	bh=Rvi+/itkwYCPMs6mJEMa2/X3sMfGbOYx1gVGRJZObpk=;
+	s=k20201202; t=1761522637;
+	bh=qnKSB9P/NAHjtArqJ0IhktL8PhlJHaNGfoPcIOw4s28=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N4LTeqSHWGW+xy0zrXpBctppCIUYOdH+DTdOXS7J/zw0QVWrD8QIJcuiJSK9oOCun
-	 oLVWIepEecPomrHwiJYbHUUpN25HwNTSGoKdS2p0Flf5MgIjWps7Mtsy5J4hWtYeNg
-	 XcbaPQnyq9mhlzvJqZ8FZOgyve6V2qaWIsBGjexq4SfVwwfBcawONwDRqDbq1x7Kn4
-	 pywl6RyMLTiFJowHpvRCGD2UKhOSzEGpdAyt5zUXSBN51BiIb6OTIKBhT6AniYy/5u
-	 KVqKBEMTD9W3oR1a6jOFB6NcZqLMoKjbwSny6kLYRe2DXR6wNOKY5InJB3W7zmXhD3
-	 pn8jV1+wH56pQ==
+	b=J1K6buwIdRYVsZcSU9K0PUrSvwW03trQBRxRCcI5nG4p+eRDxz8hnmfGluz3z4vsY
+	 HjFE+31qoIusgFLZqghOSaZhShQ+iFO7xUv7IS5KyD3hmqYb9sFD0vOXZt7mJjOxyD
+	 gkV+awjLRe2YUtpxlAGwB7yleCtmNGGQze/Pvuj0RO2eBBpT5GteZAXNgzdH6iExdc
+	 aMd1GWmMBngn/MAEUyCYUAe2iMCqGv+HZAnDF3SJZhpCdd5tMqnQg016bSCGvQPedX
+	 QdaHHnr1qDvKvG5oVByBNcjtNoZeNwgqZz4GV4M/2u8NHVFS4JZcE2R+wPq5iP7ckx
+	 uI/8XOg+9H5hw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: David Hildenbrand <david@redhat.com>,
 	Zi Yan <ziy@nvidia.com>,
-	Lance Yang <lance.yang@linux.dev>,
+	Dave Kleikamp <dave.kleikamp@oracle.com>,
+	David Sterba <dsterba@suse.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Byungchul Park <byungchul@sk.com>,
 	Alistair Popple <apopple@nvidia.com>,
 	Al Viro <viro@zeniv.linux.org.uk>,
 	Arnd Bergmann <arnd@arndb.de>,
 	Benjamin LaHaise <bcrl@kvack.org>,
-	Byungchul Park <byungchul@sk.com>,
 	Chris Mason <clm@fb.com>,
 	Christian Brauner <brauner@kernel.org>,
 	Christophe Leroy <christophe.leroy@csgroup.eu>,
 	Dave Kleikamp <shaggy@kernel.org>,
-	David Sterba <dsterba@suse.com>,
 	=?UTF-8?q?Eugenio=20P=C3=A9=20rez?= <eperezma@redhat.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Gregory Price <gourry@gourry.net>,
 	"Huang, Ying" <ying.huang@linux.alibaba.com>,
 	Jan Kara <jack@suse.cz>,
@@ -76,15 +76,16 @@ Cc: David Hildenbrand <david@redhat.com>,
 	Rakie Kim <rakie.kim@sk.com>,
 	Sergey Senozhatsky <senozhatsky@chromium.org>,
 	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Dave Kleikamp <dave.kleikamp@oracle.com>,
+	Lance Yang <lance.yang@linux.dev>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17.y 1/3] mm/migrate: remove MIGRATEPAGE_UNMAP
-Date: Sun, 26 Oct 2025 19:50:26 -0400
-Message-ID: <20251026235028.289288-1-sashal@kernel.org>
+Subject: [PATCH 6.17.y 2/3] treewide: remove MIGRATEPAGE_SUCCESS
+Date: Sun, 26 Oct 2025 19:50:27 -0400
+Message-ID: <20251026235028.289288-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025102655-unequal-disown-9615@gregkh>
+In-Reply-To: <20251026235028.289288-1-sashal@kernel.org>
 References: <2025102655-unequal-disown-9615@gregkh>
+ <20251026235028.289288-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -96,46 +97,31 @@ Content-Transfer-Encoding: 8bit
 
 From: David Hildenbrand <david@redhat.com>
 
-[ Upstream commit 95c2908f1a4fd608b1cdbb5acef3572e5d769e1c ]
+[ Upstream commit fb49a4425cfa163faccd91f913773d3401d3a7d4 ]
 
-migrate_folio_unmap() is the only user of MIGRATEPAGE_UNMAP.  We want to
-remove MIGRATEPAGE_* completely.
+At this point MIGRATEPAGE_SUCCESS is misnamed for all folio users,
+and now that we remove MIGRATEPAGE_UNMAP, it's really the only "success"
+return value that the code uses and expects.
 
-It's rather weird to have a generic MIGRATEPAGE_UNMAP, documented to be
-returned from address-space callbacks, when it's only used for an internal
-helper.
+Let's just get rid of MIGRATEPAGE_SUCCESS completely and just use "0"
+for success.
 
-Let's start by having only a single "success" return value for
-migrate_folio_unmap() -- 0 -- by moving the "folio was already freed"
-check into the single caller.
-
-There is a remaining comment for PG_isolated, which we renamed to
-PG_movable_ops_isolated recently and forgot to update.
-
-While we might still run into that case with zsmalloc, it's something we
-want to get rid of soon.  So let's just focus that optimization on real
-folios only for now by excluding movable_ops pages.  Note that concurrent
-freeing can happen at any time and this "already freed" check is not
-relevant for correctness.
-
-[david@redhat.com: no need to pass "reason" to migrate_folio_unmap(), per Lance]
-  Link: https://lkml.kernel.org/r/3bb725f8-28d7-4aa2-b75f-af40d5cab280@redhat.com
-Link: https://lkml.kernel.org/r/20250811143949.1117439-2-david@redhat.com
+Link: https://lkml.kernel.org/r/20250811143949.1117439-3-david@redhat.com
 Signed-off-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Zi Yan <ziy@nvidia.com>
-Reviewed-by: Lance Yang <lance.yang@linux.dev>
+Reviewed-by: Zi Yan <ziy@nvidia.com>			[mm]
+Acked-by: Dave Kleikamp <dave.kleikamp@oracle.com>	[jfs]
+Acked-by: David Sterba <dsterba@suse.com>		[btrfs]
+Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Byungchul Park <byungchul@sk.com>
 Cc: Alistair Popple <apopple@nvidia.com>
 Cc: Al Viro <viro@zeniv.linux.org.uk>
 Cc: Arnd Bergmann <arnd@arndb.de>
 Cc: Benjamin LaHaise <bcrl@kvack.org>
-Cc: Byungchul Park <byungchul@sk.com>
 Cc: Chris Mason <clm@fb.com>
 Cc: Christian Brauner <brauner@kernel.org>
 Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
 Cc: Dave Kleikamp <shaggy@kernel.org>
-Cc: David Sterba <dsterba@suse.com>
 Cc: Eugenio Pé rez <eperezma@redhat.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc: Gregory Price <gourry@gourry.net>
 Cc: "Huang, Ying" <ying.huang@linux.alibaba.com>
 Cc: Jan Kara <jack@suse.cz>
@@ -154,121 +140,402 @@ Cc: Oscar Salvador <osalvador@suse.de>
 Cc: Rakie Kim <rakie.kim@sk.com>
 Cc: Sergey Senozhatsky <senozhatsky@chromium.org>
 Cc: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-Cc: Dave Kleikamp <dave.kleikamp@oracle.com>
+Cc: Lance Yang <lance.yang@linux.dev>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Stable-dep-of: 4ba5a8a7faa6 ("vmw_balloon: indicate success when effectively deflating during migration")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/migrate.h |  1 -
- mm/migrate.c            | 45 ++++++++++++++++++++---------------------
- 2 files changed, 22 insertions(+), 24 deletions(-)
+ arch/powerpc/platforms/pseries/cmm.c |  2 +-
+ drivers/misc/vmw_balloon.c           |  4 +--
+ drivers/virtio/virtio_balloon.c      |  2 +-
+ fs/aio.c                             |  2 +-
+ fs/btrfs/inode.c                     |  4 +--
+ fs/hugetlbfs/inode.c                 |  4 +--
+ fs/jfs/jfs_metapage.c                |  8 +++---
+ include/linux/migrate.h              | 10 +------
+ mm/migrate.c                         | 40 +++++++++++++---------------
+ mm/migrate_device.c                  |  2 +-
+ mm/zsmalloc.c                        |  4 +--
+ 11 files changed, 36 insertions(+), 46 deletions(-)
 
+diff --git a/arch/powerpc/platforms/pseries/cmm.c b/arch/powerpc/platforms/pseries/cmm.c
+index 5e0a718d1be7b..0823fa2da1516 100644
+--- a/arch/powerpc/platforms/pseries/cmm.c
++++ b/arch/powerpc/platforms/pseries/cmm.c
+@@ -545,7 +545,7 @@ static int cmm_migratepage(struct balloon_dev_info *b_dev_info,
+ 	/* balloon page list reference */
+ 	put_page(page);
+ 
+-	return MIGRATEPAGE_SUCCESS;
++	return 0;
+ }
+ 
+ static void cmm_balloon_compaction_init(void)
+diff --git a/drivers/misc/vmw_balloon.c b/drivers/misc/vmw_balloon.c
+index 6653fc53c951c..6df51ee8db621 100644
+--- a/drivers/misc/vmw_balloon.c
++++ b/drivers/misc/vmw_balloon.c
+@@ -1806,7 +1806,7 @@ static int vmballoon_migratepage(struct balloon_dev_info *b_dev_info,
+ 		 * the list after acquiring the lock.
+ 		 */
+ 		get_page(newpage);
+-		ret = MIGRATEPAGE_SUCCESS;
++		ret = 0;
+ 	}
+ 
+ 	/* Update the balloon list under the @pages_lock */
+@@ -1817,7 +1817,7 @@ static int vmballoon_migratepage(struct balloon_dev_info *b_dev_info,
+ 	 * If we succeed just insert it to the list and update the statistics
+ 	 * under the lock.
+ 	 */
+-	if (ret == MIGRATEPAGE_SUCCESS) {
++	if (!ret) {
+ 		balloon_page_insert(&b->b_dev_info, newpage);
+ 		__count_vm_event(BALLOON_MIGRATE);
+ 	}
+diff --git a/drivers/virtio/virtio_balloon.c b/drivers/virtio/virtio_balloon.c
+index e299e18346a30..eae65136cdfb5 100644
+--- a/drivers/virtio/virtio_balloon.c
++++ b/drivers/virtio/virtio_balloon.c
+@@ -875,7 +875,7 @@ static int virtballoon_migratepage(struct balloon_dev_info *vb_dev_info,
+ 	balloon_page_finalize(page);
+ 	put_page(page); /* balloon reference */
+ 
+-	return MIGRATEPAGE_SUCCESS;
++	return 0;
+ }
+ #endif /* CONFIG_BALLOON_COMPACTION */
+ 
+diff --git a/fs/aio.c b/fs/aio.c
+index 7fc7b6221312c..059e03cfa088c 100644
+--- a/fs/aio.c
++++ b/fs/aio.c
+@@ -445,7 +445,7 @@ static int aio_migrate_folio(struct address_space *mapping, struct folio *dst,
+ 	folio_get(dst);
+ 
+ 	rc = folio_migrate_mapping(mapping, dst, src, 1);
+-	if (rc != MIGRATEPAGE_SUCCESS) {
++	if (rc) {
+ 		folio_put(dst);
+ 		goto out_unlock;
+ 	}
+diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
+index cd8a09e3d1dc0..4031cbdea0740 100644
+--- a/fs/btrfs/inode.c
++++ b/fs/btrfs/inode.c
+@@ -7430,7 +7430,7 @@ static int btrfs_migrate_folio(struct address_space *mapping,
+ {
+ 	int ret = filemap_migrate_folio(mapping, dst, src, mode);
+ 
+-	if (ret != MIGRATEPAGE_SUCCESS)
++	if (ret)
+ 		return ret;
+ 
+ 	if (folio_test_ordered(src)) {
+@@ -7438,7 +7438,7 @@ static int btrfs_migrate_folio(struct address_space *mapping,
+ 		folio_set_ordered(dst);
+ 	}
+ 
+-	return MIGRATEPAGE_SUCCESS;
++	return 0;
+ }
+ #else
+ #define btrfs_migrate_folio NULL
+diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
+index be4be99304bc0..5517d40266ddf 100644
+--- a/fs/hugetlbfs/inode.c
++++ b/fs/hugetlbfs/inode.c
+@@ -1054,7 +1054,7 @@ static int hugetlbfs_migrate_folio(struct address_space *mapping,
+ 	int rc;
+ 
+ 	rc = migrate_huge_page_move_mapping(mapping, dst, src);
+-	if (rc != MIGRATEPAGE_SUCCESS)
++	if (rc)
+ 		return rc;
+ 
+ 	if (hugetlb_folio_subpool(src)) {
+@@ -1065,7 +1065,7 @@ static int hugetlbfs_migrate_folio(struct address_space *mapping,
+ 
+ 	folio_migrate_flags(dst, src);
+ 
+-	return MIGRATEPAGE_SUCCESS;
++	return 0;
+ }
+ #else
+ #define hugetlbfs_migrate_folio NULL
+diff --git a/fs/jfs/jfs_metapage.c b/fs/jfs/jfs_metapage.c
+index b98cf3bb6c1fe..871cf4fb36366 100644
+--- a/fs/jfs/jfs_metapage.c
++++ b/fs/jfs/jfs_metapage.c
+@@ -169,7 +169,7 @@ static int __metapage_migrate_folio(struct address_space *mapping,
+ 	}
+ 
+ 	rc = filemap_migrate_folio(mapping, dst, src, mode);
+-	if (rc != MIGRATEPAGE_SUCCESS)
++	if (rc)
+ 		return rc;
+ 
+ 	for (i = 0; i < MPS_PER_PAGE; i++) {
+@@ -199,7 +199,7 @@ static int __metapage_migrate_folio(struct address_space *mapping,
+ 		}
+ 	}
+ 
+-	return MIGRATEPAGE_SUCCESS;
++	return 0;
+ }
+ #endif	/* CONFIG_MIGRATION */
+ 
+@@ -242,7 +242,7 @@ static int __metapage_migrate_folio(struct address_space *mapping,
+ 		return -EAGAIN;
+ 
+ 	rc = filemap_migrate_folio(mapping, dst, src, mode);
+-	if (rc != MIGRATEPAGE_SUCCESS)
++	if (rc)
+ 		return rc;
+ 
+ 	if (unlikely(insert_metapage(dst, mp)))
+@@ -253,7 +253,7 @@ static int __metapage_migrate_folio(struct address_space *mapping,
+ 	mp->folio = dst;
+ 	remove_metapage(src, mp);
+ 
+-	return MIGRATEPAGE_SUCCESS;
++	return 0;
+ }
+ #endif	/* CONFIG_MIGRATION */
+ 
 diff --git a/include/linux/migrate.h b/include/linux/migrate.h
-index 9009e27b5f44c..302f3e95faeaa 100644
+index 302f3e95faeaa..1f0ac122c3bfc 100644
 --- a/include/linux/migrate.h
 +++ b/include/linux/migrate.h
-@@ -18,7 +18,6 @@ struct migration_target_control;
-  * - zero on page migration success;
-  */
- #define MIGRATEPAGE_SUCCESS		0
--#define MIGRATEPAGE_UNMAP		1
+@@ -12,13 +12,6 @@ typedef void free_folio_t(struct folio *folio, unsigned long private);
  
+ struct migration_target_control;
+ 
+-/*
+- * Return values from addresss_space_operations.migratepage():
+- * - negative errno on page migration failure;
+- * - zero on page migration success;
+- */
+-#define MIGRATEPAGE_SUCCESS		0
+-
  /**
   * struct movable_operations - Driver page migration
+  * @isolate_page:
+@@ -34,8 +27,7 @@ struct migration_target_control;
+  * @src page.  The driver should copy the contents of the
+  * @src page to the @dst page and set up the fields of @dst page.
+  * Both pages are locked.
+- * If page migration is successful, the driver should
+- * return MIGRATEPAGE_SUCCESS.
++ * If page migration is successful, the driver should return 0.
+  * If the driver cannot migrate the page at the moment, it can return
+  * -EAGAIN.  The VM interprets this as a temporary migration failure and
+  * will retry it later.  Any other error value is a permanent migration
 diff --git a/mm/migrate.c b/mm/migrate.c
-index 4ff6eea0ef7ed..e38c933d0c376 100644
+index e38c933d0c376..bf6b1753a1976 100644
 --- a/mm/migrate.c
 +++ b/mm/migrate.c
-@@ -1188,7 +1188,7 @@ static void migrate_folio_done(struct folio *src,
- static int migrate_folio_unmap(new_folio_t get_new_folio,
- 		free_folio_t put_new_folio, unsigned long private,
- 		struct folio *src, struct folio **dstp, enum migrate_mode mode,
--		enum migrate_reason reason, struct list_head *ret)
-+		struct list_head *ret)
+@@ -231,18 +231,17 @@ static void putback_movable_ops_page(struct page *page)
+  * src and dst are also released by migration core. These pages will not be
+  * folios in the future, so that must be reworked.
+  *
+- * Returns MIGRATEPAGE_SUCCESS on success, otherwise a negative error
+- * code.
++ * Returns 0 on success, otherwise a negative error code.
+  */
+ static int migrate_movable_ops_page(struct page *dst, struct page *src,
+ 		enum migrate_mode mode)
  {
- 	struct folio *dst;
- 	int rc = -EAGAIN;
-@@ -1197,16 +1197,6 @@ static int migrate_folio_unmap(new_folio_t get_new_folio,
- 	bool locked = false;
- 	bool dst_locked = false;
+-	int rc = MIGRATEPAGE_SUCCESS;
++	int rc;
  
--	if (folio_ref_count(src) == 1) {
--		/* Folio was freed from under us. So we are done. */
--		folio_clear_active(src);
--		folio_clear_unevictable(src);
--		/* free_pages_prepare() will clear PG_isolated. */
--		list_del(&src->lru);
--		migrate_folio_done(src, reason);
+ 	VM_WARN_ON_ONCE_PAGE(!page_has_movable_ops(src), src);
+ 	VM_WARN_ON_ONCE_PAGE(!PageMovableOpsIsolated(src), src);
+ 	rc = page_movable_ops(src)->migrate_page(dst, src, mode);
+-	if (rc == MIGRATEPAGE_SUCCESS)
++	if (!rc)
+ 		ClearPageMovableOpsIsolated(src);
+ 	return rc;
+ }
+@@ -586,7 +585,7 @@ static int __folio_migrate_mapping(struct address_space *mapping,
+ 		if (folio_test_swapbacked(folio))
+ 			__folio_set_swapbacked(newfolio);
+ 
 -		return MIGRATEPAGE_SUCCESS;
--	}
--
++		return 0;
+ 	}
+ 
+ 	oldzone = folio_zone(folio);
+@@ -687,7 +686,7 @@ static int __folio_migrate_mapping(struct address_space *mapping,
+ 	}
+ 	local_irq_enable();
+ 
+-	return MIGRATEPAGE_SUCCESS;
++	return 0;
+ }
+ 
+ int folio_migrate_mapping(struct address_space *mapping,
+@@ -736,7 +735,7 @@ int migrate_huge_page_move_mapping(struct address_space *mapping,
+ 
+ 	xas_unlock_irq(&xas);
+ 
+-	return MIGRATEPAGE_SUCCESS;
++	return 0;
+ }
+ 
+ /*
+@@ -852,14 +851,14 @@ static int __migrate_folio(struct address_space *mapping, struct folio *dst,
+ 		return rc;
+ 
+ 	rc = __folio_migrate_mapping(mapping, dst, src, expected_count);
+-	if (rc != MIGRATEPAGE_SUCCESS)
++	if (rc)
+ 		return rc;
+ 
+ 	if (src_private)
+ 		folio_attach_private(dst, folio_detach_private(src));
+ 
+ 	folio_migrate_flags(dst, src);
+-	return MIGRATEPAGE_SUCCESS;
++	return 0;
+ }
+ 
+ /**
+@@ -966,7 +965,7 @@ static int __buffer_migrate_folio(struct address_space *mapping,
+ 	}
+ 
+ 	rc = filemap_migrate_folio(mapping, dst, src, mode);
+-	if (rc != MIGRATEPAGE_SUCCESS)
++	if (rc)
+ 		goto unlock_buffers;
+ 
+ 	bh = head;
+@@ -1070,7 +1069,7 @@ static int fallback_migrate_folio(struct address_space *mapping,
+  *
+  * Return value:
+  *   < 0 - error code
+- *  MIGRATEPAGE_SUCCESS - success
++ *     0 - success
+  */
+ static int move_to_new_folio(struct folio *dst, struct folio *src,
+ 				enum migrate_mode mode)
+@@ -1098,7 +1097,7 @@ static int move_to_new_folio(struct folio *dst, struct folio *src,
+ 	else
+ 		rc = fallback_migrate_folio(mapping, dst, src, mode);
+ 
+-	if (rc == MIGRATEPAGE_SUCCESS) {
++	if (!rc) {
+ 		/*
+ 		 * For pagecache folios, src->mapping must be cleared before src
+ 		 * is freed. Anonymous folios must stay anonymous until freed.
+@@ -1448,7 +1447,7 @@ static int unmap_and_move_huge_page(new_folio_t get_new_folio,
+ 	if (folio_ref_count(src) == 1) {
+ 		/* page was freed from under us. So we are done. */
+ 		folio_putback_hugetlb(src);
+-		return MIGRATEPAGE_SUCCESS;
++		return 0;
+ 	}
+ 
  	dst = get_new_folio(src, private);
- 	if (!dst)
- 		return -ENOMEM;
-@@ -1296,7 +1286,7 @@ static int migrate_folio_unmap(new_folio_t get_new_folio,
+@@ -1511,8 +1510,7 @@ static int unmap_and_move_huge_page(new_folio_t get_new_folio,
+ 		rc = move_to_new_folio(dst, src, mode);
  
- 	if (unlikely(page_has_movable_ops(&src->page))) {
- 		__migrate_folio_record(dst, old_page_state, anon_vma);
--		return MIGRATEPAGE_UNMAP;
-+		return 0;
+ 	if (page_was_mapped)
+-		remove_migration_ptes(src,
+-			rc == MIGRATEPAGE_SUCCESS ? dst : src, 0);
++		remove_migration_ptes(src, !rc ? dst : src, 0);
+ 
+ unlock_put_anon:
+ 	folio_unlock(dst);
+@@ -1521,7 +1519,7 @@ static int unmap_and_move_huge_page(new_folio_t get_new_folio,
+ 	if (anon_vma)
+ 		put_anon_vma(anon_vma);
+ 
+-	if (rc == MIGRATEPAGE_SUCCESS) {
++	if (!rc) {
+ 		move_hugetlb_state(src, dst, reason);
+ 		put_new_folio = NULL;
  	}
- 
- 	/*
-@@ -1326,7 +1316,7 @@ static int migrate_folio_unmap(new_folio_t get_new_folio,
- 
- 	if (!folio_mapped(src)) {
- 		__migrate_folio_record(dst, old_page_state, anon_vma);
--		return MIGRATEPAGE_UNMAP;
-+		return 0;
- 	}
- 
+@@ -1529,7 +1527,7 @@ static int unmap_and_move_huge_page(new_folio_t get_new_folio,
+ out_unlock:
+ 	folio_unlock(src);
  out:
-@@ -1869,14 +1859,27 @@ static int migrate_pages_batch(struct list_head *from,
- 				continue;
- 			}
- 
-+			/*
-+			 * If we are holding the last folio reference, the folio
-+			 * was freed from under us, so just drop our reference.
-+			 */
-+			if (likely(!page_has_movable_ops(&folio->page)) &&
-+			    folio_ref_count(folio) == 1) {
-+				folio_clear_active(folio);
-+				folio_clear_unevictable(folio);
-+				list_del(&folio->lru);
-+				migrate_folio_done(folio, reason);
-+				stats->nr_succeeded += nr_pages;
-+				stats->nr_thp_succeeded += is_thp;
-+				continue;
-+			}
-+
- 			rc = migrate_folio_unmap(get_new_folio, put_new_folio,
--					private, folio, &dst, mode, reason,
--					ret_folios);
-+					private, folio, &dst, mode, ret_folios);
+-	if (rc == MIGRATEPAGE_SUCCESS)
++	if (!rc)
+ 		folio_putback_hugetlb(src);
+ 	else if (rc != -EAGAIN)
+ 		list_move_tail(&src->lru, ret);
+@@ -1639,7 +1637,7 @@ static int migrate_hugetlbs(struct list_head *from, new_folio_t get_new_folio,
+ 						      reason, ret_folios);
  			/*
  			 * The rules are:
--			 *	Success: folio will be freed
--			 *	Unmap: folio will be put on unmap_folios list,
--			 *	       dst folio put on dst_folios list
-+			 *	0: folio will be put on unmap_folios list,
-+			 *	   dst folio put on dst_folios list
+-			 *	Success: hugetlb folio will be put back
++			 *	0: hugetlb folio will be put back
  			 *	-EAGAIN: stay on the from list
  			 *	-ENOMEM: stay on the from list
  			 *	Other errno: put on ret_folios list
-@@ -1926,11 +1929,7 @@ static int migrate_pages_batch(struct list_head *from,
- 				thp_retry += is_thp;
+@@ -1656,7 +1654,7 @@ static int migrate_hugetlbs(struct list_head *from, new_folio_t get_new_folio,
+ 				retry++;
  				nr_retry_pages += nr_pages;
  				break;
 -			case MIGRATEPAGE_SUCCESS:
--				stats->nr_succeeded += nr_pages;
--				stats->nr_thp_succeeded += is_thp;
--				break;
--			case MIGRATEPAGE_UNMAP:
 +			case 0:
- 				list_move_tail(&folio->lru, &unmap_folios);
- 				list_add_tail(&dst->lru, &dst_folios);
+ 				stats->nr_succeeded += nr_pages;
  				break;
+ 			default:
+@@ -1710,7 +1708,7 @@ static void migrate_folios_move(struct list_head *src_folios,
+ 				reason, ret_folios);
+ 		/*
+ 		 * The rules are:
+-		 *	Success: folio will be freed
++		 *	0: folio will be freed
+ 		 *	-EAGAIN: stay on the unmap_folios list
+ 		 *	Other errno: put on ret_folios list
+ 		 */
+@@ -1720,7 +1718,7 @@ static void migrate_folios_move(struct list_head *src_folios,
+ 			*thp_retry += is_thp;
+ 			*nr_retry_pages += nr_pages;
+ 			break;
+-		case MIGRATEPAGE_SUCCESS:
++		case 0:
+ 			stats->nr_succeeded += nr_pages;
+ 			stats->nr_thp_succeeded += is_thp;
+ 			break;
+diff --git a/mm/migrate_device.c b/mm/migrate_device.c
+index e05e14d6eacdb..abd9f6850db65 100644
+--- a/mm/migrate_device.c
++++ b/mm/migrate_device.c
+@@ -778,7 +778,7 @@ static void __migrate_device_pages(unsigned long *src_pfns,
+ 		if (migrate && migrate->fault_page == page)
+ 			extra_cnt = 1;
+ 		r = folio_migrate_mapping(mapping, newfolio, folio, extra_cnt);
+-		if (r != MIGRATEPAGE_SUCCESS)
++		if (r)
+ 			src_pfns[i] &= ~MIGRATE_PFN_MIGRATE;
+ 		else
+ 			folio_migrate_flags(newfolio, folio);
+diff --git a/mm/zsmalloc.c b/mm/zsmalloc.c
+index 805a10b41266a..153783d49d346 100644
+--- a/mm/zsmalloc.c
++++ b/mm/zsmalloc.c
+@@ -1746,7 +1746,7 @@ static int zs_page_migrate(struct page *newpage, struct page *page,
+ 	 * instead.
+ 	 */
+ 	if (!zpdesc->zspage)
+-		return MIGRATEPAGE_SUCCESS;
++		return 0;
+ 
+ 	/* The page is locked, so this pointer must remain valid */
+ 	zspage = get_zspage(zpdesc);
+@@ -1813,7 +1813,7 @@ static int zs_page_migrate(struct page *newpage, struct page *page,
+ 	reset_zpdesc(zpdesc);
+ 	zpdesc_put(zpdesc);
+ 
+-	return MIGRATEPAGE_SUCCESS;
++	return 0;
+ }
+ 
+ static void zs_page_putback(struct page *page)
 -- 
 2.51.0
 
