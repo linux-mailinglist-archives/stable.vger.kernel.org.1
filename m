@@ -1,146 +1,120 @@
-Return-Path: <stable+bounces-189764-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-189765-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F1A7C0A552
-	for <lists+stable@lfdr.de>; Sun, 26 Oct 2025 10:19:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D551FC0A59A
+	for <lists+stable@lfdr.de>; Sun, 26 Oct 2025 10:44:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 08A163AE1F9
-	for <lists+stable@lfdr.de>; Sun, 26 Oct 2025 09:19:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 251693A9910
+	for <lists+stable@lfdr.de>; Sun, 26 Oct 2025 09:44:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1A7F23EA8D;
-	Sun, 26 Oct 2025 09:19:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B731288505;
+	Sun, 26 Oct 2025 09:44:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ml0MAfpw"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ovp5fpfj"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66BEC126C02
-	for <stable@vger.kernel.org>; Sun, 26 Oct 2025 09:19:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FE0E17BA6;
+	Sun, 26 Oct 2025 09:44:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761470369; cv=none; b=i3eQ38EzreimuRsSAbrmJmsQHwGqHP/WENXmteM4TDV5+r5io9HkuNP8miQtVezrHuEArx2gOHTg/4FSJA6rf0LdnA/XoCQssbxupN1evVINInqmTVYTv0g38C2M7/55RsoXAUJxYoH9LtEl/Gyat/YczkYlWpe6MsTLweWOcWc=
+	t=1761471847; cv=none; b=d1FO2hNYHTu0wV89Fsn6THtb1UnsMMFuGTT8vHBEXG9jZZE/VkBc4AEUtIzu9tzYnolzqOafVesfYXuiClsYpo70pLWQtkaI7mp1XeiyQQ7AuadFHVyWgD6BRmovwY9lDz+078+SZgoFWssXPdzLUviZHB0VczA+bl2JhNZaSX4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761470369; c=relaxed/simple;
-	bh=m5dBsLXxcjfd/Jg1/TXpqHofhyi2GbaizAwo22sE+Vo=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=nE+PusK6RaHO3xM/iTbY7nXgL3Ciqn5WtiIafyXRYdtZsUYh7U2YPPG0Trv5TLyk+xIDJb8Zj0skpY7KmGRQjW49NtVK1H5jgdOU9GRXFK7Lj1giYT4kj5rA0rOYm390bnMOAtFbqgArkzdStQT9Uzv65PkNGON2jw3PnealoMw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ml0MAfpw; arc=none smtp.client-ip=209.85.216.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-3304dd2f119so2851461a91.2
-        for <stable@vger.kernel.org>; Sun, 26 Oct 2025 02:19:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761470367; x=1762075167; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=udg3CwQcBQ0BBJcZyhfktrzA11lxinS2ppEpd97MHiI=;
-        b=Ml0MAfpwNv3AzOq4d0mscFCR4XbuUZTc5LaQIziZ3sXzatAdnA/iSDuLm6LfVqmHFR
-         KGqYc6CM6Mc43M2cyXKmib4L/LsyAB5g7v83jjDFrvh2sgd4W8G0kFr6RHbwF9LF5hrR
-         NLgDNhYpL09IvciYyQLgkIvB1Kj0DSS1p2P6D9bI5Rv65dGV7963YnrBfUZyHS0sCXUn
-         lZusZ5ba/efn9DM0tV5AKCEmABeSA59u5ulEp4zSmIcyXuRcu8F3fSwmD+PebSs7alk+
-         KbizxaRy9+h3qr8bSEJvyW64j/rDeFRpinfhsboK4Zq8poE5EHKAvTLxIHIMY8n8VNVO
-         Ceew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761470367; x=1762075167;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=udg3CwQcBQ0BBJcZyhfktrzA11lxinS2ppEpd97MHiI=;
-        b=He/4unzbikH4XDLooFXs/fmwQuWvXWaa6ujfDmExm53Gk1H7SK9lmaiDPH7R9MRpAc
-         xBQHZSN8QCX1RXlINxJ4WO+tUAq7VAZiirSmU5f4qHSPTkJmJ6RPsxgKaQML8Wo0q85n
-         HoLL/NGLD7X3isMsRVEo3FBaMfSMAmdcNAHqsDONr/gFXehqOFgTiiZePNMipbN62d9J
-         nPpCgUmRecBh8NSpwbR/mq1zKAp29utyeYKshq3MPYm3+QqsxOgu4rqlitS1gHwURLfo
-         KWN04uzy6QN9ljs/oqu0xGgkspmquCpvEDlPM+XLXuQQQtva8MjGeGO1t3M3oyUqdN2H
-         Ging==
-X-Forwarded-Encrypted: i=1; AJvYcCVEby3X30GOjnJbcdXhkqSbYfVO2r7WIKyjgR3DlCb60IwSwXpQE+Yr9yBSsaVLckyR05td6NU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywr7/qBvusIgsVQWUDc+w4yA7hNzwvSGZH44a9VI4RJ4NDw/06C
-	znnkd3L0lPQAk0jMrdsgGINCY+pSIyXFd/yhLg09oqvVcdijS4NGtpex
-X-Gm-Gg: ASbGncv56MIaE6TpJ4kr0JC167+bPWMs8KpbBQwpHYOIuKG4W50y7rThN0Se9qqmn2i
-	YgQCpoljMeKL5QBVvXpUPdI8KR820wOEUELUIvU3Q/QJdMafjoLOCRVRmd+0WjAqHcT61WEQwwo
-	5dduyzepRHZw8BDpBVz5RBJWT0ZaAAMuPMqA/3RQX/R8nsSDfnMqvBSxlh0uWCs5uEte12j34Rq
-	RjvxuQrGscUg/vuV36m0VxFmo1MxMST1rL6TwgCZ2if8SkS5pEehmYN0Ny81g2ns6QYfhXLsBo4
-	j/gJQTTeCJvIxxj4C25SOm+CqUNv5LlmsN0REewRxMTxWARqIAgPsipmJjR8vikXgfQ3M1doz/j
-	oofQ4vCq8UknPCbghsf1gswBxJ8EKLZNl8K9r/F4XBlH/ng7jts8FrTKGkkS/6Md4J/xkoi9TK+
-	H9gPvzinvDSmruFicOylybgg==
-X-Google-Smtp-Source: AGHT+IH6eN+njVM8GBwTsi7fLGE3YNfCJKSism0LE4927eZ8Rab/oS7OTOf02WSA0mHpx2ydqTM/Bg==
-X-Received: by 2002:a17:90b:4c48:b0:32e:936f:ad7 with SMTP id 98e67ed59e1d1-33bcf8f8737mr8845587a91.27.1761470367609;
-        Sun, 26 Oct 2025 02:19:27 -0700 (PDT)
-Received: from localhost.localdomain ([124.77.218.104])
-        by smtp.googlemail.com with ESMTPSA id 98e67ed59e1d1-33fee418419sm1947131a91.12.2025.10.26.02.19.24
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sun, 26 Oct 2025 02:19:27 -0700 (PDT)
-From: Miaoqian Lin <linmq006@gmail.com>
-To: Paul Walmsley <pjw@kernel.org>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Alexandre Ghiti <alex@ghiti.fr>,
-	Samuel Holland <samuel.holland@sifive.com>,
-	Andrew Jones <ajones@ventanamicro.com>,
-	linux-riscv@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	bpf@vger.kernel.org
-Cc: linmq006@gmail.com,
-	stable@vger.kernel.org
-Subject: [PATCH] riscv: Fix memory leak in module_frob_arch_sections()
-Date: Sun, 26 Oct 2025 17:19:08 +0800
-Message-Id: <20251026091912.39727-1-linmq006@gmail.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+	s=arc-20240116; t=1761471847; c=relaxed/simple;
+	bh=MyRDkkeM1WniRrNwIECJAWX6rR/HsGtbFOS5K7hsaLo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IyUTwQgb9ZM7c5nXnk8B8epmnlGi54Sum6Q6thMSduA7TqhC7UzmPVkcLzVyuMn7vN0iw2r5yJHYVmwVgm0EMEfWnmqWuFUOaT5Pfiyi4nQcibL/b4Kg6ccJErE2tehm60zBb9mevI7jHxZwQWzPg4PUX1yaAlY6kuGeQdXuLdE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ovp5fpfj; arc=none smtp.client-ip=198.175.65.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1761471846; x=1793007846;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=MyRDkkeM1WniRrNwIECJAWX6rR/HsGtbFOS5K7hsaLo=;
+  b=Ovp5fpfjKoj+Go/AhTv9LrRreDjFLLLAKWKxcFGrEonSqX4Y82zz4+Ol
+   syh1m0Wkzmi14i5+R6twZ8uIpUZI5Dm63aM2f8lMJHgfCNEu+wuELgXZL
+   y+4dVWyS/nvVK6V2LR08M6S6gke/3pdBWaN5ndvS4pEfoUFKmisQww65q
+   XBpgAKybvLDu3zyBvkx3ZEvtJACf8feb6f8HP2LO3WHSZNwl7koDTakFs
+   W8Us4FnV6mMOSFijmoki6UOmdArevFpeGa25S7GhbZ4I1+wh99LslNbA0
+   HyFq717/VzwnQiJBNhqn0BwYXp4+PFam8v9lzlqNPLPDfVIx0/Z/xpXzr
+   Q==;
+X-CSE-ConnectionGUID: rU81IqelQ6OQupZgFBx7uA==
+X-CSE-MsgGUID: xt7tB2iTQn2Ftk3k8LX/ZA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="63730916"
+X-IronPort-AV: E=Sophos;i="6.19,256,1754982000"; 
+   d="scan'208";a="63730916"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Oct 2025 02:43:52 -0700
+X-CSE-ConnectionGUID: RJXJrLBXRruANBTCQE/mPQ==
+X-CSE-MsgGUID: sgB1CLxGQzyoEeuxq8N8/Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,256,1754982000"; 
+   d="scan'208";a="184877434"
+Received: from lkp-server02.sh.intel.com (HELO 66d7546c76b2) ([10.239.97.151])
+  by orviesa008.jf.intel.com with ESMTP; 26 Oct 2025 02:43:46 -0700
+Received: from kbuild by 66d7546c76b2 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1vCxHr-000G1x-2v;
+	Sun, 26 Oct 2025 09:43:43 +0000
+Date: Sun, 26 Oct 2025 17:43:09 +0800
+From: kernel test robot <lkp@intel.com>
+To: Coia Prant <coiaprant@gmail.com>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Heiko Stuebner <heiko@sntech.de>, Dragan Simic <dsimic@manjaro.org>,
+	Jonas Karlman <jonas@kwiboo.se>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, Coia Prant <coiaprant@gmail.com>
+Subject: Re: [PATCH] arm64: dts: rockchip: Add devicetree for the X3568 v4
+Message-ID: <202510261750.glZ5VRca-lkp@intel.com>
+References: <20251025203711.3859240-1-coiaprant@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251025203711.3859240-1-coiaprant@gmail.com>
 
-The current code directly overwrites the scratch pointer with the
-return value of kvrealloc(). If kvrealloc() fails and returns NULL,
-the original buffer becomes unreachable, causing a memory leak.
+Hi Coia,
 
-Fix this by using a temporary variable to store kvrealloc()'s return
-value and only update the scratch pointer on success.
+kernel test robot noticed the following build errors:
 
-Found via static anlaysis and this is similar to commit 42378a9ca553
-("bpf, verifier: Fix memory leak in array reallocation for stack state")
+[auto build test ERROR on krzk/for-next]
+[also build test ERROR on krzk-dt/for-next linus/master v6.18-rc2]
+[cannot apply to rockchip/for-next next-20251024]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-Fixes: be17c0df6795 ("riscv: module: Optimize PLT/GOT entry counting")
-Cc: stable@vger.kernel.org
-Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
----
- arch/riscv/kernel/module-sections.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+url:    https://github.com/intel-lab-lkp/linux/commits/Coia-Prant/arm64-dts-rockchip-Add-devicetree-for-the-X3568-v4/20251026-043855
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/krzk/linux.git for-next
+patch link:    https://lore.kernel.org/r/20251025203711.3859240-1-coiaprant%40gmail.com
+patch subject: [PATCH] arm64: dts: rockchip: Add devicetree for the X3568 v4
+config: arm64-randconfig-002-20251026 (https://download.01.org/0day-ci/archive/20251026/202510261750.glZ5VRca-lkp@intel.com/config)
+compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project e1ae12640102fd2b05bc567243580f90acb1135f)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251026/202510261750.glZ5VRca-lkp@intel.com/reproduce)
 
-diff --git a/arch/riscv/kernel/module-sections.c b/arch/riscv/kernel/module-sections.c
-index 75551ac6504c..1675cbad8619 100644
---- a/arch/riscv/kernel/module-sections.c
-+++ b/arch/riscv/kernel/module-sections.c
-@@ -119,6 +119,7 @@ int module_frob_arch_sections(Elf_Ehdr *ehdr, Elf_Shdr *sechdrs,
- 	unsigned int num_plts = 0;
- 	unsigned int num_gots = 0;
- 	Elf_Rela *scratch = NULL;
-+	Elf_Rela *new_scratch;
- 	size_t scratch_size = 0;
- 	int i;
- 
-@@ -168,9 +169,12 @@ int module_frob_arch_sections(Elf_Ehdr *ehdr, Elf_Shdr *sechdrs,
- 		scratch_size_needed = (num_scratch_relas + num_relas) * sizeof(*scratch);
- 		if (scratch_size_needed > scratch_size) {
- 			scratch_size = scratch_size_needed;
--			scratch = kvrealloc(scratch, scratch_size, GFP_KERNEL);
--			if (!scratch)
-+			new_scratch = kvrealloc(scratch, scratch_size, GFP_KERNEL);
-+			if (!new_scratch) {
-+				kvfree(scratch);
- 				return -ENOMEM;
-+			}
-+			scratch = new_scratch;
- 		}
- 
- 		for (size_t j = 0; j < num_relas; j++)
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202510261750.glZ5VRca-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+>> Error: missing overlay file(s)
+
 -- 
-2.39.5 (Apple Git-154)
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
