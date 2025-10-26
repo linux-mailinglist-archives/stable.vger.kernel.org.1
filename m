@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-189785-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-189786-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D664AC0A9F6
-	for <lists+stable@lfdr.de>; Sun, 26 Oct 2025 15:26:40 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFA0CC0A9FF
+	for <lists+stable@lfdr.de>; Sun, 26 Oct 2025 15:27:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3DC193A306B
-	for <lists+stable@lfdr.de>; Sun, 26 Oct 2025 14:26:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F14203A3178
+	for <lists+stable@lfdr.de>; Sun, 26 Oct 2025 14:26:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5ABF2D7DCD;
-	Sun, 26 Oct 2025 14:26:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65E3E2DC763;
+	Sun, 26 Oct 2025 14:26:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AVD85qNg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l65MJcda"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3154214A94
-	for <stable@vger.kernel.org>; Sun, 26 Oct 2025 14:26:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1989C2DF15E
+	for <stable@vger.kernel.org>; Sun, 26 Oct 2025 14:26:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761488798; cv=none; b=dtWq5IspfNekC/bQut7yu3XDRXKRnNHahBEKRY5cv2SkcPKewuABOpMQE9RcDg8dHguVVLQKUjgOKCpVwmH07EEULpMwl1wqwDSExSujAqePVpZIDx/kp5bptmivPVbEG+9IBLuCe5bpem9GC9lLCUCiF34BT633xnLD8KKnzsg=
+	t=1761488812; cv=none; b=kkJOrmpJiopHwT8CyJhlAAdpcp6iVoKzI+tb9Ip5AsmT8lk6OC1qvHI9Lz8ISblZk9edmOydJdaiddjA0wSefX07XcpFwmm6ojWftolnkfGBbTZW4s32rMdVhNPXbt5uQAoCYuoC41uVg6FcSUIJ+X+JIQeuFJSn93EyrcpZXWg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761488798; c=relaxed/simple;
-	bh=IK0ha+5xJZKfvEsjw9LHxFDBZszaa4Cfh+gKhCLx1Zk=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=kxlpD25eo4VNx9qtTIkmWPdU1+6CjZx1vc2IfJg3vUesFCO1xkJatikKTJ62112ZpDN+Rt+XmDh16WWFoXTl8Qw+n2lygHC2Di4roGWb8BfpXzJ4Ex6MGgtQEcLM1oyAwWrYUiDOqx7Q3ux2pkAfItCRQ8F/GzUwIoHBjnA8pGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AVD85qNg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09B61C4CEE7;
-	Sun, 26 Oct 2025 14:26:37 +0000 (UTC)
+	s=arc-20240116; t=1761488812; c=relaxed/simple;
+	bh=H+y7tokTGnmDnAM7YmgWy0+3H/x0312btwmlaEX6aH4=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=XjD8KwHdUsL9xSCWMJInP9nuhyIlzRsKxMC3lRR4JbdGBUvpMZgGBvsjEX3OG8uCF60dggcCklbdOigSgC8uPi/jq98jX7hitB0sAOlMqXRo1PdfwcyoAyNIHwIxIkeG+0pbKcXIqxPNCieR+KSLHm61fpiFoKVhriTiqOZx0XU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l65MJcda; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B7A6C4CEE7;
+	Sun, 26 Oct 2025 14:26:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761488798;
-	bh=IK0ha+5xJZKfvEsjw9LHxFDBZszaa4Cfh+gKhCLx1Zk=;
+	s=korg; t=1761488811;
+	bh=H+y7tokTGnmDnAM7YmgWy0+3H/x0312btwmlaEX6aH4=;
 	h=Subject:To:Cc:From:Date:From;
-	b=AVD85qNgkqHMe9WuBhkuaINeB6WlQCiFqIMJuIQUGEzhBWKvrzVs2JkvioIkDRfg+
-	 7WxVaix6Pg4jGDeERZRYJnzc0TG0YpcFkniIhORf9SQpINErZRFGQ/McU/tjZ2qgkm
-	 5IA7hkGeSS1nHEc0fxeqg78xMy6F9UBLBwQC8MTY=
-Subject: FAILED: patch "[PATCH] smb: client: allocate enough space for MR WRs and" failed to apply to 5.4-stable tree
-To: metze@samba.org,linkinjeon@kernel.org,longli@microsoft.com,smfrench@gmail.com,stfrench@microsoft.com,tom@talpey.com
+	b=l65MJcdaJRuRtkehL99dhjOe4JHgRafx4CaEgwM3aCfEyZhOul/yDxLwE5ekjdlPS
+	 gtCD6x+usVjOb4FU4lF0S6yMA519MiOpWmGLKlVLN0O79ExddPhApHM/3ZLUOlYhnz
+	 l1QZXz0VQ6Ehn3M+FqGTN+nu89LBg5+Qe0ptxkQ0=
+Subject: FAILED: patch "[PATCH] arm64: mte: Do not warn if the page is already tagged in" failed to apply to 6.12-stable tree
+To: catalin.marinas@arm.com,david@redhat.com,wangkefeng.wang@huawei.com,will@kernel.org,yang@os.amperecomputing.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sun, 26 Oct 2025 15:26:15 +0100
-Message-ID: <2025102615-unsoiled-renovator-7821@gregkh>
+Date: Sun, 26 Oct 2025 15:26:49 +0100
+Message-ID: <2025102649-rebirth-stray-74d8@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 6.12-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
 git checkout FETCH_HEAD
-git cherry-pick -x e607ef686ab95fbcb0dfd16f49aea7918be626e1
+git cherry-pick -x b98c94eed4a975e0c80b7e90a649a46967376f58
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025102615-unsoiled-renovator-7821@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025102649-rebirth-stray-74d8@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,115 +77,61 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From e607ef686ab95fbcb0dfd16f49aea7918be626e1 Mon Sep 17 00:00:00 2001
-From: Stefan Metzmacher <metze@samba.org>
-Date: Thu, 16 Oct 2025 12:54:21 +0200
-Subject: [PATCH] smb: client: allocate enough space for MR WRs and
- ib_drain_qp()
+From b98c94eed4a975e0c80b7e90a649a46967376f58 Mon Sep 17 00:00:00 2001
+From: Catalin Marinas <catalin.marinas@arm.com>
+Date: Wed, 22 Oct 2025 11:09:14 +0100
+Subject: [PATCH] arm64: mte: Do not warn if the page is already tagged in
+ copy_highpage()
 
-The IB_WR_REG_MR and IB_WR_LOCAL_INV operations for smbdirect_mr_io
-structures should never fail because the submission or completion queues
-are too small. So we allocate more send_wr depending on the (local) max
-number of MRs.
+The arm64 copy_highpage() assumes that the destination page is newly
+allocated and not MTE-tagged (PG_mte_tagged unset) and warns
+accordingly. However, following commit 060913999d7a ("mm: migrate:
+support poisoned recover from migrate folio"), folio_mc_copy() is called
+before __folio_migrate_mapping(). If the latter fails (-EAGAIN), the
+copy will be done again to the same destination page. Since
+copy_highpage() already set the PG_mte_tagged flag, this second copy
+will warn.
 
-While there also add additional space for ib_drain_qp().
+Replace the WARN_ON_ONCE(page already tagged) in the arm64
+copy_highpage() with a comment.
 
-This should make sure ib_post_send() will never fail
-because the submission queue is full.
+Reported-by: syzbot+d1974fc28545a3e6218b@syzkaller.appspotmail.com
+Link: https://lore.kernel.org/r/68dda1ae.a00a0220.102ee.0065.GAE@google.com
+Reviewed-by: David Hildenbrand <david@redhat.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: stable@vger.kernel.org # 6.12.x
+Reviewed-by: Yang Shi <yang@os.amperecomputing.com>
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 
-Fixes: f198186aa9bb ("CIFS: SMBD: Establish SMB Direct connection")
-Fixes: cc55f65dd352 ("smb: client: make use of common smbdirect_socket_parameters")
-Cc: stable@vger.kernel.org
-Cc: Steve French <smfrench@gmail.com>
-Cc: Tom Talpey <tom@talpey.com>
-Cc: Long Li <longli@microsoft.com>
-Cc: Namjae Jeon <linkinjeon@kernel.org>
-Cc: linux-cifs@vger.kernel.org
-Cc: samba-technical@lists.samba.org
-Signed-off-by: Stefan Metzmacher <metze@samba.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-
-diff --git a/fs/smb/client/smbdirect.c b/fs/smb/client/smbdirect.c
-index 49e2df3ad1f0..b1218ea4aa8b 100644
---- a/fs/smb/client/smbdirect.c
-+++ b/fs/smb/client/smbdirect.c
-@@ -1767,6 +1767,7 @@ static struct smbd_connection *_smbd_get_connection(
- 	struct smbdirect_socket *sc;
- 	struct smbdirect_socket_parameters *sp;
- 	struct rdma_conn_param conn_param;
-+	struct ib_qp_cap qp_cap;
- 	struct ib_qp_init_attr qp_attr;
- 	struct sockaddr_in *addr_in = (struct sockaddr_in *) dstaddr;
- 	struct ib_port_immutable port_immutable;
-@@ -1838,6 +1839,25 @@ static struct smbd_connection *_smbd_get_connection(
- 		goto config_failed;
- 	}
+diff --git a/arch/arm64/mm/copypage.c b/arch/arm64/mm/copypage.c
+index a86c897017df..cd5912ba617b 100644
+--- a/arch/arm64/mm/copypage.c
++++ b/arch/arm64/mm/copypage.c
+@@ -35,7 +35,7 @@ void copy_highpage(struct page *to, struct page *from)
+ 		    from != folio_page(src, 0))
+ 			return;
  
-+	sp->responder_resources =
-+		min_t(u8, sp->responder_resources,
-+		      sc->ib.dev->attrs.max_qp_rd_atom);
-+	log_rdma_mr(INFO, "responder_resources=%d\n",
-+		sp->responder_resources);
-+
-+	/*
-+	 * We use allocate sp->responder_resources * 2 MRs
-+	 * and each MR needs WRs for REG and INV, so
-+	 * we use '* 4'.
-+	 *
-+	 * +1 for ib_drain_qp()
-+	 */
-+	memset(&qp_cap, 0, sizeof(qp_cap));
-+	qp_cap.max_send_wr = sp->send_credit_target + sp->responder_resources * 4 + 1;
-+	qp_cap.max_recv_wr = sp->recv_credit_max + 1;
-+	qp_cap.max_send_sge = SMBDIRECT_SEND_IO_MAX_SGE;
-+	qp_cap.max_recv_sge = SMBDIRECT_RECV_IO_MAX_SGE;
-+
- 	sc->ib.pd = ib_alloc_pd(sc->ib.dev, 0);
- 	if (IS_ERR(sc->ib.pd)) {
- 		rc = PTR_ERR(sc->ib.pd);
-@@ -1848,7 +1868,7 @@ static struct smbd_connection *_smbd_get_connection(
+-		WARN_ON_ONCE(!folio_try_hugetlb_mte_tagging(dst));
++		folio_try_hugetlb_mte_tagging(dst);
  
- 	sc->ib.send_cq =
- 		ib_alloc_cq_any(sc->ib.dev, sc,
--				sp->send_credit_target, IB_POLL_SOFTIRQ);
-+				qp_cap.max_send_wr, IB_POLL_SOFTIRQ);
- 	if (IS_ERR(sc->ib.send_cq)) {
- 		sc->ib.send_cq = NULL;
- 		goto alloc_cq_failed;
-@@ -1856,7 +1876,7 @@ static struct smbd_connection *_smbd_get_connection(
+ 		/*
+ 		 * Populate tags for all subpages.
+@@ -51,8 +51,13 @@ void copy_highpage(struct page *to, struct page *from)
+ 		}
+ 		folio_set_hugetlb_mte_tagged(dst);
+ 	} else if (page_mte_tagged(from)) {
+-		/* It's a new page, shouldn't have been tagged yet */
+-		WARN_ON_ONCE(!try_page_mte_tagging(to));
++		/*
++		 * Most of the time it's a new page that shouldn't have been
++		 * tagged yet. However, folio migration can end up reusing the
++		 * same page without untagging it. Ignore the warning if the
++		 * page is already tagged.
++		 */
++		try_page_mte_tagging(to);
  
- 	sc->ib.recv_cq =
- 		ib_alloc_cq_any(sc->ib.dev, sc,
--				sp->recv_credit_max, IB_POLL_SOFTIRQ);
-+				qp_cap.max_recv_wr, IB_POLL_SOFTIRQ);
- 	if (IS_ERR(sc->ib.recv_cq)) {
- 		sc->ib.recv_cq = NULL;
- 		goto alloc_cq_failed;
-@@ -1865,11 +1885,7 @@ static struct smbd_connection *_smbd_get_connection(
- 	memset(&qp_attr, 0, sizeof(qp_attr));
- 	qp_attr.event_handler = smbd_qp_async_error_upcall;
- 	qp_attr.qp_context = sc;
--	qp_attr.cap.max_send_wr = sp->send_credit_target;
--	qp_attr.cap.max_recv_wr = sp->recv_credit_max;
--	qp_attr.cap.max_send_sge = SMBDIRECT_SEND_IO_MAX_SGE;
--	qp_attr.cap.max_recv_sge = SMBDIRECT_RECV_IO_MAX_SGE;
--	qp_attr.cap.max_inline_data = 0;
-+	qp_attr.cap = qp_cap;
- 	qp_attr.sq_sig_type = IB_SIGNAL_REQ_WR;
- 	qp_attr.qp_type = IB_QPT_RC;
- 	qp_attr.send_cq = sc->ib.send_cq;
-@@ -1883,12 +1899,6 @@ static struct smbd_connection *_smbd_get_connection(
- 	}
- 	sc->ib.qp = sc->rdma.cm_id->qp;
- 
--	sp->responder_resources =
--		min_t(u8, sp->responder_resources,
--		      sc->ib.dev->attrs.max_qp_rd_atom);
--	log_rdma_mr(INFO, "responder_resources=%d\n",
--		sp->responder_resources);
--
- 	memset(&conn_param, 0, sizeof(conn_param));
- 	conn_param.initiator_depth = sp->initiator_depth;
- 	conn_param.responder_resources = sp->responder_resources;
+ 		mte_copy_page_tags(kto, kfrom);
+ 		set_page_mte_tagged(to);
 
 
