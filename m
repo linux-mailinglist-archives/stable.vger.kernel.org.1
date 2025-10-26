@@ -1,459 +1,219 @@
-Return-Path: <stable+bounces-189792-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-189793-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id C010CC0AA23
-	for <lists+stable@lfdr.de>; Sun, 26 Oct 2025 15:30:10 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F951C0AA08
+	for <lists+stable@lfdr.de>; Sun, 26 Oct 2025 15:28:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D2AA74EAB18
-	for <lists+stable@lfdr.de>; Sun, 26 Oct 2025 14:27:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2DF4E3B06F2
+	for <lists+stable@lfdr.de>; Sun, 26 Oct 2025 14:27:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 239902E2EF9;
-	Sun, 26 Oct 2025 14:27:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28CA32DF706;
+	Sun, 26 Oct 2025 14:27:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n7VQkU5G"
+	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="QfVNJejq"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f42.google.com (mail-io1-f42.google.com [209.85.166.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6A4A1E9B22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B66F1547D2
 	for <stable@vger.kernel.org>; Sun, 26 Oct 2025 14:27:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761488860; cv=none; b=a3wxfuloLBRM3PS7VBoOOHbX14jt8npk09HaoMX5megtyCsFnDrFpiZ/tmpF41V6CYKsj4x4pTdUkMj/ueVrH8fKBSTN6u2ykvNYhT0wakz+NSbE+e9WxSYLDIgLXz8kQNzsErXdDnRI8Of7Cu+vjF+UOLz9egLBa5BjlIsDQWg=
+	t=1761488863; cv=none; b=H1PZohr2yb0L5o2EKzJ7vbMRHCLc9Sypb+8SvXiY8haliQhNSC6tgXLZk6MakfdlDLlILsl27KP59qnktPmv9ez5CMzEO9yRLy1Ber21aW0ePsQW2TPspixk7Pm5ze8pg1BCK/jBlzlFyuwSPILKAVVVWB9n/Eo5xhYevQzboJc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761488860; c=relaxed/simple;
-	bh=XbiDA0dYyK7P4qAjTBKcr7UBsKjPlv5oaTk3qA5a898=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=u/tEudl5QHjTC8fkSGo+5oHKVZxc4sHGKVxRPloKG8J/fFUm2WVaexUJbDF1IAL0PIb7nm5SI7VEbZhvWhR0Q+92anhcHL1bcTJiCeJ3nXUxa4jqEyGlorE5ShUm3lZ9pqEubE7xBIL0EAVs2HsL4yJpm94Jd0b5TDyeabR6xRM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n7VQkU5G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 586EBC4CEE7;
-	Sun, 26 Oct 2025 14:27:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761488860;
-	bh=XbiDA0dYyK7P4qAjTBKcr7UBsKjPlv5oaTk3qA5a898=;
-	h=Subject:To:Cc:From:Date:From;
-	b=n7VQkU5GAt5kzPVrQfDddvgxMjFAelLPE4j5tH+MEsCuLBgQg9y8h8l6oDdZjgPRW
-	 wFkjsCYpo2bCtux/Vx2ujOHdQRnSuP2zNl94jSvepl1X3lArc7SHSjVI7wGQXMreRC
-	 u/DH/ey+VXayo7pdPfybGEnzgC01NLEVWD9FDGG0=
-Subject: FAILED: patch "[PATCH] devcoredump: Fix circular locking dependency with" failed to apply to 5.4-stable tree
-To: dev@lankhorst.se,dakr@kernel.org,gregkh@linuxfoundation.org,johannes@sipsolutions.net,matthew.brost@intel.com,mukesh.ojha@oss.qualcomm.com,quic_mojha@quicinc.com,rafael@kernel.org
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Sun, 26 Oct 2025 15:27:25 +0100
-Message-ID: <2025102625-cringing-unstuck-790a@gregkh>
+	s=arc-20240116; t=1761488863; c=relaxed/simple;
+	bh=GWaZg6cgnGxm2jWHKUx4itKppyaj/g+NWmZHLumSl4Q=;
+	h=Content-Type:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To; b=ICb2t6oLPq+/l6R04MFku0XpKVWAtQ+iN4w/6+XM9S/S2IZ6di1hWz311Qhg9kXs/saMb9wuuXhWWHL+CdJWSdmGSxDvaGXGFGHsVL5EjrHbO9R0Xlkyir8AtMzlQRrIYREqPSWAfRGrYUQ1q5WQf3wHgXeY5osgGq4Ir0QJyM0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=QfVNJejq; arc=none smtp.client-ip=209.85.166.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
+Received: by mail-io1-f42.google.com with SMTP id ca18e2360f4ac-945a6c8721aso12395339f.0
+        for <stable@vger.kernel.org>; Sun, 26 Oct 2025 07:27:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1761488859; x=1762093659; darn=vger.kernel.org;
+        h=in-reply-to:from:content-language:references:cc:to:subject
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=tLARJInzXo0NYKYmjvIS0nSWoS/+1xandjkE5RE8+ZI=;
+        b=QfVNJejqiHO2XxVAjoCwoFTv0jia7cyF5y8M1QBEMVF0vkpS3RI/Pc5tH6gTSfwSVh
+         B++ljzujK/SlBEs5so9bf6UePopiPzn0owbsjoYTSvseExi4QeAeo3vx1cgV4YVf9SYs
+         wLiJ6P0yKOgYFM9Uymvoek5FGYhpnbO+YPJYh8bGVIkGYWgs3I9LE5zLhnrHzXIFwX4U
+         NRmK5pMsjiQtVv7/7guD52TK5C8V6mYc3S5MMOU87G4aVfO+6ElIDWAl0hQDSexj7hZY
+         /6i/RGGq5Q9T1wCwj/AKHFlT+Kxp92Z/nsAvXGQJSfMUDwJDL3ehC6KNrvSfs9m7t35+
+         lrrA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761488859; x=1762093659;
+        h=in-reply-to:from:content-language:references:cc:to:subject
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=tLARJInzXo0NYKYmjvIS0nSWoS/+1xandjkE5RE8+ZI=;
+        b=AX0GuZnIIdoHRAhscmY+sOfQI3Bp8jCk6xkbXUTLpVhxZrDL99Th3Q1PU8M1a+MjU0
+         3njkayMc5Q5JNFXVfwFUmcAq14tF3EaK6ChbN08FCL5/aWuB1aE8qpptWmllrgeceqJM
+         bJyVbiCKE8INlCjNRfdHBpHEf1A9dAnu+yXRzKWBfVebgBB+ImlLFKB7MM229uDXbTCh
+         lX8KPv4jGSsDS+lj7L1tNjoIbXle7fBJoLoPHNtDLwFXX8j+RXw8yWOqTk/05ErwxBs6
+         Lsg8BWWydAK/rXJes82/z6/V2YY47jlnh+1GrBwn7ZZtDuwAD9M3jZYUlL0CNrdBHEFf
+         unxQ==
+X-Gm-Message-State: AOJu0YxNcp1fHgOxctXeUUD8ZqzrHGwzcPYgV9GHjRRkS1xvre/nqcDm
+	lOGmqX6LJvxHUUvU385Dyr1PmFV9+GJTXvuLDl0m7GQhahAscNf30cBnFyYhvE0htjs=
+X-Gm-Gg: ASbGnctra2wakIExM6JzPGi5L3bAOQINIOMg+6deIUzuywh3xK8pML3Jd/b7ZJt1ciL
+	rgFPs/cdyKVpCjumueKFGAVbSN6WSLhcu1ta4TIm3QyvG+s+kXUElFx83SAeNsRFI2vUIV9q4Yx
+	Sm3Ig+BdwP/G1LcgUGLflrNxoyune+063zcov+Ol80y5QG2CUl3IqV60MCqiuqyMY60mtt1UZMs
+	4hTTmrHVP6H0L+KCdzwPw6gb8I/KZ6enbIWaYXij4JntYUkhMG6dDA7EpKa3J0pj7vgFbWeToAf
+	wVWNDyNKCeKb/svmaK8twgk3lGJm/fiXnPhmBFvmVYI+P0wk58zByi0rkbPxo1xzaR5ctz9Pe+M
+	Uth31AgeiPrX/g62EtUBorbmK4p9OkmPKxoQYLjEiZb4Ni4esgpk9T7Utswe/9xUwcDLh7HmOpE
+	+kVpRCo4wd
+X-Google-Smtp-Source: AGHT+IHNvd5DOgZl46jJGIgc1cujbkMuWwaGUbBCWftB1UaWz7CdB/NQ93DriQ9mTocWcPzp8zSwwQ==
+X-Received: by 2002:a05:6e02:1fca:b0:430:ab63:69d6 with SMTP id e9e14a558f8ab-430c527dc00mr422161755ab.21.1761488859580;
+        Sun, 26 Oct 2025 07:27:39 -0700 (PDT)
+Received: from [192.168.1.150] ([198.8.77.157])
+        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-5aea995d412sm1986569173.46.2025.10.26.07.27.38
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 26 Oct 2025 07:27:38 -0700 (PDT)
+Content-Type: multipart/mixed; boundary="------------Rciy02gCSVs2RZ8Kl0Wkj5Xq"
+Message-ID: <f0056b81-512f-447c-9ac1-e41f66d5ee07@kernel.dk>
+Date: Sun, 26 Oct 2025 08:27:37 -0600
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: FAILED: patch "[PATCH] io_uring/sqpoll: switch away from
+ getrusage() for CPU" failed to apply to 6.12-stable tree
+To: gregkh@linuxfoundation.org, krisman@suse.de
+Cc: stable@vger.kernel.org
+References: <2025102606-showplace-direness-c7b3@gregkh>
+Content-Language: en-US
+From: Jens Axboe <axboe@kernel.dk>
+In-Reply-To: <2025102606-showplace-direness-c7b3@gregkh>
 
+This is a multi-part message in MIME format.
+--------------Rciy02gCSVs2RZ8Kl0Wkj5Xq
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-The patch below does not apply to the 5.4-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+On 10/26/25 8:22 AM, gregkh@linuxfoundation.org wrote:
+> 
+> The patch below does not apply to the 6.12-stable tree.
+> If someone wants it applied there, or to any other stable or longterm
+> tree, then please email the backport, including the original git commit
+> id to <stable@vger.kernel.org>.
+> 
+> To reproduce the conflict and resubmit, you may use the following commands:
+> 
+> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
+> git checkout FETCH_HEAD
+> git cherry-pick -x 8ac9b0d33e5c0a995338ee5f25fe1b6ff7d97f65
+> # <resolve conflicts, build, test, etc.>
+> git commit -s
+> git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025102606-showplace-direness-c7b3@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
-To reproduce the conflict and resubmit, you may use the following commands:
+Here's one for 6.12-stable, just needed some trivial fixups.
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
-git checkout FETCH_HEAD
-git cherry-pick -x a91c8096590bd7801a26454789f2992094fe36da
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025102625-cringing-unstuck-790a@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+-- 
+Jens Axboe
 
-Possible dependencies:
+--------------Rciy02gCSVs2RZ8Kl0Wkj5Xq
+Content-Type: text/x-patch; charset=UTF-8;
+ name="0001-io_uring-sqpoll-switch-away-from-getrusage-for-CPU-a.patch"
+Content-Disposition: attachment;
+ filename*0="0001-io_uring-sqpoll-switch-away-from-getrusage-for-CPU-a.pa";
+ filename*1="tch"
+Content-Transfer-Encoding: base64
 
+RnJvbSBiOWM3ZGEyM2JhMDdjNjc4MWUxM2Y5NzM5OGIyOTc5ZDJlYTYyMzBmIE1vbiBTZXAg
+MTcgMDA6MDA6MDAgMjAwMQpGcm9tOiBKZW5zIEF4Ym9lIDxheGJvZUBrZXJuZWwuZGs+CkRh
+dGU6IFR1ZSwgMjEgT2N0IDIwMjUgMDc6MTY6MDggLTA2MDAKU3ViamVjdDogW1BBVENIIDEv
+Ml0gaW9fdXJpbmcvc3Fwb2xsOiBzd2l0Y2ggYXdheSBmcm9tIGdldHJ1c2FnZSgpIGZvciBD
+UFUKIGFjY291bnRpbmcKCkNvbW1pdCA4YWM5YjBkMzNlNWMwYTk5NTMzOGVlNWYyNWZlMWI2
+ZmY3ZDk3ZjY1IHVwc3RyZWFtLgoKZ2V0cnVzYWdlKCkgZG9lcyBhIGxvdCBtb3JlIHRoYW4g
+d2hhdCB0aGUgU1FQT0xMIGFjY291bnRpbmcgbmVlZHMsIHRoZQpsYXR0ZXIgb25seSBjYXJl
+cyBhYm91dCAoYW5kIHVzZXMpIHRoZSBzdGltZS4gUmF0aGVyIHRoYW4gZG8gYSBmdWxsClJV
+U0FHRV9TRUxGIHN1bW1hdGlvbiwganVzdCBxdWVyeSB0aGUgdXNlZCBzdGltZSBpbnN0ZWFk
+LgoKQ2M6IHN0YWJsZUB2Z2VyLmtlcm5lbC5vcmcKRml4ZXM6IDNmY2I5ZDE3MjA2ZSAoImlv
+X3VyaW5nL3NxcG9sbDogc3RhdGlzdGljcyBvZiB0aGUgdHJ1ZSB1dGlsaXphdGlvbiBvZiBz
+cSB0aHJlYWRzIikKUmV2aWV3ZWQtYnk6IEdhYnJpZWwgS3Jpc21hbiBCZXJ0YXppIDxrcmlz
+bWFuQHN1c2UuZGU+ClNpZ25lZC1vZmYtYnk6IEplbnMgQXhib2UgPGF4Ym9lQGtlcm5lbC5k
+az4KLS0tCiBpb191cmluZy9mZGluZm8uYyB8ICA4ICsrKystLS0tCiBpb191cmluZy9zcXBv
+bGwuYyB8IDMyICsrKysrKysrKysrKysrKysrKy0tLS0tLS0tLS0tLS0tCiBpb191cmluZy9z
+cXBvbGwuaCB8ICAxICsKIDMgZmlsZXMgY2hhbmdlZCwgMjMgaW5zZXJ0aW9ucygrKSwgMTgg
+ZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvaW9fdXJpbmcvZmRpbmZvLmMgYi9pb191cmlu
+Zy9mZGluZm8uYwppbmRleCBjNmM2MjRlYjk4NjYuLjVjMGEwMmJmZWI1NSAxMDA2NDQKLS0t
+IGEvaW9fdXJpbmcvZmRpbmZvLmMKKysrIGIvaW9fdXJpbmcvZmRpbmZvLmMKQEAgLTU1LDcg
+KzU1LDYgQEAgX19jb2xkIHZvaWQgaW9fdXJpbmdfc2hvd19mZGluZm8oc3RydWN0IHNlcV9m
+aWxlICptLCBzdHJ1Y3QgZmlsZSAqZmlsZSkKIAlzdHJ1Y3QgaW9fcmluZ19jdHggKmN0eCA9
+IGZpbGUtPnByaXZhdGVfZGF0YTsKIAlzdHJ1Y3QgaW9fb3ZlcmZsb3dfY3FlICpvY3FlOwog
+CXN0cnVjdCBpb19yaW5ncyAqciA9IGN0eC0+cmluZ3M7Ci0Jc3RydWN0IHJ1c2FnZSBzcV91
+c2FnZTsKIAl1bnNpZ25lZCBpbnQgc3FfbWFzayA9IGN0eC0+c3FfZW50cmllcyAtIDEsIGNx
+X21hc2sgPSBjdHgtPmNxX2VudHJpZXMgLSAxOwogCXVuc2lnbmVkIGludCBzcV9oZWFkID0g
+UkVBRF9PTkNFKHItPnNxLmhlYWQpOwogCXVuc2lnbmVkIGludCBzcV90YWlsID0gUkVBRF9P
+TkNFKHItPnNxLnRhaWwpOwpAQCAtMTU1LDE0ICsxNTQsMTUgQEAgX19jb2xkIHZvaWQgaW9f
+dXJpbmdfc2hvd19mZGluZm8oc3RydWN0IHNlcV9maWxlICptLCBzdHJ1Y3QgZmlsZSAqZmls
+ZSkKIAkJICogdGhyZWFkIHRlcm1pbmF0aW9uLgogCQkgKi8KIAkJaWYgKHRzaykgeworCQkJ
+dTY0IHVzZWM7CisKIAkJCWdldF90YXNrX3N0cnVjdCh0c2spOwogCQkJcmN1X3JlYWRfdW5s
+b2NrKCk7Ci0JCQlnZXRydXNhZ2UodHNrLCBSVVNBR0VfU0VMRiwgJnNxX3VzYWdlKTsKKwkJ
+CXVzZWMgPSBpb19zcV9jcHVfdXNlYyh0c2spOwogCQkJcHV0X3Rhc2tfc3RydWN0KHRzayk7
+CiAJCQlzcV9waWQgPSBzcS0+dGFza19waWQ7CiAJCQlzcV9jcHUgPSBzcS0+c3FfY3B1Owot
+CQkJc3FfdG90YWxfdGltZSA9IChzcV91c2FnZS5ydV9zdGltZS50dl9zZWMgKiAxMDAwMDAw
+Ci0JCQkJCSArIHNxX3VzYWdlLnJ1X3N0aW1lLnR2X3VzZWMpOworCQkJc3FfdG90YWxfdGlt
+ZSA9IHVzZWM7CiAJCQlzcV93b3JrX3RpbWUgPSBzcS0+d29ya190aW1lOwogCQl9IGVsc2Ug
+ewogCQkJcmN1X3JlYWRfdW5sb2NrKCk7CmRpZmYgLS1naXQgYS9pb191cmluZy9zcXBvbGwu
+YyBiL2lvX3VyaW5nL3NxcG9sbC5jCmluZGV4IDJmYWEzMDU4YjJkMC4uYWYyMzNiMmZhYjEw
+IDEwMDY0NAotLS0gYS9pb191cmluZy9zcXBvbGwuYworKysgYi9pb191cmluZy9zcXBvbGwu
+YwpAQCAtMTEsNiArMTEsNyBAQAogI2luY2x1ZGUgPGxpbnV4L2F1ZGl0Lmg+CiAjaW5jbHVk
+ZSA8bGludXgvc2VjdXJpdHkuaD4KICNpbmNsdWRlIDxsaW51eC9jcHVzZXQuaD4KKyNpbmNs
+dWRlIDxsaW51eC9zY2hlZC9jcHV0aW1lLmg+CiAjaW5jbHVkZSA8bGludXgvaW9fdXJpbmcu
+aD4KIAogI2luY2x1ZGUgPHVhcGkvbGludXgvaW9fdXJpbmcuaD4KQEAgLTE3NSw2ICsxNzYs
+MjAgQEAgc3RhdGljIGlubGluZSBib29sIGlvX3NxZF9ldmVudHNfcGVuZGluZyhzdHJ1Y3Qg
+aW9fc3FfZGF0YSAqc3FkKQogCXJldHVybiBSRUFEX09OQ0Uoc3FkLT5zdGF0ZSk7CiB9CiAK
+K3U2NCBpb19zcV9jcHVfdXNlYyhzdHJ1Y3QgdGFza19zdHJ1Y3QgKnRzaykKK3sKKwl1NjQg
+dXRpbWUsIHN0aW1lOworCisJdGFza19jcHV0aW1lX2FkanVzdGVkKHRzaywgJnV0aW1lLCAm
+c3RpbWUpOworCWRvX2RpdihzdGltZSwgMTAwMCk7CisJcmV0dXJuIHN0aW1lOworfQorCitz
+dGF0aWMgdm9pZCBpb19zcV91cGRhdGVfd29ya3RpbWUoc3RydWN0IGlvX3NxX2RhdGEgKnNx
+ZCwgdTY0IHVzZWMpCit7CisJc3FkLT53b3JrX3RpbWUgKz0gaW9fc3FfY3B1X3VzZWMoY3Vy
+cmVudCkgLSB1c2VjOworfQorCiBzdGF0aWMgaW50IF9faW9fc3FfdGhyZWFkKHN0cnVjdCBp
+b19yaW5nX2N0eCAqY3R4LCBib29sIGNhcF9lbnRyaWVzKQogewogCXVuc2lnbmVkIGludCB0
+b19zdWJtaXQ7CkBAIC0yNjEsMjYgKzI3NiwxNSBAQCBzdGF0aWMgYm9vbCBpb19zcV90d19w
+ZW5kaW5nKHN0cnVjdCBsbGlzdF9ub2RlICpyZXRyeV9saXN0KQogCXJldHVybiByZXRyeV9s
+aXN0IHx8ICFsbGlzdF9lbXB0eSgmdGN0eC0+dGFza19saXN0KTsKIH0KIAotc3RhdGljIHZv
+aWQgaW9fc3FfdXBkYXRlX3dvcmt0aW1lKHN0cnVjdCBpb19zcV9kYXRhICpzcWQsIHN0cnVj
+dCBydXNhZ2UgKnN0YXJ0KQotewotCXN0cnVjdCBydXNhZ2UgZW5kOwotCi0JZ2V0cnVzYWdl
+KGN1cnJlbnQsIFJVU0FHRV9TRUxGLCAmZW5kKTsKLQllbmQucnVfc3RpbWUudHZfc2VjIC09
+IHN0YXJ0LT5ydV9zdGltZS50dl9zZWM7Ci0JZW5kLnJ1X3N0aW1lLnR2X3VzZWMgLT0gc3Rh
+cnQtPnJ1X3N0aW1lLnR2X3VzZWM7Ci0KLQlzcWQtPndvcmtfdGltZSArPSBlbmQucnVfc3Rp
+bWUudHZfdXNlYyArIGVuZC5ydV9zdGltZS50dl9zZWMgKiAxMDAwMDAwOwotfQotCiBzdGF0
+aWMgaW50IGlvX3NxX3RocmVhZCh2b2lkICpkYXRhKQogewogCXN0cnVjdCBsbGlzdF9ub2Rl
+ICpyZXRyeV9saXN0ID0gTlVMTDsKIAlzdHJ1Y3QgaW9fc3FfZGF0YSAqc3FkID0gZGF0YTsK
+IAlzdHJ1Y3QgaW9fcmluZ19jdHggKmN0eDsKLQlzdHJ1Y3QgcnVzYWdlIHN0YXJ0OwogCXVu
+c2lnbmVkIGxvbmcgdGltZW91dCA9IDA7CiAJY2hhciBidWZbVEFTS19DT01NX0xFTl07CiAJ
+REVGSU5FX1dBSVQod2FpdCk7CisJdTY0IHN0YXJ0OwogCiAJLyogb2ZmbG9hZCBjb250ZXh0
+IGNyZWF0aW9uIGZhaWxlZCwganVzdCBleGl0ICovCiAJaWYgKCFjdXJyZW50LT5pb191cmlu
+ZykgewpAQCAtMzIzLDcgKzMyNyw3IEBAIHN0YXRpYyBpbnQgaW9fc3FfdGhyZWFkKHZvaWQg
+KmRhdGEpCiAJCX0KIAogCQljYXBfZW50cmllcyA9ICFsaXN0X2lzX3Npbmd1bGFyKCZzcWQt
+PmN0eF9saXN0KTsKLQkJZ2V0cnVzYWdlKGN1cnJlbnQsIFJVU0FHRV9TRUxGLCAmc3RhcnQp
+OworCQlzdGFydCA9IGlvX3NxX2NwdV91c2VjKGN1cnJlbnQpOwogCQlsaXN0X2Zvcl9lYWNo
+X2VudHJ5KGN0eCwgJnNxZC0+Y3R4X2xpc3QsIHNxZF9saXN0KSB7CiAJCQlpbnQgcmV0ID0g
+X19pb19zcV90aHJlYWQoY3R4LCBjYXBfZW50cmllcyk7CiAKQEAgLTMzOSw3ICszNDMsNyBA
+QCBzdGF0aWMgaW50IGlvX3NxX3RocmVhZCh2b2lkICpkYXRhKQogCiAJCWlmIChzcXRfc3Bp
+biB8fCAhdGltZV9hZnRlcihqaWZmaWVzLCB0aW1lb3V0KSkgewogCQkJaWYgKHNxdF9zcGlu
+KSB7Ci0JCQkJaW9fc3FfdXBkYXRlX3dvcmt0aW1lKHNxZCwgJnN0YXJ0KTsKKwkJCQlpb19z
+cV91cGRhdGVfd29ya3RpbWUoc3FkLCBzdGFydCk7CiAJCQkJdGltZW91dCA9IGppZmZpZXMg
+KyBzcWQtPnNxX3RocmVhZF9pZGxlOwogCQkJfQogCQkJaWYgKHVubGlrZWx5KG5lZWRfcmVz
+Y2hlZCgpKSkgewpkaWZmIC0tZ2l0IGEvaW9fdXJpbmcvc3Fwb2xsLmggYi9pb191cmluZy9z
+cXBvbGwuaAppbmRleCBiODNkY2RlYzk3NjUuLmZkMmY2ZjI5YjUxNiAxMDA2NDQKLS0tIGEv
+aW9fdXJpbmcvc3Fwb2xsLmgKKysrIGIvaW9fdXJpbmcvc3Fwb2xsLmgKQEAgLTI5LDYgKzI5
+LDcgQEAgdm9pZCBpb19zcV90aHJlYWRfdW5wYXJrKHN0cnVjdCBpb19zcV9kYXRhICpzcWQp
+Owogdm9pZCBpb19wdXRfc3FfZGF0YShzdHJ1Y3QgaW9fc3FfZGF0YSAqc3FkKTsKIHZvaWQg
+aW9fc3Fwb2xsX3dhaXRfc3Eoc3RydWN0IGlvX3JpbmdfY3R4ICpjdHgpOwogaW50IGlvX3Nx
+cG9sbF93cV9jcHVfYWZmaW5pdHkoc3RydWN0IGlvX3JpbmdfY3R4ICpjdHgsIGNwdW1hc2tf
+dmFyX3QgbWFzayk7Cit1NjQgaW9fc3FfY3B1X3VzZWMoc3RydWN0IHRhc2tfc3RydWN0ICp0
+c2spOwogCiBzdGF0aWMgaW5saW5lIHN0cnVjdCB0YXNrX3N0cnVjdCAqc3Fwb2xsX3Rhc2tf
+bG9ja2VkKHN0cnVjdCBpb19zcV9kYXRhICpzcWQpCiB7Ci0tIAoyLjUxLjAKCg==
 
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From a91c8096590bd7801a26454789f2992094fe36da Mon Sep 17 00:00:00 2001
-From: Maarten Lankhorst <dev@lankhorst.se>
-Date: Wed, 23 Jul 2025 16:24:16 +0200
-Subject: [PATCH] devcoredump: Fix circular locking dependency with
- devcd->mutex.
-
-The original code causes a circular locking dependency found by lockdep.
-
-======================================================
-WARNING: possible circular locking dependency detected
-6.16.0-rc6-lgci-xe-xe-pw-151626v3+ #1 Tainted: G S   U
-------------------------------------------------------
-xe_fault_inject/5091 is trying to acquire lock:
-ffff888156815688 ((work_completion)(&(&devcd->del_wk)->work)){+.+.}-{0:0}, at: __flush_work+0x25d/0x660
-
-but task is already holding lock:
-
-ffff888156815620 (&devcd->mutex){+.+.}-{3:3}, at: dev_coredump_put+0x3f/0xa0
-which lock already depends on the new lock.
-the existing dependency chain (in reverse order) is:
--> #2 (&devcd->mutex){+.+.}-{3:3}:
-       mutex_lock_nested+0x4e/0xc0
-       devcd_data_write+0x27/0x90
-       sysfs_kf_bin_write+0x80/0xf0
-       kernfs_fop_write_iter+0x169/0x220
-       vfs_write+0x293/0x560
-       ksys_write+0x72/0xf0
-       __x64_sys_write+0x19/0x30
-       x64_sys_call+0x2bf/0x2660
-       do_syscall_64+0x93/0xb60
-       entry_SYSCALL_64_after_hwframe+0x76/0x7e
--> #1 (kn->active#236){++++}-{0:0}:
-       kernfs_drain+0x1e2/0x200
-       __kernfs_remove+0xae/0x400
-       kernfs_remove_by_name_ns+0x5d/0xc0
-       remove_files+0x54/0x70
-       sysfs_remove_group+0x3d/0xa0
-       sysfs_remove_groups+0x2e/0x60
-       device_remove_attrs+0xc7/0x100
-       device_del+0x15d/0x3b0
-       devcd_del+0x19/0x30
-       process_one_work+0x22b/0x6f0
-       worker_thread+0x1e8/0x3d0
-       kthread+0x11c/0x250
-       ret_from_fork+0x26c/0x2e0
-       ret_from_fork_asm+0x1a/0x30
--> #0 ((work_completion)(&(&devcd->del_wk)->work)){+.+.}-{0:0}:
-       __lock_acquire+0x1661/0x2860
-       lock_acquire+0xc4/0x2f0
-       __flush_work+0x27a/0x660
-       flush_delayed_work+0x5d/0xa0
-       dev_coredump_put+0x63/0xa0
-       xe_driver_devcoredump_fini+0x12/0x20 [xe]
-       devm_action_release+0x12/0x30
-       release_nodes+0x3a/0x120
-       devres_release_all+0x8a/0xd0
-       device_unbind_cleanup+0x12/0x80
-       device_release_driver_internal+0x23a/0x280
-       device_driver_detach+0x14/0x20
-       unbind_store+0xaf/0xc0
-       drv_attr_store+0x21/0x50
-       sysfs_kf_write+0x4a/0x80
-       kernfs_fop_write_iter+0x169/0x220
-       vfs_write+0x293/0x560
-       ksys_write+0x72/0xf0
-       __x64_sys_write+0x19/0x30
-       x64_sys_call+0x2bf/0x2660
-       do_syscall_64+0x93/0xb60
-       entry_SYSCALL_64_after_hwframe+0x76/0x7e
-other info that might help us debug this:
-Chain exists of: (work_completion)(&(&devcd->del_wk)->work) --> kn->active#236 --> &devcd->mutex
- Possible unsafe locking scenario:
-       CPU0                    CPU1
-       ----                    ----
-  lock(&devcd->mutex);
-                               lock(kn->active#236);
-                               lock(&devcd->mutex);
-  lock((work_completion)(&(&devcd->del_wk)->work));
- *** DEADLOCK ***
-5 locks held by xe_fault_inject/5091:
- #0: ffff8881129f9488 (sb_writers#5){.+.+}-{0:0}, at: ksys_write+0x72/0xf0
- #1: ffff88810c755078 (&of->mutex#2){+.+.}-{3:3}, at: kernfs_fop_write_iter+0x123/0x220
- #2: ffff8881054811a0 (&dev->mutex){....}-{3:3}, at: device_release_driver_internal+0x55/0x280
- #3: ffff888156815620 (&devcd->mutex){+.+.}-{3:3}, at: dev_coredump_put+0x3f/0xa0
- #4: ffffffff8359e020 (rcu_read_lock){....}-{1:2}, at: __flush_work+0x72/0x660
-stack backtrace:
-CPU: 14 UID: 0 PID: 5091 Comm: xe_fault_inject Tainted: G S   U              6.16.0-rc6-lgci-xe-xe-pw-151626v3+ #1 PREEMPT_{RT,(lazy)}
-Tainted: [S]=CPU_OUT_OF_SPEC, [U]=USER
-Hardware name: Micro-Star International Co., Ltd. MS-7D25/PRO Z690-A DDR4(MS-7D25), BIOS 1.10 12/13/2021
-Call Trace:
- <TASK>
- dump_stack_lvl+0x91/0xf0
- dump_stack+0x10/0x20
- print_circular_bug+0x285/0x360
- check_noncircular+0x135/0x150
- ? register_lock_class+0x48/0x4a0
- __lock_acquire+0x1661/0x2860
- lock_acquire+0xc4/0x2f0
- ? __flush_work+0x25d/0x660
- ? mark_held_locks+0x46/0x90
- ? __flush_work+0x25d/0x660
- __flush_work+0x27a/0x660
- ? __flush_work+0x25d/0x660
- ? trace_hardirqs_on+0x1e/0xd0
- ? __pfx_wq_barrier_func+0x10/0x10
- flush_delayed_work+0x5d/0xa0
- dev_coredump_put+0x63/0xa0
- xe_driver_devcoredump_fini+0x12/0x20 [xe]
- devm_action_release+0x12/0x30
- release_nodes+0x3a/0x120
- devres_release_all+0x8a/0xd0
- device_unbind_cleanup+0x12/0x80
- device_release_driver_internal+0x23a/0x280
- ? bus_find_device+0xa8/0xe0
- device_driver_detach+0x14/0x20
- unbind_store+0xaf/0xc0
- drv_attr_store+0x21/0x50
- sysfs_kf_write+0x4a/0x80
- kernfs_fop_write_iter+0x169/0x220
- vfs_write+0x293/0x560
- ksys_write+0x72/0xf0
- __x64_sys_write+0x19/0x30
- x64_sys_call+0x2bf/0x2660
- do_syscall_64+0x93/0xb60
- ? __f_unlock_pos+0x15/0x20
- ? __x64_sys_getdents64+0x9b/0x130
- ? __pfx_filldir64+0x10/0x10
- ? do_syscall_64+0x1a2/0xb60
- ? clear_bhb_loop+0x30/0x80
- ? clear_bhb_loop+0x30/0x80
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
-RIP: 0033:0x76e292edd574
-Code: c7 00 16 00 00 00 b8 ff ff ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 f3 0f 1e fa 80 3d d5 ea 0e 00 00 74 13 b8 01 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 54 c3 0f 1f 00 55 48 89 e5 48 83 ec 20 48 89
-RSP: 002b:00007fffe247a828 EFLAGS: 00000202 ORIG_RAX: 0000000000000001
-RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 000076e292edd574
-RDX: 000000000000000c RSI: 00006267f6306063 RDI: 000000000000000b
-RBP: 000000000000000c R08: 000076e292fc4b20 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000202 R12: 00006267f6306063
-R13: 000000000000000b R14: 00006267e6859c00 R15: 000076e29322a000
- </TASK>
-xe 0000:03:00.0: [drm] Xe device coredump has been deleted.
-
-Fixes: 01daccf74832 ("devcoredump : Serialize devcd_del work")
-Cc: Mukesh Ojha <quic_mojha@quicinc.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Johannes Berg <johannes@sipsolutions.net>
-Cc: Rafael J. Wysocki <rafael@kernel.org>
-Cc: Danilo Krummrich <dakr@kernel.org>
-Cc: linux-kernel@vger.kernel.org
-Cc: stable@vger.kernel.org # v6.1+
-Signed-off-by: Maarten Lankhorst <dev@lankhorst.se>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Acked-by: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250723142416.1020423-1-dev@lankhorst.se
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
-diff --git a/drivers/base/devcoredump.c b/drivers/base/devcoredump.c
-index 37faf6156d7c..55bdc7f5e59d 100644
---- a/drivers/base/devcoredump.c
-+++ b/drivers/base/devcoredump.c
-@@ -23,50 +23,46 @@ struct devcd_entry {
- 	void *data;
- 	size_t datalen;
- 	/*
--	 * Here, mutex is required to serialize the calls to del_wk work between
--	 * user/kernel space which happens when devcd is added with device_add()
--	 * and that sends uevent to user space. User space reads the uevents,
--	 * and calls to devcd_data_write() which try to modify the work which is
--	 * not even initialized/queued from devcoredump.
-+	 * There are 2 races for which mutex is required.
- 	 *
-+	 * The first race is between device creation and userspace writing to
-+	 * schedule immediately destruction.
- 	 *
-+	 * This race is handled by arming the timer before device creation, but
-+	 * when device creation fails the timer still exists.
- 	 *
--	 *        cpu0(X)                                 cpu1(Y)
-+	 * To solve this, hold the mutex during device_add(), and set
-+	 * init_completed on success before releasing the mutex.
- 	 *
--	 *        dev_coredump() uevent sent to user space
--	 *        device_add()  ======================> user space process Y reads the
--	 *                                              uevents writes to devcd fd
--	 *                                              which results into writes to
-+	 * That way the timer will never fire until device_add() is called,
-+	 * it will do nothing if init_completed is not set. The timer is also
-+	 * cancelled in that case.
- 	 *
--	 *                                             devcd_data_write()
--	 *                                               mod_delayed_work()
--	 *                                                 try_to_grab_pending()
--	 *                                                   timer_delete()
--	 *                                                     debug_assert_init()
--	 *       INIT_DELAYED_WORK()
--	 *       schedule_delayed_work()
--	 *
--	 *
--	 * Also, mutex alone would not be enough to avoid scheduling of
--	 * del_wk work after it get flush from a call to devcd_free()
--	 * mentioned as below.
--	 *
--	 *	disabled_store()
--	 *        devcd_free()
--	 *          mutex_lock()             devcd_data_write()
--	 *          flush_delayed_work()
--	 *          mutex_unlock()
--	 *                                   mutex_lock()
--	 *                                   mod_delayed_work()
--	 *                                   mutex_unlock()
--	 * So, delete_work flag is required.
-+	 * The second race involves multiple parallel invocations of devcd_free(),
-+	 * add a deleted flag so only 1 can call the destructor.
- 	 */
- 	struct mutex mutex;
--	bool delete_work;
-+	bool init_completed, deleted;
- 	struct module *owner;
- 	ssize_t (*read)(char *buffer, loff_t offset, size_t count,
- 			void *data, size_t datalen);
- 	void (*free)(void *data);
-+	/*
-+	 * If nothing interferes and device_add() was returns success,
-+	 * del_wk will destroy the device after the timer fires.
-+	 *
-+	 * Multiple userspace processes can interfere in the working of the timer:
-+	 * - Writing to the coredump will reschedule the timer to run immediately,
-+	 *   if still armed.
-+	 *
-+	 *   This is handled by using "if (cancel_delayed_work()) {
-+	 *   schedule_delayed_work() }", to prevent re-arming after having
-+	 *   been previously fired.
-+	 * - Writing to /sys/class/devcoredump/disabled will destroy the
-+	 *   coredump synchronously.
-+	 *   This is handled by using disable_delayed_work_sync(), and then
-+	 *   checking if deleted flag is set with &devcd->mutex held.
-+	 */
- 	struct delayed_work del_wk;
- 	struct device *failing_dev;
- };
-@@ -95,14 +91,27 @@ static void devcd_dev_release(struct device *dev)
- 	kfree(devcd);
- }
- 
-+static void __devcd_del(struct devcd_entry *devcd)
-+{
-+	devcd->deleted = true;
-+	device_del(&devcd->devcd_dev);
-+	put_device(&devcd->devcd_dev);
-+}
-+
- static void devcd_del(struct work_struct *wk)
- {
- 	struct devcd_entry *devcd;
-+	bool init_completed;
- 
- 	devcd = container_of(wk, struct devcd_entry, del_wk.work);
- 
--	device_del(&devcd->devcd_dev);
--	put_device(&devcd->devcd_dev);
-+	/* devcd->mutex serializes against dev_coredumpm_timeout */
-+	mutex_lock(&devcd->mutex);
-+	init_completed = devcd->init_completed;
-+	mutex_unlock(&devcd->mutex);
-+
-+	if (init_completed)
-+		__devcd_del(devcd);
- }
- 
- static ssize_t devcd_data_read(struct file *filp, struct kobject *kobj,
-@@ -122,12 +131,12 @@ static ssize_t devcd_data_write(struct file *filp, struct kobject *kobj,
- 	struct device *dev = kobj_to_dev(kobj);
- 	struct devcd_entry *devcd = dev_to_devcd(dev);
- 
--	mutex_lock(&devcd->mutex);
--	if (!devcd->delete_work) {
--		devcd->delete_work = true;
--		mod_delayed_work(system_wq, &devcd->del_wk, 0);
--	}
--	mutex_unlock(&devcd->mutex);
-+	/*
-+	 * Although it's tempting to use mod_delayed work here,
-+	 * that will cause a reschedule if the timer already fired.
-+	 */
-+	if (cancel_delayed_work(&devcd->del_wk))
-+		schedule_delayed_work(&devcd->del_wk, 0);
- 
- 	return count;
- }
-@@ -151,11 +160,21 @@ static int devcd_free(struct device *dev, void *data)
- {
- 	struct devcd_entry *devcd = dev_to_devcd(dev);
- 
-+	/*
-+	 * To prevent a race with devcd_data_write(), disable work and
-+	 * complete manually instead.
-+	 *
-+	 * We cannot rely on the return value of
-+	 * disable_delayed_work_sync() here, because it might be in the
-+	 * middle of a cancel_delayed_work + schedule_delayed_work pair.
-+	 *
-+	 * devcd->mutex here guards against multiple parallel invocations
-+	 * of devcd_free().
-+	 */
-+	disable_delayed_work_sync(&devcd->del_wk);
- 	mutex_lock(&devcd->mutex);
--	if (!devcd->delete_work)
--		devcd->delete_work = true;
--
--	flush_delayed_work(&devcd->del_wk);
-+	if (!devcd->deleted)
-+		__devcd_del(devcd);
- 	mutex_unlock(&devcd->mutex);
- 	return 0;
- }
-@@ -179,12 +198,10 @@ static ssize_t disabled_show(const struct class *class, const struct class_attri
-  *                                                                 put_device() <- last reference
-  *             error = fn(dev, data)                           devcd_dev_release()
-  *             devcd_free(dev, data)                           kfree(devcd)
-- *             mutex_lock(&devcd->mutex);
-  *
-  *
-  * In the above diagram, it looks like disabled_store() would be racing with parallelly
-- * running devcd_del() and result in memory abort while acquiring devcd->mutex which
-- * is called after kfree of devcd memory after dropping its last reference with
-+ * running devcd_del() and result in memory abort after dropping its last reference with
-  * put_device(). However, this will not happens as fn(dev, data) runs
-  * with its own reference to device via klist_node so it is not its last reference.
-  * so, above situation would not occur.
-@@ -374,7 +391,7 @@ void dev_coredumpm_timeout(struct device *dev, struct module *owner,
- 	devcd->read = read;
- 	devcd->free = free;
- 	devcd->failing_dev = get_device(dev);
--	devcd->delete_work = false;
-+	devcd->deleted = false;
- 
- 	mutex_init(&devcd->mutex);
- 	device_initialize(&devcd->devcd_dev);
-@@ -383,8 +400,14 @@ void dev_coredumpm_timeout(struct device *dev, struct module *owner,
- 		     atomic_inc_return(&devcd_count));
- 	devcd->devcd_dev.class = &devcd_class;
- 
--	mutex_lock(&devcd->mutex);
- 	dev_set_uevent_suppress(&devcd->devcd_dev, true);
-+
-+	/* devcd->mutex prevents devcd_del() completing until init finishes */
-+	mutex_lock(&devcd->mutex);
-+	devcd->init_completed = false;
-+	INIT_DELAYED_WORK(&devcd->del_wk, devcd_del);
-+	schedule_delayed_work(&devcd->del_wk, timeout);
-+
- 	if (device_add(&devcd->devcd_dev))
- 		goto put_device;
- 
-@@ -401,13 +424,20 @@ void dev_coredumpm_timeout(struct device *dev, struct module *owner,
- 
- 	dev_set_uevent_suppress(&devcd->devcd_dev, false);
- 	kobject_uevent(&devcd->devcd_dev.kobj, KOBJ_ADD);
--	INIT_DELAYED_WORK(&devcd->del_wk, devcd_del);
--	schedule_delayed_work(&devcd->del_wk, timeout);
-+
-+	/*
-+	 * Safe to run devcd_del() now that we are done with devcd_dev.
-+	 * Alternatively we could have taken a ref on devcd_dev before
-+	 * dropping the lock.
-+	 */
-+	devcd->init_completed = true;
- 	mutex_unlock(&devcd->mutex);
- 	return;
-  put_device:
--	put_device(&devcd->devcd_dev);
- 	mutex_unlock(&devcd->mutex);
-+	cancel_delayed_work_sync(&devcd->del_wk);
-+	put_device(&devcd->devcd_dev);
-+
-  put_module:
- 	module_put(owner);
-  free:
-
+--------------Rciy02gCSVs2RZ8Kl0Wkj5Xq--
 
