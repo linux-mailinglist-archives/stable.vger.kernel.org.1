@@ -1,454 +1,274 @@
-Return-Path: <stable+bounces-189897-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-189898-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 893C9C0B7DA
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 00:49:59 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EEB8C0B7E3
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 00:50:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id DCD1334A40D
-	for <lists+stable@lfdr.de>; Sun, 26 Oct 2025 23:49:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6DCBE19C0813
+	for <lists+stable@lfdr.de>; Sun, 26 Oct 2025 23:51:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B057F301011;
-	Sun, 26 Oct 2025 23:49:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 855A4301011;
+	Sun, 26 Oct 2025 23:50:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uex9mM8K"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N4LTeqSH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68C2F2D1319;
-	Sun, 26 Oct 2025 23:49:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 428262F7444
+	for <stable@vger.kernel.org>; Sun, 26 Oct 2025 23:50:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761522593; cv=none; b=Jn9RVE4vfJdzqCRPRorxrCq6vxqQwLMrogW+IX2DC7WQoZtGAFw02zxp0+Ssb1XlhOOrHWBZdNew/TG2IvIk+ziNrnwE+rAWN3UDdFlVsnru1dqDcpkBJ+anoPy4RgrGKzXDGNxrGkQfsrFGRHbl4bSmeB8DSM1TBr7ZnyAaJaU=
+	t=1761522634; cv=none; b=uoFK3UCYZd0I9YwVGuZdCIeC76W7Pw3NnB+DhzWcG/Q0PC5TCu+MCb5zMvYemmeNj9R51zDGDVmSUpjUekegFXyTXAkYf0KmB8mCl0R7pZq3815JAMxBBYGoLT52VfsB0LjfNPvTG4GbFZ2VLXN8+1gn/D7R3a+O5fUCzAjj1GE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761522593; c=relaxed/simple;
-	bh=zrVS2i/rcCHT7gYREePmKcPT1Ou1ThzZiIcVHjHDJhU=;
+	s=arc-20240116; t=1761522634; c=relaxed/simple;
+	bh=Rvi+/itkwYCPMs6mJEMa2/X3sMfGbOYx1gVGRJZObpk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uFLOTGSk10EHR/femtdhK1ByhEOrCnH3zfxMaV1MtoFz2xSNlPgI5bnaWP2yaEWmQ49oPJiP1zKYyrAay3ft13UKo89l4wo+J+3Je7OjIAPvB5kDE1L37m0tMNxkSh+J04y/rrIQwXLrLRA/jiL1dFueMvrLbLy9J1+d21HlF8o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uex9mM8K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF846C4CEE7;
-	Sun, 26 Oct 2025 23:49:51 +0000 (UTC)
+	 MIME-Version:Content-Type; b=O/799OebyCNiUjkc0jqHin7VFea1+6enkKmfKArL8rYKRXRMCy2xZNxhGqFNbOT/xfUhhEPbHRbwZQ9Pel3g3jO037wl41wG9qHFSBIMuAwxYVVqy9K0iKVBqTD7jmUqOtZcAmKNo5cWCTRjqQ0kpAMrJDxvNpLXZqd/8XmuQUU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N4LTeqSH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F9E4C4CEE7;
+	Sun, 26 Oct 2025 23:50:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761522593;
-	bh=zrVS2i/rcCHT7gYREePmKcPT1Ou1ThzZiIcVHjHDJhU=;
+	s=k20201202; t=1761522633;
+	bh=Rvi+/itkwYCPMs6mJEMa2/X3sMfGbOYx1gVGRJZObpk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uex9mM8KpHrntCudxKmA3QWnGHP/C/ZGbAnLgUiAbPWcUOkCY0Lx59c8Dq+DErr/A
-	 712QyFzPAk4ys017pmovH6v3MN1k2qliV1a7UGGMrj2MkptG//EdbxhBYdv8twwACb
-	 uDGjK0vVQunglpZ0wFx7ohoDqkGyy6hw81elrKfT0lls/CCPMRkwse/o8kClth0/5V
-	 m2VzUWjLMRMdq7XERUPMT3UUFKlPSEoX5ie0kU/1lq2ULg459JYN8SQ0tuTgk7vO+0
-	 Hx1x3gA2hLg7PFGzyTywH9HnRie6mekf0yY5DME81DkbCcMptsAFV9BVur8X9B7qhj
-	 QwVzck7lfyC4A==
+	b=N4LTeqSHWGW+xy0zrXpBctppCIUYOdH+DTdOXS7J/zw0QVWrD8QIJcuiJSK9oOCun
+	 oLVWIepEecPomrHwiJYbHUUpN25HwNTSGoKdS2p0Flf5MgIjWps7Mtsy5J4hWtYeNg
+	 XcbaPQnyq9mhlzvJqZ8FZOgyve6V2qaWIsBGjexq4SfVwwfBcawONwDRqDbq1x7Kn4
+	 pywl6RyMLTiFJowHpvRCGD2UKhOSzEGpdAyt5zUXSBN51BiIb6OTIKBhT6AniYy/5u
+	 KVqKBEMTD9W3oR1a6jOFB6NcZqLMoKjbwSny6kLYRe2DXR6wNOKY5InJB3W7zmXhD3
+	 pn8jV1+wH56pQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Maarten Lankhorst <dev@lankhorst.se>,
-	Mukesh Ojha <quic_mojha@quicinc.com>,
+Cc: David Hildenbrand <david@redhat.com>,
+	Zi Yan <ziy@nvidia.com>,
+	Lance Yang <lance.yang@linux.dev>,
+	Alistair Popple <apopple@nvidia.com>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Benjamin LaHaise <bcrl@kvack.org>,
+	Byungchul Park <byungchul@sk.com>,
+	Chris Mason <clm@fb.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Dave Kleikamp <shaggy@kernel.org>,
+	David Sterba <dsterba@suse.com>,
+	=?UTF-8?q?Eugenio=20P=C3=A9=20rez?= <eperezma@redhat.com>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	Matthew Brost <matthew.brost@intel.com>,
-	Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>,
+	Gregory Price <gourry@gourry.net>,
+	"Huang, Ying" <ying.huang@linux.alibaba.com>,
+	Jan Kara <jack@suse.cz>,
+	Jason Wang <jasowang@redhat.com>,
+	Jerrin Shaji George <jerrin.shaji-george@broadcom.com>,
+	Josef Bacik <josef@toxicpanda.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Mathew Brost <matthew.brost@intel.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Minchan Kim <minchan@kernel.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Rakie Kim <rakie.kim@sk.com>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Dave Kleikamp <dave.kleikamp@oracle.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y] devcoredump: Fix circular locking dependency with devcd->mutex.
-Date: Sun, 26 Oct 2025 19:49:50 -0400
-Message-ID: <20251026234950.288779-1-sashal@kernel.org>
+Subject: [PATCH 6.17.y 1/3] mm/migrate: remove MIGRATEPAGE_UNMAP
+Date: Sun, 26 Oct 2025 19:50:26 -0400
+Message-ID: <20251026235028.289288-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025102621-apply-napping-0bd1@gregkh>
-References: <2025102621-apply-napping-0bd1@gregkh>
+In-Reply-To: <2025102655-unequal-disown-9615@gregkh>
+References: <2025102655-unequal-disown-9615@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Maarten Lankhorst <dev@lankhorst.se>
+From: David Hildenbrand <david@redhat.com>
 
-[ Upstream commit a91c8096590bd7801a26454789f2992094fe36da ]
+[ Upstream commit 95c2908f1a4fd608b1cdbb5acef3572e5d769e1c ]
 
-The original code causes a circular locking dependency found by lockdep.
+migrate_folio_unmap() is the only user of MIGRATEPAGE_UNMAP.  We want to
+remove MIGRATEPAGE_* completely.
 
-======================================================
-WARNING: possible circular locking dependency detected
-6.16.0-rc6-lgci-xe-xe-pw-151626v3+ #1 Tainted: G S   U
-------------------------------------------------------
-xe_fault_inject/5091 is trying to acquire lock:
-ffff888156815688 ((work_completion)(&(&devcd->del_wk)->work)){+.+.}-{0:0}, at: __flush_work+0x25d/0x660
+It's rather weird to have a generic MIGRATEPAGE_UNMAP, documented to be
+returned from address-space callbacks, when it's only used for an internal
+helper.
 
-but task is already holding lock:
+Let's start by having only a single "success" return value for
+migrate_folio_unmap() -- 0 -- by moving the "folio was already freed"
+check into the single caller.
 
-ffff888156815620 (&devcd->mutex){+.+.}-{3:3}, at: dev_coredump_put+0x3f/0xa0
-which lock already depends on the new lock.
-the existing dependency chain (in reverse order) is:
--> #2 (&devcd->mutex){+.+.}-{3:3}:
-       mutex_lock_nested+0x4e/0xc0
-       devcd_data_write+0x27/0x90
-       sysfs_kf_bin_write+0x80/0xf0
-       kernfs_fop_write_iter+0x169/0x220
-       vfs_write+0x293/0x560
-       ksys_write+0x72/0xf0
-       __x64_sys_write+0x19/0x30
-       x64_sys_call+0x2bf/0x2660
-       do_syscall_64+0x93/0xb60
-       entry_SYSCALL_64_after_hwframe+0x76/0x7e
--> #1 (kn->active#236){++++}-{0:0}:
-       kernfs_drain+0x1e2/0x200
-       __kernfs_remove+0xae/0x400
-       kernfs_remove_by_name_ns+0x5d/0xc0
-       remove_files+0x54/0x70
-       sysfs_remove_group+0x3d/0xa0
-       sysfs_remove_groups+0x2e/0x60
-       device_remove_attrs+0xc7/0x100
-       device_del+0x15d/0x3b0
-       devcd_del+0x19/0x30
-       process_one_work+0x22b/0x6f0
-       worker_thread+0x1e8/0x3d0
-       kthread+0x11c/0x250
-       ret_from_fork+0x26c/0x2e0
-       ret_from_fork_asm+0x1a/0x30
--> #0 ((work_completion)(&(&devcd->del_wk)->work)){+.+.}-{0:0}:
-       __lock_acquire+0x1661/0x2860
-       lock_acquire+0xc4/0x2f0
-       __flush_work+0x27a/0x660
-       flush_delayed_work+0x5d/0xa0
-       dev_coredump_put+0x63/0xa0
-       xe_driver_devcoredump_fini+0x12/0x20 [xe]
-       devm_action_release+0x12/0x30
-       release_nodes+0x3a/0x120
-       devres_release_all+0x8a/0xd0
-       device_unbind_cleanup+0x12/0x80
-       device_release_driver_internal+0x23a/0x280
-       device_driver_detach+0x14/0x20
-       unbind_store+0xaf/0xc0
-       drv_attr_store+0x21/0x50
-       sysfs_kf_write+0x4a/0x80
-       kernfs_fop_write_iter+0x169/0x220
-       vfs_write+0x293/0x560
-       ksys_write+0x72/0xf0
-       __x64_sys_write+0x19/0x30
-       x64_sys_call+0x2bf/0x2660
-       do_syscall_64+0x93/0xb60
-       entry_SYSCALL_64_after_hwframe+0x76/0x7e
-other info that might help us debug this:
-Chain exists of: (work_completion)(&(&devcd->del_wk)->work) --> kn->active#236 --> &devcd->mutex
- Possible unsafe locking scenario:
-       CPU0                    CPU1
-       ----                    ----
-  lock(&devcd->mutex);
-                               lock(kn->active#236);
-                               lock(&devcd->mutex);
-  lock((work_completion)(&(&devcd->del_wk)->work));
- *** DEADLOCK ***
-5 locks held by xe_fault_inject/5091:
- #0: ffff8881129f9488 (sb_writers#5){.+.+}-{0:0}, at: ksys_write+0x72/0xf0
- #1: ffff88810c755078 (&of->mutex#2){+.+.}-{3:3}, at: kernfs_fop_write_iter+0x123/0x220
- #2: ffff8881054811a0 (&dev->mutex){....}-{3:3}, at: device_release_driver_internal+0x55/0x280
- #3: ffff888156815620 (&devcd->mutex){+.+.}-{3:3}, at: dev_coredump_put+0x3f/0xa0
- #4: ffffffff8359e020 (rcu_read_lock){....}-{1:2}, at: __flush_work+0x72/0x660
-stack backtrace:
-CPU: 14 UID: 0 PID: 5091 Comm: xe_fault_inject Tainted: G S   U              6.16.0-rc6-lgci-xe-xe-pw-151626v3+ #1 PREEMPT_{RT,(lazy)}
-Tainted: [S]=CPU_OUT_OF_SPEC, [U]=USER
-Hardware name: Micro-Star International Co., Ltd. MS-7D25/PRO Z690-A DDR4(MS-7D25), BIOS 1.10 12/13/2021
-Call Trace:
- <TASK>
- dump_stack_lvl+0x91/0xf0
- dump_stack+0x10/0x20
- print_circular_bug+0x285/0x360
- check_noncircular+0x135/0x150
- ? register_lock_class+0x48/0x4a0
- __lock_acquire+0x1661/0x2860
- lock_acquire+0xc4/0x2f0
- ? __flush_work+0x25d/0x660
- ? mark_held_locks+0x46/0x90
- ? __flush_work+0x25d/0x660
- __flush_work+0x27a/0x660
- ? __flush_work+0x25d/0x660
- ? trace_hardirqs_on+0x1e/0xd0
- ? __pfx_wq_barrier_func+0x10/0x10
- flush_delayed_work+0x5d/0xa0
- dev_coredump_put+0x63/0xa0
- xe_driver_devcoredump_fini+0x12/0x20 [xe]
- devm_action_release+0x12/0x30
- release_nodes+0x3a/0x120
- devres_release_all+0x8a/0xd0
- device_unbind_cleanup+0x12/0x80
- device_release_driver_internal+0x23a/0x280
- ? bus_find_device+0xa8/0xe0
- device_driver_detach+0x14/0x20
- unbind_store+0xaf/0xc0
- drv_attr_store+0x21/0x50
- sysfs_kf_write+0x4a/0x80
- kernfs_fop_write_iter+0x169/0x220
- vfs_write+0x293/0x560
- ksys_write+0x72/0xf0
- __x64_sys_write+0x19/0x30
- x64_sys_call+0x2bf/0x2660
- do_syscall_64+0x93/0xb60
- ? __f_unlock_pos+0x15/0x20
- ? __x64_sys_getdents64+0x9b/0x130
- ? __pfx_filldir64+0x10/0x10
- ? do_syscall_64+0x1a2/0xb60
- ? clear_bhb_loop+0x30/0x80
- ? clear_bhb_loop+0x30/0x80
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
-RIP: 0033:0x76e292edd574
-Code: c7 00 16 00 00 00 b8 ff ff ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 f3 0f 1e fa 80 3d d5 ea 0e 00 00 74 13 b8 01 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 54 c3 0f 1f 00 55 48 89 e5 48 83 ec 20 48 89
-RSP: 002b:00007fffe247a828 EFLAGS: 00000202 ORIG_RAX: 0000000000000001
-RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 000076e292edd574
-RDX: 000000000000000c RSI: 00006267f6306063 RDI: 000000000000000b
-RBP: 000000000000000c R08: 000076e292fc4b20 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000202 R12: 00006267f6306063
-R13: 000000000000000b R14: 00006267e6859c00 R15: 000076e29322a000
- </TASK>
-xe 0000:03:00.0: [drm] Xe device coredump has been deleted.
+There is a remaining comment for PG_isolated, which we renamed to
+PG_movable_ops_isolated recently and forgot to update.
 
-Fixes: 01daccf74832 ("devcoredump : Serialize devcd_del work")
-Cc: Mukesh Ojha <quic_mojha@quicinc.com>
+While we might still run into that case with zsmalloc, it's something we
+want to get rid of soon.  So let's just focus that optimization on real
+folios only for now by excluding movable_ops pages.  Note that concurrent
+freeing can happen at any time and this "already freed" check is not
+relevant for correctness.
+
+[david@redhat.com: no need to pass "reason" to migrate_folio_unmap(), per Lance]
+  Link: https://lkml.kernel.org/r/3bb725f8-28d7-4aa2-b75f-af40d5cab280@redhat.com
+Link: https://lkml.kernel.org/r/20250811143949.1117439-2-david@redhat.com
+Signed-off-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Zi Yan <ziy@nvidia.com>
+Reviewed-by: Lance Yang <lance.yang@linux.dev>
+Cc: Alistair Popple <apopple@nvidia.com>
+Cc: Al Viro <viro@zeniv.linux.org.uk>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Benjamin LaHaise <bcrl@kvack.org>
+Cc: Byungchul Park <byungchul@sk.com>
+Cc: Chris Mason <clm@fb.com>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Dave Kleikamp <shaggy@kernel.org>
+Cc: David Sterba <dsterba@suse.com>
+Cc: Eugenio Pé rez <eperezma@redhat.com>
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Johannes Berg <johannes@sipsolutions.net>
-Cc: Rafael J. Wysocki <rafael@kernel.org>
-Cc: Danilo Krummrich <dakr@kernel.org>
-Cc: linux-kernel@vger.kernel.org
-Cc: stable@vger.kernel.org # v6.1+
-Signed-off-by: Maarten Lankhorst <dev@lankhorst.se>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Acked-by: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250723142416.1020423-1-dev@lankhorst.se
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-[ replaced disable_delayed_work_sync() with cancel_delayed_work_sync() ]
+Cc: Gregory Price <gourry@gourry.net>
+Cc: "Huang, Ying" <ying.huang@linux.alibaba.com>
+Cc: Jan Kara <jack@suse.cz>
+Cc: Jason Wang <jasowang@redhat.com>
+Cc: Jerrin Shaji George <jerrin.shaji-george@broadcom.com>
+Cc: Josef Bacik <josef@toxicpanda.com>
+Cc: Joshua Hahn <joshua.hahnjy@gmail.com>
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Mathew Brost <matthew.brost@intel.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Minchan Kim <minchan@kernel.org>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: Rakie Kim <rakie.kim@sk.com>
+Cc: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+Cc: Dave Kleikamp <dave.kleikamp@oracle.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: 4ba5a8a7faa6 ("vmw_balloon: indicate success when effectively deflating during migration")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/devcoredump.c | 138 ++++++++++++++++++++++---------------
- 1 file changed, 84 insertions(+), 54 deletions(-)
+ include/linux/migrate.h |  1 -
+ mm/migrate.c            | 45 ++++++++++++++++++++---------------------
+ 2 files changed, 22 insertions(+), 24 deletions(-)
 
-diff --git a/drivers/base/devcoredump.c b/drivers/base/devcoredump.c
-index 7e2d1f0d903a6..6e6bf8be00664 100644
---- a/drivers/base/devcoredump.c
-+++ b/drivers/base/devcoredump.c
-@@ -26,50 +26,46 @@ struct devcd_entry {
- 	void *data;
- 	size_t datalen;
- 	/*
--	 * Here, mutex is required to serialize the calls to del_wk work between
--	 * user/kernel space which happens when devcd is added with device_add()
--	 * and that sends uevent to user space. User space reads the uevents,
--	 * and calls to devcd_data_write() which try to modify the work which is
--	 * not even initialized/queued from devcoredump.
-+	 * There are 2 races for which mutex is required.
- 	 *
-+	 * The first race is between device creation and userspace writing to
-+	 * schedule immediately destruction.
- 	 *
-+	 * This race is handled by arming the timer before device creation, but
-+	 * when device creation fails the timer still exists.
- 	 *
--	 *        cpu0(X)                                 cpu1(Y)
-+	 * To solve this, hold the mutex during device_add(), and set
-+	 * init_completed on success before releasing the mutex.
- 	 *
--	 *        dev_coredump() uevent sent to user space
--	 *        device_add()  ======================> user space process Y reads the
--	 *                                              uevents writes to devcd fd
--	 *                                              which results into writes to
-+	 * That way the timer will never fire until device_add() is called,
-+	 * it will do nothing if init_completed is not set. The timer is also
-+	 * cancelled in that case.
- 	 *
--	 *                                             devcd_data_write()
--	 *                                               mod_delayed_work()
--	 *                                                 try_to_grab_pending()
--	 *                                                   del_timer()
--	 *                                                     debug_assert_init()
--	 *       INIT_DELAYED_WORK()
--	 *       schedule_delayed_work()
--	 *
--	 *
--	 * Also, mutex alone would not be enough to avoid scheduling of
--	 * del_wk work after it get flush from a call to devcd_free()
--	 * mentioned as below.
--	 *
--	 *	disabled_store()
--	 *        devcd_free()
--	 *          mutex_lock()             devcd_data_write()
--	 *          flush_delayed_work()
--	 *          mutex_unlock()
--	 *                                   mutex_lock()
--	 *                                   mod_delayed_work()
--	 *                                   mutex_unlock()
--	 * So, delete_work flag is required.
-+	 * The second race involves multiple parallel invocations of devcd_free(),
-+	 * add a deleted flag so only 1 can call the destructor.
- 	 */
- 	struct mutex mutex;
--	bool delete_work;
-+	bool init_completed, deleted;
- 	struct module *owner;
- 	ssize_t (*read)(char *buffer, loff_t offset, size_t count,
- 			void *data, size_t datalen);
- 	void (*free)(void *data);
-+	/*
-+	 * If nothing interferes and device_add() was returns success,
-+	 * del_wk will destroy the device after the timer fires.
-+	 *
-+	 * Multiple userspace processes can interfere in the working of the timer:
-+	 * - Writing to the coredump will reschedule the timer to run immediately,
-+	 *   if still armed.
-+	 *
-+	 *   This is handled by using "if (cancel_delayed_work()) {
-+	 *   schedule_delayed_work() }", to prevent re-arming after having
-+	 *   been previously fired.
-+	 * - Writing to /sys/class/devcoredump/disabled will destroy the
-+	 *   coredump synchronously.
-+	 *   This is handled by using disable_delayed_work_sync(), and then
-+	 *   checking if deleted flag is set with &devcd->mutex held.
-+	 */
- 	struct delayed_work del_wk;
- 	struct device *failing_dev;
- };
-@@ -98,14 +94,27 @@ static void devcd_dev_release(struct device *dev)
- 	kfree(devcd);
- }
+diff --git a/include/linux/migrate.h b/include/linux/migrate.h
+index 9009e27b5f44c..302f3e95faeaa 100644
+--- a/include/linux/migrate.h
++++ b/include/linux/migrate.h
+@@ -18,7 +18,6 @@ struct migration_target_control;
+  * - zero on page migration success;
+  */
+ #define MIGRATEPAGE_SUCCESS		0
+-#define MIGRATEPAGE_UNMAP		1
  
-+static void __devcd_del(struct devcd_entry *devcd)
-+{
-+	devcd->deleted = true;
-+	device_del(&devcd->devcd_dev);
-+	put_device(&devcd->devcd_dev);
-+}
-+
- static void devcd_del(struct work_struct *wk)
+ /**
+  * struct movable_operations - Driver page migration
+diff --git a/mm/migrate.c b/mm/migrate.c
+index 4ff6eea0ef7ed..e38c933d0c376 100644
+--- a/mm/migrate.c
++++ b/mm/migrate.c
+@@ -1188,7 +1188,7 @@ static void migrate_folio_done(struct folio *src,
+ static int migrate_folio_unmap(new_folio_t get_new_folio,
+ 		free_folio_t put_new_folio, unsigned long private,
+ 		struct folio *src, struct folio **dstp, enum migrate_mode mode,
+-		enum migrate_reason reason, struct list_head *ret)
++		struct list_head *ret)
  {
- 	struct devcd_entry *devcd;
-+	bool init_completed;
+ 	struct folio *dst;
+ 	int rc = -EAGAIN;
+@@ -1197,16 +1197,6 @@ static int migrate_folio_unmap(new_folio_t get_new_folio,
+ 	bool locked = false;
+ 	bool dst_locked = false;
  
- 	devcd = container_of(wk, struct devcd_entry, del_wk.work);
- 
--	device_del(&devcd->devcd_dev);
--	put_device(&devcd->devcd_dev);
-+	/* devcd->mutex serializes against dev_coredumpm_timeout */
-+	mutex_lock(&devcd->mutex);
-+	init_completed = devcd->init_completed;
-+	mutex_unlock(&devcd->mutex);
-+
-+	if (init_completed)
-+		__devcd_del(devcd);
- }
- 
- static ssize_t devcd_data_read(struct file *filp, struct kobject *kobj,
-@@ -125,12 +134,12 @@ static ssize_t devcd_data_write(struct file *filp, struct kobject *kobj,
- 	struct device *dev = kobj_to_dev(kobj);
- 	struct devcd_entry *devcd = dev_to_devcd(dev);
- 
--	mutex_lock(&devcd->mutex);
--	if (!devcd->delete_work) {
--		devcd->delete_work = true;
--		mod_delayed_work(system_wq, &devcd->del_wk, 0);
+-	if (folio_ref_count(src) == 1) {
+-		/* Folio was freed from under us. So we are done. */
+-		folio_clear_active(src);
+-		folio_clear_unevictable(src);
+-		/* free_pages_prepare() will clear PG_isolated. */
+-		list_del(&src->lru);
+-		migrate_folio_done(src, reason);
+-		return MIGRATEPAGE_SUCCESS;
 -	}
--	mutex_unlock(&devcd->mutex);
-+	/*
-+	 * Although it's tempting to use mod_delayed work here,
-+	 * that will cause a reschedule if the timer already fired.
-+	 */
-+	if (cancel_delayed_work(&devcd->del_wk))
-+		schedule_delayed_work(&devcd->del_wk, 0);
- 
- 	return count;
- }
-@@ -158,11 +167,21 @@ static int devcd_free(struct device *dev, void *data)
- {
- 	struct devcd_entry *devcd = dev_to_devcd(dev);
- 
-+	/*
-+	 * To prevent a race with devcd_data_write(), cancel work and
-+	 * complete manually instead.
-+	 *
-+	 * We cannot rely on the return value of
-+	 * cancel_delayed_work_sync() here, because it might be in the
-+	 * middle of a cancel_delayed_work + schedule_delayed_work pair.
-+	 *
-+	 * devcd->mutex here guards against multiple parallel invocations
-+	 * of devcd_free().
-+	 */
-+	cancel_delayed_work_sync(&devcd->del_wk);
- 	mutex_lock(&devcd->mutex);
--	if (!devcd->delete_work)
--		devcd->delete_work = true;
 -
--	flush_delayed_work(&devcd->del_wk);
-+	if (!devcd->deleted)
-+		__devcd_del(devcd);
- 	mutex_unlock(&devcd->mutex);
- 	return 0;
- }
-@@ -186,12 +205,10 @@ static ssize_t disabled_show(const struct class *class, const struct class_attri
-  *                                                                 put_device() <- last reference
-  *             error = fn(dev, data)                           devcd_dev_release()
-  *             devcd_free(dev, data)                           kfree(devcd)
-- *             mutex_lock(&devcd->mutex);
-  *
-  *
-- * In the above diagram, It looks like disabled_store() would be racing with parallely
-- * running devcd_del() and result in memory abort while acquiring devcd->mutex which
-- * is called after kfree of devcd memory  after dropping its last reference with
-+ * In the above diagram, it looks like disabled_store() would be racing with parallelly
-+ * running devcd_del() and result in memory abort after dropping its last reference with
-  * put_device(). However, this will not happens as fn(dev, data) runs
-  * with its own reference to device via klist_node so it is not its last reference.
-  * so, above situation would not occur.
-@@ -352,7 +369,7 @@ void dev_coredumpm(struct device *dev, struct module *owner,
- 	devcd->read = read;
- 	devcd->free = free;
- 	devcd->failing_dev = get_device(dev);
--	devcd->delete_work = false;
-+	devcd->deleted = false;
+ 	dst = get_new_folio(src, private);
+ 	if (!dst)
+ 		return -ENOMEM;
+@@ -1296,7 +1286,7 @@ static int migrate_folio_unmap(new_folio_t get_new_folio,
  
- 	mutex_init(&devcd->mutex);
- 	device_initialize(&devcd->devcd_dev);
-@@ -361,8 +378,14 @@ void dev_coredumpm(struct device *dev, struct module *owner,
- 		     atomic_inc_return(&devcd_count));
- 	devcd->devcd_dev.class = &devcd_class;
+ 	if (unlikely(page_has_movable_ops(&src->page))) {
+ 		__migrate_folio_record(dst, old_page_state, anon_vma);
+-		return MIGRATEPAGE_UNMAP;
++		return 0;
+ 	}
  
--	mutex_lock(&devcd->mutex);
- 	dev_set_uevent_suppress(&devcd->devcd_dev, true);
-+
-+	/* devcd->mutex prevents devcd_del() completing until init finishes */
-+	mutex_lock(&devcd->mutex);
-+	devcd->init_completed = false;
-+	INIT_DELAYED_WORK(&devcd->del_wk, devcd_del);
-+	schedule_delayed_work(&devcd->del_wk, DEVCD_TIMEOUT);
-+
- 	if (device_add(&devcd->devcd_dev))
- 		goto put_device;
+ 	/*
+@@ -1326,7 +1316,7 @@ static int migrate_folio_unmap(new_folio_t get_new_folio,
  
-@@ -379,13 +402,20 @@ void dev_coredumpm(struct device *dev, struct module *owner,
+ 	if (!folio_mapped(src)) {
+ 		__migrate_folio_record(dst, old_page_state, anon_vma);
+-		return MIGRATEPAGE_UNMAP;
++		return 0;
+ 	}
  
- 	dev_set_uevent_suppress(&devcd->devcd_dev, false);
- 	kobject_uevent(&devcd->devcd_dev.kobj, KOBJ_ADD);
--	INIT_DELAYED_WORK(&devcd->del_wk, devcd_del);
--	schedule_delayed_work(&devcd->del_wk, DEVCD_TIMEOUT);
+ out:
+@@ -1869,14 +1859,27 @@ static int migrate_pages_batch(struct list_head *from,
+ 				continue;
+ 			}
+ 
++			/*
++			 * If we are holding the last folio reference, the folio
++			 * was freed from under us, so just drop our reference.
++			 */
++			if (likely(!page_has_movable_ops(&folio->page)) &&
++			    folio_ref_count(folio) == 1) {
++				folio_clear_active(folio);
++				folio_clear_unevictable(folio);
++				list_del(&folio->lru);
++				migrate_folio_done(folio, reason);
++				stats->nr_succeeded += nr_pages;
++				stats->nr_thp_succeeded += is_thp;
++				continue;
++			}
 +
-+	/*
-+	 * Safe to run devcd_del() now that we are done with devcd_dev.
-+	 * Alternatively we could have taken a ref on devcd_dev before
-+	 * dropping the lock.
-+	 */
-+	devcd->init_completed = true;
- 	mutex_unlock(&devcd->mutex);
- 	return;
-  put_device:
--	put_device(&devcd->devcd_dev);
- 	mutex_unlock(&devcd->mutex);
-+	cancel_delayed_work_sync(&devcd->del_wk);
-+	put_device(&devcd->devcd_dev);
-+
-  put_module:
- 	module_put(owner);
-  free:
+ 			rc = migrate_folio_unmap(get_new_folio, put_new_folio,
+-					private, folio, &dst, mode, reason,
+-					ret_folios);
++					private, folio, &dst, mode, ret_folios);
+ 			/*
+ 			 * The rules are:
+-			 *	Success: folio will be freed
+-			 *	Unmap: folio will be put on unmap_folios list,
+-			 *	       dst folio put on dst_folios list
++			 *	0: folio will be put on unmap_folios list,
++			 *	   dst folio put on dst_folios list
+ 			 *	-EAGAIN: stay on the from list
+ 			 *	-ENOMEM: stay on the from list
+ 			 *	Other errno: put on ret_folios list
+@@ -1926,11 +1929,7 @@ static int migrate_pages_batch(struct list_head *from,
+ 				thp_retry += is_thp;
+ 				nr_retry_pages += nr_pages;
+ 				break;
+-			case MIGRATEPAGE_SUCCESS:
+-				stats->nr_succeeded += nr_pages;
+-				stats->nr_thp_succeeded += is_thp;
+-				break;
+-			case MIGRATEPAGE_UNMAP:
++			case 0:
+ 				list_move_tail(&folio->lru, &unmap_folios);
+ 				list_add_tail(&dst->lru, &dst_folios);
+ 				break;
 -- 
 2.51.0
 
