@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-189811-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-189812-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51D2FC0AA59
-	for <lists+stable@lfdr.de>; Sun, 26 Oct 2025 15:35:40 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A90A2C0AA6E
+	for <lists+stable@lfdr.de>; Sun, 26 Oct 2025 15:38:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 977C74E1C55
-	for <lists+stable@lfdr.de>; Sun, 26 Oct 2025 14:35:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BA90B3A859A
+	for <lists+stable@lfdr.de>; Sun, 26 Oct 2025 14:37:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D43C1A9F92;
-	Sun, 26 Oct 2025 14:35:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C891721C167;
+	Sun, 26 Oct 2025 14:37:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lQlgNXJS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MIzcd7Nl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1E175C96
-	for <stable@vger.kernel.org>; Sun, 26 Oct 2025 14:35:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 889B01EBFE0
+	for <stable@vger.kernel.org>; Sun, 26 Oct 2025 14:37:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761489335; cv=none; b=kvCynckkCMV6I2rfBsGv0XmoQjPapzOe1LaCQcO8b3TIWLzyYk9w3nuwq/qDngqKl97Y2eyjt79Mxf7s/wepHrGu2yLkSs9UNfPSjcO8RtBE/xVwJif9Mb1TyQo6PG05b8qWqYJ0UnjeEcaS6jSngOliuTLyft0B4jmqq+Q3BPk=
+	t=1761489467; cv=none; b=AEQgBDvV6iUKjUaYo4fiYR/b1f54AsaVEzCnPEsyNN1yW4ilMY6VJwxSJghTT9lZo+8SR53kJyEyyTw3QDZHjDwsTlPAmC3Qsa8dhKuxLDXrMDpTYY7cg+Wv8OLpTNe9jFL0A8PD/YX0rV/IZawSdo0Akzo3sJ1IHSQLlT4Yg7A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761489335; c=relaxed/simple;
-	bh=w6I4ZnobLqlEaYeWmNbSUSDagA8x37h6KrXMPL/prws=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=dggLl7a2RBvKwSKzUEP3BcmqhthfPMxpzwhyN9KU0WZiNRybCQPMQU/r7HNHDs8qyYKJfaY3CpnVYTOALCJcTSotTZGJhf6Ps+Rif47cXvYh1NezGbXI/JjPGeY23Up3XAFGmzxcQOS/mCc8y0xTGp7EajXO+8ScR9vnL9IIzho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lQlgNXJS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41365C4CEE7;
-	Sun, 26 Oct 2025 14:35:35 +0000 (UTC)
+	s=arc-20240116; t=1761489467; c=relaxed/simple;
+	bh=YKpyKJO8HEUUpY4VV8661QMD1VaDKshSAdRExuPGEzE=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Yyi8Px2G/u2esUQoCAZ3D8vq1PeIqMZBcEs/WTxhpxmcIZdgomhBqE7FtzBTpwwFAIsVFJc8IXoYHm1hOOQPP3sZjxXs33EJEhFK/eX5gp0E8WzqSKO5xmD03fLeamm//Z9+PKXzPqUxvs0+x6HE/kOBckpTJF1IC+FnlAnUmvM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MIzcd7Nl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 103FDC4CEE7;
+	Sun, 26 Oct 2025 14:37:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761489335;
-	bh=w6I4ZnobLqlEaYeWmNbSUSDagA8x37h6KrXMPL/prws=;
+	s=korg; t=1761489467;
+	bh=YKpyKJO8HEUUpY4VV8661QMD1VaDKshSAdRExuPGEzE=;
 	h=Subject:To:Cc:From:Date:From;
-	b=lQlgNXJSk7hAJpZ+mv3mA5k3/ZUhCAHvCZABDRJAtSMeEED286nhVL9BTIZgw9SUC
-	 U9UVyZLJ5dIk4vBVPeVWnNTWJjC4dUvAaMv1RnqtU/0dJgZGc3TIViV5JWbiDI+VYh
-	 ptjj8OYrIJbMBCGfUL0aiKCsR+z/P5KsgHeqmeD4=
-Subject: FAILED: patch "[PATCH] drm/amd/display: use GFP_NOWAIT for allocation in interrupt" failed to apply to 6.17-stable tree
-To: aurabindo.pillai@amd.com,alexander.deucher@amd.com,mario.limonciello@amd.com,sunpeng.li@amd.com
+	b=MIzcd7Nl/OyHGHtE/+A3P+JK+WdXg6u3YgKfuMvVo3dZsWd1VtNvyIBSl/DweQr5h
+	 43DE2Rf08KchRYlhab9fvLuz7OGlYbtMztSWSk+6P9foYNfNzhRAhhzRIc0K4UsdyK
+	 4pUnQ0nikUW8wR3Y7tLZ/IQSyQ7E0Z0a4TrtO1X8=
+Subject: FAILED: patch "[PATCH] xfs: always warn about deprecated mount options" failed to apply to 6.17-stable tree
+To: djwong@kernel.org,cem@kernel.org,cmaiolino@redhat.com,hch@lst.de
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sun, 26 Oct 2025 15:35:33 +0100
-Message-ID: <2025102633-shimmy-ferocity-c891@gregkh>
+Date: Sun, 26 Oct 2025 15:37:44 +0100
+Message-ID: <2025102644-leverage-whiny-afee@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,10 +62,10 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.17.y
 git checkout FETCH_HEAD
-git cherry-pick -x 72a1eb3cf573ab957ae412f0efb0cf6ff0876234
+git cherry-pick -x 630785bfbe12c3ee3ebccd8b530a98d632b7e39d
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025102633-shimmy-ferocity-c891@gregkh' --subject-prefix 'PATCH 6.17.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025102644-leverage-whiny-afee@gregkh' --subject-prefix 'PATCH 6.17.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,44 +77,63 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 72a1eb3cf573ab957ae412f0efb0cf6ff0876234 Mon Sep 17 00:00:00 2001
-From: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Date: Thu, 25 Sep 2025 10:23:59 -0400
-Subject: [PATCH] drm/amd/display: use GFP_NOWAIT for allocation in interrupt
- handler
+From 630785bfbe12c3ee3ebccd8b530a98d632b7e39d Mon Sep 17 00:00:00 2001
+From: "Darrick J. Wong" <djwong@kernel.org>
+Date: Tue, 21 Oct 2025 11:30:12 -0700
+Subject: [PATCH] xfs: always warn about deprecated mount options
 
-schedule_dc_vmin_vmax() is called by dm_crtc_high_irq(). Hence, we
-cannot have the former sleep. Use GFP_NOWAIT for allocation in this
-function.
+The deprecation of the 'attr2' mount option in 6.18 wasn't entirely
+successful because nobody noticed that the kernel never printed a
+warning about attr2 being set in fstab if the only xfs filesystem is the
+root fs; the initramfs mounts the root fs with no mount options; and the
+init scripts only conveyed the fstab options by remounting the root fs.
 
-Fixes: c210b757b400 ("drm/amd/display: fix dmub access race condition")
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Sun peng (Leo) Li <sunpeng.li@amd.com>
-Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit c04812cbe2f247a1c1e53a9b6c5e659963fe4065)
-Cc: stable@vger.kernel.org
+Fix this by making it complain all the time.
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index 6597475e245d..bfa3199591b6 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -551,13 +551,13 @@ static void schedule_dc_vmin_vmax(struct amdgpu_device *adev,
- 	struct dc_stream_state *stream,
- 	struct dc_crtc_timing_adjust *adjust)
+Cc: stable@vger.kernel.org # v5.13
+Fixes: 92cf7d36384b99 ("xfs: Skip repetitive warnings about mount options")
+Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Carlos Maiolino <cmaiolino@redhat.com>
+Signed-off-by: Carlos Maiolino <cem@kernel.org>
+
+diff --git a/fs/xfs/xfs_super.c b/fs/xfs/xfs_super.c
+index 9d51186b24dd..c53f2edf92e7 100644
+--- a/fs/xfs/xfs_super.c
++++ b/fs/xfs/xfs_super.c
+@@ -1379,16 +1379,25 @@ suffix_kstrtoull(
+ static inline void
+ xfs_fs_warn_deprecated(
+ 	struct fs_context	*fc,
+-	struct fs_parameter	*param,
+-	uint64_t		flag,
+-	bool			value)
++	struct fs_parameter	*param)
  {
--	struct vupdate_offload_work *offload_work = kzalloc(sizeof(*offload_work), GFP_KERNEL);
-+	struct vupdate_offload_work *offload_work = kzalloc(sizeof(*offload_work), GFP_NOWAIT);
- 	if (!offload_work) {
- 		drm_dbg_driver(adev_to_drm(adev), "Failed to allocate vupdate_offload_work\n");
- 		return;
- 	}
+-	/* Don't print the warning if reconfiguring and current mount point
+-	 * already had the flag set
++	/*
++	 * Always warn about someone passing in a deprecated mount option.
++	 * Previously we wouldn't print the warning if we were reconfiguring
++	 * and current mount point already had the flag set, but that was not
++	 * the right thing to do.
++	 *
++	 * Many distributions mount the root filesystem with no options in the
++	 * initramfs and rely on mount -a to remount the root fs with the
++	 * options in fstab.  However, the old behavior meant that there would
++	 * never be a warning about deprecated mount options for the root fs in
++	 * /etc/fstab.  On a single-fs system, that means no warning at all.
++	 *
++	 * Compounding this problem are distribution scripts that copy
++	 * /proc/mounts to fstab, which means that we can't remove mount
++	 * options unless we're 100% sure they have only ever been advertised
++	 * in /proc/mounts in response to explicitly provided mount options.
+ 	 */
+-	if ((fc->purpose & FS_CONTEXT_FOR_RECONFIGURE) &&
+-            !!(XFS_M(fc->root->d_sb)->m_features & flag) == value)
+-		return;
+ 	xfs_warn(fc->s_fs_info, "%s mount option is deprecated.", param->key);
+ }
  
--	struct dc_crtc_timing_adjust *adjust_copy = kzalloc(sizeof(*adjust_copy), GFP_KERNEL);
-+	struct dc_crtc_timing_adjust *adjust_copy = kzalloc(sizeof(*adjust_copy), GFP_NOWAIT);
- 	if (!adjust_copy) {
- 		drm_dbg_driver(adev_to_drm(adev), "Failed to allocate adjust_copy\n");
- 		kfree(offload_work);
 
 
