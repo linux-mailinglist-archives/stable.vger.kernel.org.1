@@ -1,142 +1,182 @@
-Return-Path: <stable+bounces-189752-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-189753-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25BDCC0A236
-	for <lists+stable@lfdr.de>; Sun, 26 Oct 2025 04:34:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C5795C0A24B
+	for <lists+stable@lfdr.de>; Sun, 26 Oct 2025 04:59:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4B8BE3B3189
-	for <lists+stable@lfdr.de>; Sun, 26 Oct 2025 03:34:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8C62D3A98ED
+	for <lists+stable@lfdr.de>; Sun, 26 Oct 2025 03:59:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB6351DE3DF;
-	Sun, 26 Oct 2025 03:34:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12E44225408;
+	Sun, 26 Oct 2025 03:59:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Ly4Cm5bJ"
 X-Original-To: stable@vger.kernel.org
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D6391A314F;
-	Sun, 26 Oct 2025 03:34:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8008A182D2;
+	Sun, 26 Oct 2025 03:59:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761449684; cv=none; b=MtukDg0FMZqgLG/hQ27uDkyaPcUx4lseqHIu50jkRQNtUgBMj3VTrPzU0QYnnDS+wRmBhtRJXvgj8NjLPNIeDs48Hb6qCU1GJBNfRG92buZ63ZMhHBos7Pi+cJKUS1hXNt9XVgOiwSMuk0rQPNmhryVjREP/kmiAkCm3NNJrSH4=
+	t=1761451162; cv=none; b=NSh8gx4R2dcgQ/5YrbIi7PSDcDxC4kFerHBNl4W29IOrMJzX016k5kINZ5CSpWmG3/Niq2p6zp7NJ1H2aD5OIic0bpFo9FVwwZ1+9J+A+WN6MSRKl84zRoI2Ca/NVyxO8JugCRLURD7hCu2RdMgUPvLK8jn1DOytaGGZ0pWYDf4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761449684; c=relaxed/simple;
-	bh=Y1I09DJiUO/uNIaF1NKLu6n6yAYxBTZ1RW/dPuXEPIs=;
-	h=Content-Type:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To; b=sz3OXqtsH9I4rVaB/wd6QpGlNyk5nGKiy6nsaUAFfxX64m/4RK+EyrhsA5qJfHsUDDm1SeZFVgkmzkzYtF16uUDdjz+MjlkC1TR2Fxz+BrXOq8Pbf5XrBWU5i73ObG6mnSUlOI7VHrEKZhL/cxSaHt2mHVlwZZ9BkRZfDG51K7k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: ab1349d2b21c11f0a38c85956e01ac42-20251026
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.6,REQID:44b6f9c3-6290-4886-a7e6-3bd9357fd70c,IP:0,UR
-	L:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:5,BULK:0,RULE:Release_Ham,ACTION:r
-	elease,TS:5
-X-CID-META: VersionHash:a9d874c,CLOUDID:4e5baa1b11c108ec7ff3b7b96f6dc9a6,BulkI
-	D:nil,BulkQuantity:0,Recheck:0,SF:81|82|102|817,TC:nil,Content:-10|-8|-5|5
-	0,EDM:-3,IP:nil,URL:0,File:2|127,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:
-	0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: ab1349d2b21c11f0a38c85956e01ac42-20251026
-X-User: zhangheng@kylinos.cn
-Received: from [172.25.120.76] [(10.44.16.150)] by mailgw.kylinos.cn
-	(envelope-from <zhangheng@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_128_GCM_SHA256 128/128)
-	with ESMTP id 1971309412; Sun, 26 Oct 2025 11:34:24 +0800
-Content-Type: multipart/mixed; boundary="------------EG8zjlNRNjcQWj3EtsGJp8Qt"
-Message-ID: <e765d91f-3c00-4dc5-ac24-68a5512a0c12@kylinos.cn>
-Date: Sun, 26 Oct 2025 11:34:21 +0800
+	s=arc-20240116; t=1761451162; c=relaxed/simple;
+	bh=6Gp9raUBPHcZ4I/DV/S1GtUuBi+6/amBX7YEBV0n6cQ=;
+	h=Date:To:From:Subject:Message-Id; b=IJDxGPm3DEK807W1e82IWcycHpPZ+aO12ACOf283hBjUDbbbOnxsn5QhKllVbPB6gGPOSrjGJHhcboPOrH0UdwBjVt7uAwyj5Ddl9yGqaf+Yczq8LvspCjlSgomzs8Dw7DpqJmUMosjCOeHn0qtrGCdkx1vv29j/Kdl1EaJa0RI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Ly4Cm5bJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDD8EC4CEE7;
+	Sun, 26 Oct 2025 03:59:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1761451162;
+	bh=6Gp9raUBPHcZ4I/DV/S1GtUuBi+6/amBX7YEBV0n6cQ=;
+	h=Date:To:From:Subject:From;
+	b=Ly4Cm5bJjfDLi1A2H3o245ndxniftc7qQE+5XAkTzrjWGexf3nCyAJD61W91UPTNp
+	 rxKP+jwPj+MDRD4Ssv/EPYbsZO7VIhpaYs+8ccqfCyn0Kgfa5hzVRgfIY5ewaTCYlS
+	 7fPCYLMyMhLvQO29fovrosSMCJ8AqBXmuEcDmCG4=
+Date: Sat, 25 Oct 2025 20:59:21 -0700
+To: mm-commits@vger.kernel.org,wangzijie1@honor.com,viro@zeniv.linux.org.uk,stable@vger.kernel.org,brauner@kernel.org,adobriyan@gmail.com,albinwyang@tencent.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + fs-proc-fix-uaf-in-proc_readdir_de.patch added to mm-hotfixes-unstable branch
+Message-Id: <20251026035921.DDD8EC4CEE7@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: [PATCH v4] HID: quirks: Change manufacturer for 4c4a:4155
-To: Terry Junge <linuxhid@cosmicgizmosystems.com>, jikos@kernel.org,
- bentiss@kernel.org, staffan.melin@oscillator.se
-Cc: linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
- 1114557@bugs.debian.org, stable@vger.kernel.org
-References: <20250923022445.3276026-1-zhangheng@kylinos.cn>
- <e0dde746-3761-414e-8df1-eb8557cadbf8@cosmicgizmosystems.com>
- <e605f642-c967-4d41-8145-a10e8f48fb1b@kylinos.cn>
- <365f9f8e-549e-42e1-ac8c-7ff1f42c6977@cosmicgizmosystems.com>
- <8f0155d4-72a7-45ec-a272-7892e783bbed@kylinos.cn>
- <c7aab08b-52fa-41ef-a7fb-118298bb93aa@cosmicgizmosystems.com>
-From: zhangheng <zhangheng@kylinos.cn>
-In-Reply-To: <c7aab08b-52fa-41ef-a7fb-118298bb93aa@cosmicgizmosystems.com>
 
-This is a multi-part message in MIME format.
---------------EG8zjlNRNjcQWj3EtsGJp8Qt
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
 
---------------EG8zjlNRNjcQWj3EtsGJp8Qt
-Content-Type: text/plain; charset=UTF-8;
- name="v4-0001-HID-quirks-Change-manufacturer-for-4c4a-4155.patch"
-Content-Disposition: attachment;
- filename*0="v4-0001-HID-quirks-Change-manufacturer-for-4c4a-4155.patch"
-Content-Transfer-Encoding: base64
+The patch titled
+     Subject: fs/proc: fix uaf in proc_readdir_de()
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     fs-proc-fix-uaf-in-proc_readdir_de.patch
 
-RnJvbSAwMWJlMGUzMWI0ZmQ5OTFmOTU1Zjc3ZWMwNmQwYzhiN2E2ZDBmYjEzIE1vbiBTZXAg
-MTcgMDA6MDA6MDAgMjAwMQpGcm9tOiBaaGFuZyBIZW5nIDx6aGFuZ2hlbmdAa3lsaW5vcy5j
-bj4KRGF0ZTogRnJpLCAxMiBTZXAgMjAyNSAyMDozODoxOCArMDgwMApTdWJqZWN0OiBbUEFU
-Q0ggdjRdIEhJRDogcXVpcmtzOiBDaGFuZ2UgbWFudWZhY3R1cmVyIGZvciA0YzRhOjQxNTUK
-CkJhc2VkIG9uIGF2YWlsYWJsZSBldmlkZW5jZSwgdGhlIFVTQiBJRCA0YzRhOjQxNTUgdXNl
-ZCBieSBtdWx0aXBsZQpkZXZpY2VzIGhhcyBiZWVuIGF0dHJpYnV0ZWQgdG8gSmllbGkuIFRo
-ZSBjb21taXQgMWE4OTUzZjRmNzc0CigiSElEOiBBZGQgSUdOT1JFIHF1aXJrIGZvciBTTUFS
-VExJTktURUNITk9MT0dZIikgYWZmZWN0ZWQgdG91Y2hzY3JlZW4KZnVuY3Rpb25hbGl0eS4g
-QWRkZWQgY2hlY2tzIGZvciBtYW51ZmFjdHVyZXIgYW5kIHNlcmlhbCBudW1iZXIgdG8KbWFp
-bnRhaW4gbWljcm9waG9uZSBjb21wYXRpYmlsaXR5LCBlbmFibGluZyBib3RoIGRldmljZXMg
-dG8gZnVuY3Rpb24KcHJvcGVybHkuCgpGaXhlczogMWE4OTUzZjRmNzc0ICgiSElEOiBBZGQg
-SUdOT1JFIHF1aXJrIGZvciBTTUFSVExJTktURUNITk9MT0dZIikKQ2M6IHN0YWJsZUB2Z2Vy
-Lmtlcm5lbC5vcmcKVGVzdGVkLWJ5OiBzdGFmZmFuLm1lbGluQG9zY2lsbGF0b3Iuc2UKU2ln
-bmVkLW9mZi1ieTogWmhhbmcgSGVuZyA8emhhbmdoZW5nQGt5bGlub3MuY24+Ci0tLQpDaGFu
-Z2VzIGluIHY0OgotLSBhZGQgc2VyaWFsIG51bWJlci4gU2luY2UgSSBzYXcgSklFTEkgdXNp
-bmcgaWRlbnRpY2FsIElEcyBmb3IgZGlmZmVyZW50CmRldmljZXMgd2l0aCBkaXN0aW5jdCBz
-ZXJpYWwgbnVtYmVycywgSSB3b3JyeSBTTUFSVExJTktURUNITk9MT0dZIG1pZ2h0CnJldXNl
-IHRoaXMgSUQgZm9yIHRvdWNoc2NyZWVucy4gQWRkaW5nIHNlcmlhbCBudW1iZXIgdmVyaWZp
-Y2F0aW9uIHByb3ZpZGVzCmV4dHJhIGluc3VyYW5jZS4KIGRyaXZlcnMvaGlkL2hpZC1pZHMu
-aCAgICB8ICA0ICsrLS0KIGRyaXZlcnMvaGlkL2hpZC1xdWlya3MuYyB8IDEzICsrKysrKysr
-KysrKy0KIDIgZmlsZXMgY2hhbmdlZCwgMTQgaW5zZXJ0aW9ucygrKSwgMyBkZWxldGlvbnMo
-LSkKCmRpZmYgLS1naXQgYS9kcml2ZXJzL2hpZC9oaWQtaWRzLmggYi9kcml2ZXJzL2hpZC9o
-aWQtaWRzLmgKaW5kZXggNjZmMDVkMDJjZmNhLi41ZTZlODc0ODcyMDUgMTAwNjQ0Ci0tLSBh
-L2RyaXZlcnMvaGlkL2hpZC1pZHMuaAorKysgYi9kcml2ZXJzL2hpZC9oaWQtaWRzLmgKQEAg
-LTE1NDYsNyArMTU0Niw3IEBACiAjZGVmaW5lIFVTQl9WRU5ET1JfSURfU0lHTk9URUMJCQkw
-eDIxMzMKICNkZWZpbmUgVVNCX0RFVklDRV9JRF9TSUdOT1RFQ19WSUVXU09OSUNfUEQxMDEx
-CTB4MDAxOAogCi0jZGVmaW5lIFVTQl9WRU5ET1JfSURfU01BUlRMSU5LVEVDSE5PTE9HWSAg
-ICAgICAgICAgICAgMHg0YzRhCi0jZGVmaW5lIFVTQl9ERVZJQ0VfSURfU01BUlRMSU5LVEVD
-SE5PTE9HWV80MTU1ICAgICAgICAgMHg0MTU1CisjZGVmaW5lIFVTQl9WRU5ET1JfSURfSklF
-TElfU0RLX0RFRkFVTFQJCTB4NGM0YQorI2RlZmluZSBVU0JfREVWSUNFX0lEX0pJRUxJX1NE
-S180MTU1CQkweDQxNTUKIAogI2VuZGlmCmRpZmYgLS1naXQgYS9kcml2ZXJzL2hpZC9oaWQt
-cXVpcmtzLmMgYi9kcml2ZXJzL2hpZC9oaWQtcXVpcmtzLmMKaW5kZXggYmNkNGJjY2YxYTdj
-Li4yMjc2MGFjNTBmMmQgMTAwNjQ0Ci0tLSBhL2RyaXZlcnMvaGlkL2hpZC1xdWlya3MuYwor
-KysgYi9kcml2ZXJzL2hpZC9oaWQtcXVpcmtzLmMKQEAgLTkxNSw3ICs5MTUsNiBAQCBzdGF0
-aWMgY29uc3Qgc3RydWN0IGhpZF9kZXZpY2VfaWQgaGlkX2lnbm9yZV9saXN0W10gPSB7CiAj
-ZW5kaWYKIAl7IEhJRF9VU0JfREVWSUNFKFVTQl9WRU5ET1JfSURfWUVBTElOSywgVVNCX0RF
-VklDRV9JRF9ZRUFMSU5LX1AxS19QNEtfQjJLKSB9LAogCXsgSElEX1VTQl9ERVZJQ0UoVVNC
-X1ZFTkRPUl9JRF9RVUFOVEEsIFVTQl9ERVZJQ0VfSURfUVVBTlRBX0hQXzVNUF9DQU1FUkFf
-NTQ3MykgfSwKLQl7IEhJRF9VU0JfREVWSUNFKFVTQl9WRU5ET1JfSURfU01BUlRMSU5LVEVD
-SE5PTE9HWSwgVVNCX0RFVklDRV9JRF9TTUFSVExJTktURUNITk9MT0dZXzQxNTUpIH0sCiAJ
-eyB9CiB9OwogCkBAIC0xMDY0LDYgKzEwNjMsMTggQEAgYm9vbCBoaWRfaWdub3JlKHN0cnVj
-dCBoaWRfZGV2aWNlICpoZGV2KQogCQkJCQkgICAgIHN0cmxlbihlbGFuX2FjcGlfaWRbaV0u
-aWQpKSkKIAkJCQkJcmV0dXJuIHRydWU7CiAJCWJyZWFrOworCWNhc2UgVVNCX1ZFTkRPUl9J
-RF9KSUVMSV9TREtfREVGQVVMVDoKKwkJLyoKKwkJICogTXVsdGlwbGUgVVNCIGRldmljZXMg
-d2l0aCBpZGVudGljYWwgSURzIChtaWMgJiB0b3VjaHNjcmVlbikuCisJCSAqIFRoZSB0b3Vj
-aCBzY3JlZW4gcmVxdWlyZXMgaGlkIGNvcmUgcHJvY2Vzc2luZywgYnV0IHRoZQorCQkgKiBt
-aWNyb3Bob25lIGRvZXMgbm90LiBUaGV5IGNhbiBiZSBkaXN0aW5ndWlzaGVkIGJ5IG1hbnVm
-YWN0dXJlcgorCQkgKiBhbmQgc2VyaWFsIG51bWJlci4KKwkJICovCisJCWlmIChoZGV2LT5w
-cm9kdWN0ID09IFVTQl9ERVZJQ0VfSURfSklFTElfU0RLXzQxNTUgJiYKKwkJICAgIHN0cm5j
-bXAoaGRldi0+bmFtZSwgIlNtYXJ0bGlua1RlY2hub2xvZ3kiLCAxOSkgPT0gMCAmJgorCQkg
-ICAgc3RybmNtcChoZGV2LT51bmlxLCAiMjAyMDExMTEwMDAwMDEiLCAxNCkgPT0gMCkKKwkJ
-CXJldHVybiB0cnVlOworCQlicmVhazsKIAl9CiAKIAlpZiAoaGRldi0+dHlwZSA9PSBISURf
-VFlQRV9VU0JNT1VTRSAmJgotLSAKMi40Ny4xCgo=
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/fs-proc-fix-uaf-in-proc_readdir_de.patch
 
---------------EG8zjlNRNjcQWj3EtsGJp8Qt--
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Wei Yang <albinwyang@tencent.com>
+Subject: fs/proc: fix uaf in proc_readdir_de()
+Date: Sat, 25 Oct 2025 10:42:33 +0800
+
+Pde is erased from subdir rbtree through rb_erase(), but not set the node
+to EMPTY, which may result in uaf access.  We should use RB_CLEAR_NODE()
+set the erased node to EMPTY, then pde_subdir_next() will return NULL to
+avoid uaf access.
+
+We found an uaf issue while using stress-ng testing, need to run testcase
+getdent and tun in the same time.  The steps of the issue is as follows:
+
+1) use getdent to traverse dir /proc/pid/net/dev_snmp6/, and current
+   pde is tun3;
+
+2) in the [time windows] unregister netdevice tun3 and tun2, and erase
+   them from rbtree.  erase tun3 first, and then erase tun2.  the
+   pde(tun2) will be released to slab;
+
+3) continue to getdent process, then pde_subdir_next() will return
+   pde(tun2) which is released, it will case uaf access.
+
+CPU 0                                      |    CPU 1
+----------------------------------------------------------------------------------------------
+traverse dir /proc/pid/net/dev_snmp6/      |   unregister_netdevice(tun->dev)   //tun3 tun2
+sys_getdents64()                           |
+  iterate_dir()                            |
+    proc_readdir()                         |
+      proc_readdir_de()                    |     snmp6_unregister_dev()
+        pde_get(de);                       |       proc_remove()
+        read_unlock(&proc_subdir_lock);    |         remove_proc_subtree()
+                                           |           write_lock(&proc_subdir_lock);
+        [time window]                      |           rb_erase(&root->subdir_node, &parent->subdir);
+                                           |           write_unlock(&proc_subdir_lock);
+        read_lock(&proc_subdir_lock);      |
+        next = pde_subdir_next(de);        |
+        pde_put(de);                       |
+        de = next;    //UAF                |
+
+rbtree of dev_snmp6
+                        |
+                    pde(tun3)
+                     /    \
+                  NULL  pde(tun2)
+
+Link: https://lkml.kernel.org/r/20251025024233.158363-1-albin_yang@163.com
+Signed-off-by: Wei Yang <albinwyang@tencent.com>
+Cc: Al Viro <viro@zeniv.linux.org.uk>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: wangzijie <wangzijie1@honor.com>
+Cc: Alexey Dobriyan <adobriyan@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ fs/proc/generic.c |   12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
+
+--- a/fs/proc/generic.c~fs-proc-fix-uaf-in-proc_readdir_de
++++ a/fs/proc/generic.c
+@@ -698,6 +698,12 @@ void pde_put(struct proc_dir_entry *pde)
+ 	}
+ }
+ 
++static void pde_erase(struct proc_dir_entry *pde, struct proc_dir_entry *parent)
++{
++	rb_erase(&pde->subdir_node, &parent->subdir);
++	RB_CLEAR_NODE(&pde->subdir_node);
++}
++
+ /*
+  * Remove a /proc entry and free it if it's not currently in use.
+  */
+@@ -720,7 +726,7 @@ void remove_proc_entry(const char *name,
+ 			WARN(1, "removing permanent /proc entry '%s'", de->name);
+ 			de = NULL;
+ 		} else {
+-			rb_erase(&de->subdir_node, &parent->subdir);
++			pde_erase(de, parent);
+ 			if (S_ISDIR(de->mode))
+ 				parent->nlink--;
+ 		}
+@@ -764,7 +770,7 @@ int remove_proc_subtree(const char *name
+ 			root->parent->name, root->name);
+ 		return -EINVAL;
+ 	}
+-	rb_erase(&root->subdir_node, &parent->subdir);
++	pde_erase(root, parent);
+ 
+ 	de = root;
+ 	while (1) {
+@@ -776,7 +782,7 @@ int remove_proc_subtree(const char *name
+ 					next->parent->name, next->name);
+ 				return -EINVAL;
+ 			}
+-			rb_erase(&next->subdir_node, &de->subdir);
++			pde_erase(next, de);
+ 			de = next;
+ 			continue;
+ 		}
+_
+
+Patches currently in -mm which might be from albinwyang@tencent.com are
+
+fs-proc-fix-uaf-in-proc_readdir_de.patch
+
 
