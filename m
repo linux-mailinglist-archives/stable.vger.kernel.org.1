@@ -1,99 +1,90 @@
-Return-Path: <stable+bounces-189877-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-189878-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3633DC0AE0C
-	for <lists+stable@lfdr.de>; Sun, 26 Oct 2025 17:43:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08CA9C0AE21
+	for <lists+stable@lfdr.de>; Sun, 26 Oct 2025 17:45:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 8D0243499D1
-	for <lists+stable@lfdr.de>; Sun, 26 Oct 2025 16:43:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F3A9F3B4AE0
+	for <lists+stable@lfdr.de>; Sun, 26 Oct 2025 16:44:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5026F2C11D4;
-	Sun, 26 Oct 2025 16:43:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E5B1261581;
+	Sun, 26 Oct 2025 16:44:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DxAXl5sQ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ac6DUDQD"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
+Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7887125485A
-	for <stable@vger.kernel.org>; Sun, 26 Oct 2025 16:43:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EAFF246798
+	for <stable@vger.kernel.org>; Sun, 26 Oct 2025 16:44:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761497021; cv=none; b=FKxk6Cuoc171iItOzgX1gl9cJSVmXAIVr+QEQ/r4WxGHhVYMKFFuhe+CNpjNfvnqwnT5nRlU9/KcqwDjKQCl2gXPZh6lAXIvdCqmBoC6QgH9BV0cqtk4q8Y8Ldwsh6rMr38Xu+uXe2apbVUezP/++G6wYMQ47YRBA5zNl/n94Jg=
+	t=1761497080; cv=none; b=dU6aYsh2MRXIacw3inWxEEfx1wNDqxkaap4A7xODfnNzz9/04Gy/Dlig1sHxbJCVEdck1azgWQXJXd0LxzjpJggnDQZU+6Qxlr9SmUbELqWn8Ygsnre3vidGbTB5ljwLehjrq4XaJNSueL0N7f08fSvTxdc2IiydTLSIpONgN0Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761497021; c=relaxed/simple;
-	bh=2blCvwW/JNfSePtiQhOpyFAVkiDR84ySlcLJfmQoOvc=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=s1h9I64IbMDr8k8b7hw9szJVoH0/XxSVZ8l298Hcz5oj1fZwOS+imNtkOWNjhYyjN/R5wWYwpZFCxb6lgJFe0DR8AVSkz//DLMbW0/xkK4uTwTRoND3K5FXMN5qmxVDGYVyPbRvbnWPq6WNeP2FTERQ4vvB5UejbTJHt/ngOI6c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DxAXl5sQ; arc=none smtp.client-ip=209.85.210.174
+	s=arc-20240116; t=1761497080; c=relaxed/simple;
+	bh=eQUOoR9FD3UwTeZyPSZWJNKIzcKibTzjwuLGuN9r9W8=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=EaeiPZcQ3bDYLhDOcvbAMwGrFRGSVHLbYrGlhIUTYXfFG7wUul3OFKb7pqj95W/MsTTwwGqSHiLyZgmE9OJNXsfbKTLrZvJq9Ml3XKEAdsu1tnYhTxsGYhFrGgY6SSaGAa8wgINqsFrg2TzF9tBy8WFw+JNjoCz/3qy1Slc/enY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ac6DUDQD; arc=none smtp.client-ip=209.85.210.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-781ea2cee3fso3551416b3a.0
-        for <stable@vger.kernel.org>; Sun, 26 Oct 2025 09:43:38 -0700 (PDT)
+Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-7a4176547bfso929540b3a.2
+        for <stable@vger.kernel.org>; Sun, 26 Oct 2025 09:44:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761497018; x=1762101818; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1761497079; x=1762101879; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=jCF061NAS8FhFP3hNpS05moHDGkV+h3U/U3CN5+nY3Y=;
-        b=DxAXl5sQtELRP1vcSZKU/GpY9atRPG/tlMzgWNQqc6HLf0hkZWybnzK7UbPByM98hn
-         Za0+1LO4s9ryppsa1kUqDjYSOxw0yMVtUAQwNo80OkcPKVh6Xmz55KvA0704fhyd4edn
-         dgqFKS4Dj1l/wHvZJqaeMPE054Yc+NqKGL5aefM5iba2iVEbzsUqvxcAthlx76k+ri7f
-         uE1RdSVkJvk8Kq0zgLEnp/rjyBNQQvp7UMmqjYE+LOo6aoIgRpohGWilR9XYq81sy0QS
-         F1WEzUBKhEVM5LCJqcrOD26IWhmOtvRU7/GGDzf28RQV2diUrJrX9ABeMt9rOYSPNL2E
-         wkig==
+        bh=OFfVLgzVjo4apr0F+9sFbXPgvyArU5e8XxuMCreDUBs=;
+        b=Ac6DUDQDiSqha8TOhpNWOy1v4k4BWEPkFUBk1QP17CIF8yHldefaXWI5zassdy+prA
+         g4N2SlPHpaaoQ4FBct+YD4Eahk6TU6cWdOZVy+ImjTiMWa7rXG4V7ZoiqSyk39iLlgnA
+         Ex1rKWoOpHTHwEYEOVEKOORBXLK5bhWtr6KLAewwf9x4yU6fkTMmVu5DYlb0P8XOzkkM
+         Lu4pddOAZk0KwUO5NFoSFh7FqoIvmAcRPBSiU6srzeU1W7LLm27MdqZvxQTfZIJiHNwJ
+         4yrDENrUACx21mLAxbjsdNIp/NV7ORfWcCxuFEm/QFNeVvZrOdsrptiuEvctu9czYL2n
+         xmjQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761497018; x=1762101818;
+        d=1e100.net; s=20230601; t=1761497079; x=1762101879;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=jCF061NAS8FhFP3hNpS05moHDGkV+h3U/U3CN5+nY3Y=;
-        b=D2rtGEuH4KTkPHCMIfNhzpBXzgKMzyalgc+bREM6vsZt3Mfy6SFeU1dpk3ROS4cTbH
-         i2K73ZpysBwTWlHBQ6dglAA+3bGTVj/GkVROwY5hrq0Jt0arvj2bBzj51O3nGx5/hmsb
-         D/PwjuprVoptVIg65X8cSIYtO4QJqyGB7kUJNwLvlA67vkUuxMt7aXGEcunBvvIBn4Ed
-         IEPsM1XE9RFX/9eesw5vNgzzOHmCA5dro+BkU3JB63SIg0Fy5BYk/RkbxtTs0nAHHOve
-         B9dRopVtbKZuyjjVD34FDdRFcVfrMAGhGA15X2P5rRHkLE3UGOltKy5sC8RiTucTDod1
-         4Y6Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUgoke1zpLXWjvBpm8Xqk9QtHXCNulgaKWBytRNwzFI2zzAwGPGLhp6YnaPzZKEf8SKh8Zq384=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyN6c63BuyHAzQ56Xg9X1thCXulUWmlx/1753AJbCAGYuTCU1qr
-	Ookdm5TxoBoMoXl8wbxG+xHCkN/bQtA0KWQH3wMLz0mWJ8OApbGlsYWeFcUA+8HL90U=
-X-Gm-Gg: ASbGncvxBRad7O3DLtmF9HN//io92Wa54WKKH/jWX5/kcSFEf4H2KmKYKZfTIVufJlY
-	PJtRG2YyPMZfrpyZ6L7A+IV0dw0l34u0o7t8HN/CqVNGZjbYDbNP8145LM4+TZeTcBdZlQ9sfwk
-	a81slGaiO9ORLhmqdq8Zvo5fZODVWA7DK3k7dItEmVa+p3Fn2shlTLiRzmP1VtDvy4xA+S1afrE
-	RcVdUN2CryNrcBqqE9QhtV/yEbzfs/zXuTngTxW8mlcTm51QN7uNWRXsDvbgaz1b0Hq8zFXFA3z
-	W79jHtGMtiZgviKBlens6FBac65IpqfePR16trGUjItwmnmod5t7Y1iC/17d37i3eu6cyc2Rxcw
-	H/I1Hp64xiWc2OpGwIGOVWSWAc4k7p22pWKKghvkVSvErLzL2ENBymquPTA48Y/lXFUJeG1vRjr
-	OQ4mAuoo6kQ9sxuA+3q2UbYV7otDF/GoQ65CcvryWy+0c=
-X-Google-Smtp-Source: AGHT+IFf+qjeyS6hjsC0nfYxfHIiI+ppqXHvuLXgsxBumfjvvdYcGEtHm3eqB+rkAU1cSh6c7pSxUA==
-X-Received: by 2002:a17:903:2446:b0:290:6b30:fb3 with SMTP id d9443c01a7336-2948b97658bmr102681155ad.16.1761497017589;
-        Sun, 26 Oct 2025 09:43:37 -0700 (PDT)
+        bh=OFfVLgzVjo4apr0F+9sFbXPgvyArU5e8XxuMCreDUBs=;
+        b=q8QpiaVBfLoKeDyRlO8UB6vvgilnZ/1Mk0SIe+yGweHd6SNCTjiyfq4TjMGocAPqmn
+         23AwGrkFg5tqEAtxzg2Wc24xGti/QExXYolA9UdHEFnMlgbnNgkoPYaVd8m8d2FfKtc5
+         a+QV6apsbZUXwAQcbew6lLzAjioEfCDGx7mwdth1aqlhKv3moaGG6xGzDWHIBg23ULTT
+         JBL6KowwAtlD3/+fYPpXYOrhVI48nEIXckaDX5Q/cTb0XhFMr3MOOSuF1bTZjvnkK9pw
+         i4rmyLWRl0TGdCMLq8q3O6rVXzsBDuMbBKx7JN8HBOoszgi2gCf4OOpTpgvgH3eYNN1L
+         z34w==
+X-Forwarded-Encrypted: i=1; AJvYcCVkAYRPIVRSsyBorq99Ta3rPMbXCd7PYDLGMei5xh1Zj2W7lh0CQd6d9r491qsjvJTw6KhwMww=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwLzgn3sycEnLmi4xsuk7sowltWavyxxbAaVq0kwUkkYivINiUc
+	bb5Fe9WlGG5SlJ7EXx3e5LgiI5jjiu6ZQhwgIq80uPkKva7VRyWlxUOW
+X-Gm-Gg: ASbGncs3GPU4QOpkSq4k8vitCLdQm+fpJhNoIQqXxs6C3vTmsEZsGpUq3wAZ32Y9C3e
+	RE0pBU+x6MvHq+GFbsjKd5MIcwp4pPJI61A9CayUWKVRSYiNPfBMwsgk9Ul0CKXT0KJtNuyhtvm
+	a1Ift1WVkapQcZUCBNUAV/jjA/6M53QOtKa+yXhlo1eGqQnownvUJ+DUOfmnanEvPsbMULl05XB
+	Jw/hj+lOVulcsKtKoYK1QYNbh+xuSxMTPxr9+cPRandrJsQFAqTbzmUSjaUyM0PHfLhsxAzHeyJ
+	B5jYnNffBewANtSVs4o2gDQYHpM55uohn+KWUWdOgB8Q/PWIP+oskhlFVMQUlnc3gk8OS6M9/CV
+	VI2LYSXH/N7D/nEuuzn9xBc94LSMnqqEz/mzAP3VFNuoKGDQoIrZPEXPoVcoSWvlxwWMfjqQq9K
+	BHjo2DuXVbjl915Xcb4k260n+LfRijGJgn
+X-Google-Smtp-Source: AGHT+IG49PJG/CbqXkaLHQC41z6X6jQK0xuoXYiEh+MDaaZLvv+6LBLNMogH8+OEV/PxbJSmU+sHyg==
+X-Received: by 2002:a05:6a20:7d9f:b0:262:1611:6528 with SMTP id adf61e73a8af0-33deae4e085mr11445565637.29.1761497078563;
+        Sun, 26 Oct 2025 09:44:38 -0700 (PDT)
 Received: from localhost.localdomain ([124.77.218.104])
-        by smtp.googlemail.com with ESMTPSA id 98e67ed59e1d1-33fee8014f6sm2961731a91.0.2025.10.26.09.43.32
+        by smtp.googlemail.com with ESMTPSA id d2e1a72fcca58-7a414072492sm5307768b3a.53.2025.10.26.09.44.35
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sun, 26 Oct 2025 09:43:37 -0700 (PDT)
+        Sun, 26 Oct 2025 09:44:38 -0700 (PDT)
 From: Miaoqian Lin <linmq006@gmail.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Xu Yang <xu.yang_2@nxp.com>,
-	Yuichiro Tsuji <yuichtsu@amazon.com>,
-	Max Schulze <max.schulze@online.de>,
-	=?UTF-8?q?Krzysztof=20Ha=C5=82asa?= <khalasa@piap.pl>,
-	David Hollis <dhollis@davehollis.com>,
-	Greg Kroah-Hartman <gregkh@suse.de>,
-	David Brownell <david-b@pacbell.net>,
-	linux-usb@vger.kernel.org,
-	netdev@vger.kernel.org,
+To: "Rafael J. Wysocki" <rafael@kernel.org>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	Zhang Rui <rui.zhang@intel.com>,
+	Lukasz Luba <lukasz.luba@arm.com>,
+	Yu-Che Cheng <giver@chromium.org>,
+	linux-pm@vger.kernel.org,
 	linux-kernel@vger.kernel.org
 Cc: linmq006@gmail.com,
 	stable@vger.kernel.org
-Subject: [PATCH v2] net: usb: asix_devices: Check return value of usbnet_get_endpoints
-Date: Mon, 27 Oct 2025 00:43:16 +0800
-Message-Id: <20251026164318.57624-1-linmq006@gmail.com>
+Subject: [PATCH] thermal/of: Fix reference count leak in thermal_of_cm_lookup
+Date: Mon, 27 Oct 2025 00:44:22 +0800
+Message-Id: <20251026164422.58128-1-linmq006@gmail.com>
 X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -103,63 +94,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The code did not check the return value of usbnet_get_endpoints.
-Add checks and return the error if it fails to transfer the error.
+The function calls of_parse_phandle() to get a
+device node, which increments the reference count of the node. However,
+the function fails to call of_node_put() to decrement the reference.
+This leads to a reference count leak.
 
-Found via static anlaysis and this is similar to
-commit 07161b2416f7 ("sr9800: Add check for usbnet_get_endpoints").
+This is found by static analysis and similar to the commit a508e33956b5
+("ipmi:ipmb: Fix refcount leak in ipmi_ipmb_probe")
 
-Fixes: 933a27d39e0e ("USB: asix - Add AX88178 support and many other changes")
-Fixes: 2e55cc7210fe ("[PATCH] USB: usbnet (3/9) module for ASIX Ethernet adapters")
+Fixes: 423de5b5bc5b ("thermal/of: Fix cdev lookup in thermal_of_should_bind()")
 Cc: stable@vger.kernel.org
 Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
 ---
-- v1:http://lore.kernel.org/all/20250830103743.2118777-1-linmq006@gmail.com
-changes in v2:
-- fix the blank line.
-- update message to clarify how this is detected
-- add Cc: stable
----
- drivers/net/usb/asix_devices.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ drivers/thermal/thermal_of.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/usb/asix_devices.c b/drivers/net/usb/asix_devices.c
-index 85bd5d845409..232bbd79a4de 100644
---- a/drivers/net/usb/asix_devices.c
-+++ b/drivers/net/usb/asix_devices.c
-@@ -230,7 +230,9 @@ static int ax88172_bind(struct usbnet *dev, struct usb_interface *intf)
- 	int i;
- 	unsigned long gpio_bits = dev->driver_info->data;
+diff --git a/drivers/thermal/thermal_of.c b/drivers/thermal/thermal_of.c
+index 1a51a4d240ff..932291648683 100644
+--- a/drivers/thermal/thermal_of.c
++++ b/drivers/thermal/thermal_of.c
+@@ -284,8 +284,12 @@ static bool thermal_of_cm_lookup(struct device_node *cm_np,
+ 		int count, i;
  
--	usbnet_get_endpoints(dev,intf);
-+	ret = usbnet_get_endpoints(dev, intf);
-+	if (ret)
-+		goto out;
+ 		tr_np = of_parse_phandle(child, "trip", 0);
+-		if (tr_np != trip->priv)
++		if (tr_np != trip->priv) {
++			of_node_put(tr_np);
+ 			continue;
++		}
++
++		of_node_put(tr_np);
  
- 	/* Toggle the GPIOs in a manufacturer/model specific way */
- 	for (i = 2; i >= 0; i--) {
-@@ -848,7 +850,9 @@ static int ax88772_bind(struct usbnet *dev, struct usb_interface *intf)
- 
- 	dev->driver_priv = priv;
- 
--	usbnet_get_endpoints(dev, intf);
-+	ret = usbnet_get_endpoints(dev, intf);
-+	if (ret)
-+		return ret;
- 
- 	/* Maybe the boot loader passed the MAC address via device tree */
- 	if (!eth_platform_get_mac_address(&dev->udev->dev, buf)) {
-@@ -1281,7 +1285,9 @@ static int ax88178_bind(struct usbnet *dev, struct usb_interface *intf)
- 	int ret;
- 	u8 buf[ETH_ALEN] = {0};
- 
--	usbnet_get_endpoints(dev,intf);
-+	ret = usbnet_get_endpoints(dev, intf);
-+	if (ret)
-+		return ret;
- 
- 	/* Get the MAC address */
- 	ret = asix_read_cmd(dev, AX_CMD_READ_NODE_ID, 0, 0, ETH_ALEN, buf, 0);
+ 		/* The trip has been found, look up the cdev. */
+ 		count = of_count_phandle_with_args(child, "cooling-device",
 -- 
 2.39.5 (Apple Git-154)
 
