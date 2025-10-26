@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-189778-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-189779-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1108CC0A9C6
-	for <lists+stable@lfdr.de>; Sun, 26 Oct 2025 15:24:24 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id D86C7C0AA0E
+	for <lists+stable@lfdr.de>; Sun, 26 Oct 2025 15:29:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 36D963495F0
-	for <lists+stable@lfdr.de>; Sun, 26 Oct 2025 14:24:23 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6093C4E9C57
+	for <lists+stable@lfdr.de>; Sun, 26 Oct 2025 14:26:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36EB6246BA9;
-	Sun, 26 Oct 2025 14:24:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DCF026F463;
+	Sun, 26 Oct 2025 14:26:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m3UbyFjF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dnkjlmft"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAC1B215191
-	for <stable@vger.kernel.org>; Sun, 26 Oct 2025 14:24:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A8EC27B34D
+	for <stable@vger.kernel.org>; Sun, 26 Oct 2025 14:26:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761488661; cv=none; b=REaEMapziOJyriVoRQHrxHJllTjPGGdWGXk40faOvixt1BGKpy8VDG9JGz0ZRaoMG/04CBYdOo1BRykkG7kscZ69F8TpsXMVEijmof45MOdVGZssosUmpBoA/JZn3Z4dPuvMxf24e8YK9xREJWGyybIie9KYyvVSfCyzehbsR4s=
+	t=1761488776; cv=none; b=CwiOAprx13myhcSDBU1ciJaw8nRUyDroRa8PiTje32IT+Q8fgFHYWaFu1IWy2sZE3Nl4fSllIXnQ/JEPHXWbeVuGffzyy2MAnyIcwLVNWLZhAmxLW9Ue0w3YUHtAZg2ByHKgbJTIXZ+h57Kzy+SLok3uANxA0zYh5shYHiEMU3A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761488661; c=relaxed/simple;
-	bh=kbZH0dUBukePVEM1RwZUExcAdBM5ZISox1sHvk4KRU4=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=qNcQLftt8FsT5jTNKdmKgi4g4Myld0mx4PHHZwtd+3nPoSh8IN1nsToSj8TK+OAi74mR5lGUdALFYRUBEG6vUg8Bz+deYNLGX4uQ3DXWKg+QHBOA4iIxIoQ6K/FzsIbVjPGq124IYnzfNu6Gz8Pux1xvxabJH8w66OS7iPif2kM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m3UbyFjF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 269F1C4CEFB;
-	Sun, 26 Oct 2025 14:24:19 +0000 (UTC)
+	s=arc-20240116; t=1761488776; c=relaxed/simple;
+	bh=Fq8HLKTgQgfQK6TQPd1XQ77OqAOY33VcMUd+6etrd4g=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=A9nYljdXfiylEIXgrsMtBR5igt8HBOFgMyCkjyBhbqpd3fxwUulb2Cu4wBmBMa7iovyAG7EVz9C1WVGwjqw+/uYPtV8phTA+u5I/T4iwxB75lW0kYTfwFnMkUi073rHhMtpBctnUgSQN2zT/Yw0PmMOApeCXqDVYsEVYREx6eV0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dnkjlmft; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40EBAC4CEE7;
+	Sun, 26 Oct 2025 14:26:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761488660;
-	bh=kbZH0dUBukePVEM1RwZUExcAdBM5ZISox1sHvk4KRU4=;
+	s=korg; t=1761488775;
+	bh=Fq8HLKTgQgfQK6TQPd1XQ77OqAOY33VcMUd+6etrd4g=;
 	h=Subject:To:Cc:From:Date:From;
-	b=m3UbyFjFz5we0Iyz/hIRW7ZoUUQVultTcTS0wUFB8GGymC31wjq74AtZYSr0Mb80U
-	 o/GbirKoUxJa75x5qtEHjvFZOwoo2qWJbio69i52SuhmfNDXLmF6ZouliwG/FpjhWg
-	 n3P/xZYvwgjAmInL1ifsLntGWlvZ/Mfki7fqo45g=
-Subject: FAILED: patch "[PATCH] xfs: always warn about deprecated mount options" failed to apply to 5.10-stable tree
-To: djwong@kernel.org,cem@kernel.org,cmaiolino@redhat.com,hch@lst.de
+	b=DnkjlmftQ242J9bsHISt49E3u4pQ3uRQuikvj+kfLCR+UF2mmAvsf/ghl3u0i1SU6
+	 DJwbv/CW+SW5G9gMnd6U6IhYajjbtLF1dAlZHI6FfG8zGVrfxZqt4bX7f3SzoFQizV
+	 xtJRCEtsg5HPVbOe0aOzQtlhTOJF0WqvFP0qk2cQ=
+Subject: FAILED: patch "[PATCH] smb: client: allocate enough space for MR WRs and" failed to apply to 6.17-stable tree
+To: metze@samba.org,linkinjeon@kernel.org,longli@microsoft.com,smfrench@gmail.com,stfrench@microsoft.com,tom@talpey.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sun, 26 Oct 2025 15:24:17 +0100
-Message-ID: <2025102617-untrimmed-ideally-b80b@gregkh>
+Date: Sun, 26 Oct 2025 15:26:13 +0100
+Message-ID: <2025102613-galvanize-commerce-52df@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.17-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.17.y
 git checkout FETCH_HEAD
-git cherry-pick -x 630785bfbe12c3ee3ebccd8b530a98d632b7e39d
+git cherry-pick -x e607ef686ab95fbcb0dfd16f49aea7918be626e1
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025102617-untrimmed-ideally-b80b@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025102613-galvanize-commerce-52df@gregkh' --subject-prefix 'PATCH 6.17.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,63 +77,115 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 630785bfbe12c3ee3ebccd8b530a98d632b7e39d Mon Sep 17 00:00:00 2001
-From: "Darrick J. Wong" <djwong@kernel.org>
-Date: Tue, 21 Oct 2025 11:30:12 -0700
-Subject: [PATCH] xfs: always warn about deprecated mount options
+From e607ef686ab95fbcb0dfd16f49aea7918be626e1 Mon Sep 17 00:00:00 2001
+From: Stefan Metzmacher <metze@samba.org>
+Date: Thu, 16 Oct 2025 12:54:21 +0200
+Subject: [PATCH] smb: client: allocate enough space for MR WRs and
+ ib_drain_qp()
 
-The deprecation of the 'attr2' mount option in 6.18 wasn't entirely
-successful because nobody noticed that the kernel never printed a
-warning about attr2 being set in fstab if the only xfs filesystem is the
-root fs; the initramfs mounts the root fs with no mount options; and the
-init scripts only conveyed the fstab options by remounting the root fs.
+The IB_WR_REG_MR and IB_WR_LOCAL_INV operations for smbdirect_mr_io
+structures should never fail because the submission or completion queues
+are too small. So we allocate more send_wr depending on the (local) max
+number of MRs.
 
-Fix this by making it complain all the time.
+While there also add additional space for ib_drain_qp().
 
-Cc: stable@vger.kernel.org # v5.13
-Fixes: 92cf7d36384b99 ("xfs: Skip repetitive warnings about mount options")
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Carlos Maiolino <cmaiolino@redhat.com>
-Signed-off-by: Carlos Maiolino <cem@kernel.org>
+This should make sure ib_post_send() will never fail
+because the submission queue is full.
 
-diff --git a/fs/xfs/xfs_super.c b/fs/xfs/xfs_super.c
-index 9d51186b24dd..c53f2edf92e7 100644
---- a/fs/xfs/xfs_super.c
-+++ b/fs/xfs/xfs_super.c
-@@ -1379,16 +1379,25 @@ suffix_kstrtoull(
- static inline void
- xfs_fs_warn_deprecated(
- 	struct fs_context	*fc,
--	struct fs_parameter	*param,
--	uint64_t		flag,
--	bool			value)
-+	struct fs_parameter	*param)
- {
--	/* Don't print the warning if reconfiguring and current mount point
--	 * already had the flag set
-+	/*
-+	 * Always warn about someone passing in a deprecated mount option.
-+	 * Previously we wouldn't print the warning if we were reconfiguring
-+	 * and current mount point already had the flag set, but that was not
-+	 * the right thing to do.
-+	 *
-+	 * Many distributions mount the root filesystem with no options in the
-+	 * initramfs and rely on mount -a to remount the root fs with the
-+	 * options in fstab.  However, the old behavior meant that there would
-+	 * never be a warning about deprecated mount options for the root fs in
-+	 * /etc/fstab.  On a single-fs system, that means no warning at all.
-+	 *
-+	 * Compounding this problem are distribution scripts that copy
-+	 * /proc/mounts to fstab, which means that we can't remove mount
-+	 * options unless we're 100% sure they have only ever been advertised
-+	 * in /proc/mounts in response to explicitly provided mount options.
- 	 */
--	if ((fc->purpose & FS_CONTEXT_FOR_RECONFIGURE) &&
--            !!(XFS_M(fc->root->d_sb)->m_features & flag) == value)
--		return;
- 	xfs_warn(fc->s_fs_info, "%s mount option is deprecated.", param->key);
- }
+Fixes: f198186aa9bb ("CIFS: SMBD: Establish SMB Direct connection")
+Fixes: cc55f65dd352 ("smb: client: make use of common smbdirect_socket_parameters")
+Cc: stable@vger.kernel.org
+Cc: Steve French <smfrench@gmail.com>
+Cc: Tom Talpey <tom@talpey.com>
+Cc: Long Li <longli@microsoft.com>
+Cc: Namjae Jeon <linkinjeon@kernel.org>
+Cc: linux-cifs@vger.kernel.org
+Cc: samba-technical@lists.samba.org
+Signed-off-by: Stefan Metzmacher <metze@samba.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+
+diff --git a/fs/smb/client/smbdirect.c b/fs/smb/client/smbdirect.c
+index 49e2df3ad1f0..b1218ea4aa8b 100644
+--- a/fs/smb/client/smbdirect.c
++++ b/fs/smb/client/smbdirect.c
+@@ -1767,6 +1767,7 @@ static struct smbd_connection *_smbd_get_connection(
+ 	struct smbdirect_socket *sc;
+ 	struct smbdirect_socket_parameters *sp;
+ 	struct rdma_conn_param conn_param;
++	struct ib_qp_cap qp_cap;
+ 	struct ib_qp_init_attr qp_attr;
+ 	struct sockaddr_in *addr_in = (struct sockaddr_in *) dstaddr;
+ 	struct ib_port_immutable port_immutable;
+@@ -1838,6 +1839,25 @@ static struct smbd_connection *_smbd_get_connection(
+ 		goto config_failed;
+ 	}
  
++	sp->responder_resources =
++		min_t(u8, sp->responder_resources,
++		      sc->ib.dev->attrs.max_qp_rd_atom);
++	log_rdma_mr(INFO, "responder_resources=%d\n",
++		sp->responder_resources);
++
++	/*
++	 * We use allocate sp->responder_resources * 2 MRs
++	 * and each MR needs WRs for REG and INV, so
++	 * we use '* 4'.
++	 *
++	 * +1 for ib_drain_qp()
++	 */
++	memset(&qp_cap, 0, sizeof(qp_cap));
++	qp_cap.max_send_wr = sp->send_credit_target + sp->responder_resources * 4 + 1;
++	qp_cap.max_recv_wr = sp->recv_credit_max + 1;
++	qp_cap.max_send_sge = SMBDIRECT_SEND_IO_MAX_SGE;
++	qp_cap.max_recv_sge = SMBDIRECT_RECV_IO_MAX_SGE;
++
+ 	sc->ib.pd = ib_alloc_pd(sc->ib.dev, 0);
+ 	if (IS_ERR(sc->ib.pd)) {
+ 		rc = PTR_ERR(sc->ib.pd);
+@@ -1848,7 +1868,7 @@ static struct smbd_connection *_smbd_get_connection(
+ 
+ 	sc->ib.send_cq =
+ 		ib_alloc_cq_any(sc->ib.dev, sc,
+-				sp->send_credit_target, IB_POLL_SOFTIRQ);
++				qp_cap.max_send_wr, IB_POLL_SOFTIRQ);
+ 	if (IS_ERR(sc->ib.send_cq)) {
+ 		sc->ib.send_cq = NULL;
+ 		goto alloc_cq_failed;
+@@ -1856,7 +1876,7 @@ static struct smbd_connection *_smbd_get_connection(
+ 
+ 	sc->ib.recv_cq =
+ 		ib_alloc_cq_any(sc->ib.dev, sc,
+-				sp->recv_credit_max, IB_POLL_SOFTIRQ);
++				qp_cap.max_recv_wr, IB_POLL_SOFTIRQ);
+ 	if (IS_ERR(sc->ib.recv_cq)) {
+ 		sc->ib.recv_cq = NULL;
+ 		goto alloc_cq_failed;
+@@ -1865,11 +1885,7 @@ static struct smbd_connection *_smbd_get_connection(
+ 	memset(&qp_attr, 0, sizeof(qp_attr));
+ 	qp_attr.event_handler = smbd_qp_async_error_upcall;
+ 	qp_attr.qp_context = sc;
+-	qp_attr.cap.max_send_wr = sp->send_credit_target;
+-	qp_attr.cap.max_recv_wr = sp->recv_credit_max;
+-	qp_attr.cap.max_send_sge = SMBDIRECT_SEND_IO_MAX_SGE;
+-	qp_attr.cap.max_recv_sge = SMBDIRECT_RECV_IO_MAX_SGE;
+-	qp_attr.cap.max_inline_data = 0;
++	qp_attr.cap = qp_cap;
+ 	qp_attr.sq_sig_type = IB_SIGNAL_REQ_WR;
+ 	qp_attr.qp_type = IB_QPT_RC;
+ 	qp_attr.send_cq = sc->ib.send_cq;
+@@ -1883,12 +1899,6 @@ static struct smbd_connection *_smbd_get_connection(
+ 	}
+ 	sc->ib.qp = sc->rdma.cm_id->qp;
+ 
+-	sp->responder_resources =
+-		min_t(u8, sp->responder_resources,
+-		      sc->ib.dev->attrs.max_qp_rd_atom);
+-	log_rdma_mr(INFO, "responder_resources=%d\n",
+-		sp->responder_resources);
+-
+ 	memset(&conn_param, 0, sizeof(conn_param));
+ 	conn_param.initiator_depth = sp->initiator_depth;
+ 	conn_param.responder_resources = sp->responder_resources;
 
 
