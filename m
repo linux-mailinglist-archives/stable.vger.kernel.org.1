@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-189800-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-189801-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3BC3C0AA35
-	for <lists+stable@lfdr.de>; Sun, 26 Oct 2025 15:32:19 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D7A8C0AA38
+	for <lists+stable@lfdr.de>; Sun, 26 Oct 2025 15:32:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5DBC43AA199
-	for <lists+stable@lfdr.de>; Sun, 26 Oct 2025 14:32:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 471051899823
+	for <lists+stable@lfdr.de>; Sun, 26 Oct 2025 14:33:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE89B1A9F92;
-	Sun, 26 Oct 2025 14:32:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 585271A9F92;
+	Sun, 26 Oct 2025 14:32:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jFqtKf8l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wV5XyW/4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D70D125A0
-	for <stable@vger.kernel.org>; Sun, 26 Oct 2025 14:32:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17002125A0
+	for <stable@vger.kernel.org>; Sun, 26 Oct 2025 14:32:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761489133; cv=none; b=DPNiIrCiqOaSSa31aZ3TWUE43qEGH9CR6IfpL6cqcT+Q/pjA0c465MDaHzCs+lpSCFYAcg81bYnRLvv/qzSB/HnjVE/LsOCAoRxnFZjo6SMnOC+aTzsE4DSfMJkCXSE310oIpDS8uVIro97KLBtnAum3FlNUp4eq9RxJgA9euYY=
+	t=1761489169; cv=none; b=r4QHwPKPODBxXjjcQ+3dFrldM+6RRx8PXVooMTIoxO/+M5pl+SvEszvTLVZL42fLNUfuXg0SMnQpYaWAMLo5WFMv0S110o/QAG/Mw4WNhqUZfTgg2XftwTEwQQhh/RNHlJhVqzi7f3xnq0+e+xrgzbHwBh7LDKsm723QVsJ1ImY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761489133; c=relaxed/simple;
-	bh=03bt7MyNpALXVPQQnLJGiC/ZBKMkSS54/5J1BNeBWok=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Xquft4pDbyfsN+2oxxU0/zIbJ1oOtk72MTLw/e1/lek8lGRd11LFnCe4+IgQ/3CFzgHZ4UJfkWjryAd84kJG5khfDKfghnFlwPlEktTXQs8eZl43aKVKN1Wyj465YSKj0cZ/aTzrGtEYw9kId20CIDXdf8CYx2Fzln2N7yWd4IE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jFqtKf8l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEBB3C4CEE7;
-	Sun, 26 Oct 2025 14:32:12 +0000 (UTC)
+	s=arc-20240116; t=1761489169; c=relaxed/simple;
+	bh=PMzfYmmRivHIeN40P+vXqdBjm43yiDeijiDd5cVqqfc=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=QHW9xOpi9tIEvEQB80qRmi6rXfTFh5UXayr4+nEiYFPeChSMTcr0P8LKTFE4NsvuAWHnDVakZrLFRkWxIil8nb/MPuWqNB2/RhdYVLwLcsj7iVcJEMlqMff3yuSxCk4POgGQf+RmCynukdaVTbVny3i+4znKA2dI4kbLRKfbzBc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wV5XyW/4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38775C4CEE7;
+	Sun, 26 Oct 2025 14:32:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761489133;
-	bh=03bt7MyNpALXVPQQnLJGiC/ZBKMkSS54/5J1BNeBWok=;
+	s=korg; t=1761489168;
+	bh=PMzfYmmRivHIeN40P+vXqdBjm43yiDeijiDd5cVqqfc=;
 	h=Subject:To:Cc:From:Date:From;
-	b=jFqtKf8lAhTZfvNHjNpG/zl1X55lxbbm+lzFDYUjsD/HClucZ0Sk8S3JELFRpudNR
-	 sLGuvgwmdIWi9DbRupYEpZT0PXhgmkD3Nr5y/tWzXBuf7QYbDo5enbmg0/L40O4DrU
-	 ZgLX0nNv4T7jcRaXDAngLKWVFrUrVLb4BAc6M+3k=
+	b=wV5XyW/4uLXHL5YJsm+Yx7LmkXcZWG6eS5WaPgKjp84DZ50FFkjX6mtTqfxcyB9SO
+	 pDuuPrrvGjMPk+4gjCeAO3fVS1rLA4JDPqDxUv+Uus3Rz3o0ZNFupDBaSM1O3H2Xsi
+	 7N6+6Y9c1Ts9kadrHFszLZ4NN/iFvb4KFIG2iqMA=
 Subject: FAILED: patch "[PATCH] gpio: idio-16: Define fixed direction of the GPIO lines" failed to apply to 6.17-stable tree
 To: wbg@kernel.org,andriy.shevchenko@linux.intel.com,bartosz.golaszewski@linaro.org,linus.walleij@linaro.org,mark.caveayland@nutanix.com,mwalle@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sun, 26 Oct 2025 15:32:10 +0100
-Message-ID: <2025102610-dissuade-tamer-7d92@gregkh>
+Date: Sun, 26 Oct 2025 15:32:45 +0100
+Message-ID: <2025102645-grueling-ramrod-c231@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -65,7 +65,7 @@ git checkout FETCH_HEAD
 git cherry-pick -x 2ba5772e530f73eb847fb96ce6c4017894869552
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025102610-dissuade-tamer-7d92@gregkh' --subject-prefix 'PATCH 6.17.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025102645-grueling-ramrod-c231@gregkh' --subject-prefix 'PATCH 6.17.y' HEAD^..
 
 Possible dependencies:
 
