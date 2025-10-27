@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-190726-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191047-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2A2BC108FA
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:10:10 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3B71C110F0
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:32:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 7779B3517FD
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:10:10 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7EDC750175F
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:23:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BA2332B9B0;
-	Mon, 27 Oct 2025 19:07:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5922D32E140;
+	Mon, 27 Oct 2025 19:21:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ms+20KqP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MiRAOU1b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3847A32B991;
-	Mon, 27 Oct 2025 19:07:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02A192C3749;
+	Mon, 27 Oct 2025 19:21:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592034; cv=none; b=pCZsx1VXwOHuikrlmrxdXalU5wE13MKtA/0ZrzCIZe6O+uN/UfX1dUE3yuPRgZvZHJEd82jfaRM0GMhpoRjEKYWPg40SazHKbAWg+Nnbgi6R/jIryhoVcNMrneOJijYD94FFr4FaBMkgv3TQRXFUxw+R12+U5I9TKMMSNlhT0aM=
+	t=1761592876; cv=none; b=jINjGIeO/OU2eEm/te3o0A9g5mQTrGRhXuyp2MARMh8FrGZnX77+9Hds/nu25nozPYBZf8yqj/2Utzip8Qb/TCkpMpeZDbxcPxQmjfe2tiA1A0vbW6UuPQ6jdgiNr+z594FgZoblDHJqoMjcSKmJMIO9ncdtSlaP3/RMaJFRZ7M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592034; c=relaxed/simple;
-	bh=hIr6YZ4rsHBTMT0ySE06GCzwUPegHdKXNa7y79kn8ks=;
+	s=arc-20240116; t=1761592876; c=relaxed/simple;
+	bh=G8x41RGDCDVWa/xVIHRESfasGhLrEmR0noEZe1ob0eA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SeV5OJjEDEWhqjYYocTZi7/uQ4+J4mQYgEHbWAyu/G5//0jsGHZHcvs8wffGNAB+4pk0DT3bZyodAnn4HVwakpwClW6kRnzovd1qrBivXR9TscTJVAxTBFFD824RLXsINR/VppEPDn0I5bAEFnMJKzU5d3jH2DuI45F3SHJl97s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ms+20KqP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCB8AC113D0;
-	Mon, 27 Oct 2025 19:07:13 +0000 (UTC)
+	 MIME-Version; b=cnfYzI9XloNyM5ElofEa7noJjCuS8IpRNOzLIGTPyO/d//t3/p1Xu560KkRGoLNNXT3rsgQe3RQViQNFT09TVBJj5+67Vp4B4/+djNEOEZZSTYAVxZhHysoknbAfQKhn5WbfIrRe5U0EyBjAJzqo7rXsQLCx5cMfnYMRR1tbLGQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MiRAOU1b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27015C4CEF1;
+	Mon, 27 Oct 2025 19:21:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592034;
-	bh=hIr6YZ4rsHBTMT0ySE06GCzwUPegHdKXNa7y79kn8ks=;
+	s=korg; t=1761592875;
+	bh=G8x41RGDCDVWa/xVIHRESfasGhLrEmR0noEZe1ob0eA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ms+20KqPvRN0PcVkRsTUsPC/6zBJX8D0zDoRj+sHODDIkcd703Aj83lO+pQgYB5ba
-	 s9PmoBQ8n2lNkhgikObNL7tr1rADzEovB0tIYQTIwsTd63otamQC8zMT94qZx8i8jC
-	 wApliVj9NIyco/iehz9nX5xK1Q3jc4XmJE+sfSRQ=
+	b=MiRAOU1bjFXZVZ/nUNkqF2f0KL9ojb0VlJGqu9gMkcQfGQ7NqqaZhsGrGqFL/JGx9
+	 eG12r8X0TakutQ+zVG4YddX0N9QMRtJkhwPBK4mH8x8BWVKdGZqHvCwdH0G7sgMLq4
+	 0fHyMki8KjfkduCsjLSP/z8QZkAYgZ9UBFYSCBlI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sergey Bashirov <sergeybashirov@gmail.com>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 092/123] NFSD: Rework encoding and decoding of nfsd4_deviceid
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Robin Murohy <robin.murphy@arm.com>,
+	"Isaac J. Manjarres" <isaacmanjarres@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 046/117] dma-debug: dont report false positives with DMA_BOUNCE_UNALIGNED_KMALLOC
 Date: Mon, 27 Oct 2025 19:36:12 +0100
-Message-ID: <20251027183448.850770191@linuxfoundation.org>
+Message-ID: <20251027183455.237668376@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183446.381986645@linuxfoundation.org>
-References: <20251027183446.381986645@linuxfoundation.org>
+In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
+References: <20251027183453.919157109@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,158 +65,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sergey Bashirov <sergeybashirov@gmail.com>
+From: Marek Szyprowski <m.szyprowski@samsung.com>
 
-[ Upstream commit 832738e4b325b742940761e10487403f9aad13e8 ]
+commit 03521c892bb8d0712c23e158ae9bdf8705897df8 upstream.
 
-Compilers may optimize the layout of C structures, so we should not rely
-on sizeof struct and memcpy to encode and decode XDR structures. The byte
-order of the fields should also be taken into account.
+Commit 370645f41e6e ("dma-mapping: force bouncing if the kmalloc() size is
+not cache-line-aligned") introduced DMA_BOUNCE_UNALIGNED_KMALLOC feature
+and permitted architecture specific code configure kmalloc slabs with
+sizes smaller than the value of dma_get_cache_alignment().
 
-This patch adds the correct functions to handle the deviceid4 structure
-and removes the pad field, which is currently not used by NFSD, from the
-runtime state. The server's byte order is preserved because the deviceid4
-blob on the wire is only used as a cookie by the client.
+When that feature is enabled, the physical address of some small
+kmalloc()-ed buffers might be not aligned to the CPU cachelines, thus not
+really suitable for typical DMA.  To properly handle that case a SWIOTLB
+buffer bouncing is used, so no CPU cache corruption occurs.  When that
+happens, there is no point reporting a false-positive DMA-API warning that
+the buffer is not properly aligned, as this is not a client driver fault.
 
-Signed-off-by: Sergey Bashirov <sergeybashirov@gmail.com>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Stable-dep-of: d68886bae76a ("NFSD: Fix last write offset handling in layoutcommit")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[m.szyprowski@samsung.com: replace is_swiotlb_allocated() with is_swiotlb_active(), per Catalin]
+  Link: https://lkml.kernel.org/r/20251010173009.3916215-1-m.szyprowski@samsung.com
+Link: https://lkml.kernel.org/r/20251009141508.2342138-1-m.szyprowski@samsung.com
+Fixes: 370645f41e6e ("dma-mapping: force bouncing if the kmalloc() size is not cache-line-aligned")
+Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Christoph Hellwig <hch@lst.de>
+Cc: Inki Dae <m.szyprowski@samsung.com>
+Cc: Robin Murohy <robin.murphy@arm.com>
+Cc: "Isaac J. Manjarres" <isaacmanjarres@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/blocklayoutxdr.c    |    7 ++-----
- fs/nfsd/flexfilelayoutxdr.c |    3 +--
- fs/nfsd/nfs4layouts.c       |    1 -
- fs/nfsd/nfs4xdr.c           |   14 +-------------
- fs/nfsd/xdr4.h              |   36 +++++++++++++++++++++++++++++++++++-
- 5 files changed, 39 insertions(+), 22 deletions(-)
+ kernel/dma/debug.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/fs/nfsd/blocklayoutxdr.c
-+++ b/fs/nfsd/blocklayoutxdr.c
-@@ -29,8 +29,7 @@ nfsd4_block_encode_layoutget(struct xdr_
- 	*p++ = cpu_to_be32(len);
- 	*p++ = cpu_to_be32(1);		/* we always return a single extent */
+--- a/kernel/dma/debug.c
++++ b/kernel/dma/debug.c
+@@ -23,6 +23,7 @@
+ #include <linux/ctype.h>
+ #include <linux/list.h>
+ #include <linux/slab.h>
++#include <linux/swiotlb.h>
+ #include <asm/sections.h>
+ #include "debug.h"
  
--	p = xdr_encode_opaque_fixed(p, &b->vol_id,
--			sizeof(struct nfsd4_deviceid));
-+	p = svcxdr_encode_deviceid4(p, &b->vol_id);
- 	p = xdr_encode_hyper(p, b->foff);
- 	p = xdr_encode_hyper(p, b->len);
- 	p = xdr_encode_hyper(p, b->soff);
-@@ -145,9 +144,7 @@ nfsd4_block_decode_layoutupdate(__be32 *
- 	for (i = 0; i < nr_iomaps; i++) {
- 		struct pnfs_block_extent bex;
- 
--		memcpy(&bex.vol_id, p, sizeof(struct nfsd4_deviceid));
--		p += XDR_QUADLEN(sizeof(struct nfsd4_deviceid));
--
-+		p = svcxdr_decode_deviceid4(p, &bex.vol_id);
- 		p = xdr_decode_hyper(p, &bex.foff);
- 		if (bex.foff & (block_size - 1)) {
- 			dprintk("%s: unaligned offset 0x%llx\n",
---- a/fs/nfsd/flexfilelayoutxdr.c
-+++ b/fs/nfsd/flexfilelayoutxdr.c
-@@ -54,8 +54,7 @@ nfsd4_ff_encode_layoutget(struct xdr_str
- 	*p++ = cpu_to_be32(1);			/* single mirror */
- 	*p++ = cpu_to_be32(1);			/* single data server */
- 
--	p = xdr_encode_opaque_fixed(p, &fl->deviceid,
--			sizeof(struct nfsd4_deviceid));
-+	p = svcxdr_encode_deviceid4(p, &fl->deviceid);
- 
- 	*p++ = cpu_to_be32(1);			/* efficiency */
- 
---- a/fs/nfsd/nfs4layouts.c
-+++ b/fs/nfsd/nfs4layouts.c
-@@ -120,7 +120,6 @@ nfsd4_set_deviceid(struct nfsd4_deviceid
- 
- 	id->fsid_idx = fhp->fh_export->ex_devid_map->idx;
- 	id->generation = device_generation;
--	id->pad = 0;
- 	return 0;
- }
- 
---- a/fs/nfsd/nfs4xdr.c
-+++ b/fs/nfsd/nfs4xdr.c
-@@ -566,18 +566,6 @@ nfsd4_decode_state_owner4(struct nfsd4_c
- }
- 
- #ifdef CONFIG_NFSD_PNFS
--static __be32
--nfsd4_decode_deviceid4(struct nfsd4_compoundargs *argp,
--		       struct nfsd4_deviceid *devid)
--{
--	__be32 *p;
--
--	p = xdr_inline_decode(argp->xdr, NFS4_DEVICEID4_SIZE);
--	if (!p)
--		return nfserr_bad_xdr;
--	memcpy(devid, p, sizeof(*devid));
--	return nfs_ok;
--}
- 
- static __be32
- nfsd4_decode_layoutupdate4(struct nfsd4_compoundargs *argp,
-@@ -1733,7 +1721,7 @@ nfsd4_decode_getdeviceinfo(struct nfsd4_
- 	__be32 status;
- 
- 	memset(gdev, 0, sizeof(*gdev));
--	status = nfsd4_decode_deviceid4(argp, &gdev->gd_devid);
-+	status = nfsd4_decode_deviceid4(argp->xdr, &gdev->gd_devid);
- 	if (status)
- 		return status;
- 	if (xdr_stream_decode_u32(argp->xdr, &gdev->gd_layout_type) < 0)
---- a/fs/nfsd/xdr4.h
-+++ b/fs/nfsd/xdr4.h
-@@ -459,9 +459,43 @@ struct nfsd4_reclaim_complete {
- struct nfsd4_deviceid {
- 	u64			fsid_idx;
- 	u32			generation;
--	u32			pad;
- };
- 
-+static inline __be32 *
-+svcxdr_encode_deviceid4(__be32 *p, const struct nfsd4_deviceid *devid)
-+{
-+	__be64 *q = (__be64 *)p;
-+
-+	*q = (__force __be64)devid->fsid_idx;
-+	p += 2;
-+	*p++ = (__force __be32)devid->generation;
-+	*p++ = xdr_zero;
-+	return p;
-+}
-+
-+static inline __be32 *
-+svcxdr_decode_deviceid4(__be32 *p, struct nfsd4_deviceid *devid)
-+{
-+	__be64 *q = (__be64 *)p;
-+
-+	devid->fsid_idx = (__force u64)(*q);
-+	p += 2;
-+	devid->generation = (__force u32)(*p++);
-+	p++; /* NFSD does not use the remaining octets */
-+	return p;
-+}
-+
-+static inline __be32
-+nfsd4_decode_deviceid4(struct xdr_stream *xdr, struct nfsd4_deviceid *devid)
-+{
-+	__be32 *p = xdr_inline_decode(xdr, NFS4_DEVICEID4_SIZE);
-+
-+	if (unlikely(!p))
-+		return nfserr_bad_xdr;
-+	svcxdr_decode_deviceid4(p, devid);
-+	return nfs_ok;
-+}
-+
- struct nfsd4_layout_seg {
- 	u32			iomode;
- 	u64			offset;
+@@ -594,7 +595,9 @@ static void add_dma_entry(struct dma_deb
+ 	if (rc == -ENOMEM) {
+ 		pr_err_once("cacheline tracking ENOMEM, dma-debug disabled\n");
+ 		global_disable = true;
+-	} else if (rc == -EEXIST && !(attrs & DMA_ATTR_SKIP_CPU_SYNC)) {
++	} else if (rc == -EEXIST && !(attrs & DMA_ATTR_SKIP_CPU_SYNC) &&
++		   !(IS_ENABLED(CONFIG_DMA_BOUNCE_UNALIGNED_KMALLOC) &&
++		     is_swiotlb_active(entry->dev))) {
+ 		err_printk(entry->dev, entry,
+ 			"cacheline tracking EEXIST, overlapping mappings aren't supported\n");
+ 	}
 
 
 
