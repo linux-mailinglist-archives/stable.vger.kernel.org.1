@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-191203-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190715-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09A1AC1125E
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:37:43 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F3DBC10AF5
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:15:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E31D6563776
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:29:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0661656661D
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:09:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DE95321445;
-	Mon, 27 Oct 2025 19:27:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF2D3320CBE;
+	Mon, 27 Oct 2025 19:06:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ERi1wHNi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZZuUGLww"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD96731DD87;
-	Mon, 27 Oct 2025 19:27:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AEC2202963;
+	Mon, 27 Oct 2025 19:06:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761593272; cv=none; b=i8Lp3lpB2DZilA/3sOZb5EbvUyY3NpFW0ucqeJhjvROvZza04/awzwJKPgbhwA2Bpdyta9KQbb2rRrPc3smyFWjo9DuYvhdQPWWPfsD3A1fjvPbwYKVI4cftwK/VC6STQsajecTF55QjPHL/oMvWADJUnDsKWoeXrkFzLBfFn38=
+	t=1761592005; cv=none; b=ceXiJnhQC8pX2V8Vt0o35yuFYRvZYwFepIO6iFInnR9V92Ox5WVb1Bp6p/zILswTNNZsTgP44gPVlWdd9Um9iqIgxf4oBWXyf7enxqxtffroiBpN0M6HTPzsahWcxtPZGXGEwMOENM31YsR/lWPL2k2PAx6kcfP+Wggk8x9nKFo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761593272; c=relaxed/simple;
-	bh=wPWH7H/BuCqdhJxp1oTJ9s8rME0Elj+s/dTW5q08Frg=;
+	s=arc-20240116; t=1761592005; c=relaxed/simple;
+	bh=ej2KkGEBD31qR+tbCg/Cnm9FfvP7SNgZItuhn7WQpNk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HuHf6UwEmAYBfsCawSAZIf39n8ag4TisqXqFEQDhS9Q4QxfExIcIch6TUjNH/LpjSzLR8UQimsHB8zJ8b2r4a1n4P/MpARCCs4YBBNhC1OCFHiHG0jl8y0UDTRZzjZvq6/RWijT+5WVKWbmx3CUk8qQ6jNcemi83ypiQxF9rdyo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ERi1wHNi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41383C4CEF1;
-	Mon, 27 Oct 2025 19:27:52 +0000 (UTC)
+	 MIME-Version; b=QLpRaS158DHL0yK6sF9MB9WFV62A+gEE2gA+if5lyvp6zBe6bEyeZxQ3VO+z3mCNJCGyCbCBLMFZq39xD3hOfu5mByx2BWGTaqeEYNcQPGBcUCx3SIS1U43mF8AcKqUmt2mnTm7XCz4zoQZvIIEFeqsecBPuzi8quc2ztt/XwWw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZZuUGLww; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C9E0C4CEF1;
+	Mon, 27 Oct 2025 19:06:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761593272;
-	bh=wPWH7H/BuCqdhJxp1oTJ9s8rME0Elj+s/dTW5q08Frg=;
+	s=korg; t=1761592005;
+	bh=ej2KkGEBD31qR+tbCg/Cnm9FfvP7SNgZItuhn7WQpNk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ERi1wHNiDKLLelYDlbXTft76MdlzfVGcIluEOCCc+BkZUZyYZDFKxYl9USzPiGiDs
-	 hiwnwUvnCdpttlEbpRc6NdVskXRXQLeoR5vzhErmudAyw4TpnXcwrKXfNrkIDUkMOv
-	 gMqFzs/uRpHvdzzBsZVzq72DMnlUFMl1G37moAno=
+	b=ZZuUGLwwapElZ/wp/kzLzoHRXnKGcP1DBUcodS3+Ora2JSF1BLas+XIOCA6QgLaD+
+	 ZiFDAOAVIrxwS3hWgptAT1pyZ8r5p3ONjdxZY1Kk56q9iBkJDyXXMW64TYDpKZtZvY
+	 Dj4B6LntubFHk2e/7b4GHVZtpMcjIYEmrYziK8fs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charlie Jenkins <charlie@rivosinc.com>,
-	Paul Walmsley <pjw@kernel.org>
-Subject: [PATCH 6.17 080/184] riscv: cpufeature: avoid uninitialized variable in has_thead_homogeneous_vlenb()
+	syzbot+f6c3c066162d2c43a66c@syzkaller.appspotmail.com,
+	Deepanshu Kartikey <kartikey406@gmail.com>,
+	Ian Abbott <abbotti@mev.co.uk>
+Subject: [PATCH 5.15 082/123] comedi: fix divide-by-zero in comedi_buf_munge()
 Date: Mon, 27 Oct 2025 19:36:02 +0100
-Message-ID: <20251027183517.056089634@linuxfoundation.org>
+Message-ID: <20251027183448.585126928@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
-References: <20251027183514.934710872@linuxfoundation.org>
+In-Reply-To: <20251027183446.381986645@linuxfoundation.org>
+References: <20251027183446.381986645@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,49 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Walmsley <pjw@kernel.org>
+From: Deepanshu Kartikey <kartikey406@gmail.com>
 
-commit 2dc99ea2727640b2fe12f9aa0e38ea2fc3cbb92d upstream.
+commit 87b318ba81dda2ee7b603f4f6c55e78ec3e95974 upstream.
 
-In has_thead_homogeneous_vlenb(), smatch detected that the vlenb variable
-could be used while uninitialized.  It appears that this could happen if
-no CPUs described in DT have the "thead,vlenb" property.
+The comedi_buf_munge() function performs a modulo operation
+`async->munge_chan %= async->cmd.chanlist_len` without first
+checking if chanlist_len is zero. If a user program submits a command with
+chanlist_len set to zero, this causes a divide-by-zero error when the device
+processes data in the interrupt handler path.
 
-Fix by initializing vlenb to 0, which will keep thead_vlenb_of set to 0
-(as it was statically initialized).  This in turn will cause
-riscv_v_setup_vsize() to fall back to CSR probing - the desired result if
-thead,vlenb isn't provided in the DT data.
+Add a check for zero chanlist_len at the beginning of the
+function, similar to the existing checks for !map and
+CMDF_RAWDATA flag. When chanlist_len is zero, update
+munge_count and return early, indicating the data was
+handled without munging.
 
-While here, fix a nearby comment typo.
+This prevents potential kernel panics from malformed user commands.
 
+Reported-by: syzbot+f6c3c066162d2c43a66c@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=f6c3c066162d2c43a66c
 Cc: stable@vger.kernel.org
-Cc: Charlie Jenkins <charlie@rivosinc.com>
-Fixes: 377be47f90e41 ("riscv: vector: Use vlenb from DT for thead")
-Signed-off-by: Paul Walmsley <pjw@kernel.org>
-Link: https://lore.kernel.org/r/22674afb-2fe8-2a83-1818-4c37bd554579@kernel.org
+Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
+Reviewed-by: Ian Abbott <abbotti@mev.co.uk>
+Link: https://patch.msgid.link/20250924102639.1256191-1-kartikey406@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/riscv/kernel/cpufeature.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/comedi/comedi_buf.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/riscv/kernel/cpufeature.c
-+++ b/arch/riscv/kernel/cpufeature.c
-@@ -932,9 +932,9 @@ static int has_thead_homogeneous_vlenb(v
- {
- 	int cpu;
- 	u32 prev_vlenb = 0;
--	u32 vlenb;
-+	u32 vlenb = 0;
+--- a/drivers/comedi/comedi_buf.c
++++ b/drivers/comedi/comedi_buf.c
+@@ -369,7 +369,7 @@ static unsigned int comedi_buf_munge(str
+ 	unsigned int count = 0;
+ 	const unsigned int num_sample_bytes = comedi_bytes_per_sample(s);
  
--	/* Ignore thead,vlenb property if xtheavector is not enabled in the kernel */
-+	/* Ignore thead,vlenb property if xtheadvector is not enabled in the kernel */
- 	if (!IS_ENABLED(CONFIG_RISCV_ISA_XTHEADVECTOR))
- 		return 0;
- 
+-	if (!s->munge || (async->cmd.flags & CMDF_RAWDATA)) {
++	if (!s->munge || (async->cmd.flags & CMDF_RAWDATA) || async->cmd.chanlist_len == 0) {
+ 		async->munge_count += num_bytes;
+ 		return num_bytes;
+ 	}
 
 
 
