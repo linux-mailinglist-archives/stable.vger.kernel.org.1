@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-191063-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190954-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 310AFC11105
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:32:38 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35A06C10EE9
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:26:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id CE05C548679
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:23:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 69657563DCD
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:18:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BE94328613;
-	Mon, 27 Oct 2025 19:21:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21B6230C62D;
+	Mon, 27 Oct 2025 19:17:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SIpISsQt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xF2EOpvr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9FB830147E;
-	Mon, 27 Oct 2025 19:21:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEB95320A0D;
+	Mon, 27 Oct 2025 19:17:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592916; cv=none; b=iAjH0r20s4MNRhY7rY309SMq5Wl/LEeCpdvKoXclacxQAn1Jw/PioV6OwMx3nSvXFBKdWFw6khByG4b/pPYIAH8cCyyaO2kZ53ZkO7vUm4e1pwuLun2MiQzfWoslhGseRocBkeePOj8TwbR9OkCaRpTi0h+t6HHmjNmuzN/QysU=
+	t=1761592632; cv=none; b=sm5oFNKp2nmljuwMm00jU3CT5z6Wk1JXxMh7sfqNCtQEkBptQAW+z9e6eAo8YUdJ9PQXo174E3yXoITSQPn5Ne0yLRiFuRTYupXO5Aozbq2VXe26fV3J3nCrtCW0Z1rjd5468RsCPbE7o+JKpH0f0d3lXQLHL63/kM+HFDYR9r8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592916; c=relaxed/simple;
-	bh=Crya+F1Ux6MLM4bVRJcZEnPvxhYIwjJuTDm2ihoKIEg=;
+	s=arc-20240116; t=1761592632; c=relaxed/simple;
+	bh=byfwklMKRlD5lHf1P48PvXebjx4QzWZnZVePKis7OI4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GjgTTr+BEkwaVAU+qjw8cXmsFXv9X7/bsV6TXaLnVrTcoLFavhmQA4SGSJf81A4mpbtRaLCFvKushfDgRKVGd1CrugpD4zy7OSwBPe3BRLXG+EFT/ZQwp5Z8dPFYRLoqkiP/zrSGCKgQhhU5LW0rblTHsHvAwElQ5dATkfEMtJc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SIpISsQt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CF81C4CEF1;
-	Mon, 27 Oct 2025 19:21:56 +0000 (UTC)
+	 MIME-Version; b=KNUn9w2ay+w3qJjd7nf+OIqk0va35V5LOsXCGdegG8eVB2a8uSsfzjW3qFIh6KWbzzjxI0pjNYuheFY7+ay6BxkVn0Ri0J8T1mtKcCdckaKGaDwAvQyfPsNkKNjSP15Rs/X8Li+Ochao9FNUPpQd+sQ8NqVZantcfm3aHJ6Va8U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xF2EOpvr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F6C4C4CEF1;
+	Mon, 27 Oct 2025 19:17:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592916;
-	bh=Crya+F1Ux6MLM4bVRJcZEnPvxhYIwjJuTDm2ihoKIEg=;
+	s=korg; t=1761592632;
+	bh=byfwklMKRlD5lHf1P48PvXebjx4QzWZnZVePKis7OI4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SIpISsQtPxUuaAF7t1AWpViloY0oi0/10RvoOW+nj4x0PUEsfTcoWrdl0zqY+YVYy
-	 rlsGE9IkppaRQFBWrgf5Q4yKjeHz4KobwL4+LO28Pm+R+bNgpG2ox/wlqrVleh/3KV
-	 obHkV6eGohLgWFU4S7dV1WOVJ2Z7mvvLg7QbkvT8=
+	b=xF2EOpvrpzzWITc07zeFKSL+Zj2M+DwzhSUpitGQFqdQLqmveNrWC6wY4ZnuPgdGQ
+	 Hy7GHbO4xAwmVZPtcNQRd/qIHcz8WiG8oHiFWQhG9IfgSrA/7Mw2Z1F0iuxv7kUOWb
+	 OVw+qoXMSHBfKSPCUgmIvvrYP/UcwwhLvTdpEr5Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+10e35716f8e4929681fa@syzkaller.appspotmail.com,
-	mhal@rbox.co,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.12 060/117] vsock: fix lock inversion in vsock_assign_transport()
-Date: Mon, 27 Oct 2025 19:36:26 +0100
-Message-ID: <20251027183455.642005688@linuxfoundation.org>
+	Andrei Lalaev <andrey.lalaev@gmail.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 6.6 38/84] can: netlink: can_changelink(): allow disabling of automatic restart
+Date: Mon, 27 Oct 2025 19:36:27 +0100
+Message-ID: <20251027183439.836563995@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
-References: <20251027183453.919157109@linuxfoundation.org>
+In-Reply-To: <20251027183438.817309828@linuxfoundation.org>
+References: <20251027183438.817309828@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,100 +61,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefano Garzarella <sgarzare@redhat.com>
+From: Marc Kleine-Budde <mkl@pengutronix.de>
 
-commit f7c877e7535260cc7a21484c994e8ce7e8cb6780 upstream.
+commit 8e93ac51e4c6dc399fad59ec21f55f2cfb46d27c upstream.
 
-Syzbot reported a potential lock inversion deadlock between
-vsock_register_mutex and sk_lock-AF_VSOCK when vsock_linger() is called.
+Since the commit c1f3f9797c1f ("can: netlink: can_changelink(): fix NULL
+pointer deref of struct can_priv::do_set_mode"), the automatic restart
+delay can only be set for devices that implement the restart handler struct
+can_priv::do_set_mode. As it makes no sense to configure a automatic
+restart for devices that doesn't support it.
 
-The issue was introduced by commit 687aa0c5581b ("vsock: Fix
-transport_* TOCTOU") which added vsock_register_mutex locking in
-vsock_assign_transport() around the transport->release() call, that can
-call vsock_linger(). vsock_assign_transport() can be called with sk_lock
-held. vsock_linger() calls sk_wait_event() that temporarily releases and
-re-acquires sk_lock. During this window, if another thread hold
-vsock_register_mutex while trying to acquire sk_lock, a circular
-dependency is created.
+However, since systemd commit 13ce5d4632e3 ("network/can: properly handle
+CAN.RestartSec=0") [1], systemd-networkd correctly handles a restart delay
+of "0" (i.e. the restart is disabled). Which means that a disabled restart
+is always configured in the kernel.
 
-Fix this by releasing vsock_register_mutex before calling
-transport->release() and vsock_deassign_transport(). This is safe
-because we don't need to hold vsock_register_mutex while releasing the
-old transport, and we ensure the new transport won't disappear by
-obtaining a module reference first via try_module_get().
+On systems with both changes active this causes that CAN interfaces that
+don't implement a restart handler cannot be brought up by systemd-networkd.
 
-Reported-by: syzbot+10e35716f8e4929681fa@syzkaller.appspotmail.com
-Tested-by: syzbot+10e35716f8e4929681fa@syzkaller.appspotmail.com
-Fixes: 687aa0c5581b ("vsock: Fix transport_* TOCTOU")
-Cc: mhal@rbox.co
+Solve this problem by allowing a delay of "0" to be configured, even if the
+device does not implement a restart handler.
+
+[1] https://github.com/systemd/systemd/commit/13ce5d4632e395521e6205c954493c7fc1c4c6e0
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
-Link: https://patch.msgid.link/20251021121718.137668-1-sgarzare@redhat.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Cc: Andrei Lalaev <andrey.lalaev@gmail.com>
+Reported-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Closes: https://lore.kernel.org/all/20251020-certain-arrogant-vole-of-sunshine-141841-mkl@pengutronix.de
+Fixes: c1f3f9797c1f ("can: netlink: can_changelink(): fix NULL pointer deref of struct can_priv::do_set_mode")
+Link: https://patch.msgid.link/20251020-netlink-fix-restart-v1-1-3f53c7f8520b@pengutronix.de
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/vmw_vsock/af_vsock.c |   38 +++++++++++++++++++-------------------
- 1 file changed, 19 insertions(+), 19 deletions(-)
+ drivers/net/can/dev/netlink.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/net/vmw_vsock/af_vsock.c
-+++ b/net/vmw_vsock/af_vsock.c
-@@ -487,12 +487,26 @@ int vsock_assign_transport(struct vsock_
- 		goto err;
+--- a/drivers/net/can/dev/netlink.c
++++ b/drivers/net/can/dev/netlink.c
+@@ -285,7 +285,9 @@ static int can_changelink(struct net_dev
  	}
  
--	if (vsk->transport) {
--		if (vsk->transport == new_transport) {
--			ret = 0;
--			goto err;
--		}
-+	if (vsk->transport && vsk->transport == new_transport) {
-+		ret = 0;
-+		goto err;
-+	}
+ 	if (data[IFLA_CAN_RESTART_MS]) {
+-		if (!priv->do_set_mode) {
++		unsigned int restart_ms = nla_get_u32(data[IFLA_CAN_RESTART_MS]);
 +
-+	/* We increase the module refcnt to prevent the transport unloading
-+	 * while there are open sockets assigned to it.
-+	 */
-+	if (!new_transport || !try_module_get(new_transport->module)) {
-+		ret = -ENODEV;
-+		goto err;
-+	}
-+
-+	/* It's safe to release the mutex after a successful try_module_get().
-+	 * Whichever transport `new_transport` points at, it won't go away until
-+	 * the last module_put() below or in vsock_deassign_transport().
-+	 */
-+	mutex_unlock(&vsock_register_mutex);
- 
-+	if (vsk->transport) {
- 		/* transport->release() must be called with sock lock acquired.
- 		 * This path can only be taken during vsock_connect(), where we
- 		 * have already held the sock lock. In the other cases, this
-@@ -512,20 +526,6 @@ int vsock_assign_transport(struct vsock_
- 		vsk->peer_shutdown = 0;
++		if (restart_ms != 0 && !priv->do_set_mode) {
+ 			NL_SET_ERR_MSG(extack,
+ 				       "Device doesn't support restart from Bus Off");
+ 			return -EOPNOTSUPP;
+@@ -294,7 +296,7 @@ static int can_changelink(struct net_dev
+ 		/* Do not allow changing restart delay while running */
+ 		if (dev->flags & IFF_UP)
+ 			return -EBUSY;
+-		priv->restart_ms = nla_get_u32(data[IFLA_CAN_RESTART_MS]);
++		priv->restart_ms = restart_ms;
  	}
  
--	/* We increase the module refcnt to prevent the transport unloading
--	 * while there are open sockets assigned to it.
--	 */
--	if (!new_transport || !try_module_get(new_transport->module)) {
--		ret = -ENODEV;
--		goto err;
--	}
--
--	/* It's safe to release the mutex after a successful try_module_get().
--	 * Whichever transport `new_transport` points at, it won't go away until
--	 * the last module_put() below or in vsock_deassign_transport().
--	 */
--	mutex_unlock(&vsock_register_mutex);
--
- 	if (sk->sk_type == SOCK_SEQPACKET) {
- 		if (!new_transport->seqpacket_allow ||
- 		    !new_transport->seqpacket_allow(remote_cid)) {
+ 	if (data[IFLA_CAN_RESTART]) {
 
 
 
