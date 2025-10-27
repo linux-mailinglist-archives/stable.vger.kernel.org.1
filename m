@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-190711-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191070-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E138DC10B31
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:16:16 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA686C11042
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:30:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4DA2F567466
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:09:36 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 38C665017F5
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:24:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3F97326D6F;
-	Mon, 27 Oct 2025 19:06:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7986831D740;
+	Mon, 27 Oct 2025 19:22:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gSpsUK/g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HQjAMkYZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70A43322A26;
-	Mon, 27 Oct 2025 19:06:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 357F02BD033;
+	Mon, 27 Oct 2025 19:22:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591995; cv=none; b=i3SoSaZ3sp6adLJ8Q3F5iep2rr4U69onrcljVwFCsgL7aA7/doK4w/DUjCidZuq3vESZX922a2907mlocxlHSTljKTtetRkXI8EnrRADjTo7Qs1zaYt7ks7oNmc3/ddA+1kxFwskh0HK81QJNkJS3BU5vCRfE22N9f1h291Q6fA=
+	t=1761592935; cv=none; b=DekRG41UGExRy+J+kjXTANZQ4YdOkyfEZS/4OJunbpdBULSX8z1gd87xuDqdw/vTJKELSN2n0SYLqlzTo/FW7qs0eYb2Kdirx7zIi5Woox/OdAH9EkzN0X3Cdbfd9BDUJgMmrW17yBRc4uPwdhgcsJ2MPphy8UIJL3QL2Mqyl2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591995; c=relaxed/simple;
-	bh=6pXkUqQvQlc+VeqQxpeEvD652A+AIPFC0nbyrDE4lwQ=;
+	s=arc-20240116; t=1761592935; c=relaxed/simple;
+	bh=maKULD8YfwwbLq4VAhd4m+ROS8mGrLCtI1nNuwvQyF0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CPFuevxp6eB/VMtVIRKP9WLIRwhyHiD9RYHuzBDHxRnE8jq5kyqNlaxGf7xvtG1gN4nYwloxjrklZGojXhgLqgvZeD1QH45NeYuLF/9IoSpDZJjzPFyyph1jIPJajq/xEG9+0qRbFtvnX0qxkgF/fwTMsmgADT7STAcKk0QyGYo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gSpsUK/g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A43CFC4CEFD;
-	Mon, 27 Oct 2025 19:06:34 +0000 (UTC)
+	 MIME-Version; b=eNjJKZHV5IWEWHt2P9aLPZhN8CPDV73PeuOZ2l0KPx9dH95b9Y1O6JI+VXIJNtBR0hd4c/SjhbdGvx3ETDK42VtwCGhH48Irc749zYc0Ts4lvA+QFeIoxodU/F7nP6h4gkQk2m/DryxcvjJmXTeY8vzSDh4UJDFjDtVzSGn0y8A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HQjAMkYZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD2F0C4CEF1;
+	Mon, 27 Oct 2025 19:22:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591995;
-	bh=6pXkUqQvQlc+VeqQxpeEvD652A+AIPFC0nbyrDE4lwQ=;
+	s=korg; t=1761592935;
+	bh=maKULD8YfwwbLq4VAhd4m+ROS8mGrLCtI1nNuwvQyF0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gSpsUK/gpaPWkaQo3LB8nZZkKyvwR51sF2iy21f6IxgTpVqYgAbyz3YX+KDaCftQ1
-	 qcxUZJzDQErSgW3KqmnztGHzKMDKtRT983kyBZLTKJqedyM/y9WXvIq3nHvpFruxqE
-	 7p86LD5vNfU8ggEHV5Y5UvAivIPCSIHeF7A1WkSA=
+	b=HQjAMkYZ2NOQJYRpfuabZCo1AXosKm7TaQNosmwXEhFhgQeVnP6QwbmB9zueRDCvE
+	 0X3Jtqy2pb7YeZQrp1OYuRQ0V5AqK6XEwio6+FXngI0MUf8JR0e3hSe4pn6qluIRWp
+	 KKCJQ30eZ+xt8O7a7jXJtELB9A87k4rVe8qrb6m0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Tim Guttzeit <t.guttzeit@tuxedocomputers.com>,
-	Werner Sembach <wse@tuxedocomputers.com>
-Subject: [PATCH 5.15 078/123] usb/core/quirks: Add Huawei ME906S to wakeup quirk
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 032/117] can: rockchip-canfd: rkcanfd_start_xmit(): use can_dev_dropped_skb() instead of can_dropped_invalid_skb()
 Date: Mon, 27 Oct 2025 19:35:58 +0100
-Message-ID: <20251027183448.482532939@linuxfoundation.org>
+Message-ID: <20251027183454.838229891@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183446.381986645@linuxfoundation.org>
-References: <20251027183446.381986645@linuxfoundation.org>
+In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
+References: <20251027183453.919157109@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +61,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tim Guttzeit <t.guttzeit@tuxedocomputers.com>
+From: Marc Kleine-Budde <mkl@pengutronix.de>
 
-commit dfc2cf4dcaa03601cd4ca0f7def88b2630fca6ab upstream.
+[ Upstream commit 3a3bc9bbb3a0287164a595787df0c70d91e77cfd ]
 
-The list of Huawei LTE modules needing the quirk fixing spurious wakeups
-was missing the IDs of the Huawei ME906S module, therefore suspend did not
-work.
+In addition to can_dropped_invalid_skb(), the helper function
+can_dev_dropped_skb() checks whether the device is in listen-only mode and
+discards the skb accordingly.
 
-Cc: stable <stable@kernel.org>
-Signed-off-by: Tim Guttzeit <t.guttzeit@tuxedocomputers.com>
-Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
-Link: https://patch.msgid.link/20251020134304.35079-1-wse@tuxedocomputers.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Replace can_dropped_invalid_skb() by can_dev_dropped_skb() to also drop
+skbs in for listen-only mode.
+
+Reported-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Closes: https://lore.kernel.org/all/20251017-bizarre-enchanted-quokka-f3c704-mkl@pengutronix.de/
+Fixes: ff60bfbaf67f ("can: rockchip_canfd: add driver for Rockchip CAN-FD controller")
+Link: https://patch.msgid.link/20251017-fix-skb-drop-check-v1-3-556665793fa4@pengutronix.de
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/core/quirks.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/can/rockchip/rockchip_canfd-tx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/core/quirks.c
-+++ b/drivers/usb/core/quirks.c
-@@ -461,6 +461,8 @@ static const struct usb_device_id usb_qu
- 	/* Huawei 4G LTE module */
- 	{ USB_DEVICE(0x12d1, 0x15bb), .driver_info =
- 			USB_QUIRK_DISCONNECT_SUSPEND },
-+	{ USB_DEVICE(0x12d1, 0x15c1), .driver_info =
-+			USB_QUIRK_DISCONNECT_SUSPEND },
- 	{ USB_DEVICE(0x12d1, 0x15c3), .driver_info =
- 			USB_QUIRK_DISCONNECT_SUSPEND },
+diff --git a/drivers/net/can/rockchip/rockchip_canfd-tx.c b/drivers/net/can/rockchip/rockchip_canfd-tx.c
+index 865a15e033a9e..12200dcfd3389 100644
+--- a/drivers/net/can/rockchip/rockchip_canfd-tx.c
++++ b/drivers/net/can/rockchip/rockchip_canfd-tx.c
+@@ -72,7 +72,7 @@ netdev_tx_t rkcanfd_start_xmit(struct sk_buff *skb, struct net_device *ndev)
+ 	int err;
+ 	u8 i;
  
+-	if (can_dropped_invalid_skb(ndev, skb))
++	if (can_dev_dropped_skb(ndev, skb))
+ 		return NETDEV_TX_OK;
+ 
+ 	if (!netif_subqueue_maybe_stop(priv->ndev, 0,
+-- 
+2.51.0
+
 
 
 
