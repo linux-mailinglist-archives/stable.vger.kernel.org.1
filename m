@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-190454-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190448-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBC85C10783
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:06:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ECAC7C10751
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:05:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9C53956411F
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:01:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 701545604A2
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:00:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FF04329C5D;
-	Mon, 27 Oct 2025 18:55:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA657336EFE;
+	Mon, 27 Oct 2025 18:55:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xcOyO1Es"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UaKh68K1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03980329C45;
-	Mon, 27 Oct 2025 18:55:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6432B33509B;
+	Mon, 27 Oct 2025 18:55:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591333; cv=none; b=J3ablbHOK7YQGN6yTJaZ9k22Tij9eLewVN1sl0SV60MXVidM6eY8LATcVARcHa/mlr/cD7lm9qbYbb+CyNvaE47h2/hHCgyTzVfKuLr5pHpNcxfm98cwgaHI1IO5iP4wWuA/z6rViJ5GSuRXzuos6LLaubbegMbKPduOXzG4FYw=
+	t=1761591317; cv=none; b=O0TZkPNpXRSGiHmNOayMZpHJXOxZB4mQyoUsN1ZDKg78IGhDrRr/i8c64p/vyuiV4CactevnK9Sp+Ba+VKAOOSynKmQEHoRKruMdCswl0CtBiJ9hX8Urik8NKkkmrFjEDSI8kJDuvnWBuoWn19rt6UKx7HjRXbi6ArJ9k22nqpo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591333; c=relaxed/simple;
-	bh=RgDffYKXPDGxU9lMjjln+BIknwtnS8an92HtPixLVWI=;
+	s=arc-20240116; t=1761591317; c=relaxed/simple;
+	bh=LZ48kcxnwtGlqEQNEmsVl8p8HLHyT9ADzkBJ5LwoHZ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=c9ljTl29QxV9trBCa9Lr7VRiogTmAIizgCk5Z7b52w0Y9gwNo8W+uFHdkGCvPADeSZ5Xot2uLdOJk0uqtWz4dGkNc2wcoeDM50MqTjzp4ej6zmEAET0u3/6rm4OIDcTwQwrUq68T7uSmLE+OfkxcOBUBw1srfBayr0FkOSWow/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xcOyO1Es; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B3C6C4CEF1;
-	Mon, 27 Oct 2025 18:55:32 +0000 (UTC)
+	 MIME-Version; b=imq28HwWWekCv5w/ybLE6jShkabTJzZJuT2wlVmrAquCLvHx/UghZa7qA2fwlRLgFXTS3qjX9qrgC+WhspoZS0IqnyVH1gOimW62TZ1upxJXpVGJ6ajJXzkFAs2e22l6eL6Vt5hFWTLx9IHQHqcONwsgWQ4d0WJ5YYQpIaVFeNE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UaKh68K1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8C7BC4CEF1;
+	Mon, 27 Oct 2025 18:55:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591332;
-	bh=RgDffYKXPDGxU9lMjjln+BIknwtnS8an92HtPixLVWI=;
+	s=korg; t=1761591317;
+	bh=LZ48kcxnwtGlqEQNEmsVl8p8HLHyT9ADzkBJ5LwoHZ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xcOyO1EssAQ+Pzyx5TIIYGEny7xadT1i8NXrtYzFJqBWuGPXmYbUhEXj2kye/tCJj
-	 w8ADCg8puWcRSQAM++4rE7I7BV+oV8YqQzf/fQ0MK0svl1Ca9mtNbNN2UQ7g8rFEvE
-	 JrksIe+e6p4ZDgbapl5E8ZM+BFT+7KOxdHpHl3w0=
+	b=UaKh68K19OVyyJhj5hUMbQeLj8qvKypVPnoFIWUNAt5MWsjPzIDnidrDcoNXHAFM2
+	 tpGjywK+9b8vXcdHim1mjYWWhF2ABiXYDPbK0XikOGWZS5zyv9e2H6bdUzP2+z2jEZ
+	 BDRmRL56Nim3eAJ3tY3NgsHG8katoY6+ONebYZ1Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>,
-	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 120/332] drm/amd/display: Add missing DCE6 SCL_HORZ_FILTER_INIT* SRIs
-Date: Mon, 27 Oct 2025 19:32:53 +0100
-Message-ID: <20251027183527.782206830@linuxfoundation.org>
+	Anthony Yznaga <anthony.yznaga@oracle.com>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	Andreas Larsson <andreas@gaisler.com>
+Subject: [PATCH 5.10 149/332] sparc64: fix hugetlb for sun4u
+Date: Mon, 27 Oct 2025 19:33:22 +0100
+Message-ID: <20251027183528.567842947@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
 References: <20251027183524.611456697@linuxfoundation.org>
@@ -60,44 +60,71 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Timur Kristóf <timur.kristof@gmail.com>
+From: Anthony Yznaga <anthony.yznaga@oracle.com>
 
-[ Upstream commit d60f9c45d1bff7e20ecd57492ef7a5e33c94a37c ]
+commit 6fd44a481b3c6111e4801cec964627791d0f3ec5 upstream.
 
-Without these, it's impossible to program these registers.
+An attempt to exercise sparc hugetlb code in a sun4u-based guest
+running under qemu results in the guest hanging due to being stuck
+in a trap loop. This is due to invalid hugetlb TTEs being installed
+that do not have the expected _PAGE_PMD_HUGE and page size bits set.
+Although the breakage has gone apparently unnoticed for several years,
+fix it now so there is the option to exercise sparc hugetlb code under
+qemu. This can be useful because sun4v support in qemu does not support
+linux guests currently and sun4v-based hardware resources may not be
+readily available.
 
-Fixes: 102b2f587ac8 ("drm/amd/display: dce_transform: DCE6 Scaling Horizontal Filter Init (v2)")
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix tested with a 6.15.2 and 6.16-rc6 kernels by running libhugetlbfs
+tests on a qemu guest running Debian 13.
+
+Fixes: c7d9f77d33a7 ("sparc64: Multi-page size support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Anthony Yznaga <anthony.yznaga@oracle.com>
+Tested-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Reviewed-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Reviewed-by: Andreas Larsson <andreas@gaisler.com>
+Link: https://lore.kernel.org/r/20250716012446.10357-1-anthony.yznaga@oracle.com
+Signed-off-by: Andreas Larsson <andreas@gaisler.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/dce/dce_transform.h | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/sparc/mm/hugetlbpage.c |   20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dce/dce_transform.h b/drivers/gpu/drm/amd/display/dc/dce/dce_transform.h
-index cbce194ec7b82..ff746fba850bc 100644
---- a/drivers/gpu/drm/amd/display/dc/dce/dce_transform.h
-+++ b/drivers/gpu/drm/amd/display/dc/dce/dce_transform.h
-@@ -155,6 +155,8 @@
- 	SRI(SCL_COEF_RAM_TAP_DATA, SCL, id), \
- 	SRI(VIEWPORT_START, SCL, id), \
- 	SRI(VIEWPORT_SIZE, SCL, id), \
-+	SRI(SCL_HORZ_FILTER_INIT_RGB_LUMA, SCL, id), \
-+	SRI(SCL_HORZ_FILTER_INIT_CHROMA, SCL, id), \
- 	SRI(SCL_HORZ_FILTER_SCALE_RATIO, SCL, id), \
- 	SRI(SCL_VERT_FILTER_SCALE_RATIO, SCL, id), \
- 	SRI(SCL_VERT_FILTER_INIT, SCL, id), \
--- 
-2.51.0
-
+--- a/arch/sparc/mm/hugetlbpage.c
++++ b/arch/sparc/mm/hugetlbpage.c
+@@ -133,6 +133,26 @@ hugetlb_get_unmapped_area(struct file *f
+ 
+ static pte_t sun4u_hugepage_shift_to_tte(pte_t entry, unsigned int shift)
+ {
++	unsigned long hugepage_size = _PAGE_SZ4MB_4U;
++
++	pte_val(entry) = pte_val(entry) & ~_PAGE_SZALL_4U;
++
++	switch (shift) {
++	case HPAGE_256MB_SHIFT:
++		hugepage_size = _PAGE_SZ256MB_4U;
++		pte_val(entry) |= _PAGE_PMD_HUGE;
++		break;
++	case HPAGE_SHIFT:
++		pte_val(entry) |= _PAGE_PMD_HUGE;
++		break;
++	case HPAGE_64K_SHIFT:
++		hugepage_size = _PAGE_SZ64K_4U;
++		break;
++	default:
++		WARN_ONCE(1, "unsupported hugepage shift=%u\n", shift);
++	}
++
++	pte_val(entry) = pte_val(entry) | hugepage_size;
+ 	return entry;
+ }
+ 
 
 
 
