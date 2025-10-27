@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-190745-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191241-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF312C10B1D
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:16:00 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86F39C11207
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:36:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 390EE1A254F8
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:10:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C8D59561A3B
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:31:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DC4D32C933;
-	Mon, 27 Oct 2025 19:08:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13B9A301030;
+	Mon, 27 Oct 2025 19:29:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ylG1bHgo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p89BgTC1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ADB91662E7;
-	Mon, 27 Oct 2025 19:08:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C47D11BC4E;
+	Mon, 27 Oct 2025 19:29:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592085; cv=none; b=RM+TlOoHhHloSjWabCysNUw7ClSGIEtwOkMkp8Q+sHQSD11fzuBhXQwlWxvVesuZCWc6KwaH0Dbkh2BWk17Pr3UHiKGmuYHYjLRN5mEgjHOiZa/M6TcGspWiUs9M1Uv+6AfybmGH4f/GCw1uoxbVXCDigQQoh5Ugd3U4rWaovY4=
+	t=1761593385; cv=none; b=S3Hs75GRBY6nhLCo+QF09NCJS4GPXH/APx/fH2N7lLqgw4G4N+BmGF2cQBdFAvx823Pcw3rnVn4xuBaUxWIqRkvynvz28D7LqSHcAqUgKeMuJNbpEYD9WZvESZvap5WQajs1aZ97810shUvboAEhY2W8VTVbIFUagTevxcXPNeI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592085; c=relaxed/simple;
-	bh=c/xeaimjgRBxtaQV7JSGjykukmnltdo2DfZPWv27czI=;
+	s=arc-20240116; t=1761593385; c=relaxed/simple;
+	bh=g7u7d1wZPwtoN/PtUzTvbxLpAbH8gsLgb++ccHxDSp0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cyQUX66icWS6vEMTBEa55TzpuLHbCOaW271VY+Q5xlP0asa3Olu4coiF2pjkoATzVzVSHjUiylwa3RReMhouiiiOUbe1eYO91YvIVVQsHv0oT1JcodX6791l499tgvuoUiWFbCdAKyIoJQKfmqSk5omUxFlVgx7v+5VsNRUBRuQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ylG1bHgo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFFC0C4CEF1;
-	Mon, 27 Oct 2025 19:08:04 +0000 (UTC)
+	 MIME-Version; b=JbRZc/OrfwsfYKFzO8+j7ZqD0S3mV6yL87yHwb5EgY+wDaKB93cUfm12txxISFL5w59aDYQ96ypO5uSZkV3g7AqyhOS/4OEKs2Bd3kXGPKIa7KLn1EoJwJURtbVsSVh50aARymT0x2f/hQN4sqG01IiL8jj/40ryvqAUXCsubrg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p89BgTC1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 485CFC4CEFD;
+	Mon, 27 Oct 2025 19:29:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592085;
-	bh=c/xeaimjgRBxtaQV7JSGjykukmnltdo2DfZPWv27czI=;
+	s=korg; t=1761593385;
+	bh=g7u7d1wZPwtoN/PtUzTvbxLpAbH8gsLgb++ccHxDSp0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ylG1bHgolZ4LUF0wk5degbbD8LAljbdXGUcmQZjJIcrQaVkruTkvNywY+1agAwsUy
-	 QW9NbrvcDFoxGDmMFIEEPjPdifygtq63HfY9Zj3aWfcHFRtzTgTd19tJOe9yr35vwm
-	 8+bEJvpeT6acsEYzB94+SFw5v6ZmFMW6aVg6oDOA=
+	b=p89BgTC1+Tm4JfbvES8lLewXT8tusRVKDuVn4a3Eot8gXTzi5oFK2JEbQn9Mf7MUU
+	 2O72qpWcX8KwX0elgURMG1GnRR6HyirKq/CXCTTHEPtLJkarpyGdKacfSGPd1UKUlw
+	 fpIUwH9y96iKGslwCEnczYpdf7fPsL0LBW8GzLhs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Duy Nguyen <duy.nguyen.rh@renesas.com>,
-	Thuan Nguyen <thuan.nguyen-hong@banvien.com.vn>,
-	Marek Vasut <marek.vasut+renesas@mailbox.org>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 112/123] PCI: rcar-host: Drop PMSR spinlock
+	SeongJae Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.17 110/184] mm/damon/core: fix list_add_tail() call on damon_call()
 Date: Mon, 27 Oct 2025 19:36:32 +0100
-Message-ID: <20251027183449.384818392@linuxfoundation.org>
+Message-ID: <20251027183517.886255693@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183446.381986645@linuxfoundation.org>
-References: <20251027183446.381986645@linuxfoundation.org>
+In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
+References: <20251027183514.934710872@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,85 +61,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Vasut <marek.vasut+renesas@mailbox.org>
+From: SeongJae Park <sj@kernel.org>
 
-[ Upstream commit 0a8f173d9dad13930d5888505dc4c4fd6a1d4262 ]
+commit c3fa5b1bfd8380d935fa961f2ac166bdf000f418 upstream.
 
-The pmsr_lock spinlock used to be necessary to synchronize access to the
-PMSR register, because that access could have been triggered from either
-config space access in rcar_pcie_config_access() or an exception handler
-rcar_pcie_aarch32_abort_handler().
+Each damon_ctx maintains callback requests using a linked list
+(damon_ctx->call_controls).  When a new callback request is received via
+damon_call(), the new request should be added to the list.  However, the
+function is making a mistake at list_add_tail() invocation: putting the
+new item to add and the list head to add it before, in the opposite order.
+Because of the linked list manipulation implementation, the new request
+can still be reached from the context's list head.  But the list items
+that were added before the new request are dropped from the list.
 
-The rcar_pcie_aarch32_abort_handler() case is no longer applicable since
-commit 6e36203bc14c ("PCI: rcar: Use PCI_SET_ERROR_RESPONSE after read
-which triggered an exception"), which performs more accurate, controlled
-invocation of the exception, and a fixup.
+As a result, the callbacks are unexpectedly not invocated.  Worse yet, if
+the dropped callback requests were dynamically allocated, the memory is
+leaked.  Actually DAMON sysfs interface is using a dynamically allocated
+repeat-mode callback request for automatic essential stats update.  And
+because the online DAMON parameters commit is using a non-repeat-mode
+callback request, the issue can easily be reproduced, like below.
 
-This leaves rcar_pcie_config_access() as the only call site from which
-rcar_pcie_wakeup() is called. The rcar_pcie_config_access() can only be
-called from the controller struct pci_ops .read and .write callbacks,
-and those are serialized in drivers/pci/access.c using raw spinlock
-'pci_lock' . It should be noted that CONFIG_PCI_LOCKLESS_CONFIG is never
-set on this platform.
+    # damo start --damos_action stat --refresh_stat 1s
+    # damo tune --damos_action stat --refresh_stat 1s
 
-Since the 'pci_lock' is a raw spinlock , and the 'pmsr_lock' is not a
-raw spinlock, this constellation triggers 'BUG: Invalid wait context'
-with CONFIG_PROVE_RAW_LOCK_NESTING=y .
+The first command dynamically allocates the repeat-mode callback request
+for automatic essential stat update.  Users can see the essential stats
+are automatically updated for every second, using the sysfs interface.
 
-Remove the pmsr_lock to fix the locking.
+The second command calls damon_commit() with a new callback request that
+was made for the commit.  As a result, the previously added repeat-mode
+callback request is dropped from the list.  The automatic stats refresh
+stops working, and the memory for the repeat-mode callback request is
+leaked.  It can be confirmed using kmemleak.
 
-Fixes: a115b1bd3af0 ("PCI: rcar: Add L1 link state fix into data abort hook")
-Reported-by: Duy Nguyen <duy.nguyen.rh@renesas.com>
-Reported-by: Thuan Nguyen <thuan.nguyen-hong@banvien.com.vn>
-Signed-off-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20250909162707.13927-1-marek.vasut+renesas@mailbox.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix the mistake on the list_add_tail() call.
+
+Link: https://lkml.kernel.org/r/20251014205939.1206-1-sj@kernel.org
+Fixes: 004ded6bee11 ("mm/damon: accept parallel damon_call() requests")
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: <stable@vger.kernel.org>	[6.17+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/controller/pcie-rcar-host.c |   13 ++-----------
- 1 file changed, 2 insertions(+), 11 deletions(-)
+ mm/damon/core.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/pci/controller/pcie-rcar-host.c
-+++ b/drivers/pci/controller/pcie-rcar-host.c
-@@ -67,20 +67,13 @@ struct rcar_pcie_host {
- 	int			(*phy_init_fn)(struct rcar_pcie_host *host);
- };
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -1422,7 +1422,7 @@ int damon_call(struct damon_ctx *ctx, st
+ 	INIT_LIST_HEAD(&control->list);
  
--static DEFINE_SPINLOCK(pmsr_lock);
--
- static int rcar_pcie_wakeup(struct device *pcie_dev, void __iomem *pcie_base)
- {
--	unsigned long flags;
- 	u32 pmsr, val;
- 	int ret = 0;
- 
--	spin_lock_irqsave(&pmsr_lock, flags);
--
--	if (!pcie_base || pm_runtime_suspended(pcie_dev)) {
--		ret = -EINVAL;
--		goto unlock_exit;
--	}
-+	if (!pcie_base || pm_runtime_suspended(pcie_dev))
-+		return -EINVAL;
- 
- 	pmsr = readl(pcie_base + PMSR);
- 
-@@ -98,8 +91,6 @@ static int rcar_pcie_wakeup(struct devic
- 		writel(L1FAEG | PMEL1RX, pcie_base + PMSR);
- 	}
- 
--unlock_exit:
--	spin_unlock_irqrestore(&pmsr_lock, flags);
- 	return ret;
- }
- 
+ 	mutex_lock(&ctx->call_controls_lock);
+-	list_add_tail(&ctx->call_controls, &control->list);
++	list_add_tail(&control->list, &ctx->call_controls);
+ 	mutex_unlock(&ctx->call_controls_lock);
+ 	if (!damon_is_running(ctx))
+ 		return -EINVAL;
 
 
 
