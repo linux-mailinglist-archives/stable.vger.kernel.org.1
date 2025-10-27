@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-190752-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190966-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5221DC10B7A
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:17:07 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB938C10F6B
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:27:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 49112506B8C
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:10:53 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 94D844FBF98
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:19:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 986D5328612;
-	Mon, 27 Oct 2025 19:08:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1514C31DDBC;
+	Mon, 27 Oct 2025 19:17:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NYdei1ih"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gHYhXdc8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52D1835965;
-	Mon, 27 Oct 2025 19:08:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C28652BE037;
+	Mon, 27 Oct 2025 19:17:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592103; cv=none; b=SDrEVkktngLukXrd7Li+lrFI2jS2DKp0L68tRoCwgB0KZYkBd0OC5ETRBEsuYjQOfEMTaRWTX0XWTFx3Dr8NxtxqXXX1ThV3x21cjForFLiiJLYF+mFcaGWCjyDSgxcpV/AmS0v0tkcfUEmo4zr/VE3FAD5A5bHfRkvZcb1bU+0=
+	t=1761592663; cv=none; b=kPlhzg1M/P8dMB9BqJIbe86ZSUmU5n6k1WeLeBoXe11SFpiH8gTmbCV1mLhTFxgidn37wp9xE18Vm0uKk16ppivlmvsers1qHPutEruIfhCIvIms6DH/k7OM3kalSl2nJAv9vAhKP1htriPS8DRWKXpY0amtnsfe79HFL/Jb3Ro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592103; c=relaxed/simple;
-	bh=sib9+wuHwLC28XXJvMBLnfya/TnHg4Ibc6BvV34JCIE=;
+	s=arc-20240116; t=1761592663; c=relaxed/simple;
+	bh=/wkQIwWRHIjnO+qfR781hZq5MqQXkBm2nh4tTrTOjVg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OU3tdJhUPgEAHG7cXZpddfX98fzVL05P3igLQnSi7QvJbxOVvDTo5PgUlDta9VurdkzAVAGk6R7x+c7oW0tDT7hNCpDMyCm5TuHK8ta66rPSmZe3BSWRGF2J57J+Um12/sQgwnedddVguMcZrEFvpIO9Rh24rB63ud+ABuQ8BxU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NYdei1ih; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DADB2C4CEF1;
-	Mon, 27 Oct 2025 19:08:22 +0000 (UTC)
+	 MIME-Version; b=oSy/cLWz2rbcW515BPfsumH0xGkJpXN6e5vkRqVjuWTMDPTWUIYyYQEj8tOZAMLx/OsyGO63nNYhp3tGnqQajQQIxti1j5QO1KytFYd0OTsf4mLZ0/xCfi3OMq/XdzSHsP9pxldTRzCQY1VgBi829NQEGDPU6qD4bbJhaRi7OyE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gHYhXdc8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FF80C4CEF1;
+	Mon, 27 Oct 2025 19:17:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592103;
-	bh=sib9+wuHwLC28XXJvMBLnfya/TnHg4Ibc6BvV34JCIE=;
+	s=korg; t=1761592663;
+	bh=/wkQIwWRHIjnO+qfR781hZq5MqQXkBm2nh4tTrTOjVg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NYdei1ihqX8/zNnuMY8gu//zrwcJlWhRyfHE45wReSaz4/xH2I1V+CFlYTh070OgT
-	 eyjbZOlKA25hLyrqigVr5mFWJZAZBmY7U98Yoq7YGFXZblmjLyRzU7xRubzgfjxKUj
-	 moK38Ok2qgkMh7AZ2lfGhre/wUWs9eYLuUN7YDhA=
+	b=gHYhXdc8n4ebn4gYR9KhZk4kFteWpTDdTG3MqUayioRmDKNQk/TyOyDC22et+6j90
+	 TLKPhMnCcP8E2xQN8DFzq72LJE+WekTh7XDvdYrfuCe7uIMg6gv5pBwWU02vbZvzI1
+	 3RLHShjqplU3N9VWk32EA3dWTi3dsMZ74Qh14MEo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuen-Han Tsai <khtsai@google.com>,
+	Han Xu <han.xu@nxp.com>,
+	Haibo Chen <haibo.chen@nxp.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 118/123] usb: gadget: Introduce free_usb_request helper
+Subject: [PATCH 6.6 49/84] spi: spi-nxp-fspi: add extra delay after dll locked
 Date: Mon, 27 Oct 2025 19:36:38 +0100
-Message-ID: <20251027183449.543634917@linuxfoundation.org>
+Message-ID: <20251027183440.126292963@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183446.381986645@linuxfoundation.org>
-References: <20251027183446.381986645@linuxfoundation.org>
+In-Reply-To: <20251027183438.817309828@linuxfoundation.org>
+References: <20251027183438.817309828@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,70 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuen-Han Tsai <khtsai@google.com>
+From: Han Xu <han.xu@nxp.com>
 
-[ Upstream commit 201c53c687f2b55a7cc6d9f4000af4797860174b ]
+[ Upstream commit b93b4269791fdebbac2a9ad26f324dc2abb9e60f ]
 
-Introduce the free_usb_request() function that frees both the request's
-buffer and the request itself.
+Due to the erratum ERR050272, the DLL lock status register STS2
+[xREFLOCK, xSLVLOCK] bit may indicate DLL is locked before DLL is
+actually locked. Add an extra 4us delay as a workaround.
 
-This function serves as the cleanup callback for DEFINE_FREE() to enable
-automatic, scope-based cleanup for usb_request pointers.
+refer to ERR050272, on Page 20.
+https://www.nxp.com/docs/en/errata/IMX8_1N94W.pdf
 
-Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
-Link: https://lore.kernel.org/r/20250916-ready-v1-2-4997bf277548@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Link: https://lore.kernel.org/r/20250916-ready-v1-2-4997bf277548@google.com
-Stable-dep-of: 75a5b8d4ddd4 ("usb: gadget: f_ncm: Refactor bind path to use __free()")
+Fixes: 99d822b3adc4 ("spi: spi-nxp-fspi: use DLL calibration when clock rate > 100MHz")
+Signed-off-by: Han Xu <han.xu@nxp.com>
+Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
+Link: https://patch.msgid.link/20250922-fspi-fix-v1-2-ff4315359d31@nxp.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/usb/gadget.h |   23 +++++++++++++++++++++++
- 1 file changed, 23 insertions(+)
+ drivers/spi/spi-nxp-fspi.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/include/linux/usb/gadget.h
-+++ b/include/linux/usb/gadget.h
-@@ -17,6 +17,7 @@
- #ifndef __LINUX_USB_GADGET_H
- #define __LINUX_USB_GADGET_H
+diff --git a/drivers/spi/spi-nxp-fspi.c b/drivers/spi/spi-nxp-fspi.c
+index bc6c086ddd43f..731504ec7ef8b 100644
+--- a/drivers/spi/spi-nxp-fspi.c
++++ b/drivers/spi/spi-nxp-fspi.c
+@@ -665,6 +665,12 @@ static void nxp_fspi_dll_calibration(struct nxp_fspi *f)
+ 				   0, POLL_TOUT, true);
+ 	if (ret)
+ 		dev_warn(f->dev, "DLL lock failed, please fix it!\n");
++
++	/*
++	 * For ERR050272, DLL lock status bit is not accurate,
++	 * wait for 4us more as a workaround.
++	 */
++	udelay(4);
+ }
  
-+#include <linux/cleanup.h>
- #include <linux/device.h>
- #include <linux/errno.h>
- #include <linux/init.h>
-@@ -292,6 +293,28 @@ static inline void usb_ep_fifo_flush(str
- 
- /*-------------------------------------------------------------------------*/
- 
-+/**
-+ * free_usb_request - frees a usb_request object and its buffer
-+ * @req: the request being freed
-+ *
-+ * This helper function frees both the request's buffer and the request object
-+ * itself by calling usb_ep_free_request(). Its signature is designed to be used
-+ * with DEFINE_FREE() to enable automatic, scope-based cleanup for usb_request
-+ * pointers.
-+ */
-+static inline void free_usb_request(struct usb_request *req)
-+{
-+	if (!req)
-+		return;
-+
-+	kfree(req->buf);
-+	usb_ep_free_request(req->ep, req);
-+}
-+
-+DEFINE_FREE(free_usb_request, struct usb_request *, free_usb_request(_T))
-+
-+/*-------------------------------------------------------------------------*/
-+
- struct usb_dcd_config_params {
- 	__u8  bU1devExitLat;	/* U1 Device exit Latency */
- #define USB_DEFAULT_U1_DEV_EXIT_LAT	0x01	/* Less then 1 microsec */
+ /*
+-- 
+2.51.0
+
 
 
 
