@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-190719-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190862-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6051C10ADA
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:15:20 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57DFAC10ABF
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:15:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6BF001A27A68
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:10:25 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 0161135205B
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:15:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F00232B9B1;
-	Mon, 27 Oct 2025 19:06:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF2FD31D757;
+	Mon, 27 Oct 2025 19:13:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="irbdmt/q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gPk3XBak"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD45E32B994;
-	Mon, 27 Oct 2025 19:06:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A001027FD62;
+	Mon, 27 Oct 2025 19:13:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592015; cv=none; b=DVGFrdnHU14eYXie7sReVQZw4bPBVYtSWMPk6lgyuwFLg8gGCNngSF9GyVfkY3oxdokUCnWRCki3uN90DbAv0sWucwpxd4ahbRGqNX192iq5gFqEVkuimC0718YZBCFdT38cOGOBAmMcBueQ3GYst9IpprR53aAfOTlyqUyFL3g=
+	t=1761592395; cv=none; b=BsG/bNdUNnEbjCtO/wv86PW3uUyOfTqEeg0XT1XtnXPKdB65UCbRYabW4V6sjyLcsFw1sjDz/YD2cwf36jsNuv8c6TnTUNliO+i80OIEi4xkpReGSag/VbaZjTSJ29dA2087YSN2rEHF15EB/kxlojnDJMpVTLtecNCnbh9DcTw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592015; c=relaxed/simple;
-	bh=ORK+ZW4BBQQqcjpuoIU9Ke9R193zZhbOizUOwZxsabQ=;
+	s=arc-20240116; t=1761592395; c=relaxed/simple;
+	bh=LSpGkHjTUZJlJKV9h//1EEAZwz91o/EYVYIE/USEg2w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eRZ3ld3uX+uROQtwzsILWuzN1+kIV3gO6s7n+K2do46bn5QSAyg7Y46ZrRpDuSl3iAiqo7Wa+csGmw7QAGNboBqAbP1qGpHJHrYAL3sadkUKUkidnzhLkPlrHbsrYBaJYBeyZOlWfCIioECUreNLakjrKVvU+jX59cShjZHpdpk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=irbdmt/q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E98AC4CEF1;
-	Mon, 27 Oct 2025 19:06:55 +0000 (UTC)
+	 MIME-Version; b=lTbKRUoOoyl8CqxuDeNRFX0BJSC+Y8gVTvdaDLiw+5XJOlYoRwnKTrZwBJbfw8t1M2jX2LJGmYaCOcIGPQ/rL2zxhA5HHxZcd/fs5iwOwApNhTja7Ujm8q+SaFrKTHzu+Xfzh0Cr9G+u4ncp8/1Nd9X44wTVBuaR4WkdZTbVmHI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gPk3XBak; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD0B9C4CEF1;
+	Mon, 27 Oct 2025 19:13:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592015;
-	bh=ORK+ZW4BBQQqcjpuoIU9Ke9R193zZhbOizUOwZxsabQ=;
+	s=korg; t=1761592395;
+	bh=LSpGkHjTUZJlJKV9h//1EEAZwz91o/EYVYIE/USEg2w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=irbdmt/qcZ8pXsutD3nebm/7rxixA4R+ajH6MlSYcWfIdQzYaJj/6ezwXYtjPyl6j
-	 Be9G+IpGwXRx3J4h0FHn+LTyQ9rvWogIQs/YiX84kMU2WZIjYd/4qHGmkq9f9WX1qZ
-	 7JN7xLia4H1L59aPauI7qplrzGFDzDXJtOXA3VGA=
+	b=gPk3XBak+jj/1eyz3mJOajr8a16gEtJHYapx8cd7xWozmHy3YvJSCqjnXSnCanAco
+	 mboTsUHXP/5bNvNrDH1XphJQlt4SYWJ6LFXoLHpM/goni09oEpshazsSCZMx739K2m
+	 DD7Ix9vVTF75WAVg+bRfFreRq08ygsnBzz/yycvE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Victoria Votokina <Victoria.Votokina@kaspersky.com>
-Subject: [PATCH 5.15 085/123] most: usb: hdm_probe: Fix calling put_device() before device initialization
+	Reinhard Speyerer <rspmn@arcor.de>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.1 104/157] USB: serial: option: add Quectel RG255C
 Date: Mon, 27 Oct 2025 19:36:05 +0100
-Message-ID: <20251027183448.665494534@linuxfoundation.org>
+Message-ID: <20251027183504.046896708@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183446.381986645@linuxfoundation.org>
-References: <20251027183446.381986645@linuxfoundation.org>
+In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
+References: <20251027183501.227243846@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +61,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Victoria Votokina <Victoria.Votokina@kaspersky.com>
+From: Reinhard Speyerer <rspmn@arcor.de>
 
-commit a8cc9e5fcb0e2eef21513a4fec888f5712cb8162 upstream.
+commit 89205c60c0fc96b73567a2e9fe27ee3f59d01193 upstream.
 
-The early error path in hdm_probe() can jump to err_free_mdev before
-&mdev->dev has been initialized with device_initialize(). Calling
-put_device(&mdev->dev) there triggers a device core WARN and ends up
-invoking kref_put(&kobj->kref, kobject_release) on an uninitialized
-kobject.
+Add support for Quectel RG255C devices to complement commit 5c964c8a97c1
+("net: usb: qmi_wwan: add Quectel RG255C").
+The composition is DM / NMEA / AT / QMI.
 
-In this path the private struct was only kmalloc'ed and the intended
-release is effectively kfree(mdev) anyway, so free it directly instead
-of calling put_device() on an uninitialized device.
+T:  Bus=01 Lev=02 Prnt=99 Port=01 Cnt=02 Dev#=110 Spd=480  MxCh= 0
+D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=2c7c ProdID=0316 Rev= 5.15
+S:  Manufacturer=Quectel
+S:  Product=RG255C-GL
+S:  SerialNumber=xxxxxxxx
+C:* #Ifs= 4 Cfg#= 1 Atr=a0 MxPwr=500mA
+I:* If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 1 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
+E:  Ad=86(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
 
-This removes the WARNING and fixes the pre-initialization error path.
-
-Fixes: 97a6f772f36b ("drivers: most: add USB adapter driver")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Victoria Votokina <Victoria.Votokina@kaspersky.com>
-Link: https://patch.msgid.link/20251010105241.4087114-3-Victoria.Votokina@kaspersky.com
+Signed-off-by: Reinhard Speyerer <rspmn@arcor.de>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/most/most_usb.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/serial/option.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/most/most_usb.c
-+++ b/drivers/most/most_usb.c
-@@ -1097,7 +1097,7 @@ err_free_cap:
- err_free_conf:
- 	kfree(mdev->conf);
- err_free_mdev:
--	put_device(&mdev->dev);
-+	kfree(mdev);
- 	return ret;
- }
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -273,6 +273,7 @@ static void option_instat_callback(struc
+ #define QUECTEL_PRODUCT_EM05CN			0x0312
+ #define QUECTEL_PRODUCT_EM05G_GR		0x0313
+ #define QUECTEL_PRODUCT_EM05G_RS		0x0314
++#define QUECTEL_PRODUCT_RG255C			0x0316
+ #define QUECTEL_PRODUCT_EM12			0x0512
+ #define QUECTEL_PRODUCT_RM500Q			0x0800
+ #define QUECTEL_PRODUCT_RM520N			0x0801
+@@ -1271,6 +1272,9 @@ static const struct usb_device_id option
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_RM500K, 0xff, 0x00, 0x00) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_RG650V, 0xff, 0xff, 0x30) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_RG650V, 0xff, 0, 0) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_RG255C, 0xff, 0xff, 0x30) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_RG255C, 0xff, 0, 0) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_RG255C, 0xff, 0xff, 0x40) },
  
+ 	{ USB_DEVICE(CMOTECH_VENDOR_ID, CMOTECH_PRODUCT_6001) },
+ 	{ USB_DEVICE(CMOTECH_VENDOR_ID, CMOTECH_PRODUCT_CMU_300) },
 
 
 
