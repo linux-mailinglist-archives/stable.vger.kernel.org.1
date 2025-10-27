@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-191052-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191219-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C64A0C10FE8
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:29:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A4334C111CE
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:35:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D75C9462A94
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:23:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9E0AD564C81
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:30:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF4322D836A;
-	Mon, 27 Oct 2025 19:21:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDFA632143D;
+	Mon, 27 Oct 2025 19:28:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yS++ZBiS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C+cflgKa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B89531A811;
-	Mon, 27 Oct 2025 19:21:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAF34322C8A;
+	Mon, 27 Oct 2025 19:28:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592888; cv=none; b=cWJqlXMMJbUkEht/igaN7arx3beJNMlBjL7P0/aA1auLVeTHPezgddnock0yMk/GoX8AB8Z+nw8WCCPCFncSsx+oSpfcPOrz+pTKYrD6k9NIE35GYCC1KxlGWEPmXJQvQu3N9vmIAeaDsuXkvowkuisLrl+sZ+pq7kYkHGSgFuI=
+	t=1761593314; cv=none; b=c9K+S8ViMtc1cf0KQ9+9vezAakAg2H4ZsiTdH5D+8vc/8YVQmke6ldLIxP5Cx1WRqosLWDOR56/l2iPjBTGEko++xmXm/kZl7NDSCMmWJ9nZB3jFgUcH4WVjSPc2I0f7qiLC1oaNrBnMdCRi63lftcwMbfdHcuvXaK00AXWP1Bw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592888; c=relaxed/simple;
-	bh=BQZ3V8jNiP065TMVlxbkFq8njOTjfl4mLiEc4gKEUgs=;
+	s=arc-20240116; t=1761593314; c=relaxed/simple;
+	bh=0afZk4QLeL0xsOLwE4NNL/68Hepwcvgk1D1lDvMhea4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ALBmJSJcIyQ7VR5edXQuWbNIpIozG8XdR0fj6NccgV9DqJlnz5zSb6/O3tvGTguPcvA7sRXO6aLajraGGS6O2NdNzLwDtsOLVVgTETxQYtf1sXUiqN+DNUEE+Y0DSQl4bO7CNUFHJAjm+MxR05XQIx8ra8w4ZZbD9NV32oGoql8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yS++ZBiS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DB20C4CEF1;
-	Mon, 27 Oct 2025 19:21:27 +0000 (UTC)
+	 MIME-Version; b=ARnPMsiqoJ8zA1Y82rTHU+d/L+S/ZtXM6pg1mi5KyQyoVR+SQC7WwxMQJ6jhb1YnT+GFfbl8whkDtpD5zTWF0iwuw5194fy28WHi53MPpw8GR+PAURrQeV30XjmQjuhw2fyZ/4lMCzyiU87zEq21K2zu7GOHEQWuKLNSnByZIJs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C+cflgKa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07CC9C4CEF1;
+	Mon, 27 Oct 2025 19:28:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592888;
-	bh=BQZ3V8jNiP065TMVlxbkFq8njOTjfl4mLiEc4gKEUgs=;
+	s=korg; t=1761593314;
+	bh=0afZk4QLeL0xsOLwE4NNL/68Hepwcvgk1D1lDvMhea4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yS++ZBiSGJg3IP1w1AX3Mu/spZCrG/Aij3YFRF0py69plZmwjmSuXnJVMU1sn+0R4
-	 FuDlkE2ps0YkwI829aUV9xAkIbM8kiRvABfyDw2fsKABuxQkAUTujnBrBu+pQlr/3i
-	 XiAQENf4xIYRhpPgRpiYgQ2j4ejfzfPNh+DAJdrY=
+	b=C+cflgKatv+K7sE1ChqGidn6vQTbucuWeMoG9ZNMhnF/nupSSuhpQgxM+wCCgZrAK
+	 R5nZq/Ok8rqfEVDoQGe3Vy7U5y9p8SbGehfAM2UovglnnccVi/aGO5JnksJ/bwN76a
+	 NiP2KSx+am7l5ibZcN0DqVbaa35Ry8yKIu5/npmA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Cave-Ayland <mark.caveayland@nutanix.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	William Breathitt Gray <wbg@kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: [PATCH 6.12 050/117] gpio: 104-idio-16: Define maximum valid register address offset
-Date: Mon, 27 Oct 2025 19:36:16 +0100
-Message-ID: <20251027183455.350805648@linuxfoundation.org>
+	syzbot+10e35716f8e4929681fa@syzkaller.appspotmail.com,
+	mhal@rbox.co,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.17 095/184] vsock: fix lock inversion in vsock_assign_transport()
+Date: Mon, 27 Oct 2025 19:36:17 +0100
+Message-ID: <20251027183517.462263707@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
-References: <20251027183453.919157109@linuxfoundation.org>
+In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
+References: <20251027183514.934710872@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,44 +63,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: William Breathitt Gray <wbg@kernel.org>
+From: Stefano Garzarella <sgarzare@redhat.com>
 
-commit c4d35e635f3a65aec291a6045cae8c99cede5bba upstream.
+commit f7c877e7535260cc7a21484c994e8ce7e8cb6780 upstream.
 
-Attempting to load the 104-idio-16 module fails during regmap
-initialization with a return error -EINVAL. This is a result of the
-regmap cache failing initialization. Set the idio_16_regmap_config
-max_register member to fix this failure.
+Syzbot reported a potential lock inversion deadlock between
+vsock_register_mutex and sk_lock-AF_VSOCK when vsock_linger() is called.
 
-Fixes: 2c210c9a34a3 ("gpio: 104-idio-16: Migrate to the regmap API")
-Reported-by: Mark Cave-Ayland <mark.caveayland@nutanix.com>
-Closes: https://lore.kernel.org/r/9b0375fd-235f-4ee1-a7fa-daca296ef6bf@nutanix.com
-Suggested-by: Mark Cave-Ayland <mark.caveayland@nutanix.com>
+The issue was introduced by commit 687aa0c5581b ("vsock: Fix
+transport_* TOCTOU") which added vsock_register_mutex locking in
+vsock_assign_transport() around the transport->release() call, that can
+call vsock_linger(). vsock_assign_transport() can be called with sk_lock
+held. vsock_linger() calls sk_wait_event() that temporarily releases and
+re-acquires sk_lock. During this window, if another thread hold
+vsock_register_mutex while trying to acquire sk_lock, a circular
+dependency is created.
+
+Fix this by releasing vsock_register_mutex before calling
+transport->release() and vsock_deassign_transport(). This is safe
+because we don't need to hold vsock_register_mutex while releasing the
+old transport, and we ensure the new transport won't disappear by
+obtaining a module reference first via try_module_get().
+
+Reported-by: syzbot+10e35716f8e4929681fa@syzkaller.appspotmail.com
+Tested-by: syzbot+10e35716f8e4929681fa@syzkaller.appspotmail.com
+Fixes: 687aa0c5581b ("vsock: Fix transport_* TOCTOU")
+Cc: mhal@rbox.co
 Cc: stable@vger.kernel.org
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: William Breathitt Gray <wbg@kernel.org>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Link: https://lore.kernel.org/r/20251020-fix-gpio-idio-16-regmap-v2-1-ebeb50e93c33@kernel.org
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
+Link: https://patch.msgid.link/20251021121718.137668-1-sgarzare@redhat.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpio/gpio-104-idio-16.c |    1 +
- 1 file changed, 1 insertion(+)
+ net/vmw_vsock/af_vsock.c |   38 +++++++++++++++++++-------------------
+ 1 file changed, 19 insertions(+), 19 deletions(-)
 
---- a/drivers/gpio/gpio-104-idio-16.c
-+++ b/drivers/gpio/gpio-104-idio-16.c
-@@ -59,6 +59,7 @@ static const struct regmap_config idio_1
- 	.reg_stride = 1,
- 	.val_bits = 8,
- 	.io_port = true,
-+	.max_register = 0x5,
- 	.wr_table = &idio_16_wr_table,
- 	.rd_table = &idio_16_rd_table,
- 	.volatile_table = &idio_16_rd_table,
+--- a/net/vmw_vsock/af_vsock.c
++++ b/net/vmw_vsock/af_vsock.c
+@@ -487,12 +487,26 @@ int vsock_assign_transport(struct vsock_
+ 		goto err;
+ 	}
+ 
+-	if (vsk->transport) {
+-		if (vsk->transport == new_transport) {
+-			ret = 0;
+-			goto err;
+-		}
++	if (vsk->transport && vsk->transport == new_transport) {
++		ret = 0;
++		goto err;
++	}
++
++	/* We increase the module refcnt to prevent the transport unloading
++	 * while there are open sockets assigned to it.
++	 */
++	if (!new_transport || !try_module_get(new_transport->module)) {
++		ret = -ENODEV;
++		goto err;
++	}
++
++	/* It's safe to release the mutex after a successful try_module_get().
++	 * Whichever transport `new_transport` points at, it won't go away until
++	 * the last module_put() below or in vsock_deassign_transport().
++	 */
++	mutex_unlock(&vsock_register_mutex);
+ 
++	if (vsk->transport) {
+ 		/* transport->release() must be called with sock lock acquired.
+ 		 * This path can only be taken during vsock_connect(), where we
+ 		 * have already held the sock lock. In the other cases, this
+@@ -512,20 +526,6 @@ int vsock_assign_transport(struct vsock_
+ 		vsk->peer_shutdown = 0;
+ 	}
+ 
+-	/* We increase the module refcnt to prevent the transport unloading
+-	 * while there are open sockets assigned to it.
+-	 */
+-	if (!new_transport || !try_module_get(new_transport->module)) {
+-		ret = -ENODEV;
+-		goto err;
+-	}
+-
+-	/* It's safe to release the mutex after a successful try_module_get().
+-	 * Whichever transport `new_transport` points at, it won't go away until
+-	 * the last module_put() below or in vsock_deassign_transport().
+-	 */
+-	mutex_unlock(&vsock_register_mutex);
+-
+ 	if (sk->sk_type == SOCK_SEQPACKET) {
+ 		if (!new_transport->seqpacket_allow ||
+ 		    !new_transport->seqpacket_allow(remote_cid)) {
 
 
 
