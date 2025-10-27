@@ -1,65 +1,61 @@
-Return-Path: <stable+bounces-190696-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190865-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BEC7C10A54
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:14:33 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98A6AC10CE8
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:20:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A2EF561D36
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:09:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 38F8F566422
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:15:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 642CC31D754;
-	Mon, 27 Oct 2025 19:05:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54B35301707;
+	Mon, 27 Oct 2025 19:13:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NUHY9px8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bjdxUXsp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 186D23126A0;
-	Mon, 27 Oct 2025 19:05:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ABD92DAFC3;
+	Mon, 27 Oct 2025 19:13:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591956; cv=none; b=H+69ufSNt4aN+rzM574ZYP0vBwoEQoj8YRiLvLL0PyZ1MvhB9GWYGkh+wKhb5pGE4Ud2TtilTcFPvCKkEQtf6H5vwKSwMwy9rlJ6a3Y6HPXZCstzn8Kj//MW7T3UsFKsm2dZdAD/5qCXfXlYysD+LT0I2e9Cx2hGSEEkKVz53Cc=
+	t=1761592403; cv=none; b=obV5LAr7Pn26hPfaqED6cubojjhpBjUu4W8vd8mBRmLeTde9SGDmlHBZYlCnCRai3nq/VDSLdi1BJR22NYQms0Gr7gJEV+05gVuuXr0GkPTyHagGq06PJ4RQJnpYXV3dbrjRwxp1riz832hJNDyHAFhb68bgzhKztncg1rYDOiE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591956; c=relaxed/simple;
-	bh=+dMRimA0mwlWIdgWF6jQ+Oy8xAibGJZZuh5b9HIOpW8=;
+	s=arc-20240116; t=1761592403; c=relaxed/simple;
+	bh=ojv++QjIH3srBTSWoiCAbv3TpdgQBa6uC6+tCx2a8Ko=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OeuTW1GZLhsrxFKiCLDbQPbECcSpxOvDu6ktYKT/zbI4jLdUJedyrnM3PxQqLHmST5tDXMdpnSywACnKnQGXneKAMnmLAR/oo5zb8hFXuQFx0DHq0PuHIXMGDfFkFE4NS/BFvrEBN7/pLj4WpHxqrl540E2GZzTTjXlHKkffnQw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NUHY9px8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71C1CC4CEF1;
-	Mon, 27 Oct 2025 19:05:55 +0000 (UTC)
+	 MIME-Version; b=ghV8CRLpTasJbBHM05GnSKH7bp05OGnYr392f8NoNhbgfqH6PWedoEPpKcYWxHLyFc2t9BN6YLlp1x3xaB2OdJVgBTCGzKZfjfR03FXDv9UlDLXhWFzKLRAesT7lksNMeYd8iCP2XMyhSRzHaBeIrz0gJdSIkPvpiz9kz0qbmO0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bjdxUXsp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92906C4CEF1;
+	Mon, 27 Oct 2025 19:13:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591955;
-	bh=+dMRimA0mwlWIdgWF6jQ+Oy8xAibGJZZuh5b9HIOpW8=;
+	s=korg; t=1761592402;
+	bh=ojv++QjIH3srBTSWoiCAbv3TpdgQBa6uC6+tCx2a8Ko=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NUHY9px8/bWW2zpAkXA/Gs3ldmLcWdMUdWbygJgYDmS/nBl85iq0Yjc7nyNK3BeDh
-	 UazZvwa8ccPrgk0MeBOHb01ZRWbPYEIVRD4g8Z8ZhCkaQ+jQ2H9gfUI444NtA+Ood3
-	 LnN+pIPECEwSa+kqSkY7urMWCzt16dx0EzHSqrpE=
+	b=bjdxUXspa7DonhNhzsVoXco8jbe1lXfqmDJ8LFchi9tBVpVOX7qb1r0+JJ9aQCLQm
+	 R/hbJnM4BtsMmZduhgf0JRginXs//fEMnASzlCx2tCPdqSliIotBwS33n4DjQwHUJX
+	 QRZHAr6qn8o8N/zAK5iSpXa9jhDjZ7X7Q0ch64Cg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Huang Ying <ying.huang@linux.alibaba.com>,
-	Will Deacon <will@kernel.org>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Gavin Shan <gshan@redhat.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Yicong Yang <yangyicong@hisilicon.com>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Catalin Marinas <catalin.marinas@arm.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <smfrench@gmail.com>,
+	Tom Talpey <tom@talpey.com>,
+	linux-cifs@vger.kernel.org,
+	samba-technical@lists.samba.org,
+	Stefan Metzmacher <metze@samba.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 061/123] arm64, mm: avoid always making PTE dirty in pte_mkwrite()
+Subject: [PATCH 6.1 080/157] smb: server: let smb_direct_flush_send_list() invalidate a remote key first
 Date: Mon, 27 Oct 2025 19:35:41 +0100
-Message-ID: <20251027183448.029112365@linuxfoundation.org>
+Message-ID: <20251027183503.420851234@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183446.381986645@linuxfoundation.org>
-References: <20251027183446.381986645@linuxfoundation.org>
+In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
+References: <20251027183501.227243846@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,73 +67,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huang Ying <ying.huang@linux.alibaba.com>
+From: Stefan Metzmacher <metze@samba.org>
 
-[ Upstream commit 143937ca51cc6ae2fccc61a1cb916abb24cd34f5 ]
+[ Upstream commit 1b53426334c3c942db47e0959a2527a4f815af50 ]
 
-Current pte_mkwrite_novma() makes PTE dirty unconditionally.  This may
-mark some pages that are never written dirty wrongly.  For example,
-do_swap_page() may map the exclusive pages with writable and clean PTEs
-if the VMA is writable and the page fault is for read access.
-However, current pte_mkwrite_novma() implementation always dirties the
-PTE.  This may cause unnecessary disk writing if the pages are
-never written before being reclaimed.
+If we want to invalidate a remote key we should do that as soon as
+possible, so do it in the first send work request.
 
-So, change pte_mkwrite_novma() to clear the PTE_RDONLY bit only if the
-PTE_DIRTY bit is set to make it possible to make the PTE writable and
-clean.
-
-The current behavior was introduced in commit 73e86cb03cf2 ("arm64:
-Move PTE_RDONLY bit handling out of set_pte_at()").  Before that,
-pte_mkwrite() only sets the PTE_WRITE bit, while set_pte_at() only
-clears the PTE_RDONLY bit if both the PTE_WRITE and the PTE_DIRTY bits
-are set.
-
-To test the performance impact of the patch, on an arm64 server
-machine, run 16 redis-server processes on socket 1 and 16
-memtier_benchmark processes on socket 0 with mostly get
-transactions (that is, redis-server will mostly read memory only).
-The memory footprint of redis-server is larger than the available
-memory, so swap out/in will be triggered.  Test results show that the
-patch can avoid most swapping out because the pages are mostly clean.
-And the benchmark throughput improves ~23.9% in the test.
-
-Fixes: 73e86cb03cf2 ("arm64: Move PTE_RDONLY bit handling out of set_pte_at()")
-Signed-off-by: Huang Ying <ying.huang@linux.alibaba.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: Anshuman Khandual <anshuman.khandual@arm.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Gavin Shan <gshan@redhat.com>
-Cc: Ard Biesheuvel <ardb@kernel.org>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Yicong Yang <yangyicong@hisilicon.com>
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-kernel@vger.kernel.org
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Cc: Steve French <smfrench@gmail.com>
+Cc: Tom Talpey <tom@talpey.com>
+Cc: linux-cifs@vger.kernel.org
+Cc: samba-technical@lists.samba.org
+Signed-off-by: Stefan Metzmacher <metze@samba.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/include/asm/pgtable.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/smb/server/transport_rdma.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
-index a0bfa9cd76dab..a1902dcf7a7e3 100644
---- a/arch/arm64/include/asm/pgtable.h
-+++ b/arch/arm64/include/asm/pgtable.h
-@@ -175,7 +175,8 @@ static inline pmd_t set_pmd_bit(pmd_t pmd, pgprot_t prot)
- static inline pte_t pte_mkwrite(pte_t pte)
- {
- 	pte = set_pte_bit(pte, __pgprot(PTE_WRITE));
--	pte = clear_pte_bit(pte, __pgprot(PTE_RDONLY));
-+	if (pte_sw_dirty(pte))
-+		pte = clear_pte_bit(pte, __pgprot(PTE_RDONLY));
- 	return pte;
- }
+diff --git a/fs/smb/server/transport_rdma.c b/fs/smb/server/transport_rdma.c
+index af1c41f922bb3..81da8a5c1e0db 100644
+--- a/fs/smb/server/transport_rdma.c
++++ b/fs/smb/server/transport_rdma.c
+@@ -933,12 +933,15 @@ static int smb_direct_flush_send_list(struct smb_direct_transport *t,
+ 			       struct smb_direct_sendmsg,
+ 			       list);
  
++	if (send_ctx->need_invalidate_rkey) {
++		first->wr.opcode = IB_WR_SEND_WITH_INV;
++		first->wr.ex.invalidate_rkey = send_ctx->remote_key;
++		send_ctx->need_invalidate_rkey = false;
++		send_ctx->remote_key = 0;
++	}
++
+ 	last->wr.send_flags = IB_SEND_SIGNALED;
+ 	last->wr.wr_cqe = &last->cqe;
+-	if (is_last && send_ctx->need_invalidate_rkey) {
+-		last->wr.opcode = IB_WR_SEND_WITH_INV;
+-		last->wr.ex.invalidate_rkey = send_ctx->remote_key;
+-	}
+ 
+ 	ret = smb_direct_post_send(t, &first->wr);
+ 	if (!ret) {
 -- 
 2.51.0
 
