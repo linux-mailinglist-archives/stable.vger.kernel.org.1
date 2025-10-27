@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-191017-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190872-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5500C10EB6
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:25:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 37AB5C10CD9
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:20:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 79D5419A4C6E
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:21:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C3F8B1A646F7
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:15:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B48221576E;
-	Mon, 27 Oct 2025 19:19:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BA2F29E110;
+	Mon, 27 Oct 2025 19:13:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l2kDS1Cx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rlsBExPd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7CCA23EA92;
-	Mon, 27 Oct 2025 19:19:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0840D23EA92;
+	Mon, 27 Oct 2025 19:13:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592797; cv=none; b=GPwiZUA07C0wPT+EDR/fnLY+q04iLWyjieGvDk06g5mQvv06H9OpCTIyuEvqvIGmYg6UWtGjBppvm9X+5y6hQMiPBz7p77lVWnggnfBFNzYmlSRlWd4/Pnj1umigCvTjeJLmIukJndlUDq45IuEObAceuwRQmfXIX1D+onE5O5Y=
+	t=1761592421; cv=none; b=A+UOr4Zdk3UrOdmPOGAQirQuFAPxCziNdcUY4rT/mv/iqV/tFZoZ7unRuTxPO1sV7A5UOIDmAUguAPsXwA9LnTIJLOyoBVBloQ4rdBfUstO8vVe7b2hJMkaMgkFATJr4TiWmrBhSmDZn3Vh5o9fOinXvsMxk4VH1ijLblHl85D8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592797; c=relaxed/simple;
-	bh=RV5tFQ4I5LIRMJIEg58pbGCSaTQ6a2do0VhhzO6UkSg=;
+	s=arc-20240116; t=1761592421; c=relaxed/simple;
+	bh=kj8nV62/2OCNSFYpyrhc/fQXNPVfROp0jSSvt0r0YMo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hoo3yC7LonrZRID5wEmyLMhAssitdyzY+HhC07sZtTfphnoiiDioPDu2F8k3QbnpVoNodUDbYFFhfht1xVssCv3Sj8ruAlOBOrW2H8gnTKPp+SROdUWTlv3d+Ayy9qXy2X3WSaoSOLX8f9tFOFsyKm1oN3aCcHSeK1psvwEzFSU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l2kDS1Cx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49F97C4CEF1;
-	Mon, 27 Oct 2025 19:19:57 +0000 (UTC)
+	 MIME-Version; b=P2CqBCxzd/coE60uC8EBsjB4zVwDUGQPhz7uLy1DjVxyAOW5O1GHtVhX/3OkQPoBK6lvl6G4GjR/N5EPaHrh5karTkzxiEXHtx/J7t9wPElxPVaq6FNsxIxSXgXYa/zzhcdOWEvalMsmFKRZmjKSlB72fQ+PipIEhlNjuhhZwAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rlsBExPd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89F4DC4CEF1;
+	Mon, 27 Oct 2025 19:13:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592797;
-	bh=RV5tFQ4I5LIRMJIEg58pbGCSaTQ6a2do0VhhzO6UkSg=;
+	s=korg; t=1761592420;
+	bh=kj8nV62/2OCNSFYpyrhc/fQXNPVfROp0jSSvt0r0YMo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l2kDS1Cx2X2doFyfiyL7S0EOlmIVgC+HBaveYU5cJ36fNX8nx5PxSus5gALDOnJXb
-	 lLnwFySzG45c1RxIecNjEvSsPkFYLDkv8l7uHkNTo7y0LzFAyM5uVeKPoYk3RZUviB
-	 wZGrnFBCXEpP8V3NXXALX/IGHrl6BFuAIhuB6POs=
+	b=rlsBExPd8R/EwvrQog2rGpqCm4E4SNjXf/8GiYTwdW985CtiOH8ApSw5A9gAOkqVe
+	 hePBA0zk1ZnmHKnMMj5GmgF5NFsmthgqAaA5+G6hC1aEEdwcjpenAsV14tySoSu7Oh
+	 MBH9pqmt/5PfPmyUdVLccxJsOPC9LngfjG/Z5vk8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Erhard Furtner <erhard_f@mailbox.org>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Andrew Donnellan <ajd@linux.ibm.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 016/117] powerpc/32: Remove PAGE_KERNEL_TEXT to fix startup failure
+Subject: [PATCH 6.1 081/157] net/mlx5e: Return 1 instead of 0 in invalid case in mlx5e_mpwrq_umr_entry_size()
 Date: Mon, 27 Oct 2025 19:35:42 +0100
-Message-ID: <20251027183454.383665941@linuxfoundation.org>
+Message-ID: <20251027183503.447135830@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
-References: <20251027183453.919157109@linuxfoundation.org>
+In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
+References: <20251027183501.227243846@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,109 +63,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
+From: Nathan Chancellor <nathan@kernel.org>
 
-[ Upstream commit 9316512b717f6f25c4649b3fdb0a905b6a318e9f ]
+[ Upstream commit aaf043a5688114703ae2c1482b92e7e0754d684e ]
 
-PAGE_KERNEL_TEXT is an old macro that is used to tell kernel whether
-kernel text has to be mapped read-only or read-write based on build
-time options.
+When building with Clang 20 or newer, there are some objtool warnings
+from unexpected fallthroughs to other functions:
 
-But nowadays, with functionnalities like jump_labels, static links,
-etc ... more only less all kernels need to be read-write at some
-point, and some combinations of configs failed to work due to
-innacurate setting of PAGE_KERNEL_TEXT. On the other hand, today
-we have CONFIG_STRICT_KERNEL_RWX which implements a more controlled
-access to kernel modifications.
+  vmlinux.o: warning: objtool: mlx5e_mpwrq_mtts_per_wqe() falls through to next function mlx5e_mpwrq_max_num_entries()
+  vmlinux.o: warning: objtool: mlx5e_mpwrq_max_log_rq_size() falls through to next function mlx5e_get_linear_rq_headroom()
 
-Instead of trying to keep PAGE_KERNEL_TEXT accurate with all
-possible options that may imply kernel text modification, always
-set kernel text read-write at startup and rely on
-CONFIG_STRICT_KERNEL_RWX to provide accurate protection.
+LLVM 20 contains an (admittedly problematic [1]) optimization [2] to
+convert divide by zero into the equivalent of __builtin_unreachable(),
+which invokes undefined behavior and destroys code generation when it is
+encountered in a control flow graph.
 
-Do this by passing PAGE_KERNEL_X to map_kernel_page() in
-__maping_ram_chunk() instead of passing PAGE_KERNEL_TEXT. Once
-this is done, the only remaining user of PAGE_KERNEL_TEXT is
-mmu_mark_initmem_nx() which uses it in a call to setibat().
-As setibat() ignores the RW/RO, we can seamlessly replace
-PAGE_KERNEL_TEXT by PAGE_KERNEL_X here as well and get rid of
-PAGE_KERNEL_TEXT completely.
+mlx5e_mpwrq_umr_entry_size() returns 0 in the default case of an
+unrecognized mlx5e_mpwrq_umr_mode value. mlx5e_mpwrq_mtts_per_wqe(),
+which is inlined into mlx5e_mpwrq_max_log_rq_size(), uses the result of
+mlx5e_mpwrq_umr_entry_size() in a divide operation without checking for
+zero, so LLVM is able to infer there will be a divide by zero in this
+case and invokes undefined behavior. While there is some proposed work
+to isolate this undefined behavior and avoid the destructive code
+generation that results in these objtool warnings, code should still be
+defensive against divide by zero.
 
-Reported-by: Erhard Furtner <erhard_f@mailbox.org>
-Closes: https://lore.kernel.org/all/342b4120-911c-4723-82ec-d8c9b03a8aef@mailbox.org/
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Tested-by: Andrew Donnellan <ajd@linux.ibm.com>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/8e2d793abf87ae3efb8f6dce10f974ac0eda61b8.1757412205.git.christophe.leroy@csgroup.eu
+As the WARN_ONCE() implies that an invalid value should be handled
+gracefully, return 1 instead of 0 in the default case so that the
+results of this division operation is always valid.
+
+Fixes: 168723c1f8d6 ("net/mlx5e: xsk: Use umr_mode to calculate striding RQ parameters")
+Link: https://lore.kernel.org/CAGG=3QUk8-Ak7YKnRziO4=0z=1C_7+4jF+6ZeDQ9yF+kuTOHOQ@mail.gmail.com/ [1]
+Link: https://github.com/llvm/llvm-project/commit/37932643abab699e8bb1def08b7eb4eae7ff1448 [2]
+Closes: https://github.com/ClangBuiltLinux/linux/issues/2131
+Closes: https://github.com/ClangBuiltLinux/linux/issues/2132
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/20251014-mlx5e-avoid-zero-div-from-mlx5e_mpwrq_umr_entry_size-v1-1-dc186b8819ef@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/include/asm/pgtable.h | 12 ------------
- arch/powerpc/mm/book3s32/mmu.c     |  4 ++--
- arch/powerpc/mm/pgtable_32.c       |  2 +-
- 3 files changed, 3 insertions(+), 15 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/en/params.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/include/asm/pgtable.h b/arch/powerpc/include/asm/pgtable.h
-index 2f72ad885332e..2ec5431ce1be2 100644
---- a/arch/powerpc/include/asm/pgtable.h
-+++ b/arch/powerpc/include/asm/pgtable.h
-@@ -20,18 +20,6 @@ struct mm_struct;
- #include <asm/nohash/pgtable.h>
- #endif /* !CONFIG_PPC_BOOK3S */
- 
--/*
-- * Protection used for kernel text. We want the debuggers to be able to
-- * set breakpoints anywhere, so don't write protect the kernel text
-- * on platforms where such control is possible.
-- */
--#if defined(CONFIG_KGDB) || defined(CONFIG_XMON) || defined(CONFIG_BDI_SWITCH) || \
--	defined(CONFIG_KPROBES) || defined(CONFIG_DYNAMIC_FTRACE)
--#define PAGE_KERNEL_TEXT	PAGE_KERNEL_X
--#else
--#define PAGE_KERNEL_TEXT	PAGE_KERNEL_ROX
--#endif
--
- /* Make modules code happy. We don't set RO yet */
- #define PAGE_KERNEL_EXEC	PAGE_KERNEL_X
- 
-diff --git a/arch/powerpc/mm/book3s32/mmu.c b/arch/powerpc/mm/book3s32/mmu.c
-index 2db167f4233f7..507e2ef50bd79 100644
---- a/arch/powerpc/mm/book3s32/mmu.c
-+++ b/arch/powerpc/mm/book3s32/mmu.c
-@@ -204,7 +204,7 @@ int mmu_mark_initmem_nx(void)
- 
- 	for (i = 0; i < nb - 1 && base < top;) {
- 		size = bat_block_size(base, top);
--		setibat(i++, PAGE_OFFSET + base, base, size, PAGE_KERNEL_TEXT);
-+		setibat(i++, PAGE_OFFSET + base, base, size, PAGE_KERNEL_X);
- 		base += size;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/params.c b/drivers/net/ethernet/mellanox/mlx5/core/en/params.c
+index 33cc53f221e0b..542cc017e64cd 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en/params.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en/params.c
+@@ -94,7 +94,7 @@ u8 mlx5e_mpwrq_umr_entry_size(enum mlx5e_mpwrq_umr_mode mode)
+ 		return sizeof(struct mlx5_ksm) * 4;
  	}
- 	if (base < top) {
-@@ -215,7 +215,7 @@ int mmu_mark_initmem_nx(void)
- 				pr_warn("Some RW data is getting mapped X. "
- 					"Adjust CONFIG_DATA_SHIFT to avoid that.\n");
- 		}
--		setibat(i++, PAGE_OFFSET + base, base, size, PAGE_KERNEL_TEXT);
-+		setibat(i++, PAGE_OFFSET + base, base, size, PAGE_KERNEL_X);
- 		base += size;
- 	}
- 	for (; i < nb; i++)
-diff --git a/arch/powerpc/mm/pgtable_32.c b/arch/powerpc/mm/pgtable_32.c
-index 787b222063866..e52d036c7a831 100644
---- a/arch/powerpc/mm/pgtable_32.c
-+++ b/arch/powerpc/mm/pgtable_32.c
-@@ -109,7 +109,7 @@ static void __init __mapin_ram_chunk(unsigned long offset, unsigned long top)
- 	p = memstart_addr + s;
- 	for (; s < top; s += PAGE_SIZE) {
- 		ktext = core_kernel_text(v);
--		map_kernel_page(v, p, ktext ? PAGE_KERNEL_TEXT : PAGE_KERNEL);
-+		map_kernel_page(v, p, ktext ? PAGE_KERNEL_X : PAGE_KERNEL);
- 		v += PAGE_SIZE;
- 		p += PAGE_SIZE;
- 	}
+ 	WARN_ONCE(1, "MPWRQ UMR mode %d is not known\n", mode);
+-	return 0;
++	return 1;
+ }
+ 
+ u8 mlx5e_mpwrq_log_wqe_sz(struct mlx5_core_dev *mdev, u8 page_shift,
 -- 
 2.51.0
 
