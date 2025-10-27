@@ -1,122 +1,127 @@
-Return-Path: <stable+bounces-191319-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191320-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0E81C1162B
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 21:26:22 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D87EC116D6
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 21:43:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 50FC04E7834
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:26:20 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D600E4E6773
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:43:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB1442E427F;
-	Mon, 27 Oct 2025 20:26:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE05431E0E0;
+	Mon, 27 Oct 2025 20:43:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hWofA5oh"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="im/ryDRG"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99E4727978C
-	for <stable@vger.kernel.org>; Mon, 27 Oct 2025 20:26:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EDDE2D94B2
+	for <stable@vger.kernel.org>; Mon, 27 Oct 2025 20:42:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761596776; cv=none; b=a/2daUsNB0WjKeakpZPb7pQZiw/rL7vZP70PS9Sj+Vq/H0A63QEuroLGaBResrLVXLnQ7TnPD2PeIoPFnSz5bZBvFLD1IfcztQcep6SCRIwr69Getqza0un8/XGT/5VryCge2jhm3BwevimmCJe9V/R0eWxPs+gpoGORGDAC4iY=
+	t=1761597780; cv=none; b=c43gBiT5OEkxBJPv8Ut7zGG/gaa+iuLueGlAU4C/a/fOiZInJGAl+RoS2HdLXd4vaEw75p+OMkTCQiWAaUfklvuR+AXNIUC7NdOgsOIJDnsyg2S9o+1vx84qF6mB2MUSXQ2HFX9EmJzuwD8sYnAOKe1klRdRzvGpMwr4gQZ6keE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761596776; c=relaxed/simple;
-	bh=UJ6MmkxbwNihwhAWkFRhdgi3rLiRJ5FOlBCHopS8LMM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=B1mCWDFUin8YBSYT5G0EpObLwRX2siVA7Nx5THRBbMpOl8FQC4nJaC8BuAXo3L+r6Vv2LTiv/4/h2QRhjdg92oRDbhHb1Ypoc6D/zjlhIt6cd7A3EjO8qBVS76wLFazu4aCDG5svqldCPUaJJZjWl4wJzzt3bowvhz7YCA3AYps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hWofA5oh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D2ECC4AF09
-	for <stable@vger.kernel.org>; Mon, 27 Oct 2025 20:26:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761596776;
-	bh=UJ6MmkxbwNihwhAWkFRhdgi3rLiRJ5FOlBCHopS8LMM=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=hWofA5ohRf0zlap1Yx3dfPfsYAjFHzHmbkX0tchEDP0SMA2VI3/S5vBr5tIh1P0VO
-	 pBWM8yvcCg/dtESJVC70AHbbbMXK5/3iqrVM41GVXFq0118s2iFoTpDHv0/pmX38GD
-	 B7aJdXXKxbNsVCoxq+uDxYE6fFE3FJKUTXxbdPHAFXEF52Hm78AnNNc5V8Q69pTMi4
-	 tvRqSPZVQXx0cdOSg+97j6RsKnM9lFXONa56a2i6DrqxlXjk2xHs7WT9Bbs9NjRAd1
-	 2L5+gAZnlbyC7PankEHxeqm2E6MElh6zr21HbbfZrOVzMQIBgn3ctswlFpNI9KewXT
-	 jAWHncaNYzMiQ==
-Received: by mail-ot1-f42.google.com with SMTP id 46e09a7af769-7c53908e8b5so1217451a34.1
-        for <stable@vger.kernel.org>; Mon, 27 Oct 2025 13:26:16 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVrWrrUzEFNcVaHo08aBfwaDzry9UTAy3g8y09GOCDwvuGNTZAppaAak6Q8aH7WC3m37I8pEUY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw0pOOmW5mH4Q4ehZWoS02Sip3XJW/47YMO5D4etzuhiAecPwh2
-	XrzRPjz73wDOv+w9D5zDl0j3d98rB/2jO1DdyDWYxAYmItxIOSzLiuvCSsuBgT8YjHnbtnSD8jb
-	raTmgeVH4JRs8m8xDMBn4bDPR8krAKG8=
-X-Google-Smtp-Source: AGHT+IE9D/Es2uxgo0RZaaHln7lBhFVmUzdgDvDqUNNXq/SfZLMveyNlMgTOcnrqhFYu2i1d8G63X4JEoe5CjH+wt1s=
-X-Received: by 2002:a05:6808:4fcd:b0:44d:b8fb:53cb with SMTP id
- 5614622812f47-44f6b9a9313mr491212b6e.6.1761596775578; Mon, 27 Oct 2025
- 13:26:15 -0700 (PDT)
+	s=arc-20240116; t=1761597780; c=relaxed/simple;
+	bh=gWWe3paV3a/kYxDO1EPMAPiCjS1sugw4GH1dIZqDEUI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=q71+OG9smSOmqpcnwTK6Gc+DlLGIYppi1rilSJMwNQp89/h5uu5f5gxhEtShis70h2f933OpJ6SRiAzmoKzvGnVrL3OWGvhFLHjgsEmGkBI9BlXquDOmfy7jx68XvzUsosvAuT2sdUnQm1XYzq31mhJv56WJmRN6UWjkBkJ4eQM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=im/ryDRG; arc=none smtp.client-ip=209.85.222.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-89f3a6028a8so306303685a.1
+        for <stable@vger.kernel.org>; Mon, 27 Oct 2025 13:42:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1761597778; x=1762202578; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=zODHDgIVcThjNTQxncSaZSJNvBOcC1ZxkNJs06nMyxk=;
+        b=im/ryDRGW2j/YpVX8OxMpPCvo0UtWJLR7fTUWzxpou0Hs195/+gLryw2HFUf9Cvn5K
+         ugcqH9FjyMnzb3of4LfPT+tCUNhVBBNX2nEaGoLiDXRy6xtGqFRNVNCorjnrG3w02Vmr
+         8fEJW+FzCWUpjdLI0GNVA3/a7VJW/igG2Mekfw5EtrE3e1FmVCGBQMZUkSmWgzICnfgx
+         t/QSst0rsXtFO+RuHS5RW0K2/XLMGHq5On81ws3ZRa15E/VzEtEi5AheDQUdOHIKaU2N
+         PpN6RQM+vI5VqR5SjMGbZkv+gwX6Ht2e+c0ghboVEYAN04uL5XgYOjwmgroE/mdCbq3G
+         FRPQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761597778; x=1762202578;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=zODHDgIVcThjNTQxncSaZSJNvBOcC1ZxkNJs06nMyxk=;
+        b=cOm8ugrOrqnMzAJbEa5CADcSwkHcDaUzttSTKkpw708w88zflwXCp9UlNsFWcK+dKV
+         FguvfGeZoJQUnQ8CWV9YukjljDWUGG7c2HTv/yjPjKuuwFkrEEKS9s2/5GA6i8NF8ZyR
+         kRx9vW4I8xPCxBg4daDlrx9dVw3WtfEWeON6uas6B549KWH+7MPvC4z4xJt5NGht7nEd
+         UIJ5JswVftn0SKsYqZEE1MVat1bp/tZZSV2v3NBR7s656vYn9E3H96gYaWerAOWrkcSD
+         Zyl7Wr+Pq6w6+klHk46W0VlJhNyT51sUy+Zw+0oP4s+Ld1haK8jyWyZmnsdiNKxdy3cK
+         f+sQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUpo9LkgfRQYaZI3UeKbwkaC9qALvW/Igq4PVAEXOt4DgXclcp4eYbIui4Ut4c0bHVBg+Bp8Q4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwCg5q21/A6klBYJMO4/cNsgsh3Onx9wPhu3HBD/fvTpMnp12Pl
+	WY55JbzxXVX1QInpaXgL/eZ5WOMhDskXbk5kmjx8nLPoU2FB0QRVzjL8
+X-Gm-Gg: ASbGncs4sxKJ0g/QqRPyJT57T1JxeQZ8H0nwDE+OMoPyh2Pu0qctFBkv3JQ1Y2pnJBT
+	6HV4f0c2jdxsaPKS2d/lOvcluRlukqDPnuQesw68kaZCI1zE4Km0kNtGmLz3K3A0l+hrar9wiZ7
+	3v4dgp/wNSbDQFGgBVWm2emStHt8X4SKobXvGxBZ73HZ75YV+DL0WUYZkLTROdtXopSCp5YxrpZ
+	lXl41rjH75ZiUxI9aCfz4e5TSmcZBFDfWg0uQQPScwxiGZ26dL0LquiC5rME8/X8qAwYattfqsl
+	t9je2nVUIo2IYnizfXHWA/wkZd8INonalzVIxFV+Tx8Sv4rqKoFmmjVWtXRAnK0DVkeHv8oT3v/
+	FZFmE3Rt4pYhwuE7YbBA4BwV+dfcr2YJ6M9nzipTKD4hGzlMgiBxyxCuxscnjdmirKLYlJY1Df7
+	3imSI62alD1ffAtNZLZsJZCVfqNcI=
+X-Google-Smtp-Source: AGHT+IHjY1h62yk27PivH7Y+anegVGVxs9iDSQpJ7ULwNyIzYPD2WxXDfIKBytoxE1XNdGRwtGRCmw==
+X-Received: by 2002:a05:620a:2953:b0:8a1:b5ab:bbd6 with SMTP id af79cd13be357-8a6fa37ded9mr168442885a.71.1761597777922;
+        Mon, 27 Oct 2025 13:42:57 -0700 (PDT)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-89f3497793esm657733485a.1.2025.10.27.13.42.55
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 27 Oct 2025 13:42:57 -0700 (PDT)
+Message-ID: <4d3df05a-36af-4e1e-b904-a995a3744e55@gmail.com>
+Date: Mon, 27 Oct 2025 13:42:54 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251026164422.58128-1-linmq006@gmail.com>
-In-Reply-To: <20251026164422.58128-1-linmq006@gmail.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Mon, 27 Oct 2025 21:26:04 +0100
-X-Gmail-Original-Message-ID: <CAJZ5v0hsJaK1DkNu7bRTBDH3U5seT2fmceg=CVpekK_QsVtS0w@mail.gmail.com>
-X-Gm-Features: AWmQ_bkTU4NdICPyyaKCzsC2sDArHDgS5akUzg9xK_GdVIhm4dNrpn04nphu_7U
-Message-ID: <CAJZ5v0hsJaK1DkNu7bRTBDH3U5seT2fmceg=CVpekK_QsVtS0w@mail.gmail.com>
-Subject: Re: [PATCH] thermal/of: Fix reference count leak in thermal_of_cm_lookup
-To: Miaoqian Lin <linmq006@gmail.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Daniel Lezcano <daniel.lezcano@linaro.org>, 
-	Zhang Rui <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>, 
-	Yu-Che Cheng <giver@chromium.org>, linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5.10 000/332] 5.10.246-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
+ hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
+ sr@sladewatkins.com
+References: <20251027183524.611456697@linuxfoundation.org>
+Content-Language: en-US, fr-FR
+From: Florian Fainelli <f.fainelli@gmail.com>
+In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Sun, Oct 26, 2025 at 5:44=E2=80=AFPM Miaoqian Lin <linmq006@gmail.com> w=
-rote:
->
-> The function calls of_parse_phandle() to get a
-> device node, which increments the reference count of the node. However,
-> the function fails to call of_node_put() to decrement the reference.
-> This leads to a reference count leak.
->
-> This is found by static analysis and similar to the commit a508e33956b5
-> ("ipmi:ipmb: Fix refcount leak in ipmi_ipmb_probe")
->
-> Fixes: 423de5b5bc5b ("thermal/of: Fix cdev lookup in thermal_of_should_bi=
-nd()")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
-> ---
->  drivers/thermal/thermal_of.c | 6 +++++-
->  1 file changed, 5 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/thermal/thermal_of.c b/drivers/thermal/thermal_of.c
-> index 1a51a4d240ff..932291648683 100644
-> --- a/drivers/thermal/thermal_of.c
-> +++ b/drivers/thermal/thermal_of.c
-> @@ -284,8 +284,12 @@ static bool thermal_of_cm_lookup(struct device_node =
-*cm_np,
->                 int count, i;
->
->                 tr_np =3D of_parse_phandle(child, "trip", 0);
-> -               if (tr_np !=3D trip->priv)
-> +               if (tr_np !=3D trip->priv) {
-> +                       of_node_put(tr_np);
->                         continue;
-> +               }
-> +
-> +               of_node_put(tr_np);
+On 10/27/25 11:30, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 5.10.246 release.
+> There are 332 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Wed, 29 Oct 2025 18:34:15 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.10.246-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.10.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-If it can be done here, it may as well be done before the check above.
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
+BMIPS_GENERIC:
 
->
->                 /* The trip has been found, look up the cdev. */
->                 count =3D of_count_phandle_with_args(child, "cooling-devi=
-ce",
-> --
-
-It would be more prudent to hold this reference throughout the scope
-though and release it when the scope is left.
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+-- 
+Florian
 
