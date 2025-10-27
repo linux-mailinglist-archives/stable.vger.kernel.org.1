@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-191233-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191067-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83435C111F5
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:35:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A78CC11021
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:29:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A52495659EE
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:31:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A88CE5809EA
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:23:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 093212D2398;
-	Mon, 27 Oct 2025 19:29:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C251B3233F5;
+	Mon, 27 Oct 2025 19:22:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ke+zLx+D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N88Z+hJT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB61F2C11DF;
-	Mon, 27 Oct 2025 19:29:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EE3230CD92;
+	Mon, 27 Oct 2025 19:22:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761593360; cv=none; b=oAfYy/+JaRNQCFIdVPuNsmTIe1X61SfBm7VaJDbYk4B1HYKTchu6JJSjU/dJZ9Yrsvogw+AcbRCIbKgl9hhxOrKnIDuLAoAPWKwqQijbFhZMI6KHOW2NhFXBy3QnGiXwlOtRJGM1EU/cUutODA8ORKQ729xBat2VzdTrOIjEcI8=
+	t=1761592927; cv=none; b=FAw5msC08XQFqfnQAY3eBxsY7x+wjuJEraxXIqOsgkcVC62/zUZdsId5kwx40UDvFk7MbOam/uEY5tLxrsxzrwzmGOCRxefCNPbyyK6gN3pktMOnNrDfI+AzkpVNW7tRJZUBbkieWKIKg8W72+RTptJTkhq2OV3Zs4hJAN5mzcg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761593360; c=relaxed/simple;
-	bh=H72p1qsb7Id9judXdX6pZHlA/SmsTi5b82ay5DZZnaU=;
+	s=arc-20240116; t=1761592927; c=relaxed/simple;
+	bh=t79sqMtxmBB2gSupgicOSnMs/YY8lqlRBMI3Lg089Gw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q1FgZzcP9awbM0MlDex9Lha/DcN9pRLwik2TlQAF/DYa0psySa22ZldhSVRIZhPhRKiKlTU09XeCtN6I2Grx06U8BoSWBNHMQqT9Rc+zedp98RArlvU1IM1K9cJvtYV/mffQ2MPe7zyu4pGBOaLCVHViLcsSXOPUKxJzqN41TVk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ke+zLx+D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 261B8C4CEF1;
-	Mon, 27 Oct 2025 19:29:19 +0000 (UTC)
+	 MIME-Version:Content-Type; b=cHzNJt8RjqJ8LhrQIlZozwtW7bDw5S+fd16YNnP37NHFMFeglDWn/O0HN3dQ4XNKWKxNbYpae65+/KE3DyJi1QUQD/jO/yoNIW6DADNdJBmSp0i0T+i8z2e1xWrBJD8WSHzkenGbwt02aYfoqYd4jPTtIUs6/t3iPg+YK5SrgMg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N88Z+hJT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C518C4CEF1;
+	Mon, 27 Oct 2025 19:22:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761593360;
-	bh=H72p1qsb7Id9judXdX6pZHlA/SmsTi5b82ay5DZZnaU=;
+	s=korg; t=1761592926;
+	bh=t79sqMtxmBB2gSupgicOSnMs/YY8lqlRBMI3Lg089Gw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ke+zLx+D78I4mWLS/b6ZPQzBPHsENfK1AP3bO1EnuRrWnV20lQth93A6ms6bbjdck
-	 rmx2El77YSZKvqlzU/ViDG93ZWTS4chMrofI0qXikLmp464JX90/KqzcE+ycTRWxMu
-	 SKiJVNNYzC+N2mSiHLLl58l3Pmz+rk9N9sdqIxSo=
+	b=N88Z+hJTqY6XyaxZUIvFx+rmNK9X9InhRB4/E3UOTL5rDJAd+oJpfxhZvUqQ9ZYYp
+	 Gc5ENAYS8HobHdiPhvaj0uKtYarOWs1YmFaxB4mKxim7+EfXept+HMJaH9BNBUHQ36
+	 ssY2CymOS+wfhiOc3YvyD6f70fYVBk3WgCWioJLI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Meenakshikumar Somasundaram <meenakshikumar.somasundaram@amd.com>,
-	Chris Park <chris.park@amd.com>,
-	Charlene Liu <Charlene.Liu@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>
-Subject: [PATCH 6.17 108/184] drm/amd/display: increase max link count and fix link->enc NULL pointer access
+	Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 064/117] net: ravb: Ensure memory write completes before ringing TX doorbell
 Date: Mon, 27 Oct 2025 19:36:30 +0100
-Message-ID: <20251027183517.829787385@linuxfoundation.org>
+Message-ID: <20251027183455.742115831@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
-References: <20251027183514.934710872@linuxfoundation.org>
+In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
+References: <20251027183453.919157109@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +61,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Charlene Liu <Charlene.Liu@amd.com>
+From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
 
-commit bec947cbe9a65783adb475a5fb47980d7b4f4796 upstream.
+commit 706136c5723626fcde8dd8f598a4dcd251e24927 upstream.
 
-[why]
-1.) dc->links[MAX_LINKS] array size smaller than actual requested.
-max_connector + max_dpia + 4 virtual = 14.
-increase from 12 to 14.
+Add a final dma_wmb() barrier before triggering the transmit request
+(TCCR_TSRQ) to ensure all descriptor and buffer writes are visible to
+the DMA engine.
 
-2.) hw_init() access null LINK_ENC for dpia non display_endpoint.
+According to the hardware manual, a read-back operation is required
+before writing to the doorbell register to guarantee completion of
+previous writes. Instead of performing a dummy read, a dma_wmb() is
+used to both enforce the same ordering semantics on the CPU side and
+also to ensure completion of writes.
 
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Meenakshikumar Somasundaram <meenakshikumar.somasundaram@amd.com>
-Reviewed-by: Chris Park <chris.park@amd.com>
-Signed-off-by: Charlene Liu <Charlene.Liu@amd.com>
-Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit d7f5a61e1b04ed87b008c8d327649d184dc5bb45)
+Fixes: c156633f1353 ("Renesas Ethernet AVB driver proper")
 Cc: stable@vger.kernel.org
+Co-developed-by: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
+Signed-off-by: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
+Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Reviewed-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+Link: https://patch.msgid.link/20251017151830.171062-5-prabhakar.mahadev-lad.rj@bp.renesas.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/hwss/dcn401/dcn401_hwseq.c |    3 +++
- drivers/gpu/drm/amd/display/dc/inc/hw/hw_shared.h         |    8 +++++++-
- 2 files changed, 10 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/renesas/ravb_main.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/drivers/gpu/drm/amd/display/dc/hwss/dcn401/dcn401_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn401/dcn401_hwseq.c
-@@ -200,6 +200,9 @@ void dcn401_init_hw(struct dc *dc)
- 		 */
- 		struct dc_link *link = dc->links[i];
+--- a/drivers/net/ethernet/renesas/ravb_main.c
++++ b/drivers/net/ethernet/renesas/ravb_main.c
+@@ -2224,6 +2224,14 @@ static netdev_tx_t ravb_start_xmit(struc
+ 		dma_wmb();
+ 		desc->die_dt = DT_FSINGLE;
+ 	}
++
++	/* Before ringing the doorbell we need to make sure that the latest
++	 * writes have been committed to memory, otherwise it could delay
++	 * things until the doorbell is rang again.
++	 * This is in replacement of the read operation mentioned in the HW
++	 * manuals.
++	 */
++	dma_wmb();
+ 	ravb_modify(ndev, TCCR, TCCR_TSRQ0 << q, TCCR_TSRQ0 << q);
  
-+		if (link->ep_type != DISPLAY_ENDPOINT_PHY)
-+			continue;
-+
- 		link->link_enc->funcs->hw_init(link->link_enc);
- 
- 		/* Check for enabled DIG to identify enabled display */
---- a/drivers/gpu/drm/amd/display/dc/inc/hw/hw_shared.h
-+++ b/drivers/gpu/drm/amd/display/dc/inc/hw/hw_shared.h
-@@ -44,7 +44,13 @@
-  */
- #define MAX_PIPES 6
- #define MAX_PHANTOM_PIPES (MAX_PIPES / 2)
--#define MAX_LINKS (MAX_PIPES * 2 +2)
-+
-+#define MAX_DPIA 6
-+#define MAX_CONNECTOR 6
-+#define MAX_VIRTUAL_LINKS 4
-+
-+#define MAX_LINKS (MAX_DPIA + MAX_CONNECTOR + MAX_VIRTUAL_LINKS)
-+
- #define MAX_DIG_LINK_ENCODERS 7
- #define MAX_DWB_PIPES	1
- #define MAX_HPO_DP2_ENCODERS	4
+ 	priv->cur_tx[q] += num_tx_desc;
 
 
 
