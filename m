@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-190765-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191052-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 794C6C10BA8
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:17:40 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C64A0C10FE8
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:29:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4FEC34FC12D
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:11:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D75C9462A94
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:23:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 174DD32E13F;
-	Mon, 27 Oct 2025 19:08:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF4322D836A;
+	Mon, 27 Oct 2025 19:21:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fbNDF+jJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yS++ZBiS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7FDF32D7DE;
-	Mon, 27 Oct 2025 19:08:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B89531A811;
+	Mon, 27 Oct 2025 19:21:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592137; cv=none; b=rTmlmXm3EzFyBQKG+153CuywOt4MwZV+4rAzW6mO+mD4y9YqUp2hlSi3pwJCYnrEM9s7OG2tRCRbCI0SSFuvT9C62umCt0LiDvRpF9SjoFy5RrOND0EuBbf7jMv0HMRmmjOjuBPtQA/oaCji0ahb0cASrIf+NMFKgxY5bFiOcbk=
+	t=1761592888; cv=none; b=cWJqlXMMJbUkEht/igaN7arx3beJNMlBjL7P0/aA1auLVeTHPezgddnock0yMk/GoX8AB8Z+nw8WCCPCFncSsx+oSpfcPOrz+pTKYrD6k9NIE35GYCC1KxlGWEPmXJQvQu3N9vmIAeaDsuXkvowkuisLrl+sZ+pq7kYkHGSgFuI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592137; c=relaxed/simple;
-	bh=hnw+b0o7KHIfSqz8PwgC+HA2+kIKtqV1Pzwy/6f9HSc=;
+	s=arc-20240116; t=1761592888; c=relaxed/simple;
+	bh=BQZ3V8jNiP065TMVlxbkFq8njOTjfl4mLiEc4gKEUgs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Yp1s7USC3xIbf9RYSQlwAnU9KSwGycDA5VSp9noyw0AmFYzP2oA1vzyrAZavjECcv9E2a6gfYsJhr6/xtxPHnPcQ0TZ6ruzngPYYkB7SNn0OL9hgHIK58OPf+GtU7ohhsWzQiUXVSbb1yofdEWeqV10DX+6OgrwpZLM6nUbULmk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fbNDF+jJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22370C4CEF1;
-	Mon, 27 Oct 2025 19:08:56 +0000 (UTC)
+	 MIME-Version; b=ALBmJSJcIyQ7VR5edXQuWbNIpIozG8XdR0fj6NccgV9DqJlnz5zSb6/O3tvGTguPcvA7sRXO6aLajraGGS6O2NdNzLwDtsOLVVgTETxQYtf1sXUiqN+DNUEE+Y0DSQl4bO7CNUFHJAjm+MxR05XQIx8ra8w4ZZbD9NV32oGoql8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yS++ZBiS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DB20C4CEF1;
+	Mon, 27 Oct 2025 19:21:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592137;
-	bh=hnw+b0o7KHIfSqz8PwgC+HA2+kIKtqV1Pzwy/6f9HSc=;
+	s=korg; t=1761592888;
+	bh=BQZ3V8jNiP065TMVlxbkFq8njOTjfl4mLiEc4gKEUgs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fbNDF+jJEThZ4tKRIX7F0ovqqMUWoLfzcTKDzq9id+GN5rdPa5fuDpWynbruGoFCP
-	 Y4jU+wTNUXmJQIB52qNiAIpv+ufqfJX6kHW8T70sA7KDeSxeSbTpQ9HgkVt86iW6yD
-	 FerOJ8EQCBHUPoQLNXp67w1CAOxhB9k6hnR8SgeA=
+	b=yS++ZBiSGJg3IP1w1AX3Mu/spZCrG/Aij3YFRF0py69plZmwjmSuXnJVMU1sn+0R4
+	 FuDlkE2ps0YkwI829aUV9xAkIbM8kiRvABfyDw2fsKABuxQkAUTujnBrBu+pQlr/3i
+	 XiAQENf4xIYRhpPgRpiYgQ2j4ejfzfPNh+DAJdrY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Nyekjaer <sean@geanix.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 096/123] iio: imu: inv_icm42600: Avoid configuring if already pm_runtime suspended
+	Mark Cave-Ayland <mark.caveayland@nutanix.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	William Breathitt Gray <wbg@kernel.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Subject: [PATCH 6.12 050/117] gpio: 104-idio-16: Define maximum valid register address offset
 Date: Mon, 27 Oct 2025 19:36:16 +0100
-Message-ID: <20251027183448.958386487@linuxfoundation.org>
+Message-ID: <20251027183455.350805648@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183446.381986645@linuxfoundation.org>
-References: <20251027183446.381986645@linuxfoundation.org>
+In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
+References: <20251027183453.919157109@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,68 +64,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Nyekjaer <sean@geanix.com>
+From: William Breathitt Gray <wbg@kernel.org>
 
-[ Upstream commit 466f7a2fef2a4e426f809f79845a1ec1aeb558f4 ]
+commit c4d35e635f3a65aec291a6045cae8c99cede5bba upstream.
 
-Do as in suspend, skip resume configuration steps if the device is already
-pm_runtime suspended. This avoids reconfiguring a device that is already
-in the correct low-power state and ensures that pm_runtime handles the
-power state transitions properly.
+Attempting to load the 104-idio-16 module fails during regmap
+initialization with a return error -EINVAL. This is a result of the
+regmap cache failing initialization. Set the idio_16_regmap_config
+max_register member to fix this failure.
 
-Fixes: 31c24c1e93c3 ("iio: imu: inv_icm42600: add core of new inv_icm42600 driver")
-Signed-off-by: Sean Nyekjaer <sean@geanix.com>
-Link: https://patch.msgid.link/20250901-icm42pmreg-v3-3-ef1336246960@geanix.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-[ Placed early return before regulator enable instead of APEX wakeup logic ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 2c210c9a34a3 ("gpio: 104-idio-16: Migrate to the regmap API")
+Reported-by: Mark Cave-Ayland <mark.caveayland@nutanix.com>
+Closes: https://lore.kernel.org/r/9b0375fd-235f-4ee1-a7fa-daca296ef6bf@nutanix.com
+Suggested-by: Mark Cave-Ayland <mark.caveayland@nutanix.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: William Breathitt Gray <wbg@kernel.org>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Link: https://lore.kernel.org/r/20251020-fix-gpio-idio-16-regmap-v2-1-ebeb50e93c33@kernel.org
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/imu/inv_icm42600/inv_icm42600_core.c |   11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ drivers/gpio/gpio-104-idio-16.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
-@@ -680,17 +680,15 @@ EXPORT_SYMBOL_GPL(inv_icm42600_core_prob
- static int __maybe_unused inv_icm42600_suspend(struct device *dev)
- {
- 	struct inv_icm42600_state *st = dev_get_drvdata(dev);
--	int ret;
-+	int ret = 0;
- 
- 	mutex_lock(&st->lock);
- 
- 	st->suspended.gyro = st->conf.gyro.mode;
- 	st->suspended.accel = st->conf.accel.mode;
- 	st->suspended.temp = st->conf.temp_en;
--	if (pm_runtime_suspended(dev)) {
--		ret = 0;
-+	if (pm_runtime_suspended(dev))
- 		goto out_unlock;
--	}
- 
- 	/* disable FIFO data streaming */
- 	if (st->fifo.on) {
-@@ -722,10 +720,13 @@ static int __maybe_unused inv_icm42600_r
- 	struct inv_icm42600_state *st = dev_get_drvdata(dev);
- 	struct inv_icm42600_timestamp *gyro_ts = iio_priv(st->indio_gyro);
- 	struct inv_icm42600_timestamp *accel_ts = iio_priv(st->indio_accel);
--	int ret;
-+	int ret = 0;
- 
- 	mutex_lock(&st->lock);
- 
-+	if (pm_runtime_suspended(dev))
-+		goto out_unlock;
-+
- 	ret = inv_icm42600_enable_regulator_vddio(st);
- 	if (ret)
- 		goto out_unlock;
+--- a/drivers/gpio/gpio-104-idio-16.c
++++ b/drivers/gpio/gpio-104-idio-16.c
+@@ -59,6 +59,7 @@ static const struct regmap_config idio_1
+ 	.reg_stride = 1,
+ 	.val_bits = 8,
+ 	.io_port = true,
++	.max_register = 0x5,
+ 	.wr_table = &idio_16_wr_table,
+ 	.rd_table = &idio_16_rd_table,
+ 	.volatile_table = &idio_16_rd_table,
 
 
 
