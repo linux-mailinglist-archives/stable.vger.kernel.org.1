@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-190895-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190965-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B9E0C10E57
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:24:18 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76BC8C10F22
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:27:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E989754645F
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:16:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 06D92583121
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:19:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BC4E30E0C5;
-	Mon, 27 Oct 2025 19:14:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EAA932C92D;
+	Mon, 27 Oct 2025 19:17:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xlQnayZ2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HUNWb1nx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D96D72F25F1;
-	Mon, 27 Oct 2025 19:14:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AC6F31DDBC;
+	Mon, 27 Oct 2025 19:17:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592478; cv=none; b=OAcmAjg+rH4Lkt4rye+m04ZmqZovwAESib56QK/wuCkG2bJ/NomriHGiUlt1GM11hSDuPMMYrCiL0yF1YdqU4ZPui+Iu19ZHldjSBrUcAaAltUWlhGQ9LJS1qTvNxO+5x2e1NXN/v51KBWrTNBIUP75NSg63zDRMpuGWytBJ70c=
+	t=1761592661; cv=none; b=LkUY5OQZSkXgnSmQ8qgeZKq53GWvqZ9ns1mvYAEXrVRqrx+nmCkDzgan44QkuIVBxu+oziuflIbqxoI0W2w4MC6H2m6VPR7uljvAva9rzQgDHqNGJO5Z7eZIxxONFK2Bma2yMZhbuACOQQYn+h40gRYW986ewUqewWBXQOi6EJc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592478; c=relaxed/simple;
-	bh=UZAmSh27JQvQtZh+7xZ7YPtAPHev5I0k0TKwYPNn8Ac=;
+	s=arc-20240116; t=1761592661; c=relaxed/simple;
+	bh=soSpHTcRDAJaxTxiCf2a6n7UU0ZjMG2CGhtVqhop03k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bY1hHt/gwYbvv4AoSN5RfCuNp1O5QmUUHP+ZTG8A6rZwUSEG7THfWS6QVWTyVS3NLmvBtsqrjn4F2dwo/5D0xXRMpRTdNZZ6qIy0V1kdjoLC6JSFwlZcoHH/sRdPlSbCejUcIf3KS1vHuMtlJuNeWQEAhqffZ2R92wLVON8hq9g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xlQnayZ2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42F02C4CEF1;
-	Mon, 27 Oct 2025 19:14:38 +0000 (UTC)
+	 MIME-Version; b=SJvbs9fFVjIoZHKmsOmMe2WwUSzoOpAR83xUDfI7zLVCFMfi/KIS5dpxJRUaK/QDiHBOtz2JhTTdYEN+I6RitA5me1FQm+7P3lKqapWopCdClzZnK+JXDHFG/0JaFvZfKu+hjPUOwOZ+iPw7lcJJt+ps8ALQpvKlmndcEGp4u+4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HUNWb1nx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB220C4CEFD;
+	Mon, 27 Oct 2025 19:17:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592478;
-	bh=UZAmSh27JQvQtZh+7xZ7YPtAPHev5I0k0TKwYPNn8Ac=;
+	s=korg; t=1761592661;
+	bh=soSpHTcRDAJaxTxiCf2a6n7UU0ZjMG2CGhtVqhop03k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xlQnayZ2HGRnAYZl+7hqAxEob0aASFqyAHt1h6HA+DNz+Z9UExwHgPNiv44kRFyPj
-	 AWofm0RmX9qFt0YqXP7NxYCCc0QN37FZsqYic1ljmZQDC8ZwVzpxigH+J5uyRbaFHA
-	 ddSDoOG/YXQn868cVvGBwAx1dlt1ZwSTJyqEqOWQ=
+	b=HUNWb1nxZL8pIYOIjYfHcjkdegKVAycb2QOOiM0klhMB9jcwz6H1EXG5CSaH9rLBr
+	 VL8wcrexV8ouh0MwwaYLSGP+Q8jIyjKDfKw/ZhLze4rslUosg0AkDJ7YvanwnzNVQu
+	 LRfRzNs/dIUkWzrFPeRVwGO+3jk7bt6nZc/f8cWU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Theodore Tso <tytso@mit.edu>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 136/157] ext4: avoid potential buffer over-read in parse_apply_sb_mount_options()
+	Geliang Tang <geliang@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 48/84] selftests: mptcp: join: mark implicit tests as skipped if not supported
 Date: Mon, 27 Oct 2025 19:36:37 +0100
-Message-ID: <20251027183504.907507690@linuxfoundation.org>
+Message-ID: <20251027183440.098020815@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
-References: <20251027183501.227243846@linuxfoundation.org>
+In-Reply-To: <20251027183438.817309828@linuxfoundation.org>
+References: <20251027183438.817309828@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,76 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Theodore Ts'o <tytso@mit.edu>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-[ Upstream commit 8ecb790ea8c3fc69e77bace57f14cf0d7c177bd8 ]
+commit 973f80d715bd2504b4db6e049f292e694145cd79 upstream.
 
-Unlike other strings in the ext4 superblock, we rely on tune2fs to
-make sure s_mount_opts is NUL terminated.  Harden
-parse_apply_sb_mount_options() by treating s_mount_opts as a potential
-__nonstring.
+The call to 'continue_if' was missing: it properly marks a subtest as
+'skipped' if the attached condition is not valid.
 
+Without that, the test is wrongly marked as passed on older kernels.
+
+Fixes: 36c4127ae8dd ("selftests: mptcp: join: skip implicit tests if not supported")
 Cc: stable@vger.kernel.org
-Fixes: 8b67f04ab9de ("ext4: Add mount options in superblock")
-Reviewed-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Message-ID: <20250916-tune2fs-v2-1-d594dc7486f0@mit.edu>
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-[ added sizeof() third argument to strscpy_pad() ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Geliang Tang <geliang@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20251020-net-mptcp-c-flag-late-add-addr-v1-3-8207030cb0e8@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/super.c |   17 +++++------------
- 1 file changed, 5 insertions(+), 12 deletions(-)
+ tools/testing/selftests/net/mptcp/mptcp_join.sh |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/ext4/super.c
-+++ b/fs/ext4/super.c
-@@ -2415,7 +2415,7 @@ static int parse_apply_sb_mount_options(
- 					struct ext4_fs_context *m_ctx)
- {
- 	struct ext4_sb_info *sbi = EXT4_SB(sb);
--	char *s_mount_opts = NULL;
-+	char s_mount_opts[65];
- 	struct ext4_fs_context *s_ctx = NULL;
- 	struct fs_context *fc = NULL;
- 	int ret = -ENOMEM;
-@@ -2423,15 +2423,11 @@ static int parse_apply_sb_mount_options(
- 	if (!sbi->s_es->s_mount_opts[0])
- 		return 0;
+--- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+@@ -3737,7 +3737,7 @@ endpoint_tests()
+ 	# subflow_rebuild_header is needed to support the implicit flag
+ 	# userspace pm type prevents add_addr
+ 	if reset "implicit EP" &&
+-	   mptcp_lib_kallsyms_has "subflow_rebuild_header$"; then
++	   continue_if mptcp_lib_kallsyms_has "subflow_rebuild_header$"; then
+ 		pm_nl_set_limits $ns1 2 2
+ 		pm_nl_set_limits $ns2 2 2
+ 		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal
+@@ -3762,7 +3762,7 @@ endpoint_tests()
+ 	fi
  
--	s_mount_opts = kstrndup(sbi->s_es->s_mount_opts,
--				sizeof(sbi->s_es->s_mount_opts),
--				GFP_KERNEL);
--	if (!s_mount_opts)
--		return ret;
-+	strscpy_pad(s_mount_opts, sbi->s_es->s_mount_opts, sizeof(s_mount_opts));
- 
- 	fc = kzalloc(sizeof(struct fs_context), GFP_KERNEL);
- 	if (!fc)
--		goto out_free;
-+		return -ENOMEM;
- 
- 	s_ctx = kzalloc(sizeof(struct ext4_fs_context), GFP_KERNEL);
- 	if (!s_ctx)
-@@ -2463,11 +2459,8 @@ parse_failed:
- 	ret = 0;
- 
- out_free:
--	if (fc) {
--		ext4_fc_free(fc);
--		kfree(fc);
--	}
--	kfree(s_mount_opts);
-+	ext4_fc_free(fc);
-+	kfree(fc);
- 	return ret;
- }
- 
+ 	if reset_with_tcp_filter "delete and re-add" ns2 10.0.3.2 REJECT OUTPUT &&
+-	   mptcp_lib_kallsyms_has "subflow_rebuild_header$"; then
++	   continue_if mptcp_lib_kallsyms_has "subflow_rebuild_header$"; then
+ 		start_events
+ 		pm_nl_set_limits $ns1 0 3
+ 		pm_nl_set_limits $ns2 0 3
 
 
 
