@@ -1,178 +1,142 @@
-Return-Path: <stable+bounces-190062-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190063-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3F2CC0FC97
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:52:49 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3436C0FCE5
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:55:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9B6D2467798
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 17:51:25 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 168104F9AE2
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 17:54:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D54D8239E63;
-	Mon, 27 Oct 2025 17:50:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E4DE311C15;
+	Mon, 27 Oct 2025 17:54:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lNeRGrqq"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="DfT9TLL1"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from lelvem-ot01.ext.ti.com (lelvem-ot01.ext.ti.com [198.47.23.234])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B7363195F6;
-	Mon, 27 Oct 2025 17:50:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0856316911;
+	Mon, 27 Oct 2025 17:54:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.234
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761587448; cv=none; b=A9a5rpnSAeW+h0l4briM7uGmEmldIL871O8A9aW/FNvb39P0xuEPFb3wwHeUBJP6FQaRWoI97b3IByynkjUguGZr6oHlPbFcP7Rn1qBcf4Qty1R6Pd/xS6PHclU5jdo4MlmvosanZ0i59fLIwaB7azRN7g5O+fymckTwwbmVwV8=
+	t=1761587682; cv=none; b=SbMdZ1lSSCNqwgHxIKS4OTm5nqIt+BbPdPxumDzVcpeGLQ8USx4cn08FaJHN5GQkKMoNQIt7lpW4m6lj/tTKW2oGwy/YOMqf0x1fNzTO7o9cnn1dOKxXvFeDdcALONm6erp+4iLkjuVGrGv14HJ3IvG2nA5rIJksNJwsJ1yL9PM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761587448; c=relaxed/simple;
-	bh=gWMR3EMNxsqGBFIYnPRgcYxp7Xq38xPHaG0jSJHKz9Q=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AqwISRKtZQij84Ye5uUQ3sti/nu5Ftub/yuZ7Y9fYGAU9zrKk6ct2B/Je0/QQf4fpjetUyKIxBkPTBohy7aU3iOJSfxX69IMiS+nYweHgL1RTh01VW3tqaNz7j2a8ddamDL5T2csF9YQZFw+XZTJn4twkzjoqOPdETmmi7jUCCk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lNeRGrqq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE115C113D0;
-	Mon, 27 Oct 2025 17:50:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761587447;
-	bh=gWMR3EMNxsqGBFIYnPRgcYxp7Xq38xPHaG0jSJHKz9Q=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lNeRGrqqswfbqCvnnNXM4slvXS54r/yMWNN1xkzeG+Gl/Iv3utGAVx6q4Lgg5EdkM
-	 kBPvV6wL3+rFWlkUL87LCyvE9HECFfj9TWrVWj8I+hEaT5EOD1jfMlS6KStK32WXhF
-	 QytGmZuE+bh9M8JMpe1yakYqDq6qKEaueM6n4QHF8ecXQ8MqBbOJ0wyLGHDYP9j1ZP
-	 MNlvrAU1F5R7nPcbrXb1iILIclxPwh6YfSgdStUe1rkZBjgZmDIzBLRq5wSQrudomo
-	 47YhG2IjwVz7J1qyTOK1Q7RmwU8YPDDQxSMPdG/BIhsqmOsf2naC+1tI48GiMSUpnd
-	 Dziq0LiyNgBow==
-From: Song Liu <song@kernel.org>
-To: bpf@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org,
-	live-patching@vger.kernel.org
-Cc: ast@kernel.org,
-	daniel@iogearbox.net,
-	andrii@kernel.org,
-	rostedt@goodmis.org,
-	andrey.grodzovsky@crowdstrike.com,
-	mhiramat@kernel.org,
-	kernel-team@meta.com,
-	olsajiri@gmail.com,
-	Song Liu <song@kernel.org>,
-	stable@vger.kernel.org,
-	Jiri Olsa <jolsa@kernel.org>
-Subject: [PATCH v4 bpf 1/3] ftrace: Fix BPF fexit with livepatch
-Date: Mon, 27 Oct 2025 10:50:21 -0700
-Message-ID: <20251027175023.1521602-2-song@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20251027175023.1521602-1-song@kernel.org>
-References: <20251027175023.1521602-1-song@kernel.org>
+	s=arc-20240116; t=1761587682; c=relaxed/simple;
+	bh=KJjCjEUAXMGf93l+7ab3kNT6BgnFhiKNhk4r970RuRc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=JItwuhY+q1NbPiQg7Z0y0Q3zTAbPCHGr7psfulQHGTCARzNIc9w2Zhfzlipo0fY/tgaE5pfkQJboA+lqzIC3eIqy4RJy2ghc8Az8dGeZGig6AtrsyIM9WgydFoNnfKpdIBMGgEyIUi9T/a8BN1JvvZD0hZVj1C4pC57brP0xxho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=DfT9TLL1; arc=none smtp.client-ip=198.47.23.234
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+Received: from lelvem-sh02.itg.ti.com ([10.180.78.226])
+	by lelvem-ot01.ext.ti.com (8.15.2/8.15.2) with ESMTP id 59RHrssW2479401;
+	Mon, 27 Oct 2025 12:53:54 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1761587634;
+	bh=gFyTNoE2X2hQrZXZgQ1MBu5TC8MY83aQCzpJALZfkd4=;
+	h=Date:Subject:To:CC:References:From:In-Reply-To;
+	b=DfT9TLL1J4E5CSALY/kZQMoepMNVcrZdFJ8G15x4Q9Um4UiFHL4anwgTSzoDcKX1P
+	 2AOpvzY1e81vSYXz2PEnEreCy/rByPtzdWqPFQattLfXetkj1E4vOmFbyZxBqFzc6A
+	 HnYhVaehSyU5gmGxes8Pgh7UejjHh3LcA0DPOZgY=
+Received: from DLEE212.ent.ti.com (dlee212.ent.ti.com [157.170.170.114])
+	by lelvem-sh02.itg.ti.com (8.18.1/8.18.1) with ESMTPS id 59RHrrD81816199
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Mon, 27 Oct 2025 12:53:53 -0500
+Received: from DLEE214.ent.ti.com (157.170.170.117) by DLEE212.ent.ti.com
+ (157.170.170.114) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Mon, 27 Oct
+ 2025 12:53:53 -0500
+Received: from lelvem-mr06.itg.ti.com (10.180.75.8) by DLEE214.ent.ti.com
+ (157.170.170.117) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20 via Frontend
+ Transport; Mon, 27 Oct 2025 12:53:53 -0500
+Received: from [10.249.128.221] ([10.249.128.221])
+	by lelvem-mr06.itg.ti.com (8.18.1/8.18.1) with ESMTP id 59RHriYB1061461;
+	Mon, 27 Oct 2025 12:53:45 -0500
+Message-ID: <dcf71d6b-f453-425f-a49e-2408d0caad20@ti.com>
+Date: Mon, 27 Oct 2025 23:23:44 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/4] drm/tidss: Fixes data edge sampling
+To: Louis Chauvet <louis.chauvet@bootlin.com>, Jyri Sarha <jyri.sarha@iki.fi>,
+        Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+        Maarten Lankhorst
+	<maarten.lankhorst@linux.intel.com>,
+        Maxime Ripard <mripard@kernel.org>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+        Rob Herring <robh@kernel.org>,
+        "Krzysztof
+ Kozlowski" <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>, "Sam
+ Ravnborg" <sam@ravnborg.org>,
+        Benoit Parrot <bparrot@ti.com>, Lee Jones
+	<lee@kernel.org>,
+        Nishanth Menon <nm@ti.com>, Vignesh Raghavendra
+	<vigneshr@ti.com>,
+        Tero Kristo <kristo@kernel.org>, "Thakkar, Devarsh"
+	<devarsht@ti.com>
+CC: <thomas.petazzoni@bootlin.com>, Jyri Sarha <jsarha@ti.com>,
+        Tomi Valkeinen
+	<tomi.valkeinen@ti.com>,
+        <dri-devel@lists.freedesktop.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+        <stable@vger.kernel.org>
+References: <20250730-fix-edge-handling-v1-0-1bdfb3fe7922@bootlin.com>
+Content-Language: en-US
+From: Swamil Jain <s-jain1@ti.com>
+In-Reply-To: <20250730-fix-edge-handling-v1-0-1bdfb3fe7922@bootlin.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-When livepatch is attached to the same function as bpf trampoline with
-a fexit program, bpf trampoline code calls register_ftrace_direct()
-twice. The first time will fail with -EAGAIN, and the second time it
-will succeed. This requires register_ftrace_direct() to unregister
-the address on the first attempt. Otherwise, the bpf trampoline cannot
-attach. Here is an easy way to reproduce this issue:
+Hi Louis,
 
-  insmod samples/livepatch/livepatch-sample.ko
-  bpftrace -e 'fexit:cmdline_proc_show {}'
-  ERROR: Unable to attach probe: fexit:vmlinux:cmdline_proc_show...
+On 30-07-2025 22:32, Louis Chauvet wrote:
+> Currently the driver only configure the data edge sampling partially. The
+> AM62 require it to be configured in two distincts registers: one in tidss
+> and one in the general device registers.
+> 
+> Introduce a new dt property to link the proper syscon node from the main
+> device registers into the tidss driver.
+> 
+> Fixes: 32a1795f57ee ("drm/tidss: New driver for TI Keystone platform Display SubSystem")
+> ---
 
-Fix this by cleaning up the hash when register_ftrace_function_nolock hits
-errors.
+We are planning to re-spin the series with a v2.
+If you have any concerns please inform.
 
-Also, move the code that resets ops->func and ops->trampoline to the error
-path of register_ftrace_direct(); and add a helper function reset_direct()
-in register_ftrace_direct() and unregister_ftrace_direct().
+Regards,
+Swamil
 
-Fixes: d05cb470663a ("ftrace: Fix modification of direct_function hash while in use")
-Cc: stable@vger.kernel.org # v6.6+
-Reported-by: Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
-Closes: https://lore.kernel.org/live-patching/c5058315a39d4615b333e485893345be@crowdstrike.com/
-Cc: Steven Rostedt (Google) <rostedt@goodmis.org>
-Cc: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Acked-and-tested-by: Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
-Signed-off-by: Song Liu <song@kernel.org>
-Reviewed-by: Jiri Olsa <jolsa@kernel.org>
----
- kernel/bpf/trampoline.c |  5 -----
- kernel/trace/ftrace.c   | 20 ++++++++++++++------
- 2 files changed, 14 insertions(+), 11 deletions(-)
-
-diff --git a/kernel/bpf/trampoline.c b/kernel/bpf/trampoline.c
-index 5949095e51c3..f2cb0b097093 100644
---- a/kernel/bpf/trampoline.c
-+++ b/kernel/bpf/trampoline.c
-@@ -479,11 +479,6 @@ static int bpf_trampoline_update(struct bpf_trampoline *tr, bool lock_direct_mut
- 		 * BPF_TRAMP_F_SHARE_IPMODIFY is set, we can generate the
- 		 * trampoline again, and retry register.
- 		 */
--		/* reset fops->func and fops->trampoline for re-register */
--		tr->fops->func = NULL;
--		tr->fops->trampoline = 0;
--
--		/* free im memory and reallocate later */
- 		bpf_tramp_image_free(im);
- 		goto again;
- 	}
-diff --git a/kernel/trace/ftrace.c b/kernel/trace/ftrace.c
-index 42bd2ba68a82..cbeb7e833131 100644
---- a/kernel/trace/ftrace.c
-+++ b/kernel/trace/ftrace.c
-@@ -5953,6 +5953,17 @@ static void register_ftrace_direct_cb(struct rcu_head *rhp)
- 	free_ftrace_hash(fhp);
- }
- 
-+static void reset_direct(struct ftrace_ops *ops, unsigned long addr)
-+{
-+	struct ftrace_hash *hash = ops->func_hash->filter_hash;
-+
-+	remove_direct_functions_hash(hash, addr);
-+
-+	/* cleanup for possible another register call */
-+	ops->func = NULL;
-+	ops->trampoline = 0;
-+}
-+
- /**
-  * register_ftrace_direct - Call a custom trampoline directly
-  * for multiple functions registered in @ops
-@@ -6048,6 +6059,8 @@ int register_ftrace_direct(struct ftrace_ops *ops, unsigned long addr)
- 	ops->direct_call = addr;
- 
- 	err = register_ftrace_function_nolock(ops);
-+	if (err)
-+		reset_direct(ops, addr);
- 
-  out_unlock:
- 	mutex_unlock(&direct_mutex);
-@@ -6080,7 +6093,6 @@ EXPORT_SYMBOL_GPL(register_ftrace_direct);
- int unregister_ftrace_direct(struct ftrace_ops *ops, unsigned long addr,
- 			     bool free_filters)
- {
--	struct ftrace_hash *hash = ops->func_hash->filter_hash;
- 	int err;
- 
- 	if (check_direct_multi(ops))
-@@ -6090,13 +6102,9 @@ int unregister_ftrace_direct(struct ftrace_ops *ops, unsigned long addr,
- 
- 	mutex_lock(&direct_mutex);
- 	err = unregister_ftrace_function(ops);
--	remove_direct_functions_hash(hash, addr);
-+	reset_direct(ops, addr);
- 	mutex_unlock(&direct_mutex);
- 
--	/* cleanup for possible another register call */
--	ops->func = NULL;
--	ops->trampoline = 0;
--
- 	if (free_filters)
- 		ftrace_free_filter(ops);
- 	return err;
--- 
-2.47.3
+> Cc: stable@vger.kernel.org
+> 
+> Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
+> 
+> ---
+> Louis Chauvet (4):
+>        dt-bindings: display: ti,am65x-dss: Add clk property for data edge synchronization
+>        dt-bindings: mfd: syscon: Add ti,am625-dss-clk-ctrl
+>        arm64: dts: ti: k3-am62-main: Add tidss clk-ctrl property
+>        drm/tidss: Fix sampling edge configuration
+> 
+>   .../devicetree/bindings/display/ti/ti,am65x-dss.yaml       |  6 ++++++
+>   Documentation/devicetree/bindings/mfd/syscon.yaml          |  3 ++-
+>   arch/arm64/boot/dts/ti/k3-am62-main.dtsi                   |  6 ++++++
+>   drivers/gpu/drm/tidss/tidss_dispc.c                        | 14 ++++++++++++++
+>   4 files changed, 28 insertions(+), 1 deletion(-)
+> ---
+> base-commit: 85c23f28905cf20a86ceec3cfd7a0a5572c9eb13
+> change-id: 20250730-fix-edge-handling-9123f7438910
+> 
+> Best regards,
 
 
