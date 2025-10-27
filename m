@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-191057-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191225-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 879A3C10FDF
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:29:09 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62F19C11381
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:43:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0424C54611E
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:23:44 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5B9C1502456
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:31:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB42332549E;
-	Mon, 27 Oct 2025 19:21:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7759732B991;
+	Mon, 27 Oct 2025 19:28:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b4ZAU62O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T5cSuJcM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A87BB246BB7;
-	Mon, 27 Oct 2025 19:21:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3418832B9B0;
+	Mon, 27 Oct 2025 19:28:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592901; cv=none; b=tv8frGJqfaGC5Anmb2r1QRgbX6sCTvWgBRhD0JrJEuPaH/n8656WVppOGn7hJs6jDA9fKt2tyx/J8uh5QfSK39FmGf2bS9gyQ1YVSNrkYurrFMlT2jQknVi+bQ/vom9lQG3eWVL83kCz+rvaA3CkGtuZ1G1i8KxjWVXLjVx9+5g=
+	t=1761593335; cv=none; b=UZDfL3NIzKYzXJPYehWuaq6EOHj2n5L0yDX40JYauYTyGmsKEqsWsRohtWVwDDKuhhUNpe/7y9Y9iP5bAfuceLz5KDi5Uiv0NTGTz26d2Bc8WcL61UKfX/a8LDCaO7LRtgq1Q4ekYkEIEpTkD4brpMpihWNGRXpD5nD4QDf9mUo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592901; c=relaxed/simple;
-	bh=M8aehLe1JfsD4orsT2RnOdq9Ko+uwrexnkhK6ErZP28=;
+	s=arc-20240116; t=1761593335; c=relaxed/simple;
+	bh=rJif1dTCiVz/fJ8Wp6UdfHHWkpevy2qTadosuxUfnz8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tWaIlt1WEU0l4hE6sktLJFQqlEGP0TOAZykpwmdcmJzwdXP8DYrXOuMbGL57h6un9vJnkgkknc9y4AOD8i0pwPr/KDZx2DBPwVcxKNu0MwRNQsgeVcKw/aQSAFPfz/7OyLYQtlZBHN2kfuE0GwLTP1eQ08GV9+kGlXGhAEHIIrk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b4ZAU62O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFAADC4CEF1;
-	Mon, 27 Oct 2025 19:21:40 +0000 (UTC)
+	 MIME-Version:Content-Type; b=t0VXrsBiAM27Lp+FSSk/PlhQrbof9sg80XW2UhNpsWcgn2nGYoE8gEJRefrOi7+hX/PkEweva2LhY7j/XHEryMxS4Dj7kT5YLoTY9i7PUnzu6Spkyv44adjKRzrC/dVN601GceBNRi1/0NR0SbM7HFwfUee0dHYVp5JxAx13iYg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T5cSuJcM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7DF7C113D0;
+	Mon, 27 Oct 2025 19:28:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592901;
-	bh=M8aehLe1JfsD4orsT2RnOdq9Ko+uwrexnkhK6ErZP28=;
+	s=korg; t=1761593335;
+	bh=rJif1dTCiVz/fJ8Wp6UdfHHWkpevy2qTadosuxUfnz8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b4ZAU62OmnUZo0lJkFWeK8iUtq6eC/DGewAsZ+5SKWHQUdvlRkPgok1oCzNG9cSs1
-	 53fz02xIFSEJ6n2hyDM+sFO1OGOnRlhpXnNgsXW+ujKXSQlGi963xxxewn4/Rhkcec
-	 Jr+Vy3bv0lPIPc/jUcuaHZLnJuidwzE9YbxlOig4=
+	b=T5cSuJcMmkZOV3DccQa7PCkLMbipC5RwSpH6vtDd7QYqbFWUSTdXtX9/ABE7pQvm6
+	 aJqYAHDn5dut4hlYHfNUrwV3EE7KGIUWxVvQgr6cGBRX4KSPxM0IqV0foCUpQ0ps5f
+	 RylqJF6izNsFCE2c/NoM8tstYvlIGvldAJMTs7F0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Saket Dumbre <saket.dumbre@intel.com>,
-	Xi Ruoyao <xry111@xry111.site>,
-	Huacai Chen <chenhuacai@loongson.cn>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.12 055/117] ACPICA: Work around bogus -Wstringop-overread warning since GCC 11
-Date: Mon, 27 Oct 2025 19:36:21 +0100
-Message-ID: <20251027183455.501519992@linuxfoundation.org>
+	Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.17 100/184] net: ravb: Ensure memory write completes before ringing TX doorbell
+Date: Mon, 27 Oct 2025 19:36:22 +0100
+Message-ID: <20251027183517.606263831@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
-References: <20251027183453.919157109@linuxfoundation.org>
+In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
+References: <20251027183514.934710872@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,59 +61,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xi Ruoyao <xry111@xry111.site>
+From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
 
-commit 6e3a4754717a74e931a9f00b5f953be708e07acb upstream.
+commit 706136c5723626fcde8dd8f598a4dcd251e24927 upstream.
 
-When ACPI_MISALIGNMENT_NOT_SUPPORTED is set, GCC can produce a bogus
--Wstringop-overread warning, see [1].
+Add a final dma_wmb() barrier before triggering the transmit request
+(TCCR_TSRQ) to ensure all descriptor and buffer writes are visible to
+the DMA engine.
 
-To me, it's very clear that we have a compiler bug here, thus just
-disable the warning.
+According to the hardware manual, a read-back operation is required
+before writing to the doorbell register to guarantee completion of
+previous writes. Instead of performing a dummy read, a dma_wmb() is
+used to both enforce the same ordering semantics on the CPU side and
+also to ensure completion of writes.
 
-Fixes: a9d13433fe17 ("LoongArch: Align ACPI structures if ARCH_STRICT_ALIGN enabled")
-Link: https://lore.kernel.org/all/899f2dec-e8b9-44f4-ab8d-001e160a2aed@roeck-us.net/
-Link: https://github.com/acpica/acpica/commit/abf5b573
-Link: https://gcc.gnu.org/PR122073 [1]
-Co-developed-by: Saket Dumbre <saket.dumbre@intel.com>
-Signed-off-by: Saket Dumbre <saket.dumbre@intel.com>
-Signed-off-by: Xi Ruoyao <xry111@xry111.site>
-Acked-by: Huacai Chen <chenhuacai@loongson.cn>
-Cc: All applicable <stable@vger.kernel.org>
-[ rjw: Subject and changelog edits ]
-Link: https://patch.msgid.link/20251021092825.822007-1-xry111@xry111.site
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: c156633f1353 ("Renesas Ethernet AVB driver proper")
+Cc: stable@vger.kernel.org
+Co-developed-by: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
+Signed-off-by: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
+Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Reviewed-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+Link: https://patch.msgid.link/20251017151830.171062-5-prabhakar.mahadev-lad.rj@bp.renesas.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/acpica/tbprint.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/net/ethernet/renesas/ravb_main.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/drivers/acpi/acpica/tbprint.c
-+++ b/drivers/acpi/acpica/tbprint.c
-@@ -95,6 +95,11 @@ acpi_tb_print_table_header(acpi_physical
- {
- 	struct acpi_table_header local_header;
- 
-+#pragma GCC diagnostic push
-+#if defined(__GNUC__) && __GNUC__ >= 11
-+#pragma GCC diagnostic ignored "-Wstringop-overread"
-+#endif
-+
- 	if (ACPI_COMPARE_NAMESEG(header->signature, ACPI_SIG_FACS)) {
- 
- 		/* FACS only has signature and length fields */
-@@ -135,4 +140,5 @@ acpi_tb_print_table_header(acpi_physical
- 			   local_header.asl_compiler_id,
- 			   local_header.asl_compiler_revision));
+--- a/drivers/net/ethernet/renesas/ravb_main.c
++++ b/drivers/net/ethernet/renesas/ravb_main.c
+@@ -2231,6 +2231,14 @@ static netdev_tx_t ravb_start_xmit(struc
+ 		dma_wmb();
+ 		desc->die_dt = DT_FSINGLE;
  	}
-+#pragma GCC diagnostic pop
- }
++
++	/* Before ringing the doorbell we need to make sure that the latest
++	 * writes have been committed to memory, otherwise it could delay
++	 * things until the doorbell is rang again.
++	 * This is in replacement of the read operation mentioned in the HW
++	 * manuals.
++	 */
++	dma_wmb();
+ 	ravb_modify(ndev, TCCR, TCCR_TSRQ0 << q, TCCR_TSRQ0 << q);
+ 
+ 	priv->cur_tx[q] += num_tx_desc;
 
 
 
