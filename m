@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-190665-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190533-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68156C10987
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:11:49 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D72EC10879
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:08:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 270CE1A60921
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:08:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D5D99566506
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:03:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84DAC32ED2E;
-	Mon, 27 Oct 2025 19:04:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8BD03314D4;
+	Mon, 27 Oct 2025 18:58:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="USglgS/r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xat1+Hcj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AEF231BC84;
-	Mon, 27 Oct 2025 19:04:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 872B53128D0;
+	Mon, 27 Oct 2025 18:58:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591876; cv=none; b=Bms48d9If1yeEZEUj9XcNSxBDgeUey9LZP9C6We67uVMD1Aw9xaH8pD94Cw4M+8A8CxL7TZY9tKfHKL6mBm1mYPfsDV9Qf4hXHm7zSKbrVZmxYRc45IHel2RQeQlVjYF/SEtfE3UJhuEwCzeqosxzhRpJEGDZsZLliPiji8XjnU=
+	t=1761591538; cv=none; b=XoZOKfWLOXL1bdezoUGpa+DHZu0rfzN/X4bBXmAS+HqHlfrYdGLAW13QmASuBmp9t6HYnnMnVsU+c3oOH6eLjcGIBPgA8n346MxE/GsebsXNRHPd+Ab0PHkEB6bd7nfia1DLvVv6BdKeltr7cZVpwCn9ea7cNyv0R2Ax5Ajv3mw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591876; c=relaxed/simple;
-	bh=1qFLx/Qj69ZSGOwMXn4KvAMhZqWvaY/1/vz05fFuzrI=;
+	s=arc-20240116; t=1761591538; c=relaxed/simple;
+	bh=Gwq9cTAeAnTkvnZcdJCQEWdW/5MdeNM+7ESiE0BsFOE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UQiVQ6pGwzu070K+XLA1Cc7mbUIfVhZZwd7TT/aiIU48XsxXHw2KWH2VWQi0T0MyNkiXZVsSQg1/xJQyLv+fsyUU+wzGLhwEdFSa5XQtiDqUSS0MMh5Omkl7gTxNU9C+hABx7ZLVUKUJpJLN+2Xy9StG5B6DdS9FVV+GiQKr1Pc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=USglgS/r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70B1CC4CEF1;
-	Mon, 27 Oct 2025 19:04:35 +0000 (UTC)
+	 MIME-Version; b=VpilR/RiGncY903nELevkDQ9gmOGayGddCGSAwT+HPWH6/8/Co18oZzIXFebOdxPISbFf3bh2kmLjNkXLvVk7QjlFWDlBvk9d2vFGnfxI6+DITJnv46PVpYP9N6ef0AmShJPMfF2zT2pfbTdN5AgDmbr+0C2laAi7SUPxxWyZf8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xat1+Hcj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B82EC4CEF1;
+	Mon, 27 Oct 2025 18:58:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591875;
-	bh=1qFLx/Qj69ZSGOwMXn4KvAMhZqWvaY/1/vz05fFuzrI=;
+	s=korg; t=1761591538;
+	bh=Gwq9cTAeAnTkvnZcdJCQEWdW/5MdeNM+7ESiE0BsFOE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=USglgS/rX0Pl93En+sLDJLSHycbyyFsbQGgG1RxI6BGhV4LnPjv4Qj0VxAXNmQftu
-	 ZWqgL5i4TTNSlBM+yV+2NTy13LecesHnN/N1Tv48lf57f5YIKFSeiIluxRUPvwLdJe
-	 Woz+IqUb2uBLrou1RPjOofBzEwsNrL3ijVDMraOg=
+	b=Xat1+HcjPSExa2XIKANAmzu/Hf5FRDU3ydY4t3PMyY2MuoioPqu6P6kqR1Av4z/ur
+	 wVdqAuyWgeLV0jCU3XxSzGz7Dbd94RrI1jaNDhDTm2kHevzS4YTa/MQxIg6qOex6DZ
+	 i1pX+dTKgre7ukbyrszkP1yR2BoRnM9DIG7jS6ks=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kaustabh Chakraborty <kauschluss@disroot.org>,
-	Inki Dae <inki.dae@samsung.com>,
+	Jason Andryuk <jason.andryuk@amd.com>,
+	Juergen Gross <jgross@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 009/123] drm/exynos: exynos7_drm_decon: fix uninitialized crtc reference in functions
+Subject: [PATCH 5.10 236/332] xen/events: Update virq_to_irq on migration
 Date: Mon, 27 Oct 2025 19:34:49 +0100
-Message-ID: <20251027183446.644838549@linuxfoundation.org>
+Message-ID: <20251027183531.053625135@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183446.381986645@linuxfoundation.org>
-References: <20251027183446.381986645@linuxfoundation.org>
+In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
+References: <20251027183524.611456697@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,69 +62,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kaustabh Chakraborty <kauschluss@disroot.org>
+From: Jason Andryuk <jason.andryuk@amd.com>
 
-[ Upstream commit d31bbacf783daf1e71fbe5c68df93550c446bf44 ]
+[ Upstream commit 3fcc8e146935415d69ffabb5df40ecf50e106131 ]
 
-Modify the functions to accept a pointer to struct decon_context
-instead.
+VIRQs come in 3 flavors, per-VPU, per-domain, and global, and the VIRQs
+are tracked in per-cpu virq_to_irq arrays.
 
-Signed-off-by: Kaustabh Chakraborty <kauschluss@disroot.org>
-Signed-off-by: Inki Dae <inki.dae@samsung.com>
-Stable-dep-of: e1361a4f1be9 ("drm/exynos: exynos7_drm_decon: remove ctx->suspended")
+Per-domain and global VIRQs must be bound on CPU 0, and
+bind_virq_to_irq() sets the per_cpu virq_to_irq at registration time
+Later, the interrupt can migrate, and info->cpu is updated.  When
+calling __unbind_from_irq(), the per-cpu virq_to_irq is cleared for a
+different cpu.  If bind_virq_to_irq() is called again with CPU 0, the
+stale irq is returned.  There won't be any irq_info for the irq, so
+things break.
+
+Make xen_rebind_evtchn_to_cpu() update the per_cpu virq_to_irq mappings
+to keep them update to date with the current cpu.  This ensures the
+correct virq_to_irq is cleared in __unbind_from_irq().
+
+Fixes: e46cdb66c8fc ("xen: event channels")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jason Andryuk <jason.andryuk@amd.com>
+Reviewed-by: Juergen Gross <jgross@suse.com>
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Message-ID: <20250828003604.8949-4-jason.andryuk@amd.com>
+[ Adjust context ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/exynos/exynos7_drm_decon.c |   11 ++++-------
- 1 file changed, 4 insertions(+), 7 deletions(-)
+ drivers/xen/events/events_base.c |   13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/exynos/exynos7_drm_decon.c
-+++ b/drivers/gpu/drm/exynos/exynos7_drm_decon.c
-@@ -81,10 +81,8 @@ static const enum drm_plane_type decon_w
- 	DRM_PLANE_TYPE_CURSOR,
- };
+--- a/drivers/xen/events/events_base.c
++++ b/drivers/xen/events/events_base.c
+@@ -1746,9 +1746,20 @@ static int xen_rebind_evtchn_to_cpu(stru
+ 	 * virq or IPI channel, which don't actually need to be rebound. Ignore
+ 	 * it, but don't do the xenlinux-level rebind in that case.
+ 	 */
+-	if (HYPERVISOR_event_channel_op(EVTCHNOP_bind_vcpu, &bind_vcpu) >= 0)
++	if (HYPERVISOR_event_channel_op(EVTCHNOP_bind_vcpu, &bind_vcpu) >= 0) {
++		int old_cpu = info->cpu;
++
+ 		bind_evtchn_to_cpu(evtchn, tcpu);
  
--static void decon_wait_for_vblank(struct exynos_drm_crtc *crtc)
-+static void decon_wait_for_vblank(struct decon_context *ctx)
- {
--	struct decon_context *ctx = crtc->ctx;
--
- 	if (ctx->suspended)
- 		return;
++		if (info->type == IRQT_VIRQ) {
++			int virq = info->u.virq;
++			int irq = per_cpu(virq_to_irq, old_cpu)[virq];
++
++			per_cpu(virq_to_irq, old_cpu)[virq] = -1;
++			per_cpu(virq_to_irq, tcpu)[virq] = irq;
++		}
++	}
++
+ 	do_unmask(info, EVT_MASK_REASON_TEMPORARY);
  
-@@ -100,9 +98,8 @@ static void decon_wait_for_vblank(struct
- 		DRM_DEV_DEBUG_KMS(ctx->dev, "vblank wait timed out.\n");
- }
- 
--static void decon_clear_channels(struct exynos_drm_crtc *crtc)
-+static void decon_clear_channels(struct decon_context *ctx)
- {
--	struct decon_context *ctx = crtc->ctx;
- 	unsigned int win, ch_enabled = 0;
- 
- 	/* Check if any channel is enabled. */
-@@ -118,7 +115,7 @@ static void decon_clear_channels(struct
- 
- 	/* Wait for vsync, as disable channel takes effect at next vsync */
- 	if (ch_enabled)
--		decon_wait_for_vblank(ctx->crtc);
-+		decon_wait_for_vblank(ctx);
- }
- 
- static int decon_ctx_initialize(struct decon_context *ctx,
-@@ -126,7 +123,7 @@ static int decon_ctx_initialize(struct d
- {
- 	ctx->drm_dev = drm_dev;
- 
--	decon_clear_channels(ctx->crtc);
-+	decon_clear_channels(ctx);
- 
- 	return exynos_drm_register_dma(drm_dev, ctx->dev, &ctx->dma_priv);
- }
+ 	return 0;
 
 
 
