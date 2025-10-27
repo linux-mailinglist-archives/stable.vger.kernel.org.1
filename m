@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-190926-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190712-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79B71C10DA8
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:22:20 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78683C108CD
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:09:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D14441A60879
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:17:43 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 1D689351790
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:09:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AED1B31E0E0;
-	Mon, 27 Oct 2025 19:16:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 691AB32AAD7;
+	Mon, 27 Oct 2025 19:06:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z8YHMhug"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zvvz5hU+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AA632C3749;
-	Mon, 27 Oct 2025 19:16:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10C1432A3F9;
+	Mon, 27 Oct 2025 19:06:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592560; cv=none; b=lsJaEuf38bXEsvU/hzGQ2e1e3y3ZjetPdnyVSVEuraze2xOxtQiWiWknr7aUTQ5wzW2nEL/1Lhj3i1+6YflEhPf8i7vWFMprmPHwkUXuKnmCR8fkgXR4Li6QfkB0W8Bu/q89AA7q2gbJrHJ2LPZMR/mX29E6WFlb4P8Apd+GYik=
+	t=1761591998; cv=none; b=NkRgluKo3E2R9FJ+13+f8k2rzwzV0ID/5Mk4+2HyoCk8czcZmREnXpXpeew/194IIlH6fDsEz5PEvLXy/Wp7l8/7HQRaVPy+pjL+2OlaIvrwz/86EKVTZz3eFHhFDyVheiTIcAdMUTSGUSbHEdvCSgQgYg+3bXG3AugEPwPYDzw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592560; c=relaxed/simple;
-	bh=E/tLVRIpSayESXD/vj1tMyRpcapfFqy9RlegdXJ5u0s=;
+	s=arc-20240116; t=1761591998; c=relaxed/simple;
+	bh=+QU1J1PAMbiqeTfpefZokaY0aEiK/pOrhw2ZGCXYPAU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g6qDGiVgTMZ5+hN9SqreBpq1yd0v+STrVTK/x3c4YpBnANu95k7fgDZY5IiS/+N5OZB905FhPMdRSh9zCngmbOZjDVJ5FSt5Rc5SqkPu+rUpA9aXe+QS0wpsayv/wAX56Vk7rpyWZZDkXbYoULwknZn6ndFGuH8F5RwWZAq+hlg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z8YHMhug; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB5CCC4CEF1;
-	Mon, 27 Oct 2025 19:15:59 +0000 (UTC)
+	 MIME-Version; b=bGh8Bv/SO/vQ97YNv5qgw9qRg/eiP/O7z6wmzHJsyPep59DDnfKhksn23Z8cui3Xkq8tDLYez1wjzrpjUPB650Q70PymEoGUXUUlS2UCKYn4FmNK7dzQrdaoahHiNHkOPEFvbhTIDMQRqVD5DlMP0wEoiubnAw4Brcv9t66I1tM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zvvz5hU+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C33EC4CEF1;
+	Mon, 27 Oct 2025 19:06:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592560;
-	bh=E/tLVRIpSayESXD/vj1tMyRpcapfFqy9RlegdXJ5u0s=;
+	s=korg; t=1761591997;
+	bh=+QU1J1PAMbiqeTfpefZokaY0aEiK/pOrhw2ZGCXYPAU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z8YHMhug+Bnj6c1NHpVi5lqa6TODibLWKADw+4o4SJ8/Fcbv6UsS+ljIoPmVioUy5
-	 5LyIypJKvseRWqI3sA0s0He2Trt784D23pvMQO0932rlPlKNWywaRL2YDOMa5s4uf7
-	 E7/uFBAgIlXKnMS1K9/95FSfsZRvMcK+6xo8uoj8=
+	b=zvvz5hU+PRlNRiLSFqpBItGOPNPPkI+1Fzbk1D+Ilic0LNzvcK/k36xc1zK4DinJl
+	 zVebfOGXOc+ose2zofwJAe3Qrkj+G6DW6PA4b7tF5uvgNGzUHx0pt7XmkToMuGGUrY
+	 jewzHbyLMzvOiibdFambPyNdMP/gAQ60K9LK9jj8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yangtao Li <frank.li@vivo.com>,
-	Viacheslav Dubeyko <slava@dubeyko.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 10/84] hfsplus: return EIO when type of hidden directory mismatch in hfsplus_fill_super()
+	stable <stable@kernel.org>,
+	Andrey Konovalov <andreyknvl@gmail.com>
+Subject: [PATCH 5.15 079/123] usb: raw-gadget: do not limit transfer length
 Date: Mon, 27 Oct 2025 19:35:59 +0100
-Message-ID: <20251027183439.090504362@linuxfoundation.org>
+Message-ID: <20251027183448.509000381@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183438.817309828@linuxfoundation.org>
-References: <20251027183438.817309828@linuxfoundation.org>
+In-Reply-To: <20251027183446.381986645@linuxfoundation.org>
+References: <20251027183446.381986645@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +61,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yangtao Li <frank.li@vivo.com>
+From: Andrey Konovalov <andreyknvl@gmail.com>
 
-[ Upstream commit 9282bc905f0949fab8cf86c0f620ca988761254c ]
+commit 37b9dd0d114a0e38c502695e30f55a74fb0c37d0 upstream.
 
-If Catalog File contains corrupted record for the case of
-hidden directory's type, regard it as I/O error instead of
-Invalid argument.
+Drop the check on the maximum transfer length in Raw Gadget for both
+control and non-control transfers.
 
-Signed-off-by: Yangtao Li <frank.li@vivo.com>
-Reviewed-by: Viacheslav Dubeyko <slava@dubeyko.com>
-Link: https://lore.kernel.org/r/20250805165905.3390154-1-frank.li@vivo.com
-Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Limiting the transfer length causes a problem with emulating USB devices
+whose full configuration descriptor exceeds PAGE_SIZE in length.
+
+Overall, there does not appear to be any reason to enforce any kind of
+transfer length limit on the Raw Gadget side for either control or
+non-control transfers, so let's just drop the related check.
+
+Cc: stable <stable@kernel.org>
+Fixes: f2c2e717642c ("usb: gadget: add raw-gadget interface")
+Signed-off-by: Andrey Konovalov <andreyknvl@gmail.com>
+Link: https://patch.msgid.link/a6024e8eab679043e9b8a5defdb41c4bda62f02b.1761085528.git.andreyknvl@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/hfsplus/super.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/gadget/legacy/raw_gadget.c |    2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/fs/hfsplus/super.c b/fs/hfsplus/super.c
-index 8c086f16dd589..7e889820a63d0 100644
---- a/fs/hfsplus/super.c
-+++ b/fs/hfsplus/super.c
-@@ -538,7 +538,7 @@ static int hfsplus_fill_super(struct super_block *sb, void *data, int silent)
- 	if (!hfs_brec_read(&fd, &entry, sizeof(entry))) {
- 		hfs_find_exit(&fd);
- 		if (entry.type != cpu_to_be16(HFSPLUS_FOLDER)) {
--			err = -EINVAL;
-+			err = -EIO;
- 			goto out_put_root;
- 		}
- 		inode = hfsplus_iget(sb, be32_to_cpu(entry.folder.id));
--- 
-2.51.0
-
+--- a/drivers/usb/gadget/legacy/raw_gadget.c
++++ b/drivers/usb/gadget/legacy/raw_gadget.c
+@@ -620,8 +620,6 @@ static void *raw_alloc_io_data(struct us
+ 		return ERR_PTR(-EINVAL);
+ 	if (!usb_raw_io_flags_valid(io->flags))
+ 		return ERR_PTR(-EINVAL);
+-	if (io->length > PAGE_SIZE)
+-		return ERR_PTR(-EINVAL);
+ 	if (get_from_user)
+ 		data = memdup_user(ptr + sizeof(*io), io->length);
+ 	else {
 
 
 
