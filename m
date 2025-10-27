@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-190779-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190659-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14A3EC10BD4
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:18:12 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DBA9C10A05
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:13:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 85E7A1A63280
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:12:46 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B8C8C504E61
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:07:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF6643254AC;
-	Mon, 27 Oct 2025 19:09:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD71B32ED55;
+	Mon, 27 Oct 2025 19:04:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I8dyfAPD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fbNq9EvL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89146325493;
-	Mon, 27 Oct 2025 19:09:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 666EA32E152;
+	Mon, 27 Oct 2025 19:04:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592174; cv=none; b=sVIq6Sed/DLe82CSwQp7BkuETNkb3bbYIuA1Ce46xA7I05idw/YpoNyCVBXsHqNs/4nDpE7lA0LcugH+3LNkoS9hQt+kc3nTILfTgaEDcAzbY/BWsv70sSCXyRtjYx0MvtnHSIKsEzwvYwhK5Q/06zibFshUCW5OXTc9CwAKbcc=
+	t=1761591860; cv=none; b=Tx5xwCXPBa46Fsr1GgFDfPRflFcGnbTuHhxOGoTZhhoiKSxi0rkYfzvQ1/peR1fSH2eI85Qo9Gi89ylIVbo5ngzzzKf+9WG8DsFyQBjWpywTZL7ygZbTyM4PIpw8egfNeWV9Skm/BV0DU6t9HdcWAQxZ/IGQVjtmnfA//7OnPxM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592174; c=relaxed/simple;
-	bh=Ynz7DALu/6NnyvvbC2VCc35G+Bq43BIwGqr6cy4Hf9k=;
+	s=arc-20240116; t=1761591860; c=relaxed/simple;
+	bh=OYwrldROOMuD4fA+vPkA22cn949UXepSELglbbRzJM8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P+beJIbMJMYDQaedScoxaxBbIWARWDF5tyH+G+zfxpyO+JLpimqyrzW4acnaOETKZh0ZGg/skBAth+mnKhtEB+byx/DnUl0gXT285zhvsymJjkDGlmF2SV5D8D1QZXZ/H8qVNm0eY8dp4CSjkEV7z+3ESNjm0JHbz3xcu+AlOmk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I8dyfAPD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 120E7C4CEF1;
-	Mon, 27 Oct 2025 19:09:33 +0000 (UTC)
+	 MIME-Version; b=KG6qNCeiyEnhMLqoL3hmvWLN7WP/cn8rAt3b1Eccwc3oQOrCqukDAAQkGxkJd+cjgtl6L+4GwH7SqybNg15RRe56pntumwsQW1PloIPUPJdX1xT13hRj9mORvDjxOHSTqUg9rlzEanXndOC1w2SpvubEndAC/POVPvkn0PvCQeI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fbNq9EvL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7565C4CEF1;
+	Mon, 27 Oct 2025 19:04:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592174;
-	bh=Ynz7DALu/6NnyvvbC2VCc35G+Bq43BIwGqr6cy4Hf9k=;
+	s=korg; t=1761591860;
+	bh=OYwrldROOMuD4fA+vPkA22cn949UXepSELglbbRzJM8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I8dyfAPD/hxx5SvBmomf81VyOaU6xQ95IWDrZPxnMsvg2bmZBjjwGQ6WPXRE6TLaH
-	 Cylcs3wkrgl6sb8hqdUkRlGqwgqsbUMGFRI47q/X5Wumq3MTTTbjehSw9FSn7HelYM
-	 qhDo8DBTERH7ZXm1hpqwxKcysByc5+wEBycS51R8=
+	b=fbNq9EvL/V1g7NDIOsgmUv/Evrxh9PsBvGPjQ4om5hh45c82H3S/LOy6cMmTgKMoz
+	 N4cRQ5xiQsIIklWNPXr3xJyDbNbb7sDTYTLHmxMWQ7fIj65V66+DMr9tLvZzXsZuel
+	 4Wq62ux5razTvLQZslgZovvzRG4f6f9q+dsSB1hs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	stable@kernel.org,
-	Kuen-Han Tsai <khtsai@google.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 022/157] usb: gadget: f_ncm: Refactor bind path to use __free()
+	Zhang Yi <yi.zhang@huawei.com>,
+	Deepanshu Kartikey <kartikey406@gmail.com>,
+	Theodore Tso <tytso@mit.edu>,
+	syzbot+038b7bf43423e132b308@syzkaller.appspotmail.com
+Subject: [PATCH 5.15 003/123] ext4: detect invalid INLINE_DATA + EXTENTS flag combination
 Date: Mon, 27 Oct 2025 19:34:43 +0100
-Message-ID: <20251027183501.870134829@linuxfoundation.org>
+Message-ID: <20251027183446.480449993@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
-References: <20251027183501.227243846@linuxfoundation.org>
+In-Reply-To: <20251027183446.381986645@linuxfoundation.org>
+References: <20251027183446.381986645@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,233 +64,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuen-Han Tsai <khtsai@google.com>
+From: Deepanshu Kartikey <kartikey406@gmail.com>
 
-[ Upstream commit 75a5b8d4ddd4eb6b16cb0b475d14ff4ae64295ef ]
+commit 1d3ad183943b38eec2acf72a0ae98e635dc8456b upstream.
 
-After an bind/unbind cycle, the ncm->notify_req is left stale. If a
-subsequent bind fails, the unified error label attempts to free this
-stale request, leading to a NULL pointer dereference when accessing
-ep->ops->free_request.
+syzbot reported a BUG_ON in ext4_es_cache_extent() when opening a verity
+file on a corrupted ext4 filesystem mounted without a journal.
 
-Refactor the error handling in the bind path to use the __free()
-automatic cleanup mechanism.
+The issue is that the filesystem has an inode with both the INLINE_DATA
+and EXTENTS flags set:
 
-Unable to handle kernel NULL pointer dereference at virtual address 0000000000000020
-Call trace:
- usb_ep_free_request+0x2c/0xec
- ncm_bind+0x39c/0x3dc
- usb_add_function+0xcc/0x1f0
- configfs_composite_bind+0x468/0x588
- gadget_bind_driver+0x104/0x270
- really_probe+0x190/0x374
- __driver_probe_device+0xa0/0x12c
- driver_probe_device+0x3c/0x218
- __device_attach_driver+0x14c/0x188
- bus_for_each_drv+0x10c/0x168
- __device_attach+0xfc/0x198
- device_initial_probe+0x14/0x24
- bus_probe_device+0x94/0x11c
- device_add+0x268/0x48c
- usb_add_gadget+0x198/0x28c
- dwc3_gadget_init+0x700/0x858
- __dwc3_set_mode+0x3cc/0x664
- process_scheduled_works+0x1d8/0x488
- worker_thread+0x244/0x334
- kthread+0x114/0x1bc
- ret_from_fork+0x10/0x20
+    EXT4-fs error (device loop0): ext4_cache_extents:545: inode #15:
+    comm syz.0.17: corrupted extent tree: lblk 0 < prev 66
 
-Fixes: 9f6ce4240a2b ("usb: gadget: f_ncm.c added")
+Investigation revealed that the inode has both flags set:
+    DEBUG: inode 15 - flag=1, i_inline_off=164, has_inline=1, extents_flag=1
+
+This is an invalid combination since an inode should have either:
+- INLINE_DATA: data stored directly in the inode
+- EXTENTS: data stored in extent-mapped blocks
+
+Having both flags causes ext4_has_inline_data() to return true, skipping
+extent tree validation in __ext4_iget(). The unvalidated out-of-order
+extents then trigger a BUG_ON in ext4_es_cache_extent() due to integer
+underflow when calculating hole sizes.
+
+Fix this by detecting this invalid flag combination early in ext4_iget()
+and rejecting the corrupted inode.
+
 Cc: stable@kernel.org
-Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
-Link: https://lore.kernel.org/r/20250916-ready-v1-3-4997bf277548@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Link: https://lore.kernel.org/r/20250916-ready-v1-3-4997bf277548@google.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-and-tested-by: syzbot+038b7bf43423e132b308@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=038b7bf43423e132b308
+Suggested-by: Zhang Yi <yi.zhang@huawei.com>
+Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
+Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
+Message-ID: <20250930112810.315095-1-kartikey406@gmail.com>
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/function/f_ncm.c |   78 +++++++++++++++---------------------
- 1 file changed, 33 insertions(+), 45 deletions(-)
+ fs/ext4/inode.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/drivers/usb/gadget/function/f_ncm.c
-+++ b/drivers/usb/gadget/function/f_ncm.c
-@@ -11,6 +11,7 @@
-  * Copyright (C) 2008 Nokia Corporation
-  */
- 
-+#include <linux/cleanup.h>
- #include <linux/kernel.h>
- #include <linux/interrupt.h>
- #include <linux/module.h>
-@@ -19,6 +20,7 @@
- #include <linux/crc32.h>
- 
- #include <linux/usb/cdc.h>
-+#include <linux/usb/gadget.h>
- 
- #include "u_ether.h"
- #include "u_ether_configfs.h"
-@@ -1437,18 +1439,18 @@ static int ncm_bind(struct usb_configura
- 	struct usb_ep		*ep;
- 	struct f_ncm_opts	*ncm_opts;
- 
-+	struct usb_os_desc_table	*os_desc_table __free(kfree) = NULL;
-+	struct usb_request		*request __free(free_usb_request) = NULL;
-+
- 	if (!can_support_ecm(cdev->gadget))
- 		return -EINVAL;
- 
- 	ncm_opts = container_of(f->fi, struct f_ncm_opts, func_inst);
- 
- 	if (cdev->use_os_string) {
--		f->os_desc_table = kzalloc(sizeof(*f->os_desc_table),
--					   GFP_KERNEL);
--		if (!f->os_desc_table)
-+		os_desc_table = kzalloc(sizeof(*os_desc_table), GFP_KERNEL);
-+		if (!os_desc_table)
- 			return -ENOMEM;
--		f->os_desc_n = 1;
--		f->os_desc_table[0].os_desc = &ncm_opts->ncm_os_desc;
+--- a/fs/ext4/inode.c
++++ b/fs/ext4/inode.c
+@@ -4785,6 +4785,14 @@ struct inode *__ext4_iget(struct super_b
  	}
- 
- 	mutex_lock(&ncm_opts->lock);
-@@ -1458,16 +1460,15 @@ static int ncm_bind(struct usb_configura
- 	mutex_unlock(&ncm_opts->lock);
- 
- 	if (status)
--		goto fail;
-+		return status;
- 
- 	ncm_opts->bound = true;
- 
- 	us = usb_gstrings_attach(cdev, ncm_strings,
- 				 ARRAY_SIZE(ncm_string_defs));
--	if (IS_ERR(us)) {
--		status = PTR_ERR(us);
--		goto fail;
--	}
-+	if (IS_ERR(us))
-+		return PTR_ERR(us);
-+
- 	ncm_control_intf.iInterface = us[STRING_CTRL_IDX].id;
- 	ncm_data_nop_intf.iInterface = us[STRING_DATA_IDX].id;
- 	ncm_data_intf.iInterface = us[STRING_DATA_IDX].id;
-@@ -1477,55 +1478,47 @@ static int ncm_bind(struct usb_configura
- 	/* allocate instance-specific interface IDs */
- 	status = usb_interface_id(c, f);
- 	if (status < 0)
--		goto fail;
-+		return status;
- 	ncm->ctrl_id = status;
- 	ncm_iad_desc.bFirstInterface = status;
- 
- 	ncm_control_intf.bInterfaceNumber = status;
- 	ncm_union_desc.bMasterInterface0 = status;
- 
--	if (cdev->use_os_string)
--		f->os_desc_table[0].if_id =
--			ncm_iad_desc.bFirstInterface;
--
- 	status = usb_interface_id(c, f);
- 	if (status < 0)
--		goto fail;
-+		return status;
- 	ncm->data_id = status;
- 
- 	ncm_data_nop_intf.bInterfaceNumber = status;
- 	ncm_data_intf.bInterfaceNumber = status;
- 	ncm_union_desc.bSlaveInterface0 = status;
- 
--	status = -ENODEV;
--
- 	/* allocate instance-specific endpoints */
- 	ep = usb_ep_autoconfig(cdev->gadget, &fs_ncm_in_desc);
- 	if (!ep)
--		goto fail;
-+		return -ENODEV;
- 	ncm->port.in_ep = ep;
- 
- 	ep = usb_ep_autoconfig(cdev->gadget, &fs_ncm_out_desc);
- 	if (!ep)
--		goto fail;
-+		return -ENODEV;
- 	ncm->port.out_ep = ep;
- 
- 	ep = usb_ep_autoconfig(cdev->gadget, &fs_ncm_notify_desc);
- 	if (!ep)
--		goto fail;
-+		return -ENODEV;
- 	ncm->notify = ep;
- 
--	status = -ENOMEM;
--
- 	/* allocate notification request and buffer */
--	ncm->notify_req = usb_ep_alloc_request(ep, GFP_KERNEL);
--	if (!ncm->notify_req)
--		goto fail;
--	ncm->notify_req->buf = kmalloc(NCM_STATUS_BYTECOUNT, GFP_KERNEL);
--	if (!ncm->notify_req->buf)
--		goto fail;
--	ncm->notify_req->context = ncm;
--	ncm->notify_req->complete = ncm_notify_complete;
-+	request = usb_ep_alloc_request(ep, GFP_KERNEL);
-+	if (!request)
-+		return -ENOMEM;
-+	request->buf = kmalloc(NCM_STATUS_BYTECOUNT, GFP_KERNEL);
-+	if (!request->buf)
-+		return -ENOMEM;
-+	request->context = ncm;
-+	request->complete = ncm_notify_complete;
- 
- 	/*
- 	 * support all relevant hardware speeds... we expect that when
-@@ -1545,7 +1538,7 @@ static int ncm_bind(struct usb_configura
- 	status = usb_assign_descriptors(f, ncm_fs_function, ncm_hs_function,
- 			ncm_ss_function, ncm_ss_function);
- 	if (status)
--		goto fail;
-+		return status;
- 
- 	/*
- 	 * NOTE:  all that is done without knowing or caring about
-@@ -1559,25 +1552,20 @@ static int ncm_bind(struct usb_configura
- 	hrtimer_init(&ncm->task_timer, CLOCK_MONOTONIC, HRTIMER_MODE_REL_SOFT);
- 	ncm->task_timer.function = ncm_tx_timeout;
- 
-+	if (cdev->use_os_string) {
-+		os_desc_table[0].os_desc = &ncm_opts->ncm_os_desc;
-+		os_desc_table[0].if_id = ncm_iad_desc.bFirstInterface;
-+		f->os_desc_table = no_free_ptr(os_desc_table);
-+		f->os_desc_n = 1;
+ 	ei->i_flags = le32_to_cpu(raw_inode->i_flags);
+ 	ext4_set_inode_flags(inode, true);
++	/* Detect invalid flag combination - can't have both inline data and extents */
++	if (ext4_test_inode_flag(inode, EXT4_INODE_INLINE_DATA) &&
++	    ext4_test_inode_flag(inode, EXT4_INODE_EXTENTS)) {
++		ext4_error_inode(inode, function, line, 0,
++			"inode has both inline data and extents flags");
++		ret = -EFSCORRUPTED;
++		goto bad_inode;
 +	}
-+        ncm->notify_req = no_free_ptr(request);
-+
- 	DBG(cdev, "CDC Network: %s speed IN/%s OUT/%s NOTIFY/%s\n",
- 			gadget_is_superspeed(c->cdev->gadget) ? "super" :
- 			gadget_is_dualspeed(c->cdev->gadget) ? "dual" : "full",
- 			ncm->port.in_ep->name, ncm->port.out_ep->name,
- 			ncm->notify->name);
- 	return 0;
--
--fail:
--	kfree(f->os_desc_table);
--	f->os_desc_n = 0;
--
--	if (ncm->notify_req) {
--		kfree(ncm->notify_req->buf);
--		usb_ep_free_request(ncm->notify, ncm->notify_req);
--	}
--
--	ERROR(cdev, "%s: can't bind, err %d\n", f->name, status);
--
--	return status;
- }
- 
- static inline struct f_ncm_opts *to_f_ncm_opts(struct config_item *item)
+ 	inode->i_blocks = ext4_inode_blocks(raw_inode, ei);
+ 	ei->i_file_acl = le32_to_cpu(raw_inode->i_file_acl_lo);
+ 	if (ext4_has_feature_64bit(sb))
 
 
 
