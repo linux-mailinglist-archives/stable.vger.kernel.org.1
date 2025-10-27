@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-191061-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190981-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 855BFC10E2F
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:23:50 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95C98C10F3D
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:27:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 321D73521A2
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:23:50 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 3FAAD5035A9
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:19:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D72A73016F9;
-	Mon, 27 Oct 2025 19:21:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 388C12D7DDA;
+	Mon, 27 Oct 2025 19:18:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aZv85/4t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V2EHZnj4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E590324B37;
-	Mon, 27 Oct 2025 19:21:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E79AE2D5A14;
+	Mon, 27 Oct 2025 19:18:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592911; cv=none; b=IKM1YBs1tngRSWJwut87nvvogAVfv214AZ1Erf0mctrZHhXf6jWxmHz4iJkrbbWI2LvYyFw+aFkOSDux0RApH1RHZnJyZYp+wZfaBRMXCsO/trNzyXXiuBYkVpNI1hqUDXBgJC6AA6QRqN+YNOt7cjZtG/5Vhnb7rx1LC79L8Cw=
+	t=1761592705; cv=none; b=n3hWhtIzI1dsGA0XwEkf4VfxraqqNKaUt51Ll0hUhIUJrHKm4fvqInf2V70RtEg6Ax2nn+m4k7tCAiFpRmhCRtviPz9f2cHL9YTcLL0z1pCxjRusk5dAUlOh8JXj0+xmpRXQ8WYUdTmyiN4sXGxvOUZZBXqmVqG5++zZhLH3bdc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592911; c=relaxed/simple;
-	bh=qSoahRxM8yQ4V5slepN8JtBWGoLjfqRpUQZdCTxb0k0=;
+	s=arc-20240116; t=1761592705; c=relaxed/simple;
+	bh=FVCficxlZM4mxxaM8zqDqidTxFbUSMKV8V22IcXdzCA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BR14w+Bc9Ue2rVCmMBBRHMEBVMIq5U/w8hE4sqUE8I8a0tLnLjIcRHFPe7ihjvq842tAclcjgCOQbhx+i+xdn5tugY74hFyu7H+QByIC+W8poG2d3ubiLIvBBeYMZibsfihxR1lWRnTWapXd0pZ8GCin6JxO4ZZTzILlJJJ0JS4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aZv85/4t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 226D9C4CEF1;
-	Mon, 27 Oct 2025 19:21:50 +0000 (UTC)
+	 MIME-Version; b=u3GVjDf9+6cRu7DwFInjrRSa/ZA0GMhnVJvmBFr10aMzj8nH42fE3UhVWHBcxQ2NvRP4onApiqKi6ki+UqzqAku7vQ4y9Yv5H/hia7qrJ0SNwfJmjTNF0yKR5Fv2jylinMWJi6FH87C3yqFPfFlt7WjrYg2vKfnhlTsj/3eREu8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V2EHZnj4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31774C4CEF1;
+	Mon, 27 Oct 2025 19:18:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592911;
-	bh=qSoahRxM8yQ4V5slepN8JtBWGoLjfqRpUQZdCTxb0k0=;
+	s=korg; t=1761592704;
+	bh=FVCficxlZM4mxxaM8zqDqidTxFbUSMKV8V22IcXdzCA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aZv85/4tg8vbYp5lH/bNLCLcg1Di9w60cLsHnB+i/Bqm4g5bwTZ8LxM61zR4iDCLb
-	 VMlo3IRe4rLepCzh3xUxX9MKlX1tEySgI6uiUCMTvoPCw+rI7lPBmf2Xs8BYiGbFvr
-	 WS4HJXYC0Z7zfSTz/4H+7PlyfFzIlMem0FiaYhbs=
+	b=V2EHZnj4Ftzd1cFjPf0S72qzmF1jCYxhNmVJjYPcJyocEmrx3zP3sp43OkX7Bpf9G
+	 1ZSWbEp6k25ax6tBoHI2iHXNH4Sv1bdzhjYBxWrqtFOfOR5aqqtR2PJs8l8MQqccly
+	 TGJw8psLJW/ws/IGiUhHhoS5F4pgy24o1cWCA3Bo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Maciej W. Rozycki" <macro@orcam.me.uk>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Subject: [PATCH 6.12 058/117] MIPS: Malta: Fix keyboard resource preventing i8042 driver from registering
+	Mark Cave-Ayland <mark.caveayland@nutanix.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	William Breathitt Gray <wbg@kernel.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Subject: [PATCH 6.6 35/84] gpio: 104-idio-16: Define maximum valid register address offset
 Date: Mon, 27 Oct 2025 19:36:24 +0100
-Message-ID: <20251027183455.586909906@linuxfoundation.org>
+Message-ID: <20251027183439.755351026@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
-References: <20251027183453.919157109@linuxfoundation.org>
+In-Reply-To: <20251027183438.817309828@linuxfoundation.org>
+References: <20251027183438.817309828@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,70 +62,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej W. Rozycki <macro@orcam.me.uk>
+From: William Breathitt Gray <wbg@kernel.org>
 
-commit bf5570590a981d0659d0808d2d4bcda21b27a2a5 upstream.
+commit c4d35e635f3a65aec291a6045cae8c99cede5bba upstream.
 
-MIPS Malta platform code registers the PCI southbridge legacy port I/O
-PS/2 keyboard range as a standard resource marked as busy.  It prevents
-the i8042 driver from registering as it fails to claim the resource in
-a call to i8042_platform_init().  Consequently PS/2 keyboard and mouse
-devices cannot be used with this platform.
+Attempting to load the 104-idio-16 module fails during regmap
+initialization with a return error -EINVAL. This is a result of the
+regmap cache failing initialization. Set the idio_16_regmap_config
+max_register member to fix this failure.
 
-Fix the issue by removing the busy marker from the standard reservation,
-making the driver register successfully:
-
-  serio: i8042 KBD port at 0x60,0x64 irq 1
-  serio: i8042 AUX port at 0x60,0x64 irq 12
-
-and the resource show up as expected among the legacy devices:
-
-  00000000-00ffffff : MSC PCI I/O
-    00000000-0000001f : dma1
-    00000020-00000021 : pic1
-    00000040-0000005f : timer
-    00000060-0000006f : keyboard
-      00000060-0000006f : i8042
-    00000070-00000077 : rtc0
-    00000080-0000008f : dma page reg
-    000000a0-000000a1 : pic2
-    000000c0-000000df : dma2
-    [...]
-
-If the i8042 driver has not been configured, then the standard resource
-will remain there preventing any conflicting dynamic assignment of this
-PCI port I/O address range.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Acked-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Fixes: 2c210c9a34a3 ("gpio: 104-idio-16: Migrate to the regmap API")
+Reported-by: Mark Cave-Ayland <mark.caveayland@nutanix.com>
+Closes: https://lore.kernel.org/r/9b0375fd-235f-4ee1-a7fa-daca296ef6bf@nutanix.com
+Suggested-by: Mark Cave-Ayland <mark.caveayland@nutanix.com>
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/alpine.DEB.2.21.2510211919240.8377@angie.orcam.me.uk
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: William Breathitt Gray <wbg@kernel.org>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Link: https://lore.kernel.org/r/20251020-fix-gpio-idio-16-regmap-v2-1-ebeb50e93c33@kernel.org
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/mti-malta/malta-setup.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpio/gpio-104-idio-16.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/mips/mti-malta/malta-setup.c
-+++ b/arch/mips/mti-malta/malta-setup.c
-@@ -47,7 +47,7 @@ static struct resource standard_io_resou
- 		.name = "keyboard",
- 		.start = 0x60,
- 		.end = 0x6f,
--		.flags = IORESOURCE_IO | IORESOURCE_BUSY
-+		.flags = IORESOURCE_IO
- 	},
- 	{
- 		.name = "dma page reg",
+diff --git a/drivers/gpio/gpio-104-idio-16.c b/drivers/gpio/gpio-104-idio-16.c
+index ffe7e1cb6b23..fe5c10cd5c32 100644
+--- a/drivers/gpio/gpio-104-idio-16.c
++++ b/drivers/gpio/gpio-104-idio-16.c
+@@ -59,6 +59,7 @@ static const struct regmap_config idio_16_regmap_config = {
+ 	.reg_stride = 1,
+ 	.val_bits = 8,
+ 	.io_port = true,
++	.max_register = 0x5,
+ 	.wr_table = &idio_16_wr_table,
+ 	.rd_table = &idio_16_rd_table,
+ 	.volatile_table = &idio_16_rd_table,
+-- 
+2.51.1
+
 
 
 
