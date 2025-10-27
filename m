@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-190115-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190458-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03588C0FF99
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:41:21 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02942C106F3
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:04:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 9F04234F066
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:41:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 78D461A27B8D
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:01:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2E3231AF09;
-	Mon, 27 Oct 2025 18:41:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 080DD329C45;
+	Mon, 27 Oct 2025 18:55:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fd/5yDI/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lsioIU3x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51FC4313520;
-	Mon, 27 Oct 2025 18:41:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B822A32142E;
+	Mon, 27 Oct 2025 18:55:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761590477; cv=none; b=S9F/RD0h94irKmWWXtt8W0Y0si75ZhNRPgb78J9Bh4HgECmsyBpMuEXbSAgeeHAyVKV2QE/IsJWDJYINOul6F9g0IXXBMYcCYZdU00OBdN1OcgS4lMkusZz2I1H0KSydKJ6/bu0iu09/p3EvUEak4gn7D7EmIkKGUSL/II34LXw=
+	t=1761591343; cv=none; b=Zt1IycBFF+q1L8JLc9IJnTr81ZyyY9dK6CMepWqoYBos5EvYtwf2rQH4DrkrRV95mnRXivHli234wtciRiA8SjQye0Vdmz+pTuMn3B4ldC7jvTnODM6dunj7zr05xIBzmyZiOO0De9NSYNJ2pq9ny7J86AoHaMcQ66bNQO2xjXU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761590477; c=relaxed/simple;
-	bh=cPEd+YaUbw8GWVMYQH6yJfPrhEilm6dZKhoPaX7xfLg=;
+	s=arc-20240116; t=1761591343; c=relaxed/simple;
+	bh=gHN4dv+OzzV4ha0Xp7/WkDOMjJj8iNlRRZ1WksJ3QK0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B6XGuDBtyEP7HSj3hgiFgPVCtP3VSXfZQFXwy8n2e1uJs+RFKsou3cCGEKqDi8I49b/0GMCkz+Eh2Z90zv08jys1/aZlQG2+wr4FI9efgwV2BOvW5PmgimhIdpt/SLzwbJ2zxqsmOoLctEukOUAQJAx0zW810Fiui11mukWgcl8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fd/5yDI/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BE5CC113D0;
-	Mon, 27 Oct 2025 18:41:16 +0000 (UTC)
+	 MIME-Version; b=bX2IDa5w/yn07+2/UyT9jFZiGdI+CnUZWPnmkVgWDbs+SrKhSE//Hi2k0MFwc8NrKT0QXalaH2SGq3k3vz1V7zYvo+agu/GTVlUZrYi2ZlxpmaAfsLBC1MVnYOEGBpHjZRiicyqxBtcaN4eMYyu4zLwTggtvWK5NBy9O0rR6CR8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lsioIU3x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD97BC4CEF1;
+	Mon, 27 Oct 2025 18:55:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761590476;
-	bh=cPEd+YaUbw8GWVMYQH6yJfPrhEilm6dZKhoPaX7xfLg=;
+	s=korg; t=1761591343;
+	bh=gHN4dv+OzzV4ha0Xp7/WkDOMjJj8iNlRRZ1WksJ3QK0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fd/5yDI/pPIms/IU4mLuXrGnWuBnUYwCX1p4ZvDyqb390jMFTRlSs4OUHftA/zWz7
-	 SEJvPktxDxwDCzN0lunwJa+4hAnwEA4AbVxEnqviInsE0v/01NPQUZdp7vQ4VfUGXF
-	 /LKuNOrohNZZssS7hq1dbSSVyw1XElmnA7GPAi90=
+	b=lsioIU3x3Ap4iKSGmC6u8J0ttRJlx4LfOs3ATY/Avzq06/dSs9lQrThzT4RbhPWAC
+	 0X+4/eAHYccKlNXmB9klp4RuECVbrmfZO8yXDklqqzMbkKLVl0uvOy1DCJCL4ohY4p
+	 wOx3OnTFYxGIV6oX809EcevlmzGGGx2L2LeO82bM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Karcher <kernel@mkarcher.dialup.fu-berlin.de>,
-	Andreas Larsson <andreas@gaisler.com>,
-	Sasha Levin <sashal@kernel.org>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Subject: [PATCH 5.4 059/224] sparc: fix accurate exception reporting in copy_to_user for Niagara 4
-Date: Mon, 27 Oct 2025 19:33:25 +0100
-Message-ID: <20251027183510.581462580@linuxfoundation.org>
+	Zhen Ni <zhen.ni@easystack.cn>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH 5.10 153/332] memory: samsung: exynos-srom: Fix of_iomap leak in exynos_srom_probe
+Date: Mon, 27 Oct 2025 19:33:26 +0100
+Message-ID: <20251027183528.671782154@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183508.963233542@linuxfoundation.org>
-References: <20251027183508.963233542@linuxfoundation.org>
+In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
+References: <20251027183524.611456697@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +61,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Karcher <kernel@mkarcher.dialup.fu-berlin.de>
+From: Zhen Ni <zhen.ni@easystack.cn>
 
-[ Upstream commit 5a746c1a2c7980de6c888b6373299f751ad7790b ]
+commit 6744085079e785dae5f7a2239456135407c58b25 upstream.
 
-The referenced commit introduced exception handlers on user-space memory
-references in copy_from_user and copy_to_user. These handlers return from
-the respective function and calculate the remaining bytes left to copy
-using the current register contents. This commit fixes a bad calculation.
-This will fix the return value of copy_to_user in a specific faulting case.
-The behaviour of memcpy stays unchanged.
+The of_platform_populate() call at the end of the function has a
+possible failure path, causing a resource leak.
 
-Fixes: 957077048009 ("sparc64: Convert NG4copy_{from,to}_user to accurate exception reporting.")
-Tested-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de> # on Oracle SPARC T4-1
-Signed-off-by: Michael Karcher <kernel@mkarcher.dialup.fu-berlin.de>
-Reviewed-by: Andreas Larsson <andreas@gaisler.com>
-Link: https://lore.kernel.org/r/20250905-memcpy_series-v4-4-1ca72dda195b@mkarcher.dialup.fu-berlin.de
-Signed-off-by: Andreas Larsson <andreas@gaisler.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Replace of_iomap() with devm_platform_ioremap_resource() to ensure
+automatic cleanup of srom->reg_base.
+
+This issue was detected by smatch static analysis:
+drivers/memory/samsung/exynos-srom.c:155 exynos_srom_probe()warn:
+'srom->reg_base' from of_iomap() not released on lines: 155.
+
+Fixes: 8ac2266d8831 ("memory: samsung: exynos-srom: Add support for bank configuration")
+Cc: stable@vger.kernel.org
+Signed-off-by: Zhen Ni <zhen.ni@easystack.cn>
+Link: https://lore.kernel.org/r/20250806025538.306593-1-zhen.ni@easystack.cn
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/sparc/lib/NG4memcpy.S | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/memory/samsung/exynos-srom.c |   10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
-diff --git a/arch/sparc/lib/NG4memcpy.S b/arch/sparc/lib/NG4memcpy.S
-index 7ad58ebe0d009..df0ec1bd19489 100644
---- a/arch/sparc/lib/NG4memcpy.S
-+++ b/arch/sparc/lib/NG4memcpy.S
-@@ -281,7 +281,7 @@ FUNC_NAME:	/* %o0=dst, %o1=src, %o2=len */
- 	subcc		%o5, 0x20, %o5
- 	EX_ST(STORE(stx, %g1, %o0 + 0x00), memcpy_retl_o2_plus_o5_plus_32)
- 	EX_ST(STORE(stx, %g2, %o0 + 0x08), memcpy_retl_o2_plus_o5_plus_24)
--	EX_ST(STORE(stx, GLOBAL_SPARE, %o0 + 0x10), memcpy_retl_o2_plus_o5_plus_24)
-+	EX_ST(STORE(stx, GLOBAL_SPARE, %o0 + 0x10), memcpy_retl_o2_plus_o5_plus_16)
- 	EX_ST(STORE(stx, %o4, %o0 + 0x18), memcpy_retl_o2_plus_o5_plus_8)
- 	bne,pt		%icc, 1b
- 	 add		%o0, 0x20, %o0
--- 
-2.51.0
-
+--- a/drivers/memory/samsung/exynos-srom.c
++++ b/drivers/memory/samsung/exynos-srom.c
+@@ -121,20 +121,18 @@ static int exynos_srom_probe(struct plat
+ 		return -ENOMEM;
+ 
+ 	srom->dev = dev;
+-	srom->reg_base = of_iomap(np, 0);
+-	if (!srom->reg_base) {
++	srom->reg_base = devm_platform_ioremap_resource(pdev, 0);
++	if (IS_ERR(srom->reg_base)) {
+ 		dev_err(&pdev->dev, "iomap of exynos srom controller failed\n");
+-		return -ENOMEM;
++		return PTR_ERR(srom->reg_base);
+ 	}
+ 
+ 	platform_set_drvdata(pdev, srom);
+ 
+ 	srom->reg_offset = exynos_srom_alloc_reg_dump(exynos_srom_offsets,
+ 						      ARRAY_SIZE(exynos_srom_offsets));
+-	if (!srom->reg_offset) {
+-		iounmap(srom->reg_base);
++	if (!srom->reg_offset)
+ 		return -ENOMEM;
+-	}
+ 
+ 	for_each_child_of_node(np, child) {
+ 		if (exynos_srom_configure_bank(srom, child)) {
 
 
 
