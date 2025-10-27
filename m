@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-190302-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190313-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BA63C10533
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:58:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 59B0CC10545
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:58:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A3FC562BF4
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:53:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF8065630F1
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:53:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3FAE32D7CC;
-	Mon, 27 Oct 2025 18:49:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01C9232E12A;
+	Mon, 27 Oct 2025 18:49:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e1nCuDks"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1PdzG7b/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1AA932D45E;
-	Mon, 27 Oct 2025 18:49:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B08CB32548A;
+	Mon, 27 Oct 2025 18:49:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761590947; cv=none; b=rOQzFIe5iByAyLwXtESydoavWL2iqYmZKYLLMgqITZut4ZgIE/sA65GXEg7292otiNo+WxCDGi6waeMqkZYyX7GEdW7bpTw34IAn/HP9AbMOHWTB5CiIhH7DkUuUpeKj6tV3ytYkl+I07JnaufR/uZATU6lxwpuGUNFUeVenkv4=
+	t=1761590974; cv=none; b=joLn6T8MW2iUONgAvW1Wc59p6iUAZykXiaawsawgtMRPKTVct+3fVEuRWHqEmunzBDhjr7wGvaFL6HHPwA0Ro46sFosLVl/JinVzjtiTi8jt2OzgZBGs4Ez0qEHpHp8UBwtD1l033R/nZlIQ97eghK8phtEbo+aPLyDn3W8JwOw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761590947; c=relaxed/simple;
-	bh=RHBAA3Iq2sR8ofHKYJcOVvBOHZUcGcjiaEXviAWvQis=;
+	s=arc-20240116; t=1761590974; c=relaxed/simple;
+	bh=oU+K+Agv8A/9cySIo9TIN1xk5CJ7VihwwuEeBeqwt3A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i4XtkamuxTtY+LxCS7qeqAG14nhe5I2+6R9zTT4TJjKvjIaEnhDeh7UCWD42Omdy2cNrP5wKOwmFAsS54ZvUmBZLziv1067e/wMQzUMJwu9OwLIJrVKI2sdG8y3vR+6HAGeNiqotnke6suCPOLeWB7lmnB35O/9Ffe+0hdl/ufY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e1nCuDks; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0DAFC4CEF1;
-	Mon, 27 Oct 2025 18:49:05 +0000 (UTC)
+	 MIME-Version; b=NjoTFq8ExsnEMRMyRAa235vo0QaHrbDbC/MdVqsOZdZYAr8u3nTdmJfOvOypM3r7yL+wd+YlqZ9fwsCNjT53QeXTY6bHufs3A1GySfYqME+eC7RFM/RLBNJxcj94EsxWDvLzNtunCBFzXQHQ2fl5lZrHZGPxavGl7x9lPYghEIM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1PdzG7b/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 433EBC4CEFD;
+	Mon, 27 Oct 2025 18:49:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761590946;
-	bh=RHBAA3Iq2sR8ofHKYJcOVvBOHZUcGcjiaEXviAWvQis=;
+	s=korg; t=1761590974;
+	bh=oU+K+Agv8A/9cySIo9TIN1xk5CJ7VihwwuEeBeqwt3A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e1nCuDksUQxnQGSQLSQeCOmPEAbgLA9H1aGl7A37Mq3ZClFmcaO2EbMK/klpdpeU9
-	 vIj7rwhafM5WYXB8tCT6gH0LgsqFau3p8ybnDJOcN9HLUH0NCQnw/J6eENd72JXAyB
-	 btPxhLI6yXsaKZtgN82F7DuHibVDbwGsaUbdjhvE=
+	b=1PdzG7b/oshMn/v5K8OBA4xC7ji/F7VNZiVTeRU9teg8d0RWPLNplyGYIbiqXd07I
+	 omj5vcMD9PAfCx/Nx7zb918cTCg6wI3st6/PyN0f45jfmkxv89HIHns7777w1N1+9a
+	 /UxUWpa8UJ0W7QwyI4cXc/zLfa2yZyQ1QNUPMRZA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wang Haoran <haoranwangsec@gmail.com>,
-	ziiiro <yuanmingbuaa@gmail.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 5.10 001/332] scsi: target: target_core_configfs: Add length check to avoid buffer overflow
-Date: Mon, 27 Oct 2025 19:30:54 +0100
-Message-ID: <20251027183524.655586514@linuxfoundation.org>
+	Duoming Zhou <duoming@zju.edu.cn>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: [PATCH 5.10 002/332] media: b2c2: Fix use-after-free causing by irq_check_work in flexcop_pci_remove
+Date: Mon, 27 Oct 2025 19:30:55 +0100
+Message-ID: <20251027183524.681637211@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
 References: <20251027183524.611456697@linuxfoundation.org>
@@ -66,48 +65,120 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Wang Haoran <haoranwangsec@gmail.com>
+From: Duoming Zhou <duoming@zju.edu.cn>
 
-commit 27e06650a5eafe832a90fd2604f0c5e920857fae upstream.
+commit 01e03fb7db419d39e18d6090d4873c1bff103914 upstream.
 
-A buffer overflow arises from the usage of snprintf to write into the
-buffer "buf" in target_lu_gp_members_show function located in
-/drivers/target/target_core_configfs.c. This buffer is allocated with
-size LU_GROUP_NAME_BUF (256 bytes).
+The original code uses cancel_delayed_work() in flexcop_pci_remove(), which
+does not guarantee that the delayed work item irq_check_work has fully
+completed if it was already running. This leads to use-after-free scenarios
+where flexcop_pci_remove() may free the flexcop_device while irq_check_work
+is still active and attempts to dereference the device.
 
-snprintf(...) formats multiple strings into buf with the HBA name
-(hba->hba_group.cg_item), a slash character, a devicename (dev->
-dev_group.cg_item) and a newline character, the total formatted string
-length may exceed the buffer size of 256 bytes.
+A typical race condition is illustrated below:
 
-Since snprintf() returns the total number of bytes that would have been
-written (the length of %s/%sn ), this value may exceed the buffer length
-(256 bytes) passed to memcpy(), this will ultimately cause function
-memcpy reporting a buffer overflow error.
+CPU 0 (remove)                         | CPU 1 (delayed work callback)
+flexcop_pci_remove()                   | flexcop_pci_irq_check_work()
+  cancel_delayed_work()                |
+  flexcop_device_kfree(fc_pci->fc_dev) |
+                                       |   fc = fc_pci->fc_dev; // UAF
 
-An additional check of the return value of snprintf() can avoid this
-buffer overflow.
+This is confirmed by a KASAN report:
 
-Reported-by: Wang Haoran <haoranwangsec@gmail.com>
-Reported-by: ziiiro <yuanmingbuaa@gmail.com>
-Signed-off-by: Wang Haoran <haoranwangsec@gmail.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+==================================================================
+BUG: KASAN: slab-use-after-free in __run_timer_base.part.0+0x7d7/0x8c0
+Write of size 8 at addr ffff8880093aa8c8 by task bash/135
+...
+Call Trace:
+ <IRQ>
+ dump_stack_lvl+0x55/0x70
+ print_report+0xcf/0x610
+ ? __run_timer_base.part.0+0x7d7/0x8c0
+ kasan_report+0xb8/0xf0
+ ? __run_timer_base.part.0+0x7d7/0x8c0
+ __run_timer_base.part.0+0x7d7/0x8c0
+ ? __pfx___run_timer_base.part.0+0x10/0x10
+ ? __pfx_read_tsc+0x10/0x10
+ ? ktime_get+0x60/0x140
+ ? lapic_next_event+0x11/0x20
+ ? clockevents_program_event+0x1d4/0x2a0
+ run_timer_softirq+0xd1/0x190
+ handle_softirqs+0x16a/0x550
+ irq_exit_rcu+0xaf/0xe0
+ sysvec_apic_timer_interrupt+0x70/0x80
+ </IRQ>
+...
+
+Allocated by task 1:
+ kasan_save_stack+0x24/0x50
+ kasan_save_track+0x14/0x30
+ __kasan_kmalloc+0x7f/0x90
+ __kmalloc_noprof+0x1be/0x460
+ flexcop_device_kmalloc+0x54/0xe0
+ flexcop_pci_probe+0x1f/0x9d0
+ local_pci_probe+0xdc/0x190
+ pci_device_probe+0x2fe/0x470
+ really_probe+0x1ca/0x5c0
+ __driver_probe_device+0x248/0x310
+ driver_probe_device+0x44/0x120
+ __driver_attach+0xd2/0x310
+ bus_for_each_dev+0xed/0x170
+ bus_add_driver+0x208/0x500
+ driver_register+0x132/0x460
+ do_one_initcall+0x89/0x300
+ kernel_init_freeable+0x40d/0x720
+ kernel_init+0x1a/0x150
+ ret_from_fork+0x10c/0x1a0
+ ret_from_fork_asm+0x1a/0x30
+
+Freed by task 135:
+ kasan_save_stack+0x24/0x50
+ kasan_save_track+0x14/0x30
+ kasan_save_free_info+0x3a/0x60
+ __kasan_slab_free+0x3f/0x50
+ kfree+0x137/0x370
+ flexcop_device_kfree+0x32/0x50
+ pci_device_remove+0xa6/0x1d0
+ device_release_driver_internal+0xf8/0x210
+ pci_stop_bus_device+0x105/0x150
+ pci_stop_and_remove_bus_device_locked+0x15/0x30
+ remove_store+0xcc/0xe0
+ kernfs_fop_write_iter+0x2c3/0x440
+ vfs_write+0x871/0xd70
+ ksys_write+0xee/0x1c0
+ do_syscall_64+0xac/0x280
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+...
+
+Replace cancel_delayed_work() with cancel_delayed_work_sync() to ensure
+that the delayed work item is properly canceled and any executing delayed
+work has finished before the device memory is deallocated.
+
+This bug was initially identified through static analysis. To reproduce
+and test it, I simulated the B2C2 FlexCop PCI device in QEMU and introduced
+artificial delays within the flexcop_pci_irq_check_work() function to
+increase the likelihood of triggering the bug.
+
+Fixes: 382c5546d618 ("V4L/DVB (10694): [PATCH] software IRQ watchdog for Flexcop B2C2 DVB PCI cards")
+Cc: stable@vger.kernel.org
+Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/target/target_core_configfs.c |    2 +-
+ drivers/media/pci/b2c2/flexcop-pci.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/target/target_core_configfs.c
-+++ b/drivers/target/target_core_configfs.c
-@@ -2637,7 +2637,7 @@ static ssize_t target_lu_gp_members_show
- 			config_item_name(&dev->dev_group.cg_item));
- 		cur_len++; /* Extra byte for NULL terminator */
+--- a/drivers/media/pci/b2c2/flexcop-pci.c
++++ b/drivers/media/pci/b2c2/flexcop-pci.c
+@@ -411,7 +411,7 @@ static void flexcop_pci_remove(struct pc
+ 	struct flexcop_pci *fc_pci = pci_get_drvdata(pdev);
  
--		if ((cur_len + len) > PAGE_SIZE) {
-+		if ((cur_len + len) > PAGE_SIZE || cur_len > LU_GROUP_NAME_BUF) {
- 			pr_warn("Ran out of lu_gp_show_attr"
- 				"_members buffer\n");
- 			break;
+ 	if (irq_chk_intv > 0)
+-		cancel_delayed_work(&fc_pci->irq_check_work);
++		cancel_delayed_work_sync(&fc_pci->irq_check_work);
+ 
+ 	flexcop_pci_dma_exit(fc_pci);
+ 	flexcop_device_exit(fc_pci->fc_dev);
 
 
 
