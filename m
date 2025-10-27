@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-190912-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191054-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C2F5C10DC0
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:22:41 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0381C10F49
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:27:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A89E8582185
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:17:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2176C1899C4C
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:23:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 857702D6E70;
-	Mon, 27 Oct 2025 19:15:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECF82321445;
+	Mon, 27 Oct 2025 19:21:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z2RiaR8n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fyDaEbpx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41576303CA2;
-	Mon, 27 Oct 2025 19:15:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99FE131E107;
+	Mon, 27 Oct 2025 19:21:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592523; cv=none; b=fQ31OLwYRI0/2lh+vACgGAjgSJPM6aH9yH0t+ZUxViGAyawYvC4aKpFHxaB5hIpgL+IVIFrkXwQJXJ4AM4K5P/IPurBQ7XEEjAzkGeRObfzXVXIs1NMZfkxmlBQHWx3fO5qgu09h4jHB3Oa1M54IOHzALBA/t1qyIUgUoVY8nno=
+	t=1761592893; cv=none; b=elKIJVWtOkE9xeZ3xXJpKAbm2UnxB1dVDaRkpwLWb/ugNAv7IVtbtnFePhkX2chsxKW0o0TIZ6yrjHuO5hjCgFAHPClKlu/R/Wk5/R3mqU6XWqqh6La+5DK9jzvSfITVfxOsj6T4qkU67DwqtJZ9iQLywtkwjXcban2Io2MuWUI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592523; c=relaxed/simple;
-	bh=BGcyUz0jdSBVZbdCVg8mm6QdwcRaKGWqomSOUvAyZ4E=;
+	s=arc-20240116; t=1761592893; c=relaxed/simple;
+	bh=FBTt/RY6MyGUCttokx96deFBvFrPhxbKX6PAKKWoO4s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UhwQpFUXT14EF4l0bsJSW0lOTSFA1hgJSMhd536xdPWPo7EqK9gP/pYz02ekOEOZySNRwu30EWAeTqs9DDn4oFRYrxmhk6UGlWtcDsZBBo7HrwwKcV2JFkNw747q/9Hzhe+q0tePSSbXjtvQWqBI6gO4iYlZU52lWbtMpBn1nyY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z2RiaR8n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B20DAC4CEFD;
-	Mon, 27 Oct 2025 19:15:22 +0000 (UTC)
+	 MIME-Version; b=CVBUxJeL4EgdVmvWQknozaISDyrS/zub1VVEWY1BxJfOZHcy7rLRdtPTdRkxwxMaT8SUsAyB87RORG1asDMvJuPLd3MgZJB65yhsFcQsX/lY8yRw91/VJvMiiET9xq9RbwMAo24UgHkTbUS4NCGj8gnLqoONe6IFnrSKTIxbZDM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fyDaEbpx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E673C4CEF1;
+	Mon, 27 Oct 2025 19:21:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592523;
-	bh=BGcyUz0jdSBVZbdCVg8mm6QdwcRaKGWqomSOUvAyZ4E=;
+	s=korg; t=1761592893;
+	bh=FBTt/RY6MyGUCttokx96deFBvFrPhxbKX6PAKKWoO4s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z2RiaR8nMcHdxEoA+hgdR9uZcHkIwEpoeJZShnTmCtsWAeIrke0RUFTpJqlg/sa5u
-	 fMS0sr5x9VAu/V8ydPFE/1Tn+AAvaIqb/3I3qPFO1+IFwq81pwgKvaQjUAmDQglXLV
-	 NvEy3FomLY6I0OV8ms9LOK2I1YgblZJnTo30LfEc=
+	b=fyDaEbpxbVTUGl/Uw6xH9zytmJaNdL1jebTw8u0Qd/zKM4+C8syNM1V5+Eeh76E/B
+	 y6z21HotT8gQznFyb0cHkqPxyCaDxlyQMcYXwpCgiaLFXJ2JtoGSEfrPz5/Ok5NTQf
+	 wdLpHRsMvDmUkfpHKcR+G5Oeuh+hvOKqleSL3gko=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Carlos Maiolino <cem@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 117/157] xfs: rename the old_crc variable in xlog_recover_process
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.12 052/117] Revert "cpuidle: menu: Avoid discarding useful information"
 Date: Mon, 27 Oct 2025 19:36:18 +0100
-Message-ID: <20251027183504.384797084@linuxfoundation.org>
+Message-ID: <20251027183455.416267806@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
-References: <20251027183501.227243846@linuxfoundation.org>
+In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
+References: <20251027183453.919157109@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +61,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit 0b737f4ac1d3ec093347241df74bbf5f54a7e16c ]
+commit 10fad4012234a7dea621ae17c0c9486824f645a0 upstream.
 
-old_crc is a very misleading name.  Rename it to expected_crc as that
-described the usage much better.
+It is reported that commit 85975daeaa4d ("cpuidle: menu: Avoid discarding
+useful information") led to a performance regression on Intel Jasper Lake
+systems because it reduced the time spent by CPUs in idle state C7 which
+is correlated to the maximum frequency the CPUs can get to because of an
+average running power limit [1].
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Carlos Maiolino <cem@kernel.org>
-Stable-dep-of: e747883c7d73 ("xfs: fix log CRC mismatches between i386 and other architectures")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Before that commit, get_typical_interval() would have returned UINT_MAX
+whenever it had been unable to make a high-confidence prediction which
+had led to selecting the deepest available idle state too often and
+both power and performance had been inadequate as a result of that on
+some systems.  However, this had not been a problem on systems with
+relatively aggressive average running power limits, like the Jasper Lake
+systems in question, because on those systems it was compensated by the
+ability to run CPUs faster.
+
+It was addressed by causing get_typical_interval() to return a number
+based on the recent idle duration information available to it even if it
+could not make a high-confidence prediction, but that clearly did not
+take the possible correlation between idle power and available CPU
+capacity into account.
+
+For this reason, revert most of the changes made by commit 85975daeaa4d,
+except for one cosmetic cleanup, and add a comment explaining the
+rationale for returning UINT_MAX from get_typical_interval() when it
+is unable to make a high-confidence prediction.
+
+Fixes: 85975daeaa4d ("cpuidle: menu: Avoid discarding useful information")
+Closes: https://lore.kernel.org/linux-pm/36iykr223vmcfsoysexug6s274nq2oimcu55ybn6ww4il3g3cv@cohflgdbpnq7/ [1]
+Reported-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: All applicable <stable@vger.kernel.org>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Link: https://patch.msgid.link/3663603.iIbC2pHGDl@rafael.j.wysocki
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/xfs/xfs_log_recover.c |   17 ++++++++---------
- 1 file changed, 8 insertions(+), 9 deletions(-)
+ drivers/cpuidle/governors/menu.c |   21 +++++++++------------
+ 1 file changed, 9 insertions(+), 12 deletions(-)
 
---- a/fs/xfs/xfs_log_recover.c
-+++ b/fs/xfs/xfs_log_recover.c
-@@ -2854,20 +2854,19 @@ xlog_recover_process(
- 	int			pass,
- 	struct list_head	*buffer_list)
- {
--	__le32			old_crc = rhead->h_crc;
--	__le32			crc;
-+	__le32			expected_crc = rhead->h_crc, crc;
- 
- 	crc = xlog_cksum(log, rhead, dp, be32_to_cpu(rhead->h_len));
- 
- 	/*
- 	 * Nothing else to do if this is a CRC verification pass. Just return
- 	 * if this a record with a non-zero crc. Unfortunately, mkfs always
--	 * sets old_crc to 0 so we must consider this valid even on v5 supers.
--	 * Otherwise, return EFSBADCRC on failure so the callers up the stack
--	 * know precisely what failed.
-+	 * sets expected_crc to 0 so we must consider this valid even on v5
-+	 * supers.  Otherwise, return EFSBADCRC on failure so the callers up the
-+	 * stack know precisely what failed.
+--- a/drivers/cpuidle/governors/menu.c
++++ b/drivers/cpuidle/governors/menu.c
+@@ -199,20 +199,17 @@ again:
+ 	 *
+ 	 * This can deal with workloads that have long pauses interspersed
+ 	 * with sporadic activity with a bunch of short pauses.
++	 *
++	 * However, if the number of remaining samples is too small to exclude
++	 * any more outliers, allow the deepest available idle state to be
++	 * selected because there are systems where the time spent by CPUs in
++	 * deep idle states is correlated to the maximum frequency the CPUs
++	 * can get to.  On those systems, shallow idle states should be avoided
++	 * unless there is a clear indication that the given CPU is most likley
++	 * going to be woken up shortly.
  	 */
- 	if (pass == XLOG_RECOVER_CRCPASS) {
--		if (old_crc && crc != old_crc)
-+		if (expected_crc && crc != expected_crc)
- 			return -EFSBADCRC;
- 		return 0;
- 	}
-@@ -2878,11 +2877,11 @@ xlog_recover_process(
- 	 * zero CRC check prevents warnings from being emitted when upgrading
- 	 * the kernel from one that does not add CRCs by default.
- 	 */
--	if (crc != old_crc) {
--		if (old_crc || xfs_has_crc(log->l_mp)) {
-+	if (crc != expected_crc) {
-+		if (expected_crc || xfs_has_crc(log->l_mp)) {
- 			xfs_alert(log->l_mp,
- 		"log record CRC mismatch: found 0x%x, expected 0x%x.",
--					le32_to_cpu(old_crc),
-+					le32_to_cpu(expected_crc),
- 					le32_to_cpu(crc));
- 			xfs_hex_dump(dp, 32);
- 		}
+-	if (divisor * 4 <= INTERVALS * 3) {
+-		/*
+-		 * If there are sufficiently many data points still under
+-		 * consideration after the outliers have been eliminated,
+-		 * returning without a prediction would be a mistake because it
+-		 * is likely that the next interval will not exceed the current
+-		 * maximum, so return the latter in that case.
+-		 */
+-		if (divisor >= INTERVALS / 2)
+-			return max;
+-
++	if (divisor * 4 <= INTERVALS * 3)
+ 		return UINT_MAX;
+-	}
+ 
+ 	thresh = max - 1;
+ 	goto again;
 
 
 
