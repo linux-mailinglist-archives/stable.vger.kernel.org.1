@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-190630-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191061-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DEBFC109AC
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:12:11 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 855BFC10E2F
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:23:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF19C564100
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:06:33 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 321D73521A2
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:23:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E22A32B997;
-	Mon, 27 Oct 2025 19:03:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D72A73016F9;
+	Mon, 27 Oct 2025 19:21:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MkA1bR1a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aZv85/4t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C00E52F8BD1;
-	Mon, 27 Oct 2025 19:03:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E590324B37;
+	Mon, 27 Oct 2025 19:21:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591787; cv=none; b=OIUOgDMH7p50sFzNlkkgy35S1mexup+p69kCvDEIaP2itRlRDcfIY9NFuwFPI4pg2VcL3Q/mMLlyKsz5OJfBHAissPm/ni6uxz5qDZR+ijVifxRToNvdPEuYtosE7KUQDjOKeMXUGBQYQOT9/IcAcxi+yHefvCq2l/U11MhAWPw=
+	t=1761592911; cv=none; b=IKM1YBs1tngRSWJwut87nvvogAVfv214AZ1Erf0mctrZHhXf6jWxmHz4iJkrbbWI2LvYyFw+aFkOSDux0RApH1RHZnJyZYp+wZfaBRMXCsO/trNzyXXiuBYkVpNI1hqUDXBgJC6AA6QRqN+YNOt7cjZtG/5Vhnb7rx1LC79L8Cw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591787; c=relaxed/simple;
-	bh=dd6H32s+lNkWmY+gnP3871zALo4R0y+saVwxwzpmrEk=;
+	s=arc-20240116; t=1761592911; c=relaxed/simple;
+	bh=qSoahRxM8yQ4V5slepN8JtBWGoLjfqRpUQZdCTxb0k0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IET7mzPIWPHPnJ3boQUz3zcQb+2608BP2i/2cdyaSRjsd9C1kOtwGEyF/tVua9WEidmRQ/THQGQ7jAuV9qN5nl0MKFBqwG6x9q6O5LoVEFj+JLHQR+zFLhZAkzdJ56vkgOymIxWeOOi1jxerMU7nmDielhokxOc1WyElOi5OAP0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MkA1bR1a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5444AC4CEF1;
-	Mon, 27 Oct 2025 19:03:07 +0000 (UTC)
+	 MIME-Version:Content-Type; b=BR14w+Bc9Ue2rVCmMBBRHMEBVMIq5U/w8hE4sqUE8I8a0tLnLjIcRHFPe7ihjvq842tAclcjgCOQbhx+i+xdn5tugY74hFyu7H+QByIC+W8poG2d3ubiLIvBBeYMZibsfihxR1lWRnTWapXd0pZ8GCin6JxO4ZZTzILlJJJ0JS4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aZv85/4t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 226D9C4CEF1;
+	Mon, 27 Oct 2025 19:21:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591787;
-	bh=dd6H32s+lNkWmY+gnP3871zALo4R0y+saVwxwzpmrEk=;
+	s=korg; t=1761592911;
+	bh=qSoahRxM8yQ4V5slepN8JtBWGoLjfqRpUQZdCTxb0k0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MkA1bR1aTyfVb0NtmefBU9G93O1nighPdmVoYvgQUngkNUt6rXcL+2oF2VDLbBi8x
-	 V2xjPsVikYTUUI0vW4Pndnirb3R5Ef/g6zxvScqQBVr2UBPfwCKRl8gxSWFcoIrPVO
-	 dp3Xtu8lWa2VtJCT3UYqfDwzrPqeDG59pgFyKJVc=
+	b=aZv85/4tg8vbYp5lH/bNLCLcg1Di9w60cLsHnB+i/Bqm4g5bwTZ8LxM61zR4iDCLb
+	 VMlo3IRe4rLepCzh3xUxX9MKlX1tEySgI6uiUCMTvoPCw+rI7lPBmf2Xs8BYiGbFvr
+	 WS4HJXYC0Z7zfSTz/4H+7PlyfFzIlMem0FiaYhbs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhengchao Shao <shaozhengchao@huawei.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.10 330/332] net: rtnetlink: fix module reference count leak issue in rtnetlink_rcv_msg
-Date: Mon, 27 Oct 2025 19:36:23 +0100
-Message-ID: <20251027183533.609456044@linuxfoundation.org>
+	"Maciej W. Rozycki" <macro@orcam.me.uk>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Subject: [PATCH 6.12 058/117] MIPS: Malta: Fix keyboard resource preventing i8042 driver from registering
+Date: Mon, 27 Oct 2025 19:36:24 +0100
+Message-ID: <20251027183455.586909906@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
-References: <20251027183524.611456697@linuxfoundation.org>
+In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
+References: <20251027183453.919157109@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,40 +61,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhengchao Shao <shaozhengchao@huawei.com>
+From: Maciej W. Rozycki <macro@orcam.me.uk>
 
-commit 5b22f62724a0a09e00d301abf5b57b0c12be8a16 upstream.
+commit bf5570590a981d0659d0808d2d4bcda21b27a2a5 upstream.
 
-When bulk delete command is received in the rtnetlink_rcv_msg function,
-if bulk delete is not supported, module_put is not called to release
-the reference counting. As a result, module reference count is leaked.
+MIPS Malta platform code registers the PCI southbridge legacy port I/O
+PS/2 keyboard range as a standard resource marked as busy.  It prevents
+the i8042 driver from registering as it fails to claim the resource in
+a call to i8042_platform_init().  Consequently PS/2 keyboard and mouse
+devices cannot be used with this platform.
 
-Fixes: a6cec0bcd342 ("net: rtnetlink: add bulk delete support flag")
-Signed-off-by: Zhengchao Shao <shaozhengchao@huawei.com>
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://lore.kernel.org/r/20220815024629.240367-1-shaozhengchao@huawei.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fix the issue by removing the busy marker from the standard reservation,
+making the driver register successfully:
+
+  serio: i8042 KBD port at 0x60,0x64 irq 1
+  serio: i8042 AUX port at 0x60,0x64 irq 12
+
+and the resource show up as expected among the legacy devices:
+
+  00000000-00ffffff : MSC PCI I/O
+    00000000-0000001f : dma1
+    00000020-00000021 : pic1
+    00000040-0000005f : timer
+    00000060-0000006f : keyboard
+      00000060-0000006f : i8042
+    00000070-00000077 : rtc0
+    00000080-0000008f : dma page reg
+    000000a0-000000a1 : pic2
+    000000c0-000000df : dma2
+    [...]
+
+If the i8042 driver has not been configured, then the standard resource
+will remain there preventing any conflicting dynamic assignment of this
+PCI port I/O address range.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Acked-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/alpine.DEB.2.21.2510211919240.8377@angie.orcam.me.uk
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/rtnetlink.c |    1 +
- 1 file changed, 1 insertion(+)
+ arch/mips/mti-malta/malta-setup.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/core/rtnetlink.c
-+++ b/net/core/rtnetlink.c
-@@ -5624,6 +5624,7 @@ static int rtnetlink_rcv_msg(struct sk_b
- 	if (kind == RTNL_KIND_DEL && (nlh->nlmsg_flags & NLM_F_BULK) &&
- 	    !(flags & RTNL_FLAG_BULK_DEL_SUPPORTED)) {
- 		NL_SET_ERR_MSG(extack, "Bulk delete is not supported");
-+		module_put(owner);
- 		goto err_unlock;
- 	}
- 
+--- a/arch/mips/mti-malta/malta-setup.c
++++ b/arch/mips/mti-malta/malta-setup.c
+@@ -47,7 +47,7 @@ static struct resource standard_io_resou
+ 		.name = "keyboard",
+ 		.start = 0x60,
+ 		.end = 0x6f,
+-		.flags = IORESOURCE_IO | IORESOURCE_BUSY
++		.flags = IORESOURCE_IO
+ 	},
+ 	{
+ 		.name = "dma page reg",
 
 
 
