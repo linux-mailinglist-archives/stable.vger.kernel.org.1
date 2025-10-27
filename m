@@ -1,105 +1,131 @@
-Return-Path: <stable+bounces-189939-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-189940-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id B85DCC0C595
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 09:41:57 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D348BC0C64C
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 09:46:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 02B794F1190
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 08:41:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7696018A49CC
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 08:45:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82FA62E8B77;
-	Mon, 27 Oct 2025 08:41:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1B962F12AE;
+	Mon, 27 Oct 2025 08:43:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rufVP4OS"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="A4QL/wD8"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F9502D24A7;
-	Mon, 27 Oct 2025 08:41:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14B102E543B
+	for <stable@vger.kernel.org>; Mon, 27 Oct 2025 08:43:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761554474; cv=none; b=QP9DRe/TXcZkmSh2zIoAW1Xp1mJHBrwHZPbGABT8CWGHcGTJKJWYPtKdd+3HYe3dwO+nQdvrP0+o4OGl2e4K4KAyQApaUvgz7zl55ksJu2RLMw0jGO7WhfqgL0RWfAwwdejbkAQMQRjmdO0u99rDgimfv8VDkg55Ahb7borKIe0=
+	t=1761554597; cv=none; b=XwyZVh+0DzxZ75yfVaMzbQWew0Lmn4aE79UHM+91klrE4O6hLA3DuiFmXbjJTQwH2e5YC9Vvqw8OCH34m4efnOmRlFRnJ9QgjYxy6JV/DPyyLlSN05nBjckcdoYxu4BeOzeMjHZnA5uIKJD0J2E4+8zR8Pbx9o5FJC3qCCdLqXc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761554474; c=relaxed/simple;
-	bh=p7L1ppdjpTPK5vdV3Mi+mMZfy8PqxfrJ0ZCIY6BoM3Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jirHwokdigZ1MccY1q3t7ulQe0K8hzt4ncQYg5r2ad0meM/RPr8gXY5Mf0v9R7xD9ldcBhx/RCyKFJ6/Kq8fVnOgN3EM1P91330beAmSVvJevcbcZA2xq7aXbCHVZenVSpCGel8nSAU2CeBE38iTsQP/Wsx7CGdS20PglIz16do=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rufVP4OS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADEC6C4CEF1;
-	Mon, 27 Oct 2025 08:41:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761554473;
-	bh=p7L1ppdjpTPK5vdV3Mi+mMZfy8PqxfrJ0ZCIY6BoM3Q=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=rufVP4OSJtQ3/mqTsI9HPHrUO+OB+vlQGbAQqIDt1z1/AZr7oI74LCqffPdj8vLew
-	 JW1i1LFS8BrXSqZRhEm8DGIdLLQVtvMjlTR4+W3Nd5kmSFHSa0+5cnJLiMCDqe1zZi
-	 BZNURd+k0QiE1zTDpsPp4znfOXhDST9Y3ZAdAzHCG4QUeEz2dKvoj2FRR+7KtARw0K
-	 x93tfow3vIZdl4w3bnKt+Aq0n8eljgp5LLbcx8nSChwFpPFXxJxXmmuBeEl5qZ6Ewt
-	 QStYGjeV2llAJvn5SGcXYs1zeEWXAMkH7z30MF1MUyoV1y4kbm/N2jrDV4GJAx84ZL
-	 F0pZYbv/EemuQ==
-Received: from johan by xi.lan with local (Exim 4.98.2)
-	(envelope-from <johan@kernel.org>)
-	id 1vDImy-000000000Gc-2Ow9;
-	Mon, 27 Oct 2025 09:41:16 +0100
-Date: Mon, 27 Oct 2025 09:41:16 +0100
-From: Johan Hovold <johan@kernel.org>
-To: Chun-Kuang Hu <chunkuang.hu@kernel.org>,
-	Philipp Zabel <p.zabel@pengutronix.de>
-Cc: David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	CK Hu <ck.hu@mediatek.com>, Ma Ke <make24@iscas.ac.cn>,
-	Sjoerd Simons <sjoerd@collabora.com>,
-	dri-devel@lists.freedesktop.org, linux-mediatek@lists.infradead.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] drm/mediatek: fix device use-after-free on unbind
-Message-ID: <aP8wLMrFTsJI-Lr3@hovoldconsulting.com>
-References: <20251006093937.27869-1-johan@kernel.org>
+	s=arc-20240116; t=1761554597; c=relaxed/simple;
+	bh=oMKB4koHGfhFxqW7ZtCA1mWeRO3jC3K1GWY5reJ1TjE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=seo/25NbLjSB//rRHfXg/7pf/wxBYVLgmF1LwbVr9fLOzT64zhJzBx9z20yL0WqyHJgKc/gX9GdGY1Aujf5LibnjHrOb8aet5L+3466QsJZXTlYsWABFwhrtm72g2btsu5ccbUsj0V/4M2Ahp4dSBuPoIRzSvmS4yOiRXcepgUc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=A4QL/wD8; arc=none smtp.client-ip=209.85.214.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-290c2b6a6c2so45983595ad.1
+        for <stable@vger.kernel.org>; Mon, 27 Oct 2025 01:43:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1761554595; x=1762159395; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=UHwoqgImEy7LQLhZWFXUDhaPJoy+ecZ3A4KynxwsxS0=;
+        b=A4QL/wD81Yvir5jIrST7pzfQaM9QZpokBqwsDOqDCVFFEmisx8cL8/ippltZKwHfQp
+         J/sBY3cOIyEnN7WGRv1vXjsReKrIQBM3w66fn9L6FbWwrz2pANSGC+x2Cpu1dGYMnjOC
+         gRs+ERyUe/jt2zawSqhSFbqbqDzW+lGvDG3UbklrwKcXdmvCGPTwOp5JKkVah56Mzn30
+         m1tAeioxL5V+hA93o9x1gk+9X+cEu4lxnIKoECEhtyCaLgR7GRJHAu40wtANzRsff66b
+         92rIJnnw9m5dOnpYl6k0l0iBZcBNQl8QPYKGkrVjJPoUkDn7ohuhSZPDAUnzGMy2mHIR
+         qzwA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761554595; x=1762159395;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=UHwoqgImEy7LQLhZWFXUDhaPJoy+ecZ3A4KynxwsxS0=;
+        b=XiHEAPYfkVXlwXUl7YM3w6gdmrtIxzjSyTU1/sV4nGKXW2/BzmOGN7H2T8tJpZCCOx
+         Y9HS9SyKdRDMZ2U4ILL3MaQmB6XZTyZAlVzvnfySPuP55rQvcGtTGWqIVbTPF2RjT850
+         M5C8W/EpVuyxNYn9OAZA5FrouceyS6OYFfPbycUxfeglllnHXRJEAc2W+AcwgucZJxBj
+         oG6vDceSD8WtpGoZstLYJjPi2I9I5hWHNZhSFhquvkPRxgQmdZOuyo9MKGs+Trt/OAat
+         waVpho0h4Cygy/MAYWpinYnRv7GFbOAjst1OM3UKBS6VZ0j187f0PrpFZ+DUcLeJ0gSp
+         xIKA==
+X-Forwarded-Encrypted: i=1; AJvYcCW8qgX2iKSlqv+91XBOA15uFOZNA0CbCxEKlkplNZSMmR6hCz8CdZLUhBu+TYRsrCGIq9CRfHE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzuD6ElpHy0rbwI0txwoPebNSADRgh2PZMfZbTUTYXDEocrRQQv
+	lDQEE88UepTbI6TF4bpp6UbHBQ5SvEL8CHfYCtAWwyZxm1gIwmbkVd98
+X-Gm-Gg: ASbGncuyAlNXPGzwB8z+AJWd64G4mtZbEqeqTWZ1ou6lfZNgege7VrBugdOWp/fwnL6
+	lAUp3N+pMVfe26y5YQZ8yiszDIHfWj8vabanGZrhxXxiyBgq5WjP+rTZfTlDj9UucbAs5lrUz3y
+	LaSZ/kI+alf7smH+KEA42ycVN9zm+9sACTQT4pEvobK0TTIz4W3TC+rW9RqdrKub6AlDtLkcwjA
+	vZZyJo+6VxhaiEHBYsxx8owYBfEH9rgA+ZatwD6vmokyodxcY3bEilkFLugY6jIGK3dM9aXbO2v
+	5QpjxHCe4G1CXiT/LNm98KcuuFlCKPppjOSNtVXOoO4CbOpzkb8MmHVRdIgwubY//x7aiZtwQGT
+	LEDaowxu5LRpwJXNE+wTQXbxAq/dUqtREE4kGzVzzljLHh5aUw/dKtlYlYv9HQeVbyMorNQeIGk
+	dPloUHgto4icUAAJgwrRluThq0Nmny6KTdZlKxaiAdz6M=
+X-Google-Smtp-Source: AGHT+IHwgVcslq+1mjD8C6Vh5GqRLux2tDGUe1R/TUV71B2G9ynp6h0rzEeVb0xZxIg7lRsdj6RNXQ==
+X-Received: by 2002:a17:903:247:b0:294:c189:68dd with SMTP id d9443c01a7336-294c1896977mr7969545ad.44.1761554595286;
+        Mon, 27 Oct 2025 01:43:15 -0700 (PDT)
+Received: from localhost.localdomain ([124.77.218.104])
+        by smtp.googlemail.com with ESMTPSA id d9443c01a7336-29498e3d2aasm75349815ad.88.2025.10.27.01.43.11
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Mon, 27 Oct 2025 01:43:14 -0700 (PDT)
+From: Miaoqian Lin <linmq006@gmail.com>
+To: Neil Armstrong <neil.armstrong@linaro.org>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Jerome Brunet <jbrunet@baylibre.com>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Nicolas Belin <nbelin@baylibre.com>,
+	Jagan Teki <jagan@amarulasolutions.com>,
+	dri-devel@lists.freedesktop.org,
+	linux-amlogic@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Cc: linmq006@gmail.com,
+	stable@vger.kernel.org
+Subject: [PATCH] drm/meson: Fix reference count leak in meson_encoder_dsi_probe
+Date: Mon, 27 Oct 2025 16:42:58 +0800
+Message-Id: <20251027084258.79180-1-linmq006@gmail.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251006093937.27869-1-johan@kernel.org>
+Content-Transfer-Encoding: 8bit
 
-Hi Chun-Kuang,
+The of_graph_get_remote_node() function returns a device node with its
+reference count incremented. The caller is responsible for calling
+of_node_put() to release this reference when done.
 
-On Mon, Oct 06, 2025 at 11:39:37AM +0200, Johan Hovold wrote:
-> A recent change fixed device reference leaks when looking up drm
-> platform device driver data during bind() but failed to remove a partial
-> fix which had been added by commit 80805b62ea5b ("drm/mediatek: Fix
-> kobject put for component sub-drivers").
-> 
-> This results in a reference imbalance on component bind() failures and
-> on unbind() which could lead to a user-after-free.
-> 
-> Make sure to only drop the references after retrieving the driver data
-> by effectively reverting the previous partial fix.
-> 
-> Note that holding a reference to a device does not prevent its driver
-> data from going away so there is no point in keeping the reference.
-> 
-> Fixes: 1f403699c40f ("drm/mediatek: Fix device/node reference count leaks in mtk_drm_get_all_drm_priv")
-> Reported-by: Sjoerd Simons <sjoerd@collabora.com>
-> Link: https://lore.kernel.org/r/20251003-mtk-drm-refcount-v1-1-3b3f2813b0db@collabora.com
-> Cc: stable@vger.kernel.org
-> Cc: Ma Ke <make24@iscas.ac.cn>
-> Cc: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-> Signed-off-by: Johan Hovold <johan@kernel.org>
+Fixes: 42dcf15f901c ("drm/meson: add DSI encoder")
+Cc: stable@vger.kernel.org
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+---
+ drivers/gpu/drm/meson/meson_encoder_dsi.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-This patch fixes a regression in 6.17-rc4 that apparently breaks boot
-for some users. To make things worse, the offending commit was also
-backported to the stable trees.
+diff --git a/drivers/gpu/drm/meson/meson_encoder_dsi.c b/drivers/gpu/drm/meson/meson_encoder_dsi.c
+index 6c6624f9ba24..01edf46e30d0 100644
+--- a/drivers/gpu/drm/meson/meson_encoder_dsi.c
++++ b/drivers/gpu/drm/meson/meson_encoder_dsi.c
+@@ -121,6 +121,7 @@ int meson_encoder_dsi_probe(struct meson_drm *priv)
+ 	}
+ 
+ 	meson_encoder_dsi->next_bridge = of_drm_find_bridge(remote);
++	of_node_put(remote);
+ 	if (!meson_encoder_dsi->next_bridge)
+ 		return dev_err_probe(priv->dev, -EPROBE_DEFER,
+ 				     "Failed to find DSI transceiver bridge\n");
+-- 
+2.39.5 (Apple Git-154)
 
-You need to get this one into mainline as soon as possible, that is,
-this week and into 6.18-rc4.
-
-Johan
 
