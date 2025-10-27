@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-190103-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190439-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CD33C0FF7E
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:41:02 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 382E1C1063F
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:01:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA8CE4621C6
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:41:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4A6111A23BFF
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:58:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B67F031B839;
-	Mon, 27 Oct 2025 18:40:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DD03328604;
+	Mon, 27 Oct 2025 18:54:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D1xFh35J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P7T+elXY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6602B31B137;
-	Mon, 27 Oct 2025 18:40:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49D683254A8;
+	Mon, 27 Oct 2025 18:54:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761590444; cv=none; b=mUU32ArcLbpYcvg40X6ysDtXgFrUwp13O/q9xG34jasbNeNmYj9DCUdyBrag9qZFO9a+Xh4GorbqFnHkgRiVky0SoCQPhTkYCBZwz1IrMdHPezUoSs40j5SIfMg8iLSSXsHatftESXgd1KZ/FUuQTDPlYJDvOZq0RwEL7+p+J5Y=
+	t=1761591294; cv=none; b=Z+NX71gjY6B9MX+FMz611mZjvaGOGxc01GA5W/UANhF6tBZ1ucQGfo7nJVfpN+OWl1ND4OuCxonj6hgugCCiYhyOrp+yosgeF9oFpfPwmuejOsL3zDvKPwyNCki/f+9iuzl6rZWN6Ld8vIgBVCNRHq4m8QZAC0Yefo6++OkrNfE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761590444; c=relaxed/simple;
-	bh=C8jlbmabZFgew2UAaJ4hG/nnm2hkZIQNiJ79YnWyob0=;
+	s=arc-20240116; t=1761591294; c=relaxed/simple;
+	bh=J+IG4f447A1L9tB7CdxjnWYdtNRETrH1uMfKWqJJoIA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iA1Rpzne7pErUyjHpNeMSBpPj3T/9ItKqHAN/tLYA4uwP6oFcLGBLGURw5sOev9P1cHUmM6zYuiImzp91Bt9Re4v9L0v3bW6zaqCQXtrZtcXkCYw2+BWusmSO3VefLLS6Y0baWN/o2ZX0WnBlXuj3IYalc+TZaT1oF4f2wZ+6Ig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D1xFh35J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF8C5C4CEF1;
-	Mon, 27 Oct 2025 18:40:43 +0000 (UTC)
+	 MIME-Version:Content-Type; b=PFuVSCTAol2YUs6CzHZR86NRg3wQA1LvZRz74VQYeZPUTx37A94pTVb5CVynteSibqV94FkCE2fNhOClCHiTnUqjEMqbgmbzFT0qSY/YjRXUA0DMO6XC7JjmUHh4xGVMqCUf8Fudf6W1SrbsNrVTFxudAup8vuP3FM+2NzPEHOI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P7T+elXY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE220C4CEF1;
+	Mon, 27 Oct 2025 18:54:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761590444;
-	bh=C8jlbmabZFgew2UAaJ4hG/nnm2hkZIQNiJ79YnWyob0=;
+	s=korg; t=1761591294;
+	bh=J+IG4f447A1L9tB7CdxjnWYdtNRETrH1uMfKWqJJoIA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D1xFh35Jal1YXF4LEi+ayYikf6keE40tbzlM9sUpysgqWuTEblmiZH3/FXI4P/BzN
-	 2z6ML8YnpNpBJtkm6ns0QvjDm/6+8i+2shAJmCP3gLxLGIdRw+GLvvEopxaC+BjVco
-	 EbWGvKPif+J2eVKxh+BSMFaizIhnD88O+adTMVGk=
+	b=P7T+elXYIciO+/Gx4xeBdNiV5MMboFVc9BCcjKOUPJUgyj1uxTEq4VGF5u9AbQn9X
+	 JumIidUMBy1YgyRq6b1+auIiUxkK37CY5J7Lutby0KH0yWgIjWKm3106ksITq52rbi
+	 6bGUmv6aEHc1o2Dec2V4iw0NMUxAyLFnEv6Llfi0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Liam Beguin <liambeguin@gmail.com>,
+	Michael Hennerich <michael.hennerich@analog.com>,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
 	Andy Shevchenko <andy@kernel.org>,
-	Hans de Goede <hansg@kernel.org>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 048/224] iio: consumers: Fix offset handling in iio_convert_raw_to_processed()
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 5.10 141/332] iio: frequency: adf4350: Fix prescaler usage.
 Date: Mon, 27 Oct 2025 19:33:14 +0100
-Message-ID: <20251027183510.286054726@linuxfoundation.org>
+Message-ID: <20251027183528.358007853@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183508.963233542@linuxfoundation.org>
-References: <20251027183508.963233542@linuxfoundation.org>
+In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
+References: <20251027183524.611456697@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +62,77 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hansg@kernel.org>
+From: Michael Hennerich <michael.hennerich@analog.com>
 
-[ Upstream commit 33f5c69c4daff39c010b3ea6da8ebab285f4277b ]
+commit 33d7ecbf69aa7dd4145e3b77962bcb8759eede3d upstream.
 
-Fix iio_convert_raw_to_processed() offset handling for channels without
-a scale attribute.
+The ADF4350/1 features a programmable dual-modulus prescaler of 4/5 or 8/9.
+When set to 4/5, the maximum RF frequency allowed is 3 GHz.
+Therefore, when operating the ADF4351 above 3 GHz, this must be set to 8/9.
+In this context not the RF output frequency is meant
+- it's the VCO frequency.
 
-The offset has been applied to the raw64 value not to the original raw
-value. Use the raw64 value so that the offset is taken into account.
+Therefore move the prescaler selection after we derived the VCO frequency
+from the desired RF output frequency.
 
-Fixes: 14b457fdde38 ("iio: inkern: apply consumer scale when no channel scale is available")
-Cc: Liam Beguin <liambeguin@gmail.com>
+This BUG may have caused PLL lock instabilities when operating the VCO at
+the very high range close to 4.4 GHz.
+
+Fixes: e31166f0fd48 ("iio: frequency: New driver for Analog Devices ADF4350/ADF4351 Wideband Synthesizers")
+Signed-off-by: Michael Hennerich <michael.hennerich@analog.com>
+Signed-off-by: Nuno Sá <nuno.sa@analog.com>
 Reviewed-by: Andy Shevchenko <andy@kernel.org>
-Signed-off-by: Hans de Goede <hansg@kernel.org>
-Link: https://patch.msgid.link/20250831104825.15097-3-hansg@kernel.org
+Link: https://patch.msgid.link/20250829-adf4350-fix-v2-1-0bf543ba797d@analog.com
+Cc: <Stable@vger.kernel.org>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/inkern.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/frequency/adf4350.c |   20 +++++++++++++-------
+ 1 file changed, 13 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/iio/inkern.c b/drivers/iio/inkern.c
-index 6374d50915557..6bdd175df021d 100644
---- a/drivers/iio/inkern.c
-+++ b/drivers/iio/inkern.c
-@@ -627,7 +627,7 @@ static int iio_convert_raw_to_processed_unlocked(struct iio_channel *chan,
- 		 * If no channel scaling is available apply consumer scale to
- 		 * raw value and return.
- 		 */
--		*processed = raw * scale;
-+		*processed = raw64 * scale;
- 		return 0;
+--- a/drivers/iio/frequency/adf4350.c
++++ b/drivers/iio/frequency/adf4350.c
+@@ -143,6 +143,19 @@ static int adf4350_set_freq(struct adf43
+ 	if (freq > ADF4350_MAX_OUT_FREQ || freq < st->min_out_freq)
+ 		return -EINVAL;
+ 
++	st->r4_rf_div_sel = 0;
++
++	/*
++	 * !\TODO: The below computation is making sure we get a power of 2
++	 * shift (st->r4_rf_div_sel) so that freq becomes higher or equal to
++	 * ADF4350_MIN_VCO_FREQ. This might be simplified with fls()/fls_long()
++	 * and friends.
++	 */
++	while (freq < ADF4350_MIN_VCO_FREQ) {
++		freq <<= 1;
++		st->r4_rf_div_sel++;
++	}
++
+ 	if (freq > ADF4350_MAX_FREQ_45_PRESC) {
+ 		prescaler = ADF4350_REG1_PRESCALER;
+ 		mdiv = 75;
+@@ -151,13 +164,6 @@ static int adf4350_set_freq(struct adf43
+ 		mdiv = 23;
  	}
  
--- 
-2.51.0
-
+-	st->r4_rf_div_sel = 0;
+-
+-	while (freq < ADF4350_MIN_VCO_FREQ) {
+-		freq <<= 1;
+-		st->r4_rf_div_sel++;
+-	}
+-
+ 	/*
+ 	 * Allow a predefined reference division factor
+ 	 * if not set, compute our own
 
 
 
