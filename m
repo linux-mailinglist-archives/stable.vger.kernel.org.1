@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-190632-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191227-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E820C109D5
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:12:57 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1668AC111D4
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:35:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 79DCB560C59
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:06:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3F60B1A22E5D
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:31:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CF5332B994;
-	Mon, 27 Oct 2025 19:03:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A41CF32E6B5;
+	Mon, 27 Oct 2025 19:29:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YvXD5MjX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uvsTumwW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F22732C305;
-	Mon, 27 Oct 2025 19:03:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62CE732D0FF;
+	Mon, 27 Oct 2025 19:29:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591793; cv=none; b=pCvjBfoSqxdoB4ARaSv7nTns/yJM9ERffUK1uSIeNBKzuT40NDQfYehgEMESPuzuQWSxNtdwHYRlAd8sLBDFhjkrI+/HhS9nrC2Wf3rovbryv99TCUTuu7ixTcnWuyiR3KfKwjsuJ6OAQErTNUwNcaNDmcUCd+TnKlPsEqyOKPg=
+	t=1761593341; cv=none; b=NEJHft5Viq7VoHeifMoopstYXJ4TUyQcheONC9LAUfkl5hX0cDsutaXPGcjVA8AP4LVlRNnHRrpXj0/RoN6TaXFjVyDmIX6ocCOezsVkHgkEm9kDDjVXMy5yps0GgAoHlpfjx2YqHjUZHPCpLKtvtN1ZvZrUrSpNY3V+2XrPzPg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591793; c=relaxed/simple;
-	bh=h/J5+xCQvfw+kJNm3jbrgMoPcum8nuk1YTawjZh/1aE=;
+	s=arc-20240116; t=1761593341; c=relaxed/simple;
+	bh=7QNzhxLHd25scwFRKljwxas3mu732uBepE8F9mo7GfY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fpNCfkeM3OHI5mUgOoc8zQLBsuj3fi/PTCAC/YuYCHCKw9nRJfqHDs6aBBfEZJaBju/7j2mjRukdexpUgLX2KA+971ICb7XWFDtCjOPKO912bbK44HD0vuzaJDMXG8I9KmAQDGxrYeQjJeXMtQu3M355wuSyVoHD0kPrZcy1/0U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YvXD5MjX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98829C4CEF1;
-	Mon, 27 Oct 2025 19:03:12 +0000 (UTC)
+	 MIME-Version; b=q7MK/XbP73Gi9fp50krfrHMv7O+FMEIdIC9kSgCqdZJw5XGLk71r8Jcccr8QwAZ0ETS4mhT9pNetQeHn0ngfv7O+Ky3z50TkVUs9rru1oTX95yNWfT+A87q86nI0CgNZxLgydfJ+h9I5MASAD+C7d+0N4ieuOVKJSecnalm6ko8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uvsTumwW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDFC2C4CEF1;
+	Mon, 27 Oct 2025 19:29:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591792;
-	bh=h/J5+xCQvfw+kJNm3jbrgMoPcum8nuk1YTawjZh/1aE=;
+	s=korg; t=1761593341;
+	bh=7QNzhxLHd25scwFRKljwxas3mu732uBepE8F9mo7GfY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YvXD5MjXK1/mgwHrPR6hgHPR1V9gvZRglPrbLR+9Yzpgw93N5FDsB88qtGumOniR1
-	 eE5VTa8/DfOcJfHQ3lyBUqQ/gZQvgDsE+qnbtYN5YDKCt4la4EMsLhYlEw4CftRZgB
-	 0u+DwUnADkCw0UkuojazkOnpy6wkCR18/rD8Ui5A=
+	b=uvsTumwWCwf1nwPnwx1MQjdF28pgvQKSBuZEroTr3kLXAIBM/CWc93bYWyEiy6spg
+	 kv3NghWM690OufvJ4R7jS69pYq4uds0kVUw18Rvhsqw0LWAPbPYeSvIUwnFwzyzfXg
+	 CqEqIiz7rZbIA6UFk/AtQPfZ08Oi1pyCjvtcqFEs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anup Patel <apatel@ventanamicro.com>,
-	Atish Patra <atishp@rivosinc.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>
-Subject: [PATCH 5.10 331/332] RISC-V: Dont fail in riscv_of_parent_hartid() for disabled HARTs
+	Geliang Tang <geliang@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.17 102/184] selftests: mptcp: join: mark flush re-add as skipped if not supported
 Date: Mon, 27 Oct 2025 19:36:24 +0100
-Message-ID: <20251027183533.637015808@linuxfoundation.org>
+Message-ID: <20251027183517.659966902@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
-References: <20251027183524.611456697@linuxfoundation.org>
+In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
+References: <20251027183514.934710872@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anup Patel <apatel@ventanamicro.com>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-commit c4676f8dc1e12e68d6511f9ed89707fdad4c962c upstream.
+commit d68460bc31f9c8c6fc81fbb56ec952bec18409f1 upstream.
 
-The riscv_of_processor_hartid() used by riscv_of_parent_hartid() fails
-for HARTs disabled in the DT. This results in the following warning
-thrown by the RISC-V INTC driver for the E-core on SiFive boards:
+The call to 'continue_if' was missing: it properly marks a subtest as
+'skipped' if the attached condition is not valid.
 
-[    0.000000] riscv-intc: unable to find hart id for /cpus/cpu@0/interrupt-controller
+Without that, the test is wrongly marked as passed on older kernels.
 
-The riscv_of_parent_hartid() is only expected to read the hartid
-from the DT so we directly call of_get_cpu_hwid() instead of calling
-riscv_of_processor_hartid().
-
-Fixes: ad635e723e17 ("riscv: cpu: Add 64bit hartid support on RV64")
-Signed-off-by: Anup Patel <apatel@ventanamicro.com>
-Reviewed-by: Atish Patra <atishp@rivosinc.com>
-Link: https://lore.kernel.org/r/20231027154254.355853-2-apatel@ventanamicro.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Fixes: e06959e9eebd ("selftests: mptcp: join: test for flush/re-add endpoints")
+Cc: stable@vger.kernel.org
+Reviewed-by: Geliang Tang <geliang@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20251020-net-mptcp-c-flag-late-add-addr-v1-2-8207030cb0e8@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/riscv/kernel/cpu.c |   11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ tools/testing/selftests/net/mptcp/mptcp_join.sh |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/riscv/kernel/cpu.c
-+++ b/arch/riscv/kernel/cpu.c
-@@ -50,13 +50,14 @@ int riscv_of_processor_hartid(struct dev
-  */
- int riscv_of_parent_hartid(struct device_node *node, unsigned long *hartid)
- {
--	int rc;
--
- 	for (; node; node = node->parent) {
- 		if (of_device_is_compatible(node, "riscv")) {
--			rc = riscv_of_processor_hartid(node, hartid);
--			if (!rc)
--				return 0;
-+			*hartid = (unsigned long)of_get_cpu_hwid(node, 0);
-+			if (*hartid == ~0UL) {
-+				pr_warn("Found CPU without hart ID\n");
-+				return -ENODEV;
-+			}
-+			return 0;
- 		}
- 	}
+--- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+@@ -3927,7 +3927,7 @@ endpoint_tests()
  
+ 	# flush and re-add
+ 	if reset_with_tcp_filter "flush re-add" ns2 10.0.3.2 REJECT OUTPUT &&
+-	   mptcp_lib_kallsyms_has "subflow_rebuild_header$"; then
++	   continue_if mptcp_lib_kallsyms_has "subflow_rebuild_header$"; then
+ 		pm_nl_set_limits $ns1 0 2
+ 		pm_nl_set_limits $ns2 1 2
+ 		# broadcast IP: no packet for this address will be received on ns1
 
 
 
