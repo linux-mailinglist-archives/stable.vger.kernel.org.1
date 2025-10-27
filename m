@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-190251-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190253-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63E46C1044C
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:55:03 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5207C1034A
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:51:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B402F1887E95
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:52:01 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 60EAD352D02
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:51:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AF28329C71;
-	Mon, 27 Oct 2025 18:46:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90D913328FB;
+	Mon, 27 Oct 2025 18:46:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QU72lxqk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gGA7EEVD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D15EF329C7B;
-	Mon, 27 Oct 2025 18:46:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 322E5320A31;
+	Mon, 27 Oct 2025 18:46:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761590807; cv=none; b=Clg/n0oEjyivPjGtHzD4BL4c/4yCJXgSDRzasA5gYhpJXklK7E6u7BQjK/YTO6GrLg//RbYBIt+EFKZyS37vgNT3OdeQyx5muQK+8BKr+8EbUx1VxCJ/JbFGpKxcYONQBadZs+ohyUkBbSoDcZs6nfPElosHaLAdsL6tpN1qY7E=
+	t=1761590813; cv=none; b=BN239BQg67WRec3T+Ja2KYlBg4O+97xo7i7tROnChGWSxIUUpd0snINDyTTai6myqfBuybbwHCp6r+e4tpEZFR7/7beQ/55w8Ga0BK/gR5pdBKB8cGbeixAgwgOF3duckdMlgYWas4rm8Q0vhsg3o6MoXB3g3tlfj/zvmHq3yIg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761590807; c=relaxed/simple;
-	bh=6HaxomTQNZOdDDkHtQbx90aWDtKemytXnF6YW/5Dpf0=;
+	s=arc-20240116; t=1761590813; c=relaxed/simple;
+	bh=jrJDP1i0pZKMrM3tJ3Ev3zY+sPGjFVKx32dBs8qP2ew=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HpDKgUlBj4Az4Y/07OpP5FkvNmytaiHOmbJnMbUW1WiwgVN17JPLakjXwYXEXOEwonPeAPRDt3IEm6vf26PsPweFdOzGoigL8fzzb00Cn0ynYKsnd/D1goqJtOvr80dHpS+5UZEz2Xfk8f1iCtzARX/l+/0oNMtavNRh5Jwns/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QU72lxqk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A19BC4CEF1;
-	Mon, 27 Oct 2025 18:46:47 +0000 (UTC)
+	 MIME-Version; b=A5Y80XouFpABcz1iTFsNAKRCR+uH0IOWTBR2DL+2YXOL6+jR79yzByhAWKSuWL5BIaOYDyYzY+BpGXqKqjgrzsTgPVQ/rwACydiEGwp/N55V0au306nQ769pd+fKvaY6bwCAs+1jU/AYi2UYTWRm+Bh/A0XOAR96b2xfxhArnPM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gGA7EEVD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E1ACC4CEF1;
+	Mon, 27 Oct 2025 18:46:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761590807;
-	bh=6HaxomTQNZOdDDkHtQbx90aWDtKemytXnF6YW/5Dpf0=;
+	s=korg; t=1761590812;
+	bh=jrJDP1i0pZKMrM3tJ3Ev3zY+sPGjFVKx32dBs8qP2ew=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QU72lxqkFxNKJCLAXRIuV6NU7QcXSY3ujRwqH8Kl/NbHi1Oj045ks6MfcJhdhO2ro
-	 RiHZnywCytR3hItrn/xSUFFijyrGZY0NIyPCDpbZ5NVzh5OBbZLQLWs/xMWcKpyRku
-	 AJgejCXovKKFZjDLac+cLvSD7mnCXma9owMFQuGc=
+	b=gGA7EEVDkzCl6m2KZCXcHyugogQHy1UWZ5jDECS3OM4dcbOmYW+UBBYzf/4Hi3dGK
+	 9wDkrgEB63ThCwnhtnvAmdgzLWb/wySCjrnMuS3t4EGyUaHhxXzmvu+g6Kix1mOvlw
+	 LgnEO47FNWCyBeJavT7MiZeG2NAy7yvthBXnFpwo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Nikolay Aleksandrov <razor@blackwall.org>,
 	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 183/224] net: rtnetlink: add msg kind names
-Date: Mon, 27 Oct 2025 19:35:29 +0100
-Message-ID: <20251027183513.750034016@linuxfoundation.org>
+Subject: [PATCH 5.4 184/224] net: rtnetlink: add helper to extract msg types kind
+Date: Mon, 27 Oct 2025 19:35:30 +0100
+Message-ID: <20251027183513.773001278@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251027183508.963233542@linuxfoundation.org>
 References: <20251027183508.963233542@linuxfoundation.org>
@@ -68,69 +68,49 @@ Content-Transfer-Encoding: 8bit
 
 From: Nikolay Aleksandrov <razor@blackwall.org>
 
-[ Upstream commit 12dc5c2cb7b269c5a1c6d02844f40bfce942a7a6 ]
+[ Upstream commit 2e9ea3e30f696fd438319c07836422bb0bbb4608 ]
 
-Add rtnl kind names instead of using raw values. We'll need to
-check for DEL kind later to validate bulk flag support.
+Add a helper which extracts the msg type's kind using the kind mask (0x3).
 
 Signed-off-by: Nikolay Aleksandrov <razor@blackwall.org>
 Signed-off-by: David S. Miller <davem@davemloft.net>
 Stable-dep-of: bf29555f5bdc ("rtnetlink: Allow deleting FDB entries in user namespace")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/rtnetlink.h | 7 +++++++
- net/core/rtnetlink.c    | 6 +++---
- 2 files changed, 10 insertions(+), 3 deletions(-)
+ include/net/rtnetlink.h | 6 ++++++
+ net/core/rtnetlink.c    | 2 +-
+ 2 files changed, 7 insertions(+), 1 deletion(-)
 
 diff --git a/include/net/rtnetlink.h b/include/net/rtnetlink.h
-index 5c2a73bbfabee..74eff5259b361 100644
+index 74eff5259b361..02b0636a4523d 100644
 --- a/include/net/rtnetlink.h
 +++ b/include/net/rtnetlink.h
-@@ -13,6 +13,13 @@ enum rtnl_link_flags {
- 	RTNL_FLAG_DOIT_UNLOCKED = 1,
+@@ -19,6 +19,12 @@ enum rtnl_kinds {
+ 	RTNL_KIND_GET,
+ 	RTNL_KIND_SET
  };
- 
-+enum rtnl_kinds {
-+	RTNL_KIND_NEW,
-+	RTNL_KIND_DEL,
-+	RTNL_KIND_GET,
-+	RTNL_KIND_SET
-+};
++#define RTNL_KIND_MASK 0x3
 +
++static inline enum rtnl_kinds rtnl_msgtype_kind(int msgtype)
++{
++	return msgtype & RTNL_KIND_MASK;
++}
+ 
  void rtnl_register(int protocol, int msgtype,
  		   rtnl_doit_func, rtnl_dumpit_func, unsigned int flags);
- int rtnl_register_module(struct module *owner, int protocol, int msgtype,
 diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
-index f1338734c2eee..2cdb07dd263bd 100644
+index 2cdb07dd263bd..b41f31a09a7cd 100644
 --- a/net/core/rtnetlink.c
 +++ b/net/core/rtnetlink.c
-@@ -5193,11 +5193,11 @@ static int rtnetlink_rcv_msg(struct sk_buff *skb, struct nlmsghdr *nlh,
- {
- 	struct net *net = sock_net(skb->sk);
- 	struct rtnl_link *link;
-+	enum rtnl_kinds kind;
- 	struct module *owner;
- 	int err = -EOPNOTSUPP;
- 	rtnl_doit_func doit;
- 	unsigned int flags;
--	int kind;
- 	int family;
- 	int type;
+@@ -5212,7 +5212,7 @@ static int rtnetlink_rcv_msg(struct sk_buff *skb, struct nlmsghdr *nlh,
+ 		return 0;
  
-@@ -5214,11 +5214,11 @@ static int rtnetlink_rcv_msg(struct sk_buff *skb, struct nlmsghdr *nlh,
  	family = ((struct rtgenmsg *)nlmsg_data(nlh))->rtgen_family;
- 	kind = type&3;
+-	kind = type&3;
++	kind = rtnl_msgtype_kind(type);
  
--	if (kind != 2 && !netlink_net_capable(skb, CAP_NET_ADMIN))
-+	if (kind != RTNL_KIND_GET && !netlink_net_capable(skb, CAP_NET_ADMIN))
+ 	if (kind != RTNL_KIND_GET && !netlink_net_capable(skb, CAP_NET_ADMIN))
  		return -EPERM;
- 
- 	rcu_read_lock();
--	if (kind == 2 && nlh->nlmsg_flags&NLM_F_DUMP) {
-+	if (kind == RTNL_KIND_GET && (nlh->nlmsg_flags & NLM_F_DUMP)) {
- 		struct sock *rtnl;
- 		rtnl_dumpit_func dumpit;
- 		u16 min_dump_alloc = 0;
 -- 
 2.51.0
 
