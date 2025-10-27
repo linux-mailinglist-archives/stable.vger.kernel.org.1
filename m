@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-190794-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190541-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D565C10BE5
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:18:24 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3AEEC107FB
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:07:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2C5BB1A21F97
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:13:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7F17418983BC
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:04:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E95E0329C6E;
-	Mon, 27 Oct 2025 19:10:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2176323411;
+	Mon, 27 Oct 2025 18:59:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UZXmUx+H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WmXq+xG0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A540A3074AC;
-	Mon, 27 Oct 2025 19:10:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E75932E72F;
+	Mon, 27 Oct 2025 18:59:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592213; cv=none; b=eHGt5TK3BmW7j3Vpaxxkj/j+seVizsrgGxmZXD9JnuV6Ear10DyEm+uh+l2oLcCLU4YVlejmIgJvXQaERAKi1sen3NhEBgZPbsA+os/yTiwa8fyv/dImtYzRbDQLyMxUv1+DvgcwNi7s67HdieSqYSJz45MPOTPb508EeGgG4o8=
+	t=1761591559; cv=none; b=TQcvixW/kBzl4+wW8DKms8So3DyU4i2mFTjmxE0ntmDbcQb2cuxBiIhSuG/3CxDLlsKZGx4vQmwxWDzzgnpPyCFRnw+cny7gL4Fpy91mnlrYKcVghRX8W/7lk38zX3kld2gjqnXfj0xpUZkr+kR9GZ1sWIbUW+o6UcVbBpiu9N4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592213; c=relaxed/simple;
-	bh=lbN9aL8gxaY29vKNWffiKcUs2i2ReRdJHztsW71LZ48=;
+	s=arc-20240116; t=1761591559; c=relaxed/simple;
+	bh=0BvY4EVVjVOjBAZGG+1i2C79u0Z+IS/wOa4P/8je/Rg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rRYLuZbeFRBdtCvSBCokfI9yb7QeOuKUQXe+eY+/ZTF0DjDM8WIC1R0DzHS16xu5G0Qw6jVWqA4sQEgpnnYmOpuPgQRn9/syN2N2gnh4jyrS/VEARmKWzNosE5dy2pU9kKRhvePWkBGHT8RuK7yapIQ3rp8m8Wko5XKciVzwpWA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UZXmUx+H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 372DFC4CEF1;
-	Mon, 27 Oct 2025 19:10:13 +0000 (UTC)
+	 MIME-Version; b=XBx/dXuU8vXpnj009qSZFE8jVnZi9cbU/RElmRKcF4WhTEuRC3I/QNq72UQ6fPwVMLVTEbauuTJopv30/bPWO4rhtW72f6bKVE+2/d7jNRG8GPYItTgmgNUvQu0muzgj4+TXFCfaXHCJYFYcO8VPYt0wbxytOMxYZfLXS1h+wsk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WmXq+xG0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E66EEC4CEF1;
+	Mon, 27 Oct 2025 18:59:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592213;
-	bh=lbN9aL8gxaY29vKNWffiKcUs2i2ReRdJHztsW71LZ48=;
+	s=korg; t=1761591559;
+	bh=0BvY4EVVjVOjBAZGG+1i2C79u0Z+IS/wOa4P/8je/Rg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UZXmUx+H8tN1O6GcwgTdj04WJ7Guu4nLc4YYTcA9zdCG+BEvi5SpHo3zNG+VSOd69
-	 nL357B6kIk/IgrYVSJPJiladpqDy5Xn3quXDgEVVcBEmcmSBm59WLPxNDFmO7KvI/X
-	 zVAI9BmUe3Ghk6yChMK9IGK0Zza1hn0yD5MePfWQ=
+	b=WmXq+xG06oYaxy4SFNiITY7PnvHp5Du5Xgnv5qYnmhq5STeHhX64llCNj0KDteCCN
+	 ycDkQ88gNPyscPPLVgV6FEGN2lW12kYfuyeTPduQ/2jKgQA1+jMRueqNgbS8XRtNcB
+	 TcUOSf9hCnizn2VT1QY38pdqGFIH5AaS85CQFEX0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuezhang Mo <Yuezhang.Mo@sony.com>,
-	Friendy Su <friendy.su@sony.com>,
-	Daniel Palmer <daniel.palmer@sony.com>,
-	Gao Xiang <hsiangkao@linux.alibaba.com>,
-	Christian Brauner <brauner@kernel.org>,
+	Raju Rangoju <Raju.Rangoju@amd.com>,
+	Dawid Osuchowski <dawid.osuchowski@linux.intel.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 036/157] dax: skip read lock assertion for read-only filesystems
+Subject: [PATCH 5.10 244/332] amd-xgbe: Avoid spurious link down messages during interface toggle
 Date: Mon, 27 Oct 2025 19:34:57 +0100
-Message-ID: <20251027183502.265632642@linuxfoundation.org>
+Message-ID: <20251027183531.276886294@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
-References: <20251027183501.227243846@linuxfoundation.org>
+In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
+References: <20251027183524.611456697@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,48 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuezhang Mo <Yuezhang.Mo@sony.com>
+From: Raju Rangoju <Raju.Rangoju@amd.com>
 
-[ Upstream commit 154d1e7ad9e5ce4b2aaefd3862b3dba545ad978d ]
+[ Upstream commit 2616222e423398bb374ffcb5d23dea4ba2c3e524 ]
 
-The commit 168316db3583("dax: assert that i_rwsem is held
-exclusive for writes") added lock assertions to ensure proper
-locking in DAX operations. However, these assertions trigger
-false-positive lockdep warnings since read lock is unnecessary
-on read-only filesystems(e.g., erofs).
+During interface toggle operations (ifdown/ifup), the driver currently
+resets the local helper variable 'phy_link' to -1. This causes the link
+state machine to incorrectly interpret the state as a link change event,
+resulting in spurious "Link is down" messages being logged when the
+interface is brought back up.
 
-This patch skips the read lock assertion for read-only filesystems,
-eliminating the spurious warnings while maintaining the integrity
-checks for writable filesystems.
+Preserve the phy_link state across interface toggles to avoid treating
+the -1 sentinel value as a legitimate link state transition.
 
-Fixes: 168316db3583 ("dax: assert that i_rwsem is held exclusive for writes")
-Signed-off-by: Yuezhang Mo <Yuezhang.Mo@sony.com>
-Reviewed-by: Friendy Su <friendy.su@sony.com>
-Reviewed-by: Daniel Palmer <daniel.palmer@sony.com>
-Reviewed-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Fixes: 88131a812b16 ("amd-xgbe: Perform phy connect/disconnect at dev open/stop")
+Signed-off-by: Raju Rangoju <Raju.Rangoju@amd.com>
+Reviewed-by: Dawid Osuchowski <dawid.osuchowski@linux.intel.com>
+Link: https://patch.msgid.link/20251010065142.1189310-1-Raju.Rangoju@amd.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/dax.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/amd/xgbe/xgbe-drv.c  | 1 -
+ drivers/net/ethernet/amd/xgbe/xgbe-mdio.c | 1 +
+ 2 files changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/dax.c b/fs/dax.c
-index ca7138bb1d545..2ebe70de35ec3 100644
---- a/fs/dax.c
-+++ b/fs/dax.c
-@@ -1524,7 +1524,7 @@ dax_iomap_rw(struct kiocb *iocb, struct iov_iter *iter,
- 	if (iov_iter_rw(iter) == WRITE) {
- 		lockdep_assert_held_write(&iomi.inode->i_rwsem);
- 		iomi.flags |= IOMAP_WRITE;
--	} else {
-+	} else if (!sb_rdonly(iomi.inode->i_sb)) {
- 		lockdep_assert_held(&iomi.inode->i_rwsem);
+diff --git a/drivers/net/ethernet/amd/xgbe/xgbe-drv.c b/drivers/net/ethernet/amd/xgbe/xgbe-drv.c
+index 8926011604e39..9cd6dac033630 100644
+--- a/drivers/net/ethernet/amd/xgbe/xgbe-drv.c
++++ b/drivers/net/ethernet/amd/xgbe/xgbe-drv.c
+@@ -1172,7 +1172,6 @@ static void xgbe_free_rx_data(struct xgbe_prv_data *pdata)
+ 
+ static int xgbe_phy_reset(struct xgbe_prv_data *pdata)
+ {
+-	pdata->phy_link = -1;
+ 	pdata->phy_speed = SPEED_UNKNOWN;
+ 
+ 	return pdata->phy_if.phy_reset(pdata);
+diff --git a/drivers/net/ethernet/amd/xgbe/xgbe-mdio.c b/drivers/net/ethernet/amd/xgbe/xgbe-mdio.c
+index 19fed56b6ee3f..ebb8b3e5b9a88 100644
+--- a/drivers/net/ethernet/amd/xgbe/xgbe-mdio.c
++++ b/drivers/net/ethernet/amd/xgbe/xgbe-mdio.c
+@@ -1636,6 +1636,7 @@ static int xgbe_phy_init(struct xgbe_prv_data *pdata)
+ 		pdata->phy.duplex = DUPLEX_FULL;
  	}
  
++	pdata->phy_link = 0;
+ 	pdata->phy.link = 0;
+ 
+ 	pdata->phy.pause_autoneg = pdata->pause_autoneg;
 -- 
 2.51.0
 
