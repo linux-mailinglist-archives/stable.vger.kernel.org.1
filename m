@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-190403-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190069-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DC28C104F4
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:57:23 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3080C0FF0F
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:39:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 2149A4FEEBF
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:56:40 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 846AE4E879F
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:39:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2896F32D0D1;
-	Mon, 27 Oct 2025 18:53:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B962C313520;
+	Mon, 27 Oct 2025 18:39:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hMkzNngq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XfCaV1AG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D119932D0FB;
-	Mon, 27 Oct 2025 18:53:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7542D218EB1;
+	Mon, 27 Oct 2025 18:39:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591205; cv=none; b=CiSRBHY1Zaaty0pBayRe5eaHGq1LgfCIami8/ZU6/vyfh6mVjnXLvDjTlTLUSLp5XVZgpFXdr70y38bb52FJClJSIsI4fwFqEveEuPlTyXRf3RzqnUgfy2pGFR7dnmP0K0rbT4b1GMokALmdXgQuXFFktBw2YX25d2/Xv6hOeGs=
+	t=1761590354; cv=none; b=Emsa0ft74dngqSoTq88kH7+1/Ex+0p8dtNrUEnr5TFT2J1MddfEjZoqHsiOcMM3EsKSFxt6F8UQ8vaXLJPADn7mwuo2SfeHzI9mzZVaYfL2Td0tH1zqyg4wDfBR8GPIcUnsALYoc8boZxPL5vIwhHW0trliDdPyQSigxL5Iwbig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591205; c=relaxed/simple;
-	bh=WvXu8gmrSqZiTHd0X3XY5zflkVrYVg8/ygbslerfznM=;
+	s=arc-20240116; t=1761590354; c=relaxed/simple;
+	bh=Tc6FQvMRyatBIfh7EVL9eoW/bzmbFsWL7829uRTOlFo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=unDurK81iyogyckkEIgNo6ZdwcF3fr+I3fPsReHSTfTa/gScOGNkjgXB6oGVTuQbJQlTYyKBli3a3ALVKLiBIzqq7/wInuFxXUUfYn04AVWBC/KpbvTv5CeuqttkpvHC+hIpSnEArWzHRIYGEO+LQCGxCchx4QLcdrvCNymuzZo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hMkzNngq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55527C4CEF1;
-	Mon, 27 Oct 2025 18:53:25 +0000 (UTC)
+	 MIME-Version; b=HpMcrtaJVsQdRYVdFqEFI+3DAR/0uIMODX7B8xCkESLY/J+MXptxeaT/w41bvaGb8SUHKzf6gr2i2i/Cqt7T3tpxzKEuXBk4WLLKxlh/OKm09LtD+pHHLpEcfyeQIIOM7NIVhLEMVjKPR6K2GMvv/Qz94VjC63ms1g0yHfkSb1c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XfCaV1AG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1E82C4CEF1;
+	Mon, 27 Oct 2025 18:39:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591205;
-	bh=WvXu8gmrSqZiTHd0X3XY5zflkVrYVg8/ygbslerfznM=;
+	s=korg; t=1761590354;
+	bh=Tc6FQvMRyatBIfh7EVL9eoW/bzmbFsWL7829uRTOlFo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hMkzNngq/coFiva42gD/MeNblqZ9kFr6fR2hp9KRW1x/GuCvV4CR6N1+9Q/OGrjJw
-	 dWxoemCWwr3xMoulN5OXCee7B1J5hLxJ72jb/Yr9Vu72gITfKi5GCDJxp659Jmxc6H
-	 hhl4Jy8EzbUf8qPyY+XjVuoTTwoCgYJwbBum5LsI=
+	b=XfCaV1AGHrmHM/uNkNQqzRHuLStEr75W0XrsIlOHNJHZI/8nmJeWraAqaLWWBINNj
+	 sEgCQENpJNUyxSFd/Wv5sHSMdN49vGHOsRLrjdmmWOoIcrkvSAcj1WXci5s3KYoy+q
+	 CANzbdqMOEHlCQZkqUQ+plSQu+jCAK+WacgS8ZFg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Garry <john.garry@huawei.com>,
-	Jack Wang <jinpu.wang@ionos.com>,
-	Jason Yan <yanaijie@huawei.com>,
-	Hannes Reinecke <hare@suse.de>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	hupu <hupu.gm@gmail.com>,
+	Guilherme Amadio <amadio@gentoo.org>,
+	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 106/332] scsi: libsas: Add sas_task_find_rq()
-Date: Mon, 27 Oct 2025 19:32:39 +0100
-Message-ID: <20251027183527.414356644@linuxfoundation.org>
+Subject: [PATCH 5.4 014/224] perf subcmd: avoid crash in exclude_cmds when excludes is empty
+Date: Mon, 27 Oct 2025 19:32:40 +0100
+Message-ID: <20251027183509.372907797@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
-References: <20251027183524.611456697@linuxfoundation.org>
+In-Reply-To: <20251027183508.963233542@linuxfoundation.org>
+References: <20251027183508.963233542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,61 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Garry <john.garry@huawei.com>
+From: hupu <hupu.gm@gmail.com>
 
-[ Upstream commit a9ee3f840646e2ec419c734e592ffe997195435e ]
+[ Upstream commit a5edf3550f4260504b7e0ab3d40d13ffe924b773 ]
 
-blk-mq already provides a unique tag per request. Some libsas LLDDs - like
-hisi_sas - already use this tag as the unique per-I/O HW tag.
+When cross-compiling the perf tool for ARM64, `perf help` may crash
+with the following assertion failure:
 
-Add a common function to provide the request associated with a sas_task for
-all libsas LLDDs.
+  help.c:122: exclude_cmds: Assertion `cmds->names[ci] == NULL' failed.
 
-Signed-off-by: John Garry <john.garry@huawei.com>
-Link: https://lore.kernel.org/r/1666091763-11023-2-git-send-email-john.garry@huawei.com
-Reviewed-by: Jack Wang <jinpu.wang@ionos.com>
-Reviewed-by: Jason Yan <yanaijie@huawei.com>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Stable-dep-of: 60cd16a3b743 ("scsi: mvsas: Fix use-after-free bugs in mvs_work_queue")
+This happens when the perf binary is not named exactly "perf" or when
+multiple "perf-*" binaries exist in the same directory. In such cases,
+the `excludes` command list can be empty, which leads to the final
+assertion in exclude_cmds() being triggered.
+
+Add a simple guard at the beginning of exclude_cmds() to return early
+if excludes->cnt is zero, preventing the crash.
+
+Signed-off-by: hupu <hupu.gm@gmail.com>
+Reported-by: Guilherme Amadio <amadio@gentoo.org>
+Reviewed-by: Namhyung Kim <namhyung@kernel.org>
+Link: https://lore.kernel.org/r/20250909094953.106706-1-amadio@gentoo.org
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/scsi/libsas.h | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ tools/lib/subcmd/help.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/include/scsi/libsas.h b/include/scsi/libsas.h
-index daf9b07956abf..a4d34c118f8f7 100644
---- a/include/scsi/libsas.h
-+++ b/include/scsi/libsas.h
-@@ -622,6 +622,24 @@ extern struct sas_task *sas_alloc_task(gfp_t flags);
- extern struct sas_task *sas_alloc_slow_task(gfp_t flags);
- extern void sas_free_task(struct sas_task *task);
+diff --git a/tools/lib/subcmd/help.c b/tools/lib/subcmd/help.c
+index 4260c8b4257bd..10f134c64ada1 100644
+--- a/tools/lib/subcmd/help.c
++++ b/tools/lib/subcmd/help.c
+@@ -72,6 +72,9 @@ void exclude_cmds(struct cmdnames *cmds, struct cmdnames *excludes)
+ 	size_t ci, cj, ei;
+ 	int cmp;
  
-+static inline struct request *sas_task_find_rq(struct sas_task *task)
-+{
-+	struct scsi_cmnd *scmd;
++	if (!excludes->cnt)
++		return;
 +
-+	if (task->task_proto & SAS_PROTOCOL_STP_ALL) {
-+		struct ata_queued_cmd *qc = task->uldd_task;
-+
-+		scmd = qc ? qc->scsicmd : NULL;
-+	} else {
-+		scmd = task->uldd_task;
-+	}
-+
-+	if (!scmd)
-+		return NULL;
-+
-+	return scsi_cmd_to_rq(scmd);
-+}
-+
- struct sas_domain_function_template {
- 	/* The class calls these to notify the LLDD of an event. */
- 	void (*lldd_port_formed)(struct asd_sas_phy *);
+ 	ci = cj = ei = 0;
+ 	while (ci < cmds->cnt && ei < excludes->cnt) {
+ 		cmp = strcmp(cmds->names[ci]->name, excludes->names[ei]->name);
 -- 
 2.51.0
 
