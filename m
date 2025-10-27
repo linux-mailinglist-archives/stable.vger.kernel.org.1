@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-190449-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190490-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D59E1C1077A
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:06:35 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97E8BC107CB
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:07:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1188E560D7A
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:00:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 14338565160
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:01:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BDEE338F40;
-	Mon, 27 Oct 2025 18:55:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E40EF2F5A1B;
+	Mon, 27 Oct 2025 18:57:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rib7Kgoz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="csro5jqP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 038CE338F23;
-	Mon, 27 Oct 2025 18:55:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89C4E324B2F;
+	Mon, 27 Oct 2025 18:57:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591320; cv=none; b=rsM2JTgBsEp9wK7lnAbsR689RDHWsxC5ybacCYPMZqowe07mLdolS8EuzXciIbefgk6qS5gxIADu0QG8dqVavQKbH6fdIJvDp/dRoU/OkIMqLwxRl37KpLIfbvICh9NaFKh8LtZ96GDNnd0QXvl5gNNSoIxB7jXtH/QPBkzRpFg=
+	t=1761591426; cv=none; b=hSpjap2/j78eokEkHOZQ5ScR6X1GN4OqDnpa4bL3jduVVU/rviCPdkTHmmpYfGZPUJlFGn7Pe+vd8MFWKVuIK7Tav8CBtZbjf0UxQoYGi+Aftw2ps5WBL3Bm0rkpclahHRenxrQbnZQpyQUUUyXCRFA60wd+49XbxPvsSsxmEUY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591320; c=relaxed/simple;
-	bh=KkizM/AV0fKzmVWj6ZVzswDKakX4PpMF+PK2xwbSsrw=;
+	s=arc-20240116; t=1761591426; c=relaxed/simple;
+	bh=eLZg7lAiZ3cbCpNDPlHW+9I2joBvgDMlIU9QrRoB3Ow=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jArdyouIb5x54JRIRu1ks9ReRI4DZcg0T1tw53DksiO7IDmLQnkdSyXbMfOQaIcFRFyHSC6ItcqSWNDwlBjDXg4bIyl2MINKRAVuyEzAzU7kF/p4bQySu4Dt9IYWv3Q3J2FEBrsoC2aWoMGCrk1wl9EndYUcE/10dwEfWtLpLMY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rib7Kgoz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79530C19421;
-	Mon, 27 Oct 2025 18:55:19 +0000 (UTC)
+	 MIME-Version; b=Wc0BuBGxbhJcNH6+GHPAL0CDR99TUSGrc4QdGRcqV0nL1DFdPTX343DwJ5xscU4ZsLIghXg8BYLPzzur31DPAJp28I44yyptARMBiIGPIkOhXs7Ynsp/MJgHRviS3HNBC9pTDuq9QFvIV+eUHdbcotrtL8iqSY2DClhfDPhwZ9E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=csro5jqP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7DEBC4CEF1;
+	Mon, 27 Oct 2025 18:57:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591319;
-	bh=KkizM/AV0fKzmVWj6ZVzswDKakX4PpMF+PK2xwbSsrw=;
+	s=korg; t=1761591426;
+	bh=eLZg7lAiZ3cbCpNDPlHW+9I2joBvgDMlIU9QrRoB3Ow=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Rib7KgoziU63nki5nCve6r3+b14jTG76pLhiPvoGvji4exZfu4OPe3Pdx8LbAF68q
-	 zXbQ4lGt4CNfUzGbUS35x1VBe2waby4DyVeo3dO8xuq6GLE1eBdGKf2ad+9l8/KGHI
-	 J+obQk+1K5Ykxg+Z1ATZNptHoAER9UXzPjFoYDrk=
+	b=csro5jqPZ7nEfDTBC8nGaHImCqG9QZojL4psJZ8XSi1vkF5fWTl+cT/67zA6ASmZo
+	 iZZg3oL/C0fMzMBmJMV6mXZfUnhM/kGMMFa94Cp/oZcY30kH6qBB6XpWy/8hoGWmMo
+	 Lo82pjTaZt/nhpGtUzISkbz2UyGVoHiCkJVBC8Ik=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Ke <make24@iscas.ac.cn>,
-	Andreas Larsson <andreas@gaisler.com>
-Subject: [PATCH 5.10 150/332] sparc: fix error handling in scan_one_device()
-Date: Mon, 27 Oct 2025 19:33:23 +0100
-Message-ID: <20251027183528.594228465@linuxfoundation.org>
+	Rex Chen <rex.chen_1@nxp.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 5.10 152/332] mmc: core: SPI mode remove cmd7
+Date: Mon, 27 Oct 2025 19:33:25 +0100
+Message-ID: <20251027183528.645832378@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
 References: <20251027183524.611456697@linuxfoundation.org>
@@ -65,53 +65,38 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ma Ke <make24@iscas.ac.cn>
+From: Rex Chen <rex.chen_1@nxp.com>
 
-commit 302c04110f0ce70d25add2496b521132548cd408 upstream.
+commit fec40f44afdabcbc4a7748e4278f30737b54bb1a upstream.
 
-Once of_device_register() failed, we should call put_device() to
-decrement reference count for cleanup. Or it could cause memory leak.
-So fix this by calling put_device(), then the name can be freed in
-kobject_cleanup().
+SPI mode doesn't support cmd7, so remove it in mmc_sdio_alive() and
+confirm if sdio is active by checking CCCR register value is available
+or not.
 
-Calling path: of_device_register() -> of_device_add() -> device_add().
-As comment of device_add() says, 'if device_add() succeeds, you should
-call device_del() when you want to get rid of it. If device_add() has
-not succeeded, use only put_device() to drop the reference count'.
-
-Found by code review.
-
+Signed-off-by: Rex Chen <rex.chen_1@nxp.com>
 Cc: stable@vger.kernel.org
-Fixes: cf44bbc26cf1 ("[SPARC]: Beginnings of generic of_device framework.")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-Reviewed-by: Andreas Larsson <andreas@gaisler.com>
-Signed-off-by: Andreas Larsson <andreas@gaisler.com>
+Link: https://lore.kernel.org/r/20250728082230.1037917-2-rex.chen_1@nxp.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/sparc/kernel/of_device_32.c |    1 +
- arch/sparc/kernel/of_device_64.c |    1 +
- 2 files changed, 2 insertions(+)
+ drivers/mmc/core/sdio.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/arch/sparc/kernel/of_device_32.c
-+++ b/arch/sparc/kernel/of_device_32.c
-@@ -387,6 +387,7 @@ static struct platform_device * __init s
+--- a/drivers/mmc/core/sdio.c
++++ b/drivers/mmc/core/sdio.c
+@@ -929,7 +929,11 @@ static void mmc_sdio_remove(struct mmc_h
+  */
+ static int mmc_sdio_alive(struct mmc_host *host)
+ {
+-	return mmc_select_card(host->card);
++	if (!mmc_host_is_spi(host))
++		return mmc_select_card(host->card);
++	else
++		return mmc_io_rw_direct(host->card, 0, 0, SDIO_CCCR_CCCR, 0,
++					NULL);
+ }
  
- 	if (of_device_register(op)) {
- 		printk("%pOF: Could not register of device.\n", dp);
-+		put_device(&op->dev);
- 		kfree(op);
- 		op = NULL;
- 	}
---- a/arch/sparc/kernel/of_device_64.c
-+++ b/arch/sparc/kernel/of_device_64.c
-@@ -680,6 +680,7 @@ static struct platform_device * __init s
- 
- 	if (of_device_register(op)) {
- 		printk("%pOF: Could not register of device.\n", dp);
-+		put_device(&op->dev);
- 		kfree(op);
- 		op = NULL;
- 	}
+ /*
 
 
 
