@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-190922-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190984-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD2CCC10E01
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:23:28 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DE20C10FB7
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:28:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9655958231D
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:17:13 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 2B0A1508FAD
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:20:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 790D3321440;
-	Mon, 27 Oct 2025 19:15:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3C802D5C95;
+	Mon, 27 Oct 2025 19:18:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DZDIiBN9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dgLJh110"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D17117F4F6;
-	Mon, 27 Oct 2025 19:15:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61E052D5A14;
+	Mon, 27 Oct 2025 19:18:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592550; cv=none; b=jYobUzt+kd/Bw94nQ+90gs16M0qsIK8Y2hYhIPWQ3leHNJofGGWxUSa+o4SSzFqSFoVaHNyh/hHmhlofEHJZ+bPgAsruZk4SVcfpMYNIX7NVmBi4lWCE7WRhki+jxw14F9wjb7DoudmliVnmVp8tPu+69nuZhGke5ib3oRoad84=
+	t=1761592712; cv=none; b=ouUQFdzeuYzRHN66nVLnXM3GfpMnHcqYYxFcsDO8GoC2DtGtEh0F9/ALCoz23WpQNjjnTTiUFydHcwuX8tGtC52OYp9watjsnJBSqUdyQqWwQM1nmWt5EOqZtULwO0WmI7HuFHYY5ANV+BfXBMdhgKvxjrKOwiaA0YEyOJrGZ2c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592550; c=relaxed/simple;
-	bh=tVcG+aUPqzTAsqtBg/lHAIrZ/eAoafLA/Hnr9Ki7FFs=;
+	s=arc-20240116; t=1761592712; c=relaxed/simple;
+	bh=wMOm/c5wXMpBY0Sj+w2rXUhY/V3JS949OdYo2Mm00rM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=io7+0ybZm5JivLTL7QpS1tmLBEctaeRmR205zWqFPKQhTx+8eoOGCutgBsdTVbCdTJ71nz68xk2bBZaQiuGyK6RfwKiC8c1U5SLG+QizpfI1Wi2Ki2erSg3Y0k5qwIxSK4ey3jEUn2JzNqJsGAewH4volnKb+Sd5Wonp8e2W1lQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DZDIiBN9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B719CC4CEF1;
-	Mon, 27 Oct 2025 19:15:49 +0000 (UTC)
+	 MIME-Version; b=hYEiuDX8cUP3W89LxBSnPbrheG6jUmOq8kTvYjjlU+WsitpniNv0z6fs6DHq5pCtADNlrT5ZoRlkvpzsCOTOElwKQkX4iqfbhzDn04C72OmCq0Ql3BJTJMbqMsP83TfTUECCoSsuM6b3zMHmk2xgSsX5IZ6s9bmPzg1pFhl4uL0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dgLJh110; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAA6CC4CEFD;
+	Mon, 27 Oct 2025 19:18:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592550;
-	bh=tVcG+aUPqzTAsqtBg/lHAIrZ/eAoafLA/Hnr9Ki7FFs=;
+	s=korg; t=1761592712;
+	bh=wMOm/c5wXMpBY0Sj+w2rXUhY/V3JS949OdYo2Mm00rM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DZDIiBN98/prqcXIvQ78Iii4AKLqnO5KpfVBpLUGt9oMhSzLiITZauLJQ6M4cjaoK
-	 TMPF108FGy9/y1f/pu1MDMKaJjjq9RlKV4hSLo+SsV+Vd2ZEc355nKh7ayC9F0Wo5I
-	 8vIT90p+4QnfgzBI8Qa5jELRz1N8tBvuzz9pKwRs=
+	b=dgLJh110YfZeDwOtwwu6krQyatPXfT3uBVLVqOB3GmJWDlj7AbKDpQ4Lag9R0VnMd
+	 b7HPcGMOXTVvSa6sE/ZiRaLZbJ2plfuvZUHYvevJdBAwXjKR1WYlLk1ySNbB7R7pLl
+	 lvCSOtx+7wmx5zmyzb8JvmUYHMN0sX5jbY6KkC/8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	James Morse <james.morse@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Ryan Roberts <ryan.roberts@arm.com>
-Subject: [PATCH 6.1 156/157] arm64: cputype: Add Neoverse-V3AE definitions
+	Tomas Winkler <tomasw@gmail.com>,
+	Alexander Usyskin <alexander.usyskin@intel.com>
+Subject: [PATCH 6.6 68/84] mei: me: add wildcat lake P DID
 Date: Mon, 27 Oct 2025 19:36:57 +0100
-Message-ID: <20251027183505.481045711@linuxfoundation.org>
+Message-ID: <20251027183440.623436110@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
-References: <20251027183501.227243846@linuxfoundation.org>
+In-Reply-To: <20251027183438.817309828@linuxfoundation.org>
+References: <20251027183438.817309828@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,54 +61,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Rutland <mark.rutland@arm.com>
+From: Alexander Usyskin <alexander.usyskin@intel.com>
 
-commit 3bbf004c4808e2c3241e5c1ad6cc102f38a03c39 upstream.
+commit 410d6c2ad4d1a88efa0acbb9966693725b564933 upstream.
 
-Add cputype definitions for Neoverse-V3AE. These will be used for errata
-detection in subsequent patches.
+Add Wildcat Lake P device id.
 
-These values can be found in the Neoverse-V3AE TRM:
-
-  https://developer.arm.com/documentation/SDEN-2615521/9-0/
-
-... in section A.6.1 ("MIDR_EL1, Main ID Register").
-
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Cc: James Morse <james.morse@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
-Signed-off-by: Will Deacon <will@kernel.org>
-[ Ryan: Trivial backport ]
-Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+Cc: stable@vger.kernel.org
+Co-developed-by: Tomas Winkler <tomasw@gmail.com>
+Signed-off-by: Tomas Winkler <tomasw@gmail.com>
+Signed-off-by: Alexander Usyskin <alexander.usyskin@intel.com>
+Link: https://patch.msgid.link/20251016125912.2146136-1-alexander.usyskin@intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/include/asm/cputype.h |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/misc/mei/hw-me-regs.h |    2 ++
+ drivers/misc/mei/pci-me.c     |    2 ++
+ 2 files changed, 4 insertions(+)
 
---- a/arch/arm64/include/asm/cputype.h
-+++ b/arch/arm64/include/asm/cputype.h
-@@ -93,6 +93,7 @@
- #define ARM_CPU_PART_NEOVERSE_V2	0xD4F
- #define ARM_CPU_PART_CORTEX_A720	0xD81
- #define ARM_CPU_PART_CORTEX_X4		0xD82
-+#define ARM_CPU_PART_NEOVERSE_V3AE	0xD83
- #define ARM_CPU_PART_NEOVERSE_V3	0xD84
- #define ARM_CPU_PART_CORTEX_X925	0xD85
- #define ARM_CPU_PART_CORTEX_A725	0xD87
-@@ -173,6 +174,7 @@
- #define MIDR_NEOVERSE_V2 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_V2)
- #define MIDR_CORTEX_A720 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A720)
- #define MIDR_CORTEX_X4 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X4)
-+#define MIDR_NEOVERSE_V3AE	MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_V3AE)
- #define MIDR_NEOVERSE_V3 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_V3)
- #define MIDR_CORTEX_X925 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X925)
- #define MIDR_CORTEX_A725 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A725)
+--- a/drivers/misc/mei/hw-me-regs.h
++++ b/drivers/misc/mei/hw-me-regs.h
+@@ -120,6 +120,8 @@
+ #define MEI_DEV_ID_PTL_H      0xE370  /* Panther Lake H */
+ #define MEI_DEV_ID_PTL_P      0xE470  /* Panther Lake P */
+ 
++#define MEI_DEV_ID_WCL_P      0x4D70  /* Wildcat Lake P */
++
+ /*
+  * MEI HW Section
+  */
+--- a/drivers/misc/mei/pci-me.c
++++ b/drivers/misc/mei/pci-me.c
+@@ -127,6 +127,8 @@ static const struct pci_device_id mei_me
+ 	{MEI_PCI_DEVICE(MEI_DEV_ID_PTL_H, MEI_ME_PCH15_CFG)},
+ 	{MEI_PCI_DEVICE(MEI_DEV_ID_PTL_P, MEI_ME_PCH15_CFG)},
+ 
++	{MEI_PCI_DEVICE(MEI_DEV_ID_WCL_P, MEI_ME_PCH15_CFG)},
++
+ 	/* required last entry */
+ 	{0, }
+ };
 
 
 
