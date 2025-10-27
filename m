@@ -1,143 +1,164 @@
-Return-Path: <stable+bounces-190015-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190016-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69EF0C0ED33
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 16:11:16 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23CC3C0ECBE
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 16:07:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7535718837C7
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 15:05:36 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 9C82934D7F7
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 15:07:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA11A3019A3;
-	Mon, 27 Oct 2025 15:05:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB0B13081CD;
+	Mon, 27 Oct 2025 15:06:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G9P7A7SE"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cga75pyY"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
+Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A69D2EDD76
-	for <stable@vger.kernel.org>; Mon, 27 Oct 2025 15:05:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3146E2E8DE2
+	for <stable@vger.kernel.org>; Mon, 27 Oct 2025 15:06:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761577505; cv=none; b=dWVWAPJ4JtKxjnpW27grf6JxLYegSs//N9IojJ9nKAzHC5cAzvaOh/XnmkHbH4XqDQsbbt6lf6jym0Z1JKpN6Xh4thn+xTrJFmrNckympts/ZCobzzMQzRoh4XBo1QL1UXtLX1okcgtEYWUN7dfM0ggThZUig6OPS+1wX+CXsfk=
+	t=1761577566; cv=none; b=iNhG1c3ui1IP+7fSg+nisBUsXOII4AYkWfIgy9Ttgz5Aw0crgVW9Pmf4w9BJu7oXaVdxmCcmOH8JudxxO1wEiUCZrc8tGMngAwntvOevbste/wvpxWts87WqEXUI4UAQ973Tani8iS4aSFEzctzKmWjOKyh7aKYfP+QMWJQqjG0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761577505; c=relaxed/simple;
-	bh=T6j5pJIXxBFsaGqyk9NT2RfkOVr+/me2qdWz0yBnXMM=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=fSpRBImkuJrpIFh+dG5YqP1MEONJDL1+Gcsh4juUp97Pj0cXkfuOc2SL1r8Xm34Ex3DxK3Tsg/mFlt9b8SzslO0kUemWlqojmleBFDr9GfSP7ObYnkl6q3a5qCk6B87Gn79voHGFPUe/kAHmOshn2/BJNu62yo9/k1vR0DE+/Rw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=G9P7A7SE; arc=none smtp.client-ip=209.85.210.179
+	s=arc-20240116; t=1761577566; c=relaxed/simple;
+	bh=juEvfZ6xSAmrjLQLGlrgYpDF4UPOG2/XdIWNOau1zWU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=JIohR6OybRp0me/O1ro5ka8lHtrJMe1XPT8MwRn0nh6RgEAU07G4/jeii0f9q3zP9FFSPRD1Yen5dH7u3Zi2LKUKUAT4BhjAaaZRSNgxVihP1Y1Xz2XMkNLnzLfQjurNODEsvyex83mMC8n/XE/aVE9cyJSiXuTytZzWg/25A+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cga75pyY; arc=none smtp.client-ip=209.85.210.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-7a26ea3bf76so6362332b3a.2
-        for <stable@vger.kernel.org>; Mon, 27 Oct 2025 08:05:03 -0700 (PDT)
+Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-7a213c3c3f5so6160748b3a.3
+        for <stable@vger.kernel.org>; Mon, 27 Oct 2025 08:06:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761577503; x=1762182303; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=kTupaOgzH6gbHMiWqxU5N/avQRrB+TsM9DGFdEjR8ho=;
-        b=G9P7A7SE0cYKcuVk8MuBwcRcI74Kjl6yzR2cI8MhocDmNulu+Blaqelp6KgoHbWxwd
-         t9rYTdRhIHyK6aOGUHGhOMHNx5T6Y81wndqXyjJzh1/UqPAI7Iuy6LRwc5sVvCgrrcYT
-         Gq0Z9o7x61LaU28+avucYFU3C66Y2Mo165wSpT4RflfEKbZbc1iwyk8d+42cjp0YEJNB
-         fI2UEMxUNKqvCoVDCBaKZ/61wftDhyd8sDtxcHtxBcv4OsBpIHjtW7fl35QzaJ51PVvk
-         qg/4MpzUX3zBaHBRB7GESPKtRHWZyAB271XnUW2zuBEnJbtccpKBDJCzW4UTvxIzLKmt
-         hsfw==
+        d=gmail.com; s=20230601; t=1761577564; x=1762182364; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=AuqEiBypQSyV+NhjApDxiloo6xn14f1pCOFw2OHgWCg=;
+        b=cga75pyYWkfWyAmGprUyG2WKLOg1VmODLKx0KcZ7GkpyHFm5MGLnx8K9CmYb/uMlx6
+         ASJhnkue4K9dkKJS8sMNlzGbCfFfkhx9Mk5n53cqWg7lVWS+hlXlBjycCxZuisn8wzeV
+         QZ3FHSVBEaC59/EJYzetfJ+xbLs7icHDY1M2Gne8mELptFcfAbRtemdU27iXNNsl8Vkq
+         IfcVWVolO2p16Eha0XVhS75zpZSvkOP6fr+rcB8a2ehhb56qRct8Nxx9OhT+35OMYA3c
+         3KE3GZ8kwcjHE2JTHpdD994T9cSjK6Hzdt97YUdzGAVh4xyi4Ku0AcK6hSMNCZij2WqJ
+         cx3w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761577503; x=1762182303;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=kTupaOgzH6gbHMiWqxU5N/avQRrB+TsM9DGFdEjR8ho=;
-        b=ZugW41Tih98+oL/tl7gQcVrnOM5Gtuw8ziM0AyqO3ZVOFDZUOko9ssqn45YyZehSgG
-         kGI4eanGavvXJFBLAQO6Ma1dEBHDsbn3SJ1AjLEZNrNhUa2w8SiYW0YgMQ/+vGYFJGtc
-         JF/8fJQI7AwaBNrJAJcuiojvxtaRxbSGWPB3a0FLrbq8qyHFFkw2MNMLbntLEqMRTYe0
-         PbNf70gD7LhBbS9H3BoaraFV9SH8QHDy5MZtFopujhr+4OXMUSNJCFKTTPodNS4E00mk
-         In96K4sBTjSmqcJx8UE95cQFXcv7MjJRIqb+LBYMYpd4wD2bk10BKLAOtIcWmSCLW4FB
-         5neQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX8H8X/4JYKJB1f/R7X7/i4zjjE6GZzAJAg+7cBEY2zlAfx1tJckCji848PGQtC2RssQwP7Dv0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxRsfEo1ixJDyq3KmckSffi4H136wxj3HJkSoh/bbO8Kqa/Z/+o
-	zDrKPKK6laCEbSP+MRGwRtl0mF+0GV5IlZKrjY5FqLfvkEAyvB/97T4Q
-X-Gm-Gg: ASbGncv2DmSMSkmSPXzc9dX1iWgHFEFPb6R8s0gUcsT5bNqkrYLgjuWmILWOBPMw52P
-	+mvK/qsvkeZr0Uy7+20a/xW5RqwOuPy+65dj4EmbmVDv/sbCBvhoBjjc3exCDNWzjqhdcI3vuJa
-	+oQdXk/rBlD/3ENVqB8xF/bqhwZWRZy2w+WtOaRqHG1wZHfRCJwMJgWdpKzEIQQCup07i8hkfAk
-	BM41F71wRtDSS7AcP7leNClPwNxtXw0k32YC8SCGbt4cIsf32x4R4bAqjCopEmKeIHjpENV1Yi8
-	T0ve5Ul9Y8GOuXdiUWwa6q7kLRrwpvidv/679YZ7uFOikVLSbs0778aDBXBDkwFOmb+5feWhzEf
-	ucG+Xx6PDhGXNg6PlVta4CI96aeEwA7SWZ0wRwsEOLNUC7KNCnrHYwTXMPUqpoLtsAwe19OEDbC
-	UsIWXBps5QaCu4mGeHcfvYBBmT9PFAKxFW
-X-Google-Smtp-Source: AGHT+IHo5ASx3suVa6f8wqaFBDyQtbbs8qUYAB4N9R32si782j8k4P1cTG8u6ANyizohrN8+sMLTeg==
-X-Received: by 2002:a17:902:eccc:b0:27e:f07c:8413 with SMTP id d9443c01a7336-294cb378960mr2882435ad.9.1761577502931;
-        Mon, 27 Oct 2025 08:05:02 -0700 (PDT)
-Received: from localhost.localdomain ([124.77.218.104])
-        by smtp.googlemail.com with ESMTPSA id d9443c01a7336-29498d273a2sm84808825ad.60.2025.10.27.08.05.00
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Mon, 27 Oct 2025 08:05:02 -0700 (PDT)
-From: Miaoqian Lin <linmq006@gmail.com>
-To: "Rafael J. Wysocki" <rafael@kernel.org>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	linux-pm@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: linmq006@gmail.com,
-	stable@vger.kernel.org
-Subject: [PATCH] cpufreq: nforce2: fix reference count leak in nforce2
-Date: Mon, 27 Oct 2025 23:04:45 +0800
-Message-Id: <20251027150447.58433-1-linmq006@gmail.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+        d=1e100.net; s=20230601; t=1761577564; x=1762182364;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=AuqEiBypQSyV+NhjApDxiloo6xn14f1pCOFw2OHgWCg=;
+        b=VYzDwlE+hFnqcblnUV5NFZULw9ciUsu4UxgKTJNZps2NEqe6QYbAXKrImS8WXRxo1D
+         BEiJjkBsyioJKsuBixfN7ziSe/g1XcTxVEgyykGot2vqhRDyeH2PRx0tejuwPAX5Nwk/
+         8CzYxFGp9lCyvf2WwF2Aqkku/eYQ1gkWMSByeZOFRQGzbmYMBxX0L4jRTHSCvLo9awvy
+         ry/MjB7LaV+GiSUD+6R3HDUYYvrMWKnFR24p/NwLX27azkkLjQ5Flbcq26MZtU0R4yYa
+         tsg+0nMNDhdEi+BxnS47LRJjIgWMSQlb9x+aDomAveJs6DqhxpDTqh3neQ19tzDJFcMf
+         zQ1A==
+X-Forwarded-Encrypted: i=1; AJvYcCXAHbwg5ZR+Hd0C6BVHRrZ521xIhD+jNITyeKN8TkZFY0GOqPcyCMkABURtfuU47fnMHxcTZx0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxeOBNIE6bQYVY1pm0vR2Nok9I4K6nyksl0KaWoMgD18oBswddO
+	DPHhJzF0jOyzxUA5cmfIQsVIlybSmvB9oCeBnSy8y187NverZPYURhya
+X-Gm-Gg: ASbGncs7g0/vp5Sz4iN4+HjCD386cRSFbJjXfTXCw6PnoLr+FpLqFOfsstoGSwlBVdl
+	nHoVw9X1jAwfDTUg5VZpBLQSRvcJc+sOBfGXOIlcanBEWaFi8FN466UA5a2GaIjowW05zMd1t5P
+	UecMql8g7N6nvaFWfYRD+UhmcjbR9qvC8glDGOrQvPqdE0qi8vvZXLUvtnlBxCUdbXiVMs5VZ4Q
+	MLlbuWYD6fmUt9SC8E5yZsBb9gtfNbBlMRLUzO/bCj3vvQOlAJHJJH+2mM8ZvTNsT9uW0vKuSNE
+	9QBtPZHdhB689Ufldgy6MwEF5exIXAroLoaJM2gyncGZOXyqjn+oPXx68n9SfMAp588fuBM688g
+	huwNG/ttdEincG88h4CX9NLHmcsJSP/9Xk5gkhjcgiCvrJUW3IGojFLE/CZmWZtAQk0L4t/w3XG
+	j39PPQUMbvGRaAxYK0ao1RiAfn4hmpX3XJOUv4rs+XS53vELHvioc=
+X-Google-Smtp-Source: AGHT+IE//ftoG7hudWyqwVqH7rp/r57M0IzNCI5Ivf6IYwy5vXRcB+e2jlZU94XIYDL362p6j8hxMg==
+X-Received: by 2002:a05:6a20:3c90:b0:341:5d9f:8007 with SMTP id adf61e73a8af0-3415d9f87a5mr9096245637.57.1761577564184;
+        Mon, 27 Oct 2025 08:06:04 -0700 (PDT)
+Received: from ?IPV6:2001:ee0:4f4c:210:d7dc:fc1f:94d0:3318? ([2001:ee0:4f4c:210:d7dc:fc1f:94d0:3318])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7a414087005sm8526808b3a.60.2025.10.27.08.05.57
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 27 Oct 2025 08:06:03 -0700 (PDT)
+Message-ID: <e7e05a6f-1995-4c49-929d-3d8ee7b0ac5c@gmail.com>
+Date: Mon, 27 Oct 2025 22:05:55 +0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v5] virtio-net: fix received length check in big
+ packets
+To: Parav Pandit <parav@nvidia.com>,
+ "netdev@vger.kernel.org" <netdev@vger.kernel.org>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
+ Xuan Zhuo <xuanzhuo@linux.alibaba.com>, =?UTF-8?Q?Eugenio_P=C3=A9rez?=
+ <eperezma@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ "Minggang(Gavin) Li" <gavinl@nvidia.com>, Gavi Teitz <gavi@nvidia.com>,
+ "virtualization@lists.linux.dev" <virtualization@lists.linux.dev>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>
+References: <20251024150649.22906-1-minhquangbui99@gmail.com>
+ <CY8PR12MB71951A2ADD74508A9FC60956DCFEA@CY8PR12MB7195.namprd12.prod.outlook.com>
+ <8e2b6a66-787b-4a03-aa74-a00430b85236@gmail.com>
+ <CY8PR12MB7195F589628BD6617A77F81CDCFCA@CY8PR12MB7195.namprd12.prod.outlook.com>
+Content-Language: en-US
+From: Bui Quang Minh <minhquangbui99@gmail.com>
+In-Reply-To: <CY8PR12MB7195F589628BD6617A77F81CDCFCA@CY8PR12MB7195.namprd12.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-There are two reference count leaks in this driver:
+On 10/27/25 21:55, Parav Pandit wrote:
+>> From: Bui Quang Minh <minhquangbui99@gmail.com>
+>> Sent: 27 October 2025 08:19 PM
+>>
+>> On 10/25/25 14:11, Parav Pandit wrote:
+>>>> From: Bui Quang Minh <minhquangbui99@gmail.com>
+>>>> Sent: 24 October 2025 08:37 PM
+>>>>
+>>>> Since commit 4959aebba8c0 ("virtio-net: use mtu size as buffer length
+>>>> for big packets"), when guest gso is off, the allocated size for big
+>>>> packets is not MAX_SKB_FRAGS * PAGE_SIZE anymore but depends on
+>>>> negotiated MTU. The number of allocated frags for big packets is
+>>>> stored in vi-
+>>>>> big_packets_num_skbfrags.
+>>>> Because the host announced buffer length can be malicious (e.g. the
+>>>> host vhost_net driver's get_rx_bufs is modified to announce incorrect
+>>>> length), we need a check in virtio_net receive path. Currently, the
+>>>> check is not adapted to the new change which can lead to NULL page
+>>>> pointer dereference in the below while loop when receiving length that is
+>> larger than the allocated one.
+>>> This looks wrong.
+>>> A device DMAed N bytes, and it reports N + M bytes in the completion?
+>>> Such devices should be fixed.
+>>>
+>>> If driver allocated X bytes, and device copied X + Y bytes on receive packet, it
+>> will crash the driver host anyway.
+>>> The fixes tag in this patch is incorrect because this is not a driver bug.
+>>> It is just adding resiliency in driver for broken device. So driver cannot have
+>> fixes tag here.
+>>
+>> Yes, I agree that the check is a protection against broken device.
+>>
+>> The check is already there before this commit, but it is not correct since the
+>> changes in commit 4959aebba8c0 ("virtio-net: use mtu size as buffer length
+>> for big packets"). So this patch fixes the check corresponding to the new
+>> change. I think this is a valid use of Fixes tag.
+> I am missing something.
+> If you don’t have the broken device, what part if wrong in the patch which needs fixes tag?
 
-1. In nforce2_fsb_read(): pci_get_subsys() increases the reference count
-   of the PCI device, but pci_dev_put() is never called to release it,
-   thus leaking the reference.
+The host can load the own vhost_net driver and sends the incorrect 
+length. IMHO, it's good to sanity check the received input.
 
-2. In nforce2_detect_chipset(): pci_get_subsys() gets a reference to the
-   nforce2_dev which is stored in a global variable, but the reference
-   is never released when the module is unloaded.
+The check
 
-Fix both by:
-- Adding pci_dev_put(nforce2_sub5) in nforce2_fsb_read() after reading
-  the configuration.
-- Adding pci_dev_put(nforce2_dev) in nforce2_exit() to release the
-  global device reference.
+     if (unlikely(len > MAX_SKB_FRAGS * PAGE_SIZE))
+         goto err;
 
-Found via static analysis.
+is wrong because the allocated buffer is (vi->big_packets_num_skbfrags + 
+1) * PAGE_SIZE not MAX_SKB_FRAGS * PAGE_SIZE anymore. 
+vi->big_packets_num_skbfrags depends on the negotiated mtu between host 
+and guest when guest_gso is off as in function virtnet_set_big_packets.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
----
- drivers/cpufreq/cpufreq-nforce2.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/drivers/cpufreq/cpufreq-nforce2.c b/drivers/cpufreq/cpufreq-nforce2.c
-index fedad1081973..fbbbe501cf2d 100644
---- a/drivers/cpufreq/cpufreq-nforce2.c
-+++ b/drivers/cpufreq/cpufreq-nforce2.c
-@@ -145,6 +145,8 @@ static unsigned int nforce2_fsb_read(int bootfsb)
- 	pci_read_config_dword(nforce2_sub5, NFORCE2_BOOTFSB, &fsb);
- 	fsb /= 1000000;
- 
-+	pci_dev_put(nforce2_sub5);
-+
- 	/* Check if PLL register is already set */
- 	pci_read_config_byte(nforce2_dev, NFORCE2_PLLENABLE, (u8 *)&temp);
- 
-@@ -426,6 +428,7 @@ static int __init nforce2_init(void)
- static void __exit nforce2_exit(void)
- {
- 	cpufreq_unregister_driver(&nforce2_driver);
-+	pci_dev_put(nforce2_dev);
- }
- 
- module_init(nforce2_init);
--- 
-2.39.5 (Apple Git-154)
+Thanks,
+Quang Minh.
 
 
