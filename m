@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-190570-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190680-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E776C10861
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:08:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F865C10A14
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:13:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8108D1A208DA
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:05:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E3641A25BCB
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:09:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C51C02D6401;
-	Mon, 27 Oct 2025 19:00:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2629D3328EA;
+	Mon, 27 Oct 2025 19:05:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EaraZPVn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M6k6y05G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A23D31E0F0;
-	Mon, 27 Oct 2025 19:00:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D85A33314DD;
+	Mon, 27 Oct 2025 19:05:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591635; cv=none; b=lBG4c4xeBqJPTWapojYn0OoZoPF0MOwQFBqRVKViT1x3HGqLpnvxa6rhVOv6AS3FsQc7yDe2S/cT3F0bmgvjeYCIaCpYwTp4A/IWZYV+iNtz3cYPGJXVkH4d0zRdQIokHt8/r7Vn9NpDx3qu8XEG/4mSSyGMNdmMkdZSlMrrtKE=
+	t=1761591914; cv=none; b=WDbHre3fUDshegQbqTYy/95in2RDJYfnh7tPE+XyqPkeUeB/unPEoAzggZPGqEcKtZjZTedhxM5zPJE0X7pK0Nfvi5NCk6L6zsbNPUe1487cY3ScMVafrV+rU8kOmUInCZnw+ShNuUB8vN1Gh6sWAYvkc/XTH5Pqentl/8B3ThM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591635; c=relaxed/simple;
-	bh=aelxr1Om+kGoBE3fW3y9pviYPAEN0iLwBS/KUWCfMcM=;
+	s=arc-20240116; t=1761591914; c=relaxed/simple;
+	bh=cUHJQGDnHXTVwiO89N31F6jM+yKBSiVQ1fIu4HFLDQk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iz9ma6UWyH04u/5YjtOUEHu8hZTrLt8EXvta4VO5ldOyZug8ESHAlYUwPn7qdFSUTa3u5M5yALkza2aTV0KFQQzIuhjFk3bA8iNbzxIfCo6HkEqyuM6RMWxq3AJGmaBUMZBTNTRKWyl/qHCDquArlZ8hijjVHJwh7EC6xe7Y//k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EaraZPVn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F5FCC4CEF1;
-	Mon, 27 Oct 2025 19:00:34 +0000 (UTC)
+	 MIME-Version; b=oqeiVWIs9W7OUvzrYRY7ePlnNT8Fpv0rKZ7fJhYpiQposMx3KEzAJjPWBm87kUWX7coX66zrttROsw4WJDPeR1M7RLXgjp2dziMnU6qugUd/oLk7zbA5qKRndaY3j+bd8p+XJvMNZ7drGg0oMdv/pLsXdhklqTXQLOtqsI4FRtg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M6k6y05G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B411C4CEF1;
+	Mon, 27 Oct 2025 19:05:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591635;
-	bh=aelxr1Om+kGoBE3fW3y9pviYPAEN0iLwBS/KUWCfMcM=;
+	s=korg; t=1761591914;
+	bh=cUHJQGDnHXTVwiO89N31F6jM+yKBSiVQ1fIu4HFLDQk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EaraZPVn4CVRPcoX6ulOSpW3E9EGAUhHm0LyvO/z+bca6549o0k9+a9024ZJ/fLa3
-	 aDs5pDDMYmm3qdEwREWA9SptKDHjRVDC4HXJEqXc98iNC26626GOzPOQTvNEcgWzJd
-	 e+RDBCFM3tPS8uqi+JnEWrI6CFPsioLdvLh2i7c8=
+	b=M6k6y05GfsCng7UcEGYs8hrTat0HrkPgBGwVK6wYg1u6JGZCqfkEWWqsVkh7IWCkm
+	 RGOIfUJwkQ84w7e7kcdcbdEAJQB2ZIV3jnQky8siVR5VRf0GWHDfGHPGgvY20u9k48
+	 vH3Dd80SFdxfEidDNbOxodfHqBdX83N8lm72dGWY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	syzbot+356aed408415a56543cd@syzkaller.appspotmail.com,
+	Yang Chenzhi <yang.chenzhi@vivo.com>,
+	Viacheslav Dubeyko <slava@dubeyko.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 273/332] net: add ndo_fdb_del_bulk
+Subject: [PATCH 5.15 046/123] hfs: validate record offset in hfsplus_bmap_alloc
 Date: Mon, 27 Oct 2025 19:35:26 +0100
-Message-ID: <20251027183532.072248828@linuxfoundation.org>
+Message-ID: <20251027183447.631497582@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
-References: <20251027183524.611456697@linuxfoundation.org>
+In-Reply-To: <20251027183446.381986645@linuxfoundation.org>
+References: <20251027183446.381986645@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +63,219 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikolay Aleksandrov <razor@blackwall.org>
+From: Yang Chenzhi <yang.chenzhi@vivo.com>
 
-[ Upstream commit 1306d5362a591493a2d07f685ed2cc480dcda320 ]
+[ Upstream commit 738d5a51864ed8d7a68600b8c0c63fe6fe5c4f20 ]
 
-Add a new netdev op called ndo_fdb_del_bulk, it will be later used for
-driver-specific bulk delete implementation dispatched from rtnetlink. The
-first user will be the bridge, we need it to signal to rtnetlink from
-the driver that we support bulk delete operation (NLM_F_BULK).
+hfsplus_bmap_alloc can trigger a crash if a
+record offset or length is larger than node_size
 
-Signed-off-by: Nikolay Aleksandrov <razor@blackwall.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: bf29555f5bdc ("rtnetlink: Allow deleting FDB entries in user namespace")
+[   15.264282] BUG: KASAN: slab-out-of-bounds in hfsplus_bmap_alloc+0x887/0x8b0
+[   15.265192] Read of size 8 at addr ffff8881085ca188 by task test/183
+[   15.265949]
+[   15.266163] CPU: 0 UID: 0 PID: 183 Comm: test Not tainted 6.17.0-rc2-gc17b750b3ad9 #14 PREEMPT(voluntary)
+[   15.266165] Hardware name: QEMU Ubuntu 24.04 PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+[   15.266167] Call Trace:
+[   15.266168]  <TASK>
+[   15.266169]  dump_stack_lvl+0x53/0x70
+[   15.266173]  print_report+0xd0/0x660
+[   15.266181]  kasan_report+0xce/0x100
+[   15.266185]  hfsplus_bmap_alloc+0x887/0x8b0
+[   15.266208]  hfs_btree_inc_height.isra.0+0xd5/0x7c0
+[   15.266217]  hfsplus_brec_insert+0x870/0xb00
+[   15.266222]  __hfsplus_ext_write_extent+0x428/0x570
+[   15.266225]  __hfsplus_ext_cache_extent+0x5e/0x910
+[   15.266227]  hfsplus_ext_read_extent+0x1b2/0x200
+[   15.266233]  hfsplus_file_extend+0x5a7/0x1000
+[   15.266237]  hfsplus_get_block+0x12b/0x8c0
+[   15.266238]  __block_write_begin_int+0x36b/0x12c0
+[   15.266251]  block_write_begin+0x77/0x110
+[   15.266252]  cont_write_begin+0x428/0x720
+[   15.266259]  hfsplus_write_begin+0x51/0x100
+[   15.266262]  cont_write_begin+0x272/0x720
+[   15.266270]  hfsplus_write_begin+0x51/0x100
+[   15.266274]  generic_perform_write+0x321/0x750
+[   15.266285]  generic_file_write_iter+0xc3/0x310
+[   15.266289]  __kernel_write_iter+0x2fd/0x800
+[   15.266296]  dump_user_range+0x2ea/0x910
+[   15.266301]  elf_core_dump+0x2a94/0x2ed0
+[   15.266320]  vfs_coredump+0x1d85/0x45e0
+[   15.266349]  get_signal+0x12e3/0x1990
+[   15.266357]  arch_do_signal_or_restart+0x89/0x580
+[   15.266362]  irqentry_exit_to_user_mode+0xab/0x110
+[   15.266364]  asm_exc_page_fault+0x26/0x30
+[   15.266366] RIP: 0033:0x41bd35
+[   15.266367] Code: bc d1 f3 0f 7f 27 f3 0f 7f 6f 10 f3 0f 7f 77 20 f3 0f 7f 7f 30 49 83 c0 0f 49 29 d0 48 8d 7c 17 31 e9 9f 0b 00 00 66 0f ef c0 <f3> 0f 6f 0e f3 0f 6f 56 10 66 0f 74 c1 66 0f d7 d0 49 83 f8f
+[   15.266369] RSP: 002b:00007ffc9e62d078 EFLAGS: 00010283
+[   15.266371] RAX: 00007ffc9e62d100 RBX: 0000000000000000 RCX: 0000000000000000
+[   15.266372] RDX: 00000000000000e0 RSI: 0000000000000000 RDI: 00007ffc9e62d100
+[   15.266373] RBP: 0000400000000040 R08: 00000000000000e0 R09: 0000000000000000
+[   15.266374] R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+[   15.266375] R13: 0000000000000000 R14: 0000000000000000 R15: 0000400000000000
+[   15.266376]  </TASK>
+
+When calling hfsplus_bmap_alloc to allocate a free node, this function
+first retrieves the bitmap from header node and map node using node->page
+together with the offset and length from hfs_brec_lenoff
+
+```
+len = hfs_brec_lenoff(node, 2, &off16);
+off = off16;
+
+off += node->page_offset;
+pagep = node->page + (off >> PAGE_SHIFT);
+data = kmap_local_page(*pagep);
+```
+
+However, if the retrieved offset or length is invalid(i.e. exceeds
+node_size), the code may end up accessing pages outside the allocated
+range for this node.
+
+This patch adds proper validation of both offset and length before use,
+preventing out-of-bounds page access. Move is_bnode_offset_valid and
+check_and_correct_requested_length to hfsplus_fs.h, as they may be
+required by other functions.
+
+Reported-by: syzbot+356aed408415a56543cd@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/67bcb4a6.050a0220.bbfd1.008f.GAE@google.com/
+Signed-off-by: Yang Chenzhi <yang.chenzhi@vivo.com>
+Reviewed-by: Viacheslav Dubeyko <slava@dubeyko.com>
+Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
+Link: https://lore.kernel.org/r/20250818141734.8559-2-yang.chenzhi@vivo.com
+Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/netdevice.h | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ fs/hfsplus/bnode.c      | 41 ----------------------------------------
+ fs/hfsplus/btree.c      |  6 ++++++
+ fs/hfsplus/hfsplus_fs.h | 42 +++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 48 insertions(+), 41 deletions(-)
 
-diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
-index 06b37f45b67c9..d3a3e77a18df1 100644
---- a/include/linux/netdevice.h
-+++ b/include/linux/netdevice.h
-@@ -1200,6 +1200,10 @@ struct netdev_net_notifier {
-  *		      struct net_device *dev,
-  *		      const unsigned char *addr, u16 vid)
-  *	Deletes the FDB entry from dev coresponding to addr.
-+ * int (*ndo_fdb_del_bulk)(struct ndmsg *ndm, struct nlattr *tb[],
-+ *			   struct net_device *dev,
-+ *			   u16 vid,
-+ *			   struct netlink_ext_ack *extack);
-  * int (*ndo_fdb_dump)(struct sk_buff *skb, struct netlink_callback *cb,
-  *		       struct net_device *dev, struct net_device *filter_dev,
-  *		       int *idx)
-@@ -1452,6 +1456,11 @@ struct net_device_ops {
- 					       struct net_device *dev,
- 					       const unsigned char *addr,
- 					       u16 vid);
-+	int			(*ndo_fdb_del_bulk)(struct ndmsg *ndm,
-+						    struct nlattr *tb[],
-+						    struct net_device *dev,
-+						    u16 vid,
-+						    struct netlink_ext_ack *extack);
- 	int			(*ndo_fdb_dump)(struct sk_buff *skb,
- 						struct netlink_callback *cb,
- 						struct net_device *dev,
+diff --git a/fs/hfsplus/bnode.c b/fs/hfsplus/bnode.c
+index c9c38fddf505b..e566cea238279 100644
+--- a/fs/hfsplus/bnode.c
++++ b/fs/hfsplus/bnode.c
+@@ -18,47 +18,6 @@
+ #include "hfsplus_fs.h"
+ #include "hfsplus_raw.h"
+ 
+-static inline
+-bool is_bnode_offset_valid(struct hfs_bnode *node, int off)
+-{
+-	bool is_valid = off < node->tree->node_size;
+-
+-	if (!is_valid) {
+-		pr_err("requested invalid offset: "
+-		       "NODE: id %u, type %#x, height %u, "
+-		       "node_size %u, offset %d\n",
+-		       node->this, node->type, node->height,
+-		       node->tree->node_size, off);
+-	}
+-
+-	return is_valid;
+-}
+-
+-static inline
+-int check_and_correct_requested_length(struct hfs_bnode *node, int off, int len)
+-{
+-	unsigned int node_size;
+-
+-	if (!is_bnode_offset_valid(node, off))
+-		return 0;
+-
+-	node_size = node->tree->node_size;
+-
+-	if ((off + len) > node_size) {
+-		int new_len = (int)node_size - off;
+-
+-		pr_err("requested length has been corrected: "
+-		       "NODE: id %u, type %#x, height %u, "
+-		       "node_size %u, offset %d, "
+-		       "requested_len %d, corrected_len %d\n",
+-		       node->this, node->type, node->height,
+-		       node->tree->node_size, off, len, new_len);
+-
+-		return new_len;
+-	}
+-
+-	return len;
+-}
+ 
+ /* Copy a specified range of bytes from the raw data of a node */
+ void hfs_bnode_read(struct hfs_bnode *node, void *buf, int off, int len)
+diff --git a/fs/hfsplus/btree.c b/fs/hfsplus/btree.c
+index 66774f4cb4fd5..2211907537fec 100644
+--- a/fs/hfsplus/btree.c
++++ b/fs/hfsplus/btree.c
+@@ -392,6 +392,12 @@ struct hfs_bnode *hfs_bmap_alloc(struct hfs_btree *tree)
+ 	len = hfs_brec_lenoff(node, 2, &off16);
+ 	off = off16;
+ 
++	if (!is_bnode_offset_valid(node, off)) {
++		hfs_bnode_put(node);
++		return ERR_PTR(-EIO);
++	}
++	len = check_and_correct_requested_length(node, off, len);
++
+ 	off += node->page_offset;
+ 	pagep = node->page + (off >> PAGE_SHIFT);
+ 	data = kmap(*pagep);
+diff --git a/fs/hfsplus/hfsplus_fs.h b/fs/hfsplus/hfsplus_fs.h
+index c01bf9ff56a96..8396964b056f0 100644
+--- a/fs/hfsplus/hfsplus_fs.h
++++ b/fs/hfsplus/hfsplus_fs.h
+@@ -572,6 +572,48 @@ hfsplus_btree_lock_class(struct hfs_btree *tree)
+ 	return class;
+ }
+ 
++static inline
++bool is_bnode_offset_valid(struct hfs_bnode *node, int off)
++{
++	bool is_valid = off < node->tree->node_size;
++
++	if (!is_valid) {
++		pr_err("requested invalid offset: "
++		       "NODE: id %u, type %#x, height %u, "
++		       "node_size %u, offset %d\n",
++		       node->this, node->type, node->height,
++		       node->tree->node_size, off);
++	}
++
++	return is_valid;
++}
++
++static inline
++int check_and_correct_requested_length(struct hfs_bnode *node, int off, int len)
++{
++	unsigned int node_size;
++
++	if (!is_bnode_offset_valid(node, off))
++		return 0;
++
++	node_size = node->tree->node_size;
++
++	if ((off + len) > node_size) {
++		int new_len = (int)node_size - off;
++
++		pr_err("requested length has been corrected: "
++		       "NODE: id %u, type %#x, height %u, "
++		       "node_size %u, offset %d, "
++		       "requested_len %d, corrected_len %d\n",
++		       node->this, node->type, node->height,
++		       node->tree->node_size, off, len, new_len);
++
++		return new_len;
++	}
++
++	return len;
++}
++
+ /* compatibility */
+ #define hfsp_mt2ut(t)		(struct timespec64){ .tv_sec = __hfsp_mt2ut(t) }
+ #define hfsp_ut2mt(t)		__hfsp_ut2mt((t).tv_sec)
 -- 
 2.51.0
 
