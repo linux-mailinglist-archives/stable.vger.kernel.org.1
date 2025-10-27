@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-191243-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191116-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5AE0C113F0
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:47:23 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B38EC11108
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:32:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 294205652F2
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:31:52 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 13EA8501F78
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:25:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B6C932C93B;
-	Mon, 27 Oct 2025 19:29:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0907A19D07A;
+	Mon, 27 Oct 2025 19:24:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xXXwWSFO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0TXsGrcJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC7DE31D72E;
-	Mon, 27 Oct 2025 19:29:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B917C2C3745;
+	Mon, 27 Oct 2025 19:24:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761593392; cv=none; b=EQhv5ZvgsqcqlMWha97rwbexYCtlHM9TBSTFeymheskhzoxYVmiDGDBH7t4yEwU4uXn7hfhtexUGY7wJagNW2IQE/cyKrPCQP1KvA9GT0DyBYx79kzGad2T3fLFR9RWYtlZ7IyxEZqc0XoczAcXoFuDvyCVupB4JW5IcOnmO1OM=
+	t=1761593051; cv=none; b=mOK8hE2+CXRKXEbf3fUIpj4CuZHZbTGtvtOZS9DkuR1v6utac3inQSkIFhl+p72P6MrQJyeGf+H0eiawv98Fc6YOMl3frWNH4fv6B6YmKIq7REqypFyyYht1/X5up7uDTfTF3aD2KSidhMaJqhlm2dJeFy5kswtgUzeZa2S7X7w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761593392; c=relaxed/simple;
-	bh=fqWM4/7Gy/kFL/sQT4BxVWsyKB9hcrfhgspQRi8D8Uc=;
+	s=arc-20240116; t=1761593051; c=relaxed/simple;
+	bh=e3dt0fFx54e7fbB5jE7RFE2k7vTfW3SS3Tqoie977XQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UIjrEiUp4Gh0oifJVE/297XsH1aTQaYJQ2wwbfAzRQchldHsw9x5081VLRarcFNkPmvjOPA3iRyMTlGoJTNwgJ6F5UF+TgSNriL7AFuH/8dcOdge6SVJdeTNVc583nnb4PEo+jLiBb3Y45BU67cIoBSVp53pNeU9/T5XBEllYmw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xXXwWSFO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D2B7C4CEF1;
-	Mon, 27 Oct 2025 19:29:51 +0000 (UTC)
+	 MIME-Version; b=PmdN6WYnmu7rNjN1nAMrscUgmrbnwj8UYSGDo1XBygUPB4Gf4YJeM99sgrHDVNrfwEPLWJq9CBQnS0XXYuk6YZFknMr+8ZHUPj+F1I/j1BtdqLxjYUTAOzZluIDBL9ZjTa/PZmj4+tmMarGDg6pcVQDR3O1ACIElnP8292NegqU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0TXsGrcJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2302AC4CEF1;
+	Mon, 27 Oct 2025 19:24:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761593391;
-	bh=fqWM4/7Gy/kFL/sQT4BxVWsyKB9hcrfhgspQRi8D8Uc=;
+	s=korg; t=1761593051;
+	bh=e3dt0fFx54e7fbB5jE7RFE2k7vTfW3SS3Tqoie977XQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xXXwWSFOJgabAjoMG6hUyQZsIyQJmQM7oW2/cbFx0O3jlhudqv/BouIh55P4ANVr3
-	 7lVzEe3/HDZTLT7uHqo8lc6k8mV++U2AiY/VD+53WR7X/dKiG6mqgsexN9a1BBraW5
-	 Go3JPE+Gfubq637nUhtk5LeXOu7uw6zZwa/PlnyU=
+	b=0TXsGrcJr+Nv0xRIRuQ3j2vdCZQc5YTK+FKpVpMT+raut/7LFhH52qW028arSNQnm
+	 wLH1ey3lbT+6iJs/F8EDKaOXPjS+pgV1iFtrjnzBFCZmvfgFKvbrmlTUs4dPYbAfhQ
+	 6f7D/CTFGJgP/rkVyoeMSSbACxJTQjxlksCSrhRE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mattijs Korpershoek <mkorpershoek@kernel.org>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
+	Christian Marangi <ansuelsmth@gmail.com>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 120/184] spi: cadence-quadspi: Fix pm_runtime unbalance on dma EPROBE_DEFER
+Subject: [PATCH 6.12 076/117] spi: airoha: do not keep {tx,rx} dma buffer always mapped
 Date: Mon, 27 Oct 2025 19:36:42 +0100
-Message-ID: <20251027183518.174963575@linuxfoundation.org>
+Message-ID: <20251027183456.085956303@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
-References: <20251027183514.934710872@linuxfoundation.org>
+In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
+References: <20251027183453.919157109@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,63 +63,448 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mattijs Korpershoek <mkorpershoek@kernel.org>
+From: Lorenzo Bianconi <lorenzo@kernel.org>
 
-[ Upstream commit 8735696acea24ac1f9d4490992418c71941ca68c ]
+[ Upstream commit 7a4b3ebf1d60349587fee21872536e7bd6a4cf39 ]
 
-In csqspi_probe(), when cqspi_request_mmap_dma() returns -EPROBE_DEFER,
-we handle the error by jumping to probe_setup_failed.
-In that label, we call pm_runtime_disable(), even if we never called
-pm_runtime_enable() before.
+DMA map txrx_buf on demand in airoha_snand_dirmap_read and
+airoha_snand_dirmap_write routines and do not keep it always mapped.
+This patch is not fixing any bug or introducing any functional change
+to the driver, it just simplifies the code and improve code readability
+without introducing any performance degradation according to the results
+obtained from the mtd_speedtest kernel module test.
 
-Because of this, the driver cannot probe:
+root@OpenWrt:# insmod mtd_test.ko
+root@OpenWrt:# insmod mtd_speedtest.ko dev=5
+[   49.849869] =================================================
+[   49.855659] mtd_speedtest: MTD device: 5
+[   49.859583] mtd_speedtest: MTD device size 8388608, eraseblock size 131072, page size 2048, count of eraseblocks 64, pages per eraseblock 64, OOB size 128
+[   49.874622] mtd_test: scanning for bad eraseblocks
+[   49.879433] mtd_test: scanned 64 eraseblocks, 0 are bad
+[   50.106372] mtd_speedtest: testing eraseblock write speed
+[   53.083380] mtd_speedtest: eraseblock write speed is 2756 KiB/s
+[   53.089322] mtd_speedtest: testing eraseblock read speed
+[   54.143360] mtd_speedtest: eraseblock read speed is 7811 KiB/s
+[   54.370365] mtd_speedtest: testing page write speed
+[   57.349480] mtd_speedtest: page write speed is 2754 KiB/s
+[   57.354895] mtd_speedtest: testing page read speed
+[   58.410431] mtd_speedtest: page read speed is 7796 KiB/s
+[   58.636805] mtd_speedtest: testing 2 page write speed
+[   61.612427] mtd_speedtest: 2 page write speed is 2757 KiB/s
+[   61.618021] mtd_speedtest: testing 2 page read speed
+[   62.672653] mtd_speedtest: 2 page read speed is 7804 KiB/s
+[   62.678159] mtd_speedtest: Testing erase speed
+[   62.903617] mtd_speedtest: erase speed is 37063 KiB/s
+[   62.908678] mtd_speedtest: Testing 2x multi-block erase speed
+[   63.134083] mtd_speedtest: 2x multi-block erase speed is 37292 KiB/s
+[   63.140442] mtd_speedtest: Testing 4x multi-block erase speed
+[   63.364262] mtd_speedtest: 4x multi-block erase speed is 37566 KiB/s
+[   63.370632] mtd_speedtest: Testing 8x multi-block erase speed
+[   63.595740] mtd_speedtest: 8x multi-block erase speed is 37344 KiB/s
+[   63.602089] mtd_speedtest: Testing 16x multi-block erase speed
+[   63.827426] mtd_speedtest: 16x multi-block erase speed is 37320 KiB/s
+[   63.833860] mtd_speedtest: Testing 32x multi-block erase speed
+[   64.059389] mtd_speedtest: 32x multi-block erase speed is 37288 KiB/s
+[   64.065833] mtd_speedtest: Testing 64x multi-block erase speed
+[   64.290609] mtd_speedtest: 64x multi-block erase speed is 37415 KiB/s
+[   64.297063] mtd_speedtest: finished
+[   64.300555] =================================================
 
-[    2.690018] cadence-qspi 47040000.spi: No Rx DMA available
-[    2.699735] spi-nor spi0.0: resume failed with -13
-[    2.699741] spi-nor: probe of spi0.0 failed with error -13
-
-Only call pm_runtime_disable() if it was enabled by adding a new
-label to handle cqspi_request_mmap_dma() failures.
-
-Fixes: b07f349d1864 ("spi: spi-cadence-quadspi: Fix pm runtime unbalance")
-Signed-off-by: Mattijs Korpershoek <mkorpershoek@kernel.org>
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://patch.msgid.link/20251009-cadence-quadspi-fix-pm-runtime-v2-1-8bdfefc43902@kernel.org
+Tested-by: Christian Marangi <ansuelsmth@gmail.com>
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Link: https://patch.msgid.link/20240922-airoha-spi-fixes-v3-1-f958802b3d68@kernel.org
 Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: 20d7b236b78c ("spi: airoha: switch back to non-dma mode in the case of error")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-cadence-quadspi.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/spi/spi-airoha-snfi.c | 154 ++++++++++++++++------------------
+ 1 file changed, 71 insertions(+), 83 deletions(-)
 
-diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-quadspi.c
-index d1a59120d3845..ce0f605ab688b 100644
---- a/drivers/spi/spi-cadence-quadspi.c
-+++ b/drivers/spi/spi-cadence-quadspi.c
-@@ -1995,7 +1995,7 @@ static int cqspi_probe(struct platform_device *pdev)
- 	if (cqspi->use_direct_mode) {
- 		ret = cqspi_request_mmap_dma(cqspi);
- 		if (ret == -EPROBE_DEFER)
--			goto probe_setup_failed;
-+			goto probe_dma_failed;
- 	}
+diff --git a/drivers/spi/spi-airoha-snfi.c b/drivers/spi/spi-airoha-snfi.c
+index a3f766e04202f..0b89dc42545b1 100644
+--- a/drivers/spi/spi-airoha-snfi.c
++++ b/drivers/spi/spi-airoha-snfi.c
+@@ -214,13 +214,6 @@ enum airoha_snand_cs {
+ 	SPI_CHIP_SEL_LOW,
+ };
  
- 	if (!(ddata && (ddata->quirks & CQSPI_DISABLE_RUNTIME_PM))) {
-@@ -2019,9 +2019,10 @@ static int cqspi_probe(struct platform_device *pdev)
+-struct airoha_snand_dev {
+-	size_t buf_len;
+-
+-	u8 *txrx_buf;
+-	dma_addr_t dma_addr;
+-};
+-
+ struct airoha_snand_ctrl {
+ 	struct device *dev;
+ 	struct regmap *regmap_ctrl;
+@@ -657,9 +650,9 @@ static bool airoha_snand_supports_op(struct spi_mem *mem,
+ 
+ static int airoha_snand_dirmap_create(struct spi_mem_dirmap_desc *desc)
+ {
+-	struct airoha_snand_dev *as_dev = spi_get_ctldata(desc->mem->spi);
++	u8 *txrx_buf = spi_get_ctldata(desc->mem->spi);
+ 
+-	if (!as_dev->txrx_buf)
++	if (!txrx_buf)
+ 		return -EINVAL;
+ 
+ 	if (desc->info.offset + desc->info.length > U32_MAX)
+@@ -678,10 +671,11 @@ static int airoha_snand_dirmap_create(struct spi_mem_dirmap_desc *desc)
+ static ssize_t airoha_snand_dirmap_read(struct spi_mem_dirmap_desc *desc,
+ 					u64 offs, size_t len, void *buf)
+ {
+-	struct spi_device *spi = desc->mem->spi;
+-	struct airoha_snand_dev *as_dev = spi_get_ctldata(spi);
+ 	struct spi_mem_op *op = &desc->info.op_tmpl;
++	struct spi_device *spi = desc->mem->spi;
+ 	struct airoha_snand_ctrl *as_ctrl;
++	u8 *txrx_buf = spi_get_ctldata(spi);
++	dma_addr_t dma_addr;
+ 	u32 val, rd_mode;
+ 	int err;
+ 
+@@ -706,14 +700,17 @@ static ssize_t airoha_snand_dirmap_read(struct spi_mem_dirmap_desc *desc,
+ 	if (err)
+ 		return err;
+ 
+-	dma_sync_single_for_device(as_ctrl->dev, as_dev->dma_addr,
+-				   as_dev->buf_len, DMA_BIDIRECTIONAL);
++	dma_addr = dma_map_single(as_ctrl->dev, txrx_buf, SPI_NAND_CACHE_SIZE,
++				  DMA_FROM_DEVICE);
++	err = dma_mapping_error(as_ctrl->dev, dma_addr);
++	if (err)
++		return err;
+ 
+ 	/* set dma addr */
+ 	err = regmap_write(as_ctrl->regmap_nfi, REG_SPI_NFI_STRADDR,
+-			   as_dev->dma_addr);
++			   dma_addr);
+ 	if (err)
+-		return err;
++		goto error_dma_unmap;
+ 
+ 	/* set cust sec size */
+ 	val = as_ctrl->nfi_cfg.sec_size * as_ctrl->nfi_cfg.sec_num;
+@@ -722,58 +719,58 @@ static ssize_t airoha_snand_dirmap_read(struct spi_mem_dirmap_desc *desc,
+ 				 REG_SPI_NFI_SNF_MISC_CTL2,
+ 				 SPI_NFI_READ_DATA_BYTE_NUM, val);
+ 	if (err)
+-		return err;
++		goto error_dma_unmap;
+ 
+ 	/* set read command */
+ 	err = regmap_write(as_ctrl->regmap_nfi, REG_SPI_NFI_RD_CTL2,
+ 			   op->cmd.opcode);
+ 	if (err)
+-		return err;
++		goto error_dma_unmap;
+ 
+ 	/* set read mode */
+ 	err = regmap_write(as_ctrl->regmap_nfi, REG_SPI_NFI_SNF_MISC_CTL,
+ 			   FIELD_PREP(SPI_NFI_DATA_READ_WR_MODE, rd_mode));
+ 	if (err)
+-		return err;
++		goto error_dma_unmap;
+ 
+ 	/* set read addr */
+ 	err = regmap_write(as_ctrl->regmap_nfi, REG_SPI_NFI_RD_CTL3, 0x0);
+ 	if (err)
+-		return err;
++		goto error_dma_unmap;
+ 
+ 	/* set nfi read */
+ 	err = regmap_update_bits(as_ctrl->regmap_nfi, REG_SPI_NFI_CNFG,
+ 				 SPI_NFI_OPMODE,
+ 				 FIELD_PREP(SPI_NFI_OPMODE, 6));
+ 	if (err)
+-		return err;
++		goto error_dma_unmap;
+ 
+ 	err = regmap_set_bits(as_ctrl->regmap_nfi, REG_SPI_NFI_CNFG,
+ 			      SPI_NFI_READ_MODE | SPI_NFI_DMA_MODE);
+ 	if (err)
+-		return err;
++		goto error_dma_unmap;
+ 
+ 	err = regmap_write(as_ctrl->regmap_nfi, REG_SPI_NFI_CMD, 0x0);
+ 	if (err)
+-		return err;
++		goto error_dma_unmap;
+ 
+ 	/* trigger dma start read */
+ 	err = regmap_clear_bits(as_ctrl->regmap_nfi, REG_SPI_NFI_CON,
+ 				SPI_NFI_RD_TRIG);
+ 	if (err)
+-		return err;
++		goto error_dma_unmap;
+ 
+ 	err = regmap_set_bits(as_ctrl->regmap_nfi, REG_SPI_NFI_CON,
+ 			      SPI_NFI_RD_TRIG);
+ 	if (err)
+-		return err;
++		goto error_dma_unmap;
+ 
+ 	err = regmap_read_poll_timeout(as_ctrl->regmap_nfi,
+ 				       REG_SPI_NFI_SNF_STA_CTL1, val,
+ 				       (val & SPI_NFI_READ_FROM_CACHE_DONE),
+ 				       0, 1 * USEC_PER_SEC);
+ 	if (err)
+-		return err;
++		goto error_dma_unmap;
+ 
+ 	/*
+ 	 * SPI_NFI_READ_FROM_CACHE_DONE bit must be written at the end
+@@ -783,35 +780,41 @@ static ssize_t airoha_snand_dirmap_read(struct spi_mem_dirmap_desc *desc,
+ 				SPI_NFI_READ_FROM_CACHE_DONE,
+ 				SPI_NFI_READ_FROM_CACHE_DONE);
+ 	if (err)
+-		return err;
++		goto error_dma_unmap;
+ 
+ 	err = regmap_read_poll_timeout(as_ctrl->regmap_nfi, REG_SPI_NFI_INTR,
+ 				       val, (val & SPI_NFI_AHB_DONE), 0,
+ 				       1 * USEC_PER_SEC);
+ 	if (err)
+-		return err;
++		goto error_dma_unmap;
+ 
+ 	/* DMA read need delay for data ready from controller to DRAM */
+ 	udelay(1);
+ 
+-	dma_sync_single_for_cpu(as_ctrl->dev, as_dev->dma_addr,
+-				as_dev->buf_len, DMA_BIDIRECTIONAL);
++	dma_unmap_single(as_ctrl->dev, dma_addr, SPI_NAND_CACHE_SIZE,
++			 DMA_FROM_DEVICE);
+ 	err = airoha_snand_set_mode(as_ctrl, SPI_MODE_MANUAL);
+ 	if (err < 0)
+ 		return err;
+ 
+-	memcpy(buf, as_dev->txrx_buf + offs, len);
++	memcpy(buf, txrx_buf + offs, len);
+ 
+ 	return len;
++
++error_dma_unmap:
++	dma_unmap_single(as_ctrl->dev, dma_addr, SPI_NAND_CACHE_SIZE,
++			 DMA_FROM_DEVICE);
++	return err;
+ }
+ 
+ static ssize_t airoha_snand_dirmap_write(struct spi_mem_dirmap_desc *desc,
+ 					 u64 offs, size_t len, const void *buf)
+ {
+-	struct spi_device *spi = desc->mem->spi;
+-	struct airoha_snand_dev *as_dev = spi_get_ctldata(spi);
+ 	struct spi_mem_op *op = &desc->info.op_tmpl;
++	struct spi_device *spi = desc->mem->spi;
++	u8 *txrx_buf = spi_get_ctldata(spi);
+ 	struct airoha_snand_ctrl *as_ctrl;
++	dma_addr_t dma_addr;
+ 	u32 wr_mode, val;
+ 	int err;
+ 
+@@ -820,19 +823,20 @@ static ssize_t airoha_snand_dirmap_write(struct spi_mem_dirmap_desc *desc,
+ 	if (err < 0)
+ 		return err;
+ 
+-	dma_sync_single_for_cpu(as_ctrl->dev, as_dev->dma_addr,
+-				as_dev->buf_len, DMA_BIDIRECTIONAL);
+-	memcpy(as_dev->txrx_buf + offs, buf, len);
+-	dma_sync_single_for_device(as_ctrl->dev, as_dev->dma_addr,
+-				   as_dev->buf_len, DMA_BIDIRECTIONAL);
++	memcpy(txrx_buf + offs, buf, len);
++	dma_addr = dma_map_single(as_ctrl->dev, txrx_buf, SPI_NAND_CACHE_SIZE,
++				  DMA_TO_DEVICE);
++	err = dma_mapping_error(as_ctrl->dev, dma_addr);
++	if (err)
++		return err;
+ 
+ 	err = airoha_snand_set_mode(as_ctrl, SPI_MODE_DMA);
+ 	if (err < 0)
+-		return err;
++		goto error_dma_unmap;
+ 
+ 	err = airoha_snand_nfi_config(as_ctrl);
+ 	if (err)
+-		return err;
++		goto error_dma_unmap;
+ 
+ 	if (op->cmd.opcode == SPI_NAND_OP_PROGRAM_LOAD_QUAD ||
+ 	    op->cmd.opcode == SPI_NAND_OP_PROGRAM_LOAD_RAMDON_QUAD)
+@@ -841,9 +845,9 @@ static ssize_t airoha_snand_dirmap_write(struct spi_mem_dirmap_desc *desc,
+ 		wr_mode = 0;
+ 
+ 	err = regmap_write(as_ctrl->regmap_nfi, REG_SPI_NFI_STRADDR,
+-			   as_dev->dma_addr);
++			   dma_addr);
+ 	if (err)
+-		return err;
++		goto error_dma_unmap;
+ 
+ 	val = FIELD_PREP(SPI_NFI_PROG_LOAD_BYTE_NUM,
+ 			 as_ctrl->nfi_cfg.sec_size * as_ctrl->nfi_cfg.sec_num);
+@@ -851,65 +855,65 @@ static ssize_t airoha_snand_dirmap_write(struct spi_mem_dirmap_desc *desc,
+ 				 REG_SPI_NFI_SNF_MISC_CTL2,
+ 				 SPI_NFI_PROG_LOAD_BYTE_NUM, val);
+ 	if (err)
+-		return err;
++		goto error_dma_unmap;
+ 
+ 	err = regmap_write(as_ctrl->regmap_nfi, REG_SPI_NFI_PG_CTL1,
+ 			   FIELD_PREP(SPI_NFI_PG_LOAD_CMD,
+ 				      op->cmd.opcode));
+ 	if (err)
+-		return err;
++		goto error_dma_unmap;
+ 
+ 	err = regmap_write(as_ctrl->regmap_nfi, REG_SPI_NFI_SNF_MISC_CTL,
+ 			   FIELD_PREP(SPI_NFI_DATA_READ_WR_MODE, wr_mode));
+ 	if (err)
+-		return err;
++		goto error_dma_unmap;
+ 
+ 	err = regmap_write(as_ctrl->regmap_nfi, REG_SPI_NFI_PG_CTL2, 0x0);
+ 	if (err)
+-		return err;
++		goto error_dma_unmap;
+ 
+ 	err = regmap_clear_bits(as_ctrl->regmap_nfi, REG_SPI_NFI_CNFG,
+ 				SPI_NFI_READ_MODE);
+ 	if (err)
+-		return err;
++		goto error_dma_unmap;
+ 
+ 	err = regmap_update_bits(as_ctrl->regmap_nfi, REG_SPI_NFI_CNFG,
+ 				 SPI_NFI_OPMODE,
+ 				 FIELD_PREP(SPI_NFI_OPMODE, 3));
+ 	if (err)
+-		return err;
++		goto error_dma_unmap;
+ 
+ 	err = regmap_set_bits(as_ctrl->regmap_nfi, REG_SPI_NFI_CNFG,
+ 			      SPI_NFI_DMA_MODE);
+ 	if (err)
+-		return err;
++		goto error_dma_unmap;
+ 
+ 	err = regmap_write(as_ctrl->regmap_nfi, REG_SPI_NFI_CMD, 0x80);
+ 	if (err)
+-		return err;
++		goto error_dma_unmap;
+ 
+ 	err = regmap_clear_bits(as_ctrl->regmap_nfi, REG_SPI_NFI_CON,
+ 				SPI_NFI_WR_TRIG);
+ 	if (err)
+-		return err;
++		goto error_dma_unmap;
+ 
+ 	err = regmap_set_bits(as_ctrl->regmap_nfi, REG_SPI_NFI_CON,
+ 			      SPI_NFI_WR_TRIG);
+ 	if (err)
+-		return err;
++		goto error_dma_unmap;
+ 
+ 	err = regmap_read_poll_timeout(as_ctrl->regmap_nfi, REG_SPI_NFI_INTR,
+ 				       val, (val & SPI_NFI_AHB_DONE), 0,
+ 				       1 * USEC_PER_SEC);
+ 	if (err)
+-		return err;
++		goto error_dma_unmap;
+ 
+ 	err = regmap_read_poll_timeout(as_ctrl->regmap_nfi,
+ 				       REG_SPI_NFI_SNF_STA_CTL1, val,
+ 				       (val & SPI_NFI_LOAD_TO_CACHE_DONE),
+ 				       0, 1 * USEC_PER_SEC);
+ 	if (err)
+-		return err;
++		goto error_dma_unmap;
+ 
+ 	/*
+ 	 * SPI_NFI_LOAD_TO_CACHE_DONE bit must be written at the end
+@@ -919,13 +923,20 @@ static ssize_t airoha_snand_dirmap_write(struct spi_mem_dirmap_desc *desc,
+ 				SPI_NFI_LOAD_TO_CACHE_DONE,
+ 				SPI_NFI_LOAD_TO_CACHE_DONE);
+ 	if (err)
+-		return err;
++		goto error_dma_unmap;
+ 
++	dma_unmap_single(as_ctrl->dev, dma_addr, SPI_NAND_CACHE_SIZE,
++			 DMA_TO_DEVICE);
+ 	err = airoha_snand_set_mode(as_ctrl, SPI_MODE_MANUAL);
+ 	if (err < 0)
+ 		return err;
+ 
+ 	return len;
++
++error_dma_unmap:
++	dma_unmap_single(as_ctrl->dev, dma_addr, SPI_NAND_CACHE_SIZE,
++			 DMA_TO_DEVICE);
++	return err;
+ }
+ 
+ static int airoha_snand_exec_op(struct spi_mem *mem,
+@@ -1016,42 +1027,20 @@ static const struct spi_controller_mem_ops airoha_snand_mem_ops = {
+ static int airoha_snand_setup(struct spi_device *spi)
+ {
+ 	struct airoha_snand_ctrl *as_ctrl;
+-	struct airoha_snand_dev *as_dev;
+-
+-	as_ctrl = spi_controller_get_devdata(spi->controller);
+-
+-	as_dev = devm_kzalloc(as_ctrl->dev, sizeof(*as_dev), GFP_KERNEL);
+-	if (!as_dev)
+-		return -ENOMEM;
++	u8 *txrx_buf;
+ 
+ 	/* prepare device buffer */
+-	as_dev->buf_len = SPI_NAND_CACHE_SIZE;
+-	as_dev->txrx_buf = devm_kzalloc(as_ctrl->dev, as_dev->buf_len,
+-					GFP_KERNEL);
+-	if (!as_dev->txrx_buf)
+-		return -ENOMEM;
+-
+-	as_dev->dma_addr = dma_map_single(as_ctrl->dev, as_dev->txrx_buf,
+-					  as_dev->buf_len, DMA_BIDIRECTIONAL);
+-	if (dma_mapping_error(as_ctrl->dev, as_dev->dma_addr))
++	as_ctrl = spi_controller_get_devdata(spi->controller);
++	txrx_buf = devm_kzalloc(as_ctrl->dev, SPI_NAND_CACHE_SIZE,
++				GFP_KERNEL);
++	if (!txrx_buf)
+ 		return -ENOMEM;
+ 
+-	spi_set_ctldata(spi, as_dev);
++	spi_set_ctldata(spi, txrx_buf);
  
  	return 0;
- probe_setup_failed:
--	cqspi_controller_enable(cqspi, 0);
- 	if (!(ddata && (ddata->quirks & CQSPI_DISABLE_RUNTIME_PM)))
- 		pm_runtime_disable(dev);
-+probe_dma_failed:
-+	cqspi_controller_enable(cqspi, 0);
- probe_reset_failed:
- 	if (cqspi->is_jh7110)
- 		cqspi_jh7110_disable_clk(pdev, cqspi);
+ }
+ 
+-static void airoha_snand_cleanup(struct spi_device *spi)
+-{
+-	struct airoha_snand_dev *as_dev = spi_get_ctldata(spi);
+-	struct airoha_snand_ctrl *as_ctrl;
+-
+-	as_ctrl = spi_controller_get_devdata(spi->controller);
+-	dma_unmap_single(as_ctrl->dev, as_dev->dma_addr,
+-			 as_dev->buf_len, DMA_BIDIRECTIONAL);
+-	spi_set_ctldata(spi, NULL);
+-}
+-
+ static int airoha_snand_nfi_setup(struct airoha_snand_ctrl *as_ctrl)
+ {
+ 	u32 val, sec_size, sec_num;
+@@ -1153,7 +1142,6 @@ static int airoha_snand_probe(struct platform_device *pdev)
+ 	ctrl->bits_per_word_mask = SPI_BPW_MASK(8);
+ 	ctrl->mode_bits = SPI_RX_DUAL;
+ 	ctrl->setup = airoha_snand_setup;
+-	ctrl->cleanup = airoha_snand_cleanup;
+ 	device_set_node(&ctrl->dev, dev_fwnode(dev));
+ 
+ 	err = airoha_snand_nfi_setup(as_ctrl);
 -- 
 2.51.0
 
