@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-191111-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190895-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41EE7C11072
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:30:51 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B9E0C10E57
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:24:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C27A8582C2B
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:25:40 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E989754645F
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:16:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC055302CB9;
-	Mon, 27 Oct 2025 19:23:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BC4E30E0C5;
+	Mon, 27 Oct 2025 19:14:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wSA+zOms"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xlQnayZ2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98F612C15BB;
-	Mon, 27 Oct 2025 19:23:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D96D72F25F1;
+	Mon, 27 Oct 2025 19:14:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761593038; cv=none; b=LklEduKpBkAa7CDkNdCi2JcS52cWTF19v7FVI09Pr4fIQIYxf19mVBdcWA/6Ozou5u6CnxbseVP6NFolr1uiI2F2+vH6JdiOouw7FP3SeK4zPFylkn8HNI80MrRDQ4PgfvBxBNgZcYfjPFgz/6K3hOYyS3LgbN3LCdx/pFpPARQ=
+	t=1761592478; cv=none; b=OAcmAjg+rH4Lkt4rye+m04ZmqZovwAESib56QK/wuCkG2bJ/NomriHGiUlt1GM11hSDuPMMYrCiL0yF1YdqU4ZPui+Iu19ZHldjSBrUcAaAltUWlhGQ9LJS1qTvNxO+5x2e1NXN/v51KBWrTNBIUP75NSg63zDRMpuGWytBJ70c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761593038; c=relaxed/simple;
-	bh=MAPa9ak95kUmJpF0B3c5hE2Y5p+74FBaCNY30J2gzs0=;
+	s=arc-20240116; t=1761592478; c=relaxed/simple;
+	bh=UZAmSh27JQvQtZh+7xZ7YPtAPHev5I0k0TKwYPNn8Ac=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bXlygxKd1WhYfMwRrjYrt7ShEaBMly8rJvYp9+sOa8hLUses6hULQSlS1TBxgS+5Ysd1EdoGPYR06vIT3lWkVuq0Ut0cek9iQZeu056Y9ceaFZcODVBuM+PlY8Vu9kW9m9awnVXfK4/Kwe0abhNcJNyWUpTsc0mdTPTUFQto97c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wSA+zOms; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A241C4CEF1;
-	Mon, 27 Oct 2025 19:23:58 +0000 (UTC)
+	 MIME-Version; b=bY1hHt/gwYbvv4AoSN5RfCuNp1O5QmUUHP+ZTG8A6rZwUSEG7THfWS6QVWTyVS3NLmvBtsqrjn4F2dwo/5D0xXRMpRTdNZZ6qIy0V1kdjoLC6JSFwlZcoHH/sRdPlSbCejUcIf3KS1vHuMtlJuNeWQEAhqffZ2R92wLVON8hq9g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xlQnayZ2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42F02C4CEF1;
+	Mon, 27 Oct 2025 19:14:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761593038;
-	bh=MAPa9ak95kUmJpF0B3c5hE2Y5p+74FBaCNY30J2gzs0=;
+	s=korg; t=1761592478;
+	bh=UZAmSh27JQvQtZh+7xZ7YPtAPHev5I0k0TKwYPNn8Ac=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wSA+zOms002+oc7mf68pmhE+hKm2YHqk3b5GA2n7y7S41CWQiOEe6T4paACU80Jac
-	 X9cKsXUce8e0hfcHOT+m5vm3uWKGzFCE4m+Ax2vkY2DmH/HS19N4xfTj5180RAjSOO
-	 dH4KSvowUWboyH7dB2Vrne9Xap4WF3tskIA5fvng=
+	b=xlQnayZ2HGRnAYZl+7hqAxEob0aASFqyAHt1h6HA+DNz+Z9UExwHgPNiv44kRFyPj
+	 AWofm0RmX9qFt0YqXP7NxYCCc0QN37FZsqYic1ljmZQDC8ZwVzpxigH+J5uyRbaFHA
+	 ddSDoOG/YXQn868cVvGBwAx1dlt1ZwSTJyqEqOWQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Robinson <pbrobinson@gmail.com>,
-	Andrea della Porta <andrea.porta@suse.com>,
-	Phil Elwell <phil@raspberrypi.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Jan Kara <jack@suse.cz>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 071/117] arm64: dts: broadcom: bcm2712: Define VGIC interrupt
+Subject: [PATCH 6.1 136/157] ext4: avoid potential buffer over-read in parse_apply_sb_mount_options()
 Date: Mon, 27 Oct 2025 19:36:37 +0100
-Message-ID: <20251027183455.930457113@linuxfoundation.org>
+Message-ID: <20251027183504.907507690@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
-References: <20251027183453.919157109@linuxfoundation.org>
+In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
+References: <20251027183501.227243846@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,45 +63,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Robinson <pbrobinson@gmail.com>
+From: Theodore Ts'o <tytso@mit.edu>
 
-[ Upstream commit aa960b597600bed80fe171729057dd6aa188b5b5 ]
+[ Upstream commit 8ecb790ea8c3fc69e77bace57f14cf0d7c177bd8 ]
 
-Define the interrupt in the GICv2 for vGIC so KVM
-can be used, it was missed from the original upstream
-DTB for some reason.
+Unlike other strings in the ext4 superblock, we rely on tune2fs to
+make sure s_mount_opts is NUL terminated.  Harden
+parse_apply_sb_mount_options() by treating s_mount_opts as a potential
+__nonstring.
 
-Signed-off-by: Peter Robinson <pbrobinson@gmail.com>
-Cc: Andrea della Porta <andrea.porta@suse.com>
-Cc: Phil Elwell <phil@raspberrypi.com>
-Fixes: faa3381267d0 ("arm64: dts: broadcom: Add minimal support for Raspberry Pi 5")
-Link: https://lore.kernel.org/r/20250924085612.1039247-1-pbrobinson@gmail.com
-Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Cc: stable@vger.kernel.org
+Fixes: 8b67f04ab9de ("ext4: Add mount options in superblock")
+Reviewed-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Message-ID: <20250916-tune2fs-v2-1-d594dc7486f0@mit.edu>
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+[ added sizeof() third argument to strscpy_pad() ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/broadcom/bcm2712.dtsi | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/ext4/super.c |   17 +++++------------
+ 1 file changed, 5 insertions(+), 12 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/broadcom/bcm2712.dtsi b/arch/arm64/boot/dts/broadcom/bcm2712.dtsi
-index 0f38236501743..209f99b1ceae7 100644
---- a/arch/arm64/boot/dts/broadcom/bcm2712.dtsi
-+++ b/arch/arm64/boot/dts/broadcom/bcm2712.dtsi
-@@ -264,6 +264,8 @@
- 			      <0x7fffe000 0x2000>;
- 			interrupt-controller;
- 			#address-cells = <0>;
-+			interrupts = <GIC_PPI 9 (GIC_CPU_MASK_SIMPLE(4) |
-+					IRQ_TYPE_LEVEL_HIGH)>;
- 			#interrupt-cells = <3>;
- 		};
- 	};
--- 
-2.51.0
-
+--- a/fs/ext4/super.c
++++ b/fs/ext4/super.c
+@@ -2415,7 +2415,7 @@ static int parse_apply_sb_mount_options(
+ 					struct ext4_fs_context *m_ctx)
+ {
+ 	struct ext4_sb_info *sbi = EXT4_SB(sb);
+-	char *s_mount_opts = NULL;
++	char s_mount_opts[65];
+ 	struct ext4_fs_context *s_ctx = NULL;
+ 	struct fs_context *fc = NULL;
+ 	int ret = -ENOMEM;
+@@ -2423,15 +2423,11 @@ static int parse_apply_sb_mount_options(
+ 	if (!sbi->s_es->s_mount_opts[0])
+ 		return 0;
+ 
+-	s_mount_opts = kstrndup(sbi->s_es->s_mount_opts,
+-				sizeof(sbi->s_es->s_mount_opts),
+-				GFP_KERNEL);
+-	if (!s_mount_opts)
+-		return ret;
++	strscpy_pad(s_mount_opts, sbi->s_es->s_mount_opts, sizeof(s_mount_opts));
+ 
+ 	fc = kzalloc(sizeof(struct fs_context), GFP_KERNEL);
+ 	if (!fc)
+-		goto out_free;
++		return -ENOMEM;
+ 
+ 	s_ctx = kzalloc(sizeof(struct ext4_fs_context), GFP_KERNEL);
+ 	if (!s_ctx)
+@@ -2463,11 +2459,8 @@ parse_failed:
+ 	ret = 0;
+ 
+ out_free:
+-	if (fc) {
+-		ext4_fc_free(fc);
+-		kfree(fc);
+-	}
+-	kfree(s_mount_opts);
++	ext4_fc_free(fc);
++	kfree(fc);
+ 	return ret;
+ }
+ 
 
 
 
