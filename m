@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-190936-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191028-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6AC9C10EA1
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:25:01 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3BAAC10EE3
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:26:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 85F7D4631AC
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:17:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 85F631892A4C
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:22:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0A9930147E;
-	Mon, 27 Oct 2025 19:16:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A81F326D6D;
+	Mon, 27 Oct 2025 19:20:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HoAF7NOa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c6LNz4/q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DB0E21576E;
-	Mon, 27 Oct 2025 19:16:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAB0730C35E;
+	Mon, 27 Oct 2025 19:20:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592586; cv=none; b=nKZeMKBdbXz5ywPgMwVA2SJycn9odXT4ePPt5lWU4lJu5vm/aZHgfePdCFvHTuB4iYH9//luFN3OkRYRIqEMxhlMUP43zHlbpiVYoN8LiAZ4n3cYBKru0+c/fQ36voWbFlhCKENwflr+17Wt55Zhg7QJDHDw2dry7qHYEobScic=
+	t=1761592826; cv=none; b=Ku29G1dtC0QC6LDj+9n8QNv4iJarm83ecwer3UXUHzYsvzW7bPybEflbR97rmhTZGd/dfsGtjH1zp3rMhk5BN0vfJQb53WFgiXunG8bOX98EtW4cNFZhhIyH2pkCVqwxbrtDnVJL9O8Wm6VOHmhDRf9gPPwNUi/Zl09wLQTxOoY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592586; c=relaxed/simple;
-	bh=6bS/9IDZvQ59383AOb0msmKKbW8ZtcyRT1PiyFLvQ3g=;
+	s=arc-20240116; t=1761592826; c=relaxed/simple;
+	bh=A/GfSUL16qI329ZnfnQgswZnDZy6ueUHhYbDSLpW6tE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LhiJJb43UcUwWu3QYh9NqznDWXzOtE2vzvaFui+wNxi7uUg7WWQyrTadprgiaDQeaU6br8OibrzNkodi7I+8x84ysu1IW+X6x5HKYlM2NPYiel7xp02YsCqHUcmmSiJO2jN7kz4GIJv0Tl5fDnafIFhjqX7qXaX5nmYDu0dlc/M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HoAF7NOa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E21CC4CEF1;
-	Mon, 27 Oct 2025 19:16:25 +0000 (UTC)
+	 MIME-Version:Content-Type; b=JDq/jfqu6DciMJatRei3RcGntCcnXh6zPhnVpYMr+Fp/qN58qmla1wMTIISRLunAaJjfFwpbtqtqw+4FP/h4DqUGAFeUoE8aH86q+cqdW5t+I0At/gCbKCiaBKW3TasOEX/BP53hbMSKizj9X+egkAIfxKGn8YCqZwOqCjruBc8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c6LNz4/q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05308C4CEF1;
+	Mon, 27 Oct 2025 19:20:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592585;
-	bh=6bS/9IDZvQ59383AOb0msmKKbW8ZtcyRT1PiyFLvQ3g=;
+	s=korg; t=1761592826;
+	bh=A/GfSUL16qI329ZnfnQgswZnDZy6ueUHhYbDSLpW6tE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HoAF7NOaovOKyLPksTIbPR/kKHnyNbbNMwEUuEk1Vqj7dT4g5qZ/ZqNdM0xqoYKzX
-	 bODj7G552qXHaRUa298XfM6G/Ql5hKklf0YFHlZlujTzMK/xLX+nbEXoPrKYpfHV3Y
-	 zXNdI8ytne9kFroRo8ysxgLwkak2wq8lWyvdC1Es=
+	b=c6LNz4/qf1DVJJSmmD4cZvbXoPeAKxwbmevGemDyc+toP68teZvze1UUiNVbwi+IS
+	 +AK4AvHxpNhG0uHd3U6J/HV1TrhGyXW+ZKCVmu1G+wHz1EQjz0k56LT/3hmzT8VBf2
+	 288ZYN10p3SkhcAx/L31BNmQ0na6lfE0XUl+Fr9E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Schuster <schuster.simon@siemens-energy.com>,
-	Andreas Oetken <andreas.oetken@siemens-energy.com>,
-	Dinh Nguyen <dinguyen@kernel.org>,
+	=?UTF-8?q?Michael=20Wei=C3=9F?= <michael.weiss@aisec.fraunhofer.de>,
+	Harshal Gohel <hg@simonwunderlich.de>,
+	=?UTF-8?q?Johannes=20Wiesb=C3=B6ck?= <johannes.wiesboeck@aisec.fraunhofer.de>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 02/84] nios2: ensure that memblock.current_limit is set when setting pfn limits
-Date: Mon, 27 Oct 2025 19:35:51 +0100
-Message-ID: <20251027183438.884074461@linuxfoundation.org>
+Subject: [PATCH 6.12 026/117] rtnetlink: Allow deleting FDB entries in user namespace
+Date: Mon, 27 Oct 2025 19:35:52 +0100
+Message-ID: <20251027183454.672398757@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183438.817309828@linuxfoundation.org>
-References: <20251027183438.817309828@linuxfoundation.org>
+In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
+References: <20251027183453.919157109@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,77 +64,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Simon Schuster <schuster.simon@siemens-energy.com>
+From: Johannes Wiesböck <johannes.wiesboeck@aisec.fraunhofer.de>
 
-[ Upstream commit a20b83cf45be2057f3d073506779e52c7fa17f94 ]
+[ Upstream commit bf29555f5bdc017bac22ca66fcb6c9f46ec8788f ]
 
-On nios2, with CONFIG_FLATMEM set, the kernel relies on
-memblock_get_current_limit() to determine the limits of mem_map, in
-particular for max_low_pfn.
-Unfortunately, memblock.current_limit is only default initialized to
-MEMBLOCK_ALLOC_ANYWHERE at this point of the bootup, potentially leading
-to situations where max_low_pfn can erroneously exceed the value of
-max_pfn and, thus, the valid range of available DRAM.
+Creating FDB entries is possible from a non-initial user namespace when
+having CAP_NET_ADMIN, yet, when deleting FDB entries, processes receive
+an EPERM because the capability is always checked against the initial
+user namespace. This restricts the FDB management from unprivileged
+containers.
 
-This can in turn cause kernel-level paging failures, e.g.:
+Drop the netlink_capable check in rtnl_fdb_del as it was originally
+dropped in c5c351088ae7 and reintroduced in 1690be63a27b without
+intention.
 
-[   76.900000] Unable to handle kernel paging request at virtual address 20303000
-[   76.900000] ea = c0080890, ra = c000462c, cause = 14
-[   76.900000] Kernel panic - not syncing: Oops
-[   76.900000] ---[ end Kernel panic - not syncing: Oops ]---
+This patch was tested using a container on GyroidOS, where it was
+possible to delete FDB entries from an unprivileged user namespace and
+private network namespace.
 
-This patch fixes this by pre-calculating memblock.current_limit
-based on the upper limits of the available memory ranges via
-adjust_lowmem_bounds, a simplified version of the equivalent
-implementation within the arm architecture.
-
-Signed-off-by: Simon Schuster <schuster.simon@siemens-energy.com>
-Signed-off-by: Andreas Oetken <andreas.oetken@siemens-energy.com>
-Signed-off-by: Dinh Nguyen <dinguyen@kernel.org>
+Fixes: 1690be63a27b ("bridge: Add vlan support to static neighbors")
+Reviewed-by: Michael Weiß <michael.weiss@aisec.fraunhofer.de>
+Tested-by: Harshal Gohel <hg@simonwunderlich.de>
+Signed-off-by: Johannes Wiesböck <johannes.wiesboeck@aisec.fraunhofer.de>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
+Link: https://patch.msgid.link/20251015201548.319871-1-johannes.wiesboeck@aisec.fraunhofer.de
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/nios2/kernel/setup.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ net/core/rtnetlink.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/arch/nios2/kernel/setup.c b/arch/nios2/kernel/setup.c
-index 8582ed9658447..5308c76122817 100644
---- a/arch/nios2/kernel/setup.c
-+++ b/arch/nios2/kernel/setup.c
-@@ -147,6 +147,20 @@ static void __init find_limits(unsigned long *min, unsigned long *max_low,
- 	*max_high = PFN_DOWN(memblock_end_of_DRAM());
- }
+diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
+index 4d0ee1c9002aa..650c3c20e79ff 100644
+--- a/net/core/rtnetlink.c
++++ b/net/core/rtnetlink.c
+@@ -4414,9 +4414,6 @@ static int rtnl_fdb_del(struct sk_buff *skb, struct nlmsghdr *nlh,
+ 	int err;
+ 	u16 vid;
  
-+static void __init adjust_lowmem_bounds(void)
-+{
-+	phys_addr_t block_start, block_end;
-+	u64 i;
-+	phys_addr_t memblock_limit = 0;
-+
-+	for_each_mem_range(i, &block_start, &block_end) {
-+		if (block_end > memblock_limit)
-+			memblock_limit = block_end;
-+	}
-+
-+	memblock_set_current_limit(memblock_limit);
-+}
-+
- void __init setup_arch(char **cmdline_p)
- {
- 	console_verbose();
-@@ -160,6 +174,7 @@ void __init setup_arch(char **cmdline_p)
- 	/* Keep a copy of command line */
- 	*cmdline_p = boot_command_line;
- 
-+	adjust_lowmem_bounds();
- 	find_limits(&min_low_pfn, &max_low_pfn, &max_pfn);
- 	max_mapnr = max_low_pfn;
- 
+-	if (!netlink_capable(skb, CAP_NET_ADMIN))
+-		return -EPERM;
+-
+ 	if (!del_bulk) {
+ 		err = nlmsg_parse_deprecated(nlh, sizeof(*ndm), tb, NDA_MAX,
+ 					     NULL, extack);
 -- 
 2.51.0
 
