@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-190557-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190837-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C7A6C108F4
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:10:09 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C147C10A6E
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:14:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C875A562B67
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:04:38 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id CAC1B351F70
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:14:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F8F2334691;
-	Mon, 27 Oct 2025 19:00:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADDF918A6A5;
+	Mon, 27 Oct 2025 19:12:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t7iZs8RE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hDFK31Fn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF30131BC96;
-	Mon, 27 Oct 2025 19:00:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F6C132143F;
+	Mon, 27 Oct 2025 19:12:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591602; cv=none; b=X3rKH13QrWyQbtYneY4Hz9H+aXEtEUhVmhi2zm1XN3+oeDyhc+aV5eQ93prABujZtwFCwRE61Cd4rWBc2wAoU6r8Bfw6vGFDsm0NuK2pMtIDl3sd2m4hHh91ijvZpz+9iq0R3QNyiKwoF5wINTDyUYRjJQMPSZ/pC54ipMQFWdU=
+	t=1761592328; cv=none; b=WL3R2uKOjA0452th1vQ8txpwSxZ+PHNlB4Ep4wpl/E7L/DHgmM98R2WbbR+Hhph5eS1r3uNm+0tK2Is8Won9LrICvQkJmreuYWP9e9G5FpAU17zuoj9FICHWhAGgHAxYI1BmAfTrJUUf+Se3Jbx8tXUTJZkuM3wcScN+F61fMBY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591602; c=relaxed/simple;
-	bh=P/RtpSBVtaxrgEGKTerTNPAhoECJ40XS0bYmRzsBUVk=;
+	s=arc-20240116; t=1761592328; c=relaxed/simple;
+	bh=SUkhqzpTy5OhMOcx7zV20uhCJkXwYL62javajhYgogU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M/E5YbzkZJkF5TI8rkuCrREAvNXGLp5xrNBOhqKupWK5I+KFC0vcHbU5YBXVUMJLsyc+Zt05ZVGLZaXTyhG6LVLWQAzXC56ODqWiNkVQtmBeWCpzNzFyPq7CNaIEEbJFQQuwiSrGnlyoW2OxSwWrycpU+itytZAVi81WnIN9oFk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t7iZs8RE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EEBCC4CEF1;
-	Mon, 27 Oct 2025 19:00:00 +0000 (UTC)
+	 MIME-Version; b=rC+DltC0Mmzz4ZXtUNkjfv47Yw5R1RsQ429Yzr1Ta0h4CdmVGw3l/WhBbpAaCo7i9GOxsMXQzrqhyoCsSTs1H8sx5x5FyUhFwsJrypFuGWoQXAJqidOXNlTcK9RCnANFHyNn2TAFBTyJzj5m90F3WLexOBACiDLtO+JxIq/gCcA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hDFK31Fn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCA6BC4CEFD;
+	Mon, 27 Oct 2025 19:12:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591601;
-	bh=P/RtpSBVtaxrgEGKTerTNPAhoECJ40XS0bYmRzsBUVk=;
+	s=korg; t=1761592328;
+	bh=SUkhqzpTy5OhMOcx7zV20uhCJkXwYL62javajhYgogU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t7iZs8REATW6/CJclW/sXiJHADfGscvwAYntz+F28f9ES0otJJ3ixu7Pmz+3ylQjO
-	 RaGqz3qy3rT93WZe1s6TiyP8SVzbgiLYimfEeNyZrDEF7jI/USdI/Bhy7YHFLra1R9
-	 7ENxFZOWeVX2HWJr+4H38ShH8Ux7ZRLLTosyFqYI=
+	b=hDFK31FntgWEgPEo6KoLoK6owAe99qamMYjWTHt0VO0Ao/FfMNAyQw5td0Bxx8bqM
+	 Pa3/jISe7LnZdDEwuymP6+esIJBvlz+EGyDvPloIHz4cSx76SftQccagoew6dcDY9k
+	 /SOoc75epvoXM6KS1wm85R+bIT8CNMLhEIHZ6uwY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xichao Zhao <zhao.xichao@vivo.com>,
-	Jan Kara <jack@suse.cz>,
-	Kees Cook <kees@kernel.org>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 258/332] exec: Fix incorrect type for ret
+Subject: [PATCH 6.1 050/157] net: usb: lan78xx: Add error handling to lan78xx_init_mac_address
 Date: Mon, 27 Oct 2025 19:35:11 +0100
-Message-ID: <20251027183531.659304733@linuxfoundation.org>
+Message-ID: <20251027183502.633545757@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
-References: <20251027183524.611456697@linuxfoundation.org>
+In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
+References: <20251027183501.227243846@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +63,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xichao Zhao <zhao.xichao@vivo.com>
+From: Oleksij Rempel <o.rempel@pengutronix.de>
 
-[ Upstream commit 5e088248375d171b80c643051e77ade6b97bc386 ]
+[ Upstream commit 6f31135894ec96481e2bda93a1da70712f5e57c1 ]
 
-In the setup_arg_pages(), ret is declared as an unsigned long.
-The ret might take a negative value. Therefore, its type should
-be changed to int.
+Convert `lan78xx_init_mac_address` to return error codes and handle
+failures in register read and write operations. Update `lan78xx_reset`
+to check for errors during MAC address initialization and propagate them
+appropriately.
 
-Signed-off-by: Xichao Zhao <zhao.xichao@vivo.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20250825073609.219855-1-zhao.xichao@vivo.com
-Signed-off-by: Kees Cook <kees@kernel.org>
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20241209130751.703182-3-o.rempel@pengutronix.de
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 8d93ff40d49d ("net: usb: lan78xx: fix use of improperly initialized dev->chipid in lan78xx_reset")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/exec.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/usb/lan78xx.c | 36 ++++++++++++++++++++++++++++--------
+ 1 file changed, 28 insertions(+), 8 deletions(-)
 
-diff --git a/fs/exec.c b/fs/exec.c
-index 7144c541818f6..2979b458b650a 100644
---- a/fs/exec.c
-+++ b/fs/exec.c
-@@ -746,7 +746,7 @@ int setup_arg_pages(struct linux_binprm *bprm,
- 		    unsigned long stack_top,
- 		    int executable_stack)
+diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
+index 0f1c9009d793e..08fb03bcf4952 100644
+--- a/drivers/net/usb/lan78xx.c
++++ b/drivers/net/usb/lan78xx.c
+@@ -1940,13 +1940,19 @@ static const struct ethtool_ops lan78xx_ethtool_ops = {
+ 	.get_regs	= lan78xx_get_regs,
+ };
+ 
+-static void lan78xx_init_mac_address(struct lan78xx_net *dev)
++static int lan78xx_init_mac_address(struct lan78xx_net *dev)
  {
--	unsigned long ret;
+ 	u32 addr_lo, addr_hi;
+ 	u8 addr[6];
 +	int ret;
- 	unsigned long stack_shift;
- 	struct mm_struct *mm = current->mm;
- 	struct vm_area_struct *vma = bprm->vma;
++
++	ret = lan78xx_read_reg(dev, RX_ADDRL, &addr_lo);
++	if (ret < 0)
++		return ret;
+ 
+-	lan78xx_read_reg(dev, RX_ADDRL, &addr_lo);
+-	lan78xx_read_reg(dev, RX_ADDRH, &addr_hi);
++	ret = lan78xx_read_reg(dev, RX_ADDRH, &addr_hi);
++	if (ret < 0)
++		return ret;
+ 
+ 	addr[0] = addr_lo & 0xFF;
+ 	addr[1] = (addr_lo >> 8) & 0xFF;
+@@ -1979,14 +1985,26 @@ static void lan78xx_init_mac_address(struct lan78xx_net *dev)
+ 			  (addr[2] << 16) | (addr[3] << 24);
+ 		addr_hi = addr[4] | (addr[5] << 8);
+ 
+-		lan78xx_write_reg(dev, RX_ADDRL, addr_lo);
+-		lan78xx_write_reg(dev, RX_ADDRH, addr_hi);
++		ret = lan78xx_write_reg(dev, RX_ADDRL, addr_lo);
++		if (ret < 0)
++			return ret;
++
++		ret = lan78xx_write_reg(dev, RX_ADDRH, addr_hi);
++		if (ret < 0)
++			return ret;
+ 	}
+ 
+-	lan78xx_write_reg(dev, MAF_LO(0), addr_lo);
+-	lan78xx_write_reg(dev, MAF_HI(0), addr_hi | MAF_HI_VALID_);
++	ret = lan78xx_write_reg(dev, MAF_LO(0), addr_lo);
++	if (ret < 0)
++		return ret;
++
++	ret = lan78xx_write_reg(dev, MAF_HI(0), addr_hi | MAF_HI_VALID_);
++	if (ret < 0)
++		return ret;
+ 
+ 	eth_hw_addr_set(dev->net, addr);
++
++	return 0;
+ }
+ 
+ /* MDIO read and write wrappers for phylib */
+@@ -2910,7 +2928,9 @@ static int lan78xx_reset(struct lan78xx_net *dev)
+ 		}
+ 	} while (buf & HW_CFG_LRST_);
+ 
+-	lan78xx_init_mac_address(dev);
++	ret = lan78xx_init_mac_address(dev);
++	if (ret < 0)
++		return ret;
+ 
+ 	/* save DEVID for later usage */
+ 	ret = lan78xx_read_reg(dev, ID_REV, &buf);
 -- 
 2.51.0
 
