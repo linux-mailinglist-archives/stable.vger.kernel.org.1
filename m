@@ -1,62 +1,57 @@
-Return-Path: <stable+bounces-190957-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190886-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0574C10E0B
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:23:30 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1B44C10D03
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:21:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 37B411A63AA3
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:19:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C6141A2802D
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:16:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDE0C1E47CA;
-	Mon, 27 Oct 2025 19:17:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38145328B7A;
+	Mon, 27 Oct 2025 19:14:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fy1UbfGf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CMVc+VyC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A78A72C3749;
-	Mon, 27 Oct 2025 19:17:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD3E12222AA;
+	Mon, 27 Oct 2025 19:14:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592640; cv=none; b=HbWZvO1mODczYgh5i1DyVQXR3bxw/emOeEUP8G2qdjrFGkdreHU70FlpZsLCNKBuRjf9aXZpsyWtY8PeJS2jtCZ6RBXVhKGwrwNIg8hCEuMe09EKIodCMnzN/rDLsh+v7F3ZgRr6JyIYBH88mSf2GNYj+pFszKWb8jGTAebpd8A=
+	t=1761592458; cv=none; b=rwjayMplhiW9uvEqSV5fnX3BDaNQFpl/ifsKu6qy08EoY0P7lMwZblHdQz3LJ1z3Kb5evveuxc2tZfabvWoiKRpUe9UPpzq8ZB1e+N0CJCyBNtbjPnmnqCIWnU+GxF+G2HCX6cL49ypySjjzeFyeosdPj+VkAcM0CkmzfK3iIQ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592640; c=relaxed/simple;
-	bh=E/vaTDzHpP0Ot5XuliCRJjSR2ftZCuuH7lUdErhABgE=;
+	s=arc-20240116; t=1761592458; c=relaxed/simple;
+	bh=soYbDVs6zqMxXi5Ftepl2PHWkGZy1CdR2Kw84vzuevo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q5Ebigq1jW+VFTf0raA13g4AyHoACVJc7JubqVcx7mirJRpvEbPezOek9XtSKnnbRzYgOIroT+ihGi89lrqp/agG1gH20fTb03zCM6QE1ZvWEJETWa+JmlZDcr7mqv+5VQzskdrXKLXwXAm3sE9db+RzlPZYVH1eUIx6W3CHZ80=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fy1UbfGf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4607C113D0;
-	Mon, 27 Oct 2025 19:17:19 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ia7kIaTxdlkx2s9OeOGHin9yarRPMNcHLnHfE5YDtmLuYdZ64CWMsTts52DPYli9gdqN1E89vcW3AoNaoB2SRB5Y3rb+G4XMoxRkJquKj6mitPP4jJ5nu+ORS29HzUnz9ejTgtPK7FpL/9liTlSyxd/RdC6krElEKvt6hXpWBS0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CMVc+VyC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42DEFC4CEF1;
+	Mon, 27 Oct 2025 19:14:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592640;
-	bh=E/vaTDzHpP0Ot5XuliCRJjSR2ftZCuuH7lUdErhABgE=;
+	s=korg; t=1761592457;
+	bh=soYbDVs6zqMxXi5Ftepl2PHWkGZy1CdR2Kw84vzuevo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Fy1UbfGfbFhG8edxi+zmcXfQ7MQnlPDr/euvsKHUs3f3/G9ufbax9UYOEF/wh8SHD
-	 xBNCHyaY80u1kXrY7aIvw0GLAkt8O6T3pU1Oe0e9N1D1bDrnbO5lNXXjbk34dt7lKi
-	 w4gqjXH4fvXiyLZPKSUMznSLVkx7lDkrIYzNR5UQ=
+	b=CMVc+VyCi6cROSmbj+XaXc2iGotuOHDvT/k4xvIExSs+F8kUAQyoMlQWF6KUy2uH4
+	 gozGiZeLaf6TfnIuKNYTrnuY5u51p8UHh9nYa3zRjrp/q6fjG7IDqKyY18HRN0LkmL
+	 /JHVy/6U4yvUls650/sw/4ZpnmfJoYdAcMw34MmA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Deepanshu Kartikey <kartikey406@gmail.com>,
-	syzbot+6fdd8fa3380730a4b22c@syzkaller.appspotmail.com,
-	Mark Fasheh <mark@fasheh.com>,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Jun Piao <piaojun@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 41/84] ocfs2: clear extent cache after moving/defragmenting extents
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 129/157] PCI: j721e: Enable ACSPCIE Refclk if "ti,syscon-acspcie-proxy-ctrl" exists
 Date: Mon, 27 Oct 2025 19:36:30 +0100
-Message-ID: <20251027183439.915065155@linuxfoundation.org>
+Message-ID: <20251027183504.713047030@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183438.817309828@linuxfoundation.org>
-References: <20251027183438.817309828@linuxfoundation.org>
+In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
+References: <20251027183501.227243846@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,69 +61,99 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Deepanshu Kartikey <kartikey406@gmail.com>
+From: Siddharth Vadapalli <s-vadapalli@ti.com>
 
-commit 78a63493f8e352296dbc7cb7b3f4973105e8679e upstream.
+[ Upstream commit 82c4be4168e26a5593aaa1002b5678128a638824 ]
 
-The extent map cache can become stale when extents are moved or
-defragmented, causing subsequent operations to see outdated extent flags.
-This triggers a BUG_ON in ocfs2_refcount_cal_cow_clusters().
+The ACSPCIE module is capable of driving the reference clock required by
+the PCIe Endpoint device. It is an alternative to on-board and external
+reference clock generators. Enabling the output from the ACSPCIE module's
+PAD IO Buffers requires clearing the "PAD IO disable" bits of the
+ACSPCIE_PROXY_CTRL register in the CTRL_MMR register space.
 
-The problem occurs when:
-1. copy_file_range() creates a reflinked extent with OCFS2_EXT_REFCOUNTED
-2. ioctl(FITRIM) triggers ocfs2_move_extents()
-3. __ocfs2_move_extents_range() reads and caches the extent (flags=0x2)
-4. ocfs2_move_extent()/ocfs2_defrag_extent() calls __ocfs2_move_extent()
-   which clears OCFS2_EXT_REFCOUNTED flag on disk (flags=0x0)
-5. The extent map cache is not invalidated after the move
-6. Later write() operations read stale cached flags (0x2) but disk has
-   updated flags (0x0), causing a mismatch
-7. BUG_ON(!(rec->e_flags & OCFS2_EXT_REFCOUNTED)) triggers
+Add support to enable the ACSPCIE reference clock output using the optional
+device-tree property "ti,syscon-acspcie-proxy-ctrl".
 
-Fix by clearing the extent map cache after each extent move/defrag
-operation in __ocfs2_move_extents_range().  This ensures subsequent
-operations read fresh extent data from disk.
-
-Link: https://lore.kernel.org/all/20251009142917.517229-1-kartikey406@gmail.com/T/
-Link: https://lkml.kernel.org/r/20251009154903.522339-1-kartikey406@gmail.com
-Fixes: 53069d4e7695 ("Ocfs2/move_extents: move/defrag extents within a certain range.")
-Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
-Reported-by: syzbot+6fdd8fa3380730a4b22c@syzkaller.appspotmail.com
-Tested-by: syzbot+6fdd8fa3380730a4b22c@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?id=2959889e1f6e216585ce522f7e8bc002b46ad9e7
-Reviewed-by: Mark Fasheh <mark@fasheh.com>
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Link: https://lore.kernel.org/linux-pci/20240829105316.1483684-3-s-vadapalli@ti.com
+Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Stable-dep-of: f842d3313ba1 ("PCI: j721e: Fix programming sequence of "strap" settings")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ocfs2/move_extents.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/pci/controller/cadence/pci-j721e.c |   39 ++++++++++++++++++++++++++++-
+ 1 file changed, 38 insertions(+), 1 deletion(-)
 
---- a/fs/ocfs2/move_extents.c
-+++ b/fs/ocfs2/move_extents.c
-@@ -868,6 +868,11 @@ static int __ocfs2_move_extents_range(st
- 			mlog_errno(ret);
- 			goto out;
- 		}
-+		/*
-+		 * Invalidate extent cache after moving/defragging to prevent
-+		 * stale cached data with outdated extent flags.
-+		 */
-+		ocfs2_extent_map_trunc(inode, cpos);
+--- a/drivers/pci/controller/cadence/pci-j721e.c
++++ b/drivers/pci/controller/cadence/pci-j721e.c
+@@ -46,6 +46,7 @@ enum link_status {
+ #define LANE_COUNT_MASK			BIT(8)
+ #define LANE_COUNT(n)			((n) << 8)
  
- 		context->clusters_moved += alloc_size;
- next:
++#define ACSPCIE_PAD_DISABLE_MASK	GENMASK(1, 0)
+ #define GENERATION_SEL_MASK		GENMASK(1, 0)
+ 
+ #define MAX_LANES			2
+@@ -218,6 +219,36 @@ static int j721e_pcie_set_lane_count(str
+ 	return ret;
+ }
+ 
++static int j721e_enable_acspcie_refclk(struct j721e_pcie *pcie,
++				       struct regmap *syscon)
++{
++	struct device *dev = pcie->cdns_pcie->dev;
++	struct device_node *node = dev->of_node;
++	u32 mask = ACSPCIE_PAD_DISABLE_MASK;
++	struct of_phandle_args args;
++	u32 val;
++	int ret;
++
++	ret = of_parse_phandle_with_fixed_args(node,
++					       "ti,syscon-acspcie-proxy-ctrl",
++					       1, 0, &args);
++	if (ret) {
++		dev_err(dev,
++			"ti,syscon-acspcie-proxy-ctrl has invalid arguments\n");
++		return ret;
++	}
++
++	/* Clear PAD IO disable bits to enable refclk output */
++	val = ~(args.args[0]);
++	ret = regmap_update_bits(syscon, 0, mask, val);
++	if (ret) {
++		dev_err(dev, "failed to enable ACSPCIE refclk: %d\n", ret);
++		return ret;
++	}
++
++	return 0;
++}
++
+ static int j721e_pcie_ctrl_init(struct j721e_pcie *pcie)
+ {
+ 	struct device *dev = pcie->cdns_pcie->dev;
+@@ -257,7 +288,13 @@ static int j721e_pcie_ctrl_init(struct j
+ 		return ret;
+ 	}
+ 
+-	return 0;
++	/* Enable ACSPCIE refclk output if the optional property exists */
++	syscon = syscon_regmap_lookup_by_phandle_optional(node,
++						"ti,syscon-acspcie-proxy-ctrl");
++	if (!syscon)
++		return 0;
++
++	return j721e_enable_acspcie_refclk(pcie, syscon);
+ }
+ 
+ static int cdns_ti_pcie_config_read(struct pci_bus *bus, unsigned int devfn,
 
 
 
