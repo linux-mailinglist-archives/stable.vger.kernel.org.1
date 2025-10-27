@@ -1,57 +1,62 @@
-Return-Path: <stable+bounces-191067-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190957-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A78CC11021
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:29:50 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0574C10E0B
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:23:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A88CE5809EA
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:23:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 37B411A63AA3
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:19:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C251B3233F5;
-	Mon, 27 Oct 2025 19:22:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDE0C1E47CA;
+	Mon, 27 Oct 2025 19:17:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N88Z+hJT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fy1UbfGf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EE3230CD92;
-	Mon, 27 Oct 2025 19:22:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A78A72C3749;
+	Mon, 27 Oct 2025 19:17:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592927; cv=none; b=FAw5msC08XQFqfnQAY3eBxsY7x+wjuJEraxXIqOsgkcVC62/zUZdsId5kwx40UDvFk7MbOam/uEY5tLxrsxzrwzmGOCRxefCNPbyyK6gN3pktMOnNrDfI+AzkpVNW7tRJZUBbkieWKIKg8W72+RTptJTkhq2OV3Zs4hJAN5mzcg=
+	t=1761592640; cv=none; b=HbWZvO1mODczYgh5i1DyVQXR3bxw/emOeEUP8G2qdjrFGkdreHU70FlpZsLCNKBuRjf9aXZpsyWtY8PeJS2jtCZ6RBXVhKGwrwNIg8hCEuMe09EKIodCMnzN/rDLsh+v7F3ZgRr6JyIYBH88mSf2GNYj+pFszKWb8jGTAebpd8A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592927; c=relaxed/simple;
-	bh=t79sqMtxmBB2gSupgicOSnMs/YY8lqlRBMI3Lg089Gw=;
+	s=arc-20240116; t=1761592640; c=relaxed/simple;
+	bh=E/vaTDzHpP0Ot5XuliCRJjSR2ftZCuuH7lUdErhABgE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cHzNJt8RjqJ8LhrQIlZozwtW7bDw5S+fd16YNnP37NHFMFeglDWn/O0HN3dQ4XNKWKxNbYpae65+/KE3DyJi1QUQD/jO/yoNIW6DADNdJBmSp0i0T+i8z2e1xWrBJD8WSHzkenGbwt02aYfoqYd4jPTtIUs6/t3iPg+YK5SrgMg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N88Z+hJT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C518C4CEF1;
-	Mon, 27 Oct 2025 19:22:06 +0000 (UTC)
+	 MIME-Version; b=Q5Ebigq1jW+VFTf0raA13g4AyHoACVJc7JubqVcx7mirJRpvEbPezOek9XtSKnnbRzYgOIroT+ihGi89lrqp/agG1gH20fTb03zCM6QE1ZvWEJETWa+JmlZDcr7mqv+5VQzskdrXKLXwXAm3sE9db+RzlPZYVH1eUIx6W3CHZ80=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fy1UbfGf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4607C113D0;
+	Mon, 27 Oct 2025 19:17:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592926;
-	bh=t79sqMtxmBB2gSupgicOSnMs/YY8lqlRBMI3Lg089Gw=;
+	s=korg; t=1761592640;
+	bh=E/vaTDzHpP0Ot5XuliCRJjSR2ftZCuuH7lUdErhABgE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N88Z+hJTqY6XyaxZUIvFx+rmNK9X9InhRB4/E3UOTL5rDJAd+oJpfxhZvUqQ9ZYYp
-	 Gc5ENAYS8HobHdiPhvaj0uKtYarOWs1YmFaxB4mKxim7+EfXept+HMJaH9BNBUHQ36
-	 ssY2CymOS+wfhiOc3YvyD6f70fYVBk3WgCWioJLI=
+	b=Fy1UbfGfbFhG8edxi+zmcXfQ7MQnlPDr/euvsKHUs3f3/G9ufbax9UYOEF/wh8SHD
+	 xBNCHyaY80u1kXrY7aIvw0GLAkt8O6T3pU1Oe0e9N1D1bDrnbO5lNXXjbk34dt7lKi
+	 w4gqjXH4fvXiyLZPKSUMznSLVkx7lDkrIYzNR5UQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 064/117] net: ravb: Ensure memory write completes before ringing TX doorbell
+	Deepanshu Kartikey <kartikey406@gmail.com>,
+	syzbot+6fdd8fa3380730a4b22c@syzkaller.appspotmail.com,
+	Mark Fasheh <mark@fasheh.com>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Jun Piao <piaojun@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 41/84] ocfs2: clear extent cache after moving/defragmenting extents
 Date: Mon, 27 Oct 2025 19:36:30 +0100
-Message-ID: <20251027183455.742115831@linuxfoundation.org>
+Message-ID: <20251027183439.915065155@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
-References: <20251027183453.919157109@linuxfoundation.org>
+In-Reply-To: <20251027183438.817309828@linuxfoundation.org>
+References: <20251027183438.817309828@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,57 +66,69 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+From: Deepanshu Kartikey <kartikey406@gmail.com>
 
-commit 706136c5723626fcde8dd8f598a4dcd251e24927 upstream.
+commit 78a63493f8e352296dbc7cb7b3f4973105e8679e upstream.
 
-Add a final dma_wmb() barrier before triggering the transmit request
-(TCCR_TSRQ) to ensure all descriptor and buffer writes are visible to
-the DMA engine.
+The extent map cache can become stale when extents are moved or
+defragmented, causing subsequent operations to see outdated extent flags.
+This triggers a BUG_ON in ocfs2_refcount_cal_cow_clusters().
 
-According to the hardware manual, a read-back operation is required
-before writing to the doorbell register to guarantee completion of
-previous writes. Instead of performing a dummy read, a dma_wmb() is
-used to both enforce the same ordering semantics on the CPU side and
-also to ensure completion of writes.
+The problem occurs when:
+1. copy_file_range() creates a reflinked extent with OCFS2_EXT_REFCOUNTED
+2. ioctl(FITRIM) triggers ocfs2_move_extents()
+3. __ocfs2_move_extents_range() reads and caches the extent (flags=0x2)
+4. ocfs2_move_extent()/ocfs2_defrag_extent() calls __ocfs2_move_extent()
+   which clears OCFS2_EXT_REFCOUNTED flag on disk (flags=0x0)
+5. The extent map cache is not invalidated after the move
+6. Later write() operations read stale cached flags (0x2) but disk has
+   updated flags (0x0), causing a mismatch
+7. BUG_ON(!(rec->e_flags & OCFS2_EXT_REFCOUNTED)) triggers
 
-Fixes: c156633f1353 ("Renesas Ethernet AVB driver proper")
-Cc: stable@vger.kernel.org
-Co-developed-by: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
-Signed-off-by: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
-Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Reviewed-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
-Link: https://patch.msgid.link/20251017151830.171062-5-prabhakar.mahadev-lad.rj@bp.renesas.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fix by clearing the extent map cache after each extent move/defrag
+operation in __ocfs2_move_extents_range().  This ensures subsequent
+operations read fresh extent data from disk.
+
+Link: https://lore.kernel.org/all/20251009142917.517229-1-kartikey406@gmail.com/T/
+Link: https://lkml.kernel.org/r/20251009154903.522339-1-kartikey406@gmail.com
+Fixes: 53069d4e7695 ("Ocfs2/move_extents: move/defrag extents within a certain range.")
+Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
+Reported-by: syzbot+6fdd8fa3380730a4b22c@syzkaller.appspotmail.com
+Tested-by: syzbot+6fdd8fa3380730a4b22c@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?id=2959889e1f6e216585ce522f7e8bc002b46ad9e7
+Reviewed-by: Mark Fasheh <mark@fasheh.com>
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/renesas/ravb_main.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ fs/ocfs2/move_extents.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/net/ethernet/renesas/ravb_main.c
-+++ b/drivers/net/ethernet/renesas/ravb_main.c
-@@ -2224,6 +2224,14 @@ static netdev_tx_t ravb_start_xmit(struc
- 		dma_wmb();
- 		desc->die_dt = DT_FSINGLE;
- 	}
-+
-+	/* Before ringing the doorbell we need to make sure that the latest
-+	 * writes have been committed to memory, otherwise it could delay
-+	 * things until the doorbell is rang again.
-+	 * This is in replacement of the read operation mentioned in the HW
-+	 * manuals.
-+	 */
-+	dma_wmb();
- 	ravb_modify(ndev, TCCR, TCCR_TSRQ0 << q, TCCR_TSRQ0 << q);
+--- a/fs/ocfs2/move_extents.c
++++ b/fs/ocfs2/move_extents.c
+@@ -868,6 +868,11 @@ static int __ocfs2_move_extents_range(st
+ 			mlog_errno(ret);
+ 			goto out;
+ 		}
++		/*
++		 * Invalidate extent cache after moving/defragging to prevent
++		 * stale cached data with outdated extent flags.
++		 */
++		ocfs2_extent_map_trunc(inode, cpos);
  
- 	priv->cur_tx[q] += num_tx_desc;
+ 		context->clusters_moved += alloc_size;
+ next:
 
 
 
