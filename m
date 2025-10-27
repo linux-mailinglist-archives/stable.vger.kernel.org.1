@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-190946-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190708-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B4D9C10E8F
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:24:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62BD6C10A7A
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:14:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B44FB5644AF
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:17:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DDDE918975BD
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:09:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 843E31FBC92;
-	Mon, 27 Oct 2025 19:16:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C56D246BB7;
+	Mon, 27 Oct 2025 19:06:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fyQFLQKj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jyjjkFNH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E4DD241663;
-	Mon, 27 Oct 2025 19:16:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3604C31BC91;
+	Mon, 27 Oct 2025 19:06:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592612; cv=none; b=AFH2nuqSrpGDEuPLfOatklqbnKPiIPSU38qBX3nRD0CpKea+FS7wuiohr3avWRbHeCjD7AtBC2YAnhdjWTnUfFWxqsychtQDjXe24NRIL1ZrST2YAI3XGl1KHHTyOEDJ4kWqIiUOxWsifML8+pzp0vCq6hfOonlAmvvrVMbNpzk=
+	t=1761591987; cv=none; b=EA/e4nZ+/mBzSvx0wOwfxsnUsFjE6hKTW6xuFhHXhbLJlhv0HjIHCVf5W2tvfl5NF2tIBlMltZUe95u+wI20R1SaDeD7mmSZoARxrbSP+tHOxgdtoz79dt31uJ1DM6TISkMZGQerXHp1nfWA0k3/tf2IRwokNzYZ6SoetkKz9mc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592612; c=relaxed/simple;
-	bh=nPOKyEoOGt7HdC+ZKaI8HaM1iNrMyeKCwZBJJ79h0X4=;
+	s=arc-20240116; t=1761591987; c=relaxed/simple;
+	bh=BqB6ZBsvgk7a0GOH/wieDYFNfWmxnMMPwsBWPXvdeks=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QzTkFA/iRWjll5SRiLN3LS4vQe39HEr0dYwIE3m0ikTCI8spAiSMYfJYG4LKrUs73iSvBNllV4GQd7/napdkGoD+q8hFvDgTAx+RoKHkZas3yoOERAP+ETLC+ouDFqtRslDHyvgZ5JI+V5UKEfkw/P2mjeHFVH8HJBoE9rml700=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fyQFLQKj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CA11C4CEF1;
-	Mon, 27 Oct 2025 19:16:51 +0000 (UTC)
+	 MIME-Version; b=Igt/oxyfyo0RUaM4eG5GPjQxwpUMb5qpaq1dJ2sNPfSePTcqIEaLCHSh7nRV8o4ERThfDKKWayYbwAKIMCFmg/0eGvOhrC0T4oEzm7EjLx8T1aGbiObTKAKAbnLykdqtmgYj/N50Y2gsH9b49WS7J+xhVxsIWAccJi33ac4LcOI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jyjjkFNH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEA92C4CEF1;
+	Mon, 27 Oct 2025 19:06:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592611;
-	bh=nPOKyEoOGt7HdC+ZKaI8HaM1iNrMyeKCwZBJJ79h0X4=;
+	s=korg; t=1761591987;
+	bh=BqB6ZBsvgk7a0GOH/wieDYFNfWmxnMMPwsBWPXvdeks=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fyQFLQKjM4gwwP+ra0WieZhgUC5KUWj1Kdx6POnTLtR6rqqpMokCN/+4FeTWsL8Nt
-	 C7cJOSN1kce+4tF66ORW/bBQa3HQTchHYLSpOrnMVA4vXq28fHpG2kaxuBpmAkyJRV
-	 0gs79xxwQ1UAySesGX6oar9VcZp9BYxKxqGsiM2o=
+	b=jyjjkFNHmeeGkzKczvt5OJOhfqfcCvuMdCNLDCOGED7Mk/I+q4R8MA3LDczagYSDi
+	 F/Ta1W2NQHRelysGW+d91c8CRzJsga663tbjM11fhCFZyJ2hHh18szc9Bd5Ij9gEHL
+	 6Kl3zqf2IAheNOsjEtxF6HCv3VxEVVj2xyXqulN4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+356aed408415a56543cd@syzkaller.appspotmail.com,
-	Yang Chenzhi <yang.chenzhi@vivo.com>,
-	Viacheslav Dubeyko <slava@dubeyko.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 06/84] hfs: validate record offset in hfsplus_bmap_alloc
+	Renjun Wang <renjunw0@foxmail.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 5.15 075/123] USB: serial: option: add UNISOC UIS7720
 Date: Mon, 27 Oct 2025 19:35:55 +0100
-Message-ID: <20251027183438.987919872@linuxfoundation.org>
+Message-ID: <20251027183448.406290036@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183438.817309828@linuxfoundation.org>
-References: <20251027183438.817309828@linuxfoundation.org>
+In-Reply-To: <20251027183446.381986645@linuxfoundation.org>
+References: <20251027183446.381986645@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,222 +61,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Chenzhi <yang.chenzhi@vivo.com>
+From: Renjun Wang <renjunw0@foxmail.com>
 
-[ Upstream commit 738d5a51864ed8d7a68600b8c0c63fe6fe5c4f20 ]
+commit 71c07570b918f000de5d0f7f1bf17a2887e303b5 upstream.
 
-hfsplus_bmap_alloc can trigger a crash if a
-record offset or length is larger than node_size
+Add support for UNISOC (Spreadtrum) UIS7720 (A7720) module.
 
-[   15.264282] BUG: KASAN: slab-out-of-bounds in hfsplus_bmap_alloc+0x887/0x8b0
-[   15.265192] Read of size 8 at addr ffff8881085ca188 by task test/183
-[   15.265949]
-[   15.266163] CPU: 0 UID: 0 PID: 183 Comm: test Not tainted 6.17.0-rc2-gc17b750b3ad9 #14 PREEMPT(voluntary)
-[   15.266165] Hardware name: QEMU Ubuntu 24.04 PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-[   15.266167] Call Trace:
-[   15.266168]  <TASK>
-[   15.266169]  dump_stack_lvl+0x53/0x70
-[   15.266173]  print_report+0xd0/0x660
-[   15.266181]  kasan_report+0xce/0x100
-[   15.266185]  hfsplus_bmap_alloc+0x887/0x8b0
-[   15.266208]  hfs_btree_inc_height.isra.0+0xd5/0x7c0
-[   15.266217]  hfsplus_brec_insert+0x870/0xb00
-[   15.266222]  __hfsplus_ext_write_extent+0x428/0x570
-[   15.266225]  __hfsplus_ext_cache_extent+0x5e/0x910
-[   15.266227]  hfsplus_ext_read_extent+0x1b2/0x200
-[   15.266233]  hfsplus_file_extend+0x5a7/0x1000
-[   15.266237]  hfsplus_get_block+0x12b/0x8c0
-[   15.266238]  __block_write_begin_int+0x36b/0x12c0
-[   15.266251]  block_write_begin+0x77/0x110
-[   15.266252]  cont_write_begin+0x428/0x720
-[   15.266259]  hfsplus_write_begin+0x51/0x100
-[   15.266262]  cont_write_begin+0x272/0x720
-[   15.266270]  hfsplus_write_begin+0x51/0x100
-[   15.266274]  generic_perform_write+0x321/0x750
-[   15.266285]  generic_file_write_iter+0xc3/0x310
-[   15.266289]  __kernel_write_iter+0x2fd/0x800
-[   15.266296]  dump_user_range+0x2ea/0x910
-[   15.266301]  elf_core_dump+0x2a94/0x2ed0
-[   15.266320]  vfs_coredump+0x1d85/0x45e0
-[   15.266349]  get_signal+0x12e3/0x1990
-[   15.266357]  arch_do_signal_or_restart+0x89/0x580
-[   15.266362]  irqentry_exit_to_user_mode+0xab/0x110
-[   15.266364]  asm_exc_page_fault+0x26/0x30
-[   15.266366] RIP: 0033:0x41bd35
-[   15.266367] Code: bc d1 f3 0f 7f 27 f3 0f 7f 6f 10 f3 0f 7f 77 20 f3 0f 7f 7f 30 49 83 c0 0f 49 29 d0 48 8d 7c 17 31 e9 9f 0b 00 00 66 0f ef c0 <f3> 0f 6f 0e f3 0f 6f 56 10 66 0f 74 c1 66 0f d7 d0 49 83 f8f
-[   15.266369] RSP: 002b:00007ffc9e62d078 EFLAGS: 00010283
-[   15.266371] RAX: 00007ffc9e62d100 RBX: 0000000000000000 RCX: 0000000000000000
-[   15.266372] RDX: 00000000000000e0 RSI: 0000000000000000 RDI: 00007ffc9e62d100
-[   15.266373] RBP: 0000400000000040 R08: 00000000000000e0 R09: 0000000000000000
-[   15.266374] R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-[   15.266375] R13: 0000000000000000 R14: 0000000000000000 R15: 0000400000000000
-[   15.266376]  </TASK>
+T:  Bus=05 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  5 Spd=480 MxCh= 0
+D:  Ver= 2.10 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=1782 ProdID=4064 Rev=04.04
+S:  Manufacturer=Unisoc-phone
+S:  Product=Unisoc-phone
+S:  SerialNumber=0123456789ABCDEF
+C:  #Ifs= 9 Cfg#= 1 Atr=c0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 1 Cls=e0(wlcon) Sub=01 Prot=03 Driver=rndis_host
+E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+I:  If#= 1 Alt= 0 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=rndis_host
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 6 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=06(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 7 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=07(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=88(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 8 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
+E:  Ad=08(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=89(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
 
-When calling hfsplus_bmap_alloc to allocate a free node, this function
-first retrieves the bitmap from header node and map node using node->page
-together with the offset and length from hfs_brec_lenoff
+0&1: RNDIS, 2: LOG, 3: DIAG, 4&5: AT Ports, 6&7: AT2 Ports, 8: ADB
 
-```
-len = hfs_brec_lenoff(node, 2, &off16);
-off = off16;
-
-off += node->page_offset;
-pagep = node->page + (off >> PAGE_SHIFT);
-data = kmap_local_page(*pagep);
-```
-
-However, if the retrieved offset or length is invalid(i.e. exceeds
-node_size), the code may end up accessing pages outside the allocated
-range for this node.
-
-This patch adds proper validation of both offset and length before use,
-preventing out-of-bounds page access. Move is_bnode_offset_valid and
-check_and_correct_requested_length to hfsplus_fs.h, as they may be
-required by other functions.
-
-Reported-by: syzbot+356aed408415a56543cd@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/67bcb4a6.050a0220.bbfd1.008f.GAE@google.com/
-Signed-off-by: Yang Chenzhi <yang.chenzhi@vivo.com>
-Reviewed-by: Viacheslav Dubeyko <slava@dubeyko.com>
-Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
-Link: https://lore.kernel.org/r/20250818141734.8559-2-yang.chenzhi@vivo.com
-Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Renjun Wang <renjunw0@foxmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/hfsplus/bnode.c      | 41 ----------------------------------------
- fs/hfsplus/btree.c      |  6 ++++++
- fs/hfsplus/hfsplus_fs.h | 42 +++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 48 insertions(+), 41 deletions(-)
+ drivers/usb/serial/option.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/hfsplus/bnode.c b/fs/hfsplus/bnode.c
-index 14f4995588ff0..407d5152eb411 100644
---- a/fs/hfsplus/bnode.c
-+++ b/fs/hfsplus/bnode.c
-@@ -18,47 +18,6 @@
- #include "hfsplus_fs.h"
- #include "hfsplus_raw.h"
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -617,6 +617,7 @@ static void option_instat_callback(struc
+ #define UNISOC_VENDOR_ID			0x1782
+ /* TOZED LT70-C based on UNISOC SL8563 uses UNISOC's vendor ID */
+ #define TOZED_PRODUCT_LT70C			0x4055
++#define UNISOC_PRODUCT_UIS7720			0x4064
+ /* Luat Air72*U series based on UNISOC UIS8910 uses UNISOC's vendor ID */
+ #define LUAT_PRODUCT_AIR720U			0x4e00
  
--static inline
--bool is_bnode_offset_valid(struct hfs_bnode *node, int off)
--{
--	bool is_valid = off < node->tree->node_size;
--
--	if (!is_valid) {
--		pr_err("requested invalid offset: "
--		       "NODE: id %u, type %#x, height %u, "
--		       "node_size %u, offset %d\n",
--		       node->this, node->type, node->height,
--		       node->tree->node_size, off);
--	}
--
--	return is_valid;
--}
--
--static inline
--int check_and_correct_requested_length(struct hfs_bnode *node, int off, int len)
--{
--	unsigned int node_size;
--
--	if (!is_bnode_offset_valid(node, off))
--		return 0;
--
--	node_size = node->tree->node_size;
--
--	if ((off + len) > node_size) {
--		int new_len = (int)node_size - off;
--
--		pr_err("requested length has been corrected: "
--		       "NODE: id %u, type %#x, height %u, "
--		       "node_size %u, offset %d, "
--		       "requested_len %d, corrected_len %d\n",
--		       node->this, node->type, node->height,
--		       node->tree->node_size, off, len, new_len);
--
--		return new_len;
--	}
--
--	return len;
--}
- 
- /* Copy a specified range of bytes from the raw data of a node */
- void hfs_bnode_read(struct hfs_bnode *node, void *buf, int off, int len)
-diff --git a/fs/hfsplus/btree.c b/fs/hfsplus/btree.c
-index 9e1732a2b92a8..fe6a54c4083c3 100644
---- a/fs/hfsplus/btree.c
-+++ b/fs/hfsplus/btree.c
-@@ -393,6 +393,12 @@ struct hfs_bnode *hfs_bmap_alloc(struct hfs_btree *tree)
- 	len = hfs_brec_lenoff(node, 2, &off16);
- 	off = off16;
- 
-+	if (!is_bnode_offset_valid(node, off)) {
-+		hfs_bnode_put(node);
-+		return ERR_PTR(-EIO);
-+	}
-+	len = check_and_correct_requested_length(node, off, len);
-+
- 	off += node->page_offset;
- 	pagep = node->page + (off >> PAGE_SHIFT);
- 	data = kmap_local_page(*pagep);
-diff --git a/fs/hfsplus/hfsplus_fs.h b/fs/hfsplus/hfsplus_fs.h
-index 1473b04fc0f31..e67b35cb5ccc7 100644
---- a/fs/hfsplus/hfsplus_fs.h
-+++ b/fs/hfsplus/hfsplus_fs.h
-@@ -574,6 +574,48 @@ hfsplus_btree_lock_class(struct hfs_btree *tree)
- 	return class;
- }
- 
-+static inline
-+bool is_bnode_offset_valid(struct hfs_bnode *node, int off)
-+{
-+	bool is_valid = off < node->tree->node_size;
-+
-+	if (!is_valid) {
-+		pr_err("requested invalid offset: "
-+		       "NODE: id %u, type %#x, height %u, "
-+		       "node_size %u, offset %d\n",
-+		       node->this, node->type, node->height,
-+		       node->tree->node_size, off);
-+	}
-+
-+	return is_valid;
-+}
-+
-+static inline
-+int check_and_correct_requested_length(struct hfs_bnode *node, int off, int len)
-+{
-+	unsigned int node_size;
-+
-+	if (!is_bnode_offset_valid(node, off))
-+		return 0;
-+
-+	node_size = node->tree->node_size;
-+
-+	if ((off + len) > node_size) {
-+		int new_len = (int)node_size - off;
-+
-+		pr_err("requested length has been corrected: "
-+		       "NODE: id %u, type %#x, height %u, "
-+		       "node_size %u, offset %d, "
-+		       "requested_len %d, corrected_len %d\n",
-+		       node->this, node->type, node->height,
-+		       node->tree->node_size, off, len, new_len);
-+
-+		return new_len;
-+	}
-+
-+	return len;
-+}
-+
- /* compatibility */
- #define hfsp_mt2ut(t)		(struct timespec64){ .tv_sec = __hfsp_mt2ut(t) }
- #define hfsp_ut2mt(t)		__hfsp_ut2mt((t).tv_sec)
--- 
-2.51.0
-
+@@ -2466,6 +2467,7 @@ static const struct usb_device_id option
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9291, 0xff, 0xff, 0x30) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9291, 0xff, 0xff, 0x40) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(UNISOC_VENDOR_ID, TOZED_PRODUCT_LT70C, 0xff, 0, 0) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(UNISOC_VENDOR_ID, UNISOC_PRODUCT_UIS7720, 0xff, 0, 0) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(UNISOC_VENDOR_ID, LUAT_PRODUCT_AIR720U, 0xff, 0, 0) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x1bbb, 0x0530, 0xff),			/* TCL IK512 MBIM */
+ 	  .driver_info = NCTRL(1) },
 
 
 
