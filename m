@@ -1,62 +1,64 @@
-Return-Path: <stable+bounces-190717-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191189-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF8BBC10AE9
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:15:28 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21628C11387
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:43:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 794B4567584
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:09:57 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 94AC150408A
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:29:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2D87329C55;
-	Mon, 27 Oct 2025 19:06:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7A9F32E134;
+	Mon, 27 Oct 2025 19:27:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="khbEqMQK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BTfxozn4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E5C22D5A14;
-	Mon, 27 Oct 2025 19:06:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95E3232D0E0;
+	Mon, 27 Oct 2025 19:27:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592010; cv=none; b=uiZRJ+WirTKd7YqiClrfYwT4xUN50tXrB87xZg8Qbdc2c5JVLaLm2gpwes/Y/ayaLAq58Q3uSkK/UJmQvHmu/oKH3N4z2rb6kwawccpESiCAwduWx0vjw8c/hVY+x2nzmaRNm9mXZXx0zM3OE/11wif0WXonKiXuBO6dIeyO4EE=
+	t=1761593236; cv=none; b=nkgYrO83dn09rGxpmt9n97Hnz4LFGD+yLgyC/OC8/I5Pw2tbCfOrkUFkBGRYImwD+6ab25tPOBb29r5Mmmxkebtb8QYTMzByABe9XzG3uJx9VENC4Ba41rsV2bTPx+jL7qOR4W9bVTqqwhH15IKr/n+wLIDJvZVWfEiURh7tUFA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592010; c=relaxed/simple;
-	bh=h1JlbebYpZhj8OZ34iimeet0I1BiA4JOoBbHtATM9WE=;
+	s=arc-20240116; t=1761593236; c=relaxed/simple;
+	bh=ckiLdYMm/pn6i5s4Jf7WwYEBg1TBt8NK5got+XaxBvA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o7eQJIbGYdnikWB7Fmd+R1B6z5oKHWk57qqiBCWERFi3WRir0V4baz9b33gNyKmU6p1aaj2ac3b7EVDejn73MHez5X6VHzHExQSWyIcrFWvPdfiYxNVF7G8hd2GY67ek5uKVM8MQemPOyhVhqsioMhpLlNt77wCKwdQxupKUXaw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=khbEqMQK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E9CCC4CEF1;
-	Mon, 27 Oct 2025 19:06:50 +0000 (UTC)
+	 MIME-Version; b=QXgKLPgwQ838tQcaAKrVKP/UL5+iajX8i5eybrt5n9rqWutv1Y8phnA8RayYSlHUT82zwHSVYULFiGw708zZo0S63kQvAyRrDGCbCe+ez5DqFxMmpSE/YVmFS1QuHAGCoDafRBTZAicpvMTVAGQMIPb6+EKonbnqNdciQYsVJc0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BTfxozn4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00B10C4CEF1;
+	Mon, 27 Oct 2025 19:27:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592010;
-	bh=h1JlbebYpZhj8OZ34iimeet0I1BiA4JOoBbHtATM9WE=;
+	s=korg; t=1761593236;
+	bh=ckiLdYMm/pn6i5s4Jf7WwYEBg1TBt8NK5got+XaxBvA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=khbEqMQKwEiOEtf9XMr4OCroylKYHY347vdf6AFuLXwErVaJTcCFYdXjCLrzjoKVr
-	 /alLvIdETYzK5celIHTtjQYepP8dIQVS9R8Bcl2mPM/Kc/AxWuYkYcJJbOJeG83P9T
-	 uMuVICPk/qwiCKuQbSDdoLjRCAb+tX9s0N+P/E6Y=
+	b=BTfxozn4wgGNR75sgiPrI4ldGvSmt44lMSTsqp6VcZvRNHAWe745Zf6CofRz4qTRE
+	 aels1GxSSR+r8U6IPtAYN/T3hHf4oOD/hKx2YxRdZ+dafncnXri3OE7oWXbc7NGqm6
+	 eOxfKSjRhxYSSW0isQg2h3jjBvVKLBZnDXLdNP3o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Deepanshu Kartikey <kartikey406@gmail.com>,
-	syzbot+6fdd8fa3380730a4b22c@syzkaller.appspotmail.com,
-	Mark Fasheh <mark@fasheh.com>,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Jun Piao <piaojun@huawei.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	syzbot+8259e1d0e3ae8ed0c490@syzkaller.appspotmail.com,
+	syzbot+665739f456b28f32b23d@syzkaller.appspotmail.com,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Oscar Salvador <osalvador@suse.de>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Zi Yan <ziy@nvidia.com>,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.15 066/123] ocfs2: clear extent cache after moving/defragmenting extents
+Subject: [PATCH 6.17 064/184] mm: dont spin in add_stack_record when gfp flags dont allow
 Date: Mon, 27 Oct 2025 19:35:46 +0100
-Message-ID: <20251027183448.164375099@linuxfoundation.org>
+Message-ID: <20251027183516.615109663@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183446.381986645@linuxfoundation.org>
-References: <20251027183446.381986645@linuxfoundation.org>
+In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
+References: <20251027183514.934710872@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,67 +70,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Deepanshu Kartikey <kartikey406@gmail.com>
+From: Alexei Starovoitov <ast@kernel.org>
 
-commit 78a63493f8e352296dbc7cb7b3f4973105e8679e upstream.
+commit c83aab85e18103a6dc066b4939e2c92a02bb1b05 upstream.
 
-The extent map cache can become stale when extents are moved or
-defragmented, causing subsequent operations to see outdated extent flags.
-This triggers a BUG_ON in ocfs2_refcount_cal_cow_clusters().
+syzbot was able to find the following path:
+  add_stack_record_to_list mm/page_owner.c:182 [inline]
+  inc_stack_record_count mm/page_owner.c:214 [inline]
+  __set_page_owner+0x2c3/0x4a0 mm/page_owner.c:333
+  set_page_owner include/linux/page_owner.h:32 [inline]
+  post_alloc_hook+0x240/0x2a0 mm/page_alloc.c:1851
+  prep_new_page mm/page_alloc.c:1859 [inline]
+  get_page_from_freelist+0x21e4/0x22c0 mm/page_alloc.c:3858
+  alloc_pages_nolock_noprof+0x94/0x120 mm/page_alloc.c:7554
 
-The problem occurs when:
-1. copy_file_range() creates a reflinked extent with OCFS2_EXT_REFCOUNTED
-2. ioctl(FITRIM) triggers ocfs2_move_extents()
-3. __ocfs2_move_extents_range() reads and caches the extent (flags=0x2)
-4. ocfs2_move_extent()/ocfs2_defrag_extent() calls __ocfs2_move_extent()
-   which clears OCFS2_EXT_REFCOUNTED flag on disk (flags=0x0)
-5. The extent map cache is not invalidated after the move
-6. Later write() operations read stale cached flags (0x2) but disk has
-   updated flags (0x0), causing a mismatch
-7. BUG_ON(!(rec->e_flags & OCFS2_EXT_REFCOUNTED)) triggers
+Don't spin in add_stack_record_to_list() when it is called
+from *_nolock() context.
 
-Fix by clearing the extent map cache after each extent move/defrag
-operation in __ocfs2_move_extents_range().  This ensures subsequent
-operations read fresh extent data from disk.
-
-Link: https://lore.kernel.org/all/20251009142917.517229-1-kartikey406@gmail.com/T/
-Link: https://lkml.kernel.org/r/20251009154903.522339-1-kartikey406@gmail.com
-Fixes: 53069d4e7695 ("Ocfs2/move_extents: move/defrag extents within a certain range.")
-Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
-Reported-by: syzbot+6fdd8fa3380730a4b22c@syzkaller.appspotmail.com
-Tested-by: syzbot+6fdd8fa3380730a4b22c@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?id=2959889e1f6e216585ce522f7e8bc002b46ad9e7
-Reviewed-by: Mark Fasheh <mark@fasheh.com>
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Jun Piao <piaojun@huawei.com>
+Link: https://lkml.kernel.org/r/CAADnVQK_8bNYEA7TJYgwTYR57=TTFagsvRxp62pFzS_z129eTg@mail.gmail.com
+Fixes: 97769a53f117 ("mm, bpf: Introduce try_alloc_pages() for opportunistic page allocation")
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Reported-by: syzbot+8259e1d0e3ae8ed0c490@syzkaller.appspotmail.com
+Reported-by: syzbot+665739f456b28f32b23d@syzkaller.appspotmail.com
+Acked-by: Vlastimil Babka <vbabka@suse.cz>
+Reviewed-by: Oscar Salvador <osalvador@suse.de>
+Cc: Brendan Jackman <jackmanb@google.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Zi Yan <ziy@nvidia.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ocfs2/move_extents.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ mm/page_owner.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/fs/ocfs2/move_extents.c
-+++ b/fs/ocfs2/move_extents.c
-@@ -868,6 +868,11 @@ static int __ocfs2_move_extents_range(st
- 			mlog_errno(ret);
- 			goto out;
- 		}
-+		/*
-+		 * Invalidate extent cache after moving/defragging to prevent
-+		 * stale cached data with outdated extent flags.
-+		 */
-+		ocfs2_extent_map_trunc(inode, cpos);
+diff --git a/mm/page_owner.c b/mm/page_owner.c
+index c3ca21132c2c..589ec37c94aa 100644
+--- a/mm/page_owner.c
++++ b/mm/page_owner.c
+@@ -168,6 +168,9 @@ static void add_stack_record_to_list(struct stack_record *stack_record,
+ 	unsigned long flags;
+ 	struct stack *stack;
  
- 		context->clusters_moved += alloc_size;
- next:
++	if (!gfpflags_allow_spinning(gfp_mask))
++		return;
++
+ 	set_current_in_page_owner();
+ 	stack = kmalloc(sizeof(*stack), gfp_nested_mask(gfp_mask));
+ 	if (!stack) {
+-- 
+2.51.1
+
 
 
 
