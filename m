@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-190892-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190961-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FC65C10D33
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:21:28 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9D2EC10E11
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:23:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1AD431A28285
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:16:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0F9B71A6355F
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:19:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30E9832ABF3;
-	Mon, 27 Oct 2025 19:14:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 778002C15BB;
+	Mon, 27 Oct 2025 19:17:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LOkoFUd7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v8qazkxj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD6BD32AAD4;
-	Mon, 27 Oct 2025 19:14:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3280F17F4F6;
+	Mon, 27 Oct 2025 19:17:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592471; cv=none; b=Hjo21CWbjqUlRmL0N9YiNUztQP6Ak1Sa45vgrWSvth5fX+bN5s+LkSZ9MNK6RAjCpYzSnOWJz/VikA2Mb/ZYXeuhgxj4B1DxVVqkzuqkZc4uaZGY5zqn/aTYnOiCCcnigVQ3mfPdVmGMWEMXFRD6MWUzP1FGjzQujUS8GORflwM=
+	t=1761592651; cv=none; b=VHW45d91HQUZ/uJG9a3KJD89hrHBO7FdHd7sD0mtQ/smReMAlf5exx/6DSWxSiD8GMYIvXRy3OzIKsXtEVVigr8odQurc0LTTEAh6GuG1AK3Rw3Yw6KQgem2fm+w8PYovxfxxJzQKYswU7kvBS8cQhEOh3M3bmEmiQ25aUWFqQY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592471; c=relaxed/simple;
-	bh=Z/9klJzHRx68ZosWATdMMcHiXzPaWhNeJU9G8Wgwv9s=;
+	s=arc-20240116; t=1761592651; c=relaxed/simple;
+	bh=CTfigwhrLfmLmVKkkp+ny1xkzyg20kMboQi3PLEEYCc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B+zSA6zlpfoHZOdm4hlkvH9WFapyfgtAQfV7Ego5K21e6p3wCJJ2n5jD4BL9qTA8bhWSIwL+3kytL5z+aCZDVQpghVEK9fjD3/YrdJVKRQjEiu5TRC/ihwcLlTcym6nyIMt2FuhHcjMdYhnhsdhTG2wiTnO6e9Z7J5vkViA9log=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LOkoFUd7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DEE9C4CEFD;
-	Mon, 27 Oct 2025 19:14:30 +0000 (UTC)
+	 MIME-Version:Content-Type; b=NWw9GyrOrg7kq6cXtCYsgqrn+tK0OwUuAbySat4M8c9EEwQC3apl1Qf8v9Y4zRQSVJatMrlB9ZCavQC69meKuqFWGQh9nAdJcvjMVHnGege+sDkrAotAbdulFc0c3qvraSVb+xkgxITbZaAn3OUgDvw5hyvSCq4nMxLhDnTOObQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v8qazkxj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D46AC4CEF1;
+	Mon, 27 Oct 2025 19:17:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592470;
-	bh=Z/9klJzHRx68ZosWATdMMcHiXzPaWhNeJU9G8Wgwv9s=;
+	s=korg; t=1761592650;
+	bh=CTfigwhrLfmLmVKkkp+ny1xkzyg20kMboQi3PLEEYCc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LOkoFUd7GM4rF5f56D2Vo2FIlbq7jTJxT4M+L7dDT0OaHaccUUZHEf/2tvQIkeN6I
-	 XOIvWkz3WEO8cK4JsYA1KvxsKKPqDmpml+KyPvWS/GjwbdoPW3MZ97kLJ1mof4Aqu0
-	 JXyL776vtqaN+5ebCmpHtPE//OvOA992TCc405rs=
+	b=v8qazkxjeSt3ytPIBEPT1IIY1p6wsqYFkfevEJm5ASokV6lc9EzqStnGuxImfzpvo
+	 B/9+qMM9GMcoP/On3vHgTPf9PsCZPHu5q375k0NG1JZfLtIGVnT24cAsxnEUQ6xsxf
+	 ixxoIwisBcjyD1QG1hs2fLo8fpcmSlhPD5tfr3Zo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konstantin Evtushenko <koevtushenko@yandex.com>,
-	Sergey Bashirov <sergeybashirov@gmail.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 133/157] NFSD: Fix last write offset handling in layoutcommit
+	Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 45/84] net: ravb: Enforce descriptor type ordering
 Date: Mon, 27 Oct 2025 19:36:34 +0100
-Message-ID: <20251027183504.821455259@linuxfoundation.org>
+Message-ID: <20251027183440.020284280@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
-References: <20251027183501.227243846@linuxfoundation.org>
+In-Reply-To: <20251027183438.817309828@linuxfoundation.org>
+References: <20251027183438.817309828@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,118 +61,78 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sergey Bashirov <sergeybashirov@gmail.com>
+From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
 
-[ Upstream commit d68886bae76a4b9b3484d23e5b7df086f940fa38 ]
+commit 5370c31e84b0e0999c7b5ff949f4e104def35584 upstream.
 
-The data type of loca_last_write_offset is newoffset4 and is switched
-on a boolean value, no_newoffset, that indicates if a previous write
-occurred or not. If no_newoffset is FALSE, an offset is not given.
-This means that client does not try to update the file size. Thus,
-server should not try to calculate new file size and check if it fits
-into the segment range. See RFC 8881, section 12.5.4.2.
+Ensure the TX descriptor type fields are published in a safe order so the
+DMA engine never begins processing a descriptor chain before all descriptor
+fields are fully initialised.
 
-Sometimes the current incorrect logic may cause clients to hang when
-trying to sync an inode. If layoutcommit fails, the client marks the
-inode as dirty again.
+For multi-descriptor transmits the driver writes DT_FEND into the last
+descriptor and DT_FSTART into the first. The DMA engine begins processing
+when it observes DT_FSTART. Move the dma_wmb() barrier so it executes
+immediately after DT_FEND and immediately before writing DT_FSTART
+(and before DT_FSINGLE in the single-descriptor case). This guarantees
+that all prior CPU writes to the descriptor memory are visible to the
+device before DT_FSTART is seen.
 
-Fixes: 9cf514ccfacb ("nfsd: implement pNFS operations")
+This avoids a situation where compiler/CPU reordering could publish
+DT_FSTART ahead of DT_FEND or other descriptor fields, allowing the DMA to
+start on a partially initialised chain and causing corrupted transmissions
+or TX timeouts. Such a failure was observed on RZ/G2L with an RT kernel as
+transmit queue timeouts and device resets.
+
+Fixes: 2f45d1902acf ("ravb: minimize TX data copying")
 Cc: stable@vger.kernel.org
-Co-developed-by: Konstantin Evtushenko <koevtushenko@yandex.com>
-Signed-off-by: Konstantin Evtushenko <koevtushenko@yandex.com>
-Signed-off-by: Sergey Bashirov <sergeybashirov@gmail.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-[ removed rqstp parameter from proc_layoutcommit ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Co-developed-by: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
+Signed-off-by: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
+Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Reviewed-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+Link: https://patch.msgid.link/20251017151830.171062-4-prabhakar.mahadev-lad.rj@bp.renesas.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/blocklayout.c |    5 ++---
- fs/nfsd/nfs4proc.c    |   30 +++++++++++++++---------------
- 2 files changed, 17 insertions(+), 18 deletions(-)
+ drivers/net/ethernet/renesas/ravb_main.c |   16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
 
---- a/fs/nfsd/blocklayout.c
-+++ b/fs/nfsd/blocklayout.c
-@@ -117,7 +117,6 @@ static __be32
- nfsd4_block_commit_blocks(struct inode *inode, struct nfsd4_layoutcommit *lcp,
- 		struct iomap *iomaps, int nr_iomaps)
- {
--	loff_t new_size = lcp->lc_last_wr + 1;
- 	struct iattr iattr = { .ia_valid = 0 };
- 	int error;
+--- a/drivers/net/ethernet/renesas/ravb_main.c
++++ b/drivers/net/ethernet/renesas/ravb_main.c
+@@ -2038,13 +2038,25 @@ static netdev_tx_t ravb_start_xmit(struc
  
-@@ -127,9 +126,9 @@ nfsd4_block_commit_blocks(struct inode *
- 	iattr.ia_valid |= ATTR_ATIME | ATTR_CTIME | ATTR_MTIME;
- 	iattr.ia_atime = iattr.ia_ctime = iattr.ia_mtime = lcp->lc_mtime;
- 
--	if (new_size > i_size_read(inode)) {
-+	if (lcp->lc_size_chg) {
- 		iattr.ia_valid |= ATTR_SIZE;
--		iattr.ia_size = new_size;
-+		iattr.ia_size = lcp->lc_newsize;
+ 		skb_tx_timestamp(skb);
  	}
- 
- 	error = inode->i_sb->s_export_op->commit_blocks(inode, iomaps,
---- a/fs/nfsd/nfs4proc.c
-+++ b/fs/nfsd/nfs4proc.c
-@@ -2261,7 +2261,6 @@ nfsd4_layoutcommit(struct svc_rqst *rqst
- 	const struct nfsd4_layout_seg *seg = &lcp->lc_seg;
- 	struct svc_fh *current_fh = &cstate->current_fh;
- 	const struct nfsd4_layout_ops *ops;
--	loff_t new_size = lcp->lc_last_wr + 1;
- 	struct inode *inode;
- 	struct nfs4_layout_stateid *ls;
- 	__be32 nfserr;
-@@ -2276,13 +2275,21 @@ nfsd4_layoutcommit(struct svc_rqst *rqst
- 		goto out;
- 	inode = d_inode(current_fh->fh_dentry);
- 
--	nfserr = nfserr_inval;
--	if (new_size <= seg->offset)
--		goto out;
--	if (new_size > seg->offset + seg->length)
--		goto out;
--	if (!lcp->lc_newoffset && new_size > i_size_read(inode))
--		goto out;
-+	lcp->lc_size_chg = false;
-+	if (lcp->lc_newoffset) {
-+		loff_t new_size = lcp->lc_last_wr + 1;
+-	/* Descriptor type must be set after all the above writes */
+-	dma_wmb();
 +
-+		nfserr = nfserr_inval;
-+		if (new_size <= seg->offset)
-+			goto out;
-+		if (new_size > seg->offset + seg->length)
-+			goto out;
-+
-+		if (new_size > i_size_read(inode)) {
-+			lcp->lc_size_chg = true;
-+			lcp->lc_newsize = new_size;
-+		}
-+	}
- 
- 	nfserr = nfsd4_preprocess_layout_stateid(rqstp, cstate, &lcp->lc_sid,
- 						false, lcp->lc_layout_type,
-@@ -2298,13 +2305,6 @@ nfsd4_layoutcommit(struct svc_rqst *rqst
- 	/* LAYOUTCOMMIT does not require any serialization */
- 	mutex_unlock(&ls->ls_mutex);
- 
--	if (new_size > i_size_read(inode)) {
--		lcp->lc_size_chg = 1;
--		lcp->lc_newsize = new_size;
--	} else {
--		lcp->lc_size_chg = 0;
--	}
--
- 	nfserr = ops->proc_layoutcommit(inode, lcp);
- 	nfs4_put_stid(&ls->ls_stid);
- out:
+ 	if (num_tx_desc > 1) {
+ 		desc->die_dt = DT_FEND;
+ 		desc--;
++		/* When using multi-descriptors, DT_FEND needs to get written
++		 * before DT_FSTART, but the compiler may reorder the memory
++		 * writes in an attempt to optimize the code.
++		 * Use a dma_wmb() barrier to make sure DT_FEND and DT_FSTART
++		 * are written exactly in the order shown in the code.
++		 * This is particularly important for cases where the DMA engine
++		 * is already running when we are running this code. If the DMA
++		 * sees DT_FSTART without the corresponding DT_FEND it will enter
++		 * an error condition.
++		 */
++		dma_wmb();
+ 		desc->die_dt = DT_FSTART;
+ 	} else {
++		/* Descriptor type must be set after all the above writes */
++		dma_wmb();
+ 		desc->die_dt = DT_FSINGLE;
+ 	}
+ 	ravb_modify(ndev, TCCR, TCCR_TSRQ0 << q, TCCR_TSRQ0 << q);
 
 
 
