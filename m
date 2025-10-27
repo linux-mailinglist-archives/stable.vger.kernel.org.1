@@ -1,59 +1,53 @@
-Return-Path: <stable+bounces-190267-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190301-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBCA2C1049D
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:56:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EDE2C1051E
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:57:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 20A5C1892229
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:52:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A72F156285A
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:53:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B072032ABF1;
-	Mon, 27 Oct 2025 18:47:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06532324B28;
+	Mon, 27 Oct 2025 18:49:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qKhwMpFC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RhA4PRct"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C30D3218B2;
-	Mon, 27 Oct 2025 18:47:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B36A0324B24;
+	Mon, 27 Oct 2025 18:49:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761590851; cv=none; b=NO5+TGpU/zleLKOXqOs3G05VpOyv6o5wQMJjhib9MRFEEky4Fxyjq/Bc0BfGF0q7IuCGztmyxvge4RyfZv0uTga9cM07tz9ivwQH0cqNoOCBC0JuYmiV04l1T6jeIgoBKMP5zVvrwiOZ99JdVv8nkXIxSGeE9R3hsSuMiQtDbRk=
+	t=1761590943; cv=none; b=D3UMPkjHh0BZqbOV9W2qCqZt6W0dY8Mt8PpHUw9zBtkNUH67fGHO7fm5k5s0Dvp0Z+TafhcEBH7JI9gqE+IF5nifrVpotV+u+W7QhHnMKzWNu7F86ifiuTydwWHcDQi/KUXWHTD2rcLJhqpEp37H5tpZUtMgW5C8SscHZCj+4Ag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761590851; c=relaxed/simple;
-	bh=UW5RhnSY3w5CyT+fRn3VcN2ucxNWLCtCvKSA2XzQIHg=;
+	s=arc-20240116; t=1761590943; c=relaxed/simple;
+	bh=ty0ZMLeGslOetsCRqU9ydELgFOnxvO3h+Q+oz3BYSzE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XOM4rt3WQuw/cRGvhvgRWUSEC3kIJPrK/NhW3TGZFoNKmwdvlq7j/srV/hCdLCZFlBCvRBNT2F9tvd9pDjKHd8PCawuhkricmrm8nq2OCx5yAR9ghq6mTjuP8BUKfjnjknbIaadrrGwQidpyMiRXvoOPkJwXidLFElWqYoshBm4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qKhwMpFC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75B5DC4CEF1;
-	Mon, 27 Oct 2025 18:47:30 +0000 (UTC)
+	 MIME-Version; b=UgXIRoJoA58dK+W3RnKIrFqwbaGb7+JMCugOjaoRnOVujel+zxtlHGR8C4Iv6t+lreO/M7bktEjpa0drijTwAYDPpuuTXWIFqWIXsbqN3erFcd3H44PfuINU6GimDmnfZZW7hbke9RPZ0PrxuxjpD2zEbjPudsgC/u5sxTSd3Jo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RhA4PRct; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42E3BC4CEF1;
+	Mon, 27 Oct 2025 18:49:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761590851;
-	bh=UW5RhnSY3w5CyT+fRn3VcN2ucxNWLCtCvKSA2XzQIHg=;
+	s=korg; t=1761590943;
+	bh=ty0ZMLeGslOetsCRqU9ydELgFOnxvO3h+Q+oz3BYSzE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qKhwMpFCEHGLIx5nkF98ncttBf5uyYx0xOMKEQZKaF6igRnrEnYPyGw/Gb8CSaegY
-	 YKTedNu8N82VWEthLrd72WSnmRsXOBhzhjFPrLB5o6iEUZonJ/IbGYQoOJNZlJvZVR
-	 C3P26Z19zv0QYMFORqQAildA9nNFga/JwZh4XQXA=
+	b=RhA4PRct3p5FFofpjebm6ugvxMsjLKrGiAHtgv5rfIgp6CAEzBQhBTmG0XcLg6oTn
+	 0CWB5XKdyA6KamLpAsRniyhyNmXqv4vwTfAi5Blg0vPq78UXRX69+2zytoZeKdN52P
+	 tG8fkKBfkgdcbBCEHv2OwO7xuCUpKbTrtvw1ybls=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Deepanshu Kartikey <kartikey406@gmail.com>,
-	syzbot+6fdd8fa3380730a4b22c@syzkaller.appspotmail.com,
-	Mark Fasheh <mark@fasheh.com>,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Jun Piao <piaojun@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.4 197/224] ocfs2: clear extent cache after moving/defragmenting extents
-Date: Mon, 27 Oct 2025 19:35:43 +0100
-Message-ID: <20251027183514.082921582@linuxfoundation.org>
+	Michal Pecio <michal.pecio@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.4 198/224] net: usb: rtl8150: Fix frame padding
+Date: Mon, 27 Oct 2025 19:35:44 +0100
+Message-ID: <20251027183514.106607164@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251027183508.963233542@linuxfoundation.org>
 References: <20251027183508.963233542@linuxfoundation.org>
@@ -72,63 +66,55 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Deepanshu Kartikey <kartikey406@gmail.com>
+From: Michal Pecio <michal.pecio@gmail.com>
 
-commit 78a63493f8e352296dbc7cb7b3f4973105e8679e upstream.
+commit 75cea9860aa6b2350d90a8d78fed114d27c7eca2 upstream.
 
-The extent map cache can become stale when extents are moved or
-defragmented, causing subsequent operations to see outdated extent flags.
-This triggers a BUG_ON in ocfs2_refcount_cal_cow_clusters().
+TX frames aren't padded and unknown memory is sent into the ether.
 
-The problem occurs when:
-1. copy_file_range() creates a reflinked extent with OCFS2_EXT_REFCOUNTED
-2. ioctl(FITRIM) triggers ocfs2_move_extents()
-3. __ocfs2_move_extents_range() reads and caches the extent (flags=0x2)
-4. ocfs2_move_extent()/ocfs2_defrag_extent() calls __ocfs2_move_extent()
-   which clears OCFS2_EXT_REFCOUNTED flag on disk (flags=0x0)
-5. The extent map cache is not invalidated after the move
-6. Later write() operations read stale cached flags (0x2) but disk has
-   updated flags (0x0), causing a mismatch
-7. BUG_ON(!(rec->e_flags & OCFS2_EXT_REFCOUNTED)) triggers
+Theoretically, it isn't even guaranteed that the extra memory exists
+and can be sent out, which could cause further problems. In practice,
+I found that plenty of tailroom exists in the skb itself (in my test
+with ping at least) and skb_padto() easily succeeds, so use it here.
 
-Fix by clearing the extent map cache after each extent move/defrag
-operation in __ocfs2_move_extents_range().  This ensures subsequent
-operations read fresh extent data from disk.
+In the event of -ENOMEM drop the frame like other drivers do.
 
-Link: https://lore.kernel.org/all/20251009142917.517229-1-kartikey406@gmail.com/T/
-Link: https://lkml.kernel.org/r/20251009154903.522339-1-kartikey406@gmail.com
-Fixes: 53069d4e7695 ("Ocfs2/move_extents: move/defrag extents within a certain range.")
-Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
-Reported-by: syzbot+6fdd8fa3380730a4b22c@syzkaller.appspotmail.com
-Tested-by: syzbot+6fdd8fa3380730a4b22c@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?id=2959889e1f6e216585ce522f7e8bc002b46ad9e7
-Reviewed-by: Mark Fasheh <mark@fasheh.com>
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+The use of one more padding byte instead of a USB zero-length packet
+is retained to avoid regression. I have a dodgy Etron xHCI controller
+which doesn't seem to support sending ZLPs at all.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@vger.kernel.org
+Signed-off-by: Michal Pecio <michal.pecio@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20251014203528.3f9783c4.michal.pecio@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ocfs2/move_extents.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/net/usb/rtl8150.c |   11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
---- a/fs/ocfs2/move_extents.c
-+++ b/fs/ocfs2/move_extents.c
-@@ -870,6 +870,11 @@ static int __ocfs2_move_extents_range(st
- 			mlog_errno(ret);
- 			goto out;
- 		}
-+		/*
-+		 * Invalidate extent cache after moving/defragging to prevent
-+		 * stale cached data with outdated extent flags.
-+		 */
-+		ocfs2_extent_map_trunc(inode, cpos);
+--- a/drivers/net/usb/rtl8150.c
++++ b/drivers/net/usb/rtl8150.c
+@@ -705,9 +705,16 @@ static netdev_tx_t rtl8150_start_xmit(st
+ 	rtl8150_t *dev = netdev_priv(netdev);
+ 	int count, res;
  
- 		context->clusters_moved += alloc_size;
- next:
++	/* pad the frame and ensure terminating USB packet, datasheet 9.2.3 */
++	count = max(skb->len, ETH_ZLEN);
++	if (count % 64 == 0)
++		count++;
++	if (skb_padto(skb, count)) {
++		netdev->stats.tx_dropped++;
++		return NETDEV_TX_OK;
++	}
++
+ 	netif_stop_queue(netdev);
+-	count = (skb->len < 60) ? 60 : skb->len;
+-	count = (count & 0x3f) ? count : count + 1;
+ 	dev->tx_skb = skb;
+ 	usb_fill_bulk_urb(dev->tx_urb, dev->udev, usb_sndbulkpipe(dev->udev, 2),
+ 		      skb->data, count, write_bulk_callback, dev);
 
 
 
