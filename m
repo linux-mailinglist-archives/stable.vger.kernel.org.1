@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-191049-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190620-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E3C4C10E00
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:23:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A7E6C10765
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:06:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 1E4DB346929
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:23:28 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 2FCC835153A
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:06:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DBB02D8377;
-	Mon, 27 Oct 2025 19:21:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D51032ABC8;
+	Mon, 27 Oct 2025 19:02:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eZ9fahMM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VBr97PD9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE5FD30F534;
-	Mon, 27 Oct 2025 19:21:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD46231BCBC;
+	Mon, 27 Oct 2025 19:02:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592880; cv=none; b=u5K4swGcfNNW0pnC2vm5qfYAqUe86hnzIsWSyOa0kPd6rFluQd5IJCSffj9fuqwRxkotzvh+M2/PXXlqAaUcF/Q9JbxAYPsgcwPiujuHmthRfKQPcx2iAdwvqIvkQDvHgJv6MCkj8QFtMqHBRpc45a6Y+s6TKEPsIHSULxz1Bwk=
+	t=1761591761; cv=none; b=LyyC4KAuQ98rRKpg1vGe3gVgJByO0dymvebEPE13pi1PwISih6l/popTSjUhei7h9U3ft1FxpQx2fRU68cz63DydsoSTl6FMVBHVvcjVnNbqq4LVcilTcs3w9KOT4I0yJK2lxFxx3xE5BE1VHEgFXL4adxul4QYheOfRgJBkjE4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592880; c=relaxed/simple;
-	bh=UoSIvBjiFjFvpbXSgWK+FJZZ7/QHzys1MCD8wI5J2RY=;
+	s=arc-20240116; t=1761591761; c=relaxed/simple;
+	bh=88HB8yiKgjd62DKNIOgZHyp3l+ffO9yKXWuN/vFnCTI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GtBFO680Y3D7OE3csnjGYw3halNgWUIxzy0xY9VqAjLveSKCBW3TtM2WNDzn6t0KuZ6HDhQyUE5DPy6tcyvSSyxa85lY3hcXzoEx2ztbde65vAG+cE+1nt+ynavW8HOmpMiFP3cfKW13dgK6ugazfwCnJfkoOyvjMfofpL+6Q+w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eZ9fahMM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61C4AC4CEF1;
-	Mon, 27 Oct 2025 19:21:20 +0000 (UTC)
+	 MIME-Version; b=PTTJWw0okQO6SN1HABL/0XWdDwrENtKkY/Q/Srr4rTplVE9zUtE1GaKBzUK8owmBh3lCYCAMuWYnjPqhn/pJsmr9vxrN9HpD3K+eYSizk1LItzQGbqrzA+QtDIskFivXbU8dPTYVPG+2zaeSVY6g0Yv9dYcjp/0pjld9YS8BhHs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VBr97PD9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52101C4CEF1;
+	Mon, 27 Oct 2025 19:02:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592880;
-	bh=UoSIvBjiFjFvpbXSgWK+FJZZ7/QHzys1MCD8wI5J2RY=;
+	s=korg; t=1761591761;
+	bh=88HB8yiKgjd62DKNIOgZHyp3l+ffO9yKXWuN/vFnCTI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eZ9fahMM2HJnMw0Amnd0giIn8VGANvpBoy57aFY499nM0c9M5SamB5vBBektiDaJ4
-	 +Lvh35/BjXFD/8G4eJRFNIc+2SS4HqsMwPvqjk5B5CdknK9fV36UBZXhw1qS0D23gX
-	 voW7Gyg9LftpX+o7W+/QQTJtNbubn+o0co4nUlIM=
+	b=VBr97PD9u8os589mEvrXVJwODbf8dUpAUNvv74+9hAC/5CQtn6DqxOeG7cODFrtDq
+	 VQFbeP+n9nWm90vE8K3PclOsC9hCZ4nfiul32mZmn9uKigeU7P1yHwwbHUE8wxxWGK
+	 YhG5oLSe02jTOh6gzCZep1qOSDGqvKlGe39xcw4s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 030/117] can: bxcan: bxcan_start_xmit(): use can_dev_dropped_skb() instead of can_dropped_invalid_skb()
+	Mark Rutland <mark.rutland@arm.com>,
+	James Morse <james.morse@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Ryan Roberts <ryan.roberts@arm.com>
+Subject: [PATCH 5.10 303/332] arm64: cputype: Add Neoverse-V3AE definitions
 Date: Mon, 27 Oct 2025 19:35:56 +0100
-Message-ID: <20251027183454.784129071@linuxfoundation.org>
+Message-ID: <20251027183532.853084663@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
-References: <20251027183453.919157109@linuxfoundation.org>
+In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
+References: <20251027183524.611456697@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +64,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Kleine-Budde <mkl@pengutronix.de>
+From: Mark Rutland <mark.rutland@arm.com>
 
-[ Upstream commit 3a20c444cd123e820e10ae22eeaf00e189315aa1 ]
+commit 3bbf004c4808e2c3241e5c1ad6cc102f38a03c39 upstream.
 
-In addition to can_dropped_invalid_skb(), the helper function
-can_dev_dropped_skb() checks whether the device is in listen-only mode and
-discards the skb accordingly.
+Add cputype definitions for Neoverse-V3AE. These will be used for errata
+detection in subsequent patches.
 
-Replace can_dropped_invalid_skb() by can_dev_dropped_skb() to also drop
-skbs in for listen-only mode.
+These values can be found in the Neoverse-V3AE TRM:
 
-Reported-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Closes: https://lore.kernel.org/all/20251017-bizarre-enchanted-quokka-f3c704-mkl@pengutronix.de/
-Fixes: f00647d8127b ("can: bxcan: add support for ST bxCAN controller")
-Link: https://patch.msgid.link/20251017-fix-skb-drop-check-v1-1-556665793fa4@pengutronix.de
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  https://developer.arm.com/documentation/SDEN-2615521/9-0/
+
+... in section A.6.1 ("MIDR_EL1, Main ID Register").
+
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Cc: James Morse <james.morse@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+Signed-off-by: Will Deacon <will@kernel.org>
+[ Ryan: Trivial backport ]
+Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/can/bxcan.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/include/asm/cputype.h |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/can/bxcan.c b/drivers/net/can/bxcan.c
-index bfc60eb33dc37..333ad42ea73bc 100644
---- a/drivers/net/can/bxcan.c
-+++ b/drivers/net/can/bxcan.c
-@@ -842,7 +842,7 @@ static netdev_tx_t bxcan_start_xmit(struct sk_buff *skb,
- 	u32 id;
- 	int i, j;
- 
--	if (can_dropped_invalid_skb(ndev, skb))
-+	if (can_dev_dropped_skb(ndev, skb))
- 		return NETDEV_TX_OK;
- 
- 	if (bxcan_tx_busy(priv))
--- 
-2.51.0
-
+--- a/arch/arm64/include/asm/cputype.h
++++ b/arch/arm64/include/asm/cputype.h
+@@ -92,6 +92,7 @@
+ #define ARM_CPU_PART_NEOVERSE_V2	0xD4F
+ #define ARM_CPU_PART_CORTEX_A720	0xD81
+ #define ARM_CPU_PART_CORTEX_X4		0xD82
++#define ARM_CPU_PART_NEOVERSE_V3AE	0xD83
+ #define ARM_CPU_PART_NEOVERSE_V3	0xD84
+ #define ARM_CPU_PART_CORTEX_X925	0xD85
+ #define ARM_CPU_PART_CORTEX_A725	0xD87
+@@ -157,6 +158,7 @@
+ #define MIDR_NEOVERSE_V2 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_V2)
+ #define MIDR_CORTEX_A720 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A720)
+ #define MIDR_CORTEX_X4 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X4)
++#define MIDR_NEOVERSE_V3AE	MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_V3AE)
+ #define MIDR_NEOVERSE_V3 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_V3)
+ #define MIDR_CORTEX_X925 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X925)
+ #define MIDR_CORTEX_A725 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A725)
 
 
 
