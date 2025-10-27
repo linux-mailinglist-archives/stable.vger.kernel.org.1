@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-190087-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190420-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A87CC0FF48
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:40:04 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C8A3C10543
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:58:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6649E462153
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:40:02 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6C4634FE83A
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:57:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EC78308F3A;
-	Mon, 27 Oct 2025 18:40:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02C93326D4F;
+	Mon, 27 Oct 2025 18:54:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q4Db4IN/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YyUz4jPp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFC0E218EB1;
-	Mon, 27 Oct 2025 18:40:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3DDC32549E;
+	Mon, 27 Oct 2025 18:54:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761590401; cv=none; b=NdEuL23YmW1c4smZfdvVgC/whNwyWS70OE2cukrDJnGdte/YytXVcBWdBWbCXdspEb2lu6+eZCC4NSMdbsyvlokwuAwsNV2ENaLauxIS3eiLsnwG1r/GXOC4HRG89TwG2bin/N0+2Bq+yJn0kHvO/aEgclF+72XRVFIdpQHaW6M=
+	t=1761591244; cv=none; b=kN8yVFGw532vBcm0JXr0SHNy2/eE75SQOmYC64vxoBlRiqAmdVlhxxSfEp+jfc1OobB3FXNAfWY05Sz1e9eWCzBk36hYCwuBKWeBsMXCHjUph+FeONfXaX+UpqKo+Q02YPIFrIvVSVOlgt2423MlDOdnoY08aw4DYjHwS0c0Lrg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761590401; c=relaxed/simple;
-	bh=lgnaPq9Cyz2rTUASZfjHT8J9ulVM7b7itUYLADg126Q=;
+	s=arc-20240116; t=1761591244; c=relaxed/simple;
+	bh=3HmRWmSLrbMgePqkCHEOWULAchlEOw7jFDeVPVGJH1c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aNulDuUcJ1nQiOsNp3m2iQChMyK0B+IbJ7WdX28kZwHpdOLGtfeRaqg6b9AeQ1LpRTk8dxsv6JrwB9/9jLZr1t8LQ5uZOGteAendHaaWff6sIfjo4//QUceogudNaRw15n91k7H5tCh4ct1tgE0CRNi0fIzaPhFcqzsQtEDjkug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q4Db4IN/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45FB6C4CEF1;
-	Mon, 27 Oct 2025 18:40:01 +0000 (UTC)
+	 MIME-Version; b=SScWeuFDrIkJ6wM7JRF88jlEoC80DSrjgMbAR3y9mCGUjtDzG6kBpLkh3VfKlX6qGtn+2ofLtEHPww7ClGe5wmSlsYNnOCNGU2cW07zEXoq7TFQac6NSC3IDPiWXz9Tcb1qPaV6JsR+qej2zcFOsLES03PgfkD4+2KCUHIWEwiw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YyUz4jPp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 455EAC4CEF1;
+	Mon, 27 Oct 2025 18:54:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761590401;
-	bh=lgnaPq9Cyz2rTUASZfjHT8J9ulVM7b7itUYLADg126Q=;
+	s=korg; t=1761591244;
+	bh=3HmRWmSLrbMgePqkCHEOWULAchlEOw7jFDeVPVGJH1c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q4Db4IN/fYXWJS7yBYa/Zd9aquvbSex7G6wzmV2MgsBYjE9VBkN2JUsxkWH9t9Y7G
-	 13qEgKaWms9YmN41/xvRvrZVWr8pVUrVrMla/JvULlPP5goMW4H+zBHk9UAdR9HlnZ
-	 3bEi65xG4h+wF5GuE6L1rHkK5CGvLjPtP3PvyBq8=
+	b=YyUz4jPpG5LWXytzdxL59lujp782od/A7VP1SiVZnM5B8H/gjq7q5cuc04otfNqQT
+	 A0jfbT7sZKn3Y93a5LcuA0nMLBJmNcxNP7228XPsW3qvLQpjetdbGd2v7amHIttGnj
+	 JI7hSnxfeeEr8VgKDpamJ66ijjYAU14ASrA6wvXI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kohei Ito <ito.kohei@socionext.com>,
-	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
-	Jarkko Nikula <jarkko.nikula@linux.intel.com>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Muhammad Alifa Ramdhan <ramdhan@starlabs.sg>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 030/224] i2c: designware: Add disabling clocks when probe fails
+Subject: [PATCH 5.10 123/332] crypto: essiv - Check ssize for decryption and in-place encryption
 Date: Mon, 27 Oct 2025 19:32:56 +0100
-Message-ID: <20251027183509.811101159@linuxfoundation.org>
+Message-ID: <20251027183527.858386804@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183508.963233542@linuxfoundation.org>
-References: <20251027183508.963233542@linuxfoundation.org>
+In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
+References: <20251027183524.611456697@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,41 +62,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
+From: Herbert Xu <herbert@gondor.apana.org.au>
 
-[ Upstream commit c149841b069ccc6e480b00e11f35a57b5d88c7bb ]
+[ Upstream commit 6bb73db6948c2de23e407fe1b7ef94bf02b7529f ]
 
-After an error occurs during probing state, dw_i2c_plat_pm_cleanup() is
-called. However, this function doesn't disable clocks and the clock-enable
-count keeps increasing. Should disable these clocks explicitly.
+Move the ssize check to the start in essiv_aead_crypt so that
+it's also checked for decryption and in-place encryption.
 
-Fixes: 7272194ed391f ("i2c-designware: add minimal support for runtime PM")
-Co-developed-by: Kohei Ito <ito.kohei@socionext.com>
-Signed-off-by: Kohei Ito <ito.kohei@socionext.com>
-Signed-off-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
-Acked-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Reported-by: Muhammad Alifa Ramdhan <ramdhan@starlabs.sg>
+Fixes: be1eb7f78aa8 ("crypto: essiv - create wrapper template for ESSIV generation")
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-designware-platdrv.c | 1 +
- 1 file changed, 1 insertion(+)
+ crypto/essiv.c | 14 ++++++--------
+ 1 file changed, 6 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/i2c/busses/i2c-designware-platdrv.c b/drivers/i2c/busses/i2c-designware-platdrv.c
-index 75313c80f132f..fd5ffe13c7033 100644
---- a/drivers/i2c/busses/i2c-designware-platdrv.c
-+++ b/drivers/i2c/busses/i2c-designware-platdrv.c
-@@ -414,6 +414,7 @@ static int dw_i2c_plat_probe(struct platform_device *pdev)
+diff --git a/crypto/essiv.c b/crypto/essiv.c
+index 85bb624e32b9b..7db206fc97f21 100644
+--- a/crypto/essiv.c
++++ b/crypto/essiv.c
+@@ -185,9 +185,14 @@ static int essiv_aead_crypt(struct aead_request *req, bool enc)
+ 	const struct essiv_tfm_ctx *tctx = crypto_aead_ctx(tfm);
+ 	struct essiv_aead_request_ctx *rctx = aead_request_ctx(req);
+ 	struct aead_request *subreq = &rctx->aead_req;
++	int ivsize = crypto_aead_ivsize(tfm);
++	int ssize = req->assoclen - ivsize;
+ 	struct scatterlist *src = req->src;
+ 	int err;
  
- exit_probe:
- 	dw_i2c_plat_pm_cleanup(dev);
-+	i2c_dw_prepare_clk(dev, false);
- exit_reset:
- 	reset_control_assert(dev->rst);
- 	return ret;
++	if (ssize < 0)
++		return -EINVAL;
++
+ 	crypto_cipher_encrypt_one(tctx->essiv_cipher, req->iv, req->iv);
+ 
+ 	/*
+@@ -197,19 +202,12 @@ static int essiv_aead_crypt(struct aead_request *req, bool enc)
+ 	 */
+ 	rctx->assoc = NULL;
+ 	if (req->src == req->dst || !enc) {
+-		scatterwalk_map_and_copy(req->iv, req->dst,
+-					 req->assoclen - crypto_aead_ivsize(tfm),
+-					 crypto_aead_ivsize(tfm), 1);
++		scatterwalk_map_and_copy(req->iv, req->dst, ssize, ivsize, 1);
+ 	} else {
+ 		u8 *iv = (u8 *)aead_request_ctx(req) + tctx->ivoffset;
+-		int ivsize = crypto_aead_ivsize(tfm);
+-		int ssize = req->assoclen - ivsize;
+ 		struct scatterlist *sg;
+ 		int nents;
+ 
+-		if (ssize < 0)
+-			return -EINVAL;
+-
+ 		nents = sg_nents_for_len(req->src, ssize);
+ 		if (nents < 0)
+ 			return -EINVAL;
 -- 
 2.51.0
 
