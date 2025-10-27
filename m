@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-190955-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191231-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2029AC10DF0
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:23:16 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC3C6C111D7
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:35:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B1E2B1A6348F
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:18:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E78F119A6620
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:31:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A71DB320A0D;
-	Mon, 27 Oct 2025 19:17:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A65F2BE037;
+	Mon, 27 Oct 2025 19:29:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WMrKRj7p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="apEy9Gdo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FCC91E47CA;
-	Mon, 27 Oct 2025 19:17:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB7931DDC1B;
+	Mon, 27 Oct 2025 19:29:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592635; cv=none; b=dWNJtLrrM8DmLTqNkWs7e0DhiLFHJIZBOkrtIqRtfCpIsVj0bGAVJXUf1IdfGswLvXKtkT2XN0bVEAYZ8K9yR0JMeIT5HzAjLiWjCkylsa9zVbGmMdquO3xbWdsvwaxCKFhgXXYtBtj47GPGPL4OLwAwGQAbb8BMwiBA68h9+to=
+	t=1761593354; cv=none; b=bA/pWLOQwU6HG93I0l2HqZD9Dv/O5c0brlUZPO4CSwf5vRDDPBKC9gN/HrfHag4uxFOTj+JH0vBDauPcw97nWWDIotDm8UPtG6lR3MQmZ6TZDRa13tlUfFmGuK+0MYr0mnkY7F6WOPUSOR/y3dr01+eX1Jo0N5J8oqyKPaPTC/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592635; c=relaxed/simple;
-	bh=r/WmfOTTxlpVgWdFWx/zX6NEQbTGT1pnZERW8ZnE1wI=;
+	s=arc-20240116; t=1761593354; c=relaxed/simple;
+	bh=DPCdu3rey6gyzvVGCZD6zvnzjs/k56sOaawWEsxgRs0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CLDzVDuZbNRHYjR4zGu1OpaKpczhUa8iHxEYPdlz2be4kNpL79bp/bc49ph/fkcyQEaEsvPyXlsngxvkhRbGhEWXMdDmvLhjoNHclulKawW7h6zcrbeA80DMvBuFXX70vPPeCYNFJP4Z4TXaLNVv2DJSS3M2mwQKMGZfQMls6eI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WMrKRj7p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8BA1C113D0;
-	Mon, 27 Oct 2025 19:17:14 +0000 (UTC)
+	 MIME-Version; b=TFowx7LPyVrRn27Tk+Y6mzlYB145mnuJKxlHTL668vzROaPX+dbhuC1TQf3djAXetDqYvZKAIadSoBpEA+O3asip0RXuIVOVX6nBuqqZJ3UQryohF5uLkmY6Snuhaen9P7huBCFkOg+Bmok5hrrQ/F/EEVdh8APBEQmTLGtH6Io=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=apEy9Gdo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E8C0C4CEF1;
+	Mon, 27 Oct 2025 19:29:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592635;
-	bh=r/WmfOTTxlpVgWdFWx/zX6NEQbTGT1pnZERW8ZnE1wI=;
+	s=korg; t=1761593353;
+	bh=DPCdu3rey6gyzvVGCZD6zvnzjs/k56sOaawWEsxgRs0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WMrKRj7ppo8YGnCek54lLWyx52bhchTe5LC+GWWu/sPSQMwx/pVtXzoLsKYvwnFPh
-	 nmcH4ibbuqzPI7LGrim+0NcLGewLCcYG8ljZRtq8YuRuXl/wlVnRfoqOT5nrPkzuYi
-	 Tfn3Rc8uDBHGfwStbgiAn26Y+wWtgO+lyj69GQa4=
+	b=apEy9GdobToOLuh5PHrRnz8psjfYl81vRCjIaIqM+a1hdflIOJzF/3f1Jev/6CcxL
+	 65pdXCFW6eyGjgsZkadEe5U4z3nemus7HOyga0Km5D94Lfc+y6J38zOLK/Q3tP0RmJ
+	 mbNDkXBhYQouBivISfEsku3MTtWUcOwUUAoVb0X8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	linux-cifs@vger.kernel.org,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
-	Pavel Shilovskiy <pshilovskiy@microsoft.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.6 39/84] cifs: Fix TCP_Server_Info::credits to be signed
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Pedro Falcato <pfalcato@suse.de>,
+	Jann Horn <jannh@google.com>,
+	Liam Howlett <liam.howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.17 106/184] mm/mremap: correctly account old mapping after MREMAP_DONTUNMAP remap
 Date: Mon, 27 Oct 2025 19:36:28 +0100
-Message-ID: <20251027183439.860574899@linuxfoundation.org>
+Message-ID: <20251027183517.773982781@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183438.817309828@linuxfoundation.org>
-References: <20251027183438.817309828@linuxfoundation.org>
+In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
+References: <20251027183514.934710872@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,42 +65,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 
-commit 5b2ff4873aeab972f919d5aea11c51393322bf58 upstream.
+commit 0e59f47c15cec4cd88c51c5cda749607b719c82b upstream.
 
-Fix TCP_Server_Info::credits to be signed, just as echo_credits and
-oplock_credits are.  This also fixes what ought to get at least a
-compilation warning if not an outright error in *get_credits_field() as a
-pointer to the unsigned server->credits field is passed back as a pointer
-to a signed int.
+Commit b714ccb02a76 ("mm/mremap: complete refactor of move_vma()")
+mistakenly introduced a new behaviour - clearing the VM_ACCOUNT flag of
+the old mapping when a mapping is mremap()'d with the MREMAP_DONTUNMAP
+flag set.
 
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: linux-cifs@vger.kernel.org
-Cc: stable@vger.kernel.org
-Acked-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
-Acked-by: Pavel Shilovskiy <pshilovskiy@microsoft.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+While we always clear the VM_LOCKED and VM_LOCKONFAULT flags for the old
+mapping (the page tables have been moved, so there is no data that could
+possibly be locked in memory), there is no reason to touch any other VMA
+flags.
+
+This is because after the move the old mapping is in a state as if it were
+freshly mapped.  This implies that the attributes of the mapping ought to
+remain the same, including whether or not the mapping is accounted.
+
+Link: https://lkml.kernel.org/r/20251013165836.273113-1-lorenzo.stoakes@oracle.com
+Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Fixes: b714ccb02a76 ("mm/mremap: complete refactor of move_vma()")
+Reviewed-by: Pedro Falcato <pfalcato@suse.de>
+Cc: Jann Horn <jannh@google.com>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/cifsglob.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ mm/mremap.c | 15 ++++++---------
+ 1 file changed, 6 insertions(+), 9 deletions(-)
 
---- a/fs/smb/client/cifsglob.h
-+++ b/fs/smb/client/cifsglob.h
-@@ -703,7 +703,7 @@ struct TCP_Server_Info {
- 	bool nosharesock;
- 	bool tcp_nodelay;
- 	bool terminate;
--	unsigned int credits;  /* send no more requests at once */
-+	int credits;  /* send no more requests at once */
- 	unsigned int max_credits; /* can override large 32000 default at mnt */
- 	unsigned int in_flight;  /* number of requests on the wire to server */
- 	unsigned int max_in_flight; /* max number of requests that were on wire */
+diff --git a/mm/mremap.c b/mm/mremap.c
+index 35de0a7b910e..bd7314898ec5 100644
+--- a/mm/mremap.c
++++ b/mm/mremap.c
+@@ -1237,10 +1237,10 @@ static int copy_vma_and_data(struct vma_remap_struct *vrm,
+ }
+ 
+ /*
+- * Perform final tasks for MADV_DONTUNMAP operation, clearing mlock() and
+- * account flags on remaining VMA by convention (it cannot be mlock()'d any
+- * longer, as pages in range are no longer mapped), and removing anon_vma_chain
+- * links from it (if the entire VMA was copied over).
++ * Perform final tasks for MADV_DONTUNMAP operation, clearing mlock() flag on
++ * remaining VMA by convention (it cannot be mlock()'d any longer, as pages in
++ * range are no longer mapped), and removing anon_vma_chain links from it if the
++ * entire VMA was copied over.
+  */
+ static void dontunmap_complete(struct vma_remap_struct *vrm,
+ 			       struct vm_area_struct *new_vma)
+@@ -1250,11 +1250,8 @@ static void dontunmap_complete(struct vma_remap_struct *vrm,
+ 	unsigned long old_start = vrm->vma->vm_start;
+ 	unsigned long old_end = vrm->vma->vm_end;
+ 
+-	/*
+-	 * We always clear VM_LOCKED[ONFAULT] | VM_ACCOUNT on the old
+-	 * vma.
+-	 */
+-	vm_flags_clear(vrm->vma, VM_LOCKED_MASK | VM_ACCOUNT);
++	/* We always clear VM_LOCKED[ONFAULT] on the old VMA. */
++	vm_flags_clear(vrm->vma, VM_LOCKED_MASK);
+ 
+ 	/*
+ 	 * anon_vma links of the old vma is no longer needed after its page
+-- 
+2.51.1
+
 
 
 
