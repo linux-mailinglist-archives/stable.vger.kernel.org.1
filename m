@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-190916-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190979-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 534A0C10D90
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:22:10 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 180AEC10F5B
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:27:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 17DF0188E666
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:17:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C30F0564450
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:19:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8445320382;
-	Mon, 27 Oct 2025 19:15:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECD1A31DD87;
+	Mon, 27 Oct 2025 19:18:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Ov3oiRw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1aiFd83r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A57BB31C584;
-	Mon, 27 Oct 2025 19:15:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E4D52D6E70;
+	Mon, 27 Oct 2025 19:18:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592533; cv=none; b=UmJZ0FKyLxgHjtVqEZm7+ADG+1pYvfYjgm8/p35lQvrFYLP7b0AY6io7Nu+7gmXlMWJGr0h+ZAb3OsLLwt5ef2ZPJ6R0DtrqzCNbY+KABhlICqGHY4EeyuKcFr9knuJZwlspoRNAghZ9izuujbrPOoeakDAcpItyQkaPJQB/2HA=
+	t=1761592699; cv=none; b=DomYVK5Ju+mt3WIPmQJpXUtyZfYCmhRDjDMNu5gzgrriVpkn3c6Zfr07OoVZ4H67m9UOA8S8GfwbVcTADdREDyBAzL1Ja6NC+sgO4NjilxH+qBdybIeLQXjLYrmQk0FstN2CWzHWgTMGNjTOwbVqYpALBnANhP4M74AEJsKJP4c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592533; c=relaxed/simple;
-	bh=C4NQcQwkm1JgJsDMFGRjuF5ZO08Ie5K3tbo/FWOh5Xs=;
+	s=arc-20240116; t=1761592699; c=relaxed/simple;
+	bh=j6nL9DxpLauzjuOEY7soJY6U+3khwRTrv6VsYZnMxAo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LxYvlC+ueLeJARc/nUMNwUhYZaJDWo6Y9U8PyGIBSoBe2bd106Bor5zwQyMft9aqEQQyEamopYLdP2rZyhuN2TMtVHsPt3Kc9HAt+/UGj8lvSOlXELFYakiiBUvbrWR2pq0feUr8wNOI9XOkkagibd5BnR2AJorxJA6iAxzb9bc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Ov3oiRw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39C98C4CEF1;
-	Mon, 27 Oct 2025 19:15:33 +0000 (UTC)
+	 MIME-Version; b=gCzvbbJ7O6GR5zB24bR16EQU+4uPeaIymg2oIg2OM5WzxepyQ2DmW/JRWX9Hw0OY+EqdZ8O/tU/vqi1C/KZM4XlEG55d+mMMJCDuJYEwFvQo1UF0LKsQXFhWsH3QU3+TMZu/bJiFuFuS7+BBLhaNlLohBpaF5qW4g8sTCCnk9yE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1aiFd83r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D05EEC4CEF1;
+	Mon, 27 Oct 2025 19:18:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592533;
-	bh=C4NQcQwkm1JgJsDMFGRjuF5ZO08Ie5K3tbo/FWOh5Xs=;
+	s=korg; t=1761592699;
+	bh=j6nL9DxpLauzjuOEY7soJY6U+3khwRTrv6VsYZnMxAo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0Ov3oiRw6JaeTm+A5wwKLFswn3WommC/kV+WXMRA/ZNr6zca+ldYSYEXtyds5sG9O
-	 c/8NPT9vmaCi8ri5N3NkA4wXI3JcExVj4QtqFw7Z0LcriHII1Rb+eJxwgcdbM/K4TL
-	 sNqNkoyc7JN2IbXdFIXhg+dwsiaArPmX2MOtx0js=
+	b=1aiFd83rj1++FVBxHws3pcQoVYIusfrSLTlVRYDyvZ7MvTn+np5TvHU+GYWroz+NU
+	 ZcmGNhs0FcnX8oG+D/ZCdz/oBjozqCvZN1A7JVsYa/pFk1mkzjYqQa82JVRnwsC4zl
+	 R2Uj9NcJebC0m8p6MkbZnWqTVKkSB0458s9WJi1E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Bence=20Cs=C3=B3k=C3=A1s?= <csokas.bence@prolan.hu>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 121/157] PM: runtime: Add new devm functions
+	stable <stable@kernel.org>,
+	Kaushlendra Kumar <kaushlendra.kumar@intel.com>,
+	Sudeep Holla <sudeep.holla@arm.com>
+Subject: [PATCH 6.6 33/84] arch_topology: Fix incorrect error check in topology_parse_cpu_capacity()
 Date: Mon, 27 Oct 2025 19:36:22 +0100
-Message-ID: <20251027183504.493954504@linuxfoundation.org>
+Message-ID: <20251027183439.704393007@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
-References: <20251027183501.227243846@linuxfoundation.org>
+In-Reply-To: <20251027183438.817309828@linuxfoundation.org>
+References: <20251027183438.817309828@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,114 +60,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bence Csókás <csokas.bence@prolan.hu>
+From: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
 
-[ Upstream commit 73db799bf5efc5a04654bb3ff6c9bf63a0dfa473 ]
+commit 2eead19334516c8e9927c11b448fbe512b1f18a1 upstream.
 
-Add `devm_pm_runtime_set_active_enabled()` and
-`devm_pm_runtime_get_noresume()` for simplifying
-common cases in drivers.
+Fix incorrect use of PTR_ERR_OR_ZERO() in topology_parse_cpu_capacity()
+which causes the code to proceed with NULL clock pointers. The current
+logic uses !PTR_ERR_OR_ZERO(cpu_clk) which evaluates to true for both
+valid pointers and NULL, leading to potential NULL pointer dereference
+in clk_get_rate().
 
-Signed-off-by: Bence Csókás <csokas.bence@prolan.hu>
-Link: https://patch.msgid.link/20250327195928.680771-3-csokas.bence@prolan.hu
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Stable-dep-of: 0792c1984a45 ("iio: imu: inv_icm42600: Simplify pm_runtime setup")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Per include/linux/err.h documentation, PTR_ERR_OR_ZERO(ptr) returns:
+"The error code within @ptr if it is an error pointer; 0 otherwise."
+
+This means PTR_ERR_OR_ZERO() returns 0 for both valid pointers AND NULL
+pointers. Therefore !PTR_ERR_OR_ZERO(cpu_clk) evaluates to true (proceed)
+when cpu_clk is either valid or NULL, causing clk_get_rate(NULL) to be
+called when of_clk_get() returns NULL.
+
+Replace with !IS_ERR_OR_NULL(cpu_clk) which only proceeds for valid
+pointers, preventing potential NULL pointer dereference in clk_get_rate().
+
+Cc: stable <stable@kernel.org>
+Signed-off-by: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
+Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
+Fixes: b8fe128dad8f ("arch_topology: Adjust initial CPU capacities with current freq")
+Link: https://patch.msgid.link/20250923174308.1771906-1-kaushlendra.kumar@intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/base/power/runtime.c |   44 +++++++++++++++++++++++++++++++++++++++++++
- include/linux/pm_runtime.h   |    4 +++
- 2 files changed, 48 insertions(+)
+ drivers/base/arch_topology.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/base/power/runtime.c
-+++ b/drivers/base/power/runtime.c
-@@ -1512,6 +1512,32 @@ out:
- }
- EXPORT_SYMBOL_GPL(pm_runtime_enable);
- 
-+static void pm_runtime_set_suspended_action(void *data)
-+{
-+	pm_runtime_set_suspended(data);
-+}
-+
-+/**
-+ * devm_pm_runtime_set_active_enabled - set_active version of devm_pm_runtime_enable.
-+ *
-+ * @dev: Device to handle.
-+ */
-+int devm_pm_runtime_set_active_enabled(struct device *dev)
-+{
-+	int err;
-+
-+	err = pm_runtime_set_active(dev);
-+	if (err)
-+		return err;
-+
-+	err = devm_add_action_or_reset(dev, pm_runtime_set_suspended_action, dev);
-+	if (err)
-+		return err;
-+
-+	return devm_pm_runtime_enable(dev);
-+}
-+EXPORT_SYMBOL_GPL(devm_pm_runtime_set_active_enabled);
-+
- static void pm_runtime_disable_action(void *data)
- {
- 	pm_runtime_dont_use_autosuspend(data);
-@@ -1534,6 +1560,24 @@ int devm_pm_runtime_enable(struct device
- }
- EXPORT_SYMBOL_GPL(devm_pm_runtime_enable);
- 
-+static void pm_runtime_put_noidle_action(void *data)
-+{
-+	pm_runtime_put_noidle(data);
-+}
-+
-+/**
-+ * devm_pm_runtime_get_noresume - devres-enabled version of pm_runtime_get_noresume.
-+ *
-+ * @dev: Device to handle.
-+ */
-+int devm_pm_runtime_get_noresume(struct device *dev)
-+{
-+	pm_runtime_get_noresume(dev);
-+
-+	return devm_add_action_or_reset(dev, pm_runtime_put_noidle_action, dev);
-+}
-+EXPORT_SYMBOL_GPL(devm_pm_runtime_get_noresume);
-+
- /**
-  * pm_runtime_forbid - Block runtime PM of a device.
-  * @dev: Device to handle.
---- a/include/linux/pm_runtime.h
-+++ b/include/linux/pm_runtime.h
-@@ -95,7 +95,9 @@ extern void pm_runtime_new_link(struct d
- extern void pm_runtime_drop_link(struct device_link *link);
- extern void pm_runtime_release_supplier(struct device_link *link);
- 
-+int devm_pm_runtime_set_active_enabled(struct device *dev);
- extern int devm_pm_runtime_enable(struct device *dev);
-+int devm_pm_runtime_get_noresume(struct device *dev);
- 
- /**
-  * pm_runtime_get_if_in_use - Conditionally bump up runtime PM usage counter.
-@@ -292,7 +294,9 @@ static inline void __pm_runtime_disable(
- static inline void pm_runtime_allow(struct device *dev) {}
- static inline void pm_runtime_forbid(struct device *dev) {}
- 
-+static inline int devm_pm_runtime_set_active_enabled(struct device *dev) { return 0; }
- static inline int devm_pm_runtime_enable(struct device *dev) { return 0; }
-+static inline int devm_pm_runtime_get_noresume(struct device *dev) { return 0; }
- 
- static inline void pm_suspend_ignore_children(struct device *dev, bool enable) {}
- static inline void pm_runtime_get_noresume(struct device *dev) {}
+--- a/drivers/base/arch_topology.c
++++ b/drivers/base/arch_topology.c
+@@ -326,7 +326,7 @@ bool __init topology_parse_cpu_capacity(
+ 		 * frequency (by keeping the initial capacity_freq_ref value).
+ 		 */
+ 		cpu_clk = of_clk_get(cpu_node, 0);
+-		if (!PTR_ERR_OR_ZERO(cpu_clk)) {
++		if (!IS_ERR_OR_NULL(cpu_clk)) {
+ 			per_cpu(capacity_freq_ref, cpu) =
+ 				clk_get_rate(cpu_clk) / HZ_PER_KHZ;
+ 			clk_put(cpu_clk);
 
 
 
