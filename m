@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-191097-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190923-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D72E1C10FFA
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:29:28 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC67EC10DE8
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:23:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5715019A5DC8
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:25:40 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 20A04506BCF
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:17:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98D4F32C93E;
-	Mon, 27 Oct 2025 19:23:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2038932145A;
+	Mon, 27 Oct 2025 19:15:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P3wtiwZL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g7FxJ5qP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55AC927FD62;
-	Mon, 27 Oct 2025 19:23:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB0B531CA7E;
+	Mon, 27 Oct 2025 19:15:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592999; cv=none; b=GcMLgMihHXuOX4USc5QaHK81vK5CSsOud3W4hGYMUI4/PS2R+vnYk1Rc/tcAuxaCjse+lj8n6/Fhk1XapqJYmEdTDouHZAvQGk60niuJS+GyhHiOEQOVm8TFS9L6tuk6ICITyHBiN5+d6ak1OAbNbVpdzCpUZDzWyaySXh91JRc=
+	t=1761592552; cv=none; b=Hzbu/GlCoDQkYoTbGb02rfYjexhPsI9HjoiIKin53oH9bYOPdiiO6TTu0F0YugTB8iRWsf9r9C0U54ADPy81VkvC5asm4QludO0eaMzr3wsoVTSmLAcjKfIAAvQkgCptoKrjD65Aj4VHstKc8SYvdtBn2OE2tPVQs1Z9RgODIKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592999; c=relaxed/simple;
-	bh=efV2isxBffESxRyiJAP3FMGnhHIf4ks4vDMLPsaYuyk=;
+	s=arc-20240116; t=1761592552; c=relaxed/simple;
+	bh=Fi9+kG8NitJLPayNE7AQeAU2ufAH4mpCqZbP+U4eSqM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KQL0B6ve4OPNGW1iZnWP0Tuj4FVHVHMHba78OlQJVXVPi5bnbdgJIO7LFh1xAqXQJrUBVu3I6g1sluZQJjs6pyGyhxGP0Kf9zenrld/UsF9aUnUSKk2nmxn9gLGof316ccU37aQgYLfwCKH9g5I8lXNJx47t6+qIsQAexXQpwFI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P3wtiwZL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDC3EC4CEF1;
-	Mon, 27 Oct 2025 19:23:18 +0000 (UTC)
+	 MIME-Version; b=uD1A+3cCdGN0fbDoXywCIfC7ud8qyK+V5smrxhfKN3M2RKIYePlEk7maOPYTnPo6ftX7Nm7lZOuDUIu12crqz29Yi4Sw6uSklj09ePXVCVCseNxpHT/B5nKzFNIaiAQkgGw4C6NV8tB2aBnOJp+YRclai/92wBQEbaMuUBy8Jdg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g7FxJ5qP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F36DC4CEF1;
+	Mon, 27 Oct 2025 19:15:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592999;
-	bh=efV2isxBffESxRyiJAP3FMGnhHIf4ks4vDMLPsaYuyk=;
+	s=korg; t=1761592552;
+	bh=Fi9+kG8NitJLPayNE7AQeAU2ufAH4mpCqZbP+U4eSqM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P3wtiwZLX2Al6iz+V8zq+odG9MzxjsQ5zR6VzSjiNDlSzHQigquzFRaGp0LRduEDM
-	 Yqc+zS9E4RkM8vYiaiwDsmN/M7232Q0mzfF58TXpfUW0psm/OOKIyYRBVzHvynkkOy
-	 gJyCfituU2qkya/hicGEJRT5a+8/D8FFfGSYffXo=
+	b=g7FxJ5qPjM8wEWeNjhs0Alv+i0cu+eW9iXbrqaugzwoaG/OqXoMUmZ3gwQ7QZCkBJ
+	 HNxSjfczxFKyI0lGtarO85JG7tJrKMMm5q35jOBkhpPIMeG8yAvUYor/Irx/YCaChC
+	 UhTnl9QX4MkhSdB69dmw4s8XJupfBXKzPDj9WVos=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kiran K <kiran.k@intel.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Salvatore Bonaccorso <carnil@debian.org>,
-	Guido Berhoerster <guido+debian@berhoerster.name>
-Subject: [PATCH 6.12 092/117] Bluetooth: btintel: Add DSBR support for BlazarIW, BlazarU and GaP
+	Mark Rutland <mark.rutland@arm.com>,
+	James Morse <james.morse@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Ryan Roberts <ryan.roberts@arm.com>
+Subject: [PATCH 6.1 157/157] arm64: errata: Apply workarounds for Neoverse-V3AE
 Date: Mon, 27 Oct 2025 19:36:58 +0100
-Message-ID: <20251027183456.508886839@linuxfoundation.org>
+Message-ID: <20251027183505.507492969@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
-References: <20251027183453.919157109@linuxfoundation.org>
+In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
+References: <20251027183501.227243846@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,84 +64,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kiran K <kiran.k@intel.com>
+From: Mark Rutland <mark.rutland@arm.com>
 
-commit d88a8bb8bbbec9d57b84232a2d6f8dab84221959 upstream.
+commit 0c33aa1804d101c11ba1992504f17a42233f0e11 upstream.
 
-Add DSBR support for BlazarIW, BlazarU and Gale Peak2 cores.
+Neoverse-V3AE is also affected by erratum #3312417, as described in its
+Software Developer Errata Notice (SDEN) document:
 
-Refer commit eb9e749c0182 ("Bluetooth: btintel: Allow configuring drive
-strength of BRI") for details about DSBR.
+  Neoverse V3AE (MP172) SDEN v9.0, erratum 3312417
+  https://developer.arm.com/documentation/SDEN-2615521/9-0/
 
-Signed-off-by: Kiran K <kiran.k@intel.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Cc: Salvatore Bonaccorso <carnil@debian.org>
-Cc: Guido Berhoerster <guido+debian@berhoerster.name>
+Enable the workaround for Neoverse-V3AE, and document this.
+
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Cc: James Morse <james.morse@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+Signed-off-by: Will Deacon <will@kernel.org>
+[ Ryan: Trivial backport ]
+Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bluetooth/btintel.c |   28 ++++++++++++++++++++--------
- drivers/bluetooth/btintel.h |    3 +++
- 2 files changed, 23 insertions(+), 8 deletions(-)
+ Documentation/arm64/silicon-errata.rst |    2 ++
+ arch/arm64/Kconfig                     |    1 +
+ arch/arm64/kernel/cpu_errata.c         |    1 +
+ 3 files changed, 4 insertions(+)
 
---- a/drivers/bluetooth/btintel.c
-+++ b/drivers/bluetooth/btintel.c
-@@ -2734,20 +2734,32 @@ static int btintel_set_dsbr(struct hci_d
+--- a/Documentation/arm64/silicon-errata.rst
++++ b/Documentation/arm64/silicon-errata.rst
+@@ -181,6 +181,8 @@ stable kernels.
+ +----------------+-----------------+-----------------+-----------------------------+
+ | ARM            | Neoverse-V3     | #3312417        | ARM64_ERRATUM_3194386       |
+ +----------------+-----------------+-----------------+-----------------------------+
++| ARM            | Neoverse-V3AE   | #3312417        | ARM64_ERRATUM_3194386       |
+++----------------+-----------------+-----------------+-----------------------------+
+ | ARM            | MMU-500         | #841119,826419  | N/A                         |
+ +----------------+-----------------+-----------------+-----------------------------+
+ | ARM            | MMU-600         | #1076982,1209401| N/A                         |
+--- a/arch/arm64/Kconfig
++++ b/arch/arm64/Kconfig
+@@ -1027,6 +1027,7 @@ config ARM64_ERRATUM_3194386
+ 	  * ARM Neoverse-V1 erratum 3324341
+ 	  * ARM Neoverse V2 erratum 3324336
+ 	  * ARM Neoverse-V3 erratum 3312417
++	  * ARM Neoverse-V3AE erratum 3312417
  
- 	struct btintel_dsbr_cmd cmd;
- 	struct sk_buff *skb;
-+	u32 dsbr, cnvi;
- 	u8 status;
--	u32 dsbr;
--	bool apply_dsbr;
- 	int err;
- 
--	/* DSBR command needs to be sent for BlazarI + B0 step product after
--	 * downloading IML image.
-+	cnvi = ver->cnvi_top & 0xfff;
-+	/* DSBR command needs to be sent for,
-+	 * 1. BlazarI or BlazarIW + B0 step product in IML image.
-+	 * 2. Gale Peak2 or BlazarU in OP image.
- 	 */
--	apply_dsbr = (ver->img_type == BTINTEL_IMG_IML &&
--		((ver->cnvi_top & 0xfff) == BTINTEL_CNVI_BLAZARI) &&
--		INTEL_CNVX_TOP_STEP(ver->cnvi_top) == 0x01);
- 
--	if (!apply_dsbr)
-+	switch (cnvi) {
-+	case BTINTEL_CNVI_BLAZARI:
-+	case BTINTEL_CNVI_BLAZARIW:
-+		if (ver->img_type == BTINTEL_IMG_IML &&
-+		    INTEL_CNVX_TOP_STEP(ver->cnvi_top) == 0x01)
-+			break;
- 		return 0;
-+	case BTINTEL_CNVI_GAP:
-+	case BTINTEL_CNVI_BLAZARU:
-+		if (ver->img_type == BTINTEL_IMG_OP &&
-+		    hdev->bus == HCI_USB)
-+			break;
-+		return 0;
-+	default:
-+		return 0;
-+	}
- 
- 	dsbr = 0;
- 	err = btintel_uefi_get_dsbr(&dsbr);
---- a/drivers/bluetooth/btintel.h
-+++ b/drivers/bluetooth/btintel.h
-@@ -53,6 +53,9 @@ struct intel_tlv {
- } __packed;
- 
- #define BTINTEL_CNVI_BLAZARI		0x900
-+#define BTINTEL_CNVI_BLAZARIW		0x901
-+#define BTINTEL_CNVI_GAP		0x910
-+#define BTINTEL_CNVI_BLAZARU		0x930
- 
- #define BTINTEL_IMG_BOOTLOADER		0x01	/* Bootloader image */
- #define BTINTEL_IMG_IML			0x02	/* Intermediate image */
+ 	  On affected cores "MSR SSBS, #0" instructions may not affect
+ 	  subsequent speculative instructions, which may permit unexepected
+--- a/arch/arm64/kernel/cpu_errata.c
++++ b/arch/arm64/kernel/cpu_errata.c
+@@ -457,6 +457,7 @@ static const struct midr_range erratum_s
+ 	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V1),
+ 	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V2),
+ 	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V3),
++	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V3AE),
+ 	{}
+ };
+ #endif
 
 
 
