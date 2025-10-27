@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-191114-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191284-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A931C11078
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:31:00 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3805C113CC
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:45:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1CDB1564B15
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:25:45 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id EDB5456667D
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:33:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B24BC321F5F;
-	Mon, 27 Oct 2025 19:24:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65B14308F3A;
+	Mon, 27 Oct 2025 19:31:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pk84sbrf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yDxKtsr4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 646142C3745;
-	Mon, 27 Oct 2025 19:24:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2187C23EA92;
+	Mon, 27 Oct 2025 19:31:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761593046; cv=none; b=uUNd6KaHOoE67J8grWx/8k8WBc10msqke8OOpqPhw6OQwDvueVpzgzkrHgOPdjpiJftIb77C54Dg1uGS+SVbBYdqXqWTe7lQDlj7HzGUZXyHamfWaI3d4fvAiKzlwj1dkcQlFe3y5vncZ3ZCdnSpXSNfp+s7l0pI3y+haNDST28=
+	t=1761593519; cv=none; b=nekLjDkjpqN1IqQZMo2BxnqIeZkH5SQFodw69tcxt0ghuCIc49oOJYAwKDaI/WL0gbkb8vI4VWOV3njlKtOgYIAKlbD90hOLs5BW9Y2DSMOQi+Bu9V9rddltwiuH4PCZLq962wdO6Rl+tJsqHIklaZiGbcqkvqJxR284T1zoLSk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761593046; c=relaxed/simple;
-	bh=xxug9ayMhVrSxtbF64iNXZvFyMho6P2bw/5D/RutrCA=;
+	s=arc-20240116; t=1761593519; c=relaxed/simple;
+	bh=BsnHBZBHWuFlFMudWx+tLrJXzqzz7yigVXyh/GkkhA0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nqPa5kZMdV9NSnndHzjQRMp72ratmEzwBIKY2fWoSwduGXSImF3ndCP1QGmjvY6phMuVJabVOCq+y3gnMn5VCkT09UX3Dnn0GOEyS7u8xsR4SXFJctju+QD4BiHQ7fHYCXFCWVRUdrubSpY19TBNc26ovzIDnHWh8EQCR1fkXVo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pk84sbrf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB48EC4CEF1;
-	Mon, 27 Oct 2025 19:24:05 +0000 (UTC)
+	 MIME-Version; b=TOmCVPpCYwWhrE6rvNRK0NuXD0ROC/PoCsFqhioN1YC2TL0GKseOK8+XsN4/o77yqEHj6xrjBjS79wMIX1+d7QjkVCgmSdZwMlHFRfx5aiVHzsh5rmGmgGX06Jq32Dqbj1P00cznA1HHIqASDpUt46qNq2vtKEJsnMj1cGjtu+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yDxKtsr4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A5E4C4CEF1;
+	Mon, 27 Oct 2025 19:31:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761593046;
-	bh=xxug9ayMhVrSxtbF64iNXZvFyMho6P2bw/5D/RutrCA=;
+	s=korg; t=1761593519;
+	bh=BsnHBZBHWuFlFMudWx+tLrJXzqzz7yigVXyh/GkkhA0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Pk84sbrftLb/CorPNfHSThb882GtNPAfgUGvweGaw8I3AW2dLqRUmYBPYH5UHvtzs
-	 mmumHn7gsATK55zq/FVN+SiczunxRI4GEa43aDrSXIupMeZ6Cb/br3/p2esMo0B7Jx
-	 MRmBcn34x4QTJR4dM1tYiafU7FmcsD2ohVTQMPhU=
+	b=yDxKtsr4g/B0RoTqZn0/ZTWFp1+pfb5ZYfhsQ6iHdq848tZWEFpXo5t+J1Dt6vzhc
+	 5AFoE8w/8/vacT/yJQ450ah9Cf+0PsZW8nI+lq8qROTQ/5XZQe7/t4CinAYTWaaX6k
+	 zmGnjvIvlz+hea27ut+6e7kOLZPGPdUyLbWlLljI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikhail Kshevetskiy <mikhail.kshevetskiy@iopsys.eu>,
-	Frieder Schrempf <frieder.schrempf@kontron.de>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Han Xu <han.xu@nxp.com>,
+	Haibo Chen <haibo.chen@nxp.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 074/117] spi: airoha: return an error for continuous mode dirmap creation cases
+Subject: [PATCH 6.17 118/184] spi: spi-nxp-fspi: add extra delay after dll locked
 Date: Mon, 27 Oct 2025 19:36:40 +0100
-Message-ID: <20251027183456.030048403@linuxfoundation.org>
+Message-ID: <20251027183518.120808140@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
-References: <20251027183453.919157109@linuxfoundation.org>
+In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
+References: <20251027183514.934710872@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,47 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikhail Kshevetskiy <mikhail.kshevetskiy@iopsys.eu>
+From: Han Xu <han.xu@nxp.com>
 
-[ Upstream commit 4314ffce4eb81a6c18700af1b6e29b6e0c6b9e37 ]
+[ Upstream commit b93b4269791fdebbac2a9ad26f324dc2abb9e60f ]
 
-This driver can accelerate single page operations only, thus
-continuous reading mode should not be used.
+Due to the erratum ERR050272, the DLL lock status register STS2
+[xREFLOCK, xSLVLOCK] bit may indicate DLL is locked before DLL is
+actually locked. Add an extra 4us delay as a workaround.
 
-Continuous reading will use sizes up to the size of one erase block.
-This size is much larger than the size of single flash page. Use this
-difference to identify continuous reading and return an error.
+refer to ERR050272, on Page 20.
+https://www.nxp.com/docs/en/errata/IMX8_1N94W.pdf
 
-Signed-off-by: Mikhail Kshevetskiy <mikhail.kshevetskiy@iopsys.eu>
-Reviewed-by: Frieder Schrempf <frieder.schrempf@kontron.de>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Fixes: a403997c12019 ("spi: airoha: add SPI-NAND Flash controller driver")
-Link: https://patch.msgid.link/20251012121707.2296160-2-mikhail.kshevetskiy@iopsys.eu
+Fixes: 99d822b3adc4 ("spi: spi-nxp-fspi: use DLL calibration when clock rate > 100MHz")
+Signed-off-by: Han Xu <han.xu@nxp.com>
+Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
+Link: https://patch.msgid.link/20250922-fspi-fix-v1-2-ff4315359d31@nxp.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-airoha-snfi.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/spi/spi-nxp-fspi.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/spi/spi-airoha-snfi.c b/drivers/spi/spi-airoha-snfi.c
-index 1369691a997bf..6930dea48f330 100644
---- a/drivers/spi/spi-airoha-snfi.c
-+++ b/drivers/spi/spi-airoha-snfi.c
-@@ -625,6 +625,10 @@ static int airoha_snand_dirmap_create(struct spi_mem_dirmap_desc *desc)
- 	if (desc->info.offset + desc->info.length > U32_MAX)
- 		return -EINVAL;
- 
-+	/* continuous reading is not supported */
-+	if (desc->info.length > SPI_NAND_CACHE_SIZE)
-+		return -E2BIG;
+diff --git a/drivers/spi/spi-nxp-fspi.c b/drivers/spi/spi-nxp-fspi.c
+index 542d6f57c1aef..bde6d131ab8b7 100644
+--- a/drivers/spi/spi-nxp-fspi.c
++++ b/drivers/spi/spi-nxp-fspi.c
+@@ -709,6 +709,12 @@ static void nxp_fspi_dll_calibration(struct nxp_fspi *f)
+ 				   0, POLL_TOUT, true);
+ 	if (ret)
+ 		dev_warn(f->dev, "DLL lock failed, please fix it!\n");
 +
- 	if (!airoha_snand_supports_op(desc->mem, &desc->info.op_tmpl))
- 		return -EOPNOTSUPP;
++	/*
++	 * For ERR050272, DLL lock status bit is not accurate,
++	 * wait for 4us more as a workaround.
++	 */
++	udelay(4);
+ }
  
+ /*
 -- 
 2.51.0
 
