@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-191081-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191247-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05F06C1103F
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:30:17 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69FCDC11411
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:49:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B1BE2567711
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:24:20 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 335BC56539A
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:31:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03A6232AACD;
-	Mon, 27 Oct 2025 19:22:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CEF52D9EE2;
+	Mon, 27 Oct 2025 19:30:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s19yQtCF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZfZwpN0W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4C9C31D75F;
-	Mon, 27 Oct 2025 19:22:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2938A31D75C;
+	Mon, 27 Oct 2025 19:30:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592963; cv=none; b=oX/hyKezQVIiA9dBUVt4po5rNwhi3gOdnLMrsQ+GWj6KiKQ9LFsmjXD4p44q7/SLHsloe1VKNFtOpfawzoNt+ZpU60oAXUBR1BE79xzNoZHk2ZMxPJe7RJYXkE2VkKn9ywb4533b43v/CMDNO7+90FyblvJbfBJ5PdsI/AF9Phg=
+	t=1761593405; cv=none; b=mxM8FvxCwnu0B3BAPJOuu0nKFC8IOT6KdNXRLMUQrMIkd/Lhn1hFzZ+xvpQtU2JfV+ocNReRI5VB9I/ziPysqewIh2ZKQc2TI+Gx6JsMaOHh857BjIP10btryPkJem0R3KwWDaPTQBydjvuEu/tz56j0UY6vZVxk+8rtqJylRu8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592963; c=relaxed/simple;
-	bh=0q5cn0SRCYm5Xjiq/ZkVH0Hfbh1hw37rBkBYrG+R5+E=;
+	s=arc-20240116; t=1761593405; c=relaxed/simple;
+	bh=IlrtNquIwspPCMI2YkvImEVsP34gPhtiGNXJnmrJ0q0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J21ZisrTJPK4z4hKbI3LOklaoO8Cni7nS+4N1f+iMiakj/19ieiZHIJoZqtjOSdeHh5nTAXmcrrEhzX7IcIGYjasR9jO0gkFwIoH7/2SrK3rSiSCIb+PX1y8Q8WFvWH38cjGmtBVgDXzi5kURe9CS8NJs+TKtj4IWQXogOjEBxo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s19yQtCF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1324C4CEFD;
-	Mon, 27 Oct 2025 19:22:42 +0000 (UTC)
+	 MIME-Version; b=jGN+wgGj4wONz1lnMDKXWIqCy59oKC475UsGnYtTylqNxlrVrU5F8oLVL7cEwCjU0QngyF3IQzrxPOFOmw7Z9IykLQA0aw9F1x93V+wYMgPakoZUVozT9RJ63XwLQR42umuvnAB8mR6WBWYMKUY8iJgLyz5aZnxnimry74mcGOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZfZwpN0W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F1FCC113D0;
+	Mon, 27 Oct 2025 19:30:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592963;
-	bh=0q5cn0SRCYm5Xjiq/ZkVH0Hfbh1hw37rBkBYrG+R5+E=;
+	s=korg; t=1761593405;
+	bh=IlrtNquIwspPCMI2YkvImEVsP34gPhtiGNXJnmrJ0q0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s19yQtCF+mi5LHpc7TbRr31TyL7yDGVJ0Flkxuqd4tSyu6TQAXuSzTyYdxov+uveG
-	 dE8sut5eiuKGUf/VyhRF7Ym7CM8NhpiWxwXdCzfNHuWGPcf4swG20SnLb1FkrYUY56
-	 h2tJC3VObxO0cfQaoj2i3bDN4/EToZIe/z9lDDXA=
+	b=ZfZwpN0WmDN27vsTnkuz1MVyH8wREa7Zt5M0tOheL7fvd6MZ1BOkAXr6Hc6PTRzN/
+	 LAuFv3RAAV8vFW+41GwSZOA2GTjtnJwbkKmL5v4R0hXS4Lpbh9ypAEQQHtxRIfh/sp
+	 11TDtyiZ4aPECgH0dCpQqSyMFDojoZPtg+VRFeVk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anup Patel <apatel@ventanamicro.com>,
-	Han Gao <rabenda.cn@gmail.com>,
-	"Guo Ren (Alibaba DAMO Academy)" <guoren@kernel.org>,
-	Paul Walmsley <pjw@kernel.org>,
+	Cristian Marussi <cristian.marussi@arm.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 080/117] RISC-V: Define pgprot_dmacoherent() for non-coherent devices
+Subject: [PATCH 6.17 124/184] include: trace: Fix inflight count helper on failed initialization
 Date: Mon, 27 Oct 2025 19:36:46 +0100
-Message-ID: <20251027183456.188950414@linuxfoundation.org>
+Message-ID: <20251027183518.283408610@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
-References: <20251027183453.919157109@linuxfoundation.org>
+In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
+References: <20251027183514.934710872@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,50 +62,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anup Patel <apatel@ventanamicro.com>
+From: Cristian Marussi <cristian.marussi@arm.com>
 
-[ Upstream commit ca525d53f994d45c8140968b571372c45f555ac1 ]
+[ Upstream commit 289ce7e9a5e1a52ac7e522a3e389dc16be08d7a4 ]
 
-The pgprot_dmacoherent() is used when allocating memory for
-non-coherent devices and by default pgprot_dmacoherent() is
-same as pgprot_noncached() unless architecture overrides it.
+Add a check to the scmi_inflight_count() helper to handle the case
+when the SCMI debug subsystem fails to initialize.
 
-Currently, there is no pgprot_dmacoherent() definition for
-RISC-V hence non-coherent device memory is being mapped as
-IO thereby making CPU access to such memory slow.
-
-Define pgprot_dmacoherent() to be same as pgprot_writecombine()
-for RISC-V so that CPU access non-coherent device memory as
-NOCACHE which is better than accessing it as IO.
-
-Fixes: ff689fd21cb1 ("riscv: add RISC-V Svpbmt extension support")
-Signed-off-by: Anup Patel <apatel@ventanamicro.com>
-Tested-by: Han Gao <rabenda.cn@gmail.com>
-Tested-by: Guo Ren (Alibaba DAMO Academy) <guoren@kernel.org>
-Link: https://lore.kernel.org/r/20250820152316.1012757-1-apatel@ventanamicro.com
-Signed-off-by: Paul Walmsley <pjw@kernel.org>
+Fixes: f8e656382b4a ("include: trace:  Add tracepoint support for inflight xfer count")
+Signed-off-by: Cristian Marussi <cristian.marussi@arm.com>
+Message-Id: <20251014115346.2391418-2-cristian.marussi@arm.com>
+Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/include/asm/pgtable.h | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/firmware/arm_scmi/common.h | 8 +++++---
+ drivers/firmware/arm_scmi/driver.c | 7 +++++--
+ 2 files changed, 10 insertions(+), 5 deletions(-)
 
-diff --git a/arch/riscv/include/asm/pgtable.h b/arch/riscv/include/asm/pgtable.h
-index 03881122506a7..87c7d94c71f13 100644
---- a/arch/riscv/include/asm/pgtable.h
-+++ b/arch/riscv/include/asm/pgtable.h
-@@ -655,6 +655,8 @@ static inline pgprot_t pgprot_writecombine(pgprot_t _prot)
- 	return __pgprot(prot);
+diff --git a/drivers/firmware/arm_scmi/common.h b/drivers/firmware/arm_scmi/common.h
+index 21c0b95027c64..7c35c95fddbaf 100644
+--- a/drivers/firmware/arm_scmi/common.h
++++ b/drivers/firmware/arm_scmi/common.h
+@@ -333,10 +333,12 @@ static inline void scmi_inc_count(struct scmi_debug_info *dbg, int stat)
+ 	}
  }
  
-+#define pgprot_dmacoherent pgprot_writecombine
+-static inline void scmi_dec_count(atomic_t *arr, int stat)
++static inline void scmi_dec_count(struct scmi_debug_info *dbg, int stat)
+ {
+-	if (IS_ENABLED(CONFIG_ARM_SCMI_DEBUG_COUNTERS))
+-		atomic_dec(&arr[stat]);
++	if (IS_ENABLED(CONFIG_ARM_SCMI_DEBUG_COUNTERS)) {
++		if (dbg)
++			atomic_dec(&dbg->counters[stat]);
++	}
+ }
+ 
+ enum scmi_bad_msg {
+diff --git a/drivers/firmware/arm_scmi/driver.c b/drivers/firmware/arm_scmi/driver.c
+index 56419285c0bfd..1cd15412024cd 100644
+--- a/drivers/firmware/arm_scmi/driver.c
++++ b/drivers/firmware/arm_scmi/driver.c
+@@ -594,7 +594,7 @@ scmi_xfer_inflight_register_unlocked(struct scmi_xfer *xfer,
+ 	/* Set in-flight */
+ 	set_bit(xfer->hdr.seq, minfo->xfer_alloc_table);
+ 	hash_add(minfo->pending_xfers, &xfer->node, xfer->hdr.seq);
+-	scmi_inc_count(info->dbg->counters, XFERS_INFLIGHT);
++	scmi_inc_count(info->dbg, XFERS_INFLIGHT);
+ 
+ 	xfer->pending = true;
+ }
+@@ -803,7 +803,7 @@ __scmi_xfer_put(struct scmi_xfers_info *minfo, struct scmi_xfer *xfer)
+ 			hash_del(&xfer->node);
+ 			xfer->pending = false;
+ 
+-			scmi_dec_count(info->dbg->counters, XFERS_INFLIGHT);
++			scmi_dec_count(info->dbg, XFERS_INFLIGHT);
+ 		}
+ 		hlist_add_head(&xfer->node, &minfo->free_xfers);
+ 	}
+@@ -3407,6 +3407,9 @@ int scmi_inflight_count(const struct scmi_handle *handle)
+ 	if (IS_ENABLED(CONFIG_ARM_SCMI_DEBUG_COUNTERS)) {
+ 		struct scmi_info *info = handle_to_scmi_info(handle);
+ 
++		if (!info->dbg)
++			return 0;
 +
- /*
-  * THP functions
-  */
+ 		return atomic_read(&info->dbg->counters[XFERS_INFLIGHT]);
+ 	} else {
+ 		return 0;
 -- 
 2.51.0
 
