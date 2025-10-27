@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-190956-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190885-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37162C10C10
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:18:38 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B978C10B0D
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:15:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id D83F3348480
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:18:37 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 4875D3520DE
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:15:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3933D32A3C5;
-	Mon, 27 Oct 2025 19:17:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76946328B53;
+	Mon, 27 Oct 2025 19:14:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oDWZyP8W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lg+yegza"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E824F329C7D;
-	Mon, 27 Oct 2025 19:17:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3403231E0E0;
+	Mon, 27 Oct 2025 19:14:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592638; cv=none; b=TWf9/WttHSad1+guusdu/ogN4vSyr0rlGwqPhhmPukKIRTX4iIUX/QoSs1MiHii9Smdh81jliLFxL5EJF5v+M5B5Ka3oUHvZ3zLTainwy/4U+na6vITlYRBlpKMmatQ7wRcaLfEAmtMPeI8izCs6L5tZ7rdLwzexgyIJ4LwEylU=
+	t=1761592455; cv=none; b=VkdZqLPXhYNYsofMks1mz07U5xH9HbCzMQlIc5xY5QPI7TxOOku5k1HIp/gXw4LFbwIZaG+ATWsIVWykt5eKwczP19dRnZKJ+53IhtLOxn4l0u2JyQH47VAJoAwdWtSs6nssljJwZ3Derl6dkMa5/rj6bl1e1hD1IJV5lx+ForU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592638; c=relaxed/simple;
-	bh=93shxL/l6H87Ab/6whoqzKvqINsVvSM9Sy/QfWBqYmE=;
+	s=arc-20240116; t=1761592455; c=relaxed/simple;
+	bh=Bx+HNuSbdXxJnaEX5YIH/+j0sFoRZCF/pFZ8inKGrVM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=C8+YAftEPke0RRCHC3QLEO5DgIlBHtKkh0JgwLNq30ucN6cnaTnoXZTuLI8OUkuH4Nar5IIh1JW+o+hzW7ScrX8j96W00n5kd4z92ntWIQ6iI1cbOvkTrgTmxELFVQmmE4e917s72+Cff/cZR0Ye/J1IzaEDZZ6Syubc0XiCFxo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oDWZyP8W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 799ECC116B1;
-	Mon, 27 Oct 2025 19:17:17 +0000 (UTC)
+	 MIME-Version; b=cl2oJMnHdTRTALX8zM5Zv/jf7dnKpBAq+MVbYLW2VwzLUjBvlc3kwIlVGSZmCe3OmAgkwwPS1ms07jTX/cDmUV9GNwpDirbyBH4jZpAKK5LZpgdjJXrFkKnYj33hcmxeHXx15i8nuiwjHjWM8gmBu4HilLuoEg1iQrpiNySGxPw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lg+yegza; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA8A9C4CEF1;
+	Mon, 27 Oct 2025 19:14:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592637;
-	bh=93shxL/l6H87Ab/6whoqzKvqINsVvSM9Sy/QfWBqYmE=;
+	s=korg; t=1761592455;
+	bh=Bx+HNuSbdXxJnaEX5YIH/+j0sFoRZCF/pFZ8inKGrVM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oDWZyP8W5leYLcqlVWzbkoC246KE9/4FPlZgKsJShW2+uY0LNSzEgTJZCSIbfHpEW
-	 1IlNMx4VdGtRy6mKddrKxTtbTHaeHVC3hlX1Ei2WCgXGLOl9fMqpS3DEeXyzv8SqXN
-	 yeOFOIyo3IEEqtUzR7bg1LRQoOWlIXzJIz3Cd2SA=
+	b=lg+yegza7HZGnJYVml6+JUqI20H514e/e6Evm80A/3NbrGbGJcF+rWTZnzSvmU014
+	 KasCRvx3Uaj2z5iR4ezCHyWSpy6Xnu+LJQw1Y+UKjojnzv1iyIuFj0ZEIpWZ3tPANS
+	 E3E05HeziZWqkrNtJmPS4ulifv30WMET75Ef/ERM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Maciej W. Rozycki" <macro@orcam.me.uk>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Subject: [PATCH 6.6 40/84] MIPS: Malta: Fix keyboard resource preventing i8042 driver from registering
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Gergely Kovacs <Gergely.Kovacs2@arm.com>,
+	Will Deacon <will@kernel.org>,
+	David Hildenbrand <david@redhat.com>,
+	Lance Yang <lance.yang@linux.dev>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 128/157] arm64: mte: Do not flag the zero page as PG_mte_tagged
 Date: Mon, 27 Oct 2025 19:36:29 +0100
-Message-ID: <20251027183439.888055114@linuxfoundation.org>
+Message-ID: <20251027183504.685131074@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183438.817309828@linuxfoundation.org>
-References: <20251027183438.817309828@linuxfoundation.org>
+In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
+References: <20251027183501.227243846@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,70 +63,94 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej W. Rozycki <macro@orcam.me.uk>
+From: Catalin Marinas <catalin.marinas@arm.com>
 
-commit bf5570590a981d0659d0808d2d4bcda21b27a2a5 upstream.
+[ Upstream commit f620d66af3165838bfa845dcf9f5f9b4089bf508 ]
 
-MIPS Malta platform code registers the PCI southbridge legacy port I/O
-PS/2 keyboard range as a standard resource marked as busy.  It prevents
-the i8042 driver from registering as it fails to claim the resource in
-a call to i8042_platform_init().  Consequently PS/2 keyboard and mouse
-devices cannot be used with this platform.
+Commit 68d54ceeec0e ("arm64: mte: Allow PTRACE_PEEKMTETAGS access to the
+zero page") attempted to fix ptrace() reading of tags from the zero page
+by marking it as PG_mte_tagged during cpu_enable_mte(). The same commit
+also changed the ptrace() tag access permission check to the VM_MTE vma
+flag while turning the page flag test into a WARN_ON_ONCE().
 
-Fix the issue by removing the busy marker from the standard reservation,
-making the driver register successfully:
+Attempting to set the PG_mte_tagged flag early with
+CONFIG_DEFERRED_STRUCT_PAGE_INIT enabled may either hang (after commit
+d77e59a8fccd "arm64: mte: Lock a page for MTE tag initialisation") or
+have the flags cleared later during page_alloc_init_late(). In addition,
+pages_identical() -> memcmp_pages() will reject any comparison with the
+zero page as it is marked as tagged.
 
-  serio: i8042 KBD port at 0x60,0x64 irq 1
-  serio: i8042 AUX port at 0x60,0x64 irq 12
+Partially revert the above commit to avoid setting PG_mte_tagged on the
+zero page. Update the __access_remote_tags() warning on untagged pages
+to ignore the zero page since it is known to have the tags initialised.
 
-and the resource show up as expected among the legacy devices:
+Note that all user mapping of the zero page are marked as pte_special().
+The arm64 set_pte_at() will not call mte_sync_tags() on such pages, so
+PG_mte_tagged will remain cleared.
 
-  00000000-00ffffff : MSC PCI I/O
-    00000000-0000001f : dma1
-    00000020-00000021 : pic1
-    00000040-0000005f : timer
-    00000060-0000006f : keyboard
-      00000060-0000006f : i8042
-    00000070-00000077 : rtc0
-    00000080-0000008f : dma page reg
-    000000a0-000000a1 : pic2
-    000000c0-000000df : dma2
-    [...]
-
-If the i8042 driver has not been configured, then the standard resource
-will remain there preventing any conflicting dynamic assignment of this
-PCI port I/O address range.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Acked-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/alpine.DEB.2.21.2510211919240.8377@angie.orcam.me.uk
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Fixes: 68d54ceeec0e ("arm64: mte: Allow PTRACE_PEEKMTETAGS access to the zero page")
+Reported-by: Gergely Kovacs <Gergely.Kovacs2@arm.com>
+Cc: stable@vger.kernel.org # 5.10.x
+Cc: Will Deacon <will@kernel.org>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Lance Yang <lance.yang@linux.dev>
+Acked-by: Lance Yang <lance.yang@linux.dev>
+Reviewed-by: David Hildenbrand <david@redhat.com>
+Tested-by: Lance Yang <lance.yang@linux.dev>
+Signed-off-by: Will Deacon <will@kernel.org>
+[ removed folio-based hugetlb MTE checks ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/mti-malta/malta-setup.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/kernel/cpufeature.c |   10 +++++++---
+ arch/arm64/kernel/mte.c        |    2 +-
+ 2 files changed, 8 insertions(+), 4 deletions(-)
 
---- a/arch/mips/mti-malta/malta-setup.c
-+++ b/arch/mips/mti-malta/malta-setup.c
-@@ -47,7 +47,7 @@ static struct resource standard_io_resou
- 		.name = "keyboard",
- 		.start = 0x60,
- 		.end = 0x6f,
--		.flags = IORESOURCE_IO | IORESOURCE_BUSY
-+		.flags = IORESOURCE_IO
- 	},
- 	{
- 		.name = "dma page reg",
+--- a/arch/arm64/kernel/cpufeature.c
++++ b/arch/arm64/kernel/cpufeature.c
+@@ -2068,17 +2068,21 @@ static void bti_enable(const struct arm6
+ #ifdef CONFIG_ARM64_MTE
+ static void cpu_enable_mte(struct arm64_cpu_capabilities const *cap)
+ {
++	static bool cleared_zero_page = false;
++
+ 	sysreg_clear_set(sctlr_el1, 0, SCTLR_ELx_ATA | SCTLR_EL1_ATA0);
+ 
+ 	mte_cpu_setup();
+ 
+ 	/*
+ 	 * Clear the tags in the zero page. This needs to be done via the
+-	 * linear map which has the Tagged attribute.
++	 * linear map which has the Tagged attribute. Since this page is
++	 * always mapped as pte_special(), set_pte_at() will not attempt to
++	 * clear the tags or set PG_mte_tagged.
+ 	 */
+-	if (!page_mte_tagged(ZERO_PAGE(0))) {
++	if (!cleared_zero_page) {
++		cleared_zero_page = true;
+ 		mte_clear_page_tags(lm_alias(empty_zero_page));
+-		set_page_mte_tagged(ZERO_PAGE(0));
+ 	}
+ 
+ 	kasan_init_hw_tags_cpu();
+--- a/arch/arm64/kernel/mte.c
++++ b/arch/arm64/kernel/mte.c
+@@ -456,7 +456,7 @@ static int __access_remote_tags(struct m
+ 			put_page(page);
+ 			break;
+ 		}
+-		WARN_ON_ONCE(!page_mte_tagged(page));
++		WARN_ON_ONCE(!page_mte_tagged(page) && !is_zero_page(page));
+ 
+ 		/* limit access to the end of the page */
+ 		offset = offset_in_page(addr);
 
 
 
