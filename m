@@ -1,155 +1,164 @@
-Return-Path: <stable+bounces-191282-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191318-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46C1AC11406
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:48:50 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 382CAC114B6
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:59:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7B1F24F8316
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:33:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3346E467715
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:58:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFFBD31D389;
-	Mon, 27 Oct 2025 19:31:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8489315789;
+	Mon, 27 Oct 2025 19:58:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FAjQmF8Q"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="R5jhvjI2"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E96552C3745
-	for <stable@vger.kernel.org>; Mon, 27 Oct 2025 19:31:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C81A2D97A6
+	for <stable@vger.kernel.org>; Mon, 27 Oct 2025 19:57:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761593514; cv=none; b=B9Fw1OSprQ+SC4UmsGVmjYDweQuO1YZpoD7gWsUvPsw+rbWawkamQFjN3TnEbwioEFumKRrio/V7qsoyC2VIDVtW2ePieIDCjQP8ZEG7+h7jRF/qAex5I+RgUDQ90px3yp8EZwVAjoesBJrqSgLlp5j70hM4qujGDqui1s97reQ=
+	t=1761595080; cv=none; b=ugij14jzG3Fqc8W1VPTCEmrvun9imHrtNGeEz5pKi2bazxjQqhp3mDQ9BKOo5UPcB0f/6OngRFhVrKRouXufrm9OkIsQZy6FkjhgQ4lP13wWJ2DrQfsCBjfgUgLwybdKBk7/dYuF+LqDD+Fm4t/wTsUDxHWhTNgan6DSAMImBRs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761593514; c=relaxed/simple;
-	bh=Wfw586FZsQVYuyKx2zTL0/KlV8MshdPbK8gyqOvNcfM=;
+	s=arc-20240116; t=1761595080; c=relaxed/simple;
+	bh=3uqE98Bb5YTB1wH+b5+ZFqSfmfvTk/0fgO+sMvaAa8Y=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gQas4KNYIpuviHQH6JTthJ38/hPsJKIDZoI7dI6/iv0XPFowHmBb4llA9vbwJdwQq/N9o0QTmhHTb3D6g2BFjLieSj20ZGKDBPLeELpYSUM3TLiQ767rKP0BhQq3a8rGEKd6yR9W7PPNbETqygT3pAqz1PI3dainZiEu2ejZOr0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FAjQmF8Q; arc=none smtp.client-ip=209.85.210.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-7a26ea3bf76so6751971b3a.2
-        for <stable@vger.kernel.org>; Mon, 27 Oct 2025 12:31:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761593508; x=1762198308; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=aQIEre2ri1pN3eJbczeUY9nkqkn0UVxrRDPMJROpfpI=;
-        b=FAjQmF8QEaMq/4sEvxiPtMVlGIDHw71iK1Z/aBQchBBLxUv9aIzjJzAN8+P0cYwOe/
-         5KmSx/F8uIgpx70W5l4Z9B5tZqGkCBkP4R0Ih/PjEJbSFp4cRK/NPkHagw50ZgQJbGom
-         AfsBJRR7mKuWf266I+sJsaY1W8s4Ox18oZft5tMW5rZy+A9DeheLyykIq+yMJN3VBD4a
-         zKKsH6SOWAvBhWqqs7SLViQJWnUipLnKWxFlU/lbgu8ElgHmAgDcUK9TrdS6BFlqJ+Wm
-         D5V1MBeBJpJAHaCKnkeGTC9wnVia6ZP+2eded35AMd0ZU2on90RmIHyCuvIHzyNRofoq
-         fDuA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761593508; x=1762198308;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=aQIEre2ri1pN3eJbczeUY9nkqkn0UVxrRDPMJROpfpI=;
-        b=D35U+R0w1ptVpIF/EAroek1i78QBp4KPCZeL4icketeTslGwXGPa4K6+eNyNf/cugY
-         UaqEv4b3R09ipOT4DaaCFr4UxswXcMyrIopsSB7enn/givVi3uF5DhGwBsFFGafAqil3
-         9g/X21FUHXGIWxjz+zFnchqHPVxL62ykPEDui4pNjA9zFLJ/WY4SfC8zprUJ1iXE/gzz
-         NWSL6kiinKXiVLEYuAmSrW4INWrVctDuB3uxmic1f+ghUuEuVAlPjftT34ogHTbh7HyD
-         lq4pUTtD/qUXmAocKGVuRvQCYLcPUuSA231llWe5GiG3oE1CjxGzv84PN5ZBWhmirPUH
-         LXmQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXQy8PCXbujx251w6nqQxxKH3hgu3qA4b5xtKM+XTpwtTTZVnbJFtdshZvT9DIc8iBc1dkkRHQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxKkNimRJ6clpuhQF95S8PxaRazVTTdXDeBIaAG6zEw5ZWoaxU4
-	b0sS8dYyKekpwImuhq6f2MLdMPQVBpE0h+4yQCNALDWQ1oGmA3CdD6p1cUgMe5aY
-X-Gm-Gg: ASbGncub8737tnr9YON8FkVhqB7OD05dr7V1I8s7XSeitVNxv8VmcAMEp56LUWxNpOb
-	lgQE3OGX+ZhLS8tDuZDD6PHt1jqPoHGDpCCGfQm6vI+5Oxy0I1qjrG+VygxOBKwYZK8MnyQ6IHS
-	uO1R0XLYoQzT92hxXokXY0G8TUyMEzTWORIp8PkswKIUQZoqzvfU4094NliI8Jr35HGB2QEb+E3
-	Eo7R0ZbV4JW8vQu1+V/qPrZBCJ6Ik96waF4e34HD2j++2/C7PavMIgtH8XaS3dPjphItEIKfCm+
-	lpJNMwtphtzIjKOK+PM4BlI7hPLwr50QEMKsyrZz5u0vOZGxQCBO4rQy8nHVHHGAMLbFJDdBKle
-	D0JkreWyNYnf7kwZTJT3BAxXgCTOB/RWnHE7fo48H8fdFFvRkqEtISvNhf6U1L1+mg+FG9nsRvz
-	Lr4vPwTClRvT7VEMeF8ysG7FcT5Vbg+mWUrr/4ig==
-X-Google-Smtp-Source: AGHT+IEkosWML/wG8WDCCZZJB7OEe7Pbs33Ch34uBEMhw66C9EPkEPTbWzwlAuneyQFI3gppfP9HKQ==
-X-Received: by 2002:a05:6a20:914f:b0:334:a72c:806e with SMTP id adf61e73a8af0-344d441f72fmr848282637.43.1761593507941;
-        Mon, 27 Oct 2025 12:31:47 -0700 (PDT)
-Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b712f0c0b1asm8203659a12.32.2025.10.27.12.31.46
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 27 Oct 2025 12:31:47 -0700 (PDT)
-Message-ID: <eb241eee-2b51-410a-b13b-9511202a68f7@gmail.com>
-Date: Mon, 27 Oct 2025 12:31:45 -0700
+	 In-Reply-To:Content-Type; b=dvhaGXHPDMW3YsCI5guzl5EeGgirkM4dj/TFuyYssgMen7g8ZQLwhkj42wViAvuZC45UmBqxb7dFJ+GipgGLa5VciwpcZo3159DGLF0LIucFFR/xcmIeAZM/lQOxnPgdd+iK8q0ARSORML7JtqTZKUuNqamdJkLuZT+4rHqLLvk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=R5jhvjI2; arc=none smtp.client-ip=91.218.175.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Message-ID: <eb749233-0342-49a9-a41b-6d18239eb1d9@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1761595076;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2+G+nasBC3jhxtT7KXEPZymKlMWjpHoUogw8SupcDt0=;
+	b=R5jhvjI2imvi4D/zszJUbbWCLGeIvULnw4as9CgNbJB3NmYk1Tk+7nHYaMrUQbTgr1cMhL
+	l8S3oPaIJC+yLkPfEc1Ga4NCEkLvDw1GqzhWTG8I0wMswvtzFJ30HXk2A13hrujeW0h8Pc
+	miaf3sxiCGDT8NiXBdW1ggYwUlYyZo8=
+Date: Mon, 27 Oct 2025 12:57:52 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5.4 000/224] 5.4.301-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
- hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
- sr@sladewatkins.com
-References: <20251027183508.963233542@linuxfoundation.org>
-Content-Language: en-US, fr-FR
-From: Florian Fainelli <f.fainelli@gmail.com>
-In-Reply-To: <20251027183508.963233542@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v1 2/2] ALSA: hda/realtek: Add match for ASUS Xbox Ally
+ projects
+To: Antheas Kapenekakis <lkml@antheas.dev>
+Cc: Shenghao Ding <shenghao-ding@ti.com>, Baojun Xu <baojun.xu@ti.com>,
+ Takashi Iwai <tiwai@suse.com>, linux-sound@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20251026191635.2447593-1-lkml@antheas.dev>
+ <20251026191635.2447593-2-lkml@antheas.dev>
+ <CAGwozwEwPj9VRRo2U50ccg=_qSM7p-1c_hw2y=OYA-pFc=p13w@mail.gmail.com>
+ <35A5783A-CA60-4B10-8C7B-5820B65307FE@linux.dev>
+ <CAGwozwFtah66p=5oy9rf5phVGdDTiWg0WuJBT3qGpWdP3A62Pg@mail.gmail.com>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Matthew Schwartz <matthew.schwartz@linux.dev>
+In-Reply-To: <CAGwozwFtah66p=5oy9rf5phVGdDTiWg0WuJBT3qGpWdP3A62Pg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-On 10/27/25 11:32, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.4.301 release.
-> There are 224 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On 10/27/25 1:23 AM, Antheas Kapenekakis wrote:
+> On Mon, 27 Oct 2025 at 07:02, Matthew Schwartz
+> <matthew.schwartz@linux.dev> wrote:
+>>
+>>
+>>
+>>> On Oct 26, 2025, at 12:19 PM, Antheas Kapenekakis <lkml@antheas.dev> wrote:
+>>>
+>>> On Sun, 26 Oct 2025 at 20:16, Antheas Kapenekakis <lkml@antheas.dev> wrote:
+>>>>
+>>>> Bind the realtek codec to TAS2781 I2C audio amps on ASUS Xbox Ally
+>>>> projects. While these projects work without a quirk, adding it increases
+>>>> the output volume significantly.
+>>>
+>>> Also, if you can upstream the firmware files:
+>>> TAS2XXX13840.bin
+>>> TAS2XXX13841.bin
+>>> TAS2XXX13940.bin
+>>> TAS2XXX13941.bin
+>>
+>> This is the firmware at [1], correct? I’m testing the series with that firmware on my ROG Xbox Ally X, and I found something interesting.
+>>
+>> By default, with just your kernel patches and the firmware files hosted at [1], my unit is loading:
+>>
+>> tas2781-hda i2c-TXNW2781:00-tas2781-hda.0: Loaded FW: TAS2XXX13840.bin, sha256: 58cffa36ae23a2d9b2349ecb6c1d4e89627934cd79218f6ada06eaffe6688246
+>>
+>> However, with this firmware file,  TAS2XXX13840.bin, there is significant audio clipping above 75% speaker level on my individual unit.
+>>
+>> Then, I tried renaming the other firmware file, TAS2XXX13841.bin, into TAS2XXX13840.bin. Now my unit is loading:
+>>
+>> tas2781-hda i2c-TXNW2781:00-tas2781-hda.0: Loaded FW: TAS2XXX13840.bin, sha256: 0fda76e7142cb455df1860cfdb19bb3cb6871128b385595fe06b296a070f4b8c
+>>
+>> With this firmware file, audio is perfect all the way to 100% speaker level.
+>>
+>> If I recall, there have been other ASUS products that required matching amplifier hardware with firmware correctly, right? It looks like this might be another case of since it seems my unit is loading the wrong firmware for its amplifiers.
 > 
-> Responses should be made by Wed, 29 Oct 2025 18:34:15 +0000.
-> Anything received after that time might be too late.
+> The original Ally X had a similar setup, yes.
 > 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.4.301-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.4.y
-> and the diffstat can be found below.
+> First patch might not be perfect and your speaker pin might be 1. My
+> Xbox Ally's pin is 1. It loads:
+> Loaded FW: TAS2XXX13941.bin, sha256:
+> 0fda76e7142cb455df1860cfdb19bb3cb6871128b385595fe06b296a070f4b8c
 > 
-> thanks,
+> And it sounds loud and crisp. So the pin is read.
 > 
-> greg k-h
+> I had multiple users verify the X works, but perhaps it is not perfect
+> yet. Make sure you are not using a dsp that might be interfering
 
-On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
-BMIPS_GENERIC:
+Seems like there have been other reports similar to mine on Xbox Ally X, where flipping the firmware files by renaming them fixes sound issues for them.
 
-Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+@TI, Maybe something is different with the conditional logic for the ROG Xbox Ally X? The current GPIO-detected speaker_id doesn't always correspond to the correct firmware choice on this model it seems.
 
-There is a new warning showing up with 
-b27e16c9e625465fe9ea9955bd8ab095498de9e3 ("tcp: fix 
-tcp_tso_should_defer() vs large RTT") , but since 5.4 does not have the 
-full minmax backports this is expected:
+> 
+> Antheas
+> 
+>> Matt
+>>
+>> [1]: https://github.com/hhd-dev/hwfirm
+>>
+>>>
+>>> That would be great :)
+>>>
+>>> Antheas
+>>>
+>>>> Cc: stable@vger.kernel.org # 6.17
+>>>> Signed-off-by: Antheas Kapenekakis <lkml@antheas.dev>
+>>>> ---
+>>>> sound/hda/codecs/realtek/alc269.c | 2 ++
+>>>> 1 file changed, 2 insertions(+)
+>>>>
+>>>> diff --git a/sound/hda/codecs/realtek/alc269.c b/sound/hda/codecs/realtek/alc269.c
+>>>> index 8ad5febd822a..d1ad84eee6d1 100644
+>>>> --- a/sound/hda/codecs/realtek/alc269.c
+>>>> +++ b/sound/hda/codecs/realtek/alc269.c
+>>>> @@ -6713,6 +6713,8 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
+>>>>        SND_PCI_QUIRK(0x1043, 0x12f0, "ASUS X541UV", ALC256_FIXUP_ASUS_MIC_NO_PRESENCE),
+>>>>        SND_PCI_QUIRK(0x1043, 0x1313, "Asus K42JZ", ALC269VB_FIXUP_ASUS_MIC_NO_PRESENCE),
+>>>>        SND_PCI_QUIRK(0x1043, 0x1314, "ASUS GA605K", ALC285_FIXUP_ASUS_GA605K_HEADSET_MIC),
+>>>> +       SND_PCI_QUIRK(0x1043, 0x1384, "ASUS RC73XA", ALC287_FIXUP_TXNW2781_I2C),
+>>>> +       SND_PCI_QUIRK(0x1043, 0x1394, "ASUS RC73YA", ALC287_FIXUP_TXNW2781_I2C),
+>>>>        SND_PCI_QUIRK(0x1043, 0x13b0, "ASUS Z550SA", ALC256_FIXUP_ASUS_MIC_NO_PRESENCE),
+>>>>        SND_PCI_QUIRK(0x1043, 0x1427, "Asus Zenbook UX31E", ALC269VB_FIXUP_ASUS_ZENBOOK),
+>>>>        SND_PCI_QUIRK(0x1043, 0x1433, "ASUS GX650PY/PZ/PV/PU/PYV/PZV/PIV/PVV", ALC285_FIXUP_ASUS_I2C_HEADSET_MIC),
+>>>> --
+>>>> 2.51.1
+>>>>
+>>>>
+>>>
+>>>
+>>
+>>
+> 
 
-In file included from ./include/linux/list.h:9,
-                  from ./include/net/tcp.h:19,
-                  from net/ipv4/tcp_output.c:40:
-net/ipv4/tcp_output.c: In function 'tcp_tso_should_defer':
-./include/linux/kernel.h:843:43: warning: comparison of distinct pointer 
-types lacks a cast
-   843 |                 (!!(sizeof((typeof(x) *)1 == (typeof(y) *)1)))
-       |                                           ^~
-./include/linux/kernel.h:857:18: note: in expansion of macro '__typecheck'
-   857 |                 (__typecheck(x, y) && __no_side_effects(x, y))
-       |                  ^~~~~~~~~~~
-./include/linux/kernel.h:867:31: note: in expansion of macro '__safe_cmp'
-   867 |         __builtin_choose_expr(__safe_cmp(x, y), \
-       |                               ^~~~~~~~~~
-./include/linux/kernel.h:876:25: note: in expansion of macro '__careful_cmp'
-   876 | #define min(x, y)       __careful_cmp(x, y, <)
-       |                         ^~~~~~~~~~~~~
-net/ipv4/tcp_output.c:2028:21: note: in expansion of macro 'min'
-  2028 |         threshold = min(srtt_in_ns >> 1, NSEC_PER_MSEC);
-       |                     ^~~
-
-I don't think this should hold off the release though.
--- 
-Florian
 
