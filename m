@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-190229-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190553-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1CB0C10302
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:50:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F572C106E1
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:04:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 9D565352B2C
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:50:56 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id BD1A43510BB
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:04:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E1C23314BC;
-	Mon, 27 Oct 2025 18:45:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99CF0334395;
+	Mon, 27 Oct 2025 18:59:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="arPTDYPw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qPiwSO6V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B105330D43;
-	Mon, 27 Oct 2025 18:45:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57F9A332EC9;
+	Mon, 27 Oct 2025 18:59:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761590753; cv=none; b=htHZr503Xk9ZQqszzmAp3JvXqw1DbBnY01GWj/hjtZjUXih88yo/p6FoFeZoQFjTGyNJIj+mVjol1b0N9Ty6DN4DlusWx/AOel68FR+broXFritKQeWpbEnswFciQmtumvsNgFOcMlhP7v8K9z/2w4FZePozB1ewbpD18kkSUFc=
+	t=1761591590; cv=none; b=DQtq6hLhwE8arQB1IkJLHUfYJFLeOSAMTsxyFvrbBMLrgClGCAZIlSq1MKtv5puHZoUSA/Hd/u2C8p1B479qd2TlnThAdYcMXPvThoAyDFjbjzq04g2PQlFoWBtkR+04phd4/JaP88jwiurODheW4wyq9IyzyD+EnKATNOfinO0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761590753; c=relaxed/simple;
-	bh=Qh5Mb/WRR1dOTK8PvTcx5HsrAYDydjZ4M9qUmkz6Hbw=;
+	s=arc-20240116; t=1761591590; c=relaxed/simple;
+	bh=diMazE92oibnmaor/2N/ue4x2ZtcwHhpTcnPwF2sQ7E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C1FobGzPtfSnDeIQxP8OLizKtU23oHKxzFsNZZqCppoY8Fv5NaVqKVMoGn7u65oHRmKrc4gepO/wUUXZWgV4dDzB+GFPNjMfXeh84uc4rJeKiV3McrGtpkGH4wij81JQR6cfKpqS4llIAs6RubS8L8zF7xTiXOGS2Vxtn9oc0tE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=arPTDYPw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96D20C4CEFD;
-	Mon, 27 Oct 2025 18:45:52 +0000 (UTC)
+	 MIME-Version; b=LCvUE4yHHWRJaAPFgDxf3FRlLsR4qYNAI1D8ibznZRjSyiG1sEEy9yHz6IjKzSinimZEB+vFtpKJ0YW0bCt3Nsn4e3veh+un0EJDLJlzyGY7+Bozni+YiZVvvnZeZA5PfKtPOoK2+D1rzann52WAl5BGlZRLBcmJbTp2gvK1vug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qPiwSO6V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBA0CC113D0;
+	Mon, 27 Oct 2025 18:59:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761590752;
-	bh=Qh5Mb/WRR1dOTK8PvTcx5HsrAYDydjZ4M9qUmkz6Hbw=;
+	s=korg; t=1761591590;
+	bh=diMazE92oibnmaor/2N/ue4x2ZtcwHhpTcnPwF2sQ7E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=arPTDYPwbZf2dG/BuKQ6VeLNiw0nOYj61f7oepvfdq5yU3k9SU5PRWLZzB77mhAvb
-	 IairX/OtyKt5Lmk1PWYN/2nrjYUzL9ZIaLezETbWFJI7kd2qMtAZzMkEa8zfSZ/Wsz
-	 eQEymcEHibBkhXseJ2jCL+plnpm8M890N8x7neW8=
+	b=qPiwSO6VjZ2BmnK5QpiYDdhwSyNxg6aU2h2/Icu+yr1zzCoCiEYj+VNXLXuRhTQg3
+	 kQAKaD5ajExlM2pmT6WNNRarParWqxhTd7WmJT4W6JRmMfe1vyOV3fKyt7jPzQqsAk
+	 3bct04mFTM3CQoZJ+Pr7FgKpXLCwoHqeBcP6b/rE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Raju Rangoju <Raju.Rangoju@amd.com>,
-	Dawid Osuchowski <dawid.osuchowski@linux.intel.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 161/224] amd-xgbe: Avoid spurious link down messages during interface toggle
-Date: Mon, 27 Oct 2025 19:35:07 +0100
-Message-ID: <20251027183513.240802904@linuxfoundation.org>
+Subject: [PATCH 5.10 255/332] sched/fair: Fix pelt lost idle time detection
+Date: Mon, 27 Oct 2025 19:35:08 +0100
+Message-ID: <20251027183531.576467529@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183508.963233542@linuxfoundation.org>
-References: <20251027183508.963233542@linuxfoundation.org>
+In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
+References: <20251027183524.611456697@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +62,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Raju Rangoju <Raju.Rangoju@amd.com>
+From: Vincent Guittot <vincent.guittot@linaro.org>
 
-[ Upstream commit 2616222e423398bb374ffcb5d23dea4ba2c3e524 ]
+[ Upstream commit 17e3e88ed0b6318fde0d1c14df1a804711cab1b5 ]
 
-During interface toggle operations (ifdown/ifup), the driver currently
-resets the local helper variable 'phy_link' to -1. This causes the link
-state machine to incorrectly interpret the state as a link change event,
-resulting in spurious "Link is down" messages being logged when the
-interface is brought back up.
+The check for some lost idle pelt time should be always done when
+pick_next_task_fair() fails to pick a task and not only when we call it
+from the fair fast-path.
 
-Preserve the phy_link state across interface toggles to avoid treating
-the -1 sentinel value as a legitimate link state transition.
+The case happens when the last running task on rq is a RT or DL task. When
+the latter goes to sleep and the /Sum of util_sum of the rq is at the max
+value, we don't account the lost of idle time whereas we should.
 
-Fixes: 88131a812b16 ("amd-xgbe: Perform phy connect/disconnect at dev open/stop")
-Signed-off-by: Raju Rangoju <Raju.Rangoju@amd.com>
-Reviewed-by: Dawid Osuchowski <dawid.osuchowski@linux.intel.com>
-Link: https://patch.msgid.link/20251010065142.1189310-1-Raju.Rangoju@amd.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 67692435c411 ("sched: Rework pick_next_task() slow-path")
+Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/amd/xgbe/xgbe-drv.c  | 1 -
- drivers/net/ethernet/amd/xgbe/xgbe-mdio.c | 1 +
- 2 files changed, 1 insertion(+), 1 deletion(-)
+ kernel/sched/fair.c | 26 +++++++++++++-------------
+ 1 file changed, 13 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/net/ethernet/amd/xgbe/xgbe-drv.c b/drivers/net/ethernet/amd/xgbe/xgbe-drv.c
-index de10e7e3a68d0..1fa7eb75d1a39 100644
---- a/drivers/net/ethernet/amd/xgbe/xgbe-drv.c
-+++ b/drivers/net/ethernet/amd/xgbe/xgbe-drv.c
-@@ -1247,7 +1247,6 @@ static void xgbe_free_rx_data(struct xgbe_prv_data *pdata)
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index 952a3fd41a6fe..c11d59bea0ea8 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -7353,21 +7353,21 @@ done: __maybe_unused;
+ 	return p;
  
- static int xgbe_phy_reset(struct xgbe_prv_data *pdata)
- {
--	pdata->phy_link = -1;
- 	pdata->phy_speed = SPEED_UNKNOWN;
+ idle:
+-	if (!rf)
+-		return NULL;
+-
+-	new_tasks = sched_balance_newidle(rq, rf);
++	if (rf) {
++		new_tasks = sched_balance_newidle(rq, rf);
  
- 	return pdata->phy_if.phy_reset(pdata);
-diff --git a/drivers/net/ethernet/amd/xgbe/xgbe-mdio.c b/drivers/net/ethernet/amd/xgbe/xgbe-mdio.c
-index 3819b23c927d5..6dd95e7d81e41 100644
---- a/drivers/net/ethernet/amd/xgbe/xgbe-mdio.c
-+++ b/drivers/net/ethernet/amd/xgbe/xgbe-mdio.c
-@@ -1637,6 +1637,7 @@ static int xgbe_phy_init(struct xgbe_prv_data *pdata)
- 		pdata->phy.duplex = DUPLEX_FULL;
- 	}
+-	/*
+-	 * Because sched_balance_newidle() releases (and re-acquires) rq->lock, it is
+-	 * possible for any higher priority task to appear. In that case we
+-	 * must re-start the pick_next_entity() loop.
+-	 */
+-	if (new_tasks < 0)
+-		return RETRY_TASK;
++		/*
++		 * Because sched_balance_newidle() releases (and re-acquires)
++		 * rq->lock, it is possible for any higher priority task to
++		 * appear. In that case we must re-start the pick_next_entity()
++		 * loop.
++		 */
++		if (new_tasks < 0)
++			return RETRY_TASK;
  
-+	pdata->phy_link = 0;
- 	pdata->phy.link = 0;
+-	if (new_tasks > 0)
+-		goto again;
++		if (new_tasks > 0)
++			goto again;
++	}
  
- 	pdata->phy.pause_autoneg = pdata->pause_autoneg;
+ 	/*
+ 	 * rq is about to be idle, check if we need to update the
 -- 
 2.51.0
 
