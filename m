@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-190695-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190587-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26A32C10A44
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:14:13 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AD4AC10918
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:10:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 433A31A61401
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:09:31 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D4A564F7D61
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:05:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEF8E2F25F1;
-	Mon, 27 Oct 2025 19:05:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9588D3218B2;
+	Mon, 27 Oct 2025 19:01:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JSX/31tu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PH7qMVNQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B0C818A6A5;
-	Mon, 27 Oct 2025 19:05:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5116C2C3745;
+	Mon, 27 Oct 2025 19:01:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591953; cv=none; b=aoS9vAuBiXpsGl2UtV4ETQ7bmKxumHVgAN6QXXGkEk7b7V02rDtIBpGmcYpTIjJfcEoV1lqy5JQsDMpri7I0eEJitd90HKhCD7DWB/ya7FesAGyRMkwF+iZ68MAWz7uhC1Y0tI3gCIj4yu+qVXhXqK+8wuilK0OkkLH+IyYC9d4=
+	t=1761591674; cv=none; b=TFr25H9w+63a/z9tpAsP3Q6JoCJ6+K4B8jHUOIxvHt3q7j9r+LU7T9ERvDI4ftKE7erSzBFJ0gM9mH3ufJ4EMh8kD2wWlqUEmHA47SR7BIQDehetSuD7MoPECk0PKKPXMLJfMoKNFCxivXM7aAC5lZ92NKynFcUu4tPJx4fLpVk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591953; c=relaxed/simple;
-	bh=aANELpW8fttpTb7TbododQVjdBsS89CM4Z6IUkZhEI0=;
+	s=arc-20240116; t=1761591674; c=relaxed/simple;
+	bh=KqduGBqKlYyl2Sd6bNpNcLS/2n0t5y0gsmFsaC+By74=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RrWqbtPVgxWpLb+xzLd7SbrCGJ5Rnn0xZtb3VobvuEDWTQdBU/QptL8Mv2RbeQzegniSMfyXZYJYGSQ0VKd+KDJcsITqIb7fpmKsjgPWVlu3cCLox9CcEiZ3UaQJskQ1c+fE50TZ/HXMtn0q5INecOQU1KYoNLEyjicW/dROAMU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JSX/31tu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D4FEC4CEF1;
-	Mon, 27 Oct 2025 19:05:52 +0000 (UTC)
+	 MIME-Version; b=SOHJD2Twth+p9faiiNngCa4i2GX4nIBveDus/VHDrrHedvOUsilnubVVAbHQdSmIURmRXPka9ZC6RP1pv4xPuAyxPFF0XsWBwD1HTEDibKREzkY/Uh+o951dq3cIfLhi0kv1slMAwfrREtUZIXILghMIYLCjpM2AnIKVup2YIZc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PH7qMVNQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFA26C4CEF1;
+	Mon, 27 Oct 2025 19:01:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591953;
-	bh=aANELpW8fttpTb7TbododQVjdBsS89CM4Z6IUkZhEI0=;
+	s=korg; t=1761591674;
+	bh=KqduGBqKlYyl2Sd6bNpNcLS/2n0t5y0gsmFsaC+By74=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JSX/31tulTbBeEdcdd52jdYxfyg6xH+Ab0L/OK0IdhPqL0/jIszOJoT7ncOkb/fS4
-	 c/sJeUnZI8BRnl606uV9XMm1klmCJs0l4wHfKf9ynAAqlDhBcf2tmAt4rrEJ7sunxX
-	 X+H6zTri0JUmMhY27ncJlqPAqw/dZTKuYeU3BezU=
+	b=PH7qMVNQm8KMbbItcorMEZIoping7lggX9hWmgPUETC6sTIk7mYImySPcDNe6w/cq
+	 KpzHrfQ3tOEFrTFWeH/cPCebMo9qvA3JPKCU8hg/lhsXR9PIMIpiW/QgII7gnfGAvt
+	 0v1res6pIdtDqF7aQc+fr8jElS5fYS+/cN2swq6A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ioana Ciornei <ioana.ciornei@nxp.com>,
-	Mathew McBride <matt@traverse.com.au>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Anup Patel <anup@brainfault.org>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Tsukasa OI <research_trasio@irq.a4lg.com>,
+	Atish Patra <atishp@rivosinc.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 060/123] dpaa2-eth: fix the pointer passed to PTR_ALIGN on Tx path
+Subject: [PATCH 5.10 287/332] RISC-V: Correctly print supported extensions
 Date: Mon, 27 Oct 2025 19:35:40 +0100
-Message-ID: <20251027183448.000004352@linuxfoundation.org>
+Message-ID: <20251027183532.436417175@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183446.381986645@linuxfoundation.org>
-References: <20251027183446.381986645@linuxfoundation.org>
+In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
+References: <20251027183524.611456697@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,52 +65,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ioana Ciornei <ioana.ciornei@nxp.com>
+From: Tsukasa OI <research_trasio@irq.a4lg.com>
 
-[ Upstream commit 902e81e679d86846a2404630d349709ad9372d0d ]
+[ Upstream commit 58004f266918912771ee71f46bfb92bf64ab9108 ]
 
-The blamed commit increased the needed headroom to account for
-alignment. This means that the size required to always align a Tx buffer
-was added inside the dpaa2_eth_needed_headroom() function. By doing
-that, a manual adjustment of the pointer passed to PTR_ALIGN() was no
-longer correct since the 'buffer_start' variable was already pointing
-to the start of the skb's memory.
+This commit replaces BITS_PER_LONG with number of alphabet letters.
 
-The behavior of the dpaa2-eth driver without this patch was to drop
-frames on Tx even when the headroom was matching the 128 bytes
-necessary. Fix this by removing the manual adjust of 'buffer_start' from
-the PTR_MODE call.
+Current ISA pretty-printing code expects extension 'a' (bit 0) through
+'z' (bit 25).  Although bit 26 and higher is not currently used (thus never
+cause an issue in practice), it will be an annoying problem if we start to
+use those in the future.
 
-Closes: https://lore.kernel.org/netdev/70f0dcd9-1906-4d13-82df-7bbbbe7194c6@app.fastmail.com/T/#u
-Fixes: f422abe3f23d ("dpaa2-eth: increase the needed headroom to account for alignment")
-Signed-off-by: Ioana Ciornei <ioana.ciornei@nxp.com>
-Tested-by: Mathew McBride <matt@traverse.com.au>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20251016135807.360978-1-ioana.ciornei@nxp.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+This commit disables printing high bits for now.
+
+Reviewed-by: Anup Patel <anup@brainfault.org>
+Tested-by: Heiko Stuebner <heiko@sntech.de>
+Signed-off-by: Tsukasa OI <research_trasio@irq.a4lg.com>
+Signed-off-by: Atish Patra <atishp@rivosinc.com>
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Stable-dep-of: d2721bb165b3 ("RISC-V: Don't print details of CPUs disabled in DT")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ arch/riscv/kernel/cpufeature.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c b/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c
-index 7554cf37507df..0439bf465fa5b 100644
---- a/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c
-+++ b/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c
-@@ -1018,8 +1018,7 @@ static int dpaa2_eth_build_single_fd(struct dpaa2_eth_priv *priv,
- 	dma_addr_t addr;
+diff --git a/arch/riscv/kernel/cpufeature.c b/arch/riscv/kernel/cpufeature.c
+index ac202f44a6702..ece126dad3547 100644
+--- a/arch/riscv/kernel/cpufeature.c
++++ b/arch/riscv/kernel/cpufeature.c
+@@ -13,6 +13,8 @@
+ #include <asm/smp.h>
+ #include <asm/switch_to.h>
  
- 	buffer_start = skb->data - dpaa2_eth_needed_headroom(skb);
--	aligned_start = PTR_ALIGN(buffer_start - DPAA2_ETH_TX_BUF_ALIGN,
--				  DPAA2_ETH_TX_BUF_ALIGN);
-+	aligned_start = PTR_ALIGN(buffer_start, DPAA2_ETH_TX_BUF_ALIGN);
- 	if (aligned_start >= skb->head)
- 		buffer_start = aligned_start;
- 	else
++#define NUM_ALPHA_EXTS ('z' - 'a' + 1)
++
+ unsigned long elf_hwcap __read_mostly;
+ 
+ /* Host ISA bitmap */
+@@ -63,7 +65,7 @@ void riscv_fill_hwcap(void)
+ {
+ 	struct device_node *node;
+ 	const char *isa;
+-	char print_str[BITS_PER_LONG + 1];
++	char print_str[NUM_ALPHA_EXTS + 1];
+ 	size_t i, j, isa_len;
+ 	static unsigned long isa2hwcap[256] = {0};
+ 
+@@ -133,13 +135,13 @@ void riscv_fill_hwcap(void)
+ 	}
+ 
+ 	memset(print_str, 0, sizeof(print_str));
+-	for (i = 0, j = 0; i < BITS_PER_LONG; i++)
++	for (i = 0, j = 0; i < NUM_ALPHA_EXTS; i++)
+ 		if (riscv_isa[0] & BIT_MASK(i))
+ 			print_str[j++] = (char)('a' + i);
+ 	pr_info("riscv: ISA extensions %s\n", print_str);
+ 
+ 	memset(print_str, 0, sizeof(print_str));
+-	for (i = 0, j = 0; i < BITS_PER_LONG; i++)
++	for (i = 0, j = 0; i < NUM_ALPHA_EXTS; i++)
+ 		if (elf_hwcap & BIT_MASK(i))
+ 			print_str[j++] = (char)('a' + i);
+ 	pr_info("riscv: ELF capabilities %s\n", print_str);
 -- 
 2.51.0
 
