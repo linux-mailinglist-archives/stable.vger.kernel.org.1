@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-190552-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190811-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20CF7C108BE
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:09:43 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 468D8C10C6D
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:19:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3DF34566821
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:04:24 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id AB59F502C94
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:13:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15710334374;
-	Mon, 27 Oct 2025 18:59:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 853A52D2398;
+	Mon, 27 Oct 2025 19:10:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JEh9kzn2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pvfmh3x2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7BB033375A;
-	Mon, 27 Oct 2025 18:59:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37FFA35965;
+	Mon, 27 Oct 2025 19:10:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591587; cv=none; b=bzdxshOsndOeKm4/uRohj1+j0dZjHxU8jojGnQJJ6TaXmuTyMLzF2D4yEjt2OON3fSAvF5QnMttTbG3H9TzQWeAVbWu75iJwqhMZeuNopfCy6weRCGx7CQZ7w6p8mCMj1HTttfLY25F2H/Iw2i4V5kSuCDGZixMiNLw+uD+leuI=
+	t=1761592258; cv=none; b=gmc/VPkfLSTtn0hvQmS400LotJ1Lcf/5yXdpHbQAC+63oNnXpgkG3afvAEBbula8+XU+VVFaO0GfZTDAQ60tl4aGnSNdjJjBGY6J3raJ/e0IlNgzQf7Bpf43+wJdgcDonSpZm6AOzL3VWxgM31xxGjlPYJdBG1xyDfd14FUlnEM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591587; c=relaxed/simple;
-	bh=JNMs0SGTheIVeCRqgOq7iKawpjfhkWQHcA2BAhuqMhI=;
+	s=arc-20240116; t=1761592258; c=relaxed/simple;
+	bh=EyWW1nNWjZot+VK/xg4T4yKwMfBGD/ddyZCDtlha33s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ADO9mixS9vc2c1Ybs0z2nTcgrQ4Wt5YHhvvc3z4VNtZB4sUJOw8vv5eAZdNTZZsM3SSzJWyGn99vtM/fwecJb7Awj2Mk1KO4dlkCtDZyXFvswH9DMJ7aOmtpiIHhokYAm0BqqDim3yWdF1EuEFGKXbT4123tNRneVUpiljYuA+g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JEh9kzn2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59010C4CEF1;
-	Mon, 27 Oct 2025 18:59:47 +0000 (UTC)
+	 MIME-Version; b=rdLBoK44Y31+NzZm8MRwqguKEGCOMCa98xO4EeoWtQ/Gtcu/cgD38ji7eBn3O3tEj1+dtfGmzPoTwH7LIqrO+U7vsqUnnivhdQgIZncuuzXS9NoZRw/zhWWiIeV4rWONy5SopF5RDZsuTVPBJa2lKsSYEsYQHONBsWA7gIbwvVI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pvfmh3x2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD065C4CEFD;
+	Mon, 27 Oct 2025 19:10:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591587;
-	bh=JNMs0SGTheIVeCRqgOq7iKawpjfhkWQHcA2BAhuqMhI=;
+	s=korg; t=1761592258;
+	bh=EyWW1nNWjZot+VK/xg4T4yKwMfBGD/ddyZCDtlha33s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JEh9kzn2xKI1oVLf1g/xlmNiYoI0HcXwPLSKY4/d7N+ehet9n5TaQyPJWTfHa/Gyc
-	 0kgPV8BD+TGJrN0QvEy7wzIIvDBuJyhFCEWDz71nmpVRF07rKZWwnPt88WPW5qaD03
-	 CVYWa/zCzxcXXmocwKfqmP/vBRhN8pdbd50i7QOw=
+	b=pvfmh3x2bVahRPGfN8J2GZoJGPF6igLqvc1/zihO/UOVy1fpx3HsZzHz1wv+SQw6z
+	 vKuQgqg09JsBQN8wjLZlbVnD4hcEuSy//5Jo4KFMwshhbh7hh4x3k+GjCXIHQwajxj
+	 0REztz8unBldYdtrmc5J/2dPoc2pLJkCrYQ5HjDI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ingo Molnar <mingo@kernel.org>,
-	Shrikanth Hegde <sshegde@linux.ibm.com>,
+	Jann Horn <jannh@google.com>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 254/332] sched/balancing: Rename newidle_balance() => sched_balance_newidle()
+Subject: [PATCH 6.1 046/157] tls: wait for async encrypt in case of error during latter iterations of sendmsg
 Date: Mon, 27 Oct 2025 19:35:07 +0100
-Message-ID: <20251027183531.550110507@linuxfoundation.org>
+Message-ID: <20251027183502.530696498@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
-References: <20251027183524.611456697@linuxfoundation.org>
+In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
+References: <20251027183501.227243846@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,97 +63,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ingo Molnar <mingo@kernel.org>
+From: Sabrina Dubroca <sd@queasysnail.net>
 
-[ Upstream commit 7d058285cd77cc1411c91efd1b1673530bb1bee8 ]
+[ Upstream commit b014a4e066c555185b7c367efacdc33f16695495 ]
 
-Standardize scheduler load-balancing function names on the
-sched_balance_() prefix.
+If we hit an error during the main loop of tls_sw_sendmsg_locked (eg
+failed allocation), we jump to send_end and immediately
+return. Previous iterations may have queued async encryption requests
+that are still pending. We should wait for those before returning, as
+we could otherwise be reading from memory that userspace believes
+we're not using anymore, which would be a sort of use-after-free.
 
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Shrikanth Hegde <sshegde@linux.ibm.com>
-Link: https://lore.kernel.org/r/20240308111819.1101550-11-mingo@kernel.org
-Stable-dep-of: 17e3e88ed0b6 ("sched/fair: Fix pelt lost idle time detection")
+This is similar to what tls_sw_recvmsg already does: failures during
+the main loop jump to the "wait for async" code, not straight to the
+unlock/return.
+
+Fixes: a42055e8d2c3 ("net/tls: Add support for async encryption of records for performance")
+Reported-by: Jann Horn <jannh@google.com>
+Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
+Link: https://patch.msgid.link/c793efe9673b87f808d84fdefc0f732217030c52.1760432043.git.sd@queasysnail.net
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/fair.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ net/tls/tls_sw.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 802c97a05f57e..952a3fd41a6fe 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -3907,7 +3907,7 @@ static inline unsigned long cfs_rq_load_avg(struct cfs_rq *cfs_rq)
- 	return cfs_rq->avg.load_avg;
- }
+diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
+index c67cf1a06c0e5..0e378d7cb6903 100644
+--- a/net/tls/tls_sw.c
++++ b/net/tls/tls_sw.c
+@@ -1029,7 +1029,7 @@ int tls_sw_sendmsg(struct sock *sk, struct msghdr *msg, size_t size)
+ 			if (ret == -EINPROGRESS)
+ 				num_async++;
+ 			else if (ret != -EAGAIN)
+-				goto send_end;
++				goto end;
+ 		}
+ 	}
  
--static int newidle_balance(struct rq *this_rq, struct rq_flags *rf);
-+static int sched_balance_newidle(struct rq *this_rq, struct rq_flags *rf);
+@@ -1182,8 +1182,9 @@ int tls_sw_sendmsg(struct sock *sk, struct msghdr *msg, size_t size)
+ 			goto alloc_encrypted;
+ 	}
  
- static inline unsigned long task_util(struct task_struct *p)
- {
-@@ -4234,7 +4234,7 @@ attach_entity_load_avg(struct cfs_rq *cfs_rq, struct sched_entity *se) {}
- static inline void
- detach_entity_load_avg(struct cfs_rq *cfs_rq, struct sched_entity *se) {}
++send_end:
+ 	if (!num_async) {
+-		goto send_end;
++		goto end;
+ 	} else if (num_zc || eor) {
+ 		int err;
  
--static inline int newidle_balance(struct rq *rq, struct rq_flags *rf)
-+static inline int sched_balance_newidle(struct rq *rq, struct rq_flags *rf)
- {
- 	return 0;
- }
-@@ -7065,7 +7065,7 @@ balance_fair(struct rq *rq, struct task_struct *prev, struct rq_flags *rf)
- 	if (rq->nr_running)
- 		return 1;
+@@ -1201,7 +1202,7 @@ int tls_sw_sendmsg(struct sock *sk, struct msghdr *msg, size_t size)
+ 		tls_tx_records(sk, msg->msg_flags);
+ 	}
  
--	return newidle_balance(rq, rf) != 0;
-+	return sched_balance_newidle(rq, rf) != 0;
- }
- #endif /* CONFIG_SMP */
+-send_end:
++end:
+ 	ret = sk_stream_error(sk, msg->msg_flags, ret);
  
-@@ -7356,10 +7356,10 @@ done: __maybe_unused;
- 	if (!rf)
- 		return NULL;
- 
--	new_tasks = newidle_balance(rq, rf);
-+	new_tasks = sched_balance_newidle(rq, rf);
- 
- 	/*
--	 * Because newidle_balance() releases (and re-acquires) rq->lock, it is
-+	 * Because sched_balance_newidle() releases (and re-acquires) rq->lock, it is
- 	 * possible for any higher priority task to appear. In that case we
- 	 * must re-start the pick_next_entity() loop.
- 	 */
-@@ -10090,7 +10090,7 @@ static int load_balance(int this_cpu, struct rq *this_rq,
- 	ld_moved = 0;
- 
- 	/*
--	 * newidle_balance() disregards balance intervals, so we could
-+	 * sched_balance_newidle() disregards balance intervals, so we could
- 	 * repeatedly reach this code, which would lead to balance_interval
- 	 * skyrocketting in a short amount of time. Skip the balance_interval
- 	 * increase logic to avoid that.
-@@ -10808,7 +10808,7 @@ static inline void nohz_newidle_balance(struct rq *this_rq) { }
- #endif /* CONFIG_NO_HZ_COMMON */
- 
- /*
-- * newidle_balance is called by schedule() if this_cpu is about to become
-+ * sched_balance_newidle is called by schedule() if this_cpu is about to become
-  * idle. Attempts to pull tasks from other CPUs.
-  *
-  * Returns:
-@@ -10816,7 +10816,7 @@ static inline void nohz_newidle_balance(struct rq *this_rq) { }
-  *     0 - failed, no new tasks
-  *   > 0 - success, new (fair) tasks present
-  */
--static int newidle_balance(struct rq *this_rq, struct rq_flags *rf)
-+static int sched_balance_newidle(struct rq *this_rq, struct rq_flags *rf)
- {
- 	unsigned long next_balance = jiffies + HZ;
- 	int this_cpu = this_rq->cpu;
+ 	release_sock(sk);
 -- 
 2.51.0
 
