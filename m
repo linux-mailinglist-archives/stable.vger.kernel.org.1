@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-191278-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191317-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8DA1C11136
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:33:12 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id E92ACC11369
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:42:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 7CE0A34C178
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:33:12 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A49DA563130
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:35:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26DFA22A4DB;
-	Mon, 27 Oct 2025 19:31:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C18E932ABEC;
+	Mon, 27 Oct 2025 19:33:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="su50qCdO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1rIxJtVd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE4FF23EA92;
-	Mon, 27 Oct 2025 19:31:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DBAD32ABDC;
+	Mon, 27 Oct 2025 19:33:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761593502; cv=none; b=PdMNkV8SnK8t3aABvGx7PZP9/V7sPj/mcXdznLJ62k1izjvqSxw6MDfjqcxEJ56+c9bLXBFgM8MtOrgqAg4QfmnNSJS033Jr93DaFjWhH32wwA/H16wGDgVF+E9U78qusjKYCNkpIGaNRPC6ClSJAyNC1TpBl1bzuHlLvVPf0P4=
+	t=1761593624; cv=none; b=jWeANi1EWHlIslqdQIxW4pi2J+zPI/cYC8jqyn2Ek2gCjlAsjC3NjvNj2AdAvMcQpAzP945jm6QNSBS70kXjfBB8XfuAVicrwt45YSSxBNoOcH/64Q4x/MvBD0+4ifSW5VB3LqgVvwBI//zjWHa2M/Rev+ej6tJEIodJwmexSkQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761593502; c=relaxed/simple;
-	bh=tymrxLwtcXEH6V7L/NItgAlG468UVodCtOsfEVahOUA=;
+	s=arc-20240116; t=1761593624; c=relaxed/simple;
+	bh=dLYGA+t/HJIYRPZLrJVUxizRvu/D5GxICCp1Jrqmf5Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tHCPKX2tLiR5MLT3AYrwHoqcy7J0XYRjgjm9aQ7r2SI5Nn40Z3UqCsNxYbPr2FTvDbGbgxMO5I4GFUYai0V/bZ1wLQbmpOcqX/PRDPOh3uuKpqQDMv4zlwrLFU6g9d6IgPK+AJyiiQ99ZoRDjFymtAquM7hDBwGQa9rWLbpFOlA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=su50qCdO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F680C4CEF1;
-	Mon, 27 Oct 2025 19:31:42 +0000 (UTC)
+	 MIME-Version; b=txzmEDNbFaysk33Ihf5o30NU05TMGtZGYfPzRzfxv6JmM72GAoJHD58fjz3Sn8neFzPdQOpncp0PNrpAHJxCNCp0S1XWP+tIxR3eZo4lGjr163JUbFySD5/fzZV+9B3MzS135BJgOObb6a75q9tV9ktX314nz/9nlAOFPlLF7Ss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1rIxJtVd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECD1FC4CEF1;
+	Mon, 27 Oct 2025 19:33:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761593502;
-	bh=tymrxLwtcXEH6V7L/NItgAlG468UVodCtOsfEVahOUA=;
+	s=korg; t=1761593624;
+	bh=dLYGA+t/HJIYRPZLrJVUxizRvu/D5GxICCp1Jrqmf5Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=su50qCdOD0CLtloy+/joIAPqhk8gQjn9rsHyIY/XFJNw9Z5lYgfzhdcM96ptXhG83
-	 PNXhent1cuFMNTFziBn+E9R2K4/IY6mPJdat0PCgh26d9V7Pbc2co8nc+5d8C75vbz
-	 7rVee1TwRicwO3cYemvB484TPWqiNfGbrV1lxVPk=
+	b=1rIxJtVdEb0RsfVpcfUDjGllXQFuMUrrkLM0Q5cqhQXtznza0eWVmRS8vDGCxn1Ju
+	 mQhPmOxy6E8boUxgJ/M+PjX75W+SosNqqTSZURRjQqMve4vRdQqJ7+KzFLW5JnjHG6
+	 B5c9eep8+5xV2Zwe9XW1lW0ej9N/1Fe9RhsIZb4c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	stable <stable@kernel.org>,
-	Tim Guttzeit <t.guttzeit@tuxedocomputers.com>,
-	Werner Sembach <wse@tuxedocomputers.com>
-Subject: [PATCH 6.17 152/184] usb/core/quirks: Add Huawei ME906S to wakeup quirk
-Date: Mon, 27 Oct 2025 19:37:14 +0100
-Message-ID: <20251027183519.025590491@linuxfoundation.org>
+	Andrey Konovalov <andreyknvl@gmail.com>
+Subject: [PATCH 6.17 153/184] usb: raw-gadget: do not limit transfer length
+Date: Mon, 27 Oct 2025 19:37:15 +0100
+Message-ID: <20251027183519.050138058@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
 References: <20251027183514.934710872@linuxfoundation.org>
@@ -66,34 +65,40 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Tim Guttzeit <t.guttzeit@tuxedocomputers.com>
+From: Andrey Konovalov <andreyknvl@gmail.com>
 
-commit dfc2cf4dcaa03601cd4ca0f7def88b2630fca6ab upstream.
+commit 37b9dd0d114a0e38c502695e30f55a74fb0c37d0 upstream.
 
-The list of Huawei LTE modules needing the quirk fixing spurious wakeups
-was missing the IDs of the Huawei ME906S module, therefore suspend did not
-work.
+Drop the check on the maximum transfer length in Raw Gadget for both
+control and non-control transfers.
+
+Limiting the transfer length causes a problem with emulating USB devices
+whose full configuration descriptor exceeds PAGE_SIZE in length.
+
+Overall, there does not appear to be any reason to enforce any kind of
+transfer length limit on the Raw Gadget side for either control or
+non-control transfers, so let's just drop the related check.
 
 Cc: stable <stable@kernel.org>
-Signed-off-by: Tim Guttzeit <t.guttzeit@tuxedocomputers.com>
-Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
-Link: https://patch.msgid.link/20251020134304.35079-1-wse@tuxedocomputers.com
+Fixes: f2c2e717642c ("usb: gadget: add raw-gadget interface")
+Signed-off-by: Andrey Konovalov <andreyknvl@gmail.com>
+Link: https://patch.msgid.link/a6024e8eab679043e9b8a5defdb41c4bda62f02b.1761085528.git.andreyknvl@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/core/quirks.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/usb/gadget/legacy/raw_gadget.c |    2 --
+ 1 file changed, 2 deletions(-)
 
---- a/drivers/usb/core/quirks.c
-+++ b/drivers/usb/core/quirks.c
-@@ -467,6 +467,8 @@ static const struct usb_device_id usb_qu
- 	/* Huawei 4G LTE module */
- 	{ USB_DEVICE(0x12d1, 0x15bb), .driver_info =
- 			USB_QUIRK_DISCONNECT_SUSPEND },
-+	{ USB_DEVICE(0x12d1, 0x15c1), .driver_info =
-+			USB_QUIRK_DISCONNECT_SUSPEND },
- 	{ USB_DEVICE(0x12d1, 0x15c3), .driver_info =
- 			USB_QUIRK_DISCONNECT_SUSPEND },
- 
+--- a/drivers/usb/gadget/legacy/raw_gadget.c
++++ b/drivers/usb/gadget/legacy/raw_gadget.c
+@@ -667,8 +667,6 @@ static void *raw_alloc_io_data(struct us
+ 		return ERR_PTR(-EINVAL);
+ 	if (!usb_raw_io_flags_valid(io->flags))
+ 		return ERR_PTR(-EINVAL);
+-	if (io->length > PAGE_SIZE)
+-		return ERR_PTR(-EINVAL);
+ 	if (get_from_user)
+ 		data = memdup_user(ptr + sizeof(*io), io->length);
+ 	else {
 
 
 
