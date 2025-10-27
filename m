@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-191246-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190904-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80515C111FB
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:36:00 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7965AC10D6F
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:21:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 160701894193
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:32:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5B8561A6254C
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:17:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64CF5320CBE;
-	Mon, 27 Oct 2025 19:30:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6B41325481;
+	Mon, 27 Oct 2025 19:15:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r19yNRlM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tqzt5o+q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15B6731E107;
-	Mon, 27 Oct 2025 19:30:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FF422E54A3;
+	Mon, 27 Oct 2025 19:15:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761593402; cv=none; b=gwcj8cXKQ3iUmnU5EZNbaFv28iGbmpVEsI3nUxFmkHLQzZOsBxEh1o1hsNe1BQF7AHMO1cjo9llFgqbHSk+64aPVFXc0IahiY1qyHAwh40llP//dH+pXy8u/5ji6rlzsy7ta0rG/mnPti3uL0xq5yXAocuMrUjNjj/y/PVWNrdU=
+	t=1761592502; cv=none; b=kKZrFduXO2TckxlT+xhE4mHE+QXyYZg2/En/O6Un5/1rNS5u4kOBzXUCicOT6GJPgDXDWQNJJJXGBR8XkD6bswyPITv7kHs07gxzPFshdVAh1SnoG0IqHsDir2ENcCMPXhPNdRU9aIog9NGMNjSxkYlkP3YcIpPcAiB82/GOWvg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761593402; c=relaxed/simple;
-	bh=9JJfOQBczYs9W096w7Z9xDMP/27wED5ENRDnUbeo2o4=;
+	s=arc-20240116; t=1761592502; c=relaxed/simple;
+	bh=ASP0B9LN9UjonoG58CImBAeAy3ZEgHPhnbObLwcPA8Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bdLINDm+dpdWkeT4vKcZ/mpsYx/j+LKHQ6xcC8RSyQvt7Pw2vG/9u9AZvoqC1IkuimmbpwwFMopLmptQLlI8Xcmal3vVhy2++hU1nfnMMm6lCg3dipYpB2sAmN5iLD2VZM1Qsp0xvgnldH7tN4a5MBrN05NdiFb9aAjOMv23xVA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r19yNRlM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93542C4CEF1;
-	Mon, 27 Oct 2025 19:30:01 +0000 (UTC)
+	 MIME-Version; b=XvCHQ7lWd3BEhO9JMqVHmajHRBWaGJMkZ/GcV8ODyxjQTGym6HtP0VLyHmMHib2xyf/Z28QEQubVGhp1vH1l//LUTz9AjPTDwhqslkocTQ8kkDmqVC/4xYw3I5sOQmE+UrVTyb3ruunaguSJ9OkwATleDOWuddlzWpnr9+o+gwU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tqzt5o+q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01AF3C4CEF1;
+	Mon, 27 Oct 2025 19:15:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761593402;
-	bh=9JJfOQBczYs9W096w7Z9xDMP/27wED5ENRDnUbeo2o4=;
+	s=korg; t=1761592502;
+	bh=ASP0B9LN9UjonoG58CImBAeAy3ZEgHPhnbObLwcPA8Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r19yNRlM+hsWB/XBkxz7I7sIHEFJJkxSjX5tyCkofBCXig+bUGmWNCBIThZ8MXaAU
-	 1rCQ+/9nUje62J06OXs54epmvcnnRII8S24lW6FcznOBVFnttdR4g5OXKVlenEq8IJ
-	 R6dX2lmJ8ZHdaQps8AwhoOOevIV61iYwcjN0O4yA=
+	b=tqzt5o+q/De+hHEJWk04aWIjh5aISRJpRZeh0eaSF7RVylJ2CzJA6UZJ5fCRCtp8Y
+	 swN2maehqcR9XM3ubYqTFyaa85Qmd9www+ZBZp+SDXE6tfxikUDjx8AUQ7ScDJrlOQ
+	 Wdz03kIlx/qmefRZ384DorwJNR4mBQgLVuOh9ye8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cristian Marussi <cristian.marussi@arm.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Piotr Kwapulinski <piotr.kwapulinski@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Rafal Romanowski <rafal.romanowski@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 123/184] firmware: arm_scmi: Account for failed debug initialization
+Subject: [PATCH 6.1 144/157] ixgbevf: Add support for Intel(R) E610 device
 Date: Mon, 27 Oct 2025 19:36:45 +0100
-Message-ID: <20251027183518.257005283@linuxfoundation.org>
+Message-ID: <20251027183505.142657353@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
-References: <20251027183514.934710872@linuxfoundation.org>
+In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
+References: <20251027183501.227243846@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,211 +65,173 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cristian Marussi <cristian.marussi@arm.com>
+From: Piotr Kwapulinski <piotr.kwapulinski@intel.com>
 
-[ Upstream commit 2290ab43b9d8eafb8046387f10a8dfa2b030ba46 ]
+[ Upstream commit 4c44b450c69b676955c2790dcf467c1f969d80f1 ]
 
-When the SCMI debug subsystem fails to initialize, the related debug root
-will be missing, and the underlying descriptor will be NULL.
+Add support for Intel(R) E610 Series of network devices. The E610
+is based on X550 but adds firmware managed link, enhanced security
+capabilities and support for updated server manageability
 
-Handle this fault condition in the SCMI debug helpers that maintain
-metrics counters.
-
-Fixes: 0b3d48c4726e ("firmware: arm_scmi: Track basic SCMI communication debug metrics")
-Signed-off-by: Cristian Marussi <cristian.marussi@arm.com>
-Message-Id: <20251014115346.2391418-1-cristian.marussi@arm.com>
-Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Signed-off-by: Piotr Kwapulinski <piotr.kwapulinski@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Stable-dep-of: a7075f501bd3 ("ixgbevf: fix mailbox API compatibility by negotiating supported features")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/firmware/arm_scmi/common.h | 24 ++++++++++++++--
- drivers/firmware/arm_scmi/driver.c | 44 ++++++++++--------------------
- 2 files changed, 35 insertions(+), 33 deletions(-)
+ drivers/net/ethernet/intel/ixgbevf/defines.h      |    5 ++++-
+ drivers/net/ethernet/intel/ixgbevf/ixgbevf.h      |    6 +++++-
+ drivers/net/ethernet/intel/ixgbevf/ixgbevf_main.c |   12 ++++++++++--
+ drivers/net/ethernet/intel/ixgbevf/vf.c           |   12 +++++++++++-
+ drivers/net/ethernet/intel/ixgbevf/vf.h           |    4 +++-
+ 5 files changed, 33 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/firmware/arm_scmi/common.h b/drivers/firmware/arm_scmi/common.h
-index 07b9e629276d2..21c0b95027c64 100644
---- a/drivers/firmware/arm_scmi/common.h
-+++ b/drivers/firmware/arm_scmi/common.h
-@@ -309,10 +309,28 @@ enum debug_counters {
- 	SCMI_DEBUG_COUNTERS_LAST
+--- a/drivers/net/ethernet/intel/ixgbevf/defines.h
++++ b/drivers/net/ethernet/intel/ixgbevf/defines.h
+@@ -1,5 +1,5 @@
+ /* SPDX-License-Identifier: GPL-2.0 */
+-/* Copyright(c) 1999 - 2018 Intel Corporation. */
++/* Copyright(c) 1999 - 2024 Intel Corporation. */
+ 
+ #ifndef _IXGBEVF_DEFINES_H_
+ #define _IXGBEVF_DEFINES_H_
+@@ -16,6 +16,9 @@
+ #define IXGBE_DEV_ID_X550_VF_HV		0x1564
+ #define IXGBE_DEV_ID_X550EM_X_VF_HV	0x15A9
+ 
++#define IXGBE_DEV_ID_E610_VF		0x57AD
++#define IXGBE_SUBDEV_ID_E610_VF_HV	0x00FF
++
+ #define IXGBE_VF_IRQ_CLEAR_MASK		7
+ #define IXGBE_VF_MAX_TX_QUEUES		8
+ #define IXGBE_VF_MAX_RX_QUEUES		8
+--- a/drivers/net/ethernet/intel/ixgbevf/ixgbevf.h
++++ b/drivers/net/ethernet/intel/ixgbevf/ixgbevf.h
+@@ -1,5 +1,5 @@
+ /* SPDX-License-Identifier: GPL-2.0 */
+-/* Copyright(c) 1999 - 2018 Intel Corporation. */
++/* Copyright(c) 1999 - 2024 Intel Corporation. */
+ 
+ #ifndef _IXGBEVF_H_
+ #define _IXGBEVF_H_
+@@ -418,6 +418,8 @@ enum ixgbevf_boards {
+ 	board_X550EM_x_vf,
+ 	board_X550EM_x_vf_hv,
+ 	board_x550em_a_vf,
++	board_e610_vf,
++	board_e610_vf_hv,
  };
  
--static inline void scmi_inc_count(atomic_t *arr, int stat)
-+/**
-+ * struct scmi_debug_info  - Debug common info
-+ * @top_dentry: A reference to the top debugfs dentry
-+ * @name: Name of this SCMI instance
-+ * @type: Type of this SCMI instance
-+ * @is_atomic: Flag to state if the transport of this instance is atomic
-+ * @counters: An array of atomic_c's used for tracking statistics (if enabled)
-+ */
-+struct scmi_debug_info {
-+	struct dentry *top_dentry;
-+	const char *name;
-+	const char *type;
-+	bool is_atomic;
-+	atomic_t counters[SCMI_DEBUG_COUNTERS_LAST];
+ enum ixgbevf_xcast_modes {
+@@ -434,11 +436,13 @@ extern const struct ixgbevf_info ixgbevf
+ extern const struct ixgbe_mbx_operations ixgbevf_mbx_ops;
+ extern const struct ixgbe_mbx_operations ixgbevf_mbx_ops_legacy;
+ extern const struct ixgbevf_info ixgbevf_x550em_a_vf_info;
++extern const struct ixgbevf_info ixgbevf_e610_vf_info;
+ 
+ extern const struct ixgbevf_info ixgbevf_82599_vf_hv_info;
+ extern const struct ixgbevf_info ixgbevf_X540_vf_hv_info;
+ extern const struct ixgbevf_info ixgbevf_X550_vf_hv_info;
+ extern const struct ixgbevf_info ixgbevf_X550EM_x_vf_hv_info;
++extern const struct ixgbevf_info ixgbevf_e610_vf_hv_info;
+ extern const struct ixgbe_mbx_operations ixgbevf_hv_mbx_ops;
+ 
+ /* needed by ethtool.c */
+--- a/drivers/net/ethernet/intel/ixgbevf/ixgbevf_main.c
++++ b/drivers/net/ethernet/intel/ixgbevf/ixgbevf_main.c
+@@ -1,5 +1,5 @@
+ // SPDX-License-Identifier: GPL-2.0
+-/* Copyright(c) 1999 - 2018 Intel Corporation. */
++/* Copyright(c) 1999 - 2024 Intel Corporation. */
+ 
+ /******************************************************************************
+  Copyright (c)2006 - 2007 Myricom, Inc. for some LRO specific code
+@@ -39,7 +39,7 @@ static const char ixgbevf_driver_string[
+ 	"Intel(R) 10 Gigabit PCI Express Virtual Function Network Driver";
+ 
+ static char ixgbevf_copyright[] =
+-	"Copyright (c) 2009 - 2018 Intel Corporation.";
++	"Copyright (c) 2009 - 2024 Intel Corporation.";
+ 
+ static const struct ixgbevf_info *ixgbevf_info_tbl[] = {
+ 	[board_82599_vf]	= &ixgbevf_82599_vf_info,
+@@ -51,6 +51,8 @@ static const struct ixgbevf_info *ixgbev
+ 	[board_X550EM_x_vf]	= &ixgbevf_X550EM_x_vf_info,
+ 	[board_X550EM_x_vf_hv]	= &ixgbevf_X550EM_x_vf_hv_info,
+ 	[board_x550em_a_vf]	= &ixgbevf_x550em_a_vf_info,
++	[board_e610_vf]         = &ixgbevf_e610_vf_info,
++	[board_e610_vf_hv]      = &ixgbevf_e610_vf_hv_info,
+ };
+ 
+ /* ixgbevf_pci_tbl - PCI Device ID Table
+@@ -71,6 +73,9 @@ static const struct pci_device_id ixgbev
+ 	{PCI_VDEVICE(INTEL, IXGBE_DEV_ID_X550EM_X_VF), board_X550EM_x_vf },
+ 	{PCI_VDEVICE(INTEL, IXGBE_DEV_ID_X550EM_X_VF_HV), board_X550EM_x_vf_hv},
+ 	{PCI_VDEVICE(INTEL, IXGBE_DEV_ID_X550EM_A_VF), board_x550em_a_vf },
++	{PCI_VDEVICE_SUB(INTEL, IXGBE_DEV_ID_E610_VF, PCI_ANY_ID,
++			 IXGBE_SUBDEV_ID_E610_VF_HV), board_e610_vf_hv},
++	{PCI_VDEVICE(INTEL, IXGBE_DEV_ID_E610_VF), board_e610_vf},
+ 	/* required last entry */
+ 	{0, }
+ };
+@@ -4686,6 +4691,9 @@ static int ixgbevf_probe(struct pci_dev
+ 	case ixgbe_mac_X540_vf:
+ 		dev_info(&pdev->dev, "Intel(R) X540 Virtual Function\n");
+ 		break;
++	case ixgbe_mac_e610_vf:
++		dev_info(&pdev->dev, "Intel(R) E610 Virtual Function\n");
++		break;
+ 	case ixgbe_mac_82599_vf:
+ 	default:
+ 		dev_info(&pdev->dev, "Intel(R) 82599 Virtual Function\n");
+--- a/drivers/net/ethernet/intel/ixgbevf/vf.c
++++ b/drivers/net/ethernet/intel/ixgbevf/vf.c
+@@ -1,5 +1,5 @@
+ // SPDX-License-Identifier: GPL-2.0
+-/* Copyright(c) 1999 - 2018 Intel Corporation. */
++/* Copyright(c) 1999 - 2024 Intel Corporation. */
+ 
+ #include "vf.h"
+ #include "ixgbevf.h"
+@@ -1076,3 +1076,13 @@ const struct ixgbevf_info ixgbevf_x550em
+ 	.mac = ixgbe_mac_x550em_a_vf,
+ 	.mac_ops = &ixgbevf_mac_ops,
+ };
++
++const struct ixgbevf_info ixgbevf_e610_vf_info = {
++	.mac                    = ixgbe_mac_e610_vf,
++	.mac_ops                = &ixgbevf_mac_ops,
 +};
 +
-+static inline void scmi_inc_count(struct scmi_debug_info *dbg, int stat)
- {
--	if (IS_ENABLED(CONFIG_ARM_SCMI_DEBUG_COUNTERS))
--		atomic_inc(&arr[stat]);
-+	if (IS_ENABLED(CONFIG_ARM_SCMI_DEBUG_COUNTERS)) {
-+		if (dbg)
-+			atomic_inc(&dbg->counters[stat]);
-+	}
- }
++const struct ixgbevf_info ixgbevf_e610_vf_hv_info = {
++	.mac            = ixgbe_mac_e610_vf,
++	.mac_ops        = &ixgbevf_hv_mac_ops,
++};
+--- a/drivers/net/ethernet/intel/ixgbevf/vf.h
++++ b/drivers/net/ethernet/intel/ixgbevf/vf.h
+@@ -1,5 +1,5 @@
+ /* SPDX-License-Identifier: GPL-2.0 */
+-/* Copyright(c) 1999 - 2018 Intel Corporation. */
++/* Copyright(c) 1999 - 2024 Intel Corporation. */
  
- static inline void scmi_dec_count(atomic_t *arr, int stat)
-diff --git a/drivers/firmware/arm_scmi/driver.c b/drivers/firmware/arm_scmi/driver.c
-index bd56a877fdfc8..56419285c0bfd 100644
---- a/drivers/firmware/arm_scmi/driver.c
-+++ b/drivers/firmware/arm_scmi/driver.c
-@@ -115,22 +115,6 @@ struct scmi_protocol_instance {
+ #ifndef __IXGBE_VF_H__
+ #define __IXGBE_VF_H__
+@@ -54,6 +54,8 @@ enum ixgbe_mac_type {
+ 	ixgbe_mac_X550_vf,
+ 	ixgbe_mac_X550EM_x_vf,
+ 	ixgbe_mac_x550em_a_vf,
++	ixgbe_mac_e610,
++	ixgbe_mac_e610_vf,
+ 	ixgbe_num_macs
+ };
  
- #define ph_to_pi(h)	container_of(h, struct scmi_protocol_instance, ph)
- 
--/**
-- * struct scmi_debug_info  - Debug common info
-- * @top_dentry: A reference to the top debugfs dentry
-- * @name: Name of this SCMI instance
-- * @type: Type of this SCMI instance
-- * @is_atomic: Flag to state if the transport of this instance is atomic
-- * @counters: An array of atomic_c's used for tracking statistics (if enabled)
-- */
--struct scmi_debug_info {
--	struct dentry *top_dentry;
--	const char *name;
--	const char *type;
--	bool is_atomic;
--	atomic_t counters[SCMI_DEBUG_COUNTERS_LAST];
--};
--
- /**
-  * struct scmi_info - Structure representing a SCMI instance
-  *
-@@ -1034,7 +1018,7 @@ scmi_xfer_command_acquire(struct scmi_chan_info *cinfo, u32 msg_hdr)
- 		spin_unlock_irqrestore(&minfo->xfer_lock, flags);
- 
- 		scmi_bad_message_trace(cinfo, msg_hdr, MSG_UNEXPECTED);
--		scmi_inc_count(info->dbg->counters, ERR_MSG_UNEXPECTED);
-+		scmi_inc_count(info->dbg, ERR_MSG_UNEXPECTED);
- 
- 		return xfer;
- 	}
-@@ -1062,7 +1046,7 @@ scmi_xfer_command_acquire(struct scmi_chan_info *cinfo, u32 msg_hdr)
- 			msg_type, xfer_id, msg_hdr, xfer->state);
- 
- 		scmi_bad_message_trace(cinfo, msg_hdr, MSG_INVALID);
--		scmi_inc_count(info->dbg->counters, ERR_MSG_INVALID);
-+		scmi_inc_count(info->dbg, ERR_MSG_INVALID);
- 
- 		/* On error the refcount incremented above has to be dropped */
- 		__scmi_xfer_put(minfo, xfer);
-@@ -1107,7 +1091,7 @@ static void scmi_handle_notification(struct scmi_chan_info *cinfo,
- 			PTR_ERR(xfer));
- 
- 		scmi_bad_message_trace(cinfo, msg_hdr, MSG_NOMEM);
--		scmi_inc_count(info->dbg->counters, ERR_MSG_NOMEM);
-+		scmi_inc_count(info->dbg, ERR_MSG_NOMEM);
- 
- 		scmi_clear_channel(info, cinfo);
- 		return;
-@@ -1123,7 +1107,7 @@ static void scmi_handle_notification(struct scmi_chan_info *cinfo,
- 	trace_scmi_msg_dump(info->id, cinfo->id, xfer->hdr.protocol_id,
- 			    xfer->hdr.id, "NOTI", xfer->hdr.seq,
- 			    xfer->hdr.status, xfer->rx.buf, xfer->rx.len);
--	scmi_inc_count(info->dbg->counters, NOTIFICATION_OK);
-+	scmi_inc_count(info->dbg, NOTIFICATION_OK);
- 
- 	scmi_notify(cinfo->handle, xfer->hdr.protocol_id,
- 		    xfer->hdr.id, xfer->rx.buf, xfer->rx.len, ts);
-@@ -1183,10 +1167,10 @@ static void scmi_handle_response(struct scmi_chan_info *cinfo,
- 	if (xfer->hdr.type == MSG_TYPE_DELAYED_RESP) {
- 		scmi_clear_channel(info, cinfo);
- 		complete(xfer->async_done);
--		scmi_inc_count(info->dbg->counters, DELAYED_RESPONSE_OK);
-+		scmi_inc_count(info->dbg, DELAYED_RESPONSE_OK);
- 	} else {
- 		complete(&xfer->done);
--		scmi_inc_count(info->dbg->counters, RESPONSE_OK);
-+		scmi_inc_count(info->dbg, RESPONSE_OK);
- 	}
- 
- 	if (IS_ENABLED(CONFIG_ARM_SCMI_RAW_MODE_SUPPORT)) {
-@@ -1296,7 +1280,7 @@ static int scmi_wait_for_reply(struct device *dev, const struct scmi_desc *desc,
- 					"timed out in resp(caller: %pS) - polling\n",
- 					(void *)_RET_IP_);
- 				ret = -ETIMEDOUT;
--				scmi_inc_count(info->dbg->counters, XFERS_RESPONSE_POLLED_TIMEOUT);
-+				scmi_inc_count(info->dbg, XFERS_RESPONSE_POLLED_TIMEOUT);
- 			}
- 		}
- 
-@@ -1321,7 +1305,7 @@ static int scmi_wait_for_reply(struct device *dev, const struct scmi_desc *desc,
- 					    "RESP" : "resp",
- 					    xfer->hdr.seq, xfer->hdr.status,
- 					    xfer->rx.buf, xfer->rx.len);
--			scmi_inc_count(info->dbg->counters, RESPONSE_POLLED_OK);
-+			scmi_inc_count(info->dbg, RESPONSE_POLLED_OK);
- 
- 			if (IS_ENABLED(CONFIG_ARM_SCMI_RAW_MODE_SUPPORT)) {
- 				scmi_raw_message_report(info->raw, xfer,
-@@ -1336,7 +1320,7 @@ static int scmi_wait_for_reply(struct device *dev, const struct scmi_desc *desc,
- 			dev_err(dev, "timed out in resp(caller: %pS)\n",
- 				(void *)_RET_IP_);
- 			ret = -ETIMEDOUT;
--			scmi_inc_count(info->dbg->counters, XFERS_RESPONSE_TIMEOUT);
-+			scmi_inc_count(info->dbg, XFERS_RESPONSE_TIMEOUT);
- 		}
- 	}
- 
-@@ -1420,13 +1404,13 @@ static int do_xfer(const struct scmi_protocol_handle *ph,
- 	    !is_transport_polling_capable(info->desc)) {
- 		dev_warn_once(dev,
- 			      "Polling mode is not supported by transport.\n");
--		scmi_inc_count(info->dbg->counters, SENT_FAIL_POLLING_UNSUPPORTED);
-+		scmi_inc_count(info->dbg, SENT_FAIL_POLLING_UNSUPPORTED);
- 		return -EINVAL;
- 	}
- 
- 	cinfo = idr_find(&info->tx_idr, pi->proto->id);
- 	if (unlikely(!cinfo)) {
--		scmi_inc_count(info->dbg->counters, SENT_FAIL_CHANNEL_NOT_FOUND);
-+		scmi_inc_count(info->dbg, SENT_FAIL_CHANNEL_NOT_FOUND);
- 		return -EINVAL;
- 	}
- 	/* True ONLY if also supported by transport. */
-@@ -1461,19 +1445,19 @@ static int do_xfer(const struct scmi_protocol_handle *ph,
- 	ret = info->desc->ops->send_message(cinfo, xfer);
- 	if (ret < 0) {
- 		dev_dbg(dev, "Failed to send message %d\n", ret);
--		scmi_inc_count(info->dbg->counters, SENT_FAIL);
-+		scmi_inc_count(info->dbg, SENT_FAIL);
- 		return ret;
- 	}
- 
- 	trace_scmi_msg_dump(info->id, cinfo->id, xfer->hdr.protocol_id,
- 			    xfer->hdr.id, "CMND", xfer->hdr.seq,
- 			    xfer->hdr.status, xfer->tx.buf, xfer->tx.len);
--	scmi_inc_count(info->dbg->counters, SENT_OK);
-+	scmi_inc_count(info->dbg, SENT_OK);
- 
- 	ret = scmi_wait_for_message_response(cinfo, xfer);
- 	if (!ret && xfer->hdr.status) {
- 		ret = scmi_to_linux_errno(xfer->hdr.status);
--		scmi_inc_count(info->dbg->counters, ERR_PROTOCOL);
-+		scmi_inc_count(info->dbg, ERR_PROTOCOL);
- 	}
- 
- 	if (info->desc->ops->mark_txdone)
--- 
-2.51.0
-
 
 
 
