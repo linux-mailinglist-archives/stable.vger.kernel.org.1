@@ -1,64 +1,58 @@
-Return-Path: <stable+bounces-191189-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191022-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21628C11387
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:43:39 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D54EC10FBB
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:28:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 94AC150408A
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:29:27 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 19B145090D3
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:21:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7A9F32E134;
-	Mon, 27 Oct 2025 19:27:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CDA12C3749;
+	Mon, 27 Oct 2025 19:20:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BTfxozn4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xGNSI2dC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95E3232D0E0;
-	Mon, 27 Oct 2025 19:27:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCFC33016F9;
+	Mon, 27 Oct 2025 19:20:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761593236; cv=none; b=nkgYrO83dn09rGxpmt9n97Hnz4LFGD+yLgyC/OC8/I5Pw2tbCfOrkUFkBGRYImwD+6ab25tPOBb29r5Mmmxkebtb8QYTMzByABe9XzG3uJx9VENC4Ba41rsV2bTPx+jL7qOR4W9bVTqqwhH15IKr/n+wLIDJvZVWfEiURh7tUFA=
+	t=1761592811; cv=none; b=Lmt9b4L5bBubbqCp/RCTOWxotXzH3LsOONeAx4jvcAmEnyFELeWJbtmwEof8g/KUdTLT0eGf9fuOtA63+nB2DKzlhOXTUD19O7ysvJJl2GfQnl5v9m9gKZSwLkH9gwyJvXqcIlYNJLVjEE0vBEnycaw+o/1tLBerLBhtVppOI1c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761593236; c=relaxed/simple;
-	bh=ckiLdYMm/pn6i5s4Jf7WwYEBg1TBt8NK5got+XaxBvA=;
+	s=arc-20240116; t=1761592811; c=relaxed/simple;
+	bh=2GVRt56IMnNCA6ZaSgfweKoQrj4yOErVnLpOUzaev6k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QXgKLPgwQ838tQcaAKrVKP/UL5+iajX8i5eybrt5n9rqWutv1Y8phnA8RayYSlHUT82zwHSVYULFiGw708zZo0S63kQvAyRrDGCbCe+ez5DqFxMmpSE/YVmFS1QuHAGCoDafRBTZAicpvMTVAGQMIPb6+EKonbnqNdciQYsVJc0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BTfxozn4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00B10C4CEF1;
-	Mon, 27 Oct 2025 19:27:16 +0000 (UTC)
+	 MIME-Version; b=XdF4TCD1VUAtJskj2yB5DYwPB0p+0Qba4dUUWaES95DsWkQ2+fjoG1DLlHFqISYmQe3wQxpncNG6/iOGGoQJ4eSrQEbi9WqZYCBORJiVyNnyWju+MiyYsK2cA56q+ZnL1yf3svSoUi2Lb1qo9HPreZNynEFFyijLfp4CfiIeJr0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xGNSI2dC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72170C4CEF1;
+	Mon, 27 Oct 2025 19:20:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761593236;
-	bh=ckiLdYMm/pn6i5s4Jf7WwYEBg1TBt8NK5got+XaxBvA=;
+	s=korg; t=1761592810;
+	bh=2GVRt56IMnNCA6ZaSgfweKoQrj4yOErVnLpOUzaev6k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BTfxozn4wgGNR75sgiPrI4ldGvSmt44lMSTsqp6VcZvRNHAWe745Zf6CofRz4qTRE
-	 aels1GxSSR+r8U6IPtAYN/T3hHf4oOD/hKx2YxRdZ+dafncnXri3OE7oWXbc7NGqm6
-	 eOxfKSjRhxYSSW0isQg2h3jjBvVKLBZnDXLdNP3o=
+	b=xGNSI2dCqbSACyzPWjJeMC2+R7YaX4VvKe+sg/BcdNDfik/UQ5f8q++g59+QkUm9/
+	 oZzPH7oOMQX2VYT/EDpe2+H9comD9UdslNpv3zf2lv+O1LNuIYG7PUe78ua0a6Ph2c
+	 6T2+1I2zLkurY4UdciTAoavKjU/8cipMYZnpqdzw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexei Starovoitov <ast@kernel.org>,
-	syzbot+8259e1d0e3ae8ed0c490@syzkaller.appspotmail.com,
-	syzbot+665739f456b28f32b23d@syzkaller.appspotmail.com,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Oscar Salvador <osalvador@suse.de>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Zi Yan <ziy@nvidia.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.17 064/184] mm: dont spin in add_stack_record when gfp flags dont allow
+	Nathan Chancellor <nathan@kernel.org>,
+	Nicolas Schier <nicolas@fjasle.eu>,
+	Borislav Petkov <bp@alien8.de>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 020/117] Unbreak make tools/* for user-space targets
 Date: Mon, 27 Oct 2025 19:35:46 +0100
-Message-ID: <20251027183516.615109663@linuxfoundation.org>
+Message-ID: <20251027183454.500247590@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
-References: <20251027183514.934710872@linuxfoundation.org>
+In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
+References: <20251027183453.919157109@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,62 +64,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexei Starovoitov <ast@kernel.org>
+From: Linus Torvalds <torvalds@linux-foundation.org>
 
-commit c83aab85e18103a6dc066b4939e2c92a02bb1b05 upstream.
+[ Upstream commit ee916dccd4df6e2fd19c3606c4735282b72f1473 ]
 
-syzbot was able to find the following path:
-  add_stack_record_to_list mm/page_owner.c:182 [inline]
-  inc_stack_record_count mm/page_owner.c:214 [inline]
-  __set_page_owner+0x2c3/0x4a0 mm/page_owner.c:333
-  set_page_owner include/linux/page_owner.h:32 [inline]
-  post_alloc_hook+0x240/0x2a0 mm/page_alloc.c:1851
-  prep_new_page mm/page_alloc.c:1859 [inline]
-  get_page_from_freelist+0x21e4/0x22c0 mm/page_alloc.c:3858
-  alloc_pages_nolock_noprof+0x94/0x120 mm/page_alloc.c:7554
+This pattern isn't very documented, and apparently not used much outside
+of 'make tools/help', but it has existed for over a decade (since commit
+ea01fa9f63ae: "tools: Connect to the kernel build system").
 
-Don't spin in add_stack_record_to_list() when it is called
-from *_nolock() context.
+However, it doesn't work very well for most cases, particularly the
+useful "tools/all" target, because it overrides the LDFLAGS value with
+an empty one.
 
-Link: https://lkml.kernel.org/r/CAADnVQK_8bNYEA7TJYgwTYR57=TTFagsvRxp62pFzS_z129eTg@mail.gmail.com
-Fixes: 97769a53f117 ("mm, bpf: Introduce try_alloc_pages() for opportunistic page allocation")
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Reported-by: syzbot+8259e1d0e3ae8ed0c490@syzkaller.appspotmail.com
-Reported-by: syzbot+665739f456b28f32b23d@syzkaller.appspotmail.com
-Acked-by: Vlastimil Babka <vbabka@suse.cz>
-Reviewed-by: Oscar Salvador <osalvador@suse.de>
-Cc: Brendan Jackman <jackmanb@google.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Zi Yan <ziy@nvidia.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+And once overridden, 'make' will then not honor the tooling makefiles
+trying to change it - which then makes any LDFLAGS use in the tooling
+directory break, typically causing odd link errors.
+
+Remove that LDFLAGS override, since it seems to be entirely historical.
+The core kernel makefiles no longer modify LDFLAGS as part of the build,
+and use kernel-specific link flags instead (eg 'KBUILD_LDFLAGS' and
+friends).
+
+This allows more of the 'make tools/*' cases to work.  I say 'more',
+because some of the tooling build rules make various other assumptions
+or have other issues, so it's still a bit hit-or-miss.  But those issues
+tend to show up with the 'make -C tools xyz' pattern too, so now it's no
+longer an issue of this particular 'tools/*' build rule being special.
+
+Acked-by: Nathan Chancellor <nathan@kernel.org>
+Cc: Nicolas Schier <nicolas@fjasle.eu>
+Cc: Borislav Petkov <bp@alien8.de>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/page_owner.c | 3 +++
- 1 file changed, 3 insertions(+)
+ Makefile | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/mm/page_owner.c b/mm/page_owner.c
-index c3ca21132c2c..589ec37c94aa 100644
---- a/mm/page_owner.c
-+++ b/mm/page_owner.c
-@@ -168,6 +168,9 @@ static void add_stack_record_to_list(struct stack_record *stack_record,
- 	unsigned long flags;
- 	struct stack *stack;
+diff --git a/Makefile b/Makefile
+index d4c679b2d4bcf..0aa9fd3ab9a1c 100644
+--- a/Makefile
++++ b/Makefile
+@@ -1372,11 +1372,11 @@ endif
  
-+	if (!gfpflags_allow_spinning(gfp_mask))
-+		return;
-+
- 	set_current_in_page_owner();
- 	stack = kmalloc(sizeof(*stack), gfp_nested_mask(gfp_mask));
- 	if (!stack) {
+ tools/: FORCE
+ 	$(Q)mkdir -p $(objtree)/tools
+-	$(Q)$(MAKE) LDFLAGS= O=$(abspath $(objtree)) subdir=tools -C $(srctree)/tools/
++	$(Q)$(MAKE) O=$(abspath $(objtree)) subdir=tools -C $(srctree)/tools/
+ 
+ tools/%: FORCE
+ 	$(Q)mkdir -p $(objtree)/tools
+-	$(Q)$(MAKE) LDFLAGS= O=$(abspath $(objtree)) subdir=tools -C $(srctree)/tools/ $*
++	$(Q)$(MAKE) O=$(abspath $(objtree)) subdir=tools -C $(srctree)/tools/ $*
+ 
+ # ---------------------------------------------------------------------------
+ # Kernel selftest
 -- 
-2.51.1
+2.51.0
 
 
 
