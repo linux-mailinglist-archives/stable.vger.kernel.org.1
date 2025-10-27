@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-191196-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190669-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22026C1138D
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:43:41 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B44B0C109BA
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:12:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 552A354587E
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:29:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F2EAA1A25849
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:08:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBE892D5C95;
-	Mon, 27 Oct 2025 19:27:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F739330B0E;
+	Mon, 27 Oct 2025 19:04:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VtoVQO7l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZgZHsaEf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 997AE1BC4E;
-	Mon, 27 Oct 2025 19:27:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A72C33033C;
+	Mon, 27 Oct 2025 19:04:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761593254; cv=none; b=bEzZnmLo3H7E8mkEWqKomHjks4nDnd/XgHKMX0fcvr+yiXwKqG6rRuh0phsFFP9qlbZgCPiy4sfvDSHu1u6WKuXV0xkR4WHUe2M5XotEoAiIaxxmkwATTD8bgSh7AzNrRhLIQ4DAOIKKA/FzwwXIiF1kw/l20VzXOwT+tfIyS6M=
+	t=1761591886; cv=none; b=nrw1yn3BQNI1Xnz/F9T3AT0hMSMtAONZ/4s4UjztZzvWRsQ/hbEts0dBi9CAEtxNi2qit/jwUjJPg3Q06AzGNasdln+MuAHUPxN4KPU0+3BcljSE77IiaOK0RLn3uJsqTVd6pP/sVTQOS4fDEGSjNQFp0PY2hmQ3cpsSfxnhTr8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761593254; c=relaxed/simple;
-	bh=danlQ7lPFU15lc+uN0OBkoIER56uirKcuxAMFfIQGfg=;
+	s=arc-20240116; t=1761591886; c=relaxed/simple;
+	bh=ERRDpxtTHdihjT9BWNwuLs72jxIglDT0G51oLU2Velg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VVPEgRh54ZUEh2zIrmE8aTynwbMxk2bpGUb0I0GkZMlcnlbGSOP1wdIbveuehtOo72xC4UN8UirGaUABZJM5ZmrGBM3X16aIdaNyM2i5kdpwhY2yH33sqb/ThXrwgmLv7V+C2y2UgDs8t45HzogKH7k7wLDcYV/PUaruz9kWAEI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VtoVQO7l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EA36C4CEF1;
-	Mon, 27 Oct 2025 19:27:34 +0000 (UTC)
+	 MIME-Version; b=Cc/yZCJ7Gw/xpFaA0w8ehRJutSVko2wC/IpqUH/NJR5WHReWHap4M4NgzP4AQH8gB4b8hyFS2tzaKu28POCOlFDwhAjVsT7/hdfSNJTlCt0m/Y8TwacetSC/ArHJImFV9MMCop7c+np6+TvaucYewAWtKRTbIVghV2bPG8lmvBE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZgZHsaEf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6B40C4CEF1;
+	Mon, 27 Oct 2025 19:04:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761593254;
-	bh=danlQ7lPFU15lc+uN0OBkoIER56uirKcuxAMFfIQGfg=;
+	s=korg; t=1761591886;
+	bh=ERRDpxtTHdihjT9BWNwuLs72jxIglDT0G51oLU2Velg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VtoVQO7lOouW1JXe0yKVcu7P93iyZY41xGmQ4dLMJGLjDDxWh+DpZlHS/O5H4My56
-	 LWtPpUfFwUZ4a2Xu18R3vQet4xxWpArQ0hKZXfuw5tskrYYY/qNDAb8XkgvBA6FjzR
-	 PaueyVA2T6RVj/3pif2kWoyjyGYxHJTzUoBtbzgE=
+	b=ZgZHsaEf29v5GGxGF5pIO7xn2XcWhBJDkuvwgEQm8CYENgsGqJ3nuSY7GPpfQ0jpz
+	 /iSNJmWBaTNGSB5vc57pFHjJXOglpRV9R/Vucj+/hnLtKJ46lUqnHpVa1Cjlq6c4f7
+	 0OfFb0VlJAGJDvrySaGOQ2oBRXHd8hfJqn8vTJVc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Gautham R. Shenoy" <gautham.shenoy@amd.com>,
-	"Mario Limonciello (AMD)" <superm1@kernel.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Takashi Sakamoto <o-takashi@sakamocchi.jp>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 034/184] cpufreq/amd-pstate: Fix a regression leading to EPP 0 after hibernate
+Subject: [PATCH 5.15 036/123] ALSA: firewire: amdtp-stream: fix enum kernel-doc warnings
 Date: Mon, 27 Oct 2025 19:35:16 +0100
-Message-ID: <20251027183515.836346861@linuxfoundation.org>
+Message-ID: <20251027183447.367767070@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
-References: <20251027183514.934710872@linuxfoundation.org>
+In-Reply-To: <20251027183446.381986645@linuxfoundation.org>
+References: <20251027183446.381986645@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello (AMD) <superm1@kernel.org>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-[ Upstream commit 85d7dda5a9f665ea579741ec873a8841f37e8943 ]
+[ Upstream commit d41f68dff783d181a8fd462e612bda0fbab7f735 ]
 
-After resuming from S4, all CPUs except the boot CPU have the wrong EPP
-hint programmed.  This is because when the CPUs were offlined the EPP value
-was reset to 0.
+Fix spelling of CIP_NO_HEADER to prevent a kernel-doc warning.
 
-This is a similar problem as fixed by
-commit ba3319e590571 ("cpufreq/amd-pstate: Fix a regression leading to EPP
-0 after resume") and the solution is also similar.  When offlining rather
-than reset the values to zero, reset them to match those chosen by the
-policy. When the CPUs are onlined again these values will be restored.
+Warning: amdtp-stream.h:57 Enum value 'CIP_NO_HEADER' not described in enum 'cip_flags'
+Warning: amdtp-stream.h:57 Excess enum value '%CIP_NO_HEADERS' description in 'cip_flags'
 
-Closes: https://community.frame.work/t/increased-power-usage-after-resuming-from-suspend-on-ryzen-7040-kernel-6-15-regression/74531/20?u=mario_limonciello
-Fixes: 608a76b65288 ("cpufreq/amd-pstate: Add support for the "Requested CPU Min frequency" BIOS option")
-Reviewed-by: Gautham R. Shenoy <gautham.shenoy@amd.com>
-Signed-off-by: Mario Limonciello (AMD) <superm1@kernel.org>
+Fixes: 3b196c394dd9f ("ALSA: firewire-lib: add no-header packet processing")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Reviewed-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/amd-pstate.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ sound/firewire/amdtp-stream.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/cpufreq/amd-pstate.c b/drivers/cpufreq/amd-pstate.c
-index b4c79fde1979b..e4f1933dd7d47 100644
---- a/drivers/cpufreq/amd-pstate.c
-+++ b/drivers/cpufreq/amd-pstate.c
-@@ -1614,7 +1614,11 @@ static int amd_pstate_cpu_offline(struct cpufreq_policy *policy)
- 	 * min_perf value across kexec reboots. If this CPU is just onlined normally after this, the
- 	 * limits, epp and desired perf will get reset to the cached values in cpudata struct
- 	 */
--	return amd_pstate_update_perf(policy, perf.bios_min_perf, 0U, 0U, 0U, false);
-+	return amd_pstate_update_perf(policy, perf.bios_min_perf,
-+				     FIELD_GET(AMD_CPPC_DES_PERF_MASK, cpudata->cppc_req_cached),
-+				     FIELD_GET(AMD_CPPC_MAX_PERF_MASK, cpudata->cppc_req_cached),
-+				     FIELD_GET(AMD_CPPC_EPP_PERF_MASK, cpudata->cppc_req_cached),
-+				     false);
- }
- 
- static int amd_pstate_suspend(struct cpufreq_policy *policy)
+diff --git a/sound/firewire/amdtp-stream.h b/sound/firewire/amdtp-stream.h
+index 011d0f0c39415..dc70256ca2203 100644
+--- a/sound/firewire/amdtp-stream.h
++++ b/sound/firewire/amdtp-stream.h
+@@ -32,7 +32,7 @@
+  *	allows 5 times as large as IEC 61883-6 defines.
+  * @CIP_HEADER_WITHOUT_EOH: Only for in-stream. CIP Header doesn't include
+  *	valid EOH.
+- * @CIP_NO_HEADERS: a lack of headers in packets
++ * @CIP_NO_HEADER: a lack of headers in packets
+  * @CIP_UNALIGHED_DBC: Only for in-stream. The value of dbc is not alighed to
+  *	the value of current SYT_INTERVAL; e.g. initial value is not zero.
+  * @CIP_UNAWARE_SYT: For outgoing packet, the value in SYT field of CIP is 0xffff.
 -- 
 2.51.0
 
