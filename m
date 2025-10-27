@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-190390-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190391-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31E42C10663
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:02:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EAB5FC10642
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:01:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B835F564E6B
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:56:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2ABD4564E8A
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:56:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A901E2F25F1;
-	Mon, 27 Oct 2025 18:52:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C671D32B997;
+	Mon, 27 Oct 2025 18:53:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2pgxvMOK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1lU9nfQq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37D8932ABE1;
-	Mon, 27 Oct 2025 18:52:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD5B232ABCE;
+	Mon, 27 Oct 2025 18:52:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591177; cv=none; b=V1wGUBrukOSa1TGD1NYUUbOKxXa/bq1ypazctsLx8JazRi7aBfTBAdCRLYSj7xsrzpmAlrN9Ro3Pcf1WQSpWxISFhEL06EzqpFCrOcZDnB0t+lPIZ/PcsR6pwCOcYpmT3/0oU/lm0fIonQCcwkIOfj/t/WAqlyhGNB8X+qnhnXM=
+	t=1761591179; cv=none; b=lyzAOxC7LCCN/OM/DEfbjjae2j6mCFj39AjnJtt5hliSht5fCbSaHXVDJ8G164iJg+aR+hNCKD4ShjFXUMKRfGTcBpydnl/ng+PS4wrVMsYy91RxfgeRTIPhzytfh2M2CDvkcf751qOwpYpEOmhjG/pUuBUMFjQlz5LT3aNjFKg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591177; c=relaxed/simple;
-	bh=qANkAEANtYvaoUrxCaDDj7zYk2ZQ2IZ4qbpB339OZd0=;
+	s=arc-20240116; t=1761591179; c=relaxed/simple;
+	bh=C0+2b4KAsMoG41W+DTZuQY6FRkwf9n8H/Qmcj8wlL4s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pTGJKt2eFVxtM06sJ7TZqaQZymPVBDELcP+MGmHZbQ0+zFA+S+ObcVrXrt5ftboINe9Fs1lE4JjjE1wbJnXgYRN85rzUIjl8yx/hovZ6GB8N1XtOSU0lJhwFg03hj56j0j+vpEpbhM9/Qa3h16Zm6oD+GUAk/rCcZWvmouV942k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2pgxvMOK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF9B1C4CEF1;
-	Mon, 27 Oct 2025 18:52:56 +0000 (UTC)
+	 MIME-Version; b=YpjsUG+F2qHzEGM/lDOTxlGG1mmNd7NyZwm6+xo+O3TUKR/TWLbX1CsSvct8SSyhFpsDIvyugTmLn2i8Zh84ibdMV0h5YEOzwmojCTQ6YaRiaTZ0X8e2v4z7NIgfotwoh9DCVxPmAU04FV0F0T34o+Z4p6vY7BD6q03WamwtZC8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1lU9nfQq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5040DC4CEF1;
+	Mon, 27 Oct 2025 18:52:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591177;
-	bh=qANkAEANtYvaoUrxCaDDj7zYk2ZQ2IZ4qbpB339OZd0=;
+	s=korg; t=1761591179;
+	bh=C0+2b4KAsMoG41W+DTZuQY6FRkwf9n8H/Qmcj8wlL4s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2pgxvMOKLJ9Xa7qIGUixFCyosSipIXQafRbT5f01U8KZ0t06WZaSnykbZ7TAb77z4
-	 bzkIQ1ySUEHAj6EWF2ScmhUeFMNKiSldsJH13y5m4AAk4cmwpL6TicKBOd9S0evvBF
-	 +JtY0GI00YYn9diZw/zFheHR0r+AsV/tG4ZrHoJo=
+	b=1lU9nfQqqYxoW2y8c+ipzQ6ouyojCuWDkBzk1nhKRtZ36EnssI6l7wwdCE+Oq8Pwy
+	 v5JpL0v8wIRR4UJLRGCKbzQPjbiYAddzAXfQZ5K+pnV4vC/QKYcu1tjKp4w2LV9KsQ
+	 7qgLe9bVN6w+ao43NuOZ2aa8VmPMWi1WFk3n0wds=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 5.10 096/332] fs: always return zero on success from replace_fd()
-Date: Mon, 27 Oct 2025 19:32:29 +0100
-Message-ID: <20251027183527.156481932@linuxfoundation.org>
+	Zhen Ni <zhen.ni@easystack.cn>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>
+Subject: [PATCH 5.10 097/332] clocksource/drivers/clps711x: Fix resource leaks in error paths
+Date: Mon, 27 Oct 2025 19:32:30 +0100
+Message-ID: <20251027183527.180470277@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
 References: <20251027183524.611456697@linuxfoundation.org>
@@ -60,53 +59,74 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+From: Zhen Ni <zhen.ni@easystack.cn>
 
-commit 708c04a5c2b78e22f56e2350de41feba74dfccd9 upstream.
+commit cd32e596f02fc981674573402c1138f616df1728 upstream.
 
-replace_fd() returns the number of the new file descriptor through the
-return value of do_dup2(). However its callers never care about the
-specific returned number. In fact the caller in receive_fd_replace() treats
-any non-zero return value as an error and therefore never calls
-__receive_sock() for most file descriptors, which is a bug.
+The current implementation of clps711x_timer_init() has multiple error
+paths that directly return without releasing the base I/O memory mapped
+via of_iomap(). Fix of_iomap leaks in error paths.
 
-To fix the bug in receive_fd_replace() and to avoid the same issue
-happening in future callers, signal success through a plain zero.
-
-Suggested-by: Al Viro <viro@zeniv.linux.org.uk>
-Link: https://lore.kernel.org/lkml/20250801220215.GS222315@ZenIV/
-Fixes: 173817151b15 ("fs: Expand __receive_fd() to accept existing fd")
-Fixes: 42eb0d54c08a ("fs: split receive_fd_replace from __receive_fd")
+Fixes: 04410efbb6bc ("clocksource/drivers/clps711x: Convert init function to return error")
+Fixes: 2a6a8e2d9004 ("clocksource/drivers/clps711x: Remove board support")
+Signed-off-by: Zhen Ni <zhen.ni@easystack.cn>
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
 Cc: stable@vger.kernel.org
-Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-Link: https://lore.kernel.org/20250805-fix-receive_fd_replace-v3-1-b72ba8b34bac@linutronix.de
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Link: https://lore.kernel.org/r/20250814123324.1516495-1-zhen.ni@easystack.cn
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/file.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/clocksource/clps711x-timer.c |   23 ++++++++++++++++-------
+ 1 file changed, 16 insertions(+), 7 deletions(-)
 
---- a/fs/file.c
-+++ b/fs/file.c
-@@ -1095,7 +1095,10 @@ int replace_fd(unsigned fd, struct file
- 	err = expand_files(files, fd);
- 	if (unlikely(err < 0))
- 		goto out_unlock;
--	return do_dup2(files, file, fd, flags);
-+	err = do_dup2(files, file, fd, flags);
-+	if (err < 0)
-+		return err;
-+	return 0;
+--- a/drivers/clocksource/clps711x-timer.c
++++ b/drivers/clocksource/clps711x-timer.c
+@@ -78,24 +78,33 @@ static int __init clps711x_timer_init(st
+ 	unsigned int irq = irq_of_parse_and_map(np, 0);
+ 	struct clk *clock = of_clk_get(np, 0);
+ 	void __iomem *base = of_iomap(np, 0);
++	int ret = 0;
  
- out_unlock:
- 	spin_unlock(&files->file_lock);
+ 	if (!base)
+ 		return -ENOMEM;
+-	if (!irq)
+-		return -EINVAL;
+-	if (IS_ERR(clock))
+-		return PTR_ERR(clock);
++	if (!irq) {
++		ret = -EINVAL;
++		goto unmap_io;
++	}
++	if (IS_ERR(clock)) {
++		ret = PTR_ERR(clock);
++		goto unmap_io;
++	}
+ 
+ 	switch (of_alias_get_id(np, "timer")) {
+ 	case CLPS711X_CLKSRC_CLOCKSOURCE:
+ 		clps711x_clksrc_init(clock, base);
+ 		break;
+ 	case CLPS711X_CLKSRC_CLOCKEVENT:
+-		return _clps711x_clkevt_init(clock, base, irq);
++		ret =  _clps711x_clkevt_init(clock, base, irq);
++		break;
+ 	default:
+-		return -EINVAL;
++		ret = -EINVAL;
++		break;
+ 	}
+ 
+-	return 0;
++unmap_io:
++	iounmap(base);
++	return ret;
+ }
+ TIMER_OF_DECLARE(clps711x, "cirrus,ep7209-timer", clps711x_timer_init);
 
 
 
