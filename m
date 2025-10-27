@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-190850-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191213-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A530C10A93
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:14:56 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 792FCC111C2
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:35:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id D595A351FF9
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:14:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 146BD5827AC
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:30:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D80DE325481;
-	Mon, 27 Oct 2025 19:12:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F1D532E13F;
+	Mon, 27 Oct 2025 19:28:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2LPvWgHY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YvhExuMM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94C7221C160;
-	Mon, 27 Oct 2025 19:12:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF1CA32D440;
+	Mon, 27 Oct 2025 19:28:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592363; cv=none; b=qQzTochOpcArEsMcEM4aaqEYpdQj/CXa7v5XTSpdxfxL4QNH5lKrkLrnCralsSuXJ8LmymQ9qQ4pX2ujGEgn5AzXuQ/MyUjqLymNMuu7Z7BiHEJzJLn3+TUfxKFvocE9QlAj4ulcBtvbkl2aE92mS2psWGqljXj/TvNAAeXftKc=
+	t=1761593299; cv=none; b=haS+X0yUIKpt9Yn2Sv/7ql0h3Vc92sMRK7M6qqdqjkHPe1EV45Q5txb/qgRp9o3Q5r9vbAv+DD5WrE8mgg5mjbtFDdOQGdrfNgwUnknwZw6UFBEnBqxjfhVQSp0PYu6RMmOyeLEcNRVnNf+FKl6Os/qEn+XbPzopD5/gkMoV2M4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592363; c=relaxed/simple;
-	bh=c7HBUly4ZCCmAR6xDY2DTJ3GbQLRzaPy59+wk2EM8Rc=;
+	s=arc-20240116; t=1761593299; c=relaxed/simple;
+	bh=EfbbByxmdnfhrsECSHo36lYmE6aPWNzjPFwItyE6Vtc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aUzHWFSSCk1sPfdDy5Kiy5FLSprsIx30/wN9bFFM1DSZbW663u30+/SCBjckcAwhb312SeAIJM8m+sci/PUwfODrT9gzl5/KJps05PXUmGmtLJCsUE7DE2eQxIfK4kxH3JP/PxxKSGlixx8CNDP6JMSzS+jQV9rHG7K37VMSdAw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2LPvWgHY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A490FC4CEF1;
-	Mon, 27 Oct 2025 19:12:42 +0000 (UTC)
+	 MIME-Version; b=jz2hvLzkkVGaghaXM3jNVE4U/m2ddJKKWxI3EDvxL8g6uZz0uLU+3ZFY1UPM+9oVhtaItoFdiCN2BZAxvQm+1FGLsvj5sQP9hE1i+F8fjqq8YaY5sWiXf8lBC24V7UqixZgvf0GqJfRVPqXBoCYDv7Vy42HcY/JZqJ3Oj36XShk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YvhExuMM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A8E2C4CEF1;
+	Mon, 27 Oct 2025 19:28:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592363;
-	bh=c7HBUly4ZCCmAR6xDY2DTJ3GbQLRzaPy59+wk2EM8Rc=;
+	s=korg; t=1761593298;
+	bh=EfbbByxmdnfhrsECSHo36lYmE6aPWNzjPFwItyE6Vtc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2LPvWgHYuUfl9vjfzOGourZJZcOqWc13i4YM6Csful1zyp+oRaFmU1KCysExarAQy
-	 EBs9iYwyrbfYBNbRIGrMO9YL+1cKBeP12OdPyHDZrdeMQYXSBa5xsXaRcyUoepgaQa
-	 0ZGGmsqjJROXOB3BYZlUgZer4AkWgPbjzyRk97sc=
+	b=YvhExuMM6Xp8V4t9u2sVewVL1leZr/B1lEFdC8IYqmfsUQhUr5qPDsw+ytNIZKGh4
+	 q7PtSBuHAASlDG4J+u32E3Jb2D9FimOBssX6XoS++52JUNKHBm5yw5+GZy2iP4J4Cu
+	 rrKap+JQrJMhoOZ9NR45XQzh3V6tAMhexUBUUp24=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+10e35716f8e4929681fa@syzkaller.appspotmail.com,
-	mhal@rbox.co,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.1 093/157] vsock: fix lock inversion in vsock_assign_transport()
+	Filipe Manana <fdmanana@suse.com>,
+	Ting-Chang Hou <tchou@synology.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.17 072/184] btrfs: send: fix duplicated rmdir operations when using extrefs
 Date: Mon, 27 Oct 2025 19:35:54 +0100
-Message-ID: <20251027183503.762555740@linuxfoundation.org>
+Message-ID: <20251027183516.833443499@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
-References: <20251027183501.227243846@linuxfoundation.org>
+In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
+References: <20251027183514.934710872@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,100 +62,226 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefano Garzarella <sgarzare@redhat.com>
+From: Ting-Chang Hou <tchou@synology.com>
 
-commit f7c877e7535260cc7a21484c994e8ce7e8cb6780 upstream.
+commit 1fabe43b4e1a97597ec5d5ffcd2b7cf96e654b8f upstream.
 
-Syzbot reported a potential lock inversion deadlock between
-vsock_register_mutex and sk_lock-AF_VSOCK when vsock_linger() is called.
+Commit 29d6d30f5c8a ("Btrfs: send, don't send rmdir for same target
+multiple times") has fixed an issue that a send stream contained a rmdir
+operation for the same directory multiple times. After that fix we keep
+track of the last directory for which we sent a rmdir operation and
+compare with it before sending a rmdir for the parent inode of a deleted
+hardlink we are processing. But there is still a corner case that in
+between rmdir dir operations for the same inode we find deleted hardlinks
+for other parent inodes, so tracking just the last inode for which we sent
+a rmdir operation is not enough.
 
-The issue was introduced by commit 687aa0c5581b ("vsock: Fix
-transport_* TOCTOU") which added vsock_register_mutex locking in
-vsock_assign_transport() around the transport->release() call, that can
-call vsock_linger(). vsock_assign_transport() can be called with sk_lock
-held. vsock_linger() calls sk_wait_event() that temporarily releases and
-re-acquires sk_lock. During this window, if another thread hold
-vsock_register_mutex while trying to acquire sk_lock, a circular
-dependency is created.
+Hardlinks of a file in the same directory are stored in the same INODE_REF
+item, but if the number of hardlinks is too large and can not fit in a
+leaf, we use INODE_EXTREF items to store them. The key of an INODE_EXTREF
+item is (inode_id, INODE_EXTREF, hash[name, parent ino]), so between two
+hardlinks for the same parent directory, we can find others for other
+parent directories. For example for the reproducer below we get the
+following (from a btrfs inspect-internal dump-tree output):
 
-Fix this by releasing vsock_register_mutex before calling
-transport->release() and vsock_deassign_transport(). This is safe
-because we don't need to hold vsock_register_mutex while releasing the
-old transport, and we ensure the new transport won't disappear by
-obtaining a module reference first via try_module_get().
+    item 0 key (259 INODE_EXTREF 2309449) itemoff 16257 itemsize 26
+            index 6925 parent 257 namelen 8 name: foo.6923
+    item 1 key (259 INODE_EXTREF 2311350) itemoff 16231 itemsize 26
+            index 6588 parent 258 namelen 8 name: foo.6587
+    item 2 key (259 INODE_EXTREF 2457395) itemoff 16205 itemsize 26
+            index 6611 parent 257 namelen 8 name: foo.6609
+    (...)
 
-Reported-by: syzbot+10e35716f8e4929681fa@syzkaller.appspotmail.com
-Tested-by: syzbot+10e35716f8e4929681fa@syzkaller.appspotmail.com
-Fixes: 687aa0c5581b ("vsock: Fix transport_* TOCTOU")
-Cc: mhal@rbox.co
-Cc: stable@vger.kernel.org
-Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
-Link: https://patch.msgid.link/20251021121718.137668-1-sgarzare@redhat.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+So tracking the last directory's inode number does not work in this case
+since we process a link for parent inode 257, then for 258 and then back
+again for 257, and that second time we process a deleted link for 257 we
+think we have not yet sent a rmdir operation.
+
+Fix this by using a rbtree to keep track of all the directories for which
+we have already sent rmdir operations, and add those directories to the
+'check_dirs' ref list in process_recorded_refs() only if the directory is
+not yet in the rbtree, otherwise skip it since it means we have already
+sent a rmdir operation for that directory.
+
+The following test script reproduces the problem:
+
+  $ cat test.sh
+  #!/bin/bash
+
+  DEV=/dev/sdi
+  MNT=/mnt/sdi
+
+  mkfs.btrfs -f $DEV
+  mount $DEV $MNT
+
+  mkdir $MNT/a $MNT/b
+
+  echo 123 > $MNT/a/foo
+  for ((i = 1; i <= 1000; i++)); do
+     ln $MNT/a/foo $MNT/a/foo.$i
+     ln $MNT/a/foo $MNT/b/foo.$i
+  done
+
+  btrfs subvolume snapshot -r $MNT $MNT/snap1
+  btrfs send $MNT/snap1 -f /tmp/base.send
+
+  rm -r $MNT/a $MNT/b
+
+  btrfs subvolume snapshot -r $MNT $MNT/snap2
+  btrfs send -p $MNT/snap1 $MNT/snap2 -f /tmp/incremental.send
+
+  umount $MNT
+  mkfs.btrfs -f $DEV
+  mount $DEV $MNT
+
+  btrfs receive $MNT -f /tmp/base.send
+  btrfs receive $MNT -f /tmp/incremental.send
+
+  rm -f /tmp/base.send /tmp/incremental.send
+
+  umount $MNT
+
+When running it, it fails like this:
+
+  $ ./test.sh
+  (...)
+  At subvol snap1
+  At snapshot snap2
+  ERROR: rmdir o257-9-0 failed: No such file or directory
+
+CC: <stable@vger.kernel.org>
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Ting-Chang Hou <tchou@synology.com>
+[ Updated changelog ]
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/vmw_vsock/af_vsock.c |   38 +++++++++++++++++++-------------------
- 1 file changed, 19 insertions(+), 19 deletions(-)
+ fs/btrfs/send.c |   56 ++++++++++++++++++++++++++++++++++++++++++++++++--------
+ 1 file changed, 48 insertions(+), 8 deletions(-)
 
---- a/net/vmw_vsock/af_vsock.c
-+++ b/net/vmw_vsock/af_vsock.c
-@@ -483,12 +483,26 @@ int vsock_assign_transport(struct vsock_
- 		goto err;
- 	}
+--- a/fs/btrfs/send.c
++++ b/fs/btrfs/send.c
+@@ -4148,6 +4148,48 @@ out:
+ 	return ret;
+ }
  
--	if (vsk->transport) {
--		if (vsk->transport == new_transport) {
--			ret = 0;
--			goto err;
--		}
-+	if (vsk->transport && vsk->transport == new_transport) {
-+		ret = 0;
-+		goto err;
-+	}
++static int rbtree_check_dir_ref_comp(const void *k, const struct rb_node *node)
++{
++	const struct recorded_ref *data = k;
++	const struct recorded_ref *ref = rb_entry(node, struct recorded_ref, node);
 +
-+	/* We increase the module refcnt to prevent the transport unloading
-+	 * while there are open sockets assigned to it.
-+	 */
-+	if (!new_transport || !try_module_get(new_transport->module)) {
-+		ret = -ENODEV;
-+		goto err;
-+	}
++	if (data->dir > ref->dir)
++		return 1;
++	if (data->dir < ref->dir)
++		return -1;
++	if (data->dir_gen > ref->dir_gen)
++		return 1;
++	if (data->dir_gen < ref->dir_gen)
++		return -1;
++	return 0;
++}
 +
-+	/* It's safe to release the mutex after a successful try_module_get().
-+	 * Whichever transport `new_transport` points at, it won't go away until
-+	 * the last module_put() below or in vsock_deassign_transport().
-+	 */
-+	mutex_unlock(&vsock_register_mutex);
- 
-+	if (vsk->transport) {
- 		/* transport->release() must be called with sock lock acquired.
- 		 * This path can only be taken during vsock_connect(), where we
- 		 * have already held the sock lock. In the other cases, this
-@@ -508,20 +522,6 @@ int vsock_assign_transport(struct vsock_
- 		vsk->peer_shutdown = 0;
++static bool rbtree_check_dir_ref_less(struct rb_node *node, const struct rb_node *parent)
++{
++	const struct recorded_ref *entry = rb_entry(node, struct recorded_ref, node);
++
++	return rbtree_check_dir_ref_comp(entry, parent) < 0;
++}
++
++static int record_check_dir_ref_in_tree(struct rb_root *root,
++			struct recorded_ref *ref, struct list_head *list)
++{
++	struct recorded_ref *tmp_ref;
++	int ret;
++
++	if (rb_find(ref, root, rbtree_check_dir_ref_comp))
++		return 0;
++
++	ret = dup_ref(ref, list);
++	if (ret < 0)
++		return ret;
++
++	tmp_ref = list_last_entry(list, struct recorded_ref, list);
++	rb_add(&tmp_ref->node, root, rbtree_check_dir_ref_less);
++	tmp_ref->root = root;
++	return 0;
++}
++
+ static int rename_current_inode(struct send_ctx *sctx,
+ 				struct fs_path *current_path,
+ 				struct fs_path *new_path)
+@@ -4175,11 +4217,11 @@ static int process_recorded_refs(struct
+ 	struct recorded_ref *cur;
+ 	struct recorded_ref *cur2;
+ 	LIST_HEAD(check_dirs);
++	struct rb_root rbtree_check_dirs = RB_ROOT;
+ 	struct fs_path *valid_path = NULL;
+ 	u64 ow_inode = 0;
+ 	u64 ow_gen;
+ 	u64 ow_mode;
+-	u64 last_dir_ino_rm = 0;
+ 	bool did_overwrite = false;
+ 	bool is_orphan = false;
+ 	bool can_rename = true;
+@@ -4483,7 +4525,7 @@ static int process_recorded_refs(struct
+ 					goto out;
+ 			}
+ 		}
+-		ret = dup_ref(cur, &check_dirs);
++		ret = record_check_dir_ref_in_tree(&rbtree_check_dirs, cur, &check_dirs);
+ 		if (ret < 0)
+ 			goto out;
  	}
+@@ -4511,7 +4553,7 @@ static int process_recorded_refs(struct
+ 		}
  
--	/* We increase the module refcnt to prevent the transport unloading
--	 * while there are open sockets assigned to it.
--	 */
--	if (!new_transport || !try_module_get(new_transport->module)) {
--		ret = -ENODEV;
--		goto err;
--	}
--
--	/* It's safe to release the mutex after a successful try_module_get().
--	 * Whichever transport `new_transport` points at, it won't go away until
--	 * the last module_put() below or in vsock_deassign_transport().
--	 */
--	mutex_unlock(&vsock_register_mutex);
--
- 	if (sk->sk_type == SOCK_SEQPACKET) {
- 		if (!new_transport->seqpacket_allow ||
- 		    !new_transport->seqpacket_allow(remote_cid)) {
+ 		list_for_each_entry(cur, &sctx->deleted_refs, list) {
+-			ret = dup_ref(cur, &check_dirs);
++			ret = record_check_dir_ref_in_tree(&rbtree_check_dirs, cur, &check_dirs);
+ 			if (ret < 0)
+ 				goto out;
+ 		}
+@@ -4521,7 +4563,7 @@ static int process_recorded_refs(struct
+ 		 * We have a moved dir. Add the old parent to check_dirs
+ 		 */
+ 		cur = list_first_entry(&sctx->deleted_refs, struct recorded_ref, list);
+-		ret = dup_ref(cur, &check_dirs);
++		ret = record_check_dir_ref_in_tree(&rbtree_check_dirs, cur, &check_dirs);
+ 		if (ret < 0)
+ 			goto out;
+ 	} else if (!S_ISDIR(sctx->cur_inode_mode)) {
+@@ -4555,7 +4597,7 @@ static int process_recorded_refs(struct
+ 				if (is_current_inode_path(sctx, cur->full_path))
+ 					fs_path_reset(&sctx->cur_inode_path);
+ 			}
+-			ret = dup_ref(cur, &check_dirs);
++			ret = record_check_dir_ref_in_tree(&rbtree_check_dirs, cur, &check_dirs);
+ 			if (ret < 0)
+ 				goto out;
+ 		}
+@@ -4598,8 +4640,7 @@ static int process_recorded_refs(struct
+ 			ret = cache_dir_utimes(sctx, cur->dir, cur->dir_gen);
+ 			if (ret < 0)
+ 				goto out;
+-		} else if (ret == inode_state_did_delete &&
+-			   cur->dir != last_dir_ino_rm) {
++		} else if (ret == inode_state_did_delete) {
+ 			ret = can_rmdir(sctx, cur->dir, cur->dir_gen);
+ 			if (ret < 0)
+ 				goto out;
+@@ -4611,7 +4652,6 @@ static int process_recorded_refs(struct
+ 				ret = send_rmdir(sctx, valid_path);
+ 				if (ret < 0)
+ 					goto out;
+-				last_dir_ino_rm = cur->dir;
+ 			}
+ 		}
+ 	}
 
 
 
