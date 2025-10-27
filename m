@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-190301-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190275-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EDE2C1051E
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:57:46 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9102EC103AA
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:52:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A72F156285A
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:53:24 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 3C66A352E99
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:52:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06532324B28;
-	Mon, 27 Oct 2025 18:49:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 712792D8368;
+	Mon, 27 Oct 2025 18:47:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RhA4PRct"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0GypGU9y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B36A0324B24;
-	Mon, 27 Oct 2025 18:49:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2961832B9A5;
+	Mon, 27 Oct 2025 18:47:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761590943; cv=none; b=D3UMPkjHh0BZqbOV9W2qCqZt6W0dY8Mt8PpHUw9zBtkNUH67fGHO7fm5k5s0Dvp0Z+TafhcEBH7JI9gqE+IF5nifrVpotV+u+W7QhHnMKzWNu7F86ifiuTydwWHcDQi/KUXWHTD2rcLJhqpEp37H5tpZUtMgW5C8SscHZCj+4Ag=
+	t=1761590872; cv=none; b=PHXckI6izJzJ2SlboUq/wRjtimi4rBoI2OFHLu9i6SM9XPuRX6RX0SAFKH+UW4G4GXOa+EG9lEj5DUCw/OPlHgu/asrlsBUgHqo8jchqXORtu9r3H9VFngpPuToO+IqKLcsPC+bWxXFTsyI3qo79csRPe+hDru+pZ9vDuTwthqQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761590943; c=relaxed/simple;
-	bh=ty0ZMLeGslOetsCRqU9ydELgFOnxvO3h+Q+oz3BYSzE=;
+	s=arc-20240116; t=1761590872; c=relaxed/simple;
+	bh=/0n0zhCqVx2lZj8ZXK2DG7NERu0YIFRqkxNhAwSlPV8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UgXIRoJoA58dK+W3RnKIrFqwbaGb7+JMCugOjaoRnOVujel+zxtlHGR8C4Iv6t+lreO/M7bktEjpa0drijTwAYDPpuuTXWIFqWIXsbqN3erFcd3H44PfuINU6GimDmnfZZW7hbke9RPZ0PrxuxjpD2zEbjPudsgC/u5sxTSd3Jo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RhA4PRct; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42E3BC4CEF1;
-	Mon, 27 Oct 2025 18:49:03 +0000 (UTC)
+	 MIME-Version:Content-Type; b=onPVaIOdeB5EqcsIHshyx0rtmh4K7A8yxs61lfN8HY6wKwNOeG7uq1xbm218oKEGc+7oIusAeeeSTlBKuO2lPumovt6Cii1ym3qtSab1FZES58U0LUvE/JuFJe7cUX2dT31RO06yJAKJ+6MIO25sEMSpmGJTtrclh5Oaf+5vOIk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0GypGU9y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B21DC4CEF1;
+	Mon, 27 Oct 2025 18:47:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761590943;
-	bh=ty0ZMLeGslOetsCRqU9ydELgFOnxvO3h+Q+oz3BYSzE=;
+	s=korg; t=1761590871;
+	bh=/0n0zhCqVx2lZj8ZXK2DG7NERu0YIFRqkxNhAwSlPV8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RhA4PRct3p5FFofpjebm6ugvxMsjLKrGiAHtgv5rfIgp6CAEzBQhBTmG0XcLg6oTn
-	 0CWB5XKdyA6KamLpAsRniyhyNmXqv4vwTfAi5Blg0vPq78UXRX69+2zytoZeKdN52P
-	 tG8fkKBfkgdcbBCEHv2OwO7xuCUpKbTrtvw1ybls=
+	b=0GypGU9y2INCP8Tyxxarf+ZmuNVyaj1fOo9x0EbWUo22lYkgS23jNKUrzVBiWUMD5
+	 m5ozkY3uKFWbxfX1tS98R2J4dUSBGegSqbQFa6xGDPAJXjXEahhh1nKtrfe+nCCRjR
+	 IAVvgW9BRr1WUY9k9PTV3oJBRvjNCuzSfgVBPfHk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Pecio <michal.pecio@gmail.com>,
-	Simon Horman <horms@kernel.org>,
+	Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.4 198/224] net: usb: rtl8150: Fix frame padding
-Date: Mon, 27 Oct 2025 19:35:44 +0100
-Message-ID: <20251027183514.106607164@linuxfoundation.org>
+Subject: [PATCH 5.4 199/224] net: ravb: Ensure memory write completes before ringing TX doorbell
+Date: Mon, 27 Oct 2025 19:35:45 +0100
+Message-ID: <20251027183514.129652788@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251027183508.963233542@linuxfoundation.org>
 References: <20251027183508.963233542@linuxfoundation.org>
@@ -60,61 +61,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Pecio <michal.pecio@gmail.com>
+From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
 
-commit 75cea9860aa6b2350d90a8d78fed114d27c7eca2 upstream.
+commit 706136c5723626fcde8dd8f598a4dcd251e24927 upstream.
 
-TX frames aren't padded and unknown memory is sent into the ether.
+Add a final dma_wmb() barrier before triggering the transmit request
+(TCCR_TSRQ) to ensure all descriptor and buffer writes are visible to
+the DMA engine.
 
-Theoretically, it isn't even guaranteed that the extra memory exists
-and can be sent out, which could cause further problems. In practice,
-I found that plenty of tailroom exists in the skb itself (in my test
-with ping at least) and skb_padto() easily succeeds, so use it here.
+According to the hardware manual, a read-back operation is required
+before writing to the doorbell register to guarantee completion of
+previous writes. Instead of performing a dummy read, a dma_wmb() is
+used to both enforce the same ordering semantics on the CPU side and
+also to ensure completion of writes.
 
-In the event of -ENOMEM drop the frame like other drivers do.
-
-The use of one more padding byte instead of a USB zero-length packet
-is retained to avoid regression. I have a dodgy Etron xHCI controller
-which doesn't seem to support sending ZLPs at all.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Fixes: c156633f1353 ("Renesas Ethernet AVB driver proper")
 Cc: stable@vger.kernel.org
-Signed-off-by: Michal Pecio <michal.pecio@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20251014203528.3f9783c4.michal.pecio@gmail.com
+Co-developed-by: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
+Signed-off-by: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
+Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Reviewed-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+Link: https://patch.msgid.link/20251017151830.171062-5-prabhakar.mahadev-lad.rj@bp.renesas.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/usb/rtl8150.c |   11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/renesas/ravb_main.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/drivers/net/usb/rtl8150.c
-+++ b/drivers/net/usb/rtl8150.c
-@@ -705,9 +705,16 @@ static netdev_tx_t rtl8150_start_xmit(st
- 	rtl8150_t *dev = netdev_priv(netdev);
- 	int count, res;
- 
-+	/* pad the frame and ensure terminating USB packet, datasheet 9.2.3 */
-+	count = max(skb->len, ETH_ZLEN);
-+	if (count % 64 == 0)
-+		count++;
-+	if (skb_padto(skb, count)) {
-+		netdev->stats.tx_dropped++;
-+		return NETDEV_TX_OK;
-+	}
+--- a/drivers/net/ethernet/renesas/ravb_main.c
++++ b/drivers/net/ethernet/renesas/ravb_main.c
+@@ -1602,6 +1602,14 @@ static netdev_tx_t ravb_start_xmit(struc
+ 	} else {
+ 		desc->die_dt = DT_FSINGLE;
+ 	}
 +
- 	netif_stop_queue(netdev);
--	count = (skb->len < 60) ? 60 : skb->len;
--	count = (count & 0x3f) ? count : count + 1;
- 	dev->tx_skb = skb;
- 	usb_fill_bulk_urb(dev->tx_urb, dev->udev, usb_sndbulkpipe(dev->udev, 2),
- 		      skb->data, count, write_bulk_callback, dev);
++	/* Before ringing the doorbell we need to make sure that the latest
++	 * writes have been committed to memory, otherwise it could delay
++	 * things until the doorbell is rang again.
++	 * This is in replacement of the read operation mentioned in the HW
++	 * manuals.
++	 */
++	dma_wmb();
+ 	ravb_modify(ndev, TCCR, TCCR_TSRQ0 << q, TCCR_TSRQ0 << q);
+ 
+ 	priv->cur_tx[q] += num_tx_desc;
 
 
 
