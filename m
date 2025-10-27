@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-190402-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190404-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id A688EC104C7
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:56:37 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 498BDC104F7
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:57:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 529773517E3
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:56:37 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7E4E84FEF0F
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:56:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64B0832BF25;
-	Mon, 27 Oct 2025 18:53:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 468B331D742;
+	Mon, 27 Oct 2025 18:53:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IQ6ZBwue"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KyeZS27M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E9CD2D8DB9
-	for <stable@vger.kernel.org>; Mon, 27 Oct 2025 18:53:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBFE332AAC5
+	for <stable@vger.kernel.org>; Mon, 27 Oct 2025 18:53:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591205; cv=none; b=uHibkU/g2Nxr+7LJU4lU8BWWj+IifLOimnHs4eDUE0mhb5CEzvUgzOQ7zq73MIoGv6YgSPQMkcLvfZY8rnq3z+HFwQPuLCreft743NjmU31CDnNfREfCAWaqd0rih/hG1R8WlCsoy0bni3pmdRiQhIoMmTo0B7yL10pJWrG0h6A=
+	t=1761591206; cv=none; b=Seb2bl16DODpN13krALqZvISfMkv6I2aeY7/yfocuLfHXGG2CdpnhAvTvFaWIw1Gnu85NdO81zGHDhFdNx7KvwWtpjbatD7jFZLrFpoqQN6+ni+E+UodGnzBdv+Weze8l1M05gbpeXMVPQoYGY42myyUaRb7IgLk8ll2mTT6qQY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591205; c=relaxed/simple;
-	bh=InfPhsnOJHLzogaV3xy72HAtQniSF/OBdsAQ/1y5cY0=;
+	s=arc-20240116; t=1761591206; c=relaxed/simple;
+	bh=T9mCKGaPJasIrMyH+Q4KKwEZ6sae9x4LV40CiuC7BYQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cYTVvCrUSuuPirpSuihty4Ve6xONJEIIKqWeEsLkXL+65Z7TqhPwHmL8rPM0pSvWvXkRL9JsmXgoMkUFby3/xGDxUJV3AymXJbug6vpZ1cq9y66/xS3unSPayhopFNlNTc4u3bwdxvEUjKlx19DmyViLTgmiVDt+IRPGS4NA+MQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IQ6ZBwue; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 161DAC116B1;
-	Mon, 27 Oct 2025 18:53:23 +0000 (UTC)
+	 MIME-Version; b=J4WXd21DuIbSd8LdbQ+hO2NZLbCETcX/LwWLsBFOwLN9JVYlLarsEW9ug9FyZHmFX1u6ClsPviN2h2BZqbAlyBHJvKysTt789vI5LqTwNjJO7JnNkoDuMZ0p1oPq4VspfoQj9euoRFYT+9k7QHihHw45VldMbOlNMtOqTCN2Chw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KyeZS27M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01D1AC113D0;
+	Mon, 27 Oct 2025 18:53:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761591204;
-	bh=InfPhsnOJHLzogaV3xy72HAtQniSF/OBdsAQ/1y5cY0=;
+	s=k20201202; t=1761591205;
+	bh=T9mCKGaPJasIrMyH+Q4KKwEZ6sae9x4LV40CiuC7BYQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IQ6ZBwue7Z/nyM0zpAVEhtUJ2V65ik+0nl6257EFQcOr6EyAD+A3bxJbStXdlLW9q
-	 DxZLHmkXcUxAHkDXNfxPIZLFAZrTgvKKVydMWC9x40RhM8juudvGtPmb8y+pvI6kGQ
-	 H1eO2lAjsT21mCF7k0NR2PoORjRQ+bTZq8zNoZzm4qHCgA7txMvH7vtrq1bVCguMmG
-	 tLu3crvV67RJV4PPfImK3x0SXdLVHgSoOlHo3MjL4H/L0MtNiCggFdir40rB4yABjr
-	 YmfTfE8Fj/FN8bsg8zbVu+bxwk6l8lLtHVmwc5feqmFkdiOnNzoKQR6wZNtV+NPDyu
-	 Jp1RWoaElwXnw==
+	b=KyeZS27MUrgs5FT61asLekKWnTKtWIbDr1R1CjeeMYp06tcSefcymA8CqZo7b/xfi
+	 cu+PO+UwbZjZoWU0JVLnwsoEy3U3zn0+pP0wxKsl4Q5nRHDfHp7dXh9LcdlKRrjVnt
+	 keDeDE2rOyoHnpVm+pDSviQM/JfXjkJjjps+0CwLmSfn64GbOXE3PR0bqIj/ie73xe
+	 RLKYWinrXrqtiHFYZ3QMsdXfjaFFHvxdNtGgD0wuHV45hF4i4SSN/nyFdNsCILLsJm
+	 VnNAO5dW7x0ishynuXGj2JjMmjoN4uncBCEVYbwiMYvr60VWCKqBjQJlJU0fjlurs+
+	 pm2mrZBAOWveg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y 2/4] serial: sc16is7xx: reorder code to remove prototype declarations
-Date: Mon, 27 Oct 2025 14:53:19 -0400
-Message-ID: <20251027185321.644316-2-sashal@kernel.org>
+Subject: [PATCH 6.1.y 3/4] serial: sc16is7xx: refactor EFR lock
+Date: Mon, 27 Oct 2025 14:53:20 -0400
+Message-ID: <20251027185321.644316-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251027185321.644316-1-sashal@kernel.org>
 References: <2025102739-fable-reroute-e6a6@gregkh>
@@ -64,126 +63,193 @@ Content-Transfer-Encoding: 8bit
 
 From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
 
-[ Upstream commit 2de8a1b46756b5a79d8447f99afdfe49e914225a ]
+[ Upstream commit 0c84bea0cabc4e2b98a3de88eeb4ff798931f056 ]
 
-Move/reorder some functions to remove sc16is7xx_ier_set() and
-sc16is7xx_stop_tx() prototypes declarations.
+Move common code for EFR lock/unlock of mutex into functions for code reuse
+and clarity.
 
-No functional change.
+With the addition of old_lcr, move irda_mode within struct sc16is7xx_one to
+reduce memory usage:
+    Before: /* size: 752, cachelines: 12, members: 10 */
+    After:  /* size: 744, cachelines: 12, members: 10 */
 
-sc16is7xx_ier_set() was introduced in
-commit cc4c1d05eb10 ("sc16is7xx: Properly resume TX after stop").
-
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Link: https://lore.kernel.org/r/20231221231823.2327894-16-hugo@hugovil.com
+Link: https://lore.kernel.org/r/20231221231823.2327894-17-hugo@hugovil.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Stable-dep-of: 1c05bf6c0262 ("serial: sc16is7xx: remove useless enable of enhanced features")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/sc16is7xx.c | 75 ++++++++++++++++------------------
- 1 file changed, 36 insertions(+), 39 deletions(-)
+ drivers/tty/serial/sc16is7xx.c | 106 ++++++++++++++++++---------------
+ 1 file changed, 57 insertions(+), 49 deletions(-)
 
 diff --git a/drivers/tty/serial/sc16is7xx.c b/drivers/tty/serial/sc16is7xx.c
-index a187ae217fc4c..f87fcde9a3d49 100644
+index f87fcde9a3d49..c0c2c1450e88d 100644
 --- a/drivers/tty/serial/sc16is7xx.c
 +++ b/drivers/tty/serial/sc16is7xx.c
-@@ -355,9 +355,6 @@ static struct uart_driver sc16is7xx_uart = {
- 	.nr		= SC16IS7XX_MAX_DEVS,
+@@ -329,8 +329,9 @@ struct sc16is7xx_one {
+ 	struct kthread_work		reg_work;
+ 	struct kthread_delayed_work	ms_work;
+ 	struct sc16is7xx_one_config	config;
+-	bool				irda_mode;
+ 	unsigned int			old_mctrl;
++	u8				old_lcr; /* Value before EFR access. */
++	bool				irda_mode;
  };
  
--static void sc16is7xx_ier_set(struct uart_port *port, u8 bit);
--static void sc16is7xx_stop_tx(struct uart_port *port);
--
- #define to_sc16is7xx_one(p,e)	((container_of((p), struct sc16is7xx_one, e)))
- 
- static u8 sc16is7xx_port_read(struct uart_port *port, u8 reg)
-@@ -415,6 +412,42 @@ static void sc16is7xx_power(struct uart_port *port, int on)
+ struct sc16is7xx_port {
+@@ -412,6 +413,49 @@ static void sc16is7xx_power(struct uart_port *port, int on)
  			      on ? 0 : SC16IS7XX_IER_SLEEP_BIT);
  }
  
-+static void sc16is7xx_ier_clear(struct uart_port *port, u8 bit)
++/*
++ * In an amazing feat of design, the Enhanced Features Register (EFR)
++ * shares the address of the Interrupt Identification Register (IIR).
++ * Access to EFR is switched on by writing a magic value (0xbf) to the
++ * Line Control Register (LCR). Any interrupt firing during this time will
++ * see the EFR where it expects the IIR to be, leading to
++ * "Unexpected interrupt" messages.
++ *
++ * Prevent this possibility by claiming a mutex while accessing the EFR,
++ * and claiming the same mutex from within the interrupt handler. This is
++ * similar to disabling the interrupt, but that doesn't work because the
++ * bulk of the interrupt processing is run as a workqueue job in thread
++ * context.
++ */
++static void sc16is7xx_efr_lock(struct uart_port *port)
 +{
-+	struct sc16is7xx_port *s = dev_get_drvdata(port->dev);
 +	struct sc16is7xx_one *one = to_sc16is7xx_one(port, port);
 +
-+	lockdep_assert_held_once(&port->lock);
++	mutex_lock(&one->efr_lock);
 +
-+	one->config.flags |= SC16IS7XX_RECONF_IER;
-+	one->config.ier_mask |= bit;
-+	one->config.ier_val &= ~bit;
-+	kthread_queue_work(&s->kworker, &one->reg_work);
++	/* Backup content of LCR. */
++	one->old_lcr = sc16is7xx_port_read(port, SC16IS7XX_LCR_REG);
++
++	/* Enable access to Enhanced register set */
++	sc16is7xx_port_write(port, SC16IS7XX_LCR_REG, SC16IS7XX_LCR_CONF_MODE_B);
++
++	/* Disable cache updates when writing to EFR registers */
++	regcache_cache_bypass(one->regmap, true);
 +}
 +
-+static void sc16is7xx_ier_set(struct uart_port *port, u8 bit)
++static void sc16is7xx_efr_unlock(struct uart_port *port)
 +{
-+	struct sc16is7xx_port *s = dev_get_drvdata(port->dev);
 +	struct sc16is7xx_one *one = to_sc16is7xx_one(port, port);
 +
-+	lockdep_assert_held_once(&port->lock);
++	/* Re-enable cache updates when writing to normal registers */
++	regcache_cache_bypass(one->regmap, false);
 +
-+	one->config.flags |= SC16IS7XX_RECONF_IER;
-+	one->config.ier_mask |= bit;
-+	one->config.ier_val |= bit;
-+	kthread_queue_work(&s->kworker, &one->reg_work);
++	/* Restore original content of LCR */
++	sc16is7xx_port_write(port, SC16IS7XX_LCR_REG, one->old_lcr);
++
++	mutex_unlock(&one->efr_lock);
 +}
 +
-+static void sc16is7xx_stop_tx(struct uart_port *port)
-+{
-+	sc16is7xx_ier_clear(port, SC16IS7XX_IER_THRI_BIT);
-+}
-+
-+static void sc16is7xx_stop_rx(struct uart_port *port)
-+{
-+	sc16is7xx_ier_clear(port, SC16IS7XX_IER_RDI_BIT);
-+}
-+
- static const struct sc16is7xx_devtype sc16is74x_devtype = {
- 	.name		= "SC16IS74X",
- 	.nr_gpio	= 0,
-@@ -891,42 +924,6 @@ static void sc16is7xx_reg_proc(struct kthread_work *ws)
- 		sc16is7xx_reconf_rs485(&one->port);
- }
- 
--static void sc16is7xx_ier_clear(struct uart_port *port, u8 bit)
--{
--	struct sc16is7xx_port *s = dev_get_drvdata(port->dev);
--	struct sc16is7xx_one *one = to_sc16is7xx_one(port, port);
--
--	lockdep_assert_held_once(&port->lock);
--
--	one->config.flags |= SC16IS7XX_RECONF_IER;
--	one->config.ier_mask |= bit;
--	one->config.ier_val &= ~bit;
--	kthread_queue_work(&s->kworker, &one->reg_work);
--}
--
--static void sc16is7xx_ier_set(struct uart_port *port, u8 bit)
--{
--	struct sc16is7xx_port *s = dev_get_drvdata(port->dev);
--	struct sc16is7xx_one *one = to_sc16is7xx_one(port, port);
--
--	lockdep_assert_held_once(&port->lock);
--
--	one->config.flags |= SC16IS7XX_RECONF_IER;
--	one->config.ier_mask |= bit;
--	one->config.ier_val |= bit;
--	kthread_queue_work(&s->kworker, &one->reg_work);
--}
--
--static void sc16is7xx_stop_tx(struct uart_port *port)
--{
--	sc16is7xx_ier_clear(port, SC16IS7XX_IER_THRI_BIT);
--}
--
--static void sc16is7xx_stop_rx(struct uart_port *port)
--{
--	sc16is7xx_ier_clear(port, SC16IS7XX_IER_RDI_BIT);
--}
--
- static void sc16is7xx_ms_proc(struct kthread_work *ws)
+ static void sc16is7xx_ier_clear(struct uart_port *port, u8 bit)
  {
- 	struct sc16is7xx_one *one = to_sc16is7xx_one(ws, ms_work.work);
+ 	struct sc16is7xx_port *s = dev_get_drvdata(port->dev);
+@@ -538,39 +582,12 @@ static int sc16is7xx_set_baud(struct uart_port *port, int baud)
+ 		div /= prescaler;
+ 	}
+ 
+-	/* In an amazing feat of design, the Enhanced Features Register shares
+-	 * the address of the Interrupt Identification Register, and is
+-	 * switched in by writing a magic value (0xbf) to the Line Control
+-	 * Register. Any interrupt firing during this time will see the EFR
+-	 * where it expects the IIR to be, leading to "Unexpected interrupt"
+-	 * messages.
+-	 *
+-	 * Prevent this possibility by claiming a mutex while accessing the
+-	 * EFR, and claiming the same mutex from within the interrupt handler.
+-	 * This is similar to disabling the interrupt, but that doesn't work
+-	 * because the bulk of the interrupt processing is run as a workqueue
+-	 * job in thread context.
+-	 */
+-	mutex_lock(&one->efr_lock);
+-
+-	lcr = sc16is7xx_port_read(port, SC16IS7XX_LCR_REG);
+-
+-	/* Open the LCR divisors for configuration */
+-	sc16is7xx_port_write(port, SC16IS7XX_LCR_REG,
+-			     SC16IS7XX_LCR_CONF_MODE_B);
+-
+ 	/* Enable enhanced features */
+-	regcache_cache_bypass(one->regmap, true);
++	sc16is7xx_efr_lock(port);
+ 	sc16is7xx_port_update(port, SC16IS7XX_EFR_REG,
+ 			      SC16IS7XX_EFR_ENABLE_BIT,
+ 			      SC16IS7XX_EFR_ENABLE_BIT);
+-
+-	regcache_cache_bypass(one->regmap, false);
+-
+-	/* Put LCR back to the normal mode */
+-	sc16is7xx_port_write(port, SC16IS7XX_LCR_REG, lcr);
+-
+-	mutex_unlock(&one->efr_lock);
++	sc16is7xx_efr_unlock(port);
+ 
+ 	/* If bit MCR_CLKSEL is set, the divide by 4 prescaler is activated. */
+ 	sc16is7xx_port_update(port, SC16IS7XX_MCR_REG,
+@@ -580,7 +597,8 @@ static int sc16is7xx_set_baud(struct uart_port *port, int baud)
+ 
+ 	mutex_lock(&one->efr_lock);
+ 
+-	/* Open the LCR divisors for configuration */
++	/* Backup LCR and access special register set (DLL/DLH) */
++	lcr = sc16is7xx_port_read(port, SC16IS7XX_LCR_REG);
+ 	sc16is7xx_port_write(port, SC16IS7XX_LCR_REG,
+ 			     SC16IS7XX_LCR_CONF_MODE_A);
+ 
+@@ -590,7 +608,7 @@ static int sc16is7xx_set_baud(struct uart_port *port, int baud)
+ 	sc16is7xx_port_write(port, SC16IS7XX_DLL_REG, div % 256);
+ 	regcache_cache_bypass(one->regmap, false);
+ 
+-	/* Put LCR back to the normal mode */
++	/* Restore LCR and access to general register set */
+ 	sc16is7xx_port_write(port, SC16IS7XX_LCR_REG, lcr);
+ 
+ 	mutex_unlock(&one->efr_lock);
+@@ -1073,17 +1091,7 @@ static void sc16is7xx_set_termios(struct uart_port *port,
+ 	if (!(termios->c_cflag & CREAD))
+ 		port->ignore_status_mask |= SC16IS7XX_LSR_BRK_ERROR_MASK;
+ 
+-	/* As above, claim the mutex while accessing the EFR. */
+-	mutex_lock(&one->efr_lock);
+-
+-	sc16is7xx_port_write(port, SC16IS7XX_LCR_REG,
+-			     SC16IS7XX_LCR_CONF_MODE_B);
+-
+ 	/* Configure flow control */
+-	regcache_cache_bypass(one->regmap, true);
+-	sc16is7xx_port_write(port, SC16IS7XX_XON1_REG, termios->c_cc[VSTART]);
+-	sc16is7xx_port_write(port, SC16IS7XX_XOFF1_REG, termios->c_cc[VSTOP]);
+-
+ 	port->status &= ~(UPSTAT_AUTOCTS | UPSTAT_AUTORTS);
+ 	if (termios->c_cflag & CRTSCTS) {
+ 		flow |= SC16IS7XX_EFR_AUTOCTS_BIT |
+@@ -1095,16 +1103,16 @@ static void sc16is7xx_set_termios(struct uart_port *port,
+ 	if (termios->c_iflag & IXOFF)
+ 		flow |= SC16IS7XX_EFR_SWFLOW1_BIT;
+ 
+-	sc16is7xx_port_update(port,
+-			      SC16IS7XX_EFR_REG,
+-			      SC16IS7XX_EFR_FLOWCTRL_BITS,
+-			      flow);
+-	regcache_cache_bypass(one->regmap, false);
+-
+ 	/* Update LCR register */
+ 	sc16is7xx_port_write(port, SC16IS7XX_LCR_REG, lcr);
+ 
+-	mutex_unlock(&one->efr_lock);
++	/* Update EFR registers */
++	sc16is7xx_efr_lock(port);
++	sc16is7xx_port_write(port, SC16IS7XX_XON1_REG, termios->c_cc[VSTART]);
++	sc16is7xx_port_write(port, SC16IS7XX_XOFF1_REG, termios->c_cc[VSTOP]);
++	sc16is7xx_port_update(port, SC16IS7XX_EFR_REG,
++			      SC16IS7XX_EFR_FLOWCTRL_BITS, flow);
++	sc16is7xx_efr_unlock(port);
+ 
+ 	/* Get baud rate generator configuration */
+ 	baud = uart_get_baud_rate(port, termios, old,
 -- 
 2.51.0
 
