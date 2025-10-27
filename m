@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-191154-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190783-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC63BC110F9
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:32:33 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1606C10C0A
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:18:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D1E0F561AA2
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:27:35 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0EB8B50269C
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:12:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 598B2302CB9;
-	Mon, 27 Oct 2025 19:25:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BF1D31BCBC;
+	Mon, 27 Oct 2025 19:09:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VMcJBqh6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p7yHfysJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EE30274FD0;
-	Mon, 27 Oct 2025 19:25:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4876831BC91;
+	Mon, 27 Oct 2025 19:09:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761593149; cv=none; b=LfmSbVx9llw89NzNH752vOjerhMajbgU9zNS/1SOFcCSS81i2jNKFydcALQVu3BZ6vPWVS/Q7k7+b72tstVWD311gpIq3cBo9a9EFJMkJB2ej+r/5kCaFTNB8vT1N/nu7WeO7IyQIKOHQdaFEUK4CxaPa+5ZHJ51b2rGpgKEVYk=
+	t=1761592185; cv=none; b=SbxU+KkIMbG5TwTZCyrz8cL7XKgetyLoH6suJsuYMwhus84A6eOzYsCnodObF8Gw2+LKpz/lEkbzWmEVMCVkyCUPHn+iwqDOdqgXVfxTBf4HL627hoW30AxspTzzQPdTCu4ba9L40EM4hHAwfi+QCT5r/8V5oTPUr/fTn2nQujk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761593149; c=relaxed/simple;
-	bh=o5wFBb0DnE+HtdSCEXjuXyHdoL+yt7WZw7pwXQpgSbw=;
+	s=arc-20240116; t=1761592185; c=relaxed/simple;
+	bh=G3kNB7D1GyWXth0R3GV3cZcDv8bTVtzLU2GI6r9XXu0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=us993kPCx3t2fJ7rPjrfAkMth4kwD5cPgoEisp3ONBe1022LFsmbGkJhsgA/+YnuW5Ht/hckezN04ri/sykTmBSVxxvRL5pqFLwZsZ4YwXCzDPGHKV5TcgR33kc88PnhdjEUwoXX0+2eAmHzFZ9CuhhNebRX0XPd2/pn7rylPE0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VMcJBqh6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C8F0C4CEF1;
-	Mon, 27 Oct 2025 19:25:48 +0000 (UTC)
+	 MIME-Version; b=RrMtOI9gSPzgkB4vHVQHL1+8KUwomkMz/CbqKLswFE1BCyjOfN1fTGXXXEyIr3C8HlC3ogbvGZ86kqshaFQj+3vrZhLW2KpmgKwfrm+4KMSYS/o5dybhSK2eUmtOr9QglShxCRbqhC8tZIm4jwFKH8LeKXlGv1mys1hWSJ6Tcto=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p7yHfysJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6240C4CEFD;
+	Mon, 27 Oct 2025 19:09:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761593148;
-	bh=o5wFBb0DnE+HtdSCEXjuXyHdoL+yt7WZw7pwXQpgSbw=;
+	s=korg; t=1761592185;
+	bh=G3kNB7D1GyWXth0R3GV3cZcDv8bTVtzLU2GI6r9XXu0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VMcJBqh6wjdjRcDw+ea7mLHmMMeKy9MHxbfHiF1Ag1A4A9oGGyRkC5S4N8r6DpVMT
-	 5bPOOpAz4sPDtHOpeJr7AR65OmWmV0RpmeignqCRralmAX8uYr90fF25Tqdz6gYVVg
-	 haw9cfjWMoaD2V0hmP81LcrlPDK8sGu2VHgZHiEI=
+	b=p7yHfysJotmk3PIo6t2JQcXRdlO7gTmIpCjY/OV/MqsjxQEtBvR289bpl4pLk0etn
+	 SRo5wMJ+i2IKHo1T22oe5k/dqN1xTxnU3Epc5JaGjq5zQX+hCZULRXUNKnOgFsOFvk
+	 dG3ebrrI9h5w3Fm7S0iCrrDTvI4lSiNB2qGKwsBM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Aring <aahringo@redhat.com>,
-	David Teigland <teigland@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 005/184] dlm: move to rinfo for all middle conversion cases
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Anna-Maria Behnsen <anna-maria@linutronix.de>,
+	Jeongjun Park <aha310510@gmail.com>
+Subject: [PATCH 6.1 026/157] clocksource/drivers/sp804: Do not use timer namespace for timer_shutdown() function
 Date: Mon, 27 Oct 2025 19:34:47 +0100
-Message-ID: <20251027183515.085263742@linuxfoundation.org>
+Message-ID: <20251027183501.983929869@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
-References: <20251027183514.934710872@linuxfoundation.org>
+In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
+References: <20251027183501.227243846@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +65,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Aring <aahringo@redhat.com>
+From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
 
-[ Upstream commit a8abcff174f7f9ce4587c6451b1a2450d01f52c9 ]
+[ Upstream commit 6e1fc2591f116dfb20b65cf27356475461d61bd8 ]
 
-Since commit f74dacb4c8116 ("dlm: fix recovery of middle conversions")
-we introduced additional debugging information if we hit the middle
-conversion by using log_limit(). The DLM log_limit() functionality
-requires a DLM debug option being enabled. As this case is so rarely and
-excempt any potential introduced new issue with recovery we switching it
-to log_rinfo() ad this is ratelimited under normal DLM loglevel.
+A new "shutdown" timer state is being added to the generic timer code. One
+of the functions to change the timer into the state is called
+"timer_shutdown()". This means that there can not be other functions
+called "timer_shutdown()" as the timer code owns the "timer_*" name space.
 
-Signed-off-by: Alexander Aring <aahringo@redhat.com>
-Signed-off-by: David Teigland <teigland@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Rename timer_shutdown() to evt_timer_shutdown() to avoid this conflict.
+
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Guenter Roeck <linux@roeck-us.net>
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Reviewed-by: Anna-Maria Behnsen <anna-maria@linutronix.de>
+Link: https://lkml.kernel.org/r/20221106212702.182883323@goodmis.org
+Link: https://lore.kernel.org/all/20221105060155.592778858@goodmis.org/
+Link: https://lore.kernel.org/r/20221110064147.158230501@goodmis.org
+Link: https://lore.kernel.org/r/20221123201624.634354813@linutronix.de
+Signed-off-by: Jeongjun Park <aha310510@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/dlm/lock.c    | 2 +-
- fs/dlm/recover.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/clocksource/timer-sp804.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/fs/dlm/lock.c b/fs/dlm/lock.c
-index 6dd3a524cd352..be938fdf17d96 100644
---- a/fs/dlm/lock.c
-+++ b/fs/dlm/lock.c
-@@ -5576,7 +5576,7 @@ static int receive_rcom_lock_args(struct dlm_ls *ls, struct dlm_lkb *lkb,
+--- a/drivers/clocksource/timer-sp804.c
++++ b/drivers/clocksource/timer-sp804.c
+@@ -155,14 +155,14 @@ static irqreturn_t sp804_timer_interrupt
+ 	return IRQ_HANDLED;
+ }
  
- 	if (rl->rl_status == DLM_LKSTS_CONVERT && middle_conversion(lkb)) {
- 		/* We may need to adjust grmode depending on other granted locks. */
--		log_limit(ls, "%s %x middle convert gr %d rq %d remote %d %x",
-+		log_rinfo(ls, "%s %x middle convert gr %d rq %d remote %d %x",
- 			  __func__, lkb->lkb_id, lkb->lkb_grmode,
- 			  lkb->lkb_rqmode, lkb->lkb_nodeid, lkb->lkb_remid);
- 		rsb_set_flag(r, RSB_RECOVER_CONVERT);
-diff --git a/fs/dlm/recover.c b/fs/dlm/recover.c
-index be4240f09abd4..3ac020fb8139e 100644
---- a/fs/dlm/recover.c
-+++ b/fs/dlm/recover.c
-@@ -842,7 +842,7 @@ static void recover_conversion(struct dlm_rsb *r)
- 		 */
- 		if (((lkb->lkb_grmode == DLM_LOCK_PR) && (other_grmode == DLM_LOCK_CW)) ||
- 		    ((lkb->lkb_grmode == DLM_LOCK_CW) && (other_grmode == DLM_LOCK_PR))) {
--			log_limit(ls, "%s %x gr %d rq %d, remote %d %x, other_lkid %u, other gr %d, set gr=NL",
-+			log_rinfo(ls, "%s %x gr %d rq %d, remote %d %x, other_lkid %u, other gr %d, set gr=NL",
- 				  __func__, lkb->lkb_id, lkb->lkb_grmode,
- 				  lkb->lkb_rqmode, lkb->lkb_nodeid,
- 				  lkb->lkb_remid, other_lkid, other_grmode);
--- 
-2.51.0
-
+-static inline void timer_shutdown(struct clock_event_device *evt)
++static inline void evt_timer_shutdown(struct clock_event_device *evt)
+ {
+ 	writel(0, common_clkevt->ctrl);
+ }
+ 
+ static int sp804_shutdown(struct clock_event_device *evt)
+ {
+-	timer_shutdown(evt);
++	evt_timer_shutdown(evt);
+ 	return 0;
+ }
+ 
+@@ -171,7 +171,7 @@ static int sp804_set_periodic(struct clo
+ 	unsigned long ctrl = TIMER_CTRL_32BIT | TIMER_CTRL_IE |
+ 			     TIMER_CTRL_PERIODIC | TIMER_CTRL_ENABLE;
+ 
+-	timer_shutdown(evt);
++	evt_timer_shutdown(evt);
+ 	writel(common_clkevt->reload, common_clkevt->load);
+ 	writel(ctrl, common_clkevt->ctrl);
+ 	return 0;
 
 
 
