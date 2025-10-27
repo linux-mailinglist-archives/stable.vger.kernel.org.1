@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-191202-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190944-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13BF3C11192
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:34:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 29C93C10ECA
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:25:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 476DC581FC9
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:29:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A2C475828E5
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:17:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55DB5309EF7;
-	Mon, 27 Oct 2025 19:27:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13F84322745;
+	Mon, 27 Oct 2025 19:16:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kKZWYzrS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pxLQYghU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1172431E0F2;
-	Mon, 27 Oct 2025 19:27:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C19A91FBC92;
+	Mon, 27 Oct 2025 19:16:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761593270; cv=none; b=YZGRnAdFzvVhvMqyF62aicARUdIO9Uxy2stLjDs24JE0+EJ9sj8MxRE1Hpec6VpBGXnco2+e3tgmdzR2iVj4i/WRWGeAgoWThhuHIrMaQQbRRuIhGOPY0QkTaMscv79vUr6ZKRxAPxcmKUeazHQCB+jMtSNx5NSNkRIUtaSCh34=
+	t=1761592606; cv=none; b=TNeM0QbVcACTkYogg/OEMWQZX8hQUUvDGh8JuDWa6ehVf6oljIQ2hvFdJIWFoYzT8+yMXBN7vPPlEU9tVZcWuQVcFMo2neyoIYyAJg61cBSMW7hPE2rotScPd/goRAKktSodpnFCI6DghEYlQfD2Wy0SKBzXzSbz0LzoDEDQIZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761593270; c=relaxed/simple;
-	bh=5X9BKoueeCCsr5HWB4IYOTsNEqYwWUVcYKPLxPg/Cl4=;
+	s=arc-20240116; t=1761592606; c=relaxed/simple;
+	bh=alzehZZPAgOXKEXT5T07HQmPaTbJk1BkvAItk3yr/Hs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZNfEloKha+UdXMEKHlS2E8G90LJdYAJv8aH2KkjhT0y/Rc5bs+6XS2mQXFawTy3dSrljb1Y7bBGtU0u5gn12vyeYUaHk9FSqk7wdylwO5NV9SIMn2ek6139p306gIEAelyRdNpZSOnPgA83487Vye/hNTTS1NxHHGKitK+hGSc0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kKZWYzrS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98290C4CEFD;
-	Mon, 27 Oct 2025 19:27:49 +0000 (UTC)
+	 MIME-Version; b=nH0ALPCnitmBu9z1mg8VQ2Fd2x2UjpNHIJqDjz0I7sdF1QPMp8lelKN46Nj3FEVGEFwO5abPvSWeK/XZdjbhT9ST6gsG9aXgW52MypS6Z7H5MN8UMZ75V/pU3CQK8cIdiBQCHcW5X7SFePFAPL4xmRk9fECB0wRMV9mTwMw26MY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pxLQYghU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 531C9C4CEF1;
+	Mon, 27 Oct 2025 19:16:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761593269;
-	bh=5X9BKoueeCCsr5HWB4IYOTsNEqYwWUVcYKPLxPg/Cl4=;
+	s=korg; t=1761592606;
+	bh=alzehZZPAgOXKEXT5T07HQmPaTbJk1BkvAItk3yr/Hs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kKZWYzrSjZUEhC52yvdc2ZZeBYr0T3jPxf1HvZwJxNCczf4U8NlxBT16qArrZMQeg
-	 hJYeraUCJ+iMgAgEx4Uov+pbbCHfWNrphHOXCxmrGMhQRV3K6J74jVddWJSI2Qbjqo
-	 ILKQ0/kTTFG33birCqbL8fcXXRH0EQeR7ZEgChCw=
+	b=pxLQYghUg0E1sOVyRAtknntnNHvijgceol28KRRpXU5doDz8LC+DOiQwVFIq3gv2s
+	 x9CNX4TRQABZ0llZ58l+8C33YdCD4RwBGwnL1052yeHObmDENm/Pq+SIvgOofoGhuQ
+	 VH5mU7hlH6gxuczYNvF4+t3J9Kglq3lZz82xueUY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Vacek <neelx@suse.com>,
-	Qu Wenruo <wqu@suse.com>,
-	Dewei Meng <mengdewei@cqsoftware.com.cn>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.17 071/184] btrfs: directly free partially initialized fs_info in btrfs_check_leaked_roots()
+	Viacheslav Dubeyko <slava@dubeyko.com>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	Yangtao Li <frank.li@vivo.com>,
+	linux-fsdevel@vger.kernel.org,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 04/84] hfs: make proper initalization of struct hfs_find_data
 Date: Mon, 27 Oct 2025 19:35:53 +0100
-Message-ID: <20251027183516.804195385@linuxfoundation.org>
+Message-ID: <20251027183438.935884966@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
-References: <20251027183514.934710872@linuxfoundation.org>
+In-Reply-To: <20251027183438.817309828@linuxfoundation.org>
+References: <20251027183438.817309828@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,81 +64,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dewei Meng <mengdewei@cqsoftware.com.cn>
+From: Viacheslav Dubeyko <slava@dubeyko.com>
 
-commit 17679ac6df6c4830ba711835aa8cf961be36cfa1 upstream.
+[ Upstream commit c62663a986acee7c4485c1fa9de5fc40194b6290 ]
 
-If fs_info->super_copy or fs_info->super_for_commit allocated failed in
-btrfs_get_tree_subvol(), then no need to call btrfs_free_fs_info().
-Otherwise btrfs_check_leaked_roots() would access NULL pointer because
-fs_info->allocated_roots had not been initialised.
+Potenatially, __hfs_ext_read_extent() could operate by
+not initialized values of fd->key after hfs_brec_find() call:
 
-syzkaller reported the following information:
-  ------------[ cut here ]------------
-  BUG: unable to handle page fault for address: fffffffffffffbb0
-  #PF: supervisor read access in kernel mode
-  #PF: error_code(0x0000) - not-present page
-  PGD 64c9067 P4D 64c9067 PUD 64cb067 PMD 0
-  Oops: Oops: 0000 [#1] SMP KASAN PTI
-  CPU: 0 UID: 0 PID: 1402 Comm: syz.1.35 Not tainted 6.15.8 #4 PREEMPT(lazy)
-  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), (...)
-  RIP: 0010:arch_atomic_read arch/x86/include/asm/atomic.h:23 [inline]
-  RIP: 0010:raw_atomic_read include/linux/atomic/atomic-arch-fallback.h:457 [inline]
-  RIP: 0010:atomic_read include/linux/atomic/atomic-instrumented.h:33 [inline]
-  RIP: 0010:refcount_read include/linux/refcount.h:170 [inline]
-  RIP: 0010:btrfs_check_leaked_roots+0x18f/0x2c0 fs/btrfs/disk-io.c:1230
-  [...]
-  Call Trace:
-   <TASK>
-   btrfs_free_fs_info+0x310/0x410 fs/btrfs/disk-io.c:1280
-   btrfs_get_tree_subvol+0x592/0x6b0 fs/btrfs/super.c:2029
-   btrfs_get_tree+0x63/0x80 fs/btrfs/super.c:2097
-   vfs_get_tree+0x98/0x320 fs/super.c:1759
-   do_new_mount+0x357/0x660 fs/namespace.c:3899
-   path_mount+0x716/0x19c0 fs/namespace.c:4226
-   do_mount fs/namespace.c:4239 [inline]
-   __do_sys_mount fs/namespace.c:4450 [inline]
-   __se_sys_mount fs/namespace.c:4427 [inline]
-   __x64_sys_mount+0x28c/0x310 fs/namespace.c:4427
-   do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
-   do_syscall_64+0x92/0x180 arch/x86/entry/syscall_64.c:94
-   entry_SYSCALL_64_after_hwframe+0x76/0x7e
-  RIP: 0033:0x7f032eaffa8d
-  [...]
+static inline int __hfs_ext_read_extent(struct hfs_find_data *fd, struct hfs_extent *extent,
+                                        u32 cnid, u32 block, u8 type)
+{
+        int res;
 
-Fixes: 3bb17a25bcb0 ("btrfs: add get_tree callback for new mount API")
-CC: stable@vger.kernel.org # 6.12+
-Reviewed-by: Daniel Vacek <neelx@suse.com>
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Dewei Meng <mengdewei@cqsoftware.com.cn>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+        hfs_ext_build_key(fd->search_key, cnid, block, type);
+        fd->key->ext.FNum = 0;
+        res = hfs_brec_find(fd);
+        if (res && res != -ENOENT)
+                return res;
+        if (fd->key->ext.FNum != fd->search_key->ext.FNum ||
+            fd->key->ext.FkType != fd->search_key->ext.FkType)
+                return -ENOENT;
+        if (fd->entrylength != sizeof(hfs_extent_rec))
+                return -EIO;
+        hfs_bnode_read(fd->bnode, extent, fd->entryoffset, sizeof(hfs_extent_rec));
+        return 0;
+}
+
+This patch changes kmalloc() on kzalloc() in hfs_find_init()
+and intializes fd->record, fd->keyoffset, fd->keylength,
+fd->entryoffset, fd->entrylength for the case if hfs_brec_find()
+has been found nothing in the b-tree node.
+
+Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
+cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+cc: Yangtao Li <frank.li@vivo.com>
+cc: linux-fsdevel@vger.kernel.org
+Link: https://lore.kernel.org/r/20250818225252.126427-1-slava@dubeyko.com
+Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/super.c |    8 +++++++-
+ fs/hfs/bfind.c | 8 +++++++-
  1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/fs/btrfs/super.c
-+++ b/fs/btrfs/super.c
-@@ -2070,7 +2070,13 @@ static int btrfs_get_tree_subvol(struct
- 	fs_info->super_copy = kzalloc(BTRFS_SUPER_INFO_SIZE, GFP_KERNEL);
- 	fs_info->super_for_commit = kzalloc(BTRFS_SUPER_INFO_SIZE, GFP_KERNEL);
- 	if (!fs_info->super_copy || !fs_info->super_for_commit) {
--		btrfs_free_fs_info(fs_info);
-+		/*
-+		 * Dont call btrfs_free_fs_info() to free it as it's still
-+		 * initialized partially.
-+		 */
-+		kfree(fs_info->super_copy);
-+		kfree(fs_info->super_for_commit);
-+		kvfree(fs_info);
+diff --git a/fs/hfs/bfind.c b/fs/hfs/bfind.c
+index 34e9804e0f360..e46f650b5e9c2 100644
+--- a/fs/hfs/bfind.c
++++ b/fs/hfs/bfind.c
+@@ -21,7 +21,7 @@ int hfs_find_init(struct hfs_btree *tree, struct hfs_find_data *fd)
+ 
+ 	fd->tree = tree;
+ 	fd->bnode = NULL;
+-	ptr = kmalloc(tree->max_key_len * 2 + 4, GFP_KERNEL);
++	ptr = kzalloc(tree->max_key_len * 2 + 4, GFP_KERNEL);
+ 	if (!ptr)
  		return -ENOMEM;
- 	}
- 	btrfs_init_fs_info(fs_info);
+ 	fd->search_key = ptr;
+@@ -115,6 +115,12 @@ int hfs_brec_find(struct hfs_find_data *fd)
+ 	__be32 data;
+ 	int height, res;
+ 
++	fd->record = -1;
++	fd->keyoffset = -1;
++	fd->keylength = -1;
++	fd->entryoffset = -1;
++	fd->entrylength = -1;
++
+ 	tree = fd->tree;
+ 	if (fd->bnode)
+ 		hfs_bnode_put(fd->bnode);
+-- 
+2.51.0
+
 
 
 
