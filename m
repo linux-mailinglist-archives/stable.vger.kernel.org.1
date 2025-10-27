@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-190371-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190334-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D083DC10630
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:01:16 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20071C105A6
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:59:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AD85156474E
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:55:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8BFE2464496
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:54:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20EDC3314C3;
-	Mon, 27 Oct 2025 18:52:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9491032ED4B;
+	Mon, 27 Oct 2025 18:50:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="He6ikZHf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="riOhHd6P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AF9232AAB2;
-	Mon, 27 Oct 2025 18:52:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D834032F767;
+	Mon, 27 Oct 2025 18:50:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591125; cv=none; b=EtS0mKWKEt/Om14dNkpUXbYfvLYQeCpG3y75L5TPRruJn2RGKFdWJySDrd47EvG4K3UtWo0enTQjVWMb/KY1ZrcWjXliUXGOANMRYz00zbsvD9Zm4JnDUXCm1rpy74+sy8+CsflPsPV1wZVHyMyMcT7ak9W+MSXva/+Nj1T4mLA=
+	t=1761591029; cv=none; b=da1zM6HJiC6iapVdy8xnVhMUv8EBK0uphy9l0wTmuxEN77m3opoguT5dVOWcqTeCj6+XXZXTXEkTrTels3+YUYtLcPOP1t2hBVhWOEMNWuPO2btHTZMB+CZVlpAfe31TStR0zKqbXCDhgy6o+8K08NNDfP0G32nyxXAA+X0LPsI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591125; c=relaxed/simple;
-	bh=FC82QBLXK2p/fCIJ08BRysjpbKpqrGpUf2EUJ8kgxRs=;
+	s=arc-20240116; t=1761591029; c=relaxed/simple;
+	bh=B2rztP9/fLoLGkAHJN6ASK+WFKulmAdWsOu0MA1gpVU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F4sZ3m3BbiktWyzTTRkbzXl7g607BvTZJsXRVdSfK5Q5lrzxh/6xIjNU4Zl2XDx4Dm7L11RnHCnTPy8lobQ/6557aXDYUnW8aA605T3TT+UdflN0McrKHJ8hBbn7O/EaItSwIewI9pdi+r/8g9tsBLK93dyD7GTuBYXVStuphKk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=He6ikZHf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C7A0C4CEF1;
-	Mon, 27 Oct 2025 18:52:04 +0000 (UTC)
+	 MIME-Version; b=NYqxS5HeKw4BGAkPcuUflEPx4ZmFJQzG+N1rJj1RiW41tvkpsAd+TpgzLCr0jJRou/kqq+zMs6wkfAzPwCRERpTtb7A9EwXcXSLIhuxJk2Ye5W1gBY7yW7NT38hVEjxlDrnpwAFnViH3LAI+aQGt6E6NGKy/AHCrraNtsS+vmMU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=riOhHd6P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57E72C4CEF1;
+	Mon, 27 Oct 2025 18:50:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591125;
-	bh=FC82QBLXK2p/fCIJ08BRysjpbKpqrGpUf2EUJ8kgxRs=;
+	s=korg; t=1761591029;
+	bh=B2rztP9/fLoLGkAHJN6ASK+WFKulmAdWsOu0MA1gpVU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=He6ikZHfSKKyfcDUxOB4KkfZs/tSfT3naq3+g7CJ4ZdcUXnDZwRFxMKVqqolAkbRI
-	 bob8WabmKEqx9PYFQfCxhK4DAAHQCOb13/yt9kXi94cCpC6TT4q/7aQ/elnUON0DM8
-	 /mo9Ceozbwq2AO7LHsZY3L4Zxa3qosJ4KTKTjavM=
+	b=riOhHd6Piol4onDJT1GPTx1uskWxHhOJ/PRK//4Hw+tNoDYSVySf/wulwnOC0ip8R
+	 Mjdd0OQfF6zQmynjZ7rQg5CnU5/N8JIaKRuiRYV8usaG2qHe68CFzUTxEjjR/tauFj
+	 LEyE1atThkq6t2mIj4PPivaOFVN/U0OmrxOuZVqs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Dan Carpenter <dan.carpenter@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 040/332] usb: host: max3421-hcd: Fix error pointer dereference in probe cleanup
-Date: Mon, 27 Oct 2025 19:31:33 +0100
-Message-ID: <20251027183525.679004553@linuxfoundation.org>
+Subject: [PATCH 5.10 041/332] serial: max310x: Add error checking in probe()
+Date: Mon, 27 Oct 2025 19:31:34 +0100
+Message-ID: <20251027183525.706683048@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
 References: <20251027183524.611456697@linuxfoundation.org>
@@ -67,33 +67,31 @@ Content-Transfer-Encoding: 8bit
 
 From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 186e8f2bdba551f3ae23396caccd452d985c23e3 ]
+[ Upstream commit 672a37ba8af1f2ebcedeb94aea2cdd047f805f30 ]
 
-The kthread_run() function returns error pointers so the
-max3421_hcd->spi_thread pointer can be either error pointers or NULL.
-Check for both before dereferencing it.
+Check if devm_i2c_new_dummy_device() fails.
 
-Fixes: 05dfa5c9bc37 ("usb: host: max3421-hcd: fix "spi_rd8" uses dynamic stack allocation warning")
+Fixes: 2e1f2d9a9bdb ("serial: max310x: implement I2C support")
 Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/r/aJTMVAPtRe5H6jug@stanley.mountain
+Link: https://lore.kernel.org/r/aJTMPZiKqeXSE-KM@stanley.mountain
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/max3421-hcd.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/tty/serial/max310x.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/usb/host/max3421-hcd.c b/drivers/usb/host/max3421-hcd.c
-index db1b73486e90b..7ab8c518dfc2b 100644
---- a/drivers/usb/host/max3421-hcd.c
-+++ b/drivers/usb/host/max3421-hcd.c
-@@ -1925,7 +1925,7 @@ max3421_probe(struct spi_device *spi)
- 	if (hcd) {
- 		kfree(max3421_hcd->tx);
- 		kfree(max3421_hcd->rx);
--		if (max3421_hcd->spi_thread)
-+		if (!IS_ERR_OR_NULL(max3421_hcd->spi_thread))
- 			kthread_stop(max3421_hcd->spi_thread);
- 		usb_put_hcd(hcd);
+diff --git a/drivers/tty/serial/max310x.c b/drivers/tty/serial/max310x.c
+index 363b68555fe62..4ef2762347f62 100644
+--- a/drivers/tty/serial/max310x.c
++++ b/drivers/tty/serial/max310x.c
+@@ -1660,6 +1660,8 @@ static int max310x_i2c_probe(struct i2c_client *client)
+ 		port_client = devm_i2c_new_dummy_device(&client->dev,
+ 							client->adapter,
+ 							port_addr);
++		if (IS_ERR(port_client))
++			return PTR_ERR(port_client);
+ 
+ 		regmaps[i] = devm_regmap_init_i2c(port_client, &regcfg_i2c);
  	}
 -- 
 2.51.0
