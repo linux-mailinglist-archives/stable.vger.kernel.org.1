@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-190988-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191100-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE12BC10F1C
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:26:57 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94E3EC11009
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:29:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0A77F58335D
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:20:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3BFAF19A5E18
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:25:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E303C32142A;
-	Mon, 27 Oct 2025 19:18:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B57F831D72B;
+	Mon, 27 Oct 2025 19:23:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g0D1W6+O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ow92RrNs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FBC3320CCE;
-	Mon, 27 Oct 2025 19:18:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71EAE27FD62;
+	Mon, 27 Oct 2025 19:23:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592722; cv=none; b=YfmZ15KQW1CyZT1KHwdg2gMK0SVrRYW6cnRM6+ClhkPqoWR74JecQv1cb4o4Cl2anDzY5mNjuvg3kPo8XeVEUYi8RHJy8wGj4Na1SoNpNZ9D/y7/On+LlMSMjlwGO4+K7bKg0uKO60MiJYvXuU1pSbR2xymN82Elghmp11d5f28=
+	t=1761593007; cv=none; b=K0sAwkwses+RnWm0coUrl29cJcVi9yq+rH4971Gcs3dK9Cco+zC4dZWnJ6NMXW0EETWEQyhOlzR1aMy/6RI2B5lTZ2eGglwyZc1Nyq0Vn+SfYolaIUa9bkp1UUcZJdewgrKZrGHnidMROycK2jfvX6dDrtPmINjQnO3x5fTIGZ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592722; c=relaxed/simple;
-	bh=dVWcG8WqzEyYiFKm42aGbkX9ybqnMo9icZ0NdINcRLQ=;
+	s=arc-20240116; t=1761593007; c=relaxed/simple;
+	bh=WUsvJuEEmaPYn4FCDa4xua4WpGA73xwfQ/B9Klb3D+M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MNn2/6a/R6jSpRTG0zWcGhlc5J4TrypE53PmUvHPidVfa2vYNMreou6DhXZ8HVKgpt7Ik9DiB3iQcTOSUx4pYSfF4aTY848c/CueSdImpSKOgCSeIxeJyUTESnHuGzufxfo7uShBZtd99nHnxKkqNNWyxwQIKU7EtWSSXUzTGXk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g0D1W6+O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 336BAC4CEF1;
-	Mon, 27 Oct 2025 19:18:42 +0000 (UTC)
+	 MIME-Version; b=S/GjWcCQl8fUBC2CJGwaiI0kmdWn2Rm1VcxDwzhNHl1Vog03RuV3IuMMWr2nRGF4QdAmWuiHmKxFTUi+y4eZ6YtWqNcZ/iybKsqVZlNDshWTn1IVD5hhpqF2ULL7ugq0YiiNlsjVYsViCTUAH8R0JlUsSxRe1msO1un6UvsvKTs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ow92RrNs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5283C113D0;
+	Mon, 27 Oct 2025 19:23:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592722;
-	bh=dVWcG8WqzEyYiFKm42aGbkX9ybqnMo9icZ0NdINcRLQ=;
+	s=korg; t=1761593007;
+	bh=WUsvJuEEmaPYn4FCDa4xua4WpGA73xwfQ/B9Klb3D+M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g0D1W6+Oaqr4Jlzrqyf5V2TxDIj+JX8nrXDdASP3HgxvKyxMZvF0X6qCJB2JvQ4Tq
-	 YoHCiTg0C0gvwOefzuSqa4hg1WAHgwuczi8+W5dp7WejQJMqV+cozVSDbRR85aLHbb
-	 teoa0Ce7JdcAfw1fEKSQB46QwSfcAMWBvdqTa+9o=
+	b=Ow92RrNsJ3gn1t6jekdFl/Xvky4TXY1vYecAjp1foxHbwSbA45iiShtkHfxZfaegn
+	 qJn6HUU8T42zQbHGO45UwmuX4xmiPNHTInRxpoD2UFIdyX6h1495w8kAKK0S4zYsz8
+	 fHRG7wsCCkVLXjoj5DZWtqkfQUehKRYcEJCsEiqM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Michael Grzeschik <m.grzeschik@pengutronix.de>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Badhri Jagan Sridharan <badhri@google.com>
-Subject: [PATCH 6.6 72/84] tcpm: switch check for role_sw device with fw_node
+	Reinhard Speyerer <rspmn@arcor.de>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.12 095/117] USB: serial: option: add Quectel RG255C
 Date: Mon, 27 Oct 2025 19:37:01 +0100
-Message-ID: <20251027183440.727617528@linuxfoundation.org>
+Message-ID: <20251027183456.588458950@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183438.817309828@linuxfoundation.org>
-References: <20251027183438.817309828@linuxfoundation.org>
+In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
+References: <20251027183453.919157109@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +61,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Grzeschik <m.grzeschik@pengutronix.de>
+From: Reinhard Speyerer <rspmn@arcor.de>
 
-commit 2d8713f807a49b8a67c221670e50ae04967e915d upstream.
+commit 89205c60c0fc96b73567a2e9fe27ee3f59d01193 upstream.
 
-When there is no port entry in the tcpci entry itself, the driver will
-trigger an error message "OF: graph: no port node found in /...../typec" .
+Add support for Quectel RG255C devices to complement commit 5c964c8a97c1
+("net: usb: qmi_wwan: add Quectel RG255C").
+The composition is DM / NMEA / AT / QMI.
 
-It is documented that the dts node should contain an connector entry
-with ports and several port pointing to devices with usb-role-switch
-property set. Only when those connector entry is missing, it should
-check for port entries in the main node.
+T:  Bus=01 Lev=02 Prnt=99 Port=01 Cnt=02 Dev#=110 Spd=480  MxCh= 0
+D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=2c7c ProdID=0316 Rev= 5.15
+S:  Manufacturer=Quectel
+S:  Product=RG255C-GL
+S:  SerialNumber=xxxxxxxx
+C:* #Ifs= 4 Cfg#= 1 Atr=a0 MxPwr=500mA
+I:* If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 1 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
+E:  Ad=86(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
 
-We switch the search order for looking after ports, which will avoid the
-failure message while there are explicit connector entries.
-
-Fixes: d56de8c9a17d ("usb: typec: tcpm: try to get role switch from tcpc fwnode")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Reviewed-by: Badhri Jagan Sridharan <badhri@google.com>
-Link: https://patch.msgid.link/20251013-b4-ml-topic-tcpm-v2-1-63c9b2ab8a0b@pengutronix.de
+Signed-off-by: Reinhard Speyerer <rspmn@arcor.de>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/typec/tcpm/tcpm.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/usb/serial/option.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/usb/typec/tcpm/tcpm.c
-+++ b/drivers/usb/typec/tcpm/tcpm.c
-@@ -6636,9 +6636,9 @@ struct tcpm_port *tcpm_register_port(str
- 	port->partner_desc.identity = &port->partner_ident;
- 	port->port_type = port->typec_caps.type;
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -273,6 +273,7 @@ static void option_instat_callback(struc
+ #define QUECTEL_PRODUCT_EM05CN			0x0312
+ #define QUECTEL_PRODUCT_EM05G_GR		0x0313
+ #define QUECTEL_PRODUCT_EM05G_RS		0x0314
++#define QUECTEL_PRODUCT_RG255C			0x0316
+ #define QUECTEL_PRODUCT_EM12			0x0512
+ #define QUECTEL_PRODUCT_RM500Q			0x0800
+ #define QUECTEL_PRODUCT_RM520N			0x0801
+@@ -1271,6 +1272,9 @@ static const struct usb_device_id option
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_RM500K, 0xff, 0x00, 0x00) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_RG650V, 0xff, 0xff, 0x30) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_RG650V, 0xff, 0, 0) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_RG255C, 0xff, 0xff, 0x30) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_RG255C, 0xff, 0, 0) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_RG255C, 0xff, 0xff, 0x40) },
  
--	port->role_sw = usb_role_switch_get(port->dev);
-+	port->role_sw = fwnode_usb_role_switch_get(tcpc->fwnode);
- 	if (!port->role_sw)
--		port->role_sw = fwnode_usb_role_switch_get(tcpc->fwnode);
-+		port->role_sw = usb_role_switch_get(port->dev);
- 	if (IS_ERR(port->role_sw)) {
- 		err = PTR_ERR(port->role_sw);
- 		goto out_destroy_wq;
+ 	{ USB_DEVICE(CMOTECH_VENDOR_ID, CMOTECH_PRODUCT_6001) },
+ 	{ USB_DEVICE(CMOTECH_VENDOR_ID, CMOTECH_PRODUCT_CMU_300) },
 
 
 
