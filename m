@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-190826-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191169-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2572C10CC1
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:20:23 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F8FAC110F6
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:32:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D7FAD508FA0
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:13:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 703D61A23525
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:28:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E77BB32C92A;
-	Mon, 27 Oct 2025 19:11:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A5AB328638;
+	Mon, 27 Oct 2025 19:26:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ri2HxvTB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yRNXLeyY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3EC432C326;
-	Mon, 27 Oct 2025 19:11:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3859432548B;
+	Mon, 27 Oct 2025 19:26:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592299; cv=none; b=Kd566ewcw31zfisLXtjIpMUCoUjHQYEkozYixtVNT9adZn/ZF5i3nuACzdQyh8Z8YEURD9HJLPD1L77WvAxR113PiHsxN/NBrNDwpIkco0aWbpCE6nxOZUJYlHa7XLIX2a2ev3vm7JO0ie5u0+nO7qxNvG6Qo/yDOUF8M4eyQIg=
+	t=1761593188; cv=none; b=TLAlzPL71Rhyp1bNzauyunj3LjDqJ5hAuTvdIlX2s+nrJMwBFLz+/fBQSxarCjIUsVnd6NfMQw9AdxqhVrtfPDWdIAtiWdpYk1FYKe8oEXIo63oqlcsAmuVGNYzqNRqJy/yD91Vr6YVOulpjFv+E302dtbRwYd1ZGroyMcaW9GY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592299; c=relaxed/simple;
-	bh=ywjJnJaQoQ/+ZzEy2mqgSMMXtYKBPQLMzl0JeNrPOHw=;
+	s=arc-20240116; t=1761593188; c=relaxed/simple;
+	bh=GMsw9QEfr88PeYdIy7CCHxuO653XSdDtRsVd76HNd20=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HicyP0fB0EwI6vOr9oxQiftHV2F8/dwN3cShGd2rFlZbf8O6ZcjBRjfA9LvW7M2wpni3xgTuUpVEI/Rg4wVgB8zzeQXULTvwS00VCzyeWmljW7huJbeaBW4P0301DwatTVc/NwQNKzO77lvlur3EsIRCthu6s6l806t92AwgjL4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ri2HxvTB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10421C4CEFD;
-	Mon, 27 Oct 2025 19:11:38 +0000 (UTC)
+	 MIME-Version; b=WOSVBT0SUX7mrFRoz1KG9yGJSlqnIGG2XomxzkUmFpSpi4kRwI4vsDnWZ7EWgfrGle51M8Hox/HjYYNAG5H/RZpDWENVVsJ4B8ZrCsMkS4+LgZzY7CzhxyqNVhDWb5Md12bfHWwnLvOdECGaXjujnU0J81ZyylA63rLsKJybf14=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yRNXLeyY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BE3EC4CEF1;
+	Mon, 27 Oct 2025 19:26:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592299;
-	bh=ywjJnJaQoQ/+ZzEy2mqgSMMXtYKBPQLMzl0JeNrPOHw=;
+	s=korg; t=1761593187;
+	bh=GMsw9QEfr88PeYdIy7CCHxuO653XSdDtRsVd76HNd20=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ri2HxvTBk7JGnv2Yqi6SuqrLTpfm0YM86nDpOJjrt4FAeCC+519BM/6EkYE/8uulA
-	 ULCrQScBGGZ98ds4YoPzvwHlijui43QYPn2LHRz3Yi5WYMU9T2yyTy/NuHeMzLE4GR
-	 U/pkeo4HtnjNKuaIwkHTDeJbsM92KjkUxaeXDAbI=
+	b=yRNXLeyYXxW5Lnh5ti7izSiWc8ZNJfMAckzyqL/yGomn6v03Csis/Da5LkOEQ5S61
+	 INyUn/0rqMzxvNK5zRcgYeze3tBdHspUiUehgucF8YiML+2zpXWcx6YNWqRF5eFzr5
+	 o8bf2OnapLI1TkERorurivbxFmX2aMzB91nrGECM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Schuster <schuster.simon@siemens-energy.com>,
-	Andreas Oetken <andreas.oetken@siemens-energy.com>,
-	Dinh Nguyen <dinguyen@kernel.org>,
+	Amery Hung <ameryhung@gmail.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 068/157] nios2: ensure that memblock.current_limit is set when setting pfn limits
+Subject: [PATCH 6.17 047/184] net/mlx5e: RX, Fix generating skb from non-linear xdp_buff for striding RQ
 Date: Mon, 27 Oct 2025 19:35:29 +0100
-Message-ID: <20251027183503.107707391@linuxfoundation.org>
+Message-ID: <20251027183516.170446667@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
-References: <20251027183501.227243846@linuxfoundation.org>
+In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
+References: <20251027183514.934710872@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,74 +63,120 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Simon Schuster <schuster.simon@siemens-energy.com>
+From: Amery Hung <ameryhung@gmail.com>
 
-[ Upstream commit a20b83cf45be2057f3d073506779e52c7fa17f94 ]
+[ Upstream commit 87bcef158ac1faca1bd7e0104588e8e2956d10be ]
 
-On nios2, with CONFIG_FLATMEM set, the kernel relies on
-memblock_get_current_limit() to determine the limits of mem_map, in
-particular for max_low_pfn.
-Unfortunately, memblock.current_limit is only default initialized to
-MEMBLOCK_ALLOC_ANYWHERE at this point of the bootup, potentially leading
-to situations where max_low_pfn can erroneously exceed the value of
-max_pfn and, thus, the valid range of available DRAM.
+XDP programs can change the layout of an xdp_buff through
+bpf_xdp_adjust_tail() and bpf_xdp_adjust_head(). Therefore, the driver
+cannot assume the size of the linear data area nor fragments. Fix the
+bug in mlx5 by generating skb according to xdp_buff after XDP programs
+run.
 
-This can in turn cause kernel-level paging failures, e.g.:
+Currently, when handling multi-buf XDP, the mlx5 driver assumes the
+layout of an xdp_buff to be unchanged. That is, the linear data area
+continues to be empty and fragments remain the same. This may cause
+the driver to generate erroneous skb or triggering a kernel
+warning. When an XDP program added linear data through
+bpf_xdp_adjust_head(), the linear data will be ignored as
+mlx5e_build_linear_skb() builds an skb without linear data and then
+pull data from fragments to fill the linear data area. When an XDP
+program has shrunk the non-linear data through bpf_xdp_adjust_tail(),
+the delta passed to __pskb_pull_tail() may exceed the actual nonlinear
+data size and trigger the BUG_ON in it.
 
-[   76.900000] Unable to handle kernel paging request at virtual address 20303000
-[   76.900000] ea = c0080890, ra = c000462c, cause = 14
-[   76.900000] Kernel panic - not syncing: Oops
-[   76.900000] ---[ end Kernel panic - not syncing: Oops ]---
+To fix the issue, first record the original number of fragments. If the
+number of fragments changes after the XDP program runs, rewind the end
+fragment pointer by the difference and recalculate the truesize. Then,
+build the skb with the linear data area matching the xdp_buff. Finally,
+only pull data in if there is non-linear data and fill the linear part
+up to 256 bytes.
 
-This patch fixes this by pre-calculating memblock.current_limit
-based on the upper limits of the available memory ranges via
-adjust_lowmem_bounds, a simplified version of the equivalent
-implementation within the arm architecture.
-
-Signed-off-by: Simon Schuster <schuster.simon@siemens-energy.com>
-Signed-off-by: Andreas Oetken <andreas.oetken@siemens-energy.com>
-Signed-off-by: Dinh Nguyen <dinguyen@kernel.org>
+Fixes: f52ac7028bec ("net/mlx5e: RX, Add XDP multi-buffer support in Striding RQ")
+Signed-off-by: Amery Hung <ameryhung@gmail.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/1760644540-899148-3-git-send-email-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/nios2/kernel/setup.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ .../net/ethernet/mellanox/mlx5/core/en_rx.c   | 26 ++++++++++++++++---
+ 1 file changed, 23 insertions(+), 3 deletions(-)
 
-diff --git a/arch/nios2/kernel/setup.c b/arch/nios2/kernel/setup.c
-index 40bc8fb75e0b5..e2fc4b59d93ea 100644
---- a/arch/nios2/kernel/setup.c
-+++ b/arch/nios2/kernel/setup.c
-@@ -147,6 +147,20 @@ static void __init find_limits(unsigned long *min, unsigned long *max_low,
- 	*max_high = PFN_DOWN(memblock_end_of_DRAM());
- }
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c b/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
+index 25d993ded314a..5dbf48da2f4f1 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
+@@ -2017,6 +2017,7 @@ mlx5e_skb_from_cqe_mpwrq_nonlinear(struct mlx5e_rq *rq, struct mlx5e_mpw_info *w
+ 	u32 byte_cnt       = cqe_bcnt;
+ 	struct skb_shared_info *sinfo;
+ 	unsigned int truesize = 0;
++	u32 pg_consumed_bytes;
+ 	struct bpf_prog *prog;
+ 	struct sk_buff *skb;
+ 	u32 linear_frame_sz;
+@@ -2070,7 +2071,8 @@ mlx5e_skb_from_cqe_mpwrq_nonlinear(struct mlx5e_rq *rq, struct mlx5e_mpw_info *w
  
-+static void __init adjust_lowmem_bounds(void)
-+{
-+	phys_addr_t block_start, block_end;
-+	u64 i;
-+	phys_addr_t memblock_limit = 0;
-+
-+	for_each_mem_range(i, &block_start, &block_end) {
-+		if (block_end > memblock_limit)
-+			memblock_limit = block_end;
-+	}
-+
-+	memblock_set_current_limit(memblock_limit);
-+}
-+
- void __init setup_arch(char **cmdline_p)
- {
- 	console_verbose();
-@@ -160,6 +174,7 @@ void __init setup_arch(char **cmdline_p)
- 	/* Keep a copy of command line */
- 	*cmdline_p = boot_command_line;
+ 	while (byte_cnt) {
+ 		/* Non-linear mode, hence non-XSK, which always uses PAGE_SIZE. */
+-		u32 pg_consumed_bytes = min_t(u32, PAGE_SIZE - frag_offset, byte_cnt);
++		pg_consumed_bytes =
++			min_t(u32, PAGE_SIZE - frag_offset, byte_cnt);
  
-+	adjust_lowmem_bounds();
- 	find_limits(&min_low_pfn, &max_low_pfn, &max_pfn);
- 	max_mapnr = max_low_pfn;
+ 		if (test_bit(MLX5E_RQ_STATE_SHAMPO, &rq->state))
+ 			truesize += pg_consumed_bytes;
+@@ -2086,10 +2088,15 @@ mlx5e_skb_from_cqe_mpwrq_nonlinear(struct mlx5e_rq *rq, struct mlx5e_mpw_info *w
+ 	}
+ 
+ 	if (prog) {
++		u8 nr_frags_free, old_nr_frags = sinfo->nr_frags;
++		u32 len;
++
+ 		if (mlx5e_xdp_handle(rq, prog, mxbuf)) {
+ 			if (__test_and_clear_bit(MLX5E_RQ_FLAG_XDP_XMIT, rq->flags)) {
+ 				struct mlx5e_frag_page *pfp;
+ 
++				frag_page -= old_nr_frags - sinfo->nr_frags;
++
+ 				for (pfp = head_page; pfp < frag_page; pfp++)
+ 					pfp->frags++;
+ 
+@@ -2100,9 +2107,19 @@ mlx5e_skb_from_cqe_mpwrq_nonlinear(struct mlx5e_rq *rq, struct mlx5e_mpw_info *w
+ 			return NULL; /* page/packet was consumed by XDP */
+ 		}
+ 
++		nr_frags_free = old_nr_frags - sinfo->nr_frags;
++		if (unlikely(nr_frags_free)) {
++			frag_page -= nr_frags_free;
++			truesize -= (nr_frags_free - 1) * PAGE_SIZE +
++				ALIGN(pg_consumed_bytes,
++				      BIT(rq->mpwqe.log_stride_sz));
++		}
++
++		len = mxbuf->xdp.data_end - mxbuf->xdp.data;
++
+ 		skb = mlx5e_build_linear_skb(
+ 			rq, mxbuf->xdp.data_hard_start, linear_frame_sz,
+-			mxbuf->xdp.data - mxbuf->xdp.data_hard_start, 0,
++			mxbuf->xdp.data - mxbuf->xdp.data_hard_start, len,
+ 			mxbuf->xdp.data - mxbuf->xdp.data_meta);
+ 		if (unlikely(!skb)) {
+ 			mlx5e_page_release_fragmented(rq->page_pool,
+@@ -2127,8 +2144,11 @@ mlx5e_skb_from_cqe_mpwrq_nonlinear(struct mlx5e_rq *rq, struct mlx5e_mpw_info *w
+ 			do
+ 				pagep->frags++;
+ 			while (++pagep < frag_page);
++
++			headlen = min_t(u16, MLX5E_RX_MAX_HEAD - len,
++					skb->data_len);
++			__pskb_pull_tail(skb, headlen);
+ 		}
+-		__pskb_pull_tail(skb, headlen);
+ 	} else {
+ 		dma_addr_t addr;
  
 -- 
 2.51.0
