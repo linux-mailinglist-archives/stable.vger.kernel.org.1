@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-190670-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190813-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBD12C10A32
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:14:03 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB9DFC10C52
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:19:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 858B44FFF61
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:08:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 382141A63BE0
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:13:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4829A3314A9;
-	Mon, 27 Oct 2025 19:04:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2286E302158;
+	Mon, 27 Oct 2025 19:11:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tQz7BATi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kNsu+9LK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 034DD330D47;
-	Mon, 27 Oct 2025 19:04:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2D7F22A4DB;
+	Mon, 27 Oct 2025 19:11:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591889; cv=none; b=VSMWwMXL7yP70+xYl/CCkJoOPbKOjE7W7hADkZPSGQhJVch8qq2eDNo2LOOCO+QbxFJiPI3OD4AfB8gcrURcDG0a/aNpcP68yhlTTXiKIzUdjg/lDUUPwLi1E396G/OkxivcEU2gG/AZUj74RWYVxAd2zAV08w8tizy67OX+17Y=
+	t=1761592263; cv=none; b=smNe/BbzDJPBkBU6BUgB4V9jDRE+N3kQZ9fYQx/I3EGR0ItPS8trMnTi4F5O9YWi6oHtjHvDwvFBmxaxToJ3P5CLFSz6dNckSZkq7ELg1eWHgofRaQ63ez8kcscXWZaHOf0fEGrNbjnhHg/zAn9ZYUX3BawBJ3rk9d2p/ytAxQ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591889; c=relaxed/simple;
-	bh=KRp+sjnQBJGiec2Pg+3B/Rlxct92N0s/bzVG+QQpI8M=;
+	s=arc-20240116; t=1761592263; c=relaxed/simple;
+	bh=bzTqXf2LR3Mh1dlP/zlIffAIBN+ERHH7qN1m4IRK3cY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eCcmrJskXo64nQRZucbPEHg4zhgO4UGTWuo0ZLxSS02OSuuGshVm95JUOLrZfp/2gfJ9BIets0w2v/udv1cou9uq0KGSuytI9IRFLWJkM+vP3hJpgCqx4XH6JtrOgP2QblOcb2R6U/8PyIaFTghqfUAS4DTNya7CoWCrI+Fmzsc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tQz7BATi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FCF0C4CEF1;
-	Mon, 27 Oct 2025 19:04:48 +0000 (UTC)
+	 MIME-Version; b=qvOQKjVOUlXvDc9pmPRXp00Egd6+BrpDlAuS3UEfdtRMZY2uq1Haz/NQH9pOGQgBfp23t6QlS2Q+Mz8mqJxVLMTserW+aVGaA07g8e2hrR1rRBtz4D/lCd+jwu+hfAXvHS2IWL2wBZrr6UoSLrxwMk93TvnIsGc+M7wZWIxHKj0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kNsu+9LK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67129C4CEF1;
+	Mon, 27 Oct 2025 19:11:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591888;
-	bh=KRp+sjnQBJGiec2Pg+3B/Rlxct92N0s/bzVG+QQpI8M=;
+	s=korg; t=1761592263;
+	bh=bzTqXf2LR3Mh1dlP/zlIffAIBN+ERHH7qN1m4IRK3cY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tQz7BATip2I1UkNUOCzbemUi4cuY7vquRckNWApQCTmOUa6jSmdvLgG5Rzi4cVBXI
-	 x/H19yhYgrdHVav0WtYu7Ii7GlwIgHTsgJ72TaL+sUuX57URqHCr2573XQHLOrceXZ
-	 Hb0u+jsd0VmXM0Oa4yAbRPVAAKgSAfAZB6AynF5c=
+	b=kNsu+9LKNDseYpICHsbygsEN4aymBrO7iGNnRQ1LFXHXliBiW7cQPLxgGXvr+0N1u
+	 ME/RA7aJrFoP3DfZSbZpHg5LHm9JegJp75omAcaaUTUt20/CGKBypAHgRdKKh/9XPI
+	 E1YfZZPKt0VO4BdX+c4zCYByyBrBjn/oFUW9BN6o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiaming Zhang <r772577952@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 037/123] ALSA: usb-audio: Fix NULL pointer deference in try_to_register_card
+Subject: [PATCH 6.1 056/157] ASoC: nau8821: Add DMI quirk to bypass jack debounce circuit
 Date: Mon, 27 Oct 2025 19:35:17 +0100
-Message-ID: <20251027183447.394030296@linuxfoundation.org>
+Message-ID: <20251027183502.793039047@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183446.381986645@linuxfoundation.org>
-References: <20251027183446.381986645@linuxfoundation.org>
+In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
+References: <20251027183501.227243846@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +62,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiaming Zhang <r772577952@gmail.com>
+From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
 
-[ Upstream commit 28412b489b088fb88dff488305fd4e56bd47f6e4 ]
+[ Upstream commit 2b4eda7bf7d8a4e2f7575a98f55d8336dec0f302 ]
 
-In try_to_register_card(), the return value of usb_ifnum_to_if() is
-passed directly to usb_interface_claimed() without a NULL check, which
-will lead to a NULL pointer dereference when creating an invalid
-USB audio device. Fix this by adding a check to ensure the interface
-pointer is valid before passing it to usb_interface_claimed().
+Stress testing the audio jack hotplug handling on a few Steam Deck units
+revealed that the debounce circuit is responsible for having a negative
+impact on the detection reliability, e.g. in some cases the ejection
+interrupt is not fired, while in other instances it goes into a kind of
+invalid state and generates a flood of misleading interrupts.
 
-Fixes: 39efc9c8a973 ("ALSA: usb-audio: Fix last interface check for registration")
-Closes: https://lore.kernel.org/all/CANypQFYtQxHL5ghREs-BujZG413RPJGnO5TH=xjFBKpPts33tA@mail.gmail.com/
-Signed-off-by: Jiaming Zhang <r772577952@gmail.com>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Add new entries to the DMI table introduced via commit 1bc40efdaf4a
+("ASoC: nau8821: Add DMI quirk mechanism for active-high jack-detect")
+and extend the quirk logic to allow bypassing the debounce circuit used
+for jack detection on Valve Steam Deck LCD and OLED models.
+
+While at it, rename existing NAU8821_JD_ACTIVE_HIGH quirk bitfield to
+NAU8821_QUIRK_JD_ACTIVE_HIGH.  This should help improve code readability
+by differentiating from similarly named register bits.
+
+Fixes: aab1ad11d69f ("ASoC: nau8821: new driver")
+Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+Link: https://patch.msgid.link/20251003-nau8821-jdet-fixes-v1-4-f7b0e2543f09@collabora.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/card.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ sound/soc/codecs/nau8821.c | 33 +++++++++++++++++++++++++++------
+ 1 file changed, 27 insertions(+), 6 deletions(-)
 
-diff --git a/sound/usb/card.c b/sound/usb/card.c
-index bec6d41a143d2..33ffa62032ab9 100644
---- a/sound/usb/card.c
-+++ b/sound/usb/card.c
-@@ -753,10 +753,16 @@ get_alias_quirk(struct usb_device *dev, unsigned int id)
-  */
- static int try_to_register_card(struct snd_usb_audio *chip, int ifnum)
- {
-+	struct usb_interface *iface;
-+
- 	if (check_delayed_register_option(chip) == ifnum ||
--	    chip->last_iface == ifnum ||
--	    usb_interface_claimed(usb_ifnum_to_if(chip->dev, chip->last_iface)))
-+	    chip->last_iface == ifnum)
-+		return snd_card_register(chip->card);
-+
-+	iface = usb_ifnum_to_if(chip->dev, chip->last_iface);
-+	if (iface && usb_interface_claimed(iface))
- 		return snd_card_register(chip->card);
-+
- 	return 0;
- }
+diff --git a/sound/soc/codecs/nau8821.c b/sound/soc/codecs/nau8821.c
+index 380ceac4d8700..66309eede0dbd 100644
+--- a/sound/soc/codecs/nau8821.c
++++ b/sound/soc/codecs/nau8821.c
+@@ -26,7 +26,8 @@
+ #include <sound/tlv.h>
+ #include "nau8821.h"
  
+-#define NAU8821_JD_ACTIVE_HIGH			BIT(0)
++#define NAU8821_QUIRK_JD_ACTIVE_HIGH			BIT(0)
++#define NAU8821_QUIRK_JD_DB_BYPASS			BIT(1)
+ 
+ static int nau8821_quirk;
+ static int quirk_override = -1;
+@@ -1043,9 +1044,10 @@ static void nau8821_setup_inserted_irq(struct nau8821 *nau8821)
+ 	regmap_update_bits(regmap, NAU8821_R1D_I2S_PCM_CTRL2,
+ 		NAU8821_I2S_MS_MASK, NAU8821_I2S_MS_SLAVE);
+ 
+-	/* Not bypass de-bounce circuit */
+-	regmap_update_bits(regmap, NAU8821_R0D_JACK_DET_CTRL,
+-		NAU8821_JACK_DET_DB_BYPASS, 0);
++	/* Do not bypass de-bounce circuit */
++	if (!(nau8821_quirk & NAU8821_QUIRK_JD_DB_BYPASS))
++		regmap_update_bits(regmap, NAU8821_R0D_JACK_DET_CTRL,
++				   NAU8821_JACK_DET_DB_BYPASS, 0);
+ 
+ 	regmap_update_bits(regmap, NAU8821_R0F_INTERRUPT_MASK,
+ 		NAU8821_IRQ_EJECT_EN, 0);
+@@ -1718,7 +1720,23 @@ static const struct dmi_system_id nau8821_quirk_table[] = {
+ 			DMI_MATCH(DMI_SYS_VENDOR, "Positivo Tecnologia SA"),
+ 			DMI_MATCH(DMI_BOARD_NAME, "CW14Q01P-V2"),
+ 		},
+-		.driver_data = (void *)(NAU8821_JD_ACTIVE_HIGH),
++		.driver_data = (void *)(NAU8821_QUIRK_JD_ACTIVE_HIGH),
++	},
++	{
++		/* Valve Steam Deck LCD */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Valve"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "Jupiter"),
++		},
++		.driver_data = (void *)(NAU8821_QUIRK_JD_DB_BYPASS),
++	},
++	{
++		/* Valve Steam Deck OLED */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Valve"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "Galileo"),
++		},
++		.driver_data = (void *)(NAU8821_QUIRK_JD_DB_BYPASS),
+ 	},
+ 	{}
+ };
+@@ -1760,9 +1778,12 @@ static int nau8821_i2c_probe(struct i2c_client *i2c)
+ 
+ 	nau8821_check_quirks();
+ 
+-	if (nau8821_quirk & NAU8821_JD_ACTIVE_HIGH)
++	if (nau8821_quirk & NAU8821_QUIRK_JD_ACTIVE_HIGH)
+ 		nau8821->jkdet_polarity = 0;
+ 
++	if (nau8821_quirk & NAU8821_QUIRK_JD_DB_BYPASS)
++		dev_dbg(dev, "Force bypassing jack detection debounce circuit\n");
++
+ 	nau8821_print_device_properties(nau8821);
+ 
+ 	nau8821_reset_chip(nau8821->regmap);
 -- 
 2.51.0
 
