@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-190152-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190160-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C6A6C1005F
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:43:56 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05E95C100A4
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:44:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 0874834CABC
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:43:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1FAA3462617
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:44:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02F56320CBE;
-	Mon, 27 Oct 2025 18:42:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1ECCD321F5F;
+	Mon, 27 Oct 2025 18:42:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ug9nwPG/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O/HGAVBL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5CAE31B82E
-	for <stable@vger.kernel.org>; Mon, 27 Oct 2025 18:42:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D153F31D377
+	for <stable@vger.kernel.org>; Mon, 27 Oct 2025 18:42:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761590571; cv=none; b=iXtecZigQug73QVlNHYVAxSm+a0QnnPdP7SdqGo6+aRBND7JDvfZXG1fK6iTU7tJQSvMF5gUpGCVM0L1bDTgXbFDG877R6mKCVpQTPfsxQGccp5wRHTh+lOZRlz7m/eu2nHQodrT7iLfVajXmRpT6BWD4znNNQzyapGHNozwW+I=
+	t=1761590576; cv=none; b=m7xjIjoJMUJrVw+hLVSlYonlAyun9ZFTVumODGFyiaIK7A0ubX1zjYpV2kLKfJxqyDGgeJsA44uUlVXj1ePbE+P5aq12VclJuWwWwwRGMtLp5HFfy+hFJw/oF9BjDtvVjcu/TjsvviEPNQKJGDHryMV6AV91NQJYP1MwadOtjmE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761590571; c=relaxed/simple;
-	bh=Ckwe6bHp0CdVI6m0xvtOxnT6bprh/v1lMkEQpLjYPug=;
+	s=arc-20240116; t=1761590576; c=relaxed/simple;
+	bh=dT7NFPo/BVjeqjFiNQKUUZRZjQzlhzwBdprkkFb18RI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IaCzhcwLTfTQ4AXDI2iHc4pK1UqXOcMhrq5RrOsNsR6OiLSxKLqaeSz7cG4+lrpyjsUo7BF8bICqEqVOoEd7J7Y0gsP7ruYu6xyB4e9Tzhwx/6X3AyiXQPCJ6WO0tgM1SIaHRg3XjXeT2xWp+zv02v7/tH0ERJCav9wbg/V78rc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ug9nwPG/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18C1AC116B1;
-	Mon, 27 Oct 2025 18:42:51 +0000 (UTC)
+	 MIME-Version; b=DD8fDfa0KAEOa6jy+keb13D8DWM8JPmIQbaAU1Gn3D52Zx/G16Adnrke3Lq//LW0kNmlVue5dEmBMxECMyI0ksbljUrmC1Zy3V3X4AOuJNGuYYlvq3sE8K4XlJfu3xUHTEGrlvQcSkKDK81CORkwZvZW5ZJQjhzcpXiQAO9JHa4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O/HGAVBL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E77A3C116B1;
+	Mon, 27 Oct 2025 18:42:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761590571;
-	bh=Ckwe6bHp0CdVI6m0xvtOxnT6bprh/v1lMkEQpLjYPug=;
+	s=k20201202; t=1761590576;
+	bh=dT7NFPo/BVjeqjFiNQKUUZRZjQzlhzwBdprkkFb18RI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ug9nwPG/ZWA1fiQ5XEXZ/Nnfvbtr3YHGq6tqEZvldR+OS6jzkFTSaG0Zgr3Hlo1oc
-	 g1gMnM39SgPc6L8gRAqII+Mzf1tAEj7nwsrNrfmeRA+T7++vDrQwhXNR1kTMlYM9i+
-	 sn5hpvQARwG2wvqvq3qpIJLuEiWHX9XfAX7FBuo3wr34jf2IvNu0Zr/6NKxPXoIHB3
-	 fh35nqnFyy0aie/jvU4x+XczqhXB18VXCYYBALX74vOUZ4Nw3cBecv86Gd/YkONLoo
-	 btaFS6N42vtXC3fVpTWlY10udotuKyvHxFlZKmJJRxxHUn/mmDudiKbmYqz3jdrTDl
-	 BNex6x7aBNMYg==
+	b=O/HGAVBLIZJ4aJpAQLEXQG9dM0pQK1hIsOtjfFP2KjaqXG4mCkJXTW1MQzg+HeDuK
+	 vvPMIqlW5gpNx+E4LKJkyp18QlxZNcHjrdbIhbvd+NhfgjjfGYMh7jWu0GmDRwzCri
+	 WKh1vnTwe29eq9FvkVNHKPrQM8Pt6IoYtf2iu1zyBGOKjyym5bPv475cdOk8qwy1Ah
+	 SyUIq87Ps1MBbKB4zn5Ux/zQoqd32Tdu149kzRNYRp0ZLfUloZJZSVo34WYH99Ypwa
+	 5sDYUjys35YQJIdulcVOjHRlptE+RjnywX/sU1khXztIheeeFrdj+h1CL9RmQQle48
+	 6ib6Q7VBQ7rWA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+Cc: Uday M Bhat <uday.m.bhat@intel.com>,
+	Samuel Jacob <samjaco@google.com>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10.y 1/2] serial: 8250_dw: Use devm_add_action_or_reset()
-Date: Mon, 27 Oct 2025 14:42:48 -0400
-Message-ID: <20251027184249.638796-1-sashal@kernel.org>
+Subject: [PATCH 5.15.y 3/6] xhci: dbc: Allow users to modify DbC poll interval via sysfs
+Date: Mon, 27 Oct 2025 14:42:49 -0400
+Message-ID: <20251027184252.639069-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025102700-sleep-robotics-c9e3@gregkh>
-References: <2025102700-sleep-robotics-c9e3@gregkh>
+In-Reply-To: <20251027184252.639069-1-sashal@kernel.org>
+References: <2025102714-patriot-eel-32c8@gregkh>
+ <20251027184252.639069-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,142 +63,134 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Uday M Bhat <uday.m.bhat@intel.com>
 
-[ Upstream commit 295b09128d12fb1a7a67f771cc0ae0df869eafaf ]
+[ Upstream commit de3edd47a18fe05a560847cc3165871474e08196 ]
 
-Slightly simplify ->probe() and drop a few goto labels by using
-devm_add_action_or_reset() for clock and reset cleanup.
+xhci DbC driver polls the host controller for DbC events at a reduced
+rate when DbC is enabled but there are no active data transfers.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20220509172129.37770-1-andriy.shevchenko@linux.intel.com
+Allow users to modify this reduced poll interval via dbc_poll_interval_ms
+sysfs entry. Unit is milliseconds and accepted range is 0 to 5000.
+Max interval of 5000 ms is selected as it matches the common 5 second
+timeout used in usb stack.
+Default value is 64 milliseconds.
+
+A long interval is useful when users know there won't be any activity
+on systems connected via DbC for long periods, and want to avoid
+battery drainage due to unnecessary CPU usage.
+
+Example being Android Debugger (ADB) usage over DbC on ChromeOS systems
+running Android Runtime.
+
+[minor changes and rewording -Mathias]
+
+Co-developed-by: Samuel Jacob <samjaco@google.com>
+Signed-off-by: Samuel Jacob <samjaco@google.com>
+Signed-off-by: Uday M Bhat <uday.m.bhat@intel.com>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20240626124835.1023046-5-mathias.nyman@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: daeb4037adf7 ("serial: 8250_dw: handle reset control deassert error")
+Stable-dep-of: f3d12ec847b9 ("xhci: dbc: fix bogus 1024 byte prefix if ttyDBC read races with stall event")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/8250/8250_dw.c | 63 +++++++++++++++----------------
- 1 file changed, 31 insertions(+), 32 deletions(-)
+ .../testing/sysfs-bus-pci-drivers-xhci_hcd    | 10 +++++
+ drivers/usb/host/xhci-dbgcap.c                | 38 +++++++++++++++++++
+ drivers/usb/host/xhci-dbgcap.h                |  2 +-
+ 3 files changed, 49 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/tty/serial/8250/8250_dw.c b/drivers/tty/serial/8250/8250_dw.c
-index ace221afeb039..6abdebb63ecbe 100644
---- a/drivers/tty/serial/8250/8250_dw.c
-+++ b/drivers/tty/serial/8250/8250_dw.c
-@@ -438,6 +438,16 @@ static void dw8250_quirks(struct uart_port *p, struct dw8250_data *data)
- 	}
+diff --git a/Documentation/ABI/testing/sysfs-bus-pci-drivers-xhci_hcd b/Documentation/ABI/testing/sysfs-bus-pci-drivers-xhci_hcd
+index 5a775b8f65435..fc82aa4e54b00 100644
+--- a/Documentation/ABI/testing/sysfs-bus-pci-drivers-xhci_hcd
++++ b/Documentation/ABI/testing/sysfs-bus-pci-drivers-xhci_hcd
+@@ -75,3 +75,13 @@ Description:
+ 		The default value is 1  (GNU Remote Debug command).
+ 		Other permissible value is 0 which is for vendor defined debug
+ 		target.
++
++What:		/sys/bus/pci/drivers/xhci_hcd/.../dbc_poll_interval_ms
++Date:		February 2024
++Contact:	Mathias Nyman <mathias.nyman@linux.intel.com>
++Description:
++		This attribute adjust the polling interval used to check for
++		DbC events. Unit is milliseconds. Accepted values range from 0
++		up to 5000. The default value is 64 ms.
++		This polling interval is used while DbC is enabled but has no
++		active data transfers.
+diff --git a/drivers/usb/host/xhci-dbgcap.c b/drivers/usb/host/xhci-dbgcap.c
+index fa4ef738d9e62..004e69f424860 100644
+--- a/drivers/usb/host/xhci-dbgcap.c
++++ b/drivers/usb/host/xhci-dbgcap.c
+@@ -1214,11 +1214,48 @@ static ssize_t dbc_bInterfaceProtocol_store(struct device *dev,
+ 	return size;
  }
  
-+static void dw8250_clk_disable_unprepare(void *data)
++static ssize_t dbc_poll_interval_ms_show(struct device *dev,
++					 struct device_attribute *attr,
++					 char *buf)
 +{
-+	clk_disable_unprepare(data);
++	struct xhci_dbc *dbc;
++	struct xhci_hcd *xhci;
++
++	xhci = hcd_to_xhci(dev_get_drvdata(dev));
++	dbc = xhci->dbc;
++
++	return sysfs_emit(buf, "%u\n", dbc->poll_interval);
 +}
 +
-+static void dw8250_reset_control_assert(void *data)
++static ssize_t dbc_poll_interval_ms_store(struct device *dev,
++					  struct device_attribute *attr,
++					  const char *buf, size_t size)
 +{
-+	reset_control_assert(data);
-+}
++	struct xhci_dbc *dbc;
++	struct xhci_hcd *xhci;
++	u32 value;
++	int ret;
 +
- static int dw8250_probe(struct platform_device *pdev)
- {
- 	struct uart_8250_port uart = {}, *up = &uart;
-@@ -539,35 +549,43 @@ static int dw8250_probe(struct platform_device *pdev)
- 	if (err)
- 		dev_warn(dev, "could not enable optional baudclk: %d\n", err);
- 
-+	err = devm_add_action_or_reset(dev, dw8250_clk_disable_unprepare, data->clk);
-+	if (err)
-+		return err;
-+
- 	if (data->clk)
- 		p->uartclk = clk_get_rate(data->clk);
- 
- 	/* If no clock rate is defined, fail. */
- 	if (!p->uartclk) {
- 		dev_err(dev, "clock rate not defined\n");
--		err = -EINVAL;
--		goto err_clk;
++	ret = kstrtou32(buf, 0, &value);
++	if (ret || value > DBC_POLL_INTERVAL_MAX)
 +		return -EINVAL;
- 	}
- 
- 	data->pclk = devm_clk_get_optional(dev, "apb_pclk");
--	if (IS_ERR(data->pclk)) {
--		err = PTR_ERR(data->pclk);
--		goto err_clk;
--	}
-+	if (IS_ERR(data->pclk))
-+		return PTR_ERR(data->pclk);
- 
- 	err = clk_prepare_enable(data->pclk);
- 	if (err) {
- 		dev_err(dev, "could not enable apb_pclk\n");
--		goto err_clk;
-+		return err;
- 	}
- 
-+	err = devm_add_action_or_reset(dev, dw8250_clk_disable_unprepare, data->pclk);
-+	if (err)
-+		return err;
 +
- 	data->rst = devm_reset_control_get_optional_exclusive(dev, NULL);
--	if (IS_ERR(data->rst)) {
--		err = PTR_ERR(data->rst);
--		goto err_pclk;
--	}
-+	if (IS_ERR(data->rst))
-+		return PTR_ERR(data->rst);
++	xhci = hcd_to_xhci(dev_get_drvdata(dev));
++	dbc = xhci->dbc;
 +
- 	reset_control_deassert(data->rst);
- 
-+	err = devm_add_action_or_reset(dev, dw8250_reset_control_assert, data->rst);
-+	if (err)
-+		return err;
++	dbc->poll_interval = value;
 +
- 	dw8250_quirks(p, data);
++	mod_delayed_work(system_wq, &dbc->event_work, 0);
++
++	return size;
++}
++
+ static DEVICE_ATTR_RW(dbc);
+ static DEVICE_ATTR_RW(dbc_idVendor);
+ static DEVICE_ATTR_RW(dbc_idProduct);
+ static DEVICE_ATTR_RW(dbc_bcdDevice);
+ static DEVICE_ATTR_RW(dbc_bInterfaceProtocol);
++static DEVICE_ATTR_RW(dbc_poll_interval_ms);
  
- 	/* If the Busy Functionality is not implemented, don't handle it */
-@@ -585,10 +603,8 @@ static int dw8250_probe(struct platform_device *pdev)
- 	}
+ static struct attribute *dbc_dev_attributes[] = {
+ 	&dev_attr_dbc.attr,
+@@ -1226,6 +1263,7 @@ static struct attribute *dbc_dev_attributes[] = {
+ 	&dev_attr_dbc_idProduct.attr,
+ 	&dev_attr_dbc_bcdDevice.attr,
+ 	&dev_attr_dbc_bInterfaceProtocol.attr,
++	&dev_attr_dbc_poll_interval_ms.attr,
+ 	NULL
+ };
  
- 	data->data.line = serial8250_register_8250_port(up);
--	if (data->data.line < 0) {
--		err = data->data.line;
--		goto err_reset;
--	}
-+	if (data->data.line < 0)
-+		return data->data.line;
- 
- 	/*
- 	 * Some platforms may provide a reference clock shared between several
-@@ -609,17 +625,6 @@ static int dw8250_probe(struct platform_device *pdev)
- 	pm_runtime_enable(dev);
- 
- 	return 0;
+diff --git a/drivers/usb/host/xhci-dbgcap.h b/drivers/usb/host/xhci-dbgcap.h
+index 86312043552df..abafd31e04e05 100644
+--- a/drivers/usb/host/xhci-dbgcap.h
++++ b/drivers/usb/host/xhci-dbgcap.h
+@@ -94,7 +94,7 @@ struct dbc_ep {
+ #define DBC_QUEUE_SIZE			16
+ #define DBC_WRITE_BUF_SIZE		8192
+ #define DBC_POLL_INTERVAL_DEFAULT	64	/* milliseconds */
 -
--err_reset:
--	reset_control_assert(data->rst);
--
--err_pclk:
--	clk_disable_unprepare(data->pclk);
--
--err_clk:
--	clk_disable_unprepare(data->clk);
--
--	return err;
- }
- 
- static int dw8250_remove(struct platform_device *pdev)
-@@ -637,12 +642,6 @@ static int dw8250_remove(struct platform_device *pdev)
- 
- 	serial8250_unregister_port(data->data.line);
- 
--	reset_control_assert(data->rst);
--
--	clk_disable_unprepare(data->pclk);
--
--	clk_disable_unprepare(data->clk);
--
- 	pm_runtime_disable(dev);
- 	pm_runtime_put_noidle(dev);
- 
++#define DBC_POLL_INTERVAL_MAX		5000	/* milliseconds */
+ /*
+  * Private structure for DbC hardware state:
+  */
 -- 
 2.51.0
 
