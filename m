@@ -1,334 +1,151 @@
-Return-Path: <stable+bounces-190024-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190025-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C1DFC0EF31
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 16:27:43 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6DAAC0EF9D
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 16:33:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 075464E2AAA
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 15:19:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8994C3BCA08
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 15:28:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B0BE2C325C;
-	Mon, 27 Oct 2025 15:19:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7ACD230BB9E;
+	Mon, 27 Oct 2025 15:27:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="guaOA1J/"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="hp/F1YYs"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D58E302143
-	for <stable@vger.kernel.org>; Mon, 27 Oct 2025 15:19:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.12
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761578375; cv=fail; b=epeWYHIgC9Dc9YLCle77nxcP+GxNZLsPMuxOWLyuoakRnSzIPCDDD/nEOx9O6LP24FS6KQdfvK6alU1DUZoiOwp/FUPOAQcpQOgN7uRHcmMKMRHcJ45CAxIrNOShuo8dCTdYFPlHY+CNXMr2jo33gMT8V5UstbjpOGCjJZL90Yk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761578375; c=relaxed/simple;
-	bh=380cyxoXF7lt8ErwL4mFK93yuGXvVHXrj9vdu2mqXF4=;
-	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=sPhP0B1ldPio5y5aAoOjLrkpFgphqh9o4bRHpUP+HB2U/LiixdZhxmdVFWsnRs/Pg8oFwgT4XQVbkjtg8QLKbnXxAZ96tmo2aZX4AY1GwDjMpczm93ZZiJkE67kgsesURAN5dGh/6OYEptfwC+lAJkOyrepwAkjMrYwzYQPKO2U=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=guaOA1J/; arc=fail smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1761578374; x=1793114374;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=380cyxoXF7lt8ErwL4mFK93yuGXvVHXrj9vdu2mqXF4=;
-  b=guaOA1J/At6ByuIwG80+9Xb3KBgrrdvUoglR5Q+FMhrCh25ITwc73KHm
-   R+zDeDHibpwBKSXmRRCDUf0BJ7c3oF63g4s7F0KQ4zOx+UdU2+jobsMSg
-   tDvZ1KRPBiRFHFxRdWIk2Zso3j/HAHQFl8uCdY7nClfzON2oQmelO+kYL
-   ZxzAZcb5hH33apWA8uregvKAYCKSFpZKAC66hO8r/UwkDxKjOP5djDCRu
-   21w3wBT+Q4KbA5f69xY7mrz8Q0ujENeyLoY3bK3FFWjR+qo7gRkTb4b7K
-   STY03xxiUZqgs15G990NEXV4EmqqPv7an3zv6DG+fQa9WelOokqJXTZlQ
-   w==;
-X-CSE-ConnectionGUID: zCzdXxJCS1W94NE5wM6jTw==
-X-CSE-MsgGUID: D1sILACZRrGaIcaEo02THw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="75105438"
-X-IronPort-AV: E=Sophos;i="6.19,259,1754982000"; 
-   d="scan'208";a="75105438"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2025 08:19:33 -0700
-X-CSE-ConnectionGUID: 4IlKVQJySZSlkAiHs5lYZw==
-X-CSE-MsgGUID: i/cn8B+9TsO3A0V9GHGXhQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,259,1754982000"; 
-   d="scan'208";a="215961267"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
-  by fmviesa001.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2025 08:19:33 -0700
-Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27; Mon, 27 Oct 2025 08:19:32 -0700
-Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27 via Frontend Transport; Mon, 27 Oct 2025 08:19:32 -0700
-Received: from PH8PR06CU001.outbound.protection.outlook.com (40.107.209.22) by
- edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27; Mon, 27 Oct 2025 08:19:31 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Xn5wfh87NzH8zRawihAdJCBVJKxxgMlTmJr1b8Scg4nNI9XntvpnxM6gIWBMQ3wkdlXlkPLHaHsgEwASc6g4QJrAcU9oEqCmLC4vTB6pkk3rJJRZZAJ91embSoqDGo5s/4kU1oQnfBU0gda8c1m54h6zIDw5aaOdM5GeebY5mk51BvUSEYnm2+987cMrSak67ALf84Ct4/9SGW5Cyg/AC3O+hK+Hm1fMQyEszrSE/V468bs8HwQ+iUGE64ROa4DfZNdNOl8Oljxlws0+CE6TKaPVqMdafSMTyDYLXa1ZR0WBm2JxkTnL+Ap0tqVpwDXLUduAid9bp8Syjo7o0yzKoQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=KD12g7CmYshMBmqG4yfMEhFd30Jm/ANjc13/pUDAxnM=;
- b=LXIjaiGpRnhUiasIu3W7sFri3M9FkjLgBOXQr7UdS18gahMGyNc0I2nzJvPaODC8TQ6+TI89Ev69kNprJWAesBK3RlrGWvExpPXmlxjhxfiyPT8KAHheZfy7cQoalE0/T7fl4UCAyhd+eM7w2O7rnmPCJNiEUjbv9YYWBVD7EbNiazBXpR/U6zrLq4ljWNR2ODLjxDcld3jTe8Mt7NVu8kb7gAGYgGTOW6zvDZfai93VwAVd0t1u71HcZ2K8PKna5UU6ISqTtZzEg8C46VK5f55rrk3F1ffV4AkgSbas8CCFwQPsAG4tUol/mS7m2RTCUDHA7Ic5VrBAcTFb0XGnlA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DS0PR11MB8718.namprd11.prod.outlook.com (2603:10b6:8:1b9::20)
- by IA0PR11MB7742.namprd11.prod.outlook.com (2603:10b6:208:403::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9253.19; Mon, 27 Oct
- 2025 15:19:29 +0000
-Received: from DS0PR11MB8718.namprd11.prod.outlook.com
- ([fe80::4b3b:9dbe:f68c:d808]) by DS0PR11MB8718.namprd11.prod.outlook.com
- ([fe80::4b3b:9dbe:f68c:d808%4]) with mapi id 15.20.9253.018; Mon, 27 Oct 2025
- 15:19:29 +0000
-Message-ID: <e81c5f0c-eaf5-457e-8257-eaf0e7116164@intel.com>
-Date: Mon, 27 Oct 2025 16:19:24 +0100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH AUTOSEL 6.17] idpf: link NAPIs to queues
-To: Sasha Levin <sashal@kernel.org>
-CC: <patches@lists.linux.dev>, <stable@vger.kernel.org>, Maciej Fijalkowski
-	<maciej.fijalkowski@intel.com>, Ramu R <ramu.r@intel.com>, Tony Nguyen
-	<anthony.l.nguyen@intel.com>, <przemyslaw.kitszel@intel.com>,
-	<intel-wired-lan@lists.osuosl.org>
-References: <20251025160905.3857885-1-sashal@kernel.org>
- <20251025160905.3857885-238-sashal@kernel.org>
-From: Alexander Lobakin <aleksander.lobakin@intel.com>
-Content-Language: en-US
-In-Reply-To: <20251025160905.3857885-238-sashal@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: DU2PR04CA0166.eurprd04.prod.outlook.com
- (2603:10a6:10:2b0::21) To DS0PR11MB8718.namprd11.prod.outlook.com
- (2603:10b6:8:1b9::20)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF02030B51C;
+	Mon, 27 Oct 2025 15:27:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1761578871; cv=none; b=jwyxjCDsv8q1oXEdHDLtlI79QVIhX5y06+9GsFiTcpGD/irhRqooqdddJnGehTVnCSejEVXWMTucv5yU460vUU0YJDsKCsbGaNDfaIbrijbBg7SKsH7ZzQGfJvUFH+I+munjWIo1pxKqu017EpDHqymYAiITAih82R9kr0kGfrY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1761578871; c=relaxed/simple;
+	bh=pC9WNtnSdSWvIcqNoa/8q9bz1yev4yl3OAHJhURI6mw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=drwuG6cab25y4KVJe+u30s1FjHIjeK/KPCDYYCso5x/uDQovT+Nnve2EG4ZlaD4WYbHwlFncphxVBFnh37HjObBzYIZgCTO+sRnlFC9PzXZUWLoobWBjCskcfW1F6QMT8XtiJMY4MZxgg4lWg12/5u9lAbO/oh9ngEARQ5U70RM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=hp/F1YYs; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59RCE9hR012355;
+	Mon, 27 Oct 2025 15:27:48 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=0hnTkGhW0Qu058vS20Ne+nFknI24pW
+	Wq3ScsTj/z+C0=; b=hp/F1YYs2aaOJyUE342YIMD6X+5E1AMCDSf5lJmmIJiG3s
+	wz+QtEduGVhjAjcLj1DB5Hh20i/BOmXr0RxS1BpoPzwMeJpLvrWI0KVl9kUkmvBQ
+	cANa+hh7bPRdC++7eKUcMtwAJmCstMOJdEWQLw1NB8TyGRg7lWKUJofgdufSplIy
+	2IYypNcRYDbNUg7eE4VoFlLK5OqwmA/Pf1RqLNBN63dfjheRdKHZ7z5jpyAGQyEH
+	3YIkrFMRwpupUo3yKCqCku3Ju1oOgFwP+N1lKUBGyjzTgvZzdNBp0QxfCZS8y30Q
+	mYbyoKpXj1ZLKjHqeB4mlTiarNKCWx4lRg1TY/8A==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a0p81qgst-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 27 Oct 2025 15:27:48 +0000 (GMT)
+Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 59RFKpAs028083;
+	Mon, 27 Oct 2025 15:27:48 GMT
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a0p81qgss-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 27 Oct 2025 15:27:48 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59RCJu1e009455;
+	Mon, 27 Oct 2025 15:27:47 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4a1b3hx1f3-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 27 Oct 2025 15:27:47 +0000
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 59RFRhga58393030
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 27 Oct 2025 15:27:43 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8DE3E20040;
+	Mon, 27 Oct 2025 15:27:43 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1332F20049;
+	Mon, 27 Oct 2025 15:27:43 +0000 (GMT)
+Received: from osiris (unknown [9.111.14.160])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Mon, 27 Oct 2025 15:27:42 +0000 (GMT)
+Date: Mon, 27 Oct 2025 16:27:41 +0100
+From: Heiko Carstens <hca@linux.ibm.com>
+To: Miaoqian Lin <linmq006@gmail.com>
+Cc: Alexander Gordeev <agordeev@linux.ibm.com>,
+        Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>, linux-s390@vger.kernel.org,
+        linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
+        stable@vger.kernel.org
+Subject: Re: [PATCH v2] s390/mm: Fix memory leak in add_marker() when
+ kvrealloc fails
+Message-ID: <20251027152741.14551Cb6-hca@linux.ibm.com>
+References: <20251027150838.59571-1-linmq006@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR11MB8718:EE_|IA0PR11MB7742:EE_
-X-MS-Office365-Filtering-Correlation-Id: f2596ca3-3d29-46dc-85c8-08de156c3915
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024|7053199007;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?R0crck95dHlENDJyUG5jN0lpT0x2akxLUUdMWVg1Tlk0bHYxS21iNHYwVnFL?=
- =?utf-8?B?cDRPWVFlbGt4cndSTWlKbUtpZGtVQmI2OTdVNFphdmMzV3VmUUttMno1M0tn?=
- =?utf-8?B?V2RncmlKV29rNnNvcGgreFNZUlJIS0dBMzlYNlloTmpoREhHNmtTdjkvUDRO?=
- =?utf-8?B?TkhCWkFub2VIbVNZckdxaVRUUG5oZ0ZBUHgyVU1WYW1SOWJSQkladWZKdXk0?=
- =?utf-8?B?b3dreFkzc0pWZ01QSjNJQ0c2RjFER21NSlBlYmZzSUV5UW1lcFRxK3ZqbVgy?=
- =?utf-8?B?WkNZTXpIbGgyVE8vSmg5U25qQ3QrVXAzc1dwdWtJQzUvQmFNeHRLS1RGRWF3?=
- =?utf-8?B?bHRUdk9RdTRuekRXeHJQNzhXMCtGbDJhRWlzLzhFRlpBK2pBUnFGeVVENzY4?=
- =?utf-8?B?V1FkZ2toRXNIWmd1ejVtYnozVUtyVzBCcHRYZnVXblZrTkxValpqVWZQNGlP?=
- =?utf-8?B?bjAvd1dmZnhDY0R0dU5RWXZkcDBMRkliL1JtUDN6dk9JbnB1bnpCanVKSDIy?=
- =?utf-8?B?dkJTVHVHNytsWFl1MkF2VXRXdDVlTTk4ZWZnRlhvRWxWL2tMcjFwTnpUQytn?=
- =?utf-8?B?OGdmTEFsd2RwWGdRUjdpZkxNSEU2RnFXRU8xcjhjRzUvK3lBWWN1N1lHcVN3?=
- =?utf-8?B?SXJZTjZ5anp2dVRZM2EwTnZYZXpUV09VR1ovUzliZk11OTFKOUdBcEdXVGFB?=
- =?utf-8?B?d1RleC85Z2dnLzUrQ0VldWJacXQxbm5QbXdVSWlsTnZhUGJzL2dCSy9RTnVE?=
- =?utf-8?B?b0lmTFI3ajFRZ3lTdGJhQktJeDRtdVo0ZURRRVNUTU55NDJEQzY5dnI2MEM0?=
- =?utf-8?B?L3VVT1V4eUVwdG9WbkZMTDVleGZpbkErdG5nalJMZzBtWVh5OU4zRGFwWk5C?=
- =?utf-8?B?M1NWRUwyKzNPZUtCQ21JbkpPT2VtV1k1YXJBTXJ4U0RvWmNWUEg0dUh2SkdQ?=
- =?utf-8?B?VXdpanhkNEdyZ2JUUFh0V2ZNMjBhSGxwL3gvV2NFeWJkL1FCKzNjckMrN0hJ?=
- =?utf-8?B?U3JjdGtZZGQvQk16OW0rMlM5Z25pWHE2UTV4RHpXTjAxMk5qdmpoVlh2K2NP?=
- =?utf-8?B?WHpvNUJ4ci9oRFMrT3JVLy9QVmJNbXJCeko5Y0hQVFZkMUxBZUJ6RGk4eWhL?=
- =?utf-8?B?aVBmbUdkOE83bGw2eER2V0dKK2UxQnVzK0lPOVNZTEQrNUY4d2hObDkrR25F?=
- =?utf-8?B?QWtUZXk4UmpNU3RBMW9SQUEzR043Sm15U01YcVU5MEd3Y1JCblRnTDN0VStG?=
- =?utf-8?B?dkUwUU5EVnN4Z1VzY0c1aEVCeDIxVGhQRmdvZmc5L09sS0xDejcrZ2V6ZGNE?=
- =?utf-8?B?ZlVwbjU5Y0gzampjeVlQNHpnalVYcGkyaERCZkNwUUJxQjRQL1liL2ZTb1hX?=
- =?utf-8?B?VjBYQll5Q2YvejZOTzA5VmMvMlFoc3M0NDFpU1BIT2o4YjFKTkcwRHpFWFcv?=
- =?utf-8?B?UTJ2bmpObU9vaWFwRU9FSHZmMlYxanlKSVdSZk1PY253NEtHZ0paK1YwU25L?=
- =?utf-8?B?SGs4d28zWXp6MGIwNjFoTjNFRVpEZFpNTlZFRWljTjZ3ZUdhZmhaQnhRSWVu?=
- =?utf-8?B?bVkySXdYNkNldVZLS3JkQmRhcy9yUWd0SnBEUlRVeTE2aE5UYVh0YWY3amRU?=
- =?utf-8?B?ai9BQzY1L3hjNjJTV3Yya2srUjZQVEg4NGlUU1VYNDhTQU12OHRIZGY5Z09Q?=
- =?utf-8?B?L0xvbFdXKzVLZDVJWXhQdUc1U29ka2QzeGFlWEdNZ1pYc1VrTm5GeHkySGhG?=
- =?utf-8?B?WVQ0RXlVcTBQTEJ3U0RVTTB6RThBUVBTSVJLZXkwRmdRRUtnQ2wxdnM4YTY0?=
- =?utf-8?B?TlUreklhT2JXSGFFa0hmS0l4MmpqU3pXbllzWWZFSzBaTkZpZ09zZ2dKaE0w?=
- =?utf-8?B?clpIZ0Zia2tJOG5saEZzbjhWYVN0NzRHVUVOMzdlWmNUdFRiQWxIdDREYkNZ?=
- =?utf-8?Q?GP+/3IdrkMbbOziT0GPrnLLYwBH65w/I?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB8718.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?R1pmL0pKc2ZSRjNrOVBjemZtMUtuYmF2cy9hTWxBNU1vMmpOcWdud0lZbWh2?=
- =?utf-8?B?cUdCZW5OeXlZRGwveWY5a3BXelNBbktKcEJuc2piVnMrNlppUFpJRzAxaFdG?=
- =?utf-8?B?Z2tzbDhjQURNTXFQdmdWcnQ2ZjhNUUw5MFhYTU1ZcUxpcnpMSGE3NHBUamVQ?=
- =?utf-8?B?OVBVSE5tdEcwMkVIaG9pKzV0Zy9NMDhRTlpCbnIxcHVGMnlrTnF2MzRwMUxY?=
- =?utf-8?B?dlR4QXdibkY5V2RqNWM3TmxWUnlDMzk0VlhiblJHSGEvTXJzNWVQcEtTalhm?=
- =?utf-8?B?VTNmTTFMRHJ3Rzhtd09IZS9kamhkZmx3dDM1MDQzTEtsK1JKVEhubEtTaGkv?=
- =?utf-8?B?S3A2NGQrTUxQdDl3M21RQnljbXVZSlMwMzVQb1EzNW9wYStsbkhFLys5TENu?=
- =?utf-8?B?YzBhWXR0anZ0dGhFU0VvOVBJRkNRTUFpN2VjRmd3S2RaZm9LZW5UOWZDaGlF?=
- =?utf-8?B?WGVYdmFSOWNhR0pGQm44L3dISVdjZk9pT294OGc5QTdTMmoxNHphZWRMRHFK?=
- =?utf-8?B?U1JEcHRiWVIwU2srSm43QVlCUDdSWjdDdm13V1pYbkl2UjF2SlBmYTdqTTRk?=
- =?utf-8?B?T0I1bUFQR2hIcWZady9mSTBmTm1SMTJyZDZhWkhyeVd5VW9xUk5Qa1lMU0tU?=
- =?utf-8?B?dlVhQ1RQZUxNdVF6SHVYa05IeHpPemxFbmlOZkdJdGRDNTdBNGFsSzNzc0xD?=
- =?utf-8?B?TEhuekNvRElTNzFuaythUVloSmY3eWpSUTFCVnpHOERPaXh4Vm9PQ3BiMGFV?=
- =?utf-8?B?STF4SmIwUWRVMkFPam1vSkswVGNhTHN4YUd4UW5jTnJ2SWl5NXlaTEJZVGZN?=
- =?utf-8?B?TURNTkp3SW5KblI5ZUpaM1ozeGoweGhFek81YmxHalpaZWdtQ01WdElqMjRy?=
- =?utf-8?B?dGxNMkJKN2NOMzU3eHN0RG1YVm1NWkJFc0lzUlJqRUVSd2pxak84QVJycjJL?=
- =?utf-8?B?bTY0YTZpSUZrM1hCd1hPVm9ka1hOYUNCZ1hiNUJuZG1wWmcxVEtNTHppVTZV?=
- =?utf-8?B?Vmx1Y0NKS3ZDTXZmdUZFZFMxUzdJODZ5VW52KzJyS2tJZGdMYXNudVJGRnFj?=
- =?utf-8?B?a2tWRWtOU1FIZGFYSDJyOVBDTWJ5WU9rdjQ5N0JBcUduYWNsbHRHS1ZHUjJI?=
- =?utf-8?B?T2dMQldidVlHWnRjSUxqZXY0ZUNNZ2h5NUVGR1ZtZUhZQzVKK3Z5VlZVNHdo?=
- =?utf-8?B?MGFma2lRYWxEMXVOWjVGbWt6azVQSHAza3lYNWtqVDU0bWEvL3NMU01lQzRq?=
- =?utf-8?B?RDNKL3Z5ZXZEN2s5OEIzVE1HZURaQTFDN0RsZFNEc0NrTUM0ZEZKbllSYTla?=
- =?utf-8?B?dXRGdytKcElVT1ZxVWJ0ZmFuWXdLeXIvei9odGRmbUxBS203Yko1SXZKWHhE?=
- =?utf-8?B?KzN3d0p6em5vZmYwdTdiaWFYUGtWdjlaODFLMGhoRkpkdHlWNTlYNXJhZWV3?=
- =?utf-8?B?RDRpckhDaFZKWFdPenpJV0NkYk5tMEdVTXVTRitoN2JhZE9meXRwaUpHZG56?=
- =?utf-8?B?ZkFyNGc4c2NUY3pnZUZQS3UwZ2RsTG9PNkUyM28yWUc4R0h2WnMzTlYvM0Vj?=
- =?utf-8?B?MGRhazg3Vm1POFN1dE52KzVLUDJKQjVEWG1oSEdSOEtCQXZ4ZUZKZGFEQTJs?=
- =?utf-8?B?ZWxsYXBlUU9ySWpQMUxKMXlMYU9iV05rUnpzdEg3LzE1S2NrM1lWdWdzTkpm?=
- =?utf-8?B?Zm5ycUtwQVRUSDZ5UjMxQ1VHZ2x6d2RsVnJtQ2Rqb05LWXZVTTBMQUZ2U0w1?=
- =?utf-8?B?aXZ3U0U3cUpBaS9tLzY4UldQS3A5SnJabTBCMHphRm9FZ1hMMnFKbmIvK3dW?=
- =?utf-8?B?cUxCdnFxZkkwamY5azNwK3RGekNDYnl3bkJvQkZTSmhSdTZ4QVN3a3pzVzZJ?=
- =?utf-8?B?akZLVERiS080QVZuSmxUek1zTlY1emVwc095b3JIWEJOd1ZjakZnNWk5Uisw?=
- =?utf-8?B?cHNBanNXWW05Tk1YWHE2TlM5K0prd011ZGFEeE82LzVGdmtYaUhOdVJQUktW?=
- =?utf-8?B?SnE0YmV5YW50ZkZMOGF0ZWI1VFB0WldDZjNkT21ScTRKbHhvUU9SaDlsVWRn?=
- =?utf-8?B?SG1DZGtsWUYveVR4eXNDUGRvaXZDVkl0UjltWERVa0tpSENVYmxjWC9XempX?=
- =?utf-8?B?OXR5S2QxN08wejFHVnMyeVZvRVZyWGFXb3VqWTg5Z0tUNjRWUUVQa2RCcHVw?=
- =?utf-8?B?a2c9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: f2596ca3-3d29-46dc-85c8-08de156c3915
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB8718.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Oct 2025 15:19:29.4176
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: GPStsl1sXwDxwDA/ldVd+Dj3WahX3SNZAiSFae9/K2Xa3gl39oBFUv3ZDxFxcoemzNlGaxF6WlfBhDpTar72sjvd3C0ORhb4VwOycy5/pD8=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR11MB7742
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251027150838.59571-1-linmq006@gmail.com>
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=fIQ0HJae c=1 sm=1 tr=0 ts=68ff8f74 cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=kj9zAlcOel0A:10 a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=VwQbUJbxAAAA:8 a=pGLkceISAAAA:8 a=-osUowgCyyGCssfuuIAA:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-ORIG-GUID: 3bfZjd2b8lXVWE895fk64jtP7NO2KNgJ
+X-Proofpoint-GUID: 93eD7qV39UhLruIR2aycUZm5zOSMRVHt
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDI1MDAyNCBTYWx0ZWRfX4EftPELcSSqI
+ IhJ97fNiRA3d09vl7aon1ewDS6RABH7IF1Ge0CphRCx5JRANBYufNAez7phsDjqzn4QoU0Enf31
+ UtOmv20r9+7U1fUZV5uDR5uZj6VZX1uLzT3waN3l9MSnY61DTQE37af29f+kPlKDCl+KVELfIZd
+ 2VjJUaRVmBIyW4w/2blg3YyNpOr1erULdap99fyvsxTPjDHo7xwNDIne/5S/umItXYampdJntNZ
+ NzypgHBN4RVSAnFcHvUhlIASxQcI5UoojNbpXKbp5SmB4OyWX7JZHIp+lNUIwQ0BXrgGNFOxgjv
+ jZmhyyED8jTa1jZHZTpwrVwyHfY7eN+sCVstXm+v1jnhR/q0L6SAN9kp/a/X7tOsO/i2aIlLjik
+ ZGQCLUo6UFqYcMtqSvWHzQI95439ow==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-10-27_06,2025-10-22_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 priorityscore=1501 adultscore=0 suspectscore=0 spamscore=0
+ clxscore=1015 bulkscore=0 lowpriorityscore=0 phishscore=0 impostorscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510250024
 
-From: Sasha Levin <sashal@kernel.org>
-Date: Sat, 25 Oct 2025 11:57:49 -0400
-
-> From: Alexander Lobakin <aleksander.lobakin@intel.com>
+On Mon, Oct 27, 2025 at 11:08:38PM +0800, Miaoqian Lin wrote:
+> The function has a memory leak when kvrealloc() fails.
+> The function directly assigns NULL to the markers pointer, losing the
+> reference to the previously allocated memory. This causes kvfree() in
+> pt_dump_init() to free NULL instead of the leaked memory.
 > 
-> [ Upstream commit bd74a86bc75d35adefbebcec7c3a743d02c06230 ]
+> Fix by:
+> 1. Using kvrealloc() uniformly for all allocations
+> 2. Using a temporary variable to preserve the original pointer until
+>    allocation succeeds
+> 3. Removing the error path that sets markers_cnt=0 to keep
+>    consistency between markers and markers_cnt
 > 
-> Add the missing linking of NAPIs to netdev queues when enabling
-> interrupt vectors in order to support NAPI configuration and
-> interfaces requiring get_rx_queue()->napi to be set (like XSk
-> busy polling).
+> Found via static analysis and this is similar to commit 42378a9ca553
+> ("bpf, verifier: Fix memory leak in array reallocation for stack state")
 > 
-> As currently, idpf_vport_{start,stop}() is called from several flows
-> with inconsistent RTNL locking, we need to synchronize them to avoid
-> runtime assertions. Notably:
-> 
-> * idpf_{open,stop}() -- regular NDOs, RTNL is always taken;
-> * idpf_initiate_soft_reset() -- usually called under RTNL;
-> * idpf_init_task -- called from the init work, needs RTNL;
-> * idpf_vport_dealloc -- called without RTNL taken, needs it.
-> 
-> Expand common idpf_vport_{start,stop}() to take an additional bool
-> telling whether we need to manually take the RTNL lock.
-> 
-> Suggested-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com> # helper
-> Signed-off-by: Alexander Lobakin <aleksander.lobakin@intel.com>
-> Tested-by: Ramu R <ramu.r@intel.com>
-> Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> Fixes: d0e7915d2ad3 ("s390/mm/ptdump: Generate address marker array dynamically")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
 > ---
-> 
-> LLM Generated explanations, may be completely bogus:
-> 
-> YES
-> 
-> Why this is a bug-fix
-> - The driver was missing the association between netdev queues and their
->   NAPI instances. This breaks NAPI-aware configuration and features that
->   require queue->napi to be set, e.g., AF_XDP busy polling. The patch
->   adds the missing linkage and corresponding unlinkage, which is clearly
->   a functional fix rather than a feature.
-> 
-> What changed
-> - Link/unlink netdev queues to the NAPI of each q_vector:
->   - Adds `idpf_q_vector_set_napi()` and uses it to associate both RX and
->     TX queues with the q_vector’s `napi`:
->     - Link on IRQ request:
->       drivers/net/ethernet/intel/idpf/idpf_txrx.c:4043
->     - Unlink on IRQ free:
->       drivers/net/ethernet/intel/idpf/idpf_txrx.c:3852
->   - Helper implementation:
->     drivers/net/ethernet/intel/idpf/idpf_txrx.c:3818
-> 
-> - Ensure correct locking for netif_queue_set_napi:
->   - `netif_queue_set_napi()` asserts RTNL or invisibility
->     (net/core/dev.c:7167), so the patch adds an `rtnl` parameter to the
->     vport bring-up/tear-down paths and acquires RTNL where it previously
->     wasn’t guaranteed:
->     - `idpf_vport_open(struct idpf_vport *vport, bool rtnl)` acquires
->       RTNL when `rtnl=true`
->       (drivers/net/ethernet/intel/idpf/idpf_lib.c:1397–1400), and
->       releases on both success and error paths (1528–1531).
->     - `idpf_vport_stop(struct idpf_vport *vport, bool rtnl)` does the
->       same for teardown (900–927).
->   - Callers updated according to their RTNL context, avoiding double-
->     lock or missing-lock situations:
->     - NDO stop: passes `false` (called under RTNL):
->       drivers/net/ethernet/intel/idpf/idpf_lib.c:951
->     - NDO open: passes `false` (called under RTNL):
->       drivers/net/ethernet/intel/idpf/idpf_lib.c:2275
->     - init work (not under RTNL): `idpf_init_task()` passes `true`:
->       drivers/net/ethernet/intel/idpf/idpf_lib.c:1607
->     - vport dealloc (not under RTNL): passes `true`:
->       drivers/net/ethernet/intel/idpf/idpf_lib.c:1044
->     - soft reset (usually under RTNL via ndo contexts): passes `false`:
->       drivers/net/ethernet/intel/idpf/idpf_lib.c:1997 and reopen at
->       2027, 2037
-> 
-> - Order of operations remains sane:
->   - Add NAPI and map vectors, then request IRQs, then link queues to
->     NAPI, then enable NAPI/IRQs
->     (drivers/net/ethernet/intel/idpf/idpf_txrx.c:4598–4607, 4043,
->     4619–4621).
->   - On teardown disable interrupts/NAPI, delete NAPI, unlink queues,
->     free IRQs (drivers/net/ethernet/intel/idpf/idpf_txrx.c:4119–4125,
->     3852).
-> 
-> Impact and risk
-> - User-visible bug fixed: AF_XDP busy-polling and other NAPI-aware paths
->   can now retrieve the correct NAPI via get_rx_queue()->napi.
-> - Change is tightly scoped to the idpf driver; no UAPI or architectural
->   changes.
-> - Locking adjustments are minimal and consistent with net core
->   expectations for `netif_queue_set_napi()`.
-> - Similar pattern exists in other drivers (e.g., ice, igb, igc) that use
->   `netif_queue_set_napi`, which supports the approach’s correctness.
-> - Note: In the rare request_irq failure unwind, the code frees any
->   requested IRQs but doesn’t explicitly clear queue->napi for
->   previously-linked vectors; however, `napi_del()` runs and the
->   q_vector/napi storage remains valid, and normal teardown does clear
->   associations. This is a minor edge and does not outweigh the benefit
->   of the fix.
-> 
-> Stable backport suitability
-> - Meets stable criteria: fixes a real functional bug, small and self-
->   contained, limited to a single driver, low regression risk, and
->   conforms to net core locking rules.
-> - Dependency: requires `netif_queue_set_napi()` (present in this branch,
->   net/core/dev.c:7159). For older stable series lacking this API, a
->   backport would need equivalent infrastructure or adaptation.
-> 
-> Conclusion
-> - This is a clear, necessary bug fix enabling expected NAPI-aware
->   behavior in idpf. It is safe and appropriate to backport.
+> changes in v2:
+> - update the fixing logic to prevent memory leak in v1
+> v1 link: https://lore.kernel.org/all/20251026091351.36275-1-linmq006@gmail.com/
+> ---
+>  arch/s390/mm/dump_pagetables.c | 22 +++++++++-------------
+>  1 file changed, 9 insertions(+), 13 deletions(-)
 
-While it's more of a feature and a prereq for XDP support in idpf, this
-generated explanation is actually good and precise. I'm perfectly fine
-with backporting this.
-
-> 
->  drivers/net/ethernet/intel/idpf/idpf_lib.c  | 38 +++++++++++++++------
->  drivers/net/ethernet/intel/idpf/idpf_txrx.c | 17 +++++++++
->  2 files changed, 45 insertions(+), 10 deletions(-)
-Thanks,
-Olek
+Applied, thanks!
 
