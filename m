@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-190460-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190169-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9FF7C106F9
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:04:51 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48AA4C100C3
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:44:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AAD811A27C6D
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:01:32 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id C1C3535042E
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:44:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDB1E3233ED;
-	Mon, 27 Oct 2025 18:55:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BEA9324B30;
+	Mon, 27 Oct 2025 18:43:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xrRe5TBz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pJ8rPOoV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79F6532143D;
-	Mon, 27 Oct 2025 18:55:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB6DD324B2A;
+	Mon, 27 Oct 2025 18:43:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591348; cv=none; b=NJqiD0vjTjbSpacQ/Fha9ZPGUHfIRcVfEp02RWxV/f+QjNDAbmlcqqkaLTV5Iupd+wNCGcTnQ/rGrffOqvxHIxvyO1g8oSQ2zDZ7iCC7fiX3FY46WZU1RklwqDHChNXAh6mzD+w+C1g8y4LTbidq2sVMkYfuycnXRorM0fYqhog=
+	t=1761590589; cv=none; b=Iw+87f5T2wA/zDPCZFohHveX2Vr41ct8cxDtBXIOQHSkJA399+LXskTiVC1LfQqnYqOua1cL7OVKZh20xibh6oeLGA2ROzT3/Fb+Pk3haNipDVsvwl/8Ej5Nmia7V0GqrfxzrtFiq3i80urIpJkIVCtELLiE8nGA7j1Ek+PgjX0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591348; c=relaxed/simple;
-	bh=+6IUmWzwCsizl+ibnB/3RSBPlJWeRaEAAQuCwRL/zu0=;
+	s=arc-20240116; t=1761590589; c=relaxed/simple;
+	bh=FlwamHSVFEmxQO6ExBGZQfAUt4QNn56abfOPZq/WDcc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eJjfUoYCdekhEYvXg0/RYMSPJM+xT0O2a1aDLxTz5NQFY3DQ7U2264r7d5JOw4SVVoU7CteqA7I9woOUahk4myzj+XLsaIDFBFc4aw5KFiIrMb3mbMWzbhUHZXGcxF3R1axPyTbMg6Y3a5TiUlUEEglgk7WzV6a0bpcaOre0+Is=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xrRe5TBz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DB34C4CEF1;
-	Mon, 27 Oct 2025 18:55:47 +0000 (UTC)
+	 MIME-Version; b=LapCd3iw6RR4kdabC8TsfUjUwFHXyM62HX0W8X/xsOgct+UeRQWBJwSAqxhWQUrZNBd+HNTzhUrdU7M1/8tXrYB7ac5hw8UnGnbHKoPHBLe20Wm76KuvXqRE6+7lgWNoXSBur23en4F8rS/8uTsAxJ2d0DTvCCw3jmOUXdxjuig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pJ8rPOoV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A956C113D0;
+	Mon, 27 Oct 2025 18:43:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591348;
-	bh=+6IUmWzwCsizl+ibnB/3RSBPlJWeRaEAAQuCwRL/zu0=;
+	s=korg; t=1761590589;
+	bh=FlwamHSVFEmxQO6ExBGZQfAUt4QNn56abfOPZq/WDcc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xrRe5TBzSyykqlj/Xw4FiQkhRmxQKq2cLKCIu0DmwjEVSeE7VuV3rGLTg+iYxUpc2
-	 Z1dnYik6kPbO228YBxWNkcPJWP2pXJzesthvydnqjamty62QbHgGvc/vwKKpB2bokW
-	 7L86rk4J67ancFCDILkFvhCHHRX74f6LSlwuhCl8=
+	b=pJ8rPOoVZURXXmbTtkQaeiSXpF8u/pfbz4wdCnvukYMzDini5gN2hrV7DY8wuEVAb
+	 sPACvi6n24BxJq0lrC4iVrdH14Y94fN3X0fnwthK+RFGIvfHZ2qO99MLnzqkFsosWe
+	 THp61Q3el+JZpxGLJaPv32Hm3IIY9Jb2EF1i/EIQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Santhosh Kumar K <s-k6@ti.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 5.10 163/332] spi: cadence-quadspi: Flush posted register writes before INDAC access
-Date: Mon, 27 Oct 2025 19:33:36 +0100
-Message-ID: <20251027183528.931599299@linuxfoundation.org>
+	Kohei Enju <enjuk@amazon.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 071/224] net: ena: return 0 in ena_get_rxfh_key_size() when RSS hash key is not configurable
+Date: Mon, 27 Oct 2025 19:33:37 +0100
+Message-ID: <20251027183510.904672408@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
-References: <20251027183524.611456697@linuxfoundation.org>
+In-Reply-To: <20251027183508.963233542@linuxfoundation.org>
+References: <20251027183508.963233542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +62,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pratyush Yadav <pratyush@kernel.org>
+From: Kohei Enju <enjuk@amazon.com>
 
-commit 29e0b471ccbd674d20d4bbddea1a51e7105212c5 upstream.
+[ Upstream commit f017156aea60db8720e47591ed1e041993381ad2 ]
 
-cqspi_indirect_read_execute() and cqspi_indirect_write_execute() first
-set the enable bit on APB region and then start reading/writing to the
-AHB region. On TI K3 SoCs these regions lie on different endpoints. This
-means that the order of the two operations is not guaranteed, and they
-might be reordered at the interconnect level.
+In EC2 instances where the RSS hash key is not configurable, ethtool
+shows bogus RSS hash key since ena_get_rxfh_key_size() unconditionally
+returns ENA_HASH_KEY_SIZE.
 
-It is possible for the AHB write to be executed before the APB write to
-enable the indirect controller, causing the transaction to be invalid
-and the write erroring out. Read back the APB region write before
-accessing the AHB region to make sure the write got flushed and the race
-condition is eliminated.
+Commit 6a4f7dc82d1e ("net: ena: rss: do not allocate key when not
+supported") added proper handling for devices that don't support RSS
+hash key configuration, but ena_get_rxfh_key_size() has been unchanged.
 
-Fixes: 140623410536 ("mtd: spi-nor: Add driver for Cadence Quad SPI Flash Controller")
-CC: stable@vger.kernel.org
-Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
-Signed-off-by: Pratyush Yadav <pratyush@kernel.org>
-Signed-off-by: Santhosh Kumar K <s-k6@ti.com>
-Message-ID: <20250905185958.3575037-2-s-k6@ti.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+When the RSS hash key is not configurable, return 0 instead of
+ENA_HASH_KEY_SIZE to clarify getting the value is not supported.
+
+Tested on m5 instance families.
+
+Without patch:
+ # ethtool -x ens5 | grep -A 1 "RSS hash key"
+ RSS hash key:
+ 00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00
+
+With patch:
+ # ethtool -x ens5 | grep -A 1 "RSS hash key"
+ RSS hash key:
+ Operation not supported
+
+Fixes: 6a4f7dc82d1e ("net: ena: rss: do not allocate key when not supported")
+Signed-off-by: Kohei Enju <enjuk@amazon.com>
+Link: https://patch.msgid.link/20250929050247.51680-1-enjuk@amazon.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-cadence-quadspi.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/ethernet/amazon/ena/ena_ethtool.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/spi/spi-cadence-quadspi.c
-+++ b/drivers/spi/spi-cadence-quadspi.c
-@@ -502,6 +502,7 @@ static int cqspi_indirect_read_execute(s
- 	reinit_completion(&cqspi->transfer_complete);
- 	writel(CQSPI_REG_INDIRECTRD_START_MASK,
- 	       reg_base + CQSPI_REG_INDIRECTRD);
-+	readl(reg_base + CQSPI_REG_INDIRECTRD); /* Flush posted write. */
+diff --git a/drivers/net/ethernet/amazon/ena/ena_ethtool.c b/drivers/net/ethernet/amazon/ena/ena_ethtool.c
+index ae631b8770fc1..5f037e9db023a 100644
+--- a/drivers/net/ethernet/amazon/ena/ena_ethtool.c
++++ b/drivers/net/ethernet/amazon/ena/ena_ethtool.c
+@@ -633,7 +633,10 @@ static u32 ena_get_rxfh_indir_size(struct net_device *netdev)
  
- 	while (remaining > 0) {
- 		if (!wait_for_completion_timeout(&cqspi->transfer_complete,
-@@ -611,6 +612,8 @@ static int cqspi_indirect_write_execute(
- 	reinit_completion(&cqspi->transfer_complete);
- 	writel(CQSPI_REG_INDIRECTWR_START_MASK,
- 	       reg_base + CQSPI_REG_INDIRECTWR);
-+	readl(reg_base + CQSPI_REG_INDIRECTWR); /* Flush posted write. */
+ static u32 ena_get_rxfh_key_size(struct net_device *netdev)
+ {
+-	return ENA_HASH_KEY_SIZE;
++	struct ena_adapter *adapter = netdev_priv(netdev);
++	struct ena_rss *rss = &adapter->ena_dev->rss;
 +
- 	/*
- 	 * As per 66AK2G02 TRM SPRUHY8F section 11.15.5.3 Indirect Access
- 	 * Controller programming sequence, couple of cycles of
++	return rss->hash_key ? ENA_HASH_KEY_SIZE : 0;
+ }
+ 
+ static int ena_indirection_table_get(struct ena_adapter *adapter, u32 *indir)
+-- 
+2.51.0
+
 
 
 
