@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-191044-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190723-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7067C11090
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:31:19 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1EA1C10B04
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:15:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 779E0546391
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:23:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9B823566647
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:10:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D9A62D6E70;
-	Mon, 27 Oct 2025 19:21:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8FA332ABFA;
+	Mon, 27 Oct 2025 19:07:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ozm4NwvH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W3/UwhcS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BD3E1F7586;
-	Mon, 27 Oct 2025 19:21:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75ADB2D73B1;
+	Mon, 27 Oct 2025 19:07:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592870; cv=none; b=I+nkpxRjjZuUZ8iZm6iPfP6hgOuDLVWxrPubs9Aw271/ptQHAfWK16ncb3TLzraapCUU2UeKfKvb2PpSXy+JnWJIGV7CBU9MLT2n8jwdFLIAx7FZwd/8pwZc+mweGQLU2B2L0M+h43yyRJG+8IFAH4JXWFAN0Y1iTRQVSjOaOAQ=
+	t=1761592026; cv=none; b=aoF0wqmF7EAE3a0CErdlnN8xjFIPkgYHwa6guLOdmXLLRgz2/drzGn68vykDUAHADtUg8t/59z0ZcjbCWswxOCoKrdrGJtvdk7HAg2Y6DMt5p9wkj/dUYZ7uco2jEG/qR5mhrBOu8rJ45AHxI3GEKfUtWTt2DB7VhFR1z/7CXwU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592870; c=relaxed/simple;
-	bh=uOY033g2OPRFBv111L8P7xNuNjwQqX4IWJTTnEWOUFg=;
+	s=arc-20240116; t=1761592026; c=relaxed/simple;
+	bh=OO3Zt8PfUufYZAcuSdg3kmalgFvS02czTyOkhdIYPBQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lbhFPbKMjDw/NvphRGzJ43rBlRxhT9UDeLmqNSn/ARW0GDXcZPFSApfY1Rj7mM1NaG1t/Sf8XLwRu8P/yif/8HxvPxyE77SAkqQIvyud+swYidmPAkHsN4VrtGMLmRx21RKf86rFYkjkCBKi55YkPMxdHqvNNmWjPIHkkcOAN1U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ozm4NwvH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C42BC4CEF1;
-	Mon, 27 Oct 2025 19:21:07 +0000 (UTC)
+	 MIME-Version; b=tRjNRWznnHMCtZVlcqgXf375rfCRAUB/W8dPiigZDk1H3+OGAIqurgsmzWaytGrlCWC3gapTDg3I/f2pZsSdusXpS5qEXNQkwZq0/XdvVYesXIQYWJTWvU707QAgRMSQv2revfG4L+IiUumK6tP6OSlILzSh1TP9wGzhgXVpfcw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W3/UwhcS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08FA0C4CEF1;
+	Mon, 27 Oct 2025 19:07:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592867;
-	bh=uOY033g2OPRFBv111L8P7xNuNjwQqX4IWJTTnEWOUFg=;
+	s=korg; t=1761592026;
+	bh=OO3Zt8PfUufYZAcuSdg3kmalgFvS02czTyOkhdIYPBQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ozm4NwvHm/nFUhX3dsnAKFNC6iCmO9DyfjGL/fkRSfW9xAa7jAZT1UH34s6gxTNxN
-	 y77kVLThIblg9w8ufMNn1X/A6qzLD3xrBOiJlDjoN1xt3FF6nvf8lkKcBuNpCCqTEc
-	 sRz8+WBkAbdUF0X95b20u4CkhQTxXKBMImx2bZE4=
+	b=W3/UwhcSGz+8DYVKhhQVgqwtl7Cxs4+s6gTlDR5P/Ud7PDS1/MyJuYrlVATF5tDhk
+	 473E8vX5084UpXlYDndQq/sHAfGGRLxFKmCSqRfalvTQgc9Oc9RMfbIIZht0+XHFGf
+	 hrcTaNfSUO+KK4J1fD51wEJyWdkNDxaiuADPgJZo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Patrisious Haddad <phaddad@nvidia.com>,
-	Leon Romanovsky <leonro@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 043/117] net/mlx5: Fix IPsec cleanup over MPV device
+	Peter Oberparleiter <oberpar@linux.ibm.com>,
+	Vineeth Vijayan <vneethv@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>
+Subject: [PATCH 5.15 089/123] s390/cio: Update purge function to unregister the unused subchannels
 Date: Mon, 27 Oct 2025 19:36:09 +0100
-Message-ID: <20251027183455.154141346@linuxfoundation.org>
+Message-ID: <20251027183448.772784321@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
-References: <20251027183453.919157109@linuxfoundation.org>
+In-Reply-To: <20251027183446.381986645@linuxfoundation.org>
+References: <20251027183446.381986645@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,206 +62,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Patrisious Haddad <phaddad@nvidia.com>
+From: Vineeth Vijayan <vneethv@linux.ibm.com>
 
-[ Upstream commit 664f76be38a18c61151d0ef248c7e2f3afb4f3c7 ]
+commit 9daa5a8795865f9a3c93d8d1066785b07ded6073 upstream.
 
-When we do mlx5e_detach_netdev() we eventually disable blocking events
-notifier, among those events are IPsec MPV events from IB to core.
+Starting with 'commit 2297791c92d0 ("s390/cio: dont unregister
+subchannel from child-drivers")', cio no longer unregisters
+subchannels when the attached device is invalid or unavailable.
 
-So before disabling those blocking events, make sure to also unregister
-the devcom device and mark all this device operations as complete,
-in order to prevent the other device from using invalid netdev
-during future devcom events which could cause the trace below.
+As an unintended side-effect, the cio_ignore purge function no longer
+removes subchannels for devices on the cio_ignore list if no CCW device
+is attached. This situation occurs when a CCW device is non-operational
+or unavailable
 
-BUG: kernel NULL pointer dereference, address: 0000000000000010
-PGD 146427067 P4D 146427067 PUD 146488067 PMD 0
-Oops: Oops: 0000 [#1] SMP
-CPU: 1 UID: 0 PID: 7735 Comm: devlink Tainted: GW 6.12.0-rc6_for_upstream_min_debug_2024_11_08_00_46 #1
-Tainted: [W]=WARN
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.13.0-0-gf21b5a4aeb02-prebuilt.qemu.org 04/01/2014
-RIP: 0010:mlx5_devcom_comp_set_ready+0x5/0x40 [mlx5_core]
-Code: 00 01 48 83 05 23 32 1e 00 01 41 b8 ed ff ff ff e9 60 ff ff ff 48 83 05 00 32 1e 00 01 eb e3 66 0f 1f 44 00 00 0f 1f 44 00 00 <48> 8b 47 10 48 83 05 5f 32 1e 00 01 48 8b 50 40 48 85 d2 74 05 40
-RSP: 0018:ffff88811a5c35f8 EFLAGS: 00010206
-RAX: ffff888106e8ab80 RBX: ffff888107d7e200 RCX: ffff88810d6f0a00
-RDX: ffff88810d6f0a00 RSI: 0000000000000001 RDI: 0000000000000000
-RBP: ffff88811a17e620 R08: 0000000000000040 R09: 0000000000000000
-R10: ffff88811a5c3618 R11: 0000000de85d51bd R12: ffff88811a17e600
-R13: ffff88810d6f0a00 R14: 0000000000000000 R15: ffff8881034bda80
-FS:  00007f27bdf89180(0000) GS:ffff88852c880000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000000000010 CR3: 000000010f159005 CR4: 0000000000372eb0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
- ? __die+0x20/0x60
- ? page_fault_oops+0x150/0x3e0
- ? exc_page_fault+0x74/0x130
- ? asm_exc_page_fault+0x22/0x30
- ? mlx5_devcom_comp_set_ready+0x5/0x40 [mlx5_core]
- mlx5e_devcom_event_mpv+0x42/0x60 [mlx5_core]
- mlx5_devcom_send_event+0x8c/0x170 [mlx5_core]
- blocking_event+0x17b/0x230 [mlx5_core]
- notifier_call_chain+0x35/0xa0
- blocking_notifier_call_chain+0x3d/0x60
- mlx5_blocking_notifier_call_chain+0x22/0x30 [mlx5_core]
- mlx5_core_mp_event_replay+0x12/0x20 [mlx5_core]
- mlx5_ib_bind_slave_port+0x228/0x2c0 [mlx5_ib]
- mlx5_ib_stage_init_init+0x664/0x9d0 [mlx5_ib]
- ? idr_alloc_cyclic+0x50/0xb0
- ? __kmalloc_cache_noprof+0x167/0x340
- ? __kmalloc_noprof+0x1a7/0x430
- __mlx5_ib_add+0x34/0xd0 [mlx5_ib]
- mlx5r_probe+0xe9/0x310 [mlx5_ib]
- ? kernfs_add_one+0x107/0x150
- ? __mlx5_ib_add+0xd0/0xd0 [mlx5_ib]
- auxiliary_bus_probe+0x3e/0x90
- really_probe+0xc5/0x3a0
- ? driver_probe_device+0x90/0x90
- __driver_probe_device+0x80/0x160
- driver_probe_device+0x1e/0x90
- __device_attach_driver+0x7d/0x100
- bus_for_each_drv+0x80/0xd0
- __device_attach+0xbc/0x1f0
- bus_probe_device+0x86/0xa0
- device_add+0x62d/0x830
- __auxiliary_device_add+0x3b/0xa0
- ? auxiliary_device_init+0x41/0x90
- add_adev+0xd1/0x150 [mlx5_core]
- mlx5_rescan_drivers_locked+0x21c/0x300 [mlx5_core]
- esw_mode_change+0x6c/0xc0 [mlx5_core]
- mlx5_devlink_eswitch_mode_set+0x21e/0x640 [mlx5_core]
- devlink_nl_eswitch_set_doit+0x60/0xe0
- genl_family_rcv_msg_doit+0xd0/0x120
- genl_rcv_msg+0x180/0x2b0
- ? devlink_get_from_attrs_lock+0x170/0x170
- ? devlink_nl_eswitch_get_doit+0x290/0x290
- ? devlink_nl_pre_doit_port_optional+0x50/0x50
- ? genl_family_rcv_msg_dumpit+0xf0/0xf0
- netlink_rcv_skb+0x54/0x100
- genl_rcv+0x24/0x40
- netlink_unicast+0x1fc/0x2d0
- netlink_sendmsg+0x1e4/0x410
- __sock_sendmsg+0x38/0x60
- ? sockfd_lookup_light+0x12/0x60
- __sys_sendto+0x105/0x160
- ? __sys_recvmsg+0x4e/0x90
- __x64_sys_sendto+0x20/0x30
- do_syscall_64+0x4c/0x100
- entry_SYSCALL_64_after_hwframe+0x4b/0x53
-RIP: 0033:0x7f27bc91b13a
-Code: bb 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 8b 05 fa 96 2c 00 45 89 c9 4c 63 d1 48 63 ff 85 c0 75 15 b8 2c 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 76 f3 c3 0f 1f 40 00 41 55 41 54 4d 89 c5 55
-RSP: 002b:00007fff369557e8 EFLAGS: 00000246 ORIG_RAX: 000000000000002c
-RAX: ffffffffffffffda RBX: 0000000009c54b10 RCX: 00007f27bc91b13a
-RDX: 0000000000000038 RSI: 0000000009c54b10 RDI: 0000000000000006
-RBP: 0000000009c54920 R08: 00007f27bd0030e0 R09: 000000000000000c
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000001
- </TASK>
-Modules linked in: mlx5_vdpa vringh vhost_iotlb vdpa xt_MASQUERADE nf_conntrack_netlink nfnetlink iptable_nat xt_addrtype xt_conntrack nf_nat br_netfilter rpcsec_gss_krb5 auth_rpcgss oid_registry overlay rpcrdma rdma_ucm ib_iser libiscsi ib_umad scsi_transport_iscsi ib_ipoib rdma_cm iw_cm ib_cm mlx5_fwctl mlx5_ib ib_uverbs ib_core mlx5_core
-CR2: 0000000000000010
+To ensure the same outcome of the purge function as when the
+current cio_ignore list had been active during boot, update the purge
+function to remove I/O subchannels without working CCW devices if the
+associated device number is found on the cio_ignore list.
 
-Fixes: 82f9378c443c ("net/mlx5: Handle IPsec steering upon master unbind/bind")
-Signed-off-by: Patrisious Haddad <phaddad@nvidia.com>
-Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/1761136182-918470-5-git-send-email-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 2297791c92d0 ("s390/cio: dont unregister subchannel from child-drivers")
+Suggested-by: Peter Oberparleiter <oberpar@linux.ibm.com>
+Reviewed-by: Peter Oberparleiter <oberpar@linux.ibm.com>
+Signed-off-by: Vineeth Vijayan <vneethv@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../mellanox/mlx5/core/en_accel/ipsec.h       |  5 ++++
- .../mellanox/mlx5/core/en_accel/ipsec_fs.c    | 25 +++++++++++++++++--
- .../net/ethernet/mellanox/mlx5/core/en_main.c |  2 ++
- 3 files changed, 30 insertions(+), 2 deletions(-)
+ drivers/s390/cio/device.c |   39 +++++++++++++++++++++++++--------------
+ 1 file changed, 25 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.h b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.h
-index 9aff779c77c89..78e78b6f81467 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.h
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.h
-@@ -337,6 +337,7 @@ void mlx5e_ipsec_build_accel_xfrm_attrs(struct mlx5e_ipsec_sa_entry *sa_entry,
- void mlx5e_ipsec_handle_mpv_event(int event, struct mlx5e_priv *slave_priv,
- 				  struct mlx5e_priv *master_priv);
- void mlx5e_ipsec_send_event(struct mlx5e_priv *priv, int event);
-+void mlx5e_ipsec_disable_events(struct mlx5e_priv *priv);
- 
- static inline struct mlx5_core_dev *
- mlx5e_ipsec_sa2dev(struct mlx5e_ipsec_sa_entry *sa_entry)
-@@ -382,6 +383,10 @@ static inline void mlx5e_ipsec_handle_mpv_event(int event, struct mlx5e_priv *sl
- static inline void mlx5e_ipsec_send_event(struct mlx5e_priv *priv, int event)
- {
+--- a/drivers/s390/cio/device.c
++++ b/drivers/s390/cio/device.c
+@@ -1323,23 +1323,34 @@ void ccw_device_schedule_recovery(void)
+ 	spin_unlock_irqrestore(&recovery_lock, flags);
  }
-+
-+static inline void mlx5e_ipsec_disable_events(struct mlx5e_priv *priv)
-+{
-+}
- #endif
  
- #endif	/* __MLX5E_IPSEC_H__ */
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_fs.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_fs.c
-index 59b9653f573c8..131eb9b4eba65 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_fs.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_fs.c
-@@ -2421,9 +2421,30 @@ void mlx5e_ipsec_handle_mpv_event(int event, struct mlx5e_priv *slave_priv,
- 
- void mlx5e_ipsec_send_event(struct mlx5e_priv *priv, int event)
+-static int purge_fn(struct device *dev, void *data)
++static int purge_fn(struct subchannel *sch, void *data)
  {
--	if (!priv->ipsec)
--		return; /* IPsec not supported */
-+	if (!priv->ipsec || mlx5_devcom_comp_get_size(priv->devcom) < 2)
-+		return; /* IPsec not supported or no peers */
- 
- 	mlx5_devcom_send_event(priv->devcom, event, event, priv);
- 	wait_for_completion(&priv->ipsec->comp);
- }
+-	struct ccw_device *cdev = to_ccwdev(dev);
+-	struct ccw_dev_id *id = &cdev->private->dev_id;
+-	struct subchannel *sch = to_subchannel(cdev->dev.parent);
+-
+-	spin_lock_irq(cdev->ccwlock);
+-	if (is_blacklisted(id->ssid, id->devno) &&
+-	    (cdev->private->state == DEV_STATE_OFFLINE) &&
+-	    (atomic_cmpxchg(&cdev->private->onoff, 0, 1) == 0)) {
+-		CIO_MSG_EVENT(3, "ccw: purging 0.%x.%04x\n", id->ssid,
+-			      id->devno);
++	struct ccw_device *cdev;
 +
-+void mlx5e_ipsec_disable_events(struct mlx5e_priv *priv)
-+{
-+	struct mlx5_devcom_comp_dev *tmp = NULL;
-+	struct mlx5e_priv *peer_priv;
++	spin_lock_irq(sch->lock);
++	if (sch->st != SUBCHANNEL_TYPE_IO || !sch->schib.pmcw.dnv)
++		goto unlock;
 +
-+	if (!priv->devcom)
-+		return;
++	if (!is_blacklisted(sch->schid.ssid, sch->schib.pmcw.dev))
++		goto unlock;
 +
-+	if (!mlx5_devcom_for_each_peer_begin(priv->devcom))
-+		goto out;
++	cdev = sch_get_cdev(sch);
++	if (cdev) {
++		if (cdev->private->state != DEV_STATE_OFFLINE)
++			goto unlock;
 +
-+	peer_priv = mlx5_devcom_get_next_peer_data(priv->devcom, &tmp);
-+	if (peer_priv)
-+		complete_all(&peer_priv->ipsec->comp);
-+
-+	mlx5_devcom_for_each_peer_end(priv->devcom);
-+out:
-+	mlx5_devcom_unregister_component(priv->devcom);
-+	priv->devcom = NULL;
-+}
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-index 4a2f58a9d7066..7e04a17fa3b82 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-@@ -257,6 +257,7 @@ static void mlx5e_devcom_cleanup_mpv(struct mlx5e_priv *priv)
++		if (atomic_cmpxchg(&cdev->private->onoff, 0, 1) != 0)
++			goto unlock;
+ 		ccw_device_sched_todo(cdev, CDEV_TODO_UNREG);
+-		css_sched_sch_todo(sch, SCH_TODO_UNREG);
+ 		atomic_set(&cdev->private->onoff, 0);
  	}
- 
- 	mlx5_devcom_unregister_component(priv->devcom);
-+	priv->devcom = NULL;
+-	spin_unlock_irq(cdev->ccwlock);
++
++	css_sched_sch_todo(sch, SCH_TODO_UNREG);
++	CIO_MSG_EVENT(3, "ccw: purging 0.%x.%04x%s\n", sch->schid.ssid,
++		      sch->schib.pmcw.dev, cdev ? "" : " (no cdev)");
++
++unlock:
++	spin_unlock_irq(sch->lock);
+ 	/* Abort loop in case of pending signal. */
+ 	if (signal_pending(current))
+ 		return -EINTR;
+@@ -1355,7 +1366,7 @@ static int purge_fn(struct device *dev,
+ int ccw_purge_blacklisted(void)
+ {
+ 	CIO_MSG_EVENT(2, "ccw: purging blacklisted devices\n");
+-	bus_for_each_dev(&ccw_bus_type, NULL, NULL, purge_fn);
++	for_each_subchannel_staged(purge_fn, NULL, NULL);
+ 	return 0;
  }
  
- static int blocking_event(struct notifier_block *nb, unsigned long event, void *data)
-@@ -5830,6 +5831,7 @@ static void mlx5e_nic_disable(struct mlx5e_priv *priv)
- 	if (mlx5e_monitor_counter_supported(priv))
- 		mlx5e_monitor_counter_cleanup(priv);
- 
-+	mlx5e_ipsec_disable_events(priv);
- 	mlx5e_disable_blocking_events(priv);
- 	if (priv->en_trap) {
- 		mlx5e_deactivate_trap(priv);
--- 
-2.51.0
-
 
 
 
