@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-191314-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191120-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A104FC112A9
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:38:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3423AC11045
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:30:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AC8F5189E1BD
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:35:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1682B1A6247C
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:26:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1BDF2D7DDD;
-	Mon, 27 Oct 2025 19:33:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B9BD326D6D;
+	Mon, 27 Oct 2025 19:24:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h8K/Tb3C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sbwzi788"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C010308F3A;
-	Mon, 27 Oct 2025 19:33:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F9A63254AC;
+	Mon, 27 Oct 2025 19:24:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761593614; cv=none; b=SiW6uv53VvHN7DZLhTdMrAr8yi35FU6WD9l/ccLLTV+goBjzt5NDLOgeP04dIPcee07L5kmtwftHeIyOf6fxMM99xI2s0eZ1dEacj7uw1ZfQ7KB0Ct+u/A3EeGi+xagwytrK+58f44Uwv1cv6LsFlfj0os4Mxao2CqUdwlMJl0Y=
+	t=1761593062; cv=none; b=BJNiemGQJ6PF0aIec1bHOKNqw+a6TNn09zY1k9cyc6qhqMFTldhMkt+H7eEU9Ci96HPbbiTBbsRMH1+i+47jlk/EuqLIfIeYJlrjyQtX6JG7T26jrK90kihUSdBigNFdujCo77dYuvLjKiPyGSK2p0/9EP3X4Bu/FpLOGy4oAPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761593614; c=relaxed/simple;
-	bh=VDeRh82q6MwXQGb+yvRYIXGfZoHofi1aMAvydxC4rjc=;
+	s=arc-20240116; t=1761593062; c=relaxed/simple;
+	bh=nq3NIesUxwtP9CON9n+aPatGkYNqXUKOzSr2Z+HcXfw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Tz8lZVM/P2JACy0O1JBxuloBqrFBp8UhWJaiwAEcrXPyJQI/72clXrZgo9sfk2KyqkUKcuAtgZ31NWQLSa4WlWSJokzCPruR3l5FVt/eMMZkq6r2JBxl6flRLdbUs5CXVfVuoDiA5I55uiPqEjlP9/zoG/1m0ZxWehRLtitfHDk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h8K/Tb3C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9CDDC4CEF1;
-	Mon, 27 Oct 2025 19:33:33 +0000 (UTC)
+	 MIME-Version; b=rnZbHfu3OfI9IMnLzU2vuKYQwqXWN9Pm+Yqp0Slk4wl8EjcbHEmjLoM5orMkAB0OiY6O/HdgyswVoRLUp6syXwoZP9vRcIxIL1gl1UpM324y+INTJPKuxzEH0o71c/HE8rZsTm6vl1vb8+qdOe9wrdR9hWg26/sgHli0/23kPfE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sbwzi788; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87BB8C4CEF1;
+	Mon, 27 Oct 2025 19:24:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761593614;
-	bh=VDeRh82q6MwXQGb+yvRYIXGfZoHofi1aMAvydxC4rjc=;
+	s=korg; t=1761593061;
+	bh=nq3NIesUxwtP9CON9n+aPatGkYNqXUKOzSr2Z+HcXfw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h8K/Tb3CHUTrF7xPvrcYGOR2kR9lNejfy6MLFcDzxOO4F+oZXNPhBHO/w/mDKiITV
-	 lT/dIAj+scckGIdJIeUb4shod3uVfrukZHbu8Jeilo9rmGcR3ZTVr6I/7m3PpWRfqu
-	 v8GEH8VAxVmQv8/GKKzOJOnUY8X0DtQx4fZdow0A=
+	b=Sbwzi788mq71xf9BVUOOp8OXBJLIZlwIMogo9CEfaChCwmy5VClZId5gGa9mIb8x9
+	 73mHEkzYtvHlLGH7Ony+txL295fdNyjgxKORpxoVlEaNAZcybnHA+yQUzbfbuQMjQJ
+	 USmGw0Tg+pGI5LeLhWydc46RexRM5MeGsiSi3oas=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miguel Ojeda <ojeda@kernel.org>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Alice Ryhl <aliceryhl@google.com>
-Subject: [PATCH 6.17 160/184] objtool/rust: add one more `noreturn` Rust function
+	syzbot+d1974fc28545a3e6218b@syzkaller.appspotmail.com,
+	David Hildenbrand <david@redhat.com>,
+	Will Deacon <will@kernel.org>,
+	Kefeng Wang <wangkefeng.wang@huawei.com>,
+	Yang Shi <yang@os.amperecomputing.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 116/117] arm64: mte: Do not warn if the page is already tagged in copy_highpage()
 Date: Mon, 27 Oct 2025 19:37:22 +0100
-Message-ID: <20251027183519.232661535@linuxfoundation.org>
+Message-ID: <20251027183457.167468082@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
-References: <20251027183514.934710872@linuxfoundation.org>
+In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
+References: <20251027183453.919157109@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +66,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miguel Ojeda <ojeda@kernel.org>
+From: Catalin Marinas <catalin.marinas@arm.com>
 
-commit dbdf2a7feb422f9bacfd12774e624cf26f503eb0 upstream.
+[ Upstream commit b98c94eed4a975e0c80b7e90a649a46967376f58 ]
 
-Between Rust 1.79 and 1.86, under `CONFIG_RUST_KERNEL_DOCTESTS=y`,
-`objtool` may report:
+The arm64 copy_highpage() assumes that the destination page is newly
+allocated and not MTE-tagged (PG_mte_tagged unset) and warns
+accordingly. However, following commit 060913999d7a ("mm: migrate:
+support poisoned recover from migrate folio"), folio_mc_copy() is called
+before __folio_migrate_mapping(). If the latter fails (-EAGAIN), the
+copy will be done again to the same destination page. Since
+copy_highpage() already set the PG_mte_tagged flag, this second copy
+will warn.
 
-    rust/doctests_kernel_generated.o: warning: objtool:
-    rust_doctest_kernel_alloc_kbox_rs_13() falls through to next
-    function rust_doctest_kernel_alloc_kvec_rs_0()
+Replace the WARN_ON_ONCE(page already tagged) in the arm64
+copy_highpage() with a comment.
 
-(as well as in rust_doctest_kernel_alloc_kvec_rs_0) due to calls to the
-`noreturn` symbol:
-
-    core::option::expect_failed
-
-from code added in commits 779db37373a3 ("rust: alloc: kvec: implement
-AsPageIter for VVec") and 671618432f46 ("rust: alloc: kbox: implement
-AsPageIter for VBox").
-
-Thus add the mangled one to the list so that `objtool` knows it is
-actually `noreturn`.
-
-This can be reproduced as well in other versions by tweaking the code,
-such as the latest stable Rust (1.90.0).
-
-Stable does not have code that triggers this, but it could have it in
-the future. Downstream forks could too. Thus tag it for backport.
-
-See commit 56d680dd23c3 ("objtool/rust: list `noreturn` Rust functions")
-for more details.
-
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Cc: stable@vger.kernel.org # Needed in 6.12.y and later.
-Link: https://patch.msgid.link/20251020020714.2511718-1-ojeda@kernel.org
+Reported-by: syzbot+d1974fc28545a3e6218b@syzkaller.appspotmail.com
+Link: https://lore.kernel.org/r/68dda1ae.a00a0220.102ee.0065.GAE@google.com
+Reviewed-by: David Hildenbrand <david@redhat.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: stable@vger.kernel.org # 6.12.x
+Reviewed-by: Yang Shi <yang@os.amperecomputing.com>
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+[ omitted hugetlb MTE changes ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/objtool/check.c |    1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/mm/copypage.c |    9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -217,6 +217,7 @@ static bool is_rust_noreturn(const struc
- 	 * these come from the Rust standard library).
- 	 */
- 	return str_ends_with(func->name, "_4core5sliceSp15copy_from_slice17len_mismatch_fail")		||
-+	       str_ends_with(func->name, "_4core6option13expect_failed")				||
- 	       str_ends_with(func->name, "_4core6option13unwrap_failed")				||
- 	       str_ends_with(func->name, "_4core6result13unwrap_failed")				||
- 	       str_ends_with(func->name, "_4core9panicking5panic")					||
+--- a/arch/arm64/mm/copypage.c
++++ b/arch/arm64/mm/copypage.c
+@@ -25,8 +25,13 @@ void copy_highpage(struct page *to, stru
+ 		page_kasan_tag_reset(to);
+ 
+ 	if (system_supports_mte() && page_mte_tagged(from)) {
+-		/* It's a new page, shouldn't have been tagged yet */
+-		WARN_ON_ONCE(!try_page_mte_tagging(to));
++		/*
++		 * Most of the time it's a new page that shouldn't have been
++		 * tagged yet. However, folio migration can end up reusing the
++		 * same page without untagging it. Ignore the warning if the
++		 * page is already tagged.
++		 */
++		try_page_mte_tagging(to);
+ 		mte_copy_page_tags(kto, kfrom);
+ 		set_page_mte_tagged(to);
+ 	}
 
 
 
