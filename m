@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-190634-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191236-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98D99C10924
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:10:38 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2270C11390
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:43:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 81C861A282F5
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:07:15 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 90554564D18
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:31:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0092632B9A1;
-	Mon, 27 Oct 2025 19:03:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1F0032C31E;
+	Mon, 27 Oct 2025 19:29:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S0cI8tx+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LJvIEzLR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8B1131B83D;
-	Mon, 27 Oct 2025 19:03:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C142304BD3;
+	Mon, 27 Oct 2025 19:29:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591798; cv=none; b=QI5Q2zgqx32lxbFpMqrNty2+boAMDlRMbO0FTvDnWrAbgbb+UJas9iXwVLYqbYsfgMpyDnGcbZsHjMyzzxsKpCz0EYUozu4Y+qbTEP/FeqPNEwJcXR1VnwRSZ2Kyy/i3fc/0VuXEPHu96+hv1BH14QBWYxxGp7hCugdnwc5sn/A=
+	t=1761593370; cv=none; b=no3bgj/QgvnCv1ZjCjOFmoxHB9Xlv8ft9yXQ/IuN7tQWsiecbsiK6ntMEvO/8yoItkAfdDG7AI6Q+DBSksmsNdnZC4udP1fh4HQR4WCbXG/hzVPj51aUsHWXl7regezHwylS2UUvQSIS+RHFZIx80zlJus+cQPmHKEgKiUwRuNw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591798; c=relaxed/simple;
-	bh=AIFOJbp/nMiAwKcmo4byTYTSZKMohAqn5TY2+adoY/s=;
+	s=arc-20240116; t=1761593370; c=relaxed/simple;
+	bh=8Nc/20Uv/Ki8kabok6cq8tHwpe97n6DpVU+47N4uAaE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KVVtopKvrBZEnJPeXB3AaNZ6KTFyrLCHoW/CkgNru2EW+ngerpV/h/IcVGIwH3zK45SsOk1Ql1Tw+nZ/HkataZSywqozEg8RbRYV2fipyRI+xvjOxV1mLv+Mbdye+BB1eS5DaiYyZdNsh8p3vyePWbCRexQcBwcNT0b36p3gQ7M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S0cI8tx+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4791C113D0;
-	Mon, 27 Oct 2025 19:03:17 +0000 (UTC)
+	 MIME-Version; b=QwxWZeZtY1dlq9CyybTs+XHFvtBkGsNQx664ISim6jDWsAoPzlnAnJJ3hToHkMcq2zqptGoQMJgZ9j4tkZKuOw/hOxRdZZKLbDedMuAh6PCiwdda/3Z3a4daboTZrrJvetoKK8+XLJM7Yb4AmqsnHwCZPg0stZeUX98miH2WQR4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LJvIEzLR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D765DC4CEF1;
+	Mon, 27 Oct 2025 19:29:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591798;
-	bh=AIFOJbp/nMiAwKcmo4byTYTSZKMohAqn5TY2+adoY/s=;
+	s=korg; t=1761593370;
+	bh=8Nc/20Uv/Ki8kabok6cq8tHwpe97n6DpVU+47N4uAaE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S0cI8tx+drpWHcNshEyzUZNIVb0TUUAIT/Sd13ID1fdCNWOioPJmq1jDfVVSqza4b
-	 u3Jh0luKy4PMelnhmaus1hDd2dzvfsKYh0ydvK8mvhCfFlEF3nVZxTT3SJ7YZXTjRL
-	 TF9gqzEfk95MV0guFeqaqqMTXxF6RtbKknxWwQOo=
+	b=LJvIEzLRbbMlgOhzZALmKHMpICj/PIstd6EitbU1IxFEViZ7KOAjRhB38AJxlxs9K
+	 wvSm4xsak6UmbzJxeMBUHq2WRkyR6zv64xHHP5cbQ6n1NKI9KOAtshZ+HE8l36biKt
+	 dxHrUMafnbnjAxUVbXGKlntVEGZFdYg3twwal6tw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+10e35716f8e4929681fa@syzkaller.appspotmail.com,
-	mhal@rbox.co,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 5.10 305/332] vsock: fix lock inversion in vsock_assign_transport()
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Carlos Maiolino <cem@kernel.org>
+Subject: [PATCH 6.17 076/184] xfs: fix locking in xchk_nlinks_collect_dir
 Date: Mon, 27 Oct 2025 19:35:58 +0100
-Message-ID: <20251027183532.907140365@linuxfoundation.org>
+Message-ID: <20251027183516.946172338@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
-References: <20251027183524.611456697@linuxfoundation.org>
+In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
+References: <20251027183514.934710872@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,102 +62,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefano Garzarella <sgarzare@redhat.com>
+From: Darrick J. Wong <djwong@kernel.org>
 
-commit f7c877e7535260cc7a21484c994e8ce7e8cb6780 upstream.
+commit f477af0cfa0487eddec66ffe10fd9df628ba6f52 upstream.
 
-Syzbot reported a potential lock inversion deadlock between
-vsock_register_mutex and sk_lock-AF_VSOCK when vsock_linger() is called.
+On a filesystem with parent pointers, xchk_nlinks_collect_dir walks both
+the directory entries (data fork) and the parent pointers (attr fork) to
+determine the correct link count.  Unfortunately I forgot to update the
+lock mode logic to handle the case of a directory whose attr fork is in
+btree format and has not yet been loaded *and* whose data fork doesn't
+need loading.
 
-The issue was introduced by commit 687aa0c5581b ("vsock: Fix
-transport_* TOCTOU") which added vsock_register_mutex locking in
-vsock_assign_transport() around the transport->release() call, that can
-call vsock_linger(). vsock_assign_transport() can be called with sk_lock
-held. vsock_linger() calls sk_wait_event() that temporarily releases and
-re-acquires sk_lock. During this window, if another thread hold
-vsock_register_mutex while trying to acquire sk_lock, a circular
-dependency is created.
+This leads to a bunch of assertions from xfs/286 in xfs_iread_extents
+because we only took ILOCK_SHARED, not ILOCK_EXCL.  You'd need the rare
+happenstance of a directory with a large number of non-pptr extended
+attributes set and enough memory pressure to cause the directory to be
+evicted and partially reloaded from disk.
 
-Fix this by releasing vsock_register_mutex before calling
-transport->release() and vsock_deassign_transport(). This is safe
-because we don't need to hold vsock_register_mutex while releasing the
-old transport, and we ensure the new transport won't disappear by
-obtaining a module reference first via try_module_get().
+I /think/ this only started in 6.18-rc1 because I've started seeing OOM
+errors with the maple tree slab using 70% of memory, and this didn't
+happen in 6.17.  Yay dynamic systems!
 
-Reported-by: syzbot+10e35716f8e4929681fa@syzkaller.appspotmail.com
-Tested-by: syzbot+10e35716f8e4929681fa@syzkaller.appspotmail.com
-Fixes: 687aa0c5581b ("vsock: Fix transport_* TOCTOU")
-Cc: mhal@rbox.co
-Cc: stable@vger.kernel.org
-Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
-Link: https://patch.msgid.link/20251021121718.137668-1-sgarzare@redhat.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-[Stefano: fixed context since 5.10 is missing SEQPACKET support in vsock]
-Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
+Cc: stable@vger.kernel.org # v6.10
+Fixes: 77ede5f44b0d86 ("xfs: walk directory parent pointers to determine backref count")
+Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Carlos Maiolino <cem@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/vmw_vsock/af_vsock.c |   38 +++++++++++++++++++-------------------
- 1 file changed, 19 insertions(+), 19 deletions(-)
+ fs/xfs/scrub/nlinks.c |   34 +++++++++++++++++++++++++++++++---
+ 1 file changed, 31 insertions(+), 3 deletions(-)
 
---- a/net/vmw_vsock/af_vsock.c
-+++ b/net/vmw_vsock/af_vsock.c
-@@ -479,12 +479,26 @@ int vsock_assign_transport(struct vsock_
- 		goto err;
- 	}
+--- a/fs/xfs/scrub/nlinks.c
++++ b/fs/xfs/scrub/nlinks.c
+@@ -376,6 +376,36 @@ out_incomplete:
+ 	return error;
+ }
  
--	if (vsk->transport) {
--		if (vsk->transport == new_transport) {
--			ret = 0;
--			goto err;
--		}
-+	if (vsk->transport && vsk->transport == new_transport) {
-+		ret = 0;
-+		goto err;
-+	}
++static uint
++xchk_nlinks_ilock_dir(
++	struct xfs_inode	*ip)
++{
++	uint			lock_mode = XFS_ILOCK_SHARED;
 +
-+	/* We increase the module refcnt to prevent the transport unloading
-+	 * while there are open sockets assigned to it.
++	/*
++	 * We're going to scan the directory entries, so we must be ready to
++	 * pull the data fork mappings into memory if they aren't already.
 +	 */
-+	if (!new_transport || !try_module_get(new_transport->module)) {
-+		ret = -ENODEV;
-+		goto err;
-+	}
++	if (xfs_need_iread_extents(&ip->i_df))
++		lock_mode = XFS_ILOCK_EXCL;
 +
-+	/* It's safe to release the mutex after a successful try_module_get().
-+	 * Whichever transport `new_transport` points at, it won't go away until
-+	 * the last module_put() below or in vsock_deassign_transport().
++	/*
++	 * We're going to scan the parent pointers, so we must be ready to
++	 * pull the attr fork mappings into memory if they aren't already.
 +	 */
-+	mutex_unlock(&vsock_register_mutex);
++	if (xfs_has_parent(ip->i_mount) && xfs_inode_has_attr_fork(ip) &&
++	    xfs_need_iread_extents(&ip->i_af))
++		lock_mode = XFS_ILOCK_EXCL;
++
++	/*
++	 * Take the IOLOCK so that other threads cannot start a directory
++	 * update while we're scanning.
++	 */
++	lock_mode |= XFS_IOLOCK_SHARED;
++	xfs_ilock(ip, lock_mode);
++	return lock_mode;
++}
++
+ /* Walk a directory to bump the observed link counts of the children. */
+ STATIC int
+ xchk_nlinks_collect_dir(
+@@ -394,8 +424,7 @@ xchk_nlinks_collect_dir(
+ 		return 0;
  
-+	if (vsk->transport) {
- 		/* transport->release() must be called with sock lock acquired.
- 		 * This path can only be taken during vsock_stream_connect(),
- 		 * where we have already held the sock lock.
-@@ -504,20 +518,6 @@ int vsock_assign_transport(struct vsock_
- 		vsk->peer_shutdown = 0;
- 	}
+ 	/* Prevent anyone from changing this directory while we walk it. */
+-	xfs_ilock(dp, XFS_IOLOCK_SHARED);
+-	lock_mode = xfs_ilock_data_map_shared(dp);
++	lock_mode = xchk_nlinks_ilock_dir(dp);
  
--	/* We increase the module refcnt to prevent the transport unloading
--	 * while there are open sockets assigned to it.
--	 */
--	if (!new_transport || !try_module_get(new_transport->module)) {
--		ret = -ENODEV;
--		goto err;
--	}
--
--	/* It's safe to release the mutex after a successful try_module_get().
--	 * Whichever transport `new_transport` points at, it won't go away until
--	 * the last module_put() below or in vsock_deassign_transport().
--	 */
--	mutex_unlock(&vsock_register_mutex);
--
- 	ret = new_transport->init(vsk, psk);
- 	if (ret) {
- 		module_put(new_transport->module);
+ 	/*
+ 	 * The dotdot entry of an unlinked directory still points to the last
+@@ -452,7 +481,6 @@ out_abort:
+ 	xchk_iscan_abort(&xnc->collect_iscan);
+ out_unlock:
+ 	xfs_iunlock(dp, lock_mode);
+-	xfs_iunlock(dp, XFS_IOLOCK_SHARED);
+ 	return error;
+ }
+ 
 
 
 
