@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-190639-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190929-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60F4CC107B0
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:07:00 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F057BC10DAB
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:22:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 0B19535152D
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:07:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5B13D19A7EEB
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:17:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E44AD326D5D;
-	Mon, 27 Oct 2025 19:03:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9FE0324B09;
+	Mon, 27 Oct 2025 19:16:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ScL5WoCD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XWvSZEbS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EC9F32BF21;
-	Mon, 27 Oct 2025 19:03:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85E8617F4F6;
+	Mon, 27 Oct 2025 19:16:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591808; cv=none; b=s3K8vZPnVhcQ3pxQg21h/7zsqbazV+hRozwWlz67nw0GjJmap9FMPHPVrzbC4UMEOSciJSHFrFUdPDoCA7SEwsosBoLxWNKa89QlslID0PD5KR20FBLGUIx3sYcLNAuS4BCw3v6f0yNyH5DYI+o4w6LULu/mcpsEso41r1M9JLU=
+	t=1761592568; cv=none; b=YEasORKWGwHSj0927xCNsnIFN66U/Orz2mzTEROQLjbMffngW+UldjqudgkER6n4V3dwWK9MU0Weu3EX5jboMm47bfEPJKsdSpd6Q7wGK/vA9NnpJvAWdicnto2p5i9dW4FgVO2hhfchSuv8BLZ0EX5AoWHUGox68dracWtTvxo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591808; c=relaxed/simple;
-	bh=hXeaHJUJuqaQQifbBmhLTAlE7p/ja3D5A38+nC2oCoM=;
+	s=arc-20240116; t=1761592568; c=relaxed/simple;
+	bh=UPhM0oNCIaPlAP9u21xBEYdhMU+uBH65P64OWu6mprc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vFrPY+Khj6SixPRkfuWntDiNdjJdqSTOQs9eJVgZJ2jMnsQ1apsbS4IZrKbUxaPvS7s0MTOSyvFKngFV5YZ3xR1I4hrBIGLe5RigbxirM92mea5pvw+Rp+0WsYXz8gZE8uQ3omfzLnKGRhtpjQkFlGYPYPV6E1bxMWYepQ8ZRp8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ScL5WoCD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19556C113D0;
-	Mon, 27 Oct 2025 19:03:27 +0000 (UTC)
+	 MIME-Version; b=mi4ko5e0if27HhCbi3+MDpvuJ+yErJrSoJdCjbG/RIEDpV3Jbvr/3AUELfKikBQtIifxHgLC6UHvtsogHIJwoT0AYkr20HSHdme1HWJVfHCtV67TYge7GA2rofDayla5v0ey8/4g08R5s3PJCRkgu64F1Pl+hyRRtRxNgYgfLSM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XWvSZEbS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A04BEC4CEF1;
+	Mon, 27 Oct 2025 19:16:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591808;
-	bh=hXeaHJUJuqaQQifbBmhLTAlE7p/ja3D5A38+nC2oCoM=;
+	s=korg; t=1761592568;
+	bh=UPhM0oNCIaPlAP9u21xBEYdhMU+uBH65P64OWu6mprc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ScL5WoCDIZsSV5cfsRWe72qwHbFxpp4d3t++1SUVg0HllWZP6eSaNUjvWuYOEKe3H
-	 T54ZMeWK/xPP90Yz0Qw1moUf2Xxjpa+lgLyMfbnrGzev7W+Dm5WRQHKWftdklTBBt5
-	 5mOCufCx9Hrid3CxqnFfrUd4HE8jobPr8gg00Zt0=
+	b=XWvSZEbSM9rNCOBhTfUTidfXKmEv4lt24qm91MbwPI8pc09CJ0WLv31xKbJCtd5Nd
+	 ua3PP1uH4FLaRv56f8mciGZdmCkyigng9LdeEGhSU1/hvtU5JtmBglIWl33BAKX+rS
+	 ieZ2JsvhvArBotmngt8zTMiG5oxBy0HLQngbSrWk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Nyekjaer <sean@geanix.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Erhard Furtner <erhard_f@mailbox.org>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Andrew Donnellan <ajd@linux.ibm.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 309/332] iio: imu: inv_icm42600: Avoid configuring if already pm_runtime suspended
+Subject: [PATCH 6.6 13/84] powerpc/32: Remove PAGE_KERNEL_TEXT to fix startup failure
 Date: Mon, 27 Oct 2025 19:36:02 +0100
-Message-ID: <20251027183533.015173404@linuxfoundation.org>
+Message-ID: <20251027183439.169574243@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
-References: <20251027183524.611456697@linuxfoundation.org>
+In-Reply-To: <20251027183438.817309828@linuxfoundation.org>
+References: <20251027183438.817309828@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,68 +64,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Nyekjaer <sean@geanix.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-[ Upstream commit 466f7a2fef2a4e426f809f79845a1ec1aeb558f4 ]
+[ Upstream commit 9316512b717f6f25c4649b3fdb0a905b6a318e9f ]
 
-Do as in suspend, skip resume configuration steps if the device is already
-pm_runtime suspended. This avoids reconfiguring a device that is already
-in the correct low-power state and ensures that pm_runtime handles the
-power state transitions properly.
+PAGE_KERNEL_TEXT is an old macro that is used to tell kernel whether
+kernel text has to be mapped read-only or read-write based on build
+time options.
 
-Fixes: 31c24c1e93c3 ("iio: imu: inv_icm42600: add core of new inv_icm42600 driver")
-Signed-off-by: Sean Nyekjaer <sean@geanix.com>
-Link: https://patch.msgid.link/20250901-icm42pmreg-v3-3-ef1336246960@geanix.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-[ adjusted context to non-APEX suspend/resume implementation ]
+But nowadays, with functionnalities like jump_labels, static links,
+etc ... more only less all kernels need to be read-write at some
+point, and some combinations of configs failed to work due to
+innacurate setting of PAGE_KERNEL_TEXT. On the other hand, today
+we have CONFIG_STRICT_KERNEL_RWX which implements a more controlled
+access to kernel modifications.
+
+Instead of trying to keep PAGE_KERNEL_TEXT accurate with all
+possible options that may imply kernel text modification, always
+set kernel text read-write at startup and rely on
+CONFIG_STRICT_KERNEL_RWX to provide accurate protection.
+
+Do this by passing PAGE_KERNEL_X to map_kernel_page() in
+__maping_ram_chunk() instead of passing PAGE_KERNEL_TEXT. Once
+this is done, the only remaining user of PAGE_KERNEL_TEXT is
+mmu_mark_initmem_nx() which uses it in a call to setibat().
+As setibat() ignores the RW/RO, we can seamlessly replace
+PAGE_KERNEL_TEXT by PAGE_KERNEL_X here as well and get rid of
+PAGE_KERNEL_TEXT completely.
+
+Reported-by: Erhard Furtner <erhard_f@mailbox.org>
+Closes: https://lore.kernel.org/all/342b4120-911c-4723-82ec-d8c9b03a8aef@mailbox.org/
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Tested-by: Andrew Donnellan <ajd@linux.ibm.com>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/8e2d793abf87ae3efb8f6dce10f974ac0eda61b8.1757412205.git.christophe.leroy@csgroup.eu
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/imu/inv_icm42600/inv_icm42600_core.c |   11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ arch/powerpc/include/asm/pgtable.h | 12 ------------
+ arch/powerpc/mm/book3s32/mmu.c     |  4 ++--
+ arch/powerpc/mm/pgtable_32.c       |  2 +-
+ 3 files changed, 3 insertions(+), 15 deletions(-)
 
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
-@@ -680,17 +680,15 @@ EXPORT_SYMBOL_GPL(inv_icm42600_core_prob
- static int __maybe_unused inv_icm42600_suspend(struct device *dev)
- {
- 	struct inv_icm42600_state *st = dev_get_drvdata(dev);
--	int ret;
-+	int ret = 0;
+diff --git a/arch/powerpc/include/asm/pgtable.h b/arch/powerpc/include/asm/pgtable.h
+index d0ee46de248ea..74502f91ed936 100644
+--- a/arch/powerpc/include/asm/pgtable.h
++++ b/arch/powerpc/include/asm/pgtable.h
+@@ -20,18 +20,6 @@ struct mm_struct;
+ #include <asm/nohash/pgtable.h>
+ #endif /* !CONFIG_PPC_BOOK3S */
  
- 	mutex_lock(&st->lock);
+-/*
+- * Protection used for kernel text. We want the debuggers to be able to
+- * set breakpoints anywhere, so don't write protect the kernel text
+- * on platforms where such control is possible.
+- */
+-#if defined(CONFIG_KGDB) || defined(CONFIG_XMON) || defined(CONFIG_BDI_SWITCH) || \
+-	defined(CONFIG_KPROBES) || defined(CONFIG_DYNAMIC_FTRACE)
+-#define PAGE_KERNEL_TEXT	PAGE_KERNEL_X
+-#else
+-#define PAGE_KERNEL_TEXT	PAGE_KERNEL_ROX
+-#endif
+-
+ /* Make modules code happy. We don't set RO yet */
+ #define PAGE_KERNEL_EXEC	PAGE_KERNEL_X
  
- 	st->suspended.gyro = st->conf.gyro.mode;
- 	st->suspended.accel = st->conf.accel.mode;
- 	st->suspended.temp = st->conf.temp_en;
--	if (pm_runtime_suspended(dev)) {
--		ret = 0;
-+	if (pm_runtime_suspended(dev))
- 		goto out_unlock;
--	}
+diff --git a/arch/powerpc/mm/book3s32/mmu.c b/arch/powerpc/mm/book3s32/mmu.c
+index 850783cfa9c73..1b1848761a000 100644
+--- a/arch/powerpc/mm/book3s32/mmu.c
++++ b/arch/powerpc/mm/book3s32/mmu.c
+@@ -204,7 +204,7 @@ void mmu_mark_initmem_nx(void)
  
- 	/* disable FIFO data streaming */
- 	if (st->fifo.on) {
-@@ -722,10 +720,13 @@ static int __maybe_unused inv_icm42600_r
- 	struct inv_icm42600_state *st = dev_get_drvdata(dev);
- 	struct inv_icm42600_timestamp *gyro_ts = iio_priv(st->indio_gyro);
- 	struct inv_icm42600_timestamp *accel_ts = iio_priv(st->indio_accel);
--	int ret;
-+	int ret = 0;
- 
- 	mutex_lock(&st->lock);
- 
-+	if (pm_runtime_suspended(dev))
-+		goto out_unlock;
-+
- 	ret = inv_icm42600_enable_regulator_vddio(st);
- 	if (ret)
- 		goto out_unlock;
+ 	for (i = 0; i < nb - 1 && base < top;) {
+ 		size = bat_block_size(base, top);
+-		setibat(i++, PAGE_OFFSET + base, base, size, PAGE_KERNEL_TEXT);
++		setibat(i++, PAGE_OFFSET + base, base, size, PAGE_KERNEL_X);
+ 		base += size;
+ 	}
+ 	if (base < top) {
+@@ -215,7 +215,7 @@ void mmu_mark_initmem_nx(void)
+ 				pr_warn("Some RW data is getting mapped X. "
+ 					"Adjust CONFIG_DATA_SHIFT to avoid that.\n");
+ 		}
+-		setibat(i++, PAGE_OFFSET + base, base, size, PAGE_KERNEL_TEXT);
++		setibat(i++, PAGE_OFFSET + base, base, size, PAGE_KERNEL_X);
+ 		base += size;
+ 	}
+ 	for (; i < nb; i++)
+diff --git a/arch/powerpc/mm/pgtable_32.c b/arch/powerpc/mm/pgtable_32.c
+index 5c02fd08d61ef..69fac96c2dcd1 100644
+--- a/arch/powerpc/mm/pgtable_32.c
++++ b/arch/powerpc/mm/pgtable_32.c
+@@ -109,7 +109,7 @@ static void __init __mapin_ram_chunk(unsigned long offset, unsigned long top)
+ 	p = memstart_addr + s;
+ 	for (; s < top; s += PAGE_SIZE) {
+ 		ktext = core_kernel_text(v);
+-		map_kernel_page(v, p, ktext ? PAGE_KERNEL_TEXT : PAGE_KERNEL);
++		map_kernel_page(v, p, ktext ? PAGE_KERNEL_X : PAGE_KERNEL);
+ 		v += PAGE_SIZE;
+ 		p += PAGE_SIZE;
+ 	}
+-- 
+2.51.0
+
 
 
 
