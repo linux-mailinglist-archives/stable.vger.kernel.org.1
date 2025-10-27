@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-191018-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191186-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92095C10EB9
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:25:17 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F934C11342
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:41:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D61801A25115
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:21:33 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 9F8FF504772
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:29:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3CDD2D7DDA;
-	Mon, 27 Oct 2025 19:20:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73C1132C926;
+	Mon, 27 Oct 2025 19:27:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VMm+wNEy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ETCUEFib"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E2B31FBC92;
-	Mon, 27 Oct 2025 19:20:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 206AD304BD3;
+	Mon, 27 Oct 2025 19:27:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592800; cv=none; b=kswCd7DU2qHlEtoxpHJOrXUJ/ClajBlQ16N6G3UKsqM5YaKrNp4+mXjryI94SGfBlWFlznmwNCa1AOlo/ZWmZ4MmG68LmwrkfmRGRbM2MMG2+JrrRKWRJoIcMpWGgbLN0G0qE3jSq6HUNm95bfnsDIqEbOC715W9vHIFh/rIeZE=
+	t=1761593229; cv=none; b=p9cXXftcKX1baE7rR+KQQDZsfOcrDtKybAN+aznhKeyW3twFjpa3NMS51bDaDBSjj7+X7dSxyENj8S2+K+HURlzu9tmTLLCcX3O7da/XvAo4FGkd4mrmiQb2LOJRmViggSrF8ID6NapFNCdFRUsAZtFyEZAK+q5JzIW+E1m+mnA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592800; c=relaxed/simple;
-	bh=i9vwRb1t/bl4pkKetN5U0J1+twn9j3o/8loS71zlk9w=;
+	s=arc-20240116; t=1761593229; c=relaxed/simple;
+	bh=E+kZsIn/00RIUuNdDPsmsEckBa8NBdUjcNjTNhYm/hc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RqhR8K2APEZbdDedMPf7MSfQ/hpiFaeZueN3yYVsPGrpFFKwpWy6f33w5CNZPiRdzOZD4cGl31iNZCY/9i/R2unMt9Rrin8obsAV/+l8SddkW3GDfjezQYzfKuyEdsQDQLBgFm8nWo5PIYaZMtSE42aNJry5DI+4i8JTiIakA2E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VMm+wNEy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D84E7C4CEF1;
-	Mon, 27 Oct 2025 19:19:59 +0000 (UTC)
+	 MIME-Version; b=CWT/N0Qxpgw/ODMGFye+ZwSvrgJC11JIp3VL6BZsbxtSIKjnpj8Vm7bp1SLG7BYoXVsxmg8X1qDd5W8TBy0SMkuHbTFZAzBm5gZgtrp8OSqfyItvG4bnNJlX0i9vyWd7+rU2BL5vS1ILaGFrU/a4WS3oX/+IvWPMjEYBCKQFgz8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ETCUEFib; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61919C4CEF1;
+	Mon, 27 Oct 2025 19:27:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592800;
-	bh=i9vwRb1t/bl4pkKetN5U0J1+twn9j3o/8loS71zlk9w=;
+	s=korg; t=1761593228;
+	bh=E+kZsIn/00RIUuNdDPsmsEckBa8NBdUjcNjTNhYm/hc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VMm+wNEyMMOvlVniU6oK/k62pPDrFaGfWmskovls2AoInRuWYSA5y12pkwyLUeewO
-	 F69St+CJKE2kMI0FfWlcPVeUBfyLI/FlSQota4TvB+DNe8hvjhuU/4o+kb+Ac46JQr
-	 P42Cf4AiikdG5am7mz48gL/IJ6u+aENZbExKdM/8=
+	b=ETCUEFib2ykscH30bkeDtdsXd/8Ct29QAC6WyVZCf++SloZ5dddIc+bSWwEAbT5eg
+	 AFTjax5W0vztzWWiyg6CQKipfahNl3sNyYpJfJfPybujRpNvGxukJHxCCUqM1n8p9K
+	 9jFeSxHT517e9iC94KzBFPEdH+L/JkL/rRju0Hz8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan Cameron <jonathan.cameron@huawei.com>,
-	Yicong Yang <yangyicong@hisilicon.com>,
-	Yushan Wang <wangyushan12@huawei.com>,
-	Will Deacon <will@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 017/117] drivers/perf: hisi: Relax the event ID check in the framework
+	Jakub Acs <acsjakub@amazon.de>,
+	Jan Kara <jack@suse.cz>,
+	Amir Goldstein <amir73il@gmail.com>,
+	Miklos Szeredi <miklos@szeredi.hu>,
+	Christian Brauner <brauner@kernel.org>,
+	linux-unionfs@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 6.17 061/184] fs/notify: call exportfs_encode_fid with s_umount
 Date: Mon, 27 Oct 2025 19:35:43 +0100
-Message-ID: <20251027183454.413288057@linuxfoundation.org>
+Message-ID: <20251027183516.529735185@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
-References: <20251027183453.919157109@linuxfoundation.org>
+In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
+References: <20251027183514.934710872@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,59 +67,111 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yicong Yang <yangyicong@hisilicon.com>
+From: Jakub Acs <acsjakub@amazon.de>
 
-[ Upstream commit 43de0ac332b815cf56dbdce63687de9acfd35d49 ]
+commit a7c4bb43bfdc2b9f06ee9d036028ed13a83df42a upstream.
 
-Event ID is only using the attr::config bit [7, 0] but we check the
-event range using the whole 64bit field. It blocks the usage of the
-rest field of attr::config. Relax the check by only using the
-bit [7, 0].
+Calling intotify_show_fdinfo() on fd watching an overlayfs inode, while
+the overlayfs is being unmounted, can lead to dereferencing NULL ptr.
 
-Acked-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
-Signed-off-by: Yushan Wang <wangyushan12@huawei.com>
-Signed-off-by: Will Deacon <will@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This issue was found by syzkaller.
+
+Race Condition Diagram:
+
+Thread 1                           Thread 2
+--------                           --------
+
+generic_shutdown_super()
+ shrink_dcache_for_umount
+  sb->s_root = NULL
+
+                    |
+                    |             vfs_read()
+                    |              inotify_fdinfo()
+                    |               * inode get from mark *
+                    |               show_mark_fhandle(m, inode)
+                    |                exportfs_encode_fid(inode, ..)
+                    |                 ovl_encode_fh(inode, ..)
+                    |                  ovl_check_encode_origin(inode)
+                    |                   * deref i_sb->s_root *
+                    |
+                    |
+                    v
+ fsnotify_sb_delete(sb)
+
+Which then leads to:
+
+[   32.133461] Oops: general protection fault, probably for non-canonical address 0xdffffc0000000006: 0000 [#1] SMP DEBUG_PAGEALLOC KASAN NOPTI
+[   32.134438] KASAN: null-ptr-deref in range [0x0000000000000030-0x0000000000000037]
+[   32.135032] CPU: 1 UID: 0 PID: 4468 Comm: systemd-coredum Not tainted 6.17.0-rc6 #22 PREEMPT(none)
+
+<snip registers, unreliable trace>
+
+[   32.143353] Call Trace:
+[   32.143732]  ovl_encode_fh+0xd5/0x170
+[   32.144031]  exportfs_encode_inode_fh+0x12f/0x300
+[   32.144425]  show_mark_fhandle+0xbe/0x1f0
+[   32.145805]  inotify_fdinfo+0x226/0x2d0
+[   32.146442]  inotify_show_fdinfo+0x1c5/0x350
+[   32.147168]  seq_show+0x530/0x6f0
+[   32.147449]  seq_read_iter+0x503/0x12a0
+[   32.148419]  seq_read+0x31f/0x410
+[   32.150714]  vfs_read+0x1f0/0x9e0
+[   32.152297]  ksys_read+0x125/0x240
+
+IOW ovl_check_encode_origin derefs inode->i_sb->s_root, after it was set
+to NULL in the unmount path.
+
+Fix it by protecting calling exportfs_encode_fid() from
+show_mark_fhandle() with s_umount lock.
+
+This form of fix was suggested by Amir in [1].
+
+[1]: https://lore.kernel.org/all/CAOQ4uxhbDwhb+2Brs1UdkoF0a3NSdBAOQPNfEHjahrgoKJpLEw@mail.gmail.com/
+
+Fixes: c45beebfde34 ("ovl: support encoding fid from inode with no alias")
+Signed-off-by: Jakub Acs <acsjakub@amazon.de>
+Cc: Jan Kara <jack@suse.cz>
+Cc: Amir Goldstein <amir73il@gmail.com>
+Cc: Miklos Szeredi <miklos@szeredi.hu>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: linux-unionfs@vger.kernel.org
+Cc: linux-fsdevel@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org
+Signed-off-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/perf/hisilicon/hisi_uncore_pmu.c | 2 +-
- drivers/perf/hisilicon/hisi_uncore_pmu.h | 3 ++-
- 2 files changed, 3 insertions(+), 2 deletions(-)
+ fs/notify/fdinfo.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/perf/hisilicon/hisi_uncore_pmu.c b/drivers/perf/hisilicon/hisi_uncore_pmu.c
-index 918cdc31de572..e37682b280db5 100644
---- a/drivers/perf/hisilicon/hisi_uncore_pmu.c
-+++ b/drivers/perf/hisilicon/hisi_uncore_pmu.c
-@@ -198,7 +198,7 @@ int hisi_uncore_pmu_event_init(struct perf_event *event)
- 		return -EINVAL;
+--- a/fs/notify/fdinfo.c
++++ b/fs/notify/fdinfo.c
+@@ -17,6 +17,7 @@
+ #include "fanotify/fanotify.h"
+ #include "fdinfo.h"
+ #include "fsnotify.h"
++#include "../internal.h"
  
- 	hisi_pmu = to_hisi_pmu(event->pmu);
--	if (event->attr.config > hisi_pmu->check_event)
-+	if ((event->attr.config & HISI_EVENTID_MASK) > hisi_pmu->check_event)
- 		return -EINVAL;
+ #if defined(CONFIG_PROC_FS)
  
- 	if (hisi_pmu->on_cpu == -1)
-diff --git a/drivers/perf/hisilicon/hisi_uncore_pmu.h b/drivers/perf/hisilicon/hisi_uncore_pmu.h
-index 25b2d43b72bf9..ab5d54170b416 100644
---- a/drivers/perf/hisilicon/hisi_uncore_pmu.h
-+++ b/drivers/perf/hisilicon/hisi_uncore_pmu.h
-@@ -43,7 +43,8 @@
- 		return FIELD_GET(GENMASK_ULL(hi, lo), event->attr.config);  \
- 	}
+@@ -46,7 +47,12 @@ static void show_mark_fhandle(struct seq
  
--#define HISI_GET_EVENTID(ev) (ev->hw.config_base & 0xff)
-+#define HISI_EVENTID_MASK		GENMASK(7, 0)
-+#define HISI_GET_EVENTID(ev)		((ev)->hw.config_base & HISI_EVENTID_MASK)
+ 	size = f->handle_bytes >> 2;
  
- #define HISI_PMU_EVTYPE_BITS		8
- #define HISI_PMU_EVTYPE_SHIFT(idx)	((idx) % 4 * HISI_PMU_EVTYPE_BITS)
--- 
-2.51.0
-
++	if (!super_trylock_shared(inode->i_sb))
++		return;
++
+ 	ret = exportfs_encode_fid(inode, (struct fid *)f->f_handle, &size);
++	up_read(&inode->i_sb->s_umount);
++
+ 	if ((ret == FILEID_INVALID) || (ret < 0))
+ 		return;
+ 
 
 
 
