@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-190888-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190745-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66FE9C10DAE
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:22:30 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF312C10B1D
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:16:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 34D04507563
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:15:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 390EE1A254F8
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:10:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61D282E7F05;
-	Mon, 27 Oct 2025 19:14:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DC4D32C933;
+	Mon, 27 Oct 2025 19:08:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oQ/zjeTq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ylG1bHgo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14AD735965;
-	Mon, 27 Oct 2025 19:14:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ADB91662E7;
+	Mon, 27 Oct 2025 19:08:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592463; cv=none; b=pEmiF+zrRUBI/x0ZQmi5fYVptQJ9VGprmyt4P1Eutd/i8d7KusGFETEZ0I0/PtEmyUWT5SIPrkeMVAuPuEzTpULMsbUySLQjQi4jDAgLG5tDwcRgZvBXP5nnZAloodP2aJQjj/LdRP2qWSFQxeAnrGrG0PewkJGbw1HMzTV+dW0=
+	t=1761592085; cv=none; b=RM+TlOoHhHloSjWabCysNUw7ClSGIEtwOkMkp8Q+sHQSD11fzuBhXQwlWxvVesuZCWc6KwaH0Dbkh2BWk17Pr3UHiKGmuYHYjLRN5mEgjHOiZa/M6TcGspWiUs9M1Uv+6AfybmGH4f/GCw1uoxbVXCDigQQoh5Ugd3U4rWaovY4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592463; c=relaxed/simple;
-	bh=mN83whtl0kHxS16khtf8nWVY0+znO9jO7xiKd/9T9fc=;
+	s=arc-20240116; t=1761592085; c=relaxed/simple;
+	bh=c/xeaimjgRBxtaQV7JSGjykukmnltdo2DfZPWv27czI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CLJZ3tkiLNSSLE0nzhx4R2AfWgNIHAwv46UIDtIuAtmUgvdeT589lUl6juPSOIp+oTe1HR+Dg20arC+SVkdKVK26R1WCuFbY6r77AeeQ2pkhVE03Q7XcqHMA/2w5i8IwZOH4pB40YvYAVs21W8jr80OY3PiNCIQHxs4W4e1yNcA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oQ/zjeTq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F6FDC4CEF1;
-	Mon, 27 Oct 2025 19:14:22 +0000 (UTC)
+	 MIME-Version; b=cyQUX66icWS6vEMTBEa55TzpuLHbCOaW271VY+Q5xlP0asa3Olu4coiF2pjkoATzVzVSHjUiylwa3RReMhouiiiOUbe1eYO91YvIVVQsHv0oT1JcodX6791l499tgvuoUiWFbCdAKyIoJQKfmqSk5omUxFlVgx7v+5VsNRUBRuQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ylG1bHgo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFFC0C4CEF1;
+	Mon, 27 Oct 2025 19:08:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592462;
-	bh=mN83whtl0kHxS16khtf8nWVY0+znO9jO7xiKd/9T9fc=;
+	s=korg; t=1761592085;
+	bh=c/xeaimjgRBxtaQV7JSGjykukmnltdo2DfZPWv27czI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oQ/zjeTqnEXN6XkKzTUc4YMemcN39CvdrA7Ns+ZVHLMrdMHygZ1Wtycge2hUZOYUt
-	 CNr8YZdUg8+uYd1/6OQVsqk/gV0+U/QpSlSYkH0akzyp8JrF9oNB05q/z/tzZIFNE0
-	 jhX/AUadJUanJqPR93Ta+7RnBmqqWLlKoyYAKAhs=
+	b=ylG1bHgolZ4LUF0wk5degbbD8LAljbdXGUcmQZjJIcrQaVkruTkvNywY+1agAwsUy
+	 QW9NbrvcDFoxGDmMFIEEPjPdifygtq63HfY9Zj3aWfcHFRtzTgTd19tJOe9yr35vwm
+	 8+bEJvpeT6acsEYzB94+SFw5v6ZmFMW6aVg6oDOA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sergey Bashirov <sergeybashirov@gmail.com>,
-	Chuck Lever <chuck.lever@oracle.com>,
+	Duy Nguyen <duy.nguyen.rh@renesas.com>,
+	Thuan Nguyen <thuan.nguyen-hong@banvien.com.vn>,
+	Marek Vasut <marek.vasut+renesas@mailbox.org>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 131/157] NFSD: Rework encoding and decoding of nfsd4_deviceid
+Subject: [PATCH 5.15 112/123] PCI: rcar-host: Drop PMSR spinlock
 Date: Mon, 27 Oct 2025 19:36:32 +0100
-Message-ID: <20251027183504.768622484@linuxfoundation.org>
+Message-ID: <20251027183449.384818392@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
-References: <20251027183501.227243846@linuxfoundation.org>
+In-Reply-To: <20251027183446.381986645@linuxfoundation.org>
+References: <20251027183446.381986645@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,158 +65,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sergey Bashirov <sergeybashirov@gmail.com>
+From: Marek Vasut <marek.vasut+renesas@mailbox.org>
 
-[ Upstream commit 832738e4b325b742940761e10487403f9aad13e8 ]
+[ Upstream commit 0a8f173d9dad13930d5888505dc4c4fd6a1d4262 ]
 
-Compilers may optimize the layout of C structures, so we should not rely
-on sizeof struct and memcpy to encode and decode XDR structures. The byte
-order of the fields should also be taken into account.
+The pmsr_lock spinlock used to be necessary to synchronize access to the
+PMSR register, because that access could have been triggered from either
+config space access in rcar_pcie_config_access() or an exception handler
+rcar_pcie_aarch32_abort_handler().
 
-This patch adds the correct functions to handle the deviceid4 structure
-and removes the pad field, which is currently not used by NFSD, from the
-runtime state. The server's byte order is preserved because the deviceid4
-blob on the wire is only used as a cookie by the client.
+The rcar_pcie_aarch32_abort_handler() case is no longer applicable since
+commit 6e36203bc14c ("PCI: rcar: Use PCI_SET_ERROR_RESPONSE after read
+which triggered an exception"), which performs more accurate, controlled
+invocation of the exception, and a fixup.
 
-Signed-off-by: Sergey Bashirov <sergeybashirov@gmail.com>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Stable-dep-of: d68886bae76a ("NFSD: Fix last write offset handling in layoutcommit")
+This leaves rcar_pcie_config_access() as the only call site from which
+rcar_pcie_wakeup() is called. The rcar_pcie_config_access() can only be
+called from the controller struct pci_ops .read and .write callbacks,
+and those are serialized in drivers/pci/access.c using raw spinlock
+'pci_lock' . It should be noted that CONFIG_PCI_LOCKLESS_CONFIG is never
+set on this platform.
+
+Since the 'pci_lock' is a raw spinlock , and the 'pmsr_lock' is not a
+raw spinlock, this constellation triggers 'BUG: Invalid wait context'
+with CONFIG_PROVE_RAW_LOCK_NESTING=y .
+
+Remove the pmsr_lock to fix the locking.
+
+Fixes: a115b1bd3af0 ("PCI: rcar: Add L1 link state fix into data abort hook")
+Reported-by: Duy Nguyen <duy.nguyen.rh@renesas.com>
+Reported-by: Thuan Nguyen <thuan.nguyen-hong@banvien.com.vn>
+Signed-off-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20250909162707.13927-1-marek.vasut+renesas@mailbox.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/blocklayoutxdr.c    |    7 ++-----
- fs/nfsd/flexfilelayoutxdr.c |    3 +--
- fs/nfsd/nfs4layouts.c       |    1 -
- fs/nfsd/nfs4xdr.c           |   14 +-------------
- fs/nfsd/xdr4.h              |   36 +++++++++++++++++++++++++++++++++++-
- 5 files changed, 39 insertions(+), 22 deletions(-)
+ drivers/pci/controller/pcie-rcar-host.c |   13 ++-----------
+ 1 file changed, 2 insertions(+), 11 deletions(-)
 
---- a/fs/nfsd/blocklayoutxdr.c
-+++ b/fs/nfsd/blocklayoutxdr.c
-@@ -29,8 +29,7 @@ nfsd4_block_encode_layoutget(struct xdr_
- 	*p++ = cpu_to_be32(len);
- 	*p++ = cpu_to_be32(1);		/* we always return a single extent */
- 
--	p = xdr_encode_opaque_fixed(p, &b->vol_id,
--			sizeof(struct nfsd4_deviceid));
-+	p = svcxdr_encode_deviceid4(p, &b->vol_id);
- 	p = xdr_encode_hyper(p, b->foff);
- 	p = xdr_encode_hyper(p, b->len);
- 	p = xdr_encode_hyper(p, b->soff);
-@@ -145,9 +144,7 @@ nfsd4_block_decode_layoutupdate(__be32 *
- 	for (i = 0; i < nr_iomaps; i++) {
- 		struct pnfs_block_extent bex;
- 
--		memcpy(&bex.vol_id, p, sizeof(struct nfsd4_deviceid));
--		p += XDR_QUADLEN(sizeof(struct nfsd4_deviceid));
--
-+		p = svcxdr_decode_deviceid4(p, &bex.vol_id);
- 		p = xdr_decode_hyper(p, &bex.foff);
- 		if (bex.foff & (block_size - 1)) {
- 			dprintk("%s: unaligned offset 0x%llx\n",
---- a/fs/nfsd/flexfilelayoutxdr.c
-+++ b/fs/nfsd/flexfilelayoutxdr.c
-@@ -54,8 +54,7 @@ nfsd4_ff_encode_layoutget(struct xdr_str
- 	*p++ = cpu_to_be32(1);			/* single mirror */
- 	*p++ = cpu_to_be32(1);			/* single data server */
- 
--	p = xdr_encode_opaque_fixed(p, &fl->deviceid,
--			sizeof(struct nfsd4_deviceid));
-+	p = svcxdr_encode_deviceid4(p, &fl->deviceid);
- 
- 	*p++ = cpu_to_be32(1);			/* efficiency */
- 
---- a/fs/nfsd/nfs4layouts.c
-+++ b/fs/nfsd/nfs4layouts.c
-@@ -120,7 +120,6 @@ nfsd4_set_deviceid(struct nfsd4_deviceid
- 
- 	id->fsid_idx = fhp->fh_export->ex_devid_map->idx;
- 	id->generation = device_generation;
--	id->pad = 0;
- 	return 0;
- }
- 
---- a/fs/nfsd/nfs4xdr.c
-+++ b/fs/nfsd/nfs4xdr.c
-@@ -566,18 +566,6 @@ nfsd4_decode_state_owner4(struct nfsd4_c
- }
- 
- #ifdef CONFIG_NFSD_PNFS
--static __be32
--nfsd4_decode_deviceid4(struct nfsd4_compoundargs *argp,
--		       struct nfsd4_deviceid *devid)
--{
--	__be32 *p;
--
--	p = xdr_inline_decode(argp->xdr, NFS4_DEVICEID4_SIZE);
--	if (!p)
--		return nfserr_bad_xdr;
--	memcpy(devid, p, sizeof(*devid));
--	return nfs_ok;
--}
- 
- static __be32
- nfsd4_decode_layoutupdate4(struct nfsd4_compoundargs *argp,
-@@ -1733,7 +1721,7 @@ nfsd4_decode_getdeviceinfo(struct nfsd4_
- 	__be32 status;
- 
- 	memset(gdev, 0, sizeof(*gdev));
--	status = nfsd4_decode_deviceid4(argp, &gdev->gd_devid);
-+	status = nfsd4_decode_deviceid4(argp->xdr, &gdev->gd_devid);
- 	if (status)
- 		return status;
- 	if (xdr_stream_decode_u32(argp->xdr, &gdev->gd_layout_type) < 0)
---- a/fs/nfsd/xdr4.h
-+++ b/fs/nfsd/xdr4.h
-@@ -459,9 +459,43 @@ struct nfsd4_reclaim_complete {
- struct nfsd4_deviceid {
- 	u64			fsid_idx;
- 	u32			generation;
--	u32			pad;
+--- a/drivers/pci/controller/pcie-rcar-host.c
++++ b/drivers/pci/controller/pcie-rcar-host.c
+@@ -67,20 +67,13 @@ struct rcar_pcie_host {
+ 	int			(*phy_init_fn)(struct rcar_pcie_host *host);
  };
  
-+static inline __be32 *
-+svcxdr_encode_deviceid4(__be32 *p, const struct nfsd4_deviceid *devid)
-+{
-+	__be64 *q = (__be64 *)p;
-+
-+	*q = (__force __be64)devid->fsid_idx;
-+	p += 2;
-+	*p++ = (__force __be32)devid->generation;
-+	*p++ = xdr_zero;
-+	return p;
-+}
-+
-+static inline __be32 *
-+svcxdr_decode_deviceid4(__be32 *p, struct nfsd4_deviceid *devid)
-+{
-+	__be64 *q = (__be64 *)p;
-+
-+	devid->fsid_idx = (__force u64)(*q);
-+	p += 2;
-+	devid->generation = (__force u32)(*p++);
-+	p++; /* NFSD does not use the remaining octets */
-+	return p;
-+}
-+
-+static inline __be32
-+nfsd4_decode_deviceid4(struct xdr_stream *xdr, struct nfsd4_deviceid *devid)
-+{
-+	__be32 *p = xdr_inline_decode(xdr, NFS4_DEVICEID4_SIZE);
-+
-+	if (unlikely(!p))
-+		return nfserr_bad_xdr;
-+	svcxdr_decode_deviceid4(p, devid);
-+	return nfs_ok;
-+}
-+
- struct nfsd4_layout_seg {
- 	u32			iomode;
- 	u64			offset;
+-static DEFINE_SPINLOCK(pmsr_lock);
+-
+ static int rcar_pcie_wakeup(struct device *pcie_dev, void __iomem *pcie_base)
+ {
+-	unsigned long flags;
+ 	u32 pmsr, val;
+ 	int ret = 0;
+ 
+-	spin_lock_irqsave(&pmsr_lock, flags);
+-
+-	if (!pcie_base || pm_runtime_suspended(pcie_dev)) {
+-		ret = -EINVAL;
+-		goto unlock_exit;
+-	}
++	if (!pcie_base || pm_runtime_suspended(pcie_dev))
++		return -EINVAL;
+ 
+ 	pmsr = readl(pcie_base + PMSR);
+ 
+@@ -98,8 +91,6 @@ static int rcar_pcie_wakeup(struct devic
+ 		writel(L1FAEG | PMEL1RX, pcie_base + PMSR);
+ 	}
+ 
+-unlock_exit:
+-	spin_unlock_irqrestore(&pmsr_lock, flags);
+ 	return ret;
+ }
+ 
 
 
 
