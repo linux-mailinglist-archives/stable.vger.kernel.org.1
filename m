@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-190657-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190549-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79BC3C107EF
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:07:37 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2427FC10849
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:08:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 260BF35164C
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:07:37 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C5A96503CF6
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:04:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4910B32E6BA;
-	Mon, 27 Oct 2025 19:04:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66746332916;
+	Mon, 27 Oct 2025 18:59:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0MtVGCrF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P6izRlPE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05F6330F526;
-	Mon, 27 Oct 2025 19:04:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22CD0328B7A;
+	Mon, 27 Oct 2025 18:59:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591855; cv=none; b=Fm+k6Tfz/8fqQisa0XDIhqMtlGnDyeb1nTIRY1OmcKLonjwDgG3nCddXT3SS3Aj1GS7Jwp+zKVifcnf48RgeJsgyMCXOJCVX1j5Jtwfq+PtTMN6r0FJ4+nxLzLeDF+/Q/jqkKS2NINvtjEjKJLLtgW7NqsX7bX1o4H4wySJOebo=
+	t=1761591580; cv=none; b=gTFLdsVleMIOFWc6Pt9GznZaCGbJguUNN8e8vzDk6bJHYO9jmEouqzXjcjhWVg7d25ZAc8Jg5iPVoxzCCpm5l9bRDfW58J9VA2R7u+4zskKmMpridhDERgas0ac9FQ3nnHQBBWE6TX1x4wpklcACHZ7MHv3QJFY7OS8QWyEehoU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591855; c=relaxed/simple;
-	bh=/GnT3qzSvxuFIIzNokBgIyk8mCNYKskprayxk8VNCRQ=;
+	s=arc-20240116; t=1761591580; c=relaxed/simple;
+	bh=/xmKzb9SnHLHQix9Vyi94XN5FxYsnuBF9+2FTbWZRT4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VD0nE2aADbtBBdaHQlsl94i6vK52X9iC3/9kMudf3zNoQYm53gm8Ebk9Yd1kEgS9WTpxhxp6FlHQZOy8kLQNJkc8hMQbxr2ZUKZqTsKU2YLRHaGzdKvxhUwTMhByvuC+ZE7Pnz+2GPZwDLKyIl2ehwUd8ifi9CcV1iZuGicJr3c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0MtVGCrF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B64AC4CEF1;
-	Mon, 27 Oct 2025 19:04:14 +0000 (UTC)
+	 MIME-Version; b=W9cTOEIm6NrfOpu6qh6hfhpbjWGsJrrnBMZiqyYBiDO8Vz33E0vwzOBwfNkT0oykwofOc/fFZKm03c2BqG9BnG6gURn4KP+zUHVnEQiCAD48OPN+HoX94pssvoTVZCSFSmfcFo52SDjMdNaPGiBnHlP5STKOePcYY0I2QQq8FeM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P6izRlPE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0C21C4CEF1;
+	Mon, 27 Oct 2025 18:59:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591854;
-	bh=/GnT3qzSvxuFIIzNokBgIyk8mCNYKskprayxk8VNCRQ=;
+	s=korg; t=1761591580;
+	bh=/xmKzb9SnHLHQix9Vyi94XN5FxYsnuBF9+2FTbWZRT4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0MtVGCrFaZwd5Gkg+4w2lONBQRnftqlCkzbzUg3oc/3c8EyBTmdU5teeeH9HcQZLF
-	 oVofOeeHygsSsizeFQWHLUi4aR3oNa5yQooJRrfQQrdTvBFoyYy+2l5uf6eRcKvfEp
-	 Z2mOnayR/GurAUW25s1OOXbUn5Vw2dCpn2oK206s=
+	b=P6izRlPEdByu+1Nm67DVichI7SOFA9+2Dd+4ISbs6E2vt6bnMadRVo8kuxvqQNhdY
+	 059Mg6VZ5j7UDhRFaY/+TZEFLNf0Xgl6/cjXSHJ05n0mvHwxyNyzMvRoh5GTNmyKmr
+	 JTgcT7LEt3TEvTWkzf+0fDSQ5ZJ/mzBK9AyU+2A4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandr Sapozhnikov <alsp705@gmail.com>,
-	Alexey Simakov <bigalex934@gmail.com>,
-	Pavan Chebbi <pavan.chebbi@broadcom.com>,
+	I Viswanath <viswanathiyyappan@gmail.com>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Khalid Aziz <khalid@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 023/123] tg3: prevent use of uninitialized remote_adv and local_adv variables
-Date: Mon, 27 Oct 2025 19:35:03 +0100
-Message-ID: <20251027183447.018419869@linuxfoundation.org>
+Subject: [PATCH 5.10 251/332] net: usb: lan78xx: fix use of improperly initialized dev->chipid in lan78xx_reset
+Date: Mon, 27 Oct 2025 19:35:04 +0100
+Message-ID: <20251027183531.467963128@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183446.381986645@linuxfoundation.org>
-References: <20251027183446.381986645@linuxfoundation.org>
+In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
+References: <20251027183524.611456697@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,55 +64,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexey Simakov <bigalex934@gmail.com>
+From: I Viswanath <viswanathiyyappan@gmail.com>
 
-[ Upstream commit 0c3f2e62815a43628e748b1e4ad97a1c46cce703 ]
+[ Upstream commit 8d93ff40d49d70e05c82a74beae31f883fe0eaf8 ]
 
-Some execution paths that jump to the fiber_setup_done label
-could leave the remote_adv and local_adv variables uninitialized
-and then use it.
+dev->chipid is used in lan78xx_init_mac_address before it's initialized:
 
-Initialize this variables at the point of definition to avoid this.
+lan78xx_reset() {
+    lan78xx_init_mac_address()
+        lan78xx_read_eeprom()
+            lan78xx_read_raw_eeprom() <- dev->chipid is used here
 
-Fixes: 85730a631f0c ("tg3: Add SGMII phy support for 5719/5718 serdes")
-Co-developed-by: Alexandr Sapozhnikov <alsp705@gmail.com>
-Signed-off-by: Alexandr Sapozhnikov <alsp705@gmail.com>
-Signed-off-by: Alexey Simakov <bigalex934@gmail.com>
-Reviewed-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
-Link: https://patch.msgid.link/20251014164736.5890-1-bigalex934@gmail.com
+    dev->chipid = ... <- dev->chipid is initialized correctly here
+}
+
+Reorder initialization so that dev->chipid is set before calling
+lan78xx_init_mac_address().
+
+Fixes: a0db7d10b76e ("lan78xx: Add to handle mux control per chip id")
+Signed-off-by: I Viswanath <viswanathiyyappan@gmail.com>
+Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Reviewed-by: Khalid Aziz <khalid@kernel.org>
+Link: https://patch.msgid.link/20251013181648.35153-1-viswanathiyyappan@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/tg3.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ drivers/net/usb/lan78xx.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/tg3.c b/drivers/net/ethernet/broadcom/tg3.c
-index 7c51b9b593afc..bd3b56c7aab8d 100644
---- a/drivers/net/ethernet/broadcom/tg3.c
-+++ b/drivers/net/ethernet/broadcom/tg3.c
-@@ -5815,7 +5815,7 @@ static int tg3_setup_fiber_mii_phy(struct tg3 *tp, bool force_reset)
- 	u32 current_speed = SPEED_UNKNOWN;
- 	u8 current_duplex = DUPLEX_UNKNOWN;
- 	bool current_link_up = false;
--	u32 local_adv, remote_adv, sgsr;
-+	u32 local_adv = 0, remote_adv = 0, sgsr;
+diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
+index c3aa3f75ab914..fd5fa64cbe932 100644
+--- a/drivers/net/usb/lan78xx.c
++++ b/drivers/net/usb/lan78xx.c
+@@ -2673,10 +2673,6 @@ static int lan78xx_reset(struct lan78xx_net *dev)
+ 		}
+ 	} while (buf & HW_CFG_LRST_);
  
- 	if ((tg3_asic_rev(tp) == ASIC_REV_5719 ||
- 	     tg3_asic_rev(tp) == ASIC_REV_5720) &&
-@@ -5956,9 +5956,6 @@ static int tg3_setup_fiber_mii_phy(struct tg3 *tp, bool force_reset)
- 		else
- 			current_duplex = DUPLEX_HALF;
- 
--		local_adv = 0;
--		remote_adv = 0;
+-	ret = lan78xx_init_mac_address(dev);
+-	if (ret < 0)
+-		return ret;
 -
- 		if (bmcr & BMCR_ANENABLE) {
- 			u32 common;
+ 	/* save DEVID for later usage */
+ 	ret = lan78xx_read_reg(dev, ID_REV, &buf);
+ 	if (ret < 0)
+@@ -2685,6 +2681,10 @@ static int lan78xx_reset(struct lan78xx_net *dev)
+ 	dev->chipid = (buf & ID_REV_CHIP_ID_MASK_) >> 16;
+ 	dev->chiprev = buf & ID_REV_CHIP_REV_MASK_;
  
++	ret = lan78xx_init_mac_address(dev);
++	if (ret < 0)
++		return ret;
++
+ 	/* Respond to the IN token with a NAK */
+ 	ret = lan78xx_read_reg(dev, USB_CFG0, &buf);
+ 	if (ret < 0)
 -- 
 2.51.0
 
