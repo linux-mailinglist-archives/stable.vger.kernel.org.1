@@ -1,191 +1,99 @@
-Return-Path: <stable+bounces-190000-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190001-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B114C0E7A4
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 15:40:17 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90235C0E7B3
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 15:40:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C7712188DE87
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 14:37:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 62E501891A7C
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 14:38:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C007830ACFB;
-	Mon, 27 Oct 2025 14:35:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6448D17A2E0;
+	Mon, 27 Oct 2025 14:37:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="hSmKKWD5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uz9umbei"
 X-Original-To: stable@vger.kernel.org
-Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DB1023E355;
-	Mon, 27 Oct 2025 14:35:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22FB9279DCC
+	for <stable@vger.kernel.org>; Mon, 27 Oct 2025 14:37:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761575739; cv=none; b=Fsfs8GHn++iNyjabgLVaCqb+7iU6tR3GsWeZXIp+bVPZNhT6nGWdQsFFtU4pQIKEbRYiddFmvb5kPnlNLS7OyG16OwdmOMS3+f9tb/CRSjIOhQtvLCSVqQX43rfc0EjDJn4bXf+yBWs3Ul3kg1HxfuIOJujywQ9thaZDmbervg4=
+	t=1761575829; cv=none; b=m/fh0cQg4hq5MoPjwOB1RbsjX+L/n7J6rIdXpMV/bvjIRotkiJAKe2TDHQg4Y2qgYZpCwQRHONgRemh7N17bUNMae29hoYsjz2NyIJwQwVs2g7aCvjFLzh+R0O6EAIlU56qqxCBabl1Yvw6nfcLMTqadzE+PFrCODLfQRDFhrfI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761575739; c=relaxed/simple;
-	bh=r5CubwPSgel9Kbfug9bRhlGBAU1MiZJ3lZEaLzdKfjM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=B+/86Q0YGHTLPmv4k8HsjIwBwlRu7PIHkqpV63LuDOLL4PCwW8fAKSXc7naYGml/XkVR4MdMKWLKHtSkW0VR2IRwOx6eNDk6MIVCdiP+kqwTZXuDS1U51bk2KJ5TYg9vdkqMRMtoIv7VMz2TIS3qldNu8lMrKvt/vIOBz6kFHs0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=hSmKKWD5; arc=none smtp.client-ip=217.194.8.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
-Received: from francesco-nb (248.201.173.83.static.wline.lns.sme.cust.swisscom.ch [83.173.201.248])
-	by mail11.truemail.it (Postfix) with ESMTPA id 5844321E50;
-	Mon, 27 Oct 2025 15:35:26 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1761575726;
-	bh=8GGEgENZ1Vbe/2oA2ExOI5P6StTcMkX9+lb/DIzzw+k=; h=From:To:Subject;
-	b=hSmKKWD5RlUsXX84DlnGt9tQK3iinQHeJKVdKvorRGtoHbNNKnsxYszN0rIZeqHDm
-	 59UDEeDMSQK9KFlAXGVwV/G2fTStj9zYorqDxRw7G4YRkCmP6jEm8smZB+Shs0jvOK
-	 +T3wA10zIHWZiGFf3iFcT55QfkSFMNHLReAZFOyIcUSK1JAXLC9HNO8/frDxKfa3kB
-	 NehBY0neZ/6gCc0wWZH0Ygf6aE8Wcold9fUk+VlvIJsX9woFLf5+OyUi1HrGmI/y2x
-	 Rz8SzYnNctjv2T5Z9PPSbAeUh0ICNCPc4H/n2C/IeR+U5dxWUR3FcKAP1rk8GX/R4G
-	 PK7bG/Wf8J/Vg==
-Date: Mon, 27 Oct 2025 15:35:22 +0100
-From: Francesco Dolcini <francesco@dolcini.it>
-To: Andrew Lunn <andrew@lunn.ch>, Russell King <linux@armlinux.org.uk>
-Cc: Emanuele Ghidoli <ghidoliemanuele@gmail.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Emanuele Ghidoli <emanuele.ghidoli@toradex.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v1] net: phy: dp83867: Disable EEE support as not
- implemented
-Message-ID: <20251027143522.GA57409@francesco-nb>
-References: <20251023144857.529566-1-ghidoliemanuele@gmail.com>
- <ae723e7c-f876-45ef-bc41-3b39dc1dc76b@lunn.ch>
- <664ef58b-d7e6-4f08-b88f-e7c2cf08c83c@gmail.com>
- <df3aac25-e8e9-46cb-bd92-637822665080@lunn.ch>
+	s=arc-20240116; t=1761575829; c=relaxed/simple;
+	bh=IDojGxn6zxZSYX8pidKmVxsX9SjeyYH0f+yp4UqFk3Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=PXkNBe7cDinz/9m3UuHN3ZABXv/yAn6vRaAxxRX3WGzSl1pVr33YNJU2EcepluHVIzNwAZQW2J1X09HJ9UuYwmIItYmJxp9LAunWrap69ORGoLmcQDzUajE/O4iehl2xXVFzga1AVB7BD76KN1eHm14l/7gwWh3ta1AV0vSKA/Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uz9umbei; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B19BC4CEF1;
+	Mon, 27 Oct 2025 14:37:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761575829;
+	bh=IDojGxn6zxZSYX8pidKmVxsX9SjeyYH0f+yp4UqFk3Y=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=uz9umbeiH+5kdFkJ7qd61Ou25SWXqqiaK0Z5OrvK8GbdgclL+EUGvCvhVd+plhy1c
+	 GWjm/cgXzl5HZlBnShtiZ2QF3mZ6RNgTSLKbsnjGv6nloJQbQBy063+gpCA149TyWm
+	 K2kCnP9jBBMOEy3IaAb4OPE4TOhosLVuOYWKxJe7E4ZAr3Ovl13cH/m1DQm0q17spv
+	 GFcDf+J+yrrQ2VMRoGJORVy0CmwL/AKYwz/hWzUK6Ox4owMhrYnzXAd5uogLbZ83us
+	 dy8KN6iDxLHAY34UtQq9RHl3zYUcUB3Iz958bpVkxemCcTU9K3xOuALAFHtuH8E7mF
+	 vJfkCbdUWC+hw==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Geliang Tang <tanggeliang@kylinos.cn>,
+	Matthieu Baerts <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6.y 1/2] selftests: mptcp: disable add_addr retrans in endpoint_tests
+Date: Mon, 27 Oct 2025 10:37:05 -0400
+Message-ID: <20251027143706.523131-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2025102627-tug-sabbath-3edb@gregkh>
+References: <2025102627-tug-sabbath-3edb@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <df3aac25-e8e9-46cb-bd92-637822665080@lunn.ch>
 
-Hello Andrew and Russel,
+From: Geliang Tang <tanggeliang@kylinos.cn>
 
-On Mon, Oct 27, 2025 at 02:25:12PM +0100, Andrew Lunn wrote:
-> On Mon, Oct 27, 2025 at 01:57:48PM +0100, Emanuele Ghidoli wrote:
-> > On 27/10/2025 00:45, Andrew Lunn wrote:
-> > >> Since the introduction of phylink-managed EEE support in the stmmac driver,
-> > >> EEE is now enabled by default, leading to issues on systems using the
-> > >> DP83867 PHY.
-> > >> Fixes: 2a10154abcb7 ("net: phy: dp83867: Add TI dp83867 phy")
-> > > 
-> > > What has this Fixes: tag got to do with phylink?
-> > I think that the phylink commit is just enabling by default the EEE support,
-> > and my commit is not really fixing that. It is why I didn't put a Fixes: tag
-> > pointing to that.
-> > 
-> > I’ve tried to trace the behavior, but it’s quite complex. From my testing, I
-> > can summarize the situation as follows:
-> > 
-> > - ethtool, after that patch, returns:
-> > ethtool --show-eee end0
-> > EEE settings for end0:
-> >         EEE status: enabled - active
-> >         Tx LPI: 1000000 (us)
-> >         Supported EEE link modes:  100baseT/Full
-> >                                    1000baseT/Full
-> >         Advertised EEE link modes:  100baseT/Full
-> >                                     1000baseT/Full
-> >         Link partner advertised EEE link modes:  100baseT/Full
-> >                                                  1000baseT/Full
-> > - before that patch returns, after boot:
-> > EEE settings for end0:
-> >         EEE status: disabled
-> >         Tx LPI: disabled
-> >         Supported EEE link modes:  100baseT/Full
-> >                                    1000baseT/Full
-> >         Advertised EEE link modes:  Not reported
-> >         Link partner advertised EEE link modes:  100baseT/Full
-> >                                                  1000baseT/Full
-> > - Enabling EEE manually using ethtool, triggers the problem too (and ethtool
-> > -show-eee report eee status enabled):
-> > ethtool --set-eee end0 eee on tx-lpi on
-> > ethtool --show-eee end0
-> > EEE settings for end0:
-> >         EEE status: enabled - active
-> >         Tx LPI: 1000000 (us)
-> >         Supported EEE link modes:  100baseT/Full
-> >                                    1000baseT/Full
-> >         Advertised EEE link modes:  100baseT/Full
-> >                                     1000baseT/Full
-> >         Link partner advertised EEE link modes:  100baseT/Full
-> >                                                  1000baseT/Full
-> > 
-> > I understand Russell point of view but from my point of view EEE is now
-> > enabled by default, and before it wasn't, at least on my setup.
-> 
-> We like to try to understand what is going on, and give accurate
-> descriptions. You have given us important information here, which at
-> minimum should go into the commit message, but more likely, it will
-> help lead us to the correct fix.
-> 
-> So, two things here. You say:
-> 
-> > I think that the phylink commit is just enabling by default the EEE support,
-> 
-> That needs confirming, because you are blaming the conversion to
-> phylink, not that phylink now enabled EEE by default. Russell also
-> tries to avoid behaviour change, which this clearly is. We want a
-> better understanding what caused this behaviour change.
-> 
-> Also:
-> 
-> > - Enabling EEE manually using ethtool, triggers the problem too (and ethtool
-> > -show-eee report eee status enabled):
-> 
-> This indicates EEE has always been broken. This brokenness has been
-> somewhat hidden in the past, and it is the change in behaviour in
-> phylink which exposed this brokenness. A commit message using these
-> words would be much more factually correct, and it would also fit with
-> the Fixes: tag you used.
-> 
-> So, please work with Russell. I see two things which would be good to
-> understand before a new version of the patch is submitted:
-> 
-> What cause the behaviour change such that EEE is now enabled? Was it
-> deliberate? Should something be change to revert that behaviour
-> change?
-> 
-> Given that EEE has always been broken, do we understand it
-> sufficiently to say it is not fixable? Is there an errata? Are we sure
-> it is the PHY and not the MAC which is broken?
+[ Upstream commit f92199f551e617fae028c5c5905ddd63e3616e18 ]
 
-I was talking together with Emanuele on this topic and we are confused
-on how to proceed.
+To prevent test instability in the "delete re-add signal" test caused by
+ADD_ADDR retransmissions, disable retransmissions for this test by setting
+net.mptcp.add_addr_timeout to 0.
 
-From the various comments and tests in this thread, to me the actual
-code change is correct, the dp83867 does not support EEE and we have to
-explicitly disable it in the dp83867 driver.
+Suggested-by: Matthieu Baerts <matttbe@kernel.org>
+Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20250815-net-mptcp-misc-fixes-6-17-rc2-v1-6-521fe9957892@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: c3496c052ac3 ("selftests: mptcp: join: mark 'delete re-add signal' as skipped if not supported")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ tools/testing/selftests/net/mptcp/mptcp_join.sh | 1 +
+ 1 file changed, 1 insertion(+)
 
-As of now we do not have a clear shared understanding on what is going
-on in the stmmac driver. And the commit message is not correct on this
-regard.
-
-This patch is already merged [1] in netdev tree, should we send a series
-reverting this commit and another commit with just the same change and a
-different commit message? 
-
-In parallel, unrelated to the dp83867 topic, Emanuele is trying to help
-figuring out why the actual behavior of the stmmac changed after Russell
-refactoring. And it's clear that this change in behavior is not expected.
-
-[1] commit 84a905290cb4 ("net: phy: dp83867: Disable EEE support as not implemented")
-
-Francesco
+diff --git a/tools/testing/selftests/net/mptcp/mptcp_join.sh b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+index 9a907d8260c9c..4acef599e1f1b 100755
+--- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+@@ -3838,6 +3838,7 @@ endpoint_tests()
+ 	# remove and re-add
+ 	if reset_with_events "delete re-add signal" &&
+ 	   mptcp_lib_kallsyms_has "subflow_rebuild_header$"; then
++		ip netns exec $ns1 sysctl -q net.mptcp.add_addr_timeout=0
+ 		pm_nl_set_limits $ns1 0 3
+ 		pm_nl_set_limits $ns2 3 3
+ 		pm_nl_add_endpoint $ns1 10.0.2.1 id 1 flags signal
+-- 
+2.51.0
 
 
