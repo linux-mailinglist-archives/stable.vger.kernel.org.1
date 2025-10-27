@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-191241-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190960-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86F39C11207
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:36:07 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA0A3C10F19
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:26:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C8D59561A3B
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:31:35 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 87762508411
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:18:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13B9A301030;
-	Mon, 27 Oct 2025 19:29:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8C8731D73E;
+	Mon, 27 Oct 2025 19:17:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p89BgTC1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MBfSlf+B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C47D11BC4E;
-	Mon, 27 Oct 2025 19:29:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95FAC2C3745;
+	Mon, 27 Oct 2025 19:17:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761593385; cv=none; b=S3Hs75GRBY6nhLCo+QF09NCJS4GPXH/APx/fH2N7lLqgw4G4N+BmGF2cQBdFAvx823Pcw3rnVn4xuBaUxWIqRkvynvz28D7LqSHcAqUgKeMuJNbpEYD9WZvESZvap5WQajs1aZ97810shUvboAEhY2W8VTVbIFUagTevxcXPNeI=
+	t=1761592648; cv=none; b=e1zEaFfW9ITCzU5Vched/DLwYcuyBlPYKC5KTZpX9eYM+9vTUM27oUllVARuqnIk/lkoohWZOcUTj5GqvoXByeaaLVE/AvaS3Oul0AE3f3xxIrKF61Fjdx2NLSImjMY2hy4JEo2++LO/XZbuQ1zmtuCyb9zZHHmOsbEqujmu7DY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761593385; c=relaxed/simple;
-	bh=g7u7d1wZPwtoN/PtUzTvbxLpAbH8gsLgb++ccHxDSp0=;
+	s=arc-20240116; t=1761592648; c=relaxed/simple;
+	bh=VhdrprKlk3QRrRa972jXLKWE3JGhLXgR8io+ixKy0Nw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JbRZc/OrfwsfYKFzO8+j7ZqD0S3mV6yL87yHwb5EgY+wDaKB93cUfm12txxISFL5w59aDYQ96ypO5uSZkV3g7AqyhOS/4OEKs2Bd3kXGPKIa7KLn1EoJwJURtbVsSVh50aARymT0x2f/hQN4sqG01IiL8jj/40ryvqAUXCsubrg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p89BgTC1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 485CFC4CEFD;
-	Mon, 27 Oct 2025 19:29:45 +0000 (UTC)
+	 MIME-Version; b=I1/ITSscZrzTJ4FXOTmZkZQ3PViC82pUgZomP4J5Doh+8kztgKMCFUqBM2ZaIcL5BytG2ZvE15BFdHDHYzs1Rwz44s6Mw+xrYETLx/kTj7nJuC4+Nx29zYBuDC7/l+Doo+Q68uK0S5xud2VcJV6VUk6BCVIC/AONWidy1RKu6B8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MBfSlf+B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD85AC4CEF1;
+	Mon, 27 Oct 2025 19:17:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761593385;
-	bh=g7u7d1wZPwtoN/PtUzTvbxLpAbH8gsLgb++ccHxDSp0=;
+	s=korg; t=1761592648;
+	bh=VhdrprKlk3QRrRa972jXLKWE3JGhLXgR8io+ixKy0Nw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p89BgTC1+Tm4JfbvES8lLewXT8tusRVKDuVn4a3Eot8gXTzi5oFK2JEbQn9Mf7MUU
-	 2O72qpWcX8KwX0elgURMG1GnRR6HyirKq/CXCTTHEPtLJkarpyGdKacfSGPd1UKUlw
-	 fpIUwH9y96iKGslwCEnczYpdf7fPsL0LBW8GzLhs=
+	b=MBfSlf+BogLQNQinEezfWvnqDw103XX7FFUdv3yt7ElvuizHF682fMNr6Cl/wNicy
+	 UfpTbS933rPcvaOuNEM1bCy3FNxt1iOVf28mvFE9Jvrm2u1ELmD212xGZROqABnDo/
+	 Sx5tVtzZDH4WEICCpBK28ldMvKFU6w9zvTtkRrCM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.17 110/184] mm/damon/core: fix list_add_tail() call on damon_call()
-Date: Mon, 27 Oct 2025 19:36:32 +0100
-Message-ID: <20251027183517.886255693@linuxfoundation.org>
+	Michal Pecio <michal.pecio@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 44/84] net: usb: rtl8150: Fix frame padding
+Date: Mon, 27 Oct 2025 19:36:33 +0100
+Message-ID: <20251027183439.992875303@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
-References: <20251027183514.934710872@linuxfoundation.org>
+In-Reply-To: <20251027183438.817309828@linuxfoundation.org>
+References: <20251027183438.817309828@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,66 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: SeongJae Park <sj@kernel.org>
+From: Michal Pecio <michal.pecio@gmail.com>
 
-commit c3fa5b1bfd8380d935fa961f2ac166bdf000f418 upstream.
+commit 75cea9860aa6b2350d90a8d78fed114d27c7eca2 upstream.
 
-Each damon_ctx maintains callback requests using a linked list
-(damon_ctx->call_controls).  When a new callback request is received via
-damon_call(), the new request should be added to the list.  However, the
-function is making a mistake at list_add_tail() invocation: putting the
-new item to add and the list head to add it before, in the opposite order.
-Because of the linked list manipulation implementation, the new request
-can still be reached from the context's list head.  But the list items
-that were added before the new request are dropped from the list.
+TX frames aren't padded and unknown memory is sent into the ether.
 
-As a result, the callbacks are unexpectedly not invocated.  Worse yet, if
-the dropped callback requests were dynamically allocated, the memory is
-leaked.  Actually DAMON sysfs interface is using a dynamically allocated
-repeat-mode callback request for automatic essential stats update.  And
-because the online DAMON parameters commit is using a non-repeat-mode
-callback request, the issue can easily be reproduced, like below.
+Theoretically, it isn't even guaranteed that the extra memory exists
+and can be sent out, which could cause further problems. In practice,
+I found that plenty of tailroom exists in the skb itself (in my test
+with ping at least) and skb_padto() easily succeeds, so use it here.
 
-    # damo start --damos_action stat --refresh_stat 1s
-    # damo tune --damos_action stat --refresh_stat 1s
+In the event of -ENOMEM drop the frame like other drivers do.
 
-The first command dynamically allocates the repeat-mode callback request
-for automatic essential stat update.  Users can see the essential stats
-are automatically updated for every second, using the sysfs interface.
+The use of one more padding byte instead of a USB zero-length packet
+is retained to avoid regression. I have a dodgy Etron xHCI controller
+which doesn't seem to support sending ZLPs at all.
 
-The second command calls damon_commit() with a new callback request that
-was made for the commit.  As a result, the previously added repeat-mode
-callback request is dropped from the list.  The automatic stats refresh
-stops working, and the memory for the repeat-mode callback request is
-leaked.  It can be confirmed using kmemleak.
-
-Fix the mistake on the list_add_tail() call.
-
-Link: https://lkml.kernel.org/r/20251014205939.1206-1-sj@kernel.org
-Fixes: 004ded6bee11 ("mm/damon: accept parallel damon_call() requests")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: <stable@vger.kernel.org>	[6.17+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@vger.kernel.org
+Signed-off-by: Michal Pecio <michal.pecio@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20251014203528.3f9783c4.michal.pecio@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/damon/core.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/usb/rtl8150.c |   11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -1422,7 +1422,7 @@ int damon_call(struct damon_ctx *ctx, st
- 	INIT_LIST_HEAD(&control->list);
+--- a/drivers/net/usb/rtl8150.c
++++ b/drivers/net/usb/rtl8150.c
+@@ -685,9 +685,16 @@ static netdev_tx_t rtl8150_start_xmit(st
+ 	rtl8150_t *dev = netdev_priv(netdev);
+ 	int count, res;
  
- 	mutex_lock(&ctx->call_controls_lock);
--	list_add_tail(&ctx->call_controls, &control->list);
-+	list_add_tail(&control->list, &ctx->call_controls);
- 	mutex_unlock(&ctx->call_controls_lock);
- 	if (!damon_is_running(ctx))
- 		return -EINVAL;
++	/* pad the frame and ensure terminating USB packet, datasheet 9.2.3 */
++	count = max(skb->len, ETH_ZLEN);
++	if (count % 64 == 0)
++		count++;
++	if (skb_padto(skb, count)) {
++		netdev->stats.tx_dropped++;
++		return NETDEV_TX_OK;
++	}
++
+ 	netif_stop_queue(netdev);
+-	count = (skb->len < 60) ? 60 : skb->len;
+-	count = (count & 0x3f) ? count : count + 1;
+ 	dev->tx_skb = skb;
+ 	usb_fill_bulk_urb(dev->tx_urb, dev->udev, usb_sndbulkpipe(dev->udev, 2),
+ 		      skb->data, count, write_bulk_callback, dev);
 
 
 
