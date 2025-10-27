@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-191027-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191195-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 736F0C10EE0
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:25:59 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 464D5C1117D
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:34:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4A70D189D092
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:22:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CE7AE563169
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:29:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 308FE32B9AA;
-	Mon, 27 Oct 2025 19:20:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D703303CA2;
+	Mon, 27 Oct 2025 19:27:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TyZj3bYl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HML3bz+L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF492324B09;
-	Mon, 27 Oct 2025 19:20:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ABE72C3749;
+	Mon, 27 Oct 2025 19:27:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592824; cv=none; b=PBYGkgUQpn9Qe/MqGhax3QCfqb0EvpxCrPDop/1dafP86Q4SaDZeneas+jZTwxkEmK7hnhSmwikZno0xtaTw2lBdc69mTVB2ZWw+JdopLCUQWxcRKYo254+ts1D38X9hqpLDnl06iG9KYyaPyfaO4JRhIS9bD/zRhW/Scv8lQR8=
+	t=1761593252; cv=none; b=VoAzFwyHjYkQW1eeMQYk+M87bfUn5mbVhnoWovepTw04x6RfBMKIvJyBUoSt0thY7XsAKTAirQNzKIUyXYxgAgJv0+7/r83uv03YTwa0HxuirSzsNYmNOcz034LQ7wAXuYgHpPpXGz5pPC/IAb4Ydz68bPiLrVCr+3p5Q/RwN1w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592824; c=relaxed/simple;
-	bh=O8MlZ7Ec64tQ0psY3JZ7+Smo6bdZDGnV6MJg1ZILHT8=;
+	s=arc-20240116; t=1761593252; c=relaxed/simple;
+	bh=zrE3bH5ZWtkgZY71rSyP8nHcEV82Gz61IBI7EmQC988=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eQRgR6JWPLXKBNwVlRlWZqb1gEfKYqk1WYeBjkRl9wm3WyFSjEZyLgTb97Z0LcIC2h3PiBgzM6nvUDgV7/YSWPfYpoGF/BbxK91ilp+n/vhbbxpSyPFFUzsjj8LPWavivtbqfgr5cBUW171SPGIiQeFnNGUe8oG5dE4Rs8ej/TY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TyZj3bYl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FB3BC4CEF1;
-	Mon, 27 Oct 2025 19:20:23 +0000 (UTC)
+	 MIME-Version; b=IyXvwAVcGpM2ZJBBhc133KXn+SKn1LcnPdf9YLD7AxcT+bHM5qO+qiJATOl0OxcTKxL2d43ttzbxuHSm3114DGQlinEFhGrtFOgr/lMzv7xiLcmGXmLwbVTzx1mj2DplG0n4gEgada6DCwoUAcNGxSkygXc+CevMBjpQo9HNnTU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HML3bz+L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F6F1C4CEF1;
+	Mon, 27 Oct 2025 19:27:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592823;
-	bh=O8MlZ7Ec64tQ0psY3JZ7+Smo6bdZDGnV6MJg1ZILHT8=;
+	s=korg; t=1761593252;
+	bh=zrE3bH5ZWtkgZY71rSyP8nHcEV82Gz61IBI7EmQC988=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TyZj3bYlFiL7xGRYC7is8zNrMRJW0u1TA6ylUTRa9fqo9ur+jlDHAwwW78w0xdtlh
-	 jrx0VBse9l8udcQyFuFNY3a++rtStz1LM3GinHIw81nBehg3LaKX2oSwryw85UkIUI
-	 99m1AERWPi5Q7WICLZ1S3WL/vd9AaiR5KbcDD5K8=
+	b=HML3bz+L4W9e9Y15WeW1rLl2RVgS37XnjXQtQ2Lfa1nt5gYmZRAxeEnLzfCGnU9tq
+	 uJ0v0fn5pids+3KuYL7Pb9cIAULcn4VUfZOij5QNFAZkJC6dm00C/rT83l18COifdF
+	 cYVwfbcseMbr3IlFncUN4ZQ1thyqUgyTVNVmrlFQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 025/117] net/mlx5e: Return 1 instead of 0 in invalid case in mlx5e_mpwrq_umr_entry_size()
+	Gabriel Krisman Bertazi <krisman@suse.de>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.17 069/184] io_uring/sqpoll: switch away from getrusage() for CPU accounting
 Date: Mon, 27 Oct 2025 19:35:51 +0100
-Message-ID: <20251027183454.646568899@linuxfoundation.org>
+Message-ID: <20251027183516.749654076@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
-References: <20251027183453.919157109@linuxfoundation.org>
+In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
+References: <20251027183514.934710872@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,69 +61,145 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Jens Axboe <axboe@kernel.dk>
 
-[ Upstream commit aaf043a5688114703ae2c1482b92e7e0754d684e ]
+commit 8ac9b0d33e5c0a995338ee5f25fe1b6ff7d97f65 upstream.
 
-When building with Clang 20 or newer, there are some objtool warnings
-from unexpected fallthroughs to other functions:
+getrusage() does a lot more than what the SQPOLL accounting needs, the
+latter only cares about (and uses) the stime. Rather than do a full
+RUSAGE_SELF summation, just query the used stime instead.
 
-  vmlinux.o: warning: objtool: mlx5e_mpwrq_mtts_per_wqe() falls through to next function mlx5e_mpwrq_max_num_entries()
-  vmlinux.o: warning: objtool: mlx5e_mpwrq_max_log_rq_size() falls through to next function mlx5e_get_linear_rq_headroom()
-
-LLVM 20 contains an (admittedly problematic [1]) optimization [2] to
-convert divide by zero into the equivalent of __builtin_unreachable(),
-which invokes undefined behavior and destroys code generation when it is
-encountered in a control flow graph.
-
-mlx5e_mpwrq_umr_entry_size() returns 0 in the default case of an
-unrecognized mlx5e_mpwrq_umr_mode value. mlx5e_mpwrq_mtts_per_wqe(),
-which is inlined into mlx5e_mpwrq_max_log_rq_size(), uses the result of
-mlx5e_mpwrq_umr_entry_size() in a divide operation without checking for
-zero, so LLVM is able to infer there will be a divide by zero in this
-case and invokes undefined behavior. While there is some proposed work
-to isolate this undefined behavior and avoid the destructive code
-generation that results in these objtool warnings, code should still be
-defensive against divide by zero.
-
-As the WARN_ONCE() implies that an invalid value should be handled
-gracefully, return 1 instead of 0 in the default case so that the
-results of this division operation is always valid.
-
-Fixes: 168723c1f8d6 ("net/mlx5e: xsk: Use umr_mode to calculate striding RQ parameters")
-Link: https://lore.kernel.org/CAGG=3QUk8-Ak7YKnRziO4=0z=1C_7+4jF+6ZeDQ9yF+kuTOHOQ@mail.gmail.com/ [1]
-Link: https://github.com/llvm/llvm-project/commit/37932643abab699e8bb1def08b7eb4eae7ff1448 [2]
-Closes: https://github.com/ClangBuiltLinux/linux/issues/2131
-Closes: https://github.com/ClangBuiltLinux/linux/issues/2132
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/20251014-mlx5e-avoid-zero-div-from-mlx5e_mpwrq_umr_entry_size-v1-1-dc186b8819ef@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 3fcb9d17206e ("io_uring/sqpoll: statistics of the true utilization of sq threads")
+Reviewed-by: Gabriel Krisman Bertazi <krisman@suse.de>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en/params.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ io_uring/fdinfo.c |    8 ++++----
+ io_uring/sqpoll.c |   32 ++++++++++++++++++--------------
+ io_uring/sqpoll.h |    1 +
+ 3 files changed, 23 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/params.c b/drivers/net/ethernet/mellanox/mlx5/core/en/params.c
-index 58ec5e44aa7ad..3dac708c0d75a 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/params.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/params.c
-@@ -99,7 +99,7 @@ u8 mlx5e_mpwrq_umr_entry_size(enum mlx5e_mpwrq_umr_mode mode)
- 		return sizeof(struct mlx5_ksm) * 4;
- 	}
- 	WARN_ONCE(1, "MPWRQ UMR mode %d is not known\n", mode);
--	return 0;
-+	return 1;
+--- a/io_uring/fdinfo.c
++++ b/io_uring/fdinfo.c
+@@ -59,7 +59,6 @@ static void __io_uring_show_fdinfo(struc
+ {
+ 	struct io_overflow_cqe *ocqe;
+ 	struct io_rings *r = ctx->rings;
+-	struct rusage sq_usage;
+ 	unsigned int sq_mask = ctx->sq_entries - 1, cq_mask = ctx->cq_entries - 1;
+ 	unsigned int sq_head = READ_ONCE(r->sq.head);
+ 	unsigned int sq_tail = READ_ONCE(r->sq.tail);
+@@ -150,14 +149,15 @@ static void __io_uring_show_fdinfo(struc
+ 		 * thread termination.
+ 		 */
+ 		if (tsk) {
++			u64 usec;
++
+ 			get_task_struct(tsk);
+ 			rcu_read_unlock();
+-			getrusage(tsk, RUSAGE_SELF, &sq_usage);
++			usec = io_sq_cpu_usec(tsk);
+ 			put_task_struct(tsk);
+ 			sq_pid = sq->task_pid;
+ 			sq_cpu = sq->sq_cpu;
+-			sq_total_time = (sq_usage.ru_stime.tv_sec * 1000000
+-					 + sq_usage.ru_stime.tv_usec);
++			sq_total_time = usec;
+ 			sq_work_time = sq->work_time;
+ 		} else {
+ 			rcu_read_unlock();
+--- a/io_uring/sqpoll.c
++++ b/io_uring/sqpoll.c
+@@ -11,6 +11,7 @@
+ #include <linux/audit.h>
+ #include <linux/security.h>
+ #include <linux/cpuset.h>
++#include <linux/sched/cputime.h>
+ #include <linux/io_uring.h>
+ 
+ #include <uapi/linux/io_uring.h>
+@@ -169,6 +170,20 @@ static inline bool io_sqd_events_pending
+ 	return READ_ONCE(sqd->state);
  }
  
- u8 mlx5e_mpwrq_log_wqe_sz(struct mlx5_core_dev *mdev, u8 page_shift,
--- 
-2.51.0
-
++u64 io_sq_cpu_usec(struct task_struct *tsk)
++{
++	u64 utime, stime;
++
++	task_cputime_adjusted(tsk, &utime, &stime);
++	do_div(stime, 1000);
++	return stime;
++}
++
++static void io_sq_update_worktime(struct io_sq_data *sqd, u64 usec)
++{
++	sqd->work_time += io_sq_cpu_usec(current) - usec;
++}
++
+ static int __io_sq_thread(struct io_ring_ctx *ctx, bool cap_entries)
+ {
+ 	unsigned int to_submit;
+@@ -255,26 +270,15 @@ static bool io_sq_tw_pending(struct llis
+ 	return retry_list || !llist_empty(&tctx->task_list);
+ }
+ 
+-static void io_sq_update_worktime(struct io_sq_data *sqd, struct rusage *start)
+-{
+-	struct rusage end;
+-
+-	getrusage(current, RUSAGE_SELF, &end);
+-	end.ru_stime.tv_sec -= start->ru_stime.tv_sec;
+-	end.ru_stime.tv_usec -= start->ru_stime.tv_usec;
+-
+-	sqd->work_time += end.ru_stime.tv_usec + end.ru_stime.tv_sec * 1000000;
+-}
+-
+ static int io_sq_thread(void *data)
+ {
+ 	struct llist_node *retry_list = NULL;
+ 	struct io_sq_data *sqd = data;
+ 	struct io_ring_ctx *ctx;
+-	struct rusage start;
+ 	unsigned long timeout = 0;
+ 	char buf[TASK_COMM_LEN] = {};
+ 	DEFINE_WAIT(wait);
++	u64 start;
+ 
+ 	/* offload context creation failed, just exit */
+ 	if (!current->io_uring) {
+@@ -317,7 +321,7 @@ static int io_sq_thread(void *data)
+ 		}
+ 
+ 		cap_entries = !list_is_singular(&sqd->ctx_list);
+-		getrusage(current, RUSAGE_SELF, &start);
++		start = io_sq_cpu_usec(current);
+ 		list_for_each_entry(ctx, &sqd->ctx_list, sqd_list) {
+ 			int ret = __io_sq_thread(ctx, cap_entries);
+ 
+@@ -333,7 +337,7 @@ static int io_sq_thread(void *data)
+ 
+ 		if (sqt_spin || !time_after(jiffies, timeout)) {
+ 			if (sqt_spin) {
+-				io_sq_update_worktime(sqd, &start);
++				io_sq_update_worktime(sqd, start);
+ 				timeout = jiffies + sqd->sq_thread_idle;
+ 			}
+ 			if (unlikely(need_resched())) {
+--- a/io_uring/sqpoll.h
++++ b/io_uring/sqpoll.h
+@@ -29,6 +29,7 @@ void io_sq_thread_unpark(struct io_sq_da
+ void io_put_sq_data(struct io_sq_data *sqd);
+ void io_sqpoll_wait_sq(struct io_ring_ctx *ctx);
+ int io_sqpoll_wq_cpu_affinity(struct io_ring_ctx *ctx, cpumask_var_t mask);
++u64 io_sq_cpu_usec(struct task_struct *tsk);
+ 
+ static inline struct task_struct *sqpoll_task_locked(struct io_sq_data *sqd)
+ {
 
 
 
