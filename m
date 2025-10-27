@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-190934-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190864-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD0D4C10E86
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:24:53 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A07D2C10CE9
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:20:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D7D9556399D
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:17:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 89D9556255C
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:15:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CE0731CA72;
-	Mon, 27 Oct 2025 19:16:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A248E2F6909;
+	Mon, 27 Oct 2025 19:13:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ngW4R1uK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kzJqAeRo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38DC72C15BB;
-	Mon, 27 Oct 2025 19:16:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E9AC23D2A3;
+	Mon, 27 Oct 2025 19:13:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592581; cv=none; b=QxBRCuyPw+/wXnLnTYIX7O07wluH/fr96KmPHwjZ91qOK7w8yDxJDl4hF+Iva3kDIIDzUfLhtLt9Gy6KswBS+eTkdaN3zb6d53JNg9p/98KOZnc1m4B9XT0hHVpmhiF+TAcRi8kHMRbWa9dZybu2NxtvfT1MRUuwHVrmsf6ySGo=
+	t=1761592400; cv=none; b=EOpqbhRiioTR3BmpxmwNgJgYLk2y+zfByGHOOTEequ1gXkODqwQTkfsiGlj5llol0rRDoA9Bg5zUPtVehwpG1Aydt0f/d368mcxZvqEiao8vY3KX+LKVlPqIgBxb+qhvzMmFVDtoS/UBObr4AQ/MEkBOjEaGJOxpHFxmAGzZZ7M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592581; c=relaxed/simple;
-	bh=RqATXAHazVmAr/SMcRx9SlejlzBS9NXwg+TRuoyLoDU=;
+	s=arc-20240116; t=1761592400; c=relaxed/simple;
+	bh=/DirF/mrB+DlRqJxMUmr4+hViC5JE+d7r1CPpCTFDDw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Imu6VHFQOWX8y4AQFKf9YYifrcFT5hqN9m1ediFT7V4YMEU874j9nfuIj55nrDh9nASSEqlrlQRKqEA37jnlmN5PFHqBfuHCWKgAUCV4yWjWcADJ75Yy7JSttGI5HYcxKMHSNFw/EeM2+FqOFZDwANSxBucRdd1S5dS7oGFQznc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ngW4R1uK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A2CEC4CEF1;
-	Mon, 27 Oct 2025 19:16:20 +0000 (UTC)
+	 MIME-Version; b=aPCIgYoyIe3W3kXh2vsJcb6yxb7T1tKep4m2H4cA+CXYA3jlpowK+tX7UDjz28xejrdPBkdPhnOGI4uF6PGns7d3cl7CW9n92QO/jnCOPmUhgXijgkFqGeIM9kQUAeYNnDbQQOVcAqrEWQm7L4/nv6FmR2/rwU2Wcr1vEj0tAW0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kzJqAeRo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E464CC4CEF1;
+	Mon, 27 Oct 2025 19:13:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592580;
-	bh=RqATXAHazVmAr/SMcRx9SlejlzBS9NXwg+TRuoyLoDU=;
+	s=korg; t=1761592400;
+	bh=/DirF/mrB+DlRqJxMUmr4+hViC5JE+d7r1CPpCTFDDw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ngW4R1uK+tVlTR2sa7llOcSyajl7n12im5wj/ChHap2aZTFfyzmg228xss5W41ovc
-	 FKoQHsjUpP1BtRMzbzo8bv5cJjKMthIizGKn510AdJ/6IMquVZk3gq1Y+dBfazy2YR
-	 PthW0ROUH1Txr8EJ1MCEawgrYy4zFIQqvzeurMZQ=
+	b=kzJqAeRoOIB3BM4ehzW+yuHAJMIbDG43v7bWWb0ijM6m6qiFaw6xXaUx76DV21SKu
+	 l67XwdkJ6FfQmxmJ2sSiS0KG2Ulw4HNI3H3IIUzhP1bRrq1RZ8jM/LsgM6MQV9AbF9
+	 XS18DZD7L7O5AwX5suwIJZQgZ7cd/OHttXEPs2yk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Michael=20Wei=C3=9F?= <michael.weiss@aisec.fraunhofer.de>,
-	Harshal Gohel <hg@simonwunderlich.de>,
-	=?UTF-8?q?Johannes=20Wiesb=C3=B6ck?= <johannes.wiesboeck@aisec.fraunhofer.de>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 18/84] rtnetlink: Allow deleting FDB entries in user namespace
+	stable <stable@kernel.org>,
+	Tim Guttzeit <t.guttzeit@tuxedocomputers.com>,
+	Werner Sembach <wse@tuxedocomputers.com>
+Subject: [PATCH 6.1 106/157] usb/core/quirks: Add Huawei ME906S to wakeup quirk
 Date: Mon, 27 Oct 2025 19:36:07 +0100
-Message-ID: <20251027183439.302896918@linuxfoundation.org>
+Message-ID: <20251027183504.099267621@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183438.817309828@linuxfoundation.org>
-References: <20251027183438.817309828@linuxfoundation.org>
+In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
+References: <20251027183501.227243846@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,61 +60,40 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Wiesböck <johannes.wiesboeck@aisec.fraunhofer.de>
+From: Tim Guttzeit <t.guttzeit@tuxedocomputers.com>
 
-[ Upstream commit bf29555f5bdc017bac22ca66fcb6c9f46ec8788f ]
+commit dfc2cf4dcaa03601cd4ca0f7def88b2630fca6ab upstream.
 
-Creating FDB entries is possible from a non-initial user namespace when
-having CAP_NET_ADMIN, yet, when deleting FDB entries, processes receive
-an EPERM because the capability is always checked against the initial
-user namespace. This restricts the FDB management from unprivileged
-containers.
+The list of Huawei LTE modules needing the quirk fixing spurious wakeups
+was missing the IDs of the Huawei ME906S module, therefore suspend did not
+work.
 
-Drop the netlink_capable check in rtnl_fdb_del as it was originally
-dropped in c5c351088ae7 and reintroduced in 1690be63a27b without
-intention.
-
-This patch was tested using a container on GyroidOS, where it was
-possible to delete FDB entries from an unprivileged user namespace and
-private network namespace.
-
-Fixes: 1690be63a27b ("bridge: Add vlan support to static neighbors")
-Reviewed-by: Michael Weiß <michael.weiss@aisec.fraunhofer.de>
-Tested-by: Harshal Gohel <hg@simonwunderlich.de>
-Signed-off-by: Johannes Wiesböck <johannes.wiesboeck@aisec.fraunhofer.de>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://patch.msgid.link/20251015201548.319871-1-johannes.wiesboeck@aisec.fraunhofer.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable <stable@kernel.org>
+Signed-off-by: Tim Guttzeit <t.guttzeit@tuxedocomputers.com>
+Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
+Link: https://patch.msgid.link/20251020134304.35079-1-wse@tuxedocomputers.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/rtnetlink.c | 3 ---
- 1 file changed, 3 deletions(-)
+ drivers/usb/core/quirks.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
-index 26c520d1af6e6..1613563132035 100644
---- a/net/core/rtnetlink.c
-+++ b/net/core/rtnetlink.c
-@@ -4383,9 +4383,6 @@ static int rtnl_fdb_del(struct sk_buff *skb, struct nlmsghdr *nlh,
- 	int err;
- 	u16 vid;
+--- a/drivers/usb/core/quirks.c
++++ b/drivers/usb/core/quirks.c
+@@ -464,6 +464,8 @@ static const struct usb_device_id usb_qu
+ 	/* Huawei 4G LTE module */
+ 	{ USB_DEVICE(0x12d1, 0x15bb), .driver_info =
+ 			USB_QUIRK_DISCONNECT_SUSPEND },
++	{ USB_DEVICE(0x12d1, 0x15c1), .driver_info =
++			USB_QUIRK_DISCONNECT_SUSPEND },
+ 	{ USB_DEVICE(0x12d1, 0x15c3), .driver_info =
+ 			USB_QUIRK_DISCONNECT_SUSPEND },
  
--	if (!netlink_capable(skb, CAP_NET_ADMIN))
--		return -EPERM;
--
- 	if (!del_bulk) {
- 		err = nlmsg_parse_deprecated(nlh, sizeof(*ndm), tb, NDA_MAX,
- 					     NULL, extack);
--- 
-2.51.0
-
 
 
 
