@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-190200-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190239-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id F20F7C10278
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:49:26 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D015C10392
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:52:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A9FFC4FECD8
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:47:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ED7BB1A242FF
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:51:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F740322C99;
-	Mon, 27 Oct 2025 18:44:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00FE1328B66;
+	Mon, 27 Oct 2025 18:46:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2SwqDeV0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P4BOfbQ4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEF6E31B82C;
-	Mon, 27 Oct 2025 18:44:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52E0F32862B;
+	Mon, 27 Oct 2025 18:46:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761590670; cv=none; b=ZIl6kiaQEKu8z2woUkbNtVoE4OLrr+h3fneKRYWChawExUm6f6+NYkBX+V21bkEuVNRJgpDncxeWvPQum1RJD0oNWouhI0u1dHMbSpwaYJRCQZS4IZd+meLroRShbAFGVQAe4CPGVYesaN1jbhN58utj5D+b2TmE4L0rERGyeAQ=
+	t=1761590779; cv=none; b=O7Se8/c1y58/ySL5gRJAVK4QYdrQrGShpJm5sl34jXF20H46YhzFlIZNJlaioMMyTOUYiS/O416+JrqEhtxACiI2PNcsR0Nu8PFHao/YTWitZ/+t7oElDx7AMDNCVDjizeOzFC4v4KPLOqd0VE350Qv8s5Ki4kCMs8Z80xkgMeI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761590670; c=relaxed/simple;
-	bh=ZQ1Pga82YqKwa2yMoQoAKF+D1THFdS+l3H8QjKDn9Nw=;
+	s=arc-20240116; t=1761590779; c=relaxed/simple;
+	bh=YpqYEvnxI9A8T44XQfLHtO+CrCnXGAX78BVTGQXN/+I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=owoK2D0Vp3l14ie9YMPn/AJ6ta05EjUCdabjsQJa04Poce5/Rzcdipryhqhg5paNK+r7HkOM++hdWdioSoPJFX7xrwQqEtee+Zku0vgqn7eD/NVPp3FgS+eL9qnJQVGIE9lJe48ncnT7m/Ca+GLZcw9k0a5POCFEH9erI4IQk6Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2SwqDeV0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22195C4CEF1;
-	Mon, 27 Oct 2025 18:44:28 +0000 (UTC)
+	 MIME-Version; b=WV/1hRDv/kXp6UqKyAjvowoy2Mm2xs7nFfYeUJXHzM+ygAQAqm3SiPrfjetpklub1BkTPcjT2fG5z5Z8iMJIEFyzV/nV75n/noizyr42cQn3pnvNUOUk+vrDwbu+f4VEJCY0UHrfZ2CwMzkrNWEaFNu8W6U+/Uhvr1C3h336XiU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P4BOfbQ4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC9A2C4CEF1;
+	Mon, 27 Oct 2025 18:46:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761590669;
-	bh=ZQ1Pga82YqKwa2yMoQoAKF+D1THFdS+l3H8QjKDn9Nw=;
+	s=korg; t=1761590779;
+	bh=YpqYEvnxI9A8T44XQfLHtO+CrCnXGAX78BVTGQXN/+I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2SwqDeV0LPdn3QMGuHDVgz6VcD+0E8sBG3AZdOdAeI/AbRiitZvO7f19XRyLa0nM9
-	 h7jBhoF8qrPttA3Q+r5xy4y64wn01Cm6Z7zdb67FRns/euDhM6cFUby9yEoY2MhPaB
-	 mvB4f5XV7pVYRdeHlcJfpL5OMpIOgjtr4nwZ7N7c=
+	b=P4BOfbQ4FSMOF+51evqoB6B1fwEDT9pVaebNr0/ZeQdmSlUNGZ21mDjaRy3huKAyv
+	 hXSPwURV/xf8nu8iDvRHrASTbpMgty2GL5iN+WPTE9gat4cO+ybC6msrid7/sqFfPm
+	 //8pKvRHmjj4ZYMsrRFIq43zA3XJt+WVnsawOzDQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+0be4f339a8218d2a5bb1@syzkaller.appspotmail.com,
-	stable@kernel.org,
-	Albin Babu Varghese <albinbabuvarghese20@gmail.com>,
-	Ahmet Eray Karadag <eraykrdg1@gmail.com>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 5.4 131/224] ext4: guard against EA inode refcount underflow in xattr update
-Date: Mon, 27 Oct 2025 19:34:37 +0100
-Message-ID: <20251027183512.486516430@linuxfoundation.org>
+	Nalivayko Sergey <Sergey.Nalivayko@kaspersky.com>,
+	Dominique Martinet <asmadeus@codewreck.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 132/224] net/9p: fix double req put in p9_fd_cancelled
+Date: Mon, 27 Oct 2025 19:34:38 +0100
+Message-ID: <20251027183512.511185103@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251027183508.963233542@linuxfoundation.org>
 References: <20251027183508.963233542@linuxfoundation.org>
@@ -68,81 +66,124 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ahmet Eray Karadag <eraykrdg1@gmail.com>
+From: Nalivayko Sergey <Sergey.Nalivayko@kaspersky.com>
 
-commit 57295e835408d8d425bef58da5253465db3d6888 upstream.
+[ Upstream commit 674b56aa57f9379854cb6798c3bbcef7e7b51ab7 ]
 
-syzkaller found a path where ext4_xattr_inode_update_ref() reads an EA
-inode refcount that is already <= 0 and then applies ref_change (often
--1). That lets the refcount underflow and we proceed with a bogus value,
-triggering errors like:
+Syzkaller reports a KASAN issue as below:
 
-  EXT4-fs error: EA inode <n> ref underflow: ref_count=-1 ref_change=-1
-  EXT4-fs warning: ea_inode dec ref err=-117
+general protection fault, probably for non-canonical address 0xfbd59c0000000021: 0000 [#1] PREEMPT SMP KASAN NOPTI
+KASAN: maybe wild-memory-access in range [0xdead000000000108-0xdead00000000010f]
+CPU: 0 PID: 5083 Comm: syz-executor.2 Not tainted 6.1.134-syzkaller-00037-g855bd1d7d838 #0
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.12.0-1 04/01/2014
+RIP: 0010:__list_del include/linux/list.h:114 [inline]
+RIP: 0010:__list_del_entry include/linux/list.h:137 [inline]
+RIP: 0010:list_del include/linux/list.h:148 [inline]
+RIP: 0010:p9_fd_cancelled+0xe9/0x200 net/9p/trans_fd.c:734
 
-Make the invariant explicit: if the current refcount is non-positive,
-treat this as on-disk corruption, emit ext4_error_inode(), and fail the
-operation with -EFSCORRUPTED instead of updating the refcount. Delete the
-WARN_ONCE() as negative refcounts are now impossible; keep error reporting
-in ext4_error_inode().
+Call Trace:
+ <TASK>
+ p9_client_flush+0x351/0x440 net/9p/client.c:614
+ p9_client_rpc+0xb6b/0xc70 net/9p/client.c:734
+ p9_client_version net/9p/client.c:920 [inline]
+ p9_client_create+0xb51/0x1240 net/9p/client.c:1027
+ v9fs_session_init+0x1f0/0x18f0 fs/9p/v9fs.c:408
+ v9fs_mount+0xba/0xcb0 fs/9p/vfs_super.c:126
+ legacy_get_tree+0x108/0x220 fs/fs_context.c:632
+ vfs_get_tree+0x8e/0x300 fs/super.c:1573
+ do_new_mount fs/namespace.c:3056 [inline]
+ path_mount+0x6a6/0x1e90 fs/namespace.c:3386
+ do_mount fs/namespace.c:3399 [inline]
+ __do_sys_mount fs/namespace.c:3607 [inline]
+ __se_sys_mount fs/namespace.c:3584 [inline]
+ __x64_sys_mount+0x283/0x300 fs/namespace.c:3584
+ do_syscall_x64 arch/x86/entry/common.c:51 [inline]
+ do_syscall_64+0x35/0x80 arch/x86/entry/common.c:81
+ entry_SYSCALL_64_after_hwframe+0x6e/0xd8
 
-This prevents the underflow and the follow-on orphan/cleanup churn.
+This happens because of a race condition between:
 
-Reported-by: syzbot+0be4f339a8218d2a5bb1@syzkaller.appspotmail.com
-Fixes: https://syzbot.org/bug?extid=0be4f339a8218d2a5bb1
-Cc: stable@kernel.org
-Co-developed-by: Albin Babu Varghese <albinbabuvarghese20@gmail.com>
-Signed-off-by: Albin Babu Varghese <albinbabuvarghese20@gmail.com>
-Signed-off-by: Ahmet Eray Karadag <eraykrdg1@gmail.com>
-Message-ID: <20250920021342.45575-1-eraykrdg1@gmail.com>
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+- The 9p client sending an invalid flush request and later cleaning it up;
+- The 9p client in p9_read_work() canceled all pending requests.
+
+      Thread 1                              Thread 2
+    ...
+    p9_client_create()
+    ...
+    p9_fd_create()
+    ...
+    p9_conn_create()
+    ...
+    // start Thread 2
+    INIT_WORK(&m->rq, p9_read_work);
+                                        p9_read_work()
+    ...
+    p9_client_rpc()
+    ...
+                                        ...
+                                        p9_conn_cancel()
+                                        ...
+                                        spin_lock(&m->req_lock);
+    ...
+    p9_fd_cancelled()
+    ...
+                                        ...
+                                        spin_unlock(&m->req_lock);
+                                        // status rewrite
+                                        p9_client_cb(m->client, req, REQ_STATUS_ERROR)
+                                        // first remove
+                                        list_del(&req->req_list);
+                                        ...
+
+    spin_lock(&m->req_lock)
+    ...
+    // second remove
+    list_del(&req->req_list);
+    spin_unlock(&m->req_lock)
+  ...
+
+Commit 74d6a5d56629 ("9p/trans_fd: Fix concurrency del of req_list in
+p9_fd_cancelled/p9_read_work") fixes a concurrency issue in the 9p filesystem
+client where the req_list could be deleted simultaneously by both
+p9_read_work and p9_fd_cancelled functions, but for the case where req->status
+equals REQ_STATUS_RCVD.
+
+Update the check for req->status in p9_fd_cancelled to skip processing not
+just received requests, but anything that is not SENT, as whatever
+changed the state from SENT also removed the request from its list.
+
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+
+Fixes: afd8d6541155 ("9P: Add cancelled() to the transport functions.")
+Cc: stable@vger.kernel.org
+Signed-off-by: Nalivayko Sergey <Sergey.Nalivayko@kaspersky.com>
+Message-ID: <20250715154815.3501030-1-Sergey.Nalivayko@kaspersky.com>
+[updated the check from status == RECV || status == ERROR to status != SENT]
+Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
+[ replaced m->req_lock with client->lock ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/xattr.c |   15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+ net/9p/trans_fd.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/fs/ext4/xattr.c
-+++ b/fs/ext4/xattr.c
-@@ -1030,7 +1030,7 @@ static int ext4_xattr_inode_update_ref(h
- 				       int ref_change)
- {
- 	struct ext4_iloc iloc;
--	s64 ref_count;
-+	u64 ref_count;
- 	int ret;
+--- a/net/9p/trans_fd.c
++++ b/net/9p/trans_fd.c
+@@ -711,10 +711,10 @@ static int p9_fd_cancelled(struct p9_cli
+ 	p9_debug(P9_DEBUG_TRANS, "client %p req %p\n", client, req);
  
- 	inode_lock_nested(ea_inode, I_MUTEX_XATTR);
-@@ -1040,13 +1040,17 @@ static int ext4_xattr_inode_update_ref(h
- 		goto out;
- 
- 	ref_count = ext4_xattr_inode_get_ref(ea_inode);
-+	if ((ref_count == 0 && ref_change < 0) || (ref_count == U64_MAX && ref_change > 0)) {
-+		ext4_error_inode(ea_inode, __func__, __LINE__, 0,
-+			"EA inode %lu ref wraparound: ref_count=%lld ref_change=%d",
-+			ea_inode->i_ino, ref_count, ref_change);
-+		ret = -EFSCORRUPTED;
-+		goto out;
-+	}
- 	ref_count += ref_change;
- 	ext4_xattr_inode_set_ref(ea_inode, ref_count);
- 
- 	if (ref_change > 0) {
--		WARN_ONCE(ref_count <= 0, "EA inode %lu ref_count=%lld",
--			  ea_inode->i_ino, ref_count);
--
- 		if (ref_count == 1) {
- 			WARN_ONCE(ea_inode->i_nlink, "EA inode %lu i_nlink=%u",
- 				  ea_inode->i_ino, ea_inode->i_nlink);
-@@ -1055,9 +1059,6 @@ static int ext4_xattr_inode_update_ref(h
- 			ext4_orphan_del(handle, ea_inode);
- 		}
- 	} else {
--		WARN_ONCE(ref_count < 0, "EA inode %lu ref_count=%lld",
--			  ea_inode->i_ino, ref_count);
--
- 		if (ref_count == 0) {
- 			WARN_ONCE(ea_inode->i_nlink != 1,
- 				  "EA inode %lu i_nlink=%u",
+ 	spin_lock(&client->lock);
+-	/* Ignore cancelled request if message has been received
+-	 * before lock.
+-	 */
+-	if (req->status == REQ_STATUS_RCVD) {
++	/* Ignore cancelled request if status changed since the request was
++	 * processed in p9_client_flush()
++	*/
++	if (req->status != REQ_STATUS_SENT) {
+ 		spin_unlock(&client->lock);
+ 		return 0;
+ 	}
 
 
 
