@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-190258-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190260-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5BD6C1036B
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:52:05 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBE60C10374
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:52:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 403F2352D33
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:52:05 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 9998D352D57
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:52:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E04B328639;
-	Mon, 27 Oct 2025 18:47:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6999C32AABA;
+	Mon, 27 Oct 2025 18:47:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="btYnYeBw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W35kEJwO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28ACA33290A;
-	Mon, 27 Oct 2025 18:47:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24464324B33;
+	Mon, 27 Oct 2025 18:47:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761590829; cv=none; b=Ez/kTWxqT4CZACHzrlh5yTMH3H3OLNFZipX5dq8S62EQX9ZN3oB4dh0QUwRJwdcoMrWkk3GjGu4Z8OgxaFASRjCLh8q0J5NRZxnuxHYvBYLIFWDmeWCr5OnzqdSMb3LfaVqyJVxNlt6pddj3ewFHMn6tFqzoGtWnpVcYFYagFoQ=
+	t=1761590833; cv=none; b=BzYE9vuVCQfRb/fnzj7nS2qVE3t+dggbddOXE6ty5p1yq2Uj6wMsoaMcLa6Mk18jloFA0OuCxAhnXIMxwb2N/c7Vower3sb9V4miOxszlh4N/MxHW6Q7gkTRaPTmLt3OQBu0G4R5pKhTDCU5aZX6TVBEKEfO0ZWKZdGFJ6HWUbk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761590829; c=relaxed/simple;
-	bh=9s/N/wZltcIChCOF5q9JeEB7lcpk1rAgl0kxyntVFF0=;
+	s=arc-20240116; t=1761590833; c=relaxed/simple;
+	bh=1Z0H4nZRp3O/jrv/LBbgsc5xfzF/tPlJpYiLqU0Ra/c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=O4KZ2nnKgkRlPIZrWDZva6jnFn/S9OmW9ONmBhzQKO6PglxOz66Z9VHsAbidC7dIycwu3oGXGC8cn5J+4qtGAErjp4dcCt9SIfMuVFzo2ARTGB+kN1gpI5N8zv8JeL2GBFj8U3RCUrJd7CHeSmNl0Ei/0/SvHksuE4QgYrS1FPk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=btYnYeBw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 868FFC4CEFD;
-	Mon, 27 Oct 2025 18:47:08 +0000 (UTC)
+	 MIME-Version; b=hiF8/++ZBKFH1xqWWXH2GlkM+7eAb/7klgs3VtQvoQepDv1l6tlFBi8SNTCVHawwGb/YQTX31GOu3vSHvlEy5dqT+dWw2Vj6HqHPR6D/DUd1VFaNDWeXpjtYNpnl82o0pXOWzgR1U0y4R+ABsa5LCTfQqgQ8SmI1UrrutxKY4WY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W35kEJwO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CFD3C4CEF1;
+	Mon, 27 Oct 2025 18:47:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761590829;
-	bh=9s/N/wZltcIChCOF5q9JeEB7lcpk1rAgl0kxyntVFF0=;
+	s=korg; t=1761590832;
+	bh=1Z0H4nZRp3O/jrv/LBbgsc5xfzF/tPlJpYiLqU0Ra/c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=btYnYeBw0O8ZjRoFtIcHXzLQnWbImT3mGHjOjpceWFb6jNmRtnnUGlVc34vFh/Lfe
-	 t39YvOJwCPs1uWt/tecrPgZnYqjkCULl1zBhOn+lZmEFaUX0XOtAyK5ymfArtLTMX/
-	 bMXCPZlf9FkabU0KZq2OnEgboGZ+ET5boHayMsRs=
+	b=W35kEJwOgrFoUP2jSHpGGrCvYfZcTFz4na/MknSB+RGNaYY8dy3l55nA2tKNu76UD
+	 zJmKX5utyn/0jRra+qrpsQv2K22ALKVjPP3JHLs+xz5R6TPAGGM8XrQA3VXbtGk6/+
+	 w9nH2Pu+034lgAg1IrF/adIlNclsNUHH7fCGLy5M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Michael=20Wei=C3=9F?= <michael.weiss@aisec.fraunhofer.de>,
-	Harshal Gohel <hg@simonwunderlich.de>,
-	=?UTF-8?q?Johannes=20Wiesb=C3=B6ck?= <johannes.wiesboeck@aisec.fraunhofer.de>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
+	Wei Fang <wei.fang@nxp.com>,
+	Claudiu Manoil <claudiu.manoil@nxp.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 190/224] rtnetlink: Allow deleting FDB entries in user namespace
-Date: Mon, 27 Oct 2025 19:35:36 +0100
-Message-ID: <20251027183513.912343597@linuxfoundation.org>
+Subject: [PATCH 5.4 191/224] net: enetc: correct the value of ENETC_RXB_TRUESIZE
+Date: Mon, 27 Oct 2025 19:35:37 +0100
+Message-ID: <20251027183513.942142622@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251027183508.963233542@linuxfoundation.org>
 References: <20251027183508.963233542@linuxfoundation.org>
@@ -64,58 +61,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Wiesböck <johannes.wiesboeck@aisec.fraunhofer.de>
+From: Wei Fang <wei.fang@nxp.com>
 
-[ Upstream commit bf29555f5bdc017bac22ca66fcb6c9f46ec8788f ]
+[ Upstream commit e59bc32df2e989f034623a580e30a2a72af33b3f ]
 
-Creating FDB entries is possible from a non-initial user namespace when
-having CAP_NET_ADMIN, yet, when deleting FDB entries, processes receive
-an EPERM because the capability is always checked against the initial
-user namespace. This restricts the FDB management from unprivileged
-containers.
+The ENETC RX ring uses the page halves flipping mechanism, each page is
+split into two halves for the RX ring to use. And ENETC_RXB_TRUESIZE is
+defined to 2048 to indicate the size of half a page. However, the page
+size is configurable, for ARM64 platform, PAGE_SIZE is default to 4K,
+but it could be configured to 16K or 64K.
 
-Drop the netlink_capable check in rtnl_fdb_del as it was originally
-dropped in c5c351088ae7 and reintroduced in 1690be63a27b without
-intention.
+When PAGE_SIZE is set to 16K or 64K, ENETC_RXB_TRUESIZE is not correct,
+and the RX ring will always use the first half of the page. This is not
+consistent with the description in the relevant kernel doc and commit
+messages.
 
-This patch was tested using a container on GyroidOS, where it was
-possible to delete FDB entries from an unprivileged user namespace and
-private network namespace.
+This issue is invisible in most cases, but if users want to increase
+PAGE_SIZE to receive a Jumbo frame with a single buffer for some use
+cases, it will not work as expected, because the buffer size of each
+RX BD is fixed to 2048 bytes.
 
-Fixes: 1690be63a27b ("bridge: Add vlan support to static neighbors")
-Reviewed-by: Michael Weiß <michael.weiss@aisec.fraunhofer.de>
-Tested-by: Harshal Gohel <hg@simonwunderlich.de>
-Signed-off-by: Johannes Wiesböck <johannes.wiesboeck@aisec.fraunhofer.de>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://patch.msgid.link/20251015201548.319871-1-johannes.wiesboeck@aisec.fraunhofer.de
+Based on the above two points, we expect to correct ENETC_RXB_TRUESIZE
+to (PAGE_SIZE >> 1), as described in the comment.
+
+Fixes: d4fd0404c1c9 ("enetc: Introduce basic PF and VF ENETC ethernet drivers")
+Signed-off-by: Wei Fang <wei.fang@nxp.com>
+Reviewed-by: Claudiu Manoil <claudiu.manoil@nxp.com>
+Link: https://patch.msgid.link/20251016080131.3127122-1-wei.fang@nxp.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/rtnetlink.c | 3 ---
- 1 file changed, 3 deletions(-)
+ drivers/net/ethernet/freescale/enetc/enetc.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
-index 3d3743ef4f691..342b92afd1219 100644
---- a/net/core/rtnetlink.c
-+++ b/net/core/rtnetlink.c
-@@ -3836,9 +3836,6 @@ static int rtnl_fdb_del(struct sk_buff *skb, struct nlmsghdr *nlh,
- 	int err;
- 	u16 vid;
+diff --git a/drivers/net/ethernet/freescale/enetc/enetc.h b/drivers/net/ethernet/freescale/enetc/enetc.h
+index b8801a2b6a025..6203d117d0d2c 100644
+--- a/drivers/net/ethernet/freescale/enetc/enetc.h
++++ b/drivers/net/ethernet/freescale/enetc/enetc.h
+@@ -27,7 +27,7 @@ struct enetc_tx_swbd {
+ };
  
--	if (!netlink_capable(skb, CAP_NET_ADMIN))
--		return -EPERM;
--
- 	if (!del_bulk) {
- 		err = nlmsg_parse_deprecated(nlh, sizeof(*ndm), tb, NDA_MAX,
- 					     NULL, extack);
+ #define ENETC_RX_MAXFRM_SIZE	ENETC_MAC_MAXFRM_SIZE
+-#define ENETC_RXB_TRUESIZE	2048 /* PAGE_SIZE >> 1 */
++#define ENETC_RXB_TRUESIZE	(PAGE_SIZE >> 1)
+ #define ENETC_RXB_PAD		NET_SKB_PAD /* add extra space if needed */
+ #define ENETC_RXB_DMA_SIZE	\
+ 	(SKB_WITH_OVERHEAD(ENETC_RXB_TRUESIZE) - ENETC_RXB_PAD)
 -- 
 2.51.0
 
