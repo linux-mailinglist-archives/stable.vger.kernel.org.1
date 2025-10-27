@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-191312-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191129-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A4B3C112A5
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:38:49 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D54F1C11099
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:31:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8F33219A09BA
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:35:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 039673A541B
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:26:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0777F319858;
-	Mon, 27 Oct 2025 19:33:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E5C1329C46;
+	Mon, 27 Oct 2025 19:24:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gad/FEXz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rfSrg7wN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6CD831197B;
-	Mon, 27 Oct 2025 19:33:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE6F9328B77;
+	Mon, 27 Oct 2025 19:24:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761593608; cv=none; b=SU6uDgErnFuw0lf7MQ6477mYBkIUFA0AyJThCs8nccekaOWgYbeAKMSkWbx+vX/NSS79t+pkVR/M87+eK4h0LEKiUqpsJwqBHyaLKR2OzjdJoD3T5b3URz4G5nQKQLxlhoTRwk2fCi0Vukxd6DYQMSwQtSIFpdLeimYXAQJS1qo=
+	t=1761593085; cv=none; b=t8ebet/4tzG0Ckrr3uvmdZq2O27sdBiQCyQhlL/9m3ovqOgjpj6ii3fHg/15VuR5rIeV2sHLSGBl6aGujEZi2vsbZC3HL+YF6Ln+KwvN1XGUrr+XYezdYUHJucSDOUL354YqjIIomxZ4/drp8K+Zja7jA0JtPzu1HxhkdK7nHaU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761593608; c=relaxed/simple;
-	bh=3+NtMc3M9ZXsRmsXkqL2+Q28g2lMhFeOfvSDXMfxs1U=;
+	s=arc-20240116; t=1761593085; c=relaxed/simple;
+	bh=iOEWFGINnCyPrPhdSXDcb3Dw6RVO0xcDJ1H025bC2E8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hzGG9zU3VZ/KasQZuFcGBd1dXYvFRINWj9fkYDyQeZxcWcFMkNekNtc9tEVNsXlM6z/xWcLlaQaH7xBHOgYV717r4RnpJaYtN1X6Ja34I32nuZmmviv3mliXDR2T2ajRV4KYAa0ucPD0XJoPXCmcPZ4Y8BVf/LNtfS6JeIciCik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gad/FEXz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADEBBC4CEF1;
-	Mon, 27 Oct 2025 19:33:27 +0000 (UTC)
+	 MIME-Version; b=cnJPwAkHi4p5F1Y7QQcMZG+yuKPgtmxVfw6THI//g3i2H7I4gu7OyjtipNFokp0YC5vLGRmBzSwTcTyh3x0hJJKhG7Ho/3q2usZiuVGB2yBuqwyPsNM9oHBbtVSlwFpvct3lBauqM9naLd7d2RrG7EOAtVYUcNyWdFF0to5rc+Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rfSrg7wN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A63CC4CEFD;
+	Mon, 27 Oct 2025 19:24:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761593608;
-	bh=3+NtMc3M9ZXsRmsXkqL2+Q28g2lMhFeOfvSDXMfxs1U=;
+	s=korg; t=1761593084;
+	bh=iOEWFGINnCyPrPhdSXDcb3Dw6RVO0xcDJ1H025bC2E8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Gad/FEXz1lSKA7Sm2qQvQ/59bPqLxcvwsNN0+sUHLfUbKyecs3MGiEuv/4wAg2IBC
-	 C7fLqRqUllwWydRSL1odKfMu0NFb2z5v6Bffd5mYRK0Ba8G+pBYOeRQCKmR+LMRRZ3
-	 Ljn7q9toal+o/Pyxp/OIPV5hWFXfuBgMJ6P/mnv8=
+	b=rfSrg7wNfd7N6XnBbnNsdw9jv70k5SUekeTrIXj+h+xOMWLHEyxoRQmPLbhNEXy3X
+	 KrcRKto9vsE1izLNTHhGIBq5k6/1ZhH3S0JIBzGJIwa8AVW1hPL8thZdP55xfdtzCl
+	 Rb3kkRiCVJzqfGAfufg82RRbs29CTsC9tDxoLhrQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+f6c3c066162d2c43a66c@syzkaller.appspotmail.com,
-	Deepanshu Kartikey <kartikey406@gmail.com>,
-	Ian Abbott <abbotti@mev.co.uk>
-Subject: [PATCH 6.17 158/184] comedi: fix divide-by-zero in comedi_buf_munge()
+	stable <stable@kernel.org>,
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Subject: [PATCH 6.12 114/117] serial: sc16is7xx: remove useless enable of enhanced features
 Date: Mon, 27 Oct 2025 19:37:20 +0100
-Message-ID: <20251027183519.180752485@linuxfoundation.org>
+Message-ID: <20251027183457.112874530@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
-References: <20251027183514.934710872@linuxfoundation.org>
+In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
+References: <20251027183453.919157109@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +61,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Deepanshu Kartikey <kartikey406@gmail.com>
+From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
 
-commit 87b318ba81dda2ee7b603f4f6c55e78ec3e95974 upstream.
+commit 1c05bf6c0262f946571a37678250193e46b1ff0f upstream.
 
-The comedi_buf_munge() function performs a modulo operation
-`async->munge_chan %= async->cmd.chanlist_len` without first
-checking if chanlist_len is zero. If a user program submits a command with
-chanlist_len set to zero, this causes a divide-by-zero error when the device
-processes data in the interrupt handler path.
+Commit 43c51bb573aa ("sc16is7xx: make sure device is in suspend once
+probed") permanently enabled access to the enhanced features in
+sc16is7xx_probe(), and it is never disabled after that.
 
-Add a check for zero chanlist_len at the beginning of the
-function, similar to the existing checks for !map and
-CMDF_RAWDATA flag. When chanlist_len is zero, update
-munge_count and return early, indicating the data was
-handled without munging.
+Therefore, remove re-enable of enhanced features in
+sc16is7xx_set_baud(). This eliminates a potential useless read + write
+cycle each time the baud rate is reconfigured.
 
-This prevents potential kernel panics from malformed user commands.
-
-Reported-by: syzbot+f6c3c066162d2c43a66c@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=f6c3c066162d2c43a66c
-Cc: stable@vger.kernel.org
-Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
-Reviewed-by: Ian Abbott <abbotti@mev.co.uk>
-Link: https://patch.msgid.link/20250924102639.1256191-1-kartikey406@gmail.com
+Fixes: 43c51bb573aa ("sc16is7xx: make sure device is in suspend once probed")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Link: https://patch.msgid.link/20251006142002.177475-1-hugo@hugovil.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/comedi/comedi_buf.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/tty/serial/sc16is7xx.c |    7 -------
+ 1 file changed, 7 deletions(-)
 
---- a/drivers/comedi/comedi_buf.c
-+++ b/drivers/comedi/comedi_buf.c
-@@ -317,7 +317,7 @@ static unsigned int comedi_buf_munge(str
- 	unsigned int count = 0;
- 	const unsigned int num_sample_bytes = comedi_bytes_per_sample(s);
- 
--	if (!s->munge || (async->cmd.flags & CMDF_RAWDATA)) {
-+	if (!s->munge || (async->cmd.flags & CMDF_RAWDATA) || async->cmd.chanlist_len == 0) {
- 		async->munge_count += num_bytes;
- 		return num_bytes;
+--- a/drivers/tty/serial/sc16is7xx.c
++++ b/drivers/tty/serial/sc16is7xx.c
+@@ -585,13 +585,6 @@ static int sc16is7xx_set_baud(struct uar
+ 		div /= prescaler;
  	}
+ 
+-	/* Enable enhanced features */
+-	sc16is7xx_efr_lock(port);
+-	sc16is7xx_port_update(port, SC16IS7XX_EFR_REG,
+-			      SC16IS7XX_EFR_ENABLE_BIT,
+-			      SC16IS7XX_EFR_ENABLE_BIT);
+-	sc16is7xx_efr_unlock(port);
+-
+ 	/* If bit MCR_CLKSEL is set, the divide by 4 prescaler is activated. */
+ 	sc16is7xx_port_update(port, SC16IS7XX_MCR_REG,
+ 			      SC16IS7XX_MCR_CLKSEL_BIT,
 
 
 
