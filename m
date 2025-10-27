@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-190915-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190760-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97FA3C10D8D
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:22:09 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 747E9C10BC2
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:17:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC7361897F69
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:17:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4BB4A463B52
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:11:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68C8031E0F4;
-	Mon, 27 Oct 2025 19:15:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 655E2324B0B;
+	Mon, 27 Oct 2025 19:08:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yniFLnaC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="flgd6gW+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 226D431B80E;
-	Mon, 27 Oct 2025 19:15:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 213EC2C11DF;
+	Mon, 27 Oct 2025 19:08:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592531; cv=none; b=eiv/Rk/ot0i4zB0OmpEsz46k1mcuBE6/rTnbjlF7E1DFotCax/TQA9H70dZlrp8erDvBcxWDu1dY2Dpuqt2yQuaHB4r8t7kVtbTb3GOZQ0wp4xeu+hixvsFLhmUO4xzRYOwL/TmPyIm60mII8zgIU8LJXGZAlxdL/VwWUd9M4h0=
+	t=1761592124; cv=none; b=m9nhhKYiJcHMgEMbGzTMLqTd6qIxZViOIBa4KkK+7mOkEVWgdrElj7F72hY0WYMA+nK7vHBTv5JnQNfzEVNXT/im+/C5gqe9CHTjTXrVIiRo6dbGtzbR+OlBT9JGlIHj28ucDvUlLdMbs5hgh+mJKeQcrqcuYt8uarCgP3AK2us=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592531; c=relaxed/simple;
-	bh=LItyahLFdRei/yHWsIUSToRL2WorMjluWk4kQDU44Io=;
+	s=arc-20240116; t=1761592124; c=relaxed/simple;
+	bh=XvJzYmZGYdcI0ZJ1xCtlbZjW5UBTWxM1CENUEOla+Q0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fb005Gq5iYS4mNqdNHqbLviKghDP8RdCbcU0YWkiROA7aFEYC4J72tt+XzsbHdkOSl+q1VSS5bkY54pFfKcTeWDcfFZr0Z+j8/9PiEaDa6iAcrBz1J9NMqu5uzpeHTE1GAsXVzkCZRgLeSlJXp0XshfDiPpxwYq1WJyEDLwI7lc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yniFLnaC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA524C4CEF1;
-	Mon, 27 Oct 2025 19:15:30 +0000 (UTC)
+	 MIME-Version; b=l4w4resBNHQeeQHQ9u6XEwwwsRRF6+0K344Yt4CNDqvz8T7Hzxis1KHJOP5RMaw/JUY8Ji75fngXaRpoa+1SE0edpRh9U5Izqjxbfwx/TUb12ABm4yyZukI2YjhvSAJQXlrm/Q+PAMCnIbUJfaBsrIGGDLjYXm1N69VOsitjv4c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=flgd6gW+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6419C4CEF1;
+	Mon, 27 Oct 2025 19:08:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592531;
-	bh=LItyahLFdRei/yHWsIUSToRL2WorMjluWk4kQDU44Io=;
+	s=korg; t=1761592124;
+	bh=XvJzYmZGYdcI0ZJ1xCtlbZjW5UBTWxM1CENUEOla+Q0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yniFLnaC1bFWYNpk7JpMvC/FuyUwwVlbM2eQfcYtBU9Mdfu8CwM5iL+pNLjE+Tmd7
-	 zgtIdmMdJ568z7oFn6BPSNs1uB5tmuh/YFNNCXv4G70+3VuHhkbuhmp5+VIgtvRouD
-	 YwsAZfX22B8qp1OF6dPH/xUy/kfNYblqng/ssE2o=
+	b=flgd6gW+cp5Nb1/6jGyrJxV7NXqksfHKuGXtaPk34L2rrWoV2P2FK6hoRSP/8/k39
+	 R5a7y8BWNHiFeLqYZImeX+bIiAmUSGbOqi1tZHK3xwiy4ueD8ZoyZV6JiaOxvDdocZ
+	 Z2hHALlkwPBrI28n271HHJpExzZZeq3o1X09TgrA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Devarsh Thakkar <devarsht@ti.com>,
-	Harikrishna Shenoy <h-shenoy@ti.com>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Miklos Szeredi <mszeredi@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 120/157] phy: cadence: cdns-dphy: Fix PLL lock and O_CMN_READY polling
+Subject: [PATCH 5.15 101/123] fuse: fix livelock in synchronous file put from fuseblk workers
 Date: Mon, 27 Oct 2025 19:36:21 +0100
-Message-ID: <20251027183504.466707001@linuxfoundation.org>
+Message-ID: <20251027183449.093613602@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
-References: <20251027183501.227243846@linuxfoundation.org>
+In-Reply-To: <20251027183446.381986645@linuxfoundation.org>
+References: <20251027183446.381986645@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,267 +62,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Devarsh Thakkar <devarsht@ti.com>
+From: "Darrick J. Wong" <djwong@kernel.org>
 
-[ Upstream commit 284fb19a3ffb1083c3ad9c00d29749d09dddb99c ]
+[ Upstream commit 26e5c67deb2e1f42a951f022fdf5b9f7eb747b01 ]
 
-PLL lockup and O_CMN_READY assertion can only happen after common state
-machine gets enabled by programming DPHY_CMN_SSM register, but driver was
-polling them before the common state machine was enabled which is
-incorrect.  This is as per the DPHY initialization sequence as mentioned in
-J721E TRM [1] at section "12.7.2.4.1.2.1 Start-up Sequence Timing Diagram".
-It shows O_CMN_READY polling at the end after common configuration pin
-setup where the common configuration pin setup step enables state machine
-as referenced in "Table 12-1533. Common Configuration-Related Setup
-mentions state machine"
+I observed a hang when running generic/323 against a fuseblk server.
+This test opens a file, initiates a lot of AIO writes to that file
+descriptor, and closes the file descriptor before the writes complete.
+Unsurprisingly, the AIO exerciser threads are mostly stuck waiting for
+responses from the fuseblk server:
 
-To fix this :
-- Add new function callbacks for polling on PLL lock and O_CMN_READY
-  assertion.
-- As state machine and clocks get enabled in power_on callback only, move
-  the clock related programming part from configure callback to power_on
-callback and poll for the PLL lockup and O_CMN_READY assertion after state
-machine gets enabled.
-- The configure callback only saves the PLL configuration received from the
-  client driver which will be applied later on in power_on callback.
-- Add checks to ensure configure is called before power_on and state
-  machine is in disabled state before power_on callback is called.
-- Disable state machine in power_off so that client driver can re-configure
-  the PLL by following up a power_off, configure, power_on sequence.
+# cat /proc/372265/task/372313/stack
+[<0>] request_wait_answer+0x1fe/0x2a0 [fuse]
+[<0>] __fuse_simple_request+0xd3/0x2b0 [fuse]
+[<0>] fuse_do_getattr+0xfc/0x1f0 [fuse]
+[<0>] fuse_file_read_iter+0xbe/0x1c0 [fuse]
+[<0>] aio_read+0x130/0x1e0
+[<0>] io_submit_one+0x542/0x860
+[<0>] __x64_sys_io_submit+0x98/0x1a0
+[<0>] do_syscall_64+0x37/0xf0
+[<0>] entry_SYSCALL_64_after_hwframe+0x4b/0x53
 
-[1]: https://www.ti.com/lit/zip/spruil1
+But the /weird/ part is that the fuseblk server threads are waiting for
+responses from itself:
 
-Cc: stable@vger.kernel.org
-Fixes: 7a343c8bf4b5 ("phy: Add Cadence D-PHY support")
-Signed-off-by: Devarsh Thakkar <devarsht@ti.com>
-Tested-by: Harikrishna Shenoy <h-shenoy@ti.com>
-Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Link: https://lore.kernel.org/r/20250704125915.1224738-2-devarsht@ti.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+# cat /proc/372210/task/372232/stack
+[<0>] request_wait_answer+0x1fe/0x2a0 [fuse]
+[<0>] __fuse_simple_request+0xd3/0x2b0 [fuse]
+[<0>] fuse_file_put+0x9a/0xd0 [fuse]
+[<0>] fuse_release+0x36/0x50 [fuse]
+[<0>] __fput+0xec/0x2b0
+[<0>] task_work_run+0x55/0x90
+[<0>] syscall_exit_to_user_mode+0xe9/0x100
+[<0>] do_syscall_64+0x43/0xf0
+[<0>] entry_SYSCALL_64_after_hwframe+0x4b/0x53
+
+The fuseblk server is fuse2fs so there's nothing all that exciting in
+the server itself.  So why is the fuse server calling fuse_file_put?
+The commit message for the fstest sheds some light on that:
+
+"By closing the file descriptor before calling io_destroy, you pretty
+much guarantee that the last put on the ioctx will be done in interrupt
+context (during I/O completion).
+
+Aha.  AIO fgets a new struct file from the fd when it queues the ioctx.
+The completion of the FUSE_WRITE command from userspace causes the fuse
+server to call the AIO completion function.  The completion puts the
+struct file, queuing a delayed fput to the fuse server task.  When the
+fuse server task returns to userspace, it has to run the delayed fput,
+which in the case of a fuseblk server, it does synchronously.
+
+Sending the FUSE_RELEASE command sychronously from fuse server threads
+is a bad idea because a client program can initiate enough simultaneous
+AIOs such that all the fuse server threads end up in delayed_fput, and
+now there aren't any threads left to handle the queued fuse commands.
+
+Fix this by only using asynchronous fputs when closing files, and leave
+a comment explaining why.
+
+Cc: stable@vger.kernel.org # v2.6.38
+Fixes: 5a18ec176c934c ("fuse: fix hang of single threaded fuseblk filesystem")
+Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/phy/cadence/cdns-dphy.c |  124 +++++++++++++++++++++++++++++-----------
- 1 file changed, 92 insertions(+), 32 deletions(-)
+ fs/fuse/file.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/drivers/phy/cadence/cdns-dphy.c
-+++ b/drivers/phy/cadence/cdns-dphy.c
-@@ -101,6 +101,8 @@ struct cdns_dphy_ops {
- 	void (*set_pll_cfg)(struct cdns_dphy *dphy,
- 			    const struct cdns_dphy_cfg *cfg);
- 	unsigned long (*get_wakeup_time_ns)(struct cdns_dphy *dphy);
-+	int (*wait_for_pll_lock)(struct cdns_dphy *dphy);
-+	int (*wait_for_cmn_ready)(struct cdns_dphy *dphy);
- };
- 
- struct cdns_dphy {
-@@ -110,6 +112,8 @@ struct cdns_dphy {
- 	struct clk *pll_ref_clk;
- 	const struct cdns_dphy_ops *ops;
- 	struct phy *phy;
-+	bool is_configured;
-+	bool is_powered;
- };
- 
- /* Order of bands is important since the index is the band number. */
-@@ -196,6 +200,16 @@ static unsigned long cdns_dphy_get_wakeu
- 	return dphy->ops->get_wakeup_time_ns(dphy);
- }
- 
-+static int cdns_dphy_wait_for_pll_lock(struct cdns_dphy *dphy)
-+{
-+	return dphy->ops->wait_for_pll_lock ? dphy->ops->wait_for_pll_lock(dphy) : 0;
-+}
-+
-+static int cdns_dphy_wait_for_cmn_ready(struct cdns_dphy *dphy)
-+{
-+	return  dphy->ops->wait_for_cmn_ready ? dphy->ops->wait_for_cmn_ready(dphy) : 0;
-+}
-+
- static unsigned long cdns_dphy_ref_get_wakeup_time_ns(struct cdns_dphy *dphy)
- {
- 	/* Default wakeup time is 800 ns (in a simulated environment). */
-@@ -237,7 +251,6 @@ static unsigned long cdns_dphy_j721e_get
- static void cdns_dphy_j721e_set_pll_cfg(struct cdns_dphy *dphy,
- 					const struct cdns_dphy_cfg *cfg)
- {
--	u32 status;
- 
- 	/*
- 	 * set the PWM and PLL Byteclk divider settings to recommended values
-@@ -254,13 +267,6 @@ static void cdns_dphy_j721e_set_pll_cfg(
- 
- 	writel(DPHY_TX_J721E_WIZ_LANE_RSTB,
- 	       dphy->regs + DPHY_TX_J721E_WIZ_RST_CTRL);
--
--	readl_poll_timeout(dphy->regs + DPHY_TX_J721E_WIZ_PLL_CTRL, status,
--			   (status & DPHY_TX_WIZ_PLL_LOCK), 0, POLL_TIMEOUT_US);
--
--	readl_poll_timeout(dphy->regs + DPHY_TX_J721E_WIZ_STATUS, status,
--			   (status & DPHY_TX_WIZ_O_CMN_READY), 0,
--			   POLL_TIMEOUT_US);
- }
- 
- static void cdns_dphy_j721e_set_psm_div(struct cdns_dphy *dphy, u8 div)
-@@ -268,6 +274,23 @@ static void cdns_dphy_j721e_set_psm_div(
- 	writel(div, dphy->regs + DPHY_TX_J721E_WIZ_PSM_FREQ);
- }
- 
-+static int cdns_dphy_j721e_wait_for_pll_lock(struct cdns_dphy *dphy)
-+{
-+	u32 status;
-+
-+	return readl_poll_timeout(dphy->regs + DPHY_TX_J721E_WIZ_PLL_CTRL, status,
-+			       status & DPHY_TX_WIZ_PLL_LOCK, 0, POLL_TIMEOUT_US);
-+}
-+
-+static int cdns_dphy_j721e_wait_for_cmn_ready(struct cdns_dphy *dphy)
-+{
-+	u32 status;
-+
-+	return readl_poll_timeout(dphy->regs + DPHY_TX_J721E_WIZ_STATUS, status,
-+			       status & DPHY_TX_WIZ_O_CMN_READY, 0,
-+			       POLL_TIMEOUT_US);
-+}
-+
- /*
-  * This is the reference implementation of DPHY hooks. Specific integration of
-  * this IP may have to re-implement some of them depending on how they decided
-@@ -283,6 +306,8 @@ static const struct cdns_dphy_ops j721e_
- 	.get_wakeup_time_ns = cdns_dphy_j721e_get_wakeup_time_ns,
- 	.set_pll_cfg = cdns_dphy_j721e_set_pll_cfg,
- 	.set_psm_div = cdns_dphy_j721e_set_psm_div,
-+	.wait_for_pll_lock = cdns_dphy_j721e_wait_for_pll_lock,
-+	.wait_for_cmn_ready = cdns_dphy_j721e_wait_for_cmn_ready,
- };
- 
- static int cdns_dphy_config_from_opts(struct phy *phy,
-@@ -340,21 +365,36 @@ static int cdns_dphy_validate(struct phy
- static int cdns_dphy_configure(struct phy *phy, union phy_configure_opts *opts)
- {
- 	struct cdns_dphy *dphy = phy_get_drvdata(phy);
--	struct cdns_dphy_cfg cfg = { 0 };
--	int ret, band_ctrl;
--	unsigned int reg;
-+	int ret;
- 
--	ret = cdns_dphy_config_from_opts(phy, &opts->mipi_dphy, &cfg);
--	if (ret)
--		return ret;
-+	ret = cdns_dphy_config_from_opts(phy, &opts->mipi_dphy, &dphy->cfg);
-+	if (!ret)
-+		dphy->is_configured = true;
-+
-+	return ret;
-+}
-+
-+static int cdns_dphy_power_on(struct phy *phy)
-+{
-+	struct cdns_dphy *dphy = phy_get_drvdata(phy);
-+	int ret;
-+	u32 reg;
-+
-+	if (!dphy->is_configured || dphy->is_powered)
-+		return -EINVAL;
-+
-+	clk_prepare_enable(dphy->psm_clk);
-+	clk_prepare_enable(dphy->pll_ref_clk);
- 
- 	/*
- 	 * Configure the internal PSM clk divider so that the DPHY has a
- 	 * 1MHz clk (or something close).
+--- a/fs/fuse/file.c
++++ b/fs/fuse/file.c
+@@ -340,8 +340,14 @@ void fuse_file_release(struct inode *ino
+ 	 * Make the release synchronous if this is a fuseblk mount,
+ 	 * synchronous RELEASE is allowed (and desirable) in this case
+ 	 * because the server can be trusted not to screw up.
++	 *
++	 * Always use the asynchronous file put because the current thread
++	 * might be the fuse server.  This can happen if a process starts some
++	 * aio and closes the fd before the aio completes.  Since aio takes its
++	 * own ref to the file, the IO completion has to drop the ref, which is
++	 * how the fuse server can end up closing its clients' files.
  	 */
- 	ret = cdns_dphy_setup_psm(dphy);
--	if (ret)
--		return ret;
-+	if (ret) {
-+		dev_err(&dphy->phy->dev, "Failed to setup PSM with error %d\n", ret);
-+		goto err_power_on;
-+	}
- 
- 	/*
- 	 * Configure attach clk lanes to data lanes: the DPHY has 2 clk lanes
-@@ -369,40 +409,60 @@ static int cdns_dphy_configure(struct ph
- 	 * Configure the DPHY PLL that will be used to generate the TX byte
- 	 * clk.
- 	 */
--	cdns_dphy_set_pll_cfg(dphy, &cfg);
-+	cdns_dphy_set_pll_cfg(dphy, &dphy->cfg);
- 
--	band_ctrl = cdns_dphy_tx_get_band_ctrl(opts->mipi_dphy.hs_clk_rate);
--	if (band_ctrl < 0)
--		return band_ctrl;
-+	ret = cdns_dphy_tx_get_band_ctrl(dphy->cfg.hs_clk_rate);
-+	if (ret < 0) {
-+		dev_err(&dphy->phy->dev, "Failed to get band control value with error %d\n", ret);
-+		goto err_power_on;
-+	}
- 
--	reg = FIELD_PREP(DPHY_BAND_CFG_LEFT_BAND, band_ctrl) |
--	      FIELD_PREP(DPHY_BAND_CFG_RIGHT_BAND, band_ctrl);
-+	reg = FIELD_PREP(DPHY_BAND_CFG_LEFT_BAND, ret) |
-+	      FIELD_PREP(DPHY_BAND_CFG_RIGHT_BAND, ret);
- 	writel(reg, dphy->regs + DPHY_BAND_CFG);
- 
--	return 0;
--}
--
--static int cdns_dphy_power_on(struct phy *phy)
--{
--	struct cdns_dphy *dphy = phy_get_drvdata(phy);
--
--	clk_prepare_enable(dphy->psm_clk);
--	clk_prepare_enable(dphy->pll_ref_clk);
--
- 	/* Start TX state machine. */
- 	writel(DPHY_CMN_SSM_EN | DPHY_CMN_TX_MODE_EN,
- 	       dphy->regs + DPHY_CMN_SSM);
- 
-+	ret = cdns_dphy_wait_for_pll_lock(dphy);
-+	if (ret) {
-+		dev_err(&dphy->phy->dev, "Failed to lock PLL with error %d\n", ret);
-+		goto err_power_on;
-+	}
-+
-+	ret = cdns_dphy_wait_for_cmn_ready(dphy);
-+	if (ret) {
-+		dev_err(&dphy->phy->dev, "O_CMN_READY signal failed to assert with error %d\n",
-+			ret);
-+		goto err_power_on;
-+	}
-+
-+	dphy->is_powered = true;
-+
- 	return 0;
-+
-+err_power_on:
-+	clk_disable_unprepare(dphy->pll_ref_clk);
-+	clk_disable_unprepare(dphy->psm_clk);
-+
-+	return ret;
+-	fuse_file_put(ff, ff->fm->fc->destroy);
++	fuse_file_put(ff, false);
  }
  
- static int cdns_dphy_power_off(struct phy *phy)
- {
- 	struct cdns_dphy *dphy = phy_get_drvdata(phy);
-+	u32 reg;
- 
- 	clk_disable_unprepare(dphy->pll_ref_clk);
- 	clk_disable_unprepare(dphy->psm_clk);
- 
-+	/* Stop TX state machine. */
-+	reg = readl(dphy->regs + DPHY_CMN_SSM);
-+	writel(reg & ~DPHY_CMN_SSM_EN, dphy->regs + DPHY_CMN_SSM);
-+
-+	dphy->is_powered = false;
-+
- 	return 0;
- }
- 
+ void fuse_release_common(struct file *file, bool isdir)
 
 
 
