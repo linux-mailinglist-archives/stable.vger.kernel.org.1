@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-190917-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190762-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEC4BC10D93
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:22:10 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C605BC10BB3
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:17:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 03944188C41C
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:17:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ADCCF3A717C
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:11:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB91831B80E;
-	Mon, 27 Oct 2025 19:15:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FBFB325485;
+	Mon, 27 Oct 2025 19:08:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nNTcOj2P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pAgt2Aob"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 678522D7DDA;
-	Mon, 27 Oct 2025 19:15:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A9B82D7DDA;
+	Mon, 27 Oct 2025 19:08:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592536; cv=none; b=H3t50lxoMxmrdDQ6bnb5wCm/Ut1iQKUr7YvoVuqNtGm2DGuv7ikWjoLXTvIEprTwS2X/DK5BFjK1uESHG7TPNn5QeUCvYpw/wxePOR6s8cLrzYVM3aewbZbTuphKLJsiZtJIXtM5YHlYlbYVZHbjkiPOSVPygv+ajHvSJ0NClts=
+	t=1761592131; cv=none; b=SA8Hnq76SD5WgnMW1gW/qI9QZSXpCLZbedw42CUyO4NIkhszaj8ge4wZK6venaUN973rf3zwwzaUxIQoaOPOMMPLiFNpUtSk3Aizz1FxI4xEzDW9TxLxWBuWADHUMzgA9Csw0K1GqEevjUXzX95qLSGBAB/gEE3K7NHryXix/dM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592536; c=relaxed/simple;
-	bh=GZOLv90Z205qYfQvLdzeKByGLLhJ/2lvwKv+hpbVntI=;
+	s=arc-20240116; t=1761592131; c=relaxed/simple;
+	bh=prkURT1Le7wV/Gu5vwA9ydMf/+C4R4eHjDlhKHOt2Zs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gLj8Igmg4Cp65ts0bheNtNBfGVvc51xN6JLpNFsuvlcKVwkKEYqlSpKoP8GVC9IIlYRj81EOmujRNP+HXqXAT8FaB/3mLwcoE+UUBRiVyh+oaln2p5MAq22MM/DjQPOCXGcQZrnxiO09XNpos1jCPdlkQ00WEayMKjYYwaLbfH4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nNTcOj2P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8CB4C4CEF1;
-	Mon, 27 Oct 2025 19:15:35 +0000 (UTC)
+	 MIME-Version; b=GQKlifm+BwmJHE/w+Qc3MuUn1RiJ2FQGexiInqAsSQ6XGxZeax/m4oMH3h7ONxz2hpmEvEw5jZdYN8S+6M2ResMSSiqZuoBBFOf3o/PEU3iLwcbOLlaJEZMDwGrtmlLmnznI9ihcGaOV0ZjM6gXui0rMkU4rhN0gCZh+D3n4Cy0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pAgt2Aob; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36BD7C4CEF1;
+	Mon, 27 Oct 2025 19:08:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592536;
-	bh=GZOLv90Z205qYfQvLdzeKByGLLhJ/2lvwKv+hpbVntI=;
+	s=korg; t=1761592129;
+	bh=prkURT1Le7wV/Gu5vwA9ydMf/+C4R4eHjDlhKHOt2Zs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nNTcOj2Pls38UomEiTLY+Kv1b9DZp4RSrdpzJRHIp5Xsou4NCze1O6pTwbXjUunaK
-	 na9rywvzPTOrrnoZ5MQMk4yqLcQB3xInBMd/No7nEzVfQcPFRF3redY7FBEhLUdhPZ
-	 4TXwqlwHElESt+wEuvmx6txPfJHTp50L6rGDc0RE=
+	b=pAgt2AobeuPxI8ePMNJCrMSaI7pFwMhE388KRSd4HqwOd4BMVqYSDdmADGQcxfrS/
+	 LXiwwQZHiZU3x7BIPgPWJ8NILPMC2fb86dOqg09eqbZmrbUoq1GKZAxmQFPFFXIeGS
+	 YFFH1b3zybze4BjKvMKRRsKmzRkD/+1j3mILgIsE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Nyekjaer <sean@geanix.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 122/157] iio: imu: inv_icm42600: Simplify pm_runtime setup
+Subject: [PATCH 5.15 103/123] PCI: j721e: Fix programming sequence of "strap" settings
 Date: Mon, 27 Oct 2025 19:36:23 +0100
-Message-ID: <20251027183504.520271158@linuxfoundation.org>
+Message-ID: <20251027183449.146641096@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
-References: <20251027183501.227243846@linuxfoundation.org>
+In-Reply-To: <20251027183446.381986645@linuxfoundation.org>
+References: <20251027183446.381986645@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,88 +62,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Nyekjaer <sean@geanix.com>
+From: Siddharth Vadapalli <s-vadapalli@ti.com>
 
-[ Upstream commit 0792c1984a45ccd7a296d6b8cb78088bc99a212e ]
+[ Upstream commit f842d3313ba179d4005096357289c7ad09cec575 ]
 
-Rework the power management in inv_icm42600_core_probe() to use
-devm_pm_runtime_set_active_enabled(), which simplifies the runtime PM
-setup by handling activation and enabling in one step.
-Remove the separate inv_icm42600_disable_pm callback, as it's no longer
-needed with the devm-managed approach.
-Using devm_pm_runtime_enable() also fixes the missing disable of
-autosuspend.
-Update inv_icm42600_disable_vddio_reg() to only disable the regulator if
-the device is not suspended i.e. powered-down, preventing unbalanced
-disables.
-Also remove redundant error msg on regulator_disable(), the regulator
-framework already emits an error message when regulator_disable() fails.
+The Cadence PCIe Controller integrated in the TI K3 SoCs supports both
+Root-Complex and Endpoint modes of operation. The Glue Layer allows
+"strapping" the Mode of operation of the Controller, the Link Speed
+and the Link Width. This is enabled by programming the "PCIEn_CTRL"
+register (n corresponds to the PCIe instance) within the CTRL_MMR
+memory-mapped register space. The "reset-values" of the registers are
+also different depending on the mode of operation.
 
-This simplifies the PM setup and avoids manipulating the usage counter
-unnecessarily.
+Since the PCIe Controller latches onto the "reset-values" immediately
+after being powered on, if the Glue Layer configuration is not done while
+the PCIe Controller is off, it will result in the PCIe Controller latching
+onto the wrong "reset-values". In practice, this will show up as a wrong
+representation of the PCIe Controller's capability structures in the PCIe
+Configuration Space. Some such capabilities which are supported by the PCIe
+Controller in the Root-Complex mode but are incorrectly latched onto as
+being unsupported are:
+- Link Bandwidth Notification
+- Alternate Routing ID (ARI) Forwarding Support
+- Next capability offset within Advanced Error Reporting (AER) capability
 
-Fixes: 31c24c1e93c3 ("iio: imu: inv_icm42600: add core of new inv_icm42600 driver")
-Signed-off-by: Sean Nyekjaer <sean@geanix.com>
-Link: https://patch.msgid.link/20250901-icm42pmreg-v3-1-ef1336246960@geanix.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Fix this by powering off the PCIe Controller before programming the "strap"
+settings and powering it on after that. The runtime PM APIs namely
+pm_runtime_put_sync() and pm_runtime_get_sync() will decrement and
+increment the usage counter respectively, causing GENPD to power off and
+power on the PCIe Controller.
+
+Fixes: f3e25911a430 ("PCI: j721e: Add TI J721E PCIe driver")
+Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20250908120828.1471776-1-s-vadapalli@ti.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/imu/inv_icm42600/inv_icm42600_core.c |   24 ++++++-----------------
- 1 file changed, 7 insertions(+), 17 deletions(-)
+ drivers/pci/controller/cadence/pci-j721e.c |   25 +++++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
 
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
-@@ -550,20 +550,12 @@ static void inv_icm42600_disable_vdd_reg
- static void inv_icm42600_disable_vddio_reg(void *_data)
- {
- 	struct inv_icm42600_state *st = _data;
--	const struct device *dev = regmap_get_device(st->map);
--	int ret;
--
--	ret = regulator_disable(st->vddio_supply);
--	if (ret)
--		dev_err(dev, "failed to disable vddio error %d\n", ret);
--}
-+	struct device *dev = regmap_get_device(st->map);
+--- a/drivers/pci/controller/cadence/pci-j721e.c
++++ b/drivers/pci/controller/cadence/pci-j721e.c
+@@ -270,6 +270,25 @@ static int j721e_pcie_ctrl_init(struct j
+ 	if (!ret)
+ 		offset = args.args[0];
  
--static void inv_icm42600_disable_pm(void *_data)
--{
--	struct device *dev = _data;
-+	if (pm_runtime_status_suspended(dev))
-+		return;
- 
--	pm_runtime_put_sync(dev);
--	pm_runtime_disable(dev);
-+	regulator_disable(st->vddio_supply);
- }
- 
- int inv_icm42600_core_probe(struct regmap *regmap, int chip, int irq,
-@@ -660,16 +652,14 @@ int inv_icm42600_core_probe(struct regma
- 		return ret;
- 
- 	/* setup runtime power management */
--	ret = pm_runtime_set_active(dev);
-+	ret = devm_pm_runtime_set_active_enabled(dev);
- 	if (ret)
- 		return ret;
--	pm_runtime_get_noresume(dev);
--	pm_runtime_enable(dev);
++	/*
++	 * The PCIe Controller's registers have different "reset-values"
++	 * depending on the "strap" settings programmed into the PCIEn_CTRL
++	 * register within the CTRL_MMR memory-mapped register space.
++	 * The registers latch onto a "reset-value" based on the "strap"
++	 * settings sampled after the PCIe Controller is powered on.
++	 * To ensure that the "reset-values" are sampled accurately, power
++	 * off the PCIe Controller before programming the "strap" settings
++	 * and power it on after that. The runtime PM APIs namely
++	 * pm_runtime_put_sync() and pm_runtime_get_sync() will decrement and
++	 * increment the usage counter respectively, causing GENPD to power off
++	 * and power on the PCIe Controller.
++	 */
++	ret = pm_runtime_put_sync(dev);
++	if (ret < 0) {
++		dev_err(dev, "Failed to power off PCIe Controller\n");
++		return ret;
++	}
 +
- 	pm_runtime_set_autosuspend_delay(dev, INV_ICM42600_SUSPEND_DELAY_MS);
- 	pm_runtime_use_autosuspend(dev);
--	pm_runtime_put(dev);
+ 	ret = j721e_pcie_set_mode(pcie, syscon, offset);
+ 	if (ret < 0) {
+ 		dev_err(dev, "Failed to set pci mode\n");
+@@ -288,6 +307,12 @@ static int j721e_pcie_ctrl_init(struct j
+ 		return ret;
+ 	}
  
--	return devm_add_action_or_reset(dev, inv_icm42600_disable_pm, dev);
-+	return ret;
- }
- EXPORT_SYMBOL_GPL(inv_icm42600_core_probe);
- 
++	ret = pm_runtime_get_sync(dev);
++	if (ret < 0) {
++		dev_err(dev, "Failed to power on PCIe Controller\n");
++		return ret;
++	}
++
+ 	/* Enable ACSPCIE refclk output if the optional property exists */
+ 	syscon = syscon_regmap_lookup_by_phandle_optional(node,
+ 						"ti,syscon-acspcie-proxy-ctrl");
 
 
 
