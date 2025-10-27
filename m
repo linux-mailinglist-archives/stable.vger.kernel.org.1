@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-190654-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190797-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA532C109F6
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:13:15 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A64FC10C15
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:18:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0980E502E97
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:07:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EAD3A1A637A7
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:13:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE72F32E155;
-	Mon, 27 Oct 2025 19:04:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5838328B44;
+	Mon, 27 Oct 2025 19:10:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1l8ElNMo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i3d7p7Om"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69572309F1E;
-	Mon, 27 Oct 2025 19:04:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7216730506B;
+	Mon, 27 Oct 2025 19:10:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591847; cv=none; b=SQdbC4dLIg0gJrPdbkr9Q/e8IdqgbINpsc/ntcghVzfH5sQIh07gdO3yW+bCh7E54sg8clfk2Xnu1JHDysNt40MgAh9Ts1/58uPAR74f9UuSj98+LGms1WWbLqyXnHkQpN9SytayeiMQKyTAeKI52Bs7QQIpBgYTWFp766D67zI=
+	t=1761592221; cv=none; b=lf5rqm+apzsIj6Jr0oZ/kLlh/eX0SUGLzYucgl5Xm2cGRSEaCqo/ytR0q+SJcQcomohvMNbDrsAGxJHzeybhMg8QkghfUUREF2iWf/WutyYCCANm6+v0bSjejMQJDZb3O9zn2a0kgahMPSkoVIdXGchb4IN3tjTQ39mRn3tneec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591847; c=relaxed/simple;
-	bh=RCNL9V8ibvGJp98b93qpRZsojb9q4j1WLwbyKONexWk=;
+	s=arc-20240116; t=1761592221; c=relaxed/simple;
+	bh=X5uueY2jVEPuwDDBjBH5hkoT2NwPULEw12pWUsyvX6s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UgmQKh6b0VjG5B0kT+E5USRpgRryBKdGYaje6m9k8X1p+eq3JCw8/G4DHTJVV01VNk0jAdr8EbWgsigums5l1rkUKTHegQ/mVOHTKasz3vGXr9jq/dAwLmshMkE5HmnVdlaQU/wCkA5NzZA+lLflRZH/jRzWHyxbyqwUn6kVQ9Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1l8ElNMo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99EFAC4CEF1;
-	Mon, 27 Oct 2025 19:04:06 +0000 (UTC)
+	 MIME-Version; b=dqcD/3xexrEsH4hwd04QQjp5DIzJ/l3xmflsfmGmyd7ZVj6Z5IvlJ3SJkfNF2KGcw+BxR8Ba+lvReL7vHjRLjPGYuKVVdjUSMV46VoGLtwtpsKRtCV77LTjw1ONNCo5Zlqend4v1efVOkTPqsXWUPg24y4yblkDDpMhPQl97iJM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i3d7p7Om; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 077FFC4CEF1;
+	Mon, 27 Oct 2025 19:10:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591846;
-	bh=RCNL9V8ibvGJp98b93qpRZsojb9q4j1WLwbyKONexWk=;
+	s=korg; t=1761592221;
+	bh=X5uueY2jVEPuwDDBjBH5hkoT2NwPULEw12pWUsyvX6s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1l8ElNMowZyKUsHZjo/TjTn+zQJ9tIcKMRmtsgyqaDDF7t4QO1Vxjc6ivaBU974wn
-	 +CpUA+2Gw29KqUDqxCCD+XnIsDlPAFQMnR/wuUiwlVG9F7ivSGB+3+qh5hwGXQ5PhJ
-	 oy1Npq668gUztxzPIIDmPXg5Ie6MJrl90GC8PERk=
+	b=i3d7p7OmPuJ1OqWzhlsgTjXAb9PZJODi5rTnCgUBdZ8nMBfz24iregbefb4lNsGIp
+	 dqOQZSTyMqrWsBIdUyCFp+BoeOO9QZzrxBv8m1JyUzB49JvyurkHugrvzzX3DZcxJS
+	 qejZ4inhEoPI8krUiNLw2ecK4U6cxVQAkocImFvU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Francesco Ruggeri <fruggeri05@gmail.com>,
-	Dmitry Safonov <dima@arista.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Philippe Guibert <philippe.guibert@6wind.com>,
+	Nicolas Dichtel <nicolas.dichtel@6wind.com>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 020/123] net/ip6_tunnel: Prevent perpetual tunnel growth
+Subject: [PATCH 6.1 039/157] doc: fix seg6_flowlabel path
 Date: Mon, 27 Oct 2025 19:35:00 +0100
-Message-ID: <20251027183446.941635554@linuxfoundation.org>
+Message-ID: <20251027183502.346231773@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183446.381986645@linuxfoundation.org>
-References: <20251027183446.381986645@linuxfoundation.org>
+In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
+References: <20251027183501.227243846@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,102 +64,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Safonov <dima@arista.com>
+From: Nicolas Dichtel <nicolas.dichtel@6wind.com>
 
-[ Upstream commit 21f4d45eba0b2dcae5dbc9e5e0ad08735c993f16 ]
+[ Upstream commit 0b4b77eff5f8cd9be062783a1c1e198d46d0a753 ]
 
-Similarly to ipv4 tunnel, ipv6 version updates dev->needed_headroom, too.
-While ipv4 tunnel headroom adjustment growth was limited in
-commit 5ae1e9922bbd ("net: ip_tunnel: prevent perpetual headroom growth"),
-ipv6 tunnel yet increases the headroom without any ceiling.
+This sysctl is not per interface; it's global per netns.
 
-Reflect ipv4 tunnel headroom adjustment limit on ipv6 version.
-
-Credits to Francesco Ruggeri, who was originally debugging this issue
-and wrote local Arista-specific patch and a reproducer.
-
-Fixes: 8eb30be0352d ("ipv6: Create ip6_tnl_xmit")
-Cc: Florian Westphal <fw@strlen.de>
-Cc: Francesco Ruggeri <fruggeri05@gmail.com>
-Signed-off-by: Dmitry Safonov <dima@arista.com>
-Link: https://patch.msgid.link/20251009-ip6_tunnel-headroom-v2-1-8e4dbd8f7e35@arista.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 292ecd9f5a94 ("doc: move seg6_flowlabel to seg6-sysctl.rst")
+Reported-by: Philippe Guibert <philippe.guibert@6wind.com>
+Signed-off-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/ip_tunnels.h | 15 +++++++++++++++
- net/ipv4/ip_tunnel.c     | 14 --------------
- net/ipv6/ip6_tunnel.c    |  3 +--
- 3 files changed, 16 insertions(+), 16 deletions(-)
+ Documentation/networking/seg6-sysctl.rst | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/include/net/ip_tunnels.h b/include/net/ip_tunnels.h
-index d8b9942f1afd9..7ca06cf6e0f79 100644
---- a/include/net/ip_tunnels.h
-+++ b/include/net/ip_tunnels.h
-@@ -467,6 +467,21 @@ struct metadata_dst *iptunnel_metadata_reply(struct metadata_dst *md,
- int skb_tunnel_check_pmtu(struct sk_buff *skb, struct dst_entry *encap_dst,
- 			  int headroom, bool reply);
+diff --git a/Documentation/networking/seg6-sysctl.rst b/Documentation/networking/seg6-sysctl.rst
+index 07c20e470bafe..1b6af4779be11 100644
+--- a/Documentation/networking/seg6-sysctl.rst
++++ b/Documentation/networking/seg6-sysctl.rst
+@@ -25,6 +25,9 @@ seg6_require_hmac - INTEGER
  
-+static inline void ip_tunnel_adj_headroom(struct net_device *dev,
-+					  unsigned int headroom)
-+{
-+	/* we must cap headroom to some upperlimit, else pskb_expand_head
-+	 * will overflow header offsets in skb_headers_offset_update().
-+	 */
-+	const unsigned int max_allowed = 512;
+ 	Default is 0.
+ 
++/proc/sys/net/ipv6/seg6_* variables:
++====================================
 +
-+	if (headroom > max_allowed)
-+		headroom = max_allowed;
-+
-+	if (headroom > READ_ONCE(dev->needed_headroom))
-+		WRITE_ONCE(dev->needed_headroom, headroom);
-+}
-+
- int iptunnel_handle_offloads(struct sk_buff *skb, int gso_type_mask);
- 
- static inline int iptunnel_pull_offloads(struct sk_buff *skb)
-diff --git a/net/ipv4/ip_tunnel.c b/net/ipv4/ip_tunnel.c
-index 9f9b7768cd192..7ddadf779004e 100644
---- a/net/ipv4/ip_tunnel.c
-+++ b/net/ipv4/ip_tunnel.c
-@@ -553,20 +553,6 @@ static int tnl_update_pmtu(struct net_device *dev, struct sk_buff *skb,
- 	return 0;
- }
- 
--static void ip_tunnel_adj_headroom(struct net_device *dev, unsigned int headroom)
--{
--	/* we must cap headroom to some upperlimit, else pskb_expand_head
--	 * will overflow header offsets in skb_headers_offset_update().
--	 */
--	static const unsigned int max_allowed = 512;
--
--	if (headroom > max_allowed)
--		headroom = max_allowed;
--
--	if (headroom > READ_ONCE(dev->needed_headroom))
--		WRITE_ONCE(dev->needed_headroom, headroom);
--}
--
- void ip_md_tunnel_xmit(struct sk_buff *skb, struct net_device *dev,
- 		       u8 proto, int tunnel_hlen)
- {
-diff --git a/net/ipv6/ip6_tunnel.c b/net/ipv6/ip6_tunnel.c
-index 5955fca601b3a..ccdea44438940 100644
---- a/net/ipv6/ip6_tunnel.c
-+++ b/net/ipv6/ip6_tunnel.c
-@@ -1247,8 +1247,7 @@ int ip6_tnl_xmit(struct sk_buff *skb, struct net_device *dev, __u8 dsfield,
- 	 */
- 	max_headroom = LL_RESERVED_SPACE(dst->dev) + sizeof(struct ipv6hdr)
- 			+ dst->header_len + t->hlen;
--	if (max_headroom > READ_ONCE(dev->needed_headroom))
--		WRITE_ONCE(dev->needed_headroom, max_headroom);
-+	ip_tunnel_adj_headroom(dev, max_headroom);
- 
- 	err = ip6_tnl_encap(skb, t, &proto, fl6);
- 	if (err)
+ seg6_flowlabel - INTEGER
+ 	Controls the behaviour of computing the flowlabel of outer
+ 	IPv6 header in case of SR T.encaps
 -- 
 2.51.0
 
