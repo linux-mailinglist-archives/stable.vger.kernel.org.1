@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-191042-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190934-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C075C10F1F
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:26:59 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD0D4C10E86
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:24:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4367718983A0
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:23:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D7D9556399D
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:17:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 800E42DAFC3;
-	Mon, 27 Oct 2025 19:21:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CE0731CA72;
+	Mon, 27 Oct 2025 19:16:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tthyOqjD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ngW4R1uK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33DB41F7586;
-	Mon, 27 Oct 2025 19:21:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38DC72C15BB;
+	Mon, 27 Oct 2025 19:16:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592865; cv=none; b=mSMgqKKtzrd6C7sfKcNnwytaTQfMScD1ei6VAyYvGGScYWCT6kRXrmPXGw57FFNGoJRWfKg0gXOekWwohxshdba0REJg6/f0Bm+is3QiqF0vMpRoeu1Fpo/9FZca81nzCvAIVPcOdXFk5xKaz/FNxJeUkiIItyQNw+PrAfTF2e4=
+	t=1761592581; cv=none; b=QxBRCuyPw+/wXnLnTYIX7O07wluH/fr96KmPHwjZ91qOK7w8yDxJDl4hF+Iva3kDIIDzUfLhtLt9Gy6KswBS+eTkdaN3zb6d53JNg9p/98KOZnc1m4B9XT0hHVpmhiF+TAcRi8kHMRbWa9dZybu2NxtvfT1MRUuwHVrmsf6ySGo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592865; c=relaxed/simple;
-	bh=djWDenqlJf3vVocsN7hqSnBISubWipTq9Tr3yFx+a8w=;
+	s=arc-20240116; t=1761592581; c=relaxed/simple;
+	bh=RqATXAHazVmAr/SMcRx9SlejlzBS9NXwg+TRuoyLoDU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N9yXcY/Qg7LToNIVih+XP2TuUjSpQEmfFQo1RoK0in9zd/RXKM9JaKq9Vd779ACGHobsoj6t9fc6iPCgpBcmFyNWNSpb/RukHndtbbYf1nZ3rUPdFnbNDcg2HgsNrx+xV18p/DjtRpfmOIDHRqDtARRBaVTgWzZHcxbZVGFhmRk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tthyOqjD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39EEBC4CEFD;
-	Mon, 27 Oct 2025 19:21:02 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Imu6VHFQOWX8y4AQFKf9YYifrcFT5hqN9m1ediFT7V4YMEU874j9nfuIj55nrDh9nASSEqlrlQRKqEA37jnlmN5PFHqBfuHCWKgAUCV4yWjWcADJ75Yy7JSttGI5HYcxKMHSNFw/EeM2+FqOFZDwANSxBucRdd1S5dS7oGFQznc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ngW4R1uK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A2CEC4CEF1;
+	Mon, 27 Oct 2025 19:16:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592862;
-	bh=djWDenqlJf3vVocsN7hqSnBISubWipTq9Tr3yFx+a8w=;
+	s=korg; t=1761592580;
+	bh=RqATXAHazVmAr/SMcRx9SlejlzBS9NXwg+TRuoyLoDU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tthyOqjDfevxTLmUHUN68t6DEaxo3akTTspFnXyeRHG654PEZIJvbRK0tqv6fOSU9
-	 dD1Dz7f5R3fBNXjsCxZbxQVR3Hvkgt1Usy/pedwwf8LCiL/FWhdlifNVtkTyupKh1e
-	 5IVzkDz/o/OMmsESiKEGrLbEIrhTm+LHP6Hk70m8=
+	b=ngW4R1uK+tVlTR2sa7llOcSyajl7n12im5wj/ChHap2aZTFfyzmg228xss5W41ovc
+	 FKoQHsjUpP1BtRMzbzo8bv5cJjKMthIizGKn510AdJ/6IMquVZk3gq1Y+dBfazy2YR
+	 PthW0ROUH1Txr8EJ1MCEawgrYy4zFIQqvzeurMZQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexey Simakov <bigalex934@gmail.com>,
-	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
+	=?UTF-8?q?Michael=20Wei=C3=9F?= <michael.weiss@aisec.fraunhofer.de>,
+	Harshal Gohel <hg@simonwunderlich.de>,
+	=?UTF-8?q?Johannes=20Wiesb=C3=B6ck?= <johannes.wiesboeck@aisec.fraunhofer.de>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 041/117] sctp: avoid NULL dereference when chunk data buffer is missing
+Subject: [PATCH 6.6 18/84] rtnetlink: Allow deleting FDB entries in user namespace
 Date: Mon, 27 Oct 2025 19:36:07 +0100
-Message-ID: <20251027183455.093665877@linuxfoundation.org>
+Message-ID: <20251027183439.302896918@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
-References: <20251027183453.919157109@linuxfoundation.org>
+In-Reply-To: <20251027183438.817309828@linuxfoundation.org>
+References: <20251027183438.817309828@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,58 +64,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexey Simakov <bigalex934@gmail.com>
+From: Johannes Wiesböck <johannes.wiesboeck@aisec.fraunhofer.de>
 
-[ Upstream commit 441f0647f7673e0e64d4910ef61a5fb8f16bfb82 ]
+[ Upstream commit bf29555f5bdc017bac22ca66fcb6c9f46ec8788f ]
 
-chunk->skb pointer is dereferenced in the if-block where it's supposed
-to be NULL only.
+Creating FDB entries is possible from a non-initial user namespace when
+having CAP_NET_ADMIN, yet, when deleting FDB entries, processes receive
+an EPERM because the capability is always checked against the initial
+user namespace. This restricts the FDB management from unprivileged
+containers.
 
-chunk->skb can only be NULL if chunk->head_skb is not. Check for frag_list
-instead and do it just before replacing chunk->skb. We're sure that
-otherwise chunk->skb is non-NULL because of outer if() condition.
+Drop the netlink_capable check in rtnl_fdb_del as it was originally
+dropped in c5c351088ae7 and reintroduced in 1690be63a27b without
+intention.
 
-Fixes: 90017accff61 ("sctp: Add GSO support")
-Signed-off-by: Alexey Simakov <bigalex934@gmail.com>
-Acked-by: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>
-Link: https://patch.msgid.link/20251021130034.6333-1-bigalex934@gmail.com
+This patch was tested using a container on GyroidOS, where it was
+possible to delete FDB entries from an unprivileged user namespace and
+private network namespace.
+
+Fixes: 1690be63a27b ("bridge: Add vlan support to static neighbors")
+Reviewed-by: Michael Weiß <michael.weiss@aisec.fraunhofer.de>
+Tested-by: Harshal Gohel <hg@simonwunderlich.de>
+Signed-off-by: Johannes Wiesböck <johannes.wiesboeck@aisec.fraunhofer.de>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
+Link: https://patch.msgid.link/20251015201548.319871-1-johannes.wiesboeck@aisec.fraunhofer.de
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sctp/inqueue.c | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ net/core/rtnetlink.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/net/sctp/inqueue.c b/net/sctp/inqueue.c
-index 5c16521818058..f5a7d5a387555 100644
---- a/net/sctp/inqueue.c
-+++ b/net/sctp/inqueue.c
-@@ -169,13 +169,14 @@ struct sctp_chunk *sctp_inq_pop(struct sctp_inq *queue)
- 				chunk->head_skb = chunk->skb;
+diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
+index 26c520d1af6e6..1613563132035 100644
+--- a/net/core/rtnetlink.c
++++ b/net/core/rtnetlink.c
+@@ -4383,9 +4383,6 @@ static int rtnl_fdb_del(struct sk_buff *skb, struct nlmsghdr *nlh,
+ 	int err;
+ 	u16 vid;
  
- 			/* skbs with "cover letter" */
--			if (chunk->head_skb && chunk->skb->data_len == chunk->skb->len)
-+			if (chunk->head_skb && chunk->skb->data_len == chunk->skb->len) {
-+				if (WARN_ON(!skb_shinfo(chunk->skb)->frag_list)) {
-+					__SCTP_INC_STATS(dev_net(chunk->skb->dev),
-+							 SCTP_MIB_IN_PKT_DISCARDS);
-+					sctp_chunk_free(chunk);
-+					goto next_chunk;
-+				}
- 				chunk->skb = skb_shinfo(chunk->skb)->frag_list;
+-	if (!netlink_capable(skb, CAP_NET_ADMIN))
+-		return -EPERM;
 -
--			if (WARN_ON(!chunk->skb)) {
--				__SCTP_INC_STATS(dev_net(chunk->skb->dev), SCTP_MIB_IN_PKT_DISCARDS);
--				sctp_chunk_free(chunk);
--				goto next_chunk;
- 			}
- 		}
- 
+ 	if (!del_bulk) {
+ 		err = nlmsg_parse_deprecated(nlh, sizeof(*ndm), tb, NDA_MAX,
+ 					     NULL, extack);
 -- 
 2.51.0
 
