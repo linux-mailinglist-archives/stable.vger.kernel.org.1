@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-191244-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191078-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id B47ADC113D8
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:45:57 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFCA2C10F9D
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:28:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7FFEB5066C2
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:31:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 221361A24804
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:24:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A53E031BCAE;
-	Mon, 27 Oct 2025 19:29:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DE1D329C46;
+	Mon, 27 Oct 2025 19:22:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mGw77gr0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mBBoMziv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60C9231D740;
-	Mon, 27 Oct 2025 19:29:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDD1931D753;
+	Mon, 27 Oct 2025 19:22:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761593395; cv=none; b=XeKU/HSL55+AfER308H8KAL2JJpZuGxsM6DcF0VJHZylZKKJPQG7qKPv1b2vTY+FhsNOuEoy9AqlPBmBIHweLOJ+spqMDWUpQDQQQ85x7XGH4YcDxVGrX82yOhBtlSYS4y4EJLSgtyMVaKNVUNJm4SjjE8j7VppDML0h11M8qYA=
+	t=1761592955; cv=none; b=mdMhotWTrYPlO4ElSyfmTFCA1krJjzjN6f5u0uDsSLSnhSSPXJe7vgY5/O23cuSLiMq/8CC5+djXAFUJsaVDsUg/9m6xfeI5a+g+NVNB6iIWNU70Iwg3MhS6tNiuniF3iwPR/TsYUsF5iB2VVX+d1nBT3Xx/yRuPtorB/N7HQqg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761593395; c=relaxed/simple;
-	bh=Dwr0VNQ5vWgRynBEPBqvcVJDUsCdWsFIJop3pC7h/aQ=;
+	s=arc-20240116; t=1761592955; c=relaxed/simple;
+	bh=vBuHsqY2snZe4YtbT2uv1f8DGotOcO3fOLQddhlOmB8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O3YeWnoGZuVdkq77TQj8huhNbc1G68S6OJTl82f0NKGvVkVtto+gPeyAZK2w2fQ1MSL/pfgkpCQhKz8yrRp+Ee54np0e8kXIxDEwkDM7MBpdUkIz55rtNYpfIJaKUvqtWsr987zqk+++Z9PC6jyc5rVRFgMcUCBH5QzG4CXr8ks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mGw77gr0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C96B5C4CEF1;
-	Mon, 27 Oct 2025 19:29:54 +0000 (UTC)
+	 MIME-Version; b=tPY2Z9/NEDd9KF9XrWId2xJRgpFSPaawMO2EIkH+qNgR6SOZTYt0uN2Q2kVSibiZgG+GYKpd3zBOkRB2BORrYOJ940AVC7jyh284Z4cD+776xDM0Y58pvzOlV3XjgnfWOsoB06FHnY/bszHGRi75FIEK3RDFx6Lp5bBHy4unrlQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mBBoMziv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50647C4CEF1;
+	Mon, 27 Oct 2025 19:22:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761593395;
-	bh=Dwr0VNQ5vWgRynBEPBqvcVJDUsCdWsFIJop3pC7h/aQ=;
+	s=korg; t=1761592955;
+	bh=vBuHsqY2snZe4YtbT2uv1f8DGotOcO3fOLQddhlOmB8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mGw77gr0+QWvOKOT2cdjtJ+hfh05OmhmJa3OC61YzVTsSKxdHpQPzXkrn18bj5anP
-	 bzeQJ3XxljQFPIP2AyBrIQHxRf3IAJZ9SNBAFvJfDIHT9alIHvXaQSfrjqgaq+t584
-	 3Pn4B4w2f6fsIcfUynOHICOAfGKLwFBlfyJEPcYw=
+	b=mBBoMziv3w0RgIP4oL+Gj3W9hKWT3A7/4WOlQMfguH89zjTyaReAeL2xV4wY081/5
+	 GbKLPODdCsaP684eCNw0bIcM3/s/+7XBBPi/wfti29xNfJ5A+82em6RD2z34medm/D
+	 mmzPBMlQuAvO4wULLlQ4NHsTvk5CzIgy+Mq1XR/o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Mikhail Kshevetskiy <mikhail.kshevetskiy@iopsys.eu>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 121/184] arm64: dts: broadcom: bcm2712: Add default GIC address cells
+Subject: [PATCH 6.12 077/117] spi: airoha: switch back to non-dma mode in the case of error
 Date: Mon, 27 Oct 2025 19:36:43 +0100
-Message-ID: <20251027183518.202386798@linuxfoundation.org>
+Message-ID: <20251027183456.113131380@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
-References: <20251027183514.934710872@linuxfoundation.org>
+In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
+References: <20251027183453.919157109@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +64,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Mikhail Kshevetskiy <mikhail.kshevetskiy@iopsys.eu>
 
-[ Upstream commit 278b6cabf18bd804f956b98a2f1068717acdbfe3 ]
+[ Upstream commit 20d7b236b78c7ec685a22db5689b9c829975e0c3 ]
 
-Add missing address-cells 0 to GIC interrupt node to silence W=1
-warning:
+Current dirmap code does not switch back to non-dma mode in the case of
+error. This is wrong.
 
-  bcm2712.dtsi:494.4-497.31: Warning (interrupt_map): /axi/pcie@1000110000:interrupt-map:
-    Missing property '#address-cells' in node /soc@107c000000/interrupt-controller@7fff9000, using 0 as fallback
+This patch fixes dirmap read/write error path.
 
-Value '0' is correct because:
-1. GIC interrupt controller does not have children,
-2. interrupt-map property (in PCI node) consists of five components and
-   the fourth component "parent unit address", which size is defined by
-   '#address-cells' of the node pointed to by the interrupt-parent
-   component, is not used (=0)
-
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20250822133407.312505-2-krzysztof.kozlowski@linaro.org
-Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Stable-dep-of: aa960b597600 ("arm64: dts: broadcom: bcm2712: Define VGIC interrupt")
+Fixes: a403997c12019 ("spi: airoha: add SPI-NAND Flash controller driver")
+Signed-off-by: Mikhail Kshevetskiy <mikhail.kshevetskiy@iopsys.eu>
+Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://patch.msgid.link/20251012121707.2296160-6-mikhail.kshevetskiy@iopsys.eu
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/broadcom/bcm2712.dtsi | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/spi/spi-airoha-snfi.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/broadcom/bcm2712.dtsi b/arch/arm64/boot/dts/broadcom/bcm2712.dtsi
-index 0a9212d3106f1..940f1c4831988 100644
---- a/arch/arm64/boot/dts/broadcom/bcm2712.dtsi
-+++ b/arch/arm64/boot/dts/broadcom/bcm2712.dtsi
-@@ -270,6 +270,7 @@
- 			      <0x7fffc000 0x2000>,
- 			      <0x7fffe000 0x2000>;
- 			interrupt-controller;
-+			#address-cells = <0>;
- 			#interrupt-cells = <3>;
- 		};
+diff --git a/drivers/spi/spi-airoha-snfi.c b/drivers/spi/spi-airoha-snfi.c
+index 0b89dc42545b1..8143fbb0cf4e6 100644
+--- a/drivers/spi/spi-airoha-snfi.c
++++ b/drivers/spi/spi-airoha-snfi.c
+@@ -698,13 +698,13 @@ static ssize_t airoha_snand_dirmap_read(struct spi_mem_dirmap_desc *desc,
+ 
+ 	err = airoha_snand_nfi_config(as_ctrl);
+ 	if (err)
+-		return err;
++		goto error_dma_mode_off;
+ 
+ 	dma_addr = dma_map_single(as_ctrl->dev, txrx_buf, SPI_NAND_CACHE_SIZE,
+ 				  DMA_FROM_DEVICE);
+ 	err = dma_mapping_error(as_ctrl->dev, dma_addr);
+ 	if (err)
+-		return err;
++		goto error_dma_mode_off;
+ 
+ 	/* set dma addr */
+ 	err = regmap_write(as_ctrl->regmap_nfi, REG_SPI_NFI_STRADDR,
+@@ -804,6 +804,8 @@ static ssize_t airoha_snand_dirmap_read(struct spi_mem_dirmap_desc *desc,
+ error_dma_unmap:
+ 	dma_unmap_single(as_ctrl->dev, dma_addr, SPI_NAND_CACHE_SIZE,
+ 			 DMA_FROM_DEVICE);
++error_dma_mode_off:
++	airoha_snand_set_mode(as_ctrl, SPI_MODE_MANUAL);
+ 	return err;
+ }
+ 
+@@ -936,6 +938,7 @@ static ssize_t airoha_snand_dirmap_write(struct spi_mem_dirmap_desc *desc,
+ error_dma_unmap:
+ 	dma_unmap_single(as_ctrl->dev, dma_addr, SPI_NAND_CACHE_SIZE,
+ 			 DMA_TO_DEVICE);
++	airoha_snand_set_mode(as_ctrl, SPI_MODE_MANUAL);
+ 	return err;
+ }
  
 -- 
 2.51.0
