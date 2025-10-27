@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-190866-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191043-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8401C10CD1
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:20:37 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16533C10FD0
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:28:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F7E51A20094
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:15:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 221B1581F11
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:23:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D713E23D2A3;
-	Mon, 27 Oct 2025 19:13:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82D383054D2;
+	Mon, 27 Oct 2025 19:21:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ctEXCvyk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V1ZfahUQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9336F221DAC;
-	Mon, 27 Oct 2025 19:13:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FD84202963;
+	Mon, 27 Oct 2025 19:21:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592405; cv=none; b=bAcg0KbqJLtOjPNpQOL8RofVfUIpglSusDw/TkJYzy1R6GqoMj0ILzNjBL5EWOXCTFy5si05paizHzVn5c/KxV7bEs3f5RMPBKJdAFTNy1qtDWYXWBGA62AUckyNbH6LcS4QGLSXHyORVOELn67OIc+Q36PxY6iSo8dIJ/0SOAE=
+	t=1761592865; cv=none; b=NvcZk8jU45aP+lj3azDzHPj/4yoM6rqyfMmablEFA3YbCWsEd+tMwbjB8awygya+trFUPMPwJWnc3WJ4fSH6b4imCFdKT8ja2diWZlZ9OmTuOnXDoU/95Zd+otkAyPcV8FcXP4CXgZTfReR7m/8EliOUBBR+VTVHWMtBphIo6jo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592405; c=relaxed/simple;
-	bh=dYEdcCtn4/sm05/K9xy4Zwd9SIdT1BvrNAcviTpVhtY=;
+	s=arc-20240116; t=1761592865; c=relaxed/simple;
+	bh=v/JGEWkbkylg9YOCSaGx2tgozCZVY/aLQb7iUW5jcQU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q+vP1n6ujHFX4SDhp3rfCqhPeoEVebDcszkR6vAynaFGMP7lZYtX61GIJfd6rweNBj75aPUWlpMln8Q8amYS5UwwHo0F/SOm3e2hw9YuqQJoHhUpQP+wzGJj6jlZsdjtsbw7KYoSqphpKfd4F6T2+RStHcQrp1Q1jCMnmtt2dDg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ctEXCvyk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20C29C4CEF1;
-	Mon, 27 Oct 2025 19:13:24 +0000 (UTC)
+	 MIME-Version; b=ZUpjS+p4evMEoSZTuutdvrxEG/T0pZ2CUAvAaQEIn6QXOeejYianZJ7yLNCgGr2D1+HORB+uQReRxUpUvLs2qG5Ci6p54G73Ak26jfJpR7aPXF32noCehLJ8uAIIhcsbJV9oAV6tTIhx5vZ4mWm4ImRRUKtAPs0c013ThYLo7Uw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V1ZfahUQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C88C6C4CEF1;
+	Mon, 27 Oct 2025 19:21:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592405;
-	bh=dYEdcCtn4/sm05/K9xy4Zwd9SIdT1BvrNAcviTpVhtY=;
+	s=korg; t=1761592865;
+	bh=v/JGEWkbkylg9YOCSaGx2tgozCZVY/aLQb7iUW5jcQU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ctEXCvykt1NKAzTJoUkeGZftigm7hrIM9KCMcdBwUVIHVUqDHLDIKbjsrfqOIZVcO
-	 jDXOtwN+jIRxAOTEoc7Di2//C24Pjls5NRf6FAR7No4GpXxWFeu78KV6fRkoveyJha
-	 udzXyiKAhqTSzTICpepWSYJV6QS7oPbrIRI0c6+o=
+	b=V1ZfahUQkwneasmIrg1IMrZzt/BFQyogvRCn5AXIzj0mv8Xdsp74lLb6vlO4D/mus
+	 OIlS7ZxCGIhm3DLuUHIjkgqzPQy8zWnvSLJYE+KRd3AsoG9wLW9XpLvRLsaz7rmvsP
+	 JTPGv0QKcoMGQPSagBBrbkUABk7SYDCa2t5BfjbU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Andrey Konovalov <andreyknvl@gmail.com>
-Subject: [PATCH 6.1 107/157] usb: raw-gadget: do not limit transfer length
+	Robert Marko <robert.marko@sartura.hr>,
+	Horatiu Vultur <horatiu.vultur@microchip.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 042/117] net: phy: micrel: always set shared->phydev for LAN8814
 Date: Mon, 27 Oct 2025 19:36:08 +0100
-Message-ID: <20251027183504.125253017@linuxfoundation.org>
+Message-ID: <20251027183455.125403774@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
-References: <20251027183501.227243846@linuxfoundation.org>
+In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
+References: <20251027183453.919157109@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrey Konovalov <andreyknvl@gmail.com>
+From: Robert Marko <robert.marko@sartura.hr>
 
-commit 37b9dd0d114a0e38c502695e30f55a74fb0c37d0 upstream.
+[ Upstream commit 399d10934740ae8cdaa4e3245f7c5f6c332da844 ]
 
-Drop the check on the maximum transfer length in Raw Gadget for both
-control and non-control transfers.
+Currently, during the LAN8814 PTP probe shared->phydev is only set if PTP
+clock gets actually set, otherwise the function will return before setting
+it.
 
-Limiting the transfer length causes a problem with emulating USB devices
-whose full configuration descriptor exceeds PAGE_SIZE in length.
+This is an issue as shared->phydev is unconditionally being used when IRQ
+is being handled, especially in lan8814_gpio_process_cap and since it was
+not set it will cause a NULL pointer exception and crash the kernel.
 
-Overall, there does not appear to be any reason to enforce any kind of
-transfer length limit on the Raw Gadget side for either control or
-non-control transfers, so let's just drop the related check.
+So, simply always set shared->phydev to avoid the NULL pointer exception.
 
-Cc: stable <stable@kernel.org>
-Fixes: f2c2e717642c ("usb: gadget: add raw-gadget interface")
-Signed-off-by: Andrey Konovalov <andreyknvl@gmail.com>
-Link: https://patch.msgid.link/a6024e8eab679043e9b8a5defdb41c4bda62f02b.1761085528.git.andreyknvl@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: b3f1a08fcf0d ("net: phy: micrel: Add support for PTP_PF_EXTTS for lan8814")
+Signed-off-by: Robert Marko <robert.marko@sartura.hr>
+Tested-by: Horatiu Vultur <horatiu.vultur@microchip.com>
+Link: https://patch.msgid.link/20251021132034.983936-1-robert.marko@sartura.hr
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/legacy/raw_gadget.c |    2 --
- 1 file changed, 2 deletions(-)
+ drivers/net/phy/micrel.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/gadget/legacy/raw_gadget.c
-+++ b/drivers/usb/gadget/legacy/raw_gadget.c
-@@ -620,8 +620,6 @@ static void *raw_alloc_io_data(struct us
- 		return ERR_PTR(-EINVAL);
- 	if (!usb_raw_io_flags_valid(io->flags))
- 		return ERR_PTR(-EINVAL);
--	if (io->length > PAGE_SIZE)
--		return ERR_PTR(-EINVAL);
- 	if (get_from_user)
- 		data = memdup_user(ptr + sizeof(*io), io->length);
- 	else {
+diff --git a/drivers/net/phy/micrel.c b/drivers/net/phy/micrel.c
+index 92e9eb4146d9b..f60cf630bdb3d 100644
+--- a/drivers/net/phy/micrel.c
++++ b/drivers/net/phy/micrel.c
+@@ -3870,6 +3870,8 @@ static int lan8814_ptp_probe_once(struct phy_device *phydev)
+ {
+ 	struct lan8814_shared_priv *shared = phydev->shared->priv;
+ 
++	shared->phydev = phydev;
++
+ 	/* Initialise shared lock for clock*/
+ 	mutex_init(&shared->shared_lock);
+ 
+@@ -3921,8 +3923,6 @@ static int lan8814_ptp_probe_once(struct phy_device *phydev)
+ 
+ 	phydev_dbg(phydev, "successfully registered ptp clock\n");
+ 
+-	shared->phydev = phydev;
+-
+ 	/* The EP.4 is shared between all the PHYs in the package and also it
+ 	 * can be accessed by any of the PHYs
+ 	 */
+-- 
+2.51.0
+
 
 
 
