@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-191242-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190899-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D882C11219
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:36:24 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBAF1C10D50
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:21:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 232D556799E
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:31:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0BFE91890B17
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:16:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3206F32D0D4;
-	Mon, 27 Oct 2025 19:29:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 875253164A8;
+	Mon, 27 Oct 2025 19:14:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wJxTNPl/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W2eA56wh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0F8932D0C5;
-	Mon, 27 Oct 2025 19:29:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 462192DC33D;
+	Mon, 27 Oct 2025 19:14:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761593389; cv=none; b=tQxO+1my/sUMeE6ZfuYYBqo+4Ids8ln5LlepEY/+Cyag+hWvOFDluxFZyBy7KQ8kltfcNEnf/2EvJfh31pTY36AiMyktGFU4vw6lUXr2zXUmiHadG8wjCYcQ0vBdSm2uAyJn5jygYEdDRPnT7ayOjMac/upE2tpvdG0fjSKGi6c=
+	t=1761592489; cv=none; b=fO7f/FHL+eO9frcfa9KsVeWv4Gzk/VCR0OdWLkc+UUir02j/GvpalQOj+iEI1owhMKz2s8Xg/YdaADEoYQC/Yz0WLw1WtMtQoWuuwAWb2cR6rS6RXnL0+GPfOXTq0Y3kozTFDsVZ1zQj2Et8Mx+dF6cilFT/8lcUth7Gc635dms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761593389; c=relaxed/simple;
-	bh=p9T++zmoVRJh+b1ln0XJ3QsFUIBNZMEBLMOazirhkF0=;
+	s=arc-20240116; t=1761592489; c=relaxed/simple;
+	bh=FukJW6Sw7MrCeUgMNweum+iL0zLyvx/Co6rR3ct3loQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WYXPx1oNU0M1ipYaRxElmpbQ1ZZSJ5jFyHIyqfSl/JoVwl1b1CtTHc4UBWdhM8RSpF1N5jY/UrdslKQy66c1x/hmtafM10FAcfXiI46/1GC3qsUv3irh6v51T0sdIpCYrEKGZqFdcOd0jpK6TKvu6/av5d4BEtbumJzdvE3Bry4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wJxTNPl/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C43AC4CEF1;
-	Mon, 27 Oct 2025 19:29:48 +0000 (UTC)
+	 MIME-Version; b=e2K5KNeLqNluDWr2868oLCE2IPeosGcJUi6SY6qdsIC3CyA7r9o07XQUuOP3zNGlaCLW120tmXx5CRVvRwg+Okh46E8sfWr0nRW9P9Qo2NYyGRF/5YPoSDnDjMA5G500uwPkJjkxc4ul5qJ2IJoJGKFq+U+LHqcSTfyZ7AYhGBw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W2eA56wh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5E42C4CEFD;
+	Mon, 27 Oct 2025 19:14:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761593388;
-	bh=p9T++zmoVRJh+b1ln0XJ3QsFUIBNZMEBLMOazirhkF0=;
+	s=korg; t=1761592489;
+	bh=FukJW6Sw7MrCeUgMNweum+iL0zLyvx/Co6rR3ct3loQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wJxTNPl/94UXjbylNw19ZnDvaKUC01xPobsLPFlV/qYD10FySsARVixrIx/y+3tNk
-	 DLjynnH0thKUht05gj/2r1BsLsFtmdYAiDvIhu2yzpdsLIokkJ9mvADbzNvXjZeMMT
-	 vE4WEwKqIx7/KdQ1QLxdfz5t4v9KRy6I8ezEtZm0=
+	b=W2eA56whDYWUlvCAjzJGk/C1eLiSQllSJQulE/FKQi2b2c3Eb049otFiunc1NEW6K
+	 fN5Bj6B5EKLP7iYgzI7Aj3jmW5Qiiqa21rYwlAquSPUP5nZ+FxOTFKcVcaNmQaP3Ix
+	 iTyIvryHorj8I7lvZ7lC6boG+1KgqSHZv4e+TjCg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haibo Chen <haibo.chen@nxp.com>,
-	Mark Brown <broonie@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 119/184] spi: spi-nxp-fspi: limit the clock rate for different sample clock source selection
+Subject: [PATCH 6.1 140/157] f2fs: remove the create argument to f2fs_map_blocks
 Date: Mon, 27 Oct 2025 19:36:41 +0100
-Message-ID: <20251027183518.147521354@linuxfoundation.org>
+Message-ID: <20251027183505.027157340@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
-References: <20251027183514.934710872@linuxfoundation.org>
+In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
+References: <20251027183501.227243846@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,74 +63,290 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haibo Chen <haibo.chen@nxp.com>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit f43579ef3500527649b1c233be7cf633806353aa ]
+[ Upstream commit cd8fc5226bef3a1fda13a0e61794a039ca46744a ]
 
-For different sample clock source selection, the max frequency
-flexspi supported are different. For mode 0, max frequency is 66MHz.
-For mode 3, the max frequency is 166MHz.
+The create argument is always identicaly to map->m_may_create, so use
+that consistently.
 
-Refer to 3.9.9 FlexSPI timing parameters on page 65.
-https://www.nxp.com/docs/en/data-sheet/IMX8MNCEC.pdf
-
-Though flexspi maybe still work under higher frequency, but can't
-guarantee the stability. IC suggest to add this limitation on all
-SoCs which contain flexspi.
-
-Fixes: c07f27032317 ("spi: spi-nxp-fspi: add the support for sample data from DQS pad")
-Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
-Link: https://patch.msgid.link/20250922-fspi-fix-v1-3-ff4315359d31@nxp.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Stable-dep-of: 9d5c4f5c7a2c ("f2fs: fix wrong block mapping for multi-devices")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-nxp-fspi.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ fs/f2fs/data.c              |   65 ++++++++++++++++++--------------------------
+ fs/f2fs/f2fs.h              |    3 --
+ fs/f2fs/file.c              |   12 ++++----
+ include/trace/events/f2fs.h |   11 ++-----
+ 4 files changed, 39 insertions(+), 52 deletions(-)
 
-diff --git a/drivers/spi/spi-nxp-fspi.c b/drivers/spi/spi-nxp-fspi.c
-index bde6d131ab8b7..ab13f11242c3c 100644
---- a/drivers/spi/spi-nxp-fspi.c
-+++ b/drivers/spi/spi-nxp-fspi.c
-@@ -404,6 +404,8 @@ struct nxp_fspi {
- 	int flags;
- 	/* save the previous operation clock rate */
- 	unsigned long pre_op_rate;
-+	/* the max clock rate fspi output to device */
-+	unsigned long max_rate;
- };
+--- a/fs/f2fs/data.c
++++ b/fs/f2fs/data.c
+@@ -1464,8 +1464,7 @@ int f2fs_get_block_locked(struct dnode_o
+  * maps continuous logical blocks to physical blocks, and return such
+  * info via f2fs_map_blocks structure.
+  */
+-int f2fs_map_blocks(struct inode *inode, struct f2fs_map_blocks *map,
+-						int create, int flag)
++int f2fs_map_blocks(struct inode *inode, struct f2fs_map_blocks *map, int flag)
+ {
+ 	unsigned int maxblocks = map->m_len;
+ 	struct dnode_of_data dn;
+@@ -1494,38 +1493,31 @@ int f2fs_map_blocks(struct inode *inode,
+ 	pgofs =	(pgoff_t)map->m_lblk;
+ 	end = pgofs + maxblocks;
  
- static inline int needs_ip_only(struct nxp_fspi *f)
-@@ -675,10 +677,13 @@ static void nxp_fspi_select_rx_sample_clk_source(struct nxp_fspi *f,
- 	 * change the mode back to mode 0.
- 	 */
- 	reg = fspi_readl(f, f->iobase + FSPI_MCR0);
--	if (op_is_dtr)
-+	if (op_is_dtr) {
- 		reg |= FSPI_MCR0_RXCLKSRC(3);
--	else	/*select mode 0 */
-+		f->max_rate = 166000000;
-+	} else {	/*select mode 0 */
- 		reg &= ~FSPI_MCR0_RXCLKSRC(3);
-+		f->max_rate = 66000000;
-+	}
- 	fspi_writel(f, reg, f->iobase + FSPI_MCR0);
+-	if (!create && f2fs_lookup_read_extent_cache(inode, pgofs, &ei)) {
+-		if (f2fs_lfs_mode(sbi) && flag == F2FS_GET_BLOCK_DIO &&
+-							map->m_may_create)
+-			goto next_dnode;
+-
+-		map->m_pblk = ei.blk + pgofs - ei.fofs;
+-		map->m_len = min((pgoff_t)maxblocks, ei.fofs + ei.len - pgofs);
+-		map->m_flags = F2FS_MAP_MAPPED;
+-		if (map->m_next_extent)
+-			*map->m_next_extent = pgofs + map->m_len;
++	if (map->m_may_create ||
++	    !f2fs_lookup_read_extent_cache(inode, pgofs, &ei))
++		goto next_dnode;
++
++	/* Found the map in read extent cache */
++	map->m_pblk = ei.blk + pgofs - ei.fofs;
++	map->m_len = min((pgoff_t)maxblocks, ei.fofs + ei.len - pgofs);
++	map->m_flags = F2FS_MAP_MAPPED;
++	if (map->m_next_extent)
++		*map->m_next_extent = pgofs + map->m_len;
+ 
+-		/* for hardware encryption, but to avoid potential issue in future */
+-		if (flag == F2FS_GET_BLOCK_DIO)
+-			f2fs_wait_on_block_writeback_range(inode,
++	/* for hardware encryption, but to avoid potential issue in future */
++	if (flag == F2FS_GET_BLOCK_DIO)
++		f2fs_wait_on_block_writeback_range(inode,
+ 						map->m_pblk, map->m_len);
+ 
+-		if (map->m_multidev_dio) {
+-			block_t blk_addr = map->m_pblk;
+-
+-			bidx = f2fs_target_device_index(sbi, map->m_pblk);
++	if (map->m_multidev_dio) {
++		bidx = f2fs_target_device_index(sbi, map->m_pblk);
+ 
+-			map->m_bdev = FDEV(bidx).bdev;
+-			map->m_pblk -= FDEV(bidx).start_blk;
+-			map->m_len = min(map->m_len,
++		map->m_bdev = FDEV(bidx).bdev;
++		map->m_pblk -= FDEV(bidx).start_blk;
++		map->m_len = min(map->m_len,
+ 				FDEV(bidx).end_blk + 1 - map->m_pblk);
+-
+-			if (map->m_may_create)
+-				f2fs_update_device_state(sbi, inode->i_ino,
+-							blk_addr, map->m_len);
+-		}
+-		goto out;
+ 	}
++	goto out;
+ 
+ next_dnode:
+ 	if (map->m_may_create)
+@@ -1589,7 +1581,7 @@ next_block:
+ 			set_inode_flag(inode, FI_APPEND_WRITE);
+ 		}
+ 	} else {
+-		if (create) {
++		if (map->m_may_create) {
+ 			if (unlikely(f2fs_cp_error(sbi))) {
+ 				err = -EIO;
+ 				goto sync_out;
+@@ -1764,7 +1756,7 @@ unlock_out:
+ 		f2fs_balance_fs(sbi, dn.node_changed);
+ 	}
+ out:
+-	trace_f2fs_map_blocks(inode, map, create, flag, err);
++	trace_f2fs_map_blocks(inode, map, flag, err);
+ 	return err;
  }
  
-@@ -793,6 +798,7 @@ static void nxp_fspi_select_mem(struct nxp_fspi *f, struct spi_device *spi,
- 	dev_dbg(f->dev, "Target device [CS:%x] selected\n", spi_get_chipselect(spi, 0));
+@@ -1786,7 +1778,7 @@ bool f2fs_overwrite_io(struct inode *ino
  
- 	nxp_fspi_select_rx_sample_clk_source(f, op_is_dtr);
-+	rate = min(f->max_rate, op->max_freq);
+ 	while (map.m_lblk < last_lblk) {
+ 		map.m_len = last_lblk - map.m_lblk;
+-		err = f2fs_map_blocks(inode, &map, 0, F2FS_GET_BLOCK_DEFAULT);
++		err = f2fs_map_blocks(inode, &map, F2FS_GET_BLOCK_DEFAULT);
+ 		if (err || map.m_len == 0)
+ 			return false;
+ 		map.m_lblk += map.m_len;
+@@ -1960,7 +1952,7 @@ next:
+ 		map.m_len = cluster_size - count_in_cluster;
+ 	}
  
- 	if (op_is_dtr) {
- 		f->flags |= FSPI_DTR_MODE;
--- 
-2.51.0
-
+-	ret = f2fs_map_blocks(inode, &map, 0, F2FS_GET_BLOCK_FIEMAP);
++	ret = f2fs_map_blocks(inode, &map, F2FS_GET_BLOCK_FIEMAP);
+ 	if (ret)
+ 		goto out;
+ 
+@@ -2093,7 +2085,7 @@ static int f2fs_read_single_page(struct
+ 	map->m_lblk = block_in_file;
+ 	map->m_len = last_block - block_in_file;
+ 
+-	ret = f2fs_map_blocks(inode, map, 0, F2FS_GET_BLOCK_DEFAULT);
++	ret = f2fs_map_blocks(inode, map, F2FS_GET_BLOCK_DEFAULT);
+ 	if (ret)
+ 		goto out;
+ got_it:
+@@ -3850,7 +3842,7 @@ static sector_t f2fs_bmap(struct address
+ 		map.m_next_pgofs = NULL;
+ 		map.m_seg_type = NO_CHECK_TYPE;
+ 
+-		if (!f2fs_map_blocks(inode, &map, 0, F2FS_GET_BLOCK_BMAP))
++		if (!f2fs_map_blocks(inode, &map, F2FS_GET_BLOCK_BMAP))
+ 			blknr = map.m_pblk;
+ 	}
+ out:
+@@ -3958,7 +3950,7 @@ retry:
+ 		map.m_seg_type = NO_CHECK_TYPE;
+ 		map.m_may_create = false;
+ 
+-		ret = f2fs_map_blocks(inode, &map, 0, F2FS_GET_BLOCK_FIEMAP);
++		ret = f2fs_map_blocks(inode, &map, F2FS_GET_BLOCK_FIEMAP);
+ 		if (ret)
+ 			goto out;
+ 
+@@ -4187,8 +4179,7 @@ static int f2fs_iomap_begin(struct inode
+ 	if (flags & IOMAP_WRITE)
+ 		map.m_may_create = true;
+ 
+-	err = f2fs_map_blocks(inode, &map, flags & IOMAP_WRITE,
+-			      F2FS_GET_BLOCK_DIO);
++	err = f2fs_map_blocks(inode, &map, F2FS_GET_BLOCK_DIO);
+ 	if (err)
+ 		return err;
+ 
+--- a/fs/f2fs/f2fs.h
++++ b/fs/f2fs/f2fs.h
+@@ -3794,8 +3794,7 @@ struct page *f2fs_get_lock_data_page(str
+ struct page *f2fs_get_new_data_page(struct inode *inode,
+ 			struct page *ipage, pgoff_t index, bool new_i_size);
+ int f2fs_do_write_data_page(struct f2fs_io_info *fio);
+-int f2fs_map_blocks(struct inode *inode, struct f2fs_map_blocks *map,
+-			int create, int flag);
++int f2fs_map_blocks(struct inode *inode, struct f2fs_map_blocks *map, int flag);
+ int f2fs_fiemap(struct inode *inode, struct fiemap_extent_info *fieinfo,
+ 			u64 start, u64 len);
+ int f2fs_encrypt_one_page(struct f2fs_io_info *fio);
+--- a/fs/f2fs/file.c
++++ b/fs/f2fs/file.c
+@@ -1800,7 +1800,7 @@ next_alloc:
+ 		f2fs_unlock_op(sbi);
+ 
+ 		map.m_seg_type = CURSEG_COLD_DATA_PINNED;
+-		err = f2fs_map_blocks(inode, &map, 1, F2FS_GET_BLOCK_PRE_DIO);
++		err = f2fs_map_blocks(inode, &map, F2FS_GET_BLOCK_PRE_DIO);
+ 		file_dont_truncate(inode);
+ 
+ 		f2fs_up_write(&sbi->pin_sem);
+@@ -1813,7 +1813,7 @@ next_alloc:
+ 
+ 		map.m_len = expanded;
+ 	} else {
+-		err = f2fs_map_blocks(inode, &map, 1, F2FS_GET_BLOCK_PRE_AIO);
++		err = f2fs_map_blocks(inode, &map, F2FS_GET_BLOCK_PRE_AIO);
+ 		expanded = map.m_len;
+ 	}
+ out_err:
+@@ -2710,7 +2710,7 @@ static int f2fs_defragment_range(struct
+ 	 */
+ 	while (map.m_lblk < pg_end) {
+ 		map.m_len = pg_end - map.m_lblk;
+-		err = f2fs_map_blocks(inode, &map, 0, F2FS_GET_BLOCK_DEFAULT);
++		err = f2fs_map_blocks(inode, &map, F2FS_GET_BLOCK_DEFAULT);
+ 		if (err)
+ 			goto out;
+ 
+@@ -2757,7 +2757,7 @@ static int f2fs_defragment_range(struct
+ 
+ do_map:
+ 		map.m_len = pg_end - map.m_lblk;
+-		err = f2fs_map_blocks(inode, &map, 0, F2FS_GET_BLOCK_DEFAULT);
++		err = f2fs_map_blocks(inode, &map, F2FS_GET_BLOCK_DEFAULT);
+ 		if (err)
+ 			goto clear_out;
+ 
+@@ -3352,7 +3352,7 @@ int f2fs_precache_extents(struct inode *
+ 		map.m_len = end - map.m_lblk;
+ 
+ 		f2fs_down_write(&fi->i_gc_rwsem[WRITE]);
+-		err = f2fs_map_blocks(inode, &map, 0, F2FS_GET_BLOCK_PRECACHE);
++		err = f2fs_map_blocks(inode, &map, F2FS_GET_BLOCK_PRECACHE);
+ 		f2fs_up_write(&fi->i_gc_rwsem[WRITE]);
+ 		if (err)
+ 			return err;
+@@ -4635,7 +4635,7 @@ static int f2fs_preallocate_blocks(struc
+ 		flag = F2FS_GET_BLOCK_PRE_AIO;
+ 	}
+ 
+-	ret = f2fs_map_blocks(inode, &map, 1, flag);
++	ret = f2fs_map_blocks(inode, &map, flag);
+ 	/* -ENOSPC|-EDQUOT are fine to report the number of allocated blocks. */
+ 	if (ret < 0 && !((ret == -ENOSPC || ret == -EDQUOT) && map.m_len > 0))
+ 		return ret;
+--- a/include/trace/events/f2fs.h
++++ b/include/trace/events/f2fs.h
+@@ -564,10 +564,10 @@ TRACE_EVENT(f2fs_file_write_iter,
+ );
+ 
+ TRACE_EVENT(f2fs_map_blocks,
+-	TP_PROTO(struct inode *inode, struct f2fs_map_blocks *map,
+-				int create, int flag, int ret),
++	TP_PROTO(struct inode *inode, struct f2fs_map_blocks *map, int flag,
++		 int ret),
+ 
+-	TP_ARGS(inode, map, create, flag, ret),
++	TP_ARGS(inode, map, flag, ret),
+ 
+ 	TP_STRUCT__entry(
+ 		__field(dev_t,	dev)
+@@ -579,7 +579,6 @@ TRACE_EVENT(f2fs_map_blocks,
+ 		__field(int,	m_seg_type)
+ 		__field(bool,	m_may_create)
+ 		__field(bool,	m_multidev_dio)
+-		__field(int,	create)
+ 		__field(int,	flag)
+ 		__field(int,	ret)
+ 	),
+@@ -594,7 +593,6 @@ TRACE_EVENT(f2fs_map_blocks,
+ 		__entry->m_seg_type	= map->m_seg_type;
+ 		__entry->m_may_create	= map->m_may_create;
+ 		__entry->m_multidev_dio	= map->m_multidev_dio;
+-		__entry->create		= create;
+ 		__entry->flag		= flag;
+ 		__entry->ret		= ret;
+ 	),
+@@ -602,7 +600,7 @@ TRACE_EVENT(f2fs_map_blocks,
+ 	TP_printk("dev = (%d,%d), ino = %lu, file offset = %llu, "
+ 		"start blkaddr = 0x%llx, len = 0x%llx, flags = %u, "
+ 		"seg_type = %d, may_create = %d, multidevice = %d, "
+-		"create = %d, flag = %d, err = %d",
++		"flag = %d, err = %d",
+ 		show_dev_ino(__entry),
+ 		(unsigned long long)__entry->m_lblk,
+ 		(unsigned long long)__entry->m_pblk,
+@@ -611,7 +609,6 @@ TRACE_EVENT(f2fs_map_blocks,
+ 		__entry->m_seg_type,
+ 		__entry->m_may_create,
+ 		__entry->m_multidev_dio,
+-		__entry->create,
+ 		__entry->flag,
+ 		__entry->ret)
+ );
 
 
 
