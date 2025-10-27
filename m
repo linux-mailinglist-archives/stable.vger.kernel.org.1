@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-190839-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191183-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 758FDC10D24
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:21:21 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58F4AC113B1
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:44:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3888E580248
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:14:42 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C84BB545532
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:29:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA38932143E;
-	Mon, 27 Oct 2025 19:12:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF54031D75F;
+	Mon, 27 Oct 2025 19:27:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nNhzWoqn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cvM9kdg+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 774AB218EB1;
-	Mon, 27 Oct 2025 19:12:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A9BD238145;
+	Mon, 27 Oct 2025 19:27:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592333; cv=none; b=bKRvLpuTN9Du+iY1PTIKxJsP2G8bGk8oSu9M2oPth7nEWKkNMapTupcsJnmOZISvU10l+EFuNX3XOe3X0kg5avCXrMl9o2iJEyEJWnM4tHPhw0u1fDjn1OMjFq+yctR0c5ym9nXdx9ZaBGtZMLyeA+4w+EEpjKxCpk2DF9hJnUE=
+	t=1761593221; cv=none; b=PyHgQAqCiFEBHAAPPNJEhlzhAWsX92ErNh4iXcjd2Ylr1gAsLiSNz8QgvVLxfNoJdaqPVq84m4+CVkshgeNhrmwWhxFzpi57PIAZMB2LWMSfOlXU9HwBrmre/jrpxuIKuJfRq/+y67YrJ5/p3R6VkFiKZ6n2D/y/2E1Krhenpic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592333; c=relaxed/simple;
-	bh=NmWX0l3uPAnYdC2v3cRNETWW2ujEpVjCjExGPlgd1rc=;
+	s=arc-20240116; t=1761593221; c=relaxed/simple;
+	bh=q7Tnss5R9Z1Zb1hGXJpSz6lITkSp87L6dYPHI0LrBgs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GykWEH2xpnYfoeAAywV58c5ihuEsIuVsSYuGO2QG9W+qrtJBSiz91YvfsBalsbQb0SJZxyw0/pmHyBBUpjRqeylGEIfvX+/7gwOG9hG6lXlXLtJzQstFH4qJCJZhvaurypKNRll5rtks3eb4WGA17ZzcNKSxCfiHVg5LsFOiuXM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nNhzWoqn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B92FC4CEF1;
-	Mon, 27 Oct 2025 19:12:12 +0000 (UTC)
+	 MIME-Version; b=P9zd4TMmH5hTw4OxFpdY8LZptfdQQL+HRrXlsmw9oWTrtE7W4Wb1t7HXj/e76qe4pfY/l8zUp9KNikKzd0yHgt/aBxMy1nSlmxLgL1Cl7tpGDKIbm4imwClnolZpwjrb1UmgBqMYTloSKnY69opt+HLGDiDnU0VawEyK/iXgYt8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cvM9kdg+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDC30C4CEF1;
+	Mon, 27 Oct 2025 19:27:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592333;
-	bh=NmWX0l3uPAnYdC2v3cRNETWW2ujEpVjCjExGPlgd1rc=;
+	s=korg; t=1761593221;
+	bh=q7Tnss5R9Z1Zb1hGXJpSz6lITkSp87L6dYPHI0LrBgs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nNhzWoqnaS/ZLl7gQLiVaCMMJDKQatwzmbaSJPKvtv1VLG2yJFFskxsR8u7IYkZHh
-	 GTfuAXcHaVGvfF2/ZgI4hWzvWcjVvwYXkh8eQ60AVqvGqXVs3365qnzii/vJdgCMTf
-	 rg8O1tQken7hACP+knrbJioagZvX85VLAyTDKKeY=
+	b=cvM9kdg+VNLGRgWcw8M3/fRQLdpzmHE5VSSXkCS+nJ2H0xmzIwblqBE/cO5Sjwd4W
+	 rcjOWGt1uXhBOJnwH0F07OWcwtY8YZcqz7hApd12SmNefF/RmKUFFKCXJVDcMDa4+4
+	 pAZJJyX1Jfmwiq2BzhWNRY9jCQaiTwmDjLo7iA7s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fabian Vogt <fvogt@suse.de>,
-	Marvin Friedrich <marvin.friedrich@suse.com>,
-	Guo Ren <guoren@kernel.org>,
-	Paul Walmsley <pjw@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nicolas Schier <nicolas@fjasle.eu>,
+	Borislav Petkov <bp@alien8.de>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 052/157] riscv: kprobes: Fix probe address validation
-Date: Mon, 27 Oct 2025 19:35:13 +0100
-Message-ID: <20251027183502.687567027@linuxfoundation.org>
+Subject: [PATCH 6.17 032/184] Unbreak make tools/* for user-space targets
+Date: Mon, 27 Oct 2025 19:35:14 +0100
+Message-ID: <20251027183515.787974797@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
-References: <20251027183501.227243846@linuxfoundation.org>
+In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
+References: <20251027183514.934710872@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,66 +64,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabian Vogt <fvogt@suse.de>
+From: Linus Torvalds <torvalds@linux-foundation.org>
 
-[ Upstream commit 9e68bd803fac49274fde914466fd3b07c4d602c8 ]
+[ Upstream commit ee916dccd4df6e2fd19c3606c4735282b72f1473 ]
 
-When adding a kprobe such as "p:probe/tcp_sendmsg _text+15392192",
-arch_check_kprobe would start iterating all instructions starting from
-_text until the probed address. Not only is this very inefficient, but
-literal values in there (e.g. left by function patching) are
-misinterpreted in a way that causes a desync.
+This pattern isn't very documented, and apparently not used much outside
+of 'make tools/help', but it has existed for over a decade (since commit
+ea01fa9f63ae: "tools: Connect to the kernel build system").
 
-Fix this by doing it like x86: start the iteration at the closest
-preceding symbol instead of the given starting point.
+However, it doesn't work very well for most cases, particularly the
+useful "tools/all" target, because it overrides the LDFLAGS value with
+an empty one.
 
-Fixes: 87f48c7ccc73 ("riscv: kprobe: Fixup kernel panic when probing an illegal position")
-Signed-off-by: Fabian Vogt <fvogt@suse.de>
-Signed-off-by: Marvin Friedrich <marvin.friedrich@suse.com>
-Acked-by: Guo Ren <guoren@kernel.org>
-Link: https://lore.kernel.org/r/6191817.lOV4Wx5bFT@fvogt-thinkpad
-Signed-off-by: Paul Walmsley <pjw@kernel.org>
+And once overridden, 'make' will then not honor the tooling makefiles
+trying to change it - which then makes any LDFLAGS use in the tooling
+directory break, typically causing odd link errors.
+
+Remove that LDFLAGS override, since it seems to be entirely historical.
+The core kernel makefiles no longer modify LDFLAGS as part of the build,
+and use kernel-specific link flags instead (eg 'KBUILD_LDFLAGS' and
+friends).
+
+This allows more of the 'make tools/*' cases to work.  I say 'more',
+because some of the tooling build rules make various other assumptions
+or have other issues, so it's still a bit hit-or-miss.  But those issues
+tend to show up with the 'make -C tools xyz' pattern too, so now it's no
+longer an issue of this particular 'tools/*' build rule being special.
+
+Acked-by: Nathan Chancellor <nathan@kernel.org>
+Cc: Nicolas Schier <nicolas@fjasle.eu>
+Cc: Borislav Petkov <bp@alien8.de>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kernel/probes/kprobes.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ Makefile | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/riscv/kernel/probes/kprobes.c b/arch/riscv/kernel/probes/kprobes.c
-index cca2b3a2135ad..f4836ef13e9bb 100644
---- a/arch/riscv/kernel/probes/kprobes.c
-+++ b/arch/riscv/kernel/probes/kprobes.c
-@@ -48,10 +48,15 @@ static void __kprobes arch_simulate_insn(struct kprobe *p, struct pt_regs *regs)
- 	post_kprobe_handler(p, kcb, regs);
- }
+diff --git a/Makefile b/Makefile
+index 072a3be625510..356bf65e5e7a2 100644
+--- a/Makefile
++++ b/Makefile
+@@ -1444,11 +1444,11 @@ endif
  
--static bool __kprobes arch_check_kprobe(struct kprobe *p)
-+static bool __kprobes arch_check_kprobe(unsigned long addr)
- {
--	unsigned long tmp  = (unsigned long)p->addr - p->offset;
--	unsigned long addr = (unsigned long)p->addr;
-+	unsigned long tmp, offset;
-+
-+	/* start iterating at the closest preceding symbol */
-+	if (!kallsyms_lookup_size_offset(addr, NULL, &offset))
-+		return false;
-+
-+	tmp = addr - offset;
+ tools/: FORCE
+ 	$(Q)mkdir -p $(objtree)/tools
+-	$(Q)$(MAKE) LDFLAGS= O=$(abspath $(objtree)) subdir=tools -C $(srctree)/tools/
++	$(Q)$(MAKE) O=$(abspath $(objtree)) subdir=tools -C $(srctree)/tools/
  
- 	while (tmp <= addr) {
- 		if (tmp == addr)
-@@ -70,7 +75,7 @@ int __kprobes arch_prepare_kprobe(struct kprobe *p)
- 	if ((unsigned long)insn & 0x1)
- 		return -EILSEQ;
+ tools/%: FORCE
+ 	$(Q)mkdir -p $(objtree)/tools
+-	$(Q)$(MAKE) LDFLAGS= O=$(abspath $(objtree)) subdir=tools -C $(srctree)/tools/ $*
++	$(Q)$(MAKE) O=$(abspath $(objtree)) subdir=tools -C $(srctree)/tools/ $*
  
--	if (!arch_check_kprobe(p))
-+	if (!arch_check_kprobe((unsigned long)p->addr))
- 		return -EILSEQ;
- 
- 	/* copy instruction */
+ # ---------------------------------------------------------------------------
+ # Kernel selftest
 -- 
 2.51.0
 
