@@ -1,55 +1,65 @@
-Return-Path: <stable+bounces-190594-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190876-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BEC0C10951
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:11:11 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E160C10D75
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:21:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3091D46423B
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:05:43 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B4553505C02
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:15:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E6E1322DB7;
-	Mon, 27 Oct 2025 19:01:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E32AB321434;
+	Mon, 27 Oct 2025 19:13:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kxXy/000"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r9DI4hEk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5859B321F48;
-	Mon, 27 Oct 2025 19:01:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E31930F526;
+	Mon, 27 Oct 2025 19:13:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591692; cv=none; b=k9Uhitz7sxD31huIi/fyuKaQ3a7R0FIXRPVZryI5UqcyHdoUs4nMwZbAB60+SOBVqUoqZf5xJRI1aHx/yZ9pXVhRhD3Ac8tyfO5j7Ni1NI1Xeie3whLERUzkchPpe36XuQ06HUyh1MEQGzsgcxCmd3z4WqZ6IXUdXmx2lGSMuBU=
+	t=1761592431; cv=none; b=ArHPYHkYyVQ45h/uaBh27CFid4xIjURwPdiU0cisUvO81QT3jl4iNGDFLq7wWPqbLX/U3bk5tvWI29tZj76KKAy7WMZNwSNvRV5RkWWrVEmUWrikoPEjQtS+owKjKG2cSFfsovF7rg+SS7ByU/6ka/1gJlcbMT2mQcjWz7Js/Pk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591692; c=relaxed/simple;
-	bh=6rUhq1EiAOxe3giluCiKaQS6WicK71XLE2IwNPlMh0I=;
+	s=arc-20240116; t=1761592431; c=relaxed/simple;
+	bh=bMimpoJlR+P0WrJFlVcbVT1/JxN3rw+nSMPMAhbBmQM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PwS0uMUdrJgisUad5wWmtDglFeqIyVAkcp+9BWjxPc5Xnm0hLzFflNzx9JOjvjXiHBgI9JF+PuiyFoAXHkmG3aReV/MLtteF7kUm5MXtn/LJkC+Mx3zoH0pGph9W8QqgG+0V6Dm8jfvEUSzDxC/fxHJgZn2I4hXTHuGCsiyVbQo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kxXy/000; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE566C4CEF1;
-	Mon, 27 Oct 2025 19:01:31 +0000 (UTC)
+	 MIME-Version; b=A3MIs9vRtNR1WbUOQn4278Ldqq9ZQRoMYuvwrsFv6dxMdm7ngBpLlDlDK9aana8y0k3w3MPz0f3yVcO0Gi37mj5vfCB03jYQOBkWTVwBoiHALtBNAKGubL3q6k2epZ5Xo9EHH2O9MXkdmuU/mTu3N5PurVqZzjuFtCI7j3Ve/ew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r9DI4hEk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C749C4CEF1;
+	Mon, 27 Oct 2025 19:13:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591692;
-	bh=6rUhq1EiAOxe3giluCiKaQS6WicK71XLE2IwNPlMh0I=;
+	s=korg; t=1761592431;
+	bh=bMimpoJlR+P0WrJFlVcbVT1/JxN3rw+nSMPMAhbBmQM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kxXy/000LAC04c4N8Cg5QOzpknnKD3+AkZkhMPQUSzfIpwNoq+l8TVxaTIbahF4We
-	 sOv0pt81/v13R8HMf3ZO4C2VAEnX59eX7n/xhjgBSQT+CoHk1TjE+mPaT7Y472zLFV
-	 CMumy1Bib1jJ6GKRPK+EAcrd3gEZijQcIsExp+HA=
+	b=r9DI4hEkFXiQqyhAidHrVMR24297TydLQXyJr4qr/CiVWWORTJ9Q4B+7y19jS0ggS
+	 azBwFo9ZHJqpPRLVWiMiaYvqrA8Jq0CoGpSP80MCyI/VUdurBzSJ3Hpec8eerHmt7I
+	 qD2EW1j+QwyDq0DnStA6Ur6/YMomnwFlG8Tb+fIQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	LI Qingwu <Qing-wu.Li@leica-geosystems.com.cn>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 5.10 293/332] USB: serial: option: add Telit FN920C04 ECM compositions
+	Huang Ying <ying.huang@linux.alibaba.com>,
+	Will Deacon <will@kernel.org>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Gavin Shan <gshan@redhat.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Yicong Yang <yangyicong@hisilicon.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 085/157] arm64, mm: avoid always making PTE dirty in pte_mkwrite()
 Date: Mon, 27 Oct 2025 19:35:46 +0100
-Message-ID: <20251027183532.591411758@linuxfoundation.org>
+Message-ID: <20251027183503.554043304@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
-References: <20251027183524.611456697@linuxfoundation.org>
+In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
+References: <20251027183501.227243846@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,100 +71,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: LI Qingwu <Qing-wu.Li@leica-geosystems.com.cn>
+From: Huang Ying <ying.huang@linux.alibaba.com>
 
-commit 622865c73ae30f254abdf182f4b66cccbe3e0f10 upstream.
+[ Upstream commit 143937ca51cc6ae2fccc61a1cb916abb24cd34f5 ]
 
-Add support for the Telit Cinterion FN920C04 module when operating in
-ECM (Ethernet Control Model) mode. The following USB product IDs are
-used by the module when AT#USBCFG is set to 3 or 7.
+Current pte_mkwrite_novma() makes PTE dirty unconditionally.  This may
+mark some pages that are never written dirty wrongly.  For example,
+do_swap_page() may map the exclusive pages with writable and clean PTEs
+if the VMA is writable and the page fault is for read access.
+However, current pte_mkwrite_novma() implementation always dirties the
+PTE.  This may cause unnecessary disk writing if the pages are
+never written before being reclaimed.
 
-0x10A3: ECM + tty (NMEA) + tty (DUN) [+ tty (DIAG)]
-T:  Bus=01 Lev=02 Prnt=02 Port=00 Cnt=01 Dev#=  3 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1bc7 ProdID=10a3 Rev= 5.15
-S:  Manufacturer=Telit Cinterion
-S:  Product=FN920
-S:  SerialNumber=76e7cb38
-C:* #Ifs= 5 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:* If#= 0 Alt= 0 #EPs= 1 Cls=02(comm.) Sub=06 Prot=00 Driver=cdc_ether
-E:  Ad=82(I) Atr=03(Int.) MxPS=  16 Ivl=32ms
-I:  If#= 1 Alt= 0 #EPs= 0 Cls=0a(data ) Sub=00 Prot=00 Driver=cdc_ether
-I:* If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=cdc_ether
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=60 Driver=option
-E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+So, change pte_mkwrite_novma() to clear the PTE_RDONLY bit only if the
+PTE_DIRTY bit is set to make it possible to make the PTE writable and
+clean.
 
-0x10A8: ECM + tty (DUN) + tty (AUX) [+ tty (DIAG)]
-T:  Bus=03 Lev=02 Prnt=02 Port=00 Cnt=01 Dev#=  3 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1bc7 ProdID=10a8 Rev= 5.15
-S:  Manufacturer=Telit Cinterion
-S:  Product=FN920
-S:  SerialNumber=76e7cb38
-C:* #Ifs= 5 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:* If#= 0 Alt= 0 #EPs= 1 Cls=02(comm.) Sub=06 Prot=00 Driver=cdc_ether
-E:  Ad=82(I) Atr=03(Int.) MxPS=  16 Ivl=32ms
-I:  If#= 1 Alt= 0 #EPs= 0 Cls=0a(data ) Sub=00 Prot=00 Driver=cdc_ether
-I:* If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=cdc_ether
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+The current behavior was introduced in commit 73e86cb03cf2 ("arm64:
+Move PTE_RDONLY bit handling out of set_pte_at()").  Before that,
+pte_mkwrite() only sets the PTE_WRITE bit, while set_pte_at() only
+clears the PTE_RDONLY bit if both the PTE_WRITE and the PTE_DIRTY bits
+are set.
 
-Adding these IDs allows the option driver to automatically create the
-corresponding /dev/ttyUSB* ports under ECM mode.
+To test the performance impact of the patch, on an arm64 server
+machine, run 16 redis-server processes on socket 1 and 16
+memtier_benchmark processes on socket 0 with mostly get
+transactions (that is, redis-server will mostly read memory only).
+The memory footprint of redis-server is larger than the available
+memory, so swap out/in will be triggered.  Test results show that the
+patch can avoid most swapping out because the pages are mostly clean.
+And the benchmark throughput improves ~23.9% in the test.
 
-Tested with FN920C04 under ECM configuration (USBCFG=3 and 7).
-
-Signed-off-by: LI Qingwu <Qing-wu.Li@leica-geosystems.com.cn>
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 73e86cb03cf2 ("arm64: Move PTE_RDONLY bit handling out of set_pte_at()")
+Signed-off-by: Huang Ying <ying.huang@linux.alibaba.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Anshuman Khandual <anshuman.khandual@arm.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Gavin Shan <gshan@redhat.com>
+Cc: Ard Biesheuvel <ardb@kernel.org>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Yicong Yang <yangyicong@hisilicon.com>
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-kernel@vger.kernel.org
+Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/option.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ arch/arm64/include/asm/pgtable.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -1403,10 +1403,14 @@ static const struct usb_device_id option
- 	  .driver_info = RSVD(0) | NCTRL(3) },
- 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10a2, 0xff),	/* Telit FN920C04 (MBIM) */
- 	  .driver_info = NCTRL(4) },
-+	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10a3, 0xff),	/* Telit FN920C04 (ECM) */
-+	  .driver_info = NCTRL(4) },
- 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10a4, 0xff),	/* Telit FN20C04 (rmnet) */
- 	  .driver_info = RSVD(0) | NCTRL(3) },
- 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10a7, 0xff),	/* Telit FN920C04 (MBIM) */
- 	  .driver_info = NCTRL(4) },
-+	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10a8, 0xff),	/* Telit FN920C04 (ECM) */
-+	  .driver_info = NCTRL(4) },
- 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10a9, 0xff),	/* Telit FN20C04 (rmnet) */
- 	  .driver_info = RSVD(0) | NCTRL(2) | RSVD(3) | RSVD(4) },
- 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10aa, 0xff),	/* Telit FN920C04 (MBIM) */
+diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
+index 426c3cb3e3bb1..62326f249aa71 100644
+--- a/arch/arm64/include/asm/pgtable.h
++++ b/arch/arm64/include/asm/pgtable.h
+@@ -183,7 +183,8 @@ static inline pmd_t set_pmd_bit(pmd_t pmd, pgprot_t prot)
+ static inline pte_t pte_mkwrite(pte_t pte)
+ {
+ 	pte = set_pte_bit(pte, __pgprot(PTE_WRITE));
+-	pte = clear_pte_bit(pte, __pgprot(PTE_RDONLY));
++	if (pte_sw_dirty(pte))
++		pte = clear_pte_bit(pte, __pgprot(PTE_RDONLY));
+ 	return pte;
+ }
+ 
+-- 
+2.51.0
+
 
 
 
