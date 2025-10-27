@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-191000-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191118-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE33FC10FBA
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:28:43 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23AE4C11039
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:30:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 88CC654570A
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:20:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 287C41A6210E
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:26:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F058B17F4F6;
-	Mon, 27 Oct 2025 19:19:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAA5E323411;
+	Mon, 27 Oct 2025 19:24:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HORck4Ut"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LUO8bfJU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD43F3090CC;
-	Mon, 27 Oct 2025 19:19:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F59A31E0F2;
+	Mon, 27 Oct 2025 19:24:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592753; cv=none; b=bMp9l6a91hTuKTFtKSRzpUqRZZP2Bnj6NRAc8eUWAeWQSp72TXNEMBnyCD5utOj3ZHgcZ/BpV7o+wlAk8HvCApP8o5bak4y0MAoG2pSziSglZFYE2dhjVPpa0B6H7dY/+owxDf0/tOFG/BaW4sffdRTyk7P0d1UJrJXiP3GDIhU=
+	t=1761593058; cv=none; b=ozt0B7TEvviJtHvjVZ9s3PvQ8QUR1KsoDUTDcssHu3prn/vYl2FW8TBzbj4huMVrJoHpYgrw+H2Insmy3Qogzzlc3LVARmPSvAi6/EIhKqpazZdytgnFR+5dP2Rhj6mOsgeWS6sYMIzPg/o0/24iLZdgJxWlPgGrWJHm9g74luM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592753; c=relaxed/simple;
-	bh=FifZcLPhWxxgcLRN9dLOFmlvmz2J7XlxclBuUjspr/4=;
+	s=arc-20240116; t=1761593058; c=relaxed/simple;
+	bh=SQp7zspBKEhne3YoSb8otKVs1Cpc3Xf7C9Nf1SzPsNc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QVY/A+jFYaA6uztepXebOCdj6nV1o7nfsjdrxC87kHSJ7G0FGWgKaloEchND5CcNNub3CqvOvw7H4N/a/SETaVXasMSNV7o3obrYc0Krs3ZR6hMQ/p97dq79PiMez8nwZUJeo5MKYPauqjXBun0j0sWVzinUJt81ciN5jfD2nN0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HORck4Ut; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F299C4CEF1;
-	Mon, 27 Oct 2025 19:19:13 +0000 (UTC)
+	 MIME-Version; b=dh+eMKUm9W9WbZqooQuhffqMUPqoym4PnlyuZefSbGc7mu1LN6rlzTzfCTIUBYl4Mk6nbi+NcsksaSHR6YiMf0Dk3xTUfIpja5j0cpCe0hCwgOK5UTzOEWkPDYune1tphOApZ63WySIhXukZtfTNwLwxnq7fqqJ89xYEK/Ps2ww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LUO8bfJU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66759C4CEF1;
+	Mon, 27 Oct 2025 19:24:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592753;
-	bh=FifZcLPhWxxgcLRN9dLOFmlvmz2J7XlxclBuUjspr/4=;
+	s=korg; t=1761593056;
+	bh=SQp7zspBKEhne3YoSb8otKVs1Cpc3Xf7C9Nf1SzPsNc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HORck4UtPbMhcTgPJItcWchAKzDm1VzmiF64iQM9u8HGLwwct9QQRxZsx0ORgdul9
-	 Y5hzUgCTv/mS62TDxS5Mx65DVwvcTDl3jUHwXD9EhiJLZ13BfirmJX1u66rqazS0na
-	 9O9qTV52xKfmoOO8y2ewM1FSBBmr1mnzacu+Wyiw=
+	b=LUO8bfJUJ47POnfWTLydqCfYq5qbgIbh5DSyQTIYqqkuEeascAwAMZISt+xgeyQLq
+	 fVYFSsCpqKFCfSIwv7FmrA8A44mNibmqVnIw8JsLvsIATB4Z+5FilVVKCsbls0pFRN
+	 OkuNlZd7xDNXetpwZdhoPQ/RcMPoZl6XlV4ENSeY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Miklos Szeredi <mszeredi@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 83/84] fuse: fix livelock in synchronous file put from fuseblk workers
+	stable@kernel.org,
+	Junhao Xie <bigfoot@radxa.com>,
+	Xilin Wu <sophon@radxa.com>
+Subject: [PATCH 6.12 106/117] misc: fastrpc: Fix dma_buf object leak in fastrpc_map_lookup
 Date: Mon, 27 Oct 2025 19:37:12 +0100
-Message-ID: <20251027183441.025625586@linuxfoundation.org>
+Message-ID: <20251027183456.890989458@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183438.817309828@linuxfoundation.org>
-References: <20251027183438.817309828@linuxfoundation.org>
+In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
+References: <20251027183453.919157109@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,96 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Darrick J. Wong" <djwong@kernel.org>
+From: Junhao Xie <bigfoot@radxa.com>
 
-[ Upstream commit 26e5c67deb2e1f42a951f022fdf5b9f7eb747b01 ]
+commit fff111bf45cbeeb659324316d68554e35d350092 upstream.
 
-I observed a hang when running generic/323 against a fuseblk server.
-This test opens a file, initiates a lot of AIO writes to that file
-descriptor, and closes the file descriptor before the writes complete.
-Unsurprisingly, the AIO exerciser threads are mostly stuck waiting for
-responses from the fuseblk server:
+In fastrpc_map_lookup, dma_buf_get is called to obtain a reference to
+the dma_buf for comparison purposes. However, this reference is never
+released when the function returns, leading to a dma_buf memory leak.
 
-# cat /proc/372265/task/372313/stack
-[<0>] request_wait_answer+0x1fe/0x2a0 [fuse]
-[<0>] __fuse_simple_request+0xd3/0x2b0 [fuse]
-[<0>] fuse_do_getattr+0xfc/0x1f0 [fuse]
-[<0>] fuse_file_read_iter+0xbe/0x1c0 [fuse]
-[<0>] aio_read+0x130/0x1e0
-[<0>] io_submit_one+0x542/0x860
-[<0>] __x64_sys_io_submit+0x98/0x1a0
-[<0>] do_syscall_64+0x37/0xf0
-[<0>] entry_SYSCALL_64_after_hwframe+0x4b/0x53
+Fix this by adding dma_buf_put before returning from the function,
+ensuring that the temporarily acquired reference is properly released
+regardless of whether a matching map is found.
 
-But the /weird/ part is that the fuseblk server threads are waiting for
-responses from itself:
-
-# cat /proc/372210/task/372232/stack
-[<0>] request_wait_answer+0x1fe/0x2a0 [fuse]
-[<0>] __fuse_simple_request+0xd3/0x2b0 [fuse]
-[<0>] fuse_file_put+0x9a/0xd0 [fuse]
-[<0>] fuse_release+0x36/0x50 [fuse]
-[<0>] __fput+0xec/0x2b0
-[<0>] task_work_run+0x55/0x90
-[<0>] syscall_exit_to_user_mode+0xe9/0x100
-[<0>] do_syscall_64+0x43/0xf0
-[<0>] entry_SYSCALL_64_after_hwframe+0x4b/0x53
-
-The fuseblk server is fuse2fs so there's nothing all that exciting in
-the server itself.  So why is the fuse server calling fuse_file_put?
-The commit message for the fstest sheds some light on that:
-
-"By closing the file descriptor before calling io_destroy, you pretty
-much guarantee that the last put on the ioctx will be done in interrupt
-context (during I/O completion).
-
-Aha.  AIO fgets a new struct file from the fd when it queues the ioctx.
-The completion of the FUSE_WRITE command from userspace causes the fuse
-server to call the AIO completion function.  The completion puts the
-struct file, queuing a delayed fput to the fuse server task.  When the
-fuse server task returns to userspace, it has to run the delayed fput,
-which in the case of a fuseblk server, it does synchronously.
-
-Sending the FUSE_RELEASE command sychronously from fuse server threads
-is a bad idea because a client program can initiate enough simultaneous
-AIOs such that all the fuse server threads end up in delayed_fput, and
-now there aren't any threads left to handle the queued fuse commands.
-
-Fix this by only using asynchronous fputs when closing files, and leave
-a comment explaining why.
-
-Cc: stable@vger.kernel.org # v2.6.38
-Fixes: 5a18ec176c934c ("fuse: fix hang of single threaded fuseblk filesystem")
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 9031626ade38 ("misc: fastrpc: Fix fastrpc_map_lookup operation")
+Cc: stable@kernel.org
+Signed-off-by: Junhao Xie <bigfoot@radxa.com>
+Tested-by: Xilin Wu <sophon@radxa.com>
+Link: https://lore.kernel.org/stable/48B368FB4C7007A7%2B20251017083906.3259343-1-bigfoot%40radxa.com
+Link: https://patch.msgid.link/48B368FB4C7007A7+20251017083906.3259343-1-bigfoot@radxa.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/fuse/file.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/misc/fastrpc.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/fs/fuse/file.c
-+++ b/fs/fuse/file.c
-@@ -339,8 +339,14 @@ void fuse_file_release(struct inode *ino
- 	 * Make the release synchronous if this is a fuseblk mount,
- 	 * synchronous RELEASE is allowed (and desirable) in this case
- 	 * because the server can be trusted not to screw up.
-+	 *
-+	 * Always use the asynchronous file put because the current thread
-+	 * might be the fuse server.  This can happen if a process starts some
-+	 * aio and closes the fd before the aio completes.  Since aio takes its
-+	 * own ref to the file, the IO completion has to drop the ref, which is
-+	 * how the fuse server can end up closing its clients' files.
- 	 */
--	fuse_file_put(ff, ff->fm->fc->destroy);
-+	fuse_file_put(ff, false);
+--- a/drivers/misc/fastrpc.c
++++ b/drivers/misc/fastrpc.c
+@@ -384,6 +384,8 @@ static int fastrpc_map_lookup(struct fas
+ 	}
+ 	spin_unlock(&fl->lock);
+ 
++	dma_buf_put(buf);
++
+ 	return ret;
  }
  
- void fuse_release_common(struct file *file, bool isdir)
 
 
 
