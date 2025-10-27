@@ -1,94 +1,90 @@
-Return-Path: <stable+bounces-190019-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190020-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A650C0EE5A
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 16:19:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 77D96C0EE3C
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 16:18:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C7FDD46149C
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 15:09:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B01D3BF3BB
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 15:10:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 657FD2EDD76;
-	Mon, 27 Oct 2025 15:09:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B26E2FE057;
+	Mon, 27 Oct 2025 15:09:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZAzgYODE"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kJ7ja//h"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B714C611E
-	for <stable@vger.kernel.org>; Mon, 27 Oct 2025 15:09:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D74D81F5820
+	for <stable@vger.kernel.org>; Mon, 27 Oct 2025 15:09:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761577773; cv=none; b=J8luLAY0MfkYbhOY9mCexsvI67b7/OCQn0oYqsiwOZ1dOTWkOcgtd9IVnjuO3If/kkK8vfAzM/qhlrnJBTq+mtKyizm0NBI6OrKqi4RXjlEtWKRqGvtOwX9+ZwUXOLUjqweP5Ok9zgbt1Cwg2Z1mjwYt9iXzcz6toD1f92wNxic=
+	t=1761577795; cv=none; b=GPIKKAVjS57IjYtyV5rB/5PWSAlt1iCUpxIKdRy87gV2490KVAurgYjtKpUQscea4ErEVOEWD6a5j1/uc23q/gnEmeH9kWfX5OsnCh7/AjNP4CDcOuoDPgGFy0Oyl8Xq8tYjYSMUk8VJEj4dJUk0Rk8p2yOlmW0782wzbzDm7X0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761577773; c=relaxed/simple;
-	bh=eIQuMzndX2IaXQQgsZY7X9rDiT2WkLqj/57iQwR1pfI=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=TrjVCujMiDMH5hwGk6bvK535pXO8fb35lxaoAFboJHI+CK5/48dZr7FnQEDYHHZ8cyEYQDyfitSTiEOGc8EbvbWNdzACTvyvyLAF5vU3Hohbf5E7Ao2gu8n8lxunQ8Xc1gEN3QUkRcwlnWioKvibuHm2dSz9OBYvUpfmUw2SMc4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZAzgYODE; arc=none smtp.client-ip=209.85.210.182
+	s=arc-20240116; t=1761577795; c=relaxed/simple;
+	bh=ZsCPFXC9R6NQL97nYWlCY006QYpTpfOsDxb5I2LLUOE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=a8GEsvofGVGa2yHFN40Z+g7cgqHmydVYGulsZbTeSQ+QwD25cquSwGwqnJE+T+2m7NTHxCwbGuSs/bvbi5iypxMUcqiWQwA9oCBN18gV4PaqpuPAhWbQ9xxgyMXZVUP6Z/ytLIIsmozieBZyjPsM+xbCEyVmxR/0PjejgWHHTQg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kJ7ja//h; arc=none smtp.client-ip=209.85.214.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-7a26dab3a97so2904178b3a.0
-        for <stable@vger.kernel.org>; Mon, 27 Oct 2025 08:09:31 -0700 (PDT)
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-290aaff555eso44107555ad.2
+        for <stable@vger.kernel.org>; Mon, 27 Oct 2025 08:09:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761577771; x=1762182571; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1761577793; x=1762182593; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=du5oJpRBhJlPxSiwoBeavUKOwQ5aDhNDZOqlYr8mmsc=;
-        b=ZAzgYODEEsVcYhLKjQrvV+DCv995CnSx7BzeDU552u5LZtpXxRnB0cmT3d+N9EmvAc
-         IYGDKITFlrCwxBHAppQL0SWpZHv5zi14fsEa1XiPHtBcxuUw1Szq6CBSdesnWlPZO9gh
-         ZgLsCY4UZvnRlscVp+aBmmY6xOZLoI1YPNzqIuN10HmgjDKdpWecc7Ki23iGxcsRvp5U
-         /JbLSdu9IRsztd8K1bne3+WM0n9Q7k20Q7mxecZqS8WJ4n5msdGbb2pM0pSQsHHwBw1j
-         Ep68pWKqdS3tFnsTEy5gCPYndNSfIHsljQ0H/mnlNWhZARHnQ5+PTPBpSQoxfIFyzQXp
-         qN+g==
+        bh=bOWeTrE1BXy5AjZlTLFESliT17UYj7Zas8RzdCqx+Q0=;
+        b=kJ7ja//h1GuoShmdPrCSmyeJEW9lvcDD9TjI7HmOoqCiqUww61jtinmFyFPki9aVRB
+         XgmaLqmysom2tx/vUAfxD79ODDCZbfnnqYwHvIdnK+vcABfymOOvyqqiRRWun8hkXVRI
+         qDrCOxp8pXBPb9o1Fp9D4isFqnu7mMnHnCgLIusz7m/+j+WpKQUQ87HEx13fi3u9jl6t
+         X1ltlZ5Mlk6tDKI5MOpscQiB+XZk86RFKweU6kmzejVblEu4mf+QL1gDbijVQ+1Q0mwP
+         HKTrnEPib67AbFuJ961hiJsyReugDUHr7V+/RynxjsSbG0jpyGhGRQN+ZEM/vxRzEh5E
+         ODVQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761577771; x=1762182571;
+        d=1e100.net; s=20230601; t=1761577793; x=1762182593;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=du5oJpRBhJlPxSiwoBeavUKOwQ5aDhNDZOqlYr8mmsc=;
-        b=MDbLtvuzakYV81WMQWf3Rm0i1DFYQKKTNMmZInqPdQC4xFITl29/E7WJdpnKXEpIyh
-         ADRWO01+hAcOA1uCcT3cGEw/HM58pRN7U+mNJCN+IEtm8ZprAhUjnIGCjGb/XoxtL6M3
-         oDEZ/2EIZMfee+0Qbp1LC2mPkx8LQDrWPEbkaEJyHD53QLb8PTsKaDEUvQvd/w+RgVhB
-         /XFfJp2ka4jceo/BpaR0vmuJS2BZyIH0QazdeWuJ8d0YRLJk0iO96oWI5tEERPSwSMFj
-         IPjbPVdpmHf8mYC1BuXEyTHzyGKDoet12bkWmtU4IKdSKalBecLaXn2xyOonw7040mF4
-         aNjA==
-X-Forwarded-Encrypted: i=1; AJvYcCV0828vtTLYoaCFYB2e0Bf5HTpg9AFO77JgSNHSALVbu8l7cUgcsh+J4Jv+ULVO93b6okH2dcs=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxir1i/HDwAfcTv9naiFM6V/LS0AUltFYoFwMUuLTyUbeq5rl1T
-	4Q+gXgosrLSa+fCxjS6XIqN4cciUqThaHrgXlCyvRiWpvlBpdFvlONX+
-X-Gm-Gg: ASbGncttcWRlPzgoV64JzGm/n74Ir0qedkFWbH/8Qtb3ChAZWiGxWbXF3umbQy73xfp
-	MQukzw2Dq+VVQQyQkieypJYJlXzJbOfQCXty01RITes+c5SQ85Q5V4+XksNwcQ6Dy+jwWTsoLTD
-	IrFgiYEzkrNNwpbCoJGqj5feY0OcAppCPBklbtD6FeuTOoeJuIAep7p0UnhjqSm7x2/03cp9Rrf
-	IXEXgq9smZP1nwfE8Vl22wefGOqYZYwfn3Kf+oP5P7O3Sivi6vm1L2lgr76oYl6QpuwBc7inweR
-	FTd6a7SNJzfiB0MRB++kC/t1xMrrsEyZryLLeU0VPDjUlsHtEK7ay+SAjD8oq2FRIXenxZ29yDv
-	7q2UPeJ+BGU2fEbpE4uC8kwt8ZJqXnG8W1LOk6WKrsMGTOobhX+4QwnfYq4fqHrDBE9UCwLl4E7
-	mdEGg3N/m81QwAIi8CUDtE+Q==
-X-Google-Smtp-Source: AGHT+IFScmYX6R3rthmA7m7QRURybKZunKqeR6Hr6fFU6rVxiKPR6zlKhkOB5h4TP+qYA1pWCaz3NA==
-X-Received: by 2002:a05:6a00:390b:b0:7a3:455e:3fa5 with SMTP id d2e1a72fcca58-7a441a6b2d6mr397621b3a.0.1761577770926;
-        Mon, 27 Oct 2025 08:09:30 -0700 (PDT)
+        bh=bOWeTrE1BXy5AjZlTLFESliT17UYj7Zas8RzdCqx+Q0=;
+        b=Fz2ifLhBq/YO5dohKU5tHYMimeEAj707HMBcI490IsZX8NDeZ/PW8B5yy+T4CQm6AM
+         6Ke96H4sH0pB9u6aYbkktMlpO8BlKuvFK+Vz0JCDncIjnbT7feti+Zr/d2N0efRUkdwk
+         pYV8FKZkdBzXvP4Yy6OMNidDVTWQMKyPFo9O4vzAzBrityINKVtwCTxxbljYzKlE9O3R
+         qXxTUOgnMvnCSA/s0iNoL1AAdcloZ7WFyEGPKJAUBDophZ29C3oTotOMU78pwZaUkWPh
+         nImP9EhIGTmsAZjA7ncO3GNvDZKyItWVkHu726Q7iL3D9DqEshCCnJ4eSTdUSyreieXl
+         9YKg==
+X-Forwarded-Encrypted: i=1; AJvYcCUtFwcBPXWdBZ3oGA8ze3w5QyJU8pA8YzT7lPalfGnDtXzG0gS+JsLHxJilJgFd/HYx6Sf2wD0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx6cGuVeC9SgSBZKISdp44UyyJkYtZ1m9A620lagPvrGxD16ii/
+	COMVpSY4cr5F1W2rjUcZ5/36mVS62QaPDNCYEIQc0+BJ/4uc/NmrDwzq
+X-Gm-Gg: ASbGncs9LVHRkdz2F0NIjYzwtyVBXTG/WgGYkhGaXMUOy0ipouPRy7EwH6FHyxHkSeS
+	IRFjRMbgFHrPMUSa/4NbiRU9zjEpQjlTCwktJp5lHbbQomkdZjR+RZSgLjAM0FAkEEha/zpnigb
+	tMIWtzEsgf52WJf1cV7ManCOD3+z83MId9c4kn0suHQXKxTDJQDRvGE36YlbqmsLo8i8vH8b8Z7
+	s0BeXFuPmRudy7ecCLX6pr8MCT1X8SIsGsQ31MU0GWo1m8EdTgqowvKXA5AwWRr0/a3kGzQYLkQ
+	i1AAP42hvIRxywom8tyc+T2PfZpQmgqB4Kk40n9XaHMl7R2qoA7KFKYS17tDAXtbth1A7/SkxrI
+	0imoUSWpSuL0xpQtR6Ibudbt/g8BkbovRnIogZAfplzuF/OwukGK90rlS1sUC18USOXZP2iuvoT
+	BPqL+XluWkH3fVMeugtCCkr7oLy4TYwy0A
+X-Google-Smtp-Source: AGHT+IHm+qmEs3k8KDkI28OdIfpmmkZKiOOzJFODhG9t1YR8Za920Qncpnz3yBINujjAHcwPpw/fHQ==
+X-Received: by 2002:a17:902:ea01:b0:252:a80c:3cc5 with SMTP id d9443c01a7336-294cb3d6169mr3033825ad.22.1761577792933;
+        Mon, 27 Oct 2025 08:09:52 -0700 (PDT)
 Received: from localhost.localdomain ([124.77.218.104])
-        by smtp.googlemail.com with ESMTPSA id d2e1a72fcca58-7a41c70ea64sm6929565b3a.3.2025.10.27.08.09.26
+        by smtp.googlemail.com with ESMTPSA id d9443c01a7336-29498e4113fsm84234275ad.90.2025.10.27.08.09.48
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Mon, 27 Oct 2025 08:09:29 -0700 (PDT)
+        Mon, 27 Oct 2025 08:09:51 -0700 (PDT)
 From: Miaoqian Lin <linmq006@gmail.com>
-To: Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Albert Herranz <albert_herranz@yahoo.es>,
-	Grant Likely <grant.likely@secretlab.ca>,
-	Segher Boessenkool <segher@kernel.crashing.org>,
-	linuxppc-dev@lists.ozlabs.org,
+To: Weili Qian <qianweili@huawei.com>,
+	Zhou Wang <wangzhou1@hisilicon.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	"David S. Miller" <davem@davemloft.net>,
+	Kai Ye <yekai13@huawei.com>,
+	linux-crypto@vger.kernel.org,
 	linux-kernel@vger.kernel.org
 Cc: linmq006@gmail.com,
 	stable@vger.kernel.org
-Subject: [PATCH] powerpc/flipper-pic: Fix device node reference leak in flipper_pic_init
-Date: Mon, 27 Oct 2025 23:09:11 +0800
-Message-Id: <20251027150914.59811-1-linmq006@gmail.com>
+Subject: [PATCH] crypto: hisilicon/qm - Fix device reference leak in qm_get_qos_value
+Date: Mon, 27 Oct 2025 23:09:34 +0800
+Message-Id: <20251027150934.60013-1-linmq006@gmail.com>
 X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -98,53 +94,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The flipper_pic_init() function calls of_get_parent() which increases
-the device node reference count, but fails to call of_node_put() to
-balance the reference count.
+The qm_get_qos_value() function calls bus_find_device_by_name() which
+increases the device reference count, but fails to call put_device()
+to balance the reference count and lead to a device reference leak.
 
-Add calls to of_node_put() in all paths to fix the leak.
+Add put_device() calls in both the error path and success path to
+properly balance the reference count.
 
 Found via static analysis.
 
-Fixes: 028ee972f032 ("powerpc: gamecube/wii: flipper interrupt controller support")
+Fixes: 22d7a6c39cab ("crypto: hisilicon/qm - add pci bdf number check")
 Cc: stable@vger.kernel.org
 Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
 ---
- arch/powerpc/platforms/embedded6xx/flipper-pic.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/crypto/hisilicon/qm.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/powerpc/platforms/embedded6xx/flipper-pic.c b/arch/powerpc/platforms/embedded6xx/flipper-pic.c
-index 91a8f0a7086e..cf6f795c8d76 100644
---- a/arch/powerpc/platforms/embedded6xx/flipper-pic.c
-+++ b/arch/powerpc/platforms/embedded6xx/flipper-pic.c
-@@ -135,13 +135,13 @@ static struct irq_domain * __init flipper_pic_init(struct device_node *np)
- 	}
- 	if (!of_device_is_compatible(pi, "nintendo,flipper-pi")) {
- 		pr_err("unexpected parent compatible\n");
--		goto out;
-+		goto out_put_node;
- 	}
- 
- 	retval = of_address_to_resource(pi, 0, &res);
- 	if (retval) {
- 		pr_err("no io memory range found\n");
--		goto out;
-+		goto out_put_node;
- 	}
- 	io_base = ioremap(res.start, resource_size(&res));
- 
-@@ -154,9 +154,12 @@ static struct irq_domain * __init flipper_pic_init(struct device_node *np)
- 					      &flipper_irq_domain_ops, io_base);
- 	if (!irq_domain) {
- 		pr_err("failed to allocate irq_domain\n");
-+		of_node_put(pi);
- 		return NULL;
+diff --git a/drivers/crypto/hisilicon/qm.c b/drivers/crypto/hisilicon/qm.c
+index a5b96adf2d1e..3b391a146635 100644
+--- a/drivers/crypto/hisilicon/qm.c
++++ b/drivers/crypto/hisilicon/qm.c
+@@ -3871,10 +3871,12 @@ static ssize_t qm_get_qos_value(struct hisi_qm *qm, const char *buf,
+ 	pdev = container_of(dev, struct pci_dev, dev);
+ 	if (pci_physfn(pdev) != qm->pdev) {
+ 		pci_err(qm->pdev, "the pdev input does not match the pf!\n");
++		put_device(dev);
+ 		return -EINVAL;
  	}
  
-+out_put_node:
-+	of_node_put(pi);
- out:
- 	return irq_domain;
+ 	*fun_index = pdev->devfn;
++	put_device(dev);
+ 
+ 	return 0;
  }
 -- 
 2.39.5 (Apple Git-154)
