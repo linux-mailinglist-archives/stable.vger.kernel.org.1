@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-190427-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190110-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D284BC106D5
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:04:04 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43C05C0FF90
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:41:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 001BD5620B8
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:57:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1C31119C5589
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:41:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4305232ED57;
-	Mon, 27 Oct 2025 18:54:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95AF02EDD62;
+	Mon, 27 Oct 2025 18:41:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="En28RIgA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UQufZhUA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F233832ED45;
-	Mon, 27 Oct 2025 18:54:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 524C4218EB1;
+	Mon, 27 Oct 2025 18:41:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591263; cv=none; b=taYe/A4tSfje+My3xAdP2ZIZtnpSnta3J7KlQTtxBoVrgitquvvqBfHJjTTb+7JiWcSJhxGy7GscodsMTHC9tdQnx0ukv2MOC8+8Vw1z+/GxYNdn1wqGCZVRdNDxLjQrOEQVllF2yuHV+Rtf/B0Lse/Yf4LUZscw/R6mxwUpNXI=
+	t=1761590463; cv=none; b=DhOFTfdLm1hn2ktUVZ8cRrEEtss4QzUqZJt3uUSlhBi09bGqC1qwVXDivRVwuaTsF/cf/mMZCMzBDzZstHL7p7ujx/rviayQSMIvjIgOkjvbgseD/6ZY5b87c2Z3ZPU5txc4HXpj/zpPyRkouTjdq/jVU7ZH9QywrJiHCENtQQ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591263; c=relaxed/simple;
-	bh=4RRpqmgeayvP6US3HlBo5FbkXDdvG7+vlYm0BHc95a4=;
+	s=arc-20240116; t=1761590463; c=relaxed/simple;
+	bh=QdJo763C+KJmoOVfclMaL4uFwLJ6qmlEBjaKIzaBff4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AC8jAl3fQKLeOtZ+ItrqDWpkc1BHb+f+VY4vynfJ8aU3H5vj/w2WQx4ab9RxoxfH2aMVQd0+cTYk33CCjJVXlFLfIKIPWJeAPezja1QJRepyH9X/1LCPnTtwdSubOXgNeYjLaHLYB52CTR4YyT7X5ENTLHJp+rjrRCvi4GmwamE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=En28RIgA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85D29C4CEF1;
-	Mon, 27 Oct 2025 18:54:22 +0000 (UTC)
+	 MIME-Version; b=thc+nWXbrEM59PkG54P93uj/QdHHtHaSpwsYrl2rq6wNoo5Rd6WOpsFuTZkcZsOldr59pLjH2XmLyTTVYx7iSrXVKcPx2GzAl+d7RWvKmzkUd7GY5rqEP8U4nv1WxvKUUXI7ascJyYu8cbR3KFkpPBHkaZXI3cCj6f0Hmmisi94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UQufZhUA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB175C113D0;
+	Mon, 27 Oct 2025 18:41:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591262;
-	bh=4RRpqmgeayvP6US3HlBo5FbkXDdvG7+vlYm0BHc95a4=;
+	s=korg; t=1761590463;
+	bh=QdJo763C+KJmoOVfclMaL4uFwLJ6qmlEBjaKIzaBff4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=En28RIgAKsh6A9lrvgCAEHEDt03BaebOeZgdFf6kwSaoXdLX8zIWSSpqDmcAGoQ/L
-	 zjQn1feyc9qp86QyAdIt4O1xCLnbPCZk3JiEurFQ73dhZnHtXMUOpy3du9//itYCHb
-	 pgqVZ22ypW9k5t+V9QIrjBwjTfSPOzwzVgf2J5TU=
+	b=UQufZhUAvrZfpqv00+2jMY0VsS3eIxTbzoTVJnDi8RVn3u7DnBCpyjhBg4CrC0JFe
+	 6eFd72edvTtX1tNH/zAUZDS5mHA4TJqn9n6hGz0c09Ge9hxPwKINFbl0NzxIUdxREp
+	 f7WcnE8Ovk05xmDatuqpjikG/1pjC2ERqzZFBbMw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miaoqian Lin <linmq006@gmail.com>,
-	Kevin Hilman <khilman@baylibre.com>
-Subject: [PATCH 5.10 130/332] ARM: OMAP2+: pm33xx-core: ix device node reference leaks in amx3_idle_init
+	Qianfeng Rong <rongqianfeng@vivo.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 037/224] ALSA: lx_core: use int type to store negative error codes
 Date: Mon, 27 Oct 2025 19:33:03 +0100
-Message-ID: <20251027183528.064924748@linuxfoundation.org>
+Message-ID: <20251027183509.998290753@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
-References: <20251027183524.611456697@linuxfoundation.org>
+In-Reply-To: <20251027183508.963233542@linuxfoundation.org>
+References: <20251027183508.963233542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,54 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miaoqian Lin <linmq006@gmail.com>
+From: Qianfeng Rong <rongqianfeng@vivo.com>
 
-commit 74139a64e8cedb6d971c78d5d17384efeced1725 upstream.
+[ Upstream commit 4ef353d546cda466fc39b7daca558d7bcec21c09 ]
 
-Add missing of_node_put() calls to release
-device node references obtained via of_parse_phandle().
+Change the 'ret' variable from u16 to int to store negative error codes or
+zero returned by lx_message_send_atomic().
 
-Fixes: 06ee7a950b6a ("ARM: OMAP2+: pm33xx-core: Add cpuidle_ops for am335x/am437x")
-Cc: stable@vger.kernel.org
-Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
-Link: https://lore.kernel.org/r/20250902075943.2408832-1-linmq006@gmail.com
-Signed-off-by: Kevin Hilman <khilman@baylibre.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Storing the negative error codes in unsigned type, doesn't cause an issue
+at runtime but it's ugly as pants. Additionally, assigning negative error
+codes to unsigned type may trigger a GCC warning when the -Wsign-conversion
+flag is enabled.
+
+No effect on runtime.
+
+Fixes: 02bec4904508 ("ALSA: lx6464es - driver for the digigram lx6464es interface")
+Signed-off-by: Qianfeng Rong <rongqianfeng@vivo.com>
+Link: https://patch.msgid.link/20250828081312.393148-1-rongqianfeng@vivo.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/mach-omap2/pm33xx-core.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ sound/pci/lx6464es/lx_core.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/arm/mach-omap2/pm33xx-core.c
-+++ b/arch/arm/mach-omap2/pm33xx-core.c
-@@ -393,12 +393,15 @@ static int __init amx3_idle_init(struct
- 		if (!state_node)
- 			break;
+diff --git a/sound/pci/lx6464es/lx_core.c b/sound/pci/lx6464es/lx_core.c
+index 00975e86473c5..6cf7572779d41 100644
+--- a/sound/pci/lx6464es/lx_core.c
++++ b/sound/pci/lx6464es/lx_core.c
+@@ -316,7 +316,7 @@ static int lx_message_send_atomic(struct lx6464es *chip, struct lx_rmh *rmh)
+ /* low-level dsp access */
+ int lx_dsp_get_version(struct lx6464es *chip, u32 *rdsp_version)
+ {
+-	u16 ret;
++	int ret;
  
--		if (!of_device_is_available(state_node))
-+		if (!of_device_is_available(state_node)) {
-+			of_node_put(state_node);
- 			continue;
-+		}
+ 	mutex_lock(&chip->msg_lock);
  
- 		if (i == CPUIDLE_STATE_MAX) {
- 			pr_warn("%s: cpuidle states reached max possible\n",
- 				__func__);
-+			of_node_put(state_node);
- 			break;
- 		}
+@@ -330,10 +330,10 @@ int lx_dsp_get_version(struct lx6464es *chip, u32 *rdsp_version)
  
-@@ -408,6 +411,7 @@ static int __init amx3_idle_init(struct
- 			states[state_count].wfi_flags |= WFI_FLAG_WAKE_M3 |
- 							 WFI_FLAG_FLUSH_CACHE;
+ int lx_dsp_get_clock_frequency(struct lx6464es *chip, u32 *rfreq)
+ {
+-	u16 ret = 0;
+ 	u32 freq_raw = 0;
+ 	u32 freq = 0;
+ 	u32 frequency = 0;
++	int ret;
  
-+		of_node_put(state_node);
- 		state_count++;
- 	}
+ 	mutex_lock(&chip->msg_lock);
  
+-- 
+2.51.0
+
 
 
 
