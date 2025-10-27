@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-190468-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190134-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91C77C1070E
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:05:04 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD160C10041
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:43:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 15F891A20F06
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:01:42 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B50BC4F7E3B
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:42:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF3EE31D375;
-	Mon, 27 Oct 2025 18:56:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11775227B8E;
+	Mon, 27 Oct 2025 18:42:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fFdPTr+8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EhIX1+ne"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8571E314B8F;
-	Mon, 27 Oct 2025 18:56:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B89A730FC0F;
+	Mon, 27 Oct 2025 18:42:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591369; cv=none; b=hZj5RdC5oyWavGWXfc2QbdMDC42p4E6RTNjm56vq6huuQdpR7KMbNqkiwaboP7JAUeoZqoBlgVO+A4w41tq7r731/aEaD3Ki9WkigF4Su34hxnHibfiFVAUOpKlZiAmUczSOzmMq9f8horwZD4zFOKZCXRFS7nUhB/xWLo+AfZI=
+	t=1761590529; cv=none; b=U0QoxaRUOVhbqX8mDKXcJO8JJdn4FgC9AgcIrgeJat82H8EADjjLuJXFNWYEQqyLtRXLvKV6BkqTRR+DZQEzxHUfUOEFlkWXpFYTjn5RXUGDjhlO45/gVqukWCZb6btKCeS1OXlwrgiQjQk6x6AntHitKBI4aFAtT443ou0Ed/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591369; c=relaxed/simple;
-	bh=I76MVyUJth0efiQHch7pCWTxE0msN/vwuN99GYMeJdQ=;
+	s=arc-20240116; t=1761590529; c=relaxed/simple;
+	bh=dTCi8+OTWHjz4PG6ehDCu0feHgoNfBlp+nzQS1KNGec=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cM2YMUYwDcwjxodVxZNBrHVRL+Ei/ER7Jx1cFy+7CNWh7yrlHrg3oZ6UsIY2S67kitSa9Kt6SVbr49aHeB4UoD4Egt68/xxTxdWEsVnoEhUEyp8J9Y0Rv24/dWasDayQUtIfzYy7pG+NDcq8nPD1TAdZ6uGoIoHYwZLjZVZpL+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fFdPTr+8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAC47C4CEF1;
-	Mon, 27 Oct 2025 18:56:08 +0000 (UTC)
+	 MIME-Version:Content-Type; b=RZzcAAdJHWV6IyTj85MPgpCDGd8sfeL3nvrZECZ+2BgO6mBAZ+Wt/L1HBLxvdIc2hF/lptUm2U4r7sB/zCZKjJxeI2h37faSFfGvo9vZUqG0oB836oQ2cohhwi27KAX1cU/aVDY/ziuG0VO4k9SN1zKn0F8+J5SimjKOE1NBs50=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EhIX1+ne; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44E44C4CEFD;
+	Mon, 27 Oct 2025 18:42:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591369;
-	bh=I76MVyUJth0efiQHch7pCWTxE0msN/vwuN99GYMeJdQ=;
+	s=korg; t=1761590529;
+	bh=dTCi8+OTWHjz4PG6ehDCu0feHgoNfBlp+nzQS1KNGec=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fFdPTr+8B09kGHoiX+pW37XQ6AlUm1jCQc4nCEtDZpTPl4tiAGp9NecD0xh0WYD+P
-	 sWW3yla4z7S5zEs2FdWkb1AS4MbNFR/DtFzal1EeQvHq0ogt3tUb0Ns8p9SQnz4zpx
-	 vCtJ35EKpN8PAFQjjA6exuieBl2cs8SZCJRBcO/M=
+	b=EhIX1+nevEdqLIYucPWQqG6z+kBWv5jDw+ohq6WpwKWs7S/4snjbJQoVxkk2TOH1E
+	 sbIEYOU6r8sfn/4K0vxcPR8+cE5+98qns3pGTDDqKebFfU8LrRznPvCQsGtxFyomtn
+	 sZJVXpL7xL65hB2ZImNTqWe2WsFncqMCiyNAGabc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	"Jason A. Donenfeld" <Jason@zx2c4.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Eric Biggers <ebiggers@google.com>
-Subject: [PATCH 5.10 171/332] lib/crypto/curve25519-hacl64: Disable KASAN with clang-17 and older
-Date: Mon, 27 Oct 2025 19:33:44 +0100
-Message-ID: <20251027183529.142271445@linuxfoundation.org>
+	Michael Hennerich <michael.hennerich@analog.com>,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 5.4 079/224] iio: frequency: adf4350: Fix ADF4350_REG3_12BIT_CLKDIV_MODE
+Date: Mon, 27 Oct 2025 19:33:45 +0100
+Message-ID: <20251027183511.112698048@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
-References: <20251027183524.611456697@linuxfoundation.org>
+In-Reply-To: <20251027183508.963233542@linuxfoundation.org>
+References: <20251027183508.963233542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,74 +61,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Michael Hennerich <michael.hennerich@analog.com>
 
-commit 2f13daee2a72bb962f5fd356c3a263a6f16da965 upstream.
+commit 1d8fdabe19267338f29b58f968499e5b55e6a3b6 upstream.
 
-After commit 6f110a5e4f99 ("Disable SLUB_TINY for build testing"), which
-causes CONFIG_KASAN to be enabled in allmodconfig again, arm64
-allmodconfig builds with clang-17 and older show an instance of
--Wframe-larger-than (which breaks the build with CONFIG_WERROR=y):
+The clk div bits (2 bits wide) do not start in bit 16 but in bit 15. Fix it
+accordingly.
 
-  lib/crypto/curve25519-hacl64.c:757:6: error: stack frame size (2336) exceeds limit (2048) in 'curve25519_generic' [-Werror,-Wframe-larger-than]
-    757 | void curve25519_generic(u8 mypublic[CURVE25519_KEY_SIZE],
-        |      ^
-
-When KASAN is disabled, the stack usage is roughly quartered:
-
-  lib/crypto/curve25519-hacl64.c:757:6: error: stack frame size (608) exceeds limit (128) in 'curve25519_generic' [-Werror,-Wframe-larger-than]
-    757 | void curve25519_generic(u8 mypublic[CURVE25519_KEY_SIZE],
-        |      ^
-
-Using '-Rpass-analysis=stack-frame-layout' shows the following variables
-and many, many 8-byte spills when KASAN is enabled:
-
-  Offset: [SP-144], Type: Variable, Align: 8, Size: 40
-  Offset: [SP-464], Type: Variable, Align: 8, Size: 320
-  Offset: [SP-784], Type: Variable, Align: 8, Size: 320
-  Offset: [SP-864], Type: Variable, Align: 32, Size: 80
-  Offset: [SP-896], Type: Variable, Align: 32, Size: 32
-  Offset: [SP-1016], Type: Variable, Align: 8, Size: 120
-
-When KASAN is disabled, there are still spills but not at many and the
-variables list is smaller:
-
-  Offset: [SP-192], Type: Variable, Align: 32, Size: 80
-  Offset: [SP-224], Type: Variable, Align: 32, Size: 32
-  Offset: [SP-344], Type: Variable, Align: 8, Size: 120
-
-Disable KASAN for this file when using clang-17 or older to avoid
-blowing out the stack, clearing up the warning.
-
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Acked-by: "Jason A. Donenfeld" <Jason@zx2c4.com>
-Acked-by: Ard Biesheuvel <ardb@kernel.org>
-Link: https://lore.kernel.org/r/20250609-curve25519-hacl64-disable-kasan-clang-v1-1-08ea0ac5ccff@kernel.org
-Signed-off-by: Eric Biggers <ebiggers@google.com>
+Fixes: e31166f0fd48 ("iio: frequency: New driver for Analog Devices ADF4350/ADF4351 Wideband Synthesizers")
+Signed-off-by: Michael Hennerich <michael.hennerich@analog.com>
+Signed-off-by: Nuno Sá <nuno.sa@analog.com>
+Link: https://patch.msgid.link/20250829-adf4350-fix-v2-2-0bf543ba797d@analog.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- lib/crypto/Makefile |    4 ++++
- 1 file changed, 4 insertions(+)
+ include/linux/iio/frequency/adf4350.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/lib/crypto/Makefile
-+++ b/lib/crypto/Makefile
-@@ -22,6 +22,10 @@ obj-$(CONFIG_CRYPTO_LIB_CURVE25519_GENER
- libcurve25519-generic-y				:= curve25519-fiat32.o
- libcurve25519-generic-$(CONFIG_ARCH_SUPPORTS_INT128)	:= curve25519-hacl64.o
- libcurve25519-generic-y				+= curve25519-generic.o
-+# clang versions prior to 18 may blow out the stack with KASAN
-+ifeq ($(call clang-min-version, 180000),)
-+KASAN_SANITIZE_curve25519-hacl64.o := n
-+endif
+--- a/include/linux/iio/frequency/adf4350.h
++++ b/include/linux/iio/frequency/adf4350.h
+@@ -51,7 +51,7 @@
  
- obj-$(CONFIG_CRYPTO_LIB_CURVE25519)		+= libcurve25519.o
- libcurve25519-y					+= curve25519.o
+ /* REG3 Bit Definitions */
+ #define ADF4350_REG3_12BIT_CLKDIV(x)		((x) << 3)
+-#define ADF4350_REG3_12BIT_CLKDIV_MODE(x)	((x) << 16)
++#define ADF4350_REG3_12BIT_CLKDIV_MODE(x)	((x) << 15)
+ #define ADF4350_REG3_12BIT_CSR_EN		(1 << 18)
+ #define ADF4351_REG3_CHARGE_CANCELLATION_EN	(1 << 21)
+ #define ADF4351_REG3_ANTI_BACKLASH_3ns_EN	(1 << 22)
 
 
 
