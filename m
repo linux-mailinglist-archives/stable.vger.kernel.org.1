@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-190556-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190700-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12040C108F1
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:10:09 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30DD5C10A50
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:14:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CE8DF567542
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:04:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 568981A61705
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:09:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 896F8334684;
-	Mon, 27 Oct 2025 18:59:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B127D3203AF;
+	Mon, 27 Oct 2025 19:06:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="masE+uK3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J9RSaj+v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FEBC2D542A;
-	Mon, 27 Oct 2025 18:59:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 680CC3081B0;
+	Mon, 27 Oct 2025 19:06:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591598; cv=none; b=AmgbfOAAhw0gVwEYRsB0cFrtcH16ACmHQJotwnCZ8huAQGnFR9BdNCtJ8iL0fuOo6YdKqrKNIdze0rnFJOVIw4m0Di+oJxSj97n839LtIEx6F5Fgjwg0LexRm4foIXvtt8j7OI/nrpV9Nh8JA+FyE2fYfH6kmI5Dyr5c2oyvRYY=
+	t=1761591966; cv=none; b=RoDoWdv5uyFnycTkYaSzb8GaLhZDtVrK9qrkEmwSCBL0VfKBWfZP821hp7D9MhywxNrdeJia2c/VrYxw8LLAl3+3XQPKt/L1IAejaaS7uee6T9h1wTfQB6FRziZFoyIrvQtEqRy73JFfdlF2tBM/U/7Hu3qat23KeFrX6aQrpXQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591598; c=relaxed/simple;
-	bh=LdH/Ga4VLznCWRgrmUKW1mOrgZlrLMfl6hhilUuIKAQ=;
+	s=arc-20240116; t=1761591966; c=relaxed/simple;
+	bh=ZC0vlYXxlxgicVipLALJFzA/GFFDqDj9C+n6fXiccrY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YRVE3O5hz6NFna0r8AOuJbKjXjbk1KOsMTF5OzWB4NGTyaEQ+tKYjOoFhnxNAD0j/1FH5BoCon2QA/t4XErKsV4ZAM2fBc76FDN8iB0G84nwtp5x9slJVib5kh8FyGCO5hAQP7/pHEtweDb+MLhWvxkg1ync07qAW0gLSVwiUB4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=masE+uK3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3395C4CEF1;
-	Mon, 27 Oct 2025 18:59:57 +0000 (UTC)
+	 MIME-Version; b=mrlwwYM5HYBm4AdZk7yQzV36/KbddKxgfNB6LnUV9wrs7oP3TXhcX98yaWhGH8YUUK5mRJXQ0LL6t+JLUmVj2hNhJcoxqk7bFyRVT0OlVRoG2alpMr0Z8Rv9mMoYx9selRe60tQrdTrojgdEn27f+Z2OH/enp3N87m6yAC1Z68c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J9RSaj+v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED53DC4CEF1;
+	Mon, 27 Oct 2025 19:06:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591598;
-	bh=LdH/Ga4VLznCWRgrmUKW1mOrgZlrLMfl6hhilUuIKAQ=;
+	s=korg; t=1761591966;
+	bh=ZC0vlYXxlxgicVipLALJFzA/GFFDqDj9C+n6fXiccrY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=masE+uK3lgO3EBLiAl/nHeid0PlyJKVGIQqfiU1ySh6q+hqhRlZ3zLZZ/AdSV3dGA
-	 VZPAPIEk4hceBDfjo/0gI+nDUFP6iYhSVD/UHnhFSVzzEY4yvuv6+Gp+VgSeqVZnHF
-	 N7ZTfujXM5N6u6KC7A9qirbBkpEHgPpH6m6HREaI=
+	b=J9RSaj+vJ8Mh3wnoeKVjKUhlsy3dq3lPPgPXRPOG23DB3SgOUPbFeEWgoR/4FmfWj
+	 GkPGX1nMOqSh01SAsiuHMRPLqSLPmM7xH7004zy6zj1K+BCCl1N1tMtulXwZVsPcjn
+	 gU7NqxQwHpFZiE5zg1cBlD5+g6HEdUuEWIo51JNI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiaming Zhang <r772577952@gmail.com>,
-	Viacheslav Dubeyko <slava@dubeyko.com>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	Yangtao Li <frank.li@vivo.com>,
-	linux-fsdevel@vger.kernel.org,
-	syzkaller@googlegroups.com
-Subject: [PATCH 5.10 257/332] hfsplus: fix slab-out-of-bounds read in hfsplus_strcasecmp()
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 030/123] net: usb: lan78xx: Add error handling to lan78xx_init_mac_address
 Date: Mon, 27 Oct 2025 19:35:10 +0100
-Message-ID: <20251027183531.632673442@linuxfoundation.org>
+Message-ID: <20251027183447.204436405@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
-References: <20251027183524.611456697@linuxfoundation.org>
+In-Reply-To: <20251027183446.381986645@linuxfoundation.org>
+References: <20251027183446.381986645@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,228 +63,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Viacheslav Dubeyko <slava@dubeyko.com>
+From: Oleksij Rempel <o.rempel@pengutronix.de>
 
-commit 42520df65bf67189541a425f7d36b0b3e7bd7844 upstream.
+[ Upstream commit 6f31135894ec96481e2bda93a1da70712f5e57c1 ]
 
-The hfsplus_strcasecmp() logic can trigger the issue:
+Convert `lan78xx_init_mac_address` to return error codes and handle
+failures in register read and write operations. Update `lan78xx_reset`
+to check for errors during MAC address initialization and propagate them
+appropriately.
 
-[  117.317703][ T9855] ==================================================================
-[  117.318353][ T9855] BUG: KASAN: slab-out-of-bounds in hfsplus_strcasecmp+0x1bc/0x490
-[  117.318991][ T9855] Read of size 2 at addr ffff88802160f40c by task repro/9855
-[  117.319577][ T9855]
-[  117.319773][ T9855] CPU: 0 UID: 0 PID: 9855 Comm: repro Not tainted 6.17.0-rc6 #33 PREEMPT(full)
-[  117.319780][ T9855] Hardware name: QEMU Ubuntu 24.04 PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-[  117.319783][ T9855] Call Trace:
-[  117.319785][ T9855]  <TASK>
-[  117.319788][ T9855]  dump_stack_lvl+0x1c1/0x2a0
-[  117.319795][ T9855]  ? __virt_addr_valid+0x1c8/0x5c0
-[  117.319803][ T9855]  ? __pfx_dump_stack_lvl+0x10/0x10
-[  117.319808][ T9855]  ? rcu_is_watching+0x15/0xb0
-[  117.319816][ T9855]  ? lock_release+0x4b/0x3e0
-[  117.319821][ T9855]  ? __kasan_check_byte+0x12/0x40
-[  117.319828][ T9855]  ? __virt_addr_valid+0x1c8/0x5c0
-[  117.319835][ T9855]  ? __virt_addr_valid+0x4a5/0x5c0
-[  117.319842][ T9855]  print_report+0x17e/0x7e0
-[  117.319848][ T9855]  ? __virt_addr_valid+0x1c8/0x5c0
-[  117.319855][ T9855]  ? __virt_addr_valid+0x4a5/0x5c0
-[  117.319862][ T9855]  ? __phys_addr+0xd3/0x180
-[  117.319869][ T9855]  ? hfsplus_strcasecmp+0x1bc/0x490
-[  117.319876][ T9855]  kasan_report+0x147/0x180
-[  117.319882][ T9855]  ? hfsplus_strcasecmp+0x1bc/0x490
-[  117.319891][ T9855]  hfsplus_strcasecmp+0x1bc/0x490
-[  117.319900][ T9855]  ? __pfx_hfsplus_cat_case_cmp_key+0x10/0x10
-[  117.319906][ T9855]  hfs_find_rec_by_key+0xa9/0x1e0
-[  117.319913][ T9855]  __hfsplus_brec_find+0x18e/0x470
-[  117.319920][ T9855]  ? __pfx_hfsplus_bnode_find+0x10/0x10
-[  117.319926][ T9855]  ? __pfx_hfs_find_rec_by_key+0x10/0x10
-[  117.319933][ T9855]  ? __pfx___hfsplus_brec_find+0x10/0x10
-[  117.319942][ T9855]  hfsplus_brec_find+0x28f/0x510
-[  117.319949][ T9855]  ? __pfx_hfs_find_rec_by_key+0x10/0x10
-[  117.319956][ T9855]  ? __pfx_hfsplus_brec_find+0x10/0x10
-[  117.319963][ T9855]  ? __kmalloc_noprof+0x2a9/0x510
-[  117.319969][ T9855]  ? hfsplus_find_init+0x8c/0x1d0
-[  117.319976][ T9855]  hfsplus_brec_read+0x2b/0x120
-[  117.319983][ T9855]  hfsplus_lookup+0x2aa/0x890
-[  117.319990][ T9855]  ? __pfx_hfsplus_lookup+0x10/0x10
-[  117.320003][ T9855]  ? d_alloc_parallel+0x2f0/0x15e0
-[  117.320008][ T9855]  ? __lock_acquire+0xaec/0xd80
-[  117.320013][ T9855]  ? __pfx_d_alloc_parallel+0x10/0x10
-[  117.320019][ T9855]  ? __raw_spin_lock_init+0x45/0x100
-[  117.320026][ T9855]  ? __init_waitqueue_head+0xa9/0x150
-[  117.320034][ T9855]  __lookup_slow+0x297/0x3d0
-[  117.320039][ T9855]  ? __pfx___lookup_slow+0x10/0x10
-[  117.320045][ T9855]  ? down_read+0x1ad/0x2e0
-[  117.320055][ T9855]  lookup_slow+0x53/0x70
-[  117.320065][ T9855]  walk_component+0x2f0/0x430
-[  117.320073][ T9855]  path_lookupat+0x169/0x440
-[  117.320081][ T9855]  filename_lookup+0x212/0x590
-[  117.320089][ T9855]  ? __pfx_filename_lookup+0x10/0x10
-[  117.320098][ T9855]  ? strncpy_from_user+0x150/0x290
-[  117.320105][ T9855]  ? getname_flags+0x1e5/0x540
-[  117.320112][ T9855]  user_path_at+0x3a/0x60
-[  117.320117][ T9855]  __x64_sys_umount+0xee/0x160
-[  117.320123][ T9855]  ? __pfx___x64_sys_umount+0x10/0x10
-[  117.320129][ T9855]  ? do_syscall_64+0xb7/0x3a0
-[  117.320135][ T9855]  ? entry_SYSCALL_64_after_hwframe+0x77/0x7f
-[  117.320141][ T9855]  ? entry_SYSCALL_64_after_hwframe+0x77/0x7f
-[  117.320145][ T9855]  do_syscall_64+0xf3/0x3a0
-[  117.320150][ T9855]  ? exc_page_fault+0x9f/0xf0
-[  117.320154][ T9855]  entry_SYSCALL_64_after_hwframe+0x77/0x7f
-[  117.320158][ T9855] RIP: 0033:0x7f7dd7908b07
-[  117.320163][ T9855] Code: 23 0d 00 f7 d8 64 89 01 48 83 c8 ff c3 66 0f 1f 44 00 00 31 f6 e9 09 00 00 00 66 0f 1f 84 00 00 08
-[  117.320167][ T9855] RSP: 002b:00007ffd5ebd9698 EFLAGS: 00000202 ORIG_RAX: 00000000000000a6
-[  117.320172][ T9855] RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007f7dd7908b07
-[  117.320176][ T9855] RDX: 0000000000000009 RSI: 0000000000000009 RDI: 00007ffd5ebd9740
-[  117.320179][ T9855] RBP: 00007ffd5ebda780 R08: 0000000000000005 R09: 00007ffd5ebd9530
-[  117.320181][ T9855] R10: 00007f7dd799bfc0 R11: 0000000000000202 R12: 000055e2008b32d0
-[  117.320184][ T9855] R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
-[  117.320189][ T9855]  </TASK>
-[  117.320190][ T9855]
-[  117.351311][ T9855] Allocated by task 9855:
-[  117.351683][ T9855]  kasan_save_track+0x3e/0x80
-[  117.352093][ T9855]  __kasan_kmalloc+0x8d/0xa0
-[  117.352490][ T9855]  __kmalloc_noprof+0x288/0x510
-[  117.352914][ T9855]  hfsplus_find_init+0x8c/0x1d0
-[  117.353342][ T9855]  hfsplus_lookup+0x19c/0x890
-[  117.353747][ T9855]  __lookup_slow+0x297/0x3d0
-[  117.354148][ T9855]  lookup_slow+0x53/0x70
-[  117.354514][ T9855]  walk_component+0x2f0/0x430
-[  117.354921][ T9855]  path_lookupat+0x169/0x440
-[  117.355325][ T9855]  filename_lookup+0x212/0x590
-[  117.355740][ T9855]  user_path_at+0x3a/0x60
-[  117.356115][ T9855]  __x64_sys_umount+0xee/0x160
-[  117.356529][ T9855]  do_syscall_64+0xf3/0x3a0
-[  117.356920][ T9855]  entry_SYSCALL_64_after_hwframe+0x77/0x7f
-[  117.357429][ T9855]
-[  117.357636][ T9855] The buggy address belongs to the object at ffff88802160f000
-[  117.357636][ T9855]  which belongs to the cache kmalloc-2k of size 2048
-[  117.358827][ T9855] The buggy address is located 0 bytes to the right of
-[  117.358827][ T9855]  allocated 1036-byte region [ffff88802160f000, ffff88802160f40c)
-[  117.360061][ T9855]
-[  117.360266][ T9855] The buggy address belongs to the physical page:
-[  117.360813][ T9855] page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x21608
-[  117.361562][ T9855] head: order:3 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
-[  117.362285][ T9855] flags: 0xfff00000000040(head|node=0|zone=1|lastcpupid=0x7ff)
-[  117.362929][ T9855] page_type: f5(slab)
-[  117.363282][ T9855] raw: 00fff00000000040 ffff88801a842f00 ffffea0000932000 dead000000000002
-[  117.364015][ T9855] raw: 0000000000000000 0000000080080008 00000000f5000000 0000000000000000
-[  117.364750][ T9855] head: 00fff00000000040 ffff88801a842f00 ffffea0000932000 dead000000000002
-[  117.365491][ T9855] head: 0000000000000000 0000000080080008 00000000f5000000 0000000000000000
-[  117.366232][ T9855] head: 00fff00000000003 ffffea0000858201 00000000ffffffff 00000000ffffffff
-[  117.366968][ T9855] head: ffffffffffffffff 0000000000000000 00000000ffffffff 0000000000000008
-[  117.367711][ T9855] page dumped because: kasan: bad access detected
-[  117.368259][ T9855] page_owner tracks the page as allocated
-[  117.368745][ T9855] page last allocated via order 3, migratetype Unmovable, gfp_mask 0xd20c0(__GFP_IO|__GFP_FS|__GFP_NOWARN1
-[  117.370541][ T9855]  post_alloc_hook+0x240/0x2a0
-[  117.370954][ T9855]  get_page_from_freelist+0x2101/0x21e0
-[  117.371435][ T9855]  __alloc_frozen_pages_noprof+0x274/0x380
-[  117.371935][ T9855]  alloc_pages_mpol+0x241/0x4b0
-[  117.372360][ T9855]  allocate_slab+0x8d/0x380
-[  117.372752][ T9855]  ___slab_alloc+0xbe3/0x1400
-[  117.373159][ T9855]  __kmalloc_cache_noprof+0x296/0x3d0
-[  117.373621][ T9855]  nexthop_net_init+0x75/0x100
-[  117.374038][ T9855]  ops_init+0x35c/0x5c0
-[  117.374400][ T9855]  setup_net+0x10c/0x320
-[  117.374768][ T9855]  copy_net_ns+0x31b/0x4d0
-[  117.375156][ T9855]  create_new_namespaces+0x3f3/0x720
-[  117.375613][ T9855]  unshare_nsproxy_namespaces+0x11c/0x170
-[  117.376094][ T9855]  ksys_unshare+0x4ca/0x8d0
-[  117.376477][ T9855]  __x64_sys_unshare+0x38/0x50
-[  117.376879][ T9855]  do_syscall_64+0xf3/0x3a0
-[  117.377265][ T9855] page last free pid 9110 tgid 9110 stack trace:
-[  117.377795][ T9855]  __free_frozen_pages+0xbeb/0xd50
-[  117.378229][ T9855]  __put_partials+0x152/0x1a0
-[  117.378625][ T9855]  put_cpu_partial+0x17c/0x250
-[  117.379026][ T9855]  __slab_free+0x2d4/0x3c0
-[  117.379404][ T9855]  qlist_free_all+0x97/0x140
-[  117.379790][ T9855]  kasan_quarantine_reduce+0x148/0x160
-[  117.380250][ T9855]  __kasan_slab_alloc+0x22/0x80
-[  117.380662][ T9855]  __kmalloc_noprof+0x232/0x510
-[  117.381074][ T9855]  tomoyo_supervisor+0xc0a/0x1360
-[  117.381498][ T9855]  tomoyo_env_perm+0x149/0x1e0
-[  117.381903][ T9855]  tomoyo_find_next_domain+0x15ad/0x1b90
-[  117.382378][ T9855]  tomoyo_bprm_check_security+0x11c/0x180
-[  117.382859][ T9855]  security_bprm_check+0x89/0x280
-[  117.383289][ T9855]  bprm_execve+0x8f1/0x14a0
-[  117.383673][ T9855]  do_execveat_common+0x528/0x6b0
-[  117.384103][ T9855]  __x64_sys_execve+0x94/0xb0
-[  117.384500][ T9855]
-[  117.384706][ T9855] Memory state around the buggy address:
-[  117.385179][ T9855]  ffff88802160f300: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-[  117.385854][ T9855]  ffff88802160f380: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-[  117.386534][ T9855] >ffff88802160f400: 00 04 fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-[  117.387204][ T9855]                       ^
-[  117.387566][ T9855]  ffff88802160f480: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-[  117.388243][ T9855]  ffff88802160f500: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-[  117.388918][ T9855] ==================================================================
-
-The issue takes place if the length field of struct hfsplus_unistr
-is bigger than HFSPLUS_MAX_STRLEN. The patch simply checks
-the length of comparing strings. And if the strings' length
-is bigger than HFSPLUS_MAX_STRLEN, then it is corrected
-to this value.
-
-v2
-The string length correction has been added for hfsplus_strcmp().
-
-Reported-by: Jiaming Zhang <r772577952@gmail.com>
-Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
-cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-cc: Yangtao Li <frank.li@vivo.com>
-cc: linux-fsdevel@vger.kernel.org
-cc: syzkaller@googlegroups.com
-Link: https://lore.kernel.org/r/20250919191243.1370388-1-slava@dubeyko.com
-Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20241209130751.703182-3-o.rempel@pengutronix.de
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 8d93ff40d49d ("net: usb: lan78xx: fix use of improperly initialized dev->chipid in lan78xx_reset")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/hfsplus/unicode.c |   24 ++++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
+ drivers/net/usb/lan78xx.c | 36 ++++++++++++++++++++++++++++--------
+ 1 file changed, 28 insertions(+), 8 deletions(-)
 
---- a/fs/hfsplus/unicode.c
-+++ b/fs/hfsplus/unicode.c
-@@ -40,6 +40,18 @@ int hfsplus_strcasecmp(const struct hfsp
- 	p1 = s1->unicode;
- 	p2 = s2->unicode;
+diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
+index 4be15489a2c2a..182a4dbd8cf26 100644
+--- a/drivers/net/usb/lan78xx.c
++++ b/drivers/net/usb/lan78xx.c
+@@ -1773,13 +1773,19 @@ static const struct ethtool_ops lan78xx_ethtool_ops = {
+ 	.get_regs	= lan78xx_get_regs,
+ };
  
-+	if (len1 > HFSPLUS_MAX_STRLEN) {
-+		len1 = HFSPLUS_MAX_STRLEN;
-+		pr_err("invalid length %u has been corrected to %d\n",
-+			be16_to_cpu(s1->length), len1);
-+	}
+-static void lan78xx_init_mac_address(struct lan78xx_net *dev)
++static int lan78xx_init_mac_address(struct lan78xx_net *dev)
+ {
+ 	u32 addr_lo, addr_hi;
+ 	u8 addr[6];
++	int ret;
 +
-+	if (len2 > HFSPLUS_MAX_STRLEN) {
-+		len2 = HFSPLUS_MAX_STRLEN;
-+		pr_err("invalid length %u has been corrected to %d\n",
-+			be16_to_cpu(s2->length), len2);
-+	}
-+
- 	while (1) {
- 		c1 = c2 = 0;
++	ret = lan78xx_read_reg(dev, RX_ADDRL, &addr_lo);
++	if (ret < 0)
++		return ret;
  
-@@ -74,6 +86,18 @@ int hfsplus_strcmp(const struct hfsplus_
- 	p1 = s1->unicode;
- 	p2 = s2->unicode;
+-	lan78xx_read_reg(dev, RX_ADDRL, &addr_lo);
+-	lan78xx_read_reg(dev, RX_ADDRH, &addr_hi);
++	ret = lan78xx_read_reg(dev, RX_ADDRH, &addr_hi);
++	if (ret < 0)
++		return ret;
  
-+	if (len1 > HFSPLUS_MAX_STRLEN) {
-+		len1 = HFSPLUS_MAX_STRLEN;
-+		pr_err("invalid length %u has been corrected to %d\n",
-+			be16_to_cpu(s1->length), len1);
-+	}
+ 	addr[0] = addr_lo & 0xFF;
+ 	addr[1] = (addr_lo >> 8) & 0xFF;
+@@ -1812,14 +1818,26 @@ static void lan78xx_init_mac_address(struct lan78xx_net *dev)
+ 			  (addr[2] << 16) | (addr[3] << 24);
+ 		addr_hi = addr[4] | (addr[5] << 8);
+ 
+-		lan78xx_write_reg(dev, RX_ADDRL, addr_lo);
+-		lan78xx_write_reg(dev, RX_ADDRH, addr_hi);
++		ret = lan78xx_write_reg(dev, RX_ADDRL, addr_lo);
++		if (ret < 0)
++			return ret;
 +
-+	if (len2 > HFSPLUS_MAX_STRLEN) {
-+		len2 = HFSPLUS_MAX_STRLEN;
-+		pr_err("invalid length %u has been corrected to %d\n",
-+			be16_to_cpu(s2->length), len2);
-+	}
++		ret = lan78xx_write_reg(dev, RX_ADDRH, addr_hi);
++		if (ret < 0)
++			return ret;
+ 	}
+ 
+-	lan78xx_write_reg(dev, MAF_LO(0), addr_lo);
+-	lan78xx_write_reg(dev, MAF_HI(0), addr_hi | MAF_HI_VALID_);
++	ret = lan78xx_write_reg(dev, MAF_LO(0), addr_lo);
++	if (ret < 0)
++		return ret;
 +
- 	for (len = min(len1, len2); len > 0; len--) {
- 		c1 = be16_to_cpu(*p1);
- 		c2 = be16_to_cpu(*p2);
++	ret = lan78xx_write_reg(dev, MAF_HI(0), addr_hi | MAF_HI_VALID_);
++	if (ret < 0)
++		return ret;
+ 
+ 	eth_hw_addr_set(dev->net, addr);
++
++	return 0;
+ }
+ 
+ /* MDIO read and write wrappers for phylib */
+@@ -2718,7 +2736,9 @@ static int lan78xx_reset(struct lan78xx_net *dev)
+ 		}
+ 	} while (buf & HW_CFG_LRST_);
+ 
+-	lan78xx_init_mac_address(dev);
++	ret = lan78xx_init_mac_address(dev);
++	if (ret < 0)
++		return ret;
+ 
+ 	/* save DEVID for later usage */
+ 	ret = lan78xx_read_reg(dev, ID_REV, &buf);
+-- 
+2.51.0
+
 
 
 
