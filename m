@@ -1,62 +1,58 @@
-Return-Path: <stable+bounces-191160-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190838-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C59EC110DB
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:32:12 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77CCDC10A77
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:14:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 50CAE1A60CF6
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:28:15 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 24695351F87
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:14:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C38E93233ED;
-	Mon, 27 Oct 2025 19:26:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3463A3090CC;
+	Mon, 27 Oct 2025 19:12:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QUeNxS/B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DnToOTsr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CCF632145A;
-	Mon, 27 Oct 2025 19:26:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4E702D73AB;
+	Mon, 27 Oct 2025 19:12:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761593164; cv=none; b=gCVvKmpyOaSg+I25nMhnWHYop2NKOIZrMoqLyhdpTIzAZgx7P1klvMEUX4hM1GlUNZGxDpB/n0MNfiDQB9Evn+PiI9hsGA2z82RBcI8Y6YDCu6TqUWJfhhjw2vg4vE1/ghqe9JP3voNiHfxO33jq+S6AL3H47kiiT0fy2sext1M=
+	t=1761592331; cv=none; b=HjeEa6WtVmU61DKHfhQ3JQxq2c62WSDcgxEfvIXtw3+SE2yHTAs+eWvHvxK4ELmfCq3mZXDBEA9p73gEsWRIPpuGhkHm5f34SAQ6e0cI2Ok7QmTrFHsGyadnHY+PexCGfZN+8PwfgOupgAUXDvs6isqTxLLq0d0om+iuHuQ828g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761593164; c=relaxed/simple;
-	bh=sYpNS3X6C6KrnX4bYMsptICUZskOho3g0XIx57p4h9w=;
+	s=arc-20240116; t=1761592331; c=relaxed/simple;
+	bh=i7XAx8y1riwbK/G9oNafJleQFBzZnHJBnDkg6UUl/KE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uloqgkbPdQ0I4xfmuSBagM1TO+JAMjUL2CccXSbmeoSMU77+IVBrQPh8GrpSKHv49MrcieZNsSBisiJFpkSkkGjkCi/teUYWicN1NOI9SfbSoNHpC5eC4NTOWwQFtVcss2LxpqTL/ovQERgTSGzSTTrr+ByVPfCqGzTKVFFDQdY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QUeNxS/B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D21CCC4CEF1;
-	Mon, 27 Oct 2025 19:26:03 +0000 (UTC)
+	 MIME-Version; b=kQLL8wEOTalTpdGUBNvBz/UpnHuyN0C1KR37AhxvdKG0eyHZDkMhLG2IvrIGKB20m/BFtrLKXP0z/WYAecxrbR2cu0RtcXWbtGvOpZBFtFehMsPymFVTaRbYyYX4zVhDQzym7aO/YF7F403GOL448aE7UrwqPas1priU+BpLmTc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DnToOTsr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 715A4C4CEF1;
+	Mon, 27 Oct 2025 19:12:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761593164;
-	bh=sYpNS3X6C6KrnX4bYMsptICUZskOho3g0XIx57p4h9w=;
+	s=korg; t=1761592330;
+	bh=i7XAx8y1riwbK/G9oNafJleQFBzZnHJBnDkg6UUl/KE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QUeNxS/BNcraHVAk1X5uqOOSeIjqqa0KnI6PTlasAaNO583U02/b7SgIin4bsavBG
-	 NFTTFDg2u7vxAmuk461XTj+n5EWMWJhmh25Mvh1If+18FTMjubydm3DqPO3N5g6xta
-	 2Yi3LZJ6LeoqGhZTFRntTJxO2AKs0KChhuhfXwwI=
+	b=DnToOTsrFSDHcSE112MiaT2fuVv8/G46pP3CeaVB/RmS8MLkThXYr3oAPibnWJAHp
+	 I49CyxHh8jjSo1VfYkRdg87UqFBlJGnBS4bCdR47P/lk76DPuR0VFVkPcr26613Ru9
+	 Or9Z5/ltBCcwN5XX6vTKv4sW8AC1Xw3w37l2Up6A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Steve French <smfrench@gmail.com>,
-	Tom Talpey <tom@talpey.com>,
-	Long Li <longli@microsoft.com>,
-	linux-cifs@vger.kernel.org,
-	samba-technical@lists.samba.org,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Stefan Metzmacher <metze@samba.org>,
-	Steve French <stfrench@microsoft.com>,
+	I Viswanath <viswanathiyyappan@gmail.com>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Khalid Aziz <khalid@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 030/184] smb: client: make use of ib_wc_status_msg() and skip IB_WC_WR_FLUSH_ERR logging
+Subject: [PATCH 6.1 051/157] net: usb: lan78xx: fix use of improperly initialized dev->chipid in lan78xx_reset
 Date: Mon, 27 Oct 2025 19:35:12 +0100
-Message-ID: <20251027183515.735545706@linuxfoundation.org>
+Message-ID: <20251027183502.660425194@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
-References: <20251027183514.934710872@linuxfoundation.org>
+In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
+References: <20251027183501.227243846@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,78 +64,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Metzmacher <metze@samba.org>
+From: I Viswanath <viswanathiyyappan@gmail.com>
 
-[ Upstream commit a8e970358b31a5abba8b5737a67ba7b8d26f4258 ]
+[ Upstream commit 8d93ff40d49d70e05c82a74beae31f883fe0eaf8 ]
 
-There's no need to get log message for every IB_WC_WR_FLUSH_ERR
-completion, but any other error should be logged at level ERR.
+dev->chipid is used in lan78xx_init_mac_address before it's initialized:
 
-Cc: Steve French <smfrench@gmail.com>
-Cc: Tom Talpey <tom@talpey.com>
-Cc: Long Li <longli@microsoft.com>
-Cc: linux-cifs@vger.kernel.org
-Cc: samba-technical@lists.samba.org
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Stefan Metzmacher <metze@samba.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+lan78xx_reset() {
+    lan78xx_init_mac_address()
+        lan78xx_read_eeprom()
+            lan78xx_read_raw_eeprom() <- dev->chipid is used here
+
+    dev->chipid = ... <- dev->chipid is initialized correctly here
+}
+
+Reorder initialization so that dev->chipid is set before calling
+lan78xx_init_mac_address().
+
+Fixes: a0db7d10b76e ("lan78xx: Add to handle mux control per chip id")
+Signed-off-by: I Viswanath <viswanathiyyappan@gmail.com>
+Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Reviewed-by: Khalid Aziz <khalid@kernel.org>
+Link: https://patch.msgid.link/20251013181648.35153-1-viswanathiyyappan@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/smbdirect.c | 20 ++++++++++++--------
- 1 file changed, 12 insertions(+), 8 deletions(-)
+ drivers/net/usb/lan78xx.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/fs/smb/client/smbdirect.c b/fs/smb/client/smbdirect.c
-index cbf1deff11065..99fad70356c57 100644
---- a/fs/smb/client/smbdirect.c
-+++ b/fs/smb/client/smbdirect.c
-@@ -362,8 +362,8 @@ static void send_done(struct ib_cq *cq, struct ib_wc *wc)
- 	struct smbd_connection *info =
- 		container_of(sc, struct smbd_connection, socket);
+diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
+index 08fb03bcf4952..42f8fc71baee8 100644
+--- a/drivers/net/usb/lan78xx.c
++++ b/drivers/net/usb/lan78xx.c
+@@ -2928,10 +2928,6 @@ static int lan78xx_reset(struct lan78xx_net *dev)
+ 		}
+ 	} while (buf & HW_CFG_LRST_);
  
--	log_rdma_send(INFO, "smbdirect_send_io 0x%p completed wc->status=%d\n",
--		request, wc->status);
-+	log_rdma_send(INFO, "smbdirect_send_io 0x%p completed wc->status=%s\n",
-+		request, ib_wc_status_msg(wc->status));
+-	ret = lan78xx_init_mac_address(dev);
+-	if (ret < 0)
+-		return ret;
+-
+ 	/* save DEVID for later usage */
+ 	ret = lan78xx_read_reg(dev, ID_REV, &buf);
+ 	if (ret < 0)
+@@ -2940,6 +2936,10 @@ static int lan78xx_reset(struct lan78xx_net *dev)
+ 	dev->chipid = (buf & ID_REV_CHIP_ID_MASK_) >> 16;
+ 	dev->chiprev = buf & ID_REV_CHIP_REV_MASK_;
  
- 	for (i = 0; i < request->num_sge; i++)
- 		ib_dma_unmap_single(sc->ib.dev,
-@@ -372,8 +372,9 @@ static void send_done(struct ib_cq *cq, struct ib_wc *wc)
- 			DMA_TO_DEVICE);
- 
- 	if (wc->status != IB_WC_SUCCESS || wc->opcode != IB_WC_SEND) {
--		log_rdma_send(ERR, "wc->status=%d wc->opcode=%d\n",
--			wc->status, wc->opcode);
-+		if (wc->status != IB_WC_WR_FLUSH_ERR)
-+			log_rdma_send(ERR, "wc->status=%s wc->opcode=%d\n",
-+				ib_wc_status_msg(wc->status), wc->opcode);
- 		mempool_free(request, sc->send_io.mem.pool);
- 		smbd_disconnect_rdma_connection(info);
- 		return;
-@@ -543,13 +544,16 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
- 	u32 data_length = 0;
- 	u32 remaining_data_length = 0;
- 
--	log_rdma_recv(INFO, "response=0x%p type=%d wc status=%d wc opcode %d byte_len=%d pkey_index=%u\n",
--		      response, sc->recv_io.expected, wc->status, wc->opcode,
-+	log_rdma_recv(INFO,
-+		      "response=0x%p type=%d wc status=%s wc opcode %d byte_len=%d pkey_index=%u\n",
-+		      response, sc->recv_io.expected,
-+		      ib_wc_status_msg(wc->status), wc->opcode,
- 		      wc->byte_len, wc->pkey_index);
- 
- 	if (wc->status != IB_WC_SUCCESS || wc->opcode != IB_WC_RECV) {
--		log_rdma_recv(INFO, "wc->status=%d opcode=%d\n",
--			wc->status, wc->opcode);
-+		if (wc->status != IB_WC_WR_FLUSH_ERR)
-+			log_rdma_recv(ERR, "wc->status=%s opcode=%d\n",
-+				ib_wc_status_msg(wc->status), wc->opcode);
- 		goto error;
- 	}
- 
++	ret = lan78xx_init_mac_address(dev);
++	if (ret < 0)
++		return ret;
++
+ 	/* Respond to the IN token with a NAK */
+ 	ret = lan78xx_read_reg(dev, USB_CFG0, &buf);
+ 	if (ret < 0)
 -- 
 2.51.0
 
