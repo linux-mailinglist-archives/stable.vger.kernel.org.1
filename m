@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-190640-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190930-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E11EDC109BD
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:12:30 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 513C1C10E53
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:24:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1D8BD564CF8
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:07:00 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 71A035047A8
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:17:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5ACC32C92A;
-	Mon, 27 Oct 2025 19:03:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3535323411;
+	Mon, 27 Oct 2025 19:16:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y7acO6VO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E5lDAQXf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 752AB32BF21;
-	Mon, 27 Oct 2025 19:03:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FD0417F4F6;
+	Mon, 27 Oct 2025 19:16:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591811; cv=none; b=Z7WXmW9/N6xovxPtLxlUOS7CFxdpFaDig55Vozl851vd0meQ76FKHwslWTVBYyMQlVOFoLg5JhMpP5j9r7lJIjBmGhV+XbGJ5J9+0gWb87kU1hpmqShvmRqdDd0JS4qXlPhgLD0RAxcz8MAM4txvzaahbDynruUhWrGJDdMJwF8=
+	t=1761592570; cv=none; b=VAnouSl/qFLKXzSD8PLXXsXSowZsTkrP66TMn+vGuiYmkg+6XJkU/BpOHKcW+yi4AmXdDI1ppnPrxvX/zb5xAXb0MrSfSsC6ecYYygQl/TNoy3xR5G6VIVADyJz+O5oFRzKsN7KxYblBFXP2prm3nZ1tDpkdemis+VDJmd2+wCY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591811; c=relaxed/simple;
-	bh=++nuKB42dTEdVNuKdyXIVBBooKgRgaFV1BbgCPZ9GO0=;
+	s=arc-20240116; t=1761592570; c=relaxed/simple;
+	bh=OIauqFtBvTntc6h4kUgKIVooC1wHtWKygtzulCp5qW8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JCgFHj0sH5vGRtKiiN0HmnysFTzcNUjkpr0ihWxDEIQCJF8M0kzPeI2ZXgCmCcYJrPbV7lrBdqptMpiFqnPobJGiiEg9YAoeHZSuyC5KNb7StIGZpZX9nfudN3DC3zNBMgNgXSVUMF6fNOOdo7FYN6HJQsHdVYxTVPpnOKZqF8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y7acO6VO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2AE2C4CEF1;
-	Mon, 27 Oct 2025 19:03:30 +0000 (UTC)
+	 MIME-Version; b=jvzomn1GkTbZBq1lRAuUP1Q+G9elJAzg8rAcTZmFLJaaL249FBcDO0zIHL0uHK6jv0ngQhELja34uQrbvvS/JXXhQSwnbuMVyEqatRkQhgohIggdLSgSh4lh3wJCpzEa+wjR2xqgDbFtKeD3OObdt8+d03mZFgJ0tWnXILsg++c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E5lDAQXf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34861C4CEF1;
+	Mon, 27 Oct 2025 19:16:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591811;
-	bh=++nuKB42dTEdVNuKdyXIVBBooKgRgaFV1BbgCPZ9GO0=;
+	s=korg; t=1761592570;
+	bh=OIauqFtBvTntc6h4kUgKIVooC1wHtWKygtzulCp5qW8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y7acO6VOo7NjwIWbJRZAChRP6LKwxywFH/zc63+r4+0GbMSqdpzhobnlBeEVCRLb9
-	 XjMU4tm3KIE4XYokivb076ewDTTvMEtarP37LQwApTr9dm04L1wr2++gg5Uv4yfOWw
-	 l3azXfOsLJR2CnfG7/ZKAywwBaXAsQaE3cecL8Qo=
+	b=E5lDAQXfyzBDTPaCDoMO03fdBvPu6UxuNsKnB2w/KMmSexqeGzYA/LaUFE/5uixRp
+	 F076ESoP3pd3+sf8bgk0LVu1/7gdsUjbFWmLLyRdPzd1cM+oX+sh+m4FUhbnEMAUB7
+	 Tb++MrtR/oZ0nzDKOje8UcQvifpfEaZzkHdPxsGY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Bence=20Cs=C3=B3k=C3=A1s?= <csokas.bence@prolan.hu>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Jonathan Cameron <jonathan.cameron@huawei.com>,
+	Yicong Yang <yangyicong@hisilicon.com>,
+	Yushan Wang <wangyushan12@huawei.com>,
+	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 310/332] PM: runtime: Add new devm functions
+Subject: [PATCH 6.6 14/84] drivers/perf: hisi: Relax the event ID check in the framework
 Date: Mon, 27 Oct 2025 19:36:03 +0100
-Message-ID: <20251027183533.042543199@linuxfoundation.org>
+Message-ID: <20251027183439.196724386@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
-References: <20251027183524.611456697@linuxfoundation.org>
+In-Reply-To: <20251027183438.817309828@linuxfoundation.org>
+References: <20251027183438.817309828@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,114 +62,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bence Csókás <csokas.bence@prolan.hu>
+From: Yicong Yang <yangyicong@hisilicon.com>
 
-[ Upstream commit 73db799bf5efc5a04654bb3ff6c9bf63a0dfa473 ]
+[ Upstream commit 43de0ac332b815cf56dbdce63687de9acfd35d49 ]
 
-Add `devm_pm_runtime_set_active_enabled()` and
-`devm_pm_runtime_get_noresume()` for simplifying
-common cases in drivers.
+Event ID is only using the attr::config bit [7, 0] but we check the
+event range using the whole 64bit field. It blocks the usage of the
+rest field of attr::config. Relax the check by only using the
+bit [7, 0].
 
-Signed-off-by: Bence Csókás <csokas.bence@prolan.hu>
-Link: https://patch.msgid.link/20250327195928.680771-3-csokas.bence@prolan.hu
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Stable-dep-of: 0792c1984a45 ("iio: imu: inv_icm42600: Simplify pm_runtime setup")
+Acked-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
+Signed-off-by: Yushan Wang <wangyushan12@huawei.com>
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/base/power/runtime.c |   44 +++++++++++++++++++++++++++++++++++++++++++
- include/linux/pm_runtime.h   |    4 +++
- 2 files changed, 48 insertions(+)
+ drivers/perf/hisilicon/hisi_uncore_pmu.c | 2 +-
+ drivers/perf/hisilicon/hisi_uncore_pmu.h | 3 ++-
+ 2 files changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/base/power/runtime.c
-+++ b/drivers/base/power/runtime.c
-@@ -1479,6 +1479,32 @@ void pm_runtime_enable(struct device *de
- }
- EXPORT_SYMBOL_GPL(pm_runtime_enable);
+diff --git a/drivers/perf/hisilicon/hisi_uncore_pmu.c b/drivers/perf/hisilicon/hisi_uncore_pmu.c
+index 04031450d5fec..c3013059cca82 100644
+--- a/drivers/perf/hisilicon/hisi_uncore_pmu.c
++++ b/drivers/perf/hisilicon/hisi_uncore_pmu.c
+@@ -212,7 +212,7 @@ int hisi_uncore_pmu_event_init(struct perf_event *event)
+ 		return -EINVAL;
  
-+static void pm_runtime_set_suspended_action(void *data)
-+{
-+	pm_runtime_set_suspended(data);
-+}
-+
-+/**
-+ * devm_pm_runtime_set_active_enabled - set_active version of devm_pm_runtime_enable.
-+ *
-+ * @dev: Device to handle.
-+ */
-+int devm_pm_runtime_set_active_enabled(struct device *dev)
-+{
-+	int err;
-+
-+	err = pm_runtime_set_active(dev);
-+	if (err)
-+		return err;
-+
-+	err = devm_add_action_or_reset(dev, pm_runtime_set_suspended_action, dev);
-+	if (err)
-+		return err;
-+
-+	return devm_pm_runtime_enable(dev);
-+}
-+EXPORT_SYMBOL_GPL(devm_pm_runtime_set_active_enabled);
-+
- static void pm_runtime_disable_action(void *data)
- {
- 	pm_runtime_dont_use_autosuspend(data);
-@@ -1501,6 +1527,24 @@ int devm_pm_runtime_enable(struct device
- }
- EXPORT_SYMBOL_GPL(devm_pm_runtime_enable);
+ 	hisi_pmu = to_hisi_pmu(event->pmu);
+-	if (event->attr.config > hisi_pmu->check_event)
++	if ((event->attr.config & HISI_EVENTID_MASK) > hisi_pmu->check_event)
+ 		return -EINVAL;
  
-+static void pm_runtime_put_noidle_action(void *data)
-+{
-+	pm_runtime_put_noidle(data);
-+}
-+
-+/**
-+ * devm_pm_runtime_get_noresume - devres-enabled version of pm_runtime_get_noresume.
-+ *
-+ * @dev: Device to handle.
-+ */
-+int devm_pm_runtime_get_noresume(struct device *dev)
-+{
-+	pm_runtime_get_noresume(dev);
-+
-+	return devm_add_action_or_reset(dev, pm_runtime_put_noidle_action, dev);
-+}
-+EXPORT_SYMBOL_GPL(devm_pm_runtime_get_noresume);
-+
- /**
-  * pm_runtime_forbid - Block runtime PM of a device.
-  * @dev: Device to handle.
---- a/include/linux/pm_runtime.h
-+++ b/include/linux/pm_runtime.h
-@@ -61,7 +61,9 @@ extern void pm_runtime_new_link(struct d
- extern void pm_runtime_drop_link(struct device_link *link);
- extern void pm_runtime_release_supplier(struct device_link *link);
+ 	if (hisi_pmu->on_cpu == -1)
+diff --git a/drivers/perf/hisilicon/hisi_uncore_pmu.h b/drivers/perf/hisilicon/hisi_uncore_pmu.h
+index 92402aa69d70f..67d1c3d3a41c0 100644
+--- a/drivers/perf/hisilicon/hisi_uncore_pmu.h
++++ b/drivers/perf/hisilicon/hisi_uncore_pmu.h
+@@ -43,7 +43,8 @@
+ 		return FIELD_GET(GENMASK_ULL(hi, lo), event->attr.config);  \
+ 	}
  
-+int devm_pm_runtime_set_active_enabled(struct device *dev);
- extern int devm_pm_runtime_enable(struct device *dev);
-+int devm_pm_runtime_get_noresume(struct device *dev);
+-#define HISI_GET_EVENTID(ev) (ev->hw.config_base & 0xff)
++#define HISI_EVENTID_MASK		GENMASK(7, 0)
++#define HISI_GET_EVENTID(ev)		((ev)->hw.config_base & HISI_EVENTID_MASK)
  
- /**
-  * pm_runtime_get_if_in_use - Conditionally bump up runtime PM usage counter.
-@@ -258,7 +260,9 @@ static inline void __pm_runtime_disable(
- static inline void pm_runtime_allow(struct device *dev) {}
- static inline void pm_runtime_forbid(struct device *dev) {}
- 
-+static inline int devm_pm_runtime_set_active_enabled(struct device *dev) { return 0; }
- static inline int devm_pm_runtime_enable(struct device *dev) { return 0; }
-+static inline int devm_pm_runtime_get_noresume(struct device *dev) { return 0; }
- 
- static inline void pm_suspend_ignore_children(struct device *dev, bool enable) {}
- static inline void pm_runtime_get_noresume(struct device *dev) {}
+ #define HISI_PMU_EVTYPE_BITS		8
+ #define HISI_PMU_EVTYPE_SHIFT(idx)	((idx) % 4 * HISI_PMU_EVTYPE_BITS)
+-- 
+2.51.0
+
 
 
 
