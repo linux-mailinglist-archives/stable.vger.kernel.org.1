@@ -1,177 +1,110 @@
-Return-Path: <stable+bounces-189935-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-189936-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48398C0C375
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 09:02:43 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FD52C0C441
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 09:15:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 6F49634392D
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 08:02:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E5D84189EC29
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 08:15:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E59C42E54A7;
-	Mon, 27 Oct 2025 08:02:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 962212E7645;
+	Mon, 27 Oct 2025 08:15:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="FoAs+Uzs";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="02K3F5x1"
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=gaisler.com header.i=@gaisler.com header.b="U7oPHaKg"
 X-Original-To: stable@vger.kernel.org
-Received: from fout-b3-smtp.messagingengine.com (fout-b3-smtp.messagingengine.com [202.12.124.146])
+Received: from smtp-out3.simply.com (smtp-out3.simply.com [94.231.106.210])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED9512E0407
-	for <stable@vger.kernel.org>; Mon, 27 Oct 2025 08:02:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.146
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 036DD1946DA;
+	Mon, 27 Oct 2025 08:15:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.231.106.210
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761552157; cv=none; b=jnQ6C52JWtrJuagNWqKZYrwjX6d10tEVGoy5C4cIzo7Itbdz+OsjDlDolwllwkJUN6OAG/kngskS2NqlqkjJGuvUTeKAfCTzU9LtK84wi7Ee1xFFYEcx25g2aAzAd+LK1JChMQia4+fce1RkhsJH1h8fKduJZbL6Vl3LaOCKkHg=
+	t=1761552920; cv=none; b=aYA7DdlCdcONb9AxFAlybU609yo8v8+RE/AiyuN1gqnC3N1nxfyyq20dXEXU9MWC2b5L5mjQmLMMKemr3z4RkVwIGNd3pm8WNVVeHOE1kjE37Ar4vedFiJH51oVhEOmJaBDkHWePXMAW42LJ1biX3lA13hR/Hm7FgOGO/K7g/UM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761552157; c=relaxed/simple;
-	bh=bElmMkwiwOo4JMtzF5WY4J9SptXaNzCTyFikG9LRkGA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VHiKyMEHD8e76cbpbpxQ510FHPz0pWMVb0DI1aYjG2w4WGvdnH4aTe8WOpvYKVlj6QkuH68sRlqqp+VgprEN1keV+lteH+2SSVdGDJkU1ZH2bkGKpJ+MeS/zkrOuTQy0MmBwCsaR27KRkDZNCw8KLb6ipv2vtAQM6T2nwBZXbsc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=FoAs+Uzs; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=02K3F5x1; arc=none smtp.client-ip=202.12.124.146
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfout.stl.internal (Postfix) with ESMTP id B0F661D00101;
-	Mon, 27 Oct 2025 04:02:33 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-01.internal (MEProxy); Mon, 27 Oct 2025 04:02:34 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm3; t=1761552153; x=1761638553; bh=LLm7Cikno9
-	xF1Sc0S4H/43tcR7lqz1pRtaMukreDWlE=; b=FoAs+Uzsr1FxsFOVX8wgHKvUFL
-	dn6nFJh36Oh0ytiwWKDQPfKB3eHLjM/CULA3A5F1CGK7CgwAGql0SKepDnlzmjBR
-	dGkDxIvHyAGX8OmiswJcEGpkMU34GOHbB9J/GiJZ+b4o0YjnDt/YlGs9zbTVBXPu
-	sa8MFoDBQdC3iLkeng5kHyg/VyWY8Hh7Qm+LKnihuNHDX4CWMlqA2OGIrIpnN0iQ
-	eiJ0lYI8aQq9Tu3xt9rufI4kHWLRU1VAyQjYAteDbwgMr0KEX1pSGpfV01YX3CjH
-	Uc9tX5Yg6D24X+BPvfFU+AHB70gdI4qF5VNEizzkycgyQHXV2wMC5pe7ossA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1761552153; x=1761638553; bh=LLm7Cikno9xF1Sc0S4H/43tcR7lqz1pRtaM
-	ukreDWlE=; b=02K3F5x1VfX0UOScrKleZ4hWStgH5VTlh+VsTmbphyNlXIi29QI
-	7s8vBdjggrDmHMjt10MukQ6UVWILjJZ7hm1kbJwRNhi1gNdT4C1lbVHWaaHxFisi
-	05z0pL9uProkljAUXfidc88o5zrKSPitCVkLUmld9KKy5vUxclxUDNQNJjj4A9XW
-	xvmkJTi8NsX0YKJKRcA4EdPrP2iol9tOJkHMyHmRSOnaU50aMO3zB0yt700weFX8
-	vmIwYpy9D6C5puZZWU9bTeO+YnMxm0TCBhEDKsX6KRcMh/tsTxUM0GewBvGt3L5n
-	eFqZjKL78VO8TwFpZQVR+3rAiAAJp3hSyyA==
-X-ME-Sender: <xms:GSf_aGwrJmZbFgJQBGXt18GNwtVsDqlmKnNzemDJm_jW_pb3b6Y-Sg>
-    <xme:GSf_aAzDWViC-EJGsEa0OOiva8E8NOhMWbRDrF5d_Z7ELPR7He-KeGccGvFr2JdDY
-    Fp9Huqa135DEIR29xrdQOZ52gbfub4HMeQtRkf6fhzGxFhDMg>
-X-ME-Received: <xmr:GSf_aPLvgPBj3WFSe_90IuXMu_cGXNiYsuzYajwLTY-aXknvB6DwGIrq2zZqDm5lQMMMFfjTTdw8F_1DJjtC-nkq33Hb6DuXbl3fjA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdduheejgeefucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepifhrvghgucfm
-    jfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrfgrthhtvghrnhepgeehueehgf
-    dtledutdelkeefgeejteegieekheefudeiffdvudeffeelvedttddvnecuffhomhgrihhn
-    pehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmh
-    grihhlfhhrohhmpehgrhgvgheskhhrohgrhhdrtghomhdpnhgspghrtghpthhtohepudei
-    pdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehsrghshhgrlheskhgvrhhnvghlrd
-    horhhgpdhrtghpthhtohepshhtrggslhgvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhr
-    tghpthhtohepfigsgheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepmhgrrhhkrdgtrg
-    hvvggrhihlrghnugesnhhuthgrnhhigidrtghomhdprhgtphhtthhopehmfigrlhhlvges
-    khgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghnughrihihrdhshhgvvhgthhgvnhhkoh
-    eslhhinhhugidrihhnthgvlhdrtghomhdprhgtphhtthhopehlihhnuhhsrdifrghllhgv
-    ihhjsehlihhnrghrohdrohhrghdprhgtphhtthhopegsrghrthhoshiirdhgohhlrghsii
-    gvfihskhhisehlihhnrghrohdrohhrgh
-X-ME-Proxy: <xmx:GSf_aMjh9x4dfUCNkyAzmx-DzAtO4u4Ar_xu5zoMNwpzvLC7713x0g>
-    <xmx:GSf_aAMQxEjXAPrpWKqQVPDyCMdZJ29swJoomJ_pn1-t9Kd1O9ja4A>
-    <xmx:GSf_aH4B2rpg3pTnNRkh4i9IR5PQpfAH9Bvmq_YOVZp1KZtYAPNq3w>
-    <xmx:GSf_aHnc_u6c3T_sZDiHDf0wBfveisxJxegocqnNLasMzY8oQ4LeuQ>
-    <xmx:GSf_aM9IHaj-cAKficmvdmPpxbeHSVN3zzVGgEoXHZZynsW9vWjXosuN>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 27 Oct 2025 04:02:32 -0400 (EDT)
-Date: Mon, 27 Oct 2025 09:02:30 +0100
-From: Greg KH <greg@kroah.com>
-To: Sasha Levin <sashal@kernel.org>
-Cc: stable@vger.kernel.org, William Breathitt Gray <wbg@kernel.org>,
-	Mark Cave-Ayland <mark.caveayland@nutanix.com>,
-	Michael Walle <mwalle@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: Re: [PATCH 6.12.y] gpio: idio-16: Define fixed direction of the GPIO
- lines
-Message-ID: <2025102724-womb-width-695a@gregkh>
-References: <2025102619-shortage-tabby-5157@gregkh>
- <20251026225104.272662-1-sashal@kernel.org>
+	s=arc-20240116; t=1761552920; c=relaxed/simple;
+	bh=CzMWNYBpkVxjntctMxpyDnNqn3kObLOGDmZpfh4lBHc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=MIrzKTYhPqpN3POCJg/wff4fqp/vYKOC5LLlzmne/+BH4OkGwZ4WiQoNjaB2eTGoWt74V010BaKe3oFlV1YVsSQyzXqrH3+cDa60TJWFr7u8nQlFVfqvyZ8E3+AVcY2pn6IIPg9XByCRs1754Eji09gFjadlHfdHhdNT/g3lhrc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gaisler.com; spf=pass smtp.mailfrom=gaisler.com; dkim=fail (0-bit key) header.d=gaisler.com header.i=@gaisler.com header.b=U7oPHaKg reason="key not found in DNS"; arc=none smtp.client-ip=94.231.106.210
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gaisler.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gaisler.com
+Received: from localhost (localhost [127.0.0.1])
+	by smtp.simply.com (Simply.com) with ESMTP id 4cw5kk1q7vz1DDSX;
+	Mon, 27 Oct 2025 09:09:18 +0100 (CET)
+Received: from [10.10.15.20] (h-98-128-223-123.NA.cust.bahnhof.se [98.128.223.123])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by smtp.simply.com (Simply.com) with ESMTPSA id 4cw5kj4mWhz1DDSD;
+	Mon, 27 Oct 2025 09:09:17 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gaisler.com;
+	s=simplycom2; t=1761552558;
+	bh=ZLV2TZQ8o0UIo4kQoy81VsD/d+q0Y3BumdWGaXuUWFs=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=U7oPHaKgL8ya1ryi1sQnGMtxdWqzLdImAv2+viSOEJzM9A6NZo5rYPOs3wkx8MITz
+	 VdI2cbRdHtPmbp8gd3Sp5i0ncY5AiNcCFhpq5hC6WoaGCPK+niW2y//67xXSzIobOB
+	 38t2HiXUfA4px479zvBd5RxN5gdPIqRc5rZ/bnKedw4p+y1ok8c7eA/ZFpE0AjnSVO
+	 75CWmLYcHCsJzCOY7RvpvQlAFRNuZl0X7SBpWRPTt4mhIt4uqstrwDLt+pRZYE70fS
+	 MVxuQZ3F9CaSnvhpYDbxUvnXYYJZviZ8PL7bo9M0p3Dc5PLgLDArCbqYW8RIs7eSoJ
+	 H9HnEuMPxDzxw==
+Message-ID: <62e049c9-cb92-4eaa-b069-e96ddafaad03@gaisler.com>
+Date: Mon, 27 Oct 2025 09:09:17 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251026225104.272662-1-sashal@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH AUTOSEL 6.17-5.4] sparc: Replace __ASSEMBLY__ with
+ __ASSEMBLER__ in uapi headers
+To: Sasha Levin <sashal@kernel.org>, patches@lists.linux.dev,
+ stable@vger.kernel.org
+Cc: Thomas Huth <thuth@redhat.com>, "David S. Miller" <davem@davemloft.net>,
+ sparclinux@vger.kernel.org, nathan@kernel.org, alexandre.f.demers@gmail.com,
+ alexander.deucher@amd.com, llvm@lists.linux.dev
+References: <20251025160905.3857885-1-sashal@kernel.org>
+ <20251025160905.3857885-242-sashal@kernel.org>
+Content-Language: en-US
+From: Andreas Larsson <andreas@gaisler.com>
+In-Reply-To: <20251025160905.3857885-242-sashal@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Sun, Oct 26, 2025 at 06:51:03PM -0400, Sasha Levin wrote:
-> From: William Breathitt Gray <wbg@kernel.org>
+On 2025-10-25 17:57, Sasha Levin wrote:
+> From: Thomas Huth <thuth@redhat.com>
 > 
-> [ Upstream commit 2ba5772e530f73eb847fb96ce6c4017894869552 ]
+> [ Upstream commit d6fb6511de74bd0d4cb4cabddae9b31d533af1c1 ]
 > 
-> The direction of the IDIO-16 GPIO lines is fixed with the first 16 lines
-> as output and the remaining 16 lines as input. Set the gpio_config
-> fixed_direction_output member to represent the fixed direction of the
-> GPIO lines.
+> __ASSEMBLY__ is only defined by the Makefile of the kernel, so
+> this is not really useful for uapi headers (unless the userspace
+> Makefile defines it, too). Let's switch to __ASSEMBLER__ which
+> gets set automatically by the compiler when compiling assembly
+> code.
 > 
-> Fixes: db02247827ef ("gpio: idio-16: Migrate to the regmap API")
-> Reported-by: Mark Cave-Ayland <mark.caveayland@nutanix.com>
-> Closes: https://lore.kernel.org/r/9b0375fd-235f-4ee1-a7fa-daca296ef6bf@nutanix.com
-> Suggested-by: Michael Walle <mwalle@kernel.org>
-> Cc: stable@vger.kernel.org # ae495810cffe: gpio: regmap: add the .fixed_direction_output configuration parameter
-> Cc: stable@vger.kernel.org
-> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> Signed-off-by: William Breathitt Gray <wbg@kernel.org>
-> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-> Link: https://lore.kernel.org/r/20251020-fix-gpio-idio-16-regmap-v2-3-ebeb50e93c33@kernel.org
-> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-> [ Adjust context ]
+> This is a completely mechanical patch (done with a simple "sed -i"
+> statement).
+> 
+> Cc: David S. Miller <davem@davemloft.net>
+> Cc: Andreas Larsson <andreas@gaisler.com>
+> Cc: sparclinux@vger.kernel.org
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
+> Reviewed-by: Andreas Larsson <andreas@gaisler.com>
+> Signed-off-by: Andreas Larsson <andreas@gaisler.com>
 > Signed-off-by: Sasha Levin <sashal@kernel.org>
 > ---
->  drivers/gpio/gpio-idio-16.c | 5 +++++
->  1 file changed, 5 insertions(+)
-> 
-> diff --git a/drivers/gpio/gpio-idio-16.c b/drivers/gpio/gpio-idio-16.c
-> index 2c95125892972..f7e557c2c9cd4 100644
-> --- a/drivers/gpio/gpio-idio-16.c
-> +++ b/drivers/gpio/gpio-idio-16.c
-> @@ -3,6 +3,7 @@
->   * GPIO library for the ACCES IDIO-16 family
->   * Copyright (C) 2022 William Breathitt Gray
->   */
-> +#include <linux/bitmap.h>
->  #include <linux/bits.h>
->  #include <linux/device.h>
->  #include <linux/err.h>
-> @@ -106,6 +107,7 @@ int devm_idio_16_regmap_register(struct device *const dev,
->  	struct idio_16_data *data;
->  	struct regmap_irq_chip *chip;
->  	struct regmap_irq_chip_data *chip_data;
-> +	DECLARE_BITMAP(fixed_direction_output, IDIO_16_NGPIO);
->  
->  	if (!config->parent)
->  		return -EINVAL;
-> @@ -163,6 +165,9 @@ int devm_idio_16_regmap_register(struct device *const dev,
->  	gpio_config.irq_domain = regmap_irq_get_domain(chip_data);
->  	gpio_config.reg_mask_xlate = idio_16_reg_mask_xlate;
->  
-> +	bitmap_from_u64(fixed_direction_output, GENMASK_U64(15, 0));
-> +	gpio_config.fixed_direction_output = fixed_direction_output;
-> +
->  	return PTR_ERR_OR_ZERO(devm_gpio_regmap_register(dev, &gpio_config));
->  }
->  EXPORT_SYMBOL_GPL(devm_idio_16_regmap_register);
-> -- 
-> 2.51.0
-> 
-> 
 
-Breaks the build :(
+The upstream commit dc356bf3c173 ("sparc: Drop the "-ansi" from the asflags") is
+a prerequisite to d6fb6511de74 ("sparc: Replace __ASSEMBLY__ with __ASSEMBLER__
+in uapi headers") that here is planned to be picked up to stable branches. If
+this prerequisite is not picked up first the kernel will not compile [1].
+
+[1] https://lore.kernel.org/all/810a8ec4-e416-42b6-97bf-8a56f41deea1@redhat.com/
+
+Cheers,
+Andreas
+
 
