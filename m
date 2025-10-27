@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-190943-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190735-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AF05C10DC3
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:22:44 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41F5AC10B01
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:15:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E4CBC1A62EBD
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:18:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CD9EB1A24FE1
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:10:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B8883203A7;
-	Mon, 27 Oct 2025 19:16:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A983309F1E;
+	Mon, 27 Oct 2025 19:07:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D9+loaUk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GTqrIuab"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 234CF202963;
-	Mon, 27 Oct 2025 19:16:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47F6B14A4F0;
+	Mon, 27 Oct 2025 19:07:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592604; cv=none; b=tMEpa5/N5XRdxN+s/QIeWPmJTmuLs6jbExQqcorwdG9hmoutGHMoSR6Cz2Z9AfUJ8bXLisCGkyyOo52zejESw2dvTvTU9hFrkN7/Tc5+xZ3JcgwBS5hVQZ3YH+L6z8aikc1lYrRz6/JhMbaKWL/jH3fUcSQ6r6m1sOmdlwEGzpc=
+	t=1761592059; cv=none; b=ivweXFQ8je14PqLsZ9BnscHKdDWetsz+43KbGTkD+AMrfPdF9VsAlFkkJ5mVj4nHg332z9EJ6N1zhwsNyNO3gARrVxIX/TIcvgjAfXWp5XVOFl7CRU8Ac66UO8WUQXYkadY7DMDPIRqkwyz9g8YmR1JaIjHTFQln/6w44pMy7cE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592604; c=relaxed/simple;
-	bh=2AZYDrMiawjiuqQBgevB7dQD6cXb/QXZrKUry77YOMI=;
+	s=arc-20240116; t=1761592059; c=relaxed/simple;
+	bh=QKxrIheFljRrno8T6VaR6az4cDX2ilQt7dvXkOkyUMU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TBtNu2lIGwiUwkV73eCofBL3KDxuo1lKMKr7zEzyDK7qTWxGDTbF3m1BmMSrOnAHbEoW2JOYFvWR1cEqnS57rhoFQXxg8QlJnLT5URBldsQFfpVsyfUIiR59bsoosN6XmXrDuAcHR42Q3ZnUaLQWnikA4/M8IDrO0RWWQwwUpLU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D9+loaUk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAE38C4CEFD;
-	Mon, 27 Oct 2025 19:16:43 +0000 (UTC)
+	 MIME-Version; b=Oa8YbEx7S5pN05KN3IWlIOy0naaGPKVH7D82N77qUQziiHzm4jDH5fyCUfAKKJSFbIcfVZeT7vBT/7o0Na36VyfLBlN0vgE0b6Cy9eae85IgZh32GsWFSzBPddjpQeiWJIDtB+O18yaAan9qYP6goeLTy9D9ls2hr4FkwEhqyqE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GTqrIuab; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3EB0C4CEF1;
+	Mon, 27 Oct 2025 19:07:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592604;
-	bh=2AZYDrMiawjiuqQBgevB7dQD6cXb/QXZrKUry77YOMI=;
+	s=korg; t=1761592059;
+	bh=QKxrIheFljRrno8T6VaR6az4cDX2ilQt7dvXkOkyUMU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D9+loaUkycEYwIfbdCslxfLLshmNpgF9Wyjb0M0LkZ9ExZNtN6+e5P9nIV4KWeNzg
-	 tbn8faUab6XR+kxsC5qE53UIXTUaa3g79M64ViFUqrLDGifo9dm9wIylalJ9yWBd81
-	 T0HcODR2lp3VZN7OvLw2fDlBgn+5NF416CVsg9As=
+	b=GTqrIuabFbCdJhqfU2zJy9462LDj+mpDcZxKv6FwKbrClexxA3i2wHbfi5l+hWDr+
+	 YIM5/s4x90dJQ/l92LXgPmA6pVdqlZTnf2JZSukz0FThh4nAjozFUYLArA3gnMZYYc
+	 hRHoDUgiZWbhQHRd9MupgcHfr22SZb4w8mRT0Le8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Viacheslav Dubeyko <slava@dubeyko.com>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	Yangtao Li <frank.li@vivo.com>,
-	linux-fsdevel@vger.kernel.org,
+	Atish Patra <atishp@rivosinc.com>,
+	Tsukasa OI <research_trasio@irq.a4lg.com>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Anup Patel <anup@brainfault.org>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 03/84] hfs: clear offset and space out of valid records in b-tree node
+Subject: [PATCH 5.15 072/123] RISC-V: Minimal parser for "riscv, isa" strings
 Date: Mon, 27 Oct 2025 19:35:52 +0100
-Message-ID: <20251027183438.910632139@linuxfoundation.org>
+Message-ID: <20251027183448.324865727@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183438.817309828@linuxfoundation.org>
-References: <20251027183438.817309828@linuxfoundation.org>
+In-Reply-To: <20251027183446.381986645@linuxfoundation.org>
+References: <20251027183446.381986645@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,96 +65,147 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Viacheslav Dubeyko <slava@dubeyko.com>
+From: Tsukasa OI <research_trasio@irq.a4lg.com>
 
-[ Upstream commit 18b07c44f245beb03588b00b212b38fce9af7cc9 ]
+[ Upstream commit 2a31c54be097c74344b4fab20ea6104012d2cb8b ]
 
-Currently, hfs_brec_remove() executes moving records
-towards the location of deleted record and it updates
-offsets of moved records. However, the hfs_brec_remove()
-logic ignores the "mess" of b-tree node's free space and
-it doesn't touch the offsets out of records number.
-Potentially, it could confuse fsck or driver logic or
-to be a reason of potential corruption cases.
+Current hart ISA ("riscv,isa") parser don't correctly parse:
 
-This patch reworks the logic of hfs_brec_remove()
-by means of clearing freed space of b-tree node
-after the records moving. And it clear the last
-offset that keeping old location of free space
-because now the offset before this one is keeping
-the actual offset to the free space after the record
-deletion.
+1. Multi-letter extensions
+2. Version numbers
 
-Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
-cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-cc: Yangtao Li <frank.li@vivo.com>
-cc: linux-fsdevel@vger.kernel.org
-Link: https://lore.kernel.org/r/20250815194918.38165-1-slava@dubeyko.com
-Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
+All ISA extensions ratified recently has multi-letter extensions
+(except 'H'). The current "riscv,isa" parser that is easily confused
+by multi-letter extensions and "p" in version numbers can be a huge
+problem for adding new extensions through the device tree.
+
+Leaving it would create incompatible hacks and would make "riscv,isa"
+value unreliable.
+
+This commit implements minimal parser for "riscv,isa" strings.  With this,
+we can safely ignore multi-letter extensions and version numbers.
+
+[Improved commit text and fixed a bug around 's' in base extension]
+Signed-off-by: Atish Patra <atishp@rivosinc.com>
+[Fixed workaround for QEMU]
+Signed-off-by: Tsukasa OI <research_trasio@irq.a4lg.com>
+Tested-by: Heiko Stuebner <heiko@sntech.de>
+Reviewed-by: Anup Patel <anup@brainfault.org>
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Stable-dep-of: d2721bb165b3 ("RISC-V: Don't print details of CPUs disabled in DT")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/hfs/brec.c | 27 +++++++++++++++++++++++----
- 1 file changed, 23 insertions(+), 4 deletions(-)
+ arch/riscv/kernel/cpufeature.c | 72 ++++++++++++++++++++++++++++------
+ 1 file changed, 61 insertions(+), 11 deletions(-)
 
-diff --git a/fs/hfs/brec.c b/fs/hfs/brec.c
-index 896396554bcc1..b01db1fae147c 100644
---- a/fs/hfs/brec.c
-+++ b/fs/hfs/brec.c
-@@ -179,6 +179,7 @@ int hfs_brec_remove(struct hfs_find_data *fd)
- 	struct hfs_btree *tree;
- 	struct hfs_bnode *node, *parent;
- 	int end_off, rec_off, data_off, size;
-+	int src, dst, len;
+diff --git a/arch/riscv/kernel/cpufeature.c b/arch/riscv/kernel/cpufeature.c
+index dd3d57eb4eead..72c5f6ef56b5a 100644
+--- a/arch/riscv/kernel/cpufeature.c
++++ b/arch/riscv/kernel/cpufeature.c
+@@ -7,6 +7,7 @@
+  */
  
- 	tree = fd->tree;
- 	node = fd->bnode;
-@@ -208,10 +209,14 @@ int hfs_brec_remove(struct hfs_find_data *fd)
- 	}
- 	hfs_bnode_write_u16(node, offsetof(struct hfs_bnode_desc, num_recs), node->num_recs);
+ #include <linux/bitmap.h>
++#include <linux/ctype.h>
+ #include <linux/of.h>
+ #include <asm/processor.h>
+ #include <asm/hwcap.h>
+@@ -66,7 +67,7 @@ void __init riscv_fill_hwcap(void)
+ 	struct device_node *node;
+ 	const char *isa;
+ 	char print_str[NUM_ALPHA_EXTS + 1];
+-	size_t i, j, isa_len;
++	int i, j;
+ 	static unsigned long isa2hwcap[256] = {0};
  
--	if (rec_off == end_off)
--		goto skip;
- 	size = fd->keylength + fd->entrylength;
+ 	isa2hwcap['i'] = isa2hwcap['I'] = COMPAT_HWCAP_ISA_I;
+@@ -92,23 +93,72 @@ void __init riscv_fill_hwcap(void)
+ 			continue;
+ 		}
  
-+	if (rec_off == end_off) {
-+		src = fd->keyoffset;
-+		hfs_bnode_clear(node, src, size);
-+		goto skip;
-+	}
+-		i = 0;
+-		isa_len = strlen(isa);
+ #if IS_ENABLED(CONFIG_32BIT)
+ 		if (!strncmp(isa, "rv32", 4))
+-			i += 4;
++			isa += 4;
+ #elif IS_ENABLED(CONFIG_64BIT)
+ 		if (!strncmp(isa, "rv64", 4))
+-			i += 4;
++			isa += 4;
+ #endif
+-		for (; i < isa_len; ++i) {
+-			this_hwcap |= isa2hwcap[(unsigned char)(isa[i])];
++		for (; *isa; ++isa) {
++			const char *ext = isa++;
++			const char *ext_end = isa;
++			bool ext_long = false, ext_err = false;
 +
- 	do {
- 		data_off = hfs_bnode_read_u16(node, rec_off);
- 		hfs_bnode_write_u16(node, rec_off + 2, data_off - size);
-@@ -219,9 +224,23 @@ int hfs_brec_remove(struct hfs_find_data *fd)
- 	} while (rec_off >= end_off);
++			switch (*ext) {
++			case 's':
++				/**
++				 * Workaround for invalid single-letter 's' & 'u'(QEMU).
++				 * No need to set the bit in riscv_isa as 's' & 'u' are
++				 * not valid ISA extensions. It works until multi-letter
++				 * extension starting with "Su" appears.
++				 */
++				if (ext[-1] != '_' && ext[1] == 'u') {
++					++isa;
++					ext_err = true;
++					break;
++				}
++				fallthrough;
++			case 'x':
++			case 'z':
++				ext_long = true;
++				/* Multi-letter extension must be delimited */
++				for (; *isa && *isa != '_'; ++isa)
++					if (!islower(*isa) && !isdigit(*isa))
++						ext_err = true;
++				break;
++			default:
++				if (unlikely(!islower(*ext))) {
++					ext_err = true;
++					break;
++				}
++				/* Find next extension */
++				if (!isdigit(*isa))
++					break;
++				/* Skip the minor version */
++				while (isdigit(*++isa))
++					;
++				if (*isa != 'p')
++					break;
++				if (!isdigit(*++isa)) {
++					--isa;
++					break;
++				}
++				/* Skip the major version */
++				while (isdigit(*++isa))
++					;
++				break;
++			}
++			if (*isa != '_')
++				--isa;
+ 			/*
+-			 * TODO: X, Y and Z extension parsing for Host ISA
+-			 * bitmap will be added in-future.
++			 * TODO: Full version-aware handling including
++			 * multi-letter extensions will be added in-future.
+ 			 */
+-			if ('a' <= isa[i] && isa[i] < 'x')
+-				this_isa |= (1UL << (isa[i] - 'a'));
++			if (ext_err || ext_long)
++				continue;
++			this_hwcap |= isa2hwcap[(unsigned char)(*ext)];
++			this_isa |= (1UL << (*ext - 'a'));
+ 		}
  
- 	/* fill hole */
--	hfs_bnode_move(node, fd->keyoffset, fd->keyoffset + size,
--		       data_off - fd->keyoffset - size);
-+	dst = fd->keyoffset;
-+	src = fd->keyoffset + size;
-+	len = data_off - src;
-+
-+	hfs_bnode_move(node, dst, src, len);
-+
-+	src = dst + len;
-+	len = data_off - src;
-+
-+	hfs_bnode_clear(node, src, len);
-+
- skip:
-+	/*
-+	 * Remove the obsolete offset to free space.
-+	 */
-+	hfs_bnode_write_u16(node, end_off, 0);
-+
- 	hfs_bnode_dump(node);
- 	if (!fd->record)
- 		hfs_brec_update_parent(fd);
+ 		/*
 -- 
 2.51.0
 
