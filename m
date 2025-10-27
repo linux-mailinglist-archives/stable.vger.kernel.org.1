@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-190801-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191144-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC761C10BFB
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:18:32 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CD47C110B1
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:31:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4A0D9581295
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:13:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A01F61A6002E
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:27:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 336EB30506B;
-	Mon, 27 Oct 2025 19:10:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6292932C93E;
+	Mon, 27 Oct 2025 19:25:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h31wTqu2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0ZbLb9Ac"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCA8D309F1E;
-	Mon, 27 Oct 2025 19:10:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C1942D9EEC;
+	Mon, 27 Oct 2025 19:25:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592232; cv=none; b=PKWCMPZXiXBeGNnL4shCZfON+WzLOtH1IzkMJm3JrIb1TgM4a/3p65N30DtBtB1g/+tzOBFltZ0rvFkcwPkZnJ73+D1uYnJOvfOxnTS1cUCtMWT7Hlt6MjRAUEs16TMA2vrvPbAVZh+aIbfVgVostjv9NDgRPB/G4w0jLS80OvU=
+	t=1761593123; cv=none; b=NPkIoec0iHbE24Su+FqsRd1HdPEXLsRqJJcrqbAimzSLr9cHj7y5nbMvCpXocsgjmiidsOAcC0sf9sz05YVrLlAq9ZFakvkHwEfYAKV53oeEk/Q/7J1K5fCmB4RCCq2lepaU5MXfqo3OM/qs2pW8JPlphtbqFSRmqdawZcB8/RM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592232; c=relaxed/simple;
-	bh=3qMZkSNCINONjM1bTFIxweh81EFMNYmG2/Uxzczi7pc=;
+	s=arc-20240116; t=1761593123; c=relaxed/simple;
+	bh=Mbg/iqCV0Z4M87zQWxKY3pRPe8pViEtGAszjX70IDrU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RAk9Lj1Vv2jZkf6TGkPA7QcMKvctyB0at/9UvGPlhSwsh2aHcZnLvG+nTqwM1vvPahQ0AOC1b8OwwnR3FVLcXtpEeGpIcZGfN6rhUdZ7m5cdKYG6XVtU3x5z4o6tq4wTd4fKBzOtJiRLylejqYiiz9ds7TXXzSmYNdupJn2Pezk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h31wTqu2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71085C4CEF1;
-	Mon, 27 Oct 2025 19:10:31 +0000 (UTC)
+	 MIME-Version; b=Qs7o1Kzy13umDhIr2Qg44KWvpq/nRkMnhP815OJ7clbLSFJ52IwjqqYAIKgdB4grcc+6jxijzgngjsriAeug6hP2sDOOL71JFM4rywDykvvyMrVwv7NjtIrKq9LwEFSufYxP+AjGKxYQMBX3YzP0NyTzFYKAieTuUiAj6as2Fpo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0ZbLb9Ac; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2B52C4CEF1;
+	Mon, 27 Oct 2025 19:25:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592231;
-	bh=3qMZkSNCINONjM1bTFIxweh81EFMNYmG2/Uxzczi7pc=;
+	s=korg; t=1761593123;
+	bh=Mbg/iqCV0Z4M87zQWxKY3pRPe8pViEtGAszjX70IDrU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h31wTqu2dNgO/d5Q1ZoqQpPQQVa6x+wC46Mr5+BffQT0SX0teKdqiLvTX0c65viQq
-	 yWU/6Y/ZnhcrDeB5hSY4tEcCLEJ/U2pF5dxGIb1RPxbVgSGXfcZcYNPVzoKW/yGenb
-	 DG2t7opotW8lz/gQvXYe1nlxFb/mhrzUb1rptiM4=
+	b=0ZbLb9AcNG3tQ/k8v3qstclJHfaevGp9+Js2wyL30jhLMyJKmrD2hamGinfEf6lC6
+	 G3UGP+ByjMibbDds8ysl4egPizUF19fxORUZP7EMc1uHq2n90GtUb0D2vU15Ndscs2
+	 0WEt7/bsL2/DuRR1rE6DToFBSEDKhKi1YNDwQyd4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Raju Rangoju <Raju.Rangoju@amd.com>,
-	Dawid Osuchowski <dawid.osuchowski@linux.intel.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	kernel test robot <lkp@intel.com>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	"Yury Norov (NVIDIA)" <yury.norov@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 042/157] amd-xgbe: Avoid spurious link down messages during interface toggle
+Subject: [PATCH 6.17 021/184] m68k: bitops: Fix find_*_bit() signatures
 Date: Mon, 27 Oct 2025 19:35:03 +0100
-Message-ID: <20251027183502.425866811@linuxfoundation.org>
+Message-ID: <20251027183515.503087669@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
-References: <20251027183501.227243846@linuxfoundation.org>
+In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
+References: <20251027183514.934710872@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +63,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Raju Rangoju <Raju.Rangoju@amd.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
 
-[ Upstream commit 2616222e423398bb374ffcb5d23dea4ba2c3e524 ]
+[ Upstream commit 6d5674090543b89aac0c177d67e5fb32ddc53804 ]
 
-During interface toggle operations (ifdown/ifup), the driver currently
-resets the local helper variable 'phy_link' to -1. This causes the link
-state machine to incorrectly interpret the state as a link change event,
-resulting in spurious "Link is down" messages being logged when the
-interface is brought back up.
+The function signatures of the m68k-optimized implementations of the
+find_{first,next}_{,zero_}bit() helpers do not match the generic
+variants.
 
-Preserve the phy_link state across interface toggles to avoid treating
-the -1 sentinel value as a legitimate link state transition.
+Fix this by changing all non-pointer inputs and outputs to "unsigned
+long", and updating a few local variables.
 
-Fixes: 88131a812b16 ("amd-xgbe: Perform phy connect/disconnect at dev open/stop")
-Signed-off-by: Raju Rangoju <Raju.Rangoju@amd.com>
-Reviewed-by: Dawid Osuchowski <dawid.osuchowski@linux.intel.com>
-Link: https://patch.msgid.link/20251010065142.1189310-1-Raju.Rangoju@amd.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202509092305.ncd9mzaZ-lkp@intel.com/
+Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Acked-by: "Yury Norov (NVIDIA)" <yury.norov@gmail.com>
+Link: https://patch.msgid.link/de6919554fbb4cd1427155c6bafbac8a9df822c8.1757517135.git.geert@linux-m68k.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/amd/xgbe/xgbe-drv.c  | 1 -
- drivers/net/ethernet/amd/xgbe/xgbe-mdio.c | 1 +
- 2 files changed, 1 insertion(+), 1 deletion(-)
+ arch/m68k/include/asm/bitops.h | 25 ++++++++++++++-----------
+ 1 file changed, 14 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/net/ethernet/amd/xgbe/xgbe-drv.c b/drivers/net/ethernet/amd/xgbe/xgbe-drv.c
-index 34d45cebefb5d..b4d57da71de2a 100644
---- a/drivers/net/ethernet/amd/xgbe/xgbe-drv.c
-+++ b/drivers/net/ethernet/amd/xgbe/xgbe-drv.c
-@@ -1172,7 +1172,6 @@ static void xgbe_free_rx_data(struct xgbe_prv_data *pdata)
+diff --git a/arch/m68k/include/asm/bitops.h b/arch/m68k/include/asm/bitops.h
+index 14c64a6f12176..50ec92651d5a5 100644
+--- a/arch/m68k/include/asm/bitops.h
++++ b/arch/m68k/include/asm/bitops.h
+@@ -350,12 +350,12 @@ static inline bool xor_unlock_is_negative_byte(unsigned long mask,
+ #include <asm-generic/bitops/ffz.h>
+ #else
  
- static int xgbe_phy_reset(struct xgbe_prv_data *pdata)
+-static inline int find_first_zero_bit(const unsigned long *vaddr,
+-				      unsigned size)
++static inline unsigned long find_first_zero_bit(const unsigned long *vaddr,
++						unsigned long size)
  {
--	pdata->phy_link = -1;
- 	pdata->phy_speed = SPEED_UNKNOWN;
+ 	const unsigned long *p = vaddr;
+-	int res = 32;
+-	unsigned int words;
++	unsigned long res = 32;
++	unsigned long words;
+ 	unsigned long num;
  
- 	return pdata->phy_if.phy_reset(pdata);
-diff --git a/drivers/net/ethernet/amd/xgbe/xgbe-mdio.c b/drivers/net/ethernet/amd/xgbe/xgbe-mdio.c
-index 19fed56b6ee3f..ebb8b3e5b9a88 100644
---- a/drivers/net/ethernet/amd/xgbe/xgbe-mdio.c
-+++ b/drivers/net/ethernet/amd/xgbe/xgbe-mdio.c
-@@ -1636,6 +1636,7 @@ static int xgbe_phy_init(struct xgbe_prv_data *pdata)
- 		pdata->phy.duplex = DUPLEX_FULL;
- 	}
+ 	if (!size)
+@@ -376,8 +376,9 @@ static inline int find_first_zero_bit(const unsigned long *vaddr,
+ }
+ #define find_first_zero_bit find_first_zero_bit
  
-+	pdata->phy_link = 0;
- 	pdata->phy.link = 0;
+-static inline int find_next_zero_bit(const unsigned long *vaddr, int size,
+-				     int offset)
++static inline unsigned long find_next_zero_bit(const unsigned long *vaddr,
++					       unsigned long size,
++					       unsigned long offset)
+ {
+ 	const unsigned long *p = vaddr + (offset >> 5);
+ 	int bit = offset & 31UL, res;
+@@ -406,11 +407,12 @@ static inline int find_next_zero_bit(const unsigned long *vaddr, int size,
+ }
+ #define find_next_zero_bit find_next_zero_bit
  
- 	pdata->phy.pause_autoneg = pdata->pause_autoneg;
+-static inline int find_first_bit(const unsigned long *vaddr, unsigned size)
++static inline unsigned long find_first_bit(const unsigned long *vaddr,
++					   unsigned long size)
+ {
+ 	const unsigned long *p = vaddr;
+-	int res = 32;
+-	unsigned int words;
++	unsigned long res = 32;
++	unsigned long words;
+ 	unsigned long num;
+ 
+ 	if (!size)
+@@ -431,8 +433,9 @@ static inline int find_first_bit(const unsigned long *vaddr, unsigned size)
+ }
+ #define find_first_bit find_first_bit
+ 
+-static inline int find_next_bit(const unsigned long *vaddr, int size,
+-				int offset)
++static inline unsigned long find_next_bit(const unsigned long *vaddr,
++					  unsigned long size,
++					  unsigned long offset)
+ {
+ 	const unsigned long *p = vaddr + (offset >> 5);
+ 	int bit = offset & 31UL, res;
 -- 
 2.51.0
 
