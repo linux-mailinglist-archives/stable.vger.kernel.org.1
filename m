@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-190882-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191229-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FA1FC10CFD
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:21:06 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id DDB8CC113E4
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:46:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E85EA1A251C0
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:16:10 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 15A60564B22
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:31:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F3AB328604;
-	Mon, 27 Oct 2025 19:14:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04B7431E0F7;
+	Mon, 27 Oct 2025 19:29:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qOh6x6rZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DKRr2hed"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFDB6321454;
-	Mon, 27 Oct 2025 19:14:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B658A309F1E;
+	Mon, 27 Oct 2025 19:29:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592449; cv=none; b=jZnEIHNhg85wszvRiy2jnHdJFg24ii+cYs5LeRFzvcDicoufE8SKogVqKh0PfqeZcfk46Ko5dlAz1CTEgqPxZNIbWaEHMGHGYrJ+szYDQsD3tbEHoq95UT4Spx1NP56Af6Fb3I3LguK7mele248xqQqzcjJZXNqI2krLAwh1Ouw=
+	t=1761593347; cv=none; b=ZSGojZiDCrq6NDB1VUSLuILBgrIDfvLRxLnp01T1PZwvf4JJBiS0BdruzoCrZbSRx0jtWUwq8/X86IrwiFvQYp46ruoZSdd2U4qfbObiEF7V1idK9piitw1HFCN4LB2KTgPrrVboKtgzyPuc/HjUJr1PY3v30Oioeyk1eykQdV4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592449; c=relaxed/simple;
-	bh=l+t0vBEGJPUkdMaWLqaA8K9TG67p6KPSTmAxyEbwbvE=;
+	s=arc-20240116; t=1761593347; c=relaxed/simple;
+	bh=wNfdrxtMw1t1Bgkrnogl/kvbz5Upo5w/nxi6NCN5ZFg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zze405kfgMEORvdn/Fhx1BIwY8+T/jyD5zkU9MPBhRfEG54DkMvAAo2qaYU4Q0NU8YBpyYliEQdcq9LT/D/hOazQIuOkLtj/SO9lCGlfUN2gHXogSeXOhhq9XIFcThYTEpeoHBmVim5F1UuZTi5QDVaVv+HFWZvemroaqjvdGzg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qOh6x6rZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B572C4CEFD;
-	Mon, 27 Oct 2025 19:14:06 +0000 (UTC)
+	 MIME-Version; b=hkeIuixBMdfgZ7VhdQOBnLlvCJDAxyEzdsCHrrhpjfphpU7BVyIBvMjBIOP+H9nrWSXqkETMF1FgC0ss6CT7ULE4ulho1WoNEhRTo6Q/cpG/NKfv4ZrSS7f5p1IRoEti0Oila+47Km/9MU9JfdUYw4ewbmZcUl7rqxAt7ROWGf4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DKRr2hed; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3767CC4CEF1;
+	Mon, 27 Oct 2025 19:29:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592447;
-	bh=l+t0vBEGJPUkdMaWLqaA8K9TG67p6KPSTmAxyEbwbvE=;
+	s=korg; t=1761593347;
+	bh=wNfdrxtMw1t1Bgkrnogl/kvbz5Upo5w/nxi6NCN5ZFg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qOh6x6rZF+iScZH0QnSBNZ+8ym2RiJ/wWaNL+rV11QEzpep3GJ7GBYl4q5Oo/x6Lq
-	 i+MSFgCzhHJn9a4m6S/Os4ot42hDZEcsJOZcIh+DewIXWlFf2jBoyNRtcuPXyj9MCI
-	 wtQRKRqfOjyhqWjksi12Gowy3Setsx+cCpSoeRRE=
+	b=DKRr2hedLPwBQ0APJy+Q6fa1hI+2GBrHEo57wn8zZ4SYUa6/Wa0R4FlYe7Vi3IzqB
+	 ZjeLdLuNQt0odCxqfii55LjD5HV4LIkxO3y7Of9EcnVYjPgvEa3AQ+FJk5UlmtqMbh
+	 4ltLDgS3YiBqtKCMCEde6Uf9wI4kYVYlq1V6XeQM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiao Liang <shaw.leon@gmail.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 125/157] padata: Reset next CPU when reorder sequence wraps around
+	Geliang Tang <geliang@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.17 104/184] selftests: mptcp: join: mark delete re-add signal as skipped if not supported
 Date: Mon, 27 Oct 2025 19:36:26 +0100
-Message-ID: <20251027183504.603861114@linuxfoundation.org>
+Message-ID: <20251027183517.716888762@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
-References: <20251027183501.227243846@linuxfoundation.org>
+In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
+References: <20251027183514.934710872@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiao Liang <shaw.leon@gmail.com>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-[ Upstream commit 501302d5cee0d8e8ec2c4a5919c37e0df9abc99b ]
+commit c3496c052ac36ea98ec4f8e95ae6285a425a2457 upstream.
 
-When seq_nr wraps around, the next reorder job with seq 0 is hashed to
-the first CPU in padata_do_serial(). Correspondingly, need reset pd->cpu
-to the first one when pd->processed wraps around. Otherwise, if the
-number of used CPUs is not a power of 2, padata_find_next() will be
-checking a wrong list, hence deadlock.
+The call to 'continue_if' was missing: it properly marks a subtest as
+'skipped' if the attached condition is not valid.
 
-Fixes: 6fc4dbcf0276 ("padata: Replace delayed timer with immediate workqueue in padata_reorder")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Xiao Liang <shaw.leon@gmail.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-[ applied fix in padata_find_next() instead of padata_reorder() ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Without that, the test is wrongly marked as passed on older kernels.
+
+Fixes: b5e2fb832f48 ("selftests: mptcp: add explicit test case for remove/readd")
+Cc: stable@vger.kernel.org
+Reviewed-by: Geliang Tang <geliang@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20251020-net-mptcp-c-flag-late-add-addr-v1-4-8207030cb0e8@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/padata.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ tools/testing/selftests/net/mptcp/mptcp_join.sh |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/kernel/padata.c
-+++ b/kernel/padata.c
-@@ -282,7 +282,11 @@ static struct padata_priv *padata_find_n
- 	if (remove_object) {
- 		list_del_init(&padata->list);
- 		++pd->processed;
--		pd->cpu = cpumask_next_wrap(cpu, pd->cpumask.pcpu, -1, false);
-+		/* When sequence wraps around, reset to the first CPU. */
-+		if (unlikely(pd->processed == 0))
-+			pd->cpu = cpumask_first(pd->cpumask.pcpu);
-+		else
-+			pd->cpu = cpumask_next_wrap(cpu, pd->cpumask.pcpu, -1, false);
- 	}
+--- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+@@ -3852,7 +3852,7 @@ endpoint_tests()
  
- 	spin_unlock(&reorder->lock);
+ 	# remove and re-add
+ 	if reset_with_events "delete re-add signal" &&
+-	   mptcp_lib_kallsyms_has "subflow_rebuild_header$"; then
++	   continue_if mptcp_lib_kallsyms_has "subflow_rebuild_header$"; then
+ 		ip netns exec $ns1 sysctl -q net.mptcp.add_addr_timeout=0
+ 		pm_nl_set_limits $ns1 0 3
+ 		pm_nl_set_limits $ns2 3 3
 
 
 
