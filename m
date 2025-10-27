@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-191070-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190634-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA686C11042
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:30:18 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98D99C10924
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:10:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 38C665017F5
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:24:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 81C861A282F5
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:07:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7986831D740;
-	Mon, 27 Oct 2025 19:22:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0092632B9A1;
+	Mon, 27 Oct 2025 19:03:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HQjAMkYZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S0cI8tx+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 357F02BD033;
-	Mon, 27 Oct 2025 19:22:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8B1131B83D;
+	Mon, 27 Oct 2025 19:03:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592935; cv=none; b=DekRG41UGExRy+J+kjXTANZQ4YdOkyfEZS/4OJunbpdBULSX8z1gd87xuDqdw/vTJKELSN2n0SYLqlzTo/FW7qs0eYb2Kdirx7zIi5Woox/OdAH9EkzN0X3Cdbfd9BDUJgMmrW17yBRc4uPwdhgcsJ2MPphy8UIJL3QL2Mqyl2E=
+	t=1761591798; cv=none; b=QI5Q2zgqx32lxbFpMqrNty2+boAMDlRMbO0FTvDnWrAbgbb+UJas9iXwVLYqbYsfgMpyDnGcbZsHjMyzzxsKpCz0EYUozu4Y+qbTEP/FeqPNEwJcXR1VnwRSZ2Kyy/i3fc/0VuXEPHu96+hv1BH14QBWYxxGp7hCugdnwc5sn/A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592935; c=relaxed/simple;
-	bh=maKULD8YfwwbLq4VAhd4m+ROS8mGrLCtI1nNuwvQyF0=;
+	s=arc-20240116; t=1761591798; c=relaxed/simple;
+	bh=AIFOJbp/nMiAwKcmo4byTYTSZKMohAqn5TY2+adoY/s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eNjJKZHV5IWEWHt2P9aLPZhN8CPDV73PeuOZ2l0KPx9dH95b9Y1O6JI+VXIJNtBR0hd4c/SjhbdGvx3ETDK42VtwCGhH48Irc749zYc0Ts4lvA+QFeIoxodU/F7nP6h4gkQk2m/DryxcvjJmXTeY8vzSDh4UJDFjDtVzSGn0y8A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HQjAMkYZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD2F0C4CEF1;
-	Mon, 27 Oct 2025 19:22:14 +0000 (UTC)
+	 MIME-Version; b=KVVtopKvrBZEnJPeXB3AaNZ6KTFyrLCHoW/CkgNru2EW+ngerpV/h/IcVGIwH3zK45SsOk1Ql1Tw+nZ/HkataZSywqozEg8RbRYV2fipyRI+xvjOxV1mLv+Mbdye+BB1eS5DaiYyZdNsh8p3vyePWbCRexQcBwcNT0b36p3gQ7M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S0cI8tx+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4791C113D0;
+	Mon, 27 Oct 2025 19:03:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592935;
-	bh=maKULD8YfwwbLq4VAhd4m+ROS8mGrLCtI1nNuwvQyF0=;
+	s=korg; t=1761591798;
+	bh=AIFOJbp/nMiAwKcmo4byTYTSZKMohAqn5TY2+adoY/s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HQjAMkYZ2NOQJYRpfuabZCo1AXosKm7TaQNosmwXEhFhgQeVnP6QwbmB9zueRDCvE
-	 0X3Jtqy2pb7YeZQrp1OYuRQ0V5AqK6XEwio6+FXngI0MUf8JR0e3hSe4pn6qluIRWp
-	 KKCJQ30eZ+xt8O7a7jXJtELB9A87k4rVe8qrb6m0=
+	b=S0cI8tx+drpWHcNshEyzUZNIVb0TUUAIT/Sd13ID1fdCNWOioPJmq1jDfVVSqza4b
+	 u3Jh0luKy4PMelnhmaus1hDd2dzvfsKYh0ydvK8mvhCfFlEF3nVZxTT3SJ7YZXTjRL
+	 TF9gqzEfk95MV0guFeqaqqMTXxF6RtbKknxWwQOo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 032/117] can: rockchip-canfd: rkcanfd_start_xmit(): use can_dev_dropped_skb() instead of can_dropped_invalid_skb()
+	syzbot+10e35716f8e4929681fa@syzkaller.appspotmail.com,
+	mhal@rbox.co,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 5.10 305/332] vsock: fix lock inversion in vsock_assign_transport()
 Date: Mon, 27 Oct 2025 19:35:58 +0100
-Message-ID: <20251027183454.838229891@linuxfoundation.org>
+Message-ID: <20251027183532.907140365@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
-References: <20251027183453.919157109@linuxfoundation.org>
+In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
+References: <20251027183524.611456697@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +63,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Kleine-Budde <mkl@pengutronix.de>
+From: Stefano Garzarella <sgarzare@redhat.com>
 
-[ Upstream commit 3a3bc9bbb3a0287164a595787df0c70d91e77cfd ]
+commit f7c877e7535260cc7a21484c994e8ce7e8cb6780 upstream.
 
-In addition to can_dropped_invalid_skb(), the helper function
-can_dev_dropped_skb() checks whether the device is in listen-only mode and
-discards the skb accordingly.
+Syzbot reported a potential lock inversion deadlock between
+vsock_register_mutex and sk_lock-AF_VSOCK when vsock_linger() is called.
 
-Replace can_dropped_invalid_skb() by can_dev_dropped_skb() to also drop
-skbs in for listen-only mode.
+The issue was introduced by commit 687aa0c5581b ("vsock: Fix
+transport_* TOCTOU") which added vsock_register_mutex locking in
+vsock_assign_transport() around the transport->release() call, that can
+call vsock_linger(). vsock_assign_transport() can be called with sk_lock
+held. vsock_linger() calls sk_wait_event() that temporarily releases and
+re-acquires sk_lock. During this window, if another thread hold
+vsock_register_mutex while trying to acquire sk_lock, a circular
+dependency is created.
 
-Reported-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Closes: https://lore.kernel.org/all/20251017-bizarre-enchanted-quokka-f3c704-mkl@pengutronix.de/
-Fixes: ff60bfbaf67f ("can: rockchip_canfd: add driver for Rockchip CAN-FD controller")
-Link: https://patch.msgid.link/20251017-fix-skb-drop-check-v1-3-556665793fa4@pengutronix.de
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix this by releasing vsock_register_mutex before calling
+transport->release() and vsock_deassign_transport(). This is safe
+because we don't need to hold vsock_register_mutex while releasing the
+old transport, and we ensure the new transport won't disappear by
+obtaining a module reference first via try_module_get().
+
+Reported-by: syzbot+10e35716f8e4929681fa@syzkaller.appspotmail.com
+Tested-by: syzbot+10e35716f8e4929681fa@syzkaller.appspotmail.com
+Fixes: 687aa0c5581b ("vsock: Fix transport_* TOCTOU")
+Cc: mhal@rbox.co
+Cc: stable@vger.kernel.org
+Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
+Link: https://patch.msgid.link/20251021121718.137668-1-sgarzare@redhat.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+[Stefano: fixed context since 5.10 is missing SEQPACKET support in vsock]
+Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/can/rockchip/rockchip_canfd-tx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/vmw_vsock/af_vsock.c |   38 +++++++++++++++++++-------------------
+ 1 file changed, 19 insertions(+), 19 deletions(-)
 
-diff --git a/drivers/net/can/rockchip/rockchip_canfd-tx.c b/drivers/net/can/rockchip/rockchip_canfd-tx.c
-index 865a15e033a9e..12200dcfd3389 100644
---- a/drivers/net/can/rockchip/rockchip_canfd-tx.c
-+++ b/drivers/net/can/rockchip/rockchip_canfd-tx.c
-@@ -72,7 +72,7 @@ netdev_tx_t rkcanfd_start_xmit(struct sk_buff *skb, struct net_device *ndev)
- 	int err;
- 	u8 i;
+--- a/net/vmw_vsock/af_vsock.c
++++ b/net/vmw_vsock/af_vsock.c
+@@ -479,12 +479,26 @@ int vsock_assign_transport(struct vsock_
+ 		goto err;
+ 	}
  
--	if (can_dropped_invalid_skb(ndev, skb))
-+	if (can_dev_dropped_skb(ndev, skb))
- 		return NETDEV_TX_OK;
+-	if (vsk->transport) {
+-		if (vsk->transport == new_transport) {
+-			ret = 0;
+-			goto err;
+-		}
++	if (vsk->transport && vsk->transport == new_transport) {
++		ret = 0;
++		goto err;
++	}
++
++	/* We increase the module refcnt to prevent the transport unloading
++	 * while there are open sockets assigned to it.
++	 */
++	if (!new_transport || !try_module_get(new_transport->module)) {
++		ret = -ENODEV;
++		goto err;
++	}
++
++	/* It's safe to release the mutex after a successful try_module_get().
++	 * Whichever transport `new_transport` points at, it won't go away until
++	 * the last module_put() below or in vsock_deassign_transport().
++	 */
++	mutex_unlock(&vsock_register_mutex);
  
- 	if (!netif_subqueue_maybe_stop(priv->ndev, 0,
--- 
-2.51.0
-
++	if (vsk->transport) {
+ 		/* transport->release() must be called with sock lock acquired.
+ 		 * This path can only be taken during vsock_stream_connect(),
+ 		 * where we have already held the sock lock.
+@@ -504,20 +518,6 @@ int vsock_assign_transport(struct vsock_
+ 		vsk->peer_shutdown = 0;
+ 	}
+ 
+-	/* We increase the module refcnt to prevent the transport unloading
+-	 * while there are open sockets assigned to it.
+-	 */
+-	if (!new_transport || !try_module_get(new_transport->module)) {
+-		ret = -ENODEV;
+-		goto err;
+-	}
+-
+-	/* It's safe to release the mutex after a successful try_module_get().
+-	 * Whichever transport `new_transport` points at, it won't go away until
+-	 * the last module_put() below or in vsock_deassign_transport().
+-	 */
+-	mutex_unlock(&vsock_register_mutex);
+-
+ 	ret = new_transport->init(vsk, psk);
+ 	if (ret) {
+ 		module_put(new_transport->module);
 
 
 
