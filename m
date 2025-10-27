@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-190731-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191191-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7254C10B40
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:16:25 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9A4EC11165
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:33:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id AC0585077B4
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:10:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7C8FB19A696C
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:29:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CEE931B83D;
-	Mon, 27 Oct 2025 19:07:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52D1632D427;
+	Mon, 27 Oct 2025 19:27:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S8VBMdlb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E1PWnsgv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0981F320A00;
-	Mon, 27 Oct 2025 19:07:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F24132D0E6;
+	Mon, 27 Oct 2025 19:27:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592047; cv=none; b=ldRbMu6nO+BnSS0G00tyP8JZWIIjIcPhLLj71jUvhLUgdMq5+WBCBTVN/yDvvejQIhsxGill/IO1dzaiNr5hxPWw7Hg3CPBcINTpFOw85Jev75xFbE7SgrWoA7HG5dnwYRrsX8shiotOcN9ZRSG/v3xdYVttk8DN3gQ6ELNg07c=
+	t=1761593242; cv=none; b=J/9buA1muuJzUj5wnsDB1PkBeZoMSyJMU42V89o++tZGI1fdaBlOlSjwWdTDHhnC1K/hKG0EUBhIBRTQ1M0tjDMgT4nJtp+a2SEon10cDsmTTanRaUagGrjjwTiUfRKZmI47StaTrHJY4Nd3hTfvFGExkBIASi0kJALMhC1T5Bg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592047; c=relaxed/simple;
-	bh=dHcZWf6qD12NuGpC29iz+XEzxkztlIbJ2n0X66CU1PA=;
+	s=arc-20240116; t=1761593242; c=relaxed/simple;
+	bh=iFt+z6H8FD2Vy6nz2Nb5JCZ0MA3zIXXNbcWVQ1vFwgk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WncvUNsGlxKnWDHrD7z3SRJ9CERSf0a2nFxwwbZC25IcObHEMlPRT8bXZcRzYhs+IoyCcfyXZljO0emCgB1wfgZOm0PDF8dCMlGGlipI6blhQ3U2skR99WilLCz9iwn4HnWRD4RGX2cisnQ0Kp2Iqt5zlwZryRStblHQ9DLkK9s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S8VBMdlb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 927D1C4CEF1;
-	Mon, 27 Oct 2025 19:07:26 +0000 (UTC)
+	 MIME-Version; b=bEwTykg/4DYCYKqDdxjJh0CEQUnVv3oBQxi6MQipa4QNimQXEaujX4RoTRiI6r4liioYGtwPQUoQsMfCAt1L7s+VWrHVB4N7XieBIvd6foPMBpUBCR1S2T1twGpsUWbdiEaWsGfEQRx1TkkgNBCc62jKInQVY10MdfSEJniq6oE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E1PWnsgv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42E7DC4CEF1;
+	Mon, 27 Oct 2025 19:27:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592046;
-	bh=dHcZWf6qD12NuGpC29iz+XEzxkztlIbJ2n0X66CU1PA=;
+	s=korg; t=1761593241;
+	bh=iFt+z6H8FD2Vy6nz2Nb5JCZ0MA3zIXXNbcWVQ1vFwgk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S8VBMdlbjZdKYr1X+53hKAA+20xwe9CXTqBoiKei3o00DXVpbUhY4IUQn0c3nBPsb
-	 1NTneZ16VtbhVrVuAF32A9wTSDf9ueg/qUW4Q3YtdGhdwB2EtWKGeAtZOs2ZdunH5J
-	 bCvAspAOxzKrH3vXyoJZ06+3AAMYzXRpKOnTd9VQ=
+	b=E1PWnsgvaZyuB3u2/0Wkh30pQJhj6B1qb1T3zDzAxXzYyEBmCl4gT0SKlINrYORoO
+	 ZgH0A6mKO/CYZlft2Ao45FdxFGG6lE8ffztxLDoOWUIY8ClhTYt1E11W2SusXivKld
+	 6kZ4SWHqWK1x1msw252jBS/6w3VPTqhjIDF+aYPw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Pecio <michal.pecio@gmail.com>,
-	Simon Horman <horms@kernel.org>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowang@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15 068/123] net: usb: rtl8150: Fix frame padding
+Subject: [PATCH 6.17 066/184] virtio-net: zero unused hash fields
 Date: Mon, 27 Oct 2025 19:35:48 +0100
-Message-ID: <20251027183448.217290986@linuxfoundation.org>
+Message-ID: <20251027183516.668844792@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183446.381986645@linuxfoundation.org>
-References: <20251027183446.381986645@linuxfoundation.org>
+In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
+References: <20251027183514.934710872@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Pecio <michal.pecio@gmail.com>
+From: Jason Wang <jasowang@redhat.com>
 
-commit 75cea9860aa6b2350d90a8d78fed114d27c7eca2 upstream.
+commit b2284768c6b32aa224ca7d0ef0741beb434f03aa upstream.
 
-TX frames aren't padded and unknown memory is sent into the ether.
+When GSO tunnel is negotiated virtio_net_hdr_tnl_from_skb() tries to
+initialize the tunnel metadata but forget to zero unused rxhash
+fields. This may leak information to another side. Fixing this by
+zeroing the unused hash fields.
 
-Theoretically, it isn't even guaranteed that the extra memory exists
-and can be sent out, which could cause further problems. In practice,
-I found that plenty of tailroom exists in the skb itself (in my test
-with ping at least) and skb_padto() easily succeeds, so use it here.
-
-In the event of -ENOMEM drop the frame like other drivers do.
-
-The use of one more padding byte instead of a USB zero-length packet
-is retained to avoid regression. I have a dodgy Etron xHCI controller
-which doesn't seem to support sending ZLPs at all.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Signed-off-by: Michal Pecio <michal.pecio@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20251014203528.3f9783c4.michal.pecio@gmail.com
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Fixes: a2fb4bc4e2a6a ("net: implement virtio helpers to handle UDP GSO tunneling")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Jason Wang <jasowang@redhat.com>
+Reviewed-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+Link: https://patch.msgid.link/20251022034421.70244-1-jasowang@redhat.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/usb/rtl8150.c |   11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ include/linux/virtio_net.h | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/net/usb/rtl8150.c
-+++ b/drivers/net/usb/rtl8150.c
-@@ -685,9 +685,16 @@ static netdev_tx_t rtl8150_start_xmit(st
- 	rtl8150_t *dev = netdev_priv(netdev);
- 	int count, res;
+diff --git a/include/linux/virtio_net.h b/include/linux/virtio_net.h
+index 20e0584db1dd..4d1780848d0e 100644
+--- a/include/linux/virtio_net.h
++++ b/include/linux/virtio_net.h
+@@ -401,6 +401,10 @@ virtio_net_hdr_tnl_from_skb(const struct sk_buff *skb,
+ 	if (!tnl_hdr_negotiated)
+ 		return -EINVAL;
  
-+	/* pad the frame and ensure terminating USB packet, datasheet 9.2.3 */
-+	count = max(skb->len, ETH_ZLEN);
-+	if (count % 64 == 0)
-+		count++;
-+	if (skb_padto(skb, count)) {
-+		netdev->stats.tx_dropped++;
-+		return NETDEV_TX_OK;
-+	}
++        vhdr->hash_hdr.hash_value = 0;
++        vhdr->hash_hdr.hash_report = 0;
++        vhdr->hash_hdr.padding = 0;
 +
- 	netif_stop_queue(netdev);
--	count = (skb->len < 60) ? 60 : skb->len;
--	count = (count & 0x3f) ? count : count + 1;
- 	dev->tx_skb = skb;
- 	usb_fill_bulk_urb(dev->tx_urb, dev->udev, usb_sndbulkpipe(dev->udev, 2),
- 		      skb->data, count, write_bulk_callback, dev);
+ 	/* Let the basic parsing deal with plain GSO features. */
+ 	skb_shinfo(skb)->gso_type &= ~tnl_gso_type;
+ 	ret = virtio_net_hdr_from_skb(skb, hdr, true, false, vlan_hlen);
+-- 
+2.51.1
+
 
 
 
