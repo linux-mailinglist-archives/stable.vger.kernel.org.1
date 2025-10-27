@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-190170-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190463-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5183DC1010A
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:45:33 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0834C10705
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:04:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BEC4046387C
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:44:54 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D85FA5041BB
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:01:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5A4A324B2A;
-	Mon, 27 Oct 2025 18:43:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85FFF322A04;
+	Mon, 27 Oct 2025 18:55:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JR0mFSVY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j4g++KL4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8101E31D754;
-	Mon, 27 Oct 2025 18:43:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 407F91E47CA;
+	Mon, 27 Oct 2025 18:55:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761590592; cv=none; b=K7WbErI51lPUOKV1NVfw3iJHR1PJiQo5ONdPBTTmgqYxVfk3MFKUVtb80dcof8Ip4C4wRzwKlpQnsDkGmOVfWJ0TVsgaw96bGtnJGbvpTPaB/prq4bIUXWQqOkCLnp6RRzkFuW64Eric/dzh1iRwiklWDMQf6+YtWuZGh28Vn9k=
+	t=1761591356; cv=none; b=Eu68cMdODGwZ4WRkU1i9ajX2ejQGBD6YAgW8e7QbMWn+WkKsKxcM60onapLnRMDAnpr4TQZoXWGSNR7ShQVr59lv6qDW0cSD9mDAns/52jtPqRntFkHWKV1Ic2pe+PhViOvZp8yNNEicjZ1oM/Iiy7fd5BrLeL9ZeCJ9JoYAhis=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761590592; c=relaxed/simple;
-	bh=0qN57YqXUYpk42FMDdQNdJMTKaoR+kjIZqPWLBKIC74=;
+	s=arc-20240116; t=1761591356; c=relaxed/simple;
+	bh=YeMgKh/EPKB9F9x0sszjmWNb9zyu38h539y6cQrvTkQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hgvivdo2bt4+lnYIXm7aGj/ul6ne0tUT0uyzfQUqTtOShpAdpgCTIWevbeY4fVOAlOtb8s5PLa9FacBNUxRe8Ph28ae3zUlhIUapAY7hMLZ/fuQweDOEPgTPqhLsetrdPSoNfHufCxzgJxk5I+A4xE/W2Dsv19h166E8DSeusl4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JR0mFSVY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E551AC4CEF1;
-	Mon, 27 Oct 2025 18:43:11 +0000 (UTC)
+	 MIME-Version; b=hTBKWaV+copTCcBTSwWprN38JmIaAhjAzJ0V3Y8fG0cFh5KEA4GYCCpGf5Me/oEqcTplqkaxeTuj0mcKrHdYf+OoG7iPDjI+Re3cquX14NKUzZR9S8BVAW8CabZ2IhbMxrob2UiOm0qMstkM6MzgBURNV7xsztJn9ibr6U6z9X4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j4g++KL4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9F73C4CEF1;
+	Mon, 27 Oct 2025 18:55:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761590592;
-	bh=0qN57YqXUYpk42FMDdQNdJMTKaoR+kjIZqPWLBKIC74=;
+	s=korg; t=1761591356;
+	bh=YeMgKh/EPKB9F9x0sszjmWNb9zyu38h539y6cQrvTkQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JR0mFSVYWvmY7cYZxI/yIbCnFYIQV7lLp5DnlOS/NG4aBKsO3J0J0kbZkt8a3FVyn
-	 kVZAV4VIqjLGNLr/o7eq7ZSdcMhzUCFD+faW8RIdtJTaCiMFOiweafIB2+OtdP7qe1
-	 ndhPJ0jQLHi2g6vlnP8bWenqErhSG5bfjEkVqQNg=
+	b=j4g++KL4o+RdUMTDjiylQeQx5vHgmGg2EJM6Qx8wkOo5r3IXORFjmUQAyIvj/fObv
+	 WqAtLWEp+6tAxV3DEBz7Imq3yBiOSxv3ptd1JaHZm+b/Bv79Yz30GBsQOOs8EE07Ms
+	 Qinh/ENssADPEywlzk7Qln9DPswxGiuXBOgZ+Bg8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Kicinski <kuba@kernel.org>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 072/224] Revert "net/mlx5e: Update and set Xon/Xoff upon MTU set"
-Date: Mon, 27 Oct 2025 19:33:38 +0100
-Message-ID: <20251027183510.929345830@linuxfoundation.org>
+	Thorsten Blum <thorsten.blum@linux.dev>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 5.10 166/332] NFSD: Fix destination buffer size in nfsd4_ssc_setup_dul()
+Date: Mon, 27 Oct 2025 19:33:39 +0100
+Message-ID: <20251027183529.008162774@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183508.963233542@linuxfoundation.org>
-References: <20251027183508.963233542@linuxfoundation.org>
+In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
+References: <20251027183524.611456697@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,112 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Thorsten Blum <thorsten.blum@linux.dev>
 
-[ Upstream commit 6f5dacf88a32b3fd8b52c8ea781bf188c42aaa95 ]
+commit ab1c282c010c4f327bd7addc3c0035fd8e3c1721 upstream.
 
-This reverts commit ceddedc969f0532b7c62ca971ee50d519d2bc0cb.
+Commit 5304877936c0 ("NFSD: Fix strncpy() fortify warning") replaced
+strncpy(,, sizeof(..)) with strlcpy(,, sizeof(..) - 1), but strlcpy()
+already guaranteed NUL-termination of the destination buffer and
+subtracting one byte potentially truncated the source string.
 
-Commit in question breaks the mapping of PGs to pools for some SKUs.
-Specifically multi-host NICs seem to be shipped with a custom buffer
-configuration which maps the lossy PG to pool 4. But the bad commit
-overrides this with pool 0 which does not have sufficient buffer space
-reserved. Resulting in ~40% packet loss. The commit also breaks BMC /
-OOB connection completely (100% packet loss).
+The incorrect size was then carried over in commit 72f78ae00a8e ("NFSD:
+move from strlcpy with unused retval to strscpy") when switching from
+strlcpy() to strscpy().
 
-Revert, similarly to commit 3fbfe251cc9f ("Revert "net/mlx5e: Update and
-set Xon/Xoff upon port speed set""). The breakage is exactly the same,
-the only difference is that quoted commit would break the NIC immediately
-on boot, and the currently reverted commit only when MTU is changed.
+Fix this off-by-one error by using the full size of the destination
+buffer again.
 
-Note: "good" kernels do not restore the configuration, so downgrade isn't
-enough to recover machines. A NIC power cycle seems to be necessary to
-return to a healthy state (or overriding the relevant registers using
-a custom patch).
-
-Fixes: ceddedc969f0 ("net/mlx5e: Update and set Xon/Xoff upon MTU set")
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/20250929181529.1848157-1-kuba@kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 5304877936c0 ("NFSD: Fix strncpy() fortify warning")
+Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.h |   12 ----------
- drivers/net/ethernet/mellanox/mlx5/core/en_main.c        |   17 ---------------
- 2 files changed, 1 insertion(+), 28 deletions(-)
+ fs/nfsd/nfs4proc.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.h
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.h
-@@ -64,23 +64,11 @@ struct mlx5e_port_buffer {
- 	struct mlx5e_bufferx_reg  buffer[MLX5E_MAX_BUFFER];
- };
- 
--#ifdef CONFIG_MLX5_CORE_EN_DCB
- int mlx5e_port_manual_buffer_config(struct mlx5e_priv *priv,
- 				    u32 change, unsigned int mtu,
- 				    struct ieee_pfc *pfc,
- 				    u32 *buffer_size,
- 				    u8 *prio2buffer);
--#else
--static inline int
--mlx5e_port_manual_buffer_config(struct mlx5e_priv *priv,
--				u32 change, unsigned int mtu,
--				void *pfc,
--				u32 *buffer_size,
--				u8 *prio2buffer)
--{
--	return 0;
--}
--#endif
- 
- int mlx5e_port_query_buffer(struct mlx5e_priv *priv,
- 			    struct mlx5e_port_buffer *port_buffer);
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-@@ -42,7 +42,6 @@
- #include "eswitch.h"
- #include "en.h"
- #include "en/txrx.h"
--#include "en/port_buffer.h"
- #include "en_tc.h"
- #include "en_rep.h"
- #include "en_accel/ipsec.h"
-@@ -2895,11 +2894,9 @@ int mlx5e_set_dev_port_mtu(struct mlx5e_
- 	struct mlx5e_params *params = &priv->channels.params;
- 	struct net_device *netdev = priv->netdev;
- 	struct mlx5_core_dev *mdev = priv->mdev;
--	u16 mtu, prev_mtu;
-+	u16 mtu;
- 	int err;
- 
--	mlx5e_query_mtu(mdev, params, &prev_mtu);
--
- 	err = mlx5e_set_mtu(mdev, params, params->sw_mtu);
- 	if (err)
- 		return err;
-@@ -2909,18 +2906,6 @@ int mlx5e_set_dev_port_mtu(struct mlx5e_
- 		netdev_warn(netdev, "%s: VPort MTU %d is different than netdev mtu %d\n",
- 			    __func__, mtu, params->sw_mtu);
- 
--	if (mtu != prev_mtu && MLX5_BUFFER_SUPPORTED(mdev)) {
--		err = mlx5e_port_manual_buffer_config(priv, 0, mtu,
--						      NULL, NULL, NULL);
--		if (err) {
--			netdev_warn(netdev, "%s: Failed to set Xon/Xoff values with MTU %d (err %d), setting back to previous MTU %d\n",
--				    __func__, mtu, err, prev_mtu);
--
--			mlx5e_set_mtu(mdev, params, prev_mtu);
--			return err;
--		}
--	}
--
- 	params->sw_mtu = mtu;
- 	return 0;
- }
+--- a/fs/nfsd/nfs4proc.c
++++ b/fs/nfsd/nfs4proc.c
+@@ -1335,7 +1335,7 @@ try_again:
+ 		return 0;
+ 	}
+ 	if (work) {
+-		strscpy(work->nsui_ipaddr, ipaddr, sizeof(work->nsui_ipaddr) - 1);
++		strscpy(work->nsui_ipaddr, ipaddr, sizeof(work->nsui_ipaddr));
+ 		refcount_set(&work->nsui_refcnt, 2);
+ 		work->nsui_busy = true;
+ 		list_add_tail(&work->nsui_list, &nn->nfsd_ssc_mount_list);
 
 
 
