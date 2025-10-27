@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-191169-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190573-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F8FAC110F6
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:32:33 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4BD6C1092A
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:10:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 703D61A23525
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:28:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A27285677B2
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:05:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A5AB328638;
-	Mon, 27 Oct 2025 19:26:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82A2C2D8377;
+	Mon, 27 Oct 2025 19:00:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yRNXLeyY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jq0fVK3s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3859432548B;
-	Mon, 27 Oct 2025 19:26:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D9882D6E70;
+	Mon, 27 Oct 2025 19:00:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761593188; cv=none; b=TLAlzPL71Rhyp1bNzauyunj3LjDqJ5hAuTvdIlX2s+nrJMwBFLz+/fBQSxarCjIUsVnd6NfMQw9AdxqhVrtfPDWdIAtiWdpYk1FYKe8oEXIo63oqlcsAmuVGNYzqNRqJy/yD91Vr6YVOulpjFv+E302dtbRwYd1ZGroyMcaW9GY=
+	t=1761591643; cv=none; b=lIWrUHBPnBPnGMuaKlMd3T+bXSiy28mtINvxFnQ0sB2xPIJ4poMswTHNqW/gXLfcuG2Bsbh3xJ0SDPCu04WlodI3aByjFohNCDTHSn9HrpW1RZKhJVApwanZSHQe7bkHbYU/1/ye3KLf81/HA7hc5VNfAWiikB8EwPPEuyAHAeI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761593188; c=relaxed/simple;
-	bh=GMsw9QEfr88PeYdIy7CCHxuO653XSdDtRsVd76HNd20=;
+	s=arc-20240116; t=1761591643; c=relaxed/simple;
+	bh=oaarkrgkskL9BWUJtyabSnfTzjFjQmhCxe8DrxmeHQo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WOSVBT0SUX7mrFRoz1KG9yGJSlqnIGG2XomxzkUmFpSpi4kRwI4vsDnWZ7EWgfrGle51M8Hox/HjYYNAG5H/RZpDWENVVsJ4B8ZrCsMkS4+LgZzY7CzhxyqNVhDWb5Md12bfHWwnLvOdECGaXjujnU0J81ZyylA63rLsKJybf14=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yRNXLeyY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BE3EC4CEF1;
-	Mon, 27 Oct 2025 19:26:27 +0000 (UTC)
+	 MIME-Version; b=bRAqzcYlseG7Hr7600rce4FdOCYQfIyZ1cmqfJ2T7tfv5OH6NiY7dwmfDArIzXtpiGCehauu3rp4D9XSwD1EEgPFPTbwP7FPz0IVfyqwNvx16ymGiwjLlVwR20PQ42jjbOG5Mev87zfA9tzH80EKFFov/dBfqUL7qO+ZHrmypLQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jq0fVK3s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4EB2C4CEF1;
+	Mon, 27 Oct 2025 19:00:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761593187;
-	bh=GMsw9QEfr88PeYdIy7CCHxuO653XSdDtRsVd76HNd20=;
+	s=korg; t=1761591643;
+	bh=oaarkrgkskL9BWUJtyabSnfTzjFjQmhCxe8DrxmeHQo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yRNXLeyYXxW5Lnh5ti7izSiWc8ZNJfMAckzyqL/yGomn6v03Csis/Da5LkOEQ5S61
-	 INyUn/0rqMzxvNK5zRcgYeze3tBdHspUiUehgucF8YiML+2zpXWcx6YNWqRF5eFzr5
-	 o8bf2OnapLI1TkERorurivbxFmX2aMzB91nrGECM=
+	b=Jq0fVK3styEgNiQDBR2EtPjpJXU4aUlw1I7M3bsjucfdhfYrWEe3D0t3Eg1bWEDGe
+	 7MeZpE8nZWXkLqGKpoDFnZceta8SWKIavmhQTQntS4Rw7yuEaxJF/FVDhy+KrIFR8L
+	 gbp9uSlIe4eIwQXj3SML0LBvUwMb/5uWDWA8BHFc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Amery Hung <ameryhung@gmail.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
+	Wei Fang <wei.fang@nxp.com>,
+	Claudiu Manoil <claudiu.manoil@nxp.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 047/184] net/mlx5e: RX, Fix generating skb from non-linear xdp_buff for striding RQ
+Subject: [PATCH 5.10 276/332] net: enetc: correct the value of ENETC_RXB_TRUESIZE
 Date: Mon, 27 Oct 2025 19:35:29 +0100
-Message-ID: <20251027183516.170446667@linuxfoundation.org>
+Message-ID: <20251027183532.150288125@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
-References: <20251027183514.934710872@linuxfoundation.org>
+In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
+References: <20251027183524.611456697@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,121 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amery Hung <ameryhung@gmail.com>
+From: Wei Fang <wei.fang@nxp.com>
 
-[ Upstream commit 87bcef158ac1faca1bd7e0104588e8e2956d10be ]
+[ Upstream commit e59bc32df2e989f034623a580e30a2a72af33b3f ]
 
-XDP programs can change the layout of an xdp_buff through
-bpf_xdp_adjust_tail() and bpf_xdp_adjust_head(). Therefore, the driver
-cannot assume the size of the linear data area nor fragments. Fix the
-bug in mlx5 by generating skb according to xdp_buff after XDP programs
-run.
+The ENETC RX ring uses the page halves flipping mechanism, each page is
+split into two halves for the RX ring to use. And ENETC_RXB_TRUESIZE is
+defined to 2048 to indicate the size of half a page. However, the page
+size is configurable, for ARM64 platform, PAGE_SIZE is default to 4K,
+but it could be configured to 16K or 64K.
 
-Currently, when handling multi-buf XDP, the mlx5 driver assumes the
-layout of an xdp_buff to be unchanged. That is, the linear data area
-continues to be empty and fragments remain the same. This may cause
-the driver to generate erroneous skb or triggering a kernel
-warning. When an XDP program added linear data through
-bpf_xdp_adjust_head(), the linear data will be ignored as
-mlx5e_build_linear_skb() builds an skb without linear data and then
-pull data from fragments to fill the linear data area. When an XDP
-program has shrunk the non-linear data through bpf_xdp_adjust_tail(),
-the delta passed to __pskb_pull_tail() may exceed the actual nonlinear
-data size and trigger the BUG_ON in it.
+When PAGE_SIZE is set to 16K or 64K, ENETC_RXB_TRUESIZE is not correct,
+and the RX ring will always use the first half of the page. This is not
+consistent with the description in the relevant kernel doc and commit
+messages.
 
-To fix the issue, first record the original number of fragments. If the
-number of fragments changes after the XDP program runs, rewind the end
-fragment pointer by the difference and recalculate the truesize. Then,
-build the skb with the linear data area matching the xdp_buff. Finally,
-only pull data in if there is non-linear data and fill the linear part
-up to 256 bytes.
+This issue is invisible in most cases, but if users want to increase
+PAGE_SIZE to receive a Jumbo frame with a single buffer for some use
+cases, it will not work as expected, because the buffer size of each
+RX BD is fixed to 2048 bytes.
 
-Fixes: f52ac7028bec ("net/mlx5e: RX, Add XDP multi-buffer support in Striding RQ")
-Signed-off-by: Amery Hung <ameryhung@gmail.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/1760644540-899148-3-git-send-email-tariqt@nvidia.com
+Based on the above two points, we expect to correct ENETC_RXB_TRUESIZE
+to (PAGE_SIZE >> 1), as described in the comment.
+
+Fixes: d4fd0404c1c9 ("enetc: Introduce basic PF and VF ENETC ethernet drivers")
+Signed-off-by: Wei Fang <wei.fang@nxp.com>
+Reviewed-by: Claudiu Manoil <claudiu.manoil@nxp.com>
+Link: https://patch.msgid.link/20251016080131.3127122-1-wei.fang@nxp.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/mellanox/mlx5/core/en_rx.c   | 26 ++++++++++++++++---
- 1 file changed, 23 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/freescale/enetc/enetc.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c b/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
-index 25d993ded314a..5dbf48da2f4f1 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
-@@ -2017,6 +2017,7 @@ mlx5e_skb_from_cqe_mpwrq_nonlinear(struct mlx5e_rq *rq, struct mlx5e_mpw_info *w
- 	u32 byte_cnt       = cqe_bcnt;
- 	struct skb_shared_info *sinfo;
- 	unsigned int truesize = 0;
-+	u32 pg_consumed_bytes;
- 	struct bpf_prog *prog;
- 	struct sk_buff *skb;
- 	u32 linear_frame_sz;
-@@ -2070,7 +2071,8 @@ mlx5e_skb_from_cqe_mpwrq_nonlinear(struct mlx5e_rq *rq, struct mlx5e_mpw_info *w
+diff --git a/drivers/net/ethernet/freescale/enetc/enetc.h b/drivers/net/ethernet/freescale/enetc/enetc.h
+index 725c3d1cbb198..f58cca219a1e7 100644
+--- a/drivers/net/ethernet/freescale/enetc/enetc.h
++++ b/drivers/net/ethernet/freescale/enetc/enetc.h
+@@ -28,7 +28,7 @@ struct enetc_tx_swbd {
+ };
  
- 	while (byte_cnt) {
- 		/* Non-linear mode, hence non-XSK, which always uses PAGE_SIZE. */
--		u32 pg_consumed_bytes = min_t(u32, PAGE_SIZE - frag_offset, byte_cnt);
-+		pg_consumed_bytes =
-+			min_t(u32, PAGE_SIZE - frag_offset, byte_cnt);
- 
- 		if (test_bit(MLX5E_RQ_STATE_SHAMPO, &rq->state))
- 			truesize += pg_consumed_bytes;
-@@ -2086,10 +2088,15 @@ mlx5e_skb_from_cqe_mpwrq_nonlinear(struct mlx5e_rq *rq, struct mlx5e_mpw_info *w
- 	}
- 
- 	if (prog) {
-+		u8 nr_frags_free, old_nr_frags = sinfo->nr_frags;
-+		u32 len;
-+
- 		if (mlx5e_xdp_handle(rq, prog, mxbuf)) {
- 			if (__test_and_clear_bit(MLX5E_RQ_FLAG_XDP_XMIT, rq->flags)) {
- 				struct mlx5e_frag_page *pfp;
- 
-+				frag_page -= old_nr_frags - sinfo->nr_frags;
-+
- 				for (pfp = head_page; pfp < frag_page; pfp++)
- 					pfp->frags++;
- 
-@@ -2100,9 +2107,19 @@ mlx5e_skb_from_cqe_mpwrq_nonlinear(struct mlx5e_rq *rq, struct mlx5e_mpw_info *w
- 			return NULL; /* page/packet was consumed by XDP */
- 		}
- 
-+		nr_frags_free = old_nr_frags - sinfo->nr_frags;
-+		if (unlikely(nr_frags_free)) {
-+			frag_page -= nr_frags_free;
-+			truesize -= (nr_frags_free - 1) * PAGE_SIZE +
-+				ALIGN(pg_consumed_bytes,
-+				      BIT(rq->mpwqe.log_stride_sz));
-+		}
-+
-+		len = mxbuf->xdp.data_end - mxbuf->xdp.data;
-+
- 		skb = mlx5e_build_linear_skb(
- 			rq, mxbuf->xdp.data_hard_start, linear_frame_sz,
--			mxbuf->xdp.data - mxbuf->xdp.data_hard_start, 0,
-+			mxbuf->xdp.data - mxbuf->xdp.data_hard_start, len,
- 			mxbuf->xdp.data - mxbuf->xdp.data_meta);
- 		if (unlikely(!skb)) {
- 			mlx5e_page_release_fragmented(rq->page_pool,
-@@ -2127,8 +2144,11 @@ mlx5e_skb_from_cqe_mpwrq_nonlinear(struct mlx5e_rq *rq, struct mlx5e_mpw_info *w
- 			do
- 				pagep->frags++;
- 			while (++pagep < frag_page);
-+
-+			headlen = min_t(u16, MLX5E_RX_MAX_HEAD - len,
-+					skb->data_len);
-+			__pskb_pull_tail(skb, headlen);
- 		}
--		__pskb_pull_tail(skb, headlen);
- 	} else {
- 		dma_addr_t addr;
- 
+ #define ENETC_RX_MAXFRM_SIZE	ENETC_MAC_MAXFRM_SIZE
+-#define ENETC_RXB_TRUESIZE	2048 /* PAGE_SIZE >> 1 */
++#define ENETC_RXB_TRUESIZE	(PAGE_SIZE >> 1)
+ #define ENETC_RXB_PAD		NET_SKB_PAD /* add extra space if needed */
+ #define ENETC_RXB_DMA_SIZE	\
+ 	(SKB_WITH_OVERHEAD(ENETC_RXB_TRUESIZE) - ENETC_RXB_PAD)
 -- 
 2.51.0
 
