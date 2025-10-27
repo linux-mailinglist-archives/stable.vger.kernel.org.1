@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-190852-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191234-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0EE5C10D06
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:21:10 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07C5AC111F8
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:36:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 67ADA5055A2
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:14:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CD43D563C51
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:31:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A01B7326D6B;
-	Mon, 27 Oct 2025 19:12:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EF4732B9B2;
+	Mon, 27 Oct 2025 19:29:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KNZuobIY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o6xBYI3U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D66D31C58E;
-	Mon, 27 Oct 2025 19:12:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 390002C11DF;
+	Mon, 27 Oct 2025 19:29:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592369; cv=none; b=Ug735yKnq9Wbrx6kjGl7YSsKXbOQ3UEAiD9K2qeVDygb5mNyKS5lRm9dytHDswSmvoic3mkFPkH41fDNnL3Og1wnrU08bpluALCzz0frIlmXHH+TQtFTH0oR0Gbe42ocmHWKSfH06NPBJGelhFAs6eDpRFrFfuFx+fFbY7IKS0w=
+	t=1761593364; cv=none; b=XXJgpfpoDQ3SRV3KVtmc62+9N8wfUfUeuZTdbhfa/i5SPenKFAmkDKWtFWnYHn8HoeKZeaj2F92kUXu3inDB1AhkXr976qCemOkYUPc//biU3VF4k/6ToiPOWk5uUbR1f0CZdp+4nIED1biSYFQc3qDR++P0ydpd3sqrbneNGzU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592369; c=relaxed/simple;
-	bh=veILfXBCiThF9Q+xkljJk66SYx6SUqAhmmBTfuWdppA=;
+	s=arc-20240116; t=1761593364; c=relaxed/simple;
+	bh=4a4xrmfYhShRPY9YZ3JOYMDcPCNzZ33ef24hx1SX5rU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bRgd67QdZYyhDjGHa2hxYqIUXFA2osXS8x0eOLXDAnPWt7Dzq5rxjedlZ+OGjnNDLyUYOipuHBbw2lXa6qMQL78pOrF9fYdru024XPoGkn8eBg3x9MJZVoOAwDGrrZiLf9kQvuq89yzj985hDpKluKFis+1XA3VO8qoxx+o3HtI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KNZuobIY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DA15C4CEF1;
-	Mon, 27 Oct 2025 19:12:48 +0000 (UTC)
+	 MIME-Version; b=tz82guoxszRrCmGHhWjVSxro6NUQO4eQRIVvRe1HazV/JIcLB0GOHv/bGY5msM+JAfmW5JFMjPGb0i3IBhp8mQNzh9vzrGAcoH2zEDyxD4f1zpOF7eOoXd1vph2Tc6cWZx6Tqm6nIaO1knptHxuAKQ4ove9WOPV2tOZbNhEQ+bg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o6xBYI3U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0544C4CEF1;
+	Mon, 27 Oct 2025 19:29:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592368;
-	bh=veILfXBCiThF9Q+xkljJk66SYx6SUqAhmmBTfuWdppA=;
+	s=korg; t=1761593364;
+	bh=4a4xrmfYhShRPY9YZ3JOYMDcPCNzZ33ef24hx1SX5rU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KNZuobIYszoMwf9lvLb7aG9AF6nPDkiG4zdZ134TYInV3XY4I/SBj9kfk7jpVrcOa
-	 kx6JL5R4I2lBosRsoLpP+HJOuBPDFWwSptoTqbgJEdGTkJsF1ctyWSp9VqR6y65dps
-	 gIFZkpokxwcjtUSb39s2AVyqTAxIZEqLDAb+hIwo=
+	b=o6xBYI3U7fWwZvnBKha7wawcxENHCgTizGKeDQpJu4qwUUNSSRwxkwuBGOcpaphMB
+	 o76Tix6QKQSxJcYk+wiuB9mECBLgxqV4NIS7I6bGJEhY9hXRd43aK9v70SoyWWSyJg
+	 ecuZV3Xm1Uc7rTWwG4gJssKWCq8dFBm/yplVFi6I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Pecio <michal.pecio@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 095/157] net: usb: rtl8150: Fix frame padding
+	Mark Cave-Ayland <mark.caveayland@nutanix.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	William Breathitt Gray <wbg@kernel.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Subject: [PATCH 6.17 074/184] gpio: pci-idio-16: Define maximum valid register address offset
 Date: Mon, 27 Oct 2025 19:35:56 +0100
-Message-ID: <20251027183503.814376930@linuxfoundation.org>
+Message-ID: <20251027183516.890827221@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
-References: <20251027183501.227243846@linuxfoundation.org>
+In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
+References: <20251027183514.934710872@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +64,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Pecio <michal.pecio@gmail.com>
+From: William Breathitt Gray <wbg@kernel.org>
 
-commit 75cea9860aa6b2350d90a8d78fed114d27c7eca2 upstream.
+commit d37623132a6347b4ab9e2179eb3f2fa77863c364 upstream.
 
-TX frames aren't padded and unknown memory is sent into the ether.
+Attempting to load the pci-idio-16 module fails during regmap
+initialization with a return error -EINVAL. This is a result of the
+regmap cache failing initialization. Set the idio_16_regmap_config
+max_register member to fix this failure.
 
-Theoretically, it isn't even guaranteed that the extra memory exists
-and can be sent out, which could cause further problems. In practice,
-I found that plenty of tailroom exists in the skb itself (in my test
-with ping at least) and skb_padto() easily succeeds, so use it here.
-
-In the event of -ENOMEM drop the frame like other drivers do.
-
-The use of one more padding byte instead of a USB zero-length packet
-is retained to avoid regression. I have a dodgy Etron xHCI controller
-which doesn't seem to support sending ZLPs at all.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Fixes: 73d8f3efc5c2 ("gpio: pci-idio-16: Migrate to the regmap API")
+Reported-by: Mark Cave-Ayland <mark.caveayland@nutanix.com>
+Closes: https://lore.kernel.org/r/9b0375fd-235f-4ee1-a7fa-daca296ef6bf@nutanix.com
+Suggested-by: Mark Cave-Ayland <mark.caveayland@nutanix.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Michal Pecio <michal.pecio@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20251014203528.3f9783c4.michal.pecio@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: William Breathitt Gray <wbg@kernel.org>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Link: https://lore.kernel.org/r/20251020-fix-gpio-idio-16-regmap-v2-2-ebeb50e93c33@kernel.org
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/usb/rtl8150.c |   11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ drivers/gpio/gpio-pci-idio-16.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/net/usb/rtl8150.c
-+++ b/drivers/net/usb/rtl8150.c
-@@ -685,9 +685,16 @@ static netdev_tx_t rtl8150_start_xmit(st
- 	rtl8150_t *dev = netdev_priv(netdev);
- 	int count, res;
- 
-+	/* pad the frame and ensure terminating USB packet, datasheet 9.2.3 */
-+	count = max(skb->len, ETH_ZLEN);
-+	if (count % 64 == 0)
-+		count++;
-+	if (skb_padto(skb, count)) {
-+		netdev->stats.tx_dropped++;
-+		return NETDEV_TX_OK;
-+	}
-+
- 	netif_stop_queue(netdev);
--	count = (skb->len < 60) ? 60 : skb->len;
--	count = (count & 0x3f) ? count : count + 1;
- 	dev->tx_skb = skb;
- 	usb_fill_bulk_urb(dev->tx_urb, dev->udev, usb_sndbulkpipe(dev->udev, 2),
- 		      skb->data, count, write_bulk_callback, dev);
+--- a/drivers/gpio/gpio-pci-idio-16.c
++++ b/drivers/gpio/gpio-pci-idio-16.c
+@@ -41,6 +41,7 @@ static const struct regmap_config idio_1
+ 	.reg_stride = 1,
+ 	.val_bits = 8,
+ 	.io_port = true,
++	.max_register = 0x7,
+ 	.wr_table = &idio_16_wr_table,
+ 	.rd_table = &idio_16_rd_table,
+ 	.volatile_table = &idio_16_rd_table,
 
 
 
