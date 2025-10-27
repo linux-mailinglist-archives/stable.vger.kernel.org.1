@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-190214-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190537-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03938C10338
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:51:39 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id C108FC106CC
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:03:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6F29F4824D3
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:49:28 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 6D89A3486E6
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:03:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8B3F324B35;
-	Mon, 27 Oct 2025 18:45:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35156328B7F;
+	Mon, 27 Oct 2025 18:59:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pnB9asSX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JHgj/hqF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D043324B3E;
-	Mon, 27 Oct 2025 18:45:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC976328627;
+	Mon, 27 Oct 2025 18:59:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761590708; cv=none; b=blz1xJ13HAOv2Ui7eYvb/WpKv+0gPma3/+WaUwgjImLRGP5SVp7wL5pd+dW0SYZP+bxmWQ4kEfShEQd+Atku/Mzssokn8CEaOp3eeRwjmTLX4JJn0SM3ABInVIbENXfCXURaCsoNRy1hV8GKYhG5YUqQSO2aj/MH6oWjQNL9OpE=
+	t=1761591548; cv=none; b=jxtEPK5sMdDhMG88so8NhCH4O68uXi1pW2pY+4vM4NddFzmdVMci/a8Ovlhyir6GYb11FVCue21XKtapwoVdbxmCMxGe1zQVDWhVGCyTMcjFxfiB3FwuK5M8mt+5R1IDilH85vOzYuiRVfmClQKyf3U9+2rnW8NykCOLfNIF1JA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761590708; c=relaxed/simple;
-	bh=bVASHqVP1tj+GTGHxqHzdPdb+VfVIPQwquhKKeh6WBk=;
+	s=arc-20240116; t=1761591548; c=relaxed/simple;
+	bh=CTHG3zaZBAohLBBfHt36CXMhWK/Lq2FNj/RyJP6aJGw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m6KPY3DxbKMNtw9UB6dNFKv0X4zf624Q/aZTjishWFoAzD4gXNxVHIMEMVNam5H+MqrZeI6mcQ14kP5snKFmaDY6gH5hFJy26MqLHGxi7evW329d8/euAikwJTVJcUfB+ooFum5B2n6gyQGJZfvzRaAVkcBT9W58NrqBUAjRwSY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pnB9asSX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76699C113D0;
-	Mon, 27 Oct 2025 18:45:05 +0000 (UTC)
+	 MIME-Version; b=RpL5Kh20PtLHKIkk+MDIKY5uojhWrTKqDvrmsj9c8z2XnLtgnQgGh4G0MfXoI0ZF5ttZstUIQXZmMfelutwnhWPfdglVdjq8efmh1vOWHXd8dFgo+vn2MPmRBWkXaWp0gs+r0UeDYlDGrJGCYqCRI9+x1VamVyAhuaQC9gPNjhs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JHgj/hqF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6329CC4CEF1;
+	Mon, 27 Oct 2025 18:59:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761590705;
-	bh=bVASHqVP1tj+GTGHxqHzdPdb+VfVIPQwquhKKeh6WBk=;
+	s=korg; t=1761591548;
+	bh=CTHG3zaZBAohLBBfHt36CXMhWK/Lq2FNj/RyJP6aJGw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pnB9asSXWxfaiZhC/aSurjj/dXEGMPCVnP9yl+IbsIkIH7Y9rY44nFeVKDR0HcNFS
-	 fEdMsUMP4XsRrrxtEFog1T8uqfLOi5Hd7DrorX3VgubPOxLU2gLFAJhOaao6HQF6yX
-	 8NtflhSbHg3qW/PR9DbBDyJKVJM85dTyoEMXfohc=
+	b=JHgj/hqFewqlg3O0ASniifII3IFC+AXJ5V6Lgj+RzrQSn3uuwsce5AF5N29Nn9T+S
+	 pOkZBS8mIPQ2v1qaSP5wFThzdq6+4C9G161lGMUbn5MJxfHAuiG9HchmzUc2KUPKYM
+	 hnjh1STASEFEe1PGUlKUwSw39W7msrnieGaQm6o4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzbot+895c23f6917da440ed0d@syzkaller.appspotmail.com>,
-	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-	Nicolas Pitre <nico@fluxnic.net>,
+	Yuezhang Mo <Yuezhang.Mo@sony.com>,
+	Friendy Su <friendy.su@sony.com>,
+	Daniel Palmer <daniel.palmer@sony.com>,
+	Gao Xiang <hsiangkao@linux.alibaba.com>,
 	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 147/224] cramfs: Verify inode mode when loading from disk
+Subject: [PATCH 5.10 240/332] dax: skip read lock assertion for read-only filesystems
 Date: Mon, 27 Oct 2025 19:34:53 +0100
-Message-ID: <20251027183512.904888894@linuxfoundation.org>
+Message-ID: <20251027183531.167578086@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183508.963233542@linuxfoundation.org>
-References: <20251027183508.963233542@linuxfoundation.org>
+In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
+References: <20251027183524.611456697@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,53 +65,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+From: Yuezhang Mo <Yuezhang.Mo@sony.com>
 
-[ Upstream commit 7f9d34b0a7cb93d678ee7207f0634dbf79e47fe5 ]
+[ Upstream commit 154d1e7ad9e5ce4b2aaefd3862b3dba545ad978d ]
 
-The inode mode loaded from corrupted disk can be invalid. Do like what
-commit 0a9e74051313 ("isofs: Verify inode mode when loading from disk")
-does.
+The commit 168316db3583("dax: assert that i_rwsem is held
+exclusive for writes") added lock assertions to ensure proper
+locking in DAX operations. However, these assertions trigger
+false-positive lockdep warnings since read lock is unnecessary
+on read-only filesystems(e.g., erofs).
 
-Reported-by: syzbot <syzbot+895c23f6917da440ed0d@syzkaller.appspotmail.com>
-Closes: https://syzkaller.appspot.com/bug?extid=895c23f6917da440ed0d
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Link: https://lore.kernel.org/429b3ef1-13de-4310-9a8e-c2dc9a36234a@I-love.SAKURA.ne.jp
-Acked-by: Nicolas Pitre <nico@fluxnic.net>
+This patch skips the read lock assertion for read-only filesystems,
+eliminating the spurious warnings while maintaining the integrity
+checks for writable filesystems.
+
+Fixes: 168316db3583 ("dax: assert that i_rwsem is held exclusive for writes")
+Signed-off-by: Yuezhang Mo <Yuezhang.Mo@sony.com>
+Reviewed-by: Friendy Su <friendy.su@sony.com>
+Reviewed-by: Daniel Palmer <daniel.palmer@sony.com>
+Reviewed-by: Gao Xiang <hsiangkao@linux.alibaba.com>
 Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/cramfs/inode.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ fs/dax.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/cramfs/inode.c b/fs/cramfs/inode.c
-index 2f04024c3588e..82c45ca453216 100644
---- a/fs/cramfs/inode.c
-+++ b/fs/cramfs/inode.c
-@@ -117,9 +117,18 @@ static struct inode *get_cramfs_inode(struct super_block *sb,
- 		inode_nohighmem(inode);
- 		inode->i_data.a_ops = &cramfs_aops;
- 		break;
--	default:
-+	case S_IFCHR:
-+	case S_IFBLK:
-+	case S_IFIFO:
-+	case S_IFSOCK:
- 		init_special_inode(inode, cramfs_inode->mode,
- 				old_decode_dev(cramfs_inode->size));
-+		break;
-+	default:
-+		printk(KERN_DEBUG "CRAMFS: Invalid file type 0%04o for inode %lu.\n",
-+		       inode->i_mode, inode->i_ino);
-+		iget_failed(inode);
-+		return ERR_PTR(-EIO);
+diff --git a/fs/dax.c b/fs/dax.c
+index 6619a71b57bbe..a6f481f1517dd 100644
+--- a/fs/dax.c
++++ b/fs/dax.c
+@@ -1222,7 +1222,7 @@ dax_iomap_rw(struct kiocb *iocb, struct iov_iter *iter,
+ 	if (iov_iter_rw(iter) == WRITE) {
+ 		lockdep_assert_held_write(&iomi.inode->i_rwsem);
+ 		iomi.flags |= IOMAP_WRITE;
+-	} else {
++	} else if (!sb_rdonly(iomi.inode->i_sb)) {
+ 		lockdep_assert_held(&iomi.inode->i_rwsem);
  	}
  
- 	inode->i_mode = cramfs_inode->mode;
 -- 
 2.51.0
 
