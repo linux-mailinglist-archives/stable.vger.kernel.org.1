@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-190992-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191105-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E73DC10F9A
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:28:09 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F95FC110B3
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:31:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 48CB2547350
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:20:10 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 83960560440
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:25:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C77C2F4A14;
-	Mon, 27 Oct 2025 19:18:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76BF53203BA;
+	Mon, 27 Oct 2025 19:23:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s1IVBmK3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j67iOvPs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD4072DC33D;
-	Mon, 27 Oct 2025 19:18:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 340B631A811;
+	Mon, 27 Oct 2025 19:23:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592733; cv=none; b=CexJZpwhOGBCcy4cDHUYWEMUWHFranqWnSB0R89er3xkbLOtr7rCneCEitWstZYFK3Hq8FNao2zRszpYUOGwE++IW7tOEk+Rm9bNkIEsppOBPizgCSxnbCcNLITYKySLIAAzfOS89/RC72ojbndE2uyS3PbyI3/Y6Q7RzWeIdaY=
+	t=1761593023; cv=none; b=RyT60JbGXUF6IVW2WaUnoNRi9Z3zz7U8CFYZKyxfSdYQmWTLSlyX6qCZhF3x7kTj3orfWwn3fS9Yz57v43jtmxn+CIRfhX+Vs9ZTfol7/1g0kZXFaFaw3Bwld0LSXgSluhGEurMKodeV92KbdZ1bnRhXbguD/hQd1zrc1FL+zqc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592733; c=relaxed/simple;
-	bh=6r7Vr0NlOU1RvZ8NkZkNOd5YNZQP8uUhtXhGv6HyDkc=;
+	s=arc-20240116; t=1761593023; c=relaxed/simple;
+	bh=7zk9wuL/KShE9P9mFSowKjQ+2vriNPGBPCSiA8vqsG8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Pu8v/mj7aVGG1lgidAwfyibuig/T24lPC+ohnMO/yT6iiRdh8TwO8rU1Vno8rAeb1spEaxzVrd40HbNWcDERkGrInKV37pRyg8z3TUculoUXSI6ncwp1wGskcRRiUOTkBRoeBS0cpgsU/k38mfFbQRELoqC2Di5AJMKBgstgigw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s1IVBmK3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C43AC4CEF1;
-	Mon, 27 Oct 2025 19:18:52 +0000 (UTC)
+	 MIME-Version:Content-Type; b=gl7o9JiXLLqZs41wwqOLS2Dqz6TJoWqdfC5sCVKHW918qON8s8Sf6XJ2B7LPkFlrPONANkBA/rh+3IgIweF2m5qOJTCfGxH8FRqTP1pdwW/LucSYLAo7bcyBW4wDUtyqx12J5Gol8iVW1u0ucYM/FIVyWK/LSIXYD6Qn8/M+gI8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j67iOvPs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA67DC116B1;
+	Mon, 27 Oct 2025 19:23:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592732;
-	bh=6r7Vr0NlOU1RvZ8NkZkNOd5YNZQP8uUhtXhGv6HyDkc=;
+	s=korg; t=1761593023;
+	bh=7zk9wuL/KShE9P9mFSowKjQ+2vriNPGBPCSiA8vqsG8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s1IVBmK32TxYvfqSxEqVOAHzS2VX1Xl/ddCdpICV3t5k7D2YD89rWj09Gk9Gx/Or+
-	 Uis4wCF3veONDzdzkZXXeg06K8oshKgOHUCpBPTAbtIxa/fJid8z1vS0Yn77ZTXGun
-	 q1HT4N33Jq773OjWkJny+RNmX8CKh2YzRlO/kl/M=
+	b=j67iOvPs3dgmY/IqFutEoaq3pTgGwUTnrNR4MOjN5oO2AgPi7FnU1xaeOXKck7NSY
+	 hbtrIgzsy1Kbf8P8AaVraP0cKk8iA8UbBwk9quw2H8/P+K6FWEfr22We6LFN0t4t7H
+	 OSZ+LoK9isOwO0lbuLjAi65v3F7C2jq0y4sHMovM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	stable <stable@kernel.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Daniel Golle <daniel@makrotopia.org>
-Subject: [PATCH 6.6 76/84] serial: 8250_mtk: Enable baud clock and manage in runtime PM
+	=?UTF-8?q?=C5=81ukasz=20Bartosik?= <ukaszb@chromium.org>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>
+Subject: [PATCH 6.12 099/117] xhci: dbc: enable back DbC in resume if it was enabled before suspend
 Date: Mon, 27 Oct 2025 19:37:05 +0100
-Message-ID: <20251027183440.831956858@linuxfoundation.org>
+Message-ID: <20251027183456.698370310@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183438.817309828@linuxfoundation.org>
-References: <20251027183438.817309828@linuxfoundation.org>
+In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
+References: <20251027183453.919157109@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,72 +60,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Golle <daniel@makrotopia.org>
+From: Mathias Nyman <mathias.nyman@linux.intel.com>
 
-commit d518314a1fa4e980a227d1b2bda1badf433cb932 upstream.
+commit 2bbd38fcd29670e46c0fdb9cd0e90507a8a1bf6a upstream.
 
-Some MediaTek SoCs got a gated UART baud clock, which currently gets
-disabled as the clk subsystem believes it would be unused. This results in
-the uart freezing right after "clk: Disabling unused clocks" on those
-platforms.
+DbC is currently only enabled back if it's in configured state during
+suspend.
 
-Request the baud clock to be prepared and enabled during probe, and to
-restore run-time power management capabilities to what it was before commit
-e32a83c70cf9 ("serial: 8250-mtk: modify mtk uart power and clock
-management") disable and unprepare the baud clock when suspending the UART,
-prepare and enable it again when resuming it.
+If system is suspended after DbC is enabled, but before the device is
+properly enumerated by the host, then DbC would not be enabled back in
+resume.
 
-Fixes: e32a83c70cf9 ("serial: 8250-mtk: modify mtk uart power and clock management")
-Fixes: b6c7ff2693ddc ("serial: 8250_mtk: Simplify clock sequencing and runtime PM")
+Always enable DbC back in resume if it's suspended in enabled,
+connected, or configured state
+
 Cc: stable <stable@kernel.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Daniel Golle <daniel@makrotopia.org>
-Link: https://patch.msgid.link/de5197ccc31e1dab0965cabcc11ca92e67246cf6.1758058441.git.daniel@makrotopia.org
+Fixes: dfba2174dc42 ("usb: xhci: Add DbC support in xHCI driver")
+Tested-by: Łukasz Bartosik <ukaszb@chromium.org>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/8250/8250_mtk.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/usb/host/xhci-dbgcap.c |    9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
---- a/drivers/tty/serial/8250/8250_mtk.c
-+++ b/drivers/tty/serial/8250/8250_mtk.c
-@@ -435,6 +435,7 @@ static int __maybe_unused mtk8250_runtim
- 	while
- 		(serial_in(up, MTK_UART_DEBUG0));
+--- a/drivers/usb/host/xhci-dbgcap.c
++++ b/drivers/usb/host/xhci-dbgcap.c
+@@ -1387,8 +1387,15 @@ int xhci_dbc_suspend(struct xhci_hcd *xh
+ 	if (!dbc)
+ 		return 0;
  
-+	clk_disable_unprepare(data->uart_clk);
- 	clk_disable_unprepare(data->bus_clk);
+-	if (dbc->state == DS_CONFIGURED)
++	switch (dbc->state) {
++	case DS_ENABLED:
++	case DS_CONNECTED:
++	case DS_CONFIGURED:
+ 		dbc->resume_required = 1;
++		break;
++	default:
++		break;
++	}
  
- 	return 0;
-@@ -445,6 +446,7 @@ static int __maybe_unused mtk8250_runtim
- 	struct mtk8250_data *data = dev_get_drvdata(dev);
+ 	xhci_dbc_stop(dbc);
  
- 	clk_prepare_enable(data->bus_clk);
-+	clk_prepare_enable(data->uart_clk);
- 
- 	return 0;
- }
-@@ -475,13 +477,13 @@ static int mtk8250_probe_of(struct platf
- 	int dmacnt;
- #endif
- 
--	data->uart_clk = devm_clk_get(&pdev->dev, "baud");
-+	data->uart_clk = devm_clk_get_enabled(&pdev->dev, "baud");
- 	if (IS_ERR(data->uart_clk)) {
- 		/*
- 		 * For compatibility with older device trees try unnamed
- 		 * clk when no baud clk can be found.
- 		 */
--		data->uart_clk = devm_clk_get(&pdev->dev, NULL);
-+		data->uart_clk = devm_clk_get_enabled(&pdev->dev, NULL);
- 		if (IS_ERR(data->uart_clk)) {
- 			dev_warn(&pdev->dev, "Can't get uart clock\n");
- 			return PTR_ERR(data->uart_clk);
 
 
 
