@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-190097-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190398-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 869F7C0FF66
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:40:32 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B11EDC10666
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:02:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 06A114F08B0
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:40:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8AFB5565726
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:56:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F63B30FC0F;
-	Mon, 27 Oct 2025 18:40:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC5383148B3;
+	Mon, 27 Oct 2025 18:53:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xo51DxJj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Grlg4OKK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE5262D7806;
-	Mon, 27 Oct 2025 18:40:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9D7732C323;
+	Mon, 27 Oct 2025 18:53:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761590429; cv=none; b=FkeCUnxC+SW+P24nxnLasanqDtbA0v9EatZY5tSLBDuktmaAQEa+Kv5aI+GVv+8kREzY2aEKnZPlHUGGX2wIM/bjASf7UOM118eNQ4or/2bCqf0E+jCKDL0HtR+uzf/hQmjtxaeQEo7BdmGfzUGwap49Z4j7C1TNCcK8BMKgjr4=
+	t=1761591198; cv=none; b=FjDcjD1cOtEsiq1ZbqC9SWyF2CmYkXnUwLeGAAOJfOeeI+wo1WGQRV/DHw6ujblYZnfP77ykbN3TtaL2cnbpM1VzTOgSt3ldp6Ohlex265+ECK7xJi9OG3gT3cPX/M4MD5KqL0JReb1HKaxR3Wb1H4+azQRT2BynZxA0Brr2YxI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761590429; c=relaxed/simple;
-	bh=ySga9qNmeaSd8anFD2lmPeTdeVz+ZKoPCXY88kS9m0A=;
+	s=arc-20240116; t=1761591198; c=relaxed/simple;
+	bh=uhAUvnV5KjSVIpVLF9KsjXhgTbWmblV2o6HXC1dP7aQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZCXxVbWBHbS/HkpbGyBnohHohP+/gxM+oIgDJfy1fYINtgHImeuWIcTcPTXCPTpIX0ptf/rkBKR2djs4FnVK93rux1dn35YCm0FpViWsFlP3wZL/ThNCJB+bRDK1GYvTfJzgzRA67SH3L3pMu7x5MsuCtoIaNEX/ql7zIUWqMT8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xo51DxJj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B73BC4CEF1;
-	Mon, 27 Oct 2025 18:40:27 +0000 (UTC)
+	 MIME-Version:Content-Type; b=lmHiAMlV5ZX2lxinO4RgDDdY8JvhR/1WKsw18xhHQBfvLhyPV1l6dMSh+yoL8mX5kjRYVCYAXog/suNj4b62EoGXkVF0ZGc/1IJy9cIOCdSoO9kYAGyZpbY2mDkM3xyfirXxUCwGTz+Xnggj3J461+zpIC5zdUDU07MKKXlEK5E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Grlg4OKK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97896C4CEF1;
+	Mon, 27 Oct 2025 18:53:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761590428;
-	bh=ySga9qNmeaSd8anFD2lmPeTdeVz+ZKoPCXY88kS9m0A=;
+	s=korg; t=1761591197;
+	bh=uhAUvnV5KjSVIpVLF9KsjXhgTbWmblV2o6HXC1dP7aQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xo51DxJjFzjWREiHITfrrxL/ZKkacEg2PYMYPzgWhPpTRR+akoZAX+Xmpumdq2aLu
-	 gJsbIp8mzysba9JcnAnTRJu2SmxM7ooKAle+9nlK4Xuylcx1NFRkJQI1FGq7+W1EQC
-	 fV9VWLMVULlc6v1cPKdqCA4eatwf75Bmxc4f00P4=
+	b=Grlg4OKKnmjVmnDDmriu1LnRJ3qnapdi+4uGDVbXWbnRB+PZe1YJ0CpXFTfPfr/6c
+	 +XJGWvjbN9qsHxlJ7yAGskpbdhN+YfHE0V81+phWUkROAHmOMzFAieX6H5XVt5reFT
+	 hhlvtgJ/a0P/kgk+M+Y4ePtLRBeRT3MpVe9svd+M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-	Sean Young <sean@mess.org>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>,
+	Tamas Zsoldos <tamas.zsoldos@arm.com>,
+	Leo Yan <leo.yan@arm.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ian Rogers <irogers@google.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 009/224] media: imon: grab lock earlier in imon_ir_change_protocol()
-Date: Mon, 27 Oct 2025 19:32:35 +0100
-Message-ID: <20251027183509.234949877@linuxfoundation.org>
+Subject: [PATCH 5.10 103/332] perf session: Fix handling when buffer exceeds 2 GiB
+Date: Mon, 27 Oct 2025 19:32:36 +0100
+Message-ID: <20251027183527.337761112@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183508.963233542@linuxfoundation.org>
-References: <20251027183508.963233542@linuxfoundation.org>
+In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
+References: <20251027183524.611456697@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,63 +65,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+From: Leo Yan <leo.yan@arm.com>
 
-[ Upstream commit 7019553ab850ce1d3f0e512e16d14ab153f91c04 ]
+[ Upstream commit c17dda8013495d8132c976cbf349be9949d0fbd1 ]
 
-Move mutex_trylock() in imon_ir_change_protocol() to the beginning,
-for memcpy() which modifies ictx->usb_tx_buf should be protected by
-ictx->lock.
+If a user specifies an AUX buffer larger than 2 GiB, the returned size
+may exceed 0x80000000. Since the err variable is defined as a signed
+32-bit integer, such a value overflows and becomes negative.
 
-Also, verify at the beginning of send_packet() that ictx->lock is held
-in case send_packet() is by error called from imon_ir_change_protocol()
-when mutex_trylock() failed due to concurrent requests.
+As a result, the perf record command reports an error:
 
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Signed-off-by: Sean Young <sean@mess.org>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
-Stable-dep-of: fa0f61cc1d82 ("media: rc: fix races with imon_disconnect()")
+  0x146e8 [0x30]: failed to process type: 71 [Unknown error 183711232]
+
+Change the type of the err variable to a signed 64-bit integer to
+accommodate large buffer sizes correctly.
+
+Fixes: d5652d865ea734a1 ("perf session: Add ability to skip 4GiB or more")
+Reported-by: Tamas Zsoldos <tamas.zsoldos@arm.com>
+Signed-off-by: Leo Yan <leo.yan@arm.com>
+Acked-by: Namhyung Kim <namhyung@kernel.org>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Link: https://lore.kernel.org/r/20250808-perf_fix_big_buffer_size-v1-1-45f45444a9a4@arm.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/rc/imon.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ tools/perf/util/session.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/media/rc/imon.c
-+++ b/drivers/media/rc/imon.c
-@@ -598,6 +598,8 @@ static int send_packet(struct imon_conte
- 	int retval = 0;
- 	struct usb_ctrlrequest *control_req = NULL;
+diff --git a/tools/perf/util/session.c b/tools/perf/util/session.c
+index 81b7ec2ae8615..17bfcd8b7fbb1 100644
+--- a/tools/perf/util/session.c
++++ b/tools/perf/util/session.c
+@@ -1570,7 +1570,7 @@ static s64 perf_session__process_user_event(struct perf_session *session,
+ 	struct perf_tool *tool = session->tool;
+ 	struct perf_sample sample = { .time = 0, };
+ 	int fd = perf_data__fd(session->data);
+-	int err;
++	s64 err;
  
-+	lockdep_assert_held(&ictx->lock);
-+
- 	/* Check if we need to use control or interrupt urb */
- 	if (!ictx->tx_control) {
- 		pipe = usb_sndintpipe(ictx->usbdev_intf0,
-@@ -1126,7 +1128,7 @@ static int imon_ir_change_protocol(struc
- 	int retval;
- 	struct imon_context *ictx = rc->priv;
- 	struct device *dev = ictx->dev;
--	bool unlock = false;
-+	const bool unlock = mutex_trylock(&ictx->lock);
- 	unsigned char ir_proto_packet[] = {
- 		0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x86 };
- 
-@@ -1153,8 +1155,6 @@ static int imon_ir_change_protocol(struc
- 
- 	memcpy(ictx->usb_tx_buf, &ir_proto_packet, sizeof(ir_proto_packet));
- 
--	unlock = mutex_trylock(&ictx->lock);
--
- 	retval = send_packet(ictx);
- 	if (retval)
- 		goto out;
+ 	if (event->header.type != PERF_RECORD_COMPRESSED ||
+ 	    tool->compressed == perf_session__process_compressed_event_stub)
+-- 
+2.51.0
+
 
 
 
