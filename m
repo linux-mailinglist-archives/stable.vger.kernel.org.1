@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-190875-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190594-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C7FDC10D66
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:21:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BEC0C10951
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:11:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 953EC561D6C
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:15:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3091D46423B
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:05:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5969B320382;
-	Mon, 27 Oct 2025 19:13:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E6E1322DB7;
+	Mon, 27 Oct 2025 19:01:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A+R7Vu5Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kxXy/000"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1665230F526;
-	Mon, 27 Oct 2025 19:13:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5859B321F48;
+	Mon, 27 Oct 2025 19:01:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592429; cv=none; b=bmwaoZ1wjXCh93zxsZkYCnQ5F0d2fK4f2JoQp8fR13kHDUbM0b8HMHCz0lXqW1JExcBBuT3X5WF7nWTOiFMeaLqGmVDwEAksd+Kqzcl4Jkn5gtxco5DlU2Tqg9/F0R27le2TooEmWnMi7PFd31Uvtd10Q7ALZsTGcmLxp0DSQdc=
+	t=1761591692; cv=none; b=k9Uhitz7sxD31huIi/fyuKaQ3a7R0FIXRPVZryI5UqcyHdoUs4nMwZbAB60+SOBVqUoqZf5xJRI1aHx/yZ9pXVhRhD3Ac8tyfO5j7Ni1NI1Xeie3whLERUzkchPpe36XuQ06HUyh1MEQGzsgcxCmd3z4WqZ6IXUdXmx2lGSMuBU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592429; c=relaxed/simple;
-	bh=z9LLTJCLhInpL3RnrLtGZjAfqeQ5f227wMm0RFccz7k=;
+	s=arc-20240116; t=1761591692; c=relaxed/simple;
+	bh=6rUhq1EiAOxe3giluCiKaQS6WicK71XLE2IwNPlMh0I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TVi+9faMWQCjBSYHqq4HR6nyaXtVjwoOvjw47Z45dSVVKNt00bY97SAJUiUhuqfJdjDPqNpf5ytSqTZ+VhqFsNqphlQUN7D2YkpdAijXqPo6WYZ852toQe92h6KacpruKSyWJWL8JzAd/pEl3kfEb6zNZzLEJwcfTL6FY2leYao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A+R7Vu5Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FADAC4CEF1;
-	Mon, 27 Oct 2025 19:13:48 +0000 (UTC)
+	 MIME-Version; b=PwS0uMUdrJgisUad5wWmtDglFeqIyVAkcp+9BWjxPc5Xnm0hLzFflNzx9JOjvjXiHBgI9JF+PuiyFoAXHkmG3aReV/MLtteF7kUm5MXtn/LJkC+Mx3zoH0pGph9W8QqgG+0V6Dm8jfvEUSzDxC/fxHJgZn2I4hXTHuGCsiyVbQo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kxXy/000; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE566C4CEF1;
+	Mon, 27 Oct 2025 19:01:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592429;
-	bh=z9LLTJCLhInpL3RnrLtGZjAfqeQ5f227wMm0RFccz7k=;
+	s=korg; t=1761591692;
+	bh=6rUhq1EiAOxe3giluCiKaQS6WicK71XLE2IwNPlMh0I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A+R7Vu5QsZkzuJKavTawdxzr2yGODwbh15arZLDqj9+aOCHxzs+xx+6htytKZt+I1
-	 s+bvqPLKlrM1Gsyk8F96pUQmwVtlo8L5Tahu5cRM+I3JkmJ1y2p0mNs68ptxNrjcqw
-	 bUV17PipYW+zAQCEo5wNd311gR0lgVTF0/sOqCEY=
+	b=kxXy/000LAC04c4N8Cg5QOzpknnKD3+AkZkhMPQUSzfIpwNoq+l8TVxaTIbahF4We
+	 sOv0pt81/v13R8HMf3ZO4C2VAEnX59eX7n/xhjgBSQT+CoHk1TjE+mPaT7Y472zLFV
+	 CMumy1Bib1jJ6GKRPK+EAcrd3gEZijQcIsExp+HA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ioana Ciornei <ioana.ciornei@nxp.com>,
-	Mathew McBride <matt@traverse.com.au>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 084/157] dpaa2-eth: fix the pointer passed to PTR_ALIGN on Tx path
-Date: Mon, 27 Oct 2025 19:35:45 +0100
-Message-ID: <20251027183503.525564565@linuxfoundation.org>
+	LI Qingwu <Qing-wu.Li@leica-geosystems.com.cn>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 5.10 293/332] USB: serial: option: add Telit FN920C04 ECM compositions
+Date: Mon, 27 Oct 2025 19:35:46 +0100
+Message-ID: <20251027183532.591411758@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
-References: <20251027183501.227243846@linuxfoundation.org>
+In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
+References: <20251027183524.611456697@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,55 +61,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ioana Ciornei <ioana.ciornei@nxp.com>
+From: LI Qingwu <Qing-wu.Li@leica-geosystems.com.cn>
 
-[ Upstream commit 902e81e679d86846a2404630d349709ad9372d0d ]
+commit 622865c73ae30f254abdf182f4b66cccbe3e0f10 upstream.
 
-The blamed commit increased the needed headroom to account for
-alignment. This means that the size required to always align a Tx buffer
-was added inside the dpaa2_eth_needed_headroom() function. By doing
-that, a manual adjustment of the pointer passed to PTR_ALIGN() was no
-longer correct since the 'buffer_start' variable was already pointing
-to the start of the skb's memory.
+Add support for the Telit Cinterion FN920C04 module when operating in
+ECM (Ethernet Control Model) mode. The following USB product IDs are
+used by the module when AT#USBCFG is set to 3 or 7.
 
-The behavior of the dpaa2-eth driver without this patch was to drop
-frames on Tx even when the headroom was matching the 128 bytes
-necessary. Fix this by removing the manual adjust of 'buffer_start' from
-the PTR_MODE call.
+0x10A3: ECM + tty (NMEA) + tty (DUN) [+ tty (DIAG)]
+T:  Bus=01 Lev=02 Prnt=02 Port=00 Cnt=01 Dev#=  3 Spd=480  MxCh= 0
+D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=1bc7 ProdID=10a3 Rev= 5.15
+S:  Manufacturer=Telit Cinterion
+S:  Product=FN920
+S:  SerialNumber=76e7cb38
+C:* #Ifs= 5 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:* If#= 0 Alt= 0 #EPs= 1 Cls=02(comm.) Sub=06 Prot=00 Driver=cdc_ether
+E:  Ad=82(I) Atr=03(Int.) MxPS=  16 Ivl=32ms
+I:  If#= 1 Alt= 0 #EPs= 0 Cls=0a(data ) Sub=00 Prot=00 Driver=cdc_ether
+I:* If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=cdc_ether
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=60 Driver=option
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
 
-Closes: https://lore.kernel.org/netdev/70f0dcd9-1906-4d13-82df-7bbbbe7194c6@app.fastmail.com/T/#u
-Fixes: f422abe3f23d ("dpaa2-eth: increase the needed headroom to account for alignment")
-Signed-off-by: Ioana Ciornei <ioana.ciornei@nxp.com>
-Tested-by: Mathew McBride <matt@traverse.com.au>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20251016135807.360978-1-ioana.ciornei@nxp.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+0x10A8: ECM + tty (DUN) + tty (AUX) [+ tty (DIAG)]
+T:  Bus=03 Lev=02 Prnt=02 Port=00 Cnt=01 Dev#=  3 Spd=480  MxCh= 0
+D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=1bc7 ProdID=10a8 Rev= 5.15
+S:  Manufacturer=Telit Cinterion
+S:  Product=FN920
+S:  SerialNumber=76e7cb38
+C:* #Ifs= 5 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:* If#= 0 Alt= 0 #EPs= 1 Cls=02(comm.) Sub=06 Prot=00 Driver=cdc_ether
+E:  Ad=82(I) Atr=03(Int.) MxPS=  16 Ivl=32ms
+I:  If#= 1 Alt= 0 #EPs= 0 Cls=0a(data ) Sub=00 Prot=00 Driver=cdc_ether
+I:* If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=cdc_ether
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+
+Adding these IDs allows the option driver to automatically create the
+corresponding /dev/ttyUSB* ports under ECM mode.
+
+Tested with FN920C04 under ECM configuration (USBCFG=3 and 7).
+
+Signed-off-by: LI Qingwu <Qing-wu.Li@leica-geosystems.com.cn>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/usb/serial/option.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c b/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c
-index dbc40e4514f0a..3c19be56af22e 100644
---- a/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c
-+++ b/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c
-@@ -1046,8 +1046,7 @@ static int dpaa2_eth_build_single_fd(struct dpaa2_eth_priv *priv,
- 	dma_addr_t addr;
- 
- 	buffer_start = skb->data - dpaa2_eth_needed_headroom(skb);
--	aligned_start = PTR_ALIGN(buffer_start - DPAA2_ETH_TX_BUF_ALIGN,
--				  DPAA2_ETH_TX_BUF_ALIGN);
-+	aligned_start = PTR_ALIGN(buffer_start, DPAA2_ETH_TX_BUF_ALIGN);
- 	if (aligned_start >= skb->head)
- 		buffer_start = aligned_start;
- 	else
--- 
-2.51.0
-
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -1403,10 +1403,14 @@ static const struct usb_device_id option
+ 	  .driver_info = RSVD(0) | NCTRL(3) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10a2, 0xff),	/* Telit FN920C04 (MBIM) */
+ 	  .driver_info = NCTRL(4) },
++	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10a3, 0xff),	/* Telit FN920C04 (ECM) */
++	  .driver_info = NCTRL(4) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10a4, 0xff),	/* Telit FN20C04 (rmnet) */
+ 	  .driver_info = RSVD(0) | NCTRL(3) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10a7, 0xff),	/* Telit FN920C04 (MBIM) */
+ 	  .driver_info = NCTRL(4) },
++	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10a8, 0xff),	/* Telit FN920C04 (ECM) */
++	  .driver_info = NCTRL(4) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10a9, 0xff),	/* Telit FN20C04 (rmnet) */
+ 	  .driver_info = RSVD(0) | NCTRL(2) | RSVD(3) | RSVD(4) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10aa, 0xff),	/* Telit FN920C04 (MBIM) */
 
 
 
