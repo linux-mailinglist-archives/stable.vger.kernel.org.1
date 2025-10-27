@@ -1,164 +1,122 @@
-Return-Path: <stable+bounces-191318-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191319-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 382CAC114B6
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:59:53 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0E81C1162B
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 21:26:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3346E467715
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:58:04 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 50FC04E7834
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:26:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8489315789;
-	Mon, 27 Oct 2025 19:58:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB1442E427F;
+	Mon, 27 Oct 2025 20:26:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="R5jhvjI2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hWofA5oh"
 X-Original-To: stable@vger.kernel.org
-Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C81A2D97A6
-	for <stable@vger.kernel.org>; Mon, 27 Oct 2025 19:57:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99E4727978C
+	for <stable@vger.kernel.org>; Mon, 27 Oct 2025 20:26:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761595080; cv=none; b=ugij14jzG3Fqc8W1VPTCEmrvun9imHrtNGeEz5pKi2bazxjQqhp3mDQ9BKOo5UPcB0f/6OngRFhVrKRouXufrm9OkIsQZy6FkjhgQ4lP13wWJ2DrQfsCBjfgUgLwybdKBk7/dYuF+LqDD+Fm4t/wTsUDxHWhTNgan6DSAMImBRs=
+	t=1761596776; cv=none; b=a/2daUsNB0WjKeakpZPb7pQZiw/rL7vZP70PS9Sj+Vq/H0A63QEuroLGaBResrLVXLnQ7TnPD2PeIoPFnSz5bZBvFLD1IfcztQcep6SCRIwr69Getqza0un8/XGT/5VryCge2jhm3BwevimmCJe9V/R0eWxPs+gpoGORGDAC4iY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761595080; c=relaxed/simple;
-	bh=3uqE98Bb5YTB1wH+b5+ZFqSfmfvTk/0fgO+sMvaAa8Y=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dvhaGXHPDMW3YsCI5guzl5EeGgirkM4dj/TFuyYssgMen7g8ZQLwhkj42wViAvuZC45UmBqxb7dFJ+GipgGLa5VciwpcZo3159DGLF0LIucFFR/xcmIeAZM/lQOxnPgdd+iK8q0ARSORML7JtqTZKUuNqamdJkLuZT+4rHqLLvk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=R5jhvjI2; arc=none smtp.client-ip=91.218.175.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Message-ID: <eb749233-0342-49a9-a41b-6d18239eb1d9@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1761595076;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2+G+nasBC3jhxtT7KXEPZymKlMWjpHoUogw8SupcDt0=;
-	b=R5jhvjI2imvi4D/zszJUbbWCLGeIvULnw4as9CgNbJB3NmYk1Tk+7nHYaMrUQbTgr1cMhL
-	l8S3oPaIJC+yLkPfEc1Ga4NCEkLvDw1GqzhWTG8I0wMswvtzFJ30HXk2A13hrujeW0h8Pc
-	miaf3sxiCGDT8NiXBdW1ggYwUlYyZo8=
-Date: Mon, 27 Oct 2025 12:57:52 -0700
+	s=arc-20240116; t=1761596776; c=relaxed/simple;
+	bh=UJ6MmkxbwNihwhAWkFRhdgi3rLiRJ5FOlBCHopS8LMM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=B1mCWDFUin8YBSYT5G0EpObLwRX2siVA7Nx5THRBbMpOl8FQC4nJaC8BuAXo3L+r6Vv2LTiv/4/h2QRhjdg92oRDbhHb1Ypoc6D/zjlhIt6cd7A3EjO8qBVS76wLFazu4aCDG5svqldCPUaJJZjWl4wJzzt3bowvhz7YCA3AYps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hWofA5oh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D2ECC4AF09
+	for <stable@vger.kernel.org>; Mon, 27 Oct 2025 20:26:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761596776;
+	bh=UJ6MmkxbwNihwhAWkFRhdgi3rLiRJ5FOlBCHopS8LMM=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=hWofA5ohRf0zlap1Yx3dfPfsYAjFHzHmbkX0tchEDP0SMA2VI3/S5vBr5tIh1P0VO
+	 pBWM8yvcCg/dtESJVC70AHbbbMXK5/3iqrVM41GVXFq0118s2iFoTpDHv0/pmX38GD
+	 B7aJdXXKxbNsVCoxq+uDxYE6fFE3FJKUTXxbdPHAFXEF52Hm78AnNNc5V8Q69pTMi4
+	 tvRqSPZVQXx0cdOSg+97j6RsKnM9lFXONa56a2i6DrqxlXjk2xHs7WT9Bbs9NjRAd1
+	 2L5+gAZnlbyC7PankEHxeqm2E6MElh6zr21HbbfZrOVzMQIBgn3ctswlFpNI9KewXT
+	 jAWHncaNYzMiQ==
+Received: by mail-ot1-f42.google.com with SMTP id 46e09a7af769-7c53908e8b5so1217451a34.1
+        for <stable@vger.kernel.org>; Mon, 27 Oct 2025 13:26:16 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVrWrrUzEFNcVaHo08aBfwaDzry9UTAy3g8y09GOCDwvuGNTZAppaAak6Q8aH7WC3m37I8pEUY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw0pOOmW5mH4Q4ehZWoS02Sip3XJW/47YMO5D4etzuhiAecPwh2
+	XrzRPjz73wDOv+w9D5zDl0j3d98rB/2jO1DdyDWYxAYmItxIOSzLiuvCSsuBgT8YjHnbtnSD8jb
+	raTmgeVH4JRs8m8xDMBn4bDPR8krAKG8=
+X-Google-Smtp-Source: AGHT+IE9D/Es2uxgo0RZaaHln7lBhFVmUzdgDvDqUNNXq/SfZLMveyNlMgTOcnrqhFYu2i1d8G63X4JEoe5CjH+wt1s=
+X-Received: by 2002:a05:6808:4fcd:b0:44d:b8fb:53cb with SMTP id
+ 5614622812f47-44f6b9a9313mr491212b6e.6.1761596775578; Mon, 27 Oct 2025
+ 13:26:15 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH v1 2/2] ALSA: hda/realtek: Add match for ASUS Xbox Ally
- projects
-To: Antheas Kapenekakis <lkml@antheas.dev>
-Cc: Shenghao Ding <shenghao-ding@ti.com>, Baojun Xu <baojun.xu@ti.com>,
- Takashi Iwai <tiwai@suse.com>, linux-sound@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20251026191635.2447593-1-lkml@antheas.dev>
- <20251026191635.2447593-2-lkml@antheas.dev>
- <CAGwozwEwPj9VRRo2U50ccg=_qSM7p-1c_hw2y=OYA-pFc=p13w@mail.gmail.com>
- <35A5783A-CA60-4B10-8C7B-5820B65307FE@linux.dev>
- <CAGwozwFtah66p=5oy9rf5phVGdDTiWg0WuJBT3qGpWdP3A62Pg@mail.gmail.com>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Matthew Schwartz <matthew.schwartz@linux.dev>
-In-Reply-To: <CAGwozwFtah66p=5oy9rf5phVGdDTiWg0WuJBT3qGpWdP3A62Pg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+References: <20251026164422.58128-1-linmq006@gmail.com>
+In-Reply-To: <20251026164422.58128-1-linmq006@gmail.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Mon, 27 Oct 2025 21:26:04 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0hsJaK1DkNu7bRTBDH3U5seT2fmceg=CVpekK_QsVtS0w@mail.gmail.com>
+X-Gm-Features: AWmQ_bkTU4NdICPyyaKCzsC2sDArHDgS5akUzg9xK_GdVIhm4dNrpn04nphu_7U
+Message-ID: <CAJZ5v0hsJaK1DkNu7bRTBDH3U5seT2fmceg=CVpekK_QsVtS0w@mail.gmail.com>
+Subject: Re: [PATCH] thermal/of: Fix reference count leak in thermal_of_cm_lookup
+To: Miaoqian Lin <linmq006@gmail.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Daniel Lezcano <daniel.lezcano@linaro.org>, 
+	Zhang Rui <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>, 
+	Yu-Che Cheng <giver@chromium.org>, linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 10/27/25 1:23 AM, Antheas Kapenekakis wrote:
-> On Mon, 27 Oct 2025 at 07:02, Matthew Schwartz
-> <matthew.schwartz@linux.dev> wrote:
->>
->>
->>
->>> On Oct 26, 2025, at 12:19 PM, Antheas Kapenekakis <lkml@antheas.dev> wrote:
->>>
->>> On Sun, 26 Oct 2025 at 20:16, Antheas Kapenekakis <lkml@antheas.dev> wrote:
->>>>
->>>> Bind the realtek codec to TAS2781 I2C audio amps on ASUS Xbox Ally
->>>> projects. While these projects work without a quirk, adding it increases
->>>> the output volume significantly.
->>>
->>> Also, if you can upstream the firmware files:
->>> TAS2XXX13840.bin
->>> TAS2XXX13841.bin
->>> TAS2XXX13940.bin
->>> TAS2XXX13941.bin
->>
->> This is the firmware at [1], correct? I’m testing the series with that firmware on my ROG Xbox Ally X, and I found something interesting.
->>
->> By default, with just your kernel patches and the firmware files hosted at [1], my unit is loading:
->>
->> tas2781-hda i2c-TXNW2781:00-tas2781-hda.0: Loaded FW: TAS2XXX13840.bin, sha256: 58cffa36ae23a2d9b2349ecb6c1d4e89627934cd79218f6ada06eaffe6688246
->>
->> However, with this firmware file,  TAS2XXX13840.bin, there is significant audio clipping above 75% speaker level on my individual unit.
->>
->> Then, I tried renaming the other firmware file, TAS2XXX13841.bin, into TAS2XXX13840.bin. Now my unit is loading:
->>
->> tas2781-hda i2c-TXNW2781:00-tas2781-hda.0: Loaded FW: TAS2XXX13840.bin, sha256: 0fda76e7142cb455df1860cfdb19bb3cb6871128b385595fe06b296a070f4b8c
->>
->> With this firmware file, audio is perfect all the way to 100% speaker level.
->>
->> If I recall, there have been other ASUS products that required matching amplifier hardware with firmware correctly, right? It looks like this might be another case of since it seems my unit is loading the wrong firmware for its amplifiers.
-> 
-> The original Ally X had a similar setup, yes.
-> 
-> First patch might not be perfect and your speaker pin might be 1. My
-> Xbox Ally's pin is 1. It loads:
-> Loaded FW: TAS2XXX13941.bin, sha256:
-> 0fda76e7142cb455df1860cfdb19bb3cb6871128b385595fe06b296a070f4b8c
-> 
-> And it sounds loud and crisp. So the pin is read.
-> 
-> I had multiple users verify the X works, but perhaps it is not perfect
-> yet. Make sure you are not using a dsp that might be interfering
+On Sun, Oct 26, 2025 at 5:44=E2=80=AFPM Miaoqian Lin <linmq006@gmail.com> w=
+rote:
+>
+> The function calls of_parse_phandle() to get a
+> device node, which increments the reference count of the node. However,
+> the function fails to call of_node_put() to decrement the reference.
+> This leads to a reference count leak.
+>
+> This is found by static analysis and similar to the commit a508e33956b5
+> ("ipmi:ipmb: Fix refcount leak in ipmi_ipmb_probe")
+>
+> Fixes: 423de5b5bc5b ("thermal/of: Fix cdev lookup in thermal_of_should_bi=
+nd()")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+> ---
+>  drivers/thermal/thermal_of.c | 6 +++++-
+>  1 file changed, 5 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/thermal/thermal_of.c b/drivers/thermal/thermal_of.c
+> index 1a51a4d240ff..932291648683 100644
+> --- a/drivers/thermal/thermal_of.c
+> +++ b/drivers/thermal/thermal_of.c
+> @@ -284,8 +284,12 @@ static bool thermal_of_cm_lookup(struct device_node =
+*cm_np,
+>                 int count, i;
+>
+>                 tr_np =3D of_parse_phandle(child, "trip", 0);
+> -               if (tr_np !=3D trip->priv)
+> +               if (tr_np !=3D trip->priv) {
+> +                       of_node_put(tr_np);
+>                         continue;
+> +               }
+> +
+> +               of_node_put(tr_np);
 
-Seems like there have been other reports similar to mine on Xbox Ally X, where flipping the firmware files by renaming them fixes sound issues for them.
+If it can be done here, it may as well be done before the check above.
 
-@TI, Maybe something is different with the conditional logic for the ROG Xbox Ally X? The current GPIO-detected speaker_id doesn't always correspond to the correct firmware choice on this model it seems.
+>
+>                 /* The trip has been found, look up the cdev. */
+>                 count =3D of_count_phandle_with_args(child, "cooling-devi=
+ce",
+> --
 
-> 
-> Antheas
-> 
->> Matt
->>
->> [1]: https://github.com/hhd-dev/hwfirm
->>
->>>
->>> That would be great :)
->>>
->>> Antheas
->>>
->>>> Cc: stable@vger.kernel.org # 6.17
->>>> Signed-off-by: Antheas Kapenekakis <lkml@antheas.dev>
->>>> ---
->>>> sound/hda/codecs/realtek/alc269.c | 2 ++
->>>> 1 file changed, 2 insertions(+)
->>>>
->>>> diff --git a/sound/hda/codecs/realtek/alc269.c b/sound/hda/codecs/realtek/alc269.c
->>>> index 8ad5febd822a..d1ad84eee6d1 100644
->>>> --- a/sound/hda/codecs/realtek/alc269.c
->>>> +++ b/sound/hda/codecs/realtek/alc269.c
->>>> @@ -6713,6 +6713,8 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
->>>>        SND_PCI_QUIRK(0x1043, 0x12f0, "ASUS X541UV", ALC256_FIXUP_ASUS_MIC_NO_PRESENCE),
->>>>        SND_PCI_QUIRK(0x1043, 0x1313, "Asus K42JZ", ALC269VB_FIXUP_ASUS_MIC_NO_PRESENCE),
->>>>        SND_PCI_QUIRK(0x1043, 0x1314, "ASUS GA605K", ALC285_FIXUP_ASUS_GA605K_HEADSET_MIC),
->>>> +       SND_PCI_QUIRK(0x1043, 0x1384, "ASUS RC73XA", ALC287_FIXUP_TXNW2781_I2C),
->>>> +       SND_PCI_QUIRK(0x1043, 0x1394, "ASUS RC73YA", ALC287_FIXUP_TXNW2781_I2C),
->>>>        SND_PCI_QUIRK(0x1043, 0x13b0, "ASUS Z550SA", ALC256_FIXUP_ASUS_MIC_NO_PRESENCE),
->>>>        SND_PCI_QUIRK(0x1043, 0x1427, "Asus Zenbook UX31E", ALC269VB_FIXUP_ASUS_ZENBOOK),
->>>>        SND_PCI_QUIRK(0x1043, 0x1433, "ASUS GX650PY/PZ/PV/PU/PYV/PZV/PIV/PVV", ALC285_FIXUP_ASUS_I2C_HEADSET_MIC),
->>>> --
->>>> 2.51.1
->>>>
->>>>
->>>
->>>
->>
->>
-> 
-
+It would be more prudent to hold this reference throughout the scope
+though and release it when the scope is left.
 
