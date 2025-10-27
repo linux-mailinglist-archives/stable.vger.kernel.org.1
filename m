@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-190748-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191279-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DCEAC10B2D
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:16:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF4E1C11276
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:37:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8D2FA188D2B0
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:11:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CABC74630F7
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:33:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFE7E32C946;
-	Mon, 27 Oct 2025 19:08:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7ABF27FD62;
+	Mon, 27 Oct 2025 19:31:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iOI0rI4Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lMP7fqN2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C2C132D0C0;
-	Mon, 27 Oct 2025 19:08:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 748A5301707;
+	Mon, 27 Oct 2025 19:31:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592094; cv=none; b=E4ayNcyNst09jT1vZgwWbVtKLBrCnxzm9IH3p/CZLFcPHAoRP9OEFdG+ha2AnEwRbl/66wXdMfiLPYul8ln+Kft1518q1IiM+tGocQDZLWiaxEmPdSXfQbi6roafT0FYx7VQeKIPR+CehL//Di/fhvIXnD4o2+FDR2RsD+I5xzA=
+	t=1761593506; cv=none; b=i1GyFont8urbx4peNrUAI/DLliL5Qc7+10mT/XK7eZUNJ2uNqlEjV30DY0Mob+8nTON2h7CFQ/hFWIvWgRKeUu0GtKzKit6hV1nFzwN1yzhkzyBYbihN4JLrXkH1KQimpJx3jglzpa4Tr05qWAPaWHGi8JKnD6sApQyJWz/mKJw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592094; c=relaxed/simple;
-	bh=2BGDq72nEvaerL3K/q0XoQym4ThkDFpnYYyoLvzSEGA=;
+	s=arc-20240116; t=1761593506; c=relaxed/simple;
+	bh=e0QqDenBEaDnjAqoVw6TZMMN8i1gHNEr4TNZEvWwids=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LJRds3aYnr33doS9JvYYQcWa5RGIeyJEL52MUgeGigb0rb1U2yuvJARdsCtF8l9JZcuMGS7jp5c07Pzw3MUVHCFxatqgMB66cUQNcVfwiW+oGYphAsYGealQg3o8w3w0J1tnvRBe9KVzQtL9tv+DCx7LMz479Ep6HI7u8MlndAM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iOI0rI4Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A86E3C4CEFD;
-	Mon, 27 Oct 2025 19:08:12 +0000 (UTC)
+	 MIME-Version; b=gtUyEFimZp+tuYT68puL301FNpgH0fci/k2AyhYuTz8/G2GR6bIbhFe5ULs1mQ00OehCxqr8r6iCUWftWgeg35DFUbHABZapdxBKO+OML1oj52OkDKdgqdrRtELWniBkdPV7UF7n3a2e6erpRvYCZhCpSKDgrn7bvgtUQ9D/6Xg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lMP7fqN2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AE46C4CEF1;
+	Mon, 27 Oct 2025 19:31:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592093;
-	bh=2BGDq72nEvaerL3K/q0XoQym4ThkDFpnYYyoLvzSEGA=;
+	s=korg; t=1761593506;
+	bh=e0QqDenBEaDnjAqoVw6TZMMN8i1gHNEr4TNZEvWwids=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iOI0rI4YqZO6t56Ba7XCWTc2iVMu1Kc0XXzI+fNxiLQ6PJ1LeB4ihJqP1kiZATGSQ
-	 M1UESm4NxfgRDiBrd9Yd1MxJvnnFyW3d8fs3RB5io/1KQ3g4N9kKmyVya3gJDptjG/
-	 B5XnhcFzxHSXkp5HwKudYXV2fJaPKmVFytMK+ze0=
+	b=lMP7fqN21qSS56aN9ciknPadz7hmh+cOiw/bw3JmFeFKq2PtnAAx0rJFKLjm0JxGb
+	 xd+ZNojn8E2ZHKX5N2c/X0eIQb46p+2cCR/Ea5coW5TXUy5cEbcDx/J1DRtlM3NYmz
+	 16CdkhwCasuYXQXuaKqC+9vBxhvpIHaQRt72v0bM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Carlos Maiolino <cmaiolino@redhat.com>,
-	Carlos Maiolino <cem@kernel.org>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 115/123] xfs: always warn about deprecated mount options
-Date: Mon, 27 Oct 2025 19:36:35 +0100
-Message-ID: <20251027183449.463819408@linuxfoundation.org>
+Subject: [PATCH 6.17 114/184] spi: rockchip-sfc: Fix DMA-API usage
+Date: Mon, 27 Oct 2025 19:36:36 +0100
+Message-ID: <20251027183518.005265384@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183446.381986645@linuxfoundation.org>
-References: <20251027183446.381986645@linuxfoundation.org>
+In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
+References: <20251027183514.934710872@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,95 +62,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Darrick J. Wong" <djwong@kernel.org>
+From: Marek Szyprowski <m.szyprowski@samsung.com>
 
-[ Upstream commit 630785bfbe12c3ee3ebccd8b530a98d632b7e39d ]
+[ Upstream commit ee795e82e10197c070efd380dc9615c73dffad6c ]
 
-The deprecation of the 'attr2' mount option in 6.18 wasn't entirely
-successful because nobody noticed that the kernel never printed a
-warning about attr2 being set in fstab if the only xfs filesystem is the
-root fs; the initramfs mounts the root fs with no mount options; and the
-init scripts only conveyed the fstab options by remounting the root fs.
+Use DMA-API dma_map_single() call for getting the DMA address of the
+transfer buffer instead of hacking with virt_to_phys().
 
-Fix this by making it complain all the time.
+This fixes the following DMA-API debug warning:
+------------[ cut here ]------------
+DMA-API: rockchip-sfc fe300000.spi: device driver tries to sync DMA memory it has not allocated [device address=0x000000000cf70000] [size=288 bytes]
+WARNING: kernel/dma/debug.c:1106 at check_sync+0x1d8/0x690, CPU#2: systemd-udevd/151
+Modules linked in: ...
+Hardware name: Hardkernel ODROID-M1 (DT)
+pstate: 604000c9 (nZCv daIF +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+pc : check_sync+0x1d8/0x690
+lr : check_sync+0x1d8/0x690
+..
+Call trace:
+ check_sync+0x1d8/0x690 (P)
+ debug_dma_sync_single_for_cpu+0x84/0x8c
+ __dma_sync_single_for_cpu+0x88/0x234
+ rockchip_sfc_exec_mem_op+0x4a0/0x798 [spi_rockchip_sfc]
+ spi_mem_exec_op+0x408/0x498
+ spi_nor_read_data+0x170/0x184
+ spi_nor_read_sfdp+0x74/0xe4
+ spi_nor_parse_sfdp+0x120/0x11f0
+ spi_nor_sfdp_init_params_deprecated+0x3c/0x8c
+ spi_nor_scan+0x690/0xf88
+ spi_nor_probe+0xe4/0x304
+ spi_mem_probe+0x6c/0xa8
+ spi_probe+0x94/0xd4
+ really_probe+0xbc/0x298
+ ...
 
-Cc: stable@vger.kernel.org # v5.13
-Fixes: 92cf7d36384b99 ("xfs: Skip repetitive warnings about mount options")
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Carlos Maiolino <cmaiolino@redhat.com>
-Signed-off-by: Carlos Maiolino <cem@kernel.org>
-[ Update existing xfs_fs_warn_deprecated() callers ]
+Fixes: b69386fcbc60 ("spi: rockchip-sfc: Using normal memory for dma")
+Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Link: https://patch.msgid.link/20251003114239.431114-1-m.szyprowski@samsung.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/xfs/xfs_super.c |   33 +++++++++++++++++++++------------
- 1 file changed, 21 insertions(+), 12 deletions(-)
+ drivers/spi/spi-rockchip-sfc.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
---- a/fs/xfs/xfs_super.c
-+++ b/fs/xfs/xfs_super.c
-@@ -1178,16 +1178,25 @@ suffix_kstrtoint(
- static inline void
- xfs_fs_warn_deprecated(
- 	struct fs_context	*fc,
--	struct fs_parameter	*param,
--	uint64_t		flag,
--	bool			value)
-+	struct fs_parameter	*param)
- {
--	/* Don't print the warning if reconfiguring and current mount point
--	 * already had the flag set
-+	/*
-+	 * Always warn about someone passing in a deprecated mount option.
-+	 * Previously we wouldn't print the warning if we were reconfiguring
-+	 * and current mount point already had the flag set, but that was not
-+	 * the right thing to do.
-+	 *
-+	 * Many distributions mount the root filesystem with no options in the
-+	 * initramfs and rely on mount -a to remount the root fs with the
-+	 * options in fstab.  However, the old behavior meant that there would
-+	 * never be a warning about deprecated mount options for the root fs in
-+	 * /etc/fstab.  On a single-fs system, that means no warning at all.
-+	 *
-+	 * Compounding this problem are distribution scripts that copy
-+	 * /proc/mounts to fstab, which means that we can't remove mount
-+	 * options unless we're 100% sure they have only ever been advertised
-+	 * in /proc/mounts in response to explicitly provided mount options.
- 	 */
--	if ((fc->purpose & FS_CONTEXT_FOR_RECONFIGURE) &&
--            !!(XFS_M(fc->root->d_sb)->m_features & flag) == value)
--		return;
- 	xfs_warn(fc->s_fs_info, "%s mount option is deprecated.", param->key);
- }
+diff --git a/drivers/spi/spi-rockchip-sfc.c b/drivers/spi/spi-rockchip-sfc.c
+index 9eba5c0a60f23..b3c2b03b11535 100644
+--- a/drivers/spi/spi-rockchip-sfc.c
++++ b/drivers/spi/spi-rockchip-sfc.c
+@@ -704,7 +704,12 @@ static int rockchip_sfc_probe(struct platform_device *pdev)
+ 			ret = -ENOMEM;
+ 			goto err_dma;
+ 		}
+-		sfc->dma_buffer = virt_to_phys(sfc->buffer);
++		sfc->dma_buffer = dma_map_single(dev, sfc->buffer,
++					    sfc->max_iosize, DMA_BIDIRECTIONAL);
++		if (dma_mapping_error(dev, sfc->dma_buffer)) {
++			ret = -ENOMEM;
++			goto err_dma_map;
++		}
+ 	}
  
-@@ -1326,19 +1335,19 @@ xfs_fs_parse_param(
- #endif
- 	/* Following mount options will be removed in September 2025 */
- 	case Opt_ikeep:
--		xfs_fs_warn_deprecated(fc, param, XFS_FEAT_IKEEP, true);
-+		xfs_fs_warn_deprecated(fc, param);
- 		parsing_mp->m_features |= XFS_FEAT_IKEEP;
- 		return 0;
- 	case Opt_noikeep:
--		xfs_fs_warn_deprecated(fc, param, XFS_FEAT_IKEEP, false);
-+		xfs_fs_warn_deprecated(fc, param);
- 		parsing_mp->m_features &= ~XFS_FEAT_IKEEP;
- 		return 0;
- 	case Opt_attr2:
--		xfs_fs_warn_deprecated(fc, param, XFS_FEAT_ATTR2, true);
-+		xfs_fs_warn_deprecated(fc, param);
- 		parsing_mp->m_features |= XFS_FEAT_ATTR2;
- 		return 0;
- 	case Opt_noattr2:
--		xfs_fs_warn_deprecated(fc, param, XFS_FEAT_NOATTR2, true);
-+		xfs_fs_warn_deprecated(fc, param);
- 		parsing_mp->m_features |= XFS_FEAT_NOATTR2;
- 		return 0;
- 	default:
+ 	ret = devm_spi_register_controller(dev, host);
+@@ -715,6 +720,9 @@ static int rockchip_sfc_probe(struct platform_device *pdev)
+ 
+ 	return 0;
+ err_register:
++	dma_unmap_single(dev, sfc->dma_buffer, sfc->max_iosize,
++			 DMA_BIDIRECTIONAL);
++err_dma_map:
+ 	free_pages((unsigned long)sfc->buffer, get_order(sfc->max_iosize));
+ err_dma:
+ 	pm_runtime_get_sync(dev);
+@@ -736,6 +744,8 @@ static void rockchip_sfc_remove(struct platform_device *pdev)
+ 	struct spi_controller *host = sfc->host;
+ 
+ 	spi_unregister_controller(host);
++	dma_unmap_single(&pdev->dev, sfc->dma_buffer, sfc->max_iosize,
++			 DMA_BIDIRECTIONAL);
+ 	free_pages((unsigned long)sfc->buffer, get_order(sfc->max_iosize));
+ 
+ 	clk_disable_unprepare(sfc->clk);
+-- 
+2.51.0
+
 
 
 
