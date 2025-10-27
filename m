@@ -1,56 +1,66 @@
-Return-Path: <stable+bounces-190776-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190518-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E50CAC10BB7
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:17:48 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E9ACC107DB
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:07:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 86BE61A6306B
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:12:30 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 76FBD504E8D
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:02:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF84B32143F;
-	Mon, 27 Oct 2025 19:09:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D82331CA4E;
+	Mon, 27 Oct 2025 18:58:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J7vmE7pv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wJWqZk1R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B0632F5A1B;
-	Mon, 27 Oct 2025 19:09:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78DE7324B25;
+	Mon, 27 Oct 2025 18:58:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592166; cv=none; b=Xxm0wrQ8Q4+Sk6+JD5DhF/lm9b37n6iEm7I7OCQ9dHUcSlrhxIdkBaMLemmoVxYp/2lAh/dHuKFni7jQRaCCimmNyRzeENa+VfoCsfbWvABQNEK13eeXJP57OSNcW8PZ5wBtUKI2vQQf4I4Wv77tJEn3fjDQR3gli82EpfZbkw8=
+	t=1761591500; cv=none; b=aEJ+WoysEYwUVp4sDpTOGUKDZNeGF6WJzAidtCtnznvTAAFNHX4yEJnENoPOfxClOLHCbxM4Sk557kg4TvnlD4bVV1hH+tExNVYWLjZwAVm/2hDnVZet6350GYDkpYC+RodaBV0y/X0pAPUhwSzxaEdtA33YlN5K981IZwByQwA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592166; c=relaxed/simple;
-	bh=ZIYuMxuoC+OsNsqv9IczYzwM3g8Xk1kxxxyZKshQ9Dc=;
+	s=arc-20240116; t=1761591500; c=relaxed/simple;
+	bh=mZZ8d4uKquXLPe8pMD3Pz1wZ919n3F+0JPJnkXVOpjM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gB+3adG9SooOumRnLHcGCr3Sp6X2Y6qaP4DYL4iw8u9XVgn7uaGSTiJTTHPRwQpZRtTTLPRqYx1aJ/pxMDDS3QcpqvjS8jx2g05l0ldffinqgbRqj2Cp3vVYR05tWG4ZjsC5QtAXH3ZCJZ0zvWYWuUt7Uxx6608oysadCKLyHLo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J7vmE7pv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 201EBC4CEF1;
-	Mon, 27 Oct 2025 19:09:25 +0000 (UTC)
+	 MIME-Version; b=u6tL6ZYcB7r0xmKwdwCk5YMC3EvpCrwPP0mLtg85LPwrflG0NqDL/DgCx85RiFbUJfAjE8BOTtdoN9gPK40FV/BsfzPuYFL7XyZnHdNxphh9A5Jtm2i/BaJ/OijsSWxRccvQoVeb332BB2BVZh4G9HgH1DNyrFiuSNGL1twDFlk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wJWqZk1R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 555A9C4CEF1;
+	Mon, 27 Oct 2025 18:58:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592166;
-	bh=ZIYuMxuoC+OsNsqv9IczYzwM3g8Xk1kxxxyZKshQ9Dc=;
+	s=korg; t=1761591499;
+	bh=mZZ8d4uKquXLPe8pMD3Pz1wZ919n3F+0JPJnkXVOpjM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J7vmE7pv3jw5QEZEDW4z8YNTIW++XtQU2m0fqhZLDXqQlTZp613ExyuAoKe5kwLzu
-	 8PMSxHDI3aImAp0ZLJUxq9sF24VYREOaXHF5/z9me5mwa6sQaMLAXz3C+yNJ01JCct
-	 yPdNZWfHxfwDYz1vBdtig3reiixKYINetxYTjMUo=
+	b=wJWqZk1Rtz7ksIuQcy2ZfV0R7pLqUk52+srrTeK4axx+VV8atuHXu6w0tI+vWAN7S
+	 +KyedojZ9aCekg5H7uqoRwVYlO5q1L6lk6bWBWxkfntwYSvce/vJ7N2KYBX/vFOkX7
+	 f1z78s6+FRtCO13Wp1ZanYHcDGvdqCVupCH9nsS4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 011/157] crypto: rockchip - Fix dma_unmap_sg() nents value
+	David Laight <david.laight@aculab.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Arnd Bergmann <arnd@kernel.org>,
+	Christoph Hellwig <hch@infradead.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	"Jason A. Donenfeld" <Jason@zx2c4.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Mateusz Guzik <mjguzik@gmail.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Pedro Falcato <pedro.falcato@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Eliav Farber <farbere@amazon.com>
+Subject: [PATCH 5.10 219/332] minmax.h: simplify the variants of clamp()
 Date: Mon, 27 Oct 2025 19:34:32 +0100
-Message-ID: <20251027183501.555855921@linuxfoundation.org>
+Message-ID: <20251027183530.555584392@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
-References: <20251027183501.227243846@linuxfoundation.org>
+In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
+References: <20251027183524.611456697@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +72,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: David Laight <David.Laight@ACULAB.COM>
 
-[ Upstream commit 21140e5caf019e4a24e1ceabcaaa16bd693b393f ]
+[ Upstream commit 495bba17cdf95e9703af1b8ef773c55ef0dfe703 ]
 
-The dma_unmap_sg() functions should be called with the same nents as the
-dma_map_sg(), not the value the map function returned.
+Always pass a 'type' through to __clamp_once(), pass '__auto_type' from
+clamp() itself.
 
-Fixes: 57d67c6e8219 ("crypto: rockchip - rework by using crypto_engine")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-[ removed unused rctx variable declaration since device pointer already came from tctx->dev->dev instead of rctx->dev ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The expansion of __types_ok3() is reasonable so it isn't worth the added
+complexity of avoiding it when a fixed type is used for all three values.
+
+Link: https://lkml.kernel.org/r/8f69f4deac014f558bab186444bac2e8@AcuMS.aculab.com
+Signed-off-by: David Laight <david.laight@aculab.com>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Arnd Bergmann <arnd@kernel.org>
+Cc: Christoph Hellwig <hch@infradead.org>
+Cc: Dan Carpenter <dan.carpenter@linaro.org>
+Cc: Jason A. Donenfeld <Jason@zx2c4.com>
+Cc: Jens Axboe <axboe@kernel.dk>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Mateusz Guzik <mjguzik@gmail.com>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: Pedro Falcato <pedro.falcato@gmail.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Eliav Farber <farbere@amazon.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/crypto/rockchip/rk3288_crypto_ahash.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ include/linux/minmax.h |   24 ++++++++++++------------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
 
---- a/drivers/crypto/rockchip/rk3288_crypto_ahash.c
-+++ b/drivers/crypto/rockchip/rk3288_crypto_ahash.c
-@@ -236,10 +236,9 @@ static int rk_hash_unprepare(struct cryp
- {
- 	struct ahash_request *areq = container_of(breq, struct ahash_request, base);
- 	struct crypto_ahash *tfm = crypto_ahash_reqtfm(areq);
--	struct rk_ahash_rctx *rctx = ahash_request_ctx(areq);
- 	struct rk_ahash_ctx *tctx = crypto_ahash_ctx(tfm);
+--- a/include/linux/minmax.h
++++ b/include/linux/minmax.h
+@@ -183,29 +183,29 @@
+ #define __clamp(val, lo, hi)	\
+ 	((val) >= (hi) ? (hi) : ((val) <= (lo) ? (lo) : (val)))
  
--	dma_unmap_sg(tctx->dev->dev, areq->src, rctx->nrsg, DMA_TO_DEVICE);
-+	dma_unmap_sg(tctx->dev->dev, areq->src, sg_nents(areq->src), DMA_TO_DEVICE);
- 	return 0;
- }
+-#define __clamp_once(val, lo, hi, uval, ulo, uhi) ({				\
+-	__auto_type uval = (val);						\
+-	__auto_type ulo = (lo);							\
+-	__auto_type uhi = (hi);							\
++#define __clamp_once(type, val, lo, hi, uval, ulo, uhi) ({			\
++	type uval = (val);							\
++	type ulo = (lo);							\
++	type uhi = (hi);							\
+ 	BUILD_BUG_ON_MSG(statically_true(ulo > uhi),				\
+ 		"clamp() low limit " #lo " greater than high limit " #hi);	\
+ 	BUILD_BUG_ON_MSG(!__types_ok3(uval, ulo, uhi),				\
+ 		"clamp("#val", "#lo", "#hi") signedness error");		\
+ 	__clamp(uval, ulo, uhi); })
  
+-#define __careful_clamp(val, lo, hi) \
+-	__clamp_once(val, lo, hi, __UNIQUE_ID(v_), __UNIQUE_ID(l_), __UNIQUE_ID(h_))
++#define __careful_clamp(type, val, lo, hi) \
++	__clamp_once(type, val, lo, hi, __UNIQUE_ID(v_), __UNIQUE_ID(l_), __UNIQUE_ID(h_))
+ 
+ /**
+- * clamp - return a value clamped to a given range with strict typechecking
++ * clamp - return a value clamped to a given range with typechecking
+  * @val: current value
+  * @lo: lowest allowable value
+  * @hi: highest allowable value
+  *
+- * This macro does strict typechecking of @lo/@hi to make sure they are of the
+- * same type as @val.  See the unnecessary pointer comparisons.
++ * This macro checks @val/@lo/@hi to make sure they have compatible
++ * signedness.
+  */
+-#define clamp(val, lo, hi) __careful_clamp(val, lo, hi)
++#define clamp(val, lo, hi) __careful_clamp(__auto_type, val, lo, hi)
+ 
+ /**
+  * clamp_t - return a value clamped to a given range using a given type
+@@ -217,7 +217,7 @@
+  * This macro does no typechecking and uses temporary variables of type
+  * @type to make all the comparisons.
+  */
+-#define clamp_t(type, val, lo, hi) __careful_clamp((type)(val), (type)(lo), (type)(hi))
++#define clamp_t(type, val, lo, hi) __careful_clamp(type, val, lo, hi)
+ 
+ /**
+  * clamp_val - return a value clamped to a given range using val's type
+@@ -230,7 +230,7 @@
+  * type and @lo and @hi are literals that will otherwise be assigned a signed
+  * integer type.
+  */
+-#define clamp_val(val, lo, hi) clamp_t(typeof(val), val, lo, hi)
++#define clamp_val(val, lo, hi) __careful_clamp(typeof(val), val, lo, hi)
+ 
+ /*
+  * Do not check the array parameter using __must_be_array().
 
 
 
