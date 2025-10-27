@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-191141-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190800-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAE95C111FE
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:36:02 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E7FDC109E7
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:13:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id CF4C3561595
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:27:19 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 0272B34571A
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:13:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE4CD2D5A14;
-	Mon, 27 Oct 2025 19:25:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD08D321440;
+	Mon, 27 Oct 2025 19:10:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1dWIcsPt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tE5bc/gd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 848DA32D0E1;
-	Mon, 27 Oct 2025 19:25:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D9373074AC;
+	Mon, 27 Oct 2025 19:10:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761593115; cv=none; b=i5t+o/D/htmP8xmngW7/x39sUENtcbMrOkLujnxjIo2ro3Ao86JeUh9MHCd69vTes+CJhMNvw5jcJw+xoH2xCt6MBZGMKlR0/66gvvNia+3lw15TdPHt71h3YUUAVchh27xuzjiMUAmPGwkNKDy5heJAOw9UdoCQvR8GwFtdmhI=
+	t=1761592229; cv=none; b=MSaSlKPScexegVALXXC1QmGQ8YdxZN9rTUQa5LDqjRGNfUnZ8M2gKNe6Rmhrzr/W4moR3Aw3Qxcg7rGhzvqu/2G9/SfhPtt6EaykwPPWxXFogzUl2+kZXxWP2ZMqNi29nZuTcIyPeF5c/+ajyCydtcV8Hlg3G19i49yTyAR9/HE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761593115; c=relaxed/simple;
-	bh=SNC8REIofvflG6hTr98U4lid7nVq2eL01PPC7PIyNN4=;
+	s=arc-20240116; t=1761592229; c=relaxed/simple;
+	bh=Ww9zqDX6dZH/w1w/TTzdGwrhLTbPcshjvwZ4PcLrKHU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GUuYRo5iYTant7ZS/7zQ48IJ8X2gCU53vv35GSuZEwcyvPRxEAC6Ev8YaFj7FYGpdcGB+Soe8JUm8sNh29/SmZUlyhLxEps3mFwzl+u9QL2gXrqjpEMOqdYZLlszbEoWSxQ72TX4jfnYCc2YHmVwi0SUrnUmu70gMeF/+LsVlRA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1dWIcsPt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1779EC4CEF1;
-	Mon, 27 Oct 2025 19:25:14 +0000 (UTC)
+	 MIME-Version; b=YAk/0dJ04miWvLaR5Wm/O42XvzWwOtUYOK/adelNO0L+Mym7GiGFfSRc/IfFfSwPSVJs3BHThRmopeEixeoEoNSuI0txSPIG4wWnIvhYH16XaUKY2brtofEdMBwTOvQS2g8DpUW004+UJnu3pcRkzZo0uin9RyhNCo6xAND+dro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tE5bc/gd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5A55C4CEF1;
+	Mon, 27 Oct 2025 19:10:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761593115;
-	bh=SNC8REIofvflG6hTr98U4lid7nVq2eL01PPC7PIyNN4=;
+	s=korg; t=1761592229;
+	bh=Ww9zqDX6dZH/w1w/TTzdGwrhLTbPcshjvwZ4PcLrKHU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1dWIcsPtdBZskKq2T1ak6dt1PhawgafGeWMUf0oA2uNhE1CVdWPeb6qRogR4YwxVV
-	 jcouqAq13do42m5kdhy269ll1W7KvnyuiaZcXGkXLvt+IItFe91Vtz+uYTRgjvF3FP
-	 pw2dPSCdyzwmoooIODfu8QAqBZLQ6gfcyaFW4wq8=
+	b=tE5bc/gdnRj1+ii6ohdxKYhgCTKuWKLqfl0XmNashLrMhCchUNLobQHUIcgaNZiVi
+	 QqqY7mAxQOsmlY4RlAMNPAEqt4chpbWa3OpBeHrE7hGzWHxSsF2EDdvSgXVquwGgM/
+	 qWw0SPbJHRbWtKbb9Qh+9POF2Av9cPnTIkfpGRlA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fuad Tabba <tabba@google.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Will Deacon <will@kernel.org>,
+	Florian Westphal <fw@strlen.de>,
+	Francesco Ruggeri <fruggeri05@gmail.com>,
+	Dmitry Safonov <dima@arista.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 019/184] arm64: sysreg: Correct sign definitions for EIESB and DoubleLock
-Date: Mon, 27 Oct 2025 19:35:01 +0100
-Message-ID: <20251027183515.451121628@linuxfoundation.org>
+Subject: [PATCH 6.1 041/157] net/ip6_tunnel: Prevent perpetual tunnel growth
+Date: Mon, 27 Oct 2025 19:35:02 +0100
+Message-ID: <20251027183502.399484855@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
-References: <20251027183514.934710872@linuxfoundation.org>
+In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
+References: <20251027183501.227243846@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +64,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fuad Tabba <tabba@google.com>
+From: Dmitry Safonov <dima@arista.com>
 
-[ Upstream commit f4d4ebc84995178273740f3e601e97fdefc561d2 ]
+[ Upstream commit 21f4d45eba0b2dcae5dbc9e5e0ad08735c993f16 ]
 
-The `ID_AA64MMFR4_EL1.EIESB` field, is an unsigned enumeration, but was
-incorrectly defined as a `SignedEnum` when introduced in commit
-cfc680bb04c5 ("arm64: sysreg: Add layout for ID_AA64MMFR4_EL1"). This is
-corrected to `UnsignedEnum`.
+Similarly to ipv4 tunnel, ipv6 version updates dev->needed_headroom, too.
+While ipv4 tunnel headroom adjustment growth was limited in
+commit 5ae1e9922bbd ("net: ip_tunnel: prevent perpetual headroom growth"),
+ipv6 tunnel yet increases the headroom without any ceiling.
 
-Conversely, the `ID_AA64DFR0_EL1.DoubleLock` field, is a signed
-enumeration, but was incorrectly defined as an `UnsignedEnum`. This is
-corrected to `SignedEnum`, which wasn't correctly set when annotated as
-such in commit ad16d4cf0b4f ("arm64/sysreg: Initial unsigned annotations
-for ID registers").
+Reflect ipv4 tunnel headroom adjustment limit on ipv6 version.
 
-Signed-off-by: Fuad Tabba <tabba@google.com>
-Acked-by: Mark Rutland <mark.rutland@arm.com>
-Signed-off-by: Will Deacon <will@kernel.org>
+Credits to Francesco Ruggeri, who was originally debugging this issue
+and wrote local Arista-specific patch and a reproducer.
+
+Fixes: 8eb30be0352d ("ipv6: Create ip6_tnl_xmit")
+Cc: Florian Westphal <fw@strlen.de>
+Cc: Francesco Ruggeri <fruggeri05@gmail.com>
+Signed-off-by: Dmitry Safonov <dima@arista.com>
+Link: https://patch.msgid.link/20251009-ip6_tunnel-headroom-v2-1-8e4dbd8f7e35@arista.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/tools/sysreg | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/net/ip_tunnels.h | 15 +++++++++++++++
+ net/ipv4/ip_tunnel.c     | 14 --------------
+ net/ipv6/ip6_tunnel.c    |  3 +--
+ 3 files changed, 16 insertions(+), 16 deletions(-)
 
-diff --git a/arch/arm64/tools/sysreg b/arch/arm64/tools/sysreg
-index 696ab1f32a674..2a37d4c26d870 100644
---- a/arch/arm64/tools/sysreg
-+++ b/arch/arm64/tools/sysreg
-@@ -1693,7 +1693,7 @@ UnsignedEnum	43:40	TraceFilt
- 	0b0000	NI
- 	0b0001	IMP
- EndEnum
--UnsignedEnum	39:36	DoubleLock
-+SignedEnum	39:36	DoubleLock
- 	0b0000	IMP
- 	0b1111	NI
- EndEnum
-@@ -2409,7 +2409,7 @@ UnsignedEnum	11:8	ASID2
- 	0b0000	NI
- 	0b0001	IMP
- EndEnum
--SignedEnum	7:4	EIESB
-+UnsignedEnum	7:4	EIESB
- 	0b0000	NI
- 	0b0001	ToEL3
- 	0b0010	ToELx
+diff --git a/include/net/ip_tunnels.h b/include/net/ip_tunnels.h
+index 84751313b8265..e93db837412b2 100644
+--- a/include/net/ip_tunnels.h
++++ b/include/net/ip_tunnels.h
+@@ -481,6 +481,21 @@ struct metadata_dst *iptunnel_metadata_reply(struct metadata_dst *md,
+ int skb_tunnel_check_pmtu(struct sk_buff *skb, struct dst_entry *encap_dst,
+ 			  int headroom, bool reply);
+ 
++static inline void ip_tunnel_adj_headroom(struct net_device *dev,
++					  unsigned int headroom)
++{
++	/* we must cap headroom to some upperlimit, else pskb_expand_head
++	 * will overflow header offsets in skb_headers_offset_update().
++	 */
++	const unsigned int max_allowed = 512;
++
++	if (headroom > max_allowed)
++		headroom = max_allowed;
++
++	if (headroom > READ_ONCE(dev->needed_headroom))
++		WRITE_ONCE(dev->needed_headroom, headroom);
++}
++
+ int iptunnel_handle_offloads(struct sk_buff *skb, int gso_type_mask);
+ 
+ static inline int iptunnel_pull_offloads(struct sk_buff *skb)
+diff --git a/net/ipv4/ip_tunnel.c b/net/ipv4/ip_tunnel.c
+index 90e55b9979e69..dcf9e9c52a22a 100644
+--- a/net/ipv4/ip_tunnel.c
++++ b/net/ipv4/ip_tunnel.c
+@@ -567,20 +567,6 @@ static int tnl_update_pmtu(struct net_device *dev, struct sk_buff *skb,
+ 	return 0;
+ }
+ 
+-static void ip_tunnel_adj_headroom(struct net_device *dev, unsigned int headroom)
+-{
+-	/* we must cap headroom to some upperlimit, else pskb_expand_head
+-	 * will overflow header offsets in skb_headers_offset_update().
+-	 */
+-	static const unsigned int max_allowed = 512;
+-
+-	if (headroom > max_allowed)
+-		headroom = max_allowed;
+-
+-	if (headroom > READ_ONCE(dev->needed_headroom))
+-		WRITE_ONCE(dev->needed_headroom, headroom);
+-}
+-
+ void ip_md_tunnel_xmit(struct sk_buff *skb, struct net_device *dev,
+ 		       u8 proto, int tunnel_hlen)
+ {
+diff --git a/net/ipv6/ip6_tunnel.c b/net/ipv6/ip6_tunnel.c
+index 2a470c0c38aef..dfca22c6d345d 100644
+--- a/net/ipv6/ip6_tunnel.c
++++ b/net/ipv6/ip6_tunnel.c
+@@ -1256,8 +1256,7 @@ int ip6_tnl_xmit(struct sk_buff *skb, struct net_device *dev, __u8 dsfield,
+ 	 */
+ 	max_headroom = LL_RESERVED_SPACE(dst->dev) + sizeof(struct ipv6hdr)
+ 			+ dst->header_len + t->hlen;
+-	if (max_headroom > READ_ONCE(dev->needed_headroom))
+-		WRITE_ONCE(dev->needed_headroom, max_headroom);
++	ip_tunnel_adj_headroom(dev, max_headroom);
+ 
+ 	err = ip6_tnl_encap(skb, t, &proto, fl6);
+ 	if (err)
 -- 
 2.51.0
 
