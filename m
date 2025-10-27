@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-190197-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190521-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA5CEC1025A
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:49:07 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 299F7C10699
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:03:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5903546631E
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:47:39 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id C9C57351FA2
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:03:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E24532B9A2;
-	Mon, 27 Oct 2025 18:44:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2BAB32ED43;
+	Mon, 27 Oct 2025 18:58:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RmIDdIlj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TdRsXTvJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A19A322541;
-	Mon, 27 Oct 2025 18:44:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 411DA32F755;
+	Mon, 27 Oct 2025 18:58:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761590662; cv=none; b=kee1UjonxH1ef4XxrqZFA7NdVeBiQnIHh3NBSeTnXutqWeI723mGAI+aanuvjnK5yDvslxEsfp9QpdI3OX8e8ogtOgCvcV9JmVbtw4c8v+UgeX/mnBHamNS4Php8Ky2gwdm74M23sUhNiNeRI3bTgBX2dfcJc2MdMnwki3X2Tyk=
+	t=1761591508; cv=none; b=FcggFtiW2EbJ8WafD296nxkiIRJVMjpjQEfJRT+YpSEFIxH87waB51kYeA8We/B3XIIOIypVIpOel159Z4R1kT5HY+11EMBEuMC6qzseKYgs5bTe/d30XAYh9wz9njkBWUTIuUelTQqadYZKefHEiVq/U4C4bP5d1Wwq00Cqyn4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761590662; c=relaxed/simple;
-	bh=rZw6DCpiMworBpWa2MmLkasFpI7ZM8Z/ErNE1RAKD+4=;
+	s=arc-20240116; t=1761591508; c=relaxed/simple;
+	bh=NSZFZ54EuHKWXob4yMWUpJ9EmO82aQfyYPjdoiczVTs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=psPLJE0jR55Pe5Fj8GNOdO9j/o76ix/p7iMG9fQYzokFlqy+a2CMnfXUKJzpVoU51tHOfAGErvqxPVu1914H+iUapWdyJvcs07Uz7aW5u1I/8vWqnuop5/TOF4ir6l4KlQZXek2GmTNbpfsIEuMJXOd1Tt2YE3QfPVV4/X47gqU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RmIDdIlj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80B43C4CEF1;
-	Mon, 27 Oct 2025 18:44:21 +0000 (UTC)
+	 MIME-Version; b=U5n08wuhMm6e/rJoyB1a8nAhXG7gvkdr10jjVFUC0KJ3Io3R48idaNtH8/sSKYUPWFqrKD+828bATb6+rHDjKbXCsy8JNdO2HCae0avL5VpGf/p4L+LpB+aQgIRlvaJnzZhhO0phP3F+GImyymEpmEivE++xnsbuFCwIjZTAPKU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TdRsXTvJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 341E4C4CEF1;
+	Mon, 27 Oct 2025 18:58:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761590661;
-	bh=rZw6DCpiMworBpWa2MmLkasFpI7ZM8Z/ErNE1RAKD+4=;
+	s=korg; t=1761591507;
+	bh=NSZFZ54EuHKWXob4yMWUpJ9EmO82aQfyYPjdoiczVTs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RmIDdIljTWzayzDJ6AT08dRopru8sI10aYzcLXJ5vu3GOaheQyccE5V0zbA2nDJhh
-	 jvR/B8cXpmLYLW0pUBpgy5himOvohPuD+ZRiasqzy63dU7kfdVq0aDe5BH5fgd8qMI
-	 YJkISypTSu2jERqVBdxQCdPAsE3hGwrhFC6EF5eY=
+	b=TdRsXTvJlnUnu9LfAe1f5IEfYRaWjlDj0ZZBg07858xn5zRBfk8V2JEGp7bAmoukv
+	 62/I+EZaizgZ8BX5xeqB1fJ85oB/+kG94PJWHiIb+fJG8+CrDG+59r7QaTm3OxfAGS
+	 +YS6RFanL4/Pk71H84BbBD9C4da3kalYQb4eHZrI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Yongjian Sun <sunyongjian1@huawei.com>,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Baokun Li <libaokun1@huawei.com>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 5.4 129/224] ext4: increase i_disksize to offset + len in ext4_update_disksize_before_punch()
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 222/332] media: pci: ivtv: Add missing check after DMA map
 Date: Mon, 27 Oct 2025 19:34:35 +0100
-Message-ID: <20251027183512.434494586@linuxfoundation.org>
+Message-ID: <20251027183530.649736628@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183508.963233542@linuxfoundation.org>
-References: <20251027183508.963233542@linuxfoundation.org>
+In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
+References: <20251027183524.611456697@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,96 +60,67 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yongjian Sun <sunyongjian1@huawei.com>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-commit 9d80eaa1a1d37539224982b76c9ceeee736510b9 upstream.
+[ Upstream commit 1069a4fe637d0e3e4c163e3f8df9be306cc299b4 ]
 
-After running a stress test combined with fault injection,
-we performed fsck -a followed by fsck -fn on the filesystem
-image. During the second pass, fsck -fn reported:
+The DMA map functions can fail and should be tested for errors.
+If the mapping fails, free blanking_ptr and set it to 0.  As 0 is a
+valid DMA address, use blanking_ptr to test if the DMA address
+is set.
 
-Inode 131512, end of extent exceeds allowed value
-	(logical block 405, physical block 1180540, len 2)
-
-This inode was not in the orphan list. Analysis revealed the
-following call chain that leads to the inconsistency:
-
-                             ext4_da_write_end()
-                              //does not update i_disksize
-                             ext4_punch_hole()
-                              //truncate folio, keep size
-ext4_page_mkwrite()
- ext4_block_page_mkwrite()
-  ext4_block_write_begin()
-    ext4_get_block()
-     //insert written extent without update i_disksize
-journal commit
-echo 1 > /sys/block/xxx/device/delete
-
-da-write path updates i_size but does not update i_disksize. Then
-ext4_punch_hole truncates the da-folio yet still leaves i_disksize
-unchanged(in the ext4_update_disksize_before_punch function, the
-condition offset + len < size is met). Then ext4_page_mkwrite sees
-ext4_nonda_switch return 1 and takes the nodioread_nolock path, the
-folio about to be written has just been punched out, and it’s offset
-sits beyond the current i_disksize. This may result in a written
-extent being inserted, but again does not update i_disksize. If the
-journal gets committed and then the block device is yanked, we might
-run into this. It should be noted that replacing ext4_punch_hole with
-ext4_zero_range in the call sequence may also trigger this issue, as
-neither will update i_disksize under these circumstances.
-
-To fix this, we can modify ext4_update_disksize_before_punch to
-increase i_disksize to min(i_size, offset + len) when both i_size and
-(offset + len) are greater than i_disksize.
-
-Cc: stable@kernel.org
-Signed-off-by: Yongjian Sun <sunyongjian1@huawei.com>
-Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Baokun Li <libaokun1@huawei.com>
-Message-ID: <20250911133024.1841027-1-sunyongjian@huaweicloud.com>
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Fixes: 1a0adaf37c30 ("V4L/DVB (5345): ivtv driver for Conexant cx23416/cx23415 MPEG encoder/decoder")
+Cc: stable@vger.kernel.org
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/inode.c |   10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/media/pci/ivtv/ivtv-irq.c |    2 +-
+ drivers/media/pci/ivtv/ivtv-yuv.c |    8 +++++++-
+ 2 files changed, 8 insertions(+), 2 deletions(-)
 
---- a/fs/ext4/inode.c
-+++ b/fs/ext4/inode.c
-@@ -4247,7 +4247,11 @@ int ext4_can_truncate(struct inode *inod
-  * We have to make sure i_disksize gets properly updated before we truncate
-  * page cache due to hole punching or zero range. Otherwise i_disksize update
-  * can get lost as it may have been postponed to submission of writeback but
-- * that will never happen after we truncate page cache.
-+ * that will never happen if we remove the folio containing i_size from the
-+ * page cache. Also if we punch hole within i_size but above i_disksize,
-+ * following ext4_page_mkwrite() may mistakenly allocate written blocks over
-+ * the hole and thus introduce allocated blocks beyond i_disksize which is
-+ * not allowed (e2fsck would complain in case of crash).
-  */
- int ext4_update_disksize_before_punch(struct inode *inode, loff_t offset,
- 				      loff_t len)
-@@ -4256,9 +4260,11 @@ int ext4_update_disksize_before_punch(st
- 	loff_t size = i_size_read(inode);
+--- a/drivers/media/pci/ivtv/ivtv-irq.c
++++ b/drivers/media/pci/ivtv/ivtv-irq.c
+@@ -351,7 +351,7 @@ void ivtv_dma_stream_dec_prepare(struct
  
- 	WARN_ON(!inode_is_locked(inode));
--	if (offset > size || offset + len < size)
-+	if (offset > size)
- 		return 0;
+ 	/* Insert buffer block for YUV if needed */
+ 	if (s->type == IVTV_DEC_STREAM_TYPE_YUV && f->offset_y) {
+-		if (yi->blanking_dmaptr) {
++		if (yi->blanking_ptr) {
+ 			s->sg_pending[idx].src = yi->blanking_dmaptr;
+ 			s->sg_pending[idx].dst = offset;
+ 			s->sg_pending[idx].size = 720 * 16;
+--- a/drivers/media/pci/ivtv/ivtv-yuv.c
++++ b/drivers/media/pci/ivtv/ivtv-yuv.c
+@@ -120,7 +120,7 @@ static int ivtv_yuv_prep_user_dma(struct
+ 	ivtv_udma_fill_sg_array(dma, y_buffer_offset, uv_buffer_offset, y_size);
  
-+	if (offset + len < size)
-+		size = offset + len;
- 	if (EXT4_I(inode)->i_disksize >= size)
- 		return 0;
- 
+ 	/* If we've offset the y plane, ensure top area is blanked */
+-	if (f->offset_y && yi->blanking_dmaptr) {
++	if (f->offset_y && yi->blanking_ptr) {
+ 		dma->SGarray[dma->SG_length].size = cpu_to_le32(720*16);
+ 		dma->SGarray[dma->SG_length].src = cpu_to_le32(yi->blanking_dmaptr);
+ 		dma->SGarray[dma->SG_length].dst = cpu_to_le32(IVTV_DECODER_OFFSET + yuv_offset[frame]);
+@@ -924,6 +924,12 @@ static void ivtv_yuv_init(struct ivtv *i
+ 		yi->blanking_dmaptr = dma_map_single(&itv->pdev->dev,
+ 						     yi->blanking_ptr,
+ 						     720 * 16, DMA_TO_DEVICE);
++		if (dma_mapping_error(&itv->pdev->dev, yi->blanking_dmaptr)) {
++			kfree(yi->blanking_ptr);
++			yi->blanking_ptr = NULL;
++			yi->blanking_dmaptr = 0;
++			IVTV_DEBUG_WARN("Failed to dma_map yuv blanking buffer\n");
++		}
+ 	} else {
+ 		yi->blanking_dmaptr = 0;
+ 		IVTV_DEBUG_WARN("Failed to allocate yuv blanking buffer\n");
 
 
 
