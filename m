@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-190628-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190978-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D6AEC10909
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:10:18 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9162C10C82
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:19:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F3DB51A2276B
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:06:56 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 660EB35263D
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:19:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E248330DEB8;
-	Mon, 27 Oct 2025 19:03:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CC0C31BCAE;
+	Mon, 27 Oct 2025 19:18:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aIqx13jT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XyNkgsXp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DFB431C58E;
-	Mon, 27 Oct 2025 19:03:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C43A22D5A14;
+	Mon, 27 Oct 2025 19:18:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591782; cv=none; b=J1Qgo+4yLMNQanWNzBCR+3c9TjHOGoaSpvbi47MQdegBL7UC7kJhxMwFZovwBpJRmAa2G0/vgXjpmDohieEC0sOlcWGuI+pcYKBOV8m0+WQJtK5Mj2gTQYTbCUVswCAjdzL7nZoMuoCuq5hXYzFazVnseOsNJDzEcXEHezY2zm4=
+	t=1761592696; cv=none; b=dRbq39feY9gF/i9MPyWVsJGgisdRwUmTL5rKdm0kZ62AL6sqzfvijSXNayPKQYWbAC/Cqv8svAT/IOBYrnyvP9rOIW2iqWXqBOpQXgcj04qVu9bG+QDALi0EiDWtPr9HbPs19C4Y9WKETjSfFSPJ82oozi6MiyDcLP5rFthmtCQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591782; c=relaxed/simple;
-	bh=L+/UopaIXicfAXzc52303AbdNr6GxM96lzcDMmssako=;
+	s=arc-20240116; t=1761592696; c=relaxed/simple;
+	bh=9O7qHmvV2bRIFwwAdku3QP+JQ6CQOy7+daJgLucuRpo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kNVeAP07N5lL4kfw9ac1P4uqTDxfVqNBv9EH32mj1HkuzDvihwZYDQ2ig46dadeQy58gTOFu40a3f6IHqk/zVhBGFhz0vhsI+o8LoY71mbjyPpImDlbl85PfxUQhf7MVmxYy7p2wUijUCqZgRjdAMsfc71KrEDYxsmg7PCAaV5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aIqx13jT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30A78C4CEF1;
-	Mon, 27 Oct 2025 19:03:02 +0000 (UTC)
+	 MIME-Version; b=r83IcspnqulgfX4y88EnuSP9e7QOIYgXK119Da2cxj272fIkgRotHcJFgLkVL7D31anllK4oSDWZTqEIlpBkJOYWWsx/OCdWz3sO8bDbQPDAp1gpXW6eQwIi8Ko50ZgQO82Auez9ocD5CfBxokq8in5hBiQjPmS3l6ST/Piyzas=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XyNkgsXp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49E29C4CEF1;
+	Mon, 27 Oct 2025 19:18:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591782;
-	bh=L+/UopaIXicfAXzc52303AbdNr6GxM96lzcDMmssako=;
+	s=korg; t=1761592696;
+	bh=9O7qHmvV2bRIFwwAdku3QP+JQ6CQOy7+daJgLucuRpo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aIqx13jTlT/+O/Gshqb+xFdqokK+8SGYmqUb1x3HqVWg+NZ3cXVfycK+zps4NRWyz
-	 VdDqXQo1EQuPl7SdkMCBAnZ11PjoiC81ycr7MtBgJlh1kkwBajhsumQ9aH9jyqb5xn
-	 e75Ooz/PjFkGpI1GRDzWL+ucLS1iuW7k3il/nPps=
+	b=XyNkgsXpx0sfr9hFAmpLkaoDNmuLksbOYJ7pJx9XZWzmZxWfFDgIw8y2Qw+8MQxP5
+	 r+G14gRYXmAlainy4h3gWk6WK0iCh2jlMpi8Cdy+nTzZMQKUweH4r9YfPxxir8pWtr
+	 6x3XZfnS0AXPi9gp6eckoMvaxqNwVYweZA+H/y4Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Miklos Szeredi <mszeredi@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 328/332] fuse: fix livelock in synchronous file put from fuseblk workers
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Robin Murohy <robin.murphy@arm.com>,
+	"Isaac J. Manjarres" <isaacmanjarres@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 32/84] dma-debug: dont report false positives with DMA_BOUNCE_UNALIGNED_KMALLOC
 Date: Mon, 27 Oct 2025 19:36:21 +0100
-Message-ID: <20251027183533.550284238@linuxfoundation.org>
+Message-ID: <20251027183439.676910418@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
-References: <20251027183524.611456697@linuxfoundation.org>
+In-Reply-To: <20251027183438.817309828@linuxfoundation.org>
+References: <20251027183438.817309828@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,95 +65,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Darrick J. Wong" <djwong@kernel.org>
+From: Marek Szyprowski <m.szyprowski@samsung.com>
 
-[ Upstream commit 26e5c67deb2e1f42a951f022fdf5b9f7eb747b01 ]
+commit 03521c892bb8d0712c23e158ae9bdf8705897df8 upstream.
 
-I observed a hang when running generic/323 against a fuseblk server.
-This test opens a file, initiates a lot of AIO writes to that file
-descriptor, and closes the file descriptor before the writes complete.
-Unsurprisingly, the AIO exerciser threads are mostly stuck waiting for
-responses from the fuseblk server:
+Commit 370645f41e6e ("dma-mapping: force bouncing if the kmalloc() size is
+not cache-line-aligned") introduced DMA_BOUNCE_UNALIGNED_KMALLOC feature
+and permitted architecture specific code configure kmalloc slabs with
+sizes smaller than the value of dma_get_cache_alignment().
 
-[<0>] request_wait_answer+0x1fe/0x2a0 [fuse]
-[<0>] __fuse_simple_request+0xd3/0x2b0 [fuse]
-[<0>] fuse_do_getattr+0xfc/0x1f0 [fuse]
-[<0>] fuse_file_read_iter+0xbe/0x1c0 [fuse]
-[<0>] aio_read+0x130/0x1e0
-[<0>] io_submit_one+0x542/0x860
-[<0>] __x64_sys_io_submit+0x98/0x1a0
-[<0>] do_syscall_64+0x37/0xf0
-[<0>] entry_SYSCALL_64_after_hwframe+0x4b/0x53
+When that feature is enabled, the physical address of some small
+kmalloc()-ed buffers might be not aligned to the CPU cachelines, thus not
+really suitable for typical DMA.  To properly handle that case a SWIOTLB
+buffer bouncing is used, so no CPU cache corruption occurs.  When that
+happens, there is no point reporting a false-positive DMA-API warning that
+the buffer is not properly aligned, as this is not a client driver fault.
 
-But the /weird/ part is that the fuseblk server threads are waiting for
-responses from itself:
-
-[<0>] request_wait_answer+0x1fe/0x2a0 [fuse]
-[<0>] __fuse_simple_request+0xd3/0x2b0 [fuse]
-[<0>] fuse_file_put+0x9a/0xd0 [fuse]
-[<0>] fuse_release+0x36/0x50 [fuse]
-[<0>] __fput+0xec/0x2b0
-[<0>] task_work_run+0x55/0x90
-[<0>] syscall_exit_to_user_mode+0xe9/0x100
-[<0>] do_syscall_64+0x43/0xf0
-[<0>] entry_SYSCALL_64_after_hwframe+0x4b/0x53
-
-The fuseblk server is fuse2fs so there's nothing all that exciting in
-the server itself.  So why is the fuse server calling fuse_file_put?
-The commit message for the fstest sheds some light on that:
-
-"By closing the file descriptor before calling io_destroy, you pretty
-much guarantee that the last put on the ioctx will be done in interrupt
-context (during I/O completion).
-
-Aha.  AIO fgets a new struct file from the fd when it queues the ioctx.
-The completion of the FUSE_WRITE command from userspace causes the fuse
-server to call the AIO completion function.  The completion puts the
-struct file, queuing a delayed fput to the fuse server task.  When the
-fuse server task returns to userspace, it has to run the delayed fput,
-which in the case of a fuseblk server, it does synchronously.
-
-Sending the FUSE_RELEASE command sychronously from fuse server threads
-is a bad idea because a client program can initiate enough simultaneous
-AIOs such that all the fuse server threads end up in delayed_fput, and
-now there aren't any threads left to handle the queued fuse commands.
-
-Fix this by only using asynchronous fputs when closing files, and leave
-a comment explaining why.
-
-Cc: stable@vger.kernel.org # v2.6.38
-Fixes: 5a18ec176c934c ("fuse: fix hang of single threaded fuseblk filesystem")
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
-[ added isdir parameter to fuse_file_put() call ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[m.szyprowski@samsung.com: replace is_swiotlb_allocated() with is_swiotlb_active(), per Catalin]
+  Link: https://lkml.kernel.org/r/20251010173009.3916215-1-m.szyprowski@samsung.com
+Link: https://lkml.kernel.org/r/20251009141508.2342138-1-m.szyprowski@samsung.com
+Fixes: 370645f41e6e ("dma-mapping: force bouncing if the kmalloc() size is not cache-line-aligned")
+Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Christoph Hellwig <hch@lst.de>
+Cc: Inki Dae <m.szyprowski@samsung.com>
+Cc: Robin Murohy <robin.murphy@arm.com>
+Cc: "Isaac J. Manjarres" <isaacmanjarres@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/fuse/file.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ kernel/dma/debug.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/fs/fuse/file.c
-+++ b/fs/fuse/file.c
-@@ -324,8 +324,14 @@ void fuse_release_common(struct file *fi
- 	 * Make the release synchronous if this is a fuseblk mount,
- 	 * synchronous RELEASE is allowed (and desirable) in this case
- 	 * because the server can be trusted not to screw up.
-+	 *
-+	 * Always use the asynchronous file put because the current thread
-+	 * might be the fuse server.  This can happen if a process starts some
-+	 * aio and closes the fd before the aio completes.  Since aio takes its
-+	 * own ref to the file, the IO completion has to drop the ref, which is
-+	 * how the fuse server can end up closing its clients' files.
- 	 */
--	fuse_file_put(ff, ff->fm->fc->destroy, isdir);
-+	fuse_file_put(ff, false, isdir);
- }
+--- a/kernel/dma/debug.c
++++ b/kernel/dma/debug.c
+@@ -23,6 +23,7 @@
+ #include <linux/ctype.h>
+ #include <linux/list.h>
+ #include <linux/slab.h>
++#include <linux/swiotlb.h>
+ #include <asm/sections.h>
+ #include "debug.h"
  
- static int fuse_open(struct inode *inode, struct file *file)
+@@ -601,7 +602,9 @@ static void add_dma_entry(struct dma_deb
+ 	if (rc == -ENOMEM) {
+ 		pr_err_once("cacheline tracking ENOMEM, dma-debug disabled\n");
+ 		global_disable = true;
+-	} else if (rc == -EEXIST && !(attrs & DMA_ATTR_SKIP_CPU_SYNC)) {
++	} else if (rc == -EEXIST && !(attrs & DMA_ATTR_SKIP_CPU_SYNC) &&
++		   !(IS_ENABLED(CONFIG_DMA_BOUNCE_UNALIGNED_KMALLOC) &&
++		     is_swiotlb_active(entry->dev))) {
+ 		err_printk(entry->dev, entry,
+ 			"cacheline tracking EEXIST, overlapping mappings aren't supported\n");
+ 	}
 
 
 
