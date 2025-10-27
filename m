@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-190760-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191057-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 747E9C10BC2
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:17:53 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 879A3C10FDF
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:29:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4BB4A463B52
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:11:04 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0424C54611E
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:23:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 655E2324B0B;
-	Mon, 27 Oct 2025 19:08:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB42332549E;
+	Mon, 27 Oct 2025 19:21:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="flgd6gW+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b4ZAU62O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 213EC2C11DF;
-	Mon, 27 Oct 2025 19:08:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A87BB246BB7;
+	Mon, 27 Oct 2025 19:21:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592124; cv=none; b=m9nhhKYiJcHMgEMbGzTMLqTd6qIxZViOIBa4KkK+7mOkEVWgdrElj7F72hY0WYMA+nK7vHBTv5JnQNfzEVNXT/im+/C5gqe9CHTjTXrVIiRo6dbGtzbR+OlBT9JGlIHj28ucDvUlLdMbs5hgh+mJKeQcrqcuYt8uarCgP3AK2us=
+	t=1761592901; cv=none; b=tv8frGJqfaGC5Anmb2r1QRgbX6sCTvWgBRhD0JrJEuPaH/n8656WVppOGn7hJs6jDA9fKt2tyx/J8uh5QfSK39FmGf2bS9gyQ1YVSNrkYurrFMlT2jQknVi+bQ/vom9lQG3eWVL83kCz+rvaA3CkGtuZ1G1i8KxjWVXLjVx9+5g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592124; c=relaxed/simple;
-	bh=XvJzYmZGYdcI0ZJ1xCtlbZjW5UBTWxM1CENUEOla+Q0=;
+	s=arc-20240116; t=1761592901; c=relaxed/simple;
+	bh=M8aehLe1JfsD4orsT2RnOdq9Ko+uwrexnkhK6ErZP28=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l4w4resBNHQeeQHQ9u6XEwwwsRRF6+0K344Yt4CNDqvz8T7Hzxis1KHJOP5RMaw/JUY8Ji75fngXaRpoa+1SE0edpRh9U5Izqjxbfwx/TUb12ABm4yyZukI2YjhvSAJQXlrm/Q+PAMCnIbUJfaBsrIGGDLjYXm1N69VOsitjv4c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=flgd6gW+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6419C4CEF1;
-	Mon, 27 Oct 2025 19:08:43 +0000 (UTC)
+	 MIME-Version; b=tWaIlt1WEU0l4hE6sktLJFQqlEGP0TOAZykpwmdcmJzwdXP8DYrXOuMbGL57h6un9vJnkgkknc9y4AOD8i0pwPr/KDZx2DBPwVcxKNu0MwRNQsgeVcKw/aQSAFPfz/7OyLYQtlZBHN2kfuE0GwLTP1eQ08GV9+kGlXGhAEHIIrk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b4ZAU62O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFAADC4CEF1;
+	Mon, 27 Oct 2025 19:21:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592124;
-	bh=XvJzYmZGYdcI0ZJ1xCtlbZjW5UBTWxM1CENUEOla+Q0=;
+	s=korg; t=1761592901;
+	bh=M8aehLe1JfsD4orsT2RnOdq9Ko+uwrexnkhK6ErZP28=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=flgd6gW+cp5Nb1/6jGyrJxV7NXqksfHKuGXtaPk34L2rrWoV2P2FK6hoRSP/8/k39
-	 R5a7y8BWNHiFeLqYZImeX+bIiAmUSGbOqi1tZHK3xwiy4ueD8ZoyZV6JiaOxvDdocZ
-	 Z2hHALlkwPBrI28n271HHJpExzZZeq3o1X09TgrA=
+	b=b4ZAU62OmnUZo0lJkFWeK8iUtq6eC/DGewAsZ+5SKWHQUdvlRkPgok1oCzNG9cSs1
+	 53fz02xIFSEJ6n2hyDM+sFO1OGOnRlhpXnNgsXW+ujKXSQlGi963xxxewn4/Rhkcec
+	 Jr+Vy3bv0lPIPc/jUcuaHZLnJuidwzE9YbxlOig4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Miklos Szeredi <mszeredi@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 101/123] fuse: fix livelock in synchronous file put from fuseblk workers
+	Saket Dumbre <saket.dumbre@intel.com>,
+	Xi Ruoyao <xry111@xry111.site>,
+	Huacai Chen <chenhuacai@loongson.cn>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.12 055/117] ACPICA: Work around bogus -Wstringop-overread warning since GCC 11
 Date: Mon, 27 Oct 2025 19:36:21 +0100
-Message-ID: <20251027183449.093613602@linuxfoundation.org>
+Message-ID: <20251027183455.501519992@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183446.381986645@linuxfoundation.org>
-References: <20251027183446.381986645@linuxfoundation.org>
+In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
+References: <20251027183453.919157109@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,96 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Darrick J. Wong" <djwong@kernel.org>
+From: Xi Ruoyao <xry111@xry111.site>
 
-[ Upstream commit 26e5c67deb2e1f42a951f022fdf5b9f7eb747b01 ]
+commit 6e3a4754717a74e931a9f00b5f953be708e07acb upstream.
 
-I observed a hang when running generic/323 against a fuseblk server.
-This test opens a file, initiates a lot of AIO writes to that file
-descriptor, and closes the file descriptor before the writes complete.
-Unsurprisingly, the AIO exerciser threads are mostly stuck waiting for
-responses from the fuseblk server:
+When ACPI_MISALIGNMENT_NOT_SUPPORTED is set, GCC can produce a bogus
+-Wstringop-overread warning, see [1].
 
-# cat /proc/372265/task/372313/stack
-[<0>] request_wait_answer+0x1fe/0x2a0 [fuse]
-[<0>] __fuse_simple_request+0xd3/0x2b0 [fuse]
-[<0>] fuse_do_getattr+0xfc/0x1f0 [fuse]
-[<0>] fuse_file_read_iter+0xbe/0x1c0 [fuse]
-[<0>] aio_read+0x130/0x1e0
-[<0>] io_submit_one+0x542/0x860
-[<0>] __x64_sys_io_submit+0x98/0x1a0
-[<0>] do_syscall_64+0x37/0xf0
-[<0>] entry_SYSCALL_64_after_hwframe+0x4b/0x53
+To me, it's very clear that we have a compiler bug here, thus just
+disable the warning.
 
-But the /weird/ part is that the fuseblk server threads are waiting for
-responses from itself:
-
-# cat /proc/372210/task/372232/stack
-[<0>] request_wait_answer+0x1fe/0x2a0 [fuse]
-[<0>] __fuse_simple_request+0xd3/0x2b0 [fuse]
-[<0>] fuse_file_put+0x9a/0xd0 [fuse]
-[<0>] fuse_release+0x36/0x50 [fuse]
-[<0>] __fput+0xec/0x2b0
-[<0>] task_work_run+0x55/0x90
-[<0>] syscall_exit_to_user_mode+0xe9/0x100
-[<0>] do_syscall_64+0x43/0xf0
-[<0>] entry_SYSCALL_64_after_hwframe+0x4b/0x53
-
-The fuseblk server is fuse2fs so there's nothing all that exciting in
-the server itself.  So why is the fuse server calling fuse_file_put?
-The commit message for the fstest sheds some light on that:
-
-"By closing the file descriptor before calling io_destroy, you pretty
-much guarantee that the last put on the ioctx will be done in interrupt
-context (during I/O completion).
-
-Aha.  AIO fgets a new struct file from the fd when it queues the ioctx.
-The completion of the FUSE_WRITE command from userspace causes the fuse
-server to call the AIO completion function.  The completion puts the
-struct file, queuing a delayed fput to the fuse server task.  When the
-fuse server task returns to userspace, it has to run the delayed fput,
-which in the case of a fuseblk server, it does synchronously.
-
-Sending the FUSE_RELEASE command sychronously from fuse server threads
-is a bad idea because a client program can initiate enough simultaneous
-AIOs such that all the fuse server threads end up in delayed_fput, and
-now there aren't any threads left to handle the queued fuse commands.
-
-Fix this by only using asynchronous fputs when closing files, and leave
-a comment explaining why.
-
-Cc: stable@vger.kernel.org # v2.6.38
-Fixes: 5a18ec176c934c ("fuse: fix hang of single threaded fuseblk filesystem")
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: a9d13433fe17 ("LoongArch: Align ACPI structures if ARCH_STRICT_ALIGN enabled")
+Link: https://lore.kernel.org/all/899f2dec-e8b9-44f4-ab8d-001e160a2aed@roeck-us.net/
+Link: https://github.com/acpica/acpica/commit/abf5b573
+Link: https://gcc.gnu.org/PR122073 [1]
+Co-developed-by: Saket Dumbre <saket.dumbre@intel.com>
+Signed-off-by: Saket Dumbre <saket.dumbre@intel.com>
+Signed-off-by: Xi Ruoyao <xry111@xry111.site>
+Acked-by: Huacai Chen <chenhuacai@loongson.cn>
+Cc: All applicable <stable@vger.kernel.org>
+[ rjw: Subject and changelog edits ]
+Link: https://patch.msgid.link/20251021092825.822007-1-xry111@xry111.site
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/fuse/file.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/acpi/acpica/tbprint.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/fs/fuse/file.c
-+++ b/fs/fuse/file.c
-@@ -340,8 +340,14 @@ void fuse_file_release(struct inode *ino
- 	 * Make the release synchronous if this is a fuseblk mount,
- 	 * synchronous RELEASE is allowed (and desirable) in this case
- 	 * because the server can be trusted not to screw up.
-+	 *
-+	 * Always use the asynchronous file put because the current thread
-+	 * might be the fuse server.  This can happen if a process starts some
-+	 * aio and closes the fd before the aio completes.  Since aio takes its
-+	 * own ref to the file, the IO completion has to drop the ref, which is
-+	 * how the fuse server can end up closing its clients' files.
- 	 */
--	fuse_file_put(ff, ff->fm->fc->destroy);
-+	fuse_file_put(ff, false);
- }
+--- a/drivers/acpi/acpica/tbprint.c
++++ b/drivers/acpi/acpica/tbprint.c
+@@ -95,6 +95,11 @@ acpi_tb_print_table_header(acpi_physical
+ {
+ 	struct acpi_table_header local_header;
  
- void fuse_release_common(struct file *file, bool isdir)
++#pragma GCC diagnostic push
++#if defined(__GNUC__) && __GNUC__ >= 11
++#pragma GCC diagnostic ignored "-Wstringop-overread"
++#endif
++
+ 	if (ACPI_COMPARE_NAMESEG(header->signature, ACPI_SIG_FACS)) {
+ 
+ 		/* FACS only has signature and length fields */
+@@ -135,4 +140,5 @@ acpi_tb_print_table_header(acpi_physical
+ 			   local_header.asl_compiler_id,
+ 			   local_header.asl_compiler_revision));
+ 	}
++#pragma GCC diagnostic pop
+ }
 
 
 
