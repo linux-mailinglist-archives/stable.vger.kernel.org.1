@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-190739-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191063-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23692C10B59
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:16:45 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 310AFC11105
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:32:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A7AF5580725
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:10:25 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id CE05C548679
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:23:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F87630274F;
-	Mon, 27 Oct 2025 19:07:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BE94328613;
+	Mon, 27 Oct 2025 19:21:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kSrrgAEB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SIpISsQt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B496C30F526;
-	Mon, 27 Oct 2025 19:07:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9FB830147E;
+	Mon, 27 Oct 2025 19:21:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592069; cv=none; b=PV73zraoqNkMKZo9XkgOBOp04N8yWv2QqfAumGOu32UY99gqg62Gzb8vM/AmzINf8w+Z6wEzkDZrgEm3ZL5JQ1H9bPqUZNr2yshlGCmTBYeWWvV4zW5ESFDg5MTCjVlflC2GCM7iPEXYGhOsYxKJWK6V2ePl7d5iZcCiVGAQr28=
+	t=1761592916; cv=none; b=iAjH0r20s4MNRhY7rY309SMq5Wl/LEeCpdvKoXclacxQAn1Jw/PioV6OwMx3nSvXFBKdWFw6khByG4b/pPYIAH8cCyyaO2kZ53ZkO7vUm4e1pwuLun2MiQzfWoslhGseRocBkeePOj8TwbR9OkCaRpTi0h+t6HHmjNmuzN/QysU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592069; c=relaxed/simple;
-	bh=5DZk8LmxPM82EP7NHliP4s1lvEvo7gEEi3BKdxbQf78=;
+	s=arc-20240116; t=1761592916; c=relaxed/simple;
+	bh=Crya+F1Ux6MLM4bVRJcZEnPvxhYIwjJuTDm2ihoKIEg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LA/XiKnWoqwqSpT6oGJVVWcmnoAnPBJjFdmDA84Jl6uBcoolz+cTrC1ZkKp2q2Kj94/w8wJxrBasW8wXkzPEQzmhuFMctRgkeH9KuxKWs8i/SKihu/yU6hdJAuktcLxEZg5Hp/SvV6RgXdK9st7K0wriZK256mfBfm5sR94xlic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kSrrgAEB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45BC6C4CEF1;
-	Mon, 27 Oct 2025 19:07:49 +0000 (UTC)
+	 MIME-Version; b=GjgTTr+BEkwaVAU+qjw8cXmsFXv9X7/bsV6TXaLnVrTcoLFavhmQA4SGSJf81A4mpbtRaLCFvKushfDgRKVGd1CrugpD4zy7OSwBPe3BRLXG+EFT/ZQwp5Z8dPFYRLoqkiP/zrSGCKgQhhU5LW0rblTHsHvAwElQ5dATkfEMtJc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SIpISsQt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CF81C4CEF1;
+	Mon, 27 Oct 2025 19:21:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592069;
-	bh=5DZk8LmxPM82EP7NHliP4s1lvEvo7gEEi3BKdxbQf78=;
+	s=korg; t=1761592916;
+	bh=Crya+F1Ux6MLM4bVRJcZEnPvxhYIwjJuTDm2ihoKIEg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kSrrgAEBItf+fS3sElk5T6NTF2SdWtQJ/vdtc8F7wZBIWgIhTGrNsrF2sNR+QNwfg
-	 VZL4GghNJ+vLLgWPArcYWNORi1z0Im1JDgrZjn2pWo7PwcnDQFFSbAHA//md8x4sg1
-	 Po8Augz1ewuQBK8VtjSojI6Nh2VmGKysBQRvk1uM=
+	b=SIpISsQtPxUuaAF7t1AWpViloY0oi0/10RvoOW+nj4x0PUEsfTcoWrdl0zqY+YVYy
+	 rlsGE9IkppaRQFBWrgf5Q4yKjeHz4KobwL4+LO28Pm+R+bNgpG2ox/wlqrVleh/3KV
+	 obHkV6eGohLgWFU4S7dV1WOVJ2Z7mvvLg7QbkvT8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gui-Dong Han <hanguidong02@gmail.com>,
-	Felix Kuehling <felix.kuehling@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 106/123] drm/amdgpu: use atomic functions with memory barriers for vm fault info
+	syzbot+10e35716f8e4929681fa@syzkaller.appspotmail.com,
+	mhal@rbox.co,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.12 060/117] vsock: fix lock inversion in vsock_assign_transport()
 Date: Mon, 27 Oct 2025 19:36:26 +0100
-Message-ID: <20251027183449.228141393@linuxfoundation.org>
+Message-ID: <20251027183455.642005688@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183446.381986645@linuxfoundation.org>
-References: <20251027183446.381986645@linuxfoundation.org>
+In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
+References: <20251027183453.919157109@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,126 +63,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gui-Dong Han <hanguidong02@gmail.com>
+From: Stefano Garzarella <sgarzare@redhat.com>
 
-[ Upstream commit 6df8e84aa6b5b1812cc2cacd6b3f5ccbb18cda2b ]
+commit f7c877e7535260cc7a21484c994e8ce7e8cb6780 upstream.
 
-The atomic variable vm_fault_info_updated is used to synchronize access to
-adev->gmc.vm_fault_info between the interrupt handler and
-get_vm_fault_info().
+Syzbot reported a potential lock inversion deadlock between
+vsock_register_mutex and sk_lock-AF_VSOCK when vsock_linger() is called.
 
-The default atomic functions like atomic_set() and atomic_read() do not
-provide memory barriers. This allows for CPU instruction reordering,
-meaning the memory accesses to vm_fault_info and the vm_fault_info_updated
-flag are not guaranteed to occur in the intended order. This creates a
-race condition that can lead to inconsistent or stale data being used.
+The issue was introduced by commit 687aa0c5581b ("vsock: Fix
+transport_* TOCTOU") which added vsock_register_mutex locking in
+vsock_assign_transport() around the transport->release() call, that can
+call vsock_linger(). vsock_assign_transport() can be called with sk_lock
+held. vsock_linger() calls sk_wait_event() that temporarily releases and
+re-acquires sk_lock. During this window, if another thread hold
+vsock_register_mutex while trying to acquire sk_lock, a circular
+dependency is created.
 
-The previous implementation, which used an explicit mb(), was incomplete
-and inefficient. It failed to account for all potential CPU reorderings,
-such as the access of vm_fault_info being reordered before the atomic_read
-of the flag. This approach is also more verbose and less performant than
-using the proper atomic functions with acquire/release semantics.
+Fix this by releasing vsock_register_mutex before calling
+transport->release() and vsock_deassign_transport(). This is safe
+because we don't need to hold vsock_register_mutex while releasing the
+old transport, and we ensure the new transport won't disappear by
+obtaining a module reference first via try_module_get().
 
-Fix this by switching to atomic_set_release() and atomic_read_acquire().
-These functions provide the necessary acquire and release semantics,
-which act as memory barriers to ensure the correct order of operations.
-It is also more efficient and idiomatic than using explicit full memory
-barriers.
-
-Fixes: b97dfa27ef3a ("drm/amdgpu: save vm fault information for amdkfd")
+Reported-by: syzbot+10e35716f8e4929681fa@syzkaller.appspotmail.com
+Tested-by: syzbot+10e35716f8e4929681fa@syzkaller.appspotmail.com
+Fixes: 687aa0c5581b ("vsock: Fix transport_* TOCTOU")
+Cc: mhal@rbox.co
 Cc: stable@vger.kernel.org
-Signed-off-by: Gui-Dong Han <hanguidong02@gmail.com>
-Signed-off-by: Felix Kuehling <felix.kuehling@amd.com>
-Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-[ kept kgd_dev parameter and adev cast in amdgpu_amdkfd_gpuvm_get_vm_fault_info ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
+Link: https://patch.msgid.link/20251021121718.137668-1-sgarzare@redhat.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c |    5 ++---
- drivers/gpu/drm/amd/amdgpu/gmc_v7_0.c            |    7 +++----
- drivers/gpu/drm/amd/amdgpu/gmc_v8_0.c            |    7 +++----
- 3 files changed, 8 insertions(+), 11 deletions(-)
+ net/vmw_vsock/af_vsock.c |   38 +++++++++++++++++++-------------------
+ 1 file changed, 19 insertions(+), 19 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
-@@ -1870,10 +1870,9 @@ int amdgpu_amdkfd_gpuvm_get_vm_fault_inf
- 	struct amdgpu_device *adev;
- 
- 	adev = (struct amdgpu_device *)kgd;
--	if (atomic_read(&adev->gmc.vm_fault_info_updated) == 1) {
-+	if (atomic_read_acquire(&adev->gmc.vm_fault_info_updated) == 1) {
- 		*mem = *adev->gmc.vm_fault_info;
--		mb();
--		atomic_set(&adev->gmc.vm_fault_info_updated, 0);
-+		atomic_set_release(&adev->gmc.vm_fault_info_updated, 0);
- 	}
- 	return 0;
- }
---- a/drivers/gpu/drm/amd/amdgpu/gmc_v7_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gmc_v7_0.c
-@@ -1072,7 +1072,7 @@ static int gmc_v7_0_sw_init(void *handle
- 					GFP_KERNEL);
- 	if (!adev->gmc.vm_fault_info)
- 		return -ENOMEM;
--	atomic_set(&adev->gmc.vm_fault_info_updated, 0);
-+	atomic_set_release(&adev->gmc.vm_fault_info_updated, 0);
- 
- 	return 0;
- }
-@@ -1301,7 +1301,7 @@ static int gmc_v7_0_process_interrupt(st
- 	vmid = REG_GET_FIELD(status, VM_CONTEXT1_PROTECTION_FAULT_STATUS,
- 			     VMID);
- 	if (amdgpu_amdkfd_is_kfd_vmid(adev, vmid)
--		&& !atomic_read(&adev->gmc.vm_fault_info_updated)) {
-+		&& !atomic_read_acquire(&adev->gmc.vm_fault_info_updated)) {
- 		struct kfd_vm_fault_info *info = adev->gmc.vm_fault_info;
- 		u32 protections = REG_GET_FIELD(status,
- 					VM_CONTEXT1_PROTECTION_FAULT_STATUS,
-@@ -1317,8 +1317,7 @@ static int gmc_v7_0_process_interrupt(st
- 		info->prot_read = protections & 0x8 ? true : false;
- 		info->prot_write = protections & 0x10 ? true : false;
- 		info->prot_exec = protections & 0x20 ? true : false;
--		mb();
--		atomic_set(&adev->gmc.vm_fault_info_updated, 1);
-+		atomic_set_release(&adev->gmc.vm_fault_info_updated, 1);
+--- a/net/vmw_vsock/af_vsock.c
++++ b/net/vmw_vsock/af_vsock.c
+@@ -487,12 +487,26 @@ int vsock_assign_transport(struct vsock_
+ 		goto err;
  	}
  
- 	return 0;
---- a/drivers/gpu/drm/amd/amdgpu/gmc_v8_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gmc_v8_0.c
-@@ -1194,7 +1194,7 @@ static int gmc_v8_0_sw_init(void *handle
- 					GFP_KERNEL);
- 	if (!adev->gmc.vm_fault_info)
- 		return -ENOMEM;
--	atomic_set(&adev->gmc.vm_fault_info_updated, 0);
-+	atomic_set_release(&adev->gmc.vm_fault_info_updated, 0);
+-	if (vsk->transport) {
+-		if (vsk->transport == new_transport) {
+-			ret = 0;
+-			goto err;
+-		}
++	if (vsk->transport && vsk->transport == new_transport) {
++		ret = 0;
++		goto err;
++	}
++
++	/* We increase the module refcnt to prevent the transport unloading
++	 * while there are open sockets assigned to it.
++	 */
++	if (!new_transport || !try_module_get(new_transport->module)) {
++		ret = -ENODEV;
++		goto err;
++	}
++
++	/* It's safe to release the mutex after a successful try_module_get().
++	 * Whichever transport `new_transport` points at, it won't go away until
++	 * the last module_put() below or in vsock_deassign_transport().
++	 */
++	mutex_unlock(&vsock_register_mutex);
  
- 	return 0;
- }
-@@ -1482,7 +1482,7 @@ static int gmc_v8_0_process_interrupt(st
- 	vmid = REG_GET_FIELD(status, VM_CONTEXT1_PROTECTION_FAULT_STATUS,
- 			     VMID);
- 	if (amdgpu_amdkfd_is_kfd_vmid(adev, vmid)
--		&& !atomic_read(&adev->gmc.vm_fault_info_updated)) {
-+		&& !atomic_read_acquire(&adev->gmc.vm_fault_info_updated)) {
- 		struct kfd_vm_fault_info *info = adev->gmc.vm_fault_info;
- 		u32 protections = REG_GET_FIELD(status,
- 					VM_CONTEXT1_PROTECTION_FAULT_STATUS,
-@@ -1498,8 +1498,7 @@ static int gmc_v8_0_process_interrupt(st
- 		info->prot_read = protections & 0x8 ? true : false;
- 		info->prot_write = protections & 0x10 ? true : false;
- 		info->prot_exec = protections & 0x20 ? true : false;
--		mb();
--		atomic_set(&adev->gmc.vm_fault_info_updated, 1);
-+		atomic_set_release(&adev->gmc.vm_fault_info_updated, 1);
++	if (vsk->transport) {
+ 		/* transport->release() must be called with sock lock acquired.
+ 		 * This path can only be taken during vsock_connect(), where we
+ 		 * have already held the sock lock. In the other cases, this
+@@ -512,20 +526,6 @@ int vsock_assign_transport(struct vsock_
+ 		vsk->peer_shutdown = 0;
  	}
  
- 	return 0;
+-	/* We increase the module refcnt to prevent the transport unloading
+-	 * while there are open sockets assigned to it.
+-	 */
+-	if (!new_transport || !try_module_get(new_transport->module)) {
+-		ret = -ENODEV;
+-		goto err;
+-	}
+-
+-	/* It's safe to release the mutex after a successful try_module_get().
+-	 * Whichever transport `new_transport` points at, it won't go away until
+-	 * the last module_put() below or in vsock_deassign_transport().
+-	 */
+-	mutex_unlock(&vsock_register_mutex);
+-
+ 	if (sk->sk_type == SOCK_SEQPACKET) {
+ 		if (!new_transport->seqpacket_allow ||
+ 		    !new_transport->seqpacket_allow(remote_cid)) {
 
 
 
