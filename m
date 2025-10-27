@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-190722-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190866-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CC1CC10B19
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:16:00 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8401C10CD1
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:20:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7BABC567581
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:10:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F7E51A20094
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:15:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4157231B127;
-	Mon, 27 Oct 2025 19:07:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D713E23D2A3;
+	Mon, 27 Oct 2025 19:13:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xmhEEkQ/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ctEXCvyk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDFD32D73B1;
-	Mon, 27 Oct 2025 19:07:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9336F221DAC;
+	Mon, 27 Oct 2025 19:13:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592024; cv=none; b=kJ+ZqSbAX+vjYBQzoDBKV8glF6Pd0YJDukPv82rWjlYxGKtQrnt6fEQfZ0z0RJf0RUwlm//hXexcYF//PU3QOhK2+F5srDbnE1JTCmB7RBuSvD964XZ3fhumV/4919LAZxTl5r2vg5g6oykXzspZJWrJy3IOtWXsHR3vsUZMv6A=
+	t=1761592405; cv=none; b=bAcg0KbqJLtOjPNpQOL8RofVfUIpglSusDw/TkJYzy1R6GqoMj0ILzNjBL5EWOXCTFy5si05paizHzVn5c/KxV7bEs3f5RMPBKJdAFTNy1qtDWYXWBGA62AUckyNbH6LcS4QGLSXHyORVOELn67OIc+Q36PxY6iSo8dIJ/0SOAE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592024; c=relaxed/simple;
-	bh=0b2TBOPzHfygLpossAsJ1rlCmddE5I4aD0x+sjZnNa8=;
+	s=arc-20240116; t=1761592405; c=relaxed/simple;
+	bh=dYEdcCtn4/sm05/K9xy4Zwd9SIdT1BvrNAcviTpVhtY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MpqS4o0B/QXrBqCe29wtvO2xKVB9SMsE8z5G25E27rRf1KJNj/Xhd3DKprkYFy5UDxiU8bpSaU+n/NV3NlVOa/i5uHNe2m13BK7mbKnpojzz+ZHpKFiz3ZSNqpdXQtbFQpk/yj8Q17EZMRfnSCFtF8tQhV3y6Q/N0j05fa5VOuE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xmhEEkQ/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4984CC4CEF1;
-	Mon, 27 Oct 2025 19:07:03 +0000 (UTC)
+	 MIME-Version; b=q+vP1n6ujHFX4SDhp3rfCqhPeoEVebDcszkR6vAynaFGMP7lZYtX61GIJfd6rweNBj75aPUWlpMln8Q8amYS5UwwHo0F/SOm3e2hw9YuqQJoHhUpQP+wzGJj6jlZsdjtsbw7KYoSqphpKfd4F6T2+RStHcQrp1Q1jCMnmtt2dDg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ctEXCvyk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20C29C4CEF1;
+	Mon, 27 Oct 2025 19:13:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592023;
-	bh=0b2TBOPzHfygLpossAsJ1rlCmddE5I4aD0x+sjZnNa8=;
+	s=korg; t=1761592405;
+	bh=dYEdcCtn4/sm05/K9xy4Zwd9SIdT1BvrNAcviTpVhtY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xmhEEkQ/9UuDa9TqWaHhDx3xJo8vP/c3X4lRTndw0lyBEvFsmy1V3lksDgmQ++A+4
-	 YsrfwJYPyAW2u1Wb2ibt1xGoXAep7vt8x7Vg5wQh5lSej3jgWV94I/QAYm2rR73Tfx
-	 VmUnwvTDYhlVYXGeqqlzB+jLTIesLsUe2qDA8FJg=
+	b=ctEXCvykt1NKAzTJoUkeGZftigm7hrIM9KCMcdBwUVIHVUqDHLDIKbjsrfqOIZVcO
+	 jDXOtwN+jIRxAOTEoc7Di2//C24Pjls5NRf6FAR7No4GpXxWFeu78KV6fRkoveyJha
+	 udzXyiKAhqTSzTICpepWSYJV6QS7oPbrIRI0c6+o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	James Morse <james.morse@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Ryan Roberts <ryan.roberts@arm.com>
-Subject: [PATCH 5.15 088/123] arm64: errata: Apply workarounds for Neoverse-V3AE
+	stable <stable@kernel.org>,
+	Andrey Konovalov <andreyknvl@gmail.com>
+Subject: [PATCH 6.1 107/157] usb: raw-gadget: do not limit transfer length
 Date: Mon, 27 Oct 2025 19:36:08 +0100
-Message-ID: <20251027183448.745482203@linuxfoundation.org>
+Message-ID: <20251027183504.125253017@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183446.381986645@linuxfoundation.org>
-References: <20251027183446.381986645@linuxfoundation.org>
+In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
+References: <20251027183501.227243846@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,68 +61,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Rutland <mark.rutland@arm.com>
+From: Andrey Konovalov <andreyknvl@gmail.com>
 
-commit 0c33aa1804d101c11ba1992504f17a42233f0e11 upstream.
+commit 37b9dd0d114a0e38c502695e30f55a74fb0c37d0 upstream.
 
-Neoverse-V3AE is also affected by erratum #3312417, as described in its
-Software Developer Errata Notice (SDEN) document:
+Drop the check on the maximum transfer length in Raw Gadget for both
+control and non-control transfers.
 
-  Neoverse V3AE (MP172) SDEN v9.0, erratum 3312417
-  https://developer.arm.com/documentation/SDEN-2615521/9-0/
+Limiting the transfer length causes a problem with emulating USB devices
+whose full configuration descriptor exceeds PAGE_SIZE in length.
 
-Enable the workaround for Neoverse-V3AE, and document this.
+Overall, there does not appear to be any reason to enforce any kind of
+transfer length limit on the Raw Gadget side for either control or
+non-control transfers, so let's just drop the related check.
 
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Cc: James Morse <james.morse@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
-Signed-off-by: Will Deacon <will@kernel.org>
-[ Ryan: Trivial backport ]
-Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+Cc: stable <stable@kernel.org>
+Fixes: f2c2e717642c ("usb: gadget: add raw-gadget interface")
+Signed-off-by: Andrey Konovalov <andreyknvl@gmail.com>
+Link: https://patch.msgid.link/a6024e8eab679043e9b8a5defdb41c4bda62f02b.1761085528.git.andreyknvl@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/arm64/silicon-errata.rst |    2 ++
- arch/arm64/Kconfig                     |    1 +
- arch/arm64/kernel/cpu_errata.c         |    1 +
- 3 files changed, 4 insertions(+)
+ drivers/usb/gadget/legacy/raw_gadget.c |    2 --
+ 1 file changed, 2 deletions(-)
 
---- a/Documentation/arm64/silicon-errata.rst
-+++ b/Documentation/arm64/silicon-errata.rst
-@@ -160,6 +160,8 @@ stable kernels.
- +----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Neoverse-V3     | #3312417        | ARM64_ERRATUM_3194386       |
- +----------------+-----------------+-----------------+-----------------------------+
-+| ARM            | Neoverse-V3AE   | #3312417        | ARM64_ERRATUM_3194386       |
-++----------------+-----------------+-----------------+-----------------------------+
- | ARM            | MMU-500         | #841119,826419  | N/A                         |
- +----------------+-----------------+-----------------+-----------------------------+
- | ARM            | MMU-600         | #1076982,1209401| N/A                         |
---- a/arch/arm64/Kconfig
-+++ b/arch/arm64/Kconfig
-@@ -875,6 +875,7 @@ config ARM64_ERRATUM_3194386
- 	  * ARM Neoverse-V1 erratum 3324341
- 	  * ARM Neoverse V2 erratum 3324336
- 	  * ARM Neoverse-V3 erratum 3312417
-+	  * ARM Neoverse-V3AE erratum 3312417
- 
- 	  On affected cores "MSR SSBS, #0" instructions may not affect
- 	  subsequent speculative instructions, which may permit unexepected
---- a/arch/arm64/kernel/cpu_errata.c
-+++ b/arch/arm64/kernel/cpu_errata.c
-@@ -424,6 +424,7 @@ static const struct midr_range erratum_s
- 	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V1),
- 	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V2),
- 	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V3),
-+	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V3AE),
- 	{}
- };
- #endif
+--- a/drivers/usb/gadget/legacy/raw_gadget.c
++++ b/drivers/usb/gadget/legacy/raw_gadget.c
+@@ -620,8 +620,6 @@ static void *raw_alloc_io_data(struct us
+ 		return ERR_PTR(-EINVAL);
+ 	if (!usb_raw_io_flags_valid(io->flags))
+ 		return ERR_PTR(-EINVAL);
+-	if (io->length > PAGE_SIZE)
+-		return ERR_PTR(-EINVAL);
+ 	if (get_from_user)
+ 		data = memdup_user(ptr + sizeof(*io), io->length);
+ 	else {
 
 
 
