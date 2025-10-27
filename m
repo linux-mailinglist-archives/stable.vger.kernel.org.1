@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-190631-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190948-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 524BEC1099C
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:12:02 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2D98C10DD2
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:22:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 00F97564246
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:06:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EB4281A22AE0
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:18:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB87E32BF3D;
-	Mon, 27 Oct 2025 19:03:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07F3732861A;
+	Mon, 27 Oct 2025 19:16:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yNmg6XxJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NT9rIw0L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77BD032BF25;
-	Mon, 27 Oct 2025 19:03:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE3D52BD033;
+	Mon, 27 Oct 2025 19:16:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591790; cv=none; b=iAFFZ41YzmfiaEb1WTHbnfjSZdNBeXeyCgkQc6XDckNEJmMZl5ULjjnhXQrLs2AAyEz/5eGbyEKWbOO40xF4x91YZRWTmE+hzgMCebwt4OtF6PiD/FUqfAEt/mvxQ14Vy+uRtfu2tCB+cXf1EXzqnNslAEyfM7Djq0hogAR2oWg=
+	t=1761592617; cv=none; b=J30AExYW8X2Ub0u78tTi/XQDoMWPezBeOig2uQdxHhbme7VatRY9Vf4YZbvsLwA7vL5zSedsb73HPyFVvpWzAbX3llMvESxid+gvrqSkuaiDMUB6+n4LJjBh6IqD7cDefERN6BvHAI2EuP6wv+BZwTRE1X9x/ZoRXzb5k8H29gg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591790; c=relaxed/simple;
-	bh=LZG6PlQEXU4FqJ4di93tfFdMUdk1Q/xC+fjRxRWrhCk=;
+	s=arc-20240116; t=1761592617; c=relaxed/simple;
+	bh=t1lE6gkMD8EONB5uc1bkAF/fFTWY/mnSTWe9vlbM04c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AaTY+zeMmbcIMTZa3kfeJzaZcAXjmeb68vuCp4+fj4BnCX+xfL+fEDazIWueE3WK6E58/WAIpc68abL7GgBAa5nioWvKXW5J+QsvFXKyVJ+Gr8GP0FmOI7vlCGVC5VYmXhxY8f1cxi5wKam598QTdm8Fd5++oWbqXJdW4/HLKbM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yNmg6XxJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2DECC4CEF1;
-	Mon, 27 Oct 2025 19:03:09 +0000 (UTC)
+	 MIME-Version; b=gS4czzNwHObMZbl9zsm9G9bFNfEBAiHkahUKzlArVN4wkoUxJAK/n9fKrlSDPoTH13zpVQohCTI+35kNTs4GKHCj375Lmm54NjOQ8f9F9fHVrf+r3T2IdXwP9MCF2zCcrXc72W4LhjAXFLfMaVAZMjOTJJh5yf+BsLVQpz/fptU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NT9rIw0L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3C0EC4CEF1;
+	Mon, 27 Oct 2025 19:16:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591790;
-	bh=LZG6PlQEXU4FqJ4di93tfFdMUdk1Q/xC+fjRxRWrhCk=;
+	s=korg; t=1761592617;
+	bh=t1lE6gkMD8EONB5uc1bkAF/fFTWY/mnSTWe9vlbM04c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yNmg6XxJxUCRSv7A33lw49YV5AfLyw8yUer/qSZ6L3wVoaDh58MPigPd+dnJl2iqx
-	 vamXNadW6pkivggqNdTZHzVDw6FDGOpibJF8zEoK4GV+uGOTI1bQTBQXpkwpN62R8D
-	 os8lqnIjnmiofFf0/xzIRQc2UfIEKFChbjP11SpU=
+	b=NT9rIw0Lv7XMs4JQ1PknOThOPKKgRS/1Z9HACcZUgijqRQBVvs9OXI9bPKr7c4Ar2
+	 6oVJkFwJsU0EZa3UlhmCXnZieQpPNPoC5fH0lHuG21ft0VXfsWos2YdneMJ1iKMIu8
+	 yfsLRpV1J8t0foo8w70ey+wtTvySSvVahDOyvzlg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	James Morse <james.morse@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Ryan Roberts <ryan.roberts@arm.com>
-Subject: [PATCH 5.10 304/332] arm64: errata: Apply workarounds for Neoverse-V3AE
+	Alexander Aring <aahringo@redhat.com>,
+	David Teigland <teigland@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 08/84] dlm: check for defined force value in dlm_lockspace_release
 Date: Mon, 27 Oct 2025 19:35:57 +0100
-Message-ID: <20251027183532.879464245@linuxfoundation.org>
+Message-ID: <20251027183439.037536233@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
-References: <20251027183524.611456697@linuxfoundation.org>
+In-Reply-To: <20251027183438.817309828@linuxfoundation.org>
+References: <20251027183438.817309828@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,68 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Rutland <mark.rutland@arm.com>
+From: Alexander Aring <aahringo@redhat.com>
 
-commit 0c33aa1804d101c11ba1992504f17a42233f0e11 upstream.
+[ Upstream commit 6af515c9f3ccec3eb8a262ca86bef2c499d07951 ]
 
-Neoverse-V3AE is also affected by erratum #3312417, as described in its
-Software Developer Errata Notice (SDEN) document:
+Force values over 3 are undefined, so don't treat them as 3.
 
-  Neoverse V3AE (MP172) SDEN v9.0, erratum 3312417
-  https://developer.arm.com/documentation/SDEN-2615521/9-0/
-
-Enable the workaround for Neoverse-V3AE, and document this.
-
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Cc: James Morse <james.morse@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
-Signed-off-by: Will Deacon <will@kernel.org>
-[ Ryan: Trivial backport ]
-Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Alexander Aring <aahringo@redhat.com>
+Signed-off-by: David Teigland <teigland@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/arm64/silicon-errata.rst |    2 ++
- arch/arm64/Kconfig                     |    1 +
- arch/arm64/kernel/cpu_errata.c         |    1 +
- 3 files changed, 4 insertions(+)
+ fs/dlm/lockspace.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/Documentation/arm64/silicon-errata.rst
-+++ b/Documentation/arm64/silicon-errata.rst
-@@ -144,6 +144,8 @@ stable kernels.
- +----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Neoverse-V3     | #3312417        | ARM64_ERRATUM_3194386       |
- +----------------+-----------------+-----------------+-----------------------------+
-+| ARM            | Neoverse-V3AE   | #3312417        | ARM64_ERRATUM_3194386       |
-++----------------+-----------------+-----------------+-----------------------------+
- | ARM            | MMU-500         | #841119,826419  | N/A                         |
- +----------------+-----------------+-----------------+-----------------------------+
- +----------------+-----------------+-----------------+-----------------------------+
---- a/arch/arm64/Kconfig
-+++ b/arch/arm64/Kconfig
-@@ -718,6 +718,7 @@ config ARM64_ERRATUM_3194386
- 	  * ARM Neoverse-V1 erratum 3324341
- 	  * ARM Neoverse V2 erratum 3324336
- 	  * ARM Neoverse-V3 erratum 3312417
-+	  * ARM Neoverse-V3AE erratum 3312417
+diff --git a/fs/dlm/lockspace.c b/fs/dlm/lockspace.c
+index 0455dddb0797c..0b17657690d4d 100644
+--- a/fs/dlm/lockspace.c
++++ b/fs/dlm/lockspace.c
+@@ -802,7 +802,7 @@ static int release_lockspace(struct dlm_ls *ls, int force)
  
- 	  On affected cores "MSR SSBS, #0" instructions may not affect
- 	  subsequent speculative instructions, which may permit unexepected
---- a/arch/arm64/kernel/cpu_errata.c
-+++ b/arch/arm64/kernel/cpu_errata.c
-@@ -386,6 +386,7 @@ static const struct midr_range erratum_s
- 	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V1),
- 	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V2),
- 	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V3),
-+	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V3AE),
- 	{}
- };
- #endif
+ 	dlm_device_deregister(ls);
+ 
+-	if (force < 3 && dlm_user_daemon_available())
++	if (force != 3 && dlm_user_daemon_available())
+ 		do_uevent(ls, 0);
+ 
+ 	dlm_recoverd_stop(ls);
+-- 
+2.51.0
+
 
 
 
