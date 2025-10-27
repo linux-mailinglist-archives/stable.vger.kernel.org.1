@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-191234-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191049-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07C5AC111F8
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:36:00 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E3C4C10E00
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:23:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CD43D563C51
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:31:26 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 1E4DB346929
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:23:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EF4732B9B2;
-	Mon, 27 Oct 2025 19:29:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DBB02D8377;
+	Mon, 27 Oct 2025 19:21:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o6xBYI3U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eZ9fahMM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 390002C11DF;
-	Mon, 27 Oct 2025 19:29:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE5FD30F534;
+	Mon, 27 Oct 2025 19:21:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761593364; cv=none; b=XXJgpfpoDQ3SRV3KVtmc62+9N8wfUfUeuZTdbhfa/i5SPenKFAmkDKWtFWnYHn8HoeKZeaj2F92kUXu3inDB1AhkXr976qCemOkYUPc//biU3VF4k/6ToiPOWk5uUbR1f0CZdp+4nIED1biSYFQc3qDR++P0ydpd3sqrbneNGzU=
+	t=1761592880; cv=none; b=u5K4swGcfNNW0pnC2vm5qfYAqUe86hnzIsWSyOa0kPd6rFluQd5IJCSffj9fuqwRxkotzvh+M2/PXXlqAaUcF/Q9JbxAYPsgcwPiujuHmthRfKQPcx2iAdwvqIvkQDvHgJv6MCkj8QFtMqHBRpc45a6Y+s6TKEPsIHSULxz1Bwk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761593364; c=relaxed/simple;
-	bh=4a4xrmfYhShRPY9YZ3JOYMDcPCNzZ33ef24hx1SX5rU=;
+	s=arc-20240116; t=1761592880; c=relaxed/simple;
+	bh=UoSIvBjiFjFvpbXSgWK+FJZZ7/QHzys1MCD8wI5J2RY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tz82guoxszRrCmGHhWjVSxro6NUQO4eQRIVvRe1HazV/JIcLB0GOHv/bGY5msM+JAfmW5JFMjPGb0i3IBhp8mQNzh9vzrGAcoH2zEDyxD4f1zpOF7eOoXd1vph2Tc6cWZx6Tqm6nIaO1knptHxuAKQ4ove9WOPV2tOZbNhEQ+bg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o6xBYI3U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0544C4CEF1;
-	Mon, 27 Oct 2025 19:29:23 +0000 (UTC)
+	 MIME-Version; b=GtBFO680Y3D7OE3csnjGYw3halNgWUIxzy0xY9VqAjLveSKCBW3TtM2WNDzn6t0KuZ6HDhQyUE5DPy6tcyvSSyxa85lY3hcXzoEx2ztbde65vAG+cE+1nt+ynavW8HOmpMiFP3cfKW13dgK6ugazfwCnJfkoOyvjMfofpL+6Q+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eZ9fahMM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61C4AC4CEF1;
+	Mon, 27 Oct 2025 19:21:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761593364;
-	bh=4a4xrmfYhShRPY9YZ3JOYMDcPCNzZ33ef24hx1SX5rU=;
+	s=korg; t=1761592880;
+	bh=UoSIvBjiFjFvpbXSgWK+FJZZ7/QHzys1MCD8wI5J2RY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o6xBYI3U7fWwZvnBKha7wawcxENHCgTizGKeDQpJu4qwUUNSSRwxkwuBGOcpaphMB
-	 o76Tix6QKQSxJcYk+wiuB9mECBLgxqV4NIS7I6bGJEhY9hXRd43aK9v70SoyWWSyJg
-	 ecuZV3Xm1Uc7rTWwG4gJssKWCq8dFBm/yplVFi6I=
+	b=eZ9fahMM2HJnMw0Amnd0giIn8VGANvpBoy57aFY499nM0c9M5SamB5vBBektiDaJ4
+	 +Lvh35/BjXFD/8G4eJRFNIc+2SS4HqsMwPvqjk5B5CdknK9fV36UBZXhw1qS0D23gX
+	 voW7Gyg9LftpX+o7W+/QQTJtNbubn+o0co4nUlIM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Cave-Ayland <mark.caveayland@nutanix.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	William Breathitt Gray <wbg@kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: [PATCH 6.17 074/184] gpio: pci-idio-16: Define maximum valid register address offset
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 030/117] can: bxcan: bxcan_start_xmit(): use can_dev_dropped_skb() instead of can_dropped_invalid_skb()
 Date: Mon, 27 Oct 2025 19:35:56 +0100
-Message-ID: <20251027183516.890827221@linuxfoundation.org>
+Message-ID: <20251027183454.784129071@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
-References: <20251027183514.934710872@linuxfoundation.org>
+In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
+References: <20251027183453.919157109@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,44 +61,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: William Breathitt Gray <wbg@kernel.org>
+From: Marc Kleine-Budde <mkl@pengutronix.de>
 
-commit d37623132a6347b4ab9e2179eb3f2fa77863c364 upstream.
+[ Upstream commit 3a20c444cd123e820e10ae22eeaf00e189315aa1 ]
 
-Attempting to load the pci-idio-16 module fails during regmap
-initialization with a return error -EINVAL. This is a result of the
-regmap cache failing initialization. Set the idio_16_regmap_config
-max_register member to fix this failure.
+In addition to can_dropped_invalid_skb(), the helper function
+can_dev_dropped_skb() checks whether the device is in listen-only mode and
+discards the skb accordingly.
 
-Fixes: 73d8f3efc5c2 ("gpio: pci-idio-16: Migrate to the regmap API")
-Reported-by: Mark Cave-Ayland <mark.caveayland@nutanix.com>
-Closes: https://lore.kernel.org/r/9b0375fd-235f-4ee1-a7fa-daca296ef6bf@nutanix.com
-Suggested-by: Mark Cave-Ayland <mark.caveayland@nutanix.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: William Breathitt Gray <wbg@kernel.org>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Link: https://lore.kernel.org/r/20251020-fix-gpio-idio-16-regmap-v2-2-ebeb50e93c33@kernel.org
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Replace can_dropped_invalid_skb() by can_dev_dropped_skb() to also drop
+skbs in for listen-only mode.
+
+Reported-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Closes: https://lore.kernel.org/all/20251017-bizarre-enchanted-quokka-f3c704-mkl@pengutronix.de/
+Fixes: f00647d8127b ("can: bxcan: add support for ST bxCAN controller")
+Link: https://patch.msgid.link/20251017-fix-skb-drop-check-v1-1-556665793fa4@pengutronix.de
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpio-pci-idio-16.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/can/bxcan.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpio/gpio-pci-idio-16.c
-+++ b/drivers/gpio/gpio-pci-idio-16.c
-@@ -41,6 +41,7 @@ static const struct regmap_config idio_1
- 	.reg_stride = 1,
- 	.val_bits = 8,
- 	.io_port = true,
-+	.max_register = 0x7,
- 	.wr_table = &idio_16_wr_table,
- 	.rd_table = &idio_16_rd_table,
- 	.volatile_table = &idio_16_rd_table,
+diff --git a/drivers/net/can/bxcan.c b/drivers/net/can/bxcan.c
+index bfc60eb33dc37..333ad42ea73bc 100644
+--- a/drivers/net/can/bxcan.c
++++ b/drivers/net/can/bxcan.c
+@@ -842,7 +842,7 @@ static netdev_tx_t bxcan_start_xmit(struct sk_buff *skb,
+ 	u32 id;
+ 	int i, j;
+ 
+-	if (can_dropped_invalid_skb(ndev, skb))
++	if (can_dev_dropped_skb(ndev, skb))
+ 		return NETDEV_TX_OK;
+ 
+ 	if (bxcan_tx_busy(priv))
+-- 
+2.51.0
+
 
 
 
