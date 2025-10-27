@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-190919-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191257-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E69CC10E41
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:24:09 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id B43EFC11331
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:41:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 08CF8560284
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:17:10 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id EB166506CBD
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:32:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A61531C584;
-	Mon, 27 Oct 2025 19:15:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B40C4328604;
+	Mon, 27 Oct 2025 19:30:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SpRt9g7u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f4+CVzVX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E79461E47CA;
-	Mon, 27 Oct 2025 19:15:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E5CF326D6F;
+	Mon, 27 Oct 2025 19:30:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592542; cv=none; b=HFr1FNa7sO5NSzMXJtLXBpunU79uPRI8/dFE9cOAjdpc6qK3pyIirQPZaiECs5EANuiwTofX0fKBdjtguWAAqQrTt66Pm0DL/N6FPuKt9DcHSahnfqNKAfkZ1/juA+jDCRqkCBGCa1h0jbtx7Bn0x1NgOmd5wHPJJfNI3QnlP5w=
+	t=1761593437; cv=none; b=L411HN5ikH2DM4Wa91+3TpXB+wtPbVu9IN7EJvLenefl5VapEOfa/FpAa8OGE3aFQFeaWA+p8QoP628wuE8nIj6S/pQajNPRwdflG4QW8zgPaGZcn68xvFv3xJl+AhYYQve5EG1TNaMKblWMID+U7xLjM6Qbvtjyf2B5jaZIH+Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592542; c=relaxed/simple;
-	bh=WKaDVqVIFnkoPVfzD5tXoh0gSEXEeAfXF/YR+lWIsg8=;
+	s=arc-20240116; t=1761593437; c=relaxed/simple;
+	bh=AAJ4FEEJkLDMk/C9ihkXdgVQ0dzGsvq/qKuR24PcaCo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GY61iJXiCcvV2cN348RZyJr+vugVNxr9JalKtwUPXQ++9LKXDtjwFV/QxhBDYxj1Ee7OckfMQb5jnFRt+FelYfaVvJmSimfcgh28BWZ6VD/mi9R4lgaYb1z2cOqorj7gERRZAY9LtYuMB9pPtFJX+Wt6k448G5zS9Q0CsIPDSuY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SpRt9g7u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B984C4CEF1;
-	Mon, 27 Oct 2025 19:15:41 +0000 (UTC)
+	 MIME-Version; b=Obu5xBjXbHrt69Znm7O/OePd+bLoGgMsbNUvRraIYuIepsIs83Y3RlOau1S/Y0Fdb1SmW2HTJHjeOUyUGfjo6UWu5n0oNjBtXMuB9DmOYSntai7yY3kZ7MTq9PT9MXE2JbPEjlIk9deLcUNi4pWf+oRrZc1HNF0dro/3pAJlHsY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f4+CVzVX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 807BEC4CEF1;
+	Mon, 27 Oct 2025 19:30:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592541;
-	bh=WKaDVqVIFnkoPVfzD5tXoh0gSEXEeAfXF/YR+lWIsg8=;
+	s=korg; t=1761593436;
+	bh=AAJ4FEEJkLDMk/C9ihkXdgVQ0dzGsvq/qKuR24PcaCo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SpRt9g7ue7D3nYy5/vEqRUrdFz+9lNNWjxe7NoiPPxtmuxlA/TtSd2MxwgIojdZPm
-	 QzVZts7FZVBRdvBex7UWz/PJqiVIIJ+dAry7ezf2J7HYgUB5H96ry0xYSPPe5r+CgE
-	 Mp8vE+owD1tGue+Yn2k+i1hTdt3aDgGe0aVOoIyA=
+	b=f4+CVzVXJAtIOmIAtj/yP4gZhE6aiF2R4Gs8IKKEE2s1GbZ9+DwNxaBvkAL1w1pMS
+	 j2dPyZ1kwvnaRH0lLMXAqL792zdmcee8C3rzBfIx6I28+iaML2YCcBLaJep0uCh9NS
+	 alRGzKvGWsqtSNjrEEYw4LBUhY019NR0OU1O2rsk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Oberparleiter <oberpar@linux.ibm.com>,
-	Vineeth Vijayan <vneethv@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>
-Subject: [PATCH 6.1 153/157] s390/cio: Update purge function to unregister the unused subchannels
-Date: Mon, 27 Oct 2025 19:36:54 +0100
-Message-ID: <20251027183505.400732721@linuxfoundation.org>
+	Anup Patel <apatel@ventanamicro.com>,
+	Andrew Jones <ajones@ventanamicro.com>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Paul Walmsley <pjw@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.17 133/184] RISC-V: Dont print details of CPUs disabled in DT
+Date: Mon, 27 Oct 2025 19:36:55 +0100
+Message-ID: <20251027183518.528281127@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
-References: <20251027183501.227243846@linuxfoundation.org>
+In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
+References: <20251027183514.934710872@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,97 +64,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vineeth Vijayan <vneethv@linux.ibm.com>
+From: Anup Patel <apatel@ventanamicro.com>
 
-commit 9daa5a8795865f9a3c93d8d1066785b07ded6073 upstream.
+[ Upstream commit d2721bb165b3ee00dd23525885381af07fec852a ]
 
-Starting with 'commit 2297791c92d0 ("s390/cio: dont unregister
-subchannel from child-drivers")', cio no longer unregisters
-subchannels when the attached device is invalid or unavailable.
+Early boot stages may disable CPU DT nodes for unavailable
+CPUs based on SKU, pinstraps, eFuse, etc. Currently, the
+riscv_early_of_processor_hartid() prints details of a CPU
+if it is disabled in DT which has no value and gives a
+false impression to the users that there some issue with
+the CPU.
 
-As an unintended side-effect, the cio_ignore purge function no longer
-removes subchannels for devices on the cio_ignore list if no CCW device
-is attached. This situation occurs when a CCW device is non-operational
-or unavailable
-
-To ensure the same outcome of the purge function as when the
-current cio_ignore list had been active during boot, update the purge
-function to remove I/O subchannels without working CCW devices if the
-associated device number is found on the cio_ignore list.
-
-Fixes: 2297791c92d0 ("s390/cio: dont unregister subchannel from child-drivers")
-Suggested-by: Peter Oberparleiter <oberpar@linux.ibm.com>
-Reviewed-by: Peter Oberparleiter <oberpar@linux.ibm.com>
-Signed-off-by: Vineeth Vijayan <vneethv@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e3d794d555cd ("riscv: treat cpu devicetree nodes without status as enabled")
+Signed-off-by: Anup Patel <apatel@ventanamicro.com>
+Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+Link: https://lore.kernel.org/r/20251014163009.182381-1-apatel@ventanamicro.com
+Signed-off-by: Paul Walmsley <pjw@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/s390/cio/device.c |   39 +++++++++++++++++++++++++--------------
- 1 file changed, 25 insertions(+), 14 deletions(-)
+ arch/riscv/kernel/cpu.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/drivers/s390/cio/device.c
-+++ b/drivers/s390/cio/device.c
-@@ -1309,23 +1309,34 @@ void ccw_device_schedule_recovery(void)
- 	spin_unlock_irqrestore(&recovery_lock, flags);
- }
- 
--static int purge_fn(struct device *dev, void *data)
-+static int purge_fn(struct subchannel *sch, void *data)
- {
--	struct ccw_device *cdev = to_ccwdev(dev);
--	struct ccw_dev_id *id = &cdev->private->dev_id;
--	struct subchannel *sch = to_subchannel(cdev->dev.parent);
--
--	spin_lock_irq(cdev->ccwlock);
--	if (is_blacklisted(id->ssid, id->devno) &&
--	    (cdev->private->state == DEV_STATE_OFFLINE) &&
--	    (atomic_cmpxchg(&cdev->private->onoff, 0, 1) == 0)) {
--		CIO_MSG_EVENT(3, "ccw: purging 0.%x.%04x\n", id->ssid,
--			      id->devno);
-+	struct ccw_device *cdev;
-+
-+	spin_lock_irq(sch->lock);
-+	if (sch->st != SUBCHANNEL_TYPE_IO || !sch->schib.pmcw.dnv)
-+		goto unlock;
-+
-+	if (!is_blacklisted(sch->schid.ssid, sch->schib.pmcw.dev))
-+		goto unlock;
-+
-+	cdev = sch_get_cdev(sch);
-+	if (cdev) {
-+		if (cdev->private->state != DEV_STATE_OFFLINE)
-+			goto unlock;
-+
-+		if (atomic_cmpxchg(&cdev->private->onoff, 0, 1) != 0)
-+			goto unlock;
- 		ccw_device_sched_todo(cdev, CDEV_TODO_UNREG);
--		css_sched_sch_todo(sch, SCH_TODO_UNREG);
- 		atomic_set(&cdev->private->onoff, 0);
+diff --git a/arch/riscv/kernel/cpu.c b/arch/riscv/kernel/cpu.c
+index f6b13e9f5e6cb..3dbc8cc557dd1 100644
+--- a/arch/riscv/kernel/cpu.c
++++ b/arch/riscv/kernel/cpu.c
+@@ -62,10 +62,8 @@ int __init riscv_early_of_processor_hartid(struct device_node *node, unsigned lo
+ 		return -ENODEV;
  	}
--	spin_unlock_irq(cdev->ccwlock);
-+
-+	css_sched_sch_todo(sch, SCH_TODO_UNREG);
-+	CIO_MSG_EVENT(3, "ccw: purging 0.%x.%04x%s\n", sch->schid.ssid,
-+		      sch->schib.pmcw.dev, cdev ? "" : " (no cdev)");
-+
-+unlock:
-+	spin_unlock_irq(sch->lock);
- 	/* Abort loop in case of pending signal. */
- 	if (signal_pending(current))
- 		return -EINTR;
-@@ -1341,7 +1352,7 @@ static int purge_fn(struct device *dev,
- int ccw_purge_blacklisted(void)
- {
- 	CIO_MSG_EVENT(2, "ccw: purging blacklisted devices\n");
--	bus_for_each_dev(&ccw_bus_type, NULL, NULL, purge_fn);
-+	for_each_subchannel_staged(purge_fn, NULL, NULL);
- 	return 0;
- }
  
+-	if (!of_device_is_available(node)) {
+-		pr_info("CPU with hartid=%lu is not available\n", *hart);
++	if (!of_device_is_available(node))
+ 		return -ENODEV;
+-	}
+ 
+ 	if (of_property_read_string(node, "riscv,isa-base", &isa))
+ 		goto old_interface;
+-- 
+2.51.0
+
 
 
 
