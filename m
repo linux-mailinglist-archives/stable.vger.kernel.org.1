@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-191028-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190848-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3BAAC10EE3
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:26:00 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A47CC10CC4
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:20:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 85F631892A4C
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:22:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8895656163A
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:14:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A81F326D6D;
-	Mon, 27 Oct 2025 19:20:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 731F532548B;
+	Mon, 27 Oct 2025 19:12:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c6LNz4/q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K4kmYu4I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAB0730C35E;
-	Mon, 27 Oct 2025 19:20:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E23A323403;
+	Mon, 27 Oct 2025 19:12:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592826; cv=none; b=Ku29G1dtC0QC6LDj+9n8QNv4iJarm83ecwer3UXUHzYsvzW7bPybEflbR97rmhTZGd/dfsGtjH1zp3rMhk5BN0vfJQb53WFgiXunG8bOX98EtW4cNFZhhIyH2pkCVqwxbrtDnVJL9O8Wm6VOHmhDRf9gPPwNUi/Zl09wLQTxOoY=
+	t=1761592357; cv=none; b=dpXx+nQY3VLOCktRzIzahesdetzvcfYmNdFzcw+d4vjPhISYufXyBM9PIgqwLPFdzGYQHwRgBrOjYrP5IFpaQhQ21y4OsSKgFF4N2h/hJwldUml3czx+yQgwSAZhyJLoZDhZggKly3DiFqtWL8QlRNDFVjVlmnyPA668fJRag9w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592826; c=relaxed/simple;
-	bh=A/GfSUL16qI329ZnfnQgswZnDZy6ueUHhYbDSLpW6tE=;
+	s=arc-20240116; t=1761592357; c=relaxed/simple;
+	bh=voxiq+H4Skcm9NBmuClD0tjPzxxbI3q3d0SggHx5xVY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JDq/jfqu6DciMJatRei3RcGntCcnXh6zPhnVpYMr+Fp/qN58qmla1wMTIISRLunAaJjfFwpbtqtqw+4FP/h4DqUGAFeUoE8aH86q+cqdW5t+I0At/gCbKCiaBKW3TasOEX/BP53hbMSKizj9X+egkAIfxKGn8YCqZwOqCjruBc8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c6LNz4/q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05308C4CEF1;
-	Mon, 27 Oct 2025 19:20:25 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Imi0U8+QjbixMxSgNrLCFceTKFpZ6wqvkYZoTip7zuOQzKCrchu2kvfkk7AH37Cb5B2A/fosmg9eF4CrEvm6oSmGuNd04vVnt9839bQ91PGI/p80rTBc+uv1UxABdIhvY2q0TH0svppKFyyhRXklAFYRivPRN/92o9gek2bFwPA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K4kmYu4I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68E41C4CEF1;
+	Mon, 27 Oct 2025 19:12:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592826;
-	bh=A/GfSUL16qI329ZnfnQgswZnDZy6ueUHhYbDSLpW6tE=;
+	s=korg; t=1761592356;
+	bh=voxiq+H4Skcm9NBmuClD0tjPzxxbI3q3d0SggHx5xVY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c6LNz4/qf1DVJJSmmD4cZvbXoPeAKxwbmevGemDyc+toP68teZvze1UUiNVbwi+IS
-	 +AK4AvHxpNhG0uHd3U6J/HV1TrhGyXW+ZKCVmu1G+wHz1EQjz0k56LT/3hmzT8VBf2
-	 288ZYN10p3SkhcAx/L31BNmQ0na6lfE0XUl+Fr9E=
+	b=K4kmYu4IfBzzmtNVL6F8/L6IuioWd2g3yAws1znLEtmL/lcsekh8SLGW+wtMVuq+S
+	 vYUECLFuOjJxJ4EpSPOxPSBpj22w3Am+5IglkmoEUrWGH5umcnlpa4XPAbEKUgWOcI
+	 ib4Gb0yCP0igx1G6fbRE/F/SW3LssFrxRX9zzm+w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Michael=20Wei=C3=9F?= <michael.weiss@aisec.fraunhofer.de>,
-	Harshal Gohel <hg@simonwunderlich.de>,
-	=?UTF-8?q?Johannes=20Wiesb=C3=B6ck?= <johannes.wiesboeck@aisec.fraunhofer.de>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 026/117] rtnetlink: Allow deleting FDB entries in user namespace
+	"Maciej W. Rozycki" <macro@orcam.me.uk>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Subject: [PATCH 6.1 091/157] MIPS: Malta: Fix keyboard resource preventing i8042 driver from registering
 Date: Mon, 27 Oct 2025 19:35:52 +0100
-Message-ID: <20251027183454.672398757@linuxfoundation.org>
+Message-ID: <20251027183503.709890375@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
-References: <20251027183453.919157109@linuxfoundation.org>
+In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
+References: <20251027183501.227243846@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,58 +64,67 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Wiesböck <johannes.wiesboeck@aisec.fraunhofer.de>
+From: Maciej W. Rozycki <macro@orcam.me.uk>
 
-[ Upstream commit bf29555f5bdc017bac22ca66fcb6c9f46ec8788f ]
+commit bf5570590a981d0659d0808d2d4bcda21b27a2a5 upstream.
 
-Creating FDB entries is possible from a non-initial user namespace when
-having CAP_NET_ADMIN, yet, when deleting FDB entries, processes receive
-an EPERM because the capability is always checked against the initial
-user namespace. This restricts the FDB management from unprivileged
-containers.
+MIPS Malta platform code registers the PCI southbridge legacy port I/O
+PS/2 keyboard range as a standard resource marked as busy.  It prevents
+the i8042 driver from registering as it fails to claim the resource in
+a call to i8042_platform_init().  Consequently PS/2 keyboard and mouse
+devices cannot be used with this platform.
 
-Drop the netlink_capable check in rtnl_fdb_del as it was originally
-dropped in c5c351088ae7 and reintroduced in 1690be63a27b without
-intention.
+Fix the issue by removing the busy marker from the standard reservation,
+making the driver register successfully:
 
-This patch was tested using a container on GyroidOS, where it was
-possible to delete FDB entries from an unprivileged user namespace and
-private network namespace.
+  serio: i8042 KBD port at 0x60,0x64 irq 1
+  serio: i8042 AUX port at 0x60,0x64 irq 12
 
-Fixes: 1690be63a27b ("bridge: Add vlan support to static neighbors")
-Reviewed-by: Michael Weiß <michael.weiss@aisec.fraunhofer.de>
-Tested-by: Harshal Gohel <hg@simonwunderlich.de>
-Signed-off-by: Johannes Wiesböck <johannes.wiesboeck@aisec.fraunhofer.de>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://patch.msgid.link/20251015201548.319871-1-johannes.wiesboeck@aisec.fraunhofer.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+and the resource show up as expected among the legacy devices:
+
+  00000000-00ffffff : MSC PCI I/O
+    00000000-0000001f : dma1
+    00000020-00000021 : pic1
+    00000040-0000005f : timer
+    00000060-0000006f : keyboard
+      00000060-0000006f : i8042
+    00000070-00000077 : rtc0
+    00000080-0000008f : dma page reg
+    000000a0-000000a1 : pic2
+    000000c0-000000df : dma2
+    [...]
+
+If the i8042 driver has not been configured, then the standard resource
+will remain there preventing any conflicting dynamic assignment of this
+PCI port I/O address range.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Acked-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/alpine.DEB.2.21.2510211919240.8377@angie.orcam.me.uk
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/rtnetlink.c | 3 ---
- 1 file changed, 3 deletions(-)
+ arch/mips/mti-malta/malta-setup.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
-index 4d0ee1c9002aa..650c3c20e79ff 100644
---- a/net/core/rtnetlink.c
-+++ b/net/core/rtnetlink.c
-@@ -4414,9 +4414,6 @@ static int rtnl_fdb_del(struct sk_buff *skb, struct nlmsghdr *nlh,
- 	int err;
- 	u16 vid;
- 
--	if (!netlink_capable(skb, CAP_NET_ADMIN))
--		return -EPERM;
--
- 	if (!del_bulk) {
- 		err = nlmsg_parse_deprecated(nlh, sizeof(*ndm), tb, NDA_MAX,
- 					     NULL, extack);
--- 
-2.51.0
-
+--- a/arch/mips/mti-malta/malta-setup.c
++++ b/arch/mips/mti-malta/malta-setup.c
+@@ -47,7 +47,7 @@ static struct resource standard_io_resou
+ 		.name = "keyboard",
+ 		.start = 0x60,
+ 		.end = 0x6f,
+-		.flags = IORESOURCE_IO | IORESOURCE_BUSY
++		.flags = IORESOURCE_IO
+ 	},
+ 	{
+ 		.name = "dma page reg",
 
 
 
