@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-190806-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190523-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 901A1C10C51
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:19:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FEBAC1081D
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:08:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0699B508935
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:13:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A95E4566FF0
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:03:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A3C830E0C0;
-	Mon, 27 Oct 2025 19:10:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D88E30DEA2;
+	Mon, 27 Oct 2025 18:58:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1TF7CbVQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WEXtK6lR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAA201662E7;
-	Mon, 27 Oct 2025 19:10:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E1F0330B19;
+	Mon, 27 Oct 2025 18:58:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592244; cv=none; b=MPCWYDL2BdX3AtKt17Xy82E4QPsN8d8jqjYaOX24KKqbWLc8dsad564YZkZh0xsZIf9MnSM4nqLsFzd+SI0956bQoJvmmE906qVUzq3c3z49casUefkaKoySTEX82VgzaycyxhaI4yTByT3ou9swvyrkRN0dDOZ/H47dawF7ubw=
+	t=1761591513; cv=none; b=Bq86BAr/HL8OtHaekvRTya0dhyhlksSrLMbECRXt1tahGpM3mDZuiRwTrUGq4XFBQqDSxG4Evgeim5WOBFkhe1AJn6qhiPTcuWrHzBJU+jubpmhlfSyMLz8fHecTqZ4A6fbMnDHnwdbK2aTEcvdUYaFnEbOsSTCfv7c9rM9lNls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592244; c=relaxed/simple;
-	bh=6wWEztxxt3DSNNdRGJeceBtkwVuEn7U7WTU9j07cHpY=;
+	s=arc-20240116; t=1761591513; c=relaxed/simple;
+	bh=ia/XEumiYBelRK6eyxG4Tqa+7vVQ/tyPH6CtH5FUDNo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KhmHen18g8DRKihdQS3RcBGInlx9SVREvhs/dBzI2LHM7lBuW5a2gF5E/L+NJglzA0+5DrVw+/UPPiYsJQtwsno6nj4SLJZ3yScGSmSW7SPegt0yAhtyxgucBLw3NpH9vIbcUVSUT60Z7YTnNfinyEmxYQOo9inMY63tgYdCjqw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1TF7CbVQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CD3BC4CEF1;
-	Mon, 27 Oct 2025 19:10:44 +0000 (UTC)
+	 MIME-Version; b=Zog/WMWjbFRM8l+pjB7N5dxiFdH0gMoQX/mkumEn0m+2Qzif3TU1uPanWz6OrvVPMtaMd22IMjrf6bQSyJ6ovyfcJNF660c8qb7zmPEAIUKOGOCBc9EuFivtw3HiCuJbQ3yvH/dJ20v2A9CJ2xlQETMpMvrqTl0e4iXVdEgin1k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WEXtK6lR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C91DC116B1;
+	Mon, 27 Oct 2025 18:58:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592244;
-	bh=6wWEztxxt3DSNNdRGJeceBtkwVuEn7U7WTU9j07cHpY=;
+	s=korg; t=1761591512;
+	bh=ia/XEumiYBelRK6eyxG4Tqa+7vVQ/tyPH6CtH5FUDNo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1TF7CbVQOoqQXqxnq0asezRxlkXhTdesGRtZ0AHCZHcZmtCK44J5SXQFSbQXPwqTd
-	 nNonY1VjObtu1ImUKmpCUyBEGzW+FjhOpYaylChJl9fXPZEBrhTNpI6xo4QLVoKwpv
-	 Fvq4Btnqmx8R8IwcpFQgzQ/Sh+GJAV+8HBRlqIvc=
+	b=WEXtK6lR7sU9eFGTCT5opMQphbx6juxrwfY6Qsz1Eydngbej3yacrgou1jvHEOrbS
+	 cRNvnGx8bokJOH8SIUYoUyScw7K5OLEbIPLas0cbvj+xSHAj2yerszYj0uO8joHB2m
+	 aJDJ8eIB+0DOwdxd/ZRL7/dFK7fWBgUeKVpmS+38=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Inki Dae <inki.dae@samsung.com>,
-	Kaustabh Chakraborty <kauschluss@disroot.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 016/157] drm/exynos: exynos7_drm_decon: remove ctx->suspended
+	Mikhail Kobuk <m.kobuk@ispras.ru>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Subject: [PATCH 5.10 224/332] media: pci: ivtv: Add check for DMA map result
 Date: Mon, 27 Oct 2025 19:34:37 +0100
-Message-ID: <20251027183501.704281137@linuxfoundation.org>
+Message-ID: <20251027183530.708080881@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
-References: <20251027183501.227243846@linuxfoundation.org>
+In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
+References: <20251027183524.611456697@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,168 +61,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kaustabh Chakraborty <kauschluss@disroot.org>
+From: Mikhail Kobuk <m.kobuk@ispras.ru>
 
-[ Upstream commit e1361a4f1be9cb69a662c6d7b5ce218007d6e82b ]
+commit 629913d6d79508b166c66e07e4857e20233d85a9 upstream.
 
-Condition guards are found to be redundant, as the call flow is properly
-managed now, as also observed in the Exynos5433 DECON driver. Since
-state checking is no longer necessary, remove it.
+In case DMA fails, 'dma->SG_length' is 0. This value is later used to
+access 'dma->SGarray[dma->SG_length - 1]', which will cause out of
+bounds access.
 
-This also fixes an issue which prevented decon_commit() from
-decon_atomic_enable() due to an incorrect state change setting.
+Add check to return early on invalid value. Adjust warnings accordingly.
 
-Fixes: 96976c3d9aff ("drm/exynos: Add DECON driver")
-Cc: stable@vger.kernel.org
-Suggested-by: Inki Dae <inki.dae@samsung.com>
-Signed-off-by: Kaustabh Chakraborty <kauschluss@disroot.org>
-Signed-off-by: Inki Dae <inki.dae@samsung.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 1932dc2f4cf6 ("media: pci/ivtv: switch from 'pci_' to 'dma_' API")
+Signed-off-by: Mikhail Kobuk <m.kobuk@ispras.ru>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/exynos/exynos7_drm_decon.c |   36 -----------------------------
- 1 file changed, 36 deletions(-)
+ drivers/media/pci/ivtv/ivtv-udma.c |    8 ++++++++
+ drivers/media/pci/ivtv/ivtv-yuv.c  |    6 ++++++
+ drivers/media/pci/ivtv/ivtvfb.c    |    6 +++---
+ 3 files changed, 17 insertions(+), 3 deletions(-)
 
---- a/drivers/gpu/drm/exynos/exynos7_drm_decon.c
-+++ b/drivers/gpu/drm/exynos/exynos7_drm_decon.c
-@@ -52,7 +52,6 @@ struct decon_context {
- 	void __iomem			*regs;
- 	unsigned long			irq_flags;
- 	bool				i80_if;
--	bool				suspended;
- 	wait_queue_head_t		wait_vsync_queue;
- 	atomic_t			wait_vsync_event;
+--- a/drivers/media/pci/ivtv/ivtv-udma.c
++++ b/drivers/media/pci/ivtv/ivtv-udma.c
+@@ -131,6 +131,8 @@ int ivtv_udma_setup(struct ivtv *itv, un
  
-@@ -106,9 +105,6 @@ static void decon_shadow_protect_win(str
- 
- static void decon_wait_for_vblank(struct decon_context *ctx)
- {
--	if (ctx->suspended)
--		return;
--
- 	atomic_set(&ctx->wait_vsync_event, 1);
- 
- 	/*
-@@ -184,9 +180,6 @@ static void decon_commit(struct exynos_d
- 	struct drm_display_mode *mode = &crtc->base.state->adjusted_mode;
- 	u32 val, clkdiv;
- 
--	if (ctx->suspended)
--		return;
--
- 	/* nothing to do if we haven't set the mode yet */
- 	if (mode->htotal == 0 || mode->vtotal == 0)
- 		return;
-@@ -248,9 +241,6 @@ static int decon_enable_vblank(struct ex
- 	struct decon_context *ctx = crtc->ctx;
- 	u32 val;
- 
--	if (ctx->suspended)
--		return -EPERM;
--
- 	if (!test_and_set_bit(0, &ctx->irq_flags)) {
- 		val = readl(ctx->regs + VIDINTCON0);
- 
-@@ -273,9 +263,6 @@ static void decon_disable_vblank(struct
- 	struct decon_context *ctx = crtc->ctx;
- 	u32 val;
- 
--	if (ctx->suspended)
--		return;
--
- 	if (test_and_clear_bit(0, &ctx->irq_flags)) {
- 		val = readl(ctx->regs + VIDINTCON0);
- 
-@@ -377,9 +364,6 @@ static void decon_atomic_begin(struct ex
- 	struct decon_context *ctx = crtc->ctx;
- 	int i;
- 
--	if (ctx->suspended)
--		return;
--
- 	for (i = 0; i < WINDOWS_NR; i++)
- 		decon_shadow_protect_win(ctx, i, true);
- }
-@@ -399,9 +383,6 @@ static void decon_update_plane(struct ex
- 	unsigned int cpp = fb->format->cpp[0];
- 	unsigned int pitch = fb->pitches[0];
- 
--	if (ctx->suspended)
--		return;
--
- 	/*
- 	 * SHADOWCON/PRTCON register is used for enabling timing.
- 	 *
-@@ -489,9 +470,6 @@ static void decon_disable_plane(struct e
- 	unsigned int win = plane->index;
- 	u32 val;
- 
--	if (ctx->suspended)
--		return;
--
- 	/* protect windows */
- 	decon_shadow_protect_win(ctx, win, true);
- 
-@@ -510,9 +488,6 @@ static void decon_atomic_flush(struct ex
- 	struct decon_context *ctx = crtc->ctx;
- 	int i;
- 
--	if (ctx->suspended)
--		return;
--
- 	for (i = 0; i < WINDOWS_NR; i++)
- 		decon_shadow_protect_win(ctx, i, false);
- 	exynos_crtc_handle_event(crtc);
-@@ -540,9 +515,6 @@ static void decon_atomic_enable(struct e
- 	struct decon_context *ctx = crtc->ctx;
- 	int ret;
- 
--	if (!ctx->suspended)
--		return;
--
- 	ret = pm_runtime_resume_and_get(ctx->dev);
- 	if (ret < 0) {
- 		DRM_DEV_ERROR(ctx->dev, "failed to enable DECON device.\n");
-@@ -556,8 +528,6 @@ static void decon_atomic_enable(struct e
- 		decon_enable_vblank(ctx->crtc);
- 
- 	decon_commit(ctx->crtc);
--
--	ctx->suspended = false;
- }
- 
- static void decon_atomic_disable(struct exynos_drm_crtc *crtc)
-@@ -565,9 +535,6 @@ static void decon_atomic_disable(struct
- 	struct decon_context *ctx = crtc->ctx;
- 	int i;
- 
--	if (ctx->suspended)
--		return;
--
- 	/*
- 	 * We need to make sure that all windows are disabled before we
- 	 * suspend that connector. Otherwise we might try to scan from
-@@ -577,8 +544,6 @@ static void decon_atomic_disable(struct
- 		decon_disable_plane(crtc, &ctx->planes[i]);
- 
- 	pm_runtime_put_sync(ctx->dev);
--
--	ctx->suspended = true;
- }
- 
- static const struct exynos_drm_crtc_ops decon_crtc_ops = {
-@@ -699,7 +664,6 @@ static int decon_probe(struct platform_d
+ 	/* Fill SG List with new values */
+ 	if (ivtv_udma_fill_sg_list(dma, &user_dma, 0) < 0) {
++		IVTV_DEBUG_WARN("%s: could not allocate bounce buffers for highmem userspace buffers\n",
++				__func__);
+ 		unpin_user_pages(dma->map, dma->page_count);
+ 		dma->page_count = 0;
  		return -ENOMEM;
+@@ -139,6 +141,12 @@ int ivtv_udma_setup(struct ivtv *itv, un
+ 	/* Map SG List */
+ 	dma->SG_length = dma_map_sg(&itv->pdev->dev, dma->SGlist,
+ 				    dma->page_count, DMA_TO_DEVICE);
++	if (!dma->SG_length) {
++		IVTV_DEBUG_WARN("%s: DMA map error, SG_length is 0\n", __func__);
++		unpin_user_pages(dma->map, dma->page_count);
++		dma->page_count = 0;
++		return -EINVAL;
++	}
  
- 	ctx->dev = dev;
--	ctx->suspended = true;
+ 	/* Fill SG Array with new values */
+ 	ivtv_udma_fill_sg_array (dma, ivtv_dest_addr, 0, -1);
+--- a/drivers/media/pci/ivtv/ivtv-yuv.c
++++ b/drivers/media/pci/ivtv/ivtv-yuv.c
+@@ -115,6 +115,12 @@ static int ivtv_yuv_prep_user_dma(struct
+ 	}
+ 	dma->SG_length = dma_map_sg(&itv->pdev->dev, dma->SGlist,
+ 				    dma->page_count, DMA_TO_DEVICE);
++	if (!dma->SG_length) {
++		IVTV_DEBUG_WARN("%s: DMA map error, SG_length is 0\n", __func__);
++		unpin_user_pages(dma->map, dma->page_count);
++		dma->page_count = 0;
++		return -EINVAL;
++	}
  
- 	i80_if_timings = of_get_child_by_name(dev->of_node, "i80-if-timings");
- 	if (i80_if_timings)
+ 	/* Fill SG Array with new values */
+ 	ivtv_udma_fill_sg_array(dma, y_buffer_offset, uv_buffer_offset, y_size);
+--- a/drivers/media/pci/ivtv/ivtvfb.c
++++ b/drivers/media/pci/ivtv/ivtvfb.c
+@@ -281,10 +281,10 @@ static int ivtvfb_prep_dec_dma_to_device
+ 	/* Map User DMA */
+ 	if (ivtv_udma_setup(itv, ivtv_dest_addr, userbuf, size_in_bytes) <= 0) {
+ 		mutex_unlock(&itv->udma.lock);
+-		IVTVFB_WARN("ivtvfb_prep_dec_dma_to_device, Error with pin_user_pages: %d bytes, %d pages returned\n",
+-			       size_in_bytes, itv->udma.page_count);
++		IVTVFB_WARN("%s, Error in ivtv_udma_setup: %d bytes, %d pages returned\n",
++			       __func__, size_in_bytes, itv->udma.page_count);
+ 
+-		/* pin_user_pages must have failed completely */
++		/* pin_user_pages or DMA must have failed completely */
+ 		return -EIO;
+ 	}
+ 
 
 
 
