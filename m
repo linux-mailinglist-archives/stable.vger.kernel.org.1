@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-190663-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191155-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id D029AC10A0E
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:13:33 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92A9BC110BA
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:31:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id DAD1F504F04
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:07:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A721119C2880
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:28:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 091F433031E;
-	Mon, 27 Oct 2025 19:04:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3C1F31C584;
+	Mon, 27 Oct 2025 19:25:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZJwP3rEG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="thMM2SNj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B732132F777;
-	Mon, 27 Oct 2025 19:04:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90B13274FD0;
+	Mon, 27 Oct 2025 19:25:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591870; cv=none; b=t1ODuDkyT4XDuFaiM25ek2X8TA8XQgEmUWs2vFKdVeyuSfHHQH12JGCtTO4Q3NI/D96uit/SiaRICUThg27E4dQqC4YnE4Ly43gKtZzZ2kRd40UzJnKGcfq3yqzKRnk0cBipe3C5fPE1jaZsri6YQ+QTmBRr3mPh9QD+j3z3G20=
+	t=1761593151; cv=none; b=VneuMzbMflTpf8TTxFZbBfsN6rNYDmO1JRDIM0Se1N2+rTK9pzFIpihf5Ph8J/DgB0V3OQN+kC0DRzbFtqdb42i+elWEiPATc26uhI5ChHybq80Ucb1jy+5U+UP8oVRv8QQs556EfWqWiop85uvNIkdm8DR2Eo3UiCHQh6itwjM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591870; c=relaxed/simple;
-	bh=BAAWqqgCrDBK+qQUxYOI8BdzCD7V0rkoHdhSHDd6BxU=;
+	s=arc-20240116; t=1761593151; c=relaxed/simple;
+	bh=AuzCwT7mar1ZeStfaBa9lx92xPF2mDia1YZMPlIZhag=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Tdqa2mkRlbCVhvPWEOsm+xumbuZoOiBPxcuTUl2QhsHMhiJkMU/c3zvQpgiXMG8X2lXmRENDvV+FBqnALyhYIzQR7+E5XWop8dZHbLHGkJBBcMiXFoJ6ZIOBFAtqZQzC8fgsAtTq1GGxqehtBwNwqp/q6dez6S+l1/lTSADl3mo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZJwP3rEG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CADCC4CEF1;
-	Mon, 27 Oct 2025 19:04:30 +0000 (UTC)
+	 MIME-Version; b=oKP3o4CC7FTHx0xKeWV+Gttm50M/zplQMJhm1MFe/DttuHbIvELIY09uzdDGrqUf9fihMxXH7Hdwm/OWzcZjqFwDjHshcoDEqrlHaKQtWrguhrqbHBBj6CghpTsGnGApelSx5K7RhsHl3Bpo6CxP4yJZbITt/30tw5PaaBH0VpA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=thMM2SNj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB029C4CEF1;
+	Mon, 27 Oct 2025 19:25:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591870;
-	bh=BAAWqqgCrDBK+qQUxYOI8BdzCD7V0rkoHdhSHDd6BxU=;
+	s=korg; t=1761593151;
+	bh=AuzCwT7mar1ZeStfaBa9lx92xPF2mDia1YZMPlIZhag=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZJwP3rEGvkw0vmN26z5uMijNfKGLyvjr0qOgkXplrSwBU1/MPbGwyUrkzTv6bWUFz
-	 qQC03Fu7PoaysjDZ09q9bjvTHPCjbH1YD/fM5hLpW/D1lvIF3oowbiJNterAuEpawH
-	 FUjd4lLLakyqpTGXGKvwxzywL/hrwZ2Ml6nYnktU=
+	b=thMM2SNjU/r0FEWdJHLpgqju45iPEiPpDClPJs1pkWkGRvEjg/HqPF7ThFvRuxDNb
+	 As81tVNbk6JQPT1snZh7YlGu0+yu+wmxwSUec62x32UzqaEIT8LOHGImYwFEDTUCdh
+	 Ch1GdYbYIJ4SmzDI4enyZS7GjDwg/mWqcQmZxGXc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Ke <make24@iscas.ac.cn>,
-	Sean Young <sean@mess.org>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>,
+	Xichao Zhao <zhao.xichao@vivo.com>,
+	Jan Kara <jack@suse.cz>,
+	Kees Cook <kees@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 007/123] media: lirc: Fix error handling in lirc_register()
-Date: Mon, 27 Oct 2025 19:34:47 +0100
-Message-ID: <20251027183446.589949358@linuxfoundation.org>
+Subject: [PATCH 6.17 006/184] exec: Fix incorrect type for ret
+Date: Mon, 27 Oct 2025 19:34:48 +0100
+Message-ID: <20251027183515.110447705@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183446.381986645@linuxfoundation.org>
-References: <20251027183446.381986645@linuxfoundation.org>
+In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
+References: <20251027183514.934710872@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Ke <make24@iscas.ac.cn>
+From: Xichao Zhao <zhao.xichao@vivo.com>
 
-[ Upstream commit 4f4098c57e139ad972154077fb45c3e3141555dd ]
+[ Upstream commit 5e088248375d171b80c643051e77ade6b97bc386 ]
 
-When cdev_device_add() failed, calling put_device() to explicitly
-release dev->lirc_dev. Otherwise, it could cause the fault of the
-reference count.
+In the setup_arg_pages(), ret is declared as an unsigned long.
+The ret might take a negative value. Therefore, its type should
+be changed to int.
 
-Found by code review.
-
-Cc: stable@vger.kernel.org
-Fixes: a6ddd4fecbb0 ("media: lirc: remove last remnants of lirc kapi")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-Signed-off-by: Sean Young <sean@mess.org>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Signed-off-by: Xichao Zhao <zhao.xichao@vivo.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20250825073609.219855-1-zhao.xichao@vivo.com
+Signed-off-by: Kees Cook <kees@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/rc/lirc_dev.c |    9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ fs/exec.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/media/rc/lirc_dev.c
-+++ b/drivers/media/rc/lirc_dev.c
-@@ -748,11 +748,11 @@ int lirc_register(struct rc_dev *dev)
- 
- 	cdev_init(&dev->lirc_cdev, &lirc_fops);
- 
-+	get_device(&dev->dev);
-+
- 	err = cdev_device_add(&dev->lirc_cdev, &dev->lirc_dev);
- 	if (err)
--		goto out_ida;
--
--	get_device(&dev->dev);
-+		goto out_put_device;
- 
- 	switch (dev->driver_type) {
- 	case RC_DRIVER_SCANCODE:
-@@ -776,7 +776,8 @@ int lirc_register(struct rc_dev *dev)
- 
- 	return 0;
- 
--out_ida:
-+out_put_device:
-+	put_device(&dev->lirc_dev);
- 	ida_free(&lirc_ida, minor);
- 	return err;
- }
+diff --git a/fs/exec.c b/fs/exec.c
+index a69a2673f6311..1515e0585e259 100644
+--- a/fs/exec.c
++++ b/fs/exec.c
+@@ -599,7 +599,7 @@ int setup_arg_pages(struct linux_binprm *bprm,
+ 		    unsigned long stack_top,
+ 		    int executable_stack)
+ {
+-	unsigned long ret;
++	int ret;
+ 	unsigned long stack_shift;
+ 	struct mm_struct *mm = current->mm;
+ 	struct vm_area_struct *vma = bprm->vma;
+-- 
+2.51.0
+
 
 
 
