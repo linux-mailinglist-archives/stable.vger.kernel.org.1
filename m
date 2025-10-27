@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-191100-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191264-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94E3EC11009
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:29:34 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1238C113DE
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:46:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3BFAF19A5E18
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:25:46 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id AE8DE507BC2
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:32:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B57F831D72B;
-	Mon, 27 Oct 2025 19:23:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA44032ABEC;
+	Mon, 27 Oct 2025 19:30:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ow92RrNs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rLry1cwb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71EAE27FD62;
-	Mon, 27 Oct 2025 19:23:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 646B8321F48;
+	Mon, 27 Oct 2025 19:30:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761593007; cv=none; b=K0sAwkwses+RnWm0coUrl29cJcVi9yq+rH4971Gcs3dK9Cco+zC4dZWnJ6NMXW0EETWEQyhOlzR1aMy/6RI2B5lTZ2eGglwyZc1Nyq0Vn+SfYolaIUa9bkp1UUcZJdewgrKZrGHnidMROycK2jfvX6dDrtPmINjQnO3x5fTIGZ4=
+	t=1761593458; cv=none; b=IswyUak0vfZYPKhyJujihXvgDQ0sMIv+7dUCCzFLOx1ZdfW07s2w+nvlUqwolEmqhO33kwT2qc+uIH270OBagf3vkYW8YPR4DRuKqcn72/7F7t4DjH/9c1qCqjPM1jn1FZYnE10HQYdOSL28AS8rivCsXdAAKZHwoR5U46KbIZc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761593007; c=relaxed/simple;
-	bh=WUsvJuEEmaPYn4FCDa4xua4WpGA73xwfQ/B9Klb3D+M=;
+	s=arc-20240116; t=1761593458; c=relaxed/simple;
+	bh=/A0fWdnTC4ai7HTLa7Ial8ebOWZyoN+2JBSI+9TEq+Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S/GjWcCQl8fUBC2CJGwaiI0kmdWn2Rm1VcxDwzhNHl1Vog03RuV3IuMMWr2nRGF4QdAmWuiHmKxFTUi+y4eZ6YtWqNcZ/iybKsqVZlNDshWTn1IVD5hhpqF2ULL7ugq0YiiNlsjVYsViCTUAH8R0JlUsSxRe1msO1un6UvsvKTs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ow92RrNs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5283C113D0;
-	Mon, 27 Oct 2025 19:23:26 +0000 (UTC)
+	 MIME-Version; b=Ns1EpFjnAStY07YVJfjWOxEKsFsrdWC3wuSAPz+KQZ0acSm6Y8RQmlsQAUYKdKoMt/Om6j/galFQgv21XK/pCcNDKfyp4XOGvrDQKjXm7sybDbJ6bqdZKgZb+bG0ijic9/87EPiaOx7tyEQOAwuxweL0Vi0PqVkj1yi/LMDUwag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rLry1cwb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8540C4CEF1;
+	Mon, 27 Oct 2025 19:30:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761593007;
-	bh=WUsvJuEEmaPYn4FCDa4xua4WpGA73xwfQ/B9Klb3D+M=;
+	s=korg; t=1761593458;
+	bh=/A0fWdnTC4ai7HTLa7Ial8ebOWZyoN+2JBSI+9TEq+Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ow92RrNsJ3gn1t6jekdFl/Xvky4TXY1vYecAjp1foxHbwSbA45iiShtkHfxZfaegn
-	 qJn6HUU8T42zQbHGO45UwmuX4xmiPNHTInRxpoD2UFIdyX6h1495w8kAKK0S4zYsz8
-	 fHRG7wsCCkVLXjoj5DZWtqkfQUehKRYcEJCsEiqM=
+	b=rLry1cwbDlqUjDx9iEY05dKxJTrsrUNJqWzUmz61qefrLUu4P0MNWv2vlHYyquACB
+	 p3uEBh2tOAZSF+JIeDWCI1cfx3zlTgOJyelGuoQBW5RQmgcXFj5emyHV0s/ZoaeElW
+	 fenl4wuKIwvqIdRMzf+yN2xiZrORlM4dwTjW6SrQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Reinhard Speyerer <rspmn@arcor.de>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.12 095/117] USB: serial: option: add Quectel RG255C
+	Ming Lei <ming.lei@redhat.com>,
+	Ondrej Mosnacek <omosnace@redhat.com>,
+	Paul Moore <paul@paul-moore.com>,
+	Stephen Smalley <stephen.smalley.work@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.17 139/184] nbd: override creds to kernel when calling sock_{send,recv}msg()
 Date: Mon, 27 Oct 2025 19:37:01 +0100
-Message-ID: <20251027183456.588458950@linuxfoundation.org>
+Message-ID: <20251027183518.690209582@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
-References: <20251027183453.919157109@linuxfoundation.org>
+In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
+References: <20251027183514.934710872@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,68 +65,195 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Reinhard Speyerer <rspmn@arcor.de>
+From: Ondrej Mosnacek <omosnace@redhat.com>
 
-commit 89205c60c0fc96b73567a2e9fe27ee3f59d01193 upstream.
+[ Upstream commit 81ccca31214e11ea2b537fd35d4f66d7cf46268e ]
 
-Add support for Quectel RG255C devices to complement commit 5c964c8a97c1
-("net: usb: qmi_wwan: add Quectel RG255C").
-The composition is DM / NMEA / AT / QMI.
+sock_{send,recv}msg() internally calls security_socket_{send,recv}msg(),
+which does security checks (e.g. SELinux) for socket access against the
+current task. However, _sock_xmit() in drivers/block/nbd.c may be called
+indirectly from a userspace syscall, where the NBD socket access would
+be incorrectly checked against the calling userspace task (which simply
+tries to read/write a file that happens to reside on an NBD device).
 
-T:  Bus=01 Lev=02 Prnt=99 Port=01 Cnt=02 Dev#=110 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=2c7c ProdID=0316 Rev= 5.15
-S:  Manufacturer=Quectel
-S:  Product=RG255C-GL
-S:  SerialNumber=xxxxxxxx
-C:* #Ifs= 4 Cfg#= 1 Atr=a0 MxPwr=500mA
-I:* If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 1 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
-E:  Ad=86(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+To fix this, temporarily override creds to kernel ones before calling
+the sock_*() functions. This allows the security modules to recognize
+this as internal access by the kernel, which will normally be allowed.
 
-Signed-off-by: Reinhard Speyerer <rspmn@arcor.de>
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+A way to trigger the issue is to do the following (on a system with
+SELinux set to enforcing):
+
+    ### Create nbd device:
+    truncate -s 256M /tmp/testfile
+    nbd-server localhost:10809 /tmp/testfile
+
+    ### Connect to the nbd server:
+    nbd-client localhost
+
+    ### Create mdraid array
+    mdadm --create -l 1 -n 2 /dev/md/testarray /dev/nbd0 missing
+
+After these steps, assuming the SELinux policy doesn't allow the
+unexpected access pattern, errors will be visible on the kernel console:
+
+[  142.204243] nbd0: detected capacity change from 0 to 524288
+[  165.189967] md: async del_gendisk mode will be removed in future, please upgrade to mdadm-4.5+
+[  165.252299] md/raid1:md127: active with 1 out of 2 mirrors
+[  165.252725] md127: detected capacity change from 0 to 522240
+[  165.255434] block nbd0: Send control failed (result -13)
+[  165.255718] block nbd0: Request send failed, requeueing
+[  165.256006] block nbd0: Dead connection, failed to find a fallback
+[  165.256041] block nbd0: Receive control failed (result -32)
+[  165.256423] block nbd0: shutting down sockets
+[  165.257196] I/O error, dev nbd0, sector 2048 op 0x0:(READ) flags 0x0 phys_seg 1 prio class 2
+[  165.257736] Buffer I/O error on dev md127, logical block 0, async page read
+[  165.258263] I/O error, dev nbd0, sector 2048 op 0x0:(READ) flags 0x0 phys_seg 1 prio class 2
+[  165.259376] Buffer I/O error on dev md127, logical block 0, async page read
+[  165.259920] I/O error, dev nbd0, sector 2048 op 0x0:(READ) flags 0x0 phys_seg 1 prio class 2
+[  165.260628] Buffer I/O error on dev md127, logical block 0, async page read
+[  165.261661] ldm_validate_partition_table(): Disk read failed.
+[  165.262108] I/O error, dev nbd0, sector 2048 op 0x0:(READ) flags 0x0 phys_seg 1 prio class 2
+[  165.262769] Buffer I/O error on dev md127, logical block 0, async page read
+[  165.263697] I/O error, dev nbd0, sector 2048 op 0x0:(READ) flags 0x0 phys_seg 1 prio class 2
+[  165.264412] Buffer I/O error on dev md127, logical block 0, async page read
+[  165.265412] I/O error, dev nbd0, sector 2048 op 0x0:(READ) flags 0x0 phys_seg 1 prio class 2
+[  165.265872] Buffer I/O error on dev md127, logical block 0, async page read
+[  165.266378] I/O error, dev nbd0, sector 2048 op 0x0:(READ) flags 0x0 phys_seg 1 prio class 2
+[  165.267168] Buffer I/O error on dev md127, logical block 0, async page read
+[  165.267564]  md127: unable to read partition table
+[  165.269581] I/O error, dev nbd0, sector 0 op 0x0:(READ) flags 0x0 phys_seg 1 prio class 2
+[  165.269960] Buffer I/O error on dev nbd0, logical block 0, async page read
+[  165.270316] I/O error, dev nbd0, sector 0 op 0x0:(READ) flags 0x0 phys_seg 1 prio class 2
+[  165.270913] Buffer I/O error on dev nbd0, logical block 0, async page read
+[  165.271253] I/O error, dev nbd0, sector 0 op 0x0:(READ) flags 0x0 phys_seg 1 prio class 2
+[  165.271809] Buffer I/O error on dev nbd0, logical block 0, async page read
+[  165.272074] ldm_validate_partition_table(): Disk read failed.
+[  165.272360]  nbd0: unable to read partition table
+[  165.289004] ldm_validate_partition_table(): Disk read failed.
+[  165.289614]  nbd0: unable to read partition table
+
+The corresponding SELinux denial on Fedora/RHEL will look like this
+(assuming it's not silenced):
+type=AVC msg=audit(1758104872.510:116): avc:  denied  { write } for  pid=1908 comm="mdadm" laddr=::1 lport=32772 faddr=::1 fport=10809 scontext=system_u:system_r:mdadm_t:s0-s0:c0.c1023 tcontext=unconfined_u:unconfined_r:unconfined_t:s0-s0:c0.c1023 tclass=tcp_socket permissive=0
+
+The respective backtrace looks like this:
+@security[mdadm, -13,
+        handshake_exit+221615650
+        handshake_exit+221615650
+        handshake_exit+221616465
+        security_socket_sendmsg+5
+        sock_sendmsg+106
+        handshake_exit+221616150
+        sock_sendmsg+5
+        __sock_xmit+162
+        nbd_send_cmd+597
+        nbd_handle_cmd+377
+        nbd_queue_rq+63
+        blk_mq_dispatch_rq_list+653
+        __blk_mq_do_dispatch_sched+184
+        __blk_mq_sched_dispatch_requests+333
+        blk_mq_sched_dispatch_requests+38
+        blk_mq_run_hw_queue+239
+        blk_mq_dispatch_plug_list+382
+        blk_mq_flush_plug_list.part.0+55
+        __blk_flush_plug+241
+        __submit_bio+353
+        submit_bio_noacct_nocheck+364
+        submit_bio_wait+84
+        __blkdev_direct_IO_simple+232
+        blkdev_read_iter+162
+        vfs_read+591
+        ksys_read+95
+        do_syscall_64+92
+        entry_SYSCALL_64_after_hwframe+120
+]: 1
+
+The issue has started to appear since commit 060406c61c7c ("block: add
+plug while submitting IO").
+
+Cc: Ming Lei <ming.lei@redhat.com>
+Link: https://bugzilla.redhat.com/show_bug.cgi?id=2348878
+Fixes: 060406c61c7c ("block: add plug while submitting IO")
+Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
+Acked-by: Paul Moore <paul@paul-moore.com>
+Acked-by: Stephen Smalley <stephen.smalley.work@gmail.com>
+Reviewed-by: Ming Lei <ming.lei@redhat.com>
+Tested-by: Ming Lei <ming.lei@redhat.com>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/option.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/block/nbd.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -273,6 +273,7 @@ static void option_instat_callback(struc
- #define QUECTEL_PRODUCT_EM05CN			0x0312
- #define QUECTEL_PRODUCT_EM05G_GR		0x0313
- #define QUECTEL_PRODUCT_EM05G_RS		0x0314
-+#define QUECTEL_PRODUCT_RG255C			0x0316
- #define QUECTEL_PRODUCT_EM12			0x0512
- #define QUECTEL_PRODUCT_RM500Q			0x0800
- #define QUECTEL_PRODUCT_RM520N			0x0801
-@@ -1271,6 +1272,9 @@ static const struct usb_device_id option
- 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_RM500K, 0xff, 0x00, 0x00) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_RG650V, 0xff, 0xff, 0x30) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_RG650V, 0xff, 0, 0) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_RG255C, 0xff, 0xff, 0x30) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_RG255C, 0xff, 0, 0) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_RG255C, 0xff, 0xff, 0x40) },
+diff --git a/drivers/block/nbd.c b/drivers/block/nbd.c
+index 87b0b78249da3..ad39ab95ea665 100644
+--- a/drivers/block/nbd.c
++++ b/drivers/block/nbd.c
+@@ -52,6 +52,7 @@
+ static DEFINE_IDR(nbd_index_idr);
+ static DEFINE_MUTEX(nbd_index_mutex);
+ static struct workqueue_struct *nbd_del_wq;
++static struct cred *nbd_cred;
+ static int nbd_total_devices = 0;
  
- 	{ USB_DEVICE(CMOTECH_VENDOR_ID, CMOTECH_PRODUCT_6001) },
- 	{ USB_DEVICE(CMOTECH_VENDOR_ID, CMOTECH_PRODUCT_CMU_300) },
+ struct nbd_sock {
+@@ -554,6 +555,7 @@ static int __sock_xmit(struct nbd_device *nbd, struct socket *sock, int send,
+ 	int result;
+ 	struct msghdr msg = {} ;
+ 	unsigned int noreclaim_flag;
++	const struct cred *old_cred;
+ 
+ 	if (unlikely(!sock)) {
+ 		dev_err_ratelimited(disk_to_dev(nbd->disk),
+@@ -562,6 +564,8 @@ static int __sock_xmit(struct nbd_device *nbd, struct socket *sock, int send,
+ 		return -EINVAL;
+ 	}
+ 
++	old_cred = override_creds(nbd_cred);
++
+ 	msg.msg_iter = *iter;
+ 
+ 	noreclaim_flag = memalloc_noreclaim_save();
+@@ -586,6 +590,8 @@ static int __sock_xmit(struct nbd_device *nbd, struct socket *sock, int send,
+ 
+ 	memalloc_noreclaim_restore(noreclaim_flag);
+ 
++	revert_creds(old_cred);
++
+ 	return result;
+ }
+ 
+@@ -2677,7 +2683,15 @@ static int __init nbd_init(void)
+ 		return -ENOMEM;
+ 	}
+ 
++	nbd_cred = prepare_kernel_cred(&init_task);
++	if (!nbd_cred) {
++		destroy_workqueue(nbd_del_wq);
++		unregister_blkdev(NBD_MAJOR, "nbd");
++		return -ENOMEM;
++	}
++
+ 	if (genl_register_family(&nbd_genl_family)) {
++		put_cred(nbd_cred);
+ 		destroy_workqueue(nbd_del_wq);
+ 		unregister_blkdev(NBD_MAJOR, "nbd");
+ 		return -EINVAL;
+@@ -2732,6 +2746,7 @@ static void __exit nbd_cleanup(void)
+ 	/* Also wait for nbd_dev_remove_work() completes */
+ 	destroy_workqueue(nbd_del_wq);
+ 
++	put_cred(nbd_cred);
+ 	idr_destroy(&nbd_index_idr);
+ 	unregister_blkdev(NBD_MAJOR, "nbd");
+ }
+-- 
+2.51.0
+
 
 
 
