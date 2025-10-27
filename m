@@ -1,56 +1,62 @@
-Return-Path: <stable+bounces-190832-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190581-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E281C10C7C
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:19:47 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE506C1090F
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:10:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1DE541A23F5D
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:14:53 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4D1B8506680
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:05:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 780A632D7F1;
-	Mon, 27 Oct 2025 19:11:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FFC232A3C5;
+	Mon, 27 Oct 2025 19:01:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="diozo+s0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V6u6y/2J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31B7031DDBC;
-	Mon, 27 Oct 2025 19:11:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7AF9329C64;
+	Mon, 27 Oct 2025 19:01:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592315; cv=none; b=GrlMu8Vc3Hb5xKB62lXNCo4wlz1XjhvR7enLNZZhGzWcfT8468PCeKQXCsVTyzWWa3o1xBvNamdY4TBvHhS9qAT0+HeY2f61xp2LsOtAXAY2RA6eqCjbN3QwHMgsbdGQPc5b7Yv1BAVr13gKlBg5q5Z7BkkN0wGda5PE2BWTcUA=
+	t=1761591664; cv=none; b=n8eKYE8dRAp8ljKW1vJyewM0m+UDKQ+WU/i3BiQByRADhLs7Bl9wWCklvQ6qn/UXmac02FhPbU6lKzxy+2tJeEE1ezijMJD7eafBWaO+diZRJV/45QzPLYyEjFHA1n/Yjhh0GV7TFuceMSsptpi7EhYU9atiZYQbN2cGiVUi8mM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592315; c=relaxed/simple;
-	bh=RLEyKiUDOaBsjvcI8A3HOqkB444meU7paxq/3jl4wHM=;
+	s=arc-20240116; t=1761591664; c=relaxed/simple;
+	bh=NcKCYg02McSAVWVPhkQzLPwsUwF18hQnoW+DVojEyYI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hHyUybE/mlK1cU08K2FCHazuAaJh3EA4N/NYZqBhvHiC1i0XNBR4Pdk/uJauUTHSv+Ga+lvDZ4uVdBayrT99wvIzQIz48uXOJ3NPCXc/SfUUBtVh7SKrGHhDF2olcXpwhpgHvsfkqcqa39LKi17txlsHpI9i6jhpNHM1gKzXMJY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=diozo+s0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBF61C4CEF1;
-	Mon, 27 Oct 2025 19:11:54 +0000 (UTC)
+	 MIME-Version; b=XX0NhPofUtMH8W5eqI1QpJDayGWjxTT0FFSwDM2kXArq9ebUAv+atnPYWMSMidMsAlZ+BfNCc8UuYOf/2RuweQPJJFbBRc4IBOajEkOYjoX5MugTeUq5Cn7bj/VF4L5jw9zbeVdU+fDPIT35f4Ex5BuhAYG6lKTuogLekRJMkNQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V6u6y/2J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5183DC4CEF1;
+	Mon, 27 Oct 2025 19:01:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592315;
-	bh=RLEyKiUDOaBsjvcI8A3HOqkB444meU7paxq/3jl4wHM=;
+	s=korg; t=1761591663;
+	bh=NcKCYg02McSAVWVPhkQzLPwsUwF18hQnoW+DVojEyYI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=diozo+s0i+XUuH/AI/yxNyh4JYMS1/c5AkROLgrcmpm9WV8gw8ZKPAXhDY2abarz9
-	 WeOJbGqzjEowCjfdm6fS7TY7HoRPXhJ7K0TqigMBc5LfdEc/EOXmsBrgvbmC7j/Gt3
-	 d1fShYXuZ+nF3pxaZYIWQZuMf374w1GQgc5YoIdY=
+	b=V6u6y/2JLkG0nfxjdxuEwRFQtrByNGagzj3O+8KHn8pvtVjXY8+MwOycsaSkcxHad
+	 UuaOEuaUy+dGzsq6XmPQTaCYVG0bnPiACQQ2XBujubISwAr3GWcx3VGDRTk/g0iOrl
+	 QWrThJd2K4TDe1NYukmwFDvcp763hJOUA+BMir1c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Aring <aahringo@redhat.com>,
-	David Teigland <teigland@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 074/157] dlm: check for defined force value in dlm_lockspace_release
-Date: Mon, 27 Oct 2025 19:35:35 +0100
-Message-ID: <20251027183503.267280230@linuxfoundation.org>
+	Deepanshu Kartikey <kartikey406@gmail.com>,
+	syzbot+6fdd8fa3380730a4b22c@syzkaller.appspotmail.com,
+	Mark Fasheh <mark@fasheh.com>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Jun Piao <piaojun@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.10 283/332] ocfs2: clear extent cache after moving/defragmenting extents
+Date: Mon, 27 Oct 2025 19:35:36 +0100
+Message-ID: <20251027183532.332273752@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
-References: <20251027183501.227243846@linuxfoundation.org>
+In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
+References: <20251027183524.611456697@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +68,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Aring <aahringo@redhat.com>
+From: Deepanshu Kartikey <kartikey406@gmail.com>
 
-[ Upstream commit 6af515c9f3ccec3eb8a262ca86bef2c499d07951 ]
+commit 78a63493f8e352296dbc7cb7b3f4973105e8679e upstream.
 
-Force values over 3 are undefined, so don't treat them as 3.
+The extent map cache can become stale when extents are moved or
+defragmented, causing subsequent operations to see outdated extent flags.
+This triggers a BUG_ON in ocfs2_refcount_cal_cow_clusters().
 
-Signed-off-by: Alexander Aring <aahringo@redhat.com>
-Signed-off-by: David Teigland <teigland@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The problem occurs when:
+1. copy_file_range() creates a reflinked extent with OCFS2_EXT_REFCOUNTED
+2. ioctl(FITRIM) triggers ocfs2_move_extents()
+3. __ocfs2_move_extents_range() reads and caches the extent (flags=0x2)
+4. ocfs2_move_extent()/ocfs2_defrag_extent() calls __ocfs2_move_extent()
+   which clears OCFS2_EXT_REFCOUNTED flag on disk (flags=0x0)
+5. The extent map cache is not invalidated after the move
+6. Later write() operations read stale cached flags (0x2) but disk has
+   updated flags (0x0), causing a mismatch
+7. BUG_ON(!(rec->e_flags & OCFS2_EXT_REFCOUNTED)) triggers
+
+Fix by clearing the extent map cache after each extent move/defrag
+operation in __ocfs2_move_extents_range().  This ensures subsequent
+operations read fresh extent data from disk.
+
+Link: https://lore.kernel.org/all/20251009142917.517229-1-kartikey406@gmail.com/T/
+Link: https://lkml.kernel.org/r/20251009154903.522339-1-kartikey406@gmail.com
+Fixes: 53069d4e7695 ("Ocfs2/move_extents: move/defrag extents within a certain range.")
+Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
+Reported-by: syzbot+6fdd8fa3380730a4b22c@syzkaller.appspotmail.com
+Tested-by: syzbot+6fdd8fa3380730a4b22c@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?id=2959889e1f6e216585ce522f7e8bc002b46ad9e7
+Reviewed-by: Mark Fasheh <mark@fasheh.com>
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/dlm/lockspace.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/ocfs2/move_extents.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/fs/dlm/lockspace.c b/fs/dlm/lockspace.c
-index 23cf9b8f31b74..e7372d56c13f4 100644
---- a/fs/dlm/lockspace.c
-+++ b/fs/dlm/lockspace.c
-@@ -825,7 +825,7 @@ static int release_lockspace(struct dlm_ls *ls, int force)
+--- a/fs/ocfs2/move_extents.c
++++ b/fs/ocfs2/move_extents.c
+@@ -870,6 +870,11 @@ static int __ocfs2_move_extents_range(st
+ 			mlog_errno(ret);
+ 			goto out;
+ 		}
++		/*
++		 * Invalidate extent cache after moving/defragging to prevent
++		 * stale cached data with outdated extent flags.
++		 */
++		ocfs2_extent_map_trunc(inode, cpos);
  
- 	dlm_device_deregister(ls);
- 
--	if (force < 3 && dlm_user_daemon_available())
-+	if (force != 3 && dlm_user_daemon_available())
- 		do_uevent(ls, 0);
- 
- 	dlm_recoverd_stop(ls);
--- 
-2.51.0
-
+ 		context->clusters_moved += alloc_size;
+ next:
 
 
 
