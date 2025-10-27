@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-190466-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190132-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id A857AC1062A
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:01:15 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7C6DC10002
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:42:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 4BC99351D32
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:01:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 156FE1882DBA
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:42:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 630BA322539;
-	Mon, 27 Oct 2025 18:56:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C70C317711;
+	Mon, 27 Oct 2025 18:42:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QwNjdESy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rpkQn8Ya"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C9AC320CBE;
-	Mon, 27 Oct 2025 18:56:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC99830FC0F;
+	Mon, 27 Oct 2025 18:42:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591364; cv=none; b=JvzOzvagM7OVxMVET345r3b+0ssbI7iD5Co22zrsfTibULSszMY4tpP/3nC1dA2YCSo5qtqHjscgCBVBnGuOrygc0p1d13LprG74xUO84GbeRLwD057gUTJY4AEbQfSdYGgds+JLEyDpkjKLdOhLH1GbdgOi4mG4JClZ66coik0=
+	t=1761590524; cv=none; b=e52GEUNz9THvUSLYPThD0QI6CciGihgg3EeEG9qVkJYssvLzOePl7b6VBt/8cbe7vO9tYRTm3lFm5NDkH87sJ20aV2Ws0HvBt557gNVdwDisStPUk830T/Z50Nrq8rkMu+Rxswxgy6mW7pck1fkC2e7x7E+6JdnmQYx6rllM1aw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591364; c=relaxed/simple;
-	bh=lCUOwSQG2bRXFTv9IXXqhdWLUchtNuI0y5VZSVtunIw=;
+	s=arc-20240116; t=1761590524; c=relaxed/simple;
+	bh=V2FdKc9CZuiL+b0rFnCcx+xUXSBfM/8sopWV+fWRdxo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gJXIkpnUxsMPwgQ25zRI4Rol/a6gvtX+Q+mEBGQvwskkB9zJa26l1MIjVFPV/gpMRj2ZgqUz51MGxrHRLxZPcFgn5veAUFydaqMU1hqrSSR6d7Xd3zY4SOKHwfVVp3ZqzPSxTh9ZSi03/SWu6lO2GUmPOpgdY79MDgcvVxSVJQg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QwNjdESy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99231C4CEF1;
-	Mon, 27 Oct 2025 18:56:03 +0000 (UTC)
+	 MIME-Version; b=kUJE2fOjF2v6Hj93VDUdwXbF0SHJxp+jw3BqFqfDnqSfyE1855duDWxHihJKpZemJKpqmaJOIkO6yazUPEnVbp2hHZKz6iUVV96al/wg26h3Oo8xvHU9oA7uESwlGjFf84S46GaSlEeCiWAaDzI/rPhUYMkotkGPqnk7ue5zAAw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rpkQn8Ya; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1023EC4CEFD;
+	Mon, 27 Oct 2025 18:42:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591363;
-	bh=lCUOwSQG2bRXFTv9IXXqhdWLUchtNuI0y5VZSVtunIw=;
+	s=korg; t=1761590523;
+	bh=V2FdKc9CZuiL+b0rFnCcx+xUXSBfM/8sopWV+fWRdxo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QwNjdESy0t+i+lnsJzJ6LtymmAuf5OamJyuFQGRALpf/ZcuAKj5SB2pnAI84Oi3Qk
-	 4x4tIglv6cmO2p3Lbvn2Do8UXzRDk0ckseoRx8+Cssw+PjMz8MxJrLDyPPf8Dricco
-	 k28mgI3WDyMNRSECLC6zGwGFfABWvpYiXhQgmwFE=
+	b=rpkQn8YavWgmSQKcvCb9t+lagJNGuch9G0vWxXT0LPEhW7G9jcxr8xOqdk8UL53K1
+	 ou37nYV6zvyVxHiarfpVTt1hS7fuewTc387A+6DvajFOZNnKtAE0YOAaaiNZTqGXdG
+	 UzsAkfhV+YJdBPr18x/GmHtYlk3ALdI2HYoM/PP0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	stable@kernel.org,
-	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 5.10 169/332] ext4: correctly handle queries for metadata mappings
-Date: Mon, 27 Oct 2025 19:33:42 +0100
-Message-ID: <20251027183529.085915930@linuxfoundation.org>
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Linus Walleij <linus.walleij@linaro.org>
+Subject: [PATCH 5.4 077/224] pinctrl: check the return value of pinmux_ops::get_function_name()
+Date: Mon, 27 Oct 2025 19:33:43 +0100
+Message-ID: <20251027183511.058682715@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
-References: <20251027183524.611456697@linuxfoundation.org>
+In-Reply-To: <20251027183508.963233542@linuxfoundation.org>
+References: <20251027183508.963233542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,103 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-commit 46c22a8bb4cb03211da1100d7ee4a2005bf77c70 upstream.
+commit 4002ee98c022d671ecc1e4a84029e9ae7d8a5603 upstream.
 
-Currently, our handling of metadata is _ambiguous_ in some scenarios,
-that is, we end up returning unknown if the range only covers the
-mapping partially.
+While the API contract in docs doesn't specify it explicitly, the
+generic implementation of the get_function_name() callback from struct
+pinmux_ops - pinmux_generic_get_function_name() - can fail and return
+NULL. This is already checked in pinmux_check_ops() so add a similar
+check in pinmux_func_name_to_selector() instead of passing the returned
+pointer right down to strcmp() where the NULL can get dereferenced. This
+is normal operation when adding new pinfunctions.
 
-For example, in the following case:
-
-$ xfs_io -c fsmap -d
-
-  0: 254:16 [0..7]: static fs metadata 8
-  1: 254:16 [8..15]: special 102:1 8
-  2: 254:16 [16..5127]: special 102:2 5112
-  3: 254:16 [5128..5255]: special 102:3 128
-  4: 254:16 [5256..5383]: special 102:4 128
-  5: 254:16 [5384..70919]: inodes 65536
-  6: 254:16 [70920..70967]: unknown 48
-  ...
-
-$ xfs_io -c fsmap -d 24 33
-
-  0: 254:16 [24..39]: unknown 16  <--- incomplete reporting
-
-$ xfs_io -c fsmap -d 24 33  (With patch)
-
-    0: 254:16 [16..5127]: special 102:2 5112
-
-This is because earlier in ext4_getfsmap_meta_helper, we end up ignoring
-any extent that starts before our queried range, but overlaps it. While
-the man page [1] is a bit ambiguous on this, this fix makes the output
-make more sense since we are anyways returning an "unknown" extent. This
-is also consistent to how XFS does it:
-
-$ xfs_io -c fsmap -d
-
-  ...
-  6: 254:16 [104..127]: free space 24
-  7: 254:16 [128..191]: inodes 64
-  ...
-
-$ xfs_io -c fsmap -d 137 150
-
-  0: 254:16 [128..191]: inodes 64   <-- full extent returned
-
- [1] https://man7.org/linux/man-pages/man2/ioctl_getfsmap.2.html
-
-Reported-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Cc: stable@kernel.org
-Signed-off-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Message-ID: <023f37e35ee280cd9baac0296cbadcbe10995cab.1757058211.git.ojaswin@linux.ibm.com>
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@vger.kernel.org
+Tested-by: Neil Armstrong <neil.armstrong@linaro.org>
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/fsmap.c |   14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+ drivers/pinctrl/pinmux.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/ext4/fsmap.c
-+++ b/fs/ext4/fsmap.c
-@@ -74,7 +74,8 @@ static int ext4_getfsmap_dev_compare(con
- static bool ext4_getfsmap_rec_before_low_key(struct ext4_getfsmap_info *info,
- 					     struct ext4_fsmap *rec)
- {
--	return rec->fmr_physical < info->gfi_low.fmr_physical;
-+	return rec->fmr_physical + rec->fmr_length <=
-+	       info->gfi_low.fmr_physical;
- }
+--- a/drivers/pinctrl/pinmux.c
++++ b/drivers/pinctrl/pinmux.c
+@@ -324,7 +324,7 @@ static int pinmux_func_name_to_selector(
+ 	while (selector < nfuncs) {
+ 		const char *fname = ops->get_function_name(pctldev, selector);
  
- /*
-@@ -200,15 +201,18 @@ static int ext4_getfsmap_meta_helper(str
- 			  ext4_group_first_block_no(sb, agno));
- 	fs_end = fs_start + EXT4_C2B(sbi, len);
+-		if (!strcmp(function, fname))
++		if (fname && !strcmp(function, fname))
+ 			return selector;
  
--	/* Return relevant extents from the meta_list */
-+	/*
-+	 * Return relevant extents from the meta_list. We emit all extents that
-+	 * partially/fully overlap with the query range
-+	 */
- 	list_for_each_entry_safe(p, tmp, &info->gfi_meta_list, fmr_list) {
--		if (p->fmr_physical < info->gfi_next_fsblk) {
-+		if (p->fmr_physical + p->fmr_length <= info->gfi_next_fsblk) {
- 			list_del(&p->fmr_list);
- 			kfree(p);
- 			continue;
- 		}
--		if (p->fmr_physical <= fs_start ||
--		    p->fmr_physical + p->fmr_length <= fs_end) {
-+		if (p->fmr_physical <= fs_end &&
-+		    p->fmr_physical + p->fmr_length > fs_start) {
- 			/* Emit the retained free extent record if present */
- 			if (info->gfi_lastfree.fmr_owner) {
- 				error = ext4_getfsmap_helper(sb, info,
+ 		selector++;
 
 
 
