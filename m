@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-190860-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191204-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADAC0C10D0C
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:21:11 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3507C11183
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:34:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 8FC7A545AC8
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:15:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8363019A6A0F
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:30:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE1953203BB;
-	Mon, 27 Oct 2025 19:13:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B125321F5F;
+	Mon, 27 Oct 2025 19:27:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vZsQt46r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rIQfbFPE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B59031D757;
-	Mon, 27 Oct 2025 19:13:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4848431DD87;
+	Mon, 27 Oct 2025 19:27:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592390; cv=none; b=VvFTD+2ZmP2fEkCtc1Qy3IAECb6v9+AT4JYrVoYUnrb+Vp7khL2wU1eHiZJi9EQ86aZOqvdvR+uWblFGDsFblgqc9DHHNqqG/e7g/aX4gPqM2waELRzB3ATFLOV410ki2NkwGemQekZkAYmtijYnS5VicW4Fy7fOrlTPmKXHHCI=
+	t=1761593275; cv=none; b=G1HpLq0v0X093ZfQq1zq6/MTWEQCnIfLMAhxABYiELzVwO1kiJiQ90/+rg+VDMzvDN+QNNzzK1wlw1g1O9bniU1kTttEGAzUpS71r76TNAFWyXOI2o48+RZ9TaZiOlK8GYZ7BLmP26OwJpQAsitF2L+cIO+iUYwsWghvDu2k44c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592390; c=relaxed/simple;
-	bh=L/VBBScho41glXTP1m7Yw6fuvKjnMvdeFuR5dO+MTcw=;
+	s=arc-20240116; t=1761593275; c=relaxed/simple;
+	bh=TJhbXW/9flhXoPpjAtqprR7Bg/GBkP0i3T3otEiG6iY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cUxwkQiA3SGwMumMN5AWk4zIF3pK8lw8ptWwU4Mw0TxFNO0s5s0lTn89w2SW6H9zP5ysuisb8315Z+x4rBdoCX1ESaM+kcZ4Zyu/ACBAWoV2O6soQO+sY1fPUQW7MlJanIxR48hbsh42Dje7IOxLNmSnGZqIwT1L5gW8Ifo+BPo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vZsQt46r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CC66C4CEF1;
-	Mon, 27 Oct 2025 19:13:09 +0000 (UTC)
+	 MIME-Version; b=F3yrGJao/xPiW4sneSupsbBitxvjCQjrYdPsTS5YAsKXriWilmkV1WQRb89h4rLtM3o+Pr6WnjHYgWtf+3Mgb9YA8fW/q9gGaVCQGoOwuJbiu4li+wWLj+ze/Dz+kjJQT9KHEs/EgpW8lCPOfh3X36O2e5A2hgSD6ubGTnTQzak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rIQfbFPE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0D0CC4CEF1;
+	Mon, 27 Oct 2025 19:27:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592389;
-	bh=L/VBBScho41glXTP1m7Yw6fuvKjnMvdeFuR5dO+MTcw=;
+	s=korg; t=1761593275;
+	bh=TJhbXW/9flhXoPpjAtqprR7Bg/GBkP0i3T3otEiG6iY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vZsQt46rRrKVFYR9XF1VhHoT9ycrxnXBBOU4hexIOPN8aMLMqv107Vzyu4QcSFjYK
-	 3+CbQlKLmbhNxcYrNsTeAY6vM529XVK2fifq6B7c7TQpIKM8hxD8+9EihpGm9yxEqV
-	 PZQOvRE5Dyou/8jpig4VKexAGtzxsuxHU1cyVcIs=
+	b=rIQfbFPEkK2E96hVTwA5kxAaMBarnDX5PyyPlA0jOpVrJpONfm56oGgRS8GXlMrAP
+	 wbbtHIEAoUvkFMJbH/3yshuFqJVgVimNgxo9v7kTLyGVPD4e0vMKE7w28BVx0U7FkT
+	 omKMGaOQEjPpWp4vxG7XOzoRqrrQ0veXiAN4ghtA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 102/157] io_uring: correct __must_hold annotation in io_install_fixed_file
+	Alice Ryhl <aliceryhl@google.com>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: [PATCH 6.17 081/184] rust: device: fix device context of Device::parent()
 Date: Mon, 27 Oct 2025 19:36:03 +0100
-Message-ID: <20251027183503.995632365@linuxfoundation.org>
+Message-ID: <20251027183517.082200884@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
-References: <20251027183501.227243846@linuxfoundation.org>
+In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
+References: <20251027183514.934710872@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +62,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+From: Danilo Krummrich <dakr@kernel.org>
 
-[ Upstream commit c5efc6a0b3940381d67887302ddb87a5cf623685 ]
+commit cfec502b3d091ff7c24df6ccf8079470584315a0 upstream.
 
-The __must_hold annotation references &req->ctx->uring_lock, but req
-is not in scope in io_install_fixed_file. This change updates the
-annotation to reference the correct ctx->uring_lock.
-improving code clarity.
+Regardless of the DeviceContext of a device, we can't give any
+guarantees about the DeviceContext of its parent device.
 
-Fixes: f110ed8498af ("io_uring: split out fixed file installation and removal")
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This is very subtle, since it's only caused by a simple typo, i.e.
+
+	 Self::from_raw(parent)
+
+which preserves the DeviceContext in this case, vs.
+
+	 Device::from_raw(parent)
+
+which discards the DeviceContext.
+
+(I should have noticed it doing the correct thing in auxiliary::Device
+subsequently, but somehow missed it.)
+
+Hence, fix both Device::parent() and auxiliary::Device::parent().
+
+Cc: stable@vger.kernel.org
+Fixes: a4c9f71e3440 ("rust: device: implement Device::parent()")
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
+Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/filetable.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ rust/kernel/auxiliary.rs |    8 +-------
+ rust/kernel/device.rs    |    4 ++--
+ 2 files changed, 3 insertions(+), 9 deletions(-)
 
-diff --git a/io_uring/filetable.c b/io_uring/filetable.c
-index a64b4df0ac9c2..f9e59c650e893 100644
---- a/io_uring/filetable.c
-+++ b/io_uring/filetable.c
-@@ -62,7 +62,7 @@ void io_free_file_tables(struct io_file_table *table)
+--- a/rust/kernel/auxiliary.rs
++++ b/rust/kernel/auxiliary.rs
+@@ -217,13 +217,7 @@ impl<Ctx: device::DeviceContext> Device<
  
- static int io_install_fixed_file(struct io_ring_ctx *ctx, struct file *file,
- 				 u32 slot_index)
--	__must_hold(&req->ctx->uring_lock)
-+	__must_hold(&ctx->uring_lock)
- {
- 	bool needs_switch = false;
- 	struct io_fixed_file *file_slot;
--- 
-2.51.0
-
+     /// Returns a reference to the parent [`device::Device`], if any.
+     pub fn parent(&self) -> Option<&device::Device> {
+-        let ptr: *const Self = self;
+-        // CAST: `Device<Ctx: DeviceContext>` types are transparent to each other.
+-        let ptr: *const Device = ptr.cast();
+-        // SAFETY: `ptr` was derived from `&self`.
+-        let this = unsafe { &*ptr };
+-
+-        this.as_ref().parent()
++        self.as_ref().parent()
+     }
+ }
+ 
+--- a/rust/kernel/device.rs
++++ b/rust/kernel/device.rs
+@@ -250,7 +250,7 @@ impl<Ctx: DeviceContext> Device<Ctx> {
+ 
+     /// Returns a reference to the parent device, if any.
+     #[cfg_attr(not(CONFIG_AUXILIARY_BUS), expect(dead_code))]
+-    pub(crate) fn parent(&self) -> Option<&Self> {
++    pub(crate) fn parent(&self) -> Option<&Device> {
+         // SAFETY:
+         // - By the type invariant `self.as_raw()` is always valid.
+         // - The parent device is only ever set at device creation.
+@@ -263,7 +263,7 @@ impl<Ctx: DeviceContext> Device<Ctx> {
+             // - Since `parent` is not NULL, it must be a valid pointer to a `struct device`.
+             // - `parent` is valid for the lifetime of `self`, since a `struct device` holds a
+             //   reference count of its parent.
+-            Some(unsafe { Self::from_raw(parent) })
++            Some(unsafe { Device::from_raw(parent) })
+         }
+     }
+ 
 
 
 
