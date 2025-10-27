@@ -1,66 +1,57 @@
-Return-Path: <stable+bounces-190519-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190798-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E898C107B3
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:07:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CA03C10BE8
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:18:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0ED54188CAC3
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:03:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 07D8E18936C5
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:13:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C35B933032B;
-	Mon, 27 Oct 2025 18:58:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53A153128D0;
+	Mon, 27 Oct 2025 19:10:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JKXyppK7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ef36oAks"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D47D3330309;
-	Mon, 27 Oct 2025 18:58:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D26C3074AC;
+	Mon, 27 Oct 2025 19:10:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591502; cv=none; b=TOqp7DH7ALB/3BpdabSG87Uf1MNKcgY3ZRmKgin9MJnrqYPpO7ju1ILvwIZHSm7pC4zg0r17xJs8rAGTvZuVA45u8WFuTtt1eUB/EYgcC6k44OZN2I9xuVlK1sF0A/G9D338AMZ6Aw0NPTRzR+pO17FapaSaew6NL/v015cDhqU=
+	t=1761592224; cv=none; b=V5kUpes5ugSzD2F6qQ3cQJJdKtPPO5gzVUSno6rMrALVTalPaKt5gNLgpB4JY1v0essRFtJ+tdeJvoV9PFE6Ytnm8SuFSTwnokMrxRtC9N3K7FoM4qhIgStlpWeS0yeaUoQkUlmXlZxrFkmyE/0QOdnHgBbquF7ocRikeI8tG5A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591502; c=relaxed/simple;
-	bh=/TMz840P5IuA0NXolImmrWzsRB9d0in+A5aa0aMNPgU=;
+	s=arc-20240116; t=1761592224; c=relaxed/simple;
+	bh=ekoUouQrSXfk6PtrO8yri/XpxKR7Fz4Nea5GwB9u26s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=blXvNyupQM/enK2oZ1VrYeW7uvS5T9sfAlvAaNZPdnE+L91QN9Nv2MsCgM0o+wQEZ3JBsdAVnA/G0MNLC2mDVS5R2QUVvSyR1RFTwXbWS2Dbcj4l3YrHX6mCpjn1krjYhY7lLyf1yNvTt90Sc9dkKnDoiQAKwq+wIudRLDJPQV4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JKXyppK7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0584C4CEF1;
-	Mon, 27 Oct 2025 18:58:21 +0000 (UTC)
+	 MIME-Version; b=vELo+h4t728l8WzVCIos11oSX89BgfEFY6/ejueQ/2S53xVcatCCtDSvl+my3IMl2GbAIyihVMwSGAm1JKbCgyvYi6FE/UZUZKxtDSRcq8LO9ILlKa3IqMZRHLuH+MGiIqXMW7wiCnzds8Hm28alMHD5OK7JGaCTAfgbLnZGXkw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ef36oAks; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94AFBC4CEF1;
+	Mon, 27 Oct 2025 19:10:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591502;
-	bh=/TMz840P5IuA0NXolImmrWzsRB9d0in+A5aa0aMNPgU=;
+	s=korg; t=1761592223;
+	bh=ekoUouQrSXfk6PtrO8yri/XpxKR7Fz4Nea5GwB9u26s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JKXyppK7xTFPEUCNjZ0GjaL02rojdwdnxl4TFOmv8JkN0IWYkbIqcvoGorRFALtdT
-	 /cp5J8CmGXxMArB2O+flIutRuhMbs3dU1Ir/viUMhg6VUNkupLeQrtazzioc5Kw6M0
-	 jDLIVJGGP3bpmSeKvOhqGIO0IhQKlOtZ6fO6irJc=
+	b=Ef36oAkstqB9imORAarZqRULIQscePz+jj+V9/GwKp3vmp0VBiniy1AFnm8n9cd1W
+	 fk7HBSavL1eNg4jpryORiLwmpsyb3cE3HAvZUzeDxVAvqxVmuLxQ/zvDo87nYQCLlX
+	 sWe6i4anPZdGRjZoVEZbJ0yGY7VoUpcIz7qpXyZg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Laight <david.laight@aculab.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Arnd Bergmann <arnd@kernel.org>,
-	Christoph Hellwig <hch@infradead.org>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	"Jason A. Donenfeld" <Jason@zx2c4.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Mateusz Guzik <mjguzik@gmail.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Pedro Falcato <pedro.falcato@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Eliav Farber <farbere@amazon.com>
-Subject: [PATCH 5.10 220/332] minmax.h: remove some #defines that are only expanded once
-Date: Mon, 27 Oct 2025 19:34:33 +0100
-Message-ID: <20251027183530.587088389@linuxfoundation.org>
+	Marek Vasut <marek.vasut+renesas@mailbox.org>,
+	Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 013/157] drm/rcar-du: dsi: Fix 1/2/3 lane support
+Date: Mon, 27 Oct 2025 19:34:34 +0100
+Message-ID: <20251027183501.616522546@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
-References: <20251027183524.611456697@linuxfoundation.org>
+In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
+References: <20251027183501.227243846@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,84 +63,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Laight <David.Laight@ACULAB.COM>
+From: Marek Vasut <marek.vasut+renesas@mailbox.org>
 
-[ Upstream commit 2b97aaf74ed534fb838d09867d09a3ca5d795208 ]
+[ Upstream commit d83f1d19c898ac1b54ae64d1c950f5beff801982 ]
 
-The bodies of __signed_type_use() and __unsigned_type_use() are much the
-same size as their names - so put the bodies in the only line that expands
-them.
+Remove fixed PPI lane count setup. The R-Car DSI host is capable
+of operating in 1..4 DSI lane mode. Remove the hard-coded 4-lane
+configuration from PPI register settings and instead configure
+the PPI lane count according to lane count information already
+obtained by this driver instance.
 
-Similarly __signed_type() is defined separately for 64bit and then used
-exactly once just below.
+Configure TXSETR register to match PPI lane count. The R-Car V4H
+Reference Manual R19UH0186EJ0121 Rev.1.21 section 67.2.2.3 Tx Set
+Register (TXSETR), field LANECNT description indicates that the
+TXSETR register LANECNT bitfield lane count must be configured
+such, that it matches lane count configuration in PPISETR register
+DLEN bitfield. Make sure the LANECNT and DLEN bitfields are
+configured to match.
 
-Change the test for __signed_type from CONFIG_64BIT to one based on gcc
-defined macros so that the code is valid if it gets used outside of a
-kernel build.
-
-Link: https://lkml.kernel.org/r/9386d1ebb8974fbabbed2635160c3975@AcuMS.aculab.com
-Signed-off-by: David Laight <david.laight@aculab.com>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Arnd Bergmann <arnd@kernel.org>
-Cc: Christoph Hellwig <hch@infradead.org>
-Cc: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: Jason A. Donenfeld <Jason@zx2c4.com>
-Cc: Jens Axboe <axboe@kernel.dk>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Mateusz Guzik <mjguzik@gmail.com>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: Pedro Falcato <pedro.falcato@gmail.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Eliav Farber <farbere@amazon.com>
+Fixes: 155358310f01 ("drm: rcar-du: Add R-Car DSI driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
+Reviewed-by: Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>
+Link: https://lore.kernel.org/r/20250813210840.97621-1-marek.vasut+renesas@mailbox.org
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+[ adjusted file paths to remove renesas/ subdirectory ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/minmax.h |   14 ++++++--------
- 1 file changed, 6 insertions(+), 8 deletions(-)
+ drivers/gpu/drm/rcar-du/rcar_mipi_dsi.c      |    5 ++++-
+ drivers/gpu/drm/rcar-du/rcar_mipi_dsi_regs.h |    8 ++++----
+ 2 files changed, 8 insertions(+), 5 deletions(-)
 
---- a/include/linux/minmax.h
-+++ b/include/linux/minmax.h
-@@ -46,10 +46,8 @@
-  * comparison, and these expressions only need to be careful to not cause
-  * warnings for pointer use.
-  */
--#define __signed_type_use(ux) (2 + __is_nonneg(ux))
--#define __unsigned_type_use(ux) (1 + 2 * (sizeof(ux) < 4))
- #define __sign_use(ux) (is_signed_type(typeof(ux)) ? \
--	__signed_type_use(ux) : __unsigned_type_use(ux))
-+	(2 + __is_nonneg(ux)) : (1 + 2 * (sizeof(ux) < 4)))
+--- a/drivers/gpu/drm/rcar-du/rcar_mipi_dsi.c
++++ b/drivers/gpu/drm/rcar-du/rcar_mipi_dsi.c
+@@ -385,7 +385,10 @@ static int rcar_mipi_dsi_startup(struct
+ 	udelay(10);
+ 	rcar_mipi_dsi_clr(dsi, CLOCKSET1, CLOCKSET1_UPDATEPLL);
  
+-	ppisetr = PPISETR_DLEN_3 | PPISETR_CLEN;
++	rcar_mipi_dsi_clr(dsi, TXSETR, TXSETR_LANECNT_MASK);
++	rcar_mipi_dsi_set(dsi, TXSETR, dsi->lanes - 1);
++
++	ppisetr = ((BIT(dsi->lanes) - 1) & PPISETR_DLEN_MASK) | PPISETR_CLEN;
+ 	rcar_mipi_dsi_write(dsi, PPISETR, ppisetr);
+ 
+ 	rcar_mipi_dsi_set(dsi, PHYSETUP, PHYSETUP_SHUTDOWNZ);
+--- a/drivers/gpu/drm/rcar-du/rcar_mipi_dsi_regs.h
++++ b/drivers/gpu/drm/rcar-du/rcar_mipi_dsi_regs.h
+@@ -12,6 +12,9 @@
+ #define LINKSR_LPBUSY			(1 << 1)
+ #define LINKSR_HSBUSY			(1 << 0)
+ 
++#define TXSETR				0x100
++#define TXSETR_LANECNT_MASK		(0x3 << 0)
++
  /*
-  * Check whether a signed value is always non-negative.
-@@ -57,7 +55,7 @@
-  * A cast is needed to avoid any warnings from values that aren't signed
-  * integer types (in which case the result doesn't matter).
-  *
-- * On 64-bit any integer or pointer type can safely be cast to 'long'.
-+ * On 64-bit any integer or pointer type can safely be cast to 'long long'.
-  * But on 32-bit we need to avoid warnings about casting pointers to integers
-  * of different sizes without truncating 64-bit values so 'long' or 'long long'
-  * must be used depending on the size of the value.
-@@ -66,12 +64,12 @@
-  * them, but we do not use s128 types in the kernel (we do use 'u128',
-  * but they are handled by the !is_signed_type() case).
+  * Video Mode Register
   */
--#ifdef CONFIG_64BIT
--  #define __signed_type(ux) long
-+#if __SIZEOF_POINTER__ == __SIZEOF_LONG_LONG__
-+#define __is_nonneg(ux) statically_true((long long)(ux) >= 0)
- #else
--  #define __signed_type(ux) typeof(__builtin_choose_expr(sizeof(ux) > 4, 1LL, 1L))
-+#define __is_nonneg(ux) statically_true( \
-+	(typeof(__builtin_choose_expr(sizeof(ux) > 4, 1LL, 1L)))(ux) >= 0)
- #endif
--#define __is_nonneg(ux) statically_true((__signed_type(ux))(ux) >= 0)
+@@ -80,10 +83,7 @@
+  * PHY-Protocol Interface (PPI) Registers
+  */
+ #define PPISETR				0x700
+-#define PPISETR_DLEN_0			(0x1 << 0)
+-#define PPISETR_DLEN_1			(0x3 << 0)
+-#define PPISETR_DLEN_2			(0x7 << 0)
+-#define PPISETR_DLEN_3			(0xf << 0)
++#define PPISETR_DLEN_MASK		(0xf << 0)
+ #define PPISETR_CLEN			(1 << 8)
  
- #define __types_ok(ux, uy) \
- 	(__sign_use(ux) & __sign_use(uy))
+ #define PPICLCR				0x710
 
 
 
