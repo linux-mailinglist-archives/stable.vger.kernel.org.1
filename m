@@ -1,102 +1,157 @@
-Return-Path: <stable+bounces-189917-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-189918-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4AC7C0C02D
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 07:57:45 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0ED2BC0C079
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 08:03:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 377333BE692
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 06:56:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C12FD189E45E
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 07:03:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 827732BDC2B;
-	Mon, 27 Oct 2025 06:56:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B829296BC8;
+	Mon, 27 Oct 2025 07:03:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="V5yA7uZG"
+	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="sOalyLYI";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="dJjhGg4x"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from fhigh-b2-smtp.messagingengine.com (fhigh-b2-smtp.messagingengine.com [202.12.124.153])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B64528682
-	for <stable@vger.kernel.org>; Mon, 27 Oct 2025 06:55:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7D102F5B;
+	Mon, 27 Oct 2025 07:03:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.153
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761548161; cv=none; b=qHgRIfNWfGWwqzQX4rbceyclVg7PgFzYpsVxOgYtqmbAKDDMp3qIL9H+K7RqZpDVRgKQ3bGaP10CvNZLJw/nA5lyNguc+8ywmktSPN/AfkVMI+io048dbvSLwl+lLcNEkF5YxPU+UQmOgyBBfyEt719/nP2+V5wkawzuCKwalEE=
+	t=1761548601; cv=none; b=KIAzpvCSmV7QmDr95TwyyySMQ01Ht9htL/EwPkb3B6vgizljGqef8IDOQParI2UDg3eUyMjhg94DM+YGhxg4bULGSgSNbUErtT2L23wAiT9LzjNfsgpshomPL6FJKSCUoVsjCSmqEPq0c5N5ihgsnVq2f/f9abTwRj5oavSvDoI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761548161; c=relaxed/simple;
-	bh=vb0ZnpvA3usBbxYPASAaUm19xE2GVagWxrzyptkWf+o=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=loDEeoU5bcpL2uVIhoq19h5/h6GPVCykoO8lBAE6XiJLRpwNesqEz2GCveFGK3PnZPK/I5GdK9q1YYSGAF9WCVb8TJ5f0OiynruP8DEjwiWVviwZE8Od2rwGj9kqWYMph/aCyb0eJsCF4ZlgLryZ7s96y3GSKAtV1izJqE99VKo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=V5yA7uZG; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1761548160; x=1793084160;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=vb0ZnpvA3usBbxYPASAaUm19xE2GVagWxrzyptkWf+o=;
-  b=V5yA7uZGeNj4eUqxlt7SIdF1D8RL5x/sXHVtFyLFgbadlNnE80QouhkP
-   hgum5aesAxTp7g5hLCKKZauB6RKuHv65X3CGpD8u7LjEDAVwShp3SgOed
-   Z396kAZcqRrs0KeoGG/APIHJneQbC3XSPsfaGAky3Kdfni/vluh9mFpEN
-   yotAuzZxCSEnkakaXATf1VVZeQoBSCFxwTxxMLnRnz0Dv6ugDkBi0yX5j
-   I0sf5VDzuoUL0GeXg4dtdjiNkFddN/ndtv8Rb7iLm3iMS86futT/u4wE8
-   ofCe5hii6g90g/QaYZ/un4sXuCK++3wzJ9yCb3y1+IAsTnKV1CnYffVQe
-   w==;
-X-CSE-ConnectionGUID: 5cEotl1cS/KIl2SHCwXVHA==
-X-CSE-MsgGUID: hkl/jFQzS2yz6w8Asv633w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="75066614"
-X-IronPort-AV: E=Sophos;i="6.19,258,1754982000"; 
-   d="scan'208";a="75066614"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Oct 2025 23:55:59 -0700
-X-CSE-ConnectionGUID: KHYiySwtR5iFrCMmyJpHCA==
-X-CSE-MsgGUID: f6Ny5IhlTkeSUpGipoGWrA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,258,1754982000"; 
-   d="scan'208";a="189337353"
-Received: from lkp-server02.sh.intel.com (HELO 66d7546c76b2) ([10.239.97.151])
-  by fmviesa005.fm.intel.com with ESMTP; 26 Oct 2025 23:55:58 -0700
-Received: from kbuild by 66d7546c76b2 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1vDH91-000GZp-2F;
-	Mon, 27 Oct 2025 06:55:55 +0000
-Date: Mon, 27 Oct 2025 14:55:13 +0800
-From: kernel test robot <lkp@intel.com>
-To: Andrey Troshin <drtrosh@yandex-team.ru>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH 5.10] scsi: target: target_core_configfs: Add length
- check to avoid buffer overflow
-Message-ID: <aP8XUbllH_jELuC7@cf5b8cc2d60a>
+	s=arc-20240116; t=1761548601; c=relaxed/simple;
+	bh=ZFi3PiJUz4T9a0j8bsBUFz9ZoQQLLy+GZe69LdVi5dk=;
+	h=MIME-Version:Date:From:To:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=JuvT2m3U93ONlRcI4jhHIT33uuu4vdT9WKOlnLXNpdUB/hh9iqGTV22cn4QA8/hc7EuG0f9UZOqFtp8ZH2cJpN3IvxEtExJmO+UMiLbUH31JNYcZCJFtHJe3nlhtzyEqT+JD41bWl40iNxwnkkzuaHJBOA5tCAEIRnki89J0Dn0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=sOalyLYI; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=dJjhGg4x; arc=none smtp.client-ip=202.12.124.153
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id B85EA7A01FB;
+	Mon, 27 Oct 2025 03:03:18 -0400 (EDT)
+Received: from phl-imap-02 ([10.202.2.81])
+  by phl-compute-05.internal (MEProxy); Mon, 27 Oct 2025 03:03:18 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:content-transfer-encoding:content-type:content-type:date:date
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1761548598;
+	 x=1761634998; bh=adaMRzF6ds8teu7leuvNSwnScW38m8MWre0/lgf0omk=; b=
+	sOalyLYIVSjqIejTzQg+lH4kM7mlvRS4ECGsvGt8/1NLYGKxIRnzMoj6NmCTzrYm
+	OzAMaAZH4XYPdvMttQKHS8CouoLAq2xi8LYnyVH/nognFVGbsEeLBcFVR1V3dCry
+	6G+JEyFmfxn+XsS+3s9xpZyhuf4aBYatvYSpfNJ/hUUZOOZLaJRF+bzDAoK2Ra+I
+	k2awfow2TB61ghakYDxWpSNu7O1s7rRHTfn5uUwiAmNXuQ/nihAKg9AEIt6Vq0Rn
+	lOBTrmxFb8B8Y+s7t+YIkJsPxhaJ3rafVQMogGiew4BNpLlbPVO06LC+LRTty8aa
+	P3SiweQ0gDR0OgpM5kOdrg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:content-transfer-encoding:content-type
+	:content-type:date:date:feedback-id:feedback-id:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
+	:x-me-sender:x-sasl-enc; s=fm3; t=1761548598; x=1761634998; bh=a
+	daMRzF6ds8teu7leuvNSwnScW38m8MWre0/lgf0omk=; b=dJjhGg4x22kfvEVln
+	tDe2aHgEk8X7P/14dGGVWLxG5NtsY03m1YRA04FlZy8pbPWWa5Xs+tLs6BYryyS5
+	MLOenns7yYIibFw6yRo/aQhEKJsROYmpzxVGNHZ+sGeEjOy66gjo8w0UpenigMdg
+	GdPbo1alfxZ5Hu05pv1kG60cgv/VyvryeLJtbhXtBl6TeLhfwoEbSEoY4bAksIjM
+	SSGimXVkMYcx2xh7C4KKhDpEfx+soUt1eHwmbQjLSDGChcHal5olYoq/WMaW8n03
+	+D3ImRQXFgQJREYbOlEL+THgzko7ZLnYqxqp1NyGTqwnEsfKZkbw/ZiIL4D6j27a
+	0SADA==
+X-ME-Sender: <xms:Nhn_aJN5BJp4_4cZygUT8du4Qv9LnrI0Q2Q-SNwr2S8V9qWrH_7QrA>
+    <xme:Nhn_aGypNAKC9K_5M4AqI79pk1Ed_XD3ypj1VLbiGCg3rk2T9SpHLPN3Uh8toJoN-
+    -TTLhVg-NSQGn6Cqe3u6565d4g4QXropKugMmn1EPI2-htLL56jf1Y4>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdduheejfedvucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepofggfffhvffkjghfufgtgfesthhqredtredtjeenucfhrhhomhepfdetrhhnugcu
+    uegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtthgvrh
+    hnpefhfeduveehheejgfeileelheduieffleevudelvdejtdektedtgfeggffffefgvden
+    ucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrhhnug
+    esrghrnhgusgdruggvpdhnsggprhgtphhtthhopeejpdhmohguvgepshhmthhpohhuthdp
+    rhgtphhtthhopegurghvihgurdhhuhhnthgvrhdrlhhinhhugiesghhmrghilhdrtghomh
+    dprhgtphhtthhopehhrghnnhgvlhhothhtrgesghhmrghilhdrtghomhdprhgtphhtthho
+    pehguhhsthgrvhhorghrsheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepkhgvvghsse
+    hkvghrnhgvlhdrohhrghdprhgtphhtthhopegrkhhpmheslhhinhhugidqfhhouhhnuggr
+    thhiohhnrdhorhhgpdhrtghpthhtohepmhhmqdgtohhmmhhithhssehvghgvrhdrkhgvrh
+    hnvghlrdhorhhgpdhrtghpthhtohepshhtrggslhgvsehvghgvrhdrkhgvrhhnvghlrdho
+    rhhg
+X-ME-Proxy: <xmx:Nhn_aC1sZcjdwZyDGVsMI_8YhmvDJqv7LIfZ5FEYVcjzE0pyJYgfEQ>
+    <xmx:Nhn_aPLcKIQrwoA7fCU6kESbycp55Lasdd6BQc452_My6Poo476Iqw>
+    <xmx:Nhn_aKza2fpiCMo-JwbRNg9btuqxkKdzfAQZ-WDvtxYdyWl0QAE74g>
+    <xmx:Nhn_aFWeMdaccpEC6n5Cb-kF7CrHINWmd0iDquSnCyvsbutUrSCftw>
+    <xmx:Nhn_aB2YNSVO8NpiEOR5xcnAfGD4d1-HZ5PBE0JGpXVdo6ErnEL3PRcz>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 13E4B700054; Mon, 27 Oct 2025 03:03:18 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251027065048.2023-1-drtrosh@yandex-team.ru>
+X-ThreadId: A-keNruaM7oc
+Date: Mon, 27 Oct 2025 08:02:57 +0100
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Kees Cook" <kees@kernel.org>,
+ "Andrew Morton" <akpm@linux-foundation.org>, mm-commits@vger.kernel.org,
+ stable@vger.kernel.org, "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+ david.hunter.linux@gmail.com, hannelotta@gmail.com
+Message-Id: <b47b1167-28b0-445f-947b-55f7a07c1bf8@app.fastmail.com>
+In-Reply-To: <4FFB0358-0312-45AA-84BD-9249D8CE9C41@kernel.org>
+References: <20251026235632.6E245C4CEE7@smtp.kernel.org>
+ <4FFB0358-0312-45AA-84BD-9249D8CE9C41@kernel.org>
+Subject: Re: + headers-add-check-for-c-standard-version.patch added to
+ mm-hotfixes-unstable branch
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Hi,
+On Mon, Oct 27, 2025, at 03:31, Kees Cook wrote:
+> On October 26, 2025 4:56:30 PM PDT, Andrew Morton=20
+> <akpm@linux-foundation.org> wrote:
 
-Thanks for your patch.
+>>------------------------------------------------------
+>>From: Hanne-Lotta M=EF=BF=BD=EF=BF=BDenp=EF=BF=BD=EF=BF=BD=EF=BF=BD=EF=
+=BF=BD <hannelotta@gmail.com>
+>>Subject: headers: add check for C standard version
+>>Date: Sun, 26 Oct 2025 21:58:46 +0200
+>>
+>>Compiling the kernel with GCC 15 results in errors, as with GCC 15 the
+>>default language version for C compilation has been changed from
+>>-std=3Dgnu17 to -std=3Dgnu23 - unless the language version has been ch=
+anged
+>>using
+>>
+>>    KBUILD_CFLAGS +=3D -std=3Dgnu17
+>>
+>>or earlier.
+>>
+>>C23 includes new keywords 'bool', 'true' and 'false', which cause
+>>compilation errors in Linux headers:
+>>
+>>    ./include/linux/types.h:30:33: error: `bool' cannot be defined
+>>        via `typedef'
+>>
+>>    ./include/linux/stddef.h:11:9: error: cannot use keyword `false'
+>>        as enumeration constant
+>>
+>>Add check for C Standard's version in the header files to be able to
+>>compile the kernel with C23.
+>
+> What? These are internal headers, not UAPI. We build Linux with=20
+> -std=3Dgnu11. Let's not add meaningless version checks.
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
+I have a similar patch in my own testing tree but in the end
+decided not to send it because supporting std=3Dgnu23 doesn't actually
+add any features we want.
 
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-3
+The next time we raise the compiler version from gcc-8 to anything
+newer, we can change the version selection to use --std=3Dgnu2x
+unconditionally.
 
-Rule: The upstream commit ID must be specified with a separate line above the commit text.
-Subject: [PATCH 5.10] scsi: target: target_core_configfs: Add length check to avoid buffer overflow
-Link: https://lore.kernel.org/stable/20251027065048.2023-1-drtrosh%40yandex-team.ru
-
-Please ignore this mail if the patch is not relevant for upstream.
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
-
-
+      Arnd
 
