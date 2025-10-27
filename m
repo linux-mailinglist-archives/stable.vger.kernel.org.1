@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-190964-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191102-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BDFEC10ED4
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:25:35 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F38BC10EC8
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:25:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 10DCB564FC2
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:19:08 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id AFB4C353125
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:25:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5AB432B990;
-	Mon, 27 Oct 2025 19:17:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85F8631D389;
+	Mon, 27 Oct 2025 19:23:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qJ6hBwcw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sAfdAomX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 927A732ABF1;
-	Mon, 27 Oct 2025 19:17:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 420C323EA92;
+	Mon, 27 Oct 2025 19:23:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592658; cv=none; b=d1did2pI++sntdl9Q+o7IgXfGv9QaSgsbNpGQmuOp/NJtJkUn11oOTn5uwG+fMYVsg1Dv3GmUPccusQCu55g/l+oRS5uKhcUxwMofL7P05WiYl9OaNyLutPdDj+8jEyvIyxwHO5NdNDH/1do5aV4QFWmCuMoHHl0N0E1pujjkc4=
+	t=1761593012; cv=none; b=dExbruJlef/EySdZwzjRynLhBZ8YdpJ+4hhfSjHCRNfnBku5gl4WG9H2Iqq2TWCxMiqo8VlVNDFzdz1BAfZzYCvOyZ+oHJzLpJ0V7Ih/EVFPICZLD7Z/LBi0JKeoQ1K53VP7gzfBRJHEapJ3AnXXmSar2wsZwujTV5VcV4Xifng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592658; c=relaxed/simple;
-	bh=d/ua5Cnnzm1BEF5bKiMZRxzZHrF28fElMhEjZF4+uQs=;
+	s=arc-20240116; t=1761593012; c=relaxed/simple;
+	bh=W0+he7Qhmw4PoK8Sd479LUq3Y6xhoFJNPgh6fLSvaR0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fajdfxFwGIBau3n/QKagCYnKsnAs89melY9o/IiV5H6V0zmP6bmmZ0qMAZ1qvF7+nqRnkkZZXPPCaglh0K6y4OzhI4AvGeQo5Jztx1Fe+njL410NJrkbFlqoJJzvhBiMQY040JwsvRIUIPnqCamsGferE3lNNreRfihA/Bt6bc0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qJ6hBwcw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 269E2C113D0;
-	Mon, 27 Oct 2025 19:17:37 +0000 (UTC)
+	 MIME-Version; b=VFtYGQfHvR4cD897hr8/oWy/03PkZEIA+mv53i/1jINIvQK7PlXvPd1rXZzrElt3fVYNNWmg2iS+Wu+ZbUtYfIu/mlFyxPFO+XFg9S3siL/xiBddf1jgRNVZrdw8Q69dzGgJuiGJlt6DWa+23K77HNAfADDJdCTAUcQltvN5m6M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sAfdAomX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C05EFC4CEF1;
+	Mon, 27 Oct 2025 19:23:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592658;
-	bh=d/ua5Cnnzm1BEF5bKiMZRxzZHrF28fElMhEjZF4+uQs=;
+	s=korg; t=1761593012;
+	bh=W0+he7Qhmw4PoK8Sd479LUq3Y6xhoFJNPgh6fLSvaR0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qJ6hBwcwyDUSTalHmjKx5FBAH5cFBc1lFjCdal6gZlKJ/ngg6/Bsb1gqeE0c3ZwBy
-	 /JRYL+hKe8WrzxS6Fe5Azqws+E2bwqNJTqLHrjvu4vv8ygu91Q8otBfSOQa7zOjB8q
-	 J8FLKZJ6jEIWqxR/Z4j0tsDf8aDddRfM8du8+z1U=
+	b=sAfdAomXwQ5o8Qmeiq7XVMweNk5vzHInrbNgpqOVXKAwq9ypNG+FCWpR5sNvYiyET
+	 UKN9L9/obm/8blzAe8l+jPK73csG8tXXG8j8LRK2J+O+Y2WJrW7MTJL0k3lV1Nyqsr
+	 P9iCwaSK2NqbHUA3wpwW6v/L/8dukLrIU4BeLczI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geliang Tang <geliang@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 47/84] selftests: mptcp: join: mark flush re-add as skipped if not supported
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 070/117] arm64: dts: broadcom: bcm2712: Add default GIC address cells
 Date: Mon, 27 Oct 2025 19:36:36 +0100
-Message-ID: <20251027183440.071925000@linuxfoundation.org>
+Message-ID: <20251027183455.898569616@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183438.817309828@linuxfoundation.org>
-References: <20251027183438.817309828@linuxfoundation.org>
+In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
+References: <20251027183453.919157109@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit d68460bc31f9c8c6fc81fbb56ec952bec18409f1 upstream.
+[ Upstream commit 278b6cabf18bd804f956b98a2f1068717acdbfe3 ]
 
-The call to 'continue_if' was missing: it properly marks a subtest as
-'skipped' if the attached condition is not valid.
+Add missing address-cells 0 to GIC interrupt node to silence W=1
+warning:
 
-Without that, the test is wrongly marked as passed on older kernels.
+  bcm2712.dtsi:494.4-497.31: Warning (interrupt_map): /axi/pcie@1000110000:interrupt-map:
+    Missing property '#address-cells' in node /soc@107c000000/interrupt-controller@7fff9000, using 0 as fallback
 
-Fixes: e06959e9eebd ("selftests: mptcp: join: test for flush/re-add endpoints")
-Cc: stable@vger.kernel.org
-Reviewed-by: Geliang Tang <geliang@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20251020-net-mptcp-c-flag-late-add-addr-v1-2-8207030cb0e8@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Value '0' is correct because:
+1. GIC interrupt controller does not have children,
+2. interrupt-map property (in PCI node) consists of five components and
+   the fourth component "parent unit address", which size is defined by
+   '#address-cells' of the node pointed to by the interrupt-parent
+   component, is not used (=0)
+
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20250822133407.312505-2-krzysztof.kozlowski@linaro.org
+Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Stable-dep-of: aa960b597600 ("arm64: dts: broadcom: bcm2712: Define VGIC interrupt")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/mptcp/mptcp_join.sh |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/broadcom/bcm2712.dtsi | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-@@ -3910,7 +3910,7 @@ endpoint_tests()
- 
- 	# flush and re-add
- 	if reset_with_tcp_filter "flush re-add" ns2 10.0.3.2 REJECT OUTPUT &&
--	   mptcp_lib_kallsyms_has "subflow_rebuild_header$"; then
-+	   continue_if mptcp_lib_kallsyms_has "subflow_rebuild_header$"; then
- 		pm_nl_set_limits $ns1 0 2
- 		pm_nl_set_limits $ns2 1 2
- 		# broadcast IP: no packet for this address will be received on ns1
+diff --git a/arch/arm64/boot/dts/broadcom/bcm2712.dtsi b/arch/arm64/boot/dts/broadcom/bcm2712.dtsi
+index 447bfa060918c..0f38236501743 100644
+--- a/arch/arm64/boot/dts/broadcom/bcm2712.dtsi
++++ b/arch/arm64/boot/dts/broadcom/bcm2712.dtsi
+@@ -263,6 +263,7 @@
+ 			      <0x7fffc000 0x2000>,
+ 			      <0x7fffe000 0x2000>;
+ 			interrupt-controller;
++			#address-cells = <0>;
+ 			#interrupt-cells = <3>;
+ 		};
+ 	};
+-- 
+2.51.0
+
 
 
 
