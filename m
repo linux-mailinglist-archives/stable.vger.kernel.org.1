@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-190467-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190133-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A42DC1070B
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:05:03 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA754C1003B
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:43:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DCF141888BE3
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:01:40 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 1E4E94EF6F5
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:42:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BB6C314D21;
-	Mon, 27 Oct 2025 18:56:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23D16319611;
+	Mon, 27 Oct 2025 18:42:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pzcxMOSn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o1zqlsMi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE81D2C3749;
-	Mon, 27 Oct 2025 18:56:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D723F30FC0F;
+	Mon, 27 Oct 2025 18:42:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591367; cv=none; b=KF0Cl5zJif64XSt8INSrgOvd83e9UXjK3m0rsqP1uZllJn4Oey3q004JdVh/Qw8KqIibpl+W2y5nOGS4uG+uyqkhQxRsqW/rVeZ4lYrCoHv1KTLkcoByQxPndn3fVm1Wo23eiM/fEro9/hQNmwbLJGj0jBqeOal2vR+nOqJa8Co=
+	t=1761590526; cv=none; b=cRO0CH78jBv3xTVtGPMbxZGJPkitQu9QpGmiA85H19y3nvCeGwddrZq1S+u9bDYBDzIjokBv9ANDSQP3Ff7YTa+kp3AP7f4Z3a1LFs/2g6VukprTMCvdPZ2Qp7yhGA/v18FWMFXNtZ+TIItB1Akc9ss7g1tR3S6JlTK4Hb+kxsA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591367; c=relaxed/simple;
-	bh=Qrh4f2HFj6DWC4JB1tyB6tG0oMoUgbooCD9B3nLtQx0=;
+	s=arc-20240116; t=1761590526; c=relaxed/simple;
+	bh=siW3Ukwt0GJf76IFPreWSViEhLPZogpQeaeMKRGTrXw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o+CL6WSlcuc1Hy+7q3Mgp2Y9rCkTU965kUdaARfXoQr6PiJSKQuQnN+Lhs0CnVF8iiFpBsiThAKrkfEWUnvT6m4H8E8jazNTS8f6+x//81GC/I1I5uzK2AONxZOIg3+7V7CfB6RAGgZiW4lXZl9+KbbZSnIArxXY7aQfpNXRRyc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pzcxMOSn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 382CDC4CEF1;
-	Mon, 27 Oct 2025 18:56:06 +0000 (UTC)
+	 MIME-Version; b=OAt4wXYDSyC+wHEVFXvsz2DLElUF70eaZENUbbGtZ1cOBnoDuTBNFLbipCk2/WQZzMRCVoIL6UTw2+ImXTXY9BI+H/S0P4A61jkp+EhNyMejbm2VrROSsIPnwWJXMC6HbEcQfR42xyklQNuOsnMTqqEjiXImvUaSKl+o07Y+4fU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o1zqlsMi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62FA5C4CEFD;
+	Mon, 27 Oct 2025 18:42:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591366;
-	bh=Qrh4f2HFj6DWC4JB1tyB6tG0oMoUgbooCD9B3nLtQx0=;
+	s=korg; t=1761590526;
+	bh=siW3Ukwt0GJf76IFPreWSViEhLPZogpQeaeMKRGTrXw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pzcxMOSnjiI/bmNRu8FFhkqIg6i9bbSEjV3RpYpsIx9icNdxD1ppY8IBlvvjPlaet
-	 Q90gDnp5nAL5xeqaq45OFofuSXjGhCuCnT1NXhsvl/zKysrQtOwnFMLdXz9zO+3+mC
-	 RzTOHhWVCIczuo0sKMnSsb1j8li1F8O76SzHVXdk=
+	b=o1zqlsMiS+r7AlUMdbQ2Xr78YOQ29K6eS2wg2q0i81y0snyx9sx5EC2cE10W5/R7/
+	 T+R6uWQMDB3juAyGOSE+RQg5ZgofMBQu/8T4fFckPH3zUZJkwGKanrpiJOAaX/jsgO
+	 kt179jvTUm4r0oWbgk4u/ZP2EqDuy6GvlfEVSHeg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+0be4f339a8218d2a5bb1@syzkaller.appspotmail.com,
-	stable@kernel.org,
-	Albin Babu Varghese <albinbabuvarghese20@gmail.com>,
-	Ahmet Eray Karadag <eraykrdg1@gmail.com>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 5.10 170/332] ext4: guard against EA inode refcount underflow in xattr update
-Date: Mon, 27 Oct 2025 19:33:43 +0100
-Message-ID: <20251027183529.113846134@linuxfoundation.org>
+	Zhen Ni <zhen.ni@easystack.cn>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>
+Subject: [PATCH 5.4 078/224] clocksource/drivers/clps711x: Fix resource leaks in error paths
+Date: Mon, 27 Oct 2025 19:33:44 +0100
+Message-ID: <20251027183511.086238917@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
-References: <20251027183524.611456697@linuxfoundation.org>
+In-Reply-To: <20251027183508.963233542@linuxfoundation.org>
+References: <20251027183508.963233542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,85 +61,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ahmet Eray Karadag <eraykrdg1@gmail.com>
+From: Zhen Ni <zhen.ni@easystack.cn>
 
-commit 57295e835408d8d425bef58da5253465db3d6888 upstream.
+commit cd32e596f02fc981674573402c1138f616df1728 upstream.
 
-syzkaller found a path where ext4_xattr_inode_update_ref() reads an EA
-inode refcount that is already <= 0 and then applies ref_change (often
--1). That lets the refcount underflow and we proceed with a bogus value,
-triggering errors like:
+The current implementation of clps711x_timer_init() has multiple error
+paths that directly return without releasing the base I/O memory mapped
+via of_iomap(). Fix of_iomap leaks in error paths.
 
-  EXT4-fs error: EA inode <n> ref underflow: ref_count=-1 ref_change=-1
-  EXT4-fs warning: ea_inode dec ref err=-117
-
-Make the invariant explicit: if the current refcount is non-positive,
-treat this as on-disk corruption, emit ext4_error_inode(), and fail the
-operation with -EFSCORRUPTED instead of updating the refcount. Delete the
-WARN_ONCE() as negative refcounts are now impossible; keep error reporting
-in ext4_error_inode().
-
-This prevents the underflow and the follow-on orphan/cleanup churn.
-
-Reported-by: syzbot+0be4f339a8218d2a5bb1@syzkaller.appspotmail.com
-Fixes: https://syzbot.org/bug?extid=0be4f339a8218d2a5bb1
-Cc: stable@kernel.org
-Co-developed-by: Albin Babu Varghese <albinbabuvarghese20@gmail.com>
-Signed-off-by: Albin Babu Varghese <albinbabuvarghese20@gmail.com>
-Signed-off-by: Ahmet Eray Karadag <eraykrdg1@gmail.com>
-Message-ID: <20250920021342.45575-1-eraykrdg1@gmail.com>
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Fixes: 04410efbb6bc ("clocksource/drivers/clps711x: Convert init function to return error")
+Fixes: 2a6a8e2d9004 ("clocksource/drivers/clps711x: Remove board support")
+Signed-off-by: Zhen Ni <zhen.ni@easystack.cn>
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250814123324.1516495-1-zhen.ni@easystack.cn
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/xattr.c |   15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+ drivers/clocksource/clps711x-timer.c |   23 ++++++++++++++++-------
+ 1 file changed, 16 insertions(+), 7 deletions(-)
 
---- a/fs/ext4/xattr.c
-+++ b/fs/ext4/xattr.c
-@@ -983,7 +983,7 @@ static int ext4_xattr_inode_update_ref(h
- 				       int ref_change)
- {
- 	struct ext4_iloc iloc;
--	s64 ref_count;
-+	u64 ref_count;
- 	int ret;
+--- a/drivers/clocksource/clps711x-timer.c
++++ b/drivers/clocksource/clps711x-timer.c
+@@ -78,24 +78,33 @@ static int __init clps711x_timer_init(st
+ 	unsigned int irq = irq_of_parse_and_map(np, 0);
+ 	struct clk *clock = of_clk_get(np, 0);
+ 	void __iomem *base = of_iomap(np, 0);
++	int ret = 0;
  
- 	inode_lock_nested(ea_inode, I_MUTEX_XATTR);
-@@ -993,13 +993,17 @@ static int ext4_xattr_inode_update_ref(h
- 		goto out;
- 
- 	ref_count = ext4_xattr_inode_get_ref(ea_inode);
-+	if ((ref_count == 0 && ref_change < 0) || (ref_count == U64_MAX && ref_change > 0)) {
-+		ext4_error_inode(ea_inode, __func__, __LINE__, 0,
-+			"EA inode %lu ref wraparound: ref_count=%lld ref_change=%d",
-+			ea_inode->i_ino, ref_count, ref_change);
-+		ret = -EFSCORRUPTED;
-+		goto out;
+ 	if (!base)
+ 		return -ENOMEM;
+-	if (!irq)
+-		return -EINVAL;
+-	if (IS_ERR(clock))
+-		return PTR_ERR(clock);
++	if (!irq) {
++		ret = -EINVAL;
++		goto unmap_io;
 +	}
- 	ref_count += ref_change;
- 	ext4_xattr_inode_set_ref(ea_inode, ref_count);
++	if (IS_ERR(clock)) {
++		ret = PTR_ERR(clock);
++		goto unmap_io;
++	}
  
- 	if (ref_change > 0) {
--		WARN_ONCE(ref_count <= 0, "EA inode %lu ref_count=%lld",
--			  ea_inode->i_ino, ref_count);
--
- 		if (ref_count == 1) {
- 			WARN_ONCE(ea_inode->i_nlink, "EA inode %lu i_nlink=%u",
- 				  ea_inode->i_ino, ea_inode->i_nlink);
-@@ -1008,9 +1012,6 @@ static int ext4_xattr_inode_update_ref(h
- 			ext4_orphan_del(handle, ea_inode);
- 		}
- 	} else {
--		WARN_ONCE(ref_count < 0, "EA inode %lu ref_count=%lld",
--			  ea_inode->i_ino, ref_count);
--
- 		if (ref_count == 0) {
- 			WARN_ONCE(ea_inode->i_nlink != 1,
- 				  "EA inode %lu i_nlink=%u",
+ 	switch (of_alias_get_id(np, "timer")) {
+ 	case CLPS711X_CLKSRC_CLOCKSOURCE:
+ 		clps711x_clksrc_init(clock, base);
+ 		break;
+ 	case CLPS711X_CLKSRC_CLOCKEVENT:
+-		return _clps711x_clkevt_init(clock, base, irq);
++		ret =  _clps711x_clkevt_init(clock, base, irq);
++		break;
+ 	default:
+-		return -EINVAL;
++		ret = -EINVAL;
++		break;
+ 	}
+ 
+-	return 0;
++unmap_io:
++	iounmap(base);
++	return ret;
+ }
+ TIMER_OF_DECLARE(clps711x, "cirrus,ep7209-timer", clps711x_timer_init);
 
 
 
