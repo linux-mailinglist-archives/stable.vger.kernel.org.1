@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-190186-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190188-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 291BAC101BE
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:47:16 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FA34C101E8
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:47:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CAABF462FB1
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:46:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A18BE4285AD
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:46:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 068F6320A33;
-	Mon, 27 Oct 2025 18:43:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 347CB320CC2;
+	Mon, 27 Oct 2025 18:43:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="px5sxAwp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fUgbOCD/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B390F31E0F2;
-	Mon, 27 Oct 2025 18:43:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0FFC261B99;
+	Mon, 27 Oct 2025 18:43:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761590633; cv=none; b=KJamRGiG2Dm1DIc6Vc5PA4F0QMtL1Oewqxzc5uWnas4g6CTzi+6DHhxBAwS+KjY3vTG9xakPYtu3Kyk4ZK1EhlUPHzzC2tveUzvW3WaN33UyuQZOUVIXFTZ0pc9k3owsIYR9Xh1Emv13ucn/0m7ZfHlgwhnO7vyhqcYCkbnZNDM=
+	t=1761590639; cv=none; b=iRj1NT4KxzlRxbwyk4uTmg7mMz9fa/vpCuXuJlN3j7hcX3XwKglCxn2yHkbS708P/iV2njEwAw9q+ZFUjNQj7LZJ43oAxz6LH1L/0XGjRSPguBnx7lGMy7lxeJxQNwA7Uf8acaZinlPxAvUKSlnr4QMQUk9MDffstbTnJSACGNQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761590633; c=relaxed/simple;
-	bh=eLJoAI8eJrAnUH2Q4Aw+HwfLKBRGv4rQ1rTFkkxJuJ4=;
+	s=arc-20240116; t=1761590639; c=relaxed/simple;
+	bh=eSb20Y51C45rDW0wz2VpKMJwryKATFlQYj5HX7tuPeQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gWyW1xTU0wEdlR3PL6PkrvdSsaysrahnTRLpYerRkf/mTE0/n9IRVlc5wNzBH40oHKEGVF25/HGoXTk5G5Vczet8H0yefv4U7cm3EaQUe0JcIXVlyDhu8XWZY4OoUh6bfazDzIBe2ohRkKelXrKb8tPek6NmNFkeHNc3vDsqLm0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=px5sxAwp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 479A2C4CEF1;
-	Mon, 27 Oct 2025 18:43:53 +0000 (UTC)
+	 MIME-Version; b=UfZO7y46hFilzbPVORLXRxcyBdBYWq9XPrGtqIeOnUie1Rn8kk/DLRDQz28jnpHhu8Ze8l3WeomUI1cK7ZeGAOQDn/FKO5xeturJ6qlMQYayBgGU15Cov9Iydpi7G1U/gFMBS3LjnOWxkIkCS2/dpJgU8ED1zzt7Dc+djs/X9Xg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fUgbOCD/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 758E3C4CEF1;
+	Mon, 27 Oct 2025 18:43:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761590633;
-	bh=eLJoAI8eJrAnUH2Q4Aw+HwfLKBRGv4rQ1rTFkkxJuJ4=;
+	s=korg; t=1761590638;
+	bh=eSb20Y51C45rDW0wz2VpKMJwryKATFlQYj5HX7tuPeQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=px5sxAwp7twgqyjxObqysk4bkuZP1cNu6VWn1u6D6YZh0XiYxaaDWUrjdvhCv54MS
-	 D7JfH3H9Ushk9pERcTEqPnhXxqf7vlGGEtn/gJqRhioRR37U2Ue1cXIYQCj475lmHO
-	 C62V6sTqt+dmnGfB0c4kRsbkkR71gjSoIPT2tOmE=
+	b=fUgbOCD/ahHMg9/4Tkyq+aW6s8LETbORgl2299QioWyeSjiVJ27YjESdE3YRWykYU
+	 VxW4xPyOXYc5aXkLqNHylTtFUFPI52heBM5wFUkXErIeCzcAHXXnCW4njqUeUwqTUI
+	 DuIkcm9sulXLgX+TH9FdIkap6GxicF1lZIWH7Nz4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rex Chen <rex.chen_1@nxp.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 5.4 119/224] mmc: core: SPI mode remove cmd7
-Date: Mon, 27 Oct 2025 19:34:25 +0100
-Message-ID: <20251027183512.170147864@linuxfoundation.org>
+	Esben Haabendal <esben@geanix.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>
+Subject: [PATCH 5.4 120/224] rtc: interface: Ensure alarm irq is enabled when UIE is enabled
+Date: Mon, 27 Oct 2025 19:34:26 +0100
+Message-ID: <20251027183512.196159380@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251027183508.963233542@linuxfoundation.org>
 References: <20251027183508.963233542@linuxfoundation.org>
@@ -65,38 +65,40 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Rex Chen <rex.chen_1@nxp.com>
+From: Esben Haabendal <esben@geanix.com>
 
-commit fec40f44afdabcbc4a7748e4278f30737b54bb1a upstream.
+commit 9db26d5855d0374d4652487bfb5aacf40821c469 upstream.
 
-SPI mode doesn't support cmd7, so remove it in mmc_sdio_alive() and
-confirm if sdio is active by checking CCCR register value is available
-or not.
+When setting a normal alarm, user-space is responsible for using
+RTC_AIE_ON/RTC_AIE_OFF to control if alarm irq should be enabled.
 
-Signed-off-by: Rex Chen <rex.chen_1@nxp.com>
+But when RTC_UIE_ON is used, interrupts must be enabled so that the
+requested irq events are generated.
+When RTC_UIE_OFF is used, alarm irq is disabled if there are no other
+alarms queued, so this commit brings symmetry to that.
+
+Signed-off-by: Esben Haabendal <esben@geanix.com>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250728082230.1037917-2-rex.chen_1@nxp.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Link: https://lore.kernel.org/r/20250516-rtc-uie-irq-fixes-v2-5-3de8e530a39e@geanix.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/core/sdio.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/rtc/interface.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/mmc/core/sdio.c
-+++ b/drivers/mmc/core/sdio.c
-@@ -868,7 +868,11 @@ static void mmc_sdio_remove(struct mmc_h
-  */
- static int mmc_sdio_alive(struct mmc_host *host)
- {
--	return mmc_select_card(host->card);
-+	if (!mmc_host_is_spi(host))
-+		return mmc_select_card(host->card);
-+	else
-+		return mmc_io_rw_direct(host->card, 0, 0, SDIO_CCCR_CCCR, 0,
-+					NULL);
- }
- 
- /*
+--- a/drivers/rtc/interface.c
++++ b/drivers/rtc/interface.c
+@@ -577,6 +577,10 @@ int rtc_update_irq_enable(struct rtc_dev
+ 		rtc->uie_rtctimer.node.expires = ktime_add(now, onesec);
+ 		rtc->uie_rtctimer.period = ktime_set(1, 0);
+ 		err = rtc_timer_enqueue(rtc, &rtc->uie_rtctimer);
++		if (!err && rtc->ops && rtc->ops->alarm_irq_enable)
++			err = rtc->ops->alarm_irq_enable(rtc->dev.parent, 1);
++		if (err)
++			goto out;
+ 	} else {
+ 		rtc_timer_remove(rtc, &rtc->uie_rtctimer);
+ 	}
 
 
 
