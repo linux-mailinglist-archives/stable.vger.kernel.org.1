@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-190084-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190455-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEB73C0FF3F
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:39:55 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FBB8C1060F
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:01:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id CD4F44EDACF
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:39:54 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id BFF6D3519D5
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:01:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D720308F3A;
-	Mon, 27 Oct 2025 18:39:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6B9131E0E4;
+	Mon, 27 Oct 2025 18:55:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y+ooWAHK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y0qHZiYl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE367218EB1;
-	Mon, 27 Oct 2025 18:39:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3E1B32A3C3;
+	Mon, 27 Oct 2025 18:55:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761590394; cv=none; b=f/3nXjeG8KQ0XQN823jREir6xpbfG8FOaO4mtZ+EnH7OefioxpvtdZygfAaDZRaRff2/UTmRIXK1pu9pXkCnFFH9QEs3L0YDmsJzmNPsHPYX9t2fQNirWWURytRThOluVXzI72j0bDusxTlcfsL2K2SwzELjbLvSPeSXGlQW5WQ=
+	t=1761591335; cv=none; b=Y8stDLut+5vrpr82u1DNW0QZad+PfcYEmas71Wj2R+y5vOjYnaJYiXl1vxHINHR7PcFrOCSFwUdGxfqymPZxtSXUptZOqnKk+cuEKWrze/s3HKjYDZq9EMA0vz99TcZ0rANeCEka6rM2OplsnaQ+TH2Y8rYVup/TslZ8eHPVIas=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761590394; c=relaxed/simple;
-	bh=SQUzB8EoNnmeweFdYTvktuG2DdDAcG0rNCQ0q/Gdi5U=;
+	s=arc-20240116; t=1761591335; c=relaxed/simple;
+	bh=1tp5DctZ7bfspg3chQkuclzYsrReI2bWHcLAjDVQ/Tg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GzVgw+36B9eQuFPG69xM76UeIhFerqBq2VpYyyP+dPY8Q9oMPU0EXIL6LUj8aGnCkurGGpxol7Eet9XwJO4viiJJBhiZUMb/exRAPAUPc2uuziL3rli4yGeeF5PxoZxuEszUczJxxZyGJ/XZ6kGnr+V7UmupVzMwO4TtJpPt3mY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y+ooWAHK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EC68C4CEF1;
-	Mon, 27 Oct 2025 18:39:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=QXjsSLCOqMyuk64sPPoiCEt4tvVYh81ikfJjMhKnSoXUapsgj8QdTd9UDHNGFnhrWLdnyUMIKvqW1CMRySScRw27WUKywgGZ1y328q6ptA//vKDDw4Ked0Y5Qxer6Hj43wd6j8DJ7maZpfYr4kSLfHxTDTOGxS8iY7UDuw4dOQc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y0qHZiYl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B253C4CEF1;
+	Mon, 27 Oct 2025 18:55:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761590393;
-	bh=SQUzB8EoNnmeweFdYTvktuG2DdDAcG0rNCQ0q/Gdi5U=;
+	s=korg; t=1761591335;
+	bh=1tp5DctZ7bfspg3chQkuclzYsrReI2bWHcLAjDVQ/Tg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y+ooWAHKqzxPGrXgc7q3dSC41J6wRIXMCOgS+NlrpUaAWi32pnawSyFeCEQbiVtcG
-	 PSlx7O3Yeg/25kAF783y7ZrtZ5mr18QILbkr1YqVoP5vyqkkNlXHVSUAsz3RLNjB7x
-	 3vbxftORq1W+DDoV84Ml/w10MtNP0+4aDlsCmm/0=
+	b=y0qHZiYl8SyabLYrdNkTcnnmLBn8RWV3Z/2ggqZxMBk45E4VdMvZ1cVw2TE6CCM14
+	 DGrFHtqqexWwoBLbVj3HqUgUbyevRRpk2MvgW8+EGkiwmwpq/WwwrvPlubDCWCCb5y
+	 JDDT2cvodwLxUBArEysd6l5ckOIbpOiWWdlbJYSc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+136ca59d411f92e821b7@syzkaller.appspotmail.com,
-	Paul Chaignon <paul.chaignon@gmail.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Eduard Zingerman <eddyz87@gmail.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 028/224] bpf: Explicitly check accesses to bpf_sock_addr
+Subject: [PATCH 5.10 121/332] drm/amd/display: Properly clear SCL_*_FILTER_CONTROL on DCE6
 Date: Mon, 27 Oct 2025 19:32:54 +0100
-Message-ID: <20251027183509.759350020@linuxfoundation.org>
+Message-ID: <20251027183527.807427599@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183508.963233542@linuxfoundation.org>
-References: <20251027183508.963233542@linuxfoundation.org>
+In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
+References: <20251027183524.611456697@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,79 +60,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Chaignon <paul.chaignon@gmail.com>
+From: Timur Kristóf <timur.kristof@gmail.com>
 
-[ Upstream commit 6fabca2fc94d33cdf7ec102058983b086293395f ]
+[ Upstream commit c0aa7cf49dd6cb302fe28e7183992b772cb7420c ]
 
-Syzkaller found a kernel warning on the following sock_addr program:
+Previously, the code would set a bit field which didn't exist
+on DCE6 so it would be effectively a no-op.
 
-    0: r0 = 0
-    1: r2 = *(u32 *)(r1 +60)
-    2: exit
-
-which triggers:
-
-    verifier bug: error during ctx access conversion (0)
-
-This is happening because offset 60 in bpf_sock_addr corresponds to an
-implicit padding of 4 bytes, right after msg_src_ip4. Access to this
-padding isn't rejected in sock_addr_is_valid_access and it thus later
-fails to convert the access.
-
-This patch fixes it by explicitly checking the various fields of
-bpf_sock_addr in sock_addr_is_valid_access.
-
-I checked the other ctx structures and is_valid_access functions and
-didn't find any other similar cases. Other cases of (properly handled)
-padding are covered in new tests in a subsequent patch.
-
-Fixes: 1cedee13d25a ("bpf: Hooks for sys_sendmsg")
-Reported-by: syzbot+136ca59d411f92e821b7@syzkaller.appspotmail.com
-Signed-off-by: Paul Chaignon <paul.chaignon@gmail.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Acked-by: Eduard Zingerman <eddyz87@gmail.com>
-Acked-by: Daniel Borkmann <daniel@iogearbox.net>
-Closes: https://syzkaller.appspot.com/bug?extid=136ca59d411f92e821b7
-Link: https://lore.kernel.org/bpf/b58609d9490649e76e584b0361da0abd3c2c1779.1758094761.git.paul.chaignon@gmail.com
+Fixes: b70aaf5586f2 ("drm/amd/display: dce_transform: add DCE6 specific macros,functions")
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/filter.c | 16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/amd/display/dc/dce/dce_transform.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/net/core/filter.c b/net/core/filter.c
-index fd18497977bdf..2c56c910a0c13 100644
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -7132,13 +7132,17 @@ static bool sock_addr_is_valid_access(int off, int size,
- 			return false;
- 		info->reg_type = PTR_TO_SOCKET;
- 		break;
--	default:
--		if (type == BPF_READ) {
--			if (size != size_default)
--				return false;
--		} else {
-+	case bpf_ctx_range(struct bpf_sock_addr, user_family):
-+	case bpf_ctx_range(struct bpf_sock_addr, family):
-+	case bpf_ctx_range(struct bpf_sock_addr, type):
-+	case bpf_ctx_range(struct bpf_sock_addr, protocol):
-+		if (type != BPF_READ)
- 			return false;
--		}
-+		if (size != size_default)
-+			return false;
-+		break;
-+	default:
-+		return false;
- 	}
+diff --git a/drivers/gpu/drm/amd/display/dc/dce/dce_transform.c b/drivers/gpu/drm/amd/display/dc/dce/dce_transform.c
+index a54a309879246..a3f4fa346b77e 100644
+--- a/drivers/gpu/drm/amd/display/dc/dce/dce_transform.c
++++ b/drivers/gpu/drm/amd/display/dc/dce/dce_transform.c
+@@ -528,8 +528,7 @@ static void dce60_transform_set_scaler(
+ 		if (coeffs_v != xfm_dce->filter_v || coeffs_h != xfm_dce->filter_h) {
+ 			/* 4. Program vertical filters */
+ 			if (xfm_dce->filter_v == NULL)
+-				REG_SET(SCL_VERT_FILTER_CONTROL, 0,
+-						SCL_V_2TAP_HARDCODE_COEF_EN, 0);
++				REG_WRITE(SCL_VERT_FILTER_CONTROL, 0);
+ 			program_multi_taps_filter(
+ 					xfm_dce,
+ 					data->taps.v_taps,
+@@ -543,8 +542,7 @@ static void dce60_transform_set_scaler(
  
- 	return true;
+ 			/* 5. Program horizontal filters */
+ 			if (xfm_dce->filter_h == NULL)
+-				REG_SET(SCL_HORZ_FILTER_CONTROL, 0,
+-						SCL_H_2TAP_HARDCODE_COEF_EN, 0);
++				REG_WRITE(SCL_HORZ_FILTER_CONTROL, 0);
+ 			program_multi_taps_filter(
+ 					xfm_dce,
+ 					data->taps.h_taps,
 -- 
 2.51.0
 
