@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-190894-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190750-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3ECEC10D45
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:21:35 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 296EDC10B8F
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:17:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DA7801A25E2C
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:16:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B198E463AE1
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:10:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C0D131D36D;
-	Mon, 27 Oct 2025 19:14:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A5D0328637;
+	Mon, 27 Oct 2025 19:08:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cYdOEWy/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eajf2cgY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 188AE2F25F1;
-	Mon, 27 Oct 2025 19:14:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 369F12D542A;
+	Mon, 27 Oct 2025 19:08:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592476; cv=none; b=pM+RvzwxR1bD5Br9bGc2K35Yimxf842fEFDNXmBbxu0ID28f4WDE+PKZtIPY3kvWdSvHNv+sLMsUPcB6ZDBtfLRcKjXy7yooSuvO+ubu/PxpvmPq6zEd/IzBcM69rsoV940uImVbF2UAZn0TjIzVwYp8avmGiWl0g1NGuihs/18=
+	t=1761592098; cv=none; b=oK6cAL3YUScYEoHfzvkxsBCLTX3KdRSukzCwnjKLrCYwMi0muuRCfFXqaydvoRIHxijLMK5URdlI05u4fmQIqRKgsBrh7oRLSvQD0i6wUOeGaNuYMo17v3OCKC4UNBRLaTin5KPQd269v4SNhDOOJdv6aSzQeAhDfEZpF1bsCgE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592476; c=relaxed/simple;
-	bh=V0h8Oo3XcMpZ5CUFLNKvKxdvUZdQ4ozspOxGALqSyGE=;
+	s=arc-20240116; t=1761592098; c=relaxed/simple;
+	bh=jUhMoANh0l03YKhknf5DpDU3GrYHKp9TllH4an6OTNk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QowvAWsRNIhiFIGJurPW9+vGwUWWG3N39q4G2PizCTpvzP+MDkfogYvRZeF6DMA8uUTTaMnr+2vkRPuBx+tFiMYCBy9FXg904b0jSZd+nVAM6vL3tMmftsqlXHcFKeTnS8H9Ly7Tge3PxfFltaJ0DnUnlH9vdVAx7K45MdYhQco=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cYdOEWy/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 984F2C16AAE;
-	Mon, 27 Oct 2025 19:14:35 +0000 (UTC)
+	 MIME-Version; b=HpSJ8dZ0yUiqPu5hKoZ1j6w9y/hmB3F41g/UHAG0Vcfh0uYeBcHOjIAB3ECo7SDgZ+u+IqKKkNxLWt6oZTpQULILCgidPNRZYivbgJL+tV9ZPrdHHf+IuKiYC1S9IcMoJi6ae9TedhxImPGNb98YgLRgvPj/KpHM0+emNi57ryk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eajf2cgY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDA92C4CEF1;
+	Mon, 27 Oct 2025 19:08:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592475;
-	bh=V0h8Oo3XcMpZ5CUFLNKvKxdvUZdQ4ozspOxGALqSyGE=;
+	s=korg; t=1761592098;
+	bh=jUhMoANh0l03YKhknf5DpDU3GrYHKp9TllH4an6OTNk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cYdOEWy/l5z/oKBvmTMHwxQ/cjuCEj26g6AshCf4lrIJRTmvcFAkPOrCHt2xoMj4G
-	 5eKjm/MW74aioBJO4LsMFcNWpKOWVAVMYpyWiBgJ/QV7h6a2e924Cp4FPs7cwpxEou
-	 of/X00JHzba4x3xg30WMG2ZGBYjNK+8lt0r7nDAc=
+	b=eajf2cgYkV4zBIzSXI360U3uixZ/s9oFeUQzoGizrwpx/XtYrO2JOiYacRh8gEbt3
+	 GT4sG4HuHMpEi0arycKC8gGuDdPNPGqR8d1YHOEZOC36Z21E+vy/2/YMk1pAgzpPvB
+	 /zMUGRrvRzdlqxnsy3CNuKc/xILvJbzsbCr7KR9s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Robert Morris <rtm@csail.mit.edu>,
-	Thomas Haynes <loghyr@hammerspace.com>,
-	Chuck Lever <chuck.lever@oracle.com>,
+	stable <stable@kernel.org>,
+	Kaushlendra Kumar <kaushlendra.kumar@intel.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 135/157] NFSD: Define a proc_layoutcommit for the FlexFiles layout type
+Subject: [PATCH 5.15 116/123] arch_topology: Fix incorrect error check in topology_parse_cpu_capacity()
 Date: Mon, 27 Oct 2025 19:36:36 +0100
-Message-ID: <20251027183504.878393741@linuxfoundation.org>
+Message-ID: <20251027183449.491500278@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
-References: <20251027183501.227243846@linuxfoundation.org>
+In-Reply-To: <20251027183446.381986645@linuxfoundation.org>
+References: <20251027183446.381986645@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
 
-[ Upstream commit 4b47a8601b71ad98833b447d465592d847b4dc77 ]
+[ Upstream commit 2eead19334516c8e9927c11b448fbe512b1f18a1 ]
 
-Avoid a crash if a pNFS client should happen to send a LAYOUTCOMMIT
-operation on a FlexFiles layout.
+Fix incorrect use of PTR_ERR_OR_ZERO() in topology_parse_cpu_capacity()
+which causes the code to proceed with NULL clock pointers. The current
+logic uses !PTR_ERR_OR_ZERO(cpu_clk) which evaluates to true for both
+valid pointers and NULL, leading to potential NULL pointer dereference
+in clk_get_rate().
 
-Reported-by: Robert Morris <rtm@csail.mit.edu>
-Closes: https://lore.kernel.org/linux-nfs/152f99b2-ba35-4dec-93a9-4690e625dccd@oracle.com/T/#t
-Cc: Thomas Haynes <loghyr@hammerspace.com>
-Cc: stable@vger.kernel.org
-Fixes: 9b9960a0ca47 ("nfsd: Add a super simple flex file server")
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-[ removed struct svc_rqst parameter from nfsd4_ff_proc_layoutcommit ]
+Per include/linux/err.h documentation, PTR_ERR_OR_ZERO(ptr) returns:
+"The error code within @ptr if it is an error pointer; 0 otherwise."
+
+This means PTR_ERR_OR_ZERO() returns 0 for both valid pointers AND NULL
+pointers. Therefore !PTR_ERR_OR_ZERO(cpu_clk) evaluates to true (proceed)
+when cpu_clk is either valid or NULL, causing clk_get_rate(NULL) to be
+called when of_clk_get() returns NULL.
+
+Replace with !IS_ERR_OR_NULL(cpu_clk) which only proceeds for valid
+pointers, preventing potential NULL pointer dereference in clk_get_rate().
+
+Cc: stable <stable@kernel.org>
+Signed-off-by: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
+Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
+Fixes: b8fe128dad8f ("arch_topology: Adjust initial CPU capacities with current freq")
+Link: https://patch.msgid.link/20250923174308.1771906-1-kaushlendra.kumar@intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[ Adjust context ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/flexfilelayout.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/base/arch_topology.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/nfsd/flexfilelayout.c
-+++ b/fs/nfsd/flexfilelayout.c
-@@ -125,6 +125,13 @@ nfsd4_ff_proc_getdeviceinfo(struct super
- 	return 0;
- }
- 
-+static __be32
-+nfsd4_ff_proc_layoutcommit(struct inode *inode,
-+		struct nfsd4_layoutcommit *lcp)
-+{
-+	return nfs_ok;
-+}
-+
- const struct nfsd4_layout_ops ff_layout_ops = {
- 	.notify_types		=
- 			NOTIFY_DEVICEID4_DELETE | NOTIFY_DEVICEID4_CHANGE,
-@@ -133,4 +140,5 @@ const struct nfsd4_layout_ops ff_layout_
- 	.encode_getdeviceinfo	= nfsd4_ff_encode_getdeviceinfo,
- 	.proc_layoutget		= nfsd4_ff_proc_layoutget,
- 	.encode_layoutget	= nfsd4_ff_encode_layoutget,
-+	.proc_layoutcommit	= nfsd4_ff_proc_layoutcommit,
- };
+--- a/drivers/base/arch_topology.c
++++ b/drivers/base/arch_topology.c
+@@ -290,7 +290,7 @@ bool __init topology_parse_cpu_capacity(
+ 		 * frequency (by keeping the initial freq_factor value).
+ 		 */
+ 		cpu_clk = of_clk_get(cpu_node, 0);
+-		if (!PTR_ERR_OR_ZERO(cpu_clk)) {
++		if (!IS_ERR_OR_NULL(cpu_clk)) {
+ 			per_cpu(freq_factor, cpu) =
+ 				clk_get_rate(cpu_clk) / 1000;
+ 			clk_put(cpu_clk);
 
 
 
