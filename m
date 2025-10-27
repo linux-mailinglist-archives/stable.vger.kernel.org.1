@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-190104-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190442-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70810C0FF81
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:41:03 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00FDDC105FA
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:00:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 16BF3462340
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:41:02 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7CD464FFEBA
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:58:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF8062D8DB9;
-	Mon, 27 Oct 2025 18:40:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B75B328B41;
+	Mon, 27 Oct 2025 18:55:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jfg7EJv5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PGgVK0+I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67680313520;
-	Mon, 27 Oct 2025 18:40:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06223331A4D;
+	Mon, 27 Oct 2025 18:55:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761590447; cv=none; b=GvqStLh1Jpe8CEPR77g3hAGp9J1c1iIliUtau9Kcq6vmvOuORo6FLx7+k1yiHG2Krj8i/EzvWtn1LoFftgsnqVkyxJaOzp5VNqyjjzbOkkPMW1hCBIH5LfTWH7P8b209y6MnF5XgLOfv+DrB2nCS45ayaGxFpPiJve5un8T9f+Y=
+	t=1761591302; cv=none; b=U8QhKLw9nhxeNFGfZq8Xdt09Rv+NUyVuvdSPv/OOsT/mDQWJchF/tLhCjpl/Qmf6zUtaZA3Osnj8eMBjXtqD4R1cMg+hGEQBIrG+UmiXo1Z/UOdrz65DBnaEUqzmPoXmqKDmAHvRJyMLDkHr7eYoKnKhHFHvSRrMsj2bQv1a0G8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761590447; c=relaxed/simple;
-	bh=IEYSs8GIvwgB3DY3WaYjOs89BH3CEynqRa7ou8qtkds=;
+	s=arc-20240116; t=1761591302; c=relaxed/simple;
+	bh=Axl0M9bttNiWB/8Mw4zYBj3g1uE/A6yWsc7b1harRIA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OvPex6ERpKRgelP3ncL4G3xML57EYPO0lpDYPs2Qa4iudRbKfzU5GJAuOCUASP2IgC/ERNkWjfXmwn2BvluhpGkW5RIicXv6CKYl65ORU2N7CQGGcB0iEBa/PkL9UfNikWiH9PY08Br8GsS3MQoJsOfEKXaMavo2MeMP/8br4qM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jfg7EJv5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE9C4C4CEF1;
-	Mon, 27 Oct 2025 18:40:46 +0000 (UTC)
+	 MIME-Version; b=pmGmUBrSn9glF+Y/VPZFbME7FxNGt2jIITscg/aPa8eOwB+p2O5ugVtkFU/GoROsgH/ag8+AaN6eP9drXkn6QVqoXK/YGQYQq07cETekNYOq7wUE3Xh0GTKnDG61xYw0P9mC6LrIVhRvop6de3MODPQzrtq+amUsUSL8yVEYydU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PGgVK0+I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E5CCC4CEF1;
+	Mon, 27 Oct 2025 18:55:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761590447;
-	bh=IEYSs8GIvwgB3DY3WaYjOs89BH3CEynqRa7ou8qtkds=;
+	s=korg; t=1761591301;
+	bh=Axl0M9bttNiWB/8Mw4zYBj3g1uE/A6yWsc7b1harRIA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jfg7EJv5rU5czMGpriFM14mQZClzKcSRl4Np/LscxFjQC0xdLm3+brxvQkpNP+keZ
-	 hjaERu3EAzrkSKBhWB88HyWYv70SntcI+AWC5XMskqlYr9aV8O6FcdkKIqAi5h79P+
-	 2/NFFsQbmLtZ5fSVAvpv/4heKljs7q/pjZ3cnKGk=
+	b=PGgVK0+IddUcHjBJp0sE3Ac9+BolPEewtGk0c2OWtyzamShnYsxradndtI5EcoMnk
+	 4p6szWCLsqnek/2cneXvKNIDELEuk0Dj5jM6L/2Ygtu6jXLlCo8A/493+GySg45UGX
+	 +ahH0mFolX2L/hvVe+KQP9FYKPu3SsubytN6F+O8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhen Ni <zhen.ni@easystack.cn>,
-	Phil Sutter <phil@nwl.cc>,
-	Florian Westphal <fw@strlen.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 049/224] netfilter: ipset: Remove unused htable_bits in macro ahash_region
-Date: Mon, 27 Oct 2025 19:33:15 +0100
-Message-ID: <20251027183510.311345547@linuxfoundation.org>
+	Sean Nyekjaer <sean@geanix.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 5.10 143/332] iio: imu: inv_icm42600: Drop redundant pm_runtime reinitialization in resume
+Date: Mon, 27 Oct 2025 19:33:16 +0100
+Message-ID: <20251027183528.409528655@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183508.963233542@linuxfoundation.org>
-References: <20251027183508.963233542@linuxfoundation.org>
+In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
+References: <20251027183524.611456697@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhen Ni <zhen.ni@easystack.cn>
+From: Sean Nyekjaer <sean@geanix.com>
 
-[ Upstream commit ba941796d7cd1e81f51eed145dad1b47240ff420 ]
+commit a95a0b4e471a6d8860f40c6ac8f1cad9dde3189a upstream.
 
-Since the ahash_region() macro was redefined to calculate the region
-index solely from HTABLE_REGION_BITS, the htable_bits parameter became
-unused.
+Remove unnecessary calls to pm_runtime_disable(), pm_runtime_set_active(),
+and pm_runtime_enable() from the resume path. These operations are not
+required here and can interfere with proper pm_runtime state handling,
+especially when resuming from a pm_runtime suspended state.
 
-Remove the unused htable_bits argument and its call sites, simplifying
-the code without changing semantics.
-
-Fixes: 8478a729c046 ("netfilter: ipset: fix region locking in hash types")
-Signed-off-by: Zhen Ni <zhen.ni@easystack.cn>
-Reviewed-by: Phil Sutter <phil@nwl.cc>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 31c24c1e93c3 ("iio: imu: inv_icm42600: add core of new inv_icm42600 driver")
+Signed-off-by: Sean Nyekjaer <sean@geanix.com>
+Link: https://patch.msgid.link/20250901-icm42pmreg-v3-2-ef1336246960@geanix.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/ipset/ip_set_hash_gen.h | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/iio/imu/inv_icm42600/inv_icm42600_core.c |    4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/net/netfilter/ipset/ip_set_hash_gen.h b/net/netfilter/ipset/ip_set_hash_gen.h
-index 297631f9717bc..0dcba0a87283d 100644
---- a/net/netfilter/ipset/ip_set_hash_gen.h
-+++ b/net/netfilter/ipset/ip_set_hash_gen.h
-@@ -87,7 +87,7 @@ struct hbucket {
- 		: jhash_size((htable_bits) - HTABLE_REGION_BITS))
- #define ahash_sizeof_regions(htable_bits)		\
- 	(ahash_numof_locks(htable_bits) * sizeof(struct ip_set_region))
--#define ahash_region(n, htable_bits)		\
-+#define ahash_region(n)		\
- 	((n) / jhash_size(HTABLE_REGION_BITS))
- #define ahash_bucket_start(h,  htable_bits)	\
- 	((htable_bits) < HTABLE_REGION_BITS ? 0	\
-@@ -716,7 +716,7 @@ mtype_resize(struct ip_set *set, bool retried)
- #endif
- 				key = HKEY(data, h->initval, htable_bits);
- 				m = __ipset_dereference(hbucket(t, key));
--				nr = ahash_region(key, htable_bits);
-+				nr = ahash_region(key);
- 				if (!m) {
- 					m = kzalloc(sizeof(*m) +
- 					    AHASH_INIT_SIZE * dsize,
-@@ -866,7 +866,7 @@ mtype_add(struct ip_set *set, void *value, const struct ip_set_ext *ext,
- 	rcu_read_lock_bh();
- 	t = rcu_dereference_bh(h->table);
- 	key = HKEY(value, h->initval, t->htable_bits);
--	r = ahash_region(key, t->htable_bits);
-+	r = ahash_region(key);
- 	atomic_inc(&t->uref);
- 	elements = t->hregion[r].elements;
- 	maxelem = t->maxelem;
-@@ -1059,7 +1059,7 @@ mtype_del(struct ip_set *set, void *value, const struct ip_set_ext *ext,
- 	rcu_read_lock_bh();
- 	t = rcu_dereference_bh(h->table);
- 	key = HKEY(value, h->initval, t->htable_bits);
--	r = ahash_region(key, t->htable_bits);
-+	r = ahash_region(key);
- 	atomic_inc(&t->uref);
- 	rcu_read_unlock_bh();
+--- a/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
++++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
+@@ -730,10 +730,6 @@ static int __maybe_unused inv_icm42600_r
+ 	if (ret)
+ 		goto out_unlock;
  
--- 
-2.51.0
-
+-	pm_runtime_disable(dev);
+-	pm_runtime_set_active(dev);
+-	pm_runtime_enable(dev);
+-
+ 	/* restore sensors state */
+ 	ret = inv_icm42600_set_pwr_mgmt0(st, st->suspended.gyro,
+ 					 st->suspended.accel,
 
 
 
