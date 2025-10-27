@@ -1,62 +1,57 @@
-Return-Path: <stable+bounces-190849-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191029-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E05AC10D15
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:21:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CC13C10F43
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:27:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E99C750563F
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:14:53 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 947B7505863
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:21:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B2CC3254BC;
-	Mon, 27 Oct 2025 19:12:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC692324B09;
+	Mon, 27 Oct 2025 19:20:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t9080UKT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RD6V+EZC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6E72323403;
-	Mon, 27 Oct 2025 19:12:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67E5C31D393;
+	Mon, 27 Oct 2025 19:20:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592360; cv=none; b=PEVauCVM5N+WhG5oP6PoJSjLXQprrIaKSfhofvaX0/7VkgrVG2IDPqzYTWrDw4gUFtb8YFEQOv90tueHKWgaJHURTcN2J28/rbqZgw4Rx8gwKi6h4qA9qYP7doVdSMkGzZQHoxB3y8YyKMR47MTx6S53sZlKVrY2usSzJ0TrtMs=
+	t=1761592829; cv=none; b=MidmEx8otSleB/Z3PByfOoI6GKJm/rRAMwdiTHytchn4TcSNBuEpPiXEbsiTlrPqSox53pe3HAyz6BmNd5HIsURZkno8j0r/lewd8da+4LXBMIMkyQ+AgGo7NEOqG8MoP6KjhVOAlauIBcgf+T0bBXnRJvqkzlKvGs9279uWEfk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592360; c=relaxed/simple;
-	bh=nxNGtuboDrVqB2+YGEiAzWf/aWc9jANSIOys/gLkhww=;
+	s=arc-20240116; t=1761592829; c=relaxed/simple;
+	bh=uLswryaAHFQmz0xuuQ985dmLUuSqOwmtr4B50F4Omqk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kuCoU6O6UPu7TJPkaWUQa63bGATXw4JQ5FYDf52owF3ZscL68FB8MGEwPMnhNR4j/w3XjkRU3h6AkoL/0P8ik+HHne1f8GsLvQYoOJe7fya3Fce9YH7eWkNy5FQ6txnWAG0ArB3KRs2MCX9sinrYW8vTSvzgw8O8xZGxeMLo834=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t9080UKT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC3D1C4CEF1;
-	Mon, 27 Oct 2025 19:12:38 +0000 (UTC)
+	 MIME-Version; b=sFe1yzr+LMIJSgy6A3/YIaH7e6Z+FC3D10KyQkYuiRfE+yp5UIHsaiWGaync4c6eIRL0+vu+8ZNfErXIlmuHzhHPutPdsAuWZPXp/lfMA4p5rLn5tb25qn0cbpUnCruu3j/VnJHDKDpq6KD8gO08GfY3Gml+52WLcyQG2Ik7eqU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RD6V+EZC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94FBBC4CEF1;
+	Mon, 27 Oct 2025 19:20:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592359;
-	bh=nxNGtuboDrVqB2+YGEiAzWf/aWc9jANSIOys/gLkhww=;
+	s=korg; t=1761592828;
+	bh=uLswryaAHFQmz0xuuQ985dmLUuSqOwmtr4B50F4Omqk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t9080UKTgO07g6qZpE8fM4DQc/d3TB3GIOIxAF1IIVAxLpws7pLJ6wf/pxX/bnUTy
-	 gP4Pi77VSVukg1UntfW6ztWe2t5Lh3vNtkBa5zNqkvHowGCcHkxUKNYAX2Xx5Lvwzp
-	 dNBInOXMgcN/7E2ptcsh48P/KEyrzkG3Lhv1hgaE=
+	b=RD6V+EZC/POR3u12Np8jL1ciYzsIEwhqzxJB2fVuzLvElLvRsZcXKUUdoj+FcdSw7
+	 LCZHFRkqagMhL0rjFkntb+nPBeCaIj4jvdUMi2OnF0YzBLwJ48Td+nsiV4erjK3w+I
+	 QDYoNggWt2Hc4ewzk96n0i/sYaUidSTbitpUdtiE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Deepanshu Kartikey <kartikey406@gmail.com>,
-	syzbot+6fdd8fa3380730a4b22c@syzkaller.appspotmail.com,
-	Mark Fasheh <mark@fasheh.com>,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Jun Piao <piaojun@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 092/157] ocfs2: clear extent cache after moving/defragmenting extents
+	Jianpeng Chang <jianpeng.chang.cn@windriver.com>,
+	Wei Fang <wei.fang@nxp.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 027/117] net: enetc: fix the deadlock of enetc_mdio_lock
 Date: Mon, 27 Oct 2025 19:35:53 +0100
-Message-ID: <20251027183503.735199005@linuxfoundation.org>
+Message-ID: <20251027183454.700074878@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
-References: <20251027183501.227243846@linuxfoundation.org>
+In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
+References: <20251027183453.919157109@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,67 +63,163 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Deepanshu Kartikey <kartikey406@gmail.com>
+From: Jianpeng Chang <jianpeng.chang.cn@windriver.com>
 
-commit 78a63493f8e352296dbc7cb7b3f4973105e8679e upstream.
+[ Upstream commit 50bd33f6b3922a6b760aa30d409cae891cec8fb5 ]
 
-The extent map cache can become stale when extents are moved or
-defragmented, causing subsequent operations to see outdated extent flags.
-This triggers a BUG_ON in ocfs2_refcount_cal_cow_clusters().
+After applying the workaround for err050089, the LS1028A platform
+experiences RCU stalls on RT kernel. This issue is caused by the
+recursive acquisition of the read lock enetc_mdio_lock. Here list some
+of the call stacks identified under the enetc_poll path that may lead to
+a deadlock:
 
-The problem occurs when:
-1. copy_file_range() creates a reflinked extent with OCFS2_EXT_REFCOUNTED
-2. ioctl(FITRIM) triggers ocfs2_move_extents()
-3. __ocfs2_move_extents_range() reads and caches the extent (flags=0x2)
-4. ocfs2_move_extent()/ocfs2_defrag_extent() calls __ocfs2_move_extent()
-   which clears OCFS2_EXT_REFCOUNTED flag on disk (flags=0x0)
-5. The extent map cache is not invalidated after the move
-6. Later write() operations read stale cached flags (0x2) but disk has
-   updated flags (0x0), causing a mismatch
-7. BUG_ON(!(rec->e_flags & OCFS2_EXT_REFCOUNTED)) triggers
+enetc_poll
+  -> enetc_lock_mdio
+  -> enetc_clean_rx_ring OR napi_complete_done
+     -> napi_gro_receive
+        -> enetc_start_xmit
+           -> enetc_lock_mdio
+           -> enetc_map_tx_buffs
+           -> enetc_unlock_mdio
+  -> enetc_unlock_mdio
 
-Fix by clearing the extent map cache after each extent move/defrag
-operation in __ocfs2_move_extents_range().  This ensures subsequent
-operations read fresh extent data from disk.
+After enetc_poll acquires the read lock, a higher-priority writer attempts
+to acquire the lock, causing preemption. The writer detects that a
+read lock is already held and is scheduled out. However, readers under
+enetc_poll cannot acquire the read lock again because a writer is already
+waiting, leading to a thread hang.
 
-Link: https://lore.kernel.org/all/20251009142917.517229-1-kartikey406@gmail.com/T/
-Link: https://lkml.kernel.org/r/20251009154903.522339-1-kartikey406@gmail.com
-Fixes: 53069d4e7695 ("Ocfs2/move_extents: move/defrag extents within a certain range.")
-Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
-Reported-by: syzbot+6fdd8fa3380730a4b22c@syzkaller.appspotmail.com
-Tested-by: syzbot+6fdd8fa3380730a4b22c@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?id=2959889e1f6e216585ce522f7e8bc002b46ad9e7
-Reviewed-by: Mark Fasheh <mark@fasheh.com>
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Currently, the deadlock is avoided by adjusting enetc_lock_mdio to prevent
+recursive lock acquisition.
+
+Fixes: 6d36ecdbc441 ("net: enetc: take the MDIO lock only once per NAPI poll cycle")
+Signed-off-by: Jianpeng Chang <jianpeng.chang.cn@windriver.com>
+Acked-by: Wei Fang <wei.fang@nxp.com>
+Link: https://patch.msgid.link/20251015021427.180757-1-jianpeng.chang.cn@windriver.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ocfs2/move_extents.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/net/ethernet/freescale/enetc/enetc.c | 25 ++++++++++++++++----
+ 1 file changed, 21 insertions(+), 4 deletions(-)
 
---- a/fs/ocfs2/move_extents.c
-+++ b/fs/ocfs2/move_extents.c
-@@ -868,6 +868,11 @@ static int __ocfs2_move_extents_range(st
- 			mlog_errno(ret);
- 			goto out;
- 		}
-+		/*
-+		 * Invalidate extent cache after moving/defragging to prevent
-+		 * stale cached data with outdated extent flags.
-+		 */
-+		ocfs2_extent_map_trunc(inode, cpos);
+diff --git a/drivers/net/ethernet/freescale/enetc/enetc.c b/drivers/net/ethernet/freescale/enetc/enetc.c
+index d8272b7a55fcb..749b65aab14a9 100644
+--- a/drivers/net/ethernet/freescale/enetc/enetc.c
++++ b/drivers/net/ethernet/freescale/enetc/enetc.c
+@@ -1246,6 +1246,8 @@ static int enetc_clean_rx_ring(struct enetc_bdr *rx_ring,
+ 	/* next descriptor to process */
+ 	i = rx_ring->next_to_clean;
  
- 		context->clusters_moved += alloc_size;
- next:
++	enetc_lock_mdio();
++
+ 	while (likely(rx_frm_cnt < work_limit)) {
+ 		union enetc_rx_bd *rxbd;
+ 		struct sk_buff *skb;
+@@ -1281,7 +1283,9 @@ static int enetc_clean_rx_ring(struct enetc_bdr *rx_ring,
+ 		rx_byte_cnt += skb->len + ETH_HLEN;
+ 		rx_frm_cnt++;
+ 
++		enetc_unlock_mdio();
+ 		napi_gro_receive(napi, skb);
++		enetc_lock_mdio();
+ 	}
+ 
+ 	rx_ring->next_to_clean = i;
+@@ -1289,6 +1293,8 @@ static int enetc_clean_rx_ring(struct enetc_bdr *rx_ring,
+ 	rx_ring->stats.packets += rx_frm_cnt;
+ 	rx_ring->stats.bytes += rx_byte_cnt;
+ 
++	enetc_unlock_mdio();
++
+ 	return rx_frm_cnt;
+ }
+ 
+@@ -1598,6 +1604,8 @@ static int enetc_clean_rx_ring_xdp(struct enetc_bdr *rx_ring,
+ 	/* next descriptor to process */
+ 	i = rx_ring->next_to_clean;
+ 
++	enetc_lock_mdio();
++
+ 	while (likely(rx_frm_cnt < work_limit)) {
+ 		union enetc_rx_bd *rxbd, *orig_rxbd;
+ 		int orig_i, orig_cleaned_cnt;
+@@ -1657,7 +1665,9 @@ static int enetc_clean_rx_ring_xdp(struct enetc_bdr *rx_ring,
+ 			if (unlikely(!skb))
+ 				goto out;
+ 
++			enetc_unlock_mdio();
+ 			napi_gro_receive(napi, skb);
++			enetc_lock_mdio();
+ 			break;
+ 		case XDP_TX:
+ 			tx_ring = priv->xdp_tx_ring[rx_ring->index];
+@@ -1692,7 +1702,9 @@ static int enetc_clean_rx_ring_xdp(struct enetc_bdr *rx_ring,
+ 			}
+ 			break;
+ 		case XDP_REDIRECT:
++			enetc_unlock_mdio();
+ 			err = xdp_do_redirect(rx_ring->ndev, &xdp_buff, prog);
++			enetc_lock_mdio();
+ 			if (unlikely(err)) {
+ 				enetc_xdp_drop(rx_ring, orig_i, i);
+ 				rx_ring->stats.xdp_redirect_failures++;
+@@ -1712,8 +1724,11 @@ static int enetc_clean_rx_ring_xdp(struct enetc_bdr *rx_ring,
+ 	rx_ring->stats.packets += rx_frm_cnt;
+ 	rx_ring->stats.bytes += rx_byte_cnt;
+ 
+-	if (xdp_redirect_frm_cnt)
++	if (xdp_redirect_frm_cnt) {
++		enetc_unlock_mdio();
+ 		xdp_do_flush();
++		enetc_lock_mdio();
++	}
+ 
+ 	if (xdp_tx_frm_cnt)
+ 		enetc_update_tx_ring_tail(tx_ring);
+@@ -1722,6 +1737,8 @@ static int enetc_clean_rx_ring_xdp(struct enetc_bdr *rx_ring,
+ 		enetc_refill_rx_ring(rx_ring, enetc_bd_unused(rx_ring) -
+ 				     rx_ring->xdp.xdp_tx_in_flight);
+ 
++	enetc_unlock_mdio();
++
+ 	return rx_frm_cnt;
+ }
+ 
+@@ -1740,6 +1757,7 @@ static int enetc_poll(struct napi_struct *napi, int budget)
+ 	for (i = 0; i < v->count_tx_rings; i++)
+ 		if (!enetc_clean_tx_ring(&v->tx_ring[i], budget))
+ 			complete = false;
++	enetc_unlock_mdio();
+ 
+ 	prog = rx_ring->xdp.prog;
+ 	if (prog)
+@@ -1751,10 +1769,8 @@ static int enetc_poll(struct napi_struct *napi, int budget)
+ 	if (work_done)
+ 		v->rx_napi_work = true;
+ 
+-	if (!complete) {
+-		enetc_unlock_mdio();
++	if (!complete)
+ 		return budget;
+-	}
+ 
+ 	napi_complete_done(napi, work_done);
+ 
+@@ -1763,6 +1779,7 @@ static int enetc_poll(struct napi_struct *napi, int budget)
+ 
+ 	v->rx_napi_work = false;
+ 
++	enetc_lock_mdio();
+ 	/* enable interrupts */
+ 	enetc_wr_reg_hot(v->rbier, ENETC_RBIER_RXTIE);
+ 
+-- 
+2.51.0
+
 
 
 
