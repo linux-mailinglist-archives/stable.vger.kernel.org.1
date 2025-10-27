@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-190863-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191042-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 999CCC10AC5
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:15:12 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C075C10F1F
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:26:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 1F360352069
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:15:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4367718983A0
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:23:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19D3B31BC8F;
-	Mon, 27 Oct 2025 19:13:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 800E42DAFC3;
+	Mon, 27 Oct 2025 19:21:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yD7FWwmz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tthyOqjD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C804331BC84;
-	Mon, 27 Oct 2025 19:13:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33DB41F7586;
+	Mon, 27 Oct 2025 19:21:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592397; cv=none; b=aBIIFUF/+GaXR/qsIaaeESNxnsw4kjqalOOioOUDFM0GjVDVaHG+QaDyTzVXc9LKnQogNjBdWrOJ28jO9niumDKavNVyzaHHBjwvQese0cJBOpnuacHFb4aKRiK97rdEdD+YKWwHi4orFxElX26EzR/x15JP9PYDhSao3Uu37DA=
+	t=1761592865; cv=none; b=mSMgqKKtzrd6C7sfKcNnwytaTQfMScD1ei6VAyYvGGScYWCT6kRXrmPXGw57FFNGoJRWfKg0gXOekWwohxshdba0REJg6/f0Bm+is3QiqF0vMpRoeu1Fpo/9FZca81nzCvAIVPcOdXFk5xKaz/FNxJeUkiIItyQNw+PrAfTF2e4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592397; c=relaxed/simple;
-	bh=x+G4wQ++EidYfnxaHi2hGLcMap5mXVEqAobSs6EqZdo=;
+	s=arc-20240116; t=1761592865; c=relaxed/simple;
+	bh=djWDenqlJf3vVocsN7hqSnBISubWipTq9Tr3yFx+a8w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O/x8q/ZHUGbjvAA4lhjTyA9kosd3BBDxNK2nVUaZxMKkO3HwCO/Q/sBr2rgjfudIJytTdEuYFwCTvTjlR54OZziE+WTNcnFpPdIlRldxcYQBJLqIRJZEgvlUtB3zqYikPpRWPVVW9NLnsc5JPBC8Z7ZMnKdUl7t4/CaupxX8q58=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yD7FWwmz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B442C4CEF1;
-	Mon, 27 Oct 2025 19:13:17 +0000 (UTC)
+	 MIME-Version; b=N9yXcY/Qg7LToNIVih+XP2TuUjSpQEmfFQo1RoK0in9zd/RXKM9JaKq9Vd779ACGHobsoj6t9fc6iPCgpBcmFyNWNSpb/RukHndtbbYf1nZ3rUPdFnbNDcg2HgsNrx+xV18p/DjtRpfmOIDHRqDtARRBaVTgWzZHcxbZVGFhmRk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tthyOqjD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39EEBC4CEFD;
+	Mon, 27 Oct 2025 19:21:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592397;
-	bh=x+G4wQ++EidYfnxaHi2hGLcMap5mXVEqAobSs6EqZdo=;
+	s=korg; t=1761592862;
+	bh=djWDenqlJf3vVocsN7hqSnBISubWipTq9Tr3yFx+a8w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yD7FWwmzNnjew1IhWKp0EWUp8F4us2uk6g9bz9SwmYxULpf3Ugbkh7pPUaKQ0cxGj
-	 xJQTpYqrs5eMrzU0ItV0M9J8aPHTLjYZ2lfll8dPZJT6BB4ZbHz4o3BmTig+Kbfl73
-	 MrXSGNmKjhJmxbYI4CNE0bDk1+IASOdc+SxThSlA=
+	b=tthyOqjDfevxTLmUHUN68t6DEaxo3akTTspFnXyeRHG654PEZIJvbRK0tqv6fOSU9
+	 dD1Dz7f5R3fBNXjsCxZbxQVR3Hvkgt1Usy/pedwwf8LCiL/FWhdlifNVtkTyupKh1e
+	 5IVzkDz/o/OMmsESiKEGrLbEIrhTm+LHP6Hk70m8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	LI Qingwu <Qing-wu.Li@leica-geosystems.com.cn>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.1 105/157] USB: serial: option: add Telit FN920C04 ECM compositions
-Date: Mon, 27 Oct 2025 19:36:06 +0100
-Message-ID: <20251027183504.072680261@linuxfoundation.org>
+	Alexey Simakov <bigalex934@gmail.com>,
+	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 041/117] sctp: avoid NULL dereference when chunk data buffer is missing
+Date: Mon, 27 Oct 2025 19:36:07 +0100
+Message-ID: <20251027183455.093665877@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
-References: <20251027183501.227243846@linuxfoundation.org>
+In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
+References: <20251027183453.919157109@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,100 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: LI Qingwu <Qing-wu.Li@leica-geosystems.com.cn>
+From: Alexey Simakov <bigalex934@gmail.com>
 
-commit 622865c73ae30f254abdf182f4b66cccbe3e0f10 upstream.
+[ Upstream commit 441f0647f7673e0e64d4910ef61a5fb8f16bfb82 ]
 
-Add support for the Telit Cinterion FN920C04 module when operating in
-ECM (Ethernet Control Model) mode. The following USB product IDs are
-used by the module when AT#USBCFG is set to 3 or 7.
+chunk->skb pointer is dereferenced in the if-block where it's supposed
+to be NULL only.
 
-0x10A3: ECM + tty (NMEA) + tty (DUN) [+ tty (DIAG)]
-T:  Bus=01 Lev=02 Prnt=02 Port=00 Cnt=01 Dev#=  3 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1bc7 ProdID=10a3 Rev= 5.15
-S:  Manufacturer=Telit Cinterion
-S:  Product=FN920
-S:  SerialNumber=76e7cb38
-C:* #Ifs= 5 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:* If#= 0 Alt= 0 #EPs= 1 Cls=02(comm.) Sub=06 Prot=00 Driver=cdc_ether
-E:  Ad=82(I) Atr=03(Int.) MxPS=  16 Ivl=32ms
-I:  If#= 1 Alt= 0 #EPs= 0 Cls=0a(data ) Sub=00 Prot=00 Driver=cdc_ether
-I:* If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=cdc_ether
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=60 Driver=option
-E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+chunk->skb can only be NULL if chunk->head_skb is not. Check for frag_list
+instead and do it just before replacing chunk->skb. We're sure that
+otherwise chunk->skb is non-NULL because of outer if() condition.
 
-0x10A8: ECM + tty (DUN) + tty (AUX) [+ tty (DIAG)]
-T:  Bus=03 Lev=02 Prnt=02 Port=00 Cnt=01 Dev#=  3 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1bc7 ProdID=10a8 Rev= 5.15
-S:  Manufacturer=Telit Cinterion
-S:  Product=FN920
-S:  SerialNumber=76e7cb38
-C:* #Ifs= 5 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:* If#= 0 Alt= 0 #EPs= 1 Cls=02(comm.) Sub=06 Prot=00 Driver=cdc_ether
-E:  Ad=82(I) Atr=03(Int.) MxPS=  16 Ivl=32ms
-I:  If#= 1 Alt= 0 #EPs= 0 Cls=0a(data ) Sub=00 Prot=00 Driver=cdc_ether
-I:* If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=cdc_ether
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-
-Adding these IDs allows the option driver to automatically create the
-corresponding /dev/ttyUSB* ports under ECM mode.
-
-Tested with FN920C04 under ECM configuration (USBCFG=3 and 7).
-
-Signed-off-by: LI Qingwu <Qing-wu.Li@leica-geosystems.com.cn>
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 90017accff61 ("sctp: Add GSO support")
+Signed-off-by: Alexey Simakov <bigalex934@gmail.com>
+Acked-by: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>
+Link: https://patch.msgid.link/20251021130034.6333-1-bigalex934@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/option.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ net/sctp/inqueue.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -1403,10 +1403,14 @@ static const struct usb_device_id option
- 	  .driver_info = RSVD(0) | NCTRL(3) },
- 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10a2, 0xff),	/* Telit FN920C04 (MBIM) */
- 	  .driver_info = NCTRL(4) },
-+	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10a3, 0xff),	/* Telit FN920C04 (ECM) */
-+	  .driver_info = NCTRL(4) },
- 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10a4, 0xff),	/* Telit FN20C04 (rmnet) */
- 	  .driver_info = RSVD(0) | NCTRL(3) },
- 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10a7, 0xff),	/* Telit FN920C04 (MBIM) */
- 	  .driver_info = NCTRL(4) },
-+	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10a8, 0xff),	/* Telit FN920C04 (ECM) */
-+	  .driver_info = NCTRL(4) },
- 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10a9, 0xff),	/* Telit FN20C04 (rmnet) */
- 	  .driver_info = RSVD(0) | NCTRL(2) | RSVD(3) | RSVD(4) },
- 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10aa, 0xff),	/* Telit FN920C04 (MBIM) */
+diff --git a/net/sctp/inqueue.c b/net/sctp/inqueue.c
+index 5c16521818058..f5a7d5a387555 100644
+--- a/net/sctp/inqueue.c
++++ b/net/sctp/inqueue.c
+@@ -169,13 +169,14 @@ struct sctp_chunk *sctp_inq_pop(struct sctp_inq *queue)
+ 				chunk->head_skb = chunk->skb;
+ 
+ 			/* skbs with "cover letter" */
+-			if (chunk->head_skb && chunk->skb->data_len == chunk->skb->len)
++			if (chunk->head_skb && chunk->skb->data_len == chunk->skb->len) {
++				if (WARN_ON(!skb_shinfo(chunk->skb)->frag_list)) {
++					__SCTP_INC_STATS(dev_net(chunk->skb->dev),
++							 SCTP_MIB_IN_PKT_DISCARDS);
++					sctp_chunk_free(chunk);
++					goto next_chunk;
++				}
+ 				chunk->skb = skb_shinfo(chunk->skb)->frag_list;
+-
+-			if (WARN_ON(!chunk->skb)) {
+-				__SCTP_INC_STATS(dev_net(chunk->skb->dev), SCTP_MIB_IN_PKT_DISCARDS);
+-				sctp_chunk_free(chunk);
+-				goto next_chunk;
+ 			}
+ 		}
+ 
+-- 
+2.51.0
+
 
 
 
