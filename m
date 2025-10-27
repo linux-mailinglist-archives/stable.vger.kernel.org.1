@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-191035-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191176-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 723FEC10F8B
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:28:02 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38377C112F4
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:40:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E4509567252
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:22:17 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 821CA504229
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:28:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C4E131D393;
-	Mon, 27 Oct 2025 19:20:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D33982D97A6;
+	Mon, 27 Oct 2025 19:26:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bp7WLCel"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nu2YJzS2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCEED31D753;
-	Mon, 27 Oct 2025 19:20:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D019321F48;
+	Mon, 27 Oct 2025 19:26:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592844; cv=none; b=mNvTXT1S5ckYyYB3OvedlWzuOFZehgtv20i/Lx7FDnjbPg1+wHFM7WQis1C+YDqau/CQRKtI8k7rx6/L/jEeoD3f5ggn54Al3V2slp+4p2Ia4TBVz6ps4KBC14pDd9Yf6YFBwF4eObT974eqbIvBPeCV0KjzMMn5P+1AjTVhyLk=
+	t=1761593203; cv=none; b=O/3HOoVgEZX9jKZ+DyKUbISkbyt4xNkEvbu4JnGmkRjtJ7ELVUWAh+Som/LySKN4ySvOhcyYPSkHn3PYutAP2hrl7AUVBsXe7WF5td2/LkWYgqi8pN62+aRitrCkQ7wXzTUcNigapzFLltjC//dtoQw5B0t8M4YX4Rw9QMbTKUk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592844; c=relaxed/simple;
-	bh=TgnYSmINwvw5cBzMyi7Y1FJ4xK7yS1Dz3ApNiGOhJlU=;
+	s=arc-20240116; t=1761593203; c=relaxed/simple;
+	bh=UNi115xtzT1ELnd2k20KtsaGudcfTIiSlL/RH8MsdWE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b73wDNc77TyrSUj58ho3odNR6RJtgRbQ2AWMfM2aPeLNpvemQuRpgqxLenCcJ6CYCCzduUkbGw9cZCZ5PaL0RQTo9pik7MJOnKIXDGilYJbjbgMAIaMHD9fxI3zJV6YnIZ4DHAbU3LP+ngJoOiWv8b6w7gu6AjG2VqYx0qaLKWQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bp7WLCel; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50949C4CEF1;
-	Mon, 27 Oct 2025 19:20:44 +0000 (UTC)
+	 MIME-Version; b=l+9yBMnNJvpkB9k6i9rCA3UD3yBS7R2pwSWllM0M3Uqab4aga7G7pongQ73qDPUbbkEeOEJszezrATIyWyxdOZnYGZRXXaOLnYzEZF6LcNb2+5L8t7ystpOgZ/cXG1CBTS/3Zu92uBy52tOHEWw+SG9UvX2ey77NLob9XC5LZF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nu2YJzS2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1671C4CEF1;
+	Mon, 27 Oct 2025 19:26:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592844;
-	bh=TgnYSmINwvw5cBzMyi7Y1FJ4xK7yS1Dz3ApNiGOhJlU=;
+	s=korg; t=1761593203;
+	bh=UNi115xtzT1ELnd2k20KtsaGudcfTIiSlL/RH8MsdWE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Bp7WLCelVpOg29vU3j5thZDj3b3KjeybuSWJdZAEApiIVNPLaDTW7JfQKSbuzlm8C
-	 4MTPblq3r1jl+hJMEUhMf3g3kOtQSsdl8FgnBZFjfqhAxObPtzQgO2ihch4Y9LlutZ
-	 VEKdKDQu0MaJcVxQRR9JWsU1SmTJ0ZfrTO9DY0Ug=
+	b=Nu2YJzS2iw8F80YirTxrMhru4Yvs1ofLqEJe+wXBYMugaCE4sZmR7OalfiYSWDljG
+	 mi0avsP/eYamQefbFhJ0egJ27GN4VNmHdCit9Nr2CteWWybEDWukfyJB5R7ZRwHf6Y
+	 bIpNuysNeaMn5+LBUJqqn52jhBO94mpgX1zELapM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Aring <aahringo@redhat.com>,
-	David Teigland <teigland@redhat.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Jijie Shao <shaojijie@huawei.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 008/117] dlm: check for defined force value in dlm_lockspace_release
+Subject: [PATCH 6.17 052/184] net: hibmcge: select FIXED_PHY
 Date: Mon, 27 Oct 2025 19:35:34 +0100
-Message-ID: <20251027183454.161250142@linuxfoundation.org>
+Message-ID: <20251027183516.298685293@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
-References: <20251027183453.919157109@linuxfoundation.org>
+In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
+References: <20251027183514.934710872@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,36 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Aring <aahringo@redhat.com>
+From: Heiner Kallweit <hkallweit1@gmail.com>
 
-[ Upstream commit 6af515c9f3ccec3eb8a262ca86bef2c499d07951 ]
+[ Upstream commit d63f0391d6c7b75e1a847e1a26349fa8cad0004d ]
 
-Force values over 3 are undefined, so don't treat them as 3.
+hibmcge uses fixed_phy_register() et al, but doesn't cater for the case
+that hibmcge is built-in and fixed_phy is a module. To solve this
+select FIXED_PHY.
 
-Signed-off-by: Alexander Aring <aahringo@redhat.com>
-Signed-off-by: David Teigland <teigland@redhat.com>
+Fixes: 1d7cd7a9c69c ("net: hibmcge: support scenario without PHY")
+Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+Reviewed-by: Jijie Shao <shaojijie@huawei.com>
+Link: https://patch.msgid.link/c4fc061f-b6d5-418b-a0dc-6b238cdbedce@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/dlm/lockspace.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/hisilicon/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/dlm/lockspace.c b/fs/dlm/lockspace.c
-index 8afac6e2dff00..7b4b6977dcd66 100644
---- a/fs/dlm/lockspace.c
-+++ b/fs/dlm/lockspace.c
-@@ -730,7 +730,7 @@ static int release_lockspace(struct dlm_ls *ls, int force)
- 
- 	dlm_device_deregister(ls);
- 
--	if (force < 3 && dlm_user_daemon_available())
-+	if (force != 3 && dlm_user_daemon_available())
- 		do_uevent(ls, 0);
- 
- 	dlm_recoverd_stop(ls);
+diff --git a/drivers/net/ethernet/hisilicon/Kconfig b/drivers/net/ethernet/hisilicon/Kconfig
+index 65302c41bfb14..38875c196cb69 100644
+--- a/drivers/net/ethernet/hisilicon/Kconfig
++++ b/drivers/net/ethernet/hisilicon/Kconfig
+@@ -148,6 +148,7 @@ config HIBMCGE
+ 	tristate "Hisilicon BMC Gigabit Ethernet Device Support"
+ 	depends on PCI && PCI_MSI
+ 	select PHYLIB
++	select FIXED_PHY
+ 	select MOTORCOMM_PHY
+ 	select REALTEK_PHY
+ 	help
 -- 
 2.51.0
 
