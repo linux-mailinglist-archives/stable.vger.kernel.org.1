@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-191261-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190986-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 238EAC113C6
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:45:33 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76F7DC10F04
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:26:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 3CC525067B4
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:32:52 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A8AF950303A
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:20:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B49D332D0F0;
-	Mon, 27 Oct 2025 19:30:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4090327783;
+	Mon, 27 Oct 2025 19:18:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vy4iFXo+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OLzcyiVG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68B89248898;
-	Mon, 27 Oct 2025 19:30:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F977326D5D;
+	Mon, 27 Oct 2025 19:18:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761593449; cv=none; b=QfqfcxTok83dqkWdFqFqtfqZZqwnrjs81KQwB9hmdfFAyzojUm9QANqI3PaDDYo3fXYIfI0Hk9PmAINosBj4XafLDJ9av+jGoZv831/rW9nIylXyWWBUNMOl78p0qB8XtTGYQcIqt8h30irJ9wu7iJjK/z6wTkWtA2om8c4NUlI=
+	t=1761592717; cv=none; b=K0PNQcCYAxCU7PPV0JZrMGTw79Nrz/vVJXWK73RmVPdfeAGjyaYlyUYEaCicmuLJ6WBZ5rfmuHhCM6CedIMn27bApECkRjjXisqxWMCGTggbynv/jhbNkBdsOtz1Mgm3VF46hbLQN6zP/4OxZAQenwsuzD2C5JINZ07awvuNxJ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761593449; c=relaxed/simple;
-	bh=ywpgz5JkIBi7qXyyVO+yqyK379eiH/xD7NswlMb53jE=;
+	s=arc-20240116; t=1761592717; c=relaxed/simple;
+	bh=1YgDMORaZBxma3AAe+RnXTbOpecmFlmErXdK+gLotKw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RGq2qD5uAIaFj4WcokHA4uPd+Xb0Sg8qf9tPJob6fArwTzxrvSqOgEuModZje1hHBDz3FKdmT9YNY40UFhlwmgI41HeCkKzXWDwJ4vkCsn29FU9RbHLkBS1YzgkLTzWTr5wetAJ/dfRsPb4Btjh6xg/LsUAU7C09wJLGWo1smqA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vy4iFXo+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE9B8C4CEF1;
-	Mon, 27 Oct 2025 19:30:48 +0000 (UTC)
+	 MIME-Version; b=uxEugNB1iPuh5EpI9han50aS+Ybyh8zbrNQytkTMZZt1M046jrO3RDuVrngf0PEGtwbgHKJGoNfE0GUGtGeqpq8j5XaY2zmTd+7gQxuNu74HRJOY3hSwQKyQW1oooe/TO4TQSnkKMxC64duYmJDwKIgKsSKkYk6naumJggja344=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OLzcyiVG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A8B2C4AF09;
+	Mon, 27 Oct 2025 19:18:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761593449;
-	bh=ywpgz5JkIBi7qXyyVO+yqyK379eiH/xD7NswlMb53jE=;
+	s=korg; t=1761592717;
+	bh=1YgDMORaZBxma3AAe+RnXTbOpecmFlmErXdK+gLotKw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vy4iFXo+HRkdSLQ6sljX4qi/LB0V4azO2oRHlBVDIJkRPv0AzmwE7gJScBkB2c2fi
-	 98nSoXYpUq+X9WpAvMgbXPIfcxDAmdhQ0qwaHpq76buI3mk2n8o5rIkI9CnP0us8R5
-	 i7xMm351dO1uegrWpaRSMFLpUEcnTP/AN0Dbk7fw=
+	b=OLzcyiVGqDMguVWyJF8YTTFl572B01osvc05fUL0aUgTItbndlWAXQsi51y9214WQ
+	 aLWQ+ZRS/EzNCeSyCgzxu4Jc9trv30bZ/Hu9C+eawiW/q9jOFseu8fikaOz2DS4J44
+	 zHMBWaAjXhuvug0OGKZNDpiQT7mby3Itt9d/1ji8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	JuenKit Yip <JuenKit_Yip@hotmail.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 137/184] hwmon: (sht3x) Fix error handling
+	syzbot+916742d5d24f6c254761@syzkaller.appspotmail.com,
+	stable <stable@kernel.org>,
+	Victoria Votokina <Victoria.Votokina@kaspersky.com>
+Subject: [PATCH 6.6 70/84] most: usb: Fix use-after-free in hdm_disconnect
 Date: Mon, 27 Oct 2025 19:36:59 +0100
-Message-ID: <20251027183518.636164566@linuxfoundation.org>
+Message-ID: <20251027183440.677331525@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
-References: <20251027183514.934710872@linuxfoundation.org>
+In-Reply-To: <20251027183438.817309828@linuxfoundation.org>
+References: <20251027183438.817309828@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,104 +62,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guenter Roeck <linux@roeck-us.net>
+From: Victoria Votokina <Victoria.Votokina@kaspersky.com>
 
-[ Upstream commit 8dcc66ad379ec0642fb281c45ccfd7d2d366e53f ]
+commit 4b1270902609ef0d935ed2faa2ea6d122bd148f5 upstream.
 
-Handling of errors when reading status, temperature, and humidity returns
-the error number as negative attribute value. Fix it up by returning
-the error as return value.
+hdm_disconnect() calls most_deregister_interface(), which eventually
+unregisters the MOST interface device with device_unregister(iface->dev).
+If that drops the last reference, the device core may call release_mdev()
+immediately while hdm_disconnect() is still executing.
 
-Fixes: a0ac418c6007c ("hwmon: (sht3x) convert some of sysfs interface to hwmon")
-Cc: JuenKit Yip <JuenKit_Yip@hotmail.com>
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The old code also freed several mdev-owned allocations in
+hdm_disconnect() and then performed additional put_device() calls.
+Depending on refcount order, this could lead to use-after-free or
+double-free when release_mdev() ran (or when unregister paths also
+performed puts).
+
+Fix by moving the frees of mdev-owned allocations into release_mdev(),
+so they happen exactly once when the device is truly released, and by
+dropping the extra put_device() calls in hdm_disconnect() that are
+redundant after device_unregister() and most_deregister_interface().
+
+This addresses the KASAN slab-use-after-free reported by syzbot in
+hdm_disconnect(). See report and stack traces in the bug link below.
+
+Reported-by: syzbot+916742d5d24f6c254761@syzkaller.appspotmail.com
+Cc: stable <stable@kernel.org>
+Closes: https://syzkaller.appspot.com/bug?extid=916742d5d24f6c254761
+Fixes: 97a6f772f36b ("drivers: most: add USB adapter driver")
+Signed-off-by: Victoria Votokina <Victoria.Votokina@kaspersky.com>
+Link: https://patch.msgid.link/20251010105241.4087114-2-Victoria.Votokina@kaspersky.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/sht3x.c | 27 +++++++++++++++++----------
- 1 file changed, 17 insertions(+), 10 deletions(-)
+ drivers/most/most_usb.c |   11 ++++-------
+ 1 file changed, 4 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/hwmon/sht3x.c b/drivers/hwmon/sht3x.c
-index 557ad3e7752a9..f36c0229328fa 100644
---- a/drivers/hwmon/sht3x.c
-+++ b/drivers/hwmon/sht3x.c
-@@ -291,24 +291,26 @@ static struct sht3x_data *sht3x_update_client(struct device *dev)
- 	return data;
+--- a/drivers/most/most_usb.c
++++ b/drivers/most/most_usb.c
+@@ -929,6 +929,10 @@ static void release_mdev(struct device *
+ {
+ 	struct most_dev *mdev = to_mdev_from_dev(dev);
+ 
++	kfree(mdev->busy_urbs);
++	kfree(mdev->cap);
++	kfree(mdev->conf);
++	kfree(mdev->ep_address);
+ 	kfree(mdev);
+ }
+ /**
+@@ -1121,13 +1125,6 @@ static void hdm_disconnect(struct usb_in
+ 	if (mdev->dci)
+ 		device_unregister(&mdev->dci->dev);
+ 	most_deregister_interface(&mdev->iface);
+-
+-	kfree(mdev->busy_urbs);
+-	kfree(mdev->cap);
+-	kfree(mdev->conf);
+-	kfree(mdev->ep_address);
+-	put_device(&mdev->dci->dev);
+-	put_device(&mdev->dev);
  }
  
--static int temp1_input_read(struct device *dev)
-+static int temp1_input_read(struct device *dev, long *temp)
- {
- 	struct sht3x_data *data = sht3x_update_client(dev);
- 
- 	if (IS_ERR(data))
- 		return PTR_ERR(data);
- 
--	return data->temperature;
-+	*temp = data->temperature;
-+	return 0;
- }
- 
--static int humidity1_input_read(struct device *dev)
-+static int humidity1_input_read(struct device *dev, long *humidity)
- {
- 	struct sht3x_data *data = sht3x_update_client(dev);
- 
- 	if (IS_ERR(data))
- 		return PTR_ERR(data);
- 
--	return data->humidity;
-+	*humidity = data->humidity;
-+	return 0;
- }
- 
- /*
-@@ -706,6 +708,7 @@ static int sht3x_read(struct device *dev, enum hwmon_sensor_types type,
- 		      u32 attr, int channel, long *val)
- {
- 	enum sht3x_limits index;
-+	int ret;
- 
- 	switch (type) {
- 	case hwmon_chip:
-@@ -720,10 +723,12 @@ static int sht3x_read(struct device *dev, enum hwmon_sensor_types type,
- 	case hwmon_temp:
- 		switch (attr) {
- 		case hwmon_temp_input:
--			*val = temp1_input_read(dev);
--			break;
-+			return temp1_input_read(dev, val);
- 		case hwmon_temp_alarm:
--			*val = temp1_alarm_read(dev);
-+			ret = temp1_alarm_read(dev);
-+			if (ret < 0)
-+				return ret;
-+			*val = ret;
- 			break;
- 		case hwmon_temp_max:
- 			index = limit_max;
-@@ -748,10 +753,12 @@ static int sht3x_read(struct device *dev, enum hwmon_sensor_types type,
- 	case hwmon_humidity:
- 		switch (attr) {
- 		case hwmon_humidity_input:
--			*val = humidity1_input_read(dev);
--			break;
-+			return humidity1_input_read(dev, val);
- 		case hwmon_humidity_alarm:
--			*val = humidity1_alarm_read(dev);
-+			ret = humidity1_alarm_read(dev);
-+			if (ret < 0)
-+				return ret;
-+			*val = ret;
- 			break;
- 		case hwmon_humidity_max:
- 			index = limit_max;
--- 
-2.51.0
-
+ static int hdm_suspend(struct usb_interface *interface, pm_message_t message)
 
 
 
