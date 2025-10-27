@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-190642-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190543-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34AAFC10940
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:10:59 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 451F2C10896
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:09:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6E4FF188C044
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:07:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EF7055626CB
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:03:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8349932C940;
-	Mon, 27 Oct 2025 19:03:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBDE03328FA;
+	Mon, 27 Oct 2025 18:59:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F1hi53La"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jMSJT1ni"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E10632D43F;
-	Mon, 27 Oct 2025 19:03:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E3753328F4;
+	Mon, 27 Oct 2025 18:59:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591816; cv=none; b=nfTeFL+DC6ZrWiN7IXhAc/FQjuAUI79zm+mNkoU90Q2+2QUaVgsTjnCXm8dpf3ACmKIoe9NHOfkkSShpgUrnOWuhYFJXuBddmAcDDCuSNE46hRmjCbBSghKTkFErmURlFQld16at179caI7R0alnR9zz2qcLI2WK975+c2DhDco=
+	t=1761591564; cv=none; b=hMwx3Ak14xgWR0BilhSFoe42bvc/NnD8Ytcxp89/HfVKJNofHk0XB+ql/vajHhqcf1ctpGIuNuSqh2f4xlXhVk+S5wq683XOwOfw5IF8yBs63/ke8gLp+JTcOGdkVYNdizoQZCq1oczZ33XiOfwTcEf1sy1OKh8GzuGKmO0CQRc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591816; c=relaxed/simple;
-	bh=d77xYxsRoSqroU54lIRlHvcf+GiTR+aOSt0ClgSz7gw=;
+	s=arc-20240116; t=1761591564; c=relaxed/simple;
+	bh=iMMpN/GVeikLSZgrRlMDiBEl2BCInqCd2q3orYdTIck=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ciHt/r/QX3qM3V0pcXQO8zlesLu5r2/jMAdVhaWEeCpdGj4SV8l5IV2f1dYOnHHbrccUp/qOYJEaaDi8au7x1fEzq6Eig9jHUhV2Mff1iT656KNltip7OMw2dlSXYqeb3ZP0UzggFhOcaizzrSb2eWeSJEBuLVml/i9/R4pG6NI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F1hi53La; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9DB5C4CEFD;
-	Mon, 27 Oct 2025 19:03:35 +0000 (UTC)
+	 MIME-Version; b=b4A+06jFNmS2rD1NTFnFwA8UMMnCqoyHawSZWbEWtm0aJl1tPlC9gVZED5YSUnH5MXIqoCAV8nRXAlset82DOZ0MmEn1vh61lFpk60TyUiDxai0NAyzZVNj76/HBHW0R+YaEe+vpZ+jrwhGBAvyyCs1l0UpLAunkJ+8PQLZfZEg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jMSJT1ni; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10D97C4CEF1;
+	Mon, 27 Oct 2025 18:59:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591816;
-	bh=d77xYxsRoSqroU54lIRlHvcf+GiTR+aOSt0ClgSz7gw=;
+	s=korg; t=1761591564;
+	bh=iMMpN/GVeikLSZgrRlMDiBEl2BCInqCd2q3orYdTIck=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F1hi53LalSg52ezjM0VOgxfvXA/tnLlMmn4jp3Bq8aXcdPoCvVNUSvqIFaP4vUH2A
-	 FQJawAk0lL5e0GbO1Muq0g9QfuLQ8iTSC1cZdqLYMCRUnei7L2NG4/wTvbDVHg9Yux
-	 iWVvwBV1dkhAeNFu/Ufkwo5m7iWuoS2gc6JAQNfI=
+	b=jMSJT1niIDYwB+LJEvVk/403ttTOjSNPsIzwQIiRZBSr+So5jk3kbR8TumOeIvJCC
+	 GNn0Na01bFmxMeCUWuwB6ZnWae+2gZvJZsxZfgkdMbLPaqvnnq92fNtRKJ3PTpgtMA
+	 AIImVET3Lh/BSpHxTw6Fer8z1fSppW8/EAVheFyU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yi Cong <yicong@kylinos.cn>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 5.15 001/123] r8152: add error handling in rtl8152_driver_init
+	stable@kernel.org,
+	Zhang Yi <yi.zhang@huawei.com>,
+	Deepanshu Kartikey <kartikey406@gmail.com>,
+	Theodore Tso <tytso@mit.edu>,
+	syzbot+038b7bf43423e132b308@syzkaller.appspotmail.com
+Subject: [PATCH 5.10 228/332] ext4: detect invalid INLINE_DATA + EXTENTS flag combination
 Date: Mon, 27 Oct 2025 19:34:41 +0100
-Message-ID: <20251027183446.425369646@linuxfoundation.org>
+Message-ID: <20251027183530.819250786@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183446.381986645@linuxfoundation.org>
-References: <20251027183446.381986645@linuxfoundation.org>
+In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
+References: <20251027183524.611456697@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +64,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yi Cong <yicong@kylinos.cn>
+From: Deepanshu Kartikey <kartikey406@gmail.com>
 
-commit 75527d61d60d493d1eb064f335071a20ca581f54 upstream.
+commit 1d3ad183943b38eec2acf72a0ae98e635dc8456b upstream.
 
-rtl8152_driver_init() is missing the error handling.
-When rtl8152_driver registration fails, rtl8152_cfgselector_driver
-should be deregistered.
+syzbot reported a BUG_ON in ext4_es_cache_extent() when opening a verity
+file on a corrupted ext4 filesystem mounted without a journal.
 
-Fixes: ec51fbd1b8a2 ("r8152: add USB device driver for config selection")
-Cc: stable@vger.kernel.org
-Signed-off-by: Yi Cong <yicong@kylinos.cn>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20251011082415.580740-1-yicongsrfy@163.com
-[pabeni@redhat.com: clarified the commit message]
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+The issue is that the filesystem has an inode with both the INLINE_DATA
+and EXTENTS flags set:
+
+    EXT4-fs error (device loop0): ext4_cache_extents:545: inode #15:
+    comm syz.0.17: corrupted extent tree: lblk 0 < prev 66
+
+Investigation revealed that the inode has both flags set:
+    DEBUG: inode 15 - flag=1, i_inline_off=164, has_inline=1, extents_flag=1
+
+This is an invalid combination since an inode should have either:
+- INLINE_DATA: data stored directly in the inode
+- EXTENTS: data stored in extent-mapped blocks
+
+Having both flags causes ext4_has_inline_data() to return true, skipping
+extent tree validation in __ext4_iget(). The unvalidated out-of-order
+extents then trigger a BUG_ON in ext4_es_cache_extent() due to integer
+underflow when calculating hole sizes.
+
+Fix this by detecting this invalid flag combination early in ext4_iget()
+and rejecting the corrupted inode.
+
+Cc: stable@kernel.org
+Reported-and-tested-by: syzbot+038b7bf43423e132b308@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=038b7bf43423e132b308
+Suggested-by: Zhang Yi <yi.zhang@huawei.com>
+Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
+Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
+Message-ID: <20250930112810.315095-1-kartikey406@gmail.com>
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/usb/r8152.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ fs/ext4/inode.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/drivers/net/usb/r8152.c
-+++ b/drivers/net/usb/r8152.c
-@@ -9925,7 +9925,12 @@ static int __init rtl8152_driver_init(vo
- 	ret = usb_register_device_driver(&rtl8152_cfgselector_driver, THIS_MODULE);
- 	if (ret)
- 		return ret;
--	return usb_register(&rtl8152_driver);
-+
-+	ret = usb_register(&rtl8152_driver);
-+	if (ret)
-+		usb_deregister_device_driver(&rtl8152_cfgselector_driver);
-+
-+	return ret;
- }
- 
- static void __exit rtl8152_driver_exit(void)
+--- a/fs/ext4/inode.c
++++ b/fs/ext4/inode.c
+@@ -4868,6 +4868,14 @@ struct inode *__ext4_iget(struct super_b
+ 	}
+ 	ei->i_flags = le32_to_cpu(raw_inode->i_flags);
+ 	ext4_set_inode_flags(inode, true);
++	/* Detect invalid flag combination - can't have both inline data and extents */
++	if (ext4_test_inode_flag(inode, EXT4_INODE_INLINE_DATA) &&
++	    ext4_test_inode_flag(inode, EXT4_INODE_EXTENTS)) {
++		ext4_error_inode(inode, function, line, 0,
++			"inode has both inline data and extents flags");
++		ret = -EFSCORRUPTED;
++		goto bad_inode;
++	}
+ 	inode->i_blocks = ext4_inode_blocks(raw_inode, ei);
+ 	ei->i_file_acl = le32_to_cpu(raw_inode->i_file_acl_lo);
+ 	if (ext4_has_feature_64bit(sb))
 
 
 
