@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-190811-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190678-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 468D8C10C6D
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:19:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 442FEC10A52
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:14:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id AB59F502C94
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:13:18 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 983DE507363
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:08:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 853A52D2398;
-	Mon, 27 Oct 2025 19:10:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07036331A76;
+	Mon, 27 Oct 2025 19:05:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pvfmh3x2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nlHzj1qq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37FFA35965;
-	Mon, 27 Oct 2025 19:10:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF3EF3314DD;
+	Mon, 27 Oct 2025 19:05:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592258; cv=none; b=gmc/VPkfLSTtn0hvQmS400LotJ1Lcf/5yXdpHbQAC+63oNnXpgkG3afvAEBbula8+XU+VVFaO0GfZTDAQ60tl4aGnSNdjJjBGY6J3raJ/e0IlNgzQf7Bpf43+wJdgcDonSpZm6AOzL3VWxgM31xxGjlPYJdBG1xyDfd14FUlnEM=
+	t=1761591909; cv=none; b=MvcfQbAR5w0BfcWgHilLYjrQXbzx8uyadQHXOmBu7NOjgMR9bUszr03GBULpJIfvEnE6MiqeG0dbHZvi9uO7QXM0mi4ISyfPp2RWyRIy05+C9S5TeSGS1iTbu2RV8qhaNK5DoqY73cOcCQ1OaubSQoioykwe/nDJyAiLrx1M80c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592258; c=relaxed/simple;
-	bh=EyWW1nNWjZot+VK/xg4T4yKwMfBGD/ddyZCDtlha33s=;
+	s=arc-20240116; t=1761591909; c=relaxed/simple;
+	bh=dNtyJKtqgjzikMtkExyGB7XHnlCooKbjKxfxL3Fww90=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rdLBoK44Y31+NzZm8MRwqguKEGCOMCa98xO4EeoWtQ/Gtcu/cgD38ji7eBn3O3tEj1+dtfGmzPoTwH7LIqrO+U7vsqUnnivhdQgIZncuuzXS9NoZRw/zhWWiIeV4rWONy5SopF5RDZsuTVPBJa2lKsSYEsYQHONBsWA7gIbwvVI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pvfmh3x2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD065C4CEFD;
-	Mon, 27 Oct 2025 19:10:57 +0000 (UTC)
+	 MIME-Version; b=V+37RZArdzC4KYGDusYuxs5BWVKvc0tOl/uqgOuAql22rX6vdWBnCgMFxJDVvJFNF6ZruA0LoSNkSwMeY5ZBo+SbzAG/g5LJ30ACtkYz7aqdQvPhdCDnrN9HqScrA0cQSkQs877bDZd4ZquWR98qsut5PdVhg+bkdGHjS7W2p3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nlHzj1qq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 430C3C4CEFD;
+	Mon, 27 Oct 2025 19:05:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592258;
-	bh=EyWW1nNWjZot+VK/xg4T4yKwMfBGD/ddyZCDtlha33s=;
+	s=korg; t=1761591909;
+	bh=dNtyJKtqgjzikMtkExyGB7XHnlCooKbjKxfxL3Fww90=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pvfmh3x2bVahRPGfN8J2GZoJGPF6igLqvc1/zihO/UOVy1fpx3HsZzHz1wv+SQw6z
-	 vKuQgqg09JsBQN8wjLZlbVnD4hcEuSy//5Jo4KFMwshhbh7hh4x3k+GjCXIHQwajxj
-	 0REztz8unBldYdtrmc5J/2dPoc2pLJkCrYQ5HjDI=
+	b=nlHzj1qq5eM+ymxx9D+wT1aVYm88AalwdAJSmjtne+wZgc/UavTydjYChBlBqxMfO
+	 FQeE9wAsXvYa5jTi/r8wEMZGiOAwPmxaroV+dK0yHnxvbNz4CrWXNmoUqCxg+zK9nq
+	 O5G+3iZLIwy+6uu8OfMTcZJP5gR3pAv4BiZxeDtU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,12 +46,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sabrina Dubroca <sd@queasysnail.net>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 046/157] tls: wait for async encrypt in case of error during latter iterations of sendmsg
+Subject: [PATCH 5.15 027/123] tls: always set record_type in tls_process_cmsg
 Date: Mon, 27 Oct 2025 19:35:07 +0100
-Message-ID: <20251027183502.530696498@linuxfoundation.org>
+Message-ID: <20251027183447.126354364@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
-References: <20251027183501.227243846@linuxfoundation.org>
+In-Reply-To: <20251027183446.381986645@linuxfoundation.org>
+References: <20251027183446.381986645@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,68 +63,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Sabrina Dubroca <sd@queasysnail.net>
 
-[ Upstream commit b014a4e066c555185b7c367efacdc33f16695495 ]
+[ Upstream commit b6fe4c29bb51cf239ecf48eacf72b924565cb619 ]
 
-If we hit an error during the main loop of tls_sw_sendmsg_locked (eg
-failed allocation), we jump to send_end and immediately
-return. Previous iterations may have queued async encryption requests
-that are still pending. We should wait for those before returning, as
-we could otherwise be reading from memory that userspace believes
-we're not using anymore, which would be a sort of use-after-free.
+When userspace wants to send a non-DATA record (via the
+TLS_SET_RECORD_TYPE cmsg), we need to send any pending data from a
+previous MSG_MORE send() as a separate DATA record. If that DATA record
+is encrypted asynchronously, tls_handle_open_record will return
+-EINPROGRESS. This is currently treated as an error by
+tls_process_cmsg, and it will skip setting record_type to the correct
+value, but the caller (tls_sw_sendmsg_locked) handles that return
+value correctly and proceeds with sending the new message with an
+incorrect record_type (DATA instead of whatever was requested in the
+cmsg).
 
-This is similar to what tls_sw_recvmsg already does: failures during
-the main loop jump to the "wait for async" code, not straight to the
-unlock/return.
+Always set record_type before handling the open record. If
+tls_handle_open_record returns an error, record_type will be
+ignored. If it succeeds, whether with synchronous crypto (returning 0)
+or asynchronous (returning -EINPROGRESS), the caller will proceed
+correctly.
 
 Fixes: a42055e8d2c3 ("net/tls: Add support for async encryption of records for performance")
 Reported-by: Jann Horn <jannh@google.com>
 Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
-Link: https://patch.msgid.link/c793efe9673b87f808d84fdefc0f732217030c52.1760432043.git.sd@queasysnail.net
+Link: https://patch.msgid.link/0457252e578a10a94e40c72ba6288b3a64f31662.1760432043.git.sd@queasysnail.net
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/tls/tls_sw.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ net/tls/tls_main.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
-index c67cf1a06c0e5..0e378d7cb6903 100644
---- a/net/tls/tls_sw.c
-+++ b/net/tls/tls_sw.c
-@@ -1029,7 +1029,7 @@ int tls_sw_sendmsg(struct sock *sk, struct msghdr *msg, size_t size)
- 			if (ret == -EINPROGRESS)
- 				num_async++;
- 			else if (ret != -EAGAIN)
--				goto send_end;
-+				goto end;
- 		}
- 	}
+diff --git a/net/tls/tls_main.c b/net/tls/tls_main.c
+index ba170f1f38a4c..0352771295914 100644
+--- a/net/tls/tls_main.c
++++ b/net/tls/tls_main.c
+@@ -185,12 +185,9 @@ int tls_proccess_cmsg(struct sock *sk, struct msghdr *msg,
+ 			if (msg->msg_flags & MSG_MORE)
+ 				return -EINVAL;
  
-@@ -1182,8 +1182,9 @@ int tls_sw_sendmsg(struct sock *sk, struct msghdr *msg, size_t size)
- 			goto alloc_encrypted;
- 	}
- 
-+send_end:
- 	if (!num_async) {
--		goto send_end;
-+		goto end;
- 	} else if (num_zc || eor) {
- 		int err;
- 
-@@ -1201,7 +1202,7 @@ int tls_sw_sendmsg(struct sock *sk, struct msghdr *msg, size_t size)
- 		tls_tx_records(sk, msg->msg_flags);
- 	}
- 
--send_end:
-+end:
- 	ret = sk_stream_error(sk, msg->msg_flags, ret);
- 
- 	release_sock(sk);
+-			rc = tls_handle_open_record(sk, msg->msg_flags);
+-			if (rc)
+-				return rc;
+-
+ 			*record_type = *(unsigned char *)CMSG_DATA(cmsg);
+-			rc = 0;
++
++			rc = tls_handle_open_record(sk, msg->msg_flags);
+ 			break;
+ 		default:
+ 			return -EINVAL;
 -- 
 2.51.0
 
