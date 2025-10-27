@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-190549-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190802-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2427FC10849
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:08:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D37CC10C46
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:19:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C5A96503CF6
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:04:06 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E0B79500BAF
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:13:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66746332916;
-	Mon, 27 Oct 2025 18:59:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF502320A00;
+	Mon, 27 Oct 2025 19:10:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P6izRlPE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iPOGE3ei"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22CD0328B7A;
-	Mon, 27 Oct 2025 18:59:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A6EC2DAFC3;
+	Mon, 27 Oct 2025 19:10:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591580; cv=none; b=gTFLdsVleMIOFWc6Pt9GznZaCGbJguUNN8e8vzDk6bJHYO9jmEouqzXjcjhWVg7d25ZAc8Jg5iPVoxzCCpm5l9bRDfW58J9VA2R7u+4zskKmMpridhDERgas0ac9FQ3nnHQBBWE6TX1x4wpklcACHZ7MHv3QJFY7OS8QWyEehoU=
+	t=1761592234; cv=none; b=cFkAy179hG+s+SXtrniGBGN4wba94LeiWYFSIPBYpX7IhNGOFwZXzrRPO9X21//GK548HuramyjeKKqkTjRAh40Cb7bmi9r3nU29MyeiSIExXsFfN+jq6nnXpM0VSZ+ykFnWsWqvXXSlRAirXXF1Fo9YPU7JQzQp+rePvKK0MGs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591580; c=relaxed/simple;
-	bh=/xmKzb9SnHLHQix9Vyi94XN5FxYsnuBF9+2FTbWZRT4=;
+	s=arc-20240116; t=1761592234; c=relaxed/simple;
+	bh=e3UtPQ1jFCUJQWAmYORGEWT4RGNDM/uhZverNE4ztYc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W9cTOEIm6NrfOpu6qh6hfhpbjWGsJrrnBMZiqyYBiDO8Vz33E0vwzOBwfNkT0oykwofOc/fFZKm03c2BqG9BnG6gURn4KP+zUHVnEQiCAD48OPN+HoX94pssvoTVZCSFSmfcFo52SDjMdNaPGiBnHlP5STKOePcYY0I2QQq8FeM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P6izRlPE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0C21C4CEF1;
-	Mon, 27 Oct 2025 18:59:39 +0000 (UTC)
+	 MIME-Version; b=jY09vN4a4BhM1etsno76jkmcdgJ8iVhCPRVvNA4vRYQA52x8wlPCJieGUr+H9mMT/x1bMAwkxKYbNW+zvv5E1XkaciWYOpqp92NHJYSeDPE1VVU9nPXg1FzSx2eApOhVCz8XkKqLwESwF989rSiWu4rjfPV6mIoiygR2XozXCkA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iPOGE3ei; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B674C4CEFD;
+	Mon, 27 Oct 2025 19:10:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591580;
-	bh=/xmKzb9SnHLHQix9Vyi94XN5FxYsnuBF9+2FTbWZRT4=;
+	s=korg; t=1761592234;
+	bh=e3UtPQ1jFCUJQWAmYORGEWT4RGNDM/uhZverNE4ztYc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P6izRlPEdByu+1Nm67DVichI7SOFA9+2Dd+4ISbs6E2vt6bnMadRVo8kuxvqQNhdY
-	 059Mg6VZ5j7UDhRFaY/+TZEFLNf0Xgl6/cjXSHJ05n0mvHwxyNyzMvRoh5GTNmyKmr
-	 JTgcT7LEt3TEvTWkzf+0fDSQ5ZJ/mzBK9AyU+2A4=
+	b=iPOGE3ei/Yq93Ol8jfdVjFqMLBw0N0qOLFAdUtLIRUvojNPnCdpQKhYAl1dSbzkFZ
+	 GJwD2LXDEKELWUTa+TyqxHpXx8pgcSdMKRRQnzwE5FrcUus6OU0tC8TVHObyes1L99
+	 8zKS8Epztp3yijooxn6YZktCXZVMwpNgZtc6AFco=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	I Viswanath <viswanathiyyappan@gmail.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Khalid Aziz <khalid@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Neal Cardwell <ncardwell@google.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 251/332] net: usb: lan78xx: fix use of improperly initialized dev->chipid in lan78xx_reset
+Subject: [PATCH 6.1 043/157] tcp: fix tcp_tso_should_defer() vs large RTT
 Date: Mon, 27 Oct 2025 19:35:04 +0100
-Message-ID: <20251027183531.467963128@linuxfoundation.org>
+Message-ID: <20251027183502.452372246@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
-References: <20251027183524.611456697@linuxfoundation.org>
+In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
+References: <20251027183501.227243846@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,64 +63,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: I Viswanath <viswanathiyyappan@gmail.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 8d93ff40d49d70e05c82a74beae31f883fe0eaf8 ]
+[ Upstream commit 295ce1eb36ae47dc862d6c8a1012618a25516208 ]
 
-dev->chipid is used in lan78xx_init_mac_address before it's initialized:
+Neal reported that using neper tcp_stream with TCP_TX_DELAY
+set to 50ms would often lead to flows stuck in a small cwnd mode,
+regardless of the congestion control.
 
-lan78xx_reset() {
-    lan78xx_init_mac_address()
-        lan78xx_read_eeprom()
-            lan78xx_read_raw_eeprom() <- dev->chipid is used here
+While tcp_stream sets TCP_TX_DELAY too late after the connect(),
+it highlighted two kernel bugs.
 
-    dev->chipid = ... <- dev->chipid is initialized correctly here
-}
+The following heuristic in tcp_tso_should_defer() seems wrong
+for large RTT:
 
-Reorder initialization so that dev->chipid is set before calling
-lan78xx_init_mac_address().
+delta = tp->tcp_clock_cache - head->tstamp;
+/* If next ACK is likely to come too late (half srtt), do not defer */
+if ((s64)(delta - (u64)NSEC_PER_USEC * (tp->srtt_us >> 4)) < 0)
+      goto send_now;
 
-Fixes: a0db7d10b76e ("lan78xx: Add to handle mux control per chip id")
-Signed-off-by: I Viswanath <viswanathiyyappan@gmail.com>
-Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Reviewed-by: Khalid Aziz <khalid@kernel.org>
-Link: https://patch.msgid.link/20251013181648.35153-1-viswanathiyyappan@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+If next ACK is expected to come in more than 1 ms, we should
+not defer because we prefer a smooth ACK clocking.
+
+While blamed commit was a step in the good direction, it was not
+generic enough.
+
+Another patch fixing TCP_TX_DELAY for established flows
+will be proposed when net-next reopens.
+
+Fixes: 50c8339e9299 ("tcp: tso: restore IW10 after TSO autosizing")
+Reported-by: Neal Cardwell <ncardwell@google.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Neal Cardwell <ncardwell@google.com>
+Tested-by: Neal Cardwell <ncardwell@google.com>
+Link: https://patch.msgid.link/20251011115742.1245771-1-edumazet@google.com
+[pabeni@redhat.com: fixed whitespace issue]
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/lan78xx.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ net/ipv4/tcp_output.c | 19 +++++++++++++++----
+ 1 file changed, 15 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
-index c3aa3f75ab914..fd5fa64cbe932 100644
---- a/drivers/net/usb/lan78xx.c
-+++ b/drivers/net/usb/lan78xx.c
-@@ -2673,10 +2673,6 @@ static int lan78xx_reset(struct lan78xx_net *dev)
- 		}
- 	} while (buf & HW_CFG_LRST_);
- 
--	ret = lan78xx_init_mac_address(dev);
--	if (ret < 0)
--		return ret;
--
- 	/* save DEVID for later usage */
- 	ret = lan78xx_read_reg(dev, ID_REV, &buf);
- 	if (ret < 0)
-@@ -2685,6 +2681,10 @@ static int lan78xx_reset(struct lan78xx_net *dev)
- 	dev->chipid = (buf & ID_REV_CHIP_ID_MASK_) >> 16;
- 	dev->chiprev = buf & ID_REV_CHIP_REV_MASK_;
- 
-+	ret = lan78xx_init_mac_address(dev);
-+	if (ret < 0)
-+		return ret;
+diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
+index 40568365cdb3b..a8d8e2f294ff2 100644
+--- a/net/ipv4/tcp_output.c
++++ b/net/ipv4/tcp_output.c
+@@ -2184,7 +2184,8 @@ static bool tcp_tso_should_defer(struct sock *sk, struct sk_buff *skb,
+ 				 u32 max_segs)
+ {
+ 	const struct inet_connection_sock *icsk = inet_csk(sk);
+-	u32 send_win, cong_win, limit, in_flight;
++	u32 send_win, cong_win, limit, in_flight, threshold;
++	u64 srtt_in_ns, expected_ack, how_far_is_the_ack;
+ 	struct tcp_sock *tp = tcp_sk(sk);
+ 	struct sk_buff *head;
+ 	int win_divisor;
+@@ -2246,9 +2247,19 @@ static bool tcp_tso_should_defer(struct sock *sk, struct sk_buff *skb,
+ 	head = tcp_rtx_queue_head(sk);
+ 	if (!head)
+ 		goto send_now;
+-	delta = tp->tcp_clock_cache - head->tstamp;
+-	/* If next ACK is likely to come too late (half srtt), do not defer */
+-	if ((s64)(delta - (u64)NSEC_PER_USEC * (tp->srtt_us >> 4)) < 0)
 +
- 	/* Respond to the IN token with a NAK */
- 	ret = lan78xx_read_reg(dev, USB_CFG0, &buf);
- 	if (ret < 0)
++	srtt_in_ns = (u64)(NSEC_PER_USEC >> 3) * tp->srtt_us;
++	/* When is the ACK expected ? */
++	expected_ack = head->tstamp + srtt_in_ns;
++	/* How far from now is the ACK expected ? */
++	how_far_is_the_ack = expected_ack - tp->tcp_clock_cache;
++
++	/* If next ACK is likely to come too late,
++	 * ie in more than min(1ms, half srtt), do not defer.
++	 */
++	threshold = min(srtt_in_ns >> 1, NSEC_PER_MSEC);
++
++	if ((s64)(how_far_is_the_ack - threshold) > 0)
+ 		goto send_now;
+ 
+ 	/* Ok, it looks like it is advisable to defer.
 -- 
 2.51.0
 
