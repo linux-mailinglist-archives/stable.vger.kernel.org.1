@@ -1,62 +1,56 @@
-Return-Path: <stable+bounces-191046-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190869-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3820C11048
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:30:20 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B974C10D27
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:21:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 27C5F548269
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:23:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 883445672CA
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:15:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39AA432E157;
-	Mon, 27 Oct 2025 19:21:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D1B52DAFC3;
+	Mon, 27 Oct 2025 19:13:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P9XvR7S9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eh2mHee+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8D09315D44;
-	Mon, 27 Oct 2025 19:21:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49B7023EA92;
+	Mon, 27 Oct 2025 19:13:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592873; cv=none; b=UCc7CrYzxkzNlsoK/pHUpn726lTOrcYze8oS316VECYhhdPTxDqaLaVsxp2kWDDGeIEnEF0Pm1T+JIwspaDF8jY1/4CVX2OK2F2R6m2Wyb2tnA/EOdmYSpJj8r69tOMOqAz+ty4x6nN/ujlACKuZVobZ2RVy1g4EI7PpDXIv6bM=
+	t=1761592413; cv=none; b=k9ZNU7gqzA4itLfJP9Ip5HA7Z+JyPmyXJFwuZuORMPA8OhYwlYEHyxDkeeJubKi2hVBKSKMGvplrT4Gr7al+/c6fet8zQVby5GpMo4vaFYN4+zrFP2ssWEKIePwpjKzoiF4nNvZM2nzdgdWbn8QThrkaFd7+olOUhuR7Bhv7KDI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592873; c=relaxed/simple;
-	bh=tozWThGsbSJn6ZkPMvPThlIwp0HIVOIOuQBHSSG/bOY=;
+	s=arc-20240116; t=1761592413; c=relaxed/simple;
+	bh=0c/RF5nPYb30xrWBi6l9CC8FLdFNLp28wt0fN4Arrd8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EBcV1QLMpH2GZeaDOwSLOJU9/oMO+JapPQsdJFqzvAHyvJfrDAjfGF0flJqUj3J3UW9Hdu5GVfPEp/iYi0UNtsWvsypFOMSz9rQ3tINVyUXJmysnZwUvewSd8vgQPEutHrZHgIcW2ZwrYEM5cFe5py3nYc4TJziO+ztkgeSd6N0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P9XvR7S9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D355C4CEF1;
-	Mon, 27 Oct 2025 19:21:12 +0000 (UTC)
+	 MIME-Version; b=A3yJ3j3dORa3oBBG94F8DT+YxUoIox/TAIVtvQEod7EW2W3RpTIc99SbJiO6IEBDHeR7m5i4kbm59cpdR3J3D2AZB90/duTT5dtH57GjSUschMPNQxlPYUNUELUUkSBiqTkK8+Z/3X1/0ysW1GXCn0PY/wT+P0WK8SAyDNUVA78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eh2mHee+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEC82C4CEF1;
+	Mon, 27 Oct 2025 19:13:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592872;
-	bh=tozWThGsbSJn6ZkPMvPThlIwp0HIVOIOuQBHSSG/bOY=;
+	s=korg; t=1761592413;
+	bh=0c/RF5nPYb30xrWBi6l9CC8FLdFNLp28wt0fN4Arrd8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P9XvR7S9ks/Y1AqSGh4lT7kh2LYUSE43OlJe51ILr9a9TpIQPCjzkFfyffBFDdniU
-	 AQOYbXY3mmZqIL0fJOdUMv4rM65ajrMBIWkvKh9mYRIrFi86l1FqIHY+ggpyP15uaq
-	 GXc1bUAu1pYbjDryyeXUtJAykuM/1J7XXeKlDecQ=
+	b=eh2mHee+yL+axF/XU04XH57P+Tqii3KatXItdIRaVKmcvZ/50O+dAQFeKw7NRikv/
+	 Iy3QGjZr1lU6lDhcXchJ1gtQfCWn3srz0k0V8puiUvlmt+zou9KhdOxrpq5/t8mnhB
+	 Hnm5l5ZOQAHSHocJqgTKWZonncSqL+44VGHv2Vw8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jay Vosburgh <jv@jvosburgh.net>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Vincent Bernat <vincent@bernat.ch>,
-	Tonghao Zhang <tonghao@bamaicloud.com>
-Subject: [PATCH 6.12 045/117] net: bonding: fix possible peer notify event loss or dup issue
+	syzbot+f6c3c066162d2c43a66c@syzkaller.appspotmail.com,
+	Deepanshu Kartikey <kartikey406@gmail.com>,
+	Ian Abbott <abbotti@mev.co.uk>
+Subject: [PATCH 6.1 110/157] comedi: fix divide-by-zero in comedi_buf_munge()
 Date: Mon, 27 Oct 2025 19:36:11 +0100
-Message-ID: <20251027183455.210234466@linuxfoundation.org>
+Message-ID: <20251027183504.202704598@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
-References: <20251027183453.919157109@linuxfoundation.org>
+In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
+References: <20251027183501.227243846@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,118 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tonghao Zhang <tonghao@bamaicloud.com>
+From: Deepanshu Kartikey <kartikey406@gmail.com>
 
-commit 10843e1492e474c02b91314963161731fa92af91 upstream.
+commit 87b318ba81dda2ee7b603f4f6c55e78ec3e95974 upstream.
 
-If the send_peer_notif counter and the peer event notify are not synchronized.
-It may cause problems such as the loss or dup of peer notify event.
+The comedi_buf_munge() function performs a modulo operation
+`async->munge_chan %= async->cmd.chanlist_len` without first
+checking if chanlist_len is zero. If a user program submits a command with
+chanlist_len set to zero, this causes a divide-by-zero error when the device
+processes data in the interrupt handler path.
 
-Before this patch:
-- If should_notify_peers is true and the lock for send_peer_notif-- fails, peer
-  event may be sent again in next mii_monitor loop, because should_notify_peers
-  is still true.
-- If should_notify_peers is true and the lock for send_peer_notif-- succeeded,
-  but the lock for peer event fails, the peer event will be lost.
+Add a check for zero chanlist_len at the beginning of the
+function, similar to the existing checks for !map and
+CMDF_RAWDATA flag. When chanlist_len is zero, update
+munge_count and return early, indicating the data was
+handled without munging.
 
-This patch locks the RTNL for send_peer_notif, events, and commit simultaneously.
+This prevents potential kernel panics from malformed user commands.
 
-Fixes: 07a4ddec3ce9 ("bonding: add an option to specify a delay between peer notifications")
-Cc: Jay Vosburgh <jv@jvosburgh.net>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Paolo Abeni <pabeni@redhat.com>
-Cc: Hangbin Liu <liuhangbin@gmail.com>
-Cc: Nikolay Aleksandrov <razor@blackwall.org>
-Cc: Vincent Bernat <vincent@bernat.ch>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Tonghao Zhang <tonghao@bamaicloud.com>
-Acked-by: Jay Vosburgh <jv@jvosburgh.net>
-Link: https://patch.msgid.link/20251021050933.46412-1-tonghao@bamaicloud.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reported-by: syzbot+f6c3c066162d2c43a66c@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=f6c3c066162d2c43a66c
+Cc: stable@vger.kernel.org
+Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
+Reviewed-by: Ian Abbott <abbotti@mev.co.uk>
+Link: https://patch.msgid.link/20250924102639.1256191-1-kartikey406@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/bonding/bond_main.c |   40 ++++++++++++++++++----------------------
- 1 file changed, 18 insertions(+), 22 deletions(-)
+ drivers/comedi/comedi_buf.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -2951,7 +2951,7 @@ static void bond_mii_monitor(struct work
- {
- 	struct bonding *bond = container_of(work, struct bonding,
- 					    mii_work.work);
--	bool should_notify_peers = false;
-+	bool should_notify_peers;
- 	bool commit;
- 	unsigned long delay;
- 	struct slave *slave;
-@@ -2963,30 +2963,33 @@ static void bond_mii_monitor(struct work
- 		goto re_arm;
+--- a/drivers/comedi/comedi_buf.c
++++ b/drivers/comedi/comedi_buf.c
+@@ -368,7 +368,7 @@ static unsigned int comedi_buf_munge(str
+ 	unsigned int count = 0;
+ 	const unsigned int num_sample_bytes = comedi_bytes_per_sample(s);
  
- 	rcu_read_lock();
-+
- 	should_notify_peers = bond_should_notify_peers(bond);
- 	commit = !!bond_miimon_inspect(bond);
--	if (bond->send_peer_notif) {
--		rcu_read_unlock();
--		if (rtnl_trylock()) {
--			bond->send_peer_notif--;
--			rtnl_unlock();
--		}
--	} else {
--		rcu_read_unlock();
--	}
- 
--	if (commit) {
-+	rcu_read_unlock();
-+
-+	if (commit || bond->send_peer_notif) {
- 		/* Race avoidance with bond_close cancel of workqueue */
- 		if (!rtnl_trylock()) {
- 			delay = 1;
--			should_notify_peers = false;
- 			goto re_arm;
- 		}
- 
--		bond_for_each_slave(bond, slave, iter) {
--			bond_commit_link_state(slave, BOND_SLAVE_NOTIFY_LATER);
-+		if (commit) {
-+			bond_for_each_slave(bond, slave, iter) {
-+				bond_commit_link_state(slave,
-+						       BOND_SLAVE_NOTIFY_LATER);
-+			}
-+			bond_miimon_commit(bond);
-+		}
-+
-+		if (bond->send_peer_notif) {
-+			bond->send_peer_notif--;
-+			if (should_notify_peers)
-+				call_netdevice_notifiers(NETDEV_NOTIFY_PEERS,
-+							 bond->dev);
- 		}
--		bond_miimon_commit(bond);
- 
- 		rtnl_unlock();	/* might sleep, hold no other locks */
+-	if (!s->munge || (async->cmd.flags & CMDF_RAWDATA)) {
++	if (!s->munge || (async->cmd.flags & CMDF_RAWDATA) || async->cmd.chanlist_len == 0) {
+ 		async->munge_count += num_bytes;
+ 		return num_bytes;
  	}
-@@ -2994,13 +2997,6 @@ static void bond_mii_monitor(struct work
- re_arm:
- 	if (bond->params.miimon)
- 		queue_delayed_work(bond->wq, &bond->mii_work, delay);
--
--	if (should_notify_peers) {
--		if (!rtnl_trylock())
--			return;
--		call_netdevice_notifiers(NETDEV_NOTIFY_PEERS, bond->dev);
--		rtnl_unlock();
--	}
- }
- 
- static int bond_upper_dev_walk(struct net_device *upper,
 
 
 
