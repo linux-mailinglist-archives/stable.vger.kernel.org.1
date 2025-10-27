@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-190886-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190743-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1B44C10D03
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:21:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 92D7AC10B13
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:15:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C6141A2802D
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:16:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2A6D61A254E4
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:10:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38145328B7A;
-	Mon, 27 Oct 2025 19:14:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6479232C336;
+	Mon, 27 Oct 2025 19:08:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CMVc+VyC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PhCGVuUq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD3E12222AA;
-	Mon, 27 Oct 2025 19:14:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EF6431D757;
+	Mon, 27 Oct 2025 19:08:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592458; cv=none; b=rwjayMplhiW9uvEqSV5fnX3BDaNQFpl/ifsKu6qy08EoY0P7lMwZblHdQz3LJ1z3Kb5evveuxc2tZfabvWoiKRpUe9UPpzq8ZB1e+N0CJCyBNtbjPnmnqCIWnU+GxF+G2HCX6cL49ypySjjzeFyeosdPj+VkAcM0CkmzfK3iIQ0=
+	t=1761592080; cv=none; b=EuFleSqtoRw8oHJDvhr3MIQo/u2yiQxA3+LIRLMakaXUiRjBvecH46FzTR8DW0Lq4gFDvSy+POSgzNFBe2DErkFwBN7VEL+CPAbx/C0oRCKUHuSafowmw74CwYRBW+Enee6YOBxo8/Hr8pty6jlgkN9NI8ooc2Rs97Ces8v78XY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592458; c=relaxed/simple;
-	bh=soYbDVs6zqMxXi5Ftepl2PHWkGZy1CdR2Kw84vzuevo=;
+	s=arc-20240116; t=1761592080; c=relaxed/simple;
+	bh=Ch9ofegO7Z6HfGMBwypeDo8RVMo5zfIkQIecaiP3TTw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ia7kIaTxdlkx2s9OeOGHin9yarRPMNcHLnHfE5YDtmLuYdZ64CWMsTts52DPYli9gdqN1E89vcW3AoNaoB2SRB5Y3rb+G4XMoxRkJquKj6mitPP4jJ5nu+ORS29HzUnz9ejTgtPK7FpL/9liTlSyxd/RdC6krElEKvt6hXpWBS0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CMVc+VyC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42DEFC4CEF1;
-	Mon, 27 Oct 2025 19:14:17 +0000 (UTC)
+	 MIME-Version; b=CMjrChPFhKvmMANCBjfhbS3nLX3W67iYGX0vOZpkThKsRZqQJu4QaPYvP6FCnnVPmZPzC5GAzH8+8st3wHcM/VrLLdpJTGHdLQAmHc6ATNve7L+ZSPb0aPMyIsqPjIO2VmC0NmjjYbnBVrm6I0Yur8KDpPL00n6eQhtOWs3IEg0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PhCGVuUq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3F83C4CEF1;
+	Mon, 27 Oct 2025 19:07:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592457;
-	bh=soYbDVs6zqMxXi5Ftepl2PHWkGZy1CdR2Kw84vzuevo=;
+	s=korg; t=1761592080;
+	bh=Ch9ofegO7Z6HfGMBwypeDo8RVMo5zfIkQIecaiP3TTw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CMVc+VyCi6cROSmbj+XaXc2iGotuOHDvT/k4xvIExSs+F8kUAQyoMlQWF6KUy2uH4
-	 gozGiZeLaf6TfnIuKNYTrnuY5u51p8UHh9nYa3zRjrp/q6fjG7IDqKyY18HRN0LkmL
-	 /JHVy/6U4yvUls650/sw/4ZpnmfJoYdAcMw34MmA=
+	b=PhCGVuUqyJYxhskNygg0eZabYUDnnJ+iKL0sFSt9YAxnMJxCtbtgewCvanLHszz0L
+	 0PG0GtknXEKGrOIbLslD22AAo+SvlqJA9pSG3wbxfmdFaWludUe3oEOOrGZyt57PLB
+	 XHlasx096RCEhzsf0VAGCxtYW9S/Ctlnu2btSxB8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Siddharth Vadapalli <s-vadapalli@ti.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Vidya Sagar <vidyas@nvidia.com>,
+	Niklas Cassel <cassel@kernel.org>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Jon Hunter <jonathanh@nvidia.com>,
+	Thierry Reding <treding@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 129/157] PCI: j721e: Enable ACSPCIE Refclk if "ti,syscon-acspcie-proxy-ctrl" exists
+Subject: [PATCH 5.15 110/123] PCI: tegra194: Handle errors in BPMP response
 Date: Mon, 27 Oct 2025 19:36:30 +0100
-Message-ID: <20251027183504.713047030@linuxfoundation.org>
+Message-ID: <20251027183449.334349544@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
-References: <20251027183501.227243846@linuxfoundation.org>
+In-Reply-To: <20251027183446.381986645@linuxfoundation.org>
+References: <20251027183446.381986645@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,99 +64,112 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Siddharth Vadapalli <s-vadapalli@ti.com>
+From: Vidya Sagar <vidyas@nvidia.com>
 
-[ Upstream commit 82c4be4168e26a5593aaa1002b5678128a638824 ]
+[ Upstream commit f8c9ad46b00453a8c075453f3745f8d263f44834 ]
 
-The ACSPCIE module is capable of driving the reference clock required by
-the PCIe Endpoint device. It is an alternative to on-board and external
-reference clock generators. Enabling the output from the ACSPCIE module's
-PAD IO Buffers requires clearing the "PAD IO disable" bits of the
-ACSPCIE_PROXY_CTRL register in the CTRL_MMR register space.
+The return value from tegra_bpmp_transfer() indicates the success or
+failure of the IPC transaction with BPMP. If the transaction succeeded, we
+also need to check the actual command's result code.
 
-Add support to enable the ACSPCIE reference clock output using the optional
-device-tree property "ti,syscon-acspcie-proxy-ctrl".
+If we don't have error handling for tegra_bpmp_transfer(), we will set the
+pcie->ep_state to EP_STATE_ENABLED even when the tegra_bpmp_transfer()
+command fails. Thus, the pcie->ep_state will get out of sync with reality,
+and any further PERST# assert + deassert will be a no-op and will not
+trigger the hardware initialization sequence.
 
-Link: https://lore.kernel.org/linux-pci/20240829105316.1483684-3-s-vadapalli@ti.com
-Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Stable-dep-of: f842d3313ba1 ("PCI: j721e: Fix programming sequence of "strap" settings")
+This is because pex_ep_event_pex_rst_deassert() checks the current
+pcie->ep_state, and does nothing if the current state is already
+EP_STATE_ENABLED.
+
+Thus, it is important to have error handling for tegra_bpmp_transfer(),
+such that the pcie->ep_state can not get out of sync with reality, so that
+we will try to initialize the hardware not only during the first PERST#
+assert + deassert, but also during any succeeding PERST# assert + deassert.
+
+One example where this fix is needed is when using a rock5b as host.
+During the initial PERST# assert + deassert (triggered by the bootloader on
+the rock5b) pex_ep_event_pex_rst_deassert() will get called, but for some
+unknown reason, the tegra_bpmp_transfer() call to initialize the PHY fails.
+Once Linux has been loaded on the rock5b, the PCIe driver will once again
+assert + deassert PERST#. However, without tegra_bpmp_transfer() error
+handling, this second PERST# assert + deassert will not trigger the
+hardware initialization sequence.
+
+With tegra_bpmp_transfer() error handling, the second PERST# assert +
+deassert will once again trigger the hardware to be initialized and this
+time the tegra_bpmp_transfer() succeeds.
+
+Fixes: c57247f940e8 ("PCI: tegra: Add support for PCIe endpoint mode in Tegra194")
+Signed-off-by: Vidya Sagar <vidyas@nvidia.com>
+[cassel: improve commit log]
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
+Acked-by: Thierry Reding <treding@nvidia.com>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20250922140822.519796-8-cassel@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/controller/cadence/pci-j721e.c |   39 ++++++++++++++++++++++++++++-
- 1 file changed, 38 insertions(+), 1 deletion(-)
+ drivers/pci/controller/dwc/pcie-tegra194.c |   18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
 
---- a/drivers/pci/controller/cadence/pci-j721e.c
-+++ b/drivers/pci/controller/cadence/pci-j721e.c
-@@ -46,6 +46,7 @@ enum link_status {
- #define LANE_COUNT_MASK			BIT(8)
- #define LANE_COUNT(n)			((n) << 8)
+--- a/drivers/pci/controller/dwc/pcie-tegra194.c
++++ b/drivers/pci/controller/dwc/pcie-tegra194.c
+@@ -1168,6 +1168,7 @@ static int tegra_pcie_bpmp_set_ctrl_stat
+ 	struct mrq_uphy_response resp;
+ 	struct tegra_bpmp_message msg;
+ 	struct mrq_uphy_request req;
++	int err;
  
-+#define ACSPCIE_PAD_DISABLE_MASK	GENMASK(1, 0)
- #define GENERATION_SEL_MASK		GENMASK(1, 0)
+ 	/* Controller-5 doesn't need to have its state set by BPMP-FW */
+ 	if (pcie->cid == 5)
+@@ -1187,7 +1188,13 @@ static int tegra_pcie_bpmp_set_ctrl_stat
+ 	msg.rx.data = &resp;
+ 	msg.rx.size = sizeof(resp);
  
- #define MAX_LANES			2
-@@ -218,6 +219,36 @@ static int j721e_pcie_set_lane_count(str
- 	return ret;
- }
- 
-+static int j721e_enable_acspcie_refclk(struct j721e_pcie *pcie,
-+				       struct regmap *syscon)
-+{
-+	struct device *dev = pcie->cdns_pcie->dev;
-+	struct device_node *node = dev->of_node;
-+	u32 mask = ACSPCIE_PAD_DISABLE_MASK;
-+	struct of_phandle_args args;
-+	u32 val;
-+	int ret;
-+
-+	ret = of_parse_phandle_with_fixed_args(node,
-+					       "ti,syscon-acspcie-proxy-ctrl",
-+					       1, 0, &args);
-+	if (ret) {
-+		dev_err(dev,
-+			"ti,syscon-acspcie-proxy-ctrl has invalid arguments\n");
-+		return ret;
-+	}
-+
-+	/* Clear PAD IO disable bits to enable refclk output */
-+	val = ~(args.args[0]);
-+	ret = regmap_update_bits(syscon, 0, mask, val);
-+	if (ret) {
-+		dev_err(dev, "failed to enable ACSPCIE refclk: %d\n", ret);
-+		return ret;
-+	}
+-	return tegra_bpmp_transfer(pcie->bpmp, &msg);
++	err = tegra_bpmp_transfer(pcie->bpmp, &msg);
++	if (err)
++		return err;
++	if (msg.rx.ret)
++		return -EINVAL;
 +
 +	return 0;
-+}
-+
- static int j721e_pcie_ctrl_init(struct j721e_pcie *pcie)
- {
- 	struct device *dev = pcie->cdns_pcie->dev;
-@@ -257,7 +288,13 @@ static int j721e_pcie_ctrl_init(struct j
- 		return ret;
- 	}
- 
--	return 0;
-+	/* Enable ACSPCIE refclk output if the optional property exists */
-+	syscon = syscon_regmap_lookup_by_phandle_optional(node,
-+						"ti,syscon-acspcie-proxy-ctrl");
-+	if (!syscon)
-+		return 0;
-+
-+	return j721e_enable_acspcie_refclk(pcie, syscon);
  }
  
- static int cdns_ti_pcie_config_read(struct pci_bus *bus, unsigned int devfn,
+ static int tegra_pcie_bpmp_set_pll_state(struct tegra_pcie_dw *pcie,
+@@ -1196,6 +1203,7 @@ static int tegra_pcie_bpmp_set_pll_state
+ 	struct mrq_uphy_response resp;
+ 	struct tegra_bpmp_message msg;
+ 	struct mrq_uphy_request req;
++	int err;
+ 
+ 	memset(&req, 0, sizeof(req));
+ 	memset(&resp, 0, sizeof(resp));
+@@ -1215,7 +1223,13 @@ static int tegra_pcie_bpmp_set_pll_state
+ 	msg.rx.data = &resp;
+ 	msg.rx.size = sizeof(resp);
+ 
+-	return tegra_bpmp_transfer(pcie->bpmp, &msg);
++	err = tegra_bpmp_transfer(pcie->bpmp, &msg);
++	if (err)
++		return err;
++	if (msg.rx.ret)
++		return -EINVAL;
++
++	return 0;
+ }
+ 
+ static void tegra_pcie_downstream_dev_to_D0(struct tegra_pcie_dw *pcie)
 
 
 
