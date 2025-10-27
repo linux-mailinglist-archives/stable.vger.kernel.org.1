@@ -1,137 +1,103 @@
-Return-Path: <stable+bounces-190005-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190006-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DC93C0EA11
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 15:55:10 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id E604BC0E8FD
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 15:47:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 061EA3A56AA
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 14:40:40 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 95A2E4FCD90
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 14:41:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 966BB308F0B;
-	Mon, 27 Oct 2025 14:40:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4516E2C0F95;
+	Mon, 27 Oct 2025 14:41:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gHR/ojOf"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="kxwSkzWF"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F43F307AFB
-	for <stable@vger.kernel.org>; Mon, 27 Oct 2025 14:40:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FFD01990D9;
+	Mon, 27 Oct 2025 14:41:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761576013; cv=none; b=FAW0X5c+UA6MpngBCIQWDOcUZf/5d119SDt4M9RNb+v46A5Ws3A1OSFGPU2bHY8k1s9cKZjhF6ZZGWgjm2OXswiK46oSzRLJMoM/kWO8AE7Hn8w5ntS2dhlqA4eWg5iYrYdidrJRpgK6kgIxLyP3OQMGEYHxilp5AHafVDQkq5Q=
+	t=1761576105; cv=none; b=OaAi8/ykXy51CKpnRRKviA2QVHbXncYxc9p8T6cWGmUX4CVPCy6ScbQfTDTa2ISx1M8pKlbUrJ1Jrxn+PqKVgBr7LBeYJCSppL1KrLhAjeqgBTlESLLWkWcce2Dvof9YnvYljDpWF+YjX0l6o/s412ADk6Q1+4ZaskGnmAn1OWc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761576013; c=relaxed/simple;
-	bh=6H1STr1MDjQdsTK46Ti3R8cTWSnRtuvMmsTmwJzK7uk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=j6mlriQ0jEWhf+6LdovX+njLG2EbLjkxtrzOqi0HnUp6A6KBL1qq9pSWM7IOM0ewNANWBknEtC/GFattKcdMiIfB+dmQvZM4cy8DZLalhFouCkiC0xCzrstSH6jrvICwoW1KqKpNgOVAjRqggt/1MX1i2EyAWiYHd88A3eJR7sQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gHR/ojOf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03CBDC4CEF1;
-	Mon, 27 Oct 2025 14:40:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761576010;
-	bh=6H1STr1MDjQdsTK46Ti3R8cTWSnRtuvMmsTmwJzK7uk=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gHR/ojOf4gYrnc95piEtfDrGOMVtPIOUeEV4jmXPoTPWHYfgdYpevd+hY1E/n7nGb
-	 2GT3ksVYzlu0pF2HucdhsdrMhFEO+7vKDdp2o4APX8ItF1LPXXhRT/bzMRvnECUSal
-	 IMD1IDhc3JVjcYwThOjN+mnJAmH5QIejEIDzW9Ub/RpKf6HkxIMRkHjtpxz96wLh5t
-	 6SHtzuruhqSs3ZVm/C+zg5cNgt2jGW9V4VlhoDtkT4A8Bh8mICFZuyiYBprod3J6M0
-	 O8IKKptsL/bp4s4/4uKtJdKh0x9g8BPutpBVLwMzrpVFQ+5uv7EoE51kb+T8ATSBsi
-	 XFkoTH3FP3DmQ==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
-	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10.y] net: ravb: Enforce descriptor type ordering
-Date: Mon, 27 Oct 2025 10:40:08 -0400
-Message-ID: <20251027144008.525379-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025102624-thirsty-otter-d285@gregkh>
-References: <2025102624-thirsty-otter-d285@gregkh>
+	s=arc-20240116; t=1761576105; c=relaxed/simple;
+	bh=vhHN2CWlz68ehyr1Y2hDojwu9+Vue88/Z0ZxYv7WECM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OgZ7moBIetzX0+utJy7wexxg8b8lQad9QDrf3K5vRoIV2+rHj9VHlWAQ6aB1VaTydHOkyJ8w8TgdKzNoDSQ3+dddp3j/HS/yrYOc0tFosku/Zzn5+D+4vpNYrBCccyYQprHk0wU2Eqe2KHJkH8xrOC3aBIeYcAAlK4rLSTHkEPM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=kxwSkzWF; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=sgneSpTtmkYD7aVSON0HmkCfsNXMfkSDiuyU+kka0Ww=; b=kxwSkzWFmWtZhEHJ0UgnvuvjhV
+	qPy/NTHigiOoD3XebU6/1WMXTxbJdsxzbDmnVDqT58uivysQ+lMtLy1D87iPDdyZGBTbBE9FLcIfl
+	CVy+snMTfmeO2KGPVz+ODvUC244Qmmz+YBV2R9QkfbEbRwmFBFF8HpXyq9/IvtQlza/E=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1vDOPU-00CCd4-G7; Mon, 27 Oct 2025 15:41:24 +0100
+Date: Mon, 27 Oct 2025 15:41:24 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Francesco Dolcini <francesco@dolcini.it>
+Cc: Russell King <linux@armlinux.org.uk>,
+	Emanuele Ghidoli <ghidoliemanuele@gmail.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Emanuele Ghidoli <emanuele.ghidoli@toradex.com>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v1] net: phy: dp83867: Disable EEE support as not
+ implemented
+Message-ID: <539795a1-2a69-4fcb-88e7-ca4e3b13ad7c@lunn.ch>
+References: <20251023144857.529566-1-ghidoliemanuele@gmail.com>
+ <ae723e7c-f876-45ef-bc41-3b39dc1dc76b@lunn.ch>
+ <664ef58b-d7e6-4f08-b88f-e7c2cf08c83c@gmail.com>
+ <df3aac25-e8e9-46cb-bd92-637822665080@lunn.ch>
+ <20251027143522.GA57409@francesco-nb>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251027143522.GA57409@francesco-nb>
 
-From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+> I was talking together with Emanuele on this topic and we are confused
+> on how to proceed.
+> 
+> >From the various comments and tests in this thread, to me the actual
+> code change is correct, the dp83867 does not support EEE and we have to
+> explicitly disable it in the dp83867 driver.
+> 
+> As of now we do not have a clear shared understanding on what is going
+> on in the stmmac driver. And the commit message is not correct on this
+> regard.
+> 
+> This patch is already merged [1] in netdev tree, should we send a series
+> reverting this commit and another commit with just the same change and a
+> different commit message? 
 
-[ Upstream commit 5370c31e84b0e0999c7b5ff949f4e104def35584 ]
+No, if its merged, its merged. What should come out of this is a
+learning, please be precise with commit messages, more detail rather
+than less, and provide as much supporting evidence as you can for any
+claims you make.
 
-Ensure the TX descriptor type fields are published in a safe order so the
-DMA engine never begins processing a descriptor chain before all descriptor
-fields are fully initialised.
+> In parallel, unrelated to the dp83867 topic, Emanuele is trying to help
+> figuring out why the actual behavior of the stmmac changed after Russell
+> refactoring. And it's clear that this change in behavior is not expected.
 
-For multi-descriptor transmits the driver writes DT_FEND into the last
-descriptor and DT_FSTART into the first. The DMA engine begins processing
-when it observes DT_FSTART. Move the dma_wmb() barrier so it executes
-immediately after DT_FEND and immediately before writing DT_FSTART
-(and before DT_FSINGLE in the single-descriptor case). This guarantees
-that all prior CPU writes to the descriptor memory are visible to the
-device before DT_FSTART is seen.
+Great.
 
-This avoids a situation where compiler/CPU reordering could publish
-DT_FSTART ahead of DT_FEND or other descriptor fields, allowing the DMA to
-start on a partially initialised chain and causing corrupted transmissions
-or TX timeouts. Such a failure was observed on RZ/G2L with an RT kernel as
-transmit queue timeouts and device resets.
-
-Fixes: 2f45d1902acf ("ravb: minimize TX data copying")
-Cc: stable@vger.kernel.org
-Co-developed-by: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
-Signed-off-by: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
-Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Reviewed-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
-Link: https://patch.msgid.link/20251017151830.171062-4-prabhakar.mahadev-lad.rj@bp.renesas.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ kept unconditional skb_tx_timestamp() ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/net/ethernet/renesas/ravb_main.c | 16 ++++++++++++++--
- 1 file changed, 14 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/ethernet/renesas/ravb_main.c b/drivers/net/ethernet/renesas/ravb_main.c
-index b08478aabc6e6..7e71c60f75d5a 100644
---- a/drivers/net/ethernet/renesas/ravb_main.c
-+++ b/drivers/net/ethernet/renesas/ravb_main.c
-@@ -1596,13 +1596,25 @@ static netdev_tx_t ravb_start_xmit(struct sk_buff *skb, struct net_device *ndev)
- 	}
- 
- 	skb_tx_timestamp(skb);
--	/* Descriptor type must be set after all the above writes */
--	dma_wmb();
-+
- 	if (num_tx_desc > 1) {
- 		desc->die_dt = DT_FEND;
- 		desc--;
-+		/* When using multi-descriptors, DT_FEND needs to get written
-+		 * before DT_FSTART, but the compiler may reorder the memory
-+		 * writes in an attempt to optimize the code.
-+		 * Use a dma_wmb() barrier to make sure DT_FEND and DT_FSTART
-+		 * are written exactly in the order shown in the code.
-+		 * This is particularly important for cases where the DMA engine
-+		 * is already running when we are running this code. If the DMA
-+		 * sees DT_FSTART without the corresponding DT_FEND it will enter
-+		 * an error condition.
-+		 */
-+		dma_wmb();
- 		desc->die_dt = DT_FSTART;
- 	} else {
-+		/* Descriptor type must be set after all the above writes */
-+		dma_wmb();
- 		desc->die_dt = DT_FSINGLE;
- 	}
- 	ravb_modify(ndev, TCCR, TCCR_TSRQ0 << q, TCCR_TSRQ0 << q);
--- 
-2.51.0
-
+	Andrew
 
