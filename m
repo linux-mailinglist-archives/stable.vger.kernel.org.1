@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-190676-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191163-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF803C10AB4
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:15:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54F98C1111D
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:32:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AB6B6566E99
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:08:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 777F6564BD8
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:28:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C7EA31E0F0;
-	Mon, 27 Oct 2025 19:05:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80EF42BD033;
+	Mon, 27 Oct 2025 19:26:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z/9x39zk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nj8zL54E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F05C629E110;
-	Mon, 27 Oct 2025 19:05:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CD1F326D50;
+	Mon, 27 Oct 2025 19:26:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591906; cv=none; b=KJ3RicMFtBzXhytZGRZt9/V1WkHmYxA0E6GpEGLe11IE/gOJPNp8fd0Q4WX/RBfyknZp9dD9an95QE7NSnL3TX+0fNBdUk5qroRYNGC+xVdVNr/aG2xD2w7UUly1gCOwYKp2Mxk3aCkWCIDMdgUTS5z0PzQ68ou77WERz+jdLm8=
+	t=1761593172; cv=none; b=j0J3Db/nrUEFd3C/zJLXr2N3rfQUyuftuxV/PRa2Kkua+n/MyiNz/XuuPYEsSET8gHs5rYYflvecL13aNKIGKjI1gKLTbj/wrchpLj7ooWtXYk1IetBc7MLurgK6cBnOmqoLxG+3oqxJ0w6MNsH11SGZX/zcrp71p8BUJrO/grs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591906; c=relaxed/simple;
-	bh=ygj/HSQHjdeQV2sB903Xdbw9MoB5uxy7cXMfuze5x4g=;
+	s=arc-20240116; t=1761593172; c=relaxed/simple;
+	bh=/cEb3bfA0eXRFUBzA3L1wJl3ByzIhBF2hPuBowR5DK0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YpagRI/AZKxKRYYrSu3zx/at91ZJ/hB99euV21SsW+8YWLJ/5WJyS/beGQoejhgR4ZO0zRf4N5GtPx4Kb95qxcZsWl7qpk3xi+r3iEBLBp2vbKmmaq0bbxt9dxxH4nPwXjmo2ZF1sV0+2+M9UMmWWu7HYOAlKyvG04jGmTvpUzQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z/9x39zk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11B34C4CEF1;
-	Mon, 27 Oct 2025 19:05:03 +0000 (UTC)
+	 MIME-Version; b=o0Xqf6UVS/1PctWnwFoTfhDEZbK2mShY6xkrZvsXEbTnuUU5crJCEAcFBtE62u6nlwXEnq/bxIk/mlakIdYW5OOeSezNppA/V1KHZb2nC9eEX0cxtbGd+yzOYmD/aoWtzG+Qms97IHXZCvT81U+oXvCXBPr8Kl4WbCqlZCblFl8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nj8zL54E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C234EC4CEF1;
+	Mon, 27 Oct 2025 19:26:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591904;
-	bh=ygj/HSQHjdeQV2sB903Xdbw9MoB5uxy7cXMfuze5x4g=;
+	s=korg; t=1761593172;
+	bh=/cEb3bfA0eXRFUBzA3L1wJl3ByzIhBF2hPuBowR5DK0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z/9x39zkCGim/OcXoLlFOWWPgj5qovKA12zLEV7xBjY0rp6wSuX1wnS8CXhftOH2q
-	 QaVIqTLdYiUh35hH6vmQTOZBg7A26tKeLBIQI2F7+uV3mAeMBeaf/MlF3QTZizqwJG
-	 kLbRBeO/Ehrd6s828DpNtlSQ2fwvAfCYYyUeF4rU=
+	b=Nj8zL54EzZQadVtAxJEYpSSBpnAldJKzq933py5MvxD2KEGWeooBvmT1+RcQSY9dQ
+	 gk7/0KNt+LaNVzaW5R++Zzwc8a66Pp6oLbybFxF6qN1YM4krCHN3pWjGFqgH4ZvC83
+	 4OjdmFkE/tFa1iIMueZbe5CAOqtmnklkNMzDgRgM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Viacheslav Dubeyko <slava@dubeyko.com>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	Yangtao Li <frank.li@vivo.com>,
-	linux-fsdevel@vger.kernel.org,
+	Aleksander Jan Bajkowski <olek2@wp.pl>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 043/123] hfs: clear offset and space out of valid records in b-tree node
+Subject: [PATCH 6.17 041/184] net: phy: realtek: fix rtl8221b-vm-cg name
 Date: Mon, 27 Oct 2025 19:35:23 +0100
-Message-ID: <20251027183447.554869992@linuxfoundation.org>
+Message-ID: <20251027183516.015427150@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183446.381986645@linuxfoundation.org>
-References: <20251027183446.381986645@linuxfoundation.org>
+In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
+References: <20251027183514.934710872@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,96 +63,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Viacheslav Dubeyko <slava@dubeyko.com>
+From: Aleksander Jan Bajkowski <olek2@wp.pl>
 
-[ Upstream commit 18b07c44f245beb03588b00b212b38fce9af7cc9 ]
+[ Upstream commit ffff5c8fc2af2218a3332b3d5b97654599d50cde ]
 
-Currently, hfs_brec_remove() executes moving records
-towards the location of deleted record and it updates
-offsets of moved records. However, the hfs_brec_remove()
-logic ignores the "mess" of b-tree node's free space and
-it doesn't touch the offsets out of records number.
-Potentially, it could confuse fsck or driver logic or
-to be a reason of potential corruption cases.
+When splitting the RTL8221B-VM-CG into C22 and C45 variants, the name was
+accidentally changed to RTL8221B-VN-CG. This patch brings back the previous
+part number.
 
-This patch reworks the logic of hfs_brec_remove()
-by means of clearing freed space of b-tree node
-after the records moving. And it clear the last
-offset that keeping old location of free space
-because now the offset before this one is keeping
-the actual offset to the free space after the record
-deletion.
-
-Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
-cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-cc: Yangtao Li <frank.li@vivo.com>
-cc: linux-fsdevel@vger.kernel.org
-Link: https://lore.kernel.org/r/20250815194918.38165-1-slava@dubeyko.com
-Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
+Fixes: ad5ce743a6b0 ("net: phy: realtek: Add driver instances for rtl8221b via Clause 45")
+Signed-off-by: Aleksander Jan Bajkowski <olek2@wp.pl>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20251016192325.2306757-1-olek2@wp.pl
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/hfs/brec.c | 27 +++++++++++++++++++++++----
- 1 file changed, 23 insertions(+), 4 deletions(-)
+ drivers/net/phy/realtek/realtek_main.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/fs/hfs/brec.c b/fs/hfs/brec.c
-index 896396554bcc1..b01db1fae147c 100644
---- a/fs/hfs/brec.c
-+++ b/fs/hfs/brec.c
-@@ -179,6 +179,7 @@ int hfs_brec_remove(struct hfs_find_data *fd)
- 	struct hfs_btree *tree;
- 	struct hfs_bnode *node, *parent;
- 	int end_off, rec_off, data_off, size;
-+	int src, dst, len;
+diff --git a/drivers/net/phy/realtek/realtek_main.c b/drivers/net/phy/realtek/realtek_main.c
+index 64af3b96f0288..62ef87ecc5587 100644
+--- a/drivers/net/phy/realtek/realtek_main.c
++++ b/drivers/net/phy/realtek/realtek_main.c
+@@ -156,7 +156,7 @@
+ #define RTL_8211FVD_PHYID			0x001cc878
+ #define RTL_8221B				0x001cc840
+ #define RTL_8221B_VB_CG				0x001cc849
+-#define RTL_8221B_VN_CG				0x001cc84a
++#define RTL_8221B_VM_CG				0x001cc84a
+ #define RTL_8251B				0x001cc862
+ #define RTL_8261C				0x001cc890
  
- 	tree = fd->tree;
- 	node = fd->bnode;
-@@ -208,10 +209,14 @@ int hfs_brec_remove(struct hfs_find_data *fd)
- 	}
- 	hfs_bnode_write_u16(node, offsetof(struct hfs_bnode_desc, num_recs), node->num_recs);
+@@ -1362,16 +1362,16 @@ static int rtl8221b_vb_cg_c45_match_phy_device(struct phy_device *phydev,
+ 	return rtlgen_is_c45_match(phydev, RTL_8221B_VB_CG, true);
+ }
  
--	if (rec_off == end_off)
--		goto skip;
- 	size = fd->keylength + fd->entrylength;
+-static int rtl8221b_vn_cg_c22_match_phy_device(struct phy_device *phydev,
++static int rtl8221b_vm_cg_c22_match_phy_device(struct phy_device *phydev,
+ 					       const struct phy_driver *phydrv)
+ {
+-	return rtlgen_is_c45_match(phydev, RTL_8221B_VN_CG, false);
++	return rtlgen_is_c45_match(phydev, RTL_8221B_VM_CG, false);
+ }
  
-+	if (rec_off == end_off) {
-+		src = fd->keyoffset;
-+		hfs_bnode_clear(node, src, size);
-+		goto skip;
-+	}
-+
- 	do {
- 		data_off = hfs_bnode_read_u16(node, rec_off);
- 		hfs_bnode_write_u16(node, rec_off + 2, data_off - size);
-@@ -219,9 +224,23 @@ int hfs_brec_remove(struct hfs_find_data *fd)
- 	} while (rec_off >= end_off);
+-static int rtl8221b_vn_cg_c45_match_phy_device(struct phy_device *phydev,
++static int rtl8221b_vm_cg_c45_match_phy_device(struct phy_device *phydev,
+ 					       const struct phy_driver *phydrv)
+ {
+-	return rtlgen_is_c45_match(phydev, RTL_8221B_VN_CG, true);
++	return rtlgen_is_c45_match(phydev, RTL_8221B_VM_CG, true);
+ }
  
- 	/* fill hole */
--	hfs_bnode_move(node, fd->keyoffset, fd->keyoffset + size,
--		       data_off - fd->keyoffset - size);
-+	dst = fd->keyoffset;
-+	src = fd->keyoffset + size;
-+	len = data_off - src;
-+
-+	hfs_bnode_move(node, dst, src, len);
-+
-+	src = dst + len;
-+	len = data_off - src;
-+
-+	hfs_bnode_clear(node, src, len);
-+
- skip:
-+	/*
-+	 * Remove the obsolete offset to free space.
-+	 */
-+	hfs_bnode_write_u16(node, end_off, 0);
-+
- 	hfs_bnode_dump(node);
- 	if (!fd->record)
- 		hfs_brec_update_parent(fd);
+ static int rtl_internal_nbaset_match_phy_device(struct phy_device *phydev,
+@@ -1718,7 +1718,7 @@ static struct phy_driver realtek_drvs[] = {
+ 		.suspend        = genphy_c45_pma_suspend,
+ 		.resume         = rtlgen_c45_resume,
+ 	}, {
+-		.match_phy_device = rtl8221b_vn_cg_c22_match_phy_device,
++		.match_phy_device = rtl8221b_vm_cg_c22_match_phy_device,
+ 		.name           = "RTL8221B-VM-CG 2.5Gbps PHY (C22)",
+ 		.probe		= rtl822x_probe,
+ 		.get_features   = rtl822x_get_features,
+@@ -1731,8 +1731,8 @@ static struct phy_driver realtek_drvs[] = {
+ 		.read_page      = rtl821x_read_page,
+ 		.write_page     = rtl821x_write_page,
+ 	}, {
+-		.match_phy_device = rtl8221b_vn_cg_c45_match_phy_device,
+-		.name           = "RTL8221B-VN-CG 2.5Gbps PHY (C45)",
++		.match_phy_device = rtl8221b_vm_cg_c45_match_phy_device,
++		.name           = "RTL8221B-VM-CG 2.5Gbps PHY (C45)",
+ 		.probe		= rtl822x_probe,
+ 		.config_init    = rtl822xb_config_init,
+ 		.get_rate_matching = rtl822xb_get_rate_matching,
 -- 
 2.51.0
 
