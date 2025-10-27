@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-191107-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190995-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AB0EC110D2
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:32:07 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BEF6C10F54
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:27:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 96100502B4D
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:25:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 88285566ECB
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:20:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8180231E107;
-	Mon, 27 Oct 2025 19:23:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1D0A326D6D;
+	Mon, 27 Oct 2025 19:19:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WzPuLz37"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c7OgQ5an"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DA32233735;
-	Mon, 27 Oct 2025 19:23:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEE2F32862C;
+	Mon, 27 Oct 2025 19:19:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761593028; cv=none; b=PSQ3NwYJCrG0xWsizk09cwyKtqO1EEwm6EegIWMstqu/EhNlzRNMkLnRXQIGLkwvvjEv7O2ZEnpd2gCRWSCK5vNV1XTAaYJ2MPzLtKsdNSJnqb9WjGwExn1TKxxeTyNZIKfuoPsqDAGXQNMh4KdYxBnmRqmIz5BjOGmWGS8kjPc=
+	t=1761592740; cv=none; b=R/p0CYlcX2eBFCwP04qZEhlLED0wkoGSmpZRnAKBil56dbB8wDnkFEEZATB38MYmwaDEOsoBvSBoSUyGX9EyQUP6In6tHUAha+8UByD9q/eEKuMVXGHNTVwS6kjh35d0TDbQnRpuHTXO5QiQWd+rTl1WJNeF832k/AiBWunoS2g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761593028; c=relaxed/simple;
-	bh=S5ZAutcr7l39/ciU9WTL2qZmQk2rn1wHS6HPqu4eGe4=;
+	s=arc-20240116; t=1761592740; c=relaxed/simple;
+	bh=QTmLdx+IUnr1NZLvbLMjK+zca1FBcfLVrAdOI6XhUJ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sm85aOhCLd6sabbvyolPLCZ/GRl3NEQO+ldS2lbY8f2znJko4EuvEjq87w+2fSt0hyEXdPG5m8m1Gx3WQFLZSTzJlyJTFPb66QRFCqCIjYAT108AWWBhtndhG8KuilRA4ISxqOE0Cf13X3lA+QhSUoOPHlkVg8OBkwV+KQAKlUQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WzPuLz37; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5910C113D0;
-	Mon, 27 Oct 2025 19:23:47 +0000 (UTC)
+	 MIME-Version; b=m0rcuEnsK1EnLcFW4OPkSalqj10bs90d+gKX8b7G/ZO8gZ/EoEIHQCgQngmo+izUmb7ERZXftPBH8TFqPjaqes0LTxuwq8kUIMCxgwmqLvYfsKZp3x6/BSYJoenTKXstUUm7G7yH4aNhWHmxwvfwm/zAvOFErMiU8oV4yVAYPF8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c7OgQ5an; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C6E0C4CEF1;
+	Mon, 27 Oct 2025 19:18:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761593028;
-	bh=S5ZAutcr7l39/ciU9WTL2qZmQk2rn1wHS6HPqu4eGe4=;
+	s=korg; t=1761592740;
+	bh=QTmLdx+IUnr1NZLvbLMjK+zca1FBcfLVrAdOI6XhUJ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WzPuLz37PaqdNq3R6s7/AB/IHben8zG7eTWX+pfTBPuMbi8aJ3ONuP1G6eytbKo98
-	 0USecphh+4f9V37LVOvWZvz8oz1R0EKOj57KVlcZJpOV0OqldWDjNq5pEajC7OrWkH
-	 Y7AKFLq0CczSAm4EiC2WKqAtgjnrI0qNWHhjOTFA=
+	b=c7OgQ5anvYBFXDQpTXd8e2DefTSRBplTlRVu2OTLz1hs+16qI19A14ji26jLbp4Lu
+	 P7MtpFnLVDb+0RTNoKqqOw2sB7D4F/Px1ciADCLjelmeu7O8YouiNjCqUe5dAYthm4
+	 I4sFq/9wqinVCQ8Sd6qC0pfc7ckUfGiJpsSZ8cjw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Cooper <andrew.cooper3@citrix.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	stable@kernel.org
-Subject: [PATCH 6.12 101/117] x86/microcode: Fix Entrysign revision check for Zen1/Naples
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Carlos Maiolino <cmaiolino@redhat.com>,
+	Carlos Maiolino <cem@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 78/84] xfs: always warn about deprecated mount options
 Date: Mon, 27 Oct 2025 19:37:07 +0100
-Message-ID: <20251027183456.753730862@linuxfoundation.org>
+Message-ID: <20251027183440.888400234@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
-References: <20251027183453.919157109@linuxfoundation.org>
+In-Reply-To: <20251027183438.817309828@linuxfoundation.org>
+References: <20251027183438.817309828@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +64,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Cooper <andrew.cooper3@citrix.com>
+From: "Darrick J. Wong" <djwong@kernel.org>
 
-commit 876f0d43af78639790bee0e57b39d498ae35adcf upstream.
+[ Upstream commit 630785bfbe12c3ee3ebccd8b530a98d632b7e39d ]
 
-... to match AMD's statement here:
+The deprecation of the 'attr2' mount option in 6.18 wasn't entirely
+successful because nobody noticed that the kernel never printed a
+warning about attr2 being set in fstab if the only xfs filesystem is the
+root fs; the initramfs mounts the root fs with no mount options; and the
+init scripts only conveyed the fstab options by remounting the root fs.
 
-https://www.amd.com/en/resources/product-security/bulletin/amd-sb-7033.html
+Fix this by making it complain all the time.
 
-Fixes: 50cef76d5cb0 ("x86/microcode/AMD: Load only SHA256-checksummed patches")
-Signed-off-by: Andrew Cooper <andrew.cooper3@citrix.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: <stable@kernel.org>
-Link: https://patch.msgid.link/20251020144124.2930784-1-andrew.cooper3@citrix.com
+Cc: stable@vger.kernel.org # v5.13
+Fixes: 92cf7d36384b99 ("xfs: Skip repetitive warnings about mount options")
+Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Carlos Maiolino <cmaiolino@redhat.com>
+Signed-off-by: Carlos Maiolino <cem@kernel.org>
+[ Update existing xfs_fs_warn_deprecated() callers ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/cpu/microcode/amd.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/xfs/xfs_super.c |   33 +++++++++++++++++++++------------
+ 1 file changed, 21 insertions(+), 12 deletions(-)
 
---- a/arch/x86/kernel/cpu/microcode/amd.c
-+++ b/arch/x86/kernel/cpu/microcode/amd.c
-@@ -182,7 +182,7 @@ static bool need_sha_check(u32 cur_rev)
- 	}
+--- a/fs/xfs/xfs_super.c
++++ b/fs/xfs/xfs_super.c
+@@ -1230,16 +1230,25 @@ suffix_kstrtoint(
+ static inline void
+ xfs_fs_warn_deprecated(
+ 	struct fs_context	*fc,
+-	struct fs_parameter	*param,
+-	uint64_t		flag,
+-	bool			value)
++	struct fs_parameter	*param)
+ {
+-	/* Don't print the warning if reconfiguring and current mount point
+-	 * already had the flag set
++	/*
++	 * Always warn about someone passing in a deprecated mount option.
++	 * Previously we wouldn't print the warning if we were reconfiguring
++	 * and current mount point already had the flag set, but that was not
++	 * the right thing to do.
++	 *
++	 * Many distributions mount the root filesystem with no options in the
++	 * initramfs and rely on mount -a to remount the root fs with the
++	 * options in fstab.  However, the old behavior meant that there would
++	 * never be a warning about deprecated mount options for the root fs in
++	 * /etc/fstab.  On a single-fs system, that means no warning at all.
++	 *
++	 * Compounding this problem are distribution scripts that copy
++	 * /proc/mounts to fstab, which means that we can't remove mount
++	 * options unless we're 100% sure they have only ever been advertised
++	 * in /proc/mounts in response to explicitly provided mount options.
+ 	 */
+-	if ((fc->purpose & FS_CONTEXT_FOR_RECONFIGURE) &&
+-            !!(XFS_M(fc->root->d_sb)->m_features & flag) == value)
+-		return;
+ 	xfs_warn(fc->s_fs_info, "%s mount option is deprecated.", param->key);
+ }
  
- 	switch (cur_rev >> 8) {
--	case 0x80012: return cur_rev <= 0x800126f; break;
-+	case 0x80012: return cur_rev <= 0x8001277; break;
- 	case 0x80082: return cur_rev <= 0x800820f; break;
- 	case 0x83010: return cur_rev <= 0x830107c; break;
- 	case 0x86001: return cur_rev <= 0x860010e; break;
+@@ -1378,19 +1387,19 @@ xfs_fs_parse_param(
+ #endif
+ 	/* Following mount options will be removed in September 2025 */
+ 	case Opt_ikeep:
+-		xfs_fs_warn_deprecated(fc, param, XFS_FEAT_IKEEP, true);
++		xfs_fs_warn_deprecated(fc, param);
+ 		parsing_mp->m_features |= XFS_FEAT_IKEEP;
+ 		return 0;
+ 	case Opt_noikeep:
+-		xfs_fs_warn_deprecated(fc, param, XFS_FEAT_IKEEP, false);
++		xfs_fs_warn_deprecated(fc, param);
+ 		parsing_mp->m_features &= ~XFS_FEAT_IKEEP;
+ 		return 0;
+ 	case Opt_attr2:
+-		xfs_fs_warn_deprecated(fc, param, XFS_FEAT_ATTR2, true);
++		xfs_fs_warn_deprecated(fc, param);
+ 		parsing_mp->m_features |= XFS_FEAT_ATTR2;
+ 		return 0;
+ 	case Opt_noattr2:
+-		xfs_fs_warn_deprecated(fc, param, XFS_FEAT_NOATTR2, true);
++		xfs_fs_warn_deprecated(fc, param);
+ 		parsing_mp->m_features |= XFS_FEAT_NOATTR2;
+ 		return 0;
+ 	default:
 
 
 
