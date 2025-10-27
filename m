@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-191231-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191065-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC3C6C111D7
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:35:29 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA7D0C1101C
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:29:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E78F119A6620
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:31:48 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 61A9B5486C8
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:23:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A65F2BE037;
-	Mon, 27 Oct 2025 19:29:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4016F324B37;
+	Mon, 27 Oct 2025 19:22:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="apEy9Gdo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pRmBgdOF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB7931DDC1B;
-	Mon, 27 Oct 2025 19:29:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFD042BD033;
+	Mon, 27 Oct 2025 19:22:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761593354; cv=none; b=bA/pWLOQwU6HG93I0l2HqZD9Dv/O5c0brlUZPO4CSwf5vRDDPBKC9gN/HrfHag4uxFOTj+JH0vBDauPcw97nWWDIotDm8UPtG6lR3MQmZ6TZDRa13tlUfFmGuK+0MYr0mnkY7F6WOPUSOR/y3dr01+eX1Jo0N5J8oqyKPaPTC/Y=
+	t=1761592922; cv=none; b=PSLkP7kxVsaGQmXN/r5VVVQXOcONT5KK788M+JFrETdpGcncHeDkTrZEERs12dKvak9a877xRxQbpGgMH9K/m8zKGagyBwRgx7IV0q4y20zqON63g90uz14ZCfEYTqdSzKH2p5I3eZqhEjVUL7CJJS/qjd84PI21VJ5Z12Qo4tY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761593354; c=relaxed/simple;
-	bh=DPCdu3rey6gyzvVGCZD6zvnzjs/k56sOaawWEsxgRs0=;
+	s=arc-20240116; t=1761592922; c=relaxed/simple;
+	bh=0t27Mi8ggwc4q6IsxjpkZWXjUdnxw0lRL9MO/L6VcfE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TFowx7LPyVrRn27Tk+Y6mzlYB145mnuJKxlHTL668vzROaPX+dbhuC1TQf3djAXetDqYvZKAIadSoBpEA+O3asip0RXuIVOVX6nBuqqZJ3UQryohF5uLkmY6Snuhaen9P7huBCFkOg+Bmok5hrrQ/F/EEVdh8APBEQmTLGtH6Io=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=apEy9Gdo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E8C0C4CEF1;
-	Mon, 27 Oct 2025 19:29:13 +0000 (UTC)
+	 MIME-Version; b=Uxmu6gff9SNDCQGYpBHxMJQapUmISOp6r/llQvlV8vE37HgL5ojthTOUApMthu5Yw69NMx+YmXgDgWpBYd6ceYTTo4b56zWqUfZgEwN/tsAcZm07ErP5UILyevex9oaTJjqLA/D0IJFUJ6FTDl8fM7tuUftMEAEeHUanNeAp21E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pRmBgdOF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 786DAC4CEF1;
+	Mon, 27 Oct 2025 19:22:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761593353;
-	bh=DPCdu3rey6gyzvVGCZD6zvnzjs/k56sOaawWEsxgRs0=;
+	s=korg; t=1761592921;
+	bh=0t27Mi8ggwc4q6IsxjpkZWXjUdnxw0lRL9MO/L6VcfE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=apEy9GdobToOLuh5PHrRnz8psjfYl81vRCjIaIqM+a1hdflIOJzF/3f1Jev/6CcxL
-	 65pdXCFW6eyGjgsZkadEe5U4z3nemus7HOyga0Km5D94Lfc+y6J38zOLK/Q3tP0RmJ
-	 mbNDkXBhYQouBivISfEsku3MTtWUcOwUUAoVb0X8=
+	b=pRmBgdOFEe5HSW0gUD9uhQMmPErAu6S11W2L0PzScsrS4rqZ5c5UTmspFDUqPJkqN
+	 nvCy46y9zrfmIXGmYh/7jWXVtu7/+zN6orlqv/KiHe4gMH+sMCE2QsjI8/tfC6GofN
+	 i3I6K8Vx070m1EvE0HE45qoqt6bD0Velw/HZyk2w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Pedro Falcato <pfalcato@suse.de>,
-	Jann Horn <jannh@google.com>,
-	Liam Howlett <liam.howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.17 106/184] mm/mremap: correctly account old mapping after MREMAP_DONTUNMAP remap
+	Michal Pecio <michal.pecio@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 062/117] net: usb: rtl8150: Fix frame padding
 Date: Mon, 27 Oct 2025 19:36:28 +0100
-Message-ID: <20251027183517.773982781@linuxfoundation.org>
+Message-ID: <20251027183455.693928987@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
-References: <20251027183514.934710872@linuxfoundation.org>
+In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
+References: <20251027183453.919157109@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,78 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+From: Michal Pecio <michal.pecio@gmail.com>
 
-commit 0e59f47c15cec4cd88c51c5cda749607b719c82b upstream.
+commit 75cea9860aa6b2350d90a8d78fed114d27c7eca2 upstream.
 
-Commit b714ccb02a76 ("mm/mremap: complete refactor of move_vma()")
-mistakenly introduced a new behaviour - clearing the VM_ACCOUNT flag of
-the old mapping when a mapping is mremap()'d with the MREMAP_DONTUNMAP
-flag set.
+TX frames aren't padded and unknown memory is sent into the ether.
 
-While we always clear the VM_LOCKED and VM_LOCKONFAULT flags for the old
-mapping (the page tables have been moved, so there is no data that could
-possibly be locked in memory), there is no reason to touch any other VMA
-flags.
+Theoretically, it isn't even guaranteed that the extra memory exists
+and can be sent out, which could cause further problems. In practice,
+I found that plenty of tailroom exists in the skb itself (in my test
+with ping at least) and skb_padto() easily succeeds, so use it here.
 
-This is because after the move the old mapping is in a state as if it were
-freshly mapped.  This implies that the attributes of the mapping ought to
-remain the same, including whether or not the mapping is accounted.
+In the event of -ENOMEM drop the frame like other drivers do.
 
-Link: https://lkml.kernel.org/r/20251013165836.273113-1-lorenzo.stoakes@oracle.com
-Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Fixes: b714ccb02a76 ("mm/mremap: complete refactor of move_vma()")
-Reviewed-by: Pedro Falcato <pfalcato@suse.de>
-Cc: Jann Horn <jannh@google.com>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+The use of one more padding byte instead of a USB zero-length packet
+is retained to avoid regression. I have a dodgy Etron xHCI controller
+which doesn't seem to support sending ZLPs at all.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@vger.kernel.org
+Signed-off-by: Michal Pecio <michal.pecio@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20251014203528.3f9783c4.michal.pecio@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/mremap.c | 15 ++++++---------
- 1 file changed, 6 insertions(+), 9 deletions(-)
+ drivers/net/usb/rtl8150.c |   11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/mm/mremap.c b/mm/mremap.c
-index 35de0a7b910e..bd7314898ec5 100644
---- a/mm/mremap.c
-+++ b/mm/mremap.c
-@@ -1237,10 +1237,10 @@ static int copy_vma_and_data(struct vma_remap_struct *vrm,
- }
+--- a/drivers/net/usb/rtl8150.c
++++ b/drivers/net/usb/rtl8150.c
+@@ -685,9 +685,16 @@ static netdev_tx_t rtl8150_start_xmit(st
+ 	rtl8150_t *dev = netdev_priv(netdev);
+ 	int count, res;
  
- /*
-- * Perform final tasks for MADV_DONTUNMAP operation, clearing mlock() and
-- * account flags on remaining VMA by convention (it cannot be mlock()'d any
-- * longer, as pages in range are no longer mapped), and removing anon_vma_chain
-- * links from it (if the entire VMA was copied over).
-+ * Perform final tasks for MADV_DONTUNMAP operation, clearing mlock() flag on
-+ * remaining VMA by convention (it cannot be mlock()'d any longer, as pages in
-+ * range are no longer mapped), and removing anon_vma_chain links from it if the
-+ * entire VMA was copied over.
-  */
- static void dontunmap_complete(struct vma_remap_struct *vrm,
- 			       struct vm_area_struct *new_vma)
-@@ -1250,11 +1250,8 @@ static void dontunmap_complete(struct vma_remap_struct *vrm,
- 	unsigned long old_start = vrm->vma->vm_start;
- 	unsigned long old_end = vrm->vma->vm_end;
- 
--	/*
--	 * We always clear VM_LOCKED[ONFAULT] | VM_ACCOUNT on the old
--	 * vma.
--	 */
--	vm_flags_clear(vrm->vma, VM_LOCKED_MASK | VM_ACCOUNT);
-+	/* We always clear VM_LOCKED[ONFAULT] on the old VMA. */
-+	vm_flags_clear(vrm->vma, VM_LOCKED_MASK);
- 
- 	/*
- 	 * anon_vma links of the old vma is no longer needed after its page
--- 
-2.51.1
-
++	/* pad the frame and ensure terminating USB packet, datasheet 9.2.3 */
++	count = max(skb->len, ETH_ZLEN);
++	if (count % 64 == 0)
++		count++;
++	if (skb_padto(skb, count)) {
++		netdev->stats.tx_dropped++;
++		return NETDEV_TX_OK;
++	}
++
+ 	netif_stop_queue(netdev);
+-	count = (skb->len < 60) ? 60 : skb->len;
+-	count = (count & 0x3f) ? count : count + 1;
+ 	dev->tx_skb = skb;
+ 	usb_fill_bulk_urb(dev->tx_urb, dev->udev, usb_sndbulkpipe(dev->udev, 2),
+ 		      skb->data, count, write_bulk_callback, dev);
 
 
 
