@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-190384-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190395-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD6A7C105BA
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:59:26 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9785AC10644
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:01:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DED4518913BD
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:56:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A9758565051
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:56:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7C922C3749;
-	Mon, 27 Oct 2025 18:52:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DFC5326D6C;
+	Mon, 27 Oct 2025 18:53:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L3Il97P8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q2JvD94z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 623142F6902;
-	Mon, 27 Oct 2025 18:52:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1907231D37A;
+	Mon, 27 Oct 2025 18:53:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591161; cv=none; b=eCakKU3G7XvYWSr22yXyqC3NH2h28sOasWGQLHTsvII+Y6DeaRDv33NsP9T9nbwh3PPybHbLOSx9dK/leKRh/LPfm3yhkc479I08F0h0zEHwQRzIZc6+FkujKthv9slgxaGC9B1+vG7ApAkYzZ7fThtf6xgQrb6o8utlPH24isI=
+	t=1761591190; cv=none; b=A1rDhnwHr+7npyFWop4TwDd/o1x/Ff7iRXNBDuFR/0lHhcKnLUFmZdGoNDcH6T/wjQ9u4wEP8x866teuJccF4q20iiTtXdmTourhG8jMUdSgoZYNAJJQHLSQI6nytC75FtconTuhbhDkeLrFN3ChbTr3YCndMUSq2Ty1jDlj2yo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591161; c=relaxed/simple;
-	bh=K0EembCDrq6XqGoB1eEfSBX7ITuGS7ZJch8Ui/H1vSg=;
+	s=arc-20240116; t=1761591190; c=relaxed/simple;
+	bh=lTR1EMGgzgIaDFMrfFhFFhu3SyOR48e1jmpAB2znq58=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JrEPUrMR5uQouBw56hqBomG5DHc42HBL0BtBo74Wqi5XWX1OE7wiPL2YPOKY4vLU1CkPlnAcqZmkw3OvaUf7BAu0krxubHcrbTCXj63UOMF8pU9S5SPtHYWoR6phtUj8SR+tOlcoTmdqoGylvGYo7AdT2ZgiwfJgGLmeu5vYonQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L3Il97P8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA669C113D0;
-	Mon, 27 Oct 2025 18:52:40 +0000 (UTC)
+	 MIME-Version; b=PnN2SunsK9qVYALsyVeqEDhc+H88zCAvlM9ISod4CKl4PlarDTXT7RBlw/qOtb/cgseTpU+lJz8t43nD9sQGO/KW7v5nKeBObdJNxWE8TgRgCQQHJhea+TaYh9oqcgsNCMNY9+qjJ6VQGPr0pHVIyCE/Td/AnzuGhbxiwkQ74Uk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q2JvD94z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F496C4CEF1;
+	Mon, 27 Oct 2025 18:53:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591161;
-	bh=K0EembCDrq6XqGoB1eEfSBX7ITuGS7ZJch8Ui/H1vSg=;
+	s=korg; t=1761591190;
+	bh=lTR1EMGgzgIaDFMrfFhFFhu3SyOR48e1jmpAB2znq58=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L3Il97P8Jl3PW1njjOfrVDVV4u1B6sPuyEZWkoZkp+a8vlZqwT7AsfO4i4VO/axAb
-	 X6gYsmEP7+9XuJsJEm+FlzvNvr+gML+ucZ1ur2QeiNBbWbY3uY2MGigJRoK2pGwVOn
-	 VWaJB9HpLAouy9pOui0tYB/RLmbVUeg86iTG7jKE=
+	b=q2JvD94z5p3JwjLlwu4LJzrmCUziNppCQz3hjp8/xZkX9ovDxglZWlEidvcmYonKt
+	 x2Kvf5CopAVHiZKyzUv39FmTw9AgcnUIE/jNz/F0A21HRDxVHkL5OlvicBuxsLw121
+	 e1ccsq/2rqb1qiMadQdqKdpNI3EES5vsZxS2pulQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Stephan Gerhold <stephan.gerhold@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Anthony Iliopoulos <ailiop@suse.com>,
+	Benjamin Coddington <bcodding@redhat.com>,
+	Anna Schumaker <anna.schumaker@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 073/332] remoteproc: qcom: q6v5: Avoid disabling handover IRQ twice
-Date: Mon, 27 Oct 2025 19:32:06 +0100
-Message-ID: <20251027183526.551739119@linuxfoundation.org>
+Subject: [PATCH 5.10 074/332] NFSv4.1: fix backchannel max_resp_sz verification check
+Date: Mon, 27 Oct 2025 19:32:07 +0100
+Message-ID: <20251027183526.579582649@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
 References: <20251027183524.611456697@linuxfoundation.org>
@@ -67,47 +67,48 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Stephan Gerhold <stephan.gerhold@linaro.org>
+From: Anthony Iliopoulos <ailiop@suse.com>
 
-[ Upstream commit 110be46f5afe27b66caa2d12473a84cd397b1925 ]
+[ Upstream commit 191512355e520dfc45c8bc3b56d4de59c3ade33e ]
 
-enable_irq() and disable_irq() are reference counted, so we must make sure
-that each enable_irq() is always paired with a single disable_irq(). If we
-call disable_irq() twice followed by just a single enable_irq(), the IRQ
-will remain disabled forever.
+When the client max_resp_sz is larger than what the server encodes in
+its reply, the nfs4_verify_back_channel_attrs() check fails and this
+causes nfs4_proc_create_session() to fail, in cases where the client
+page size is larger than that of the server and the server does not want
+to negotiate upwards.
 
-For the error handling path in qcom_q6v5_wait_for_start(), disable_irq()
-will end up being called twice, because disable_irq() also happens in
-qcom_q6v5_unprepare() when rolling back the call to qcom_q6v5_prepare().
+While this is not a problem with the linux nfs server that will reflect
+the proposed value in its reply irrespective of the local page size,
+other nfs server implementations may insist on their own max_resp_sz
+value, which could be smaller.
 
-Fix this by dropping disable_irq() in qcom_q6v5_wait_for_start(). Since
-qcom_q6v5_prepare() is the function that calls enable_irq(), it makes more
-sense to have the rollback handled always by qcom_q6v5_unprepare().
+Fix this by accepting smaller max_resp_sz values from the server, as
+this does not violate the protocol. The server is allowed to decrease
+but not increase proposed the size, and as such values smaller than the
+client-proposed ones are valid.
 
-Fixes: 3b415c8fb263 ("remoteproc: q6v5: Extract common resource handling")
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
-Link: https://lore.kernel.org/r/20250820-rproc-qcom-q6v5-fixes-v2-1-910b1a3aff71@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: 43c2e885be25 ("nfs4: fix channel attribute sanity-checks")
+Signed-off-by: Anthony Iliopoulos <ailiop@suse.com>
+Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
+Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/remoteproc/qcom_q6v5.c | 3 ---
- 1 file changed, 3 deletions(-)
+ fs/nfs/nfs4proc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/remoteproc/qcom_q6v5.c b/drivers/remoteproc/qcom_q6v5.c
-index fd6fd36268d93..f2080738ca05e 100644
---- a/drivers/remoteproc/qcom_q6v5.c
-+++ b/drivers/remoteproc/qcom_q6v5.c
-@@ -115,9 +115,6 @@ int qcom_q6v5_wait_for_start(struct qcom_q6v5 *q6v5, int timeout)
- 	int ret;
- 
- 	ret = wait_for_completion_timeout(&q6v5->start_done, timeout);
--	if (!ret)
--		disable_irq(q6v5->handover_irq);
--
- 	return !ret ? -ETIMEDOUT : 0;
- }
- EXPORT_SYMBOL_GPL(qcom_q6v5_wait_for_start);
+diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
+index c094413c17541..87774f3b4c354 100644
+--- a/fs/nfs/nfs4proc.c
++++ b/fs/nfs/nfs4proc.c
+@@ -8971,7 +8971,7 @@ static int nfs4_verify_back_channel_attrs(struct nfs41_create_session_args *args
+ 		goto out;
+ 	if (rcvd->max_rqst_sz > sent->max_rqst_sz)
+ 		return -EINVAL;
+-	if (rcvd->max_resp_sz < sent->max_resp_sz)
++	if (rcvd->max_resp_sz > sent->max_resp_sz)
+ 		return -EINVAL;
+ 	if (rcvd->max_resp_sz_cached > sent->max_resp_sz_cached)
+ 		return -EINVAL;
 -- 
 2.51.0
 
