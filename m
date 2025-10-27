@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-190407-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190070-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6701C10696
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:03:00 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CB74C0FF10
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:39:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0FFBD56608C
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:56:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1ED1719C4F61
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:39:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24D643074AC;
-	Mon, 27 Oct 2025 18:53:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E1A430FC0F;
+	Mon, 27 Oct 2025 18:39:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HE/BVGjv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KwHLHgJW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B873C32D0F1;
-	Mon, 27 Oct 2025 18:53:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBD9A2D7806;
+	Mon, 27 Oct 2025 18:39:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591210; cv=none; b=LTPY5maj2JnXgrm4ZzLfR66LDPMo16Jb6aAtmobOA3APTnYQZfVc5Y4l3p6yGeoG/144swaj4QqvoYOt5zRWbhzWmNiVjCjErDXHjtwhBB9aZkshcNITiKXjr3/sUYMKC8QYBPAsMHNwQMM0v2aiYzIUEJJc/lIP6aaoUJcPUeI=
+	t=1761590357; cv=none; b=eZEU7IpRVOb5N97qxBRry8RBLb5vFK9XIitU6mKQi1WOP3uTs79U4sctH1sOYQSPqjKMyl6C49yYl62bSh8mzgn1Hhwd6IijQ6aqV4NFQV+d+MGMyTVLZCeBZ+5DxI8z0twXLa/0jkGVmCy0hOLqbjpf45TlOOestB1Cb5eVUlA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591210; c=relaxed/simple;
-	bh=woFucZrZuV2h07llLW708wMtSLTr1oomw9ZQZs2EVEY=;
+	s=arc-20240116; t=1761590357; c=relaxed/simple;
+	bh=d+7RfwEi7pbvDJwrEKKl/0kz8JucUtN/BIOvEtxbs4A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dkUIEUWkZUaGulQ75+tn9w9U1g1cqEbIBiTwbygUDNUaOoAraIPd6jqGB3QLywSyH4FFcLz12tu2ZQ6iDiWPS1CFZK+UWwYGOdo1AK1+cheKsXpELgofSIVMMAUZeIMlnkEbJpr7GL+Ip19fXojran4+52UkHCiH5LcMyr5RTdM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HE/BVGjv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40A12C4CEF1;
-	Mon, 27 Oct 2025 18:53:30 +0000 (UTC)
+	 MIME-Version:Content-Type; b=gfm7xP/MTuTNkT+HHU8t2l/LuXtGXsjsN/4cE6Drj7bxibV+JE1iEFWVUIUNKETEy/Dn+79XpuLkoAtZX+/7t7WXipx6H28ar99O1G5rSaQXq15Sv3+7qfnbCSOFgqUaIUgcV5oB/pL3ymm6zIkVdf5H9exyhT3ECO/iKR7heik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KwHLHgJW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32A5DC4CEF1;
+	Mon, 27 Oct 2025 18:39:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591210;
-	bh=woFucZrZuV2h07llLW708wMtSLTr1oomw9ZQZs2EVEY=;
+	s=korg; t=1761590356;
+	bh=d+7RfwEi7pbvDJwrEKKl/0kz8JucUtN/BIOvEtxbs4A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HE/BVGjvsEqCT72D69wQYsW8UCnacGjrhmtAaQ8L/f9KLPiAhzxdRPlfV9NcxCRJV
-	 wBLpjT9LmSm+ks8BVlehWkKaEVUYJpRvIqgIFo6Ps3UpQqJX85boML3esSwUHkSoPd
-	 WLpLSU4d1JXSX7B+P/gNyR99g6qPT7OkpB1oA8AU=
+	b=KwHLHgJWGFukZdR53e6x7qYLTpsGTl329ZTbYR+rgAGu7vGkFzsYr/JWzBXsm2sIR
+	 k8KU3QKmMdprRNguQcAkb73uuFCyxYlhjwSREBZAZ2nk/1NlCYeQMgxIgeFJAmri3r
+	 SrjTiGHMQr7adH7WUopcvB6tTpfwhWr4F8jFhmwU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Garry <john.garry@huawei.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 108/332] scsi: mvsas: Use sas_task_find_rq() for tagging
+	Ovidiu Panait <ovidiu.panait.oss@gmail.com>
+Subject: [PATCH 5.4 015/224] staging: axis-fifo: fix maximum TX packet length check
 Date: Mon, 27 Oct 2025 19:32:41 +0100
-Message-ID: <20251027183527.466475848@linuxfoundation.org>
+Message-ID: <20251027183509.400313211@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
-References: <20251027183524.611456697@linuxfoundation.org>
+In-Reply-To: <20251027183508.963233542@linuxfoundation.org>
+References: <20251027183508.963233542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,208 +58,76 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Garry <john.garry@huawei.com>
+From: Ovidiu Panait <ovidiu.panait.oss@gmail.com>
 
-[ Upstream commit 2acf97f199f9eba8321390325519e9b6bff60108 ]
+commit 52ff2b840bc723f3be1f096f8017c78e0515858c upstream.
 
-The request associated with a SCSI command coming from the block layer has
-a unique tag, so use that when possible for getting a slot.
+Since commit 2ca34b508774 ("staging: axis-fifo: Correct handling of
+tx_fifo_depth for size validation"), write() operations with packets
+larger than 'tx_fifo_depth - 4' words are no longer rejected with -EINVAL.
 
-Unfortunately we don't support reserved commands in the SCSI midlayer yet.
-As such, SMP tasks - as an example - will not have a request associated, so
-in the interim continue to manage those tags for that type of sas_task
-internally.
+Fortunately, the packets are not actually getting transmitted to hardware,
+otherwise they would be raising a 'Transmit Packet Overrun Error'
+interrupt, which requires a reset of the TX circuit to recover from.
 
-We reserve an arbitrary 4 tags for these internal tags. Indeed, we already
-decrement MVS_RSVD_SLOTS by 2 for the shost can_queue when flag
-MVF_FLAG_SOC is set. This change was made in commit 20b09c2992fe ("[SCSI]
-mvsas: add support for 94xx; layout change; bug fixes"), but what those 2
-slots are used for is not obvious.
+Instead, the request times out inside wait_event_interruptible_timeout()
+and always returns -EAGAIN, since the wake up condition can never be true
+for these packets. But still, they unnecessarily block other tasks from
+writing to the FIFO and the EAGAIN return code signals userspace to retry
+the write() call, even though it will always fail and time out.
 
-Also make the tag management functions static, where possible.
+According to the AXI4-Stream FIFO reference manual (PG080), the maximum
+valid packet length is 'tx_fifo_depth - 4' words, so attempting to send
+larger packets is invalid and should not be happening in the first place:
 
-Signed-off-by: John Garry <john.garry@huawei.com>
-Link: https://lore.kernel.org/r/1666091763-11023-8-git-send-email-john.garry@huawei.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Stable-dep-of: 60cd16a3b743 ("scsi: mvsas: Fix use-after-free bugs in mvs_work_queue")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+> The maximum packet that can be transmitted is limited by the size of
+> the FIFO, which is (C_TX_FIFO_DEPTH–4)*(data interface width/8) bytes.
+
+Therefore, bring back the old behavior and outright reject packets larger
+than 'tx_fifo_depth - 4' with -EINVAL. Add a comment to explain why the
+check is necessary. The dev_err() message was removed to avoid cluttering
+the dmesg log if an invalid packet is received from userspace.
+
+Fixes: 2ca34b508774 ("staging: axis-fifo: Correct handling of tx_fifo_depth for size validation")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ovidiu Panait <ovidiu.panait.oss@gmail.com>
+Link: https://lore.kernel.org/r/20250817171350.872105-1-ovidiu.panait.oss@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/mvsas/mv_defs.h |  1 +
- drivers/scsi/mvsas/mv_init.c |  9 +++++----
- drivers/scsi/mvsas/mv_sas.c  | 35 ++++++++++++++++++++++-------------
- drivers/scsi/mvsas/mv_sas.h  |  7 +------
- 4 files changed, 29 insertions(+), 23 deletions(-)
+ drivers/staging/axis-fifo/axis-fifo.c |   14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/scsi/mvsas/mv_defs.h b/drivers/scsi/mvsas/mv_defs.h
-index 199ab49aa047f..3ec1c7546cdb4 100644
---- a/drivers/scsi/mvsas/mv_defs.h
-+++ b/drivers/scsi/mvsas/mv_defs.h
-@@ -40,6 +40,7 @@ enum driver_configuration {
- 	MVS_ATA_CMD_SZ		= 96,	/* SATA command table buffer size */
- 	MVS_OAF_SZ		= 64,	/* Open address frame buffer size */
- 	MVS_QUEUE_SIZE		= 64,	/* Support Queue depth */
-+	MVS_RSVD_SLOTS		= 4,
- 	MVS_SOC_CAN_QUEUE	= MVS_SOC_SLOTS - 2,
- };
- 
-diff --git a/drivers/scsi/mvsas/mv_init.c b/drivers/scsi/mvsas/mv_init.c
-index 17a4fc7cd14bb..ccbea18f8ee12 100644
---- a/drivers/scsi/mvsas/mv_init.c
-+++ b/drivers/scsi/mvsas/mv_init.c
-@@ -143,7 +143,7 @@ static void mvs_free(struct mvs_info *mvi)
- 		scsi_host_put(mvi->shost);
- 	list_for_each_entry(mwq, &mvi->wq_list, entry)
- 		cancel_delayed_work(&mwq->work_q);
--	kfree(mvi->tags);
-+	kfree(mvi->rsvd_tags);
- 	kfree(mvi);
- }
- 
-@@ -285,7 +285,6 @@ static int mvs_alloc(struct mvs_info *mvi, struct Scsi_Host *shost)
- 			printk(KERN_DEBUG "failed to create dma pool %s.\n", pool_name);
- 			goto err_out;
- 	}
--	mvi->tags_num = slot_nr;
- 
- 	return 0;
- err_out:
-@@ -368,8 +367,8 @@ static struct mvs_info *mvs_pci_alloc(struct pci_dev *pdev,
- 	mvi->sas = sha;
- 	mvi->shost = shost;
- 
--	mvi->tags = kzalloc(MVS_CHIP_SLOT_SZ>>3, GFP_KERNEL);
--	if (!mvi->tags)
-+	mvi->rsvd_tags = bitmap_zalloc(MVS_RSVD_SLOTS, GFP_KERNEL);
-+	if (!mvi->rsvd_tags)
- 		goto err_out;
- 
- 	if (MVS_CHIP_DISP->chip_ioremap(mvi))
-@@ -470,6 +469,8 @@ static void  mvs_post_sas_ha_init(struct Scsi_Host *shost,
- 	else
- 		can_queue = MVS_CHIP_SLOT_SZ;
- 
-+	can_queue -= MVS_RSVD_SLOTS;
-+
- 	shost->sg_tablesize = min_t(u16, SG_ALL, MVS_MAX_SG);
- 	shost->can_queue = can_queue;
- 	mvi->shost->cmd_per_lun = MVS_QUEUE_SIZE;
-diff --git a/drivers/scsi/mvsas/mv_sas.c b/drivers/scsi/mvsas/mv_sas.c
-index 4450641f6e736..6fca411007343 100644
---- a/drivers/scsi/mvsas/mv_sas.c
-+++ b/drivers/scsi/mvsas/mv_sas.c
-@@ -20,31 +20,34 @@ static int mvs_find_tag(struct mvs_info *mvi, struct sas_task *task, u32 *tag)
- 	return 0;
- }
- 
--void mvs_tag_clear(struct mvs_info *mvi, u32 tag)
-+static void mvs_tag_clear(struct mvs_info *mvi, u32 tag)
- {
--	void *bitmap = mvi->tags;
-+	void *bitmap = mvi->rsvd_tags;
- 	clear_bit(tag, bitmap);
- }
- 
--void mvs_tag_free(struct mvs_info *mvi, u32 tag)
-+static void mvs_tag_free(struct mvs_info *mvi, u32 tag)
- {
-+	if (tag >= MVS_RSVD_SLOTS)
-+		return;
-+
- 	mvs_tag_clear(mvi, tag);
- }
- 
--void mvs_tag_set(struct mvs_info *mvi, unsigned int tag)
-+static void mvs_tag_set(struct mvs_info *mvi, unsigned int tag)
- {
--	void *bitmap = mvi->tags;
-+	void *bitmap = mvi->rsvd_tags;
- 	set_bit(tag, bitmap);
- }
- 
--inline int mvs_tag_alloc(struct mvs_info *mvi, u32 *tag_out)
-+static int mvs_tag_alloc(struct mvs_info *mvi, u32 *tag_out)
- {
- 	unsigned int index, tag;
--	void *bitmap = mvi->tags;
-+	void *bitmap = mvi->rsvd_tags;
- 
--	index = find_first_zero_bit(bitmap, mvi->tags_num);
-+	index = find_first_zero_bit(bitmap, MVS_RSVD_SLOTS);
- 	tag = index;
--	if (tag >= mvi->tags_num)
-+	if (tag >= MVS_RSVD_SLOTS)
- 		return -SAS_QUEUE_FULL;
- 	mvs_tag_set(mvi, tag);
- 	*tag_out = tag;
-@@ -691,6 +694,7 @@ static int mvs_task_prep(struct sas_task *task, struct mvs_info *mvi, int is_tmf
- 	struct mvs_task_exec_info tei;
- 	struct mvs_slot_info *slot;
- 	u32 tag = 0xdeadbeef, n_elem = 0;
-+	struct request *rq;
- 	int rc = 0;
- 
- 	if (!dev->port) {
-@@ -755,9 +759,14 @@ static int mvs_task_prep(struct sas_task *task, struct mvs_info *mvi, int is_tmf
- 		n_elem = task->num_scatter;
+--- a/drivers/staging/axis-fifo/axis-fifo.c
++++ b/drivers/staging/axis-fifo/axis-fifo.c
+@@ -494,11 +494,17 @@ static ssize_t axis_fifo_write(struct fi
+ 		return -EINVAL;
  	}
  
--	rc = mvs_tag_alloc(mvi, &tag);
--	if (rc)
--		goto err_out;
-+	rq = sas_task_find_rq(task);
-+	if (rq) {
-+		tag = rq->tag + MVS_RSVD_SLOTS;
-+	} else {
-+		rc = mvs_tag_alloc(mvi, &tag);
-+		if (rc)
-+			goto err_out;
-+	}
+-	if (words_to_write > fifo->tx_fifo_depth) {
+-		dev_err(fifo->dt_device, "tried to write more words [%u] than slots in the fifo buffer [%u]\n",
+-			words_to_write, fifo->tx_fifo_depth);
++	/*
++	 * In 'Store-and-Forward' mode, the maximum packet that can be
++	 * transmitted is limited by the size of the FIFO, which is
++	 * (C_TX_FIFO_DEPTH–4)*(data interface width/8) bytes.
++	 *
++	 * Do not attempt to send a packet larger than 'tx_fifo_depth - 4',
++	 * otherwise a 'Transmit Packet Overrun Error' interrupt will be
++	 * raised, which requires a reset of the TX circuit to recover.
++	 */
++	if (words_to_write > (fifo->tx_fifo_depth - 4))
+ 		return -EINVAL;
+-	}
  
- 	slot = &mvi->slot_info[tag];
- 
-@@ -860,7 +869,7 @@ int mvs_queue_command(struct sas_task *task, gfp_t gfp_flags)
- static void mvs_slot_free(struct mvs_info *mvi, u32 rx_desc)
- {
- 	u32 slot_idx = rx_desc & RXQ_SLOT_MASK;
--	mvs_tag_clear(mvi, slot_idx);
-+	mvs_tag_free(mvi, slot_idx);
- }
- 
- static void mvs_slot_task_free(struct mvs_info *mvi, struct sas_task *task,
-diff --git a/drivers/scsi/mvsas/mv_sas.h b/drivers/scsi/mvsas/mv_sas.h
-index 8617a5ff5fe93..ab1f7fb85574d 100644
---- a/drivers/scsi/mvsas/mv_sas.h
-+++ b/drivers/scsi/mvsas/mv_sas.h
-@@ -370,8 +370,7 @@ struct mvs_info {
- 	u32 chip_id;
- 	const struct mvs_chip_info *chip;
- 
--	int tags_num;
--	unsigned long *tags;
-+	unsigned long *rsvd_tags;
- 	/* further per-slot information */
- 	struct mvs_phy phy[MVS_MAX_PHYS];
- 	struct mvs_port port[MVS_MAX_PHYS];
-@@ -424,10 +423,6 @@ struct mvs_task_exec_info {
- 
- /******************** function prototype *********************/
- void mvs_get_sas_addr(void *buf, u32 buflen);
--void mvs_tag_clear(struct mvs_info *mvi, u32 tag);
--void mvs_tag_free(struct mvs_info *mvi, u32 tag);
--void mvs_tag_set(struct mvs_info *mvi, unsigned int tag);
--int mvs_tag_alloc(struct mvs_info *mvi, u32 *tag_out);
- void mvs_iounmap(void __iomem *regs);
- int mvs_ioremap(struct mvs_info *mvi, int bar, int bar_ex);
- void mvs_phys_reset(struct mvs_info *mvi, u32 phy_mask, int hard);
--- 
-2.51.0
-
+ 	if (fifo->write_flags & O_NONBLOCK) {
+ 		/*
 
 
 
