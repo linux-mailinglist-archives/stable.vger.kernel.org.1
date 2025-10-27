@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-190567-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190819-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69210C1085B
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:08:47 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9882BC10C79
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:19:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 23B0A1A261BB
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:05:22 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B7E8C4F65C1
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:13:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13118337688;
-	Mon, 27 Oct 2025 19:00:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D85603233F5;
+	Mon, 27 Oct 2025 19:11:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lp1pke5g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YihzqGEO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE2D931578B;
-	Mon, 27 Oct 2025 19:00:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 954B935965;
+	Mon, 27 Oct 2025 19:11:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591627; cv=none; b=n8ZvmRWPgOsSxj48L9VIoGBQfg3+v9TWfoZEbrQ0xCkYwPiphfPgPDr4yGozoyKEqawXdh4c+/IVzrkqiZplal0Xn28o4kAULL1ZfcuT3JTwMwCDNYrxTAfH5wz03ITlY+sxZ5n5mvHjFiqL73Gp/VBtFClxSDJB/7l2Kwr79XU=
+	t=1761592281; cv=none; b=FYM4ck89DNqUiM9rghG8n4zcWa8AsNsvdP1PhpdCxDUAe0+611LJx2rWTzoOLO/p37Hkt6fLBIpJC7zON8G4k/dDhSYDYm2w1SFi5hEHZL7OKQAZvjkj0v6WnYjUOA9gEKNTn+giijYt1BvaBaB9WpBLgCkIpFlPKZI1ZttWijI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591627; c=relaxed/simple;
-	bh=m10aOH3Hx4z2HTfCpNR2nmexFi/rRqHqEOsaQCYjYdk=;
+	s=arc-20240116; t=1761592281; c=relaxed/simple;
+	bh=D6DPpPviPX+tSCYrGURb8flm0sD1YSwhNhe+3vwecr4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Yj5MPi9ObeMMCtCR9w5zHcUx1BOCoCig1tTTngHMjkt7aelUP6+3iWc2ARJUT0kaIL/WYzfR0hEqImCSd95Odv8BrXEt81qO6M5wX85NbYZPSgoaZUTEFS7M6e5O8gJ3dYqGy8bO10e/khyibTq7Q7DkGxSHTwcagE7lR9HDyNI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lp1pke5g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50944C4CEFD;
-	Mon, 27 Oct 2025 19:00:27 +0000 (UTC)
+	 MIME-Version; b=qrxg4N2zWfYkyaKR3BARpdRuMB3Ra2eAQy2Sc1SjlIkVZVQZ1H4JdDTBIeUg7Xs5xVB3kIIRoQHBxZvnP/Ngs9A6Q62+17Z1iSoLVg3ZxVxaNRBST6VhfY46AIRXxkfuNpJLnuDMbEuHXCxAWVgIJ12XFLmah6/nwRxTV3CXTnc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YihzqGEO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27572C4CEF1;
+	Mon, 27 Oct 2025 19:11:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591627;
-	bh=m10aOH3Hx4z2HTfCpNR2nmexFi/rRqHqEOsaQCYjYdk=;
+	s=korg; t=1761592281;
+	bh=D6DPpPviPX+tSCYrGURb8flm0sD1YSwhNhe+3vwecr4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lp1pke5g/hhAV8vRlLfYWCB7Bqnr+/oyfy2dOLsZEG+jj0iaHwo2fiWc9WV389FhM
-	 BqWQELuF5BcFk8zfzf6iRBPH1cy0N1o0XDT6YkhqSFPNkIo41jFq34YfGkvoCQ2Gv0
-	 2BCwT+Y+iUhwU4rqlqM+DlUquVWX8zzU8Uuc/U0Y=
+	b=YihzqGEO+79fY7IiyeD4728QIQ1hWiKoCpH2J9Je17zCwJdjTa9d/4YkT9cMhMlot
+	 7U6pVVjOTcHGDjJbcT0NnXpGmJPeb+PiGkGWXX2l598Y5Jq/XFmGTL9AEf20WdKo7U
+	 Zu5zem7l2C1bL+Imx2pGFXARVG+fbjmRX+j4FL8A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	Jiaming Zhang <r772577952@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 270/332] net: rtnetlink: use BIT for flag values
+Subject: [PATCH 6.1 062/157] ALSA: usb-audio: Fix NULL pointer deference in try_to_register_card
 Date: Mon, 27 Oct 2025 19:35:23 +0100
-Message-ID: <20251027183531.990457641@linuxfoundation.org>
+Message-ID: <20251027183502.947970704@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
-References: <20251027183524.611456697@linuxfoundation.org>
+In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
+References: <20251027183501.227243846@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,37 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikolay Aleksandrov <razor@blackwall.org>
+From: Jiaming Zhang <r772577952@gmail.com>
 
-[ Upstream commit 0569e31f1bc2f50613ba4c219f3ecc0d1174d841 ]
+[ Upstream commit 28412b489b088fb88dff488305fd4e56bd47f6e4 ]
 
-Use BIT to define flag values.
+In try_to_register_card(), the return value of usb_ifnum_to_if() is
+passed directly to usb_interface_claimed() without a NULL check, which
+will lead to a NULL pointer dereference when creating an invalid
+USB audio device. Fix this by adding a check to ensure the interface
+pointer is valid before passing it to usb_interface_claimed().
 
-Signed-off-by: Nikolay Aleksandrov <razor@blackwall.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: bf29555f5bdc ("rtnetlink: Allow deleting FDB entries in user namespace")
+Fixes: 39efc9c8a973 ("ALSA: usb-audio: Fix last interface check for registration")
+Closes: https://lore.kernel.org/all/CANypQFYtQxHL5ghREs-BujZG413RPJGnO5TH=xjFBKpPts33tA@mail.gmail.com/
+Signed-off-by: Jiaming Zhang <r772577952@gmail.com>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/rtnetlink.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/usb/card.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/include/net/rtnetlink.h b/include/net/rtnetlink.h
-index 02b0636a4523d..030fc7eef7401 100644
---- a/include/net/rtnetlink.h
-+++ b/include/net/rtnetlink.h
-@@ -10,7 +10,7 @@ typedef int (*rtnl_doit_func)(struct sk_buff *, struct nlmsghdr *,
- typedef int (*rtnl_dumpit_func)(struct sk_buff *, struct netlink_callback *);
+diff --git a/sound/usb/card.c b/sound/usb/card.c
+index 5f539a1baef3d..d7fe1c22a48bb 100644
+--- a/sound/usb/card.c
++++ b/sound/usb/card.c
+@@ -753,10 +753,16 @@ get_alias_quirk(struct usb_device *dev, unsigned int id)
+  */
+ static int try_to_register_card(struct snd_usb_audio *chip, int ifnum)
+ {
++	struct usb_interface *iface;
++
+ 	if (check_delayed_register_option(chip) == ifnum ||
+-	    chip->last_iface == ifnum ||
+-	    usb_interface_claimed(usb_ifnum_to_if(chip->dev, chip->last_iface)))
++	    chip->last_iface == ifnum)
++		return snd_card_register(chip->card);
++
++	iface = usb_ifnum_to_if(chip->dev, chip->last_iface);
++	if (iface && usb_interface_claimed(iface))
+ 		return snd_card_register(chip->card);
++
+ 	return 0;
+ }
  
- enum rtnl_link_flags {
--	RTNL_FLAG_DOIT_UNLOCKED = 1,
-+	RTNL_FLAG_DOIT_UNLOCKED = BIT(0),
- };
- 
- enum rtnl_kinds {
 -- 
 2.51.0
 
