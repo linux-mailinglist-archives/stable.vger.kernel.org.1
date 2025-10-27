@@ -1,55 +1,74 @@
-Return-Path: <stable+bounces-190593-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191188-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9611C1089B
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:09:26 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E3D9C11177
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:34:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 930D619C7B5E
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:06:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 19DFE463E35
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:29:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1077C2D839A;
-	Mon, 27 Oct 2025 19:01:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B6C432E122;
+	Mon, 27 Oct 2025 19:27:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hOvC5tI1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qNTKSsmH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0D2A321F48;
-	Mon, 27 Oct 2025 19:01:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1191B202963;
+	Mon, 27 Oct 2025 19:27:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591689; cv=none; b=BVDk9eSDnAxlXS6Mh5IneqnrJH6jG8I+CpdIDDTtty0BfhgSg7GHcHzBUt0gkktvRvpbdGWZXVtukCwrcgOR2Qrf85wtGDB1j/SutGbkwesQQWbyMxgpi0wyLB/YNvJy+m24hDgbzFhe4wJY7nrKl1tG2pz5VTr5xWWsv6X06wI=
+	t=1761593234; cv=none; b=XjzmalykfKiWld7Gl5EMwxmUhD7IQs3um+wqqKSmoaUoeT+zNK/Rbq79LjvWUoHFOfkmOH9+plHgo6kKlXlNjClfDjFDCB+wZiUQR/7lnYn0OUm+Xc7dT+pYp7qns5E5wBq/HxkeCNxpJP6xwM03nABJd79hg1wC7Exc2+l35+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591689; c=relaxed/simple;
-	bh=sm3t+acIsSd0o9tlyEjjyEBl7zuhWVLDjbJ/cqQFf2M=;
+	s=arc-20240116; t=1761593234; c=relaxed/simple;
+	bh=934bB7yTD5RWvHouy1T4/k1lxTm5Sw9TFeBuvcpBjbs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O2bO21esJeIUbnWMdEx83f2Gjge309wdN8ROgO4ABJbCKfW1nzzkRipbJ7wdrb/xaILLgOCLUJiK1sSeWtyjYd4PhzGZjdzKSg/4OKs+em1brgckKyPXe7ocqt4BRuWPIF6dNZm+48UTPvxjOtmWohSYo4+PDozU9IiRSYLaDFA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hOvC5tI1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 510D9C4CEF1;
-	Mon, 27 Oct 2025 19:01:29 +0000 (UTC)
+	 MIME-Version; b=qPEJ930Nb4I7oHooIxGudyrTzjH0khSbviLUIH8BsnHVFZ3FG9/M8Oi13d766jjpcKa6sLUIMt9qZBxGW3c2vrOmZnQR6hcxlTmUE+EAWAoHDB6sXe1VlQr9R9/0ot8e5wmYOS1lJMacPxFeCWeLuOL7pBENs544KgdNyBftTRI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qNTKSsmH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F0ACC4CEF1;
+	Mon, 27 Oct 2025 19:27:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591689;
-	bh=sm3t+acIsSd0o9tlyEjjyEBl7zuhWVLDjbJ/cqQFf2M=;
+	s=korg; t=1761593233;
+	bh=934bB7yTD5RWvHouy1T4/k1lxTm5Sw9TFeBuvcpBjbs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hOvC5tI1tzUe6DsB+rz9wAcFTI2FV4SOapKSe7unQA0E6ml+9yh2EKEsdROolTFKu
-	 OvDs9tRBTDZv7dYr19vjBD8pW+lDy+2+FJVhCDVJc6bp8zlJq+COXjoRujMMI8Od/0
-	 qUG9q1cVMoR23+VEdcHYBkOi2ZUsdXtM3VMLgnXY=
+	b=qNTKSsmHOPs5z4T08bzZgpV9XtIiA+XfZT/iFwFT4AoDMyG0Tkdh3QE5IcDGTcaWA
+	 06HGtiQSbFGiEP4qX73551R5Wst8oSWSplT2eJ6hIhqbMrTvzArkXO0gNR9LKTR9fk
+	 WfhDIbUygckLyBEzls0cnZNChUeyUiqxXcBWK8UQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Reinhard Speyerer <rspmn@arcor.de>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 5.10 292/332] USB: serial: option: add Quectel RG255C
+	Lance Yang <lance.yang@linux.dev>,
+	Eero Tamminen <oak@helsinkinet.fi>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	Anna Schumaker <anna.schumaker@oracle.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Finn Thain <fthain@linux-m68k.org>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Joel Granados <joel.granados@kernel.org>,
+	John Stultz <jstultz@google.com>,
+	Kent Overstreet <kent.overstreet@linux.dev>,
+	Mingzhe Yang <mingzhe.yang@ly.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Tomasz Figa <tfiga@chromium.org>,
+	Waiman Long <longman@redhat.com>,
+	Will Deacon <will@kernel.org>,
+	Yongliang Gao <leonylgao@tencent.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.17 063/184] hung_task: fix warnings caused by unaligned lock pointers
 Date: Mon, 27 Oct 2025 19:35:45 +0100
-Message-ID: <20251027183532.565021491@linuxfoundation.org>
+Message-ID: <20251027183516.586562060@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
-References: <20251027183524.611456697@linuxfoundation.org>
+In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
+References: <20251027183514.934710872@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,68 +80,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Reinhard Speyerer <rspmn@arcor.de>
+From: Lance Yang <lance.yang@linux.dev>
 
-commit 89205c60c0fc96b73567a2e9fe27ee3f59d01193 upstream.
+commit c97513cddcfc235f2522617980838e500af21d01 upstream.
 
-Add support for Quectel RG255C devices to complement commit 5c964c8a97c1
-("net: usb: qmi_wwan: add Quectel RG255C").
-The composition is DM / NMEA / AT / QMI.
+The blocker tracking mechanism assumes that lock pointers are at least
+4-byte aligned to use their lower bits for type encoding.
 
-T:  Bus=01 Lev=02 Prnt=99 Port=01 Cnt=02 Dev#=110 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=2c7c ProdID=0316 Rev= 5.15
-S:  Manufacturer=Quectel
-S:  Product=RG255C-GL
-S:  SerialNumber=xxxxxxxx
-C:* #Ifs= 4 Cfg#= 1 Atr=a0 MxPwr=500mA
-I:* If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 1 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
-E:  Ad=86(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+However, as reported by Eero Tamminen, some architectures like m68k
+only guarantee 2-byte alignment of 32-bit values. This breaks the
+assumption and causes two related WARN_ON_ONCE checks to trigger.
 
-Signed-off-by: Reinhard Speyerer <rspmn@arcor.de>
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
+To fix this, the runtime checks are adjusted to silently ignore any lock
+that is not 4-byte aligned, effectively disabling the feature in such
+cases and avoiding the related warnings.
+
+Thanks to Geert Uytterhoeven for bisecting!
+
+Link: https://lkml.kernel.org/r/20250909145243.17119-1-lance.yang@linux.dev
+Fixes: e711faaafbe5 ("hung_task: replace blocker_mutex with encoded blocker")
+Signed-off-by: Lance Yang <lance.yang@linux.dev>
+Reported-by: Eero Tamminen <oak@helsinkinet.fi>
+Closes: https://lore.kernel.org/lkml/CAMuHMdW7Ab13DdGs2acMQcix5ObJK0O2dG_Fxzr8_g58Rc1_0g@mail.gmail.com
+Reviewed-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Cc: Anna Schumaker <anna.schumaker@oracle.com>
+Cc: Boqun Feng <boqun.feng@gmail.com>
+Cc: Finn Thain <fthain@linux-m68k.org>
+Cc: Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Joel Granados <joel.granados@kernel.org>
+Cc: John Stultz <jstultz@google.com>
+Cc: Kent Overstreet <kent.overstreet@linux.dev>
+Cc: Lance Yang <lance.yang@linux.dev>
+Cc: Mingzhe Yang <mingzhe.yang@ly.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Cc: Tomasz Figa <tfiga@chromium.org>
+Cc: Waiman Long <longman@redhat.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Yongliang Gao <leonylgao@tencent.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/option.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ include/linux/hung_task.h | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -273,6 +273,7 @@ static void option_instat_callback(struc
- #define QUECTEL_PRODUCT_EM05CN			0x0312
- #define QUECTEL_PRODUCT_EM05G_GR		0x0313
- #define QUECTEL_PRODUCT_EM05G_RS		0x0314
-+#define QUECTEL_PRODUCT_RG255C			0x0316
- #define QUECTEL_PRODUCT_EM12			0x0512
- #define QUECTEL_PRODUCT_RM500Q			0x0800
- #define QUECTEL_PRODUCT_RM520N			0x0801
-@@ -1271,6 +1272,9 @@ static const struct usb_device_id option
- 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_RM500K, 0xff, 0x00, 0x00) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_RG650V, 0xff, 0xff, 0x30) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_RG650V, 0xff, 0, 0) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_RG255C, 0xff, 0xff, 0x30) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_RG255C, 0xff, 0, 0) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_RG255C, 0xff, 0xff, 0x40) },
+diff --git a/include/linux/hung_task.h b/include/linux/hung_task.h
+index 34e615c76ca5..c4403eeb7144 100644
+--- a/include/linux/hung_task.h
++++ b/include/linux/hung_task.h
+@@ -20,6 +20,10 @@
+  * always zero. So we can use these bits to encode the specific blocking
+  * type.
+  *
++ * Note that on architectures where this is not guaranteed, or for any
++ * unaligned lock, this tracking mechanism is silently skipped for that
++ * lock.
++ *
+  * Type encoding:
+  * 00 - Blocked on mutex			(BLOCKER_TYPE_MUTEX)
+  * 01 - Blocked on semaphore			(BLOCKER_TYPE_SEM)
+@@ -45,7 +49,7 @@ static inline void hung_task_set_blocker(void *lock, unsigned long type)
+ 	 * If the lock pointer matches the BLOCKER_TYPE_MASK, return
+ 	 * without writing anything.
+ 	 */
+-	if (WARN_ON_ONCE(lock_ptr & BLOCKER_TYPE_MASK))
++	if (lock_ptr & BLOCKER_TYPE_MASK)
+ 		return;
  
- 	{ USB_DEVICE(CMOTECH_VENDOR_ID, CMOTECH_PRODUCT_6001) },
- 	{ USB_DEVICE(CMOTECH_VENDOR_ID, CMOTECH_PRODUCT_CMU_300) },
+ 	WRITE_ONCE(current->blocker, lock_ptr | type);
+@@ -53,8 +57,6 @@ static inline void hung_task_set_blocker(void *lock, unsigned long type)
+ 
+ static inline void hung_task_clear_blocker(void)
+ {
+-	WARN_ON_ONCE(!READ_ONCE(current->blocker));
+-
+ 	WRITE_ONCE(current->blocker, 0UL);
+ }
+ 
+-- 
+2.51.1
+
 
 
 
