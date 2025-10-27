@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-191009-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191082-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31060C10CEE
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:20:59 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BAB0C1113B
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:33:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id EBB47352918
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:20:57 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id EF290548E13
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:24:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37E25301707;
-	Mon, 27 Oct 2025 19:19:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FBE932B9AA;
+	Mon, 27 Oct 2025 19:22:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fE0OrlYZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ys6181wg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E798F241663;
-	Mon, 27 Oct 2025 19:19:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05B6F32143D;
+	Mon, 27 Oct 2025 19:22:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592777; cv=none; b=qe0y8Vftg39976u+2B6/jnmMc9eo5/Hjvf/ONG5xmJN36fBF0YWhegUBrYGtdR1aCht0gjlRqGUNYFHqBz9WXyv2MJ+jgFRQg8afJUozeO3lpTDw9/vOT5E7+85WYbarDhDaqUrCfexgsp9v3JgD+4wnkNvaU94FLCurISCQ9lc=
+	t=1761592966; cv=none; b=RbIdyjzMi0mu+l0W0mu4fIBHvzyww8sdU/tcJVdI9pFPeLkfusDk0M5W7+Q/iZpx5cFwwfhvRM2FDNlZhoTOilkGuh83z/cPApwFIpMAAyoU6YHSS8JPmKF+dfHuUHV0QGEpdjsCEb58ewAIoUnwNFXcO6JmSqgAVS3hcohh1dQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592777; c=relaxed/simple;
-	bh=GUT2OYoUJNIsa0GlgNAmvnBaPF63FjxwCv77Ihboj7g=;
+	s=arc-20240116; t=1761592966; c=relaxed/simple;
+	bh=ejFlTbyRsr7w/BBrsJwNZjFnSOOtfcFe/8VKWJK1G/s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mWdw6SVbe3wtMZIWPWr5xEpYcPpm6ywZu20Yi9FyBGm0zpdg4TQjy3AuRkWrvj5AA2/qCNg8u7T+OYzuSxZuZIR6ILBruKKZrE2mJsr9jL39mZ5WZECGVipZwJS0iSwj6eSmc5fUIyRwCfPt1dl9IJkIGMYBhnJF+0pVeTK1QV8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fE0OrlYZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C60DC4CEF1;
-	Mon, 27 Oct 2025 19:19:36 +0000 (UTC)
+	 MIME-Version; b=cxia/rMtD6x1RwhpEHrfog2lAJ1MsHO+waVATZ17rwJzrIHFACOrskItEN8R43g/VitSlCRhYJ0GOoj4zogAqlrfr+1eqmaBEJchAEQqfYD9rwb+X8y7Gcp5A+hqm9/gEv9sWMCmhRYe75NIalwFWK0gzNc6mJbZXf+iUXsRck4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ys6181wg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DA6BC4CEF1;
+	Mon, 27 Oct 2025 19:22:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592776;
-	bh=GUT2OYoUJNIsa0GlgNAmvnBaPF63FjxwCv77Ihboj7g=;
+	s=korg; t=1761592965;
+	bh=ejFlTbyRsr7w/BBrsJwNZjFnSOOtfcFe/8VKWJK1G/s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fE0OrlYZthVob/OjKdqm/SLfZd86Gf324miLzlsue4aYFl/nvBobIyVjlplEE8A3a
-	 rlit0E99SE+8Zt4M0kdGLPqXR4e08iH5bTeYJqB5SHE9rMct4Yk2aXmplQ5gufULk6
-	 75ZDGX5yJzE/j/djw7yGIIKDdNjGjHUUpY6Xuuv8=
+	b=ys6181wgnv7l9iOF9lu1qUKGB/ccGB+1RULJDlZw5o2Ao3bU3+JzN7AtjrklASf4w
+	 TJyxqFBwkQ1FDFK+QTxu26WQS/Kd3CU1BPh9F/VYTQQFMOx2gaihzS84DNN91gu50V
+	 7YQUrTii8ArHOnfBwxyKv+ctBbIu1Ap0w78FCdiI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Eric Biggers <ebiggers@kernel.org>,
-	Breno Leitao <leitao@debian.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+	Anup Patel <apatel@ventanamicro.com>,
+	Andrew Jones <ajones@ventanamicro.com>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Paul Walmsley <pjw@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 58/84] sched: Remove never used code in mm_cid_get()
+Subject: [PATCH 6.12 081/117] RISC-V: Dont print details of CPUs disabled in DT
 Date: Mon, 27 Oct 2025 19:36:47 +0100
-Message-ID: <20251027183440.364805080@linuxfoundation.org>
+Message-ID: <20251027183456.217068212@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183438.817309828@linuxfoundation.org>
-References: <20251027183438.817309828@linuxfoundation.org>
+In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
+References: <20251027183453.919157109@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,49 +64,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Anup Patel <apatel@ventanamicro.com>
 
-[ Upstream commit 53abe3e1c154628cc74e33a1bfcd865656e433a5 ]
+[ Upstream commit d2721bb165b3ee00dd23525885381af07fec852a ]
 
-Clang is not happy with set but unused variable (this is visible
-with `make W=1` build:
+Early boot stages may disable CPU DT nodes for unavailable
+CPUs based on SKU, pinstraps, eFuse, etc. Currently, the
+riscv_early_of_processor_hartid() prints details of a CPU
+if it is disabled in DT which has no value and gives a
+false impression to the users that there some issue with
+the CPU.
 
-  kernel/sched/sched.h:3744:18: error: variable 'cpumask' set but not used [-Werror,-Wunused-but-set-variable]
-
-It seems like the variable was never used along with the assignment
-that does not have side effects as far as I can see.  Remove those
-altogether.
-
-Fixes: 223baf9d17f2 ("sched: Fix performance regression introduced by mm_cid")
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Tested-by: Eric Biggers <ebiggers@kernel.org>
-Reviewed-by: Breno Leitao <leitao@debian.org>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Fixes: e3d794d555cd ("riscv: treat cpu devicetree nodes without status as enabled")
+Signed-off-by: Anup Patel <apatel@ventanamicro.com>
+Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+Link: https://lore.kernel.org/r/20251014163009.182381-1-apatel@ventanamicro.com
+Signed-off-by: Paul Walmsley <pjw@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/sched.h | 2 --
- 1 file changed, 2 deletions(-)
+ arch/riscv/kernel/cpu.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
-index f7cb505ab337a..64634314a89ce 100644
---- a/kernel/sched/sched.h
-+++ b/kernel/sched/sched.h
-@@ -3435,11 +3435,9 @@ static inline int __mm_cid_get(struct rq *rq, struct mm_struct *mm)
- static inline int mm_cid_get(struct rq *rq, struct mm_struct *mm)
- {
- 	struct mm_cid __percpu *pcpu_cid = mm->pcpu_cid;
--	struct cpumask *cpumask;
- 	int cid;
+diff --git a/arch/riscv/kernel/cpu.c b/arch/riscv/kernel/cpu.c
+index f6b13e9f5e6cb..3dbc8cc557dd1 100644
+--- a/arch/riscv/kernel/cpu.c
++++ b/arch/riscv/kernel/cpu.c
+@@ -62,10 +62,8 @@ int __init riscv_early_of_processor_hartid(struct device_node *node, unsigned lo
+ 		return -ENODEV;
+ 	}
  
- 	lockdep_assert_rq_held(rq);
--	cpumask = mm_cidmask(mm);
- 	cid = __this_cpu_read(pcpu_cid->cid);
- 	if (mm_cid_is_valid(cid)) {
- 		mm_cid_snapshot_time(rq, mm);
+-	if (!of_device_is_available(node)) {
+-		pr_info("CPU with hartid=%lu is not available\n", *hart);
++	if (!of_device_is_available(node))
+ 		return -ENODEV;
+-	}
+ 
+ 	if (of_property_read_string(node, "riscv,isa-base", &isa))
+ 		goto old_interface;
 -- 
 2.51.0
 
