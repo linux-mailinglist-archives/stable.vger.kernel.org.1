@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-190872-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190591-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37AB5C10CD9
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:20:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 33FB5C10894
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:09:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C3F8B1A646F7
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:15:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 182361A2706A
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:06:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BA2F29E110;
-	Mon, 27 Oct 2025 19:13:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D855D2F25F1;
+	Mon, 27 Oct 2025 19:01:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rlsBExPd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LMVldEzD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0840D23EA92;
-	Mon, 27 Oct 2025 19:13:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 962DB2C3745;
+	Mon, 27 Oct 2025 19:01:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592421; cv=none; b=A+UOr4Zdk3UrOdmPOGAQirQuFAPxCziNdcUY4rT/mv/iqV/tFZoZ7unRuTxPO1sV7A5UOIDmAUguAPsXwA9LnTIJLOyoBVBloQ4rdBfUstO8vVe7b2hJMkaMgkFATJr4TiWmrBhSmDZn3Vh5o9fOinXvsMxk4VH1ijLblHl85D8=
+	t=1761591684; cv=none; b=JJ+OlktGveOVeguPMP3duz7wXMDlEscJQA7QxMPRuRUudYiknFXBBsfzd5aqacDAANpiuXufqYJFnOWdsIo1ywgfskw2o6fGbGuJKUAvS7cwadWlEMH+OTUVoA+BiFU0GqI9xRphcenCB+/FQlut+r6SzyqTSKbM+g5FtPeOReg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592421; c=relaxed/simple;
-	bh=kj8nV62/2OCNSFYpyrhc/fQXNPVfROp0jSSvt0r0YMo=;
+	s=arc-20240116; t=1761591684; c=relaxed/simple;
+	bh=UdUHLlbpcHzn8tvFcBqb9X3YamRusnm/K2uRxU7+LGw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P2CqBCxzd/coE60uC8EBsjB4zVwDUGQPhz7uLy1DjVxyAOW5O1GHtVhX/3OkQPoBK6lvl6G4GjR/N5EPaHrh5karTkzxiEXHtx/J7t9wPElxPVaq6FNsxIxSXgXYa/zzhcdOWEvalMsmFKRZmjKSlB72fQ+PipIEhlNjuhhZwAk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rlsBExPd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89F4DC4CEF1;
-	Mon, 27 Oct 2025 19:13:40 +0000 (UTC)
+	 MIME-Version; b=O1Myx5dCBINe0lraXrVAVEl5hfoOo5sUeO/2M0b3Q+M0EWo056IdO2/++S/V2aGe3aNGmwQHrYK+zgcoUcsFQIpp3SILZhy7DcT+1+RpuCqlC1T++4AxDuhQQgAlRFQI97npCpPc07qFzWmYipTvkRre4SRJ0nJUtuVt8IiCsEY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LMVldEzD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26B17C4CEF1;
+	Mon, 27 Oct 2025 19:01:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592420;
-	bh=kj8nV62/2OCNSFYpyrhc/fQXNPVfROp0jSSvt0r0YMo=;
+	s=korg; t=1761591684;
+	bh=UdUHLlbpcHzn8tvFcBqb9X3YamRusnm/K2uRxU7+LGw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rlsBExPd8R/EwvrQog2rGpqCm4E4SNjXf/8GiYTwdW985CtiOH8ApSw5A9gAOkqVe
-	 hePBA0zk1ZnmHKnMMj5GmgF5NFsmthgqAaA5+G6hC1aEEdwcjpenAsV14tySoSu7Oh
-	 MBH9pqmt/5PfPmyUdVLccxJsOPC9LngfjG/Z5vk8=
+	b=LMVldEzDmsfa8U0z7AyXeCUD6taw7PLNBZ7Rh9QEgNVZ1sihvUeaunMrY2Lx85TM+
+	 9ZkbikHSON+sHM56Oeeildp4nRPr0RboZSnRwRWGayfekfSScaAAY+p0Il86cui/Jf
+	 rQaKoU6CBVZocK0BTdifjbAranA5URg/0oVmmO3E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Anup Patel <apatel@ventanamicro.com>,
+	Andrew Jones <ajones@ventanamicro.com>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Paul Walmsley <pjw@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 081/157] net/mlx5e: Return 1 instead of 0 in invalid case in mlx5e_mpwrq_umr_entry_size()
-Date: Mon, 27 Oct 2025 19:35:42 +0100
-Message-ID: <20251027183503.447135830@linuxfoundation.org>
+Subject: [PATCH 5.10 290/332] RISC-V: Dont print details of CPUs disabled in DT
+Date: Mon, 27 Oct 2025 19:35:43 +0100
+Message-ID: <20251027183532.513900812@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
-References: <20251027183501.227243846@linuxfoundation.org>
+In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
+References: <20251027183524.611456697@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,66 +64,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Anup Patel <apatel@ventanamicro.com>
 
-[ Upstream commit aaf043a5688114703ae2c1482b92e7e0754d684e ]
+[ Upstream commit d2721bb165b3ee00dd23525885381af07fec852a ]
 
-When building with Clang 20 or newer, there are some objtool warnings
-from unexpected fallthroughs to other functions:
+Early boot stages may disable CPU DT nodes for unavailable
+CPUs based on SKU, pinstraps, eFuse, etc. Currently, the
+riscv_early_of_processor_hartid() prints details of a CPU
+if it is disabled in DT which has no value and gives a
+false impression to the users that there some issue with
+the CPU.
 
-  vmlinux.o: warning: objtool: mlx5e_mpwrq_mtts_per_wqe() falls through to next function mlx5e_mpwrq_max_num_entries()
-  vmlinux.o: warning: objtool: mlx5e_mpwrq_max_log_rq_size() falls through to next function mlx5e_get_linear_rq_headroom()
-
-LLVM 20 contains an (admittedly problematic [1]) optimization [2] to
-convert divide by zero into the equivalent of __builtin_unreachable(),
-which invokes undefined behavior and destroys code generation when it is
-encountered in a control flow graph.
-
-mlx5e_mpwrq_umr_entry_size() returns 0 in the default case of an
-unrecognized mlx5e_mpwrq_umr_mode value. mlx5e_mpwrq_mtts_per_wqe(),
-which is inlined into mlx5e_mpwrq_max_log_rq_size(), uses the result of
-mlx5e_mpwrq_umr_entry_size() in a divide operation without checking for
-zero, so LLVM is able to infer there will be a divide by zero in this
-case and invokes undefined behavior. While there is some proposed work
-to isolate this undefined behavior and avoid the destructive code
-generation that results in these objtool warnings, code should still be
-defensive against divide by zero.
-
-As the WARN_ONCE() implies that an invalid value should be handled
-gracefully, return 1 instead of 0 in the default case so that the
-results of this division operation is always valid.
-
-Fixes: 168723c1f8d6 ("net/mlx5e: xsk: Use umr_mode to calculate striding RQ parameters")
-Link: https://lore.kernel.org/CAGG=3QUk8-Ak7YKnRziO4=0z=1C_7+4jF+6ZeDQ9yF+kuTOHOQ@mail.gmail.com/ [1]
-Link: https://github.com/llvm/llvm-project/commit/37932643abab699e8bb1def08b7eb4eae7ff1448 [2]
-Closes: https://github.com/ClangBuiltLinux/linux/issues/2131
-Closes: https://github.com/ClangBuiltLinux/linux/issues/2132
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/20251014-mlx5e-avoid-zero-div-from-mlx5e_mpwrq_umr_entry_size-v1-1-dc186b8819ef@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: e3d794d555cd ("riscv: treat cpu devicetree nodes without status as enabled")
+Signed-off-by: Anup Patel <apatel@ventanamicro.com>
+Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+Link: https://lore.kernel.org/r/20251014163009.182381-1-apatel@ventanamicro.com
+Signed-off-by: Paul Walmsley <pjw@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en/params.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/riscv/kernel/cpu.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/params.c b/drivers/net/ethernet/mellanox/mlx5/core/en/params.c
-index 33cc53f221e0b..542cc017e64cd 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/params.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/params.c
-@@ -94,7 +94,7 @@ u8 mlx5e_mpwrq_umr_entry_size(enum mlx5e_mpwrq_umr_mode mode)
- 		return sizeof(struct mlx5_ksm) * 4;
+diff --git a/arch/riscv/kernel/cpu.c b/arch/riscv/kernel/cpu.c
+index 11d6d6cc61d51..39013aedbe0ab 100644
+--- a/arch/riscv/kernel/cpu.c
++++ b/arch/riscv/kernel/cpu.c
+@@ -27,10 +27,8 @@ int riscv_of_processor_hartid(struct device_node *node, unsigned long *hart)
+ 		return -ENODEV;
  	}
- 	WARN_ONCE(1, "MPWRQ UMR mode %d is not known\n", mode);
--	return 0;
-+	return 1;
- }
  
- u8 mlx5e_mpwrq_log_wqe_sz(struct mlx5_core_dev *mdev, u8 page_shift,
+-	if (!of_device_is_available(node)) {
+-		pr_info("CPU with hartid=%lu is not available\n", *hart);
++	if (!of_device_is_available(node))
+ 		return -ENODEV;
+-	}
+ 
+ 	if (of_property_read_string(node, "riscv,isa", &isa)) {
+ 		pr_warn("CPU with hartid=%lu has no \"riscv,isa\" property\n", *hart);
 -- 
 2.51.0
 
