@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-190646-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190538-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6421FC1094E
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:11:08 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1034C10823
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:08:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B0E221A6057C
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:07:45 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id BAC435038CF
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:03:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C500A329C46;
-	Mon, 27 Oct 2025 19:03:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA50F3128D0;
+	Mon, 27 Oct 2025 18:59:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bJf902B2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wa3YCgjs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 818AB31D72B;
-	Mon, 27 Oct 2025 19:03:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A319432AAB3;
+	Mon, 27 Oct 2025 18:59:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591826; cv=none; b=ii2t0pklPftpUIcgrUryWjkpQ77ig7ymbfDSQEPT+ibkTEzIFkfOvYgcTgZYl5MtTeJfDhmeID5zxWehOremPJP87R3ApMfh+rUkksNXKUqbxpPoFT+hw3TZfpZhC048m0j/Lc3/ksmti4/PW2E8zGL7BjCYEkZP/R/R65cMdDE=
+	t=1761591551; cv=none; b=YN10OVi0XnrdXIBMv+rvtOlsJX+mPooqnNxgD76ifrYpn2GmAZAV8h9ds38tH9XnK72MvstR4Z4/Y1vaSURyKhe5qf/Tws37mMqIIIVnNxNyyV6Argy0wfLp9euaAhK5vYfQHBje+S0Xy2rb3TjsXn6WLjqZPSeFn0FaassJygc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591826; c=relaxed/simple;
-	bh=zZ0r5wv0Rs8i1Bl3qpPOZrma+5LivPApxenmLtO5hgc=;
+	s=arc-20240116; t=1761591551; c=relaxed/simple;
+	bh=r32/3Yo0uYEtc/yvrRFvHNCV7/K5g8LGbDhoyDCR/gs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jwMgVJ078w/COJSSmJ+VZVuqHfUSiGdGi+6NCVDT0cG46m22UwIpRTwi/CWt4+9PQQ89EOUJUhVWqOPMjRkz7xrYZ9Whqtf/3L7h3MYOn+xp7mmtjNJIRDHvNWAXqq25kxI0NSZLOTVrqrcCIspSdB2UJiA16Iuj9a4bzntZGNg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bJf902B2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16C1FC4CEF1;
-	Mon, 27 Oct 2025 19:03:45 +0000 (UTC)
+	 MIME-Version; b=hqheUg5kY8CpMRpDcT8tkrSQPOjV0+jWoTiotqR1SR9lf87eEawed8y761o/t255/prlDVB7xWkn76Jt/oFZrzjGQY3gmLI0vGkAlN+Nsz2eB4oykObZm+kRX6hRsqEBwSk+lQztef7wiW4ZpYueewjV8MyMioZTp3MJuoR4uXc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wa3YCgjs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16F0FC4CEF1;
+	Mon, 27 Oct 2025 18:59:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591826;
-	bh=zZ0r5wv0Rs8i1Bl3qpPOZrma+5LivPApxenmLtO5hgc=;
+	s=korg; t=1761591551;
+	bh=r32/3Yo0uYEtc/yvrRFvHNCV7/K5g8LGbDhoyDCR/gs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bJf902B2ZhTnm6t/tSrAEzWwH4omiU+DJRBp901VIbv4c6Fq8JCDVtN4fXecPJRx0
-	 hI2J6ErMxroafDUKXUYNbA6c/IrAlyiNXJ5f6m8umpaSfuUNP7yZ9+8TGghX80/UgJ
-	 dxNXNfLGd9uxOpnkHVcWXWcWb3UGf3VRVFrzAEF0=
+	b=wa3YCgjs0lbKOycw7Lf9Vb2G8wT82PFd/71V7M7FEBI60AEagfDyp5JT2F8OvZpD1
+	 HqNVFgXXw2LekNYmKQK7NzHREWgTPZfXPQKOborqQX68MsR6EjDv3g5A4QMoSunNB6
+	 9DbknoJ561XYTZwkX93djDJt/yVcIGiuwfj51BG0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	"Mario Limonciello (AMD)" <superm1@kernel.org>,
-	Jie Zhan <zhanjie9@hisilicon.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Qais Yousef <qyousef@layalina.io>,
+	Yeounsu Moon <yyyynoom@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 013/123] cpufreq: CPPC: Avoid using CPUFREQ_ETERNAL as transition delay
-Date: Mon, 27 Oct 2025 19:34:53 +0100
-Message-ID: <20251027183446.754152694@linuxfoundation.org>
+Subject: [PATCH 5.10 241/332] net: dlink: handle dma_map_single() failure properly
+Date: Mon, 27 Oct 2025 19:34:54 +0100
+Message-ID: <20251027183531.195099856@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183446.381986645@linuxfoundation.org>
-References: <20251027183446.381986645@linuxfoundation.org>
+In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
+References: <20251027183524.611456697@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,87 +63,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+From: Yeounsu Moon <yyyynoom@gmail.com>
 
-[ Upstream commit f965d111e68f4a993cc44d487d416e3d954eea11 ]
+[ Upstream commit 65946eac6d888d50ae527c4e5c237dbe5cc3a2f2 ]
 
-If cppc_get_transition_latency() returns CPUFREQ_ETERNAL to indicate a
-failure to retrieve the transition latency value from the platform
-firmware, the CPPC cpufreq driver will use that value (converted to
-microseconds) as the policy transition delay, but it is way too large
-for any practical use.
+There is no error handling for `dma_map_single()` failures.
 
-Address this by making the driver use the cpufreq's default
-transition latency value (in microseconds) as the transition delay
-if CPUFREQ_ETERNAL is returned by cppc_get_transition_latency().
+Add error handling by checking `dma_mapping_error()` and freeing
+the `skb` using `dev_kfree_skb()` (process context) when it fails.
 
-Fixes: d4f3388afd48 ("cpufreq / CPPC: Set platform specific transition_delay_us")
-Cc: 5.19+ <stable@vger.kernel.org> # 5.19
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Mario Limonciello (AMD) <superm1@kernel.org>
-Reviewed-by: Jie Zhan <zhanjie9@hisilicon.com>
-Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
-Reviewed-by: Qais Yousef <qyousef@layalina.io>
-[ added CPUFREQ_DEFAULT_TRANSITION_LATENCY_NS definition to include/linux/cpufreq.h ]
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Yeounsu Moon <yyyynoom@gmail.com>
+Tested-on: D-Link DGE-550T Rev-A3
+Suggested-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cpufreq/cppc_cpufreq.c |   14 ++++++++++++--
- include/linux/cpufreq.h        |    3 +++
- 2 files changed, 15 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/dlink/dl2k.c | 23 ++++++++++++++++-------
+ 1 file changed, 16 insertions(+), 7 deletions(-)
 
---- a/drivers/cpufreq/cppc_cpufreq.c
-+++ b/drivers/cpufreq/cppc_cpufreq.c
-@@ -395,6 +395,16 @@ static int cppc_verify_policy(struct cpu
- 	return 0;
- }
+diff --git a/drivers/net/ethernet/dlink/dl2k.c b/drivers/net/ethernet/dlink/dl2k.c
+index 0af58c4dcebc1..dc85a742f97cb 100644
+--- a/drivers/net/ethernet/dlink/dl2k.c
++++ b/drivers/net/ethernet/dlink/dl2k.c
+@@ -499,25 +499,34 @@ static int alloc_list(struct net_device *dev)
+ 	for (i = 0; i < RX_RING_SIZE; i++) {
+ 		/* Allocated fixed size of skbuff */
+ 		struct sk_buff *skb;
++		dma_addr_t addr;
  
-+static unsigned int __cppc_cpufreq_get_transition_delay_us(unsigned int cpu)
-+{
-+	unsigned int transition_latency_ns = cppc_get_transition_latency(cpu);
+ 		skb = netdev_alloc_skb_ip_align(dev, np->rx_buf_sz);
+ 		np->rx_skbuff[i] = skb;
+-		if (!skb) {
+-			free_list(dev);
+-			return -ENOMEM;
+-		}
++		if (!skb)
++			goto err_free_list;
 +
-+	if (transition_latency_ns == CPUFREQ_ETERNAL)
-+		return CPUFREQ_DEFAULT_TRANSITION_LATENCY_NS / NSEC_PER_USEC;
-+
-+	return transition_latency_ns / NSEC_PER_USEC;
-+}
-+
- /*
-  * The PCC subspace describes the rate at which platform can accept commands
-  * on the shared PCC channel (including READs which do not count towards freq
-@@ -417,14 +427,14 @@ static unsigned int cppc_cpufreq_get_tra
- 			return 10000;
- 		}
++		addr = dma_map_single(&np->pdev->dev, skb->data,
++				      np->rx_buf_sz, DMA_FROM_DEVICE);
++		if (dma_mapping_error(&np->pdev->dev, addr))
++			goto err_kfree_skb;
+ 
+ 		np->rx_ring[i].next_desc = cpu_to_le64(np->rx_ring_dma +
+ 						((i + 1) % RX_RING_SIZE) *
+ 						sizeof(struct netdev_desc));
+ 		/* Rubicon now supports 40 bits of addressing space. */
+-		np->rx_ring[i].fraginfo =
+-		    cpu_to_le64(dma_map_single(&np->pdev->dev, skb->data,
+-					       np->rx_buf_sz, DMA_FROM_DEVICE));
++		np->rx_ring[i].fraginfo = cpu_to_le64(addr);
+ 		np->rx_ring[i].fraginfo |= cpu_to_le64((u64)np->rx_buf_sz << 48);
  	}
--	return cppc_get_transition_latency(cpu) / NSEC_PER_USEC;
-+	return __cppc_cpufreq_get_transition_delay_us(cpu);
+ 
+ 	return 0;
++
++err_kfree_skb:
++	dev_kfree_skb(np->rx_skbuff[i]);
++	np->rx_skbuff[i] = NULL;
++err_free_list:
++	free_list(dev);
++	return -ENOMEM;
  }
  
- #else
- 
- static unsigned int cppc_cpufreq_get_transition_delay_us(unsigned int cpu)
- {
--	return cppc_get_transition_latency(cpu) / NSEC_PER_USEC;
-+	return __cppc_cpufreq_get_transition_delay_us(cpu);
- }
- #endif
- 
---- a/include/linux/cpufreq.h
-+++ b/include/linux/cpufreq.h
-@@ -32,6 +32,9 @@
-  */
- 
- #define CPUFREQ_ETERNAL			(-1)
-+
-+#define CPUFREQ_DEFAULT_TRANSITION_LATENCY_NS	NSEC_PER_MSEC
-+
- #define CPUFREQ_NAME_LEN		16
- /* Print length for names. Extra 1 space for accommodating '\n' in prints */
- #define CPUFREQ_NAME_PLEN		(CPUFREQ_NAME_LEN + 1)
+ static void rio_hw_init(struct net_device *dev)
+-- 
+2.51.0
+
 
 
 
