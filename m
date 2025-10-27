@@ -1,56 +1,65 @@
-Return-Path: <stable+bounces-191015-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190696-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4041EC10F40
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:27:20 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BEC7C10A54
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:14:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6B9CF561FF8
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:21:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A2EF561D36
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:09:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E95E031DD87;
-	Mon, 27 Oct 2025 19:19:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 642CC31D754;
+	Mon, 27 Oct 2025 19:05:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CaM3Ut8x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NUHY9px8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4B2630E0C0;
-	Mon, 27 Oct 2025 19:19:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 186D23126A0;
+	Mon, 27 Oct 2025 19:05:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592792; cv=none; b=N0lJbhSQzCbUR9qWCSJD/2p6pwSd3UfKX9/7T0DBq9vP1zbhAQ40DxalauESR8Gcyi+/Ok2GKO4z8h0h/1lUeomojg8s5COet2ia6BgF0fVXvzM0WMXH8Wj+IZzDigssU/56NVoCAFcPMpgGkWkuRuWYQXQk8CKiu2nxfAK9oag=
+	t=1761591956; cv=none; b=H+69ufSNt4aN+rzM574ZYP0vBwoEQoj8YRiLvLL0PyZ1MvhB9GWYGkh+wKhb5pGE4Ud2TtilTcFPvCKkEQtf6H5vwKSwMwy9rlJ6a3Y6HPXZCstzn8Kj//MW7T3UsFKsm2dZdAD/5qCXfXlYysD+LT0I2e9Cx2hGSEEkKVz53Cc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592792; c=relaxed/simple;
-	bh=eCwOg9QlfF1O7Ydl+P8xcU4OJz457qRHsrFB02UU+3M=;
+	s=arc-20240116; t=1761591956; c=relaxed/simple;
+	bh=+dMRimA0mwlWIdgWF6jQ+Oy8xAibGJZZuh5b9HIOpW8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TZtJVRN3Ij00Myxa2IVbr+J7keoXSo58rNXuJQUAVvgirvgYY9jFf2Ol3N6cEg6ZB2dld7dzA9lMGpMCxanWJ2KoumrwM7ib7VnM5Khqgl3Zy6xx/5+abg8EL1+TvKYXLx2jbv/KEmuUodh9PHh7MmO6pOuUq0ibTzRzcxbJQb4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CaM3Ut8x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34398C116D0;
-	Mon, 27 Oct 2025 19:19:52 +0000 (UTC)
+	 MIME-Version; b=OeuTW1GZLhsrxFKiCLDbQPbECcSpxOvDu6ktYKT/zbI4jLdUJedyrnM3PxQqLHmST5tDXMdpnSywACnKnQGXneKAMnmLAR/oo5zb8hFXuQFx0DHq0PuHIXMGDfFkFE4NS/BFvrEBN7/pLj4WpHxqrl540E2GZzTTjXlHKkffnQw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NUHY9px8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71C1CC4CEF1;
+	Mon, 27 Oct 2025 19:05:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592792;
-	bh=eCwOg9QlfF1O7Ydl+P8xcU4OJz457qRHsrFB02UU+3M=;
+	s=korg; t=1761591955;
+	bh=+dMRimA0mwlWIdgWF6jQ+Oy8xAibGJZZuh5b9HIOpW8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CaM3Ut8xiV48p8Fr0OM2xk7Hfqz0aSzXatQcwKKF8GJDL1dU7sAYs/M0IIi3JFuG6
-	 CwLjzyPv59xx6QBC3ldvoRK3NXgkIgSysOCBH2tUD8jAHLyTelck6co9gUUVhLKFEg
-	 a6NeOUyGo85tu1bFMkgqyDq9GqcKInA4NodViRCQ=
+	b=NUHY9px8/bWW2zpAkXA/Gs3ldmLcWdMUdWbygJgYDmS/nBl85iq0Yjc7nyNK3BeDh
+	 UazZvwa8ccPrgk0MeBOHb01ZRWbPYEIVRD4g8Z8ZhCkaQ+jQ2H9gfUI444NtA+Ood3
+	 LnN+pIPECEwSa+kqSkY7urMWCzt16dx0EzHSqrpE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andreas Gruenbacher <agruenba@redhat.com>,
-	Andrew Price <anprice@redhat.com>,
+	Huang Ying <ying.huang@linux.alibaba.com>,
+	Will Deacon <will@kernel.org>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Gavin Shan <gshan@redhat.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Yicong Yang <yangyicong@hisilicon.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Catalin Marinas <catalin.marinas@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 014/117] gfs2: Fix unlikely race in gdlm_put_lock
-Date: Mon, 27 Oct 2025 19:35:40 +0100
-Message-ID: <20251027183454.327240375@linuxfoundation.org>
+Subject: [PATCH 5.15 061/123] arm64, mm: avoid always making PTE dirty in pte_mkwrite()
+Date: Mon, 27 Oct 2025 19:35:41 +0100
+Message-ID: <20251027183448.029112365@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
-References: <20251027183453.919157109@linuxfoundation.org>
+In-Reply-To: <20251027183446.381986645@linuxfoundation.org>
+References: <20251027183446.381986645@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +71,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andreas Gruenbacher <agruenba@redhat.com>
+From: Huang Ying <ying.huang@linux.alibaba.com>
 
-[ Upstream commit 28c4d9bc0708956c1a736a9e49fee71b65deee81 ]
+[ Upstream commit 143937ca51cc6ae2fccc61a1cb916abb24cd34f5 ]
 
-In gdlm_put_lock(), there is a small window of time in which the
-DFL_UNMOUNT flag has been set but the lockspace hasn't been released,
-yet.  In that window, dlm may still call gdlm_ast() and gdlm_bast().
-To prevent it from dereferencing freed glock objects, only free the
-glock if the lockspace has actually been released.
+Current pte_mkwrite_novma() makes PTE dirty unconditionally.  This may
+mark some pages that are never written dirty wrongly.  For example,
+do_swap_page() may map the exclusive pages with writable and clean PTEs
+if the VMA is writable and the page fault is for read access.
+However, current pte_mkwrite_novma() implementation always dirties the
+PTE.  This may cause unnecessary disk writing if the pages are
+never written before being reclaimed.
 
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
-Reviewed-by: Andrew Price <anprice@redhat.com>
+So, change pte_mkwrite_novma() to clear the PTE_RDONLY bit only if the
+PTE_DIRTY bit is set to make it possible to make the PTE writable and
+clean.
+
+The current behavior was introduced in commit 73e86cb03cf2 ("arm64:
+Move PTE_RDONLY bit handling out of set_pte_at()").  Before that,
+pte_mkwrite() only sets the PTE_WRITE bit, while set_pte_at() only
+clears the PTE_RDONLY bit if both the PTE_WRITE and the PTE_DIRTY bits
+are set.
+
+To test the performance impact of the patch, on an arm64 server
+machine, run 16 redis-server processes on socket 1 and 16
+memtier_benchmark processes on socket 0 with mostly get
+transactions (that is, redis-server will mostly read memory only).
+The memory footprint of redis-server is larger than the available
+memory, so swap out/in will be triggered.  Test results show that the
+patch can avoid most swapping out because the pages are mostly clean.
+And the benchmark throughput improves ~23.9% in the test.
+
+Fixes: 73e86cb03cf2 ("arm64: Move PTE_RDONLY bit handling out of set_pte_at()")
+Signed-off-by: Huang Ying <ying.huang@linux.alibaba.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Anshuman Khandual <anshuman.khandual@arm.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Gavin Shan <gshan@redhat.com>
+Cc: Ard Biesheuvel <ardb@kernel.org>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Yicong Yang <yangyicong@hisilicon.com>
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-kernel@vger.kernel.org
+Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/gfs2/lock_dlm.c | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+ arch/arm64/include/asm/pgtable.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/gfs2/lock_dlm.c b/fs/gfs2/lock_dlm.c
-index 9e27dd8bef88d..38ea69ca2303d 100644
---- a/fs/gfs2/lock_dlm.c
-+++ b/fs/gfs2/lock_dlm.c
-@@ -321,12 +321,6 @@ static void gdlm_put_lock(struct gfs2_glock *gl)
- 	gfs2_sbstats_inc(gl, GFS2_LKS_DCOUNT);
- 	gfs2_update_request_times(gl);
+diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
+index a0bfa9cd76dab..a1902dcf7a7e3 100644
+--- a/arch/arm64/include/asm/pgtable.h
++++ b/arch/arm64/include/asm/pgtable.h
+@@ -175,7 +175,8 @@ static inline pmd_t set_pmd_bit(pmd_t pmd, pgprot_t prot)
+ static inline pte_t pte_mkwrite(pte_t pte)
+ {
+ 	pte = set_pte_bit(pte, __pgprot(PTE_WRITE));
+-	pte = clear_pte_bit(pte, __pgprot(PTE_RDONLY));
++	if (pte_sw_dirty(pte))
++		pte = clear_pte_bit(pte, __pgprot(PTE_RDONLY));
+ 	return pte;
+ }
  
--	/* don't want to call dlm if we've unmounted the lock protocol */
--	if (test_bit(DFL_UNMOUNT, &ls->ls_recover_flags)) {
--		gfs2_glock_free(gl);
--		return;
--	}
--
- 	/*
- 	 * When the lockspace is released, all remaining glocks will be
- 	 * unlocked automatically.  This is more efficient than unlocking them
-@@ -348,6 +342,11 @@ static void gdlm_put_lock(struct gfs2_glock *gl)
- 		goto again;
- 	}
- 
-+	if (error == -ENODEV) {
-+		gfs2_glock_free(gl);
-+		return;
-+	}
-+
- 	if (error) {
- 		fs_err(sdp, "gdlm_unlock %x,%llx err=%d\n",
- 		       gl->gl_name.ln_type,
 -- 
 2.51.0
 
