@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-190853-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190855-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EF2DC10CA9
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:20:09 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C91CC10DD5
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:22:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E93D41A64521
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:15:23 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 1BC215074AD
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:15:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8A03323406;
-	Mon, 27 Oct 2025 19:12:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65572326D6C;
+	Mon, 27 Oct 2025 19:12:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jQAfntKq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PdT/teEb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96597326D6D;
-	Mon, 27 Oct 2025 19:12:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F6EE31E0E6;
+	Mon, 27 Oct 2025 19:12:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592371; cv=none; b=qqyDAXzpd8VqQD/+UJFI/LRuPtu5lNNFEw669GZWeymPZZH0CrZZhl5r8OKmVqNtcwwuqtHuWmd759XBj54lpzNrPqs0tmYPMFKnkNs0edxP9u6lmq/gnQ/qeduCkUk4tUAT3FrcrQ7Vg3wq4PLWtgLLtwkF0HizaMPq9lkVdcw=
+	t=1761592377; cv=none; b=uT5MVBg1eGRckL4B7hpTIU0gNGgV/ZiRSyC+MOX63w+avLDNo+gpBe/potWqOfPjXsFShb+kSCm+vxqMcfsK13iRa11z1jbnny8oZ8y5WKs4x7qaitkyUriZyahPG9NL0OfLIFpXRW1Sb8wiWWZnFTjUUbfGGC9LvnZBpV8u8S4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592371; c=relaxed/simple;
-	bh=YkfATgtGCwCTHmXsJ8DKQ8g7uBxnour4gzDjKHPAOag=;
+	s=arc-20240116; t=1761592377; c=relaxed/simple;
+	bh=pWbQGJOww4I2M4ciK4yn0111l5v2UQPvbfX0T/Z1+Qg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VjLZv8P6M0yl5NtPIo9tzBM/b2woi5G6+4tKLK5SaoVrAZJ5HVS/3+dmVMvJbohHteBTwD4LHnEUdVMpQbpkAys+JZ5j4ifleX0ZckUj5ILHAZiE0x1Cs2NWe+lrtG1VqqWUbfcnfFQ8uLmNKqjKeTEp9G4dIaTXqUnTDGYNZ84=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jQAfntKq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28599C4CEF1;
-	Mon, 27 Oct 2025 19:12:51 +0000 (UTC)
+	 MIME-Version:Content-Type; b=R/rcs7fkieEvuAqm27wqtqWGtsH8h9e9sFt3EUvmQIQImR1n2qFQX4Wum5fNmHZmKDKjl+iaKQUTBQwBdQm2jo34YN0dii18xhpMp35+bRVVE3s5kqlDKdWq6YdlMt025oPONGx+1N1UYkntjdpgaMhemE7d9mFbJFLYs5ECdsk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PdT/teEb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EBF1C4CEF1;
+	Mon, 27 Oct 2025 19:12:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592371;
-	bh=YkfATgtGCwCTHmXsJ8DKQ8g7uBxnour4gzDjKHPAOag=;
+	s=korg; t=1761592376;
+	bh=pWbQGJOww4I2M4ciK4yn0111l5v2UQPvbfX0T/Z1+Qg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jQAfntKqmXbVyJkEsDsbp5ikJ7IKfKGTbRJDjVmpkHzA/ISHd+nEX/pwPHKhMS3ta
-	 h9/ZJ3yohr3RCJQJm/hbSb/QoRNMsC/+UEv/M2OQaTGPK6cWYdqW0hKllA8FZ7/nrk
-	 x1jwV11CtDpgdRaaxM9U/2vYKX03IWPqm208cUt8=
+	b=PdT/teEbZOEWE0S0NCo1b3JLTez8XRqN0iy9jxT8TTh8RQE0UALEnwkJ2JXFErzFo
+	 Xo/gWRi/vc6aYslazJ3mbplvFG80BXHppzZg47zEqwFD8Bs8pFCk3Sc8WpDu9JX/8j
+	 Oa5KFceUEguuJPxjyHQl96nIHCfabU7KKgqkvJMY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,9 +46,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
 	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 096/157] net: ravb: Enforce descriptor type ordering
-Date: Mon, 27 Oct 2025 19:35:57 +0100
-Message-ID: <20251027183503.842710818@linuxfoundation.org>
+Subject: [PATCH 6.1 097/157] net: ravb: Ensure memory write completes before ringing TX doorbell
+Date: Mon, 27 Oct 2025 19:35:58 +0100
+Message-ID: <20251027183503.867037546@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
 References: <20251027183501.227243846@linuxfoundation.org>
@@ -70,69 +70,48 @@ Content-Transfer-Encoding: 8bit
 
 From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
 
-commit 5370c31e84b0e0999c7b5ff949f4e104def35584 upstream.
+commit 706136c5723626fcde8dd8f598a4dcd251e24927 upstream.
 
-Ensure the TX descriptor type fields are published in a safe order so the
-DMA engine never begins processing a descriptor chain before all descriptor
-fields are fully initialised.
+Add a final dma_wmb() barrier before triggering the transmit request
+(TCCR_TSRQ) to ensure all descriptor and buffer writes are visible to
+the DMA engine.
 
-For multi-descriptor transmits the driver writes DT_FEND into the last
-descriptor and DT_FSTART into the first. The DMA engine begins processing
-when it observes DT_FSTART. Move the dma_wmb() barrier so it executes
-immediately after DT_FEND and immediately before writing DT_FSTART
-(and before DT_FSINGLE in the single-descriptor case). This guarantees
-that all prior CPU writes to the descriptor memory are visible to the
-device before DT_FSTART is seen.
+According to the hardware manual, a read-back operation is required
+before writing to the doorbell register to guarantee completion of
+previous writes. Instead of performing a dummy read, a dma_wmb() is
+used to both enforce the same ordering semantics on the CPU side and
+also to ensure completion of writes.
 
-This avoids a situation where compiler/CPU reordering could publish
-DT_FSTART ahead of DT_FEND or other descriptor fields, allowing the DMA to
-start on a partially initialised chain and causing corrupted transmissions
-or TX timeouts. Such a failure was observed on RZ/G2L with an RT kernel as
-transmit queue timeouts and device resets.
-
-Fixes: 2f45d1902acf ("ravb: minimize TX data copying")
+Fixes: c156633f1353 ("Renesas Ethernet AVB driver proper")
 Cc: stable@vger.kernel.org
 Co-developed-by: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
 Signed-off-by: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
 Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
 Reviewed-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
-Link: https://patch.msgid.link/20251017151830.171062-4-prabhakar.mahadev-lad.rj@bp.renesas.com
+Link: https://patch.msgid.link/20251017151830.171062-5-prabhakar.mahadev-lad.rj@bp.renesas.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/renesas/ravb_main.c |   16 ++++++++++++++--
- 1 file changed, 14 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/renesas/ravb_main.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
 --- a/drivers/net/ethernet/renesas/ravb_main.c
 +++ b/drivers/net/ethernet/renesas/ravb_main.c
-@@ -2054,13 +2054,25 @@ static netdev_tx_t ravb_start_xmit(struc
- 
- 		skb_tx_timestamp(skb);
- 	}
--	/* Descriptor type must be set after all the above writes */
--	dma_wmb();
-+
- 	if (num_tx_desc > 1) {
- 		desc->die_dt = DT_FEND;
- 		desc--;
-+		/* When using multi-descriptors, DT_FEND needs to get written
-+		 * before DT_FSTART, but the compiler may reorder the memory
-+		 * writes in an attempt to optimize the code.
-+		 * Use a dma_wmb() barrier to make sure DT_FEND and DT_FSTART
-+		 * are written exactly in the order shown in the code.
-+		 * This is particularly important for cases where the DMA engine
-+		 * is already running when we are running this code. If the DMA
-+		 * sees DT_FSTART without the corresponding DT_FEND it will enter
-+		 * an error condition.
-+		 */
-+		dma_wmb();
- 		desc->die_dt = DT_FSTART;
- 	} else {
-+		/* Descriptor type must be set after all the above writes */
-+		dma_wmb();
+@@ -2075,6 +2075,14 @@ static netdev_tx_t ravb_start_xmit(struc
+ 		dma_wmb();
  		desc->die_dt = DT_FSINGLE;
  	}
++
++	/* Before ringing the doorbell we need to make sure that the latest
++	 * writes have been committed to memory, otherwise it could delay
++	 * things until the doorbell is rang again.
++	 * This is in replacement of the read operation mentioned in the HW
++	 * manuals.
++	 */
++	dma_wmb();
  	ravb_modify(ndev, TCCR, TCCR_TSRQ0 << q, TCCR_TSRQ0 << q);
+ 
+ 	priv->cur_tx[q] += num_tx_desc;
 
 
 
