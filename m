@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-190071-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190408-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B114C0FF15
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:39:24 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEF89C10506
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:57:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6029D19C49A0
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:39:48 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 60B384FCC8D
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:56:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CECFC30217A;
-	Mon, 27 Oct 2025 18:39:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F3DC32D0E9;
+	Mon, 27 Oct 2025 18:53:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h1c7d4ND"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jkr22FgP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 896732D7806;
-	Mon, 27 Oct 2025 18:39:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3838231D746;
+	Mon, 27 Oct 2025 18:53:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761590359; cv=none; b=u9s7dPutV6jVePCLuK9ewMaTHKlDfaKOJ0KVVoIAvbfpc5v0E+mjuIihLjFJV92ZXOSwYHO7qlW39hboVPwlUNILPpdbM0lH030ikdlPpu2tQp03W/UMX2r5sHX6Oh5sKy3LhvOg8oi3s9IHdL9OD7FT7rUv+Tm9Yu121PzDYTA=
+	t=1761591213; cv=none; b=XsQ1qCd/Qd3ZT0Lj+Q1dNvB/kS9R6tL/Cw7MQh+XbdTFDkDRSpGiUjJQ0m+dsJFnlc7TKv5Vk4PmGMZWxGfkoK0Lw7RFFArNwTsA0d15Ib5SaJ9wLy1lrmKbd/didDACy5DNPMxSgTHggZJweGnzB7fWYPyw8EuSnuD7RKlAEE0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761590359; c=relaxed/simple;
-	bh=t4ilWETdbcogbK3fK8alpJLTFcnLaRU0tBJCvlD8siQ=;
+	s=arc-20240116; t=1761591213; c=relaxed/simple;
+	bh=nFvv2Lf5pSdyTGBmtWxruduN055e70vpdYqKxKJhkqc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E/M4FdQbAM2wvXkPfxdCRKwA13gzlGlnxPkHpDvl1PDnMjUc5ErKU7BkqxySLOjX4KHoytMuCVZmR2sgGCdzpFYI1Zpunitx3kJOXG+U2pP35XmiBO29cv+aibyq6SUM/Bi8+L5itruWP0jHxc/FAW3jrdSDzVdH3PvUp8y6XJ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h1c7d4ND; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12BE3C4CEF1;
-	Mon, 27 Oct 2025 18:39:18 +0000 (UTC)
+	 MIME-Version; b=KSmoTrTI/QW8+lFReZ4vYIEfypO1o7/2UwnFRebwa7BhT+LfbJnKSsk1933cIAzFpZ9ZFjk5I56Mf8ajUF0V4lMyyWOmnjfCRRet47w8eZcwiW22y+ttrtq2mGn0aZEXLtgOUDlTS59mDXGL9MHCWp9ctE3nv1OgRvLMAF72W44=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jkr22FgP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2062C4CEF1;
+	Mon, 27 Oct 2025 18:53:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761590359;
-	bh=t4ilWETdbcogbK3fK8alpJLTFcnLaRU0tBJCvlD8siQ=;
+	s=korg; t=1761591213;
+	bh=nFvv2Lf5pSdyTGBmtWxruduN055e70vpdYqKxKJhkqc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h1c7d4NDgVLFTgwKysvNhUSwrB6VKwXHXimZ/ycXlf+nvPJs6PCMh46EWxg/jF/Pf
-	 8fAfjY3qzGqqh1nusdtSorsNCnTJrUA7A5dBeKmxyIerUTw/OY4VUk6c+ir5cUdlxH
-	 J9TCXI6cl/7SvwML0+wc0uO15yaEVdLxCdTq2+hw=
+	b=jkr22FgPaI2TdigsEvlCZhNzRFQR41OX4rC0w1RS+NHU6K5JHj+87fFoH84fecHiY
+	 wM3TlD7qXd/WlhxL0NSl5zENMe7ZKA3vKhZAf5RBTgt4nfgZEL/d1/E0ODmslOwv/H
+	 RS0By1yP3aRWa30NA4PMa1Rx7YFZ12Pk6B7ERS9o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ovidiu Panait <ovidiu.panait.oss@gmail.com>
-Subject: [PATCH 5.4 016/224] staging: axis-fifo: flush RX FIFO on read errors
+	Duoming Zhou <duoming@zju.edu.cn>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 109/332] scsi: mvsas: Fix use-after-free bugs in mvs_work_queue
 Date: Mon, 27 Oct 2025 19:32:42 +0100
-Message-ID: <20251027183509.428723087@linuxfoundation.org>
+Message-ID: <20251027183527.494791926@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183508.963233542@linuxfoundation.org>
-References: <20251027183508.963233542@linuxfoundation.org>
+In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
+References: <20251027183524.611456697@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,89 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ovidiu Panait <ovidiu.panait.oss@gmail.com>
+From: Duoming Zhou <duoming@zju.edu.cn>
 
-commit 82a051e2553b9e297cba82a975d9c538b882c79e upstream.
+[ Upstream commit 60cd16a3b7439ccb699d0bf533799eeb894fd217 ]
 
-Flush stale data from the RX FIFO in case of errors, to avoid reading
-old data when new packets arrive.
+During the detaching of Marvell's SAS/SATA controller, the original code
+calls cancel_delayed_work() in mvs_free() to cancel the delayed work
+item mwq->work_q. However, if mwq->work_q is already running, the
+cancel_delayed_work() may fail to cancel it. This can lead to
+use-after-free scenarios where mvs_free() frees the mvs_info while
+mvs_work_queue() is still executing and attempts to access the
+already-freed mvs_info.
 
-Commit c6e8d85fafa7 ("staging: axis-fifo: Remove hardware resets for
-user errors") removed full FIFO resets from the read error paths, which
-fixed potential TX data losses, but introduced this RX issue.
+A typical race condition is illustrated below:
 
-Fixes: c6e8d85fafa7 ("staging: axis-fifo: Remove hardware resets for user errors")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ovidiu Panait <ovidiu.panait.oss@gmail.com>
-Link: https://lore.kernel.org/r/20250912101322.1282507-2-ovidiu.panait.oss@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CPU 0 (remove)            | CPU 1 (delayed work callback)
+mvs_pci_remove()          |
+  mvs_free()              | mvs_work_queue()
+    cancel_delayed_work() |
+      kfree(mvi)          |
+                          |   mvi-> // UAF
+
+Replace cancel_delayed_work() with cancel_delayed_work_sync() to ensure
+that the delayed work item is properly canceled and any executing
+delayed work item completes before the mvs_info is deallocated.
+
+This bug was found by static analysis.
+
+Fixes: 20b09c2992fe ("[SCSI] mvsas: add support for 94xx; layout change; bug fixes")
+Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/axis-fifo/axis-fifo.c |   18 +++++++++++-------
- 1 file changed, 11 insertions(+), 7 deletions(-)
+ drivers/scsi/mvsas/mv_init.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/staging/axis-fifo/axis-fifo.c
-+++ b/drivers/staging/axis-fifo/axis-fifo.c
-@@ -400,6 +400,7 @@ static ssize_t axis_fifo_read(struct fil
- 	}
- 
- 	bytes_available = ioread32(fifo->base_addr + XLLF_RLR_OFFSET);
-+	words_available = bytes_available / sizeof(u32);
- 	if (!bytes_available) {
- 		dev_err(fifo->dt_device, "received a packet of length 0\n");
- 		ret = -EIO;
-@@ -410,7 +411,7 @@ static ssize_t axis_fifo_read(struct fil
- 		dev_err(fifo->dt_device, "user read buffer too small (available bytes=%zu user buffer bytes=%zu)\n",
- 			bytes_available, len);
- 		ret = -EINVAL;
--		goto end_unlock;
-+		goto err_flush_rx;
- 	}
- 
- 	if (bytes_available % sizeof(u32)) {
-@@ -419,11 +420,9 @@ static ssize_t axis_fifo_read(struct fil
- 		 */
- 		dev_err(fifo->dt_device, "received a packet that isn't word-aligned\n");
- 		ret = -EIO;
--		goto end_unlock;
-+		goto err_flush_rx;
- 	}
- 
--	words_available = bytes_available / sizeof(u32);
--
- 	/* read data into an intermediate buffer, copying the contents
- 	 * to userspace when the buffer is full
- 	 */
-@@ -435,18 +434,23 @@ static ssize_t axis_fifo_read(struct fil
- 			tmp_buf[i] = ioread32(fifo->base_addr +
- 					      XLLF_RDFD_OFFSET);
- 		}
-+		words_available -= copy;
- 
- 		if (copy_to_user(buf + copied * sizeof(u32), tmp_buf,
- 				 copy * sizeof(u32))) {
- 			ret = -EFAULT;
--			goto end_unlock;
-+			goto err_flush_rx;
- 		}
- 
- 		copied += copy;
--		words_available -= copy;
- 	}
-+	mutex_unlock(&fifo->read_lock);
-+
-+	return bytes_available;
- 
--	ret = bytes_available;
-+err_flush_rx:
-+	while (words_available--)
-+		ioread32(fifo->base_addr + XLLF_RDFD_OFFSET);
- 
- end_unlock:
- 	mutex_unlock(&fifo->read_lock);
+diff --git a/drivers/scsi/mvsas/mv_init.c b/drivers/scsi/mvsas/mv_init.c
+index ccbea18f8ee12..c9dfbc1e37655 100644
+--- a/drivers/scsi/mvsas/mv_init.c
++++ b/drivers/scsi/mvsas/mv_init.c
+@@ -142,7 +142,7 @@ static void mvs_free(struct mvs_info *mvi)
+ 	if (mvi->shost)
+ 		scsi_host_put(mvi->shost);
+ 	list_for_each_entry(mwq, &mvi->wq_list, entry)
+-		cancel_delayed_work(&mwq->work_q);
++		cancel_delayed_work_sync(&mwq->work_q);
+ 	kfree(mvi->rsvd_tags);
+ 	kfree(mvi);
+ }
+-- 
+2.51.0
+
 
 
 
