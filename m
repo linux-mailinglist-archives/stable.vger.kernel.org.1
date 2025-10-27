@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-190121-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190428-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBCA6C10008
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:43:01 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8C4BC1061B
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:01:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D740B4F8DB5
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:41:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 09B121A203BF
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:57:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81D73218EB1;
-	Mon, 27 Oct 2025 18:41:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C81A831DD81;
+	Mon, 27 Oct 2025 18:54:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ei9ukHuU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SPGJVHgQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FD852D8DB9;
-	Mon, 27 Oct 2025 18:41:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8371A31B819;
+	Mon, 27 Oct 2025 18:54:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761590493; cv=none; b=GzgBp5bwe84K23OtQ7padeOZI9X4/vTpktEWj/tWrGiLcsul5/VHRD2w/BJCW+UMSXzgy1wi9m68h0sncctp4WkaDtP7HAeRA2PuLOrwk9eMLYZpnDZml+CCp5OB3i+5rqHUjXKGG/egkD50A1bpt3ILlTP/ZfF1b1/yT4J0c8k=
+	t=1761591265; cv=none; b=YOd8MdotmZtepJ2a75YMJvKSh0ibnEBepk5DkpdkQVr9ncyZ4wjvooKty3sSEf+Ztn/TEL9NC2FBwMRzEHpIjEhISL/7TYnUHZgTP4k2ay1YIuvI/6PQovWlE5vpzXhor82et7x0b17eftpegm5zFbGJKS5lTwr3//ONFN44AKQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761590493; c=relaxed/simple;
-	bh=seFFerxcoom0Y6KfdtmHPoQI5GPMEyMOtgOc94sGdhI=;
+	s=arc-20240116; t=1761591265; c=relaxed/simple;
+	bh=ojjqH+Z4MnfhhwwJIerQWMDDII4E+kQVmYjn01ghSBI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vDfvNZJKuc9LRoh38TPzzlaQ/Jrc09YWLbUMkAPQivArIByb4ehjYWIvWeQpdefB/oqhEst0AY6ftqhxakagfEFNVoDNDENfA3FEu0wdezbUef56GYMzFwYk2DlmEaXSwAKPgSgFAAF8RCwv8k+cspFktVYGIErcnAg5xyus+OA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ei9ukHuU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5BF8C4CEF1;
-	Mon, 27 Oct 2025 18:41:32 +0000 (UTC)
+	 MIME-Version; b=KJkv5duAp+ZsE8DIWtsBuuupj57iREA9UWxbqaislNkwN1GCRAmcSiKK1MyEqINrg3Qv/GZfnp/H69ExI43UwgFRKnju2UVQGg9VwSjsKUs0VTUY3maFj6vATyxywTRXvm0LeP5McAJ3EEwWfxp9uLR4oM002iqL6FZeynmzfmU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SPGJVHgQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16EC7C4CEF1;
+	Mon, 27 Oct 2025 18:54:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761590493;
-	bh=seFFerxcoom0Y6KfdtmHPoQI5GPMEyMOtgOc94sGdhI=;
+	s=korg; t=1761591265;
+	bh=ojjqH+Z4MnfhhwwJIerQWMDDII4E+kQVmYjn01ghSBI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ei9ukHuUY29LZKnT3r/Si4XBh5Jvynqke/qpzngYjePpF66qq0zN9RtCSNWfzWFfR
-	 tRtod3C+Rtn/g3tRAj5BLP33xs4EECbMlxrd+P+NtaU8HZdf7mgsFchEOzDfIzIAoj
-	 CIpF4abHS3yxG7MslkT7Nph2iZmAAKGH27ELt4+o=
+	b=SPGJVHgQttdgXWsLug+Ue36A/iwOXm+gvmYGrIXUmY6zU5e3ixh4VIyni9djLGjAB
+	 wsPq2mwK/DWEtxq/2EbimIKajlmumKtWPBc9c91yuAgicLqR5YD10IeTutrxzH91fM
+	 f5ZtS3LG7uDK1rSr9j6Y3vtCBFTLIUW5v9bK+hBw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Kerkmann <s.kerkmann@pengutronix.de>,
-	Jeff Chen <jeff.chen_1@nxp.con>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 038/224] wifi: mwifiex: send world regulatory domain to driver
+	Jason Andryuk <jason.andryuk@amd.com>,
+	Jan Beulich <jbeulich@suse.com>,
+	Juergen Gross <jgross@suse.com>
+Subject: [PATCH 5.10 131/332] xen/events: Cleanup find_virq() return codes
 Date: Mon, 27 Oct 2025 19:33:04 +0100
-Message-ID: <20251027183510.024601470@linuxfoundation.org>
+Message-ID: <20251027183528.090100400@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183508.963233542@linuxfoundation.org>
-References: <20251027183508.963233542@linuxfoundation.org>
+In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
+References: <20251027183524.611456697@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Kerkmann <s.kerkmann@pengutronix.de>
+From: Jason Andryuk <jason.andryuk@amd.com>
 
-[ Upstream commit 56819d00bc2ebaa6308913c28680da5d896852b8 ]
+commit 08df2d7dd4ab2db8a172d824cda7872d5eca460a upstream.
 
-The world regulatory domain is a restrictive subset of channel
-configurations which allows legal operation of the adapter all over the
-world. Changing to this domain should not be prevented.
+rc is overwritten by the evtchn_status hypercall in each iteration, so
+the return value will be whatever the last iteration is.  This could
+incorrectly return success even if the event channel was not found.
+Change to an explicit -ENOENT for an un-found virq and return 0 on a
+successful match.
 
-Fixes: dd4a9ac05c8e1 ("mwifiex: send regulatory domain info to firmware only if alpha2 changed") changed
-Signed-off-by: Stefan Kerkmann <s.kerkmann@pengutronix.de>
-Reviewed-by: Jeff Chen <jeff.chen_1@nxp.con>
-Link: https://patch.msgid.link/20250804-fix-mwifiex-regulatory-domain-v1-1-e4715c770c4d@pengutronix.de
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 62cc5fc7b2e0 ("xen/pv-on-hvm kexec: rebind virqs to existing eventchannel ports")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jason Andryuk <jason.andryuk@amd.com>
+Reviewed-by: Jan Beulich <jbeulich@suse.com>
+Reviewed-by: Juergen Gross <jgross@suse.com>
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Message-ID: <20250828003604.8949-2-jason.andryuk@amd.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/marvell/mwifiex/cfg80211.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/xen/events/events_base.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/marvell/mwifiex/cfg80211.c b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
-index 40e10f6e3dbf8..9f9826b94ad40 100644
---- a/drivers/net/wireless/marvell/mwifiex/cfg80211.c
-+++ b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
-@@ -667,10 +667,9 @@ static void mwifiex_reg_notifier(struct wiphy *wiphy,
- 		return;
- 	}
+--- a/drivers/xen/events/events_base.c
++++ b/drivers/xen/events/events_base.c
+@@ -1263,10 +1263,11 @@ static int find_virq(unsigned int virq,
+ {
+ 	struct evtchn_status status;
+ 	evtchn_port_t port;
+-	int rc = -ENOENT;
  
--	/* Don't send world or same regdom info to firmware */
--	if (strncmp(request->alpha2, "00", 2) &&
--	    strncmp(request->alpha2, adapter->country_code,
--		    sizeof(request->alpha2))) {
-+	/* Don't send same regdom info to firmware */
-+	if (strncmp(request->alpha2, adapter->country_code,
-+		    sizeof(request->alpha2)) != 0) {
- 		memcpy(adapter->country_code, request->alpha2,
- 		       sizeof(request->alpha2));
- 		mwifiex_send_domain_info_cmd_fw(wiphy);
--- 
-2.51.0
-
+ 	memset(&status, 0, sizeof(status));
+ 	for (port = 0; port < xen_evtchn_max_channels(); port++) {
++		int rc;
++
+ 		status.dom = DOMID_SELF;
+ 		status.port = port;
+ 		rc = HYPERVISOR_event_channel_op(EVTCHNOP_status, &status);
+@@ -1276,10 +1277,10 @@ static int find_virq(unsigned int virq,
+ 			continue;
+ 		if (status.u.virq == virq && status.vcpu == xen_vcpu_nr(cpu)) {
+ 			*evtchn = port;
+-			break;
++			return 0;
+ 		}
+ 	}
+-	return rc;
++	return -ENOENT;
+ }
+ 
+ /**
 
 
 
