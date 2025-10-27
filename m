@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-190877-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191023-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3010BC10D5E
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:21:45 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE70AC10EC2
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:25:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 84293505D8C
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:15:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8898C188B23E
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:21:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E07B328613;
-	Mon, 27 Oct 2025 19:13:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3835314B8F;
+	Mon, 27 Oct 2025 19:20:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qWlb6HKo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RYn2v9JX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AB8032779A;
-	Mon, 27 Oct 2025 19:13:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89967274FD0;
+	Mon, 27 Oct 2025 19:20:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592434; cv=none; b=haxJimcT07vKyReU4cxuPs+bmELlqSkOr08w4CrcmdpJu07Gn3pE69UiLRjkjLDfgVEn24Jl/iLRYg2wnS0VAMh65nzyQO8CIYdThyxiBcnhEUawZ1MrdsQ59L9Luj44YJY9Md/3cQL23OgtgKDwiwKj9e3zLuuYp+CTdusCK7M=
+	t=1761592813; cv=none; b=RlQ5zcjU3U9nJwrtTPiuQLUM3eDTC037m7iFSJ9OA8bXFRPWTDzMMoWQ07bGxpIuZ3tofX8AZWcrYuayFNpnvhCzHP8sVi7oh9uwGPid5K+cwWDrs0D3veR6dB07dUF0LmetaoukBORCuruvWG92786Wxn55/mHOpWiYpF/xVV0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592434; c=relaxed/simple;
-	bh=F/oLs21nW6I6BEzu4jh97xCQUtkngYYE4RZbgDjKWwk=;
+	s=arc-20240116; t=1761592813; c=relaxed/simple;
+	bh=GpdUjxTyZ0lgkCjn7yRhAOxnzpMcbWBS3GYstG5CViY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f6j52TwpUxImA+23QCoEuzkpgI+ZoWd0aVCpxPzSNwIitXO5fUUYmrCIMAO6en0sVwNMXgE16POFHhBvKSH4K+ORbELzekxqgVe4zG/v3YTp59EIh4YdFZJeCjvpc8y1c2foio4PaaMx5o0c9dbcFUGrJkdlusdf96+w74F2pQc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qWlb6HKo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C20D3C4CEFD;
-	Mon, 27 Oct 2025 19:13:53 +0000 (UTC)
+	 MIME-Version; b=W1QPy5wUpenqEdoXnp+ina4NB4Al0ypQIVDwWhKU06bFsvQSeOAKCZrYdqX3sIC5jSnB2/H/haQAyPD6KaFPfaShSlorx2+HXTX+Xma63rnbdugT1HESuyCDJ4QX5hoaQRNhEQCJtyvWyWTi6EldElYQHYkzittXXoNR5Lcdrdo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RYn2v9JX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18EC7C116B1;
+	Mon, 27 Oct 2025 19:20:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592434;
-	bh=F/oLs21nW6I6BEzu4jh97xCQUtkngYYE4RZbgDjKWwk=;
+	s=korg; t=1761592813;
+	bh=GpdUjxTyZ0lgkCjn7yRhAOxnzpMcbWBS3GYstG5CViY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qWlb6HKo7Iep0+LfIgkvJVS8E1CVeHxRTEjMKa8622LNHO5AqrRgfORFEO9Ay5sVb
-	 LCOYuI8OhvsWiuHr3cmvRQUYVq6abcsjYOHWKwnKl/kRF5hWfOy7yIPRhXqn1xpp6M
-	 ROrJKQX0ff6lS8gRd9j6Xat+hhC21ZB2RkZZQjrE=
+	b=RYn2v9JXNXCkkOonNN0lddhALXUOyEorcad2MSJ5XG3Ge4G8SWAKQaKpWS7FSlJNR
+	 eENrjHpMaceH2uME241/LP+5YFkczsrBZHuRfREgP5RPaxOfIR+tww5rzzUF3bLTms
+	 8LIe7yaoxuDZ2j1VBVlAlCsucT4xhqS+/eznepGs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexey Simakov <bigalex934@gmail.com>,
-	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Lukasz Luba <lukasz.luba@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 086/157] sctp: avoid NULL dereference when chunk data buffer is missing
+Subject: [PATCH 6.12 021/117] PM: EM: Drop unused parameter from em_adjust_new_capacity()
 Date: Mon, 27 Oct 2025 19:35:47 +0100
-Message-ID: <20251027183503.580527368@linuxfoundation.org>
+Message-ID: <20251027183454.528588602@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
-References: <20251027183501.227243846@linuxfoundation.org>
+In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
+References: <20251027183453.919157109@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexey Simakov <bigalex934@gmail.com>
+From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
 
-[ Upstream commit 441f0647f7673e0e64d4910ef61a5fb8f16bfb82 ]
+[ Upstream commit 5fad775d432c6c9158ea12e7e00d8922ef8d3dfc ]
 
-chunk->skb pointer is dereferenced in the if-block where it's supposed
-to be NULL only.
+The max_cap parameter is never used in em_adjust_new_capacity(), so
+drop it.
 
-chunk->skb can only be NULL if chunk->head_skb is not. Check for frag_list
-instead and do it just before replacing chunk->skb. We're sure that
-otherwise chunk->skb is non-NULL because of outer if() condition.
+No functional impact.
 
-Fixes: 90017accff61 ("sctp: Add GSO support")
-Signed-off-by: Alexey Simakov <bigalex934@gmail.com>
-Acked-by: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>
-Link: https://patch.msgid.link/20251021130034.6333-1-bigalex934@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Lukasz Luba <lukasz.luba@arm.com>
+Link: https://patch.msgid.link/2369979.ElGaqSPkdT@rjwysocki.net
+Stable-dep-of: 1ebe8f7e7825 ("PM: EM: Fix late boot with holes in CPU topology")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sctp/inqueue.c | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ kernel/power/energy_model.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/net/sctp/inqueue.c b/net/sctp/inqueue.c
-index 5c16521818058..f5a7d5a387555 100644
---- a/net/sctp/inqueue.c
-+++ b/net/sctp/inqueue.c
-@@ -169,13 +169,14 @@ struct sctp_chunk *sctp_inq_pop(struct sctp_inq *queue)
- 				chunk->head_skb = chunk->skb;
+--- a/kernel/power/energy_model.c
++++ b/kernel/power/energy_model.c
+@@ -723,8 +723,7 @@ free_em_table:
+  * are correctly calculated.
+  */
+ static void em_adjust_new_capacity(struct device *dev,
+-				   struct em_perf_domain *pd,
+-				   u64 max_cap)
++				   struct em_perf_domain *pd)
+ {
+ 	struct em_perf_table *em_table;
  
- 			/* skbs with "cover letter" */
--			if (chunk->head_skb && chunk->skb->data_len == chunk->skb->len)
-+			if (chunk->head_skb && chunk->skb->data_len == chunk->skb->len) {
-+				if (WARN_ON(!skb_shinfo(chunk->skb)->frag_list)) {
-+					__SCTP_INC_STATS(dev_net(chunk->skb->dev),
-+							 SCTP_MIB_IN_PKT_DISCARDS);
-+					sctp_chunk_free(chunk);
-+					goto next_chunk;
-+				}
- 				chunk->skb = skb_shinfo(chunk->skb)->frag_list;
--
--			if (WARN_ON(!chunk->skb)) {
--				__SCTP_INC_STATS(dev_net(chunk->skb->dev), SCTP_MIB_IN_PKT_DISCARDS);
--				sctp_chunk_free(chunk);
--				goto next_chunk;
- 			}
- 		}
+@@ -795,7 +794,7 @@ static void em_check_capacity_update(voi
+ 			 cpu, cpu_capacity, em_max_perf);
  
--- 
-2.51.0
-
+ 		dev = get_cpu_device(cpu);
+-		em_adjust_new_capacity(dev, pd, cpu_capacity);
++		em_adjust_new_capacity(dev, pd);
+ 	}
+ 
+ 	free_cpumask_var(cpu_done_mask);
 
 
 
