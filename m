@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-191180-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190584-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 141BCC11262
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:37:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0800AC10936
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:10:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 2361D501250
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:29:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 79F7E5678A5
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:05:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B289232C31E;
-	Mon, 27 Oct 2025 19:26:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75C2632861A;
+	Mon, 27 Oct 2025 19:01:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q5t3PNIC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mPORpJLc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F4D831D75F;
-	Mon, 27 Oct 2025 19:26:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D9CF3233ED;
+	Mon, 27 Oct 2025 19:01:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761593213; cv=none; b=ZrTjJ7ZQzqG/kiKOoLIl6qNyRn0PShfCG/lllFWZeVXxV7M8xu5o4IBpquJJNkFTxKLUwDIXjpOqug9IZCooHx4/vzuwl2YrunmJVEnTQ2iPyT85kWVAT7pFBzkTdzjoy8JFLi/xbC5vMHAMH003S5oImN312m8mC7yGf1S+0yY=
+	t=1761591669; cv=none; b=mPX2QaZNK2PsTmiZq2+cvInAiWRiPD5kYARkaeXgNkY7B0R0leUnwLevt3Pyh/IqPn7xIYp+/fB0Lyqj5VIPTP9hcjckife07HkHUoZ24aIB930iEEnbHA/96o8Es5uaDqswXaZdlpuzV1LxZyVRki2Sxz46VkawHEJsfIob+0Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761593213; c=relaxed/simple;
-	bh=WVO2szA3Yq+6SqR8XJIISuS/4b7ufSal/1OiM4p9aqA=;
+	s=arc-20240116; t=1761591669; c=relaxed/simple;
+	bh=o/HKvfedrIkhKnrXaubNvLMVB3XD9MOXcrxL6asBlJA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=twCssl1O+67gxF0Z+ugv50CmB+3w1RnNwkHvt7qzLAyuDcb15h5AD+xoitebs4zei1A5Urr62fQzI4iPuZt8MUqEdkasbhaqhHS4XXL2r01lt/Cn38HS/48q58fCxP98gIg2YG1AE1u/1Lp40sqtrfkSzyF7HWXVbV53mGdBY6A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q5t3PNIC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02FA1C4CEF1;
-	Mon, 27 Oct 2025 19:26:52 +0000 (UTC)
+	 MIME-Version:Content-Type; b=pmaNL7cbyACtvx09jTjwNKY9AmkTvJsPMTg70v2Xwf8eeDgBngAmrxAwpamrAX+jklovXIAErv2py5fidVmM135WnqjJTIt3w9B6Yrm1WYIGVaVD3MX1CRYkK3xOGrn2HsomTnIxO6MSu88lwljQyeBJPUGBaEpU0+EmyjuX26E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mPORpJLc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B215CC4CEFD;
+	Mon, 27 Oct 2025 19:01:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761593213;
-	bh=WVO2szA3Yq+6SqR8XJIISuS/4b7ufSal/1OiM4p9aqA=;
+	s=korg; t=1761591669;
+	bh=o/HKvfedrIkhKnrXaubNvLMVB3XD9MOXcrxL6asBlJA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q5t3PNICVcNZEH5rotvbxmmw2wzRpHXKIYVDjiALBJR9L5iQ7N+QmQVWqahVcXqMc
-	 uBVV39/QKDYI11FHtFWA1QhCMmks4RBYXMFePR840PRpr+4LjhP4QoGdz5bb6gvV9U
-	 rAjjZOQekGEF8P+36NPxARO2lLVvQHD5gvFCkI6Y=
+	b=mPORpJLcSVTNp0ICHKBwc8WWkc6Bx6yRZ9TLopp85qPHT4t8JFcnQTZB2VcClGZn1
+	 m0hoUACzRCZAArGz1MEnJj2K+k61zAMCAL9xAJrx5s77I2o/LlmSRMwN7jfXruqvdp
+	 1sqBLkySPKGxovRxjgMYxNSVex1ztzAQjVwMLUqA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ralf Lici <ralf@mandelbit.com>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 056/184] espintcp: use datagram_poll_queue for socket readiness
+	Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.10 285/332] net: ravb: Ensure memory write completes before ringing TX doorbell
 Date: Mon, 27 Oct 2025 19:35:38 +0100
-Message-ID: <20251027183516.409515628@linuxfoundation.org>
+Message-ID: <20251027183532.382806714@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
-References: <20251027183514.934710872@linuxfoundation.org>
+In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
+References: <20251027183524.611456697@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,57 +61,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ralf Lici <ralf@mandelbit.com>
+From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
 
-[ Upstream commit 0fc3e32c2c069f541f2724d91f5e98480b640326 ]
+commit 706136c5723626fcde8dd8f598a4dcd251e24927 upstream.
 
-espintcp uses a custom queue (ike_queue) to deliver packets to
-userspace. The polling logic relies on datagram_poll, which checks
-sk_receive_queue, which can lead to false readiness signals when that
-queue contains non-userspace packets.
+Add a final dma_wmb() barrier before triggering the transmit request
+(TCCR_TSRQ) to ensure all descriptor and buffer writes are visible to
+the DMA engine.
 
-Switch espintcp_poll to use datagram_poll_queue with ike_queue, ensuring
-poll only signals readiness when userspace data is actually available.
+According to the hardware manual, a read-back operation is required
+before writing to the doorbell register to guarantee completion of
+previous writes. Instead of performing a dummy read, a dma_wmb() is
+used to both enforce the same ordering semantics on the CPU side and
+also to ensure completion of writes.
 
-Fixes: e27cca96cd68 ("xfrm: add espintcp (RFC 8229)")
-Signed-off-by: Ralf Lici <ralf@mandelbit.com>
-Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
-Link: https://patch.msgid.link/20251021100942.195010-3-ralf@mandelbit.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: c156633f1353 ("Renesas Ethernet AVB driver proper")
+Cc: stable@vger.kernel.org
+Co-developed-by: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
+Signed-off-by: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
+Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Reviewed-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+Link: https://patch.msgid.link/20251017151830.171062-5-prabhakar.mahadev-lad.rj@bp.renesas.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/xfrm/espintcp.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ drivers/net/ethernet/renesas/ravb_main.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/net/xfrm/espintcp.c b/net/xfrm/espintcp.c
-index fc7a603b04f13..bf744ac9d5a73 100644
---- a/net/xfrm/espintcp.c
-+++ b/net/xfrm/espintcp.c
-@@ -555,14 +555,10 @@ static void espintcp_close(struct sock *sk, long timeout)
- static __poll_t espintcp_poll(struct file *file, struct socket *sock,
- 			      poll_table *wait)
- {
--	__poll_t mask = datagram_poll(file, sock, wait);
- 	struct sock *sk = sock->sk;
- 	struct espintcp_ctx *ctx = espintcp_getctx(sk);
+--- a/drivers/net/ethernet/renesas/ravb_main.c
++++ b/drivers/net/ethernet/renesas/ravb_main.c
+@@ -1605,6 +1605,14 @@ static netdev_tx_t ravb_start_xmit(struc
+ 	} else {
+ 		desc->die_dt = DT_FSINGLE;
+ 	}
++
++	/* Before ringing the doorbell we need to make sure that the latest
++	 * writes have been committed to memory, otherwise it could delay
++	 * things until the doorbell is rang again.
++	 * This is in replacement of the read operation mentioned in the HW
++	 * manuals.
++	 */
++	dma_wmb();
+ 	ravb_modify(ndev, TCCR, TCCR_TSRQ0 << q, TCCR_TSRQ0 << q);
  
--	if (!skb_queue_empty(&ctx->ike_queue))
--		mask |= EPOLLIN | EPOLLRDNORM;
--
--	return mask;
-+	return datagram_poll_queue(file, sock, wait, &ctx->ike_queue);
- }
- 
- static void build_protos(struct proto *espintcp_prot,
--- 
-2.51.0
-
+ 	priv->cur_tx[q] += num_tx_desc;
 
 
 
