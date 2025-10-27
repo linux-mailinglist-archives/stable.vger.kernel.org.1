@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-190697-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190589-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id C264BC10E71
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:24:37 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88BA0C1091D
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:10:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A391D50064C
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:16:42 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 10327501A61
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:05:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECC3D324B33;
-	Mon, 27 Oct 2025 19:05:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAB012C3749;
+	Mon, 27 Oct 2025 19:01:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wg4ZE9oi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tZgNcAdb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9E0731E0F2;
-	Mon, 27 Oct 2025 19:05:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 771CB27978C;
+	Mon, 27 Oct 2025 19:01:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591958; cv=none; b=Ot/2nLXtRl4kaojFTpBWlpxZMJwM+sUI+iLDW0Z0rseEZxPAZp4DCFA90TKY75CA9Dy6NxE8ebuvSsMp+phlGRoOgjTP4WEpR6eaQO51ovPOpcI+uFWeLXlOxlaTeN2qBobhAsqKbDEqjlQMtiXuQBG2GNPJBeb6nN5H3N2I4LE=
+	t=1761591679; cv=none; b=GHmby58rLokwIvSN716WieUIPp1LnLT3A/FM0c/gQQAptkuUIABI92UzjzGasoEOQyPrivzjkb8iirOBMNyZFsa8wvv/UYHoOZmjV1+fa6i3tYJXcNiMtnt8Ae2siGn0tKu1zBg+67iyYMMGUlFQe6gQpFhfn1EE3OJ3RQnuUc8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591958; c=relaxed/simple;
-	bh=OrhHCllAyDCpHforBJX/tVzi12vJWr1H5tmWlXii7sw=;
+	s=arc-20240116; t=1761591679; c=relaxed/simple;
+	bh=QFL6x9NCX5Aom62c6jC196CjU5wCaewaA8Lc6SGY/qo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kmb1XT3du460OL8vLyPiQDwiBXryEJ8qh1Yw/N5h90Z7PGZhGEC/k5ZMgrnL0H8IQYhDQwZXJZUGACd8FFdg00zGiI7g5E0g6VW4GZGO0ex8UOd9rF0W7Gv+FENpGZjEw92LCzklUntbJN9SibyVyPq2J19SdC84ncvt5NBDDo4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wg4ZE9oi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B6E4C4CEF1;
-	Mon, 27 Oct 2025 19:05:58 +0000 (UTC)
+	 MIME-Version; b=qoCe1lvbusdYyCliDC4CSIdCTDLU71K7CR8+ZKjz1n2EwtBoiZ0jQkzXLwQ/Yj/RnuKBr3uugAPKJqFng9GDLbkuBHNhN8lLp9+CDepizWf3Wm8VBqILDfuG59tACw3Ktm0wq8zrUVzqT1pqw2TtnRHFxI1W8+ull0WMiLzE7B4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tZgNcAdb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BD3FC4CEF1;
+	Mon, 27 Oct 2025 19:01:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591958;
-	bh=OrhHCllAyDCpHforBJX/tVzi12vJWr1H5tmWlXii7sw=;
+	s=korg; t=1761591679;
+	bh=QFL6x9NCX5Aom62c6jC196CjU5wCaewaA8Lc6SGY/qo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Wg4ZE9oitD78ezsh8nDWaBwFvoPMBWkTuq4KngQxybt2dRtR1ddjfk2LtL5qw9FmC
-	 y0Lz9HuVi7rQ4irgkzgmALOxx41lnyOXSi3nVuJPxq3tAO79wLVhOQoGg9pahnMi74
-	 r0cihtGjM++ZzubiJAZj7E6O+knMr7FPFACiHsso=
+	b=tZgNcAdbkqZsJV5Xjn7ok4YDlpt1RZH9HnbZqyxSULldUdI90CNFV6md1GbAZskKC
+	 30lkLF4xCwoXXwADHXbmLjOWVc08FQ6KpgBcY/RSZOdDPpnIaFvRvt93p/H0wtBow7
+	 VhDDy6nwWIRB8Mu5hxnd1f7+bCFKA/8Iu93TXH0M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexey Simakov <bigalex934@gmail.com>,
-	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Sunil V L <sunilvl@ventanamicro.com>,
+	Atish Patra <atishp@rivosinc.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 062/123] sctp: avoid NULL dereference when chunk data buffer is missing
+Subject: [PATCH 5.10 289/332] riscv: cpu: Add 64bit hartid support on RV64
 Date: Mon, 27 Oct 2025 19:35:42 +0100
-Message-ID: <20251027183448.054911353@linuxfoundation.org>
+Message-ID: <20251027183532.488170688@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183446.381986645@linuxfoundation.org>
-References: <20251027183446.381986645@linuxfoundation.org>
+In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
+References: <20251027183524.611456697@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +63,262 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexey Simakov <bigalex934@gmail.com>
+From: Sunil V L <sunilvl@ventanamicro.com>
 
-[ Upstream commit 441f0647f7673e0e64d4910ef61a5fb8f16bfb82 ]
+[ Upstream commit ad635e723e17379b192a5ba9c182e3eedfc24d16 ]
 
-chunk->skb pointer is dereferenced in the if-block where it's supposed
-to be NULL only.
+The hartid can be a 64bit value on RV64 platforms.
 
-chunk->skb can only be NULL if chunk->head_skb is not. Check for frag_list
-instead and do it just before replacing chunk->skb. We're sure that
-otherwise chunk->skb is non-NULL because of outer if() condition.
+Add support for 64bit hartid in riscv_of_processor_hartid() and
+update its callers.
 
-Fixes: 90017accff61 ("sctp: Add GSO support")
-Signed-off-by: Alexey Simakov <bigalex934@gmail.com>
-Acked-by: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>
-Link: https://patch.msgid.link/20251021130034.6333-1-bigalex934@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
+Reviewed-by: Atish Patra <atishp@rivosinc.com>
+Link: https://lore.kernel.org/r/20220527051743.2829940-5-sunilvl@ventanamicro.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Stable-dep-of: d2721bb165b3 ("RISC-V: Don't print details of CPUs disabled in DT")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sctp/inqueue.c | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ arch/riscv/include/asm/processor.h |  4 ++--
+ arch/riscv/kernel/cpu.c            | 26 +++++++++++++++-----------
+ arch/riscv/kernel/cpufeature.c     |  6 ++++--
+ arch/riscv/kernel/smpboot.c        |  9 +++++----
+ drivers/clocksource/timer-riscv.c  | 15 ++++++++-------
+ drivers/irqchip/irq-riscv-intc.c   |  7 ++++---
+ drivers/irqchip/irq-sifive-plic.c  |  7 ++++---
+ 7 files changed, 42 insertions(+), 32 deletions(-)
 
-diff --git a/net/sctp/inqueue.c b/net/sctp/inqueue.c
-index 7182c5a450fb5..6a434d441dc70 100644
---- a/net/sctp/inqueue.c
-+++ b/net/sctp/inqueue.c
-@@ -163,13 +163,14 @@ struct sctp_chunk *sctp_inq_pop(struct sctp_inq *queue)
- 				chunk->head_skb = chunk->skb;
+diff --git a/arch/riscv/include/asm/processor.h b/arch/riscv/include/asm/processor.h
+index bdddcd5c1b71d..b5295806643b1 100644
+--- a/arch/riscv/include/asm/processor.h
++++ b/arch/riscv/include/asm/processor.h
+@@ -66,8 +66,8 @@ static inline void wait_for_interrupt(void)
+ }
  
- 			/* skbs with "cover letter" */
--			if (chunk->head_skb && chunk->skb->data_len == chunk->skb->len)
-+			if (chunk->head_skb && chunk->skb->data_len == chunk->skb->len) {
-+				if (WARN_ON(!skb_shinfo(chunk->skb)->frag_list)) {
-+					__SCTP_INC_STATS(dev_net(chunk->skb->dev),
-+							 SCTP_MIB_IN_PKT_DISCARDS);
-+					sctp_chunk_free(chunk);
-+					goto next_chunk;
-+				}
- 				chunk->skb = skb_shinfo(chunk->skb)->frag_list;
--
--			if (WARN_ON(!chunk->skb)) {
--				__SCTP_INC_STATS(dev_net(chunk->skb->dev), SCTP_MIB_IN_PKT_DISCARDS);
--				sctp_chunk_free(chunk);
--				goto next_chunk;
- 			}
+ struct device_node;
+-int riscv_of_processor_hartid(struct device_node *node);
+-int riscv_of_parent_hartid(struct device_node *node);
++int riscv_of_processor_hartid(struct device_node *node, unsigned long *hartid);
++int riscv_of_parent_hartid(struct device_node *node, unsigned long *hartid);
+ 
+ extern void riscv_fill_hwcap(void);
+ 
+diff --git a/arch/riscv/kernel/cpu.c b/arch/riscv/kernel/cpu.c
+index f13b2c9ea912d..11d6d6cc61d51 100644
+--- a/arch/riscv/kernel/cpu.c
++++ b/arch/riscv/kernel/cpu.c
+@@ -12,37 +12,36 @@
+  * Returns the hart ID of the given device tree node, or -ENODEV if the node
+  * isn't an enabled and valid RISC-V hart node.
+  */
+-int riscv_of_processor_hartid(struct device_node *node)
++int riscv_of_processor_hartid(struct device_node *node, unsigned long *hart)
+ {
+ 	const char *isa;
+-	u32 hart;
+ 
+ 	if (!of_device_is_compatible(node, "riscv")) {
+ 		pr_warn("Found incompatible CPU\n");
+ 		return -ENODEV;
+ 	}
+ 
+-	hart = of_get_cpu_hwid(node, 0);
+-	if (hart == ~0U) {
++	*hart = (unsigned long) of_get_cpu_hwid(node, 0);
++	if (*hart == ~0UL) {
+ 		pr_warn("Found CPU without hart ID\n");
+ 		return -ENODEV;
+ 	}
+ 
+ 	if (!of_device_is_available(node)) {
+-		pr_info("CPU with hartid=%d is not available\n", hart);
++		pr_info("CPU with hartid=%lu is not available\n", *hart);
+ 		return -ENODEV;
+ 	}
+ 
+ 	if (of_property_read_string(node, "riscv,isa", &isa)) {
+-		pr_warn("CPU with hartid=%d has no \"riscv,isa\" property\n", hart);
++		pr_warn("CPU with hartid=%lu has no \"riscv,isa\" property\n", *hart);
+ 		return -ENODEV;
+ 	}
+ 	if (isa[0] != 'r' || isa[1] != 'v') {
+-		pr_warn("CPU with hartid=%d has an invalid ISA of \"%s\"\n", hart, isa);
++		pr_warn("CPU with hartid=%lu has an invalid ISA of \"%s\"\n", *hart, isa);
+ 		return -ENODEV;
+ 	}
+ 
+-	return hart;
++	return 0;
+ }
+ 
+ /*
+@@ -51,11 +50,16 @@ int riscv_of_processor_hartid(struct device_node *node)
+  * To achieve this, we walk up the DT tree until we find an active
+  * RISC-V core (HART) node and extract the cpuid from it.
+  */
+-int riscv_of_parent_hartid(struct device_node *node)
++int riscv_of_parent_hartid(struct device_node *node, unsigned long *hartid)
+ {
++	int rc;
++
+ 	for (; node; node = node->parent) {
+-		if (of_device_is_compatible(node, "riscv"))
+-			return riscv_of_processor_hartid(node);
++		if (of_device_is_compatible(node, "riscv")) {
++			rc = riscv_of_processor_hartid(node, hartid);
++			if (!rc)
++				return 0;
++		}
+ 	}
+ 
+ 	return -1;
+diff --git a/arch/riscv/kernel/cpufeature.c b/arch/riscv/kernel/cpufeature.c
+index 54d230bdaf976..f46efff26e3dc 100644
+--- a/arch/riscv/kernel/cpufeature.c
++++ b/arch/riscv/kernel/cpufeature.c
+@@ -67,8 +67,9 @@ void riscv_fill_hwcap(void)
+ 	struct device_node *node;
+ 	const char *isa;
+ 	char print_str[NUM_ALPHA_EXTS + 1];
+-	int i, j;
++	int i, j, rc;
+ 	static unsigned long isa2hwcap[256] = {0};
++	unsigned long hartid;
+ 
+ 	isa2hwcap['i'] = isa2hwcap['I'] = COMPAT_HWCAP_ISA_I;
+ 	isa2hwcap['m'] = isa2hwcap['M'] = COMPAT_HWCAP_ISA_M;
+@@ -85,7 +86,8 @@ void riscv_fill_hwcap(void)
+ 		unsigned long this_hwcap = 0;
+ 		unsigned long this_isa = 0;
+ 
+-		if (riscv_of_processor_hartid(node) < 0)
++		rc = riscv_of_processor_hartid(node, &hartid);
++		if (rc < 0)
+ 			continue;
+ 
+ 		if (of_property_read_string(node, "riscv,isa", &isa)) {
+diff --git a/arch/riscv/kernel/smpboot.c b/arch/riscv/kernel/smpboot.c
+index 0e0aed380e281..9df6413771923 100644
+--- a/arch/riscv/kernel/smpboot.c
++++ b/arch/riscv/kernel/smpboot.c
+@@ -67,15 +67,16 @@ void __init smp_prepare_cpus(unsigned int max_cpus)
+ void __init setup_smp(void)
+ {
+ 	struct device_node *dn;
+-	int hart;
++	unsigned long hart;
+ 	bool found_boot_cpu = false;
+ 	int cpuid = 1;
++	int rc;
+ 
+ 	cpu_set_ops(0);
+ 
+ 	for_each_of_cpu_node(dn) {
+-		hart = riscv_of_processor_hartid(dn);
+-		if (hart < 0)
++		rc = riscv_of_processor_hartid(dn, &hart);
++		if (rc < 0)
+ 			continue;
+ 
+ 		if (hart == cpuid_to_hartid_map(0)) {
+@@ -84,7 +85,7 @@ void __init setup_smp(void)
+ 			continue;
  		}
+ 		if (cpuid >= NR_CPUS) {
+-			pr_warn("Invalid cpuid [%d] for hartid [%d]\n",
++			pr_warn("Invalid cpuid [%d] for hartid [%lu]\n",
+ 				cpuid, hart);
+ 			break;
+ 		}
+diff --git a/drivers/clocksource/timer-riscv.c b/drivers/clocksource/timer-riscv.c
+index c51c5ed15aa75..4930d08c9374a 100644
+--- a/drivers/clocksource/timer-riscv.c
++++ b/drivers/clocksource/timer-riscv.c
+@@ -92,20 +92,21 @@ static irqreturn_t riscv_timer_interrupt(int irq, void *dev_id)
  
+ static int __init riscv_timer_init_dt(struct device_node *n)
+ {
+-	int cpuid, hartid, error;
++	int cpuid, error;
++	unsigned long hartid;
+ 	struct device_node *child;
+ 	struct irq_domain *domain;
+ 
+-	hartid = riscv_of_processor_hartid(n);
+-	if (hartid < 0) {
+-		pr_warn("Not valid hartid for node [%pOF] error = [%d]\n",
++	error = riscv_of_processor_hartid(n, &hartid);
++	if (error < 0) {
++		pr_warn("Not valid hartid for node [%pOF] error = [%lu]\n",
+ 			n, hartid);
+-		return hartid;
++		return error;
+ 	}
+ 
+ 	cpuid = riscv_hartid_to_cpuid(hartid);
+ 	if (cpuid < 0) {
+-		pr_warn("Invalid cpuid for hartid [%d]\n", hartid);
++		pr_warn("Invalid cpuid for hartid [%lu]\n", hartid);
+ 		return cpuid;
+ 	}
+ 
+@@ -131,7 +132,7 @@ static int __init riscv_timer_init_dt(struct device_node *n)
+ 		return -ENODEV;
+ 	}
+ 
+-	pr_info("%s: Registering clocksource cpuid [%d] hartid [%d]\n",
++	pr_info("%s: Registering clocksource cpuid [%d] hartid [%lu]\n",
+ 	       __func__, cpuid, hartid);
+ 	error = clocksource_register_hz(&riscv_clocksource, riscv_timebase);
+ 	if (error) {
+diff --git a/drivers/irqchip/irq-riscv-intc.c b/drivers/irqchip/irq-riscv-intc.c
+index 8017f6d32d52b..edbf90a7565f6 100644
+--- a/drivers/irqchip/irq-riscv-intc.c
++++ b/drivers/irqchip/irq-riscv-intc.c
+@@ -95,10 +95,11 @@ static const struct irq_domain_ops riscv_intc_domain_ops = {
+ static int __init riscv_intc_init(struct device_node *node,
+ 				  struct device_node *parent)
+ {
+-	int rc, hartid;
++	int rc;
++	unsigned long hartid;
+ 
+-	hartid = riscv_of_parent_hartid(node);
+-	if (hartid < 0) {
++	rc = riscv_of_parent_hartid(node, &hartid);
++	if (rc < 0) {
+ 		pr_warn("unable to find hart id for %pOF\n", node);
+ 		return 0;
+ 	}
+diff --git a/drivers/irqchip/irq-sifive-plic.c b/drivers/irqchip/irq-sifive-plic.c
+index bd99ee0ae433d..5fdf0eae48f7d 100644
+--- a/drivers/irqchip/irq-sifive-plic.c
++++ b/drivers/irqchip/irq-sifive-plic.c
+@@ -315,7 +315,8 @@ static int __init plic_init(struct device_node *node,
+ 	for (i = 0; i < nr_contexts; i++) {
+ 		struct of_phandle_args parent;
+ 		irq_hw_number_t hwirq;
+-		int cpu, hartid;
++		int cpu;
++		unsigned long hartid;
+ 
+ 		if (of_irq_parse_one(node, i, &parent)) {
+ 			pr_err("failed to parse parent for context %d.\n", i);
+@@ -329,8 +330,8 @@ static int __init plic_init(struct device_node *node,
+ 		if (parent.args[0] != RV_IRQ_EXT)
+ 			continue;
+ 
+-		hartid = riscv_of_parent_hartid(parent.np);
+-		if (hartid < 0) {
++		error = riscv_of_parent_hartid(parent.np, &hartid);
++		if (error < 0) {
+ 			pr_warn("failed to parse hart ID for context %d.\n", i);
+ 			continue;
+ 		}
 -- 
 2.51.0
 
