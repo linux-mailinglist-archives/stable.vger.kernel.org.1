@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-191307-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191309-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C53AC112D6
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:39:23 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66D9AC113D2
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:45:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 13FCC5848BF
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:34:27 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 3EF38566FAB
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:34:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3207A2D8DB7;
-	Mon, 27 Oct 2025 19:33:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41E182D7DDA;
+	Mon, 27 Oct 2025 19:33:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dUZ3xudp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VglIGSC8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA69A1FBC92;
-	Mon, 27 Oct 2025 19:33:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F269921576E;
+	Mon, 27 Oct 2025 19:33:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761593592; cv=none; b=QZ+QZ+ESIM0dyoCPvyWGL0ONLBTD57Vo8tufU1PHAEi+XnPNc1nwCiox1/NpBmSBE7zvcvCv/OtunWhgPg+RDyd/zNAUBHKQnmff0merNRTyjQ1QmqKDQBglurbHhAP8VVrtX3JxDgjbSsvtlE68OJQjqS6YTmFb1swS5IlwpFc=
+	t=1761593599; cv=none; b=C48Pdm32ioWbGmuTgYRQfVwujwfQsfUhNh9a4PdHd0AlCW6EABgaV6KoXvMIAra4INxIUvRV47O7nt6uV/0Qj15ZqXxUDgmle2MrQq0puN5iwXuzPwV6ih+QHfXBSfkGcQv9OFHDXl7msZ5iFT5lG6+pTdiZqErqtgg7betnH1o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761593592; c=relaxed/simple;
-	bh=ZJq0QQsgfAbv0cIQLUtCQypDhT89r0Sow35HXDEGYco=;
+	s=arc-20240116; t=1761593599; c=relaxed/simple;
+	bh=hzJCG1rmETtn3KqGAE2RuJAnmF8df/ZbGT5bBkLQ0ic=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=perJlefInG8qrZA9vtdFoO+mlueHK3CUT+Biw+fPiFzn8IU68mVT0ZUC3j6ngWmc8lWHh3WHxMTOb+W8t7NjyX2SLfmq8si/waxllQtY/B5iOLuDvtystqVPOFNLoyUaKhZled7mVHlfG5vzLHXcg0oD6mLKTKlHgneJXKxkZSc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dUZ3xudp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50910C4CEF1;
-	Mon, 27 Oct 2025 19:33:12 +0000 (UTC)
+	 MIME-Version; b=YJvD4YI8TLs6hdEicjwkXb7r9m3QKWN9j6RgNi2vnOcqtU97avlRGYq5cg3hKJJjSGDXJITqS0wYYE+EN3mwC4XQIJ1Nzh3bm1bfUtUSi0ead5c+qUKQqFVXsdJJ33D+fCN7LtUMWKmGATpe/i7pcJs6Hxz6tu+yQbFY+drpiUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VglIGSC8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 737ACC4CEFD;
+	Mon, 27 Oct 2025 19:33:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761593592;
-	bh=ZJq0QQsgfAbv0cIQLUtCQypDhT89r0Sow35HXDEGYco=;
+	s=korg; t=1761593598;
+	bh=hzJCG1rmETtn3KqGAE2RuJAnmF8df/ZbGT5bBkLQ0ic=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dUZ3xudpfs3g9D/6wNb1nMqwD1TChuxkXy3HpyiAYZ7tFygvO9amq2so6CIyH+V7H
-	 n3DE90dcXr+vAgo6VYESB96akLmTNcDcrDQvKt24HRhLA6XVuIleoCKdXbJ9jdyTsq
-	 MtPlBoOvKzfjbhpvj8F48+iybzi8ltsflEhoc8Xg=
+	b=VglIGSC8oRM+TvWzOImmsIeOmDDx0N2J12/haqpZielFQG98OKB5wdd6vmIU7d41v
+	 4zAKHt/CAlIOgn66m6qZR7TIYo3ShYPAZWBFDcO4V7ip+82cmJDbxK44vJAyeZcQwU
+	 sNC6MJJoYbxCTZxwAtysqPnAJXaNsAq0DDZ68rZg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Ioana Ciornei <ioana.ciornei@nxp.com>,
 	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Mathieu Dubois-Briand <mathieu.dubois-briand@bootlin.com>,
-	Lee Jones <lee@kernel.org>,
+	Michael Walle <mwalle@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 182/184] gpio: regmap: Allow to allocate regmap-irq device
-Date: Mon, 27 Oct 2025 19:37:44 +0100
-Message-ID: <20251027183519.825936154@linuxfoundation.org>
+Subject: [PATCH 6.17 183/184] gpio: regmap: add the .fixed_direction_output configuration parameter
+Date: Mon, 27 Oct 2025 19:37:45 +0100
+Message-ID: <20251027183519.854322283@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
 References: <20251027183514.934710872@linuxfoundation.org>
@@ -68,112 +67,131 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Mathieu Dubois-Briand <mathieu.dubois-briand@bootlin.com>
+From: Ioana Ciornei <ioana.ciornei@nxp.com>
 
-[ Upstream commit 553b75d4bfe9264f631d459fe9996744e0672b0e ]
+[ Upstream commit 00aaae60faf554c27c95e93d47f200a93ff266ef ]
 
-GPIO controller often have support for IRQ: allow to easily allocate
-both gpio-regmap and regmap-irq in one operation.
+There are GPIO controllers such as the one present in the LX2160ARDB
+QIXIS FPGA which have fixed-direction input and output GPIO lines mixed
+together in a single register. This cannot be modeled using the
+gpio-regmap as-is since there is no way to present the true direction of
+a GPIO line.
 
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+In order to make this use case possible, add a new configuration
+parameter - fixed_direction_output - into the gpio_regmap_config
+structure. This will enable user drivers to provide a bitmap that
+represents the fixed direction of the GPIO lines.
+
+Signed-off-by: Ioana Ciornei <ioana.ciornei@nxp.com>
 Acked-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Signed-off-by: Mathieu Dubois-Briand <mathieu.dubois-briand@bootlin.com>
-Link: https://lore.kernel.org/r/20250824-mdb-max7360-support-v14-5-435cfda2b1ea@bootlin.com
-Signed-off-by: Lee Jones <lee@kernel.org>
+Reviewed-by: Michael Walle <mwalle@kernel.org>
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Stable-dep-of: 2ba5772e530f ("gpio: idio-16: Define fixed direction of the GPIO lines")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpio/gpio-regmap.c  |   29 +++++++++++++++++++++++++++--
- include/linux/gpio/regmap.h |   11 +++++++++++
- 2 files changed, 38 insertions(+), 2 deletions(-)
+ drivers/gpio/gpio-regmap.c  |   26 ++++++++++++++++++++++++--
+ include/linux/gpio/regmap.h |    5 +++++
+ 2 files changed, 29 insertions(+), 2 deletions(-)
 
 --- a/drivers/gpio/gpio-regmap.c
 +++ b/drivers/gpio/gpio-regmap.c
-@@ -32,6 +32,11 @@ struct gpio_regmap {
+@@ -31,6 +31,7 @@ struct gpio_regmap {
+ 	unsigned int reg_clr_base;
  	unsigned int reg_dir_in_base;
  	unsigned int reg_dir_out_base;
++	unsigned long *fixed_direction_output;
  
-+#ifdef CONFIG_REGMAP_IRQ
-+	int regmap_irq_line;
-+	struct regmap_irq_chip_data *irq_chip_data;
-+#endif
-+
- 	int (*reg_mask_xlate)(struct gpio_regmap *gpio, unsigned int base,
- 			      unsigned int offset, unsigned int *reg,
- 			      unsigned int *mask);
-@@ -215,6 +220,7 @@ EXPORT_SYMBOL_GPL(gpio_regmap_get_drvdat
-  */
- struct gpio_regmap *gpio_regmap_register(const struct gpio_regmap_config *config)
- {
-+	struct irq_domain *irq_domain;
- 	struct gpio_regmap *gpio;
- 	struct gpio_chip *chip;
- 	int ret;
-@@ -295,8 +301,22 @@ struct gpio_regmap *gpio_regmap_register
- 	if (ret < 0)
- 		goto err_free_gpio;
+ #ifdef CONFIG_REGMAP_IRQ
+ 	int regmap_irq_line;
+@@ -134,6 +135,13 @@ static int gpio_regmap_get_direction(str
+ 	unsigned int base, val, reg, mask;
+ 	int invert, ret;
  
--	if (config->irq_domain) {
--		ret = gpiochip_irqchip_add_domain(chip, config->irq_domain);
-+#ifdef CONFIG_REGMAP_IRQ
-+	if (config->regmap_irq_chip) {
-+		gpio->regmap_irq_line = config->regmap_irq_line;
-+		ret = regmap_add_irq_chip_fwnode(dev_fwnode(config->parent), config->regmap,
-+						 config->regmap_irq_line, config->regmap_irq_flags,
-+						 0, config->regmap_irq_chip, &gpio->irq_chip_data);
-+		if (ret)
-+			goto err_free_gpio;
++	if (gpio->fixed_direction_output) {
++		if (test_bit(offset, gpio->fixed_direction_output))
++			return GPIO_LINE_DIRECTION_OUT;
++		else
++			return GPIO_LINE_DIRECTION_IN;
++	}
 +
-+		irq_domain = regmap_irq_get_domain(gpio->irq_chip_data);
-+	} else
-+#endif
-+	irq_domain = config->irq_domain;
-+
-+	if (irq_domain) {
-+		ret = gpiochip_irqchip_add_domain(chip, irq_domain);
- 		if (ret)
- 			goto err_remove_gpiochip;
+ 	if (gpio->reg_dat_base && !gpio->reg_set_base)
+ 		return GPIO_LINE_DIRECTION_IN;
+ 	if (gpio->reg_set_base && !gpio->reg_dat_base)
+@@ -283,6 +291,17 @@ struct gpio_regmap *gpio_regmap_register
+ 			goto err_free_gpio;
  	}
-@@ -317,6 +337,11 @@ EXPORT_SYMBOL_GPL(gpio_regmap_register);
-  */
- void gpio_regmap_unregister(struct gpio_regmap *gpio)
- {
-+#ifdef CONFIG_REGMAP_IRQ
-+	if (gpio->irq_chip_data)
-+		regmap_del_irq_chip(gpio->regmap_irq_line, gpio->irq_chip_data);
-+#endif
+ 
++	if (config->fixed_direction_output) {
++		gpio->fixed_direction_output = bitmap_alloc(chip->ngpio,
++							    GFP_KERNEL);
++		if (!gpio->fixed_direction_output) {
++			ret = -ENOMEM;
++			goto err_free_gpio;
++		}
++		bitmap_copy(gpio->fixed_direction_output,
++			    config->fixed_direction_output, chip->ngpio);
++	}
 +
+ 	/* if not set, assume there is only one register */
+ 	gpio->ngpio_per_reg = config->ngpio_per_reg;
+ 	if (!gpio->ngpio_per_reg)
+@@ -299,7 +318,7 @@ struct gpio_regmap *gpio_regmap_register
+ 
+ 	ret = gpiochip_add_data(chip, gpio);
+ 	if (ret < 0)
+-		goto err_free_gpio;
++		goto err_free_bitmap;
+ 
+ #ifdef CONFIG_REGMAP_IRQ
+ 	if (config->regmap_irq_chip) {
+@@ -308,7 +327,7 @@ struct gpio_regmap *gpio_regmap_register
+ 						 config->regmap_irq_line, config->regmap_irq_flags,
+ 						 0, config->regmap_irq_chip, &gpio->irq_chip_data);
+ 		if (ret)
+-			goto err_free_gpio;
++			goto err_free_bitmap;
+ 
+ 		irq_domain = regmap_irq_get_domain(gpio->irq_chip_data);
+ 	} else
+@@ -325,6 +344,8 @@ struct gpio_regmap *gpio_regmap_register
+ 
+ err_remove_gpiochip:
+ 	gpiochip_remove(chip);
++err_free_bitmap:
++	bitmap_free(gpio->fixed_direction_output);
+ err_free_gpio:
+ 	kfree(gpio);
+ 	return ERR_PTR(ret);
+@@ -343,6 +364,7 @@ void gpio_regmap_unregister(struct gpio_
+ #endif
+ 
  	gpiochip_remove(&gpio->gpio_chip);
++	bitmap_free(gpio->fixed_direction_output);
  	kfree(gpio);
  }
+ EXPORT_SYMBOL_GPL(gpio_regmap_unregister);
 --- a/include/linux/gpio/regmap.h
 +++ b/include/linux/gpio/regmap.h
-@@ -40,6 +40,11 @@ struct regmap;
+@@ -37,6 +37,10 @@ struct regmap;
+  *			offset to a register/bitmask pair. If not
+  *			given the default gpio_regmap_simple_xlate()
+  *			is used.
++ * @fixed_direction_output:
++ *			(Optional) Bitmap representing the fixed direction of
++ *			the GPIO lines. Useful when there are GPIO lines with a
++ *			fixed direction mixed together in the same register.
   * @drvdata:		(Optional) Pointer to driver specific data which is
   *			not used by gpio-remap but is provided "as is" to the
   *			driver callback(s).
-+ * @regmap_irq_chip:	(Optional) Pointer on an regmap_irq_chip structure. If
-+ *			set, a regmap-irq device will be created and the IRQ
-+ *			domain will be set accordingly.
-+ * @regmap_irq_line	(Optional) The IRQ the device uses to signal interrupts.
-+ * @regmap_irq_flags	(Optional) The IRQF_ flags to use for the interrupt.
-  *
-  * The ->reg_mask_xlate translates a given base address and GPIO offset to
-  * register and mask pair. The base address is one of the given register
-@@ -78,6 +83,12 @@ struct gpio_regmap_config {
+@@ -82,6 +86,7 @@ struct gpio_regmap_config {
+ 	int reg_stride;
  	int ngpio_per_reg;
  	struct irq_domain *irq_domain;
++	unsigned long *fixed_direction_output;
  
-+#ifdef CONFIG_REGMAP_IRQ
-+	struct regmap_irq_chip *regmap_irq_chip;
-+	int regmap_irq_line;
-+	unsigned long regmap_irq_flags;
-+#endif
-+
- 	int (*reg_mask_xlate)(struct gpio_regmap *gpio, unsigned int base,
- 			      unsigned int offset, unsigned int *reg,
- 			      unsigned int *mask);
+ #ifdef CONFIG_REGMAP_IRQ
+ 	struct regmap_irq_chip *regmap_irq_chip;
 
 
 
