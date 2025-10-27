@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-190703-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190839-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 581FDC10AE3
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:15:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 758FDC10D24
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:21:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7E48C562181
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:09:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3888E580248
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:14:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B6973164A8;
-	Mon, 27 Oct 2025 19:06:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA38932143E;
+	Mon, 27 Oct 2025 19:12:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N3GBTU2S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nNhzWoqn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37841322745;
-	Mon, 27 Oct 2025 19:06:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 774AB218EB1;
+	Mon, 27 Oct 2025 19:12:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591974; cv=none; b=KhT9M9uwKAUvX0iybGXJkAIPChY5C4g3EkH+64t4YFJgNBcIdTPvnbMkms0Iax/luYuGtK2hZIrd8+4XTMaNFf6LE+0hBkP54c3Ph4XbeEBxunH6hjVDMNQ00+BvR7Sfn6SaTJRmuaccLXDMewgdj6qlXt+PsdAFB6yAk0eYE+4=
+	t=1761592333; cv=none; b=bKRvLpuTN9Du+iY1PTIKxJsP2G8bGk8oSu9M2oPth7nEWKkNMapTupcsJnmOZISvU10l+EFuNX3XOe3X0kg5avCXrMl9o2iJEyEJWnM4tHPhw0u1fDjn1OMjFq+yctR0c5ym9nXdx9ZaBGtZMLyeA+4w+EEpjKxCpk2DF9hJnUE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591974; c=relaxed/simple;
-	bh=vs8PLaRPkjh9ZYRSNzHULwc5Fcsza8Q38/ScxXokgic=;
+	s=arc-20240116; t=1761592333; c=relaxed/simple;
+	bh=NmWX0l3uPAnYdC2v3cRNETWW2ujEpVjCjExGPlgd1rc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Tc64nQObKobX9XkfM7778jegdTVXK8cL2auP9F08zbEX7Hav/fjkmHsHsh0Fot3/6v9KafiEHyG0hyPnX1efybL8x8nfOetknswl3vTwWNKaFVb4Ai3/eojhIgaUdbb6m5YMjpmEKJ77EFMGTGqLB2rbCZzD9uMfcQUaMBmiSJY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N3GBTU2S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B61A6C4CEF1;
-	Mon, 27 Oct 2025 19:06:13 +0000 (UTC)
+	 MIME-Version; b=GykWEH2xpnYfoeAAywV58c5ihuEsIuVsSYuGO2QG9W+qrtJBSiz91YvfsBalsbQb0SJZxyw0/pmHyBBUpjRqeylGEIfvX+/7gwOG9hG6lXlXLtJzQstFH4qJCJZhvaurypKNRll5rtks3eb4WGA17ZzcNKSxCfiHVg5LsFOiuXM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nNhzWoqn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B92FC4CEF1;
+	Mon, 27 Oct 2025 19:12:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591974;
-	bh=vs8PLaRPkjh9ZYRSNzHULwc5Fcsza8Q38/ScxXokgic=;
+	s=korg; t=1761592333;
+	bh=NmWX0l3uPAnYdC2v3cRNETWW2ujEpVjCjExGPlgd1rc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N3GBTU2SrJf2CqnDbZpXQpS1SnN2fGSAD2pGGY4AOhnmJNKeizOFIkg+MIcnOsVDt
-	 5sFnmn4bfq+jREZijrxZeliob8IUYsxCUtuVu8k8ffqRvScDelwiEUYZVjLXFOEzIx
-	 d5zyP4iwmcshv4aKoOIstGnKLOeJ9gU8v3KWgrE8=
+	b=nNhzWoqnaS/ZLl7gQLiVaCMMJDKQatwzmbaSJPKvtv1VLG2yJFFskxsR8u7IYkZHh
+	 GTfuAXcHaVGvfF2/ZgI4hWzvWcjVvwYXkh8eQ60AVqvGqXVs3365qnzii/vJdgCMTf
+	 rg8O1tQken7hACP+knrbJioagZvX85VLAyTDKKeY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>,
-	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
+	Fabian Vogt <fvogt@suse.de>,
+	Marvin Friedrich <marvin.friedrich@suse.com>,
+	Guo Ren <guoren@kernel.org>,
+	Paul Walmsley <pjw@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 033/123] drm/amd/powerplay: Fix CIK shutdown temperature
+Subject: [PATCH 6.1 052/157] riscv: kprobes: Fix probe address validation
 Date: Mon, 27 Oct 2025 19:35:13 +0100
-Message-ID: <20251027183447.284901370@linuxfoundation.org>
+Message-ID: <20251027183502.687567027@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183446.381986645@linuxfoundation.org>
-References: <20251027183446.381986645@linuxfoundation.org>
+In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
+References: <20251027183501.227243846@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,48 +62,68 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Timur Kristóf <timur.kristof@gmail.com>
+From: Fabian Vogt <fvogt@suse.de>
 
-[ Upstream commit 6917112af2ba36c5f19075eb9f2933ffd07e55bf ]
+[ Upstream commit 9e68bd803fac49274fde914466fd3b07c4d602c8 ]
 
-Remove extra multiplication.
+When adding a kprobe such as "p:probe/tcp_sendmsg _text+15392192",
+arch_check_kprobe would start iterating all instructions starting from
+_text until the probed address. Not only is this very inefficient, but
+literal values in there (e.g. left by function patching) are
+misinterpreted in a way that causes a desync.
 
-CIK GPUs such as Hawaii appear to use PP_TABLE_V0 in which case
-the shutdown temperature is hardcoded in smu7_init_dpm_defaults
-and is already multiplied by 1000. The value was mistakenly
-multiplied another time by smu7_get_thermal_temperature_range.
+Fix this by doing it like x86: start the iteration at the closest
+preceding symbol instead of the given starting point.
 
-Fixes: 4ba082572a42 ("drm/amd/powerplay: export the thermal ranges of VI asics (V2)")
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/1676
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 87f48c7ccc73 ("riscv: kprobe: Fixup kernel panic when probing an illegal position")
+Signed-off-by: Fabian Vogt <fvogt@suse.de>
+Signed-off-by: Marvin Friedrich <marvin.friedrich@suse.com>
+Acked-by: Guo Ren <guoren@kernel.org>
+Link: https://lore.kernel.org/r/6191817.lOV4Wx5bFT@fvogt-thinkpad
+Signed-off-by: Paul Walmsley <pjw@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ arch/riscv/kernel/probes/kprobes.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
-index 2d1f37aefdbd1..e25032ad16be7 100644
---- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
-@@ -5387,8 +5387,7 @@ static int smu7_get_thermal_temperature_range(struct pp_hwmgr *hwmgr,
- 		thermal_data->max = table_info->cac_dtp_table->usSoftwareShutdownTemp *
- 			PP_TEMPERATURE_UNITS_PER_CENTIGRADES;
- 	else if (hwmgr->pp_table_version == PP_TABLE_V0)
--		thermal_data->max = data->thermal_temp_setting.temperature_shutdown *
--			PP_TEMPERATURE_UNITS_PER_CENTIGRADES;
-+		thermal_data->max = data->thermal_temp_setting.temperature_shutdown;
- 
- 	return 0;
+diff --git a/arch/riscv/kernel/probes/kprobes.c b/arch/riscv/kernel/probes/kprobes.c
+index cca2b3a2135ad..f4836ef13e9bb 100644
+--- a/arch/riscv/kernel/probes/kprobes.c
++++ b/arch/riscv/kernel/probes/kprobes.c
+@@ -48,10 +48,15 @@ static void __kprobes arch_simulate_insn(struct kprobe *p, struct pt_regs *regs)
+ 	post_kprobe_handler(p, kcb, regs);
  }
+ 
+-static bool __kprobes arch_check_kprobe(struct kprobe *p)
++static bool __kprobes arch_check_kprobe(unsigned long addr)
+ {
+-	unsigned long tmp  = (unsigned long)p->addr - p->offset;
+-	unsigned long addr = (unsigned long)p->addr;
++	unsigned long tmp, offset;
++
++	/* start iterating at the closest preceding symbol */
++	if (!kallsyms_lookup_size_offset(addr, NULL, &offset))
++		return false;
++
++	tmp = addr - offset;
+ 
+ 	while (tmp <= addr) {
+ 		if (tmp == addr)
+@@ -70,7 +75,7 @@ int __kprobes arch_prepare_kprobe(struct kprobe *p)
+ 	if ((unsigned long)insn & 0x1)
+ 		return -EILSEQ;
+ 
+-	if (!arch_check_kprobe(p))
++	if (!arch_check_kprobe((unsigned long)p->addr))
+ 		return -EILSEQ;
+ 
+ 	/* copy instruction */
 -- 
 2.51.0
 
