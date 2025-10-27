@@ -1,59 +1,66 @@
-Return-Path: <stable+bounces-190787-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190519-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFD3AC10BE3
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:18:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E898C107B3
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:07:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 06CF21A60E8C
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:13:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0ED54188CAC3
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:03:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8E9732ABC8;
-	Mon, 27 Oct 2025 19:09:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C35B933032B;
+	Mon, 27 Oct 2025 18:58:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eGsWmesk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JKXyppK7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 943D530E825;
-	Mon, 27 Oct 2025 19:09:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D47D3330309;
+	Mon, 27 Oct 2025 18:58:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592195; cv=none; b=BR7rPtMYJrKO5wynCPJmDBhdMMI86Hed0c3GP3Fu3fCzHnfLDc60uDIu77D03qXpNN4XYbRHGJDul9DB/JJ+d+W/7TrXLM5SArdiVOXlR6GrTlrDCkXL1hFX49t8X0fQ1RMIIhZeREn0Xod1Z0baMiTbulNkF8u+g5lQWEytuws=
+	t=1761591502; cv=none; b=TOqp7DH7ALB/3BpdabSG87Uf1MNKcgY3ZRmKgin9MJnrqYPpO7ju1ILvwIZHSm7pC4zg0r17xJs8rAGTvZuVA45u8WFuTtt1eUB/EYgcC6k44OZN2I9xuVlK1sF0A/G9D338AMZ6Aw0NPTRzR+pO17FapaSaew6NL/v015cDhqU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592195; c=relaxed/simple;
-	bh=xCajF9tTosMf3kLfODvyLpeLApWHpgDy1HH9HRMC4fM=;
+	s=arc-20240116; t=1761591502; c=relaxed/simple;
+	bh=/TMz840P5IuA0NXolImmrWzsRB9d0in+A5aa0aMNPgU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iHsCZzSGoWUWCG3va1nTuZtSqDcxlrRpsiH/zDbsJmeFKVjTG3v3GTviJOvcXr4+ytmh8VCOB5aPeaHBXnVwCst7fN4/2UWzVBUqJ7FVlJaZLYrWKoZVJj8dX4FQR+vCDIiOrD0blh6k+MeIy0bHFFIwiWv2jWjcp7vw7ILHYJo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eGsWmesk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26CB8C4CEF1;
-	Mon, 27 Oct 2025 19:09:54 +0000 (UTC)
+	 MIME-Version; b=blXvNyupQM/enK2oZ1VrYeW7uvS5T9sfAlvAaNZPdnE+L91QN9Nv2MsCgM0o+wQEZ3JBsdAVnA/G0MNLC2mDVS5R2QUVvSyR1RFTwXbWS2Dbcj4l3YrHX6mCpjn1krjYhY7lLyf1yNvTt90Sc9dkKnDoiQAKwq+wIudRLDJPQV4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JKXyppK7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0584C4CEF1;
+	Mon, 27 Oct 2025 18:58:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592195;
-	bh=xCajF9tTosMf3kLfODvyLpeLApWHpgDy1HH9HRMC4fM=;
+	s=korg; t=1761591502;
+	bh=/TMz840P5IuA0NXolImmrWzsRB9d0in+A5aa0aMNPgU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eGsWmeskwUaXRmL8ziCovQZnCljrWIN0ZPW8rWxqSC49fE5oPUSp1txVdDGEjnZje
-	 jRUZ6HPhvXsk4SIUTyvQ/x7+eb/mnCBY0JCtsDtXPmWT11h/vuEXssHasKyg0Wb2Gs
-	 LZgGvVa1Iw9NZ9l7RPOO0ydSmsZRUBoo+YsVf27s=
+	b=JKXyppK7xTFPEUCNjZ0GjaL02rojdwdnxl4TFOmv8JkN0IWYkbIqcvoGorRFALtdT
+	 /cp5J8CmGXxMArB2O+flIutRuhMbs3dU1Ir/viUMhg6VUNkupLeQrtazzioc5Kw6M0
+	 jDLIVJGGP3bpmSeKvOhqGIO0IhQKlOtZ6fO6irJc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	"Mario Limonciello (AMD)" <superm1@kernel.org>,
-	Jie Zhan <zhanjie9@hisilicon.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Qais Yousef <qyousef@layalina.io>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 012/157] cpufreq: CPPC: Avoid using CPUFREQ_ETERNAL as transition delay
+	David Laight <david.laight@aculab.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Arnd Bergmann <arnd@kernel.org>,
+	Christoph Hellwig <hch@infradead.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	"Jason A. Donenfeld" <Jason@zx2c4.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Mateusz Guzik <mjguzik@gmail.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Pedro Falcato <pedro.falcato@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Eliav Farber <farbere@amazon.com>
+Subject: [PATCH 5.10 220/332] minmax.h: remove some #defines that are only expanded once
 Date: Mon, 27 Oct 2025 19:34:33 +0100
-Message-ID: <20251027183501.585371179@linuxfoundation.org>
+Message-ID: <20251027183530.587088389@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
-References: <20251027183501.227243846@linuxfoundation.org>
+In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
+References: <20251027183524.611456697@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,85 +72,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+From: David Laight <David.Laight@ACULAB.COM>
 
-[ Upstream commit f965d111e68f4a993cc44d487d416e3d954eea11 ]
+[ Upstream commit 2b97aaf74ed534fb838d09867d09a3ca5d795208 ]
 
-If cppc_get_transition_latency() returns CPUFREQ_ETERNAL to indicate a
-failure to retrieve the transition latency value from the platform
-firmware, the CPPC cpufreq driver will use that value (converted to
-microseconds) as the policy transition delay, but it is way too large
-for any practical use.
+The bodies of __signed_type_use() and __unsigned_type_use() are much the
+same size as their names - so put the bodies in the only line that expands
+them.
 
-Address this by making the driver use the cpufreq's default
-transition latency value (in microseconds) as the transition delay
-if CPUFREQ_ETERNAL is returned by cppc_get_transition_latency().
+Similarly __signed_type() is defined separately for 64bit and then used
+exactly once just below.
 
-Fixes: d4f3388afd48 ("cpufreq / CPPC: Set platform specific transition_delay_us")
-Cc: 5.19+ <stable@vger.kernel.org> # 5.19
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Mario Limonciello (AMD) <superm1@kernel.org>
-Reviewed-by: Jie Zhan <zhanjie9@hisilicon.com>
-Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
-Reviewed-by: Qais Yousef <qyousef@layalina.io>
-[ added CPUFREQ_DEFAULT_TRANSITION_LATENCY_NS definition to include/linux/cpufreq.h ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Change the test for __signed_type from CONFIG_64BIT to one based on gcc
+defined macros so that the code is valid if it gets used outside of a
+kernel build.
+
+Link: https://lkml.kernel.org/r/9386d1ebb8974fbabbed2635160c3975@AcuMS.aculab.com
+Signed-off-by: David Laight <david.laight@aculab.com>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Arnd Bergmann <arnd@kernel.org>
+Cc: Christoph Hellwig <hch@infradead.org>
+Cc: Dan Carpenter <dan.carpenter@linaro.org>
+Cc: Jason A. Donenfeld <Jason@zx2c4.com>
+Cc: Jens Axboe <axboe@kernel.dk>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Mateusz Guzik <mjguzik@gmail.com>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: Pedro Falcato <pedro.falcato@gmail.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Eliav Farber <farbere@amazon.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cpufreq/cppc_cpufreq.c |   14 ++++++++++++--
- include/linux/cpufreq.h        |    3 +++
- 2 files changed, 15 insertions(+), 2 deletions(-)
+ include/linux/minmax.h |   14 ++++++--------
+ 1 file changed, 6 insertions(+), 8 deletions(-)
 
---- a/drivers/cpufreq/cppc_cpufreq.c
-+++ b/drivers/cpufreq/cppc_cpufreq.c
-@@ -338,6 +338,16 @@ static int cppc_verify_policy(struct cpu
- 	return 0;
- }
- 
-+static unsigned int __cppc_cpufreq_get_transition_delay_us(unsigned int cpu)
-+{
-+	unsigned int transition_latency_ns = cppc_get_transition_latency(cpu);
-+
-+	if (transition_latency_ns == CPUFREQ_ETERNAL)
-+		return CPUFREQ_DEFAULT_TRANSITION_LATENCY_NS / NSEC_PER_USEC;
-+
-+	return transition_latency_ns / NSEC_PER_USEC;
-+}
-+
- /*
-  * The PCC subspace describes the rate at which platform can accept commands
-  * on the shared PCC channel (including READs which do not count towards freq
-@@ -360,12 +370,12 @@ static unsigned int cppc_cpufreq_get_tra
- 			return 10000;
- 		}
- 	}
--	return cppc_get_transition_latency(cpu) / NSEC_PER_USEC;
-+	return __cppc_cpufreq_get_transition_delay_us(cpu);
- }
- #else
- static unsigned int cppc_cpufreq_get_transition_delay_us(unsigned int cpu)
- {
--	return cppc_get_transition_latency(cpu) / NSEC_PER_USEC;
-+	return __cppc_cpufreq_get_transition_delay_us(cpu);
- }
- #endif
- 
---- a/include/linux/cpufreq.h
-+++ b/include/linux/cpufreq.h
-@@ -32,6 +32,9 @@
+--- a/include/linux/minmax.h
++++ b/include/linux/minmax.h
+@@ -46,10 +46,8 @@
+  * comparison, and these expressions only need to be careful to not cause
+  * warnings for pointer use.
   */
+-#define __signed_type_use(ux) (2 + __is_nonneg(ux))
+-#define __unsigned_type_use(ux) (1 + 2 * (sizeof(ux) < 4))
+ #define __sign_use(ux) (is_signed_type(typeof(ux)) ? \
+-	__signed_type_use(ux) : __unsigned_type_use(ux))
++	(2 + __is_nonneg(ux)) : (1 + 2 * (sizeof(ux) < 4)))
  
- #define CPUFREQ_ETERNAL			(-1)
-+
-+#define CPUFREQ_DEFAULT_TRANSITION_LATENCY_NS	NSEC_PER_MSEC
-+
- #define CPUFREQ_NAME_LEN		16
- /* Print length for names. Extra 1 space for accommodating '\n' in prints */
- #define CPUFREQ_NAME_PLEN		(CPUFREQ_NAME_LEN + 1)
+ /*
+  * Check whether a signed value is always non-negative.
+@@ -57,7 +55,7 @@
+  * A cast is needed to avoid any warnings from values that aren't signed
+  * integer types (in which case the result doesn't matter).
+  *
+- * On 64-bit any integer or pointer type can safely be cast to 'long'.
++ * On 64-bit any integer or pointer type can safely be cast to 'long long'.
+  * But on 32-bit we need to avoid warnings about casting pointers to integers
+  * of different sizes without truncating 64-bit values so 'long' or 'long long'
+  * must be used depending on the size of the value.
+@@ -66,12 +64,12 @@
+  * them, but we do not use s128 types in the kernel (we do use 'u128',
+  * but they are handled by the !is_signed_type() case).
+  */
+-#ifdef CONFIG_64BIT
+-  #define __signed_type(ux) long
++#if __SIZEOF_POINTER__ == __SIZEOF_LONG_LONG__
++#define __is_nonneg(ux) statically_true((long long)(ux) >= 0)
+ #else
+-  #define __signed_type(ux) typeof(__builtin_choose_expr(sizeof(ux) > 4, 1LL, 1L))
++#define __is_nonneg(ux) statically_true( \
++	(typeof(__builtin_choose_expr(sizeof(ux) > 4, 1LL, 1L)))(ux) >= 0)
+ #endif
+-#define __is_nonneg(ux) statically_true((__signed_type(ux))(ux) >= 0)
+ 
+ #define __types_ok(ux, uy) \
+ 	(__sign_use(ux) & __sign_use(uy))
 
 
 
