@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-191045-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190938-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF618C10DE2
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:23:09 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id E80EFC10E98
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:24:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 7C098346DC7
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:23:09 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 89864546B17
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:17:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB34F21576E;
-	Mon, 27 Oct 2025 19:21:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2FC531D72A;
+	Mon, 27 Oct 2025 19:16:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ea0gW6JP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F/hwFuSP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 776622D8377;
-	Mon, 27 Oct 2025 19:21:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A3912DC33D;
+	Mon, 27 Oct 2025 19:16:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592870; cv=none; b=P0Ks3LL2mkeaE7kiraB4t7aFat2Zd0kvoRvRA6ILlAsTZf/iuNImbQQmrPV/8sg299uQsNGNPG5mhDvL7uX/GUulvlJFPSiuUipTp/a6xFP8+a0Hhzrp5/G4euX5MfM597drkYsIkkaG1dGc4brO7jb5Rzt31p1LVajamSwCCus=
+	t=1761592591; cv=none; b=Xg3L3osxxHx9vnZF9nhv2hsk4zJyxkCVyWjOaQxusvhTwTwW/f5ZZtfZAgwIMBJI42mxSJ7VeQG8Id1SgM9wC03sE75dzP3mAMVo+Lkk99/+v4kGBBumc0YZZ2yx5t1Y44K12f5U3cANZjVpiHGxQd/PxEhcU9iwZBwGuHnp/0k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592870; c=relaxed/simple;
-	bh=xeMObYoLgmoFSY4R0nHyIOsoq7aiRB2pRxIiALWll34=;
+	s=arc-20240116; t=1761592591; c=relaxed/simple;
+	bh=2awGQTVe6ylerQ3YKE+FEIeA0Q69e0cDEKRFW/Qzwgc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NmGuklKPVvEXl/9FixYfJrvHwe8d6cKPAo+2NuQygbqgLgZ5Q17Kq7uaWqOzXTMbwTL2xb4xinJAhBryByBMoqVdrLiIbyF7vzDMYzHZYQDv9Al58qL8brvFZJZYjVkuqad8M1iGeEWYoX+E+GdYzXnzD8+ZcfofSEQXDWd+miQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ea0gW6JP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE2B4C4CEFD;
-	Mon, 27 Oct 2025 19:21:09 +0000 (UTC)
+	 MIME-Version; b=dX/GXx0cRyDZ2oh8dDBhS+RQr549Cg9G4Jf9OQid/toUqnOZPKoTMd0/i7PY3fAN1ZPVoPrJgu7gJF00H2IbU6cNTA4ucFdVO1OlbtE8rzOgZqE3TffjBQxg64k7ipzyrXdB3X2l0CTLu8NsZX/Wh3ZaSC8D92RJrGwYzygvRlg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F/hwFuSP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC3C4C4CEF1;
+	Mon, 27 Oct 2025 19:16:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592870;
-	bh=xeMObYoLgmoFSY4R0nHyIOsoq7aiRB2pRxIiALWll34=;
+	s=korg; t=1761592591;
+	bh=2awGQTVe6ylerQ3YKE+FEIeA0Q69e0cDEKRFW/Qzwgc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ea0gW6JPy7jsbSnzpWdfB6KmS6xvNGKkkkTxqGxGsWBy9wV/QU5igZev7weMqgawK
-	 sVZoZX8gcifmsIg/LqR0/ya5A5HigD8NF1qmP/DfIZEwAfIhPS8uYg8+Zm9pnVuXaG
-	 LL1dJD0J4A1XNA/JnjxFr9aUySj7S5VzU6DXW88k=
+	b=F/hwFuSPhy2xzNYOyzp6TRQxS8BIRAWFiP+4w2f9sRhnpuvmJpiyU6VMp/3o2FuMS
+	 w1T6UF4008l17fQYjMex4rfz9vXxZWfMYiycr2KvgCEGDrNMto5+Jgn2LeMOprDbuW
+	 2nXYr443xzx+mQkJ7ZKU2WIA/K5aK/fHGRJuKsG0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Acs <acsjakub@amazon.de>,
-	Jan Kara <jack@suse.cz>,
-	Amir Goldstein <amir73il@gmail.com>,
-	Miklos Szeredi <miklos@szeredi.hu>,
-	Christian Brauner <brauner@kernel.org>,
-	linux-unionfs@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 6.12 044/117] fs/notify: call exportfs_encode_fid with s_umount
+	Wei Fang <wei.fang@nxp.com>,
+	Claudiu Manoil <claudiu.manoil@nxp.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 21/84] net: enetc: correct the value of ENETC_RXB_TRUESIZE
 Date: Mon, 27 Oct 2025 19:36:10 +0100
-Message-ID: <20251027183455.182140414@linuxfoundation.org>
+Message-ID: <20251027183439.385661697@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
-References: <20251027183453.919157109@linuxfoundation.org>
+In-Reply-To: <20251027183438.817309828@linuxfoundation.org>
+References: <20251027183438.817309828@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,111 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Acs <acsjakub@amazon.de>
+From: Wei Fang <wei.fang@nxp.com>
 
-commit a7c4bb43bfdc2b9f06ee9d036028ed13a83df42a upstream.
+[ Upstream commit e59bc32df2e989f034623a580e30a2a72af33b3f ]
 
-Calling intotify_show_fdinfo() on fd watching an overlayfs inode, while
-the overlayfs is being unmounted, can lead to dereferencing NULL ptr.
+The ENETC RX ring uses the page halves flipping mechanism, each page is
+split into two halves for the RX ring to use. And ENETC_RXB_TRUESIZE is
+defined to 2048 to indicate the size of half a page. However, the page
+size is configurable, for ARM64 platform, PAGE_SIZE is default to 4K,
+but it could be configured to 16K or 64K.
 
-This issue was found by syzkaller.
+When PAGE_SIZE is set to 16K or 64K, ENETC_RXB_TRUESIZE is not correct,
+and the RX ring will always use the first half of the page. This is not
+consistent with the description in the relevant kernel doc and commit
+messages.
 
-Race Condition Diagram:
+This issue is invisible in most cases, but if users want to increase
+PAGE_SIZE to receive a Jumbo frame with a single buffer for some use
+cases, it will not work as expected, because the buffer size of each
+RX BD is fixed to 2048 bytes.
 
-Thread 1                           Thread 2
---------                           --------
+Based on the above two points, we expect to correct ENETC_RXB_TRUESIZE
+to (PAGE_SIZE >> 1), as described in the comment.
 
-generic_shutdown_super()
- shrink_dcache_for_umount
-  sb->s_root = NULL
-
-                    |
-                    |             vfs_read()
-                    |              inotify_fdinfo()
-                    |               * inode get from mark *
-                    |               show_mark_fhandle(m, inode)
-                    |                exportfs_encode_fid(inode, ..)
-                    |                 ovl_encode_fh(inode, ..)
-                    |                  ovl_check_encode_origin(inode)
-                    |                   * deref i_sb->s_root *
-                    |
-                    |
-                    v
- fsnotify_sb_delete(sb)
-
-Which then leads to:
-
-[   32.133461] Oops: general protection fault, probably for non-canonical address 0xdffffc0000000006: 0000 [#1] SMP DEBUG_PAGEALLOC KASAN NOPTI
-[   32.134438] KASAN: null-ptr-deref in range [0x0000000000000030-0x0000000000000037]
-[   32.135032] CPU: 1 UID: 0 PID: 4468 Comm: systemd-coredum Not tainted 6.17.0-rc6 #22 PREEMPT(none)
-
-<snip registers, unreliable trace>
-
-[   32.143353] Call Trace:
-[   32.143732]  ovl_encode_fh+0xd5/0x170
-[   32.144031]  exportfs_encode_inode_fh+0x12f/0x300
-[   32.144425]  show_mark_fhandle+0xbe/0x1f0
-[   32.145805]  inotify_fdinfo+0x226/0x2d0
-[   32.146442]  inotify_show_fdinfo+0x1c5/0x350
-[   32.147168]  seq_show+0x530/0x6f0
-[   32.147449]  seq_read_iter+0x503/0x12a0
-[   32.148419]  seq_read+0x31f/0x410
-[   32.150714]  vfs_read+0x1f0/0x9e0
-[   32.152297]  ksys_read+0x125/0x240
-
-IOW ovl_check_encode_origin derefs inode->i_sb->s_root, after it was set
-to NULL in the unmount path.
-
-Fix it by protecting calling exportfs_encode_fid() from
-show_mark_fhandle() with s_umount lock.
-
-This form of fix was suggested by Amir in [1].
-
-[1]: https://lore.kernel.org/all/CAOQ4uxhbDwhb+2Brs1UdkoF0a3NSdBAOQPNfEHjahrgoKJpLEw@mail.gmail.com/
-
-Fixes: c45beebfde34 ("ovl: support encoding fid from inode with no alias")
-Signed-off-by: Jakub Acs <acsjakub@amazon.de>
-Cc: Jan Kara <jack@suse.cz>
-Cc: Amir Goldstein <amir73il@gmail.com>
-Cc: Miklos Szeredi <miklos@szeredi.hu>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: linux-unionfs@vger.kernel.org
-Cc: linux-fsdevel@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Cc: stable@vger.kernel.org
-Signed-off-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: d4fd0404c1c9 ("enetc: Introduce basic PF and VF ENETC ethernet drivers")
+Signed-off-by: Wei Fang <wei.fang@nxp.com>
+Reviewed-by: Claudiu Manoil <claudiu.manoil@nxp.com>
+Link: https://patch.msgid.link/20251016080131.3127122-1-wei.fang@nxp.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/notify/fdinfo.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/net/ethernet/freescale/enetc/enetc.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/notify/fdinfo.c
-+++ b/fs/notify/fdinfo.c
-@@ -17,6 +17,7 @@
- #include "fanotify/fanotify.h"
- #include "fdinfo.h"
- #include "fsnotify.h"
-+#include "../internal.h"
+diff --git a/drivers/net/ethernet/freescale/enetc/enetc.h b/drivers/net/ethernet/freescale/enetc/enetc.h
+index 860ecee302f1a..dcf3e4b4e3f55 100644
+--- a/drivers/net/ethernet/freescale/enetc/enetc.h
++++ b/drivers/net/ethernet/freescale/enetc/enetc.h
+@@ -41,7 +41,7 @@ struct enetc_tx_swbd {
+ };
  
- #if defined(CONFIG_PROC_FS)
- 
-@@ -46,7 +47,12 @@ static void show_mark_fhandle(struct seq
- 
- 	size = f->handle_bytes >> 2;
- 
-+	if (!super_trylock_shared(inode->i_sb))
-+		return;
-+
- 	ret = exportfs_encode_fid(inode, (struct fid *)f->f_handle, &size);
-+	up_read(&inode->i_sb->s_umount);
-+
- 	if ((ret == FILEID_INVALID) || (ret < 0))
- 		return;
- 
+ #define ENETC_RX_MAXFRM_SIZE	ENETC_MAC_MAXFRM_SIZE
+-#define ENETC_RXB_TRUESIZE	2048 /* PAGE_SIZE >> 1 */
++#define ENETC_RXB_TRUESIZE	(PAGE_SIZE >> 1)
+ #define ENETC_RXB_PAD		NET_SKB_PAD /* add extra space if needed */
+ #define ENETC_RXB_DMA_SIZE	\
+ 	(SKB_WITH_OVERHEAD(ENETC_RXB_TRUESIZE) - ENETC_RXB_PAD)
+-- 
+2.51.0
+
 
 
 
