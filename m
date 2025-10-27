@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-190550-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190803-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED1D4C108B5
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:09:38 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47B54C10BE0
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:18:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 92321562832
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:04:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8FA0719C5B2A
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:13:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB653332EB7;
-	Mon, 27 Oct 2025 18:59:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6195D30F526;
+	Mon, 27 Oct 2025 19:10:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OHy7gnbu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NJ+AVQNy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8B17332EB1;
-	Mon, 27 Oct 2025 18:59:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D1832DAFC3;
+	Mon, 27 Oct 2025 19:10:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591582; cv=none; b=WFJK5IxnIgyJ4RsccnpEEauH/ytGhX/WFzRR+AdFmndDdUSpyVivXG0irSopq9J6bGIcg4iggjrYhLA8Vt7un9pfNRLzpwxE5T7vQLIpxypXjMGdB7qD1D2PmMRN8RHn+KEr2thL8QIFZ6nchqdUutXzT1UhLPCrIywksCPWqaM=
+	t=1761592237; cv=none; b=QVhXGznKi8SixYOi7LUx1IEzH7JzGw+L3+zUOREeNzwYe7FclRseqHrbR6KizsdEO3uJl2dTyqfZlr3u3RTEP+GENDTlIBTBHnHlsOHu8ZVyS5XjOV6gLBnAdy85IKLSg3kLr00hyL1bKVoKf9IfM2bHIcC8r3B//er3yFVr48A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591582; c=relaxed/simple;
-	bh=tUYJWDXToLCQhHqBrXrbXZ9ZLcAbyxvDP8Xr0R6lqBE=;
+	s=arc-20240116; t=1761592237; c=relaxed/simple;
+	bh=YewE0aYX/LKzIJ2q/aqKRzTuQmmNtXeBynLNXAOSYZw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rZKbhR3dQUdZ3r3UGXy2ExsLJsQgIk/mETarJUD5K9k0RCfmDJvEf1GXWT30NC5D9VYbh3KhkojCoTP2TYzs8X1X4wgLSypOdvdz6X/C/ALqIl3FrrueyDf5WihdP7ZmMi8bfJ7KZ6CQXWMsZy3umajkb271MmzKaoJHEy8fK4s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OHy7gnbu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B420C4CEF1;
-	Mon, 27 Oct 2025 18:59:42 +0000 (UTC)
+	 MIME-Version; b=h9CFrYWtZWI4fidg5Ot+QN6Argjc8hHAeV8Z+yhiBgOGlWg5vCaL3jvONK5TZOyA/aPBMJuJ0XcDxCVvZ3mbcE/LtPv9jgHDeK0HvjZzsun8KpKanRoZ5woVFn28CQYY3/tFaTV5S6zdFFDYRHs2PLMiaj639bmJ5mCh19rPJvU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NJ+AVQNy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2219C4CEF1;
+	Mon, 27 Oct 2025 19:10:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591582;
-	bh=tUYJWDXToLCQhHqBrXrbXZ9ZLcAbyxvDP8Xr0R6lqBE=;
+	s=korg; t=1761592237;
+	bh=YewE0aYX/LKzIJ2q/aqKRzTuQmmNtXeBynLNXAOSYZw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OHy7gnbuB/wn01DSahCD1Lz7XewvZhTc3Bk4JDdS3LjASu/cPWEYVvBLZIzB5uaVE
-	 PD/FcS6Ko92iaqcaTmq0DeGUhPqy959C70LRgwlVufrtYHt+lxgLSdCFvfscuoV4Vx
-	 2449pirZgD/cnLvFCTaQF1/bbPotXqmsIFkZdP94=
+	b=NJ+AVQNy4VRf3xxlG4kLeq1AX9wlvOcADWRMOWHs6Jim70mc0EvIRUOa9wMdk1cjm
+	 fuNd+fkTEkxPDcgm3blPRQbXGV+Wnh7k7Zklty8EdixUAcm6YOK86mkAgAZusQnWo/
+	 Gf3JdBQeWNh8sxhXRgSSMhXY5lo/BnjlxRJ70cmY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>,
-	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
+	Alexandr Sapozhnikov <alsp705@gmail.com>,
+	Alexey Simakov <bigalex934@gmail.com>,
+	Pavan Chebbi <pavan.chebbi@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 252/332] drm/amd/powerplay: Fix CIK shutdown temperature
+Subject: [PATCH 6.1 044/157] tg3: prevent use of uninitialized remote_adv and local_adv variables
 Date: Mon, 27 Oct 2025 19:35:05 +0100
-Message-ID: <20251027183531.496724447@linuxfoundation.org>
+Message-ID: <20251027183502.478775574@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
-References: <20251027183524.611456697@linuxfoundation.org>
+In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
+References: <20251027183501.227243846@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,48 +62,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Timur Kristóf <timur.kristof@gmail.com>
+From: Alexey Simakov <bigalex934@gmail.com>
 
-[ Upstream commit 6917112af2ba36c5f19075eb9f2933ffd07e55bf ]
+[ Upstream commit 0c3f2e62815a43628e748b1e4ad97a1c46cce703 ]
 
-Remove extra multiplication.
+Some execution paths that jump to the fiber_setup_done label
+could leave the remote_adv and local_adv variables uninitialized
+and then use it.
 
-CIK GPUs such as Hawaii appear to use PP_TABLE_V0 in which case
-the shutdown temperature is hardcoded in smu7_init_dpm_defaults
-and is already multiplied by 1000. The value was mistakenly
-multiplied another time by smu7_get_thermal_temperature_range.
+Initialize this variables at the point of definition to avoid this.
 
-Fixes: 4ba082572a42 ("drm/amd/powerplay: export the thermal ranges of VI asics (V2)")
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/1676
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 85730a631f0c ("tg3: Add SGMII phy support for 5719/5718 serdes")
+Co-developed-by: Alexandr Sapozhnikov <alsp705@gmail.com>
+Signed-off-by: Alexandr Sapozhnikov <alsp705@gmail.com>
+Signed-off-by: Alexey Simakov <bigalex934@gmail.com>
+Reviewed-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
+Link: https://patch.msgid.link/20251014164736.5890-1-bigalex934@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/net/ethernet/broadcom/tg3.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
-index 3673a9e7ba449..e2816c88cfe52 100644
---- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
-@@ -4982,8 +4982,7 @@ static int smu7_get_thermal_temperature_range(struct pp_hwmgr *hwmgr,
- 		thermal_data->max = table_info->cac_dtp_table->usSoftwareShutdownTemp *
- 			PP_TEMPERATURE_UNITS_PER_CENTIGRADES;
- 	else if (hwmgr->pp_table_version == PP_TABLE_V0)
--		thermal_data->max = data->thermal_temp_setting.temperature_shutdown *
--			PP_TEMPERATURE_UNITS_PER_CENTIGRADES;
-+		thermal_data->max = data->thermal_temp_setting.temperature_shutdown;
+diff --git a/drivers/net/ethernet/broadcom/tg3.c b/drivers/net/ethernet/broadcom/tg3.c
+index 95d460237835d..8e5236142aaca 100644
+--- a/drivers/net/ethernet/broadcom/tg3.c
++++ b/drivers/net/ethernet/broadcom/tg3.c
+@@ -5814,7 +5814,7 @@ static int tg3_setup_fiber_mii_phy(struct tg3 *tp, bool force_reset)
+ 	u32 current_speed = SPEED_UNKNOWN;
+ 	u8 current_duplex = DUPLEX_UNKNOWN;
+ 	bool current_link_up = false;
+-	u32 local_adv, remote_adv, sgsr;
++	u32 local_adv = 0, remote_adv = 0, sgsr;
  
- 	return 0;
- }
+ 	if ((tg3_asic_rev(tp) == ASIC_REV_5719 ||
+ 	     tg3_asic_rev(tp) == ASIC_REV_5720) &&
+@@ -5955,9 +5955,6 @@ static int tg3_setup_fiber_mii_phy(struct tg3 *tp, bool force_reset)
+ 		else
+ 			current_duplex = DUPLEX_HALF;
+ 
+-		local_adv = 0;
+-		remote_adv = 0;
+-
+ 		if (bmcr & BMCR_ANENABLE) {
+ 			u32 common;
+ 
 -- 
 2.51.0
 
