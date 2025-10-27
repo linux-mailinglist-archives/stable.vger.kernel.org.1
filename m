@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-191022-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191190-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D54EC10FBB
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:28:44 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B4D0C1117A
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:34:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 19B145090D3
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:21:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A4FE2567460
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:29:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CDA12C3749;
-	Mon, 27 Oct 2025 19:20:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BB5B32D7F9;
+	Mon, 27 Oct 2025 19:27:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xGNSI2dC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WJUQzknP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCFC33016F9;
-	Mon, 27 Oct 2025 19:20:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 283FC202963;
+	Mon, 27 Oct 2025 19:27:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592811; cv=none; b=Lmt9b4L5bBubbqCp/RCTOWxotXzH3LsOONeAx4jvcAmEnyFELeWJbtmwEof8g/KUdTLT0eGf9fuOtA63+nB2DKzlhOXTUD19O7ysvJJl2GfQnl5v9m9gKZSwLkH9gwyJvXqcIlYNJLVjEE0vBEnycaw+o/1tLBerLBhtVppOI1c=
+	t=1761593239; cv=none; b=UnFf5zZn7FvEC8swGLCoBYBjdRuok6u2CkZWchm9XULaehKwS8R070j1QRwx/zoLz73kY/t9gvbdELXO8m7NwyD0FHjlrC2RdBxl7SdSxxOy5DdOtoi8BmxEhuF4bFjUkb90Leu+M5Ir8qZBy/7MIN1p92y1n+S8pWTDxa8skhg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592811; c=relaxed/simple;
-	bh=2GVRt56IMnNCA6ZaSgfweKoQrj4yOErVnLpOUzaev6k=;
+	s=arc-20240116; t=1761593239; c=relaxed/simple;
+	bh=Q7ZYnV4XwCsD1ZYTUHyyYkVboR579iof9wzHNOIPNnY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XdF4TCD1VUAtJskj2yB5DYwPB0p+0Qba4dUUWaES95DsWkQ2+fjoG1DLlHFqISYmQe3wQxpncNG6/iOGGoQJ4eSrQEbi9WqZYCBORJiVyNnyWju+MiyYsK2cA56q+ZnL1yf3svSoUi2Lb1qo9HPreZNynEFFyijLfp4CfiIeJr0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xGNSI2dC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72170C4CEF1;
-	Mon, 27 Oct 2025 19:20:10 +0000 (UTC)
+	 MIME-Version; b=TLOktADhB3WdqwrZzeEdDg8XLP9v6stLAWlGW29ZqegWJjaCDoTp3m2UWzll98DZO+LxEcz9fBMDXIC1BVGCajTN0Y+M/M1ieTT8wD4DsXXeSa6+ZVxMZ0JICqO1S/Id47HMDaU8D/QVjjcEsnYF/zY94M1YWSLObMfzPEuBu/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WJUQzknP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF137C4CEF1;
+	Mon, 27 Oct 2025 19:27:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592810;
-	bh=2GVRt56IMnNCA6ZaSgfweKoQrj4yOErVnLpOUzaev6k=;
+	s=korg; t=1761593239;
+	bh=Q7ZYnV4XwCsD1ZYTUHyyYkVboR579iof9wzHNOIPNnY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xGNSI2dCqbSACyzPWjJeMC2+R7YaX4VvKe+sg/BcdNDfik/UQ5f8q++g59+QkUm9/
-	 oZzPH7oOMQX2VYT/EDpe2+H9comD9UdslNpv3zf2lv+O1LNuIYG7PUe78ua0a6Ph2c
-	 6T2+1I2zLkurY4UdciTAoavKjU/8cipMYZnpqdzw=
+	b=WJUQzknPp9DF2lJel+o3264XopAaNqU5vROIVp0bMJs3Thgw1lIEWaq5Cr+OM8yZ2
+	 GjxoUA3nQpnSyIwFR52nReDeowuKA7AjZwp1OIn4XiShZJpoeDGYh/wyGhwfam2GaV
+	 cLYGBR2UrfjYyaofqxY1UYYtPGPdtfFg5+GmaFUY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nicolas Schier <nicolas@fjasle.eu>,
-	Borislav Petkov <bp@alien8.de>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 020/117] Unbreak make tools/* for user-space targets
-Date: Mon, 27 Oct 2025 19:35:46 +0100
-Message-ID: <20251027183454.500247590@linuxfoundation.org>
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Robin Murohy <robin.murphy@arm.com>,
+	"Isaac J. Manjarres" <isaacmanjarres@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.17 065/184] dma-debug: dont report false positives with DMA_BOUNCE_UNALIGNED_KMALLOC
+Date: Mon, 27 Oct 2025 19:35:47 +0100
+Message-ID: <20251027183516.642365477@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
-References: <20251027183453.919157109@linuxfoundation.org>
+In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
+References: <20251027183514.934710872@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,67 +65,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Linus Torvalds <torvalds@linux-foundation.org>
+From: Marek Szyprowski <m.szyprowski@samsung.com>
 
-[ Upstream commit ee916dccd4df6e2fd19c3606c4735282b72f1473 ]
+commit 03521c892bb8d0712c23e158ae9bdf8705897df8 upstream.
 
-This pattern isn't very documented, and apparently not used much outside
-of 'make tools/help', but it has existed for over a decade (since commit
-ea01fa9f63ae: "tools: Connect to the kernel build system").
+Commit 370645f41e6e ("dma-mapping: force bouncing if the kmalloc() size is
+not cache-line-aligned") introduced DMA_BOUNCE_UNALIGNED_KMALLOC feature
+and permitted architecture specific code configure kmalloc slabs with
+sizes smaller than the value of dma_get_cache_alignment().
 
-However, it doesn't work very well for most cases, particularly the
-useful "tools/all" target, because it overrides the LDFLAGS value with
-an empty one.
+When that feature is enabled, the physical address of some small
+kmalloc()-ed buffers might be not aligned to the CPU cachelines, thus not
+really suitable for typical DMA.  To properly handle that case a SWIOTLB
+buffer bouncing is used, so no CPU cache corruption occurs.  When that
+happens, there is no point reporting a false-positive DMA-API warning that
+the buffer is not properly aligned, as this is not a client driver fault.
 
-And once overridden, 'make' will then not honor the tooling makefiles
-trying to change it - which then makes any LDFLAGS use in the tooling
-directory break, typically causing odd link errors.
-
-Remove that LDFLAGS override, since it seems to be entirely historical.
-The core kernel makefiles no longer modify LDFLAGS as part of the build,
-and use kernel-specific link flags instead (eg 'KBUILD_LDFLAGS' and
-friends).
-
-This allows more of the 'make tools/*' cases to work.  I say 'more',
-because some of the tooling build rules make various other assumptions
-or have other issues, so it's still a bit hit-or-miss.  But those issues
-tend to show up with the 'make -C tools xyz' pattern too, so now it's no
-longer an issue of this particular 'tools/*' build rule being special.
-
-Acked-by: Nathan Chancellor <nathan@kernel.org>
-Cc: Nicolas Schier <nicolas@fjasle.eu>
-Cc: Borislav Petkov <bp@alien8.de>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[m.szyprowski@samsung.com: replace is_swiotlb_allocated() with is_swiotlb_active(), per Catalin]
+  Link: https://lkml.kernel.org/r/20251010173009.3916215-1-m.szyprowski@samsung.com
+Link: https://lkml.kernel.org/r/20251009141508.2342138-1-m.szyprowski@samsung.com
+Fixes: 370645f41e6e ("dma-mapping: force bouncing if the kmalloc() size is not cache-line-aligned")
+Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Christoph Hellwig <hch@lst.de>
+Cc: Inki Dae <m.szyprowski@samsung.com>
+Cc: Robin Murohy <robin.murphy@arm.com>
+Cc: "Isaac J. Manjarres" <isaacmanjarres@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Makefile | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ kernel/dma/debug.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/Makefile b/Makefile
-index d4c679b2d4bcf..0aa9fd3ab9a1c 100644
---- a/Makefile
-+++ b/Makefile
-@@ -1372,11 +1372,11 @@ endif
+--- a/kernel/dma/debug.c
++++ b/kernel/dma/debug.c
+@@ -23,6 +23,7 @@
+ #include <linux/ctype.h>
+ #include <linux/list.h>
+ #include <linux/slab.h>
++#include <linux/swiotlb.h>
+ #include <asm/sections.h>
+ #include "debug.h"
  
- tools/: FORCE
- 	$(Q)mkdir -p $(objtree)/tools
--	$(Q)$(MAKE) LDFLAGS= O=$(abspath $(objtree)) subdir=tools -C $(srctree)/tools/
-+	$(Q)$(MAKE) O=$(abspath $(objtree)) subdir=tools -C $(srctree)/tools/
- 
- tools/%: FORCE
- 	$(Q)mkdir -p $(objtree)/tools
--	$(Q)$(MAKE) LDFLAGS= O=$(abspath $(objtree)) subdir=tools -C $(srctree)/tools/ $*
-+	$(Q)$(MAKE) O=$(abspath $(objtree)) subdir=tools -C $(srctree)/tools/ $*
- 
- # ---------------------------------------------------------------------------
- # Kernel selftest
--- 
-2.51.0
-
+@@ -594,7 +595,9 @@ static void add_dma_entry(struct dma_deb
+ 	if (rc == -ENOMEM) {
+ 		pr_err_once("cacheline tracking ENOMEM, dma-debug disabled\n");
+ 		global_disable = true;
+-	} else if (rc == -EEXIST && !(attrs & DMA_ATTR_SKIP_CPU_SYNC)) {
++	} else if (rc == -EEXIST && !(attrs & DMA_ATTR_SKIP_CPU_SYNC) &&
++		   !(IS_ENABLED(CONFIG_DMA_BOUNCE_UNALIGNED_KMALLOC) &&
++		     is_swiotlb_active(entry->dev))) {
+ 		err_printk(entry->dev, entry,
+ 			"cacheline tracking EEXIST, overlapping mappings aren't supported\n");
+ 	}
 
 
 
