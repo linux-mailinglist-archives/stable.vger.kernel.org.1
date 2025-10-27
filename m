@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-190588-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190697-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2F08C10930
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:10:44 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id C264BC10E71
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:24:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AFAD0567ACA
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:05:32 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A391D50064C
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:16:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2827C314D19;
-	Mon, 27 Oct 2025 19:01:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECC3D324B33;
+	Mon, 27 Oct 2025 19:05:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="glxakcG2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wg4ZE9oi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D767D2C3745;
-	Mon, 27 Oct 2025 19:01:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9E0731E0F2;
+	Mon, 27 Oct 2025 19:05:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591676; cv=none; b=XttD3SG5YQAeBFVKs6Ic47fqcuZDrSc4pgGoiYoEiV00RZ+iOxCL/LrT/U9ZWx+z6QsqEQLK4XFsLbCqtamrTYQTd8nPl2TURxrPXtdkqgvJrAJcIHZgM9GpKW/Fktx6/6oeFIlq/Ph+NV1jz4RSsNw59F9dySGL/TBIjNJxpHU=
+	t=1761591958; cv=none; b=Ot/2nLXtRl4kaojFTpBWlpxZMJwM+sUI+iLDW0Z0rseEZxPAZp4DCFA90TKY75CA9Dy6NxE8ebuvSsMp+phlGRoOgjTP4WEpR6eaQO51ovPOpcI+uFWeLXlOxlaTeN2qBobhAsqKbDEqjlQMtiXuQBG2GNPJBeb6nN5H3N2I4LE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591676; c=relaxed/simple;
-	bh=uru+4rWf4vW3bCxUvPOXnnGrXOFnmg8555v+TfzqqBU=;
+	s=arc-20240116; t=1761591958; c=relaxed/simple;
+	bh=OrhHCllAyDCpHforBJX/tVzi12vJWr1H5tmWlXii7sw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IEEyNbXmfNQKE8XhKQy63tsRy5VsGR2hZ++Dg2+zlvcdUPM+rVLOz/31xkwYqOrUDq64iulM3FvIT2FwgFjPrmtFLNJmxx/MV5J1ZHB6RSssC+t+uDbVO6+T+22XarO5wzAe/EOIYYwirNJ6zORkBl0gOrFhfpcnz7NI0FZA7W8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=glxakcG2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A357C4CEF1;
-	Mon, 27 Oct 2025 19:01:16 +0000 (UTC)
+	 MIME-Version; b=Kmb1XT3du460OL8vLyPiQDwiBXryEJ8qh1Yw/N5h90Z7PGZhGEC/k5ZMgrnL0H8IQYhDQwZXJZUGACd8FFdg00zGiI7g5E0g6VW4GZGO0ex8UOd9rF0W7Gv+FENpGZjEw92LCzklUntbJN9SibyVyPq2J19SdC84ncvt5NBDDo4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wg4ZE9oi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B6E4C4CEF1;
+	Mon, 27 Oct 2025 19:05:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591676;
-	bh=uru+4rWf4vW3bCxUvPOXnnGrXOFnmg8555v+TfzqqBU=;
+	s=korg; t=1761591958;
+	bh=OrhHCllAyDCpHforBJX/tVzi12vJWr1H5tmWlXii7sw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=glxakcG2LEi8fXGl+g+a5o1OmLeTaWzH5DKTQS3CFxh5/xxekWGgMGWbWRdTieHdK
-	 9nOterjYRF6L2wOe3fetdEceKXi5xcC5wijNo46KSZOqGdrm55i+EIsbb6rOuFqmBL
-	 zbe5O6nbDY9+RK3/XAReplQFykdawRlmqVf27TVY=
+	b=Wg4ZE9oitD78ezsh8nDWaBwFvoPMBWkTuq4KngQxybt2dRtR1ddjfk2LtL5qw9FmC
+	 y0Lz9HuVi7rQ4irgkzgmALOxx41lnyOXSi3nVuJPxq3tAO79wLVhOQoGg9pahnMi74
+	 r0cihtGjM++ZzubiJAZj7E6O+knMr7FPFACiHsso=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Atish Patra <atishp@rivosinc.com>,
-	Tsukasa OI <research_trasio@irq.a4lg.com>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Anup Patel <anup@brainfault.org>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
+	Alexey Simakov <bigalex934@gmail.com>,
+	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 288/332] RISC-V: Minimal parser for "riscv, isa" strings
-Date: Mon, 27 Oct 2025 19:35:41 +0100
-Message-ID: <20251027183532.463182630@linuxfoundation.org>
+Subject: [PATCH 5.15 062/123] sctp: avoid NULL dereference when chunk data buffer is missing
+Date: Mon, 27 Oct 2025 19:35:42 +0100
+Message-ID: <20251027183448.054911353@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
-References: <20251027183524.611456697@linuxfoundation.org>
+In-Reply-To: <20251027183446.381986645@linuxfoundation.org>
+References: <20251027183446.381986645@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,147 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tsukasa OI <research_trasio@irq.a4lg.com>
+From: Alexey Simakov <bigalex934@gmail.com>
 
-[ Upstream commit 2a31c54be097c74344b4fab20ea6104012d2cb8b ]
+[ Upstream commit 441f0647f7673e0e64d4910ef61a5fb8f16bfb82 ]
 
-Current hart ISA ("riscv,isa") parser don't correctly parse:
+chunk->skb pointer is dereferenced in the if-block where it's supposed
+to be NULL only.
 
-1. Multi-letter extensions
-2. Version numbers
+chunk->skb can only be NULL if chunk->head_skb is not. Check for frag_list
+instead and do it just before replacing chunk->skb. We're sure that
+otherwise chunk->skb is non-NULL because of outer if() condition.
 
-All ISA extensions ratified recently has multi-letter extensions
-(except 'H'). The current "riscv,isa" parser that is easily confused
-by multi-letter extensions and "p" in version numbers can be a huge
-problem for adding new extensions through the device tree.
-
-Leaving it would create incompatible hacks and would make "riscv,isa"
-value unreliable.
-
-This commit implements minimal parser for "riscv,isa" strings.  With this,
-we can safely ignore multi-letter extensions and version numbers.
-
-[Improved commit text and fixed a bug around 's' in base extension]
-Signed-off-by: Atish Patra <atishp@rivosinc.com>
-[Fixed workaround for QEMU]
-Signed-off-by: Tsukasa OI <research_trasio@irq.a4lg.com>
-Tested-by: Heiko Stuebner <heiko@sntech.de>
-Reviewed-by: Anup Patel <anup@brainfault.org>
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
-Stable-dep-of: d2721bb165b3 ("RISC-V: Don't print details of CPUs disabled in DT")
+Fixes: 90017accff61 ("sctp: Add GSO support")
+Signed-off-by: Alexey Simakov <bigalex934@gmail.com>
+Acked-by: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>
+Link: https://patch.msgid.link/20251021130034.6333-1-bigalex934@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kernel/cpufeature.c | 72 ++++++++++++++++++++++++++++------
- 1 file changed, 61 insertions(+), 11 deletions(-)
+ net/sctp/inqueue.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
-diff --git a/arch/riscv/kernel/cpufeature.c b/arch/riscv/kernel/cpufeature.c
-index ece126dad3547..54d230bdaf976 100644
---- a/arch/riscv/kernel/cpufeature.c
-+++ b/arch/riscv/kernel/cpufeature.c
-@@ -7,6 +7,7 @@
-  */
+diff --git a/net/sctp/inqueue.c b/net/sctp/inqueue.c
+index 7182c5a450fb5..6a434d441dc70 100644
+--- a/net/sctp/inqueue.c
++++ b/net/sctp/inqueue.c
+@@ -163,13 +163,14 @@ struct sctp_chunk *sctp_inq_pop(struct sctp_inq *queue)
+ 				chunk->head_skb = chunk->skb;
  
- #include <linux/bitmap.h>
-+#include <linux/ctype.h>
- #include <linux/of.h>
- #include <asm/processor.h>
- #include <asm/hwcap.h>
-@@ -66,7 +67,7 @@ void riscv_fill_hwcap(void)
- 	struct device_node *node;
- 	const char *isa;
- 	char print_str[NUM_ALPHA_EXTS + 1];
--	size_t i, j, isa_len;
-+	int i, j;
- 	static unsigned long isa2hwcap[256] = {0};
- 
- 	isa2hwcap['i'] = isa2hwcap['I'] = COMPAT_HWCAP_ISA_I;
-@@ -92,23 +93,72 @@ void riscv_fill_hwcap(void)
- 			continue;
+ 			/* skbs with "cover letter" */
+-			if (chunk->head_skb && chunk->skb->data_len == chunk->skb->len)
++			if (chunk->head_skb && chunk->skb->data_len == chunk->skb->len) {
++				if (WARN_ON(!skb_shinfo(chunk->skb)->frag_list)) {
++					__SCTP_INC_STATS(dev_net(chunk->skb->dev),
++							 SCTP_MIB_IN_PKT_DISCARDS);
++					sctp_chunk_free(chunk);
++					goto next_chunk;
++				}
+ 				chunk->skb = skb_shinfo(chunk->skb)->frag_list;
+-
+-			if (WARN_ON(!chunk->skb)) {
+-				__SCTP_INC_STATS(dev_net(chunk->skb->dev), SCTP_MIB_IN_PKT_DISCARDS);
+-				sctp_chunk_free(chunk);
+-				goto next_chunk;
+ 			}
  		}
  
--		i = 0;
--		isa_len = strlen(isa);
- #if IS_ENABLED(CONFIG_32BIT)
- 		if (!strncmp(isa, "rv32", 4))
--			i += 4;
-+			isa += 4;
- #elif IS_ENABLED(CONFIG_64BIT)
- 		if (!strncmp(isa, "rv64", 4))
--			i += 4;
-+			isa += 4;
- #endif
--		for (; i < isa_len; ++i) {
--			this_hwcap |= isa2hwcap[(unsigned char)(isa[i])];
-+		for (; *isa; ++isa) {
-+			const char *ext = isa++;
-+			const char *ext_end = isa;
-+			bool ext_long = false, ext_err = false;
-+
-+			switch (*ext) {
-+			case 's':
-+				/**
-+				 * Workaround for invalid single-letter 's' & 'u'(QEMU).
-+				 * No need to set the bit in riscv_isa as 's' & 'u' are
-+				 * not valid ISA extensions. It works until multi-letter
-+				 * extension starting with "Su" appears.
-+				 */
-+				if (ext[-1] != '_' && ext[1] == 'u') {
-+					++isa;
-+					ext_err = true;
-+					break;
-+				}
-+				fallthrough;
-+			case 'x':
-+			case 'z':
-+				ext_long = true;
-+				/* Multi-letter extension must be delimited */
-+				for (; *isa && *isa != '_'; ++isa)
-+					if (!islower(*isa) && !isdigit(*isa))
-+						ext_err = true;
-+				break;
-+			default:
-+				if (unlikely(!islower(*ext))) {
-+					ext_err = true;
-+					break;
-+				}
-+				/* Find next extension */
-+				if (!isdigit(*isa))
-+					break;
-+				/* Skip the minor version */
-+				while (isdigit(*++isa))
-+					;
-+				if (*isa != 'p')
-+					break;
-+				if (!isdigit(*++isa)) {
-+					--isa;
-+					break;
-+				}
-+				/* Skip the major version */
-+				while (isdigit(*++isa))
-+					;
-+				break;
-+			}
-+			if (*isa != '_')
-+				--isa;
- 			/*
--			 * TODO: X, Y and Z extension parsing for Host ISA
--			 * bitmap will be added in-future.
-+			 * TODO: Full version-aware handling including
-+			 * multi-letter extensions will be added in-future.
- 			 */
--			if ('a' <= isa[i] && isa[i] < 'x')
--				this_isa |= (1UL << (isa[i] - 'a'));
-+			if (ext_err || ext_long)
-+				continue;
-+			this_hwcap |= isa2hwcap[(unsigned char)(*ext)];
-+			this_isa |= (1UL << (*ext - 'a'));
- 		}
- 
- 		/*
 -- 
 2.51.0
 
