@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-190761-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190916-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 481AFC10BA7
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:17:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 534A0C10D90
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:22:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A6113580B19
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:11:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 17DF0188E666
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:17:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC3BA31B80E;
-	Mon, 27 Oct 2025 19:08:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8445320382;
+	Mon, 27 Oct 2025 19:15:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EOJ+QtrW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Ov3oiRw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67EFC2D6E70;
-	Mon, 27 Oct 2025 19:08:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A57BB31C584;
+	Mon, 27 Oct 2025 19:15:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592128; cv=none; b=NovoUF5c9N6F8HM1CW5IaX0Mf4PPqNzdZxMuw18BzE/bkQYBmifxx1AKJw/nK0qJb/wJqvmOQMkiZAiQRUodGCiAbyqrBVp6mKiHhMTe5dHjd2gZNLl5mO9Yq3WLvZ1XvkHKHhOg3BhBbW1zOqqIrg8pNZ6r6TvyJMLKtviZgQ4=
+	t=1761592533; cv=none; b=UmJZ0FKyLxgHjtVqEZm7+ADG+1pYvfYjgm8/p35lQvrFYLP7b0AY6io7Nu+7gmXlMWJGr0h+ZAb3OsLLwt5ef2ZPJ6R0DtrqzCNbY+KABhlICqGHY4EeyuKcFr9knuJZwlspoRNAghZ9izuujbrPOoeakDAcpItyQkaPJQB/2HA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592128; c=relaxed/simple;
-	bh=1TsHgw3UBX/dEKgE+fRb+VdrVraqadrdYwstlUJ//ss=;
+	s=arc-20240116; t=1761592533; c=relaxed/simple;
+	bh=C4NQcQwkm1JgJsDMFGRjuF5ZO08Ie5K3tbo/FWOh5Xs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JikScMkWG9rGYXZqs3IYsF72VxQMDuwC2YtU5aqGHG6Ugj7xIwOMUjF8jDpl3tg/1CCKFiuEjFMABxABkVPBmsghpA+/WtZGQy4DDRnz1f3aC7PmUu41dUwI/JFZWsJuKGyar29vF7F7xhmHLcCqIDNGqOFC/Gbka4HPrGE8vvU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EOJ+QtrW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FD0AC4CEF1;
-	Mon, 27 Oct 2025 19:08:46 +0000 (UTC)
+	 MIME-Version:Content-Type; b=LxYvlC+ueLeJARc/nUMNwUhYZaJDWo6Y9U8PyGIBSoBe2bd106Bor5zwQyMft9aqEQQyEamopYLdP2rZyhuN2TMtVHsPt3Kc9HAt+/UGj8lvSOlXELFYakiiBUvbrWR2pq0feUr8wNOI9XOkkagibd5BnR2AJorxJA6iAxzb9bc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Ov3oiRw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39C98C4CEF1;
+	Mon, 27 Oct 2025 19:15:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592127;
-	bh=1TsHgw3UBX/dEKgE+fRb+VdrVraqadrdYwstlUJ//ss=;
+	s=korg; t=1761592533;
+	bh=C4NQcQwkm1JgJsDMFGRjuF5ZO08Ie5K3tbo/FWOh5Xs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EOJ+QtrWr7ih1HYTS5MoEhdZNyeUtlQWq3iE1G+o+vLNV4KyEv9fCEW0qaBeJw5EP
-	 89KRAb+38aohIhBNTFGtfYpE9Q7TMyRT3PTY80V1gn892vBu/CafisOGC9ftHPijkF
-	 /cJ6iKcOgCB0JoPQJFQ7UFGVkzooq4jF9dI+L4o0=
+	b=0Ov3oiRw6JaeTm+A5wwKLFswn3WommC/kV+WXMRA/ZNr6zca+ldYSYEXtyds5sG9O
+	 c/8NPT9vmaCi8ri5N3NkA4wXI3JcExVj4QtqFw7Z0LcriHII1Rb+eJxwgcdbM/K4TL
+	 sNqNkoyc7JN2IbXdFIXhg+dwsiaArPmX2MOtx0js=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Siddharth Vadapalli <s-vadapalli@ti.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	=?UTF-8?q?Bence=20Cs=C3=B3k=C3=A1s?= <csokas.bence@prolan.hu>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 102/123] PCI: j721e: Enable ACSPCIE Refclk if "ti,syscon-acspcie-proxy-ctrl" exists
+Subject: [PATCH 6.1 121/157] PM: runtime: Add new devm functions
 Date: Mon, 27 Oct 2025 19:36:22 +0100
-Message-ID: <20251027183449.118782130@linuxfoundation.org>
+Message-ID: <20251027183504.493954504@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183446.381986645@linuxfoundation.org>
-References: <20251027183446.381986645@linuxfoundation.org>
+In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
+References: <20251027183501.227243846@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,96 +63,111 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Siddharth Vadapalli <s-vadapalli@ti.com>
+From: Bence Csókás <csokas.bence@prolan.hu>
 
-[ Upstream commit 82c4be4168e26a5593aaa1002b5678128a638824 ]
+[ Upstream commit 73db799bf5efc5a04654bb3ff6c9bf63a0dfa473 ]
 
-The ACSPCIE module is capable of driving the reference clock required by
-the PCIe Endpoint device. It is an alternative to on-board and external
-reference clock generators. Enabling the output from the ACSPCIE module's
-PAD IO Buffers requires clearing the "PAD IO disable" bits of the
-ACSPCIE_PROXY_CTRL register in the CTRL_MMR register space.
+Add `devm_pm_runtime_set_active_enabled()` and
+`devm_pm_runtime_get_noresume()` for simplifying
+common cases in drivers.
 
-Add support to enable the ACSPCIE reference clock output using the optional
-device-tree property "ti,syscon-acspcie-proxy-ctrl".
-
-Link: https://lore.kernel.org/linux-pci/20240829105316.1483684-3-s-vadapalli@ti.com
-Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Stable-dep-of: f842d3313ba1 ("PCI: j721e: Fix programming sequence of "strap" settings")
+Signed-off-by: Bence Csókás <csokas.bence@prolan.hu>
+Link: https://patch.msgid.link/20250327195928.680771-3-csokas.bence@prolan.hu
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Stable-dep-of: 0792c1984a45 ("iio: imu: inv_icm42600: Simplify pm_runtime setup")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/controller/cadence/pci-j721e.c |   39 ++++++++++++++++++++++++++++-
- 1 file changed, 38 insertions(+), 1 deletion(-)
+ drivers/base/power/runtime.c |   44 +++++++++++++++++++++++++++++++++++++++++++
+ include/linux/pm_runtime.h   |    4 +++
+ 2 files changed, 48 insertions(+)
 
---- a/drivers/pci/controller/cadence/pci-j721e.c
-+++ b/drivers/pci/controller/cadence/pci-j721e.c
-@@ -46,6 +46,7 @@ enum link_status {
- #define LANE_COUNT_MASK			BIT(8)
- #define LANE_COUNT(n)			((n) << 8)
- 
-+#define ACSPCIE_PAD_DISABLE_MASK	GENMASK(1, 0)
- #define GENERATION_SEL_MASK		GENMASK(1, 0)
- 
- #define MAX_LANES			2
-@@ -218,6 +219,36 @@ static int j721e_pcie_set_lane_count(str
- 	return ret;
+--- a/drivers/base/power/runtime.c
++++ b/drivers/base/power/runtime.c
+@@ -1512,6 +1512,32 @@ out:
  }
+ EXPORT_SYMBOL_GPL(pm_runtime_enable);
  
-+static int j721e_enable_acspcie_refclk(struct j721e_pcie *pcie,
-+				       struct regmap *syscon)
++static void pm_runtime_set_suspended_action(void *data)
 +{
-+	struct device *dev = pcie->cdns_pcie->dev;
-+	struct device_node *node = dev->of_node;
-+	u32 mask = ACSPCIE_PAD_DISABLE_MASK;
-+	struct of_phandle_args args;
-+	u32 val;
-+	int ret;
-+
-+	ret = of_parse_phandle_with_fixed_args(node,
-+					       "ti,syscon-acspcie-proxy-ctrl",
-+					       1, 0, &args);
-+	if (ret) {
-+		dev_err(dev,
-+			"ti,syscon-acspcie-proxy-ctrl has invalid arguments\n");
-+		return ret;
-+	}
-+
-+	/* Clear PAD IO disable bits to enable refclk output */
-+	val = ~(args.args[0]);
-+	ret = regmap_update_bits(syscon, 0, mask, val);
-+	if (ret) {
-+		dev_err(dev, "failed to enable ACSPCIE refclk: %d\n", ret);
-+		return ret;
-+	}
-+
-+	return 0;
++	pm_runtime_set_suspended(data);
 +}
 +
- static int j721e_pcie_ctrl_init(struct j721e_pcie *pcie)
- {
- 	struct device *dev = pcie->dev;
-@@ -257,7 +288,13 @@ static int j721e_pcie_ctrl_init(struct j
- 		return ret;
- 	}
- 
--	return 0;
-+	/* Enable ACSPCIE refclk output if the optional property exists */
-+	syscon = syscon_regmap_lookup_by_phandle_optional(node,
-+						"ti,syscon-acspcie-proxy-ctrl");
-+	if (!syscon)
-+		return 0;
++/**
++ * devm_pm_runtime_set_active_enabled - set_active version of devm_pm_runtime_enable.
++ *
++ * @dev: Device to handle.
++ */
++int devm_pm_runtime_set_active_enabled(struct device *dev)
++{
++	int err;
 +
-+	return j721e_enable_acspcie_refclk(pcie, syscon);
++	err = pm_runtime_set_active(dev);
++	if (err)
++		return err;
++
++	err = devm_add_action_or_reset(dev, pm_runtime_set_suspended_action, dev);
++	if (err)
++		return err;
++
++	return devm_pm_runtime_enable(dev);
++}
++EXPORT_SYMBOL_GPL(devm_pm_runtime_set_active_enabled);
++
+ static void pm_runtime_disable_action(void *data)
+ {
+ 	pm_runtime_dont_use_autosuspend(data);
+@@ -1534,6 +1560,24 @@ int devm_pm_runtime_enable(struct device
  }
+ EXPORT_SYMBOL_GPL(devm_pm_runtime_enable);
  
- static int cdns_ti_pcie_config_read(struct pci_bus *bus, unsigned int devfn,
++static void pm_runtime_put_noidle_action(void *data)
++{
++	pm_runtime_put_noidle(data);
++}
++
++/**
++ * devm_pm_runtime_get_noresume - devres-enabled version of pm_runtime_get_noresume.
++ *
++ * @dev: Device to handle.
++ */
++int devm_pm_runtime_get_noresume(struct device *dev)
++{
++	pm_runtime_get_noresume(dev);
++
++	return devm_add_action_or_reset(dev, pm_runtime_put_noidle_action, dev);
++}
++EXPORT_SYMBOL_GPL(devm_pm_runtime_get_noresume);
++
+ /**
+  * pm_runtime_forbid - Block runtime PM of a device.
+  * @dev: Device to handle.
+--- a/include/linux/pm_runtime.h
++++ b/include/linux/pm_runtime.h
+@@ -95,7 +95,9 @@ extern void pm_runtime_new_link(struct d
+ extern void pm_runtime_drop_link(struct device_link *link);
+ extern void pm_runtime_release_supplier(struct device_link *link);
+ 
++int devm_pm_runtime_set_active_enabled(struct device *dev);
+ extern int devm_pm_runtime_enable(struct device *dev);
++int devm_pm_runtime_get_noresume(struct device *dev);
+ 
+ /**
+  * pm_runtime_get_if_in_use - Conditionally bump up runtime PM usage counter.
+@@ -292,7 +294,9 @@ static inline void __pm_runtime_disable(
+ static inline void pm_runtime_allow(struct device *dev) {}
+ static inline void pm_runtime_forbid(struct device *dev) {}
+ 
++static inline int devm_pm_runtime_set_active_enabled(struct device *dev) { return 0; }
+ static inline int devm_pm_runtime_enable(struct device *dev) { return 0; }
++static inline int devm_pm_runtime_get_noresume(struct device *dev) { return 0; }
+ 
+ static inline void pm_suspend_ignore_children(struct device *dev, bool enable) {}
+ static inline void pm_runtime_get_noresume(struct device *dev) {}
 
 
 
