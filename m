@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-191068-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190958-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFA2CC10FF7
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:29:26 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5AB4C10E50
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:24:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B8BD582043
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:23:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DA36A5678CB
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:18:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA756326D6D;
-	Mon, 27 Oct 2025 19:22:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60DE53218B2;
+	Mon, 27 Oct 2025 19:17:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J4Pd1DZC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hlru+vQN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4C8C30CD92;
-	Mon, 27 Oct 2025 19:22:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C4A535965;
+	Mon, 27 Oct 2025 19:17:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592929; cv=none; b=HFlyX3kPC8igmphU8KL8y3xovHHpkOpEhBPkVvQ7fFRYZyLmDnriDRCnOrqUmsrUfIWv3KPYMIMKgdiLbTW5DT2dNhu/IpWA7rsLnuKEaFqttsyElI3Gxhna3Ptvi1ZbnT003YQNSQKuHWaIfvinv6m+nabuhuTdg0UoAbNtFFY=
+	t=1761592643; cv=none; b=XfywQauCItYE1Sus7ELXNFg5PRgLYmBfW3VHbwaIz+XJ3fqq6uU+9Rfdh4jc0A7ac1raajB/DVRfTxCClbj+t+PygDEwepgjFLSqZoVRRgi4fxB6hZRiLKG460C86/xI/xaGvFePptpj25DIb6ADPX9zWlsJyaILDkI8nRXZ0ow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592929; c=relaxed/simple;
-	bh=EOv9P2I3Z76LEf6iUvaIZujOKJ60nMIaDO+t16zjVik=;
+	s=arc-20240116; t=1761592643; c=relaxed/simple;
+	bh=GUT1RYcPehOweluoTpH5ArSNGD5ojuPyRFHtPlrVlBA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ea68/E5ohVij8/EEhy+KpqpokmoK4de8A7K/Pj+jlPfw0+nnFI975Hf7/Ha0v9bZ9rT/NZaRwaKgksPyk/1b7pKBgT9THUmBOgZonZ/VhHKb1KICEcXIXKgasaLAJRwRSjQcFVxeukxhwkzBJrcZmNjs3vRz/Api746xThXmFnE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J4Pd1DZC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35C13C4CEF1;
-	Mon, 27 Oct 2025 19:22:09 +0000 (UTC)
+	 MIME-Version; b=WxLX9PCmRmTW6jW0fcEDtaS3jyAyy6N0xVbOGqpPL5/8eEn0YFWDnPbuII+9uJFajWryu/64n8f03PZ8XcHeoYf6EwYou3BqfRe3LZZ+h0cJyPTQCUAPObAbdEvaRmP68WoATnLuK4Webz2Ji1J198r5jSfjvfrkfHIJcOvvp2c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hlru+vQN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A297FC4CEF1;
+	Mon, 27 Oct 2025 19:17:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592929;
-	bh=EOv9P2I3Z76LEf6iUvaIZujOKJ60nMIaDO+t16zjVik=;
+	s=korg; t=1761592643;
+	bh=GUT1RYcPehOweluoTpH5ArSNGD5ojuPyRFHtPlrVlBA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J4Pd1DZCAB4/S1k4o/0/tOgTItL6ZY8+XQB+GEgIZj/7i526LWD0rxFtZ0nU1J76a
-	 JuhoxeejBl6Sn52/X7SsK8X8ivqxiWVcSuZHztcfHlvHD3d8haqiaxpFpRFW502axc
-	 L+VZ0XKIn+j9adOq1D/do66PdJTCUV7ZTR7o1jjI=
+	b=hlru+vQNMSxczR0EMh9fPc8gIIjcgJIp0D6R7Pe7tqAu7LC772XbIeuYqiDodbjlX
+	 Ifmrk459vT24BujrtXyqZ1ut+NxDrqXQTLP95jNQWEdBwr8PI8kglN90PauyI7KAQz
+	 hcatodwxNjI4+TK61Reg6TpTtqh0uEP6ygFCDlUs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geliang Tang <geliang@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 065/117] selftests: mptcp: join: mark flush re-add as skipped if not supported
+	syzbot+10e35716f8e4929681fa@syzkaller.appspotmail.com,
+	mhal@rbox.co,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.6 42/84] vsock: fix lock inversion in vsock_assign_transport()
 Date: Mon, 27 Oct 2025 19:36:31 +0100
-Message-ID: <20251027183455.768667572@linuxfoundation.org>
+Message-ID: <20251027183439.941520724@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
-References: <20251027183453.919157109@linuxfoundation.org>
+In-Reply-To: <20251027183438.817309828@linuxfoundation.org>
+References: <20251027183438.817309828@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +63,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Stefano Garzarella <sgarzare@redhat.com>
 
-commit d68460bc31f9c8c6fc81fbb56ec952bec18409f1 upstream.
+commit f7c877e7535260cc7a21484c994e8ce7e8cb6780 upstream.
 
-The call to 'continue_if' was missing: it properly marks a subtest as
-'skipped' if the attached condition is not valid.
+Syzbot reported a potential lock inversion deadlock between
+vsock_register_mutex and sk_lock-AF_VSOCK when vsock_linger() is called.
 
-Without that, the test is wrongly marked as passed on older kernels.
+The issue was introduced by commit 687aa0c5581b ("vsock: Fix
+transport_* TOCTOU") which added vsock_register_mutex locking in
+vsock_assign_transport() around the transport->release() call, that can
+call vsock_linger(). vsock_assign_transport() can be called with sk_lock
+held. vsock_linger() calls sk_wait_event() that temporarily releases and
+re-acquires sk_lock. During this window, if another thread hold
+vsock_register_mutex while trying to acquire sk_lock, a circular
+dependency is created.
 
-Fixes: e06959e9eebd ("selftests: mptcp: join: test for flush/re-add endpoints")
+Fix this by releasing vsock_register_mutex before calling
+transport->release() and vsock_deassign_transport(). This is safe
+because we don't need to hold vsock_register_mutex while releasing the
+old transport, and we ensure the new transport won't disappear by
+obtaining a module reference first via try_module_get().
+
+Reported-by: syzbot+10e35716f8e4929681fa@syzkaller.appspotmail.com
+Tested-by: syzbot+10e35716f8e4929681fa@syzkaller.appspotmail.com
+Fixes: 687aa0c5581b ("vsock: Fix transport_* TOCTOU")
+Cc: mhal@rbox.co
 Cc: stable@vger.kernel.org
-Reviewed-by: Geliang Tang <geliang@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20251020-net-mptcp-c-flag-late-add-addr-v1-2-8207030cb0e8@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
+Link: https://patch.msgid.link/20251021121718.137668-1-sgarzare@redhat.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/mptcp/mptcp_join.sh |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/vmw_vsock/af_vsock.c |   38 +++++++++++++++++++-------------------
+ 1 file changed, 19 insertions(+), 19 deletions(-)
 
---- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-@@ -3897,7 +3897,7 @@ endpoint_tests()
+--- a/net/vmw_vsock/af_vsock.c
++++ b/net/vmw_vsock/af_vsock.c
+@@ -486,12 +486,26 @@ int vsock_assign_transport(struct vsock_
+ 		goto err;
+ 	}
  
- 	# flush and re-add
- 	if reset_with_tcp_filter "flush re-add" ns2 10.0.3.2 REJECT OUTPUT &&
--	   mptcp_lib_kallsyms_has "subflow_rebuild_header$"; then
-+	   continue_if mptcp_lib_kallsyms_has "subflow_rebuild_header$"; then
- 		pm_nl_set_limits $ns1 0 2
- 		pm_nl_set_limits $ns2 1 2
- 		# broadcast IP: no packet for this address will be received on ns1
+-	if (vsk->transport) {
+-		if (vsk->transport == new_transport) {
+-			ret = 0;
+-			goto err;
+-		}
++	if (vsk->transport && vsk->transport == new_transport) {
++		ret = 0;
++		goto err;
++	}
++
++	/* We increase the module refcnt to prevent the transport unloading
++	 * while there are open sockets assigned to it.
++	 */
++	if (!new_transport || !try_module_get(new_transport->module)) {
++		ret = -ENODEV;
++		goto err;
++	}
++
++	/* It's safe to release the mutex after a successful try_module_get().
++	 * Whichever transport `new_transport` points at, it won't go away until
++	 * the last module_put() below or in vsock_deassign_transport().
++	 */
++	mutex_unlock(&vsock_register_mutex);
+ 
++	if (vsk->transport) {
+ 		/* transport->release() must be called with sock lock acquired.
+ 		 * This path can only be taken during vsock_connect(), where we
+ 		 * have already held the sock lock. In the other cases, this
+@@ -511,20 +525,6 @@ int vsock_assign_transport(struct vsock_
+ 		vsk->peer_shutdown = 0;
+ 	}
+ 
+-	/* We increase the module refcnt to prevent the transport unloading
+-	 * while there are open sockets assigned to it.
+-	 */
+-	if (!new_transport || !try_module_get(new_transport->module)) {
+-		ret = -ENODEV;
+-		goto err;
+-	}
+-
+-	/* It's safe to release the mutex after a successful try_module_get().
+-	 * Whichever transport `new_transport` points at, it won't go away until
+-	 * the last module_put() below or in vsock_deassign_transport().
+-	 */
+-	mutex_unlock(&vsock_register_mutex);
+-
+ 	if (sk->sk_type == SOCK_SEQPACKET) {
+ 		if (!new_transport->seqpacket_allow ||
+ 		    !new_transport->seqpacket_allow(remote_cid)) {
 
 
 
