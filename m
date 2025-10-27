@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-191171-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190703-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C1D7C110FF
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:32:35 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 581FDC10AE3
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:15:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 37D831A611AC
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:28:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7E48C562181
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:09:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E1BA328B46;
-	Mon, 27 Oct 2025 19:26:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B6973164A8;
+	Mon, 27 Oct 2025 19:06:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JprYiCnh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N3GBTU2S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E73932143D;
-	Mon, 27 Oct 2025 19:26:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37841322745;
+	Mon, 27 Oct 2025 19:06:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761593194; cv=none; b=Wibq6UWVtkn22XzyPp7tUhlRDIaU16tFLetDTNSIR+Ft8I3jUWN0ABtiWkt8437oQKNupjP3UTxyWX7HbymRuLninBi62S/yXqxAzCdNpk3+i/P+ooZaLnPFHRnjZO79ZorcoGAVJYZWZjieXywaps0p0t1vbXhD7zIUtMOXM1A=
+	t=1761591974; cv=none; b=KhT9M9uwKAUvX0iybGXJkAIPChY5C4g3EkH+64t4YFJgNBcIdTPvnbMkms0Iax/luYuGtK2hZIrd8+4XTMaNFf6LE+0hBkP54c3Ph4XbeEBxunH6hjVDMNQ00+BvR7Sfn6SaTJRmuaccLXDMewgdj6qlXt+PsdAFB6yAk0eYE+4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761593194; c=relaxed/simple;
-	bh=OKlPKqp1BIEa+XjInYQjJpoUxifXIOS9UESkayeucug=;
+	s=arc-20240116; t=1761591974; c=relaxed/simple;
+	bh=vs8PLaRPkjh9ZYRSNzHULwc5Fcsza8Q38/ScxXokgic=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oZsBX7nNrleMeNUxXoeAT/f1CcpMGsBXXO59dlfNkkxtfjkvz/q2+hSCczwS+55HJSq5kVSB//Y7FpNmqmVIq0HBl7Kg927VBHHgH6ea8fhM0drDr9n+487d0aZqqSutFcKurWkhrxhA/WGORGtkDIPZ502SSHY51HDZ5ziH3V0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JprYiCnh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 699B2C4CEF1;
-	Mon, 27 Oct 2025 19:26:32 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Tc64nQObKobX9XkfM7778jegdTVXK8cL2auP9F08zbEX7Hav/fjkmHsHsh0Fot3/6v9KafiEHyG0hyPnX1efybL8x8nfOetknswl3vTwWNKaFVb4Ai3/eojhIgaUdbb6m5YMjpmEKJ77EFMGTGqLB2rbCZzD9uMfcQUaMBmiSJY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N3GBTU2S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B61A6C4CEF1;
+	Mon, 27 Oct 2025 19:06:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761593192;
-	bh=OKlPKqp1BIEa+XjInYQjJpoUxifXIOS9UESkayeucug=;
+	s=korg; t=1761591974;
+	bh=vs8PLaRPkjh9ZYRSNzHULwc5Fcsza8Q38/ScxXokgic=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JprYiCnhPOgJP371M/AQ8EKjaJo9LemvKTAm4tYv3T7ke56TdZ85n0pYVptMWKGUr
-	 elE+GxZqv2McUdW9YHC3g5q+QD21ic6zZK5AuzobQaYJOGEqsZpp/3WfSg8xvl9ahO
-	 siEDULA/+3l37XrlhIpLW2MzDEuMtyVrRogal/e0=
+	b=N3GBTU2SrJf2CqnDbZpXQpS1SnN2fGSAD2pGGY4AOhnmJNKeizOFIkg+MIcnOsVDt
+	 5sFnmn4bfq+jREZijrxZeliob8IUYsxCUtuVu8k8ffqRvScDelwiEUYZVjLXFOEzIx
+	 d5zyP4iwmcshv4aKoOIstGnKLOeJ9gU8v3KWgrE8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <smfrench@gmail.com>,
-	Tom Talpey <tom@talpey.com>,
-	linux-cifs@vger.kernel.org,
-	samba-technical@lists.samba.org,
-	Stefan Metzmacher <metze@samba.org>,
-	Steve French <stfrench@microsoft.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 031/184] smb: server: let smb_direct_flush_send_list() invalidate a remote key first
+Subject: [PATCH 5.15 033/123] drm/amd/powerplay: Fix CIK shutdown temperature
 Date: Mon, 27 Oct 2025 19:35:13 +0100
-Message-ID: <20251027183515.761319761@linuxfoundation.org>
+Message-ID: <20251027183447.284901370@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
-References: <20251027183514.934710872@linuxfoundation.org>
+In-Reply-To: <20251027183446.381986645@linuxfoundation.org>
+References: <20251027183446.381986645@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,55 +60,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Metzmacher <metze@samba.org>
+From: Timur Kristóf <timur.kristof@gmail.com>
 
-[ Upstream commit 1b53426334c3c942db47e0959a2527a4f815af50 ]
+[ Upstream commit 6917112af2ba36c5f19075eb9f2933ffd07e55bf ]
 
-If we want to invalidate a remote key we should do that as soon as
-possible, so do it in the first send work request.
+Remove extra multiplication.
 
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Cc: Steve French <smfrench@gmail.com>
-Cc: Tom Talpey <tom@talpey.com>
-Cc: linux-cifs@vger.kernel.org
-Cc: samba-technical@lists.samba.org
-Signed-off-by: Stefan Metzmacher <metze@samba.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+CIK GPUs such as Hawaii appear to use PP_TABLE_V0 in which case
+the shutdown temperature is hardcoded in smu7_init_dpm_defaults
+and is already multiplied by 1000. The value was mistakenly
+multiplied another time by smu7_get_thermal_temperature_range.
+
+Fixes: 4ba082572a42 ("drm/amd/powerplay: export the thermal ranges of VI asics (V2)")
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/1676
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/transport_rdma.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/fs/smb/server/transport_rdma.c b/fs/smb/server/transport_rdma.c
-index e1f659d3b4cf5..2363244ff5f75 100644
---- a/fs/smb/server/transport_rdma.c
-+++ b/fs/smb/server/transport_rdma.c
-@@ -939,12 +939,15 @@ static int smb_direct_flush_send_list(struct smb_direct_transport *t,
- 			       struct smb_direct_sendmsg,
- 			       list);
+diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
+index 2d1f37aefdbd1..e25032ad16be7 100644
+--- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
+@@ -5387,8 +5387,7 @@ static int smu7_get_thermal_temperature_range(struct pp_hwmgr *hwmgr,
+ 		thermal_data->max = table_info->cac_dtp_table->usSoftwareShutdownTemp *
+ 			PP_TEMPERATURE_UNITS_PER_CENTIGRADES;
+ 	else if (hwmgr->pp_table_version == PP_TABLE_V0)
+-		thermal_data->max = data->thermal_temp_setting.temperature_shutdown *
+-			PP_TEMPERATURE_UNITS_PER_CENTIGRADES;
++		thermal_data->max = data->thermal_temp_setting.temperature_shutdown;
  
-+	if (send_ctx->need_invalidate_rkey) {
-+		first->wr.opcode = IB_WR_SEND_WITH_INV;
-+		first->wr.ex.invalidate_rkey = send_ctx->remote_key;
-+		send_ctx->need_invalidate_rkey = false;
-+		send_ctx->remote_key = 0;
-+	}
-+
- 	last->wr.send_flags = IB_SEND_SIGNALED;
- 	last->wr.wr_cqe = &last->cqe;
--	if (is_last && send_ctx->need_invalidate_rkey) {
--		last->wr.opcode = IB_WR_SEND_WITH_INV;
--		last->wr.ex.invalidate_rkey = send_ctx->remote_key;
--	}
- 
- 	ret = smb_direct_post_send(t, &first->wr);
- 	if (!ret) {
+ 	return 0;
+ }
 -- 
 2.51.0
 
