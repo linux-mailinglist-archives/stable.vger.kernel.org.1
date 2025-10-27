@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-190586-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191014-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BED8DC1093C
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:10:54 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9000FC10EB3
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:25:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7EE44567A0A
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:05:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8C41B1897958
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:21:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08A6933769D;
-	Mon, 27 Oct 2025 19:01:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60ECF2D2398;
+	Mon, 27 Oct 2025 19:19:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a5GzwWb/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XVlKJLpK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B38C1332900;
-	Mon, 27 Oct 2025 19:01:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E57321576E;
+	Mon, 27 Oct 2025 19:19:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591671; cv=none; b=khAA+yKc3LcX1Fzj95bZeM8zfC+MbmTKqdfe+OPTwKVLq1LiLnyRAs2JbY0+WE7jXF16krIzR2MviuNEPEPnQfyocD9ZBWrZEhxXbDQt5oN22sVu/geX5ZyXilU9QfBwOkVy0y2BuRZUC0yJpLv31SgFdiWS5T6m1p8GbABnbtM=
+	t=1761592790; cv=none; b=gjUTn8BKbu6zq2Kw0GGWneSEBnoufeIhSK6bHwei6b0Zl5nD1vrrVGjZVh4xV1CqM6vlahrU6ky8qtirintxBjQB5txWKYwobCavZJv00kBYqXtOQb4+QlxjfbXuuukbnS1lIlAIoYyY5YgjbPoZT65eXF0guYxkuPLk1NRPUoU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591671; c=relaxed/simple;
-	bh=icM7Q1j8GLqLmcpszjolm1Y/md1kJGQpU7Zw15cxzdA=;
+	s=arc-20240116; t=1761592790; c=relaxed/simple;
+	bh=NhiCV4be9oOTw1f02Jnnp0NNng5V6tqdp6dtVp67BPA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NTyNjOirbejE5iR3p11+Viqht/plqMF8aDxAmjUA1gQIgWwdSxe4rC8qXucIx2MyY3sGz/mRNLSPl5BgM40xgkw+WAYoaUVIAw/crzdN/QZKJd3WH4D7ExBfS369sgJ5v2TxsCsIgxQLLeK2psrCUj9fegxyJzKboivaAoKEFiA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a5GzwWb/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44FB5C19422;
-	Mon, 27 Oct 2025 19:01:11 +0000 (UTC)
+	 MIME-Version; b=ZGcPiycKwhKRdbCazOVSDUtqNxPFHj8U+UcJEs5TM3R61iTfBQiV2D+9p/4Z7lvbrpDi+TD/RxiMLPVKXtLDOu1mxo0RrVJm2XrprCPCntekEdMyY961hqk+rbR989MBRS4GRfz7vgyBjfjhgE+E+awH7RyVos3Go4iaAwhPNyY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XVlKJLpK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A68CAC4CEF1;
+	Mon, 27 Oct 2025 19:19:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591671;
-	bh=icM7Q1j8GLqLmcpszjolm1Y/md1kJGQpU7Zw15cxzdA=;
+	s=korg; t=1761592790;
+	bh=NhiCV4be9oOTw1f02Jnnp0NNng5V6tqdp6dtVp67BPA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a5GzwWb/YZxefV4KerrrNK8KPOnz9S2bv8RwDVDc69CT4CyycfclAzUFjZf052keC
-	 2/2x7ygF1BLVMgovjFOUgjSsDe+TcVvQDFR6pDsTCudOupdHX14QZDmLqG034KIkGN
-	 uvT7ATvvhSglnDMEf1biDBlhFcT84DIrOVPCeKQQ=
+	b=XVlKJLpK+QNnYoH7xD2Ly3cQ0I3g2Z50gbZhXwl9MyfwtA11N0CJMcZcfhKG5PdlZ
+	 4soruJADZm33mswO9EQf6OoYtco+RYFZU2Y+VXcsBMbocmdWyCMcKEr/7zrz/z6sZX
+	 wX4venZjr35G7kSRMbufG1SayQvmS/dmf0RL09BQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	linux-riscv@lists.infradead.org,
-	Rob Herring <robh@kernel.org>,
+	Fuad Tabba <tabba@google.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 286/332] riscv: Use of_get_cpu_hwid()
+Subject: [PATCH 6.12 013/117] arm64: sysreg: Correct sign definitions for EIESB and DoubleLock
 Date: Mon, 27 Oct 2025 19:35:39 +0100
-Message-ID: <20251027183532.408988014@linuxfoundation.org>
+Message-ID: <20251027183454.299225872@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
-References: <20251027183524.611456697@linuxfoundation.org>
+In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
+References: <20251027183453.919157109@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,43 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rob Herring <robh@kernel.org>
+From: Fuad Tabba <tabba@google.com>
 
-[ Upstream commit bd2259ee458e299ec14061da7faddcfb0d54d154 ]
+[ Upstream commit f4d4ebc84995178273740f3e601e97fdefc561d2 ]
 
-Replace open coded parsing of CPU nodes' 'reg' property with
-of_get_cpu_hwid().
+The `ID_AA64MMFR4_EL1.EIESB` field, is an unsigned enumeration, but was
+incorrectly defined as a `SignedEnum` when introduced in commit
+cfc680bb04c5 ("arm64: sysreg: Add layout for ID_AA64MMFR4_EL1"). This is
+corrected to `UnsignedEnum`.
 
-Cc: Paul Walmsley <paul.walmsley@sifive.com>
-Cc: Palmer Dabbelt <palmer@dabbelt.com>
-Cc: Albert Ou <aou@eecs.berkeley.edu>
-Cc: linux-riscv@lists.infradead.org
-Signed-off-by: Rob Herring <robh@kernel.org>
-Link: https://lore.kernel.org/r/20211006164332.1981454-9-robh@kernel.org
-Stable-dep-of: d2721bb165b3 ("RISC-V: Don't print details of CPUs disabled in DT")
+Conversely, the `ID_AA64DFR0_EL1.DoubleLock` field, is a signed
+enumeration, but was incorrectly defined as an `UnsignedEnum`. This is
+corrected to `SignedEnum`, which wasn't correctly set when annotated as
+such in commit ad16d4cf0b4f ("arm64/sysreg: Initial unsigned annotations
+for ID registers").
+
+Signed-off-by: Fuad Tabba <tabba@google.com>
+Acked-by: Mark Rutland <mark.rutland@arm.com>
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kernel/cpu.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/arm64/tools/sysreg | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/riscv/kernel/cpu.c b/arch/riscv/kernel/cpu.c
-index 6d59e6906fddf..f13b2c9ea912d 100644
---- a/arch/riscv/kernel/cpu.c
-+++ b/arch/riscv/kernel/cpu.c
-@@ -22,7 +22,8 @@ int riscv_of_processor_hartid(struct device_node *node)
- 		return -ENODEV;
- 	}
- 
--	if (of_property_read_u32(node, "reg", &hart)) {
-+	hart = of_get_cpu_hwid(node, 0);
-+	if (hart == ~0U) {
- 		pr_warn("Found CPU without hart ID\n");
- 		return -ENODEV;
- 	}
+diff --git a/arch/arm64/tools/sysreg b/arch/arm64/tools/sysreg
+index 362bcfa0aed18..5127d3d3b8677 100644
+--- a/arch/arm64/tools/sysreg
++++ b/arch/arm64/tools/sysreg
+@@ -1213,7 +1213,7 @@ UnsignedEnum	43:40	TraceFilt
+ 	0b0000	NI
+ 	0b0001	IMP
+ EndEnum
+-UnsignedEnum	39:36	DoubleLock
++SignedEnum	39:36	DoubleLock
+ 	0b0000	IMP
+ 	0b1111	NI
+ EndEnum
+@@ -1861,7 +1861,7 @@ UnsignedEnum	11:8	ASID2
+ 	0b0000	NI
+ 	0b0001	IMP
+ EndEnum
+-SignedEnum	7:4	EIESB
++UnsignedEnum	7:4	EIESB
+ 	0b0000	NI
+ 	0b0001	ToEL3
+ 	0b0010	ToELx
 -- 
 2.51.0
 
