@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-191096-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191259-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03A68C110A5
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:31:38 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A491AC11225
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:36:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 8EB9A560122
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:25:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 115C11A26BA0
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:33:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEB0C32D0F9;
-	Mon, 27 Oct 2025 19:23:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CDD2329C41;
+	Mon, 27 Oct 2025 19:30:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uEpfrGtS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZEue1QG+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84A6B32D0F2;
-	Mon, 27 Oct 2025 19:23:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 386AD32A3D7;
+	Mon, 27 Oct 2025 19:30:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592996; cv=none; b=N2ayW67GEyLD9IWkY8My/VboNKM2yej0AvT71P2/THiYuiI8hKo4aUjhNqwmxJpDG/nR7FN//IL99hzJfst/HVLF3p8u9i3AOOAeUwUYCXK0aCH1QcYkZu7LsWGARfO4KZsPPmj1i5CY84X+206DbAGCgilrcws7GAx56plPj9I=
+	t=1761593443; cv=none; b=DawCbdzUENFukrzcxM6t/nBFJ7Vb1xjoTftks0S43uPqJ0RFCfkfnyufYIrbEFP08jnaeM1IRiz/oJjzk3cc35yXfWT1sxuV4yD55tTpxwWx+m1LOHBfeG3Cqk923K9jX8hXo0DZoHkItRJMbvgH429Ka1aNqJr62VqJqdMTZog=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592996; c=relaxed/simple;
-	bh=8lW9eiyuHVLLAABraT6ljhcgZSoLOyAKqSMGJee0fQk=;
+	s=arc-20240116; t=1761593443; c=relaxed/simple;
+	bh=QPGFrIvuj+WlZN8A1i0ODoWlczDJ8hBmxowwqPAChL0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dkSyKu/ceDe3ebiYv1nTXmjwdQz2VaLPjp8SmXiDZ4j8NA+V5dHUw+7Spzxc6BjkHbmQTO9vgbOIvD8RTfRjC5LOTRoEwV+SecK1jOiVcU0brFwafzf1+/POmVbq8lHM+E30ozC9WSDr3jfmewJf+7Q6jcm7pp3LAoTw0nokm5w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uEpfrGtS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15A7EC116B1;
-	Mon, 27 Oct 2025 19:23:15 +0000 (UTC)
+	 MIME-Version; b=lsVEoD4EHZswxWmR42cJJK34cCjT6Xrpwrikml+WBl8P0IDQ7jHnYPpLmF9AdTxIVTJyIND29zF51OcuPMJRS7s7p03OcuijDwmqzZziOOBoinb7AeqwOtlIiSa/lpqRaBqrYD3bOL3uUj1o1wXWs3oyrleqo6QuAv1S6Ji2lNs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZEue1QG+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABC3CC113D0;
+	Mon, 27 Oct 2025 19:30:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592996;
-	bh=8lW9eiyuHVLLAABraT6ljhcgZSoLOyAKqSMGJee0fQk=;
+	s=korg; t=1761593443;
+	bh=QPGFrIvuj+WlZN8A1i0ODoWlczDJ8hBmxowwqPAChL0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uEpfrGtSmq9RizMYE6WTlvhItKmR+NMzweiasPim9uTPoM894+zpzhYpWs90vmMxJ
-	 Z28JB+MKbxGbALREXBcQF6rFXuQh06caXjXpX0GaBxA/zr5mrDB4/T89KBhusdFQOw
-	 ARou3+8F2FarxdsV55odIy4z60zAJBGh2oVwAKws=
+	b=ZEue1QG+OAe5RUOY2ojfJ5FiiATy566bRe0yO+rNOKV4OGrWLMMtrZaJ7iYpix6SH
+	 dGSj/7DTdUJ+C/FLQZDNZl42nko1mVGCU5JLQm1nkIKQzdrrn0vyapihaH8mHIM/o/
+	 0ND1UU1nquWlQaA+GaWaoFl5y1xQwAmTv22jyDSM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fengnan Chang <changfengnan@bytedance.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.12 091/117] io_uring/sqpoll: be smarter on when to update the stime usage
+	Erick Karanja <karanja99erick@gmail.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.17 135/184] hwmon: (pmbus/isl68137) Fix child node reference leak on early return
 Date: Mon, 27 Oct 2025 19:36:57 +0100
-Message-ID: <20251027183456.483325312@linuxfoundation.org>
+Message-ID: <20251027183518.581183953@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
-References: <20251027183453.919157109@linuxfoundation.org>
+In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
+References: <20251027183514.934710872@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,155 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Erick Karanja <karanja99erick@gmail.com>
 
-Commit a94e0657269c5b8e1a90b17aa2c048b3d276e16d upstream.
+[ Upstream commit 57f6f47920ef2f598c46d0a04bd9c8984c98e6df ]
 
-The current approach is a bit naive, and hence calls the time querying
-way too often. Only start the "doing work" timer when there's actual
-work to do, and then use that information to terminate (and account) the
-work time once done. This greatly reduces the frequency of these calls,
-when they cannot have changed anyway.
+In the case of an early return, the reference to the child node needs
+to be released.
 
-Running a basic random reader that is setup to use SQPOLL, a profile
-before this change shows these as the top cycle consumers:
+Use for_each_child_of_node_scoped to fix the issue.
 
-+   32.60%  iou-sqp-1074  [kernel.kallsyms]  [k] thread_group_cputime_adjusted
-+   19.97%  iou-sqp-1074  [kernel.kallsyms]  [k] thread_group_cputime
-+   12.20%  io_uring      io_uring           [.] submitter_uring_fn
-+    4.13%  iou-sqp-1074  [kernel.kallsyms]  [k] getrusage
-+    2.45%  iou-sqp-1074  [kernel.kallsyms]  [k] io_submit_sqes
-+    2.18%  iou-sqp-1074  [kernel.kallsyms]  [k] __pi_memset_generic
-+    2.09%  iou-sqp-1074  [kernel.kallsyms]  [k] cputime_adjust
-
-and after this change, top of profile looks as follows:
-
-+   36.23%  io_uring     io_uring           [.] submitter_uring_fn
-+   23.26%  iou-sqp-819  [kernel.kallsyms]  [k] io_sq_thread
-+   10.14%  iou-sqp-819  [kernel.kallsyms]  [k] io_sq_tw
-+    6.52%  iou-sqp-819  [kernel.kallsyms]  [k] tctx_task_work_run
-+    4.82%  iou-sqp-819  [kernel.kallsyms]  [k] nvme_submit_cmds.part.0
-+    2.91%  iou-sqp-819  [kernel.kallsyms]  [k] io_submit_sqes
-[...]
-     0.02%  iou-sqp-819  [kernel.kallsyms]  [k] cputime_adjust
-
-where it's spending the cycles on things that actually matter.
-
-Reported-by: Fengnan Chang <changfengnan@bytedance.com>
-Cc: stable@vger.kernel.org
-Fixes: 3fcb9d17206e ("io_uring/sqpoll: statistics of the true utilization of sq threads")
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 3996187f80a0e ("hwmon: (pmbus/isl68137) add support for voltage divider on Vout")
+Signed-off-by: Erick Karanja <karanja99erick@gmail.com>
+Link: https://lore.kernel.org/r/20251012181249.359401-1-karanja99erick@gmail.com
+[groeck: Updated subject/description]
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/sqpoll.c |   43 ++++++++++++++++++++++++++++++++-----------
- 1 file changed, 32 insertions(+), 11 deletions(-)
+ drivers/hwmon/pmbus/isl68137.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/io_uring/sqpoll.c
-+++ b/io_uring/sqpoll.c
-@@ -176,6 +176,11 @@ static inline bool io_sqd_events_pending
- 	return READ_ONCE(sqd->state);
- }
- 
-+struct io_sq_time {
-+	bool started;
-+	u64 usec;
-+};
-+
- u64 io_sq_cpu_usec(struct task_struct *tsk)
+diff --git a/drivers/hwmon/pmbus/isl68137.c b/drivers/hwmon/pmbus/isl68137.c
+index c52c55d2e7f48..0c6b31ee755b9 100644
+--- a/drivers/hwmon/pmbus/isl68137.c
++++ b/drivers/hwmon/pmbus/isl68137.c
+@@ -334,10 +334,9 @@ static int isl68137_probe_from_dt(struct device *dev,
+ 				  struct isl68137_data *data)
  {
- 	u64 utime, stime;
-@@ -185,12 +190,24 @@ u64 io_sq_cpu_usec(struct task_struct *t
- 	return stime;
- }
+ 	const struct device_node *np = dev->of_node;
+-	struct device_node *child;
+ 	int err;
  
--static void io_sq_update_worktime(struct io_sq_data *sqd, u64 usec)
-+static void io_sq_update_worktime(struct io_sq_data *sqd, struct io_sq_time *ist)
- {
--	sqd->work_time += io_sq_cpu_usec(current) - usec;
-+	if (!ist->started)
-+		return;
-+	ist->started = false;
-+	sqd->work_time += io_sq_cpu_usec(current) - ist->usec;
- }
+-	for_each_child_of_node(np, child) {
++	for_each_child_of_node_scoped(np, child) {
+ 		if (strcmp(child->name, "channel"))
+ 			continue;
  
--static int __io_sq_thread(struct io_ring_ctx *ctx, bool cap_entries)
-+static void io_sq_start_worktime(struct io_sq_time *ist)
-+{
-+	if (ist->started)
-+		return;
-+	ist->started = true;
-+	ist->usec = io_sq_cpu_usec(current);
-+}
-+
-+static int __io_sq_thread(struct io_ring_ctx *ctx, struct io_sq_data *sqd,
-+			  bool cap_entries, struct io_sq_time *ist)
- {
- 	unsigned int to_submit;
- 	int ret = 0;
-@@ -203,6 +220,8 @@ static int __io_sq_thread(struct io_ring
- 	if (to_submit || !wq_list_empty(&ctx->iopoll_list)) {
- 		const struct cred *creds = NULL;
- 
-+		io_sq_start_worktime(ist);
-+
- 		if (ctx->sq_creds != current_cred())
- 			creds = override_creds(ctx->sq_creds);
- 
-@@ -284,7 +303,6 @@ static int io_sq_thread(void *data)
- 	unsigned long timeout = 0;
- 	char buf[TASK_COMM_LEN];
- 	DEFINE_WAIT(wait);
--	u64 start;
- 
- 	/* offload context creation failed, just exit */
- 	if (!current->io_uring) {
-@@ -319,6 +337,7 @@ static int io_sq_thread(void *data)
- 	mutex_lock(&sqd->lock);
- 	while (1) {
- 		bool cap_entries, sqt_spin = false;
-+		struct io_sq_time ist = { };
- 
- 		if (io_sqd_events_pending(sqd) || signal_pending(current)) {
- 			if (io_sqd_handle_event(sqd))
-@@ -327,9 +346,8 @@ static int io_sq_thread(void *data)
- 		}
- 
- 		cap_entries = !list_is_singular(&sqd->ctx_list);
--		start = io_sq_cpu_usec(current);
- 		list_for_each_entry(ctx, &sqd->ctx_list, sqd_list) {
--			int ret = __io_sq_thread(ctx, cap_entries);
-+			int ret = __io_sq_thread(ctx, sqd, cap_entries, &ist);
- 
- 			if (!sqt_spin && (ret > 0 || !wq_list_empty(&ctx->iopoll_list)))
- 				sqt_spin = true;
-@@ -337,15 +355,18 @@ static int io_sq_thread(void *data)
- 		if (io_sq_tw(&retry_list, IORING_TW_CAP_ENTRIES_VALUE))
- 			sqt_spin = true;
- 
--		list_for_each_entry(ctx, &sqd->ctx_list, sqd_list)
--			if (io_napi(ctx))
-+		list_for_each_entry(ctx, &sqd->ctx_list, sqd_list) {
-+			if (io_napi(ctx)) {
-+				io_sq_start_worktime(&ist);
- 				io_napi_sqpoll_busy_poll(ctx);
-+			}
-+		}
-+
-+		io_sq_update_worktime(sqd, &ist);
- 
- 		if (sqt_spin || !time_after(jiffies, timeout)) {
--			if (sqt_spin) {
--				io_sq_update_worktime(sqd, start);
-+			if (sqt_spin)
- 				timeout = jiffies + sqd->sq_thread_idle;
--			}
- 			if (unlikely(need_resched())) {
- 				mutex_unlock(&sqd->lock);
- 				cond_resched();
+-- 
+2.51.0
+
 
 
 
