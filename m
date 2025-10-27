@@ -1,99 +1,53 @@
-Return-Path: <stable+bounces-189955-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-189956-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC948C0D2BA
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 12:38:32 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED88BC0D356
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 12:43:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 2F8F7344605
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 11:38:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2DD473BDA1D
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 11:40:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8F972FB965;
-	Mon, 27 Oct 2025 11:38:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAF1D2F99A6;
+	Mon, 27 Oct 2025 11:40:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="YcZbm7D/";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="imeA4lqN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YBF+E92U"
 X-Original-To: stable@vger.kernel.org
-Received: from fout-b5-smtp.messagingengine.com (fout-b5-smtp.messagingengine.com [202.12.124.148])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0F3B4438B
-	for <stable@vger.kernel.org>; Mon, 27 Oct 2025 11:38:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.148
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 695111C861D
+	for <stable@vger.kernel.org>; Mon, 27 Oct 2025 11:40:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761565106; cv=none; b=Dk2SiP1IIZ7kk8HuSe35g8ghdnKF9lJWCfNJ6wJjMclWTLDiZh0FkC8N30CkyQ63fytjjKT4XMpSKsyZzue8NbI8fm26ekO7t6DXSGjNnRKU2KV/9TtlOAVPYrku4TT7UgwNf+OiDpIHj9jkJmCU5kOiS0hvZipKyVq2+l90Oj0=
+	t=1761565249; cv=none; b=jKkVAlBVitO5IM9SXhQU2XynYnk2PaZyrpmEx3MWNkQSD1sllWMQrwefL4O6ycjqGLWNfAsdr3RbuewXEWyrOoizairf33DXyd33BlZoNZa9CSsI/1aUJXZ5hrYm3yHRIWjbRFZlEglLRIKxCLWKyRhk3yRndLSB199onMof7jg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761565106; c=relaxed/simple;
-	bh=6aCF8x16CSrId6Qfu0HaAtB80U8c4JwXDaArSP4tfIk=;
+	s=arc-20240116; t=1761565249; c=relaxed/simple;
+	bh=p199MZUK74DuV9R8BVwcbNSGCptTnBkNE16l/LPPMTY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tD7toZvMppKxWnld9LV5O2YVQ9f+oXm4AejRauPGSJLGlSxr/RYbfb5SBkYVpF1+jnl/3+toQVSosV0V5R1dJbTCqpRzZcJfojtHJSKsbOCZrtxQ2Q6lZzcm4A4bn28aHFE0pz48EgjrINGcPhCodfeDiZiApRislBMdSKzs5QU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=YcZbm7D/; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=imeA4lqN; arc=none smtp.client-ip=202.12.124.148
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfout.stl.internal (Postfix) with ESMTP id E6C461D00173;
-	Mon, 27 Oct 2025 07:38:23 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-01.internal (MEProxy); Mon, 27 Oct 2025 07:38:24 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm3; t=1761565103; x=1761651503; bh=39d0JVXLMC
-	IFe2t3ZktH8KWGrHD8yw3zS0Nsc1cBSLU=; b=YcZbm7D/bNtfs0twYy0XZohelO
-	Yn7qixfCp6SmU4mqgE5DlWULguMx2rVhOPhBSq8FV/Lm8DqN5N5IHrgxcYibNIN5
-	x0iBZV/HxdIxZ1BN+Cp/pjevQn5auuqBncNJPU6pYytdai798biedF2Ivnem7XUL
-	IQD0/vr5dIpXLkzaf1omj+x0t8paoqeWjzHVNgKQiJVnTWmWf3rxC2ymuerWH3nu
-	xBUpNF1yIJIgFDgqELi9TFHDomTp/y3eYoLPmICnLf2TUT6eOkHk90CkeBcs6EU1
-	SHWaFQrDZhk63DnKPlLVSh+2qab5X3NvEeQ60JarEh93WokFW4v31lcMZqkQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1761565103; x=1761651503; bh=39d0JVXLMCIFe2t3ZktH8KWGrHD8yw3zS0N
-	sc1cBSLU=; b=imeA4lqNPH7+gOw84gXexj80uiXbpLfukADCQQM7l0Il7YBLmBh
-	hYEZFzgrjGRU2wTMzz6pHrF4fJld1ul0wMnyuJwN6CE+47k2ytfJlzzP9zOg56im
-	HiH4/2dBhmZGuNRTTQbQna7qXED+u4fwXolCIpfS/jFpn0g1O3PuyvXZRMV9lBWM
-	J4ywnPK5+LIRso+Tn0nL/qwKOndhdzuO/8yQMx4kOJbwQcxTN21Vw0bgbM3k7ctm
-	AgQMjwA8khHM7yfzXZUAPhPd8arZ7Z3GZ1NDeqmuGvUmbIY/st2AVaTDz71C7e0d
-	jUvfM31WWMGrXQ7sh9gzOSXmIejdqPj14Kw==
-X-ME-Sender: <xms:r1n_aK7Mcf05dJJCsytGdGzqVqhVYFpTqEjjH1elGxUKAJqZ46JUBA>
-    <xme:r1n_aG97NexT_8jx5p8WIouw0Q5iu3oBCeM8AE-llSz_UE8HtlzV9yDrVr5JKlyQC
-    3zSTv_MbPSVu9h3UwMqFiOt8D6UbUk3wxVWy3aQl8E4WomdGg>
-X-ME-Received: <xmr:r1n_aEEgHQhOehAnRumklEwUp93hKCLlCXSXEVpObDA_7BSGgaDq1aqzVomL9eLXyMVuensyoyEDze9mTxaSD_dgPeKinNs0PedhXw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdduheejkeejucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepifhrvghgucfm
-    jfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrfgrthhtvghrnhepkedvudelhe
-    ekfeffgfduhfdvjeegtedvfedtgffhffetteeiudelhfetvdehgffhnecuffhomhgrihhn
-    pehgihhthhhusgdrtghomhdpmhhsghhiugdrlhhinhhknecuvehluhhsthgvrhfuihiivg
-    eptdenucfrrghrrghmpehmrghilhhfrhhomhepghhrvghgsehkrhhorghhrdgtohhmpdhn
-    sggprhgtphhtthhopedutddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepuhifuh
-    estghovghlrggtrghnthhhuhhsrdhnrghmvgdprhgtphhtthhopehsthgrsghlvgesvhhg
-    vghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehruhhntghhvghnghdrlhhusehhph
-    hmihgtrhhordgtohhmpdhrtghpthhtohepmhgrihhlhhholheskhgvrhhnvghlrdhorhhg
-    pdhrtghpthhtohepmhhklhesphgvnhhguhhtrhhonhhigidruggv
-X-ME-Proxy: <xmx:r1n_aDWZT5KOJwWuw1EJzbxPWF8ojrbuBa1mWN8wvCSvccWoNZnA9g>
-    <xmx:r1n_aI9CJpZtS_0AfXBvF4SeuVzkGxrB8HJ2a6gicmduTUc1xLm7tg>
-    <xmx:r1n_aI7hXG460j1F5xAgOqB7myvQkx3RaQM8wdBwNvOpCPX4_yeH7w>
-    <xmx:r1n_aJlflAxlDejBU92N5fUks2PuPIrlgWyAKGbD50zYAs_IMTfb-w>
-    <xmx:r1n_aH2_x3Zp26mIEOgepB5xS5JIam5ZMYvpcLDzIJ3IJRuhjgbu-0fR>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 27 Oct 2025 07:38:22 -0400 (EDT)
-Date: Mon, 27 Oct 2025 12:37:37 +0100
-From: Greg KH <greg@kroah.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=jKAVhDpulJVm39j3KkWFpRiiN3S1cC4HqxEQC+NZb2J8hxhmKWG7JCpUP6XlMh1UmrZ/ZvW5Ks5W62cvUXfGY+kUfUeJejq+rGerN4EmZJD7YW9HRhD+k0oqhigLb5PSJGa5AmRMNiwNjsXEzJB9hpf5Cq6WiGOgeoRUZ+2uGiQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YBF+E92U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5B1EC4CEF1;
+	Mon, 27 Oct 2025 11:40:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1761565249;
+	bh=p199MZUK74DuV9R8BVwcbNSGCptTnBkNE16l/LPPMTY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=YBF+E92UXpseYMXJWLVcssFOyRzYJqGEOUNFFDQTCj8+u+GQm3wO8HjYJqGz8xHuK
+	 LkLHvdcTDUzrGYC7MIotnW8wg7EXYKMlw1nHLK14j/rwCWr28Ks7lrfauccWq9tCLb
+	 z2Lax98t58Ea4M8/t/Bt4DdZYBusXTH4Rg/3x89o=
+Date: Mon, 27 Oct 2025 12:40:46 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
 To: Celeste Liu <uwu@coelacanthus.name>
 Cc: stable@vger.kernel.org, Runcheng Lu <runcheng.lu@hpmicro.com>,
 	Vincent Mailhol <mailhol@kernel.org>,
 	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: Re: [PATCH 5.10.y] can: gs_usb: increase max interface to U8_MAX
-Message-ID: <2025102730-overcoat-carol-dbf9@gregkh>
-References: <2025102040-unusual-concur-90e9@gregkh>
- <20251020122342.1517889-2-uwu@coelacanthus.name>
+Subject: Re: [PATCH 5.4.y] can: gs_usb: increase max interface to U8_MAX
+Message-ID: <2025102739-gout-copilot-7469@gregkh>
+References: <2025102041-mounting-pursuit-e9d3@gregkh>
+ <20251020122237.1517578-2-uwu@coelacanthus.name>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -102,9 +56,9 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251020122342.1517889-2-uwu@coelacanthus.name>
+In-Reply-To: <20251020122237.1517578-2-uwu@coelacanthus.name>
 
-On Mon, Oct 20, 2025 at 08:23:43PM +0800, Celeste Liu wrote:
+On Mon, Oct 20, 2025 at 08:22:38PM +0800, Celeste Liu wrote:
 > commit 2a27f6a8fb5722223d526843040f747e9b0e8060 upstream
 > 
 > This issue was found by Runcheng Lu when develop HSCanT USB to CAN FD
@@ -132,7 +86,7 @@ On Mon, Oct 20, 2025 at 08:23:43PM +0800, Celeste Liu wrote:
 >  1 file changed, 11 insertions(+), 12 deletions(-)
 > 
 > diff --git a/drivers/net/can/usb/gs_usb.c b/drivers/net/can/usb/gs_usb.c
-> index 864db200f45e..f39bd429f77d 100644
+> index 1a24c1d9dd8f..509b0c83ebb8 100644
 > --- a/drivers/net/can/usb/gs_usb.c
 > +++ b/drivers/net/can/usb/gs_usb.c
 > @@ -156,10 +156,6 @@ struct gs_host_frame {
@@ -218,5 +172,5 @@ On Mon, Oct 20, 2025 at 08:23:43PM +0800, Celeste Liu wrote:
 > 
 > 
 
-I'm not even going to try to build this one :)
+Again, not going to try :)
 
