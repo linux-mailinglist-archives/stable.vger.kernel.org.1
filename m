@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-190441-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190451-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB1C4C10645
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:01:41 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90E3EC106E4
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:04:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 817D9188B9F7
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:58:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 878A31A2790C
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:01:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE9CA330B26;
-	Mon, 27 Oct 2025 18:54:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 695A73346BB;
+	Mon, 27 Oct 2025 18:55:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ic+Ml6YY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FMqvnvED"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A7F4330B18;
-	Mon, 27 Oct 2025 18:54:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23FC9329C73;
+	Mon, 27 Oct 2025 18:55:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591299; cv=none; b=ZNygTcZsSul9ABGV5SUlqwjsx0wFh8XddejYcgxY2/tnp+XiTzcZpnA1L3tw8RDG+ICPmO5FMQkRQFH/4N2xGwU3aKjRp+9CC6flQ8E6ULsR3F5gFNdKzmkIRLTzxLp52j4wy4WPv/ltEnK3ByqA7UN9kSB5zTPY+TcLkVBHJ0o=
+	t=1761591325; cv=none; b=git6YOd9KCwEcsgbru5OAboiLZGGEFBlPrcQx2O3r10chckK/l5BdHHFl1Mw9fOP131Kx0cY2K1e6rmLxWoL7nYPe7s1HumHdgOW82gkTih7R0ugprjoma325DSMMz1s+5IV2wIwPqopaEHHEy4YvXtrBErjws9LhNrg1BcaeLg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591299; c=relaxed/simple;
-	bh=pWgBKTFk11Sd39JeTLbf+P7mUWlu1Nlx++QR/v7PAEU=;
+	s=arc-20240116; t=1761591325; c=relaxed/simple;
+	bh=G4HG2SCMgr6tcWa5fHtGJK+nB6qdaH10lJUk4xwtjKk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N6GhC0U24+C1vNvU/0xOjGkysVHJfZZre8xE9aS/FdrlxWooc2OXZtxl6Xq2bfVSHthfqReIrU7fSUiXdyN1CHsEKLscW1F4o8aMah1MMZDXoFGx9WISbWt7EWWWE1Olb7Y0n8IddWsaqpxWEpLMxh52o1QqLFp4L2vKQfI9MbE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ic+Ml6YY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1488C116C6;
-	Mon, 27 Oct 2025 18:54:58 +0000 (UTC)
+	 MIME-Version; b=oqAOguO++BE3U2jV2irujHCty3LD/WoVjpsv8URdNgsLhEXy1FliLfL6Bv3GsYrX0TJFNl6ox+5PQV9mOncIvUTVYtmBtFNAlm+ge8BGAftqkSb5XV4djz8Nfh5BXqJHXb8lWOvb5D1kqyKjE2GvVJhRll5T9kmX3QAB4JYl51I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FMqvnvED; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA684C116B1;
+	Mon, 27 Oct 2025 18:55:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591299;
-	bh=pWgBKTFk11Sd39JeTLbf+P7mUWlu1Nlx++QR/v7PAEU=;
+	s=korg; t=1761591325;
+	bh=G4HG2SCMgr6tcWa5fHtGJK+nB6qdaH10lJUk4xwtjKk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ic+Ml6YYace9em6jqXXSCcVLE3Zj2vPr1dSrz96MuNJeSu8vKSWPDTR+D2PbghoFJ
-	 EwQcf5has9jl9g4LuJ0dp1FPP9He3Nmu3JESgWShlvI89QRKtjUF+YLSlAFsQVqgWq
-	 AndX+mKXM9pmVYYmK5PxMDos7lhET7CPG9jblB6Y=
+	b=FMqvnvEDlTq8+nodgqfN3dw6/1QdLaFcFnrvDvpWWJwWZxr32VPhUINyp/U0tGgha
+	 LUJVo79UTNmgZMe/RhLUUgC2fo6h0kKAOcME6QRgIFvL+InHmEnTikVITIwJVu21qr
+	 AWcrB21snbuB1P4dbR6iYzLAxwUbZyOo817ZFNlk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,9 +46,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Peng Fan <peng.fan@nxp.com>,
 	Jassi Brar <jassisinghbrar@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 116/332] mailbox: zynqmp-ipi: Remove redundant mbox_controller_unregister() call
-Date: Mon, 27 Oct 2025 19:32:49 +0100
-Message-ID: <20251027183527.679240027@linuxfoundation.org>
+Subject: [PATCH 5.10 117/332] mailbox: zynqmp-ipi: Remove dev.parent check in zynqmp_ipi_free_mboxes
+Date: Mon, 27 Oct 2025 19:32:50 +0100
+Message-ID: <20251027183527.704410930@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
 References: <20251027183524.611456697@linuxfoundation.org>
@@ -69,16 +69,16 @@ Content-Transfer-Encoding: 8bit
 
 From: Harini T <harini.t@amd.com>
 
-[ Upstream commit 341867f730d3d3bb54491ee64e8b1a0c446656e7 ]
+[ Upstream commit 019e3f4550fc7d319a7fd03eff487255f8e8aecd ]
 
-The controller is registered using the device-managed function
-'devm_mbox_controller_register()'. As documented in mailbox.c, this
-ensures the devres framework automatically calls
-mbox_controller_unregister() when device_unregister() is invoked, making
-the explicit call unnecessary.
+The ipi_mbox->dev.parent check is unreliable proxy for registration
+status as it fails to protect against probe failures that occur after
+the parent is assigned but before device_register() completes.
 
-Remove redundant mbox_controller_unregister() call as
-device_unregister() handles controller cleanup.
+device_is_registered() is the canonical and robust method to verify the
+registration status.
+
+Remove ipi_mbox->dev.parent check in zynqmp_ipi_free_mboxes().
 
 Fixes: 4981b82ba2ff ("mailbox: ZynqMP IPI mailbox controller")
 Signed-off-by: Harini T <harini.t@amd.com>
@@ -86,21 +86,26 @@ Reviewed-by: Peng Fan <peng.fan@nxp.com>
 Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mailbox/zynqmp-ipi-mailbox.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/mailbox/zynqmp-ipi-mailbox.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/mailbox/zynqmp-ipi-mailbox.c b/drivers/mailbox/zynqmp-ipi-mailbox.c
-index be06de791c544..136c1f67dd223 100644
+index 136c1f67dd223..e64f7157f065f 100644
 --- a/drivers/mailbox/zynqmp-ipi-mailbox.c
 +++ b/drivers/mailbox/zynqmp-ipi-mailbox.c
-@@ -619,7 +619,6 @@ static void zynqmp_ipi_free_mboxes(struct zynqmp_ipi_pdata *pdata)
+@@ -618,10 +618,8 @@ static void zynqmp_ipi_free_mboxes(struct zynqmp_ipi_pdata *pdata)
+ 	i = pdata->num_mboxes;
  	for (; i >= 0; i--) {
  		ipi_mbox = &pdata->ipi_mboxes[i];
- 		if (ipi_mbox->dev.parent) {
--			mbox_controller_unregister(&ipi_mbox->mbox);
- 			if (device_is_registered(&ipi_mbox->dev))
- 				device_unregister(&ipi_mbox->dev);
- 		}
+-		if (ipi_mbox->dev.parent) {
+-			if (device_is_registered(&ipi_mbox->dev))
+-				device_unregister(&ipi_mbox->dev);
+-		}
++		if (device_is_registered(&ipi_mbox->dev))
++			device_unregister(&ipi_mbox->dev);
+ 	}
+ }
+ 
 -- 
 2.51.0
 
