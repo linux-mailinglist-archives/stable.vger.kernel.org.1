@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-190285-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190287-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 761C0C103DA
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:53:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D4E2C103E1
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:53:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id DDA9D4FD3C3
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:52:51 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 116264F284A
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:52:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6904C32C940;
-	Mon, 27 Oct 2025 18:48:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88B0432C33F;
+	Mon, 27 Oct 2025 18:48:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r6rGYH6z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pQvclW7w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CABCD1DED64;
-	Mon, 27 Oct 2025 18:48:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28BE732C93C;
+	Mon, 27 Oct 2025 18:48:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761590901; cv=none; b=a2v5F7djBisWsQsC4ma50pk0KKyYEAmP25RILRELnwpUfdbG6TnikCGpwoDSRKtMI5IdV/oCzcIwB97yDaZ8cYZzCf/5Ax3RbsWlehHPHja21JM66LljzS+q8ML59cNpW2sdnl1eSR1KW3XVVuQz4wsRGSlqTZfLHYrn8+6FBrU=
+	t=1761590907; cv=none; b=sDDuYKYDdxBV6qd09P1c/sd1FxkNSxjHLQn6fz9xcLVsIzDFguST0Jv5u0tTLBM97QTFN/KJHMF30ek9QNbYFYoJdDnnSwmYxKn1A/wKRKqxevHPpKWsZwYKIIqqvSRUrZKmzZde7ZPNBOpZ8UX861MNKqgOybtRUE2dlh9kiFs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761590901; c=relaxed/simple;
-	bh=Ox8spd41NVnTtJM1zs+gfaFvsz344OPL+YMkBzaNdL0=;
+	s=arc-20240116; t=1761590907; c=relaxed/simple;
+	bh=J6CiqI8lPGbVdiwLaaiWO6eMJVelpXl6d2pA10EILWE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZQiUicPkbWMYjVuxMaqKr7uNbfT6/oUF0D/c3iXSF/74tXSxNagADlFjg+9SnlmN2CTARU0Dnm/u7DV7jscVnXvQ3H1hrygRzJDf3CUtrTM4p/BSPHGIgUeytzyNwr0fRVecYODL6wTIk76wNOWj6i4iCjFca/v5OwpwLLfoplw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r6rGYH6z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6E26C4CEF1;
-	Mon, 27 Oct 2025 18:48:20 +0000 (UTC)
+	 MIME-Version; b=GBgLLcy7Pia3fdPZzEEoOutcmo1uZ/bPzLeMTDT5YUfZqL8/bOnn45pXSok9TMJIrhXxIo58o/T67vHit77IOvmclW2M8pMQ+lK0NZOg4LkLZYJ6SjNx2qwh8s6xlgQqvdu4BRbZSKqXx6NvWMd+hvNG0CVz1629ApoO3d7wlMo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pQvclW7w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA729C4CEF1;
+	Mon, 27 Oct 2025 18:48:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761590901;
-	bh=Ox8spd41NVnTtJM1zs+gfaFvsz344OPL+YMkBzaNdL0=;
+	s=korg; t=1761590906;
+	bh=J6CiqI8lPGbVdiwLaaiWO6eMJVelpXl6d2pA10EILWE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r6rGYH6z+4/PiZVk2eyB1BuiYt35Vt5ohbWSzaaR2R2Ew8H0JqcxmymtNBoYM2qLx
-	 Lv5j9We3YkMNRXxx4BKI2tNCCGxFlfLouVED1kF+N4ZgiZUtTWdZF5Z9B4TRsyvjlf
-	 J1h9HFJSJ4deGwszHYo1sOId7ZKkOLLjvTTu2WNo=
+	b=pQvclW7wcNkqXUNlq9onFEuMhcBVNSL9NddnecZG54pPoDDHNLg0bHTGlxSigUMb4
+	 tX1zLnqkUZYV/VnsQZd4EbODLeyYzQWEMN0z4pO4PPUW+4pgWuobo6lUMc8DrO+heI
+	 iZ9vl27trMY1JQUz+IYji7baj5F4dcYDLztMDJIg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+1d79ebe5383fc016cf07@syzkaller.appspotmail.com,
-	Jan Kara <jack@suse.cz>,
-	Christian Brauner <brauner@kernel.org>,
+	Robert Morris <rtm@csail.mit.edu>,
+	Thomas Haynes <loghyr@hammerspace.com>,
+	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 217/224] vfs: Dont leak disconnected dentries on umount
-Date: Mon, 27 Oct 2025 19:36:03 +0100
-Message-ID: <20251027183514.549092640@linuxfoundation.org>
+Subject: [PATCH 5.4 218/224] NFSD: Define a proc_layoutcommit for the FlexFiles layout type
+Date: Mon, 27 Oct 2025 19:36:04 +0100
+Message-ID: <20251027183514.572550259@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251027183508.963233542@linuxfoundation.org>
 References: <20251027183508.963233542@linuxfoundation.org>
@@ -67,56 +67,48 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit 56094ad3eaa21e6621396cc33811d8f72847a834 ]
+[ Upstream commit 4b47a8601b71ad98833b447d465592d847b4dc77 ]
 
-When user calls open_by_handle_at() on some inode that is not cached, we
-will create disconnected dentry for it. If such dentry is a directory,
-exportfs_decode_fh_raw() will then try to connect this dentry to the
-dentry tree through reconnect_path(). It may happen for various reasons
-(such as corrupted fs or race with rename) that the call to
-lookup_one_unlocked() in reconnect_one() will fail to find the dentry we
-are trying to reconnect and instead create a new dentry under the
-parent. Now this dentry will not be marked as disconnected although the
-parent still may well be disconnected (at least in case this
-inconsistency happened because the fs is corrupted and .. doesn't point
-to the real parent directory). This creates inconsistency in
-disconnected flags but AFAICS it was mostly harmless. At least until
-commit f1ee616214cb ("VFS: don't keep disconnected dentries on d_anon")
-which removed adding of most disconnected dentries to sb->s_anon list.
-Thus after this commit cleanup of disconnected dentries implicitely
-relies on the fact that dput() will immediately reclaim such dentries.
-However when some leaf dentry isn't marked as disconnected, as in the
-scenario described above, the reclaim doesn't happen and the dentries
-are "leaked". Memory reclaim can eventually reclaim them but otherwise
-they stay in memory and if umount comes first, we hit infamous "Busy
-inodes after unmount" bug. Make sure all dentries created under a
-disconnected parent are marked as disconnected as well.
+Avoid a crash if a pNFS client should happen to send a LAYOUTCOMMIT
+operation on a FlexFiles layout.
 
-Reported-by: syzbot+1d79ebe5383fc016cf07@syzkaller.appspotmail.com
-Fixes: f1ee616214cb ("VFS: don't keep disconnected dentries on d_anon")
-CC: stable@vger.kernel.org
-Signed-off-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-[ relocated DCACHE_DISCONNECTED propagation from d_alloc_parallel() to d_alloc() ]
+Reported-by: Robert Morris <rtm@csail.mit.edu>
+Closes: https://lore.kernel.org/linux-nfs/152f99b2-ba35-4dec-93a9-4690e625dccd@oracle.com/T/#t
+Cc: Thomas Haynes <loghyr@hammerspace.com>
+Cc: stable@vger.kernel.org
+Fixes: 9b9960a0ca47 ("nfsd: Add a super simple flex file server")
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+[ removed struct svc_rqst parameter from nfsd4_ff_proc_layoutcommit ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/dcache.c |    2 ++
- 1 file changed, 2 insertions(+)
+ fs/nfsd/flexfilelayout.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/fs/dcache.c
-+++ b/fs/dcache.c
-@@ -1782,6 +1782,8 @@ struct dentry *d_alloc(struct dentry * p
- 	__dget_dlock(parent);
- 	dentry->d_parent = parent;
- 	list_add(&dentry->d_child, &parent->d_subdirs);
-+	if (parent->d_flags & DCACHE_DISCONNECTED)
-+		dentry->d_flags |= DCACHE_DISCONNECTED;
- 	spin_unlock(&parent->d_lock);
+--- a/fs/nfsd/flexfilelayout.c
++++ b/fs/nfsd/flexfilelayout.c
+@@ -124,6 +124,13 @@ nfsd4_ff_proc_getdeviceinfo(struct super
+ 	return 0;
+ }
  
- 	return dentry;
++static __be32
++nfsd4_ff_proc_layoutcommit(struct inode *inode,
++		struct nfsd4_layoutcommit *lcp)
++{
++	return nfs_ok;
++}
++
+ const struct nfsd4_layout_ops ff_layout_ops = {
+ 	.notify_types		=
+ 			NOTIFY_DEVICEID4_DELETE | NOTIFY_DEVICEID4_CHANGE,
+@@ -132,4 +139,5 @@ const struct nfsd4_layout_ops ff_layout_
+ 	.encode_getdeviceinfo	= nfsd4_ff_encode_getdeviceinfo,
+ 	.proc_layoutget		= nfsd4_ff_proc_layoutget,
+ 	.encode_layoutget	= nfsd4_ff_encode_layoutget,
++	.proc_layoutcommit	= nfsd4_ff_proc_layoutcommit,
+ };
 
 
 
