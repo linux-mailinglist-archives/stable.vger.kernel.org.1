@@ -1,60 +1,55 @@
-Return-Path: <stable+bounces-191120-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191315-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3423AC11045
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:30:20 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD8D9C111AD
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:34:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1682B1A6247C
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:26:25 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 7A7B335361F
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:34:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B9BD326D6D;
-	Mon, 27 Oct 2025 19:24:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8009337160;
+	Mon, 27 Oct 2025 19:33:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sbwzi788"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aA9YUtVP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F9A63254AC;
-	Mon, 27 Oct 2025 19:24:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C707309EF7;
+	Mon, 27 Oct 2025 19:33:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761593062; cv=none; b=BJNiemGQJ6PF0aIec1bHOKNqw+a6TNn09zY1k9cyc6qhqMFTldhMkt+H7eEU9Ci96HPbbiTBbsRMH1+i+47jlk/EuqLIfIeYJlrjyQtX6JG7T26jrK90kihUSdBigNFdujCo77dYuvLjKiPyGSK2p0/9EP3X4Bu/FpLOGy4oAPU=
+	t=1761593618; cv=none; b=rx4ADepmJa9ErVVOTPcWpxQ1ApAlS+FIAPz5zBSwfAq2z0gSEwFKsvmo4JfRsGyWIvriwO/SVcEmnNUow33rrabL4ewXsO3+wSG50U+AP/j9pTjX8mqrWHJHpvFtVJZaR1IXKzIMv0RhrnThYuq4vvt/Slgdcv3JoGJBhJ7J13U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761593062; c=relaxed/simple;
-	bh=nq3NIesUxwtP9CON9n+aPatGkYNqXUKOzSr2Z+HcXfw=;
+	s=arc-20240116; t=1761593618; c=relaxed/simple;
+	bh=rhhiffPSlTmNRmgU3AZif/pttDNJl1vQ3HZ7REPMp4g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rnZbHfu3OfI9IMnLzU2vuKYQwqXWN9Pm+Yqp0Slk4wl8EjcbHEmjLoM5orMkAB0OiY6O/HdgyswVoRLUp6syXwoZP9vRcIxIL1gl1UpM324y+INTJPKuxzEH0o71c/HE8rZsTm6vl1vb8+qdOe9wrdR9hWg26/sgHli0/23kPfE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sbwzi788; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87BB8C4CEF1;
-	Mon, 27 Oct 2025 19:24:21 +0000 (UTC)
+	 MIME-Version; b=TqDj5STpmNeylvBFv2Fzz+fVq49HMxoqfjHZj693WQrKvpX2aQaHMQ2j4Sl15Ab0UmImS055eLfzj2/1jRSVyEaGuWr8QdlOcCiqF8PDOa/aQQFaz10hTu4iEwdFrcvzeIXZKRCZ3MLjgVVTx6AFRLiGVk6lnRWPvZqS0bqY6U8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aA9YUtVP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B4D2C4CEF1;
+	Mon, 27 Oct 2025 19:33:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761593061;
-	bh=nq3NIesUxwtP9CON9n+aPatGkYNqXUKOzSr2Z+HcXfw=;
+	s=korg; t=1761593618;
+	bh=rhhiffPSlTmNRmgU3AZif/pttDNJl1vQ3HZ7REPMp4g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Sbwzi788mq71xf9BVUOOp8OXBJLIZlwIMogo9CEfaChCwmy5VClZId5gGa9mIb8x9
-	 73mHEkzYtvHlLGH7Ony+txL295fdNyjgxKORpxoVlEaNAZcybnHA+yQUzbfbuQMjQJ
-	 USmGw0Tg+pGI5LeLhWydc46RexRM5MeGsiSi3oas=
+	b=aA9YUtVP+5b2QXmrsnK4L683nwdVGgPYuAA0LxOiPoE79bhQSAmvCLs4fv01bjW6z
+	 fmQIYjmxmcSE7CGf80bS4ZiwV9kpWf1QfUIdyKToKSPjGMZouisOw2PXH3IYCi5fJg
+	 cnjhLdn/xzTZf6ohKUqN+j8lf11e2eDyvKg/u+90=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+d1974fc28545a3e6218b@syzkaller.appspotmail.com,
-	David Hildenbrand <david@redhat.com>,
-	Will Deacon <will@kernel.org>,
-	Kefeng Wang <wangkefeng.wang@huawei.com>,
-	Yang Shi <yang@os.amperecomputing.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 116/117] arm64: mte: Do not warn if the page is already tagged in copy_highpage()
-Date: Mon, 27 Oct 2025 19:37:22 +0100
-Message-ID: <20251027183457.167468082@linuxfoundation.org>
+	Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>
+Subject: [PATCH 6.17 161/184] nvmem: rcar-efuse: add missing MODULE_DEVICE_TABLE
+Date: Mon, 27 Oct 2025 19:37:23 +0100
+Message-ID: <20251027183519.260184493@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
-References: <20251027183453.919157109@linuxfoundation.org>
+In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
+References: <20251027183514.934710872@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,59 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Catalin Marinas <catalin.marinas@arm.com>
+From: Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>
 
-[ Upstream commit b98c94eed4a975e0c80b7e90a649a46967376f58 ]
+commit 7959ffbec062c35bda02aa635d21ac45dbfacd80 upstream.
 
-The arm64 copy_highpage() assumes that the destination page is newly
-allocated and not MTE-tagged (PG_mte_tagged unset) and warns
-accordingly. However, following commit 060913999d7a ("mm: migrate:
-support poisoned recover from migrate folio"), folio_mc_copy() is called
-before __folio_migrate_mapping(). If the latter fails (-EAGAIN), the
-copy will be done again to the same destination page. Since
-copy_highpage() already set the PG_mte_tagged flag, this second copy
-will warn.
+The nvmem-rcar-efuse driver can be compiled as a module. Add missing
+MODULE_DEVICE_TABLE so it can be matched by modalias and automatically
+loaded by udev.
 
-Replace the WARN_ON_ONCE(page already tagged) in the arm64
-copy_highpage() with a comment.
-
-Reported-by: syzbot+d1974fc28545a3e6218b@syzkaller.appspotmail.com
-Link: https://lore.kernel.org/r/68dda1ae.a00a0220.102ee.0065.GAE@google.com
-Reviewed-by: David Hildenbrand <david@redhat.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: stable@vger.kernel.org # 6.12.x
-Reviewed-by: Yang Shi <yang@os.amperecomputing.com>
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-[ omitted hugetlb MTE changes ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 1530b923a514 ("nvmem: Add R-Car E-FUSE driver")
+Signed-off-by: Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://patch.msgid.link/20250919142856.2313927-1-cosmin-gabriel.tanislav.xa@renesas.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/mm/copypage.c |    9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/nvmem/rcar-efuse.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/arm64/mm/copypage.c
-+++ b/arch/arm64/mm/copypage.c
-@@ -25,8 +25,13 @@ void copy_highpage(struct page *to, stru
- 		page_kasan_tag_reset(to);
+--- a/drivers/nvmem/rcar-efuse.c
++++ b/drivers/nvmem/rcar-efuse.c
+@@ -127,6 +127,7 @@ static const struct of_device_id rcar_fu
+ 	{ .compatible = "renesas,r8a779h0-otp", .data = &rcar_fuse_v4m },
+ 	{ /* sentinel */ }
+ };
++MODULE_DEVICE_TABLE(of, rcar_fuse_match);
  
- 	if (system_supports_mte() && page_mte_tagged(from)) {
--		/* It's a new page, shouldn't have been tagged yet */
--		WARN_ON_ONCE(!try_page_mte_tagging(to));
-+		/*
-+		 * Most of the time it's a new page that shouldn't have been
-+		 * tagged yet. However, folio migration can end up reusing the
-+		 * same page without untagging it. Ignore the warning if the
-+		 * page is already tagged.
-+		 */
-+		try_page_mte_tagging(to);
- 		mte_copy_page_tags(kto, kfrom);
- 		set_page_mte_tagged(to);
- 	}
+ static struct platform_driver rcar_fuse_driver = {
+ 	.probe = rcar_fuse_probe,
 
 
 
