@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-190616-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191045-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8AFFC108E5
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:10:00 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF618C10DE2
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:23:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8401E1A27A75
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:06:41 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 7C098346DC7
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:23:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93B1D31CA42;
-	Mon, 27 Oct 2025 19:02:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB34F21576E;
+	Mon, 27 Oct 2025 19:21:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s2TK/uqd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ea0gW6JP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F2DA246BB7;
-	Mon, 27 Oct 2025 19:02:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 776622D8377;
+	Mon, 27 Oct 2025 19:21:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591751; cv=none; b=M5eauCOoWNPeASRpGQP9n/V8YysMKOKdYcm4Opx6pPpAtPCcw9623c0do6r+fYViH5vVLI3irVgxTK5mHxnjmjcrvXpf09u9ZjPZnznD3BYtYV6+99MJc9382NSc/w9cPZpMs7854zbOHgt2f2NRWrZ/S5Lji+A9xeIQS2oVJv8=
+	t=1761592870; cv=none; b=P0Ks3LL2mkeaE7kiraB4t7aFat2Zd0kvoRvRA6ILlAsTZf/iuNImbQQmrPV/8sg299uQsNGNPG5mhDvL7uX/GUulvlJFPSiuUipTp/a6xFP8+a0Hhzrp5/G4euX5MfM597drkYsIkkaG1dGc4brO7jb5Rzt31p1LVajamSwCCus=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591751; c=relaxed/simple;
-	bh=mbYhDXATO/dbSohOAOQNwAFoGdRFNsaEsbvQX+D7FFY=;
+	s=arc-20240116; t=1761592870; c=relaxed/simple;
+	bh=xeMObYoLgmoFSY4R0nHyIOsoq7aiRB2pRxIiALWll34=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AmtU83CLXSu/YSclS8yNgk+fCcKhri/abL2SbSBDkpKq49lYNIc9WgbUGDRucBCyhyaN2km8Mtk/dMjVjbBWc8aUzDyGApYkmN4Qsf4Po5w/asFhgENsMIxOegS61m4d2/75gBW6nYviZcTWaQD0Q3r5L5JCal2ZtEpZiIb95Y4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s2TK/uqd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C0C6C4CEF1;
-	Mon, 27 Oct 2025 19:02:30 +0000 (UTC)
+	 MIME-Version; b=NmGuklKPVvEXl/9FixYfJrvHwe8d6cKPAo+2NuQygbqgLgZ5Q17Kq7uaWqOzXTMbwTL2xb4xinJAhBryByBMoqVdrLiIbyF7vzDMYzHZYQDv9Al58qL8brvFZJZYjVkuqad8M1iGeEWYoX+E+GdYzXnzD8+ZcfofSEQXDWd+miQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ea0gW6JP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE2B4C4CEFD;
+	Mon, 27 Oct 2025 19:21:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591750;
-	bh=mbYhDXATO/dbSohOAOQNwAFoGdRFNsaEsbvQX+D7FFY=;
+	s=korg; t=1761592870;
+	bh=xeMObYoLgmoFSY4R0nHyIOsoq7aiRB2pRxIiALWll34=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s2TK/uqd160cjrNn7cernOsBoelbSoI5dFFjjL4nB2QX6zMPhtW20L74tOuMlsFPj
-	 Bw0HH5m10lomt3MbhoDnPtrsEt+cJPaD/eGQsqd+XGgdTcNbSXZ2ZRG68FYJbJJdV5
-	 e2ccjT2zn/rwEnvGFYEnEqifgwJqpVAoXTQKv3DA=
+	b=ea0gW6JPy7jsbSnzpWdfB6KmS6xvNGKkkkTxqGxGsWBy9wV/QU5igZev7weMqgawK
+	 sVZoZX8gcifmsIg/LqR0/ya5A5HigD8NF1qmP/DfIZEwAfIhPS8uYg8+Zm9pnVuXaG
+	 LL1dJD0J4A1XNA/JnjxFr9aUySj7S5VzU6DXW88k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vidya Sagar <vidyas@nvidia.com>,
-	Niklas Cassel <cassel@kernel.org>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Jon Hunter <jonathanh@nvidia.com>,
-	Thierry Reding <treding@nvidia.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 317/332] PCI: tegra194: Handle errors in BPMP response
+	Jakub Acs <acsjakub@amazon.de>,
+	Jan Kara <jack@suse.cz>,
+	Amir Goldstein <amir73il@gmail.com>,
+	Miklos Szeredi <miklos@szeredi.hu>,
+	Christian Brauner <brauner@kernel.org>,
+	linux-unionfs@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 6.12 044/117] fs/notify: call exportfs_encode_fid with s_umount
 Date: Mon, 27 Oct 2025 19:36:10 +0100
-Message-ID: <20251027183533.231015083@linuxfoundation.org>
+Message-ID: <20251027183455.182140414@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
-References: <20251027183524.611456697@linuxfoundation.org>
+In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
+References: <20251027183453.919157109@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,110 +67,111 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vidya Sagar <vidyas@nvidia.com>
+From: Jakub Acs <acsjakub@amazon.de>
 
-[ Upstream commit f8c9ad46b00453a8c075453f3745f8d263f44834 ]
+commit a7c4bb43bfdc2b9f06ee9d036028ed13a83df42a upstream.
 
-The return value from tegra_bpmp_transfer() indicates the success or
-failure of the IPC transaction with BPMP. If the transaction succeeded, we
-also need to check the actual command's result code.
+Calling intotify_show_fdinfo() on fd watching an overlayfs inode, while
+the overlayfs is being unmounted, can lead to dereferencing NULL ptr.
 
-If we don't have error handling for tegra_bpmp_transfer(), we will set the
-pcie->ep_state to EP_STATE_ENABLED even when the tegra_bpmp_transfer()
-command fails. Thus, the pcie->ep_state will get out of sync with reality,
-and any further PERST# assert + deassert will be a no-op and will not
-trigger the hardware initialization sequence.
+This issue was found by syzkaller.
 
-This is because pex_ep_event_pex_rst_deassert() checks the current
-pcie->ep_state, and does nothing if the current state is already
-EP_STATE_ENABLED.
+Race Condition Diagram:
 
-Thus, it is important to have error handling for tegra_bpmp_transfer(),
-such that the pcie->ep_state can not get out of sync with reality, so that
-we will try to initialize the hardware not only during the first PERST#
-assert + deassert, but also during any succeeding PERST# assert + deassert.
+Thread 1                           Thread 2
+--------                           --------
 
-One example where this fix is needed is when using a rock5b as host.
-During the initial PERST# assert + deassert (triggered by the bootloader on
-the rock5b) pex_ep_event_pex_rst_deassert() will get called, but for some
-unknown reason, the tegra_bpmp_transfer() call to initialize the PHY fails.
-Once Linux has been loaded on the rock5b, the PCIe driver will once again
-assert + deassert PERST#. However, without tegra_bpmp_transfer() error
-handling, this second PERST# assert + deassert will not trigger the
-hardware initialization sequence.
+generic_shutdown_super()
+ shrink_dcache_for_umount
+  sb->s_root = NULL
 
-With tegra_bpmp_transfer() error handling, the second PERST# assert +
-deassert will once again trigger the hardware to be initialized and this
-time the tegra_bpmp_transfer() succeeds.
+                    |
+                    |             vfs_read()
+                    |              inotify_fdinfo()
+                    |               * inode get from mark *
+                    |               show_mark_fhandle(m, inode)
+                    |                exportfs_encode_fid(inode, ..)
+                    |                 ovl_encode_fh(inode, ..)
+                    |                  ovl_check_encode_origin(inode)
+                    |                   * deref i_sb->s_root *
+                    |
+                    |
+                    v
+ fsnotify_sb_delete(sb)
 
-Fixes: c57247f940e8 ("PCI: tegra: Add support for PCIe endpoint mode in Tegra194")
-Signed-off-by: Vidya Sagar <vidyas@nvidia.com>
-[cassel: improve commit log]
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
-Acked-by: Thierry Reding <treding@nvidia.com>
+Which then leads to:
+
+[   32.133461] Oops: general protection fault, probably for non-canonical address 0xdffffc0000000006: 0000 [#1] SMP DEBUG_PAGEALLOC KASAN NOPTI
+[   32.134438] KASAN: null-ptr-deref in range [0x0000000000000030-0x0000000000000037]
+[   32.135032] CPU: 1 UID: 0 PID: 4468 Comm: systemd-coredum Not tainted 6.17.0-rc6 #22 PREEMPT(none)
+
+<snip registers, unreliable trace>
+
+[   32.143353] Call Trace:
+[   32.143732]  ovl_encode_fh+0xd5/0x170
+[   32.144031]  exportfs_encode_inode_fh+0x12f/0x300
+[   32.144425]  show_mark_fhandle+0xbe/0x1f0
+[   32.145805]  inotify_fdinfo+0x226/0x2d0
+[   32.146442]  inotify_show_fdinfo+0x1c5/0x350
+[   32.147168]  seq_show+0x530/0x6f0
+[   32.147449]  seq_read_iter+0x503/0x12a0
+[   32.148419]  seq_read+0x31f/0x410
+[   32.150714]  vfs_read+0x1f0/0x9e0
+[   32.152297]  ksys_read+0x125/0x240
+
+IOW ovl_check_encode_origin derefs inode->i_sb->s_root, after it was set
+to NULL in the unmount path.
+
+Fix it by protecting calling exportfs_encode_fid() from
+show_mark_fhandle() with s_umount lock.
+
+This form of fix was suggested by Amir in [1].
+
+[1]: https://lore.kernel.org/all/CAOQ4uxhbDwhb+2Brs1UdkoF0a3NSdBAOQPNfEHjahrgoKJpLEw@mail.gmail.com/
+
+Fixes: c45beebfde34 ("ovl: support encoding fid from inode with no alias")
+Signed-off-by: Jakub Acs <acsjakub@amazon.de>
+Cc: Jan Kara <jack@suse.cz>
+Cc: Amir Goldstein <amir73il@gmail.com>
+Cc: Miklos Szeredi <miklos@szeredi.hu>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: linux-unionfs@vger.kernel.org
+Cc: linux-fsdevel@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20250922140822.519796-8-cassel@kernel.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Jan Kara <jack@suse.cz>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/controller/dwc/pcie-tegra194.c |   18 ++++++++++++++++--
- 1 file changed, 16 insertions(+), 2 deletions(-)
+ fs/notify/fdinfo.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/pci/controller/dwc/pcie-tegra194.c
-+++ b/drivers/pci/controller/dwc/pcie-tegra194.c
-@@ -1160,6 +1160,7 @@ static int tegra_pcie_bpmp_set_ctrl_stat
- 	struct mrq_uphy_response resp;
- 	struct tegra_bpmp_message msg;
- 	struct mrq_uphy_request req;
-+	int err;
+--- a/fs/notify/fdinfo.c
++++ b/fs/notify/fdinfo.c
+@@ -17,6 +17,7 @@
+ #include "fanotify/fanotify.h"
+ #include "fdinfo.h"
+ #include "fsnotify.h"
++#include "../internal.h"
  
- 	/* Controller-5 doesn't need to have its state set by BPMP-FW */
- 	if (pcie->cid == 5)
-@@ -1179,7 +1180,13 @@ static int tegra_pcie_bpmp_set_ctrl_stat
- 	msg.rx.data = &resp;
- 	msg.rx.size = sizeof(resp);
+ #if defined(CONFIG_PROC_FS)
  
--	return tegra_bpmp_transfer(pcie->bpmp, &msg);
-+	err = tegra_bpmp_transfer(pcie->bpmp, &msg);
-+	if (err)
-+		return err;
-+	if (msg.rx.ret)
-+		return -EINVAL;
+@@ -46,7 +47,12 @@ static void show_mark_fhandle(struct seq
+ 
+ 	size = f->handle_bytes >> 2;
+ 
++	if (!super_trylock_shared(inode->i_sb))
++		return;
 +
-+	return 0;
- }
- 
- static int tegra_pcie_bpmp_set_pll_state(struct tegra_pcie_dw *pcie,
-@@ -1188,6 +1195,7 @@ static int tegra_pcie_bpmp_set_pll_state
- 	struct mrq_uphy_response resp;
- 	struct tegra_bpmp_message msg;
- 	struct mrq_uphy_request req;
-+	int err;
- 
- 	memset(&req, 0, sizeof(req));
- 	memset(&resp, 0, sizeof(resp));
-@@ -1207,7 +1215,13 @@ static int tegra_pcie_bpmp_set_pll_state
- 	msg.rx.data = &resp;
- 	msg.rx.size = sizeof(resp);
- 
--	return tegra_bpmp_transfer(pcie->bpmp, &msg);
-+	err = tegra_bpmp_transfer(pcie->bpmp, &msg);
-+	if (err)
-+		return err;
-+	if (msg.rx.ret)
-+		return -EINVAL;
+ 	ret = exportfs_encode_fid(inode, (struct fid *)f->f_handle, &size);
++	up_read(&inode->i_sb->s_umount);
 +
-+	return 0;
- }
+ 	if ((ret == FILEID_INVALID) || (ret < 0))
+ 		return;
  
- static void tegra_pcie_downstream_dev_to_D0(struct tegra_pcie_dw *pcie)
 
 
 
