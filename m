@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-191153-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190782-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 556A3C110B9
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:31:56 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36C4AC10BFE
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:18:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4842419A23A1
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:28:00 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 71E9B50240A
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:12:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71E6431D36D;
-	Mon, 27 Oct 2025 19:25:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD04C324B19;
+	Mon, 27 Oct 2025 19:09:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZPel1tEV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AMQlJfZB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DE752C15BB;
-	Mon, 27 Oct 2025 19:25:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7744A31E0E1;
+	Mon, 27 Oct 2025 19:09:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761593146; cv=none; b=mop+jUOOEcYyPJC8/4X16aHp59EBGcq1uIhHx8hNzWS0S+cLaUL/HEZRByPdgx5yUrdxflTUpEekqtms+QSEgC5qDxPuBqL/QJ7ej+g0V+nX3nYt8hZxt6V/S2I/fy8q7+KhAjKt0fFdcaZtDEus6CaFJ42iLRMnXDMpkJlS6uk=
+	t=1761592182; cv=none; b=D1axVtScpuzCl+R4ghhnTvLyV4q91ccf8L/LIeNsdCzcYoA4TLAHZwYD4UHUss0/yeLdY6XOme2DSdX73pkAHeXikE38wTF+7Mi44t8p1k+D0QVzHMxfQVMRvecLvtTh27Ojel9f/ihliEOaPOh4Yx4j6Z0wcfuCNAdoxnEqCYg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761593146; c=relaxed/simple;
-	bh=sxr9ysepk7HQVkTcN0/Y3NPqXEWAf3CrsviekG3SBjk=;
+	s=arc-20240116; t=1761592182; c=relaxed/simple;
+	bh=1Ps5FUYhkvgVkhQbfq7FqSmqifr9o2gd8dgFrUrdI/E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LkmhOl3dvcBVP0N4U4EyilotRDYy5cLiou3MrLsKa+DokIBGOnMF0jvimOHBffdhTu/LpNXXHDBXUptsw2G5L7APcx4ceX4MGkm/J/FRvejVP3ifvOsB2H7yrUj8wMx9yPH+TXl1MTH+k732EMmUqxAWCanTmfDb/vWuqP7u4VE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZPel1tEV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B72E1C4CEF1;
-	Mon, 27 Oct 2025 19:25:45 +0000 (UTC)
+	 MIME-Version; b=ohbVTI7vQLJd/fSAN0Zaj3DDIPShsviYw8YEqtYt0+hdHUba3rSqTFG+U1JukfYz7zZv9cMXPByHHkqWn1vYMAjUjxk+Xdnmpkbo5GJ3LqClq9IkNlvr/SI7M/0ZKNNAcuVNa0cI4pqSqTgOc+hxvVqtXjipLRtg7H9npqtC/6I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AMQlJfZB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D77DAC4CEF1;
+	Mon, 27 Oct 2025 19:09:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761593146;
-	bh=sxr9ysepk7HQVkTcN0/Y3NPqXEWAf3CrsviekG3SBjk=;
+	s=korg; t=1761592182;
+	bh=1Ps5FUYhkvgVkhQbfq7FqSmqifr9o2gd8dgFrUrdI/E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZPel1tEVWvf5/oiL/icwquS6cq7XY6l5ufYSzQTGoEYkNx8QAcFlDiTjl1HXHKuDk
-	 rK/m+Osv3mg3rpstAaVI88I2VqqpeTFyL7JW44SHhX3DKTu+NgKhDdbkzLsIM/B0OZ
-	 7ixT5V2kp2oum4546RaauvxYOdv2IJB9H2Z8H/JQ=
+	b=AMQlJfZBfgJUURWLx8hZoI2PeFy8/Dh1SLySwu2ead0afs8oV0qRHICpZl4ICGwGR
+	 ZOd5xmQjUUghaMY+HjK5ybV5ij+XebeJkI5lQCe9J01cSqonagnYdnYi2NDbJ1VO5r
+	 Jynhrr6A2tgTwuKcKAF6JBJUc2XfY/NWs5CJ60MY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Tejun Heo <tj@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 004/184] cgroup/misc: fix misc_res_type kernel-doc warning
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Anna-Maria Behnsen <anna-maria@linutronix.de>,
+	Marc Zyngier <maz@kernel.org>,
+	Jeongjun Park <aha310510@gmail.com>
+Subject: [PATCH 6.1 025/157] clocksource/drivers/arm_arch_timer: Do not use timer namespace for timer_shutdown() function
 Date: Mon, 27 Oct 2025 19:34:46 +0100
-Message-ID: <20251027183515.059965797@linuxfoundation.org>
+Message-ID: <20251027183501.956402162@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
-References: <20251027183514.934710872@linuxfoundation.org>
+In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
+References: <20251027183501.227243846@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +66,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
 
-[ Upstream commit 0fbbcab7f9082cdc233da5e5e353f69830f11956 ]
+[ Upstream commit 73737a5833ace25a8408b0d3b783637cb6bf29d1 ]
 
-Format the kernel-doc for SCALE_HW_CALIB_INVALID correctly to
-avoid a kernel-doc warning:
+A new "shutdown" timer state is being added to the generic timer code. One
+of the functions to change the timer into the state is called
+"timer_shutdown()". This means that there can not be other functions
+called "timer_shutdown()" as the timer code owns the "timer_*" name space.
 
-Warning: include/linux/misc_cgroup.h:26 Enum value
- 'MISC_CG_RES_TDX' not described in enum 'misc_res_type'
+Rename timer_shutdown() to arch_timer_shutdown() to avoid this conflict.
 
-Fixes: 7c035bea9407 ("KVM: TDX: Register TDX host key IDs to cgroup misc controller")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Signed-off-by: Tejun Heo <tj@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Guenter Roeck <linux@roeck-us.net>
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Reviewed-by: Anna-Maria Behnsen <anna-maria@linutronix.de>
+Acked-by: Marc Zyngier <maz@kernel.org>
+Link: https://lkml.kernel.org/r/20221106212702.002251651@goodmis.org
+Link: https://lore.kernel.org/all/20221105060155.409832154@goodmis.org/
+Link: https://lore.kernel.org/r/20221110064146.981725531@goodmis.org
+Link: https://lore.kernel.org/r/20221123201624.574672568@linutronix.de
+Signed-off-by: Jeongjun Park <aha310510@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/misc_cgroup.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clocksource/arm_arch_timer.c |   12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/include/linux/misc_cgroup.h b/include/linux/misc_cgroup.h
-index 71cf5bfc6349d..0cb36a3ffc479 100644
---- a/include/linux/misc_cgroup.h
-+++ b/include/linux/misc_cgroup.h
-@@ -19,7 +19,7 @@ enum misc_res_type {
- 	MISC_CG_RES_SEV_ES,
- #endif
- #ifdef CONFIG_INTEL_TDX_HOST
--	/* Intel TDX HKIDs resource */
-+	/** @MISC_CG_RES_TDX: Intel TDX HKIDs resource */
- 	MISC_CG_RES_TDX,
- #endif
- 	/** @MISC_CG_RES_TYPES: count of enum misc_res_type constants */
--- 
-2.51.0
-
+--- a/drivers/clocksource/arm_arch_timer.c
++++ b/drivers/clocksource/arm_arch_timer.c
+@@ -687,8 +687,8 @@ static irqreturn_t arch_timer_handler_vi
+ 	return timer_handler(ARCH_TIMER_MEM_VIRT_ACCESS, evt);
+ }
+ 
+-static __always_inline int timer_shutdown(const int access,
+-					  struct clock_event_device *clk)
++static __always_inline int arch_timer_shutdown(const int access,
++					       struct clock_event_device *clk)
+ {
+ 	unsigned long ctrl;
+ 
+@@ -701,22 +701,22 @@ static __always_inline int timer_shutdow
+ 
+ static int arch_timer_shutdown_virt(struct clock_event_device *clk)
+ {
+-	return timer_shutdown(ARCH_TIMER_VIRT_ACCESS, clk);
++	return arch_timer_shutdown(ARCH_TIMER_VIRT_ACCESS, clk);
+ }
+ 
+ static int arch_timer_shutdown_phys(struct clock_event_device *clk)
+ {
+-	return timer_shutdown(ARCH_TIMER_PHYS_ACCESS, clk);
++	return arch_timer_shutdown(ARCH_TIMER_PHYS_ACCESS, clk);
+ }
+ 
+ static int arch_timer_shutdown_virt_mem(struct clock_event_device *clk)
+ {
+-	return timer_shutdown(ARCH_TIMER_MEM_VIRT_ACCESS, clk);
++	return arch_timer_shutdown(ARCH_TIMER_MEM_VIRT_ACCESS, clk);
+ }
+ 
+ static int arch_timer_shutdown_phys_mem(struct clock_event_device *clk)
+ {
+-	return timer_shutdown(ARCH_TIMER_MEM_PHYS_ACCESS, clk);
++	return arch_timer_shutdown(ARCH_TIMER_MEM_PHYS_ACCESS, clk);
+ }
+ 
+ static __always_inline void set_next_event(const int access, unsigned long evt,
 
 
 
