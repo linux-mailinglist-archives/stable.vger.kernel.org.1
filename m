@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-190664-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190784-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CDD2C10982
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:11:46 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7A45C10C2B
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:18:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0CA111895BD5
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:08:10 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 3A493502724
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:12:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA29632B988;
-	Mon, 27 Oct 2025 19:04:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBD18329C60;
+	Mon, 27 Oct 2025 19:09:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JJZY2Mw3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sr1SG/sH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7B2D327783;
-	Mon, 27 Oct 2025 19:04:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3087328639;
+	Mon, 27 Oct 2025 19:09:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591873; cv=none; b=sSaM5JyeZgFkSQ6FuN49qs/zKTV1LxoPSr4zlYBB6Zj9Psmtzo8rkt2Tqy+PXWdjQ59UJ5KZNWvdGm2zihXT+M649tae2iHhTxSjxwPUVZfHYJjcTRN9JW3s1O3fEk+JqdoaGtwsqaWssk9EiAmJYixNwoiDWqcWg/krBO4KPHc=
+	t=1761592187; cv=none; b=BKYvhKjSHt9voxitXIPWz+fyf0QbwjqBnsUl3zrlLGSzhbn7sA9AKVlUo74gXtpOPhyEEGyUXxKiubodh4d2ujixMP1T3L32+TsxtxlP7B29YaOaQBWnNu+OMeoWQ86h+Yu6fpA4O0QaUS9u5Q5xPQMnOqGhm7klzjKDLXQ6zR0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591873; c=relaxed/simple;
-	bh=En8yRtAgrJJDhG+lJWpi91gQqwDOtOqyfkQRyiozwGw=;
+	s=arc-20240116; t=1761592187; c=relaxed/simple;
+	bh=Jk3vk0WkVz8Mc5jvmhDayM0C3ycd1mmFjoRFrDlT3uY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CkxY0FCrPD5DuH0MX1ML+btb1kagpQUyagl+IQqYNp9tDfUJWTEmvN68eTbK8LEPELb1/WQD70G1E493v9nj79r9KGyZJrAMH5zfLY3/1jAglQmpXrRRAE3uVkHHt8/CKmjbjyq5kTcTMleq7RL/AES6Y4FFobXpnA0GLHhZya4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JJZY2Mw3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D165DC4CEF1;
-	Mon, 27 Oct 2025 19:04:32 +0000 (UTC)
+	 MIME-Version; b=PV32yjD1KruogGcrgb8NV5eOMna3EmbfCNWy1ijgcfmK9TpyZMngHLdE/tAqk0z8HCO0oVtvbeYJG9Uc3gnnzUzKZI9e5gbaZoqpEk37kzX3NW21SSJUSVKGpJtQDFEXGJiM0rnSh1HYJ5ccGhXccp0tZ6y5Dx2RrC8tM47ZvZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sr1SG/sH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A05FC4CEF1;
+	Mon, 27 Oct 2025 19:09:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591873;
-	bh=En8yRtAgrJJDhG+lJWpi91gQqwDOtOqyfkQRyiozwGw=;
+	s=korg; t=1761592187;
+	bh=Jk3vk0WkVz8Mc5jvmhDayM0C3ycd1mmFjoRFrDlT3uY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JJZY2Mw3DyrR5geenyztVEIu3jUxupxZpdPgELZ5rXiu3t5kdJ2MuDVosM/ZTw1ko
-	 sUlr5ZWf/FXavpqYAUxyWwGK888iopcRRpg6Yfo96W1h6m9vHMe8ukZ8zeOBcQFWqh
-	 0XJlIPZT9Qt2BC/mWkXyo1djnZg+kBeALS5b/NKU=
+	b=sr1SG/sHJchR/DqJ/FUBlMIXRU08PCrFdd6+m3YiV7KyIEXxVcAs8Mz5z8G6uQRkg
+	 5EcAlR8lMZtIgkCYUev67Qt5Erc2Ygmb+RUyKHyr0UDFaCfNqln2ygdZniZwMf1n0X
+	 5iaDvqLzcmniKvyXqXdW1TeJKEcdcuIEjFLwOl2A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu Kuai <yukuai3@huawei.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Jens Axboe <axboe@kernel.dk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 008/123] blk-crypto: fix missing blktrace bio split events
+	Thomas Gleixner <tglx@linutronix.de>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Anna-Maria Behnsen <anna-maria@linutronix.de>,
+	Jeongjun Park <aha310510@gmail.com>
+Subject: [PATCH 6.1 027/157] timers: Replace BUG_ON()s
 Date: Mon, 27 Oct 2025 19:34:48 +0100
-Message-ID: <20251027183446.618591946@linuxfoundation.org>
+Message-ID: <20251027183502.013783510@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183446.381986645@linuxfoundation.org>
-References: <20251027183446.381986645@linuxfoundation.org>
+In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
+References: <20251027183501.227243846@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,50 +64,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu Kuai <yukuai3@huawei.com>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-[ Upstream commit 06d712d297649f48ebf1381d19bd24e942813b37 ]
+[ Upstream commit 82ed6f7ef58f9634fe4462dd721902c580f01569 ]
 
-trace_block_split() is missing, resulting in blktrace inability to catch
-BIO split events and making it harder to analyze the BIO sequence.
+The timer code still has a few BUG_ON()s left which are crashing the kernel
+in situations where it still can recover or simply refuse to take an
+action.
 
-Cc: stable@vger.kernel.org
-Fixes: 488f6682c832 ("block: blk-crypto-fallback for Inline Encryption")
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-[ changed blk_crypto_fallback_split_bio_if_needed() to blk_crypto_split_bio_if_needed() ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Remove the one in the hotplug callback which checks for the CPU being
+offline. If that happens then the whole hotplug machinery will explode in
+colourful ways.
+
+Replace the rest with WARN_ON_ONCE() and conditional returns where
+appropriate.
+
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Guenter Roeck <linux@roeck-us.net>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Reviewed-by: Anna-Maria Behnsen <anna-maria@linutronix.de>
+Link: https://lore.kernel.org/r/20221123201624.769128888@linutronix.de
+Signed-off-by: Jeongjun Park <aha310510@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- block/blk-crypto-fallback.c |    3 +++
- 1 file changed, 3 insertions(+)
+ kernel/time/timer.c |   11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
---- a/block/blk-crypto-fallback.c
-+++ b/block/blk-crypto-fallback.c
-@@ -18,6 +18,7 @@
- #include <linux/mempool.h>
- #include <linux/module.h>
- #include <linux/random.h>
-+#include <trace/events/block.h>
+--- a/kernel/time/timer.c
++++ b/kernel/time/timer.c
+@@ -1208,7 +1208,8 @@ EXPORT_SYMBOL(timer_reduce);
+  */
+ void add_timer(struct timer_list *timer)
+ {
+-	BUG_ON(timer_pending(timer));
++	if (WARN_ON_ONCE(timer_pending(timer)))
++		return;
+ 	__mod_timer(timer, timer->expires, MOD_TIMER_NOTPENDING);
+ }
+ EXPORT_SYMBOL(add_timer);
+@@ -1227,7 +1228,8 @@ void add_timer_on(struct timer_list *tim
+ 	struct timer_base *new_base, *base;
+ 	unsigned long flags;
  
- #include "blk-crypto-internal.h"
+-	BUG_ON(timer_pending(timer) || !timer->function);
++	if (WARN_ON_ONCE(timer_pending(timer) || !timer->function))
++		return;
  
-@@ -231,7 +232,9 @@ static bool blk_crypto_split_bio_if_need
- 			bio->bi_status = BLK_STS_RESOURCE;
- 			return false;
- 		}
-+
- 		bio_chain(split_bio, bio);
-+		trace_block_split(split_bio, bio->bi_iter.bi_sector);
- 		submit_bio_noacct(bio);
- 		*bio_ptr = split_bio;
- 	}
+ 	new_base = get_timer_cpu_base(timer->flags, cpu);
+ 
+@@ -2047,8 +2049,6 @@ int timers_dead_cpu(unsigned int cpu)
+ 	struct timer_base *new_base;
+ 	int b, i;
+ 
+-	BUG_ON(cpu_online(cpu));
+-
+ 	for (b = 0; b < NR_BASES; b++) {
+ 		old_base = per_cpu_ptr(&timer_bases[b], cpu);
+ 		new_base = get_cpu_ptr(&timer_bases[b]);
+@@ -2065,7 +2065,8 @@ int timers_dead_cpu(unsigned int cpu)
+ 		 */
+ 		forward_timer_base(new_base);
+ 
+-		BUG_ON(old_base->running_timer);
++		WARN_ON_ONCE(old_base->running_timer);
++		old_base->running_timer = NULL;
+ 
+ 		for (i = 0; i < WHEEL_SIZE; i++)
+ 			migrate_timer_list(new_base, old_base->vectors + i);
 
 
 
