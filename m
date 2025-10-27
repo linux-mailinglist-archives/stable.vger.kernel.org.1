@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-191008-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191258-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBD98C10FB6
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:28:28 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C228C11222
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:36:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D37D4507321
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:20:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5ADC21A26AAC
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:32:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9360F322539;
-	Mon, 27 Oct 2025 19:19:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A6D7320A32;
+	Mon, 27 Oct 2025 19:30:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Su+U+Ed+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MLT1gdhT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FBA7238145;
-	Mon, 27 Oct 2025 19:19:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25BF7328B5B;
+	Mon, 27 Oct 2025 19:30:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592774; cv=none; b=qysN2+gF4Aw745v0zvzihlgUoOUW9zUaq0xEuvHLhoL8Mqa8h+heGcRF+T2s3ew3vFXXBROYBdBBw0bokhxjkJExxsCtLq3ezj8rqFzYPN6xbabEmS2oaLapr/+RVXUOjkrW2aywZzMnPFi7qGAR7WyVGEHoOTFy4cSTvaIEayM=
+	t=1761593440; cv=none; b=bhvT2gKEGM/OvKi4KR2fa5vLLF7IecqJ4OAZIooH1G5HgN1LmJlAC69DxUITbIVVLEXdiYqiJgO0skckEWJthT2U087y39wZd645Yu+vEAPhQS9pHM7w2JWNco7s4fH4k9MVM4e4tUZhatRDypqeK5fCv9Bm4TIjULLnZJ1a/Ps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592774; c=relaxed/simple;
-	bh=2WQ/eHq0u6Q6/T0OWYzkWfWzA8l07ncEdXhad6S1sjk=;
+	s=arc-20240116; t=1761593440; c=relaxed/simple;
+	bh=F1xB4zLolSJpz0vInRl67igN0TJ18GtUCfVFn4AKdj8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fs9ebQQ72du+0l7+mw1P9ysEqYmOOGd+rNGQS3td74OhMFzjd46W5XB8sXi3NpgeCwA5do5uYGs6sbWkhhZC9GHGOGmJ+n01vw2TiHR0NqBtLF4IkSIGGtmyHJNP2gtLlhnUeP/CIPLidLVxa/CAYlMJtLYHDcTfMLmwO4WTstA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Su+U+Ed+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D658AC4CEF1;
-	Mon, 27 Oct 2025 19:19:33 +0000 (UTC)
+	 MIME-Version; b=h7HtXorhOxBEsULzrVp2RbJL3+8z/qm2DDtnYXoqxd4IeRHtrBCM+PPf719oImdcaSrKb3uFioAftlPSW4Qs/Tg3JYs7/ced59eNi+WJSMFeS9y1Vk2poOHwJRkiT3hjJQ/Go7Eewz0lYTKhYiPUdQwg6gxci0aFGf1YCL1iiQc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MLT1gdhT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97E63C4CEF1;
+	Mon, 27 Oct 2025 19:30:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592774;
-	bh=2WQ/eHq0u6Q6/T0OWYzkWfWzA8l07ncEdXhad6S1sjk=;
+	s=korg; t=1761593440;
+	bh=F1xB4zLolSJpz0vInRl67igN0TJ18GtUCfVFn4AKdj8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Su+U+Ed+te/9b7VJpLHOm1FzN3lGWINmqPbfGvG6WHYz0K9ZVrGK3UdA9THnGUf9Z
-	 a2+o6qq/w/V54p2Zsz1qXD/X79aBlBC90Mxx3gL6pLvMmZzE8ngO3DjkE29IRshli3
-	 sK/9gEfoF7oPyczy71cd0pu+EcgbFPfOdO5cC1Ko=
+	b=MLT1gdhT+E7GuYgn74o/NkWC6xkp++iEQ/CYrnyaAF2/X8jcHH+M96mP19sh0ZMq8
+	 jVklghoWa5rHeITO21flk/WqnBzkhYdovfgAutgRyCvafwxwIOj5EFElckdLWzmnQ5
+	 tRzD48KKsKIWdibMfDOs1dEMhn+2cjfTpGJPDvC4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+f6c3c066162d2c43a66c@syzkaller.appspotmail.com,
-	Deepanshu Kartikey <kartikey406@gmail.com>,
-	Ian Abbott <abbotti@mev.co.uk>
-Subject: [PATCH 6.6 67/84] comedi: fix divide-by-zero in comedi_buf_munge()
+	Evan Green <evan@rivosinc.com>,
+	Paul Walmsley <pjw@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.17 134/184] riscv: hwprobe: avoid uninitialized variable use in hwprobe_arch_id()
 Date: Mon, 27 Oct 2025 19:36:56 +0100
-Message-ID: <20251027183440.599500006@linuxfoundation.org>
+Message-ID: <20251027183518.555230615@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183438.817309828@linuxfoundation.org>
-References: <20251027183438.817309828@linuxfoundation.org>
+In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
+References: <20251027183514.934710872@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Deepanshu Kartikey <kartikey406@gmail.com>
+From: Paul Walmsley <pjw@kernel.org>
 
-commit 87b318ba81dda2ee7b603f4f6c55e78ec3e95974 upstream.
+[ Upstream commit b7776a802f2f80139f96530a489dd00fd7089eda ]
 
-The comedi_buf_munge() function performs a modulo operation
-`async->munge_chan %= async->cmd.chanlist_len` without first
-checking if chanlist_len is zero. If a user program submits a command with
-chanlist_len set to zero, this causes a divide-by-zero error when the device
-processes data in the interrupt handler path.
+Resolve this smatch warning:
 
-Add a check for zero chanlist_len at the beginning of the
-function, similar to the existing checks for !map and
-CMDF_RAWDATA flag. When chanlist_len is zero, update
-munge_count and return early, indicating the data was
-handled without munging.
+  arch/riscv/kernel/sys_hwprobe.c:50 hwprobe_arch_id() error: uninitialized symbol 'cpu_id'.
 
-This prevents potential kernel panics from malformed user commands.
+This could happen if hwprobe_arch_id() was called with a key ID of
+something other than MVENDORID, MIMPID, and MARCHID.  This does not
+happen in the current codebase.  The only caller of hwprobe_arch_id()
+is a function that only passes one of those three key IDs.
 
-Reported-by: syzbot+f6c3c066162d2c43a66c@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=f6c3c066162d2c43a66c
-Cc: stable@vger.kernel.org
-Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
-Reviewed-by: Ian Abbott <abbotti@mev.co.uk>
-Link: https://patch.msgid.link/20250924102639.1256191-1-kartikey406@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+For the sake of reducing static analyzer warning noise, and in the
+unlikely event that hwprobe_arch_id() is someday called with some
+other key ID, validate hwprobe_arch_id()'s input to ensure that
+'cpu_id' is always initialized before use.
+
+Fixes: ea3de9ce8aa280 ("RISC-V: Add a syscall for HW probing")
+Cc: Evan Green <evan@rivosinc.com>
+Signed-off-by: Paul Walmsley <pjw@kernel.org>
+Link: https://lore.kernel.org/r/cf5a13ec-19d0-9862-059b-943f36107bf3@kernel.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/comedi/comedi_buf.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/riscv/kernel/sys_hwprobe.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/comedi/comedi_buf.c
-+++ b/drivers/comedi/comedi_buf.c
-@@ -368,7 +368,7 @@ static unsigned int comedi_buf_munge(str
- 	unsigned int count = 0;
- 	const unsigned int num_sample_bytes = comedi_bytes_per_sample(s);
+--- a/arch/riscv/kernel/sys_hwprobe.c
++++ b/arch/riscv/kernel/sys_hwprobe.c
+@@ -30,6 +30,11 @@ static void hwprobe_arch_id(struct riscv
+ 	bool first = true;
+ 	int cpu;
  
--	if (!s->munge || (async->cmd.flags & CMDF_RAWDATA)) {
-+	if (!s->munge || (async->cmd.flags & CMDF_RAWDATA) || async->cmd.chanlist_len == 0) {
- 		async->munge_count += num_bytes;
- 		return num_bytes;
++	if (pair->key != RISCV_HWPROBE_KEY_MVENDORID &&
++	    pair->key != RISCV_HWPROBE_KEY_MIMPID &&
++	    pair->key != RISCV_HWPROBE_KEY_MARCHID)
++		goto out;
++
+ 	for_each_cpu(cpu, cpus) {
+ 		u64 cpu_id;
+ 
+@@ -60,6 +65,7 @@ static void hwprobe_arch_id(struct riscv
+ 		}
  	}
+ 
++out:
+ 	pair->value = id;
+ }
+ 
 
 
 
