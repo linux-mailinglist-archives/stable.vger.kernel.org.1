@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-190443-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190107-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7D58C10603
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:00:49 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4E11C0FF8A
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:41:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5BD63501307
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:58:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D026519C53B2
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:41:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6BDA3328F4;
-	Mon, 27 Oct 2025 18:55:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A019331B100;
+	Mon, 27 Oct 2025 18:40:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VCL8GQW6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XgZodrev"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 919BF31197B;
-	Mon, 27 Oct 2025 18:55:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C7BF313520;
+	Mon, 27 Oct 2025 18:40:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591304; cv=none; b=dFWO9qdzvDu7Wr8ggFaBIo+KFmYF0XtNqgIyVs7EUx3SDq1dKyaQISh6EkmjLsWgz7x0YCgcfMJLzJihlyjPtsQJ1vxMoVnuWbXu7qMEmQgMGipMxbsKX2ZiHtrlYORI9RBnTHeEUTLrsGmcSOh+TJ1nyeLEq0Iupr3ggS/YhCA=
+	t=1761590455; cv=none; b=htXrk/6fJFpTkD3lyHIXZbBY/rciML+a02ySI5+zOaToZWzrVbpMDWymN5jPZeRs47jQ6Lr+r7K1BXyCz4VRGqiGECEDk8ACO3mAFOrsLLN9F1BbUnhGq+lxFgJnCFdLQN20fAw8Zjc689AfFzEynlY/Et9dMg7X4OsZuLOF4K8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591304; c=relaxed/simple;
-	bh=2q4s/km++UTkV/qTxzoK8Q4AtmS5gWelv47bn9tck2I=;
+	s=arc-20240116; t=1761590455; c=relaxed/simple;
+	bh=QmkPtarn0F+Gih5qvOpNLWnb7emNTLNhT5ra1jAqSxY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E+L1NizZQhcYv/zJmE4sP0ejmPhPnIzT+u3UudtVHfTWhtfR4XDd5gGEu82oAcJd91sydNOeKUYBowsBjd4XlQjcUiK6Dz7U5IECJErJZ4C9ygPqRaYRK3U1J3yODoo3YIMiq5ekynTlqoaJAwGYycQLmGGzFGOH9CdNBE6A4dk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VCL8GQW6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 223E1C116C6;
-	Mon, 27 Oct 2025 18:55:03 +0000 (UTC)
+	 MIME-Version; b=J+l0yjGayAwGP8pbTY+jRKeYG5yn1Q4HaSrJwdnDnwXIkZ1/stxFOd7T2K9j8DBWikGsqbR+gAXCOUwRGPomMx0mYjW1qgADnR6UrbJTaLIOiDGkb+tPIh68bTOSC6fILMYY7m6ZTsEREVt3fC9CsS3WjZxlbAmhFRooMeXjHAY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XgZodrev; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E019C4CEF1;
+	Mon, 27 Oct 2025 18:40:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591304;
-	bh=2q4s/km++UTkV/qTxzoK8Q4AtmS5gWelv47bn9tck2I=;
+	s=korg; t=1761590454;
+	bh=QmkPtarn0F+Gih5qvOpNLWnb7emNTLNhT5ra1jAqSxY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VCL8GQW6NEwt7BqKJQGGAb9Rqnsl3lC4mhjjLYRnC3n5DWSp+eKq5g1PHtPu29GwG
-	 5//rCbCcizwdkBL6MPrxcBXeGYeUTIxPP8HLetJNcJ597DfpuH5i4UFSNgY5rVbb0L
-	 WotMSw9RiMWL9YaFWkiElO0QKvDcXvaE3W7JvsjA=
+	b=XgZodrev7uYC7ZGx3K07vtLn3x6AVdiPouRJncsWdfX54rf5xV5tO9003Fsrl0Udh
+	 /li5KPqlX4QnS81UMu9hSqnabNqQKKGECmqne2lDJYDSiuvAYnjMunCXdxhrRQk/FF
+	 Tmi4yAXWmXwYLnyYwjQmteEqtLipPNuBQBIwdyIU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan@kernel.org>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Vladimir Zapolskiy <vz@mleia.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.10 144/332] lib/genalloc: fix device leak in of_gen_pool_get()
-Date: Mon, 27 Oct 2025 19:33:17 +0100
-Message-ID: <20251027183528.436146884@linuxfoundation.org>
+	Abdun Nihaal <abdun.nihaal@gmail.com>,
+	Jiri Slaby <jirislaby@kernel.org>,
+	Felix Fietkau <nbd@nbd.name>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 052/224] wifi: mt76: fix potential memory leak in mt76_wmac_probe()
+Date: Mon, 27 Oct 2025 19:33:18 +0100
+Message-ID: <20251027183510.392938454@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
-References: <20251027183524.611456697@linuxfoundation.org>
+In-Reply-To: <20251027183508.963233542@linuxfoundation.org>
+References: <20251027183508.963233542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Abdun Nihaal <abdun.nihaal@gmail.com>
 
-commit 1260cbcffa608219fc9188a6cbe9c45a300ef8b5 upstream.
+[ Upstream commit 42754b7de2b1a2cf116c5e3f1e8e78392f4ed700 ]
 
-Make sure to drop the reference taken when looking up the genpool platform
-device in of_gen_pool_get() before returning the pool.
+In mt76_wmac_probe(), when the mt76_alloc_device() call succeeds, memory
+is allocated for both struct ieee80211_hw and a workqueue. However, on
+the error path, the workqueue is not freed. Fix that by calling
+mt76_free_device() on the error path.
 
-Note that holding a reference to a device does typically not prevent its
-devres managed resources from being released so there is no point in
-keeping the reference.
-
-Link: https://lkml.kernel.org/r/20250924080207.18006-1-johan@kernel.org
-Fixes: 9375db07adea ("genalloc: add devres support, allow to find a managed pool by device")
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Cc: Philipp Zabel <p.zabel@pengutronix.de>
-Cc: Vladimir Zapolskiy <vz@mleia.com>
-Cc: <stable@vger.kernel.org>	[3.10+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c8846e101502 ("mt76: add driver for MT7603E and MT7628/7688")
+Signed-off-by: Abdun Nihaal <abdun.nihaal@gmail.com>
+Reviewed-by: Jiri Slaby <jirislaby@kernel.org>
+Link: https://patch.msgid.link/20250709145532.41246-1-abdun.nihaal@gmail.com
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/genalloc.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/net/wireless/mediatek/mt76/mt7603/soc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/lib/genalloc.c
-+++ b/lib/genalloc.c
-@@ -893,8 +893,11 @@ struct gen_pool *of_gen_pool_get(struct
- 		if (!name)
- 			name = np_pool->name;
- 	}
--	if (pdev)
-+	if (pdev) {
- 		pool = gen_pool_get(&pdev->dev, name);
-+		put_device(&pdev->dev);
-+	}
-+
- 	of_node_put(np_pool);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/soc.c b/drivers/net/wireless/mediatek/mt76/mt7603/soc.c
+index 68efb300c0d88..8c3603f113894 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7603/soc.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7603/soc.c
+@@ -48,7 +48,7 @@ mt76_wmac_probe(struct platform_device *pdev)
  
- 	return pool;
+ 	return 0;
+ error:
+-	ieee80211_free_hw(mt76_hw(dev));
++	mt76_free_device(mdev);
+ 	return ret;
+ }
+ 
+-- 
+2.51.0
+
 
 
 
