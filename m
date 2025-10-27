@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-190979-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191058-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 180AEC10F5B
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42700C10F5D
 	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:27:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C30F0564450
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:19:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 344021A60C97
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:24:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECD1A31DD87;
-	Mon, 27 Oct 2025 19:18:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B5FD324B0B;
+	Mon, 27 Oct 2025 19:21:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1aiFd83r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ghvTRt+P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E4D52D6E70;
-	Mon, 27 Oct 2025 19:18:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D223230CD92;
+	Mon, 27 Oct 2025 19:21:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592699; cv=none; b=DomYVK5Ju+mt3WIPmQJpXUtyZfYCmhRDjDMNu5gzgrriVpkn3c6Zfr07OoVZ4H67m9UOA8S8GfwbVcTADdREDyBAzL1Ja6NC+sgO4NjilxH+qBdybIeLQXjLYrmQk0FstN2CWzHWgTMGNjTOwbVqYpALBnANhP4M74AEJsKJP4c=
+	t=1761592903; cv=none; b=kgjkZr7m/tUUKayPU0pXen2eiTQa7cUWeod+A7f7qvNHk0rualuYecOKHX+ZL09onqSKlj1/aTg+tBInbqEr6lKj2koIezEITr5/Ksr1NlvDORdM2TxOXV/VOiXcLsNEnWbnOlqx9eVbBZd+F6FOLhHAsogR69sTYGRugolw6Sw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592699; c=relaxed/simple;
-	bh=j6nL9DxpLauzjuOEY7soJY6U+3khwRTrv6VsYZnMxAo=;
+	s=arc-20240116; t=1761592903; c=relaxed/simple;
+	bh=biPAXZ84wBTXjTSnfw9eIdW9nJHl34Ui5kuFMVUr3yg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gCzvbbJ7O6GR5zB24bR16EQU+4uPeaIymg2oIg2OM5WzxepyQ2DmW/JRWX9Hw0OY+EqdZ8O/tU/vqi1C/KZM4XlEG55d+mMMJCDuJYEwFvQo1UF0LKsQXFhWsH3QU3+TMZu/bJiFuFuS7+BBLhaNlLohBpaF5qW4g8sTCCnk9yE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1aiFd83r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D05EEC4CEF1;
-	Mon, 27 Oct 2025 19:18:18 +0000 (UTC)
+	 MIME-Version; b=RgP2jmEjE/qN8wMsfyB1i1RN4Wzy7sN6LKLj91OZRgdfkKBSEkZaKYl/sGnU51FBs/2oV40m1Qor6IjCUgNym7rC7wXbPsB91WOb3GK38MKaEWwO+GxR32u3X6Y42r5J2NLHmh3ffG3Vqe+nelqUAfES2LtRa2OOZ5KhlDjzYYU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ghvTRt+P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66879C4CEF1;
+	Mon, 27 Oct 2025 19:21:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592699;
-	bh=j6nL9DxpLauzjuOEY7soJY6U+3khwRTrv6VsYZnMxAo=;
+	s=korg; t=1761592903;
+	bh=biPAXZ84wBTXjTSnfw9eIdW9nJHl34Ui5kuFMVUr3yg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1aiFd83rj1++FVBxHws3pcQoVYIusfrSLTlVRYDyvZ7MvTn+np5TvHU+GYWroz+NU
-	 ZcmGNhs0FcnX8oG+D/ZCdz/oBjozqCvZN1A7JVsYa/pFk1mkzjYqQa82JVRnwsC4zl
-	 R2Uj9NcJebC0m8p6MkbZnWqTVKkSB0458s9WJi1E=
+	b=ghvTRt+PfFW6I0s9OoB278+jV9flzYQNXeHhK/irJKI00S8YTAAX1qezyZ25NdOkv
+	 gYYb3ONuKmUQUajZhgFm6kFJw+Zte1QbB/d9Vn9mAO2whoqzCCdjGcRYFGJRcR05nl
+	 9fLLZ7J8cv3YqIp+rdOIVZoNcEiPXspUfpoNPMJs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Kaushlendra Kumar <kaushlendra.kumar@intel.com>,
-	Sudeep Holla <sudeep.holla@arm.com>
-Subject: [PATCH 6.6 33/84] arch_topology: Fix incorrect error check in topology_parse_cpu_capacity()
+	Andrei Lalaev <andrey.lalaev@gmail.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 6.12 056/117] can: netlink: can_changelink(): allow disabling of automatic restart
 Date: Mon, 27 Oct 2025 19:36:22 +0100
-Message-ID: <20251027183439.704393007@linuxfoundation.org>
+Message-ID: <20251027183455.530172078@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183438.817309828@linuxfoundation.org>
-References: <20251027183438.817309828@linuxfoundation.org>
+In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
+References: <20251027183453.919157109@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +61,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
+From: Marc Kleine-Budde <mkl@pengutronix.de>
 
-commit 2eead19334516c8e9927c11b448fbe512b1f18a1 upstream.
+commit 8e93ac51e4c6dc399fad59ec21f55f2cfb46d27c upstream.
 
-Fix incorrect use of PTR_ERR_OR_ZERO() in topology_parse_cpu_capacity()
-which causes the code to proceed with NULL clock pointers. The current
-logic uses !PTR_ERR_OR_ZERO(cpu_clk) which evaluates to true for both
-valid pointers and NULL, leading to potential NULL pointer dereference
-in clk_get_rate().
+Since the commit c1f3f9797c1f ("can: netlink: can_changelink(): fix NULL
+pointer deref of struct can_priv::do_set_mode"), the automatic restart
+delay can only be set for devices that implement the restart handler struct
+can_priv::do_set_mode. As it makes no sense to configure a automatic
+restart for devices that doesn't support it.
 
-Per include/linux/err.h documentation, PTR_ERR_OR_ZERO(ptr) returns:
-"The error code within @ptr if it is an error pointer; 0 otherwise."
+However, since systemd commit 13ce5d4632e3 ("network/can: properly handle
+CAN.RestartSec=0") [1], systemd-networkd correctly handles a restart delay
+of "0" (i.e. the restart is disabled). Which means that a disabled restart
+is always configured in the kernel.
 
-This means PTR_ERR_OR_ZERO() returns 0 for both valid pointers AND NULL
-pointers. Therefore !PTR_ERR_OR_ZERO(cpu_clk) evaluates to true (proceed)
-when cpu_clk is either valid or NULL, causing clk_get_rate(NULL) to be
-called when of_clk_get() returns NULL.
+On systems with both changes active this causes that CAN interfaces that
+don't implement a restart handler cannot be brought up by systemd-networkd.
 
-Replace with !IS_ERR_OR_NULL(cpu_clk) which only proceeds for valid
-pointers, preventing potential NULL pointer dereference in clk_get_rate().
+Solve this problem by allowing a delay of "0" to be configured, even if the
+device does not implement a restart handler.
 
-Cc: stable <stable@kernel.org>
-Signed-off-by: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
-Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
-Fixes: b8fe128dad8f ("arch_topology: Adjust initial CPU capacities with current freq")
-Link: https://patch.msgid.link/20250923174308.1771906-1-kaushlendra.kumar@intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[1] https://github.com/systemd/systemd/commit/13ce5d4632e395521e6205c954493c7fc1c4c6e0
+
+Cc: stable@vger.kernel.org
+Cc: Andrei Lalaev <andrey.lalaev@gmail.com>
+Reported-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Closes: https://lore.kernel.org/all/20251020-certain-arrogant-vole-of-sunshine-141841-mkl@pengutronix.de
+Fixes: c1f3f9797c1f ("can: netlink: can_changelink(): fix NULL pointer deref of struct can_priv::do_set_mode")
+Link: https://patch.msgid.link/20251020-netlink-fix-restart-v1-1-3f53c7f8520b@pengutronix.de
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/base/arch_topology.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/can/dev/netlink.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/base/arch_topology.c
-+++ b/drivers/base/arch_topology.c
-@@ -326,7 +326,7 @@ bool __init topology_parse_cpu_capacity(
- 		 * frequency (by keeping the initial capacity_freq_ref value).
- 		 */
- 		cpu_clk = of_clk_get(cpu_node, 0);
--		if (!PTR_ERR_OR_ZERO(cpu_clk)) {
-+		if (!IS_ERR_OR_NULL(cpu_clk)) {
- 			per_cpu(capacity_freq_ref, cpu) =
- 				clk_get_rate(cpu_clk) / HZ_PER_KHZ;
- 			clk_put(cpu_clk);
+--- a/drivers/net/can/dev/netlink.c
++++ b/drivers/net/can/dev/netlink.c
+@@ -285,7 +285,9 @@ static int can_changelink(struct net_dev
+ 	}
+ 
+ 	if (data[IFLA_CAN_RESTART_MS]) {
+-		if (!priv->do_set_mode) {
++		unsigned int restart_ms = nla_get_u32(data[IFLA_CAN_RESTART_MS]);
++
++		if (restart_ms != 0 && !priv->do_set_mode) {
+ 			NL_SET_ERR_MSG(extack,
+ 				       "Device doesn't support restart from Bus Off");
+ 			return -EOPNOTSUPP;
+@@ -294,7 +296,7 @@ static int can_changelink(struct net_dev
+ 		/* Do not allow changing restart delay while running */
+ 		if (dev->flags & IFF_UP)
+ 			return -EBUSY;
+-		priv->restart_ms = nla_get_u32(data[IFLA_CAN_RESTART_MS]);
++		priv->restart_ms = restart_ms;
+ 	}
+ 
+ 	if (data[IFLA_CAN_RESTART]) {
 
 
 
