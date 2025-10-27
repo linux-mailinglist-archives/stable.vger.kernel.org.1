@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-190208-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190219-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13CA0C102F9
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:50:54 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93F70C10377
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:52:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2CC1B481A6E
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:48:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A3604482CF2
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:49:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE28432D450;
-	Mon, 27 Oct 2025 18:44:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9544E330311;
+	Mon, 27 Oct 2025 18:45:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oFKmH62a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wKRdCCld"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B8C5317709;
-	Mon, 27 Oct 2025 18:44:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E3DF3254AC;
+	Mon, 27 Oct 2025 18:45:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761590690; cv=none; b=tGEQVyeU5Qh7bYp2l0earew4figXYD0MpsJbTTkBZth2fNjQKbBxWIWv7PTLQs/+tm+DRsHBrirCyC+3c2brCL18XsWNY+d9Ezh16MN3zGZRsgTJqZPzP+jHY2IL9+9uTAlSJgIymbJZlqqSryxAghHlnCALeGv96z5oAP01aGI=
+	t=1761590719; cv=none; b=Z6SPIfvN8WUNrdsUQR0buydZzRDwAb8phNS32ZvFqnocRdyzMqVh/Q6d6mVnQFMJgkCcbaAf95y5ZyPeCwHcIlwO1P28LPee0muJHFKJ0SnbYa8djkn8kf85B+EsRwx6Xk0Cqw+MrYW/3zvfrsaQ7Hmi4jrk6wAOiXd9XFcFtSs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761590690; c=relaxed/simple;
-	bh=AE+LSsXEFOi4yoq2ypkpNtuDWsVfWGeeBWRg3aUohQM=;
+	s=arc-20240116; t=1761590719; c=relaxed/simple;
+	bh=gQIDH2SAFVuDJepwppFyLYSy7lTa59JMIXthgZhcZJk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JXZ3VB7GYLIV+LvpH0eu/ilpO7a4JPlspB0ugUnSs5CInOsIGQQ6k6C0JniHF8U2WZL5p74bNShnO9YtFsk3fPH/unnJorm485FggiQ3oyrbRebj+Y9ITaNcRhCwM8NrTQO4YnXWtIqSSL6hZZYj7QU/pwBZuUUy5rTibuxC06U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oFKmH62a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C05ECC4CEFD;
-	Mon, 27 Oct 2025 18:44:49 +0000 (UTC)
+	 MIME-Version; b=muW16HyfNWr0ZgY834WX34OPX05/yg+CQPvlH1WgyW4lK3wVC9ttlvdByUsuSkGRMRY2o8Dvog5/2HPN8MmQdswnQJUpo9PEKs6/vMXTLBvdQ8lNUWyi8P86inbS3bYdC2hgeJKh9EGopHCLOAtZMLC1p7bJ6R6NDUsZjuSmnMU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wKRdCCld; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61F60C4CEFD;
+	Mon, 27 Oct 2025 18:45:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761590690;
-	bh=AE+LSsXEFOi4yoq2ypkpNtuDWsVfWGeeBWRg3aUohQM=;
+	s=korg; t=1761590718;
+	bh=gQIDH2SAFVuDJepwppFyLYSy7lTa59JMIXthgZhcZJk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oFKmH62aKL8ryGDQOCbkdijQ+LXgeFtpRqoOGQuUb54ic5rlFXhE1v6rw72Gs4Nki
-	 PT8Kc050RGbZPC8qb8+MgmECXR8nt+73YEqYD4IhNWVDOZR6tCCJzDivrfBYpRSz3+
-	 eTVbdQrTnF6B7faS4by/mB4r+VpnB/HM3Us3uidc=
+	b=wKRdCCldff7T7s9Ts1tfbewA+aRAihr6kpeyfRouQzuStJk9pyTpxNV4NdN124b/f
+	 x1l0e1QneZJURvd1xMEA7K5FhkMuhJetffTAy/pSL8+BJyCzj1JwqEXDF0sxCalZhh
+	 PtE2U+YBT6eJRfIKoSTaQLtUEENNmH8lU7NO2PLE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+cc2032ba16cc2018ca25@syzkaller.appspotmail.com,
-	Jim Mattson <jmattson@google.com>,
-	Sean Christopherson <seanjc@google.com>,
+	syzbot+8743fca924afed42f93e@syzkaller.appspotmail.com,
+	Larshin Sergey <Sergey.Larshin@kaspersky.com>,
+	Jan Kara <jack@suse.cz>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 133/224] KVM: x86: Dont (re)check L1 intercepts when completing userspace I/O
-Date: Mon, 27 Oct 2025 19:34:39 +0100
-Message-ID: <20251027183512.535689926@linuxfoundation.org>
+Subject: [PATCH 5.4 134/224] fs: udf: fix OOB read in lengthAllocDescs handling
+Date: Mon, 27 Oct 2025 19:34:40 +0100
+Message-ID: <20251027183512.563192700@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251027183508.963233542@linuxfoundation.org>
 References: <20251027183508.963233542@linuxfoundation.org>
@@ -67,142 +67,79 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Larshin Sergey <Sergey.Larshin@kaspersky.com>
 
-[ Upstream commit e750f85391286a4c8100275516973324b621a269 ]
+[ Upstream commit 3bd5e45c2ce30e239d596becd5db720f7eb83c99 ]
 
-When completing emulation of instruction that generated a userspace exit
-for I/O, don't recheck L1 intercepts as KVM has already finished that
-phase of instruction execution, i.e. has already committed to allowing L2
-to perform I/O.  If L1 (or host userspace) modifies the I/O permission
-bitmaps during the exit to userspace,  KVM will treat the access as being
-intercepted despite already having emulated the I/O access.
+When parsing Allocation Extent Descriptor, lengthAllocDescs comes from
+on-disk data and must be validated against the block size. Crafted or
+corrupted images may set lengthAllocDescs so that the total descriptor
+length (sizeof(allocExtDesc) + lengthAllocDescs) exceeds the buffer,
+leading udf_update_tag() to call crc_itu_t() on out-of-bounds memory and
+trigger a KASAN use-after-free read.
 
-Pivot on EMULTYPE_NO_DECODE to detect that KVM is completing emulation.
-Of the three users of EMULTYPE_NO_DECODE, only complete_emulated_io() (the
-intended "recipient") can reach the code in question.  gp_interception()'s
-use is mutually exclusive with is_guest_mode(), and
-complete_emulated_insn_gp() unconditionally pairs EMULTYPE_NO_DECODE with
-EMULTYPE_SKIP.
+BUG: KASAN: use-after-free in crc_itu_t+0x1d5/0x2b0 lib/crc-itu-t.c:60
+Read of size 1 at addr ffff888041e7d000 by task syz-executor317/5309
 
-The bad behavior was detected by a syzkaller program that toggles port I/O
-interception during the userspace I/O exit, ultimately resulting in a WARN
-on vcpu->arch.pio.count being non-zero due to KVM no completing emulation
-of the I/O instruction.
+CPU: 0 UID: 0 PID: 5309 Comm: syz-executor317 Not tainted 6.12.0-rc4-syzkaller-00261-g850925a8133c #0
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x241/0x360 lib/dump_stack.c:120
+ print_address_description mm/kasan/report.c:377 [inline]
+ print_report+0x169/0x550 mm/kasan/report.c:488
+ kasan_report+0x143/0x180 mm/kasan/report.c:601
+ crc_itu_t+0x1d5/0x2b0 lib/crc-itu-t.c:60
+ udf_update_tag+0x70/0x6a0 fs/udf/misc.c:261
+ udf_write_aext+0x4d8/0x7b0 fs/udf/inode.c:2179
+ extent_trunc+0x2f7/0x4a0 fs/udf/truncate.c:46
+ udf_truncate_tail_extent+0x527/0x7e0 fs/udf/truncate.c:106
+ udf_release_file+0xc1/0x120 fs/udf/file.c:185
+ __fput+0x23f/0x880 fs/file_table.c:431
+ task_work_run+0x24f/0x310 kernel/task_work.c:239
+ exit_task_work include/linux/task_work.h:43 [inline]
+ do_exit+0xa2f/0x28e0 kernel/exit.c:939
+ do_group_exit+0x207/0x2c0 kernel/exit.c:1088
+ __do_sys_exit_group kernel/exit.c:1099 [inline]
+ __se_sys_exit_group kernel/exit.c:1097 [inline]
+ __x64_sys_exit_group+0x3f/0x40 kernel/exit.c:1097
+ x64_sys_call+0x2634/0x2640 arch/x86/include/generated/asm/syscalls_64.h:232
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+ </TASK>
 
-  WARNING: CPU: 23 PID: 1083 at arch/x86/kvm/x86.c:8039 emulator_pio_in_out+0x154/0x170 [kvm]
-  Modules linked in: kvm_intel kvm irqbypass
-  CPU: 23 UID: 1000 PID: 1083 Comm: repro Not tainted 6.16.0-rc5-c1610d2d66b1-next-vm #74 NONE
-  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 0.0.0 02/06/2015
-  RIP: 0010:emulator_pio_in_out+0x154/0x170 [kvm]
-  PKRU: 55555554
-  Call Trace:
-   <TASK>
-   kvm_fast_pio+0xd6/0x1d0 [kvm]
-   vmx_handle_exit+0x149/0x610 [kvm_intel]
-   kvm_arch_vcpu_ioctl_run+0xda8/0x1ac0 [kvm]
-   kvm_vcpu_ioctl+0x244/0x8c0 [kvm]
-   __x64_sys_ioctl+0x8a/0xd0
-   do_syscall_64+0x5d/0xc60
-   entry_SYSCALL_64_after_hwframe+0x4b/0x53
-   </TASK>
+Validate the computed total length against epos->bh->b_size.
 
-Reported-by: syzbot+cc2032ba16cc2018ca25@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/68790db4.a00a0220.3af5df.0020.GAE@google.com
-Fixes: 8a76d7f25f8f ("KVM: x86: Add x86 callback for intercept check")
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+
+Reported-by: syzbot+8743fca924afed42f93e@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=8743fca924afed42f93e
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
 Cc: stable@vger.kernel.org
-Cc: Jim Mattson <jmattson@google.com>
-Link: https://lore.kernel.org/r/20250715190638.1899116-1-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-[ is_guest_mode() was open coded ]
+
+Signed-off-by: Larshin Sergey <Sergey.Larshin@kaspersky.com>
+Link: https://patch.msgid.link/20250922131358.745579-1-Sergey.Larshin@kaspersky.com
+Signed-off-by: Jan Kara <jack@suse.cz>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/include/asm/kvm_emulate.h |    2 +-
- arch/x86/kvm/emulate.c             |   10 ++++------
- arch/x86/kvm/x86.c                 |    9 ++++++++-
- 3 files changed, 13 insertions(+), 8 deletions(-)
+ fs/udf/inode.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/arch/x86/include/asm/kvm_emulate.h
-+++ b/arch/x86/include/asm/kvm_emulate.h
-@@ -448,7 +448,7 @@ bool x86_page_table_writing_insn(struct
- #define EMULATION_RESTART 1
- #define EMULATION_INTERCEPTED 2
- void init_decode_cache(struct x86_emulate_ctxt *ctxt);
--int x86_emulate_insn(struct x86_emulate_ctxt *ctxt);
-+int x86_emulate_insn(struct x86_emulate_ctxt *ctxt, bool check_intercepts);
- int emulator_task_switch(struct x86_emulate_ctxt *ctxt,
- 			 u16 tss_selector, int idt_index, int reason,
- 			 bool has_error_code, u32 error_code);
---- a/arch/x86/kvm/emulate.c
-+++ b/arch/x86/kvm/emulate.c
-@@ -5605,12 +5605,11 @@ void init_decode_cache(struct x86_emulat
- 	ctxt->mem_read.end = 0;
- }
- 
--int x86_emulate_insn(struct x86_emulate_ctxt *ctxt)
-+int x86_emulate_insn(struct x86_emulate_ctxt *ctxt, bool check_intercepts)
- {
- 	const struct x86_emulate_ops *ops = ctxt->ops;
- 	int rc = X86EMUL_CONTINUE;
- 	int saved_dst_type = ctxt->dst.type;
--	unsigned emul_flags;
- 
- 	ctxt->mem_read.pos = 0;
- 
-@@ -5625,7 +5624,6 @@ int x86_emulate_insn(struct x86_emulate_
- 		goto done;
+--- a/fs/udf/inode.c
++++ b/fs/udf/inode.c
+@@ -2202,6 +2202,9 @@ int8_t udf_current_aext(struct inode *in
+ 		if (check_add_overflow(sizeof(struct allocExtDesc),
+ 				le32_to_cpu(header->lengthAllocDescs), &alen))
+ 			return -1;
++
++		if (alen > epos->bh->b_size)
++			return -1;
  	}
  
--	emul_flags = ctxt->ops->get_hflags(ctxt);
- 	if (unlikely(ctxt->d &
- 		     (No64|Undefined|Sse|Mmx|Intercept|CheckPerm|Priv|Prot|String))) {
- 		if ((ctxt->mode == X86EMUL_MODE_PROT64 && (ctxt->d & No64)) ||
-@@ -5659,7 +5657,7 @@ int x86_emulate_insn(struct x86_emulate_
- 				fetch_possible_mmx_operand(ctxt, &ctxt->dst);
- 		}
- 
--		if (unlikely(emul_flags & X86EMUL_GUEST_MASK) && ctxt->intercept) {
-+		if (unlikely(check_intercepts) && ctxt->intercept) {
- 			rc = emulator_check_intercept(ctxt, ctxt->intercept,
- 						      X86_ICPT_PRE_EXCEPT);
- 			if (rc != X86EMUL_CONTINUE)
-@@ -5688,7 +5686,7 @@ int x86_emulate_insn(struct x86_emulate_
- 				goto done;
- 		}
- 
--		if (unlikely(emul_flags & X86EMUL_GUEST_MASK) && (ctxt->d & Intercept)) {
-+		if (unlikely(check_intercepts) && (ctxt->d & Intercept)) {
- 			rc = emulator_check_intercept(ctxt, ctxt->intercept,
- 						      X86_ICPT_POST_EXCEPT);
- 			if (rc != X86EMUL_CONTINUE)
-@@ -5742,7 +5740,7 @@ int x86_emulate_insn(struct x86_emulate_
- 
- special_insn:
- 
--	if (unlikely(emul_flags & X86EMUL_GUEST_MASK) && (ctxt->d & Intercept)) {
-+	if (unlikely(check_intercepts) && (ctxt->d & Intercept)) {
- 		rc = emulator_check_intercept(ctxt, ctxt->intercept,
- 					      X86_ICPT_POST_MEMACCESS);
- 		if (rc != X86EMUL_CONTINUE)
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -6855,7 +6855,14 @@ restart:
- 	/* Save the faulting GPA (cr2) in the address field */
- 	ctxt->exception.address = cr2_or_gpa;
- 
--	r = x86_emulate_insn(ctxt);
-+	/*
-+	 * Check L1's instruction intercepts when emulating instructions for
-+	 * L2, unless KVM is re-emulating a previously decoded instruction,
-+	 * e.g. to complete userspace I/O, in which case KVM has already
-+	 * checked the intercepts.
-+	 */
-+	r = x86_emulate_insn(ctxt, is_guest_mode(vcpu) &&
-+				   !(emulation_type & EMULTYPE_NO_DECODE));
- 
- 	if (r == EMULATION_INTERCEPTED)
- 		return 1;
+ 	switch (iinfo->i_alloc_type) {
 
 
 
