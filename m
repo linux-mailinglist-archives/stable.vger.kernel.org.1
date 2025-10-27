@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-190763-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190632-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A447FC10B52
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:16:44 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E820C109D5
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:12:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 605271892D9C
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:11:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 79DCB560C59
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:06:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD5C332D43D;
-	Mon, 27 Oct 2025 19:08:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CF5332B994;
+	Mon, 27 Oct 2025 19:03:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W3deaqUx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YvXD5MjX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B56F2BD033;
-	Mon, 27 Oct 2025 19:08:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F22732C305;
+	Mon, 27 Oct 2025 19:03:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592132; cv=none; b=Xhal322l79g2d/sZXdiWt7OO+1XMKEbCGbJMj4Je41S6bPt2JTOVGqn/C337h/kNMwGx49rwgjqU30zPposdS4sMMHSVnZm0Amm2gm5AKPQX+Nl/RBJYMAQzzOU5MTJFKeleSup6LrNJZibNkVSpyIlFVldV4fYAcUdk50nBBEA=
+	t=1761591793; cv=none; b=pCvjBfoSqxdoB4ARaSv7nTns/yJM9ERffUK1uSIeNBKzuT40NDQfYehgEMESPuzuQWSxNtdwHYRlAd8sLBDFhjkrI+/HhS9nrC2Wf3rovbryv99TCUTuu7ixTcnWuyiR3KfKwjsuJ6OAQErTNUwNcaNDmcUCd+TnKlPsEqyOKPg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592132; c=relaxed/simple;
-	bh=DFUDXIr4HokyZMICOVHr3/6BuB+VN5eMagMBRc4GGM0=;
+	s=arc-20240116; t=1761591793; c=relaxed/simple;
+	bh=h/J5+xCQvfw+kJNm3jbrgMoPcum8nuk1YTawjZh/1aE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bKALtJ8tSP+OcWcFi+KDIKvcv7XzNp9lsUv6bt5FoXmnsjM4giBNxiqeQW0zFvt9vhjrzpLGkpbOQmq17qCdbWbE4SWD1YcfCPy/QraTyNydXYrfQ/shmuyEe1MUHX1oe1Bp07Qw8DSr36n08Wmr9Gs0nGaSfxA4ZjZIC5lrGGs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W3deaqUx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9322C4CEF1;
-	Mon, 27 Oct 2025 19:08:51 +0000 (UTC)
+	 MIME-Version; b=fpNCfkeM3OHI5mUgOoc8zQLBsuj3fi/PTCAC/YuYCHCKw9nRJfqHDs6aBBfEZJaBju/7j2mjRukdexpUgLX2KA+971ICb7XWFDtCjOPKO912bbK44HD0vuzaJDMXG8I9KmAQDGxrYeQjJeXMtQu3M355wuSyVoHD0kPrZcy1/0U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YvXD5MjX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98829C4CEF1;
+	Mon, 27 Oct 2025 19:03:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592132;
-	bh=DFUDXIr4HokyZMICOVHr3/6BuB+VN5eMagMBRc4GGM0=;
+	s=korg; t=1761591792;
+	bh=h/J5+xCQvfw+kJNm3jbrgMoPcum8nuk1YTawjZh/1aE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W3deaqUxf6Rl0SdSWVfrcua5lbBmeoTbm4aYt10VmTyBxiojMtJka+326iMRdnZeI
-	 JCHOQuGLNMB5d28qHnuR2njUocTX3VPVE10ZWax7PwUjpa5DDh22Rt41z/igLxP6Bm
-	 X70ZpYQVxYjXtRVaXb4aTuguLPm4o9p0zdVrryoo=
+	b=YvXD5MjXK1/mgwHrPR6hgHPR1V9gvZRglPrbLR+9Yzpgw93N5FDsB88qtGumOniR1
+	 eE5VTa8/DfOcJfHQ3lyBUqQ/gZQvgDsE+qnbtYN5YDKCt4la4EMsLhYlEw4CftRZgB
+	 0u+DwUnADkCw0UkuojazkOnpy6wkCR18/rD8Ui5A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
-	Muhammad Usama Anjum <usama.anjum@collabora.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 104/123] wifi: ath11k: HAL SRNG: dont deinitialize and re-initialize again
+	Anup Patel <apatel@ventanamicro.com>,
+	Atish Patra <atishp@rivosinc.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>
+Subject: [PATCH 5.10 331/332] RISC-V: Dont fail in riscv_of_parent_hartid() for disabled HARTs
 Date: Mon, 27 Oct 2025 19:36:24 +0100
-Message-ID: <20251027183449.173691506@linuxfoundation.org>
+Message-ID: <20251027183533.637015808@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183446.381986645@linuxfoundation.org>
-References: <20251027183446.381986645@linuxfoundation.org>
+In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
+References: <20251027183524.611456697@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,88 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Muhammad Usama Anjum <usama.anjum@collabora.com>
+From: Anup Patel <apatel@ventanamicro.com>
 
-[ Upstream commit 32be3ca4cf78b309dfe7ba52fe2d7cc3c23c5634 ]
+commit c4676f8dc1e12e68d6511f9ed89707fdad4c962c upstream.
 
-Don't deinitialize and reinitialize the HAL helpers. The dma memory is
-deallocated and there is high possibility that we'll not be able to get
-the same memory allocated from dma when there is high memory pressure.
+The riscv_of_processor_hartid() used by riscv_of_parent_hartid() fails
+for HARTs disabled in the DT. This results in the following warning
+thrown by the RISC-V INTC driver for the E-core on SiFive boards:
 
-Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03926.13-QCAHSPSWPL_V2_SILICONZ_CE-2.52297.6
+[    0.000000] riscv-intc: unable to find hart id for /cpus/cpu@0/interrupt-controller
 
-Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
-Cc: stable@vger.kernel.org
-Cc: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Link: https://patch.msgid.link/20250722053121.1145001-1-usama.anjum@collabora.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The riscv_of_parent_hartid() is only expected to read the hartid
+from the DT so we directly call of_get_cpu_hwid() instead of calling
+riscv_of_processor_hartid().
+
+Fixes: ad635e723e17 ("riscv: cpu: Add 64bit hartid support on RV64")
+Signed-off-by: Anup Patel <apatel@ventanamicro.com>
+Reviewed-by: Atish Patra <atishp@rivosinc.com>
+Link: https://lore.kernel.org/r/20231027154254.355853-2-apatel@ventanamicro.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/ath/ath11k/core.c |    6 +-----
- drivers/net/wireless/ath/ath11k/hal.c  |   16 ++++++++++++++++
- drivers/net/wireless/ath/ath11k/hal.h  |    1 +
- 3 files changed, 18 insertions(+), 5 deletions(-)
+ arch/riscv/kernel/cpu.c |   11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
---- a/drivers/net/wireless/ath/ath11k/core.c
-+++ b/drivers/net/wireless/ath/ath11k/core.c
-@@ -942,14 +942,10 @@ static int ath11k_core_reconfigure_on_cr
- 	mutex_unlock(&ab->core_lock);
- 
- 	ath11k_dp_free(ab);
--	ath11k_hal_srng_deinit(ab);
-+	ath11k_hal_srng_clear(ab);
- 
- 	ab->free_vdev_map = (1LL << (ab->num_radios * TARGET_NUM_VDEVS)) - 1;
- 
--	ret = ath11k_hal_srng_init(ab);
--	if (ret)
--		return ret;
--
- 	clear_bit(ATH11K_FLAG_CRASH_FLUSH, &ab->dev_flags);
- 
- 	ret = ath11k_core_qmi_firmware_ready(ab);
---- a/drivers/net/wireless/ath/ath11k/hal.c
-+++ b/drivers/net/wireless/ath/ath11k/hal.c
-@@ -1313,6 +1313,22 @@ void ath11k_hal_srng_deinit(struct ath11
- }
- EXPORT_SYMBOL(ath11k_hal_srng_deinit);
- 
-+void ath11k_hal_srng_clear(struct ath11k_base *ab)
-+{
-+	/* No need to memset rdp and wrp memory since each individual
-+	 * segment would get cleared in ath11k_hal_srng_src_hw_init()
-+	 * and ath11k_hal_srng_dst_hw_init().
-+	 */
-+	memset(ab->hal.srng_list, 0,
-+	       sizeof(ab->hal.srng_list));
-+	memset(ab->hal.shadow_reg_addr, 0,
-+	       sizeof(ab->hal.shadow_reg_addr));
-+	ab->hal.avail_blk_resource = 0;
-+	ab->hal.current_blk_index = 0;
-+	ab->hal.num_shadow_reg_configured = 0;
-+}
-+EXPORT_SYMBOL(ath11k_hal_srng_clear);
-+
- void ath11k_hal_dump_srng_stats(struct ath11k_base *ab)
+--- a/arch/riscv/kernel/cpu.c
++++ b/arch/riscv/kernel/cpu.c
+@@ -50,13 +50,14 @@ int riscv_of_processor_hartid(struct dev
+  */
+ int riscv_of_parent_hartid(struct device_node *node, unsigned long *hartid)
  {
- 	struct hal_srng *srng;
---- a/drivers/net/wireless/ath/ath11k/hal.h
-+++ b/drivers/net/wireless/ath/ath11k/hal.h
-@@ -952,6 +952,7 @@ int ath11k_hal_srng_setup(struct ath11k_
- 			  struct hal_srng_params *params);
- int ath11k_hal_srng_init(struct ath11k_base *ath11k);
- void ath11k_hal_srng_deinit(struct ath11k_base *ath11k);
-+void ath11k_hal_srng_clear(struct ath11k_base *ab);
- void ath11k_hal_dump_srng_stats(struct ath11k_base *ab);
- void ath11k_hal_srng_get_shadow_config(struct ath11k_base *ab,
- 				       u32 **cfg, u32 *len);
+-	int rc;
+-
+ 	for (; node; node = node->parent) {
+ 		if (of_device_is_compatible(node, "riscv")) {
+-			rc = riscv_of_processor_hartid(node, hartid);
+-			if (!rc)
+-				return 0;
++			*hartid = (unsigned long)of_get_cpu_hwid(node, 0);
++			if (*hartid == ~0UL) {
++				pr_warn("Found CPU without hart ID\n");
++				return -ENODEV;
++			}
++			return 0;
+ 		}
+ 	}
+ 
 
 
 
