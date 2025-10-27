@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-191071-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190636-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41715C10FFD
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:29:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FBFCC109C0
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:12:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1836E563456
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:24:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 48864566A35
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:06:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1638B328638;
-	Mon, 27 Oct 2025 19:22:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB5B232D0F3;
+	Mon, 27 Oct 2025 19:03:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oZDCxn8W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rVQfxMyN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C537A328639;
-	Mon, 27 Oct 2025 19:22:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 325C332D0EB;
+	Mon, 27 Oct 2025 19:03:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592937; cv=none; b=NWa6PUfKvc9QW0OJHR4S+Ex6GO2OCGiqD1Gkn/ZoVeojm3Ug4gh4jJhAC7gN+WJBzAhWMd4gOzWE1yeHN6ekJ0EyG5R9mfKmSUXzkbpfHX/KJycOsP5nI7bwCqKfuSYuUwIPN5gS4CU44QaCrxkTljIQgTc7Y+JY2dMn/xbC4t4=
+	t=1761591801; cv=none; b=PGdsZ6I/Wqql8X20TLV5T3ay+YzmusLwkCl2twBIJ8YI9LDuD4uVUcd3UyMbIGZjfNNL6YZ9ywEKJ4ofNltlGliPIuMyQOCBha79BIWenmGg3EjYnLx/1m5RHpvcHgwp/241Npzw0iktpRt/z7mF7qpgka68OcPiZbpBv6xPrlk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592937; c=relaxed/simple;
-	bh=Fi90z7ChSKEbjSVMm2bZfCQKeJy5+jAv5osNFvO7S2Y=;
+	s=arc-20240116; t=1761591801; c=relaxed/simple;
+	bh=N35p/c/gkv8YK1iO+u3ZD6aHp65aPcisTvmJeLTV7EU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=h5MhPcPSY12fiGonFfX7W8jRG5mAq6bG5/9c6R7pDfz9fMX+fEYcfesGUVk+LS4Z0UpE7GYy4p26Mruc/0JCrbPkXtrrk82x05xnhbN7eD4aMUkDNg4+Ns8kWp0rkJpsA3q3BSV+nx/y+kkdsndB/LLOlTrHWffmIean6oWpXZs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oZDCxn8W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A6EBC4CEF1;
-	Mon, 27 Oct 2025 19:22:17 +0000 (UTC)
+	 MIME-Version; b=cqnffP7art35WBQRTEWUtl0zVfkOHj2PVwuaTQrh+z+KnDcGkTCACymo7OC40ldPN7xQ9IjoWwIf4CY4z06CzkWnbx/WP5ZOXZLv7GGNNmCxSBWaRqDkMru1kxjvzpozJSch2HMfCiiaN86C2VAPX+PAS7/gUgwednDheKafIjg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rVQfxMyN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59CB2C4CEF1;
+	Mon, 27 Oct 2025 19:03:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592937;
-	bh=Fi90z7ChSKEbjSVMm2bZfCQKeJy5+jAv5osNFvO7S2Y=;
+	s=korg; t=1761591800;
+	bh=N35p/c/gkv8YK1iO+u3ZD6aHp65aPcisTvmJeLTV7EU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oZDCxn8WY4F8IbuqoiTaUt7Bh+dolftbjgQR5NcwbZvlULi9rVwumNFkkxUO21HDC
-	 Wlc/y1I68vvc2VLfG0vpYXA61iDbrdw5BHKJHX1aBgKiquJl9YszRyKEyHFqkjlVL4
-	 BXpSwg5gygI22euSaJSWjBIj/+Ruev9k7CqKYUwY=
+	b=rVQfxMyNxzPxeYMFF7to9at5Yq5MuRErQr84cQaxqEESQePLRa4QhfVcIX0da4kPq
+	 QFhzIbr6hxKPsNunhby8kAdXFgwHRLbTZFGXBp5Q772qWZ+df64derv+ItxhDAf00v
+	 UCP105n1+4ZdLDL/7DtWp5ZDRwzAFFAqNdmfx84s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Xin Long <lucien.xin@gmail.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 033/117] selftests: net: fix server bind failure in sctp_vrf.sh
+Subject: [PATCH 5.10 306/332] media: s5p-mfc: remove an unused/uninitialized variable
 Date: Mon, 27 Oct 2025 19:35:59 +0100
-Message-ID: <20251027183454.868341177@linuxfoundation.org>
+Message-ID: <20251027183532.932054809@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
-References: <20251027183453.919157109@linuxfoundation.org>
+In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
+References: <20251027183524.611456697@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,246 +60,139 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xin Long <lucien.xin@gmail.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit a73ca0449bcb7c238097cc6a1bf3fd82a78374df ]
+[ Upstream commit 7fa37ba25a1dfc084e24ea9acc14bf1fad8af14c ]
 
-sctp_vrf.sh could fail:
+The s5p_mfc_cmd_args structure in the v6 driver is never used, not
+initialized to anything other than zero, but as of clang-21 this
+causes a warning:
 
-  TEST 12: bind vrf-2 & 1 in server, connect from client 1 & 2, N [FAIL]
-  not ok 1 selftests: net: sctp_vrf.sh # exit=3
+drivers/media/platform/samsung/s5p-mfc/s5p_mfc_cmd_v6.c:45:7: error: variable 'h2r_args' is uninitialized when passed as a const pointer argument here [-Werror,-Wuninitialized-const-pointer]
+   45 |                                         &h2r_args);
+      |                                          ^~~~~~~~
 
-The failure happens when the server bind in a new run conflicts with an
-existing association from the previous run:
+Just remove this for simplicity. Since the function is also called
+through a callback, this does require adding a trivial wrapper with
+the correct prototype.
 
-[1] ip netns exec $SERVER_NS ./sctp_hello server ...
-[2] ip netns exec $CLIENT_NS ./sctp_hello client ...
-[3] ip netns exec $SERVER_NS pkill sctp_hello ...
-[4] ip netns exec $SERVER_NS ./sctp_hello server ...
-
-It occurs if the client in [2] sends a message and closes immediately.
-With the message unacked, no SHUTDOWN is sent. Killing the server in [3]
-triggers a SHUTDOWN the client also ignores due to the unacked message,
-leaving the old association alive. This causes the bind at [4] to fail
-until the message is acked and the client responds to a second SHUTDOWN
-after the server’s T2 timer expires (3s).
-
-This patch fixes the issue by preventing the client from sending data.
-Instead, the client blocks on recv() and waits for the server to close.
-It also waits until both the server and the client sockets are fully
-released in stop_server and wait_client before restarting.
-
-Additionally, replace 2>&1 >/dev/null with -q in sysctl and grep, and
-drop other redundant 2>&1 >/dev/null redirections, and fix a typo from
-N to Y (connect successfully) in the description of the last test.
-
-Fixes: a61bd7b9fef3 ("selftests: add a selftest for sctp vrf")
-Reported-by: Hangbin Liu <liuhangbin@gmail.com>
-Tested-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Xin Long <lucien.xin@gmail.com>
-Link: https://patch.msgid.link/be2dacf52d0917c4ba5e2e8c5a9cb640740ad2b6.1760731574.git.lucien.xin@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: f96f3cfa0bb8 ("[media] s5p-mfc: Update MFC v4l2 driver to support MFC6.x")
+Cc: stable@vger.kernel.org
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+[ Adjust context ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/sctp_hello.c | 17 +-----
- tools/testing/selftests/net/sctp_vrf.sh  | 73 +++++++++++++++---------
- 2 files changed, 47 insertions(+), 43 deletions(-)
+ drivers/media/platform/s5p-mfc/s5p_mfc_cmd_v6.c |   35 ++++++++----------------
+ 1 file changed, 13 insertions(+), 22 deletions(-)
 
-diff --git a/tools/testing/selftests/net/sctp_hello.c b/tools/testing/selftests/net/sctp_hello.c
-index f02f1f95d2275..a04dac0b8027d 100644
---- a/tools/testing/selftests/net/sctp_hello.c
-+++ b/tools/testing/selftests/net/sctp_hello.c
-@@ -29,7 +29,6 @@ static void set_addr(struct sockaddr_storage *ss, char *ip, char *port, int *len
- static int do_client(int argc, char *argv[])
+--- a/drivers/media/platform/s5p-mfc/s5p_mfc_cmd_v6.c
++++ b/drivers/media/platform/s5p-mfc/s5p_mfc_cmd_v6.c
+@@ -14,8 +14,7 @@
+ #include "s5p_mfc_opr.h"
+ #include "s5p_mfc_cmd_v6.h"
+ 
+-static int s5p_mfc_cmd_host2risc_v6(struct s5p_mfc_dev *dev, int cmd,
+-				struct s5p_mfc_cmd_args *args)
++static int s5p_mfc_cmd_host2risc_v6(struct s5p_mfc_dev *dev, int cmd)
  {
- 	struct sockaddr_storage ss;
--	char buf[] = "hello";
- 	int csk, ret, len;
+ 	mfc_debug(2, "Issue the command: %d\n", cmd);
  
- 	if (argc < 5) {
-@@ -56,16 +55,10 @@ static int do_client(int argc, char *argv[])
+@@ -31,7 +30,6 @@ static int s5p_mfc_cmd_host2risc_v6(stru
  
- 	set_addr(&ss, argv[3], argv[4], &len);
- 	ret = connect(csk, (struct sockaddr *)&ss, len);
--	if (ret < 0) {
--		printf("failed to connect to peer\n");
-+	if (ret < 0)
- 		return -1;
--	}
- 
--	ret = send(csk, buf, strlen(buf) + 1, 0);
--	if (ret < 0) {
--		printf("failed to send msg %d\n", ret);
--		return -1;
--	}
-+	recv(csk, NULL, 0, 0);
- 	close(csk);
- 
- 	return 0;
-@@ -75,7 +68,6 @@ int main(int argc, char *argv[])
+ static int s5p_mfc_sys_init_cmd_v6(struct s5p_mfc_dev *dev)
  {
- 	struct sockaddr_storage ss;
- 	int lsk, csk, ret, len;
--	char buf[20];
+-	struct s5p_mfc_cmd_args h2r_args;
+ 	struct s5p_mfc_buf_size_v6 *buf_size = dev->variant->buf_size->priv;
+ 	int ret;
  
- 	if (argc < 2 || (strcmp(argv[1], "server") && strcmp(argv[1], "client"))) {
- 		printf("%s server|client ...\n", argv[0]);
-@@ -125,11 +117,6 @@ int main(int argc, char *argv[])
- 		return -1;
+@@ -41,33 +39,23 @@ static int s5p_mfc_sys_init_cmd_v6(struc
+ 
+ 	mfc_write(dev, dev->ctx_buf.dma, S5P_FIMV_CONTEXT_MEM_ADDR_V6);
+ 	mfc_write(dev, buf_size->dev_ctx, S5P_FIMV_CONTEXT_MEM_SIZE_V6);
+-	return s5p_mfc_cmd_host2risc_v6(dev, S5P_FIMV_H2R_CMD_SYS_INIT_V6,
+-					&h2r_args);
++	return s5p_mfc_cmd_host2risc_v6(dev, S5P_FIMV_H2R_CMD_SYS_INIT_V6);
+ }
+ 
+ static int s5p_mfc_sleep_cmd_v6(struct s5p_mfc_dev *dev)
+ {
+-	struct s5p_mfc_cmd_args h2r_args;
+-
+-	memset(&h2r_args, 0, sizeof(struct s5p_mfc_cmd_args));
+-	return s5p_mfc_cmd_host2risc_v6(dev, S5P_FIMV_H2R_CMD_SLEEP_V6,
+-			&h2r_args);
++	return s5p_mfc_cmd_host2risc_v6(dev, S5P_FIMV_H2R_CMD_SLEEP_V6);
+ }
+ 
+ static int s5p_mfc_wakeup_cmd_v6(struct s5p_mfc_dev *dev)
+ {
+-	struct s5p_mfc_cmd_args h2r_args;
+-
+-	memset(&h2r_args, 0, sizeof(struct s5p_mfc_cmd_args));
+-	return s5p_mfc_cmd_host2risc_v6(dev, S5P_FIMV_H2R_CMD_WAKEUP_V6,
+-					&h2r_args);
++	return s5p_mfc_cmd_host2risc_v6(dev, S5P_FIMV_H2R_CMD_WAKEUP_V6);
+ }
+ 
+ /* Open a new instance and get its number */
+ static int s5p_mfc_open_inst_cmd_v6(struct s5p_mfc_ctx *ctx)
+ {
+ 	struct s5p_mfc_dev *dev = ctx->dev;
+-	struct s5p_mfc_cmd_args h2r_args;
+ 	int codec_type;
+ 
+ 	mfc_debug(2, "Requested codec mode: %d\n", ctx->codec_mode);
+@@ -129,23 +117,20 @@ static int s5p_mfc_open_inst_cmd_v6(stru
+ 	mfc_write(dev, ctx->ctx.size, S5P_FIMV_CONTEXT_MEM_SIZE_V6);
+ 	mfc_write(dev, 0, S5P_FIMV_D_CRC_CTRL_V6); /* no crc */
+ 
+-	return s5p_mfc_cmd_host2risc_v6(dev, S5P_FIMV_H2R_CMD_OPEN_INSTANCE_V6,
+-					&h2r_args);
++	return s5p_mfc_cmd_host2risc_v6(dev, S5P_FIMV_H2R_CMD_OPEN_INSTANCE_V6);
+ }
+ 
+ /* Close instance */
+ static int s5p_mfc_close_inst_cmd_v6(struct s5p_mfc_ctx *ctx)
+ {
+ 	struct s5p_mfc_dev *dev = ctx->dev;
+-	struct s5p_mfc_cmd_args h2r_args;
+ 	int ret = 0;
+ 
+ 	dev->curr_ctx = ctx->num;
+ 	if (ctx->state != MFCINST_FREE) {
+ 		mfc_write(dev, ctx->inst_no, S5P_FIMV_INSTANCE_ID_V6);
+ 		ret = s5p_mfc_cmd_host2risc_v6(dev,
+-					S5P_FIMV_H2R_CMD_CLOSE_INSTANCE_V6,
+-					&h2r_args);
++					S5P_FIMV_H2R_CMD_CLOSE_INSTANCE_V6);
+ 	} else {
+ 		ret = -EINVAL;
  	}
- 
--	ret = recv(csk, buf, sizeof(buf), 0);
--	if (ret <= 0) {
--		printf("failed to recv msg %d\n", ret);
--		return -1;
--	}
- 	close(csk);
- 	close(lsk);
- 
-diff --git a/tools/testing/selftests/net/sctp_vrf.sh b/tools/testing/selftests/net/sctp_vrf.sh
-index c854034b6aa16..667b211aa8a11 100755
---- a/tools/testing/selftests/net/sctp_vrf.sh
-+++ b/tools/testing/selftests/net/sctp_vrf.sh
-@@ -20,9 +20,9 @@ setup() {
- 	modprobe sctp_diag
- 	setup_ns CLIENT_NS1 CLIENT_NS2 SERVER_NS
- 
--	ip net exec $CLIENT_NS1 sysctl -w net.ipv6.conf.default.accept_dad=0 2>&1 >/dev/null
--	ip net exec $CLIENT_NS2 sysctl -w net.ipv6.conf.default.accept_dad=0 2>&1 >/dev/null
--	ip net exec $SERVER_NS sysctl -w net.ipv6.conf.default.accept_dad=0 2>&1 >/dev/null
-+	ip net exec $CLIENT_NS1 sysctl -wq net.ipv6.conf.default.accept_dad=0
-+	ip net exec $CLIENT_NS2 sysctl -wq net.ipv6.conf.default.accept_dad=0
-+	ip net exec $SERVER_NS sysctl -wq net.ipv6.conf.default.accept_dad=0
- 
- 	ip -n $SERVER_NS link add veth1 type veth peer name veth1 netns $CLIENT_NS1
- 	ip -n $SERVER_NS link add veth2 type veth peer name veth1 netns $CLIENT_NS2
-@@ -62,17 +62,40 @@ setup() {
+@@ -153,9 +138,15 @@ static int s5p_mfc_close_inst_cmd_v6(str
+ 	return ret;
  }
  
- cleanup() {
--	ip netns exec $SERVER_NS pkill sctp_hello 2>&1 >/dev/null
-+	wait_client $CLIENT_NS1
-+	wait_client $CLIENT_NS2
-+	stop_server
- 	cleanup_ns $CLIENT_NS1 $CLIENT_NS2 $SERVER_NS
- }
- 
--wait_server() {
-+start_server() {
- 	local IFACE=$1
- 	local CNT=0
- 
--	until ip netns exec $SERVER_NS ss -lS src $SERVER_IP:$SERVER_PORT | \
--		grep LISTEN | grep "$IFACE" 2>&1 >/dev/null; do
--		[ $((CNT++)) = "20" ] && { RET=3; return $RET; }
-+	ip netns exec $SERVER_NS ./sctp_hello server $AF $SERVER_IP $SERVER_PORT $IFACE &
-+	disown
-+	until ip netns exec $SERVER_NS ss -SlH | grep -q "$IFACE"; do
-+		[ $((CNT++)) -eq 30 ] && { RET=3; return $RET; }
-+		sleep 0.1
-+	done
++static int s5p_mfc_cmd_host2risc_v6_args(struct s5p_mfc_dev *dev, int cmd,
++				    struct s5p_mfc_cmd_args *ignored)
++{
++	return s5p_mfc_cmd_host2risc_v6(dev, cmd);
 +}
 +
-+stop_server() {
-+	local CNT=0
-+
-+	ip netns exec $SERVER_NS pkill sctp_hello
-+	while ip netns exec $SERVER_NS ss -SaH | grep -q .; do
-+		[ $((CNT++)) -eq 30 ] && break
-+		sleep 0.1
-+	done
-+}
-+
-+wait_client() {
-+	local CLIENT_NS=$1
-+	local CNT=0
-+
-+	while ip netns exec $CLIENT_NS ss -SaH | grep -q .; do
-+		[ $((CNT++)) -eq 30 ] && break
- 		sleep 0.1
- 	done
- }
-@@ -81,14 +104,12 @@ do_test() {
- 	local CLIENT_NS=$1
- 	local IFACE=$2
- 
--	ip netns exec $SERVER_NS pkill sctp_hello 2>&1 >/dev/null
--	ip netns exec $SERVER_NS ./sctp_hello server $AF $SERVER_IP \
--		$SERVER_PORT $IFACE 2>&1 >/dev/null &
--	disown
--	wait_server $IFACE || return $RET
-+	start_server $IFACE || return $RET
- 	timeout 3 ip netns exec $CLIENT_NS ./sctp_hello client $AF \
--		$SERVER_IP $SERVER_PORT $CLIENT_IP $CLIENT_PORT 2>&1 >/dev/null
-+		$SERVER_IP $SERVER_PORT $CLIENT_IP $CLIENT_PORT
- 	RET=$?
-+	wait_client $CLIENT_NS
-+	stop_server
- 	return $RET
- }
- 
-@@ -96,25 +117,21 @@ do_testx() {
- 	local IFACE1=$1
- 	local IFACE2=$2
- 
--	ip netns exec $SERVER_NS pkill sctp_hello 2>&1 >/dev/null
--	ip netns exec $SERVER_NS ./sctp_hello server $AF $SERVER_IP \
--		$SERVER_PORT $IFACE1 2>&1 >/dev/null &
--	disown
--	wait_server $IFACE1 || return $RET
--	ip netns exec $SERVER_NS ./sctp_hello server $AF $SERVER_IP \
--		$SERVER_PORT $IFACE2 2>&1 >/dev/null &
--	disown
--	wait_server $IFACE2 || return $RET
-+	start_server $IFACE1 || return $RET
-+	start_server $IFACE2 || return $RET
- 	timeout 3 ip netns exec $CLIENT_NS1 ./sctp_hello client $AF \
--		$SERVER_IP $SERVER_PORT $CLIENT_IP $CLIENT_PORT 2>&1 >/dev/null && \
-+		$SERVER_IP $SERVER_PORT $CLIENT_IP $CLIENT_PORT && \
- 	timeout 3 ip netns exec $CLIENT_NS2 ./sctp_hello client $AF \
--		$SERVER_IP $SERVER_PORT $CLIENT_IP $CLIENT_PORT 2>&1 >/dev/null
-+		$SERVER_IP $SERVER_PORT $CLIENT_IP $CLIENT_PORT
- 	RET=$?
-+	wait_client $CLIENT_NS1
-+	wait_client $CLIENT_NS2
-+	stop_server
- 	return $RET
- }
- 
- testup() {
--	ip netns exec $SERVER_NS sysctl -w net.sctp.l3mdev_accept=1 2>&1 >/dev/null
-+	ip netns exec $SERVER_NS sysctl -wq net.sctp.l3mdev_accept=1
- 	echo -n "TEST 01: nobind, connect from client 1, l3mdev_accept=1, Y "
- 	do_test $CLIENT_NS1 || { echo "[FAIL]"; return $RET; }
- 	echo "[PASS]"
-@@ -123,7 +140,7 @@ testup() {
- 	do_test $CLIENT_NS2 && { echo "[FAIL]"; return $RET; }
- 	echo "[PASS]"
- 
--	ip netns exec $SERVER_NS sysctl -w net.sctp.l3mdev_accept=0 2>&1 >/dev/null
-+	ip netns exec $SERVER_NS sysctl -wq net.sctp.l3mdev_accept=0
- 	echo -n "TEST 03: nobind, connect from client 1, l3mdev_accept=0, N "
- 	do_test $CLIENT_NS1 && { echo "[FAIL]"; return $RET; }
- 	echo "[PASS]"
-@@ -160,7 +177,7 @@ testup() {
- 	do_testx vrf-1 vrf-2 || { echo "[FAIL]"; return $RET; }
- 	echo "[PASS]"
- 
--	echo -n "TEST 12: bind vrf-2 & 1 in server, connect from client 1 & 2, N "
-+	echo -n "TEST 12: bind vrf-2 & 1 in server, connect from client 1 & 2, Y "
- 	do_testx vrf-2 vrf-1 || { echo "[FAIL]"; return $RET; }
- 	echo "[PASS]"
- }
--- 
-2.51.0
-
+ /* Initialize cmd function pointers for MFC v6 */
+ static struct s5p_mfc_hw_cmds s5p_mfc_cmds_v6 = {
+-	.cmd_host2risc = s5p_mfc_cmd_host2risc_v6,
++	.cmd_host2risc = s5p_mfc_cmd_host2risc_v6_args,
+ 	.sys_init_cmd = s5p_mfc_sys_init_cmd_v6,
+ 	.sleep_cmd = s5p_mfc_sleep_cmd_v6,
+ 	.wakeup_cmd = s5p_mfc_wakeup_cmd_v6,
 
 
 
