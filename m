@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-190124-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190431-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 594EEC10014
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:43:11 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E2F8C10524
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:57:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A0A6C4F90D0
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:41:43 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id A5AF6352F7F
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:57:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DB40308F3A;
-	Mon, 27 Oct 2025 18:41:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A53B03314AB;
+	Mon, 27 Oct 2025 18:54:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y2mx5FvX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a6yvGwrw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BF162D8DB9;
-	Mon, 27 Oct 2025 18:41:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 634AE31BC91;
+	Mon, 27 Oct 2025 18:54:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761590501; cv=none; b=I1iFRCX3uAytPgKs1iVLMTwoIPt26rFSh8egPbdD3fZN6yNxEWDfUakCC5b5UMY2yN/tiddWyGzTQntuxt2inU83Ya0Y+iLJVynMh/WcmSOm8Kq085RREK3916TZkyUEalyQYBk6EY33BtquI+ssXpiNIax5PVLnuO1VaMEqVjs=
+	t=1761591273; cv=none; b=OEy1gsOEDp41ofvxEE20B3OrzFMcF2oJ4iUCHszeY5abIaM1YqzEAmgvicWidmWgd8z1fizEQL4tCvRUNuSoCtDeByKB/GxBwZiOjcEHe1HXFF5jEPQgVQxtK5yN7Oswjgorr2DoviUiudJ9OitJe/mja7NJVI2uBoLB9bYTon0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761590501; c=relaxed/simple;
-	bh=9mtIIA0PrDsfYikZcWVJwQMlVuYNwUgK9oQYag6tV1U=;
+	s=arc-20240116; t=1761591273; c=relaxed/simple;
+	bh=L4b/F9EOZyJD6hh7oDwEd0BSO/3zMCCZBbOl25lX4QA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=POkbkgHVSutQny83cGvJEsoHg2sBI/ICqwQYahuy6iqqhUuJcSoijMVyznFgVYxOViKK+u+9daCluG14uHcohyZKaSIHovg/GMJNnt3wWFWVurqfLBJ+zpwZo/0vGSwH6nOKKBhSvLkcfR/36EI6sDekPmHRfNk2JoaUtI8T9ZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y2mx5FvX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB76EC4CEF1;
-	Mon, 27 Oct 2025 18:41:40 +0000 (UTC)
+	 MIME-Version; b=A4XuzuOaj3+w8yLc3ztjLZ+AZkRZPAZAziaqaZZoUlmNINp74Yb/GadChSDCX3oDJXe8dA95UCrcFAAakmI3BDriPqq6HaVjl1fCoxvNy+6t1jZ3X/cl17Xpw+aRyo4nbYkt4CqDD3orwWNwK6P+XSMOOPyZKOW0S22egmNFBBE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a6yvGwrw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8012C4CEF1;
+	Mon, 27 Oct 2025 18:54:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761590501;
-	bh=9mtIIA0PrDsfYikZcWVJwQMlVuYNwUgK9oQYag6tV1U=;
+	s=korg; t=1761591273;
+	bh=L4b/F9EOZyJD6hh7oDwEd0BSO/3zMCCZBbOl25lX4QA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y2mx5FvXtgOo+E4jPVCCRtTXC/QoIwMhzMxIoAeLgsBqiyughlDz7++x6+rJPEjC5
-	 AvCEwglhLXegYJ/o2hM7MD/VxMeI3Rj4jDUyEo2FY1PrRc+TVUf5X635ovWslqFaYi
-	 Wqr/Gu0RPYhusqMgGeNYdOfRdjJGZuNrUecEIlCA=
+	b=a6yvGwrwca/ifx3hLPmZ8XyYf+Mt1OPaEwmBCjyx1P2FVvQQA0G4SpLjpqoGMoesD
+	 BhNAu9f9xWb7y16oqv0BwZkwhxlDIU/eoxXwIHhUr/fW1Ur0Jin2E54ibYok3XZGEK
+	 ecPWUcHGQYJ9dkkrbkpeUsoPJ09d0SuErzoVo10g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 039/224] PCI: tegra: Fix devm_kcalloc() argument order for port->phys allocation
-Date: Mon, 27 Oct 2025 19:33:05 +0100
-Message-ID: <20251027183510.051929710@linuxfoundation.org>
+	Carlo Caione <ccaione@baylibre.com>,
+	Johan Hovold <johan@kernel.org>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>
+Subject: [PATCH 5.10 133/332] firmware: meson_sm: fix device leak at probe
+Date: Mon, 27 Oct 2025 19:33:06 +0100
+Message-ID: <20251027183528.143389101@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183508.963233542@linuxfoundation.org>
-References: <20251027183508.963233542@linuxfoundation.org>
+In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
+References: <20251027183524.611456697@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit e1a8805e5d263453ad76a4f50ab3b1c18ea07560 ]
+commit 8ece3173f87df03935906d0c612c2aeda9db92ca upstream.
 
-Fix incorrect argument order in devm_kcalloc() when allocating port->phys.
-The original call used sizeof(phy) as the number of elements and
-port->lanes as the element size, which is reversed.  While this happens to
-produce the correct total allocation size with current pointer size and
-lane counts, the argument order is wrong.
+Make sure to drop the reference to the secure monitor device taken by
+of_find_device_by_node() when looking up its driver data on behalf of
+other drivers (e.g. during probe).
 
-Fixes: 6fe7c187e026 ("PCI: tegra: Support per-lane PHYs")
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-[mani: added Fixes tag]
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Link: https://patch.msgid.link/20250819150436.3105973-1-alok.a.tiwari@oracle.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Note that holding a reference to the platform device does not prevent
+its driver data from going away so there is no point in keeping the
+reference after the helper returns.
+
+Fixes: 8cde3c2153e8 ("firmware: meson_sm: Rework driver as a proper platform driver")
+Cc: stable@vger.kernel.org	# 5.5
+Cc: Carlo Caione <ccaione@baylibre.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Acked-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Link: https://lore.kernel.org/r/20250725074019.8765-1-johan@kernel.org
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/controller/pci-tegra.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/firmware/meson/meson_sm.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pci/controller/pci-tegra.c b/drivers/pci/controller/pci-tegra.c
-index 74c0ddd433815..9e3588d568ce4 100644
---- a/drivers/pci/controller/pci-tegra.c
-+++ b/drivers/pci/controller/pci-tegra.c
-@@ -1394,7 +1394,7 @@ static int tegra_pcie_port_get_phys(struct tegra_pcie_port *port)
- 	unsigned int i;
- 	int err;
+--- a/drivers/firmware/meson/meson_sm.c
++++ b/drivers/firmware/meson/meson_sm.c
+@@ -225,11 +225,16 @@ EXPORT_SYMBOL(meson_sm_call_write);
+ struct meson_sm_firmware *meson_sm_get(struct device_node *sm_node)
+ {
+ 	struct platform_device *pdev = of_find_device_by_node(sm_node);
++	struct meson_sm_firmware *fw;
  
--	port->phys = devm_kcalloc(dev, sizeof(phy), port->lanes, GFP_KERNEL);
-+	port->phys = devm_kcalloc(dev, port->lanes, sizeof(phy), GFP_KERNEL);
- 	if (!port->phys)
- 		return -ENOMEM;
+ 	if (!pdev)
+ 		return NULL;
  
--- 
-2.51.0
-
+-	return platform_get_drvdata(pdev);
++	fw = platform_get_drvdata(pdev);
++
++	put_device(&pdev->dev);
++
++	return fw;
+ }
+ EXPORT_SYMBOL_GPL(meson_sm_get);
+ 
 
 
 
