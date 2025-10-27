@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-190433-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190127-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DEECC105C9
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:59:46 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2D1CC10021
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:43:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 05B244FD52C
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:57:50 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 83B4A4FC9AD
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:41:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46DF8330338;
-	Mon, 27 Oct 2025 18:54:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 454923191BF;
+	Mon, 27 Oct 2025 18:41:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L4UAvJEn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z571NgxK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0269532E159;
-	Mon, 27 Oct 2025 18:54:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3E142D8DB9;
+	Mon, 27 Oct 2025 18:41:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591279; cv=none; b=u2Nbb6mOtVILvrDfswiNWfp7S9Rwn4wkfIEWKndWlhqaih5clSk6aU8dtkV0U2X6qrDr0pF5KOWeUNk1kauI6TltKkqkPuN6kKHtpAYRxuiagRJuL1Rw6DheSxKTpy9E7i9A7CZWAG8ZG9OD8rewBvlyIRVZkk8Cm8N2Bnxguug=
+	t=1761590509; cv=none; b=jawbqMIRTI8uuqBtj1KQFV2zoFFsbNJQACv3fXGnPPUfVAQHAKIZtbqELnoT+RdOF6BKCr+lX4XgpD6A7AoiPycbtgy0WJ7owS4f6XoEig/tNY2IiNyCKV7Dyx196R8Zg72HBn7JjR0kPDbwsbM7b47H+33YTMvurYXlT2C8KVc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591279; c=relaxed/simple;
-	bh=RGovrv8+QtGXwAAS903ebVzHmj05IMCZTOdkDu0ZLcM=;
+	s=arc-20240116; t=1761590509; c=relaxed/simple;
+	bh=v7+pBvYFyWxkOTI/nYuE/+WG4XpWl6EJxwnWugm1kRE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YuAYGb8Hdwv19EcvrWFOFt6R3VXzKtsWna5TS6XM6rzLfLhCyc4fuM7M3mXEqPmYi/bII6xzoeZoxs4sv9n3DpUprPnyXLT2jQcKHf8lWCgWrkzfEF5GgJurQVGdMwFqLnFV6DNlZzhwH2A7Bmc2fQ26nw7gYoH91K4hciCGPTE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L4UAvJEn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39BD2C4CEF1;
-	Mon, 27 Oct 2025 18:54:38 +0000 (UTC)
+	 MIME-Version; b=t9poPiocXbBuSwe3NQ8wXP1ALv1SBQKabwr/Qk5rbfk7VCwgDxCIR0kj+kGCxdgdXeDiBX75wJSv7vGfDcSbQfDfcTpSWBlnQA6nGJ+6leARaEYyNDa6dwaVUSovPJCOAVZV4N7Cr4FiiTpF2mvDBHQSygSdjVfiWqfTNyp3YFk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z571NgxK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89874C4CEF1;
+	Mon, 27 Oct 2025 18:41:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591278;
-	bh=RGovrv8+QtGXwAAS903ebVzHmj05IMCZTOdkDu0ZLcM=;
+	s=korg; t=1761590508;
+	bh=v7+pBvYFyWxkOTI/nYuE/+WG4XpWl6EJxwnWugm1kRE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L4UAvJEnqfoNpTuGlNfhC6c91pDJVw+OrKzjYaH9gJoMb5KViLo2nkkndU/AWtx3U
-	 9ZAEFRTUsW9BmENomlfMpucLJzG0QgNsQ8c6QdpC7J9rqnhdJvWLLDLCH4cKoX7NX+
-	 jjUnBC/AsYQQghKla9GWwrvB2qvepDRl2bFfxh/s=
+	b=Z571NgxKV5H7p/fwbnTWZLxPF1sJtmHcm8LXGju9NBO+f4TtbSX08SjOP79v7Bud6
+	 8M/UQedQmOKX5SR0JZ7ByC3SAHE1QpI98WPl7SW/Pm6j1uxkJEHpKpfCfdi6de3+XH
+	 WR7V3HW+SlcdJPsnkoKEKsuGbMfPEs8U4CRvHdOY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petr Vorel <pvorel@suse.cz>,
-	Shuhao Fu <sfual@cse.ust.hk>,
-	Danilo Krummrich <dakr@kernel.org>
-Subject: [PATCH 5.10 135/332] drm/nouveau: fix bad ret code in nouveau_bo_move_prep
+	William Wu <william.wu@rock-chips.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 042/224] usb: gadget: configfs: Correctly set use_os_string at bind
 Date: Mon, 27 Oct 2025 19:33:08 +0100
-Message-ID: <20251027183528.198102570@linuxfoundation.org>
+Message-ID: <20251027183510.131302353@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
-References: <20251027183524.611456697@linuxfoundation.org>
+In-Reply-To: <20251027183508.963233542@linuxfoundation.org>
+References: <20251027183508.963233542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +61,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shuhao Fu <sfual@cse.ust.hk>
+From: William Wu <william.wu@rock-chips.com>
 
-commit e4bea919584ff292c9156cf7d641a2ab3cbe27b0 upstream.
+[ Upstream commit e271cc0d25015f4be6c88bd7731444644eb352c2 ]
 
-In `nouveau_bo_move_prep`, if `nouveau_mem_map` fails, an error code
-should be returned. Currently, it returns zero even if vmm addr is not
-correctly mapped.
+Once the use_os_string flag is set to true for some functions
+(e.g. adb/mtp) which need to response the OS string, and then
+if we re-bind the ConfigFS gadget to use the other functions
+(e.g. hid) which should not to response the OS string, however,
+because the use_os_string flag is still true, so the usb gadget
+response the OS string descriptor incorrectly, this can cause
+the USB device to be unrecognizable on the Windows system.
 
-Cc: stable@vger.kernel.org
-Reviewed-by: Petr Vorel <pvorel@suse.cz>
-Signed-off-by: Shuhao Fu <sfual@cse.ust.hk>
-Fixes: 9ce523cc3bf2 ("drm/nouveau: separate buffer object backing memory from nvkm structures")
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+An example of this as follows:
+
+echo 1 > os_desc/use
+ln -s functions/ffs.adb configs/b.1/function0
+start adbd
+echo "<udc device>" > UDC   #succeed
+
+stop adbd
+rm configs/b.1/function0
+echo 0 > os_desc/use
+ln -s functions/hid.gs0 configs/b.1/function0
+echo "<udc device>" > UDC  #fail to connect on Windows
+
+This patch sets the use_os_string flag to false at bind if
+the functions not support OS Descriptors.
+
+Signed-off-by: William Wu <william.wu@rock-chips.com>
+Fixes: 87213d388e92 ("usb: gadget: configfs: OS String support")
+Link: https://lore.kernel.org/r/1755833769-25434-1-git-send-email-william.wu@rock-chips.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/nouveau/nouveau_bo.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/gadget/configfs.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/gpu/drm/nouveau/nouveau_bo.c
-+++ b/drivers/gpu/drm/nouveau/nouveau_bo.c
-@@ -796,7 +796,7 @@ done:
- 		nvif_vmm_put(vmm, &old_mem->vma[1]);
- 		nvif_vmm_put(vmm, &old_mem->vma[0]);
+diff --git a/drivers/usb/gadget/configfs.c b/drivers/usb/gadget/configfs.c
+index 476a22728e8d1..d2be874af7d3c 100644
+--- a/drivers/usb/gadget/configfs.c
++++ b/drivers/usb/gadget/configfs.c
+@@ -1327,6 +1327,8 @@ static int configfs_composite_bind(struct usb_gadget *gadget,
+ 		cdev->use_os_string = true;
+ 		cdev->b_vendor_code = gi->b_vendor_code;
+ 		memcpy(cdev->qw_sign, gi->qw_sign, OS_STRING_QW_SIGN_LEN);
++	} else {
++		cdev->use_os_string = false;
  	}
--	return 0;
-+	return ret;
- }
  
- static int
+ 	if (gadget_is_otg(gadget) && !otg_desc[0]) {
+-- 
+2.51.0
+
 
 
 
