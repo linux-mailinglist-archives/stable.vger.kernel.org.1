@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-191082-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191248-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BAB0C1113B
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:33:15 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C91EC11318
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:40:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id EF290548E13
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:24:31 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 036BE565630
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:32:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FBE932B9AA;
-	Mon, 27 Oct 2025 19:22:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAFC92DA740;
+	Mon, 27 Oct 2025 19:30:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ys6181wg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xgXgscn7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05B6F32143D;
-	Mon, 27 Oct 2025 19:22:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D7D91B424F;
+	Mon, 27 Oct 2025 19:30:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592966; cv=none; b=RbIdyjzMi0mu+l0W0mu4fIBHvzyww8sdU/tcJVdI9pFPeLkfusDk0M5W7+Q/iZpx5cFwwfhvRM2FDNlZhoTOilkGuh83z/cPApwFIpMAAyoU6YHSS8JPmKF+dfHuUHV0QGEpdjsCEb58ewAIoUnwNFXcO6JmSqgAVS3hcohh1dQ=
+	t=1761593408; cv=none; b=auRNp6bZaDXxMNYSQFd0MKG3Jr+6CGywoEmUrWv5z0bH+bHP/av4thWmlI63j1ZUmlSE+S+PcL58cqELm3YoosFXSohE1hEXGHd+D6JB5ORH1WWNFFgVhCrOO0gBO17UMrn4gTNk5EtwTLFYnvjk0zW75l2AgKarh8fIxrsHoHs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592966; c=relaxed/simple;
-	bh=ejFlTbyRsr7w/BBrsJwNZjFnSOOtfcFe/8VKWJK1G/s=;
+	s=arc-20240116; t=1761593408; c=relaxed/simple;
+	bh=9oFsYGw38X7HDdIGKBP1diUFaCssbkmF/zUAC+MOvlI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cxia/rMtD6x1RwhpEHrfog2lAJ1MsHO+waVATZ17rwJzrIHFACOrskItEN8R43g/VitSlCRhYJ0GOoj4zogAqlrfr+1eqmaBEJchAEQqfYD9rwb+X8y7Gcp5A+hqm9/gEv9sWMCmhRYe75NIalwFWK0gzNc6mJbZXf+iUXsRck4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ys6181wg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DA6BC4CEF1;
-	Mon, 27 Oct 2025 19:22:45 +0000 (UTC)
+	 MIME-Version; b=Yi5grEYd0pcdd7FGgUB3kL73xbugX94czI1mieTd2OYSDxzOQwSWIshWktXFr17B5zJYiBG7fiYerUIOEABF+GER9rqTfIdKk+CTcHpTxC02UDV0uwvU7rymvpgMiSG7JU2mQHD5cwIj8KF242QShlrV/ncnY/TeDVf4olHJrWw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xgXgscn7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1F9FC4CEF1;
+	Mon, 27 Oct 2025 19:30:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592965;
-	bh=ejFlTbyRsr7w/BBrsJwNZjFnSOOtfcFe/8VKWJK1G/s=;
+	s=korg; t=1761593408;
+	bh=9oFsYGw38X7HDdIGKBP1diUFaCssbkmF/zUAC+MOvlI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ys6181wgnv7l9iOF9lu1qUKGB/ccGB+1RULJDlZw5o2Ao3bU3+JzN7AtjrklASf4w
-	 TJyxqFBwkQ1FDFK+QTxu26WQS/Kd3CU1BPh9F/VYTQQFMOx2gaihzS84DNN91gu50V
-	 7YQUrTii8ArHOnfBwxyKv+ctBbIu1Ap0w78FCdiI=
+	b=xgXgscn7qIRzIV5/YmHAhqLNSQxP+dg6zfe6X3/H+GX5z2cxT7fHfivLHwfp7UeqB
+	 LnMBIT0puwuOom7KW+WEfu4/IhFUAHvBeuczenWF/PmCvLpu972BUT36ySEddUjuhx
+	 UIku/XLUae+43cT2U2Nm8itOy0/4VA/vDkdqYWQY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anup Patel <apatel@ventanamicro.com>,
-	Andrew Jones <ajones@ventanamicro.com>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Paul Walmsley <pjw@kernel.org>,
+	Cristian Marussi <cristian.marussi@arm.com>,
+	Artem Shimko <a.shimko.dev@gmail.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 081/117] RISC-V: Dont print details of CPUs disabled in DT
+Subject: [PATCH 6.17 125/184] firmware: arm_scmi: Fix premature SCMI_XFER_FLAG_IS_RAW clearing in raw mode
 Date: Mon, 27 Oct 2025 19:36:47 +0100
-Message-ID: <20251027183456.217068212@linuxfoundation.org>
+Message-ID: <20251027183518.309735950@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
-References: <20251027183453.919157109@linuxfoundation.org>
+In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
+References: <20251027183514.934710872@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,48 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anup Patel <apatel@ventanamicro.com>
+From: Artem Shimko <a.shimko.dev@gmail.com>
 
-[ Upstream commit d2721bb165b3ee00dd23525885381af07fec852a ]
+[ Upstream commit 20b93a0088a595bceed4a026d527cbbac4e876c5 ]
 
-Early boot stages may disable CPU DT nodes for unavailable
-CPUs based on SKU, pinstraps, eFuse, etc. Currently, the
-riscv_early_of_processor_hartid() prints details of a CPU
-if it is disabled in DT which has no value and gives a
-false impression to the users that there some issue with
-the CPU.
+The SCMI_XFER_FLAG_IS_RAW flag was being cleared prematurely in
+scmi_xfer_raw_put() before the transfer completion was properly
+acknowledged by the raw message handlers.
 
-Fixes: e3d794d555cd ("riscv: treat cpu devicetree nodes without status as enabled")
-Signed-off-by: Anup Patel <apatel@ventanamicro.com>
-Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
-Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
-Link: https://lore.kernel.org/r/20251014163009.182381-1-apatel@ventanamicro.com
-Signed-off-by: Paul Walmsley <pjw@kernel.org>
+Move the clearing of SCMI_XFER_FLAG_IS_RAW and SCMI_XFER_FLAG_CHAN_SET
+from scmi_xfer_raw_put() to __scmi_xfer_put() to ensure the flags remain
+set throughout the entire raw message processing pipeline until the
+transfer is returned to the free pool.
+
+Fixes: 3095a3e25d8f ("firmware: arm_scmi: Add xfer helpers to provide raw access")
+Suggested-by: Cristian Marussi <cristian.marussi@arm.com>
+Signed-off-by: Artem Shimko <a.shimko.dev@gmail.com>
+Reviewed-by: Cristian Marussi <cristian.marussi@arm.com>
+Message-Id: <20251008091057.1969260-1-a.shimko.dev@gmail.com>
+Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kernel/cpu.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/firmware/arm_scmi/driver.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/arch/riscv/kernel/cpu.c b/arch/riscv/kernel/cpu.c
-index f6b13e9f5e6cb..3dbc8cc557dd1 100644
---- a/arch/riscv/kernel/cpu.c
-+++ b/arch/riscv/kernel/cpu.c
-@@ -62,10 +62,8 @@ int __init riscv_early_of_processor_hartid(struct device_node *node, unsigned lo
- 		return -ENODEV;
+diff --git a/drivers/firmware/arm_scmi/driver.c b/drivers/firmware/arm_scmi/driver.c
+index 1cd15412024cd..a8f2247feab9d 100644
+--- a/drivers/firmware/arm_scmi/driver.c
++++ b/drivers/firmware/arm_scmi/driver.c
+@@ -805,6 +805,7 @@ __scmi_xfer_put(struct scmi_xfers_info *minfo, struct scmi_xfer *xfer)
+ 
+ 			scmi_dec_count(info->dbg, XFERS_INFLIGHT);
+ 		}
++		xfer->flags = 0;
+ 		hlist_add_head(&xfer->node, &minfo->free_xfers);
  	}
+ 	spin_unlock_irqrestore(&minfo->xfer_lock, flags);
+@@ -823,8 +824,6 @@ void scmi_xfer_raw_put(const struct scmi_handle *handle, struct scmi_xfer *xfer)
+ {
+ 	struct scmi_info *info = handle_to_scmi_info(handle);
  
--	if (!of_device_is_available(node)) {
--		pr_info("CPU with hartid=%lu is not available\n", *hart);
-+	if (!of_device_is_available(node))
- 		return -ENODEV;
--	}
+-	xfer->flags &= ~SCMI_XFER_FLAG_IS_RAW;
+-	xfer->flags &= ~SCMI_XFER_FLAG_CHAN_SET;
+ 	return __scmi_xfer_put(&info->tx_minfo, xfer);
+ }
  
- 	if (of_property_read_string(node, "riscv,isa-base", &isa))
- 		goto old_interface;
 -- 
 2.51.0
 
