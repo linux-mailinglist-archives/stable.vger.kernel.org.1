@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-190491-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190502-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id A600FC10768
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:06:25 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8711C107AB
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:06:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A9BCD4FEE11
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:01:57 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id AC4FA504B9F
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:02:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FB9F31D36D;
-	Mon, 27 Oct 2025 18:57:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2313C32D0D8;
+	Mon, 27 Oct 2025 18:57:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SlwGiGU7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d99bQf2m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCF4632A3C1;
-	Mon, 27 Oct 2025 18:57:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D252032C95F;
+	Mon, 27 Oct 2025 18:57:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591428; cv=none; b=uoAvqd0fIyM0+Z+KGo+XObFCbS/l5SciQ6h3bPGICGMhSRn1vHjtWT/NwVlsR73VRSzwZVknfnD2322tKZA7Ef/unTJSn4Hf4JLBvka+dy0Nn7OfHBLT55KemYgCRBVqHcf8JyxGhVi7yWBr0MokMiFaiU02gpUk8C2kUYce6xk=
+	t=1761591458; cv=none; b=CY2UK1twupmydq9aXCDD9CnhXFg5yN+ZsNSoI8QK+9RAu5LoGnN0hMOwpDVDsl5hDwEJEHfZ4+wz07B+aZVrbDcKPNeBeXeJFLVvvrY+x92BiifVDcW7Xt3Y9qRErRa96v8N86+MsvhRsGrfgwp342bBLK2XqrKiP9loG94TKkk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591428; c=relaxed/simple;
-	bh=OGUFgTfIHGbF/sLvCeJQ7e4BdSUVhnE4KydiK0zD0J4=;
+	s=arc-20240116; t=1761591458; c=relaxed/simple;
+	bh=fGZoDg4q6f0ijw+oSwSI986+HbvknNHoJnRhNgOTQaI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L6Oh+FBSvvX4iG8bx7nrU/WTw46UpE7jphr+sJujLP/aX7kEUuKTnjdKOXqqSwrtMN4Vl7BUWsri7RhvEHCUwOj34LTS8uro3ryghvYiefhUsz3ug+bQGEBK3q3j51khpozh6s1o8u3wykJ5LVhtxwypdWpacmB2oYc5SnkL1gk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SlwGiGU7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 513AEC4CEF1;
-	Mon, 27 Oct 2025 18:57:08 +0000 (UTC)
+	 MIME-Version; b=Zw/3WEAHtX3SWWm7X0K3qwwXWlMBrnjCtzMv3q9FeXt5kpsdWk/IrAKermjFC4n1+zdIjVQuVtfaoBVJjTv4tz6DC7aDmYrX0jwaPf4DVsKcBLH1KF/IygIBtJQ8sDkwr+lx+1/8SH0ll/kyD1hC3V7Z5pGMSNekQEwuNByHRFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d99bQf2m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 643ECC4CEF1;
+	Mon, 27 Oct 2025 18:57:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591428;
-	bh=OGUFgTfIHGbF/sLvCeJQ7e4BdSUVhnE4KydiK0zD0J4=;
+	s=korg; t=1761591458;
+	bh=fGZoDg4q6f0ijw+oSwSI986+HbvknNHoJnRhNgOTQaI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SlwGiGU7rogJgZEoEVeFmPKx7NrlzsndjFd2G7twaql6+a+aJLhtfvBmyzif0XoW0
-	 /XTEmQ/F3vlwu0B+jRosnuOeUB3uTbLGBhKu2XITYlHz2XoOoC7WdC26zfLJ71Aqw/
-	 TZMGr9EJBqHv1udlk+XGOenRwT3VLtV9Bw4NI0og=
+	b=d99bQf2mCa3WZBs7Q/DbFF+JSWiqQsNqs8Z3FKCKFjxiSnwTPiQ0gXwtPnHYEH0Jc
+	 Z5KTSWB1psdfy1yE1rdMjmsphkICmIkYNuhzL+QwI6IwXqi/2hR1JCo7v3fURmOL7P
+	 HfcqgGfEG4RYt7tX3xYZtmYoS9Xdlx0yiv8xotzE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nalivayko Sergey <Sergey.Nalivayko@kaspersky.com>,
-	Dominique Martinet <asmadeus@codewreck.org>,
+	syzbot <syzbot+895c23f6917da440ed0d@syzkaller.appspotmail.com>,
+	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 186/332] net/9p: fix double req put in p9_fd_cancelled
-Date: Mon, 27 Oct 2025 19:33:59 +0100
-Message-ID: <20251027183529.584582385@linuxfoundation.org>
+Subject: [PATCH 5.10 187/332] minixfs: Verify inode mode when loading from disk
+Date: Mon, 27 Oct 2025 19:34:00 +0100
+Message-ID: <20251027183529.614520324@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
 References: <20251027183524.611456697@linuxfoundation.org>
@@ -66,124 +67,47 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Nalivayko Sergey <Sergey.Nalivayko@kaspersky.com>
+From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
 
-[ Upstream commit 674b56aa57f9379854cb6798c3bbcef7e7b51ab7 ]
+[ Upstream commit 73861970938ad1323eb02bbbc87f6fbd1e5bacca ]
 
-Syzkaller reports a KASAN issue as below:
+The inode mode loaded from corrupted disk can be invalid. Do like what
+commit 0a9e74051313 ("isofs: Verify inode mode when loading from disk")
+does.
 
-general protection fault, probably for non-canonical address 0xfbd59c0000000021: 0000 [#1] PREEMPT SMP KASAN NOPTI
-KASAN: maybe wild-memory-access in range [0xdead000000000108-0xdead00000000010f]
-CPU: 0 PID: 5083 Comm: syz-executor.2 Not tainted 6.1.134-syzkaller-00037-g855bd1d7d838 #0
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.12.0-1 04/01/2014
-RIP: 0010:__list_del include/linux/list.h:114 [inline]
-RIP: 0010:__list_del_entry include/linux/list.h:137 [inline]
-RIP: 0010:list_del include/linux/list.h:148 [inline]
-RIP: 0010:p9_fd_cancelled+0xe9/0x200 net/9p/trans_fd.c:734
-
-Call Trace:
- <TASK>
- p9_client_flush+0x351/0x440 net/9p/client.c:614
- p9_client_rpc+0xb6b/0xc70 net/9p/client.c:734
- p9_client_version net/9p/client.c:920 [inline]
- p9_client_create+0xb51/0x1240 net/9p/client.c:1027
- v9fs_session_init+0x1f0/0x18f0 fs/9p/v9fs.c:408
- v9fs_mount+0xba/0xcb0 fs/9p/vfs_super.c:126
- legacy_get_tree+0x108/0x220 fs/fs_context.c:632
- vfs_get_tree+0x8e/0x300 fs/super.c:1573
- do_new_mount fs/namespace.c:3056 [inline]
- path_mount+0x6a6/0x1e90 fs/namespace.c:3386
- do_mount fs/namespace.c:3399 [inline]
- __do_sys_mount fs/namespace.c:3607 [inline]
- __se_sys_mount fs/namespace.c:3584 [inline]
- __x64_sys_mount+0x283/0x300 fs/namespace.c:3584
- do_syscall_x64 arch/x86/entry/common.c:51 [inline]
- do_syscall_64+0x35/0x80 arch/x86/entry/common.c:81
- entry_SYSCALL_64_after_hwframe+0x6e/0xd8
-
-This happens because of a race condition between:
-
-- The 9p client sending an invalid flush request and later cleaning it up;
-- The 9p client in p9_read_work() canceled all pending requests.
-
-      Thread 1                              Thread 2
-    ...
-    p9_client_create()
-    ...
-    p9_fd_create()
-    ...
-    p9_conn_create()
-    ...
-    // start Thread 2
-    INIT_WORK(&m->rq, p9_read_work);
-                                        p9_read_work()
-    ...
-    p9_client_rpc()
-    ...
-                                        ...
-                                        p9_conn_cancel()
-                                        ...
-                                        spin_lock(&m->req_lock);
-    ...
-    p9_fd_cancelled()
-    ...
-                                        ...
-                                        spin_unlock(&m->req_lock);
-                                        // status rewrite
-                                        p9_client_cb(m->client, req, REQ_STATUS_ERROR)
-                                        // first remove
-                                        list_del(&req->req_list);
-                                        ...
-
-    spin_lock(&m->req_lock)
-    ...
-    // second remove
-    list_del(&req->req_list);
-    spin_unlock(&m->req_lock)
-  ...
-
-Commit 74d6a5d56629 ("9p/trans_fd: Fix concurrency del of req_list in
-p9_fd_cancelled/p9_read_work") fixes a concurrency issue in the 9p filesystem
-client where the req_list could be deleted simultaneously by both
-p9_read_work and p9_fd_cancelled functions, but for the case where req->status
-equals REQ_STATUS_RCVD.
-
-Update the check for req->status in p9_fd_cancelled to skip processing not
-just received requests, but anything that is not SENT, as whatever
-changed the state from SENT also removed the request from its list.
-
-Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
-
-Fixes: afd8d6541155 ("9P: Add cancelled() to the transport functions.")
-Cc: stable@vger.kernel.org
-Signed-off-by: Nalivayko Sergey <Sergey.Nalivayko@kaspersky.com>
-Message-ID: <20250715154815.3501030-1-Sergey.Nalivayko@kaspersky.com>
-[updated the check from status == RECV || status == ERROR to status != SENT]
-Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
-[ replaced m->req_lock with client->lock ]
+Reported-by: syzbot <syzbot+895c23f6917da440ed0d@syzkaller.appspotmail.com>
+Closes: https://syzkaller.appspot.com/bug?extid=895c23f6917da440ed0d
+Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Link: https://lore.kernel.org/ec982681-84b8-4624-94fa-8af15b77cbd2@I-love.SAKURA.ne.jp
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/9p/trans_fd.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ fs/minix/inode.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/net/9p/trans_fd.c
-+++ b/net/9p/trans_fd.c
-@@ -711,10 +711,10 @@ static int p9_fd_cancelled(struct p9_cli
- 	p9_debug(P9_DEBUG_TRANS, "client %p req %p\n", client, req);
+diff --git a/fs/minix/inode.c b/fs/minix/inode.c
+index e938f5b1e4b94..7636e789eb49b 100644
+--- a/fs/minix/inode.c
++++ b/fs/minix/inode.c
+@@ -469,8 +469,14 @@ void minix_set_inode(struct inode *inode, dev_t rdev)
+ 		inode->i_op = &minix_symlink_inode_operations;
+ 		inode_nohighmem(inode);
+ 		inode->i_mapping->a_ops = &minix_aops;
+-	} else
++	} else if (S_ISCHR(inode->i_mode) || S_ISBLK(inode->i_mode) ||
++		   S_ISFIFO(inode->i_mode) || S_ISSOCK(inode->i_mode)) {
+ 		init_special_inode(inode, inode->i_mode, rdev);
++	} else {
++		printk(KERN_DEBUG "MINIX-fs: Invalid file type 0%04o for inode %lu.\n",
++		       inode->i_mode, inode->i_ino);
++		make_bad_inode(inode);
++	}
+ }
  
- 	spin_lock(&client->lock);
--	/* Ignore cancelled request if message has been received
--	 * before lock.
--	 */
--	if (req->status == REQ_STATUS_RCVD) {
-+	/* Ignore cancelled request if status changed since the request was
-+	 * processed in p9_client_flush()
-+	*/
-+	if (req->status != REQ_STATUS_SENT) {
- 		spin_unlock(&client->lock);
- 		return 0;
- 	}
+ /*
+-- 
+2.51.0
+
 
 
 
