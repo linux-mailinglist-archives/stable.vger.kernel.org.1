@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-190573-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191030-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4BD6C1092A
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:10:42 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id AAA96C11058
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:30:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A27285677B2
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:05:03 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id BB93950410E
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:21:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82A2C2D8377;
-	Mon, 27 Oct 2025 19:00:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F015C32863C;
+	Mon, 27 Oct 2025 19:20:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jq0fVK3s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S0KUBN/C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D9882D6E70;
-	Mon, 27 Oct 2025 19:00:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D66231D393;
+	Mon, 27 Oct 2025 19:20:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591643; cv=none; b=lIWrUHBPnBPnGMuaKlMd3T+bXSiy28mtINvxFnQ0sB2xPIJ4poMswTHNqW/gXLfcuG2Bsbh3xJ0SDPCu04WlodI3aByjFohNCDTHSn9HrpW1RZKhJVApwanZSHQe7bkHbYU/1/ye3KLf81/HA7hc5VNfAWiikB8EwPPEuyAHAeI=
+	t=1761592831; cv=none; b=EYzDcFYaQ5zwNdHKoVO8xDxvnTCfeHZJrEe+l3sQv86F7bHeODc914CuphH9FK7NMPATSyXXubY9jzb1YDtCZGSiY/ZsGfOtGBLc8gUKbkAJ1Mz4+N1kvx9CQldS+LM4bhPT89r9k9+kDE1buf/WwSAyMvOJE4RzSrEyhdA/lZs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591643; c=relaxed/simple;
-	bh=oaarkrgkskL9BWUJtyabSnfTzjFjQmhCxe8DrxmeHQo=;
+	s=arc-20240116; t=1761592831; c=relaxed/simple;
+	bh=h6TA3ugHgxiU37q6R4HjFLSUsGLfs2LnjGcBLufnz8U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bRAqzcYlseG7Hr7600rce4FdOCYQfIyZ1cmqfJ2T7tfv5OH6NiY7dwmfDArIzXtpiGCehauu3rp4D9XSwD1EEgPFPTbwP7FPz0IVfyqwNvx16ymGiwjLlVwR20PQ42jjbOG5Mev87zfA9tzH80EKFFov/dBfqUL7qO+ZHrmypLQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jq0fVK3s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4EB2C4CEF1;
-	Mon, 27 Oct 2025 19:00:42 +0000 (UTC)
+	 MIME-Version; b=FEWX4LwOL7nPngeiGiJgH2f8CXY4JdKDfSGSVKFX6Yjt6PTq0ilWuWtL6j0wkdqzt9CdIrlzW3BJxEGvSnLyAdr5Mlky/wGQf+5V9nybhwNWYfFmTLLFbJ/IQA8ECmkaU95r6n1xwEdvjhkhRwLmm4199Br0DpXUxP9ZMZ7b33A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S0KUBN/C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30B61C4CEF1;
+	Mon, 27 Oct 2025 19:20:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591643;
-	bh=oaarkrgkskL9BWUJtyabSnfTzjFjQmhCxe8DrxmeHQo=;
+	s=korg; t=1761592831;
+	bh=h6TA3ugHgxiU37q6R4HjFLSUsGLfs2LnjGcBLufnz8U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jq0fVK3styEgNiQDBR2EtPjpJXU4aUlw1I7M3bsjucfdhfYrWEe3D0t3Eg1bWEDGe
-	 7MeZpE8nZWXkLqGKpoDFnZceta8SWKIavmhQTQntS4Rw7yuEaxJF/FVDhy+KrIFR8L
-	 gbp9uSlIe4eIwQXj3SML0LBvUwMb/5uWDWA8BHFc=
+	b=S0KUBN/CDc5EDJ4cGascUswHXX75LEib52VSfwNcyJKvcBtgwQmgB83KzjCnopriT
+	 gYGEobek+E+4FBoHWUePvl9i9nalqOD3e601BW9hYWTG4Xa3ijFPZXI/WBfS07Vy1q
+	 eTXd/NGYamCRhTisEZG9RzvodNvZKteE6Jeht/BM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wei Fang <wei.fang@nxp.com>,
-	Claudiu Manoil <claudiu.manoil@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Viacheslav Dubeyko <slava@dubeyko.com>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	Yangtao Li <frank.li@vivo.com>,
+	linux-fsdevel@vger.kernel.org,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 276/332] net: enetc: correct the value of ENETC_RXB_TRUESIZE
+Subject: [PATCH 6.12 003/117] hfs: clear offset and space out of valid records in b-tree node
 Date: Mon, 27 Oct 2025 19:35:29 +0100
-Message-ID: <20251027183532.150288125@linuxfoundation.org>
+Message-ID: <20251027183454.023199612@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
-References: <20251027183524.611456697@linuxfoundation.org>
+In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
+References: <20251027183453.919157109@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +64,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wei Fang <wei.fang@nxp.com>
+From: Viacheslav Dubeyko <slava@dubeyko.com>
 
-[ Upstream commit e59bc32df2e989f034623a580e30a2a72af33b3f ]
+[ Upstream commit 18b07c44f245beb03588b00b212b38fce9af7cc9 ]
 
-The ENETC RX ring uses the page halves flipping mechanism, each page is
-split into two halves for the RX ring to use. And ENETC_RXB_TRUESIZE is
-defined to 2048 to indicate the size of half a page. However, the page
-size is configurable, for ARM64 platform, PAGE_SIZE is default to 4K,
-but it could be configured to 16K or 64K.
+Currently, hfs_brec_remove() executes moving records
+towards the location of deleted record and it updates
+offsets of moved records. However, the hfs_brec_remove()
+logic ignores the "mess" of b-tree node's free space and
+it doesn't touch the offsets out of records number.
+Potentially, it could confuse fsck or driver logic or
+to be a reason of potential corruption cases.
 
-When PAGE_SIZE is set to 16K or 64K, ENETC_RXB_TRUESIZE is not correct,
-and the RX ring will always use the first half of the page. This is not
-consistent with the description in the relevant kernel doc and commit
-messages.
+This patch reworks the logic of hfs_brec_remove()
+by means of clearing freed space of b-tree node
+after the records moving. And it clear the last
+offset that keeping old location of free space
+because now the offset before this one is keeping
+the actual offset to the free space after the record
+deletion.
 
-This issue is invisible in most cases, but if users want to increase
-PAGE_SIZE to receive a Jumbo frame with a single buffer for some use
-cases, it will not work as expected, because the buffer size of each
-RX BD is fixed to 2048 bytes.
-
-Based on the above two points, we expect to correct ENETC_RXB_TRUESIZE
-to (PAGE_SIZE >> 1), as described in the comment.
-
-Fixes: d4fd0404c1c9 ("enetc: Introduce basic PF and VF ENETC ethernet drivers")
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
-Reviewed-by: Claudiu Manoil <claudiu.manoil@nxp.com>
-Link: https://patch.msgid.link/20251016080131.3127122-1-wei.fang@nxp.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
+cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+cc: Yangtao Li <frank.li@vivo.com>
+cc: linux-fsdevel@vger.kernel.org
+Link: https://lore.kernel.org/r/20250815194918.38165-1-slava@dubeyko.com
+Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/freescale/enetc/enetc.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/hfs/brec.c | 27 +++++++++++++++++++++++----
+ 1 file changed, 23 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/freescale/enetc/enetc.h b/drivers/net/ethernet/freescale/enetc/enetc.h
-index 725c3d1cbb198..f58cca219a1e7 100644
---- a/drivers/net/ethernet/freescale/enetc/enetc.h
-+++ b/drivers/net/ethernet/freescale/enetc/enetc.h
-@@ -28,7 +28,7 @@ struct enetc_tx_swbd {
- };
+diff --git a/fs/hfs/brec.c b/fs/hfs/brec.c
+index 896396554bcc1..b01db1fae147c 100644
+--- a/fs/hfs/brec.c
++++ b/fs/hfs/brec.c
+@@ -179,6 +179,7 @@ int hfs_brec_remove(struct hfs_find_data *fd)
+ 	struct hfs_btree *tree;
+ 	struct hfs_bnode *node, *parent;
+ 	int end_off, rec_off, data_off, size;
++	int src, dst, len;
  
- #define ENETC_RX_MAXFRM_SIZE	ENETC_MAC_MAXFRM_SIZE
--#define ENETC_RXB_TRUESIZE	2048 /* PAGE_SIZE >> 1 */
-+#define ENETC_RXB_TRUESIZE	(PAGE_SIZE >> 1)
- #define ENETC_RXB_PAD		NET_SKB_PAD /* add extra space if needed */
- #define ENETC_RXB_DMA_SIZE	\
- 	(SKB_WITH_OVERHEAD(ENETC_RXB_TRUESIZE) - ENETC_RXB_PAD)
+ 	tree = fd->tree;
+ 	node = fd->bnode;
+@@ -208,10 +209,14 @@ int hfs_brec_remove(struct hfs_find_data *fd)
+ 	}
+ 	hfs_bnode_write_u16(node, offsetof(struct hfs_bnode_desc, num_recs), node->num_recs);
+ 
+-	if (rec_off == end_off)
+-		goto skip;
+ 	size = fd->keylength + fd->entrylength;
+ 
++	if (rec_off == end_off) {
++		src = fd->keyoffset;
++		hfs_bnode_clear(node, src, size);
++		goto skip;
++	}
++
+ 	do {
+ 		data_off = hfs_bnode_read_u16(node, rec_off);
+ 		hfs_bnode_write_u16(node, rec_off + 2, data_off - size);
+@@ -219,9 +224,23 @@ int hfs_brec_remove(struct hfs_find_data *fd)
+ 	} while (rec_off >= end_off);
+ 
+ 	/* fill hole */
+-	hfs_bnode_move(node, fd->keyoffset, fd->keyoffset + size,
+-		       data_off - fd->keyoffset - size);
++	dst = fd->keyoffset;
++	src = fd->keyoffset + size;
++	len = data_off - src;
++
++	hfs_bnode_move(node, dst, src, len);
++
++	src = dst + len;
++	len = data_off - src;
++
++	hfs_bnode_clear(node, src, len);
++
+ skip:
++	/*
++	 * Remove the obsolete offset to free space.
++	 */
++	hfs_bnode_write_u16(node, end_off, 0);
++
+ 	hfs_bnode_dump(node);
+ 	if (!fd->record)
+ 		hfs_brec_update_parent(fd);
 -- 
 2.51.0
 
