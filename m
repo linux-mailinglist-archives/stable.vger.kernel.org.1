@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-191283-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190897-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 906A7C11288
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:38:12 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id D717CC10E56
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:24:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6246D584155
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:33:27 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 9648E504366
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:16:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BA6E31E0E4;
-	Mon, 27 Oct 2025 19:31:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9ACA331D389;
+	Mon, 27 Oct 2025 19:14:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QLJXyMoi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="phtzY5jW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16A03322547;
-	Mon, 27 Oct 2025 19:31:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 586AB274FD0;
+	Mon, 27 Oct 2025 19:14:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761593516; cv=none; b=sYcg9c0Vh2ex8iNfkLrkCpUhtsHZ0PxKm/FFbQAKIZ3w5XHnaS2wmHIFDAo0mf0CVSAZQ4YSm2TpKECl9I2hNYmhE6Y2SXJNN5gtik+qzpxMjuHHhdxQ9DNYKds3A8SnjSHgU6aNrIV9c7TM0LZ1Z0r1jYFPhyYL5a3CFocFKn4=
+	t=1761592484; cv=none; b=TwPhp5pe0ltTr6xYdL1kphydsGL5hn7xzYcmmce5VfC4I4S4gpk6wFTYslaAFKI07qmi3iATTkQlANGKY0XVoPE3f0gSt/GN9FEhWBIlMDX81n5u6jcUObMo18BDO69o4hOn+jXrrcCYhclcwVQ+dznXOXKotv6tjzQDw+P0FRg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761593516; c=relaxed/simple;
-	bh=vHq6Bxh+CMdgk8txM8tjyzhEJWagLv9X5svXthT4pAo=;
+	s=arc-20240116; t=1761592484; c=relaxed/simple;
+	bh=BfK/Ki23uds8rmQ/y7jfKTFLpfpLRBxna4+YOC9eZoU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VIfSgEHiGvBeXBZUZtQi0HprTwuWRMwc4b2WMlzJg6NfRWEDPrz8Aswkw2hNBFLMRccU7RfzhTfZfz0I46t1u0NL5VtY3ortPxZ7OI1uLayM5C2hufddrOi77tGFXl4vHNS7tRQodm6kSoFE8QgBLXSHk3d+edwP04GSlFVlla4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QLJXyMoi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80AC5C4CEF1;
-	Mon, 27 Oct 2025 19:31:55 +0000 (UTC)
+	 MIME-Version; b=tF0Cs6zQL2Kz3anIVEt1mJ1cmN4UX1rEjfhVlg8z2pO0LaeFZPfQ/onybZNFbSqXYdXr+Lkqejousenq7Lr5fk4/CFhuQMy3E98jJvMu3q4NPihebRv7thLNvcLa02N5yT55g/03cfTKDaybByt5BufUmp3BoGV7xFexQWt2IgY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=phtzY5jW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9419BC4CEF1;
+	Mon, 27 Oct 2025 19:14:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761593515;
-	bh=vHq6Bxh+CMdgk8txM8tjyzhEJWagLv9X5svXthT4pAo=;
+	s=korg; t=1761592483;
+	bh=BfK/Ki23uds8rmQ/y7jfKTFLpfpLRBxna4+YOC9eZoU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QLJXyMoi3kQyj2XWA+1a1wofVIz5/Y9Nr5zH28yxslTIE0H6DdmmWFnVvQp8pvzS+
-	 ddw3oShcHJZO8YspVJZZUh849iAAmnpPFmlcbG/KmhFG77Kc2fkHlkB2k1zLUjgBvK
-	 FXySGbpMr39eQcL4el8eWSGmeu+UEmN40TYmMhTw=
+	b=phtzY5jWOX+65Mh5kPO3SDfs0ko+HEdyJPsmD61SZOjTpuXBZ3CO1phTv1fs+y5OV
+	 PhKMJ9AjQEnJesVUYriWRXEeCGHGkI+zRElRe8HnuO04ahLyqtesZZtjyGQwPJ6FGm
+	 5XPpgJ/4+o0BLggy/Ro4glO5ZR/tUGSsfoYGY2aw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haibo Chen <haibo.chen@nxp.com>,
-	Mark Brown <broonie@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 117/184] spi: spi-nxp-fspi: re-config the clock rate when operation require new clock rate
+Subject: [PATCH 6.1 138/157] PCI: tegra194: Reset BARs when running in PCIe endpoint mode
 Date: Mon, 27 Oct 2025 19:36:39 +0100
-Message-ID: <20251027183518.092807885@linuxfoundation.org>
+Message-ID: <20251027183504.965515936@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
-References: <20251027183514.934710872@linuxfoundation.org>
+In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
+References: <20251027183501.227243846@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,72 +63,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haibo Chen <haibo.chen@nxp.com>
+From: Niklas Cassel <cassel@kernel.org>
 
-[ Upstream commit a89103f67112453fa36c9513e951c19eed9d2d92 ]
+[ Upstream commit 42f9c66a6d0cc45758dab77233c5460e1cf003df ]
 
-Current operation contain the max_freq, so new coming operation may use
-new clock rate, need to re-config the clock rate to match the requirement.
+Tegra already defines all BARs except BAR0 as BAR_RESERVED.  This is
+sufficient for pci-epf-test to not allocate backing memory and to not call
+set_bar() for those BARs. However, marking a BAR as BAR_RESERVED does not
+mean that the BAR gets disabled.
 
-Fixes: 26851cf65ffc ("spi: nxp-fspi: Support per spi-mem operation frequency switches")
-Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
-Link: https://patch.msgid.link/20250922-fspi-fix-v1-1-ff4315359d31@nxp.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+The host side driver, pci_endpoint_test, simply does an ioremap for all
+enabled BARs and will run tests against all enabled BARs, so it will run
+tests against the BARs marked as BAR_RESERVED.
+
+After running the BAR tests (which will write to all enabled BARs), the
+inbound address translation is broken. This is because the tegra controller
+exposes the ATU Port Logic Structure in BAR4, so when BAR4 is written, the
+inbound address translation settings get overwritten.
+
+To avoid this, implement the dw_pcie_ep_ops .init() callback and start off
+by disabling all BARs (pci-epf-test will later enable/configure BARs that
+are not defined as BAR_RESERVED).
+
+This matches the behavior of other PCIe endpoint drivers: dra7xx, imx6,
+layerscape-ep, artpec6, dw-rockchip, qcom-ep, rcar-gen4, and uniphier-ep.
+
+With this, the PCI endpoint kselftest test case CONSECUTIVE_BAR_TEST (which
+was specifically made to detect address translation issues) passes.
+
+Fixes: c57247f940e8 ("PCI: tegra: Add support for PCIe endpoint mode in Tegra194")
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20250922140822.519796-7-cassel@kernel.org
+[ changed .init field to .ep_init in pcie_ep_ops struct ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-nxp-fspi.c | 16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
+ drivers/pci/controller/dwc/pcie-tegra194.c |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/spi/spi-nxp-fspi.c b/drivers/spi/spi-nxp-fspi.c
-index 7cbe774f1f39b..542d6f57c1aef 100644
---- a/drivers/spi/spi-nxp-fspi.c
-+++ b/drivers/spi/spi-nxp-fspi.c
-@@ -402,6 +402,8 @@ struct nxp_fspi {
- #define FSPI_NEED_INIT		BIT(0)
- #define FSPI_DTR_MODE		BIT(1)
- 	int flags;
-+	/* save the previous operation clock rate */
-+	unsigned long pre_op_rate;
- };
- 
- static inline int needs_ip_only(struct nxp_fspi *f)
-@@ -757,11 +759,17 @@ static void nxp_fspi_select_mem(struct nxp_fspi *f, struct spi_device *spi,
- 	uint64_t size_kb;
- 
- 	/*
--	 * Return, if previously selected target device is same as current
--	 * requested target device. Also the DTR or STR mode do not change.
-+	 * Return when following condition all meet,
-+	 * 1, if previously selected target device is same as current
-+	 *    requested target device.
-+	 * 2, the DTR or STR mode do not change.
-+	 * 3, previous operation max rate equals current one.
-+	 *
-+	 * For other case, need to re-config.
- 	 */
- 	if ((f->selected == spi_get_chipselect(spi, 0)) &&
--	    (!!(f->flags & FSPI_DTR_MODE) == op_is_dtr))
-+	    (!!(f->flags & FSPI_DTR_MODE) == op_is_dtr) &&
-+	    (f->pre_op_rate == op->max_freq))
- 		return;
- 
- 	/* Reset FLSHxxCR0 registers */
-@@ -807,6 +815,8 @@ static void nxp_fspi_select_mem(struct nxp_fspi *f, struct spi_device *spi,
- 	if (rate > 100000000)
- 		nxp_fspi_dll_calibration(f);
- 
-+	f->pre_op_rate = op->max_freq;
-+
- 	f->selected = spi_get_chipselect(spi, 0);
+--- a/drivers/pci/controller/dwc/pcie-tegra194.c
++++ b/drivers/pci/controller/dwc/pcie-tegra194.c
+@@ -1949,6 +1949,15 @@ static irqreturn_t tegra_pcie_ep_pex_rst
+ 	return IRQ_HANDLED;
  }
  
--- 
-2.51.0
-
++static void tegra_pcie_ep_init(struct dw_pcie_ep *ep)
++{
++	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
++	enum pci_barno bar;
++
++	for (bar = 0; bar < PCI_STD_NUM_BARS; bar++)
++		dw_pcie_ep_reset_bar(pci, bar);
++};
++
+ static int tegra_pcie_ep_raise_legacy_irq(struct tegra_pcie_dw *pcie, u16 irq)
+ {
+ 	/* Tegra194 supports only INTA */
+@@ -2022,6 +2031,7 @@ tegra_pcie_ep_get_features(struct dw_pci
+ }
+ 
+ static const struct dw_pcie_ep_ops pcie_ep_ops = {
++	.ep_init = tegra_pcie_ep_init,
+ 	.raise_irq = tegra_pcie_ep_raise_irq,
+ 	.get_features = tegra_pcie_ep_get_features,
+ };
 
 
 
