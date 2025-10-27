@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-190453-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190082-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E775C106E7
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:04:41 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBE72C0FF36
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:39:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E07BB1A2797C
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:01:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CB09319C504B
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:40:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B009632AAB1;
-	Mon, 27 Oct 2025 18:55:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF76B218EB1;
+	Mon, 27 Oct 2025 18:39:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BPhvAQcs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0S/O/e5y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67E5B329C55;
-	Mon, 27 Oct 2025 18:55:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADB622D7806;
+	Mon, 27 Oct 2025 18:39:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591330; cv=none; b=JJcPkghhq+scR2rfPNIl0649i8ExRWqnZZB4TcvVG55T4qZ5vqGT1A5yw9zCOW3zSc4ya2kjcEwEGVsEnu0L3NemldtwaPwVVwiUKr/A5kBZYA74PzOuUb1spaF1eLfEzLZgnPwhwTvDEeN14stRnyTAB2yDTKrqji0WnZA5mf4=
+	t=1761590388; cv=none; b=kQYYYCY61JDT1jtogkd4t4hgVco6h3dmv0ruGCg8Xdy5g9qYDDbq6mpx27b3BOQK1IbY/eCtIVlyos61VQa1cDtU7kjDq0K1mbfQWcKpPK3j+L/rX+CYjk82ZPt+weuggaHS6d3AGfy4D4uD7l7vxTJkxwuYQiNV4dhEfiSYVYg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591330; c=relaxed/simple;
-	bh=3nTfQR1KxhGsNq7IBpvkj+pu4YXRkWJZn6H4+JimFNE=;
+	s=arc-20240116; t=1761590388; c=relaxed/simple;
+	bh=CDA1rKfSYCB48hFufW9nizl+UMU2DOuIZkvESUD3nto=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jWTNG+4wAlEg6jDGuKtCp867HI5FvQyyPqJEcd6qspU0rmrhybeCKe3y9C8a/pwmSR8+TSYDmsHOzUeQnQ4AJ6vbbGY++PiGWzwI+bJl08/y89ukctl8KQ5bk9IPnaP9l9gWWJggd3+654ogTpptb1J+Z9HoGp4sfUCAvL9/Qls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BPhvAQcs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECE05C4CEF1;
-	Mon, 27 Oct 2025 18:55:29 +0000 (UTC)
+	 MIME-Version:Content-Type; b=omipyOSgIVAbaWH9mKVW5u/QoHJNBT+1iioDpWDxG4aExCItqpf/1j0eC30HZlrvgRGQQKIuP/5lkrzdps1nMI4g9IPk6bzsgoxFy2l6hrXbh3yts/8Vz7JfLZmhj13C2iJt5DwSxA9E3Mf9xbBmsH/XkkeNeuUO6prnL6sbeKQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0S/O/e5y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FD2AC4CEF1;
+	Mon, 27 Oct 2025 18:39:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591330;
-	bh=3nTfQR1KxhGsNq7IBpvkj+pu4YXRkWJZn6H4+JimFNE=;
+	s=korg; t=1761590388;
+	bh=CDA1rKfSYCB48hFufW9nizl+UMU2DOuIZkvESUD3nto=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BPhvAQcs6zkbguvpvO1iQM3dljRkTJHDpag4LWgL0G0lXWJshQnIQoM/yMszLXnvm
-	 BoeZppcBAqHllBVA5NCKg1a+T0vgiFBpqUTnx9KkVmI9emL7AZA5LD8nzTdcef1VJD
-	 Z/q7YVv2YWa0xj846S6wMrwYgy+5juYMGGuO8mGk=
+	b=0S/O/e5yfBNSaPb/qZMPE6+pDLRoMtEse1PQ87w5cflGZBzl6ilMJLFV6erGchKH7
+	 oi4kgN52dbbSJxLpcuTCFyHeKEMIEIlNmxP/wRaaYJ3z7HnivXD31SO7vfXRZOK0jM
+	 IfGU3fATjdvDbAPFnmeTumajxRoD42lUgiRKTJxQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 119/332] drm/amdgpu: Add additional DCE6 SCL registers
+Subject: [PATCH 5.4 026/224] pwm: tiehrpwm: Fix corner case in clock divisor calculation
 Date: Mon, 27 Oct 2025 19:32:52 +0100
-Message-ID: <20251027183527.756202437@linuxfoundation.org>
+Message-ID: <20251027183509.706820008@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
-References: <20251027183524.611456697@linuxfoundation.org>
+In-Reply-To: <20251027183508.963233542@linuxfoundation.org>
+References: <20251027183508.963233542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,97 +60,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
 
-[ Upstream commit 507296328b36ffd00ec1f4fde5b8acafb7222ec7 ]
+[ Upstream commit 00f83f0e07e44e2f1fb94b223e77ab7b18ee2d7d ]
 
-Fixes: 102b2f587ac8 ("drm/amd/display: dce_transform: DCE6 Scaling Horizontal Filter Init (v2)")
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+The function set_prescale_div() is responsible for calculating the clock
+divisor settings such that the input clock rate is divided down such that
+the required period length is at most 0x10000 clock ticks. If period_cycles
+is an integer multiple of 0x10000, the divisor period_cycles / 0x10000 is
+good enough. So round up in the calculation of the required divisor and
+compare it using >= instead of >.
+
+Fixes: 19891b20e7c2 ("pwm: pwm-tiehrpwm: PWM driver support for EHRPWM")
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+Link: https://lore.kernel.org/r/85488616d7bfcd9c32717651d0be7e330e761b9c.1754927682.git.u.kleine-koenig@baylibre.com
+Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/include/asic_reg/dce/dce_6_0_d.h       | 7 +++++++
- drivers/gpu/drm/amd/include/asic_reg/dce/dce_6_0_sh_mask.h | 2 ++
- 2 files changed, 9 insertions(+)
+ drivers/pwm/pwm-tiehrpwm.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/include/asic_reg/dce/dce_6_0_d.h b/drivers/gpu/drm/amd/include/asic_reg/dce/dce_6_0_d.h
-index 9de01ae574c03..067eddd9c62d8 100644
---- a/drivers/gpu/drm/amd/include/asic_reg/dce/dce_6_0_d.h
-+++ b/drivers/gpu/drm/amd/include/asic_reg/dce/dce_6_0_d.h
-@@ -4115,6 +4115,7 @@
- #define mmSCL0_SCL_COEF_RAM_CONFLICT_STATUS 0x1B55
- #define mmSCL0_SCL_COEF_RAM_SELECT 0x1B40
- #define mmSCL0_SCL_COEF_RAM_TAP_DATA 0x1B41
-+#define mmSCL0_SCL_SCALER_ENABLE 0x1B42
- #define mmSCL0_SCL_CONTROL 0x1B44
- #define mmSCL0_SCL_DEBUG 0x1B6A
- #define mmSCL0_SCL_DEBUG2 0x1B69
-@@ -4144,6 +4145,7 @@
- #define mmSCL1_SCL_COEF_RAM_CONFLICT_STATUS 0x1E55
- #define mmSCL1_SCL_COEF_RAM_SELECT 0x1E40
- #define mmSCL1_SCL_COEF_RAM_TAP_DATA 0x1E41
-+#define mmSCL1_SCL_SCALER_ENABLE 0x1E42
- #define mmSCL1_SCL_CONTROL 0x1E44
- #define mmSCL1_SCL_DEBUG 0x1E6A
- #define mmSCL1_SCL_DEBUG2 0x1E69
-@@ -4173,6 +4175,7 @@
- #define mmSCL2_SCL_COEF_RAM_CONFLICT_STATUS 0x4155
- #define mmSCL2_SCL_COEF_RAM_SELECT 0x4140
- #define mmSCL2_SCL_COEF_RAM_TAP_DATA 0x4141
-+#define mmSCL2_SCL_SCALER_ENABLE 0x4142
- #define mmSCL2_SCL_CONTROL 0x4144
- #define mmSCL2_SCL_DEBUG 0x416A
- #define mmSCL2_SCL_DEBUG2 0x4169
-@@ -4202,6 +4205,7 @@
- #define mmSCL3_SCL_COEF_RAM_CONFLICT_STATUS 0x4455
- #define mmSCL3_SCL_COEF_RAM_SELECT 0x4440
- #define mmSCL3_SCL_COEF_RAM_TAP_DATA 0x4441
-+#define mmSCL3_SCL_SCALER_ENABLE 0x4442
- #define mmSCL3_SCL_CONTROL 0x4444
- #define mmSCL3_SCL_DEBUG 0x446A
- #define mmSCL3_SCL_DEBUG2 0x4469
-@@ -4231,6 +4235,7 @@
- #define mmSCL4_SCL_COEF_RAM_CONFLICT_STATUS 0x4755
- #define mmSCL4_SCL_COEF_RAM_SELECT 0x4740
- #define mmSCL4_SCL_COEF_RAM_TAP_DATA 0x4741
-+#define mmSCL4_SCL_SCALER_ENABLE 0x4742
- #define mmSCL4_SCL_CONTROL 0x4744
- #define mmSCL4_SCL_DEBUG 0x476A
- #define mmSCL4_SCL_DEBUG2 0x4769
-@@ -4260,6 +4265,7 @@
- #define mmSCL5_SCL_COEF_RAM_CONFLICT_STATUS 0x4A55
- #define mmSCL5_SCL_COEF_RAM_SELECT 0x4A40
- #define mmSCL5_SCL_COEF_RAM_TAP_DATA 0x4A41
-+#define mmSCL5_SCL_SCALER_ENABLE 0x4A42
- #define mmSCL5_SCL_CONTROL 0x4A44
- #define mmSCL5_SCL_DEBUG 0x4A6A
- #define mmSCL5_SCL_DEBUG2 0x4A69
-@@ -4287,6 +4293,7 @@
- #define mmSCL_COEF_RAM_CONFLICT_STATUS 0x1B55
- #define mmSCL_COEF_RAM_SELECT 0x1B40
- #define mmSCL_COEF_RAM_TAP_DATA 0x1B41
-+#define mmSCL_SCALER_ENABLE 0x1B42
- #define mmSCL_CONTROL 0x1B44
- #define mmSCL_DEBUG 0x1B6A
- #define mmSCL_DEBUG2 0x1B69
-diff --git a/drivers/gpu/drm/amd/include/asic_reg/dce/dce_6_0_sh_mask.h b/drivers/gpu/drm/amd/include/asic_reg/dce/dce_6_0_sh_mask.h
-index 41c4a46ce3572..afe7303802c61 100644
---- a/drivers/gpu/drm/amd/include/asic_reg/dce/dce_6_0_sh_mask.h
-+++ b/drivers/gpu/drm/amd/include/asic_reg/dce/dce_6_0_sh_mask.h
-@@ -8646,6 +8646,8 @@
- #define REGAMMA_LUT_INDEX__REGAMMA_LUT_INDEX__SHIFT 0x00000000
- #define REGAMMA_LUT_WRITE_EN_MASK__REGAMMA_LUT_WRITE_EN_MASK_MASK 0x00000007L
- #define REGAMMA_LUT_WRITE_EN_MASK__REGAMMA_LUT_WRITE_EN_MASK__SHIFT 0x00000000
-+#define SCL_SCALER_ENABLE__SCL_SCALE_EN_MASK 0x00000001L
-+#define SCL_SCALER_ENABLE__SCL_SCALE_EN__SHIFT 0x00000000
- #define SCL_ALU_CONTROL__SCL_ALU_DISABLE_MASK 0x00000001L
- #define SCL_ALU_CONTROL__SCL_ALU_DISABLE__SHIFT 0x00000000
- #define SCL_BYPASS_CONTROL__SCL_BYPASS_MODE_MASK 0x00000003L
+diff --git a/drivers/pwm/pwm-tiehrpwm.c b/drivers/pwm/pwm-tiehrpwm.c
+index 7b4c770ce9d67..7414daef81a35 100644
+--- a/drivers/pwm/pwm-tiehrpwm.c
++++ b/drivers/pwm/pwm-tiehrpwm.c
+@@ -167,7 +167,7 @@ static int set_prescale_div(unsigned long rqst_prescaler, u16 *prescale_div,
+ 
+ 			*prescale_div = (1 << clkdiv) *
+ 					(hspclkdiv ? (hspclkdiv * 2) : 1);
+-			if (*prescale_div > rqst_prescaler) {
++			if (*prescale_div >= rqst_prescaler) {
+ 				*tb_clk_div = (clkdiv << TBCTL_CLKDIV_SHIFT) |
+ 					(hspclkdiv << TBCTL_HSPCLKDIV_SHIFT);
+ 				return 0;
+@@ -266,7 +266,7 @@ static int ehrpwm_pwm_config(struct pwm_chip *chip, struct pwm_device *pwm,
+ 	pc->period_cycles[pwm->hwpwm] = period_cycles;
+ 
+ 	/* Configure clock prescaler to support Low frequency PWM wave */
+-	if (set_prescale_div(period_cycles/PERIOD_MAX, &ps_divval,
++	if (set_prescale_div(DIV_ROUND_UP(period_cycles, PERIOD_MAX), &ps_divval,
+ 			     &tb_divval)) {
+ 		dev_err(chip->dev, "Unsupported values\n");
+ 		return -EINVAL;
 -- 
 2.51.0
 
