@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-190963-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190748-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64E2DC10E1B
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:23:35 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DCEAC10B2D
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:16:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8B1641A6120E
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:19:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8D2FA188D2B0
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:11:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64FB631D39A;
-	Mon, 27 Oct 2025 19:17:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFE7E32C946;
+	Mon, 27 Oct 2025 19:08:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l5ZrbLQR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iOI0rI4Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 189FE31D36D;
-	Mon, 27 Oct 2025 19:17:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C2C132D0C0;
+	Mon, 27 Oct 2025 19:08:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592656; cv=none; b=Z3Lq6OPX0TkMBBmAJg2KvCIUq+2H3sypG6SkN1WzQwow1Pb5ZAZo1+Fw6iIVgwLDT3LzgKX6VjQvQUYwZOrEzJQr5AIGTz0G439x8LpYL2t/qixx7gfgaRjKvVwYEQfwIysLBwq9dZfL1OzyTiN6atmOxE46gvpH5/GlJjkKSEE=
+	t=1761592094; cv=none; b=E4ayNcyNst09jT1vZgwWbVtKLBrCnxzm9IH3p/CZLFcPHAoRP9OEFdG+ha2AnEwRbl/66wXdMfiLPYul8ln+Kft1518q1IiM+tGocQDZLWiaxEmPdSXfQbi6roafT0FYx7VQeKIPR+CehL//Di/fhvIXnD4o2+FDR2RsD+I5xzA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592656; c=relaxed/simple;
-	bh=Sq15tN5HQC/dLTqps06opOMhWbVeLu772auvMli6nOc=;
+	s=arc-20240116; t=1761592094; c=relaxed/simple;
+	bh=2BGDq72nEvaerL3K/q0XoQym4ThkDFpnYYyoLvzSEGA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bXdEw+BhiNqezyrdWy3rkE0pIfqLbDdk3o0yJflWLY24fth5YQMGf2iDBRh0WmzwHgXZvwQ/Zoa08Rtd3XcxlE1c1T41s+HtT6b2AfxyYovm0+nYYSZn/WxrLuefDk+rs2kf018NtPLdwZmQaWS/mA/3AP7ITPlR6iAQKP5byBo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l5ZrbLQR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99CD2C4CEF1;
-	Mon, 27 Oct 2025 19:17:35 +0000 (UTC)
+	 MIME-Version; b=LJRds3aYnr33doS9JvYYQcWa5RGIeyJEL52MUgeGigb0rb1U2yuvJARdsCtF8l9JZcuMGS7jp5c07Pzw3MUVHCFxatqgMB66cUQNcVfwiW+oGYphAsYGealQg3o8w3w0J1tnvRBe9KVzQtL9tv+DCx7LMz479Ep6HI7u8MlndAM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iOI0rI4Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A86E3C4CEFD;
+	Mon, 27 Oct 2025 19:08:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592656;
-	bh=Sq15tN5HQC/dLTqps06opOMhWbVeLu772auvMli6nOc=;
+	s=korg; t=1761592093;
+	bh=2BGDq72nEvaerL3K/q0XoQym4ThkDFpnYYyoLvzSEGA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l5ZrbLQRQn8d807nBQ0arHhpyvytOoq3QbpML8imexjshy27mcZ+EiRdyCILTbuOE
-	 T11jra7fnoV+yRX/OUI5ujvfNB4ij4xGQjGswNeubu/5ijc3B1ldbqnwQJGv/ZNbKB
-	 F73+sQ3dfpQgLhyb0bmeyDBgJiJIgpxlT/rh7yi4=
+	b=iOI0rI4YqZO6t56Ba7XCWTc2iVMu1Kc0XXzI+fNxiLQ6PJ1LeB4ihJqP1kiZATGSQ
+	 M1UESm4NxfgRDiBrd9Yd1MxJvnnFyW3d8fs3RB5io/1KQ3g4N9kKmyVya3gJDptjG/
+	 B5XnhcFzxHSXkp5HwKudYXV2fJaPKmVFytMK+ze0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 46/84] net: ravb: Ensure memory write completes before ringing TX doorbell
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Carlos Maiolino <cmaiolino@redhat.com>,
+	Carlos Maiolino <cem@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 115/123] xfs: always warn about deprecated mount options
 Date: Mon, 27 Oct 2025 19:36:35 +0100
-Message-ID: <20251027183440.046111764@linuxfoundation.org>
+Message-ID: <20251027183449.463819408@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183438.817309828@linuxfoundation.org>
-References: <20251027183438.817309828@linuxfoundation.org>
+In-Reply-To: <20251027183446.381986645@linuxfoundation.org>
+References: <20251027183446.381986645@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,57 +62,97 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+From: "Darrick J. Wong" <djwong@kernel.org>
 
-commit 706136c5723626fcde8dd8f598a4dcd251e24927 upstream.
+[ Upstream commit 630785bfbe12c3ee3ebccd8b530a98d632b7e39d ]
 
-Add a final dma_wmb() barrier before triggering the transmit request
-(TCCR_TSRQ) to ensure all descriptor and buffer writes are visible to
-the DMA engine.
+The deprecation of the 'attr2' mount option in 6.18 wasn't entirely
+successful because nobody noticed that the kernel never printed a
+warning about attr2 being set in fstab if the only xfs filesystem is the
+root fs; the initramfs mounts the root fs with no mount options; and the
+init scripts only conveyed the fstab options by remounting the root fs.
 
-According to the hardware manual, a read-back operation is required
-before writing to the doorbell register to guarantee completion of
-previous writes. Instead of performing a dummy read, a dma_wmb() is
-used to both enforce the same ordering semantics on the CPU side and
-also to ensure completion of writes.
+Fix this by making it complain all the time.
 
-Fixes: c156633f1353 ("Renesas Ethernet AVB driver proper")
-Cc: stable@vger.kernel.org
-Co-developed-by: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
-Signed-off-by: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
-Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Reviewed-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
-Link: https://patch.msgid.link/20251017151830.171062-5-prabhakar.mahadev-lad.rj@bp.renesas.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Cc: stable@vger.kernel.org # v5.13
+Fixes: 92cf7d36384b99 ("xfs: Skip repetitive warnings about mount options")
+Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Carlos Maiolino <cmaiolino@redhat.com>
+Signed-off-by: Carlos Maiolino <cem@kernel.org>
+[ Update existing xfs_fs_warn_deprecated() callers ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/renesas/ravb_main.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ fs/xfs/xfs_super.c |   33 +++++++++++++++++++++------------
+ 1 file changed, 21 insertions(+), 12 deletions(-)
 
---- a/drivers/net/ethernet/renesas/ravb_main.c
-+++ b/drivers/net/ethernet/renesas/ravb_main.c
-@@ -2059,6 +2059,14 @@ static netdev_tx_t ravb_start_xmit(struc
- 		dma_wmb();
- 		desc->die_dt = DT_FSINGLE;
- 	}
-+
-+	/* Before ringing the doorbell we need to make sure that the latest
-+	 * writes have been committed to memory, otherwise it could delay
-+	 * things until the doorbell is rang again.
-+	 * This is in replacement of the read operation mentioned in the HW
-+	 * manuals.
-+	 */
-+	dma_wmb();
- 	ravb_modify(ndev, TCCR, TCCR_TSRQ0 << q, TCCR_TSRQ0 << q);
+--- a/fs/xfs/xfs_super.c
++++ b/fs/xfs/xfs_super.c
+@@ -1178,16 +1178,25 @@ suffix_kstrtoint(
+ static inline void
+ xfs_fs_warn_deprecated(
+ 	struct fs_context	*fc,
+-	struct fs_parameter	*param,
+-	uint64_t		flag,
+-	bool			value)
++	struct fs_parameter	*param)
+ {
+-	/* Don't print the warning if reconfiguring and current mount point
+-	 * already had the flag set
++	/*
++	 * Always warn about someone passing in a deprecated mount option.
++	 * Previously we wouldn't print the warning if we were reconfiguring
++	 * and current mount point already had the flag set, but that was not
++	 * the right thing to do.
++	 *
++	 * Many distributions mount the root filesystem with no options in the
++	 * initramfs and rely on mount -a to remount the root fs with the
++	 * options in fstab.  However, the old behavior meant that there would
++	 * never be a warning about deprecated mount options for the root fs in
++	 * /etc/fstab.  On a single-fs system, that means no warning at all.
++	 *
++	 * Compounding this problem are distribution scripts that copy
++	 * /proc/mounts to fstab, which means that we can't remove mount
++	 * options unless we're 100% sure they have only ever been advertised
++	 * in /proc/mounts in response to explicitly provided mount options.
+ 	 */
+-	if ((fc->purpose & FS_CONTEXT_FOR_RECONFIGURE) &&
+-            !!(XFS_M(fc->root->d_sb)->m_features & flag) == value)
+-		return;
+ 	xfs_warn(fc->s_fs_info, "%s mount option is deprecated.", param->key);
+ }
  
- 	priv->cur_tx[q] += num_tx_desc;
+@@ -1326,19 +1335,19 @@ xfs_fs_parse_param(
+ #endif
+ 	/* Following mount options will be removed in September 2025 */
+ 	case Opt_ikeep:
+-		xfs_fs_warn_deprecated(fc, param, XFS_FEAT_IKEEP, true);
++		xfs_fs_warn_deprecated(fc, param);
+ 		parsing_mp->m_features |= XFS_FEAT_IKEEP;
+ 		return 0;
+ 	case Opt_noikeep:
+-		xfs_fs_warn_deprecated(fc, param, XFS_FEAT_IKEEP, false);
++		xfs_fs_warn_deprecated(fc, param);
+ 		parsing_mp->m_features &= ~XFS_FEAT_IKEEP;
+ 		return 0;
+ 	case Opt_attr2:
+-		xfs_fs_warn_deprecated(fc, param, XFS_FEAT_ATTR2, true);
++		xfs_fs_warn_deprecated(fc, param);
+ 		parsing_mp->m_features |= XFS_FEAT_ATTR2;
+ 		return 0;
+ 	case Opt_noattr2:
+-		xfs_fs_warn_deprecated(fc, param, XFS_FEAT_NOATTR2, true);
++		xfs_fs_warn_deprecated(fc, param);
+ 		parsing_mp->m_features |= XFS_FEAT_NOATTR2;
+ 		return 0;
+ 	default:
 
 
 
