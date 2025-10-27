@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-191041-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190720-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D37ADC10FE5
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:29:16 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DFFBC108EE
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:10:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C4F18581DD1
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:23:01 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 150583517E7
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:10:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7ADBA32E131;
-	Mon, 27 Oct 2025 19:21:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B919A32ABF6;
+	Mon, 27 Oct 2025 19:06:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DXOHafHh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x+kJGTjN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34E6A32D45C;
-	Mon, 27 Oct 2025 19:21:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72D672D73B1;
+	Mon, 27 Oct 2025 19:06:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592860; cv=none; b=bjgR5ICcbRgnSoZxPx6pI30hksdf00NflFPWF6bJ3/jcKn00A1Kl9mr1Dk5ynlEUpU8O7N0I6YYyMLjKR4Wz+3r90imjg0umaMr1SZ/rHZwe7iqsdzxqWBY3APhO+Yy/RxjTe59yZeWV2afShZ8Wf45mPfoJDgtnrnL3sYruCm8=
+	t=1761592018; cv=none; b=A/L+ah3eoeSuQBzhFKlaKwwPGjs/yI9HK7QrXymTlhKFmEhP7uYKaeD44uWBoJxXbRtB9y3Q9jZVP4VUkRsMb1gjyG3bpV26E+hzbXVsrvDtjToywo9zTBq72rs8RE+Wl/NDDserDhb34btV6UphKtSb3V+kJruZba7GEHZy+fU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592860; c=relaxed/simple;
-	bh=s00QPazGtlnxOLEQaVPTQPev2OpK+paZmnbCYgBHoyQ=;
+	s=arc-20240116; t=1761592018; c=relaxed/simple;
+	bh=KUxb3lD8nN9fYDUGRm4L14PFeyPGoIFSSxHlspmzggA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WD3hcoRVHDIW/SowKrjgKv2TEdwZAY4ltxvYP2dGns3Y6sSivv/g0q9eC5dTeHQrPzius1btn1PqCdzwGCtAya0ifktRyV6kMjCp48S9i7Kpr2FM6FCxRiTTG4nOlHeBngRJEA3UFd1RM/QSzTJ1B6uCUKEs+82iu4UkcTUjgMI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DXOHafHh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE720C4CEF1;
-	Mon, 27 Oct 2025 19:20:59 +0000 (UTC)
+	 MIME-Version; b=Z6PvpJiJWZazgWkxM82HrQ1Kw1ngcGeKN4UED+bf8OaY+EjcRkdK0PFZAS25Y/m8SKnpacaPzSSOoldDLCk40hdl3x70mB9Np2kEqYZyDwYUHg1jdQ+JX75YRLc4+7RwbW8FF4mkap729NPs+COxaUZAeT5V6zn9sfiW7J0Y37k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x+kJGTjN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06073C4CEF1;
+	Mon, 27 Oct 2025 19:06:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592860;
-	bh=s00QPazGtlnxOLEQaVPTQPev2OpK+paZmnbCYgBHoyQ=;
+	s=korg; t=1761592018;
+	bh=KUxb3lD8nN9fYDUGRm4L14PFeyPGoIFSSxHlspmzggA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DXOHafHhpX3ZIBiLHQH2nsF8SSORLOAI0F3NHj+Gg1awoiuWwRz8fq3ooQ2jrY28Q
-	 zGVx/C+u8FUQDFy5UET4ARUX05GRP00KnZw2Ng1n/XYl0Y0gmCcm/oT4sqm3cS75k8
-	 6VN3NXxZBy4nUylvqoyJ1f24igG2mMnhMMa9q9Xs=
+	b=x+kJGTjN1QXzNCHDKF+Xyd+9XE/ErSvXNIK1zD3+RymBa+dQ6aJsY2fqMstZe0gst
+	 Rs9Ggd/F1vzUmjTUDCohd4EQlZWrnV+p7CTO++IvadAOrFj1yEPz6OfnuyEWBRHidk
+	 3zfxTyzUd9qtd99zGoXAM7AAX3QqvoZ3ffFS6xy4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiasheng Jiang <jiashengjiangcool@gmail.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 040/117] ptp: ocp: Fix typo using index 1 instead of i in SMA initialization loop
+	Florian Eckert <fe@dev.tdt.de>,
+	stable <stable@kernel.org>
+Subject: [PATCH 5.15 086/123] serial: 8250_exar: add support for Advantech 2 port card with Device ID 0x0018
 Date: Mon, 27 Oct 2025 19:36:06 +0100
-Message-ID: <20251027183455.067165190@linuxfoundation.org>
+Message-ID: <20251027183448.691063185@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
-References: <20251027183453.919157109@linuxfoundation.org>
+In-Reply-To: <20251027183446.381986645@linuxfoundation.org>
+References: <20251027183446.381986645@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +61,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+From: Florian Eckert <fe@dev.tdt.de>
 
-[ Upstream commit a767957e7a83f9e742be196aa52a48de8ac5a7e4 ]
+commit e7cbce761fe3fcbcb49bcf30d4f8ca5e1a9ee2a0 upstream.
 
-In ptp_ocp_sma_fb_init(), the code mistakenly used bp->sma[1]
-instead of bp->sma[i] inside a for-loop, which caused only SMA[1]
-to have its DIRECTION_CAN_CHANGE capability cleared. This led to
-inconsistent capability flags across SMA pins.
+The Advantech 2-port serial card with PCI vendor=0x13fe and device=0x0018
+has a 'XR17V35X' chip installed on the circuit board. Therefore, this
+driver can be used instead of theu outdated out-of-tree driver from the
+manufacturer.
 
-Fixes: 09eeb3aecc6c ("ptp_ocp: implement DPLL ops")
-Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
-Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Link: https://patch.msgid.link/20251021182456.9729-1-jiashengjiangcool@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Florian Eckert <fe@dev.tdt.de>
+Cc: stable <stable@kernel.org>
+Link: https://patch.msgid.link/20250924134115.2667650-1-fe@dev.tdt.de
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ptp/ptp_ocp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/tty/serial/8250/8250_exar.c |   11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/drivers/ptp/ptp_ocp.c b/drivers/ptp/ptp_ocp.c
-index efbd80db778d6..bd9919c01e502 100644
---- a/drivers/ptp/ptp_ocp.c
-+++ b/drivers/ptp/ptp_ocp.c
-@@ -2546,7 +2546,7 @@ ptp_ocp_sma_fb_init(struct ptp_ocp *bp)
- 		for (i = 0; i < OCP_SMA_NUM; i++) {
- 			bp->sma[i].fixed_fcn = true;
- 			bp->sma[i].fixed_dir = true;
--			bp->sma[1].dpll_prop.capabilities &=
-+			bp->sma[i].dpll_prop.capabilities &=
- 				~DPLL_PIN_CAPABILITIES_DIRECTION_CAN_CHANGE;
- 		}
- 		return;
--- 
-2.51.0
-
+--- a/drivers/tty/serial/8250/8250_exar.c
++++ b/drivers/tty/serial/8250/8250_exar.c
+@@ -33,6 +33,8 @@
+ #define PCI_DEVICE_ID_ACCESSIO_COM_4SM		0x10db
+ #define PCI_DEVICE_ID_ACCESSIO_COM_8SM		0x10ea
+ 
++#define PCI_DEVICE_ID_ADVANTECH_XR17V352	0x0018
++
+ #define PCI_DEVICE_ID_COMMTECH_4224PCI335	0x0002
+ #define PCI_DEVICE_ID_COMMTECH_4222PCI335	0x0004
+ #define PCI_DEVICE_ID_COMMTECH_2324PCI335	0x000a
+@@ -842,6 +844,12 @@ static const struct exar8250_board pbn_f
+ 	.exit		= pci_xr17v35x_exit,
+ };
+ 
++static const struct exar8250_board pbn_adv_XR17V352 = {
++	.num_ports	= 2,
++	.setup		= pci_xr17v35x_setup,
++	.exit		= pci_xr17v35x_exit,
++};
++
+ static const struct exar8250_board pbn_exar_XR17V4358 = {
+ 	.num_ports	= 12,
+ 	.setup		= pci_xr17v35x_setup,
+@@ -911,6 +919,9 @@ static const struct pci_device_id exar_p
+ 	USR_DEVICE(XR17C152, 2980, pbn_exar_XR17C15x),
+ 	USR_DEVICE(XR17C152, 2981, pbn_exar_XR17C15x),
+ 
++	/* ADVANTECH devices */
++	EXAR_DEVICE(ADVANTECH, XR17V352, pbn_adv_XR17V352),
++
+ 	/* Exar Corp. XR17C15[248] Dual/Quad/Octal UART */
+ 	EXAR_DEVICE(EXAR, XR17C152, pbn_exar_XR17C15x),
+ 	EXAR_DEVICE(EXAR, XR17C154, pbn_exar_XR17C15x),
 
 
 
