@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-190109-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190447-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6FDCC0FF8D
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:41:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A3B19C106A5
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:03:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1305719C53F8
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:41:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AC4C91A25888
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:59:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3576931B110;
-	Mon, 27 Oct 2025 18:41:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 297B11F7586;
+	Mon, 27 Oct 2025 18:55:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qtVOAa+i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G8wvvVgA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E26AB308F3A;
-	Mon, 27 Oct 2025 18:41:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D749F320A05;
+	Mon, 27 Oct 2025 18:55:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761590461; cv=none; b=Uy1pCY+ywjXVNlsmn+IV3d4k6HtVKipyapNHVl8AOhRaRF4fHVAmNMcRxfYQUe019dPUGyHsh1s2MlHtk0D8vPvfrsfWCj5uwo3sLqfxSGzQ1HnRD5Et/w4CFPUcKtk6Wdo5tBPJ63if5dfvGRkrUhLzP8CZLQpmGddcuGw/VQI=
+	t=1761591314; cv=none; b=G1lG680pIfijBYxIeCRGdsI0QlWqfrSgBEU/Q0yXp62/22ZtdiLiA1FIPgt4IhyUeLRxMwnXeJziMd5+4cRKYsCbMgmHGrm/GDHqe9Pb4A+g1TwZX2e8DS8DY1mHy76+o0K2wxSZKV/5wYJL7lHw8IuGEySx6FRHGPoZr6h/fOM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761590461; c=relaxed/simple;
-	bh=Kij9IZHJO4gb8cWer+YKpeeEHbNGdGTufZdIdQzCv2w=;
+	s=arc-20240116; t=1761591314; c=relaxed/simple;
+	bh=HyhBTeN3fyyJGhOb4XN4OddnIoeohRm9p7/Tca4+DtI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uTxba7F429gohYMyl+fsNfDFvygJZ5DNmU2JUWqN1bGr9Blv65YLgKmkH2yMjApqvZwcmSILg4MGPN/Wrk+T6LimT58ZyGTNrSsc6C25J/E3I7tgtLh+C2nmoNwR2ifpulIyk0LvqjDVMN2Hn9iGdNJHa+oQMYMr6diZxu4Oua4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qtVOAa+i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DB73C4CEF1;
-	Mon, 27 Oct 2025 18:40:59 +0000 (UTC)
+	 MIME-Version; b=L3AizXApfRFFoX7u+q/Oas9I8FzeR3VO7LwPhgNxOyQMrVe0rS+ZONwDPjbA/Ba7T3TUMdluumrAb1ACXWhPP324ZqqNDjq5d1lEblplOM2WoR/fukUvxgu3+KBPl6JvoetDiCo3nk04oWaHPqVBRU4N4DyxkuKv4aLuSZZKmMg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G8wvvVgA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B7D0C113D0;
+	Mon, 27 Oct 2025 18:55:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761590460;
-	bh=Kij9IZHJO4gb8cWer+YKpeeEHbNGdGTufZdIdQzCv2w=;
+	s=korg; t=1761591314;
+	bh=HyhBTeN3fyyJGhOb4XN4OddnIoeohRm9p7/Tca4+DtI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qtVOAa+iRdoxUq9hDJzMNqKSiFy1qQ18t1XmxVFfsUwWjFUh3Ai02z7rDF4ASIpnW
-	 R1Ysb1eSfCVPiCmN+R6VJETs55UdBSO0UdbVT4s1XQltLKOPuvupZexdnG+ZyzQqUO
-	 FX7Op8G45U3sF9HQJPYTt9TLganAyhGNYMvC1IL8=
+	b=G8wvvVgAFf6bTiJPDkg52kFclgPLh8jrOF7Kx3rQ2DlVIKqS67cuCEI1cwMLBNBgS
+	 YkJR1BDxVaOFprV4PyLOKeA9WfPZOabt0nvFgsVOCCT/0+ECE+lMhQM9zbOscFKkW1
+	 3KAKS+ifL+4w5JG0Dw8vPcSSvUAz82x1ez/HIx2E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vlad Dumitrescu <vdumitrescu@nvidia.com>,
-	Mark Zhang <markzhang@nvidia.com>,
-	Edward Srouji <edwards@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 054/224] IB/sa: Fix sa_local_svc_timeout_ms read race
-Date: Mon, 27 Oct 2025 19:33:20 +0100
-Message-ID: <20251027183510.445609755@linuxfoundation.org>
+	Eric Biggers <ebiggers@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.10 148/332] sctp: Fix MAC comparison to be constant-time
+Date: Mon, 27 Oct 2025 19:33:21 +0100
+Message-ID: <20251027183528.542700540@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183508.963233542@linuxfoundation.org>
-References: <20251027183508.963233542@linuxfoundation.org>
+In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
+References: <20251027183524.611456697@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,66 +61,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vlad Dumitrescu <vdumitrescu@nvidia.com>
+From: Eric Biggers <ebiggers@kernel.org>
 
-[ Upstream commit 1428cd764cd708d53a072a2f208d87014bfe05bc ]
+commit dd91c79e4f58fbe2898dac84858033700e0e99fb upstream.
 
-When computing the delta, the sa_local_svc_timeout_ms is read without
-ib_nl_request_lock held. Though unlikely in practice, this can cause
-a race condition if multiple local service threads are managing the
-timeout.
+To prevent timing attacks, MACs need to be compared in constant time.
+Use the appropriate helper function for this.
 
-Fixes: 2ca546b92a02 ("IB/sa: Route SA pathrecord query through netlink")
-Signed-off-by: Vlad Dumitrescu <vdumitrescu@nvidia.com>
-Reviewed-by: Mark Zhang <markzhang@nvidia.com>
-Signed-off-by: Edward Srouji <edwards@nvidia.com>
-Link: https://patch.msgid.link/20250916163112.98414-1-edwards@nvidia.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: bbd0d59809f9 ("[SCTP]: Implement the receive and verification of AUTH chunk")
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@vger.kernel.org
+Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+Link: https://patch.msgid.link/20250818205426.30222-3-ebiggers@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/core/sa_query.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ net/sctp/sm_make_chunk.c |    3 ++-
+ net/sctp/sm_statefuns.c  |    3 ++-
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/infiniband/core/sa_query.c b/drivers/infiniband/core/sa_query.c
-index 11ab6390eda4d..b05df8694a4a5 100644
---- a/drivers/infiniband/core/sa_query.c
-+++ b/drivers/infiniband/core/sa_query.c
-@@ -1036,6 +1036,8 @@ int ib_nl_handle_set_timeout(struct sk_buff *skb,
- 	if (timeout > IB_SA_LOCAL_SVC_TIMEOUT_MAX)
- 		timeout = IB_SA_LOCAL_SVC_TIMEOUT_MAX;
+--- a/net/sctp/sm_make_chunk.c
++++ b/net/sctp/sm_make_chunk.c
+@@ -31,6 +31,7 @@
+ #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
  
-+	spin_lock_irqsave(&ib_nl_request_lock, flags);
-+
- 	delta = timeout - sa_local_svc_timeout_ms;
- 	if (delta < 0)
- 		abs_delta = -delta;
-@@ -1043,7 +1045,6 @@ int ib_nl_handle_set_timeout(struct sk_buff *skb,
- 		abs_delta = delta;
- 
- 	if (delta != 0) {
--		spin_lock_irqsave(&ib_nl_request_lock, flags);
- 		sa_local_svc_timeout_ms = timeout;
- 		list_for_each_entry(query, &ib_nl_request_list, list) {
- 			if (delta < 0 && abs_delta > query->timeout)
-@@ -1061,9 +1062,10 @@ int ib_nl_handle_set_timeout(struct sk_buff *skb,
- 		if (delay)
- 			mod_delayed_work(ib_nl_wq, &ib_nl_timed_work,
- 					 (unsigned long)delay);
--		spin_unlock_irqrestore(&ib_nl_request_lock, flags);
+ #include <crypto/hash.h>
++#include <crypto/algapi.h>
+ #include <linux/types.h>
+ #include <linux/kernel.h>
+ #include <linux/ip.h>
+@@ -1751,7 +1752,7 @@ struct sctp_association *sctp_unpack_coo
+ 		}
  	}
  
-+	spin_unlock_irqrestore(&ib_nl_request_lock, flags);
-+
- settimeout_out:
- 	return 0;
- }
--- 
-2.51.0
-
+-	if (memcmp(digest, cookie->signature, SCTP_SIGNATURE_SIZE)) {
++	if (crypto_memneq(digest, cookie->signature, SCTP_SIGNATURE_SIZE)) {
+ 		*error = -SCTP_IERROR_BAD_SIG;
+ 		goto fail;
+ 	}
+--- a/net/sctp/sm_statefuns.c
++++ b/net/sctp/sm_statefuns.c
+@@ -30,6 +30,7 @@
+ 
+ #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+ 
++#include <crypto/algapi.h>
+ #include <linux/types.h>
+ #include <linux/kernel.h>
+ #include <linux/ip.h>
+@@ -4303,7 +4304,7 @@ static enum sctp_ierror sctp_sf_authenti
+ 				 sh_key, GFP_ATOMIC);
+ 
+ 	/* Discard the packet if the digests do not match */
+-	if (memcmp(save_digest, digest, sig_len)) {
++	if (crypto_memneq(save_digest, digest, sig_len)) {
+ 		kfree(save_digest);
+ 		return SCTP_IERROR_BAD_SIG;
+ 	}
 
 
 
