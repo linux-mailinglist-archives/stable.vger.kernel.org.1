@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-190845-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191193-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5857CC10D30
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:21:26 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91C50C1116E
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:33:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 15394565F43
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:14:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E02731A2522D
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:29:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 659DA31BCBC;
-	Mon, 27 Oct 2025 19:12:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F95C2F4A14;
+	Mon, 27 Oct 2025 19:27:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WRY+pC9D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yh6LGTry"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AD862D836A;
-	Mon, 27 Oct 2025 19:12:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFDAC1BC4E;
+	Mon, 27 Oct 2025 19:27:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592349; cv=none; b=d3lkF7vHtqBloTFmyAPIlOgPId7Rzbz354vRY/t3hf7VrxarYXicWNqfsw/6jpMkP3bTGirQSIRN1qpbjt1hqQtjxmSr/DupqTtdlDxWwe/llfrPuJvsqeu/Uk2YWLjw2ELXuwb+gSNUc3cC1Qdz1WJwUza2oKT+9a8QgFxVa2Y=
+	t=1761593246; cv=none; b=NtzA0uz8l6Ngibx1xnBqSiUx3epWu4q8fRhwc1UIWNKYusuGzXnz8Vyu9GYWOxsQ87R00ZVqgHQIqVlX8kdjsIaB1MT/y5UFF8gff3PGO4oEOV+VNRO7K+FhPEgQRRhdd0cgiUk0pPFClCIt9xu3zIhWxSGlbw5h04isn9HNsDc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592349; c=relaxed/simple;
-	bh=QH9YlGU2RRBZ+HBOdA80kvJUWNceuIDawEUzriQBgtk=;
+	s=arc-20240116; t=1761593246; c=relaxed/simple;
+	bh=XPcAxNMJ6NsmtceC3Oj5tQzI34eN7HkTYoxVtb8MJI4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tPGhHdQfU8WmPAGSVHsXWhOSBZIgR1FPSQZI4hu3p2B5hI2nwKKXtmWE46LkM1x+7mKc7014iGOxUhgKvIYCUFP7X++Oax9FM1+FizWjGO9UjcvG5TROLt+sXAZbm7jhzCOjFsdiuzPSiJCcFgXD/ssRFHJJk0e+nGNVJcd1rkI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WRY+pC9D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97F2CC4CEF1;
-	Mon, 27 Oct 2025 19:12:28 +0000 (UTC)
+	 MIME-Version; b=DqZsiQeA3C/w9hoSxZvAX6U7prlMfrYpJ7lAfwmanrCVxTA4O+c2UZHn72WvXcFFesC+Fy0Y3vDZ1BBs27JtDHu5LhFPpz/1PeVcCpAYYrPqWieolANUWvjA9K7/xlSKJs1dMwS50CWx8C/C+iDs50aB0aoCYnc50R3cq05eMOM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yh6LGTry; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62BB3C4CEF1;
+	Mon, 27 Oct 2025 19:27:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592348;
-	bh=QH9YlGU2RRBZ+HBOdA80kvJUWNceuIDawEUzriQBgtk=;
+	s=korg; t=1761593246;
+	bh=XPcAxNMJ6NsmtceC3Oj5tQzI34eN7HkTYoxVtb8MJI4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WRY+pC9D/dmpx3tv8pKA5w5Z4nImzhXYiXMiAdJi3L3hS8Ptmpw8vy0AeCcThLdZB
-	 dTPE8YX4CAyDquXVwjLSXxbW9bPK2u9FGbuTJrRMBWNVF9qRBAK8ZGqkyhRBQ0w3hW
-	 u94WbE9uANgK+gvYFYDlg8IC19aiIcLy0a8EM9tg=
+	b=Yh6LGTry+ksHal2+tml4QHkysreGP/huefQezDepnGCbKUzpMqF7M+VUi48n+v5hs
+	 bLLKopZXXSvgDGSNThbFJ4pwczTJ+58dOtiaoBRHW9NBi/kGqsuE9zI17nLZQzVr8I
+	 MaYwYKXFwln5Ezd2J1dk8rdLuTBLQMvf4AoqJCI8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.1 088/157] Revert "cpuidle: menu: Avoid discarding useful information"
-Date: Mon, 27 Oct 2025 19:35:49 +0100
-Message-ID: <20251027183503.633168988@linuxfoundation.org>
+	Tsukasa OI <research_trasio@irq.a4lg.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Olof Johansson <olof@lixom.net>,
+	Jingwei Wang <wangjingwei@iscas.ac.cn>,
+	Paul Walmsley <pjw@kernel.org>
+Subject: [PATCH 6.17 068/184] riscv: hwprobe: Fix stale vDSO data for late-initialized keys at boot
+Date: Mon, 27 Oct 2025 19:35:50 +0100
+Message-ID: <20251027183516.720763341@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
-References: <20251027183501.227243846@linuxfoundation.org>
+In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
+References: <20251027183514.934710872@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,83 +65,225 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Jingwei Wang <wangjingwei@iscas.ac.cn>
 
-commit 10fad4012234a7dea621ae17c0c9486824f645a0 upstream.
+commit 5d15d2ad36b0f7afab83ca9fc8a2a6e60cbe54c4 upstream.
 
-It is reported that commit 85975daeaa4d ("cpuidle: menu: Avoid discarding
-useful information") led to a performance regression on Intel Jasper Lake
-systems because it reduced the time spent by CPUs in idle state C7 which
-is correlated to the maximum frequency the CPUs can get to because of an
-average running power limit [1].
+The hwprobe vDSO data for some keys, like MISALIGNED_VECTOR_PERF,
+is determined by an asynchronous kthread. This can create a race
+condition where the kthread finishes after the vDSO data has
+already been populated, causing userspace to read stale values.
 
-Before that commit, get_typical_interval() would have returned UINT_MAX
-whenever it had been unable to make a high-confidence prediction which
-had led to selecting the deepest available idle state too often and
-both power and performance had been inadequate as a result of that on
-some systems.  However, this had not been a problem on systems with
-relatively aggressive average running power limits, like the Jasper Lake
-systems in question, because on those systems it was compensated by the
-ability to run CPUs faster.
+To fix this race, a new 'ready' flag is added to the vDSO data,
+initialized to 'false' during arch_initcall_sync. This flag is
+checked by both the vDSO's user-space code and the riscv_hwprobe
+syscall. The syscall serves as a one-time gate, using a completion
+to wait for any pending probes before populating the data and
+setting the flag to 'true', thus ensuring userspace reads fresh
+values on its first request.
 
-It was addressed by causing get_typical_interval() to return a number
-based on the recent idle duration information available to it even if it
-could not make a high-confidence prediction, but that clearly did not
-take the possible correlation between idle power and available CPU
-capacity into account.
-
-For this reason, revert most of the changes made by commit 85975daeaa4d,
-except for one cosmetic cleanup, and add a comment explaining the
-rationale for returning UINT_MAX from get_typical_interval() when it
-is unable to make a high-confidence prediction.
-
-Fixes: 85975daeaa4d ("cpuidle: menu: Avoid discarding useful information")
-Closes: https://lore.kernel.org/linux-pm/36iykr223vmcfsoysexug6s274nq2oimcu55ybn6ww4il3g3cv@cohflgdbpnq7/ [1]
-Reported-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: All applicable <stable@vger.kernel.org>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Link: https://patch.msgid.link/3663603.iIbC2pHGDl@rafael.j.wysocki
+Reported-by: Tsukasa OI <research_trasio@irq.a4lg.com>
+Closes: https://lore.kernel.org/linux-riscv/760d637b-b13b-4518-b6bf-883d55d44e7f@irq.a4lg.com/
+Fixes: e7c9d66e313b ("RISC-V: Report vector unaligned access speed hwprobe")
+Cc: Palmer Dabbelt <palmer@dabbelt.com>
+Cc: Alexandre Ghiti <alexghiti@rivosinc.com>
+Cc: Olof Johansson <olof@lixom.net>
+Cc: stable@vger.kernel.org
+Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Co-developed-by: Palmer Dabbelt <palmer@dabbelt.com>
+Signed-off-by: Palmer Dabbelt <palmer@dabbelt.com>
+Signed-off-by: Jingwei Wang <wangjingwei@iscas.ac.cn>
+Link: https://lore.kernel.org/r/20250811142035.105820-1-wangjingwei@iscas.ac.cn
+[pjw@kernel.org: fix checkpatch issues]
+Signed-off-by: Paul Walmsley <pjw@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cpuidle/governors/menu.c |   21 +++++++++------------
- 1 file changed, 9 insertions(+), 12 deletions(-)
+ arch/riscv/include/asm/hwprobe.h           |    7 ++
+ arch/riscv/include/asm/vdso/arch_data.h    |    6 ++
+ arch/riscv/kernel/sys_hwprobe.c            |   70 ++++++++++++++++++++++++-----
+ arch/riscv/kernel/unaligned_access_speed.c |    9 ++-
+ arch/riscv/kernel/vdso/hwprobe.c           |    2 
+ 5 files changed, 79 insertions(+), 15 deletions(-)
 
---- a/drivers/cpuidle/governors/menu.c
-+++ b/drivers/cpuidle/governors/menu.c
-@@ -256,20 +256,17 @@ again:
- 	 *
- 	 * This can deal with workloads that have long pauses interspersed
- 	 * with sporadic activity with a bunch of short pauses.
-+	 *
-+	 * However, if the number of remaining samples is too small to exclude
-+	 * any more outliers, allow the deepest available idle state to be
-+	 * selected because there are systems where the time spent by CPUs in
-+	 * deep idle states is correlated to the maximum frequency the CPUs
-+	 * can get to.  On those systems, shallow idle states should be avoided
-+	 * unless there is a clear indication that the given CPU is most likley
-+	 * going to be woken up shortly.
- 	 */
--	if (divisor * 4 <= INTERVALS * 3) {
--		/*
--		 * If there are sufficiently many data points still under
--		 * consideration after the outliers have been eliminated,
--		 * returning without a prediction would be a mistake because it
--		 * is likely that the next interval will not exceed the current
--		 * maximum, so return the latter in that case.
--		 */
--		if (divisor >= INTERVALS / 2)
--			return max;
--
-+	if (divisor * 4 <= INTERVALS * 3)
- 		return UINT_MAX;
--	}
+--- a/arch/riscv/include/asm/hwprobe.h
++++ b/arch/riscv/include/asm/hwprobe.h
+@@ -41,4 +41,11 @@ static inline bool riscv_hwprobe_pair_cm
+ 	return pair->value == other_pair->value;
+ }
  
- 	thresh = max - 1;
- 	goto again;
++#ifdef CONFIG_MMU
++void riscv_hwprobe_register_async_probe(void);
++void riscv_hwprobe_complete_async_probe(void);
++#else
++static inline void riscv_hwprobe_register_async_probe(void) {}
++static inline void riscv_hwprobe_complete_async_probe(void) {}
++#endif
+ #endif
+--- a/arch/riscv/include/asm/vdso/arch_data.h
++++ b/arch/riscv/include/asm/vdso/arch_data.h
+@@ -12,6 +12,12 @@ struct vdso_arch_data {
+ 
+ 	/* Boolean indicating all CPUs have the same static hwprobe values. */
+ 	__u8 homogeneous_cpus;
++
++	/*
++	 * A gate to check and see if the hwprobe data is actually ready, as
++	 * probing is deferred to avoid boot slowdowns.
++	 */
++	__u8 ready;
+ };
+ 
+ #endif /* __RISCV_ASM_VDSO_ARCH_DATA_H */
+--- a/arch/riscv/kernel/sys_hwprobe.c
++++ b/arch/riscv/kernel/sys_hwprobe.c
+@@ -5,6 +5,9 @@
+  * more details.
+  */
+ #include <linux/syscalls.h>
++#include <linux/completion.h>
++#include <linux/atomic.h>
++#include <linux/once.h>
+ #include <asm/cacheflush.h>
+ #include <asm/cpufeature.h>
+ #include <asm/hwprobe.h>
+@@ -450,28 +453,32 @@ static int hwprobe_get_cpus(struct riscv
+ 	return 0;
+ }
+ 
+-static int do_riscv_hwprobe(struct riscv_hwprobe __user *pairs,
+-			    size_t pair_count, size_t cpusetsize,
+-			    unsigned long __user *cpus_user,
+-			    unsigned int flags)
+-{
+-	if (flags & RISCV_HWPROBE_WHICH_CPUS)
+-		return hwprobe_get_cpus(pairs, pair_count, cpusetsize,
+-					cpus_user, flags);
++#ifdef CONFIG_MMU
+ 
+-	return hwprobe_get_values(pairs, pair_count, cpusetsize,
+-				  cpus_user, flags);
++static DECLARE_COMPLETION(boot_probes_done);
++static atomic_t pending_boot_probes = ATOMIC_INIT(1);
++
++void riscv_hwprobe_register_async_probe(void)
++{
++	atomic_inc(&pending_boot_probes);
+ }
+ 
+-#ifdef CONFIG_MMU
++void riscv_hwprobe_complete_async_probe(void)
++{
++	if (atomic_dec_and_test(&pending_boot_probes))
++		complete(&boot_probes_done);
++}
+ 
+-static int __init init_hwprobe_vdso_data(void)
++static int complete_hwprobe_vdso_data(void)
+ {
+ 	struct vdso_arch_data *avd = vdso_k_arch_data;
+ 	u64 id_bitsmash = 0;
+ 	struct riscv_hwprobe pair;
+ 	int key;
+ 
++	if (unlikely(!atomic_dec_and_test(&pending_boot_probes)))
++		wait_for_completion(&boot_probes_done);
++
+ 	/*
+ 	 * Initialize vDSO data with the answers for the "all CPUs" case, to
+ 	 * save a syscall in the common case.
+@@ -499,13 +506,52 @@ static int __init init_hwprobe_vdso_data
+ 	 * vDSO should defer to the kernel for exotic cpu masks.
+ 	 */
+ 	avd->homogeneous_cpus = id_bitsmash != 0 && id_bitsmash != -1;
++
++	/*
++	 * Make sure all the VDSO values are visible before we look at them.
++	 * This pairs with the implicit "no speculativly visible accesses"
++	 * barrier in the VDSO hwprobe code.
++	 */
++	smp_wmb();
++	avd->ready = true;
++	return 0;
++}
++
++static int __init init_hwprobe_vdso_data(void)
++{
++	struct vdso_arch_data *avd = vdso_k_arch_data;
++
++	/*
++	 * Prevent the vDSO cached values from being used, as they're not ready
++	 * yet.
++	 */
++	avd->ready = false;
+ 	return 0;
+ }
+ 
+ arch_initcall_sync(init_hwprobe_vdso_data);
+ 
++#else
++
++static int complete_hwprobe_vdso_data(void) { return 0; }
++
+ #endif /* CONFIG_MMU */
+ 
++static int do_riscv_hwprobe(struct riscv_hwprobe __user *pairs,
++			    size_t pair_count, size_t cpusetsize,
++			    unsigned long __user *cpus_user,
++			    unsigned int flags)
++{
++	DO_ONCE_SLEEPABLE(complete_hwprobe_vdso_data);
++
++	if (flags & RISCV_HWPROBE_WHICH_CPUS)
++		return hwprobe_get_cpus(pairs, pair_count, cpusetsize,
++					cpus_user, flags);
++
++	return hwprobe_get_values(pairs, pair_count, cpusetsize,
++				cpus_user, flags);
++}
++
+ SYSCALL_DEFINE5(riscv_hwprobe, struct riscv_hwprobe __user *, pairs,
+ 		size_t, pair_count, size_t, cpusetsize, unsigned long __user *,
+ 		cpus, unsigned int, flags)
+--- a/arch/riscv/kernel/unaligned_access_speed.c
++++ b/arch/riscv/kernel/unaligned_access_speed.c
+@@ -379,6 +379,7 @@ free:
+ static int __init vec_check_unaligned_access_speed_all_cpus(void *unused __always_unused)
+ {
+ 	schedule_on_each_cpu(check_vector_unaligned_access);
++	riscv_hwprobe_complete_async_probe();
+ 
+ 	return 0;
+ }
+@@ -473,8 +474,12 @@ static int __init check_unaligned_access
+ 			per_cpu(vector_misaligned_access, cpu) = unaligned_vector_speed_param;
+ 	} else if (!check_vector_unaligned_access_emulated_all_cpus() &&
+ 		   IS_ENABLED(CONFIG_RISCV_PROBE_VECTOR_UNALIGNED_ACCESS)) {
+-		kthread_run(vec_check_unaligned_access_speed_all_cpus,
+-			    NULL, "vec_check_unaligned_access_speed_all_cpus");
++		riscv_hwprobe_register_async_probe();
++		if (IS_ERR(kthread_run(vec_check_unaligned_access_speed_all_cpus,
++				       NULL, "vec_check_unaligned_access_speed_all_cpus"))) {
++			pr_warn("Failed to create vec_unalign_check kthread\n");
++			riscv_hwprobe_complete_async_probe();
++		}
+ 	}
+ 
+ 	/*
+--- a/arch/riscv/kernel/vdso/hwprobe.c
++++ b/arch/riscv/kernel/vdso/hwprobe.c
+@@ -27,7 +27,7 @@ static int riscv_vdso_get_values(struct
+ 	 * homogeneous, then this function can handle requests for arbitrary
+ 	 * masks.
+ 	 */
+-	if ((flags != 0) || (!all_cpus && !avd->homogeneous_cpus))
++	if (flags != 0 || (!all_cpus && !avd->homogeneous_cpus) || unlikely(!avd->ready))
+ 		return riscv_hwprobe(pairs, pair_count, cpusetsize, cpus, flags);
+ 
+ 	/* This is something we can handle, fill out the pairs. */
 
 
 
