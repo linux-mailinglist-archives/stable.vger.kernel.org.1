@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-190434-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190128-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 989B5C10633
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:01:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38206C0FFE7
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:42:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 634B21A2322F
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:58:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E44A219C5929
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:42:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D69332D0F3;
-	Mon, 27 Oct 2025 18:54:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB12C3191BF;
+	Mon, 27 Oct 2025 18:41:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SXoag1jj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QOCxYRlb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47C7133030F;
-	Mon, 27 Oct 2025 18:54:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 995ED313531;
+	Mon, 27 Oct 2025 18:41:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591281; cv=none; b=fzO/slv/1v30ohYOQkvUIvVtW+Vp9UdJoiy/I1jUvfbFQzAWZLzGOJJydTKeLLc0G/vnClvfpW9L0PIAgAxu3rRPe7dxAd579wD2HBufmnt40FamZilofruBKXjY15guOUSvDk/osV0h/BgnNZw5vY56BcR0NeN8xfOoOmM39/M=
+	t=1761590511; cv=none; b=rLnPxtDm2MBFFKPv6NQeVeGYDjIruIA5RyEKsLONxHt0hRdlKHj+DJJx+VF/Iu7StNQ3St5xAZYsVosn38AhX3EArLgr/SOxoTvP8WFgjt1XyDkvW07vmGeFGh5MpA09UI8pPsbpgCRKdlYykO58HR1O9lL8tNDODyrmFICUYjs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591281; c=relaxed/simple;
-	bh=sRPLYqwbnBIytY52Sg4uNqQ62mrBCQpQmJhb1lEwA0A=;
+	s=arc-20240116; t=1761590511; c=relaxed/simple;
+	bh=XAne1fgb2mvGNgTrJNrWghSq+k40ONQmf4dFWr5OkhU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VowPF3xNMU6YuSvqJv2z1pGONIJj02zE4pHz1bWA2ES+lqJCUh135UTh+sj4jFgH2hGZAIZEao221G74FCs4m+mF2fjkRjyL8Ecaz2wrt1YpqU02k0gi0NhTCWpyFol6gJIiIOqcvEh6KIfOoVzUjvBnBxPtnRAvHOngICQlevg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SXoag1jj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE727C4CEFD;
-	Mon, 27 Oct 2025 18:54:40 +0000 (UTC)
+	 MIME-Version; b=f9HUkgRbzDsAbNQgTpT4lMiLiJWd+Bn6YX+M9b1g8UVlQ/O4TGPW9FdnVK2F8aChpDD5vUQ23Zicm4hNiPYDAoOuLk+PmG/MntEJ+LTVcFt/QnGLDTkHPaomk1ta9enqVfI2ijrywo5qlLkMIMKzqvAx9Ea9sC7DlNP3br362FY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QOCxYRlb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C91BC4CEF1;
+	Mon, 27 Oct 2025 18:41:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591281;
-	bh=sRPLYqwbnBIytY52Sg4uNqQ62mrBCQpQmJhb1lEwA0A=;
+	s=korg; t=1761590511;
+	bh=XAne1fgb2mvGNgTrJNrWghSq+k40ONQmf4dFWr5OkhU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SXoag1jjrwYbQ9TwOd45jsumX+Jz8FS8Ns+QLU+rxQuy+nkuUiDZ+mpD1EFQvJRih
-	 CSxwu51/eTk8w7TNXFaYeutX1Mev8uhoeqj41yiOvnODWbOBTDHyzRGrtXllbY88pc
-	 O3wWwfKNAQaA86WN3ll6CSjKzA5rQh9XEhJ+ePvU=
+	b=QOCxYRlbI7UdeV1hdp+EdPCOdXyAmTWshvBk5rOLAnlJg0IzhM8HrODmE1+kkOYle
+	 qg60hnrA5AVkQL8riOD0Wk5uk4uHW0pYwb3yUV6XlInsPLYRV/v+oasoJGx3N5uJny
+	 HU6FoYFmqD+WZuvcducbzbA0f6YNGwf0Eo3lNics=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Schuster <schuster.simon@siemens-energy.com>,
-	David Hildenbrand <david@redhat.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 5.10 136/332] copy_sighand: Handle architectures where sizeof(unsigned long) < sizeof(u64)
+	Colin Ian King <colin.i.king@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 043/224] misc: genwqe: Fix incorrect cmd field being reported in error
 Date: Mon, 27 Oct 2025 19:33:09 +0100
-Message-ID: <20251027183528.224596132@linuxfoundation.org>
+Message-ID: <20251027183510.158457245@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
-References: <20251027183524.611456697@linuxfoundation.org>
+In-Reply-To: <20251027183508.963233542@linuxfoundation.org>
+References: <20251027183508.963233542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,63 +61,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Simon Schuster <schuster.simon@siemens-energy.com>
+From: Colin Ian King <colin.i.king@gmail.com>
 
-commit 04ff48239f46e8b493571e260bd0e6c3a6400371 upstream.
+[ Upstream commit 6b26053819dccc664120e07c56f107fb6f72f3fa ]
 
-With the introduction of clone3 in commit 7f192e3cd316 ("fork: add
-clone3") the effective bit width of clone_flags on all architectures was
-increased from 32-bit to 64-bit. However, the signature of the copy_*
-helper functions (e.g., copy_sighand) used by copy_process was not
-adapted.
+There is a dev_err message that is reporting the value of
+cmd->asiv_length when it should be reporting cmd->asv_length
+instead. Fix this.
 
-As such, they truncate the flags on any 32-bit architectures that
-supports clone3 (arc, arm, csky, m68k, microblaze, mips32, openrisc,
-parisc32, powerpc32, riscv32, x86-32 and xtensa).
-
-For copy_sighand with CLONE_CLEAR_SIGHAND being an actual u64
-constant, this triggers an observable bug in kernel selftest
-clone3_clear_sighand:
-
-        if (clone_flags & CLONE_CLEAR_SIGHAND)
-
-in function copy_sighand within fork.c will always fail given:
-
-        unsigned long /* == uint32_t */ clone_flags
-        #define CLONE_CLEAR_SIGHAND 0x100000000ULL
-
-This commit fixes the bug by always passing clone_flags to copy_sighand
-via their declared u64 type, invariant of architecture-dependent integer
-sizes.
-
-Fixes: b612e5df4587 ("clone3: add CLONE_CLEAR_SIGHAND")
-Cc: stable@vger.kernel.org # linux-5.5+
-Signed-off-by: Simon Schuster <schuster.simon@siemens-energy.com>
-Link: https://lore.kernel.org/20250901-nios2-implement-clone3-v2-1-53fcf5577d57@siemens-energy.com
-Acked-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Reviewed-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Fixes: eaf4722d4645 ("GenWQE Character device and DDCB queue")
+Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+Link: https://lore.kernel.org/r/20250902113712.2624743-1-colin.i.king@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/fork.c |    2 +-
+ drivers/misc/genwqe/card_ddcb.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/kernel/fork.c
-+++ b/kernel/fork.c
-@@ -1519,7 +1519,7 @@ static int copy_io(unsigned long clone_f
- 	return 0;
- }
- 
--static int copy_sighand(unsigned long clone_flags, struct task_struct *tsk)
-+static int copy_sighand(u64 clone_flags, struct task_struct *tsk)
- {
- 	struct sighand_struct *sig;
- 
+diff --git a/drivers/misc/genwqe/card_ddcb.c b/drivers/misc/genwqe/card_ddcb.c
+index 026c6ca245408..e53bdd5f04eaa 100644
+--- a/drivers/misc/genwqe/card_ddcb.c
++++ b/drivers/misc/genwqe/card_ddcb.c
+@@ -918,7 +918,7 @@ int __genwqe_execute_raw_ddcb(struct genwqe_dev *cd,
+ 	}
+ 	if (cmd->asv_length > DDCB_ASV_LENGTH) {
+ 		dev_err(&pci_dev->dev, "[%s] err: wrong asv_length of %d\n",
+-			__func__, cmd->asiv_length);
++			__func__, cmd->asv_length);
+ 		return -EINVAL;
+ 	}
+ 	rc = __genwqe_enqueue_ddcb(cd, req, f_flags);
+-- 
+2.51.0
+
 
 
 
