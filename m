@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-190710-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190631-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D90AC10B16
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:15:55 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 524BEC1099C
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:12:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D51F456295C
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:09:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 00F97564246
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:06:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB13A326D6C;
-	Mon, 27 Oct 2025 19:06:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB87E32BF3D;
+	Mon, 27 Oct 2025 19:03:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uF0LveIi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yNmg6XxJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76B0B3254B1;
-	Mon, 27 Oct 2025 19:06:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77BD032BF25;
+	Mon, 27 Oct 2025 19:03:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591992; cv=none; b=jNvmh1FZzrSl53NPCQYsZQGb9HF758nlgjzbogjRoirvgfecp5NLJHYQm94iHn9gbF7QUdQRe0i/ye4Ya+FLIXlTAsmUcCQvLUKpJml6uI1Rk5LxGsAA9N4b3zi53hXHrCpUnBaz02UkFosNPLRaP4tciUhi035rYW1tEnSw8tU=
+	t=1761591790; cv=none; b=iAFFZ41YzmfiaEb1WTHbnfjSZdNBeXeyCgkQc6XDckNEJmMZl5ULjjnhXQrLs2AAyEz/5eGbyEKWbOO40xF4x91YZRWTmE+hzgMCebwt4OtF6PiD/FUqfAEt/mvxQ14Vy+uRtfu2tCB+cXf1EXzqnNslAEyfM7Djq0hogAR2oWg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591992; c=relaxed/simple;
-	bh=Gq9Y8VBu+lGarq/l/OAq0ZQ0FabEJ5GL4IT1Ow8X5B0=;
+	s=arc-20240116; t=1761591790; c=relaxed/simple;
+	bh=LZG6PlQEXU4FqJ4di93tfFdMUdk1Q/xC+fjRxRWrhCk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lb2cBihPB1tkS2WzuXwiiOAR4HnoSIYDvcoRf0WmkS9QsiFXrvFH7mnh09pOF22akSBLfegEANeuHwQfifQGaIx3h+MpeQ6tEqbLJC7SyPIY5l8HF4L5C4g1Cy2bidUYHANUKQ19MkFgYBtE99c0syxtdnm8URqR8CGlQVPgtsI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uF0LveIi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03FBBC4CEF1;
-	Mon, 27 Oct 2025 19:06:31 +0000 (UTC)
+	 MIME-Version; b=AaTY+zeMmbcIMTZa3kfeJzaZcAXjmeb68vuCp4+fj4BnCX+xfL+fEDazIWueE3WK6E58/WAIpc68abL7GgBAa5nioWvKXW5J+QsvFXKyVJ+Gr8GP0FmOI7vlCGVC5VYmXhxY8f1cxi5wKam598QTdm8Fd5++oWbqXJdW4/HLKbM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yNmg6XxJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2DECC4CEF1;
+	Mon, 27 Oct 2025 19:03:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591992;
-	bh=Gq9Y8VBu+lGarq/l/OAq0ZQ0FabEJ5GL4IT1Ow8X5B0=;
+	s=korg; t=1761591790;
+	bh=LZG6PlQEXU4FqJ4di93tfFdMUdk1Q/xC+fjRxRWrhCk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uF0LveIiWSmLfdkBxbmV1aq7jvF7FxEjn+rS0pHELej/KWl3woUqQ7rPlCxMlOuQK
-	 apsCtxZ1C7DOE8JHbXClk8Rj3xa1LuU7KZ+aMIAiKjOZH7G1JpsFOvaNA9KpHbNUqX
-	 Uq/+MqjPi8K6cNW4MFR/lF1/jo054mZrC1+enc9Q=
+	b=yNmg6XxJxUCRSv7A33lw49YV5AfLyw8yUer/qSZ6L3wVoaDh58MPigPd+dnJl2iqx
+	 vamXNadW6pkivggqNdTZHzVDw6FDGOpibJF8zEoK4GV+uGOTI1bQTBQXpkwpN62R8D
+	 os8lqnIjnmiofFf0/xzIRQc2UfIEKFChbjP11SpU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	LI Qingwu <Qing-wu.Li@leica-geosystems.com.cn>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 5.15 077/123] USB: serial: option: add Telit FN920C04 ECM compositions
+	Mark Rutland <mark.rutland@arm.com>,
+	James Morse <james.morse@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Ryan Roberts <ryan.roberts@arm.com>
+Subject: [PATCH 5.10 304/332] arm64: errata: Apply workarounds for Neoverse-V3AE
 Date: Mon, 27 Oct 2025 19:35:57 +0100
-Message-ID: <20251027183448.455298497@linuxfoundation.org>
+Message-ID: <20251027183532.879464245@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183446.381986645@linuxfoundation.org>
-References: <20251027183446.381986645@linuxfoundation.org>
+In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
+References: <20251027183524.611456697@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,100 +64,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: LI Qingwu <Qing-wu.Li@leica-geosystems.com.cn>
+From: Mark Rutland <mark.rutland@arm.com>
 
-commit 622865c73ae30f254abdf182f4b66cccbe3e0f10 upstream.
+commit 0c33aa1804d101c11ba1992504f17a42233f0e11 upstream.
 
-Add support for the Telit Cinterion FN920C04 module when operating in
-ECM (Ethernet Control Model) mode. The following USB product IDs are
-used by the module when AT#USBCFG is set to 3 or 7.
+Neoverse-V3AE is also affected by erratum #3312417, as described in its
+Software Developer Errata Notice (SDEN) document:
 
-0x10A3: ECM + tty (NMEA) + tty (DUN) [+ tty (DIAG)]
-T:  Bus=01 Lev=02 Prnt=02 Port=00 Cnt=01 Dev#=  3 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1bc7 ProdID=10a3 Rev= 5.15
-S:  Manufacturer=Telit Cinterion
-S:  Product=FN920
-S:  SerialNumber=76e7cb38
-C:* #Ifs= 5 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:* If#= 0 Alt= 0 #EPs= 1 Cls=02(comm.) Sub=06 Prot=00 Driver=cdc_ether
-E:  Ad=82(I) Atr=03(Int.) MxPS=  16 Ivl=32ms
-I:  If#= 1 Alt= 0 #EPs= 0 Cls=0a(data ) Sub=00 Prot=00 Driver=cdc_ether
-I:* If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=cdc_ether
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=60 Driver=option
-E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+  Neoverse V3AE (MP172) SDEN v9.0, erratum 3312417
+  https://developer.arm.com/documentation/SDEN-2615521/9-0/
 
-0x10A8: ECM + tty (DUN) + tty (AUX) [+ tty (DIAG)]
-T:  Bus=03 Lev=02 Prnt=02 Port=00 Cnt=01 Dev#=  3 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1bc7 ProdID=10a8 Rev= 5.15
-S:  Manufacturer=Telit Cinterion
-S:  Product=FN920
-S:  SerialNumber=76e7cb38
-C:* #Ifs= 5 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:* If#= 0 Alt= 0 #EPs= 1 Cls=02(comm.) Sub=06 Prot=00 Driver=cdc_ether
-E:  Ad=82(I) Atr=03(Int.) MxPS=  16 Ivl=32ms
-I:  If#= 1 Alt= 0 #EPs= 0 Cls=0a(data ) Sub=00 Prot=00 Driver=cdc_ether
-I:* If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=cdc_ether
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+Enable the workaround for Neoverse-V3AE, and document this.
 
-Adding these IDs allows the option driver to automatically create the
-corresponding /dev/ttyUSB* ports under ECM mode.
-
-Tested with FN920C04 under ECM configuration (USBCFG=3 and 7).
-
-Signed-off-by: LI Qingwu <Qing-wu.Li@leica-geosystems.com.cn>
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Cc: James Morse <james.morse@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+Signed-off-by: Will Deacon <will@kernel.org>
+[ Ryan: Trivial backport ]
+Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/option.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ Documentation/arm64/silicon-errata.rst |    2 ++
+ arch/arm64/Kconfig                     |    1 +
+ arch/arm64/kernel/cpu_errata.c         |    1 +
+ 3 files changed, 4 insertions(+)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -1403,10 +1403,14 @@ static const struct usb_device_id option
- 	  .driver_info = RSVD(0) | NCTRL(3) },
- 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10a2, 0xff),	/* Telit FN920C04 (MBIM) */
- 	  .driver_info = NCTRL(4) },
-+	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10a3, 0xff),	/* Telit FN920C04 (ECM) */
-+	  .driver_info = NCTRL(4) },
- 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10a4, 0xff),	/* Telit FN20C04 (rmnet) */
- 	  .driver_info = RSVD(0) | NCTRL(3) },
- 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10a7, 0xff),	/* Telit FN920C04 (MBIM) */
- 	  .driver_info = NCTRL(4) },
-+	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10a8, 0xff),	/* Telit FN920C04 (ECM) */
-+	  .driver_info = NCTRL(4) },
- 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10a9, 0xff),	/* Telit FN20C04 (rmnet) */
- 	  .driver_info = RSVD(0) | NCTRL(2) | RSVD(3) | RSVD(4) },
- 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10aa, 0xff),	/* Telit FN920C04 (MBIM) */
+--- a/Documentation/arm64/silicon-errata.rst
++++ b/Documentation/arm64/silicon-errata.rst
+@@ -144,6 +144,8 @@ stable kernels.
+ +----------------+-----------------+-----------------+-----------------------------+
+ | ARM            | Neoverse-V3     | #3312417        | ARM64_ERRATUM_3194386       |
+ +----------------+-----------------+-----------------+-----------------------------+
++| ARM            | Neoverse-V3AE   | #3312417        | ARM64_ERRATUM_3194386       |
+++----------------+-----------------+-----------------+-----------------------------+
+ | ARM            | MMU-500         | #841119,826419  | N/A                         |
+ +----------------+-----------------+-----------------+-----------------------------+
+ +----------------+-----------------+-----------------+-----------------------------+
+--- a/arch/arm64/Kconfig
++++ b/arch/arm64/Kconfig
+@@ -718,6 +718,7 @@ config ARM64_ERRATUM_3194386
+ 	  * ARM Neoverse-V1 erratum 3324341
+ 	  * ARM Neoverse V2 erratum 3324336
+ 	  * ARM Neoverse-V3 erratum 3312417
++	  * ARM Neoverse-V3AE erratum 3312417
+ 
+ 	  On affected cores "MSR SSBS, #0" instructions may not affect
+ 	  subsequent speculative instructions, which may permit unexepected
+--- a/arch/arm64/kernel/cpu_errata.c
++++ b/arch/arm64/kernel/cpu_errata.c
+@@ -386,6 +386,7 @@ static const struct midr_range erratum_s
+ 	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V1),
+ 	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V2),
+ 	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V3),
++	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V3AE),
+ 	{}
+ };
+ #endif
 
 
 
