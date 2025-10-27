@@ -1,172 +1,89 @@
-Return-Path: <stable+bounces-189982-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-189983-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 764CDC0E003
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 14:25:36 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE1FCC0E13D
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 14:36:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 258D21887896
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 13:25:55 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 8AB4234E0DA
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 13:36:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9022D287511;
-	Mon, 27 Oct 2025 13:25:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E70130594F;
+	Mon, 27 Oct 2025 13:35:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="ZU8Krlld"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NjqLPiaz"
 X-Original-To: stable@vger.kernel.org
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8D4023EAA7;
-	Mon, 27 Oct 2025 13:25:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 359913054E8;
+	Mon, 27 Oct 2025 13:35:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761571525; cv=none; b=nUfya5vyR+4y/L/QrZhCsGM/N3gK1LypPcWzHrDqLBpi3a0JetAWk2N7/XdNyQJE7vXLpyV+vo734ajUJGF9sl8nEf6hCUpHeq5cgw7uOGnBenk1KqT0RO/UxvD/oLe+sHvZfI+eOHN+uTrsFwKT4ZaVdRxOc4glct124BQZkPs=
+	t=1761572128; cv=none; b=c31LAI5UljbYOG4JfHV9rmTiwjkMoc7bxM5a7mwwmqRDs/+dMqG5e8/gGUeSOHTV0JkwqbPoMiIiQ90S3XoDw4F5n7XeTZfNGuKLlOcEX78m0TPLt3j6YF9bmxdScRU8zzab3YjB/HWBqvHgh53MeXOEg4+10yakjXv9nha1/NQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761571525; c=relaxed/simple;
-	bh=dFkgoufaNMPNcNu22JUe9K6hYmvZv9p3G2j09geRwu0=;
+	s=arc-20240116; t=1761572128; c=relaxed/simple;
+	bh=aRsCfY5+Xwn/NNYCzEP+7073Q7UM7+DwDHvkcIvZjJg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=usLj1YNp2LlEjAqq+qQZYJHu9sTXe8UY0ZbpP0fNSky4DGuaedO0Kex5yGOkNyjKu1u02wJ5B6u3XNuzP1SRPeEH6z4VRbi3B4Tr0ZQDB1kgTTOOCmzq060mGwcwLqRbuZexMHH3ZycO5VSb6y2kfEvPHKyHjOBemM7YJCLi3E8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=ZU8Krlld; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
-	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
-	In-Reply-To:References; bh=6yAaSpVe7rlneuNUMCQd/n4cqFTVCZP+SQLMX8bewCo=; b=ZU
-	8KrlldZNgql/8qkwAb9uhuNxVsd5I1H7INbVtNN/MzB1LIReTVz+0ZlxgBninTWx9NT36V/aLO4U3
-	WG1xe+i6zNumIz/YFU5KxbMOXwo2Jdkt+qYxAxgXo5jVaFy8IujCr3MAmfCmZieSlG4YGEQFnm88/
-	im47h56njpZ39sw=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1vDNDk-00CCDQ-R4; Mon, 27 Oct 2025 14:25:12 +0100
-Date: Mon, 27 Oct 2025 14:25:12 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Emanuele Ghidoli <ghidoliemanuele@gmail.com>
-Cc: Heiner Kallweit <hkallweit1@gmail.com>,
-	Emanuele Ghidoli <emanuele.ghidoli@toradex.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v1] net: phy: dp83867: Disable EEE support as not
- implemented
-Message-ID: <df3aac25-e8e9-46cb-bd92-637822665080@lunn.ch>
-References: <20251023144857.529566-1-ghidoliemanuele@gmail.com>
- <ae723e7c-f876-45ef-bc41-3b39dc1dc76b@lunn.ch>
- <664ef58b-d7e6-4f08-b88f-e7c2cf08c83c@gmail.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=Waro646PUTHxgSpLusRMxY5/YIhrPAGjvnNbU5WuYeB/dk8zWHu6R/TPyLOZDC2DuHghnHmDQdfGBfhnmgBvczozjAj2b2w1ilIexDqUSngN/6yGMF2zOvKrDEl4R+4vkRY2r9ILFWwKUAkPmXdQBOL9tyo28KayreK23r9CuOI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NjqLPiaz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2245C4CEF1;
+	Mon, 27 Oct 2025 13:35:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761572127;
+	bh=aRsCfY5+Xwn/NNYCzEP+7073Q7UM7+DwDHvkcIvZjJg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=NjqLPiazll1u7aGaUDZ8Ocn+voLiyebRoHfnMgV6vvaf0ZxBAGKS7TDQdkeF31tAM
+	 mOsaMma6fmrVWOQ+3uMzXqr2LK7UCR92JGXyt0NeRmSYfCVkPowHCT2/1UsE+yU5Rz
+	 pz8OOqipJxV46XhVItfePHxgzNpwpyTwiNsMjkpBSIMMXg1dEyhB8XiRSjuqJJI6Nb
+	 xHYX1v9okS1xy7uHRtIsDeKFY1EhlqdkBH2fFju8fRb7XdRY0W/um83eFGP9O7Ravq
+	 E2KhPgmiQnUcIjh/NcuWy9EJ96wR3MgY4Fgn/cMoVNyw9fdmJeDc1Ai4l3eKd02pYG
+	 YRCrCZc2QFDiQ==
+Received: from johan by xi.lan with local (Exim 4.98.2)
+	(envelope-from <johan@kernel.org>)
+	id 1vDNNj-000000000HH-0GcS;
+	Mon, 27 Oct 2025 14:35:31 +0100
+Date: Mon, 27 Oct 2025 14:35:31 +0100
+From: Johan Hovold <johan@kernel.org>
+To: Alain Volmat <alain.volmat@foss.st.com>,
+	Raphael Gallais-Pou <rgallaispou@gmail.com>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Benjamin Gaignard <benjamin.gaignard@collabora.com>
+Subject: Re: [PATCH] drm: sti: fix device leaks at component probe
+Message-ID: <aP91I9j-OV4j3A49@hovoldconsulting.com>
+References: <20250922122012.27407-1-johan@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <664ef58b-d7e6-4f08-b88f-e7c2cf08c83c@gmail.com>
+In-Reply-To: <20250922122012.27407-1-johan@kernel.org>
 
-On Mon, Oct 27, 2025 at 01:57:48PM +0100, Emanuele Ghidoli wrote:
+On Mon, Sep 22, 2025 at 02:20:12PM +0200, Johan Hovold wrote:
+> Make sure to drop the references taken to the vtg devices by
+> of_find_device_by_node() when looking up their driver data during
+> component probe.
 > 
+> Note that holding a reference to a platform device does not prevent its
+> driver data from going away so there is no point in keeping the
+> reference after the lookup helper returns.
 > 
-> On 27/10/2025 00:45, Andrew Lunn wrote:
-> >> Since the introduction of phylink-managed EEE support in the stmmac driver,
-> >> EEE is now enabled by default, leading to issues on systems using the
-> >> DP83867 PHY.
-> > 
-> > Did you do a bisect to prove this?
-> Yes, I have done a bisect and the commit that introduced the behavior on our
-> board is 4218647d4556 ("net: stmmac: convert to phylink managed EEE support").
-> 
-> > 
-> >> Fixes: 2a10154abcb7 ("net: phy: dp83867: Add TI dp83867 phy")
-> > 
-> > What has this Fixes: tag got to do with phylink?
-> I think that the phylink commit is just enabling by default the EEE support,
-> and my commit is not really fixing that. It is why I didn't put a Fixes: tag
-> pointing to that.
-> 
-> I’ve tried to trace the behavior, but it’s quite complex. From my testing, I
-> can summarize the situation as follows:
-> 
-> - ethtool, after that patch, returns:
-> ethtool --show-eee end0
-> EEE settings for end0:
->         EEE status: enabled - active
->         Tx LPI: 1000000 (us)
->         Supported EEE link modes:  100baseT/Full
->                                    1000baseT/Full
->         Advertised EEE link modes:  100baseT/Full
->                                     1000baseT/Full
->         Link partner advertised EEE link modes:  100baseT/Full
->                                                  1000baseT/Full
-> - before that patch returns, after boot:
-> EEE settings for end0:
->         EEE status: disabled
->         Tx LPI: disabled
->         Supported EEE link modes:  100baseT/Full
->                                    1000baseT/Full
->         Advertised EEE link modes:  Not reported
->         Link partner advertised EEE link modes:  100baseT/Full
->                                                  1000baseT/Full
-> - Enabling EEE manually using ethtool, triggers the problem too (and ethtool
-> -show-eee report eee status enabled):
-> ethtool --set-eee end0 eee on tx-lpi on
-> ethtool --show-eee end0
-> EEE settings for end0:
->         EEE status: enabled - active
->         Tx LPI: 1000000 (us)
->         Supported EEE link modes:  100baseT/Full
->                                    1000baseT/Full
->         Advertised EEE link modes:  100baseT/Full
->                                     1000baseT/Full
->         Link partner advertised EEE link modes:  100baseT/Full
->                                                  1000baseT/Full
-> 
-> I understand Russell point of view but from my point of view EEE is now
-> enabled by default, and before it wasn't, at least on my setup.
+> Fixes: cc6b741c6f63 ("drm: sti: remove useless fields from vtg structure")
+> Cc: stable@vger.kernel.org	# 4.16
+> Cc: Benjamin Gaignard <benjamin.gaignard@collabora.com>
+> Signed-off-by: Johan Hovold <johan@kernel.org>
 
-We like to try to understand what is going on, and give accurate
-descriptions. You have given us important information here, which at
-minimum should go into the commit message, but more likely, it will
-help lead us to the correct fix.
+Can this one be picked up for 6.19?
 
-So, two things here. You say:
-
-> I think that the phylink commit is just enabling by default the EEE support,
-
-That needs confirming, because you are blaming the conversion to
-phylink, not that phylink now enabled EEE by default. Russell also
-tries to avoid behaviour change, which this clearly is. We want a
-better understanding what caused this behaviour change.
-
-Also:
-
-> - Enabling EEE manually using ethtool, triggers the problem too (and ethtool
-> -show-eee report eee status enabled):
-
-This indicates EEE has always been broken. This brokenness has been
-somewhat hidden in the past, and it is the change in behaviour in
-phylink which exposed this brokenness. A commit message using these
-words would be much more factually correct, and it would also fit with
-the Fixes: tag you used.
-
-So, please work with Russell. I see two things which would be good to
-understand before a new version of the patch is submitted:
-
-What cause the behaviour change such that EEE is now enabled? Was it
-deliberate? Should something be change to revert that behaviour
-change?
-
-Given that EEE has always been broken, do we understand it
-sufficiently to say it is not fixable? Is there an errata? Are we sure
-it is the PHY and not the MAC which is broken?
-
-	Andrew
+Johan
 
