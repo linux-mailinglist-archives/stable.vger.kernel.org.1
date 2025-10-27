@@ -1,107 +1,105 @@
-Return-Path: <stable+bounces-190156-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190162-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B600BC100FE
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:45:21 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0844C100B9
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:44:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 184AE1A201B3
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:44:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 315DC462B72
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:44:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BAF2321445;
-	Mon, 27 Oct 2025 18:42:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3C0331D37B;
+	Mon, 27 Oct 2025 18:42:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eYUyvvMF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FNHmSV/H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF0A43203A9
-	for <stable@vger.kernel.org>; Mon, 27 Oct 2025 18:42:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2925322755
+	for <stable@vger.kernel.org>; Mon, 27 Oct 2025 18:42:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761590572; cv=none; b=dPPrKPkhblLTIsqoa5kX2AcMRRzPlmpRIpTQWDd5t+YPsNLP2R27ZSitzM/mjvdKY5nmymRNA718t7vpDRqxkeOf3cV55ILSabPoMNZ1HQdQQA9tNJ2JSQ187OsnWz9y5nS0fWb+j3AGdHv00oX8i2RXbWO62ils3ryloH8/G8w=
+	t=1761590577; cv=none; b=hALSiEtE8QUwHOBBCUVriBo68DGMbQVx6EG9r1co/3D45Yfm3DQesoyIRFqHkkOwy7d0nytWMIq6zEp/M8cUv7ljRyg7/16m7iAg2Hz3UQtY2BH5QbMWAqOECfetVxsQA2/XcpYQ7EX0Ec/mPfozJz15ntjvqK4AGpED498pOeM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761590572; c=relaxed/simple;
-	bh=V0mYzgJ7yGRljKMAIZLCucOM55qx4iwM8oW1ieCk1ZY=;
+	s=arc-20240116; t=1761590577; c=relaxed/simple;
+	bh=ptsqSqWBW/nazziJ93E22JgLXir7O/lk1JZ3GZ3h+PA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rvNamBfXiAqvuIjw67Yd/a7+qLckzdE9a3WV7rSOItkstBZNn8l20MvdKevrxh+OaGtYp8N8vM7EQfYmHyAATxqpQ6caooaO/tQXzOgMSSPleddBKjPJf2Ae1DuHXIbI5awRqYR+C14Rv0Z/FclQJb0fP9WbC0lxC/iWMKKk5CI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eYUyvvMF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC894C116D0;
-	Mon, 27 Oct 2025 18:42:51 +0000 (UTC)
+	 MIME-Version:Content-Type; b=k2tQKgqYFf9pVvMNeDInRgzm7jrQyx1jxdKJq/iMjdb0HIdqikaxJ2Cdjq1/NAx+c0XClk0AMDjv2edaKN2tG4pIvYOhu10Rjn76mrzDknpqpgi4Mma+Fegdb6qI1vz0CYtvPtIZtIjytRd8QbynLiIBjVOvvnv5dOKt/6FlWGE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FNHmSV/H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5C3EC4CEF1;
+	Mon, 27 Oct 2025 18:42:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761590572;
-	bh=V0mYzgJ7yGRljKMAIZLCucOM55qx4iwM8oW1ieCk1ZY=;
+	s=k20201202; t=1761590577;
+	bh=ptsqSqWBW/nazziJ93E22JgLXir7O/lk1JZ3GZ3h+PA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eYUyvvMFJ3IIEsers4JgxajlUXiWWuLZfW9HwF/WI/i8gCiNQvIWpbnm9QrQ0gMmZ
-	 F99Zytq2aArck0PurgQng2OzLsKdvzVYWga/RBdCNCwxaC1FmCtzOVBVjCa20cJGso
-	 nE3yVIgNFVumTi/LJT7Bct4i4o7ZuiAv5xPLpkMDUw02LjjfFEarBg+jhnZqYmuoY5
-	 pD04Bf0eo4dwnbRm10MQZqwDy9YvKB3OqOUV08fY2thJuKOBHQBbrrh+Rq3kaB7EAE
-	 xOz4VKgYmee59/z4ce7Kr9WmNPgkUpw89XZKo8DWo7JuoNOeT58xvpLV8xDHBB03xV
-	 SIpkadkcj1J5g==
+	b=FNHmSV/HEknYdzI+YTnN3QpiGnX8AZLV/RXsS2BLvEnIGEDLFrjiLT7A5ywqVhTb3
+	 0Vae5bE6Mu5BBvxUNB5PPAIzxFaM9QRnEtgxU30PXeT0s23xVX1XWdM5b4h78kM4E7
+	 fay69VkTUmMWJZX2sF4J7xVAPY0flTfLAR7ct1cFXe5eIzJTo7mmFOcBFeuopILvJN
+	 mp9J+jhnlaZ78lUGgX3BSi7ts6RCgsfsXoZTfoUB+R+Wfi2t1afhrTW10eJ3uQv/+W
+	 /B7Ff1/u0+LOWwMYP3wN5uuynrIJMbglJyrlFxzdBiTQSPm5LxRjk690CbFqFdbej6
+	 VTCWCuctNH1pg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Artem Shimko <a.shimko.dev@gmail.com>,
-	stable <stable@kernel.org>,
+Cc: Mathias Nyman <mathias.nyman@linux.intel.com>,
+	=?UTF-8?q?=C5=81ukasz=20Bartosik?= <ukaszb@chromium.org>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10.y 2/2] serial: 8250_dw: handle reset control deassert error
-Date: Mon, 27 Oct 2025 14:42:49 -0400
-Message-ID: <20251027184249.638796-2-sashal@kernel.org>
+Subject: [PATCH 5.15.y 4/6] xhci: dbc: Improve performance by removing delay in transfer event polling.
+Date: Mon, 27 Oct 2025 14:42:50 -0400
+Message-ID: <20251027184252.639069-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251027184249.638796-1-sashal@kernel.org>
-References: <2025102700-sleep-robotics-c9e3@gregkh>
- <20251027184249.638796-1-sashal@kernel.org>
+In-Reply-To: <20251027184252.639069-1-sashal@kernel.org>
+References: <2025102714-patriot-eel-32c8@gregkh>
+ <20251027184252.639069-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Artem Shimko <a.shimko.dev@gmail.com>
+From: Mathias Nyman <mathias.nyman@linux.intel.com>
 
-[ Upstream commit daeb4037adf7d3349b4a1fb792f4bc9824686a4b ]
+[ Upstream commit 03e3d9c2bd85cda941b3cf78e895c1498ac05c5f ]
 
-Check the return value of reset_control_deassert() in the probe
-function to prevent continuing probe when reset deassertion fails.
+Queue event polling work with 0 delay in case there are pending transfers
+queued up. This is part 2 of a 3 part series that roughly triples dbc
+performace when using adb push and pull over dbc.
 
-Previously, reset_control_deassert() was called without checking its
-return value, which could lead to probe continuing even when the
-device reset wasn't properly deasserted.
+Max/min push rate after patches is 210/118 MB/s, pull rate 171/133 MB/s,
+tested with large files (300MB-9GB) by Łukasz Bartosik
 
-The fix checks the return value and returns an error with dev_err_probe()
-if reset deassertion fails, providing better error handling and
-diagnostics.
+First performance improvement patch was commit 31128e7492dc
+("xhci: dbc: add dbgtty request to end of list once it completes")
 
-Fixes: acbdad8dd1ab ("serial: 8250_dw: simplify optional reset handling")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Artem Shimko <a.shimko.dev@gmail.com>
-Link: https://patch.msgid.link/20251019095131.252848-1-a.shimko.dev@gmail.com
+Cc: Łukasz Bartosik <ukaszb@chromium.org>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20241227120142.1035206-2-mathias.nyman@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: f3d12ec847b9 ("xhci: dbc: fix bogus 1024 byte prefix if ttyDBC read races with stall event")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/8250/8250_dw.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/usb/host/xhci-dbgcap.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/tty/serial/8250/8250_dw.c b/drivers/tty/serial/8250/8250_dw.c
-index 6abdebb63ecbe..bcf770f344dac 100644
---- a/drivers/tty/serial/8250/8250_dw.c
-+++ b/drivers/tty/serial/8250/8250_dw.c
-@@ -580,7 +580,9 @@ static int dw8250_probe(struct platform_device *pdev)
- 	if (IS_ERR(data->rst))
- 		return PTR_ERR(data->rst);
- 
--	reset_control_deassert(data->rst);
-+	err = reset_control_deassert(data->rst);
-+	if (err)
-+		return dev_err_probe(dev, err, "failed to deassert resets\n");
- 
- 	err = devm_add_action_or_reset(dev, dw8250_reset_control_assert, data->rst);
- 	if (err)
+diff --git a/drivers/usb/host/xhci-dbgcap.c b/drivers/usb/host/xhci-dbgcap.c
+index 004e69f424860..ce56b9316e124 100644
+--- a/drivers/usb/host/xhci-dbgcap.c
++++ b/drivers/usb/host/xhci-dbgcap.c
+@@ -987,7 +987,7 @@ static void xhci_dbc_handle_events(struct work_struct *work)
+ 		/* set fast poll rate if there are pending data transfers */
+ 		if (!list_empty(&dbc->eps[BULK_OUT].list_pending) ||
+ 		    !list_empty(&dbc->eps[BULK_IN].list_pending))
+-			poll_interval = 1;
++			poll_interval = 0;
+ 		break;
+ 	default:
+ 		dev_info(dbc->dev, "stop handling dbc events\n");
 -- 
 2.51.0
 
