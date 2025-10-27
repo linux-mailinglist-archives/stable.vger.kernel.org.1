@@ -1,58 +1,63 @@
-Return-Path: <stable+bounces-190095-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190396-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67F7EC0FF60
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:40:26 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C4ABC1065A
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:02:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1C2E14621DB
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:40:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DCA24565136
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:56:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE863313520;
-	Mon, 27 Oct 2025 18:40:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 467E7322C99;
+	Mon, 27 Oct 2025 18:53:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wpc/ETmH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g9xt4i1r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 768D62D8DB9;
-	Mon, 27 Oct 2025 18:40:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB4BF32B996;
+	Mon, 27 Oct 2025 18:53:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761590423; cv=none; b=YVyKcPzzUaIHsi4QTceFvc/fJx9nKWx3/b2iniuFPoeX91CXFR0LavH7sAdBck9JN37QI7cfnJXu/6ix66pNanHyYrvXGovWvtzSH5nhd258BIwURWpx/BXTgj2IkkmpYAT0bAAGqE+ZQFF+Tdn+/x+jn0jq9JNi4ZhjtWXi+hs=
+	t=1761591192; cv=none; b=VUeikqW2wt39KrqjB8IiK1kiZxrL0LIsDIjYlm91rfyZMDa59itDs0ISFhUjtwQJqXZ7xKVHkstjnuO6UJK48X0NnGQLbV+9JWXdFcBuDQot5ioD9t416lfOUblphdKUDNfvM4omkHr6XMoDCgFSK1tbSkfnE4DSi5aenGo4TZw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761590423; c=relaxed/simple;
-	bh=qv3KqFWUE8YsvdANCtb4lPe1BF9MUY34PL7Od3K3n5E=;
+	s=arc-20240116; t=1761591192; c=relaxed/simple;
+	bh=bBpGL2hhKqZ214RLIJitIqs7QeW19S0UNhkgdiCqZSs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZubFzfjQQ9y9L4uEiZUoi3X+ZbHMGXabomIQ0Qp/gdZc9RVwmpxV5YzoVeN4wQCS4xH9dKg3qeAJojnoTaicxX0MrJdO51OXUQN+lSuMwGskwygJx2f+9u3o2GcEm4Qr8e53HoSQst3WuN+Qa+u+CKEEeCWvpaGpyyPhHOBNG+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wpc/ETmH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B58CDC4CEF1;
-	Mon, 27 Oct 2025 18:40:22 +0000 (UTC)
+	 MIME-Version; b=KzHMo+WanONZA4iG8UovBfIwF1FMC7ggM2OwXq71SG/rvBXaJeSapk6vhbswSLh/pCMNuThG6QECsJqwEkY2qFaYhgdqbz9SMQdBOJ6FsDnvFC/4OzJOvdZBcmlvj2Ku/nyczU+4+1c1mJgdllzqo2do65dZq/gi2O1NdOJAVsI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g9xt4i1r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18AAFC4CEFD;
+	Mon, 27 Oct 2025 18:53:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761590423;
-	bh=qv3KqFWUE8YsvdANCtb4lPe1BF9MUY34PL7Od3K3n5E=;
+	s=korg; t=1761591192;
+	bh=bBpGL2hhKqZ214RLIJitIqs7QeW19S0UNhkgdiCqZSs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wpc/ETmH89sVJMLrvj1c9EK0UyxamWtfMZQZt/ukXLXax09FpJ9RfKNE/B87c4Rmm
-	 iehsBNPRWN6mp6saRfop1hs3kru09fxmrwtMV/QcFTRjZCi0LgHzg4zJtgru3S9puA
-	 4Tg8v1Zjlr1JmYcthsaYMcfxx3t7FhwC05eoKFHM=
+	b=g9xt4i1rkyLVzek9MXvO6e4nEundYmPJTKlB5PxvaHat0RUYQ+a86/Otx1hauPQ1r
+	 9LWZENIKCF/kEdw8fhSE+nJb0EnG14clqsLhQqE1qqtTcOGliipdLOBC1Y5IusH4c+
+	 7KBtw9ZbEno1kYdKZdnf+yZmcLjltRblOmSchFbQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Flavius Georgescu <pretoriano.mp@gmail.com>,
-	Chris Vandomelen <chris@sightworks.com>,
-	Sean Young <sean@mess.org>,
-	Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
+	Ian Rogers <irogers@google.com>,
+	Yunseong Kim <ysk@kzalloc.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Stephen Brennan <stephen.s.brennan@oracle.com>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 007/224] media: rc: Add support for another iMON 0xffdc device
-Date: Mon, 27 Oct 2025 19:32:33 +0100
-Message-ID: <20251027183509.176655491@linuxfoundation.org>
+Subject: [PATCH 5.10 101/332] perf util: Fix compression checks returning -1 as bool
+Date: Mon, 27 Oct 2025 19:32:34 +0100
+Message-ID: <20251027183527.285478060@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183508.963233542@linuxfoundation.org>
-References: <20251027183508.963233542@linuxfoundation.org>
+In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
+References: <20251027183524.611456697@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,159 +69,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Flavius Georgescu <pretoriano.mp@gmail.com>
+From: Yunseong Kim <ysk@kzalloc.com>
 
-[ Upstream commit cf330691668a3bee37b8ac8212709b3ccdd87997 ]
+[ Upstream commit 43fa1141e2c1af79c91aaa4df03e436c415a6fc3 ]
 
-The device it's an iMON UltraBay (0x98 in config byte) with LCD,
-IR and dual-knobs front panel.
+The lzma_is_compressed and gzip_is_compressed functions are declared
+to return a "bool" type, but in case of an error (e.g., file open
+failure), they incorrectly returned -1.
 
-To work properly the device also require its own key table,
-and repeat suppression for all buttons.
+A bool type is a boolean value that is either true or false.
+Returning -1 for a bool return type can lead to unexpected behavior
+and may violate strict type-checking in some compilers.
 
-Signed-off-by: Flavius Georgescu <pretoriano.mp@gmail.com>
-Co-developed-by: Chris Vandomelen <chris@sightworks.com>
-Signed-off-by: Chris Vandomelen <chris@sightworks.com>
-Signed-off-by: Sean Young <sean@mess.org>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
-Stable-dep-of: fa0f61cc1d82 ("media: rc: fix races with imon_disconnect()")
+Fix the return value to be false in error cases, ensuring the function
+adheres to its declared return type improves for preventing potential
+bugs related to type mismatch.
+
+Fixes: 4b57fd44b61beb51 ("perf tools: Add lzma_is_compressed function")
+Reviewed-by: Ian Rogers <irogers@google.com>
+Signed-off-by: Yunseong Kim <ysk@kzalloc.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Stephen Brennan <stephen.s.brennan@oracle.com>
+Link: https://lore.kernel.org/r/20250822162506.316844-3-ysk@kzalloc.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/rc/imon.c |   61 ++++++++++++++++++++++++++++++++++++++++--------
- 1 file changed, 51 insertions(+), 10 deletions(-)
+ tools/perf/util/lzma.c | 2 +-
+ tools/perf/util/zlib.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/media/rc/imon.c
-+++ b/drivers/media/rc/imon.c
-@@ -83,6 +83,7 @@ struct imon_usb_dev_descr {
- 	__u16 flags;
- #define IMON_NO_FLAGS 0
- #define IMON_NEED_20MS_PKT_DELAY 1
-+#define IMON_SUPPRESS_REPEATED_KEYS 2
- 	struct imon_panel_key_table key_table[];
- };
+diff --git a/tools/perf/util/lzma.c b/tools/perf/util/lzma.c
+index 51424cdc3b682..aa9a0ebc1f937 100644
+--- a/tools/perf/util/lzma.c
++++ b/tools/perf/util/lzma.c
+@@ -115,7 +115,7 @@ bool lzma_is_compressed(const char *input)
+ 	ssize_t rc;
  
-@@ -149,8 +150,9 @@ struct imon_context {
- 	struct timer_list ttimer;	/* touch screen timer */
- 	int touch_x;			/* x coordinate on touchscreen */
- 	int touch_y;			/* y coordinate on touchscreen */
--	struct imon_usb_dev_descr *dev_descr; /* device description with key
--						 table for front panels */
-+	const struct imon_usb_dev_descr *dev_descr;
-+					/* device description with key */
-+					/* table for front panels */
- };
+ 	if (fd < 0)
+-		return -1;
++		return false;
  
- #define TOUCH_TIMEOUT	(HZ/30)
-@@ -315,6 +317,32 @@ static const struct imon_usb_dev_descr i
- 	}
- };
+ 	rc = read(fd, buf, sizeof(buf));
+ 	close(fd);
+diff --git a/tools/perf/util/zlib.c b/tools/perf/util/zlib.c
+index 78d2297c1b674..1f7c065230599 100644
+--- a/tools/perf/util/zlib.c
++++ b/tools/perf/util/zlib.c
+@@ -88,7 +88,7 @@ bool gzip_is_compressed(const char *input)
+ 	ssize_t rc;
  
-+/* imon ultrabay front panel key table */
-+static const struct imon_usb_dev_descr ultrabay_table = {
-+	.flags = IMON_SUPPRESS_REPEATED_KEYS,
-+	.key_table = {
-+		{ 0x0000000f0000ffeell, KEY_MEDIA },      /* Go */
-+		{ 0x000000000100ffeell, KEY_UP },
-+		{ 0x000000000001ffeell, KEY_DOWN },
-+		{ 0x000000160000ffeell, KEY_ENTER },
-+		{ 0x0000001f0000ffeell, KEY_AUDIO },      /* Music */
-+		{ 0x000000200000ffeell, KEY_VIDEO },      /* Movie */
-+		{ 0x000000210000ffeell, KEY_CAMERA },     /* Photo */
-+		{ 0x000000270000ffeell, KEY_DVD },        /* DVD */
-+		{ 0x000000230000ffeell, KEY_TV },         /* TV */
-+		{ 0x000000050000ffeell, KEY_PREVIOUS },   /* Previous */
-+		{ 0x000000070000ffeell, KEY_REWIND },
-+		{ 0x000000040000ffeell, KEY_STOP },
-+		{ 0x000000020000ffeell, KEY_PLAYPAUSE },
-+		{ 0x000000080000ffeell, KEY_FASTFORWARD },
-+		{ 0x000000060000ffeell, KEY_NEXT },       /* Next */
-+		{ 0x000100000000ffeell, KEY_VOLUMEUP },
-+		{ 0x010000000000ffeell, KEY_VOLUMEDOWN },
-+		{ 0x000000010000ffeell, KEY_MUTE },
-+		{ 0, KEY_RESERVED },
-+	}
-+};
-+
- /*
-  * USB Device ID for iMON USB Control Boards
-  *
-@@ -1261,9 +1289,11 @@ static u32 imon_mce_key_lookup(struct im
+ 	if (fd < 0)
+-		return -1;
++		return false;
  
- static u32 imon_panel_key_lookup(struct imon_context *ictx, u64 code)
- {
--	int i;
-+	const struct imon_panel_key_table *key_table;
- 	u32 keycode = KEY_RESERVED;
--	struct imon_panel_key_table *key_table = ictx->dev_descr->key_table;
-+	int i;
-+
-+	key_table = ictx->dev_descr->key_table;
- 
- 	for (i = 0; key_table[i].hw_code != 0; i++) {
- 		if (key_table[i].hw_code == (code | 0xffee)) {
-@@ -1547,7 +1577,6 @@ static void imon_incoming_packet(struct
- 	u32 kc;
- 	u64 scancode;
- 	int press_type = 0;
--	long msec;
- 	ktime_t t;
- 	static ktime_t prev_time;
- 	u8 ktype;
-@@ -1649,14 +1678,16 @@ static void imon_incoming_packet(struct
- 	spin_lock_irqsave(&ictx->kc_lock, flags);
- 
- 	t = ktime_get();
--	/* KEY_MUTE repeats from knob need to be suppressed */
--	if (ictx->kc == KEY_MUTE && ictx->kc == ictx->last_keycode) {
--		msec = ktime_ms_delta(t, prev_time);
--		if (msec < ictx->idev->rep[REP_DELAY]) {
-+	/* KEY repeats from knob and panel that need to be suppressed */
-+	if (ictx->kc == KEY_MUTE ||
-+	    ictx->dev_descr->flags & IMON_SUPPRESS_REPEATED_KEYS) {
-+		if (ictx->kc == ictx->last_keycode &&
-+		    ktime_ms_delta(t, prev_time) < ictx->idev->rep[REP_DELAY]) {
- 			spin_unlock_irqrestore(&ictx->kc_lock, flags);
- 			return;
- 		}
- 	}
-+
- 	prev_time = t;
- 	kc = ictx->kc;
- 
-@@ -1844,6 +1875,14 @@ static void imon_get_ffdc_type(struct im
- 		dev_info(ictx->dev, "0xffdc iMON Inside, iMON IR");
- 		ictx->display_supported = false;
- 		break;
-+	/* Soundgraph iMON UltraBay */
-+	case 0x98:
-+		dev_info(ictx->dev, "0xffdc iMON UltraBay, LCD + IR");
-+		detected_display_type = IMON_DISPLAY_TYPE_LCD;
-+		allowed_protos = RC_PROTO_BIT_IMON | RC_PROTO_BIT_RC6_MCE;
-+		ictx->dev_descr = &ultrabay_table;
-+		break;
-+
- 	default:
- 		dev_info(ictx->dev, "Unknown 0xffdc device, defaulting to VFD and iMON IR");
- 		detected_display_type = IMON_DISPLAY_TYPE_VFD;
-@@ -1975,10 +2014,12 @@ out:
- 
- static struct input_dev *imon_init_idev(struct imon_context *ictx)
- {
--	struct imon_panel_key_table *key_table = ictx->dev_descr->key_table;
-+	const struct imon_panel_key_table *key_table;
- 	struct input_dev *idev;
- 	int ret, i;
- 
-+	key_table = ictx->dev_descr->key_table;
-+
- 	idev = input_allocate_device();
- 	if (!idev)
- 		goto out;
+ 	rc = read(fd, buf, sizeof(buf));
+ 	close(fd);
+-- 
+2.51.0
+
 
 
 
