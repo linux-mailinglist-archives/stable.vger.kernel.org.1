@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-190425-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190099-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A354C104EE
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:57:17 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05D75C0FF72
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:40:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id B600A35184A
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:57:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6C62819C51C0
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:41:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3168D326D57;
-	Mon, 27 Oct 2025 18:54:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8594631B815;
+	Mon, 27 Oct 2025 18:40:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gS+I1/qx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tTuOMxOf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3CDC246BB7;
-	Mon, 27 Oct 2025 18:54:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E5D431B80D;
+	Mon, 27 Oct 2025 18:40:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591257; cv=none; b=ON69AvT6fkn5qnH9Q6ULrPu+Fratgfqu4wj+BuqoWNMBzTSX2hALNdCH8b1ZlewiU/vh7mDWAktLfSM2S5cqfr1xckZsuylzEPV1Hnt1hn8L3ogb0VxrwYOfWw7RAslZJSMfzkUhtHaNAl1A05W+Mk61AwOyGqmoW9UZJJYDIEQ=
+	t=1761590434; cv=none; b=cIZTdg+P8WIoimNgoc6YNrCSsQo0nYpO61Jw18V9P56rm5f2ND4u6mbYPA3WEj2q/Z0ineBVN+NQr0Y4ALD6zIlgCFb+eH0g+kdaqYRXveWi1eqVXv6T+wOZV06lDUQc4e4o8js9yqCtOuQD/JI42b8EthKofqBTMLfBz/s/cEE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591257; c=relaxed/simple;
-	bh=6WvXvGezX4zyc+cSpC8nsCYE8BwN+xxv37AEmqZGVgk=;
+	s=arc-20240116; t=1761590434; c=relaxed/simple;
+	bh=jZBx/9mUmOEMGCUk5VqymZwR+AnCDs7ZgMO0iYRkH7g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fBFM4Dhv4hzl48Xa2zJ5I685lgazygFwwVEwdUDOIs7nTA0wJQ/iMPvzZuottW92lgA4u0QV7k0XJ9aNUoEQXIyJARe7TWEB3OqstkVGLSyGoNjTHaZ0BTJTxpzWogtvxl/FmwxnCOk4kSgZWWywraX/bLGe+2fDmxp6pWS8c6c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gS+I1/qx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68CE2C4CEF1;
-	Mon, 27 Oct 2025 18:54:17 +0000 (UTC)
+	 MIME-Version; b=tE072lPLqQAs28FSZ4xUsK2oVL4tnd9TM8CSN8NxhVMIU0qLjQxBPtFdnq9cRm2vK2kpWu98orRAML0PFujbM7r9TG75vvoWYo8R2EdaZ+4f3InWmA0wIEHS8FRRdlNjQ25FIFzYSOHtPxJFCJfYybcncdn0z716aFDMQyo/4O4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tTuOMxOf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DC8DC4CEFD;
+	Mon, 27 Oct 2025 18:40:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591257;
-	bh=6WvXvGezX4zyc+cSpC8nsCYE8BwN+xxv37AEmqZGVgk=;
+	s=korg; t=1761590433;
+	bh=jZBx/9mUmOEMGCUk5VqymZwR+AnCDs7ZgMO0iYRkH7g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gS+I1/qxZb51ZXmENrvkuh76gfMeHNbLvot8/qBJBcfQ/UoyLl9J8f+QMnXbjgrF4
-	 dxBoI7ygxN2hXncGyPoPCjEuOLbaSofjPZrTkWHT50JRcx1LwfsuhgrB8vSXtZX9pJ
-	 k6//aZXcOd2C+JIwuCyUSbkxBjG/9eItEJX1ibRc=
+	b=tTuOMxOfrY/Pg3NMCSYrNcfX6AMLeXliNJifMpRjaqrqYzA0uDdyrTdJyRB58lTTi
+	 3YG0CFLKUz2alp08mCWKJ+PU2Pz3raEnmQfuaNkoiY7MTic54/fAsLfypc/5CI9csw
+	 pyRNPJWzTktglWTS1LmZMWohIjc4kR0e0mJ7gjAg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Amir Mohammad Jahangirzad <a.jahangirzad@gmail.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 5.10 128/332] ACPI: debug: fix signedness issues in read/write helpers
-Date: Mon, 27 Oct 2025 19:33:01 +0100
-Message-ID: <20251027183527.988880126@linuxfoundation.org>
+	Zhang Shurong <zhang_shurong@foxmail.com>,
+	Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 036/224] media: rj54n1cb0c: Fix memleak in rj54n1_probe()
+Date: Mon, 27 Oct 2025 19:33:02 +0100
+Message-ID: <20251027183509.971743762@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
-References: <20251027183524.611456697@linuxfoundation.org>
+In-Reply-To: <20251027183508.963233542@linuxfoundation.org>
+References: <20251027183508.963233542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,130 +64,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amir Mohammad Jahangirzad <a.jahangirzad@gmail.com>
+From: Zhang Shurong <zhang_shurong@foxmail.com>
 
-commit 496f9372eae14775e0524e83e952814691fe850a upstream.
+[ Upstream commit fda55673ecdabf25f5ecc61b5ab17239257ac252 ]
 
-In the ACPI debugger interface, the helper functions for read and write
-operations use "int" as the length parameter data type. When a large
-"size_t count" is passed from the file operations, this cast to "int"
-results in truncation and a negative value due to signed integer
-representation.
+rj54n1_probe() won't clean all the allocated resources in fail
+path, which may causes the memleaks. Add v4l2_ctrl_handler_free() to
+prevent memleak.
 
-Logically, this negative number propagates to the min() calculation,
-where it is selected over the positive buffer space value, leading to
-unexpected behavior. Subsequently, when this negative value is used in
-copy_to_user() or copy_from_user(), it is interpreted as a large positive
-value due to the unsigned nature of the size parameter in these functions,
-causing the copy operations to attempt handling sizes far beyond the
-intended buffer limits.
-
-Address the issue by:
- - Changing the length parameters in acpi_aml_read_user() and
-   acpi_aml_write_user() from "int" to "size_t", aligning with the
-   expected unsigned size semantics.
- - Updating return types and local variables in acpi_aml_read() and
-   acpi_aml_write() to "ssize_t" for consistency with kernel file
-   operation conventions.
- - Using "size_t" for the "n" variable to ensure calculations remain
-   unsigned.
- - Using min_t() for circ_count_to_end() and circ_space_to_end() to
-   ensure type-safe comparisons and prevent integer overflow.
-
-Signed-off-by: Amir Mohammad Jahangirzad <a.jahangirzad@gmail.com>
-Link: https://patch.msgid.link/20250923013113.20615-1-a.jahangirzad@gmail.com
-[ rjw: Changelog tweaks, local variable definitions ordering adjustments ]
-Fixes: 8cfb0cdf07e2 ("ACPI / debugger: Add IO interface to access debugger functionalities")
-Cc: 4.5+ <stable@vger.kernel.org> # 4.5+
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: f187352dcd45 ("media: i2c: Copy rj54n1cb0c soc_camera sensor driver")
+Signed-off-by: Zhang Shurong <zhang_shurong@foxmail.com>
+Reviewed-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/acpi_dbg.c |   26 +++++++++++++-------------
- 1 file changed, 13 insertions(+), 13 deletions(-)
+ drivers/media/i2c/rj54n1cb0c.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
---- a/drivers/acpi/acpi_dbg.c
-+++ b/drivers/acpi/acpi_dbg.c
-@@ -576,11 +576,11 @@ static int acpi_aml_release(struct inode
- 	return 0;
- }
+diff --git a/drivers/media/i2c/rj54n1cb0c.c b/drivers/media/i2c/rj54n1cb0c.c
+index 4cc51e0018744..b35b3e4286861 100644
+--- a/drivers/media/i2c/rj54n1cb0c.c
++++ b/drivers/media/i2c/rj54n1cb0c.c
+@@ -1332,10 +1332,13 @@ static int rj54n1_probe(struct i2c_client *client,
+ 			V4L2_CID_GAIN, 0, 127, 1, 66);
+ 	v4l2_ctrl_new_std(&rj54n1->hdl, &rj54n1_ctrl_ops,
+ 			V4L2_CID_AUTO_WHITE_BALANCE, 0, 1, 1, 1);
+-	rj54n1->subdev.ctrl_handler = &rj54n1->hdl;
+-	if (rj54n1->hdl.error)
+-		return rj54n1->hdl.error;
  
--static int acpi_aml_read_user(char __user *buf, int len)
-+static ssize_t acpi_aml_read_user(char __user *buf, size_t len)
- {
--	int ret;
- 	struct circ_buf *crc = &acpi_aml_io.out_crc;
--	int n;
-+	ssize_t ret;
-+	size_t n;
- 	char *p;
- 
- 	ret = acpi_aml_lock_read(crc, ACPI_AML_OUT_USER);
-@@ -589,7 +589,7 @@ static int acpi_aml_read_user(char __use
- 	/* sync head before removing logs */
- 	smp_rmb();
- 	p = &crc->buf[crc->tail];
--	n = min(len, circ_count_to_end(crc));
-+	n = min_t(size_t, len, circ_count_to_end(crc));
- 	if (copy_to_user(buf, p, n)) {
- 		ret = -EFAULT;
- 		goto out;
-@@ -606,8 +606,8 @@ out:
- static ssize_t acpi_aml_read(struct file *file, char __user *buf,
- 			     size_t count, loff_t *ppos)
- {
--	int ret = 0;
--	int size = 0;
-+	ssize_t ret = 0;
-+	ssize_t size = 0;
- 
- 	if (!count)
- 		return 0;
-@@ -646,11 +646,11 @@ again:
- 	return size > 0 ? size : ret;
- }
- 
--static int acpi_aml_write_user(const char __user *buf, int len)
-+static ssize_t acpi_aml_write_user(const char __user *buf, size_t len)
- {
--	int ret;
- 	struct circ_buf *crc = &acpi_aml_io.in_crc;
--	int n;
-+	ssize_t ret;
-+	size_t n;
- 	char *p;
- 
- 	ret = acpi_aml_lock_write(crc, ACPI_AML_IN_USER);
-@@ -659,7 +659,7 @@ static int acpi_aml_write_user(const cha
- 	/* sync tail before inserting cmds */
- 	smp_mb();
- 	p = &crc->buf[crc->head];
--	n = min(len, circ_space_to_end(crc));
-+	n = min_t(size_t, len, circ_space_to_end(crc));
- 	if (copy_from_user(p, buf, n)) {
- 		ret = -EFAULT;
- 		goto out;
-@@ -670,14 +670,14 @@ static int acpi_aml_write_user(const cha
- 	ret = n;
- out:
- 	acpi_aml_unlock_fifo(ACPI_AML_IN_USER, ret >= 0);
--	return n;
-+	return ret;
- }
- 
- static ssize_t acpi_aml_write(struct file *file, const char __user *buf,
- 			      size_t count, loff_t *ppos)
- {
--	int ret = 0;
--	int size = 0;
-+	ssize_t ret = 0;
-+	ssize_t size = 0;
- 
- 	if (!count)
- 		return 0;
++	if (rj54n1->hdl.error) {
++		ret = rj54n1->hdl.error;
++		goto err_free_ctrl;
++	}
++
++	rj54n1->subdev.ctrl_handler = &rj54n1->hdl;
+ 	rj54n1->clk_div		= clk_div;
+ 	rj54n1->rect.left	= RJ54N1_COLUMN_SKIP;
+ 	rj54n1->rect.top	= RJ54N1_ROW_SKIP;
+-- 
+2.51.0
+
 
 
 
