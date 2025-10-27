@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-190991-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191267-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20C7BC10CAC
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:20:10 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BAF73C1123D
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:37:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id C0CEF352768
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:20:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6ADFD1883F84
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:33:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A5DC31CA72;
-	Mon, 27 Oct 2025 19:18:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A495632B99B;
+	Mon, 27 Oct 2025 19:31:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DK5iZlcF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qDgv/Vy9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56F5F2E7F05;
-	Mon, 27 Oct 2025 19:18:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 512BE321F48;
+	Mon, 27 Oct 2025 19:31:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592730; cv=none; b=fUH1LjSKJwWszhNmlvF7IGjC4s9FlYLPHytf97ZriRoyDGPHQLyxugwz//LRlDZpgW1YDo9mfy4CddsdtfZsTBtXtZV54uL1xtgzmrnb4Uh9tNplfhDYFT7rUshSYZIccJvvdLfq2kKlT5JG2m/AHXFROJkwMHnLBrEP/tmMfLw=
+	t=1761593468; cv=none; b=nHA8g2OmG1noy1CcFzWgWFYNrKLHkpnMfux2Taa9vkd0Mv2EBgz8F4RQTKmaV0rLy4WOoLTrurhnn+wc3BwDNP2+csPyetcd2PTaFP/KC0rfvIN5/FcwP0KFdqBHqngSNzr1xO6b6vlenQZGNy/5Oc6Fyzh3+624dpgmjLVShjI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592730; c=relaxed/simple;
-	bh=CzkingulcRW7S1fUF3sXXjKc9sp/2kh1vN+VNHEnGUQ=;
+	s=arc-20240116; t=1761593468; c=relaxed/simple;
+	bh=WHZD+THu76bUh2NkrWDx2xcoWpWpsanBcB9FTbxUt3U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ENrBA2DYqfd+B+DXJL7MXpstu9y7w/7lkpowDfy0nDLhlNL4Its2OjMphfGeCxm36NFRyt+okhpM2yCoM9e1Q0f7Nm3YL4luusUZMjh7o9xL8dXVnPtB+XGMHWLweOCdEQ0AUpAKCrdOq6go0G2fkQhtZOr4BCulvqAdAxQCUsM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DK5iZlcF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCF1BC4CEF1;
-	Mon, 27 Oct 2025 19:18:49 +0000 (UTC)
+	 MIME-Version; b=LJil/38+E1nyAg8UTIP3vbouOsafLpKNDfXsMB0KEzu48vAuehd4Ml5hga97T6/jd6u42AnJH03livLdwoXoht6d2NYUmsq3fzL34y21Maou3E7dZgbquZp2exkonAJULV4JEuX3WxcnjANHFloCXOjB12rOhlF5JltSC6n2tjo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qDgv/Vy9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E16CC4CEF1;
+	Mon, 27 Oct 2025 19:31:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592730;
-	bh=CzkingulcRW7S1fUF3sXXjKc9sp/2kh1vN+VNHEnGUQ=;
+	s=korg; t=1761593467;
+	bh=WHZD+THu76bUh2NkrWDx2xcoWpWpsanBcB9FTbxUt3U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DK5iZlcFe0EkcwkQhbdW9ljuUkXmiwuGaxDNvab4duC0x/OtN2gpETBZd9qfwDT0b
-	 2eiXqnKiB7ix7MP8oZSKeE95saU+ywxZzNiyYCZ8oFYY75+BQ9zM9TNRXmbhzrGt/m
-	 nUYQOpFl18GnwWSoegOX1MGLdd9XZTIanIWFb1HI=
+	b=qDgv/Vy9HR8m/y7UaAokn3FvKtWE9THzfZyh+PZDUEYLSFhEFVWaoRyOkM5jyLXFB
+	 vnJP1hBM1i843kSe6riWsJ1eQOQaGTvm8MTnlFk18SeomjrQoy8GwA42cmjhQVzCPb
+	 mpH9saTEGTL2t/JAsnBpNaNgrJQqeZk6gaKTU6i4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Eckert <fe@dev.tdt.de>,
-	stable <stable@kernel.org>
-Subject: [PATCH 6.6 75/84] serial: 8250_exar: add support for Advantech 2 port card with Device ID 0x0018
+	Javier Martinez Canillas <javierm@redhat.com>,
+	Jocelyn Falempe <jfalempe@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.17 142/184] drm/panic: Fix 24bit pixel crossing page boundaries
 Date: Mon, 27 Oct 2025 19:37:04 +0100
-Message-ID: <20251027183440.805570153@linuxfoundation.org>
+Message-ID: <20251027183518.765987060@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183438.817309828@linuxfoundation.org>
-References: <20251027183438.817309828@linuxfoundation.org>
+In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
+References: <20251027183514.934710872@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,61 +62,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Eckert <fe@dev.tdt.de>
+From: Jocelyn Falempe <jfalempe@redhat.com>
 
-commit e7cbce761fe3fcbcb49bcf30d4f8ca5e1a9ee2a0 upstream.
+[ Upstream commit 23437509a69476d4f896891032d62ac868731668 ]
 
-The Advantech 2-port serial card with PCI vendor=0x13fe and device=0x0018
-has a 'XR17V35X' chip installed on the circuit board. Therefore, this
-driver can be used instead of theu outdated out-of-tree driver from the
-manufacturer.
+When using page list framebuffer, and using RGB888 format, some
+pixels can cross the page boundaries, and this case was not handled,
+leading to writing 1 or 2 bytes on the next virtual address.
 
-Signed-off-by: Florian Eckert <fe@dev.tdt.de>
-Cc: stable <stable@kernel.org>
-Link: https://patch.msgid.link/20250924134115.2667650-1-fe@dev.tdt.de
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Add a check and a specific function to handle this case.
+
+Fixes: c9ff2808790f0 ("drm/panic: Add support to scanout buffer as array of pages")
+Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+Link: https://lore.kernel.org/r/20251009122955.562888-7-jfalempe@redhat.com
+Signed-off-by: Jocelyn Falempe <jfalempe@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/8250/8250_exar.c |   11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/gpu/drm/drm_panic.c | 46 +++++++++++++++++++++++++++++++++++--
+ 1 file changed, 44 insertions(+), 2 deletions(-)
 
---- a/drivers/tty/serial/8250/8250_exar.c
-+++ b/drivers/tty/serial/8250/8250_exar.c
-@@ -33,6 +33,8 @@
- #define PCI_DEVICE_ID_ACCESSIO_COM_4SM		0x10db
- #define PCI_DEVICE_ID_ACCESSIO_COM_8SM		0x10ea
+diff --git a/drivers/gpu/drm/drm_panic.c b/drivers/gpu/drm/drm_panic.c
+index 1bc15c44207b4..f52752880e1c9 100644
+--- a/drivers/gpu/drm/drm_panic.c
++++ b/drivers/gpu/drm/drm_panic.c
+@@ -174,6 +174,33 @@ static void drm_panic_write_pixel24(void *vaddr, unsigned int offset, u32 color)
+ 	*p = color & 0xff;
+ }
  
-+#define PCI_DEVICE_ID_ADVANTECH_XR17V352	0x0018
++/*
++ * Special case if the pixel crosses page boundaries
++ */
++static void drm_panic_write_pixel24_xpage(void *vaddr, struct page *next_page,
++					  unsigned int offset, u32 color)
++{
++	u8 *vaddr2;
++	u8 *p = vaddr + offset;
 +
- #define PCI_DEVICE_ID_COMMTECH_4224PCI335	0x0002
- #define PCI_DEVICE_ID_COMMTECH_4222PCI335	0x0004
- #define PCI_DEVICE_ID_COMMTECH_2324PCI335	0x000a
-@@ -845,6 +847,12 @@ static const struct exar8250_board pbn_f
- 	.exit		= pci_xr17v35x_exit,
- };
- 
-+static const struct exar8250_board pbn_adv_XR17V352 = {
-+	.num_ports	= 2,
-+	.setup		= pci_xr17v35x_setup,
-+	.exit		= pci_xr17v35x_exit,
-+};
++	vaddr2 = kmap_local_page_try_from_panic(next_page);
 +
- static const struct exar8250_board pbn_exar_XR17V4358 = {
- 	.num_ports	= 12,
- 	.setup		= pci_xr17v35x_setup,
-@@ -914,6 +922,9 @@ static const struct pci_device_id exar_p
- 	USR_DEVICE(XR17C152, 2980, pbn_exar_XR17C15x),
- 	USR_DEVICE(XR17C152, 2981, pbn_exar_XR17C15x),
- 
-+	/* ADVANTECH devices */
-+	EXAR_DEVICE(ADVANTECH, XR17V352, pbn_adv_XR17V352),
++	*p++ = color & 0xff;
++	color >>= 8;
 +
- 	/* Exar Corp. XR17C15[248] Dual/Quad/Octal UART */
- 	EXAR_DEVICE(EXAR, XR17C152, pbn_exar_XR17C15x),
- 	EXAR_DEVICE(EXAR, XR17C154, pbn_exar_XR17C15x),
++	if (offset == PAGE_SIZE - 1)
++		p = vaddr2;
++
++	*p++ = color & 0xff;
++	color >>= 8;
++
++	if (offset == PAGE_SIZE - 2)
++		p = vaddr2;
++
++	*p = color & 0xff;
++	kunmap_local(vaddr2);
++}
++
+ static void drm_panic_write_pixel32(void *vaddr, unsigned int offset, u32 color)
+ {
+ 	u32 *p = vaddr + offset;
+@@ -231,7 +258,14 @@ static void drm_panic_blit_page(struct page **pages, unsigned int dpitch,
+ 					page = new_page;
+ 					vaddr = kmap_local_page_try_from_panic(pages[page]);
+ 				}
+-				if (vaddr)
++				if (!vaddr)
++					continue;
++
++				// Special case for 24bit, as a pixel might cross page boundaries
++				if (cpp == 3 && offset + 3 > PAGE_SIZE)
++					drm_panic_write_pixel24_xpage(vaddr, pages[page + 1],
++								      offset, fg32);
++				else
+ 					drm_panic_write_pixel(vaddr, offset, fg32, cpp);
+ 			}
+ 		}
+@@ -321,7 +355,15 @@ static void drm_panic_fill_page(struct page **pages, unsigned int dpitch,
+ 				page = new_page;
+ 				vaddr = kmap_local_page_try_from_panic(pages[page]);
+ 			}
+-			drm_panic_write_pixel(vaddr, offset, color, cpp);
++			if (!vaddr)
++				continue;
++
++			// Special case for 24bit, as a pixel might cross page boundaries
++			if (cpp == 3 && offset + 3 > PAGE_SIZE)
++				drm_panic_write_pixel24_xpage(vaddr, pages[page + 1],
++							      offset, color);
++			else
++				drm_panic_write_pixel(vaddr, offset, color, cpp);
+ 		}
+ 	}
+ 	if (vaddr)
+-- 
+2.51.0
+
 
 
 
