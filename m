@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-190901-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190971-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79817C10D67
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:21:47 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 245FBC10E44
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:24:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 503291A62524
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:17:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F0A0C19A43DF
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:19:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A827132B990;
-	Mon, 27 Oct 2025 19:14:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BEC02D97A6;
+	Mon, 27 Oct 2025 19:17:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H13eiS9R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T1tKuFbt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6412D329C64;
-	Mon, 27 Oct 2025 19:14:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF1A31FBC92;
+	Mon, 27 Oct 2025 19:17:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592494; cv=none; b=FYwMt+n278vvTN/PqPcITkNjCjMZWqEV7D7oOyb1VA+sVgRLN7LD4v3wsBydrvu2AN/ewg4EuVdXg7tD79isgrrEXrXT8Q8jy/HSqc6b9LeImT6qjY62qetoRJ3ruRiyjJk/phH/v7jVra+68RZSsqSBE5ZNwD729G5QwrYG9R0=
+	t=1761592678; cv=none; b=adn5WwWQrUQyKxGvEnECH2cxUKTFlomuFhv/EsJhk2qBgmuvSOPGdN0JCCmAMYBsKsxuZgdJ1Otgh/YKkodBcHnt0hBE7tUR4AbOnWMboL8Tz0FNGMOdSTb6xm7oR5+g39MLEHmORFECehpw4q3vgr47Vlk84oXNNfWwrPxcctQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592494; c=relaxed/simple;
-	bh=qJ3NkHMcAEFmAAOrNlsTN2Gl3geovStLTPm8mUjmXNQ=;
+	s=arc-20240116; t=1761592678; c=relaxed/simple;
+	bh=lEKXf4Mn8USC/i2sSvwwr5H2GAY1eQliG9IvlHhzs60=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QqvzCIbRekmt+DVIBLAdMRrkuFrSOiEhf9X3QTu2sz4A5LpgSozt8NoVSElTdt3EhU+W0khxzWKnIZcSmDbOn8kisebH9+l4KYmYxA9YmdXWhmlkLZZsW5a8hlXwpYrTk1IuBxJSf/D5h941oCqA7yqctNMS3kVeBM/jtcaD3Ko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H13eiS9R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB414C4CEF1;
-	Mon, 27 Oct 2025 19:14:53 +0000 (UTC)
+	 MIME-Version; b=pWC5AiUZ9eCzIBjc/BJXh7m/9zs0mAyEg8WKDeoagMszgpTQBrj3+at0x5AkcfJhyIB4CPgcncw4c1x6byFyFa/lnbsDacWcnrQvsLnmvJUufhRrq/ei+TlgKcM3h5AlaonquPX/bcK+xvrtgHYwTgbK4wmEKWlVvokm/7pmT/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T1tKuFbt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5416BC4CEF1;
+	Mon, 27 Oct 2025 19:17:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592494;
-	bh=qJ3NkHMcAEFmAAOrNlsTN2Gl3geovStLTPm8mUjmXNQ=;
+	s=korg; t=1761592678;
+	bh=lEKXf4Mn8USC/i2sSvwwr5H2GAY1eQliG9IvlHhzs60=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H13eiS9RB+b6nv5fCu1zG9vPEnVNzu+ApxwtrtAjyYdwAxohLITbebCHhEbWp2c/L
-	 9psVRCUdGrS22iR7wiCoYty+Y0tz3SKgTAlfHyoQWQmG1vPaTYGeIyPmrrLjnaXOij
-	 j9lY/BGikFrqREYBmQs7qhf7X+A6jcSq00ihwMZw=
+	b=T1tKuFbt9Zq8dAnuWxMQUogd1k+DBn12P7lHzEqALv4mTtJ3YNqtaCAT7YfkaE85m
+	 KrvuZv6QVbVcgEYx/mgeiTtfa5In6Hw8T5E7QlPDX21Pg3uC17PpoxO2nbsw8WxiRu
+	 8HGaT+ahxzErZYtTKFvCx1kZYxSlY4LGq610FB/8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	JuenKit Yip <JuenKit_Yip@hotmail.com>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 142/157] f2fs: fix wrong block mapping for multi-devices
+Subject: [PATCH 6.6 54/84] hwmon: (sht3x) Fix error handling
 Date: Mon, 27 Oct 2025 19:36:43 +0100
-Message-ID: <20251027183505.086922799@linuxfoundation.org>
+Message-ID: <20251027183440.259677378@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
-References: <20251027183501.227243846@linuxfoundation.org>
+In-Reply-To: <20251027183438.817309828@linuxfoundation.org>
+References: <20251027183438.817309828@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +62,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jaegeuk Kim <jaegeuk@kernel.org>
+From: Guenter Roeck <linux@roeck-us.net>
 
-[ Upstream commit 9d5c4f5c7a2c7677e1b3942772122b032c265aae ]
+[ Upstream commit 8dcc66ad379ec0642fb281c45ccfd7d2d366e53f ]
 
-Assuming the disk layout as below,
+Handling of errors when reading status, temperature, and humidity returns
+the error number as negative attribute value. Fix it up by returning
+the error as return value.
 
-disk0: 0            --- 0x00035abfff
-disk1: 0x00035ac000 --- 0x00037abfff
-disk2: 0x00037ac000 --- 0x00037ebfff
-
-and we want to read data from offset=13568 having len=128 across the block
-devices, we can illustrate the block addresses like below.
-
-0 .. 0x00037ac000 ------------------- 0x00037ebfff, 0x00037ec000 -------
-          |          ^            ^                                ^
-          |   fofs   0            13568                            13568+128
-          |       ------------------------------------------------------
-          |   LBA    0x37e8aa9    0x37ebfa9                        0x37ec029
-          --- map    0x3caa9      0x3ffa9
-
-In this example, we should give the relative map of the target block device
-ranging from 0x3caa9 to 0x3ffa9 where the length should be calculated by
-0x37ebfff + 1 - 0x37ebfa9.
-
-In the below equation, however, map->m_pblk was supposed to be the original
-address instead of the one from the target block address.
-
- - map->m_len = min(map->m_len, dev->end_blk + 1 - map->m_pblk);
-
-Cc: stable@vger.kernel.org
-Fixes: 71f2c8206202 ("f2fs: multidevice: support direct IO")
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Fixes: a0ac418c6007c ("hwmon: (sht3x) convert some of sysfs interface to hwmon")
+Cc: JuenKit Yip <JuenKit_Yip@hotmail.com>
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/data.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/hwmon/sht3x.c | 27 +++++++++++++++++----------
+ 1 file changed, 17 insertions(+), 10 deletions(-)
 
---- a/fs/f2fs/data.c
-+++ b/fs/f2fs/data.c
-@@ -1486,8 +1486,8 @@ static bool f2fs_map_blocks_cached(struc
- 		struct f2fs_dev_info *dev = &sbi->devs[bidx];
+diff --git a/drivers/hwmon/sht3x.c b/drivers/hwmon/sht3x.c
+index 79657910b79e6..d8a86e60cf8c1 100644
+--- a/drivers/hwmon/sht3x.c
++++ b/drivers/hwmon/sht3x.c
+@@ -288,24 +288,26 @@ static struct sht3x_data *sht3x_update_client(struct device *dev)
+ 	return data;
+ }
  
- 		map->m_bdev = dev->bdev;
--		map->m_pblk -= dev->start_blk;
- 		map->m_len = min(map->m_len, dev->end_blk + 1 - map->m_pblk);
-+		map->m_pblk -= dev->start_blk;
- 	} else {
- 		map->m_bdev = inode->i_sb->s_bdev;
- 	}
+-static int temp1_input_read(struct device *dev)
++static int temp1_input_read(struct device *dev, long *temp)
+ {
+ 	struct sht3x_data *data = sht3x_update_client(dev);
+ 
+ 	if (IS_ERR(data))
+ 		return PTR_ERR(data);
+ 
+-	return data->temperature;
++	*temp = data->temperature;
++	return 0;
+ }
+ 
+-static int humidity1_input_read(struct device *dev)
++static int humidity1_input_read(struct device *dev, long *humidity)
+ {
+ 	struct sht3x_data *data = sht3x_update_client(dev);
+ 
+ 	if (IS_ERR(data))
+ 		return PTR_ERR(data);
+ 
+-	return data->humidity;
++	*humidity = data->humidity;
++	return 0;
+ }
+ 
+ /*
+@@ -703,6 +705,7 @@ static int sht3x_read(struct device *dev, enum hwmon_sensor_types type,
+ 		      u32 attr, int channel, long *val)
+ {
+ 	enum sht3x_limits index;
++	int ret;
+ 
+ 	switch (type) {
+ 	case hwmon_chip:
+@@ -717,10 +720,12 @@ static int sht3x_read(struct device *dev, enum hwmon_sensor_types type,
+ 	case hwmon_temp:
+ 		switch (attr) {
+ 		case hwmon_temp_input:
+-			*val = temp1_input_read(dev);
+-			break;
++			return temp1_input_read(dev, val);
+ 		case hwmon_temp_alarm:
+-			*val = temp1_alarm_read(dev);
++			ret = temp1_alarm_read(dev);
++			if (ret < 0)
++				return ret;
++			*val = ret;
+ 			break;
+ 		case hwmon_temp_max:
+ 			index = limit_max;
+@@ -745,10 +750,12 @@ static int sht3x_read(struct device *dev, enum hwmon_sensor_types type,
+ 	case hwmon_humidity:
+ 		switch (attr) {
+ 		case hwmon_humidity_input:
+-			*val = humidity1_input_read(dev);
+-			break;
++			return humidity1_input_read(dev, val);
+ 		case hwmon_humidity_alarm:
+-			*val = humidity1_alarm_read(dev);
++			ret = humidity1_alarm_read(dev);
++			if (ret < 0)
++				return ret;
++			*val = ret;
+ 			break;
+ 		case hwmon_humidity_max:
+ 			index = limit_max;
+-- 
+2.51.0
+
 
 
 
