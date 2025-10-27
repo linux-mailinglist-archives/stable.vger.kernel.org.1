@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-191276-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191000-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CDE4C11270
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:37:53 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE33FC10FBA
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:28:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4F2B2583FBF
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:33:09 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 88CC654570A
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:20:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B49962D5A14;
-	Mon, 27 Oct 2025 19:31:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F058B17F4F6;
+	Mon, 27 Oct 2025 19:19:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JOEZeFer"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HORck4Ut"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7074D1FBC92;
-	Mon, 27 Oct 2025 19:31:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD43F3090CC;
+	Mon, 27 Oct 2025 19:19:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761593496; cv=none; b=nf3S1fqDQ1ERaTEbP8GuaC+LhsThV2fm9nHAiecbVeu8t8MhsqJi1LWgJOZzzdlmTh+vW5InDNDZey7xVZb+Gl5MqwzqSn2xyuZYryVdScuDIDgS5K84Wr2wCVoNVklQuPm0flmwZ5gk6ZrWv45kRL3/ZolUhwUQrSXlh8guBAo=
+	t=1761592753; cv=none; b=bMp9l6a91hTuKTFtKSRzpUqRZZP2Bnj6NRAc8eUWAeWQSp72TXNEMBnyCD5utOj3ZHgcZ/BpV7o+wlAk8HvCApP8o5bak4y0MAoG2pSziSglZFYE2dhjVPpa0B6H7dY/+owxDf0/tOFG/BaW4sffdRTyk7P0d1UJrJXiP3GDIhU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761593496; c=relaxed/simple;
-	bh=ZqXXbFS1WuDzfpqY5qP+4P6uEhTndtfcMRLsJ0ihIqc=;
+	s=arc-20240116; t=1761592753; c=relaxed/simple;
+	bh=FifZcLPhWxxgcLRN9dLOFmlvmz2J7XlxclBuUjspr/4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UGF+M5Xt/yOwA/WQR21sxuCE0bJqnvP1mTnQnxsI+whylkOFaniFo9VxDFnCBvVy+MqeWSNP9hxL55+4Mnn9iL2ZqXof/E/WCjz8dPEj9s7b1QfzzObFs+PwTvcFZo/aOPz8wWAcAqbSZ/iY4XPC+eiyFCjn+0SagbAlrMcndoc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JOEZeFer; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E84D6C4CEF1;
-	Mon, 27 Oct 2025 19:31:35 +0000 (UTC)
+	 MIME-Version; b=QVY/A+jFYaA6uztepXebOCdj6nV1o7nfsjdrxC87kHSJ7G0FGWgKaloEchND5CcNNub3CqvOvw7H4N/a/SETaVXasMSNV7o3obrYc0Krs3ZR6hMQ/p97dq79PiMez8nwZUJeo5MKYPauqjXBun0j0sWVzinUJt81ciN5jfD2nN0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HORck4Ut; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F299C4CEF1;
+	Mon, 27 Oct 2025 19:19:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761593496;
-	bh=ZqXXbFS1WuDzfpqY5qP+4P6uEhTndtfcMRLsJ0ihIqc=;
+	s=korg; t=1761592753;
+	bh=FifZcLPhWxxgcLRN9dLOFmlvmz2J7XlxclBuUjspr/4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JOEZeFeraA/1Jo/vDD6N/8T+HvyieSKV1w3M0fFyuAZd8MlTh9tq6Eqly9cYFfJGt
-	 wtiOLZPyKnjTOrDx2WfmMa67HT1cOjT+BOk9cOhK1Z2xP8jrEwRy8flw6nUpQbQ6GO
-	 uavI92xQJsCZahaYxkx9rOZuzBNK+7uSHpegjAPI=
+	b=HORck4UtPbMhcTgPJItcWchAKzDm1VzmiF64iQM9u8HGLwwct9QQRxZsx0ORgdul9
+	 Y5hzUgCTv/mS62TDxS5Mx65DVwvcTDl3jUHwXD9EhiJLZ13BfirmJX1u66rqazS0na
+	 9O9qTV52xKfmoOO8y2ewM1FSBBmr1mnzacu+Wyiw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Reinhard Speyerer <rspmn@arcor.de>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.17 150/184] USB: serial: option: add Quectel RG255C
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Miklos Szeredi <mszeredi@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 83/84] fuse: fix livelock in synchronous file put from fuseblk workers
 Date: Mon, 27 Oct 2025 19:37:12 +0100
-Message-ID: <20251027183518.973424982@linuxfoundation.org>
+Message-ID: <20251027183441.025625586@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
-References: <20251027183514.934710872@linuxfoundation.org>
+In-Reply-To: <20251027183438.817309828@linuxfoundation.org>
+References: <20251027183438.817309828@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,68 +62,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Reinhard Speyerer <rspmn@arcor.de>
+From: "Darrick J. Wong" <djwong@kernel.org>
 
-commit 89205c60c0fc96b73567a2e9fe27ee3f59d01193 upstream.
+[ Upstream commit 26e5c67deb2e1f42a951f022fdf5b9f7eb747b01 ]
 
-Add support for Quectel RG255C devices to complement commit 5c964c8a97c1
-("net: usb: qmi_wwan: add Quectel RG255C").
-The composition is DM / NMEA / AT / QMI.
+I observed a hang when running generic/323 against a fuseblk server.
+This test opens a file, initiates a lot of AIO writes to that file
+descriptor, and closes the file descriptor before the writes complete.
+Unsurprisingly, the AIO exerciser threads are mostly stuck waiting for
+responses from the fuseblk server:
 
-T:  Bus=01 Lev=02 Prnt=99 Port=01 Cnt=02 Dev#=110 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=2c7c ProdID=0316 Rev= 5.15
-S:  Manufacturer=Quectel
-S:  Product=RG255C-GL
-S:  SerialNumber=xxxxxxxx
-C:* #Ifs= 4 Cfg#= 1 Atr=a0 MxPwr=500mA
-I:* If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 1 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
-E:  Ad=86(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+# cat /proc/372265/task/372313/stack
+[<0>] request_wait_answer+0x1fe/0x2a0 [fuse]
+[<0>] __fuse_simple_request+0xd3/0x2b0 [fuse]
+[<0>] fuse_do_getattr+0xfc/0x1f0 [fuse]
+[<0>] fuse_file_read_iter+0xbe/0x1c0 [fuse]
+[<0>] aio_read+0x130/0x1e0
+[<0>] io_submit_one+0x542/0x860
+[<0>] __x64_sys_io_submit+0x98/0x1a0
+[<0>] do_syscall_64+0x37/0xf0
+[<0>] entry_SYSCALL_64_after_hwframe+0x4b/0x53
 
-Signed-off-by: Reinhard Speyerer <rspmn@arcor.de>
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
+But the /weird/ part is that the fuseblk server threads are waiting for
+responses from itself:
+
+# cat /proc/372210/task/372232/stack
+[<0>] request_wait_answer+0x1fe/0x2a0 [fuse]
+[<0>] __fuse_simple_request+0xd3/0x2b0 [fuse]
+[<0>] fuse_file_put+0x9a/0xd0 [fuse]
+[<0>] fuse_release+0x36/0x50 [fuse]
+[<0>] __fput+0xec/0x2b0
+[<0>] task_work_run+0x55/0x90
+[<0>] syscall_exit_to_user_mode+0xe9/0x100
+[<0>] do_syscall_64+0x43/0xf0
+[<0>] entry_SYSCALL_64_after_hwframe+0x4b/0x53
+
+The fuseblk server is fuse2fs so there's nothing all that exciting in
+the server itself.  So why is the fuse server calling fuse_file_put?
+The commit message for the fstest sheds some light on that:
+
+"By closing the file descriptor before calling io_destroy, you pretty
+much guarantee that the last put on the ioctx will be done in interrupt
+context (during I/O completion).
+
+Aha.  AIO fgets a new struct file from the fd when it queues the ioctx.
+The completion of the FUSE_WRITE command from userspace causes the fuse
+server to call the AIO completion function.  The completion puts the
+struct file, queuing a delayed fput to the fuse server task.  When the
+fuse server task returns to userspace, it has to run the delayed fput,
+which in the case of a fuseblk server, it does synchronously.
+
+Sending the FUSE_RELEASE command sychronously from fuse server threads
+is a bad idea because a client program can initiate enough simultaneous
+AIOs such that all the fuse server threads end up in delayed_fput, and
+now there aren't any threads left to handle the queued fuse commands.
+
+Fix this by only using asynchronous fputs when closing files, and leave
+a comment explaining why.
+
+Cc: stable@vger.kernel.org # v2.6.38
+Fixes: 5a18ec176c934c ("fuse: fix hang of single threaded fuseblk filesystem")
+Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/option.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ fs/fuse/file.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -273,6 +273,7 @@ static void option_instat_callback(struc
- #define QUECTEL_PRODUCT_EM05CN			0x0312
- #define QUECTEL_PRODUCT_EM05G_GR		0x0313
- #define QUECTEL_PRODUCT_EM05G_RS		0x0314
-+#define QUECTEL_PRODUCT_RG255C			0x0316
- #define QUECTEL_PRODUCT_EM12			0x0512
- #define QUECTEL_PRODUCT_RM500Q			0x0800
- #define QUECTEL_PRODUCT_RM520N			0x0801
-@@ -1271,6 +1272,9 @@ static const struct usb_device_id option
- 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_RM500K, 0xff, 0x00, 0x00) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_RG650V, 0xff, 0xff, 0x30) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_RG650V, 0xff, 0, 0) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_RG255C, 0xff, 0xff, 0x30) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_RG255C, 0xff, 0, 0) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_RG255C, 0xff, 0xff, 0x40) },
+--- a/fs/fuse/file.c
++++ b/fs/fuse/file.c
+@@ -339,8 +339,14 @@ void fuse_file_release(struct inode *ino
+ 	 * Make the release synchronous if this is a fuseblk mount,
+ 	 * synchronous RELEASE is allowed (and desirable) in this case
+ 	 * because the server can be trusted not to screw up.
++	 *
++	 * Always use the asynchronous file put because the current thread
++	 * might be the fuse server.  This can happen if a process starts some
++	 * aio and closes the fd before the aio completes.  Since aio takes its
++	 * own ref to the file, the IO completion has to drop the ref, which is
++	 * how the fuse server can end up closing its clients' files.
+ 	 */
+-	fuse_file_put(ff, ff->fm->fc->destroy);
++	fuse_file_put(ff, false);
+ }
  
- 	{ USB_DEVICE(CMOTECH_VENDOR_ID, CMOTECH_PRODUCT_6001) },
- 	{ USB_DEVICE(CMOTECH_VENDOR_ID, CMOTECH_PRODUCT_CMU_300) },
+ void fuse_release_common(struct file *file, bool isdir)
 
 
 
