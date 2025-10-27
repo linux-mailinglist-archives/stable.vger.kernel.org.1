@@ -1,136 +1,117 @@
-Return-Path: <stable+bounces-190047-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190048-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E152AC0F815
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:01:22 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A759C0F87E
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:08:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 196E119A5472
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 17:01:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 265D4189C2DB
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 17:08:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38A22314A9F;
-	Mon, 27 Oct 2025 17:00:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BBA4313E0B;
+	Mon, 27 Oct 2025 17:08:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d58SYbVP"
 X-Original-To: stable@vger.kernel.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8FC0314D1F;
-	Mon, 27 Oct 2025 17:00:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.40.44.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B637E31354E;
+	Mon, 27 Oct 2025 17:08:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761584447; cv=none; b=Lv6lfyJ/IYSoAllPX+D16pI4m9gQk92CLxABtAnPL6GC9l3E/Y86WSaWthXImINYGLsIJwlh0rf4wrRhQIJn4Pv1fBQ7sD1JldhM38y+k/P6/8CLb2vuYiy7fNMvrgNdeZEMiVhjedBnmCbVKtNq0uuDObuNZcptNdjHO5G+oTI=
+	t=1761584889; cv=none; b=WDqgBLj+I4Qwb2TSZgmQwkc5Iwp1RbQME9++PMQRG3Sh+yfq02jxd8h3U6qeLZ+ahkzNJ6IiX+Fdwst+qQq1eDPuHBzYPql2qWOyjm3lLBymtV1KoZ7QlJ4FTLeUsjXJri39091QjfskLR5Cz9GZZtqqVsd3gF+SLqw5PXWTGqs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761584447; c=relaxed/simple;
-	bh=AW+uBVkZ7blD+z57BRlsNkIK1OZ57j/FX/0q3xlVmn8=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=b4wrUgSI3pMyGM0Nz/CDQ2xHJ4wNqFJWnTqlN7NL+5LR12q0HzRf7wSK5iKs6c3+m8/ESCCqTCD94YLqW+ZEkniZbhzfK8QGDPjoiSYLvuJVKeSUCtodzUTDGzk8JD5tf9hrXOaUJIEIiAvPwxlbZrQEmfx+w7A40MG4cbZpweY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=goodmis.org; spf=pass smtp.mailfrom=goodmis.org; arc=none smtp.client-ip=216.40.44.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=goodmis.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=goodmis.org
-Received: from omf17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 23D331A01E6;
-	Mon, 27 Oct 2025 17:00:36 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf17.hostedemail.com (Postfix) with ESMTPA id 969A81E;
-	Mon, 27 Oct 2025 17:00:33 +0000 (UTC)
-Date: Mon, 27 Oct 2025 13:01:09 -0400
-From: Steven Rostedt <rostedt@goodmis.org>
-To: Song Liu <song@kernel.org>
-Cc: bpf@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
- live-patching@vger.kernel.org, ast@kernel.org, daniel@iogearbox.net,
- andrii@kernel.org, andrey.grodzovsky@crowdstrike.com, mhiramat@kernel.org,
- kernel-team@meta.com, olsajiri@gmail.com, stable@vger.kernel.org
-Subject: Re: [PATCH v3 bpf 1/3] ftrace: Fix BPF fexit with livepatch
-Message-ID: <20251027130109.4065026f@gandalf.local.home>
-In-Reply-To: <20251026205445.1639632-2-song@kernel.org>
-References: <20251026205445.1639632-1-song@kernel.org>
-	<20251026205445.1639632-2-song@kernel.org>
-X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1761584889; c=relaxed/simple;
+	bh=EilW+nxGrIUIpn2MiL43G+5U1z6hqpgMZANWtWAe0qI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=X9n+MDIb8yVipBQ6pbPDcoJ4+SDwDKfYpv3lOzwaJjOXgL+JWkyoYGCm38xtASTSnQ162RIUt+bpdp3egzFw5WZ+C1dsxsKFC4QfYJ6DPB27YQLJZKZPWXsQ0sXJNa7HgVeUM+rTVoGy6Imhf1A+fNRp/A6SF5nWKD1J6vffxg0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d58SYbVP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2FC9C4CEF1;
+	Mon, 27 Oct 2025 17:08:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761584888;
+	bh=EilW+nxGrIUIpn2MiL43G+5U1z6hqpgMZANWtWAe0qI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=d58SYbVPB+S4nASv/FYx1vUTcI7rYAqA0IL2HECu/iknwt0uJxsm+0yfTlU+dul2X
+	 apIp7WafXevK3+wxWdalpq89/F1LlrZA9+01IBpE14YCjuLyZW0+sJ20pZwzBlRvDc
+	 XsuICJ86eyNIPqx15FaHw/5TV1ysMLUrjW2dMDID3aivDMagBG+7Fiy1+x6DOrh6Ny
+	 FiCWFYrv8ODRM/BuoNKhBIeoJgqrWgozByZpMGB0GvPIDbjCMXIDamuin9zhLnXCCD
+	 g8xu7mUlwOl9vkfNrx6c0mJuH/VL/eCH8/v7p5SZgcLnfg36ooBMtHmv/MxJPJrY+O
+	 zvVScxptlwPnw==
+Date: Mon, 27 Oct 2025 11:08:05 -0600
+From: Keith Busch <kbusch@kernel.org>
+To: Dmitry Bogdanov <d.bogdanov@yadro.com>
+Cc: Jens Axboe <axboe@kernel.dk>, Christoph Hellwig <hch@lst.de>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Stuart Hayes <stuart.w.hayes@gmail.com>,
+	linux-nvme@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux@yadro.com, stable@vger.kernel.org
+Subject: Re: [RESEND] [PATCH] nvme-tcp: fix usage of page_frag_cache
+Message-ID: <aP-m9btCap_dt32Y@kbusch-mbp>
+References: <20251027163627.12289-1-d.bogdanov@yadro.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 969A81E
-X-Stat-Signature: zgpiqdfq3xfpp98kxzc8t1ikg1w19hnt
-X-Rspamd-Server: rspamout06
-X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
-X-Session-ID: U2FsdGVkX1/BKfmPXZzH1N7RsBVffcbvXnVHMI4eHCI=
-X-HE-Tag: 1761584433-530337
-X-HE-Meta: U2FsdGVkX1+B5Z7vjqW2B2UTVfiwYjWO0dlLJFfGF914RMDSTZeP003v7Prmm4tVy5gEAL3JvLrTpF1XXJJuxmC8DA4mK5JGwr6pgY3Ro+zNNLRlgxUgH9FF3WVN1aXzne/2/MCU4xcYZq66wRhu1n5XMuIWQd2rzjsd/Tvhb9Qlf0XBMVqpZDphETaiIEZDleh2RVZZSNSwUEPpfcOzG7uLxhNOOoG/y2G0xHEihfOzdoha0ZWm2ZTo+ZhoAZjX2WrPcWk3iT02vzJN8Nhf2ZL5ZmETsNx6PXnLqkEqB28lTk6kjKWtRI9VIQDgDVGHl+A9P0y7u49+pmNM30JAIkuS7c4IyT6v
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251027163627.12289-1-d.bogdanov@yadro.com>
 
-On Sun, 26 Oct 2025 13:54:43 -0700
-Song Liu <song@kernel.org> wrote:
-
-> --- a/kernel/trace/ftrace.c
-> +++ b/kernel/trace/ftrace.c
-> @@ -6048,6 +6048,12 @@ int register_ftrace_direct(struct ftrace_ops *ops, unsigned long addr)
->  	ops->direct_call = addr;
+On Mon, Oct 27, 2025 at 07:36:27PM +0300, Dmitry Bogdanov wrote:
+> nvme uses page_frag_cache to preallocate PDU for each preallocated request
+> of block device. Block devices are created in parallel threads,
+> consequently page_frag_cache is used in not thread-safe manner.
+> That leads to incorrect refcounting of backstore pages and premature free.
+> 
+> That can be catched by !sendpage_ok inside network stack:
+> 
+> WARNING: CPU: 7 PID: 467 at ../net/core/skbuff.c:6931 skb_splice_from_iter+0xfa/0x310.
+> 	tcp_sendmsg_locked+0x782/0xce0
+> 	tcp_sendmsg+0x27/0x40
+> 	sock_sendmsg+0x8b/0xa0
+> 	nvme_tcp_try_send_cmd_pdu+0x149/0x2a0
+> Then random panic may occur.
+> 
+> Fix that by serializing the usage of page_frag_cache.
+> 
+> Cc: stable@vger.kernel.org # 6.12
+> Fixes: 4e893ca81170 ("nvme_core: scan namespaces asynchronously")
+> Signed-off-by: Dmitry Bogdanov <d.bogdanov@yadro.com>
+> ---
+>  drivers/nvme/host/tcp.c | 8 ++++++++
+>  1 file changed, 8 insertions(+)
+> 
+> diff --git a/drivers/nvme/host/tcp.c b/drivers/nvme/host/tcp.c
+> index 1413788ca7d52..823e07759e0d3 100644
+> --- a/drivers/nvme/host/tcp.c
+> +++ b/drivers/nvme/host/tcp.c
+> @@ -145,6 +145,7 @@ struct nvme_tcp_queue {
 >  
->  	err = register_ftrace_function_nolock(ops);
-> +	if (err) {
-> +		/* cleanup for possible another register call */
-> +		ops->func = NULL;
-> +		ops->trampoline = 0;
-> +		remove_direct_functions_hash(hash, addr);
-> +	}
+>  	struct mutex		queue_lock;
+>  	struct mutex		send_mutex;
+> +	struct mutex		pf_cache_lock;
+>  	struct llist_head	req_list;
+>  	struct list_head	send_list;
 >  
+> @@ -556,9 +557,11 @@ static int nvme_tcp_init_request(struct blk_mq_tag_set *set,
+>  	struct nvme_tcp_queue *queue = &ctrl->queues[queue_idx];
+>  	u8 hdgst = nvme_tcp_hdgst_len(queue);
+>  
+> +	mutex_lock(&queue->pf_cache_lock);
+>  	req->pdu = page_frag_alloc(&queue->pf_cache,
+>  		sizeof(struct nvme_tcp_cmd_pdu) + hdgst,
+>  		GFP_KERNEL | __GFP_ZERO);
+> +	mutex_unlock(&queue->pf_cache_lock);
+>  	if (!req->pdu)
+>  		return -ENOMEM;
 
-As you AI bot noticed that it was missing what unregister_ftrace_direct()
-does, instead, can we make a helper function that both use? This way it
-will not get out of sync again.
-
-static void reset_direct(struct ftrace_ops *ops, unsigned long addr)
-{
-	struct ftrace_hash *hash = ops->func_hash->filter_hash;
-
-	ops->func = NULL;
-	ops->trampoline = 0;
-	remove_direct_functions_hash(hash, addr);
-}
-
-Then we could have:
-
-diff --git a/kernel/trace/ftrace.c b/kernel/trace/ftrace.c
-index 0c91247a95ab..51c3f5d46fde 100644
---- a/kernel/trace/ftrace.c
-+++ b/kernel/trace/ftrace.c
-@@ -6062,7 +6062,7 @@ int register_ftrace_direct(struct ftrace_ops *ops, unsigned long addr)
- 
- 	err = register_ftrace_function_nolock(ops);
- 	if (err)
--		remove_direct_functions_hash(hash, addr);
-+		reset_direct(ops, addr);
- 
-  out_unlock:
- 	mutex_unlock(&direct_mutex);
-@@ -6095,7 +6095,6 @@ EXPORT_SYMBOL_GPL(register_ftrace_direct);
- int unregister_ftrace_direct(struct ftrace_ops *ops, unsigned long addr,
- 			     bool free_filters)
- {
--	struct ftrace_hash *hash = ops->func_hash->filter_hash;
- 	int err;
- 
- 	if (check_direct_multi(ops))
-@@ -6105,13 +6104,9 @@ int unregister_ftrace_direct(struct ftrace_ops *ops, unsigned long addr,
- 
- 	mutex_lock(&direct_mutex);
- 	err = unregister_ftrace_function(ops);
--	remove_direct_functions_hash(hash, addr);
-+	reset_direct(ops, addr);
- 	mutex_unlock(&direct_mutex);
- 
--	/* cleanup for possible another register call */
--	ops->func = NULL;
--	ops->trampoline = 0;
--
- 	if (free_filters)
- 		ftrace_free_filter(ops);
- 	return err;
-
--- Steve
+Just a bit confused by this. Everything related to a specific TCP queue
+should still be single threaded on the initialization of its tagset, so
+there shouldn't be any block devices accessing the queue's driver
+specific data before the tagset is initialized. 
 
