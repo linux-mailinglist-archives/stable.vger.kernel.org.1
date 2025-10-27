@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-190651-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190542-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02085C10A26
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:13:58 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F44EC1081C
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:08:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 72233565011
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:07:26 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5928A4FFFAF
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:03:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB9F332E141;
-	Mon, 27 Oct 2025 19:03:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E31232E72F;
+	Mon, 27 Oct 2025 18:59:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vnp3WJqr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aoC9XV9P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69AC432E120;
-	Mon, 27 Oct 2025 19:03:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E864F331A76;
+	Mon, 27 Oct 2025 18:59:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591839; cv=none; b=jRT629yrqwccheWPWcQc0CwH75jAR3YiDk425rsXnWUw1X4eDpCwkKDiYORNkfrcRwgz6IqpEMrNqrDaiwT6N+PFfK27i0XlbZTZT4XgJD2N4/NjDRYA8suzz+7KW5iegB+CcKXiXbxABn45RNfYKOjZAEM8eT4upo40QVRsxYM=
+	t=1761591562; cv=none; b=jFKjN/pquDi5c1tVMantIIbbly4tmLsRzrQJUBsyp8I63b/+C2R7IOzF98/hsD30cS/On1YfhW4Gx6kqelVZwWgE+fsTxKO6ahoTwcbeL2oW3bCEsVIDCV/FwBfVCB3eKO4y0ozsc4qFVpQZgUahUilo9kaNfwH8qzBqPzrrsVk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591839; c=relaxed/simple;
-	bh=Kz9xL9BXhCC1hiVzQYIKU/xFOpbB0xRdBm5P55xZJdI=;
+	s=arc-20240116; t=1761591562; c=relaxed/simple;
+	bh=IaMxdIIYjhGipLNIHFjSAuYiMl8Ov0vkOUlEAviJ46Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AClkJRY+lXRhlycRgM4Fat6sUNUazhZBZXrPfKHshQM45+SwwwBdnxlBm39xAmfTYAGoIXPXj/PVcr4qBz2/TjbLRyKdey+3puAIkCo9KnK7eF/dh3oLoOwLGoV6Iy6wzKJP2sS0dcix+nWA79K9hDDk9TUeybJoTXyZe3I/9EY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vnp3WJqr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00F3BC4CEF1;
-	Mon, 27 Oct 2025 19:03:58 +0000 (UTC)
+	 MIME-Version; b=OwfJ8s7ma1ZCpaNWzK6X9htHwCLlV03IjVeSKXGm80CF7uognFJQM6zMeNw91Ur5Jv04EITcGEItHqceTy8x4dpvqMG24BDjmRkzrFXeERo1Xll1x5K0mrqTPtBYlSCTOksdvWuwCgy6fzt7EgWJRnViM2nf/GGUt05QhfzNTbc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aoC9XV9P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BCFCC4CEF1;
+	Mon, 27 Oct 2025 18:59:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591839;
-	bh=Kz9xL9BXhCC1hiVzQYIKU/xFOpbB0xRdBm5P55xZJdI=;
+	s=korg; t=1761591561;
+	bh=IaMxdIIYjhGipLNIHFjSAuYiMl8Ov0vkOUlEAviJ46Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vnp3WJqr9aTX3r7X+OIQMe5u6oj6zFiPi5WME836UnhvWY8TAAIylZ3tTbNsFwSgz
-	 c2o4yI5W2oFEvVcNoSuAvEYKe/XdBU6ccmHcpgIkCiKdC1ReKZbIxEfGjwqOG4azhP
-	 x9lf4trWh6aVYRoWaLuBsFgDL77Y1ZrTFzAyWKMU=
+	b=aoC9XV9PorYb4Il9BBlgULetNtTl7E9BhoqTV2ysqXYfRoU8DOqe/w9fMSEKryp7q
+	 8o9imPKEq7dak/VxNoG2EkqyPax9iPRoN0y+mTpyVBgOXzLSR8ddGbYUoDWjweD4aW
+	 ANvfvyzTWm4xTM9wZorqP80efRP78uHbFMHPaJNM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Philippe Guibert <philippe.guibert@6wind.com>,
-	Nicolas Dichtel <nicolas.dichtel@6wind.com>,
-	Simon Horman <horms@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	Neal Cardwell <ncardwell@google.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 018/123] doc: fix seg6_flowlabel path
+Subject: [PATCH 5.10 245/332] tcp: fix tcp_tso_should_defer() vs large RTT
 Date: Mon, 27 Oct 2025 19:34:58 +0100
-Message-ID: <20251027183446.886400857@linuxfoundation.org>
+Message-ID: <20251027183531.304494737@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183446.381986645@linuxfoundation.org>
-References: <20251027183446.381986645@linuxfoundation.org>
+In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
+References: <20251027183524.611456697@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,40 +63,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 0b4b77eff5f8cd9be062783a1c1e198d46d0a753 ]
+[ Upstream commit 295ce1eb36ae47dc862d6c8a1012618a25516208 ]
 
-This sysctl is not per interface; it's global per netns.
+Neal reported that using neper tcp_stream with TCP_TX_DELAY
+set to 50ms would often lead to flows stuck in a small cwnd mode,
+regardless of the congestion control.
 
-Fixes: 292ecd9f5a94 ("doc: move seg6_flowlabel to seg6-sysctl.rst")
-Reported-by: Philippe Guibert <philippe.guibert@6wind.com>
-Signed-off-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+While tcp_stream sets TCP_TX_DELAY too late after the connect(),
+it highlighted two kernel bugs.
+
+The following heuristic in tcp_tso_should_defer() seems wrong
+for large RTT:
+
+delta = tp->tcp_clock_cache - head->tstamp;
+/* If next ACK is likely to come too late (half srtt), do not defer */
+if ((s64)(delta - (u64)NSEC_PER_USEC * (tp->srtt_us >> 4)) < 0)
+      goto send_now;
+
+If next ACK is expected to come in more than 1 ms, we should
+not defer because we prefer a smooth ACK clocking.
+
+While blamed commit was a step in the good direction, it was not
+generic enough.
+
+Another patch fixing TCP_TX_DELAY for established flows
+will be proposed when net-next reopens.
+
+Fixes: 50c8339e9299 ("tcp: tso: restore IW10 after TSO autosizing")
+Reported-by: Neal Cardwell <ncardwell@google.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Neal Cardwell <ncardwell@google.com>
+Tested-by: Neal Cardwell <ncardwell@google.com>
+Link: https://patch.msgid.link/20251011115742.1245771-1-edumazet@google.com
+[pabeni@redhat.com: fixed whitespace issue]
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/networking/seg6-sysctl.rst | 3 +++
- 1 file changed, 3 insertions(+)
+ net/ipv4/tcp_output.c | 19 +++++++++++++++----
+ 1 file changed, 15 insertions(+), 4 deletions(-)
 
-diff --git a/Documentation/networking/seg6-sysctl.rst b/Documentation/networking/seg6-sysctl.rst
-index 07c20e470bafe..1b6af4779be11 100644
---- a/Documentation/networking/seg6-sysctl.rst
-+++ b/Documentation/networking/seg6-sysctl.rst
-@@ -25,6 +25,9 @@ seg6_require_hmac - INTEGER
- 
- 	Default is 0.
- 
-+/proc/sys/net/ipv6/seg6_* variables:
-+====================================
+diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
+index 32e38ac5ee2bd..88e8d6543948e 100644
+--- a/net/ipv4/tcp_output.c
++++ b/net/ipv4/tcp_output.c
+@@ -2177,7 +2177,8 @@ static bool tcp_tso_should_defer(struct sock *sk, struct sk_buff *skb,
+ 				 u32 max_segs)
+ {
+ 	const struct inet_connection_sock *icsk = inet_csk(sk);
+-	u32 send_win, cong_win, limit, in_flight;
++	u32 send_win, cong_win, limit, in_flight, threshold;
++	u64 srtt_in_ns, expected_ack, how_far_is_the_ack;
+ 	struct tcp_sock *tp = tcp_sk(sk);
+ 	struct sk_buff *head;
+ 	int win_divisor;
+@@ -2239,9 +2240,19 @@ static bool tcp_tso_should_defer(struct sock *sk, struct sk_buff *skb,
+ 	head = tcp_rtx_queue_head(sk);
+ 	if (!head)
+ 		goto send_now;
+-	delta = tp->tcp_clock_cache - head->tstamp;
+-	/* If next ACK is likely to come too late (half srtt), do not defer */
+-	if ((s64)(delta - (u64)NSEC_PER_USEC * (tp->srtt_us >> 4)) < 0)
 +
- seg6_flowlabel - INTEGER
- 	Controls the behaviour of computing the flowlabel of outer
- 	IPv6 header in case of SR T.encaps
++	srtt_in_ns = (u64)(NSEC_PER_USEC >> 3) * tp->srtt_us;
++	/* When is the ACK expected ? */
++	expected_ack = head->tstamp + srtt_in_ns;
++	/* How far from now is the ACK expected ? */
++	how_far_is_the_ack = expected_ack - tp->tcp_clock_cache;
++
++	/* If next ACK is likely to come too late,
++	 * ie in more than min(1ms, half srtt), do not defer.
++	 */
++	threshold = min(srtt_in_ns >> 1, NSEC_PER_MSEC);
++
++	if ((s64)(how_far_is_the_ack - threshold) > 0)
+ 		goto send_now;
+ 
+ 	/* Ok, it looks like it is advisable to defer.
 -- 
 2.51.0
 
