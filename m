@@ -1,118 +1,164 @@
-Return-Path: <stable+bounces-189909-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-189910-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABA2DC0BBD5
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 04:24:44 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7A05C0BE34
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 07:02:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 1604B3490F4
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 03:24:44 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5EE204EDD40
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 06:02:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07AEE2D4B5A;
-	Mon, 27 Oct 2025 03:24:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0CB32D9EDB;
+	Mon, 27 Oct 2025 06:02:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WJtwWuhA"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="eW3t6yED"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-179.mta1.migadu.com (out-179.mta1.migadu.com [95.215.58.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE3E8F9C1;
-	Mon, 27 Oct 2025 03:24:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 919552D979B
+	for <stable@vger.kernel.org>; Mon, 27 Oct 2025 06:02:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761535476; cv=none; b=JYyP5j6xZpgehfKZoytelJMdp7hqiMY5tVeiOSEo41S28I5HWlcBbf/8n3XCNSqfgd0OnEcgcIU4TUoMUyhkVkOp1nHyJxr2iBX3YKGYShhndvrJRsi1P9iYvXULMLrHcD5EVjiv9pVtpmqWqXZiiEjHi6kdw3OkQRjFIqfNmU4=
+	t=1761544959; cv=none; b=qtpqkEeUQF4kcrCkOjERFGzOYdFvTduFx6WYwdaZUFKs1mFYhR1snRja0HgoTml1JG4kZg3PCt9kddH1tOqndHnPmg+Q3CVjw1QRGkPKs/er24wXwj38FCKmePb8H9UAeCLDiN2qY0nuqf7lx7G7b+j2zrqjqH+tO5YPJwwgSK8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761535476; c=relaxed/simple;
-	bh=7cM3Cn6JKYuasEzBXvIvxBu+D5+1UWzNLsU5dSsAaVI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Gc1gBG3nFa8Rej+t3IZ0G9qtYSKHsRYg/T7kLWHYaWz7Xabiyj4EWZ1QILXyM5BMFPuvHGOmJ5RJM6gyVfE7FIq07XgNDYKETSYfQwe4cSBSWD4uuzOrg5ZDb0I0I2E8pI2gMx46PwSyZZIZynwGbAkr9dpDwqWNTjBpKQYpeUs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WJtwWuhA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3B6CC4CEE7;
-	Mon, 27 Oct 2025 03:24:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761535476;
-	bh=7cM3Cn6JKYuasEzBXvIvxBu+D5+1UWzNLsU5dSsAaVI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=WJtwWuhAaQ+p+vO8QK9rkQ7BwmTxLfja33rTGfRntbAgY0tJpkD/ASs6zl15kbDsX
-	 YUjtREUaZnMkq3xM5lvRRAwjFbJ4esctyOTkAMlGF8g+xQYYqSjInMhcVPftZRpAVt
-	 eG5RO9IQwRd1DlSyxg3p6wxpS3NU3b3AdpGoK2xzGnl12yskC8P5+dbGiGncnHeguS
-	 zjdSuULGARY3Q035d1d7/yyZBrxrq5LVHomUGw1gHY/7h2FLSkIcIYMXuctRCiNm02
-	 9lRmYhDzXs2O/z9ZlQ8SSYSqiOZ/ReId2kICBrO8ing8d6C5LgYBuThJ9kr09fecqQ
-	 RfCt91nmQo3/w==
-Date: Mon, 27 Oct 2025 11:24:32 +0800
-From: "Peter Chen (CIX)" <peter.chen@kernel.org>
-To: Miaoqian Lin <linmq006@gmail.com>
-Cc: Pawel Laszczak <pawell@cadence.com>, Roger Quadros <rogerq@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Felipe Balbi <felipe.balbi@linux.intel.com>,
-	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] usb: cdns3: Fix double resource release in
- cdns3_pci_probe
-Message-ID: <aP7l8FG_B1OimEnB@nchen-desktop>
-References: <20251026090859.33107-1-linmq006@gmail.com>
+	s=arc-20240116; t=1761544959; c=relaxed/simple;
+	bh=wwxjb9DR1LvG1RHmq4IzS3Xkgi6qBkuv3E66RDriplY=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=maNxtLpxx+X6Llus5xsGQpuhj+gOCI9mcFGbQz9ydbtJ5QO+qu2X4BXuXUtIQpznA+0Lw4N2a+oovQm4GiHNDB5QYv0xqQvNV4C0qxZmdjh3ub65Da0K/p9VZAnPeuvKjTjjzp3WN8MIVGYRAIQL4bHo87AQs8moRQ/Qn6pToyA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=eW3t6yED; arc=none smtp.client-ip=95.215.58.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Content-Type: text/plain;
+	charset=utf-8
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1761544944;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Bj8GkUukbIV/nY1dITAAUkOq2qqZTJboBaZcti6jOVo=;
+	b=eW3t6yEDhpSPFgg2UJi5MB6cQTIbszIT8oDC7AjP4L3JyOp2HpNkvz00n6WHt/U2KGx+Ut
+	RI61OU/Q/LncM/4s6Q3kJevv80jt51KK5SCbahc7PsDAmjBxRYip9U50cYBXHq0aJtDqch
+	gpeQzoAP3Lpd/sOj54YC0svDbY+Y+Xs=
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251026090859.33107-1-linmq006@gmail.com>
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.100.1.1.5\))
+Subject: Re: [PATCH v1 2/2] ALSA: hda/realtek: Add match for ASUS Xbox Ally
+ projects
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Matthew Schwartz <matthew.schwartz@linux.dev>
+In-Reply-To: <CAGwozwEwPj9VRRo2U50ccg=_qSM7p-1c_hw2y=OYA-pFc=p13w@mail.gmail.com>
+Date: Sun, 26 Oct 2025 23:01:54 -0700
+Cc: Shenghao Ding <shenghao-ding@ti.com>,
+ Baojun Xu <baojun.xu@ti.com>,
+ Takashi Iwai <tiwai@suse.com>,
+ linux-sound@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <35A5783A-CA60-4B10-8C7B-5820B65307FE@linux.dev>
+References: <20251026191635.2447593-1-lkml@antheas.dev>
+ <20251026191635.2447593-2-lkml@antheas.dev>
+ <CAGwozwEwPj9VRRo2U50ccg=_qSM7p-1c_hw2y=OYA-pFc=p13w@mail.gmail.com>
+To: Antheas Kapenekakis <lkml@antheas.dev>
+X-Migadu-Flow: FLOW_OUT
 
-On 25-10-26 17:08:59, Miaoqian Lin wrote:
-> The driver uses pcim_enable_device() to enable the PCI device,
-> the device will be automatically disabled on driver detach through
-> the managed device framework. The manual pci_disable_device() calls
-> in the error paths are therefore redundant and should be removed.
-> 
-> Found via static anlaysis and this is similar to commit 99ca0b57e49f
-> ("thermal: intel: int340x: processor: Fix warning during module unload").
-> 
-> Fixes: 7733f6c32e36 ("usb: cdns3: Add Cadence USB3 DRD Driver")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
 
-Acked-by: Peter Chen <peter.chen@kernel.org>
 
-Peter
-> ---
->  drivers/usb/cdns3/cdns3-pci-wrap.c | 5 +----
->  1 file changed, 1 insertion(+), 4 deletions(-)
-> 
-> diff --git a/drivers/usb/cdns3/cdns3-pci-wrap.c b/drivers/usb/cdns3/cdns3-pci-wrap.c
-> index 3b3b3dc75f35..57f57c24c663 100644
-> --- a/drivers/usb/cdns3/cdns3-pci-wrap.c
-> +++ b/drivers/usb/cdns3/cdns3-pci-wrap.c
-> @@ -98,10 +98,8 @@ static int cdns3_pci_probe(struct pci_dev *pdev,
->  		wrap = pci_get_drvdata(func);
->  	} else {
->  		wrap = kzalloc(sizeof(*wrap), GFP_KERNEL);
-> -		if (!wrap) {
-> -			pci_disable_device(pdev);
-> +		if (!wrap)
->  			return -ENOMEM;
-> -		}
->  	}
->  
->  	res = wrap->dev_res;
-> @@ -160,7 +158,6 @@ static int cdns3_pci_probe(struct pci_dev *pdev,
->  		/* register platform device */
->  		wrap->plat_dev = platform_device_register_full(&plat_info);
->  		if (IS_ERR(wrap->plat_dev)) {
-> -			pci_disable_device(pdev);
->  			err = PTR_ERR(wrap->plat_dev);
->  			kfree(wrap);
->  			return err;
-> -- 
-> 2.39.5 (Apple Git-154)
-> 
+> On Oct 26, 2025, at 12:19=E2=80=AFPM, Antheas Kapenekakis =
+<lkml@antheas.dev> wrote:
+>=20
+> On Sun, 26 Oct 2025 at 20:16, Antheas Kapenekakis <lkml@antheas.dev> =
+wrote:
+>>=20
+>> Bind the realtek codec to TAS2781 I2C audio amps on ASUS Xbox Ally
+>> projects. While these projects work without a quirk, adding it =
+increases
+>> the output volume significantly.
+>=20
+> Also, if you can upstream the firmware files:
+> TAS2XXX13840.bin
+> TAS2XXX13841.bin
+> TAS2XXX13940.bin
+> TAS2XXX13941.bin
 
--- 
+This is the firmware at [1], correct? I=E2=80=99m testing the series =
+with that firmware on my ROG Xbox Ally X, and I found something =
+interesting.
 
-Best regards,
-Peter
+By default, with just your kernel patches and the firmware files hosted =
+at [1], my unit is loading:
+
+tas2781-hda i2c-TXNW2781:00-tas2781-hda.0: Loaded FW: TAS2XXX13840.bin, =
+sha256: 58cffa36ae23a2d9b2349ecb6c1d4e89627934cd79218f6ada06eaffe6688246
+
+However, with this firmware file,  TAS2XXX13840.bin, there is =
+significant audio clipping above 75% speaker level on my individual =
+unit.
+
+Then, I tried renaming the other firmware file, TAS2XXX13841.bin, into =
+TAS2XXX13840.bin. Now my unit is loading:
+
+tas2781-hda i2c-TXNW2781:00-tas2781-hda.0: Loaded FW: TAS2XXX13840.bin, =
+sha256: 0fda76e7142cb455df1860cfdb19bb3cb6871128b385595fe06b296a070f4b8c
+
+With this firmware file, audio is perfect all the way to 100% speaker =
+level.
+
+If I recall, there have been other ASUS products that required matching =
+amplifier hardware with firmware correctly, right? It looks like this =
+might be another case of since it seems my unit is loading the wrong =
+firmware for its amplifiers.
+
+Matt
+
+[1]: https://github.com/hhd-dev/hwfirm
+
+>=20
+> That would be great :)
+>=20
+> Antheas
+>=20
+>> Cc: stable@vger.kernel.org # 6.17
+>> Signed-off-by: Antheas Kapenekakis <lkml@antheas.dev>
+>> ---
+>> sound/hda/codecs/realtek/alc269.c | 2 ++
+>> 1 file changed, 2 insertions(+)
+>>=20
+>> diff --git a/sound/hda/codecs/realtek/alc269.c =
+b/sound/hda/codecs/realtek/alc269.c
+>> index 8ad5febd822a..d1ad84eee6d1 100644
+>> --- a/sound/hda/codecs/realtek/alc269.c
+>> +++ b/sound/hda/codecs/realtek/alc269.c
+>> @@ -6713,6 +6713,8 @@ static const struct hda_quirk =
+alc269_fixup_tbl[] =3D {
+>>        SND_PCI_QUIRK(0x1043, 0x12f0, "ASUS X541UV", =
+ALC256_FIXUP_ASUS_MIC_NO_PRESENCE),
+>>        SND_PCI_QUIRK(0x1043, 0x1313, "Asus K42JZ", =
+ALC269VB_FIXUP_ASUS_MIC_NO_PRESENCE),
+>>        SND_PCI_QUIRK(0x1043, 0x1314, "ASUS GA605K", =
+ALC285_FIXUP_ASUS_GA605K_HEADSET_MIC),
+>> +       SND_PCI_QUIRK(0x1043, 0x1384, "ASUS RC73XA", =
+ALC287_FIXUP_TXNW2781_I2C),
+>> +       SND_PCI_QUIRK(0x1043, 0x1394, "ASUS RC73YA", =
+ALC287_FIXUP_TXNW2781_I2C),
+>>        SND_PCI_QUIRK(0x1043, 0x13b0, "ASUS Z550SA", =
+ALC256_FIXUP_ASUS_MIC_NO_PRESENCE),
+>>        SND_PCI_QUIRK(0x1043, 0x1427, "Asus Zenbook UX31E", =
+ALC269VB_FIXUP_ASUS_ZENBOOK),
+>>        SND_PCI_QUIRK(0x1043, 0x1433, "ASUS =
+GX650PY/PZ/PV/PU/PYV/PZV/PIV/PVV", ALC285_FIXUP_ASUS_I2C_HEADSET_MIC),
+>> --
+>> 2.51.1
+>>=20
+>>=20
+>=20
+>=20
+
 
