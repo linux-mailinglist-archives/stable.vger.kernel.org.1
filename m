@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-191140-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190546-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B257C111A1
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:34:45 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A1C4C1084F
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:08:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 9D4D74FF768
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:27:18 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D31FE500262
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:03:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F70D32D440;
-	Mon, 27 Oct 2025 19:25:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B508D33290A;
+	Mon, 27 Oct 2025 18:59:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VMU2XV6a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UJGdsQLZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E82D01BC4E;
-	Mon, 27 Oct 2025 19:25:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61ED41F7586;
+	Mon, 27 Oct 2025 18:59:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761593113; cv=none; b=GR2lH7MTJ+zTuZDx5AnQKuHNfQZu6Py3KoDlWXaJgGlzu8mq3FMxM60p2ZoJCC87mYK6o010+jO6UaaWugvsEMuzrABi/MFamm0XnZTyeSmnvcslZBWuIRc8ujyVDm99vu9PQsnNYEzv77r6NQSUSXl0sYpSzOP4tY0+tlCywHE=
+	t=1761591572; cv=none; b=LWpz7gahPVN39/OiLH6xbmNzbV6MAfFtViQ1jG71OY4e+K85CWdccBdJJunaVO31kH9erirObZhVsZS2VvMUsL/FcLJPJlKai4nnPmqJx58R/M3mrJ82RUDAFa2t2u2hiPW60eNq9fubV55ZbP9POySM6DHRk2C20KhLHOooumA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761593113; c=relaxed/simple;
-	bh=UFji515DdRn7XtDgMWKDitQbmqJ6wgquUnXhiFHU/AA=;
+	s=arc-20240116; t=1761591572; c=relaxed/simple;
+	bh=AX49Jqm92y1+4igOBsjnNdjOYvOzhL6yWYZfsTiA+4U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BVwJL4xt69X0lH/P9Gqg+KvMLaisypB8gH2kWaWWMa+r2AwLqJqUgP28ZZrZsak8HI6bj9fdf5zT3h5942RV4PonKb/qhm/+OqY2bpzHgRCqcK8uQ3MpKTCzZKH8VzwBOHunfRBmhnRg8gzFg4Ng7NQyNrAkuhhqKMuxCfeKPzU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VMU2XV6a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7961CC4CEF1;
-	Mon, 27 Oct 2025 19:25:12 +0000 (UTC)
+	 MIME-Version; b=AbpHFSRbimYyZz/j45qv7EJH/sqscirRZP1RpNtkRadvlbEidpHeEtu405vj8wH0F7YIBJSIaoIdlCxME6B1qZA0xgc1dwI/HlhKHwoFUEBaOvouMUIM5AYQHiiJsfnLFrNy4CR2+Rv0bdNctOYlvBjvvAKmOoTpMV8UPrArr7E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UJGdsQLZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF4E7C4CEF1;
+	Mon, 27 Oct 2025 18:59:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761593112;
-	bh=UFji515DdRn7XtDgMWKDitQbmqJ6wgquUnXhiFHU/AA=;
+	s=korg; t=1761591572;
+	bh=AX49Jqm92y1+4igOBsjnNdjOYvOzhL6yWYZfsTiA+4U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VMU2XV6aeWhyy3Adg5vne7IRPUvoG/3NyDJ8rnH0f/nKozcuoA4N6HFAYp57aN2kz
-	 6pPRTT35ddr9tFQS1Jb4eA1J0naN0/yCVWLSTJ8ruBQoy19rXtIH/sz2AyvypS0/R9
-	 K530v3cVRtnAfUuShe7IviMAqE0etn6QPAVdzE0g=
+	b=UJGdsQLZ8eehrJ+0JSGh3ir6o4RcKDtOJnuQyTxhX47hEqpRAsLujutpat1bDRMia
+	 Y1N1X4eH95nEL6Zb9yLAqHvxdCkVOyEOTM+XPJyt2O8a/Gt/KNNmr9yE9WdWbaLC2y
+	 fcEr5ms+itJg/EAsW4/0qEVgBjSutAtqVd/6mGBU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Junjie Cao <junjie.cao@intel.com>,
-	Kees Cook <kees@kernel.org>,
+	Jann Horn <jannh@google.com>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 018/184] lkdtm: fortify: Fix potential NULL dereference on kmalloc failure
-Date: Mon, 27 Oct 2025 19:35:00 +0100
-Message-ID: <20251027183515.424436909@linuxfoundation.org>
+Subject: [PATCH 5.10 248/332] tls: dont rely on tx_work during send()
+Date: Mon, 27 Oct 2025 19:35:01 +0100
+Message-ID: <20251027183531.386868891@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
-References: <20251027183514.934710872@linuxfoundation.org>
+In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
+References: <20251027183524.611456697@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +63,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junjie Cao <junjie.cao@intel.com>
+From: Sabrina Dubroca <sd@queasysnail.net>
 
-[ Upstream commit 01c7344e21c2140e72282d9d16d79a61f840fc20 ]
+[ Upstream commit 7f846c65ca11e63d2409868ff039081f80e42ae4 ]
 
-Add missing NULL pointer checks after kmalloc() calls in
-lkdtm_FORTIFY_STR_MEMBER() and lkdtm_FORTIFY_MEM_MEMBER() functions.
+With async crypto, we rely on tx_work to actually transmit records
+once encryption completes. But while send() is running, both the
+tx_lock and socket lock are held, so tx_work_handler cannot process
+the queue of encrypted records, and simply reschedules itself. During
+a large send(), this could last a long time, and use a lot of memory.
 
-Signed-off-by: Junjie Cao <junjie.cao@intel.com>
-Link: https://lore.kernel.org/r/20250814060605.5264-1-junjie.cao@intel.com
-Signed-off-by: Kees Cook <kees@kernel.org>
+Transmit any pending encrypted records before restarting the main
+loop of tls_sw_sendmsg_locked.
+
+Fixes: a42055e8d2c3 ("net/tls: Add support for async encryption of records for performance")
+Reported-by: Jann Horn <jannh@google.com>
+Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
+Link: https://patch.msgid.link/8396631478f70454b44afb98352237d33f48d34d.1760432043.git.sd@queasysnail.net
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/lkdtm/fortify.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ net/tls/tls_sw.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/drivers/misc/lkdtm/fortify.c b/drivers/misc/lkdtm/fortify.c
-index 0159276656780..00ed2147113e6 100644
---- a/drivers/misc/lkdtm/fortify.c
-+++ b/drivers/misc/lkdtm/fortify.c
-@@ -44,6 +44,9 @@ static void lkdtm_FORTIFY_STR_MEMBER(void)
- 	char *src;
- 
- 	src = kmalloc(size, GFP_KERNEL);
-+	if (!src)
-+		return;
+diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
+index e519a0160668e..a300d1ac13a88 100644
+--- a/net/tls/tls_sw.c
++++ b/net/tls/tls_sw.c
+@@ -1056,6 +1056,13 @@ int tls_sw_sendmsg(struct sock *sk, struct msghdr *msg, size_t size)
+ 				else if (ret != -EAGAIN)
+ 					goto send_end;
+ 			}
 +
- 	strscpy(src, "over ten bytes", size);
- 	size = strlen(src) + 1;
- 
-@@ -109,6 +112,9 @@ static void lkdtm_FORTIFY_MEM_MEMBER(void)
- 	char *src;
- 
- 	src = kmalloc(size, GFP_KERNEL);
-+	if (!src)
-+		return;
++			/* Transmit if any encryptions have completed */
++			if (test_and_clear_bit(BIT_TX_SCHEDULED, &ctx->tx_bitmask)) {
++				cancel_delayed_work(&ctx->tx_work.work);
++				tls_tx_records(sk, msg->msg_flags);
++			}
 +
- 	strscpy(src, "over ten bytes", size);
- 	size = strlen(src) + 1;
+ 			continue;
+ rollback_iter:
+ 			copied -= try_to_copy;
+@@ -1110,6 +1117,12 @@ int tls_sw_sendmsg(struct sock *sk, struct msghdr *msg, size_t size)
+ 					goto send_end;
+ 				}
+ 			}
++
++			/* Transmit if any encryptions have completed */
++			if (test_and_clear_bit(BIT_TX_SCHEDULED, &ctx->tx_bitmask)) {
++				cancel_delayed_work(&ctx->tx_work.work);
++				tls_tx_records(sk, msg->msg_flags);
++			}
+ 		}
  
+ 		continue;
 -- 
 2.51.0
 
