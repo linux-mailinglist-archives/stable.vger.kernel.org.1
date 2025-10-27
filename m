@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-190108-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190446-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2CD0C0FF87
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:41:07 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5134C1069C
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:03:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 787AE462362
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:41:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1BFB51A26B12
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:59:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B78431B11E;
-	Mon, 27 Oct 2025 18:40:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 987E6334690;
+	Mon, 27 Oct 2025 18:55:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lfuH0O0w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V4vDYLa+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAD642EDD62;
-	Mon, 27 Oct 2025 18:40:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55DC9328638;
+	Mon, 27 Oct 2025 18:55:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761590457; cv=none; b=tQi04KjmEZGF+qKxAPesOxq5DYvduXwiBSDy7UgbGMtGhyyvueuhnK+Z4n/h2IK22ksjGCBuUo8vJgdIILb3AOTOJ0/pvGecfiIXNoYsz9l8M2Bb8P3l0IdLIm+dqdU/NsleDnVbFr1DUBoKyaTvsYhL1EQiKoUDrmwpfQvfWNo=
+	t=1761591312; cv=none; b=UqyydNNED8uQSSAv1kajIx9H1Ad+gADGFv7rL3nGusqKZ5r9vO3kyIEkf9jtKUT70TPRJj4ajD3sevKAvI3ur+zr4OyQBuSEITPhT7Gez46Unlv8bvxSh2XAlX6pRxKrU+d+hWXhWpxRqfVkZKbcqeaAQSmCzzPuLAGeGKcaTws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761590457; c=relaxed/simple;
-	bh=drNRIW+Lvi40vnhCxRsvlvX2FcCWk8Cb7EjNCbLsWgU=;
+	s=arc-20240116; t=1761591312; c=relaxed/simple;
+	bh=ThIpqebrVOP3kae7cR2YhUpJlav684i1urwi2xtNG3o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dVekpy0kntMY0kVsGgsB2ya/dy6ttdEKrSPseWOZBtNhADQTg/df5M1xsHw7ICHk9VdFa4hC1bfCZFqxhJqlh/TJleOH/N0FVsolq7hDNVqe+JV0VutXanlA2eOJcEgBn5Ec4zPcv8hyiRHExbcjX4HUNZlNgNk63atwkDf/feE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lfuH0O0w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1114DC4CEF1;
-	Mon, 27 Oct 2025 18:40:56 +0000 (UTC)
+	 MIME-Version; b=NyE0eek1/439SzFcsMQUBQtgdC5srlUW/sZaruVmzKD3VTGVCIh5tocKuQYQ/VLSiLpIICkgcIgf4uv+eHnDTJUdl7+L+nbAmBJ4XZd6Bnf+YpmOa0xtiekp4Qrs+ekxJichAG3bdBQXJwIJ3qHHmSnFiLFo+kTsI3RYChK3Juc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V4vDYLa+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE21AC4CEF1;
+	Mon, 27 Oct 2025 18:55:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761590457;
-	bh=drNRIW+Lvi40vnhCxRsvlvX2FcCWk8Cb7EjNCbLsWgU=;
+	s=korg; t=1761591312;
+	bh=ThIpqebrVOP3kae7cR2YhUpJlav684i1urwi2xtNG3o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lfuH0O0wWcUw0OegrR3BV5XjKALpWnuZVU3Fk4q7/yAaEkDoNrMgOtawrNQjrw2hg
-	 /D3XXg/WuOBsku1ZYNkRVs/rfuSCFSlRAj2zd47u+mefwRzlPLYC/4l9b+QfD3GoxC
-	 opVnKZwG0CL7B8q8s9d87nZtk31G1a2LiQkcn+Ro=
+	b=V4vDYLa+gc6xBHqFk6ez8ix15RW8PSCtooEL/eioX/fAumLwG4F/MbZSyMBfgDp1X
+	 WmJNcOyYhHoE+MCzkK/iYrktZLO9xZG5EjMlrmQOuwEAM2cO+wpemhiA6smCx1Frfi
+	 ViDQHem1CLGjSgjC6IAuZdp4xtuaxLqhEesC5UQg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Parav Pandit <parav@nvidia.com>,
-	Vlad Dumitrescu <vdumitrescu@nvidia.com>,
-	Edward Srouji <edwards@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 053/224] RDMA/core: Resolve MAC of next-hop device without ARP support
-Date: Mon, 27 Oct 2025 19:33:19 +0100
-Message-ID: <20251027183510.418800369@linuxfoundation.org>
+	Thorsten Blum <thorsten.blum@linux.dev>,
+	Don Brace <don.brace@microchip.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 5.10 147/332] scsi: hpsa: Fix potential memory leak in hpsa_big_passthru_ioctl()
+Date: Mon, 27 Oct 2025 19:33:20 +0100
+Message-ID: <20251027183528.516123866@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183508.963233542@linuxfoundation.org>
-References: <20251027183508.963233542@linuxfoundation.org>
+In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
+References: <20251027183524.611456697@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,58 +62,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Parav Pandit <parav@nvidia.com>
+From: Thorsten Blum <thorsten.blum@linux.dev>
 
-[ Upstream commit 200651b9b8aadfbbec852f0e5d042d9abe75e2ab ]
+commit b81296591c567b12d3873b05a37b975707959b94 upstream.
 
-Currently, if the next-hop netdevice does not support ARP resolution,
-the destination MAC address is silently set to zero without reporting
-an error. This leads to incorrect behavior and may result in packet
-transmission failures.
+Replace kmalloc() followed by copy_from_user() with memdup_user() to fix
+a memory leak that occurs when copy_from_user(buff[sg_used],,) fails and
+the 'cleanup1:' path does not free the memory for 'buff[sg_used]'. Using
+memdup_user() avoids this by freeing the memory internally.
 
-Fix this by deferring MAC resolution to the IP stack via neighbour
-lookup, allowing proper resolution or error reporting as appropriate.
+Since memdup_user() already allocates memory, use kzalloc() in the else
+branch instead of manually zeroing 'buff[sg_used]' using memset(0).
 
-Fixes: 7025fcd36bd6 ("IB: address translation to map IP toIB addresses (GIDs)")
-Signed-off-by: Parav Pandit <parav@nvidia.com>
-Reviewed-by: Vlad Dumitrescu <vdumitrescu@nvidia.com>
-Signed-off-by: Edward Srouji <edwards@nvidia.com>
-Link: https://patch.msgid.link/20250916111103.84069-3-edwards@nvidia.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: edd163687ea5 ("[SCSI] hpsa: add driver for HP Smart Array controllers.")
+Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+Acked-by: Don Brace <don.brace@microchip.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/core/addr.c | 10 +++-------
- 1 file changed, 3 insertions(+), 7 deletions(-)
+ drivers/scsi/hpsa.c |   21 ++++++++++++---------
+ 1 file changed, 12 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/infiniband/core/addr.c b/drivers/infiniband/core/addr.c
-index c9e63c692b6e8..48de2285922f8 100644
---- a/drivers/infiniband/core/addr.c
-+++ b/drivers/infiniband/core/addr.c
-@@ -459,14 +459,10 @@ static int addr_resolve_neigh(const struct dst_entry *dst,
- {
- 	int ret = 0;
- 
--	if (ndev_flags & IFF_LOOPBACK) {
-+	if (ndev_flags & IFF_LOOPBACK)
- 		memcpy(addr->dst_dev_addr, addr->src_dev_addr, MAX_ADDR_LEN);
--	} else {
--		if (!(ndev_flags & IFF_NOARP)) {
--			/* If the device doesn't do ARP internally */
--			ret = fetch_ha(dst, addr, dst_in, seq);
+--- a/drivers/scsi/hpsa.c
++++ b/drivers/scsi/hpsa.c
+@@ -6500,18 +6500,21 @@ static int hpsa_big_passthru_ioctl(struc
+ 	while (left) {
+ 		sz = (left > ioc->malloc_size) ? ioc->malloc_size : left;
+ 		buff_size[sg_used] = sz;
+-		buff[sg_used] = kmalloc(sz, GFP_KERNEL);
+-		if (buff[sg_used] == NULL) {
+-			status = -ENOMEM;
+-			goto cleanup1;
 -		}
--	}
-+	else
-+		ret = fetch_ha(dst, addr, dst_in, seq);
- 	return ret;
- }
- 
--- 
-2.51.0
-
++
+ 		if (ioc->Request.Type.Direction & XFER_WRITE) {
+-			if (copy_from_user(buff[sg_used], data_ptr, sz)) {
+-				status = -EFAULT;
++			buff[sg_used] = memdup_user(data_ptr, sz);
++			if (IS_ERR(buff[sg_used])) {
++				status = PTR_ERR(buff[sg_used]);
++				goto cleanup1;
++			}
++		} else {
++			buff[sg_used] = kzalloc(sz, GFP_KERNEL);
++			if (!buff[sg_used]) {
++				status = -ENOMEM;
+ 				goto cleanup1;
+ 			}
+-		} else
+-			memset(buff[sg_used], 0, sz);
++		}
++
+ 		left -= sz;
+ 		data_ptr += sz;
+ 		sg_used++;
 
 
 
