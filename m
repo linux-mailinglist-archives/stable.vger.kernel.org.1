@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-191006-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191256-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FA1DC10F28
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:27:07 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0314DC1126D
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:37:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 21954565C54
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:20:53 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B6A2B505DE8
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:32:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F82532143D;
-	Mon, 27 Oct 2025 19:19:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86B1E32548B;
+	Mon, 27 Oct 2025 19:30:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MszkrkCa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ga1R6z9P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A24D31DDBC;
-	Mon, 27 Oct 2025 19:19:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 427CD320A02;
+	Mon, 27 Oct 2025 19:30:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592769; cv=none; b=FZUtksythfSqGrcqW0KvnRIivAq+9mC7tAjo4nuX79wrHnWsWLYK/wzBr5dVUTvjqBYV6XXKJA/ZC+k0aeuqCoRWjwxT2CabzU7GJfJKKl4FI+ZojUl1WhCeNu4KcVumlw9b5tqQJfQX4ZSuGB341Ea8qK1RnRQ29gAWSbkcEcY=
+	t=1761593434; cv=none; b=Dk3n3/6Txa/GqUoifhAsBGROYQnY8sOjXSusDxT6DgG5dAH6A12R+orPWz7IjoQaae9ox53/ceQagQk3zslSaOW/9KaZ71iWTichRbvXSVLVqrgJ4ajnoH8SGWKz7UOW2mDusbZvG37hOYabW88kZ13g6aLmYp8dqzgKLITJqsM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592769; c=relaxed/simple;
-	bh=qc1N7B/sNFGKTKuRQ/Dt2g5EZszUIz0633V4CXvokt0=;
+	s=arc-20240116; t=1761593434; c=relaxed/simple;
+	bh=2kiRAAdiiVx3uf8YiiVpya5p90qXsom+uj7vC5685CA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hQyaP3YY8FdbsL2Ja6YUKPmkzxQK7M9X+3Zg9T1RX1nIDWkQ4DPWEZQyL24wiXXJetHCDOeH3HJXmN12WVccHGYplAcarNmZ4SI8dl8UgpqPYn+CRaS0dHoS0kFnUM6M3nd+8ngtpfgigPyF7dIkxOcMsC5pf9w2XjwG3vRB8FQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MszkrkCa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2187C4CEF1;
-	Mon, 27 Oct 2025 19:19:28 +0000 (UTC)
+	 MIME-Version; b=oTg4AqfBXmSVn51nncA4m9uXbdbMHMZ+dNAr6dDxvIrnxojU9jiW2kLZIAif24XI2iUpzP9U9jsm6AJP0X+WXmh5VpE3AyO2DkzEnDNi++mKC8PHyrB7eaS0NAdkgKQaBxj81N2jfFIPw8qZvC924BqWVZZX6MHSl24JudBruQk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ga1R6z9P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30CD3C4CEF1;
+	Mon, 27 Oct 2025 19:30:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592769;
-	bh=qc1N7B/sNFGKTKuRQ/Dt2g5EZszUIz0633V4CXvokt0=;
+	s=korg; t=1761593433;
+	bh=2kiRAAdiiVx3uf8YiiVpya5p90qXsom+uj7vC5685CA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MszkrkCa79rhnCxFAnEoErd/RWIy/kLUjEg6QeN2BV2V1qB0/qKQAXbP0tdJlaPlt
-	 ZRcCFDJb1le/0XIt8mirproUi511PC5y4K7/2k4dJawX8t5YUy9TfDfsSeEYU87L7m
-	 mORb8PQwLUU9xLM63kTBKOuKkAUJu6uFnDUsY5lY=
+	b=ga1R6z9P3LCvlo/1eKy/KEyXE4f7Bw8U6z7DYqSZZMPNwWGiryCFHDvFQuwUC2Vnm
+	 wPLMjMxfZHls91BuVAnPDNW6M12sDfCNi7dNJBD2GVAEQUyihkwU49wAyyYegqEFrS
+	 rPBWonnIxMMdWFOnbmiCInQtjfzJ+oLv/pvjOe7E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Cooper <andrew.cooper3@citrix.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	stable@kernel.org
-Subject: [PATCH 6.6 65/84] x86/microcode: Fix Entrysign revision check for Zen1/Naples
+	Anup Patel <apatel@ventanamicro.com>,
+	Han Gao <rabenda.cn@gmail.com>,
+	"Guo Ren (Alibaba DAMO Academy)" <guoren@kernel.org>,
+	Paul Walmsley <pjw@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.17 132/184] RISC-V: Define pgprot_dmacoherent() for non-coherent devices
 Date: Mon, 27 Oct 2025 19:36:54 +0100
-Message-ID: <20251027183440.545287579@linuxfoundation.org>
+Message-ID: <20251027183518.500309367@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183438.817309828@linuxfoundation.org>
-References: <20251027183438.817309828@linuxfoundation.org>
+In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
+References: <20251027183514.934710872@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +64,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Cooper <andrew.cooper3@citrix.com>
+From: Anup Patel <apatel@ventanamicro.com>
 
-commit 876f0d43af78639790bee0e57b39d498ae35adcf upstream.
+[ Upstream commit ca525d53f994d45c8140968b571372c45f555ac1 ]
 
-... to match AMD's statement here:
+The pgprot_dmacoherent() is used when allocating memory for
+non-coherent devices and by default pgprot_dmacoherent() is
+same as pgprot_noncached() unless architecture overrides it.
 
-https://www.amd.com/en/resources/product-security/bulletin/amd-sb-7033.html
+Currently, there is no pgprot_dmacoherent() definition for
+RISC-V hence non-coherent device memory is being mapped as
+IO thereby making CPU access to such memory slow.
 
-Fixes: 50cef76d5cb0 ("x86/microcode/AMD: Load only SHA256-checksummed patches")
-Signed-off-by: Andrew Cooper <andrew.cooper3@citrix.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: <stable@kernel.org>
-Link: https://patch.msgid.link/20251020144124.2930784-1-andrew.cooper3@citrix.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Define pgprot_dmacoherent() to be same as pgprot_writecombine()
+for RISC-V so that CPU access non-coherent device memory as
+NOCACHE which is better than accessing it as IO.
+
+Fixes: ff689fd21cb1 ("riscv: add RISC-V Svpbmt extension support")
+Signed-off-by: Anup Patel <apatel@ventanamicro.com>
+Tested-by: Han Gao <rabenda.cn@gmail.com>
+Tested-by: Guo Ren (Alibaba DAMO Academy) <guoren@kernel.org>
+Link: https://lore.kernel.org/r/20250820152316.1012757-1-apatel@ventanamicro.com
+Signed-off-by: Paul Walmsley <pjw@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/cpu/microcode/amd.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/riscv/include/asm/pgtable.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/arch/x86/kernel/cpu/microcode/amd.c
-+++ b/arch/x86/kernel/cpu/microcode/amd.c
-@@ -184,7 +184,7 @@ static bool need_sha_check(u32 cur_rev)
- 	}
+diff --git a/arch/riscv/include/asm/pgtable.h b/arch/riscv/include/asm/pgtable.h
+index 8150677429398..4355e8f3670bb 100644
+--- a/arch/riscv/include/asm/pgtable.h
++++ b/arch/riscv/include/asm/pgtable.h
+@@ -653,6 +653,8 @@ static inline pgprot_t pgprot_writecombine(pgprot_t _prot)
+ 	return __pgprot(prot);
+ }
  
- 	switch (cur_rev >> 8) {
--	case 0x80012: return cur_rev <= 0x800126f; break;
-+	case 0x80012: return cur_rev <= 0x8001277; break;
- 	case 0x80082: return cur_rev <= 0x800820f; break;
- 	case 0x83010: return cur_rev <= 0x830107c; break;
- 	case 0x86001: return cur_rev <= 0x860010e; break;
++#define pgprot_dmacoherent pgprot_writecombine
++
+ /*
+  * Both Svade and Svadu control the hardware behavior when the PTE A/D bits need to be set. By
+  * default the M-mode firmware enables the hardware updating scheme when only Svadu is present in
+-- 
+2.51.0
+
 
 
 
