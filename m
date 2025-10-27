@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-190734-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190599-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACB9EC10B26
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:16:04 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 640A9C1074D
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:05:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 029CB5805AC
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:10:19 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 1104B351462
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:05:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9A373203B0;
-	Mon, 27 Oct 2025 19:07:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 944862222AA;
+	Mon, 27 Oct 2025 19:01:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZbBbZmGH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zxRQETk4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7D6E1F7586;
-	Mon, 27 Oct 2025 19:07:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FC75218EB1;
+	Mon, 27 Oct 2025 19:01:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592055; cv=none; b=G7375ZpZmjCgCl5LUhxB0Vsznh8t8ER10AQT4vDrxZp4g8RMMdkgYtY6OLBo096nlxNTJeRjtP72oId/t+F+hVkD/PKyIkUr+PWo51SU9Wjaw8HaVmnWlv2JqGVmXkG3AjPp+UarIDyKNTmX0L6YjuUhGvFOdE7mtVu7oIjtTWo=
+	t=1761591705; cv=none; b=ZOYWOw4sblyD3aYkpTmJFJnXDceMkU6skJLsrlQRp8i5rIJJdpuCg4Wu15lIkYc8ERDjC6h0X218pQanjZKjd8cD3KLWJ7QgFiasQQtuhxAA10zeqzeNl57jWiiqP7LefA5U6ExlQLbMCTa1nZVxKLi95RB8p9of6uqhvPV4TF4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592055; c=relaxed/simple;
-	bh=rSPMSW5YHRiLHV1Nk64hhKuRLdxf3d/2VNCK0c84LMk=;
+	s=arc-20240116; t=1761591705; c=relaxed/simple;
+	bh=DwAWr/bUNEo5J9s6hBCoE1ujNSc0vycXhlsaiGEAiDg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gZz/1Cl/TO/JNw9wZ/nVb5juAlPu0lYtLmgbhngIaWe4Bjopf3w1620GqUrPwyiGFezbW/gRx0w1V83kTWxEwmSZTNZmuaQQJPligQn1UjSiOhEHqcvOYaTNfkVfauwRaYaRSTIO1aQZAGLTJthNkLOOMOUIQF+BrFS/7p6nfGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZbBbZmGH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4143C4CEFD;
-	Mon, 27 Oct 2025 19:07:34 +0000 (UTC)
+	 MIME-Version; b=DApCbGfs3+nZdEv0uYiuRZOb5695poxzt3d+sKkLw/5t9FGI+rvs5X3JcwAI2M+Mq1x/noPOAx2yOdfRqh4V1amxm6dq2lSnHMVtclV5kHQZ8t5Wjlr9n4Sti5uGHPL2tZdnurhqGDMnGKDxR8ozPuTIaQr7CZlZoskQLw22ZhI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zxRQETk4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D416EC4CEF1;
+	Mon, 27 Oct 2025 19:01:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592055;
-	bh=rSPMSW5YHRiLHV1Nk64hhKuRLdxf3d/2VNCK0c84LMk=;
+	s=korg; t=1761591705;
+	bh=DwAWr/bUNEo5J9s6hBCoE1ujNSc0vycXhlsaiGEAiDg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZbBbZmGHYB3iz1pLTLomV/SiOISsmvwpL+kgXGaQDdfawTzysfADwDh7trcawEdXl
-	 t+PY4QzziDukPxs9RJXhmPaXTI5gdIdJxvB70mxWKtA8AH57ANPlhtTxCQ1p66CaW4
-	 lybgmK382lDmkzSTqvXUAUK5HtOM5Dxc5vuehxb0=
+	b=zxRQETk478sxid4C/l7rQ4bYd+XJfaEYom6uAuC7nCHO5eb1DDl0sKRTZ6C5Lc0KY
+	 5wOkB9iMEz4Oeg9RUtdd6GdiOGWQd+5WftOGT1m3ANfMwUjA54PbzSAdDcslNahmUN
+	 GTSrag7Ki4ORvNv+gcyfozNzw1DuCK/BNFeVCGc8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anup Patel <anup@brainfault.org>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Tsukasa OI <research_trasio@irq.a4lg.com>,
-	Atish Patra <atishp@rivosinc.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 071/123] RISC-V: Correctly print supported extensions
+	syzbot+f6c3c066162d2c43a66c@syzkaller.appspotmail.com,
+	Deepanshu Kartikey <kartikey406@gmail.com>,
+	Ian Abbott <abbotti@mev.co.uk>
+Subject: [PATCH 5.10 298/332] comedi: fix divide-by-zero in comedi_buf_munge()
 Date: Mon, 27 Oct 2025 19:35:51 +0100
-Message-ID: <20251027183448.298768724@linuxfoundation.org>
+Message-ID: <20251027183532.720936237@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183446.381986645@linuxfoundation.org>
-References: <20251027183446.381986645@linuxfoundation.org>
+In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
+References: <20251027183524.611456697@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,75 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tsukasa OI <research_trasio@irq.a4lg.com>
+From: Deepanshu Kartikey <kartikey406@gmail.com>
 
-[ Upstream commit 58004f266918912771ee71f46bfb92bf64ab9108 ]
+commit 87b318ba81dda2ee7b603f4f6c55e78ec3e95974 upstream.
 
-This commit replaces BITS_PER_LONG with number of alphabet letters.
+The comedi_buf_munge() function performs a modulo operation
+`async->munge_chan %= async->cmd.chanlist_len` without first
+checking if chanlist_len is zero. If a user program submits a command with
+chanlist_len set to zero, this causes a divide-by-zero error when the device
+processes data in the interrupt handler path.
 
-Current ISA pretty-printing code expects extension 'a' (bit 0) through
-'z' (bit 25).  Although bit 26 and higher is not currently used (thus never
-cause an issue in practice), it will be an annoying problem if we start to
-use those in the future.
+Add a check for zero chanlist_len at the beginning of the
+function, similar to the existing checks for !map and
+CMDF_RAWDATA flag. When chanlist_len is zero, update
+munge_count and return early, indicating the data was
+handled without munging.
 
-This commit disables printing high bits for now.
+This prevents potential kernel panics from malformed user commands.
 
-Reviewed-by: Anup Patel <anup@brainfault.org>
-Tested-by: Heiko Stuebner <heiko@sntech.de>
-Signed-off-by: Tsukasa OI <research_trasio@irq.a4lg.com>
-Signed-off-by: Atish Patra <atishp@rivosinc.com>
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
-Stable-dep-of: d2721bb165b3 ("RISC-V: Don't print details of CPUs disabled in DT")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: syzbot+f6c3c066162d2c43a66c@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=f6c3c066162d2c43a66c
+Cc: stable@vger.kernel.org
+Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
+Reviewed-by: Ian Abbott <abbotti@mev.co.uk>
+Link: https://patch.msgid.link/20250924102639.1256191-1-kartikey406@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/riscv/kernel/cpufeature.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/staging/comedi/comedi_buf.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/riscv/kernel/cpufeature.c b/arch/riscv/kernel/cpufeature.c
-index d959d207a40d6..dd3d57eb4eead 100644
---- a/arch/riscv/kernel/cpufeature.c
-+++ b/arch/riscv/kernel/cpufeature.c
-@@ -13,6 +13,8 @@
- #include <asm/smp.h>
- #include <asm/switch_to.h>
+--- a/drivers/staging/comedi/comedi_buf.c
++++ b/drivers/staging/comedi/comedi_buf.c
+@@ -369,7 +369,7 @@ static unsigned int comedi_buf_munge(str
+ 	unsigned int count = 0;
+ 	const unsigned int num_sample_bytes = comedi_bytes_per_sample(s);
  
-+#define NUM_ALPHA_EXTS ('z' - 'a' + 1)
-+
- unsigned long elf_hwcap __read_mostly;
- 
- /* Host ISA bitmap */
-@@ -63,7 +65,7 @@ void __init riscv_fill_hwcap(void)
- {
- 	struct device_node *node;
- 	const char *isa;
--	char print_str[BITS_PER_LONG + 1];
-+	char print_str[NUM_ALPHA_EXTS + 1];
- 	size_t i, j, isa_len;
- 	static unsigned long isa2hwcap[256] = {0};
- 
-@@ -133,13 +135,13 @@ void __init riscv_fill_hwcap(void)
- 	}
- 
- 	memset(print_str, 0, sizeof(print_str));
--	for (i = 0, j = 0; i < BITS_PER_LONG; i++)
-+	for (i = 0, j = 0; i < NUM_ALPHA_EXTS; i++)
- 		if (riscv_isa[0] & BIT_MASK(i))
- 			print_str[j++] = (char)('a' + i);
- 	pr_info("riscv: ISA extensions %s\n", print_str);
- 
- 	memset(print_str, 0, sizeof(print_str));
--	for (i = 0, j = 0; i < BITS_PER_LONG; i++)
-+	for (i = 0, j = 0; i < NUM_ALPHA_EXTS; i++)
- 		if (elf_hwcap & BIT_MASK(i))
- 			print_str[j++] = (char)('a' + i);
- 	pr_info("riscv: ELF capabilities %s\n", print_str);
--- 
-2.51.0
-
+-	if (!s->munge || (async->cmd.flags & CMDF_RAWDATA)) {
++	if (!s->munge || (async->cmd.flags & CMDF_RAWDATA) || async->cmd.chanlist_len == 0) {
+ 		async->munge_count += num_bytes;
+ 		count = num_bytes;
+ 	} else {
 
 
 
