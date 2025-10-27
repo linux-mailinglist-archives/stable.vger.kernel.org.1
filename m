@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-191149-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190822-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id A795DC111CB
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:35:16 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D92AC10C6A
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:19:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 91056508501
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:27:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3BB5D567CF8
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:13:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A79931CA7E;
-	Mon, 27 Oct 2025 19:25:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B18D32B9B0;
+	Mon, 27 Oct 2025 19:11:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D/j6odMW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OaOPQUFZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F84B2D5C95;
-	Mon, 27 Oct 2025 19:25:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 487B835965;
+	Mon, 27 Oct 2025 19:11:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761593136; cv=none; b=nzZT3m+r81u/tktGESWDBKaH206+2YTbS6+dT0enmFEXBzplDRgbNWJdC+zaomzOwah2pJ8bjrjyG/Z/8fOmGkYY3rq5Z4ux/ol3ZUjYvFXoduzPkE46n85KtyJSV80STHf6Zu1diLikp/r2V+3mtEYJL1+/buViu372T0dXIyA=
+	t=1761592289; cv=none; b=V9XQX7/KzUgYAY9PPtWd+2S1GbBeF0tdgDC/gnjJbektSpjhdZSETD6kHh+jhrrZqUwXRiQMeSZ9Stin3hPUJPcGFXSqlv3wOYs1atwGTQmkqlSDcRXhQEU52ObPXoOTsWl3gY6qeJiedVeZGLxUx5Y8Sk3WZ8WBHr8557ePsmU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761593136; c=relaxed/simple;
-	bh=geV4dmwgxIkvcgck/9ZeLYQ7P4lx2HF9NWfBMq4qrU0=;
+	s=arc-20240116; t=1761592289; c=relaxed/simple;
+	bh=eKQ1Jm+IiFj4CzIAFwfC0ivVdCZ/f2myOCVVaEsWpso=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t3+/r0MRw6MzRxMWu0eUEixD2LLmFYAIlsv6TQitJCQw5BUPTvkb9WADOyMUjY0wTYdSpYhj7T2PeSCn66mxeG+BPhXyiSEaSQGDqIvPhPSFQBZAmF2BTm6ysFvS8MqSmr9pdHVKdEE2uWQ5jn2zGulWyaffixt0pcwnxHfOaFI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D/j6odMW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73F7FC4CEF1;
-	Mon, 27 Oct 2025 19:25:35 +0000 (UTC)
+	 MIME-Version; b=q0+A3eeCJhxNpS/NDyQFjBenayb6Ao66/35U+CooMjzxcU7t5KizgvfG+fuP59XeWo5PGNDziSRClTxFgCGmmtnTRj1zTZ1ylALfuZOfnwnH6AEK0YxKE96CMlWBHhqoagqV71kGCN2b7Tq4mlxNB+QkEH5T56MeOKPWswy5Rmk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OaOPQUFZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE7F4C4CEF1;
+	Mon, 27 Oct 2025 19:11:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761593135;
-	bh=geV4dmwgxIkvcgck/9ZeLYQ7P4lx2HF9NWfBMq4qrU0=;
+	s=korg; t=1761592289;
+	bh=eKQ1Jm+IiFj4CzIAFwfC0ivVdCZ/f2myOCVVaEsWpso=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D/j6odMWA4l14kJ6sVLUV6+t1bESYZIsLIxOjA5Tl2aZ0xbT4QJWYSXU0W9ogH6lO
-	 /WiY0S1bjtQokts51D+/2EPjx7zmv/O113q8VpmzgtBuUhv3oB8YOaksQzSXAXR7ZE
-	 UwYBjTVxK3rYll13msbHWKlRLNLZ/14uDHkneD6E=
+	b=OaOPQUFZwPLlypSZe1roC/G+lWxHu7qI/84SwUcRc41PVBspe8lKzS58RcARa5Bqk
+	 L76QE/F9Vk1qMr95iXk4NRIcpbDK2s5U8jzq6gC79ZqWcQMJdO7o9rraIShuUqPK5O
+	 ZMqSTabtBxmWBHDmiHKwHoYf2w+d69JwtiS+Gnv0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan Cameron <jonathan.cameron@huawei.com>,
-	Yicong Yang <yangyicong@hisilicon.com>,
-	Yushan Wang <wangyushan12@huawei.com>,
-	Will Deacon <will@kernel.org>,
+	Jann Horn <jannh@google.com>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 026/184] drivers/perf: hisi: Relax the event ID check in the framework
+Subject: [PATCH 6.1 047/157] tls: always set record_type in tls_process_cmsg
 Date: Mon, 27 Oct 2025 19:35:08 +0100
-Message-ID: <20251027183515.631348854@linuxfoundation.org>
+Message-ID: <20251027183502.556307891@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
-References: <20251027183514.934710872@linuxfoundation.org>
+In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
+References: <20251027183501.227243846@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,56 +63,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yicong Yang <yangyicong@hisilicon.com>
+From: Sabrina Dubroca <sd@queasysnail.net>
 
-[ Upstream commit 43de0ac332b815cf56dbdce63687de9acfd35d49 ]
+[ Upstream commit b6fe4c29bb51cf239ecf48eacf72b924565cb619 ]
 
-Event ID is only using the attr::config bit [7, 0] but we check the
-event range using the whole 64bit field. It blocks the usage of the
-rest field of attr::config. Relax the check by only using the
-bit [7, 0].
+When userspace wants to send a non-DATA record (via the
+TLS_SET_RECORD_TYPE cmsg), we need to send any pending data from a
+previous MSG_MORE send() as a separate DATA record. If that DATA record
+is encrypted asynchronously, tls_handle_open_record will return
+-EINPROGRESS. This is currently treated as an error by
+tls_process_cmsg, and it will skip setting record_type to the correct
+value, but the caller (tls_sw_sendmsg_locked) handles that return
+value correctly and proceeds with sending the new message with an
+incorrect record_type (DATA instead of whatever was requested in the
+cmsg).
 
-Acked-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
-Signed-off-by: Yushan Wang <wangyushan12@huawei.com>
-Signed-off-by: Will Deacon <will@kernel.org>
+Always set record_type before handling the open record. If
+tls_handle_open_record returns an error, record_type will be
+ignored. If it succeeds, whether with synchronous crypto (returning 0)
+or asynchronous (returning -EINPROGRESS), the caller will proceed
+correctly.
+
+Fixes: a42055e8d2c3 ("net/tls: Add support for async encryption of records for performance")
+Reported-by: Jann Horn <jannh@google.com>
+Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
+Link: https://patch.msgid.link/0457252e578a10a94e40c72ba6288b3a64f31662.1760432043.git.sd@queasysnail.net
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/perf/hisilicon/hisi_uncore_pmu.c | 2 +-
- drivers/perf/hisilicon/hisi_uncore_pmu.h | 3 ++-
- 2 files changed, 3 insertions(+), 2 deletions(-)
+ net/tls/tls_main.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/perf/hisilicon/hisi_uncore_pmu.c b/drivers/perf/hisilicon/hisi_uncore_pmu.c
-index a449651f79c9f..6594d64b03a9e 100644
---- a/drivers/perf/hisilicon/hisi_uncore_pmu.c
-+++ b/drivers/perf/hisilicon/hisi_uncore_pmu.c
-@@ -234,7 +234,7 @@ int hisi_uncore_pmu_event_init(struct perf_event *event)
- 		return -EINVAL;
+diff --git a/net/tls/tls_main.c b/net/tls/tls_main.c
+index 14d01558311d2..4797f68b9ec80 100644
+--- a/net/tls/tls_main.c
++++ b/net/tls/tls_main.c
+@@ -208,12 +208,9 @@ int tls_process_cmsg(struct sock *sk, struct msghdr *msg,
+ 			if (msg->msg_flags & MSG_MORE)
+ 				return -EINVAL;
  
- 	hisi_pmu = to_hisi_pmu(event->pmu);
--	if (event->attr.config > hisi_pmu->check_event)
-+	if ((event->attr.config & HISI_EVENTID_MASK) > hisi_pmu->check_event)
- 		return -EINVAL;
- 
- 	if (hisi_pmu->on_cpu == -1)
-diff --git a/drivers/perf/hisilicon/hisi_uncore_pmu.h b/drivers/perf/hisilicon/hisi_uncore_pmu.h
-index 777675838b808..e69660f72be67 100644
---- a/drivers/perf/hisilicon/hisi_uncore_pmu.h
-+++ b/drivers/perf/hisilicon/hisi_uncore_pmu.h
-@@ -43,7 +43,8 @@
- 		return FIELD_GET(GENMASK_ULL(hi, lo), event->attr.config);  \
- 	}
- 
--#define HISI_GET_EVENTID(ev) (ev->hw.config_base & 0xff)
-+#define HISI_EVENTID_MASK		GENMASK(7, 0)
-+#define HISI_GET_EVENTID(ev)		((ev)->hw.config_base & HISI_EVENTID_MASK)
- 
- #define HISI_PMU_EVTYPE_BITS		8
- #define HISI_PMU_EVTYPE_SHIFT(idx)	((idx) % 4 * HISI_PMU_EVTYPE_BITS)
+-			rc = tls_handle_open_record(sk, msg->msg_flags);
+-			if (rc)
+-				return rc;
+-
+ 			*record_type = *(unsigned char *)CMSG_DATA(cmsg);
+-			rc = 0;
++
++			rc = tls_handle_open_record(sk, msg->msg_flags);
+ 			break;
+ 		default:
+ 			return -EINVAL;
 -- 
 2.51.0
 
