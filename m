@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-190542-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190795-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F44EC1081C
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:08:24 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70064C10C34
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:19:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5928A4FFFAF
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:03:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C6F3058108A
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:12:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E31232E72F;
-	Mon, 27 Oct 2025 18:59:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E473A31B83D;
+	Mon, 27 Oct 2025 19:10:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aoC9XV9P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tFSivq5+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E864F331A76;
-	Mon, 27 Oct 2025 18:59:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A00342D73B1;
+	Mon, 27 Oct 2025 19:10:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591562; cv=none; b=jFKjN/pquDi5c1tVMantIIbbly4tmLsRzrQJUBsyp8I63b/+C2R7IOzF98/hsD30cS/On1YfhW4Gx6kqelVZwWgE+fsTxKO6ahoTwcbeL2oW3bCEsVIDCV/FwBfVCB3eKO4y0ozsc4qFVpQZgUahUilo9kaNfwH8qzBqPzrrsVk=
+	t=1761592217; cv=none; b=M5foU5J/jdsdmAJRVUPaiYHuCFiw7Aiz6N+ofzCpiG6GTb8trHmrFPtoUkv9XQwqOFOw3l9V4RLsY14zZVlptSkWbwss98sxCMeQsZm083AL2p83/uWOfcR+JhXtV/OxeH7PLJLn+YPgzI3pD1SAKTsXSjMX50wvSoa6whtQ5Vk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591562; c=relaxed/simple;
-	bh=IaMxdIIYjhGipLNIHFjSAuYiMl8Ov0vkOUlEAviJ46Q=;
+	s=arc-20240116; t=1761592217; c=relaxed/simple;
+	bh=gvoHcjmtt5MQZCB+65IuWpi/tKZ5Yyb70Zq6nuoZilU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OwfJ8s7ma1ZCpaNWzK6X9htHwCLlV03IjVeSKXGm80CF7uognFJQM6zMeNw91Ur5Jv04EITcGEItHqceTy8x4dpvqMG24BDjmRkzrFXeERo1Xll1x5K0mrqTPtBYlSCTOksdvWuwCgy6fzt7EgWJRnViM2nf/GGUt05QhfzNTbc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aoC9XV9P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BCFCC4CEF1;
-	Mon, 27 Oct 2025 18:59:21 +0000 (UTC)
+	 MIME-Version; b=qTndCfCxiCrOPCIDq0D9vvHKqQWmB95zMoUBCP04AP+G1JdQkFcMUZSxa9ZNukOcOku0cLr/bAFK7oSaCHgGI09KNWBnzNHHgISZ2PSsYRToXc4xUkm8ZOthjThP6781n0+SVDhWLb4yze3dCzI8SZ8OkIk1fYaeQr+fX7cSHyg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tFSivq5+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDA67C4CEF1;
+	Mon, 27 Oct 2025 19:10:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591561;
-	bh=IaMxdIIYjhGipLNIHFjSAuYiMl8Ov0vkOUlEAviJ46Q=;
+	s=korg; t=1761592216;
+	bh=gvoHcjmtt5MQZCB+65IuWpi/tKZ5Yyb70Zq6nuoZilU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aoC9XV9PorYb4Il9BBlgULetNtTl7E9BhoqTV2ysqXYfRoU8DOqe/w9fMSEKryp7q
-	 8o9imPKEq7dak/VxNoG2EkqyPax9iPRoN0y+mTpyVBgOXzLSR8ddGbYUoDWjweD4aW
-	 ANvfvyzTWm4xTM9wZorqP80efRP78uHbFMHPaJNM=
+	b=tFSivq5+XHZAXXB6+nd+DPIc7X+TUDPAO8ITgN7SNO7Wg0PDHtoAltiMGKCBMhL7H
+	 6qCDqobu/cwJtKmdplDPvIW1kCmj5O05u4P7nq0BseEg4P2WlX6bYwX1ua5LJyypzY
+	 1o5AIiuLpAE0CZR8cMoeAD/fqFLrdRe16qW74iig=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neal Cardwell <ncardwell@google.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Patrik Flykt <patrik.flykt@linux.intel.com>,
+	Markus Schneider-Pargmann <msp@baylibre.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 245/332] tcp: fix tcp_tso_should_defer() vs large RTT
+Subject: [PATCH 6.1 037/157] can: m_can: m_can_plat_remove(): add missing pm_runtime_disable()
 Date: Mon, 27 Oct 2025 19:34:58 +0100
-Message-ID: <20251027183531.304494737@linuxfoundation.org>
+Message-ID: <20251027183502.292551260@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
-References: <20251027183524.611456697@linuxfoundation.org>
+In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
+References: <20251027183501.227243846@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,88 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Marc Kleine-Budde <mkl@pengutronix.de>
 
-[ Upstream commit 295ce1eb36ae47dc862d6c8a1012618a25516208 ]
+[ Upstream commit ba569fb07a7e9e9b71e9282e27e993ba859295c2 ]
 
-Neal reported that using neper tcp_stream with TCP_TX_DELAY
-set to 50ms would often lead to flows stuck in a small cwnd mode,
-regardless of the congestion control.
+Commit 227619c3ff7c ("can: m_can: move runtime PM enable/disable to
+m_can_platform") moved the PM runtime enable from the m_can core
+driver into the m_can_platform.
 
-While tcp_stream sets TCP_TX_DELAY too late after the connect(),
-it highlighted two kernel bugs.
+That patch forgot to move the pm_runtime_disable() to
+m_can_plat_remove(), so that unloading the m_can_platform driver
+causes an "Unbalanced pm_runtime_enable!" error message.
 
-The following heuristic in tcp_tso_should_defer() seems wrong
-for large RTT:
+Add the missing pm_runtime_disable() to m_can_plat_remove() to fix the
+problem.
 
-delta = tp->tcp_clock_cache - head->tstamp;
-/* If next ACK is likely to come too late (half srtt), do not defer */
-if ((s64)(delta - (u64)NSEC_PER_USEC * (tp->srtt_us >> 4)) < 0)
-      goto send_now;
-
-If next ACK is expected to come in more than 1 ms, we should
-not defer because we prefer a smooth ACK clocking.
-
-While blamed commit was a step in the good direction, it was not
-generic enough.
-
-Another patch fixing TCP_TX_DELAY for established flows
-will be proposed when net-next reopens.
-
-Fixes: 50c8339e9299 ("tcp: tso: restore IW10 after TSO autosizing")
-Reported-by: Neal Cardwell <ncardwell@google.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Neal Cardwell <ncardwell@google.com>
-Tested-by: Neal Cardwell <ncardwell@google.com>
-Link: https://patch.msgid.link/20251011115742.1245771-1-edumazet@google.com
-[pabeni@redhat.com: fixed whitespace issue]
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Cc: Patrik Flykt <patrik.flykt@linux.intel.com>
+Fixes: 227619c3ff7c ("can: m_can: move runtime PM enable/disable to m_can_platform")
+Reviewed-by: Markus Schneider-Pargmann <msp@baylibre.com>
+Link: https://patch.msgid.link/20250929-m_can-fix-state-handling-v4-1-682b49b49d9a@pengutronix.de
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp_output.c | 19 +++++++++++++++----
- 1 file changed, 15 insertions(+), 4 deletions(-)
+ drivers/net/can/m_can/m_can_platform.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
-index 32e38ac5ee2bd..88e8d6543948e 100644
---- a/net/ipv4/tcp_output.c
-+++ b/net/ipv4/tcp_output.c
-@@ -2177,7 +2177,8 @@ static bool tcp_tso_should_defer(struct sock *sk, struct sk_buff *skb,
- 				 u32 max_segs)
- {
- 	const struct inet_connection_sock *icsk = inet_csk(sk);
--	u32 send_win, cong_win, limit, in_flight;
-+	u32 send_win, cong_win, limit, in_flight, threshold;
-+	u64 srtt_in_ns, expected_ack, how_far_is_the_ack;
- 	struct tcp_sock *tp = tcp_sk(sk);
- 	struct sk_buff *head;
- 	int win_divisor;
-@@ -2239,9 +2240,19 @@ static bool tcp_tso_should_defer(struct sock *sk, struct sk_buff *skb,
- 	head = tcp_rtx_queue_head(sk);
- 	if (!head)
- 		goto send_now;
--	delta = tp->tcp_clock_cache - head->tstamp;
--	/* If next ACK is likely to come too late (half srtt), do not defer */
--	if ((s64)(delta - (u64)NSEC_PER_USEC * (tp->srtt_us >> 4)) < 0)
-+
-+	srtt_in_ns = (u64)(NSEC_PER_USEC >> 3) * tp->srtt_us;
-+	/* When is the ACK expected ? */
-+	expected_ack = head->tstamp + srtt_in_ns;
-+	/* How far from now is the ACK expected ? */
-+	how_far_is_the_ack = expected_ack - tp->tcp_clock_cache;
-+
-+	/* If next ACK is likely to come too late,
-+	 * ie in more than min(1ms, half srtt), do not defer.
-+	 */
-+	threshold = min(srtt_in_ns >> 1, NSEC_PER_MSEC);
-+
-+	if ((s64)(how_far_is_the_ack - threshold) > 0)
- 		goto send_now;
+diff --git a/drivers/net/can/m_can/m_can_platform.c b/drivers/net/can/m_can/m_can_platform.c
+index de6d8e01bf2e8..71cf3662128a1 100644
+--- a/drivers/net/can/m_can/m_can_platform.c
++++ b/drivers/net/can/m_can/m_can_platform.c
+@@ -170,7 +170,7 @@ static int m_can_plat_remove(struct platform_device *pdev)
+ 	struct m_can_classdev *mcan_class = &priv->cdev;
  
- 	/* Ok, it looks like it is advisable to defer.
+ 	m_can_class_unregister(mcan_class);
+-
++	pm_runtime_disable(mcan_class->dev);
+ 	m_can_class_free_dev(mcan_class->net);
+ 
+ 	return 0;
 -- 
 2.51.0
 
