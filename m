@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-191206-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190611-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49EFFC11195
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:34:39 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59455C1096F
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:11:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CD705560A11
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:30:00 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 355045007E3
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:06:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B69AE31E0FB;
-	Mon, 27 Oct 2025 19:28:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14C6B3254BC;
+	Mon, 27 Oct 2025 19:02:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I2Ij4kO5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p5D8fLOI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 730F331DD87;
-	Mon, 27 Oct 2025 19:28:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C194031CA42;
+	Mon, 27 Oct 2025 19:02:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761593280; cv=none; b=rzOdTqGVtXs/KFlz2wiWKTWhkWbeZNH5L3z1koAJhrSUKTKKBa5QG7LXUaJlw7QrLZtlsjbf29foPYxDBenZuyDGO+J/62cbfrTDXF8uyxAh31cwc4iEcGVffNsyNaK7lSTZjo5oaXWrWHzQAqzzwCgEs9RmQPucqpSQZzREi88=
+	t=1761591736; cv=none; b=AiweSPv577+13z6SJ7bD24fYTRge/9AIqyEwiEt00/XHwxFFMRqhz+r3usSpkRXoi+/14M8FZoxVmArz8JlWwHRH0BWg/r44QHmZImwfuBNSiPHjpvuznejF9qOUaRttxPfTXAyKWQPDXdVTYEmd45RDXPlJy73h1IRN9qxTiso=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761593280; c=relaxed/simple;
-	bh=ZNNc/L2eU4VtD8q0pYPB7A/bMPJ/XSB5w1coDUcW25Q=;
+	s=arc-20240116; t=1761591736; c=relaxed/simple;
+	bh=5ZdZDI2yjrtmvcPzJyai61dzvc9NXf8LHgTEgED4DU8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TH8E0nJeq7jAO7IS62RzDN4NbCPWljutNe4yeJ3pw8AZs4DtJZxfpIcN4ScVk+nep9E2fNuuV/kSikhvjrVm7eJSqEnQpA2JY0tL0APLWOA94is2JiVuK0YSgI7pC9iFNRKi4TAyyf2FETYS4N4cvbL3Le0V5Ydske11/laY/6o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I2Ij4kO5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFC2EC4CEF1;
-	Mon, 27 Oct 2025 19:27:59 +0000 (UTC)
+	 MIME-Version; b=c/gFDXbmBFF4oR0fYWKHDeVTVyyIptT/eprZOuRN+HQY2AbPBrvgbPBOOoCPC0X5mdEfJux00xdF9J36Hj+0sy8elGuTyZ7XNxYwCVJnxfSVwbwxXxitsbi9T3h4Gms4+6XnS18QDRYtHIAWks1NMRsoXi2TiKlLZyNX8nRcnHY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p5D8fLOI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55380C4CEF1;
+	Mon, 27 Oct 2025 19:02:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761593280;
-	bh=ZNNc/L2eU4VtD8q0pYPB7A/bMPJ/XSB5w1coDUcW25Q=;
+	s=korg; t=1761591736;
+	bh=5ZdZDI2yjrtmvcPzJyai61dzvc9NXf8LHgTEgED4DU8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I2Ij4kO5l/Z5C6jlCHXb25gBYiblNfpZ3F0M5WZnxSmIZvKR902vd9dR/QKqAGDHf
-	 qxTTca5QVmWdVvMVEkmxU0gJqQLrKi24DJ5Du/nA67TIhfJsTDU55WpsajjmyklpM+
-	 EEy9AsV5aDoV2rs64f2zKEv7bIB4v3U4oGS6YIHo=
+	b=p5D8fLOIvXC17WdHeX+Tlx5ZOWIHtp/nMl4oSrXFpV+owUYreXbHId/dsr12NeGls
+	 6rBIDSGDwsGpTP8UXB5orzjZeAhzVHocqOESsI0SN/pQZbnX39DjdrbycCsTyE3MYr
+	 SiqU1MgYr6rUpbcFxW667rbbZ0v0inJ45N2an+5A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harry Yoo <harry.yoo@oracle.com>,
-	Hao Ge <gehao@kylinos.cn>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>
-Subject: [PATCH 6.17 083/184] slab: Fix obj_ext mistakenly considered NULL due to race condition
+	Sergey Bashirov <sergeybashirov@gmail.com>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 312/332] NFSD: Rework encoding and decoding of nfsd4_deviceid
 Date: Mon, 27 Oct 2025 19:36:05 +0100
-Message-ID: <20251027183517.133576834@linuxfoundation.org>
+Message-ID: <20251027183533.097807578@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
-References: <20251027183514.934710872@linuxfoundation.org>
+In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
+References: <20251027183524.611456697@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,78 +62,158 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hao Ge <gehao@kylinos.cn>
+From: Sergey Bashirov <sergeybashirov@gmail.com>
 
-commit 7f434e1d9a17ca5f567c9796c9c105a65c18db9a upstream.
+[ Upstream commit 832738e4b325b742940761e10487403f9aad13e8 ]
 
-If two competing threads enter alloc_slab_obj_exts(), and the one that
-allocates the vector wins the cmpxchg(), the other thread that failed
-allocation mistakenly assumes that slab->obj_exts is still empty due to
-its own allocation failure. This will then trigger warnings with
-CONFIG_MEM_ALLOC_PROFILING_DEBUG checks in the subsequent free path.
+Compilers may optimize the layout of C structures, so we should not rely
+on sizeof struct and memcpy to encode and decode XDR structures. The byte
+order of the fields should also be taken into account.
 
-Therefore, let's check the result of cmpxchg() to see if marking the
-allocation as failed was successful. If it wasn't, check whether the
-winning side has succeeded its allocation (it might have been also
-marking it as failed) and if yes, return success.
+This patch adds the correct functions to handle the deviceid4 structure
+and removes the pad field, which is currently not used by NFSD, from the
+runtime state. The server's byte order is preserved because the deviceid4
+blob on the wire is only used as a cookie by the client.
 
-Suggested-by: Harry Yoo <harry.yoo@oracle.com>
-Fixes: f7381b911640 ("slab: mark slab->obj_exts allocation failures unconditionally")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Hao Ge <gehao@kylinos.cn>
-Link: https://patch.msgid.link/20251023143313.1327968-1-hao.ge@linux.dev
-Reviewed-by: Suren Baghdasaryan <surenb@google.com>
-Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
-Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+Signed-off-by: Sergey Bashirov <sergeybashirov@gmail.com>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Stable-dep-of: d68886bae76a ("NFSD: Fix last write offset handling in layoutcommit")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/slub.c |   16 +++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
+ fs/nfsd/blocklayoutxdr.c    |    7 ++-----
+ fs/nfsd/flexfilelayoutxdr.c |    3 +--
+ fs/nfsd/nfs4layouts.c       |    1 -
+ fs/nfsd/nfs4xdr.c           |   14 +-------------
+ fs/nfsd/xdr4.h              |   36 +++++++++++++++++++++++++++++++++++-
+ 5 files changed, 39 insertions(+), 22 deletions(-)
 
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -1976,9 +1976,9 @@ static inline void mark_objexts_empty(st
- 	}
+--- a/fs/nfsd/blocklayoutxdr.c
++++ b/fs/nfsd/blocklayoutxdr.c
+@@ -29,8 +29,7 @@ nfsd4_block_encode_layoutget(struct xdr_
+ 	*p++ = cpu_to_be32(len);
+ 	*p++ = cpu_to_be32(1);		/* we always return a single extent */
+ 
+-	p = xdr_encode_opaque_fixed(p, &b->vol_id,
+-			sizeof(struct nfsd4_deviceid));
++	p = svcxdr_encode_deviceid4(p, &b->vol_id);
+ 	p = xdr_encode_hyper(p, b->foff);
+ 	p = xdr_encode_hyper(p, b->len);
+ 	p = xdr_encode_hyper(p, b->soff);
+@@ -145,9 +144,7 @@ nfsd4_block_decode_layoutupdate(__be32 *
+ 	for (i = 0; i < nr_iomaps; i++) {
+ 		struct pnfs_block_extent bex;
+ 
+-		memcpy(&bex.vol_id, p, sizeof(struct nfsd4_deviceid));
+-		p += XDR_QUADLEN(sizeof(struct nfsd4_deviceid));
+-
++		p = svcxdr_decode_deviceid4(p, &bex.vol_id);
+ 		p = xdr_decode_hyper(p, &bex.foff);
+ 		if (bex.foff & (block_size - 1)) {
+ 			dprintk("%s: unaligned offset 0x%llx\n",
+--- a/fs/nfsd/flexfilelayoutxdr.c
++++ b/fs/nfsd/flexfilelayoutxdr.c
+@@ -54,8 +54,7 @@ nfsd4_ff_encode_layoutget(struct xdr_str
+ 	*p++ = cpu_to_be32(1);			/* single mirror */
+ 	*p++ = cpu_to_be32(1);			/* single data server */
+ 
+-	p = xdr_encode_opaque_fixed(p, &fl->deviceid,
+-			sizeof(struct nfsd4_deviceid));
++	p = svcxdr_encode_deviceid4(p, &fl->deviceid);
+ 
+ 	*p++ = cpu_to_be32(1);			/* efficiency */
+ 
+--- a/fs/nfsd/nfs4layouts.c
++++ b/fs/nfsd/nfs4layouts.c
+@@ -120,7 +120,6 @@ nfsd4_set_deviceid(struct nfsd4_deviceid
+ 
+ 	id->fsid_idx = fhp->fh_export->ex_devid_map->idx;
+ 	id->generation = device_generation;
+-	id->pad = 0;
+ 	return 0;
  }
  
--static inline void mark_failed_objexts_alloc(struct slab *slab)
-+static inline bool mark_failed_objexts_alloc(struct slab *slab)
- {
--	cmpxchg(&slab->obj_exts, 0, OBJEXTS_ALLOC_FAIL);
-+	return cmpxchg(&slab->obj_exts, 0, OBJEXTS_ALLOC_FAIL) == 0;
+--- a/fs/nfsd/nfs4xdr.c
++++ b/fs/nfsd/nfs4xdr.c
+@@ -566,18 +566,6 @@ nfsd4_decode_state_owner4(struct nfsd4_c
  }
  
- static inline void handle_failed_objexts_alloc(unsigned long obj_exts,
-@@ -2000,7 +2000,7 @@ static inline void handle_failed_objexts
- #else /* CONFIG_MEM_ALLOC_PROFILING_DEBUG */
+ #ifdef CONFIG_NFSD_PNFS
+-static __be32
+-nfsd4_decode_deviceid4(struct nfsd4_compoundargs *argp,
+-		       struct nfsd4_deviceid *devid)
+-{
+-	__be32 *p;
+-
+-	p = xdr_inline_decode(argp->xdr, NFS4_DEVICEID4_SIZE);
+-	if (!p)
+-		return nfserr_bad_xdr;
+-	memcpy(devid, p, sizeof(*devid));
+-	return nfs_ok;
+-}
  
- static inline void mark_objexts_empty(struct slabobj_ext *obj_exts) {}
--static inline void mark_failed_objexts_alloc(struct slab *slab) {}
-+static inline bool mark_failed_objexts_alloc(struct slab *slab) { return false; }
- static inline void handle_failed_objexts_alloc(unsigned long obj_exts,
- 			struct slabobj_ext *vec, unsigned int objects) {}
+ static __be32
+ nfsd4_decode_layoutupdate4(struct nfsd4_compoundargs *argp,
+@@ -1733,7 +1721,7 @@ nfsd4_decode_getdeviceinfo(struct nfsd4_
+ 	__be32 status;
  
-@@ -2033,8 +2033,14 @@ int alloc_slab_obj_exts(struct slab *sla
- 	vec = kcalloc_node(objects, sizeof(struct slabobj_ext), gfp,
- 			   slab_nid(slab));
- 	if (!vec) {
--		/* Mark vectors which failed to allocate */
--		mark_failed_objexts_alloc(slab);
-+		/*
-+		 * Try to mark vectors which failed to allocate.
-+		 * If this operation fails, there may be a racing process
-+		 * that has already completed the allocation.
-+		 */
-+		if (!mark_failed_objexts_alloc(slab) &&
-+		    slab_obj_exts(slab))
-+			return 0;
+ 	memset(gdev, 0, sizeof(*gdev));
+-	status = nfsd4_decode_deviceid4(argp, &gdev->gd_devid);
++	status = nfsd4_decode_deviceid4(argp->xdr, &gdev->gd_devid);
+ 	if (status)
+ 		return status;
+ 	if (xdr_stream_decode_u32(argp->xdr, &gdev->gd_layout_type) < 0)
+--- a/fs/nfsd/xdr4.h
++++ b/fs/nfsd/xdr4.h
+@@ -459,9 +459,43 @@ struct nfsd4_reclaim_complete {
+ struct nfsd4_deviceid {
+ 	u64			fsid_idx;
+ 	u32			generation;
+-	u32			pad;
+ };
  
- 		return -ENOMEM;
- 	}
++static inline __be32 *
++svcxdr_encode_deviceid4(__be32 *p, const struct nfsd4_deviceid *devid)
++{
++	__be64 *q = (__be64 *)p;
++
++	*q = (__force __be64)devid->fsid_idx;
++	p += 2;
++	*p++ = (__force __be32)devid->generation;
++	*p++ = xdr_zero;
++	return p;
++}
++
++static inline __be32 *
++svcxdr_decode_deviceid4(__be32 *p, struct nfsd4_deviceid *devid)
++{
++	__be64 *q = (__be64 *)p;
++
++	devid->fsid_idx = (__force u64)(*q);
++	p += 2;
++	devid->generation = (__force u32)(*p++);
++	p++; /* NFSD does not use the remaining octets */
++	return p;
++}
++
++static inline __be32
++nfsd4_decode_deviceid4(struct xdr_stream *xdr, struct nfsd4_deviceid *devid)
++{
++	__be32 *p = xdr_inline_decode(xdr, NFS4_DEVICEID4_SIZE);
++
++	if (unlikely(!p))
++		return nfserr_bad_xdr;
++	svcxdr_decode_deviceid4(p, devid);
++	return nfs_ok;
++}
++
+ struct nfsd4_layout_seg {
+ 	u32			iomode;
+ 	u64			offset;
 
 
 
