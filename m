@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-191089-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191253-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E14BC10FD9
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:28:57 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1942C112F7
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:40:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BBE811A26F04
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:25:15 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6A101560F7B
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:32:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B8742C11DF;
-	Mon, 27 Oct 2025 19:22:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30F6928682;
+	Mon, 27 Oct 2025 19:30:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QRhvKB7m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ce9uvO53"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10179302158;
-	Mon, 27 Oct 2025 19:22:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE6EA324B2E;
+	Mon, 27 Oct 2025 19:30:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592978; cv=none; b=oKgCd+D+RfoSt5vKfROhR9DhuCaUbzNV0oowYEEAGNIkw3g3BcYFRjQGhHkol9YvUOkjH0pLeN4NW2N1Cok3+xeBp62fYyZHTdbkITOhU6k6gBQo95zIDFZn3LHrnlmc0vyJfKImJKSTqiI2B1jvwiZRPlpnzJieRS4PRtdNn6I=
+	t=1761593424; cv=none; b=mKDOEHP27Q/C5NKqVxq74MDbUMoWtnOyAl+WCOWnJjqWBhJvHPrbQB9pVS7NRqamA51yMJeh+SXJ8tLvH+MZmw/C2JMmG4fgFxNfmzuJEnPrDueVpbkgvgJO8aV8LWnQHm8jBgchRpLAkdxZAU9GNxeWY3BelV/pgAhsXId5ads=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592978; c=relaxed/simple;
-	bh=KdFX6NIIbNrEjnFf+NrvYRYuKfK8kKidJ/L7rmaLw0g=;
+	s=arc-20240116; t=1761593424; c=relaxed/simple;
+	bh=vlSAGDWT8bm4kxqf3XK5idS+L+USqsYg5aDaioOcbDc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EmaqerlDv4ReqlbZOzCSNdEcGTJ992+vr1kHpHsFdz2S4NI+qabM7faRLRTjqBcM/It3PZjIDSJliy4ymPmmeF+rTK2IZu41hK1knrdbyzasCsgYrsy1xUbh7jmrSm0XQOnYerM8XBtyOWZzBdHMyWozlasgT59ae4vP1pikhso=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QRhvKB7m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27B98C4CEF1;
-	Mon, 27 Oct 2025 19:22:56 +0000 (UTC)
+	 MIME-Version; b=tJB2UykaRJu2viBRLvNwG44UIswAUMl5rlRzvNh07XF4lCzAqq8GGX7fCaP36KG+Q3OzADiszDDhkuDrx38KN4lJZwGB57fI5CxOqtxtGu/Eds4fW08qwxcDFL3BtEAmVBSqGdf9IhZzHMGdh8n74xxIlg1L0oy5DEg0YAOGovs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ce9uvO53; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DEDFC4CEF1;
+	Mon, 27 Oct 2025 19:30:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592977;
-	bh=KdFX6NIIbNrEjnFf+NrvYRYuKfK8kKidJ/L7rmaLw0g=;
+	s=korg; t=1761593423;
+	bh=vlSAGDWT8bm4kxqf3XK5idS+L+USqsYg5aDaioOcbDc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QRhvKB7mhopiyZZcvP1RZw0sRRmcgltkBMPBALwEgw5X9+wcpiU3xOLMOWhwnGWdw
-	 Z3kA7vomG8SshXFr/se2hspYCJFmuKt4WnZKsDQXBKONbI8iToSyVIRaf7jnfGSYOG
-	 +gGnIxHvDI90+F90zd6B4AM9Cyn/PVX7uI6hiDms=
+	b=Ce9uvO53eYsw4frT6JWmdxh+yCiYj1XhH+juIcsNObGNM/6GiA/zPfJK7tx0Rc1pT
+	 /sbJKrjSuoWWXnV5iT3cfK2RNMCr3iHA3JzaOWeGHWDVHmwDd4S8+t/nwZZZLVEdgA
+	 qGnhGHEaOcIHWtiLpCZvqC/003zx7BtsRjKUp1Zk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Javier Martinez Canillas <javierm@redhat.com>,
-	Jocelyn Falempe <jfalempe@redhat.com>,
+	Mikhail Kshevetskiy <mikhail.kshevetskiy@iopsys.eu>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 085/117] drm/panic: Fix drawing the logo on a small narrow screen
+Subject: [PATCH 6.17 129/184] spi: airoha: fix reading/writing of flashes with more than one plane per lun
 Date: Mon, 27 Oct 2025 19:36:51 +0100
-Message-ID: <20251027183456.325931181@linuxfoundation.org>
+Message-ID: <20251027183518.417930464@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
-References: <20251027183453.919157109@linuxfoundation.org>
+In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
+References: <20251027183514.934710872@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +63,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jocelyn Falempe <jfalempe@redhat.com>
+From: Mikhail Kshevetskiy <mikhail.kshevetskiy@iopsys.eu>
 
-[ Upstream commit 179753aa5b7890b311968c033d08f558f0a7be21 ]
+[ Upstream commit 0b7d9b25e4bc2e478c9d06281a65f930769fca09 ]
 
-If the logo width is bigger than the framebuffer width, and the
-height is big enough to hold the logo and the message, it will draw
-at x coordinate that are higher than the width, and ends up in a
-corrupted image.
+Attaching UBI on the flash with more than one plane per lun will lead to
+the following error:
 
-Fixes: 4b570ac2eb54 ("drm/rect: Add drm_rect_overlap()")
-Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
-Link: https://lore.kernel.org/r/20251009122955.562888-2-jfalempe@redhat.com
-Signed-off-by: Jocelyn Falempe <jfalempe@redhat.com>
+[    2.980989] spi-nand spi0.0: Micron SPI NAND was found.
+[    2.986309] spi-nand spi0.0: 256 MiB, block size: 128 KiB, page size: 2048, OOB size: 128
+[    2.994978] 2 fixed-partitions partitions found on MTD device spi0.0
+[    3.001350] Creating 2 MTD partitions on "spi0.0":
+[    3.006159] 0x000000000000-0x000000020000 : "bl2"
+[    3.011663] 0x000000020000-0x000010000000 : "ubi"
+...
+[    6.391748] ubi0: attaching mtd1
+[    6.412545] ubi0 error: ubi_attach: PEB 0 contains corrupted VID header, and the data does not contain all 0xFF
+[    6.422677] ubi0 error: ubi_attach: this may be a non-UBI PEB or a severe VID header corruption which requires manual inspection
+[    6.434249] Volume identifier header dump:
+[    6.438349]     magic     55424923
+[    6.441482]     version   1
+[    6.444007]     vol_type  0
+[    6.446539]     copy_flag 0
+[    6.449068]     compat    0
+[    6.451594]     vol_id    0
+[    6.454120]     lnum      1
+[    6.456651]     data_size 4096
+[    6.459442]     used_ebs  1061644134
+[    6.462748]     data_pad  0
+[    6.465274]     sqnum     0
+[    6.467805]     hdr_crc   61169820
+[    6.470943] Volume identifier header hexdump:
+[    6.475308] hexdump of PEB 0 offset 4096, length 126976
+[    6.507391] ubi0 warning: ubi_attach: valid VID header but corrupted EC header at PEB 4
+[    6.515415] ubi0 error: ubi_compare_lebs: unsupported on-flash UBI format
+[    6.522222] ubi0 error: ubi_attach_mtd_dev: failed to attach mtd1, error -22
+[    6.529294] UBI error: cannot attach mtd1
+
+Non dirmap reading works good. Looking to spi_mem_no_dirmap_read() code we'll see:
+
+	static ssize_t spi_mem_no_dirmap_read(struct spi_mem_dirmap_desc *desc,
+					      u64 offs, size_t len, void *buf)
+	{
+		struct spi_mem_op op = desc->info.op_tmpl;
+		int ret;
+
+// --- see here ---
+		op.addr.val = desc->info.offset + offs;
+//-----------------
+		op.data.buf.in = buf;
+		op.data.nbytes = len;
+		ret = spi_mem_adjust_op_size(desc->mem, &op);
+		if (ret)
+		return ret;
+
+		ret = spi_mem_exec_op(desc->mem, &op);
+		if (ret)
+			return ret;
+
+		return op.data.nbytes;
+	}
+
+The similar happens for spi_mem_no_dirmap_write(). Thus the address
+passed to the flash should take in the account the value of
+desc->info.offset.
+
+This patch fix dirmap reading/writing of flashes with more than one
+plane per lun.
+
+Fixes: a403997c12019 ("spi: airoha: add SPI-NAND Flash controller driver")
+Signed-off-by: Mikhail Kshevetskiy <mikhail.kshevetskiy@iopsys.eu>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://patch.msgid.link/20251012121707.2296160-7-mikhail.kshevetskiy@iopsys.eu
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_panic.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/spi/spi-airoha-snfi.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/drm_panic.c b/drivers/gpu/drm/drm_panic.c
-index f128d345b16df..932a54b674794 100644
---- a/drivers/gpu/drm/drm_panic.c
-+++ b/drivers/gpu/drm/drm_panic.c
-@@ -306,6 +306,9 @@ static void drm_panic_logo_rect(struct drm_rect *rect, const struct font_desc *f
- static void drm_panic_logo_draw(struct drm_scanout_buffer *sb, struct drm_rect *rect,
- 				const struct font_desc *font, u32 fg_color)
- {
-+	if (rect->x2 > sb->width || rect->y2 > sb->height)
-+		return;
-+
- 	if (logo_mono)
- 		drm_panic_blit(sb, rect, logo_mono->data,
- 			       DIV_ROUND_UP(drm_rect_width(rect), 8), 1, fg_color);
+diff --git a/drivers/spi/spi-airoha-snfi.c b/drivers/spi/spi-airoha-snfi.c
+index 8143fbb0cf4e6..b78163eaed61d 100644
+--- a/drivers/spi/spi-airoha-snfi.c
++++ b/drivers/spi/spi-airoha-snfi.c
+@@ -733,8 +733,9 @@ static ssize_t airoha_snand_dirmap_read(struct spi_mem_dirmap_desc *desc,
+ 	if (err)
+ 		goto error_dma_unmap;
+ 
+-	/* set read addr */
+-	err = regmap_write(as_ctrl->regmap_nfi, REG_SPI_NFI_RD_CTL3, 0x0);
++	/* set read addr: zero page offset + descriptor read offset */
++	err = regmap_write(as_ctrl->regmap_nfi, REG_SPI_NFI_RD_CTL3,
++			   desc->info.offset);
+ 	if (err)
+ 		goto error_dma_unmap;
+ 
+@@ -870,7 +871,9 @@ static ssize_t airoha_snand_dirmap_write(struct spi_mem_dirmap_desc *desc,
+ 	if (err)
+ 		goto error_dma_unmap;
+ 
+-	err = regmap_write(as_ctrl->regmap_nfi, REG_SPI_NFI_PG_CTL2, 0x0);
++	/* set write addr: zero page offset + descriptor write offset */
++	err = regmap_write(as_ctrl->regmap_nfi, REG_SPI_NFI_PG_CTL2,
++			   desc->info.offset);
+ 	if (err)
+ 		goto error_dma_unmap;
+ 
 -- 
 2.51.0
 
