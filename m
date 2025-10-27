@@ -1,181 +1,115 @@
-Return-Path: <stable+bounces-189907-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-189908-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD99DC0BB0A
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 03:31:59 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8AF2C0BBCF
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 04:23:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 277224ED61E
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 02:31:41 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 75F9234906E
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 03:23:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0C782D239A;
-	Mon, 27 Oct 2025 02:31:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jY/aEZ6q"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43DE72D4B66;
+	Mon, 27 Oct 2025 03:23:37 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87B452D0C9B;
-	Mon, 27 Oct 2025 02:31:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 792B886340;
+	Mon, 27 Oct 2025 03:23:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761532295; cv=none; b=oAIOCEC8cPBC2ty3F93nh9HE0pfpRPDnPr/1ggepTgG9MZcSEL9H7zHLwO/ucPxY6TRyCyvZlCm1OG12u1GcYGCEIYkVJtkSTzz3qX4O6lvfKuH04A9In82E1lX0fo+1xeXIPhSdyiTxbjur/SdP3KxUrPTUjxIn7pq+ObnXooM=
+	t=1761535417; cv=none; b=ZByVoz8NwzJ3Uu36/Z8urGAjYw2HAP5gdLP02x4LRswiMoNSt52YADdDM6vs/dpch2mKlaAR8Vgq+rZVXofnJl+jW3+wbCYq49PzGoO+taP+QChZSbbyhMo1lQzhGijhcYSmiBCF8jSlZNrUEt0IHQSlFsdKx4HidqPkqMe1hCk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761532295; c=relaxed/simple;
-	bh=gfjCLDjPpdK1r04ZLOu7wnXZELlC/69H8vw3z+BQxMc=;
-	h=Date:From:To:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=ca81QLQHwGQcUY0NFq7T+xtUPIuXBpjCX4YxNTko0h82sNxNQZTgWw9DQFuoMs7dKcng3EtDfhJfY222EPZqMdifgI6PJqndqmc4FU7O/OkHEgZUOgkatf+WHYKkxPKzUiatJo+GoTD6fpVxVCVlXz3JU/bFTZi59GW7UZTThlU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jY/aEZ6q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4186C4CEE7;
-	Mon, 27 Oct 2025 02:31:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761532295;
-	bh=gfjCLDjPpdK1r04ZLOu7wnXZELlC/69H8vw3z+BQxMc=;
-	h=Date:From:To:Subject:In-Reply-To:References:From;
-	b=jY/aEZ6q/e2RXlXXizf4Bof10iVTbb//X+udvG+O69ahwigo/JA/KaDvhI/Eqjqas
-	 wfjrL1sYKzNPmdJJSasZSlJ72+uAeTQnklNDw87l3es5LJIJWHqtJYuJF1iQjovVqH
-	 Pjk5slpdMAK+WH5bWI8wcPEK6OVR6HMautqeQQkI5gEhq09JWGGevLpptPJlWFw0rL
-	 0QoGY9w7Dd/pTrkgnH85GgVeSJK8ifVilcjCTnKKiEK8+tWVdAB4v171e9DCzfm3Gs
-	 rYmTMbA+MvsTcDSpD6Lo9QoNSJGCN1D284PA8a3jXkKvbzSwf7F8cqvpmDsTZETKcK
-	 4uwZGyHMPwifA==
-Date: Sun, 26 Oct 2025 19:31:31 -0700
-From: Kees Cook <kees@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>, mm-commits@vger.kernel.org,
- stable@vger.kernel.org, gustavoars@kernel.org, david.hunter.linux@gmail.com,
- arnd@arndb.de, hannelotta@gmail.com, akpm@linux-foundation.org
-Subject: =?US-ASCII?Q?Re=3A_+_headers-add-check-for-c-standard-versi?=
- =?US-ASCII?Q?on=2Epatch_added_to_mm-hotfixes-unstable_branch?=
-User-Agent: K-9 Mail for Android
-In-Reply-To: <20251026235632.6E245C4CEE7@smtp.kernel.org>
-References: <20251026235632.6E245C4CEE7@smtp.kernel.org>
-Message-ID: <4FFB0358-0312-45AA-84BD-9249D8CE9C41@kernel.org>
+	s=arc-20240116; t=1761535417; c=relaxed/simple;
+	bh=YiWTZNMYlWlwFBnF0F4D6Wxru2/5KnyGEA5TuYud0Ak=;
+	h=From:To:Cc:Subject:Date:Message-Id; b=dm/speXjhHk2YvKBUAiFqd06hqiH1YSQ6BLxTkmi4GOY8t42rjx/8qfFZeOGZVuIpU5Y1eiMhXnX3E/f1LpxsW4KYqswpTswo3HNqk1wRme2p0ymLLH+GYDerU7LVcXY0U94zSNZDDPg/YFZ3EQlllmqxXbYmb2Uaa5Hu3fsIaA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from localhost.localdomain (unknown [202.112.113.212])
+	by APP-01 (Coremail) with SMTP id qwCowACHY7aU5f5oAK+HAg--.18889S2;
+	Mon, 27 Oct 2025 11:23:09 +0800 (CST)
+From: Ma Ke <make24@iscas.ac.cn>
+To: will@kernel.org,
+	mark.rutland@arm.com,
+	james.clark@linaro.org,
+	robin.murphy@arm.com,
+	ilkka@os.amperecomputing.com,
+	make24@iscas.ac.cn,
+	u.kleine-koenig@baylibre.com,
+	suzuki.poulose@arm.com,
+	bwicaksono@nvidia.com
+Cc: linux-arm-kernel@lists.infradead.org,
+	linux-perf-users@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	akpm@linux-foundation.org,
+	stable@vger.kernel.org
+Subject: [PATCH] perf: arm_cspmu: fix device leak in arm_cspmu_impl_unregister
+Date: Mon, 27 Oct 2025 11:22:59 +0800
+Message-Id: <20251027032259.5818-1-make24@iscas.ac.cn>
+X-Mailer: git-send-email 2.17.1
+X-CM-TRANSID:qwCowACHY7aU5f5oAK+HAg--.18889S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7KF1fZrW3ArW5GF17JF43Wrg_yoW8Xry3pr
+	48CFyYvFyjgr4UK39rZay8ZFWUGa1ru3s5CryxK34F9F9rZry8t348tr9xK3W8JFWUJayU
+	t34aqr1kWa15JFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUPY14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Cr
+	1j6rxdM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVAC
+	Y4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJV
+	W8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI2
+	0VAGYxC7M4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS14v26r1q6r43MxkIecxEwV
+	AFwVW8GwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E
+	14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIx
+	kGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAF
+	wI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r
+	4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JU3kucU
+	UUUU=
+X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
 
+arm_cspmu_impl_unregister() utilizes driver_find_device() to locate
+matching devices. driver_find_device() increments the ref count of the
+found device by calling get_device(), but arm_cspmu_impl_unregister()
+fails to call put_device() to decrement the reference count after
+processing each device. This results in a reference count leak of the
+device objects, which prevents devices from being properly released
+and causes a memory leak. Fix the leak by adding put_device() after
+device_release_driver() in the while loop.
 
+Found by code review.
 
-On October 26, 2025 4:56:30 PM PDT, Andrew Morton <akpm@linux-foundation=
-=2Eorg> wrote:
->
->The patch titled
->     Subject: headers: add check for C standard version
->has been added to the -mm mm-hotfixes-unstable branch=2E  Its filename is
->     headers-add-check-for-c-standard-version=2Epatch
->
->This patch will shortly appear at
->     https://git=2Ekernel=2Eorg/pub/scm/linux/kernel/git/akpm/25-new=2Egi=
-t/tree/patches/headers-add-check-for-c-standard-version=2Epatch
->
->This patch will later appear in the mm-hotfixes-unstable branch at
->    git://git=2Ekernel=2Eorg/pub/scm/linux/kernel/git/akpm/mm
->
->Before you just go and hit "reply", please:
->   a) Consider who else should be cc'ed
->   b) Prefer to cc a suitable mailing list as well
->   c) Ideally: find the original patch on the mailing list and do a
->      reply-to-all to that, adding suitable additional cc's
->
->*** Remember to use Documentation/process/submit-checklist=2Erst when tes=
-ting your code ***
->
->The -mm tree is included into linux-next via the mm-everything
->branch at git://git=2Ekernel=2Eorg/pub/scm/linux/kernel/git/akpm/mm
->and is updated there every 2-3 working days
->
->------------------------------------------------------
->From: Hanne-Lotta M=EF=BF=BD=EF=BF=BDenp=EF=BF=BD=EF=BF=BD=EF=BF=BD=EF=BF=
-=BD <hannelotta@gmail=2Ecom>
->Subject: headers: add check for C standard version
->Date: Sun, 26 Oct 2025 21:58:46 +0200
->
->Compiling the kernel with GCC 15 results in errors, as with GCC 15 the
->default language version for C compilation has been changed from
->-std=3Dgnu17 to -std=3Dgnu23 - unless the language version has been chang=
-ed
->using
->
->    KBUILD_CFLAGS +=3D -std=3Dgnu17
->
->or earlier=2E
->
->C23 includes new keywords 'bool', 'true' and 'false', which cause
->compilation errors in Linux headers:
->
->    =2E/include/linux/types=2Eh:30:33: error: `bool' cannot be defined
->        via `typedef'
->
->    =2E/include/linux/stddef=2Eh:11:9: error: cannot use keyword `false'
->        as enumeration constant
->
->Add check for C Standard's version in the header files to be able to
->compile the kernel with C23=2E
+Cc: stable@vger.kernel.org
+Fixes: bfc653aa89cb ("perf: arm_cspmu: Separate Arm and vendor module")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+---
+ drivers/perf/arm_cspmu/arm_cspmu.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-What? These are internal headers, not UAPI=2E We build Linux with -std=3Dg=
-nu11=2E Let's not add meaningless version checks=2E
+diff --git a/drivers/perf/arm_cspmu/arm_cspmu.c b/drivers/perf/arm_cspmu/arm_cspmu.c
+index efa9b229e701..e0d4293f06f9 100644
+--- a/drivers/perf/arm_cspmu/arm_cspmu.c
++++ b/drivers/perf/arm_cspmu/arm_cspmu.c
+@@ -1365,8 +1365,10 @@ void arm_cspmu_impl_unregister(const struct arm_cspmu_impl_match *impl_match)
+ 
+ 	/* Unbind the driver from all matching backend devices. */
+ 	while ((dev = driver_find_device(&arm_cspmu_driver.driver, NULL,
+-			match, arm_cspmu_match_device)))
++			match, arm_cspmu_match_device))) {
+ 		device_release_driver(dev);
++		put_device(dev);
++	}
+ 
+ 	mutex_lock(&arm_cspmu_lock);
+ 
+-- 
+2.17.1
 
--Kees
-
->
->Link: https://lkml=2Ekernel=2Eorg/r/20251026195846=2E69740-1-hannelotta@g=
-mail=2Ecom
->Signed-off-by: Hanne-Lotta M=EF=BF=BD=EF=BF=BDenp=EF=BF=BD=EF=BF=BD=EF=BF=
-=BD=EF=BF=BD <hannelotta@gmail=2Ecom>
->Cc: David Hunter <david=2Ehunter=2Elinux@gmail=2Ecom>
->Cc: "Gustavo A=2E R=2E Silva" <gustavoars@kernel=2Eorg>
->Cc: Kees Cook <kees@kernel=2Eorg>
->Cc: Arnd Bergmann <arnd@arndb=2Ede>
->Cc: <stable@vger=2Ekernel=2Eorg>
->Signed-off-by: Andrew Morton <akpm@linux-foundation=2Eorg>
->---
->
-> include/linux/stddef=2Eh |    2 ++
-> include/linux/types=2Eh  |    2 ++
-> 2 files changed, 4 insertions(+)
->
->--- a/include/linux/stddef=2Eh~headers-add-check-for-c-standard-version
->+++ a/include/linux/stddef=2Eh
->@@ -7,10 +7,12 @@
-> #undef NULL
-> #define NULL ((void *)0)
->=20
->+#if !defined(__STDC_VERSION__) || __STDC_VERSION__ < 202311L
-> enum {
-> 	false	=3D 0,
-> 	true	=3D 1
-> };
->+#endif
->=20
-> #undef offsetof
-> #define offsetof(TYPE, MEMBER)	__builtin_offsetof(TYPE, MEMBER)
->--- a/include/linux/types=2Eh~headers-add-check-for-c-standard-version
->+++ a/include/linux/types=2Eh
->@@ -32,7 +32,9 @@ typedef __kernel_timer_t	timer_t;
-> typedef __kernel_clockid_t	clockid_t;
-> typedef __kernel_mqd_t		mqd_t;
->=20
->+#if !defined(__STDC_VERSION__) || __STDC_VERSION__ < 202311L
-> typedef _Bool			bool;
->+#endif
->=20
-> typedef __kernel_uid32_t	uid_t;
-> typedef __kernel_gid32_t	gid_t;
->_
->
->Patches currently in -mm which might be from hannelotta@gmail=2Ecom are
->
->headers-add-check-for-c-standard-version=2Epatch
->
-
---=20
-Kees Cook
 
