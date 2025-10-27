@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-191197-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190603-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE764C11249
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:37:20 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F5DBC108B2
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:09:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A2A8B50597E
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:29:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C08531A27403
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:06:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBC742D8377;
-	Mon, 27 Oct 2025 19:27:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDF4C324B37;
+	Mon, 27 Oct 2025 19:01:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x6Ytauxt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zPmPifLc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 778CD27FD62;
-	Mon, 27 Oct 2025 19:27:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A204B31B127;
+	Mon, 27 Oct 2025 19:01:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761593257; cv=none; b=uYq7z8QGOF/aFIwoXGrYcKrKL/crnm1/LZg9+oHz1TbCjQGqHS1zQr3B3lOSuC+wRAqlMAnRigJvWNv4uq++KTITMoZ0BLLqQEkhrb1vY92JWZ8MT0oqcJTioClUPXhyK1cUwNNFigGs5Nr3tyLycVzhv6XAfOFktTuk+xoOJsM=
+	t=1761591715; cv=none; b=t+ZILmWE2h7Lgdac8uypX7KIysveaXhll2zlEAxGNS4b70RS0daLdLMoWmHHlosN7o61jtU8EO+ltK4zUkiAPBV1RQaeVW8jZPRDDO2aVa6HjYIWcRwPp34aUSC2rHiEI8P/1yMa6GO/laZ6rIU4ZhJr8LhvvvFqQ4aNhL/OriE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761593257; c=relaxed/simple;
-	bh=vRwFxBETmDPaBz21f7L8X4JaCCieBeH+xC80hhTEqL4=;
+	s=arc-20240116; t=1761591715; c=relaxed/simple;
+	bh=Tw/fcgQj4/SBAiBls7zm3ANrZCu/fK+JkB8KM0t4V7k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pmQZ4Kuo0xsJi/pgcjppmSxtTrAXo/t5MQky2bzgadcFGc85LHxtkBlBRoqIO1Lthw7Shtc9i5cIop8MQmkt0Tbl9afFTISiY1hqNTbbeB0wADaSJOXXQ/Rgj8z+QdNQZ0OsAB8VrrCH71wCl4pbSQvv6NUvziSTcO0RdiM4Yl8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x6Ytauxt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB727C4CEF1;
-	Mon, 27 Oct 2025 19:27:36 +0000 (UTC)
+	 MIME-Version; b=riE0Cgg/w16QevWhWDwC5ZOkQ7a3zHuhBcMgmRrsJSswjDy8U2gWD9TRrRuJU7XHVAxL7O2YH/FU65rnfMhb20Am5KhnRnltZyRgYzo6dkwxHz0PSNnl9ghzOK6El7XP8XP9rXsQtbcL3qlhytU6v+wYVJXvvBrr4bvaGtpsV1k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zPmPifLc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38D1EC4CEF1;
+	Mon, 27 Oct 2025 19:01:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761593257;
-	bh=vRwFxBETmDPaBz21f7L8X4JaCCieBeH+xC80hhTEqL4=;
+	s=korg; t=1761591715;
+	bh=Tw/fcgQj4/SBAiBls7zm3ANrZCu/fK+JkB8KM0t4V7k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x6YtauxtrXZta/r5Rpf3FKOsE16i8GJdwsZ41QcBywo6hgRObal80xNSt7pIZbOM6
-	 7Ku71QsSpvmlghXw/ozo3xKKL12WScUhKj9dQXGBDxmMYlvfY/l/8bJMGx+acZTmAx
-	 1B73opyNIhbxhZuOtZaHFKweQteZGao8x1aNVe2c=
+	b=zPmPifLcqeI+q/LNQi9+juw4XutFdtPiVGDuT7HcuCKl3p/54N5OaX8asDAXiMbLs
+	 r4qeEDH8wJqW/ds+afPi4lctvmAQp/X5lNgPZYYJVABYV0rd2+Et/XG4yFxg7bpkwK
+	 A+Yc9TLGi9i/Vc5pkqv6NPpQmAzZ0y+IaR6YLKL8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	syzbot <syzbot+773fa9d79b29bd8b6831@syzkaller.appspotmail.com>,
+	Viacheslav Dubeyko <slava@dubeyko.com>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	Yangtao Li <frank.li@vivo.com>,
+	linux-fsdevel@vger.kernel.org,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 035/184] net/mlx5e: Return 1 instead of 0 in invalid case in mlx5e_mpwrq_umr_entry_size()
-Date: Mon, 27 Oct 2025 19:35:17 +0100
-Message-ID: <20251027183515.861679238@linuxfoundation.org>
+Subject: [PATCH 5.10 265/332] hfs: fix KMSAN uninit-value issue in hfs_find_set_zero_bits()
+Date: Mon, 27 Oct 2025 19:35:18 +0100
+Message-ID: <20251027183531.851224555@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
-References: <20251027183514.934710872@linuxfoundation.org>
+In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
+References: <20251027183524.611456697@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,66 +65,114 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Viacheslav Dubeyko <slava@dubeyko.com>
 
-[ Upstream commit aaf043a5688114703ae2c1482b92e7e0754d684e ]
+[ Upstream commit 2048ec5b98dbdfe0b929d2e42dc7a54c389c53dd ]
 
-When building with Clang 20 or newer, there are some objtool warnings
-from unexpected fallthroughs to other functions:
+The syzbot reported issue in hfs_find_set_zero_bits():
 
-  vmlinux.o: warning: objtool: mlx5e_mpwrq_mtts_per_wqe() falls through to next function mlx5e_mpwrq_max_num_entries()
-  vmlinux.o: warning: objtool: mlx5e_mpwrq_max_log_rq_size() falls through to next function mlx5e_get_linear_rq_headroom()
+=====================================================
+BUG: KMSAN: uninit-value in hfs_find_set_zero_bits+0x74d/0xb60 fs/hfs/bitmap.c:45
+ hfs_find_set_zero_bits+0x74d/0xb60 fs/hfs/bitmap.c:45
+ hfs_vbm_search_free+0x13c/0x5b0 fs/hfs/bitmap.c:151
+ hfs_extend_file+0x6a5/0x1b00 fs/hfs/extent.c:408
+ hfs_get_block+0x435/0x1150 fs/hfs/extent.c:353
+ __block_write_begin_int+0xa76/0x3030 fs/buffer.c:2151
+ block_write_begin fs/buffer.c:2262 [inline]
+ cont_write_begin+0x10e1/0x1bc0 fs/buffer.c:2601
+ hfs_write_begin+0x85/0x130 fs/hfs/inode.c:52
+ cont_expand_zero fs/buffer.c:2528 [inline]
+ cont_write_begin+0x35a/0x1bc0 fs/buffer.c:2591
+ hfs_write_begin+0x85/0x130 fs/hfs/inode.c:52
+ hfs_file_truncate+0x1d6/0xe60 fs/hfs/extent.c:494
+ hfs_inode_setattr+0x964/0xaa0 fs/hfs/inode.c:654
+ notify_change+0x1993/0x1aa0 fs/attr.c:552
+ do_truncate+0x28f/0x310 fs/open.c:68
+ do_ftruncate+0x698/0x730 fs/open.c:195
+ do_sys_ftruncate fs/open.c:210 [inline]
+ __do_sys_ftruncate fs/open.c:215 [inline]
+ __se_sys_ftruncate fs/open.c:213 [inline]
+ __x64_sys_ftruncate+0x11b/0x250 fs/open.c:213
+ x64_sys_call+0xfe3/0x3db0 arch/x86/include/generated/asm/syscalls_64.h:78
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xd9/0x210 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-LLVM 20 contains an (admittedly problematic [1]) optimization [2] to
-convert divide by zero into the equivalent of __builtin_unreachable(),
-which invokes undefined behavior and destroys code generation when it is
-encountered in a control flow graph.
+Uninit was created at:
+ slab_post_alloc_hook mm/slub.c:4154 [inline]
+ slab_alloc_node mm/slub.c:4197 [inline]
+ __kmalloc_cache_noprof+0x7f7/0xed0 mm/slub.c:4354
+ kmalloc_noprof include/linux/slab.h:905 [inline]
+ hfs_mdb_get+0x1cc8/0x2a90 fs/hfs/mdb.c:175
+ hfs_fill_super+0x3d0/0xb80 fs/hfs/super.c:337
+ get_tree_bdev_flags+0x6e3/0x920 fs/super.c:1681
+ get_tree_bdev+0x38/0x50 fs/super.c:1704
+ hfs_get_tree+0x35/0x40 fs/hfs/super.c:388
+ vfs_get_tree+0xb0/0x5c0 fs/super.c:1804
+ do_new_mount+0x738/0x1610 fs/namespace.c:3902
+ path_mount+0x6db/0x1e90 fs/namespace.c:4226
+ do_mount fs/namespace.c:4239 [inline]
+ __do_sys_mount fs/namespace.c:4450 [inline]
+ __se_sys_mount+0x6eb/0x7d0 fs/namespace.c:4427
+ __x64_sys_mount+0xe4/0x150 fs/namespace.c:4427
+ x64_sys_call+0xfa7/0x3db0 arch/x86/include/generated/asm/syscalls_64.h:166
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xd9/0x210 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-mlx5e_mpwrq_umr_entry_size() returns 0 in the default case of an
-unrecognized mlx5e_mpwrq_umr_mode value. mlx5e_mpwrq_mtts_per_wqe(),
-which is inlined into mlx5e_mpwrq_max_log_rq_size(), uses the result of
-mlx5e_mpwrq_umr_entry_size() in a divide operation without checking for
-zero, so LLVM is able to infer there will be a divide by zero in this
-case and invokes undefined behavior. While there is some proposed work
-to isolate this undefined behavior and avoid the destructive code
-generation that results in these objtool warnings, code should still be
-defensive against divide by zero.
+CPU: 1 UID: 0 PID: 12609 Comm: syz.1.2692 Not tainted 6.16.0-syzkaller #0 PREEMPT(none)
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/12/2025
+=====================================================
 
-As the WARN_ONCE() implies that an invalid value should be handled
-gracefully, return 1 instead of 0 in the default case so that the
-results of this division operation is always valid.
+The HFS_SB(sb)->bitmap buffer is allocated in hfs_mdb_get():
 
-Fixes: 168723c1f8d6 ("net/mlx5e: xsk: Use umr_mode to calculate striding RQ parameters")
-Link: https://lore.kernel.org/CAGG=3QUk8-Ak7YKnRziO4=0z=1C_7+4jF+6ZeDQ9yF+kuTOHOQ@mail.gmail.com/ [1]
-Link: https://github.com/llvm/llvm-project/commit/37932643abab699e8bb1def08b7eb4eae7ff1448 [2]
-Closes: https://github.com/ClangBuiltLinux/linux/issues/2131
-Closes: https://github.com/ClangBuiltLinux/linux/issues/2132
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/20251014-mlx5e-avoid-zero-div-from-mlx5e_mpwrq_umr_entry_size-v1-1-dc186b8819ef@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+HFS_SB(sb)->bitmap = kmalloc(8192, GFP_KERNEL);
+
+Finally, it can trigger the reported issue because kmalloc()
+doesn't clear the allocated memory. If allocated memory contains
+only zeros, then everything will work pretty fine.
+But if the allocated memory contains the "garbage", then
+it can affect the bitmap operations and it triggers
+the reported issue.
+
+This patch simply exchanges the kmalloc() on kzalloc()
+with the goal to guarantee the correctness of bitmap operations.
+Because, newly created allocation bitmap should have all
+available blocks free. Potentially, initialization bitmap's read
+operation could not fill the whole allocated memory and
+"garbage" in the not initialized memory will be the reason of
+volume coruptions and file system driver bugs.
+
+Reported-by: syzbot <syzbot+773fa9d79b29bd8b6831@syzkaller.appspotmail.com>
+Closes: https://syzkaller.appspot.com/bug?extid=773fa9d79b29bd8b6831
+Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
+cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+cc: Yangtao Li <frank.li@vivo.com>
+cc: linux-fsdevel@vger.kernel.org
+Link: https://lore.kernel.org/r/20250820230636.179085-1-slava@dubeyko.com
+Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en/params.c | 2 +-
+ fs/hfs/mdb.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/params.c b/drivers/net/ethernet/mellanox/mlx5/core/en/params.c
-index 3cca06a74cf94..06e1a04e693f3 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/params.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/params.c
-@@ -99,7 +99,7 @@ u8 mlx5e_mpwrq_umr_entry_size(enum mlx5e_mpwrq_umr_mode mode)
- 		return sizeof(struct mlx5_ksm) * 4;
+diff --git a/fs/hfs/mdb.c b/fs/hfs/mdb.c
+index cdf0edeeb2781..f8f976afcc740 100644
+--- a/fs/hfs/mdb.c
++++ b/fs/hfs/mdb.c
+@@ -172,7 +172,7 @@ int hfs_mdb_get(struct super_block *sb)
+ 		pr_warn("continuing without an alternate MDB\n");
  	}
- 	WARN_ONCE(1, "MPWRQ UMR mode %d is not known\n", mode);
--	return 0;
-+	return 1;
- }
  
- u8 mlx5e_mpwrq_log_wqe_sz(struct mlx5_core_dev *mdev, u8 page_shift,
+-	HFS_SB(sb)->bitmap = kmalloc(8192, GFP_KERNEL);
++	HFS_SB(sb)->bitmap = kzalloc(8192, GFP_KERNEL);
+ 	if (!HFS_SB(sb)->bitmap)
+ 		goto out;
+ 
 -- 
 2.51.0
 
