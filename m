@@ -1,164 +1,141 @@
-Return-Path: <stable+bounces-190016-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190017-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23CC3C0ECBE
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 16:07:07 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D55AC0EE33
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 16:18:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 9C82934D7F7
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 15:07:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 88FB1426CB4
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 15:08:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB0B13081CD;
-	Mon, 27 Oct 2025 15:06:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C947309EF8;
+	Mon, 27 Oct 2025 15:07:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cga75pyY"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Tbz1cVqZ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3146E2E8DE2
-	for <stable@vger.kernel.org>; Mon, 27 Oct 2025 15:06:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B20613090C1
+	for <stable@vger.kernel.org>; Mon, 27 Oct 2025 15:07:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761577566; cv=none; b=iNhG1c3ui1IP+7fSg+nisBUsXOII4AYkWfIgy9Ttgz5Aw0crgVW9Pmf4w9BJu7oXaVdxmCcmOH8JudxxO1wEiUCZrc8tGMngAwntvOevbste/wvpxWts87WqEXUI4UAQ973Tani8iS4aSFEzctzKmWjOKyh7aKYfP+QMWJQqjG0=
+	t=1761577656; cv=none; b=ZoAiVx7T6d+hg8L/pyOdpHvdJmRluat4RHi1fTa6LNiUXkgI0u65nMOTuVfYqRLrbEtbsZeBbYequoUAkD+j6kM19AKYwV02B7OzzHczydgjsCb052+gn2Q4BljhI2a3RFm5AUa1+fWNgLEjgh1aO0TKC1zbeUiB3vbRBg4s5fw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761577566; c=relaxed/simple;
-	bh=juEvfZ6xSAmrjLQLGlrgYpDF4UPOG2/XdIWNOau1zWU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JIohR6OybRp0me/O1ro5ka8lHtrJMe1XPT8MwRn0nh6RgEAU07G4/jeii0f9q3zP9FFSPRD1Yen5dH7u3Zi2LKUKUAT4BhjAaaZRSNgxVihP1Y1Xz2XMkNLnzLfQjurNODEsvyex83mMC8n/XE/aVE9cyJSiXuTytZzWg/25A+g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cga75pyY; arc=none smtp.client-ip=209.85.210.176
+	s=arc-20240116; t=1761577656; c=relaxed/simple;
+	bh=4KYywOgTHGEIz3ZCocUr/rj1P+mUN7k7cfPlJwv4luk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=s5DFyZ2dYwFB/dv3+/WHuhesZwn7qcqAmvW6Bx+Nx/CoLFxAt6TQ2IIXIATW/wPvCYhO8VGw3t7TcQLfkOBsNQZWZtBTd+/eQDE7lykipOdHtH8s8ij/tI4LivgFpPsjIR5r/bu+fQScOg8GsHWfVnr7wvIYO4Cx1wHVh6JA4TI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Tbz1cVqZ; arc=none smtp.client-ip=209.85.214.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-7a213c3c3f5so6160748b3a.3
-        for <stable@vger.kernel.org>; Mon, 27 Oct 2025 08:06:04 -0700 (PDT)
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-290c2b6a6c2so49946095ad.1
+        for <stable@vger.kernel.org>; Mon, 27 Oct 2025 08:07:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761577564; x=1762182364; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=AuqEiBypQSyV+NhjApDxiloo6xn14f1pCOFw2OHgWCg=;
-        b=cga75pyYWkfWyAmGprUyG2WKLOg1VmODLKx0KcZ7GkpyHFm5MGLnx8K9CmYb/uMlx6
-         ASJhnkue4K9dkKJS8sMNlzGbCfFfkhx9Mk5n53cqWg7lVWS+hlXlBjycCxZuisn8wzeV
-         QZ3FHSVBEaC59/EJYzetfJ+xbLs7icHDY1M2Gne8mELptFcfAbRtemdU27iXNNsl8Vkq
-         IfcVWVolO2p16Eha0XVhS75zpZSvkOP6fr+rcB8a2ehhb56qRct8Nxx9OhT+35OMYA3c
-         3KE3GZ8kwcjHE2JTHpdD994T9cSjK6Hzdt97YUdzGAVh4xyi4Ku0AcK6hSMNCZij2WqJ
-         cx3w==
+        d=gmail.com; s=20230601; t=1761577654; x=1762182454; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Qz3ecQyWxC7VNS5GAYBhcfKzMJ8mPoJ6wolDlF8Nh4U=;
+        b=Tbz1cVqZGseSwkIvYl/wlayY15FjFoE2rDnTwV0OruwzSlj4x4LuWngEEAf3cMNaK4
+         M/SCCf0W0Awo57RdGfDSyBh4L7DeUPJPkEB4KgV/okxGDwIp8imcBeNDmnw0JtDGLL4i
+         Otj6XBGoOk1Tp0QNr2hkAyDRh3Aaw7DTBPlLj5DXcXnlVYyhUUTGJt2lpnoPB1QPf+Qp
+         /bdKfs2N6qrJ5QCWNmpgQaNeYT+GrLLSz151I4TUNdxReaMpzsGt7Df0Mmu1rvYKlTA0
+         V3YeB5qM5SaOvhOOkJ3xYgRH6sv1ffXOncYMPE8tKKY2lElCwfi+YTQRIx7nifmZ8Fc/
+         NjeQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761577564; x=1762182364;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=AuqEiBypQSyV+NhjApDxiloo6xn14f1pCOFw2OHgWCg=;
-        b=VYzDwlE+hFnqcblnUV5NFZULw9ciUsu4UxgKTJNZps2NEqe6QYbAXKrImS8WXRxo1D
-         BEiJjkBsyioJKsuBixfN7ziSe/g1XcTxVEgyykGot2vqhRDyeH2PRx0tejuwPAX5Nwk/
-         8CzYxFGp9lCyvf2WwF2Aqkku/eYQ1gkWMSByeZOFRQGzbmYMBxX0L4jRTHSCvLo9awvy
-         ry/MjB7LaV+GiSUD+6R3HDUYYvrMWKnFR24p/NwLX27azkkLjQ5Flbcq26MZtU0R4yYa
-         tsg+0nMNDhdEi+BxnS47LRJjIgWMSQlb9x+aDomAveJs6DqhxpDTqh3neQ19tzDJFcMf
-         zQ1A==
-X-Forwarded-Encrypted: i=1; AJvYcCXAHbwg5ZR+Hd0C6BVHRrZ521xIhD+jNITyeKN8TkZFY0GOqPcyCMkABURtfuU47fnMHxcTZx0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxeOBNIE6bQYVY1pm0vR2Nok9I4K6nyksl0KaWoMgD18oBswddO
-	DPHhJzF0jOyzxUA5cmfIQsVIlybSmvB9oCeBnSy8y187NverZPYURhya
-X-Gm-Gg: ASbGncs7g0/vp5Sz4iN4+HjCD386cRSFbJjXfTXCw6PnoLr+FpLqFOfsstoGSwlBVdl
-	nHoVw9X1jAwfDTUg5VZpBLQSRvcJc+sOBfGXOIlcanBEWaFi8FN466UA5a2GaIjowW05zMd1t5P
-	UecMql8g7N6nvaFWfYRD+UhmcjbR9qvC8glDGOrQvPqdE0qi8vvZXLUvtnlBxCUdbXiVMs5VZ4Q
-	MLlbuWYD6fmUt9SC8E5yZsBb9gtfNbBlMRLUzO/bCj3vvQOlAJHJJH+2mM8ZvTNsT9uW0vKuSNE
-	9QBtPZHdhB689Ufldgy6MwEF5exIXAroLoaJM2gyncGZOXyqjn+oPXx68n9SfMAp588fuBM688g
-	huwNG/ttdEincG88h4CX9NLHmcsJSP/9Xk5gkhjcgiCvrJUW3IGojFLE/CZmWZtAQk0L4t/w3XG
-	j39PPQUMbvGRaAxYK0ao1RiAfn4hmpX3XJOUv4rs+XS53vELHvioc=
-X-Google-Smtp-Source: AGHT+IE//ftoG7hudWyqwVqH7rp/r57M0IzNCI5Ivf6IYwy5vXRcB+e2jlZU94XIYDL362p6j8hxMg==
-X-Received: by 2002:a05:6a20:3c90:b0:341:5d9f:8007 with SMTP id adf61e73a8af0-3415d9f87a5mr9096245637.57.1761577564184;
-        Mon, 27 Oct 2025 08:06:04 -0700 (PDT)
-Received: from ?IPV6:2001:ee0:4f4c:210:d7dc:fc1f:94d0:3318? ([2001:ee0:4f4c:210:d7dc:fc1f:94d0:3318])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7a414087005sm8526808b3a.60.2025.10.27.08.05.57
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 27 Oct 2025 08:06:03 -0700 (PDT)
-Message-ID: <e7e05a6f-1995-4c49-929d-3d8ee7b0ac5c@gmail.com>
-Date: Mon, 27 Oct 2025 22:05:55 +0700
+        d=1e100.net; s=20230601; t=1761577654; x=1762182454;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Qz3ecQyWxC7VNS5GAYBhcfKzMJ8mPoJ6wolDlF8Nh4U=;
+        b=xIgpgka7Q+XmjA9s1J4MryK/5OQThCEOgpDqDPFWzg+j/mm1lfDK0n+0aOnRyveGvv
+         PDbqKdt/tcT3VAf3vcnIGiAX1UCWCMxZXMpszR2ayoLEkiHhIyQyaN060sE/5SVhkAGg
+         y4xkYmgOcQf03uYqbAWlrqv12/ZXB5XF6Zr5xk/zUm/UTT/ppyK3S7DSUS7GrBOBlYUa
+         vB9jsRk9uFzThzmHVmLprw6HLwP5JiSSO/q1CamE6Vw4GEwBA0gRosFFynTIe8QHrMtn
+         Kd8uzNo6+sAKr5hMo4bQ/P4G34oMi+1Jz/ZDz3nk/yhIxvcNMH9n4+Dd9lUC+6IzYoyR
+         UtuA==
+X-Forwarded-Encrypted: i=1; AJvYcCXSdfWdwaSLshXpyh165YwcEhCAmIqRRyMXXXzgTZrW1ugIN3qQPUz39KXf6Hm0XulvKzMiu4w=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxo2zatkngAH/0P6LfOEw+5Hf1ysyOJaftCrbjwkFwc3ICesMcW
+	Gx78fgQufoPcdj7+gW/2RhipTO5hw3GH94EoiguJES2zJrmVqWXtRTX+
+X-Gm-Gg: ASbGncv/kqGznDj6kQD39dgjqtIUKDCuggdLYzyseresmyX6MJlb7LQ9HCWOS/fVJDH
+	XZ4dhfxlIC8lw0ih6MxRNJ4LTIDrZ9Y27FzWw4CV37MFn9AIo5YwYBGaHn8VgBlRd29aliqzUph
+	3HH/OWVnSHpI29DR3PWHInR7q5ER6fr+MndgLykkAxmXYNp8UkQCEDJApMwerdf3rokFKvjI9BM
+	kXQWXSprZmLH3FPyn+0jz/sS1c5ac62wqrUTtwcmAmqJc+pnKg1Gftg5N3bzGktDgb1VVpmW/hr
+	/cL0Fat5mnCCFSbJNwSPcl1htt5viVPFzAirbSlprHpLaumFkYt4TYmkPacPUusbxqHStfoTCaO
+	MNVoyhxWLBwc7f1Q1VcdjDxRxh6v+k38X/ss5gm03lPJ2gtImD00Ai84yevo0oS2vLqtnJuL9OR
+	dNq3AshqUjLGMgXyaHWlgLI2i/iiOJiswx
+X-Google-Smtp-Source: AGHT+IHFy+IMljdrhVQ66DQvOfteh6iHx3cumDuMAgc7JMxc9hldJM3AHM32ikGVgmmr//G+ptdz1g==
+X-Received: by 2002:a17:902:e805:b0:24c:cc32:788b with SMTP id d9443c01a7336-294cb3693b5mr2991405ad.3.1761577653775;
+        Mon, 27 Oct 2025 08:07:33 -0700 (PDT)
+Received: from localhost.localdomain ([124.77.218.104])
+        by smtp.googlemail.com with ESMTPSA id d9443c01a7336-29498d44db4sm86422035ad.86.2025.10.27.08.07.26
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Mon, 27 Oct 2025 08:07:30 -0700 (PDT)
+From: Miaoqian Lin <linmq006@gmail.com>
+To: Lars-Peter Clausen <lars@metafoo.de>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	Angelo Dureghello <adureghello@baylibre.com>,
+	linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: linmq006@gmail.com,
+	stable@vger.kernel.org
+Subject: [PATCH] iio: dac: ad3552r-hs: fix out-of-bound write in ad3552r_hs_write_data_source
+Date: Mon, 27 Oct 2025 23:07:13 +0800
+Message-Id: <20251027150713.59067-1-linmq006@gmail.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v5] virtio-net: fix received length check in big
- packets
-To: Parav Pandit <parav@nvidia.com>,
- "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
- Xuan Zhuo <xuanzhuo@linux.alibaba.com>, =?UTF-8?Q?Eugenio_P=C3=A9rez?=
- <eperezma@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- "Minggang(Gavin) Li" <gavinl@nvidia.com>, Gavi Teitz <gavi@nvidia.com>,
- "virtualization@lists.linux.dev" <virtualization@lists.linux.dev>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>
-References: <20251024150649.22906-1-minhquangbui99@gmail.com>
- <CY8PR12MB71951A2ADD74508A9FC60956DCFEA@CY8PR12MB7195.namprd12.prod.outlook.com>
- <8e2b6a66-787b-4a03-aa74-a00430b85236@gmail.com>
- <CY8PR12MB7195F589628BD6617A77F81CDCFCA@CY8PR12MB7195.namprd12.prod.outlook.com>
-Content-Language: en-US
-From: Bui Quang Minh <minhquangbui99@gmail.com>
-In-Reply-To: <CY8PR12MB7195F589628BD6617A77F81CDCFCA@CY8PR12MB7195.namprd12.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-On 10/27/25 21:55, Parav Pandit wrote:
->> From: Bui Quang Minh <minhquangbui99@gmail.com>
->> Sent: 27 October 2025 08:19 PM
->>
->> On 10/25/25 14:11, Parav Pandit wrote:
->>>> From: Bui Quang Minh <minhquangbui99@gmail.com>
->>>> Sent: 24 October 2025 08:37 PM
->>>>
->>>> Since commit 4959aebba8c0 ("virtio-net: use mtu size as buffer length
->>>> for big packets"), when guest gso is off, the allocated size for big
->>>> packets is not MAX_SKB_FRAGS * PAGE_SIZE anymore but depends on
->>>> negotiated MTU. The number of allocated frags for big packets is
->>>> stored in vi-
->>>>> big_packets_num_skbfrags.
->>>> Because the host announced buffer length can be malicious (e.g. the
->>>> host vhost_net driver's get_rx_bufs is modified to announce incorrect
->>>> length), we need a check in virtio_net receive path. Currently, the
->>>> check is not adapted to the new change which can lead to NULL page
->>>> pointer dereference in the below while loop when receiving length that is
->> larger than the allocated one.
->>> This looks wrong.
->>> A device DMAed N bytes, and it reports N + M bytes in the completion?
->>> Such devices should be fixed.
->>>
->>> If driver allocated X bytes, and device copied X + Y bytes on receive packet, it
->> will crash the driver host anyway.
->>> The fixes tag in this patch is incorrect because this is not a driver bug.
->>> It is just adding resiliency in driver for broken device. So driver cannot have
->> fixes tag here.
->>
->> Yes, I agree that the check is a protection against broken device.
->>
->> The check is already there before this commit, but it is not correct since the
->> changes in commit 4959aebba8c0 ("virtio-net: use mtu size as buffer length
->> for big packets"). So this patch fixes the check corresponding to the new
->> change. I think this is a valid use of Fixes tag.
-> I am missing something.
-> If you don’t have the broken device, what part if wrong in the patch which needs fixes tag?
+When simple_write_to_buffer() succeeds, it returns the number of bytes
+actually copied to the buffer, which may be less than the requested
+'count' if the buffer size is insufficient. However, the current code
+incorrectly uses 'count' as the index for null termination instead of
+the actual bytes copied, leading to out-of-bound write.
 
-The host can load the own vhost_net driver and sends the incorrect 
-length. IMHO, it's good to sanity check the received input.
+Add a check for the count and use the return value as the index.
 
-The check
+Found via static analysis. This is similar to the
+commit da9374819eb3 ("iio: backend: fix out-of-bound write")
 
-     if (unlikely(len > MAX_SKB_FRAGS * PAGE_SIZE))
-         goto err;
+Fixes: b1c5d68ea66e ("iio: dac: ad3552r-hs: add support for internal ramp")
+Cc: stable@vger.kernel.org
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+---
+ drivers/iio/dac/ad3552r-hs.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-is wrong because the allocated buffer is (vi->big_packets_num_skbfrags + 
-1) * PAGE_SIZE not MAX_SKB_FRAGS * PAGE_SIZE anymore. 
-vi->big_packets_num_skbfrags depends on the negotiated mtu between host 
-and guest when guest_gso is off as in function virtnet_set_big_packets.
-
-Thanks,
-Quang Minh.
+diff --git a/drivers/iio/dac/ad3552r-hs.c b/drivers/iio/dac/ad3552r-hs.c
+index 41b96b48ba98..a9578afa7015 100644
+--- a/drivers/iio/dac/ad3552r-hs.c
++++ b/drivers/iio/dac/ad3552r-hs.c
+@@ -549,12 +549,15 @@ static ssize_t ad3552r_hs_write_data_source(struct file *f,
+ 
+ 	guard(mutex)(&st->lock);
+ 
++	if (count >= sizeof(buf))
++		return -ENOSPC;
++
+ 	ret = simple_write_to_buffer(buf, sizeof(buf) - 1, ppos, userbuf,
+ 				     count);
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	buf[count] = '\0';
++	buf[ret] = '\0';
+ 
+ 	ret = match_string(dbgfs_attr_source, ARRAY_SIZE(dbgfs_attr_source),
+ 			   buf);
+-- 
+2.39.5 (Apple Git-154)
 
 
