@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-191281-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191112-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 635AFC11285
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:38:08 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6A70C11030
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:29:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 209EC5840BE
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:33:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 976B219A0840
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:26:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82B3F32548A;
-	Mon, 27 Oct 2025 19:31:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDD4E31D757;
+	Mon, 27 Oct 2025 19:24:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OaOs3ckt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NBQnV8B/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3109D322A3F;
-	Mon, 27 Oct 2025 19:31:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A83A2C15BB;
+	Mon, 27 Oct 2025 19:24:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761593513; cv=none; b=DYdSr+hcEuVV/FZyhpcU/hst+z0JVAoeKuYp/gUN4w1pjtniHTrSCH4LQjKNionP2oV/dbz7MxAjgibprOjup2hgkluZi+gpkbjcK0bRO7ixXc48sDkjjFawaTt12Yv0BFQuKmqDDCtKq0PcuS9x4woXZZQ8VW51YIPSBsEUIHs=
+	t=1761593041; cv=none; b=VAKp/wf/oV30ZXtxmem77aRCvW+G5BawiH9Zek+PfX9lpBvbyIgWrsupEZsSxzhqxmvfw4O1nCUvKJQ2Efqc2fX/y1T+UfHesdhKui67EQxZUVLpsSyGLbReLlAv/34PoTlDkCSn+sXxzSrkg+YZN+id1xs4zmCXPHuEVelEe3c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761593513; c=relaxed/simple;
-	bh=5TD2Lvu8cJW8nsu2NJXa9daM3nzr4DmSk3bohcKzcf0=;
+	s=arc-20240116; t=1761593041; c=relaxed/simple;
+	bh=lK2A+0PElhDiCx48Rvtyat68FSt5kmRzplk5oCr7XR4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IuiiXw8vJBk5D87x1lpCSuCgsB+F7Z7N3BTEAbqB4lUnS9gKUaPGrzAwhVihz46XBo02s0Of7ymCLB6L5eFUAribfNkpH19SvlueGpPNJzZPayOUeH3Qv9s9gUxwJdssB+r1Xjei36WXoYnr6AIhwfPGu8uH7hwt7Zwt4rYjm8k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OaOs3ckt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D3C1C4CEF1;
-	Mon, 27 Oct 2025 19:31:52 +0000 (UTC)
+	 MIME-Version; b=nwVE7t/109I1StKrfUqkgIHR6mf2ymQrY3VRnKZOq+GjzoOJywXX7jUP4ScAg937h9Zhsht2L6BiQUuKLZ1X8vUn8vf7k233oXTiLUtH1N1a0ZWmwADAcGwLJm+WzCC26kCjFbvJ4tCcQkXGukmNNfrjZyYKogRW7OdRMmZ/e+4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NBQnV8B/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C01CFC4CEF1;
+	Mon, 27 Oct 2025 19:24:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761593512;
-	bh=5TD2Lvu8cJW8nsu2NJXa9daM3nzr4DmSk3bohcKzcf0=;
+	s=korg; t=1761593041;
+	bh=lK2A+0PElhDiCx48Rvtyat68FSt5kmRzplk5oCr7XR4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OaOs3cktTiiDKgrusNYwrVdm+Q+OCy2i9pAQvKMUB6DpslDdsDVpG7X6pUL7ljIHp
-	 AalbgPmYEAYJq/T1LWk+bbrgOdYRWw9eULg4L0jU6kOfR9G17LQvkMbxBfSqNel20V
-	 dAL6Ee+QzJRB84unzAacj79IWtlk4Kx4sXJbsLuc=
+	b=NBQnV8B/ZnCINE+m6pYZbie+UUXeClnA3NqSKqlN53mjhGEvA5mp0OjiBZq1izDrh
+	 0MFpvtBUr6nz4Kba3QePrJGAKihUdFZAYV+U6cVVG+Nft8DYoKc1FNshyFQzGPjGpJ
+	 6srsO1tKERobkqJFMV1yOOHgy2JfJBvPTfOsxR/g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haibo Chen <haibo.chen@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Mark Brown <broonie@kernel.org>,
+	Cristian Marussi <cristian.marussi@arm.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 116/184] spi: spi-nxp-fspi: add the support for sample data from DQS pad
+Subject: [PATCH 6.12 072/117] firmware: arm_scmi: Account for failed debug initialization
 Date: Mon, 27 Oct 2025 19:36:38 +0100
-Message-ID: <20251027183518.063570456@linuxfoundation.org>
+Message-ID: <20251027183455.962732860@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
-References: <20251027183514.934710872@linuxfoundation.org>
+In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
+References: <20251027183453.919157109@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,138 +62,208 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haibo Chen <haibo.chen@nxp.com>
+From: Cristian Marussi <cristian.marussi@arm.com>
 
-[ Upstream commit c07f270323175b83779c2c2b80b360ed476baec5 ]
+[ Upstream commit 2290ab43b9d8eafb8046387f10a8dfa2b030ba46 ]
 
-flexspi define four mode for sample clock source selection.
-Here is the list of modes:
-mode 0: Dummy Read strobe generated by FlexSPI Controller and loopback
-        internally
-mode 1: Dummy Read strobe generated by FlexSPI Controller and loopback
-        from DQS pad
-mode 2: Reserved
-mode 3: Flash provided Read strobe and input from DQS pad
+When the SCMI debug subsystem fails to initialize, the related debug root
+will be missing, and the underlying descriptor will be NULL.
 
-In default, flexspi use mode 0 after reset. And for DTR mode, flexspi
-only support 8D-8D-8D mode. For 8D-8D-8D mode, IC suggest to use mode 3,
-otherwise read always get incorrect data.
+Handle this fault condition in the SCMI debug helpers that maintain
+metrics counters.
 
-For DTR mode, flexspi will automatically div 2 of the root clock
-and output to device. the formula is:
-    device_clock = root_clock / (is_dtr ? 2 : 1)
-So correct the clock rate setting for DTR mode to get the max
-performance.
-
-Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://patch.msgid.link/20250917-flexspi-ddr-v2-4-bb9fe2a01889@nxp.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: a89103f67112 ("spi: spi-nxp-fspi: re-config the clock rate when operation require new clock rate")
+Fixes: 0b3d48c4726e ("firmware: arm_scmi: Track basic SCMI communication debug metrics")
+Signed-off-by: Cristian Marussi <cristian.marussi@arm.com>
+Message-Id: <20251014115346.2391418-1-cristian.marussi@arm.com>
+Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-nxp-fspi.c | 56 ++++++++++++++++++++++++++++++++++++--
- 1 file changed, 53 insertions(+), 3 deletions(-)
+ drivers/firmware/arm_scmi/common.h | 24 ++++++++++++++--
+ drivers/firmware/arm_scmi/driver.c | 44 ++++++++++--------------------
+ 2 files changed, 35 insertions(+), 33 deletions(-)
 
-diff --git a/drivers/spi/spi-nxp-fspi.c b/drivers/spi/spi-nxp-fspi.c
-index b92bfef47371f..7cbe774f1f39b 100644
---- a/drivers/spi/spi-nxp-fspi.c
-+++ b/drivers/spi/spi-nxp-fspi.c
-@@ -399,7 +399,8 @@ struct nxp_fspi {
- 	struct mutex lock;
- 	struct pm_qos_request pm_qos_req;
- 	int selected;
--#define FSPI_NEED_INIT		(1 << 0)
-+#define FSPI_NEED_INIT		BIT(0)
-+#define FSPI_DTR_MODE		BIT(1)
- 	int flags;
+diff --git a/drivers/firmware/arm_scmi/common.h b/drivers/firmware/arm_scmi/common.h
+index cdec50a698a10..87acc795f7436 100644
+--- a/drivers/firmware/arm_scmi/common.h
++++ b/drivers/firmware/arm_scmi/common.h
+@@ -297,10 +297,28 @@ enum debug_counters {
+ 	SCMI_DEBUG_COUNTERS_LAST
  };
  
-@@ -645,6 +646,40 @@ static void nxp_fspi_clk_disable_unprep(struct nxp_fspi *f)
- 	return;
+-static inline void scmi_inc_count(atomic_t *arr, int stat)
++/**
++ * struct scmi_debug_info  - Debug common info
++ * @top_dentry: A reference to the top debugfs dentry
++ * @name: Name of this SCMI instance
++ * @type: Type of this SCMI instance
++ * @is_atomic: Flag to state if the transport of this instance is atomic
++ * @counters: An array of atomic_c's used for tracking statistics (if enabled)
++ */
++struct scmi_debug_info {
++	struct dentry *top_dentry;
++	const char *name;
++	const char *type;
++	bool is_atomic;
++	atomic_t counters[SCMI_DEBUG_COUNTERS_LAST];
++};
++
++static inline void scmi_inc_count(struct scmi_debug_info *dbg, int stat)
+ {
+-	if (IS_ENABLED(CONFIG_ARM_SCMI_DEBUG_COUNTERS))
+-		atomic_inc(&arr[stat]);
++	if (IS_ENABLED(CONFIG_ARM_SCMI_DEBUG_COUNTERS)) {
++		if (dbg)
++			atomic_inc(&dbg->counters[stat]);
++	}
  }
  
-+/*
-+ * Sample Clock source selection for Flash Reading
-+ * Four modes defined by fspi:
-+ * mode 0: Dummy Read strobe generated by FlexSPI Controller
-+ *         and loopback internally
-+ * mode 1: Dummy Read strobe generated by FlexSPI Controller
-+ *         and loopback from DQS pad
-+ * mode 2: Reserved
-+ * mode 3: Flash provided Read strobe and input from DQS pad
-+ *
-+ * fspi default use mode 0 after reset
-+ */
-+static void nxp_fspi_select_rx_sample_clk_source(struct nxp_fspi *f,
-+						 bool op_is_dtr)
-+{
-+	u32 reg;
-+
-+	/*
-+	 * For 8D-8D-8D mode, need to use mode 3 (Flash provided Read
-+	 * strobe and input from DQS pad), otherwise read operaton may
-+	 * meet issue.
-+	 * This mode require flash device connect the DQS pad on board.
-+	 * For other modes, still use mode 0, keep align with before.
-+	 * spi_nor_suspend will disable 8D-8D-8D mode, also need to
-+	 * change the mode back to mode 0.
-+	 */
-+	reg = fspi_readl(f, f->iobase + FSPI_MCR0);
-+	if (op_is_dtr)
-+		reg |= FSPI_MCR0_RXCLKSRC(3);
-+	else	/*select mode 0 */
-+		reg &= ~FSPI_MCR0_RXCLKSRC(3);
-+	fspi_writel(f, reg, f->iobase + FSPI_MCR0);
-+}
-+
- static void nxp_fspi_dll_calibration(struct nxp_fspi *f)
- {
- 	int ret;
-@@ -715,15 +750,18 @@ static void nxp_fspi_dll_calibration(struct nxp_fspi *f)
- static void nxp_fspi_select_mem(struct nxp_fspi *f, struct spi_device *spi,
- 				const struct spi_mem_op *op)
- {
-+	/* flexspi only support one DTR mode: 8D-8D-8D */
-+	bool op_is_dtr = op->cmd.dtr && op->addr.dtr && op->dummy.dtr && op->data.dtr;
- 	unsigned long rate = op->max_freq;
- 	int ret;
- 	uint64_t size_kb;
+ enum scmi_bad_msg {
+diff --git a/drivers/firmware/arm_scmi/driver.c b/drivers/firmware/arm_scmi/driver.c
+index f1abe605865ad..5b4df0a27e22f 100644
+--- a/drivers/firmware/arm_scmi/driver.c
++++ b/drivers/firmware/arm_scmi/driver.c
+@@ -111,22 +111,6 @@ struct scmi_protocol_instance {
  
- 	/*
- 	 * Return, if previously selected target device is same as current
--	 * requested target device.
-+	 * requested target device. Also the DTR or STR mode do not change.
- 	 */
--	if (f->selected == spi_get_chipselect(spi, 0))
-+	if ((f->selected == spi_get_chipselect(spi, 0)) &&
-+	    (!!(f->flags & FSPI_DTR_MODE) == op_is_dtr))
+ #define ph_to_pi(h)	container_of(h, struct scmi_protocol_instance, ph)
+ 
+-/**
+- * struct scmi_debug_info  - Debug common info
+- * @top_dentry: A reference to the top debugfs dentry
+- * @name: Name of this SCMI instance
+- * @type: Type of this SCMI instance
+- * @is_atomic: Flag to state if the transport of this instance is atomic
+- * @counters: An array of atomic_c's used for tracking statistics (if enabled)
+- */
+-struct scmi_debug_info {
+-	struct dentry *top_dentry;
+-	const char *name;
+-	const char *type;
+-	bool is_atomic;
+-	atomic_t counters[SCMI_DEBUG_COUNTERS_LAST];
+-};
+-
+ /**
+  * struct scmi_info - Structure representing a SCMI instance
+  *
+@@ -1000,7 +984,7 @@ scmi_xfer_command_acquire(struct scmi_chan_info *cinfo, u32 msg_hdr)
+ 		spin_unlock_irqrestore(&minfo->xfer_lock, flags);
+ 
+ 		scmi_bad_message_trace(cinfo, msg_hdr, MSG_UNEXPECTED);
+-		scmi_inc_count(info->dbg->counters, ERR_MSG_UNEXPECTED);
++		scmi_inc_count(info->dbg, ERR_MSG_UNEXPECTED);
+ 
+ 		return xfer;
+ 	}
+@@ -1028,7 +1012,7 @@ scmi_xfer_command_acquire(struct scmi_chan_info *cinfo, u32 msg_hdr)
+ 			msg_type, xfer_id, msg_hdr, xfer->state);
+ 
+ 		scmi_bad_message_trace(cinfo, msg_hdr, MSG_INVALID);
+-		scmi_inc_count(info->dbg->counters, ERR_MSG_INVALID);
++		scmi_inc_count(info->dbg, ERR_MSG_INVALID);
+ 
+ 		/* On error the refcount incremented above has to be dropped */
+ 		__scmi_xfer_put(minfo, xfer);
+@@ -1073,7 +1057,7 @@ static void scmi_handle_notification(struct scmi_chan_info *cinfo,
+ 			PTR_ERR(xfer));
+ 
+ 		scmi_bad_message_trace(cinfo, msg_hdr, MSG_NOMEM);
+-		scmi_inc_count(info->dbg->counters, ERR_MSG_NOMEM);
++		scmi_inc_count(info->dbg, ERR_MSG_NOMEM);
+ 
+ 		scmi_clear_channel(info, cinfo);
  		return;
+@@ -1089,7 +1073,7 @@ static void scmi_handle_notification(struct scmi_chan_info *cinfo,
+ 	trace_scmi_msg_dump(info->id, cinfo->id, xfer->hdr.protocol_id,
+ 			    xfer->hdr.id, "NOTI", xfer->hdr.seq,
+ 			    xfer->hdr.status, xfer->rx.buf, xfer->rx.len);
+-	scmi_inc_count(info->dbg->counters, NOTIFICATION_OK);
++	scmi_inc_count(info->dbg, NOTIFICATION_OK);
  
- 	/* Reset FLSHxxCR0 registers */
-@@ -740,6 +778,18 @@ static void nxp_fspi_select_mem(struct nxp_fspi *f, struct spi_device *spi,
+ 	scmi_notify(cinfo->handle, xfer->hdr.protocol_id,
+ 		    xfer->hdr.id, xfer->rx.buf, xfer->rx.len, ts);
+@@ -1149,10 +1133,10 @@ static void scmi_handle_response(struct scmi_chan_info *cinfo,
+ 	if (xfer->hdr.type == MSG_TYPE_DELAYED_RESP) {
+ 		scmi_clear_channel(info, cinfo);
+ 		complete(xfer->async_done);
+-		scmi_inc_count(info->dbg->counters, DELAYED_RESPONSE_OK);
++		scmi_inc_count(info->dbg, DELAYED_RESPONSE_OK);
+ 	} else {
+ 		complete(&xfer->done);
+-		scmi_inc_count(info->dbg->counters, RESPONSE_OK);
++		scmi_inc_count(info->dbg, RESPONSE_OK);
+ 	}
  
- 	dev_dbg(f->dev, "Target device [CS:%x] selected\n", spi_get_chipselect(spi, 0));
+ 	if (IS_ENABLED(CONFIG_ARM_SCMI_RAW_MODE_SUPPORT)) {
+@@ -1261,7 +1245,7 @@ static int scmi_wait_for_reply(struct device *dev, const struct scmi_desc *desc,
+ 					"timed out in resp(caller: %pS) - polling\n",
+ 					(void *)_RET_IP_);
+ 				ret = -ETIMEDOUT;
+-				scmi_inc_count(info->dbg->counters, XFERS_RESPONSE_POLLED_TIMEOUT);
++				scmi_inc_count(info->dbg, XFERS_RESPONSE_POLLED_TIMEOUT);
+ 			}
+ 		}
  
-+	nxp_fspi_select_rx_sample_clk_source(f, op_is_dtr);
-+
-+	if (op_is_dtr) {
-+		f->flags |= FSPI_DTR_MODE;
-+		/* For DTR mode, flexspi will default div 2 and output to device.
-+		 * so here to config the root clock to 2 * device rate.
-+		 */
-+		rate = rate * 2;
-+	} else {
-+		f->flags &= ~FSPI_DTR_MODE;
-+	}
-+
- 	nxp_fspi_clk_disable_unprep(f);
+@@ -1286,7 +1270,7 @@ static int scmi_wait_for_reply(struct device *dev, const struct scmi_desc *desc,
+ 					    "RESP" : "resp",
+ 					    xfer->hdr.seq, xfer->hdr.status,
+ 					    xfer->rx.buf, xfer->rx.len);
+-			scmi_inc_count(info->dbg->counters, RESPONSE_POLLED_OK);
++			scmi_inc_count(info->dbg, RESPONSE_POLLED_OK);
  
- 	ret = clk_set_rate(f->clk, rate);
+ 			if (IS_ENABLED(CONFIG_ARM_SCMI_RAW_MODE_SUPPORT)) {
+ 				scmi_raw_message_report(info->raw, xfer,
+@@ -1301,7 +1285,7 @@ static int scmi_wait_for_reply(struct device *dev, const struct scmi_desc *desc,
+ 			dev_err(dev, "timed out in resp(caller: %pS)\n",
+ 				(void *)_RET_IP_);
+ 			ret = -ETIMEDOUT;
+-			scmi_inc_count(info->dbg->counters, XFERS_RESPONSE_TIMEOUT);
++			scmi_inc_count(info->dbg, XFERS_RESPONSE_TIMEOUT);
+ 		}
+ 	}
+ 
+@@ -1385,13 +1369,13 @@ static int do_xfer(const struct scmi_protocol_handle *ph,
+ 	    !is_transport_polling_capable(info->desc)) {
+ 		dev_warn_once(dev,
+ 			      "Polling mode is not supported by transport.\n");
+-		scmi_inc_count(info->dbg->counters, SENT_FAIL_POLLING_UNSUPPORTED);
++		scmi_inc_count(info->dbg, SENT_FAIL_POLLING_UNSUPPORTED);
+ 		return -EINVAL;
+ 	}
+ 
+ 	cinfo = idr_find(&info->tx_idr, pi->proto->id);
+ 	if (unlikely(!cinfo)) {
+-		scmi_inc_count(info->dbg->counters, SENT_FAIL_CHANNEL_NOT_FOUND);
++		scmi_inc_count(info->dbg, SENT_FAIL_CHANNEL_NOT_FOUND);
+ 		return -EINVAL;
+ 	}
+ 	/* True ONLY if also supported by transport. */
+@@ -1425,19 +1409,19 @@ static int do_xfer(const struct scmi_protocol_handle *ph,
+ 	ret = info->desc->ops->send_message(cinfo, xfer);
+ 	if (ret < 0) {
+ 		dev_dbg(dev, "Failed to send message %d\n", ret);
+-		scmi_inc_count(info->dbg->counters, SENT_FAIL);
++		scmi_inc_count(info->dbg, SENT_FAIL);
+ 		return ret;
+ 	}
+ 
+ 	trace_scmi_msg_dump(info->id, cinfo->id, xfer->hdr.protocol_id,
+ 			    xfer->hdr.id, "CMND", xfer->hdr.seq,
+ 			    xfer->hdr.status, xfer->tx.buf, xfer->tx.len);
+-	scmi_inc_count(info->dbg->counters, SENT_OK);
++	scmi_inc_count(info->dbg, SENT_OK);
+ 
+ 	ret = scmi_wait_for_message_response(cinfo, xfer);
+ 	if (!ret && xfer->hdr.status) {
+ 		ret = scmi_to_linux_errno(xfer->hdr.status);
+-		scmi_inc_count(info->dbg->counters, ERR_PROTOCOL);
++		scmi_inc_count(info->dbg, ERR_PROTOCOL);
+ 	}
+ 
+ 	if (info->desc->ops->mark_txdone)
 -- 
 2.51.0
 
