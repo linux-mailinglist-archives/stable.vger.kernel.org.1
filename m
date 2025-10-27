@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-191177-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190690-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 669CDC11228
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:36:49 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41B21C10A35
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:14:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7889E5629A8
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:28:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D1E861A61364
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:09:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 189CA18A6A5;
-	Mon, 27 Oct 2025 19:26:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0653F3195E4;
+	Mon, 27 Oct 2025 19:05:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C+bqASI8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mw2cFnCE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C33BC32E68F;
-	Mon, 27 Oct 2025 19:26:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5EB127978C;
+	Mon, 27 Oct 2025 19:05:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761593205; cv=none; b=t0x+LNwucejFmInIvUvMurha21gvrQDJ7PBbgkq0NuXzFCsppjXbpWxSyVJhEXQN2SkX8OSS6mTGM2jpGz3Q/r3aDwNsnbbvucl2TTKesS5QxCSGrQ6HL8pASpT1bLakqQBXaZN3VkJO15nU3SUxXicTzkj7tRF7fh3l6r26yYc=
+	t=1761591940; cv=none; b=SSlVhQ432kLhpclixlRp3sbQLv3cglm6rsGUrAx8Fz6HoyY1RlWEhsm8vxfneHdLXSPX9FUEacMqdoLDD6ZJY2Flb9S391R519J0afwTMw7Tc3sfLjyjI4lhkClf+RXbERWB6Ey707W9TqRdI3Hzd/i0/Y8CslyhwDIZ/TFDurg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761593205; c=relaxed/simple;
-	bh=TEbMnDmZp/AfkQZ8ZEbE6C0qww7sWJFboiJT5DgXZFk=;
+	s=arc-20240116; t=1761591940; c=relaxed/simple;
+	bh=obwt3TUDD5nXFhwmhrPdnzzjPruP2kZ8VgPGri1czgM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bVHrXVHD+DNy56xVuuDwkSIriGyzJ2E+RHvo43AJayk/OF8pPE9q85oy0V9is5xobmoORzIQkkOjo4DEYEdxxmfoe42t4EPMaKJUJFeRBORINcz9wKMp/CLAbbklQMLM1Sc4gKSQfZnKJck9KHFd8gXBAZ7zNpT2R1iZAHtWk4g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C+bqASI8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57820C4CEF1;
-	Mon, 27 Oct 2025 19:26:45 +0000 (UTC)
+	 MIME-Version; b=GeirZS9lUYWtyQuAu5eOr7101r8LVY/bsM++aSXcIse8kmxam9ua9Abs2up/B0WMaeWoA728zQlYAO4cLkjLSwT6qCydwCi/lyIBbgkkUYfnjyr7qAa/RlXW/B4zzRAonKouabFTQc1wHPt3qS1wMXJTiPig89aV+5MZPXmxrF4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mw2cFnCE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45D8DC4CEF1;
+	Mon, 27 Oct 2025 19:05:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761593205;
-	bh=TEbMnDmZp/AfkQZ8ZEbE6C0qww7sWJFboiJT5DgXZFk=;
+	s=korg; t=1761591940;
+	bh=obwt3TUDD5nXFhwmhrPdnzzjPruP2kZ8VgPGri1czgM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C+bqASI8CIHe2WodaZqHnZIj5lZTnflNDNuuyCe8MzXEeIjQwTP+ALWqvEeUjJC1y
-	 6wmdKTUkvlFi9YDzowwugpddYKl0UWzkWS9fnWh/rM/EwVp7B7EM0PPdGwFMNjkFNb
-	 /XL6W7ttds11TV8+9Vu9Vnll9J+OBrTN2FQG1SZM=
+	b=Mw2cFnCEdMxSRMw1zm+iqPzR+98E86pHk6fSk8uTxQybhXWH8m3zHGfHBWHultFl+
+	 FB/XEghrFTi87vcMpob8daz0XOij5rMYoQGrU6Q+rFfyevDlShsEaLvOBRzyC/xSOu
+	 X9yE+p+SeAZWMF7Z5FPlimPsmCRmwnXhMc9rXp0I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiasheng Jiang <jiashengjiangcool@gmail.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Jakub Kicinski <kuba@kernel.org>,
+	David Ahern <dsahern@kernel.org>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 053/184] ptp: ocp: Fix typo using index 1 instead of i in SMA initialization loop
+Subject: [PATCH 5.15 055/123] net: rtnetlink: add bulk delete support flag
 Date: Mon, 27 Oct 2025 19:35:35 +0100
-Message-ID: <20251027183516.325543359@linuxfoundation.org>
+Message-ID: <20251027183447.869223701@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
-References: <20251027183514.934710872@linuxfoundation.org>
+In-Reply-To: <20251027183446.381986645@linuxfoundation.org>
+References: <20251027183446.381986645@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +63,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+From: Nikolay Aleksandrov <razor@blackwall.org>
 
-[ Upstream commit a767957e7a83f9e742be196aa52a48de8ac5a7e4 ]
+[ Upstream commit a6cec0bcd34264be8887791594be793b3f12719f ]
 
-In ptp_ocp_sma_fb_init(), the code mistakenly used bp->sma[1]
-instead of bp->sma[i] inside a for-loop, which caused only SMA[1]
-to have its DIRECTION_CAN_CHANGE capability cleared. This led to
-inconsistent capability flags across SMA pins.
+Add a new rtnl flag (RTNL_FLAG_BULK_DEL_SUPPORTED) which is used to
+verify that the delete operation allows bulk object deletion. Also emit
+a warning if anyone tries to set it for non-delete kind.
 
-Fixes: 09eeb3aecc6c ("ptp_ocp: implement DPLL ops")
-Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
-Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Link: https://patch.msgid.link/20251021182456.9729-1-jiashengjiangcool@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Suggested-by: David Ahern <dsahern@kernel.org>
+Signed-off-by: Nikolay Aleksandrov <razor@blackwall.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: bf29555f5bdc ("rtnetlink: Allow deleting FDB entries in user namespace")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ptp/ptp_ocp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/net/rtnetlink.h | 3 ++-
+ net/core/rtnetlink.c    | 8 ++++++++
+ 2 files changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/ptp/ptp_ocp.c b/drivers/ptp/ptp_ocp.c
-index 4e1286ce05c9a..f354f2f51a48c 100644
---- a/drivers/ptp/ptp_ocp.c
-+++ b/drivers/ptp/ptp_ocp.c
-@@ -2550,7 +2550,7 @@ ptp_ocp_sma_fb_init(struct ptp_ocp *bp)
- 		for (i = 0; i < OCP_SMA_NUM; i++) {
- 			bp->sma[i].fixed_fcn = true;
- 			bp->sma[i].fixed_dir = true;
--			bp->sma[1].dpll_prop.capabilities &=
-+			bp->sma[i].dpll_prop.capabilities &=
- 				~DPLL_PIN_CAPABILITIES_DIRECTION_CAN_CHANGE;
- 		}
- 		return;
+diff --git a/include/net/rtnetlink.h b/include/net/rtnetlink.h
+index 268eadbbaa300..fdc7b4ce0ef7b 100644
+--- a/include/net/rtnetlink.h
++++ b/include/net/rtnetlink.h
+@@ -10,7 +10,8 @@ typedef int (*rtnl_doit_func)(struct sk_buff *, struct nlmsghdr *,
+ typedef int (*rtnl_dumpit_func)(struct sk_buff *, struct netlink_callback *);
+ 
+ enum rtnl_link_flags {
+-	RTNL_FLAG_DOIT_UNLOCKED = BIT(0),
++	RTNL_FLAG_DOIT_UNLOCKED		= BIT(0),
++	RTNL_FLAG_BULK_DEL_SUPPORTED	= BIT(1),
+ };
+ 
+ enum rtnl_kinds {
+diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
+index 79fb6d74e6dab..61ab0497ac755 100644
+--- a/net/core/rtnetlink.c
++++ b/net/core/rtnetlink.c
+@@ -214,6 +214,8 @@ static int rtnl_register_internal(struct module *owner,
+ 	if (dumpit)
+ 		link->dumpit = dumpit;
+ 
++	WARN_ON(rtnl_msgtype_kind(msgtype) != RTNL_KIND_DEL &&
++		(flags & RTNL_FLAG_BULK_DEL_SUPPORTED));
+ 	link->flags |= flags;
+ 
+ 	/* publish protocol:msgtype */
+@@ -5634,6 +5636,12 @@ static int rtnetlink_rcv_msg(struct sk_buff *skb, struct nlmsghdr *nlh,
+ 	}
+ 
+ 	flags = link->flags;
++	if (kind == RTNL_KIND_DEL && (nlh->nlmsg_flags & NLM_F_BULK) &&
++	    !(flags & RTNL_FLAG_BULK_DEL_SUPPORTED)) {
++		NL_SET_ERR_MSG(extack, "Bulk delete is not supported");
++		goto err_unlock;
++	}
++
+ 	if (flags & RTNL_FLAG_DOIT_UNLOCKED) {
+ 		doit = link->doit;
+ 		rcu_read_unlock();
 -- 
 2.51.0
 
