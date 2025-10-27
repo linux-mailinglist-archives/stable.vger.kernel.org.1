@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-190756-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190970-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A416EC10B74
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:17:03 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BABF5C10EEC
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:26:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3A7E1580AB4
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:10:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1C260567A4F
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:19:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F38F2D8377;
-	Mon, 27 Oct 2025 19:08:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A651F322745;
+	Mon, 27 Oct 2025 19:17:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YeZdtPZg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ku9ih05s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0455241663;
-	Mon, 27 Oct 2025 19:08:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 395D82D97A6;
+	Mon, 27 Oct 2025 19:17:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592113; cv=none; b=cO96Gg5fgJ2Ie72IqfCNdv1OvBRd7qdS4tS4dSxXnZFMbTRS0yqbOqUGJR/ZKqpqiq6bzBCwcqiSDUVkTjsp4vNjibI0O7/yTsku4WO1ZXnFlTEhO2v+9Y7+zEFscGcjfFzFOc/3wVSUum+We+mxbf++Q8n5F/NK5xGuTxXuQ28=
+	t=1761592676; cv=none; b=soEHQ8VMHG/iRnJSe/1h2aP0kUa96M6LbFNqqRa527KG/tU6W0RAigNFEHWnyP0YI9woDLR11E7CjvDjBUKQbR+5RoKp9kuBi9JMNGP74uknBBJjxss1/+SrqbX+d1HNDnhwYSKMHKO8bBAYfaN5cEmyoxz1DErXGVDNUFjEbhk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592113; c=relaxed/simple;
-	bh=vm04eoohS/JRdwPjzNQrVICLRPsA0JnKEJBrBvZRsA0=;
+	s=arc-20240116; t=1761592676; c=relaxed/simple;
+	bh=yczRW7FwOW1WK1GyHIWGzYwX2r8aIQloNjGmtuSVKBM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SsoaT1GDoDI2Z1KquWkTfESKuD9RE6L2/93Z3NDLY+cXhbXkYD3JdDCFOTaQnPu/fRxt8ZHWFRoclZjc5IbAi0M0qA2p0GFbWCIiSCTF9LhTlHANyqzIeeB71PsBo+mLV4bgsJmGQczzqdG0hdzfM+7D853H2/udN9gCof4eaP0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YeZdtPZg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EC58C4CEF1;
-	Mon, 27 Oct 2025 19:08:33 +0000 (UTC)
+	 MIME-Version; b=P5SZVVfSN1uSZWrPKMuS9Ze52DORpaQJTcsYFTfY4wXhOqVx/V8oLaq8GGiti3dye3K3cS//agZ7I0czyNc5Yqu9/S3k3RxqJp7zJs8gvFz7fk7+DuNyZ52La1Z6SV+h9MLipM/9lUhceFDK+L0iyoxziUFOaXLFuUqa3TGRzc0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ku9ih05s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C088CC113D0;
+	Mon, 27 Oct 2025 19:17:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592113;
-	bh=vm04eoohS/JRdwPjzNQrVICLRPsA0JnKEJBrBvZRsA0=;
+	s=korg; t=1761592676;
+	bh=yczRW7FwOW1WK1GyHIWGzYwX2r8aIQloNjGmtuSVKBM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YeZdtPZgKCNzNinEq1L6PqyQPg5XuTv/uz33ZQbz04ey4DTmDyjAMUVCfDmKQnMU0
-	 jQLEixGWrbEuFt76KYLOJfwz3+fjJ3TzYMZwmHyKtsTLuYM8aHKumZ2PxLOd14rsmU
-	 x8mkz1GR1MJPtuO6sXXzvU/K0FDLTxkLlNjvzNL8=
+	b=Ku9ih05sNf6Tw7EbFDQg3xFETY00WA104XpKy3ncEkD/HsCdpVf5+mKuaizLxFnhY
+	 EdB7HGmda4CFaqbiT+PeM26tTTSg8D64vc8La3ATNFx8pgNmkseLuDS6aPd88vkGoE
+	 FlhoVWde00lQ4f9uIn45HYxtcuQCD2kkPxeKFAyQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Vasut <marek.vasut+renesas@mailbox.org>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>
-Subject: [PATCH 5.15 122/123] PCI: rcar: Demote WARN() to dev_warn_ratelimited() in rcar_pcie_wakeup()
+	Anup Patel <apatel@ventanamicro.com>,
+	Andrew Jones <ajones@ventanamicro.com>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Paul Walmsley <pjw@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 53/84] RISC-V: Dont print details of CPUs disabled in DT
 Date: Mon, 27 Oct 2025 19:36:42 +0100
-Message-ID: <20251027183449.648614205@linuxfoundation.org>
+Message-ID: <20251027183440.231773295@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183446.381986645@linuxfoundation.org>
-References: <20251027183446.381986645@linuxfoundation.org>
+In-Reply-To: <20251027183438.817309828@linuxfoundation.org>
+References: <20251027183438.817309828@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,76 +62,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Vasut <marek.vasut+renesas@mailbox.org>
+From: Anup Patel <apatel@ventanamicro.com>
 
-commit c93637e6a4c4e1d0e85ef7efac78d066bbb24d96 upstream.
+[ Upstream commit d2721bb165b3ee00dd23525885381af07fec852a ]
 
-Avoid large backtrace, it is sufficient to warn the user that there has
-been a link problem. Either the link has failed and the system is in need
-of maintenance, or the link continues to work and user has been informed.
-The message from the warning can be looked up in the sources.
+Early boot stages may disable CPU DT nodes for unavailable
+CPUs based on SKU, pinstraps, eFuse, etc. Currently, the
+riscv_early_of_processor_hartid() prints details of a CPU
+if it is disabled in DT which has no value and gives a
+false impression to the users that there some issue with
+the CPU.
 
-This makes an actual link issue less verbose.
-
-First of all, this controller has a limitation in that the controller
-driver has to assist the hardware with transition to L1 link state by
-writing L1IATN to PMCTRL register, the L1 and L0 link state switching
-is not fully automatic on this controller.
-
-In case of an ASMedia ASM1062 PCIe SATA controller which does not support
-ASPM, on entry to suspend or during platform pm_test, the SATA controller
-enters D3hot state and the link enters L1 state. If the SATA controller
-wakes up before rcar_pcie_wakeup() was called and returns to D0, the link
-returns to L0 before the controller driver even started its transition to
-L1 link state. At this point, the SATA controller did send an PM_ENTER_L1
-DLLP to the PCIe controller and the PCIe controller received it, and the
-PCIe controller did set PMSR PMEL1RX bit.
-
-Once rcar_pcie_wakeup() is called, if the link is already back in L0 state
-and PMEL1RX bit is set, the controller driver has no way to determine if
-it should perform the link transition to L1 state, or treat the link as if
-it is in L0 state. Currently the driver attempts to perform the transition
-to L1 link state unconditionally, which in this specific case fails with a
-PMSR L1FAEG poll timeout, however the link still works as it is already
-back in L0 state.
-
-Reduce this warning verbosity. In case the link is really broken, the
-rcar_pcie_config_access() would fail, otherwise it will succeed and any
-system with this controller and ASM1062 can suspend without generating
-a backtrace.
-
-Fixes: 84b576146294 ("PCI: rcar: Finish transition to L1 state in rcar_pcie_config_access()")
-Link: https://lore.kernel.org/linux-pci/20240511235513.77301-1-marek.vasut+renesas@mailbox.org
-Signed-off-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e3d794d555cd ("riscv: treat cpu devicetree nodes without status as enabled")
+Signed-off-by: Anup Patel <apatel@ventanamicro.com>
+Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+Link: https://lore.kernel.org/r/20251014163009.182381-1-apatel@ventanamicro.com
+Signed-off-by: Paul Walmsley <pjw@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/pcie-rcar-host.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ arch/riscv/kernel/cpu.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/drivers/pci/controller/pcie-rcar-host.c
-+++ b/drivers/pci/controller/pcie-rcar-host.c
-@@ -87,7 +87,11 @@ static int rcar_pcie_wakeup(struct devic
- 		writel(L1IATN, pcie_base + PMCTLR);
- 		ret = readl_poll_timeout_atomic(pcie_base + PMSR, val,
- 						val & L1FAEG, 10, 1000);
--		WARN(ret, "Timeout waiting for L1 link state, ret=%d\n", ret);
-+		if (ret) {
-+			dev_warn_ratelimited(pcie_dev,
-+					     "Timeout waiting for L1 link state, ret=%d\n",
-+					     ret);
-+		}
- 		writel(L1FAEG | PMEL1RX, pcie_base + PMSR);
+diff --git a/arch/riscv/kernel/cpu.c b/arch/riscv/kernel/cpu.c
+index 88732abecd023..93e794d0e5231 100644
+--- a/arch/riscv/kernel/cpu.c
++++ b/arch/riscv/kernel/cpu.c
+@@ -61,10 +61,8 @@ int __init riscv_early_of_processor_hartid(struct device_node *node, unsigned lo
+ 		return -ENODEV;
  	}
  
+-	if (!of_device_is_available(node)) {
+-		pr_info("CPU with hartid=%lu is not available\n", *hart);
++	if (!of_device_is_available(node))
+ 		return -ENODEV;
+-	}
+ 
+ 	if (of_property_read_string(node, "riscv,isa-base", &isa))
+ 		goto old_interface;
+-- 
+2.51.0
+
 
 
 
