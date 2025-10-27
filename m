@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-190429-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190124-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5ADAFC106C3
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:03:39 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 594EEC10014
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:43:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8FAC65625C3
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:57:34 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A0A6C4F90D0
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:41:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D75632F76C;
-	Mon, 27 Oct 2025 18:54:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DB40308F3A;
+	Mon, 27 Oct 2025 18:41:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1EpuI01K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y2mx5FvX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3371931B819;
-	Mon, 27 Oct 2025 18:54:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BF162D8DB9;
+	Mon, 27 Oct 2025 18:41:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591268; cv=none; b=uiCn+2QGJpzPOb5gqGGQ1U5YYmzXmKM0U5WTm1vtqR1AVe1LseKh2DskCYDDc+ogEua2D3t4w7SxFkY9lLjG6gsDyFrJL/Lvy4IyxikbJSLMt6n04azeTusbIkh5/l4a9cM4dLT9cV5+anf748KRP3Yj9i+B5+b5XEYHYBlapy0=
+	t=1761590501; cv=none; b=I1iFRCX3uAytPgKs1iVLMTwoIPt26rFSh8egPbdD3fZN6yNxEWDfUakCC5b5UMY2yN/tiddWyGzTQntuxt2inU83Ya0Y+iLJVynMh/WcmSOm8Kq085RREK3916TZkyUEalyQYBk6EY33BtquI+ssXpiNIax5PVLnuO1VaMEqVjs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591268; c=relaxed/simple;
-	bh=EkGITUN8jU8mTOBbR2V/qK8qFYRlkOzvwlBNcSbCuVc=;
+	s=arc-20240116; t=1761590501; c=relaxed/simple;
+	bh=9mtIIA0PrDsfYikZcWVJwQMlVuYNwUgK9oQYag6tV1U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iag8O6JaO/IHU89/puph6DBXayg6zChvZGsK1Ipg6quLrqd/jEe78hhSQEfY0fVtdHmJ82OL8USnnYaMAVtoQ9vmbx0dC7DuJpNvT202O5oDf5EqsDPaisgaSBxy/h06s/o7kkfKWoi5uDp3iObmiyQnS1ZzW3NbPFtCDQnO2MQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1EpuI01K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B45A2C4CEF1;
-	Mon, 27 Oct 2025 18:54:27 +0000 (UTC)
+	 MIME-Version; b=POkbkgHVSutQny83cGvJEsoHg2sBI/ICqwQYahuy6iqqhUuJcSoijMVyznFgVYxOViKK+u+9daCluG14uHcohyZKaSIHovg/GMJNnt3wWFWVurqfLBJ+zpwZo/0vGSwH6nOKKBhSvLkcfR/36EI6sDekPmHRfNk2JoaUtI8T9ZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y2mx5FvX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB76EC4CEF1;
+	Mon, 27 Oct 2025 18:41:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591268;
-	bh=EkGITUN8jU8mTOBbR2V/qK8qFYRlkOzvwlBNcSbCuVc=;
+	s=korg; t=1761590501;
+	bh=9mtIIA0PrDsfYikZcWVJwQMlVuYNwUgK9oQYag6tV1U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1EpuI01KB/mB+5iTQXTCtxjyQc9tcDeOch7xPlTp3rEK5x0lbNVBDWAxDDFLevVxa
-	 TE/a21WXwZ9hqk8NPmXMk6+quYM4i8NvMJqWPPVBBWt+MTjESH7w1Om41jkHmJtDqi
-	 BJmlByLIOsVKoenrZwC1G1h2VHtVfYFa2eA9f2o0=
+	b=y2mx5FvXtgOo+E4jPVCCRtTXC/QoIwMhzMxIoAeLgsBqiyughlDz7++x6+rJPEjC5
+	 AvCEwglhLXegYJ/o2hM7MD/VxMeI3Rj4jDUyEo2FY1PrRc+TVUf5X635ovWslqFaYi
+	 Wqr/Gu0RPYhusqMgGeNYdOfRdjJGZuNrUecEIlCA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lukas Wunner <lukas@wunner.de>,
-	"Rafael J. Wysocki (Intel)" <rafael@kernel.org>,
-	Juergen Gross <jgross@suse.com>
-Subject: [PATCH 5.10 132/332] xen/manage: Fix suspend error path
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 039/224] PCI: tegra: Fix devm_kcalloc() argument order for port->phys allocation
 Date: Mon, 27 Oct 2025 19:33:05 +0100
-Message-ID: <20251027183528.115309296@linuxfoundation.org>
+Message-ID: <20251027183510.051929710@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
-References: <20251027183524.611456697@linuxfoundation.org>
+In-Reply-To: <20251027183508.963233542@linuxfoundation.org>
+References: <20251027183508.963233542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lukas Wunner <lukas@wunner.de>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-commit f770c3d858687252f1270265ba152d5c622e793f upstream.
+[ Upstream commit e1a8805e5d263453ad76a4f50ab3b1c18ea07560 ]
 
-The device power management API has the following asymmetry:
-* dpm_suspend_start() does not clean up on failure
-  (it requires a call to dpm_resume_end())
-* dpm_suspend_end() does clean up on failure
-  (it does not require a call to dpm_resume_start())
+Fix incorrect argument order in devm_kcalloc() when allocating port->phys.
+The original call used sizeof(phy) as the number of elements and
+port->lanes as the element size, which is reversed.  While this happens to
+produce the correct total allocation size with current pointer size and
+lane counts, the argument order is wrong.
 
-The asymmetry was introduced by commit d8f3de0d2412 ("Suspend-related
-patches for 2.6.27") in June 2008:  It removed a call to device_resume()
-from device_suspend() (which was later renamed to dpm_suspend_start()).
-
-When Xen began using the device power management API in May 2008 with
-commit 0e91398f2a5d ("xen: implement save/restore"), the asymmetry did
-not yet exist.  But since it was introduced, a call to dpm_resume_end()
-is missing in the error path of dpm_suspend_start().  Fix it.
-
-Fixes: d8f3de0d2412 ("Suspend-related patches for 2.6.27")
-Signed-off-by: Lukas Wunner <lukas@wunner.de>
-Cc: stable@vger.kernel.org  # v2.6.27
-Reviewed-by: "Rafael J. Wysocki (Intel)" <rafael@kernel.org>
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Message-ID: <22453676d1ddcebbe81641bb68ddf587fee7e21e.1756990799.git.lukas@wunner.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 6fe7c187e026 ("PCI: tegra: Support per-lane PHYs")
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+[mani: added Fixes tag]
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Link: https://patch.msgid.link/20250819150436.3105973-1-alok.a.tiwari@oracle.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/xen/manage.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/pci/controller/pci-tegra.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/xen/manage.c
-+++ b/drivers/xen/manage.c
-@@ -116,7 +116,7 @@ static void do_suspend(void)
- 	err = dpm_suspend_start(PMSG_FREEZE);
- 	if (err) {
- 		pr_err("%s: dpm_suspend_start %d\n", __func__, err);
--		goto out_thaw;
-+		goto out_resume_end;
- 	}
+diff --git a/drivers/pci/controller/pci-tegra.c b/drivers/pci/controller/pci-tegra.c
+index 74c0ddd433815..9e3588d568ce4 100644
+--- a/drivers/pci/controller/pci-tegra.c
++++ b/drivers/pci/controller/pci-tegra.c
+@@ -1394,7 +1394,7 @@ static int tegra_pcie_port_get_phys(struct tegra_pcie_port *port)
+ 	unsigned int i;
+ 	int err;
  
- 	printk(KERN_DEBUG "suspending xenstore...\n");
-@@ -156,6 +156,7 @@ out_resume:
- 	else
- 		xs_suspend_cancel();
+-	port->phys = devm_kcalloc(dev, sizeof(phy), port->lanes, GFP_KERNEL);
++	port->phys = devm_kcalloc(dev, port->lanes, sizeof(phy), GFP_KERNEL);
+ 	if (!port->phys)
+ 		return -ENOMEM;
  
-+out_resume_end:
- 	dpm_resume_end(si.cancelled ? PMSG_THAW : PMSG_RESTORE);
- 
- out_thaw:
+-- 
+2.51.0
+
 
 
 
