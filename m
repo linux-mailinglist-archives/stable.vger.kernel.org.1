@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-191286-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191126-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E923C1125B
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:37:37 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2D29C10EF8
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:26:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6CFD219A6D04
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:33:56 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 4DFD235326F
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:26:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAB2F31355A;
-	Mon, 27 Oct 2025 19:32:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93E83328B41;
+	Mon, 27 Oct 2025 19:24:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GOW5VL59"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="luyiNaQH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97FEC2BDC13;
-	Mon, 27 Oct 2025 19:32:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 504B230CD92;
+	Mon, 27 Oct 2025 19:24:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761593525; cv=none; b=AN2wLENGGmprZdQ/SXrnLyA9rqR8kFlj6A3jY1dcinXTh1sK5LMzu2XQqThbVDwvW/FZIPap2VI12zmwuzG8HcivVo2ygMPodG/1Wxez7B5me60BLy5hcVmN58feaoptnXUUDb04HNRtm07RmO04G4cCKNmF2+6wFZhixMkGmVc=
+	t=1761593077; cv=none; b=gyi4c5ZLxju2vLtglgSIP+b51g0/eU9PlNgaOWKlD9SQGNuMxkl/k78BX3WeFYT+b/inQbD4WnO/yPnpZHIen2vHWXhcoTzlLAWSGHjo4qONvewUuDxoIQrTH1sWtIzjwfWO7oSltf27vLckichSFChAU7lY/IIJMoRvkJrpU18=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761593525; c=relaxed/simple;
-	bh=69SpiKekGjVbnB1SQWyraolkDH5mqAj5XdktBsheCBo=;
+	s=arc-20240116; t=1761593077; c=relaxed/simple;
+	bh=GjKps5uUESA1gfsWqmZZda+Vo+NIxBxM6H0SKsSbC0Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DHotTsurgKHVABCQm1W5g7+xlwHC9Hrtjt7K85/XqT/Tz2aWWBLYCIq7+zE6Svoa99aZh8lDZv5BPKTRM6hCWcYd68tj9GlKVMwa89/tG2HBw5kBXTt1nTIT7dXRpF2nOarq4TZdzYlsRAvFrmCMSuUREVSxFs49nsJXQh3//2I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GOW5VL59; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC496C4CEF1;
-	Mon, 27 Oct 2025 19:32:04 +0000 (UTC)
+	 MIME-Version; b=LYHbQ8AZA5C5ou5rG/AuhlT/uZ1JV1HXUdL9CGKKLhUdwB8iVT2RUPcHrQ93nRKTg5Ww+MZzTfY+O4/z3Jy/hEZcyJmqqsBx5/ac/ipmXvS6Tiq/rRlHuvPHoCsk31GtxvfpRJJu5+I4uEoho91qC1R/5A0PSTx5qoDc9AOpt+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=luyiNaQH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1964C4CEF1;
+	Mon, 27 Oct 2025 19:24:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761593525;
-	bh=69SpiKekGjVbnB1SQWyraolkDH5mqAj5XdktBsheCBo=;
+	s=korg; t=1761593077;
+	bh=GjKps5uUESA1gfsWqmZZda+Vo+NIxBxM6H0SKsSbC0Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GOW5VL59rFGA/C7BUhcQn4rvhosvmR4pm903PJ8BVheF/XXmMAiJXAClQRoigAXYE
-	 uzaXE4esdKKtuz5oNBFZxkAOh1YRajFvNaewTv8Ep9MuFxwYRknzuhAwcPn3hlIYg1
-	 blEEuzrUD7nSrrAbd4DFJWx1gM8AbNIqTr6N8pYg=
+	b=luyiNaQHjdoxJ4IlkdzvrJmAPoTh4GugS9MmJJV1uYZyPw0yIVY3nTA6/vsS2T9WN
+	 4Nmf49GzcvN4goFuAu4WpaEndBIcjqsXfh1SkzHXPmZIg7PU4jkyyg668aIWkf6GN4
+	 koL2BQwS5ZAtmoL0KjH/PiqBr5aO75+nGtPHX7xk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	stable <stable@kernel.org>,
-	=?UTF-8?q?=C5=81ukasz=20Bartosik?= <ukaszb@chromium.org>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>
-Subject: [PATCH 6.17 154/184] xhci: dbc: enable back DbC in resume if it was enabled before suspend
-Date: Mon, 27 Oct 2025 19:37:16 +0100
-Message-ID: <20251027183519.076883329@linuxfoundation.org>
+	Artem Shimko <a.shimko.dev@gmail.com>
+Subject: [PATCH 6.12 111/117] serial: 8250_dw: handle reset control deassert error
+Date: Mon, 27 Oct 2025 19:37:17 +0100
+Message-ID: <20251027183457.030736649@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
-References: <20251027183514.934710872@linuxfoundation.org>
+In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
+References: <20251027183453.919157109@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,55 +59,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mathias Nyman <mathias.nyman@linux.intel.com>
+From: Artem Shimko <a.shimko.dev@gmail.com>
 
-commit 2bbd38fcd29670e46c0fdb9cd0e90507a8a1bf6a upstream.
+commit daeb4037adf7d3349b4a1fb792f4bc9824686a4b upstream.
 
-DbC is currently only enabled back if it's in configured state during
-suspend.
+Check the return value of reset_control_deassert() in the probe
+function to prevent continuing probe when reset deassertion fails.
 
-If system is suspended after DbC is enabled, but before the device is
-properly enumerated by the host, then DbC would not be enabled back in
-resume.
+Previously, reset_control_deassert() was called without checking its
+return value, which could lead to probe continuing even when the
+device reset wasn't properly deasserted.
 
-Always enable DbC back in resume if it's suspended in enabled,
-connected, or configured state
+The fix checks the return value and returns an error with dev_err_probe()
+if reset deassertion fails, providing better error handling and
+diagnostics.
 
+Fixes: acbdad8dd1ab ("serial: 8250_dw: simplify optional reset handling")
 Cc: stable <stable@kernel.org>
-Fixes: dfba2174dc42 ("usb: xhci: Add DbC support in xHCI driver")
-Tested-by: Łukasz Bartosik <ukaszb@chromium.org>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Signed-off-by: Artem Shimko <a.shimko.dev@gmail.com>
+Link: https://patch.msgid.link/20251019095131.252848-1-a.shimko.dev@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/host/xhci-dbgcap.c |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/tty/serial/8250/8250_dw.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/host/xhci-dbgcap.c
-+++ b/drivers/usb/host/xhci-dbgcap.c
-@@ -1390,8 +1390,15 @@ int xhci_dbc_suspend(struct xhci_hcd *xh
- 	if (!dbc)
- 		return 0;
+--- a/drivers/tty/serial/8250/8250_dw.c
++++ b/drivers/tty/serial/8250/8250_dw.c
+@@ -620,7 +620,9 @@ static int dw8250_probe(struct platform_
+ 	if (IS_ERR(data->rst))
+ 		return PTR_ERR(data->rst);
  
--	if (dbc->state == DS_CONFIGURED)
-+	switch (dbc->state) {
-+	case DS_ENABLED:
-+	case DS_CONNECTED:
-+	case DS_CONFIGURED:
- 		dbc->resume_required = 1;
-+		break;
-+	default:
-+		break;
-+	}
+-	reset_control_deassert(data->rst);
++	err = reset_control_deassert(data->rst);
++	if (err)
++		return dev_err_probe(dev, err, "failed to deassert resets\n");
  
- 	xhci_dbc_stop(dbc);
- 
+ 	err = devm_add_action_or_reset(dev, dw8250_reset_control_assert, data->rst);
+ 	if (err)
 
 
 
