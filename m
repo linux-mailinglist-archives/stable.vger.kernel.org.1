@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-190574-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190685-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34456C1086A
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:08:53 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2F26C10870
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:08:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F17DB1A26A73
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:05:29 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 5FA2434F756
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:08:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2611433508A;
-	Mon, 27 Oct 2025 19:00:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BD7332861A;
+	Mon, 27 Oct 2025 19:05:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qBqcsc06"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y+t4/Fxk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D56B92D6E70;
-	Mon, 27 Oct 2025 19:00:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B60A632142E;
+	Mon, 27 Oct 2025 19:05:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591645; cv=none; b=ltInWmVt5OoD8z6eTRdcdTIFka1KLzu6yHAdOWj/i8H1WNoKx/xbABBv9k6VqWAxqt/3jEiTeBMPz5gBfeuEgbuliQ0RZj6tuY+JSCSWu1K48yQP/BIlLGzVhXbkBD4LkE0udaHedo04X2TaYn/Prt+RgBx4AFZRoJhhwSthSSU=
+	t=1761591927; cv=none; b=mT/2WSSIpL5jfbCAFc5Fzh/AtKCnITf3JRmcBA2E9vhJlSY6sR+UlymPu3iWlgzUKpsv/t/49HZsi8O2xuvtYf6H5UttbaUWCo9KcvNik1PY/2i4BPdqwVOmRy4aM2WTbHLnKxCz8KMf8ddtKhbSsWy04+UjKiTKS4oCoZKDDXU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591645; c=relaxed/simple;
-	bh=lb5zP4ucTMTSY/rnJ2FuyOsfw3WO/rdALY/i74Vcjaw=;
+	s=arc-20240116; t=1761591927; c=relaxed/simple;
+	bh=A4zcaHgObvGCC7tHoVlC8miTPXma6Qa9aKisUaOQ5Ew=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CQBK/LkzFarP7MU/F61DUyxKCo68YrNdy4OXomKDjXCTAPrVD93celX6pvuk2pnvojBz8PcYzJJ2yqDB9XUiAH1oab3ve2LVd+c9PWVl+wHROgZZsP1tWhUWTuxq2nxuqlea49TQAGt+Mja5S+m7yEXI4Kb6OOlanOooiZNRsXU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qBqcsc06; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6728AC4CEF1;
-	Mon, 27 Oct 2025 19:00:45 +0000 (UTC)
+	 MIME-Version; b=MltluufOssnek0N/HbKu+mY5dW4WnR2pou6Q50Ye4Ca+G5h47YUtxnOpLbsOkVq3e5mNH6ZhY20lRIKl6SiInCE5wfpNe6bfjSGLi2eeBzHHtXSkYV8E8E9zWsASXI0CMgqg8NKBz1PPYPbi0mtj4Wi3z9p9usXAzOoiRSDnatg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y+t4/Fxk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A6D8C4CEF1;
+	Mon, 27 Oct 2025 19:05:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591645;
-	bh=lb5zP4ucTMTSY/rnJ2FuyOsfw3WO/rdALY/i74Vcjaw=;
+	s=korg; t=1761591927;
+	bh=A4zcaHgObvGCC7tHoVlC8miTPXma6Qa9aKisUaOQ5Ew=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qBqcsc06YbIoQ+s9NbO3yWc6w/zbbNyHv0+43Zxp5Vo3j6W2dCMFyyfb1jWC6kt98
-	 IDIOX8q2g50NsTUZvG05ctbUgTG1C8U6jz3p9bTfUvm1H5zN6atJ1fuIdD6bhfcZYe
-	 A9dir03vjj67T+lu1rsfTZzL70M8oV1og2eqfWAI=
+	b=Y+t4/FxkY7EK+TyIVT6xDQcZgdYgObnkKUDpy6cGO2INHCPwd8VhmcSUtoj29qgYE
+	 lXTQrJRv6SymXiSRIb73JjURKSTHM7YD8EwVUkZAPk1cOncfdCm8yAiuMmWvVkzdXZ
+	 F1TriQOHT8nVpJ3DmJVMnglyIREm9H3gup2UBA/o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ioana Ciornei <ioana.ciornei@nxp.com>,
-	Mathew McBride <matt@traverse.com.au>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	kernel test robot <lkp@intel.com>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	"Yury Norov (NVIDIA)" <yury.norov@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 277/332] dpaa2-eth: fix the pointer passed to PTR_ALIGN on Tx path
-Date: Mon, 27 Oct 2025 19:35:30 +0100
-Message-ID: <20251027183532.175136080@linuxfoundation.org>
+Subject: [PATCH 5.15 051/123] m68k: bitops: Fix find_*_bit() signatures
+Date: Mon, 27 Oct 2025 19:35:31 +0100
+Message-ID: <20251027183447.762983493@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
-References: <20251027183524.611456697@linuxfoundation.org>
+In-Reply-To: <20251027183446.381986645@linuxfoundation.org>
+References: <20251027183446.381986645@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,52 +63,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ioana Ciornei <ioana.ciornei@nxp.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
 
-[ Upstream commit 902e81e679d86846a2404630d349709ad9372d0d ]
+[ Upstream commit 6d5674090543b89aac0c177d67e5fb32ddc53804 ]
 
-The blamed commit increased the needed headroom to account for
-alignment. This means that the size required to always align a Tx buffer
-was added inside the dpaa2_eth_needed_headroom() function. By doing
-that, a manual adjustment of the pointer passed to PTR_ALIGN() was no
-longer correct since the 'buffer_start' variable was already pointing
-to the start of the skb's memory.
+The function signatures of the m68k-optimized implementations of the
+find_{first,next}_{,zero_}bit() helpers do not match the generic
+variants.
 
-The behavior of the dpaa2-eth driver without this patch was to drop
-frames on Tx even when the headroom was matching the 128 bytes
-necessary. Fix this by removing the manual adjust of 'buffer_start' from
-the PTR_MODE call.
+Fix this by changing all non-pointer inputs and outputs to "unsigned
+long", and updating a few local variables.
 
-Closes: https://lore.kernel.org/netdev/70f0dcd9-1906-4d13-82df-7bbbbe7194c6@app.fastmail.com/T/#u
-Fixes: f422abe3f23d ("dpaa2-eth: increase the needed headroom to account for alignment")
-Signed-off-by: Ioana Ciornei <ioana.ciornei@nxp.com>
-Tested-by: Mathew McBride <matt@traverse.com.au>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20251016135807.360978-1-ioana.ciornei@nxp.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202509092305.ncd9mzaZ-lkp@intel.com/
+Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Acked-by: "Yury Norov (NVIDIA)" <yury.norov@gmail.com>
+Link: https://patch.msgid.link/de6919554fbb4cd1427155c6bafbac8a9df822c8.1757517135.git.geert@linux-m68k.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ arch/m68k/include/asm/bitops.h | 25 ++++++++++++++-----------
+ 1 file changed, 14 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c b/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c
-index 0a1a7d94583b4..d27f5a8e59dcd 100644
---- a/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c
-+++ b/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c
-@@ -994,8 +994,7 @@ static int dpaa2_eth_build_single_fd(struct dpaa2_eth_priv *priv,
- 	dma_addr_t addr;
+diff --git a/arch/m68k/include/asm/bitops.h b/arch/m68k/include/asm/bitops.h
+index 7b414099e5fc2..cca33f8ba0f67 100644
+--- a/arch/m68k/include/asm/bitops.h
++++ b/arch/m68k/include/asm/bitops.h
+@@ -314,12 +314,12 @@ static inline int bfchg_mem_test_and_change_bit(int nr,
+ #include <asm-generic/bitops/ffz.h>
+ #else
  
- 	buffer_start = skb->data - dpaa2_eth_needed_headroom(skb);
--	aligned_start = PTR_ALIGN(buffer_start - DPAA2_ETH_TX_BUF_ALIGN,
--				  DPAA2_ETH_TX_BUF_ALIGN);
-+	aligned_start = PTR_ALIGN(buffer_start, DPAA2_ETH_TX_BUF_ALIGN);
- 	if (aligned_start >= skb->head)
- 		buffer_start = aligned_start;
- 	else
+-static inline int find_first_zero_bit(const unsigned long *vaddr,
+-				      unsigned size)
++static inline unsigned long find_first_zero_bit(const unsigned long *vaddr,
++						unsigned long size)
+ {
+ 	const unsigned long *p = vaddr;
+-	int res = 32;
+-	unsigned int words;
++	unsigned long res = 32;
++	unsigned long words;
+ 	unsigned long num;
+ 
+ 	if (!size)
+@@ -340,8 +340,9 @@ static inline int find_first_zero_bit(const unsigned long *vaddr,
+ }
+ #define find_first_zero_bit find_first_zero_bit
+ 
+-static inline int find_next_zero_bit(const unsigned long *vaddr, int size,
+-				     int offset)
++static inline unsigned long find_next_zero_bit(const unsigned long *vaddr,
++					       unsigned long size,
++					       unsigned long offset)
+ {
+ 	const unsigned long *p = vaddr + (offset >> 5);
+ 	int bit = offset & 31UL, res;
+@@ -370,11 +371,12 @@ static inline int find_next_zero_bit(const unsigned long *vaddr, int size,
+ }
+ #define find_next_zero_bit find_next_zero_bit
+ 
+-static inline int find_first_bit(const unsigned long *vaddr, unsigned size)
++static inline unsigned long find_first_bit(const unsigned long *vaddr,
++					   unsigned long size)
+ {
+ 	const unsigned long *p = vaddr;
+-	int res = 32;
+-	unsigned int words;
++	unsigned long res = 32;
++	unsigned long words;
+ 	unsigned long num;
+ 
+ 	if (!size)
+@@ -395,8 +397,9 @@ static inline int find_first_bit(const unsigned long *vaddr, unsigned size)
+ }
+ #define find_first_bit find_first_bit
+ 
+-static inline int find_next_bit(const unsigned long *vaddr, int size,
+-				int offset)
++static inline unsigned long find_next_bit(const unsigned long *vaddr,
++					  unsigned long size,
++					  unsigned long offset)
+ {
+ 	const unsigned long *p = vaddr + (offset >> 5);
+ 	int bit = offset & 31UL, res;
 -- 
 2.51.0
 
