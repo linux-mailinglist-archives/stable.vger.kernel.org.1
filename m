@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-191131-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190780-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8819CC11141
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:33:19 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id B42B4C10C07
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:18:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7666D560F82
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:26:41 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 9C532502472
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:12:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7691932C329;
-	Mon, 27 Oct 2025 19:24:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D95D32549E;
+	Mon, 27 Oct 2025 19:09:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JFpbWlXV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="itecbKJq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 312F632ABF6;
-	Mon, 27 Oct 2025 19:24:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21193324B19;
+	Mon, 27 Oct 2025 19:09:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761593092; cv=none; b=uEmx2QvMpCV2/GO5cG6S+kC5onMlrcqfpA51mu5hAHuZku54zp1tUpXohoFQkv3aJfvvk3leK5AarA7WEAoiPb6y72qSOK3PfVjP94tUwDuWY+XThILGDOWChlIQSWfzJKh1hD3wHUxg6osVczJjFjlw/uGR8IfzWmmykSjDWoE=
+	t=1761592177; cv=none; b=bdiWkIYmOLf8mDxJsps6qQIUL1fiiM6eihfrmhDAwIB97ScDbE4usDBhci8FtSnFTCkvhDK3+Ya5GuQN9mq8MRD4AkyJ9P/1YOSAPbAqrTIDr9/xJeW3ijRGzQmgzgJlbwGNniu8UlMPI1KjnS1mAsRGu3kzxZk855kcNLzPqkc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761593092; c=relaxed/simple;
-	bh=Ak3EeL3oRmeJY4w8QsiZoDqPdJ9xBxZ64rCSUQOCOLk=;
+	s=arc-20240116; t=1761592177; c=relaxed/simple;
+	bh=rtH/JOvCAw40Gnd9t1M6VtSo+LiVQHB2PX9I6lWcpck=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IJ4/3QSeY6Ob9RKYefMJRgAyOkz/5Gbw8YoopbaFdDRZAbYITfDvsEx7Ay4u8FYKSFmZCRtLuRacSWbsBiRBKV6GMszjEQPx+4yPe4Cc2B+R1dNpjl1o1a0bmy7ZfEIttp4yfadfXm++SRcpb9acqugXLrw27rI5T7lqGlPSHgA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JFpbWlXV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73753C113D0;
-	Mon, 27 Oct 2025 19:24:49 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ZZv82xCehqXIdgcjLMFc3HFbxVhaRP+aBS4QU03Jw9swuTCUeeKXwKWfhQu53XZJ+NcRLRQA7AvG1GTAUConuCUhG4ZMXfQqrUpJ9xwiiK/8ijcuPz+nJ5RkE1oJccp3AL42h9AenTOu3keIzwOLxG5qrkBcZxr+rnjHotn1veY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=itecbKJq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A60C6C4CEF1;
+	Mon, 27 Oct 2025 19:09:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761593089;
-	bh=Ak3EeL3oRmeJY4w8QsiZoDqPdJ9xBxZ64rCSUQOCOLk=;
+	s=korg; t=1761592177;
+	bh=rtH/JOvCAw40Gnd9t1M6VtSo+LiVQHB2PX9I6lWcpck=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JFpbWlXVVW6JjH+F+1GT+zY7iuCm/qgsjZ4RJag6e8SZ/3/ZXf8gi29QKXRms3ouj
-	 lpLpopCit8RIBaxA5zn9lqaG6Wob3HKlhuskp4P+dQL7KTjuyhZ1SGycnJ4B9rmS1+
-	 0jjmLDoqa3xGp9A6+0TrCfRF3LfaHY4hqhv4QT0M=
+	b=itecbKJqThoJzLfz+b6HHiGKBM+ZiSyxL9QBSqgUsYmrLRow1UYvFP1dhFoQfcerp
+	 XcvBwDNBoqrhq7D7eEJ+OQ4hj+fDPKo5zAe+6z6Z8CbiUZEcFM7A4C0fwOqJQE3RGh
+	 FeAiOoPPREWLum1KlRoL/fbpdB8UEco195i5MWi0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matt Fleming <matt@readmodwrite.com>,
-	Matt Fleming <mfleming@cloudflare.com>,
-	K Prateek Nayak <kprateek.nayak@amd.com>
-Subject: [PATCH 6.17 001/184] sched/fair: Block delayed tasks on throttled hierarchy during dequeue
-Date: Mon, 27 Oct 2025 19:34:43 +0100
-Message-ID: <20251027183514.979610064@linuxfoundation.org>
+	Thomas Gleixner <tglx@linutronix.de>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Anna-Maria Behnsen <anna-maria@linutronix.de>,
+	Jeongjun Park <aha310510@gmail.com>
+Subject: [PATCH 6.1 023/157] Documentation: Remove bogus claim about del_timer_sync()
+Date: Mon, 27 Oct 2025 19:34:44 +0100
+Message-ID: <20251027183501.899001817@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
-References: <20251027183514.934710872@linuxfoundation.org>
+In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
+References: <20251027183501.227243846@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,107 +61,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: K Prateek Nayak <kprateek.nayak@amd.com>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-Dequeuing a fair task on a throttled hierarchy returns early on
-encountering a throttled cfs_rq since the throttle path has already
-dequeued the hierarchy above and has adjusted the h_nr_* accounting till
-the root cfs_rq.
+[ Upstream commit b0b0aa5d858d4d2fe39a5e4486e0550e858108f6 ]
 
-dequeue_entities() crucially misses calling __block_task() for delayed
-tasks being dequeued on the throttled hierarchies, but this was mostly
-harmless until commit b7ca5743a260 ("sched/core: Tweak
-wait_task_inactive() to force dequeue sched_delayed tasks") since all
-existing cases would re-enqueue the task if task_on_rq_queued() returned
-true and the task would eventually be blocked at pick after the
-hierarchy was unthrottled.
+del_timer_sync() does not return the number of times it tried to delete the
+timer which rearms itself. It's clearly documented:
 
-wait_task_inactive() is special as it expects the delayed task on
-throttled hierarchy to reach the blocked state on dequeue but since
-__block_task() is never called, task_on_rq_queued() continues to return
-true. Furthermore, since the task is now off the hierarchy, the pick
-never reaches it to fully block the task even after unthrottle leading
-to wait_task_inactive() looping endlessly.
+ The function returns whether it has deactivated a pending timer or not.
 
-Remedy this by calling __block_task() if a delayed task is being
-dequeued on a throttled hierarchy.
+This part of the documentation is from 2003 where del_timer_sync() really
+returned the number of deletion attempts for unknown reasons. The code
+was rewritten in 2005, but the documentation was not updated.
 
-This fix is only required for stabled kernels implementing delay dequeue
-(>= v6.12) before v6.18 since upstream commit e1fad12dcb66 ("sched/fair:
-Switch to task based throttle model") indirectly fixes this by removing
-the early return conditions in dequeue_entities() as part of the per-task
-throttle feature.
-
-Cc: stable@vger.kernel.org
-Reported-by: Matt Fleming <matt@readmodwrite.com>
-Closes: https://lore.kernel.org/all/20250925133310.1843863-1-matt@readmodwrite.com/
-Fixes: b7ca5743a260 ("sched/core: Tweak wait_task_inactive() to force dequeue sched_delayed tasks")
-Tested-by: Matt Fleming <mfleming@cloudflare.com>
-Signed-off-by: K Prateek Nayak <kprateek.nayak@amd.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Reviewed-by: Anna-Maria Behnsen <anna-maria@linutronix.de>
+Link: https://lore.kernel.org/r/20221123201624.452282769@linutronix.de
+Signed-off-by: Jeongjun Park <aha310510@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/sched/fair.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ Documentation/kernel-hacking/locking.rst                    |    3 +--
+ Documentation/translations/it_IT/kernel-hacking/locking.rst |    4 +---
+ 2 files changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 8ce56a8d507f..f0a4d9d7424d 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -6969,6 +6969,7 @@ static int dequeue_entities(struct rq *rq, struct sched_entity *se, int flags)
- 	int h_nr_runnable = 0;
- 	struct cfs_rq *cfs_rq;
- 	u64 slice = 0;
-+	int ret = 0;
+--- a/Documentation/kernel-hacking/locking.rst
++++ b/Documentation/kernel-hacking/locking.rst
+@@ -1006,8 +1006,7 @@ Another common problem is deleting timer
+ calling add_timer() at the end of their timer function).
+ Because this is a fairly common case which is prone to races, you should
+ use del_timer_sync() (``include/linux/timer.h``) to
+-handle this case. It returns the number of times the timer had to be
+-deleted before we finally stopped it from adding itself back in.
++handle this case.
  
- 	if (entity_is_task(se)) {
- 		p = task_of(se);
-@@ -6998,7 +6999,7 @@ static int dequeue_entities(struct rq *rq, struct sched_entity *se, int flags)
+ Locking Speed
+ =============
+--- a/Documentation/translations/it_IT/kernel-hacking/locking.rst
++++ b/Documentation/translations/it_IT/kernel-hacking/locking.rst
+@@ -1027,9 +1027,7 @@ Un altro problema è l'eliminazione dei
+ da soli (chiamando add_timer() alla fine della loro esecuzione).
+ Dato che questo è un problema abbastanza comune con una propensione
+ alle corse critiche, dovreste usare del_timer_sync()
+-(``include/linux/timer.h``) per gestire questo caso. Questa ritorna il
+-numero di volte che il temporizzatore è stato interrotto prima che
+-fosse in grado di fermarlo senza che si riavviasse.
++(``include/linux/timer.h``) per gestire questo caso.
  
- 		/* end evaluation on encountering a throttled cfs_rq */
- 		if (cfs_rq_throttled(cfs_rq))
--			return 0;
-+			goto out;
- 
- 		/* Don't dequeue parent if it has other entities besides us */
- 		if (cfs_rq->load.weight) {
-@@ -7039,7 +7040,7 @@ static int dequeue_entities(struct rq *rq, struct sched_entity *se, int flags)
- 
- 		/* end evaluation on encountering a throttled cfs_rq */
- 		if (cfs_rq_throttled(cfs_rq))
--			return 0;
-+			goto out;
- 	}
- 
- 	sub_nr_running(rq, h_nr_queued);
-@@ -7048,6 +7049,8 @@ static int dequeue_entities(struct rq *rq, struct sched_entity *se, int flags)
- 	if (unlikely(!was_sched_idle && sched_idle_rq(rq)))
- 		rq->next_balance = jiffies;
- 
-+	ret = 1;
-+out:
- 	if (p && task_delayed) {
- 		WARN_ON_ONCE(!task_sleep);
- 		WARN_ON_ONCE(p->on_rq != 1);
-@@ -7063,7 +7066,7 @@ static int dequeue_entities(struct rq *rq, struct sched_entity *se, int flags)
- 		__block_task(rq, p);
- 	}
- 
--	return 1;
-+	return ret;
- }
- 
- /*
-
-base-commit: 6c7871823908a4330e145d635371582f76ce1407
--- 
-2.34.1
-
+ Velocità della sincronizzazione
+ ===============================
 
 
 
