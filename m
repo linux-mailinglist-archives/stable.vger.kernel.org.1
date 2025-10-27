@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-190598-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191027-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B94ABC10978
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:11:38 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 736F0C10EE0
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:25:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E76C94644B4
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:05:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4A70D189D092
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:22:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08BB13090CC;
-	Mon, 27 Oct 2025 19:01:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 308FE32B9AA;
+	Mon, 27 Oct 2025 19:20:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KRi2iyK+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TyZj3bYl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEF3F18A6A5;
-	Mon, 27 Oct 2025 19:01:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF492324B09;
+	Mon, 27 Oct 2025 19:20:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591702; cv=none; b=GBu8niJiTo7Pr6PVPi2sxo3WeJqsnlisudnz/oRvqdA5TJSArAOr1WHVsCy+MVweoytnYZit+uzsRZUL6ylMmO4caei3dJJRO7xsW39lwqSAaFFSOe1CS1jX+rLRTlV8PAQfGaqkxkCndEskDnI1lQ1JdJrjKMU3dHgjirZkptU=
+	t=1761592824; cv=none; b=PBYGkgUQpn9Qe/MqGhax3QCfqb0EvpxCrPDop/1dafP86Q4SaDZeneas+jZTwxkEmK7hnhSmwikZno0xtaTw2lBdc69mTVB2ZWw+JdopLCUQWxcRKYo254+ts1D38X9hqpLDnl06iG9KYyaPyfaO4JRhIS9bD/zRhW/Scv8lQR8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591702; c=relaxed/simple;
-	bh=OfpwhiHlw00nLGr8lYhlcYQbRbPaZ260+8nqsVLvU+c=;
+	s=arc-20240116; t=1761592824; c=relaxed/simple;
+	bh=O8MlZ7Ec64tQ0psY3JZ7+Smo6bdZDGnV6MJg1ZILHT8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RVmY9mVZtQUV931hYbrQJIA0wgL7i3r9023z8kWuxYperPlzEUJi1k8bTZFo1bRCuT/QiDsLHBhx38qER/PyTCN5R49KOzzfR+KXdSm3Oj0HXO7GdtQwJxBGq21V+RyGw/DgIK+cFHc11dasP+h20oMo6LPunyO/6ZX2JheQYFY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KRi2iyK+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4111BC4CEF1;
-	Mon, 27 Oct 2025 19:01:42 +0000 (UTC)
+	 MIME-Version; b=eQRgR6JWPLXKBNwVlRlWZqb1gEfKYqk1WYeBjkRl9wm3WyFSjEZyLgTb97Z0LcIC2h3PiBgzM6nvUDgV7/YSWPfYpoGF/BbxK91ilp+n/vhbbxpSyPFFUzsjj8LPWavivtbqfgr5cBUW171SPGIiQeFnNGUe8oG5dE4Rs8ej/TY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TyZj3bYl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FB3BC4CEF1;
+	Mon, 27 Oct 2025 19:20:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591702;
-	bh=OfpwhiHlw00nLGr8lYhlcYQbRbPaZ260+8nqsVLvU+c=;
+	s=korg; t=1761592823;
+	bh=O8MlZ7Ec64tQ0psY3JZ7+Smo6bdZDGnV6MJg1ZILHT8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KRi2iyK+xLTclJqQFG9wRt2+JPn1i5kn2OBpokUduQ/PwJ1DBxpONK1Db5xoTtoLf
-	 Tm7sPGoNRCFOgumBhn+md/IfYdXCdNiHjFD4NVBOGiLwYP2op2eaZqnGCjAy/S7/aX
-	 lh9HyNmDUm3UqghB/TF7A+40GgMFlJz0BUL8XnMU=
+	b=TyZj3bYlFiL7xGRYC7is8zNrMRJW0u1TA6ylUTRa9fqo9ur+jlDHAwwW78w0xdtlh
+	 jrx0VBse9l8udcQyFuFNY3a++rtStz1LM3GinHIw81nBehg3LaKX2oSwryw85UkIUI
+	 99m1AERWPi5Q7WICLZ1S3WL/vd9AaiR5KbcDD5K8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu-Ting Tseng <yutingtseng@google.com>,
-	Alice Ryhl <aliceryhl@google.com>
-Subject: [PATCH 5.10 297/332] binder: remove "invalid inc weak" check
-Date: Mon, 27 Oct 2025 19:35:50 +0100
-Message-ID: <20251027183532.695314157@linuxfoundation.org>
+	Nathan Chancellor <nathan@kernel.org>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 025/117] net/mlx5e: Return 1 instead of 0 in invalid case in mlx5e_mpwrq_umr_entry_size()
+Date: Mon, 27 Oct 2025 19:35:51 +0100
+Message-ID: <20251027183454.646568899@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
-References: <20251027183524.611456697@linuxfoundation.org>
+In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
+References: <20251027183453.919157109@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,60 +63,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alice Ryhl <aliceryhl@google.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-commit d90eeb8ecd227c204ab6c34a17b372bd950b7aa2 upstream.
+[ Upstream commit aaf043a5688114703ae2c1482b92e7e0754d684e ]
 
-There are no scenarios where a weak increment is invalid on binder_node.
-The only possible case where it could be invalid is if the kernel
-delivers BR_DECREFS to the process that owns the node, and then
-increments the weak refcount again, effectively "reviving" a dead node.
+When building with Clang 20 or newer, there are some objtool warnings
+from unexpected fallthroughs to other functions:
 
-However, that is not possible: when the BR_DECREFS command is delivered,
-the kernel removes and frees the binder_node. The fact that you were
-able to call binder_inc_node_nilocked() implies that the node is not yet
-destroyed, which implies that BR_DECREFS has not been delivered to
-userspace, so incrementing the weak refcount is valid.
+  vmlinux.o: warning: objtool: mlx5e_mpwrq_mtts_per_wqe() falls through to next function mlx5e_mpwrq_max_num_entries()
+  vmlinux.o: warning: objtool: mlx5e_mpwrq_max_log_rq_size() falls through to next function mlx5e_get_linear_rq_headroom()
 
-Note that it's currently possible to trigger this condition if the owner
-calls BINDER_THREAD_EXIT while node->has_weak_ref is true. This causes
-BC_INCREFS on binder_ref instances to fail when they should not.
+LLVM 20 contains an (admittedly problematic [1]) optimization [2] to
+convert divide by zero into the equivalent of __builtin_unreachable(),
+which invokes undefined behavior and destroys code generation when it is
+encountered in a control flow graph.
 
-Cc: stable@vger.kernel.org
-Fixes: 457b9a6f09f0 ("Staging: android: add binder driver")
-Reported-by: Yu-Ting Tseng <yutingtseng@google.com>
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-Link: https://patch.msgid.link/20251015-binder-weak-inc-v1-1-7914b092c371@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+mlx5e_mpwrq_umr_entry_size() returns 0 in the default case of an
+unrecognized mlx5e_mpwrq_umr_mode value. mlx5e_mpwrq_mtts_per_wqe(),
+which is inlined into mlx5e_mpwrq_max_log_rq_size(), uses the result of
+mlx5e_mpwrq_umr_entry_size() in a divide operation without checking for
+zero, so LLVM is able to infer there will be a divide by zero in this
+case and invokes undefined behavior. While there is some proposed work
+to isolate this undefined behavior and avoid the destructive code
+generation that results in these objtool warnings, code should still be
+defensive against divide by zero.
+
+As the WARN_ONCE() implies that an invalid value should be handled
+gracefully, return 1 instead of 0 in the default case so that the
+results of this division operation is always valid.
+
+Fixes: 168723c1f8d6 ("net/mlx5e: xsk: Use umr_mode to calculate striding RQ parameters")
+Link: https://lore.kernel.org/CAGG=3QUk8-Ak7YKnRziO4=0z=1C_7+4jF+6ZeDQ9yF+kuTOHOQ@mail.gmail.com/ [1]
+Link: https://github.com/llvm/llvm-project/commit/37932643abab699e8bb1def08b7eb4eae7ff1448 [2]
+Closes: https://github.com/ClangBuiltLinux/linux/issues/2131
+Closes: https://github.com/ClangBuiltLinux/linux/issues/2132
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/20251014-mlx5e-avoid-zero-div-from-mlx5e_mpwrq_umr_entry_size-v1-1-dc186b8819ef@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/android/binder.c |   11 +----------
- 1 file changed, 1 insertion(+), 10 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/en/params.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/android/binder.c
-+++ b/drivers/android/binder.c
-@@ -1204,17 +1204,8 @@ static int binder_inc_node_nilocked(stru
- 	} else {
- 		if (!internal)
- 			node->local_weak_refs++;
--		if (!node->has_weak_ref && list_empty(&node->work.entry)) {
--			if (target_list == NULL) {
--				pr_err("invalid inc weak node for %d\n",
--					node->debug_id);
--				return -EINVAL;
--			}
--			/*
--			 * See comment above
--			 */
-+		if (!node->has_weak_ref && target_list && list_empty(&node->work.entry))
- 			binder_enqueue_work_ilocked(&node->work, target_list);
--		}
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/params.c b/drivers/net/ethernet/mellanox/mlx5/core/en/params.c
+index 58ec5e44aa7ad..3dac708c0d75a 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en/params.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en/params.c
+@@ -99,7 +99,7 @@ u8 mlx5e_mpwrq_umr_entry_size(enum mlx5e_mpwrq_umr_mode mode)
+ 		return sizeof(struct mlx5_ksm) * 4;
  	}
- 	return 0;
+ 	WARN_ONCE(1, "MPWRQ UMR mode %d is not known\n", mode);
+-	return 0;
++	return 1;
  }
+ 
+ u8 mlx5e_mpwrq_log_wqe_sz(struct mlx5_core_dev *mdev, u8 page_shift,
+-- 
+2.51.0
+
 
 
 
