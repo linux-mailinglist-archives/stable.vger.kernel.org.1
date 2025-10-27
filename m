@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-191182-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191015-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6413FC11150
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:33:27 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4041EC10F40
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:27:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CAE111A26F0E
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:29:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6B9CF561FF8
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:21:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8AB832C326;
-	Mon, 27 Oct 2025 19:26:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E95E031DD87;
+	Mon, 27 Oct 2025 19:19:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j7A9Tgt9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CaM3Ut8x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9934432C92A;
-	Mon, 27 Oct 2025 19:26:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4B2630E0C0;
+	Mon, 27 Oct 2025 19:19:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761593218; cv=none; b=L6qOfVMniAKGZ9RPd+xTXM7kKysG5jP25SU9sNhsiiSDR5Jk6Utj4fAPQlRMkzBb7E0wJLz54iJfXR/8al5+u/hiATcDvupg4H/uoRPNVS63lFqSvIU8Nt/mtyadinB0XnyvTxzPyiALBbMhM66rxDbLu2v/HpEfFWw76MQXNsw=
+	t=1761592792; cv=none; b=N0lJbhSQzCbUR9qWCSJD/2p6pwSd3UfKX9/7T0DBq9vP1zbhAQ40DxalauESR8Gcyi+/Ok2GKO4z8h0h/1lUeomojg8s5COet2ia6BgF0fVXvzM0WMXH8Wj+IZzDigssU/56NVoCAFcPMpgGkWkuRuWYQXQk8CKiu2nxfAK9oag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761593218; c=relaxed/simple;
-	bh=TTqXzHdkxqhJS6z0N22hTR1wGSijiSuAg/TtkKdOR9U=;
+	s=arc-20240116; t=1761592792; c=relaxed/simple;
+	bh=eCwOg9QlfF1O7Ydl+P8xcU4OJz457qRHsrFB02UU+3M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SgiO29oOLswFuo/KrnbccuzeG95HaHtpgDI0OpXZka0Eug07XiKTWHZKpYT6HgQxHJTsVsy6nnbfYtg8CxQjI/1jd6rtzRZ4HhpeklWJ6JB0FBLMNcR6Djkb7N4dVbtNwJ2ehH7iaLDiB9hJjjmsTa/kXwq35YgbV17R46jhpB0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j7A9Tgt9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C7D6C4CEF1;
-	Mon, 27 Oct 2025 19:26:58 +0000 (UTC)
+	 MIME-Version; b=TZtJVRN3Ij00Myxa2IVbr+J7keoXSo58rNXuJQUAVvgirvgYY9jFf2Ol3N6cEg6ZB2dld7dzA9lMGpMCxanWJ2KoumrwM7ib7VnM5Khqgl3Zy6xx/5+abg8EL1+TvKYXLx2jbv/KEmuUodh9PHh7MmO6pOuUq0ibTzRzcxbJQb4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CaM3Ut8x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34398C116D0;
+	Mon, 27 Oct 2025 19:19:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761593218;
-	bh=TTqXzHdkxqhJS6z0N22hTR1wGSijiSuAg/TtkKdOR9U=;
+	s=korg; t=1761592792;
+	bh=eCwOg9QlfF1O7Ydl+P8xcU4OJz457qRHsrFB02UU+3M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j7A9Tgt9M9ZtE9nICXkoF6FND5gSx6VhEXe/n1KK/TAFktm19wN0Rhi2cnbiq9NTv
-	 NFv7P25joscagMfXqCEBUz/qDEHQLjYNE/5Zx+xNkSZcr6f2HQICDBPXF7ARK5BRsp
-	 0aZrkkhLHSAdjHsRE0qv4hZ0voYGlfE2z1m4KdVY=
+	b=CaM3Ut8xiV48p8Fr0OM2xk7Hfqz0aSzXatQcwKKF8GJDL1dU7sAYs/M0IIi3JFuG6
+	 CwLjzyPv59xx6QBC3ldvoRK3NXgkIgSysOCBH2tUD8jAHLyTelck6co9gUUVhLKFEg
+	 a6NeOUyGo85tu1bFMkgqyDq9GqcKInA4NodViRCQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Antonio Quartulli <antonio@openvpn.net>,
-	Ralf Lici <ralf@mandelbit.com>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Andreas Gruenbacher <agruenba@redhat.com>,
+	Andrew Price <anprice@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 058/184] ovpn: use datagram_poll_queue for socket readiness in TCP
+Subject: [PATCH 6.12 014/117] gfs2: Fix unlikely race in gdlm_put_lock
 Date: Mon, 27 Oct 2025 19:35:40 +0100
-Message-ID: <20251027183516.458557333@linuxfoundation.org>
+Message-ID: <20251027183454.327240375@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
-References: <20251027183514.934710872@linuxfoundation.org>
+In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
+References: <20251027183453.919157109@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,78 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ralf Lici <ralf@mandelbit.com>
+From: Andreas Gruenbacher <agruenba@redhat.com>
 
-[ Upstream commit efd729408bc7d57e0c8d027b9ff514187fc1a05b ]
+[ Upstream commit 28c4d9bc0708956c1a736a9e49fee71b65deee81 ]
 
-openvpn TCP encapsulation uses a custom queue to deliver packets to
-userspace. Currently it relies on datagram_poll, which checks
-sk_receive_queue, leading to false readiness signals when that queue
-contains non-userspace packets.
+In gdlm_put_lock(), there is a small window of time in which the
+DFL_UNMOUNT flag has been set but the lockspace hasn't been released,
+yet.  In that window, dlm may still call gdlm_ast() and gdlm_bast().
+To prevent it from dereferencing freed glock objects, only free the
+glock if the lockspace has actually been released.
 
-Switch ovpn_tcp_poll to use datagram_poll_queue with the peer's
-user_queue, ensuring poll only signals readiness when userspace data is
-actually available. Also refactor ovpn_tcp_poll in order to enforce the
-assumption we can make on the lifetime of ovpn_sock and peer.
-
-Fixes: 11851cbd60ea ("ovpn: implement TCP transport")
-Signed-off-by: Antonio Quartulli <antonio@openvpn.net>
-Signed-off-by: Ralf Lici <ralf@mandelbit.com>
-Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
-Link: https://patch.msgid.link/20251021100942.195010-4-ralf@mandelbit.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+Reviewed-by: Andrew Price <anprice@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ovpn/tcp.c | 26 ++++++++++++++++++++++----
- 1 file changed, 22 insertions(+), 4 deletions(-)
+ fs/gfs2/lock_dlm.c | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ovpn/tcp.c b/drivers/net/ovpn/tcp.c
-index 289f62c5d2c70..0d7f30360d874 100644
---- a/drivers/net/ovpn/tcp.c
-+++ b/drivers/net/ovpn/tcp.c
-@@ -560,16 +560,34 @@ static void ovpn_tcp_close(struct sock *sk, long timeout)
- static __poll_t ovpn_tcp_poll(struct file *file, struct socket *sock,
- 			      poll_table *wait)
- {
--	__poll_t mask = datagram_poll(file, sock, wait);
-+	struct sk_buff_head *queue = &sock->sk->sk_receive_queue;
- 	struct ovpn_socket *ovpn_sock;
-+	struct ovpn_peer *peer = NULL;
-+	__poll_t mask;
+diff --git a/fs/gfs2/lock_dlm.c b/fs/gfs2/lock_dlm.c
+index 9e27dd8bef88d..38ea69ca2303d 100644
+--- a/fs/gfs2/lock_dlm.c
++++ b/fs/gfs2/lock_dlm.c
+@@ -321,12 +321,6 @@ static void gdlm_put_lock(struct gfs2_glock *gl)
+ 	gfs2_sbstats_inc(gl, GFS2_LKS_DCOUNT);
+ 	gfs2_update_request_times(gl);
  
- 	rcu_read_lock();
- 	ovpn_sock = rcu_dereference_sk_user_data(sock->sk);
--	if (ovpn_sock && ovpn_sock->peer &&
--	    !skb_queue_empty(&ovpn_sock->peer->tcp.user_queue))
--		mask |= EPOLLIN | EPOLLRDNORM;
-+	/* if we landed in this callback, we expect to have a
-+	 * meaningful state. The ovpn_socket lifecycle would
-+	 * prevent it otherwise.
-+	 */
-+	if (WARN(!ovpn_sock || !ovpn_sock->peer,
-+		 "ovpn: null state in ovpn_tcp_poll!")) {
-+		rcu_read_unlock();
-+		return 0;
+-	/* don't want to call dlm if we've unmounted the lock protocol */
+-	if (test_bit(DFL_UNMOUNT, &ls->ls_recover_flags)) {
+-		gfs2_glock_free(gl);
+-		return;
+-	}
+-
+ 	/*
+ 	 * When the lockspace is released, all remaining glocks will be
+ 	 * unlocked automatically.  This is more efficient than unlocking them
+@@ -348,6 +342,11 @@ static void gdlm_put_lock(struct gfs2_glock *gl)
+ 		goto again;
+ 	}
+ 
++	if (error == -ENODEV) {
++		gfs2_glock_free(gl);
++		return;
 +	}
 +
-+	if (ovpn_peer_hold(ovpn_sock->peer)) {
-+		peer = ovpn_sock->peer;
-+		queue = &peer->tcp.user_queue;
-+	}
- 	rcu_read_unlock();
- 
-+	mask = datagram_poll_queue(file, sock, wait, queue);
-+
-+	if (peer)
-+		ovpn_peer_put(peer);
-+
- 	return mask;
- }
- 
+ 	if (error) {
+ 		fs_err(sdp, "gdlm_unlock %x,%llx err=%d\n",
+ 		       gl->gl_name.ln_type,
 -- 
 2.51.0
 
