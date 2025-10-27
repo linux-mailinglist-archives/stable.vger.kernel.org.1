@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-191249-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191087-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDF9DC112D9
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:39:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D4FEC1112C
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:33:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5D0825656D7
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:32:09 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id CA2974FF27A
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:24:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9379D3101DF;
-	Mon, 27 Oct 2025 19:30:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C50F32C946;
+	Mon, 27 Oct 2025 19:22:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ebNcYkUW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c5mLZpaf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 511D721A94F;
-	Mon, 27 Oct 2025 19:30:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29D1931BCBC;
+	Mon, 27 Oct 2025 19:22:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761593411; cv=none; b=g+LJ0C2+QKoAXY7mxw1wOpPmHSQwxjTsHib6HHen02zsutxPuycbyvSdgCyWzRjX6YkFgUNa7Fah4j8yMby+AWxAp83w8/V7mshNnBxPh9U9BkWBt/j0/TnSsslhhnZzQRKsFyVo3jrZqKMnJBno5aAff4xnHP/m8Xfvvgp6n8g=
+	t=1761592971; cv=none; b=YHkldWjTbi2ssB+9MLjKu51EH5jgEMYUXOi94NP/xI40GYH+BKSe62F4DDO1Oe7w+bU4YTBOJcVjienax7bHhrrOfnDh2WJ/9/Juoh3doOpBcJIRUqG4KneYGSMs0vi2hNvhQhaXXN3t3DWLbpF3GhiE3XiFXDwJDqRHEEYT61k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761593411; c=relaxed/simple;
-	bh=OjK20eB3/O1fP/UEAs4a1Ol+jXfuQiA/tG6/HPYn480=;
+	s=arc-20240116; t=1761592971; c=relaxed/simple;
+	bh=tG2wfFnbIV7IO5Jq0CCr1+3HZO7NL1C/ko5Xkv+0qOQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Wmx1QBD1+T87hhcIcGz4x2+WjWJYjitcP5YWAb3E5B10dCOr6UOKsHQKN052eCsDcgarnkQ8fsUmoAHyvB5JYMshkVbyyKqHFqmgR2LJbwjxQzTDAnAb1PwEHRJa71GX111NNsZ3muNVhG7PG4uzn6BDow8xl7MnMj92cWtho/E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ebNcYkUW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C776CC4CEF1;
-	Mon, 27 Oct 2025 19:30:10 +0000 (UTC)
+	 MIME-Version; b=Gtn/x/qr0Hr4nhazRwZaLpjTID7ngKvVbcEdIndHKqDraiMV30dtRo8FLiPHt04LKDxjjXwGKsQyOaMg8YrTypxkemNy0mMf5u7PLS9ks729hy/0HxQ9/zZVHoCXC6ksyUCStnxex0QCe7KxBDLf6U94xV/zjDpMs7UZS06SXYo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c5mLZpaf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0B27C4CEF1;
+	Mon, 27 Oct 2025 19:22:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761593411;
-	bh=OjK20eB3/O1fP/UEAs4a1Ol+jXfuQiA/tG6/HPYn480=;
+	s=korg; t=1761592971;
+	bh=tG2wfFnbIV7IO5Jq0CCr1+3HZO7NL1C/ko5Xkv+0qOQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ebNcYkUWsylRXmUStkVWwCbFi40PDBAF8k5TJ122gZ1ARpWKz88bca9wpAIw8QuK7
-	 lfJAxNh6YFEvfhOpQLBW9qQLJiP4h0TJQsQGH3VWizHlM+nTiykGFzsjBCo+u2ShFK
-	 QZyZ9dlJMKjgOCkqQjoiKWr0xsg3/bCTvBzTb5gY=
+	b=c5mLZpaf4rQ1NSu5elYjFn8ixU2lB/slcXaVZ5MAWRK2VK9CH2Pe8rCEry9JOvool
+	 RsQZuBDxQGzXXWjxVeNEs7tVNF0TWbhzVgpVinY6cKipVL8XjQfbwkE2OPLZJFqAJ9
+	 9P0IWKjxQFhlK6/Qb5wp7XC+EWkTKjz07lND5sYE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikhail Kshevetskiy <mikhail.kshevetskiy@iopsys.eu>,
-	Frieder Schrempf <frieder.schrempf@kontron.de>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Mark Brown <broonie@kernel.org>,
+	JuenKit Yip <JuenKit_Yip@hotmail.com>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 126/184] spi: airoha: return an error for continuous mode dirmap creation cases
-Date: Mon, 27 Oct 2025 19:36:48 +0100
-Message-ID: <20251027183518.336206954@linuxfoundation.org>
+Subject: [PATCH 6.12 083/117] hwmon: (sht3x) Fix error handling
+Date: Mon, 27 Oct 2025 19:36:49 +0100
+Message-ID: <20251027183456.271021806@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
-References: <20251027183514.934710872@linuxfoundation.org>
+In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
+References: <20251027183453.919157109@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,47 +62,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikhail Kshevetskiy <mikhail.kshevetskiy@iopsys.eu>
+From: Guenter Roeck <linux@roeck-us.net>
 
-[ Upstream commit 4314ffce4eb81a6c18700af1b6e29b6e0c6b9e37 ]
+[ Upstream commit 8dcc66ad379ec0642fb281c45ccfd7d2d366e53f ]
 
-This driver can accelerate single page operations only, thus
-continuous reading mode should not be used.
+Handling of errors when reading status, temperature, and humidity returns
+the error number as negative attribute value. Fix it up by returning
+the error as return value.
 
-Continuous reading will use sizes up to the size of one erase block.
-This size is much larger than the size of single flash page. Use this
-difference to identify continuous reading and return an error.
-
-Signed-off-by: Mikhail Kshevetskiy <mikhail.kshevetskiy@iopsys.eu>
-Reviewed-by: Frieder Schrempf <frieder.schrempf@kontron.de>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Fixes: a403997c12019 ("spi: airoha: add SPI-NAND Flash controller driver")
-Link: https://patch.msgid.link/20251012121707.2296160-2-mikhail.kshevetskiy@iopsys.eu
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: a0ac418c6007c ("hwmon: (sht3x) convert some of sysfs interface to hwmon")
+Cc: JuenKit Yip <JuenKit_Yip@hotmail.com>
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-airoha-snfi.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/hwmon/sht3x.c | 27 +++++++++++++++++----------
+ 1 file changed, 17 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/spi/spi-airoha-snfi.c b/drivers/spi/spi-airoha-snfi.c
-index dbe640986825e..043a03cd90a19 100644
---- a/drivers/spi/spi-airoha-snfi.c
-+++ b/drivers/spi/spi-airoha-snfi.c
-@@ -618,6 +618,10 @@ static int airoha_snand_dirmap_create(struct spi_mem_dirmap_desc *desc)
- 	if (desc->info.offset + desc->info.length > U32_MAX)
- 		return -EINVAL;
+diff --git a/drivers/hwmon/sht3x.c b/drivers/hwmon/sht3x.c
+index 650b0bcc2359e..94466e28dc56f 100644
+--- a/drivers/hwmon/sht3x.c
++++ b/drivers/hwmon/sht3x.c
+@@ -294,24 +294,26 @@ static struct sht3x_data *sht3x_update_client(struct device *dev)
+ 	return data;
+ }
  
-+	/* continuous reading is not supported */
-+	if (desc->info.length > SPI_NAND_CACHE_SIZE)
-+		return -E2BIG;
-+
- 	if (!airoha_snand_supports_op(desc->mem, &desc->info.op_tmpl))
- 		return -EOPNOTSUPP;
+-static int temp1_input_read(struct device *dev)
++static int temp1_input_read(struct device *dev, long *temp)
+ {
+ 	struct sht3x_data *data = sht3x_update_client(dev);
  
+ 	if (IS_ERR(data))
+ 		return PTR_ERR(data);
+ 
+-	return data->temperature;
++	*temp = data->temperature;
++	return 0;
+ }
+ 
+-static int humidity1_input_read(struct device *dev)
++static int humidity1_input_read(struct device *dev, long *humidity)
+ {
+ 	struct sht3x_data *data = sht3x_update_client(dev);
+ 
+ 	if (IS_ERR(data))
+ 		return PTR_ERR(data);
+ 
+-	return data->humidity;
++	*humidity = data->humidity;
++	return 0;
+ }
+ 
+ /*
+@@ -709,6 +711,7 @@ static int sht3x_read(struct device *dev, enum hwmon_sensor_types type,
+ 		      u32 attr, int channel, long *val)
+ {
+ 	enum sht3x_limits index;
++	int ret;
+ 
+ 	switch (type) {
+ 	case hwmon_chip:
+@@ -723,10 +726,12 @@ static int sht3x_read(struct device *dev, enum hwmon_sensor_types type,
+ 	case hwmon_temp:
+ 		switch (attr) {
+ 		case hwmon_temp_input:
+-			*val = temp1_input_read(dev);
+-			break;
++			return temp1_input_read(dev, val);
+ 		case hwmon_temp_alarm:
+-			*val = temp1_alarm_read(dev);
++			ret = temp1_alarm_read(dev);
++			if (ret < 0)
++				return ret;
++			*val = ret;
+ 			break;
+ 		case hwmon_temp_max:
+ 			index = limit_max;
+@@ -751,10 +756,12 @@ static int sht3x_read(struct device *dev, enum hwmon_sensor_types type,
+ 	case hwmon_humidity:
+ 		switch (attr) {
+ 		case hwmon_humidity_input:
+-			*val = humidity1_input_read(dev);
+-			break;
++			return humidity1_input_read(dev, val);
+ 		case hwmon_humidity_alarm:
+-			*val = humidity1_alarm_read(dev);
++			ret = humidity1_alarm_read(dev);
++			if (ret < 0)
++				return ret;
++			*val = ret;
+ 			break;
+ 		case hwmon_humidity_max:
+ 			index = limit_max;
 -- 
 2.51.0
 
