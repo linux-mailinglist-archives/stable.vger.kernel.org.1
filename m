@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-190099-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190426-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05D75C0FF72
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:40:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4A4FC106B7
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:03:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6C62819C51C0
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:41:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AB56E561A98
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:57:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8594631B815;
-	Mon, 27 Oct 2025 18:40:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B466C2D6614;
+	Mon, 27 Oct 2025 18:54:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tTuOMxOf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="13f5ChOl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E5D431B80D;
-	Mon, 27 Oct 2025 18:40:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70FF5198A11;
+	Mon, 27 Oct 2025 18:54:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761590434; cv=none; b=cIZTdg+P8WIoimNgoc6YNrCSsQo0nYpO61Jw18V9P56rm5f2ND4u6mbYPA3WEj2q/Z0ineBVN+NQr0Y4ALD6zIlgCFb+eH0g+kdaqYRXveWi1eqVXv6T+wOZV06lDUQc4e4o8js9yqCtOuQD/JI42b8EthKofqBTMLfBz/s/cEE=
+	t=1761591260; cv=none; b=PQMnoH9CjWeeHwSCPuVYkuMkrr7CRr5errCFeDu6PFD9OhPxDRBYLbErsyP37DxQnJ/h7+/euniRmasSMTLIEoAJm7xz+rL265224GD1RwVCfyNvTbHVmKLOQl6ZAa8jkGFDMM3CBxa4Wk++NIIe3BxAtAPgmeqQ4hogShnjdv8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761590434; c=relaxed/simple;
-	bh=jZBx/9mUmOEMGCUk5VqymZwR+AnCDs7ZgMO0iYRkH7g=;
+	s=arc-20240116; t=1761591260; c=relaxed/simple;
+	bh=98Aumik56HVvLoKATIf8VKWLRPYFhTarNV9b48BYtiM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tE072lPLqQAs28FSZ4xUsK2oVL4tnd9TM8CSN8NxhVMIU0qLjQxBPtFdnq9cRm2vK2kpWu98orRAML0PFujbM7r9TG75vvoWYo8R2EdaZ+4f3InWmA0wIEHS8FRRdlNjQ25FIFzYSOHtPxJFCJfYybcncdn0z716aFDMQyo/4O4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tTuOMxOf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DC8DC4CEFD;
-	Mon, 27 Oct 2025 18:40:33 +0000 (UTC)
+	 MIME-Version; b=p/0ujC5mRUuITWGzZ6EJUhKEtkfpmZg7W4f1HUKG7qxQmnX7JkusBCv0eqSw00XHNaIvBtfnyf5wNY/+zgn56VwXyXlCc070R1p6vBM49ppZjnhXGEq16S2ceFZy6coltpy1SbdnKPbfB7o0945RsfvnEp+mUYkQx6+aun+kvj4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=13f5ChOl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03068C4CEF1;
+	Mon, 27 Oct 2025 18:54:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761590433;
-	bh=jZBx/9mUmOEMGCUk5VqymZwR+AnCDs7ZgMO0iYRkH7g=;
+	s=korg; t=1761591260;
+	bh=98Aumik56HVvLoKATIf8VKWLRPYFhTarNV9b48BYtiM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tTuOMxOfrY/Pg3NMCSYrNcfX6AMLeXliNJifMpRjaqrqYzA0uDdyrTdJyRB58lTTi
-	 3YG0CFLKUz2alp08mCWKJ+PU2Pz3raEnmQfuaNkoiY7MTic54/fAsLfypc/5CI9csw
-	 pyRNPJWzTktglWTS1LmZMWohIjc4kR0e0mJ7gjAg=
+	b=13f5ChOlMQ7hi8zuf0oJib7Rs4DlBXNMTfyByxrle73eGWlh+gehLytG6JiwaeBGp
+	 86cdcuGkt3n/Lh2VYAS2Bt+w8sGm8yquWuBW6IahkWjOl563x/dN45S0GVxCUlQTDz
+	 fmMuXn93KbySnPWLUafEUX4foT9oTRsuiz6ZpBFc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Shurong <zhang_shurong@foxmail.com>,
-	Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 036/224] media: rj54n1cb0c: Fix memleak in rj54n1_probe()
+	Stephan Gerhold <stephan.gerhold@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 5.10 129/332] arm64: dts: qcom: msm8916: Add missing MDSS reset
 Date: Mon, 27 Oct 2025 19:33:02 +0100
-Message-ID: <20251027183509.971743762@linuxfoundation.org>
+Message-ID: <20251027183528.034650800@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183508.963233542@linuxfoundation.org>
-References: <20251027183508.963233542@linuxfoundation.org>
+In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
+References: <20251027183524.611456697@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,52 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Shurong <zhang_shurong@foxmail.com>
+From: Stephan Gerhold <stephan.gerhold@linaro.org>
 
-[ Upstream commit fda55673ecdabf25f5ecc61b5ab17239257ac252 ]
+commit 99b78773c2ae55dcc01025f94eae8ce9700ae985 upstream.
 
-rj54n1_probe() won't clean all the allocated resources in fail
-path, which may causes the memleaks. Add v4l2_ctrl_handler_free() to
-prevent memleak.
+On most MSM8916 devices (aside from the DragonBoard 410c), the bootloader
+already initializes the display to show the boot splash screen. In this
+situation, MDSS is already configured and left running when starting Linux.
+To avoid side effects from the bootloader configuration, the MDSS reset can
+be specified in the device tree to start again with a clean hardware state.
 
-Fixes: f187352dcd45 ("media: i2c: Copy rj54n1cb0c soc_camera sensor driver")
-Signed-off-by: Zhang Shurong <zhang_shurong@foxmail.com>
-Reviewed-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The reset for MDSS is currently missing in msm8916.dtsi, which causes
+errors when the MDSS driver tries to re-initialize the registers:
+
+ dsi_err_worker: status=6
+ dsi_err_worker: status=6
+ dsi_err_worker: status=6
+ ...
+
+It turns out that we have always indirectly worked around this by building
+the MDSS driver as a module. Before v6.17, the power domain was temporarily
+turned off until the module was loaded, long enough to clear the register
+contents. In v6.17, power domains are not turned off during boot until
+sync_state() happens, so this is no longer working. Even before v6.17 this
+resulted in broken behavior, but notably only when the MDSS driver was
+built-in instead of a module.
+
+Cc: stable@vger.kernel.org
+Fixes: 305410ffd1b2 ("arm64: dts: msm8916: Add display support")
+Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250915-msm8916-resets-v1-1-a5c705df0c45@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/i2c/rj54n1cb0c.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ arch/arm64/boot/dts/qcom/msm8916.dtsi |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/media/i2c/rj54n1cb0c.c b/drivers/media/i2c/rj54n1cb0c.c
-index 4cc51e0018744..b35b3e4286861 100644
---- a/drivers/media/i2c/rj54n1cb0c.c
-+++ b/drivers/media/i2c/rj54n1cb0c.c
-@@ -1332,10 +1332,13 @@ static int rj54n1_probe(struct i2c_client *client,
- 			V4L2_CID_GAIN, 0, 127, 1, 66);
- 	v4l2_ctrl_new_std(&rj54n1->hdl, &rj54n1_ctrl_ops,
- 			V4L2_CID_AUTO_WHITE_BALANCE, 0, 1, 1, 1);
--	rj54n1->subdev.ctrl_handler = &rj54n1->hdl;
--	if (rj54n1->hdl.error)
--		return rj54n1->hdl.error;
+--- a/arch/arm64/boot/dts/qcom/msm8916.dtsi
++++ b/arch/arm64/boot/dts/qcom/msm8916.dtsi
+@@ -899,6 +899,8 @@
  
-+	if (rj54n1->hdl.error) {
-+		ret = rj54n1->hdl.error;
-+		goto err_free_ctrl;
-+	}
+ 			interrupts = <GIC_SPI 72 IRQ_TYPE_LEVEL_HIGH>;
+ 
++			resets = <&gcc GCC_MDSS_BCR>;
 +
-+	rj54n1->subdev.ctrl_handler = &rj54n1->hdl;
- 	rj54n1->clk_div		= clk_div;
- 	rj54n1->rect.left	= RJ54N1_COLUMN_SKIP;
- 	rj54n1->rect.top	= RJ54N1_ROW_SKIP;
--- 
-2.51.0
-
+ 			interrupt-controller;
+ 			#interrupt-cells = <1>;
+ 
 
 
 
