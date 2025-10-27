@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-191093-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191006-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22A48C1104E
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:30:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FA1DC10F28
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:27:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AA0535640F3
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:24:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 21954565C54
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:20:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4759732C926;
-	Mon, 27 Oct 2025 19:23:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F82532143D;
+	Mon, 27 Oct 2025 19:19:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ApB/dJAr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MszkrkCa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5AF52DAFC3;
-	Mon, 27 Oct 2025 19:23:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A24D31DDBC;
+	Mon, 27 Oct 2025 19:19:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592988; cv=none; b=bP4fIc0yU8erxlB2azffsRxyMvaXVx+IyfOI3gXXDAbGz3IHEBATOCOsKetyV43WFkHy62jjoCOWyEwPO7dTELAmXLdrKvE2u4T5so7uWdKdeF8Oi832lbMaRVVjh6Zz1sfmJT8sH3O35qbjBg0zdON3GBl7kJTMIcwS91Xv7Wg=
+	t=1761592769; cv=none; b=FZUtksythfSqGrcqW0KvnRIivAq+9mC7tAjo4nuX79wrHnWsWLYK/wzBr5dVUTvjqBYV6XXKJA/ZC+k0aeuqCoRWjwxT2CabzU7GJfJKKl4FI+ZojUl1WhCeNu4KcVumlw9b5tqQJfQX4ZSuGB341Ea8qK1RnRQ29gAWSbkcEcY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592988; c=relaxed/simple;
-	bh=GsQAFy5jUChE7S+hCC/G6qvh2y8yA4Kq477MPUe4gFU=;
+	s=arc-20240116; t=1761592769; c=relaxed/simple;
+	bh=qc1N7B/sNFGKTKuRQ/Dt2g5EZszUIz0633V4CXvokt0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gCKKo8+zYwM63qPi4LWaOBXGh1UmT5eTRTDf2OQWZqT6aqVl39p8sBJ3ZemJNSEJ45iQd3qKHKZkHTPH9VjnjynWiMj99AQqO+xVkWjlQ8vqJM7WtDqF3r4Go4jXQIP55kCPgFdrLvFlDegFKoMQE7G499OZ/cvH1eB6eFQa4Kg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ApB/dJAr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59E1FC4CEF1;
-	Mon, 27 Oct 2025 19:23:08 +0000 (UTC)
+	 MIME-Version; b=hQyaP3YY8FdbsL2Ja6YUKPmkzxQK7M9X+3Zg9T1RX1nIDWkQ4DPWEZQyL24wiXXJetHCDOeH3HJXmN12WVccHGYplAcarNmZ4SI8dl8UgpqPYn+CRaS0dHoS0kFnUM6M3nd+8ngtpfgigPyF7dIkxOcMsC5pf9w2XjwG3vRB8FQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MszkrkCa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2187C4CEF1;
+	Mon, 27 Oct 2025 19:19:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592988;
-	bh=GsQAFy5jUChE7S+hCC/G6qvh2y8yA4Kq477MPUe4gFU=;
+	s=korg; t=1761592769;
+	bh=qc1N7B/sNFGKTKuRQ/Dt2g5EZszUIz0633V4CXvokt0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ApB/dJArjfkoLmdJ54esWvm5KdQddlvfj6VUiAoPeNbVlYS+jCl1i1D+Hf7f348dP
-	 h7nkirVoPTlAmmdKzXJTWtM7FQtsv3fV9rlMIYtvDqcKLwq6yWNwopT2MrZ1BDxCq4
-	 aa8Uxcd2z0LD5cpqIM7fUZYR3htb2IVRTuPlOwV4=
+	b=MszkrkCa79rhnCxFAnEoErd/RWIy/kLUjEg6QeN2BV2V1qB0/qKQAXbP0tdJlaPlt
+	 ZRcCFDJb1le/0XIt8mirproUi511PC5y4K7/2k4dJawX8t5YUy9TfDfsSeEYU87L7m
+	 mORb8PQwLUU9xLM63kTBKOuKkAUJu6uFnDUsY5lY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 088/117] io_uring: correct __must_hold annotation in io_install_fixed_file
+	Andrew Cooper <andrew.cooper3@citrix.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	stable@kernel.org
+Subject: [PATCH 6.6 65/84] x86/microcode: Fix Entrysign revision check for Zen1/Naples
 Date: Mon, 27 Oct 2025 19:36:54 +0100
-Message-ID: <20251027183456.404258994@linuxfoundation.org>
+Message-ID: <20251027183440.545287579@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
-References: <20251027183453.919157109@linuxfoundation.org>
+In-Reply-To: <20251027183438.817309828@linuxfoundation.org>
+References: <20251027183438.817309828@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+From: Andrew Cooper <andrew.cooper3@citrix.com>
 
-[ Upstream commit c5efc6a0b3940381d67887302ddb87a5cf623685 ]
+commit 876f0d43af78639790bee0e57b39d498ae35adcf upstream.
 
-The __must_hold annotation references &req->ctx->uring_lock, but req
-is not in scope in io_install_fixed_file. This change updates the
-annotation to reference the correct ctx->uring_lock.
-improving code clarity.
+... to match AMD's statement here:
 
-Fixes: f110ed8498af ("io_uring: split out fixed file installation and removal")
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+https://www.amd.com/en/resources/product-security/bulletin/amd-sb-7033.html
+
+Fixes: 50cef76d5cb0 ("x86/microcode/AMD: Load only SHA256-checksummed patches")
+Signed-off-by: Andrew Cooper <andrew.cooper3@citrix.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: <stable@kernel.org>
+Link: https://patch.msgid.link/20251020144124.2930784-1-andrew.cooper3@citrix.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/filetable.c | 2 +-
+ arch/x86/kernel/cpu/microcode/amd.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/io_uring/filetable.c b/io_uring/filetable.c
-index 997c56d32ee6c..6183d61c7222d 100644
---- a/io_uring/filetable.c
-+++ b/io_uring/filetable.c
-@@ -62,7 +62,7 @@ void io_free_file_tables(struct io_file_table *table)
+--- a/arch/x86/kernel/cpu/microcode/amd.c
++++ b/arch/x86/kernel/cpu/microcode/amd.c
+@@ -184,7 +184,7 @@ static bool need_sha_check(u32 cur_rev)
+ 	}
  
- static int io_install_fixed_file(struct io_ring_ctx *ctx, struct file *file,
- 				 u32 slot_index)
--	__must_hold(&req->ctx->uring_lock)
-+	__must_hold(&ctx->uring_lock)
- {
- 	struct io_fixed_file *file_slot;
- 	int ret;
--- 
-2.51.0
-
+ 	switch (cur_rev >> 8) {
+-	case 0x80012: return cur_rev <= 0x800126f; break;
++	case 0x80012: return cur_rev <= 0x8001277; break;
+ 	case 0x80082: return cur_rev <= 0x800820f; break;
+ 	case 0x83010: return cur_rev <= 0x830107c; break;
+ 	case 0x86001: return cur_rev <= 0x860010e; break;
 
 
 
