@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-190833-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190555-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB6BAC10D53
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:21:42 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C63FC10824
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:08:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A10F15039A4
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:14:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E58A19C6045
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:04:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2B6231D399;
-	Mon, 27 Oct 2025 19:11:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D51FC33439F;
+	Mon, 27 Oct 2025 18:59:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fo9lH2av"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f2BGLHL6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE97831A06A;
-	Mon, 27 Oct 2025 19:11:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91AC3332EC9;
+	Mon, 27 Oct 2025 18:59:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592317; cv=none; b=XrdZMQcN84P/2ACdg/tudIWt6PWDJ80/AkP7R+8AjofssnDYCPEmy+IHQk4QfDArEjdzXKatqwxZRoIT3p1GOkIUjiwwtEzgrE+CTTY3YJOXX/aQR33BCpGQtBg3NQ2mrVcJ4GZJAgTg2TMaz9c6a5/B/qCtLjENkasUTlOVlaQ=
+	t=1761591595; cv=none; b=UL1R+uiSfx+jm7jv/X/yHpb7NazwiLWS/MxTgfVX0JK+Ujt2rS0OFYvFKQd3VeeTr+bgh+ICXg18e/xtfDcCWPKjKVWOMQs1E0dfJDcprUInN+cfg7ZQwLW1+Hln52OR+qAfE3+/NVEDbR2+X5EKmgUrwFiJN8XCwOpawrib18M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592317; c=relaxed/simple;
-	bh=cMwu6LCZ5fxrnHhNhydA2Wv5qRKu/VyRU+w0El3uzEM=;
+	s=arc-20240116; t=1761591595; c=relaxed/simple;
+	bh=w5XeRXujR4BL5YhrNSYmmrvt6n4JG+s+qA+qVhrc+Pc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fdqe8oT8c1/95ZfevOvYmnY0oFgwt1iOG83MsdRMAxxUSkU54Ah1l3ykJx7BZB05A+Tq9cI997Q/ku5W6t31JAz9nn1ziZpMuHYcmMiCZye6MfKuaHiPqMqhKvW6j/PJydatn386ElOCStugNz8poOhAPZrbpfKDm1UQNnOktjI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fo9lH2av; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42A09C4CEF1;
-	Mon, 27 Oct 2025 19:11:57 +0000 (UTC)
+	 MIME-Version; b=JXcRPTvY6YeLi2/k6qjb49tsaYChSioCj7Cu0VJ94Pdf0/Wewb3ewgNfhCWpUtZlRIeP0yocc7RStGFW3ohH4TqujfAWfEM9ThiM6g+kuFPPdWNNNF7FlLQ1N1uOxtezv1NLdAse0gq8kxVRJNGzzvRfyUeBHGD4vytuWG0DmOA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f2BGLHL6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2467CC4CEF1;
+	Mon, 27 Oct 2025 18:59:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592317;
-	bh=cMwu6LCZ5fxrnHhNhydA2Wv5qRKu/VyRU+w0El3uzEM=;
+	s=korg; t=1761591595;
+	bh=w5XeRXujR4BL5YhrNSYmmrvt6n4JG+s+qA+qVhrc+Pc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fo9lH2av5fBubqx3yfhqAK+fumHXH9uxQbJ+3tpDiO3DFyqqEGjHrdf43y2ufjQBg
-	 5hYT7RCKirEgwQpTJ4+kEIb0xvR92rPKoXbBP3gC/mJ5HGsXlKyiCB8AkLTReggbyV
-	 x59b2HU7lr3Ec+B+4HEPtUxoBRuuw4DHFWqDQOFQ=
+	b=f2BGLHL6pCGN2F/ypOMAHA+cZAhpZapxMz3Ddf9h6mW1sIoHJXR8LualUPucjH2eD
+	 AxkwQlvpCeGb/NIuFsM1hBcVXyVPZKNh3DAZ6CETxqXuJI11rLZEcxlDYGC2byaJlX
+	 ++xv6Tto9Yg8C/KOavNDa8UUjchzTX3xhCYDfdAo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jann Horn <jannh@google.com>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Takashi Sakamoto <o-takashi@sakamocchi.jp>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 048/157] tls: wait for pending async decryptions if tls_strp_msg_hold fails
+Subject: [PATCH 5.10 256/332] ALSA: firewire: amdtp-stream: fix enum kernel-doc warnings
 Date: Mon, 27 Oct 2025 19:35:09 +0100
-Message-ID: <20251027183502.582185242@linuxfoundation.org>
+Message-ID: <20251027183531.603408706@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
-References: <20251027183501.227243846@linuxfoundation.org>
+In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
+References: <20251027183524.611456697@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sabrina Dubroca <sd@queasysnail.net>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-[ Upstream commit b8a6ff84abbcbbc445463de58704686011edc8e1 ]
+[ Upstream commit d41f68dff783d181a8fd462e612bda0fbab7f735 ]
 
-Async decryption calls tls_strp_msg_hold to create a clone of the
-input skb to hold references to the memory it uses. If we fail to
-allocate that clone, proceeding with async decryption can lead to
-various issues (UAF on the skb, writing into userspace memory after
-the recv() call has returned).
+Fix spelling of CIP_NO_HEADER to prevent a kernel-doc warning.
 
-In this case, wait for all pending decryption requests.
+Warning: amdtp-stream.h:57 Enum value 'CIP_NO_HEADER' not described in enum 'cip_flags'
+Warning: amdtp-stream.h:57 Excess enum value '%CIP_NO_HEADERS' description in 'cip_flags'
 
-Fixes: 84c61fe1a75b ("tls: rx: do not use the standard strparser")
-Reported-by: Jann Horn <jannh@google.com>
-Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
-Link: https://patch.msgid.link/b9fe61dcc07dab15da9b35cf4c7d86382a98caf2.1760432043.git.sd@queasysnail.net
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 3b196c394dd9f ("ALSA: firewire-lib: add no-header packet processing")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Reviewed-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/tls/tls_sw.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ sound/firewire/amdtp-stream.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
-index 0e378d7cb6903..baed07edc6395 100644
---- a/net/tls/tls_sw.c
-+++ b/net/tls/tls_sw.c
-@@ -1724,8 +1724,10 @@ static int tls_decrypt_sg(struct sock *sk, struct iov_iter *out_iov,
- 
- 	if (unlikely(darg->async)) {
- 		err = tls_strp_msg_hold(&ctx->strp, &ctx->async_hold);
--		if (err)
--			__skb_queue_tail(&ctx->async_hold, darg->skb);
-+		if (err) {
-+			err = tls_decrypt_async_wait(ctx);
-+			darg->async = false;
-+		}
- 		return err;
- 	}
- 
+diff --git a/sound/firewire/amdtp-stream.h b/sound/firewire/amdtp-stream.h
+index 2ceb57d1d58ee..1332089683da0 100644
+--- a/sound/firewire/amdtp-stream.h
++++ b/sound/firewire/amdtp-stream.h
+@@ -32,7 +32,7 @@
+  *	allows 5 times as large as IEC 61883-6 defines.
+  * @CIP_HEADER_WITHOUT_EOH: Only for in-stream. CIP Header doesn't include
+  *	valid EOH.
+- * @CIP_NO_HEADERS: a lack of headers in packets
++ * @CIP_NO_HEADER: a lack of headers in packets
+  * @CIP_UNALIGHED_DBC: Only for in-stream. The value of dbc is not alighed to
+  *	the value of current SYT_INTERVAL; e.g. initial value is not zero.
+  */
 -- 
 2.51.0
 
