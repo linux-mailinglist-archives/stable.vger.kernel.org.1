@@ -1,61 +1,55 @@
-Return-Path: <stable+bounces-190982-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190890-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EA8CC10F4F
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:27:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC9B1C10DE1
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:23:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7207F500CC6
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:19:57 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0BF50506159
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:16:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82CBE320A0D;
-	Mon, 27 Oct 2025 19:18:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83DC832A3D1;
+	Mon, 27 Oct 2025 19:14:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T8aLgx9G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oiTz6Nv5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FFFE3016F9;
-	Mon, 27 Oct 2025 19:18:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37540329C7B;
+	Mon, 27 Oct 2025 19:14:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592707; cv=none; b=UeV59k69BAYX09DMfaO/jdM5bpstYiOolV0VaLHKAWsc75MzLtXyI1Clwjs+5gpDvzWMw2iCtqVIF1PyncBTMMoMRVVylsqwGnuQr3vIu37MCKffegDspBcEYLp8CKEI1o7u4mM0lJ5cZjqtyEvfs5QyRUTAmoo2gx7qGfViLVs=
+	t=1761592468; cv=none; b=WTFY2SGv2fdqjUq8uUmHsLlmUQpFSVkwIsbgKZgNyUpbzj/jNMLRdpDtcWCP26hgB9Zx33xfuUMxJjJxtSXhov/rxUYEyiYEQE+FCHXFfs5DBM9WfwbkfT3kiH9EKUH1Lr3nZZMYWKr6CNwj2LvdxFq6MCiKSL11pce7C8/xhPA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592707; c=relaxed/simple;
-	bh=e//OSrnJc/nklL9tu0RMbiSh7hYeT2KMfjpv1FCAHHc=;
+	s=arc-20240116; t=1761592468; c=relaxed/simple;
+	bh=O+TFzeqgXcAnazkTKTyt4aObLwMCxmo9YM4hpN4c3bU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dAFaPWsMEizSabXzvpUm+2HxvR7xtUm1NZqQxt5MDXR2h3GZGHSYnwe/0qPb8TmKI9wC6jvgfGh8emqkalbZsNHspOZMYOmzfvmolS5j0M/eZGoo8IrhtZ9YGchltUnOzLqz/MPk8SMI2N2cHqL0WIGjTFtrQeizT+xTAdEKlJQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T8aLgx9G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6578C4CEF1;
-	Mon, 27 Oct 2025 19:18:26 +0000 (UTC)
+	 MIME-Version; b=ZBBitd9jcYzzreu/N0TJ7hlaEFQzieuDNo2mOSeNGGR3G73sILDTuy0LgZXt/TWHekH5JWktVM4fGwRJJhgJrwFep+LTSZ2SkW5STOiEdN0/dEnp+8X51rKhKXfOJbWiYdGbGMG0OmCWpd4wgbQzr4g+E6RsG1wb/LY8akpzfZY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oiTz6Nv5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9308C116B1;
+	Mon, 27 Oct 2025 19:14:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592707;
-	bh=e//OSrnJc/nklL9tu0RMbiSh7hYeT2KMfjpv1FCAHHc=;
+	s=korg; t=1761592468;
+	bh=O+TFzeqgXcAnazkTKTyt4aObLwMCxmo9YM4hpN4c3bU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T8aLgx9GGbJ5CBgP/RSChXiTnYVJb4BZcU2OvOyCExbWDQMLSLacLqCptpKK6sDd8
-	 JcPczU+rs3voOQ7aKWCncMUdp29OTroGivmM7reZ1Lsmhj3fVwuJNO5L+AilDrUFcM
-	 r51SkB/x/qE6wDORfIJXalQCVOWs7DAVVhv2WP5I=
+	b=oiTz6Nv5ttMicSJYDQ0qbdqCeibVo2eOmvZ867BcuS/PlNvuOek71e9xfYfIiwmUd
+	 h0wvM3RTKMu36iRhNo6tKaY734fJZEbGKNKsURCy5cr6RcHYGAyA4aS/05x55Icuwo
+	 slkLtiyN86qZ0OT03HCfhxrBVUrP5mKfgG0MkDEs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sebastiano Miano <mianosebastiano@gmail.com>,
-	Samuel Dobron <sdobron@redhat.com>,
-	Carolina Jubran <cjubran@nvidia.com>,
-	Dragos Tatulea <dtatulea@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 26/84] net/mlx5e: Reuse per-RQ XDP buffer to avoid stack zeroing overhead
-Date: Mon, 27 Oct 2025 19:36:15 +0100
-Message-ID: <20251027183439.514066548@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Artem Shimko <a.shimko.dev@gmail.com>
+Subject: [PATCH 6.1 115/157] serial: 8250_dw: handle reset control deassert error
+Date: Mon, 27 Oct 2025 19:36:16 +0100
+Message-ID: <20251027183504.332942649@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183438.817309828@linuxfoundation.org>
-References: <20251027183438.817309828@linuxfoundation.org>
+In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
+References: <20251027183501.227243846@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,332 +61,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Carolina Jubran <cjubran@nvidia.com>
+From: Artem Shimko <a.shimko.dev@gmail.com>
 
-[ Upstream commit b66b76a82c8879d764ab89adc21ee855ffd292d5 ]
+commit daeb4037adf7d3349b4a1fb792f4bc9824686a4b upstream.
 
-CONFIG_INIT_STACK_ALL_ZERO introduces a performance cost by
-zero-initializing all stack variables on function entry. The mlx5 XDP
-RX path previously allocated a struct mlx5e_xdp_buff on the stack per
-received CQE, resulting in measurable performance degradation under
-this config.
+Check the return value of reset_control_deassert() in the probe
+function to prevent continuing probe when reset deassertion fails.
 
-This patch reuses a mlx5e_xdp_buff stored in the mlx5e_rq struct,
-avoiding per-CQE stack allocations and repeated zeroing.
+Previously, reset_control_deassert() was called without checking its
+return value, which could lead to probe continuing even when the
+device reset wasn't properly deasserted.
 
-With this change, XDP_DROP and XDP_TX performance matches that of
-kernels built without CONFIG_INIT_STACK_ALL_ZERO.
+The fix checks the return value and returns an error with dev_err_probe()
+if reset deassertion fails, providing better error handling and
+diagnostics.
 
-Performance was measured on a ConnectX-6Dx using a single RX channel
-(1 CPU at 100% usage) at ~50 Mpps. The baseline results were taken from
-net-next-6.15.
-
-Stack zeroing disabled:
-- XDP_DROP:
-    * baseline:                     31.47 Mpps
-    * baseline + per-RQ allocation: 32.31 Mpps (+2.68%)
-
-- XDP_TX:
-    * baseline:                     12.41 Mpps
-    * baseline + per-RQ allocation: 12.95 Mpps (+4.30%)
-
-Stack zeroing enabled:
-- XDP_DROP:
-    * baseline:                     24.32 Mpps
-    * baseline + per-RQ allocation: 32.27 Mpps (+32.7%)
-
-- XDP_TX:
-    * baseline:                     11.80 Mpps
-    * baseline + per-RQ allocation: 12.24 Mpps (+3.72%)
-
-Reported-by: Sebastiano Miano <mianosebastiano@gmail.com>
-Reported-by: Samuel Dobron <sdobron@redhat.com>
-Link: https://lore.kernel.org/all/CAMENy5pb8ea+piKLg5q5yRTMZacQqYWAoVLE1FE9WhQPq92E0g@mail.gmail.com/
-Signed-off-by: Carolina Jubran <cjubran@nvidia.com>
-Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Acked-by: Jesper Dangaard Brouer <hawk@kernel.org>
-Link: https://patch.msgid.link/1747253032-663457-1-git-send-email-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: afd5ba577c10 ("net/mlx5e: RX, Fix generating skb from non-linear xdp_buff for legacy RQ")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: acbdad8dd1ab ("serial: 8250_dw: simplify optional reset handling")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Artem Shimko <a.shimko.dev@gmail.com>
+Link: https://patch.msgid.link/20251019095131.252848-1-a.shimko.dev@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en.h  |  7 ++
- .../net/ethernet/mellanox/mlx5/core/en/xdp.h  |  6 --
- .../net/ethernet/mellanox/mlx5/core/en_rx.c   | 81 ++++++++++---------
- 3 files changed, 51 insertions(+), 43 deletions(-)
+ drivers/tty/serial/8250/8250_dw.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en.h b/drivers/net/ethernet/mellanox/mlx5/core/en.h
-index 9cf33ae48c216..455d02b6500d0 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en.h
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en.h
-@@ -519,6 +519,12 @@ struct mlx5e_xdpsq {
- 	struct mlx5e_channel      *channel;
- } ____cacheline_aligned_in_smp;
+--- a/drivers/tty/serial/8250/8250_dw.c
++++ b/drivers/tty/serial/8250/8250_dw.c
+@@ -638,7 +638,9 @@ static int dw8250_probe(struct platform_
+ 	if (IS_ERR(data->rst))
+ 		return PTR_ERR(data->rst);
  
-+struct mlx5e_xdp_buff {
-+	struct xdp_buff xdp;
-+	struct mlx5_cqe64 *cqe;
-+	struct mlx5e_rq *rq;
-+};
-+
- struct mlx5e_ktls_resync_resp;
+-	reset_control_deassert(data->rst);
++	err = reset_control_deassert(data->rst);
++	if (err)
++		return dev_err_probe(dev, err, "failed to deassert resets\n");
  
- struct mlx5e_icosq {
-@@ -717,6 +723,7 @@ struct mlx5e_rq {
- 	struct mlx5e_xdpsq    *xdpsq;
- 	DECLARE_BITMAP(flags, 8);
- 	struct page_pool      *page_pool;
-+	struct mlx5e_xdp_buff mxbuf;
- 
- 	/* AF_XDP zero-copy */
- 	struct xsk_buff_pool  *xsk_pool;
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.h b/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.h
-index ecfe93a479da8..38e9ff6aa3aee 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.h
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.h
-@@ -44,12 +44,6 @@
- 	(MLX5E_XDP_INLINE_WQE_MAX_DS_CNT * MLX5_SEND_WQE_DS - \
- 	 sizeof(struct mlx5_wqe_inline_seg))
- 
--struct mlx5e_xdp_buff {
--	struct xdp_buff xdp;
--	struct mlx5_cqe64 *cqe;
--	struct mlx5e_rq *rq;
--};
--
- /* XDP packets can be transmitted in different ways. On completion, we need to
-  * distinguish between them to clean up things in a proper way.
-  */
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c b/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
-index 8278395ee20a0..711c95074f05c 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
-@@ -1697,17 +1697,17 @@ mlx5e_skb_from_cqe_linear(struct mlx5e_rq *rq, struct mlx5e_wqe_frag_info *wi,
- 
- 	prog = rcu_dereference(rq->xdp_prog);
- 	if (prog) {
--		struct mlx5e_xdp_buff mxbuf;
-+		struct mlx5e_xdp_buff *mxbuf = &rq->mxbuf;
- 
- 		net_prefetchw(va); /* xdp_frame data area */
- 		mlx5e_fill_mxbuf(rq, cqe, va, rx_headroom, rq->buff.frame0_sz,
--				 cqe_bcnt, &mxbuf);
--		if (mlx5e_xdp_handle(rq, prog, &mxbuf))
-+				 cqe_bcnt, mxbuf);
-+		if (mlx5e_xdp_handle(rq, prog, mxbuf))
- 			return NULL; /* page/packet was consumed by XDP */
- 
--		rx_headroom = mxbuf.xdp.data - mxbuf.xdp.data_hard_start;
--		metasize = mxbuf.xdp.data - mxbuf.xdp.data_meta;
--		cqe_bcnt = mxbuf.xdp.data_end - mxbuf.xdp.data;
-+		rx_headroom = mxbuf->xdp.data - mxbuf->xdp.data_hard_start;
-+		metasize = mxbuf->xdp.data - mxbuf->xdp.data_meta;
-+		cqe_bcnt = mxbuf->xdp.data_end - mxbuf->xdp.data;
- 	}
- 	frag_size = MLX5_SKB_FRAG_SZ(rx_headroom + cqe_bcnt);
- 	skb = mlx5e_build_linear_skb(rq, va, frag_size, rx_headroom, cqe_bcnt, metasize);
-@@ -1726,11 +1726,11 @@ mlx5e_skb_from_cqe_nonlinear(struct mlx5e_rq *rq, struct mlx5e_wqe_frag_info *wi
- 			     struct mlx5_cqe64 *cqe, u32 cqe_bcnt)
- {
- 	struct mlx5e_rq_frag_info *frag_info = &rq->wqe.info.arr[0];
-+	struct mlx5e_xdp_buff *mxbuf = &rq->mxbuf;
- 	struct mlx5e_wqe_frag_info *head_wi = wi;
- 	u16 rx_headroom = rq->buff.headroom;
- 	struct mlx5e_frag_page *frag_page;
- 	struct skb_shared_info *sinfo;
--	struct mlx5e_xdp_buff mxbuf;
- 	u32 frag_consumed_bytes;
- 	struct bpf_prog *prog;
- 	struct sk_buff *skb;
-@@ -1750,8 +1750,8 @@ mlx5e_skb_from_cqe_nonlinear(struct mlx5e_rq *rq, struct mlx5e_wqe_frag_info *wi
- 	net_prefetch(va + rx_headroom);
- 
- 	mlx5e_fill_mxbuf(rq, cqe, va, rx_headroom, rq->buff.frame0_sz,
--			 frag_consumed_bytes, &mxbuf);
--	sinfo = xdp_get_shared_info_from_buff(&mxbuf.xdp);
-+			 frag_consumed_bytes, mxbuf);
-+	sinfo = xdp_get_shared_info_from_buff(&mxbuf->xdp);
- 	truesize = 0;
- 
- 	cqe_bcnt -= frag_consumed_bytes;
-@@ -1763,8 +1763,9 @@ mlx5e_skb_from_cqe_nonlinear(struct mlx5e_rq *rq, struct mlx5e_wqe_frag_info *wi
- 
- 		frag_consumed_bytes = min_t(u32, frag_info->frag_size, cqe_bcnt);
- 
--		mlx5e_add_skb_shared_info_frag(rq, sinfo, &mxbuf.xdp, frag_page,
--					       wi->offset, frag_consumed_bytes);
-+		mlx5e_add_skb_shared_info_frag(rq, sinfo, &mxbuf->xdp,
-+					       frag_page, wi->offset,
-+					       frag_consumed_bytes);
- 		truesize += frag_info->frag_stride;
- 
- 		cqe_bcnt -= frag_consumed_bytes;
-@@ -1773,7 +1774,7 @@ mlx5e_skb_from_cqe_nonlinear(struct mlx5e_rq *rq, struct mlx5e_wqe_frag_info *wi
- 	}
- 
- 	prog = rcu_dereference(rq->xdp_prog);
--	if (prog && mlx5e_xdp_handle(rq, prog, &mxbuf)) {
-+	if (prog && mlx5e_xdp_handle(rq, prog, mxbuf)) {
- 		if (__test_and_clear_bit(MLX5E_RQ_FLAG_XDP_XMIT, rq->flags)) {
- 			struct mlx5e_wqe_frag_info *pwi;
- 
-@@ -1783,21 +1784,23 @@ mlx5e_skb_from_cqe_nonlinear(struct mlx5e_rq *rq, struct mlx5e_wqe_frag_info *wi
- 		return NULL; /* page/packet was consumed by XDP */
- 	}
- 
--	skb = mlx5e_build_linear_skb(rq, mxbuf.xdp.data_hard_start, rq->buff.frame0_sz,
--				     mxbuf.xdp.data - mxbuf.xdp.data_hard_start,
--				     mxbuf.xdp.data_end - mxbuf.xdp.data,
--				     mxbuf.xdp.data - mxbuf.xdp.data_meta);
-+	skb = mlx5e_build_linear_skb(
-+		rq, mxbuf->xdp.data_hard_start, rq->buff.frame0_sz,
-+		mxbuf->xdp.data - mxbuf->xdp.data_hard_start,
-+		mxbuf->xdp.data_end - mxbuf->xdp.data,
-+		mxbuf->xdp.data - mxbuf->xdp.data_meta);
- 	if (unlikely(!skb))
- 		return NULL;
- 
- 	skb_mark_for_recycle(skb);
- 	head_wi->frag_page->frags++;
- 
--	if (xdp_buff_has_frags(&mxbuf.xdp)) {
-+	if (xdp_buff_has_frags(&mxbuf->xdp)) {
- 		/* sinfo->nr_frags is reset by build_skb, calculate again. */
- 		xdp_update_skb_shared_info(skb, wi - head_wi - 1,
- 					   sinfo->xdp_frags_size, truesize,
--					   xdp_buff_is_frag_pfmemalloc(&mxbuf.xdp));
-+					   xdp_buff_is_frag_pfmemalloc(
-+						&mxbuf->xdp));
- 
- 		for (struct mlx5e_wqe_frag_info *pwi = head_wi + 1; pwi < wi; pwi++)
- 			pwi->frag_page->frags++;
-@@ -2003,10 +2006,10 @@ mlx5e_skb_from_cqe_mpwrq_nonlinear(struct mlx5e_rq *rq, struct mlx5e_mpw_info *w
- 	struct mlx5e_frag_page *frag_page = &wi->alloc_units.frag_pages[page_idx];
- 	u16 headlen = min_t(u16, MLX5E_RX_MAX_HEAD, cqe_bcnt);
- 	struct mlx5e_frag_page *head_page = frag_page;
-+	struct mlx5e_xdp_buff *mxbuf = &rq->mxbuf;
- 	u32 frag_offset    = head_offset;
- 	u32 byte_cnt       = cqe_bcnt;
- 	struct skb_shared_info *sinfo;
--	struct mlx5e_xdp_buff mxbuf;
- 	unsigned int truesize = 0;
- 	struct bpf_prog *prog;
- 	struct sk_buff *skb;
-@@ -2052,9 +2055,10 @@ mlx5e_skb_from_cqe_mpwrq_nonlinear(struct mlx5e_rq *rq, struct mlx5e_mpw_info *w
- 		}
- 	}
- 
--	mlx5e_fill_mxbuf(rq, cqe, va, linear_hr, linear_frame_sz, linear_data_len, &mxbuf);
-+	mlx5e_fill_mxbuf(rq, cqe, va, linear_hr, linear_frame_sz,
-+			 linear_data_len, mxbuf);
- 
--	sinfo = xdp_get_shared_info_from_buff(&mxbuf.xdp);
-+	sinfo = xdp_get_shared_info_from_buff(&mxbuf->xdp);
- 
- 	while (byte_cnt) {
- 		/* Non-linear mode, hence non-XSK, which always uses PAGE_SIZE. */
-@@ -2065,7 +2069,8 @@ mlx5e_skb_from_cqe_mpwrq_nonlinear(struct mlx5e_rq *rq, struct mlx5e_mpw_info *w
- 		else
- 			truesize += ALIGN(pg_consumed_bytes, BIT(rq->mpwqe.log_stride_sz));
- 
--		mlx5e_add_skb_shared_info_frag(rq, sinfo, &mxbuf.xdp, frag_page, frag_offset,
-+		mlx5e_add_skb_shared_info_frag(rq, sinfo, &mxbuf->xdp,
-+					       frag_page, frag_offset,
- 					       pg_consumed_bytes);
- 		byte_cnt -= pg_consumed_bytes;
- 		frag_offset = 0;
-@@ -2073,7 +2078,7 @@ mlx5e_skb_from_cqe_mpwrq_nonlinear(struct mlx5e_rq *rq, struct mlx5e_mpw_info *w
- 	}
- 
- 	if (prog) {
--		if (mlx5e_xdp_handle(rq, prog, &mxbuf)) {
-+		if (mlx5e_xdp_handle(rq, prog, mxbuf)) {
- 			if (__test_and_clear_bit(MLX5E_RQ_FLAG_XDP_XMIT, rq->flags)) {
- 				struct mlx5e_frag_page *pfp;
- 
-@@ -2086,10 +2091,10 @@ mlx5e_skb_from_cqe_mpwrq_nonlinear(struct mlx5e_rq *rq, struct mlx5e_mpw_info *w
- 			return NULL; /* page/packet was consumed by XDP */
- 		}
- 
--		skb = mlx5e_build_linear_skb(rq, mxbuf.xdp.data_hard_start,
--					     linear_frame_sz,
--					     mxbuf.xdp.data - mxbuf.xdp.data_hard_start, 0,
--					     mxbuf.xdp.data - mxbuf.xdp.data_meta);
-+		skb = mlx5e_build_linear_skb(
-+			rq, mxbuf->xdp.data_hard_start, linear_frame_sz,
-+			mxbuf->xdp.data - mxbuf->xdp.data_hard_start, 0,
-+			mxbuf->xdp.data - mxbuf->xdp.data_meta);
- 		if (unlikely(!skb)) {
- 			mlx5e_page_release_fragmented(rq, &wi->linear_page);
- 			return NULL;
-@@ -2099,13 +2104,14 @@ mlx5e_skb_from_cqe_mpwrq_nonlinear(struct mlx5e_rq *rq, struct mlx5e_mpw_info *w
- 		wi->linear_page.frags++;
- 		mlx5e_page_release_fragmented(rq, &wi->linear_page);
- 
--		if (xdp_buff_has_frags(&mxbuf.xdp)) {
-+		if (xdp_buff_has_frags(&mxbuf->xdp)) {
- 			struct mlx5e_frag_page *pagep;
- 
- 			/* sinfo->nr_frags is reset by build_skb, calculate again. */
- 			xdp_update_skb_shared_info(skb, frag_page - head_page,
- 						   sinfo->xdp_frags_size, truesize,
--						   xdp_buff_is_frag_pfmemalloc(&mxbuf.xdp));
-+						   xdp_buff_is_frag_pfmemalloc(
-+							&mxbuf->xdp));
- 
- 			pagep = head_page;
- 			do
-@@ -2116,12 +2122,13 @@ mlx5e_skb_from_cqe_mpwrq_nonlinear(struct mlx5e_rq *rq, struct mlx5e_mpw_info *w
- 	} else {
- 		dma_addr_t addr;
- 
--		if (xdp_buff_has_frags(&mxbuf.xdp)) {
-+		if (xdp_buff_has_frags(&mxbuf->xdp)) {
- 			struct mlx5e_frag_page *pagep;
- 
- 			xdp_update_skb_shared_info(skb, sinfo->nr_frags,
- 						   sinfo->xdp_frags_size, truesize,
--						   xdp_buff_is_frag_pfmemalloc(&mxbuf.xdp));
-+						   xdp_buff_is_frag_pfmemalloc(
-+							&mxbuf->xdp));
- 
- 			pagep = frag_page - sinfo->nr_frags;
- 			do
-@@ -2171,20 +2178,20 @@ mlx5e_skb_from_cqe_mpwrq_linear(struct mlx5e_rq *rq, struct mlx5e_mpw_info *wi,
- 
- 	prog = rcu_dereference(rq->xdp_prog);
- 	if (prog) {
--		struct mlx5e_xdp_buff mxbuf;
-+		struct mlx5e_xdp_buff *mxbuf = &rq->mxbuf;
- 
- 		net_prefetchw(va); /* xdp_frame data area */
- 		mlx5e_fill_mxbuf(rq, cqe, va, rx_headroom, rq->buff.frame0_sz,
--				 cqe_bcnt, &mxbuf);
--		if (mlx5e_xdp_handle(rq, prog, &mxbuf)) {
-+				 cqe_bcnt, mxbuf);
-+		if (mlx5e_xdp_handle(rq, prog, mxbuf)) {
- 			if (__test_and_clear_bit(MLX5E_RQ_FLAG_XDP_XMIT, rq->flags))
- 				frag_page->frags++;
- 			return NULL; /* page/packet was consumed by XDP */
- 		}
- 
--		rx_headroom = mxbuf.xdp.data - mxbuf.xdp.data_hard_start;
--		metasize = mxbuf.xdp.data - mxbuf.xdp.data_meta;
--		cqe_bcnt = mxbuf.xdp.data_end - mxbuf.xdp.data;
-+		rx_headroom = mxbuf->xdp.data - mxbuf->xdp.data_hard_start;
-+		metasize =  mxbuf->xdp.data -  mxbuf->xdp.data_meta;
-+		cqe_bcnt =  mxbuf->xdp.data_end -  mxbuf->xdp.data;
- 	}
- 	frag_size = MLX5_SKB_FRAG_SZ(rx_headroom + cqe_bcnt);
- 	skb = mlx5e_build_linear_skb(rq, va, frag_size, rx_headroom, cqe_bcnt, metasize);
--- 
-2.51.0
-
+ 	err = devm_add_action_or_reset(dev, dw8250_reset_control_assert, data->rst);
+ 	if (err)
 
 
 
