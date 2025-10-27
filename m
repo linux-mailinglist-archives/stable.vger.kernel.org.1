@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-190455-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190085-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FBB8C1060F
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:01:03 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2C02C0FF42
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:39:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id BFF6D3519D5
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:01:02 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 699934EEE7C
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:39:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6B9131E0E4;
-	Mon, 27 Oct 2025 18:55:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2F49313520;
+	Mon, 27 Oct 2025 18:39:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y0qHZiYl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RK8JX9kN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3E1B32A3C3;
-	Mon, 27 Oct 2025 18:55:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DA3D218EB1;
+	Mon, 27 Oct 2025 18:39:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591335; cv=none; b=Y8stDLut+5vrpr82u1DNW0QZad+PfcYEmas71Wj2R+y5vOjYnaJYiXl1vxHINHR7PcFrOCSFwUdGxfqymPZxtSXUptZOqnKk+cuEKWrze/s3HKjYDZq9EMA0vz99TcZ0rANeCEka6rM2OplsnaQ+TH2Y8rYVup/TslZ8eHPVIas=
+	t=1761590396; cv=none; b=LtXQ/Rpn7tpQyVvZBjix3BEZ56CpL/ky49Eqs9MCqEGjCSBxrzjbuXovzx8HCBNvuEyqmR+u9M78ShUapWu7oIXK5gdpPQwb3iKpwdSjpw4d5jSVh9mCMmFR+Is7BZyWPM6ns03mrYHE524iJ2RpSBuJVkuc3aaY32oOYb7/KjA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591335; c=relaxed/simple;
-	bh=1tp5DctZ7bfspg3chQkuclzYsrReI2bWHcLAjDVQ/Tg=;
+	s=arc-20240116; t=1761590396; c=relaxed/simple;
+	bh=cSkJ8ddCQZVc02kK4DTBkAeMUxPSaYCqEtuuoCbAIQU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QXjsSLCOqMyuk64sPPoiCEt4tvVYh81ikfJjMhKnSoXUapsgj8QdTd9UDHNGFnhrWLdnyUMIKvqW1CMRySScRw27WUKywgGZ1y328q6ptA//vKDDw4Ked0Y5Qxer6Hj43wd6j8DJ7maZpfYr4kSLfHxTDTOGxS8iY7UDuw4dOQc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y0qHZiYl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B253C4CEF1;
-	Mon, 27 Oct 2025 18:55:35 +0000 (UTC)
+	 MIME-Version:Content-Type; b=WWTRz0j8hbT/fzVrWN7HTr4RDSddq4zIJwVij+W5YAVjsgkTHtn6yBqsfwOiVcrBkTa7SzNcwevsW/JXXkpCcOyDNO0sNQPEcsZF7djM5XAbU0oqHq8pIsDEx7kNJy8EK1VvE77aja3t46iuEsWpj72ZMyIbggVq5eHsOejrYuo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RK8JX9kN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12B29C113D0;
+	Mon, 27 Oct 2025 18:39:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591335;
-	bh=1tp5DctZ7bfspg3chQkuclzYsrReI2bWHcLAjDVQ/Tg=;
+	s=korg; t=1761590396;
+	bh=cSkJ8ddCQZVc02kK4DTBkAeMUxPSaYCqEtuuoCbAIQU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y0qHZiYl8SyabLYrdNkTcnnmLBn8RWV3Z/2ggqZxMBk45E4VdMvZ1cVw2TE6CCM14
-	 DGrFHtqqexWwoBLbVj3HqUgUbyevRRpk2MvgW8+EGkiwmwpq/WwwrvPlubDCWCCb5y
-	 JDDT2cvodwLxUBArEysd6l5ckOIbpOiWWdlbJYSc=
+	b=RK8JX9kNtxbDb7ZoyxmUmoDkXsyKXtuKdWoHOVNO+yfPH+kJUPvbloRLaJ0FKp1gH
+	 HsNsJ/c47w6uX+cIqbwIUke1dsWAQ1xBmEg8GIvzyFTpWk5NrWkvh+OSx1B7BulziO
+	 Nd8wAKgZhqM0HbrOKTDtOU8Jr1+eF4P0KXEJ1XPM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>,
-	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
+	"Leilk.Liu" <leilk.liu@mediatek.com>,
+	Chen-Yu Tsai <wenst@chromium.org>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 121/332] drm/amd/display: Properly clear SCL_*_FILTER_CONTROL on DCE6
-Date: Mon, 27 Oct 2025 19:32:54 +0100
-Message-ID: <20251027183527.807427599@linuxfoundation.org>
+Subject: [PATCH 5.4 029/224] i2c: mediatek: fix potential incorrect use of I2C_MASTER_WRRD
+Date: Mon, 27 Oct 2025 19:32:55 +0100
+Message-ID: <20251027183509.786297134@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
-References: <20251027183524.611456697@linuxfoundation.org>
+In-Reply-To: <20251027183508.963233542@linuxfoundation.org>
+References: <20251027183508.963233542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +64,85 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Timur Kristóf <timur.kristof@gmail.com>
+From: Leilk.Liu <leilk.liu@mediatek.com>
 
-[ Upstream commit c0aa7cf49dd6cb302fe28e7183992b772cb7420c ]
+[ Upstream commit b492183652808e0f389272bf63dc836241b287ff ]
 
-Previously, the code would set a bit field which didn't exist
-on DCE6 so it would be effectively a no-op.
+The old IC does not support the I2C_MASTER_WRRD (write-then-read)
+function, but the current code’s handling of i2c->auto_restart may
+potentially lead to entering the I2C_MASTER_WRRD software flow,
+resulting in unexpected bugs.
 
-Fixes: b70aaf5586f2 ("drm/amd/display: dce_transform: add DCE6 specific macros,functions")
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Instead of repurposing the auto_restart flag, add a separate flag
+to signal I2C_MASTER_WRRD operations.
+
+Also fix handling of msgs. If the operation (i2c->op) is
+I2C_MASTER_WRRD, then the msgs pointer is incremented by 2.
+For all other operations, msgs is simply incremented by 1.
+
+Fixes: b2ed11e224a2 ("I2C: mediatek: Add driver for MediaTek MT8173 I2C controller")
+Signed-off-by: Leilk.Liu <leilk.liu@mediatek.com>
+Suggested-by: Chen-Yu Tsai <wenst@chromium.org>
+Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dce/dce_transform.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/i2c/busses/i2c-mt65xx.c | 17 ++++++++++-------
+ 1 file changed, 10 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dce/dce_transform.c b/drivers/gpu/drm/amd/display/dc/dce/dce_transform.c
-index a54a309879246..a3f4fa346b77e 100644
---- a/drivers/gpu/drm/amd/display/dc/dce/dce_transform.c
-+++ b/drivers/gpu/drm/amd/display/dc/dce/dce_transform.c
-@@ -528,8 +528,7 @@ static void dce60_transform_set_scaler(
- 		if (coeffs_v != xfm_dce->filter_v || coeffs_h != xfm_dce->filter_h) {
- 			/* 4. Program vertical filters */
- 			if (xfm_dce->filter_v == NULL)
--				REG_SET(SCL_VERT_FILTER_CONTROL, 0,
--						SCL_V_2TAP_HARDCODE_COEF_EN, 0);
-+				REG_WRITE(SCL_VERT_FILTER_CONTROL, 0);
- 			program_multi_taps_filter(
- 					xfm_dce,
- 					data->taps.v_taps,
-@@ -543,8 +542,7 @@ static void dce60_transform_set_scaler(
+diff --git a/drivers/i2c/busses/i2c-mt65xx.c b/drivers/i2c/busses/i2c-mt65xx.c
+index 5587e7c549c4f..2b56ad08efed1 100644
+--- a/drivers/i2c/busses/i2c-mt65xx.c
++++ b/drivers/i2c/busses/i2c-mt65xx.c
+@@ -782,6 +782,7 @@ static int mtk_i2c_transfer(struct i2c_adapter *adap,
+ {
+ 	int ret;
+ 	int left_num = num;
++	bool write_then_read_en = false;
+ 	struct mtk_i2c *i2c = i2c_get_adapdata(adap);
  
- 			/* 5. Program horizontal filters */
- 			if (xfm_dce->filter_h == NULL)
--				REG_SET(SCL_HORZ_FILTER_CONTROL, 0,
--						SCL_H_2TAP_HARDCODE_COEF_EN, 0);
-+				REG_WRITE(SCL_HORZ_FILTER_CONTROL, 0);
- 			program_multi_taps_filter(
- 					xfm_dce,
- 					data->taps.h_taps,
+ 	ret = mtk_i2c_clock_enable(i2c);
+@@ -795,6 +796,7 @@ static int mtk_i2c_transfer(struct i2c_adapter *adap,
+ 		if (!(msgs[0].flags & I2C_M_RD) && (msgs[1].flags & I2C_M_RD) &&
+ 		    msgs[0].addr == msgs[1].addr) {
+ 			i2c->auto_restart = 0;
++			write_then_read_en = true;
+ 		}
+ 	}
+ 
+@@ -818,12 +820,10 @@ static int mtk_i2c_transfer(struct i2c_adapter *adap,
+ 		else
+ 			i2c->op = I2C_MASTER_WR;
+ 
+-		if (!i2c->auto_restart) {
+-			if (num > 1) {
+-				/* combined two messages into one transaction */
+-				i2c->op = I2C_MASTER_WRRD;
+-				left_num--;
+-			}
++		if (write_then_read_en) {
++			/* combined two messages into one transaction */
++			i2c->op = I2C_MASTER_WRRD;
++			left_num--;
+ 		}
+ 
+ 		/* always use DMA mode. */
+@@ -831,7 +831,10 @@ static int mtk_i2c_transfer(struct i2c_adapter *adap,
+ 		if (ret < 0)
+ 			goto err_exit;
+ 
+-		msgs++;
++		if (i2c->op == I2C_MASTER_WRRD)
++			msgs += 2;
++		else
++			msgs++;
+ 	}
+ 	/* the return value is number of executed messages */
+ 	ret = num;
 -- 
 2.51.0
 
