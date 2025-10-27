@@ -1,58 +1,62 @@
-Return-Path: <stable+bounces-190591-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190698-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33FB5C10894
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:09:24 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9737C10B1C
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:16:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 182361A2706A
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:06:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1AD77562975
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:09:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D855D2F25F1;
-	Mon, 27 Oct 2025 19:01:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C76F21576E;
+	Mon, 27 Oct 2025 19:06:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LMVldEzD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CBj7TDa0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 962DB2C3745;
-	Mon, 27 Oct 2025 19:01:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3825A306D37;
+	Mon, 27 Oct 2025 19:06:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591684; cv=none; b=JJ+OlktGveOVeguPMP3duz7wXMDlEscJQA7QxMPRuRUudYiknFXBBsfzd5aqacDAANpiuXufqYJFnOWdsIo1ywgfskw2o6fGbGuJKUAvS7cwadWlEMH+OTUVoA+BiFU0GqI9xRphcenCB+/FQlut+r6SzyqTSKbM+g5FtPeOReg=
+	t=1761591961; cv=none; b=M++KO3YTsXuqR0NCpBY1G5UQFtsSJDplt419cRV3wGm0xL4+TMUNe1nHlil//aEptyfNeMKDh6gw4J0Qy/KXX0EmC7zqv/feKqv0krP/CpJ+TzXiwA7V/Gzn65WwTjy5byqj8Hsk2WjsipLngFAbvOVf21H5pHcBpIv2YyMNTo4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591684; c=relaxed/simple;
-	bh=UdUHLlbpcHzn8tvFcBqb9X3YamRusnm/K2uRxU7+LGw=;
+	s=arc-20240116; t=1761591961; c=relaxed/simple;
+	bh=64rt1Psc3KBQ1v9G2HGeq5R/vFsVmJXLw132UNgOk30=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O1Myx5dCBINe0lraXrVAVEl5hfoOo5sUeO/2M0b3Q+M0EWo056IdO2/++S/V2aGe3aNGmwQHrYK+zgcoUcsFQIpp3SILZhy7DcT+1+RpuCqlC1T++4AxDuhQQgAlRFQI97npCpPc07qFzWmYipTvkRre4SRJ0nJUtuVt8IiCsEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LMVldEzD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26B17C4CEF1;
-	Mon, 27 Oct 2025 19:01:23 +0000 (UTC)
+	 MIME-Version; b=dxjyJm67h6jn9VN+afDlWH6NYabdEiWT7wPfR4TAewagfpMAjS2dBuclxGX6bh0N9PU/Ni7NxlNnarw9c/jqpUFpIepuUi3wxDtL8Rt/9Jh07BEh1WN+N0Xd8HBMqx+FHgLHIwVY0+gwNzvDGDUfxdoVLD7wNJk/qbYTixIc7ok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CBj7TDa0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE9E6C4CEF1;
+	Mon, 27 Oct 2025 19:06:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591684;
-	bh=UdUHLlbpcHzn8tvFcBqb9X3YamRusnm/K2uRxU7+LGw=;
+	s=korg; t=1761591961;
+	bh=64rt1Psc3KBQ1v9G2HGeq5R/vFsVmJXLw132UNgOk30=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LMVldEzDmsfa8U0z7AyXeCUD6taw7PLNBZ7Rh9QEgNVZ1sihvUeaunMrY2Lx85TM+
-	 9ZkbikHSON+sHM56Oeeildp4nRPr0RboZSnRwRWGayfekfSScaAAY+p0Il86cui/Jf
-	 rQaKoU6CBVZocK0BTdifjbAranA5URg/0oVmmO3E=
+	b=CBj7TDa0d6qgd9NMZyrabZgPQEgZwmv1op6l0NTdGCj+lk7Wm0Eag0/ESqic0K91n
+	 u6Cuh51R1LpRuTF7x1TxRLbd5MGduBE7FxrsTaUKKUZ14+9hReOKVF6g4e6hxiiH6p
+	 z4m/mpE30GilWmwQWrFR5iycEQZuXTnkjfWe7gxY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anup Patel <apatel@ventanamicro.com>,
-	Andrew Jones <ajones@ventanamicro.com>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Paul Walmsley <pjw@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 290/332] RISC-V: Dont print details of CPUs disabled in DT
+	Jay Vosburgh <jv@jvosburgh.net>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Vincent Bernat <vincent@bernat.ch>,
+	Tonghao Zhang <tonghao@bamaicloud.com>
+Subject: [PATCH 5.15 063/123] net: bonding: fix possible peer notify event loss or dup issue
 Date: Mon, 27 Oct 2025 19:35:43 +0100
-Message-ID: <20251027183532.513900812@linuxfoundation.org>
+Message-ID: <20251027183448.080559553@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
-References: <20251027183524.611456697@linuxfoundation.org>
+In-Reply-To: <20251027183446.381986645@linuxfoundation.org>
+References: <20251027183446.381986645@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,51 +68,118 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anup Patel <apatel@ventanamicro.com>
+From: Tonghao Zhang <tonghao@bamaicloud.com>
 
-[ Upstream commit d2721bb165b3ee00dd23525885381af07fec852a ]
+commit 10843e1492e474c02b91314963161731fa92af91 upstream.
 
-Early boot stages may disable CPU DT nodes for unavailable
-CPUs based on SKU, pinstraps, eFuse, etc. Currently, the
-riscv_early_of_processor_hartid() prints details of a CPU
-if it is disabled in DT which has no value and gives a
-false impression to the users that there some issue with
-the CPU.
+If the send_peer_notif counter and the peer event notify are not synchronized.
+It may cause problems such as the loss or dup of peer notify event.
 
-Fixes: e3d794d555cd ("riscv: treat cpu devicetree nodes without status as enabled")
-Signed-off-by: Anup Patel <apatel@ventanamicro.com>
-Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
-Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
-Link: https://lore.kernel.org/r/20251014163009.182381-1-apatel@ventanamicro.com
-Signed-off-by: Paul Walmsley <pjw@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Before this patch:
+- If should_notify_peers is true and the lock for send_peer_notif-- fails, peer
+  event may be sent again in next mii_monitor loop, because should_notify_peers
+  is still true.
+- If should_notify_peers is true and the lock for send_peer_notif-- succeeded,
+  but the lock for peer event fails, the peer event will be lost.
+
+This patch locks the RTNL for send_peer_notif, events, and commit simultaneously.
+
+Fixes: 07a4ddec3ce9 ("bonding: add an option to specify a delay between peer notifications")
+Cc: Jay Vosburgh <jv@jvosburgh.net>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: Hangbin Liu <liuhangbin@gmail.com>
+Cc: Nikolay Aleksandrov <razor@blackwall.org>
+Cc: Vincent Bernat <vincent@bernat.ch>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Tonghao Zhang <tonghao@bamaicloud.com>
+Acked-by: Jay Vosburgh <jv@jvosburgh.net>
+Link: https://patch.msgid.link/20251021050933.46412-1-tonghao@bamaicloud.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/riscv/kernel/cpu.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/net/bonding/bond_main.c |   40 ++++++++++++++++++----------------------
+ 1 file changed, 18 insertions(+), 22 deletions(-)
 
-diff --git a/arch/riscv/kernel/cpu.c b/arch/riscv/kernel/cpu.c
-index 11d6d6cc61d51..39013aedbe0ab 100644
---- a/arch/riscv/kernel/cpu.c
-+++ b/arch/riscv/kernel/cpu.c
-@@ -27,10 +27,8 @@ int riscv_of_processor_hartid(struct device_node *node, unsigned long *hart)
- 		return -ENODEV;
- 	}
+--- a/drivers/net/bonding/bond_main.c
++++ b/drivers/net/bonding/bond_main.c
+@@ -2734,7 +2734,7 @@ static void bond_mii_monitor(struct work
+ {
+ 	struct bonding *bond = container_of(work, struct bonding,
+ 					    mii_work.work);
+-	bool should_notify_peers = false;
++	bool should_notify_peers;
+ 	bool commit;
+ 	unsigned long delay;
+ 	struct slave *slave;
+@@ -2746,30 +2746,33 @@ static void bond_mii_monitor(struct work
+ 		goto re_arm;
  
--	if (!of_device_is_available(node)) {
--		pr_info("CPU with hartid=%lu is not available\n", *hart);
-+	if (!of_device_is_available(node))
- 		return -ENODEV;
+ 	rcu_read_lock();
++
+ 	should_notify_peers = bond_should_notify_peers(bond);
+ 	commit = !!bond_miimon_inspect(bond);
+-	if (bond->send_peer_notif) {
+-		rcu_read_unlock();
+-		if (rtnl_trylock()) {
+-			bond->send_peer_notif--;
+-			rtnl_unlock();
+-		}
+-	} else {
+-		rcu_read_unlock();
 -	}
  
- 	if (of_property_read_string(node, "riscv,isa", &isa)) {
- 		pr_warn("CPU with hartid=%lu has no \"riscv,isa\" property\n", *hart);
--- 
-2.51.0
-
+-	if (commit) {
++	rcu_read_unlock();
++
++	if (commit || bond->send_peer_notif) {
+ 		/* Race avoidance with bond_close cancel of workqueue */
+ 		if (!rtnl_trylock()) {
+ 			delay = 1;
+-			should_notify_peers = false;
+ 			goto re_arm;
+ 		}
+ 
+-		bond_for_each_slave(bond, slave, iter) {
+-			bond_commit_link_state(slave, BOND_SLAVE_NOTIFY_LATER);
++		if (commit) {
++			bond_for_each_slave(bond, slave, iter) {
++				bond_commit_link_state(slave,
++						       BOND_SLAVE_NOTIFY_LATER);
++			}
++			bond_miimon_commit(bond);
++		}
++
++		if (bond->send_peer_notif) {
++			bond->send_peer_notif--;
++			if (should_notify_peers)
++				call_netdevice_notifiers(NETDEV_NOTIFY_PEERS,
++							 bond->dev);
+ 		}
+-		bond_miimon_commit(bond);
+ 
+ 		rtnl_unlock();	/* might sleep, hold no other locks */
+ 	}
+@@ -2777,13 +2780,6 @@ static void bond_mii_monitor(struct work
+ re_arm:
+ 	if (bond->params.miimon)
+ 		queue_delayed_work(bond->wq, &bond->mii_work, delay);
+-
+-	if (should_notify_peers) {
+-		if (!rtnl_trylock())
+-			return;
+-		call_netdevice_notifiers(NETDEV_NOTIFY_PEERS, bond->dev);
+-		rtnl_unlock();
+-	}
+ }
+ 
+ static int bond_upper_dev_walk(struct net_device *upper,
 
 
 
