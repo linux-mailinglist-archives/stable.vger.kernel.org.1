@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-190974-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191081-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FF6AC10E5F
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:24:22 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05F06C1103F
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:30:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F121C18973F9
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:20:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B1BE2567711
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:24:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0724432779A;
-	Mon, 27 Oct 2025 19:18:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03A6232AACD;
+	Mon, 27 Oct 2025 19:22:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y/ae2QN8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s19yQtCF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B840A2D8377;
-	Mon, 27 Oct 2025 19:18:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4C9C31D75F;
+	Mon, 27 Oct 2025 19:22:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592686; cv=none; b=RdyX3EBKi6L5zxc0lZiLx8wJ0X9LkbB7L/3CAMUahoxosXxKg0kJWbAZBAb++mWdnJlpVLRajYessgbPCAjLmItjz3BXIoPZLtAuLq4X4IywMAdCvEx571+pKIA0+kQitHkPMRzUdcY5Q+ykkR5BWclj9n+I/vEPqJS8DKzsks8=
+	t=1761592963; cv=none; b=oX/hyKezQVIiA9dBUVt4po5rNwhi3gOdnLMrsQ+GWj6KiKQ9LFsmjXD4p44q7/SLHsloe1VKNFtOpfawzoNt+ZpU60oAXUBR1BE79xzNoZHk2ZMxPJe7RJYXkE2VkKn9ywb4533b43v/CMDNO7+90FyblvJbfBJ5PdsI/AF9Phg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592686; c=relaxed/simple;
-	bh=NsIhEHBJmTIKG0I2qzGFqcm1wkijAspUgebsWeZu1CM=;
+	s=arc-20240116; t=1761592963; c=relaxed/simple;
+	bh=0q5cn0SRCYm5Xjiq/ZkVH0Hfbh1hw37rBkBYrG+R5+E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gJBVHyJL6D/iNGPZU0fOrySd7L6gbdpg0ZwX7PbWTI99suEksvEI3R8AGJvZgjUck+dFYoIA7sllitV2PE0Xoug3GZ0o2i97hNDFdC2JTjWaPTlJfhiMLJI/2mhKofQ+btdTehEKDEmdPcRIsHmU7VnaSC62kRK3QvnE5ydfT1A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y/ae2QN8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01DC2C4CEF1;
-	Mon, 27 Oct 2025 19:18:05 +0000 (UTC)
+	 MIME-Version; b=J21ZisrTJPK4z4hKbI3LOklaoO8Cni7nS+4N1f+iMiakj/19ieiZHIJoZqtjOSdeHh5nTAXmcrrEhzX7IcIGYjasR9jO0gkFwIoH7/2SrK3rSiSCIb+PX1y8Q8WFvWH38cjGmtBVgDXzi5kURe9CS8NJs+TKtj4IWQXogOjEBxo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s19yQtCF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1324C4CEFD;
+	Mon, 27 Oct 2025 19:22:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592686;
-	bh=NsIhEHBJmTIKG0I2qzGFqcm1wkijAspUgebsWeZu1CM=;
+	s=korg; t=1761592963;
+	bh=0q5cn0SRCYm5Xjiq/ZkVH0Hfbh1hw37rBkBYrG+R5+E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y/ae2QN8TdaPdlfonW0xagILpsngQGR1W30MnHxscLec1yWyXayvBYibKWwdsWNQb
-	 VghZ3fek4M11TJgTZfsXIMuIixxVw0iVmDZC/otKT7c2Cffd4gULvDPpczYVPJk3C9
-	 /teqssn44j/5gDUfSq9KL1o2RheI09727K+RRq1w=
+	b=s19yQtCF+mi5LHpc7TbRr31TyL7yDGVJ0Flkxuqd4tSyu6TQAXuSzTyYdxov+uveG
+	 dE8sut5eiuKGUf/VyhRF7Ym7CM8NhpiWxwXdCzfNHuWGPcf4swG20SnLb1FkrYUY56
+	 h2tJC3VObxO0cfQaoj2i3bDN4/EToZIe/z9lDDXA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haotian Zhang <vulab@iscas.ac.cn>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Anup Patel <apatel@ventanamicro.com>,
+	Han Gao <rabenda.cn@gmail.com>,
+	"Guo Ren (Alibaba DAMO Academy)" <guoren@kernel.org>,
+	Paul Walmsley <pjw@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 56/84] gpio: ljca: Fix duplicated IRQ mapping
-Date: Mon, 27 Oct 2025 19:36:45 +0100
-Message-ID: <20251027183440.312955394@linuxfoundation.org>
+Subject: [PATCH 6.12 080/117] RISC-V: Define pgprot_dmacoherent() for non-coherent devices
+Date: Mon, 27 Oct 2025 19:36:46 +0100
+Message-ID: <20251027183456.188950414@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183438.817309828@linuxfoundation.org>
-References: <20251027183438.817309828@linuxfoundation.org>
+In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
+References: <20251027183453.919157109@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +64,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haotian Zhang <vulab@iscas.ac.cn>
+From: Anup Patel <apatel@ventanamicro.com>
 
-[ Upstream commit 4c4e6ea4a120cc5ab58e437c6ba123cbfc357d45 ]
+[ Upstream commit ca525d53f994d45c8140968b571372c45f555ac1 ]
 
-The generic_handle_domain_irq() function resolves the hardware IRQ
-internally. The driver performed a duplicative mapping by calling
-irq_find_mapping() first, which could lead to an RCU stall.
+The pgprot_dmacoherent() is used when allocating memory for
+non-coherent devices and by default pgprot_dmacoherent() is
+same as pgprot_noncached() unless architecture overrides it.
 
-Delete the redundant irq_find_mapping() call and pass the hardware IRQ
-directly to generic_handle_domain_irq().
+Currently, there is no pgprot_dmacoherent() definition for
+RISC-V hence non-coherent device memory is being mapped as
+IO thereby making CPU access to such memory slow.
 
-Fixes: c5a4b6fd31e8 ("gpio: Add support for Intel LJCA USB GPIO driver")
-Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
-Link: https://lore.kernel.org/r/20251023070231.1305-1-vulab@iscas.ac.cn
-[Bartosz: remove unused variable]
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Define pgprot_dmacoherent() to be same as pgprot_writecombine()
+for RISC-V so that CPU access non-coherent device memory as
+NOCACHE which is better than accessing it as IO.
+
+Fixes: ff689fd21cb1 ("riscv: add RISC-V Svpbmt extension support")
+Signed-off-by: Anup Patel <apatel@ventanamicro.com>
+Tested-by: Han Gao <rabenda.cn@gmail.com>
+Tested-by: Guo Ren (Alibaba DAMO Academy) <guoren@kernel.org>
+Link: https://lore.kernel.org/r/20250820152316.1012757-1-apatel@ventanamicro.com
+Signed-off-by: Paul Walmsley <pjw@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpio-ljca.c | 14 +++-----------
- 1 file changed, 3 insertions(+), 11 deletions(-)
+ arch/riscv/include/asm/pgtable.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpio/gpio-ljca.c b/drivers/gpio/gpio-ljca.c
-index dfec9fbfc7a9b..ddd73b8b790e7 100644
---- a/drivers/gpio/gpio-ljca.c
-+++ b/drivers/gpio/gpio-ljca.c
-@@ -281,22 +281,14 @@ static void ljca_gpio_event_cb(void *context, u8 cmd, const void *evt_data,
- {
- 	const struct ljca_gpio_packet *packet = evt_data;
- 	struct ljca_gpio_dev *ljca_gpio = context;
--	int i, irq;
-+	int i;
+diff --git a/arch/riscv/include/asm/pgtable.h b/arch/riscv/include/asm/pgtable.h
+index 03881122506a7..87c7d94c71f13 100644
+--- a/arch/riscv/include/asm/pgtable.h
++++ b/arch/riscv/include/asm/pgtable.h
+@@ -655,6 +655,8 @@ static inline pgprot_t pgprot_writecombine(pgprot_t _prot)
+ 	return __pgprot(prot);
+ }
  
- 	if (cmd != LJCA_GPIO_INT_EVENT)
- 		return;
- 
- 	for (i = 0; i < packet->num; i++) {
--		irq = irq_find_mapping(ljca_gpio->gc.irq.domain,
--				       packet->item[i].index);
--		if (!irq) {
--			dev_err(ljca_gpio->gc.parent,
--				"gpio_id %u does not mapped to IRQ yet\n",
--				packet->item[i].index);
--			return;
--		}
--
--		generic_handle_domain_irq(ljca_gpio->gc.irq.domain, irq);
-+		generic_handle_domain_irq(ljca_gpio->gc.irq.domain,
-+					packet->item[i].index);
- 		set_bit(packet->item[i].index, ljca_gpio->reenable_irqs);
- 	}
- 
++#define pgprot_dmacoherent pgprot_writecombine
++
+ /*
+  * THP functions
+  */
 -- 
 2.51.0
 
