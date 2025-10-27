@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-190079-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190441-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDB3BC0FF2D
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:39:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB1C4C10645
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:01:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 07DEE19C502B
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:40:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 817D9188B9F7
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:58:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A7DA313520;
-	Mon, 27 Oct 2025 18:39:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE9CA330B26;
+	Mon, 27 Oct 2025 18:54:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZznO2emu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ic+Ml6YY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7F2530217A;
-	Mon, 27 Oct 2025 18:39:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A7F4330B18;
+	Mon, 27 Oct 2025 18:54:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761590380; cv=none; b=POiF1Rd+OfuKU3lZlvf0DWoCOa+Vi2J32YBu6abS06phMfHcmOCXNhhzBgYEg39PF9ctMvcHHadhbhT2HOqNwBfmfjJ150Bu5YHh6OFMAB6K6QItf17GUKWhQ0A6H9/GISq8zqSb4xtZ/XMkw2qXKV2TfbEhKfAzBZeq31YWL18=
+	t=1761591299; cv=none; b=ZNygTcZsSul9ABGV5SUlqwjsx0wFh8XddejYcgxY2/tnp+XiTzcZpnA1L3tw8RDG+ICPmO5FMQkRQFH/4N2xGwU3aKjRp+9CC6flQ8E6ULsR3F5gFNdKzmkIRLTzxLp52j4wy4WPv/ltEnK3ByqA7UN9kSB5zTPY+TcLkVBHJ0o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761590380; c=relaxed/simple;
-	bh=V0nwzAUNOvjY2sjWdh1k5de9xPyuOkkWL3Ljkmw7Bfk=;
+	s=arc-20240116; t=1761591299; c=relaxed/simple;
+	bh=pWgBKTFk11Sd39JeTLbf+P7mUWlu1Nlx++QR/v7PAEU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NvOEV9aF6lJDmfpov6/aRO4jSH5Vs4zA8zWDcqdm58xCdXFaKEVrJAIQNUG/U2MYw56pfYvNC4BciuiC+sV/BXvi1ABH7z5ffeutu54aFX1UbvDfjc9actfI8OMxfGNLICu6vjUH+ZOMciHNe9JtgQQGSrwM2oTmqiUdV7VCZyw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZznO2emu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62D94C4CEF1;
-	Mon, 27 Oct 2025 18:39:40 +0000 (UTC)
+	 MIME-Version; b=N6GhC0U24+C1vNvU/0xOjGkysVHJfZZre8xE9aS/FdrlxWooc2OXZtxl6Xq2bfVSHthfqReIrU7fSUiXdyN1CHsEKLscW1F4o8aMah1MMZDXoFGx9WISbWt7EWWWE1Olb7Y0n8IddWsaqpxWEpLMxh52o1QqLFp4L2vKQfI9MbE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ic+Ml6YY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1488C116C6;
+	Mon, 27 Oct 2025 18:54:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761590380;
-	bh=V0nwzAUNOvjY2sjWdh1k5de9xPyuOkkWL3Ljkmw7Bfk=;
+	s=korg; t=1761591299;
+	bh=pWgBKTFk11Sd39JeTLbf+P7mUWlu1Nlx++QR/v7PAEU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZznO2emuG7nokESJMSsVOTGbAnN9oc2cvkacddc4lVUjKLln9rGAU71lk9BH1nUgs
-	 +H310mk6M3t3v+Yw67xHpAE1wxK9EZo0EADQp7SbgwsqokJs4qKsdRlnuodtSc2R/G
-	 okUoqEaM7u/S3XULSylvatbYC8r/XcLEcxZE1Zoc=
+	b=Ic+Ml6YYace9em6jqXXSCcVLE3Zj2vPr1dSrz96MuNJeSu8vKSWPDTR+D2PbghoFJ
+	 EwQcf5has9jl9g4LuJ0dp1FPP9He3Nmu3JESgWShlvI89QRKtjUF+YLSlAFsQVqgWq
+	 AndX+mKXM9pmVYYmK5PxMDos7lhET7CPG9jblB6Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Da Xue <da@libre.computer>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	Harini T <harini.t@amd.com>,
+	Peng Fan <peng.fan@nxp.com>,
+	Jassi Brar <jassisinghbrar@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 023/224] pinctrl: meson-gxl: add missing i2c_d pinmux
+Subject: [PATCH 5.10 116/332] mailbox: zynqmp-ipi: Remove redundant mbox_controller_unregister() call
 Date: Mon, 27 Oct 2025 19:32:49 +0100
-Message-ID: <20251027183509.624050481@linuxfoundation.org>
+Message-ID: <20251027183527.679240027@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183508.963233542@linuxfoundation.org>
-References: <20251027183508.963233542@linuxfoundation.org>
+In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
+References: <20251027183524.611456697@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,69 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Da Xue <da@libre.computer>
+From: Harini T <harini.t@amd.com>
 
-[ Upstream commit d8c2a9edd181f0cc4a66eec954b3d8f6a1d954a7 ]
+[ Upstream commit 341867f730d3d3bb54491ee64e8b1a0c446656e7 ]
 
-Amlogic GXL has 4 I2C attached to gpio-periphs. I2C_D is on GPIOX_10/11.
+The controller is registered using the device-managed function
+'devm_mbox_controller_register()'. As documented in mailbox.c, this
+ensures the devres framework automatically calls
+mbox_controller_unregister() when device_unregister() is invoked, making
+the explicit call unnecessary.
 
-Add the relevant func 3 pinmux per the datasheet for S805X/S905X/S905D.
+Remove redundant mbox_controller_unregister() call as
+device_unregister() handles controller cleanup.
 
-Fixes: 0f15f500ff2c ("pinctrl: meson: Add GXL pinctrl definitions")
-Signed-off-by: Da Xue <da@libre.computer>
-Link: https://lore.kernel.org/20250821233335.1707559-1-da@libre.computer
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Fixes: 4981b82ba2ff ("mailbox: ZynqMP IPI mailbox controller")
+Signed-off-by: Harini T <harini.t@amd.com>
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/meson/pinctrl-meson-gxl.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/mailbox/zynqmp-ipi-mailbox.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/pinctrl/meson/pinctrl-meson-gxl.c b/drivers/pinctrl/meson/pinctrl-meson-gxl.c
-index e8d1f3050487f..2da0f2ab4038e 100644
---- a/drivers/pinctrl/meson/pinctrl-meson-gxl.c
-+++ b/drivers/pinctrl/meson/pinctrl-meson-gxl.c
-@@ -187,6 +187,9 @@ static const unsigned int i2c_sda_c_pins[]	= { GPIODV_28 };
- static const unsigned int i2c_sck_c_dv19_pins[] = { GPIODV_19 };
- static const unsigned int i2c_sda_c_dv18_pins[] = { GPIODV_18 };
- 
-+static const unsigned int i2c_sck_d_pins[]	= { GPIOX_11 };
-+static const unsigned int i2c_sda_d_pins[]	= { GPIOX_10 };
-+
- static const unsigned int eth_mdio_pins[]	= { GPIOZ_0 };
- static const unsigned int eth_mdc_pins[]	= { GPIOZ_1 };
- static const unsigned int eth_clk_rx_clk_pins[] = { GPIOZ_2 };
-@@ -400,6 +403,8 @@ static struct meson_pmx_group meson_gxl_periphs_groups[] = {
- 	GPIO_GROUP(GPIO_TEST_N),
- 
- 	/* Bank X */
-+	GROUP(i2c_sda_d,	5,	5),
-+	GROUP(i2c_sck_d,	5,	4),
- 	GROUP(sdio_d0,		5,	31),
- 	GROUP(sdio_d1,		5,	30),
- 	GROUP(sdio_d2,		5,	29),
-@@ -631,6 +636,10 @@ static const char * const i2c_c_groups[] = {
- 	"i2c_sck_c", "i2c_sda_c", "i2c_sda_c_dv18", "i2c_sck_c_dv19",
- };
- 
-+static const char * const i2c_d_groups[] = {
-+	"i2c_sck_d", "i2c_sda_d",
-+};
-+
- static const char * const eth_groups[] = {
- 	"eth_mdio", "eth_mdc", "eth_clk_rx_clk", "eth_rx_dv",
- 	"eth_rxd0", "eth_rxd1", "eth_rxd2", "eth_rxd3",
-@@ -751,6 +760,7 @@ static struct meson_pmx_func meson_gxl_periphs_functions[] = {
- 	FUNCTION(i2c_a),
- 	FUNCTION(i2c_b),
- 	FUNCTION(i2c_c),
-+	FUNCTION(i2c_d),
- 	FUNCTION(eth),
- 	FUNCTION(pwm_a),
- 	FUNCTION(pwm_b),
+diff --git a/drivers/mailbox/zynqmp-ipi-mailbox.c b/drivers/mailbox/zynqmp-ipi-mailbox.c
+index be06de791c544..136c1f67dd223 100644
+--- a/drivers/mailbox/zynqmp-ipi-mailbox.c
++++ b/drivers/mailbox/zynqmp-ipi-mailbox.c
+@@ -619,7 +619,6 @@ static void zynqmp_ipi_free_mboxes(struct zynqmp_ipi_pdata *pdata)
+ 	for (; i >= 0; i--) {
+ 		ipi_mbox = &pdata->ipi_mboxes[i];
+ 		if (ipi_mbox->dev.parent) {
+-			mbox_controller_unregister(&ipi_mbox->mbox);
+ 			if (device_is_registered(&ipi_mbox->dev))
+ 				device_unregister(&ipi_mbox->dev);
+ 		}
 -- 
 2.51.0
 
