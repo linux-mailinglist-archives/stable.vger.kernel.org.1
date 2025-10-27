@@ -1,137 +1,237 @@
-Return-Path: <stable+bounces-190012-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190013-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51A1DC0ECCA
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 16:07:42 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26F1DC0ED09
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 16:09:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B52774FBACB
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 14:59:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8D9BF19C3A7B
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 15:04:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E4442C08D1;
-	Mon, 27 Oct 2025 14:59:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA13A2877DE;
+	Mon, 27 Oct 2025 15:04:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LuLxQE6S"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UXuiiI+Y"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D300218AD1
-	for <stable@vger.kernel.org>; Mon, 27 Oct 2025 14:59:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 559FE4A3E;
+	Mon, 27 Oct 2025 15:04:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761577152; cv=none; b=rWPuJEmadNGdCZrAlfEr4PQxzjWQROMvLLEOp1RQSoQyFJWnxhLF9cuimDXW49UBi2ezJSgfzygeNsbprHhQRUShH5YftBkSGtu0IpIAgSFw92NFSdzY/6eZlNMQIabCW1CAM5wohydItWvzWAxBy6O54zcRosBvYGxh4LJPgMw=
+	t=1761577464; cv=none; b=RWsfDDzA9s7HOZbEopxbeCaA5XetFOYGDM2nFXiH/4MvvByIW3wycy9WV3x5+Qlfvqc/b68CsOG9pPGLmit9gOYck0bZ73yIBdlRlQehXPT6luqvgnmqKorpRlU4DQpmTYsE6y3KJl0BQ1IQZjgo8HeQUs9dceeh1apzZdtLJgk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761577152; c=relaxed/simple;
-	bh=uOHwQ5QU7IkbxJT91LHq8qvl+uBlgZdrx56UfcyxsRg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DxrUOxiMksZINQmdI+AcGJbBXRbq1DJJnQTIP+EkXQUq5RGDD5qskF9wAn8zkF8vBxROGMeiLme5T+V6DLD4YdbDr9PfbXBxNsaDq+6/AMp+EoFhwCp/td6LVqOzYDTr4NXu858DO+7zXgUHN9smTBB7W3rKo1JDYaOEcNX51/M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LuLxQE6S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE870C4CEF1;
-	Mon, 27 Oct 2025 14:59:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761577151;
-	bh=uOHwQ5QU7IkbxJT91LHq8qvl+uBlgZdrx56UfcyxsRg=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LuLxQE6SYJTExbChwRZBlVTk8m40Tb21NPoyT8M1XBZn+we9Gih0olNgoZNcmcFCW
-	 Sb2RQrs7+lGCvS4+wvDf4IW9h4sac2w/d+6y/jfn4rIGo240uNm9gL5VSb+Pv4A+iu
-	 VB+c8fRCXzkqujW95uom5WXXk09PrKS4DW/sDkfuJxmlzFioFuid9JYmHIP85uq4so
-	 o4rZ4hUYe0lbEBB6y+DRm8Fe7o5tfR8n9SmgbmjBetdJm+hoCoe8uSjEoXo9wvrR0n
-	 5Q6XQ8EytUQVI/wD/8dKa7iWtlMn06mHhJmT0g8mlS7lfL1DpcIL9f6FLf5t3C6AnW
-	 6Q5saIDjdkFgg==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
-	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4.y] net: ravb: Enforce descriptor type ordering
-Date: Mon, 27 Oct 2025 10:59:07 -0400
-Message-ID: <20251027145907.533046-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025102624-direness-catalyze-d721@gregkh>
-References: <2025102624-direness-catalyze-d721@gregkh>
+	s=arc-20240116; t=1761577464; c=relaxed/simple;
+	bh=Oyvud8Xrb31jPdkUgL/nSFBCVRBEWFiP8+m62AJySW8=;
+	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=lJspPMURD+iW4aOHRpDEHeoTuVZI1l08xZbxgF1nSlp3ZxD1CG9xeag5jWJRwVj4RTMIi+A6HPQ5TpGvSjhXb3u4ocAQGvPtSKbo6W65btRg/f6TmdrIFI9ajNFKgt++mKLdzDgzIS8ZE9o9ehJ517lmzplokF0Yhhf/nA68f30=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UXuiiI+Y; arc=none smtp.client-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1761577462; x=1793113462;
+  h=from:date:to:cc:subject:in-reply-to:message-id:
+   references:mime-version:content-id;
+  bh=Oyvud8Xrb31jPdkUgL/nSFBCVRBEWFiP8+m62AJySW8=;
+  b=UXuiiI+YHMUuxEHRISGkXmHuvoC3/N44Fowoq95Dhblb0cNJqjNXZNnI
+   9pt/5mt6jFqIgfmoj5rxOT3N7VPztm542kIODwfD1o0Ipe2qUHveEt+hH
+   EqCXm4w+p9fi8X2K1ZxZS4O5aWHk2mQk7asKSln8gBSytM+xCuhyzle8D
+   fr8MEnNZuhAcoaro3IXNvQrWoJ7x5Jii2MqFwVYhv8GTWKinppa6bcG5L
+   1VjA8o6Pg6z33RL6mNmjxJVW1bhqEz8NwlkP9l24RBVcTZXKK58oWdeP1
+   i4ZqQ0sASVTYgYq8ccQjGb/8N+oFjJAvW9hkdRQ92YL/GREp1dCLmeJOZ
+   Q==;
+X-CSE-ConnectionGUID: 31wauQOsSq2fPfoVMMUA1A==
+X-CSE-MsgGUID: +01nb+TsR4W4u84KGp4mbQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="63696132"
+X-IronPort-AV: E=Sophos;i="6.19,259,1754982000"; 
+   d="scan'208";a="63696132"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2025 08:04:22 -0700
+X-CSE-ConnectionGUID: 8+IRZ5reQvGEkYVV6ZajvA==
+X-CSE-MsgGUID: Of8F0flcS4i+xSIy6S8wgA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,259,1754982000"; 
+   d="scan'208";a="184960852"
+Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.244.41])
+  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2025 08:04:15 -0700
+From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Date: Mon, 27 Oct 2025 17:04:11 +0200 (EET)
+To: Bjorn Helgaas <helgaas@kernel.org>
+cc: Lucas De Marchi <lucas.demarchi@intel.com>, intel-xe@lists.freedesktop.org, 
+    linux-pci@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+    Icenowy Zheng <uwu@icenowy.me>, Vivian Wang <wangruikang@iscas.ac.cn>, 
+    =?ISO-8859-15?Q?Thomas_Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>, 
+    Rodrigo Vivi <rodrigo.vivi@intel.com>, Bjorn Helgaas <bhelgaas@google.com>, 
+    Simon Richter <Simon.Richter@hogyros.de>, 
+    LKML <linux-kernel@vger.kernel.org>, stable@vger.kernel.org
+Subject: Re: [PATCH 1/2] PCI: Release BAR0 of an integrated bridge to allow
+ GPU BAR resize
+In-Reply-To: <20251024224401.GA1371085@bhelgaas>
+Message-ID: <5fa35d10-e3c6-9661-9287-47ebdcaca0d1@linux.intel.com>
+References: <20251024224401.GA1371085@bhelgaas>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/mixed; BOUNDARY="8323328-1098205246-1761576381=:970"
+Content-ID: <9d0e426b-9aa1-0ef7-b2f1-bd48534fcf9a@linux.intel.com>
 
-From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-[ Upstream commit 5370c31e84b0e0999c7b5ff949f4e104def35584 ]
+--8323328-1098205246-1761576381=:970
+Content-Type: text/plain; CHARSET=ISO-8859-15
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Content-ID: <3bac46db-7de1-f5bc-b075-6d9ffad99397@linux.intel.com>
 
-Ensure the TX descriptor type fields are published in a safe order so the
-DMA engine never begins processing a descriptor chain before all descriptor
-fields are fully initialised.
+On Fri, 24 Oct 2025, Bjorn Helgaas wrote:
+> On Thu, Sep 18, 2025 at 01:58:56PM -0700, Lucas De Marchi wrote:
+> > From: Ilpo J=E4rvinen <ilpo.jarvinen@linux.intel.com>
+> >=20
+> > Resizing BAR to a larger size has to release upstream bridge windows in
+> > order make the bridge windows larger as well (and to potential relocate
+> > them into a larger free block within iomem space). Some GPUs have an
+> > integrated PCI switch that has BAR0. The resource allocation assigns
+> > space for that BAR0 as it does for any resource.
+> >=20
+> > An extra resource on a bridge will pin its upstream bridge window in
+> > place which prevents BAR resize for anything beneath that bridge.
+> >=20
+> > Nothing in the pcieport driver provided by PCI core, which typically is
+> > the driver bound to these bridges, requires that BAR0. Because of that,
+> > releasing the extra BAR does not seem to have notable downsides but
+> > comes with a clear upside.
+> >=20
+> > Therefore, release BAR0 of such switches using a quirk and clear its
+> > flags to prevent any new invocation of the resource assignment
+> > algorithm from assigning the resource again.
+> >=20
+> > Due to other siblings within the PCI hierarchy of all the devices
+> > integrated into the GPU, some other devices may still have to be
+> > manually removed before the resize is free of any bridge window pins.
+> > Such siblings can be released through sysfs to unpin windows while
+> > leaving access to GPU's sysfs entries required for initiating the
+> > resize operation, whereas removing the topmost bridge this quirk
+> > targets would result in removing the GPU device as well so no manual
+> > workaround for this problem exists.
+> >=20
+> > Reported-by: Lucas De Marchi <lucas.demarchi@intel.com>
+> > Link: https://lore.kernel.org/linux-pci/fl6tx5ztvttg7txmz2ps7oyd745wg3l=
+wcp3h7esmvnyg26n44y@owo2ojiu2mov/
+> > Link: https://lore.kernel.org/intel-xe/20250721173057.867829-1-uwu@icen=
+owy.me/
+> > Signed-off-by: Ilpo J=E4rvinen <ilpo.jarvinen@linux.intel.com>
+> > Cc: <stable@vger.kernel.org> # v6.12+
+> > Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+> > ---
+> >=20
+> > Remarks from Ilpo: this feels quite hacky to me and I'm working towards=
+ a
+> > better solution which is to consider Resizable BAR maximum size the
+> > resource fitting algorithm. But then, I don't expect the better solutio=
+n
+> > to be something we want to push into stable due to extremely invasive
+> > dependencies. So maybe consider this an interim/legacy solution to the
+> > resizing problem and remove it once the algorithmic approach works (or
+> > more precisely retain it only in the old kernel versions).
+> > ---
+> >  drivers/pci/quirks.c | 23 +++++++++++++++++++++++
+> >  1 file changed, 23 insertions(+)
+> >=20
+> > diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
+> > index d97335a401930..9b1c08de3aa89 100644
+> > --- a/drivers/pci/quirks.c
+> > +++ b/drivers/pci/quirks.c
+> > @@ -6338,3 +6338,26 @@ static void pci_mask_replay_timer_timeout(struct=
+ pci_dev *pdev)
+> >  DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_GLI, 0x9750, pci_mask_replay_tim=
+er_timeout);
+> >  DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_GLI, 0x9755, pci_mask_replay_tim=
+er_timeout);
+> >  #endif
+> > +
+> > +/*
+> > + * PCI switches integrated into Intel Arc GPUs have BAR0 that prevents
+> > + * resizing the BARs of the GPU device due to that bridge BAR0 pinning=
+ the
+> > + * bridge window it's under in place. Nothing in pcieport requires tha=
+t
+> > + * BAR0.
+> > + *
+> > + * Release and disable BAR0 permanently by clearing its flags to preve=
+nt
+> > + * anything from assigning it again.
+>=20
+> Does "disabling BAR0" actually work?  This quirk keeps the PCI core
+> from assigning resources to the BAR, but I don't think we have a way
+> to actually disable an individual BAR, do we?
 
-For multi-descriptor transmits the driver writes DT_FEND into the last
-descriptor and DT_FSTART into the first. The DMA engine begins processing
-when it observes DT_FSTART. Move the dma_wmb() barrier so it executes
-immediately after DT_FEND and immediately before writing DT_FSTART
-(and before DT_FSINGLE in the single-descriptor case). This guarantees
-that all prior CPU writes to the descriptor memory are visible to the
-device before DT_FSTART is seen.
+No, we don't and that was just sloppy wording from me. The same problem
+applies to any other non-assigned BAR resource, they too are there with
+a dangling address that could conflict.
 
-This avoids a situation where compiler/CPU reordering could publish
-DT_FSTART ahead of DT_FEND or other descriptor fields, allowing the DMA to
-start on a partially initialised chain and causing corrupted transmissions
-or TX timeouts. Such a failure was observed on RZ/G2L with an RT kernel as
-transmit queue timeouts and device resets.
+> I think the only control is PCI_COMMAND_MEMORY, and the bridge must
+> have PCI_COMMAND_MEMORY enabled so memory accesses to downstream
+> devices work.
+>=20
+> No matter what we do to the struct resource, the hardware BAR still
+> contains some address, and the bridge will decode any accesses that
+> match the address in the BAR.
+>=20
+> Maybe we could effectively disable the BAR by setting it to some
+> impossible address, i.e., something outside both the upstream and
+> downstream bridge windows so memory accesses could never be routed to
+> it?
 
-Fixes: 2f45d1902acf ("ravb: minimize TX data copying")
-Cc: stable@vger.kernel.org
-Co-developed-by: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
-Signed-off-by: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
-Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Reviewed-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
-Link: https://patch.msgid.link/20251017151830.171062-4-prabhakar.mahadev-lad.rj@bp.renesas.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ kept unconditional skb_tx_timestamp() ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/net/ethernet/renesas/ravb_main.c | 16 ++++++++++++++--
- 1 file changed, 14 insertions(+), 2 deletions(-)
+I'm not entire sure how one should acquire address outside of the valid=20
+address ranges? Is the resource-to-bus mapping even valid outside a=20
+window?
 
-diff --git a/drivers/net/ethernet/renesas/ravb_main.c b/drivers/net/ethernet/renesas/ravb_main.c
-index 3cc312a526d9b..6541bc6999996 100644
---- a/drivers/net/ethernet/renesas/ravb_main.c
-+++ b/drivers/net/ethernet/renesas/ravb_main.c
-@@ -1593,13 +1593,25 @@ static netdev_tx_t ravb_start_xmit(struct sk_buff *skb, struct net_device *ndev)
- 	}
- 
- 	skb_tx_timestamp(skb);
--	/* Descriptor type must be set after all the above writes */
--	dma_wmb();
-+
- 	if (num_tx_desc > 1) {
- 		desc->die_dt = DT_FEND;
- 		desc--;
-+		/* When using multi-descriptors, DT_FEND needs to get written
-+		 * before DT_FSTART, but the compiler may reorder the memory
-+		 * writes in an attempt to optimize the code.
-+		 * Use a dma_wmb() barrier to make sure DT_FEND and DT_FSTART
-+		 * are written exactly in the order shown in the code.
-+		 * This is particularly important for cases where the DMA engine
-+		 * is already running when we are running this code. If the DMA
-+		 * sees DT_FSTART without the corresponding DT_FEND it will enter
-+		 * an error condition.
-+		 */
-+		dma_wmb();
- 		desc->die_dt = DT_FSTART;
- 	} else {
-+		/* Descriptor type must be set after all the above writes */
-+		dma_wmb();
- 		desc->die_dt = DT_FSINGLE;
- 	}
- 	ravb_modify(ndev, TCCR, TCCR_TSRQ0 << q, TCCR_TSRQ0 << q);
--- 
-2.51.0
+Perhaps find either min(start address) or max(end address) over all
+windows as those boundary addresses should be still mappable and place=20
+the BAR right below or above either of those by subtracting the resource=20
+size or adding +1). How does that approach sound?
 
+(There could be cases where a simple approach like that fails when both=20
+ends of the range are in use but then I wouldn't want to over-engineer the=
+=20
+approach at this point unless we know there are such problematic cases
+in practice.)
+
+It would be nice to do it eventually for any non-assigned BAR but it=20
+requires preserving those res->flags (for non-window resources too) in=20
+order to know which of them are even even usable as BARs.
+
+--=20
+ i.
+
+> > + */
+> > +static void pci_release_bar0(struct pci_dev *pdev)
+> > +{
+> > +=09struct resource *res =3D pci_resource_n(pdev, 0);
+> > +
+> > +=09if (!res->parent)
+> > +=09=09return;
+> > +
+> > +=09pci_release_resource(pdev, 0);
+> > +=09res->flags =3D 0;
+> > +}
+> > +DECLARE_PCI_FIXUP_ENABLE(PCI_VENDOR_ID_INTEL, 0x4fa0, pci_release_bar0=
+);
+> > +DECLARE_PCI_FIXUP_ENABLE(PCI_VENDOR_ID_INTEL, 0x4fa1, pci_release_bar0=
+);
+> > +DECLARE_PCI_FIXUP_ENABLE(PCI_VENDOR_ID_INTEL, 0xe2ff, pci_release_bar0=
+);
+> >=20
+> > --=20
+> > 2.50.1
+> >=20
+>=20
+--8323328-1098205246-1761576381=:970--
 
