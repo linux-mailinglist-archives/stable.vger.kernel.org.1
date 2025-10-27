@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-190885-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191066-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B978C10B0D
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:15:50 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8574BC1105D
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:30:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 4875D3520DE
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:15:50 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E8B474F5B71
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:23:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76946328B53;
-	Mon, 27 Oct 2025 19:14:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFC1431D757;
+	Mon, 27 Oct 2025 19:22:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lg+yegza"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="udGDTVka"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3403231E0E0;
-	Mon, 27 Oct 2025 19:14:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C0C32BD033;
+	Mon, 27 Oct 2025 19:22:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592455; cv=none; b=VkdZqLPXhYNYsofMks1mz07U5xH9HbCzMQlIc5xY5QPI7TxOOku5k1HIp/gXw4LFbwIZaG+ATWsIVWykt5eKwczP19dRnZKJ+53IhtLOxn4l0u2JyQH47VAJoAwdWtSs6nssljJwZ3Derl6dkMa5/rj6bl1e1hD1IJV5lx+ForU=
+	t=1761592924; cv=none; b=gZlye059G51Ec0jcQwoYLbPYD+gQ6sLWmnpU6NCMz68Hs4SgYsIWeasMRnS/dfjekexmTxxzzqDyRTppyS2kllZIKCIDKJ8cMAQZQHmRW6kkoIpJ2lMR8hS5tIELdxH0upVuyyjyiilksWlbWbnhnuOQWit4OTbS+19er2Kqc14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592455; c=relaxed/simple;
-	bh=Bx+HNuSbdXxJnaEX5YIH/+j0sFoRZCF/pFZ8inKGrVM=;
+	s=arc-20240116; t=1761592924; c=relaxed/simple;
+	bh=WRaUeDH2Q5B8PoYyCJZarwqshhVR4u1cEHSzjdfZ7j0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cl2oJMnHdTRTALX8zM5Zv/jf7dnKpBAq+MVbYLW2VwzLUjBvlc3kwIlVGSZmCe3OmAgkwwPS1ms07jTX/cDmUV9GNwpDirbyBH4jZpAKK5LZpgdjJXrFkKnYj33hcmxeHXx15i8nuiwjHjWM8gmBu4HilLuoEg1iQrpiNySGxPw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lg+yegza; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA8A9C4CEF1;
-	Mon, 27 Oct 2025 19:14:14 +0000 (UTC)
+	 MIME-Version:Content-Type; b=L7BUNKPVqyppgNTe+6DyIQp9wxzdwnyxgf4zV0urx261I6jEnZWEQqtf+HmgSP0wlm2eTOs/FZjZlHfjOXOJoMmqVOjvbwSQEEi3d/8uoS93vxDLAUZjg4E2r0yp4EsOxTXCZ2LQ4429Olgu0uoglEXLc2Q1wrgbltGU0Czrr7E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=udGDTVka; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17812C4CEF1;
+	Mon, 27 Oct 2025 19:22:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592455;
-	bh=Bx+HNuSbdXxJnaEX5YIH/+j0sFoRZCF/pFZ8inKGrVM=;
+	s=korg; t=1761592924;
+	bh=WRaUeDH2Q5B8PoYyCJZarwqshhVR4u1cEHSzjdfZ7j0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lg+yegza7HZGnJYVml6+JUqI20H514e/e6Evm80A/3NbrGbGJcF+rWTZnzSvmU014
-	 KasCRvx3Uaj2z5iR4ezCHyWSpy6Xnu+LJQw1Y+UKjojnzv1iyIuFj0ZEIpWZ3tPANS
-	 E3E05HeziZWqkrNtJmPS4ulifv30WMET75Ef/ERM=
+	b=udGDTVkar+oQT/G01Copscl8JAW9M5CMtfWW8aF5ZUbDFcLmHYdtGnkhtiIPRtQRr
+	 C58JDxuP8cN9ocvrVxAj29FnaPNUcO41bUHkEvONM2CJ4KskW2fF88X/LM4xa/yNuK
+	 G4B6DMYFVCBZNwPWdN3hNNa9GRXwaM8UlKm2ZrvE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Gergely Kovacs <Gergely.Kovacs2@arm.com>,
-	Will Deacon <will@kernel.org>,
-	David Hildenbrand <david@redhat.com>,
-	Lance Yang <lance.yang@linux.dev>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 128/157] arm64: mte: Do not flag the zero page as PG_mte_tagged
+	Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 063/117] net: ravb: Enforce descriptor type ordering
 Date: Mon, 27 Oct 2025 19:36:29 +0100
-Message-ID: <20251027183504.685131074@linuxfoundation.org>
+Message-ID: <20251027183455.718189226@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
-References: <20251027183501.227243846@linuxfoundation.org>
+In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
+References: <20251027183453.919157109@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,94 +61,78 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Catalin Marinas <catalin.marinas@arm.com>
+From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
 
-[ Upstream commit f620d66af3165838bfa845dcf9f5f9b4089bf508 ]
+commit 5370c31e84b0e0999c7b5ff949f4e104def35584 upstream.
 
-Commit 68d54ceeec0e ("arm64: mte: Allow PTRACE_PEEKMTETAGS access to the
-zero page") attempted to fix ptrace() reading of tags from the zero page
-by marking it as PG_mte_tagged during cpu_enable_mte(). The same commit
-also changed the ptrace() tag access permission check to the VM_MTE vma
-flag while turning the page flag test into a WARN_ON_ONCE().
+Ensure the TX descriptor type fields are published in a safe order so the
+DMA engine never begins processing a descriptor chain before all descriptor
+fields are fully initialised.
 
-Attempting to set the PG_mte_tagged flag early with
-CONFIG_DEFERRED_STRUCT_PAGE_INIT enabled may either hang (after commit
-d77e59a8fccd "arm64: mte: Lock a page for MTE tag initialisation") or
-have the flags cleared later during page_alloc_init_late(). In addition,
-pages_identical() -> memcmp_pages() will reject any comparison with the
-zero page as it is marked as tagged.
+For multi-descriptor transmits the driver writes DT_FEND into the last
+descriptor and DT_FSTART into the first. The DMA engine begins processing
+when it observes DT_FSTART. Move the dma_wmb() barrier so it executes
+immediately after DT_FEND and immediately before writing DT_FSTART
+(and before DT_FSINGLE in the single-descriptor case). This guarantees
+that all prior CPU writes to the descriptor memory are visible to the
+device before DT_FSTART is seen.
 
-Partially revert the above commit to avoid setting PG_mte_tagged on the
-zero page. Update the __access_remote_tags() warning on untagged pages
-to ignore the zero page since it is known to have the tags initialised.
+This avoids a situation where compiler/CPU reordering could publish
+DT_FSTART ahead of DT_FEND or other descriptor fields, allowing the DMA to
+start on a partially initialised chain and causing corrupted transmissions
+or TX timeouts. Such a failure was observed on RZ/G2L with an RT kernel as
+transmit queue timeouts and device resets.
 
-Note that all user mapping of the zero page are marked as pte_special().
-The arm64 set_pte_at() will not call mte_sync_tags() on such pages, so
-PG_mte_tagged will remain cleared.
-
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-Fixes: 68d54ceeec0e ("arm64: mte: Allow PTRACE_PEEKMTETAGS access to the zero page")
-Reported-by: Gergely Kovacs <Gergely.Kovacs2@arm.com>
-Cc: stable@vger.kernel.org # 5.10.x
-Cc: Will Deacon <will@kernel.org>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Lance Yang <lance.yang@linux.dev>
-Acked-by: Lance Yang <lance.yang@linux.dev>
-Reviewed-by: David Hildenbrand <david@redhat.com>
-Tested-by: Lance Yang <lance.yang@linux.dev>
-Signed-off-by: Will Deacon <will@kernel.org>
-[ removed folio-based hugetlb MTE checks ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 2f45d1902acf ("ravb: minimize TX data copying")
+Cc: stable@vger.kernel.org
+Co-developed-by: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
+Signed-off-by: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
+Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Reviewed-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+Link: https://patch.msgid.link/20251017151830.171062-4-prabhakar.mahadev-lad.rj@bp.renesas.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/kernel/cpufeature.c |   10 +++++++---
- arch/arm64/kernel/mte.c        |    2 +-
- 2 files changed, 8 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/renesas/ravb_main.c |   16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
 
---- a/arch/arm64/kernel/cpufeature.c
-+++ b/arch/arm64/kernel/cpufeature.c
-@@ -2068,17 +2068,21 @@ static void bti_enable(const struct arm6
- #ifdef CONFIG_ARM64_MTE
- static void cpu_enable_mte(struct arm64_cpu_capabilities const *cap)
- {
-+	static bool cleared_zero_page = false;
-+
- 	sysreg_clear_set(sctlr_el1, 0, SCTLR_ELx_ATA | SCTLR_EL1_ATA0);
+--- a/drivers/net/ethernet/renesas/ravb_main.c
++++ b/drivers/net/ethernet/renesas/ravb_main.c
+@@ -2203,13 +2203,25 @@ static netdev_tx_t ravb_start_xmit(struc
  
- 	mte_cpu_setup();
- 
- 	/*
- 	 * Clear the tags in the zero page. This needs to be done via the
--	 * linear map which has the Tagged attribute.
-+	 * linear map which has the Tagged attribute. Since this page is
-+	 * always mapped as pte_special(), set_pte_at() will not attempt to
-+	 * clear the tags or set PG_mte_tagged.
- 	 */
--	if (!page_mte_tagged(ZERO_PAGE(0))) {
-+	if (!cleared_zero_page) {
-+		cleared_zero_page = true;
- 		mte_clear_page_tags(lm_alias(empty_zero_page));
--		set_page_mte_tagged(ZERO_PAGE(0));
+ 		skb_tx_timestamp(skb);
  	}
- 
- 	kasan_init_hw_tags_cpu();
---- a/arch/arm64/kernel/mte.c
-+++ b/arch/arm64/kernel/mte.c
-@@ -456,7 +456,7 @@ static int __access_remote_tags(struct m
- 			put_page(page);
- 			break;
- 		}
--		WARN_ON_ONCE(!page_mte_tagged(page));
-+		WARN_ON_ONCE(!page_mte_tagged(page) && !is_zero_page(page));
- 
- 		/* limit access to the end of the page */
- 		offset = offset_in_page(addr);
+-	/* Descriptor type must be set after all the above writes */
+-	dma_wmb();
++
+ 	if (num_tx_desc > 1) {
+ 		desc->die_dt = DT_FEND;
+ 		desc--;
++		/* When using multi-descriptors, DT_FEND needs to get written
++		 * before DT_FSTART, but the compiler may reorder the memory
++		 * writes in an attempt to optimize the code.
++		 * Use a dma_wmb() barrier to make sure DT_FEND and DT_FSTART
++		 * are written exactly in the order shown in the code.
++		 * This is particularly important for cases where the DMA engine
++		 * is already running when we are running this code. If the DMA
++		 * sees DT_FSTART without the corresponding DT_FEND it will enter
++		 * an error condition.
++		 */
++		dma_wmb();
+ 		desc->die_dt = DT_FSTART;
+ 	} else {
++		/* Descriptor type must be set after all the above writes */
++		dma_wmb();
+ 		desc->die_dt = DT_FSINGLE;
+ 	}
+ 	ravb_modify(ndev, TCCR, TCCR_TSRQ0 << q, TCCR_TSRQ0 << q);
 
 
 
