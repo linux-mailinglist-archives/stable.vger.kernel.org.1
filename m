@@ -1,160 +1,116 @@
-Return-Path: <stable+bounces-191337-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191338-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4526C11FBA
-	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 00:22:31 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1982C120D3
+	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 00:32:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 369944E9773
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 23:22:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B03233B0381
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 23:26:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D63632D0FA;
-	Mon, 27 Oct 2025 23:22:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6350C331A47;
+	Mon, 27 Oct 2025 23:23:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ufgn7wwv"
+	dkim=pass (2048-bit key) header.d=sladewatkins.com header.i=@sladewatkins.com header.b="PaUcYDUO"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f172.google.com (mail-il1-f172.google.com [209.85.166.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3E0532D0D8;
-	Mon, 27 Oct 2025 23:22:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A712932E129
+	for <stable@vger.kernel.org>; Mon, 27 Oct 2025 23:23:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761607335; cv=none; b=SLhNiCj5tTocTz2FKy/52G/vEoA4a+yeJJNDTXTiCXYTAdKhXc4N4uIagAUeg80fNwpqcYLY7vCdfgkR0ui38/KuQDn82/gnXhgfxVoY4sUfcpdxWQ/RHNszAJTPrFmk9iDExpZnuv7Ha5noa+Pc7eun8jP+lESLB+/Mz8l3HFg=
+	t=1761607419; cv=none; b=aoI377YrYIF6E8xKzJXgfuf/ut7cDlwHhkL4bgcToIeRRMKTeZzVlmaDHyBCW2Xp0pn3tDndUPerMxappci7gbjIoO/Jo/YEu3hhnoXVyD+POdKk4QBe77ozBDSCeGdag4gXC3ycBlhFxq3JuEi1M+lGSY1vU4wPHUkYAioAh+M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761607335; c=relaxed/simple;
-	bh=onxRzI4qOeKxeNuAcJ0ae/Pha4L/2LJ+E+8mbQS1rjs=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=RHOtD0TLrF8otszBH6STXgoqypxX42vTYJ03OGAOvh31fOLOFMn+/Xai22fdteFMrQrsoihQObDuFka1emi5JzG79uzlBbNKSl1i/fxu4/cWh3NGasV6WRhGbKT613Ezwe+Rae6GcfTu8ify8l34Cl5/IhHXSjQi819MSU6kNZ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ufgn7wwv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 4548BC116B1;
-	Mon, 27 Oct 2025 23:22:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761607335;
-	bh=onxRzI4qOeKxeNuAcJ0ae/Pha4L/2LJ+E+8mbQS1rjs=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=Ufgn7wwvyEHJcYZm2u94ouAm/8OKru7xfw5V091ddfWYr9FvF3m1ze4nwm6AThnD6
-	 C1u9dzYYCuQtC0mSexKvqflAl7SCsTBjBri8Skl6CMxU/9b7Ya/v7w41p2kcjgocxm
-	 fOSwm6lrPaBd824qX26A6KQohob1A4m5OXX6Jt9GPHPPG6+x2waM4q3npwFYOSldsZ
-	 JHpQE7yU9RhHmHInFAIYurnyLmj03wHwJRgTg07GHb0Eyj7KvEqhRD1GDYWY9oW9j/
-	 gwynTtyxW3Q0/NRAS8NJnG3rG0bTcQ7gyExWms1Ml87HO3eKasgcO9+dwUyvTB1p3m
-	 vYu1RiebHn/pQ==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3C993CCF9E0;
-	Mon, 27 Oct 2025 23:22:15 +0000 (UTC)
-From: Dave Vasilevsky via B4 Relay <devnull+dave.vasilevsky.ca@kernel.org>
-Date: Mon, 27 Oct 2025 19:21:47 -0400
-Subject: [PATCH] powerpc: Fix mprotect on book3s32
+	s=arc-20240116; t=1761607419; c=relaxed/simple;
+	bh=bMX9jzNeBFXkZ6Y7HMFTaT/xWB1zBcledpc/9DsCuaw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=m2cG9kgE1nv21qppJgdpfGzj6HQT0jRUoflDsWBd53QubhRTBljW3G5qMauoOZUN0x3R61EbKTKnCqsgjoh+47r4gHTeneydqrlBoW0NA4cV2vWIe5/9SjDfEohHRWSsUnZnY74uKnUD+6RR2tE7+o+Eqp9NxVR1roohIcMr/KA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=sladewatkins.com; spf=pass smtp.mailfrom=sladewatkins.com; dkim=pass (2048-bit key) header.d=sladewatkins.com header.i=@sladewatkins.com header.b=PaUcYDUO; arc=none smtp.client-ip=209.85.166.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=sladewatkins.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sladewatkins.com
+Received: by mail-il1-f172.google.com with SMTP id e9e14a558f8ab-430c17e29d9so22243175ab.1
+        for <stable@vger.kernel.org>; Mon, 27 Oct 2025 16:23:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=sladewatkins.com; s=google; t=1761607417; x=1762212217; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=oEYdNd7+OFAMq+81QLmV1d41glwOS9opiHm4I2f9DlQ=;
+        b=PaUcYDUO8mit871vxTIYy8ao6zrBtGY403mAIvEJwsa0YnS4emB8CGITiYGocpaxJv
+         IhmpmEeLjGy9YQ9peNkfiSLOxt3fU7Ez4amI2jh4dNjH1aggKXLB4mx3caSbwoM+MHSX
+         jNHvQYtLEyH/vvFJyQZZYHOZjYXOEBmeB2IPivdtsdZwFI9/7wObOgY15cX/Pk987syY
+         AX1EhxlExTKocFM3frmJag5892FtmLIbTzbxhDGB7yb+94VM45zhDeIAKU7D8lFa9BAH
+         3GIcGAX0n5+ZqfS7SfGJGxes2y7QPNYzrjuQsfK7QcYSLwCw5bX1/8nrz8tn49auNQwi
+         Je1A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761607417; x=1762212217;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=oEYdNd7+OFAMq+81QLmV1d41glwOS9opiHm4I2f9DlQ=;
+        b=X8Diu88et0qwM5y7Mup7KLX8FdA4S2zf5z/lRbiqVChhyCGNfKuyktPVCQF4AAR3gO
+         H58WungHa6tcaEcbnOVpIay54BpTGxs6rnSZy0GbkFU+MVYhymbcVH3R+bVkeI+w9eU4
+         FtFFNTJycNNDyG71rxWwx6gBbYir+Yb7kv8I+4Bn69OKTZK9mJz7qRCyAwURJuup/E9D
+         dxS4Rx2dAkrZzIeBeSy+6AJjdwWrYIofZskxkLeqJgcnIm1cCMn24FuRKuUqdnaLqDQD
+         br36D8FmbmOTamT8XnUsASdCX7/ljjlUj90JLO4JYGDBoOC6YEe3LTpfszcWdx8vyy2f
+         80UA==
+X-Gm-Message-State: AOJu0YxMOo4Oti8hOQ6K5ZWYlMMiy0plfQLK4hx8r2OOprZI8GApm7ya
+	FaR7RPJj4feLvIewU3oAWbt+eZSgVp6vWti90i86Iv5ejeZNBXmDkzYiRSROm5JlNA4LGQl1ric
+	l3BVfR2NG5aew
+X-Gm-Gg: ASbGnctudgkzCeudh4ChNtTBV/6sYMqOTegYdFl55UDSNV4eABFXxT5Z/HjsxaHsCty
+	uAfSRmNfNKVM0h4ZZ6j52UR/EAjODX5+SozIlEzHsT3WkiZwLC6cgH/gCHYMPPsMDgQHvfbaNPJ
+	pN8P+2/2A6Zv920pzg46L8KHAv6pZZZ8cuo8ZCSi+OSsnV9qWOeLSAMTT8usCRKlmYHqp55ZEHL
+	KifksBxfPmYLH11jenZ5Sq3eRK7J+T3hEBIWablPv1h2dQeSVPMarHQyOXNxn+XAiFF+3Qb166y
+	3R7WBt1lGCDCqSdQJUmZpv3JVsGhhRaPHDvpYs+hEAt/jxZ8eKoiXO/TwtQ5drufCxWXNeGJURt
+	YYlYe8bebM9H9JAyDJvn7fGo9wA7pWcnrYTp84zxAZrs1ZBBNZaMP86w/hYGuV0cv3Mj2VtY+HA
+	jQENWKvtvJJMpyEU4=
+X-Google-Smtp-Source: AGHT+IH0ZPGnVVgtPdbyncjoeDuRW4QsW14xPxt5y+rrOlXlui4rOMIhJm1pDebe0CYZXcs2RVpexg==
+X-Received: by 2002:a05:6e02:2586:b0:42e:7273:a370 with SMTP id e9e14a558f8ab-4320f6a770cmr23370685ab.5.1761607416707;
+        Mon, 27 Oct 2025 16:23:36 -0700 (PDT)
+Received: from [192.168.5.72] ([174.97.1.113])
+        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-5aea7ce584bsm3684302173.27.2025.10.27.16.23.34
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 27 Oct 2025 16:23:36 -0700 (PDT)
+Message-ID: <007900a3-bd49-4532-87bc-3fb7a83d6a1a@sladewatkins.com>
+Date: Mon, 27 Oct 2025 19:23:34 -0400
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5.10 000/332] 5.10.246-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+ linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+ akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+ patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+ jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+ rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+ achill@achill.org
+References: <20251027183524.611456697@linuxfoundation.org>
+Content-Language: en-US
+From: Slade Watkins <sr@sladewatkins.com>
+In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251027-vasi-mprotect-g3-v1-1-3c5187085f9a@vasilevsky.ca>
-X-B4-Tracking: v=1; b=H4sIAIr+/2gC/x3MQQqAIBBA0avErBtQS5SuEi0ix5pFKhoRhHdPW
- r7F/y8UykwFpu6FTDcXjqFB9h1sxxp2QnbNoITSUiiD91oYz5TjRduF+4Deeq2MdaMcBbQsZfL
- 8/Mt5qfUDcHtzDGIAAAA=
-X-Change-ID: 20251027-vasi-mprotect-g3-f8f5278d4140
-To: Madhavan Srinivasan <maddy@linux.ibm.com>, 
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
- Christophe Leroy <christophe.leroy@csgroup.eu>, 
- Nadav Amit <nadav.amit@gmail.com>, 
- "Peter Zijlstra (Intel)" <peterz@infradead.org>, 
- Andrew Morton <akpm@linux-foundation.org>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org, Dave Vasilevsky <dave@vasilevsky.ca>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1761607334; l=2972;
- i=dave@vasilevsky.ca; s=20251027; h=from:subject:message-id;
- bh=E1aBGzZxrKFyEjSh5tyf0kwyoQ+SazFw/xbQmkHQC8c=;
- b=stXn+ddNorVpT4m4xv4DpE0jTKLzbB53xuvhLM3AsQqN7nWd+GkbidV1wVWZ/ynrPTQgsSvxj
- RF8akzSsGFIAuOfxrGVn1gCyHKBiUqsfRdMLRLPFG2DkjhzYuR0HhW/
-X-Developer-Key: i=dave@vasilevsky.ca; a=ed25519;
- pk=Jsd1btZeqqg6x6y73Dx0YrleQb3A3pCBnUeE0qmoKq4=
-X-Endpoint-Received: by B4 Relay for dave@vasilevsky.ca/20251027 with
- auth_id=556
-X-Original-From: Dave Vasilevsky <dave@vasilevsky.ca>
-Reply-To: dave@vasilevsky.ca
 
-From: Dave Vasilevsky <dave@vasilevsky.ca>
+On 10/27/2025 2:30 PM, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 5.10.246 release.
+> There are 332 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Wed, 29 Oct 2025 18:34:15 +0000.
+> Anything received after that time might be too late.
 
-On 32-bit book3s with hash-MMUs, tlb_flush() was a no-op. This was
-unnoticed because all uses until recently were for unmaps, and thus
-handled by __tlb_remove_tlb_entry().
+5.10.246-rc1 built and run on x86_64 test system with no errors or 
+regressions:
+Tested-by: Slade Watkins <sr@sladewatkins.com>
 
-After commit 4a18419f71cd ("mm/mprotect: use mmu_gather") in kernel 5.19,
-tlb_gather_mmu() started being used for mprotect as well. This caused
-mprotect to simply not work on these machines:
-
-  int *ptr = mmap(NULL, 4096, PROT_READ|PROT_WRITE,
-                  MAP_PRIVATE|MAP_ANONYMOUS, -1, 0);
-  *ptr = 1; // force HPTE to be created
-  mprotect(ptr, 4096, PROT_READ);
-  *ptr = 2; // should segfault, but succeeds
-
-Fixed by making tlb_flush() actually flush TLB pages. This finally
-agrees with the behaviour of boot3s64's tlb_flush().
-
-Fixes: 4a18419f71cd ("mm/mprotect: use mmu_gather")
-Signed-off-by: Dave Vasilevsky <dave@vasilevsky.ca>
----
- arch/powerpc/include/asm/book3s/32/tlbflush.h | 8 ++++++--
- arch/powerpc/mm/book3s32/tlb.c                | 6 ++++++
- 2 files changed, 12 insertions(+), 2 deletions(-)
-
-diff --git a/arch/powerpc/include/asm/book3s/32/tlbflush.h b/arch/powerpc/include/asm/book3s/32/tlbflush.h
-index e43534da5207aa3b0cb3c07b78e29b833c141f3f..b8c587ad2ea954f179246a57d6e86e45e91dcfdc 100644
---- a/arch/powerpc/include/asm/book3s/32/tlbflush.h
-+++ b/arch/powerpc/include/asm/book3s/32/tlbflush.h
-@@ -11,6 +11,7 @@
- void hash__flush_tlb_mm(struct mm_struct *mm);
- void hash__flush_tlb_page(struct vm_area_struct *vma, unsigned long vmaddr);
- void hash__flush_range(struct mm_struct *mm, unsigned long start, unsigned long end);
-+void hash__flush_gather(struct mmu_gather *tlb);
- 
- #ifdef CONFIG_SMP
- void _tlbie(unsigned long address);
-@@ -28,9 +29,12 @@ void _tlbia(void);
-  */
- static inline void tlb_flush(struct mmu_gather *tlb)
- {
--	/* 603 needs to flush the whole TLB here since it doesn't use a hash table. */
--	if (!mmu_has_feature(MMU_FTR_HPTE_TABLE))
-+	if (mmu_has_feature(MMU_FTR_HPTE_TABLE)) {
-+		hash__flush_gather(tlb);
-+	} else {
-+		/* 603 needs to flush the whole TLB here since it doesn't use a hash table. */
- 		_tlbia();
-+	}
- }
- 
- static inline void flush_range(struct mm_struct *mm, unsigned long start, unsigned long end)
-diff --git a/arch/powerpc/mm/book3s32/tlb.c b/arch/powerpc/mm/book3s32/tlb.c
-index 9ad6b56bfec96e989b96f027d075ad5812500854..3da95ecfbbb296303082e378425e92a5fbdbfac8 100644
---- a/arch/powerpc/mm/book3s32/tlb.c
-+++ b/arch/powerpc/mm/book3s32/tlb.c
-@@ -105,3 +105,9 @@ void hash__flush_tlb_page(struct vm_area_struct *vma, unsigned long vmaddr)
- 		flush_hash_pages(mm->context.id, vmaddr, pmd_val(*pmd), 1);
- }
- EXPORT_SYMBOL(hash__flush_tlb_page);
-+
-+void hash__flush_gather(struct mmu_gather *tlb)
-+{
-+	hash__flush_range(tlb->mm, tlb->start, tlb->end);
-+}
-+EXPORT_SYMBOL(hash__flush_gather);
-
----
-base-commit: dcb6fa37fd7bc9c3d2b066329b0d27dedf8becaa
-change-id: 20251027-vasi-mprotect-g3-f8f5278d4140
-
-Best regards,
--- 
-Dave Vasilevsky <dave@vasilevsky.ca>
-
-
+Slade
 
