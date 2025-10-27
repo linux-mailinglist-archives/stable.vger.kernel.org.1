@@ -1,64 +1,53 @@
-Return-Path: <stable+bounces-190142-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190164-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0CC2C100BC
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:44:51 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D312AC10122
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:45:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E34B64FF2A2
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:43:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E7A61A205FE
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:44:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 219C531B830;
-	Mon, 27 Oct 2025 18:42:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C11C33233EE;
+	Mon, 27 Oct 2025 18:42:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GcGfT09/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LKHJvj6i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D134831B836;
-	Mon, 27 Oct 2025 18:42:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BA2631D377;
+	Mon, 27 Oct 2025 18:42:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761590550; cv=none; b=k3KGD9HKejtG1YbFZiky/6iEc2262g2QDjrX2LtHxRTNB4dfzktrXZsGfQpr8ThbraIwui4hErtyjIUdjojhpdLDMfSTqwizMH8gqUk1XN/6NwTDJ73PJVlCPffjn4JDHj0rdOMNU+5eUUEluZW7/MfGtc/dBcfaHni7eo5Q9rE=
+	t=1761590579; cv=none; b=AFkDMFiiwGI4uhWq2EZbAKzH5T/LVMfKjkKAavpRmjcZMUQJuM3WtxWAs9nna71N/cupRzFpq9ggID5Vf61Gb+vRlZ145DfOghg7X6oSQa/djzv8ZT2zsDw2dPbXJzA+9lc8gun2kAl5UM5fXRInuSlDeaZrJ44xsdr8qXaCOEI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761590550; c=relaxed/simple;
-	bh=SnK4DSKuSCYmKcLSg7MCNaW3jfdt2VlUG2GttH/mQ54=;
+	s=arc-20240116; t=1761590579; c=relaxed/simple;
+	bh=TiZYc5FRCr3RYDjIRXE4HJmr4Ek7N8MFZH0ACMGcZSk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=axK8r+/l2baZ7jgdUePqEzgxy/KGEwCz3uINMcSZjaXGQEaHVhZquxXaijyi0ObgU2BUOVMF2risHJJxC3o6uOQZZ5ZuCUVIqxKk88S+aulJ9TYPASjkV8RnHH7qvXxgP5z+qK7EY8FBviIciTyr8Lgf113CXmN6bmNq/aIWKnA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GcGfT09/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41E1DC116B1;
-	Mon, 27 Oct 2025 18:42:30 +0000 (UTC)
+	 MIME-Version; b=BuJynSXhDaruZ4AU4gqsP5cjHjSrUGBuZ0QVJReVdYSsxqKLkiBmm0MGfUtKC/QuwH/HxjnaaFHP02jMgI8VcOHmJwcLN81d0KiHi543SKg6QP+6hDrT1rA1eLAIrzxYCi1ydYM0l6hERe2F9q0oLWD2W8mIR7P3bHiImd5VK5o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LKHJvj6i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DAB8C4CEFD;
+	Mon, 27 Oct 2025 18:42:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761590550;
-	bh=SnK4DSKuSCYmKcLSg7MCNaW3jfdt2VlUG2GttH/mQ54=;
+	s=korg; t=1761590579;
+	bh=TiZYc5FRCr3RYDjIRXE4HJmr4Ek7N8MFZH0ACMGcZSk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GcGfT09/TZkRq70a5CeKmTO7VxiLeiXKnBmT3bt8g7Q8OKnMZRpnxSRYN0U5eovst
-	 +q4QCq1rr7ltgcOSTpV44XmbCHlTe6cSvnGWtYSzV88J3BnKMpuseCZtiM+R0DrwTS
-	 H2nGQjgTuUQ2qsfkuMFMuzAh9LCZ2EXf1s563TfA=
+	b=LKHJvj6i717uDo/ZGbdFPhyd2ZkmDlJuuo/woYskYF1lYLL8Ci44FZ7AVPoJqaJ6w
+	 vDYPySkwW2FoOdNeJtdYZncUU6VvQwtMToZCwCmMSBpU0/QLPMs9JFZEBhqk7H6ydx
+	 6cAFMQxD1xj+lWz2qyQeTnjW2q0+jRS9HiSK0J3c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Donet Tom <donettom@linux.ibm.com>,
-	David Hildenbrand <david@redhat.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Alison Schofield <alison.schofield@intel.com>,
-	Chris Mason <clm@meta.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Hiroyouki Kamezawa <kamezawa.hiroyu@jp.fujitsu.com>,
-	Joanthan Cameron <Jonathan.Cameron@huawei.com>,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	"Yury Norov (NVIDIA)" <yury.norov@gmail.com>,
-	Zi Yan <ziy@nvidia.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Kohei Enju <enjuk@amazon.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 069/224] drivers/base/node: fix double free in register_one_node()
-Date: Mon, 27 Oct 2025 19:33:35 +0100
-Message-ID: <20251027183510.851533308@linuxfoundation.org>
+Subject: [PATCH 5.4 070/224] nfp: fix RSS hash key size when RSS is not supported
+Date: Mon, 27 Oct 2025 19:33:36 +0100
+Message-ID: <20251027183510.879030145@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251027183508.963233542@linuxfoundation.org>
 References: <20251027183508.963233542@linuxfoundation.org>
@@ -77,54 +66,39 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Donet Tom <donettom@linux.ibm.com>
+From: Kohei Enju <enjuk@amazon.com>
 
-[ Upstream commit 0efdedfa537eb534c251a5b4794caaf72cc55869 ]
+[ Upstream commit 8425161ac1204d2185e0a10f5ae652bae75d2451 ]
 
-When device_register() fails in register_node(), it calls
-put_device(&node->dev).  This triggers node_device_release(), which calls
-kfree(to_node(dev)), thereby freeing the entire node structure.
+The nfp_net_get_rxfh_key_size() function returns -EOPNOTSUPP when
+devices don't support RSS, and callers treat the negative value as a
+large positive value since the return type is u32.
 
-As a result, when register_node() returns an error, the node memory has
-already been freed.  Calling kfree(node) again in register_one_node()
-leads to a double free.
+Return 0 when devices don't support RSS, aligning with the ethtool
+interface .get_rxfh_key_size() that requires returning 0 in such cases.
 
-This patch removes the redundant kfree(node) from register_one_node() to
-prevent the double free.
-
-Link: https://lkml.kernel.org/r/20250918054144.58980-1-donettom@linux.ibm.com
-Fixes: 786eb990cfb7 ("drivers/base/node: handle error properly in register_one_node()")
-Signed-off-by: Donet Tom <donettom@linux.ibm.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Acked-by: Oscar Salvador <osalvador@suse.de>
-Cc: Alison Schofield <alison.schofield@intel.com>
-Cc: Chris Mason <clm@meta.com>
-Cc: Danilo Krummrich <dakr@kernel.org>
-Cc: Dave Jiang <dave.jiang@intel.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Hiroyouki Kamezawa <kamezawa.hiroyu@jp.fujitsu.com>
-Cc: Joanthan Cameron <Jonathan.Cameron@huawei.com>
-Cc: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-Cc: Yury Norov (NVIDIA) <yury.norov@gmail.com>
-Cc: Zi Yan <ziy@nvidia.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 9ff304bfaf58 ("nfp: add support for reporting CRC32 hash function")
+Signed-off-by: Kohei Enju <enjuk@amazon.com>
+Link: https://patch.msgid.link/20250929054230.68120-1-enjuk@amazon.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/node.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/net/ethernet/netronome/nfp/nfp_net_ethtool.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/base/node.c b/drivers/base/node.c
-index cb1bbe3068ab6..83b13a295bbe6 100644
---- a/drivers/base/node.c
-+++ b/drivers/base/node.c
-@@ -940,7 +940,6 @@ int __register_one_node(int nid)
- 	error = register_node(node_devices[nid], nid);
- 	if (error) {
- 		node_devices[nid] = NULL;
--		kfree(node);
- 		return error;
- 	}
+diff --git a/drivers/net/ethernet/netronome/nfp/nfp_net_ethtool.c b/drivers/net/ethernet/netronome/nfp/nfp_net_ethtool.c
+index ff88103571819..6e1707ef391dd 100644
+--- a/drivers/net/ethernet/netronome/nfp/nfp_net_ethtool.c
++++ b/drivers/net/ethernet/netronome/nfp/nfp_net_ethtool.c
+@@ -914,7 +914,7 @@ static u32 nfp_net_get_rxfh_key_size(struct net_device *netdev)
+ 	struct nfp_net *nn = netdev_priv(netdev);
  
+ 	if (!(nn->cap & NFP_NET_CFG_CTRL_RSS_ANY))
+-		return -EOPNOTSUPP;
++		return 0;
+ 
+ 	return nfp_net_rss_key_sz(nn);
+ }
 -- 
 2.51.0
 
