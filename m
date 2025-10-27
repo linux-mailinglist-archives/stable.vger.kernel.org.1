@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-190700-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190836-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30DD5C10A50
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:14:31 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AB5BC10D81
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:22:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 568981A61705
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:09:47 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A99FF50132A
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:14:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B127D3203AF;
-	Mon, 27 Oct 2025 19:06:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E18C32E120;
+	Mon, 27 Oct 2025 19:12:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J9RSaj+v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XQmokOt7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 680CC3081B0;
-	Mon, 27 Oct 2025 19:06:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28A3E18A6A5;
+	Mon, 27 Oct 2025 19:12:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591966; cv=none; b=RoDoWdv5uyFnycTkYaSzb8GaLhZDtVrK9qrkEmwSCBL0VfKBWfZP821hp7D9MhywxNrdeJia2c/VrYxw8LLAl3+3XQPKt/L1IAejaaS7uee6T9h1wTfQB6FRziZFoyIrvQtEqRy73JFfdlF2tBM/U/7Hu3qat23KeFrX6aQrpXQ=
+	t=1761592328; cv=none; b=WpvhqFxby//T1NDN3TG0zg0XDGFNetNVSmITCvm4ZCDZaO/dtJZAjjWnA2kkwmSU2YGDMK14KeiXjrS1MghBRx64JpIHYYqcMrCFhrX1xPmXfBNBWQuC5h9Bdb+seXS3L8c0jRa86yw3i0LTW/rmkfPDNziKc09W5LXywXG2kiA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591966; c=relaxed/simple;
-	bh=ZC0vlYXxlxgicVipLALJFzA/GFFDqDj9C+n6fXiccrY=;
+	s=arc-20240116; t=1761592328; c=relaxed/simple;
+	bh=u7UTFr/1aOeLMMKIBdAT7xVxFBgq6lC/UJHBDtN8tIU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mrlwwYM5HYBm4AdZk7yQzV36/KbddKxgfNB6LnUV9wrs7oP3TXhcX98yaWhGH8YUUK5mRJXQ0LL6t+JLUmVj2hNhJcoxqk7bFyRVT0OlVRoG2alpMr0Z8Rv9mMoYx9selRe60tQrdTrojgdEn27f+Z2OH/enp3N87m6yAC1Z68c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J9RSaj+v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED53DC4CEF1;
-	Mon, 27 Oct 2025 19:06:05 +0000 (UTC)
+	 MIME-Version; b=JHNbh2gK86e0izr9jVwY2lB/94MP+ubMeomMdY1HlIqffjxDwOoMRAfV0XFeEsS08fuRxFXgiHWC5Im2BiESGF6xZjX3wrqqnhjZP37YChybIJFWHZY/DwTcZaEgkvmQ6sXcHdydk1KRJHAb71vjWYwN54YjDUqCYcNKd+Urj34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XQmokOt7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44E3DC4CEF1;
+	Mon, 27 Oct 2025 19:12:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591966;
-	bh=ZC0vlYXxlxgicVipLALJFzA/GFFDqDj9C+n6fXiccrY=;
+	s=korg; t=1761592325;
+	bh=u7UTFr/1aOeLMMKIBdAT7xVxFBgq6lC/UJHBDtN8tIU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J9RSaj+vJ8Mh3wnoeKVjKUhlsy3dq3lPPgPXRPOG23DB3SgOUPbFeEWgoR/4FmfWj
-	 GkPGX1nMOqSh01SAsiuHMRPLqSLPmM7xH7004zy6zj1K+BCCl1N1tMtulXwZVsPcjn
-	 gU7NqxQwHpFZiE5zg1cBlD5+g6HEdUuEWIo51JNI=
+	b=XQmokOt7NC7zWjNcKVupAc6rYRFDesmFjNo4RoosrjJWfM1CQkszHqydciJ+BlCCe
+	 0JRhr8da1/0n1XitZyZRZDh369kt+wXUFHSFj45kfx1LH7+qTgNzXpXOKPhf95wMLi
+	 sTdNym0dnVbRrRMLiY7N/PvfqskBPPNN0BJBDRKk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Andrew Lunn <andrew@lunn.ch>,
+	Jann Horn <jannh@google.com>,
+	Sabrina Dubroca <sd@queasysnail.net>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 030/123] net: usb: lan78xx: Add error handling to lan78xx_init_mac_address
+Subject: [PATCH 6.1 049/157] tls: dont rely on tx_work during send()
 Date: Mon, 27 Oct 2025 19:35:10 +0100
-Message-ID: <20251027183447.204436405@linuxfoundation.org>
+Message-ID: <20251027183502.608271558@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183446.381986645@linuxfoundation.org>
-References: <20251027183446.381986645@linuxfoundation.org>
+In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
+References: <20251027183501.227243846@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,98 +63,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleksij Rempel <o.rempel@pengutronix.de>
+From: Sabrina Dubroca <sd@queasysnail.net>
 
-[ Upstream commit 6f31135894ec96481e2bda93a1da70712f5e57c1 ]
+[ Upstream commit 7f846c65ca11e63d2409868ff039081f80e42ae4 ]
 
-Convert `lan78xx_init_mac_address` to return error codes and handle
-failures in register read and write operations. Update `lan78xx_reset`
-to check for errors during MAC address initialization and propagate them
-appropriately.
+With async crypto, we rely on tx_work to actually transmit records
+once encryption completes. But while send() is running, both the
+tx_lock and socket lock are held, so tx_work_handler cannot process
+the queue of encrypted records, and simply reschedules itself. During
+a large send(), this could last a long time, and use a lot of memory.
 
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20241209130751.703182-3-o.rempel@pengutronix.de
+Transmit any pending encrypted records before restarting the main
+loop of tls_sw_sendmsg_locked.
+
+Fixes: a42055e8d2c3 ("net/tls: Add support for async encryption of records for performance")
+Reported-by: Jann Horn <jannh@google.com>
+Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
+Link: https://patch.msgid.link/8396631478f70454b44afb98352237d33f48d34d.1760432043.git.sd@queasysnail.net
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 8d93ff40d49d ("net: usb: lan78xx: fix use of improperly initialized dev->chipid in lan78xx_reset")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/lan78xx.c | 36 ++++++++++++++++++++++++++++--------
- 1 file changed, 28 insertions(+), 8 deletions(-)
+ net/tls/tls_sw.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
-index 4be15489a2c2a..182a4dbd8cf26 100644
---- a/drivers/net/usb/lan78xx.c
-+++ b/drivers/net/usb/lan78xx.c
-@@ -1773,13 +1773,19 @@ static const struct ethtool_ops lan78xx_ethtool_ops = {
- 	.get_regs	= lan78xx_get_regs,
- };
- 
--static void lan78xx_init_mac_address(struct lan78xx_net *dev)
-+static int lan78xx_init_mac_address(struct lan78xx_net *dev)
- {
- 	u32 addr_lo, addr_hi;
- 	u8 addr[6];
-+	int ret;
+diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
+index baed07edc6395..e7f151c98eb93 100644
+--- a/net/tls/tls_sw.c
++++ b/net/tls/tls_sw.c
+@@ -1109,6 +1109,13 @@ int tls_sw_sendmsg(struct sock *sk, struct msghdr *msg, size_t size)
+ 				} else if (ret != -EAGAIN)
+ 					goto send_end;
+ 			}
 +
-+	ret = lan78xx_read_reg(dev, RX_ADDRL, &addr_lo);
-+	if (ret < 0)
-+		return ret;
- 
--	lan78xx_read_reg(dev, RX_ADDRL, &addr_lo);
--	lan78xx_read_reg(dev, RX_ADDRH, &addr_hi);
-+	ret = lan78xx_read_reg(dev, RX_ADDRH, &addr_hi);
-+	if (ret < 0)
-+		return ret;
- 
- 	addr[0] = addr_lo & 0xFF;
- 	addr[1] = (addr_lo >> 8) & 0xFF;
-@@ -1812,14 +1818,26 @@ static void lan78xx_init_mac_address(struct lan78xx_net *dev)
- 			  (addr[2] << 16) | (addr[3] << 24);
- 		addr_hi = addr[4] | (addr[5] << 8);
- 
--		lan78xx_write_reg(dev, RX_ADDRL, addr_lo);
--		lan78xx_write_reg(dev, RX_ADDRH, addr_hi);
-+		ret = lan78xx_write_reg(dev, RX_ADDRL, addr_lo);
-+		if (ret < 0)
-+			return ret;
++			/* Transmit if any encryptions have completed */
++			if (test_and_clear_bit(BIT_TX_SCHEDULED, &ctx->tx_bitmask)) {
++				cancel_delayed_work(&ctx->tx_work.work);
++				tls_tx_records(sk, msg->msg_flags);
++			}
 +
-+		ret = lan78xx_write_reg(dev, RX_ADDRH, addr_hi);
-+		if (ret < 0)
-+			return ret;
- 	}
- 
--	lan78xx_write_reg(dev, MAF_LO(0), addr_lo);
--	lan78xx_write_reg(dev, MAF_HI(0), addr_hi | MAF_HI_VALID_);
-+	ret = lan78xx_write_reg(dev, MAF_LO(0), addr_lo);
-+	if (ret < 0)
-+		return ret;
+ 			continue;
+ rollback_iter:
+ 			copied -= try_to_copy;
+@@ -1163,6 +1170,12 @@ int tls_sw_sendmsg(struct sock *sk, struct msghdr *msg, size_t size)
+ 					goto send_end;
+ 				}
+ 			}
 +
-+	ret = lan78xx_write_reg(dev, MAF_HI(0), addr_hi | MAF_HI_VALID_);
-+	if (ret < 0)
-+		return ret;
- 
- 	eth_hw_addr_set(dev->net, addr);
-+
-+	return 0;
- }
- 
- /* MDIO read and write wrappers for phylib */
-@@ -2718,7 +2736,9 @@ static int lan78xx_reset(struct lan78xx_net *dev)
++			/* Transmit if any encryptions have completed */
++			if (test_and_clear_bit(BIT_TX_SCHEDULED, &ctx->tx_bitmask)) {
++				cancel_delayed_work(&ctx->tx_work.work);
++				tls_tx_records(sk, msg->msg_flags);
++			}
  		}
- 	} while (buf & HW_CFG_LRST_);
  
--	lan78xx_init_mac_address(dev);
-+	ret = lan78xx_init_mac_address(dev);
-+	if (ret < 0)
-+		return ret;
- 
- 	/* save DEVID for later usage */
- 	ret = lan78xx_read_reg(dev, ID_REV, &buf);
+ 		continue;
 -- 
 2.51.0
 
