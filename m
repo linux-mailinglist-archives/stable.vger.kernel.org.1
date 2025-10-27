@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-190856-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190926-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24940C10D1E
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:21:20 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79B71C10DA8
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:22:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5EA2D4FFFC1
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:15:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D14441A60879
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:17:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 044E131D72B;
-	Mon, 27 Oct 2025 19:13:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AED1B31E0E0;
+	Mon, 27 Oct 2025 19:16:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e6uHzOGP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z8YHMhug"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6D992D5A14;
-	Mon, 27 Oct 2025 19:12:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AA632C3749;
+	Mon, 27 Oct 2025 19:16:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592379; cv=none; b=ln9TKIt5zk6K/Pyqn2gQNq+UKVZBAqmGmXOy38hWzRFvxMIfeWl95DIw0IXJOWIM/d6utxDwudPV0f8tv7a/kQzypJvdn6RQCl+lZDNMeAikzjyhuFQQ/cGMlwLyKY9oohDks7742HmZwWn6OxBQGw0IRZ2E3Xy6aUVfi97AsNk=
+	t=1761592560; cv=none; b=lsJaEuf38bXEsvU/hzGQ2e1e3y3ZjetPdnyVSVEuraze2xOxtQiWiWknr7aUTQ5wzW2nEL/1Lhj3i1+6YflEhPf8i7vWFMprmPHwkUXuKnmCR8fkgXR4Li6QfkB0W8Bu/q89AA7q2gbJrHJ2LPZMR/mX29E6WFlb4P8Apd+GYik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592379; c=relaxed/simple;
-	bh=nj3yxv5viiaNE7KjZrZob+dJcSSpTSH0Pu0SCrX/+Nc=;
+	s=arc-20240116; t=1761592560; c=relaxed/simple;
+	bh=E/tLVRIpSayESXD/vj1tMyRpcapfFqy9RlegdXJ5u0s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IysYaoFD4icZ/SwnjY1mSTkXUoLJ1a0tLJLCMkbpAQu2Ar15pdvZQUHucorFCQn7cd4LG23gTvj/r5XZrlrfv7Siva1viLplKCOwCFLbDNC8e7XQMQ7aWTy6ta92RhPPx5gxhaKF0VnwIlXg0pEZ/SUZ8F8NEKOGDulMvj9Xsuw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e6uHzOGP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E69D9C4CEF1;
-	Mon, 27 Oct 2025 19:12:58 +0000 (UTC)
+	 MIME-Version; b=g6qDGiVgTMZ5+hN9SqreBpq1yd0v+STrVTK/x3c4YpBnANu95k7fgDZY5IiS/+N5OZB905FhPMdRSh9zCngmbOZjDVJ5FSt5Rc5SqkPu+rUpA9aXe+QS0wpsayv/wAX56Vk7rpyWZZDkXbYoULwknZn6ndFGuH8F5RwWZAq+hlg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z8YHMhug; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB5CCC4CEF1;
+	Mon, 27 Oct 2025 19:15:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592379;
-	bh=nj3yxv5viiaNE7KjZrZob+dJcSSpTSH0Pu0SCrX/+Nc=;
+	s=korg; t=1761592560;
+	bh=E/tLVRIpSayESXD/vj1tMyRpcapfFqy9RlegdXJ5u0s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e6uHzOGP4fvPjDVggBz51vEtUzHPYiNzJWTMLI5rOH4cCF/rkOJVMDoscUHOciXa7
-	 oQN9hEdBcaPNThFUEuIM09J1meAsTyv35ej8BEdqvfOpeegEQo9yJHkoaa8q8fSC5P
-	 WsF73s7rS0BaohT2ETFxxYPgdpC+bDhCY0+GckbQ=
+	b=z8YHMhug+Bnj6c1NHpVi5lqa6TODibLWKADw+4o4SJ8/Fcbv6UsS+ljIoPmVioUy5
+	 5LyIypJKvseRWqI3sA0s0He2Trt784D23pvMQO0932rlPlKNWywaRL2YDOMa5s4uf7
+	 E7/uFBAgIlXKnMS1K9/95FSfsZRvMcK+6xo8uoj8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geliang Tang <geliang@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 098/157] selftests: mptcp: join: mark flush re-add as skipped if not supported
+	Yangtao Li <frank.li@vivo.com>,
+	Viacheslav Dubeyko <slava@dubeyko.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 10/84] hfsplus: return EIO when type of hidden directory mismatch in hfsplus_fill_super()
 Date: Mon, 27 Oct 2025 19:35:59 +0100
-Message-ID: <20251027183503.895462857@linuxfoundation.org>
+Message-ID: <20251027183439.090504362@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
-References: <20251027183501.227243846@linuxfoundation.org>
+In-Reply-To: <20251027183438.817309828@linuxfoundation.org>
+References: <20251027183438.817309828@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Yangtao Li <frank.li@vivo.com>
 
-commit d68460bc31f9c8c6fc81fbb56ec952bec18409f1 upstream.
+[ Upstream commit 9282bc905f0949fab8cf86c0f620ca988761254c ]
 
-The call to 'continue_if' was missing: it properly marks a subtest as
-'skipped' if the attached condition is not valid.
+If Catalog File contains corrupted record for the case of
+hidden directory's type, regard it as I/O error instead of
+Invalid argument.
 
-Without that, the test is wrongly marked as passed on older kernels.
-
-Fixes: e06959e9eebd ("selftests: mptcp: join: test for flush/re-add endpoints")
-Cc: stable@vger.kernel.org
-Reviewed-by: Geliang Tang <geliang@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20251020-net-mptcp-c-flag-late-add-addr-v1-2-8207030cb0e8@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Yangtao Li <frank.li@vivo.com>
+Reviewed-by: Viacheslav Dubeyko <slava@dubeyko.com>
+Link: https://lore.kernel.org/r/20250805165905.3390154-1-frank.li@vivo.com
+Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/mptcp/mptcp_join.sh |    2 +-
+ fs/hfsplus/super.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-@@ -3457,7 +3457,7 @@ endpoint_tests()
- 
- 	# flush and re-add
- 	if reset_with_tcp_filter "flush re-add" ns2 10.0.3.2 REJECT OUTPUT &&
--	   mptcp_lib_kallsyms_has "subflow_rebuild_header$"; then
-+	   continue_if mptcp_lib_kallsyms_has "subflow_rebuild_header$"; then
- 		pm_nl_set_limits $ns1 0 2
- 		pm_nl_set_limits $ns2 1 2
- 		# broadcast IP: no packet for this address will be received on ns1
+diff --git a/fs/hfsplus/super.c b/fs/hfsplus/super.c
+index 8c086f16dd589..7e889820a63d0 100644
+--- a/fs/hfsplus/super.c
++++ b/fs/hfsplus/super.c
+@@ -538,7 +538,7 @@ static int hfsplus_fill_super(struct super_block *sb, void *data, int silent)
+ 	if (!hfs_brec_read(&fd, &entry, sizeof(entry))) {
+ 		hfs_find_exit(&fd);
+ 		if (entry.type != cpu_to_be16(HFSPLUS_FOLDER)) {
+-			err = -EINVAL;
++			err = -EIO;
+ 			goto out_put_root;
+ 		}
+ 		inode = hfsplus_iget(sb, be32_to_cpu(entry.folder.id));
+-- 
+2.51.0
+
 
 
 
