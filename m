@@ -1,157 +1,149 @@
-Return-Path: <stable+bounces-189918-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-189919-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0ED2BC0C079
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 08:03:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C416C0C170
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 08:20:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C12FD189E45E
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 07:03:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8D4373BC188
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 07:20:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B829296BC8;
-	Mon, 27 Oct 2025 07:03:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B66AA2DC787;
+	Mon, 27 Oct 2025 07:20:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="sOalyLYI";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="dJjhGg4x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q3Q9hYJI"
 X-Original-To: stable@vger.kernel.org
-Received: from fhigh-b2-smtp.messagingengine.com (fhigh-b2-smtp.messagingengine.com [202.12.124.153])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7D102F5B;
-	Mon, 27 Oct 2025 07:03:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.153
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A29A2DA775
+	for <stable@vger.kernel.org>; Mon, 27 Oct 2025 07:20:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761548601; cv=none; b=KIAzpvCSmV7QmDr95TwyyySMQ01Ht9htL/EwPkb3B6vgizljGqef8IDOQParI2UDg3eUyMjhg94DM+YGhxg4bULGSgSNbUErtT2L23wAiT9LzjNfsgpshomPL6FJKSCUoVsjCSmqEPq0c5N5ihgsnVq2f/f9abTwRj5oavSvDoI=
+	t=1761549616; cv=none; b=PtNy72V5qpabH8fGFyxAZfDZwvYpFyqrBmlVJvD6+3edhGExF4wLiiv1ohVaV9O8V/mYMWpnyrtZIgzty6Egb1iltvIyIWDiSUg127w8bBXhVTPxj4cEcJpFFTDrG2svfis+y+nHUSZ0eP3Zc3zR9G884YxToHsCUx2JiX9N52s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761548601; c=relaxed/simple;
-	bh=ZFi3PiJUz4T9a0j8bsBUFz9ZoQQLLy+GZe69LdVi5dk=;
-	h=MIME-Version:Date:From:To:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=JuvT2m3U93ONlRcI4jhHIT33uuu4vdT9WKOlnLXNpdUB/hh9iqGTV22cn4QA8/hc7EuG0f9UZOqFtp8ZH2cJpN3IvxEtExJmO+UMiLbUH31JNYcZCJFtHJe3nlhtzyEqT+JD41bWl40iNxwnkkzuaHJBOA5tCAEIRnki89J0Dn0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=sOalyLYI; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=dJjhGg4x; arc=none smtp.client-ip=202.12.124.153
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id B85EA7A01FB;
-	Mon, 27 Oct 2025 03:03:18 -0400 (EDT)
-Received: from phl-imap-02 ([10.202.2.81])
-  by phl-compute-05.internal (MEProxy); Mon, 27 Oct 2025 03:03:18 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:content-transfer-encoding:content-type:content-type:date:date
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1761548598;
-	 x=1761634998; bh=adaMRzF6ds8teu7leuvNSwnScW38m8MWre0/lgf0omk=; b=
-	sOalyLYIVSjqIejTzQg+lH4kM7mlvRS4ECGsvGt8/1NLYGKxIRnzMoj6NmCTzrYm
-	OzAMaAZH4XYPdvMttQKHS8CouoLAq2xi8LYnyVH/nognFVGbsEeLBcFVR1V3dCry
-	6G+JEyFmfxn+XsS+3s9xpZyhuf4aBYatvYSpfNJ/hUUZOOZLaJRF+bzDAoK2Ra+I
-	k2awfow2TB61ghakYDxWpSNu7O1s7rRHTfn5uUwiAmNXuQ/nihAKg9AEIt6Vq0Rn
-	lOBTrmxFb8B8Y+s7t+YIkJsPxhaJ3rafVQMogGiew4BNpLlbPVO06LC+LRTty8aa
-	P3SiweQ0gDR0OgpM5kOdrg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:content-transfer-encoding:content-type
-	:content-type:date:date:feedback-id:feedback-id:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm3; t=1761548598; x=1761634998; bh=a
-	daMRzF6ds8teu7leuvNSwnScW38m8MWre0/lgf0omk=; b=dJjhGg4x22kfvEVln
-	tDe2aHgEk8X7P/14dGGVWLxG5NtsY03m1YRA04FlZy8pbPWWa5Xs+tLs6BYryyS5
-	MLOenns7yYIibFw6yRo/aQhEKJsROYmpzxVGNHZ+sGeEjOy66gjo8w0UpenigMdg
-	GdPbo1alfxZ5Hu05pv1kG60cgv/VyvryeLJtbhXtBl6TeLhfwoEbSEoY4bAksIjM
-	SSGimXVkMYcx2xh7C4KKhDpEfx+soUt1eHwmbQjLSDGChcHal5olYoq/WMaW8n03
-	+D3ImRQXFgQJREYbOlEL+THgzko7ZLnYqxqp1NyGTqwnEsfKZkbw/ZiIL4D6j27a
-	0SADA==
-X-ME-Sender: <xms:Nhn_aJN5BJp4_4cZygUT8du4Qv9LnrI0Q2Q-SNwr2S8V9qWrH_7QrA>
-    <xme:Nhn_aGypNAKC9K_5M4AqI79pk1Ed_XD3ypj1VLbiGCg3rk2T9SpHLPN3Uh8toJoN-
-    -TTLhVg-NSQGn6Cqe3u6565d4g4QXropKugMmn1EPI2-htLL56jf1Y4>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdduheejfedvucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepofggfffhvffkjghfufgtgfesthhqredtredtjeenucfhrhhomhepfdetrhhnugcu
-    uegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtthgvrh
-    hnpefhfeduveehheejgfeileelheduieffleevudelvdejtdektedtgfeggffffefgvden
-    ucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrhhnug
-    esrghrnhgusgdruggvpdhnsggprhgtphhtthhopeejpdhmohguvgepshhmthhpohhuthdp
-    rhgtphhtthhopegurghvihgurdhhuhhnthgvrhdrlhhinhhugiesghhmrghilhdrtghomh
-    dprhgtphhtthhopehhrghnnhgvlhhothhtrgesghhmrghilhdrtghomhdprhgtphhtthho
-    pehguhhsthgrvhhorghrsheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepkhgvvghsse
-    hkvghrnhgvlhdrohhrghdprhgtphhtthhopegrkhhpmheslhhinhhugidqfhhouhhnuggr
-    thhiohhnrdhorhhgpdhrtghpthhtohepmhhmqdgtohhmmhhithhssehvghgvrhdrkhgvrh
-    hnvghlrdhorhhgpdhrtghpthhtohepshhtrggslhgvsehvghgvrhdrkhgvrhhnvghlrdho
-    rhhg
-X-ME-Proxy: <xmx:Nhn_aC1sZcjdwZyDGVsMI_8YhmvDJqv7LIfZ5FEYVcjzE0pyJYgfEQ>
-    <xmx:Nhn_aPLcKIQrwoA7fCU6kESbycp55Lasdd6BQc452_My6Poo476Iqw>
-    <xmx:Nhn_aKza2fpiCMo-JwbRNg9btuqxkKdzfAQZ-WDvtxYdyWl0QAE74g>
-    <xmx:Nhn_aFWeMdaccpEC6n5Cb-kF7CrHINWmd0iDquSnCyvsbutUrSCftw>
-    <xmx:Nhn_aB2YNSVO8NpiEOR5xcnAfGD4d1-HZ5PBE0JGpXVdo6ErnEL3PRcz>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 13E4B700054; Mon, 27 Oct 2025 03:03:18 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	s=arc-20240116; t=1761549616; c=relaxed/simple;
+	bh=lpAxzdosfZx/43+5Bp1uzfXdfbh0iT85aPagj/AUL6c=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=jhHByLN6B0zW17Vdu+TiHdBUnN9YFx5KuJ/0hvaYKB5Drw5Sf1PtT/quqJXm5xDa950yv1v9zf66DJf//sUMMPLSchQD2HwZEH4p9nP1ZOjUG/+Bxjh/fEK1Z0vFMutlOJ+jzfaVKZwqBwFtzLQZCwTMSKysUWWQTFxRlKE3mSs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q3Q9hYJI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C6CBC4CEF1;
+	Mon, 27 Oct 2025 07:20:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1761549615;
+	bh=lpAxzdosfZx/43+5Bp1uzfXdfbh0iT85aPagj/AUL6c=;
+	h=Subject:To:Cc:From:Date:From;
+	b=Q3Q9hYJIzLB2t3k5qftIbtimCUpF4hoeci5U+aGZuDXFB9V1/1QtGncYzjpgBv92C
+	 +BnpFFkODYF6rKvlrNOR2RFlbeMPEMQDTUWZBxw8JsSYarWi1/ixhL0GJ0KbXXhezP
+	 cx+LX0WdUDdc0b/uBOfPXG8np2BEQohXZEy7wzgo=
+Subject: FAILED: patch "[PATCH] xhci: dbc: fix bogus 1024 byte prefix if ttyDBC read races" failed to apply to 6.6-stable tree
+To: mathias.nyman@linux.intel.com,gregkh@linuxfoundation.org,stable@kernel.org,ukaszb@chromium.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 27 Oct 2025 08:20:12 +0100
+Message-ID: <2025102712-unearned-duplicate-8c3b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ThreadId: A-keNruaM7oc
-Date: Mon, 27 Oct 2025 08:02:57 +0100
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Kees Cook" <kees@kernel.org>,
- "Andrew Morton" <akpm@linux-foundation.org>, mm-commits@vger.kernel.org,
- stable@vger.kernel.org, "Gustavo A. R. Silva" <gustavoars@kernel.org>,
- david.hunter.linux@gmail.com, hannelotta@gmail.com
-Message-Id: <b47b1167-28b0-445f-947b-55f7a07c1bf8@app.fastmail.com>
-In-Reply-To: <4FFB0358-0312-45AA-84BD-9249D8CE9C41@kernel.org>
-References: <20251026235632.6E245C4CEE7@smtp.kernel.org>
- <4FFB0358-0312-45AA-84BD-9249D8CE9C41@kernel.org>
-Subject: Re: + headers-add-check-for-c-standard-version.patch added to
- mm-hotfixes-unstable branch
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Mon, Oct 27, 2025, at 03:31, Kees Cook wrote:
-> On October 26, 2025 4:56:30 PM PDT, Andrew Morton=20
-> <akpm@linux-foundation.org> wrote:
 
->>------------------------------------------------------
->>From: Hanne-Lotta M=EF=BF=BD=EF=BF=BDenp=EF=BF=BD=EF=BF=BD=EF=BF=BD=EF=
-=BF=BD <hannelotta@gmail.com>
->>Subject: headers: add check for C standard version
->>Date: Sun, 26 Oct 2025 21:58:46 +0200
->>
->>Compiling the kernel with GCC 15 results in errors, as with GCC 15 the
->>default language version for C compilation has been changed from
->>-std=3Dgnu17 to -std=3Dgnu23 - unless the language version has been ch=
-anged
->>using
->>
->>    KBUILD_CFLAGS +=3D -std=3Dgnu17
->>
->>or earlier.
->>
->>C23 includes new keywords 'bool', 'true' and 'false', which cause
->>compilation errors in Linux headers:
->>
->>    ./include/linux/types.h:30:33: error: `bool' cannot be defined
->>        via `typedef'
->>
->>    ./include/linux/stddef.h:11:9: error: cannot use keyword `false'
->>        as enumeration constant
->>
->>Add check for C Standard's version in the header files to be able to
->>compile the kernel with C23.
->
-> What? These are internal headers, not UAPI. We build Linux with=20
-> -std=3Dgnu11. Let's not add meaningless version checks.
+The patch below does not apply to the 6.6-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-I have a similar patch in my own testing tree but in the end
-decided not to send it because supporting std=3Dgnu23 doesn't actually
-add any features we want.
+To reproduce the conflict and resubmit, you may use the following commands:
 
-The next time we raise the compiler version from gcc-8 to anything
-newer, we can change the version selection to use --std=3Dgnu2x
-unconditionally.
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git checkout FETCH_HEAD
+git cherry-pick -x f3d12ec847b945d5d65846c85f062d07d5e73164
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025102712-unearned-duplicate-8c3b@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
-      Arnd
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From f3d12ec847b945d5d65846c85f062d07d5e73164 Mon Sep 17 00:00:00 2001
+From: Mathias Nyman <mathias.nyman@linux.intel.com>
+Date: Tue, 14 Oct 2025 01:55:41 +0300
+Subject: [PATCH] xhci: dbc: fix bogus 1024 byte prefix if ttyDBC read races
+ with stall event
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+DbC may add 1024 bogus bytes to the beginneing of the receiving endpoint
+if DbC hw triggers a STALL event before any Transfer Blocks (TRBs) for
+incoming data are queued, but driver handles the event after it queued
+the TRBs.
+
+This is possible as xHCI DbC hardware may trigger spurious STALL transfer
+events even if endpoint is empty. The STALL event contains a pointer
+to the stalled TRB, and "remaining" untransferred data length.
+
+As there are no TRBs queued yet the STALL event will just point to first
+TRB position of the empty ring, with '0' bytes remaining untransferred.
+
+DbC driver is polling for events, and may not handle the STALL event
+before /dev/ttyDBC0 is opened and incoming data TRBs are queued.
+
+The DbC event handler will now assume the first queued TRB (length 1024)
+has stalled with '0' bytes remaining untransferred, and copies the data
+
+This race situation can be practically mitigated by making sure the event
+handler handles all pending transfer events when DbC reaches configured
+state, and only then create dev/ttyDbC0, and start queueing transfers.
+The event handler can this way detect the STALL events on empty rings
+and discard them before any transfers are queued.
+
+This does in practice solve the issue, but still leaves a small possible
+gap for the race to trigger.
+We still need a way to distinguish spurious STALLs on empty rings with '0'
+bytes remaing, from actual STALL events with all bytes transmitted.
+
+Cc: stable <stable@kernel.org>
+Fixes: dfba2174dc42 ("usb: xhci: Add DbC support in xHCI driver")
+Tested-by: Łukasz Bartosik <ukaszb@chromium.org>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
+diff --git a/drivers/usb/host/xhci-dbgcap.c b/drivers/usb/host/xhci-dbgcap.c
+index 63edf2d8f245..023a8ec6f305 100644
+--- a/drivers/usb/host/xhci-dbgcap.c
++++ b/drivers/usb/host/xhci-dbgcap.c
+@@ -892,7 +892,8 @@ static enum evtreturn xhci_dbc_do_handle_events(struct xhci_dbc *dbc)
+ 			dev_info(dbc->dev, "DbC configured\n");
+ 			portsc = readl(&dbc->regs->portsc);
+ 			writel(portsc, &dbc->regs->portsc);
+-			return EVT_GSER;
++			ret = EVT_GSER;
++			break;
+ 		}
+ 
+ 		return EVT_DONE;
+@@ -954,7 +955,8 @@ static enum evtreturn xhci_dbc_do_handle_events(struct xhci_dbc *dbc)
+ 			break;
+ 		case TRB_TYPE(TRB_TRANSFER):
+ 			dbc_handle_xfer_event(dbc, evt);
+-			ret = EVT_XFER_DONE;
++			if (ret != EVT_GSER)
++				ret = EVT_XFER_DONE;
+ 			break;
+ 		default:
+ 			break;
+
 
