@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-191146-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190550-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BADACC110B4
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:31:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED1D4C108B5
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:09:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0ACC71881607
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:27:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 92321562832
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:04:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CFD6303CA2;
-	Mon, 27 Oct 2025 19:25:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB653332EB7;
+	Mon, 27 Oct 2025 18:59:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e4F1yJ1n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OHy7gnbu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48F2F27FD62;
-	Mon, 27 Oct 2025 19:25:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8B17332EB1;
+	Mon, 27 Oct 2025 18:59:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761593128; cv=none; b=WiL9Ja1qhoj9p4r2YGZ+bsCs0JFhB4UNtUXRJsAfHJeYCOqBasa+1/ZKr3Wg3FtpnbBBF1rnRazsaiQsNWVaTGM5G/bQgkIgcpADQ6MEUW9ddwHlmqZZjXOMcU7S6LxSGy8JckjUqAKGBMziveVihTJBbGdnnlfGgUV9yb3rQM0=
+	t=1761591582; cv=none; b=WFJK5IxnIgyJ4RsccnpEEauH/ytGhX/WFzRR+AdFmndDdUSpyVivXG0irSopq9J6bGIcg4iggjrYhLA8Vt7un9pfNRLzpwxE5T7vQLIpxypXjMGdB7qD1D2PmMRN8RHn+KEr2thL8QIFZ6nchqdUutXzT1UhLPCrIywksCPWqaM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761593128; c=relaxed/simple;
-	bh=o6kpFex0oGALyM6+jfs53DPbxdBkaT2y35j3umLqL9U=;
+	s=arc-20240116; t=1761591582; c=relaxed/simple;
+	bh=tUYJWDXToLCQhHqBrXrbXZ9ZLcAbyxvDP8Xr0R6lqBE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cRYZQveouB7w8sQUjZxnFLtULNFC9QLdRcFuaqnykSwArJ/xl3yNaO2/mF8DzH1L5a0FixC8IQbnPxHnXEO9J4RNfYqoqioN5DGHG469Q6sYAvY8gHz6kt6+yjvDRmpLhA5FbFNn/hPyRoPxmeDKydv3en5c3R8Y36WpmOQoAMg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e4F1yJ1n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C77FBC4CEF1;
-	Mon, 27 Oct 2025 19:25:27 +0000 (UTC)
+	 MIME-Version:Content-Type; b=rZKbhR3dQUdZ3r3UGXy2ExsLJsQgIk/mETarJUD5K9k0RCfmDJvEf1GXWT30NC5D9VYbh3KhkojCoTP2TYzs8X1X4wgLSypOdvdz6X/C/ALqIl3FrrueyDf5WihdP7ZmMi8bfJ7KZ6CQXWMsZy3umajkb271MmzKaoJHEy8fK4s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OHy7gnbu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B420C4CEF1;
+	Mon, 27 Oct 2025 18:59:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761593128;
-	bh=o6kpFex0oGALyM6+jfs53DPbxdBkaT2y35j3umLqL9U=;
+	s=korg; t=1761591582;
+	bh=tUYJWDXToLCQhHqBrXrbXZ9ZLcAbyxvDP8Xr0R6lqBE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e4F1yJ1nzGaGdKXtm+C+N3up1n/9bFDMJfzTDXxmKFsfqPmCP3DCZfVy5eAXtZxkS
-	 wgvKm0n6E9yKBjDchwfsenAxnF9iqrq2QjFH7iOr9YlxJQRk/y28gpPPDwTRFEfEvm
-	 yQADVgV52wVc0tnJmyVMebaMlEF+CfAMI9LE7eVQ=
+	b=OHy7gnbuB/wn01DSahCD1Lz7XewvZhTc3Bk4JDdS3LjASu/cPWEYVvBLZIzB5uaVE
+	 PD/FcS6Ko92iaqcaTmq0DeGUhPqy959C70LRgwlVufrtYHt+lxgLSdCFvfscuoV4Vx
+	 2449pirZgD/cnLvFCTaQF1/bbPotXqmsIFkZdP94=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Junhui Liu <junhui.liu@pigmoral.tech>,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	Nutty Liu <liujingqi@lanxincomputing.com>,
-	Paul Walmsley <pjw@kernel.org>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 023/184] riscv: mm: Return intended SATP mode for noXlvl options
+Subject: [PATCH 5.10 252/332] drm/amd/powerplay: Fix CIK shutdown temperature
 Date: Mon, 27 Oct 2025 19:35:05 +0100
-Message-ID: <20251027183515.553021041@linuxfoundation.org>
+Message-ID: <20251027183531.496724447@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
-References: <20251027183514.934710872@linuxfoundation.org>
+In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
+References: <20251027183524.611456697@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +60,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junhui Liu <junhui.liu@pigmoral.tech>
+From: Timur Kristóf <timur.kristof@gmail.com>
 
-[ Upstream commit f3243bed39c26ce0f13e6392a634f91d409b2d02 ]
+[ Upstream commit 6917112af2ba36c5f19075eb9f2933ffd07e55bf ]
 
-Change the return value of match_noXlvl() to return the SATP mode that
-will be used, rather than the mode being disabled. This enables unified
-logic for return value judgement with the function that obtains mmu-type
-from the fdt, avoiding extra conversion. This only changes the naming,
-with no functional impact.
+Remove extra multiplication.
 
-Signed-off-by: Junhui Liu <junhui.liu@pigmoral.tech>
-Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Reviewed-by: Nutty Liu <liujingqi@lanxincomputing.com>
-Link: https://lore.kernel.org/r/20250722-satp-from-fdt-v1-1-5ba22218fa5f@pigmoral.tech
-Signed-off-by: Paul Walmsley <pjw@kernel.org>
+CIK GPUs such as Hawaii appear to use PP_TABLE_V0 in which case
+the shutdown temperature is hardcoded in smu7_init_dpm_defaults
+and is already multiplied by 1000. The value was mistakenly
+multiplied another time by smu7_get_thermal_temperature_range.
+
+Fixes: 4ba082572a42 ("drm/amd/powerplay: export the thermal ranges of VI asics (V2)")
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/1676
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kernel/pi/cmdline_early.c | 4 ++--
- arch/riscv/mm/init.c                 | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/arch/riscv/kernel/pi/cmdline_early.c b/arch/riscv/kernel/pi/cmdline_early.c
-index fbcdc9e4e1432..389d086a07187 100644
---- a/arch/riscv/kernel/pi/cmdline_early.c
-+++ b/arch/riscv/kernel/pi/cmdline_early.c
-@@ -41,9 +41,9 @@ static char *get_early_cmdline(uintptr_t dtb_pa)
- static u64 match_noXlvl(char *cmdline)
- {
- 	if (strstr(cmdline, "no4lvl"))
--		return SATP_MODE_48;
-+		return SATP_MODE_39;
- 	else if (strstr(cmdline, "no5lvl"))
--		return SATP_MODE_57;
-+		return SATP_MODE_48;
+diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
+index 3673a9e7ba449..e2816c88cfe52 100644
+--- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
+@@ -4982,8 +4982,7 @@ static int smu7_get_thermal_temperature_range(struct pp_hwmgr *hwmgr,
+ 		thermal_data->max = table_info->cac_dtp_table->usSoftwareShutdownTemp *
+ 			PP_TEMPERATURE_UNITS_PER_CENTIGRADES;
+ 	else if (hwmgr->pp_table_version == PP_TABLE_V0)
+-		thermal_data->max = data->thermal_temp_setting.temperature_shutdown *
+-			PP_TEMPERATURE_UNITS_PER_CENTIGRADES;
++		thermal_data->max = data->thermal_temp_setting.temperature_shutdown;
  
  	return 0;
  }
-diff --git a/arch/riscv/mm/init.c b/arch/riscv/mm/init.c
-index 15683ae13fa5d..054265b3f2680 100644
---- a/arch/riscv/mm/init.c
-+++ b/arch/riscv/mm/init.c
-@@ -864,9 +864,9 @@ static __init void set_satp_mode(uintptr_t dtb_pa)
- 
- 	kernel_map.page_offset = PAGE_OFFSET_L5;
- 
--	if (satp_mode_cmdline == SATP_MODE_57) {
-+	if (satp_mode_cmdline == SATP_MODE_48) {
- 		disable_pgtable_l5();
--	} else if (satp_mode_cmdline == SATP_MODE_48) {
-+	} else if (satp_mode_cmdline == SATP_MODE_39) {
- 		disable_pgtable_l5();
- 		disable_pgtable_l4();
- 		return;
 -- 
 2.51.0
 
