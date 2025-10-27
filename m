@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-190861-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191039-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B773C10CC7
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:20:28 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3745AC10F13
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:26:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2C03C1A27547
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:15:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E99C119A7EDE
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:23:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AE1F1FBC92;
-	Mon, 27 Oct 2025 19:13:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87F9C31DDBC;
+	Mon, 27 Oct 2025 19:20:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UuUw7he+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lW5KFjAf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B237031E0F4;
-	Mon, 27 Oct 2025 19:13:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 431F632D0E1;
+	Mon, 27 Oct 2025 19:20:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592392; cv=none; b=CdD6YE6PKMfG8Xf81ypzlC5vJJioxubJeWD/+Unm+s1g5uWIA9PGGOQqKAjryJ8vIRBx0Z1iHkA7Cwx9Wqi0YzMjEIJp7pQmqO5R2ztdtwZZ3L0O0sdn3ThX4pyYRiMjVvXN8j9kEpyVsxEEjeapqMIRaZCSbjnZWsECuj27IBs=
+	t=1761592855; cv=none; b=bvsiWGEM69iujibSReoMqMoZzlKlloMfwGvdp+yfNO54DjUaVRd17M0cIPiuw2n1wj9abtDHkonTJjWMklfpg46lUSwcoK3nPe9grB7ujv9tvhxaCRgW5RzLn68lqw1oE4Q1qVgGaQ8Yz6gMybsxRbDi8hWH8ugFNr6LyIaSpM4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592392; c=relaxed/simple;
-	bh=gGuvNwK7hs2VOrQ/DCQSvagqR1H+9UpAqKeuGp1QaLc=;
+	s=arc-20240116; t=1761592855; c=relaxed/simple;
+	bh=WAXKDx+zs5PgQK6gB6wXkzPhl+LWU67Z6afcQVunLKo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DpsctSh+C/KpPXkPMrEQBCPsmp2NsIxEuZ+s32Q411wgourrhnGPJHbD/3Cfpyc8muJKTPoTZHGT8flqw9uWWES0H34BupaZsXVFD8tB/R2izIxjLFDryLtmi1f0i5dHuRyBV91LsM6mRHJxKWs59vWXJXi6DtstWyFlqbXnFQo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UuUw7he+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 412E7C4CEF1;
-	Mon, 27 Oct 2025 19:13:12 +0000 (UTC)
+	 MIME-Version; b=qeZeym/NwCTKX8MlDzIP1y94mSwle9vyl2LQasmRzbw+SUxWp+pLtSOjRAbqxmFKRC1QHEMAK78xCUOJOSb2/je9Do+TcLuI3qMpuFuTYxzJYQafqVOjMrL+ndXXI/MzDMtcHYizE2LZhRRa1m4Q7gC5MT//uBuDbx2mqCCVlQw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lW5KFjAf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BA53C4CEF1;
+	Mon, 27 Oct 2025 19:20:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592392;
-	bh=gGuvNwK7hs2VOrQ/DCQSvagqR1H+9UpAqKeuGp1QaLc=;
+	s=korg; t=1761592854;
+	bh=WAXKDx+zs5PgQK6gB6wXkzPhl+LWU67Z6afcQVunLKo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UuUw7he+MaxlADokADYSyCRZv2Tdz2SMWwDsNu/XT22t/nBQf2/eB8+3/GC8LwQh9
-	 WAjSYBl4sk6LieFJLhY6kBM+1qrkJJKFH/R4E2e8TMmf/cB0LkDUchjnmJltWCsG/d
-	 TtpGXvuBQg3QOiLtQi25IL45Par/XxlJpgCGchHM=
+	b=lW5KFjAfHpO3npQ1oVWUCL47ueQW3QKTEaDZlc28fJuujnMGHfGsHqZQraDU9uf2F
+	 zNfpv3UgFZb+hAT7/aU4KDdgDcrmPuPT/3rkRW9kHuQhG9mN9kNbJyb0ExwRXQNQWc
+	 UnweyXb4p7dKrcrXY4Jwb1Lh/0hk5NdX6YLFl8Zg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Renjun Wang <renjunw0@foxmail.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.1 103/157] USB: serial: option: add UNISOC UIS7720
+	Aksh Garg <a-garg7@ti.com>,
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 038/117] net: ethernet: ti: am65-cpts: fix timestamp loss due to race conditions
 Date: Mon, 27 Oct 2025 19:36:04 +0100
-Message-ID: <20251027183504.021489531@linuxfoundation.org>
+Message-ID: <20251027183455.010876165@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
-References: <20251027183501.227243846@linuxfoundation.org>
+In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
+References: <20251027183453.919157109@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,78 +63,195 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Renjun Wang <renjunw0@foxmail.com>
+From: Aksh Garg <a-garg7@ti.com>
 
-commit 71c07570b918f000de5d0f7f1bf17a2887e303b5 upstream.
+[ Upstream commit 49d34f3dd8519581030547eb7543a62f9ab5fa08 ]
 
-Add support for UNISOC (Spreadtrum) UIS7720 (A7720) module.
+Resolve race conditions in timestamp events list handling between TX
+and RX paths causing missed timestamps.
 
-T:  Bus=05 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  5 Spd=480 MxCh= 0
-D:  Ver= 2.10 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1782 ProdID=4064 Rev=04.04
-S:  Manufacturer=Unisoc-phone
-S:  Product=Unisoc-phone
-S:  SerialNumber=0123456789ABCDEF
-C:  #Ifs= 9 Cfg#= 1 Atr=c0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 1 Cls=e0(wlcon) Sub=01 Prot=03 Driver=rndis_host
-E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-I:  If#= 1 Alt= 0 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=rndis_host
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 6 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=06(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 7 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=07(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=88(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 8 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
-E:  Ad=08(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=89(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+The current implementation uses a single events list for both TX and RX
+timestamps. The am65_cpts_find_ts() function acquires the lock,
+splices all events (TX as well as RX events) to a temporary list,
+and releases the lock. This function performs matching of timestamps
+for TX packets only. Before it acquires the lock again to put the
+non-TX events back to the main events list, a concurrent RX
+processing thread could acquire the lock (as observed in practice),
+find an empty events list, and fail to attach timestamp to it,
+even though a relevant event exists in the spliced list which is yet to
+be restored to the main list.
 
-0&1: RNDIS, 2: LOG, 3: DIAG, 4&5: AT Ports, 6&7: AT2 Ports, 8: ADB
+Fix this by creating separate events lists to handle TX and RX
+timestamps independently.
 
-Signed-off-by: Renjun Wang <renjunw0@foxmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c459f606f66df ("net: ethernet: ti: am65-cpts: Enable RX HW timestamp for PTP packets using CPTS FIFO")
+Signed-off-by: Aksh Garg <a-garg7@ti.com>
+Reviewed-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+Link: https://patch.msgid.link/20251016115755.1123646-1-a-garg7@ti.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/option.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/ethernet/ti/am65-cpts.c | 63 ++++++++++++++++++++---------
+ 1 file changed, 43 insertions(+), 20 deletions(-)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -617,6 +617,7 @@ static void option_instat_callback(struc
- #define UNISOC_VENDOR_ID			0x1782
- /* TOZED LT70-C based on UNISOC SL8563 uses UNISOC's vendor ID */
- #define TOZED_PRODUCT_LT70C			0x4055
-+#define UNISOC_PRODUCT_UIS7720			0x4064
- /* Luat Air72*U series based on UNISOC UIS8910 uses UNISOC's vendor ID */
- #define LUAT_PRODUCT_AIR720U			0x4e00
+diff --git a/drivers/net/ethernet/ti/am65-cpts.c b/drivers/net/ethernet/ti/am65-cpts.c
+index 59d6ab989c554..8ffbfaa3ab18c 100644
+--- a/drivers/net/ethernet/ti/am65-cpts.c
++++ b/drivers/net/ethernet/ti/am65-cpts.c
+@@ -163,7 +163,9 @@ struct am65_cpts {
+ 	struct device_node *clk_mux_np;
+ 	struct clk *refclk;
+ 	u32 refclk_freq;
+-	struct list_head events;
++	/* separate lists to handle TX and RX timestamp independently */
++	struct list_head events_tx;
++	struct list_head events_rx;
+ 	struct list_head pool;
+ 	struct am65_cpts_event pool_data[AM65_CPTS_MAX_EVENTS];
+ 	spinlock_t lock; /* protects events lists*/
+@@ -227,6 +229,24 @@ static void am65_cpts_disable(struct am65_cpts *cpts)
+ 	am65_cpts_write32(cpts, 0, int_enable);
+ }
  
-@@ -2466,6 +2467,7 @@ static const struct usb_device_id option
- 	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9291, 0xff, 0xff, 0x30) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9291, 0xff, 0xff, 0x40) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(UNISOC_VENDOR_ID, TOZED_PRODUCT_LT70C, 0xff, 0, 0) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(UNISOC_VENDOR_ID, UNISOC_PRODUCT_UIS7720, 0xff, 0, 0) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(UNISOC_VENDOR_ID, LUAT_PRODUCT_AIR720U, 0xff, 0, 0) },
- 	{ USB_DEVICE_INTERFACE_CLASS(0x1bbb, 0x0530, 0xff),			/* TCL IK512 MBIM */
- 	  .driver_info = NCTRL(1) },
++static int am65_cpts_purge_event_list(struct am65_cpts *cpts,
++				      struct list_head *events)
++{
++	struct list_head *this, *next;
++	struct am65_cpts_event *event;
++	int removed = 0;
++
++	list_for_each_safe(this, next, events) {
++		event = list_entry(this, struct am65_cpts_event, list);
++		if (time_after(jiffies, event->tmo)) {
++			list_del_init(&event->list);
++			list_add(&event->list, &cpts->pool);
++			++removed;
++		}
++	}
++	return removed;
++}
++
+ static int am65_cpts_event_get_port(struct am65_cpts_event *event)
+ {
+ 	return (event->event1 & AM65_CPTS_EVENT_1_PORT_NUMBER_MASK) >>
+@@ -239,20 +259,12 @@ static int am65_cpts_event_get_type(struct am65_cpts_event *event)
+ 		AM65_CPTS_EVENT_1_EVENT_TYPE_SHIFT;
+ }
+ 
+-static int am65_cpts_cpts_purge_events(struct am65_cpts *cpts)
++static int am65_cpts_purge_events(struct am65_cpts *cpts)
+ {
+-	struct list_head *this, *next;
+-	struct am65_cpts_event *event;
+ 	int removed = 0;
+ 
+-	list_for_each_safe(this, next, &cpts->events) {
+-		event = list_entry(this, struct am65_cpts_event, list);
+-		if (time_after(jiffies, event->tmo)) {
+-			list_del_init(&event->list);
+-			list_add(&event->list, &cpts->pool);
+-			++removed;
+-		}
+-	}
++	removed += am65_cpts_purge_event_list(cpts, &cpts->events_tx);
++	removed += am65_cpts_purge_event_list(cpts, &cpts->events_rx);
+ 
+ 	if (removed)
+ 		dev_dbg(cpts->dev, "event pool cleaned up %d\n", removed);
+@@ -287,7 +299,7 @@ static int __am65_cpts_fifo_read(struct am65_cpts *cpts)
+ 						 struct am65_cpts_event, list);
+ 
+ 		if (!event) {
+-			if (am65_cpts_cpts_purge_events(cpts)) {
++			if (am65_cpts_purge_events(cpts)) {
+ 				dev_err(cpts->dev, "cpts: event pool empty\n");
+ 				ret = -1;
+ 				goto out;
+@@ -306,11 +318,21 @@ static int __am65_cpts_fifo_read(struct am65_cpts *cpts)
+ 				cpts->timestamp);
+ 			break;
+ 		case AM65_CPTS_EV_RX:
++			event->tmo = jiffies +
++				msecs_to_jiffies(AM65_CPTS_EVENT_RX_TX_TIMEOUT);
++
++			list_move_tail(&event->list, &cpts->events_rx);
++
++			dev_dbg(cpts->dev,
++				"AM65_CPTS_EV_RX e1:%08x e2:%08x t:%lld\n",
++				event->event1, event->event2,
++				event->timestamp);
++			break;
+ 		case AM65_CPTS_EV_TX:
+ 			event->tmo = jiffies +
+ 				msecs_to_jiffies(AM65_CPTS_EVENT_RX_TX_TIMEOUT);
+ 
+-			list_move_tail(&event->list, &cpts->events);
++			list_move_tail(&event->list, &cpts->events_tx);
+ 
+ 			dev_dbg(cpts->dev,
+ 				"AM65_CPTS_EV_TX e1:%08x e2:%08x t:%lld\n",
+@@ -828,7 +850,7 @@ static bool am65_cpts_match_tx_ts(struct am65_cpts *cpts,
+ 	return found;
+ }
+ 
+-static void am65_cpts_find_ts(struct am65_cpts *cpts)
++static void am65_cpts_find_tx_ts(struct am65_cpts *cpts)
+ {
+ 	struct am65_cpts_event *event;
+ 	struct list_head *this, *next;
+@@ -837,7 +859,7 @@ static void am65_cpts_find_ts(struct am65_cpts *cpts)
+ 	LIST_HEAD(events);
+ 
+ 	spin_lock_irqsave(&cpts->lock, flags);
+-	list_splice_init(&cpts->events, &events);
++	list_splice_init(&cpts->events_tx, &events);
+ 	spin_unlock_irqrestore(&cpts->lock, flags);
+ 
+ 	list_for_each_safe(this, next, &events) {
+@@ -850,7 +872,7 @@ static void am65_cpts_find_ts(struct am65_cpts *cpts)
+ 	}
+ 
+ 	spin_lock_irqsave(&cpts->lock, flags);
+-	list_splice_tail(&events, &cpts->events);
++	list_splice_tail(&events, &cpts->events_tx);
+ 	list_splice_tail(&events_free, &cpts->pool);
+ 	spin_unlock_irqrestore(&cpts->lock, flags);
+ }
+@@ -861,7 +883,7 @@ static long am65_cpts_ts_work(struct ptp_clock_info *ptp)
+ 	unsigned long flags;
+ 	long delay = -1;
+ 
+-	am65_cpts_find_ts(cpts);
++	am65_cpts_find_tx_ts(cpts);
+ 
+ 	spin_lock_irqsave(&cpts->txq.lock, flags);
+ 	if (!skb_queue_empty(&cpts->txq))
+@@ -905,7 +927,7 @@ static u64 am65_cpts_find_rx_ts(struct am65_cpts *cpts, u32 skb_mtype_seqid)
+ 
+ 	spin_lock_irqsave(&cpts->lock, flags);
+ 	__am65_cpts_fifo_read(cpts);
+-	list_for_each_safe(this, next, &cpts->events) {
++	list_for_each_safe(this, next, &cpts->events_rx) {
+ 		event = list_entry(this, struct am65_cpts_event, list);
+ 		if (time_after(jiffies, event->tmo)) {
+ 			list_move(&event->list, &cpts->pool);
+@@ -1155,7 +1177,8 @@ struct am65_cpts *am65_cpts_create(struct device *dev, void __iomem *regs,
+ 		return ERR_PTR(ret);
+ 
+ 	mutex_init(&cpts->ptp_clk_lock);
+-	INIT_LIST_HEAD(&cpts->events);
++	INIT_LIST_HEAD(&cpts->events_tx);
++	INIT_LIST_HEAD(&cpts->events_rx);
+ 	INIT_LIST_HEAD(&cpts->pool);
+ 	spin_lock_init(&cpts->lock);
+ 	skb_queue_head_init(&cpts->txq);
+-- 
+2.51.0
+
 
 
 
