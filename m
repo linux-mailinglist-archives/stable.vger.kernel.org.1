@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-190523-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190807-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FEBAC1081D
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:08:26 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B7B7C10C76
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:19:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A95E4566FF0
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:03:09 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 3FB854FDA4B
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:13:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D88E30DEA2;
-	Mon, 27 Oct 2025 18:58:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FF9932ABCD;
+	Mon, 27 Oct 2025 19:10:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WEXtK6lR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="typ2ctR/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E1F0330B19;
-	Mon, 27 Oct 2025 18:58:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEAD931BC84;
+	Mon, 27 Oct 2025 19:10:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591513; cv=none; b=Bq86BAr/HL8OtHaekvRTya0dhyhlksSrLMbECRXt1tahGpM3mDZuiRwTrUGq4XFBQqDSxG4Evgeim5WOBFkhe1AJn6qhiPTcuWrHzBJU+jubpmhlfSyMLz8fHecTqZ4A6fbMnDHnwdbK2aTEcvdUYaFnEbOsSTCfv7c9rM9lNls=
+	t=1761592247; cv=none; b=B9qHS2YjYfyVlAE8Xq7ElrQHScxUZq+H6sEGAAMGOIggXEEdJZgpaSZP2+ffW27wuM/SaX4yhCpVNjgdfwuMUOrIoWxdnLKOa+RHbPeO1AlYQa3/WpU+SxLY11z0+TA5q83qjKZEvfjMSvi0ipeac5TPb9mifKq1IMsRbpE4zCM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591513; c=relaxed/simple;
-	bh=ia/XEumiYBelRK6eyxG4Tqa+7vVQ/tyPH6CtH5FUDNo=;
+	s=arc-20240116; t=1761592247; c=relaxed/simple;
+	bh=kui52LdhR09qE3URSYgppLp2LQon6wAViNJEnqF9RhM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zog/WMWjbFRM8l+pjB7N5dxiFdH0gMoQX/mkumEn0m+2Qzif3TU1uPanWz6OrvVPMtaMd22IMjrf6bQSyJ6ovyfcJNF660c8qb7zmPEAIUKOGOCBc9EuFivtw3HiCuJbQ3yvH/dJ20v2A9CJ2xlQETMpMvrqTl0e4iXVdEgin1k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WEXtK6lR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C91DC116B1;
-	Mon, 27 Oct 2025 18:58:32 +0000 (UTC)
+	 MIME-Version; b=Pj4yD38r4/Qwk26cOAr8hXKdUNjsh4aKL9ZtS7Pfw4FWWgNYwFMM2Xg+tRjj+y3ECPw23Q4cyE+2AY1VwQ8Pu+lSdd8ad7jCwtUI+1S62NYPy4/iug/6W4NuVI8Fg2tHUN8BlCemVOyre/BuGJTHSWokCTyoumwmJ48/CuVHDew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=typ2ctR/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5593DC4CEF1;
+	Mon, 27 Oct 2025 19:10:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591512;
-	bh=ia/XEumiYBelRK6eyxG4Tqa+7vVQ/tyPH6CtH5FUDNo=;
+	s=korg; t=1761592247;
+	bh=kui52LdhR09qE3URSYgppLp2LQon6wAViNJEnqF9RhM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WEXtK6lR7sU9eFGTCT5opMQphbx6juxrwfY6Qsz1Eydngbej3yacrgou1jvHEOrbS
-	 cRNvnGx8bokJOH8SIUYoUyScw7K5OLEbIPLas0cbvj+xSHAj2yerszYj0uO8joHB2m
-	 aJDJ8eIB+0DOwdxd/ZRL7/dFK7fWBgUeKVpmS+38=
+	b=typ2ctR/qmjirackREX0M5Udqm+5il1x+fWHPKoqNIWsSzDoCplVk3w8NEvxho4DO
+	 nKZ/nzyPpsotES3AptH6/ESxel8DMMvlIBGynNT15Mvb/Qor15p9+Y07c9SvtmlUzs
+	 3uWqGUwIvKiGxzIfgf9e+ypXqDw+DGeb6TEP4QBI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikhail Kobuk <m.kobuk@ispras.ru>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Subject: [PATCH 5.10 224/332] media: pci: ivtv: Add check for DMA map result
-Date: Mon, 27 Oct 2025 19:34:37 +0100
-Message-ID: <20251027183530.708080881@linuxfoundation.org>
+	Kuen-Han Tsai <khtsai@google.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 017/157] usb: gadget: Store endpoint pointer in usb_request
+Date: Mon, 27 Oct 2025 19:34:38 +0100
+Message-ID: <20251027183501.734305750@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
-References: <20251027183524.611456697@linuxfoundation.org>
+In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
+References: <20251027183501.227243846@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,87 +61,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikhail Kobuk <m.kobuk@ispras.ru>
+From: Kuen-Han Tsai <khtsai@google.com>
 
-commit 629913d6d79508b166c66e07e4857e20233d85a9 upstream.
+[ Upstream commit bfb1d99d969fe3b892db30848aeebfa19d21f57f ]
 
-In case DMA fails, 'dma->SG_length' is 0. This value is later used to
-access 'dma->SGarray[dma->SG_length - 1]', which will cause out of
-bounds access.
+Gadget function drivers often have goto-based error handling in their
+bind paths, which can be bug-prone. Refactoring these paths to use
+__free() scope-based cleanup is desirable, but currently blocked.
 
-Add check to return early on invalid value. Adjust warnings accordingly.
+The blocker is that usb_ep_free_request(ep, req) requires two
+parameters, while the __free() mechanism can only pass a pointer to the
+request itself.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+Store an endpoint pointer in the struct usb_request. The pointer is
+populated centrally in usb_ep_alloc_request() on every successful
+allocation, making the request object self-contained.
 
-Fixes: 1932dc2f4cf6 ("media: pci/ivtv: switch from 'pci_' to 'dma_' API")
-Signed-off-by: Mikhail Kobuk <m.kobuk@ispras.ru>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
+Link: https://lore.kernel.org/r/20250916-ready-v1-1-4997bf277548@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/r/20250916-ready-v1-1-4997bf277548@google.com
+Stable-dep-of: 75a5b8d4ddd4 ("usb: gadget: f_ncm: Refactor bind path to use __free()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/pci/ivtv/ivtv-udma.c |    8 ++++++++
- drivers/media/pci/ivtv/ivtv-yuv.c  |    6 ++++++
- drivers/media/pci/ivtv/ivtvfb.c    |    6 +++---
- 3 files changed, 17 insertions(+), 3 deletions(-)
+ drivers/usb/gadget/udc/core.c |    3 +++
+ include/linux/usb/gadget.h    |    2 ++
+ 2 files changed, 5 insertions(+)
 
---- a/drivers/media/pci/ivtv/ivtv-udma.c
-+++ b/drivers/media/pci/ivtv/ivtv-udma.c
-@@ -131,6 +131,8 @@ int ivtv_udma_setup(struct ivtv *itv, un
+--- a/drivers/usb/gadget/udc/core.c
++++ b/drivers/usb/gadget/udc/core.c
+@@ -194,6 +194,9 @@ struct usb_request *usb_ep_alloc_request
  
- 	/* Fill SG List with new values */
- 	if (ivtv_udma_fill_sg_list(dma, &user_dma, 0) < 0) {
-+		IVTV_DEBUG_WARN("%s: could not allocate bounce buffers for highmem userspace buffers\n",
-+				__func__);
- 		unpin_user_pages(dma->map, dma->page_count);
- 		dma->page_count = 0;
- 		return -ENOMEM;
-@@ -139,6 +141,12 @@ int ivtv_udma_setup(struct ivtv *itv, un
- 	/* Map SG List */
- 	dma->SG_length = dma_map_sg(&itv->pdev->dev, dma->SGlist,
- 				    dma->page_count, DMA_TO_DEVICE);
-+	if (!dma->SG_length) {
-+		IVTV_DEBUG_WARN("%s: DMA map error, SG_length is 0\n", __func__);
-+		unpin_user_pages(dma->map, dma->page_count);
-+		dma->page_count = 0;
-+		return -EINVAL;
-+	}
+ 	req = ep->ops->alloc_request(ep, gfp_flags);
  
- 	/* Fill SG Array with new values */
- 	ivtv_udma_fill_sg_array (dma, ivtv_dest_addr, 0, -1);
---- a/drivers/media/pci/ivtv/ivtv-yuv.c
-+++ b/drivers/media/pci/ivtv/ivtv-yuv.c
-@@ -115,6 +115,12 @@ static int ivtv_yuv_prep_user_dma(struct
- 	}
- 	dma->SG_length = dma_map_sg(&itv->pdev->dev, dma->SGlist,
- 				    dma->page_count, DMA_TO_DEVICE);
-+	if (!dma->SG_length) {
-+		IVTV_DEBUG_WARN("%s: DMA map error, SG_length is 0\n", __func__);
-+		unpin_user_pages(dma->map, dma->page_count);
-+		dma->page_count = 0;
-+		return -EINVAL;
-+	}
++	if (req)
++		req->ep = ep;
++
+ 	trace_usb_ep_alloc_request(ep, req, req ? 0 : -ENOMEM);
  
- 	/* Fill SG Array with new values */
- 	ivtv_udma_fill_sg_array(dma, y_buffer_offset, uv_buffer_offset, y_size);
---- a/drivers/media/pci/ivtv/ivtvfb.c
-+++ b/drivers/media/pci/ivtv/ivtvfb.c
-@@ -281,10 +281,10 @@ static int ivtvfb_prep_dec_dma_to_device
- 	/* Map User DMA */
- 	if (ivtv_udma_setup(itv, ivtv_dest_addr, userbuf, size_in_bytes) <= 0) {
- 		mutex_unlock(&itv->udma.lock);
--		IVTVFB_WARN("ivtvfb_prep_dec_dma_to_device, Error with pin_user_pages: %d bytes, %d pages returned\n",
--			       size_in_bytes, itv->udma.page_count);
-+		IVTVFB_WARN("%s, Error in ivtv_udma_setup: %d bytes, %d pages returned\n",
-+			       __func__, size_in_bytes, itv->udma.page_count);
+ 	return req;
+--- a/include/linux/usb/gadget.h
++++ b/include/linux/usb/gadget.h
+@@ -31,6 +31,7 @@ struct usb_ep;
  
--		/* pin_user_pages must have failed completely */
-+		/* pin_user_pages or DMA must have failed completely */
- 		return -EIO;
- 	}
+ /**
+  * struct usb_request - describes one i/o request
++ * @ep: The associated endpoint set by usb_ep_alloc_request().
+  * @buf: Buffer used for data.  Always provide this; some controllers
+  *	only use PIO, or don't use DMA for some endpoints.
+  * @dma: DMA address corresponding to 'buf'.  If you don't set this
+@@ -96,6 +97,7 @@ struct usb_ep;
+  */
  
+ struct usb_request {
++	struct usb_ep		*ep;
+ 	void			*buf;
+ 	unsigned		length;
+ 	dma_addr_t		dma;
 
 
 
