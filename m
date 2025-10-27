@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-190333-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190344-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8DEBC10530
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:58:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D312C10555
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:58:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DD8601A240EF
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:54:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8A25B1A25068
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:55:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5EBA32E139;
-	Mon, 27 Oct 2025 18:50:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73F5D330D32;
+	Mon, 27 Oct 2025 18:50:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Txtbd/W5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aGObLa/w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 387EF32F755;
-	Mon, 27 Oct 2025 18:50:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BAA7330B3E;
+	Mon, 27 Oct 2025 18:50:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591027; cv=none; b=KLf9kgix0zF+LDZ59Wk4QF+uU3yggxTGtIWyd4I57HopOslUFKeGdwQuhjCQAZpldkxAJYKHfUcf9sodJYDRB8m0upWx48KoeXExf3XPNNQFCzEGc8lehDRNqIcje7l/eQ16FqbQG3LgenxnvUvEzPh3f3Xi6FKSQ48AzatuSw8=
+	t=1761591055; cv=none; b=AWQjF8MhAGWW729SeLNJu1oGiK1UaEzNfz5JfJMBtnqs2mOxiGVTuC0s6YZIn4Js8FFasuRt57g7e5wbmoRNBcvXbKCuO1lu/cLPO3PRBVwn3bP0oBnnQ1eOY4enxCzF2WezPE6TvYB2yGp4iAVxHrc3g5fqV1TicfFwD7OXzAM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591027; c=relaxed/simple;
-	bh=Y5YJYW8f3S3LRRjg75HF3KUYH5q74x7zk4/W5qGan1w=;
+	s=arc-20240116; t=1761591055; c=relaxed/simple;
+	bh=jqKO5wy40qphAaI4EBgtPcCmqwpFFGiBI7LXlMur64U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u2vKxkUfua+bi/0fweeVybkKBUdYtyAxqpcK69lCp31b7GpmGzMWwFcPj9eHzjnxt53w3LYfoIJCoI5m9/7i34hj2C9ipyyD972MWT0blzbfG2wlFvJr7Og9zFDEzIAdgfeuXWMDJzs1to2uxetLmFISHoZBuJehaa0KK4yUQMw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Txtbd/W5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0A70C4CEF1;
-	Mon, 27 Oct 2025 18:50:26 +0000 (UTC)
+	 MIME-Version; b=rJx8Ej3rlm4xci7X2eyAH7YmyjEMRfpRHBefGbiidPdiD6INDld56hU9Pfxn08g25/xUwJpJem6eHxr+FEhZXmBSMGjZobvfcUH3ECF6J3+DE5+CGc/wXQBGV2NtTaD5H+g7x/2BgMebJjjggFFlBkwex6FfKU2YXgW1zhpgL7k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aGObLa/w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E6FEC4CEF1;
+	Mon, 27 Oct 2025 18:50:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591027;
-	bh=Y5YJYW8f3S3LRRjg75HF3KUYH5q74x7zk4/W5qGan1w=;
+	s=korg; t=1761591055;
+	bh=jqKO5wy40qphAaI4EBgtPcCmqwpFFGiBI7LXlMur64U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Txtbd/W5IXhYJerMpzigjSZRHn7sGZZBQusMKq2G4wAtmHnYHBZ1xxiZZfQAdDB/q
-	 UhRIu1JX4k3s06nC4scGxOxTg/MVxwIzTzrGy69ZEhARTTgntPyYG0D3xckjb5iomr
-	 OxmWHtpkDklQicPK4j9dIxM0mpUKex0e9j6hOV34=
+	b=aGObLa/wUfQrDtaLgOrkXUUkSXfV7uhDpYVARjZYTamcqLuLhjKVssfqY5DzumpQ3
+	 o+eKCyAy+eBNOFC0sOzKsZKwQIqtdr26arjWP7yQjBeoVLLvsLIW74pieVL4B/IY6I
+	 bVeZ+IYzDubMQbSJRNBPd0C6TT5GQ9OM7WRyIPdU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qianfeng Rong <rongqianfeng@vivo.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Fei Shao <fshao@chromium.org>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 032/332] pinctrl: renesas: Use int type to store negative error codes
-Date: Mon, 27 Oct 2025 19:31:25 +0100
-Message-ID: <20251027183525.468842949@linuxfoundation.org>
+Subject: [PATCH 5.10 033/332] arm64: dts: mediatek: mt8516-pumpkin: Fix machine compatible
+Date: Mon, 27 Oct 2025 19:31:26 +0100
+Message-ID: <20251027183525.495361445@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
 References: <20251027183524.611456697@linuxfoundation.org>
@@ -66,40 +67,37 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Qianfeng Rong <rongqianfeng@vivo.com>
+From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 
-[ Upstream commit 9f062fc5b0ff44550088912ab89f9da40226a826 ]
+[ Upstream commit ffe6a5d1dd4d4d8af0779526cf4e40522647b25f ]
 
-Change the 'ret' variable in sh_pfc_pinconf_group_set() from unsigned
-int to int, as it needs to store either negative error codes or zero
-returned by sh_pfc_pinconf_set().
+This devicetree contained only the SoC compatible but lacked the
+machine specific one: add a "mediatek,mt8516-pumpkin" compatible
+to the list to fix dtbs_check warnings.
 
-No effect on runtime.
-
-Signed-off-by: Qianfeng Rong <rongqianfeng@vivo.com>
-Fixes: d0593c363f04ccc4 ("pinctrl: sh-pfc: Propagate errors on group config")
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/20250831084958.431913-4-rongqianfeng@vivo.com
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Fixes: 9983822c8cf9 ("arm64: dts: mediatek: add pumpkin board dts")
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: Fei Shao <fshao@chromium.org>
+Link: https://lore.kernel.org/r/20250724083914.61351-39-angelogioacchino.delregno@collabora.com
+Signed-off-by: Matthias Brugger <matthias.bgg@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/renesas/pinctrl.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/mediatek/mt8516-pumpkin.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pinctrl/renesas/pinctrl.c b/drivers/pinctrl/renesas/pinctrl.c
-index 212a4a9c3a8fc..59dc5a965fb82 100644
---- a/drivers/pinctrl/renesas/pinctrl.c
-+++ b/drivers/pinctrl/renesas/pinctrl.c
-@@ -745,7 +745,8 @@ static int sh_pfc_pinconf_group_set(struct pinctrl_dev *pctldev, unsigned group,
- 	struct sh_pfc_pinctrl *pmx = pinctrl_dev_get_drvdata(pctldev);
- 	const unsigned int *pins;
- 	unsigned int num_pins;
--	unsigned int i, ret;
-+	unsigned int i;
-+	int ret;
+diff --git a/arch/arm64/boot/dts/mediatek/mt8516-pumpkin.dts b/arch/arm64/boot/dts/mediatek/mt8516-pumpkin.dts
+index cce642c538128..3d3db33a64dc6 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8516-pumpkin.dts
++++ b/arch/arm64/boot/dts/mediatek/mt8516-pumpkin.dts
+@@ -11,7 +11,7 @@
  
- 	pins = pmx->pfc->info->groups[group].pins;
- 	num_pins = pmx->pfc->info->groups[group].nr_pins;
+ / {
+ 	model = "Pumpkin MT8516";
+-	compatible = "mediatek,mt8516";
++	compatible = "mediatek,mt8516-pumpkin", "mediatek,mt8516";
+ 
+ 	memory@40000000 {
+ 		device_type = "memory";
 -- 
 2.51.0
 
