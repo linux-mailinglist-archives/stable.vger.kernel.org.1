@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-190951-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191218-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDC88C10E7A
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:24:42 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DB30C11351
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:42:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5D68A5023B5
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:18:11 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D39255642AB
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:30:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B082221DAC;
-	Mon, 27 Oct 2025 19:17:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 343DF32A3F9;
+	Mon, 27 Oct 2025 19:28:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LVtkcKLF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LVlv37en"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 065C531BCAE;
-	Mon, 27 Oct 2025 19:17:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD130313546;
+	Mon, 27 Oct 2025 19:28:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592625; cv=none; b=k8pf/8F/Kbz88sU0gMkHPSrd1sLw6t7IGlWrs3lzJc35IYbBP574/npGk7zTZpU8RJkB3J0fZIieFDlJt94deiTuLrfP5WFg5TKcDFdH+ABAH1ebB1m7cvZO9R53GVowJQ9AN4L2fmB4Ev7mhqZdkjzWnYXGRkWN3IQB/twmo+8=
+	t=1761593312; cv=none; b=H0UbfZWW/aGoFbvrX0xA3EYIBnM/G5xNUP18quKV9LSw8YKEcOOMo+l/Ae5Q2YLYtvqXotAtIKkc/LjvCQOEj6hQMHVIQXqcEBGJQh1+rtMqxmz0w1H+Y/GzH3EOyn6r5d3YjsY7MBMSoQOC067SOqAGFyWm3BWTdg7Hv8Q6K60=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592625; c=relaxed/simple;
-	bh=BvNCNgxacphl/op/Ua5jzLqRaJl2eXpyxck1FpRkz+A=;
+	s=arc-20240116; t=1761593312; c=relaxed/simple;
+	bh=8rO9UwtA+mdgzqrMvr17LaoWatG9kO8T0wzswi6CwPA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jAen6DPlv+v9xgSe6nv0S9KnTM7MekQ7GuOZWLuYZ0yl5usgKt+9/wL2dOLz1BRwS3l3cdRGYhEIOJiVwYwxo+bNkr6UwDw6VqEJ4b4iFTGt0a7SKoEYvO5jnV35DaEF3oS/1OD9fh0eGOAmbxfYPTwmz+wrBYmjrmjpp6DaEwM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LVtkcKLF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C042C4CEFD;
-	Mon, 27 Oct 2025 19:17:04 +0000 (UTC)
+	 MIME-Version; b=fTEFFpJiSv1vvAZlikR1jhoeJixi9Zt4JmtZI3+LxRMksq2Z4JstxZriiMRcOYQnBsQR+sQksZ/hoayvpydjrWlT6qHxk73XxG1/nDqTJCnQn7vwho2iMALTWwCGjzAeOGcdhH1e0QqWzTj+uNVai9Wphf1lrftDuHAr3aul1lE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LVlv37en; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72F3FC4CEF1;
+	Mon, 27 Oct 2025 19:28:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592624;
-	bh=BvNCNgxacphl/op/Ua5jzLqRaJl2eXpyxck1FpRkz+A=;
+	s=korg; t=1761593311;
+	bh=8rO9UwtA+mdgzqrMvr17LaoWatG9kO8T0wzswi6CwPA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LVtkcKLFb1NjHixNix49sA9cuZvyYck76RHuFI54j7awhfggGEcvgRHL6JdzA1YUm
-	 0A6E9Aoo5LOSOYDbK1VBbi/6kK24VU9N3RX/HjfW2hLMTUEXG2Gbav0gHudj+KupQE
-	 KTtzEM+le80ggtpUMuiQisUo/e8iuaJ4mfFr6CiU=
+	b=LVlv37enSJb5OwS1rRMDnWFMo6/VgLURBnvM2ko4zmj8Fa9IRGFII1mm7HDPyaXMk
+	 KurEGVn8g3BQqJG+qSpGfPYzCyehmDHDrxIbFt+yH3Dgv/oEYOFsIiCPaY9tgJmxRC
+	 ZTACVtKtkh+6wz5isQYTTV8FXVogBeLTiAPYEyuU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dragos Tatulea <dtatulea@nvidia.com>,
-	Amery Hung <ameryhung@gmail.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 27/84] net/mlx5e: RX, Fix generating skb from non-linear xdp_buff for legacy RQ
+	Nam Cao <namcao@linutronix.de>,
+	kernel test robot <lkp@intel.com>,
+	Gabriele Monaco <gmonaco@redhat.com>
+Subject: [PATCH 6.17 094/184] rv: Make rtapp/pagefault monitor depends on CONFIG_MMU
 Date: Mon, 27 Oct 2025 19:36:16 +0100
-Message-ID: <20251027183439.540943611@linuxfoundation.org>
+Message-ID: <20251027183517.433890638@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183438.817309828@linuxfoundation.org>
-References: <20251027183438.817309828@linuxfoundation.org>
+In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
+References: <20251027183514.934710872@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,71 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amery Hung <ameryhung@gmail.com>
+From: Nam Cao <namcao@linutronix.de>
 
-[ Upstream commit afd5ba577c10639f62e8120df67dc70ea4b61176 ]
+commit 3d62f95bd8450cebb4a4741bf83949cd54edd4a3 upstream.
 
-XDP programs can release xdp_buff fragments when calling
-bpf_xdp_adjust_tail(). The driver currently assumes the number of
-fragments to be unchanged and may generate skb with wrong truesize or
-containing invalid frags. Fix the bug by generating skb according to
-xdp_buff after the XDP program runs.
+There is no page fault without MMU. Compiling the rtapp/pagefault monitor
+without CONFIG_MMU fails as page fault tracepoints' definitions are not
+available.
 
-Fixes: ea5d49bdae8b ("net/mlx5e: Add XDP multi buffer support to the non-linear legacy RQ")
-Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
-Signed-off-by: Amery Hung <ameryhung@gmail.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/1760644540-899148-2-git-send-email-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Make rtapp/pagefault monitor depends on CONFIG_MMU.
+
+Fixes: 9162620eb604 ("rv: Add rtapp_pagefault monitor")
+Signed-off-by: Nam Cao <namcao@linutronix.de>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202509260455.6Z9Vkty4-lkp@intel.com/
+Cc: stable@vger.kernel.org
+Reviewed-by: Gabriele Monaco <gmonaco@redhat.com>
+Link: https://lore.kernel.org/r/20251002082317.973839-1-namcao@linutronix.de
+Signed-off-by: Gabriele Monaco <gmonaco@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../net/ethernet/mellanox/mlx5/core/en_rx.c   | 25 ++++++++++++++-----
- 1 file changed, 19 insertions(+), 6 deletions(-)
+ kernel/trace/rv/monitors/pagefault/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c b/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
-index 711c95074f05c..54268892148d4 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
-@@ -1774,14 +1774,27 @@ mlx5e_skb_from_cqe_nonlinear(struct mlx5e_rq *rq, struct mlx5e_wqe_frag_info *wi
- 	}
- 
- 	prog = rcu_dereference(rq->xdp_prog);
--	if (prog && mlx5e_xdp_handle(rq, prog, mxbuf)) {
--		if (__test_and_clear_bit(MLX5E_RQ_FLAG_XDP_XMIT, rq->flags)) {
--			struct mlx5e_wqe_frag_info *pwi;
-+	if (prog) {
-+		u8 nr_frags_free, old_nr_frags = sinfo->nr_frags;
-+
-+		if (mlx5e_xdp_handle(rq, prog, mxbuf)) {
-+			if (__test_and_clear_bit(MLX5E_RQ_FLAG_XDP_XMIT,
-+						 rq->flags)) {
-+				struct mlx5e_wqe_frag_info *pwi;
-+
-+				wi -= old_nr_frags - sinfo->nr_frags;
-+
-+				for (pwi = head_wi; pwi < wi; pwi++)
-+					pwi->frag_page->frags++;
-+			}
-+			return NULL; /* page/packet was consumed by XDP */
-+		}
- 
--			for (pwi = head_wi; pwi < wi; pwi++)
--				pwi->frag_page->frags++;
-+		nr_frags_free = old_nr_frags - sinfo->nr_frags;
-+		if (unlikely(nr_frags_free)) {
-+			wi -= nr_frags_free;
-+			truesize -= nr_frags_free * frag_info->frag_stride;
- 		}
--		return NULL; /* page/packet was consumed by XDP */
- 	}
- 
- 	skb = mlx5e_build_linear_skb(
+diff --git a/kernel/trace/rv/monitors/pagefault/Kconfig b/kernel/trace/rv/monitors/pagefault/Kconfig
+index 5e16625f1653..0e013f00c33b 100644
+--- a/kernel/trace/rv/monitors/pagefault/Kconfig
++++ b/kernel/trace/rv/monitors/pagefault/Kconfig
+@@ -5,6 +5,7 @@ config RV_MON_PAGEFAULT
+ 	select RV_LTL_MONITOR
+ 	depends on RV_MON_RTAPP
+ 	depends on X86 || RISCV
++	depends on MMU
+ 	default y
+ 	select LTL_MON_EVENTS_ID
+ 	bool "pagefault monitor"
 -- 
-2.51.0
+2.51.1
 
 
 
