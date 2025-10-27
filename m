@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-191152-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190781-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D27D1C110B8
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:31:54 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4E94C10C13
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:18:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E59801A606B5
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:27:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D9344567831
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:12:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E54E427FD62;
-	Mon, 27 Oct 2025 19:25:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09BC13233ED;
+	Mon, 27 Oct 2025 19:09:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="13JCKVXk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GouDuy27"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1851274FD0;
-	Mon, 27 Oct 2025 19:25:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAF0831E0E1;
+	Mon, 27 Oct 2025 19:09:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761593143; cv=none; b=GM4rblzCmQCdWf+N04gVsxnJF1KkplD4spszdLUkCQguFc4/cbmY8KzcgoAdm8yuSaUYCpCmJbmbPd6lZA+hIyFBPzEHrV/qYvKg54cPq8qQtz/3AZte63mcH5wzISF2Qvdl5zhq/9zpL0ogl090WmP5ApWLIdRZceawpKxqOOU=
+	t=1761592179; cv=none; b=tHsL6uCZ0ddeQXe4jRhnIoUoEMz9dUeTYhGjbC1d8nVzIADS+ll8zh+4XwYkiY4rTlcQaYQlh/NXy6WGertDuB3zLcWs2Xg3qOZYISzNL182VYvbIjqyzbZyJeO2x8zHg7ZRi7cfYXBEZihACFnI9mc0pZKERtweQqjVfjMz7YA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761593143; c=relaxed/simple;
-	bh=pFtvzygCfMOCdUq7W5a23sIkJG7GbZfx7HvOq/5w6J8=;
+	s=arc-20240116; t=1761592179; c=relaxed/simple;
+	bh=1uyfziosrFxFwEF/E9ERR2yv7GzAhbxcwOuveYMtwcM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oo6drF7WrPLZZQ5MhLSAzw6voaFhYgo0VBqYeTegZCJW3TrQIWg16UhWdeJ0vebziU2uJihRxcvUWZ3Wy9iS/vb7tfoaiaeCrpmk7dixq07/Sis50J1Qya+b1qoGnU/RIuM/x2Eu2c4NGeN5CPEr8d7GHMCiYJQi0iTQZZ+qiBs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=13JCKVXk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33085C4CEF1;
-	Mon, 27 Oct 2025 19:25:43 +0000 (UTC)
+	 MIME-Version; b=p2LwyOFs8VStcpkmuvWAEqPUQAPhs51gAQ9Y8iBKBeV0vwXb892GzCh4SN1LPkmAvaQdoHZfGwaexNurpsOBEnweQQgAw7PGYCSh6JqI4a4nMoJON3NiG0qcvK3ZGuqEgFrj4UFbo/x2UYLR+DLsJtqafjtnteGWQF6PZlg2jBU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GouDuy27; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B049C4CEF1;
+	Mon, 27 Oct 2025 19:09:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761593143;
-	bh=pFtvzygCfMOCdUq7W5a23sIkJG7GbZfx7HvOq/5w6J8=;
+	s=korg; t=1761592179;
+	bh=1uyfziosrFxFwEF/E9ERR2yv7GzAhbxcwOuveYMtwcM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=13JCKVXkWxCVNDrHLLakrCGt9iBgZHLYCL31Gx6iA7cD6hMQwQ7pKCyExsvGvt01v
-	 HbiPou4vG3iELwUbbTL7XS/Zs9dVotcD0w2RKluanJZyJP/pbKsRrK4VpAeKGhOquU
-	 GOY/NuCn2ggBoe3jz57Gms/LR/uuOipK0YK1lk+g=
+	b=GouDuy27sip98bkplzZohnEvHjcq9c64QoO/Onbxlm37FmQs+cF5rMFJolw5jx6C1
+	 nC6r7rX3N/wNJlzpBcbEyd/HbDaQyNNuB5bX/yqVz6t+NxxgshiJ4L3KGce+4Dgvmd
+	 j7KUbCD4GVUaIknllglrx1mTsniWafWj6NBvoujE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Brauner <brauner@kernel.org>,
-	Amir Goldstein <amir73il@gmail.com>,
-	Jan Kara <jack@suse.cz>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 003/184] expfs: Fix exportfs_can_encode_fh() for EXPORT_FH_FID
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Anna-Maria Behnsen <anna-maria@linutronix.de>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Jeongjun Park <aha310510@gmail.com>
+Subject: [PATCH 6.1 024/157] ARM: spear: Do not use timer namespace for timer_shutdown() function
 Date: Mon, 27 Oct 2025 19:34:45 +0100
-Message-ID: <20251027183515.035091721@linuxfoundation.org>
+Message-ID: <20251027183501.926560394@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
-References: <20251027183514.934710872@linuxfoundation.org>
+In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
+References: <20251027183501.227243846@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +67,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
 
-[ Upstream commit 48b77733d0dbaf8cd0a122712072f92b2d95d894 ]
+[ Upstream commit 80b55772d41d8afec68dbc4ff0368a9fe5d1f390 ]
 
-After commit 5402c4d4d200 ("exportfs: require ->fh_to_parent() to encode
-connectable file handles") we will fail to create non-decodable file
-handles for filesystems without export operations. Fix it.
+A new "shutdown" timer state is being added to the generic timer code. One
+of the functions to change the timer into the state is called
+"timer_shutdown()". This means that there can not be other functions called
+"timer_shutdown()" as the timer code owns the "timer_*" name space.
 
-Fixes: 5402c4d4d200 ("exportfs: require ->fh_to_parent() to encode connectable file handles")
-Reviewed-by: Christian Brauner <brauner@kernel.org>
-Reviewed-by: Amir Goldstein <amir73il@gmail.com>
-Signed-off-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Rename timer_shutdown() to spear_timer_shutdown() to avoid this conflict.
+
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Guenter Roeck <linux@roeck-us.net>
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Reviewed-by: Anna-Maria Behnsen <anna-maria@linutronix.de>
+Acked-by: Arnd Bergmann <arnd@arndb.de>
+Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
+Link: https://lkml.kernel.org/r/20221106212701.822440504@goodmis.org
+Link: https://lore.kernel.org/all/20221105060155.228348078@goodmis.org/
+Link: https://lore.kernel.org/r/20221110064146.810953418@goodmis.org
+Link: https://lore.kernel.org/r/20221123201624.513863211@linutronix.de
+Signed-off-by: Jeongjun Park <aha310510@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/exportfs.h | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ arch/arm/mach-spear/time.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/include/linux/exportfs.h b/include/linux/exportfs.h
-index cfb0dd1ea49c7..b80286a73d0a9 100644
---- a/include/linux/exportfs.h
-+++ b/include/linux/exportfs.h
-@@ -314,9 +314,6 @@ static inline bool exportfs_can_decode_fh(const struct export_operations *nop)
- static inline bool exportfs_can_encode_fh(const struct export_operations *nop,
- 					  int fh_flags)
- {
--	if (!nop)
--		return false;
--
- 	/*
- 	 * If a non-decodeable file handle was requested, we only need to make
- 	 * sure that filesystem did not opt-out of encoding fid.
-@@ -324,6 +321,10 @@ static inline bool exportfs_can_encode_fh(const struct export_operations *nop,
- 	if (fh_flags & EXPORT_FH_FID)
- 		return exportfs_can_encode_fid(nop);
+--- a/arch/arm/mach-spear/time.c
++++ b/arch/arm/mach-spear/time.c
+@@ -90,7 +90,7 @@ static void __init spear_clocksource_ini
+ 		200, 16, clocksource_mmio_readw_up);
+ }
  
-+	/* Normal file handles cannot be created without export ops */
-+	if (!nop)
-+		return false;
-+
- 	/*
- 	 * If a connectable file handle was requested, we need to make sure that
- 	 * filesystem can also decode connected file handles.
--- 
-2.51.0
-
+-static inline void timer_shutdown(struct clock_event_device *evt)
++static inline void spear_timer_shutdown(struct clock_event_device *evt)
+ {
+ 	u16 val = readw(gpt_base + CR(CLKEVT));
+ 
+@@ -101,7 +101,7 @@ static inline void timer_shutdown(struct
+ 
+ static int spear_shutdown(struct clock_event_device *evt)
+ {
+-	timer_shutdown(evt);
++	spear_timer_shutdown(evt);
+ 
+ 	return 0;
+ }
+@@ -111,7 +111,7 @@ static int spear_set_oneshot(struct cloc
+ 	u16 val;
+ 
+ 	/* stop the timer */
+-	timer_shutdown(evt);
++	spear_timer_shutdown(evt);
+ 
+ 	val = readw(gpt_base + CR(CLKEVT));
+ 	val |= CTRL_ONE_SHOT;
+@@ -126,7 +126,7 @@ static int spear_set_periodic(struct clo
+ 	u16 val;
+ 
+ 	/* stop the timer */
+-	timer_shutdown(evt);
++	spear_timer_shutdown(evt);
+ 
+ 	period = clk_get_rate(gpt_clk) / HZ;
+ 	period >>= CTRL_PRESCALER16;
 
 
 
