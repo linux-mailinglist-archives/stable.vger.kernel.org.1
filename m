@@ -1,88 +1,102 @@
-Return-Path: <stable+bounces-190031-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190032-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E60FC0EFD0
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 16:36:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 070FDC0F273
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 17:05:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C702D19A28F4
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 15:36:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8AC5C1883A76
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 16:00:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8881330FC29;
-	Mon, 27 Oct 2025 15:35:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 834A330CDA2;
+	Mon, 27 Oct 2025 15:58:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TK8FXR/Y"
+	dkim=pass (2048-bit key) header.d=cknow-tech.com header.i=@cknow-tech.com header.b="NsxXLJec"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 392BF30DEC0;
-	Mon, 27 Oct 2025 15:35:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E9E230CD91
+	for <stable@vger.kernel.org>; Mon, 27 Oct 2025 15:57:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761579304; cv=none; b=B1GMathwLXVFJaOUz3ITuWWHdYnbDMVBshLElNGHeTegJGPxpOuhs1XYW5nzzWYma7MrvBTOlA1AIUs5Dp6HeFyJfQOR+/+OuvD5u3QFJjxgA+epI3ON7FtQgY1mhZLNCGTLZ34V7cnolUJOXtdyi8qo/aYzVzO4jK7tWzYPCdw=
+	t=1761580680; cv=none; b=BfpA/Gjfg/c8JbBWQUi4nAZKF7vgR+QHnCniKBfK15q/b2a+cG/dUwavBwMMafeyKCz+nfWnqJ/rzPMLVa/x65/BQtKXzxrdQNij6qwMsoctWu6OiLLFo8xHStJkWwolhW1CgW5c4zojk2QNf3oYVcDE7L66qdfXfP67sxe8FQk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761579304; c=relaxed/simple;
-	bh=SPlI2EZARTa+512LejXq1waPtkaEetiuqdFs5jbL/ss=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ptJGuPqWedvb0iFFcGqeiPyQxjRUOJWzNGF+JNWCozbFs1fAtqFg4VOtd3RwG+4N9DSmjyoRvoaD7wKlyLVJm08V8+vbMLIu3dHSJBY1ZLZpg7/lLLjPHaVyjmOOx5tUZr0haVo3UvVLWNM8px4tgLwx534zsNwtrcaPSp335LE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TK8FXR/Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6B16C4CEF1;
-	Mon, 27 Oct 2025 15:35:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761579303;
-	bh=SPlI2EZARTa+512LejXq1waPtkaEetiuqdFs5jbL/ss=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=TK8FXR/Yx20ezp0gb+qc97oBpI5Iybq+2PPTOTVgzSOkkGmG19qpM5URLowQFrJeC
-	 oTfrgNypbztOP3nwqeVqQHftLS3aWg8wBs6Edmsrw/K0VALpoEnDS4l+eWzaHuamIe
-	 eOodCz6UG1bFzdWHJ+iqXXx3Ufyi17d8Zgg50kc7HL4bungfBZAzwSFx1iHKgR9Y1U
-	 IG8tqQJGM8hhkpAzlU+ddVTGHNyLiR1bD0PyBTzl9kHtNBVeXcpr//Lwm50mMEqh9T
-	 svmzaLjFVRQGFKvrsBXzdSU2N3/MRFnsBFhHxIDmfpzZhKWXGucDVCVk4qZ7WnrpAN
-	 QtBmZtZBEsgdQ==
-Received: from johan by xi.lan with local (Exim 4.98.2)
-	(envelope-from <johan@kernel.org>)
-	id 1vDPFS-000000001zo-37a4;
-	Mon, 27 Oct 2025 16:35:07 +0100
-Date: Mon, 27 Oct 2025 16:35:06 +0100
-From: Johan Hovold <johan@kernel.org>
-To: Patrice CHOTARD <patrice.chotard@foss.st.com>
-Cc: Mauro Carvalho Chehab <mchehab@kernel.org>, linux-media@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Peter Griffin <peter.griffin@linaro.org>
-Subject: Re: [PATCH] media: c8sectpfe: fix probe device leaks
-Message-ID: <aP-RKjqX36TtT5n9@hovoldconsulting.com>
-References: <20250923151605.17689-1-johan@kernel.org>
- <aP91OoGkrSxxpsf1@hovoldconsulting.com>
- <8487acd9-3c8f-4eba-99e4-6a937618aa55@foss.st.com>
+	s=arc-20240116; t=1761580680; c=relaxed/simple;
+	bh=cNeEoNZMNjs7g8eJeKWktT8oOWjoRNKkmyvCV4rbGdo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jn9+i2Bfpwc7sqxF8LaUm/eSuFo5fAmiIeiVl34kSqxH3IqCiUiGsdf8p12+HMzsEh2nUiBWP4RvLGRhBkK1K1vDaU46d5AtSWDxWEYzMk4tavICJSCtv9l04ZURzNgLA9oHIyZ8vJUTt24DHZ72kLC++7qDSwWEM017c1W7mW8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cknow-tech.com; spf=pass smtp.mailfrom=cknow-tech.com; dkim=pass (2048-bit key) header.d=cknow-tech.com header.i=@cknow-tech.com header.b=NsxXLJec; arc=none smtp.client-ip=91.218.175.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cknow-tech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cknow-tech.com
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cknow-tech.com;
+	s=key1; t=1761580664;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=7DktUCNizUthk/eVYWcphe4sD34yOq87O4J/7ILxNWI=;
+	b=NsxXLJecBlL5+cyKyvFiI6hida+cTbMcscYIDDa4jS3yYGcrOfZXzB2o/c4EGF/VFrf8PB
+	bKQNj9HmzilsHCag2fRU+g6lVGv519KVy4+QcBPsO8hIReP20iDjiVBC4qVtGKvOgAq7zA
+	VzlG45KebSh6HL5QLDqD2pjnofyLBr6hTW/DslhwLyxrgK5TgEgBC05eKNAuj5NWuRZ6BB
+	TdXrukHsYWbyaCJE2rCJi9AkS4343Q9Lec/GXs/N9YOjXdJe5GOw0XOURI1fhQCqt7FfvC
+	4UKvRaZ2p3K4H2bV+KfaNN8R1GMa16fMEVwhkhRLjVOKqTYbGPLzFGTpX0lP/A==
+From: Diederik de Haas <diederik@cknow-tech.com>
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Heiko Stuebner <heiko@sntech.de>
+Cc: devicetree@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-rockchip@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Dragan Simic <dsimic@manjaro.org>,
+	Johan Jonker <jbx6244@gmail.com>,
+	Diederik de Haas <diederik@cknow-tech.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v2] arm64: dts: rockchip: Fix vccio4-supply on rk3566-pinetab2
+Date: Mon, 27 Oct 2025 16:54:28 +0100
+Message-ID: <20251027155724.138096-1-diederik@cknow-tech.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <8487acd9-3c8f-4eba-99e4-6a937618aa55@foss.st.com>
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-On Mon, Oct 27, 2025 at 03:28:57PM +0100, Patrice CHOTARD wrote:
-> On 10/27/25 14:35, Johan Hovold wrote:
-> > On Tue, Sep 23, 2025 at 05:16:05PM +0200, Johan Hovold wrote:
-> >> Make sure to drop the references taken to the I2C adapters during probe
-> >> on probe failure (e.g. probe deferral) and on driver unbind.
-> >>
-> >> Fixes: c5f5d0f99794 ("[media] c8sectpfe: STiH407/10 Linux DVB demux support")
-> >> Cc: stable@vger.kernel.org	# 4.3
-> >> Cc: Peter Griffin <peter.griffin@linaro.org>
-> >> Signed-off-by: Johan Hovold <johan@kernel.org>
-> >> ---
-> > 
-> > Can this one be picked up for 6.19?
+Page 13 of the PineTab2 v2 schematic dd 20230417 shows VCCIO4's power
+source is VCCIO_WL. Page 19 shows that VCCIO_WL is connected to
+VCCA1V8_PMU, so fix the PineTab2 dtsi to reflect that.
 
-> The removal of c8sectpfe driver has been initiated see https://lore.kernel.org/linux-media/c3a35ad6-c4f6-46ad-9b5b-1fe43385ecc5@foss.st.com/
+Fixes: 1b7e19448f8f ("arm64: dts: rockchip: Add devicetree for Pine64 PineTab2")
+Cc: stable@vger.kernel.org
+Reviewed-by: Dragan Simic <dsimic@manjaro.org>
+Signed-off-by: Diederik de Haas <diederik@cknow-tech.com>
+---
+Changes since v1:
+- Added Fixes tag (Dragan)
+- Added R-b tag
 
-Ah, ok, thanks.
+ arch/arm64/boot/dts/rockchip/rk3566-pinetab2.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Johan
+diff --git a/arch/arm64/boot/dts/rockchip/rk3566-pinetab2.dtsi b/arch/arm64/boot/dts/rockchip/rk3566-pinetab2.dtsi
+index d0e38412d56a..08bf40de17ea 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3566-pinetab2.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3566-pinetab2.dtsi
+@@ -789,7 +789,7 @@ &pmu_io_domains {
+ 	vccio1-supply = <&vccio_acodec>;
+ 	vccio2-supply = <&vcc_1v8>;
+ 	vccio3-supply = <&vccio_sd>;
+-	vccio4-supply = <&vcc_1v8>;
++	vccio4-supply = <&vcca1v8_pmu>;
+ 	vccio5-supply = <&vcc_1v8>;
+ 	vccio6-supply = <&vcc1v8_dvp>;
+ 	vccio7-supply = <&vcc_3v3>;
+-- 
+2.51.0
+
 
