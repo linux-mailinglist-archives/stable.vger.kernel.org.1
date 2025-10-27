@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-190599-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190847-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 640A9C1074D
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:05:51 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98E13C10CBB
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:20:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 1104B351462
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:05:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DE2991A27230
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:15:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 944862222AA;
-	Mon, 27 Oct 2025 19:01:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86F3A324B19;
+	Mon, 27 Oct 2025 19:12:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zxRQETk4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TS27N/MG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FC75218EB1;
-	Mon, 27 Oct 2025 19:01:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 458373064AA;
+	Mon, 27 Oct 2025 19:12:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591705; cv=none; b=ZOYWOw4sblyD3aYkpTmJFJnXDceMkU6skJLsrlQRp8i5rIJJdpuCg4Wu15lIkYc8ERDjC6h0X218pQanjZKjd8cD3KLWJ7QgFiasQQtuhxAA10zeqzeNl57jWiiqP7LefA5U6ExlQLbMCTa1nZVxKLi95RB8p9of6uqhvPV4TF4=
+	t=1761592354; cv=none; b=brL6QIO126xTiSFbaWtmpCkUSIy/+6+PQ8cs3IjKTbvTOxb+uFKAv0LHstcNNyf2sWIaze37uWX9TL9dN99yFdJcLOKvxxGVi+/fqNtt2oWKlcTJQdF4o5bmDGfEjM/UtChLZqUcR11aZLjSpSJ57Hf1yea93op7CS2zqRfR0/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591705; c=relaxed/simple;
-	bh=DwAWr/bUNEo5J9s6hBCoE1ujNSc0vycXhlsaiGEAiDg=;
+	s=arc-20240116; t=1761592354; c=relaxed/simple;
+	bh=2GLVcb/VzMP2WW5eqio5u69YTbOWQOqTSPjRBHJk0wk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DApCbGfs3+nZdEv0uYiuRZOb5695poxzt3d+sKkLw/5t9FGI+rvs5X3JcwAI2M+Mq1x/noPOAx2yOdfRqh4V1amxm6dq2lSnHMVtclV5kHQZ8t5Wjlr9n4Sti5uGHPL2tZdnurhqGDMnGKDxR8ozPuTIaQr7CZlZoskQLw22ZhI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zxRQETk4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D416EC4CEF1;
-	Mon, 27 Oct 2025 19:01:44 +0000 (UTC)
+	 MIME-Version; b=O7AQUNUHZWvNImBO7hIcVNWr2kwOQpuksaXHKV6QL1q2CJyw3xP5K4mzXEZezKSz0bGALeQtBeexxktJ7YvX7ERQpDBwLovv4uciY6f+lOrbeBKB2sITHk+Yq3kezO9MQ5ODfl1L052CVk+EzR9vQv51RBZnnyR63ERiN6GtXF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TS27N/MG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA177C4CEF1;
+	Mon, 27 Oct 2025 19:12:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591705;
-	bh=DwAWr/bUNEo5J9s6hBCoE1ujNSc0vycXhlsaiGEAiDg=;
+	s=korg; t=1761592354;
+	bh=2GLVcb/VzMP2WW5eqio5u69YTbOWQOqTSPjRBHJk0wk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zxRQETk478sxid4C/l7rQ4bYd+XJfaEYom6uAuC7nCHO5eb1DDl0sKRTZ6C5Lc0KY
-	 5wOkB9iMEz4Oeg9RUtdd6GdiOGWQd+5WftOGT1m3ANfMwUjA54PbzSAdDcslNahmUN
-	 GTSrag7Ki4ORvNv+gcyfozNzw1DuCK/BNFeVCGc8=
+	b=TS27N/MG9GwoMXK4986/gZM38cCioUO53tndBrT1J6MhNw0O5uFsTMBMcpEyJQ90P
+	 +aLtsJA4x5LtF8nTUJok5ZHTPykkB+snkXv2J+MGbl/O6vF5zbCZK8lgAXKxKskJ1d
+	 0vmGozZe7+/WNwjA8Mqg8OfaeHkhS42ygJuxtmS4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+f6c3c066162d2c43a66c@syzkaller.appspotmail.com,
-	Deepanshu Kartikey <kartikey406@gmail.com>,
-	Ian Abbott <abbotti@mev.co.uk>
-Subject: [PATCH 5.10 298/332] comedi: fix divide-by-zero in comedi_buf_munge()
+	Andrei Lalaev <andrey.lalaev@gmail.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 6.1 090/157] can: netlink: can_changelink(): allow disabling of automatic restart
 Date: Mon, 27 Oct 2025 19:35:51 +0100
-Message-ID: <20251027183532.720936237@linuxfoundation.org>
+Message-ID: <20251027183503.683885982@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
-References: <20251027183524.611456697@linuxfoundation.org>
+In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
+References: <20251027183501.227243846@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +61,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Deepanshu Kartikey <kartikey406@gmail.com>
+From: Marc Kleine-Budde <mkl@pengutronix.de>
 
-commit 87b318ba81dda2ee7b603f4f6c55e78ec3e95974 upstream.
+commit 8e93ac51e4c6dc399fad59ec21f55f2cfb46d27c upstream.
 
-The comedi_buf_munge() function performs a modulo operation
-`async->munge_chan %= async->cmd.chanlist_len` without first
-checking if chanlist_len is zero. If a user program submits a command with
-chanlist_len set to zero, this causes a divide-by-zero error when the device
-processes data in the interrupt handler path.
+Since the commit c1f3f9797c1f ("can: netlink: can_changelink(): fix NULL
+pointer deref of struct can_priv::do_set_mode"), the automatic restart
+delay can only be set for devices that implement the restart handler struct
+can_priv::do_set_mode. As it makes no sense to configure a automatic
+restart for devices that doesn't support it.
 
-Add a check for zero chanlist_len at the beginning of the
-function, similar to the existing checks for !map and
-CMDF_RAWDATA flag. When chanlist_len is zero, update
-munge_count and return early, indicating the data was
-handled without munging.
+However, since systemd commit 13ce5d4632e3 ("network/can: properly handle
+CAN.RestartSec=0") [1], systemd-networkd correctly handles a restart delay
+of "0" (i.e. the restart is disabled). Which means that a disabled restart
+is always configured in the kernel.
 
-This prevents potential kernel panics from malformed user commands.
+On systems with both changes active this causes that CAN interfaces that
+don't implement a restart handler cannot be brought up by systemd-networkd.
 
-Reported-by: syzbot+f6c3c066162d2c43a66c@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=f6c3c066162d2c43a66c
+Solve this problem by allowing a delay of "0" to be configured, even if the
+device does not implement a restart handler.
+
+[1] https://github.com/systemd/systemd/commit/13ce5d4632e395521e6205c954493c7fc1c4c6e0
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
-Reviewed-by: Ian Abbott <abbotti@mev.co.uk>
-Link: https://patch.msgid.link/20250924102639.1256191-1-kartikey406@gmail.com
+Cc: Andrei Lalaev <andrey.lalaev@gmail.com>
+Reported-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Closes: https://lore.kernel.org/all/20251020-certain-arrogant-vole-of-sunshine-141841-mkl@pengutronix.de
+Fixes: c1f3f9797c1f ("can: netlink: can_changelink(): fix NULL pointer deref of struct can_priv::do_set_mode")
+Link: https://patch.msgid.link/20251020-netlink-fix-restart-v1-1-3f53c7f8520b@pengutronix.de
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/staging/comedi/comedi_buf.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/can/dev/netlink.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/staging/comedi/comedi_buf.c
-+++ b/drivers/staging/comedi/comedi_buf.c
-@@ -369,7 +369,7 @@ static unsigned int comedi_buf_munge(str
- 	unsigned int count = 0;
- 	const unsigned int num_sample_bytes = comedi_bytes_per_sample(s);
+--- a/drivers/net/can/dev/netlink.c
++++ b/drivers/net/can/dev/netlink.c
+@@ -252,7 +252,9 @@ static int can_changelink(struct net_dev
+ 	}
  
--	if (!s->munge || (async->cmd.flags & CMDF_RAWDATA)) {
-+	if (!s->munge || (async->cmd.flags & CMDF_RAWDATA) || async->cmd.chanlist_len == 0) {
- 		async->munge_count += num_bytes;
- 		count = num_bytes;
- 	} else {
+ 	if (data[IFLA_CAN_RESTART_MS]) {
+-		if (!priv->do_set_mode) {
++		unsigned int restart_ms = nla_get_u32(data[IFLA_CAN_RESTART_MS]);
++
++		if (restart_ms != 0 && !priv->do_set_mode) {
+ 			NL_SET_ERR_MSG(extack,
+ 				       "Device doesn't support restart from Bus Off");
+ 			return -EOPNOTSUPP;
+@@ -261,7 +263,7 @@ static int can_changelink(struct net_dev
+ 		/* Do not allow changing restart delay while running */
+ 		if (dev->flags & IFF_UP)
+ 			return -EBUSY;
+-		priv->restart_ms = nla_get_u32(data[IFLA_CAN_RESTART_MS]);
++		priv->restart_ms = restart_ms;
+ 	}
+ 
+ 	if (data[IFLA_CAN_RESTART]) {
 
 
 
