@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-190931-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190610-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0A3AC10E99
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:24:59 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FF57C1098D
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:11:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5ED6F501D78
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:17:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E44E6560B66
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:06:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F005E326D50;
-	Mon, 27 Oct 2025 19:16:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FCC2274FD0;
+	Mon, 27 Oct 2025 19:02:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iBMi4v5n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i+vnVW7H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 997FE2222AA;
-	Mon, 27 Oct 2025 19:16:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29D81323403;
+	Mon, 27 Oct 2025 19:02:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592573; cv=none; b=K+Sj2PcOBUw0W4+dAMByuGTTpXkkTVTic/kZBFEIuiDMcYnBjlyr8KCNcg+0tLJK9ACk6Aar1u5p/ZauCcpjHVZR7Fl2YudAEfPsOK0v1IeyeaBOROnEaMZXeeR8SdQlTYxBhpaXgwdv54POMv09CUjER4I+x1ewQOb1xI/IjfY=
+	t=1761591734; cv=none; b=bYOl2yIlOy/YOoJU/CDeBubdCdTgJSGIMAp2MjnSSIjnKXbiP/bleIq/ILSVGpSw/DMWg/6Fb46LRPJqJzwnNQc0929lzsHRTlSGEzZyNVGgoEiMszw9mvJAnZxVI75XfDA0y0mQjTvm7eYuFEeFyuKUmEq9cA8/FqVR2DMguzI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592573; c=relaxed/simple;
-	bh=8w7I5chpfB9usadMEUljhkSFIxzfWOdFs8faqhFiPEk=;
+	s=arc-20240116; t=1761591734; c=relaxed/simple;
+	bh=FestsKe9v980sm3QxrPiq91PEK0rD1OTry/yFfFlggE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tYbMsm2lVbR9lWPUMEQ3XI+POmVu+U6i618D/AjSyq0Wcq5dDxV2pHSALsgbyzXOmA+dcb6O7millOotbC3YQFRp84edJhlaaOexPnjuyFHb0bLH3/lHt9hWL6lTb/RHtpRxaj61L6BT1/zLb9pKfsjAmw3rI+d48WPhLcD66Jw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iBMi4v5n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BACE4C4CEF1;
-	Mon, 27 Oct 2025 19:16:12 +0000 (UTC)
+	 MIME-Version; b=UA7TP59q/f2i5H14TcKrUOFTa8C22GOBH1qCXJjxNVo6TJA8GJCydj2WqUVNUM9MYUqYwRsXR7BkSGSwOYoGl+rInaGSA4KYpMLBTFtT+QEGi9KpY6JxOD70deU4daRJdmVxbIv37fKq4tqKxXfl+VlLsB4xmwVz+YLf1NNcl1U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i+vnVW7H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0401C4CEFD;
+	Mon, 27 Oct 2025 19:02:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592573;
-	bh=8w7I5chpfB9usadMEUljhkSFIxzfWOdFs8faqhFiPEk=;
+	s=korg; t=1761591734;
+	bh=FestsKe9v980sm3QxrPiq91PEK0rD1OTry/yFfFlggE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iBMi4v5nUPk0JurYRBneHu5ljmxSLbq9kopNVZVXyEwYYQ7eyX8mmrIt7JR/bSO8f
-	 AAQ4bZ9WKzXunBG8sumuu4q9gJG+AMRMLr1/FxdSDZ3LR6au6XVYzWCtfnsy9GaM5u
-	 FDN2+kUXdAovzNxy3dquBGm5VatfOqxeiID4YC94=
+	b=i+vnVW7HMFjeEOaoqXCnOOQ/urhi9bZyl/N94cUjkBsgVM+PuFAp53JPdwJPsbr7s
+	 MI9+/LenfXnjjY4nyUpJMqJ/oTJ1Bp1+l6Mn0NcSl4YNtp7S8eGk8J10iiur7FDkDN
+	 FMpakPlDkikRNqFcMXnNOJywj+my7MAByzgrPsqM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <smfrench@gmail.com>,
-	Tom Talpey <tom@talpey.com>,
-	linux-cifs@vger.kernel.org,
-	samba-technical@lists.samba.org,
-	Stefan Metzmacher <metze@samba.org>,
-	Steve French <stfrench@microsoft.com>,
+	Sean Nyekjaer <sean@geanix.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 15/84] smb: server: let smb_direct_flush_send_list() invalidate a remote key first
+Subject: [PATCH 5.10 311/332] iio: imu: inv_icm42600: Simplify pm_runtime setup
 Date: Mon, 27 Oct 2025 19:36:04 +0100
-Message-ID: <20251027183439.224015819@linuxfoundation.org>
+Message-ID: <20251027183533.069379893@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183438.817309828@linuxfoundation.org>
-References: <20251027183438.817309828@linuxfoundation.org>
+In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
+References: <20251027183524.611456697@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,56 +63,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Metzmacher <metze@samba.org>
+From: Sean Nyekjaer <sean@geanix.com>
 
-[ Upstream commit 1b53426334c3c942db47e0959a2527a4f815af50 ]
+[ Upstream commit 0792c1984a45ccd7a296d6b8cb78088bc99a212e ]
 
-If we want to invalidate a remote key we should do that as soon as
-possible, so do it in the first send work request.
+Rework the power management in inv_icm42600_core_probe() to use
+devm_pm_runtime_set_active_enabled(), which simplifies the runtime PM
+setup by handling activation and enabling in one step.
+Remove the separate inv_icm42600_disable_pm callback, as it's no longer
+needed with the devm-managed approach.
+Using devm_pm_runtime_enable() also fixes the missing disable of
+autosuspend.
+Update inv_icm42600_disable_vddio_reg() to only disable the regulator if
+the device is not suspended i.e. powered-down, preventing unbalanced
+disables.
+Also remove redundant error msg on regulator_disable(), the regulator
+framework already emits an error message when regulator_disable() fails.
 
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Cc: Steve French <smfrench@gmail.com>
-Cc: Tom Talpey <tom@talpey.com>
-Cc: linux-cifs@vger.kernel.org
-Cc: samba-technical@lists.samba.org
-Signed-off-by: Stefan Metzmacher <metze@samba.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+This simplifies the PM setup and avoids manipulating the usage counter
+unnecessarily.
+
+Fixes: 31c24c1e93c3 ("iio: imu: inv_icm42600: add core of new inv_icm42600 driver")
+Signed-off-by: Sean Nyekjaer <sean@geanix.com>
+Link: https://patch.msgid.link/20250901-icm42pmreg-v3-1-ef1336246960@geanix.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/transport_rdma.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ drivers/iio/imu/inv_icm42600/inv_icm42600_core.c |   24 ++++++-----------------
+ 1 file changed, 7 insertions(+), 17 deletions(-)
 
-diff --git a/fs/smb/server/transport_rdma.c b/fs/smb/server/transport_rdma.c
-index 31c1ac256e1be..91e85a1a154fd 100644
---- a/fs/smb/server/transport_rdma.c
-+++ b/fs/smb/server/transport_rdma.c
-@@ -938,12 +938,15 @@ static int smb_direct_flush_send_list(struct smb_direct_transport *t,
- 			       struct smb_direct_sendmsg,
- 			       list);
+--- a/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
++++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
+@@ -550,20 +550,12 @@ static void inv_icm42600_disable_vdd_reg
+ static void inv_icm42600_disable_vddio_reg(void *_data)
+ {
+ 	struct inv_icm42600_state *st = _data;
+-	const struct device *dev = regmap_get_device(st->map);
+-	int ret;
+-
+-	ret = regulator_disable(st->vddio_supply);
+-	if (ret)
+-		dev_err(dev, "failed to disable vddio error %d\n", ret);
+-}
++	struct device *dev = regmap_get_device(st->map);
  
-+	if (send_ctx->need_invalidate_rkey) {
-+		first->wr.opcode = IB_WR_SEND_WITH_INV;
-+		first->wr.ex.invalidate_rkey = send_ctx->remote_key;
-+		send_ctx->need_invalidate_rkey = false;
-+		send_ctx->remote_key = 0;
-+	}
+-static void inv_icm42600_disable_pm(void *_data)
+-{
+-	struct device *dev = _data;
++	if (pm_runtime_status_suspended(dev))
++		return;
+ 
+-	pm_runtime_put_sync(dev);
+-	pm_runtime_disable(dev);
++	regulator_disable(st->vddio_supply);
+ }
+ 
+ int inv_icm42600_core_probe(struct regmap *regmap, int chip, int irq,
+@@ -660,16 +652,14 @@ int inv_icm42600_core_probe(struct regma
+ 		return ret;
+ 
+ 	/* setup runtime power management */
+-	ret = pm_runtime_set_active(dev);
++	ret = devm_pm_runtime_set_active_enabled(dev);
+ 	if (ret)
+ 		return ret;
+-	pm_runtime_get_noresume(dev);
+-	pm_runtime_enable(dev);
 +
- 	last->wr.send_flags = IB_SEND_SIGNALED;
- 	last->wr.wr_cqe = &last->cqe;
--	if (is_last && send_ctx->need_invalidate_rkey) {
--		last->wr.opcode = IB_WR_SEND_WITH_INV;
--		last->wr.ex.invalidate_rkey = send_ctx->remote_key;
--	}
+ 	pm_runtime_set_autosuspend_delay(dev, INV_ICM42600_SUSPEND_DELAY_MS);
+ 	pm_runtime_use_autosuspend(dev);
+-	pm_runtime_put(dev);
  
- 	ret = smb_direct_post_send(t, &first->wr);
- 	if (!ret) {
--- 
-2.51.0
-
+-	return devm_add_action_or_reset(dev, inv_icm42600_disable_pm, dev);
++	return ret;
+ }
+ EXPORT_SYMBOL_GPL(inv_icm42600_core_probe);
+ 
 
 
 
