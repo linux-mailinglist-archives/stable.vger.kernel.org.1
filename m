@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-190969-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190755-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C86C0C10E3E
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:24:08 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96D81C10B47
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:16:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E78519A7F8D
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:19:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AC2C0188DDA7
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:11:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 785FD202963;
-	Mon, 27 Oct 2025 19:17:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7522B32D440;
+	Mon, 27 Oct 2025 19:08:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EOXZcDpf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rL2/kbbo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A6A82BE037;
-	Mon, 27 Oct 2025 19:17:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FA752D6401;
+	Mon, 27 Oct 2025 19:08:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592675; cv=none; b=SCC52hgF9eng8ASTyKfpQKcWVXuGRMe5uVvHQJDis0B8Xi1fLsrPcqjZkqcBAwHOpJIs9HQ5mwCF8GyHJm84wQ79H6AShmTR5hF7ISjLBd6lGt03TNu5KPM7pdctI1+2rFs3uBypvUgnrFoP7ljy8P0e+RcNvdeOnE2aVdaNg8Q=
+	t=1761592111; cv=none; b=Y45fwulmnSfqVp6si18gqGh3jLnv4PdvFIZa6FbP2xfZo1lAOJ1vgWIDIp6/VYLwn8Db90XXJ9cDeKDpMDkLXEJVXy+Pl+iOzDZZtPTptOCUDag/k1ZlS6tpvJazylNcTpT7HeKlQwtUk5axJYu1l3YaupMwIa2p/BQl7kZJoFM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592675; c=relaxed/simple;
-	bh=PuKchAanZrFYkQDOOCczFg3gnbvcmm1Lj7BvKZLCQic=;
+	s=arc-20240116; t=1761592111; c=relaxed/simple;
+	bh=wVqbhwT+9/Fg3bONzJsjI05Iiewm3dHO3ICJGrMO85o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ui9pZESimyqpxd8Qf3ItwVv4mcQAzVSSnyUURgspG+7k2GJwOyu9flxSbk/adnQHeLnQRaZuYtZGb8xsdOChC6PL5i5uujdxJpFM0p5l79etNfC1Ge+psbRsI/MYl9xsv6sLxNDA+TQQe7EfiWB2S3qzdWG+gFP77G5RzoS0Ulg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EOXZcDpf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FA2EC4CEF1;
-	Mon, 27 Oct 2025 19:17:52 +0000 (UTC)
+	 MIME-Version; b=urzl8eq3L+dnn/f5+wCmwab7UUoCKn6YQRDP7txY+lIrafiVKi15e9vb3OpKTU+tVJs9rTFq/cbVhjnyOX5GI4T8rzn3+uziq8Cf1upC79ifI2bnIgc2KGyeGif93yWIsyZAmEBKxaJ+zfpOQf9oD3DdKPcqu/WXVldVmsj/teE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rL2/kbbo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B66FAC4CEF1;
+	Mon, 27 Oct 2025 19:08:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592673;
-	bh=PuKchAanZrFYkQDOOCczFg3gnbvcmm1Lj7BvKZLCQic=;
+	s=korg; t=1761592111;
+	bh=wVqbhwT+9/Fg3bONzJsjI05Iiewm3dHO3ICJGrMO85o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EOXZcDpfseIrc90Ou1p1dyDaggqh3ag4NgVaW7OU9LPbfzexJvanmyNH1AExD9HSW
-	 jaE9CsKbS6GRJYtrXGXTQQd03p3wHM9QGXH6fNMEd+p7q7oopE6jKbwUyCamQcdJaW
-	 pfnKZjLZnmwoG9Neyjw7XTrv++kbY11UCDHP98pY=
+	b=rL2/kbboL8Rd4Ckz47hRi/vNt39w9ds9p/iyyqsxLjhaGPa1XxR9/9Q4mJSd9wsVm
+	 rqkL91GnirrjvJMpMBQjQXcmjLrfiYIgvssyMrKllE7Qxz7B0RZQNQDRDANYZFasVF
+	 1VfHh702hsVimUOvF7D8oxsBpOtV8SzhkbZhBlaA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anup Patel <apatel@ventanamicro.com>,
-	Han Gao <rabenda.cn@gmail.com>,
-	"Guo Ren (Alibaba DAMO Academy)" <guoren@kernel.org>,
-	Paul Walmsley <pjw@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 52/84] RISC-V: Define pgprot_dmacoherent() for non-coherent devices
+	Zhengchao Shao <shaozhengchao@huawei.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.15 121/123] net: rtnetlink: fix module reference count leak issue in rtnetlink_rcv_msg
 Date: Mon, 27 Oct 2025 19:36:41 +0100
-Message-ID: <20251027183440.204886734@linuxfoundation.org>
+Message-ID: <20251027183449.621017634@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183438.817309828@linuxfoundation.org>
-References: <20251027183438.817309828@linuxfoundation.org>
+In-Reply-To: <20251027183446.381986645@linuxfoundation.org>
+References: <20251027183446.381986645@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,53 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anup Patel <apatel@ventanamicro.com>
+From: Zhengchao Shao <shaozhengchao@huawei.com>
 
-[ Upstream commit ca525d53f994d45c8140968b571372c45f555ac1 ]
+commit 5b22f62724a0a09e00d301abf5b57b0c12be8a16 upstream.
 
-The pgprot_dmacoherent() is used when allocating memory for
-non-coherent devices and by default pgprot_dmacoherent() is
-same as pgprot_noncached() unless architecture overrides it.
+When bulk delete command is received in the rtnetlink_rcv_msg function,
+if bulk delete is not supported, module_put is not called to release
+the reference counting. As a result, module reference count is leaked.
 
-Currently, there is no pgprot_dmacoherent() definition for
-RISC-V hence non-coherent device memory is being mapped as
-IO thereby making CPU access to such memory slow.
-
-Define pgprot_dmacoherent() to be same as pgprot_writecombine()
-for RISC-V so that CPU access non-coherent device memory as
-NOCACHE which is better than accessing it as IO.
-
-Fixes: ff689fd21cb1 ("riscv: add RISC-V Svpbmt extension support")
-Signed-off-by: Anup Patel <apatel@ventanamicro.com>
-Tested-by: Han Gao <rabenda.cn@gmail.com>
-Tested-by: Guo Ren (Alibaba DAMO Academy) <guoren@kernel.org>
-Link: https://lore.kernel.org/r/20250820152316.1012757-1-apatel@ventanamicro.com
-Signed-off-by: Paul Walmsley <pjw@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: a6cec0bcd342 ("net: rtnetlink: add bulk delete support flag")
+Signed-off-by: Zhengchao Shao <shaozhengchao@huawei.com>
+Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+Link: https://lore.kernel.org/r/20220815024629.240367-1-shaozhengchao@huawei.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/riscv/include/asm/pgtable.h | 2 ++
- 1 file changed, 2 insertions(+)
+ net/core/rtnetlink.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/riscv/include/asm/pgtable.h b/arch/riscv/include/asm/pgtable.h
-index 332a6bf72b1d5..987cfe87e7825 100644
---- a/arch/riscv/include/asm/pgtable.h
-+++ b/arch/riscv/include/asm/pgtable.h
-@@ -618,6 +618,8 @@ static inline pgprot_t pgprot_writecombine(pgprot_t _prot)
- 	return __pgprot(prot);
- }
+--- a/net/core/rtnetlink.c
++++ b/net/core/rtnetlink.c
+@@ -5664,6 +5664,7 @@ static int rtnetlink_rcv_msg(struct sk_b
+ 	if (kind == RTNL_KIND_DEL && (nlh->nlmsg_flags & NLM_F_BULK) &&
+ 	    !(flags & RTNL_FLAG_BULK_DEL_SUPPORTED)) {
+ 		NL_SET_ERR_MSG(extack, "Bulk delete is not supported");
++		module_put(owner);
+ 		goto err_unlock;
+ 	}
  
-+#define pgprot_dmacoherent pgprot_writecombine
-+
- /*
-  * THP functions
-  */
--- 
-2.51.0
-
 
 
 
