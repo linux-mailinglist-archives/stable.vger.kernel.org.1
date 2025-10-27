@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-191208-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190721-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41863C1119B
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:34:43 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D39A8C10ADD
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:15:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA3195821B2
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:30:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E248B19C7482
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:10:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB62F32142B;
-	Mon, 27 Oct 2025 19:28:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6488432AAAA;
+	Mon, 27 Oct 2025 19:07:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GHzyOhmy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yq+AqYB0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 980171E47CA;
-	Mon, 27 Oct 2025 19:28:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 230E531B127;
+	Mon, 27 Oct 2025 19:07:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761593285; cv=none; b=XFNjGE6ZimVrJXvG6MHbEFK3ibedtX+7t0gowkSYXscBgJ3wXIuZhz2Rj9370pZYabzdP69r+Xvm8/V21ajZwx/6pLQQE5o6xFHeln1IGdsyOSGRFkFql/oGzdKglEWWN6fNTBkpxSAZJJgpYHMkVB7On/71MxptygN1lpKQTjY=
+	t=1761592021; cv=none; b=lvOnVtQIIRZEhQzy2dMcKyM2ZTSThMkkEkMtBn4r5UVqYAj5cwtVntLPJTNyApYs9WgAgsiAfHUxEYuetZf70Zasrqjr1cpiuG8mZz4nAU+gG3DOY2X0I1oD7uYbsFyBOOiAOa/OVwQNDES6058vHOTZqOM4UFYSaIBb7k7OAR0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761593285; c=relaxed/simple;
-	bh=iIWUYNF8eDqoc5NRVcbIDJb6yYPukK6lik/frzPmdwU=;
+	s=arc-20240116; t=1761592021; c=relaxed/simple;
+	bh=J//MqgUmgsSnkMB7oiTnQwP9SOATx6sRDAycif+vMfM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UXaSEgeoy3leg1gjkS3Jwyyx4eLTXS/LYFbXJMlkFeAdGIVL+eOt+VEEvXP2MYvYnDvy3BZfK4UbZrXeaxNKMmQKjgvM//19dilLbiJVs3bMNzV+6rIvg93lrhx7FAoFdIABscYqNIAsMv/EMMupHy8wkl82n94PKnrd1Ga/rFM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GHzyOhmy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A4CAC4CEF1;
-	Mon, 27 Oct 2025 19:28:05 +0000 (UTC)
+	 MIME-Version; b=rpYULF0OqOPxfPjX93/iGvJ98UCYyt3X2CT/rgQT0R+48X28NRcm4NruVNDX+e0etqN/kG6fNLi5syaWDqAIZplyxhcD4Uo/I5R6f5NrYGzouCQgKzpVrq+gXpscw8WBb6Zc2rE+Nm2vVJAxjc5SF3sfJ+2H/F+nueKC6bImWws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yq+AqYB0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABC22C4CEF1;
+	Mon, 27 Oct 2025 19:07:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761593285;
-	bh=iIWUYNF8eDqoc5NRVcbIDJb6yYPukK6lik/frzPmdwU=;
+	s=korg; t=1761592021;
+	bh=J//MqgUmgsSnkMB7oiTnQwP9SOATx6sRDAycif+vMfM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GHzyOhmyxWKnTkA6oYhkoaMtHQ4Y4JDSzgKNEcqYi0+cBnrsRsQwSVNrobaeqgHjn
-	 IpkWguWB3DeLeP3Eo5YFLtW18MTZ0ToQbiov+drwypWGjgdcIUothFT5V1rf56L3GT
-	 kSplKUVsw06TJPYe62JwmHdrU1JfduDZ/rqfxHuM=
+	b=yq+AqYB0dCcMVfbxuIro+RLBxx0kAG5Nqy53pQ+k5AqecSMJzYbSzFkkfAi6iegg/
+	 7oAhzcxhqDdA7LVOAH52eyRzj7GkFHs8swje2zG7Me0SvIZBl3Af298KNiiL7ZPRKx
+	 UUvQ5yPm/LKH1lxcvbMQuxqqe5FmY6XeiMsQTxV8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Saket Dumbre <saket.dumbre@intel.com>,
-	Xi Ruoyao <xry111@xry111.site>,
-	Huacai Chen <chenhuacai@loongson.cn>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.17 085/184] ACPICA: Work around bogus -Wstringop-overread warning since GCC 11
+	Mark Rutland <mark.rutland@arm.com>,
+	James Morse <james.morse@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Ryan Roberts <ryan.roberts@arm.com>
+Subject: [PATCH 5.15 087/123] arm64: cputype: Add Neoverse-V3AE definitions
 Date: Mon, 27 Oct 2025 19:36:07 +0100
-Message-ID: <20251027183517.185105946@linuxfoundation.org>
+Message-ID: <20251027183448.718776112@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
-References: <20251027183514.934710872@linuxfoundation.org>
+In-Reply-To: <20251027183446.381986645@linuxfoundation.org>
+References: <20251027183446.381986645@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +64,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xi Ruoyao <xry111@xry111.site>
+From: Mark Rutland <mark.rutland@arm.com>
 
-commit 6e3a4754717a74e931a9f00b5f953be708e07acb upstream.
+commit 3bbf004c4808e2c3241e5c1ad6cc102f38a03c39 upstream.
 
-When ACPI_MISALIGNMENT_NOT_SUPPORTED is set, GCC can produce a bogus
--Wstringop-overread warning, see [1].
+Add cputype definitions for Neoverse-V3AE. These will be used for errata
+detection in subsequent patches.
 
-To me, it's very clear that we have a compiler bug here, thus just
-disable the warning.
+These values can be found in the Neoverse-V3AE TRM:
 
-Fixes: a9d13433fe17 ("LoongArch: Align ACPI structures if ARCH_STRICT_ALIGN enabled")
-Link: https://lore.kernel.org/all/899f2dec-e8b9-44f4-ab8d-001e160a2aed@roeck-us.net/
-Link: https://github.com/acpica/acpica/commit/abf5b573
-Link: https://gcc.gnu.org/PR122073 [1]
-Co-developed-by: Saket Dumbre <saket.dumbre@intel.com>
-Signed-off-by: Saket Dumbre <saket.dumbre@intel.com>
-Signed-off-by: Xi Ruoyao <xry111@xry111.site>
-Acked-by: Huacai Chen <chenhuacai@loongson.cn>
-Cc: All applicable <stable@vger.kernel.org>
-[ rjw: Subject and changelog edits ]
-Link: https://patch.msgid.link/20251021092825.822007-1-xry111@xry111.site
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+  https://developer.arm.com/documentation/SDEN-2615521/9-0/
+
+... in section A.6.1 ("MIDR_EL1, Main ID Register").
+
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Cc: James Morse <james.morse@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+Signed-off-by: Will Deacon <will@kernel.org>
+[ Ryan: Trivial backport ]
+Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/acpica/tbprint.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ arch/arm64/include/asm/cputype.h |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/acpi/acpica/tbprint.c
-+++ b/drivers/acpi/acpica/tbprint.c
-@@ -95,6 +95,11 @@ acpi_tb_print_table_header(acpi_physical
- {
- 	struct acpi_table_header local_header;
- 
-+#pragma GCC diagnostic push
-+#if defined(__GNUC__) && __GNUC__ >= 11
-+#pragma GCC diagnostic ignored "-Wstringop-overread"
-+#endif
-+
- 	if (ACPI_COMPARE_NAMESEG(header->signature, ACPI_SIG_FACS)) {
- 
- 		/* FACS only has signature and length fields */
-@@ -135,4 +140,5 @@ acpi_tb_print_table_header(acpi_physical
- 			   local_header.asl_compiler_id,
- 			   local_header.asl_compiler_revision));
- 	}
-+#pragma GCC diagnostic pop
- }
+--- a/arch/arm64/include/asm/cputype.h
++++ b/arch/arm64/include/asm/cputype.h
+@@ -93,6 +93,7 @@
+ #define ARM_CPU_PART_NEOVERSE_V2	0xD4F
+ #define ARM_CPU_PART_CORTEX_A720	0xD81
+ #define ARM_CPU_PART_CORTEX_X4		0xD82
++#define ARM_CPU_PART_NEOVERSE_V3AE	0xD83
+ #define ARM_CPU_PART_NEOVERSE_V3	0xD84
+ #define ARM_CPU_PART_CORTEX_X925	0xD85
+ #define ARM_CPU_PART_CORTEX_A725	0xD87
+@@ -160,6 +161,7 @@
+ #define MIDR_NEOVERSE_V2 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_V2)
+ #define MIDR_CORTEX_A720 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A720)
+ #define MIDR_CORTEX_X4 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X4)
++#define MIDR_NEOVERSE_V3AE	MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_V3AE)
+ #define MIDR_NEOVERSE_V3 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_V3)
+ #define MIDR_CORTEX_X925 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X925)
+ #define MIDR_CORTEX_A725 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A725)
 
 
 
