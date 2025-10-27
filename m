@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-190252-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190263-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB404C10431
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:54:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 381F6C1046A
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:55:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3761F56095F
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:51:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E1B2D560F08
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:52:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13DE73328F8;
-	Mon, 27 Oct 2025 18:46:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70F6F32ABC8;
+	Mon, 27 Oct 2025 18:47:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f78lZS75"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xkvzdAcE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96F56330324;
-	Mon, 27 Oct 2025 18:46:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1503132ABC5;
+	Mon, 27 Oct 2025 18:47:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761590811; cv=none; b=R1dZmQ5cBETLowVmbXLQGGfrycBBVtwCzBbND8CrDFsqwenp9CpinYUckPb/8ufVkx8/wgjYWj8aNHodnb0Jj22SszjbsZKFrLc3i5nN2SJ0neWKvCLp6LeD5vqui6PJvs3QR+NjBFRFd0bTvJXIvemIAgqYGhX8DLZM73kuHH4=
+	t=1761590841; cv=none; b=KVQ3UE81kc4KsrWtDCakqru+gQ/+il7/KRo0iujCfoNssGbiiCGO23tV3XMuNN472JKGnIGAbr3e77eCn+dbIJmdGcsV6hJqg06ojXalWdIFBvsbe2JSYaPCoKFmg3aj0Nh6UDiRAEBjzZ5LEhRe2UP4HZuKicsJtjh67DcxqD0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761590811; c=relaxed/simple;
-	bh=tAdgH8Vtcf/xsGYfQ6/zGduMAWCoAYKJ9cFZgHzmEVo=;
+	s=arc-20240116; t=1761590841; c=relaxed/simple;
+	bh=mh3l3BB+nuQzG9Yr+gyjlFwIT+2RnWoy4l5fkgqZXtU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qQOU8OPJAVNEQ3S1yBnAMP2hb6bmposxWEkbfGBhfK9ucpxPUbAq+/5wKsLYBFVOmlHpoDJv42tX8MsQaZdWi+HcyYftq2wj//uolE/TUg4iNcKNuzHftNIWq9BwUh9iDepIPdwk29BAKGhrrvquA7b4kNnbPDTfcPzMKZPv/qQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f78lZS75; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE4D1C4CEFD;
-	Mon, 27 Oct 2025 18:46:49 +0000 (UTC)
+	 MIME-Version; b=gZtHg5IC4NZdY06lFYMqJlXcFqMEo966wpqQvQY4OIkofGPdPmHTlR7VJ14vgzOrwQSbrGSAPFlp6V30QVxKryRVaKTIou6F79H/n+VrpjfQYAnfRKfF5ZkoVukEPYuvLvjmRfjg4NiygELzf4xuVpB2ZV1OUH7ILLWxDj3s98w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xkvzdAcE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45A05C4CEFD;
+	Mon, 27 Oct 2025 18:47:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761590810;
-	bh=tAdgH8Vtcf/xsGYfQ6/zGduMAWCoAYKJ9cFZgHzmEVo=;
+	s=korg; t=1761590840;
+	bh=mh3l3BB+nuQzG9Yr+gyjlFwIT+2RnWoy4l5fkgqZXtU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f78lZS75jdhI7qbbMCoX+l02MfoknOdQsAvrDlJrDlg+yuxdB+L8d7ryiGBPV/MkI
-	 DFg0i3fShUgExuYkR65/URnlnkdFXlPuhZbMV2Hilpe+LQuvcTfQZm2iW71SjNz17N
-	 c5jhtdPSzNHL2/YQ59qJF8MmaG5L8JybtThTQPiY=
+	b=xkvzdAcEqTX6THu0boqXyiUkMIhykUtcAIYQ6oPZyXX9CKEAnCLj5jGQhXJvknepF
+	 ELJRfSciK5OBLXZof35m2YHN+o+VzuTe9+r0DJBl9J1E54NvZnc7eg00HGhxvyG8il
+	 PGmwv/n/CtMC7GFddQHU1pj8Wk8OwoHyydK7vNH8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kbuild test robot <lkp@intel.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Chen Yu <yu.c.chen@intel.com>,
+	Barry Song <song.bao.hua@hisilicon.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Ingo Molnar <mingo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 166/224] sched: Make newidle_balance() static again
-Date: Mon, 27 Oct 2025 19:35:12 +0100
-Message-ID: <20251027183513.357882035@linuxfoundation.org>
+Subject: [PATCH 5.4 167/224] sched/fair: Trivial correction of the newidle_balance() comment
+Date: Mon, 27 Oct 2025 19:35:13 +0100
+Message-ID: <20251027183513.380134538@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251027183508.963233542@linuxfoundation.org>
 References: <20251027183508.963233542@linuxfoundation.org>
@@ -67,78 +67,37 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Chen Yu <yu.c.chen@intel.com>
+From: Barry Song <song.bao.hua@hisilicon.com>
 
-[ Upstream commit d91cecc156620ec75d94c55369509c807c3d07e6 ]
+[ Upstream commit 5b78f2dc315354c05300795064f587366a02c6ff ]
 
-After Commit 6e2df0581f56 ("sched: Fix pick_next_task() vs 'change'
-pattern race"), there is no need to expose newidle_balance() as it
-is only used within fair.c file. Change this function back to static again.
+idle_balance() has been renamed to newidle_balance(). To differentiate
+with nohz_idle_balance, it seems refining the comment will be helpful
+for the readers of the code.
 
-No functional change.
-
-Reported-by: kbuild test robot <lkp@intel.com>
-Suggested-by: Peter Zijlstra <peterz@infradead.org>
-Signed-off-by: Chen Yu <yu.c.chen@intel.com>
+Signed-off-by: Barry Song <song.bao.hua@hisilicon.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/83cd3030b031ca5d646cd5e225be10e7a0fdd8f5.1587464698.git.yu.c.chen@intel.com
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lkml.kernel.org/r/20201202220641.22752-1-song.bao.hua@hisilicon.com
 Stable-dep-of: 17e3e88ed0b6 ("sched/fair: Fix pelt lost idle time detection")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/fair.c  | 6 ++++--
- kernel/sched/sched.h | 4 ----
- 2 files changed, 4 insertions(+), 6 deletions(-)
+ kernel/sched/fair.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 2680216234ff2..db4a1da522e42 100644
+index db4a1da522e42..1d82b9cc9eb77 100644
 --- a/kernel/sched/fair.c
 +++ b/kernel/sched/fair.c
-@@ -3690,6 +3690,8 @@ static inline unsigned long cfs_rq_load_avg(struct cfs_rq *cfs_rq)
- 	return cfs_rq->avg.load_avg;
- }
+@@ -9897,7 +9897,7 @@ static inline void nohz_newidle_balance(struct rq *this_rq) { }
+ #endif /* CONFIG_NO_HZ_COMMON */
  
-+static int newidle_balance(struct rq *this_rq, struct rq_flags *rf);
-+
- static inline unsigned long task_util(struct task_struct *p)
- {
- 	return READ_ONCE(p->se.avg.util_avg);
-@@ -3849,7 +3851,7 @@ attach_entity_load_avg(struct cfs_rq *cfs_rq, struct sched_entity *se, int flags
- static inline void
- detach_entity_load_avg(struct cfs_rq *cfs_rq, struct sched_entity *se) {}
- 
--static inline int idle_balance(struct rq *rq, struct rq_flags *rf)
-+static inline int newidle_balance(struct rq *rq, struct rq_flags *rf)
- {
- 	return 0;
- }
-@@ -9898,7 +9900,7 @@ static inline void nohz_newidle_balance(struct rq *this_rq) { }
-  * idle_balance is called by schedule() if this_cpu is about to become
+ /*
+- * idle_balance is called by schedule() if this_cpu is about to become
++ * newidle_balance is called by schedule() if this_cpu is about to become
   * idle. Attempts to pull tasks from other CPUs.
   */
--int newidle_balance(struct rq *this_rq, struct rq_flags *rf)
-+static int newidle_balance(struct rq *this_rq, struct rq_flags *rf)
- {
- 	unsigned long next_balance = jiffies + HZ;
- 	int this_cpu = this_rq->cpu;
-diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
-index b8a3db59e3267..46e6f4e905dd6 100644
---- a/kernel/sched/sched.h
-+++ b/kernel/sched/sched.h
-@@ -1464,14 +1464,10 @@ static inline void unregister_sched_domain_sysctl(void)
- }
- #endif
- 
--extern int newidle_balance(struct rq *this_rq, struct rq_flags *rf);
--
- #else
- 
- static inline void sched_ttwu_pending(void) { }
- 
--static inline int newidle_balance(struct rq *this_rq, struct rq_flags *rf) { return 0; }
--
- #endif /* CONFIG_SMP */
- 
- #include "stats.h"
+ static int newidle_balance(struct rq *this_rq, struct rq_flags *rf)
 -- 
 2.51.0
 
