@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-190741-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191232-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD6E9C10B89
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:17:13 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E00DFC111DA
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:35:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 168B35807CB
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:10:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DA31A1892B2C
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:31:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46BE532B998;
-	Mon, 27 Oct 2025 19:07:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D80031BCBC;
+	Mon, 27 Oct 2025 19:29:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VSxQxBOU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JGxR1Ls+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3E152D542A;
-	Mon, 27 Oct 2025 19:07:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 298A22D8793;
+	Mon, 27 Oct 2025 19:29:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592075; cv=none; b=dh+cqmBQ7ngKX7RRb0TaZc2bEH6++dA14xpXr5WD1NWMQ5Da21KdVuAz4MlcDWAXR/k8hDZJUJxELTBeBEO3ehqW+QVWXZl9ZcAc4ZssyXqz/Id2cnxzCh9jdSj5K1sZgHrOlBeTEgufX+IHnizv4bQ+5jAzqHN/QdVrxBHR34M=
+	t=1761593357; cv=none; b=r4Q7FUO7E6dyF1y8o7FaDlBzkLWbsj+mJjEAdJipQCwDjvmndupUi8xsBSW7YgyWnPVUv7AvWNvyPrazSW0MhN68CaWfgsT/y+kWFJagTvTvkArhDiaySuSXWMwUU1k3QPNHqeu2k3UKXOL8fTJwVjt2gECn6UBnPZwU6+TSFHE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592075; c=relaxed/simple;
-	bh=kdVOVYyhw6g/77dl45RB4MD7T3GLf64EUr51Aq7Gh4Q=;
+	s=arc-20240116; t=1761593357; c=relaxed/simple;
+	bh=yBRS6bLoLnShApop7VJQAzw5WxdFbyNAZ+TIoJLqXgw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G8gLpOaK4tlWsPZEylha4EsXnB9OT/2VPehgt6o7isopT7BrUqH7jWEaSE5YYnmgZLmbuS1ml/MzNEaS4cBd2nNSYRb/7tULvemwkySmfu3ZX2q1nirqHnWhhjMyquM7bt93YZAutFqvsmkHdJQ/dYt0VdK5vBdw8dGMacPCopQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VSxQxBOU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 826F4C4CEF1;
-	Mon, 27 Oct 2025 19:07:54 +0000 (UTC)
+	 MIME-Version; b=fiKYV4gLbHK7k8Sl4s8Q8ecSTb+GsijCjO69PcnLEGC3Zo3680znM86XmizM29Z6qc60xsXmnsA2XgtW9Vk5vEUqsRCpokb9E5u1aJ4T1OUiUGuw/d84yfKnWEpJ4Iijtk+z1mlV4jz/v1B3tzHQNGGNX94KVy2Lc+j2vBq6fQw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JGxR1Ls+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70B8DC4CEF1;
+	Mon, 27 Oct 2025 19:29:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592074;
-	bh=kdVOVYyhw6g/77dl45RB4MD7T3GLf64EUr51Aq7Gh4Q=;
+	s=korg; t=1761593357;
+	bh=yBRS6bLoLnShApop7VJQAzw5WxdFbyNAZ+TIoJLqXgw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VSxQxBOUZJuZk/o0lMC0I5FdXaQ1k+Pnxgy8ZG8uAcDSFq7Q6EGLklvOwvhsFKfui
-	 AhRn/LgDqwBRms4Kf1gfiQlSraopokCQ0lAXY/y7qHE9dSkouCtMYXzRvGS+cNjItD
-	 Q2qMgnyBY5N/iZoEbdPPMxQQoQI7yqiuNBDXC1XQ=
+	b=JGxR1Ls+ScpHhEESoS6226Wu8EMk4fSQc0TMy/QEnNypZlvf6V5YsVjwcmeSHJcu5
+	 s+7MKNpiocira9g6gfl73Jthzuj8mvc4EuoCiNEKOJGASpNcwZYBfIz1H2Si/CZ4J6
+	 bkI49Xxo6wqXEsv08ZLHdQD1yF67KUDEPZvEERTs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Robert Morris <rtm@csail.mit.edu>,
-	Thomas Haynes <loghyr@hammerspace.com>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 108/123] NFSD: Define a proc_layoutcommit for the FlexFiles layout type
-Date: Mon, 27 Oct 2025 19:36:28 +0100
-Message-ID: <20251027183449.281959633@linuxfoundation.org>
+	Matthew Brost <matthew.brost@intel.com>,
+	Matthew Auld <matthew.auld@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>
+Subject: [PATCH 6.17 107/184] drm/xe: Check return value of GGTT workqueue allocation
+Date: Mon, 27 Oct 2025 19:36:29 +0100
+Message-ID: <20251027183517.803246330@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183446.381986645@linuxfoundation.org>
-References: <20251027183446.381986645@linuxfoundation.org>
+In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
+References: <20251027183514.934710872@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Matthew Brost <matthew.brost@intel.com>
 
-[ Upstream commit 4b47a8601b71ad98833b447d465592d847b4dc77 ]
+commit ce29214ada6d08dbde1eeb5a69c3b09ddf3da146 upstream.
 
-Avoid a crash if a pNFS client should happen to send a LAYOUTCOMMIT
-operation on a FlexFiles layout.
+Workqueue allocation can fail, so check the return value of the GGTT
+workqueue allocation and fail driver initialization if the allocation
+fails.
 
-Reported-by: Robert Morris <rtm@csail.mit.edu>
-Closes: https://lore.kernel.org/linux-nfs/152f99b2-ba35-4dec-93a9-4690e625dccd@oracle.com/T/#t
-Cc: Thomas Haynes <loghyr@hammerspace.com>
+Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
 Cc: stable@vger.kernel.org
-Fixes: 9b9960a0ca47 ("nfsd: Add a super simple flex file server")
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-[ removed struct svc_rqst parameter from nfsd4_ff_proc_layoutcommit ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+Reviewed-by: Matthew Auld <matthew.auld@intel.com>
+Link: https://lore.kernel.org/r/20251022005538.828980-2-matthew.brost@intel.com
+(cherry picked from commit 1f1314e8e71385bae319e43082b798c11f6648bc)
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/flexfilelayout.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/gpu/drm/xe/xe_ggtt.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/fs/nfsd/flexfilelayout.c
-+++ b/fs/nfsd/flexfilelayout.c
-@@ -125,6 +125,13 @@ nfsd4_ff_proc_getdeviceinfo(struct super
- 	return 0;
- }
+--- a/drivers/gpu/drm/xe/xe_ggtt.c
++++ b/drivers/gpu/drm/xe/xe_ggtt.c
+@@ -291,6 +291,9 @@ int xe_ggtt_init_early(struct xe_ggtt *g
+ 		ggtt->pt_ops = &xelp_pt_ops;
  
-+static __be32
-+nfsd4_ff_proc_layoutcommit(struct inode *inode,
-+		struct nfsd4_layoutcommit *lcp)
-+{
-+	return nfs_ok;
-+}
+ 	ggtt->wq = alloc_workqueue("xe-ggtt-wq", 0, WQ_MEM_RECLAIM);
++	if (!ggtt->wq)
++		return -ENOMEM;
 +
- const struct nfsd4_layout_ops ff_layout_ops = {
- 	.notify_types		=
- 			NOTIFY_DEVICEID4_DELETE | NOTIFY_DEVICEID4_CHANGE,
-@@ -133,4 +140,5 @@ const struct nfsd4_layout_ops ff_layout_
- 	.encode_getdeviceinfo	= nfsd4_ff_encode_getdeviceinfo,
- 	.proc_layoutget		= nfsd4_ff_proc_layoutget,
- 	.encode_layoutget	= nfsd4_ff_encode_layoutget,
-+	.proc_layoutcommit	= nfsd4_ff_proc_layoutcommit,
- };
+ 	__xe_ggtt_init_early(ggtt, xe_wopcm_size(xe));
+ 
+ 	err = drmm_add_action_or_reset(&xe->drm, ggtt_fini_early, ggtt);
 
 
 
