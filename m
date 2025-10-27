@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-190698-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190873-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9737C10B1C
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:16:00 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D5C4C10DA5
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:22:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1AD77562975
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:09:19 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 98EE5545D75
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:15:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C76F21576E;
-	Mon, 27 Oct 2025 19:06:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10C9131DD87;
+	Mon, 27 Oct 2025 19:13:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CBj7TDa0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z5vttuYW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3825A306D37;
-	Mon, 27 Oct 2025 19:06:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2E6430F526;
+	Mon, 27 Oct 2025 19:13:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591961; cv=none; b=M++KO3YTsXuqR0NCpBY1G5UQFtsSJDplt419cRV3wGm0xL4+TMUNe1nHlil//aEptyfNeMKDh6gw4J0Qy/KXX0EmC7zqv/feKqv0krP/CpJ+TzXiwA7V/Gzn65WwTjy5byqj8Hsk2WjsipLngFAbvOVf21H5pHcBpIv2YyMNTo4=
+	t=1761592423; cv=none; b=RH4fFALv7wvujG09zTrAVH5gMlH6g+Vq6Ga1fev8NGovU0j0go5d/BbFl15s4YKiriOzztPFR2dVhYHRlZi86mbuBbvFY5lZGtYYW2TVQLw8mOS/irRK452yui8A77+ItshjlX3k2s37C5bR1yJcJHEGD7oqR6K6GC/1EjDyBOw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591961; c=relaxed/simple;
-	bh=64rt1Psc3KBQ1v9G2HGeq5R/vFsVmJXLw132UNgOk30=;
+	s=arc-20240116; t=1761592423; c=relaxed/simple;
+	bh=ynhCb8RXYUZbkAXch04KM6swloQzzuINp6P1HMRMsF4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dxjyJm67h6jn9VN+afDlWH6NYabdEiWT7wPfR4TAewagfpMAjS2dBuclxGX6bh0N9PU/Ni7NxlNnarw9c/jqpUFpIepuUi3wxDtL8Rt/9Jh07BEh1WN+N0Xd8HBMqx+FHgLHIwVY0+gwNzvDGDUfxdoVLD7wNJk/qbYTixIc7ok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CBj7TDa0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE9E6C4CEF1;
-	Mon, 27 Oct 2025 19:06:00 +0000 (UTC)
+	 MIME-Version:Content-Type; b=MCi0mS+s/fUdGrdSKsYKY5hbU4KtoiesiLkfRjW7Lmz4ssEr7dB1KaQ9JzZcc532UP21++ChsIJJOrNKOXEfgDaMzfoluf0xW60TY3OodHTzre04t0d2YlEmYcYfRPWDm3tF3VbdO6a4gqGzyxb0eR4Dy7fDPsmsBBH2QT55X/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z5vttuYW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B28FC4CEF1;
+	Mon, 27 Oct 2025 19:13:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591961;
-	bh=64rt1Psc3KBQ1v9G2HGeq5R/vFsVmJXLw132UNgOk30=;
+	s=korg; t=1761592423;
+	bh=ynhCb8RXYUZbkAXch04KM6swloQzzuINp6P1HMRMsF4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CBj7TDa0d6qgd9NMZyrabZgPQEgZwmv1op6l0NTdGCj+lk7Wm0Eag0/ESqic0K91n
-	 u6Cuh51R1LpRuTF7x1TxRLbd5MGduBE7FxrsTaUKKUZ14+9hReOKVF6g4e6hxiiH6p
-	 z4m/mpE30GilWmwQWrFR5iycEQZuXTnkjfWe7gxY=
+	b=z5vttuYW6ZA2p+dhMxV9h+9dqf1PttjqM/0Jsrdxvz0vF/L9Y1hA2aeq/oZsnX/gc
+	 uSYqdzHnr7yb3YaFAz6z3s9Xmzrir/5SGsuDsMw0Ta5LD7JXs2eDClfqtPg5Bi8/RI
+	 wXTB3DZ+9bTlJ4DIiEvjiBX3wdmgx2XpdS0CP+t8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jay Vosburgh <jv@jvosburgh.net>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Hangbin Liu <liuhangbin@gmail.com>,
+	=?UTF-8?q?Michael=20Wei=C3=9F?= <michael.weiss@aisec.fraunhofer.de>,
+	Harshal Gohel <hg@simonwunderlich.de>,
+	=?UTF-8?q?Johannes=20Wiesb=C3=B6ck?= <johannes.wiesboeck@aisec.fraunhofer.de>,
+	Ido Schimmel <idosch@nvidia.com>,
 	Nikolay Aleksandrov <razor@blackwall.org>,
-	Vincent Bernat <vincent@bernat.ch>,
-	Tonghao Zhang <tonghao@bamaicloud.com>
-Subject: [PATCH 5.15 063/123] net: bonding: fix possible peer notify event loss or dup issue
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 082/157] rtnetlink: Allow deleting FDB entries in user namespace
 Date: Mon, 27 Oct 2025 19:35:43 +0100
-Message-ID: <20251027183448.080559553@linuxfoundation.org>
+Message-ID: <20251027183503.473118851@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183446.381986645@linuxfoundation.org>
-References: <20251027183446.381986645@linuxfoundation.org>
+In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
+References: <20251027183501.227243846@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,120 +64,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tonghao Zhang <tonghao@bamaicloud.com>
+From: Johannes Wiesböck <johannes.wiesboeck@aisec.fraunhofer.de>
 
-commit 10843e1492e474c02b91314963161731fa92af91 upstream.
+[ Upstream commit bf29555f5bdc017bac22ca66fcb6c9f46ec8788f ]
 
-If the send_peer_notif counter and the peer event notify are not synchronized.
-It may cause problems such as the loss or dup of peer notify event.
+Creating FDB entries is possible from a non-initial user namespace when
+having CAP_NET_ADMIN, yet, when deleting FDB entries, processes receive
+an EPERM because the capability is always checked against the initial
+user namespace. This restricts the FDB management from unprivileged
+containers.
 
-Before this patch:
-- If should_notify_peers is true and the lock for send_peer_notif-- fails, peer
-  event may be sent again in next mii_monitor loop, because should_notify_peers
-  is still true.
-- If should_notify_peers is true and the lock for send_peer_notif-- succeeded,
-  but the lock for peer event fails, the peer event will be lost.
+Drop the netlink_capable check in rtnl_fdb_del as it was originally
+dropped in c5c351088ae7 and reintroduced in 1690be63a27b without
+intention.
 
-This patch locks the RTNL for send_peer_notif, events, and commit simultaneously.
+This patch was tested using a container on GyroidOS, where it was
+possible to delete FDB entries from an unprivileged user namespace and
+private network namespace.
 
-Fixes: 07a4ddec3ce9 ("bonding: add an option to specify a delay between peer notifications")
-Cc: Jay Vosburgh <jv@jvosburgh.net>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Paolo Abeni <pabeni@redhat.com>
-Cc: Hangbin Liu <liuhangbin@gmail.com>
-Cc: Nikolay Aleksandrov <razor@blackwall.org>
-Cc: Vincent Bernat <vincent@bernat.ch>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Tonghao Zhang <tonghao@bamaicloud.com>
-Acked-by: Jay Vosburgh <jv@jvosburgh.net>
-Link: https://patch.msgid.link/20251021050933.46412-1-tonghao@bamaicloud.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1690be63a27b ("bridge: Add vlan support to static neighbors")
+Reviewed-by: Michael Weiß <michael.weiss@aisec.fraunhofer.de>
+Tested-by: Harshal Gohel <hg@simonwunderlich.de>
+Signed-off-by: Johannes Wiesböck <johannes.wiesboeck@aisec.fraunhofer.de>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
+Link: https://patch.msgid.link/20251015201548.319871-1-johannes.wiesboeck@aisec.fraunhofer.de
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/bonding/bond_main.c |   40 ++++++++++++++++++----------------------
- 1 file changed, 18 insertions(+), 22 deletions(-)
+ net/core/rtnetlink.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -2734,7 +2734,7 @@ static void bond_mii_monitor(struct work
- {
- 	struct bonding *bond = container_of(work, struct bonding,
- 					    mii_work.work);
--	bool should_notify_peers = false;
-+	bool should_notify_peers;
- 	bool commit;
- 	unsigned long delay;
- 	struct slave *slave;
-@@ -2746,30 +2746,33 @@ static void bond_mii_monitor(struct work
- 		goto re_arm;
+diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
+index 6bc2f78a5ebbf..6fd6c717d1e39 100644
+--- a/net/core/rtnetlink.c
++++ b/net/core/rtnetlink.c
+@@ -4274,9 +4274,6 @@ static int rtnl_fdb_del(struct sk_buff *skb, struct nlmsghdr *nlh,
+ 	int err;
+ 	u16 vid;
  
- 	rcu_read_lock();
-+
- 	should_notify_peers = bond_should_notify_peers(bond);
- 	commit = !!bond_miimon_inspect(bond);
--	if (bond->send_peer_notif) {
--		rcu_read_unlock();
--		if (rtnl_trylock()) {
--			bond->send_peer_notif--;
--			rtnl_unlock();
--		}
--	} else {
--		rcu_read_unlock();
--	}
- 
--	if (commit) {
-+	rcu_read_unlock();
-+
-+	if (commit || bond->send_peer_notif) {
- 		/* Race avoidance with bond_close cancel of workqueue */
- 		if (!rtnl_trylock()) {
- 			delay = 1;
--			should_notify_peers = false;
- 			goto re_arm;
- 		}
- 
--		bond_for_each_slave(bond, slave, iter) {
--			bond_commit_link_state(slave, BOND_SLAVE_NOTIFY_LATER);
-+		if (commit) {
-+			bond_for_each_slave(bond, slave, iter) {
-+				bond_commit_link_state(slave,
-+						       BOND_SLAVE_NOTIFY_LATER);
-+			}
-+			bond_miimon_commit(bond);
-+		}
-+
-+		if (bond->send_peer_notif) {
-+			bond->send_peer_notif--;
-+			if (should_notify_peers)
-+				call_netdevice_notifiers(NETDEV_NOTIFY_PEERS,
-+							 bond->dev);
- 		}
--		bond_miimon_commit(bond);
- 
- 		rtnl_unlock();	/* might sleep, hold no other locks */
- 	}
-@@ -2777,13 +2780,6 @@ static void bond_mii_monitor(struct work
- re_arm:
- 	if (bond->params.miimon)
- 		queue_delayed_work(bond->wq, &bond->mii_work, delay);
+-	if (!netlink_capable(skb, CAP_NET_ADMIN))
+-		return -EPERM;
 -
--	if (should_notify_peers) {
--		if (!rtnl_trylock())
--			return;
--		call_netdevice_notifiers(NETDEV_NOTIFY_PEERS, bond->dev);
--		rtnl_unlock();
--	}
- }
- 
- static int bond_upper_dev_walk(struct net_device *upper,
+ 	if (!del_bulk) {
+ 		err = nlmsg_parse_deprecated(nlh, sizeof(*ndm), tb, NDA_MAX,
+ 					     NULL, extack);
+-- 
+2.51.0
+
 
 
 
