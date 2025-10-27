@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-190477-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190141-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E7AFC10636
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:01:28 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0527C0FFED
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:42:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 4B1B9351E2A
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:01:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 294F4462670
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:42:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8C80329C60;
-	Mon, 27 Oct 2025 18:56:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95E313195E4;
+	Mon, 27 Oct 2025 18:42:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EA+Mdkod"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iK0Fbcii"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 931C632A3C3;
-	Mon, 27 Oct 2025 18:56:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51986319611;
+	Mon, 27 Oct 2025 18:42:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591392; cv=none; b=TX9jI3AIktFQxWH67TDL8atjtSfhkMjbvRVlN0ChehN2xomG7vFiOtoG6bc6mcln1UXjIYWDqx6+SJ9OmV/3XyzwCl1UISf5ofdn3FIoBrHoo0Iho+jdUSR/xD6Ts16PBUmxeYrhLkx77NnDiuE7t9ZRRonTsYOtb/eCCCU+zMc=
+	t=1761590548; cv=none; b=PbYglUBPzLeNDcJvwKSeCa6RKLFFMbm7Hh0NoHfOJVX11ihOYJ8xT8b5Jl619UCZ5cl5CTBfu0GT9jkl4BnUWN0bqy9IfJsadXiDwDpM30N1q3Nq2C/rPCTi61kX5srjkPh71scLX1ue2bh5DvscYQkTTUUrBh4tb/MPcL1Ivow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591392; c=relaxed/simple;
-	bh=5O2Cs0uXawHxHxPdszKaBes/zSpbv6em4mI1Wylhs3w=;
+	s=arc-20240116; t=1761590548; c=relaxed/simple;
+	bh=7y3/5efzZ5nUpj0BeTP2lDy26q1uGEAK2pMbX6ZK0bg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SS5XzHdKxXueuw0Mlo3RbMmX73WLncrilL16+5cvPojL1pRBkfbFCqZnPzv9OhnX4k541YAJP1EoPeghEmr6zxEBPhuUGA1yJgp4ObSMJxuFdrOYspsxCe4tfXJ4MOsp3L8YEOyMlvwF53nPFy03+dk5mAYvas6V/ttmdlYbFHk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EA+Mdkod; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D3AEC4CEF1;
-	Mon, 27 Oct 2025 18:56:31 +0000 (UTC)
+	 MIME-Version; b=UrmU9ShlItNCOENgnO/5J6oq5LvJgJYneuv44wucDfNGteixTWlT4W2IQelCzyrxSMHyqwPX3pR3N52hiwqbOMmnAohif2VKCKM8hqV0eiSgDBxARJkB4c8Q/V2zZzZiHr2u73pzh0bhweyebJIdTksVJaGhSyoU8fN2D5nQf6w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iK0Fbcii; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE2CEC4CEF1;
+	Mon, 27 Oct 2025 18:42:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591392;
-	bh=5O2Cs0uXawHxHxPdszKaBes/zSpbv6em4mI1Wylhs3w=;
+	s=korg; t=1761590548;
+	bh=7y3/5efzZ5nUpj0BeTP2lDy26q1uGEAK2pMbX6ZK0bg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EA+Mdkodrg+lT1LhxshJ2IyXjmsOl10SDwE1CMZjwvvZb+pAH08X6WFoRZPqML0w7
-	 /iECQayHmc8hRV4xUOxpKjl8etReTIe2IdNSlVYBngrAV4yx2SHp08JxzL3rKW6U7t
-	 NGV0bIXYpHvrZKE+FRbx5FtjYsE13gpztuYBPjf0=
+	b=iK0FbciiZDt/QZwhbsWdRo/qrmWUlGQOZlOrbVTI5St8MAGe9J216LNQM1C+yw2P+
+	 fYjj/gzQLdxXmozHAGELrDIPqE147y3abn6UWXeOJIInOJi9f+7a1pWCRRhvhDBdoz
+	 nO/ZBsA7mRTdaJe++j6d7dnORYg8ovUscfnxWZ0Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Phillip Lougher <phillip@squashfs.org.uk>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	John Garry <john.garry@huawei.com>,
+	Damien Le Moal <damien.lemoal@opensource.wdc.com>,
+	Hannes Reinecke <hare@suse.de>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 179/332] Squashfs: add additional inode sanity checking
+Subject: [PATCH 5.4 086/224] scsi: mvsas: Delete mvs_tag_init()
 Date: Mon, 27 Oct 2025 19:33:52 +0100
-Message-ID: <20251027183529.381379586@linuxfoundation.org>
+Message-ID: <20251027183511.295353317@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
-References: <20251027183524.611456697@linuxfoundation.org>
+In-Reply-To: <20251027183508.963233542@linuxfoundation.org>
+References: <20251027183508.963233542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,92 +64,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Phillip Lougher <phillip@squashfs.org.uk>
+From: John Garry <john.garry@huawei.com>
 
-[ Upstream commit 9ee94bfbe930a1b39df53fa2d7b31141b780eb5a ]
+[ Upstream commit ffc9f9bf3f14876d019f67ef17d41138802529a8 ]
 
-Patch series "Squashfs: performance improvement and a sanity check".
+All mvs_tag_init() does is zero the tag bitmap, but this is already done
+with the kzalloc() call to alloc the tags, so delete this unneeded
+function.
 
-This patchset adds an additional sanity check when reading regular file
-inodes, and adds support for SEEK_DATA/SEEK_HOLE lseek() whence values.
-
-This patch (of 2):
-
-Add an additional sanity check when reading regular file inodes.
-
-A regular file if the file size is an exact multiple of the filesystem
-block size cannot have a fragment.  This is because by definition a
-fragment block stores tailends which are not a whole block in size.
-
-Link: https://lkml.kernel.org/r/20250923220652.568416-1-phillip@squashfs.org.uk
-Link: https://lkml.kernel.org/r/20250923220652.568416-2-phillip@squashfs.org.uk
-Signed-off-by: Phillip Lougher <phillip@squashfs.org.uk>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Stable-dep-of: 9f1c14c1de1b ("Squashfs: reject negative file sizes in squashfs_read_inode()")
+Signed-off-by: John Garry <john.garry@huawei.com>
+Link: https://lore.kernel.org/r/1666091763-11023-7-git-send-email-john.garry@huawei.com
+Reviewed-by: Damien Le Moal <damien.lemoal@opensource.wdc.com>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Stable-dep-of: 60cd16a3b743 ("scsi: mvsas: Fix use-after-free bugs in mvs_work_queue")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/squashfs/inode.c |   20 ++++++++++++++++++--
- 1 file changed, 18 insertions(+), 2 deletions(-)
+ drivers/scsi/mvsas/mv_init.c | 2 --
+ drivers/scsi/mvsas/mv_sas.c  | 7 -------
+ drivers/scsi/mvsas/mv_sas.h  | 1 -
+ 3 files changed, 10 deletions(-)
 
---- a/fs/squashfs/inode.c
-+++ b/fs/squashfs/inode.c
-@@ -140,8 +140,17 @@ int squashfs_read_inode(struct inode *in
- 		if (err < 0)
- 			goto failed_read;
+diff --git a/drivers/scsi/mvsas/mv_init.c b/drivers/scsi/mvsas/mv_init.c
+index 0c5e2c6105867..7622de9d7d8ba 100644
+--- a/drivers/scsi/mvsas/mv_init.c
++++ b/drivers/scsi/mvsas/mv_init.c
+@@ -286,8 +286,6 @@ static int mvs_alloc(struct mvs_info *mvi, struct Scsi_Host *shost)
+ 	}
+ 	mvi->tags_num = slot_nr;
  
-+		inode->i_size = le32_to_cpu(sqsh_ino->file_size);
- 		frag = le32_to_cpu(sqsh_ino->fragment);
- 		if (frag != SQUASHFS_INVALID_FRAG) {
-+			/*
-+			 * the file cannot have a fragment (tailend) and have a
-+			 * file size a multiple of the block size
-+			 */
-+			if ((inode->i_size & (msblk->block_size - 1)) == 0) {
-+				err = -EINVAL;
-+				goto failed_read;
-+			}
- 			frag_offset = le32_to_cpu(sqsh_ino->offset);
- 			frag_size = squashfs_frag_lookup(sb, frag, &frag_blk);
- 			if (frag_size < 0) {
-@@ -155,7 +164,6 @@ int squashfs_read_inode(struct inode *in
- 		}
+-	/* Initialize tags */
+-	mvs_tag_init(mvi);
+ 	return 0;
+ err_out:
+ 	return 1;
+diff --git a/drivers/scsi/mvsas/mv_sas.c b/drivers/scsi/mvsas/mv_sas.c
+index 68caeaf9e6369..377b931f46dcf 100644
+--- a/drivers/scsi/mvsas/mv_sas.c
++++ b/drivers/scsi/mvsas/mv_sas.c
+@@ -51,13 +51,6 @@ inline int mvs_tag_alloc(struct mvs_info *mvi, u32 *tag_out)
+ 	return 0;
+ }
  
- 		set_nlink(inode, 1);
--		inode->i_size = le32_to_cpu(sqsh_ino->file_size);
- 		inode->i_fop = &generic_ro_fops;
- 		inode->i_mode |= S_IFREG;
- 		inode->i_blocks = ((inode->i_size - 1) >> 9) + 1;
-@@ -184,8 +192,17 @@ int squashfs_read_inode(struct inode *in
- 		if (err < 0)
- 			goto failed_read;
- 
-+		inode->i_size = le64_to_cpu(sqsh_ino->file_size);
- 		frag = le32_to_cpu(sqsh_ino->fragment);
- 		if (frag != SQUASHFS_INVALID_FRAG) {
-+			/*
-+			 * the file cannot have a fragment (tailend) and have a
-+			 * file size a multiple of the block size
-+			 */
-+			if ((inode->i_size & (msblk->block_size - 1)) == 0) {
-+				err = -EINVAL;
-+				goto failed_read;
-+			}
- 			frag_offset = le32_to_cpu(sqsh_ino->offset);
- 			frag_size = squashfs_frag_lookup(sb, frag, &frag_blk);
- 			if (frag_size < 0) {
-@@ -200,7 +217,6 @@ int squashfs_read_inode(struct inode *in
- 
- 		xattr_id = le32_to_cpu(sqsh_ino->xattr);
- 		set_nlink(inode, le32_to_cpu(sqsh_ino->nlink));
--		inode->i_size = le64_to_cpu(sqsh_ino->file_size);
- 		inode->i_op = &squashfs_inode_ops;
- 		inode->i_fop = &generic_ro_fops;
- 		inode->i_mode |= S_IFREG;
+-void mvs_tag_init(struct mvs_info *mvi)
+-{
+-	int i;
+-	for (i = 0; i < mvi->tags_num; ++i)
+-		mvs_tag_clear(mvi, i);
+-}
+-
+ static struct mvs_info *mvs_find_dev_mvi(struct domain_device *dev)
+ {
+ 	unsigned long i = 0, j = 0, hi = 0;
+diff --git a/drivers/scsi/mvsas/mv_sas.h b/drivers/scsi/mvsas/mv_sas.h
+index 519edc796691a..6689481779343 100644
+--- a/drivers/scsi/mvsas/mv_sas.h
++++ b/drivers/scsi/mvsas/mv_sas.h
+@@ -428,7 +428,6 @@ void mvs_tag_clear(struct mvs_info *mvi, u32 tag);
+ void mvs_tag_free(struct mvs_info *mvi, u32 tag);
+ void mvs_tag_set(struct mvs_info *mvi, unsigned int tag);
+ int mvs_tag_alloc(struct mvs_info *mvi, u32 *tag_out);
+-void mvs_tag_init(struct mvs_info *mvi);
+ void mvs_iounmap(void __iomem *regs);
+ int mvs_ioremap(struct mvs_info *mvi, int bar, int bar_ex);
+ void mvs_phys_reset(struct mvs_info *mvi, u32 phy_mask, int hard);
+-- 
+2.51.0
+
 
 
 
