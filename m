@@ -1,55 +1,67 @@
-Return-Path: <stable+bounces-190459-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190142-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C936C106F6
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:04:50 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0CC2C100BC
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:44:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9D9C31883E92
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:01:31 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E34B64FF2A2
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:43:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 318EC32144F;
-	Mon, 27 Oct 2025 18:55:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 219C531B830;
+	Mon, 27 Oct 2025 18:42:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xzoSbnl1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GcGfT09/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2F36320CCE;
-	Mon, 27 Oct 2025 18:55:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D134831B836;
+	Mon, 27 Oct 2025 18:42:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591346; cv=none; b=ruzHMlVOAhGRKf8GipVs4Xv8ERw4QPW3AUdbzrgs9zP6l/2qQLncve1zCmYgBIFhrYzpxwkBgwdRK5S5hFNN9rWqGtCKZm4tTTT3HkGZ4zcYoSzDVC7HK/Brpr4f8OscNJ6bWj0C1TzyzRDCnHrACmkVPSyNvpoIye25WhXZ+jE=
+	t=1761590550; cv=none; b=k3KGD9HKejtG1YbFZiky/6iEc2262g2QDjrX2LtHxRTNB4dfzktrXZsGfQpr8ThbraIwui4hErtyjIUdjojhpdLDMfSTqwizMH8gqUk1XN/6NwTDJ73PJVlCPffjn4JDHj0rdOMNU+5eUUEluZW7/MfGtc/dBcfaHni7eo5Q9rE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591346; c=relaxed/simple;
-	bh=eRdlfMcKrw/lOic62Cc+pRSuOXI18B9PK2VtP+uCrYg=;
+	s=arc-20240116; t=1761590550; c=relaxed/simple;
+	bh=SnK4DSKuSCYmKcLSg7MCNaW3jfdt2VlUG2GttH/mQ54=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AuuGwmFmRFfhvRUwkDa6VyHeRaPtPccspqxhnsJpNRhLhZXTCSq67u7/uTFNR4Xw37fN1+b98qfdlssfF7yA8jWw3bjbal0hpckN6N+yXPJ+2QHWuUMnzDfcTm5WjhEyvSR4IO0CthRVSWjih/Oj526XZNCZn5OrZP6E+hHv6o4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xzoSbnl1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7620CC4CEF1;
-	Mon, 27 Oct 2025 18:55:45 +0000 (UTC)
+	 MIME-Version; b=axK8r+/l2baZ7jgdUePqEzgxy/KGEwCz3uINMcSZjaXGQEaHVhZquxXaijyi0ObgU2BUOVMF2risHJJxC3o6uOQZZ5ZuCUVIqxKk88S+aulJ9TYPASjkV8RnHH7qvXxgP5z+qK7EY8FBviIciTyr8Lgf113CXmN6bmNq/aIWKnA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GcGfT09/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41E1DC116B1;
+	Mon, 27 Oct 2025 18:42:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591345;
-	bh=eRdlfMcKrw/lOic62Cc+pRSuOXI18B9PK2VtP+uCrYg=;
+	s=korg; t=1761590550;
+	bh=SnK4DSKuSCYmKcLSg7MCNaW3jfdt2VlUG2GttH/mQ54=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xzoSbnl1gwNZq2jMTMKyvFqt+XM2i7R8xNWn2UleyGlRGH6FDdikoD+i/kzJPJASi
-	 SGE5pJ0mwZkPAZ40vNqISvicR4JDB14AM/cLI1NmJfUE7pyrs4zthqcQyazZaNNQVZ
-	 XqLfCkdGim8BEkYTxo9+O16XKTO7xEgBOO/8csdA=
+	b=GcGfT09/TZkRq70a5CeKmTO7VxiLeiXKnBmT3bt8g7Q8OKnMZRpnxSRYN0U5eovst
+	 +q4QCq1rr7ltgcOSTpV44XmbCHlTe6cSvnGWtYSzV88J3BnKMpuseCZtiM+R0DrwTS
+	 H2nGQjgTuUQ2qsfkuMFMuzAh9LCZ2EXf1s563TfA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Niklas Cassel <cassel@kernel.org>,
-	Manivannan Sadhasivam <mani@kernel.org>
-Subject: [PATCH 5.10 162/332] PCI: tegra194: Fix broken tegra_pcie_ep_raise_msi_irq()
+	Donet Tom <donettom@linux.ibm.com>,
+	David Hildenbrand <david@redhat.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Alison Schofield <alison.schofield@intel.com>,
+	Chris Mason <clm@meta.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Hiroyouki Kamezawa <kamezawa.hiroyu@jp.fujitsu.com>,
+	Joanthan Cameron <Jonathan.Cameron@huawei.com>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	"Yury Norov (NVIDIA)" <yury.norov@gmail.com>,
+	Zi Yan <ziy@nvidia.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 069/224] drivers/base/node: fix double free in register_one_node()
 Date: Mon, 27 Oct 2025 19:33:35 +0100
-Message-ID: <20251027183528.905114048@linuxfoundation.org>
+Message-ID: <20251027183510.851533308@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
-References: <20251027183524.611456697@linuxfoundation.org>
+In-Reply-To: <20251027183508.963233542@linuxfoundation.org>
+References: <20251027183508.963233542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +73,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Cassel <cassel@kernel.org>
+From: Donet Tom <donettom@linux.ibm.com>
 
-commit b640d42a6ac9ba01abe65ec34f7c73aaf6758ab8 upstream.
+[ Upstream commit 0efdedfa537eb534c251a5b4794caaf72cc55869 ]
 
-The pci_epc_raise_irq() supplies a MSI or MSI-X interrupt number in range
-(1-N), as per the pci_epc_raise_irq() kdoc, where N is 32 for MSI.
+When device_register() fails in register_node(), it calls
+put_device(&node->dev).  This triggers node_device_release(), which calls
+kfree(to_node(dev)), thereby freeing the entire node structure.
 
-But tegra_pcie_ep_raise_msi_irq() incorrectly uses the interrupt number as
-the MSI vector. This causes wrong MSI vector to be triggered, leading to
-the failure of PCI endpoint Kselftest MSI_TEST test case.
+As a result, when register_node() returns an error, the node memory has
+already been freed.  Calling kfree(node) again in register_one_node()
+leads to a double free.
 
-To fix this issue, convert the interrupt number to MSI vector.
+This patch removes the redundant kfree(node) from register_one_node() to
+prevent the double free.
 
-Fixes: c57247f940e8 ("PCI: tegra: Add support for PCIe endpoint mode in Tegra194")
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20250922140822.519796-6-cassel@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lkml.kernel.org/r/20250918054144.58980-1-donettom@linux.ibm.com
+Fixes: 786eb990cfb7 ("drivers/base/node: handle error properly in register_one_node()")
+Signed-off-by: Donet Tom <donettom@linux.ibm.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Acked-by: Oscar Salvador <osalvador@suse.de>
+Cc: Alison Schofield <alison.schofield@intel.com>
+Cc: Chris Mason <clm@meta.com>
+Cc: Danilo Krummrich <dakr@kernel.org>
+Cc: Dave Jiang <dave.jiang@intel.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Hiroyouki Kamezawa <kamezawa.hiroyu@jp.fujitsu.com>
+Cc: Joanthan Cameron <Jonathan.Cameron@huawei.com>
+Cc: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
+Cc: Yury Norov (NVIDIA) <yury.norov@gmail.com>
+Cc: Zi Yan <ziy@nvidia.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pcie-tegra194.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/base/node.c | 1 -
+ 1 file changed, 1 deletion(-)
 
---- a/drivers/pci/controller/dwc/pcie-tegra194.c
-+++ b/drivers/pci/controller/dwc/pcie-tegra194.c
-@@ -1844,10 +1844,10 @@ static int tegra_pcie_ep_raise_legacy_ir
+diff --git a/drivers/base/node.c b/drivers/base/node.c
+index cb1bbe3068ab6..83b13a295bbe6 100644
+--- a/drivers/base/node.c
++++ b/drivers/base/node.c
+@@ -940,7 +940,6 @@ int __register_one_node(int nid)
+ 	error = register_node(node_devices[nid], nid);
+ 	if (error) {
+ 		node_devices[nid] = NULL;
+-		kfree(node);
+ 		return error;
+ 	}
  
- static int tegra_pcie_ep_raise_msi_irq(struct tegra_pcie_dw *pcie, u16 irq)
- {
--	if (unlikely(irq > 31))
-+	if (unlikely(irq > 32))
- 		return -EINVAL;
- 
--	appl_writel(pcie, BIT(irq), APPL_MSI_CTRL_1);
-+	appl_writel(pcie, BIT(irq - 1), APPL_MSI_CTRL_1);
- 
- 	return 0;
- }
+-- 
+2.51.0
+
 
 
 
