@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-190800-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190547-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E7FDC109E7
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:13:07 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC64AC1080D
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:07:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 0272B34571A
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:13:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F5E01A257D8
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:04:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD08D321440;
-	Mon, 27 Oct 2025 19:10:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22374332901;
+	Mon, 27 Oct 2025 18:59:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tE5bc/gd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AIcMx6hs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D9373074AC;
-	Mon, 27 Oct 2025 19:10:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1CE33328ED;
+	Mon, 27 Oct 2025 18:59:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592229; cv=none; b=MSaSlKPScexegVALXXC1QmGQ8YdxZN9rTUQa5LDqjRGNfUnZ8M2gKNe6Rmhrzr/W4moR3Aw3Qxcg7rGhzvqu/2G9/SfhPtt6EaykwPPWxXFogzUl2+kZXxWP2ZMqNi29nZuTcIyPeF5c/+ajyCydtcV8Hlg3G19i49yTyAR9/HE=
+	t=1761591574; cv=none; b=angBjkw+FPgG14LtcIo4180uGROy7GTXw3AYPzz6lwPAK9D4Lt7dzM/IPVX2lwX1+RGwUZxuOK7tOjvGbwy3CUrbqOhud/fj5zeEv8ZHp+7/wotZyD7G/om2vFh0yi7pqqyQKQiJlAIHQ4B9bHhszYsvGM7yqf9Z5bgogOVd3gg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592229; c=relaxed/simple;
-	bh=Ww9zqDX6dZH/w1w/TTzdGwrhLTbPcshjvwZ4PcLrKHU=;
+	s=arc-20240116; t=1761591574; c=relaxed/simple;
+	bh=QzJyek1+d24ji28DregmcKpMBIrxYSMOs76VJpeK4Fs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YAk/0dJ04miWvLaR5Wm/O42XvzWwOtUYOK/adelNO0L+Mym7GiGFfSRc/IfFfSwPSVJs3BHThRmopeEixeoEoNSuI0txSPIG4wWnIvhYH16XaUKY2brtofEdMBwTOvQS2g8DpUW004+UJnu3pcRkzZo0uin9RyhNCo6xAND+dro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tE5bc/gd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5A55C4CEF1;
-	Mon, 27 Oct 2025 19:10:28 +0000 (UTC)
+	 MIME-Version; b=MUqGknnp7K4Nm3qkCMW8MpUe8/v2xMeY/6eY5n4ZkgPKvjmLEui/DfV+EV8dNFflAojwM+6GrsmbIRleZ4qZ4i7To61u1+2o20VpoFtjgomx/AIva6T7Q/cYrSBmZQYrwh/au2AhQA6K9KX+66HlN6G+aDcmcGNwXDFgWzsC1fI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AIcMx6hs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64C53C4CEF1;
+	Mon, 27 Oct 2025 18:59:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592229;
-	bh=Ww9zqDX6dZH/w1w/TTzdGwrhLTbPcshjvwZ4PcLrKHU=;
+	s=korg; t=1761591574;
+	bh=QzJyek1+d24ji28DregmcKpMBIrxYSMOs76VJpeK4Fs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tE5bc/gdnRj1+ii6ohdxKYhgCTKuWKLqfl0XmNashLrMhCchUNLobQHUIcgaNZiVi
-	 QqqY7mAxQOsmlY4RlAMNPAEqt4chpbWa3OpBeHrE7hGzWHxSsF2EDdvSgXVquwGgM/
-	 qWw0SPbJHRbWtKbb9Qh+9POF2Av9cPnTIkfpGRlA=
+	b=AIcMx6hsoHeHL9ZkeMNMIPLSrZWcvcevyM0LtWSf0gK1zSQCd2F9uFXCHq0HfA3yB
+	 zu4cw1zfmFbHSX/KPyp0HlIeK4kK3a8oJaZj0+PpU7sz4A4IZu4zfhZurqaelsrvAG
+	 kL94yoaVW8MEv2YL859cfWPKCamqTSRJVO4qaFCE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Francesco Ruggeri <fruggeri05@gmail.com>,
-	Dmitry Safonov <dima@arista.com>,
 	Jakub Kicinski <kuba@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 041/157] net/ip6_tunnel: Prevent perpetual tunnel growth
+Subject: [PATCH 5.10 249/332] net: usb: use eth_hw_addr_set() instead of ether_addr_copy()
 Date: Mon, 27 Oct 2025 19:35:02 +0100
-Message-ID: <20251027183502.399484855@linuxfoundation.org>
+Message-ID: <20251027183531.415135103@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
-References: <20251027183501.227243846@linuxfoundation.org>
+In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
+References: <20251027183524.611456697@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,102 +62,113 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Safonov <dima@arista.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit 21f4d45eba0b2dcae5dbc9e5e0ad08735c993f16 ]
+[ Upstream commit af804e6db9f60b923ff5149d9bf782e0baa82a2b ]
 
-Similarly to ipv4 tunnel, ipv6 version updates dev->needed_headroom, too.
-While ipv4 tunnel headroom adjustment growth was limited in
-commit 5ae1e9922bbd ("net: ip_tunnel: prevent perpetual headroom growth"),
-ipv6 tunnel yet increases the headroom without any ceiling.
+Commit 406f42fa0d3c ("net-next: When a bond have a massive amount
+of VLANs...") introduced a rbtree for faster Ethernet address look
+up. To maintain netdev->dev_addr in this tree we need to make all
+the writes to it got through appropriate helpers.
 
-Reflect ipv4 tunnel headroom adjustment limit on ipv6 version.
+Convert net/usb from ether_addr_copy() to eth_hw_addr_set():
 
-Credits to Francesco Ruggeri, who was originally debugging this issue
-and wrote local Arista-specific patch and a reproducer.
+  @@
+  expression dev, np;
+  @@
+  - ether_addr_copy(dev->dev_addr, np)
+  + eth_hw_addr_set(dev, np)
 
-Fixes: 8eb30be0352d ("ipv6: Create ip6_tnl_xmit")
-Cc: Florian Westphal <fw@strlen.de>
-Cc: Francesco Ruggeri <fruggeri05@gmail.com>
-Signed-off-by: Dmitry Safonov <dima@arista.com>
-Link: https://patch.msgid.link/20251009-ip6_tunnel-headroom-v2-1-8e4dbd8f7e35@arista.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 8d93ff40d49d ("net: usb: lan78xx: fix use of improperly initialized dev->chipid in lan78xx_reset")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/ip_tunnels.h | 15 +++++++++++++++
- net/ipv4/ip_tunnel.c     | 14 --------------
- net/ipv6/ip6_tunnel.c    |  3 +--
- 3 files changed, 16 insertions(+), 16 deletions(-)
+ drivers/net/usb/aqc111.c     | 2 +-
+ drivers/net/usb/lan78xx.c    | 4 ++--
+ drivers/net/usb/r8152.c      | 2 +-
+ drivers/net/usb/rndis_host.c | 2 +-
+ drivers/net/usb/rtl8150.c    | 2 +-
+ 5 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/include/net/ip_tunnels.h b/include/net/ip_tunnels.h
-index 84751313b8265..e93db837412b2 100644
---- a/include/net/ip_tunnels.h
-+++ b/include/net/ip_tunnels.h
-@@ -481,6 +481,21 @@ struct metadata_dst *iptunnel_metadata_reply(struct metadata_dst *md,
- int skb_tunnel_check_pmtu(struct sk_buff *skb, struct dst_entry *encap_dst,
- 			  int headroom, bool reply);
+diff --git a/drivers/net/usb/aqc111.c b/drivers/net/usb/aqc111.c
+index 485959771431d..ab9431ea295ad 100644
+--- a/drivers/net/usb/aqc111.c
++++ b/drivers/net/usb/aqc111.c
+@@ -720,7 +720,7 @@ static int aqc111_bind(struct usbnet *dev, struct usb_interface *intf)
+ 	if (ret)
+ 		goto out;
  
-+static inline void ip_tunnel_adj_headroom(struct net_device *dev,
-+					  unsigned int headroom)
-+{
-+	/* we must cap headroom to some upperlimit, else pskb_expand_head
-+	 * will overflow header offsets in skb_headers_offset_update().
-+	 */
-+	const unsigned int max_allowed = 512;
-+
-+	if (headroom > max_allowed)
-+		headroom = max_allowed;
-+
-+	if (headroom > READ_ONCE(dev->needed_headroom))
-+		WRITE_ONCE(dev->needed_headroom, headroom);
-+}
-+
- int iptunnel_handle_offloads(struct sk_buff *skb, int gso_type_mask);
+-	ether_addr_copy(dev->net->dev_addr, dev->net->perm_addr);
++	eth_hw_addr_set(dev->net, dev->net->perm_addr);
  
- static inline int iptunnel_pull_offloads(struct sk_buff *skb)
-diff --git a/net/ipv4/ip_tunnel.c b/net/ipv4/ip_tunnel.c
-index 90e55b9979e69..dcf9e9c52a22a 100644
---- a/net/ipv4/ip_tunnel.c
-+++ b/net/ipv4/ip_tunnel.c
-@@ -567,20 +567,6 @@ static int tnl_update_pmtu(struct net_device *dev, struct sk_buff *skb,
- 	return 0;
+ 	/* Set Rx urb size */
+ 	dev->rx_urb_size = URB_SIZE;
+diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
+index cabe6cdd6903a..3e3c67dc6bf74 100644
+--- a/drivers/net/usb/lan78xx.c
++++ b/drivers/net/usb/lan78xx.c
+@@ -1756,7 +1756,7 @@ static void lan78xx_init_mac_address(struct lan78xx_net *dev)
+ 	lan78xx_write_reg(dev, MAF_LO(0), addr_lo);
+ 	lan78xx_write_reg(dev, MAF_HI(0), addr_hi | MAF_HI_VALID_);
+ 
+-	ether_addr_copy(dev->net->dev_addr, addr);
++	eth_hw_addr_set(dev->net, addr);
  }
  
--static void ip_tunnel_adj_headroom(struct net_device *dev, unsigned int headroom)
--{
--	/* we must cap headroom to some upperlimit, else pskb_expand_head
--	 * will overflow header offsets in skb_headers_offset_update().
--	 */
--	static const unsigned int max_allowed = 512;
--
--	if (headroom > max_allowed)
--		headroom = max_allowed;
--
--	if (headroom > READ_ONCE(dev->needed_headroom))
--		WRITE_ONCE(dev->needed_headroom, headroom);
--}
--
- void ip_md_tunnel_xmit(struct sk_buff *skb, struct net_device *dev,
- 		       u8 proto, int tunnel_hlen)
- {
-diff --git a/net/ipv6/ip6_tunnel.c b/net/ipv6/ip6_tunnel.c
-index 2a470c0c38aef..dfca22c6d345d 100644
---- a/net/ipv6/ip6_tunnel.c
-+++ b/net/ipv6/ip6_tunnel.c
-@@ -1256,8 +1256,7 @@ int ip6_tnl_xmit(struct sk_buff *skb, struct net_device *dev, __u8 dsfield,
- 	 */
- 	max_headroom = LL_RESERVED_SPACE(dst->dev) + sizeof(struct ipv6hdr)
- 			+ dst->header_len + t->hlen;
--	if (max_headroom > READ_ONCE(dev->needed_headroom))
--		WRITE_ONCE(dev->needed_headroom, max_headroom);
-+	ip_tunnel_adj_headroom(dev, max_headroom);
+ /* MDIO read and write wrappers for phylib */
+@@ -2331,7 +2331,7 @@ static int lan78xx_set_mac_addr(struct net_device *netdev, void *p)
+ 	if (!is_valid_ether_addr(addr->sa_data))
+ 		return -EADDRNOTAVAIL;
  
- 	err = ip6_tnl_encap(skb, t, &proto, fl6);
- 	if (err)
+-	ether_addr_copy(netdev->dev_addr, addr->sa_data);
++	eth_hw_addr_set(netdev, addr->sa_data);
+ 
+ 	addr_lo = netdev->dev_addr[0] |
+ 		  netdev->dev_addr[1] << 8 |
+diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
+index 0d6f10c9bb139..57565fb2c0a11 100644
+--- a/drivers/net/usb/r8152.c
++++ b/drivers/net/usb/r8152.c
+@@ -1545,7 +1545,7 @@ static int set_ethernet_addr(struct r8152 *tp)
+ 		return ret;
+ 
+ 	if (tp->version == RTL_VER_01)
+-		ether_addr_copy(dev->dev_addr, sa.sa_data);
++		eth_hw_addr_set(dev, sa.sa_data);
+ 	else
+ 		ret = rtl8152_set_mac_address(dev, &sa);
+ 
+diff --git a/drivers/net/usb/rndis_host.c b/drivers/net/usb/rndis_host.c
+index 1ff723e15d523..a244796fcaa44 100644
+--- a/drivers/net/usb/rndis_host.c
++++ b/drivers/net/usb/rndis_host.c
+@@ -422,7 +422,7 @@ generic_rndis_bind(struct usbnet *dev, struct usb_interface *intf, int flags)
+ 	if (bp[0] & 0x02)
+ 		eth_hw_addr_random(net);
+ 	else
+-		ether_addr_copy(net->dev_addr, bp);
++		eth_hw_addr_set(net, bp);
+ 
+ 	/* set a nonzero filter to enable data transfers */
+ 	memset(u.set, 0, sizeof *u.set);
+diff --git a/drivers/net/usb/rtl8150.c b/drivers/net/usb/rtl8150.c
+index c0f5e8ab1e34e..84252487ae49a 100644
+--- a/drivers/net/usb/rtl8150.c
++++ b/drivers/net/usb/rtl8150.c
+@@ -270,7 +270,7 @@ static void set_ethernet_addr(rtl8150_t *dev)
+ 	ret = get_registers(dev, IDR, sizeof(node_id), node_id);
+ 
+ 	if (!ret) {
+-		ether_addr_copy(dev->netdev->dev_addr, node_id);
++		eth_hw_addr_set(dev->netdev, node_id);
+ 	} else {
+ 		eth_hw_addr_random(dev->netdev);
+ 		netdev_notice(dev->netdev, "Assigned a random MAC address: %pM\n",
 -- 
 2.51.0
 
