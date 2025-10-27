@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-191162-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190567-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91201C1127F
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:38:03 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69210C1085B
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:08:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 354CA508973
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:27:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 23B0A1A261BB
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:05:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36B6A32548D;
-	Mon, 27 Oct 2025 19:26:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13118337688;
+	Mon, 27 Oct 2025 19:00:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TMA494YW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lp1pke5g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4BCD32549B;
-	Mon, 27 Oct 2025 19:26:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE2D931578B;
+	Mon, 27 Oct 2025 19:00:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761593170; cv=none; b=q5TEAO/J6Ha/wUlO5MW6TLUz43ugeKhUTXAk//eRYATGtyEPkRQ1nYM7BkCRN0UP3NKHfkIm5R0Gsr105YdtulxAQZhlQdBB49fnwNJwJPFomaoxSVHKwz8Q2kP01Za1jvGMWfnGCfFKeaS90RIrP8R/2c10LN/vz+HfLvN/1fc=
+	t=1761591627; cv=none; b=n8ZvmRWPgOsSxj48L9VIoGBQfg3+v9TWfoZEbrQ0xCkYwPiphfPgPDr4yGozoyKEqawXdh4c+/IVzrkqiZplal0Xn28o4kAULL1ZfcuT3JTwMwCDNYrxTAfH5wz03ITlY+sxZ5n5mvHjFiqL73Gp/VBtFClxSDJB/7l2Kwr79XU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761593170; c=relaxed/simple;
-	bh=EIE6ceYDkHtE3ln8Q6c988U1l4syhrkQ+bDlNcp1PCw=;
+	s=arc-20240116; t=1761591627; c=relaxed/simple;
+	bh=m10aOH3Hx4z2HTfCpNR2nmexFi/rRqHqEOsaQCYjYdk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RKZ4TBZ+TWjunuo4behpO9W1juMYk7nEf3MUOnEu+v/OB4nf48yyIC/hTSlqyrdgMV+5HEfsqoEdZFpXqCTNKZIspEVptcM0JYxmMrOeSWrwSQYI9vsqnYB8qKtvAQ5Fut5x7zn0lB4fYLdAiyUz+lUdSbHLL/Ns2hdi3Z/rWuc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TMA494YW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3517AC4CEF1;
-	Mon, 27 Oct 2025 19:26:09 +0000 (UTC)
+	 MIME-Version; b=Yj5MPi9ObeMMCtCR9w5zHcUx1BOCoCig1tTTngHMjkt7aelUP6+3iWc2ARJUT0kaIL/WYzfR0hEqImCSd95Odv8BrXEt81qO6M5wX85NbYZPSgoaZUTEFS7M6e5O8gJ3dYqGy8bO10e/khyibTq7Q7DkGxSHTwcagE7lR9HDyNI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lp1pke5g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50944C4CEFD;
+	Mon, 27 Oct 2025 19:00:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761593169;
-	bh=EIE6ceYDkHtE3ln8Q6c988U1l4syhrkQ+bDlNcp1PCw=;
+	s=korg; t=1761591627;
+	bh=m10aOH3Hx4z2HTfCpNR2nmexFi/rRqHqEOsaQCYjYdk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TMA494YW3JEEzC3iUl7lz2leoYbktrRQa9ziJKXyog8jWzqUFGLbR/5eXVcx6G9fW
-	 jKNgW+KQ5R76K7P+D0GNjSQ9lDYVxecsBxWcc3dv7WuxAdC2nCQtAzacB6LBN1vyr5
-	 dB4AmoreNKciuc0S8Txfg6rqDYEOBuFT+Mq4yHRo=
+	b=lp1pke5g/hhAV8vRlLfYWCB7Bqnr+/oyfy2dOLsZEG+jj0iaHwo2fiWc9WV389FhM
+	 BqWQELuF5BcFk8zfzf6iRBPH1cy0N1o0XDT6YkhqSFPNkIo41jFq34YfGkvoCQ2Gv0
+	 2BCwT+Y+iUhwU4rqlqM+DlUquVWX8zzU8Uuc/U0Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ioana Ciornei <ioana.ciornei@nxp.com>,
-	Mathew McBride <matt@traverse.com.au>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 040/184] dpaa2-eth: fix the pointer passed to PTR_ALIGN on Tx path
-Date: Mon, 27 Oct 2025 19:35:22 +0100
-Message-ID: <20251027183515.989888182@linuxfoundation.org>
+Subject: [PATCH 5.10 270/332] net: rtnetlink: use BIT for flag values
+Date: Mon, 27 Oct 2025 19:35:23 +0100
+Message-ID: <20251027183531.990457641@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
-References: <20251027183514.934710872@linuxfoundation.org>
+In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
+References: <20251027183524.611456697@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,52 +62,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ioana Ciornei <ioana.ciornei@nxp.com>
+From: Nikolay Aleksandrov <razor@blackwall.org>
 
-[ Upstream commit 902e81e679d86846a2404630d349709ad9372d0d ]
+[ Upstream commit 0569e31f1bc2f50613ba4c219f3ecc0d1174d841 ]
 
-The blamed commit increased the needed headroom to account for
-alignment. This means that the size required to always align a Tx buffer
-was added inside the dpaa2_eth_needed_headroom() function. By doing
-that, a manual adjustment of the pointer passed to PTR_ALIGN() was no
-longer correct since the 'buffer_start' variable was already pointing
-to the start of the skb's memory.
+Use BIT to define flag values.
 
-The behavior of the dpaa2-eth driver without this patch was to drop
-frames on Tx even when the headroom was matching the 128 bytes
-necessary. Fix this by removing the manual adjust of 'buffer_start' from
-the PTR_MODE call.
-
-Closes: https://lore.kernel.org/netdev/70f0dcd9-1906-4d13-82df-7bbbbe7194c6@app.fastmail.com/T/#u
-Fixes: f422abe3f23d ("dpaa2-eth: increase the needed headroom to account for alignment")
-Signed-off-by: Ioana Ciornei <ioana.ciornei@nxp.com>
-Tested-by: Mathew McBride <matt@traverse.com.au>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20251016135807.360978-1-ioana.ciornei@nxp.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Nikolay Aleksandrov <razor@blackwall.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: bf29555f5bdc ("rtnetlink: Allow deleting FDB entries in user namespace")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ include/net/rtnetlink.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c b/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c
-index 0f4efd5053320..a5f3d19f1466c 100644
---- a/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c
-+++ b/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c
-@@ -1077,8 +1077,7 @@ static int dpaa2_eth_build_single_fd(struct dpaa2_eth_priv *priv,
- 	dma_addr_t addr;
+diff --git a/include/net/rtnetlink.h b/include/net/rtnetlink.h
+index 02b0636a4523d..030fc7eef7401 100644
+--- a/include/net/rtnetlink.h
++++ b/include/net/rtnetlink.h
+@@ -10,7 +10,7 @@ typedef int (*rtnl_doit_func)(struct sk_buff *, struct nlmsghdr *,
+ typedef int (*rtnl_dumpit_func)(struct sk_buff *, struct netlink_callback *);
  
- 	buffer_start = skb->data - dpaa2_eth_needed_headroom(skb);
--	aligned_start = PTR_ALIGN(buffer_start - DPAA2_ETH_TX_BUF_ALIGN,
--				  DPAA2_ETH_TX_BUF_ALIGN);
-+	aligned_start = PTR_ALIGN(buffer_start, DPAA2_ETH_TX_BUF_ALIGN);
- 	if (aligned_start >= skb->head)
- 		buffer_start = aligned_start;
- 	else
+ enum rtnl_link_flags {
+-	RTNL_FLAG_DOIT_UNLOCKED = 1,
++	RTNL_FLAG_DOIT_UNLOCKED = BIT(0),
+ };
+ 
+ enum rtnl_kinds {
 -- 
 2.51.0
 
