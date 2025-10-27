@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-190820-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191164-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6592FC10C9A
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:20:02 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6C41C110EA
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:32:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E50CA502F42
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:13:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 21778188A544
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:28:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EE1E32B994;
-	Mon, 27 Oct 2025 19:11:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29D9E3277B4;
+	Mon, 27 Oct 2025 19:26:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SjkTjJNN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Un7intwH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BFC4322A04;
-	Mon, 27 Oct 2025 19:11:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC1893277AF;
+	Mon, 27 Oct 2025 19:26:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592284; cv=none; b=aokVT6EscC0hZHegOmOMrBIBKcZhQ5eqv55QBoeLmtRXBwnyL+0IbiDZ4xQvsBrQ0Se/yxTWVcFY5FzxTs+BPMxgAiu3XexI0+riNKDuXeFDizVjaM6KMnz4cj35H59vuHFG7LJj4bQCFEHOX5l49DmNrpxLt4T5WtV5vTDeu30=
+	t=1761593174; cv=none; b=BKQ5Pxpbc8xMLcWjTpVqaE3420HYgMzsLrIsCmx3ej7rrkdXFVepmOfokGvckKbY27WS1TQaKaiZ2bterGWm8OGt9FhTZrE1v7d6NXgdg5yO+e7yJJ7ZR25RaSNPLO4V2miTyXs7tGsYqIffH088fuqVmPqyIrXoROeowuUSZ9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592284; c=relaxed/simple;
-	bh=0OvO9qS5/6qPvLopLynUSRKfHV+iZ0lZyAyBXs/ymMQ=;
+	s=arc-20240116; t=1761593174; c=relaxed/simple;
+	bh=KOpsgQw9aw4uCEkT9m3yTCDeOWnR2V7Igq2354zLl+0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MB9SYlEpAtvY/9M7d/LSBKhtbcagDf+oFcr6OIz9Vr5Kk/unD4zXnASb4WtJFRlyHqjnD0o2XEmss48JEy559wzxmMgfxZoTecE5CbZRH2g/KTfHezwSmlDBCRdbUGvV6aEp3gsDdP1vRi4Cr0oZxASA/pUieYflvZrdQeLqbbg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SjkTjJNN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7920C4CEF1;
-	Mon, 27 Oct 2025 19:11:23 +0000 (UTC)
+	 MIME-Version; b=ErpsD5805g/0IfOg8IpHe6LJdSZwFiz0ozPKY08aDgKQ38NLQQeBqmuMU3m6SIvHt0EIB8kCzPJ6SW63uxFswGHrT2EwoxfXSDA3LWejQzZFjy2heYrF53t+Xrkq788QqVPt401DkBegNMvHOt5ecBsLYE78UAP3U+8APciqwYA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Un7intwH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D72CC4CEF1;
+	Mon, 27 Oct 2025 19:26:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592284;
-	bh=0OvO9qS5/6qPvLopLynUSRKfHV+iZ0lZyAyBXs/ymMQ=;
+	s=korg; t=1761593174;
+	bh=KOpsgQw9aw4uCEkT9m3yTCDeOWnR2V7Igq2354zLl+0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SjkTjJNNpXDUUMz95K8lRHwW+4fNjKSI/Es4Gn+PO93+ZZjcW3vrwZhgv4BspcytN
-	 uTeR+svlATvnLooKWfCOfDmVNsn+SGzwfnkf2FkMG1ymBUmbuKXv/c8EgQzZYqwezW
-	 pXSMpSv11FqUCunwY8pKvPAw+SGtCP6xSoy8ut6s=
+	b=Un7intwH6WzOfpUIXQgu1a4AG59yg5JLFGCgGZgmaVQ96CoQckCFvgxu6ikSk7B//
+	 rDFoootBZVQedxg4sP3wvVBgPF0ivHVNB7glaOLFygyTHWEkfVLsoBm0DSJKXqEc0y
+	 ZLA8tpNT/o8vCb/AZLlCRmFo2fq1DhFqJIAlPm7w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?=E5=8D=A2=E5=9B=BD=E5=AE=8F?= <luguohong@xiaomi.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Jiri Kosina <jkosina@suse.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 063/157] HID: hid-input: only ignore 0 battery events for digitizers
+Subject: [PATCH 6.17 042/184] can: bxcan: bxcan_start_xmit(): use can_dev_dropped_skb() instead of can_dropped_invalid_skb()
 Date: Mon, 27 Oct 2025 19:35:24 +0100
-Message-ID: <20251027183502.973431309@linuxfoundation.org>
+Message-ID: <20251027183516.041636946@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
-References: <20251027183501.227243846@linuxfoundation.org>
+In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
+References: <20251027183514.934710872@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +59,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+From: Marc Kleine-Budde <mkl@pengutronix.de>
 
-[ Upstream commit 0187c08058da3e7f11b356ac27e0c427d36f33f2 ]
+[ Upstream commit 3a20c444cd123e820e10ae22eeaf00e189315aa1 ]
 
-Commit 581c4484769e ("HID: input: map digitizer battery usage") added
-handling of battery events for digitizers (typically for batteries
-presented in stylii). Digitizers typically report correct battery levels
-only when stylus is actively touching the surface, and in other cases
-they may report battery level of 0. To avoid confusing consumers of the
-battery information the code was added to filer out reports with 0
-battery levels.
+In addition to can_dropped_invalid_skb(), the helper function
+can_dev_dropped_skb() checks whether the device is in listen-only mode and
+discards the skb accordingly.
 
-However there exist other kinds of devices that may legitimately report
-0 battery levels. Fix this by filtering out 0-level reports only for
-digitizer usages, and continue reporting them for other kinds of devices
-(Smart Batteries, etc).
+Replace can_dropped_invalid_skb() by can_dev_dropped_skb() to also drop
+skbs in for listen-only mode.
 
-Reported-by: 卢国宏 <luguohong@xiaomi.com>
-Fixes: 581c4484769e ("HID: input: map digitizer battery usage")
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Reported-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Closes: https://lore.kernel.org/all/20251017-bizarre-enchanted-quokka-f3c704-mkl@pengutronix.de/
+Fixes: f00647d8127b ("can: bxcan: add support for ST bxCAN controller")
+Link: https://patch.msgid.link/20251017-fix-skb-drop-check-v1-1-556665793fa4@pengutronix.de
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-input.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/net/can/bxcan.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/hid/hid-input.c b/drivers/hid/hid-input.c
-index cd9d031858438..59ec205421753 100644
---- a/drivers/hid/hid-input.c
-+++ b/drivers/hid/hid-input.c
-@@ -636,7 +636,10 @@ static void hidinput_update_battery(struct hid_device *dev, unsigned int usage,
- 		return;
- 	}
+diff --git a/drivers/net/can/bxcan.c b/drivers/net/can/bxcan.c
+index bfc60eb33dc37..333ad42ea73bc 100644
+--- a/drivers/net/can/bxcan.c
++++ b/drivers/net/can/bxcan.c
+@@ -842,7 +842,7 @@ static netdev_tx_t bxcan_start_xmit(struct sk_buff *skb,
+ 	u32 id;
+ 	int i, j;
  
--	if (value == 0 || value < dev->battery_min || value > dev->battery_max)
-+	if ((usage & HID_USAGE_PAGE) == HID_UP_DIGITIZER && value == 0)
-+		return;
-+
-+	if (value < dev->battery_min || value > dev->battery_max)
- 		return;
+-	if (can_dropped_invalid_skb(ndev, skb))
++	if (can_dev_dropped_skb(ndev, skb))
+ 		return NETDEV_TX_OK;
  
- 	capacity = hidinput_scale_battery_capacity(dev, value);
+ 	if (bxcan_tx_busy(priv))
 -- 
 2.51.0
 
