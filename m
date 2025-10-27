@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-190633-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190881-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BF6FC1079B
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:06:48 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AEBFC10D7B
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:21:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 8EC023515BD
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:06:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6337A566331
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:15:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E883332C95F;
-	Mon, 27 Oct 2025 19:03:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E5BA328634;
+	Mon, 27 Oct 2025 19:14:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gQY2n7tP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bWS8s8D4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1329130DEA2;
-	Mon, 27 Oct 2025 19:03:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47ECF328604;
+	Mon, 27 Oct 2025 19:14:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591796; cv=none; b=N+vs+pHmrOk5+djx3sk9ZHOtFd+0+KmHbbBqMiCYgisSqj6QgJbRLa8iN+D+voizCgPGx4NJpKzULX25yBQ8JpXvhM1YBI1v9qPoYVseryoS+8NkxHD8UEVg9JGVf4sp53bxq1RoRLAPGI/N/Z7NXqQyt/OMFJJogJvhP5UT4tQ=
+	t=1761592447; cv=none; b=ollS8LVTIF6MSNlU90C57XXueNMXflSkdhrb+TIhTe7Gr3koS9kzX7G0ZQk9SdnLjuRtBEVspn0nGwd2rPAN5STN9HH2Nao299UOHldeay5iNVMS5+IxAZB3WJnGfWM6cjshrEd7iMjYhWlFaYidkQW0J8WFnH+wTgKLQKm6chE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591796; c=relaxed/simple;
-	bh=1rrQ7DEFPe/Hp7sMlEKxEx6u6bcJCpHhkZrLHJejV4Q=;
+	s=arc-20240116; t=1761592447; c=relaxed/simple;
+	bh=RAChbIuzvPMtqjiRwf62ZOX48tpgL1/flaeo2W3neSs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uFUyVzyOWHZj+4XvwJk678T8jVhsyE/h2kB9zIKyddwCe9hG8SaeWyE25a5lRqpdoBQj0M0WkQqTIRZB/YPFzFFsfAs1BlF+6yGDSwahK7PTXuJmHjCkTQFnzCSoK73VRqNkCzK/Dyym15YWf8txok5Rc+4OicvT1s7c+PjZowI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gQY2n7tP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F84EC4CEF1;
-	Mon, 27 Oct 2025 19:03:15 +0000 (UTC)
+	 MIME-Version; b=Qorgck+W3y/Cslt4HydhDA76husiJSpc4zTsdVurrfMyDY788BGmHkFiTR9+GDgm6TSJdHqqc15H/dqaOu2Ra/doOt5VOr5Lq5/sU3Gbv5JGUudkdqTITTH/jt1Wn2ygEhVul2auHfhfvGG4xn/IAxLlEhwY72rk12GTxah3vsU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bWS8s8D4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F696C4CEF1;
+	Mon, 27 Oct 2025 19:14:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591795;
-	bh=1rrQ7DEFPe/Hp7sMlEKxEx6u6bcJCpHhkZrLHJejV4Q=;
+	s=korg; t=1761592444;
+	bh=RAChbIuzvPMtqjiRwf62ZOX48tpgL1/flaeo2W3neSs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gQY2n7tPN3kEedQ02VCeGp4jJNrvajWbDaItyaJd4s6xbV5j6OgWUkZwhkjZq7/3z
-	 mrIAKMn3icUusMv4Shp7SZkAVJUmxte8TJXw7tB9zswJIvd/nttCUjXF7J92phFdWZ
-	 IB89XTERpsp/nIKk/Lim6nrgQfLB3o1NB660T/Zc=
+	b=bWS8s8D40C9EnOyqsaodJ8EFc6g+HJIpeNTyAk48hsxqe6ehPWZvHtnXF0VMQ+tuA
+	 VXfc04T4rXH5qvSH22UBXcRPi0dyLI9Kihjk+ZFRugai8Ql46mlne8ULQD22C9dr1c
+	 WTT22i0PS5bxgENIQNMcoW0eFFWQf+Zxmh3Qqa+E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Jinlin <lijinlin3@huawei.com>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Dan Williams <dan.j.williams@intel.com>
-Subject: [PATCH 5.10 332/332] fsdax: Fix infinite loop in dax_iomap_rw()
+	Sean Nyekjaer <sean@geanix.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 124/157] iio: imu: inv_icm42600: Avoid configuring if already pm_runtime suspended
 Date: Mon, 27 Oct 2025 19:36:25 +0100
-Message-ID: <20251027183533.663068880@linuxfoundation.org>
+Message-ID: <20251027183504.576585116@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
-References: <20251027183524.611456697@linuxfoundation.org>
+In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
+References: <20251027183501.227243846@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +63,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Jinlin <lijinlin3@huawei.com>
+From: Sean Nyekjaer <sean@geanix.com>
 
-commit 17d9c15c9b9e7fb285f7ac5367dfb5f00ff575e3 upstream.
+[ Upstream commit 466f7a2fef2a4e426f809f79845a1ec1aeb558f4 ]
 
-I got an infinite loop and a WARNING report when executing a tail command
-in virtiofs.
+Do as in suspend, skip resume configuration steps if the device is already
+pm_runtime suspended. This avoids reconfiguring a device that is already
+in the correct low-power state and ensures that pm_runtime handles the
+power state transitions properly.
 
-  WARNING: CPU: 10 PID: 964 at fs/iomap/iter.c:34 iomap_iter+0x3a2/0x3d0
-  Modules linked in:
-  CPU: 10 PID: 964 Comm: tail Not tainted 5.19.0-rc7
-  Call Trace:
-  <TASK>
-  dax_iomap_rw+0xea/0x620
-  ? __this_cpu_preempt_check+0x13/0x20
-  fuse_dax_read_iter+0x47/0x80
-  fuse_file_read_iter+0xae/0xd0
-  new_sync_read+0xfe/0x180
-  ? 0xffffffff81000000
-  vfs_read+0x14d/0x1a0
-  ksys_read+0x6d/0xf0
-  __x64_sys_read+0x1a/0x20
-  do_syscall_64+0x3b/0x90
-  entry_SYSCALL_64_after_hwframe+0x63/0xcd
-
-The tail command will call read() with a count of 0. In this case,
-iomap_iter() will report this WARNING, and always return 1 which casuing
-the infinite loop in dax_iomap_rw().
-
-Fixing by checking count whether is 0 in dax_iomap_rw().
-
-Fixes: ca289e0b95af ("fsdax: switch dax_iomap_rw to use iomap_iter")
-Signed-off-by: Li Jinlin <lijinlin3@huawei.com>
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Link: https://lore.kernel.org/r/20220725032050.3873372-1-lijinlin3@huawei.com
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+Fixes: 31c24c1e93c3 ("iio: imu: inv_icm42600: add core of new inv_icm42600 driver")
+Signed-off-by: Sean Nyekjaer <sean@geanix.com>
+Link: https://patch.msgid.link/20250901-icm42pmreg-v3-3-ef1336246960@geanix.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+[ adjusted context for suspend/resume functions lacking APEX/wakeup support ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/dax.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/iio/imu/inv_icm42600/inv_icm42600_core.c |   11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
---- a/fs/dax.c
-+++ b/fs/dax.c
-@@ -1219,6 +1219,9 @@ dax_iomap_rw(struct kiocb *iocb, struct
- 	loff_t done = 0;
- 	int ret;
+--- a/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
++++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
+@@ -670,17 +670,15 @@ EXPORT_SYMBOL_GPL(inv_icm42600_core_prob
+ static int __maybe_unused inv_icm42600_suspend(struct device *dev)
+ {
+ 	struct inv_icm42600_state *st = dev_get_drvdata(dev);
+-	int ret;
++	int ret = 0;
  
-+	if (!iomi.len)
-+		return 0;
+ 	mutex_lock(&st->lock);
+ 
+ 	st->suspended.gyro = st->conf.gyro.mode;
+ 	st->suspended.accel = st->conf.accel.mode;
+ 	st->suspended.temp = st->conf.temp_en;
+-	if (pm_runtime_suspended(dev)) {
+-		ret = 0;
++	if (pm_runtime_suspended(dev))
+ 		goto out_unlock;
+-	}
+ 
+ 	/* disable FIFO data streaming */
+ 	if (st->fifo.on) {
+@@ -712,10 +710,13 @@ static int __maybe_unused inv_icm42600_r
+ 	struct inv_icm42600_state *st = dev_get_drvdata(dev);
+ 	struct inv_icm42600_timestamp *gyro_ts = iio_priv(st->indio_gyro);
+ 	struct inv_icm42600_timestamp *accel_ts = iio_priv(st->indio_accel);
+-	int ret;
++	int ret = 0;
+ 
+ 	mutex_lock(&st->lock);
+ 
++	if (pm_runtime_suspended(dev))
++		goto out_unlock;
 +
- 	if (iov_iter_rw(iter) == WRITE) {
- 		lockdep_assert_held_write(&iomi.inode->i_rwsem);
- 		iomi.flags |= IOMAP_WRITE;
+ 	ret = inv_icm42600_enable_regulator_vddio(st);
+ 	if (ret)
+ 		goto out_unlock;
 
 
 
