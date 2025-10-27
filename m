@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-190451-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190080-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90E3EC106E4
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:04:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 76409C0FF30
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:39:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 878A31A2790C
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:01:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 909B419C4FFC
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:40:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 695A73346BB;
-	Mon, 27 Oct 2025 18:55:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEAB730217A;
+	Mon, 27 Oct 2025 18:39:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FMqvnvED"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OFuA58nB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23FC9329C73;
-	Mon, 27 Oct 2025 18:55:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B0A82D8DB9;
+	Mon, 27 Oct 2025 18:39:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591325; cv=none; b=git6YOd9KCwEcsgbru5OAboiLZGGEFBlPrcQx2O3r10chckK/l5BdHHFl1Mw9fOP131Kx0cY2K1e6rmLxWoL7nYPe7s1HumHdgOW82gkTih7R0ugprjoma325DSMMz1s+5IV2wIwPqopaEHHEy4YvXtrBErjws9LhNrg1BcaeLg=
+	t=1761590383; cv=none; b=Q7ftfPMr2NChAYQeHz0M0m7WzCejbPa/W5hb1wJpPVM0y2+CeECX8j8+KV3J4JdGYWPwqXFfOUKGcTRV0grE15aS/1PJRTfGkkLIyM/QZRYCY2AS7dhPAP1cxYHRXFI+kxIzr4rzeVSldg45CdBnhrxYzlGU9n+nUkwOj7vodLM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591325; c=relaxed/simple;
-	bh=G4HG2SCMgr6tcWa5fHtGJK+nB6qdaH10lJUk4xwtjKk=;
+	s=arc-20240116; t=1761590383; c=relaxed/simple;
+	bh=k66d5R+gFWoJgSgs831IRG1RlLXegHOiaRf4RxezKh8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oqAOguO++BE3U2jV2irujHCty3LD/WoVjpsv8URdNgsLhEXy1FliLfL6Bv3GsYrX0TJFNl6ox+5PQV9mOncIvUTVYtmBtFNAlm+ge8BGAftqkSb5XV4djz8Nfh5BXqJHXb8lWOvb5D1kqyKjE2GvVJhRll5T9kmX3QAB4JYl51I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FMqvnvED; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA684C116B1;
-	Mon, 27 Oct 2025 18:55:24 +0000 (UTC)
+	 MIME-Version; b=LYsQiMWTgiurQ0YcnQFiw/D/RgMzMAc2pvf1Pz8rO0kN/xcFG/7qbrIlvL4mzoMnGlpWHesjeBnX4lC36gmv3Lu3Yo0iv/sFDLkHArjT+dH7+wwC1pM8zq4ezUMwwDl029QqVTfSW+MsdWKgstMN/4HJo60cxIxtMzFyVFwRMqQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OFuA58nB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BC25C4CEF1;
+	Mon, 27 Oct 2025 18:39:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591325;
-	bh=G4HG2SCMgr6tcWa5fHtGJK+nB6qdaH10lJUk4xwtjKk=;
+	s=korg; t=1761590383;
+	bh=k66d5R+gFWoJgSgs831IRG1RlLXegHOiaRf4RxezKh8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FMqvnvEDlTq8+nodgqfN3dw6/1QdLaFcFnrvDvpWWJwWZxr32VPhUINyp/U0tGgha
-	 LUJVo79UTNmgZMe/RhLUUgC2fo6h0kKAOcME6QRgIFvL+InHmEnTikVITIwJVu21qr
-	 AWcrB21snbuB1P4dbR6iYzLAxwUbZyOo817ZFNlk=
+	b=OFuA58nBKKtmOPAiiSHJuJN0NHzS/6kwfKZ/fQzvaYKrs34MJ1lwWyHg1E28o2xJf
+	 GwOhy9Pvr0ZLznn8i6UUH3sizzdtlxWP/7fVCJJh7cFiuTJ4UZSvrLxN8HW4nC2Ktl
+	 5fNSEp0A9IlPaedtfBBI0gKNCYwHT2LFOntp9up4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harini T <harini.t@amd.com>,
-	Peng Fan <peng.fan@nxp.com>,
-	Jassi Brar <jassisinghbrar@gmail.com>,
+	Li Nan <linan122@huawei.com>,
+	Yu Kuai <yukuai3@huawei.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 117/332] mailbox: zynqmp-ipi: Remove dev.parent check in zynqmp_ipi_free_mboxes
+Subject: [PATCH 5.4 024/224] blk-mq: check kobject state_in_sysfs before deleting in blk_mq_unregister_hctx
 Date: Mon, 27 Oct 2025 19:32:50 +0100
-Message-ID: <20251027183527.704410930@linuxfoundation.org>
+Message-ID: <20251027183509.651473705@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
-References: <20251027183524.611456697@linuxfoundation.org>
+In-Reply-To: <20251027183508.963233542@linuxfoundation.org>
+References: <20251027183508.963233542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +63,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Harini T <harini.t@amd.com>
+From: Li Nan <linan122@huawei.com>
 
-[ Upstream commit 019e3f4550fc7d319a7fd03eff487255f8e8aecd ]
+[ Upstream commit 4c7ef92f6d4d08a27d676e4c348f4e2922cab3ed ]
 
-The ipi_mbox->dev.parent check is unreliable proxy for registration
-status as it fails to protect against probe failures that occur after
-the parent is assigned but before device_register() completes.
+In __blk_mq_update_nr_hw_queues() the return value of
+blk_mq_sysfs_register_hctxs() is not checked. If sysfs creation for hctx
+fails, later changing the number of hw_queues or removing disk will
+trigger the following warning:
 
-device_is_registered() is the canonical and robust method to verify the
-registration status.
+  kernfs: can not remove 'nr_tags', no directory
+  WARNING: CPU: 2 PID: 637 at fs/kernfs/dir.c:1707 kernfs_remove_by_name_ns+0x13f/0x160
+  Call Trace:
+   remove_files.isra.1+0x38/0xb0
+   sysfs_remove_group+0x4d/0x100
+   sysfs_remove_groups+0x31/0x60
+   __kobject_del+0x23/0xf0
+   kobject_del+0x17/0x40
+   blk_mq_unregister_hctx+0x5d/0x80
+   blk_mq_sysfs_unregister_hctxs+0x94/0xd0
+   blk_mq_update_nr_hw_queues+0x124/0x760
+   nullb_update_nr_hw_queues+0x71/0xf0 [null_blk]
+   nullb_device_submit_queues_store+0x92/0x120 [null_blk]
 
-Remove ipi_mbox->dev.parent check in zynqmp_ipi_free_mboxes().
+kobjct_del() was called unconditionally even if sysfs creation failed.
+Fix it by checkig the kobject creation statusbefore deleting it.
 
-Fixes: 4981b82ba2ff ("mailbox: ZynqMP IPI mailbox controller")
-Signed-off-by: Harini T <harini.t@amd.com>
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
-Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
+Fixes: 477e19dedc9d ("blk-mq: adjust debugfs and sysfs register when updating nr_hw_queues")
+Signed-off-by: Li Nan <linan122@huawei.com>
+Reviewed-by: Yu Kuai <yukuai3@huawei.com>
+Link: https://lore.kernel.org/r/20250826084854.1030545-1-linan666@huaweicloud.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mailbox/zynqmp-ipi-mailbox.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ block/blk-mq-sysfs.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/mailbox/zynqmp-ipi-mailbox.c b/drivers/mailbox/zynqmp-ipi-mailbox.c
-index 136c1f67dd223..e64f7157f065f 100644
---- a/drivers/mailbox/zynqmp-ipi-mailbox.c
-+++ b/drivers/mailbox/zynqmp-ipi-mailbox.c
-@@ -618,10 +618,8 @@ static void zynqmp_ipi_free_mboxes(struct zynqmp_ipi_pdata *pdata)
- 	i = pdata->num_mboxes;
- 	for (; i >= 0; i--) {
- 		ipi_mbox = &pdata->ipi_mboxes[i];
--		if (ipi_mbox->dev.parent) {
--			if (device_is_registered(&ipi_mbox->dev))
--				device_unregister(&ipi_mbox->dev);
--		}
-+		if (device_is_registered(&ipi_mbox->dev))
-+			device_unregister(&ipi_mbox->dev);
- 	}
+diff --git a/block/blk-mq-sysfs.c b/block/blk-mq-sysfs.c
+index 7abd66d1228ad..532afcb672412 100644
+--- a/block/blk-mq-sysfs.c
++++ b/block/blk-mq-sysfs.c
+@@ -241,9 +241,11 @@ static void blk_mq_unregister_hctx(struct blk_mq_hw_ctx *hctx)
+ 		return;
+ 
+ 	hctx_for_each_ctx(hctx, ctx, i)
+-		kobject_del(&ctx->kobj);
++		if (ctx->kobj.state_in_sysfs)
++			kobject_del(&ctx->kobj);
+ 
+-	kobject_del(&hctx->kobj);
++	if (hctx->kobj.state_in_sysfs)
++		kobject_del(&hctx->kobj);
  }
  
+ static int blk_mq_register_hctx(struct blk_mq_hw_ctx *hctx)
 -- 
 2.51.0
 
