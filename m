@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-190324-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190372-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B77FC1042E
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:54:26 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6E1FC10620
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:01:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 8235A4F6B74
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:53:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E98905610E7
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:55:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAB48326D4F;
-	Mon, 27 Oct 2025 18:50:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 745C432AAB3;
+	Mon, 27 Oct 2025 18:52:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iX4GgcTE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sht2T+p1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 732DC32548B;
-	Mon, 27 Oct 2025 18:50:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EBF932A3E1;
+	Mon, 27 Oct 2025 18:52:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591006; cv=none; b=eySzC7KPS7dYHG2I4CjofUeCavHXsKgYGW8M0YOmPW5a8+LkDZC23uVCm/aUXXnqSVMHmXtpbRHQbLi/aBKU11NcENhIwNZ3kQc6ujvVIDH3ZstNlPt8RBfb7l9alXBc8Ubo2W5SqmUR33Fe3D8sxiLN+Klp0mbFAjrFrDkIYSU=
+	t=1761591128; cv=none; b=SHoPeP+gEHVhna6xzrw83P32EQw66XbkL29EfV9i8U1u5yKX6t4lTNOyKpwXBeAjBP9gngA1tXYmI7jjpD6oaws+r4DRrrfzBEbODHRJ1rlCjWoWbCU+TTWK4yHyUoWnwgoFxqZWGbCqqjfsV85PnpanYfGyEZUffC2eX+y6Bi4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591006; c=relaxed/simple;
-	bh=2Z2k18Wxyzs1TS/x3JWsBQ7OrILcUHTJ4GPRpi4umz0=;
+	s=arc-20240116; t=1761591128; c=relaxed/simple;
+	bh=412YTRPzIYp5q3UZYS0yWXHe9j7T68A8xOW8sL6R7f8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZSY/QZvH6O3OHrJcshzdvcdrMjTvHGw1yI4DptI/fwUkM4eQeRpgw6W1vCRPgC3TTDuCNOBrQR30yrEU1NNwmuceUKyUWWaW5qCLJL9f+8N82ZyNLnSoURPqJ9LNYlmRiHvl1T6j9c2KIP295a5hSBumgBxvyu0d9sIUFLyGdIM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iX4GgcTE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 054E7C4CEFD;
-	Mon, 27 Oct 2025 18:50:05 +0000 (UTC)
+	 MIME-Version; b=W0P1m2yg6gurwqvVg5JK7jWMej6bf0mV678lwVjSGXybD7jlPjuwaM/ePI0TnC6nzhAwH8wHpvOp8fdry+C74SXxnmmnwrnr/3E8ZlZIBfE0edpTU+pmpHZL4MT9AW/MurmsS19DDqMh/g1n6fSeXEOSMySaFsEcHiyTLuyB2KU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sht2T+p1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B49D5C4CEF1;
+	Mon, 27 Oct 2025 18:52:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591006;
-	bh=2Z2k18Wxyzs1TS/x3JWsBQ7OrILcUHTJ4GPRpi4umz0=;
+	s=korg; t=1761591128;
+	bh=412YTRPzIYp5q3UZYS0yWXHe9j7T68A8xOW8sL6R7f8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iX4GgcTEXq8W/rvvYIdkeOKRVQlynsPq07Fi/wP+B8fn4jU4y94bDGupRfXDkTYih
-	 1+yFZFFyzhKXhl+X5mX7KmH4c8deCCgmhDd0nh1gVgWToMlhycM9ygjNiqEHK2jvGy
-	 aBtPrtMrg1YzisZOZKRK0H0SLom9xJgBHC5/Fv5U=
+	b=sht2T+p12XFKa4+jn8NHUFeRrYMcDsH2Z/8gmaczMJ+xyJuNn/rYUvqfAXY35HMLG
+	 S67yllBn4y0UlIvY20Wo4+rr71NiSwHx8vcwudK4C5IejnO6CWZ/diyaxWQ947+9C3
+	 3LM6qPr+rY/R2/5IBSafT7ZFtLaZ6nrg2LEP/EZg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qianfeng Rong <rongqianfeng@vivo.com>,
-	John Garry <john.g.garry@oracle.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Jens Axboe <axboe@kernel.dk>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 030/332] block: use int to store blk_stack_limits() return value
-Date: Mon, 27 Oct 2025 19:31:23 +0100
-Message-ID: <20251027183525.416715434@linuxfoundation.org>
+Subject: [PATCH 5.10 031/332] PM: sleep: core: Clear power.must_resume in noirq suspend error path
+Date: Mon, 27 Oct 2025 19:31:24 +0100
+Message-ID: <20251027183525.442646213@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
 References: <20251027183524.611456697@linuxfoundation.org>
@@ -68,46 +66,65 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Qianfeng Rong <rongqianfeng@vivo.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit b0b4518c992eb5f316c6e40ff186cbb7a5009518 ]
+[ Upstream commit be82483d1b60baf6747884bd74cb7de484deaf76 ]
 
-Change the 'ret' variable in blk_stack_limits() from unsigned int to int,
-as it needs to store negative value -1.
+If system suspend is aborted in the "noirq" phase (for instance, due to
+an error returned by one of the device callbacks), power.is_noirq_suspended
+will not be set for some devices and device_resume_noirq() will return
+early for them.  Consequently, noirq resume callbacks will not run for
+them at all because the noirq suspend callbacks have not run for them
+yet.
 
-Storing the negative error codes in unsigned type, or performing equality
-comparisons (e.g., ret == -1), doesn't cause an issue at runtime [1] but
-can be confusing.  Additionally, assigning negative error codes to unsigned
-type may trigger a GCC warning when the -Wsign-conversion flag is enabled.
+If any of them has power.must_resume set and late suspend has been
+skipped for it (due to power.smart_suspend), early resume should be
+skipped for it either, or its state may become inconsistent (for
+instance, if the early resume assumes that it will always follow
+noirq resume).
 
-No effect on runtime.
+Make that happen by clearing power.must_resume in device_resume_noirq()
+for devices with power.is_noirq_suspended clear that have been left in
+suspend by device_suspend_late(), which will subsequently cause
+device_resume_early() to leave the device in suspend and avoid
+changing its state.
 
-Link: https://lore.kernel.org/all/x3wogjf6vgpkisdhg3abzrx7v7zktmdnfmqeih5kosszmagqfs@oh3qxrgzkikf/ #1
-Signed-off-by: Qianfeng Rong <rongqianfeng@vivo.com>
-Reviewed-by: John Garry <john.g.garry@oracle.com>
-Fixes: fe0b393f2c0a ("block: Correct handling of bottom device misaligment")
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Link: https://lore.kernel.org/r/20250902130930.68317-1-rongqianfeng@vivo.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: 0d4b54c6fee8 ("PM / core: Add LEAVE_SUSPENDED driver flag")
+Link: https://lore.kernel.org/linux-pm/5d692b81-6f58-4e86-9cb0-ede69a09d799@rowland.harvard.edu/
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
+Link: https://patch.msgid.link/3381776.aeNJFYEL58@rafael.j.wysocki
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-settings.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/base/power/main.c | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
-diff --git a/block/blk-settings.c b/block/blk-settings.c
-index 18855d4bfda23..b2678e4dfa9e6 100644
---- a/block/blk-settings.c
-+++ b/block/blk-settings.c
-@@ -523,7 +523,8 @@ static unsigned int blk_round_down_sectors(unsigned int sectors, unsigned int lb
- int blk_stack_limits(struct queue_limits *t, struct queue_limits *b,
- 		     sector_t start)
- {
--	unsigned int top, bottom, alignment, ret = 0;
-+	unsigned int top, bottom, alignment;
-+	int ret = 0;
+diff --git a/drivers/base/power/main.c b/drivers/base/power/main.c
+index 5600ceb9212d9..964573e30d691 100644
+--- a/drivers/base/power/main.c
++++ b/drivers/base/power/main.c
+@@ -604,8 +604,20 @@ static void __device_resume_noirq(struct device *dev, pm_message_t state, bool a
+ 	if (dev->power.syscore || dev->power.direct_complete)
+ 		goto Out;
  
- 	t->max_sectors = min_not_zero(t->max_sectors, b->max_sectors);
- 	t->max_hw_sectors = min_not_zero(t->max_hw_sectors, b->max_hw_sectors);
+-	if (!dev->power.is_noirq_suspended)
++	if (!dev->power.is_noirq_suspended) {
++		/*
++		 * This means that system suspend has been aborted in the noirq
++		 * phase before invoking the noirq suspend callback for the
++		 * device, so if device_suspend_late() has left it in suspend,
++		 * device_resume_early() should leave it in suspend either in
++		 * case the early resume of it depends on the noirq resume that
++		 * has not run.
++		 */
++		if (dev_pm_skip_suspend(dev))
++			dev->power.must_resume = false;
++
+ 		goto Out;
++	}
+ 
+ 	if (!dpm_wait_for_superior(dev, async))
+ 		goto Out;
 -- 
 2.51.0
 
