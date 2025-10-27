@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-191128-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191311-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92E43C11096
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:31:21 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 630F9C112E2
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:39:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B43A23BFF83
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:26:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B4F7456417E
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:34:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9660D31DDBC;
-	Mon, 27 Oct 2025 19:24:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7558A31E0E6;
+	Mon, 27 Oct 2025 19:33:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hctk/MdU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HBVL1PBq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 520AB32143D;
-	Mon, 27 Oct 2025 19:24:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 280EC31B80E;
+	Mon, 27 Oct 2025 19:33:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761593082; cv=none; b=N14XLV7Sg9R83prr/L5RNcrkPLUzT9OLOBqVBQ1mnzNep6HYezh+dR6lLUHai/hDmVFq+wI8cMuBsQAHqvThAKQC+7B8QZ3GeInEag9+sGZPCMbPm/7iJqnmYsDoUUzPKETKn/3SW3RBRqccdh31qyhoPfA50wkcSY3bQPxEiq4=
+	t=1761593605; cv=none; b=StI0yADjkiyroTLtIL2/j3TwNjklwQkZIevwZ8kq1M1T2zmYBLTKaGZgSjlyVF22WbyiZsYnw0g+/MLITlMmeweNxVPOZ3Z0wBIqL3VAOnnNwhggjgiqIBNNvtMyWYlgVUZHchhVb74iOMMWB2YHaIWtRopqjlahNNh5STTGmNk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761593082; c=relaxed/simple;
-	bh=IHAICxzeQer7oZ+Iop8VHISStD3xOlxH6LBBisEd2rY=;
+	s=arc-20240116; t=1761593605; c=relaxed/simple;
+	bh=MNqezLtXtS8fpZ9zT1z0lS3Y2zxgfYFQua52IOctOho=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SOIvEts7cC0pF/wdB7QU/Swx3JTzXUi7yTtnvPvwJVw1eYUnSycSxSS0ehTxD3HePMX4hmkpllETKZrrys0EnA/P/+uLVYL8Lg+agt4fZzc7TWFLvrMy4nf/6PEdSBT3MGZtVRrBhTem6lCmNnnPVlrYvCGaqUQUehYGvz6/MeU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hctk/MdU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D68F2C4CEF1;
-	Mon, 27 Oct 2025 19:24:41 +0000 (UTC)
+	 MIME-Version; b=GM3n25CVN9dtHcHk6SV3k+h9FNOjTzAj/uQnVqGnOa5bn2WCBmsxrCvNh2hESicoH6E/xFqmZhLCDzop/9kLlV9Bc5hvB5CqUbdgZ8bzaDWx75Wf3G+o/gEkGPiad+2YOboh3RgZ+zWoGy1FdQyX3IwhprYD6iNcGY5FprSSDKQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HBVL1PBq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9974FC4CEF1;
+	Mon, 27 Oct 2025 19:33:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761593082;
-	bh=IHAICxzeQer7oZ+Iop8VHISStD3xOlxH6LBBisEd2rY=;
+	s=korg; t=1761593605;
+	bh=MNqezLtXtS8fpZ9zT1z0lS3Y2zxgfYFQua52IOctOho=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Hctk/MdUE9hCHqoD7iHBsvMIKZwgQ0e0kKGXoGWGdloAsF22odlNXvhIqbm4lio9g
-	 Mh671W/kmlLW2Meg/C5Iq8fipD3IKnYETnJgcKuLdsBjrO4s8WwO/o74EtQb9rp6yx
-	 LPBIR6diWUHpnTV5rzKXimKVOChlWAA2iFMnX2Gc=
+	b=HBVL1PBqHygHR7LXdDQr3DZXiZRAuC3WJ0L0LPqeb85fjaHV5Flh4JuehYNuqfvym
+	 QICJm8AwsqU1CUSYgk3hAJWryfiQSRlB/XMOkddFtANCMBTE7b7iBnxD8qTYjz+SiF
+	 3iiMwYRLVI2mjzPkJA4HivE8PeF0WlgXW6ZQ9ilA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Daniel Golle <daniel@makrotopia.org>
-Subject: [PATCH 6.12 113/117] serial: 8250_mtk: Enable baud clock and manage in runtime PM
+	Yu-Ting Tseng <yutingtseng@google.com>,
+	Alice Ryhl <aliceryhl@google.com>
+Subject: [PATCH 6.17 157/184] binder: remove "invalid inc weak" check
 Date: Mon, 27 Oct 2025 19:37:19 +0100
-Message-ID: <20251027183457.084623753@linuxfoundation.org>
+Message-ID: <20251027183519.153495484@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
-References: <20251027183453.919157109@linuxfoundation.org>
+In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
+References: <20251027183514.934710872@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,70 +61,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Golle <daniel@makrotopia.org>
+From: Alice Ryhl <aliceryhl@google.com>
 
-commit d518314a1fa4e980a227d1b2bda1badf433cb932 upstream.
+commit d90eeb8ecd227c204ab6c34a17b372bd950b7aa2 upstream.
 
-Some MediaTek SoCs got a gated UART baud clock, which currently gets
-disabled as the clk subsystem believes it would be unused. This results in
-the uart freezing right after "clk: Disabling unused clocks" on those
-platforms.
+There are no scenarios where a weak increment is invalid on binder_node.
+The only possible case where it could be invalid is if the kernel
+delivers BR_DECREFS to the process that owns the node, and then
+increments the weak refcount again, effectively "reviving" a dead node.
 
-Request the baud clock to be prepared and enabled during probe, and to
-restore run-time power management capabilities to what it was before commit
-e32a83c70cf9 ("serial: 8250-mtk: modify mtk uart power and clock
-management") disable and unprepare the baud clock when suspending the UART,
-prepare and enable it again when resuming it.
+However, that is not possible: when the BR_DECREFS command is delivered,
+the kernel removes and frees the binder_node. The fact that you were
+able to call binder_inc_node_nilocked() implies that the node is not yet
+destroyed, which implies that BR_DECREFS has not been delivered to
+userspace, so incrementing the weak refcount is valid.
 
-Fixes: e32a83c70cf9 ("serial: 8250-mtk: modify mtk uart power and clock management")
-Fixes: b6c7ff2693ddc ("serial: 8250_mtk: Simplify clock sequencing and runtime PM")
-Cc: stable <stable@kernel.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Daniel Golle <daniel@makrotopia.org>
-Link: https://patch.msgid.link/de5197ccc31e1dab0965cabcc11ca92e67246cf6.1758058441.git.daniel@makrotopia.org
+Note that it's currently possible to trigger this condition if the owner
+calls BINDER_THREAD_EXIT while node->has_weak_ref is true. This causes
+BC_INCREFS on binder_ref instances to fail when they should not.
+
+Cc: stable@vger.kernel.org
+Fixes: 457b9a6f09f0 ("Staging: android: add binder driver")
+Reported-by: Yu-Ting Tseng <yutingtseng@google.com>
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+Link: https://patch.msgid.link/20251015-binder-weak-inc-v1-1-7914b092c371@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/8250/8250_mtk.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/android/binder.c |   11 +----------
+ 1 file changed, 1 insertion(+), 10 deletions(-)
 
---- a/drivers/tty/serial/8250/8250_mtk.c
-+++ b/drivers/tty/serial/8250/8250_mtk.c
-@@ -435,6 +435,7 @@ static int __maybe_unused mtk8250_runtim
- 	while
- 		(serial_in(up, MTK_UART_DEBUG0));
- 
-+	clk_disable_unprepare(data->uart_clk);
- 	clk_disable_unprepare(data->bus_clk);
- 
- 	return 0;
-@@ -445,6 +446,7 @@ static int __maybe_unused mtk8250_runtim
- 	struct mtk8250_data *data = dev_get_drvdata(dev);
- 
- 	clk_prepare_enable(data->bus_clk);
-+	clk_prepare_enable(data->uart_clk);
- 
+--- a/drivers/android/binder.c
++++ b/drivers/android/binder.c
+@@ -850,17 +850,8 @@ static int binder_inc_node_nilocked(stru
+ 	} else {
+ 		if (!internal)
+ 			node->local_weak_refs++;
+-		if (!node->has_weak_ref && list_empty(&node->work.entry)) {
+-			if (target_list == NULL) {
+-				pr_err("invalid inc weak node for %d\n",
+-					node->debug_id);
+-				return -EINVAL;
+-			}
+-			/*
+-			 * See comment above
+-			 */
++		if (!node->has_weak_ref && target_list && list_empty(&node->work.entry))
+ 			binder_enqueue_work_ilocked(&node->work, target_list);
+-		}
+ 	}
  	return 0;
  }
-@@ -475,13 +477,13 @@ static int mtk8250_probe_of(struct platf
- 	int dmacnt;
- #endif
- 
--	data->uart_clk = devm_clk_get(&pdev->dev, "baud");
-+	data->uart_clk = devm_clk_get_enabled(&pdev->dev, "baud");
- 	if (IS_ERR(data->uart_clk)) {
- 		/*
- 		 * For compatibility with older device trees try unnamed
- 		 * clk when no baud clk can be found.
- 		 */
--		data->uart_clk = devm_clk_get(&pdev->dev, NULL);
-+		data->uart_clk = devm_clk_get_enabled(&pdev->dev, NULL);
- 		if (IS_ERR(data->uart_clk)) {
- 			dev_warn(&pdev->dev, "Can't get uart clock\n");
- 			return PTR_ERR(data->uart_clk);
 
 
 
