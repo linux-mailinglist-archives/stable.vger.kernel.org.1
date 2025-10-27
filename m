@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-190274-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190240-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73991C104AD
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:56:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A8AEC10398
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:52:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 81F331893DB5
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:53:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CDA0E1A243A6
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:51:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0FB832B993;
-	Mon, 27 Oct 2025 18:47:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B9FC31A06A;
+	Mon, 27 Oct 2025 18:46:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LtXKsyfn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aVXwhC5Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A92C832145E;
-	Mon, 27 Oct 2025 18:47:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F7C625784E;
+	Mon, 27 Oct 2025 18:46:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761590871; cv=none; b=lBX7DvTRpNxebsWqW2c4iIDMwI7HrYBEGxMOxYPqBpNf3/FZ5kuDnjuYLgim8WQzH+qtooiAY7ChjzgvgIrtFnw+mfN85NCdvaIgw3NB39B2+yByyxgppNMydy76P89RDrUIzLA4L/oTF7AmqVIDu9ENvXoE/B08t7vPAmdqBVg=
+	t=1761590782; cv=none; b=H3iIqQBj53XoRF+ndJHgpdNa1E/ZAFKPbcoAr8reHJvUSOC1J6CAlAfQ1kqsvXAomSkv3kzntSuPybe5g55VbpmYYvYzvvLEmD5VdfATFOHE84BYDDpNw9piapOFX2ZFuLTgV3lWxImfRDZXvqxc1A/gDdEu7Q1t/M79953rr30=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761590871; c=relaxed/simple;
-	bh=cuwrgm7WqlpXUd6Fhax92IoOxSDoljtFBUApCFH77vE=;
+	s=arc-20240116; t=1761590782; c=relaxed/simple;
+	bh=VO049xwA7GKA7xCNlm0aul/jF6zu32ssD9eI1CRrbek=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mo3rmb4MfBBUKRSJdM2IZhDqfQNFPWnglnnVTeLHi+lsFHzIBb0dpl+ZF0syw8G+Ccrd2pRJXWyoGDU8LSh+AfzD70qhF3xosEJJtEx7Wr1hEKkW8QxiKdN4H75hCzqIBnWD2rZ400pjcloy1YAfwCxCZgh4DOUoJvNtws61N40=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LtXKsyfn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3389C4CEFD;
-	Mon, 27 Oct 2025 18:47:48 +0000 (UTC)
+	 MIME-Version; b=TgzzndgBOc7jqIpcYXEOQCw06CF2uI/fORpVbVdqD3r3W338yQ/Vgktk3DEoQCG9gIxm0NHe2B+8XO0einI3QhQoGLDiR4haKSzOGm66ZMCgQTcu94bxNXwzOrCeaupCSfPGMnwi80TYB95ptvsXAOKBnUpLR7ZOwpk632GTHQk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aVXwhC5Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68C44C4CEF1;
+	Mon, 27 Oct 2025 18:46:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761590869;
-	bh=cuwrgm7WqlpXUd6Fhax92IoOxSDoljtFBUApCFH77vE=;
+	s=korg; t=1761590781;
+	bh=VO049xwA7GKA7xCNlm0aul/jF6zu32ssD9eI1CRrbek=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LtXKsyfnwVYqyHqOUDbo+rRMNYvl4TBpj6Vm7fn+7CbT9T7f8KVFioDHovlmc74lV
-	 i09ni1rnjUtGw7enoGZ6WlCueF4ROMHztPHfPx6I2tS8jDUoTgYUvDe5IOzX7QID5B
-	 MipqjjOReCtYHVR2W2xshJncLRngLByavRtQ830o=
+	b=aVXwhC5Yl2Kd+SsMq1YkYTW/vFi1OPA0kmf4Mz8Oo6iQxjJOT82L8A9UM8r8VQxp9
+	 EaEXOYWpuhIDiPhABZik0K6nLveUNeD/AEFnK1O9AYqB0ys0cdxsCXWK7rwyyBXXkC
+	 80fIrC9sftk0+kwlNQjPc65jwJ9ajd5Qc1CYypuU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,9 +46,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sabrina Dubroca <sd@queasysnail.net>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 164/224] tls: always set record_type in tls_process_cmsg
-Date: Mon, 27 Oct 2025 19:35:10 +0100
-Message-ID: <20251027183513.310818383@linuxfoundation.org>
+Subject: [PATCH 5.4 165/224] tls: dont rely on tx_work during send()
+Date: Mon, 27 Oct 2025 19:35:11 +0100
+Message-ID: <20251027183513.333976801@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251027183508.963233542@linuxfoundation.org>
 References: <20251027183508.963233542@linuxfoundation.org>
@@ -69,54 +69,58 @@ Content-Transfer-Encoding: 8bit
 
 From: Sabrina Dubroca <sd@queasysnail.net>
 
-[ Upstream commit b6fe4c29bb51cf239ecf48eacf72b924565cb619 ]
+[ Upstream commit 7f846c65ca11e63d2409868ff039081f80e42ae4 ]
 
-When userspace wants to send a non-DATA record (via the
-TLS_SET_RECORD_TYPE cmsg), we need to send any pending data from a
-previous MSG_MORE send() as a separate DATA record. If that DATA record
-is encrypted asynchronously, tls_handle_open_record will return
--EINPROGRESS. This is currently treated as an error by
-tls_process_cmsg, and it will skip setting record_type to the correct
-value, but the caller (tls_sw_sendmsg_locked) handles that return
-value correctly and proceeds with sending the new message with an
-incorrect record_type (DATA instead of whatever was requested in the
-cmsg).
+With async crypto, we rely on tx_work to actually transmit records
+once encryption completes. But while send() is running, both the
+tx_lock and socket lock are held, so tx_work_handler cannot process
+the queue of encrypted records, and simply reschedules itself. During
+a large send(), this could last a long time, and use a lot of memory.
 
-Always set record_type before handling the open record. If
-tls_handle_open_record returns an error, record_type will be
-ignored. If it succeeds, whether with synchronous crypto (returning 0)
-or asynchronous (returning -EINPROGRESS), the caller will proceed
-correctly.
+Transmit any pending encrypted records before restarting the main
+loop of tls_sw_sendmsg_locked.
 
 Fixes: a42055e8d2c3 ("net/tls: Add support for async encryption of records for performance")
 Reported-by: Jann Horn <jannh@google.com>
 Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
-Link: https://patch.msgid.link/0457252e578a10a94e40c72ba6288b3a64f31662.1760432043.git.sd@queasysnail.net
+Link: https://patch.msgid.link/8396631478f70454b44afb98352237d33f48d34d.1760432043.git.sd@queasysnail.net
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/tls/tls_main.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ net/tls/tls_sw.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/net/tls/tls_main.c b/net/tls/tls_main.c
-index cb51a2f46b11d..5bf809b090342 100644
---- a/net/tls/tls_main.c
-+++ b/net/tls/tls_main.c
-@@ -181,12 +181,9 @@ int tls_proccess_cmsg(struct sock *sk, struct msghdr *msg,
- 			if (msg->msg_flags & MSG_MORE)
- 				return -EINVAL;
- 
--			rc = tls_handle_open_record(sk, msg->msg_flags);
--			if (rc)
--				return rc;
--
- 			*record_type = *(unsigned char *)CMSG_DATA(cmsg);
--			rc = 0;
+diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
+index 8dabbbf521688..b175f0595a478 100644
+--- a/net/tls/tls_sw.c
++++ b/net/tls/tls_sw.c
+@@ -1052,6 +1052,13 @@ int tls_sw_sendmsg(struct sock *sk, struct msghdr *msg, size_t size)
+ 				else if (ret != -EAGAIN)
+ 					goto send_end;
+ 			}
 +
-+			rc = tls_handle_open_record(sk, msg->msg_flags);
- 			break;
- 		default:
- 			return -EINVAL;
++			/* Transmit if any encryptions have completed */
++			if (test_and_clear_bit(BIT_TX_SCHEDULED, &ctx->tx_bitmask)) {
++				cancel_delayed_work(&ctx->tx_work.work);
++				tls_tx_records(sk, msg->msg_flags);
++			}
++
+ 			continue;
+ rollback_iter:
+ 			copied -= try_to_copy;
+@@ -1106,6 +1113,12 @@ int tls_sw_sendmsg(struct sock *sk, struct msghdr *msg, size_t size)
+ 					goto send_end;
+ 				}
+ 			}
++
++			/* Transmit if any encryptions have completed */
++			if (test_and_clear_bit(BIT_TX_SCHEDULED, &ctx->tx_bitmask)) {
++				cancel_delayed_work(&ctx->tx_work.work);
++				tls_tx_records(sk, msg->msg_flags);
++			}
+ 		}
+ 
+ 		continue;
 -- 
 2.51.0
 
