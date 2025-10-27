@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-191056-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191222-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC4A6C1107B
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:31:01 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D2B0C111BC
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:34:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 925D4546B22
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:23:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0F08B1A62AAE
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:31:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01C0932779A;
-	Mon, 27 Oct 2025 19:21:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B5DA248898;
+	Mon, 27 Oct 2025 19:28:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ds7kceD5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wG4z/3mQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC08131E107;
-	Mon, 27 Oct 2025 19:21:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46147329C7B;
+	Mon, 27 Oct 2025 19:28:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592898; cv=none; b=pdb1P5EwqKFRQ7fCywnTSz6faTgJW/Hjda28B6RqYQUCgNRO26E2wPu3dHwkWUz39WQbjfMPENzQHZ1kyhOFVML7UaR1i75nsnqgcbiNnEEa8vr6EV2fRSAYpQDSwFcsmq3ofmipWPsMhque+m3kAen77e8NhdEVlke0tUm53Yo=
+	t=1761593323; cv=none; b=e8S9VVWS1XBLSOahBxAF8HGEqFSdKFFoRI3kEyJ0uo/qYqCGTZcS+Lqh2j8tVtAAcuUq0njrftzksgKlxBcsQLXP1v8XHFHBnql2iNKom8tC9eD2ySD0T8nXLgPFInJQLQj1JN0IA1kaDggIjqgZIdEe7nRrAMgrqsmQjWisoKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592898; c=relaxed/simple;
-	bh=mLsfVhsyQJ90I7SPL6bchwTbeTvnj0u9EbbfjJ9YaOc=;
+	s=arc-20240116; t=1761593323; c=relaxed/simple;
+	bh=pMLFwJ/41cvXwFLIHE7dCSeVZM3lwRBwVfYZVTLNIvY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BxWxrNgkY5ifu8/nLENheAKWfHEXQBIGrMdrkm3Kxyv3Sd+xHdk3Kk76j9//mZxoISm53x1oAkffhoKxv5jYy3MRchf2Mg59zdE3umRiEWQ0zUERPCkBt22R4Tvcy0Azc0kijD3DQ4ragy6NzwldsytNoxFw2rV+ALvWk/STBYA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ds7kceD5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40443C4CEF1;
-	Mon, 27 Oct 2025 19:21:38 +0000 (UTC)
+	 MIME-Version; b=p77Ednww5CzaS+ZI6n48FyVmUqIVRdvNJ55gsv6LnsQ1ZjlF5u/PGOuX+Krxl8/DUzsn9z3tV6qub6dSG8qZx/UkzvWA0tTYA2XaTNBmQ5ZDi7hCNVqiiM08BlLojKwm65ewc2F558PnqYn5kd2BUXalvi6R5ZBbL00gqeRMCbM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wG4z/3mQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5572C4CEF1;
+	Mon, 27 Oct 2025 19:28:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592898;
-	bh=mLsfVhsyQJ90I7SPL6bchwTbeTvnj0u9EbbfjJ9YaOc=;
+	s=korg; t=1761593323;
+	bh=pMLFwJ/41cvXwFLIHE7dCSeVZM3lwRBwVfYZVTLNIvY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ds7kceD58nLNmtCb2At1YT352yn9L3nrJmzk4I35/wSGypwfpq/keL5xQfjn7z0lJ
-	 XUApf8MQyDutK3iuE31IdbsBYOS/X91dsIVg2uSQ1PbGEUFALpzAFemJY9VtgF9pV7
-	 +PM6Hyn2QneIZPETIrfoCS2EHhhQ+VX3U//XS7Gk=
+	b=wG4z/3mQ3HJqB5ewdhpbSa+LsEv+DhDmWcjU7gmQdXWAwzQgrcQL564NR9Fs0wHgp
+	 eRv5+5intefYg80slxqiqCQ/P+7MdF+ZLeRwc7Ag1lEbcw1t/1bsh6nBqLVGAI5ssO
+	 uu+wpJ3V15mA6PM7SoRfxRdHOZ2vtNeD2fUImGUE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harry Yoo <harry.yoo@oracle.com>,
-	Hao Ge <gehao@kylinos.cn>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>
-Subject: [PATCH 6.12 054/117] slab: Fix obj_ext mistakenly considered NULL due to race condition
+	Michal Pecio <michal.pecio@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.17 098/184] net: usb: rtl8150: Fix frame padding
 Date: Mon, 27 Oct 2025 19:36:20 +0100
-Message-ID: <20251027183455.472645879@linuxfoundation.org>
+Message-ID: <20251027183517.548880109@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
-References: <20251027183453.919157109@linuxfoundation.org>
+In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
+References: <20251027183514.934710872@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,78 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hao Ge <gehao@kylinos.cn>
+From: Michal Pecio <michal.pecio@gmail.com>
 
-commit 7f434e1d9a17ca5f567c9796c9c105a65c18db9a upstream.
+commit 75cea9860aa6b2350d90a8d78fed114d27c7eca2 upstream.
 
-If two competing threads enter alloc_slab_obj_exts(), and the one that
-allocates the vector wins the cmpxchg(), the other thread that failed
-allocation mistakenly assumes that slab->obj_exts is still empty due to
-its own allocation failure. This will then trigger warnings with
-CONFIG_MEM_ALLOC_PROFILING_DEBUG checks in the subsequent free path.
+TX frames aren't padded and unknown memory is sent into the ether.
 
-Therefore, let's check the result of cmpxchg() to see if marking the
-allocation as failed was successful. If it wasn't, check whether the
-winning side has succeeded its allocation (it might have been also
-marking it as failed) and if yes, return success.
+Theoretically, it isn't even guaranteed that the extra memory exists
+and can be sent out, which could cause further problems. In practice,
+I found that plenty of tailroom exists in the skb itself (in my test
+with ping at least) and skb_padto() easily succeeds, so use it here.
 
-Suggested-by: Harry Yoo <harry.yoo@oracle.com>
-Fixes: f7381b911640 ("slab: mark slab->obj_exts allocation failures unconditionally")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Hao Ge <gehao@kylinos.cn>
-Link: https://patch.msgid.link/20251023143313.1327968-1-hao.ge@linux.dev
-Reviewed-by: Suren Baghdasaryan <surenb@google.com>
-Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
-Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+In the event of -ENOMEM drop the frame like other drivers do.
+
+The use of one more padding byte instead of a USB zero-length packet
+is retained to avoid regression. I have a dodgy Etron xHCI controller
+which doesn't seem to support sending ZLPs at all.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@vger.kernel.org
+Signed-off-by: Michal Pecio <michal.pecio@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20251014203528.3f9783c4.michal.pecio@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/slub.c |   16 +++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
+ drivers/net/usb/rtl8150.c |   11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -1941,9 +1941,9 @@ static inline void mark_objexts_empty(st
- 	}
- }
+--- a/drivers/net/usb/rtl8150.c
++++ b/drivers/net/usb/rtl8150.c
+@@ -685,9 +685,16 @@ static netdev_tx_t rtl8150_start_xmit(st
+ 	rtl8150_t *dev = netdev_priv(netdev);
+ 	int count, res;
  
--static inline void mark_failed_objexts_alloc(struct slab *slab)
-+static inline bool mark_failed_objexts_alloc(struct slab *slab)
- {
--	cmpxchg(&slab->obj_exts, 0, OBJEXTS_ALLOC_FAIL);
-+	return cmpxchg(&slab->obj_exts, 0, OBJEXTS_ALLOC_FAIL) == 0;
- }
- 
- static inline void handle_failed_objexts_alloc(unsigned long obj_exts,
-@@ -1965,7 +1965,7 @@ static inline void handle_failed_objexts
- #else /* CONFIG_MEM_ALLOC_PROFILING_DEBUG */
- 
- static inline void mark_objexts_empty(struct slabobj_ext *obj_exts) {}
--static inline void mark_failed_objexts_alloc(struct slab *slab) {}
-+static inline bool mark_failed_objexts_alloc(struct slab *slab) { return false; }
- static inline void handle_failed_objexts_alloc(unsigned long obj_exts,
- 			struct slabobj_ext *vec, unsigned int objects) {}
- 
-@@ -1998,8 +1998,14 @@ int alloc_slab_obj_exts(struct slab *sla
- 	vec = kcalloc_node(objects, sizeof(struct slabobj_ext), gfp,
- 			   slab_nid(slab));
- 	if (!vec) {
--		/* Mark vectors which failed to allocate */
--		mark_failed_objexts_alloc(slab);
-+		/*
-+		 * Try to mark vectors which failed to allocate.
-+		 * If this operation fails, there may be a racing process
-+		 * that has already completed the allocation.
-+		 */
-+		if (!mark_failed_objexts_alloc(slab) &&
-+		    slab_obj_exts(slab))
-+			return 0;
- 
- 		return -ENOMEM;
- 	}
++	/* pad the frame and ensure terminating USB packet, datasheet 9.2.3 */
++	count = max(skb->len, ETH_ZLEN);
++	if (count % 64 == 0)
++		count++;
++	if (skb_padto(skb, count)) {
++		netdev->stats.tx_dropped++;
++		return NETDEV_TX_OK;
++	}
++
+ 	netif_stop_queue(netdev);
+-	count = (skb->len < 60) ? 60 : skb->len;
+-	count = (count & 0x3f) ? count : count + 1;
+ 	dev->tx_skb = skb;
+ 	usb_fill_bulk_urb(dev->tx_urb, dev->udev, usb_sndbulkpipe(dev->udev, 2),
+ 		      skb->data, count, write_bulk_callback, dev);
 
 
 
