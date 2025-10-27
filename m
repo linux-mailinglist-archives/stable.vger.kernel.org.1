@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-190424-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190130-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id B964AC1055A
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:58:33 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C492BC0FFEE
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:42:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 119055004C0
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:57:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 998E219C59E7
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:42:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8335031DD94;
-	Mon, 27 Oct 2025 18:54:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C89C5313520;
+	Mon, 27 Oct 2025 18:41:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gbXPwyC7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rY+8Ld3Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E161246BB7;
-	Mon, 27 Oct 2025 18:54:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84D082D8DB9;
+	Mon, 27 Oct 2025 18:41:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591255; cv=none; b=Z70WeE+9leihEZL3+mp9y9YIQ+eSet/yCA49RyfbD37LD6qdciqLDIKCc6pqZeZ+YQXQaRlBpe0dSiFM1mKnMAfQyvTf1Qw8JKP79L0xFj8rTnBLM2w7DqUQLuDJTVCUopnMTmv+wDiJFcW8hwOOkXD8K0Odq4bRXJyKLVJ5s3Q=
+	t=1761590517; cv=none; b=XMZeJnGk2NQFkTF2OZm1xKhuTB2uGSAqtfQuwv41EAWwDaMLPkKApiwXHbBctTglnqsDUvSbB9OBT1ljIHb5EF/nPen6vSu1NTX+EtORH9ZV7/jbS/ZDYtIr31JYtgTtguGe8eCTCDm8NdBdfI57ih5PwV5heh3uFoJWsWpc8m4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591255; c=relaxed/simple;
-	bh=roBlNR6RNMqTHJRopVl4kMQ8Won8J2w/TFGyJNY+DW0=;
+	s=arc-20240116; t=1761590517; c=relaxed/simple;
+	bh=WV3vVmhoUBZdKr8Q57IRQIn50v9j+7YYN2584d3Q9zA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cKI/R9FrnHm4c8OdhwVTQtm1lnqrzFEgtByY1BtHZYtI88tBJXimtrfIJOsYXSd/a7kDiI8oSii9nzv3Tg8VjwsQLrw7lvoyKXU6A/L7YEJK0HKGoVXd0YuXEDdTB/wEWcPM6Eix7r/cBljakmIOwePdB3G/+pk2cr2id3BzAro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gbXPwyC7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C50F7C4CEF1;
-	Mon, 27 Oct 2025 18:54:14 +0000 (UTC)
+	 MIME-Version; b=pHG4RczDKHjUEVCq39dCo0wS3vLgmg/COR8I6fiqp5IVBST370R5NxRxQAiVmVKE+bF0zEEgQiCvyBonnjnlbWpaJZOVZNbOEdRs8Xpe+Q/zE3sIX3ARstN09sxs3uEZf5DBNkadw0rnt+uAXyHlgZ9CWe15Ii5nUUS1SeRrMuk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rY+8Ld3Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4561C4CEFD;
+	Mon, 27 Oct 2025 18:41:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591255;
-	bh=roBlNR6RNMqTHJRopVl4kMQ8Won8J2w/TFGyJNY+DW0=;
+	s=korg; t=1761590517;
+	bh=WV3vVmhoUBZdKr8Q57IRQIn50v9j+7YYN2584d3Q9zA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gbXPwyC7+1BhZcni4Dr8WjkZ9JgyBXq5+ScgWvp2zCvQf52xj7st5XkjK6oA0THGm
-	 7zInAz/jfd9NUDNJYfVkJKLg3NR3ia4uYaoZziu2A8KhiRLZks6zdZiq8pOd2IM3ag
-	 iLaCWPcV1C3syjNGMSKZ9xuxbRzN7tuTTFfBKjwg=
+	b=rY+8Ld3Y5wujs7TDwoxQb4xJfKSN3w5vQQ8eByHgsOe9mcri8CGMKAD1v0c9xRP9s
+	 F8Fbayzfm2dAYTDCK3a/bltSuhwr8RREjyBXashBQciXFYXqq+7EOYoDpiYx9kEYQd
+	 zqN+m5PBjjtVW6MmTLgqLQH7o7OzaKd1jQ91fwh0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Tang <danielzgtg.opensource@gmail.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 5.10 127/332] ACPI: TAD: Add missing sysfs_remove_group() for ACPI_TAD_RT
-Date: Mon, 27 Oct 2025 19:33:00 +0100
-Message-ID: <20251027183527.963006337@linuxfoundation.org>
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 035/224] scsi: myrs: Fix dma_alloc_coherent() error check
+Date: Mon, 27 Oct 2025 19:33:01 +0100
+Message-ID: <20251027183509.946127619@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
-References: <20251027183524.611456697@linuxfoundation.org>
+In-Reply-To: <20251027183508.963233542@linuxfoundation.org>
+References: <20251027183508.963233542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Tang <danielzgtg.opensource@gmail.com>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-commit 4aac453deca0d9c61df18d968f8864c3ae7d3d8d upstream.
+[ Upstream commit edb35b1ffc686fd9b5a91902f034eb9f4d2c9f6b ]
 
-Previously, after `rmmod acpi_tad`, `modprobe acpi_tad` would fail
-with this dmesg:
+Check for NULL return value with dma_alloc_coherent(), because DMA
+address is not always set by dma_alloc_coherent() on failure.
 
-sysfs: cannot create duplicate filename '/devices/platform/ACPI000E:00/time'
-Call Trace:
- <TASK>
- dump_stack_lvl+0x6c/0x90
- dump_stack+0x10/0x20
- sysfs_warn_dup+0x8b/0xa0
- sysfs_add_file_mode_ns+0x122/0x130
- internal_create_group+0x1dd/0x4c0
- sysfs_create_group+0x13/0x20
- acpi_tad_probe+0x147/0x1f0 [acpi_tad]
- platform_probe+0x42/0xb0
- </TASK>
-acpi-tad ACPI000E:00: probe with driver acpi-tad failed with error -17
-
-Fixes: 3230b2b3c1ab ("ACPI: TAD: Add low-level support for real time capability")
-Signed-off-by: Daniel Tang <danielzgtg.opensource@gmail.com>
-Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Link: https://patch.msgid.link/2881298.hMirdbgypa@daniel-desktop3
-Cc: 5.2+ <stable@vger.kernel.org> # 5.2+
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 77266186397c ("scsi: myrs: Add Mylex RAID controller (SCSI interface)")
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Link: https://lore.kernel.org/r/20250725083112.43975-2-fourier.thomas@gmail.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/acpi_tad.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/scsi/myrs.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/acpi/acpi_tad.c
-+++ b/drivers/acpi/acpi_tad.c
-@@ -563,6 +563,9 @@ static int acpi_tad_remove(struct platfo
+diff --git a/drivers/scsi/myrs.c b/drivers/scsi/myrs.c
+index bf0546fc555f2..04740f623a12e 100644
+--- a/drivers/scsi/myrs.c
++++ b/drivers/scsi/myrs.c
+@@ -499,14 +499,14 @@ static bool myrs_enable_mmio_mbox(struct myrs_hba *cs,
+ 	/* Temporary dma mapping, used only in the scope of this function */
+ 	mbox = dma_alloc_coherent(&pdev->dev, sizeof(union myrs_cmd_mbox),
+ 				  &mbox_addr, GFP_KERNEL);
+-	if (dma_mapping_error(&pdev->dev, mbox_addr))
++	if (!mbox)
+ 		return false;
  
- 	pm_runtime_get_sync(dev);
- 
-+	if (dd->capabilities & ACPI_TAD_RT)
-+		sysfs_remove_group(&dev->kobj, &acpi_tad_time_attr_group);
-+
- 	if (dd->capabilities & ACPI_TAD_DC_WAKE)
- 		sysfs_remove_group(&dev->kobj, &acpi_tad_dc_attr_group);
- 
+ 	/* These are the base addresses for the command memory mailbox array */
+ 	cs->cmd_mbox_size = MYRS_MAX_CMD_MBOX * sizeof(union myrs_cmd_mbox);
+ 	cmd_mbox = dma_alloc_coherent(&pdev->dev, cs->cmd_mbox_size,
+ 				      &cs->cmd_mbox_addr, GFP_KERNEL);
+-	if (dma_mapping_error(&pdev->dev, cs->cmd_mbox_addr)) {
++	if (!cmd_mbox) {
+ 		dev_err(&pdev->dev, "Failed to map command mailbox\n");
+ 		goto out_free;
+ 	}
+@@ -521,7 +521,7 @@ static bool myrs_enable_mmio_mbox(struct myrs_hba *cs,
+ 	cs->stat_mbox_size = MYRS_MAX_STAT_MBOX * sizeof(struct myrs_stat_mbox);
+ 	stat_mbox = dma_alloc_coherent(&pdev->dev, cs->stat_mbox_size,
+ 				       &cs->stat_mbox_addr, GFP_KERNEL);
+-	if (dma_mapping_error(&pdev->dev, cs->stat_mbox_addr)) {
++	if (!stat_mbox) {
+ 		dev_err(&pdev->dev, "Failed to map status mailbox\n");
+ 		goto out_free;
+ 	}
+@@ -534,7 +534,7 @@ static bool myrs_enable_mmio_mbox(struct myrs_hba *cs,
+ 	cs->fwstat_buf = dma_alloc_coherent(&pdev->dev,
+ 					    sizeof(struct myrs_fwstat),
+ 					    &cs->fwstat_addr, GFP_KERNEL);
+-	if (dma_mapping_error(&pdev->dev, cs->fwstat_addr)) {
++	if (!cs->fwstat_buf) {
+ 		dev_err(&pdev->dev, "Failed to map firmware health buffer\n");
+ 		cs->fwstat_buf = NULL;
+ 		goto out_free;
+-- 
+2.51.0
+
 
 
 
