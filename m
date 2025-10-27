@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-191055-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190976-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2105C10F58
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:27:37 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3813FC10F5C
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:27:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9BA0A19A7271
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:24:06 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 36A19502E88
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:19:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8216322745;
-	Mon, 27 Oct 2025 19:21:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F65B320CBE;
+	Mon, 27 Oct 2025 19:18:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qmE43Ket"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vpqosT6s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64D7831E107;
-	Mon, 27 Oct 2025 19:21:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9EC621576E;
+	Mon, 27 Oct 2025 19:18:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592896; cv=none; b=r0LeDuwnd/vx+BPB+jEss80f/Phl7QlUdwv9aCqLvklWptbipt0bu1hr/YIAy7VYKMrqEp1w6+EaZNL84SR3aDCJg7DdlZ47H5lAk3BFExkZWwoLKDx7Jdi5/yXdW19fyPSP+MvKHaYJHp74j7AghWvUxjmgGkY1yFGzwuTVXzw=
+	t=1761592691; cv=none; b=mHve+UnIyD2g9De8KvAY1QV078NQdYQ/kEh68ubNuka0DnkAz0JFm5TZlYbcpRvEaXOU/Z1vFb2gZFz4gorElz3bZzkHNEo+8if+sbUfAG9fxX4bok2JAzFotk6u82EnGjZVMdAcQT1AwYv5HfvNb8zwwVxmPEIor1S1faYkGH8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592896; c=relaxed/simple;
-	bh=UdUUICPW08+421B06NX5nQk2HphcQsCkfAg29zvECOs=;
+	s=arc-20240116; t=1761592691; c=relaxed/simple;
+	bh=unPXXErYCYVlXDbSozXfvzt7ZnMMNqhAUh/sVYhZYfM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E2IEoeyIK9gj43N49lVpCwPv+TcY06htLx11Hx318U8OB2TEkrRpuLUv1omDIgHYptF0AqxwrHYoVPlv28p3150uU/zcfZM4xRWpgt6KKaDPXZmsC8Fo+KUsGKVrlvrLiPkMFFERBYkGBhPaFerLD9gW4aSi66wkYZ2x84kXxNw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qmE43Ket; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC8B8C4CEF1;
-	Mon, 27 Oct 2025 19:21:35 +0000 (UTC)
+	 MIME-Version; b=mNAiI6u84USIUbSbRQFppDPFOYH2M+aIf4rKUqZzOkRQaN4RPPNO7ENGZBqaRUFmAkdUMUSBCM0Cog9ZQpsyP4heCjM8O/GNTF5oAXlzsFTw1TUAti0MkNydaSh4Qg6ydg767DdW5sLlL1Bhpb8+Udo7xgxxpmBZYQA371scGaE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vpqosT6s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E0B5C4CEF1;
+	Mon, 27 Oct 2025 19:18:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592896;
-	bh=UdUUICPW08+421B06NX5nQk2HphcQsCkfAg29zvECOs=;
+	s=korg; t=1761592691;
+	bh=unPXXErYCYVlXDbSozXfvzt7ZnMMNqhAUh/sVYhZYfM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qmE43KetMbfXhv6u19m4zcmum4BYPmZytUmSKFd/T63dgo1HXFXvdmFygk78MmmiV
-	 eeAN1guHj18OaujB20O5QOsOpW29s7qEASPaZmf7iHgEkgXXh8CfJ6nm1HjNzYlC1C
-	 GHO/+FEuOFEqzJAbCwSy9Wtzeq4ZCzMnIUYkEAeE=
+	b=vpqosT6sKDEc3g1Fx1XwRbIF+wie9JYoTkDDfyezZOLM4D259xFzqFtQcXJak0dG3
+	 upQlmEddALp9IMOlZ25XfiiRojsaGGDvLolFmV8g88yAOJrEoke0YWSK5zWOgC3w6U
+	 9Otm+xJp9hzJXUkA5NpLKJXVJ0DJ58w4Qs8KMn/Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Suren Baghdasaryan <surenb@google.com>,
-	Hao Ge <gehao@kylinos.cn>,
-	Harry Yoo <harry.yoo@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>
-Subject: [PATCH 6.12 053/117] slab: Avoid race on slab->obj_exts in alloc_slab_obj_exts
+	Alexey Simakov <bigalex934@gmail.com>,
+	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 30/84] sctp: avoid NULL dereference when chunk data buffer is missing
 Date: Mon, 27 Oct 2025 19:36:19 +0100
-Message-ID: <20251027183455.445639400@linuxfoundation.org>
+Message-ID: <20251027183439.620608332@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
-References: <20251027183453.919157109@linuxfoundation.org>
+In-Reply-To: <20251027183438.817309828@linuxfoundation.org>
+References: <20251027183438.817309828@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,77 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hao Ge <gehao@kylinos.cn>
+From: Alexey Simakov <bigalex934@gmail.com>
 
-commit 6ed8bfd24ce1cb31742b09a3eb557cd008533eec upstream.
+[ Upstream commit 441f0647f7673e0e64d4910ef61a5fb8f16bfb82 ]
 
-If two competing threads enter alloc_slab_obj_exts() and one of them
-fails to allocate the object extension vector, it might override the
-valid slab->obj_exts allocated by the other thread with
-OBJEXTS_ALLOC_FAIL. This will cause the thread that lost this race and
-expects a valid pointer to dereference a NULL pointer later on.
+chunk->skb pointer is dereferenced in the if-block where it's supposed
+to be NULL only.
 
-Update slab->obj_exts atomically using cmpxchg() to avoid
-slab->obj_exts overrides by racing threads.
+chunk->skb can only be NULL if chunk->head_skb is not. Check for frag_list
+instead and do it just before replacing chunk->skb. We're sure that
+otherwise chunk->skb is non-NULL because of outer if() condition.
 
-Thanks for Vlastimil and Suren's help with debugging.
-
-Fixes: f7381b911640 ("slab: mark slab->obj_exts allocation failures unconditionally")
-Cc: <stable@vger.kernel.org>
-Suggested-by: Suren Baghdasaryan <surenb@google.com>
-Signed-off-by: Hao Ge <gehao@kylinos.cn>
-Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
-Reviewed-by: Suren Baghdasaryan <surenb@google.com>
-Link: https://patch.msgid.link/20251021010353.1187193-1-hao.ge@linux.dev
-Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 90017accff61 ("sctp: Add GSO support")
+Signed-off-by: Alexey Simakov <bigalex934@gmail.com>
+Acked-by: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>
+Link: https://patch.msgid.link/20251021130034.6333-1-bigalex934@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/slub.c |    9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ net/sctp/inqueue.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -1943,7 +1943,7 @@ static inline void mark_objexts_empty(st
+diff --git a/net/sctp/inqueue.c b/net/sctp/inqueue.c
+index 5c16521818058..f5a7d5a387555 100644
+--- a/net/sctp/inqueue.c
++++ b/net/sctp/inqueue.c
+@@ -169,13 +169,14 @@ struct sctp_chunk *sctp_inq_pop(struct sctp_inq *queue)
+ 				chunk->head_skb = chunk->skb;
  
- static inline void mark_failed_objexts_alloc(struct slab *slab)
- {
--	slab->obj_exts = OBJEXTS_ALLOC_FAIL;
-+	cmpxchg(&slab->obj_exts, 0, OBJEXTS_ALLOC_FAIL);
- }
+ 			/* skbs with "cover letter" */
+-			if (chunk->head_skb && chunk->skb->data_len == chunk->skb->len)
++			if (chunk->head_skb && chunk->skb->data_len == chunk->skb->len) {
++				if (WARN_ON(!skb_shinfo(chunk->skb)->frag_list)) {
++					__SCTP_INC_STATS(dev_net(chunk->skb->dev),
++							 SCTP_MIB_IN_PKT_DISCARDS);
++					sctp_chunk_free(chunk);
++					goto next_chunk;
++				}
+ 				chunk->skb = skb_shinfo(chunk->skb)->frag_list;
+-
+-			if (WARN_ON(!chunk->skb)) {
+-				__SCTP_INC_STATS(dev_net(chunk->skb->dev), SCTP_MIB_IN_PKT_DISCARDS);
+-				sctp_chunk_free(chunk);
+-				goto next_chunk;
+ 			}
+ 		}
  
- static inline void handle_failed_objexts_alloc(unsigned long obj_exts,
-@@ -2008,6 +2008,7 @@ int alloc_slab_obj_exts(struct slab *sla
- #ifdef CONFIG_MEMCG
- 	new_exts |= MEMCG_DATA_OBJEXTS;
- #endif
-+retry:
- 	old_exts = READ_ONCE(slab->obj_exts);
- 	handle_failed_objexts_alloc(old_exts, vec, objects);
- 	if (new_slab) {
-@@ -2017,8 +2018,7 @@ int alloc_slab_obj_exts(struct slab *sla
- 		 * be simply assigned.
- 		 */
- 		slab->obj_exts = new_exts;
--	} else if ((old_exts & ~OBJEXTS_FLAGS_MASK) ||
--		   cmpxchg(&slab->obj_exts, old_exts, new_exts) != old_exts) {
-+	} else if (old_exts & ~OBJEXTS_FLAGS_MASK) {
- 		/*
- 		 * If the slab is already in use, somebody can allocate and
- 		 * assign slabobj_exts in parallel. In this case the existing
-@@ -2027,6 +2027,9 @@ int alloc_slab_obj_exts(struct slab *sla
- 		mark_objexts_empty(vec);
- 		kfree(vec);
- 		return 0;
-+	} else if (cmpxchg(&slab->obj_exts, old_exts, new_exts) != old_exts) {
-+		/* Retry if a racing thread changed slab->obj_exts from under us. */
-+		goto retry;
- 	}
- 
- 	kmemleak_not_leak(vec);
+-- 
+2.51.0
+
 
 
 
