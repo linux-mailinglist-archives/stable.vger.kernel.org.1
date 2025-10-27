@@ -1,62 +1,56 @@
-Return-Path: <stable+bounces-190844-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190597-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE066C10CBC
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:20:21 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1DF5C10972
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:11:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F2C91A271BB
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:15:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 363E34643E4
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:05:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04C3B32143F;
-	Mon, 27 Oct 2025 19:12:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B2AB320A02;
+	Mon, 27 Oct 2025 19:01:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PEeg/beC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JFBrxbF7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5BAD3064AA;
-	Mon, 27 Oct 2025 19:12:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28A2F306491;
+	Mon, 27 Oct 2025 19:01:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592346; cv=none; b=IRGhtE4yLCtjhg193W+5g+AFYzQXD2PwnpVMnG3KB68Ig/f+Byx5bBwq2dpqzgmRrv+iJWK4BHuuw15w4nh1gM6xTDEgXT8uJNXuHbgkdHroISpRXD4BkPQXrypeVYFweun2I1Hp6EVYeCadiX9XMRc/yPlu9QgzQXjrsMSy5lg=
+	t=1761591700; cv=none; b=XEqbQoe/ltM9hwQ9GE3g4htrgg2PQd/ZO06c878Lmr6j31uQCc4JxLUYhW4lu736GAW44sWhvlWWnwz4/hWkdOtmb+ED/D5dcRQOHQ0LJf1T/cTX6oiPxoAtgVpGUXQcB9ddlRfWPD9nAYSIRKTzFUlrVhVjZLmAzNiJaxsYEkc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592346; c=relaxed/simple;
-	bh=OjMLOI8yw7hBhnSXiT5JdxkmDCCLk1tkTdQBLX5FVaY=;
+	s=arc-20240116; t=1761591700; c=relaxed/simple;
+	bh=ZLgqcztuowXN47H34Ck/F064fUk8I6W1KppOPHyBZ9c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OIWqanM4m8dhNqMqtcVjr2X2J5VLFSobfEXjoVxzcutUTbOX148/zKAU3ywKIm0InrdRCm1xQEuZ569uemBxhT8GEorPKQtG/kY5by7ewNYyO7FK8tHgMTpxD7SApvb0m5iaAD9zR9THWQbvQituFuGPrla6+Sef/48FJ/4k71M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PEeg/beC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECBE6C4CEF1;
-	Mon, 27 Oct 2025 19:12:25 +0000 (UTC)
+	 MIME-Version:Content-Type; b=DnBMqyyp+PWdqIyq9CHxBbjnx6u8/3WGxKKTVn7Z3ZO0mw2mvfpu8ZbblMwEY7ExUIK8hEF/olbASJ51YvtfLgWHcjYEB1FlIMn0EPeDh5ljC34UryLuCKDAuVe/zZ2OJiUJXgrJOQLkZAb8+JiMuegSlDHYYijZiJfr5N5eWrQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JFBrxbF7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE127C4CEF1;
+	Mon, 27 Oct 2025 19:01:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592346;
-	bh=OjMLOI8yw7hBhnSXiT5JdxkmDCCLk1tkTdQBLX5FVaY=;
+	s=korg; t=1761591700;
+	bh=ZLgqcztuowXN47H34Ck/F064fUk8I6W1KppOPHyBZ9c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PEeg/beCBSw8Pa76QeKHYNbxIXi2uHGkS83cklyxmOSYb6E7lN56wmVOTPGIYv8e5
-	 1EU6dDPlg2NXFW0qphbw3sWI4cIaE1JQs67Tudyjw+G5MBVw5UzA/dEUUCjGH26evL
-	 KeLu8lnL7rNWjBgW4/SkCoxt+2sp3RgjX32WbZ0g=
+	b=JFBrxbF7yRFg0sAafMtLoEVvmmxY0ZbrhxSD3UwCPnRHYotIyGK85oCJNc7k9wbTF
+	 Mqi6cu8eGpGMG8yYyCXhubG3DnPFPmmuGnP7Zwv09XFzHfTFr+Q5AYP7HyFDU+f+hz
+	 OYleHxmTng4OyiQb10dr6+3kOUHqErlEMr2iJt9s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jay Vosburgh <jv@jvosburgh.net>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Vincent Bernat <vincent@bernat.ch>,
-	Tonghao Zhang <tonghao@bamaicloud.com>
-Subject: [PATCH 6.1 087/157] net: bonding: fix possible peer notify event loss or dup issue
-Date: Mon, 27 Oct 2025 19:35:48 +0100
-Message-ID: <20251027183503.605904863@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	=?UTF-8?q?=C5=81ukasz=20Bartosik?= <ukaszb@chromium.org>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>
+Subject: [PATCH 5.10 296/332] xhci: dbc: enable back DbC in resume if it was enabled before suspend
+Date: Mon, 27 Oct 2025 19:35:49 +0100
+Message-ID: <20251027183532.668152141@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
-References: <20251027183501.227243846@linuxfoundation.org>
+In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
+References: <20251027183524.611456697@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,120 +60,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tonghao Zhang <tonghao@bamaicloud.com>
+From: Mathias Nyman <mathias.nyman@linux.intel.com>
 
-commit 10843e1492e474c02b91314963161731fa92af91 upstream.
+commit 2bbd38fcd29670e46c0fdb9cd0e90507a8a1bf6a upstream.
 
-If the send_peer_notif counter and the peer event notify are not synchronized.
-It may cause problems such as the loss or dup of peer notify event.
+DbC is currently only enabled back if it's in configured state during
+suspend.
 
-Before this patch:
-- If should_notify_peers is true and the lock for send_peer_notif-- fails, peer
-  event may be sent again in next mii_monitor loop, because should_notify_peers
-  is still true.
-- If should_notify_peers is true and the lock for send_peer_notif-- succeeded,
-  but the lock for peer event fails, the peer event will be lost.
+If system is suspended after DbC is enabled, but before the device is
+properly enumerated by the host, then DbC would not be enabled back in
+resume.
 
-This patch locks the RTNL for send_peer_notif, events, and commit simultaneously.
+Always enable DbC back in resume if it's suspended in enabled,
+connected, or configured state
 
-Fixes: 07a4ddec3ce9 ("bonding: add an option to specify a delay between peer notifications")
-Cc: Jay Vosburgh <jv@jvosburgh.net>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Paolo Abeni <pabeni@redhat.com>
-Cc: Hangbin Liu <liuhangbin@gmail.com>
-Cc: Nikolay Aleksandrov <razor@blackwall.org>
-Cc: Vincent Bernat <vincent@bernat.ch>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Tonghao Zhang <tonghao@bamaicloud.com>
-Acked-by: Jay Vosburgh <jv@jvosburgh.net>
-Link: https://patch.msgid.link/20251021050933.46412-1-tonghao@bamaicloud.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Cc: stable <stable@kernel.org>
+Fixes: dfba2174dc42 ("usb: xhci: Add DbC support in xHCI driver")
+Tested-by: Łukasz Bartosik <ukaszb@chromium.org>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/bonding/bond_main.c |   40 ++++++++++++++++++----------------------
- 1 file changed, 18 insertions(+), 22 deletions(-)
+ drivers/usb/host/xhci-dbgcap.c |    9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -2821,7 +2821,7 @@ static void bond_mii_monitor(struct work
- {
- 	struct bonding *bond = container_of(work, struct bonding,
- 					    mii_work.work);
--	bool should_notify_peers = false;
-+	bool should_notify_peers;
- 	bool commit;
- 	unsigned long delay;
- 	struct slave *slave;
-@@ -2833,30 +2833,33 @@ static void bond_mii_monitor(struct work
- 		goto re_arm;
+--- a/drivers/usb/host/xhci-dbgcap.c
++++ b/drivers/usb/host/xhci-dbgcap.c
+@@ -1147,8 +1147,15 @@ int xhci_dbc_suspend(struct xhci_hcd *xh
+ 	if (!dbc)
+ 		return 0;
  
- 	rcu_read_lock();
-+
- 	should_notify_peers = bond_should_notify_peers(bond);
- 	commit = !!bond_miimon_inspect(bond);
--	if (bond->send_peer_notif) {
--		rcu_read_unlock();
--		if (rtnl_trylock()) {
--			bond->send_peer_notif--;
--			rtnl_unlock();
--		}
--	} else {
--		rcu_read_unlock();
--	}
+-	if (dbc->state == DS_CONFIGURED)
++	switch (dbc->state) {
++	case DS_ENABLED:
++	case DS_CONNECTED:
++	case DS_CONFIGURED:
+ 		dbc->resume_required = 1;
++		break;
++	default:
++		break;
++	}
  
--	if (commit) {
-+	rcu_read_unlock();
-+
-+	if (commit || bond->send_peer_notif) {
- 		/* Race avoidance with bond_close cancel of workqueue */
- 		if (!rtnl_trylock()) {
- 			delay = 1;
--			should_notify_peers = false;
- 			goto re_arm;
- 		}
+ 	xhci_dbc_stop(dbc);
  
--		bond_for_each_slave(bond, slave, iter) {
--			bond_commit_link_state(slave, BOND_SLAVE_NOTIFY_LATER);
-+		if (commit) {
-+			bond_for_each_slave(bond, slave, iter) {
-+				bond_commit_link_state(slave,
-+						       BOND_SLAVE_NOTIFY_LATER);
-+			}
-+			bond_miimon_commit(bond);
-+		}
-+
-+		if (bond->send_peer_notif) {
-+			bond->send_peer_notif--;
-+			if (should_notify_peers)
-+				call_netdevice_notifiers(NETDEV_NOTIFY_PEERS,
-+							 bond->dev);
- 		}
--		bond_miimon_commit(bond);
- 
- 		rtnl_unlock();	/* might sleep, hold no other locks */
- 	}
-@@ -2864,13 +2867,6 @@ static void bond_mii_monitor(struct work
- re_arm:
- 	if (bond->params.miimon)
- 		queue_delayed_work(bond->wq, &bond->mii_work, delay);
--
--	if (should_notify_peers) {
--		if (!rtnl_trylock())
--			return;
--		call_netdevice_notifiers(NETDEV_NOTIFY_PEERS, bond->dev);
--		rtnl_unlock();
--	}
- }
- 
- static int bond_upper_dev_walk(struct net_device *upper,
 
 
 
