@@ -1,58 +1,63 @@
-Return-Path: <stable+bounces-191094-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190920-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA8D7C110AE
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:31:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D211BC10E68
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:24:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 26F0B504B90
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:24:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 387EE580B96
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:17:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F3C51FBC92;
-	Mon, 27 Oct 2025 19:23:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BB8630F526;
+	Mon, 27 Oct 2025 19:15:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HOuzuOv/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cp4RhPnA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAFC6304BD3;
-	Mon, 27 Oct 2025 19:23:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC6561E47CA;
+	Mon, 27 Oct 2025 19:15:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592991; cv=none; b=pEsY1wMpsi2084ZCLRa5DMyGzNlpeMETJqUr2EidH6Jubw2L1hQ7E8V9kKdNdJkJBcHg8xY0xC3XQk9BmROeVxrhOmeARIg0pgible5XgReLSQYA65zF+uMJHwhMka/enKf3fSL+JAouHCnrM83k0rWMDU+61K9lLP8Q1tj5a5A=
+	t=1761592545; cv=none; b=rqgqb8ZGcmdQU3eqPVnQCX0nomo/i8wpP8w3JhorJtXrnSWzlLsbvLeKucqpQD9pubaMyctiiA7TRCZXUNOXVkLo+P+hQ14ozH92QTdAskF/CGoNWgm3AVsSc7I7aJAT/YQ/PcZGTBFP1TTPDQnvRiq9PZzjcRK2DHx6qzHhNN0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592991; c=relaxed/simple;
-	bh=THiRIQoHt0UbS1XgfdZqNN1+GdX9sH1Gtw6czyjDlIg=;
+	s=arc-20240116; t=1761592545; c=relaxed/simple;
+	bh=2MGX2qK8CE2Hgs7LNrjlpcI4vZgnJfoS94i4OvUUcYQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IDBU7NZHWOvMYx/azIarEFgfhJmPRR/6rZEGGPU/f844OiccQf63T3jx2ilx9Y46Jh5ioNOdgy2dXy2vTrC9GgGiGmIZbVEWlXYnz/els724yrzGsET8Zec3OsxAkC1s5GAm+TIo8PtjQfnc3KIGoFIeiBlef3tlsuM/L0FUU8U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HOuzuOv/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4E70C4CEF1;
-	Mon, 27 Oct 2025 19:23:10 +0000 (UTC)
+	 MIME-Version; b=HJ3sI2BPauBT2IdpykJTTlGJa+rxPbr5p3F1Fpwb6pQ8mIw0OQCiCdP4LhbN+eJXcM/VAlW1m8YUYKzk3X2wJB8UyLZm2IIKiLTP5VO200KMFHKetSTXoWlA2+ftK2F+pmIOMNFzBSHGjhGQINSSI7+ujfuOBlZr98WjJzAkiRU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cp4RhPnA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9BA1C4CEF1;
+	Mon, 27 Oct 2025 19:15:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592991;
-	bh=THiRIQoHt0UbS1XgfdZqNN1+GdX9sH1Gtw6czyjDlIg=;
+	s=korg; t=1761592544;
+	bh=2MGX2qK8CE2Hgs7LNrjlpcI4vZgnJfoS94i4OvUUcYQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HOuzuOv/B0aFA+1/Nm89Wp0myx4nONhxGrvBWuSrC6m4DgqOum2VxKoheRF0MBvuV
-	 YRqEhgA4/D5HpaBbhpG8Z/pRrjME4r4hw173kiWxnB1DAJN5gkYArl184nuE8OaJyF
-	 FmTGqg9WLKT6C8aW8r4Z3bDhLlPfJn8itqdBGCAc=
+	b=Cp4RhPnA/u3nIgrD+9N2TE2yuZE5CJUJzQumtskPaTmzAxry5LufBEZ5EOiLQIYKf
+	 P2pzTuWTS2pHC5ZpgH+mogOM1t+4PaY3D0/+5+VynlZneto1lfFIg8fe+VO0J8/Kba
+	 JjYJneCQpU33AecloCPa7E0Fz+n24tXcyJFcogkI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Eric Biggers <ebiggers@kernel.org>,
-	Breno Leitao <leitao@debian.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 089/117] sched: Remove never used code in mm_cid_get()
+	Jakub Acs <acsjakub@amazon.de>,
+	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+	David Hildenbrand <david@redhat.com>,
+	SeongJae Park <sj@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Xu Xin <xu.xin16@zte.com.cn>,
+	Chengming Zhou <chengming.zhou@linux.dev>,
+	Peter Xu <peterx@redhat.com>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 154/157] mm/ksm: fix flag-dropping behavior in ksm_madvise
 Date: Mon, 27 Oct 2025 19:36:55 +0100
-Message-ID: <20251027183456.432711613@linuxfoundation.org>
+Message-ID: <20251027183505.425653102@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
-References: <20251027183453.919157109@linuxfoundation.org>
+In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
+References: <20251027183501.227243846@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,52 +69,129 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Jakub Acs <acsjakub@amazon.de>
 
-[ Upstream commit 53abe3e1c154628cc74e33a1bfcd865656e433a5 ]
+commit f04aad36a07cc17b7a5d5b9a2d386ce6fae63e93 upstream.
 
-Clang is not happy with set but unused variable (this is visible
-with `make W=1` build:
+syzkaller discovered the following crash: (kernel BUG)
 
-  kernel/sched/sched.h:3744:18: error: variable 'cpumask' set but not used [-Werror,-Wunused-but-set-variable]
+[   44.607039] ------------[ cut here ]------------
+[   44.607422] kernel BUG at mm/userfaultfd.c:2067!
+[   44.608148] Oops: invalid opcode: 0000 [#1] SMP DEBUG_PAGEALLOC KASAN NOPTI
+[   44.608814] CPU: 1 UID: 0 PID: 2475 Comm: reproducer Not tainted 6.16.0-rc6 #1 PREEMPT(none)
+[   44.609635] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
+[   44.610695] RIP: 0010:userfaultfd_release_all+0x3a8/0x460
 
-It seems like the variable was never used along with the assignment
-that does not have side effects as far as I can see.  Remove those
-altogether.
+<snip other registers, drop unreliable trace>
 
-Fixes: 223baf9d17f2 ("sched: Fix performance regression introduced by mm_cid")
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Tested-by: Eric Biggers <ebiggers@kernel.org>
-Reviewed-by: Breno Leitao <leitao@debian.org>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[   44.617726] Call Trace:
+[   44.617926]  <TASK>
+[   44.619284]  userfaultfd_release+0xef/0x1b0
+[   44.620976]  __fput+0x3f9/0xb60
+[   44.621240]  fput_close_sync+0x110/0x210
+[   44.622222]  __x64_sys_close+0x8f/0x120
+[   44.622530]  do_syscall_64+0x5b/0x2f0
+[   44.622840]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+[   44.623244] RIP: 0033:0x7f365bb3f227
+
+Kernel panics because it detects UFFD inconsistency during
+userfaultfd_release_all().  Specifically, a VMA which has a valid pointer
+to vma->vm_userfaultfd_ctx, but no UFFD flags in vma->vm_flags.
+
+The inconsistency is caused in ksm_madvise(): when user calls madvise()
+with MADV_UNMEARGEABLE on a VMA that is registered for UFFD in MINOR mode,
+it accidentally clears all flags stored in the upper 32 bits of
+vma->vm_flags.
+
+Assuming x86_64 kernel build, unsigned long is 64-bit and unsigned int and
+int are 32-bit wide.  This setup causes the following mishap during the &=
+~VM_MERGEABLE assignment.
+
+VM_MERGEABLE is a 32-bit constant of type unsigned int, 0x8000'0000.
+After ~ is applied, it becomes 0x7fff'ffff unsigned int, which is then
+promoted to unsigned long before the & operation.  This promotion fills
+upper 32 bits with leading 0s, as we're doing unsigned conversion (and
+even for a signed conversion, this wouldn't help as the leading bit is 0).
+& operation thus ends up AND-ing vm_flags with 0x0000'0000'7fff'ffff
+instead of intended 0xffff'ffff'7fff'ffff and hence accidentally clears
+the upper 32-bits of its value.
+
+Fix it by changing `VM_MERGEABLE` constant to unsigned long, using the
+BIT() macro.
+
+Note: other VM_* flags are not affected: This only happens to the
+VM_MERGEABLE flag, as the other VM_* flags are all constants of type int
+and after ~ operation, they end up with leading 1 and are thus converted
+to unsigned long with leading 1s.
+
+Note 2:
+After commit 31defc3b01d9 ("userfaultfd: remove (VM_)BUG_ON()s"), this is
+no longer a kernel BUG, but a WARNING at the same place:
+
+[   45.595973] WARNING: CPU: 1 PID: 2474 at mm/userfaultfd.c:2067
+
+but the root-cause (flag-drop) remains the same.
+
+[akpm@linux-foundation.org: rust bindgen wasn't able to handle BIT(), from Miguel]
+  Link: https://lore.kernel.org/oe-kbuild-all/202510030449.VfSaAjvd-lkp@intel.com/
+Link: https://lkml.kernel.org/r/20251001090353.57523-2-acsjakub@amazon.de
+Fixes: 7677f7fd8be7 ("userfaultfd: add minor fault registration mode")
+Signed-off-by: Jakub Acs <acsjakub@amazon.de>
+Signed-off-by: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Acked-by: SeongJae Park <sj@kernel.org>
+Tested-by: Alice Ryhl <aliceryhl@google.com>
+Tested-by: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Xu Xin <xu.xin16@zte.com.cn>
+Cc: Chengming Zhou <chengming.zhou@linux.dev>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: Axel Rasmussen <axelrasmussen@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+[acsjakub@amazon.de: adapt rust bindgen to older versions]
+Signed-off-by: Jakub Acs <acsjakub@amazon.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/sched/sched.h | 2 --
- 1 file changed, 2 deletions(-)
+ include/linux/mm.h              |    2 +-
+ rust/bindings/bindings_helper.h |    2 ++
+ rust/bindings/lib.rs            |    1 +
+ 3 files changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
-index a441990fe808d..cf541c4502d92 100644
---- a/kernel/sched/sched.h
-+++ b/kernel/sched/sched.h
-@@ -3731,11 +3731,9 @@ static inline int __mm_cid_get(struct rq *rq, struct mm_struct *mm)
- static inline int mm_cid_get(struct rq *rq, struct mm_struct *mm)
- {
- 	struct mm_cid __percpu *pcpu_cid = mm->pcpu_cid;
--	struct cpumask *cpumask;
- 	int cid;
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -316,7 +316,7 @@ extern unsigned int kobjsize(const void
+ #define VM_MIXEDMAP	0x10000000	/* Can contain "struct page" and pure PFN pages */
+ #define VM_HUGEPAGE	0x20000000	/* MADV_HUGEPAGE marked this vma */
+ #define VM_NOHUGEPAGE	0x40000000	/* MADV_NOHUGEPAGE marked this vma */
+-#define VM_MERGEABLE	0x80000000	/* KSM may merge identical pages */
++#define VM_MERGEABLE	BIT(31)		/* KSM may merge identical pages */
  
- 	lockdep_assert_rq_held(rq);
--	cpumask = mm_cidmask(mm);
- 	cid = __this_cpu_read(pcpu_cid->cid);
- 	if (mm_cid_is_valid(cid)) {
- 		mm_cid_snapshot_time(rq, mm);
--- 
-2.51.0
-
+ #ifdef CONFIG_ARCH_USES_HIGH_VMA_FLAGS
+ #define VM_HIGH_ARCH_BIT_0	32	/* bit only usable on 64-bit architectures */
+--- a/rust/bindings/bindings_helper.h
++++ b/rust/bindings/bindings_helper.h
+@@ -7,8 +7,10 @@
+  */
+ 
+ #include <linux/slab.h>
++#include <linux/mm.h>
+ 
+ /* `bindgen` gets confused at certain things. */
+ const size_t BINDINGS_ARCH_SLAB_MINALIGN = ARCH_SLAB_MINALIGN;
+ const gfp_t BINDINGS_GFP_KERNEL = GFP_KERNEL;
+ const gfp_t BINDINGS___GFP_ZERO = __GFP_ZERO;
++const vm_flags_t BINDINGS_VM_MERGEABLE = VM_MERGEABLE;
+--- a/rust/bindings/lib.rs
++++ b/rust/bindings/lib.rs
+@@ -51,3 +51,4 @@ pub use bindings_raw::*;
+ 
+ pub const GFP_KERNEL: gfp_t = BINDINGS_GFP_KERNEL;
+ pub const __GFP_ZERO: gfp_t = BINDINGS___GFP_ZERO;
++pub const VM_MERGEABLE: vm_flags_t = BINDINGS_VM_MERGEABLE;
 
 
 
