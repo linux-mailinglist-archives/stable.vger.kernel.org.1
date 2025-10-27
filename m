@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-190785-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191156-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC2B2C10C01
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:18:34 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76C4EC1127C
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:37:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F2E7E1A634D8
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:13:06 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 9A23956192D
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:27:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91E4F32AACD;
-	Mon, 27 Oct 2025 19:09:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1844931E0E0;
+	Mon, 27 Oct 2025 19:25:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XOYk+G3Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E7wAE04D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4844332AAB9;
-	Mon, 27 Oct 2025 19:09:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C607430147E;
+	Mon, 27 Oct 2025 19:25:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592190; cv=none; b=oy5NRSjGnMn9eIR8wKX/X4mh6/1q4Ff70ShNtJyJQBSEpZCuF82cyLT1lJSxQbS9utblut4tOgvmL/ARpdbV26HXuv5fB0ca5YFPj6+JBfeeTiCfTDXHx82NByou0nrhP6nyV7xDVyQD5KZ1WrBIti7xzLVr4vdSb/XzpPO+1aU=
+	t=1761593153; cv=none; b=AVOU6+9Zms4DRimqkqwls4j7+kKHVPNnHXHZOY7kskWlpN01xY/cw1XeYLecdW4CQUN2ySTZ78oQoI2jA9W60hfBWYQZobsij3eelhR2KawPbc/2UGcjO43DMNoNXcLVcYMWcuFWHJox3GbV66YzpDNNmiie4/ShGEMwvu+qAV4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592190; c=relaxed/simple;
-	bh=5GaFS5vcc7Ho1vewSGNwB67BS6O+WCGcMVDnawpCyRc=;
+	s=arc-20240116; t=1761593153; c=relaxed/simple;
+	bh=9zNijjUfyA+iWE2uLH6+zjNwv/0FpWmQ3rTshNJz6b0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BwMxwa3iAu9WLiLGSR4haLu0zyfye9EW2pp28e+PeTiu/WD5itjH/0jR7ndv41Nej1nYgG5ue+fTxctx0H3GqJ21NpjHdkDmcTSyZlONhZQ4mCKXlc4/HsmizgudrywCZI7UNX91M9vGxA2xMr4bCFWv9FVEROTOPRWxMYIz4p0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XOYk+G3Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0990C113D0;
-	Mon, 27 Oct 2025 19:09:49 +0000 (UTC)
+	 MIME-Version; b=he4kETpprtb3UrBeottHO1cqwLOqRgQn8gRhtF4GEGK+KH97pPc6qk2BXmpjgx7P7qAyiJhXC/4kKW/sZ+jWjZXNe/ix1FpO/17mcF/9hqy+JNgK+AIpgwJBv806GpuxNL+vDIPil9OJ0qp2TD7tuww7C0iaqEvedMofu2NH4FY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E7wAE04D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F444C4CEF1;
+	Mon, 27 Oct 2025 19:25:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592190;
-	bh=5GaFS5vcc7Ho1vewSGNwB67BS6O+WCGcMVDnawpCyRc=;
+	s=korg; t=1761593153;
+	bh=9zNijjUfyA+iWE2uLH6+zjNwv/0FpWmQ3rTshNJz6b0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XOYk+G3QZOn7+L8JRoPVfEUseUBz+PPaZQkUz8Ox1aUVSkAZGzd0SsWzwhwrEPcmF
-	 kXv/1kSKRvibe5PjiY5iXcKBXai/oZVyTMsCRHLSy+4u+5ZdGilODRGvQiHDO76T8z
-	 /K4+LfwkdDAL1rWnFUS+YXoinuEMDJ4T/Mkhnn/8=
+	b=E7wAE04DmU6XGIUg3irnBuUWUiXMMHyFHPVeanwRNBh5gl5dQKSta9xihUBoLXbkM
+	 oVexnIPqDfP3PfjVqdJ6ui4470i2R/fuA2PN6P8URPmsc46KIVfYR/ImKQoh9PWV4u
+	 eVas3xMJMGIdvh+nZA90gVp3+ZOGXCNm2XGw6kjo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Anna-Maria Behnsen <anna-maria@linutronix.de>,
-	Jeongjun Park <aha310510@gmail.com>
-Subject: [PATCH 6.1 028/157] Documentation: Replace del_timer/del_timer_sync()
+	Simon Schuster <schuster.simon@siemens-energy.com>,
+	Andreas Oetken <andreas.oetken@siemens-energy.com>,
+	Dinh Nguyen <dinguyen@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.17 007/184] nios2: ensure that memblock.current_limit is set when setting pfn limits
 Date: Mon, 27 Oct 2025 19:34:49 +0100
-Message-ID: <20251027183502.042347735@linuxfoundation.org>
+Message-ID: <20251027183515.136818975@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
-References: <20251027183501.227243846@linuxfoundation.org>
+In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
+References: <20251027183514.934710872@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,174 +61,80 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Simon Schuster <schuster.simon@siemens-energy.com>
 
-[ Upstream commit 87bdd932e85881895d4720255b40ac28749c4e32 ]
+[ Upstream commit a20b83cf45be2057f3d073506779e52c7fa17f94 ]
 
-Adjust to the new preferred function names.
+On nios2, with CONFIG_FLATMEM set, the kernel relies on
+memblock_get_current_limit() to determine the limits of mem_map, in
+particular for max_low_pfn.
+Unfortunately, memblock.current_limit is only default initialized to
+MEMBLOCK_ALLOC_ANYWHERE at this point of the bootup, potentially leading
+to situations where max_low_pfn can erroneously exceed the value of
+max_pfn and, thus, the valid range of available DRAM.
 
-Suggested-by: Steven Rostedt <rostedt@goodmis.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Reviewed-by: Anna-Maria Behnsen <anna-maria@linutronix.de>
-Link: https://lore.kernel.org/r/20221123201625.075320635@linutronix.de
-Signed-off-by: Jeongjun Park <aha310510@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This can in turn cause kernel-level paging failures, e.g.:
+
+[   76.900000] Unable to handle kernel paging request at virtual address 20303000
+[   76.900000] ea = c0080890, ra = c000462c, cause = 14
+[   76.900000] Kernel panic - not syncing: Oops
+[   76.900000] ---[ end Kernel panic - not syncing: Oops ]---
+
+This patch fixes this by pre-calculating memblock.current_limit
+based on the upper limits of the available memory ranges via
+adjust_lowmem_bounds, a simplified version of the equivalent
+implementation within the arm architecture.
+
+Signed-off-by: Simon Schuster <schuster.simon@siemens-energy.com>
+Signed-off-by: Andreas Oetken <andreas.oetken@siemens-energy.com>
+Signed-off-by: Dinh Nguyen <dinguyen@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/RCU/Design/Requirements/Requirements.rst      |    2 +-
- Documentation/core-api/local_ops.rst                        |    2 +-
- Documentation/kernel-hacking/locking.rst                    |   11 +++++------
- Documentation/timers/hrtimers.rst                           |    2 +-
- Documentation/translations/it_IT/kernel-hacking/locking.rst |   10 +++++-----
- Documentation/translations/zh_CN/core-api/local_ops.rst     |    2 +-
- 6 files changed, 14 insertions(+), 15 deletions(-)
+ arch/nios2/kernel/setup.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
---- a/Documentation/RCU/Design/Requirements/Requirements.rst
-+++ b/Documentation/RCU/Design/Requirements/Requirements.rst
-@@ -1858,7 +1858,7 @@ unloaded. After a given module has been
- one of its functions results in a segmentation fault. The module-unload
- functions must therefore cancel any delayed calls to loadable-module
- functions, for example, any outstanding mod_timer() must be dealt
--with via del_timer_sync() or similar.
-+with via timer_delete_sync() or similar.
+diff --git a/arch/nios2/kernel/setup.c b/arch/nios2/kernel/setup.c
+index 2a40150142c36..f43f01c4ab934 100644
+--- a/arch/nios2/kernel/setup.c
++++ b/arch/nios2/kernel/setup.c
+@@ -142,6 +142,20 @@ static void __init find_limits(unsigned long *min, unsigned long *max_low,
+ 	*max_high = PFN_DOWN(memblock_end_of_DRAM());
+ }
  
- Unfortunately, there is no way to cancel an RCU callback; once you
- invoke call_rcu(), the callback function is eventually going to be
---- a/Documentation/core-api/local_ops.rst
-+++ b/Documentation/core-api/local_ops.rst
-@@ -191,7 +191,7 @@ Here is a sample module which implements
++static void __init adjust_lowmem_bounds(void)
++{
++	phys_addr_t block_start, block_end;
++	u64 i;
++	phys_addr_t memblock_limit = 0;
++
++	for_each_mem_range(i, &block_start, &block_end) {
++		if (block_end > memblock_limit)
++			memblock_limit = block_end;
++	}
++
++	memblock_set_current_limit(memblock_limit);
++}
++
+ void __init setup_arch(char **cmdline_p)
+ {
+ 	console_verbose();
+@@ -157,6 +171,7 @@ void __init setup_arch(char **cmdline_p)
+ 	/* Keep a copy of command line */
+ 	*cmdline_p = boot_command_line;
  
-     static void __exit test_exit(void)
-     {
--            del_timer_sync(&test_timer);
-+            timer_delete_sync(&test_timer);
-     }
++	adjust_lowmem_bounds();
+ 	find_limits(&min_low_pfn, &max_low_pfn, &max_pfn);
  
-     module_init(test_init);
---- a/Documentation/kernel-hacking/locking.rst
-+++ b/Documentation/kernel-hacking/locking.rst
-@@ -967,7 +967,7 @@ you might do the following::
- 
-             while (list) {
-                     struct foo *next = list->next;
--                    del_timer(&list->timer);
-+                    timer_delete(&list->timer);
-                     kfree(list);
-                     list = next;
-             }
-@@ -981,7 +981,7 @@ the lock after we spin_unlock_bh(), and
- the element (which has already been freed!).
- 
- This can be avoided by checking the result of
--del_timer(): if it returns 1, the timer has been deleted.
-+timer_delete(): if it returns 1, the timer has been deleted.
- If 0, it means (in this case) that it is currently running, so we can
- do::
- 
-@@ -990,7 +990,7 @@ do::
- 
-                     while (list) {
-                             struct foo *next = list->next;
--                            if (!del_timer(&list->timer)) {
-+                            if (!timer_delete(&list->timer)) {
-                                     /* Give timer a chance to delete this */
-                                     spin_unlock_bh(&list_lock);
-                                     goto retry;
-@@ -1005,8 +1005,7 @@ do::
- Another common problem is deleting timers which restart themselves (by
- calling add_timer() at the end of their timer function).
- Because this is a fairly common case which is prone to races, you should
--use del_timer_sync() (``include/linux/timer.h``) to
--handle this case.
-+use timer_delete_sync() (``include/linux/timer.h``) to
- 
- Locking Speed
- =============
-@@ -1334,7 +1333,7 @@ lock.
- 
- -  kfree()
- 
---  add_timer() and del_timer()
-+-  add_timer() and timer_delete()
- 
- Mutex API reference
- ===================
---- a/Documentation/timers/hrtimers.rst
-+++ b/Documentation/timers/hrtimers.rst
-@@ -118,7 +118,7 @@ existing timer wheel code, as it is matu
- was not really a win, due to the different data structures. Also, the
- hrtimer functions now have clearer behavior and clearer names - such as
- hrtimer_try_to_cancel() and hrtimer_cancel() [which are roughly
--equivalent to del_timer() and del_timer_sync()] - so there's no direct
-+equivalent to timer_delete() and timer_delete_sync()] - so there's no direct
- 1:1 mapping between them on the algorithmic level, and thus no real
- potential for code sharing either.
- 
---- a/Documentation/translations/it_IT/kernel-hacking/locking.rst
-+++ b/Documentation/translations/it_IT/kernel-hacking/locking.rst
-@@ -990,7 +990,7 @@ potreste fare come segue::
- 
-             while (list) {
-                     struct foo *next = list->next;
--                    del_timer(&list->timer);
-+                    timer_delete(&list->timer);
-                     kfree(list);
-                     list = next;
-             }
-@@ -1003,7 +1003,7 @@ e prenderà il *lock* solo dopo spin_unl
- di eliminare il suo oggetto (che però è già stato eliminato).
- 
- Questo può essere evitato controllando il valore di ritorno di
--del_timer(): se ritorna 1, il temporizzatore è stato già
-+timer_delete(): se ritorna 1, il temporizzatore è stato già
- rimosso. Se 0, significa (in questo caso) che il temporizzatore è in
- esecuzione, quindi possiamo fare come segue::
- 
-@@ -1012,7 +1012,7 @@ esecuzione, quindi possiamo fare come se
- 
-                     while (list) {
-                             struct foo *next = list->next;
--                            if (!del_timer(&list->timer)) {
-+                            if (!timer_delete(&list->timer)) {
-                                     /* Give timer a chance to delete this */
-                                     spin_unlock_bh(&list_lock);
-                                     goto retry;
-@@ -1026,7 +1026,7 @@ esecuzione, quindi possiamo fare come se
- Un altro problema è l'eliminazione dei temporizzatori che si riavviano
- da soli (chiamando add_timer() alla fine della loro esecuzione).
- Dato che questo è un problema abbastanza comune con una propensione
--alle corse critiche, dovreste usare del_timer_sync()
-+alle corse critiche, dovreste usare timer_delete_sync()
- (``include/linux/timer.h``) per gestire questo caso.
- 
- Velocità della sincronizzazione
-@@ -1372,7 +1372,7 @@ contesto, o trattenendo un qualsiasi *lo
- 
- -  kfree()
- 
---  add_timer() e del_timer()
-+-  add_timer() e timer_delete()
- 
- Riferimento per l'API dei Mutex
- ===============================
---- a/Documentation/translations/zh_CN/core-api/local_ops.rst
-+++ b/Documentation/translations/zh_CN/core-api/local_ops.rst
-@@ -185,7 +185,7 @@ UP之间没有不同的行为，在你�
- 
-     static void __exit test_exit(void)
-     {
--            del_timer_sync(&test_timer);
-+            timer_delete_sync(&test_timer);
-     }
- 
-     module_init(test_init);
+ 	memblock_reserve(__pa_symbol(_stext), _end - _stext);
+-- 
+2.51.0
+
 
 
 
