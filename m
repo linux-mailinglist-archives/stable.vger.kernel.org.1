@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-191211-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190724-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA8FCC1129B
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:38:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 017D2C10B2B
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:16:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 037B9547EA3
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:30:18 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 344C2504306
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:10:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4FDB328638;
-	Mon, 27 Oct 2025 19:28:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59E90313546;
+	Mon, 27 Oct 2025 19:07:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hbxUSp7m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GPtpEdPT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D6AE3254AC;
-	Mon, 27 Oct 2025 19:28:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15D54321445;
+	Mon, 27 Oct 2025 19:07:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761593293; cv=none; b=HNvHrKp/AWh08kjPNQ0FsFlK+smKXe0ZEcYW7VfZlvjTup0HcyeN0B9myJScFtocSTaZszZ1AL7Gr4CacU3yc7xVBqkasMXXmQ1PrRXs9LJtADpv6YhQDAgI31nux3YuRpI5ZcrOGFnf6qh9z/7bbkXScSab9EpJcNAORt/lu4k=
+	t=1761592029; cv=none; b=gmeIcpoNXfdnmJPgNSpoxCeK0yFl8akNvgAY+UVEwZHyD6UexAkiH773alzdkTTJNfZ6etMPQqwTknNOmf6PHBmKD6E5TPnVlSn/vXTSaLioPHC5H0C9pmJtsRDRTU+Fc0Vzu0nxobPC0STLSAJKFm+xRxmdqReStE4Fwna5f4Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761593293; c=relaxed/simple;
-	bh=RgxJnjzVXCTOHbMmwAHi/UV8vMGkgFNC2TdZ/ijPPB0=;
+	s=arc-20240116; t=1761592029; c=relaxed/simple;
+	bh=aMLxU5nGXvmgS9Luw9kGBrR6DyswKys0jA0H5Mqq5As=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nNQiDPRFA3zy3O5LjJsZ6zoiYL67AYluVOHslIIukyC59u4HxE11Bn7G8E3PHG8DjsyafOvsMpbur6izqHilI2Qz0Lb3oNNdknXSTHbTQhoP1cgWVjWnJT12H/3pCZWqIgWpKV+mCi0kJA8sPxoABQn/vUtteKf+naH8Y+RVL9U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hbxUSp7m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D37BC4CEF1;
-	Mon, 27 Oct 2025 19:28:12 +0000 (UTC)
+	 MIME-Version; b=SIg16n551vwFqA2hUqrwkbqQfI2Cf/i6mP+qJue8Oe0Jp7JmX4WkLlQIVIEF+HySW7dLSwS8jWVMsRCJpat2vJ4rTRZTpP2A4lW/+f0N+QeZfTq8fUBBCwh4d7JIWTmlC4wrzKYBpIY2l6b23IDqinE4zm7Qz1ba0LBUOllVwW4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GPtpEdPT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AA12C113D0;
+	Mon, 27 Oct 2025 19:07:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761593293;
-	bh=RgxJnjzVXCTOHbMmwAHi/UV8vMGkgFNC2TdZ/ijPPB0=;
+	s=korg; t=1761592029;
+	bh=aMLxU5nGXvmgS9Luw9kGBrR6DyswKys0jA0H5Mqq5As=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hbxUSp7mCSyRBIQegfiJXrxI+YPPni6gN6KA/F0rLfcGZtGDOLL9zLo6WjZBy7d8I
-	 8m9vIdudPX9IJ2Qbk60+SnWtBw2ApZeRanRsphwowcmotd5oabY8ohz4Qvkuv9zWNL
-	 U3ScJrpUPQRhd2L/drZugcHxJ0UCSZW2dT22KZK4=
+	b=GPtpEdPTcEKQOoIROH2OxE7ls9D4One4U/2Rjk6WSVLiOqUL8FxxU+a3NLRTTbMKL
+	 DNcMQSi1IOaoyu384bg/1lh5woLUSWlA7IC0wXQ40XiubzSzCnio5AdWGB3nTZ1NMy
+	 I1jTl47IJDSKs0zd5jS99iuoMJRwgnHFiAxHgMRE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	linux-cifs@vger.kernel.org,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
-	Pavel Shilovskiy <pshilovskiy@microsoft.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.17 088/184] cifs: Fix TCP_Server_Info::credits to be signed
+	Christoph Hellwig <hch@lst.de>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Carlos Maiolino <cem@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 090/123] xfs: rename the old_crc variable in xlog_recover_process
 Date: Mon, 27 Oct 2025 19:36:10 +0100
-Message-ID: <20251027183517.266726161@linuxfoundation.org>
+Message-ID: <20251027183448.797901796@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
-References: <20251027183514.934710872@linuxfoundation.org>
+In-Reply-To: <20251027183446.381986645@linuxfoundation.org>
+References: <20251027183446.381986645@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,42 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Christoph Hellwig <hch@lst.de>
 
-commit 5b2ff4873aeab972f919d5aea11c51393322bf58 upstream.
+[ Upstream commit 0b737f4ac1d3ec093347241df74bbf5f54a7e16c ]
 
-Fix TCP_Server_Info::credits to be signed, just as echo_credits and
-oplock_credits are.  This also fixes what ought to get at least a
-compilation warning if not an outright error in *get_credits_field() as a
-pointer to the unsigned server->credits field is passed back as a pointer
-to a signed int.
+old_crc is a very misleading name.  Rename it to expected_crc as that
+described the usage much better.
 
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: linux-cifs@vger.kernel.org
-Cc: stable@vger.kernel.org
-Acked-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
-Acked-by: Pavel Shilovskiy <pshilovskiy@microsoft.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Carlos Maiolino <cem@kernel.org>
+Stable-dep-of: e747883c7d73 ("xfs: fix log CRC mismatches between i386 and other architectures")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/cifsglob.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/xfs/xfs_log_recover.c |   17 ++++++++---------
+ 1 file changed, 8 insertions(+), 9 deletions(-)
 
---- a/fs/smb/client/cifsglob.h
-+++ b/fs/smb/client/cifsglob.h
-@@ -740,7 +740,7 @@ struct TCP_Server_Info {
- 	bool nosharesock;
- 	bool tcp_nodelay;
- 	bool terminate;
--	unsigned int credits;  /* send no more requests at once */
-+	int credits;  /* send no more requests at once */
- 	unsigned int max_credits; /* can override large 32000 default at mnt */
- 	unsigned int in_flight;  /* number of requests on the wire to server */
- 	unsigned int max_in_flight; /* max number of requests that were on wire */
+--- a/fs/xfs/xfs_log_recover.c
++++ b/fs/xfs/xfs_log_recover.c
+@@ -2864,20 +2864,19 @@ xlog_recover_process(
+ 	int			pass,
+ 	struct list_head	*buffer_list)
+ {
+-	__le32			old_crc = rhead->h_crc;
+-	__le32			crc;
++	__le32			expected_crc = rhead->h_crc, crc;
+ 
+ 	crc = xlog_cksum(log, rhead, dp, be32_to_cpu(rhead->h_len));
+ 
+ 	/*
+ 	 * Nothing else to do if this is a CRC verification pass. Just return
+ 	 * if this a record with a non-zero crc. Unfortunately, mkfs always
+-	 * sets old_crc to 0 so we must consider this valid even on v5 supers.
+-	 * Otherwise, return EFSBADCRC on failure so the callers up the stack
+-	 * know precisely what failed.
++	 * sets expected_crc to 0 so we must consider this valid even on v5
++	 * supers.  Otherwise, return EFSBADCRC on failure so the callers up the
++	 * stack know precisely what failed.
+ 	 */
+ 	if (pass == XLOG_RECOVER_CRCPASS) {
+-		if (old_crc && crc != old_crc)
++		if (expected_crc && crc != expected_crc)
+ 			return -EFSBADCRC;
+ 		return 0;
+ 	}
+@@ -2888,11 +2887,11 @@ xlog_recover_process(
+ 	 * zero CRC check prevents warnings from being emitted when upgrading
+ 	 * the kernel from one that does not add CRCs by default.
+ 	 */
+-	if (crc != old_crc) {
+-		if (old_crc || xfs_has_crc(log->l_mp)) {
++	if (crc != expected_crc) {
++		if (expected_crc || xfs_has_crc(log->l_mp)) {
+ 			xfs_alert(log->l_mp,
+ 		"log record CRC mismatch: found 0x%x, expected 0x%x.",
+-					le32_to_cpu(old_crc),
++					le32_to_cpu(expected_crc),
+ 					le32_to_cpu(crc));
+ 			xfs_hex_dump(dp, 32);
+ 		}
 
 
 
