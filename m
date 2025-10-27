@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-190770-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190511-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42D17C10BEA
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:18:29 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3583C10811
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:08:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6BA36563B52
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:11:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E7243560CA3
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:02:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6535331D39A;
-	Mon, 27 Oct 2025 19:09:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2C9332E152;
+	Mon, 27 Oct 2025 18:58:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F/dAAxVD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ep8K2o8s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 211FB2C15BB;
-	Mon, 27 Oct 2025 19:09:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F67A326D6D;
+	Mon, 27 Oct 2025 18:58:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592151; cv=none; b=A15ZlYtKMQgSIf4XMrTjtt+d9EmOoDNkimev1TBNOtrOd9oEH+5KGCTQGL23B9Y91i8UKUnp3P5Ofwi0SXAN+i12eG+Zyk5mnJinUDfbwl+FvKonSKDp10ULbWM8Bgfc6KQ8EwkzmJ+ue95IMbAXLphcbFgbnGHtplduRxpbly0=
+	t=1761591482; cv=none; b=Q4VpyBsIjvFM81h63fx8MQnXKCTsl4mv3CggICp+6Sye/NrO/9oSDhPHuojQySgYNvghR2Nbu5GRgv8LN5kBCSEoIlYeSRpd9JiTWLm5mOLRJLA+IRgX6xlup1fVneuKYf7sE7jiXfNW4TzAGrhxZRdBcCxv+a4xmYB7gl6poc0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592151; c=relaxed/simple;
-	bh=iTiAXvWkW6annGtt9UnqGOj3g5esa0My+6bJsx46dG0=;
+	s=arc-20240116; t=1761591482; c=relaxed/simple;
+	bh=0HNDmlEn0yP/Jjcvj+VooNedizpyfpllsUSEPW+qZN4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VYFgebX+wNZjdYx1DdtBEu1cqPgXRvIjfRJTcTbp8BCnjwhHh1SDUsTQJBWHdruKosgkeGUHaYRaM9DsMZec0STuVmcGT0TR9l72bRFuuuTtqoOgDXufjMvU+GIxm6z9VcdfDflcAOgwNYPZTbWDl5CbXpu6eMEEzQOqzUa5S2I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F/dAAxVD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C1ACC4CEF1;
-	Mon, 27 Oct 2025 19:09:10 +0000 (UTC)
+	 MIME-Version; b=QOwrpfphpZ7Ju0CRQHiq7AQeZzGoDPmEVqqIx4g5xeIn36c1W6672kCmcD6SssLLpSdXo1b92xRl2JpUoKzicLtHj5Yrd7lfYACHjDNhOYNjkFGHbibw7YDsktgFHrLUe5ZeGea55PTSthTTQHIkd13iB+MKUNWvYHmxrVkyWO8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ep8K2o8s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87A9BC4CEF1;
+	Mon, 27 Oct 2025 18:58:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592150;
-	bh=iTiAXvWkW6annGtt9UnqGOj3g5esa0My+6bJsx46dG0=;
+	s=korg; t=1761591481;
+	bh=0HNDmlEn0yP/Jjcvj+VooNedizpyfpllsUSEPW+qZN4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F/dAAxVDXm3p3KhoaI5umOSLa/KROzyWFMU9IeEtHnr00h8ZTyInde1NvfNOCMMvo
-	 nrkCrqiI+nFvAydKyD3f5EBsceCcCqhe2gnlx8eqXvvbJY6HKeypdZ8tx2sxI0PQBr
-	 QquJWCOJamWlA8NqjidUPtG1A45nJ3heymRshdGA=
+	b=ep8K2o8smKVaQxcxoB0MOyxCTXbiM5Gw0bvnGy/H4pMaf11f8MYzf+RK2CtexSrNa
+	 F0ja/8mpfEaBklOyebJJFL3eEVkE8NIo8P4wFXWfGchmShpgXMyjVuKrmzU7Pe0SZp
+	 Twpsw5xYtYkITViaZ9srfvQhGCEqwq/ESPjRsrZY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Deepanshu Kartikey <kartikey406@gmail.com>,
-	Theodore Tso <tytso@mit.edu>,
-	syzbot+038b7bf43423e132b308@syzkaller.appspotmail.com
-Subject: [PATCH 6.1 005/157] ext4: detect invalid INLINE_DATA + EXTENTS flag combination
+	David Laight <David.Laight@aculab.com>,
+	Arnd Bergmann <arnd@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Eliav Farber <farbere@amazon.com>
+Subject: [PATCH 5.10 213/332] minmax: fix up min3() and max3() too
 Date: Mon, 27 Oct 2025 19:34:26 +0100
-Message-ID: <20251027183501.383311755@linuxfoundation.org>
+Message-ID: <20251027183530.376141976@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
-References: <20251027183501.227243846@linuxfoundation.org>
+In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
+References: <20251027183524.611456697@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,68 +63,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Deepanshu Kartikey <kartikey406@gmail.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
 
-commit 1d3ad183943b38eec2acf72a0ae98e635dc8456b upstream.
+[ Upstream commit 21b136cc63d2a9ddd60d4699552b69c214b32964 ]
 
-syzbot reported a BUG_ON in ext4_es_cache_extent() when opening a verity
-file on a corrupted ext4 filesystem mounted without a journal.
+David Laight pointed out that we should deal with the min3() and max3()
+mess too, which still does excessive expansion.
 
-The issue is that the filesystem has an inode with both the INLINE_DATA
-and EXTENTS flags set:
+And our current macros are actually rather broken.
 
-    EXT4-fs error (device loop0): ext4_cache_extents:545: inode #15:
-    comm syz.0.17: corrupted extent tree: lblk 0 < prev 66
+In particular, the macros did this:
 
-Investigation revealed that the inode has both flags set:
-    DEBUG: inode 15 - flag=1, i_inline_off=164, has_inline=1, extents_flag=1
+  #define min3(x, y, z) min((typeof(x))min(x, y), z)
+  #define max3(x, y, z) max((typeof(x))max(x, y), z)
 
-This is an invalid combination since an inode should have either:
-- INLINE_DATA: data stored directly in the inode
-- EXTENTS: data stored in extent-mapped blocks
+and that not only is a nested expansion of possibly very complex
+arguments with all that involves, the typing with that "typeof()" cast
+is completely wrong.
 
-Having both flags causes ext4_has_inline_data() to return true, skipping
-extent tree validation in __ext4_iget(). The unvalidated out-of-order
-extents then trigger a BUG_ON in ext4_es_cache_extent() due to integer
-underflow when calculating hole sizes.
+For example, imagine what happens in max3() if 'x' happens to be a
+'unsigned char', but 'y' and 'z' are 'unsigned long'.  The types are
+compatible, and there's no warning - but the result is just random
+garbage.
 
-Fix this by detecting this invalid flag combination early in ext4_iget()
-and rejecting the corrupted inode.
+No, I don't think we've ever hit that issue in practice, but since we
+now have sane infrastructure for doing this right, let's just use it.
+It fixes any excessive expansion, and also avoids these kinds of broken
+type issues.
 
-Cc: stable@kernel.org
-Reported-and-tested-by: syzbot+038b7bf43423e132b308@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=038b7bf43423e132b308
-Suggested-by: Zhang Yi <yi.zhang@huawei.com>
-Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
-Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
-Message-ID: <20250930112810.315095-1-kartikey406@gmail.com>
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Requested-by: David Laight <David.Laight@aculab.com>
+Acked-by: Arnd Bergmann <arnd@kernel.org>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Eliav Farber <farbere@amazon.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/inode.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ include/linux/minmax.h |   12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
---- a/fs/ext4/inode.c
-+++ b/fs/ext4/inode.c
-@@ -4968,6 +4968,14 @@ struct inode *__ext4_iget(struct super_b
- 	}
- 	ei->i_flags = le32_to_cpu(raw_inode->i_flags);
- 	ext4_set_inode_flags(inode, true);
-+	/* Detect invalid flag combination - can't have both inline data and extents */
-+	if (ext4_test_inode_flag(inode, EXT4_INODE_INLINE_DATA) &&
-+	    ext4_test_inode_flag(inode, EXT4_INODE_EXTENTS)) {
-+		ext4_error_inode(inode, function, line, 0,
-+			"inode has both inline data and extents flags");
-+		ret = -EFSCORRUPTED;
-+		goto bad_inode;
-+	}
- 	inode->i_blocks = ext4_inode_blocks(raw_inode, ei);
- 	ei->i_file_acl = le32_to_cpu(raw_inode->i_file_acl_lo);
- 	if (ext4_has_feature_64bit(sb))
+--- a/include/linux/minmax.h
++++ b/include/linux/minmax.h
+@@ -152,13 +152,20 @@
+ #define umax(x, y)	\
+ 	__careful_cmp(max, (x) + 0u + 0ul + 0ull, (y) + 0u + 0ul + 0ull)
+ 
++#define __careful_op3(op, x, y, z, ux, uy, uz) ({			\
++	__auto_type ux = (x); __auto_type uy = (y);__auto_type uz = (z);\
++	BUILD_BUG_ON_MSG(!__types_ok3(x,y,z,ux,uy,uz),			\
++		#op"3("#x", "#y", "#z") signedness error");		\
++	__cmp(op, ux, __cmp(op, uy, uz)); })
++
+ /**
+  * min3 - return minimum of three values
+  * @x: first value
+  * @y: second value
+  * @z: third value
+  */
+-#define min3(x, y, z) min((typeof(x))min(x, y), z)
++#define min3(x, y, z) \
++	__careful_op3(min, x, y, z, __UNIQUE_ID(x_), __UNIQUE_ID(y_), __UNIQUE_ID(z_))
+ 
+ /**
+  * max3 - return maximum of three values
+@@ -166,7 +173,8 @@
+  * @y: second value
+  * @z: third value
+  */
+-#define max3(x, y, z) max((typeof(x))max(x, y), z)
++#define max3(x, y, z) \
++	__careful_op3(max, x, y, z, __UNIQUE_ID(x_), __UNIQUE_ID(y_), __UNIQUE_ID(z_))
+ 
+ /**
+  * min_not_zero - return the minimum that is _not_ zero, unless both are zero
 
 
 
