@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-190655-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191141-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12290C107E9
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:07:35 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAE95C111FE
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:36:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id B2031351630
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:07:34 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id CF4C3561595
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:27:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 115C132E13F;
-	Mon, 27 Oct 2025 19:04:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE4CD2D5A14;
+	Mon, 27 Oct 2025 19:25:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dtXl/cO4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1dWIcsPt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C281431B81D;
-	Mon, 27 Oct 2025 19:04:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 848DA32D0E1;
+	Mon, 27 Oct 2025 19:25:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591849; cv=none; b=BEvmVOh0iMr5Sc57uizGhlTRX+iYRPrxfo5+5dSsfjp6ZaorYsbqO3COyL68uzuvSYK45qr2pf1UTniwYC1bElvXgp+/tpD+jE06RVk1lXkFRq4xtQaFZpRtHQah3TNCJh0lQCKCdRkxDo3xrWvrM+DtfHD/6YdNUIxbfooAH10=
+	t=1761593115; cv=none; b=i5t+o/D/htmP8xmngW7/x39sUENtcbMrOkLujnxjIo2ro3Ao86JeUh9MHCd69vTes+CJhMNvw5jcJw+xoH2xCt6MBZGMKlR0/66gvvNia+3lw15TdPHt71h3YUUAVchh27xuzjiMUAmPGwkNKDy5heJAOw9UdoCQvR8GwFtdmhI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591849; c=relaxed/simple;
-	bh=V3RdiXDsVxN8DDxEFVX3yUm8PVf5O1QkNQBdj0E9qqQ=;
+	s=arc-20240116; t=1761593115; c=relaxed/simple;
+	bh=SNC8REIofvflG6hTr98U4lid7nVq2eL01PPC7PIyNN4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qyl3sOK0w0Rd7ZzbAhQz+QjhLkeBgIkKHler/ci8TbWeKDgCVjiAhBsxkseTQbTqDIeFxAT0vdradN4mOYQ76D12BxNS3fF4ClPf7wK3ZYFkVPr0FtAVMteEhd8vcAs/auEYiqRGEw038XLNDlWGFlmUbYEIH4J0eXNlGzId5r8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dtXl/cO4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E3BDC4CEF1;
-	Mon, 27 Oct 2025 19:04:09 +0000 (UTC)
+	 MIME-Version; b=GUuYRo5iYTant7ZS/7zQ48IJ8X2gCU53vv35GSuZEwcyvPRxEAC6Ev8YaFj7FYGpdcGB+Soe8JUm8sNh29/SmZUlyhLxEps3mFwzl+u9QL2gXrqjpEMOqdYZLlszbEoWSxQ72TX4jfnYCc2YHmVwi0SUrnUmu70gMeF/+LsVlRA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1dWIcsPt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1779EC4CEF1;
+	Mon, 27 Oct 2025 19:25:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591849;
-	bh=V3RdiXDsVxN8DDxEFVX3yUm8PVf5O1QkNQBdj0E9qqQ=;
+	s=korg; t=1761593115;
+	bh=SNC8REIofvflG6hTr98U4lid7nVq2eL01PPC7PIyNN4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dtXl/cO4AmraGn2x+urnUBDdgvS/2+C2a7fjp5YOjuRfCPqla2oXb6mt9slsyAfIA
-	 SAKwTU/lSwqNll8X7BcrO8zJLGRD2dpSp8wtzILex1q7cDNmKmvclasp2eUTXxg8rW
-	 Lv3vg+nNCpKIEAWADKQR4AzkhSPJQhPaUHkW4jVM=
+	b=1dWIcsPtdBZskKq2T1ak6dt1PhawgafGeWMUf0oA2uNhE1CVdWPeb6qRogR4YwxVV
+	 jcouqAq13do42m5kdhy269ll1W7KvnyuiaZcXGkXLvt+IItFe91Vtz+uYTRgjvF3FP
+	 pw2dPSCdyzwmoooIODfu8QAqBZLQ6gfcyaFW4wq8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Raju Rangoju <Raju.Rangoju@amd.com>,
-	Dawid Osuchowski <dawid.osuchowski@linux.intel.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Fuad Tabba <tabba@google.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 021/123] amd-xgbe: Avoid spurious link down messages during interface toggle
+Subject: [PATCH 6.17 019/184] arm64: sysreg: Correct sign definitions for EIESB and DoubleLock
 Date: Mon, 27 Oct 2025 19:35:01 +0100
-Message-ID: <20251027183446.966932312@linuxfoundation.org>
+Message-ID: <20251027183515.451121628@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183446.381986645@linuxfoundation.org>
-References: <20251027183446.381986645@linuxfoundation.org>
+In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
+References: <20251027183514.934710872@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Raju Rangoju <Raju.Rangoju@amd.com>
+From: Fuad Tabba <tabba@google.com>
 
-[ Upstream commit 2616222e423398bb374ffcb5d23dea4ba2c3e524 ]
+[ Upstream commit f4d4ebc84995178273740f3e601e97fdefc561d2 ]
 
-During interface toggle operations (ifdown/ifup), the driver currently
-resets the local helper variable 'phy_link' to -1. This causes the link
-state machine to incorrectly interpret the state as a link change event,
-resulting in spurious "Link is down" messages being logged when the
-interface is brought back up.
+The `ID_AA64MMFR4_EL1.EIESB` field, is an unsigned enumeration, but was
+incorrectly defined as a `SignedEnum` when introduced in commit
+cfc680bb04c5 ("arm64: sysreg: Add layout for ID_AA64MMFR4_EL1"). This is
+corrected to `UnsignedEnum`.
 
-Preserve the phy_link state across interface toggles to avoid treating
-the -1 sentinel value as a legitimate link state transition.
+Conversely, the `ID_AA64DFR0_EL1.DoubleLock` field, is a signed
+enumeration, but was incorrectly defined as an `UnsignedEnum`. This is
+corrected to `SignedEnum`, which wasn't correctly set when annotated as
+such in commit ad16d4cf0b4f ("arm64/sysreg: Initial unsigned annotations
+for ID registers").
 
-Fixes: 88131a812b16 ("amd-xgbe: Perform phy connect/disconnect at dev open/stop")
-Signed-off-by: Raju Rangoju <Raju.Rangoju@amd.com>
-Reviewed-by: Dawid Osuchowski <dawid.osuchowski@linux.intel.com>
-Link: https://patch.msgid.link/20251010065142.1189310-1-Raju.Rangoju@amd.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Fuad Tabba <tabba@google.com>
+Acked-by: Mark Rutland <mark.rutland@arm.com>
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/amd/xgbe/xgbe-drv.c  | 1 -
- drivers/net/ethernet/amd/xgbe/xgbe-mdio.c | 1 +
- 2 files changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/tools/sysreg | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/amd/xgbe/xgbe-drv.c b/drivers/net/ethernet/amd/xgbe/xgbe-drv.c
-index af04c035633ff..32397517807b0 100644
---- a/drivers/net/ethernet/amd/xgbe/xgbe-drv.c
-+++ b/drivers/net/ethernet/amd/xgbe/xgbe-drv.c
-@@ -1172,7 +1172,6 @@ static void xgbe_free_rx_data(struct xgbe_prv_data *pdata)
- 
- static int xgbe_phy_reset(struct xgbe_prv_data *pdata)
- {
--	pdata->phy_link = -1;
- 	pdata->phy_speed = SPEED_UNKNOWN;
- 
- 	return pdata->phy_if.phy_reset(pdata);
-diff --git a/drivers/net/ethernet/amd/xgbe/xgbe-mdio.c b/drivers/net/ethernet/amd/xgbe/xgbe-mdio.c
-index 19fed56b6ee3f..ebb8b3e5b9a88 100644
---- a/drivers/net/ethernet/amd/xgbe/xgbe-mdio.c
-+++ b/drivers/net/ethernet/amd/xgbe/xgbe-mdio.c
-@@ -1636,6 +1636,7 @@ static int xgbe_phy_init(struct xgbe_prv_data *pdata)
- 		pdata->phy.duplex = DUPLEX_FULL;
- 	}
- 
-+	pdata->phy_link = 0;
- 	pdata->phy.link = 0;
- 
- 	pdata->phy.pause_autoneg = pdata->pause_autoneg;
+diff --git a/arch/arm64/tools/sysreg b/arch/arm64/tools/sysreg
+index 696ab1f32a674..2a37d4c26d870 100644
+--- a/arch/arm64/tools/sysreg
++++ b/arch/arm64/tools/sysreg
+@@ -1693,7 +1693,7 @@ UnsignedEnum	43:40	TraceFilt
+ 	0b0000	NI
+ 	0b0001	IMP
+ EndEnum
+-UnsignedEnum	39:36	DoubleLock
++SignedEnum	39:36	DoubleLock
+ 	0b0000	IMP
+ 	0b1111	NI
+ EndEnum
+@@ -2409,7 +2409,7 @@ UnsignedEnum	11:8	ASID2
+ 	0b0000	NI
+ 	0b0001	IMP
+ EndEnum
+-SignedEnum	7:4	EIESB
++UnsignedEnum	7:4	EIESB
+ 	0b0000	NI
+ 	0b0001	ToEL3
+ 	0b0010	ToELx
 -- 
 2.51.0
 
