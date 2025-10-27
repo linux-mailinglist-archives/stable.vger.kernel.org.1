@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-191113-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190968-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAB4DC11033
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:29:59 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEC90C10F07
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:26:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 226881A25E40
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:26:09 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 34EF8502C15
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:19:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 295B7322C8A;
-	Mon, 27 Oct 2025 19:24:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A98ED32143F;
+	Mon, 27 Oct 2025 19:17:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jZ+OEfL0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gD06/VWR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDCF7322745;
-	Mon, 27 Oct 2025 19:24:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 646BE2BE037;
+	Mon, 27 Oct 2025 19:17:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761593043; cv=none; b=QTktwFGGktrCwbVgAyyb5J2dIzrcoDU7ssmeTb2TY2QV6tVYXIIHWzfAh4geSjXN6Uf8Ovh8BW/EuSJaF/dB4spTEzf9JRBSW5/hbkNUmY7VSUs2YPfWFRM76W1CMj7gu5YitqX2qXU4lnJle7vAnMZq2MZ6ViRsItiEHM13zSY=
+	t=1761592670; cv=none; b=RqKqyc9Y6zYyQOZkWhzkk8CJgPHrmNdLQw6NJpiqnKqD8CPyYnLWtSW2JgYsr7lWWT9wsaFfvx4HvAiB3svdy8thpXJ5Z6sKHwwjaH5Jxn1aTyL6GqfdSrG/WRvGJitd+syKUxF0NkZmkZcPEoqSjqAScLviCIl8pISrmvExrc8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761593043; c=relaxed/simple;
-	bh=S/YEs79iBkTOh00p5nfHf0U90MHlDSQ3XqYZb8U74iM=;
+	s=arc-20240116; t=1761592670; c=relaxed/simple;
+	bh=m3IDyyHGSFhYQOH31ClQPnkRURtXris0umCAJzx5T54=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=htlaNOi3ip6zNT8naVhTED6VCwxai2WmRyhXZJBpZBG1U5Nl+Fbg+9y+wQ+0y69o7VQA8lAOjAcInbNuJzanpsQZ52X67r7edp3g1hwjOIj0wMCEHmcJIPW9YYuknc0lngpvsP8JrE8739bfGowdtz6lS/OkUJXIHjTHygfFacw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jZ+OEfL0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 603B1C4CEF1;
-	Mon, 27 Oct 2025 19:24:03 +0000 (UTC)
+	 MIME-Version; b=pltTZMoNGpZpw/1v2WWbZQ5dBOeTrueR5NE0WllEoPRbhezMhkEHMUhhlMFK9AxEJ6TBwQqRI3w40PC8EctWSqwqttvg3Uq6Nqh1O8tjtye4AP0sIi49A5vRtDOps0SJlADx01H4GkJN39yFaoUCAwJ0+4o7b2QMypg0z6PPp7U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gD06/VWR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0B30C4CEF1;
+	Mon, 27 Oct 2025 19:17:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761593043;
-	bh=S/YEs79iBkTOh00p5nfHf0U90MHlDSQ3XqYZb8U74iM=;
+	s=korg; t=1761592670;
+	bh=m3IDyyHGSFhYQOH31ClQPnkRURtXris0umCAJzx5T54=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jZ+OEfL0t6xhtMVf3Usiwk2EU6FEn99UH7mGKjGFe3Y7kW88lMMlenQ96EdPPgLht
-	 3dmOKUhipfxvHp43gt057ff6OCAO++skKYdrXfhU/gYhziX++QamzYiL7tC+sBXpwt
-	 gltb9AWKfFQZyGjzDp4R5tskfOb4aUqIupR5ghNo=
+	b=gD06/VWRrKaJFHYMQQUBf7Rfsf4y8liFhihAPmfflUIOdwmUoWq8bW8RVDheTBSfV
+	 X+erSxi1+cBNBInZJ0/FmUOVmBBMyKnYL+IoXVaS6Q3QrKQ5njvDemXv09HNpkPTqT
+	 KQgEltEmCMB/RLaAOBo7moaq9Z6E2wCyGz8K7cB4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,12 +46,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Artem Shimko <a.shimko.dev@gmail.com>,
 	Sudeep Holla <sudeep.holla@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 073/117] firmware: arm_scmi: Fix premature SCMI_XFER_FLAG_IS_RAW clearing in raw mode
-Date: Mon, 27 Oct 2025 19:36:39 +0100
-Message-ID: <20251027183455.995269814@linuxfoundation.org>
+Subject: [PATCH 6.6 51/84] firmware: arm_scmi: Fix premature SCMI_XFER_FLAG_IS_RAW clearing in raw mode
+Date: Mon, 27 Oct 2025 19:36:40 +0100
+Message-ID: <20251027183440.177890940@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
-References: <20251027183453.919157109@linuxfoundation.org>
+In-Reply-To: <20251027183438.817309828@linuxfoundation.org>
+References: <20251027183438.817309828@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,7 +63,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -92,10 +92,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+), 2 deletions(-)
 
 diff --git a/drivers/firmware/arm_scmi/driver.c b/drivers/firmware/arm_scmi/driver.c
-index 5b4df0a27e22f..79866f3b6b3e7 100644
+index 9d4c983a27547..fbe893734411c 100644
 --- a/drivers/firmware/arm_scmi/driver.c
 +++ b/drivers/firmware/arm_scmi/driver.c
-@@ -771,6 +771,7 @@ __scmi_xfer_put(struct scmi_xfers_info *minfo, struct scmi_xfer *xfer)
+@@ -627,6 +627,7 @@ __scmi_xfer_put(struct scmi_xfers_info *minfo, struct scmi_xfer *xfer)
  			hash_del(&xfer->node);
  			xfer->pending = false;
  		}
@@ -103,7 +103,7 @@ index 5b4df0a27e22f..79866f3b6b3e7 100644
  		hlist_add_head(&xfer->node, &minfo->free_xfers);
  	}
  	spin_unlock_irqrestore(&minfo->xfer_lock, flags);
-@@ -789,8 +790,6 @@ void scmi_xfer_raw_put(const struct scmi_handle *handle, struct scmi_xfer *xfer)
+@@ -645,8 +646,6 @@ void scmi_xfer_raw_put(const struct scmi_handle *handle, struct scmi_xfer *xfer)
  {
  	struct scmi_info *info = handle_to_scmi_info(handle);
  
