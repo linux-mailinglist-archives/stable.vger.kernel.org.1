@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-190688-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190579-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF633C10A8A
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:14:50 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65368C1087F
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:09:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4E90E4FE227
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:08:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 58A171A26386
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:05:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D19F41E47CA;
-	Mon, 27 Oct 2025 19:05:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AFC731E0FB;
+	Mon, 27 Oct 2025 19:00:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hLvMH7pp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vCMa6pk+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EFE431B824;
-	Mon, 27 Oct 2025 19:05:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA6F0328B4F;
+	Mon, 27 Oct 2025 19:00:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591935; cv=none; b=eX+hdl+jWVi4CjphbmL3kD731qjL9W4RX+j0vqRC+Sf6hADLiNnLunoAKEn7InMSKuOmkzPHcoRi1uOgfILlg4XRXLJ2Ae4JKyF6/SGLC17bJdeJhJbYVzgDfH1KWCxxMJNH213O0XfdCksr8050FPKxSH2z90ENTClLpmVv9/k=
+	t=1761591658; cv=none; b=OC9GUDVpur52c/AuDhSkJ1EN94s0rJVCMZuOd/ZJXymB7rYRShZm1zZ6yYXDqrZQVCjmXp1huK+NXHMVweNrcT0LUr+NSpK4QQHn6d9F4m9bdXm7y48qFIyJCSHXj/1+tlJPfH3Pa8ZxlimM1LS/HN3b0NY2Gwa1gvLLYAxT5MU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591935; c=relaxed/simple;
-	bh=18N5Oha+W2d3JdQ5Lx63BJDK1ZmgXqP+UBZ8lvcrko0=;
+	s=arc-20240116; t=1761591658; c=relaxed/simple;
+	bh=cdEK1XfsHGXbQK6f4tIFKfWx5xzCcnkV4kbk19eipKE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QCfhBcC6p+dWpVbU3fAQ87Hc0dHOcoCSPzslgM/7sO1X/XNL1eyX5kCZcqFs4Ay5OIFOE+gYY/JokYvifakhhnTr8/rLTQdl8ulQzqM+IxauKkVc28EJr1u0dyXiQSc8fMe7U03yp+ONrWwIHVXnIJFup4ViZLcVIoPDf6i0qB0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hLvMH7pp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22607C4CEF1;
-	Mon, 27 Oct 2025 19:05:34 +0000 (UTC)
+	 MIME-Version; b=rjASCMhG2Ie/JxJbd/GqkyibxqhIUtaKcY4frdShmz7S/KzatufG6xkhbd5nm/cQFm01ejEf8dQ3BemjqXagmnQwg/i90Wa4Gw5iPXzB+veVyL0us0Tifn1o1LxzxalR7quePCeuUI0lqL17m5fS+S0BctBERgOmWEGrtVX89nM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vCMa6pk+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F233C4CEF1;
+	Mon, 27 Oct 2025 19:00:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591935;
-	bh=18N5Oha+W2d3JdQ5Lx63BJDK1ZmgXqP+UBZ8lvcrko0=;
+	s=korg; t=1761591658;
+	bh=cdEK1XfsHGXbQK6f4tIFKfWx5xzCcnkV4kbk19eipKE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hLvMH7ppGjDWnCMlBqB+zeo5fgBZnaqQs/11XJ4rdaBuN7ApGNrj17wptxs1domWq
-	 JHY7azOaYXKs1Om8jjJnrf+ALyEGyXOVj8n15ornK9zMC6IvdRjZy1ud4VyeJBjmFi
-	 mOVMvVghkVkOsi9RwFFYZerMGNoO1zElvKina64s=
+	b=vCMa6pk+N8pF6+i8tp4kflQJsZ9baRdT5ewtuncO8Wq8Ut6mv9AT9Hhn7L/wtX5Jn
+	 6qeNB1Rft0zosXsoye+ThX6HA15ax5AdqXCzSxDfcHFqa3EJuTx3IDVyYKFZ7iWioc
+	 NvC8N+nit8i81tUnkv2xn9OoovSrwv2fGeoBZnnQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 054/123] net: netlink: add NLM_F_BULK delete request modifier
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 5.10 281/332] Revert "cpuidle: menu: Avoid discarding useful information"
 Date: Mon, 27 Oct 2025 19:35:34 +0100
-Message-ID: <20251027183447.841542832@linuxfoundation.org>
+Message-ID: <20251027183532.279608387@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183446.381986645@linuxfoundation.org>
-References: <20251027183446.381986645@linuxfoundation.org>
+In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
+References: <20251027183524.611456697@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +61,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikolay Aleksandrov <razor@blackwall.org>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit 545528d788556c724eeb5400757f828ef27782a8 ]
+commit 10fad4012234a7dea621ae17c0c9486824f645a0 upstream.
 
-Add a new delete request modifier called NLM_F_BULK which, when
-supported, would cause the request to delete multiple objects. The flag
-is a convenient way to signal that a multiple delete operation is
-requested which can be gradually added to different delete requests. In
-order to make sure older kernels will error out if the operation is not
-supported instead of doing something unintended we have to break a
-required condition when implementing support for this flag, f.e. for
-neighbors we will omit the mandatory mac address attribute.
-Initially it will be used to add flush with filtering support for bridge
-fdbs, but it also opens the door to add similar support to others.
+It is reported that commit 85975daeaa4d ("cpuidle: menu: Avoid discarding
+useful information") led to a performance regression on Intel Jasper Lake
+systems because it reduced the time spent by CPUs in idle state C7 which
+is correlated to the maximum frequency the CPUs can get to because of an
+average running power limit [1].
 
-Signed-off-by: Nikolay Aleksandrov <razor@blackwall.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: bf29555f5bdc ("rtnetlink: Allow deleting FDB entries in user namespace")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Before that commit, get_typical_interval() would have returned UINT_MAX
+whenever it had been unable to make a high-confidence prediction which
+had led to selecting the deepest available idle state too often and
+both power and performance had been inadequate as a result of that on
+some systems.  However, this had not been a problem on systems with
+relatively aggressive average running power limits, like the Jasper Lake
+systems in question, because on those systems it was compensated by the
+ability to run CPUs faster.
+
+It was addressed by causing get_typical_interval() to return a number
+based on the recent idle duration information available to it even if it
+could not make a high-confidence prediction, but that clearly did not
+take the possible correlation between idle power and available CPU
+capacity into account.
+
+For this reason, revert most of the changes made by commit 85975daeaa4d,
+except for one cosmetic cleanup, and add a comment explaining the
+rationale for returning UINT_MAX from get_typical_interval() when it
+is unable to make a high-confidence prediction.
+
+Fixes: 85975daeaa4d ("cpuidle: menu: Avoid discarding useful information")
+Closes: https://lore.kernel.org/linux-pm/36iykr223vmcfsoysexug6s274nq2oimcu55ybn6ww4il3g3cv@cohflgdbpnq7/ [1]
+Reported-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: All applicable <stable@vger.kernel.org>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Link: https://patch.msgid.link/3663603.iIbC2pHGDl@rafael.j.wysocki
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/uapi/linux/netlink.h | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/cpuidle/governors/menu.c |   21 +++++++++------------
+ 1 file changed, 9 insertions(+), 12 deletions(-)
 
-diff --git a/include/uapi/linux/netlink.h b/include/uapi/linux/netlink.h
-index 4940a93315995..1e543cf0568c0 100644
---- a/include/uapi/linux/netlink.h
-+++ b/include/uapi/linux/netlink.h
-@@ -72,6 +72,7 @@ struct nlmsghdr {
+--- a/drivers/cpuidle/governors/menu.c
++++ b/drivers/cpuidle/governors/menu.c
+@@ -256,20 +256,17 @@ again:
+ 	 *
+ 	 * This can deal with workloads that have long pauses interspersed
+ 	 * with sporadic activity with a bunch of short pauses.
++	 *
++	 * However, if the number of remaining samples is too small to exclude
++	 * any more outliers, allow the deepest available idle state to be
++	 * selected because there are systems where the time spent by CPUs in
++	 * deep idle states is correlated to the maximum frequency the CPUs
++	 * can get to.  On those systems, shallow idle states should be avoided
++	 * unless there is a clear indication that the given CPU is most likley
++	 * going to be woken up shortly.
+ 	 */
+-	if (divisor * 4 <= INTERVALS * 3) {
+-		/*
+-		 * If there are sufficiently many data points still under
+-		 * consideration after the outliers have been eliminated,
+-		 * returning without a prediction would be a mistake because it
+-		 * is likely that the next interval will not exceed the current
+-		 * maximum, so return the latter in that case.
+-		 */
+-		if (divisor >= INTERVALS / 2)
+-			return max;
+-
++	if (divisor * 4 <= INTERVALS * 3)
+ 		return UINT_MAX;
+-	}
  
- /* Modifiers to DELETE request */
- #define NLM_F_NONREC	0x100	/* Do not delete recursively	*/
-+#define NLM_F_BULK	0x200	/* Delete multiple objects	*/
- 
- /* Flags for ACK message */
- #define NLM_F_CAPPED	0x100	/* request was capped */
--- 
-2.51.0
-
+ 	thresh = max - 1;
+ 	goto again;
 
 
 
