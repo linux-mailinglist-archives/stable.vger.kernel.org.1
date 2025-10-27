@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-191005-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191255-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 540A5C10F79
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:27:50 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA0B2C11213
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:36:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D970F561C30
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:20:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AC8891A60BFE
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:32:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED5A732ABEC;
-	Mon, 27 Oct 2025 19:19:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B11D326D74;
+	Mon, 27 Oct 2025 19:30:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z6LXG2zG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sba99p5F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A926B18A6A5;
-	Mon, 27 Oct 2025 19:19:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAE23320A32;
+	Mon, 27 Oct 2025 19:30:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592766; cv=none; b=sewTCr0nghIYoIiZiwu1AZsgjwjXxHGS6XPZsJ5H6LDvmYOmSbiVq1TLjlhRZZydwKxJSALG0BJNsa8/OO869DnsUn9RmA4Hsq8wxysQ4gKcpD3b2NLPkSsiosIcdmeJeGbh/1jqm1mgr7Inc1wf+2/+eYO1TTNktfG0JXM+fRs=
+	t=1761593430; cv=none; b=AIVkcstZt8ikoDJ0bENLjvUDvc3j39bMoztX0koj8WdtRlh/hq1WojPSWJ05Vhy9Mb5SVT/yVZ7ZRbpUtTZ5hwQxpYuglNgd/yUYZl426DiQecKkpj0WjNLbc9zS22zRlJvklYF7hYTDkY4eHSK9xjl3zFRlizXUi7pbfO1J9v4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592766; c=relaxed/simple;
-	bh=JnFPcnKf5afBsCYhEpK9sVNfxfAqxnI1R3U/pwXapbU=;
+	s=arc-20240116; t=1761593430; c=relaxed/simple;
+	bh=lpGttqV8pJVPq2rmPdzSmp1qOWTrg4o/OD50QdjZifI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ph3LefXPLIhTeau1uS1EpOvo5k4QBvl9O4pXsrTCqVVPB5SjN81ybaDACNvJBVo5YPMI/poaCqwvjPBpNLOcHs2+YVmRMsnj+6LrnFM7LnRm8GF/sghJZ9LpxllMfVQjgZjzyl5hQ7WiP8IfEYSkhYHXsbez5JUKIE+RIb+Msco=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z6LXG2zG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A56EC4CEF1;
-	Mon, 27 Oct 2025 19:19:26 +0000 (UTC)
+	 MIME-Version; b=DrbPFGhDrsPVjYFSK33OsMNaD4K8jDuar/kazntHPq7JNyF30txggBXXmGAPea0ipgJ5Tx0lj0IwUYHHM5HuajEw6cb01rc4+DCFmHh+++Y0zvtka0gB14E58tNw/9cR13hbCP7/5aRMBl0kWuqJJSezR79GDf3Kz59tblfvZ5s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sba99p5F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45545C4CEF1;
+	Mon, 27 Oct 2025 19:30:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592766;
-	bh=JnFPcnKf5afBsCYhEpK9sVNfxfAqxnI1R3U/pwXapbU=;
+	s=korg; t=1761593429;
+	bh=lpGttqV8pJVPq2rmPdzSmp1qOWTrg4o/OD50QdjZifI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z6LXG2zGqxpAxpX2SdtS4bB+Ld6f9jfLHo/ar793CpaBjom1agsfAaNPDPrcloeAL
-	 jtYd/JXnsj+HnH5wQw7dSrTk7ZIEJEFPzlvyCNzLI2YOuJCihp0/uqveR7yqN5qMWV
-	 uwS8Ad/1KZ9rR+M98nQea2eZ6LCwCmvY6js0ykAw=
+	b=Sba99p5FGd8cC8/jY1nR/GwBx88MWCgV6+uFuL1or4hVLFUiJiSyGRxD1AcG/GtFU
+	 DyIW7qGe5T6S+zf9MN/zcHT03H/QxR/ouM/uAPv1TEmaZszJY+Zuv9ENRevwpYiuZO
+	 6salY0lvDu2CDxAuQv7Iy4nuUA6MND1Z3a0bVGc8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	=?UTF-8?q?=C5=81ukasz=20Bartosik?= <ukaszb@chromium.org>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>
-Subject: [PATCH 6.6 64/84] xhci: dbc: enable back DbC in resume if it was enabled before suspend
+	Akash Goel <akash.goel@arm.com>,
+	Boris Brezillon <boris.brezillon@collabora.com>,
+	Liviu Dudau <liviu.dudau@arm.com>,
+	Steven Price <steven.price@arm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.17 131/184] drm/panthor: Fix kernel panic on partial unmap of a GPU VA region
 Date: Mon, 27 Oct 2025 19:36:53 +0100
-Message-ID: <20251027183440.518873566@linuxfoundation.org>
+Message-ID: <20251027183518.473154475@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183438.817309828@linuxfoundation.org>
-References: <20251027183438.817309828@linuxfoundation.org>
+In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
+References: <20251027183514.934710872@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,55 +62,111 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mathias Nyman <mathias.nyman@linux.intel.com>
+From: Akash Goel <akash.goel@arm.com>
 
-commit 2bbd38fcd29670e46c0fdb9cd0e90507a8a1bf6a upstream.
+[ Upstream commit 4eabd0d8791eaf9a7b114ccbf56eb488aefe7b1f ]
 
-DbC is currently only enabled back if it's in configured state during
-suspend.
+This commit address a kernel panic issue that can happen if Userspace
+tries to partially unmap a GPU virtual region (aka drm_gpuva).
+The VM_BIND interface allows partial unmapping of a BO.
 
-If system is suspended after DbC is enabled, but before the device is
-properly enumerated by the host, then DbC would not be enabled back in
-resume.
+Panthor driver pre-allocates memory for the new drm_gpuva structures
+that would be needed for the map/unmap operation, done using drm_gpuvm
+layer. It expected that only one new drm_gpuva would be needed on umap
+but a partial unmap can require 2 new drm_gpuva and that's why it
+ended up doing a NULL pointer dereference causing a kernel panic.
 
-Always enable DbC back in resume if it's suspended in enabled,
-connected, or configured state
+Following dump was seen when partial unmap was exercised.
+ Unable to handle kernel NULL pointer dereference at virtual address 0000000000000078
+ Mem abort info:
+   ESR = 0x0000000096000046
+   EC = 0x25: DABT (current EL), IL = 32 bits
+   SET = 0, FnV = 0
+   EA = 0, S1PTW = 0
+   FSC = 0x06: level 2 translation fault
+ Data abort info:
+   ISV = 0, ISS = 0x00000046, ISS2 = 0x00000000
+   CM = 0, WnR = 1, TnD = 0, TagAccess = 0
+   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
+ user pgtable: 4k pages, 48-bit VAs, pgdp=000000088a863000
+ [000000000000078] pgd=080000088a842003, p4d=080000088a842003, pud=0800000884bf5003, pmd=0000000000000000
+ Internal error: Oops: 0000000096000046 [#1] PREEMPT SMP
+ <snip>
+ pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+ pc : panthor_gpuva_sm_step_remap+0xe4/0x330 [panthor]
+ lr : panthor_gpuva_sm_step_remap+0x6c/0x330 [panthor]
+ sp : ffff800085d43970
+ x29: ffff800085d43970 x28: ffff00080363e440 x27: ffff0008090c6000
+ x26: 0000000000000030 x25: ffff800085d439f8 x24: ffff00080d402000
+ x23: ffff800085d43b60 x22: ffff800085d439e0 x21: ffff00080abdb180
+ x20: 0000000000000000 x19: 0000000000000000 x18: 0000000000000010
+ x17: 6e656c202c303030 x16: 3666666666646466 x15: 393d61766f69202c
+ x14: 312d3d7361203a70 x13: 303030323d6e656c x12: ffff80008324bf58
+ x11: 0000000000000003 x10: 0000000000000002 x9 : ffff8000801a6a9c
+ x8 : ffff00080360b300 x7 : 0000000000000000 x6 : 000000088aa35fc7
+ x5 : fff1000080000000 x4 : ffff8000842ddd30 x3 : 0000000000000001
+ x2 : 0000000100000000 x1 : 0000000000000001 x0 : 0000000000000078
+ Call trace:
+  panthor_gpuva_sm_step_remap+0xe4/0x330 [panthor]
+  op_remap_cb.isra.22+0x50/0x80
+  __drm_gpuvm_sm_unmap+0x10c/0x1c8
+  drm_gpuvm_sm_unmap+0x40/0x60
+  panthor_vm_exec_op+0xb4/0x3d0 [panthor]
+  panthor_vm_bind_exec_sync_op+0x154/0x278 [panthor]
+  panthor_ioctl_vm_bind+0x160/0x4a0 [panthor]
+  drm_ioctl_kernel+0xbc/0x138
+  drm_ioctl+0x240/0x500
+  __arm64_sys_ioctl+0xb0/0xf8
+  invoke_syscall+0x4c/0x110
+  el0_svc_common.constprop.1+0x98/0xf8
+  do_el0_svc+0x24/0x38
+  el0_svc+0x40/0xf8
+  el0t_64_sync_handler+0xa0/0xc8
+  el0t_64_sync+0x174/0x178
 
-Cc: stable <stable@kernel.org>
-Fixes: dfba2174dc42 ("usb: xhci: Add DbC support in xHCI driver")
-Tested-by: Łukasz Bartosik <ukaszb@chromium.org>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Akash Goel <akash.goel@arm.com>
+Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
+Reviewed-by: Liviu Dudau <liviu.dudau@arm.com>
+Fixes: 647810ec2476 ("drm/panthor: Add the MMU/VM logical block")
+Reviewed-by: Steven Price <steven.price@arm.com>
+Signed-off-by: Steven Price <steven.price@arm.com>
+Link: https://lore.kernel.org/r/20251017102922.670084-1-akash.goel@arm.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-dbgcap.c |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/panthor/panthor_mmu.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
---- a/drivers/usb/host/xhci-dbgcap.c
-+++ b/drivers/usb/host/xhci-dbgcap.c
-@@ -1319,8 +1319,15 @@ int xhci_dbc_suspend(struct xhci_hcd *xh
- 	if (!dbc)
- 		return 0;
+diff --git a/drivers/gpu/drm/panthor/panthor_mmu.c b/drivers/gpu/drm/panthor/panthor_mmu.c
+index 4140f697ba5af..0402f5f734a1b 100644
+--- a/drivers/gpu/drm/panthor/panthor_mmu.c
++++ b/drivers/gpu/drm/panthor/panthor_mmu.c
+@@ -1147,10 +1147,14 @@ panthor_vm_op_ctx_prealloc_vmas(struct panthor_vm_op_ctx *op_ctx)
+ 		break;
  
--	if (dbc->state == DS_CONFIGURED)
-+	switch (dbc->state) {
-+	case DS_ENABLED:
-+	case DS_CONNECTED:
-+	case DS_CONFIGURED:
- 		dbc->resume_required = 1;
-+		break;
-+	default:
-+		break;
-+	}
+ 	case DRM_PANTHOR_VM_BIND_OP_TYPE_UNMAP:
+-		/* Partial unmaps might trigger a remap with either a prev or a next VA,
+-		 * but not both.
++		/* Two VMAs can be needed for an unmap, as an unmap can happen
++		 * in the middle of a drm_gpuva, requiring a remap with both
++		 * prev & next VA. Or an unmap can span more than one drm_gpuva
++		 * where the first and last ones are covered partially, requring
++		 * a remap for the first with a prev VA and remap for the last
++		 * with a next VA.
+ 		 */
+-		vma_count = 1;
++		vma_count = 2;
+ 		break;
  
- 	xhci_dbc_stop(dbc);
- 
+ 	default:
+-- 
+2.51.0
+
 
 
 
