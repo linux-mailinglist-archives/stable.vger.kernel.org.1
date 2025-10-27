@@ -1,73 +1,60 @@
-Return-Path: <stable+bounces-191340-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191341-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E9ACC120CA
-	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 00:31:44 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EA7DC1206E
+	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 00:28:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 9316F4EAC68
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 23:28:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB25418897E9
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 23:29:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BE7F31B825;
-	Mon, 27 Oct 2025 23:28:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8443D32D450;
+	Mon, 27 Oct 2025 23:28:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Z+R8bL/L"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PiFNHfry"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AE7B2609D4
-	for <stable@vger.kernel.org>; Mon, 27 Oct 2025 23:28:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3992F26CE3A;
+	Mon, 27 Oct 2025 23:28:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761607727; cv=none; b=AcoS1f+LVjgrTJiFrmpXHQD9AUYv5BQ5jmPbiLYjsE6gZmsP3KJt7kgOAnJvx96xPIKrIxJmw3RpXCWHR0O1LE6/fpCiQctkToiIWDmXGfpg5AeZPQT4tft3VNYFfEj3mRzMQ7vUW4egKQZ7Y+3oNt2FidPGLac8ovEPRXDEaPg=
+	t=1761607730; cv=none; b=QpD2YOQo2boN3wugUo4PG9feMZppPVEdWVJgWJVGDdWEySc9Ha1F9rrvFXzUsb/AZXzI1EZNM9vZFPHhr2nJipu5OJgYO0p0LubJGZ0ziGH5Wvbk4yngp0sIuzIQ5agXjyNkZ7Tu+fOFFVWg4x0Uai2WIRY4jAcV/wyX10IGyAY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761607727; c=relaxed/simple;
-	bh=OtuSsErLL0CzwBJFr41jS0iUIamZOAPW5rtpImvk3Us=;
+	s=arc-20240116; t=1761607730; c=relaxed/simple;
+	bh=IZicGIZudhpTlaLtDGw3tQ8v1+Qu3XNy8z2ox6X1Lmc=;
 	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=swGg7ibbUa2VFxJpJ3YiyKe8I9rCt0eXJ5DzD1JoIugpMb0JFmNjEUTS0Vv0wOuCSMMhnqMiVUcaekEUt/NcjyJBAW6hbFmzupfsvnXS47EyMHb2mF+ylH1ph0cjEnOgPo8TDIRV46ieeT1t9Zseb3//MN4Q6zgdayO09XuFFW0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Z+R8bL/L; arc=none smtp.client-ip=198.175.65.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1761607726; x=1793143726;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=OtuSsErLL0CzwBJFr41jS0iUIamZOAPW5rtpImvk3Us=;
-  b=Z+R8bL/LVNOlCmsK0Mb1DL2AqsLS9F/AqfYpxTKhGBw/nzIIFAqzhsVn
-   ENkyo2/dXYvqpiIDwaktvJgsAU+U44A46eqUuTPVq07t7aYQn6GixwvyE
-   9b8o6z+dZl3PwBevqrGXKsTXsj6sJc/WMZAiHXkxdjPtIi1gzFFL2QzfD
-   6s+Va2psoH8S2Leo8S28mRfNWrfVpfZfn4yWdYKpBHfZSESbgzE+Q27oO
-   C6S1cQ30lTWdy5Xe0AnM4Gg9RU0i/M5icO+FQJHs4zjaTn5ZbTn8LJddc
-   RMFBJwbfW8eNoqAvkytvljaF+4F9ndN4rUKCIWBE8Df6YJl0lhKPqnQbQ
-   g==;
-X-CSE-ConnectionGUID: bXpxVLA9Sm+vhOPf86V27Q==
-X-CSE-MsgGUID: NS9DUW+zQPKdbNA323lrCQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="73987141"
-X-IronPort-AV: E=Sophos;i="6.19,259,1754982000"; 
-   d="scan'208";a="73987141"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2025 16:28:46 -0700
-X-CSE-ConnectionGUID: QO3+Eri6SMSfld9y+KuABA==
-X-CSE-MsgGUID: XSbQ8PeHT1a+zZTP157A0w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,259,1754982000"; 
-   d="scan'208";a="185271075"
-Received: from lkp-server02.sh.intel.com (HELO 66d7546c76b2) ([10.239.97.151])
-  by orviesa008.jf.intel.com with ESMTP; 27 Oct 2025 16:28:45 -0700
-Received: from kbuild by 66d7546c76b2 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1vDWdm-000IZR-31;
-	Mon, 27 Oct 2025 23:28:42 +0000
-Date: Tue, 28 Oct 2025 07:28:07 +0800
-From: kernel test robot <lkp@intel.com>
-To: Dave Vasilevsky via B4 Relay <devnull+dave.vasilevsky.ca@kernel.org>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH] powerpc: Fix mprotect on book3s32
-Message-ID: <aQAAB56SHIng8CGt@fb33b90f3739>
+	 Content-Disposition:In-Reply-To; b=IQLQU/zmkSGaJjEKIAQymJaCBp1kyTmwIRN/aWBL/VHdPgQOHSbZrXx/Bl/dTTjRnef/hoMooSae8KNYF1i8OmoF3ukwDXLXc3fRAd3R20sxHtc3VcmeBNjPR4vA3ehnzFP/DqpH8C2zCyNHy1tYTNZ7hIWRhQqmtay/TueOdcM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PiFNHfry; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE2F4C4CEF1;
+	Mon, 27 Oct 2025 23:28:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761607728;
+	bh=IZicGIZudhpTlaLtDGw3tQ8v1+Qu3XNy8z2ox6X1Lmc=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=PiFNHfryYS/YIt0hkuSoUELksbIx5CgbaCoOsWKsTZy8XuPdbvwEt17B6mdKGMCDC
+	 gzTBV42gtXZjpbfBU6iKCY/D6/5blAEIlfL4bM+EsDVEbmSP6IUkEsFy9ANb6yLsUC
+	 QiqBEreLqslMhY/VQ5IWgBLhI5VfXoef11yPBA7pyk0rMg5sYUTTE25/MnkJIowYaQ
+	 4a3O5Z5qE4aNdLnkxaAxinz5KB1WIxHhdln95ku/yn35Ip+zAvLMxS1TmGEZlfNn9c
+	 c7NrbnGtU8klBdQnDOQdZwzibxzH8B4ZlcI5xdoBCuSqPRcm3cifMyFDpHow0NDB/L
+	 3daJIROy80RJw==
+Date: Mon, 27 Oct 2025 18:28:47 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Manivannan Sadhasivam <mani@kernel.org>
+Cc: thippeswamy.havalige@amd.com, Ravi Kumar Bandi <ravib@amazon.com>,
+	lpieralisi@kernel.org, bhelgaas@google.com,
+	linux-pci@vger.kernel.org, kwilczynski@kernel.org, robh@kernel.org,
+	michal.simek@amd.com, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	Stefan Roese <stefan.roese@mailbox.org>,
+	"Musham, Sai Krishna" <sai.krishna.musham@amd.com>,
+	Sean Anderson <sean.anderson@linux.dev>,
+	"Yeleswarapu, Nagaradhesh" <nagaradhesh.yeleswarapu@amd.com>
+Subject: Re: [PATCH v2] PCI: xilinx-xdma: Enable INTx interrupts
+Message-ID: <20251027232847.GA1488235@bhelgaas>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -76,24 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251027-vasi-mprotect-g3-v1-1-3c5187085f9a@vasilevsky.ca>
+In-Reply-To: <176085776570.12994.10687348823390647832.b4-ty@kernel.org>
 
-Hi,
+[+cc Stefan et al]
 
-Thanks for your patch.
+On Sun, Oct 19, 2025 at 12:39:25PM +0530, Manivannan Sadhasivam wrote:
+> On Sat, 20 Sep 2025 22:52:32 +0000, Ravi Kumar Bandi wrote:
+> > The pcie-xilinx-dma-pl driver does not enable INTx interrupts
+> > after initializing the port, preventing INTx interrupts from
+> > PCIe endpoints from flowing through the Xilinx XDMA root port
+> > bridge. This issue affects kernel 6.6.0 and later versions.
+> > 
+> > This patch allows INTx interrupts generated by PCIe endpoints
+> > to flow through the root port. Tested the fix on a board with
+> > two endpoints generating INTx interrupts. Interrupts are
+> > properly detected and serviced. The /proc/interrupts output
+> > shows:
+> > 
+> > [...]
+> 
+> Applied, thanks!
+> 
+> [1/1] PCI: xilinx-xdma: Enable INTx interrupts
+>       commit: c098c13f4365e6750009be4d90dba36fa4a19b4e
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
+Pretty sure we have confirmation that we don't need either this patch
+or Stefan's patch, so I removed the pci/controller/xilinx-dma branch.
 
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
+It was at 2002478e5034 ("PCI: xilinx-xdma: Enable INTx interrupts") in
+case we need to resurrect it.
 
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH] powerpc: Fix mprotect on book3s32
-Link: https://lore.kernel.org/stable/20251027-vasi-mprotect-g3-v1-1-3c5187085f9a%40vasilevsky.ca
+IIUC, Stefan confirmed that he didn't need this patch (Ravi's) [1],
+and that after Vivado is fixed to generate the correct interrupt-map,
+his patch (Stefan's) won't be needed either [2].
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
-
-
+[1] https://lore.kernel.org/r/29bc5e92-04c9-475a-ba3d-a5ea26f1c95a@mailbox.org
+[2] https://lore.kernel.org/r/9c7e43c3-24e9-4b08-a6ce-2035b50226f4@mailbox.org
 
