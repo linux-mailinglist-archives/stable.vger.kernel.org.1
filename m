@@ -1,63 +1,54 @@
-Return-Path: <stable+bounces-190354-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190356-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71F5EC10452
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:55:05 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05290C1057B
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:58:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 1EE193515B5
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:55:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 46D871A2530F
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:55:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91600329C4E;
-	Mon, 27 Oct 2025 18:51:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD40432860F;
+	Mon, 27 Oct 2025 18:51:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zS2rXpXH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lf/LYBkk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 490FB31B81D;
-	Mon, 27 Oct 2025 18:51:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DBE931CA50;
+	Mon, 27 Oct 2025 18:51:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591081; cv=none; b=YZ3Rc8+lDrJiieyBrIJcoUEM58Z4UGXSy9fqO3rxecWK1XT4kKk9zkaES+oTwsknc8PZKpXcgKff/gBL/4rOxo3tSZ3SLBUal4Dr0fa9gFoxOKDjUC3zYsAGe6d1OHWlm2Y+yihhJJyCCnmzFBXsVJXM37NikgZRnZRmq84HnCE=
+	t=1761591086; cv=none; b=DNADAHu9ZOWTlLXq+1Amoz8cri+IXZY567LHmpGl7p3irZRtEj8XhwxARtIvp+Y3Zc/nP0QdqNntdBDm84SqplpUJA7ab46OfA1mPxRYy/qm73AxPhjCsCmyWZJNFjUNxQwrGZn5ltn1nBhErWhaxMla+Erk5LdOygxAW+83ETE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591081; c=relaxed/simple;
-	bh=hxC735n89VP89gk7LwbmpCVLzQl6tsb8X+K2ZmlX1Ns=;
+	s=arc-20240116; t=1761591086; c=relaxed/simple;
+	bh=icjcqnE0KwC1EGobTeNgWI+g/zma+qMRp9uoQKXUsXo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WdiAG4YFGfPG4msdhviPp0Z6hanM3Wyvk8bh2o+X2TUHSxhXN3m4lGqhtsPZ+PnlQ6jcMDBjpt82kmDPjNrTGHDwqAf8Y2eRmt1spxiF33ijgaTLjE333WpPZ8TnJb0Cw8NqVrh/rpzGJdieoAQG9UWX2THRcK9EvAEHLnuuLnc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zS2rXpXH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A70CBC4CEF1;
-	Mon, 27 Oct 2025 18:51:20 +0000 (UTC)
+	 MIME-Version:Content-Type; b=h8ybYSyrGsIMvd8uDEnEExsU9yndeBPCp8z33VqeOAuCObNJl68Q8533K5KCkSkfCtw+7dkvBoaO8Miw6KIn1U55xQX6y66Wa+dm/dzqN1bGHxg8zFeajIryZ7vly3az8banbgQKbUp7VA436rzFfgPuF03EFT5GJn0E2fJjhMw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lf/LYBkk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00448C4CEF1;
+	Mon, 27 Oct 2025 18:51:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591081;
-	bh=hxC735n89VP89gk7LwbmpCVLzQl6tsb8X+K2ZmlX1Ns=;
+	s=korg; t=1761591086;
+	bh=icjcqnE0KwC1EGobTeNgWI+g/zma+qMRp9uoQKXUsXo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zS2rXpXHlQZmIZ0ANxbufmVD3VSF268Q6pkonr4SxNncihwHtlvepDxULxI63RI5w
-	 h95EQT5R2NBnqk/G2YARFAXZ+S6CXrXbAuiROVktwavoJ+b5ka/unCwmn/iJouBgqv
-	 FDfwRHUZOHtA2FDZgeRn4NYHm2i4D/vatKPGzwdw=
+	b=lf/LYBkkA7NfkLENFfDEhuxylrWfKBW4yXPYsy6duxOQf0VEEkHxcHPNCC7m3xy8g
+	 V/nNrh/Yl5sONE99c3LPwkuSDIG8RLxcOE6/1I740RzHs+kSIKCAzQz8kDNIq9/Cl+
+	 ihHtOAfJtOcB4rAFCKqTqNbnV7zEMwPE5mOjr2Sc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Donet Tom <donettom@linux.ibm.com>,
-	David Hildenbrand <david@redhat.com>,
-	Alison Schofield <alison.schofield@intel.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Hiroyouki Kamezawa <kamezawa.hiroyu@jp.fujitsu.com>,
-	Joanthan Cameron <Jonathan.Cameron@huawei.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	"Yury Norov (NVIDIA)" <yury.norov@gmail.com>,
-	Zi Yan <ziy@nvidia.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	=?UTF-8?q?H=C3=A5kon=20Bugge?= <haakon.bugge@oracle.com>,
+	Zhu Yanjun <yanjun.zhu@linux.dev>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 060/332] drivers/base/node: handle error properly in register_one_node()
-Date: Mon, 27 Oct 2025 19:31:53 +0100
-Message-ID: <20251027183526.204862707@linuxfoundation.org>
+Subject: [PATCH 5.10 061/332] RDMA/cm: Rate limit destroy CM ID timeout error message
+Date: Mon, 27 Oct 2025 19:31:54 +0100
+Message-ID: <20251027183526.230845727@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
 References: <20251027183524.611456697@linuxfoundation.org>
@@ -70,60 +61,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Donet Tom <donettom@linux.ibm.com>
+From: Håkon Bugge <haakon.bugge@oracle.com>
 
-[ Upstream commit 786eb990cfb78aab94eb74fb32a030e14723a620 ]
+[ Upstream commit 2bbe1255fcf19c5eb300efb6cb5ad98d66fdae2e ]
 
-If register_node() returns an error, it is not handled correctly.
-The function will proceed further and try to register CPUs under the
-node, which is not correct.
+When the destroy CM ID timeout kicks in, you typically get a storm of
+them which creates a log flooding. Hence, change pr_err() to
+pr_err_ratelimited() in cm_destroy_id_wait_timeout().
 
-So, in this patch, if register_node() returns an error, we return
-immediately from the function.
-
-Link: https://lkml.kernel.org/r/20250822084845.19219-1-donettom@linux.ibm.com
-Fixes: 76b67ed9dce6 ("[PATCH] node hotplug: register cpu: remove node struct")
-Signed-off-by: Donet Tom <donettom@linux.ibm.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Cc: Alison Schofield <alison.schofield@intel.com>
-Cc: Danilo Krummrich <dakr@kernel.org>
-Cc: Dave Jiang <dave.jiang@intel.com>
-Cc: Donet Tom <donettom@linux.ibm.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Hiroyouki Kamezawa <kamezawa.hiroyu@jp.fujitsu.com>
-Cc: Joanthan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-Cc: Yury Norov (NVIDIA) <yury.norov@gmail.com>
-Cc: Zi Yan <ziy@nvidia.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 96d9cbe2f2ff ("RDMA/cm: add timeout to cm_destroy_id wait")
+Signed-off-by: Håkon Bugge <haakon.bugge@oracle.com>
+Link: https://patch.msgid.link/20250912100525.531102-1-haakon.bugge@oracle.com
+Reviewed-by: Zhu Yanjun <yanjun.zhu@linux.dev>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/node.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/infiniband/core/cm.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/base/node.c b/drivers/base/node.c
-index 5f745c906c330..735527922a3d3 100644
---- a/drivers/base/node.c
-+++ b/drivers/base/node.c
-@@ -961,6 +961,11 @@ int __register_one_node(int nid)
- 		return -ENOMEM;
+diff --git a/drivers/infiniband/core/cm.c b/drivers/infiniband/core/cm.c
+index 26c66685a43dd..a9c5852f52165 100644
+--- a/drivers/infiniband/core/cm.c
++++ b/drivers/infiniband/core/cm.c
+@@ -1063,8 +1063,8 @@ static noinline void cm_destroy_id_wait_timeout(struct ib_cm_id *cm_id,
+ 	struct cm_id_private *cm_id_priv;
  
- 	error = register_node(node_devices[nid], nid);
-+	if (error) {
-+		node_devices[nid] = NULL;
-+		kfree(node);
-+		return error;
-+	}
+ 	cm_id_priv = container_of(cm_id, struct cm_id_private, id);
+-	pr_err("%s: cm_id=%p timed out. state %d -> %d, refcnt=%d\n", __func__,
+-	       cm_id, old_state, cm_id->state, refcount_read(&cm_id_priv->refcount));
++	pr_err_ratelimited("%s: cm_id=%p timed out. state %d -> %d, refcnt=%d\n", __func__,
++			   cm_id, old_state, cm_id->state, refcount_read(&cm_id_priv->refcount));
+ }
  
- 	/* link cpu under this node */
- 	for_each_present_cpu(cpu) {
+ static void cm_destroy_id(struct ib_cm_id *cm_id, int err)
 -- 
 2.51.0
 
