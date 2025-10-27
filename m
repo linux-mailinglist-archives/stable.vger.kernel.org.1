@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-190506-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190766-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B6DAC10777
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:06:33 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24F9BC10BBC
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:17:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7A104188560B
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:02:54 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0A6D6507F0D
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:11:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 996DF32D450;
-	Mon, 27 Oct 2025 18:57:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C29C81E47CA;
+	Mon, 27 Oct 2025 19:09:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kC1431rx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yXpFecU7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BE8232D438;
-	Mon, 27 Oct 2025 18:57:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 734F432E134;
+	Mon, 27 Oct 2025 19:09:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591470; cv=none; b=tsR/UVz9rTab0ygriz4v1iCuUeJBC6jlu9uFRa8P3mum2BRFq1dA116ztT11sOSTlr+X/zd1XOKmdb44y0+4gDqMqG4P1IKeLs4hrIpiwcBj/MrHZoJV9uyTTXRrn26QNt9p9whQ5e/u4FaAJPAxy+E13ReyCHnfKqkPMwyZuAw=
+	t=1761592140; cv=none; b=ELPI5oPuapI+PW0t+PnEHlroZiNJQS4rlWCfMCu4RYDu2OniY3tc2H9QTQKhsDj0iWjt7H7U85ivU2FQuVCFasL9D8pdgS6hJibuWlbQ0uyxcm6gwuJj8uFD9z3e277sZPPVWmurTNvgd0xb2zuDn5KJiFv07i2FwD+9AlBY9Kw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591470; c=relaxed/simple;
-	bh=P17O9kio7XFOlopTIvooq0IqoXhk6yl5CgMqQti5500=;
+	s=arc-20240116; t=1761592140; c=relaxed/simple;
+	bh=9V8idRZlSl/OEnaUsesKG4VXGvmRozmj1GdLm5d7OqQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PurgITWJUqc/GvZ9k/TQdnJChMty+zhMW0U+aiyCdrP0IgVEf6RjQI1vhRZ7nZVuJXs3hbKyL07ka6TuSrC0zJmj9JJXONhKXI0L+ky2dOWCbfZ+bChasNbQYlEuVjHbik7r74jXOxWoK71J20qjCgFSl3Atjkc6uW+EwM5JAiE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kC1431rx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 965A4C4CEF1;
-	Mon, 27 Oct 2025 18:57:48 +0000 (UTC)
+	 MIME-Version; b=bcAvU98gPO+BOsR+CVirSBX63pO+9p3Q++USf+qtRiq7ohj/M7dyPEx/kc9csKAyKvoz201iJij/FnccZcKB9zezygdgq+y0absMed6vwyLhF2dHAm/EFekxRQAVK341wB8SMtykBwZrKHmN8p09qMiZonTwkNmPOxkBZUrL6zo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yXpFecU7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05E27C113D0;
+	Mon, 27 Oct 2025 19:08:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591468;
-	bh=P17O9kio7XFOlopTIvooq0IqoXhk6yl5CgMqQti5500=;
+	s=korg; t=1761592140;
+	bh=9V8idRZlSl/OEnaUsesKG4VXGvmRozmj1GdLm5d7OqQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kC1431rxaYWIb7ImY4kj1N4ltzDULhJso9wR1FIluhBLLXtT46GgD8gV6iYfKTzhh
-	 Vy3vFUrxHls/FCnED0PL270wHuDmRF7gQwNYw4hX3KGCao4dFAZ6sF0uPG3YnNj110
-	 D/ezfCH3jJhmHc4AtSzELo9O4a93/kDKF1dowS6I=
+	b=yXpFecU7qati/RrNXK3vH0zTZrbHw2ulTosWAVJB7HDjUkGncgVl93Sw3IyIcD+wF
+	 Ujwjkfzlvv+8TIK/r2MO7rc2txgrYKxdwx3KIPkTSQazY93+CHPtZ2Dvhg7Qnm78Gn
+	 DsiFszbf2nchajT9Hy2OEAqegAIaydgOt7gXSAKE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Laight <David.Laight@aculab.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Eliav Farber <farbere@amazon.com>
-Subject: [PATCH 5.10 208/332] minmax: simplify and clarify min_t()/max_t() implementation
-Date: Mon, 27 Oct 2025 19:34:21 +0100
-Message-ID: <20251027183530.230199419@linuxfoundation.org>
+	Shuhao Fu <sfual@cse.ust.hk>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.1 001/157] smb: client: Fix refcount leak for cifs_sb_tlink
+Date: Mon, 27 Oct 2025 19:34:22 +0100
+Message-ID: <20251027183501.271596876@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
-References: <20251027183524.611456697@linuxfoundation.org>
+In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
+References: <20251027183501.227243846@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,78 +61,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Linus Torvalds <torvalds@linux-foundation.org>
+From: Shuhao Fu <sfual@cse.ust.hk>
 
-[ Upstream commit 017fa3e89187848fd056af757769c9e66ac3e93d ]
+commit c2b77f42205ef485a647f62082c442c1cd69d3fc upstream.
 
-This simplifies the min_t() and max_t() macros by no longer making them
-work in the context of a C constant expression.
+Fix three refcount inconsistency issues related to `cifs_sb_tlink`.
 
-That means that you can no longer use them for static initializers or
-for array sizes in type definitions, but there were only a couple of
-such uses, and all of them were converted (famous last words) to use
-MIN_T/MAX_T instead.
+Comments for `cifs_sb_tlink` state that `cifs_put_tlink()` needs to be
+called after successful calls to `cifs_sb_tlink()`. Three calls fail to
+update refcount accordingly, leading to possible resource leaks.
 
-Cc: David Laight <David.Laight@aculab.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Eliav Farber <farbere@amazon.com>
+Fixes: 8ceb98437946 ("CIFS: Move rename to ops struct")
+Fixes: 2f1afe25997f ("cifs: Use smb 2 - 3 and cifsacl mount options getacl functions")
+Fixes: 366ed846df60 ("cifs: Use smb 2 - 3 and cifsacl mount options setacl function")
+Cc: stable@vger.kernel.org
+Signed-off-by: Shuhao Fu <sfual@cse.ust.hk>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/minmax.h |   19 +++++++++++--------
- 1 file changed, 11 insertions(+), 8 deletions(-)
+ fs/smb/client/inode.c   |    6 ++++--
+ fs/smb/client/smb2ops.c |    8 ++++----
+ 2 files changed, 8 insertions(+), 6 deletions(-)
 
---- a/include/linux/minmax.h
-+++ b/include/linux/minmax.h
-@@ -45,17 +45,20 @@
+--- a/fs/smb/client/inode.c
++++ b/fs/smb/client/inode.c
+@@ -2106,8 +2106,10 @@ cifs_do_rename(const unsigned int xid, s
+ 	tcon = tlink_tcon(tlink);
+ 	server = tcon->ses->server;
  
- #define __cmp(op, x, y)	((x) __cmp_op_##op (y) ? (x) : (y))
+-	if (!server->ops->rename)
+-		return -ENOSYS;
++	if (!server->ops->rename) {
++		rc = -ENOSYS;
++		goto do_rename_exit;
++	}
  
--#define __cmp_once(op, x, y, unique_x, unique_y) ({	\
--	typeof(x) unique_x = (x);			\
--	typeof(y) unique_y = (y);			\
-+#define __cmp_once_unique(op, type, x, y, ux, uy) \
-+	({ type ux = (x); type uy = (y); __cmp(op, ux, uy); })
-+
-+#define __cmp_once(op, type, x, y) \
-+	__cmp_once_unique(op, type, x, y, __UNIQUE_ID(x_), __UNIQUE_ID(y_))
-+
-+#define __careful_cmp_once(op, x, y) ({			\
- 	static_assert(__types_ok(x, y),			\
- 		#op "(" #x ", " #y ") signedness error, fix types or consider u" #op "() before " #op "_t()"); \
--	__cmp(op, unique_x, unique_y); })
-+	__cmp_once(op, __auto_type, x, y); })
+ 	/* try path-based rename first */
+ 	rc = server->ops->rename(xid, tcon, from_path, to_path, cifs_sb);
+--- a/fs/smb/client/smb2ops.c
++++ b/fs/smb/client/smb2ops.c
+@@ -3323,8 +3323,7 @@ get_smb2_acl_by_path(struct cifs_sb_info
+ 	utf16_path = cifs_convert_path_to_utf16(path, cifs_sb);
+ 	if (!utf16_path) {
+ 		rc = -ENOMEM;
+-		free_xid(xid);
+-		return ERR_PTR(rc);
++		goto put_tlink;
+ 	}
  
- #define __careful_cmp(op, x, y)					\
- 	__builtin_choose_expr(__is_constexpr((x) - (y)),	\
--		__cmp(op, x, y),				\
--		__cmp_once(op, x, y, __UNIQUE_ID(__x), __UNIQUE_ID(__y)))
-+		__cmp(op, x, y), __careful_cmp_once(op, x, y))
+ 	oparms = (struct cifs_open_parms) {
+@@ -3356,6 +3355,7 @@ get_smb2_acl_by_path(struct cifs_sb_info
+ 		SMB2_close(xid, tcon, fid.persistent_fid, fid.volatile_fid);
+ 	}
  
- #define __clamp(val, lo, hi)	\
- 	((val) >= (hi) ? (hi) : ((val) <= (lo) ? (lo) : (val)))
-@@ -158,7 +161,7 @@
-  * @x: first value
-  * @y: second value
-  */
--#define min_t(type, x, y)	__careful_cmp(min, (type)(x), (type)(y))
-+#define min_t(type, x, y) __cmp_once(min, type, x, y)
++put_tlink:
+ 	cifs_put_tlink(tlink);
+ 	free_xid(xid);
  
- /**
-  * max_t - return maximum of two values, using the specified type
-@@ -166,7 +169,7 @@
-  * @x: first value
-  * @y: second value
-  */
--#define max_t(type, x, y)	__careful_cmp(max, (type)(x), (type)(y))
-+#define max_t(type, x, y) __cmp_once(max, type, x, y)
+@@ -3396,8 +3396,7 @@ set_smb2_acl(struct cifs_ntsd *pnntsd, _
+ 	utf16_path = cifs_convert_path_to_utf16(path, cifs_sb);
+ 	if (!utf16_path) {
+ 		rc = -ENOMEM;
+-		free_xid(xid);
+-		return rc;
++		goto put_tlink;
+ 	}
  
- /*
-  * Do not check the array parameter using __must_be_array().
+ 	oparms = (struct cifs_open_parms) {
+@@ -3418,6 +3417,7 @@ set_smb2_acl(struct cifs_ntsd *pnntsd, _
+ 		SMB2_close(xid, tcon, fid.persistent_fid, fid.volatile_fid);
+ 	}
+ 
++put_tlink:
+ 	cifs_put_tlink(tlink);
+ 	free_xid(xid);
+ 	return rc;
 
 
 
