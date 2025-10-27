@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-190701-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190557-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F471C10AB9
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:15:06 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C7A6C108F4
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:10:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 20B1E568502
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:09:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C875A562B67
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:04:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 469A2322755;
-	Mon, 27 Oct 2025 19:06:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F8F2334691;
+	Mon, 27 Oct 2025 19:00:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e21K5tUU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t7iZs8RE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 029A33081B0;
-	Mon, 27 Oct 2025 19:06:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF30131BC96;
+	Mon, 27 Oct 2025 19:00:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591969; cv=none; b=piCPlG4zdGp0vVNJ0SFUIAgV/kfYMB91ehsvH1z8U2uA0OLy30Fv98oINtiI/nAvO8fwuwSgOvsmpzhO0qbeJdWCkASKk4gamYpLAE3laUFrqXNlDK94KHl2EJKxiLUT6DpoYwGc0qn28V07nUaKWzf9iunYWiK1o9HL5PEvDhQ=
+	t=1761591602; cv=none; b=X3rKH13QrWyQbtYneY4Hz9H+aXEtEUhVmhi2zm1XN3+oeDyhc+aV5eQ93prABujZtwFCwRE61Cd4rWBc2wAoU6r8Bfw6vGFDsm0NuK2pMtIDl3sd2m4hHh91ijvZpz+9iq0R3QNyiKwoF5wINTDyUYRjJQMPSZ/pC54ipMQFWdU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591969; c=relaxed/simple;
-	bh=/ULkh4MxxgGfiZLa2gE6RxzHfbwD9Y/LEqnhuQgZa34=;
+	s=arc-20240116; t=1761591602; c=relaxed/simple;
+	bh=P/RtpSBVtaxrgEGKTerTNPAhoECJ40XS0bYmRzsBUVk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X/tZmHB9rVuT0/FmRef43P56DQhwnjhKMtmKVtg+/zWX9OL4DKUeJF70N3kCnG0DOlCmdvcXrcTo6oeRqRNsgoap7dvwyzRyKsyhHBK/NeHHK3imub4HwGNwHpTThWFIdTthlX2s8ii6JZuZGfygvu01l8j8Dw32Y73rCfWB5lQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e21K5tUU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 896E1C4CEF1;
-	Mon, 27 Oct 2025 19:06:08 +0000 (UTC)
+	 MIME-Version; b=M/E5YbzkZJkF5TI8rkuCrREAvNXGLp5xrNBOhqKupWK5I+KFC0vcHbU5YBXVUMJLsyc+Zt05ZVGLZaXTyhG6LVLWQAzXC56ODqWiNkVQtmBeWCpzNzFyPq7CNaIEEbJFQQuwiSrGnlyoW2OxSwWrycpU+itytZAVi81WnIN9oFk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t7iZs8RE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EEBCC4CEF1;
+	Mon, 27 Oct 2025 19:00:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591968;
-	bh=/ULkh4MxxgGfiZLa2gE6RxzHfbwD9Y/LEqnhuQgZa34=;
+	s=korg; t=1761591601;
+	bh=P/RtpSBVtaxrgEGKTerTNPAhoECJ40XS0bYmRzsBUVk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e21K5tUUOPqd/XGKMFIlOyoFczo6AeuRTqeqfV1x8diXGnPMal0A//DcsDyRQ6jqJ
-	 ej8FJTH+uGIwZFy+EtII5PClD0CNR4/DTF6PgWlbzU+t8D3k6USZ5PVXh0gsFt0jIL
-	 4WSn2rkCkvB4je5xDMsJYeb5AJjnkXRy1HFcXKqI=
+	b=t7iZs8REATW6/CJclW/sXiJHADfGscvwAYntz+F28f9ES0otJJ3ixu7Pmz+3ylQjO
+	 RaGqz3qy3rT93WZe1s6TiyP8SVzbgiLYimfEeNyZrDEF7jI/USdI/Bhy7YHFLra1R9
+	 7ENxFZOWeVX2HWJr+4H38ShH8Ux7ZRLLTosyFqYI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	I Viswanath <viswanathiyyappan@gmail.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Khalid Aziz <khalid@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Xichao Zhao <zhao.xichao@vivo.com>,
+	Jan Kara <jack@suse.cz>,
+	Kees Cook <kees@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 031/123] net: usb: lan78xx: fix use of improperly initialized dev->chipid in lan78xx_reset
+Subject: [PATCH 5.10 258/332] exec: Fix incorrect type for ret
 Date: Mon, 27 Oct 2025 19:35:11 +0100
-Message-ID: <20251027183447.233138358@linuxfoundation.org>
+Message-ID: <20251027183531.659304733@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183446.381986645@linuxfoundation.org>
-References: <20251027183446.381986645@linuxfoundation.org>
+In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
+References: <20251027183524.611456697@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,64 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: I Viswanath <viswanathiyyappan@gmail.com>
+From: Xichao Zhao <zhao.xichao@vivo.com>
 
-[ Upstream commit 8d93ff40d49d70e05c82a74beae31f883fe0eaf8 ]
+[ Upstream commit 5e088248375d171b80c643051e77ade6b97bc386 ]
 
-dev->chipid is used in lan78xx_init_mac_address before it's initialized:
+In the setup_arg_pages(), ret is declared as an unsigned long.
+The ret might take a negative value. Therefore, its type should
+be changed to int.
 
-lan78xx_reset() {
-    lan78xx_init_mac_address()
-        lan78xx_read_eeprom()
-            lan78xx_read_raw_eeprom() <- dev->chipid is used here
-
-    dev->chipid = ... <- dev->chipid is initialized correctly here
-}
-
-Reorder initialization so that dev->chipid is set before calling
-lan78xx_init_mac_address().
-
-Fixes: a0db7d10b76e ("lan78xx: Add to handle mux control per chip id")
-Signed-off-by: I Viswanath <viswanathiyyappan@gmail.com>
-Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Reviewed-by: Khalid Aziz <khalid@kernel.org>
-Link: https://patch.msgid.link/20251013181648.35153-1-viswanathiyyappan@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Xichao Zhao <zhao.xichao@vivo.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20250825073609.219855-1-zhao.xichao@vivo.com
+Signed-off-by: Kees Cook <kees@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/lan78xx.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ fs/exec.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
-index 182a4dbd8cf26..174d94bdaae64 100644
---- a/drivers/net/usb/lan78xx.c
-+++ b/drivers/net/usb/lan78xx.c
-@@ -2736,10 +2736,6 @@ static int lan78xx_reset(struct lan78xx_net *dev)
- 		}
- 	} while (buf & HW_CFG_LRST_);
- 
--	ret = lan78xx_init_mac_address(dev);
--	if (ret < 0)
--		return ret;
--
- 	/* save DEVID for later usage */
- 	ret = lan78xx_read_reg(dev, ID_REV, &buf);
- 	if (ret < 0)
-@@ -2748,6 +2744,10 @@ static int lan78xx_reset(struct lan78xx_net *dev)
- 	dev->chipid = (buf & ID_REV_CHIP_ID_MASK_) >> 16;
- 	dev->chiprev = buf & ID_REV_CHIP_REV_MASK_;
- 
-+	ret = lan78xx_init_mac_address(dev);
-+	if (ret < 0)
-+		return ret;
-+
- 	/* Respond to the IN token with a NAK */
- 	ret = lan78xx_read_reg(dev, USB_CFG0, &buf);
- 	if (ret < 0)
+diff --git a/fs/exec.c b/fs/exec.c
+index 7144c541818f6..2979b458b650a 100644
+--- a/fs/exec.c
++++ b/fs/exec.c
+@@ -746,7 +746,7 @@ int setup_arg_pages(struct linux_binprm *bprm,
+ 		    unsigned long stack_top,
+ 		    int executable_stack)
+ {
+-	unsigned long ret;
++	int ret;
+ 	unsigned long stack_shift;
+ 	struct mm_struct *mm = current->mm;
+ 	struct vm_area_struct *vma = bprm->vma;
 -- 
 2.51.0
 
