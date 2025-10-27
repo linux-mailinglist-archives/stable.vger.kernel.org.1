@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-190312-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190314-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D912C10544
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:58:30 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08E29C1050A
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:57:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DBC77563072
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:53:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 61D4F1A20639
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:54:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C967832D7FC;
-	Mon, 27 Oct 2025 18:49:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82D83325481;
+	Mon, 27 Oct 2025 18:49:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V8bCXFfz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z+Bm4z04"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79AA1323406;
-	Mon, 27 Oct 2025 18:49:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E78B32E12B;
+	Mon, 27 Oct 2025 18:49:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761590974; cv=none; b=j4bqFX9zfieMr49d4FeKJgjYfdCxChPbEUGX0egRSZXZ4YSCCjWePVjetg6C2Mc0nAI7Pj7Re3SZJSox7nUAtQdhfnKYYR1/BIhHDZ2wQQleQaJXT5OzgC2y56Q5Oa7ExLjbU3YnX2djxk3WHNFniLUEgylRxQHJgLs6QXx/p50=
+	t=1761590977; cv=none; b=GHI8K/15NscvMjdhpAyT/xjMeG4CDT3jpa4Bjvl5//HB3TLv0eHJemMvtY2T8iYKycBn7jUx47GmvJA+besRF7oJxANa3dpJSM2Azw5v2S680/ynNc7q5tPXsncassRJ3MWlcfjvx5lMQl+fhz4j4IPVrtIw2C2y6JRRF4KxBFg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761590974; c=relaxed/simple;
-	bh=wjccWS/jl69O7aU/DwxylxJJ8rXH0lFIRcSe+oEzTxI=;
+	s=arc-20240116; t=1761590977; c=relaxed/simple;
+	bh=0iAqKSffxW1P4sY+9hxbycT495DvPA4bt8QbSm5hw/s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kqsf5PCI7I7KiPPq3uzRlRfYaYyUjJZEGERXeJOBXz44eGVcRvNv9V33OJxltU/SpHhv84nx5M6d48IMNYcQKTvPh1PPmUPl3IZIOQbPt9/5cI+axGeZwaB54FjcnKkqpyi8okx8iHL6CsVCjoMKm97nVane9v6iIwEI3rymsms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V8bCXFfz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B9A0C4CEF1;
-	Mon, 27 Oct 2025 18:49:31 +0000 (UTC)
+	 MIME-Version; b=TRa6T5AQY+Tli1roHzHbjuX06nxLBHKNiol00uPn2x1lsEWF097NcyrDrWnMgfZRvJ1RDiDZeAHIsXCf0GHqTOhKIH34NRp9SDKYyyhTyE5CDhvluvXgSy/zSIb7eqn07zCwA22GRF0enQV4qaYrua2uDc8H57o1kSVg2jr3rAg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z+Bm4z04; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6082C4CEF1;
+	Mon, 27 Oct 2025 18:49:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761590972;
-	bh=wjccWS/jl69O7aU/DwxylxJJ8rXH0lFIRcSe+oEzTxI=;
+	s=korg; t=1761590977;
+	bh=0iAqKSffxW1P4sY+9hxbycT495DvPA4bt8QbSm5hw/s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V8bCXFfzZbAyW1d4QOESStX+whenmhEx7J3gXsLiP6bCHiEhbs2gehOei78ApcG+9
-	 YWbb85hzwuN5wgiC85AGAJxENxDzOyXkTNJ6DaT9h5Tjrrm/8PDdKr/70f1dOKIn9/
-	 9qJP7oKwO19seUkNKHrjVLOFYqUiZHYdO+8msnmU=
+	b=Z+Bm4z04GQIswRnIzYkA2MSo/aTzGSLISigJUiUcl/9cCwxNNpzyO6k8v5YqIhOSk
+	 ITxfvqY19BFMQmGYLa0rgRtaJjqlRVNI0LfSbFIaccDot3Yhxa4MOePb+qY3Wmd4eT
+	 JCrG+RmVUdtTKZJOBGm+P/WYWL7iRgyMr5WAMgC4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yiqi Sun <sunyiqixm@gmail.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 5.10 019/332] crypto: rng - Ensure set_ent is always present
-Date: Mon, 27 Oct 2025 19:31:12 +0100
-Message-ID: <20251027183525.129742209@linuxfoundation.org>
+	Jeff Layton <jlayton@kernel.org>,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 020/332] filelock: add FL_RECLAIM to show_fl_flags() macro
+Date: Mon, 27 Oct 2025 19:31:13 +0100
+Message-ID: <20251027183525.154920235@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
 References: <20251027183524.611456697@linuxfoundation.org>
@@ -65,44 +66,38 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+From: Jeff Layton <jlayton@kernel.org>
 
-commit c0d36727bf39bb16ef0a67ed608e279535ebf0da upstream.
+[ Upstream commit c593b9d6c446510684da400833f9d632651942f0 ]
 
-Ensure that set_ent is always set since only drbg provides it.
+Show the FL_RECLAIM flag symbolically in tracepoints.
 
-Fixes: 77ebdabe8de7 ("crypto: af_alg - add extra parameters for DRBG interface")
-Reported-by: Yiqi Sun <sunyiqixm@gmail.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: bb0a55bb7148 ("nfs: don't allow reexport reclaims")
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
+Link: https://lore.kernel.org/20250903-filelock-v1-1-f2926902962d@kernel.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- crypto/rng.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ include/trace/events/filelock.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/crypto/rng.c
-+++ b/crypto/rng.c
-@@ -174,6 +174,11 @@ out:
- EXPORT_SYMBOL_GPL(crypto_del_default_rng);
- #endif
+diff --git a/include/trace/events/filelock.h b/include/trace/events/filelock.h
+index 1646dadd7f37c..3b1c8d93b2654 100644
+--- a/include/trace/events/filelock.h
++++ b/include/trace/events/filelock.h
+@@ -27,7 +27,8 @@
+ 		{ FL_SLEEP,		"FL_SLEEP" },			\
+ 		{ FL_DOWNGRADE_PENDING,	"FL_DOWNGRADE_PENDING" },	\
+ 		{ FL_UNLOCK_PENDING,	"FL_UNLOCK_PENDING" },		\
+-		{ FL_OFDLCK,		"FL_OFDLCK" })
++		{ FL_OFDLCK,		"FL_OFDLCK" },			\
++		{ FL_RECLAIM,		"FL_RECLAIM"})
  
-+static void rng_default_set_ent(struct crypto_rng *tfm, const u8 *data,
-+				unsigned int len)
-+{
-+}
-+
- int crypto_register_rng(struct rng_alg *alg)
- {
- 	struct crypto_alg *base = &alg->base;
-@@ -185,6 +190,9 @@ int crypto_register_rng(struct rng_alg *
- 	base->cra_flags &= ~CRYPTO_ALG_TYPE_MASK;
- 	base->cra_flags |= CRYPTO_ALG_TYPE_RNG;
- 
-+	if (!alg->set_ent)
-+		alg->set_ent = rng_default_set_ent;
-+
- 	return crypto_register_alg(base);
- }
- EXPORT_SYMBOL_GPL(crypto_register_rng);
+ #define show_fl_type(val)				\
+ 	__print_symbolic(val,				\
+-- 
+2.51.0
+
 
 
 
