@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-190788-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190535-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59CE5C10C19
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:18:40 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FC04C10819
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:08:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 429A81A635A5
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:13:14 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4C80D5052B9
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:03:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67D8E328B53;
-	Mon, 27 Oct 2025 19:09:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5608B331A50;
+	Mon, 27 Oct 2025 18:59:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tE64KaC+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N+Etaadw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2226D320CBE;
-	Mon, 27 Oct 2025 19:09:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BFA82D542A;
+	Mon, 27 Oct 2025 18:59:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592198; cv=none; b=Wg8ZOFqhjDGWiNhFtqeWjQXKlEtqkCwBsAvMDnArv8TGTWaIOEr/9zWu8oL9uPczufOBUpGTz+CiNdlC6/82lAnuu8QWlh6AO7m7uM+vaEqDJ64aOa2KgORUewTNHgI82GINkZxf8zLlMuXUKELNb7stAaS27zrcfKOMAQJ/4yA=
+	t=1761591544; cv=none; b=eUsKG+dHOy1EX342hH75dvX9+khbbGAjDPKrA9TS7smG61RSk+3VBzEOKPxlWy3shW5iaKnLucDpMe1bgmICE8tVk+QutyRzmyQzPOkDxNriZz1RmihtQ2nLilhCI4kRfPvnOzpGrgGAQTcJnmCJ50H6yQW100Zf38u7BusvTag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592198; c=relaxed/simple;
-	bh=BIbVmpUp75dlcMdLy5q4qX4kVD0RNVLfIy3G3CsPRGw=;
+	s=arc-20240116; t=1761591544; c=relaxed/simple;
+	bh=q6amGJFrW8w+yPg7XTIH45TzaUAdZJwGYmdChU30AqI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PR3tDx22hOsa3vy7qe70As8i+mk0iy3QqC+R0VBDLnb0Oe6QWDQi4MT75Nm6UY1ZwQwyoHdV2lS5zhWlPleAuiEsPTLBh1YsCSy5znx6FxIPv4bUY6Jl9zI2OWd85oUDXAvb2AmkcSyLsRQIk2JlhPrx5lQFknmZ3Cndhpshl/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tE64KaC+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD26AC4CEF1;
-	Mon, 27 Oct 2025 19:09:57 +0000 (UTC)
+	 MIME-Version; b=LT0VoXcCyi1LupjMx1HQGm61vYOqV6TxDdT9tDrNqWT9pU5umTu4dq85EhUmLgyLJdERIFNwCtd2XeqqOTMRSuSl0UdEYdRjrCq7Ll/UKB4DCQnNHY4hGBmMb9pMQFxTiAV79YqkEB1g4CxiIAmYVR0mkQAmGCfuDqW688vS26M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N+Etaadw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46435C4CEF1;
+	Mon, 27 Oct 2025 18:59:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592198;
-	bh=BIbVmpUp75dlcMdLy5q4qX4kVD0RNVLfIy3G3CsPRGw=;
+	s=korg; t=1761591543;
+	bh=q6amGJFrW8w+yPg7XTIH45TzaUAdZJwGYmdChU30AqI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tE64KaC+UQgJx15WP2271mRixGfe55+mg/xlbnPThzY4+XxSUbLVQOty4FNKeTRX+
-	 2Q8xmIcgKcDY7lOa7bZQvZXg5RqtWMYhxH/5Wxz5cHwZZtAUVAwJZhlvlgEQsBy8jB
-	 tSVwM+cXE6/fR3Hm9oCXCYDosHybxcLLWTdL/yfU=
+	b=N+EtaadwLqpLIdnAgj4bGV6iolsahp7YBcvNysfxmnL62s0D+KYDya68vCFhbHLZ8
+	 yJj7wGgKxO+fRmykghuF3yaxLNpSP/LkXxRuodmi+CkxfdWEntgQgBTPRzcWKD5fzL
+	 xFqngZHsTxe2zNtxRwm7IZ+rVusq/2Ub4SzcCbCs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Anna-Maria Behnsen <anna-maria@linutronix.de>,
-	Jeongjun Park <aha310510@gmail.com>
-Subject: [PATCH 6.1 030/157] timers: Split [try_to_]del_timer[_sync]() to prepare for shutdown mode
+	Christoph Hellwig <hch@lst.de>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Dave Chinner <dchinner@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 238/332] iomap: add the new iomap_iter model
 Date: Mon, 27 Oct 2025 19:34:51 +0100
-Message-ID: <20251027183502.096576784@linuxfoundation.org>
+Message-ID: <20251027183531.113077145@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
-References: <20251027183501.227243846@linuxfoundation.org>
+In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
+References: <20251027183524.611456697@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,253 +63,260 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit 8553b5f2774a66b1f293b7d783934210afb8f23c ]
+[ Upstream commit f4b896c213f0752adc828ddc11bd55419ffab248 ]
 
-Tearing down timers which have circular dependencies to other
-functionality, e.g. workqueues, where the timer can schedule work and work
-can arm timers, is not trivial.
+The iomap_iter struct provides a convenient way to package up and
+maintain all the arguments to the various mapping and operation
+functions.  It is operated on using the iomap_iter() function that
+is called in loop until the whole range has been processed.  Compared
+to the existing iomap_apply() function this avoid an indirect call
+for each iteration.
 
-In those cases it is desired to shutdown the timer in a way which prevents
-rearming of the timer. The mechanism to do so is to set timer->function to
-NULL and use this as an indicator for the timer arming functions to ignore
-the (re)arm request.
+For now iomap_iter() calls back into the existing ->iomap_begin and
+->iomap_end methods, but in the future this could be further optimized
+to avoid indirect calls entirely.
 
-Split the inner workings of try_do_del_timer_sync(), del_timer_sync() and
-del_timer() into helper functions to prepare for implementing the shutdown
-functionality.
+Based on an earlier patch from Matthew Wilcox <willy@infradead.org>.
 
-No functional change.
-
-Co-developed-by: Steven Rostedt <rostedt@goodmis.org>
-Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Guenter Roeck <linux@roeck-us.net>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Reviewed-by: Anna-Maria Behnsen <anna-maria@linutronix.de>
-Link: https://lore.kernel.org/all/20220407161745.7d6754b3@gandalf.local.home
-Link: https://lore.kernel.org/all/20221110064101.429013735@goodmis.org
-Link: https://lore.kernel.org/r/20221123201625.195147423@linutronix.de
-Signed-off-by: Jeongjun Park <aha310510@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+[djwong: add to apply.c to preserve git history of iomap loop control]
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+Reviewed-by: Dave Chinner <dchinner@redhat.com>
+Stable-dep-of: 154d1e7ad9e5 ("dax: skip read lock assertion for read-only filesystems")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/time/timer.c |  143 +++++++++++++++++++++++++++++++++-------------------
- 1 file changed, 92 insertions(+), 51 deletions(-)
+ fs/iomap/apply.c      | 74 ++++++++++++++++++++++++++++++++++++++++++-
+ fs/iomap/trace.h      | 37 +++++++++++++++++++++-
+ include/linux/iomap.h | 56 ++++++++++++++++++++++++++++++++
+ 3 files changed, 165 insertions(+), 2 deletions(-)
 
---- a/kernel/time/timer.c
-+++ b/kernel/time/timer.c
-@@ -1298,20 +1298,14 @@ out_unlock:
- EXPORT_SYMBOL_GPL(add_timer_on);
- 
- /**
-- * timer_delete - Deactivate a timer
-+ * __timer_delete - Internal function: Deactivate a timer
-  * @timer:	The timer to be deactivated
-  *
-- * The function only deactivates a pending timer, but contrary to
-- * timer_delete_sync() it does not take into account whether the timer's
-- * callback function is concurrently executed on a different CPU or not.
-- * It neither prevents rearming of the timer. If @timer can be rearmed
-- * concurrently then the return value of this function is meaningless.
-- *
-  * Return:
-  * * %0 - The timer was not pending
-  * * %1 - The timer was pending and deactivated
+diff --git a/fs/iomap/apply.c b/fs/iomap/apply.c
+index 26ab6563181fc..e82647aef7ead 100644
+--- a/fs/iomap/apply.c
++++ b/fs/iomap/apply.c
+@@ -1,7 +1,7 @@
+ // SPDX-License-Identifier: GPL-2.0
+ /*
+  * Copyright (C) 2010 Red Hat, Inc.
+- * Copyright (c) 2016-2018 Christoph Hellwig.
++ * Copyright (c) 2016-2021 Christoph Hellwig.
   */
--int timer_delete(struct timer_list *timer)
-+static int __timer_delete(struct timer_list *timer)
- {
- 	struct timer_base *base;
- 	unsigned long flags;
-@@ -1327,25 +1321,37 @@ int timer_delete(struct timer_list *time
+ #include <linux/module.h>
+ #include <linux/compiler.h>
+@@ -97,3 +97,75 @@ iomap_apply(struct inode *inode, loff_t pos, loff_t length, unsigned flags,
  
- 	return ret;
- }
--EXPORT_SYMBOL(timer_delete);
- 
- /**
-- * try_to_del_timer_sync - Try to deactivate a timer
-- * @timer:	Timer to deactivate
-+ * timer_delete - Deactivate a timer
-+ * @timer:	The timer to be deactivated
-  *
-- * This function tries to deactivate a timer. On success the timer is not
-- * queued and the timer callback function is not running on any CPU.
-+ * The function only deactivates a pending timer, but contrary to
-+ * timer_delete_sync() it does not take into account whether the timer's
-+ * callback function is concurrently executed on a different CPU or not.
-+ * It neither prevents rearming of the timer.  If @timer can be rearmed
-+ * concurrently then the return value of this function is meaningless.
-  *
-- * This function does not guarantee that the timer cannot be rearmed right
-- * after dropping the base lock. That needs to be prevented by the calling
-- * code if necessary.
-+ * Return:
-+ * * %0 - The timer was not pending
-+ * * %1 - The timer was pending and deactivated
-+ */
-+int timer_delete(struct timer_list *timer)
-+{
-+	return __timer_delete(timer);
-+}
-+EXPORT_SYMBOL(timer_delete);
-+
-+/**
-+ * __try_to_del_timer_sync - Internal function: Try to deactivate a timer
-+ * @timer:	Timer to deactivate
-  *
-  * Return:
-  * * %0  - The timer was not pending
-  * * %1  - The timer was pending and deactivated
-  * * %-1 - The timer callback function is running on a different CPU
-  */
--int try_to_del_timer_sync(struct timer_list *timer)
-+static int __try_to_del_timer_sync(struct timer_list *timer)
- {
- 	struct timer_base *base;
- 	unsigned long flags;
-@@ -1362,6 +1368,27 @@ int try_to_del_timer_sync(struct timer_l
- 
- 	return ret;
+ 	return written ? written : ret;
  }
 +
-+/**
-+ * try_to_del_timer_sync - Try to deactivate a timer
-+ * @timer:	Timer to deactivate
-+ *
-+ * This function tries to deactivate a timer. On success the timer is not
-+ * queued and the timer callback function is not running on any CPU.
-+ *
-+ * This function does not guarantee that the timer cannot be rearmed right
-+ * after dropping the base lock. That needs to be prevented by the calling
-+ * code if necessary.
-+ *
-+ * Return:
-+ * * %0  - The timer was not pending
-+ * * %1  - The timer was pending and deactivated
-+ * * %-1 - The timer callback function is running on a different CPU
-+ */
-+int try_to_del_timer_sync(struct timer_list *timer)
++static inline int iomap_iter_advance(struct iomap_iter *iter)
 +{
-+	return __try_to_del_timer_sync(timer);
++	/* handle the previous iteration (if any) */
++	if (iter->iomap.length) {
++		if (iter->processed <= 0)
++			return iter->processed;
++		if (WARN_ON_ONCE(iter->processed > iomap_length(iter)))
++			return -EIO;
++		iter->pos += iter->processed;
++		iter->len -= iter->processed;
++		if (!iter->len)
++			return 0;
++	}
++
++	/* clear the state for the next iteration */
++	iter->processed = 0;
++	memset(&iter->iomap, 0, sizeof(iter->iomap));
++	memset(&iter->srcmap, 0, sizeof(iter->srcmap));
++	return 1;
 +}
- EXPORT_SYMBOL(try_to_del_timer_sync);
- 
- #ifdef CONFIG_PREEMPT_RT
-@@ -1438,45 +1465,15 @@ static inline void del_timer_wait_runnin
- #endif
- 
- /**
-- * timer_delete_sync - Deactivate a timer and wait for the handler to finish.
-+ * __timer_delete_sync - Internal function: Deactivate a timer and wait
-+ *			 for the handler to finish.
-  * @timer:	The timer to be deactivated
-  *
-- * Synchronization rules: Callers must prevent restarting of the timer,
-- * otherwise this function is meaningless. It must not be called from
-- * interrupt contexts unless the timer is an irqsafe one. The caller must
-- * not hold locks which would prevent completion of the timer's callback
-- * function. The timer's handler must not call add_timer_on(). Upon exit
-- * the timer is not queued and the handler is not running on any CPU.
-- *
-- * For !irqsafe timers, the caller must not hold locks that are held in
-- * interrupt context. Even if the lock has nothing to do with the timer in
-- * question.  Here's why::
-- *
-- *    CPU0                             CPU1
-- *    ----                             ----
-- *                                     <SOFTIRQ>
-- *                                       call_timer_fn();
-- *                                       base->running_timer = mytimer;
-- *    spin_lock_irq(somelock);
-- *                                     <IRQ>
-- *                                        spin_lock(somelock);
-- *    timer_delete_sync(mytimer);
-- *    while (base->running_timer == mytimer);
-- *
-- * Now timer_delete_sync() will never return and never release somelock.
-- * The interrupt on the other CPU is waiting to grab somelock but it has
-- * interrupted the softirq that CPU0 is waiting to finish.
-- *
-- * This function cannot guarantee that the timer is not rearmed again by
-- * some concurrent or preempting code, right after it dropped the base
-- * lock. If there is the possibility of a concurrent rearm then the return
-- * value of the function is meaningless.
-- *
-  * Return:
-  * * %0	- The timer was not pending
-  * * %1	- The timer was pending and deactivated
-  */
--int timer_delete_sync(struct timer_list *timer)
-+static int __timer_delete_sync(struct timer_list *timer)
- {
- 	int ret;
- 
-@@ -1506,7 +1503,7 @@ int timer_delete_sync(struct timer_list
- 		lockdep_assert_preemption_enabled();
- 
- 	do {
--		ret = try_to_del_timer_sync(timer);
-+		ret = __try_to_del_timer_sync(timer);
- 
- 		if (unlikely(ret < 0)) {
- 			del_timer_wait_running(timer);
-@@ -1516,6 +1513,50 @@ int timer_delete_sync(struct timer_list
- 
- 	return ret;
- }
++
++static inline void iomap_iter_done(struct iomap_iter *iter)
++{
++	WARN_ON_ONCE(iter->iomap.offset > iter->pos);
++	WARN_ON_ONCE(iter->iomap.length == 0);
++	WARN_ON_ONCE(iter->iomap.offset + iter->iomap.length <= iter->pos);
++
++	trace_iomap_iter_dstmap(iter->inode, &iter->iomap);
++	if (iter->srcmap.type != IOMAP_HOLE)
++		trace_iomap_iter_srcmap(iter->inode, &iter->srcmap);
++}
 +
 +/**
-+ * timer_delete_sync - Deactivate a timer and wait for the handler to finish.
-+ * @timer:	The timer to be deactivated
++ * iomap_iter - iterate over a ranges in a file
++ * @iter: iteration structue
++ * @ops: iomap ops provided by the file system
 + *
-+ * Synchronization rules: Callers must prevent restarting of the timer,
-+ * otherwise this function is meaningless. It must not be called from
-+ * interrupt contexts unless the timer is an irqsafe one. The caller must
-+ * not hold locks which would prevent completion of the timer's callback
-+ * function. The timer's handler must not call add_timer_on(). Upon exit
-+ * the timer is not queued and the handler is not running on any CPU.
++ * Iterate over filesystem-provided space mappings for the provided file range.
 + *
-+ * For !irqsafe timers, the caller must not hold locks that are held in
-+ * interrupt context. Even if the lock has nothing to do with the timer in
-+ * question.  Here's why::
-+ *
-+ *    CPU0                             CPU1
-+ *    ----                             ----
-+ *                                     <SOFTIRQ>
-+ *                                       call_timer_fn();
-+ *                                       base->running_timer = mytimer;
-+ *    spin_lock_irq(somelock);
-+ *                                     <IRQ>
-+ *                                        spin_lock(somelock);
-+ *    timer_delete_sync(mytimer);
-+ *    while (base->running_timer == mytimer);
-+ *
-+ * Now timer_delete_sync() will never return and never release somelock.
-+ * The interrupt on the other CPU is waiting to grab somelock but it has
-+ * interrupted the softirq that CPU0 is waiting to finish.
-+ *
-+ * This function cannot guarantee that the timer is not rearmed again by
-+ * some concurrent or preempting code, right after it dropped the base
-+ * lock. If there is the possibility of a concurrent rearm then the return
-+ * value of the function is meaningless.
-+ *
-+ * Return:
-+ * * %0	- The timer was not pending
-+ * * %1	- The timer was pending and deactivated
++ * This function handles cleanup of resources acquired for iteration when the
++ * filesystem indicates there are no more space mappings, which means that this
++ * function must be called in a loop that continues as long it returns a
++ * positive value.  If 0 or a negative value is returned, the caller must not
++ * return to the loop body.  Within a loop body, there are two ways to break out
++ * of the loop body:  leave @iter.processed unchanged, or set it to a negative
++ * errno.
 + */
-+int timer_delete_sync(struct timer_list *timer)
++int iomap_iter(struct iomap_iter *iter, const struct iomap_ops *ops)
 +{
-+	return __timer_delete_sync(timer);
++	int ret;
++
++	if (iter->iomap.length && ops->iomap_end) {
++		ret = ops->iomap_end(iter->inode, iter->pos, iomap_length(iter),
++				iter->processed > 0 ? iter->processed : 0,
++				iter->flags, &iter->iomap);
++		if (ret < 0 && !iter->processed)
++			return ret;
++	}
++
++	trace_iomap_iter(iter, ops, _RET_IP_);
++	ret = iomap_iter_advance(iter);
++	if (ret <= 0)
++		return ret;
++
++	ret = ops->iomap_begin(iter->inode, iter->pos, iter->len, iter->flags,
++			       &iter->iomap, &iter->srcmap);
++	if (ret < 0)
++		return ret;
++	iomap_iter_done(iter);
++	return 1;
 +}
- EXPORT_SYMBOL(timer_delete_sync);
+diff --git a/fs/iomap/trace.h b/fs/iomap/trace.h
+index fdc7ae388476f..52b850b4d3f44 100644
+--- a/fs/iomap/trace.h
++++ b/fs/iomap/trace.h
+@@ -1,6 +1,6 @@
+ /* SPDX-License-Identifier: GPL-2.0 */
+ /*
+- * Copyright (c) 2009-2019 Christoph Hellwig
++ * Copyright (c) 2009-2021 Christoph Hellwig
+  *
+  * NOTE: none of these tracepoints shall be consider a stable kernel ABI
+  * as they can change at any time.
+@@ -140,6 +140,8 @@ DEFINE_EVENT(iomap_class, name,	\
+ 	TP_ARGS(inode, iomap))
+ DEFINE_IOMAP_EVENT(iomap_apply_dstmap);
+ DEFINE_IOMAP_EVENT(iomap_apply_srcmap);
++DEFINE_IOMAP_EVENT(iomap_iter_dstmap);
++DEFINE_IOMAP_EVENT(iomap_iter_srcmap);
  
- static void call_timer_fn(struct timer_list *timer,
+ TRACE_EVENT(iomap_apply,
+ 	TP_PROTO(struct inode *inode, loff_t pos, loff_t length,
+@@ -179,6 +181,39 @@ TRACE_EVENT(iomap_apply,
+ 		   __entry->actor)
+ );
+ 
++TRACE_EVENT(iomap_iter,
++	TP_PROTO(struct iomap_iter *iter, const void *ops,
++		 unsigned long caller),
++	TP_ARGS(iter, ops, caller),
++	TP_STRUCT__entry(
++		__field(dev_t, dev)
++		__field(u64, ino)
++		__field(loff_t, pos)
++		__field(loff_t, length)
++		__field(unsigned int, flags)
++		__field(const void *, ops)
++		__field(unsigned long, caller)
++	),
++	TP_fast_assign(
++		__entry->dev = iter->inode->i_sb->s_dev;
++		__entry->ino = iter->inode->i_ino;
++		__entry->pos = iter->pos;
++		__entry->length = iomap_length(iter);
++		__entry->flags = iter->flags;
++		__entry->ops = ops;
++		__entry->caller = caller;
++	),
++	TP_printk("dev %d:%d ino 0x%llx pos %lld length %lld flags %s (0x%x) ops %ps caller %pS",
++		  MAJOR(__entry->dev), MINOR(__entry->dev),
++		   __entry->ino,
++		   __entry->pos,
++		   __entry->length,
++		   __print_flags(__entry->flags, "|", IOMAP_FLAGS_STRINGS),
++		   __entry->flags,
++		   __entry->ops,
++		   (void *)__entry->caller)
++);
++
+ #endif /* _IOMAP_TRACE_H */
+ 
+ #undef TRACE_INCLUDE_PATH
+diff --git a/include/linux/iomap.h b/include/linux/iomap.h
+index 5bd3cac4df9cb..5100a139d2efd 100644
+--- a/include/linux/iomap.h
++++ b/include/linux/iomap.h
+@@ -143,6 +143,62 @@ struct iomap_ops {
+ 			ssize_t written, unsigned flags, struct iomap *iomap);
+ };
+ 
++/**
++ * struct iomap_iter - Iterate through a range of a file
++ * @inode: Set at the start of the iteration and should not change.
++ * @pos: The current file position we are operating on.  It is updated by
++ *	calls to iomap_iter().  Treat as read-only in the body.
++ * @len: The remaining length of the file segment we're operating on.
++ *	It is updated at the same time as @pos.
++ * @processed: The number of bytes processed by the body in the most recent
++ *	iteration, or a negative errno. 0 causes the iteration to stop.
++ * @flags: Zero or more of the iomap_begin flags above.
++ * @iomap: Map describing the I/O iteration
++ * @srcmap: Source map for COW operations
++ */
++struct iomap_iter {
++	struct inode *inode;
++	loff_t pos;
++	u64 len;
++	s64 processed;
++	unsigned flags;
++	struct iomap iomap;
++	struct iomap srcmap;
++};
++
++int iomap_iter(struct iomap_iter *iter, const struct iomap_ops *ops);
++
++/**
++ * iomap_length - length of the current iomap iteration
++ * @iter: iteration structure
++ *
++ * Returns the length that the operation applies to for the current iteration.
++ */
++static inline u64 iomap_length(const struct iomap_iter *iter)
++{
++	u64 end = iter->iomap.offset + iter->iomap.length;
++
++	if (iter->srcmap.type != IOMAP_HOLE)
++		end = min(end, iter->srcmap.offset + iter->srcmap.length);
++	return min(iter->len, end - iter->pos);
++}
++
++/**
++ * iomap_iter_srcmap - return the source map for the current iomap iteration
++ * @i: iteration structure
++ *
++ * Write operations on file systems with reflink support might require a
++ * source and a destination map.  This function retourns the source map
++ * for a given operation, which may or may no be identical to the destination
++ * map in &i->iomap.
++ */
++static inline struct iomap *iomap_iter_srcmap(struct iomap_iter *i)
++{
++	if (i->srcmap.type != IOMAP_HOLE)
++		return &i->srcmap;
++	return &i->iomap;
++}
++
+ /*
+  * Main iomap iterator function.
+  */
+-- 
+2.51.0
+
 
 
 
