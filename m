@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-190843-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190586-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87CAEC10CD0
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:20:37 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BED8DC1093C
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:10:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D0939561D16
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:14:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7EE44567A0A
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:05:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 228843203AF;
-	Mon, 27 Oct 2025 19:12:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08A6933769D;
+	Mon, 27 Oct 2025 19:01:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LvQRPOQW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a5GzwWb/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D32A821C160;
-	Mon, 27 Oct 2025 19:12:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B38C1332900;
+	Mon, 27 Oct 2025 19:01:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592343; cv=none; b=PfbGvVh5got8gKqFmF5rAq89kLFgJekM0WjH7kDAfkxJWFADZGtTbH3+X9uO8bv2dZZkgZgUglW2JT+4UD8vSpnji+AqvrfezNeLEtKk5PVRL4iq+Gpy+pGJP/EyhxQFRaqDJ8fSDdh+Fkr/L4Qky2nVB6UNAsXyNOrcrmOp4Fo=
+	t=1761591671; cv=none; b=khAA+yKc3LcX1Fzj95bZeM8zfC+MbmTKqdfe+OPTwKVLq1LiLnyRAs2JbY0+WE7jXF16krIzR2MviuNEPEPnQfyocD9ZBWrZEhxXbDQt5oN22sVu/geX5ZyXilU9QfBwOkVy0y2BuRZUC0yJpLv31SgFdiWS5T6m1p8GbABnbtM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592343; c=relaxed/simple;
-	bh=l6nZMTh5+BEqjSprz4VOAbT6kuXam2fZPx6nI3IiF0g=;
+	s=arc-20240116; t=1761591671; c=relaxed/simple;
+	bh=icM7Q1j8GLqLmcpszjolm1Y/md1kJGQpU7Zw15cxzdA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LMTtz/Oxf0mITTDAlpvTevBT7lhenvqmCNn9WJIYfEIG8ibUFvUTcthrwjhdO5c29q0NGRQkGr20Liws9aNOrkfkNLnyXlyj3GT6jV1IOi0/55/pShb+E1LTsz5C4Vwk8Hu/BopeMSuq4hcjreIR3yNRJTO+uCmoOEEtDHO5r/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LvQRPOQW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 640F9C4CEF1;
-	Mon, 27 Oct 2025 19:12:23 +0000 (UTC)
+	 MIME-Version; b=NTyNjOirbejE5iR3p11+Viqht/plqMF8aDxAmjUA1gQIgWwdSxe4rC8qXucIx2MyY3sGz/mRNLSPl5BgM40xgkw+WAYoaUVIAw/crzdN/QZKJd3WH4D7ExBfS369sgJ5v2TxsCsIgxQLLeK2psrCUj9fegxyJzKboivaAoKEFiA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a5GzwWb/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44FB5C19422;
+	Mon, 27 Oct 2025 19:01:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592343;
-	bh=l6nZMTh5+BEqjSprz4VOAbT6kuXam2fZPx6nI3IiF0g=;
+	s=korg; t=1761591671;
+	bh=icM7Q1j8GLqLmcpszjolm1Y/md1kJGQpU7Zw15cxzdA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LvQRPOQWRXQZTJbJU0EbI83NZjn2cChsBph/iJaIHHaB5yyTWN+dVStVA8QfdAAuq
-	 /iiGZux9KDLqF8469MVlU9R7yKQ/Fe1iTYPHbEhEcgVsfwrxP0AKYMmTHJFA2SuvDz
-	 B5KhnpZEmggDi/rQ9UTBDHoozMFQNdMoc4yTfjAA=
+	b=a5GzwWb/YZxefV4KerrrNK8KPOnz9S2bv8RwDVDc69CT4CyycfclAzUFjZf052keC
+	 2/2x7ygF1BLVMgovjFOUgjSsDe+TcVvQDFR6pDsTCudOupdHX14QZDmLqG034KIkGN
+	 uvT7ATvvhSglnDMEf1biDBlhFcT84DIrOVPCeKQQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	"Yury Norov (NVIDIA)" <yury.norov@gmail.com>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	linux-riscv@lists.infradead.org,
+	Rob Herring <robh@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 078/157] m68k: bitops: Fix find_*_bit() signatures
+Subject: [PATCH 5.10 286/332] riscv: Use of_get_cpu_hwid()
 Date: Mon, 27 Oct 2025 19:35:39 +0100
-Message-ID: <20251027183503.370161547@linuxfoundation.org>
+Message-ID: <20251027183532.408988014@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
-References: <20251027183501.227243846@linuxfoundation.org>
+In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
+References: <20251027183524.611456697@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,92 +65,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert@linux-m68k.org>
+From: Rob Herring <robh@kernel.org>
 
-[ Upstream commit 6d5674090543b89aac0c177d67e5fb32ddc53804 ]
+[ Upstream commit bd2259ee458e299ec14061da7faddcfb0d54d154 ]
 
-The function signatures of the m68k-optimized implementations of the
-find_{first,next}_{,zero_}bit() helpers do not match the generic
-variants.
+Replace open coded parsing of CPU nodes' 'reg' property with
+of_get_cpu_hwid().
 
-Fix this by changing all non-pointer inputs and outputs to "unsigned
-long", and updating a few local variables.
-
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202509092305.ncd9mzaZ-lkp@intel.com/
-Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Acked-by: "Yury Norov (NVIDIA)" <yury.norov@gmail.com>
-Link: https://patch.msgid.link/de6919554fbb4cd1427155c6bafbac8a9df822c8.1757517135.git.geert@linux-m68k.org
+Cc: Paul Walmsley <paul.walmsley@sifive.com>
+Cc: Palmer Dabbelt <palmer@dabbelt.com>
+Cc: Albert Ou <aou@eecs.berkeley.edu>
+Cc: linux-riscv@lists.infradead.org
+Signed-off-by: Rob Herring <robh@kernel.org>
+Link: https://lore.kernel.org/r/20211006164332.1981454-9-robh@kernel.org
+Stable-dep-of: d2721bb165b3 ("RISC-V: Don't print details of CPUs disabled in DT")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/m68k/include/asm/bitops.h | 25 ++++++++++++++-----------
- 1 file changed, 14 insertions(+), 11 deletions(-)
+ arch/riscv/kernel/cpu.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/m68k/include/asm/bitops.h b/arch/m68k/include/asm/bitops.h
-index e984af71df6be..d86aa744cb8fc 100644
---- a/arch/m68k/include/asm/bitops.h
-+++ b/arch/m68k/include/asm/bitops.h
-@@ -329,12 +329,12 @@ arch___test_and_change_bit(unsigned long nr, volatile unsigned long *addr)
- #include <asm-generic/bitops/ffz.h>
- #else
+diff --git a/arch/riscv/kernel/cpu.c b/arch/riscv/kernel/cpu.c
+index 6d59e6906fddf..f13b2c9ea912d 100644
+--- a/arch/riscv/kernel/cpu.c
++++ b/arch/riscv/kernel/cpu.c
+@@ -22,7 +22,8 @@ int riscv_of_processor_hartid(struct device_node *node)
+ 		return -ENODEV;
+ 	}
  
--static inline int find_first_zero_bit(const unsigned long *vaddr,
--				      unsigned size)
-+static inline unsigned long find_first_zero_bit(const unsigned long *vaddr,
-+						unsigned long size)
- {
- 	const unsigned long *p = vaddr;
--	int res = 32;
--	unsigned int words;
-+	unsigned long res = 32;
-+	unsigned long words;
- 	unsigned long num;
- 
- 	if (!size)
-@@ -355,8 +355,9 @@ static inline int find_first_zero_bit(const unsigned long *vaddr,
- }
- #define find_first_zero_bit find_first_zero_bit
- 
--static inline int find_next_zero_bit(const unsigned long *vaddr, int size,
--				     int offset)
-+static inline unsigned long find_next_zero_bit(const unsigned long *vaddr,
-+					       unsigned long size,
-+					       unsigned long offset)
- {
- 	const unsigned long *p = vaddr + (offset >> 5);
- 	int bit = offset & 31UL, res;
-@@ -385,11 +386,12 @@ static inline int find_next_zero_bit(const unsigned long *vaddr, int size,
- }
- #define find_next_zero_bit find_next_zero_bit
- 
--static inline int find_first_bit(const unsigned long *vaddr, unsigned size)
-+static inline unsigned long find_first_bit(const unsigned long *vaddr,
-+					   unsigned long size)
- {
- 	const unsigned long *p = vaddr;
--	int res = 32;
--	unsigned int words;
-+	unsigned long res = 32;
-+	unsigned long words;
- 	unsigned long num;
- 
- 	if (!size)
-@@ -410,8 +412,9 @@ static inline int find_first_bit(const unsigned long *vaddr, unsigned size)
- }
- #define find_first_bit find_first_bit
- 
--static inline int find_next_bit(const unsigned long *vaddr, int size,
--				int offset)
-+static inline unsigned long find_next_bit(const unsigned long *vaddr,
-+					  unsigned long size,
-+					  unsigned long offset)
- {
- 	const unsigned long *p = vaddr + (offset >> 5);
- 	int bit = offset & 31UL, res;
+-	if (of_property_read_u32(node, "reg", &hart)) {
++	hart = of_get_cpu_hwid(node, 0);
++	if (hart == ~0U) {
+ 		pr_warn("Found CPU without hart ID\n");
+ 		return -ENODEV;
+ 	}
 -- 
 2.51.0
 
