@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-190372-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190333-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6E1FC10620
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:01:12 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8DEBC10530
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:58:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E98905610E7
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:55:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DD8601A240EF
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:54:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 745C432AAB3;
-	Mon, 27 Oct 2025 18:52:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5EBA32E139;
+	Mon, 27 Oct 2025 18:50:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sht2T+p1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Txtbd/W5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EBF932A3E1;
-	Mon, 27 Oct 2025 18:52:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 387EF32F755;
+	Mon, 27 Oct 2025 18:50:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591128; cv=none; b=SHoPeP+gEHVhna6xzrw83P32EQw66XbkL29EfV9i8U1u5yKX6t4lTNOyKpwXBeAjBP9gngA1tXYmI7jjpD6oaws+r4DRrrfzBEbODHRJ1rlCjWoWbCU+TTWK4yHyUoWnwgoFxqZWGbCqqjfsV85PnpanYfGyEZUffC2eX+y6Bi4=
+	t=1761591027; cv=none; b=KLf9kgix0zF+LDZ59Wk4QF+uU3yggxTGtIWyd4I57HopOslUFKeGdwQuhjCQAZpldkxAJYKHfUcf9sodJYDRB8m0upWx48KoeXExf3XPNNQFCzEGc8lehDRNqIcje7l/eQ16FqbQG3LgenxnvUvEzPh3f3Xi6FKSQ48AzatuSw8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591128; c=relaxed/simple;
-	bh=412YTRPzIYp5q3UZYS0yWXHe9j7T68A8xOW8sL6R7f8=;
+	s=arc-20240116; t=1761591027; c=relaxed/simple;
+	bh=Y5YJYW8f3S3LRRjg75HF3KUYH5q74x7zk4/W5qGan1w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W0P1m2yg6gurwqvVg5JK7jWMej6bf0mV678lwVjSGXybD7jlPjuwaM/ePI0TnC6nzhAwH8wHpvOp8fdry+C74SXxnmmnwrnr/3E8ZlZIBfE0edpTU+pmpHZL4MT9AW/MurmsS19DDqMh/g1n6fSeXEOSMySaFsEcHiyTLuyB2KU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sht2T+p1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B49D5C4CEF1;
-	Mon, 27 Oct 2025 18:52:07 +0000 (UTC)
+	 MIME-Version; b=u2vKxkUfua+bi/0fweeVybkKBUdYtyAxqpcK69lCp31b7GpmGzMWwFcPj9eHzjnxt53w3LYfoIJCoI5m9/7i34hj2C9ipyyD972MWT0blzbfG2wlFvJr7Og9zFDEzIAdgfeuXWMDJzs1to2uxetLmFISHoZBuJehaa0KK4yUQMw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Txtbd/W5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0A70C4CEF1;
+	Mon, 27 Oct 2025 18:50:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591128;
-	bh=412YTRPzIYp5q3UZYS0yWXHe9j7T68A8xOW8sL6R7f8=;
+	s=korg; t=1761591027;
+	bh=Y5YJYW8f3S3LRRjg75HF3KUYH5q74x7zk4/W5qGan1w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sht2T+p12XFKa4+jn8NHUFeRrYMcDsH2Z/8gmaczMJ+xyJuNn/rYUvqfAXY35HMLG
-	 S67yllBn4y0UlIvY20Wo4+rr71NiSwHx8vcwudK4C5IejnO6CWZ/diyaxWQ947+9C3
-	 3LM6qPr+rY/R2/5IBSafT7ZFtLaZ6nrg2LEP/EZg=
+	b=Txtbd/W5IXhYJerMpzigjSZRHn7sGZZBQusMKq2G4wAtmHnYHBZ1xxiZZfQAdDB/q
+	 UhRIu1JX4k3s06nC4scGxOxTg/MVxwIzTzrGy69ZEhARTTgntPyYG0D3xckjb5iomr
+	 OxmWHtpkDklQicPK4j9dIxM0mpUKex0e9j6hOV34=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+	Qianfeng Rong <rongqianfeng@vivo.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 031/332] PM: sleep: core: Clear power.must_resume in noirq suspend error path
-Date: Mon, 27 Oct 2025 19:31:24 +0100
-Message-ID: <20251027183525.442646213@linuxfoundation.org>
+Subject: [PATCH 5.10 032/332] pinctrl: renesas: Use int type to store negative error codes
+Date: Mon, 27 Oct 2025 19:31:25 +0100
+Message-ID: <20251027183525.468842949@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
 References: <20251027183524.611456697@linuxfoundation.org>
@@ -66,65 +66,40 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Qianfeng Rong <rongqianfeng@vivo.com>
 
-[ Upstream commit be82483d1b60baf6747884bd74cb7de484deaf76 ]
+[ Upstream commit 9f062fc5b0ff44550088912ab89f9da40226a826 ]
 
-If system suspend is aborted in the "noirq" phase (for instance, due to
-an error returned by one of the device callbacks), power.is_noirq_suspended
-will not be set for some devices and device_resume_noirq() will return
-early for them.  Consequently, noirq resume callbacks will not run for
-them at all because the noirq suspend callbacks have not run for them
-yet.
+Change the 'ret' variable in sh_pfc_pinconf_group_set() from unsigned
+int to int, as it needs to store either negative error codes or zero
+returned by sh_pfc_pinconf_set().
 
-If any of them has power.must_resume set and late suspend has been
-skipped for it (due to power.smart_suspend), early resume should be
-skipped for it either, or its state may become inconsistent (for
-instance, if the early resume assumes that it will always follow
-noirq resume).
+No effect on runtime.
 
-Make that happen by clearing power.must_resume in device_resume_noirq()
-for devices with power.is_noirq_suspended clear that have been left in
-suspend by device_suspend_late(), which will subsequently cause
-device_resume_early() to leave the device in suspend and avoid
-changing its state.
-
-Fixes: 0d4b54c6fee8 ("PM / core: Add LEAVE_SUSPENDED driver flag")
-Link: https://lore.kernel.org/linux-pm/5d692b81-6f58-4e86-9cb0-ede69a09d799@rowland.harvard.edu/
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
-Link: https://patch.msgid.link/3381776.aeNJFYEL58@rafael.j.wysocki
+Signed-off-by: Qianfeng Rong <rongqianfeng@vivo.com>
+Fixes: d0593c363f04ccc4 ("pinctrl: sh-pfc: Propagate errors on group config")
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/20250831084958.431913-4-rongqianfeng@vivo.com
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/power/main.c | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ drivers/pinctrl/renesas/pinctrl.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/base/power/main.c b/drivers/base/power/main.c
-index 5600ceb9212d9..964573e30d691 100644
---- a/drivers/base/power/main.c
-+++ b/drivers/base/power/main.c
-@@ -604,8 +604,20 @@ static void __device_resume_noirq(struct device *dev, pm_message_t state, bool a
- 	if (dev->power.syscore || dev->power.direct_complete)
- 		goto Out;
+diff --git a/drivers/pinctrl/renesas/pinctrl.c b/drivers/pinctrl/renesas/pinctrl.c
+index 212a4a9c3a8fc..59dc5a965fb82 100644
+--- a/drivers/pinctrl/renesas/pinctrl.c
++++ b/drivers/pinctrl/renesas/pinctrl.c
+@@ -745,7 +745,8 @@ static int sh_pfc_pinconf_group_set(struct pinctrl_dev *pctldev, unsigned group,
+ 	struct sh_pfc_pinctrl *pmx = pinctrl_dev_get_drvdata(pctldev);
+ 	const unsigned int *pins;
+ 	unsigned int num_pins;
+-	unsigned int i, ret;
++	unsigned int i;
++	int ret;
  
--	if (!dev->power.is_noirq_suspended)
-+	if (!dev->power.is_noirq_suspended) {
-+		/*
-+		 * This means that system suspend has been aborted in the noirq
-+		 * phase before invoking the noirq suspend callback for the
-+		 * device, so if device_suspend_late() has left it in suspend,
-+		 * device_resume_early() should leave it in suspend either in
-+		 * case the early resume of it depends on the noirq resume that
-+		 * has not run.
-+		 */
-+		if (dev_pm_skip_suspend(dev))
-+			dev->power.must_resume = false;
-+
- 		goto Out;
-+	}
- 
- 	if (!dpm_wait_for_superior(dev, async))
- 		goto Out;
+ 	pins = pmx->pfc->info->groups[group].pins;
+ 	num_pins = pmx->pfc->info->groups[group].nr_pins;
 -- 
 2.51.0
 
