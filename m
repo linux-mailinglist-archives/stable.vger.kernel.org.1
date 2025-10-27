@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-190807-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190525-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B7B7C10C76
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:19:45 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94EA2C10801
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:07:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 3FB854FDA4B
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:13:13 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0B4B74FF4AE
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:03:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FF9932ABCD;
-	Mon, 27 Oct 2025 19:10:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 056F0330D43;
+	Mon, 27 Oct 2025 18:58:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="typ2ctR/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rXx+rSYM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEAD931BC84;
-	Mon, 27 Oct 2025 19:10:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3585330D26;
+	Mon, 27 Oct 2025 18:58:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592247; cv=none; b=B9qHS2YjYfyVlAE8Xq7ElrQHScxUZq+H6sEGAAMGOIggXEEdJZgpaSZP2+ffW27wuM/SaX4yhCpVNjgdfwuMUOrIoWxdnLKOa+RHbPeO1AlYQa3/WpU+SxLY11z0+TA5q83qjKZEvfjMSvi0ipeac5TPb9mifKq1IMsRbpE4zCM=
+	t=1761591518; cv=none; b=qZoF7qF38hcYlH/sTxxNmFM+lAcBXvTvegbRRMvnKZ58VjZMovg/UkHjXuNaacldZapCSLcjRdkmL6HwSIyWZ89y0Ls1CPte+56HlUdPOeJbtqpo0fZoO5dPSdpQ4AiPMJYLtcFvjQKf7bs7d33pHiOKEEW4yapQHcTlAvh7a+I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592247; c=relaxed/simple;
-	bh=kui52LdhR09qE3URSYgppLp2LQon6wAViNJEnqF9RhM=;
+	s=arc-20240116; t=1761591518; c=relaxed/simple;
+	bh=QMLhcPB/YNPGPxykFAN6Rqss7CIQzB44IeAWsIxQ9Bg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Pj4yD38r4/Qwk26cOAr8hXKdUNjsh4aKL9ZtS7Pfw4FWWgNYwFMM2Xg+tRjj+y3ECPw23Q4cyE+2AY1VwQ8Pu+lSdd8ad7jCwtUI+1S62NYPy4/iug/6W4NuVI8Fg2tHUN8BlCemVOyre/BuGJTHSWokCTyoumwmJ48/CuVHDew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=typ2ctR/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5593DC4CEF1;
-	Mon, 27 Oct 2025 19:10:47 +0000 (UTC)
+	 MIME-Version; b=ceAA4rHZgTwerO29VC8jkZl7rmgdnIRgtk+t5/yJTdfPpjfGrv/zSFUzr3kNJ+0wKtOOJmC6r9eWJMVevcF0Xf9oYH57viQInmYIsVR8BG9/YKn3/x7hqPcZ17yJpnYe1XFHZXrHyO5BV8od9N+NgHexI2vG15G7bAqXVRrYvaw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rXx+rSYM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85406C4CEFD;
+	Mon, 27 Oct 2025 18:58:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592247;
-	bh=kui52LdhR09qE3URSYgppLp2LQon6wAViNJEnqF9RhM=;
+	s=korg; t=1761591517;
+	bh=QMLhcPB/YNPGPxykFAN6Rqss7CIQzB44IeAWsIxQ9Bg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=typ2ctR/qmjirackREX0M5Udqm+5il1x+fWHPKoqNIWsSzDoCplVk3w8NEvxho4DO
-	 nKZ/nzyPpsotES3AptH6/ESxel8DMMvlIBGynNT15Mvb/Qor15p9+Y07c9SvtmlUzs
-	 3uWqGUwIvKiGxzIfgf9e+ypXqDw+DGeb6TEP4QBI=
+	b=rXx+rSYMXaFd6ZOnMPIVMbvepss02eaDaLdqZtiT+rZXiUHh3+Ygc0L25SmWc+APs
+	 4gnXwd1kzGSZL+QsAqKfGqPlP/KQEEWyAKgGHclJ+LZ7eoG/SQceXnqgUM7d/guaIO
+	 I+NTiyO64IDreHT6gktouE9uHcLxT97AidboKMU8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuen-Han Tsai <khtsai@google.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 017/157] usb: gadget: Store endpoint pointer in usb_request
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	David Rientjes <rientjes@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>
+Subject: [PATCH 5.10 225/332] mm/slab: make __free(kfree) accept error pointers
 Date: Mon, 27 Oct 2025 19:34:38 +0100
-Message-ID: <20251027183501.734305750@linuxfoundation.org>
+Message-ID: <20251027183530.737104595@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
-References: <20251027183501.227243846@linuxfoundation.org>
+In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
+References: <20251027183524.611456697@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,68 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuen-Han Tsai <khtsai@google.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit bfb1d99d969fe3b892db30848aeebfa19d21f57f ]
+commit cd7eb8f83fcf258f71e293f7fc52a70be8ed0128 upstream.
 
-Gadget function drivers often have goto-based error handling in their
-bind paths, which can be bug-prone. Refactoring these paths to use
-__free() scope-based cleanup is desirable, but currently blocked.
+Currently, if an automatically freed allocation is an error pointer that
+will lead to a crash.  An example of this is in wm831x_gpio_dbg_show().
 
-The blocker is that usb_ep_free_request(ep, req) requires two
-parameters, while the __free() mechanism can only pass a pointer to the
-request itself.
+   171	char *label __free(kfree) = gpiochip_dup_line_label(chip, i);
+   172	if (IS_ERR(label)) {
+   173		dev_err(wm831x->dev, "Failed to duplicate label\n");
+   174		continue;
+   175  }
 
-Store an endpoint pointer in the struct usb_request. The pointer is
-populated centrally in usb_ep_alloc_request() on every successful
-allocation, making the request object self-contained.
+The auto clean up function should check for error pointers as well,
+otherwise we're going to keep hitting issues like this.
 
-Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
-Link: https://lore.kernel.org/r/20250916-ready-v1-1-4997bf277548@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Link: https://lore.kernel.org/r/20250916-ready-v1-1-4997bf277548@google.com
-Stable-dep-of: 75a5b8d4ddd4 ("usb: gadget: f_ncm: Refactor bind path to use __free()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 54da6a092431 ("locking: Introduce __cleanup() based infrastructure")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Acked-by: David Rientjes <rientjes@google.com>
+Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/udc/core.c |    3 +++
- include/linux/usb/gadget.h    |    2 ++
- 2 files changed, 5 insertions(+)
+ include/linux/slab.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/gadget/udc/core.c
-+++ b/drivers/usb/gadget/udc/core.c
-@@ -194,6 +194,9 @@ struct usb_request *usb_ep_alloc_request
+--- a/include/linux/slab.h
++++ b/include/linux/slab.h
+@@ -188,7 +188,7 @@ void kfree_sensitive(const void *);
+ size_t __ksize(const void *);
+ size_t ksize(const void *);
  
- 	req = ep->ops->alloc_request(ep, gfp_flags);
+-DEFINE_FREE(kfree, void *, if (_T) kfree(_T))
++DEFINE_FREE(kfree, void *, if (!IS_ERR_OR_NULL(_T)) kfree(_T))
  
-+	if (req)
-+		req->ep = ep;
-+
- 	trace_usb_ep_alloc_request(ep, req, req ? 0 : -ENOMEM);
- 
- 	return req;
---- a/include/linux/usb/gadget.h
-+++ b/include/linux/usb/gadget.h
-@@ -31,6 +31,7 @@ struct usb_ep;
- 
- /**
-  * struct usb_request - describes one i/o request
-+ * @ep: The associated endpoint set by usb_ep_alloc_request().
-  * @buf: Buffer used for data.  Always provide this; some controllers
-  *	only use PIO, or don't use DMA for some endpoints.
-  * @dma: DMA address corresponding to 'buf'.  If you don't set this
-@@ -96,6 +97,7 @@ struct usb_ep;
-  */
- 
- struct usb_request {
-+	struct usb_ep		*ep;
- 	void			*buf;
- 	unsigned		length;
- 	dma_addr_t		dma;
+ #ifdef CONFIG_HAVE_HARDENED_USERCOPY_ALLOCATOR
+ void __check_heap_object(const void *ptr, unsigned long n, struct page *page,
 
 
 
