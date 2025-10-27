@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-190810-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190776-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5115BC10C31
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:19:00 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E50CAC10BB7
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:17:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 73F9F1A63B62
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:13:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 86BE61A6306B
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:12:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D03CF322A3F;
-	Mon, 27 Oct 2025 19:10:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF84B32143F;
+	Mon, 27 Oct 2025 19:09:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GMOMA1lC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J7vmE7pv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D7012D2398;
-	Mon, 27 Oct 2025 19:10:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B0632F5A1B;
+	Mon, 27 Oct 2025 19:09:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592255; cv=none; b=TQdWt5chi1BrvG4eYQBXN9r/5U4tHw2lDwZFIBD7IwuspZrPcquHrrqs6ndrBK6d9Vx7SZYFShv2WVWJ8jR3hnss1w0Kp5beAesew11cSQvufiPFPgreYMd/rKqOqN4heOC334Qge/ohQXEhGaHLKEiNerBtLAVXF5S8mLNGeJw=
+	t=1761592166; cv=none; b=Xxm0wrQ8Q4+Sk6+JD5DhF/lm9b37n6iEm7I7OCQ9dHUcSlrhxIdkBaMLemmoVxYp/2lAh/dHuKFni7jQRaCCimmNyRzeENa+VfoCsfbWvABQNEK13eeXJP57OSNcW8PZ5wBtUKI2vQQf4I4Wv77tJEn3fjDQR3gli82EpfZbkw8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592255; c=relaxed/simple;
-	bh=ow99g91JJMNSSZ6BW2i70o9r0dxSwx8TfuJTGT1ZTOY=;
+	s=arc-20240116; t=1761592166; c=relaxed/simple;
+	bh=ZIYuMxuoC+OsNsqv9IczYzwM3g8Xk1kxxxyZKshQ9Dc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dT5+xrHusZazTNQxUCvVpWvfcI7ZXxK4THsdxC90+4SiJa6z4y8j8zqr5OKmbcjcC8owt+Do8tPPYbTXuEdBzLMLlojvL9vhMQCAh/jwAuKIDU8Iw3nJKgWoTmvRfPlPAO2CNySuFX3LXBbOkySu1YaBbH9lotnsnsPAqhmHBJ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GMOMA1lC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21B81C4CEF1;
-	Mon, 27 Oct 2025 19:10:54 +0000 (UTC)
+	 MIME-Version; b=gB+3adG9SooOumRnLHcGCr3Sp6X2Y6qaP4DYL4iw8u9XVgn7uaGSTiJTTHPRwQpZRtTTLPRqYx1aJ/pxMDDS3QcpqvjS8jx2g05l0ldffinqgbRqj2Cp3vVYR05tWG4ZjsC5QtAXH3ZCJZ0zvWYWuUt7Uxx6608oysadCKLyHLo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J7vmE7pv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 201EBC4CEF1;
+	Mon, 27 Oct 2025 19:09:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592255;
-	bh=ow99g91JJMNSSZ6BW2i70o9r0dxSwx8TfuJTGT1ZTOY=;
+	s=korg; t=1761592166;
+	bh=ZIYuMxuoC+OsNsqv9IczYzwM3g8Xk1kxxxyZKshQ9Dc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GMOMA1lCXQ7Jw++vzTvIBbJn+iB1AjA4R+x4tB8az0H8fG2MKqNLYuE23xQA17NOz
-	 6JIyrKpmPsKMAlONyb2cWUOe+EQu54n/PCQ+DufhexlEoNdwKZK93AkLkSZWvND/Oh
-	 uMQklJV4RlzSsIh2eRSiD/jHYNwt75i+ZSDNl7WI=
+	b=J7vmE7pv3jw5QEZEDW4z8YNTIW++XtQU2m0fqhZLDXqQlTZp613ExyuAoKe5kwLzu
+	 8PMSxHDI3aImAp0ZLJUxq9sF24VYREOaXHF5/z9me5mwa6sQaMLAXz3C+yNJ01JCct
+	 yPdNZWfHxfwDYz1vBdtig3reiixKYINetxYTjMUo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Adrian Yip <adrian.ytw@gmail.com>
-Subject: [PATCH 6.1 010/157] drm/amd: Check whether secure display TA loaded successfully
-Date: Mon, 27 Oct 2025 19:34:31 +0100
-Message-ID: <20251027183501.527018614@linuxfoundation.org>
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 011/157] crypto: rockchip - Fix dma_unmap_sg() nents value
+Date: Mon, 27 Oct 2025 19:34:32 +0100
+Message-ID: <20251027183501.555855921@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
 References: <20251027183501.227243846@linuxfoundation.org>
@@ -66,41 +66,38 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-commit c760bcda83571e07b72c10d9da175db5051ed971 upstream.
+[ Upstream commit 21140e5caf019e4a24e1ceabcaaa16bd693b393f ]
 
-[Why]
-Not all renoir hardware supports secure display.  If the TA is present
-but the feature isn't supported it will fail to load or send commands.
-This shows ERR messages to the user that make it seems like there is
-a problem.
+The dma_unmap_sg() functions should be called with the same nents as the
+dma_map_sg(), not the value the map function returned.
 
-[How]
-Check the resp_status of the context to see if there was an error
-before trying to send any secure display commands.
-
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/1415
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Adrian Yip <adrian.ytw@gmail.com>
+Fixes: 57d67c6e8219 ("crypto: rockchip - rework by using crypto_engine")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+[ removed unused rctx variable declaration since device pointer already came from tctx->dev->dev instead of rctx->dev ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/crypto/rockchip/rk3288_crypto_ahash.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
-@@ -1959,7 +1959,7 @@ static int psp_securedisplay_initialize(
- 	}
+--- a/drivers/crypto/rockchip/rk3288_crypto_ahash.c
++++ b/drivers/crypto/rockchip/rk3288_crypto_ahash.c
+@@ -236,10 +236,9 @@ static int rk_hash_unprepare(struct cryp
+ {
+ 	struct ahash_request *areq = container_of(breq, struct ahash_request, base);
+ 	struct crypto_ahash *tfm = crypto_ahash_reqtfm(areq);
+-	struct rk_ahash_rctx *rctx = ahash_request_ctx(areq);
+ 	struct rk_ahash_ctx *tctx = crypto_ahash_ctx(tfm);
  
- 	ret = psp_ta_load(psp, &psp->securedisplay_context.context);
--	if (!ret) {
-+	if (!ret && !psp->securedisplay_context.context.resp_status) {
- 		psp->securedisplay_context.context.initialized = true;
- 		mutex_init(&psp->securedisplay_context.mutex);
- 	} else
+-	dma_unmap_sg(tctx->dev->dev, areq->src, rctx->nrsg, DMA_TO_DEVICE);
++	dma_unmap_sg(tctx->dev->dev, areq->src, sg_nents(areq->src), DMA_TO_DEVICE);
+ 	return 0;
+ }
+ 
 
 
 
