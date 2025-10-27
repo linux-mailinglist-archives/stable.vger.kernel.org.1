@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-191091-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191274-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC29EC110E1
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:32:21 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5E7CC1126A
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:37:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 29659506D5E
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:24:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0BF82564DAA
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:33:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA46432D0C5;
-	Mon, 27 Oct 2025 19:23:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5AFC31B83D;
+	Mon, 27 Oct 2025 19:31:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vS4KZtCt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vgz1zYuD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6FC432C950;
-	Mon, 27 Oct 2025 19:23:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C1D122A4DB;
+	Mon, 27 Oct 2025 19:31:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592983; cv=none; b=lUoZCgYluBDitCo45CvtajrvDJCxlRASNYD7pg75g5CeBjdAMt/dLnlU9DdRJuxLfRXK48QKvvSx1aOX8XZ2+NaCTtnjCkc/TfMrFoT1Uf5x+MvWvkInYHFRnear0R7PUL8FwiuI8rzVWIX3guwrmUYuTSA+/uWGvkDP18IsZrY=
+	t=1761593490; cv=none; b=juMXesHIgnUb56JleHjcw4d5VNYW9SoqzH762c83QUyt+WXUOaso/nWQWgMOjbCfPjtgvxzPMLQ4k3onLviDgfomI53PSTkMbUDGu4gAZ+yU5MJu1ZZsQfJ6XV2OB0azehlmrFEfa5oF8I6fhekHFEr+fPQsQDlWqX57QqiWogg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592983; c=relaxed/simple;
-	bh=mblS4J1imRwV9DqwRCErI/HXSQstGz9LM2laeBxhjUM=;
+	s=arc-20240116; t=1761593490; c=relaxed/simple;
+	bh=/iSkV3TvS8bjZJgJ0q+KXfOD1RP3NiwAwaK7ChUyWuQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fo5A01WRAGMvkQVNeXtQ4trlFpg6eYhz3JT6fZz2FAxI9SfK5NOcLBC+fP8e5x2dSUoSQO4VhWxUjwYME5z7UVcvfZhZRBM0DGvqKpxDleA2uhl7EjzFNr508RiqIBeRRQdn+VwpOfqBTbcHoz4+pa+3Q3NwsXERQM/IASPhZgs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vS4KZtCt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AC9EC4CEF1;
-	Mon, 27 Oct 2025 19:23:03 +0000 (UTC)
+	 MIME-Version; b=RIxuLReXvNeBl8QuOipw+CNxhPPhCzoIhmpkbdxZO+64wBEAUJDFkELPbI9Q0Tg3ELGHDUv5nsRLvhWzNTRiDNIBfrtV8uLiXKjqqGSFP6HelCfaEYZQBrQzfPgDVxR+tDToLwr/TV60h04zpdVTnlMsMQjohsU2eRIRpNPEA5A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vgz1zYuD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1F68C4CEF1;
+	Mon, 27 Oct 2025 19:31:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592983;
-	bh=mblS4J1imRwV9DqwRCErI/HXSQstGz9LM2laeBxhjUM=;
+	s=korg; t=1761593490;
+	bh=/iSkV3TvS8bjZJgJ0q+KXfOD1RP3NiwAwaK7ChUyWuQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vS4KZtCt3oOecTtHWLP9iyzMwMTPn/jMHE2kw9E8wrDXeRrfCah7QGtaCJzYi4JU0
-	 DKNJgnS3VnNxzC9MWnsVNFXvpCSyeOpz7KuTbW+nskjI1vveVUWGwIcZuCp1fGTX6t
-	 HMcIvrSC1srILLHZmLmFsyP0mAuPx1te8bf6CWUg=
+	b=vgz1zYuD26LDBlcdJBMDevfyhtGLsoRHzoO/3cteoaivSMALJwzY0fyslDFQUfSJl
+	 LV6cFFyVmgkxjb/OUnJ/1Wdz6uvGQjvl1cusPGtJLHUjKKxs649MH488iD9ugdOJGj
+	 KjcGh7CRX79r9IUais32XnF/z53znBSDDE9ryhPA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Han Xu <han.xu@nxp.com>,
-	Haibo Chen <haibo.chen@nxp.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 069/117] spi: spi-nxp-fspi: add extra delay after dll locked
+	SeongJae Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.17 113/184] mm/damon/sysfs: dealloc commit test ctx always
 Date: Mon, 27 Oct 2025 19:36:35 +0100
-Message-ID: <20251027183455.872237527@linuxfoundation.org>
+Message-ID: <20251027183517.975133914@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
-References: <20251027183453.919157109@linuxfoundation.org>
+In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
+References: <20251027183514.934710872@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Han Xu <han.xu@nxp.com>
+From: SeongJae Park <sj@kernel.org>
 
-[ Upstream commit b93b4269791fdebbac2a9ad26f324dc2abb9e60f ]
+commit 139e7a572af0b45f558b5e502121a768dc328ba8 upstream.
 
-Due to the erratum ERR050272, the DLL lock status register STS2
-[xREFLOCK, xSLVLOCK] bit may indicate DLL is locked before DLL is
-actually locked. Add an extra 4us delay as a workaround.
+The damon_ctx for testing online DAMON parameters commit inputs is
+deallocated only when the test fails.  This means memory is leaked for
+every successful online DAMON parameters commit.  Fix the leak by always
+deallocating it.
 
-refer to ERR050272, on Page 20.
-https://www.nxp.com/docs/en/errata/IMX8_1N94W.pdf
-
-Fixes: 99d822b3adc4 ("spi: spi-nxp-fspi: use DLL calibration when clock rate > 100MHz")
-Signed-off-by: Han Xu <han.xu@nxp.com>
-Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
-Link: https://patch.msgid.link/20250922-fspi-fix-v1-2-ff4315359d31@nxp.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20251003201455.41448-3-sj@kernel.org
+Fixes: 4c9ea539ad59 ("mm/damon/sysfs: validate user inputs from damon_sysfs_commit_input()")
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: <stable@vger.kernel.org>	[6.15+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-nxp-fspi.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ mm/damon/sysfs.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-nxp-fspi.c b/drivers/spi/spi-nxp-fspi.c
-index 5a1e55a01c521..b569302f22e61 100644
---- a/drivers/spi/spi-nxp-fspi.c
-+++ b/drivers/spi/spi-nxp-fspi.c
-@@ -665,6 +665,12 @@ static void nxp_fspi_dll_calibration(struct nxp_fspi *f)
- 				   0, POLL_TOUT, true);
- 	if (ret)
- 		dev_warn(f->dev, "DLL lock failed, please fix it!\n");
-+
-+	/*
-+	 * For ERR050272, DLL lock status bit is not accurate,
-+	 * wait for 4us more as a workaround.
-+	 */
-+	udelay(4);
+--- a/mm/damon/sysfs.c
++++ b/mm/damon/sysfs.c
+@@ -1438,12 +1438,11 @@ static int damon_sysfs_commit_input(void
+ 	if (!test_ctx)
+ 		return -ENOMEM;
+ 	err = damon_commit_ctx(test_ctx, param_ctx);
+-	if (err) {
+-		damon_destroy_ctx(test_ctx);
++	if (err)
+ 		goto out;
+-	}
+ 	err = damon_commit_ctx(kdamond->damon_ctx, param_ctx);
+ out:
++	damon_destroy_ctx(test_ctx);
+ 	damon_destroy_ctx(param_ctx);
+ 	return err;
  }
- 
- /*
--- 
-2.51.0
-
 
 
 
