@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-191271-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191108-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 044AEC11261
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:37:46 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86204C11027
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:29:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 99B0556675E
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:33:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DAC0C19A5F62
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:26:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDD0A302158;
-	Mon, 27 Oct 2025 19:31:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28F83233735;
+	Mon, 27 Oct 2025 19:23:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SatoigoQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hmW4uB8k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 798B018A6A5;
-	Mon, 27 Oct 2025 19:31:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D94F732145A;
+	Mon, 27 Oct 2025 19:23:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761593481; cv=none; b=bCUw8n69k/Y092n5AeEbYukm6j0grcSupPK3FYtHHDx+yqQM6rOc4v9uwSI3gXEUK21TkiHQpust2cOoycH4GR1OZw2iSkoZ7IU0zSwN24Qw8XTh2Dhoo3QiCNmIFc/ZsuA2t0U8ujwJpnNTwgH+1FGK6++zjtflpQjIiwh2CgQ=
+	t=1761593030; cv=none; b=NB/prn8pkpWGr8cUn0XFTGnp7ht3QIUI5NWPHDJyLlQ/aqe3cYmaS6gxLbziT0Bl/aFJROJSHSzvd5z3Md4bs1QznTrWqNB5nWeXdIsqcRwuSPwSKcZSqgy/y/JQchIVIWDyMBoyHRuZEclTY4JV8oR2LmRLgp8AI8Nb5yfy/qc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761593481; c=relaxed/simple;
-	bh=h7Rsys6sTpyYZpgxtWrdQMams7ANa7ghIw5vaIMbyNo=;
+	s=arc-20240116; t=1761593030; c=relaxed/simple;
+	bh=ujQn+kfm+HWuFL87MrJzH2y43yQpcDKQgDz7/dv/tdM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kf7CcsXhDSDqdVDRH/XTQ5EVxpvJSYt5MXUbxEWiIeW2dD/ad6wVUQ8sm+MZzIrz0LWRAG0Z3bLcVCprx1xgUpIvGjlHfKRyW0eJpjUL8AaI9tmmYhGtfg76RPgzOF9fWE7+aYIX5e/v8Mv5Yp9E/F/Nd59HMDw130nCM2Zo9V4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SatoigoQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8520DC4CEF1;
-	Mon, 27 Oct 2025 19:31:20 +0000 (UTC)
+	 MIME-Version; b=pcA4Uy8seAeF1j/b/Vy3r61eLwqnC4+TZVloHvAE5FuoUx2nnRSgq4gZeklXLn3tjdJ2xhlTPD/CUHrH/1eAODDH65p6vUdXPGPepzfEbVrqPxh8l1zEDrIazHV/8BkGaVSxr1plH1VGPJiGcCfB+cVcrPJ5s52nIzh4COjeD6o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hmW4uB8k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C64BC4CEF1;
+	Mon, 27 Oct 2025 19:23:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761593480;
-	bh=h7Rsys6sTpyYZpgxtWrdQMams7ANa7ghIw5vaIMbyNo=;
+	s=korg; t=1761593030;
+	bh=ujQn+kfm+HWuFL87MrJzH2y43yQpcDKQgDz7/dv/tdM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SatoigoQqVV+jPmPr+TiNC9oi9sQYusrfnNlMRBA5bvLB4G9d/BKP27pKG1w9wgmG
-	 +eVmeepBjbsDBLnNFgMu5G8A3bNcy0UuRUxfHSlJqY0iS6vCZMC5hlaUhXCZFLbY53
-	 ehD0kpWU4UmJ/F8F2XSOcuCTL8SVcIm5rThIs/h4=
+	b=hmW4uB8k26GTGhtpjBCd4BvG/3rRwGbp0pKib93pSn4Vw+qx6LtsGiOTewNT5NKKT
+	 jZNRPpJQiq4FIUOGxAHCdEgZ7iycIHV8cwvCOYptpQ5fUr6NAVVxbo+grIePmujo1I
+	 0fovaThAKZ7zuDCy4s3roBGI/B4sXALMF8uZR6VI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haotian Zhang <vulab@iscas.ac.cn>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 146/184] gpio: ljca: Fix duplicated IRQ mapping
+	Yu-Ting Tseng <yutingtseng@google.com>,
+	Alice Ryhl <aliceryhl@google.com>
+Subject: [PATCH 6.12 102/117] binder: remove "invalid inc weak" check
 Date: Mon, 27 Oct 2025 19:37:08 +0100
-Message-ID: <20251027183518.871035211@linuxfoundation.org>
+Message-ID: <20251027183456.780554496@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
-References: <20251027183514.934710872@linuxfoundation.org>
+In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
+References: <20251027183453.919157109@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +61,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haotian Zhang <vulab@iscas.ac.cn>
+From: Alice Ryhl <aliceryhl@google.com>
 
-[ Upstream commit 4c4e6ea4a120cc5ab58e437c6ba123cbfc357d45 ]
+commit d90eeb8ecd227c204ab6c34a17b372bd950b7aa2 upstream.
 
-The generic_handle_domain_irq() function resolves the hardware IRQ
-internally. The driver performed a duplicative mapping by calling
-irq_find_mapping() first, which could lead to an RCU stall.
+There are no scenarios where a weak increment is invalid on binder_node.
+The only possible case where it could be invalid is if the kernel
+delivers BR_DECREFS to the process that owns the node, and then
+increments the weak refcount again, effectively "reviving" a dead node.
 
-Delete the redundant irq_find_mapping() call and pass the hardware IRQ
-directly to generic_handle_domain_irq().
+However, that is not possible: when the BR_DECREFS command is delivered,
+the kernel removes and frees the binder_node. The fact that you were
+able to call binder_inc_node_nilocked() implies that the node is not yet
+destroyed, which implies that BR_DECREFS has not been delivered to
+userspace, so incrementing the weak refcount is valid.
 
-Fixes: c5a4b6fd31e8 ("gpio: Add support for Intel LJCA USB GPIO driver")
-Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
-Link: https://lore.kernel.org/r/20251023070231.1305-1-vulab@iscas.ac.cn
-[Bartosz: remove unused variable]
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Note that it's currently possible to trigger this condition if the owner
+calls BINDER_THREAD_EXIT while node->has_weak_ref is true. This causes
+BC_INCREFS on binder_ref instances to fail when they should not.
+
+Cc: stable@vger.kernel.org
+Fixes: 457b9a6f09f0 ("Staging: android: add binder driver")
+Reported-by: Yu-Ting Tseng <yutingtseng@google.com>
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+Link: https://patch.msgid.link/20251015-binder-weak-inc-v1-1-7914b092c371@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpio/gpio-ljca.c | 14 +++-----------
- 1 file changed, 3 insertions(+), 11 deletions(-)
+ drivers/android/binder.c |   11 +----------
+ 1 file changed, 1 insertion(+), 10 deletions(-)
 
-diff --git a/drivers/gpio/gpio-ljca.c b/drivers/gpio/gpio-ljca.c
-index 3b4f8830c7411..f32d1d237795b 100644
---- a/drivers/gpio/gpio-ljca.c
-+++ b/drivers/gpio/gpio-ljca.c
-@@ -286,22 +286,14 @@ static void ljca_gpio_event_cb(void *context, u8 cmd, const void *evt_data,
- {
- 	const struct ljca_gpio_packet *packet = evt_data;
- 	struct ljca_gpio_dev *ljca_gpio = context;
--	int i, irq;
-+	int i;
- 
- 	if (cmd != LJCA_GPIO_INT_EVENT)
- 		return;
- 
- 	for (i = 0; i < packet->num; i++) {
--		irq = irq_find_mapping(ljca_gpio->gc.irq.domain,
--				       packet->item[i].index);
--		if (!irq) {
--			dev_err(ljca_gpio->gc.parent,
--				"gpio_id %u does not mapped to IRQ yet\n",
--				packet->item[i].index);
--			return;
+--- a/drivers/android/binder.c
++++ b/drivers/android/binder.c
+@@ -846,17 +846,8 @@ static int binder_inc_node_nilocked(stru
+ 	} else {
+ 		if (!internal)
+ 			node->local_weak_refs++;
+-		if (!node->has_weak_ref && list_empty(&node->work.entry)) {
+-			if (target_list == NULL) {
+-				pr_err("invalid inc weak node for %d\n",
+-					node->debug_id);
+-				return -EINVAL;
+-			}
+-			/*
+-			 * See comment above
+-			 */
++		if (!node->has_weak_ref && target_list && list_empty(&node->work.entry))
+ 			binder_enqueue_work_ilocked(&node->work, target_list);
 -		}
--
--		generic_handle_domain_irq(ljca_gpio->gc.irq.domain, irq);
-+		generic_handle_domain_irq(ljca_gpio->gc.irq.domain,
-+					packet->item[i].index);
- 		set_bit(packet->item[i].index, ljca_gpio->reenable_irqs);
  	}
- 
--- 
-2.51.0
-
+ 	return 0;
+ }
 
 
 
