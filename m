@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-190446-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190109-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5134C1069C
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:03:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D6FDCC0FF8D
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:41:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1BFB51A26B12
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:59:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1305719C53F8
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:41:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 987E6334690;
-	Mon, 27 Oct 2025 18:55:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3576931B110;
+	Mon, 27 Oct 2025 18:41:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V4vDYLa+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qtVOAa+i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55DC9328638;
-	Mon, 27 Oct 2025 18:55:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E26AB308F3A;
+	Mon, 27 Oct 2025 18:41:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591312; cv=none; b=UqyydNNED8uQSSAv1kajIx9H1Ad+gADGFv7rL3nGusqKZ5r9vO3kyIEkf9jtKUT70TPRJj4ajD3sevKAvI3ur+zr4OyQBuSEITPhT7Gez46Unlv8bvxSh2XAlX6pRxKrU+d+hWXhWpxRqfVkZKbcqeaAQSmCzzPuLAGeGKcaTws=
+	t=1761590461; cv=none; b=Uy1pCY+ywjXVNlsmn+IV3d4k6HtVKipyapNHVl8AOhRaRF4fHVAmNMcRxfYQUe019dPUGyHsh1s2MlHtk0D8vPvfrsfWCj5uwo3sLqfxSGzQ1HnRD5Et/w4CFPUcKtk6Wdo5tBPJ63if5dfvGRkrUhLzP8CZLQpmGddcuGw/VQI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591312; c=relaxed/simple;
-	bh=ThIpqebrVOP3kae7cR2YhUpJlav684i1urwi2xtNG3o=;
+	s=arc-20240116; t=1761590461; c=relaxed/simple;
+	bh=Kij9IZHJO4gb8cWer+YKpeeEHbNGdGTufZdIdQzCv2w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NyE0eek1/439SzFcsMQUBQtgdC5srlUW/sZaruVmzKD3VTGVCIh5tocKuQYQ/VLSiLpIICkgcIgf4uv+eHnDTJUdl7+L+nbAmBJ4XZd6Bnf+YpmOa0xtiekp4Qrs+ekxJichAG3bdBQXJwIJ3qHHmSnFiLFo+kTsI3RYChK3Juc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V4vDYLa+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE21AC4CEF1;
-	Mon, 27 Oct 2025 18:55:11 +0000 (UTC)
+	 MIME-Version; b=uTxba7F429gohYMyl+fsNfDFvygJZ5DNmU2JUWqN1bGr9Blv65YLgKmkH2yMjApqvZwcmSILg4MGPN/Wrk+T6LimT58ZyGTNrSsc6C25J/E3I7tgtLh+C2nmoNwR2ifpulIyk0LvqjDVMN2Hn9iGdNJHa+oQMYMr6diZxu4Oua4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qtVOAa+i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DB73C4CEF1;
+	Mon, 27 Oct 2025 18:40:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591312;
-	bh=ThIpqebrVOP3kae7cR2YhUpJlav684i1urwi2xtNG3o=;
+	s=korg; t=1761590460;
+	bh=Kij9IZHJO4gb8cWer+YKpeeEHbNGdGTufZdIdQzCv2w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V4vDYLa+gc6xBHqFk6ez8ix15RW8PSCtooEL/eioX/fAumLwG4F/MbZSyMBfgDp1X
-	 WmJNcOyYhHoE+MCzkK/iYrktZLO9xZG5EjMlrmQOuwEAM2cO+wpemhiA6smCx1Frfi
-	 ViDQHem1CLGjSgjC6IAuZdp4xtuaxLqhEesC5UQg=
+	b=qtVOAa+iRdoxUq9hDJzMNqKSiFy1qQ18t1XmxVFfsUwWjFUh3Ai02z7rDF4ASIpnW
+	 R1Ysb1eSfCVPiCmN+R6VJETs55UdBSO0UdbVT4s1XQltLKOPuvupZexdnG+ZyzQqUO
+	 FX7Op8G45U3sF9HQJPYTt9TLganAyhGNYMvC1IL8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thorsten Blum <thorsten.blum@linux.dev>,
-	Don Brace <don.brace@microchip.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 5.10 147/332] scsi: hpsa: Fix potential memory leak in hpsa_big_passthru_ioctl()
+	Vlad Dumitrescu <vdumitrescu@nvidia.com>,
+	Mark Zhang <markzhang@nvidia.com>,
+	Edward Srouji <edwards@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 054/224] IB/sa: Fix sa_local_svc_timeout_ms read race
 Date: Mon, 27 Oct 2025 19:33:20 +0100
-Message-ID: <20251027183528.516123866@linuxfoundation.org>
+Message-ID: <20251027183510.445609755@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
-References: <20251027183524.611456697@linuxfoundation.org>
+In-Reply-To: <20251027183508.963233542@linuxfoundation.org>
+References: <20251027183508.963233542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +64,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thorsten Blum <thorsten.blum@linux.dev>
+From: Vlad Dumitrescu <vdumitrescu@nvidia.com>
 
-commit b81296591c567b12d3873b05a37b975707959b94 upstream.
+[ Upstream commit 1428cd764cd708d53a072a2f208d87014bfe05bc ]
 
-Replace kmalloc() followed by copy_from_user() with memdup_user() to fix
-a memory leak that occurs when copy_from_user(buff[sg_used],,) fails and
-the 'cleanup1:' path does not free the memory for 'buff[sg_used]'. Using
-memdup_user() avoids this by freeing the memory internally.
+When computing the delta, the sa_local_svc_timeout_ms is read without
+ib_nl_request_lock held. Though unlikely in practice, this can cause
+a race condition if multiple local service threads are managing the
+timeout.
 
-Since memdup_user() already allocates memory, use kzalloc() in the else
-branch instead of manually zeroing 'buff[sg_used]' using memset(0).
-
-Cc: stable@vger.kernel.org
-Fixes: edd163687ea5 ("[SCSI] hpsa: add driver for HP Smart Array controllers.")
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
-Acked-by: Don Brace <don.brace@microchip.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 2ca546b92a02 ("IB/sa: Route SA pathrecord query through netlink")
+Signed-off-by: Vlad Dumitrescu <vdumitrescu@nvidia.com>
+Reviewed-by: Mark Zhang <markzhang@nvidia.com>
+Signed-off-by: Edward Srouji <edwards@nvidia.com>
+Link: https://patch.msgid.link/20250916163112.98414-1-edwards@nvidia.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/hpsa.c |   21 ++++++++++++---------
- 1 file changed, 12 insertions(+), 9 deletions(-)
+ drivers/infiniband/core/sa_query.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/scsi/hpsa.c
-+++ b/drivers/scsi/hpsa.c
-@@ -6500,18 +6500,21 @@ static int hpsa_big_passthru_ioctl(struc
- 	while (left) {
- 		sz = (left > ioc->malloc_size) ? ioc->malloc_size : left;
- 		buff_size[sg_used] = sz;
--		buff[sg_used] = kmalloc(sz, GFP_KERNEL);
--		if (buff[sg_used] == NULL) {
--			status = -ENOMEM;
--			goto cleanup1;
--		}
+diff --git a/drivers/infiniband/core/sa_query.c b/drivers/infiniband/core/sa_query.c
+index 11ab6390eda4d..b05df8694a4a5 100644
+--- a/drivers/infiniband/core/sa_query.c
++++ b/drivers/infiniband/core/sa_query.c
+@@ -1036,6 +1036,8 @@ int ib_nl_handle_set_timeout(struct sk_buff *skb,
+ 	if (timeout > IB_SA_LOCAL_SVC_TIMEOUT_MAX)
+ 		timeout = IB_SA_LOCAL_SVC_TIMEOUT_MAX;
+ 
++	spin_lock_irqsave(&ib_nl_request_lock, flags);
 +
- 		if (ioc->Request.Type.Direction & XFER_WRITE) {
--			if (copy_from_user(buff[sg_used], data_ptr, sz)) {
--				status = -EFAULT;
-+			buff[sg_used] = memdup_user(data_ptr, sz);
-+			if (IS_ERR(buff[sg_used])) {
-+				status = PTR_ERR(buff[sg_used]);
-+				goto cleanup1;
-+			}
-+		} else {
-+			buff[sg_used] = kzalloc(sz, GFP_KERNEL);
-+			if (!buff[sg_used]) {
-+				status = -ENOMEM;
- 				goto cleanup1;
- 			}
--		} else
--			memset(buff[sg_used], 0, sz);
-+		}
+ 	delta = timeout - sa_local_svc_timeout_ms;
+ 	if (delta < 0)
+ 		abs_delta = -delta;
+@@ -1043,7 +1045,6 @@ int ib_nl_handle_set_timeout(struct sk_buff *skb,
+ 		abs_delta = delta;
+ 
+ 	if (delta != 0) {
+-		spin_lock_irqsave(&ib_nl_request_lock, flags);
+ 		sa_local_svc_timeout_ms = timeout;
+ 		list_for_each_entry(query, &ib_nl_request_list, list) {
+ 			if (delta < 0 && abs_delta > query->timeout)
+@@ -1061,9 +1062,10 @@ int ib_nl_handle_set_timeout(struct sk_buff *skb,
+ 		if (delay)
+ 			mod_delayed_work(ib_nl_wq, &ib_nl_timed_work,
+ 					 (unsigned long)delay);
+-		spin_unlock_irqrestore(&ib_nl_request_lock, flags);
+ 	}
+ 
++	spin_unlock_irqrestore(&ib_nl_request_lock, flags);
 +
- 		left -= sz;
- 		data_ptr += sz;
- 		sg_used++;
+ settimeout_out:
+ 	return 0;
+ }
+-- 
+2.51.0
+
 
 
 
