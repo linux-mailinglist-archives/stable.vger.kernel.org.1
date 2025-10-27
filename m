@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-190650-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191137-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id A36DBC109F0
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:13:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E59CDC112D0
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:39:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4897D502B30
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:07:25 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B57604F7B10
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:26:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AF9532E12A;
-	Mon, 27 Oct 2025 19:03:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C4CA322547;
+	Mon, 27 Oct 2025 19:25:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iowJGdid"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ir0prNA1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC74531CA50;
-	Mon, 27 Oct 2025 19:03:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 372B71BC4E;
+	Mon, 27 Oct 2025 19:25:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591836; cv=none; b=Agkl7IoVmqRTnpENZ4L+x85BnBOQSR5rRXvJ+F6FwaLsWJRnFs3kUVW0JcxvNMEglAddRvvMkYM/cVC+qoDwtMG9+vy1hcsimN+VXcOJ3cZMRFGW8euAQX1rjqFNhwZpgmkRTkhY9s4x+rDfPDJzLMX4gzgS5yAGdEuHui4H0mE=
+	t=1761593105; cv=none; b=dKKyJYAA4h6k86vyxUrljk0BbA8UgN9T4IKKWepEcepX6D7aHY13qrMI/D0Ubg1qbPZFf7E9ntUumdNReD8yDiHkWgOHGjIu7WiBSuJhi/8KpuuqgCKz6Le7bom9UVQpJsH9LZGDZmjduk9G0pZ47hjFYH6EyWBBXIatbvtlSNs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591836; c=relaxed/simple;
-	bh=VoIS9sX6ofJxd5JEQAse6wvaQ3ly2cyC29NWScLZ1KU=;
+	s=arc-20240116; t=1761593105; c=relaxed/simple;
+	bh=F5kb1k+P9lQ25NUBGFKfGBSQm/uya8v9x33i6w3B9/U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Sw/ksDnq47+J3NhzPsZy++6+N16MPn/u5UIoeyDQL3/tEbzHVUrq9J+xxdNOzbsSSBEbWLasq9bxtXAw8GqWYFonspY5Z/i5momlHjt3hyv2581Ry3MVuNJHJSyUEr8AF1XuPqJEKDDZqZZnWYZpKr3Wa/OKAROgcjhtVmV3R9g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iowJGdid; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71F51C4CEF1;
-	Mon, 27 Oct 2025 19:03:56 +0000 (UTC)
+	 MIME-Version; b=MIq3JnSuHll0/g1E/Gl1Zo6snPIOpoVguoqlG499ZJd0nSZ5AqzQYhzm28UclIY+GTaAh7XFYk9g0Cz4lBs/6G0X9anlNQwYbz4GuYZ2gkKJwyaI9TNyerw9sxxXJd6RRUIyFYhn5fQ+jj1hApbNcjclSUQNRQ622VzMD/DJO6I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ir0prNA1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C23B0C116B1;
+	Mon, 27 Oct 2025 19:25:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591836;
-	bh=VoIS9sX6ofJxd5JEQAse6wvaQ3ly2cyC29NWScLZ1KU=;
+	s=korg; t=1761593105;
+	bh=F5kb1k+P9lQ25NUBGFKfGBSQm/uya8v9x33i6w3B9/U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iowJGdidsXxR8Y10dfcg6rPtp5u6lodHqmQjLVX71G/iU2Q+DO01D+Vu9Yg56+xWZ
-	 p5KYZ405U4KXiBPI5oo1ndyiFNIUdm3VvF8iiMEAN5DBPEF3VjRb3Y8YX11oMkl9jM
-	 DAbrTYnUy/WKUal90OOKI+DdqZpHimatlBzJ7s0c=
+	b=ir0prNA1xE61mWQsLc6W/evlCoBTUjbZnPyQcMig59fbBbO9BzUKsmtJPxP/a+nHs
+	 fU6UK5M3ANuQx3fUJyko9t9KJu7wAVoDHTgUzaXzXKh8YgXy1pp5/piWTYFK6+sxho
+	 GNJxA4WaPKDL4UdaABO+klg2gKUevnVuIsfds7WM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yeounsu Moon <yyyynoom@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	syzbot <syzbot+773fa9d79b29bd8b6831@syzkaller.appspotmail.com>,
+	Viacheslav Dubeyko <slava@dubeyko.com>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	Yangtao Li <frank.li@vivo.com>,
+	linux-fsdevel@vger.kernel.org,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 017/123] net: dlink: handle dma_map_single() failure properly
+Subject: [PATCH 6.17 015/184] hfs: fix KMSAN uninit-value issue in hfs_find_set_zero_bits()
 Date: Mon, 27 Oct 2025 19:34:57 +0100
-Message-ID: <20251027183446.861334437@linuxfoundation.org>
+Message-ID: <20251027183515.346725308@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183446.381986645@linuxfoundation.org>
-References: <20251027183446.381986645@linuxfoundation.org>
+In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
+References: <20251027183514.934710872@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,76 +65,114 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yeounsu Moon <yyyynoom@gmail.com>
+From: Viacheslav Dubeyko <slava@dubeyko.com>
 
-[ Upstream commit 65946eac6d888d50ae527c4e5c237dbe5cc3a2f2 ]
+[ Upstream commit 2048ec5b98dbdfe0b929d2e42dc7a54c389c53dd ]
 
-There is no error handling for `dma_map_single()` failures.
+The syzbot reported issue in hfs_find_set_zero_bits():
 
-Add error handling by checking `dma_mapping_error()` and freeing
-the `skb` using `dev_kfree_skb()` (process context) when it fails.
+=====================================================
+BUG: KMSAN: uninit-value in hfs_find_set_zero_bits+0x74d/0xb60 fs/hfs/bitmap.c:45
+ hfs_find_set_zero_bits+0x74d/0xb60 fs/hfs/bitmap.c:45
+ hfs_vbm_search_free+0x13c/0x5b0 fs/hfs/bitmap.c:151
+ hfs_extend_file+0x6a5/0x1b00 fs/hfs/extent.c:408
+ hfs_get_block+0x435/0x1150 fs/hfs/extent.c:353
+ __block_write_begin_int+0xa76/0x3030 fs/buffer.c:2151
+ block_write_begin fs/buffer.c:2262 [inline]
+ cont_write_begin+0x10e1/0x1bc0 fs/buffer.c:2601
+ hfs_write_begin+0x85/0x130 fs/hfs/inode.c:52
+ cont_expand_zero fs/buffer.c:2528 [inline]
+ cont_write_begin+0x35a/0x1bc0 fs/buffer.c:2591
+ hfs_write_begin+0x85/0x130 fs/hfs/inode.c:52
+ hfs_file_truncate+0x1d6/0xe60 fs/hfs/extent.c:494
+ hfs_inode_setattr+0x964/0xaa0 fs/hfs/inode.c:654
+ notify_change+0x1993/0x1aa0 fs/attr.c:552
+ do_truncate+0x28f/0x310 fs/open.c:68
+ do_ftruncate+0x698/0x730 fs/open.c:195
+ do_sys_ftruncate fs/open.c:210 [inline]
+ __do_sys_ftruncate fs/open.c:215 [inline]
+ __se_sys_ftruncate fs/open.c:213 [inline]
+ __x64_sys_ftruncate+0x11b/0x250 fs/open.c:213
+ x64_sys_call+0xfe3/0x3db0 arch/x86/include/generated/asm/syscalls_64.h:78
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xd9/0x210 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Yeounsu Moon <yyyynoom@gmail.com>
-Tested-on: D-Link DGE-550T Rev-A3
-Suggested-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Uninit was created at:
+ slab_post_alloc_hook mm/slub.c:4154 [inline]
+ slab_alloc_node mm/slub.c:4197 [inline]
+ __kmalloc_cache_noprof+0x7f7/0xed0 mm/slub.c:4354
+ kmalloc_noprof include/linux/slab.h:905 [inline]
+ hfs_mdb_get+0x1cc8/0x2a90 fs/hfs/mdb.c:175
+ hfs_fill_super+0x3d0/0xb80 fs/hfs/super.c:337
+ get_tree_bdev_flags+0x6e3/0x920 fs/super.c:1681
+ get_tree_bdev+0x38/0x50 fs/super.c:1704
+ hfs_get_tree+0x35/0x40 fs/hfs/super.c:388
+ vfs_get_tree+0xb0/0x5c0 fs/super.c:1804
+ do_new_mount+0x738/0x1610 fs/namespace.c:3902
+ path_mount+0x6db/0x1e90 fs/namespace.c:4226
+ do_mount fs/namespace.c:4239 [inline]
+ __do_sys_mount fs/namespace.c:4450 [inline]
+ __se_sys_mount+0x6eb/0x7d0 fs/namespace.c:4427
+ __x64_sys_mount+0xe4/0x150 fs/namespace.c:4427
+ x64_sys_call+0xfa7/0x3db0 arch/x86/include/generated/asm/syscalls_64.h:166
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xd9/0x210 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+CPU: 1 UID: 0 PID: 12609 Comm: syz.1.2692 Not tainted 6.16.0-syzkaller #0 PREEMPT(none)
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/12/2025
+=====================================================
+
+The HFS_SB(sb)->bitmap buffer is allocated in hfs_mdb_get():
+
+HFS_SB(sb)->bitmap = kmalloc(8192, GFP_KERNEL);
+
+Finally, it can trigger the reported issue because kmalloc()
+doesn't clear the allocated memory. If allocated memory contains
+only zeros, then everything will work pretty fine.
+But if the allocated memory contains the "garbage", then
+it can affect the bitmap operations and it triggers
+the reported issue.
+
+This patch simply exchanges the kmalloc() on kzalloc()
+with the goal to guarantee the correctness of bitmap operations.
+Because, newly created allocation bitmap should have all
+available blocks free. Potentially, initialization bitmap's read
+operation could not fill the whole allocated memory and
+"garbage" in the not initialized memory will be the reason of
+volume coruptions and file system driver bugs.
+
+Reported-by: syzbot <syzbot+773fa9d79b29bd8b6831@syzkaller.appspotmail.com>
+Closes: https://syzkaller.appspot.com/bug?extid=773fa9d79b29bd8b6831
+Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
+cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+cc: Yangtao Li <frank.li@vivo.com>
+cc: linux-fsdevel@vger.kernel.org
+Link: https://lore.kernel.org/r/20250820230636.179085-1-slava@dubeyko.com
+Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/dlink/dl2k.c | 23 ++++++++++++++++-------
- 1 file changed, 16 insertions(+), 7 deletions(-)
+ fs/hfs/mdb.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/dlink/dl2k.c b/drivers/net/ethernet/dlink/dl2k.c
-index ca8bfd1b8278e..59db32dcf9f3d 100644
---- a/drivers/net/ethernet/dlink/dl2k.c
-+++ b/drivers/net/ethernet/dlink/dl2k.c
-@@ -499,25 +499,34 @@ static int alloc_list(struct net_device *dev)
- 	for (i = 0; i < RX_RING_SIZE; i++) {
- 		/* Allocated fixed size of skbuff */
- 		struct sk_buff *skb;
-+		dma_addr_t addr;
- 
- 		skb = netdev_alloc_skb_ip_align(dev, np->rx_buf_sz);
- 		np->rx_skbuff[i] = skb;
--		if (!skb) {
--			free_list(dev);
--			return -ENOMEM;
--		}
-+		if (!skb)
-+			goto err_free_list;
-+
-+		addr = dma_map_single(&np->pdev->dev, skb->data,
-+				      np->rx_buf_sz, DMA_FROM_DEVICE);
-+		if (dma_mapping_error(&np->pdev->dev, addr))
-+			goto err_kfree_skb;
- 
- 		np->rx_ring[i].next_desc = cpu_to_le64(np->rx_ring_dma +
- 						((i + 1) % RX_RING_SIZE) *
- 						sizeof(struct netdev_desc));
- 		/* Rubicon now supports 40 bits of addressing space. */
--		np->rx_ring[i].fraginfo =
--		    cpu_to_le64(dma_map_single(&np->pdev->dev, skb->data,
--					       np->rx_buf_sz, DMA_FROM_DEVICE));
-+		np->rx_ring[i].fraginfo = cpu_to_le64(addr);
- 		np->rx_ring[i].fraginfo |= cpu_to_le64((u64)np->rx_buf_sz << 48);
+diff --git a/fs/hfs/mdb.c b/fs/hfs/mdb.c
+index 8082eb01127cd..bf811347bb07d 100644
+--- a/fs/hfs/mdb.c
++++ b/fs/hfs/mdb.c
+@@ -172,7 +172,7 @@ int hfs_mdb_get(struct super_block *sb)
+ 		pr_warn("continuing without an alternate MDB\n");
  	}
  
- 	return 0;
-+
-+err_kfree_skb:
-+	dev_kfree_skb(np->rx_skbuff[i]);
-+	np->rx_skbuff[i] = NULL;
-+err_free_list:
-+	free_list(dev);
-+	return -ENOMEM;
- }
+-	HFS_SB(sb)->bitmap = kmalloc(8192, GFP_KERNEL);
++	HFS_SB(sb)->bitmap = kzalloc(8192, GFP_KERNEL);
+ 	if (!HFS_SB(sb)->bitmap)
+ 		goto out;
  
- static void rio_hw_init(struct net_device *dev)
 -- 
 2.51.0
 
