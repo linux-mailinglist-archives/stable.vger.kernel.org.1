@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-191144-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190548-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CD47C110B1
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:31:44 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8849EC1088E
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:09:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A01F61A6002E
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:27:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E89D5567354
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:04:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6292932C93E;
-	Mon, 27 Oct 2025 19:25:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE9EA30506B;
+	Mon, 27 Oct 2025 18:59:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0ZbLb9Ac"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="swRxJczA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C1942D9EEC;
-	Mon, 27 Oct 2025 19:25:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 791EC3328F8;
+	Mon, 27 Oct 2025 18:59:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761593123; cv=none; b=NPkIoec0iHbE24Su+FqsRd1HdPEXLsRqJJcrqbAimzSLr9cHj7y5nbMvCpXocsgjmiidsOAcC0sf9sz05YVrLlAq9ZFakvkHwEfYAKV53oeEk/Q/7J1K5fCmB4RCCq2lepaU5MXfqo3OM/qs2pW8JPlphtbqFSRmqdawZcB8/RM=
+	t=1761591577; cv=none; b=sWxDh1XAFFYccAEI3Tm5qRfyHQ0wN/h4nuGjp3xrfbKrDfYcBvyL5eO58fiseFSb7C4kntFWjVM7jxDDWR6ofgLM9FgeAd1imtQEnpMV1UHeoMDbQojtdeyMMZp+H1FTzk+iupOIxh9zDW1cJwhoD/zTSJonr4MkyMheAJxYvyI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761593123; c=relaxed/simple;
-	bh=Mbg/iqCV0Z4M87zQWxKY3pRPe8pViEtGAszjX70IDrU=;
+	s=arc-20240116; t=1761591577; c=relaxed/simple;
+	bh=vSnoN2n2WriuWnV9opvM64+9cNH3KXP5SIwfuMOkc2U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qs7o1Kzy13umDhIr2Qg44KWvpq/nRkMnhP815OJ7clbLSFJ52IwjqqYAIKgdB4grcc+6jxijzgngjsriAeug6hP2sDOOL71JFM4rywDykvvyMrVwv7NjtIrKq9LwEFSufYxP+AjGKxYQMBX3YzP0NyTzFYKAieTuUiAj6as2Fpo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0ZbLb9Ac; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2B52C4CEF1;
-	Mon, 27 Oct 2025 19:25:22 +0000 (UTC)
+	 MIME-Version; b=p30asesCE1qo4jqUf/BzwHw2kEwJmZ+ekqUHTj7St09Auylz3G0BbBmqWxB41dJq7gUmInp2uZvYH+odGDtYJnFJtYu9lXg4HoW12WyVIy77YXCo1ls+4TkACkumX3XSDWQ7/CSnJ0iuEVB3Ivoq1t9nIgjRCogVUdG+4sorjak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=swRxJczA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BB90C4CEFD;
+	Mon, 27 Oct 2025 18:59:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761593123;
-	bh=Mbg/iqCV0Z4M87zQWxKY3pRPe8pViEtGAszjX70IDrU=;
+	s=korg; t=1761591577;
+	bh=vSnoN2n2WriuWnV9opvM64+9cNH3KXP5SIwfuMOkc2U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0ZbLb9AcNG3tQ/k8v3qstclJHfaevGp9+Js2wyL30jhLMyJKmrD2hamGinfEf6lC6
-	 G3UGP+ByjMibbDds8ysl4egPizUF19fxORUZP7EMc1uHq2n90GtUb0D2vU15Ndscs2
-	 0WEt7/bsL2/DuRR1rE6DToFBSEDKhKi1YNDwQyd4=
+	b=swRxJczAZ5PW1lMHK3B0nMZgwmemmj1IPNgRf3RG1F/bzWPH9p0VGgUMdZFyYmyag
+	 FUC+17VUomqTVK7cpfGf/gk1rB9cCX27nVd8T5nKR5cLxxwn1WAKY62sLE9U4i6PPg
+	 EvUWJ+ViTa2HNZAdJFXBViO0hb/cUZU20Cne+KiM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	"Yury Norov (NVIDIA)" <yury.norov@gmail.com>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 021/184] m68k: bitops: Fix find_*_bit() signatures
+Subject: [PATCH 5.10 250/332] net: usb: lan78xx: Add error handling to lan78xx_init_mac_address
 Date: Mon, 27 Oct 2025 19:35:03 +0100
-Message-ID: <20251027183515.503087669@linuxfoundation.org>
+Message-ID: <20251027183531.440273948@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
-References: <20251027183514.934710872@linuxfoundation.org>
+In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
+References: <20251027183524.611456697@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,92 +63,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert@linux-m68k.org>
+From: Oleksij Rempel <o.rempel@pengutronix.de>
 
-[ Upstream commit 6d5674090543b89aac0c177d67e5fb32ddc53804 ]
+[ Upstream commit 6f31135894ec96481e2bda93a1da70712f5e57c1 ]
 
-The function signatures of the m68k-optimized implementations of the
-find_{first,next}_{,zero_}bit() helpers do not match the generic
-variants.
+Convert `lan78xx_init_mac_address` to return error codes and handle
+failures in register read and write operations. Update `lan78xx_reset`
+to check for errors during MAC address initialization and propagate them
+appropriately.
 
-Fix this by changing all non-pointer inputs and outputs to "unsigned
-long", and updating a few local variables.
-
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202509092305.ncd9mzaZ-lkp@intel.com/
-Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Acked-by: "Yury Norov (NVIDIA)" <yury.norov@gmail.com>
-Link: https://patch.msgid.link/de6919554fbb4cd1427155c6bafbac8a9df822c8.1757517135.git.geert@linux-m68k.org
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20241209130751.703182-3-o.rempel@pengutronix.de
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 8d93ff40d49d ("net: usb: lan78xx: fix use of improperly initialized dev->chipid in lan78xx_reset")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/m68k/include/asm/bitops.h | 25 ++++++++++++++-----------
- 1 file changed, 14 insertions(+), 11 deletions(-)
+ drivers/net/usb/lan78xx.c | 36 ++++++++++++++++++++++++++++--------
+ 1 file changed, 28 insertions(+), 8 deletions(-)
 
-diff --git a/arch/m68k/include/asm/bitops.h b/arch/m68k/include/asm/bitops.h
-index 14c64a6f12176..50ec92651d5a5 100644
---- a/arch/m68k/include/asm/bitops.h
-+++ b/arch/m68k/include/asm/bitops.h
-@@ -350,12 +350,12 @@ static inline bool xor_unlock_is_negative_byte(unsigned long mask,
- #include <asm-generic/bitops/ffz.h>
- #else
+diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
+index 3e3c67dc6bf74..c3aa3f75ab914 100644
+--- a/drivers/net/usb/lan78xx.c
++++ b/drivers/net/usb/lan78xx.c
+@@ -1710,13 +1710,19 @@ static const struct ethtool_ops lan78xx_ethtool_ops = {
+ 	.get_regs	= lan78xx_get_regs,
+ };
  
--static inline int find_first_zero_bit(const unsigned long *vaddr,
--				      unsigned size)
-+static inline unsigned long find_first_zero_bit(const unsigned long *vaddr,
-+						unsigned long size)
+-static void lan78xx_init_mac_address(struct lan78xx_net *dev)
++static int lan78xx_init_mac_address(struct lan78xx_net *dev)
  {
- 	const unsigned long *p = vaddr;
--	int res = 32;
--	unsigned int words;
-+	unsigned long res = 32;
-+	unsigned long words;
- 	unsigned long num;
+ 	u32 addr_lo, addr_hi;
+ 	u8 addr[6];
++	int ret;
++
++	ret = lan78xx_read_reg(dev, RX_ADDRL, &addr_lo);
++	if (ret < 0)
++		return ret;
  
- 	if (!size)
-@@ -376,8 +376,9 @@ static inline int find_first_zero_bit(const unsigned long *vaddr,
+-	lan78xx_read_reg(dev, RX_ADDRL, &addr_lo);
+-	lan78xx_read_reg(dev, RX_ADDRH, &addr_hi);
++	ret = lan78xx_read_reg(dev, RX_ADDRH, &addr_hi);
++	if (ret < 0)
++		return ret;
+ 
+ 	addr[0] = addr_lo & 0xFF;
+ 	addr[1] = (addr_lo >> 8) & 0xFF;
+@@ -1749,14 +1755,26 @@ static void lan78xx_init_mac_address(struct lan78xx_net *dev)
+ 			  (addr[2] << 16) | (addr[3] << 24);
+ 		addr_hi = addr[4] | (addr[5] << 8);
+ 
+-		lan78xx_write_reg(dev, RX_ADDRL, addr_lo);
+-		lan78xx_write_reg(dev, RX_ADDRH, addr_hi);
++		ret = lan78xx_write_reg(dev, RX_ADDRL, addr_lo);
++		if (ret < 0)
++			return ret;
++
++		ret = lan78xx_write_reg(dev, RX_ADDRH, addr_hi);
++		if (ret < 0)
++			return ret;
+ 	}
+ 
+-	lan78xx_write_reg(dev, MAF_LO(0), addr_lo);
+-	lan78xx_write_reg(dev, MAF_HI(0), addr_hi | MAF_HI_VALID_);
++	ret = lan78xx_write_reg(dev, MAF_LO(0), addr_lo);
++	if (ret < 0)
++		return ret;
++
++	ret = lan78xx_write_reg(dev, MAF_HI(0), addr_hi | MAF_HI_VALID_);
++	if (ret < 0)
++		return ret;
+ 
+ 	eth_hw_addr_set(dev->net, addr);
++
++	return 0;
  }
- #define find_first_zero_bit find_first_zero_bit
  
--static inline int find_next_zero_bit(const unsigned long *vaddr, int size,
--				     int offset)
-+static inline unsigned long find_next_zero_bit(const unsigned long *vaddr,
-+					       unsigned long size,
-+					       unsigned long offset)
- {
- 	const unsigned long *p = vaddr + (offset >> 5);
- 	int bit = offset & 31UL, res;
-@@ -406,11 +407,12 @@ static inline int find_next_zero_bit(const unsigned long *vaddr, int size,
- }
- #define find_next_zero_bit find_next_zero_bit
+ /* MDIO read and write wrappers for phylib */
+@@ -2655,7 +2673,9 @@ static int lan78xx_reset(struct lan78xx_net *dev)
+ 		}
+ 	} while (buf & HW_CFG_LRST_);
  
--static inline int find_first_bit(const unsigned long *vaddr, unsigned size)
-+static inline unsigned long find_first_bit(const unsigned long *vaddr,
-+					   unsigned long size)
- {
- 	const unsigned long *p = vaddr;
--	int res = 32;
--	unsigned int words;
-+	unsigned long res = 32;
-+	unsigned long words;
- 	unsigned long num;
+-	lan78xx_init_mac_address(dev);
++	ret = lan78xx_init_mac_address(dev);
++	if (ret < 0)
++		return ret;
  
- 	if (!size)
-@@ -431,8 +433,9 @@ static inline int find_first_bit(const unsigned long *vaddr, unsigned size)
- }
- #define find_first_bit find_first_bit
- 
--static inline int find_next_bit(const unsigned long *vaddr, int size,
--				int offset)
-+static inline unsigned long find_next_bit(const unsigned long *vaddr,
-+					  unsigned long size,
-+					  unsigned long offset)
- {
- 	const unsigned long *p = vaddr + (offset >> 5);
- 	int bit = offset & 31UL, res;
+ 	/* save DEVID for later usage */
+ 	ret = lan78xx_read_reg(dev, ID_REV, &buf);
 -- 
 2.51.0
 
