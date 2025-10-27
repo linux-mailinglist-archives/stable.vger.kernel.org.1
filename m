@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-190918-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191050-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1355FC10E29
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:23:39 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19D45C1100C
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:29:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 2CE2D506C06
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:17:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 36EED5826E3
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:23:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A939931D72B;
-	Mon, 27 Oct 2025 19:15:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B860C23D2A3;
+	Mon, 27 Oct 2025 19:21:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bl7kw4tM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wENvV4Es"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DB472D7DDA;
-	Mon, 27 Oct 2025 19:15:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7221F31E0E0;
+	Mon, 27 Oct 2025 19:21:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592539; cv=none; b=Ce9vyfJz4Jbbh16NeF3xGthHxqKXupbs1VF0MnIoEcCTCjZoePehSs5iM17DKNNRnYI0bP5MH2g3f4ajcyvZlrSZUDTe6N9oEl8tzC3Hi4wa+WIFRU4hyR6IIvq1lTj72Pi234eW1qiu07PIj42XTp0vreqRkiZezzzQlWk5Sgk=
+	t=1761592883; cv=none; b=uVLqLd5zlmjFDB2hNopsoO5nqUUcXAtCmJbzSjy6P6QCCckKwwnbA9SgTeF4addOrubc373hSD9djyWYNOJJYCb5raIbdaskAUQvHDI4hkUwog66RI+U6UM+h7OAEFRq/wWqsmNiQVjZZH9rSXQmvV14+eZyyKSF4He89DG1MgM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592539; c=relaxed/simple;
-	bh=TGkRWxxSSHl9scq5lAjnBxahVQQ1ULanb0VTecItDIc=;
+	s=arc-20240116; t=1761592883; c=relaxed/simple;
+	bh=2eG6NAvApt82IPALesV5qmG6GM/ZYXgh53YR5GdMeRo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fkr4zdlnlfXmk4Re2USzCRHy5LeTGZu97YMtMBHcengTE7UW0vrnRJk1i8CqXJJDgm5jIlXVmFpkFfbDYxyi8Pzt2iMoftHWr3WHihHI3gGBHPIbBH5Al8LXTQV9ZMwbrjqf0GygDHcYl5vYKEWjky/WQ8zAsehMF8T7CanTwZQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bl7kw4tM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB86EC4CEF1;
-	Mon, 27 Oct 2025 19:15:38 +0000 (UTC)
+	 MIME-Version; b=OSVXzdi0x5VMUWOC8DVVq9ihZM+fXqDkKkAtpjHtm3W3ql9Jy3ZJzqt1p/1CJf9ylQWo8t2FNn9dJdaQWDuCxBxRVxD6KORomE7U2vx7adZLSW+ihWsQ/ad0uruZd+MVT8opaqZLjEKoWc9rTYkXpnyDrxmh9e2URxILli+7sRw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wENvV4Es; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F204AC4CEF1;
+	Mon, 27 Oct 2025 19:21:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592539;
-	bh=TGkRWxxSSHl9scq5lAjnBxahVQQ1ULanb0VTecItDIc=;
+	s=korg; t=1761592883;
+	bh=2eG6NAvApt82IPALesV5qmG6GM/ZYXgh53YR5GdMeRo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bl7kw4tMoqc0zArLAlF8jDV5v1IKquOuHqdzY1ZJk2N9EyoISNTNhp/7l15Er7/Be
-	 dpYunzM5QF5ZDNR30WbVLAiIwWQvXqIiBeEVnS8GF+EDd6/c2XkbaN2K58DfiB0paU
-	 Yibqfcub2qlJtp8JCyzzJTGGTtTWnN2eS3jHshQQ=
+	b=wENvV4Esch1J0vnSTuJeNjAn0GDR5lHEwlNVRsjSu+rxRC70/l1RuemhEkhuOCINH
+	 E3XfflfvQfdLJzQgWt8DyU0U7mGd6KmWMYozar1ZBVAogQ+Mlbrcjpz7hDltCeO1VG
+	 NpbM5tomwLz3wp/7GFGHTiX6QpCdKNsezEKv+UP0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+916742d5d24f6c254761@syzkaller.appspotmail.com,
-	stable <stable@kernel.org>,
-	Victoria Votokina <Victoria.Votokina@kaspersky.com>
-Subject: [PATCH 6.1 113/157] most: usb: Fix use-after-free in hdm_disconnect
+	Daniel Vacek <neelx@suse.com>,
+	Qu Wenruo <wqu@suse.com>,
+	Dewei Meng <mengdewei@cqsoftware.com.cn>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.12 048/117] btrfs: directly free partially initialized fs_info in btrfs_check_leaked_roots()
 Date: Mon, 27 Oct 2025 19:36:14 +0100
-Message-ID: <20251027183504.280932677@linuxfoundation.org>
+Message-ID: <20251027183455.294071383@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
-References: <20251027183501.227243846@linuxfoundation.org>
+In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
+References: <20251027183453.919157109@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +63,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Victoria Votokina <Victoria.Votokina@kaspersky.com>
+From: Dewei Meng <mengdewei@cqsoftware.com.cn>
 
-commit 4b1270902609ef0d935ed2faa2ea6d122bd148f5 upstream.
+commit 17679ac6df6c4830ba711835aa8cf961be36cfa1 upstream.
 
-hdm_disconnect() calls most_deregister_interface(), which eventually
-unregisters the MOST interface device with device_unregister(iface->dev).
-If that drops the last reference, the device core may call release_mdev()
-immediately while hdm_disconnect() is still executing.
+If fs_info->super_copy or fs_info->super_for_commit allocated failed in
+btrfs_get_tree_subvol(), then no need to call btrfs_free_fs_info().
+Otherwise btrfs_check_leaked_roots() would access NULL pointer because
+fs_info->allocated_roots had not been initialised.
 
-The old code also freed several mdev-owned allocations in
-hdm_disconnect() and then performed additional put_device() calls.
-Depending on refcount order, this could lead to use-after-free or
-double-free when release_mdev() ran (or when unregister paths also
-performed puts).
+syzkaller reported the following information:
+  ------------[ cut here ]------------
+  BUG: unable to handle page fault for address: fffffffffffffbb0
+  #PF: supervisor read access in kernel mode
+  #PF: error_code(0x0000) - not-present page
+  PGD 64c9067 P4D 64c9067 PUD 64cb067 PMD 0
+  Oops: Oops: 0000 [#1] SMP KASAN PTI
+  CPU: 0 UID: 0 PID: 1402 Comm: syz.1.35 Not tainted 6.15.8 #4 PREEMPT(lazy)
+  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), (...)
+  RIP: 0010:arch_atomic_read arch/x86/include/asm/atomic.h:23 [inline]
+  RIP: 0010:raw_atomic_read include/linux/atomic/atomic-arch-fallback.h:457 [inline]
+  RIP: 0010:atomic_read include/linux/atomic/atomic-instrumented.h:33 [inline]
+  RIP: 0010:refcount_read include/linux/refcount.h:170 [inline]
+  RIP: 0010:btrfs_check_leaked_roots+0x18f/0x2c0 fs/btrfs/disk-io.c:1230
+  [...]
+  Call Trace:
+   <TASK>
+   btrfs_free_fs_info+0x310/0x410 fs/btrfs/disk-io.c:1280
+   btrfs_get_tree_subvol+0x592/0x6b0 fs/btrfs/super.c:2029
+   btrfs_get_tree+0x63/0x80 fs/btrfs/super.c:2097
+   vfs_get_tree+0x98/0x320 fs/super.c:1759
+   do_new_mount+0x357/0x660 fs/namespace.c:3899
+   path_mount+0x716/0x19c0 fs/namespace.c:4226
+   do_mount fs/namespace.c:4239 [inline]
+   __do_sys_mount fs/namespace.c:4450 [inline]
+   __se_sys_mount fs/namespace.c:4427 [inline]
+   __x64_sys_mount+0x28c/0x310 fs/namespace.c:4427
+   do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+   do_syscall_64+0x92/0x180 arch/x86/entry/syscall_64.c:94
+   entry_SYSCALL_64_after_hwframe+0x76/0x7e
+  RIP: 0033:0x7f032eaffa8d
+  [...]
 
-Fix by moving the frees of mdev-owned allocations into release_mdev(),
-so they happen exactly once when the device is truly released, and by
-dropping the extra put_device() calls in hdm_disconnect() that are
-redundant after device_unregister() and most_deregister_interface().
-
-This addresses the KASAN slab-use-after-free reported by syzbot in
-hdm_disconnect(). See report and stack traces in the bug link below.
-
-Reported-by: syzbot+916742d5d24f6c254761@syzkaller.appspotmail.com
-Cc: stable <stable@kernel.org>
-Closes: https://syzkaller.appspot.com/bug?extid=916742d5d24f6c254761
-Fixes: 97a6f772f36b ("drivers: most: add USB adapter driver")
-Signed-off-by: Victoria Votokina <Victoria.Votokina@kaspersky.com>
-Link: https://patch.msgid.link/20251010105241.4087114-2-Victoria.Votokina@kaspersky.com
+Fixes: 3bb17a25bcb0 ("btrfs: add get_tree callback for new mount API")
+CC: stable@vger.kernel.org # 6.12+
+Reviewed-by: Daniel Vacek <neelx@suse.com>
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Dewei Meng <mengdewei@cqsoftware.com.cn>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/most/most_usb.c |   11 ++++-------
- 1 file changed, 4 insertions(+), 7 deletions(-)
+ fs/btrfs/super.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/drivers/most/most_usb.c
-+++ b/drivers/most/most_usb.c
-@@ -929,6 +929,10 @@ static void release_mdev(struct device *
- {
- 	struct most_dev *mdev = to_mdev_from_dev(dev);
- 
-+	kfree(mdev->busy_urbs);
-+	kfree(mdev->cap);
-+	kfree(mdev->conf);
-+	kfree(mdev->ep_address);
- 	kfree(mdev);
- }
- /**
-@@ -1121,13 +1125,6 @@ static void hdm_disconnect(struct usb_in
- 	if (mdev->dci)
- 		device_unregister(&mdev->dci->dev);
- 	most_deregister_interface(&mdev->iface);
--
--	kfree(mdev->busy_urbs);
--	kfree(mdev->cap);
--	kfree(mdev->conf);
--	kfree(mdev->ep_address);
--	put_device(&mdev->dci->dev);
--	put_device(&mdev->dev);
- }
- 
- static int hdm_suspend(struct usb_interface *interface, pm_message_t message)
+--- a/fs/btrfs/super.c
++++ b/fs/btrfs/super.c
+@@ -2029,7 +2029,13 @@ static int btrfs_get_tree_subvol(struct
+ 	fs_info->super_copy = kzalloc(BTRFS_SUPER_INFO_SIZE, GFP_KERNEL);
+ 	fs_info->super_for_commit = kzalloc(BTRFS_SUPER_INFO_SIZE, GFP_KERNEL);
+ 	if (!fs_info->super_copy || !fs_info->super_for_commit) {
+-		btrfs_free_fs_info(fs_info);
++		/*
++		 * Dont call btrfs_free_fs_info() to free it as it's still
++		 * initialized partially.
++		 */
++		kfree(fs_info->super_copy);
++		kfree(fs_info->super_for_commit);
++		kvfree(fs_info);
+ 		return -ENOMEM;
+ 	}
+ 	btrfs_init_fs_info(fs_info);
 
 
 
