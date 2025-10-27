@@ -1,160 +1,290 @@
-Return-Path: <stable+bounces-191326-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191327-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B77CC11997
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 23:00:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A438C11BA8
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 23:34:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0E29A3B03C1
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 22:00:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F0ECF56304A
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 22:34:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1D0B2848B2;
-	Mon, 27 Oct 2025 22:00:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFEAB32D0CD;
+	Mon, 27 Oct 2025 22:34:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b="d+3QOGnh"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Ign2HiYG"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDFE82BE7A1;
-	Mon, 27 Oct 2025 22:00:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91EBC32C958;
+	Mon, 27 Oct 2025 22:34:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761602424; cv=none; b=tGKMWGXaq0JDVU/exCl3d6YjiiFSh3MdUYZz4Wjm7jsewT8C8f+397IdI+svZxg7ud6oaxDnI/4/lOJhXNksqBTZzsoyB0boQ+KjEgctZomLTMRnesutLsYcV7cWXupQKFUEabWs0F1431miBcZnvzU/gHpXDHfIFKabv3rRsZY=
+	t=1761604466; cv=none; b=j5mj2qrmhjitXOjBp3UNPsNtSWC7IVGWhvqWXV5BuQuSB9fEx5zL+AcZYxHNCHd/18eFO2vNX8F/3dqsusnqzytBKgauFhehA/CEXWw6HCfGurbqWCyUw0TCB7WBrfAVyvBUy6JNvIxaAEQP6XvpGKrA/2YxavKhpK7WeD8Hcpk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761602424; c=relaxed/simple;
-	bh=W5ID3OY7yfWGGgbtnZevjVWj3uINdDq2sxdewYF9kdo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mStfICx6PN3rnpIcEgJ9xGHSFeOIODqsWJStc4E3fW9463E0v0Gzu19gPwpdP+pX7il3ABK9sGbuUCuq2pEQROEiPkr/0e07eK4dGfOhSNdbZCQZBaQJgld/QtVtBwAtSZyVS43Hx8jHii7LmUjJu6LD/blBOea3d1JxWWa1gg4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b=d+3QOGnh; arc=none smtp.client-ip=212.227.17.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1761602412; x=1762207212; i=rwarsow@gmx.de;
-	bh=W5ID3OY7yfWGGgbtnZevjVWj3uINdDq2sxdewYF9kdo=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=d+3QOGnhyX9R6ql2Cj6Czd644bknPjREtiVlrDi1uXqnUlf6vR2X7xgZiFi8GXwv
-	 p5F8uiw+dt+HKxJvBnTrUl63k6CaIc3h1dyKBJOTTXM6azYAJ2tYKuP4n5kFvRheD
-	 pi+ZcAoL12XJZ37EGO9NwKwIgWkKZo0bYVyrNE4Em9Fs1EtV+ptpl9Z4EAsefDU1f
-	 2E2YXUY2UM8VMU8sAwWW2yi/kdNjsXHDxiHhrrFSPtWm08Y+WSfyz+ZglsQi0CEfv
-	 pc1EvfbRe6N7nj5ftFsxEj1KtKPRStwBOtXNIEqGew1+OVQqJpNF2VcVDzaoGijzv
-	 MiS4JwiDkNsRYo+Aaw==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.200.20] ([46.142.35.117]) by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MmULx-1uV3gg3tvF-00hVV6; Mon, 27
- Oct 2025 23:00:12 +0100
-Message-ID: <25c427cd-3080-4cfc-93d6-2b4d082b1166@gmx.de>
-Date: Mon, 27 Oct 2025 23:00:10 +0100
+	s=arc-20240116; t=1761604466; c=relaxed/simple;
+	bh=wy4CjKeKeNi3umJ+uYELeQEAqNQGb8eY+DZrCbSqaxc=;
+	h=Date:To:From:Subject:Message-Id; b=D0sUFSyvRPhlPpBT0+NEzvcVMC1+q6I8K0PrFIz/qqku6/ZwR6c642+RQWPfpgCxLBDZTroN4VAjtc+cKNhsgB7ci27xMLlqMDaR7VJn8nK7SIrwblWnc+vm0YXJ2KU96SglCtTt0q6UJlbUd+cy+lya6ZYrtoMXvNVrP/C7wCs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Ign2HiYG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0ADBBC4CEF1;
+	Mon, 27 Oct 2025 22:34:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1761604466;
+	bh=wy4CjKeKeNi3umJ+uYELeQEAqNQGb8eY+DZrCbSqaxc=;
+	h=Date:To:From:Subject:From;
+	b=Ign2HiYGKPPwL2bPdqgnE2WYRoE7mESrCDfxBMWRfplUJhpxxbI29PIT3wOkEjnYA
+	 B8mG1Q/q4sn1YqTeIYQn6AQvVW19aFLTGE0wGDC15q0L4RgSAI2ABicdhCczV37wPR
+	 O+rMYvhdY9WVIt+wf3pP2L8FJc+wvhHR7BRBE27U=
+Date: Mon, 27 Oct 2025 15:34:25 -0700
+To: mm-commits@vger.kernel.org,willy@infradead.org,viro@zeniv.linux.org.uk,vbabka@suse.cz,surenb@google.com,stable@vger.kernel.org,shakeel.butt@linux.dev,rppt@kernel.org,riel@surriel.com,mhocko@suse.com,lorenzo.stoakes@oracle.com,liam.howlett@oracle.com,hughd@google.com,hannes@cmpxchg.org,djwong@kernel.org,david@redhat.com,david@fromorbit.com,brauner@kernel.org,baolin.wang@linux.alibaba.com,kas@kernel.org,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-memory-do-not-populate-page-table-entries-beyond-i_size.patch added to mm-hotfixes-unstable branch
+Message-Id: <20251027223426.0ADBBC4CEF1@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.17 000/184] 6.17.6-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, conor@kernel.org,
- hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
- sr@sladewatkins.com
-References: <20251027183514.934710872@linuxfoundation.org>
-From: Ronald Warsow <rwarsow@gmx.de>
-Content-Language: de-DE, en-US
-In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:ZyVI+iOHmHeGG6Innqqf+jIfCnxkLJ8tXLF2GtY4X02xlbxH9Qt
- PIow7PLbcjBWLNhM2IM8GFWEI4yBfMfuBvb7iFBflC/pDkLXUkWOkaupXgk/4AjCSDtkm+5
- i498K2gBx1fR8KWHmOyFfX5jr53ruD7WEqem2/UO+d4TAUXQXlIb+TLLJjl7CqTgtdjoSkk
- jGdO9IxNROUH48tVE3WNw==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:mSphpQ+XcXk=;2vRlWtqWoN3p+qJ1Zj/leuXxHRQ
- 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
 
-Hi
 
-no regressions here on x86_64 (RKL, Intel 11th Gen. CPU)
+The patch titled
+     Subject: mm/memory: do not populate page table entries beyond i_size
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-memory-do-not-populate-page-table-entries-beyond-i_size.patch
 
-Thanks
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-memory-do-not-populate-page-table-entries-beyond-i_size.patch
 
-Tested-by: Ronald Warsow <rwarsow@gmx.de>
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Kiryl Shutsemau <kas@kernel.org>
+Subject: mm/memory: do not populate page table entries beyond i_size
+Date: Mon, 27 Oct 2025 11:56:35 +0000
+
+Patch series "Fix SIGBUS semantics with large folios", v3.
+
+Accessing memory within a VMA, but beyond i_size rounded up to the next
+page size, is supposed to generate SIGBUS.
+
+Darrick reported[1] an xfstests regression in v6.18-rc1.  generic/749
+failed due to missing SIGBUS.  This was caused by my recent changes that
+try to fault in the whole folio where possible:
+
+        19773df031bc ("mm/fault: try to map the entire file folio in finish_fault()")
+        357b92761d94 ("mm/filemap: map entire large folio faultaround")
+
+These changes did not consider i_size when setting up PTEs, leading to
+xfstest breakage.
+
+However, the problem has been present in the kernel for a long time -
+since huge tmpfs was introduced in 2016.  The kernel happily maps
+PMD-sized folios as PMD without checking i_size.  And huge=always tmpfs
+allocates PMD-size folios on any writes.
+
+I considered this corner case when I implemented a large tmpfs, and my
+conclusion was that no one in their right mind should rely on receiving a
+SIGBUS signal when accessing beyond i_size.  I cannot imagine how it could
+be useful for the workload.
+
+But apparently filesystem folks care a lot about preserving strict SIGBUS
+semantics.
+
+Generic/749 was introduced last year with reference to POSIX, but no real
+workloads were mentioned.  It also acknowledged the tmpfs deviation from
+the test case.
+
+POSIX indeed says[3]:
+
+        References within the address range starting at pa and
+        continuing for len bytes to whole pages following the end of an
+        object shall result in delivery of a SIGBUS signal.
+
+The patchset fixes the regression introduced by recent changes as well as
+more subtle SIGBUS breakage due to split failure on truncation.
+
+
+This patch (of 2):
+
+Accesses within VMA, but beyond i_size rounded up to PAGE_SIZE are
+supposed to generate SIGBUS.
+
+Recent changes attempted to fault in full folio where possible.  They did
+not respect i_size, which led to populating PTEs beyond i_size and
+breaking SIGBUS semantics.
+
+Darrick reported generic/749 breakage because of this.
+
+However, the problem existed before the recent changes.  With huge=always
+tmpfs, any write to a file leads to PMD-size allocation.  Following the
+fault-in of the folio will install PMD mapping regardless of i_size.
+
+Fix filemap_map_pages() and finish_fault() to not install:
+  - PTEs beyond i_size;
+  - PMD mappings across i_size;
+
+Make an exception for shmem/tmpfs that for long time intentionally
+mapped with PMDs across i_size.
+
+Link: https://lkml.kernel.org/r/20251027115636.82382-1-kirill@shutemov.name
+Link: https://lkml.kernel.org/r/20251027115636.82382-2-kirill@shutemov.name
+Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
+Fixes: 19773df031bc ("mm/fault: try to map the entire file folio in finish_fault()")
+Fixes: 357b92761d94 ("mm/filemap: map entire large folio faultaround")
+Fixes: 01c70267053d ("fs: add a filesystem flag for THPs")
+Reported-by: "Darrick J. Wong" <djwong@kernel.org>
+Cc: Al Viro <viro@zeniv.linux.org.uk>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Dave Chinner <david@fromorbit.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Hugh Dickins <hughd@google.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Rik van Riel <riel@surriel.com>
+Cc: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/filemap.c |   28 ++++++++++++++++++++--------
+ mm/memory.c  |   20 +++++++++++++++++++-
+ 2 files changed, 39 insertions(+), 9 deletions(-)
+
+--- a/mm/filemap.c~mm-memory-do-not-populate-page-table-entries-beyond-i_size
++++ a/mm/filemap.c
+@@ -3681,7 +3681,8 @@ skip:
+ static vm_fault_t filemap_map_folio_range(struct vm_fault *vmf,
+ 			struct folio *folio, unsigned long start,
+ 			unsigned long addr, unsigned int nr_pages,
+-			unsigned long *rss, unsigned short *mmap_miss)
++			unsigned long *rss, unsigned short *mmap_miss,
++			bool can_map_large)
+ {
+ 	unsigned int ref_from_caller = 1;
+ 	vm_fault_t ret = 0;
+@@ -3696,7 +3697,7 @@ static vm_fault_t filemap_map_folio_rang
+ 	 * The folio must not cross VMA or page table boundary.
+ 	 */
+ 	addr0 = addr - start * PAGE_SIZE;
+-	if (folio_within_vma(folio, vmf->vma) &&
++	if (can_map_large && folio_within_vma(folio, vmf->vma) &&
+ 	    (addr0 & PMD_MASK) == ((addr0 + folio_size(folio) - 1) & PMD_MASK)) {
+ 		vmf->pte -= start;
+ 		page -= start;
+@@ -3811,13 +3812,27 @@ vm_fault_t filemap_map_pages(struct vm_f
+ 	unsigned long rss = 0;
+ 	unsigned int nr_pages = 0, folio_type;
+ 	unsigned short mmap_miss = 0, mmap_miss_saved;
++	bool can_map_large;
+ 
+ 	rcu_read_lock();
+ 	folio = next_uptodate_folio(&xas, mapping, end_pgoff);
+ 	if (!folio)
+ 		goto out;
+ 
+-	if (filemap_map_pmd(vmf, folio, start_pgoff)) {
++	file_end = DIV_ROUND_UP(i_size_read(mapping->host), PAGE_SIZE) - 1;
++	end_pgoff = min(end_pgoff, file_end);
++
++	/*
++	 * Do not allow to map with PTEs beyond i_size and with PMD
++	 * across i_size to preserve SIGBUS semantics.
++	 *
++	 * Make an exception for shmem/tmpfs that for long time
++	 * intentionally mapped with PMDs across i_size.
++	 */
++	can_map_large = shmem_mapping(mapping) ||
++		file_end >= folio_next_index(folio);
++
++	if (can_map_large && filemap_map_pmd(vmf, folio, start_pgoff)) {
+ 		ret = VM_FAULT_NOPAGE;
+ 		goto out;
+ 	}
+@@ -3830,10 +3845,6 @@ vm_fault_t filemap_map_pages(struct vm_f
+ 		goto out;
+ 	}
+ 
+-	file_end = DIV_ROUND_UP(i_size_read(mapping->host), PAGE_SIZE) - 1;
+-	if (end_pgoff > file_end)
+-		end_pgoff = file_end;
+-
+ 	folio_type = mm_counter_file(folio);
+ 	do {
+ 		unsigned long end;
+@@ -3850,7 +3861,8 @@ vm_fault_t filemap_map_pages(struct vm_f
+ 		else
+ 			ret |= filemap_map_folio_range(vmf, folio,
+ 					xas.xa_index - folio->index, addr,
+-					nr_pages, &rss, &mmap_miss);
++					nr_pages, &rss, &mmap_miss,
++					can_map_large);
+ 
+ 		folio_unlock(folio);
+ 	} while ((folio = next_uptodate_folio(&xas, mapping, end_pgoff)) != NULL);
+--- a/mm/memory.c~mm-memory-do-not-populate-page-table-entries-beyond-i_size
++++ a/mm/memory.c
+@@ -65,6 +65,7 @@
+ #include <linux/gfp.h>
+ #include <linux/migrate.h>
+ #include <linux/string.h>
++#include <linux/shmem_fs.h>
+ #include <linux/memory-tiers.h>
+ #include <linux/debugfs.h>
+ #include <linux/userfaultfd_k.h>
+@@ -5501,8 +5502,25 @@ fallback:
+ 			return ret;
+ 	}
+ 
++	if (!needs_fallback && vma->vm_file) {
++		struct address_space *mapping = vma->vm_file->f_mapping;
++		pgoff_t file_end;
++
++		file_end = DIV_ROUND_UP(i_size_read(mapping->host), PAGE_SIZE);
++
++		/*
++		 * Do not allow to map with PTEs beyond i_size and with PMD
++		 * across i_size to preserve SIGBUS semantics.
++		 *
++		 * Make an exception for shmem/tmpfs that for long time
++		 * intentionally mapped with PMDs across i_size.
++		 */
++		needs_fallback = !shmem_mapping(mapping) &&
++			file_end < folio_next_index(folio);
++	}
++
+ 	if (pmd_none(*vmf->pmd)) {
+-		if (folio_test_pmd_mappable(folio)) {
++		if (!needs_fallback && folio_test_pmd_mappable(folio)) {
+ 			ret = do_set_pmd(vmf, folio, page);
+ 			if (ret != VM_FAULT_FALLBACK)
+ 				return ret;
+_
+
+Patches currently in -mm which might be from kas@kernel.org are
+
+mm-memory-do-not-populate-page-table-entries-beyond-i_size.patch
+mm-truncate-unmap-large-folio-on-split-failure.patch
 
 
