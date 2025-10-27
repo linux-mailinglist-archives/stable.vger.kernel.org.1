@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-191083-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191085-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id D90AEC11063
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:30:38 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EB58C10E83
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:24:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 786B3501E87
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:24:42 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id DD673353084
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:24:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BBD632BF52;
-	Mon, 27 Oct 2025 19:22:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 551DE32C93B;
+	Mon, 27 Oct 2025 19:22:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bqVTvnx0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GN78Kgyq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BB8432ABF1
-	for <stable@vger.kernel.org>; Mon, 27 Oct 2025 19:22:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 155D432C92D
+	for <stable@vger.kernel.org>; Mon, 27 Oct 2025 19:22:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592968; cv=none; b=pLa/T2zcPhBCU7sA1ms61jjJbdkDhAwIsgZV4R5tTAxmKCmUJGt0LvWy4rqFvQdYOBIlpDU3mhKO2mRJ0ARRSv6a+mP29KUnPx7q3vHtWP0JgvZHDkYPw9ae4GU0AnKEBb323D3vxkj29ueGpAomWtElBGXXCfOl9ChSlmuTFY8=
+	t=1761592969; cv=none; b=hRBxoK85H0ZXum4UHvbBtdHiHPnvF+7yZJBb12IfUuVSekLpvzCVpqAEEfh2nqy3nG09tQSNyg9ZTvcJmP9uNSJA3X5lLNjf7teCA8VVIMDKiYlFOCpo/rXUNTlYloVoxxzIhUYyf1gNfzIx/KXrSTKxkDw1LVlo1x33Wu3Mliw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592968; c=relaxed/simple;
-	bh=TsnjcNBrc5m64G4wdAVLD8TLsvgdYo5aVSJ4KISGt5w=;
+	s=arc-20240116; t=1761592969; c=relaxed/simple;
+	bh=IL0cZKp3Bhel6SXhuDxyCIoRj41eB6JHuKgn3rGpMZI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LhWcs6/8TMRl81h6b6HaQwtcgsTCbwUDmni6GkHg3HNReBYoLW0LEVWpQtjgmHhqJb72zDiTrloZ0agRqTgnti0ujralYynBNR7wFCYlwuO6g8JxGWmtQGdphT89n28ECDFh7NKklYGqgL+UGgdfQxJBXAB0VqjbTXQNbIEWaOo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bqVTvnx0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9215FC4CEFD;
-	Mon, 27 Oct 2025 19:22:47 +0000 (UTC)
+	 MIME-Version; b=CluUKvTpQ7wqH4xZMo1BRlixf40gH7qEmwr78wrf72c/majnFH2AHl11wvXGL2c4ji/+Y3tzh3ShmVQiHQLhGzNycUGNZe07x/6ZW0zZVatJfqj/3hA+0rtf8dkgDsfSbjdmcZvygU6R2JOUK8/Ig5vXt5apfmUSXEOTXwciHxI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GN78Kgyq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F911C116B1;
+	Mon, 27 Oct 2025 19:22:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1761592968;
-	bh=TsnjcNBrc5m64G4wdAVLD8TLsvgdYo5aVSJ4KISGt5w=;
+	bh=IL0cZKp3Bhel6SXhuDxyCIoRj41eB6JHuKgn3rGpMZI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bqVTvnx0LJau1IKmXVXa2++1tvOxjIxH1m+eILynaSft8NUHu+pDGyCITU55m/Lce
-	 B0WagS8eRq0KW1XqqCGXHAomKdlIzX5UwdG/iIb03U5BpZSYpA55YShNXTKWKOZTAm
-	 vZcpoGHircoZixCvsr2e1+Eel4ScOf6xU29/0LRIoJjWXcEFjyYEpJYBBd9zHngKLx
-	 HXjCLYQYI3L4atoEg1RlsxpEXg0McdvNw/zpXLO0oFWdpmUIrlCB6pCXa3pq7mOHBk
-	 r/MZTq5H0QbAcccN5ME2OOvEVDO4m8S2v7hnUaTBVltheQ0esEBVUso5bDA55gAIuN
-	 rrNV1pyACB70g==
+	b=GN78KgyqRMc0sPkgDEtstdKRhAN5Iyja+gMYN02v0lOut3jYts2VeSVhI0g8euN60
+	 UcYotWsmHjgDzUqdbH9qmfY8gQtYNgtZYH1XQqIjwHMmA6BN9FUknjUG7aCuywDxk6
+	 gWg4bpSdybUli0Ac9kGO3yDSGQu5c4Gb2m+FiC2FphMTE19RMA3fuFk3U814t/sVTL
+	 cZ1hfTMhNWJRuAEet5Uol8ySOCy4YrZRGeg3fX99kq3Yf7j2/pxlYpvKC7hYnd0tiS
+	 LqWmpPwZXq8UxJgvtKIUCAhHM1ccDnee3ntwV9yzzAfjCndcskkCDU51L6VD5C1aYN
+	 hJtHQKxoXQ3+A==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4.y 1/3] serial: 8250_dw: Use devm_clk_get_optional() to get the input clock
-Date: Mon, 27 Oct 2025 15:22:43 -0400
-Message-ID: <20251027192245.660757-1-sashal@kernel.org>
+Subject: [PATCH 5.4.y 2/3] serial: 8250_dw: Use devm_add_action_or_reset()
+Date: Mon, 27 Oct 2025 15:22:44 -0400
+Message-ID: <20251027192245.660757-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025102701-scabby-entrust-a162@gregkh>
+In-Reply-To: <20251027192245.660757-1-sashal@kernel.org>
 References: <2025102701-scabby-entrust-a162@gregkh>
+ <20251027192245.660757-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,165 +63,140 @@ Content-Transfer-Encoding: 8bit
 
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit a8afc193558a42d5df724c84436ae3b2446d8a30 ]
+[ Upstream commit 295b09128d12fb1a7a67f771cc0ae0df869eafaf ]
 
-Simplify the code which fetches the input clock by using
-devm_clk_get_optional(). This comes with a small functional change: previously
-all errors were ignored except deferred probe. Now all errors are
-treated as errors. If no input clock is present devm_clk_get_optional() will
-return NULL instead of an error which matches the behavior of the old code.
+Slightly simplify ->probe() and drop a few goto labels by using
+devm_add_action_or_reset() for clock and reset cleanup.
 
 Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20190925162617.30368-1-andriy.shevchenko@linux.intel.com
+Link: https://lore.kernel.org/r/20220509172129.37770-1-andriy.shevchenko@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Stable-dep-of: daeb4037adf7 ("serial: 8250_dw: handle reset control deassert error")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/8250/8250_dw.c | 75 +++++++++++++------------------
- 1 file changed, 32 insertions(+), 43 deletions(-)
+ drivers/tty/serial/8250/8250_dw.c | 63 +++++++++++++++----------------
+ 1 file changed, 31 insertions(+), 32 deletions(-)
 
 diff --git a/drivers/tty/serial/8250/8250_dw.c b/drivers/tty/serial/8250/8250_dw.c
-index 2d5a039229acf..bd2901798f316 100644
+index bd2901798f316..56506668a10c8 100644
 --- a/drivers/tty/serial/8250/8250_dw.c
 +++ b/drivers/tty/serial/8250/8250_dw.c
-@@ -283,9 +283,6 @@ static void dw8250_set_termios(struct uart_port *p, struct ktermios *termios,
- 	long rate;
- 	int ret;
+@@ -384,6 +384,16 @@ static void dw8250_quirks(struct uart_port *p, struct dw8250_data *data)
+ 	}
+ }
  
--	if (IS_ERR(d->clk))
--		goto out;
--
- 	clk_disable_unprepare(d->clk);
- 	rate = clk_round_rate(d->clk, baud * 16);
- 	if (rate < 0)
-@@ -296,8 +293,10 @@ static void dw8250_set_termios(struct uart_port *p, struct ktermios *termios,
- 		ret = clk_set_rate(d->clk, rate);
- 	clk_prepare_enable(d->clk);
- 
--	if (!ret)
--		p->uartclk = rate;
-+	if (ret)
-+		goto out;
++static void dw8250_clk_disable_unprepare(void *data)
++{
++	clk_disable_unprepare(data);
++}
 +
-+	p->uartclk = rate;
- 
- out:
- 	p->status &= ~UPSTAT_AUTOCTS;
-@@ -473,19 +472,18 @@ static int dw8250_probe(struct platform_device *pdev)
- 	device_property_read_u32(dev, "clock-frequency", &p->uartclk);
- 
- 	/* If there is separate baudclk, get the rate from it. */
--	data->clk = devm_clk_get(dev, "baudclk");
--	if (IS_ERR(data->clk) && PTR_ERR(data->clk) != -EPROBE_DEFER)
--		data->clk = devm_clk_get(dev, NULL);
--	if (IS_ERR(data->clk) && PTR_ERR(data->clk) == -EPROBE_DEFER)
--		return -EPROBE_DEFER;
--	if (!IS_ERR_OR_NULL(data->clk)) {
--		err = clk_prepare_enable(data->clk);
--		if (err)
--			dev_warn(dev, "could not enable optional baudclk: %d\n",
--				 err);
--		else
--			p->uartclk = clk_get_rate(data->clk);
--	}
-+	data->clk = devm_clk_get_optional(dev, "baudclk");
-+	if (data->clk == NULL)
-+		data->clk = devm_clk_get_optional(dev, NULL);
-+	if (IS_ERR(data->clk))
-+		return PTR_ERR(data->clk);
++static void dw8250_reset_control_assert(void *data)
++{
++	reset_control_assert(data);
++}
 +
-+	err = clk_prepare_enable(data->clk);
+ static int dw8250_probe(struct platform_device *pdev)
+ {
+ 	struct uart_8250_port uart = {}, *up = &uart;
+@@ -482,35 +492,43 @@ static int dw8250_probe(struct platform_device *pdev)
+ 	if (err)
+ 		dev_warn(dev, "could not enable optional baudclk: %d\n", err);
+ 
++	err = devm_add_action_or_reset(dev, dw8250_clk_disable_unprepare, data->clk);
 +	if (err)
-+		dev_warn(dev, "could not enable optional baudclk: %d\n", err);
++		return err;
 +
-+	if (data->clk)
-+		p->uartclk = clk_get_rate(data->clk);
+ 	if (data->clk)
+ 		p->uartclk = clk_get_rate(data->clk);
  
  	/* If no clock rate is defined, fail. */
  	if (!p->uartclk) {
-@@ -494,17 +492,16 @@ static int dw8250_probe(struct platform_device *pdev)
- 		goto err_clk;
+ 		dev_err(dev, "clock rate not defined\n");
+-		err = -EINVAL;
+-		goto err_clk;
++		return -EINVAL;
  	}
  
--	data->pclk = devm_clk_get(dev, "apb_pclk");
--	if (IS_ERR(data->pclk) && PTR_ERR(data->pclk) == -EPROBE_DEFER) {
--		err = -EPROBE_DEFER;
-+	data->pclk = devm_clk_get_optional(dev, "apb_pclk");
-+	if (IS_ERR(data->pclk)) {
-+		err = PTR_ERR(data->pclk);
- 		goto err_clk;
+ 	data->pclk = devm_clk_get_optional(dev, "apb_pclk");
+-	if (IS_ERR(data->pclk)) {
+-		err = PTR_ERR(data->pclk);
+-		goto err_clk;
+-	}
++	if (IS_ERR(data->pclk))
++		return PTR_ERR(data->pclk);
+ 
+ 	err = clk_prepare_enable(data->pclk);
+ 	if (err) {
+ 		dev_err(dev, "could not enable apb_pclk\n");
+-		goto err_clk;
++		return err;
  	}
--	if (!IS_ERR(data->pclk)) {
--		err = clk_prepare_enable(data->pclk);
--		if (err) {
--			dev_err(dev, "could not enable apb_pclk\n");
--			goto err_clk;
--		}
+ 
++	err = devm_add_action_or_reset(dev, dw8250_clk_disable_unprepare, data->pclk);
++	if (err)
++		return err;
 +
-+	err = clk_prepare_enable(data->pclk);
-+	if (err) {
-+		dev_err(dev, "could not enable apb_pclk\n");
-+		goto err_clk;
+ 	data->rst = devm_reset_control_get_optional_exclusive(dev, NULL);
+-	if (IS_ERR(data->rst)) {
+-		err = PTR_ERR(data->rst);
+-		goto err_pclk;
+-	}
++	if (IS_ERR(data->rst))
++		return PTR_ERR(data->rst);
++
+ 	reset_control_deassert(data->rst);
+ 
++	err = devm_add_action_or_reset(dev, dw8250_reset_control_assert, data->rst);
++	if (err)
++		return err;
++
+ 	dw8250_quirks(p, data);
+ 
+ 	/* If the Busy Functionality is not implemented, don't handle it */
+@@ -528,10 +546,8 @@ static int dw8250_probe(struct platform_device *pdev)
  	}
  
- 	data->rst = devm_reset_control_get_optional_exclusive(dev, NULL);
-@@ -547,12 +544,10 @@ static int dw8250_probe(struct platform_device *pdev)
- 	reset_control_assert(data->rst);
+ 	data->data.line = serial8250_register_8250_port(up);
+-	if (data->data.line < 0) {
+-		err = data->data.line;
+-		goto err_reset;
+-	}
++	if (data->data.line < 0)
++		return data->data.line;
  
- err_pclk:
--	if (!IS_ERR(data->pclk))
--		clk_disable_unprepare(data->pclk);
-+	clk_disable_unprepare(data->pclk);
+ 	platform_set_drvdata(pdev, data);
  
- err_clk:
--	if (!IS_ERR(data->clk))
--		clk_disable_unprepare(data->clk);
-+	clk_disable_unprepare(data->clk);
+@@ -539,17 +555,6 @@ static int dw8250_probe(struct platform_device *pdev)
+ 	pm_runtime_enable(dev);
  
- 	return err;
+ 	return 0;
+-
+-err_reset:
+-	reset_control_assert(data->rst);
+-
+-err_pclk:
+-	clk_disable_unprepare(data->pclk);
+-
+-err_clk:
+-	clk_disable_unprepare(data->clk);
+-
+-	return err;
  }
-@@ -568,11 +563,9 @@ static int dw8250_remove(struct platform_device *pdev)
  
- 	reset_control_assert(data->rst);
+ static int dw8250_remove(struct platform_device *pdev)
+@@ -561,12 +566,6 @@ static int dw8250_remove(struct platform_device *pdev)
  
--	if (!IS_ERR(data->pclk))
--		clk_disable_unprepare(data->pclk);
-+	clk_disable_unprepare(data->pclk);
+ 	serial8250_unregister_port(data->data.line);
  
--	if (!IS_ERR(data->clk))
--		clk_disable_unprepare(data->clk);
-+	clk_disable_unprepare(data->clk);
- 
+-	reset_control_assert(data->rst);
+-
+-	clk_disable_unprepare(data->pclk);
+-
+-	clk_disable_unprepare(data->clk);
+-
  	pm_runtime_disable(dev);
  	pm_runtime_put_noidle(dev);
-@@ -605,11 +598,9 @@ static int dw8250_runtime_suspend(struct device *dev)
- {
- 	struct dw8250_data *data = dev_get_drvdata(dev);
  
--	if (!IS_ERR(data->clk))
--		clk_disable_unprepare(data->clk);
-+	clk_disable_unprepare(data->clk);
- 
--	if (!IS_ERR(data->pclk))
--		clk_disable_unprepare(data->pclk);
-+	clk_disable_unprepare(data->pclk);
- 
- 	return 0;
- }
-@@ -618,11 +609,9 @@ static int dw8250_runtime_resume(struct device *dev)
- {
- 	struct dw8250_data *data = dev_get_drvdata(dev);
- 
--	if (!IS_ERR(data->pclk))
--		clk_prepare_enable(data->pclk);
-+	clk_prepare_enable(data->pclk);
- 
--	if (!IS_ERR(data->clk))
--		clk_prepare_enable(data->clk);
-+	clk_prepare_enable(data->clk);
- 
- 	return 0;
- }
 -- 
 2.51.0
 
