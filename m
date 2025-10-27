@@ -1,62 +1,56 @@
-Return-Path: <stable+bounces-190581-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190691-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE506C1090F
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:10:20 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1634CC10A92
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:14:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4D1B8506680
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:05:22 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C45C550003D
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:09:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FFC232A3C5;
-	Mon, 27 Oct 2025 19:01:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E3562C3745;
+	Mon, 27 Oct 2025 19:05:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V6u6y/2J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D5tceLUE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7AF9329C64;
-	Mon, 27 Oct 2025 19:01:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A9BE2F25F1;
+	Mon, 27 Oct 2025 19:05:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591664; cv=none; b=n8eKYE8dRAp8ljKW1vJyewM0m+UDKQ+WU/i3BiQByRADhLs7Bl9wWCklvQ6qn/UXmac02FhPbU6lKzxy+2tJeEE1ezijMJD7eafBWaO+diZRJV/45QzPLYyEjFHA1n/Yjhh0GV7TFuceMSsptpi7EhYU9atiZYQbN2cGiVUi8mM=
+	t=1761591943; cv=none; b=IedoWyP1XQQd9R6Mw6BPEOOrs2oHkiNAoKfoNhqrUhGxxnaiRfxtvtqIPLeZq0/40rduwAFYfQ287IwKsPYO5YpBQsEq4Qvj0yD8edbd0wRXxjsbxI3tvPK0djI7dmDOmhwujHPG59qrFk61fScS0T7L4fCMF0HWwtiH6HNGknI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591664; c=relaxed/simple;
-	bh=NcKCYg02McSAVWVPhkQzLPwsUwF18hQnoW+DVojEyYI=;
+	s=arc-20240116; t=1761591943; c=relaxed/simple;
+	bh=tAVTz133X5P+ST/wLgx/DKrF02EXaI3T7d557EqX8wQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XX0NhPofUtMH8W5eqI1QpJDayGWjxTT0FFSwDM2kXArq9ebUAv+atnPYWMSMidMsAlZ+BfNCc8UuYOf/2RuweQPJJFbBRc4IBOajEkOYjoX5MugTeUq5Cn7bj/VF4L5jw9zbeVdU+fDPIT35f4Ex5BuhAYG6lKTuogLekRJMkNQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V6u6y/2J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5183DC4CEF1;
-	Mon, 27 Oct 2025 19:01:03 +0000 (UTC)
+	 MIME-Version; b=XFOtEbRom/1cchCgIAXZjHHhvhSBkA+cQLIzccxxhwvoik/Y35mFB45OGAJOBoDiT+rXMVPp8qi6KPRIMq1jThk7W6qDUoWXtzu5ISvMFc3XxXJXyPQEw8wd7z0XbP8Lt8tY5XW+HgVjMCfG8xpIiuL3LBVdZ4dyPOxNDoylRlA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D5tceLUE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFAF8C4CEF1;
+	Mon, 27 Oct 2025 19:05:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591663;
-	bh=NcKCYg02McSAVWVPhkQzLPwsUwF18hQnoW+DVojEyYI=;
+	s=korg; t=1761591943;
+	bh=tAVTz133X5P+ST/wLgx/DKrF02EXaI3T7d557EqX8wQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V6u6y/2JLkG0nfxjdxuEwRFQtrByNGagzj3O+8KHn8pvtVjXY8+MwOycsaSkcxHad
-	 UuaOEuaUy+dGzsq6XmPQTaCYVG0bnPiACQQ2XBujubISwAr3GWcx3VGDRTk/g0iOrl
-	 QWrThJd2K4TDe1NYukmwFDvcp763hJOUA+BMir1c=
+	b=D5tceLUEeSimuusGxk7crMCh8A97xwnpwQ/Gn4jKQsypUMvDBJ6Bv718x8l5r0VkN
+	 ZavOD4GcV/1QxgHuoeqAGaKjCmHvQNeujqvWcPOX0L2jn0sfQ7qek2Iz32PZg97+uq
+	 uL9m24ixQF7Rj5vtB/ijxzB/gXDPt45QBUWEOc5w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Deepanshu Kartikey <kartikey406@gmail.com>,
-	syzbot+6fdd8fa3380730a4b22c@syzkaller.appspotmail.com,
-	Mark Fasheh <mark@fasheh.com>,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Jun Piao <piaojun@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.10 283/332] ocfs2: clear extent cache after moving/defragmenting extents
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 056/123] net: add ndo_fdb_del_bulk
 Date: Mon, 27 Oct 2025 19:35:36 +0100
-Message-ID: <20251027183532.332273752@linuxfoundation.org>
+Message-ID: <20251027183447.895000131@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
-References: <20251027183524.611456697@linuxfoundation.org>
+In-Reply-To: <20251027183446.381986645@linuxfoundation.org>
+References: <20251027183446.381986645@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,67 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Deepanshu Kartikey <kartikey406@gmail.com>
+From: Nikolay Aleksandrov <razor@blackwall.org>
 
-commit 78a63493f8e352296dbc7cb7b3f4973105e8679e upstream.
+[ Upstream commit 1306d5362a591493a2d07f685ed2cc480dcda320 ]
 
-The extent map cache can become stale when extents are moved or
-defragmented, causing subsequent operations to see outdated extent flags.
-This triggers a BUG_ON in ocfs2_refcount_cal_cow_clusters().
+Add a new netdev op called ndo_fdb_del_bulk, it will be later used for
+driver-specific bulk delete implementation dispatched from rtnetlink. The
+first user will be the bridge, we need it to signal to rtnetlink from
+the driver that we support bulk delete operation (NLM_F_BULK).
 
-The problem occurs when:
-1. copy_file_range() creates a reflinked extent with OCFS2_EXT_REFCOUNTED
-2. ioctl(FITRIM) triggers ocfs2_move_extents()
-3. __ocfs2_move_extents_range() reads and caches the extent (flags=0x2)
-4. ocfs2_move_extent()/ocfs2_defrag_extent() calls __ocfs2_move_extent()
-   which clears OCFS2_EXT_REFCOUNTED flag on disk (flags=0x0)
-5. The extent map cache is not invalidated after the move
-6. Later write() operations read stale cached flags (0x2) but disk has
-   updated flags (0x0), causing a mismatch
-7. BUG_ON(!(rec->e_flags & OCFS2_EXT_REFCOUNTED)) triggers
-
-Fix by clearing the extent map cache after each extent move/defrag
-operation in __ocfs2_move_extents_range().  This ensures subsequent
-operations read fresh extent data from disk.
-
-Link: https://lore.kernel.org/all/20251009142917.517229-1-kartikey406@gmail.com/T/
-Link: https://lkml.kernel.org/r/20251009154903.522339-1-kartikey406@gmail.com
-Fixes: 53069d4e7695 ("Ocfs2/move_extents: move/defrag extents within a certain range.")
-Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
-Reported-by: syzbot+6fdd8fa3380730a4b22c@syzkaller.appspotmail.com
-Tested-by: syzbot+6fdd8fa3380730a4b22c@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?id=2959889e1f6e216585ce522f7e8bc002b46ad9e7
-Reviewed-by: Mark Fasheh <mark@fasheh.com>
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Nikolay Aleksandrov <razor@blackwall.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: bf29555f5bdc ("rtnetlink: Allow deleting FDB entries in user namespace")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ocfs2/move_extents.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ include/linux/netdevice.h | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/fs/ocfs2/move_extents.c
-+++ b/fs/ocfs2/move_extents.c
-@@ -870,6 +870,11 @@ static int __ocfs2_move_extents_range(st
- 			mlog_errno(ret);
- 			goto out;
- 		}
-+		/*
-+		 * Invalidate extent cache after moving/defragging to prevent
-+		 * stale cached data with outdated extent flags.
-+		 */
-+		ocfs2_extent_map_trunc(inode, cpos);
- 
- 		context->clusters_moved += alloc_size;
- next:
+diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
+index 179c569a55c42..83bb0f21b1b02 100644
+--- a/include/linux/netdevice.h
++++ b/include/linux/netdevice.h
+@@ -1273,6 +1273,10 @@ struct netdev_net_notifier {
+  *		      struct net_device *dev,
+  *		      const unsigned char *addr, u16 vid)
+  *	Deletes the FDB entry from dev coresponding to addr.
++ * int (*ndo_fdb_del_bulk)(struct ndmsg *ndm, struct nlattr *tb[],
++ *			   struct net_device *dev,
++ *			   u16 vid,
++ *			   struct netlink_ext_ack *extack);
+  * int (*ndo_fdb_dump)(struct sk_buff *skb, struct netlink_callback *cb,
+  *		       struct net_device *dev, struct net_device *filter_dev,
+  *		       int *idx)
+@@ -1528,6 +1532,11 @@ struct net_device_ops {
+ 					       struct net_device *dev,
+ 					       const unsigned char *addr,
+ 					       u16 vid);
++	int			(*ndo_fdb_del_bulk)(struct ndmsg *ndm,
++						    struct nlattr *tb[],
++						    struct net_device *dev,
++						    u16 vid,
++						    struct netlink_ext_ack *extack);
+ 	int			(*ndo_fdb_dump)(struct sk_buff *skb,
+ 						struct netlink_callback *cb,
+ 						struct net_device *dev,
+-- 
+2.51.0
+
 
 
 
