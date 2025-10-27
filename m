@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-191256-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190919-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0314DC1126D
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:37:52 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E69CC10E41
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:24:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B6A2B505DE8
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:32:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 08CF8560284
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:17:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86B1E32548B;
-	Mon, 27 Oct 2025 19:30:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A61531C584;
+	Mon, 27 Oct 2025 19:15:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ga1R6z9P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SpRt9g7u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 427CD320A02;
-	Mon, 27 Oct 2025 19:30:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E79461E47CA;
+	Mon, 27 Oct 2025 19:15:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761593434; cv=none; b=Dk3n3/6Txa/GqUoifhAsBGROYQnY8sOjXSusDxT6DgG5dAH6A12R+orPWz7IjoQaae9ox53/ceQagQk3zslSaOW/9KaZ71iWTichRbvXSVLVqrgJ4ajnoH8SGWKz7UOW2mDusbZvG37hOYabW88kZ13g6aLmYp8dqzgKLITJqsM=
+	t=1761592542; cv=none; b=HFr1FNa7sO5NSzMXJtLXBpunU79uPRI8/dFE9cOAjdpc6qK3pyIirQPZaiECs5EANuiwTofX0fKBdjtguWAAqQrTt66Pm0DL/N6FPuKt9DcHSahnfqNKAfkZ1/juA+jDCRqkCBGCa1h0jbtx7Bn0x1NgOmd5wHPJJfNI3QnlP5w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761593434; c=relaxed/simple;
-	bh=2kiRAAdiiVx3uf8YiiVpya5p90qXsom+uj7vC5685CA=;
+	s=arc-20240116; t=1761592542; c=relaxed/simple;
+	bh=WKaDVqVIFnkoPVfzD5tXoh0gSEXEeAfXF/YR+lWIsg8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oTg4AqfBXmSVn51nncA4m9uXbdbMHMZ+dNAr6dDxvIrnxojU9jiW2kLZIAif24XI2iUpzP9U9jsm6AJP0X+WXmh5VpE3AyO2DkzEnDNi++mKC8PHyrB7eaS0NAdkgKQaBxj81N2jfFIPw8qZvC924BqWVZZX6MHSl24JudBruQk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ga1R6z9P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30CD3C4CEF1;
-	Mon, 27 Oct 2025 19:30:32 +0000 (UTC)
+	 MIME-Version; b=GY61iJXiCcvV2cN348RZyJr+vugVNxr9JalKtwUPXQ++9LKXDtjwFV/QxhBDYxj1Ee7OckfMQb5jnFRt+FelYfaVvJmSimfcgh28BWZ6VD/mi9R4lgaYb1z2cOqorj7gERRZAY9LtYuMB9pPtFJX+Wt6k448G5zS9Q0CsIPDSuY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SpRt9g7u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B984C4CEF1;
+	Mon, 27 Oct 2025 19:15:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761593433;
-	bh=2kiRAAdiiVx3uf8YiiVpya5p90qXsom+uj7vC5685CA=;
+	s=korg; t=1761592541;
+	bh=WKaDVqVIFnkoPVfzD5tXoh0gSEXEeAfXF/YR+lWIsg8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ga1R6z9P3LCvlo/1eKy/KEyXE4f7Bw8U6z7DYqSZZMPNwWGiryCFHDvFQuwUC2Vnm
-	 wPLMjMxfZHls91BuVAnPDNW6M12sDfCNi7dNJBD2GVAEQUyihkwU49wAyyYegqEFrS
-	 rPBWonnIxMMdWFOnbmiCInQtjfzJ+oLv/pvjOe7E=
+	b=SpRt9g7ue7D3nYy5/vEqRUrdFz+9lNNWjxe7NoiPPxtmuxlA/TtSd2MxwgIojdZPm
+	 QzVZts7FZVBRdvBex7UWz/PJqiVIIJ+dAry7ezf2J7HYgUB5H96ry0xYSPPe5r+CgE
+	 Mp8vE+owD1tGue+Yn2k+i1hTdt3aDgGe0aVOoIyA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anup Patel <apatel@ventanamicro.com>,
-	Han Gao <rabenda.cn@gmail.com>,
-	"Guo Ren (Alibaba DAMO Academy)" <guoren@kernel.org>,
-	Paul Walmsley <pjw@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 132/184] RISC-V: Define pgprot_dmacoherent() for non-coherent devices
+	Peter Oberparleiter <oberpar@linux.ibm.com>,
+	Vineeth Vijayan <vneethv@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>
+Subject: [PATCH 6.1 153/157] s390/cio: Update purge function to unregister the unused subchannels
 Date: Mon, 27 Oct 2025 19:36:54 +0100
-Message-ID: <20251027183518.500309367@linuxfoundation.org>
+Message-ID: <20251027183505.400732721@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
-References: <20251027183514.934710872@linuxfoundation.org>
+In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
+References: <20251027183501.227243846@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,53 +62,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anup Patel <apatel@ventanamicro.com>
+From: Vineeth Vijayan <vneethv@linux.ibm.com>
 
-[ Upstream commit ca525d53f994d45c8140968b571372c45f555ac1 ]
+commit 9daa5a8795865f9a3c93d8d1066785b07ded6073 upstream.
 
-The pgprot_dmacoherent() is used when allocating memory for
-non-coherent devices and by default pgprot_dmacoherent() is
-same as pgprot_noncached() unless architecture overrides it.
+Starting with 'commit 2297791c92d0 ("s390/cio: dont unregister
+subchannel from child-drivers")', cio no longer unregisters
+subchannels when the attached device is invalid or unavailable.
 
-Currently, there is no pgprot_dmacoherent() definition for
-RISC-V hence non-coherent device memory is being mapped as
-IO thereby making CPU access to such memory slow.
+As an unintended side-effect, the cio_ignore purge function no longer
+removes subchannels for devices on the cio_ignore list if no CCW device
+is attached. This situation occurs when a CCW device is non-operational
+or unavailable
 
-Define pgprot_dmacoherent() to be same as pgprot_writecombine()
-for RISC-V so that CPU access non-coherent device memory as
-NOCACHE which is better than accessing it as IO.
+To ensure the same outcome of the purge function as when the
+current cio_ignore list had been active during boot, update the purge
+function to remove I/O subchannels without working CCW devices if the
+associated device number is found on the cio_ignore list.
 
-Fixes: ff689fd21cb1 ("riscv: add RISC-V Svpbmt extension support")
-Signed-off-by: Anup Patel <apatel@ventanamicro.com>
-Tested-by: Han Gao <rabenda.cn@gmail.com>
-Tested-by: Guo Ren (Alibaba DAMO Academy) <guoren@kernel.org>
-Link: https://lore.kernel.org/r/20250820152316.1012757-1-apatel@ventanamicro.com
-Signed-off-by: Paul Walmsley <pjw@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 2297791c92d0 ("s390/cio: dont unregister subchannel from child-drivers")
+Suggested-by: Peter Oberparleiter <oberpar@linux.ibm.com>
+Reviewed-by: Peter Oberparleiter <oberpar@linux.ibm.com>
+Signed-off-by: Vineeth Vijayan <vneethv@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/riscv/include/asm/pgtable.h | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/s390/cio/device.c |   39 +++++++++++++++++++++++++--------------
+ 1 file changed, 25 insertions(+), 14 deletions(-)
 
-diff --git a/arch/riscv/include/asm/pgtable.h b/arch/riscv/include/asm/pgtable.h
-index 8150677429398..4355e8f3670bb 100644
---- a/arch/riscv/include/asm/pgtable.h
-+++ b/arch/riscv/include/asm/pgtable.h
-@@ -653,6 +653,8 @@ static inline pgprot_t pgprot_writecombine(pgprot_t _prot)
- 	return __pgprot(prot);
+--- a/drivers/s390/cio/device.c
++++ b/drivers/s390/cio/device.c
+@@ -1309,23 +1309,34 @@ void ccw_device_schedule_recovery(void)
+ 	spin_unlock_irqrestore(&recovery_lock, flags);
  }
  
-+#define pgprot_dmacoherent pgprot_writecombine
+-static int purge_fn(struct device *dev, void *data)
++static int purge_fn(struct subchannel *sch, void *data)
+ {
+-	struct ccw_device *cdev = to_ccwdev(dev);
+-	struct ccw_dev_id *id = &cdev->private->dev_id;
+-	struct subchannel *sch = to_subchannel(cdev->dev.parent);
+-
+-	spin_lock_irq(cdev->ccwlock);
+-	if (is_blacklisted(id->ssid, id->devno) &&
+-	    (cdev->private->state == DEV_STATE_OFFLINE) &&
+-	    (atomic_cmpxchg(&cdev->private->onoff, 0, 1) == 0)) {
+-		CIO_MSG_EVENT(3, "ccw: purging 0.%x.%04x\n", id->ssid,
+-			      id->devno);
++	struct ccw_device *cdev;
 +
- /*
-  * Both Svade and Svadu control the hardware behavior when the PTE A/D bits need to be set. By
-  * default the M-mode firmware enables the hardware updating scheme when only Svadu is present in
--- 
-2.51.0
-
++	spin_lock_irq(sch->lock);
++	if (sch->st != SUBCHANNEL_TYPE_IO || !sch->schib.pmcw.dnv)
++		goto unlock;
++
++	if (!is_blacklisted(sch->schid.ssid, sch->schib.pmcw.dev))
++		goto unlock;
++
++	cdev = sch_get_cdev(sch);
++	if (cdev) {
++		if (cdev->private->state != DEV_STATE_OFFLINE)
++			goto unlock;
++
++		if (atomic_cmpxchg(&cdev->private->onoff, 0, 1) != 0)
++			goto unlock;
+ 		ccw_device_sched_todo(cdev, CDEV_TODO_UNREG);
+-		css_sched_sch_todo(sch, SCH_TODO_UNREG);
+ 		atomic_set(&cdev->private->onoff, 0);
+ 	}
+-	spin_unlock_irq(cdev->ccwlock);
++
++	css_sched_sch_todo(sch, SCH_TODO_UNREG);
++	CIO_MSG_EVENT(3, "ccw: purging 0.%x.%04x%s\n", sch->schid.ssid,
++		      sch->schib.pmcw.dev, cdev ? "" : " (no cdev)");
++
++unlock:
++	spin_unlock_irq(sch->lock);
+ 	/* Abort loop in case of pending signal. */
+ 	if (signal_pending(current))
+ 		return -EINTR;
+@@ -1341,7 +1352,7 @@ static int purge_fn(struct device *dev,
+ int ccw_purge_blacklisted(void)
+ {
+ 	CIO_MSG_EVENT(2, "ccw: purging blacklisted devices\n");
+-	bus_for_each_dev(&ccw_bus_type, NULL, NULL, purge_fn);
++	for_each_subchannel_staged(purge_fn, NULL, NULL);
+ 	return 0;
+ }
+ 
 
 
 
