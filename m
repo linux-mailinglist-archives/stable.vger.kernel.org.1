@@ -1,64 +1,57 @@
-Return-Path: <stable+bounces-190896-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191281-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DD09C10B37
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:16:20 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 635AFC11285
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:38:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id DF7763521B5
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:16:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 209EC5840BE
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:33:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1DAD2F25F1;
-	Mon, 27 Oct 2025 19:14:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82B3F32548A;
+	Mon, 27 Oct 2025 19:31:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IwM89np/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OaOs3ckt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E94431D389;
-	Mon, 27 Oct 2025 19:14:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3109D322A3F;
+	Mon, 27 Oct 2025 19:31:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592481; cv=none; b=sb8vce18WOoulw2lObQtOihthLPa+Mawmc4WJLDAU32IvAWZnpMYLSSKCKw+68Dlc8ndptDM1noYHok51DpJHw4GG5LUA6BJs+Y96MF8mFnj9cJskstvGd2TR8SqCzVr+ke88Motg8oDkNNJzhl+L+vbsWNXxRsmcKAxt3+pXUc=
+	t=1761593513; cv=none; b=DYdSr+hcEuVV/FZyhpcU/hst+z0JVAoeKuYp/gUN4w1pjtniHTrSCH4LQjKNionP2oV/dbz7MxAjgibprOjup2hgkluZi+gpkbjcK0bRO7ixXc48sDkjjFawaTt12Yv0BFQuKmqDDCtKq0PcuS9x4woXZZQ8VW51YIPSBsEUIHs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592481; c=relaxed/simple;
-	bh=8kPq4ezmVeb+vKZ4PBFDQcxsaatCAWqQTzErdi8Rwnk=;
+	s=arc-20240116; t=1761593513; c=relaxed/simple;
+	bh=5TD2Lvu8cJW8nsu2NJXa9daM3nzr4DmSk3bohcKzcf0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=K5UFDMO8ab5zS9LM1X1EpOsfVoK4to41bp+2ujqX20iZSfjymlOdz7AFGtOlbENtICSEMRjxgUzg66fhJpkl5x0kAUUPR5niks/VDLeyej7lkAyTixjdldLz6HdX0Ttv2dnUY56PKrX6dZbS51EZB9QnzHlRLp+K0yN2rep65ZQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IwM89np/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEC86C4CEF1;
-	Mon, 27 Oct 2025 19:14:40 +0000 (UTC)
+	 MIME-Version; b=IuiiXw8vJBk5D87x1lpCSuCgsB+F7Z7N3BTEAbqB4lUnS9gKUaPGrzAwhVihz46XBo02s0Of7ymCLB6L5eFUAribfNkpH19SvlueGpPNJzZPayOUeH3Qv9s9gUxwJdssB+r1Xjei36WXoYnr6AIhwfPGu8uH7hwt7Zwt4rYjm8k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OaOs3ckt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D3C1C4CEF1;
+	Mon, 27 Oct 2025 19:31:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592481;
-	bh=8kPq4ezmVeb+vKZ4PBFDQcxsaatCAWqQTzErdi8Rwnk=;
+	s=korg; t=1761593512;
+	bh=5TD2Lvu8cJW8nsu2NJXa9daM3nzr4DmSk3bohcKzcf0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IwM89np/jYGIv4TzAmQbXiG8tQ0MLYJFUYQdxVRa6fqq+o5Vl4BHe7wUTTyrCqCRG
-	 30PtjgQjcLebjyfrwMaj5inTVr2PyCNkvYyY+RTeYEI///7AlAHheZfzqPTxX9DyEy
-	 +iVawo6RYVQQLO+YM0YrUFPn7U/jD5HKQrT9/PTs=
+	b=OaOs3cktTiiDKgrusNYwrVdm+Q+OCy2i9pAQvKMUB6DpslDdsDVpG7X6pUL7ljIHp
+	 AalbgPmYEAYJq/T1LWk+bbrgOdYRWw9eULg4L0jU6kOfR9G17LQvkMbxBfSqNel20V
+	 dAL6Ee+QzJRB84unzAacj79IWtlk4Kx4sXJbsLuc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Rob Clark <robdclark@chromium.org>,
-	Daniel Vetter <daniel.vetter@ffwll.ch>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Philipp Stanner <phasta@kernel.org>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <ckoenig.leichtzumerken@gmail.com>,
-	dri-devel@lists.freedesktop.org,
+	Haibo Chen <haibo.chen@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 137/157] drm/sched: Fix potential double free in drm_sched_job_add_resv_dependencies
+Subject: [PATCH 6.17 116/184] spi: spi-nxp-fspi: add the support for sample data from DQS pad
 Date: Mon, 27 Oct 2025 19:36:38 +0100
-Message-ID: <20251027183504.935157690@linuxfoundation.org>
+Message-ID: <20251027183518.063570456@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
-References: <20251027183501.227243846@linuxfoundation.org>
+In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
+References: <20251027183514.934710872@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,106 +61,143 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+From: Haibo Chen <haibo.chen@nxp.com>
 
-[ Upstream commit 5801e65206b065b0b2af032f7f1eef222aa2fd83 ]
+[ Upstream commit c07f270323175b83779c2c2b80b360ed476baec5 ]
 
-When adding dependencies with drm_sched_job_add_dependency(), that
-function consumes the fence reference both on success and failure, so in
-the latter case the dma_fence_put() on the error path (xarray failed to
-expand) is a double free.
+flexspi define four mode for sample clock source selection.
+Here is the list of modes:
+mode 0: Dummy Read strobe generated by FlexSPI Controller and loopback
+        internally
+mode 1: Dummy Read strobe generated by FlexSPI Controller and loopback
+        from DQS pad
+mode 2: Reserved
+mode 3: Flash provided Read strobe and input from DQS pad
 
-Interestingly this bug appears to have been present ever since
-commit ebd5f74255b9 ("drm/sched: Add dependency tracking"), since the code
-back then looked like this:
+In default, flexspi use mode 0 after reset. And for DTR mode, flexspi
+only support 8D-8D-8D mode. For 8D-8D-8D mode, IC suggest to use mode 3,
+otherwise read always get incorrect data.
 
-drm_sched_job_add_implicit_dependencies():
-...
-       for (i = 0; i < fence_count; i++) {
-               ret = drm_sched_job_add_dependency(job, fences[i]);
-               if (ret)
-                       break;
-       }
+For DTR mode, flexspi will automatically div 2 of the root clock
+and output to device. the formula is:
+    device_clock = root_clock / (is_dtr ? 2 : 1)
+So correct the clock rate setting for DTR mode to get the max
+performance.
 
-       for (; i < fence_count; i++)
-               dma_fence_put(fences[i]);
-
-Which means for the failing 'i' the dma_fence_put was already a double
-free. Possibly there were no users at that time, or the test cases were
-insufficient to hit it.
-
-The bug was then only noticed and fixed after
-commit 9c2ba265352a ("drm/scheduler: use new iterator in drm_sched_job_add_implicit_dependencies v2")
-landed, with its fixup of
-commit 4eaf02d6076c ("drm/scheduler: fix drm_sched_job_add_implicit_dependencies").
-
-At that point it was a slightly different flavour of a double free, which
-commit 963d0b356935 ("drm/scheduler: fix drm_sched_job_add_implicit_dependencies harder")
-noticed and attempted to fix.
-
-But it only moved the double free from happening inside the
-drm_sched_job_add_dependency(), when releasing the reference not yet
-obtained, to the caller, when releasing the reference already released by
-the former in the failure case.
-
-As such it is not easy to identify the right target for the fixes tag so
-lets keep it simple and just continue the chain.
-
-While fixing we also improve the comment and explain the reason for taking
-the reference and not dropping it.
-
-Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-Fixes: 963d0b356935 ("drm/scheduler: fix drm_sched_job_add_implicit_dependencies harder")
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/dri-devel/aNFbXq8OeYl3QSdm@stanley.mountain/
-Cc: Christian König <christian.koenig@amd.com>
-Cc: Rob Clark <robdclark@chromium.org>
-Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: Danilo Krummrich <dakr@kernel.org>
-Cc: Philipp Stanner <phasta@kernel.org>
-Cc: Christian König <ckoenig.leichtzumerken@gmail.com>
-Cc: dri-devel@lists.freedesktop.org
-Cc: stable@vger.kernel.org # v5.16+
-Signed-off-by: Philipp Stanner <phasta@kernel.org>
-Link: https://lore.kernel.org/r/20251015084015.6273-1-tvrtko.ursulin@igalia.com
-[ applied to drm_sched_job_add_implicit_dependencies instead of drm_sched_job_add_resv_dependencies ]
+Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://patch.msgid.link/20250917-flexspi-ddr-v2-4-bb9fe2a01889@nxp.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: a89103f67112 ("spi: spi-nxp-fspi: re-config the clock rate when operation require new clock rate")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/scheduler/sched_main.c |   13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ drivers/spi/spi-nxp-fspi.c | 56 ++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 53 insertions(+), 3 deletions(-)
 
---- a/drivers/gpu/drm/scheduler/sched_main.c
-+++ b/drivers/gpu/drm/scheduler/sched_main.c
-@@ -719,13 +719,14 @@ int drm_sched_job_add_implicit_dependenc
+diff --git a/drivers/spi/spi-nxp-fspi.c b/drivers/spi/spi-nxp-fspi.c
+index b92bfef47371f..7cbe774f1f39b 100644
+--- a/drivers/spi/spi-nxp-fspi.c
++++ b/drivers/spi/spi-nxp-fspi.c
+@@ -399,7 +399,8 @@ struct nxp_fspi {
+ 	struct mutex lock;
+ 	struct pm_qos_request pm_qos_req;
+ 	int selected;
+-#define FSPI_NEED_INIT		(1 << 0)
++#define FSPI_NEED_INIT		BIT(0)
++#define FSPI_DTR_MODE		BIT(1)
+ 	int flags;
+ };
  
- 	dma_resv_for_each_fence(&cursor, obj->resv, dma_resv_usage_rw(write),
- 				fence) {
--		/* Make sure to grab an additional ref on the added fence */
--		dma_fence_get(fence);
--		ret = drm_sched_job_add_dependency(job, fence);
--		if (ret) {
--			dma_fence_put(fence);
-+		/*
-+		 * As drm_sched_job_add_dependency always consumes the fence
-+		 * reference (even when it fails), and dma_resv_for_each_fence
-+		 * is not obtaining one, we need to grab one before calling.
-+		 */
-+		ret = drm_sched_job_add_dependency(job, dma_fence_get(fence));
-+		if (ret)
- 			return ret;
--		}
- 	}
- 	return 0;
+@@ -645,6 +646,40 @@ static void nxp_fspi_clk_disable_unprep(struct nxp_fspi *f)
+ 	return;
  }
+ 
++/*
++ * Sample Clock source selection for Flash Reading
++ * Four modes defined by fspi:
++ * mode 0: Dummy Read strobe generated by FlexSPI Controller
++ *         and loopback internally
++ * mode 1: Dummy Read strobe generated by FlexSPI Controller
++ *         and loopback from DQS pad
++ * mode 2: Reserved
++ * mode 3: Flash provided Read strobe and input from DQS pad
++ *
++ * fspi default use mode 0 after reset
++ */
++static void nxp_fspi_select_rx_sample_clk_source(struct nxp_fspi *f,
++						 bool op_is_dtr)
++{
++	u32 reg;
++
++	/*
++	 * For 8D-8D-8D mode, need to use mode 3 (Flash provided Read
++	 * strobe and input from DQS pad), otherwise read operaton may
++	 * meet issue.
++	 * This mode require flash device connect the DQS pad on board.
++	 * For other modes, still use mode 0, keep align with before.
++	 * spi_nor_suspend will disable 8D-8D-8D mode, also need to
++	 * change the mode back to mode 0.
++	 */
++	reg = fspi_readl(f, f->iobase + FSPI_MCR0);
++	if (op_is_dtr)
++		reg |= FSPI_MCR0_RXCLKSRC(3);
++	else	/*select mode 0 */
++		reg &= ~FSPI_MCR0_RXCLKSRC(3);
++	fspi_writel(f, reg, f->iobase + FSPI_MCR0);
++}
++
+ static void nxp_fspi_dll_calibration(struct nxp_fspi *f)
+ {
+ 	int ret;
+@@ -715,15 +750,18 @@ static void nxp_fspi_dll_calibration(struct nxp_fspi *f)
+ static void nxp_fspi_select_mem(struct nxp_fspi *f, struct spi_device *spi,
+ 				const struct spi_mem_op *op)
+ {
++	/* flexspi only support one DTR mode: 8D-8D-8D */
++	bool op_is_dtr = op->cmd.dtr && op->addr.dtr && op->dummy.dtr && op->data.dtr;
+ 	unsigned long rate = op->max_freq;
+ 	int ret;
+ 	uint64_t size_kb;
+ 
+ 	/*
+ 	 * Return, if previously selected target device is same as current
+-	 * requested target device.
++	 * requested target device. Also the DTR or STR mode do not change.
+ 	 */
+-	if (f->selected == spi_get_chipselect(spi, 0))
++	if ((f->selected == spi_get_chipselect(spi, 0)) &&
++	    (!!(f->flags & FSPI_DTR_MODE) == op_is_dtr))
+ 		return;
+ 
+ 	/* Reset FLSHxxCR0 registers */
+@@ -740,6 +778,18 @@ static void nxp_fspi_select_mem(struct nxp_fspi *f, struct spi_device *spi,
+ 
+ 	dev_dbg(f->dev, "Target device [CS:%x] selected\n", spi_get_chipselect(spi, 0));
+ 
++	nxp_fspi_select_rx_sample_clk_source(f, op_is_dtr);
++
++	if (op_is_dtr) {
++		f->flags |= FSPI_DTR_MODE;
++		/* For DTR mode, flexspi will default div 2 and output to device.
++		 * so here to config the root clock to 2 * device rate.
++		 */
++		rate = rate * 2;
++	} else {
++		f->flags &= ~FSPI_DTR_MODE;
++	}
++
+ 	nxp_fspi_clk_disable_unprep(f);
+ 
+ 	ret = clk_set_rate(f->clk, rate);
+-- 
+2.51.0
+
 
 
 
