@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-190859-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191203-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFE29C10ABC
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:15:07 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09A1AC1125E
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:37:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 6A14F351FFC
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:15:07 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E31D6563776
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:29:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDF042D73B1;
-	Mon, 27 Oct 2025 19:13:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DE95321445;
+	Mon, 27 Oct 2025 19:27:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZZdPVg0O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ERi1wHNi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B37A2D5A14;
-	Mon, 27 Oct 2025 19:13:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD96731DD87;
+	Mon, 27 Oct 2025 19:27:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592387; cv=none; b=dNvO19krrffLQWVDp5jwi+aNrEIqoY/b4ixukIKlDK5Gs9uR7Z0jrzKMnS/RVc2W0BdNye96Bfs4rAtfnA4YOOpfTZxRypwNH0cLQhLsWDBAHiqS01wc2d4kThLYHxPPa/NS28LzkcLkGsjCzxAajdsC0eAW7VrJW9hFAHKmQUE=
+	t=1761593272; cv=none; b=i8Lp3lpB2DZilA/3sOZb5EbvUyY3NpFW0ucqeJhjvROvZza04/awzwJKPgbhwA2Bpdyta9KQbb2rRrPc3smyFWjo9DuYvhdQPWWPfsD3A1fjvPbwYKVI4cftwK/VC6STQsajecTF55QjPHL/oMvWADJUnDsKWoeXrkFzLBfFn38=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592387; c=relaxed/simple;
-	bh=OGpFUnvureqSSH/yURz9qggxKB6Fgwn0sCYOHDuHo2U=;
+	s=arc-20240116; t=1761593272; c=relaxed/simple;
+	bh=wPWH7H/BuCqdhJxp1oTJ9s8rME0Elj+s/dTW5q08Frg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IuisPfn9tbAc7udnAZGTJIFarDFT0godhc9RqvsWr9wtIbl21MOjs9T3cke+WWP6eHPajXH/3iufoHQin/Rt7bn9PQWapOFjYwPT2JAAo0C3RpeUzenMb15Hm8LNeWNvNCz52GQSQBw6RoDvDHlPnCXlgRUDoM99GPy7E2rGqTU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZZdPVg0O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6DF0C4CEF1;
-	Mon, 27 Oct 2025 19:13:06 +0000 (UTC)
+	 MIME-Version; b=HuHf6UwEmAYBfsCawSAZIf39n8ag4TisqXqFEQDhS9Q4QxfExIcIch6TUjNH/LpjSzLR8UQimsHB8zJ8b2r4a1n4P/MpARCCs4YBBNhC1OCFHiHG0jl8y0UDTRZzjZvq6/RWijT+5WVKWbmx3CUk8qQ6jNcemi83ypiQxF9rdyo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ERi1wHNi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41383C4CEF1;
+	Mon, 27 Oct 2025 19:27:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592387;
-	bh=OGpFUnvureqSSH/yURz9qggxKB6Fgwn0sCYOHDuHo2U=;
+	s=korg; t=1761593272;
+	bh=wPWH7H/BuCqdhJxp1oTJ9s8rME0Elj+s/dTW5q08Frg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZZdPVg0OzuYzifDzAlPfQUFIPc6p98iuNRM3neucY6SAqaiq98vIGM3Tqv3X7iHdm
-	 9+U3L8IAvg4Fi74GhsvYQOkfFx7BmZ1e5KxKS8Pp4U0ZRUMaByBm78sRzLbIXfM71f
-	 wN3z9rPDjuF9zzLcD7SDrJ5BcsC3TQY3TKJPOI+E=
+	b=ERi1wHNiDKLLelYDlbXTft76MdlzfVGcIluEOCCc+BkZUZyYZDFKxYl9USzPiGiDs
+	 hiwnwUvnCdpttlEbpRc6NdVskXRXQLeoR5vzhErmudAyw4TpnXcwrKXfNrkIDUkMOv
+	 gMqFzs/uRpHvdzzBsZVzq72DMnlUFMl1G37moAno=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anup Patel <apatel@ventanamicro.com>,
-	Andrew Jones <ajones@ventanamicro.com>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Paul Walmsley <pjw@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 101/157] RISC-V: Dont print details of CPUs disabled in DT
+	Charlie Jenkins <charlie@rivosinc.com>,
+	Paul Walmsley <pjw@kernel.org>
+Subject: [PATCH 6.17 080/184] riscv: cpufeature: avoid uninitialized variable in has_thead_homogeneous_vlenb()
 Date: Mon, 27 Oct 2025 19:36:02 +0100
-Message-ID: <20251027183503.970945883@linuxfoundation.org>
+Message-ID: <20251027183517.056089634@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
-References: <20251027183501.227243846@linuxfoundation.org>
+In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
+References: <20251027183514.934710872@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,51 +61,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anup Patel <apatel@ventanamicro.com>
+From: Paul Walmsley <pjw@kernel.org>
 
-[ Upstream commit d2721bb165b3ee00dd23525885381af07fec852a ]
+commit 2dc99ea2727640b2fe12f9aa0e38ea2fc3cbb92d upstream.
 
-Early boot stages may disable CPU DT nodes for unavailable
-CPUs based on SKU, pinstraps, eFuse, etc. Currently, the
-riscv_early_of_processor_hartid() prints details of a CPU
-if it is disabled in DT which has no value and gives a
-false impression to the users that there some issue with
-the CPU.
+In has_thead_homogeneous_vlenb(), smatch detected that the vlenb variable
+could be used while uninitialized.  It appears that this could happen if
+no CPUs described in DT have the "thead,vlenb" property.
 
-Fixes: e3d794d555cd ("riscv: treat cpu devicetree nodes without status as enabled")
-Signed-off-by: Anup Patel <apatel@ventanamicro.com>
-Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
-Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
-Link: https://lore.kernel.org/r/20251014163009.182381-1-apatel@ventanamicro.com
+Fix by initializing vlenb to 0, which will keep thead_vlenb_of set to 0
+(as it was statically initialized).  This in turn will cause
+riscv_v_setup_vsize() to fall back to CSR probing - the desired result if
+thead,vlenb isn't provided in the DT data.
+
+While here, fix a nearby comment typo.
+
+Cc: stable@vger.kernel.org
+Cc: Charlie Jenkins <charlie@rivosinc.com>
+Fixes: 377be47f90e41 ("riscv: vector: Use vlenb from DT for thead")
 Signed-off-by: Paul Walmsley <pjw@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lore.kernel.org/r/22674afb-2fe8-2a83-1818-4c37bd554579@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/riscv/kernel/cpu.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ arch/riscv/kernel/cpufeature.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/riscv/kernel/cpu.c b/arch/riscv/kernel/cpu.c
-index 0f76181dc634d..e642b3dc42d27 100644
---- a/arch/riscv/kernel/cpu.c
-+++ b/arch/riscv/kernel/cpu.c
-@@ -32,10 +32,8 @@ int riscv_of_processor_hartid(struct device_node *node, unsigned long *hart)
- 		return -ENODEV;
- 	}
+--- a/arch/riscv/kernel/cpufeature.c
++++ b/arch/riscv/kernel/cpufeature.c
+@@ -932,9 +932,9 @@ static int has_thead_homogeneous_vlenb(v
+ {
+ 	int cpu;
+ 	u32 prev_vlenb = 0;
+-	u32 vlenb;
++	u32 vlenb = 0;
  
--	if (!of_device_is_available(node)) {
--		pr_info("CPU with hartid=%lu is not available\n", *hart);
-+	if (!of_device_is_available(node))
- 		return -ENODEV;
--	}
+-	/* Ignore thead,vlenb property if xtheavector is not enabled in the kernel */
++	/* Ignore thead,vlenb property if xtheadvector is not enabled in the kernel */
+ 	if (!IS_ENABLED(CONFIG_RISCV_ISA_XTHEADVECTOR))
+ 		return 0;
  
- 	if (of_property_read_string(node, "riscv,isa", &isa)) {
- 		pr_warn("CPU with hartid=%lu has no \"riscv,isa\" property\n", *hart);
--- 
-2.51.0
-
 
 
 
