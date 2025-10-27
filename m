@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-190780-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191142-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id B42B4C10C07
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:18:35 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54FCDC110AB
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:31:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 9C532502472
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:12:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 32E561A28104
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:27:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D95D32549E;
-	Mon, 27 Oct 2025 19:09:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 741373164B6;
+	Mon, 27 Oct 2025 19:25:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="itecbKJq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e3WR/usQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21193324B19;
-	Mon, 27 Oct 2025 19:09:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1412C32D0E1;
+	Mon, 27 Oct 2025 19:25:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592177; cv=none; b=bdiWkIYmOLf8mDxJsps6qQIUL1fiiM6eihfrmhDAwIB97ScDbE4usDBhci8FtSnFTCkvhDK3+Ya5GuQN9mq8MRD4AkyJ9P/1YOSAPbAqrTIDr9/xJeW3ijRGzQmgzgJlbwGNniu8UlMPI1KjnS1mAsRGu3kzxZk855kcNLzPqkc=
+	t=1761593118; cv=none; b=TzVtqofITCuvHdwY3xsPTTsu73OUtIBgz+xC++yzVT0Ue1GRcbmzVabKz9QgWhnwtmrp2gBTjr1aUI/QEm9zD+JtGaai7D1g+PaE+rijlemEF2PD7EmoWbddJBsxsfY7LtVyOGgXqA6NaSEkxxPB9mXL8upS7QZRNkk8+8d0tVs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592177; c=relaxed/simple;
-	bh=rtH/JOvCAw40Gnd9t1M6VtSo+LiVQHB2PX9I6lWcpck=;
+	s=arc-20240116; t=1761593118; c=relaxed/simple;
+	bh=Ur+KD3ZrbPO2Ptql7uQL+LzgNJkNWf4RI+RR8Pgqmpc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZZv82xCehqXIdgcjLMFc3HFbxVhaRP+aBS4QU03Jw9swuTCUeeKXwKWfhQu53XZJ+NcRLRQA7AvG1GTAUConuCUhG4ZMXfQqrUpJ9xwiiK/8ijcuPz+nJ5RkE1oJccp3AL42h9AenTOu3keIzwOLxG5qrkBcZxr+rnjHotn1veY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=itecbKJq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A60C6C4CEF1;
-	Mon, 27 Oct 2025 19:09:36 +0000 (UTC)
+	 MIME-Version; b=Bnt/TA26c1KMPr9mf2tZDwUYn9R+q+byVTfqtETac6hL2COD9MvsHv7fli1L+f7asuy/5Bb3OE54HSX6k8hU/reap7yESvSiZ47NIOSyvSI+qfz5HvvquLT5Zt6v2gOCSsh8iQ+4eHrb59vSzvOQbt7I+ObQhtOFPSwUi1KLyvU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e3WR/usQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B147C4CEF1;
+	Mon, 27 Oct 2025 19:25:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592177;
-	bh=rtH/JOvCAw40Gnd9t1M6VtSo+LiVQHB2PX9I6lWcpck=;
+	s=korg; t=1761593117;
+	bh=Ur+KD3ZrbPO2Ptql7uQL+LzgNJkNWf4RI+RR8Pgqmpc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=itecbKJqThoJzLfz+b6HHiGKBM+ZiSyxL9QBSqgUsYmrLRow1UYvFP1dhFoQfcerp
-	 XcvBwDNBoqrhq7D7eEJ+OQ4hj+fDPKo5zAe+6z6Z8CbiUZEcFM7A4C0fwOqJQE3RGh
-	 FeAiOoPPREWLum1KlRoL/fbpdB8UEco195i5MWi0=
+	b=e3WR/usQC3YURYGliOMxikU7pWdI4SMQvfcMmR+x9xdtIIVFIhOeqstjcH1obK0oi
+	 h1S3dVtccqxI7EdOkngMJCbgluUtTkC9JRMzhH+0czlxe6gZeLTAw6NnuOlfl+ZPrQ
+	 kq5vSoR5eFRuAKaQZYjeqvI+n1JV7CzYgukwFYLM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Anna-Maria Behnsen <anna-maria@linutronix.de>,
-	Jeongjun Park <aha310510@gmail.com>
-Subject: [PATCH 6.1 023/157] Documentation: Remove bogus claim about del_timer_sync()
+	kernel test robot <lkp@intel.com>,
+	Nikhil Agarwal <nikhil.agarwal@amd.com>,
+	Alex Williamson <alex.williamson@redhat.com>,
+	Nipun Gupta <nipun.gupta@amd.com>,
+	Nathan Chancellor <nathan@kernel.org>
+Subject: [PATCH 6.17 002/184] vfio/cdx: update driver to build without CONFIG_GENERIC_MSI_IRQ
 Date: Mon, 27 Oct 2025 19:34:44 +0100
-Message-ID: <20251027183501.899001817@linuxfoundation.org>
+Message-ID: <20251027183515.006177240@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
-References: <20251027183501.227243846@linuxfoundation.org>
+In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
+References: <20251027183514.934710872@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,62 +62,73 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Nipun Gupta <nipun.gupta@amd.com>
 
-[ Upstream commit b0b0aa5d858d4d2fe39a5e4486e0550e858108f6 ]
+commit 9f3acb3d9a1872e2fa36af068ca2e93a8a864089 upstream.
 
-del_timer_sync() does not return the number of times it tried to delete the
-timer which rearms itself. It's clearly documented:
+Define dummy MSI related APIs in VFIO CDX driver to build the
+driver without enabling CONFIG_GENERIC_MSI_IRQ flag.
 
- The function returns whether it has deactivated a pending timer or not.
-
-This part of the documentation is from 2003 where del_timer_sync() really
-returned the number of deletion attempts for unknown reasons. The code
-was rewritten in 2005, but the documentation was not updated.
-
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Reviewed-by: Anna-Maria Behnsen <anna-maria@linutronix.de>
-Link: https://lore.kernel.org/r/20221123201624.452282769@linutronix.de
-Signed-off-by: Jeongjun Park <aha310510@gmail.com>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202508070308.opy5dIFX-lkp@intel.com/
+Reviewed-by: Nikhil Agarwal <nikhil.agarwal@amd.com>
+Reviewed-by: Alex Williamson <alex.williamson@redhat.com>
+Signed-off-by: Nipun Gupta <nipun.gupta@amd.com>
+Link: https://lore.kernel.org/r/20250826043852.2206008-2-nipun.gupta@amd.com
+Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+Cc: Nathan Chancellor <nathan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/kernel-hacking/locking.rst                    |    3 +--
- Documentation/translations/it_IT/kernel-hacking/locking.rst |    4 +---
- 2 files changed, 2 insertions(+), 5 deletions(-)
+ drivers/vfio/cdx/Makefile  |    6 +++++-
+ drivers/vfio/cdx/private.h |   14 ++++++++++++++
+ 2 files changed, 19 insertions(+), 1 deletion(-)
 
---- a/Documentation/kernel-hacking/locking.rst
-+++ b/Documentation/kernel-hacking/locking.rst
-@@ -1006,8 +1006,7 @@ Another common problem is deleting timer
- calling add_timer() at the end of their timer function).
- Because this is a fairly common case which is prone to races, you should
- use del_timer_sync() (``include/linux/timer.h``) to
--handle this case. It returns the number of times the timer had to be
--deleted before we finally stopped it from adding itself back in.
-+handle this case.
+--- a/drivers/vfio/cdx/Makefile
++++ b/drivers/vfio/cdx/Makefile
+@@ -5,4 +5,8 @@
  
- Locking Speed
- =============
---- a/Documentation/translations/it_IT/kernel-hacking/locking.rst
-+++ b/Documentation/translations/it_IT/kernel-hacking/locking.rst
-@@ -1027,9 +1027,7 @@ Un altro problema è l'eliminazione dei
- da soli (chiamando add_timer() alla fine della loro esecuzione).
- Dato che questo è un problema abbastanza comune con una propensione
- alle corse critiche, dovreste usare del_timer_sync()
--(``include/linux/timer.h``) per gestire questo caso. Questa ritorna il
--numero di volte che il temporizzatore è stato interrotto prima che
--fosse in grado di fermarlo senza che si riavviasse.
-+(``include/linux/timer.h``) per gestire questo caso.
+ obj-$(CONFIG_VFIO_CDX) += vfio-cdx.o
  
- Velocità della sincronizzazione
- ===============================
+-vfio-cdx-objs := main.o intr.o
++vfio-cdx-objs := main.o
++
++ifdef CONFIG_GENERIC_MSI_IRQ
++vfio-cdx-objs += intr.o
++endif
+--- a/drivers/vfio/cdx/private.h
++++ b/drivers/vfio/cdx/private.h
+@@ -38,11 +38,25 @@ struct vfio_cdx_device {
+ 	u8			config_msi;
+ };
+ 
++#ifdef CONFIG_GENERIC_MSI_IRQ
+ int vfio_cdx_set_irqs_ioctl(struct vfio_cdx_device *vdev,
+ 			    u32 flags, unsigned int index,
+ 			    unsigned int start, unsigned int count,
+ 			    void *data);
+ 
+ void vfio_cdx_irqs_cleanup(struct vfio_cdx_device *vdev);
++#else
++static int vfio_cdx_set_irqs_ioctl(struct vfio_cdx_device *vdev,
++				   u32 flags, unsigned int index,
++				   unsigned int start, unsigned int count,
++				   void *data)
++{
++	return -EINVAL;
++}
++
++static void vfio_cdx_irqs_cleanup(struct vfio_cdx_device *vdev)
++{
++}
++#endif
+ 
+ #endif /* VFIO_CDX_PRIVATE_H */
 
 
 
