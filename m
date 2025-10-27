@@ -1,57 +1,62 @@
-Return-Path: <stable+bounces-190881-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191062-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AEBFC10D7B
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:21:56 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 290B8C11153
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:33:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6337A566331
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:15:44 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B6A0B50794D
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:23:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E5BA328634;
-	Mon, 27 Oct 2025 19:14:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68B5E328618;
+	Mon, 27 Oct 2025 19:21:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bWS8s8D4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2m29eNOF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47ECF328604;
-	Mon, 27 Oct 2025 19:14:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22F1A3254B1;
+	Mon, 27 Oct 2025 19:21:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592447; cv=none; b=ollS8LVTIF6MSNlU90C57XXueNMXflSkdhrb+TIhTe7Gr3koS9kzX7G0ZQk9SdnLjuRtBEVspn0nGwd2rPAN5STN9HH2Nao299UOHldeay5iNVMS5+IxAZB3WJnGfWM6cjshrEd7iMjYhWlFaYidkQW0J8WFnH+wTgKLQKm6chE=
+	t=1761592914; cv=none; b=uavfaB7BUaeVl33u68GMpyY1VXR8f5tyH9ghBKvYar18+0TyGnuI4nKbzhLep+pHczlR07WBluFf3kaMd5LRg+PxWqWTj8okJ+QKtoDWpJawT+08Ku4z1KqRPyY1dNcfHSZz5r3ShTJwn0secIRi1PXCnMX15wzynOJPOGFz2xc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592447; c=relaxed/simple;
-	bh=RAChbIuzvPMtqjiRwf62ZOX48tpgL1/flaeo2W3neSs=;
+	s=arc-20240116; t=1761592914; c=relaxed/simple;
+	bh=1jSsnyNekrQq5RKlh8BPaJF+Np8OToPdSs4BxSoQGk0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qorgck+W3y/Cslt4HydhDA76husiJSpc4zTsdVurrfMyDY788BGmHkFiTR9+GDgm6TSJdHqqc15H/dqaOu2Ra/doOt5VOr5Lq5/sU3Gbv5JGUudkdqTITTH/jt1Wn2ygEhVul2auHfhfvGG4xn/IAxLlEhwY72rk12GTxah3vsU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bWS8s8D4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F696C4CEF1;
-	Mon, 27 Oct 2025 19:14:04 +0000 (UTC)
+	 MIME-Version; b=uUAUYFClz5k1r5eBHIpK2REJkxn7BzxEdeL88OhxQTlQ9Qpo9uk+hfbR9YVt0rdVoVmHC6kS0T2D0JL/dnhKTPpwehgDyCoI7vgiROieyaZlQDa0UEQSy329LQcy7ZeZbt6w6/spOancowU2IA6ZEmFvdt5sj550q86oE5j/tWE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2m29eNOF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 834A2C4CEFD;
+	Mon, 27 Oct 2025 19:21:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592444;
-	bh=RAChbIuzvPMtqjiRwf62ZOX48tpgL1/flaeo2W3neSs=;
+	s=korg; t=1761592914;
+	bh=1jSsnyNekrQq5RKlh8BPaJF+Np8OToPdSs4BxSoQGk0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bWS8s8D40C9EnOyqsaodJ8EFc6g+HJIpeNTyAk48hsxqe6ehPWZvHtnXF0VMQ+tuA
-	 VXfc04T4rXH5qvSH22UBXcRPi0dyLI9Kihjk+ZFRugai8Ql46mlne8ULQD22C9dr1c
-	 WTT22i0PS5bxgENIQNMcoW0eFFWQf+Zxmh3Qqa+E=
+	b=2m29eNOFMVWfeKmWj1RG9orbsqQ+q5OOHUqufWS297HKI8EMlNwFxDlK9WUs5O54O
+	 xyQo/0F3vau90VGFSMieU3Q/nM8ot0/Bozhsl4Q4Q7oKas2TRHC8uBXpjfZf/vRHZZ
+	 0N6ar3dkQVutfNpCXuJU1s8beFUY4VojvIcorLDo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Nyekjaer <sean@geanix.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 124/157] iio: imu: inv_icm42600: Avoid configuring if already pm_runtime suspended
+	Deepanshu Kartikey <kartikey406@gmail.com>,
+	syzbot+6fdd8fa3380730a4b22c@syzkaller.appspotmail.com,
+	Mark Fasheh <mark@fasheh.com>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Jun Piao <piaojun@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 059/117] ocfs2: clear extent cache after moving/defragmenting extents
 Date: Mon, 27 Oct 2025 19:36:25 +0100
-Message-ID: <20251027183504.576585116@linuxfoundation.org>
+Message-ID: <20251027183455.614780745@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
-References: <20251027183501.227243846@linuxfoundation.org>
+In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
+References: <20251027183453.919157109@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,68 +68,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Nyekjaer <sean@geanix.com>
+From: Deepanshu Kartikey <kartikey406@gmail.com>
 
-[ Upstream commit 466f7a2fef2a4e426f809f79845a1ec1aeb558f4 ]
+commit 78a63493f8e352296dbc7cb7b3f4973105e8679e upstream.
 
-Do as in suspend, skip resume configuration steps if the device is already
-pm_runtime suspended. This avoids reconfiguring a device that is already
-in the correct low-power state and ensures that pm_runtime handles the
-power state transitions properly.
+The extent map cache can become stale when extents are moved or
+defragmented, causing subsequent operations to see outdated extent flags.
+This triggers a BUG_ON in ocfs2_refcount_cal_cow_clusters().
 
-Fixes: 31c24c1e93c3 ("iio: imu: inv_icm42600: add core of new inv_icm42600 driver")
-Signed-off-by: Sean Nyekjaer <sean@geanix.com>
-Link: https://patch.msgid.link/20250901-icm42pmreg-v3-3-ef1336246960@geanix.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-[ adjusted context for suspend/resume functions lacking APEX/wakeup support ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The problem occurs when:
+1. copy_file_range() creates a reflinked extent with OCFS2_EXT_REFCOUNTED
+2. ioctl(FITRIM) triggers ocfs2_move_extents()
+3. __ocfs2_move_extents_range() reads and caches the extent (flags=0x2)
+4. ocfs2_move_extent()/ocfs2_defrag_extent() calls __ocfs2_move_extent()
+   which clears OCFS2_EXT_REFCOUNTED flag on disk (flags=0x0)
+5. The extent map cache is not invalidated after the move
+6. Later write() operations read stale cached flags (0x2) but disk has
+   updated flags (0x0), causing a mismatch
+7. BUG_ON(!(rec->e_flags & OCFS2_EXT_REFCOUNTED)) triggers
+
+Fix by clearing the extent map cache after each extent move/defrag
+operation in __ocfs2_move_extents_range().  This ensures subsequent
+operations read fresh extent data from disk.
+
+Link: https://lore.kernel.org/all/20251009142917.517229-1-kartikey406@gmail.com/T/
+Link: https://lkml.kernel.org/r/20251009154903.522339-1-kartikey406@gmail.com
+Fixes: 53069d4e7695 ("Ocfs2/move_extents: move/defrag extents within a certain range.")
+Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
+Reported-by: syzbot+6fdd8fa3380730a4b22c@syzkaller.appspotmail.com
+Tested-by: syzbot+6fdd8fa3380730a4b22c@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?id=2959889e1f6e216585ce522f7e8bc002b46ad9e7
+Reviewed-by: Mark Fasheh <mark@fasheh.com>
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/imu/inv_icm42600/inv_icm42600_core.c |   11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ fs/ocfs2/move_extents.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
-@@ -670,17 +670,15 @@ EXPORT_SYMBOL_GPL(inv_icm42600_core_prob
- static int __maybe_unused inv_icm42600_suspend(struct device *dev)
- {
- 	struct inv_icm42600_state *st = dev_get_drvdata(dev);
--	int ret;
-+	int ret = 0;
+--- a/fs/ocfs2/move_extents.c
++++ b/fs/ocfs2/move_extents.c
+@@ -868,6 +868,11 @@ static int __ocfs2_move_extents_range(st
+ 			mlog_errno(ret);
+ 			goto out;
+ 		}
++		/*
++		 * Invalidate extent cache after moving/defragging to prevent
++		 * stale cached data with outdated extent flags.
++		 */
++		ocfs2_extent_map_trunc(inode, cpos);
  
- 	mutex_lock(&st->lock);
- 
- 	st->suspended.gyro = st->conf.gyro.mode;
- 	st->suspended.accel = st->conf.accel.mode;
- 	st->suspended.temp = st->conf.temp_en;
--	if (pm_runtime_suspended(dev)) {
--		ret = 0;
-+	if (pm_runtime_suspended(dev))
- 		goto out_unlock;
--	}
- 
- 	/* disable FIFO data streaming */
- 	if (st->fifo.on) {
-@@ -712,10 +710,13 @@ static int __maybe_unused inv_icm42600_r
- 	struct inv_icm42600_state *st = dev_get_drvdata(dev);
- 	struct inv_icm42600_timestamp *gyro_ts = iio_priv(st->indio_gyro);
- 	struct inv_icm42600_timestamp *accel_ts = iio_priv(st->indio_accel);
--	int ret;
-+	int ret = 0;
- 
- 	mutex_lock(&st->lock);
- 
-+	if (pm_runtime_suspended(dev))
-+		goto out_unlock;
-+
- 	ret = inv_icm42600_enable_regulator_vddio(st);
- 	if (ret)
- 		goto out_unlock;
+ 		context->clusters_moved += alloc_size;
+ next:
 
 
 
