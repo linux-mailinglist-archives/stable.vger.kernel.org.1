@@ -1,131 +1,154 @@
-Return-Path: <stable+bounces-190045-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190046-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16EDCC0F726
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 17:50:23 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6F16C0F734
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 17:51:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F310A3BA994
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 16:44:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 02070189755B
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 16:51:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7219230EF91;
-	Mon, 27 Oct 2025 16:44:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB5252D3A94;
+	Mon, 27 Oct 2025 16:51:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="ghH1DooK"
+	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="Q95Ns8BC"
 X-Original-To: stable@vger.kernel.org
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A75730C615;
-	Mon, 27 Oct 2025 16:44:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4E9C1DF265
+	for <stable@vger.kernel.org>; Mon, 27 Oct 2025 16:51:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761583485; cv=none; b=CMyycHpHFoscmhyQDragZ+YCpZuytXtiuuLPW5HLPt0Avx1Ep+3DIQfuhdl4VAvnUDbWC6x3iY6mJDzzhFsBgFJKC8KVX0bfTx91haeoZXSz7H6qLK/quW2js6kguI5wdHaXdrlj3YT92P4y7qcxARMR03DQTuRMFcSMZ0QU2/M=
+	t=1761583867; cv=none; b=MGoAa6/mJQlbESpp3z1BGTtCsCoiC0NWQzuCWL8QTVE/9czZyyWJoHoYIjbUh5fz+oDhLfzgA1vcjhF9h1z1rV+kostenAKCbXmDa5bakBjVXpRsqGQQ5/fdE9IPgfwpFD8owAa4mey7yWUETSR+bc//GBD3q3AUqrwnqsY5GeM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761583485; c=relaxed/simple;
-	bh=OFlj4QGnrs2E3fl/0ujJ9X4ekencKhGEKiw/mctCT/I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uDOK6HEJNZ92zLohvA2cg2JdmV1cqbQe6oJcU6nTVlpXIhjVwEAHYPTwjGUt9swdvSKgrkJMG3slQLIULYHy4tSN53y78I/vVElEW5UbqhaIEqFCp8uMu7dNMSRx0QJ+mK5XaWzYlj4v4Dq4eAQSUnm5zmps5uXH9reXW4uXrak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=ghH1DooK; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
-	Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=5CP7gRt0BblrjBDXAO/3HHhQ8A2T8uZzDR6yvnegDug=; b=ghH1DooKmkmLdJXWxXedWnU15v
-	ZVCXtgDvd+7aaDvknLD7KfrqAbbh5Y1S6A7CHrwNY91J13EqMnCaspEqILKrexhyVFpqn06DgqN1o
-	yvP/jZHR+E7BlwiQJw45D4qHvgkDX1LkbhGxEMLFyeOghMU8ZENl4LQ7AxO3JlE6mA12lDlddFphx
-	rsYhIlMpjkpudqsSZdZJVhTKnNO2vPJpYnFKMfNcWo96W3/Wwp4PSfUb2Yche/GY3TLsA1eGXVR9D
-	Y7OLQrhcd0LF6fua4WZKSoEdFXUJjcEQTeuMq8B5NRM5TojiE1+qF9Ek07/pf1eiHPusM8RshePVO
-	h+Ys3XJQ==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:52316)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1vDQKh-0000000026D-2lSw;
-	Mon, 27 Oct 2025 16:44:35 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1vDQKf-000000005kr-0qgI;
-	Mon, 27 Oct 2025 16:44:33 +0000
-Date: Mon, 27 Oct 2025 16:44:33 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Andrew Lunn <andrew@lunn.ch>,
-	Emanuele Ghidoli <ghidoliemanuele@gmail.com>
-Cc: Heiner Kallweit <hkallweit1@gmail.com>,
-	Emanuele Ghidoli <emanuele.ghidoli@toradex.com>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	s=arc-20240116; t=1761583867; c=relaxed/simple;
+	bh=EqepgGC/l3BkBwlCg2C9JuMnjeSRmoKoLRq7E9G076I=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=AzjyjYp9cLOK6PCV+bgOvdXCkkqUUNOZSJIzLv5DqAnOBQeH3nOUFA8RaLRFpzHv+bDd+KIkXwbzM1ITRkxdETZ9o/bsLyvYsdKmgwvHLJ1L8otDzE+WMmPduf/F1RjmcKx9leUmSi9lV2WkPipg3PJAqN6rf/YQgOKiPtZdW4I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=Q95Ns8BC; arc=none smtp.client-ip=209.85.214.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-292fd52d527so49293195ad.2
+        for <stable@vger.kernel.org>; Mon, 27 Oct 2025 09:51:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance.com; s=google; t=1761583864; x=1762188664; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8nKP8LnlisYPvQbnTYeeSfnr4LDRpnlUnYi1OfgjBiU=;
+        b=Q95Ns8BC1mIDmzv0mpGrKifIFnoZUW/vak+MzT2rfniEFPd8JOxHe4RMPBCeu18BaV
+         09l25kmvgFVNBZr+2ODYGcnze1cTYftMXUa0pStPocmM6uNWxqIjdmCKA+/hC3B0Cf/d
+         xZVOkncz5jUyyoFbn0Iu+tjlEzhYXJanRvOZrpUPJjdWg5qGu0FqyzcyxF5OJ6/Ke7NG
+         HlzwnVgEt07cgI5GvQToxb7cJ/XUCbbgIrM1XhEexiDKSWM9H2riqYZfDiBjkAqLZOYx
+         ZxCY1FMqUQ1ly8AnueK522+6CGCp0F7bvOmvgrBJYWBx97tEne4Anl9emrT8xoUqKr7k
+         SMqA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761583864; x=1762188664;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=8nKP8LnlisYPvQbnTYeeSfnr4LDRpnlUnYi1OfgjBiU=;
+        b=Omfk6zYqT5q/8ysbYKaSTOLvCxRqGGWYPkKWNUd9XebdMWf6ilTNowLjIRd2N7ZzxK
+         fk01AncirArlRVts+lnmYnbQlPByvHhoGuPespbyP101rMZt3Kq1a8SHHAovaTDqPUEl
+         R35K7z0di05UDW7795iuU11512OVZEzTNDvCkpd/6rCj1z3BKDT0SOmp4PCmj4pF6OB4
+         0GHBDMT3grz69SJ+9vIX0xTvhLSua5TgB4rXynRdfEouBDktnjBcz8I8a+dK3DdiMYGv
+         CCteRP8EV1cy3/g7zG6uKFpj8oUDkwkAzek17/0DPJ/HsmeP1cPDgCuesHsp4qi6Iyb5
+         7kCQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW/cEbv9SnYa1K4Xks8JMmCp55umqieFJ/+1OYpgc2zsL0moix2JUL/9zA1nUvbHdKwRkfGjs8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwGYgpScGfoo6OCRYl954FEokprZCDYxD5mseqZSsajej13HH6p
+	0UnuZ1Xx+7TUoP4zDFEE8/+yu/q+SWbRtE3YcK/bVj8KhG1JNCMkfKnzJmksNLpQAV8=
+X-Gm-Gg: ASbGnctcUbdYaoZieeYXodmKQYp76+YB9eQVaxCDYvu/StsOG4JmNFSQxnZo5yUZouk
+	x2wPrM96XJROfvVm3LXKhsf+yfPHeWoP3OBBtG9yr2NnV+gmQUZdADUI4p567khziM5SruGlgnb
+	50sQseGgPK2ZfFHpaMzF1v6LUBD41ZAl4ckYRh9lHFANLB4a+2chDh2oVcFFC1pWXqKVNsuY3Sm
+	/pcnDCwprw4FZ+Mt8Hw4Qb3QY94G0ODtYGCritVEAgd6UIZVqOeo1iklBNQTUWKv1p4BX8H5Qim
+	rPlwl3FoBwgDtaQn9a8EsOJhjKsFtgHTRAkHnTz+9I7nrLXQzZLBKAWzwzmwZubse+TJtGBGRtN
+	E3JuPRrK6Fat3dX3BCrxM0f/f7wPJzd32ipurQl2UcmwNVq9qxfjhhadnuY5ii8Lb3ZhDxMcf2M
+	yKzBoGBbwke5ZlajAVhme9xOhpyWKebaxy+twXUCirikFv
+X-Google-Smtp-Source: AGHT+IGjTdmlbc2UYCLdzv9SaAZWrdWKW4UkBxQqwzd5S6LRB2MyeaD63PJEhKAkXPLm5tJfWml8NA==
+X-Received: by 2002:a17:902:b281:b0:269:8f0c:4d86 with SMTP id d9443c01a7336-294cb67176dmr3769265ad.53.1761583863479;
+        Mon, 27 Oct 2025 09:51:03 -0700 (PDT)
+Received: from 5CG3510V44-KVS.bytedance.net ([203.208.189.10])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-33fed7e70b5sm9075326a91.10.2025.10.27.09.51.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 27 Oct 2025 09:51:02 -0700 (PDT)
+From: Jinhui Guo <guojinhui.liam@bytedance.com>
+To: joro@8bytes.org,
+	suravee.suthikulpanit@amd.com
+Cc: guojinhui.liam@bytedance.com,
+	iommu@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: Re: [PATCH v1] net: phy: dp83867: Disable EEE support as not
- implemented
-Message-ID: <aP-hca4pDsDlEGUt@shell.armlinux.org.uk>
-References: <20251023144857.529566-1-ghidoliemanuele@gmail.com>
- <ae723e7c-f876-45ef-bc41-3b39dc1dc76b@lunn.ch>
- <664ef58b-d7e6-4f08-b88f-e7c2cf08c83c@gmail.com>
- <aP-Hgo5mf7BQyee_@shell.armlinux.org.uk>
- <f65c1650-22c3-4363-8b7e-00d19bf7af88@gmail.com>
+Subject: [RESEND PATCH] iommu/amd: Fix pci_segment memleak in alloc_pci_segment()
+Date: Tue, 28 Oct 2025 00:50:17 +0800
+Message-Id: <20251027165017.4189-1-guojinhui.liam@bytedance.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20250928053657.1205-1-guojinhui.liam@bytedance.com>
+References: <20250928053657.1205-1-guojinhui.liam@bytedance.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <f65c1650-22c3-4363-8b7e-00d19bf7af88@gmail.com>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-On Mon, Oct 27, 2025 at 04:34:54PM +0100, Emanuele Ghidoli wrote:
-> > So, this needs to be tested - please modify phylib's
-> > genphy_c45_read_eee_cap1() to print the value read from the register.
-> > 
-> > If it is 0xffff, that confirms that theory.
-> It’s not 0xffff; I verified that the value read is:
-> TI DP83867 stmmac-0:02: Reading EEE capabilities from MDIO_PCS_EEE_ABLE: 0x0006
+Fix a memory leak of struct amd_iommu_pci_segment in alloc_pci_segment()
+when system memory (or contiguous memory) is insufficient.
 
-Thanks for testing. So the published manual for this PHY is wrong.
-https://www.ti.com/lit/ds/symlink/dp83867ir.pdf page 64.
+Fixes: 04230c119930 ("iommu/amd: Introduce per PCI segment device table")
+Fixes: eda797a27795 ("iommu/amd: Introduce per PCI segment rlookup table")
+Fixes: 99fc4ac3d297 ("iommu/amd: Introduce per PCI segment alias_table")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jinhui Guo <guojinhui.liam@bytedance.com>
+---
 
-The comment I quoted from that page implies that the PCS and AN
-MMD registers shouldn't be implemented.
+Hi,
 
-Given what we now know, I'd suggest TI PHYs are a mess. Stuff they
-say in the documentation that is ignored plainly isn't, and their
-PHYs report stuff as capable but their PHYs aren't capable.
+Just a friendly ping—resending the unchanged patch in case it got
+buried. If there is anything I can do to ease review, please let me
+know.
 
-I was suggesting to clear phydev->supported_eee, but that won't
-work if the MDIO_AN_EEE_ADV register is implemented even as far
-as exchanging EEE capabilities with the link partner. We use the
-supported_eee bitmap to know whether a register is implemented.
-Clearing ->supported_eee will mean we won't write to the advertisement
-register. That's risky. Given the brokenness so far, I wouldn't like
-to assume that the MDIO_AN_EEE_ADV register contains zero by default.
+Thanks,
+Jinhui
 
-Calling phy_disable_eee() from .get_features() won't work, because
-after we call that method, of_set_phy_eee_broken() will then be
-called, which will clear phydev->eee_disabled_modes. I think that is
-a mistake. Is there any reason why we would want to clear the
-disabled modes? Isn't it already zero? (note that if OF_MDIO is
-disabled, or there's no DT node, we don't zero this.)
+ drivers/iommu/amd/init.c | 15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
-Your placement is the only possible location as the code currently
-stands, but I would like to suggest that of_set_phy_eee_broken()
-should _not_ be calling linkmode_zero(modes), and we should be able
-to set phydev->eee_disabled_modes in the .get_features() method.
-
-Andrew, would you agree?
-
+diff --git a/drivers/iommu/amd/init.c b/drivers/iommu/amd/init.c
+index ba9e582a8bbe..77afd5884984 100644
+--- a/drivers/iommu/amd/init.c
++++ b/drivers/iommu/amd/init.c
+@@ -1608,13 +1608,22 @@ static struct amd_iommu_pci_seg *__init alloc_pci_segment(u16 id,
+ 	list_add_tail(&pci_seg->list, &amd_iommu_pci_seg_list);
+ 
+ 	if (alloc_dev_table(pci_seg))
+-		return NULL;
++		goto err_free_pci_seg;
+ 	if (alloc_alias_table(pci_seg))
+-		return NULL;
++		goto err_free_dev_table;
+ 	if (alloc_rlookup_table(pci_seg))
+-		return NULL;
++		goto err_free_alias_table;
+ 
+ 	return pci_seg;
++
++err_free_alias_table:
++	free_alias_table(pci_seg);
++err_free_dev_table:
++	free_dev_table(pci_seg);
++err_free_pci_seg:
++	list_del(&pci_seg->list);
++	kfree(pci_seg);
++	return NULL;
+ }
+ 
+ static struct amd_iommu_pci_seg *__init get_pci_segment(u16 id,
 -- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+2.20.1
+
 
