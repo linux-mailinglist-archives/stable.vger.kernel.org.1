@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-190595-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190877-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6F7FC1095D
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:11:14 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3010BC10D5E
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:21:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 622B14643FB
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:05:47 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 84293505D8C
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:15:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DF95321F5F;
-	Mon, 27 Oct 2025 19:01:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E07B328613;
+	Mon, 27 Oct 2025 19:13:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jliGsGJN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qWlb6HKo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B5CD31E0F2;
-	Mon, 27 Oct 2025 19:01:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AB8032779A;
+	Mon, 27 Oct 2025 19:13:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591695; cv=none; b=p3ODYwl3gPdsBIX98JO0e9Mq9gGCVHEdc4oCcv426azVE26SmNNu9L0Wu3EiVoyuleOQ8KzVdliIBAsmgommNfIrNzw2zQj9Ylnd0H04Ktfyg+QAeOUWGz/Bc0FMXeiHXOfWHxcjksOLk5zILqQQUbvs0q+RkOolSfVdB3IsX9E=
+	t=1761592434; cv=none; b=haxJimcT07vKyReU4cxuPs+bmELlqSkOr08w4CrcmdpJu07Gn3pE69UiLRjkjLDfgVEn24Jl/iLRYg2wnS0VAMh65nzyQO8CIYdThyxiBcnhEUawZ1MrdsQ59L9Luj44YJY9Md/3cQL23OgtgKDwiwKj9e3zLuuYp+CTdusCK7M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591695; c=relaxed/simple;
-	bh=jc8TUUfRd4wRYRx/GrypAxwQYiYqnBYplYgJw+vGf8M=;
+	s=arc-20240116; t=1761592434; c=relaxed/simple;
+	bh=F/oLs21nW6I6BEzu4jh97xCQUtkngYYE4RZbgDjKWwk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DTRqUcW7rKZWYkhG1MwT3Md2OpGmSG7XtvL+JlFuiaKVSjTpcYm8MjPTeQT+H/XV9ruW95SyM0x5fNH8aS9i2d/cAMeFm0ToqRrvLyB5rASvMfwhI21rFE8qPdLylriAd0nkh/DNh6tp2083DtSuhapNIU9MItexVRPBKjSfeN4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jliGsGJN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E0B7C4CEF1;
-	Mon, 27 Oct 2025 19:01:34 +0000 (UTC)
+	 MIME-Version; b=f6j52TwpUxImA+23QCoEuzkpgI+ZoWd0aVCpxPzSNwIitXO5fUUYmrCIMAO6en0sVwNMXgE16POFHhBvKSH4K+ORbELzekxqgVe4zG/v3YTp59EIh4YdFZJeCjvpc8y1c2foio4PaaMx5o0c9dbcFUGrJkdlusdf96+w74F2pQc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qWlb6HKo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C20D3C4CEFD;
+	Mon, 27 Oct 2025 19:13:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591694;
-	bh=jc8TUUfRd4wRYRx/GrypAxwQYiYqnBYplYgJw+vGf8M=;
+	s=korg; t=1761592434;
+	bh=F/oLs21nW6I6BEzu4jh97xCQUtkngYYE4RZbgDjKWwk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jliGsGJNgQDQy0DluQtXl+qM7uFZWXcQoITXPKr9aOb6qbSIg8HGxdS7PRPRHTxEl
-	 LoywemjL3yuv58mTNpsjsDfmiHnzRJPs9Btbkk2ljfJGgxvF7aZW+Y+Qn5cc3usfzU
-	 1UzzB0emAVUWTRoDx73JgAvph38HOdYKBpwS1nD4=
+	b=qWlb6HKo7Iep0+LfIgkvJVS8E1CVeHxRTEjMKa8622LNHO5AqrRgfORFEO9Ay5sVb
+	 LCOYuI8OhvsWiuHr3cmvRQUYVq6abcsjYOHWKwnKl/kRF5hWfOy7yIPRhXqn1xpp6M
+	 ROrJKQX0ff6lS8gRd9j6Xat+hhC21ZB2RkZZQjrE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Tim Guttzeit <t.guttzeit@tuxedocomputers.com>,
-	Werner Sembach <wse@tuxedocomputers.com>
-Subject: [PATCH 5.10 294/332] usb/core/quirks: Add Huawei ME906S to wakeup quirk
+	Alexey Simakov <bigalex934@gmail.com>,
+	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 086/157] sctp: avoid NULL dereference when chunk data buffer is missing
 Date: Mon, 27 Oct 2025 19:35:47 +0100
-Message-ID: <20251027183532.616721575@linuxfoundation.org>
+Message-ID: <20251027183503.580527368@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
-References: <20251027183524.611456697@linuxfoundation.org>
+In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
+References: <20251027183501.227243846@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tim Guttzeit <t.guttzeit@tuxedocomputers.com>
+From: Alexey Simakov <bigalex934@gmail.com>
 
-commit dfc2cf4dcaa03601cd4ca0f7def88b2630fca6ab upstream.
+[ Upstream commit 441f0647f7673e0e64d4910ef61a5fb8f16bfb82 ]
 
-The list of Huawei LTE modules needing the quirk fixing spurious wakeups
-was missing the IDs of the Huawei ME906S module, therefore suspend did not
-work.
+chunk->skb pointer is dereferenced in the if-block where it's supposed
+to be NULL only.
 
-Cc: stable <stable@kernel.org>
-Signed-off-by: Tim Guttzeit <t.guttzeit@tuxedocomputers.com>
-Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
-Link: https://patch.msgid.link/20251020134304.35079-1-wse@tuxedocomputers.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+chunk->skb can only be NULL if chunk->head_skb is not. Check for frag_list
+instead and do it just before replacing chunk->skb. We're sure that
+otherwise chunk->skb is non-NULL because of outer if() condition.
+
+Fixes: 90017accff61 ("sctp: Add GSO support")
+Signed-off-by: Alexey Simakov <bigalex934@gmail.com>
+Acked-by: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>
+Link: https://patch.msgid.link/20251021130034.6333-1-bigalex934@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/core/quirks.c |    2 ++
- 1 file changed, 2 insertions(+)
+ net/sctp/inqueue.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
---- a/drivers/usb/core/quirks.c
-+++ b/drivers/usb/core/quirks.c
-@@ -462,6 +462,8 @@ static const struct usb_device_id usb_qu
- 	/* Huawei 4G LTE module */
- 	{ USB_DEVICE(0x12d1, 0x15bb), .driver_info =
- 			USB_QUIRK_DISCONNECT_SUSPEND },
-+	{ USB_DEVICE(0x12d1, 0x15c1), .driver_info =
-+			USB_QUIRK_DISCONNECT_SUSPEND },
- 	{ USB_DEVICE(0x12d1, 0x15c3), .driver_info =
- 			USB_QUIRK_DISCONNECT_SUSPEND },
+diff --git a/net/sctp/inqueue.c b/net/sctp/inqueue.c
+index 5c16521818058..f5a7d5a387555 100644
+--- a/net/sctp/inqueue.c
++++ b/net/sctp/inqueue.c
+@@ -169,13 +169,14 @@ struct sctp_chunk *sctp_inq_pop(struct sctp_inq *queue)
+ 				chunk->head_skb = chunk->skb;
  
+ 			/* skbs with "cover letter" */
+-			if (chunk->head_skb && chunk->skb->data_len == chunk->skb->len)
++			if (chunk->head_skb && chunk->skb->data_len == chunk->skb->len) {
++				if (WARN_ON(!skb_shinfo(chunk->skb)->frag_list)) {
++					__SCTP_INC_STATS(dev_net(chunk->skb->dev),
++							 SCTP_MIB_IN_PKT_DISCARDS);
++					sctp_chunk_free(chunk);
++					goto next_chunk;
++				}
+ 				chunk->skb = skb_shinfo(chunk->skb)->frag_list;
+-
+-			if (WARN_ON(!chunk->skb)) {
+-				__SCTP_INC_STATS(dev_net(chunk->skb->dev), SCTP_MIB_IN_PKT_DISCARDS);
+-				sctp_chunk_free(chunk);
+-				goto next_chunk;
+ 			}
+ 		}
+ 
+-- 
+2.51.0
+
 
 
 
