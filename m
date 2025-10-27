@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-191048-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190727-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0F59C10FDC
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:29:04 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDB5DC10AF2
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:15:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A5DB65822FD
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:23:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1CAB51A61D8C
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:10:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B9CE23EA92;
-	Mon, 27 Oct 2025 19:21:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2051D32BF3D;
+	Mon, 27 Oct 2025 19:07:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JrTz7zVr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ibO4gnqq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 380C42C3749;
-	Mon, 27 Oct 2025 19:21:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF0CE32B991;
+	Mon, 27 Oct 2025 19:07:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592878; cv=none; b=c5GD00K1ZjBQhxl/ZdYXSFmotcrSJsIXY6CRKRnnELyOjRjzROPyKdZfILhllrO7xg2l+d7vgyNjPoOy+9y38M/tLuH28K9pbX6qcxXwvQDFIUlu6pyGnb7lCd0VHlVbNmo/G7TJN6m2BjtzATXIqceFNtSIFdwaPuftKL4YZuQ=
+	t=1761592036; cv=none; b=Sl7rxxnr6mGlzoyw7kGBDcpipRVvGzDrX0NaUkRegUqBrm421CvVIyGlJT7S/ILM5sIWPlZhi68y7sfw7TWTRnsRPsDxVdWZkN0E61UnU6xTmX4fZ66TbXkzQhP4tA9CWeEcQNjdK/BUMwt2e+F+4rrOv6pfW20wRHyhOwZD4y0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592878; c=relaxed/simple;
-	bh=jj7zBhKcSf0AAKiml90kbpWswvSE7nlU9iRTdrCGSws=;
+	s=arc-20240116; t=1761592036; c=relaxed/simple;
+	bh=a8LA1nPT1q4xYMaxockvmEPLg740j9h50EeJ52sYME4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AHUAR8J/9OdATHWWEMfwsHm2DdL0/6yOeuE+yXtOUrlv4CTeSMbcVKdb2bWKGXUyWduSUICm6oucd+Lbcne8LgHyvPODGSGD08l+UMGqP97/+104AsFk3208R4b/YT9+u7NFQMXsf8dtT5j2JQ42p+bXxh9WigMVpoS0G2ExkEU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JrTz7zVr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBFD9C4CEF1;
-	Mon, 27 Oct 2025 19:21:17 +0000 (UTC)
+	 MIME-Version; b=dZVsrx/PpeU0qpGVA3F6MnBG8AXsVVpnWatjjOl+yjx+CDDLrL0PsIP65H38IzUfcB+vABQ4MmizQ5MQUF6qr7kisUo65Ej5YGV9ugjfLPZ2rQ093q/SEyUcFtrmTaYBO4i+aBbdlVmFggXhLS8YsFjMrlCe1+vxlsDeHJm5IUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ibO4gnqq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 603B2C4CEF1;
+	Mon, 27 Oct 2025 19:07:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592878;
-	bh=jj7zBhKcSf0AAKiml90kbpWswvSE7nlU9iRTdrCGSws=;
+	s=korg; t=1761592036;
+	bh=a8LA1nPT1q4xYMaxockvmEPLg740j9h50EeJ52sYME4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JrTz7zVrwsTmyXufyWQ+uxE/1+6Gyh4iSKU63LzsmPuZW5wnElG3ex0yDLGg00exK
-	 XaGs+VmawhNtZi+GZO4fjuwt8918uWD/pEbT0xOiQOUIKaR7SfMb/I8+TmAAu7GxUe
-	 PPWmLQ3eVsTpPGlf5pFLx00qmRH0zLYB/1Ax3Yac=
+	b=ibO4gnqqVwLIde06LePYUmwph2De5C1JQrJOVyuEnVGyi0+cqxWEOlDHK/k0M3aZw
+	 4hpzMP9RuZtHV4Fqj+mUnhGW5oHEq7ey28M8NHLDTBFPw9aPPugMhGm6fnxm+sMdNI
+	 DGTXvyUpkUVO1AjVltk9RxrR3x1gBQMtK+ILL/gY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Kaushlendra Kumar <kaushlendra.kumar@intel.com>,
-	Sudeep Holla <sudeep.holla@arm.com>
-Subject: [PATCH 6.12 047/117] arch_topology: Fix incorrect error check in topology_parse_cpu_capacity()
+	Christoph Hellwig <hch@lst.de>,
+	Sergey Bashirov <sergeybashirov@gmail.com>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 093/123] NFSD: Minor cleanup in layoutcommit processing
 Date: Mon, 27 Oct 2025 19:36:13 +0100
-Message-ID: <20251027183455.266119807@linuxfoundation.org>
+Message-ID: <20251027183448.876893314@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
-References: <20251027183453.919157109@linuxfoundation.org>
+In-Reply-To: <20251027183446.381986645@linuxfoundation.org>
+References: <20251027183446.381986645@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
+From: Sergey Bashirov <sergeybashirov@gmail.com>
 
-commit 2eead19334516c8e9927c11b448fbe512b1f18a1 upstream.
+[ Upstream commit 274365a51d88658fb51cca637ba579034e90a799 ]
 
-Fix incorrect use of PTR_ERR_OR_ZERO() in topology_parse_cpu_capacity()
-which causes the code to proceed with NULL clock pointers. The current
-logic uses !PTR_ERR_OR_ZERO(cpu_clk) which evaluates to true for both
-valid pointers and NULL, leading to potential NULL pointer dereference
-in clk_get_rate().
+Remove dprintk in nfsd4_layoutcommit. These are not needed
+in day to day usage, and the information is also available
+in Wireshark when capturing NFS traffic.
 
-Per include/linux/err.h documentation, PTR_ERR_OR_ZERO(ptr) returns:
-"The error code within @ptr if it is an error pointer; 0 otherwise."
-
-This means PTR_ERR_OR_ZERO() returns 0 for both valid pointers AND NULL
-pointers. Therefore !PTR_ERR_OR_ZERO(cpu_clk) evaluates to true (proceed)
-when cpu_clk is either valid or NULL, causing clk_get_rate(NULL) to be
-called when of_clk_get() returns NULL.
-
-Replace with !IS_ERR_OR_NULL(cpu_clk) which only proceeds for valid
-pointers, preventing potential NULL pointer dereference in clk_get_rate().
-
-Cc: stable <stable@kernel.org>
-Signed-off-by: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
-Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
-Fixes: b8fe128dad8f ("arch_topology: Adjust initial CPU capacities with current freq")
-Link: https://patch.msgid.link/20250923174308.1771906-1-kaushlendra.kumar@intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Sergey Bashirov <sergeybashirov@gmail.com>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Stable-dep-of: d68886bae76a ("NFSD: Fix last write offset handling in layoutcommit")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/base/arch_topology.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/nfsd/nfs4proc.c |   12 +++---------
+ 1 file changed, 3 insertions(+), 9 deletions(-)
 
---- a/drivers/base/arch_topology.c
-+++ b/drivers/base/arch_topology.c
-@@ -341,7 +341,7 @@ bool __init topology_parse_cpu_capacity(
- 		 * frequency (by keeping the initial capacity_freq_ref value).
- 		 */
- 		cpu_clk = of_clk_get(cpu_node, 0);
--		if (!PTR_ERR_OR_ZERO(cpu_clk)) {
-+		if (!IS_ERR_OR_NULL(cpu_clk)) {
- 			per_cpu(capacity_freq_ref, cpu) =
- 				clk_get_rate(cpu_clk) / HZ_PER_KHZ;
- 			clk_put(cpu_clk);
+--- a/fs/nfsd/nfs4proc.c
++++ b/fs/nfsd/nfs4proc.c
+@@ -2278,18 +2278,12 @@ nfsd4_layoutcommit(struct svc_rqst *rqst
+ 	inode = d_inode(current_fh->fh_dentry);
+ 
+ 	nfserr = nfserr_inval;
+-	if (new_size <= seg->offset) {
+-		dprintk("pnfsd: last write before layout segment\n");
++	if (new_size <= seg->offset)
+ 		goto out;
+-	}
+-	if (new_size > seg->offset + seg->length) {
+-		dprintk("pnfsd: last write beyond layout segment\n");
++	if (new_size > seg->offset + seg->length)
+ 		goto out;
+-	}
+-	if (!lcp->lc_newoffset && new_size > i_size_read(inode)) {
+-		dprintk("pnfsd: layoutcommit beyond EOF\n");
++	if (!lcp->lc_newoffset && new_size > i_size_read(inode))
+ 		goto out;
+-	}
+ 
+ 	nfserr = nfsd4_preprocess_layout_stateid(rqstp, cstate, &lcp->lc_sid,
+ 						false, lcp->lc_layout_type,
 
 
 
