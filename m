@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-190798-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190804-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CA03C10BE8
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:18:27 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B56FC10C8E
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:19:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 07D8E18936C5
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:13:27 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 738EA5088FA
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:13:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53A153128D0;
-	Mon, 27 Oct 2025 19:10:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 002BE329C57;
+	Mon, 27 Oct 2025 19:10:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ef36oAks"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X/40FfQ2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D26C3074AC;
-	Mon, 27 Oct 2025 19:10:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B14B73074AC;
+	Mon, 27 Oct 2025 19:10:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592224; cv=none; b=V5kUpes5ugSzD2F6qQ3cQJJdKtPPO5gzVUSno6rMrALVTalPaKt5gNLgpB4JY1v0essRFtJ+tdeJvoV9PFE6Ytnm8SuFSTwnokMrxRtC9N3K7FoM4qhIgStlpWeS0yeaUoQkUlmXlZxrFkmyE/0QOdnHgBbquF7ocRikeI8tG5A=
+	t=1761592239; cv=none; b=SWO4F8dtDg8ofvVmBsB/G8NVUqxfaJ18QmoynwJz3xjl4HJgn/tXYIz/BHdnmfJr9UqpTQicwWdZQAoEbpQ/3cbcO+dbxUZw9kzMD27/RD26n8Vycdbx5NIre6NK0Ck7Xp097R5zc6C7RQTKtXPO4ZHChhzscfpW5GoVa8OeuM8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592224; c=relaxed/simple;
-	bh=ekoUouQrSXfk6PtrO8yri/XpxKR7Fz4Nea5GwB9u26s=;
+	s=arc-20240116; t=1761592239; c=relaxed/simple;
+	bh=s0v90wifCFchSXyIw1JCGGLhKiLQqN2RIgbla+zE2C0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vELo+h4t728l8WzVCIos11oSX89BgfEFY6/ejueQ/2S53xVcatCCtDSvl+my3IMl2GbAIyihVMwSGAm1JKbCgyvYi6FE/UZUZKxtDSRcq8LO9ILlKa3IqMZRHLuH+MGiIqXMW7wiCnzds8Hm28alMHD5OK7JGaCTAfgbLnZGXkw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ef36oAks; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94AFBC4CEF1;
-	Mon, 27 Oct 2025 19:10:23 +0000 (UTC)
+	 MIME-Version; b=glx/C1dWfaoFvc8F9y1BztVjkeYkyPfwqUWSu5jTREX/+uRYN9Prr25tPrS9te7PaZyixQY2gDs1+RZ5gFkpaHcbNXQi5cQstgX2RH/Jd205Nz5kIDb1MYjcyTZfPC6VgCcnxpN1lD56sfN5sJY2gJDVV8PLSDQq38R5He6aJ0M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X/40FfQ2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44C2DC4CEF1;
+	Mon, 27 Oct 2025 19:10:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592223;
-	bh=ekoUouQrSXfk6PtrO8yri/XpxKR7Fz4Nea5GwB9u26s=;
+	s=korg; t=1761592239;
+	bh=s0v90wifCFchSXyIw1JCGGLhKiLQqN2RIgbla+zE2C0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ef36oAkstqB9imORAarZqRULIQscePz+jj+V9/GwKp3vmp0VBiniy1AFnm8n9cd1W
-	 fk7HBSavL1eNg4jpryORiLwmpsyb3cE3HAvZUzeDxVAvqxVmuLxQ/zvDo87nYQCLlX
-	 sWe6i4anPZdGRjZoVEZbJ0yGY7VoUpcIz7qpXyZg=
+	b=X/40FfQ2Rp6MuZFvuMWaxZbTrhC1okTvaP9YO/CZWAPvrS6oRpu4Pxwfu14SPiRX3
+	 fKZQqodqjjhEUVpkRIflb3DMAmeW5WKE7UJ8B4i8QKS5BuUQjVP+t+uAF1l27AiV+b
+	 gSmDQ65Xv8+rc0pMFdFsT8B0cyXSiHFbfGxLVSjQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Vasut <marek.vasut+renesas@mailbox.org>,
-	Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Kaustabh Chakraborty <kauschluss@disroot.org>,
+	Inki Dae <inki.dae@samsung.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 013/157] drm/rcar-du: dsi: Fix 1/2/3 lane support
-Date: Mon, 27 Oct 2025 19:34:34 +0100
-Message-ID: <20251027183501.616522546@linuxfoundation.org>
+Subject: [PATCH 6.1 014/157] drm/exynos: exynos7_drm_decon: fix uninitialized crtc reference in functions
+Date: Mon, 27 Oct 2025 19:34:35 +0100
+Message-ID: <20251027183501.647134876@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
 References: <20251027183501.227243846@linuxfoundation.org>
@@ -67,76 +66,65 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Marek Vasut <marek.vasut+renesas@mailbox.org>
+From: Kaustabh Chakraborty <kauschluss@disroot.org>
 
-[ Upstream commit d83f1d19c898ac1b54ae64d1c950f5beff801982 ]
+[ Upstream commit d31bbacf783daf1e71fbe5c68df93550c446bf44 ]
 
-Remove fixed PPI lane count setup. The R-Car DSI host is capable
-of operating in 1..4 DSI lane mode. Remove the hard-coded 4-lane
-configuration from PPI register settings and instead configure
-the PPI lane count according to lane count information already
-obtained by this driver instance.
+Modify the functions to accept a pointer to struct decon_context
+instead.
 
-Configure TXSETR register to match PPI lane count. The R-Car V4H
-Reference Manual R19UH0186EJ0121 Rev.1.21 section 67.2.2.3 Tx Set
-Register (TXSETR), field LANECNT description indicates that the
-TXSETR register LANECNT bitfield lane count must be configured
-such, that it matches lane count configuration in PPISETR register
-DLEN bitfield. Make sure the LANECNT and DLEN bitfields are
-configured to match.
-
-Fixes: 155358310f01 ("drm: rcar-du: Add R-Car DSI driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
-Reviewed-by: Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>
-Link: https://lore.kernel.org/r/20250813210840.97621-1-marek.vasut+renesas@mailbox.org
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-[ adjusted file paths to remove renesas/ subdirectory ]
+Signed-off-by: Kaustabh Chakraborty <kauschluss@disroot.org>
+Signed-off-by: Inki Dae <inki.dae@samsung.com>
+Stable-dep-of: e1361a4f1be9 ("drm/exynos: exynos7_drm_decon: remove ctx->suspended")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/rcar-du/rcar_mipi_dsi.c      |    5 ++++-
- drivers/gpu/drm/rcar-du/rcar_mipi_dsi_regs.h |    8 ++++----
- 2 files changed, 8 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/exynos/exynos7_drm_decon.c |   11 ++++-------
+ 1 file changed, 4 insertions(+), 7 deletions(-)
 
---- a/drivers/gpu/drm/rcar-du/rcar_mipi_dsi.c
-+++ b/drivers/gpu/drm/rcar-du/rcar_mipi_dsi.c
-@@ -385,7 +385,10 @@ static int rcar_mipi_dsi_startup(struct
- 	udelay(10);
- 	rcar_mipi_dsi_clr(dsi, CLOCKSET1, CLOCKSET1_UPDATEPLL);
+--- a/drivers/gpu/drm/exynos/exynos7_drm_decon.c
++++ b/drivers/gpu/drm/exynos/exynos7_drm_decon.c
+@@ -82,10 +82,8 @@ static const enum drm_plane_type decon_w
+ 	DRM_PLANE_TYPE_CURSOR,
+ };
  
--	ppisetr = PPISETR_DLEN_3 | PPISETR_CLEN;
-+	rcar_mipi_dsi_clr(dsi, TXSETR, TXSETR_LANECNT_MASK);
-+	rcar_mipi_dsi_set(dsi, TXSETR, dsi->lanes - 1);
-+
-+	ppisetr = ((BIT(dsi->lanes) - 1) & PPISETR_DLEN_MASK) | PPISETR_CLEN;
- 	rcar_mipi_dsi_write(dsi, PPISETR, ppisetr);
+-static void decon_wait_for_vblank(struct exynos_drm_crtc *crtc)
++static void decon_wait_for_vblank(struct decon_context *ctx)
+ {
+-	struct decon_context *ctx = crtc->ctx;
+-
+ 	if (ctx->suspended)
+ 		return;
  
- 	rcar_mipi_dsi_set(dsi, PHYSETUP, PHYSETUP_SHUTDOWNZ);
---- a/drivers/gpu/drm/rcar-du/rcar_mipi_dsi_regs.h
-+++ b/drivers/gpu/drm/rcar-du/rcar_mipi_dsi_regs.h
-@@ -12,6 +12,9 @@
- #define LINKSR_LPBUSY			(1 << 1)
- #define LINKSR_HSBUSY			(1 << 0)
+@@ -101,9 +99,8 @@ static void decon_wait_for_vblank(struct
+ 		DRM_DEV_DEBUG_KMS(ctx->dev, "vblank wait timed out.\n");
+ }
  
-+#define TXSETR				0x100
-+#define TXSETR_LANECNT_MASK		(0x3 << 0)
-+
- /*
-  * Video Mode Register
-  */
-@@ -80,10 +83,7 @@
-  * PHY-Protocol Interface (PPI) Registers
-  */
- #define PPISETR				0x700
--#define PPISETR_DLEN_0			(0x1 << 0)
--#define PPISETR_DLEN_1			(0x3 << 0)
--#define PPISETR_DLEN_2			(0x7 << 0)
--#define PPISETR_DLEN_3			(0xf << 0)
-+#define PPISETR_DLEN_MASK		(0xf << 0)
- #define PPISETR_CLEN			(1 << 8)
+-static void decon_clear_channels(struct exynos_drm_crtc *crtc)
++static void decon_clear_channels(struct decon_context *ctx)
+ {
+-	struct decon_context *ctx = crtc->ctx;
+ 	unsigned int win, ch_enabled = 0;
  
- #define PPICLCR				0x710
+ 	/* Check if any channel is enabled. */
+@@ -119,7 +116,7 @@ static void decon_clear_channels(struct
+ 
+ 	/* Wait for vsync, as disable channel takes effect at next vsync */
+ 	if (ch_enabled)
+-		decon_wait_for_vblank(ctx->crtc);
++		decon_wait_for_vblank(ctx);
+ }
+ 
+ static int decon_ctx_initialize(struct decon_context *ctx,
+@@ -127,7 +124,7 @@ static int decon_ctx_initialize(struct d
+ {
+ 	ctx->drm_dev = drm_dev;
+ 
+-	decon_clear_channels(ctx->crtc);
++	decon_clear_channels(ctx);
+ 
+ 	return exynos_drm_register_dma(drm_dev, ctx->dev, &ctx->dma_priv);
+ }
 
 
 
