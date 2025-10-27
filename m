@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-190716-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190860-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B827CC10AD1
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:15:15 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADAC0C10D0C
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:21:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BF363188B961
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:10:20 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 8FC7A545AC8
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:15:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76AB8329C64;
-	Mon, 27 Oct 2025 19:06:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE1953203BB;
+	Mon, 27 Oct 2025 19:13:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e9CV3/k8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vZsQt46r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17D40202963;
-	Mon, 27 Oct 2025 19:06:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B59031D757;
+	Mon, 27 Oct 2025 19:13:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592008; cv=none; b=Z0H3ZYcsxzLR3G2lqGuZ6L5Upmhrib1cCr7XAu6bEEtgHvHBDAWPc+RFhLsDDhFo1tIgmbSIhUhystKXOQqA9FC/LI7b7r+twx6sbp+YvFplmM1lzh5jpMTXxpkJZv09GVcpD/NhcSao8/++2aYAVTdFuyek7/6Q1vvFucVW0RE=
+	t=1761592390; cv=none; b=VvFTD+2ZmP2fEkCtc1Qy3IAECb6v9+AT4JYrVoYUnrb+Vp7khL2wU1eHiZJi9EQ86aZOqvdvR+uWblFGDsFblgqc9DHHNqqG/e7g/aX4gPqM2waELRzB3ATFLOV410ki2NkwGemQekZkAYmtijYnS5VicW4Fy7fOrlTPmKXHHCI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592008; c=relaxed/simple;
-	bh=ZOM2z9W39qKvrFwI82hvWHObM9m79+ttokadAXA2G4M=;
+	s=arc-20240116; t=1761592390; c=relaxed/simple;
+	bh=L/VBBScho41glXTP1m7Yw6fuvKjnMvdeFuR5dO+MTcw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PP/2GyHqzcu1wa4DpvTG03jmt7N6L/SCg+FePjZIXtlbW+fBTfS4r7EDKf42d45S9cyov0XDEitkf2ISo6Sw9TADYvXeUQ07hJdDYsZOs/R5p8ZrImWeYa+qZD5rWB4EY+Ns1F4oGbSzhD0TvPLYIePCNjki6fKhQhhxUof2ObE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e9CV3/k8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97BC4C4CEF1;
-	Mon, 27 Oct 2025 19:06:47 +0000 (UTC)
+	 MIME-Version; b=cUxwkQiA3SGwMumMN5AWk4zIF3pK8lw8ptWwU4Mw0TxFNO0s5s0lTn89w2SW6H9zP5ysuisb8315Z+x4rBdoCX1ESaM+kcZ4Zyu/ACBAWoV2O6soQO+sY1fPUQW7MlJanIxR48hbsh42Dje7IOxLNmSnGZqIwT1L5gW8Ifo+BPo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vZsQt46r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CC66C4CEF1;
+	Mon, 27 Oct 2025 19:13:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592007;
-	bh=ZOM2z9W39qKvrFwI82hvWHObM9m79+ttokadAXA2G4M=;
+	s=korg; t=1761592389;
+	bh=L/VBBScho41glXTP1m7Yw6fuvKjnMvdeFuR5dO+MTcw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e9CV3/k84PzNLAGHtCFJO5Aj6UbjlIt6hGjxrgdC5HDJf5FAuxQlyRDmw7K/DR8qB
-	 w3+7kfKV4vo2MujgxbfstDHtqPhOuFvibgJNxfGABHNf4qEvkmN1sFs8vnLxusqrU/
-	 O0rCmVudCYtv+WDHwJfeUfyEMTVuSm2Tqaz2h6VA=
+	b=vZsQt46rRrKVFYR9XF1VhHoT9ycrxnXBBOU4hexIOPN8aMLMqv107Vzyu4QcSFjYK
+	 3+CbQlKLmbhNxcYrNsTeAY6vM529XVK2fifq6B7c7TQpIKM8hxD8+9EihpGm9yxEqV
+	 PZQOvRE5Dyou/8jpig4VKexAGtzxsuxHU1cyVcIs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tomas Winkler <tomasw@gmail.com>,
-	Alexander Usyskin <alexander.usyskin@intel.com>
-Subject: [PATCH 5.15 083/123] mei: me: add wildcat lake P DID
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 102/157] io_uring: correct __must_hold annotation in io_install_fixed_file
 Date: Mon, 27 Oct 2025 19:36:03 +0100
-Message-ID: <20251027183448.611532630@linuxfoundation.org>
+Message-ID: <20251027183503.995632365@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183446.381986645@linuxfoundation.org>
-References: <20251027183446.381986645@linuxfoundation.org>
+In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
+References: <20251027183501.227243846@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,49 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Usyskin <alexander.usyskin@intel.com>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-commit 410d6c2ad4d1a88efa0acbb9966693725b564933 upstream.
+[ Upstream commit c5efc6a0b3940381d67887302ddb87a5cf623685 ]
 
-Add Wildcat Lake P device id.
+The __must_hold annotation references &req->ctx->uring_lock, but req
+is not in scope in io_install_fixed_file. This change updates the
+annotation to reference the correct ctx->uring_lock.
+improving code clarity.
 
-Cc: stable@vger.kernel.org
-Co-developed-by: Tomas Winkler <tomasw@gmail.com>
-Signed-off-by: Tomas Winkler <tomasw@gmail.com>
-Signed-off-by: Alexander Usyskin <alexander.usyskin@intel.com>
-Link: https://patch.msgid.link/20251016125912.2146136-1-alexander.usyskin@intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: f110ed8498af ("io_uring: split out fixed file installation and removal")
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/mei/hw-me-regs.h |    2 ++
- drivers/misc/mei/pci-me.c     |    2 ++
- 2 files changed, 4 insertions(+)
+ io_uring/filetable.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/misc/mei/hw-me-regs.h
-+++ b/drivers/misc/mei/hw-me-regs.h
-@@ -120,6 +120,8 @@
- #define MEI_DEV_ID_PTL_H      0xE370  /* Panther Lake H */
- #define MEI_DEV_ID_PTL_P      0xE470  /* Panther Lake P */
+diff --git a/io_uring/filetable.c b/io_uring/filetable.c
+index a64b4df0ac9c2..f9e59c650e893 100644
+--- a/io_uring/filetable.c
++++ b/io_uring/filetable.c
+@@ -62,7 +62,7 @@ void io_free_file_tables(struct io_file_table *table)
  
-+#define MEI_DEV_ID_WCL_P      0x4D70  /* Wildcat Lake P */
-+
- /*
-  * MEI HW Section
-  */
---- a/drivers/misc/mei/pci-me.c
-+++ b/drivers/misc/mei/pci-me.c
-@@ -126,6 +126,8 @@ static const struct pci_device_id mei_me
- 	{MEI_PCI_DEVICE(MEI_DEV_ID_PTL_H, MEI_ME_PCH15_CFG)},
- 	{MEI_PCI_DEVICE(MEI_DEV_ID_PTL_P, MEI_ME_PCH15_CFG)},
- 
-+	{MEI_PCI_DEVICE(MEI_DEV_ID_WCL_P, MEI_ME_PCH15_CFG)},
-+
- 	/* required last entry */
- 	{0, }
- };
+ static int io_install_fixed_file(struct io_ring_ctx *ctx, struct file *file,
+ 				 u32 slot_index)
+-	__must_hold(&req->ctx->uring_lock)
++	__must_hold(&ctx->uring_lock)
+ {
+ 	bool needs_switch = false;
+ 	struct io_fixed_file *file_slot;
+-- 
+2.51.0
+
 
 
 
