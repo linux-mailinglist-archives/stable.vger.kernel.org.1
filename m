@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-191039-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191205-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3745AC10F13
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:26:43 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBD19C11336
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:41:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E99C119A7EDE
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:23:10 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 8CCBD563883
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:29:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87F9C31DDBC;
-	Mon, 27 Oct 2025 19:20:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FB8D3233ED;
+	Mon, 27 Oct 2025 19:27:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lW5KFjAf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U6177fm4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 431F632D0E1;
-	Mon, 27 Oct 2025 19:20:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFF9B3218B2;
+	Mon, 27 Oct 2025 19:27:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592855; cv=none; b=bvsiWGEM69iujibSReoMqMoZzlKlloMfwGvdp+yfNO54DjUaVRd17M0cIPiuw2n1wj9abtDHkonTJjWMklfpg46lUSwcoK3nPe9grB7ujv9tvhxaCRgW5RzLn68lqw1oE4Q1qVgGaQ8Yz6gMybsxRbDi8hWH8ugFNr6LyIaSpM4=
+	t=1761593278; cv=none; b=Z+276kEwrbTEwTSgsKUOyVIRiUpFAkxC9wftoQVe3iOz8zidsTp8bmzRahh8KDmzLnm9LmhZIn1m8wNGWzTTeWLAe2pWk4tcnlglpuq1wGB3EAUQ4Ns6ffnC9Mfe23dD7G65ilPC8OZl5Og+5WQjMa118T6gDdYSp4bmqG3+mxw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592855; c=relaxed/simple;
-	bh=WAXKDx+zs5PgQK6gB6wXkzPhl+LWU67Z6afcQVunLKo=;
+	s=arc-20240116; t=1761593278; c=relaxed/simple;
+	bh=QytsNCxqG5uNu8l39xYibnu1QbZ0s70S7FW1hi67cMY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qeZeym/NwCTKX8MlDzIP1y94mSwle9vyl2LQasmRzbw+SUxWp+pLtSOjRAbqxmFKRC1QHEMAK78xCUOJOSb2/je9Do+TcLuI3qMpuFuTYxzJYQafqVOjMrL+ndXXI/MzDMtcHYizE2LZhRRa1m4Q7gC5MT//uBuDbx2mqCCVlQw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lW5KFjAf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BA53C4CEF1;
-	Mon, 27 Oct 2025 19:20:54 +0000 (UTC)
+	 MIME-Version; b=lIwGWN9u/gC868Kddl6u0j6Qj/0UAW/ll62aIMlKw2y9r5ILFrNoJseYDIgalcKhtQ9zgoHz5C180MMfuvEnq4Z9O9b50c9JPOO8XX9oE6P3xp2QSJ7a96NYHQVIU+bCVp4+VeUIzroLQiQER+MKzDmnYZVSaDSDibbSJKwfhPc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U6177fm4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72F6AC4CEF1;
+	Mon, 27 Oct 2025 19:27:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592854;
-	bh=WAXKDx+zs5PgQK6gB6wXkzPhl+LWU67Z6afcQVunLKo=;
+	s=korg; t=1761593277;
+	bh=QytsNCxqG5uNu8l39xYibnu1QbZ0s70S7FW1hi67cMY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lW5KFjAfHpO3npQ1oVWUCL47ueQW3QKTEaDZlc28fJuujnMGHfGsHqZQraDU9uf2F
-	 zNfpv3UgFZb+hAT7/aU4KDdgDcrmPuPT/3rkRW9kHuQhG9mN9kNbJyb0ExwRXQNQWc
-	 UnweyXb4p7dKrcrXY4Jwb1Lh/0hk5NdX6YLFl8Zg=
+	b=U6177fm4IPQFbrvmRJcdj58i7MLsCavJgRlw/2S528kKNv5DmrlCAEXA+LWb6hXb1
+	 nb0e1RO+dPVeQ4vY8TFbMaI5rXV0rPAqzJKMuINPVt4TZ0H/Tikz4uzBJqAcStXrBj
+	 M5ECNe8/Xdpa3c0B0LaO9/0w1G/RX3vutZ1LtAZw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aksh Garg <a-garg7@ti.com>,
-	Siddharth Vadapalli <s-vadapalli@ti.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 038/117] net: ethernet: ti: am65-cpts: fix timestamp loss due to race conditions
+	Suren Baghdasaryan <surenb@google.com>,
+	Hao Ge <gehao@kylinos.cn>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>
+Subject: [PATCH 6.17 082/184] slab: Avoid race on slab->obj_exts in alloc_slab_obj_exts
 Date: Mon, 27 Oct 2025 19:36:04 +0100
-Message-ID: <20251027183455.010876165@linuxfoundation.org>
+Message-ID: <20251027183517.107241183@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
-References: <20251027183453.919157109@linuxfoundation.org>
+In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
+References: <20251027183514.934710872@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,195 +63,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aksh Garg <a-garg7@ti.com>
+From: Hao Ge <gehao@kylinos.cn>
 
-[ Upstream commit 49d34f3dd8519581030547eb7543a62f9ab5fa08 ]
+commit 6ed8bfd24ce1cb31742b09a3eb557cd008533eec upstream.
 
-Resolve race conditions in timestamp events list handling between TX
-and RX paths causing missed timestamps.
+If two competing threads enter alloc_slab_obj_exts() and one of them
+fails to allocate the object extension vector, it might override the
+valid slab->obj_exts allocated by the other thread with
+OBJEXTS_ALLOC_FAIL. This will cause the thread that lost this race and
+expects a valid pointer to dereference a NULL pointer later on.
 
-The current implementation uses a single events list for both TX and RX
-timestamps. The am65_cpts_find_ts() function acquires the lock,
-splices all events (TX as well as RX events) to a temporary list,
-and releases the lock. This function performs matching of timestamps
-for TX packets only. Before it acquires the lock again to put the
-non-TX events back to the main events list, a concurrent RX
-processing thread could acquire the lock (as observed in practice),
-find an empty events list, and fail to attach timestamp to it,
-even though a relevant event exists in the spliced list which is yet to
-be restored to the main list.
+Update slab->obj_exts atomically using cmpxchg() to avoid
+slab->obj_exts overrides by racing threads.
 
-Fix this by creating separate events lists to handle TX and RX
-timestamps independently.
+Thanks for Vlastimil and Suren's help with debugging.
 
-Fixes: c459f606f66df ("net: ethernet: ti: am65-cpts: Enable RX HW timestamp for PTP packets using CPTS FIFO")
-Signed-off-by: Aksh Garg <a-garg7@ti.com>
-Reviewed-by: Siddharth Vadapalli <s-vadapalli@ti.com>
-Link: https://patch.msgid.link/20251016115755.1123646-1-a-garg7@ti.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: f7381b911640 ("slab: mark slab->obj_exts allocation failures unconditionally")
+Cc: <stable@vger.kernel.org>
+Suggested-by: Suren Baghdasaryan <surenb@google.com>
+Signed-off-by: Hao Ge <gehao@kylinos.cn>
+Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
+Reviewed-by: Suren Baghdasaryan <surenb@google.com>
+Link: https://patch.msgid.link/20251021010353.1187193-1-hao.ge@linux.dev
+Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/ti/am65-cpts.c | 63 ++++++++++++++++++++---------
- 1 file changed, 43 insertions(+), 20 deletions(-)
+ mm/slub.c |    9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/ti/am65-cpts.c b/drivers/net/ethernet/ti/am65-cpts.c
-index 59d6ab989c554..8ffbfaa3ab18c 100644
---- a/drivers/net/ethernet/ti/am65-cpts.c
-+++ b/drivers/net/ethernet/ti/am65-cpts.c
-@@ -163,7 +163,9 @@ struct am65_cpts {
- 	struct device_node *clk_mux_np;
- 	struct clk *refclk;
- 	u32 refclk_freq;
--	struct list_head events;
-+	/* separate lists to handle TX and RX timestamp independently */
-+	struct list_head events_tx;
-+	struct list_head events_rx;
- 	struct list_head pool;
- 	struct am65_cpts_event pool_data[AM65_CPTS_MAX_EVENTS];
- 	spinlock_t lock; /* protects events lists*/
-@@ -227,6 +229,24 @@ static void am65_cpts_disable(struct am65_cpts *cpts)
- 	am65_cpts_write32(cpts, 0, int_enable);
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -1978,7 +1978,7 @@ static inline void mark_objexts_empty(st
+ 
+ static inline void mark_failed_objexts_alloc(struct slab *slab)
+ {
+-	slab->obj_exts = OBJEXTS_ALLOC_FAIL;
++	cmpxchg(&slab->obj_exts, 0, OBJEXTS_ALLOC_FAIL);
  }
  
-+static int am65_cpts_purge_event_list(struct am65_cpts *cpts,
-+				      struct list_head *events)
-+{
-+	struct list_head *this, *next;
-+	struct am65_cpts_event *event;
-+	int removed = 0;
-+
-+	list_for_each_safe(this, next, events) {
-+		event = list_entry(this, struct am65_cpts_event, list);
-+		if (time_after(jiffies, event->tmo)) {
-+			list_del_init(&event->list);
-+			list_add(&event->list, &cpts->pool);
-+			++removed;
-+		}
-+	}
-+	return removed;
-+}
-+
- static int am65_cpts_event_get_port(struct am65_cpts_event *event)
- {
- 	return (event->event1 & AM65_CPTS_EVENT_1_PORT_NUMBER_MASK) >>
-@@ -239,20 +259,12 @@ static int am65_cpts_event_get_type(struct am65_cpts_event *event)
- 		AM65_CPTS_EVENT_1_EVENT_TYPE_SHIFT;
- }
- 
--static int am65_cpts_cpts_purge_events(struct am65_cpts *cpts)
-+static int am65_cpts_purge_events(struct am65_cpts *cpts)
- {
--	struct list_head *this, *next;
--	struct am65_cpts_event *event;
- 	int removed = 0;
- 
--	list_for_each_safe(this, next, &cpts->events) {
--		event = list_entry(this, struct am65_cpts_event, list);
--		if (time_after(jiffies, event->tmo)) {
--			list_del_init(&event->list);
--			list_add(&event->list, &cpts->pool);
--			++removed;
--		}
--	}
-+	removed += am65_cpts_purge_event_list(cpts, &cpts->events_tx);
-+	removed += am65_cpts_purge_event_list(cpts, &cpts->events_rx);
- 
- 	if (removed)
- 		dev_dbg(cpts->dev, "event pool cleaned up %d\n", removed);
-@@ -287,7 +299,7 @@ static int __am65_cpts_fifo_read(struct am65_cpts *cpts)
- 						 struct am65_cpts_event, list);
- 
- 		if (!event) {
--			if (am65_cpts_cpts_purge_events(cpts)) {
-+			if (am65_cpts_purge_events(cpts)) {
- 				dev_err(cpts->dev, "cpts: event pool empty\n");
- 				ret = -1;
- 				goto out;
-@@ -306,11 +318,21 @@ static int __am65_cpts_fifo_read(struct am65_cpts *cpts)
- 				cpts->timestamp);
- 			break;
- 		case AM65_CPTS_EV_RX:
-+			event->tmo = jiffies +
-+				msecs_to_jiffies(AM65_CPTS_EVENT_RX_TX_TIMEOUT);
-+
-+			list_move_tail(&event->list, &cpts->events_rx);
-+
-+			dev_dbg(cpts->dev,
-+				"AM65_CPTS_EV_RX e1:%08x e2:%08x t:%lld\n",
-+				event->event1, event->event2,
-+				event->timestamp);
-+			break;
- 		case AM65_CPTS_EV_TX:
- 			event->tmo = jiffies +
- 				msecs_to_jiffies(AM65_CPTS_EVENT_RX_TX_TIMEOUT);
- 
--			list_move_tail(&event->list, &cpts->events);
-+			list_move_tail(&event->list, &cpts->events_tx);
- 
- 			dev_dbg(cpts->dev,
- 				"AM65_CPTS_EV_TX e1:%08x e2:%08x t:%lld\n",
-@@ -828,7 +850,7 @@ static bool am65_cpts_match_tx_ts(struct am65_cpts *cpts,
- 	return found;
- }
- 
--static void am65_cpts_find_ts(struct am65_cpts *cpts)
-+static void am65_cpts_find_tx_ts(struct am65_cpts *cpts)
- {
- 	struct am65_cpts_event *event;
- 	struct list_head *this, *next;
-@@ -837,7 +859,7 @@ static void am65_cpts_find_ts(struct am65_cpts *cpts)
- 	LIST_HEAD(events);
- 
- 	spin_lock_irqsave(&cpts->lock, flags);
--	list_splice_init(&cpts->events, &events);
-+	list_splice_init(&cpts->events_tx, &events);
- 	spin_unlock_irqrestore(&cpts->lock, flags);
- 
- 	list_for_each_safe(this, next, &events) {
-@@ -850,7 +872,7 @@ static void am65_cpts_find_ts(struct am65_cpts *cpts)
+ static inline void handle_failed_objexts_alloc(unsigned long obj_exts,
+@@ -2043,6 +2043,7 @@ int alloc_slab_obj_exts(struct slab *sla
+ #ifdef CONFIG_MEMCG
+ 	new_exts |= MEMCG_DATA_OBJEXTS;
+ #endif
++retry:
+ 	old_exts = READ_ONCE(slab->obj_exts);
+ 	handle_failed_objexts_alloc(old_exts, vec, objects);
+ 	if (new_slab) {
+@@ -2052,8 +2053,7 @@ int alloc_slab_obj_exts(struct slab *sla
+ 		 * be simply assigned.
+ 		 */
+ 		slab->obj_exts = new_exts;
+-	} else if ((old_exts & ~OBJEXTS_FLAGS_MASK) ||
+-		   cmpxchg(&slab->obj_exts, old_exts, new_exts) != old_exts) {
++	} else if (old_exts & ~OBJEXTS_FLAGS_MASK) {
+ 		/*
+ 		 * If the slab is already in use, somebody can allocate and
+ 		 * assign slabobj_exts in parallel. In this case the existing
+@@ -2062,6 +2062,9 @@ int alloc_slab_obj_exts(struct slab *sla
+ 		mark_objexts_empty(vec);
+ 		kfree(vec);
+ 		return 0;
++	} else if (cmpxchg(&slab->obj_exts, old_exts, new_exts) != old_exts) {
++		/* Retry if a racing thread changed slab->obj_exts from under us. */
++		goto retry;
  	}
  
- 	spin_lock_irqsave(&cpts->lock, flags);
--	list_splice_tail(&events, &cpts->events);
-+	list_splice_tail(&events, &cpts->events_tx);
- 	list_splice_tail(&events_free, &cpts->pool);
- 	spin_unlock_irqrestore(&cpts->lock, flags);
- }
-@@ -861,7 +883,7 @@ static long am65_cpts_ts_work(struct ptp_clock_info *ptp)
- 	unsigned long flags;
- 	long delay = -1;
- 
--	am65_cpts_find_ts(cpts);
-+	am65_cpts_find_tx_ts(cpts);
- 
- 	spin_lock_irqsave(&cpts->txq.lock, flags);
- 	if (!skb_queue_empty(&cpts->txq))
-@@ -905,7 +927,7 @@ static u64 am65_cpts_find_rx_ts(struct am65_cpts *cpts, u32 skb_mtype_seqid)
- 
- 	spin_lock_irqsave(&cpts->lock, flags);
- 	__am65_cpts_fifo_read(cpts);
--	list_for_each_safe(this, next, &cpts->events) {
-+	list_for_each_safe(this, next, &cpts->events_rx) {
- 		event = list_entry(this, struct am65_cpts_event, list);
- 		if (time_after(jiffies, event->tmo)) {
- 			list_move(&event->list, &cpts->pool);
-@@ -1155,7 +1177,8 @@ struct am65_cpts *am65_cpts_create(struct device *dev, void __iomem *regs,
- 		return ERR_PTR(ret);
- 
- 	mutex_init(&cpts->ptp_clk_lock);
--	INIT_LIST_HEAD(&cpts->events);
-+	INIT_LIST_HEAD(&cpts->events_tx);
-+	INIT_LIST_HEAD(&cpts->events_rx);
- 	INIT_LIST_HEAD(&cpts->pool);
- 	spin_lock_init(&cpts->lock);
- 	skb_queue_head_init(&cpts->txq);
--- 
-2.51.0
-
+ 	kmemleak_not_leak(vec);
 
 
 
