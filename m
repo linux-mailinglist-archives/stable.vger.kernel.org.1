@@ -1,57 +1,66 @@
-Return-Path: <stable+bounces-190772-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190514-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FBC1C10999
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:11:56 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19B51C107A5
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:06:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 8EEC5351A82
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:11:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1868D188D008
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:03:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9CF72C15BB;
-	Mon, 27 Oct 2025 19:09:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CB2332E6BD;
+	Mon, 27 Oct 2025 18:58:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m9cdTXNF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aGLZOJRp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E14731D389;
-	Mon, 27 Oct 2025 19:09:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAC2F32E6A7;
+	Mon, 27 Oct 2025 18:58:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592156; cv=none; b=IRswHfG8B8iL1QjJ68VC/wzBwxxH3EVLuER3XERMRuGyOYMaZ/93iiTFMew+KdQTtt7PgH6Azk7KGcs4Yj62iA9QZIwwViHoGg39bBR6lx9QKPy82rauHeq02onVKR/TfrrEC6RCcViG8IOIhIvwRVy74xXVYjN+EOA5jeudCxw=
+	t=1761591489; cv=none; b=VYwIgnTH+fYUOLz+7ygM5omfgylukz1Hb9pldHR7GF4hnvEBZCN9WlLytqQGptH5XGFLr8OUwv3FCtZ52ydLi+eErPQ1CcgZytq3MKya46VAlnITcfPQ7Ci9a1ZFvn0/ARAvo2TfGPXz2m9ozUH362S2nPnAXG3Z/TjlMOWPXqI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592156; c=relaxed/simple;
-	bh=tDe20rda0BM6Uzumsuxk23M2iPMLf+NPUMmURdy+ckI=;
+	s=arc-20240116; t=1761591489; c=relaxed/simple;
+	bh=ejIf3NoXRqZr+yllcUZpmWwUVYHZMGts/Srt2969Ht8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AILjkRXNmdUV472RPdsLGEZ6fOd0r4vvvsG3OdP6qDlfN8bnSJj+FimZyYKKa4L26BGUj4ranFSipyaoit8AtUMt1BHB3cO75gvxX1ScP4ORpE85HQImlfpE1ccqa/+wzjPY2PxUWW/jHzNJQ3QU0/tJ6Q16dPeqYXQ0wLD1J1g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m9cdTXNF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96AEDC4CEFD;
-	Mon, 27 Oct 2025 19:09:15 +0000 (UTC)
+	 MIME-Version; b=nICNil9Uf31/EEuIh681Y7xJOUsii//j/kW8CPL1IT21ZK9rkoTDE92AWaLWnsqvINdv2VZjfBbaYKk2fTUPWRAyH8QXu/xE0iSj6cruDuoO+KBRU/bsmnpRI7e5b32a5Q8Kp7xIFRiPT3XVsF2rrVtE5aLdOC1+oJ/92bqe7AM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aGLZOJRp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04C1CC4CEF1;
+	Mon, 27 Oct 2025 18:58:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592155;
-	bh=tDe20rda0BM6Uzumsuxk23M2iPMLf+NPUMmURdy+ckI=;
+	s=korg; t=1761591489;
+	bh=ejIf3NoXRqZr+yllcUZpmWwUVYHZMGts/Srt2969Ht8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m9cdTXNF2bdQdMDtUuwnWf2jZeXaY6rlnHnNndg/hCPYEpf0JY60SCbW0E25c83Ft
-	 yRdLb0RE6xXvls97iX2wossDG6tnjuDlVEqMducVSVghNew8QxVKRLwnzReQU5MG+a
-	 UNrVi/wTYExrFst6f/FFVyyvmaijuNAamknEBZVo=
+	b=aGLZOJRp1L8uRDgShiES6ivQyEoJOKzkd2UGmABKs/EZkcznss+/U8owuLQ8UBAXM
+	 GmLyNItYjAgf8fIUbYehSCCOIU0wMVekFhgzSFb7uZs7ZULleRZJZp7+vsFTYox8fy
+	 SELvJLWqqUIpu/YWv1gqaPn7mPg8hdlrwUmbgpc0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+884dc4621377ba579a6f@syzkaller.appspotmail.com,
-	Qu Wenruo <wqu@suse.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.1 007/157] btrfs: do not assert we found block group item when creating free space tree
+	David Laight <david.laight@aculab.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Arnd Bergmann <arnd@kernel.org>,
+	Christoph Hellwig <hch@infradead.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	"Jason A. Donenfeld" <Jason@zx2c4.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Mateusz Guzik <mjguzik@gmail.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Pedro Falcato <pedro.falcato@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Eliav Farber <farbere@amazon.com>
+Subject: [PATCH 5.10 215/332] minmax.h: update some comments
 Date: Mon, 27 Oct 2025 19:34:28 +0100
-Message-ID: <20251027183501.438969133@linuxfoundation.org>
+Message-ID: <20251027183530.433938880@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
-References: <20251027183501.227243846@linuxfoundation.org>
+In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
+References: <20251027183524.611456697@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,120 +72,130 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: David Laight <David.Laight@ACULAB.COM>
 
-commit a5a51bf4e9b7354ce7cd697e610d72c1b33fd949 upstream.
+[ Upstream commit 10666e99204818ef45c702469488353b5bb09ec7 ]
 
-Currently, when building a free space tree at populate_free_space_tree(),
-if we are not using the block group tree feature, we always expect to find
-block group items (either extent items or a block group item with key type
-BTRFS_BLOCK_GROUP_ITEM_KEY) when we search the extent tree with
-btrfs_search_slot_for_read(), so we assert that we found an item. However
-this expectation is wrong since we can have a new block group created in
-the current transaction which is still empty and for which we still have
-not added the block group's item to the extent tree, in which case we do
-not have any items in the extent tree associated to the block group.
+- Change three to several.
+- Remove the comment about retaining constant expressions, no longer true.
+- Realign to nearer 80 columns and break on major punctiation.
+- Add a leading comment to the block before __signed_type() and __is_nonneg()
+  Otherwise the block explaining the cast is a bit 'floating'.
+  Reword the rest of that comment to improve readability.
 
-The insertion of a new block group's block group item in the extent tree
-happens at btrfs_create_pending_block_groups() when it calls the helper
-insert_block_group_item(). This typically is done when a transaction
-handle is released, committed or when running delayed refs (either as
-part of a transaction commit or when serving tickets for space reservation
-if we are low on free space).
-
-So remove the assertion at populate_free_space_tree() even when the block
-group tree feature is not enabled and update the comment to mention this
-case.
-
-Syzbot reported this with the following stack trace:
-
-  BTRFS info (device loop3 state M): rebuilding free space tree
-  assertion failed: ret == 0 :: 0, in fs/btrfs/free-space-tree.c:1115
-  ------------[ cut here ]------------
-  kernel BUG at fs/btrfs/free-space-tree.c:1115!
-  Oops: invalid opcode: 0000 [#1] SMP KASAN PTI
-  CPU: 1 UID: 0 PID: 6352 Comm: syz.3.25 Not tainted syzkaller #0 PREEMPT(full)
-  Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 08/18/2025
-  RIP: 0010:populate_free_space_tree+0x700/0x710 fs/btrfs/free-space-tree.c:1115
-  Code: ff ff e8 d3 (...)
-  RSP: 0018:ffffc9000430f780 EFLAGS: 00010246
-  RAX: 0000000000000043 RBX: ffff88805b709630 RCX: fea61d0e2e79d000
-  RDX: 0000000000000000 RSI: 0000000080000000 RDI: 0000000000000000
-  RBP: ffffc9000430f8b0 R08: ffffc9000430f4a7 R09: 1ffff92000861e94
-  R10: dffffc0000000000 R11: fffff52000861e95 R12: 0000000000000001
-  R13: 1ffff92000861f00 R14: dffffc0000000000 R15: 0000000000000000
-  FS:  00007f424d9fe6c0(0000) GS:ffff888125afc000(0000) knlGS:0000000000000000
-  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-  CR2: 00007fd78ad212c0 CR3: 0000000076d68000 CR4: 00000000003526f0
-  Call Trace:
-   <TASK>
-   btrfs_rebuild_free_space_tree+0x1ba/0x6d0 fs/btrfs/free-space-tree.c:1364
-   btrfs_start_pre_rw_mount+0x128f/0x1bf0 fs/btrfs/disk-io.c:3062
-   btrfs_remount_rw fs/btrfs/super.c:1334 [inline]
-   btrfs_reconfigure+0xaed/0x2160 fs/btrfs/super.c:1559
-   reconfigure_super+0x227/0x890 fs/super.c:1076
-   do_remount fs/namespace.c:3279 [inline]
-   path_mount+0xd1a/0xfe0 fs/namespace.c:4027
-   do_mount fs/namespace.c:4048 [inline]
-   __do_sys_mount fs/namespace.c:4236 [inline]
-   __se_sys_mount+0x313/0x410 fs/namespace.c:4213
-   do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
-   do_syscall_64+0xfa/0xfa0 arch/x86/entry/syscall_64.c:94
-   entry_SYSCALL_64_after_hwframe+0x77/0x7f
-   RIP: 0033:0x7f424e39066a
-  Code: d8 64 89 02 (...)
-  RSP: 002b:00007f424d9fde68 EFLAGS: 00000246 ORIG_RAX: 00000000000000a5
-  RAX: ffffffffffffffda RBX: 00007f424d9fdef0 RCX: 00007f424e39066a
-  RDX: 0000200000000180 RSI: 0000200000000380 RDI: 0000000000000000
-  RBP: 0000200000000180 R08: 00007f424d9fdef0 R09: 0000000000000020
-  R10: 0000000000000020 R11: 0000000000000246 R12: 0000200000000380
-  R13: 00007f424d9fdeb0 R14: 0000000000000000 R15: 00002000000002c0
-   </TASK>
-  Modules linked in:
-  ---[ end trace 0000000000000000 ]---
-
-Reported-by: syzbot+884dc4621377ba579a6f@syzkaller.appspotmail.com
-Link: https://lore.kernel.org/linux-btrfs/68dc3dab.a00a0220.102ee.004e.GAE@google.com/
-Fixes: a5ed91828518 ("Btrfs: implement the free space B-tree")
-CC: <stable@vger.kernel.org> # 6.1.x: 1961d20f6fa8: btrfs: fix assertion when building free space tree
-CC: <stable@vger.kernel.org> # 6.1.x
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Link: https://lkml.kernel.org/r/85b050c81c1d4076aeb91a6cded45fee@AcuMS.aculab.com
+Signed-off-by: David Laight <david.laight@aculab.com>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Arnd Bergmann <arnd@kernel.org>
+Cc: Christoph Hellwig <hch@infradead.org>
+Cc: Dan Carpenter <dan.carpenter@linaro.org>
+Cc: Jason A. Donenfeld <Jason@zx2c4.com>
+Cc: Jens Axboe <axboe@kernel.dk>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Mateusz Guzik <mjguzik@gmail.com>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: Pedro Falcato <pedro.falcato@gmail.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Eliav Farber <farbere@amazon.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/free-space-tree.c |   15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+ include/linux/minmax.h |   61 ++++++++++++++++++++++---------------------------
+ 1 file changed, 28 insertions(+), 33 deletions(-)
 
---- a/fs/btrfs/free-space-tree.c
-+++ b/fs/btrfs/free-space-tree.c
-@@ -1102,14 +1102,15 @@ static int populate_free_space_tree(stru
- 	 * If ret is 1 (no key found), it means this is an empty block group,
- 	 * without any extents allocated from it and there's no block group
- 	 * item (key BTRFS_BLOCK_GROUP_ITEM_KEY) located in the extent tree
--	 * because we are using the block group tree feature, so block group
--	 * items are stored in the block group tree. It also means there are no
--	 * extents allocated for block groups with a start offset beyond this
--	 * block group's end offset (this is the last, highest, block group).
-+	 * because we are using the block group tree feature (so block group
-+	 * items are stored in the block group tree) or this is a new block
-+	 * group created in the current transaction and its block group item
-+	 * was not yet inserted in the extent tree (that happens in
-+	 * btrfs_create_pending_block_groups() -> insert_block_group_item()).
-+	 * It also means there are no extents allocated for block groups with a
-+	 * start offset beyond this block group's end offset (this is the last,
-+	 * highest, block group).
- 	 */
--	if (!btrfs_fs_compat_ro(trans->fs_info, BLOCK_GROUP_TREE))
--		ASSERT(ret == 0);
--
- 	start = block_group->start;
- 	end = block_group->start + block_group->length;
- 	while (ret == 0) {
+--- a/include/linux/minmax.h
++++ b/include/linux/minmax.h
+@@ -8,13 +8,10 @@
+ #include <linux/types.h>
+ 
+ /*
+- * min()/max()/clamp() macros must accomplish three things:
++ * min()/max()/clamp() macros must accomplish several things:
+  *
+  * - Avoid multiple evaluations of the arguments (so side-effects like
+  *   "x++" happen only once) when non-constant.
+- * - Retain result as a constant expressions when called with only
+- *   constant expressions (to avoid tripping VLA warnings in stack
+- *   allocation usage).
+  * - Perform signed v unsigned type-checking (to generate compile
+  *   errors instead of nasty runtime surprises).
+  * - Unsigned char/short are always promoted to signed int and can be
+@@ -31,25 +28,23 @@
+  *   bit #0 set if ok for unsigned comparisons
+  *   bit #1 set if ok for signed comparisons
+  *
+- * In particular, statically non-negative signed integer
+- * expressions are ok for both.
++ * In particular, statically non-negative signed integer expressions
++ * are ok for both.
+  *
+- * NOTE! Unsigned types smaller than 'int' are implicitly
+- * converted to 'int' in expressions, and are accepted for
+- * signed conversions for now. This is debatable.
+- *
+- * Note that 'x' is the original expression, and 'ux' is
+- * the unique variable that contains the value.
+- *
+- * We use 'ux' for pure type checking, and 'x' for when
+- * we need to look at the value (but without evaluating
+- * it for side effects! Careful to only ever evaluate it
+- * with sizeof() or __builtin_constant_p() etc).
+- *
+- * Pointers end up being checked by the normal C type
+- * rules at the actual comparison, and these expressions
+- * only need to be careful to not cause warnings for
+- * pointer use.
++ * NOTE! Unsigned types smaller than 'int' are implicitly converted to 'int'
++ * in expressions, and are accepted for signed conversions for now.
++ * This is debatable.
++ *
++ * Note that 'x' is the original expression, and 'ux' is the unique variable
++ * that contains the value.
++ *
++ * We use 'ux' for pure type checking, and 'x' for when we need to look at the
++ * value (but without evaluating it for side effects!
++ * Careful to only ever evaluate it with sizeof() or __builtin_constant_p() etc).
++ *
++ * Pointers end up being checked by the normal C type rules at the actual
++ * comparison, and these expressions only need to be careful to not cause
++ * warnings for pointer use.
+  */
+ #define __signed_type_use(x, ux) (2 + __is_nonneg(x, ux))
+ #define __unsigned_type_use(x, ux) (1 + 2 * (sizeof(ux) < 4))
+@@ -57,19 +52,19 @@
+ 	__signed_type_use(x, ux) : __unsigned_type_use(x, ux))
+ 
+ /*
+- * To avoid warnings about casting pointers to integers
+- * of different sizes, we need that special sign type.
++ * Check whether a signed value is always non-negative.
+  *
+- * On 64-bit we can just always use 'long', since any
+- * integer or pointer type can just be cast to that.
++ * A cast is needed to avoid any warnings from values that aren't signed
++ * integer types (in which case the result doesn't matter).
+  *
+- * This does not work for 128-bit signed integers since
+- * the cast would truncate them, but we do not use s128
+- * types in the kernel (we do use 'u128', but they will
+- * be handled by the !is_signed_type() case).
+- *
+- * NOTE! The cast is there only to avoid any warnings
+- * from when values that aren't signed integer types.
++ * On 64-bit any integer or pointer type can safely be cast to 'long'.
++ * But on 32-bit we need to avoid warnings about casting pointers to integers
++ * of different sizes without truncating 64-bit values so 'long' or 'long long'
++ * must be used depending on the size of the value.
++ *
++ * This does not work for 128-bit signed integers since the cast would truncate
++ * them, but we do not use s128 types in the kernel (we do use 'u128',
++ * but they are handled by the !is_signed_type() case).
+  */
+ #ifdef CONFIG_64BIT
+   #define __signed_type(ux) long
 
 
 
