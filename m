@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-191103-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190990-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id D17E7C11147
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:33:23 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEC3DC10CA3
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:20:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 261C7507B62
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:25:28 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 9A90E3527B4
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:20:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AC4E2D836A;
-	Mon, 27 Oct 2025 19:23:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D60F320CCE;
+	Mon, 27 Oct 2025 19:18:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vzmNNwUC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JYsRQ3hC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB70923EA92;
-	Mon, 27 Oct 2025 19:23:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCF722C3749;
+	Mon, 27 Oct 2025 19:18:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761593015; cv=none; b=uXB+H+mjQX7fWoLW994BFb2Bqir1W+P7Bpv5JocPIY3C1psx/orlLSajZuoIoThF0F2vN4AXB9l0a44sX8/4bkArPb8J5XCiip0DpmUbsy7qBFGt0GmKdeLaJLempVB/+JCKtu+65a9XipFi4UdzprQpk/LHT8cpBv2gEjXxdFY=
+	t=1761592728; cv=none; b=cjzxwlSQ8rL+G5+YG6iEQZn+G5Ems2SZQScffNfjxdRteL6oqZjDeeptDjGkFMeTPcOoO3g80UJ/o1JKsKS8Fvts5K4jddof+TKoxOJwfxnZEuwPW0TG2qRD20zFRwKsL3rDSBTg3zCO4nMV+QkyGkR68OieDkizGJTnZoimmMQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761593015; c=relaxed/simple;
-	bh=keUInPnTrEsb+7VJJZggau9jqJvG13MyMjRmcvZ+JHM=;
+	s=arc-20240116; t=1761592728; c=relaxed/simple;
+	bh=7l2S9W0Cxy9E1RAppVvvzOwYZ2psOGsL7PKMunfOOZQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Tg3iBrasGBBAUJgsyOwn56+2jG+zwcNSmjOkI4znAvxCxSOqzyZfaBpFcaUbQzSmTRTNzY497Kdgf7f5HmYjGIoYFOPYS5weiWYtcCCyLsTNLF4Z/K3e3vZBAAjkqRZDiIafU0OhDx8eWgQyoj5YQrTdrD7bAnRKZ4Fva8+LsGI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vzmNNwUC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56CC6C4CEF1;
-	Mon, 27 Oct 2025 19:23:34 +0000 (UTC)
+	 MIME-Version; b=O9ujChaFD8IOw1RbvGPm8uGwk5wcFX+KbhqTSL99DJLo8bXZ9HvGtE/5ZevGLBeOuY8TkZnS9O4PhmGWOaSNLcsRSys1wrzlHuxt268YYqZD0hF2joE7N0vxEP5piu8xQ3KJZFbk//hrJFCYvK+6cRzXqMJLQIoYuWojrotr6Z8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JYsRQ3hC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54785C4CEF1;
+	Mon, 27 Oct 2025 19:18:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761593014;
-	bh=keUInPnTrEsb+7VJJZggau9jqJvG13MyMjRmcvZ+JHM=;
+	s=korg; t=1761592727;
+	bh=7l2S9W0Cxy9E1RAppVvvzOwYZ2psOGsL7PKMunfOOZQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vzmNNwUCsknf+Ytp1DZeQZbBjVPDpri9hktCpRrI4jPgQPhNuTTnp7MJl5iq99ZDg
-	 hhcAYxxmB55vmruvrwihfqlIS+V/bUnhMN1xg30AJCcHcv+FOABMaSd0m1+lPY2dt3
-	 OdrOB0mEDJUJcs9jzS3X0G5MKQxZ31XhcFC9qyHA=
+	b=JYsRQ3hCXQH82Up4QGG0/VSIN8af/ApCt/UUs0QbM9fNN6MeU7pnoMMsaVwaTcECR
+	 0MK/Nzj3kWQrc+WD5zJ8DqMmjKUMzWT0fq2/qnQA57EDhZ7RCZ9m+6v90bZbVBo+AA
+	 sTejuPJu0AHTI8+/mv+0tyjs35PRGSdmtfDIGoSU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	stable <stable@kernel.org>,
-	Tim Guttzeit <t.guttzeit@tuxedocomputers.com>,
-	Werner Sembach <wse@tuxedocomputers.com>
-Subject: [PATCH 6.12 097/117] usb/core/quirks: Add Huawei ME906S to wakeup quirk
+	Artem Shimko <a.shimko.dev@gmail.com>
+Subject: [PATCH 6.6 74/84] serial: 8250_dw: handle reset control deassert error
 Date: Mon, 27 Oct 2025 19:37:03 +0100
-Message-ID: <20251027183456.641633670@linuxfoundation.org>
+Message-ID: <20251027183440.779523017@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
-References: <20251027183453.919157109@linuxfoundation.org>
+In-Reply-To: <20251027183438.817309828@linuxfoundation.org>
+References: <20251027183438.817309828@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +61,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tim Guttzeit <t.guttzeit@tuxedocomputers.com>
+From: Artem Shimko <a.shimko.dev@gmail.com>
 
-commit dfc2cf4dcaa03601cd4ca0f7def88b2630fca6ab upstream.
+commit daeb4037adf7d3349b4a1fb792f4bc9824686a4b upstream.
 
-The list of Huawei LTE modules needing the quirk fixing spurious wakeups
-was missing the IDs of the Huawei ME906S module, therefore suspend did not
-work.
+Check the return value of reset_control_deassert() in the probe
+function to prevent continuing probe when reset deassertion fails.
 
+Previously, reset_control_deassert() was called without checking its
+return value, which could lead to probe continuing even when the
+device reset wasn't properly deasserted.
+
+The fix checks the return value and returns an error with dev_err_probe()
+if reset deassertion fails, providing better error handling and
+diagnostics.
+
+Fixes: acbdad8dd1ab ("serial: 8250_dw: simplify optional reset handling")
 Cc: stable <stable@kernel.org>
-Signed-off-by: Tim Guttzeit <t.guttzeit@tuxedocomputers.com>
-Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
-Link: https://patch.msgid.link/20251020134304.35079-1-wse@tuxedocomputers.com
+Signed-off-by: Artem Shimko <a.shimko.dev@gmail.com>
+Link: https://patch.msgid.link/20251019095131.252848-1-a.shimko.dev@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/core/quirks.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/tty/serial/8250/8250_dw.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/core/quirks.c
-+++ b/drivers/usb/core/quirks.c
-@@ -464,6 +464,8 @@ static const struct usb_device_id usb_qu
- 	/* Huawei 4G LTE module */
- 	{ USB_DEVICE(0x12d1, 0x15bb), .driver_info =
- 			USB_QUIRK_DISCONNECT_SUSPEND },
-+	{ USB_DEVICE(0x12d1, 0x15c1), .driver_info =
-+			USB_QUIRK_DISCONNECT_SUSPEND },
- 	{ USB_DEVICE(0x12d1, 0x15c3), .driver_info =
- 			USB_QUIRK_DISCONNECT_SUSPEND },
+--- a/drivers/tty/serial/8250/8250_dw.c
++++ b/drivers/tty/serial/8250/8250_dw.c
+@@ -653,7 +653,9 @@ static int dw8250_probe(struct platform_
+ 	if (IS_ERR(data->rst))
+ 		return PTR_ERR(data->rst);
  
+-	reset_control_deassert(data->rst);
++	err = reset_control_deassert(data->rst);
++	if (err)
++		return dev_err_probe(dev, err, "failed to deassert resets\n");
+ 
+ 	err = devm_add_action_or_reset(dev, dw8250_reset_control_assert, data->rst);
+ 	if (err)
 
 
 
