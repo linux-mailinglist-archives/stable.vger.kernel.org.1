@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-190219-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190230-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93F70C10377
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:52:11 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C0AEC10305
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:50:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A3604482CF2
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:49:58 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id E0BBC352B3D
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:50:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9544E330311;
-	Mon, 27 Oct 2025 18:45:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E19FD328607;
+	Mon, 27 Oct 2025 18:45:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wKRdCCld"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FqLkPE/O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E3DF3254AC;
-	Mon, 27 Oct 2025 18:45:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B20D328619;
+	Mon, 27 Oct 2025 18:45:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761590719; cv=none; b=Z6SPIfvN8WUNrdsUQR0buydZzRDwAb8phNS32ZvFqnocRdyzMqVh/Q6d6mVnQFMJgkCcbaAf95y5ZyPeCwHcIlwO1P28LPee0muJHFKJ0SnbYa8djkn8kf85B+EsRwx6Xk0Cqw+MrYW/3zvfrsaQ7Hmi4jrk6wAOiXd9XFcFtSs=
+	t=1761590755; cv=none; b=Op0P2u3zw5YoGbrP0rhUiSPCY+38fXnVUuEryxW0dAmSabi5daDDSiaO3mFoZAzVzYW/UUE17EOjjO8VDOMDKHJBtlv+8qmEro0PIylaXOyLKeQ/Jna7yg0iHBu31aDGRX/p0xW0WRxaGl6p0I7TVZ2NszV8lxWPs3mxyf8TlTg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761590719; c=relaxed/simple;
-	bh=gQIDH2SAFVuDJepwppFyLYSy7lTa59JMIXthgZhcZJk=;
+	s=arc-20240116; t=1761590755; c=relaxed/simple;
+	bh=O8HEWM5Xq4KTRz9q5rMLn+yZYSrmPSbAlbNWIcAnDUg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=muW16HyfNWr0ZgY834WX34OPX05/yg+CQPvlH1WgyW4lK3wVC9ttlvdByUsuSkGRMRY2o8Dvog5/2HPN8MmQdswnQJUpo9PEKs6/vMXTLBvdQ8lNUWyi8P86inbS3bYdC2hgeJKh9EGopHCLOAtZMLC1p7bJ6R6NDUsZjuSmnMU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wKRdCCld; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61F60C4CEFD;
-	Mon, 27 Oct 2025 18:45:18 +0000 (UTC)
+	 MIME-Version; b=TvrDXVmFD94jB5SpH9X3jvptC8HB2TKvQ/5nW97aUrfZP1ezJz0wmmKxpGrai+1zXD9ZHBY9anNniClAViuI+cF/odR9Dj8IR67Twp2zi8WkCVDEG8+VUHcWuFA5EQGqVSzp04Vhe14+ksnuLd6Zg3Clm078Zly1+DuAUZovM4o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FqLkPE/O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CDC4C4CEF1;
+	Mon, 27 Oct 2025 18:45:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761590718;
-	bh=gQIDH2SAFVuDJepwppFyLYSy7lTa59JMIXthgZhcZJk=;
+	s=korg; t=1761590755;
+	bh=O8HEWM5Xq4KTRz9q5rMLn+yZYSrmPSbAlbNWIcAnDUg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wKRdCCldff7T7s9Ts1tfbewA+aRAihr6kpeyfRouQzuStJk9pyTpxNV4NdN124b/f
-	 x1l0e1QneZJURvd1xMEA7K5FhkMuhJetffTAy/pSL8+BJyCzj1JwqEXDF0sxCalZhh
-	 PtE2U+YBT6eJRfIKoSTaQLtUEENNmH8lU7NO2PLE=
+	b=FqLkPE/OksM8T0R7eY8G9Olubcc8xTz+9eRaIloewlMSwMqp1aFeSpxk8K0Q71hs7
+	 hUYF1HZZiWvlS/02FbMCWVxu1GEG8OLY4nOZxpLQTIdj1xEDDPa9JOSAI0dq/WWuf0
+	 jEVetsZVCtH7FndCzkvvoet6i7jXnScAEtnzNFa8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+8743fca924afed42f93e@syzkaller.appspotmail.com,
-	Larshin Sergey <Sergey.Larshin@kaspersky.com>,
-	Jan Kara <jack@suse.cz>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 134/224] fs: udf: fix OOB read in lengthAllocDescs handling
-Date: Mon, 27 Oct 2025 19:34:40 +0100
-Message-ID: <20251027183512.563192700@linuxfoundation.org>
+Subject: [PATCH 5.4 135/224] mfd: vexpress-sysreg: Check the return value of devm_gpiochip_add_data()
+Date: Mon, 27 Oct 2025 19:34:41 +0100
+Message-ID: <20251027183512.588681801@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251027183508.963233542@linuxfoundation.org>
 References: <20251027183508.963233542@linuxfoundation.org>
@@ -67,79 +67,51 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Larshin Sergey <Sergey.Larshin@kaspersky.com>
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-[ Upstream commit 3bd5e45c2ce30e239d596becd5db720f7eb83c99 ]
+[ Upstream commit 1efbee6852f1ff698a9981bd731308dd027189fb ]
 
-When parsing Allocation Extent Descriptor, lengthAllocDescs comes from
-on-disk data and must be validated against the block size. Crafted or
-corrupted images may set lengthAllocDescs so that the total descriptor
-length (sizeof(allocExtDesc) + lengthAllocDescs) exceeds the buffer,
-leading udf_update_tag() to call crc_itu_t() on out-of-bounds memory and
-trigger a KASAN use-after-free read.
+Commit 974cc7b93441 ("mfd: vexpress: Define the device as MFD cells")
+removed the return value check from the call to gpiochip_add_data() (or
+rather gpiochip_add() back then and later converted to devres) with no
+explanation. This function however can still fail, so check the return
+value and bail-out if it does.
 
-BUG: KASAN: use-after-free in crc_itu_t+0x1d5/0x2b0 lib/crc-itu-t.c:60
-Read of size 1 at addr ffff888041e7d000 by task syz-executor317/5309
-
-CPU: 0 UID: 0 PID: 5309 Comm: syz-executor317 Not tainted 6.12.0-rc4-syzkaller-00261-g850925a8133c #0
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0x241/0x360 lib/dump_stack.c:120
- print_address_description mm/kasan/report.c:377 [inline]
- print_report+0x169/0x550 mm/kasan/report.c:488
- kasan_report+0x143/0x180 mm/kasan/report.c:601
- crc_itu_t+0x1d5/0x2b0 lib/crc-itu-t.c:60
- udf_update_tag+0x70/0x6a0 fs/udf/misc.c:261
- udf_write_aext+0x4d8/0x7b0 fs/udf/inode.c:2179
- extent_trunc+0x2f7/0x4a0 fs/udf/truncate.c:46
- udf_truncate_tail_extent+0x527/0x7e0 fs/udf/truncate.c:106
- udf_release_file+0xc1/0x120 fs/udf/file.c:185
- __fput+0x23f/0x880 fs/file_table.c:431
- task_work_run+0x24f/0x310 kernel/task_work.c:239
- exit_task_work include/linux/task_work.h:43 [inline]
- do_exit+0xa2f/0x28e0 kernel/exit.c:939
- do_group_exit+0x207/0x2c0 kernel/exit.c:1088
- __do_sys_exit_group kernel/exit.c:1099 [inline]
- __se_sys_exit_group kernel/exit.c:1097 [inline]
- __x64_sys_exit_group+0x3f/0x40 kernel/exit.c:1097
- x64_sys_call+0x2634/0x2640 arch/x86/include/generated/asm/syscalls_64.h:232
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
- </TASK>
-
-Validate the computed total length against epos->bh->b_size.
-
-Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
-
-Reported-by: syzbot+8743fca924afed42f93e@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=8743fca924afed42f93e
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
 Cc: stable@vger.kernel.org
-
-Signed-off-by: Larshin Sergey <Sergey.Larshin@kaspersky.com>
-Link: https://patch.msgid.link/20250922131358.745579-1-Sergey.Larshin@kaspersky.com
-Signed-off-by: Jan Kara <jack@suse.cz>
+Fixes: 974cc7b93441 ("mfd: vexpress: Define the device as MFD cells")
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Link: https://lore.kernel.org/r/20250811-gpio-mmio-mfd-conv-v1-1-68c5c958cf80@linaro.org
+Signed-off-by: Lee Jones <lee@kernel.org>
+[ Use non-devm variants ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/udf/inode.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/mfd/vexpress-sysreg.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/fs/udf/inode.c
-+++ b/fs/udf/inode.c
-@@ -2202,6 +2202,9 @@ int8_t udf_current_aext(struct inode *in
- 		if (check_add_overflow(sizeof(struct allocExtDesc),
- 				le32_to_cpu(header->lengthAllocDescs), &alen))
- 			return -1;
-+
-+		if (alen > epos->bh->b_size)
-+			return -1;
- 	}
+--- a/drivers/mfd/vexpress-sysreg.c
++++ b/drivers/mfd/vexpress-sysreg.c
+@@ -160,6 +160,7 @@ static int vexpress_sysreg_probe(struct
+ 	struct gpio_chip *mmc_gpio_chip;
+ 	int master;
+ 	u32 dt_hbi;
++	int ret;
  
- 	switch (iinfo->i_alloc_type) {
+ 	mem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+ 	if (!mem)
+@@ -195,7 +196,10 @@ static int vexpress_sysreg_probe(struct
+ 	bgpio_init(mmc_gpio_chip, &pdev->dev, 0x4, base + SYS_MCI,
+ 			NULL, NULL, NULL, NULL, 0);
+ 	mmc_gpio_chip->ngpio = 2;
+-	gpiochip_add_data(mmc_gpio_chip, NULL);
++
++	ret = gpiochip_add_data(mmc_gpio_chip, NULL);
++	if (ret)
++		return ret;
+ 
+ 	return mfd_add_devices(&pdev->dev, PLATFORM_DEVID_AUTO,
+ 			vexpress_sysreg_cells,
 
 
 
