@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-191192-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190732-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17FB1C111E0
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:35:37 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A4C0C10AFB
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:15:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 95684546299
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:29:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1EB841A61F43
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:10:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F1172D7DDA;
-	Mon, 27 Oct 2025 19:27:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0D16323411;
+	Mon, 27 Oct 2025 19:07:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CHEgYFBF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f7VgZ8JR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 533B51BC4E;
-	Mon, 27 Oct 2025 19:27:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C5D7329C57;
+	Mon, 27 Oct 2025 19:07:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761593244; cv=none; b=Gw0Pto8IzeQ5B6Uygs2A/vGYGbvZjh//SprigWmfv1XdF6QL4nZnv3Josz3BCbKPHbQxGWd05r7wRSLevANegqfTLv2x4NoJzX2loBs7bYYMrSx2HTQ1s03XKd6A/AF+l0SNRUgeEn/HrvUDwH1YJ8+xeuJMHYQsNUI3pvF2STw=
+	t=1761592049; cv=none; b=q17r/TkAmA1CgEj5hVoGLWzbhbBmqOkdA73u7jWTKisG5aT2aSUjUg86xc5DfT8OM2w+VmjOfsX/FoqnHGHo9t0+759yqpB6BzDgeDDJ7Udu2aqaZqlwqMd2p3xZReJZfabrP7LEfqbqxx+ImJFs80QAhST9ZBhpcV7hVEw/dOI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761593244; c=relaxed/simple;
-	bh=mMKjImRKHaWNZYdZ8goejC0DqFytXKhIuDdbFG3VgkY=;
+	s=arc-20240116; t=1761592049; c=relaxed/simple;
+	bh=bfi4XgdljuuilD54HMwTBJlMsmDXGJan51+G/gNBQ1o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O6QmbEYbQkbxPWXFsWWvPWe5E74YR4tMqe3HArWUeF0y/q+kXvtnI8QTSjra+r7amA5NFtXvI4mwKbNMDYiUOHM4k0aCxDDH2lLd5+HRl3IprI4lxpXkmB2nB8v1kd8MwULNoIoqHw02K+xiOrF0XgtzZOlZOZFFLlg9728JuPg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CHEgYFBF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D91A4C4CEF1;
-	Mon, 27 Oct 2025 19:27:23 +0000 (UTC)
+	 MIME-Version:Content-Type; b=UToBy9sbfRlXIqr+DiJ8JHRS9mCv/6Ipb/iqID6s2hFZf4VmTLV6eUHyTWX3zlXFFrbjtKRGL64GPqH7mwfn9BF4wdwWhpWk4VnHIj6izMtM41grY40GStz+xzEe+GVyGmCX9WMfoQaJL4v8J3vgO+tkekVZplj8pA1iEyi65DE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f7VgZ8JR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22B22C4CEF1;
+	Mon, 27 Oct 2025 19:07:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761593244;
-	bh=mMKjImRKHaWNZYdZ8goejC0DqFytXKhIuDdbFG3VgkY=;
+	s=korg; t=1761592049;
+	bh=bfi4XgdljuuilD54HMwTBJlMsmDXGJan51+G/gNBQ1o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CHEgYFBFLvgJotfmU7eD1mxGNOP2JVcHF5Z27ccPIMzXoFtJISQ+AzJt/vdSwg7zx
-	 JeAe6MDsN7f2eUY1abLbkJnUc7HXdNWkqDdMZvOygu51yXycR+s7j6NpOYPFZ8olDf
-	 FJl4Ylis2JCBAWxyOymlEE1n/r1bVBvXfCiXCyb8=
+	b=f7VgZ8JRQEGKS6e4Ws7Fo1wBK6/jup5QO6C73CwzvFs3n9yfQSWEDbHnmEuu4l+rb
+	 yp7k4vLvw/4Uh1DK8+mNmkb0qXDKdfc9f8m810a5taQnB5GMuU/acQd2t+OOZyWAGM
+	 tj039czDEKYtu8ja66toNm1W4DIlXoBFTesS+EtA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Kaushlendra Kumar <kaushlendra.kumar@intel.com>,
-	Sudeep Holla <sudeep.holla@arm.com>
-Subject: [PATCH 6.17 067/184] arch_topology: Fix incorrect error check in topology_parse_cpu_capacity()
+	Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.15 069/123] net: ravb: Ensure memory write completes before ringing TX doorbell
 Date: Mon, 27 Oct 2025 19:35:49 +0100
-Message-ID: <20251027183516.696406930@linuxfoundation.org>
+Message-ID: <20251027183448.244542050@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
-References: <20251027183514.934710872@linuxfoundation.org>
+In-Reply-To: <20251027183446.381986645@linuxfoundation.org>
+References: <20251027183446.381986645@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,55 +61,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
+From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
 
-commit 2eead19334516c8e9927c11b448fbe512b1f18a1 upstream.
+commit 706136c5723626fcde8dd8f598a4dcd251e24927 upstream.
 
-Fix incorrect use of PTR_ERR_OR_ZERO() in topology_parse_cpu_capacity()
-which causes the code to proceed with NULL clock pointers. The current
-logic uses !PTR_ERR_OR_ZERO(cpu_clk) which evaluates to true for both
-valid pointers and NULL, leading to potential NULL pointer dereference
-in clk_get_rate().
+Add a final dma_wmb() barrier before triggering the transmit request
+(TCCR_TSRQ) to ensure all descriptor and buffer writes are visible to
+the DMA engine.
 
-Per include/linux/err.h documentation, PTR_ERR_OR_ZERO(ptr) returns:
-"The error code within @ptr if it is an error pointer; 0 otherwise."
+According to the hardware manual, a read-back operation is required
+before writing to the doorbell register to guarantee completion of
+previous writes. Instead of performing a dummy read, a dma_wmb() is
+used to both enforce the same ordering semantics on the CPU side and
+also to ensure completion of writes.
 
-This means PTR_ERR_OR_ZERO() returns 0 for both valid pointers AND NULL
-pointers. Therefore !PTR_ERR_OR_ZERO(cpu_clk) evaluates to true (proceed)
-when cpu_clk is either valid or NULL, causing clk_get_rate(NULL) to be
-called when of_clk_get() returns NULL.
-
-Replace with !IS_ERR_OR_NULL(cpu_clk) which only proceeds for valid
-pointers, preventing potential NULL pointer dereference in clk_get_rate().
-
-Cc: stable <stable@kernel.org>
-Signed-off-by: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
-Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
-Fixes: b8fe128dad8f ("arch_topology: Adjust initial CPU capacities with current freq")
-Link: https://patch.msgid.link/20250923174308.1771906-1-kaushlendra.kumar@intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c156633f1353 ("Renesas Ethernet AVB driver proper")
+Cc: stable@vger.kernel.org
+Co-developed-by: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
+Signed-off-by: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
+Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Reviewed-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+Link: https://patch.msgid.link/20251017151830.171062-5-prabhakar.mahadev-lad.rj@bp.renesas.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/base/arch_topology.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/renesas/ravb_main.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/drivers/base/arch_topology.c
-+++ b/drivers/base/arch_topology.c
-@@ -292,7 +292,7 @@ bool __init topology_parse_cpu_capacity(
- 		 * frequency (by keeping the initial capacity_freq_ref value).
- 		 */
- 		cpu_clk = of_clk_get(cpu_node, 0);
--		if (!PTR_ERR_OR_ZERO(cpu_clk)) {
-+		if (!IS_ERR_OR_NULL(cpu_clk)) {
- 			per_cpu(capacity_freq_ref, cpu) =
- 				clk_get_rate(cpu_clk) / HZ_PER_KHZ;
- 			clk_put(cpu_clk);
+--- a/drivers/net/ethernet/renesas/ravb_main.c
++++ b/drivers/net/ethernet/renesas/ravb_main.c
+@@ -1672,6 +1672,14 @@ static netdev_tx_t ravb_start_xmit(struc
+ 	} else {
+ 		desc->die_dt = DT_FSINGLE;
+ 	}
++
++	/* Before ringing the doorbell we need to make sure that the latest
++	 * writes have been committed to memory, otherwise it could delay
++	 * things until the doorbell is rang again.
++	 * This is in replacement of the read operation mentioned in the HW
++	 * manuals.
++	 */
++	dma_wmb();
+ 	ravb_modify(ndev, TCCR, TCCR_TSRQ0 << q, TCCR_TSRQ0 << q);
+ 
+ 	priv->cur_tx[q] += num_tx_desc;
 
 
 
