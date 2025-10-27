@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-190937-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190615-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id E288DC10E7D
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:24:44 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4C6FC109B1
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:12:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 2DB81546AFA
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:17:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B813256373D
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:06:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01C5A31A811;
-	Mon, 27 Oct 2025 19:16:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A35D432A3C1;
+	Mon, 27 Oct 2025 19:02:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tyLgoNQe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MwBgrx2t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1FE921576E;
-	Mon, 27 Oct 2025 19:16:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DE26328B62;
+	Mon, 27 Oct 2025 19:02:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592588; cv=none; b=cJNOOGOnzw88Q9hD3mHsJBhZtXfP4pae10bZVhOT63qbLBbGm58QvPObwqYmGuq+nv/yTXwWn1wFverARepsEp53i8MdHjgYTREJ7Gtz3rD2MzpN17f1zyAv2mGllrY20xmxtHKgmkxRoAv9Mj3z+92qExukxAPWe7LDYccbvj0=
+	t=1761591747; cv=none; b=EJUiQ1BOZF5LAK8Ku0QxuQ9GH/+/s/tV0ScJ+JHguOvAxI8tFgCp+0htT6LPQ+THCpDmeGFECWJJT1sFG1sTt5o1mn8PVu2wvjzUOWMpf8Pl1Dr2Ff4HBdo6wqtze+H09gdJ68CRGoqYJRavH5xMfRUvtyEwybuXI0XiFfOX31s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592588; c=relaxed/simple;
-	bh=Kr3hva3pd1vaqanO3yS5gs/OKbamIjnF84r7ZZejaJo=;
+	s=arc-20240116; t=1761591747; c=relaxed/simple;
+	bh=uz1bYlqcHNooSUEodX1K7vUoATpEUQc7OJIUJ2f1cP4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qrvdm7zOtg6v8tHIZrQ4GX07bebaiLSiUUc2Co5decpuslX/8DAwVN4S9Du7obUcft5+t6ZCXXiQiKb5ZezikTz5zK3ylCv0FycKqNIQFNV2OptMivrf12X69LkQsx+TX97iond+VmSp1nXB3dkDG1BQhEww4uAS/bPPUIYKRcY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tyLgoNQe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2007DC4CEFD;
-	Mon, 27 Oct 2025 19:16:27 +0000 (UTC)
+	 MIME-Version; b=ITcbJXDbrqsT3lX9Q9pUY+MW/bLj4MCG3G2bLjHYAFjltAzz11GO29jDV7OK2Z5VuP5acbAt45uHgv5B09erJbvXbcYl1npgWHWU7hiWHf4Jc0iAwdea/D0jKW3xUVWK2xpLBjEgVKphKSHTTda5L8jjMdnxO4rPwNW2uQQHx88=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MwBgrx2t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD7DCC4CEF1;
+	Mon, 27 Oct 2025 19:02:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592588;
-	bh=Kr3hva3pd1vaqanO3yS5gs/OKbamIjnF84r7ZZejaJo=;
+	s=korg; t=1761591747;
+	bh=uz1bYlqcHNooSUEodX1K7vUoATpEUQc7OJIUJ2f1cP4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tyLgoNQeP7i8WbeEaDyHqxQFDsAjYgyTQmyQmbl9bscu1tOXs6a/h+rgOdrfcIH6i
-	 TFSD2BNM0zj4PF2QRfjm+m33YYkG/O5Xk+/jBu/iJ5vYPauqyQWGpzpQ2A0hC7Rk3f
-	 j2IDrk4UYnnZ6DMIRvNnxHQezDiDJAg/WIgZ8JgA=
+	b=MwBgrx2tGclFCtEVltUCnVCWxagaHxaKZdqFd9hY3+GaWZxq1KK1+JMelZe+tz67D
+	 dtRARpxu5szRo0aZe0BIFynARGf4xi/rWkRPbPhXePtAoVapvdkRh6RadtTJ7zpaMc
+	 3Qw+THBe0qY6G1Ea6g9rsDLzXxQTHihv7FdBZyjs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jianpeng Chang <jianpeng.chang.cn@windriver.com>,
-	Wei Fang <wei.fang@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 20/84] net: enetc: fix the deadlock of enetc_mdio_lock
+Subject: [PATCH 5.10 316/332] crypto: rockchip - Fix dma_unmap_sg() nents value
 Date: Mon, 27 Oct 2025 19:36:09 +0100
-Message-ID: <20251027183439.359096896@linuxfoundation.org>
+Message-ID: <20251027183533.203889873@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183438.817309828@linuxfoundation.org>
-References: <20251027183438.817309828@linuxfoundation.org>
+In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
+References: <20251027183524.611456697@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,163 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jianpeng Chang <jianpeng.chang.cn@windriver.com>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-[ Upstream commit 50bd33f6b3922a6b760aa30d409cae891cec8fb5 ]
+[ Upstream commit 21140e5caf019e4a24e1ceabcaaa16bd693b393f ]
 
-After applying the workaround for err050089, the LS1028A platform
-experiences RCU stalls on RT kernel. This issue is caused by the
-recursive acquisition of the read lock enetc_mdio_lock. Here list some
-of the call stacks identified under the enetc_poll path that may lead to
-a deadlock:
+The dma_unmap_sg() functions should be called with the same nents as the
+dma_map_sg(), not the value the map function returned.
 
-enetc_poll
-  -> enetc_lock_mdio
-  -> enetc_clean_rx_ring OR napi_complete_done
-     -> napi_gro_receive
-        -> enetc_start_xmit
-           -> enetc_lock_mdio
-           -> enetc_map_tx_buffs
-           -> enetc_unlock_mdio
-  -> enetc_unlock_mdio
-
-After enetc_poll acquires the read lock, a higher-priority writer attempts
-to acquire the lock, causing preemption. The writer detects that a
-read lock is already held and is scheduled out. However, readers under
-enetc_poll cannot acquire the read lock again because a writer is already
-waiting, leading to a thread hang.
-
-Currently, the deadlock is avoided by adjusting enetc_lock_mdio to prevent
-recursive lock acquisition.
-
-Fixes: 6d36ecdbc441 ("net: enetc: take the MDIO lock only once per NAPI poll cycle")
-Signed-off-by: Jianpeng Chang <jianpeng.chang.cn@windriver.com>
-Acked-by: Wei Fang <wei.fang@nxp.com>
-Link: https://patch.msgid.link/20251015021427.180757-1-jianpeng.chang.cn@windriver.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 57d67c6e8219 ("crypto: rockchip - rework by using crypto_engine")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+[ removed unused rctx variable declaration since device pointer already came from tctx->dev->dev instead of rctx->dev ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/freescale/enetc/enetc.c | 25 ++++++++++++++++----
- 1 file changed, 21 insertions(+), 4 deletions(-)
+ drivers/crypto/rockchip/rk3288_crypto_ahash.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/freescale/enetc/enetc.c b/drivers/net/ethernet/freescale/enetc/enetc.c
-index 49c61aa920b02..7accf3a3e9f0d 100644
---- a/drivers/net/ethernet/freescale/enetc/enetc.c
-+++ b/drivers/net/ethernet/freescale/enetc/enetc.c
-@@ -1246,6 +1246,8 @@ static int enetc_clean_rx_ring(struct enetc_bdr *rx_ring,
- 	/* next descriptor to process */
- 	i = rx_ring->next_to_clean;
+--- a/drivers/crypto/rockchip/rk3288_crypto_ahash.c
++++ b/drivers/crypto/rockchip/rk3288_crypto_ahash.c
+@@ -236,10 +236,9 @@ static int rk_hash_unprepare(struct cryp
+ {
+ 	struct ahash_request *areq = container_of(breq, struct ahash_request, base);
+ 	struct crypto_ahash *tfm = crypto_ahash_reqtfm(areq);
+-	struct rk_ahash_rctx *rctx = ahash_request_ctx(areq);
+ 	struct rk_ahash_ctx *tctx = crypto_ahash_ctx(tfm);
  
-+	enetc_lock_mdio();
-+
- 	while (likely(rx_frm_cnt < work_limit)) {
- 		union enetc_rx_bd *rxbd;
- 		struct sk_buff *skb;
-@@ -1281,7 +1283,9 @@ static int enetc_clean_rx_ring(struct enetc_bdr *rx_ring,
- 		rx_byte_cnt += skb->len + ETH_HLEN;
- 		rx_frm_cnt++;
- 
-+		enetc_unlock_mdio();
- 		napi_gro_receive(napi, skb);
-+		enetc_lock_mdio();
- 	}
- 
- 	rx_ring->next_to_clean = i;
-@@ -1289,6 +1293,8 @@ static int enetc_clean_rx_ring(struct enetc_bdr *rx_ring,
- 	rx_ring->stats.packets += rx_frm_cnt;
- 	rx_ring->stats.bytes += rx_byte_cnt;
- 
-+	enetc_unlock_mdio();
-+
- 	return rx_frm_cnt;
+-	dma_unmap_sg(tctx->dev->dev, areq->src, rctx->nrsg, DMA_TO_DEVICE);
++	dma_unmap_sg(tctx->dev->dev, areq->src, sg_nents(areq->src), DMA_TO_DEVICE);
+ 	return 0;
  }
  
-@@ -1598,6 +1604,8 @@ static int enetc_clean_rx_ring_xdp(struct enetc_bdr *rx_ring,
- 	/* next descriptor to process */
- 	i = rx_ring->next_to_clean;
- 
-+	enetc_lock_mdio();
-+
- 	while (likely(rx_frm_cnt < work_limit)) {
- 		union enetc_rx_bd *rxbd, *orig_rxbd;
- 		int orig_i, orig_cleaned_cnt;
-@@ -1657,7 +1665,9 @@ static int enetc_clean_rx_ring_xdp(struct enetc_bdr *rx_ring,
- 			if (unlikely(!skb))
- 				goto out;
- 
-+			enetc_unlock_mdio();
- 			napi_gro_receive(napi, skb);
-+			enetc_lock_mdio();
- 			break;
- 		case XDP_TX:
- 			tx_ring = priv->xdp_tx_ring[rx_ring->index];
-@@ -1692,7 +1702,9 @@ static int enetc_clean_rx_ring_xdp(struct enetc_bdr *rx_ring,
- 			}
- 			break;
- 		case XDP_REDIRECT:
-+			enetc_unlock_mdio();
- 			err = xdp_do_redirect(rx_ring->ndev, &xdp_buff, prog);
-+			enetc_lock_mdio();
- 			if (unlikely(err)) {
- 				enetc_xdp_drop(rx_ring, orig_i, i);
- 				rx_ring->stats.xdp_redirect_failures++;
-@@ -1712,8 +1724,11 @@ static int enetc_clean_rx_ring_xdp(struct enetc_bdr *rx_ring,
- 	rx_ring->stats.packets += rx_frm_cnt;
- 	rx_ring->stats.bytes += rx_byte_cnt;
- 
--	if (xdp_redirect_frm_cnt)
-+	if (xdp_redirect_frm_cnt) {
-+		enetc_unlock_mdio();
- 		xdp_do_flush();
-+		enetc_lock_mdio();
-+	}
- 
- 	if (xdp_tx_frm_cnt)
- 		enetc_update_tx_ring_tail(tx_ring);
-@@ -1722,6 +1737,8 @@ static int enetc_clean_rx_ring_xdp(struct enetc_bdr *rx_ring,
- 		enetc_refill_rx_ring(rx_ring, enetc_bd_unused(rx_ring) -
- 				     rx_ring->xdp.xdp_tx_in_flight);
- 
-+	enetc_unlock_mdio();
-+
- 	return rx_frm_cnt;
- }
- 
-@@ -1740,6 +1757,7 @@ static int enetc_poll(struct napi_struct *napi, int budget)
- 	for (i = 0; i < v->count_tx_rings; i++)
- 		if (!enetc_clean_tx_ring(&v->tx_ring[i], budget))
- 			complete = false;
-+	enetc_unlock_mdio();
- 
- 	prog = rx_ring->xdp.prog;
- 	if (prog)
-@@ -1751,10 +1769,8 @@ static int enetc_poll(struct napi_struct *napi, int budget)
- 	if (work_done)
- 		v->rx_napi_work = true;
- 
--	if (!complete) {
--		enetc_unlock_mdio();
-+	if (!complete)
- 		return budget;
--	}
- 
- 	napi_complete_done(napi, work_done);
- 
-@@ -1763,6 +1779,7 @@ static int enetc_poll(struct napi_struct *napi, int budget)
- 
- 	v->rx_napi_work = false;
- 
-+	enetc_lock_mdio();
- 	/* enable interrupts */
- 	enetc_wr_reg_hot(v->rbier, ENETC_RBIER_RXTIE);
- 
--- 
-2.51.0
-
 
 
 
