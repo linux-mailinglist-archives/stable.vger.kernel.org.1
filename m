@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-190465-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190470-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5441CC10792
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:06:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BFCAC1079C
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:06:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1460D5649E0
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:01:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D7CC8566A79
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:01:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1536232143D;
-	Mon, 27 Oct 2025 18:56:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE01232143F;
+	Mon, 27 Oct 2025 18:56:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u8ku1CAX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KmFftZIL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4EF62C3749;
-	Mon, 27 Oct 2025 18:56:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6310B313E17;
+	Mon, 27 Oct 2025 18:56:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591361; cv=none; b=DZGbNfz43Q5762jsBw/vyIUu9KYvdDAqt/9Yw44xT6FDvQgeW71LOWscfcUsj2HLB+WW7IO0Yp5TILKkmI6jDLlVCQ4NFbaWONCatcyjBojxP0EbUcaAq4eEx7bRToja2lSN2UOgpixmzrw65D3LGukW+0FTSTAwSfG9swctadk=
+	t=1761591374; cv=none; b=fJsMWjuISTolDu3mzcVDQyhzaNu9EMGqKWVF9Ow3Zl4R6helel+bGxD/rYCYj/VQn48SPeEthsfFUmTmVhx4ACFQcnsDkSEE2rN2ImjFk7qnY1ax7LkESiUKQ8Glx8XImZrl/4T+ZkuRV5R0MjIdYgWcEVqbU14Q/XvXELd4UXk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591361; c=relaxed/simple;
-	bh=01uwImAQrwRHfccG4+YabVQkRYkR7NH+JRDn2XDYgNs=;
+	s=arc-20240116; t=1761591374; c=relaxed/simple;
+	bh=6Y9DdmTCvLeqLwV29EMm/4fWhVvVJ5wVjcj4yW76RpA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=u9RlxDjceYs/9wh9KYDY3/ENxccChF+SSXzp4/fANQP+MbaOdSQywOK7jUcAq+4ceYtJQq4FttCypfto4D6O/sS9dKmpdtDay+PGfjStq1l9fOeAFNJYiTewLy2BWDgsjfqMqK4B4RXogfKeLml0cM/pyaIM19oZSFptOvHepsQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u8ku1CAX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1307C4CEF1;
-	Mon, 27 Oct 2025 18:56:00 +0000 (UTC)
+	 MIME-Version; b=WJHVf/lhlojOA9vzdSQrDrYnaNE50jdxHlWwdiM133y4iZXpaQpRGmH2x6PUEycSnkNdsDxUP6G0WBAMnh9rTZNulFzfPexB0Dqbx2MMod39q6Y4F2le4FNv5hROOJNI2jJeLGJGnvWF1XMjxQ+tDGlbng99J36SQPElfqoi+bI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KmFftZIL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAA84C4CEF1;
+	Mon, 27 Oct 2025 18:56:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591361;
-	bh=01uwImAQrwRHfccG4+YabVQkRYkR7NH+JRDn2XDYgNs=;
+	s=korg; t=1761591374;
+	bh=6Y9DdmTCvLeqLwV29EMm/4fWhVvVJ5wVjcj4yW76RpA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u8ku1CAXv87Fq8q5t4nD7Mg/br8ns+0RcWdWOqOyLS7rn05miBEPNwgn6fnGhnrw6
-	 Y4tdeBppABY6NZ1aMR38dTW8Uudo94Ovt+xH6uTOFL/jE7i/AxOT2WKtiIvEoMGBGp
-	 DYCjoWOBqBTn2D9HKcSpO6p6yq5PVK/HEwBSJfLs=
+	b=KmFftZILckMHKuPR4FqNOpVenp2txStB3eN4Gd1iMT7j+2xZgLZlFxLPUUQykJ2u5
+	 hCRcxE02rBK8WyNOlxqg4Os323QzQ7O4gT/HuctNhXfI2HRSLxrHaCyWF1HhAezkq6
+	 vnAfDSUV+7Uw3zq5Tp9oYhfzYzY+3P6cx8QaMLw4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Yongjian Sun <sunyongjian1@huawei.com>,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Baokun Li <libaokun1@huawei.com>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 5.10 168/332] ext4: increase i_disksize to offset + len in ext4_update_disksize_before_punch()
-Date: Mon, 27 Oct 2025 19:33:41 +0100
-Message-ID: <20251027183529.058981877@linuxfoundation.org>
+	Stephan Gerhold <stephan.gerhold@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 172/332] arm64: dts: qcom: sdm845: Fix slimbam num-channels/ees
+Date: Mon, 27 Oct 2025 19:33:45 +0100
+Message-ID: <20251027183529.170616018@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
 References: <20251027183524.611456697@linuxfoundation.org>
@@ -63,95 +61,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yongjian Sun <sunyongjian1@huawei.com>
+From: Stephan Gerhold <stephan.gerhold@linaro.org>
 
-commit 9d80eaa1a1d37539224982b76c9ceeee736510b9 upstream.
+[ Upstream commit 316294bb6695a43a9181973ecd4e6fb3e576a9f7 ]
 
-After running a stress test combined with fault injection,
-we performed fsck -a followed by fsck -fn on the filesystem
-image. During the second pass, fsck -fn reported:
+Reading the hardware registers of the &slimbam on RB3 reveals that the BAM
+supports only 23 pipes (channels) and supports 4 EEs instead of 2. This
+hasn't caused problems so far since nothing is using the extra channels,
+but attempting to use them would lead to crashes.
 
-Inode 131512, end of extent exceeds allowed value
-	(logical block 405, physical block 1180540, len 2)
+The bam_dma driver might warn in the future if the num-channels in the DT
+are wrong, so correct the properties in the DT to avoid future regressions.
 
-This inode was not in the orphan list. Analysis revealed the
-following call chain that leads to the inconsistency:
-
-                             ext4_da_write_end()
-                              //does not update i_disksize
-                             ext4_punch_hole()
-                              //truncate folio, keep size
-ext4_page_mkwrite()
- ext4_block_page_mkwrite()
-  ext4_block_write_begin()
-    ext4_get_block()
-     //insert written extent without update i_disksize
-journal commit
-echo 1 > /sys/block/xxx/device/delete
-
-da-write path updates i_size but does not update i_disksize. Then
-ext4_punch_hole truncates the da-folio yet still leaves i_disksize
-unchanged(in the ext4_update_disksize_before_punch function, the
-condition offset + len < size is met). Then ext4_page_mkwrite sees
-ext4_nonda_switch return 1 and takes the nodioread_nolock path, the
-folio about to be written has just been punched out, and it’s offset
-sits beyond the current i_disksize. This may result in a written
-extent being inserted, but again does not update i_disksize. If the
-journal gets committed and then the block device is yanked, we might
-run into this. It should be noted that replacing ext4_punch_hole with
-ext4_zero_range in the call sequence may also trigger this issue, as
-neither will update i_disksize under these circumstances.
-
-To fix this, we can modify ext4_update_disksize_before_punch to
-increase i_disksize to min(i_size, offset + len) when both i_size and
-(offset + len) are greater than i_disksize.
-
-Cc: stable@kernel.org
-Signed-off-by: Yongjian Sun <sunyongjian1@huawei.com>
-Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Baokun Li <libaokun1@huawei.com>
-Message-ID: <20250911133024.1841027-1-sunyongjian@huaweicloud.com>
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@vger.kernel.org
+Fixes: 27ca1de07dc3 ("arm64: dts: qcom: sdm845: add slimbus nodes")
+Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250821-sdm845-slimbam-channels-v1-1-498f7d46b9ee@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+[ Adjust context ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/inode.c |   10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/qcom/sdm845.dtsi |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/ext4/inode.c
-+++ b/fs/ext4/inode.c
-@@ -3991,7 +3991,11 @@ int ext4_can_truncate(struct inode *inod
-  * We have to make sure i_disksize gets properly updated before we truncate
-  * page cache due to hole punching or zero range. Otherwise i_disksize update
-  * can get lost as it may have been postponed to submission of writeback but
-- * that will never happen after we truncate page cache.
-+ * that will never happen if we remove the folio containing i_size from the
-+ * page cache. Also if we punch hole within i_size but above i_disksize,
-+ * following ext4_page_mkwrite() may mistakenly allocate written blocks over
-+ * the hole and thus introduce allocated blocks beyond i_disksize which is
-+ * not allowed (e2fsck would complain in case of crash).
-  */
- int ext4_update_disksize_before_punch(struct inode *inode, loff_t offset,
- 				      loff_t len)
-@@ -4002,9 +4006,11 @@ int ext4_update_disksize_before_punch(st
- 	loff_t size = i_size_read(inode);
- 
- 	WARN_ON(!inode_is_locked(inode));
--	if (offset > size || offset + len < size)
-+	if (offset > size)
- 		return 0;
- 
-+	if (offset + len < size)
-+		size = offset + len;
- 	if (EXT4_I(inode)->i_disksize >= size)
- 		return 0;
+--- a/arch/arm64/boot/dts/qcom/sdm845.dtsi
++++ b/arch/arm64/boot/dts/qcom/sdm845.dtsi
+@@ -4492,11 +4492,11 @@
+ 			compatible = "qcom,bam-v1.7.0";
+ 			qcom,controlled-remotely;
+ 			reg = <0 0x17184000 0 0x2a000>;
+-			num-channels  = <31>;
++			num-channels = <23>;
+ 			interrupts = <GIC_SPI 164 IRQ_TYPE_LEVEL_HIGH>;
+ 			#dma-cells = <1>;
+ 			qcom,ee = <1>;
+-			qcom,num-ees = <2>;
++			qcom,num-ees = <4>;
+ 			iommus = <&apps_smmu 0x1806 0x0>;
+ 		};
  
 
 
