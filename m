@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-191051-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190879-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 060CEC10E0E
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:23:31 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D78E2C10D00
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:21:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 83692346A5E
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:23:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 413DA1A61FE7
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:16:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4902B31CA72;
-	Mon, 27 Oct 2025 19:21:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECA4231CA7E;
+	Mon, 27 Oct 2025 19:13:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a5S5Nc4y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OlCmRzkm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 059062C3749;
-	Mon, 27 Oct 2025 19:21:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A825F3203AE;
+	Mon, 27 Oct 2025 19:13:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592886; cv=none; b=n7N5J/QM6GfqMErfo8tD+jUmOmt5cXYySUtM5vYoSTT1qgwBJO+eD01gbFfWpf4HJ+HUA6BGDvYDYHCYxGNuqMzWqM/ld9mgZyPDWe0byZJOH5YpJBtjHCT+m6uYdhUe29sZVPg3+kygkvFzH89Y5wImEAKsRmc86LEnlPhYeE0=
+	t=1761592439; cv=none; b=Ah8BQ+dJlu8qz65fb2YNX7CtTt+vFfRsTz04mjyCWACeZ7mccnzBxZDTuUrhNE/upbyVZixp0PMAh2YbIAZNc7IM0XLzvugGjwe2g3mQGwBcUIdriYwBpkilMl0H9tCgD2BW9LUlmBo2gqJMq+vU+DeZyGWZJn1s8aSube3beZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592886; c=relaxed/simple;
-	bh=0LH0nJ3ZBHIpmfe85oZjh35LkmXKkwhUGGap5ZW5zFY=;
+	s=arc-20240116; t=1761592439; c=relaxed/simple;
+	bh=FGD7MREfCDnus3Uqo8YaVOEi2WxcnPmWVbYUVmgiMa8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YRHa5cd1+ygMfvGmFRfZmIcDR8hV4lBUOMfqWYxrBftXCELFlJdhNSdoV8OgTTIDJoRu+uV1pCz13pwr2+fU4DdSmMx9zRuOyiBZ7xDn6vrJpPCk8VrqupLEU8E14h+TdckNFS2GjvEAFa0YB/mu75fDE+UNWv+HOKx39DxPNvU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a5S5Nc4y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C2D6C4CEF1;
-	Mon, 27 Oct 2025 19:21:25 +0000 (UTC)
+	 MIME-Version; b=pmUoqyiXy0JyZdkn2IzOhR4cZZR77ZboVI/G7+K/DHLiOKbLABqcOTQRc2BOuWUA0nPC12eCfuSfIO63VYgx8CDeamOs5OKSTxoHmZarP5MIQme+n3+6djZKVRAIJZzrg5x58O1/ai04gvTIp+gmHBnBYatl53Nm5RuOHbxKL4Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OlCmRzkm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 310B3C4CEF1;
+	Mon, 27 Oct 2025 19:13:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592885;
-	bh=0LH0nJ3ZBHIpmfe85oZjh35LkmXKkwhUGGap5ZW5zFY=;
+	s=korg; t=1761592439;
+	bh=FGD7MREfCDnus3Uqo8YaVOEi2WxcnPmWVbYUVmgiMa8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a5S5Nc4yBeMpJJpfEF6Uuij3uJ4D5J7/iOMDQvKpHW3xmx6VDli9VgFx3fgSncc4/
-	 44YW4RX8p2/lafnF0SCyKoLvqH7JFmZ7T8qIzhjkxkZyUfYgWR0ihssn0aiUNferYx
-	 128aTmi+49k//AqHLIwFtgO/0WPthOoxwukXwLrg=
+	b=OlCmRzkm8x8369Dy5a2DT0Ohjl9ZvQSr1YAFfv+mCcl+0Cd48apTZweOR/Nc9xbwA
+	 KE+FKjx9dwBqsdw2TNs1pK65CjdEigPaaiEOFmseSwIextlV5ia5oz9gPh+nMWYmOB
+	 xvCpgGFS+9YPgOqx3WgrTcvfDpSQUHwcnEZlQCw8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Cave-Ayland <mark.caveayland@nutanix.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	William Breathitt Gray <wbg@kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: [PATCH 6.12 049/117] gpio: pci-idio-16: Define maximum valid register address offset
+	stable <stable@kernel.org>,
+	Victoria Votokina <Victoria.Votokina@kaspersky.com>
+Subject: [PATCH 6.1 114/157] most: usb: hdm_probe: Fix calling put_device() before device initialization
 Date: Mon, 27 Oct 2025 19:36:15 +0100
-Message-ID: <20251027183455.322579805@linuxfoundation.org>
+Message-ID: <20251027183504.306635493@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
-References: <20251027183453.919157109@linuxfoundation.org>
+In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
+References: <20251027183501.227243846@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,44 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: William Breathitt Gray <wbg@kernel.org>
+From: Victoria Votokina <Victoria.Votokina@kaspersky.com>
 
-commit d37623132a6347b4ab9e2179eb3f2fa77863c364 upstream.
+commit a8cc9e5fcb0e2eef21513a4fec888f5712cb8162 upstream.
 
-Attempting to load the pci-idio-16 module fails during regmap
-initialization with a return error -EINVAL. This is a result of the
-regmap cache failing initialization. Set the idio_16_regmap_config
-max_register member to fix this failure.
+The early error path in hdm_probe() can jump to err_free_mdev before
+&mdev->dev has been initialized with device_initialize(). Calling
+put_device(&mdev->dev) there triggers a device core WARN and ends up
+invoking kref_put(&kobj->kref, kobject_release) on an uninitialized
+kobject.
 
-Fixes: 73d8f3efc5c2 ("gpio: pci-idio-16: Migrate to the regmap API")
-Reported-by: Mark Cave-Ayland <mark.caveayland@nutanix.com>
-Closes: https://lore.kernel.org/r/9b0375fd-235f-4ee1-a7fa-daca296ef6bf@nutanix.com
-Suggested-by: Mark Cave-Ayland <mark.caveayland@nutanix.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: William Breathitt Gray <wbg@kernel.org>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Link: https://lore.kernel.org/r/20251020-fix-gpio-idio-16-regmap-v2-2-ebeb50e93c33@kernel.org
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+In this path the private struct was only kmalloc'ed and the intended
+release is effectively kfree(mdev) anyway, so free it directly instead
+of calling put_device() on an uninitialized device.
+
+This removes the WARNING and fixes the pre-initialization error path.
+
+Fixes: 97a6f772f36b ("drivers: most: add USB adapter driver")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Victoria Votokina <Victoria.Votokina@kaspersky.com>
+Link: https://patch.msgid.link/20251010105241.4087114-3-Victoria.Votokina@kaspersky.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpio/gpio-pci-idio-16.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/most/most_usb.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpio/gpio-pci-idio-16.c
-+++ b/drivers/gpio/gpio-pci-idio-16.c
-@@ -41,6 +41,7 @@ static const struct regmap_config idio_1
- 	.reg_stride = 1,
- 	.val_bits = 8,
- 	.io_port = true,
-+	.max_register = 0x7,
- 	.wr_table = &idio_16_wr_table,
- 	.rd_table = &idio_16_rd_table,
- 	.volatile_table = &idio_16_rd_table,
+--- a/drivers/most/most_usb.c
++++ b/drivers/most/most_usb.c
+@@ -1097,7 +1097,7 @@ err_free_cap:
+ err_free_conf:
+ 	kfree(mdev->conf);
+ err_free_mdev:
+-	put_device(&mdev->dev);
++	kfree(mdev);
+ 	return ret;
+ }
+ 
 
 
 
