@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-190532-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190777-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE330C10817
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:08:13 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2BA1C10C1C
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:18:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0C836500ECB
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:03:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F357D560D1F
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:12:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D2CF329C57;
-	Mon, 27 Oct 2025 18:58:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76FE3218EB1;
+	Mon, 27 Oct 2025 19:09:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mpthWa6A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e4xeEZo8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ACCB3128D0;
-	Mon, 27 Oct 2025 18:58:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F4D9321F5E;
+	Mon, 27 Oct 2025 19:09:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591536; cv=none; b=Em5REj5xzt606qiD/LHE0sM+i6DkHC795BbgeGI3IELMlf+VnbSRII6qiJuA7I3sOHmAOB8stuOzqtL+Rxjs269GvTVdS0Sj9agiYVz9XL3lsKMiTt70/frIuzUXIP4dSOh+6zTDTRK3OpOqaXCoyzo2g6cvGfc/Jpg4FL7JBNU=
+	t=1761592169; cv=none; b=P6pxy0OdxoVWUoxvNznPSb7Ov7yy+b1jcXGxY90HFb9KngVvN/IMbqPG1oAStwfU2Ye5hYrvEQGWGcEpfDwi2YcklxYC1xNsR9RwySecjB8dcGZ4YXngXXLWTqJhvgBCaXdqaCa9Esq3Jd1ZAh1IaKu1h0De9BQngf3AxYag/+Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591536; c=relaxed/simple;
-	bh=xXgbunHq1dE3GmsRYIlVaDQMrlJr7WKXn0dXCAu/vdg=;
+	s=arc-20240116; t=1761592169; c=relaxed/simple;
+	bh=NCIHeRHLrhEeEBzilenqYt5f9OB3hTtQfdOdLVCcLUE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oLK3joxpaqV/q4ENJu4i2dRoZtX6t2H9Hq2KiYgo1E1CdjR2qOYDbDuAzsgge2dNTGrWEFCyqZtWzQ5OaLDwt89QVPLinLpop0kwqe5LrtzxssKla5MY8WRsF3imYjxbGF14E6pPAAK1rT7kPl2hxbxcn1wNG8W5fTTwNPIk8xc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mpthWa6A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 949D1C4CEF1;
-	Mon, 27 Oct 2025 18:58:55 +0000 (UTC)
+	 MIME-Version; b=JoclFVh1ffvm8vzowakbjGTJdEf+Eq8k6ZIQudi/Fafl//s5K+SbcI2wrUMewmPsmQB8IX9/7mkurPAnGhw2S9Dme3OQczPZDg7l29x6wFgoBBUKyTxkN8YsG/p6P7BO97cpJbGGeQxlHVPLOi71+8aIi3bWLPONkgPoL73RHf4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e4xeEZo8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD582C4CEF1;
+	Mon, 27 Oct 2025 19:09:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591535;
-	bh=xXgbunHq1dE3GmsRYIlVaDQMrlJr7WKXn0dXCAu/vdg=;
+	s=korg; t=1761592169;
+	bh=NCIHeRHLrhEeEBzilenqYt5f9OB3hTtQfdOdLVCcLUE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mpthWa6AiyaeVng9GxHaBTkRlla8aDk0pEkREvPbdlfABcK+e49jAW/qY9q8eg/kW
-	 TjRdM0+dq5d6d0V2i4rnllgZF7Jy4YHgcIlu0ODYaGGzJVusigN+YLBh756edD86aT
-	 3C8UOTedGRh++v22VEs+CL/d1LsvGy9JcRha+eB4=
+	b=e4xeEZo8wNGdXStBqQtHclSMCZqry6g39Ij1jCwqUOtArrUIvMgklmZ9O3CBGqv61
+	 Ou7KnxekTtdwHkC3I1ikuhwwgQe73sQJTJxRh2zhkB2u8TfL+hzRgl2ZzjnWm0Rce+
+	 n8VNl6kNo1Qwg8rqGfOUoOQ1uNzFdabpVlLhqhEE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	stable@kernel.org,
-	Jan Kara <jack@suse.cz>,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 5.10 227/332] jbd2: ensure that all ongoing I/O complete before freeing blocks
-Date: Mon, 27 Oct 2025 19:34:40 +0100
-Message-ID: <20251027183530.790685373@linuxfoundation.org>
+	Kuen-Han Tsai <khtsai@google.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 020/157] usb: gadget: f_ecm: Refactor bind path to use __free()
+Date: Mon, 27 Oct 2025 19:34:41 +0100
+Message-ID: <20251027183501.814644861@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
-References: <20251027183524.611456697@linuxfoundation.org>
+In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
+References: <20251027183501.227243846@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,90 +62,161 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Yi <yi.zhang@huawei.com>
+From: Kuen-Han Tsai <khtsai@google.com>
 
-commit 3c652c3a71de1d30d72dc82c3bead8deb48eb749 upstream.
+[ Upstream commit 42988380ac67c76bb9dff8f77d7ef3eefd50b7b5 ]
 
-When releasing file system metadata blocks in jbd2_journal_forget(), if
-this buffer has not yet been checkpointed, it may have already been
-written back, currently be in the process of being written back, or has
-not yet written back.  jbd2_journal_forget() calls
-jbd2_journal_try_remove_checkpoint() to check the buffer's status and
-add it to the current transaction if it has not been written back. This
-buffer can only be reallocated after the transaction is committed.
+After an bind/unbind cycle, the ecm->notify_req is left stale. If a
+subsequent bind fails, the unified error label attempts to free this
+stale request, leading to a NULL pointer dereference when accessing
+ep->ops->free_request.
 
-jbd2_journal_try_remove_checkpoint() attempts to lock the buffer and
-check its dirty status while holding the buffer lock. If the buffer has
-already been written back, everything proceeds normally. However, there
-are two issues. First, the function returns immediately if the buffer is
-locked by the write-back process. It does not wait for the write-back to
-complete. Consequently, until the current transaction is committed and
-the block is reallocated, there is no guarantee that the I/O will
-complete. This means that ongoing I/O could write stale metadata to the
-newly allocated block, potentially corrupting data. Second, the function
-unlocks the buffer as soon as it detects that the buffer is still dirty.
-If a concurrent write-back occurs immediately after this unlocking and
-before clear_buffer_dirty() is called in jbd2_journal_forget(), data
-corruption can theoretically still occur.
+Refactor the error handling in the bind path to use the __free()
+automatic cleanup mechanism.
 
-Although these two issues are unlikely to occur in practice since the
-undergoing metadata writeback I/O does not take this long to complete,
-it's better to explicitly ensure that all ongoing I/O operations are
-completed.
-
-Fixes: 597599268e3b ("jbd2: discard dirty data when forgetting an un-journalled buffer")
+Fixes: da741b8c56d6 ("usb ethernet gadget: split CDC Ethernet function")
 Cc: stable@kernel.org
-Suggested-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Message-ID: <20250916093337.3161016-2-yi.zhang@huaweicloud.com>
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
+Link: https://lore.kernel.org/r/20250916-ready-v1-5-4997bf277548@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/r/20250916-ready-v1-5-4997bf277548@google.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/jbd2/transaction.c |   13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ drivers/usb/gadget/function/f_ecm.c |   48 +++++++++++++++---------------------
+ 1 file changed, 20 insertions(+), 28 deletions(-)
 
---- a/fs/jbd2/transaction.c
-+++ b/fs/jbd2/transaction.c
-@@ -1642,6 +1642,7 @@ int jbd2_journal_forget(handle_t *handle
- 	int drop_reserve = 0;
- 	int err = 0;
- 	int was_modified = 0;
-+	int wait_for_writeback = 0;
+--- a/drivers/usb/gadget/function/f_ecm.c
++++ b/drivers/usb/gadget/function/f_ecm.c
+@@ -8,12 +8,15 @@
  
- 	if (is_handle_aborted(handle))
- 		return -EROFS;
-@@ -1766,18 +1767,22 @@ int jbd2_journal_forget(handle_t *handle
- 		}
+ /* #define VERBOSE_DEBUG */
  
- 		/*
--		 * The buffer is still not written to disk, we should
--		 * attach this buffer to current transaction so that the
--		 * buffer can be checkpointed only after the current
--		 * transaction commits.
-+		 * The buffer has not yet been written to disk. We should
-+		 * either clear the buffer or ensure that the ongoing I/O
-+		 * is completed, and attach this buffer to current
-+		 * transaction so that the buffer can be checkpointed only
-+		 * after the current transaction commits.
- 		 */
- 		clear_buffer_dirty(bh);
-+		wait_for_writeback = 1;
- 		__jbd2_journal_file_buffer(jh, transaction, BJ_Forget);
- 		spin_unlock(&journal->j_list_lock);
- 	}
- drop:
- 	__brelse(bh);
- 	spin_unlock(&jh->b_state_lock);
-+	if (wait_for_writeback)
-+		wait_on_buffer(bh);
- 	jbd2_journal_put_journal_head(jh);
- 	if (drop_reserve) {
- 		/* no need to reserve log space for this block -bzzz */
++#include <linux/cleanup.h>
+ #include <linux/slab.h>
+ #include <linux/kernel.h>
+ #include <linux/module.h>
+ #include <linux/device.h>
+ #include <linux/etherdevice.h>
+ 
++#include <linux/usb/gadget.h>
++
+ #include "u_ether.h"
+ #include "u_ether_configfs.h"
+ #include "u_ecm.h"
+@@ -689,6 +692,7 @@ ecm_bind(struct usb_configuration *c, st
+ 	struct usb_ep		*ep;
+ 
+ 	struct f_ecm_opts	*ecm_opts;
++	struct usb_request	*request __free(free_usb_request) = NULL;
+ 
+ 	if (!can_support_ecm(cdev->gadget))
+ 		return -EINVAL;
+@@ -726,7 +730,7 @@ ecm_bind(struct usb_configuration *c, st
+ 	/* allocate instance-specific interface IDs */
+ 	status = usb_interface_id(c, f);
+ 	if (status < 0)
+-		goto fail;
++		return status;
+ 	ecm->ctrl_id = status;
+ 	ecm_iad_descriptor.bFirstInterface = status;
+ 
+@@ -735,24 +739,22 @@ ecm_bind(struct usb_configuration *c, st
+ 
+ 	status = usb_interface_id(c, f);
+ 	if (status < 0)
+-		goto fail;
++		return status;
+ 	ecm->data_id = status;
+ 
+ 	ecm_data_nop_intf.bInterfaceNumber = status;
+ 	ecm_data_intf.bInterfaceNumber = status;
+ 	ecm_union_desc.bSlaveInterface0 = status;
+ 
+-	status = -ENODEV;
+-
+ 	/* allocate instance-specific endpoints */
+ 	ep = usb_ep_autoconfig(cdev->gadget, &fs_ecm_in_desc);
+ 	if (!ep)
+-		goto fail;
++		return -ENODEV;
+ 	ecm->port.in_ep = ep;
+ 
+ 	ep = usb_ep_autoconfig(cdev->gadget, &fs_ecm_out_desc);
+ 	if (!ep)
+-		goto fail;
++		return -ENODEV;
+ 	ecm->port.out_ep = ep;
+ 
+ 	/* NOTE:  a status/notification endpoint is *OPTIONAL* but we
+@@ -761,20 +763,18 @@ ecm_bind(struct usb_configuration *c, st
+ 	 */
+ 	ep = usb_ep_autoconfig(cdev->gadget, &fs_ecm_notify_desc);
+ 	if (!ep)
+-		goto fail;
++		return -ENODEV;
+ 	ecm->notify = ep;
+ 
+-	status = -ENOMEM;
+-
+ 	/* allocate notification request and buffer */
+-	ecm->notify_req = usb_ep_alloc_request(ep, GFP_KERNEL);
+-	if (!ecm->notify_req)
+-		goto fail;
+-	ecm->notify_req->buf = kmalloc(ECM_STATUS_BYTECOUNT, GFP_KERNEL);
+-	if (!ecm->notify_req->buf)
+-		goto fail;
+-	ecm->notify_req->context = ecm;
+-	ecm->notify_req->complete = ecm_notify_complete;
++	request = usb_ep_alloc_request(ep, GFP_KERNEL);
++	if (!request)
++		return -ENOMEM;
++	request->buf = kmalloc(ECM_STATUS_BYTECOUNT, GFP_KERNEL);
++	if (!request->buf)
++		return -ENOMEM;
++	request->context = ecm;
++	request->complete = ecm_notify_complete;
+ 
+ 	/* support all relevant hardware speeds... we expect that when
+ 	 * hardware is dual speed, all bulk-capable endpoints work at
+@@ -793,7 +793,7 @@ ecm_bind(struct usb_configuration *c, st
+ 	status = usb_assign_descriptors(f, ecm_fs_function, ecm_hs_function,
+ 			ecm_ss_function, ecm_ss_function);
+ 	if (status)
+-		goto fail;
++		return status;
+ 
+ 	/* NOTE:  all that is done without knowing or caring about
+ 	 * the network link ... which is unavailable to this code
+@@ -803,22 +803,14 @@ ecm_bind(struct usb_configuration *c, st
+ 	ecm->port.open = ecm_open;
+ 	ecm->port.close = ecm_close;
+ 
++	ecm->notify_req = no_free_ptr(request);
++
+ 	DBG(cdev, "CDC Ethernet: %s speed IN/%s OUT/%s NOTIFY/%s\n",
+ 			gadget_is_superspeed(c->cdev->gadget) ? "super" :
+ 			gadget_is_dualspeed(c->cdev->gadget) ? "dual" : "full",
+ 			ecm->port.in_ep->name, ecm->port.out_ep->name,
+ 			ecm->notify->name);
+ 	return 0;
+-
+-fail:
+-	if (ecm->notify_req) {
+-		kfree(ecm->notify_req->buf);
+-		usb_ep_free_request(ecm->notify, ecm->notify_req);
+-	}
+-
+-	ERROR(cdev, "%s: can't bind, err %d\n", f->name, status);
+-
+-	return status;
+ }
+ 
+ static inline struct f_ecm_opts *to_f_ecm_opts(struct config_item *item)
 
 
 
