@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-190952-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190882-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F36AC10E77
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:24:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FA1FC10CFD
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:21:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AFFF3564505
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:18:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E85EA1A251C0
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:16:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 699FF327783;
-	Mon, 27 Oct 2025 19:17:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F3AB328604;
+	Mon, 27 Oct 2025 19:14:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MKRSMAph"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qOh6x6rZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 216DE23EA92;
-	Mon, 27 Oct 2025 19:17:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFDB6321454;
+	Mon, 27 Oct 2025 19:14:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592629; cv=none; b=MViErMuG7EFArpKVN16p5S2fdiYxdwysdWW7U21GXXdihUn04VkxrFR+w6nHLc0vv4raDI3dVWttk9kHRu/wm5sTKTh9yJ3PJ6QdZgPaC9y9meor0Ybiq2UZBwMtbiOmwRx7+6jUIghsI0aymIwCIvCKlfrjis1R80RFnPL7EIk=
+	t=1761592449; cv=none; b=jZnEIHNhg85wszvRiy2jnHdJFg24ii+cYs5LeRFzvcDicoufE8SKogVqKh0PfqeZcfk46Ko5dlAz1CTEgqPxZNIbWaEHMGHGYrJ+szYDQsD3tbEHoq95UT4Spx1NP56Af6Fb3I3LguK7mele248xqQqzcjJZXNqI2krLAwh1Ouw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592629; c=relaxed/simple;
-	bh=UhwdTEXKDhdGSjtJXPJWXwh/tBkDi3EP2wPjlrNC5Pc=;
+	s=arc-20240116; t=1761592449; c=relaxed/simple;
+	bh=l+t0vBEGJPUkdMaWLqaA8K9TG67p6KPSTmAxyEbwbvE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I0L/v4aFPusyzbApS6V+asqdZLVxFF/JU7/2F7k/rFflzye8EprZRx44A1a1Q3J0ml+X6ngV3yWNy4t8ZOHmkQjXf3Y7UuqKQ9yMkJ0UhhZXTJxIjXZq1EdlluzJ30h/o/bxEkXgUme0jYh6SGLFAvDmfvie3VLbb19jLVmwHkA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MKRSMAph; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 301F5C4CEF1;
-	Mon, 27 Oct 2025 19:17:07 +0000 (UTC)
+	 MIME-Version; b=Zze405kfgMEORvdn/Fhx1BIwY8+T/jyD5zkU9MPBhRfEG54DkMvAAo2qaYU4Q0NU8YBpyYliEQdcq9LT/D/hOazQIuOkLtj/SO9lCGlfUN2gHXogSeXOhhq9XIFcThYTEpeoHBmVim5F1UuZTi5QDVaVv+HFWZvemroaqjvdGzg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qOh6x6rZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B572C4CEFD;
+	Mon, 27 Oct 2025 19:14:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592627;
-	bh=UhwdTEXKDhdGSjtJXPJWXwh/tBkDi3EP2wPjlrNC5Pc=;
+	s=korg; t=1761592447;
+	bh=l+t0vBEGJPUkdMaWLqaA8K9TG67p6KPSTmAxyEbwbvE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MKRSMAphyWBkUnh5iCMPgIr2uo1zzUMvqsobolTd0oU7XHX96/gu2D0to3YPFsGyG
-	 OoW5pomZ/e2EjcszboGLqSKoBY1ul0BiMEbzPC9YQFwIey7ffukFN2D2vEWe5XTq7C
-	 /n2RJyXU5S/R2JNRVlSl6BC8S7SjgbxzPRYDdy/k=
+	b=qOh6x6rZF+iScZH0QnSBNZ+8ym2RiJ/wWaNL+rV11QEzpep3GJ7GBYl4q5Oo/x6Lq
+	 i+MSFgCzhHJn9a4m6S/Os4ot42hDZEcsJOZcIh+DewIXWlFf2jBoyNRtcuPXyj9MCI
+	 wtQRKRqfOjyhqWjksi12Gowy3Setsx+cCpSoeRRE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.6 36/84] Revert "cpuidle: menu: Avoid discarding useful information"
-Date: Mon, 27 Oct 2025 19:36:25 +0100
-Message-ID: <20251027183439.781532327@linuxfoundation.org>
+	Xiao Liang <shaw.leon@gmail.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 125/157] padata: Reset next CPU when reorder sequence wraps around
+Date: Mon, 27 Oct 2025 19:36:26 +0100
+Message-ID: <20251027183504.603861114@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183438.817309828@linuxfoundation.org>
-References: <20251027183438.817309828@linuxfoundation.org>
+In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
+References: <20251027183501.227243846@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,83 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Xiao Liang <shaw.leon@gmail.com>
 
-commit 10fad4012234a7dea621ae17c0c9486824f645a0 upstream.
+[ Upstream commit 501302d5cee0d8e8ec2c4a5919c37e0df9abc99b ]
 
-It is reported that commit 85975daeaa4d ("cpuidle: menu: Avoid discarding
-useful information") led to a performance regression on Intel Jasper Lake
-systems because it reduced the time spent by CPUs in idle state C7 which
-is correlated to the maximum frequency the CPUs can get to because of an
-average running power limit [1].
+When seq_nr wraps around, the next reorder job with seq 0 is hashed to
+the first CPU in padata_do_serial(). Correspondingly, need reset pd->cpu
+to the first one when pd->processed wraps around. Otherwise, if the
+number of used CPUs is not a power of 2, padata_find_next() will be
+checking a wrong list, hence deadlock.
 
-Before that commit, get_typical_interval() would have returned UINT_MAX
-whenever it had been unable to make a high-confidence prediction which
-had led to selecting the deepest available idle state too often and
-both power and performance had been inadequate as a result of that on
-some systems.  However, this had not been a problem on systems with
-relatively aggressive average running power limits, like the Jasper Lake
-systems in question, because on those systems it was compensated by the
-ability to run CPUs faster.
-
-It was addressed by causing get_typical_interval() to return a number
-based on the recent idle duration information available to it even if it
-could not make a high-confidence prediction, but that clearly did not
-take the possible correlation between idle power and available CPU
-capacity into account.
-
-For this reason, revert most of the changes made by commit 85975daeaa4d,
-except for one cosmetic cleanup, and add a comment explaining the
-rationale for returning UINT_MAX from get_typical_interval() when it
-is unable to make a high-confidence prediction.
-
-Fixes: 85975daeaa4d ("cpuidle: menu: Avoid discarding useful information")
-Closes: https://lore.kernel.org/linux-pm/36iykr223vmcfsoysexug6s274nq2oimcu55ybn6ww4il3g3cv@cohflgdbpnq7/ [1]
-Reported-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: All applicable <stable@vger.kernel.org>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Link: https://patch.msgid.link/3663603.iIbC2pHGDl@rafael.j.wysocki
+Fixes: 6fc4dbcf0276 ("padata: Replace delayed timer with immediate workqueue in padata_reorder")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Xiao Liang <shaw.leon@gmail.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+[ applied fix in padata_find_next() instead of padata_reorder() ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cpuidle/governors/menu.c |   21 +++++++++------------
- 1 file changed, 9 insertions(+), 12 deletions(-)
+ kernel/padata.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/drivers/cpuidle/governors/menu.c
-+++ b/drivers/cpuidle/governors/menu.c
-@@ -230,20 +230,17 @@ again:
- 	 *
- 	 * This can deal with workloads that have long pauses interspersed
- 	 * with sporadic activity with a bunch of short pauses.
-+	 *
-+	 * However, if the number of remaining samples is too small to exclude
-+	 * any more outliers, allow the deepest available idle state to be
-+	 * selected because there are systems where the time spent by CPUs in
-+	 * deep idle states is correlated to the maximum frequency the CPUs
-+	 * can get to.  On those systems, shallow idle states should be avoided
-+	 * unless there is a clear indication that the given CPU is most likley
-+	 * going to be woken up shortly.
- 	 */
--	if (divisor * 4 <= INTERVALS * 3) {
--		/*
--		 * If there are sufficiently many data points still under
--		 * consideration after the outliers have been eliminated,
--		 * returning without a prediction would be a mistake because it
--		 * is likely that the next interval will not exceed the current
--		 * maximum, so return the latter in that case.
--		 */
--		if (divisor >= INTERVALS / 2)
--			return max;
--
-+	if (divisor * 4 <= INTERVALS * 3)
- 		return UINT_MAX;
--	}
+--- a/kernel/padata.c
++++ b/kernel/padata.c
+@@ -282,7 +282,11 @@ static struct padata_priv *padata_find_n
+ 	if (remove_object) {
+ 		list_del_init(&padata->list);
+ 		++pd->processed;
+-		pd->cpu = cpumask_next_wrap(cpu, pd->cpumask.pcpu, -1, false);
++		/* When sequence wraps around, reset to the first CPU. */
++		if (unlikely(pd->processed == 0))
++			pd->cpu = cpumask_first(pd->cpumask.pcpu);
++		else
++			pd->cpu = cpumask_next_wrap(cpu, pd->cpumask.pcpu, -1, false);
+ 	}
  
- 	thresh = max - 1;
- 	goto again;
+ 	spin_unlock(&reorder->lock);
 
 
 
