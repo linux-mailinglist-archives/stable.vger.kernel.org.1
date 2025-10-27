@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-190782-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190562-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36C4AC10BFE
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:18:33 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 171C6C1084C
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:08:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 71E9B50240A
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:12:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2289A1A25ACD
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:05:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD04C324B19;
-	Mon, 27 Oct 2025 19:09:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7553C337107;
+	Mon, 27 Oct 2025 19:00:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AMQlJfZB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wA+Xdb9w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7744A31E0E1;
-	Mon, 27 Oct 2025 19:09:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28878336ED9;
+	Mon, 27 Oct 2025 19:00:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592182; cv=none; b=D1axVtScpuzCl+R4ghhnTvLyV4q91ccf8L/LIeNsdCzcYoA4TLAHZwYD4UHUss0/yeLdY6XOme2DSdX73pkAHeXikE38wTF+7Mi44t8p1k+D0QVzHMxfQVMRvecLvtTh27Ojel9f/ihliEOaPOh4Yx4j6Z0wcfuCNAdoxnEqCYg=
+	t=1761591615; cv=none; b=Ts/u/SYcLVKPnIvX/PN0UG3igDQHzApMDVVtV97C5PfHT74LfV3hJL39kQFdx6mQkfKCxde8tEgx9Z1x+s5eH0vT1kTk01Z7grzKEXxFYj6lZA80iqIlknIZXzeA4XbZme3OMlrwRwKdmGPXHQjT17hNbzFrP1BXGETFzFzGpmA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592182; c=relaxed/simple;
-	bh=1Ps5FUYhkvgVkhQbfq7FqSmqifr9o2gd8dgFrUrdI/E=;
+	s=arc-20240116; t=1761591615; c=relaxed/simple;
+	bh=BQnAuEJUKUc/hIJ2bGaw9L3fNkItKWY5oCIA7k68NRU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ohbVTI7vQLJd/fSAN0Zaj3DDIPShsviYw8YEqtYt0+hdHUba3rSqTFG+U1JukfYz7zZv9cMXPByHHkqWn1vYMAjUjxk+Xdnmpkbo5GJ3LqClq9IkNlvr/SI7M/0ZKNNAcuVNa0cI4pqSqTgOc+hxvVqtXjipLRtg7H9npqtC/6I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AMQlJfZB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D77DAC4CEF1;
-	Mon, 27 Oct 2025 19:09:41 +0000 (UTC)
+	 MIME-Version; b=a6kKi/CoCmlDfecO71et2Av7eDfOr0/9zGNV02IIw2+aaX+0aUoCIaWCGxmZ7xhs88xRcZ5dZEs4YV1UEXqJRoj/LEkuXNhVuvDtH5ThwNHudP3Sra0xEdQdI0hG8I3CRAe5IzT6A5+9pGC4A00g3ShFGkpuLToEeBJVjF0gF4M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wA+Xdb9w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55C06C4CEF1;
+	Mon, 27 Oct 2025 19:00:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592182;
-	bh=1Ps5FUYhkvgVkhQbfq7FqSmqifr9o2gd8dgFrUrdI/E=;
+	s=korg; t=1761591614;
+	bh=BQnAuEJUKUc/hIJ2bGaw9L3fNkItKWY5oCIA7k68NRU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AMQlJfZBfgJUURWLx8hZoI2PeFy8/Dh1SLySwu2ead0afs8oV0qRHICpZl4ICGwGR
-	 ZOd5xmQjUUghaMY+HjK5ybV5ij+XebeJkI5lQCe9J01cSqonagnYdnYi2NDbJ1VO5r
-	 Jynhrr6A2tgTwuKcKAF6JBJUc2XfY/NWs5CJ60MY=
+	b=wA+Xdb9wdLuCdga5v28Vp2lNuhRs1j9awqapPBNOB3rr6xQKX760adlhl2QnIny0f
+	 Gl0ELmZleI8m1PceOpyYeYO77I8RoA853Xr0d7X09RyvPRFLzQXJ6tcIrVI5sCPKau
+	 C3itVbkb/szyGj4Hm6Dmr6Rl14IFI6YEkWCX38nQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Anna-Maria Behnsen <anna-maria@linutronix.de>,
-	Marc Zyngier <maz@kernel.org>,
-	Jeongjun Park <aha310510@gmail.com>
-Subject: [PATCH 6.1 025/157] clocksource/drivers/arm_arch_timer: Do not use timer namespace for timer_shutdown() function
+	Inki Dae <inki.dae@samsung.com>,
+	Kaustabh Chakraborty <kauschluss@disroot.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 233/332] drm/exynos: exynos7_drm_decon: remove ctx->suspended
 Date: Mon, 27 Oct 2025 19:34:46 +0100
-Message-ID: <20251027183501.956402162@linuxfoundation.org>
+Message-ID: <20251027183530.964547447@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
-References: <20251027183501.227243846@linuxfoundation.org>
+In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
+References: <20251027183524.611456697@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,78 +62,169 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
+From: Kaustabh Chakraborty <kauschluss@disroot.org>
 
-[ Upstream commit 73737a5833ace25a8408b0d3b783637cb6bf29d1 ]
+[ Upstream commit e1361a4f1be9cb69a662c6d7b5ce218007d6e82b ]
 
-A new "shutdown" timer state is being added to the generic timer code. One
-of the functions to change the timer into the state is called
-"timer_shutdown()". This means that there can not be other functions
-called "timer_shutdown()" as the timer code owns the "timer_*" name space.
+Condition guards are found to be redundant, as the call flow is properly
+managed now, as also observed in the Exynos5433 DECON driver. Since
+state checking is no longer necessary, remove it.
 
-Rename timer_shutdown() to arch_timer_shutdown() to avoid this conflict.
+This also fixes an issue which prevented decon_commit() from
+decon_atomic_enable() due to an incorrect state change setting.
 
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Guenter Roeck <linux@roeck-us.net>
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Reviewed-by: Anna-Maria Behnsen <anna-maria@linutronix.de>
-Acked-by: Marc Zyngier <maz@kernel.org>
-Link: https://lkml.kernel.org/r/20221106212702.002251651@goodmis.org
-Link: https://lore.kernel.org/all/20221105060155.409832154@goodmis.org/
-Link: https://lore.kernel.org/r/20221110064146.981725531@goodmis.org
-Link: https://lore.kernel.org/r/20221123201624.574672568@linutronix.de
-Signed-off-by: Jeongjun Park <aha310510@gmail.com>
+Fixes: 96976c3d9aff ("drm/exynos: Add DECON driver")
+Cc: stable@vger.kernel.org
+Suggested-by: Inki Dae <inki.dae@samsung.com>
+Signed-off-by: Kaustabh Chakraborty <kauschluss@disroot.org>
+Signed-off-by: Inki Dae <inki.dae@samsung.com>
+[ Adjust context ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clocksource/arm_arch_timer.c |   12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/exynos/exynos7_drm_decon.c |   36 -----------------------------
+ 1 file changed, 36 deletions(-)
 
---- a/drivers/clocksource/arm_arch_timer.c
-+++ b/drivers/clocksource/arm_arch_timer.c
-@@ -687,8 +687,8 @@ static irqreturn_t arch_timer_handler_vi
- 	return timer_handler(ARCH_TIMER_MEM_VIRT_ACCESS, evt);
+--- a/drivers/gpu/drm/exynos/exynos7_drm_decon.c
++++ b/drivers/gpu/drm/exynos/exynos7_drm_decon.c
+@@ -51,7 +51,6 @@ struct decon_context {
+ 	void __iomem			*regs;
+ 	unsigned long			irq_flags;
+ 	bool				i80_if;
+-	bool				suspended;
+ 	wait_queue_head_t		wait_vsync_queue;
+ 	atomic_t			wait_vsync_event;
+ 
+@@ -85,9 +84,6 @@ static void decon_wait_for_vblank(struct
+ {
+ 	struct decon_context *ctx = crtc->ctx;
+ 
+-	if (ctx->suspended)
+-		return;
+-
+ 	atomic_set(&ctx->wait_vsync_event, 1);
+ 
+ 	/*
+@@ -155,9 +151,6 @@ static void decon_commit(struct exynos_d
+ 	struct drm_display_mode *mode = &crtc->base.state->adjusted_mode;
+ 	u32 val, clkdiv;
+ 
+-	if (ctx->suspended)
+-		return;
+-
+ 	/* nothing to do if we haven't set the mode yet */
+ 	if (mode->htotal == 0 || mode->vtotal == 0)
+ 		return;
+@@ -219,9 +212,6 @@ static int decon_enable_vblank(struct ex
+ 	struct decon_context *ctx = crtc->ctx;
+ 	u32 val;
+ 
+-	if (ctx->suspended)
+-		return -EPERM;
+-
+ 	if (!test_and_set_bit(0, &ctx->irq_flags)) {
+ 		val = readl(ctx->regs + VIDINTCON0);
+ 
+@@ -244,9 +234,6 @@ static void decon_disable_vblank(struct
+ 	struct decon_context *ctx = crtc->ctx;
+ 	u32 val;
+ 
+-	if (ctx->suspended)
+-		return;
+-
+ 	if (test_and_clear_bit(0, &ctx->irq_flags)) {
+ 		val = readl(ctx->regs + VIDINTCON0);
+ 
+@@ -369,9 +356,6 @@ static void decon_atomic_begin(struct ex
+ 	struct decon_context *ctx = crtc->ctx;
+ 	int i;
+ 
+-	if (ctx->suspended)
+-		return;
+-
+ 	for (i = 0; i < WINDOWS_NR; i++)
+ 		decon_shadow_protect_win(ctx, i, true);
+ }
+@@ -391,9 +375,6 @@ static void decon_update_plane(struct ex
+ 	unsigned int cpp = fb->format->cpp[0];
+ 	unsigned int pitch = fb->pitches[0];
+ 
+-	if (ctx->suspended)
+-		return;
+-
+ 	/*
+ 	 * SHADOWCON/PRTCON register is used for enabling timing.
+ 	 *
+@@ -481,9 +462,6 @@ static void decon_disable_plane(struct e
+ 	unsigned int win = plane->index;
+ 	u32 val;
+ 
+-	if (ctx->suspended)
+-		return;
+-
+ 	/* protect windows */
+ 	decon_shadow_protect_win(ctx, win, true);
+ 
+@@ -502,9 +480,6 @@ static void decon_atomic_flush(struct ex
+ 	struct decon_context *ctx = crtc->ctx;
+ 	int i;
+ 
+-	if (ctx->suspended)
+-		return;
+-
+ 	for (i = 0; i < WINDOWS_NR; i++)
+ 		decon_shadow_protect_win(ctx, i, false);
+ 	exynos_crtc_handle_event(crtc);
+@@ -531,9 +506,6 @@ static void decon_atomic_enable(struct e
+ {
+ 	struct decon_context *ctx = crtc->ctx;
+ 
+-	if (!ctx->suspended)
+-		return;
+-
+ 	pm_runtime_get_sync(ctx->dev);
+ 
+ 	decon_init(ctx);
+@@ -543,8 +515,6 @@ static void decon_atomic_enable(struct e
+ 		decon_enable_vblank(ctx->crtc);
+ 
+ 	decon_commit(ctx->crtc);
+-
+-	ctx->suspended = false;
  }
  
--static __always_inline int timer_shutdown(const int access,
--					  struct clock_event_device *clk)
-+static __always_inline int arch_timer_shutdown(const int access,
-+					       struct clock_event_device *clk)
- {
- 	unsigned long ctrl;
+ static void decon_atomic_disable(struct exynos_drm_crtc *crtc)
+@@ -552,9 +522,6 @@ static void decon_atomic_disable(struct
+ 	struct decon_context *ctx = crtc->ctx;
+ 	int i;
  
-@@ -701,22 +701,22 @@ static __always_inline int timer_shutdow
+-	if (ctx->suspended)
+-		return;
+-
+ 	/*
+ 	 * We need to make sure that all windows are disabled before we
+ 	 * suspend that connector. Otherwise we might try to scan from
+@@ -564,8 +531,6 @@ static void decon_atomic_disable(struct
+ 		decon_disable_plane(crtc, &ctx->planes[i]);
  
- static int arch_timer_shutdown_virt(struct clock_event_device *clk)
- {
--	return timer_shutdown(ARCH_TIMER_VIRT_ACCESS, clk);
-+	return arch_timer_shutdown(ARCH_TIMER_VIRT_ACCESS, clk);
+ 	pm_runtime_put_sync(ctx->dev);
+-
+-	ctx->suspended = true;
  }
  
- static int arch_timer_shutdown_phys(struct clock_event_device *clk)
- {
--	return timer_shutdown(ARCH_TIMER_PHYS_ACCESS, clk);
-+	return arch_timer_shutdown(ARCH_TIMER_PHYS_ACCESS, clk);
- }
+ static const struct exynos_drm_crtc_ops decon_crtc_ops = {
+@@ -687,7 +652,6 @@ static int decon_probe(struct platform_d
+ 		return -ENOMEM;
  
- static int arch_timer_shutdown_virt_mem(struct clock_event_device *clk)
- {
--	return timer_shutdown(ARCH_TIMER_MEM_VIRT_ACCESS, clk);
-+	return arch_timer_shutdown(ARCH_TIMER_MEM_VIRT_ACCESS, clk);
- }
+ 	ctx->dev = dev;
+-	ctx->suspended = true;
  
- static int arch_timer_shutdown_phys_mem(struct clock_event_device *clk)
- {
--	return timer_shutdown(ARCH_TIMER_MEM_PHYS_ACCESS, clk);
-+	return arch_timer_shutdown(ARCH_TIMER_MEM_PHYS_ACCESS, clk);
- }
- 
- static __always_inline void set_next_event(const int access, unsigned long evt,
+ 	i80_if_timings = of_get_child_by_name(dev->of_node, "i80-if-timings");
+ 	if (i80_if_timings)
 
 
 
