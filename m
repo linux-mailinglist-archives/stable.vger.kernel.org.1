@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-191274-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190893-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5E7CC1126A
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:37:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C688C10E23
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:23:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0BF82564DAA
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:33:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0F042566561
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:16:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5AFC31B83D;
-	Mon, 27 Oct 2025 19:31:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B036631D740;
+	Mon, 27 Oct 2025 19:14:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vgz1zYuD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RdN3f3Zh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C1D122A4DB;
-	Mon, 27 Oct 2025 19:31:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BB8731D389;
+	Mon, 27 Oct 2025 19:14:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761593490; cv=none; b=juMXesHIgnUb56JleHjcw4d5VNYW9SoqzH762c83QUyt+WXUOaso/nWQWgMOjbCfPjtgvxzPMLQ4k3onLviDgfomI53PSTkMbUDGu4gAZ+yU5MJu1ZZsQfJ6XV2OB0azehlmrFEfa5oF8I6fhekHFEr+fPQsQDlWqX57QqiWogg=
+	t=1761592473; cv=none; b=NeN/jRqz/x89q3MNl1PxqGXWqLZp/GTvtivg3iriH48rGPYfr+4Bk7q6FQ+7LxK18lGxFrdLSa4n3MmNTCK3GgdRvZLznyikQ5h/zPd3e7A8QdIktmgxDOHZ+gbKPKrdVTYuwh++e+6RyKhA1vPJQRzDHG4E//UdYicleLjvLiw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761593490; c=relaxed/simple;
-	bh=/iSkV3TvS8bjZJgJ0q+KXfOD1RP3NiwAwaK7ChUyWuQ=;
+	s=arc-20240116; t=1761592473; c=relaxed/simple;
+	bh=MNt6Zmg17xRY0rzjh0eq5nyXhuDIh3ZEDAt9S0oSKp4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RIxuLReXvNeBl8QuOipw+CNxhPPhCzoIhmpkbdxZO+64wBEAUJDFkELPbI9Q0Tg3ELGHDUv5nsRLvhWzNTRiDNIBfrtV8uLiXKjqqGSFP6HelCfaEYZQBrQzfPgDVxR+tDToLwr/TV60h04zpdVTnlMsMQjohsU2eRIRpNPEA5A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vgz1zYuD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1F68C4CEF1;
-	Mon, 27 Oct 2025 19:31:29 +0000 (UTC)
+	 MIME-Version; b=JFYnuOom9ckPuKKlekGzrQVZzjFw6NViN8j1d8Nz4aKvfT4c/nLjaw4kEDlkn8CQPZG856KSSrCGE/GPZmy/nfet0RHob1II00piSGdp2XU2iPdBGFg1V06agcK1KiIuqpgYkn+4V8tHI5L/jsvhk/FvLowZawFfzS1J5yQFSTY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RdN3f3Zh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F40C4C4CEF1;
+	Mon, 27 Oct 2025 19:14:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761593490;
-	bh=/iSkV3TvS8bjZJgJ0q+KXfOD1RP3NiwAwaK7ChUyWuQ=;
+	s=korg; t=1761592473;
+	bh=MNt6Zmg17xRY0rzjh0eq5nyXhuDIh3ZEDAt9S0oSKp4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vgz1zYuD26LDBlcdJBMDevfyhtGLsoRHzoO/3cteoaivSMALJwzY0fyslDFQUfSJl
-	 LV6cFFyVmgkxjb/OUnJ/1Wdz6uvGQjvl1cusPGtJLHUjKKxs649MH488iD9ugdOJGj
-	 KjcGh7CRX79r9IUais32XnF/z53znBSDDE9ryhPA=
+	b=RdN3f3ZhJeo7iy47xxj+hlWyf2yXAFvnOa5yXMm/CzLZbCE+WYnauNR3NBvgij7Ko
+	 mLc0GZiP1KHT38F1DjYYz4AqztsM8LxUx9x7dF7tpRZ/I1bCN5jeeL9lU4l4OPr36f
+	 8W4r4q/MK6tOOY81WhqMv+/Yi752EQXgvoBzEdwE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.17 113/184] mm/damon/sysfs: dealloc commit test ctx always
+	syzbot+1d79ebe5383fc016cf07@syzkaller.appspotmail.com,
+	Jan Kara <jack@suse.cz>,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 134/157] vfs: Dont leak disconnected dentries on umount
 Date: Mon, 27 Oct 2025 19:36:35 +0100
-Message-ID: <20251027183517.975133914@linuxfoundation.org>
+Message-ID: <20251027183504.848886794@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
-References: <20251027183514.934710872@linuxfoundation.org>
+In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
+References: <20251027183501.227243846@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +63,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: SeongJae Park <sj@kernel.org>
+From: Jan Kara <jack@suse.cz>
 
-commit 139e7a572af0b45f558b5e502121a768dc328ba8 upstream.
+[ Upstream commit 56094ad3eaa21e6621396cc33811d8f72847a834 ]
 
-The damon_ctx for testing online DAMON parameters commit inputs is
-deallocated only when the test fails.  This means memory is leaked for
-every successful online DAMON parameters commit.  Fix the leak by always
-deallocating it.
+When user calls open_by_handle_at() on some inode that is not cached, we
+will create disconnected dentry for it. If such dentry is a directory,
+exportfs_decode_fh_raw() will then try to connect this dentry to the
+dentry tree through reconnect_path(). It may happen for various reasons
+(such as corrupted fs or race with rename) that the call to
+lookup_one_unlocked() in reconnect_one() will fail to find the dentry we
+are trying to reconnect and instead create a new dentry under the
+parent. Now this dentry will not be marked as disconnected although the
+parent still may well be disconnected (at least in case this
+inconsistency happened because the fs is corrupted and .. doesn't point
+to the real parent directory). This creates inconsistency in
+disconnected flags but AFAICS it was mostly harmless. At least until
+commit f1ee616214cb ("VFS: don't keep disconnected dentries on d_anon")
+which removed adding of most disconnected dentries to sb->s_anon list.
+Thus after this commit cleanup of disconnected dentries implicitely
+relies on the fact that dput() will immediately reclaim such dentries.
+However when some leaf dentry isn't marked as disconnected, as in the
+scenario described above, the reclaim doesn't happen and the dentries
+are "leaked". Memory reclaim can eventually reclaim them but otherwise
+they stay in memory and if umount comes first, we hit infamous "Busy
+inodes after unmount" bug. Make sure all dentries created under a
+disconnected parent are marked as disconnected as well.
 
-Link: https://lkml.kernel.org/r/20251003201455.41448-3-sj@kernel.org
-Fixes: 4c9ea539ad59 ("mm/damon/sysfs: validate user inputs from damon_sysfs_commit_input()")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: <stable@vger.kernel.org>	[6.15+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Reported-by: syzbot+1d79ebe5383fc016cf07@syzkaller.appspotmail.com
+Fixes: f1ee616214cb ("VFS: don't keep disconnected dentries on d_anon")
+CC: stable@vger.kernel.org
+Signed-off-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+[ relocated DCACHE_DISCONNECTED propagation from d_alloc_parallel() to d_alloc() ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/damon/sysfs.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ fs/dcache.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/mm/damon/sysfs.c
-+++ b/mm/damon/sysfs.c
-@@ -1438,12 +1438,11 @@ static int damon_sysfs_commit_input(void
- 	if (!test_ctx)
- 		return -ENOMEM;
- 	err = damon_commit_ctx(test_ctx, param_ctx);
--	if (err) {
--		damon_destroy_ctx(test_ctx);
-+	if (err)
- 		goto out;
--	}
- 	err = damon_commit_ctx(kdamond->damon_ctx, param_ctx);
- out:
-+	damon_destroy_ctx(test_ctx);
- 	damon_destroy_ctx(param_ctx);
- 	return err;
- }
+--- a/fs/dcache.c
++++ b/fs/dcache.c
+@@ -1862,6 +1862,8 @@ struct dentry *d_alloc(struct dentry * p
+ 	__dget_dlock(parent);
+ 	dentry->d_parent = parent;
+ 	list_add(&dentry->d_child, &parent->d_subdirs);
++	if (parent->d_flags & DCACHE_DISCONNECTED)
++		dentry->d_flags |= DCACHE_DISCONNECTED;
+ 	spin_unlock(&parent->d_lock);
+ 
+ 	return dentry;
 
 
 
