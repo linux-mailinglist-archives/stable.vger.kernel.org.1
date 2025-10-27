@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-191020-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190875-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31931C10FAF
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:28:21 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C7FDC10D66
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:21:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B1CC85055AE
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:21:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 953EC561D6C
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:15:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF636315D44;
-	Mon, 27 Oct 2025 19:20:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5969B320382;
+	Mon, 27 Oct 2025 19:13:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YDwtaeQ/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A+R7Vu5Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8588823EA92;
-	Mon, 27 Oct 2025 19:20:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1665230F526;
+	Mon, 27 Oct 2025 19:13:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592805; cv=none; b=LM958iqhf+fZCybqP88STtI2PTyTE0n6F1FOE9DhlWeZLWE9uO/2w8Ayg+ENYV8j5uA1uYY0GCCkNaRoePp4pyYkWCo64bPWuyngTJLT7YcBhRLIA3EPWJZmPCulr195m8RCK2UNfBiU3qTEju7wypv0mcaM3/NciNPx4E37WhA=
+	t=1761592429; cv=none; b=bmwaoZ1wjXCh93zxsZkYCnQ5F0d2fK4f2JoQp8fR13kHDUbM0b8HMHCz0lXqW1JExcBBuT3X5WF7nWTOiFMeaLqGmVDwEAksd+Kqzcl4Jkn5gtxco5DlU2Tqg9/F0R27le2TooEmWnMi7PFd31Uvtd10Q7ALZsTGcmLxp0DSQdc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592805; c=relaxed/simple;
-	bh=EeKmQ95tj6U0bJp6ue9ZGyGgwue8Ujr9uQZ6DonAdWU=;
+	s=arc-20240116; t=1761592429; c=relaxed/simple;
+	bh=z9LLTJCLhInpL3RnrLtGZjAfqeQ5f227wMm0RFccz7k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lWxi2Qxl6WzAqqKmGxFUd/C05LpOq4QDjYqBSGWGNw5NHAvuCmXmFcstDQntnm7yX4KskNLGvCFoNYtgCNhkVVeYFqh+7bosglvqG5DcuitH78UjsUTzBDpwUrg+XTLNEwnheVr/ZXDT45tcq9aTXHbClIN0BhFhOVJIovabVjM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YDwtaeQ/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18F59C4CEF1;
-	Mon, 27 Oct 2025 19:20:04 +0000 (UTC)
+	 MIME-Version; b=TVi+9faMWQCjBSYHqq4HR6nyaXtVjwoOvjw47Z45dSVVKNt00bY97SAJUiUhuqfJdjDPqNpf5ytSqTZ+VhqFsNqphlQUN7D2YkpdAijXqPo6WYZ852toQe92h6KacpruKSyWJWL8JzAd/pEl3kfEb6zNZzLEJwcfTL6FY2leYao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A+R7Vu5Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FADAC4CEF1;
+	Mon, 27 Oct 2025 19:13:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592805;
-	bh=EeKmQ95tj6U0bJp6ue9ZGyGgwue8Ujr9uQZ6DonAdWU=;
+	s=korg; t=1761592429;
+	bh=z9LLTJCLhInpL3RnrLtGZjAfqeQ5f227wMm0RFccz7k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YDwtaeQ/4ToPXaDm6qZJEo7yRBsuMQ/1ttqA8fMrVpcQOIyev0YkxDHXJ3KCrEzyI
-	 dPPYUlJ1YffFGPMpJ8ljdg6Ge8o6gBjd362lzSCCUY2EJ9sPBGBPvdfut8wwiEgcgo
-	 aJDHkGbHTwjX6eX0Y2U5N3IlMjgfmZmDhHcVI3lM=
+	b=A+R7Vu5QsZkzuJKavTawdxzr2yGODwbh15arZLDqj9+aOCHxzs+xx+6htytKZt+I1
+	 s+bvqPLKlrM1Gsyk8F96pUQmwVtlo8L5Tahu5cRM+I3JkmJ1y2p0mNs68ptxNrjcqw
+	 bUV17PipYW+zAQCEo5wNd311gR0lgVTF0/sOqCEY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <smfrench@gmail.com>,
-	Tom Talpey <tom@talpey.com>,
-	linux-cifs@vger.kernel.org,
-	samba-technical@lists.samba.org,
-	Stefan Metzmacher <metze@samba.org>,
-	Steve French <stfrench@microsoft.com>,
+	Ioana Ciornei <ioana.ciornei@nxp.com>,
+	Mathew McBride <matt@traverse.com.au>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 019/117] smb: server: let smb_direct_flush_send_list() invalidate a remote key first
+Subject: [PATCH 6.1 084/157] dpaa2-eth: fix the pointer passed to PTR_ALIGN on Tx path
 Date: Mon, 27 Oct 2025 19:35:45 +0100
-Message-ID: <20251027183454.469977205@linuxfoundation.org>
+Message-ID: <20251027183503.525564565@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
-References: <20251027183453.919157109@linuxfoundation.org>
+In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
+References: <20251027183501.227243846@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,53 +64,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Metzmacher <metze@samba.org>
+From: Ioana Ciornei <ioana.ciornei@nxp.com>
 
-[ Upstream commit 1b53426334c3c942db47e0959a2527a4f815af50 ]
+[ Upstream commit 902e81e679d86846a2404630d349709ad9372d0d ]
 
-If we want to invalidate a remote key we should do that as soon as
-possible, so do it in the first send work request.
+The blamed commit increased the needed headroom to account for
+alignment. This means that the size required to always align a Tx buffer
+was added inside the dpaa2_eth_needed_headroom() function. By doing
+that, a manual adjustment of the pointer passed to PTR_ALIGN() was no
+longer correct since the 'buffer_start' variable was already pointing
+to the start of the skb's memory.
 
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Cc: Steve French <smfrench@gmail.com>
-Cc: Tom Talpey <tom@talpey.com>
-Cc: linux-cifs@vger.kernel.org
-Cc: samba-technical@lists.samba.org
-Signed-off-by: Stefan Metzmacher <metze@samba.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+The behavior of the dpaa2-eth driver without this patch was to drop
+frames on Tx even when the headroom was matching the 128 bytes
+necessary. Fix this by removing the manual adjust of 'buffer_start' from
+the PTR_MODE call.
+
+Closes: https://lore.kernel.org/netdev/70f0dcd9-1906-4d13-82df-7bbbbe7194c6@app.fastmail.com/T/#u
+Fixes: f422abe3f23d ("dpaa2-eth: increase the needed headroom to account for alignment")
+Signed-off-by: Ioana Ciornei <ioana.ciornei@nxp.com>
+Tested-by: Mathew McBride <matt@traverse.com.au>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20251016135807.360978-1-ioana.ciornei@nxp.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/transport_rdma.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/fs/smb/server/transport_rdma.c b/fs/smb/server/transport_rdma.c
-index 05dfef7ad67f5..bf79c066a982e 100644
---- a/fs/smb/server/transport_rdma.c
-+++ b/fs/smb/server/transport_rdma.c
-@@ -938,12 +938,15 @@ static int smb_direct_flush_send_list(struct smb_direct_transport *t,
- 			       struct smb_direct_sendmsg,
- 			       list);
+diff --git a/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c b/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c
+index dbc40e4514f0a..3c19be56af22e 100644
+--- a/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c
++++ b/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c
+@@ -1046,8 +1046,7 @@ static int dpaa2_eth_build_single_fd(struct dpaa2_eth_priv *priv,
+ 	dma_addr_t addr;
  
-+	if (send_ctx->need_invalidate_rkey) {
-+		first->wr.opcode = IB_WR_SEND_WITH_INV;
-+		first->wr.ex.invalidate_rkey = send_ctx->remote_key;
-+		send_ctx->need_invalidate_rkey = false;
-+		send_ctx->remote_key = 0;
-+	}
-+
- 	last->wr.send_flags = IB_SEND_SIGNALED;
- 	last->wr.wr_cqe = &last->cqe;
--	if (is_last && send_ctx->need_invalidate_rkey) {
--		last->wr.opcode = IB_WR_SEND_WITH_INV;
--		last->wr.ex.invalidate_rkey = send_ctx->remote_key;
--	}
- 
- 	ret = smb_direct_post_send(t, &first->wr);
- 	if (!ret) {
+ 	buffer_start = skb->data - dpaa2_eth_needed_headroom(skb);
+-	aligned_start = PTR_ALIGN(buffer_start - DPAA2_ETH_TX_BUF_ALIGN,
+-				  DPAA2_ETH_TX_BUF_ALIGN);
++	aligned_start = PTR_ALIGN(buffer_start, DPAA2_ETH_TX_BUF_ALIGN);
+ 	if (aligned_start >= skb->head)
+ 		buffer_start = aligned_start;
+ 	else
 -- 
 2.51.0
 
