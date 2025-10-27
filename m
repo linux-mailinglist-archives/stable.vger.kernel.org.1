@@ -1,66 +1,58 @@
-Return-Path: <stable+bounces-190512-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190771-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BC1CC107A1
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:06:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B69DC10B9E
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:17:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 98E4A1889A67
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:03:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5B4871A62E14
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:12:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3DA132E68F;
-	Mon, 27 Oct 2025 18:58:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14CD531D73E;
+	Mon, 27 Oct 2025 19:09:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tXpshUg9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ps0+72fx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9030D3254A8;
-	Mon, 27 Oct 2025 18:58:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A87FD31D389;
+	Mon, 27 Oct 2025 19:09:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591484; cv=none; b=OzUJj4zM8evhaJ1cCDBcnszlkloiqXeZ6bC/dlST/6ojbR6WXBINyOfJTYxM8IeG36WpCwfPITEAOO0CL2uk9GY4iR7aP22lzfa66M2NBZOpjVqqADits559LN+h2zOwTFtGGb17nIwZSf8A4u1TttLoKgIS8Fki9OqvV4mbGbI=
+	t=1761592153; cv=none; b=RLl600Ga/EsObdzMRC+p7tamo1w8v51u+yQDxPODMKkfJT64DedzuxjY0YHfQy0Nx2x5z3LkbdcTcKy9gWt3l3AUKi98VeSiETH+rZ53/LYq8oKAjM5qvu2t8CyMK9Fk/xAWzVF/oMWerfBdBdhC/GNQ2CVXs1hZ4jnPFAIn/5E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591484; c=relaxed/simple;
-	bh=x+MRSU2HjkyyBUUH+TrBwnjmZkDP+WDwYeWhyNOaujc=;
+	s=arc-20240116; t=1761592153; c=relaxed/simple;
+	bh=x3O3Z1SHf5YXLseKcXA5uVtVB0jXbDe9jH8KRkfRDUg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QsM0/C+WuzItSzIIrpNMp8zSlnteJU/Ui4YSZylVGS5jcJHa9R1+RVazlF++KEOehJzJehrSluKip90GLd5VToWqXXSV9VNSTnE/EMB4n1E5P4aZD6aSq/CX6z2VkJ2G/I+hdBU+V9p7wzp15YAWCov1BzHyNRfmuRiBBXbJ3MA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tXpshUg9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E273BC4CEF1;
-	Mon, 27 Oct 2025 18:58:03 +0000 (UTC)
+	 MIME-Version; b=NEeFq0J8j7p6QtZt4vOVD9cR2sj2JAh81DreEBimjNSr2h6phaVFZMle5y3Uy3ae6gBhFnxUx6JfkW1CJn4nWATPSNJZ/EKyHA0rycsOXVlqRteXCIfC95NAr9+VZwTZhaUsKm1S5eM2UeMX7yCh2Pwa57ab8zPaj/r2f80STIc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ps0+72fx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0AB6C113D0;
+	Mon, 27 Oct 2025 19:09:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591484;
-	bh=x+MRSU2HjkyyBUUH+TrBwnjmZkDP+WDwYeWhyNOaujc=;
+	s=korg; t=1761592153;
+	bh=x3O3Z1SHf5YXLseKcXA5uVtVB0jXbDe9jH8KRkfRDUg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tXpshUg9ZPFNjzswM+NMC81rM9SdKoY0QyIn0XhJtpvu+Q0xYZkMD2xstl3ztyjul
-	 G+2RYsJ/2MHqjutmVQniKKlNNaMPJjVAwoCQLU4gOoesduRYCCt0C6xaSGTRA4ioDu
-	 ZJP68odbiWyITvqTpm4MkAe5WOo6Z8Mz2rQ+Po/Y=
+	b=ps0+72fxydTFw2E/+3Mt5whqrs/XxNWBiTd/H2is4S23++jFZXar8pewTAkcK1SYH
+	 +soIkrrb5zCZAkB5k+1WwFAVTPtd245j6kxvfZ/JTZR061XVssp0SJOYOsUK3MgY92
+	 m0y2nClOCKXuASFu3jVTIe6O4JRpMM3SlaEvm95U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Laight <david.laight@aculab.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Arnd Bergmann <arnd@kernel.org>,
-	Christoph Hellwig <hch@infradead.org>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	"Jason A. Donenfeld" <Jason@zx2c4.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Mateusz Guzik <mjguzik@gmail.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Pedro Falcato <pedro.falcato@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Eliav Farber <farbere@amazon.com>
-Subject: [PATCH 5.10 214/332] minmax.h: add whitespace around operators and after commas
+	Boris Burkov <boris@bur.io>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Qu Wenruo <wqu@suse.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.1 006/157] btrfs: fix clearing of BTRFS_FS_RELOC_RUNNING if relocation already running
 Date: Mon, 27 Oct 2025 19:34:27 +0100
-Message-ID: <20251027183530.404369006@linuxfoundation.org>
+Message-ID: <20251027183501.411791682@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
-References: <20251027183524.611456697@linuxfoundation.org>
+In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
+References: <20251027183501.227243846@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,120 +64,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Laight <David.Laight@ACULAB.COM>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit 71ee9b16251ea4bf7c1fe222517c82bdb3220acc ]
+commit 7e5a5983edda664e8e4bb20af17b80f5135c655c upstream.
 
-Patch series "minmax.h: Cleanups and minor optimisations".
+When starting relocation, at reloc_chunk_start(), if we happen to find
+the flag BTRFS_FS_RELOC_RUNNING is already set we return an error
+(-EINPROGRESS) to the callers, however the callers call reloc_chunk_end()
+which will clear the flag BTRFS_FS_RELOC_RUNNING, which is wrong since
+relocation was started by another task and still running.
 
-Some tidyups and minor changes to minmax.h.
+Finding the BTRFS_FS_RELOC_RUNNING flag already set is an unexpected
+scenario, but still our current behaviour is not correct.
 
-This patch (of 7):
+Fix this by never calling reloc_chunk_end() if reloc_chunk_start() has
+returned an error, which is what logically makes sense, since the general
+widespread pattern is to have end functions called only if the counterpart
+start functions succeeded. This requires changing reloc_chunk_start() to
+clear BTRFS_FS_RELOC_RUNNING if there's a pending cancel request.
 
-Link: https://lkml.kernel.org/r/c50365d214e04f9ba256d417c8bebbc0@AcuMS.aculab.com
-Link: https://lkml.kernel.org/r/f04b2e1310244f62826267346fde0553@AcuMS.aculab.com
-Signed-off-by: David Laight <david.laight@aculab.com>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Arnd Bergmann <arnd@kernel.org>
-Cc: Christoph Hellwig <hch@infradead.org>
-Cc: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: Jason A. Donenfeld <Jason@zx2c4.com>
-Cc: Jens Axboe <axboe@kernel.dk>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Mateusz Guzik <mjguzik@gmail.com>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: Pedro Falcato <pedro.falcato@gmail.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Eliav Farber <farbere@amazon.com>
+Fixes: 907d2710d727 ("btrfs: add cancellable chunk relocation support")
+CC: stable@vger.kernel.org # 5.15+
+Reviewed-by: Boris Burkov <boris@bur.io>
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/minmax.h |   34 +++++++++++++++++-----------------
- 1 file changed, 17 insertions(+), 17 deletions(-)
+ fs/btrfs/relocation.c |   13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
---- a/include/linux/minmax.h
-+++ b/include/linux/minmax.h
-@@ -51,10 +51,10 @@
-  * only need to be careful to not cause warnings for
-  * pointer use.
-  */
--#define __signed_type_use(x,ux) (2+__is_nonneg(x,ux))
--#define __unsigned_type_use(x,ux) (1+2*(sizeof(ux)<4))
--#define __sign_use(x,ux) (is_signed_type(typeof(ux))? \
--	__signed_type_use(x,ux):__unsigned_type_use(x,ux))
-+#define __signed_type_use(x, ux) (2 + __is_nonneg(x, ux))
-+#define __unsigned_type_use(x, ux) (1 + 2 * (sizeof(ux) < 4))
-+#define __sign_use(x, ux) (is_signed_type(typeof(ux)) ? \
-+	__signed_type_use(x, ux) : __unsigned_type_use(x, ux))
+--- a/fs/btrfs/relocation.c
++++ b/fs/btrfs/relocation.c
+@@ -3915,6 +3915,7 @@ out:
+ /*
+  * Mark start of chunk relocation that is cancellable. Check if the cancellation
+  * has been requested meanwhile and don't start in that case.
++ * NOTE: if this returns an error, reloc_chunk_end() must not be called.
+  *
+  * Return:
+  *   0             success
+@@ -3931,10 +3932,8 @@ static int reloc_chunk_start(struct btrf
+ 
+ 	if (atomic_read(&fs_info->reloc_cancel_req) > 0) {
+ 		btrfs_info(fs_info, "chunk relocation canceled on start");
+-		/*
+-		 * On cancel, clear all requests but let the caller mark
+-		 * the end after cleanup operations.
+-		 */
++		/* On cancel, clear all requests. */
++		clear_and_wake_up_bit(BTRFS_FS_RELOC_RUNNING, &fs_info->flags);
+ 		atomic_set(&fs_info->reloc_cancel_req, 0);
+ 		return -ECANCELED;
+ 	}
+@@ -3943,9 +3942,11 @@ static int reloc_chunk_start(struct btrf
  
  /*
-  * To avoid warnings about casting pointers to integers
-@@ -74,15 +74,15 @@
- #ifdef CONFIG_64BIT
-   #define __signed_type(ux) long
- #else
--  #define __signed_type(ux) typeof(__builtin_choose_expr(sizeof(ux)>4,1LL,1L))
-+  #define __signed_type(ux) typeof(__builtin_choose_expr(sizeof(ux) > 4, 1LL, 1L))
- #endif
--#define __is_nonneg(x,ux) statically_true((__signed_type(ux))(x)>=0)
-+#define __is_nonneg(x, ux) statically_true((__signed_type(ux))(x) >= 0)
- 
--#define __types_ok(x,y,ux,uy) \
--	(__sign_use(x,ux) & __sign_use(y,uy))
-+#define __types_ok(x, y, ux, uy) \
-+	(__sign_use(x, ux) & __sign_use(y, uy))
- 
--#define __types_ok3(x,y,z,ux,uy,uz) \
--	(__sign_use(x,ux) & __sign_use(y,uy) & __sign_use(z,uz))
-+#define __types_ok3(x, y, z, ux, uy, uz) \
-+	(__sign_use(x, ux) & __sign_use(y, uy) & __sign_use(z, uz))
- 
- #define __cmp_op_min <
- #define __cmp_op_max >
-@@ -97,7 +97,7 @@
- 
- #define __careful_cmp_once(op, x, y, ux, uy) ({		\
- 	__auto_type ux = (x); __auto_type uy = (y);	\
--	BUILD_BUG_ON_MSG(!__types_ok(x,y,ux,uy),	\
-+	BUILD_BUG_ON_MSG(!__types_ok(x, y, ux, uy),	\
- 		#op"("#x", "#y") signedness error");	\
- 	__cmp(op, ux, uy); })
- 
-@@ -114,7 +114,7 @@
- 	static_assert(__builtin_choose_expr(__is_constexpr((lo) > (hi)), 	\
- 			(lo) <= (hi), true),					\
- 		"clamp() low limit " #lo " greater than high limit " #hi);	\
--	BUILD_BUG_ON_MSG(!__types_ok3(val,lo,hi,uval,ulo,uhi),			\
-+	BUILD_BUG_ON_MSG(!__types_ok3(val, lo, hi, uval, ulo, uhi),		\
- 		"clamp("#val", "#lo", "#hi") signedness error");		\
- 	__clamp(uval, ulo, uhi); })
- 
-@@ -154,7 +154,7 @@
- 
- #define __careful_op3(op, x, y, z, ux, uy, uz) ({			\
- 	__auto_type ux = (x); __auto_type uy = (y);__auto_type uz = (z);\
--	BUILD_BUG_ON_MSG(!__types_ok3(x,y,z,ux,uy,uz),			\
-+	BUILD_BUG_ON_MSG(!__types_ok3(x, y, z, ux, uy, uz),		\
- 		#op"3("#x", "#y", "#z") signedness error");		\
- 	__cmp(op, ux, __cmp(op, uy, uz)); })
- 
-@@ -326,9 +326,9 @@ static inline bool in_range32(u32 val, u
-  * Use these carefully: no type checking, and uses the arguments
-  * multiple times. Use for obvious constants only.
+  * Mark end of chunk relocation that is cancellable and wake any waiters.
++ * NOTE: call only if a previous call to reloc_chunk_start() succeeded.
   */
--#define MIN(a,b) __cmp(min,a,b)
--#define MAX(a,b) __cmp(max,a,b)
--#define MIN_T(type,a,b) __cmp(min,(type)(a),(type)(b))
--#define MAX_T(type,a,b) __cmp(max,(type)(a),(type)(b))
-+#define MIN(a, b) __cmp(min, a, b)
-+#define MAX(a, b) __cmp(max, a, b)
-+#define MIN_T(type, a, b) __cmp(min, (type)(a), (type)(b))
-+#define MAX_T(type, a, b) __cmp(max, (type)(a), (type)(b))
- 
- #endif	/* _LINUX_MINMAX_H */
+ static void reloc_chunk_end(struct btrfs_fs_info *fs_info)
+ {
++	ASSERT(test_bit(BTRFS_FS_RELOC_RUNNING, &fs_info->flags));
+ 	/* Requested after start, clear bit first so any waiters can continue */
+ 	if (atomic_read(&fs_info->reloc_cancel_req) > 0)
+ 		btrfs_info(fs_info, "chunk relocation canceled during operation");
+@@ -4158,9 +4159,9 @@ out:
+ 	if (err && rw)
+ 		btrfs_dec_block_group_ro(rc->block_group);
+ 	iput(rc->data_inode);
++	reloc_chunk_end(fs_info);
+ out_put_bg:
+ 	btrfs_put_block_group(bg);
+-	reloc_chunk_end(fs_info);
+ 	free_reloc_control(rc);
+ 	return err;
+ }
+@@ -4350,8 +4351,8 @@ out_clean:
+ 		err = ret;
+ out_unset:
+ 	unset_reloc_control(rc);
+-out_end:
+ 	reloc_chunk_end(fs_info);
++out_end:
+ 	free_reloc_control(rc);
+ out:
+ 	free_reloc_roots(&reloc_roots);
 
 
 
