@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-190958-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190887-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5AB4C10E50
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:24:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CEB3BC10D84
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:22:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DA36A5678CB
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:18:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B65A75817F6
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:15:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60DE53218B2;
-	Mon, 27 Oct 2025 19:17:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDA2F329C42;
+	Mon, 27 Oct 2025 19:14:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hlru+vQN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c3X4P4Oa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C4A535965;
-	Mon, 27 Oct 2025 19:17:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 705CC31E0E0;
+	Mon, 27 Oct 2025 19:14:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592643; cv=none; b=XfywQauCItYE1Sus7ELXNFg5PRgLYmBfW3VHbwaIz+XJ3fqq6uU+9Rfdh4jc0A7ac1raajB/DVRfTxCClbj+t+PygDEwepgjFLSqZoVRRgi4fxB6hZRiLKG460C86/xI/xaGvFePptpj25DIb6ADPX9zWlsJyaILDkI8nRXZ0ow=
+	t=1761592460; cv=none; b=H75/B7bYdujUx08bneAgevZULyQMqkUNUfLw0FOAou7P17O9ugt9buGcc05ya3EAiD4XJBsiiaiFxyDYUwy0exFvx0qEsHLwuwkW7o+V7AsvgL3E1JFH5t6lO27uyhlKlHt/7fqZowl4snSHleu3Eu9hUf1UrWdma3gBl4thAwQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592643; c=relaxed/simple;
-	bh=GUT1RYcPehOweluoTpH5ArSNGD5ojuPyRFHtPlrVlBA=;
+	s=arc-20240116; t=1761592460; c=relaxed/simple;
+	bh=s1BUzKZDmzGrL4spIYNIKAHw4PvFexvGEXGPktAbWQU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WxLX9PCmRmTW6jW0fcEDtaS3jyAyy6N0xVbOGqpPL5/8eEn0YFWDnPbuII+9uJFajWryu/64n8f03PZ8XcHeoYf6EwYou3BqfRe3LZZ+h0cJyPTQCUAPObAbdEvaRmP68WoATnLuK4Webz2Ji1J198r5jSfjvfrkfHIJcOvvp2c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hlru+vQN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A297FC4CEF1;
-	Mon, 27 Oct 2025 19:17:22 +0000 (UTC)
+	 MIME-Version; b=WFjUgk7Se6z2dt5X0rVUPbI+2uYijwXV+Cl3cvT6VCxzBnjWQeChVt0uTVIolOkkjsVIXvRQRCs6h0ASJyL2RxMKGpu96rVjdI1/8TzGa1nLtuZJN0Uonv7mAyqNw8imqwJC60LP/kZm2tzts8DDVOXuGenafa7vEnmDXS8NOsM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c3X4P4Oa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04882C4CEF1;
+	Mon, 27 Oct 2025 19:14:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592643;
-	bh=GUT1RYcPehOweluoTpH5ArSNGD5ojuPyRFHtPlrVlBA=;
+	s=korg; t=1761592460;
+	bh=s1BUzKZDmzGrL4spIYNIKAHw4PvFexvGEXGPktAbWQU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hlru+vQNMSxczR0EMh9fPc8gIIjcgJIp0D6R7Pe7tqAu7LC772XbIeuYqiDodbjlX
-	 Ifmrk459vT24BujrtXyqZ1ut+NxDrqXQTLP95jNQWEdBwr8PI8kglN90PauyI7KAQz
-	 hcatodwxNjI4+TK61Reg6TpTtqh0uEP6ygFCDlUs=
+	b=c3X4P4Oa3foSWlVVYJ++AWTzObqf6GUJpSVMDiqFjeHE3rJdmPUpiaDzw+mVXva00
+	 v579P1bNnX17PfaA4jDEk/k6Q+dLhHzGTCBskasBjUFPBKGlyXoR2Dv0Gc6NQOrGmx
+	 AkIc33eVb8d6UTxysHTwPGf2BFlzCmK5P85AOpH8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+10e35716f8e4929681fa@syzkaller.appspotmail.com,
-	mhal@rbox.co,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.6 42/84] vsock: fix lock inversion in vsock_assign_transport()
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 130/157] PCI: j721e: Fix programming sequence of "strap" settings
 Date: Mon, 27 Oct 2025 19:36:31 +0100
-Message-ID: <20251027183439.941520724@linuxfoundation.org>
+Message-ID: <20251027183504.740750458@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183438.817309828@linuxfoundation.org>
-References: <20251027183438.817309828@linuxfoundation.org>
+In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
+References: <20251027183501.227243846@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,100 +62,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefano Garzarella <sgarzare@redhat.com>
+From: Siddharth Vadapalli <s-vadapalli@ti.com>
 
-commit f7c877e7535260cc7a21484c994e8ce7e8cb6780 upstream.
+[ Upstream commit f842d3313ba179d4005096357289c7ad09cec575 ]
 
-Syzbot reported a potential lock inversion deadlock between
-vsock_register_mutex and sk_lock-AF_VSOCK when vsock_linger() is called.
+The Cadence PCIe Controller integrated in the TI K3 SoCs supports both
+Root-Complex and Endpoint modes of operation. The Glue Layer allows
+"strapping" the Mode of operation of the Controller, the Link Speed
+and the Link Width. This is enabled by programming the "PCIEn_CTRL"
+register (n corresponds to the PCIe instance) within the CTRL_MMR
+memory-mapped register space. The "reset-values" of the registers are
+also different depending on the mode of operation.
 
-The issue was introduced by commit 687aa0c5581b ("vsock: Fix
-transport_* TOCTOU") which added vsock_register_mutex locking in
-vsock_assign_transport() around the transport->release() call, that can
-call vsock_linger(). vsock_assign_transport() can be called with sk_lock
-held. vsock_linger() calls sk_wait_event() that temporarily releases and
-re-acquires sk_lock. During this window, if another thread hold
-vsock_register_mutex while trying to acquire sk_lock, a circular
-dependency is created.
+Since the PCIe Controller latches onto the "reset-values" immediately
+after being powered on, if the Glue Layer configuration is not done while
+the PCIe Controller is off, it will result in the PCIe Controller latching
+onto the wrong "reset-values". In practice, this will show up as a wrong
+representation of the PCIe Controller's capability structures in the PCIe
+Configuration Space. Some such capabilities which are supported by the PCIe
+Controller in the Root-Complex mode but are incorrectly latched onto as
+being unsupported are:
+- Link Bandwidth Notification
+- Alternate Routing ID (ARI) Forwarding Support
+- Next capability offset within Advanced Error Reporting (AER) capability
 
-Fix this by releasing vsock_register_mutex before calling
-transport->release() and vsock_deassign_transport(). This is safe
-because we don't need to hold vsock_register_mutex while releasing the
-old transport, and we ensure the new transport won't disappear by
-obtaining a module reference first via try_module_get().
+Fix this by powering off the PCIe Controller before programming the "strap"
+settings and powering it on after that. The runtime PM APIs namely
+pm_runtime_put_sync() and pm_runtime_get_sync() will decrement and
+increment the usage counter respectively, causing GENPD to power off and
+power on the PCIe Controller.
 
-Reported-by: syzbot+10e35716f8e4929681fa@syzkaller.appspotmail.com
-Tested-by: syzbot+10e35716f8e4929681fa@syzkaller.appspotmail.com
-Fixes: 687aa0c5581b ("vsock: Fix transport_* TOCTOU")
-Cc: mhal@rbox.co
+Fixes: f3e25911a430 ("PCI: j721e: Add TI J721E PCIe driver")
+Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
 Cc: stable@vger.kernel.org
-Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
-Link: https://patch.msgid.link/20251021121718.137668-1-sgarzare@redhat.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Link: https://patch.msgid.link/20250908120828.1471776-1-s-vadapalli@ti.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/vmw_vsock/af_vsock.c |   38 +++++++++++++++++++-------------------
- 1 file changed, 19 insertions(+), 19 deletions(-)
+ drivers/pci/controller/cadence/pci-j721e.c |   25 +++++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
 
---- a/net/vmw_vsock/af_vsock.c
-+++ b/net/vmw_vsock/af_vsock.c
-@@ -486,12 +486,26 @@ int vsock_assign_transport(struct vsock_
- 		goto err;
- 	}
+--- a/drivers/pci/controller/cadence/pci-j721e.c
++++ b/drivers/pci/controller/cadence/pci-j721e.c
+@@ -270,6 +270,25 @@ static int j721e_pcie_ctrl_init(struct j
+ 	if (!ret)
+ 		offset = args.args[0];
  
--	if (vsk->transport) {
--		if (vsk->transport == new_transport) {
--			ret = 0;
--			goto err;
--		}
-+	if (vsk->transport && vsk->transport == new_transport) {
-+		ret = 0;
-+		goto err;
++	/*
++	 * The PCIe Controller's registers have different "reset-values"
++	 * depending on the "strap" settings programmed into the PCIEn_CTRL
++	 * register within the CTRL_MMR memory-mapped register space.
++	 * The registers latch onto a "reset-value" based on the "strap"
++	 * settings sampled after the PCIe Controller is powered on.
++	 * To ensure that the "reset-values" are sampled accurately, power
++	 * off the PCIe Controller before programming the "strap" settings
++	 * and power it on after that. The runtime PM APIs namely
++	 * pm_runtime_put_sync() and pm_runtime_get_sync() will decrement and
++	 * increment the usage counter respectively, causing GENPD to power off
++	 * and power on the PCIe Controller.
++	 */
++	ret = pm_runtime_put_sync(dev);
++	if (ret < 0) {
++		dev_err(dev, "Failed to power off PCIe Controller\n");
++		return ret;
 +	}
 +
-+	/* We increase the module refcnt to prevent the transport unloading
-+	 * while there are open sockets assigned to it.
-+	 */
-+	if (!new_transport || !try_module_get(new_transport->module)) {
-+		ret = -ENODEV;
-+		goto err;
-+	}
-+
-+	/* It's safe to release the mutex after a successful try_module_get().
-+	 * Whichever transport `new_transport` points at, it won't go away until
-+	 * the last module_put() below or in vsock_deassign_transport().
-+	 */
-+	mutex_unlock(&vsock_register_mutex);
- 
-+	if (vsk->transport) {
- 		/* transport->release() must be called with sock lock acquired.
- 		 * This path can only be taken during vsock_connect(), where we
- 		 * have already held the sock lock. In the other cases, this
-@@ -511,20 +525,6 @@ int vsock_assign_transport(struct vsock_
- 		vsk->peer_shutdown = 0;
+ 	ret = j721e_pcie_set_mode(pcie, syscon, offset);
+ 	if (ret < 0) {
+ 		dev_err(dev, "Failed to set pci mode\n");
+@@ -288,6 +307,12 @@ static int j721e_pcie_ctrl_init(struct j
+ 		return ret;
  	}
  
--	/* We increase the module refcnt to prevent the transport unloading
--	 * while there are open sockets assigned to it.
--	 */
--	if (!new_transport || !try_module_get(new_transport->module)) {
--		ret = -ENODEV;
--		goto err;
--	}
--
--	/* It's safe to release the mutex after a successful try_module_get().
--	 * Whichever transport `new_transport` points at, it won't go away until
--	 * the last module_put() below or in vsock_deassign_transport().
--	 */
--	mutex_unlock(&vsock_register_mutex);
--
- 	if (sk->sk_type == SOCK_SEQPACKET) {
- 		if (!new_transport->seqpacket_allow ||
- 		    !new_transport->seqpacket_allow(remote_cid)) {
++	ret = pm_runtime_get_sync(dev);
++	if (ret < 0) {
++		dev_err(dev, "Failed to power on PCIe Controller\n");
++		return ret;
++	}
++
+ 	/* Enable ACSPCIE refclk output if the optional property exists */
+ 	syscon = syscon_regmap_lookup_by_phandle_optional(node,
+ 						"ti,syscon-acspcie-proxy-ctrl");
 
 
 
