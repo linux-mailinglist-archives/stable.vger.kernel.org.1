@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-191138-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190651-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 346C9C111A5
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:34:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02085C10A26
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:13:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id BFB7556144A
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:27:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 72233565011
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:07:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A8E932E145;
-	Mon, 27 Oct 2025 19:25:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB9F332E141;
+	Mon, 27 Oct 2025 19:03:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K/xHod+9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vnp3WJqr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA8B132E13F;
-	Mon, 27 Oct 2025 19:25:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69AC432E120;
+	Mon, 27 Oct 2025 19:03:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761593107; cv=none; b=udrzmPXpJeD7pWznTrLzYwcfxbPnJ63xQG5gLDhxl89qwb1LFCSrvIzxaiQoW+MD0LhkqYO4R5UkZU/YxyL88k7mRfQRP7gfEqEFnS1I9qg5lXwCrhjX91iMa+5L1B9V/efvIWMarK2BMFebuakdqiGCouZuL4htQGfDKHSoAr0=
+	t=1761591839; cv=none; b=jRT629yrqwccheWPWcQc0CwH75jAR3YiDk425rsXnWUw1X4eDpCwkKDiYORNkfrcRwgz6IqpEMrNqrDaiwT6N+PFfK27i0XlbZTZT4XgJD2N4/NjDRYA8suzz+7KW5iegB+CcKXiXbxABn45RNfYKOjZAEM8eT4upo40QVRsxYM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761593107; c=relaxed/simple;
-	bh=ohQrcnqq/6igKA1BOdtjY3qDZQpIQjwqBj+MnJFF4Fw=;
+	s=arc-20240116; t=1761591839; c=relaxed/simple;
+	bh=Kz9xL9BXhCC1hiVzQYIKU/xFOpbB0xRdBm5P55xZJdI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HZ534Ja5ZE2KFm3uiU5B6jZe0ojroNKTQ0cyCJAIBrvtCWBGtcpWllL7Mi0k06i5JMRZ8/dIAfSxsjf00F+9uI5efncd6Fsd4eksfnL8VKT8JhBqNSortoA7WKeygvdgj+Mosf8ECyrxsNj50OK2HEC2BtZleO9BpZcb0Sod50Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K/xHod+9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54174C4CEF1;
-	Mon, 27 Oct 2025 19:25:07 +0000 (UTC)
+	 MIME-Version; b=AClkJRY+lXRhlycRgM4Fat6sUNUazhZBZXrPfKHshQM45+SwwwBdnxlBm39xAmfTYAGoIXPXj/PVcr4qBz2/TjbLRyKdey+3puAIkCo9KnK7eF/dh3oLoOwLGoV6Iy6wzKJP2sS0dcix+nWA79K9hDDk9TUeybJoTXyZe3I/9EY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vnp3WJqr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00F3BC4CEF1;
+	Mon, 27 Oct 2025 19:03:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761593107;
-	bh=ohQrcnqq/6igKA1BOdtjY3qDZQpIQjwqBj+MnJFF4Fw=;
+	s=korg; t=1761591839;
+	bh=Kz9xL9BXhCC1hiVzQYIKU/xFOpbB0xRdBm5P55xZJdI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K/xHod+9byxhWx+JYvemTeKDvWTeCG/atTE2DQnileStfKczU+02PxytbrigIovGP
-	 7KiXLZ6fVI7uFqaBfye5k+X3eXe/9Db1xG9dzaAE9x+CEoPC7xnYPaSFNpLAI6npV7
-	 01Ak1klMx9fKm33IakSWCp28KIstZYYdkeXMNfws=
+	b=vnp3WJqr9aTX3r7X+OIQMe5u6oj6zFiPi5WME836UnhvWY8TAAIylZ3tTbNsFwSgz
+	 c2o4yI5W2oFEvVcNoSuAvEYKe/XdBU6ccmHcpgIkCiKdC1ReKZbIxEfGjwqOG4azhP
+	 x9lf4trWh6aVYRoWaLuBsFgDL77Y1ZrTFzAyWKMU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yangtao Li <frank.li@vivo.com>,
-	Viacheslav Dubeyko <slava@dubeyko.com>,
+	Philippe Guibert <philippe.guibert@6wind.com>,
+	Nicolas Dichtel <nicolas.dichtel@6wind.com>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 016/184] hfsplus: return EIO when type of hidden directory mismatch in hfsplus_fill_super()
+Subject: [PATCH 5.15 018/123] doc: fix seg6_flowlabel path
 Date: Mon, 27 Oct 2025 19:34:58 +0100
-Message-ID: <20251027183515.373309106@linuxfoundation.org>
+Message-ID: <20251027183446.886400857@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
-References: <20251027183514.934710872@linuxfoundation.org>
+In-Reply-To: <20251027183446.381986645@linuxfoundation.org>
+References: <20251027183446.381986645@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +64,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yangtao Li <frank.li@vivo.com>
+From: Nicolas Dichtel <nicolas.dichtel@6wind.com>
 
-[ Upstream commit 9282bc905f0949fab8cf86c0f620ca988761254c ]
+[ Upstream commit 0b4b77eff5f8cd9be062783a1c1e198d46d0a753 ]
 
-If Catalog File contains corrupted record for the case of
-hidden directory's type, regard it as I/O error instead of
-Invalid argument.
+This sysctl is not per interface; it's global per netns.
 
-Signed-off-by: Yangtao Li <frank.li@vivo.com>
-Reviewed-by: Viacheslav Dubeyko <slava@dubeyko.com>
-Link: https://lore.kernel.org/r/20250805165905.3390154-1-frank.li@vivo.com
-Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
+Fixes: 292ecd9f5a94 ("doc: move seg6_flowlabel to seg6-sysctl.rst")
+Reported-by: Philippe Guibert <philippe.guibert@6wind.com>
+Signed-off-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/hfsplus/super.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ Documentation/networking/seg6-sysctl.rst | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/fs/hfsplus/super.c b/fs/hfsplus/super.c
-index 2f215d1daf6d9..77ec048021a01 100644
---- a/fs/hfsplus/super.c
-+++ b/fs/hfsplus/super.c
-@@ -537,7 +537,7 @@ static int hfsplus_fill_super(struct super_block *sb, struct fs_context *fc)
- 	if (!hfs_brec_read(&fd, &entry, sizeof(entry))) {
- 		hfs_find_exit(&fd);
- 		if (entry.type != cpu_to_be16(HFSPLUS_FOLDER)) {
--			err = -EINVAL;
-+			err = -EIO;
- 			goto out_put_root;
- 		}
- 		inode = hfsplus_iget(sb, be32_to_cpu(entry.folder.id));
+diff --git a/Documentation/networking/seg6-sysctl.rst b/Documentation/networking/seg6-sysctl.rst
+index 07c20e470bafe..1b6af4779be11 100644
+--- a/Documentation/networking/seg6-sysctl.rst
++++ b/Documentation/networking/seg6-sysctl.rst
+@@ -25,6 +25,9 @@ seg6_require_hmac - INTEGER
+ 
+ 	Default is 0.
+ 
++/proc/sys/net/ipv6/seg6_* variables:
++====================================
++
+ seg6_flowlabel - INTEGER
+ 	Controls the behaviour of computing the flowlabel of outer
+ 	IPv6 header in case of SR T.encaps
 -- 
 2.51.0
 
