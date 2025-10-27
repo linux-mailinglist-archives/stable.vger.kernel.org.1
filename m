@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-190553-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190231-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F572C106E1
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:04:32 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AA20C103DB
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:53:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id BD1A43510BB
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:04:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 19277468C88
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:50:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99CF0334395;
-	Mon, 27 Oct 2025 18:59:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB8E13314D4;
+	Mon, 27 Oct 2025 18:45:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qPiwSO6V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gt1f+6co"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57F9A332EC9;
-	Mon, 27 Oct 2025 18:59:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77035328621;
+	Mon, 27 Oct 2025 18:45:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591590; cv=none; b=DQtq6hLhwE8arQB1IkJLHUfYJFLeOSAMTsxyFvrbBMLrgClGCAZIlSq1MKtv5puHZoUSA/Hd/u2C8p1B479qd2TlnThAdYcMXPvThoAyDFjbjzq04g2PQlFoWBtkR+04phd4/JaP88jwiurODheW4wyq9IyzyD+EnKATNOfinO0=
+	t=1761590758; cv=none; b=imf+WWqCjb1tJec60OHphBdDIZhVIXXbkmxeeXrSzDJYmqS69WmeATzsZ86gdP+1G6ZgzTE5vXtCBBMddCb9t8TzhPlRTxarUQRKjJasGSx2xOkee5qOvhI+YQCXlSkzMRM6SEc5OMaf127v/nCbCo2Ids597QPLpv5rGkUZP+Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591590; c=relaxed/simple;
-	bh=diMazE92oibnmaor/2N/ue4x2ZtcwHhpTcnPwF2sQ7E=;
+	s=arc-20240116; t=1761590758; c=relaxed/simple;
+	bh=NhNuaMRbNKrBixhultktJt8lz1tGxFObEoSTYUdfXis=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LCvUE4yHHWRJaAPFgDxf3FRlLsR4qYNAI1D8ibznZRjSyiG1sEEy9yHz6IjKzSinimZEB+vFtpKJ0YW0bCt3Nsn4e3veh+un0EJDLJlzyGY7+Bozni+YiZVvvnZeZA5PfKtPOoK2+D1rzann52WAl5BGlZRLBcmJbTp2gvK1vug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qPiwSO6V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBA0CC113D0;
-	Mon, 27 Oct 2025 18:59:49 +0000 (UTC)
+	 MIME-Version; b=CAXe7lRxVUaTwGwua3F0FkR9xfmyoDCTJJVhl3Yy4iKG+XVixVVFxG7ITL5gkuoB1V5m645vdL7f+QnXPfu93DuLh1K+Etz2wzwpzn1EsrMbjngbBzre4MHTir7lQn/NLDvLxAUQqAQW/+2cHDrL2e6nzxE71ZHEfUN8gSWv/Ls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gt1f+6co; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05195C4CEF1;
+	Mon, 27 Oct 2025 18:45:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591590;
-	bh=diMazE92oibnmaor/2N/ue4x2ZtcwHhpTcnPwF2sQ7E=;
+	s=korg; t=1761590758;
+	bh=NhNuaMRbNKrBixhultktJt8lz1tGxFObEoSTYUdfXis=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qPiwSO6VjZ2BmnK5QpiYDdhwSyNxg6aU2h2/Icu+yr1zzCoCiEYj+VNXLXuRhTQg3
-	 kQAKaD5ajExlM2pmT6WNNRarParWqxhTd7WmJT4W6JRmMfe1vyOV3fKyt7jPzQqsAk
-	 3bct04mFTM3CQoZJ+Pr7FgKpXLCwoHqeBcP6b/rE=
+	b=gt1f+6co7SCHATZdpAe1dIUfuxpy+sTZWLHJnzzDpyVG8F6AfTdxMyYiUciHNYKje
+	 vNotZjGxmFvCr7J9b0oMQ8E/cfZU8ymxkY4lcD67OI5TQP2SLFNWGkfocBbsjRMfPS
+	 biCuhXU4n8qXxzRKIjp9Vx4H8YGxyGO2cP0gsT08=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Neal Cardwell <ncardwell@google.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 255/332] sched/fair: Fix pelt lost idle time detection
+Subject: [PATCH 5.4 162/224] tcp: fix tcp_tso_should_defer() vs large RTT
 Date: Mon, 27 Oct 2025 19:35:08 +0100
-Message-ID: <20251027183531.576467529@linuxfoundation.org>
+Message-ID: <20251027183513.265058394@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
-References: <20251027183524.611456697@linuxfoundation.org>
+In-Reply-To: <20251027183508.963233542@linuxfoundation.org>
+References: <20251027183508.963233542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,69 +63,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vincent Guittot <vincent.guittot@linaro.org>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 17e3e88ed0b6318fde0d1c14df1a804711cab1b5 ]
+[ Upstream commit 295ce1eb36ae47dc862d6c8a1012618a25516208 ]
 
-The check for some lost idle pelt time should be always done when
-pick_next_task_fair() fails to pick a task and not only when we call it
-from the fair fast-path.
+Neal reported that using neper tcp_stream with TCP_TX_DELAY
+set to 50ms would often lead to flows stuck in a small cwnd mode,
+regardless of the congestion control.
 
-The case happens when the last running task on rq is a RT or DL task. When
-the latter goes to sleep and the /Sum of util_sum of the rq is at the max
-value, we don't account the lost of idle time whereas we should.
+While tcp_stream sets TCP_TX_DELAY too late after the connect(),
+it highlighted two kernel bugs.
 
-Fixes: 67692435c411 ("sched: Rework pick_next_task() slow-path")
-Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+The following heuristic in tcp_tso_should_defer() seems wrong
+for large RTT:
+
+delta = tp->tcp_clock_cache - head->tstamp;
+/* If next ACK is likely to come too late (half srtt), do not defer */
+if ((s64)(delta - (u64)NSEC_PER_USEC * (tp->srtt_us >> 4)) < 0)
+      goto send_now;
+
+If next ACK is expected to come in more than 1 ms, we should
+not defer because we prefer a smooth ACK clocking.
+
+While blamed commit was a step in the good direction, it was not
+generic enough.
+
+Another patch fixing TCP_TX_DELAY for established flows
+will be proposed when net-next reopens.
+
+Fixes: 50c8339e9299 ("tcp: tso: restore IW10 after TSO autosizing")
+Reported-by: Neal Cardwell <ncardwell@google.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Neal Cardwell <ncardwell@google.com>
+Tested-by: Neal Cardwell <ncardwell@google.com>
+Link: https://patch.msgid.link/20251011115742.1245771-1-edumazet@google.com
+[pabeni@redhat.com: fixed whitespace issue]
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/fair.c | 26 +++++++++++++-------------
- 1 file changed, 13 insertions(+), 13 deletions(-)
+ net/ipv4/tcp_output.c | 19 +++++++++++++++----
+ 1 file changed, 15 insertions(+), 4 deletions(-)
 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 952a3fd41a6fe..c11d59bea0ea8 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -7353,21 +7353,21 @@ done: __maybe_unused;
- 	return p;
+diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
+index 4f203cbbc99b5..6492110e0c9b0 100644
+--- a/net/ipv4/tcp_output.c
++++ b/net/ipv4/tcp_output.c
+@@ -1952,7 +1952,8 @@ static bool tcp_tso_should_defer(struct sock *sk, struct sk_buff *skb,
+ 				 u32 max_segs)
+ {
+ 	const struct inet_connection_sock *icsk = inet_csk(sk);
+-	u32 send_win, cong_win, limit, in_flight;
++	u32 send_win, cong_win, limit, in_flight, threshold;
++	u64 srtt_in_ns, expected_ack, how_far_is_the_ack;
+ 	struct tcp_sock *tp = tcp_sk(sk);
+ 	struct sk_buff *head;
+ 	int win_divisor;
+@@ -2014,9 +2015,19 @@ static bool tcp_tso_should_defer(struct sock *sk, struct sk_buff *skb,
+ 	head = tcp_rtx_queue_head(sk);
+ 	if (!head)
+ 		goto send_now;
+-	delta = tp->tcp_clock_cache - head->tstamp;
+-	/* If next ACK is likely to come too late (half srtt), do not defer */
+-	if ((s64)(delta - (u64)NSEC_PER_USEC * (tp->srtt_us >> 4)) < 0)
++
++	srtt_in_ns = (u64)(NSEC_PER_USEC >> 3) * tp->srtt_us;
++	/* When is the ACK expected ? */
++	expected_ack = head->tstamp + srtt_in_ns;
++	/* How far from now is the ACK expected ? */
++	how_far_is_the_ack = expected_ack - tp->tcp_clock_cache;
++
++	/* If next ACK is likely to come too late,
++	 * ie in more than min(1ms, half srtt), do not defer.
++	 */
++	threshold = min(srtt_in_ns >> 1, NSEC_PER_MSEC);
++
++	if ((s64)(how_far_is_the_ack - threshold) > 0)
+ 		goto send_now;
  
- idle:
--	if (!rf)
--		return NULL;
--
--	new_tasks = sched_balance_newidle(rq, rf);
-+	if (rf) {
-+		new_tasks = sched_balance_newidle(rq, rf);
- 
--	/*
--	 * Because sched_balance_newidle() releases (and re-acquires) rq->lock, it is
--	 * possible for any higher priority task to appear. In that case we
--	 * must re-start the pick_next_entity() loop.
--	 */
--	if (new_tasks < 0)
--		return RETRY_TASK;
-+		/*
-+		 * Because sched_balance_newidle() releases (and re-acquires)
-+		 * rq->lock, it is possible for any higher priority task to
-+		 * appear. In that case we must re-start the pick_next_entity()
-+		 * loop.
-+		 */
-+		if (new_tasks < 0)
-+			return RETRY_TASK;
- 
--	if (new_tasks > 0)
--		goto again;
-+		if (new_tasks > 0)
-+			goto again;
-+	}
- 
- 	/*
- 	 * rq is about to be idle, check if we need to update the
+ 	/* Ok, it looks like it is advisable to defer.
 -- 
 2.51.0
 
