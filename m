@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-190398-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190065-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B11EDC10666
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:02:28 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 374D9C0FF03
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:39:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8AFB5565726
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:56:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1DCA019C42D1
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:39:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC5383148B3;
-	Mon, 27 Oct 2025 18:53:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 824F530FC0F;
+	Mon, 27 Oct 2025 18:39:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Grlg4OKK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eNAOZQBO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9D7732C323;
-	Mon, 27 Oct 2025 18:53:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A302218EB1;
+	Mon, 27 Oct 2025 18:39:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591198; cv=none; b=FjDcjD1cOtEsiq1ZbqC9SWyF2CmYkXnUwLeGAAOJfOeeI+wo1WGQRV/DHw6ujblYZnfP77ykbN3TtaL2cnbpM1VzTOgSt3ldp6Ohlex265+ECK7xJi9OG3gT3cPX/M4MD5KqL0JReb1HKaxR3Wb1H4+azQRT2BynZxA0Brr2YxI=
+	t=1761590343; cv=none; b=QuSQAi8cGNqHHST8A+umIpPIIL3u8DP4uBueASNssqAG3sy2PfNBElyaH78YkyG4YlOQ9yIW+yN7dfp6LNiZyIKwgMZgP44/6JT8Znu2iuQol2zUmPN0WKSHFAH0wMKCZr7TFzxoeLhDwlJnDE6EzZDgPf+ZqCt+pPdMaJBlg34=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591198; c=relaxed/simple;
-	bh=uhAUvnV5KjSVIpVLF9KsjXhgTbWmblV2o6HXC1dP7aQ=;
+	s=arc-20240116; t=1761590343; c=relaxed/simple;
+	bh=s2gmq8dKBdTAilCYAoW4dD0atRkqtdrathisU+v7zrI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lmHiAMlV5ZX2lxinO4RgDDdY8JvhR/1WKsw18xhHQBfvLhyPV1l6dMSh+yoL8mX5kjRYVCYAXog/suNj4b62EoGXkVF0ZGc/1IJy9cIOCdSoO9kYAGyZpbY2mDkM3xyfirXxUCwGTz+Xnggj3J461+zpIC5zdUDU07MKKXlEK5E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Grlg4OKK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97896C4CEF1;
-	Mon, 27 Oct 2025 18:53:17 +0000 (UTC)
+	 MIME-Version; b=lCP4Pmz+M6MCDqvY9iKF+WGVZc88fEwA/xMh2S3moSdW+ksMeqRGr18xNvK3TdXwqDD2Vsn/I9Pn/8km87aZelV8yzPI4ZItYbka06AKVyE2yza+GWlPL3mFr3jKJrieiOo+uS1AwaJjNqr46h++k55fBahwZVhAEpPHaPIv2jw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eNAOZQBO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76753C4CEF1;
+	Mon, 27 Oct 2025 18:39:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591197;
-	bh=uhAUvnV5KjSVIpVLF9KsjXhgTbWmblV2o6HXC1dP7aQ=;
+	s=korg; t=1761590342;
+	bh=s2gmq8dKBdTAilCYAoW4dD0atRkqtdrathisU+v7zrI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Grlg4OKKnmjVmnDDmriu1LnRJ3qnapdi+4uGDVbXWbnRB+PZe1YJ0CpXFTfPfr/6c
-	 +XJGWvjbN9qsHxlJ7yAGskpbdhN+YfHE0V81+phWUkROAHmOMzFAieX6H5XVt5reFT
-	 hhlvtgJ/a0P/kgk+M+Y4ePtLRBeRT3MpVe9svd+M=
+	b=eNAOZQBOHXyoth3tieXAdRgIBp7ynLJskfYJbKqCxfmbm6jojAzhiVcdlgJwtk+/r
+	 DQL+U/+RZUphxm1DlIxTjTuJ1sKEpgiYd7GTjB6o1K9FbWAYy8lJhXCgr5swgbL+Jd
+	 7RV8uc7zwQtCkhl8Cf22QAdP49W1AeojMid1jQoo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tamas Zsoldos <tamas.zsoldos@arm.com>,
-	Leo Yan <leo.yan@arm.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ian Rogers <irogers@google.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	syzbot+f1a69784f6efe748c3bf@syzkaller.appspotmail.com,
+	Larshin Sergey <Sergey.Larshin@kaspersky.com>,
+	Sean Young <sean@mess.org>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 103/332] perf session: Fix handling when buffer exceeds 2 GiB
+Subject: [PATCH 5.4 010/224] media: rc: fix races with imon_disconnect()
 Date: Mon, 27 Oct 2025 19:32:36 +0100
-Message-ID: <20251027183527.337761112@linuxfoundation.org>
+Message-ID: <20251027183509.262278116@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
-References: <20251027183524.611456697@linuxfoundation.org>
+In-Reply-To: <20251027183508.963233542@linuxfoundation.org>
+References: <20251027183508.963233542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,58 +62,168 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leo Yan <leo.yan@arm.com>
+From: Larshin Sergey <Sergey.Larshin@kaspersky.com>
 
-[ Upstream commit c17dda8013495d8132c976cbf349be9949d0fbd1 ]
+[ Upstream commit fa0f61cc1d828178aa921475a9b786e7fbb65ccb ]
 
-If a user specifies an AUX buffer larger than 2 GiB, the returned size
-may exceed 0x80000000. Since the err variable is defined as a signed
-32-bit integer, such a value overflows and becomes negative.
+Syzbot reports a KASAN issue as below:
+BUG: KASAN: use-after-free in __create_pipe include/linux/usb.h:1945 [inline]
+BUG: KASAN: use-after-free in send_packet+0xa2d/0xbc0 drivers/media/rc/imon.c:627
+Read of size 4 at addr ffff8880256fb000 by task syz-executor314/4465
 
-As a result, the perf record command reports an error:
+CPU: 2 PID: 4465 Comm: syz-executor314 Not tainted 6.0.0-rc1-syzkaller #0
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.14.0-2 04/01/2014
+Call Trace:
+ <TASK>
+__dump_stack lib/dump_stack.c:88 [inline]
+dump_stack_lvl+0xcd/0x134 lib/dump_stack.c:106
+print_address_description mm/kasan/report.c:317 [inline]
+print_report.cold+0x2ba/0x6e9 mm/kasan/report.c:433
+kasan_report+0xb1/0x1e0 mm/kasan/report.c:495
+__create_pipe include/linux/usb.h:1945 [inline]
+send_packet+0xa2d/0xbc0 drivers/media/rc/imon.c:627
+vfd_write+0x2d9/0x550 drivers/media/rc/imon.c:991
+vfs_write+0x2d7/0xdd0 fs/read_write.c:576
+ksys_write+0x127/0x250 fs/read_write.c:631
+do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+do_syscall_64+0x35/0xb0 arch/x86/entry/common.c:80
+entry_SYSCALL_64_after_hwframe+0x63/0xcd
 
-  0x146e8 [0x30]: failed to process type: 71 [Unknown error 183711232]
+The iMON driver improperly releases the usb_device reference in
+imon_disconnect without coordinating with active users of the
+device.
 
-Change the type of the err variable to a signed 64-bit integer to
-accommodate large buffer sizes correctly.
+Specifically, the fields usbdev_intf0 and usbdev_intf1 are not
+protected by the users counter (ictx->users). During probe,
+imon_init_intf0 or imon_init_intf1 increments the usb_device
+reference count depending on the interface. However, during
+disconnect, usb_put_dev is called unconditionally, regardless of
+actual usage.
 
-Fixes: d5652d865ea734a1 ("perf session: Add ability to skip 4GiB or more")
-Reported-by: Tamas Zsoldos <tamas.zsoldos@arm.com>
-Signed-off-by: Leo Yan <leo.yan@arm.com>
-Acked-by: Namhyung Kim <namhyung@kernel.org>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Link: https://lore.kernel.org/r/20250808-perf_fix_big_buffer_size-v1-1-45f45444a9a4@arm.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+As a result, if vfd_write or other operations are still in
+progress after disconnect, this can lead to a use-after-free of
+the usb_device pointer.
+
+Thread 1 vfd_write                      Thread 2 imon_disconnect
+                                        ...
+                                        if
+                                          usb_put_dev(ictx->usbdev_intf0)
+                                        else
+                                          usb_put_dev(ictx->usbdev_intf1)
+...
+while
+  send_packet
+    if
+      pipe = usb_sndintpipe(
+        ictx->usbdev_intf0) UAF
+    else
+      pipe = usb_sndctrlpipe(
+        ictx->usbdev_intf0, 0) UAF
+
+Guard access to usbdev_intf0 and usbdev_intf1 after disconnect by
+checking ictx->disconnected in all writer paths. Add early return
+with -ENODEV in send_packet(), vfd_write(), lcd_write() and
+display_open() if the device is no longer present.
+
+Set and read ictx->disconnected under ictx->lock to ensure memory
+synchronization. Acquire the lock in imon_disconnect() before setting
+the flag to synchronize with any ongoing operations.
+
+Ensure writers exit early and safely after disconnect before the USB
+core proceeds with cleanup.
+
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+
+Reported-by: syzbot+f1a69784f6efe748c3bf@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=f1a69784f6efe748c3bf
+Fixes: 21677cfc562a ("V4L/DVB: ir-core: add imon driver")
+Cc: stable@vger.kernel.org
+
+Signed-off-by: Larshin Sergey <Sergey.Larshin@kaspersky.com>
+Signed-off-by: Sean Young <sean@mess.org>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/perf/util/session.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/rc/imon.c |   27 ++++++++++++++++++++-------
+ 1 file changed, 20 insertions(+), 7 deletions(-)
 
-diff --git a/tools/perf/util/session.c b/tools/perf/util/session.c
-index 81b7ec2ae8615..17bfcd8b7fbb1 100644
---- a/tools/perf/util/session.c
-+++ b/tools/perf/util/session.c
-@@ -1570,7 +1570,7 @@ static s64 perf_session__process_user_event(struct perf_session *session,
- 	struct perf_tool *tool = session->tool;
- 	struct perf_sample sample = { .time = 0, };
- 	int fd = perf_data__fd(session->data);
--	int err;
-+	s64 err;
+--- a/drivers/media/rc/imon.c
++++ b/drivers/media/rc/imon.c
+@@ -536,7 +536,9 @@ static int display_open(struct inode *in
  
- 	if (event->header.type != PERF_RECORD_COMPRESSED ||
- 	    tool->compressed == perf_session__process_compressed_event_stub)
--- 
-2.51.0
-
+ 	mutex_lock(&ictx->lock);
+ 
+-	if (!ictx->display_supported) {
++	if (ictx->disconnected) {
++		retval = -ENODEV;
++	} else if (!ictx->display_supported) {
+ 		pr_err("display not supported by device\n");
+ 		retval = -ENODEV;
+ 	} else if (ictx->display_isopen) {
+@@ -600,6 +602,9 @@ static int send_packet(struct imon_conte
+ 
+ 	lockdep_assert_held(&ictx->lock);
+ 
++	if (ictx->disconnected)
++		return -ENODEV;
++
+ 	/* Check if we need to use control or interrupt urb */
+ 	if (!ictx->tx_control) {
+ 		pipe = usb_sndintpipe(ictx->usbdev_intf0,
+@@ -956,12 +961,14 @@ static ssize_t vfd_write(struct file *fi
+ 	static const unsigned char vfd_packet6[] = {
+ 		0x01, 0x00, 0x00, 0x00, 0x00, 0xFF, 0xFF };
+ 
+-	if (ictx->disconnected)
+-		return -ENODEV;
+-
+ 	if (mutex_lock_interruptible(&ictx->lock))
+ 		return -ERESTARTSYS;
+ 
++	if (ictx->disconnected) {
++		retval = -ENODEV;
++		goto exit;
++	}
++
+ 	if (!ictx->dev_present_intf0) {
+ 		pr_err_ratelimited("no iMON device present\n");
+ 		retval = -ENODEV;
+@@ -1036,11 +1043,13 @@ static ssize_t lcd_write(struct file *fi
+ 	int retval = 0;
+ 	struct imon_context *ictx = file->private_data;
+ 
+-	if (ictx->disconnected)
+-		return -ENODEV;
+-
+ 	mutex_lock(&ictx->lock);
+ 
++	if (ictx->disconnected) {
++		retval = -ENODEV;
++		goto exit;
++	}
++
+ 	if (!ictx->display_supported) {
+ 		pr_err_ratelimited("no iMON display present\n");
+ 		retval = -ENODEV;
+@@ -2496,7 +2505,11 @@ static void imon_disconnect(struct usb_i
+ 	int ifnum;
+ 
+ 	ictx = usb_get_intfdata(interface);
++
++	mutex_lock(&ictx->lock);
+ 	ictx->disconnected = true;
++	mutex_unlock(&ictx->lock);
++
+ 	dev = ictx->dev;
+ 	ifnum = interface->cur_altsetting->desc.bInterfaceNumber;
+ 
 
 
 
