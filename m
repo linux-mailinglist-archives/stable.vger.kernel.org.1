@@ -1,65 +1,58 @@
-Return-Path: <stable+bounces-191040-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190932-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E80CDC11000
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:29:30 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id D531EC10DE7
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:23:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 563F7461871
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:22:50 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 90258546A39
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:17:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E71D532D427;
-	Mon, 27 Oct 2025 19:20:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D40D326D6E;
+	Mon, 27 Oct 2025 19:16:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jp1KCuia"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FctM8cU0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A053531E0F7;
-	Mon, 27 Oct 2025 19:20:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCBFC31D399;
+	Mon, 27 Oct 2025 19:16:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592857; cv=none; b=GeW9Cvj7R7lO+T8fjJDB28L741eKFrMEzF2ybTr3jHF+S/Hu4sj4iyy2Vu2v+8rkQ3FVCYfA4E+N6YXfoQWLqoAWWMHnL01UzkXwI1VjqWsIOlRiCMWxzRHH6Z/3FDjnRXypkUxYHRxYLCEmhCJCZjdpsKEE8x0q1LG7SjM3uxo=
+	t=1761592575; cv=none; b=rFtEuA8eFvPUjQe8FL5wzvYXIF3i3ewLZbXO0semdpThVYcZNWxtkp3Vorb9a1yrISbSJW1ONXqJXSF1ADwuDqY7TkBpuTyB4iGWrc6JUjhMKzEkMMnz1jytmgtGwj3fmZo3jTP0HD79O0gscP5IDalhkK2eeFYn59+JGx2b5DY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592857; c=relaxed/simple;
-	bh=hFZ2YxO2FwCJ/yNw/yePU/d5E2uzQtsh4Z8bFlW8z5Q=;
+	s=arc-20240116; t=1761592575; c=relaxed/simple;
+	bh=yZgcKAJIcrJFvc6zYgj4WEh+LrirqMMUIP/2ftLRfnk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=up0GA6O3oPz/J+d+954bemeUPVksjTEurnErD1OguA/Ex4fdeqW+H1rcnUKIxoWRVBNoRdbtn3h6GxObacvc2GBKcUwvysKc9hmqTwJT89YzaMkBmfWC5OuVNLDvhTk0PlZ3lu/BJWOUOwNAdIUqVWaRul725wjSnnxhM5wzyqg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jp1KCuia; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05B91C4CEF1;
-	Mon, 27 Oct 2025 19:20:57 +0000 (UTC)
+	 MIME-Version; b=iSXPFoygLTbnktSF3cZvfwfdr8HBZ50HCayVG8jjBpFevpXHA6uDoYAOtpqeETWy9OSrA8ZwePhk9Fmc3Tjp3Tf31uu4FKe4OJQtirk2oZClsKcrs05DFC29eCLnbeKVdjxqHT+IEcS6Uax0RIELVuHDccPd4bOP7RyFsRZXdUM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FctM8cU0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E2C3C4CEF1;
+	Mon, 27 Oct 2025 19:16:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592857;
-	bh=hFZ2YxO2FwCJ/yNw/yePU/d5E2uzQtsh4Z8bFlW8z5Q=;
+	s=korg; t=1761592575;
+	bh=yZgcKAJIcrJFvc6zYgj4WEh+LrirqMMUIP/2ftLRfnk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jp1KCuiaFdYzzNbbK6siNzjxNtix2DrgBMHxmLPbE3M224XVpIyns7UzdonR/Y/xj
-	 oWBAhYb6ja2eY/6fcA0spZ/n2ro2Fo5ppOHqwgZ0plxgQ+uxC6+n9gztZQ31UcEUVO
-	 QLUH01QZx5b51ksn73G4949VQkVipmEYmF8uEcyE=
+	b=FctM8cU0HYcWcCr7qyzqFPeOdsirFww0FhAPJRhmTwsz1MVdeto49ivLubSjp5XkP
+	 wsMb/hwZ/PTek+Xz4nha1p8r67W4nG7pLJwM7nx8qZsh13EUwWELvC8Pvwnec1tRPk
+	 7qi6OzoR8CH6GbHx40ch1G1Hfl3+MVDxSo1Ay/L4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Huang Ying <ying.huang@linux.alibaba.com>,
-	Will Deacon <will@kernel.org>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Gavin Shan <gshan@redhat.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Yicong Yang <yangyicong@hisilicon.com>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Catalin Marinas <catalin.marinas@arm.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nicolas Schier <nicolas@fjasle.eu>,
+	Borislav Petkov <bp@alien8.de>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 039/117] arm64, mm: avoid always making PTE dirty in pte_mkwrite()
+Subject: [PATCH 6.6 16/84] Unbreak make tools/* for user-space targets
 Date: Mon, 27 Oct 2025 19:36:05 +0100
-Message-ID: <20251027183455.039186307@linuxfoundation.org>
+Message-ID: <20251027183439.248736733@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
-References: <20251027183453.919157109@linuxfoundation.org>
+In-Reply-To: <20251027183438.817309828@linuxfoundation.org>
+References: <20251027183438.817309828@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,73 +64,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huang Ying <ying.huang@linux.alibaba.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
 
-[ Upstream commit 143937ca51cc6ae2fccc61a1cb916abb24cd34f5 ]
+[ Upstream commit ee916dccd4df6e2fd19c3606c4735282b72f1473 ]
 
-Current pte_mkwrite_novma() makes PTE dirty unconditionally.  This may
-mark some pages that are never written dirty wrongly.  For example,
-do_swap_page() may map the exclusive pages with writable and clean PTEs
-if the VMA is writable and the page fault is for read access.
-However, current pte_mkwrite_novma() implementation always dirties the
-PTE.  This may cause unnecessary disk writing if the pages are
-never written before being reclaimed.
+This pattern isn't very documented, and apparently not used much outside
+of 'make tools/help', but it has existed for over a decade (since commit
+ea01fa9f63ae: "tools: Connect to the kernel build system").
 
-So, change pte_mkwrite_novma() to clear the PTE_RDONLY bit only if the
-PTE_DIRTY bit is set to make it possible to make the PTE writable and
-clean.
+However, it doesn't work very well for most cases, particularly the
+useful "tools/all" target, because it overrides the LDFLAGS value with
+an empty one.
 
-The current behavior was introduced in commit 73e86cb03cf2 ("arm64:
-Move PTE_RDONLY bit handling out of set_pte_at()").  Before that,
-pte_mkwrite() only sets the PTE_WRITE bit, while set_pte_at() only
-clears the PTE_RDONLY bit if both the PTE_WRITE and the PTE_DIRTY bits
-are set.
+And once overridden, 'make' will then not honor the tooling makefiles
+trying to change it - which then makes any LDFLAGS use in the tooling
+directory break, typically causing odd link errors.
 
-To test the performance impact of the patch, on an arm64 server
-machine, run 16 redis-server processes on socket 1 and 16
-memtier_benchmark processes on socket 0 with mostly get
-transactions (that is, redis-server will mostly read memory only).
-The memory footprint of redis-server is larger than the available
-memory, so swap out/in will be triggered.  Test results show that the
-patch can avoid most swapping out because the pages are mostly clean.
-And the benchmark throughput improves ~23.9% in the test.
+Remove that LDFLAGS override, since it seems to be entirely historical.
+The core kernel makefiles no longer modify LDFLAGS as part of the build,
+and use kernel-specific link flags instead (eg 'KBUILD_LDFLAGS' and
+friends).
 
-Fixes: 73e86cb03cf2 ("arm64: Move PTE_RDONLY bit handling out of set_pte_at()")
-Signed-off-by: Huang Ying <ying.huang@linux.alibaba.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: Anshuman Khandual <anshuman.khandual@arm.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Gavin Shan <gshan@redhat.com>
-Cc: Ard Biesheuvel <ardb@kernel.org>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Yicong Yang <yangyicong@hisilicon.com>
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-kernel@vger.kernel.org
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+This allows more of the 'make tools/*' cases to work.  I say 'more',
+because some of the tooling build rules make various other assumptions
+or have other issues, so it's still a bit hit-or-miss.  But those issues
+tend to show up with the 'make -C tools xyz' pattern too, so now it's no
+longer an issue of this particular 'tools/*' build rule being special.
+
+Acked-by: Nathan Chancellor <nathan@kernel.org>
+Cc: Nicolas Schier <nicolas@fjasle.eu>
+Cc: Borislav Petkov <bp@alien8.de>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/include/asm/pgtable.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ Makefile | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
-index 5ba8376735cb0..eb57ddb5ecc53 100644
---- a/arch/arm64/include/asm/pgtable.h
-+++ b/arch/arm64/include/asm/pgtable.h
-@@ -212,7 +212,8 @@ static inline pmd_t set_pmd_bit(pmd_t pmd, pgprot_t prot)
- static inline pte_t pte_mkwrite_novma(pte_t pte)
- {
- 	pte = set_pte_bit(pte, __pgprot(PTE_WRITE));
--	pte = clear_pte_bit(pte, __pgprot(PTE_RDONLY));
-+	if (pte_sw_dirty(pte))
-+		pte = clear_pte_bit(pte, __pgprot(PTE_RDONLY));
- 	return pte;
- }
+diff --git a/Makefile b/Makefile
+index ad3952fb542d3..de7b2f9a50338 100644
+--- a/Makefile
++++ b/Makefile
+@@ -1358,11 +1358,11 @@ endif
  
+ tools/: FORCE
+ 	$(Q)mkdir -p $(objtree)/tools
+-	$(Q)$(MAKE) LDFLAGS= O=$(abspath $(objtree)) subdir=tools -C $(srctree)/tools/
++	$(Q)$(MAKE) O=$(abspath $(objtree)) subdir=tools -C $(srctree)/tools/
+ 
+ tools/%: FORCE
+ 	$(Q)mkdir -p $(objtree)/tools
+-	$(Q)$(MAKE) LDFLAGS= O=$(abspath $(objtree)) subdir=tools -C $(srctree)/tools/ $*
++	$(Q)$(MAKE) O=$(abspath $(objtree)) subdir=tools -C $(srctree)/tools/ $*
+ 
+ # ---------------------------------------------------------------------------
+ # Kernel selftest
 -- 
 2.51.0
 
