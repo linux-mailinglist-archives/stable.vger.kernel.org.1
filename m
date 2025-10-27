@@ -1,55 +1,64 @@
-Return-Path: <stable+bounces-190464-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190173-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15013C10708
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:05:02 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 700B9C10140
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:45:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id F1B5950421A
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:01:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C2B4F463FE3
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:45:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13D2E30E825;
-	Mon, 27 Oct 2025 18:55:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67ACB31C567;
+	Mon, 27 Oct 2025 18:43:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y4md9B2m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M3Mg5ikT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C27351E47CA;
-	Mon, 27 Oct 2025 18:55:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 245F4325492;
+	Mon, 27 Oct 2025 18:43:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591358; cv=none; b=aTVNIHqCjyOB3Z5nCJqpvui28A+w4vHSwMoUUST/JYFg8qYBH7/QL9RfZ2tWmoBR8bfH1o4SJH2ezbaXND2XKH44cISPjphjySG9b/sMcDAjBZjnaUCMWWclegVeX9EiFU5MTbrKk+I83G5rOnZGB6yVdf1A6ld6DtYderpC/Ok=
+	t=1761590600; cv=none; b=UC4q8682ymvzEYSIipbrQG3FqcEA+GBEu1BqH02pEDUaDxf2VqCF8pY7jMFRaB++tIMNHNTKqh6DkUeKgoGgR1IZzl960bnz/Z+C0728c+qbVyzaIOYX2mjVx5gt3hF1JB4ybtZVTox3MwyCPH1GdoKNGjSmtHcZWHISBpqN+co=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591358; c=relaxed/simple;
-	bh=6V/LRbkvQPWD3tVpnnXYeEhEbAY8UyC4B+vd5WJAJO0=;
+	s=arc-20240116; t=1761590600; c=relaxed/simple;
+	bh=TgbK3+j3JnmqGHsTam4uCCRlFZ190gU4zZazS2EfGMM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dOQYcFTcAM75XsxTzepxnPUs0d+3vQ/buVl0Pigkk6DZdD31uDba4YCgFkiqOpTCfC5jQg91QXuenR6qpoyPGN9PBatLEMTQ8FBxAuZFoymQGW9jhxw/NfEFOt5UneeYXO/w8evvOVqPeB5nClDbCaWGwwmZy8qQQ8FTi9I+QPw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y4md9B2m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 565BBC4CEF1;
-	Mon, 27 Oct 2025 18:55:58 +0000 (UTC)
+	 MIME-Version:Content-Type; b=FkdMloV8mYDE++JrZ8MUc+LgXDVtNhbHanlYWkQTPJK9A/Ax/sTMmpM4Eg2JiUS9bdzSihJx2DZWF/2cX5/0Tv5dNSv46oI8boyp4vIJSk7QNYUJoGE7OtkAjrggIFD0BC0Y4Mdl5QlR/aG8+49JDiZqUsb7xOSABijnSyf2TJQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M3Mg5ikT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74DF5C4CEF1;
+	Mon, 27 Oct 2025 18:43:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591358;
-	bh=6V/LRbkvQPWD3tVpnnXYeEhEbAY8UyC4B+vd5WJAJO0=;
+	s=korg; t=1761590600;
+	bh=TgbK3+j3JnmqGHsTam4uCCRlFZ190gU4zZazS2EfGMM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y4md9B2mDQY5pw1z8klZRUSjM9JxsQUrAa8iqBSNSA+YtdFm2rIG99L64UHAXxnow
-	 ylXWhcayqM9mjN/muraHyhyV/WXamejCalFNT+AvqfNhYoAaelqSHO0xUpFzLonwPH
-	 ypxAJ2axks8hW4/y6nv+Fs9MaWyKn/p4JATM+BUw=
+	b=M3Mg5ikTbta2gZL3LbwSvtfYyiQl706s/sKis52LmM3TA2bbZG5ePpaFMtcXok8G5
+	 8vPL5q5UxkQqLp+5se5+FQspBUemv+lxMBh1l8ghwjUmvdCbuqbxYQq8T6rgTJ9oue
+	 AkJes80pOPb0W9KnWmzRezdWDPxv8TIBJCigf+Zs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Olga Kornievskaia <okorniev@redhat.com>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.10 167/332] nfsd: nfserr_jukebox in nlm_fopen should lead to a retry
-Date: Mon, 27 Oct 2025 19:33:40 +0100
-Message-ID: <20251027183529.032525121@linuxfoundation.org>
+	Yang Shi <yang@os.amperecomputing.com>,
+	Carl Worth <carl@os.amperecomputing.com>,
+	"Christoph Lameter (Ampere)" <cl@gentwo.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	David Hildenbrand <david@redhat.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Dev Jain <dev.jain@arm.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Will Deacon <will@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.4 075/224] mm: hugetlb: avoid soft lockup when mprotect to large memory area
+Date: Mon, 27 Oct 2025 19:33:41 +0100
+Message-ID: <20251027183511.005059193@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
-References: <20251027183524.611456697@linuxfoundation.org>
+In-Reply-To: <20251027183508.963233542@linuxfoundation.org>
+References: <20251027183508.963233542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,57 +68,93 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Olga Kornievskaia <okorniev@redhat.com>
+From: Yang Shi <yang@os.amperecomputing.com>
 
-commit a082e4b4d08a4a0e656d90c2c05da85f23e6d0c9 upstream.
+commit f52ce0ea90c83a28904c7cc203a70e6434adfecb upstream.
 
-When v3 NLM request finds a conflicting delegation, it triggers
-a delegation recall and nfsd_open fails with EAGAIN. nfsd_open
-then translates EAGAIN into nfserr_jukebox. In nlm_fopen, instead
-of returning nlm_failed for when there is a conflicting delegation,
-drop this NLM request so that the client retries. Once delegation
-is recalled and if a local lock is claimed, a retry would lead to
-nfsd returning a nlm_lck_blocked error or a successful nlm lock.
+When calling mprotect() to a large hugetlb memory area in our customer's
+workload (~300GB hugetlb memory), soft lockup was observed:
 
-Fixes: d343fce148a4 ("[PATCH] knfsd: Allow lockd to drop replies as appropriate")
-Cc: stable@vger.kernel.org # v6.6
-Signed-off-by: Olga Kornievskaia <okorniev@redhat.com>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+watchdog: BUG: soft lockup - CPU#98 stuck for 23s! [t2_new_sysv:126916]
+
+CPU: 98 PID: 126916 Comm: t2_new_sysv Kdump: loaded Not tainted 6.17-rc7
+Hardware name: GIGACOMPUTING R2A3-T40-AAV1/Jefferson CIO, BIOS 5.4.4.1 07/15/2025
+pstate: 20400009 (nzCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+pc : mte_clear_page_tags+0x14/0x24
+lr : mte_sync_tags+0x1c0/0x240
+sp : ffff80003150bb80
+x29: ffff80003150bb80 x28: ffff00739e9705a8 x27: 0000ffd2d6a00000
+x26: 0000ff8e4bc00000 x25: 00e80046cde00f45 x24: 0000000000022458
+x23: 0000000000000000 x22: 0000000000000004 x21: 000000011b380000
+x20: ffff000000000000 x19: 000000011b379f40 x18: 0000000000000000
+x17: 0000000000000000 x16: 0000000000000000 x15: 0000000000000000
+x14: 0000000000000000 x13: 0000000000000000 x12: 0000000000000000
+x11: 0000000000000000 x10: 0000000000000000 x9 : ffffc875e0aa5e2c
+x8 : 0000000000000000 x7 : 0000000000000000 x6 : 0000000000000000
+x5 : fffffc01ce7a5c00 x4 : 00000000046cde00 x3 : fffffc0000000000
+x2 : 0000000000000004 x1 : 0000000000000040 x0 : ffff0046cde7c000
+
+Call trace:
+  mte_clear_page_tags+0x14/0x24
+  set_huge_pte_at+0x25c/0x280
+  hugetlb_change_protection+0x220/0x430
+  change_protection+0x5c/0x8c
+  mprotect_fixup+0x10c/0x294
+  do_mprotect_pkey.constprop.0+0x2e0/0x3d4
+  __arm64_sys_mprotect+0x24/0x44
+  invoke_syscall+0x50/0x160
+  el0_svc_common+0x48/0x144
+  do_el0_svc+0x30/0xe0
+  el0_svc+0x30/0xf0
+  el0t_64_sync_handler+0xc4/0x148
+  el0t_64_sync+0x1a4/0x1a8
+
+Soft lockup is not triggered with THP or base page because there is
+cond_resched() called for each PMD size.
+
+Although the soft lockup was triggered by MTE, it should be not MTE
+specific.  The other processing which takes long time in the loop may
+trigger soft lockup too.
+
+So add cond_resched() for hugetlb to avoid soft lockup.
+
+Link: https://lkml.kernel.org/r/20250929202402.1663290-1-yang@os.amperecomputing.com
+Fixes: 8f860591ffb2 ("[PATCH] Enable mprotect on huge pages")
+Signed-off-by: Yang Shi <yang@os.amperecomputing.com>
+Tested-by: Carl Worth <carl@os.amperecomputing.com>
+Reviewed-by: Christoph Lameter (Ampere) <cl@gentwo.org>
+Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Acked-by: Oscar Salvador <osalvador@suse.de>
+Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
+Reviewed-by: Dev Jain <dev.jain@arm.com>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Will Deacon <will@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/lockd.c |   15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ mm/hugetlb.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/fs/nfsd/lockd.c
-+++ b/fs/nfsd/lockd.c
-@@ -48,6 +48,21 @@ nlm_fopen(struct svc_rqst *rqstp, struct
- 	switch (nfserr) {
- 	case nfs_ok:
- 		return 0;
-+	case nfserr_jukebox:
-+		/* this error can indicate a presence of a conflicting
-+		 * delegation to an NLM lock request. Options are:
-+		 * (1) For now, drop this request and make the client
-+		 * retry. When delegation is returned, client's lock retry
-+		 * will complete.
-+		 * (2) NLM4_DENIED as per "spec" signals to the client
-+		 * that the lock is unavailable now but client can retry.
-+		 * Linux client implementation does not. It treats
-+		 * NLM4_DENIED same as NLM4_FAILED and errors the request.
-+		 * (3) For the future, treat this as blocked lock and try
-+		 * to callback when the delegation is returned but might
-+		 * not have a proper lock request to block on.
-+		 */
-+		fallthrough;
- 	case nfserr_dropit:
- 		return nlm_drop_reply;
- 	case nfserr_stale:
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -4703,6 +4703,8 @@ unsigned long hugetlb_change_protection(
+ 			pages++;
+ 		}
+ 		spin_unlock(ptl);
++
++		cond_resched();
+ 	}
+ 	/*
+ 	 * Must flush TLB before releasing i_mmap_rwsem: x86's huge_pmd_unshare
 
 
 
