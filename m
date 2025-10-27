@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-191296-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191298-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id A16E9C113B7
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:44:59 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 643ADC112CA
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:39:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 62B6B566CF6
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:34:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 395A2581CF6
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:34:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE176328B7F;
-	Mon, 27 Oct 2025 19:32:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D09BE329C55;
+	Mon, 27 Oct 2025 19:32:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iykFzqEB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W7XTLeMC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA4FD328B53;
-	Mon, 27 Oct 2025 19:32:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D37832143D;
+	Mon, 27 Oct 2025 19:32:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761593557; cv=none; b=RJ+aCoV2AZxPkoPmwX/BrvMlZ52szyNJHRC+Wyhv25eS8TqEgFUCbRD0Ca1SGJqtK+E0Waighw7eWfDZgfE9psHuYh8pOyvDMB0u/5evEo6z2is45kF8WWUeaSzIXv6C2Xe6JeiLgS3u48lvpFEg6GIsaxpmfijprT97V/NhngI=
+	t=1761593563; cv=none; b=ni1RaZdx3qHbQy5z+z1gifBVBL2I6prVm5X1jLHTMqQTj39ogCBIYDg594009f/tYY4lc1IGiwpWVbs5BBiyHBWzZAmp5Xg/q0rapLJEZT4FQxTMmA0VUxJqrQiK7ypQioSqrSnKSHkf1QIthY9crasqaztUMYVSMMr6gxLvc0g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761593557; c=relaxed/simple;
-	bh=YZqBmUQmknPBFRgSExfH5IwtbVNK/nSsJfRvXrvUN3E=;
+	s=arc-20240116; t=1761593563; c=relaxed/simple;
+	bh=pomrp2rdKfcKuK03fQroTvWiesRfHNhPwmwPVKB+lek=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GzY+0/NYAYN8+9V84GfO9ZX6nRgQowBmm/4zhfYqwpM4G5FqdzewPBAWk8E772IbEJWkQWIyjx+bkRNIye0qD9gkT8cwaxk/rBRSuTaMTeDHY7u/IHTxzAk1ayqhwiCEVgAOSXX8B2eEDpoc01A46f1Zd4eNXDIka5u9/293t0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iykFzqEB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5DF5C4CEF1;
-	Mon, 27 Oct 2025 19:32:36 +0000 (UTC)
+	 MIME-Version; b=WM9NjB0b9HuMHn/+E7dry8FkwIWvl1KfjHFEOWxpOfbaTBFJtufpt8lxo27tMPe960ZK44cGRST4FBO5mi6DaBtlXYb72yrwHMlnIdTH3y1rR1/C/x5juEoG0yypifAV8i9XFXjfYruFg5p11DgTU+2hToadBkw8+e/dOeFahjw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W7XTLeMC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D125C4CEF1;
+	Mon, 27 Oct 2025 19:32:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761593557;
-	bh=YZqBmUQmknPBFRgSExfH5IwtbVNK/nSsJfRvXrvUN3E=;
+	s=korg; t=1761593563;
+	bh=pomrp2rdKfcKuK03fQroTvWiesRfHNhPwmwPVKB+lek=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iykFzqEBRwqKOWHMISvWdlKXUD1D3Y7cATbShFWELTh+5niAbxcpnSIHo3DzoJyKE
-	 qYp9Sh9jfGXdyfMqST7ehyQdppHff6s7sOk0hSKKJTUfLfBMOkF2xHC6SODQLgn5jJ
-	 quEVdlR4/MJfDkaTKNk3KPPmvqKJXUjQ3VAMXGO8=
+	b=W7XTLeMCMk+EDBjL6/37sWpQfYU78p1gdGxFIA4E+ntQ6srJbtWQ1m3O/YN8t1/Jd
+	 wDYdAx9l2crZfQcNjP/1Eguj6po38dbyDKolDH/OTXFXjYe1yH4ctPxKdr44Cll9EP
+	 NNYImboIcC7mgtwmOXNUjzdA5NMYU902ABNDg1/g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	stable <stable@kernel.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Daniel Golle <daniel@makrotopia.org>
-Subject: [PATCH 6.17 172/184] serial: 8250_mtk: Enable baud clock and manage in runtime PM
-Date: Mon, 27 Oct 2025 19:37:34 +0100
-Message-ID: <20251027183519.556624115@linuxfoundation.org>
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Subject: [PATCH 6.17 173/184] serial: sc16is7xx: remove useless enable of enhanced features
+Date: Mon, 27 Oct 2025 19:37:35 +0100
+Message-ID: <20251027183519.582336430@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
 References: <20251027183514.934710872@linuxfoundation.org>
@@ -66,66 +65,43 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Daniel Golle <daniel@makrotopia.org>
+From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
 
-commit d518314a1fa4e980a227d1b2bda1badf433cb932 upstream.
+commit 1c05bf6c0262f946571a37678250193e46b1ff0f upstream.
 
-Some MediaTek SoCs got a gated UART baud clock, which currently gets
-disabled as the clk subsystem believes it would be unused. This results in
-the uart freezing right after "clk: Disabling unused clocks" on those
-platforms.
+Commit 43c51bb573aa ("sc16is7xx: make sure device is in suspend once
+probed") permanently enabled access to the enhanced features in
+sc16is7xx_probe(), and it is never disabled after that.
 
-Request the baud clock to be prepared and enabled during probe, and to
-restore run-time power management capabilities to what it was before commit
-e32a83c70cf9 ("serial: 8250-mtk: modify mtk uart power and clock
-management") disable and unprepare the baud clock when suspending the UART,
-prepare and enable it again when resuming it.
+Therefore, remove re-enable of enhanced features in
+sc16is7xx_set_baud(). This eliminates a potential useless read + write
+cycle each time the baud rate is reconfigured.
 
-Fixes: e32a83c70cf9 ("serial: 8250-mtk: modify mtk uart power and clock management")
-Fixes: b6c7ff2693ddc ("serial: 8250_mtk: Simplify clock sequencing and runtime PM")
+Fixes: 43c51bb573aa ("sc16is7xx: make sure device is in suspend once probed")
 Cc: stable <stable@kernel.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Daniel Golle <daniel@makrotopia.org>
-Link: https://patch.msgid.link/de5197ccc31e1dab0965cabcc11ca92e67246cf6.1758058441.git.daniel@makrotopia.org
+Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Link: https://patch.msgid.link/20251006142002.177475-1-hugo@hugovil.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/8250/8250_mtk.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/tty/serial/sc16is7xx.c |    7 -------
+ 1 file changed, 7 deletions(-)
 
---- a/drivers/tty/serial/8250/8250_mtk.c
-+++ b/drivers/tty/serial/8250/8250_mtk.c
-@@ -435,6 +435,7 @@ static int __maybe_unused mtk8250_runtim
- 	while
- 		(serial_in(up, MTK_UART_DEBUG0));
+--- a/drivers/tty/serial/sc16is7xx.c
++++ b/drivers/tty/serial/sc16is7xx.c
+@@ -588,13 +588,6 @@ static int sc16is7xx_set_baud(struct uar
+ 		div /= prescaler;
+ 	}
  
-+	clk_disable_unprepare(data->uart_clk);
- 	clk_disable_unprepare(data->bus_clk);
- 
- 	return 0;
-@@ -445,6 +446,7 @@ static int __maybe_unused mtk8250_runtim
- 	struct mtk8250_data *data = dev_get_drvdata(dev);
- 
- 	clk_prepare_enable(data->bus_clk);
-+	clk_prepare_enable(data->uart_clk);
- 
- 	return 0;
- }
-@@ -475,13 +477,13 @@ static int mtk8250_probe_of(struct platf
- 	int dmacnt;
- #endif
- 
--	data->uart_clk = devm_clk_get(&pdev->dev, "baud");
-+	data->uart_clk = devm_clk_get_enabled(&pdev->dev, "baud");
- 	if (IS_ERR(data->uart_clk)) {
- 		/*
- 		 * For compatibility with older device trees try unnamed
- 		 * clk when no baud clk can be found.
- 		 */
--		data->uart_clk = devm_clk_get(&pdev->dev, NULL);
-+		data->uart_clk = devm_clk_get_enabled(&pdev->dev, NULL);
- 		if (IS_ERR(data->uart_clk)) {
- 			dev_warn(&pdev->dev, "Can't get uart clock\n");
- 			return PTR_ERR(data->uart_clk);
+-	/* Enable enhanced features */
+-	sc16is7xx_efr_lock(port);
+-	sc16is7xx_port_update(port, SC16IS7XX_EFR_REG,
+-			      SC16IS7XX_EFR_ENABLE_BIT,
+-			      SC16IS7XX_EFR_ENABLE_BIT);
+-	sc16is7xx_efr_unlock(port);
+-
+ 	/* If bit MCR_CLKSEL is set, the divide by 4 prescaler is activated. */
+ 	sc16is7xx_port_update(port, SC16IS7XX_MCR_REG,
+ 			      SC16IS7XX_MCR_CLKSEL_BIT,
 
 
 
