@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-190984-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191260-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DE20C10FB7
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:28:29 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 845F5C1124C
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:37:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 2B0A1508FAD
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:20:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C5668560D54
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:32:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3C802D5C95;
-	Mon, 27 Oct 2025 19:18:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F54B32D0D9;
+	Mon, 27 Oct 2025 19:30:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dgLJh110"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N7cpuSdS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61E052D5A14;
-	Mon, 27 Oct 2025 19:18:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A0DB32D0C4;
+	Mon, 27 Oct 2025 19:30:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592712; cv=none; b=ouUQFdzeuYzRHN66nVLnXM3GfpMnHcqYYxFcsDO8GoC2DtGtEh0F9/ALCoz23WpQNjjnTTiUFydHcwuX8tGtC52OYp9watjsnJBSqUdyQqWwQM1nmWt5EOqZtULwO0WmI7HuFHYY5ANV+BfXBMdhgKvxjrKOwiaA0YEyOJrGZ2c=
+	t=1761593446; cv=none; b=gXhNVuPnh+pISi3LQZASfZfWiZyrO52T2TqQihl1mCWCL6Aq+fbmJCC1o+B+9tPlNAjLqms7MWR6boGb3XoHwwoQg2Q+WlI5FFnLsccPLVvLsRBgpHdCf3GUXj6AFS2S5m3RO8gseo4apTH8DdDr4Rbr3Q+icH72JTMp6h7UWKQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592712; c=relaxed/simple;
-	bh=wMOm/c5wXMpBY0Sj+w2rXUhY/V3JS949OdYo2Mm00rM=;
+	s=arc-20240116; t=1761593446; c=relaxed/simple;
+	bh=6fGQ5jucbnJkdgvTMh6e0WkB3ikehg3geC4dQ/apsrE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hYEiuDX8cUP3W89LxBSnPbrheG6jUmOq8kTvYjjlU+WsitpniNv0z6fs6DHq5pCtADNlrT5ZoRlkvpzsCOTOElwKQkX4iqfbhzDn04C72OmCq0Ql3BJTJMbqMsP83TfTUECCoSsuM6b3zMHmk2xgSsX5IZ6s9bmPzg1pFhl4uL0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dgLJh110; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAA6CC4CEFD;
-	Mon, 27 Oct 2025 19:18:31 +0000 (UTC)
+	 MIME-Version; b=IJRpo3jHL4eNdVeNDd+YNlNBDc9IUj3OAH51+HCbwPKbJvq+ygn2dPgd+VmqwHeW9/omietqzgQ8bykpcYaGXB94zT3EpobFSFehT4VXwldfti6TNEfysiUc5wZncPV+4znGl914lyKxry0YoM+VrOYLtPEFe4srsnMQHpFvb3o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N7cpuSdS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFCF0C4CEF1;
+	Mon, 27 Oct 2025 19:30:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592712;
-	bh=wMOm/c5wXMpBY0Sj+w2rXUhY/V3JS949OdYo2Mm00rM=;
+	s=korg; t=1761593446;
+	bh=6fGQ5jucbnJkdgvTMh6e0WkB3ikehg3geC4dQ/apsrE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dgLJh110YfZeDwOtwwu6krQyatPXfT3uBVLVqOB3GmJWDlj7AbKDpQ4Lag9R0VnMd
-	 b7HPcGMOXTVvSa6sE/ZiRaLZbJ2plfuvZUHYvevJdBAwXjKR1WYlLk1ySNbB7R7pLl
-	 lvCSOtx+7wmx5zmyzb8JvmUYHMN0sX5jbY6KkC/8=
+	b=N7cpuSdSIL93mjN52TSQuO8sCKbeo6Z78V2+WeygLHxRa5Lih3Uk4ZvVKJ+4H9xIA
+	 zwoDaPeVi2ydNyO4eMaepJXnbWm0mcj2v4GdTdCj1ExK+wCB1VjZrclxRHybf7oZGn
+	 epdNZdp3vY/PNM1FtyakY6Ru8Frbqp5Mb4EXrjb4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tomas Winkler <tomasw@gmail.com>,
-	Alexander Usyskin <alexander.usyskin@intel.com>
-Subject: [PATCH 6.6 68/84] mei: me: add wildcat lake P DID
-Date: Mon, 27 Oct 2025 19:36:57 +0100
-Message-ID: <20251027183440.623436110@linuxfoundation.org>
+	Li Qiang <liqiang01@kylinos.cn>,
+	Thomas Richard <thomas.richard@bootlin.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.17 136/184] hwmon: (cgbc-hwmon) Add missing NULL check after devm_kzalloc()
+Date: Mon, 27 Oct 2025 19:36:58 +0100
+Message-ID: <20251027183518.608924188@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183438.817309828@linuxfoundation.org>
-References: <20251027183438.817309828@linuxfoundation.org>
+In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
+References: <20251027183514.934710872@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,49 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Usyskin <alexander.usyskin@intel.com>
+From: Li Qiang <liqiang01@kylinos.cn>
 
-commit 410d6c2ad4d1a88efa0acbb9966693725b564933 upstream.
+[ Upstream commit a09a5aa8bf258ddc99a22c30f17fe304b96b5350 ]
 
-Add Wildcat Lake P device id.
+The driver allocates memory for sensor data using devm_kzalloc(), but
+did not check if the allocation succeeded. In case of memory allocation
+failure, dereferencing the NULL pointer would lead to a kernel crash.
 
-Cc: stable@vger.kernel.org
-Co-developed-by: Tomas Winkler <tomasw@gmail.com>
-Signed-off-by: Tomas Winkler <tomasw@gmail.com>
-Signed-off-by: Alexander Usyskin <alexander.usyskin@intel.com>
-Link: https://patch.msgid.link/20251016125912.2146136-1-alexander.usyskin@intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Add a NULL pointer check and return -ENOMEM to handle allocation failure
+properly.
+
+Signed-off-by: Li Qiang <liqiang01@kylinos.cn>
+Fixes: 08ebc9def79fc ("hwmon: Add Congatec Board Controller monitoring driver")
+Reviewed-by: Thomas Richard <thomas.richard@bootlin.com>
+Link: https://lore.kernel.org/r/20251017063414.1557447-1-liqiang01@kylinos.cn
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/mei/hw-me-regs.h |    2 ++
- drivers/misc/mei/pci-me.c     |    2 ++
- 2 files changed, 4 insertions(+)
+ drivers/hwmon/cgbc-hwmon.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/misc/mei/hw-me-regs.h
-+++ b/drivers/misc/mei/hw-me-regs.h
-@@ -120,6 +120,8 @@
- #define MEI_DEV_ID_PTL_H      0xE370  /* Panther Lake H */
- #define MEI_DEV_ID_PTL_P      0xE470  /* Panther Lake P */
+diff --git a/drivers/hwmon/cgbc-hwmon.c b/drivers/hwmon/cgbc-hwmon.c
+index 772f44d56ccff..3aff4e092132f 100644
+--- a/drivers/hwmon/cgbc-hwmon.c
++++ b/drivers/hwmon/cgbc-hwmon.c
+@@ -107,6 +107,9 @@ static int cgbc_hwmon_probe_sensors(struct device *dev, struct cgbc_hwmon_data *
+ 	nb_sensors = data[0];
  
-+#define MEI_DEV_ID_WCL_P      0x4D70  /* Wildcat Lake P */
+ 	hwmon->sensors = devm_kzalloc(dev, sizeof(*hwmon->sensors) * nb_sensors, GFP_KERNEL);
++	if (!hwmon->sensors)
++		return -ENOMEM;
 +
- /*
-  * MEI HW Section
-  */
---- a/drivers/misc/mei/pci-me.c
-+++ b/drivers/misc/mei/pci-me.c
-@@ -127,6 +127,8 @@ static const struct pci_device_id mei_me
- 	{MEI_PCI_DEVICE(MEI_DEV_ID_PTL_H, MEI_ME_PCH15_CFG)},
- 	{MEI_PCI_DEVICE(MEI_DEV_ID_PTL_P, MEI_ME_PCH15_CFG)},
+ 	sensor = hwmon->sensors;
  
-+	{MEI_PCI_DEVICE(MEI_DEV_ID_WCL_P, MEI_ME_PCH15_CFG)},
-+
- 	/* required last entry */
- 	{0, }
- };
+ 	for (i = 0; i < nb_sensors; i++) {
+-- 
+2.51.0
+
 
 
 
