@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-190742-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190956-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62045C10B4C
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:16:31 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37162C10C10
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:18:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 605FA58082D
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:10:29 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id D83F3348480
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:18:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D02D732C31E;
-	Mon, 27 Oct 2025 19:07:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3933D32A3C5;
+	Mon, 27 Oct 2025 19:17:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mhXDnS4+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oDWZyP8W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C5932D542A;
-	Mon, 27 Oct 2025 19:07:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E824F329C7D;
+	Mon, 27 Oct 2025 19:17:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592077; cv=none; b=PZp56dxIb3S1IN4cTNkLf4Ovs7kaCoS0J2mhnMfNSo3ZefepaQlbspvMVWSdXRH/+n6KfstfG6kcq/PMScZLY5lTLgFE59Dm0n39ugPRMchVHlqtvluy8ZyyglGu4QuAWhr8ibRM7pdqAH293+8htuoP7h/D6Ut8uD1+MbDZSY4=
+	t=1761592638; cv=none; b=TWf9/WttHSad1+guusdu/ogN4vSyr0rlGwqPhhmPukKIRTX4iIUX/QoSs1MiHii9Smdh81jliLFxL5EJF5v+M5B5Ka3oUHvZ3zLTainwy/4U+na6vITlYRBlpKMmatQ7wRcaLfEAmtMPeI8izCs6L5tZ7rdLwzexgyIJ4LwEylU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592077; c=relaxed/simple;
-	bh=ckVBycvBadnkq0zotHTljDEC7Q61GjFsgW9o2XmOTyM=;
+	s=arc-20240116; t=1761592638; c=relaxed/simple;
+	bh=93shxL/l6H87Ab/6whoqzKvqINsVvSM9Sy/QfWBqYmE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Iec/SidZbJ8xosgEHOvu7x+G11KhEQ1TcRY+ngPjE8Gv5/kXl9wgOGTI3f3rMa5dKBMH6Z6EDWm64KH7UGUE4+d8P8G2ozgIGC3v1qVg8lQmYBNkFZgNsaFbvn53/9k1ME+WfFO70PP/JtvrpCCcyikfQZmG0g4NBeNZPJtE+Fw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mhXDnS4+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D080C4CEF1;
-	Mon, 27 Oct 2025 19:07:56 +0000 (UTC)
+	 MIME-Version:Content-Type; b=C8+YAftEPke0RRCHC3QLEO5DgIlBHtKkh0JgwLNq30ucN6cnaTnoXZTuLI8OUkuH4Nar5IIh1JW+o+hzW7ScrX8j96W00n5kd4z92ntWIQ6iI1cbOvkTrgTmxELFVQmmE4e917s72+Cff/cZR0Ye/J1IzaEDZZ6Syubc0XiCFxo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oDWZyP8W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 799ECC116B1;
+	Mon, 27 Oct 2025 19:17:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592077;
-	bh=ckVBycvBadnkq0zotHTljDEC7Q61GjFsgW9o2XmOTyM=;
+	s=korg; t=1761592637;
+	bh=93shxL/l6H87Ab/6whoqzKvqINsVvSM9Sy/QfWBqYmE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mhXDnS4+UZfKdYvqJIWgzBakDiAw+4himc/gIy7/1AZ0bk6Qa6RAfsz3CpdH2W1z4
-	 9IOZ01Pu9eIcJ/AfpdtDKaanTLAhExZRMGysYz12Anywf4rH80XWnFvbEyieuzzckv
-	 4M/4Ik8m3f8Z//h3NQ/ir8aPH7JyqUVCdzZkX++8=
+	b=oDWZyP8W5leYLcqlVWzbkoC246KE9/4FPlZgKsJShW2+uY0LNSzEgTJZCSIbfHpEW
+	 1IlNMx4VdGtRy6mKddrKxTtbTHaeHVC3hlX1Ei2WCgXGLOl9fMqpS3DEeXyzv8SqXN
+	 yeOFOIyo3IEEqtUzR7bg1LRQoOWlIXzJIz3Cd2SA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 109/123] f2fs: fix wrong block mapping for multi-devices
+	"Maciej W. Rozycki" <macro@orcam.me.uk>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Subject: [PATCH 6.6 40/84] MIPS: Malta: Fix keyboard resource preventing i8042 driver from registering
 Date: Mon, 27 Oct 2025 19:36:29 +0100
-Message-ID: <20251027183449.307956902@linuxfoundation.org>
+Message-ID: <20251027183439.888055114@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183446.381986645@linuxfoundation.org>
-References: <20251027183446.381986645@linuxfoundation.org>
+In-Reply-To: <20251027183438.817309828@linuxfoundation.org>
+References: <20251027183438.817309828@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,65 +61,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jaegeuk Kim <jaegeuk@kernel.org>
+From: Maciej W. Rozycki <macro@orcam.me.uk>
 
-[ Upstream commit 9d5c4f5c7a2c7677e1b3942772122b032c265aae ]
+commit bf5570590a981d0659d0808d2d4bcda21b27a2a5 upstream.
 
-Assuming the disk layout as below,
+MIPS Malta platform code registers the PCI southbridge legacy port I/O
+PS/2 keyboard range as a standard resource marked as busy.  It prevents
+the i8042 driver from registering as it fails to claim the resource in
+a call to i8042_platform_init().  Consequently PS/2 keyboard and mouse
+devices cannot be used with this platform.
 
-disk0: 0            --- 0x00035abfff
-disk1: 0x00035ac000 --- 0x00037abfff
-disk2: 0x00037ac000 --- 0x00037ebfff
+Fix the issue by removing the busy marker from the standard reservation,
+making the driver register successfully:
 
-and we want to read data from offset=13568 having len=128 across the block
-devices, we can illustrate the block addresses like below.
+  serio: i8042 KBD port at 0x60,0x64 irq 1
+  serio: i8042 AUX port at 0x60,0x64 irq 12
 
-0 .. 0x00037ac000 ------------------- 0x00037ebfff, 0x00037ec000 -------
-          |          ^            ^                                ^
-          |   fofs   0            13568                            13568+128
-          |       ------------------------------------------------------
-          |   LBA    0x37e8aa9    0x37ebfa9                        0x37ec029
-          --- map    0x3caa9      0x3ffa9
+and the resource show up as expected among the legacy devices:
 
-In this example, we should give the relative map of the target block device
-ranging from 0x3caa9 to 0x3ffa9 where the length should be calculated by
-0x37ebfff + 1 - 0x37ebfa9.
+  00000000-00ffffff : MSC PCI I/O
+    00000000-0000001f : dma1
+    00000020-00000021 : pic1
+    00000040-0000005f : timer
+    00000060-0000006f : keyboard
+      00000060-0000006f : i8042
+    00000070-00000077 : rtc0
+    00000080-0000008f : dma page reg
+    000000a0-000000a1 : pic2
+    000000c0-000000df : dma2
+    [...]
 
-In the below equation, however, map->m_pblk was supposed to be the original
-address instead of the one from the target block address.
+If the i8042 driver has not been configured, then the standard resource
+will remain there preventing any conflicting dynamic assignment of this
+PCI port I/O address range.
 
- - map->m_len = min(map->m_len, dev->end_blk + 1 - map->m_pblk);
-
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Acked-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Cc: stable@vger.kernel.org
-Fixes: 71f2c8206202 ("f2fs: multidevice: support direct IO")
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-[ applied fix to f2fs_map_blocks() instead of f2fs_map_blocks_cached() ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://patch.msgid.link/alpine.DEB.2.21.2510211919240.8377@angie.orcam.me.uk
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/data.c |    2 +-
+ arch/mips/mti-malta/malta-setup.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/f2fs/data.c
-+++ b/fs/f2fs/data.c
-@@ -1505,9 +1505,9 @@ int f2fs_map_blocks(struct inode *inode,
- 			bidx = f2fs_target_device_index(sbi, map->m_pblk);
- 
- 			map->m_bdev = FDEV(bidx).bdev;
--			map->m_pblk -= FDEV(bidx).start_blk;
- 			map->m_len = min(map->m_len,
- 				FDEV(bidx).end_blk + 1 - map->m_pblk);
-+			map->m_pblk -= FDEV(bidx).start_blk;
- 
- 			if (map->m_may_create)
- 				f2fs_update_device_state(sbi, inode->i_ino,
+--- a/arch/mips/mti-malta/malta-setup.c
++++ b/arch/mips/mti-malta/malta-setup.c
+@@ -47,7 +47,7 @@ static struct resource standard_io_resou
+ 		.name = "keyboard",
+ 		.start = 0x60,
+ 		.end = 0x6f,
+-		.flags = IORESOURCE_IO | IORESOURCE_BUSY
++		.flags = IORESOURCE_IO
+ 	},
+ 	{
+ 		.name = "dma page reg",
 
 
 
