@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-191123-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191278-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 046CFC11051
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:30:32 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8DA1C11136
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:33:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C7DF2189ED10
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:26:34 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 7CE0A34C178
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:33:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDDDB324B2E;
-	Mon, 27 Oct 2025 19:24:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26DFA22A4DB;
+	Mon, 27 Oct 2025 19:31:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dQ6PQuQc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="su50qCdO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B2E632862C;
-	Mon, 27 Oct 2025 19:24:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE4FF23EA92;
+	Mon, 27 Oct 2025 19:31:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761593069; cv=none; b=OURNi+ObxVvM8wJsLtemsVs6Q+0SQY3dcZOEooxaNMnmBG3cBbAllqOoVefE03qMCnWo3BWdMKx1ivzXwYAlCdB1+z+qcYIO8neLf+Li8DOq+p+Ft55dR+ajXLjzT05rZh9oGfz8MJ+Ry97fkqIU0R+c81aH+mwQPi5R6ZZyBTg=
+	t=1761593502; cv=none; b=PdMNkV8SnK8t3aABvGx7PZP9/V7sPj/mcXdznLJ62k1izjvqSxw6MDfjqcxEJ56+c9bLXBFgM8MtOrgqAg4QfmnNSJS033Jr93DaFjWhH32wwA/H16wGDgVF+E9U78qusjKYCNkpIGaNRPC6ClSJAyNC1TpBl1bzuHlLvVPf0P4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761593069; c=relaxed/simple;
-	bh=/fmUDwhsb4NGyDCCLOyAjn1wuRWBTCMeIls0mJW/wU8=;
+	s=arc-20240116; t=1761593502; c=relaxed/simple;
+	bh=tymrxLwtcXEH6V7L/NItgAlG468UVodCtOsfEVahOUA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b58pwkeR8DyEInV0d+1R/CoSgBbgwdgvbeMRYwwY2A2rBdZnTEra5MgyV2NgEk3ng/pqQyDQkLLYNvQcDWZLMbFdVJCFld6Xm8LQC+i1OrR1tp0ypPXZHDvC6vDjhbwKqjy31j4IsoQCvhuVM1voJ/SUtn7ANR3zsGvLWfsWdgk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dQ6PQuQc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30AE5C4CEF1;
-	Mon, 27 Oct 2025 19:24:29 +0000 (UTC)
+	 MIME-Version; b=tHCPKX2tLiR5MLT3AYrwHoqcy7J0XYRjgjm9aQ7r2SI5Nn40Z3UqCsNxYbPr2FTvDbGbgxMO5I4GFUYai0V/bZ1wLQbmpOcqX/PRDPOh3uuKpqQDMv4zlwrLFU6g9d6IgPK+AJyiiQ99ZoRDjFymtAquM7hDBwGQa9rWLbpFOlA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=su50qCdO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F680C4CEF1;
+	Mon, 27 Oct 2025 19:31:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761593069;
-	bh=/fmUDwhsb4NGyDCCLOyAjn1wuRWBTCMeIls0mJW/wU8=;
+	s=korg; t=1761593502;
+	bh=tymrxLwtcXEH6V7L/NItgAlG468UVodCtOsfEVahOUA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dQ6PQuQc2gJc1YMjn00eLzCZApnIvpdf2ksb6XbkYhuBm9jRdeiqnfzAeH6mpNTTg
-	 46vJYi/zB6Tek9kJM4Xc1zw16cKpjK6dT2p3QeeJ478V2fgnAcR5KChnkxFZ6beW/s
-	 72+zGDldK3GZBurq3GtSo8yzsMlgVKDJgYdOts0I=
+	b=su50qCdOD0CLtloy+/joIAPqhk8gQjn9rsHyIY/XFJNw9Z5lYgfzhdcM96ptXhG83
+	 PNXhent1cuFMNTFziBn+E9R2K4/IY6mPJdat0PCgh26d9V7Pbc2co8nc+5d8C75vbz
+	 7rVee1TwRicwO3cYemvB484TPWqiNfGbrV1lxVPk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	stable <stable@kernel.org>,
-	Victoria Votokina <Victoria.Votokina@kaspersky.com>
-Subject: [PATCH 6.12 108/117] most: usb: hdm_probe: Fix calling put_device() before device initialization
+	Tim Guttzeit <t.guttzeit@tuxedocomputers.com>,
+	Werner Sembach <wse@tuxedocomputers.com>
+Subject: [PATCH 6.17 152/184] usb/core/quirks: Add Huawei ME906S to wakeup quirk
 Date: Mon, 27 Oct 2025 19:37:14 +0100
-Message-ID: <20251027183456.947576498@linuxfoundation.org>
+Message-ID: <20251027183519.025590491@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
-References: <20251027183453.919157109@linuxfoundation.org>
+In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
+References: <20251027183514.934710872@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +62,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Victoria Votokina <Victoria.Votokina@kaspersky.com>
+From: Tim Guttzeit <t.guttzeit@tuxedocomputers.com>
 
-commit a8cc9e5fcb0e2eef21513a4fec888f5712cb8162 upstream.
+commit dfc2cf4dcaa03601cd4ca0f7def88b2630fca6ab upstream.
 
-The early error path in hdm_probe() can jump to err_free_mdev before
-&mdev->dev has been initialized with device_initialize(). Calling
-put_device(&mdev->dev) there triggers a device core WARN and ends up
-invoking kref_put(&kobj->kref, kobject_release) on an uninitialized
-kobject.
+The list of Huawei LTE modules needing the quirk fixing spurious wakeups
+was missing the IDs of the Huawei ME906S module, therefore suspend did not
+work.
 
-In this path the private struct was only kmalloc'ed and the intended
-release is effectively kfree(mdev) anyway, so free it directly instead
-of calling put_device() on an uninitialized device.
-
-This removes the WARNING and fixes the pre-initialization error path.
-
-Fixes: 97a6f772f36b ("drivers: most: add USB adapter driver")
 Cc: stable <stable@kernel.org>
-Signed-off-by: Victoria Votokina <Victoria.Votokina@kaspersky.com>
-Link: https://patch.msgid.link/20251010105241.4087114-3-Victoria.Votokina@kaspersky.com
+Signed-off-by: Tim Guttzeit <t.guttzeit@tuxedocomputers.com>
+Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
+Link: https://patch.msgid.link/20251020134304.35079-1-wse@tuxedocomputers.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/most/most_usb.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/core/quirks.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/most/most_usb.c
-+++ b/drivers/most/most_usb.c
-@@ -1097,7 +1097,7 @@ err_free_cap:
- err_free_conf:
- 	kfree(mdev->conf);
- err_free_mdev:
--	put_device(&mdev->dev);
-+	kfree(mdev);
- 	return ret;
- }
+--- a/drivers/usb/core/quirks.c
++++ b/drivers/usb/core/quirks.c
+@@ -467,6 +467,8 @@ static const struct usb_device_id usb_qu
+ 	/* Huawei 4G LTE module */
+ 	{ USB_DEVICE(0x12d1, 0x15bb), .driver_info =
+ 			USB_QUIRK_DISCONNECT_SUSPEND },
++	{ USB_DEVICE(0x12d1, 0x15c1), .driver_info =
++			USB_QUIRK_DISCONNECT_SUSPEND },
+ 	{ USB_DEVICE(0x12d1, 0x15c3), .driver_info =
+ 			USB_QUIRK_DISCONNECT_SUSPEND },
  
 
 
