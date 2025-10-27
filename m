@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-190880-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190633-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1875FC10D40
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:21:35 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BF6FC1079B
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:06:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 204FF562802
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:15:43 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 8EC023515BD
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:06:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF35A32863C;
-	Mon, 27 Oct 2025 19:14:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E883332C95F;
+	Mon, 27 Oct 2025 19:03:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uyqbfYRG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gQY2n7tP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C00232861A;
-	Mon, 27 Oct 2025 19:14:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1329130DEA2;
+	Mon, 27 Oct 2025 19:03:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592442; cv=none; b=bY3wLgls/LmFBf9zOGbEScFU0SqQkZVe0zLNVT9emjKqjsYalcIRnlr0Juxf6ZA+WqnRUQBrGMjxWIKSh0Xlbo0qoOwQUswrqcpzCmJ8Ca2rqjZup8ucgXVXjMH7JstA253heRU8FOBWyqM0WzTyPuAZvxqLNAL/+JATt1gi5sY=
+	t=1761591796; cv=none; b=N+vs+pHmrOk5+djx3sk9ZHOtFd+0+KmHbbBqMiCYgisSqj6QgJbRLa8iN+D+voizCgPGx4NJpKzULX25yBQ8JpXvhM1YBI1v9qPoYVseryoS+8NkxHD8UEVg9JGVf4sp53bxq1RoRLAPGI/N/Z7NXqQyt/OMFJJogJvhP5UT4tQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592442; c=relaxed/simple;
-	bh=Gcm0PAQGGJVN8mMcrz7d3BPi9oG3J+losR5b+ZmjZu8=;
+	s=arc-20240116; t=1761591796; c=relaxed/simple;
+	bh=1rrQ7DEFPe/Hp7sMlEKxEx6u6bcJCpHhkZrLHJejV4Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QNk463Xr/LqNvgzGWiK380mq5tDHeLV9vg2eqU/gggt1n0ExAMAEF7fYZcFyeGmbMztBzFGjWRAVaOkILDCDQJBPSRsmWbskyYmsdX50/mghyiziKiNHMC1Q3uI1fdC96aHbOEikDN+1JEN8t1an/S5ngK6XyuWItjAhli86yWY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uyqbfYRG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCD70C4CEF1;
-	Mon, 27 Oct 2025 19:14:01 +0000 (UTC)
+	 MIME-Version; b=uFUyVzyOWHZj+4XvwJk678T8jVhsyE/h2kB9zIKyddwCe9hG8SaeWyE25a5lRqpdoBQj0M0WkQqTIRZB/YPFzFFsfAs1BlF+6yGDSwahK7PTXuJmHjCkTQFnzCSoK73VRqNkCzK/Dyym15YWf8txok5Rc+4OicvT1s7c+PjZowI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gQY2n7tP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F84EC4CEF1;
+	Mon, 27 Oct 2025 19:03:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592442;
-	bh=Gcm0PAQGGJVN8mMcrz7d3BPi9oG3J+losR5b+ZmjZu8=;
+	s=korg; t=1761591795;
+	bh=1rrQ7DEFPe/Hp7sMlEKxEx6u6bcJCpHhkZrLHJejV4Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uyqbfYRGACCsdd8bE5P+IwDht17Z2s+UJP11ud0/sd3UiHPh+yPAM+4EKJI9WVDmw
-	 XfmM4wRObj93hOO4Sq6NQHQftES6ik+DtPpiORN5Pm5cw4IaDB6fG2gnLroeceTaiu
-	 jTLlHeud5t1cPOZAifAWjrCe1MaVh+VWywtuQqeE=
+	b=gQY2n7tPN3kEedQ02VCeGp4jJNrvajWbDaItyaJd4s6xbV5j6OgWUkZwhkjZq7/3z
+	 mrIAKMn3icUusMv4Shp7SZkAVJUmxte8TJXw7tB9zswJIvd/nttCUjXF7J92phFdWZ
+	 IB89XTERpsp/nIKk/Lim6nrgQfLB3o1NB660T/Zc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Lechner <dlechner@baylibre.com>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 123/157] iio: imu: inv_icm42600: use = { } instead of memset()
-Date: Mon, 27 Oct 2025 19:36:24 +0100
-Message-ID: <20251027183504.549196324@linuxfoundation.org>
+	Li Jinlin <lijinlin3@huawei.com>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Dan Williams <dan.j.williams@intel.com>
+Subject: [PATCH 5.10 332/332] fsdax: Fix infinite loop in dax_iomap_rw()
+Date: Mon, 27 Oct 2025 19:36:25 +0100
+Message-ID: <20251027183533.663068880@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
-References: <20251027183501.227243846@linuxfoundation.org>
+In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
+References: <20251027183524.611456697@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,75 +60,64 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Lechner <dlechner@baylibre.com>
+From: Li Jinlin <lijinlin3@huawei.com>
 
-[ Upstream commit 352112e2d9aab6a156c2803ae14eb89a9fd93b7d ]
+commit 17d9c15c9b9e7fb285f7ac5367dfb5f00ff575e3 upstream.
 
-Use { } instead of memset() to zero-initialize stack memory to simplify
-the code.
+I got an infinite loop and a WARNING report when executing a tail command
+in virtiofs.
 
-Signed-off-by: David Lechner <dlechner@baylibre.com>
-Reviewed-by: Nuno Sá <nuno.sa@analog.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://patch.msgid.link/20250611-iio-zero-init-stack-with-instead-of-memset-v1-16-ebb2d0a24302@baylibre.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Stable-dep-of: 466f7a2fef2a ("iio: imu: inv_icm42600: Avoid configuring if already pm_runtime suspended")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  WARNING: CPU: 10 PID: 964 at fs/iomap/iter.c:34 iomap_iter+0x3a2/0x3d0
+  Modules linked in:
+  CPU: 10 PID: 964 Comm: tail Not tainted 5.19.0-rc7
+  Call Trace:
+  <TASK>
+  dax_iomap_rw+0xea/0x620
+  ? __this_cpu_preempt_check+0x13/0x20
+  fuse_dax_read_iter+0x47/0x80
+  fuse_file_read_iter+0xae/0xd0
+  new_sync_read+0xfe/0x180
+  ? 0xffffffff81000000
+  vfs_read+0x14d/0x1a0
+  ksys_read+0x6d/0xf0
+  __x64_sys_read+0x1a/0x20
+  do_syscall_64+0x3b/0x90
+  entry_SYSCALL_64_after_hwframe+0x63/0xcd
+
+The tail command will call read() with a count of 0. In this case,
+iomap_iter() will report this WARNING, and always return 1 which casuing
+the infinite loop in dax_iomap_rw().
+
+Fixing by checking count whether is 0 in dax_iomap_rw().
+
+Fixes: ca289e0b95af ("fsdax: switch dax_iomap_rw to use iomap_iter")
+Signed-off-by: Li Jinlin <lijinlin3@huawei.com>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Link: https://lore.kernel.org/r/20220725032050.3873372-1-lijinlin3@huawei.com
+Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c |    5 ++---
- drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c  |    5 ++---
- 2 files changed, 4 insertions(+), 6 deletions(-)
+ fs/dax.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c
-@@ -748,7 +748,8 @@ int inv_icm42600_accel_parse_fifo(struct
- 	const int8_t *temp;
- 	unsigned int odr;
- 	int64_t ts_val;
--	struct inv_icm42600_accel_buffer buffer;
-+	/* buffer is copied to userspace, zeroing it to avoid any data leak */
-+	struct inv_icm42600_accel_buffer buffer = { };
+--- a/fs/dax.c
++++ b/fs/dax.c
+@@ -1219,6 +1219,9 @@ dax_iomap_rw(struct kiocb *iocb, struct
+ 	loff_t done = 0;
+ 	int ret;
  
- 	/* parse all fifo packets */
- 	for (i = 0, no = 0; i < st->fifo.count; i += size, ++no) {
-@@ -767,8 +768,6 @@ int inv_icm42600_accel_parse_fifo(struct
- 			inv_icm42600_timestamp_apply_odr(ts, st->fifo.period,
- 							 st->fifo.nb.total, no);
- 
--		/* buffer is copied to userspace, zeroing it to avoid any data leak */
--		memset(&buffer, 0, sizeof(buffer));
- 		memcpy(&buffer.accel, accel, sizeof(buffer.accel));
- 		/* convert 8 bits FIFO temperature in high resolution format */
- 		buffer.temp = temp ? (*temp * 64) : 0;
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c
-@@ -760,7 +760,8 @@ int inv_icm42600_gyro_parse_fifo(struct
- 	const int8_t *temp;
- 	unsigned int odr;
- 	int64_t ts_val;
--	struct inv_icm42600_gyro_buffer buffer;
-+	/* buffer is copied to userspace, zeroing it to avoid any data leak */
-+	struct inv_icm42600_gyro_buffer buffer = { };
- 
- 	/* parse all fifo packets */
- 	for (i = 0, no = 0; i < st->fifo.count; i += size, ++no) {
-@@ -779,8 +780,6 @@ int inv_icm42600_gyro_parse_fifo(struct
- 			inv_icm42600_timestamp_apply_odr(ts, st->fifo.period,
- 							 st->fifo.nb.total, no);
- 
--		/* buffer is copied to userspace, zeroing it to avoid any data leak */
--		memset(&buffer, 0, sizeof(buffer));
- 		memcpy(&buffer.gyro, gyro, sizeof(buffer.gyro));
- 		/* convert 8 bits FIFO temperature in high resolution format */
- 		buffer.temp = temp ? (*temp * 64) : 0;
++	if (!iomi.len)
++		return 0;
++
+ 	if (iov_iter_rw(iter) == WRITE) {
+ 		lockdep_assert_held_write(&iomi.inode->i_rwsem);
+ 		iomi.flags |= IOMAP_WRITE;
 
 
 
