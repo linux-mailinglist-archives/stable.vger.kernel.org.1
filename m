@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-190198-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190201-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 590EFC10275
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:49:25 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E917C1020D
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:48:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 233634FE1D2
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:47:50 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id DE4FD34608F
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:48:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9C24322C7F;
-	Mon, 27 Oct 2025 18:44:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B2DB32C926;
+	Mon, 27 Oct 2025 18:44:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VVq5qjoH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="elzGT9z7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85A51322547;
-	Mon, 27 Oct 2025 18:44:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F9FC32C33A;
+	Mon, 27 Oct 2025 18:44:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761590664; cv=none; b=pdrOhEeJwCRRKlMr0L6zGdpBJVpL68dLkpJf7T7FceoYXIH/+4JmJocvpoOXtYxSo72PHsnUIA5+VmZi3xH/xeaIShXL8hmSEzRDy0Te0XlJTW5NPCj4qjsztQF2pykSj4PUvEC3IUL0Z+a0GE078tjh++F+qL5Y4p+ylF9Eg0A=
+	t=1761590672; cv=none; b=Pjys/IdrvrF5oXbB0O3wmH9pNju/Lp9x0qC6z2D5VYZNWBX278vfjHoflezldJJRPkehhAjY8DIBXKEkB2IN97YkXCO3kFhMqRZSgCA3XhwxSC/cIVI5C6y8IxCRQRxBEi7V+DdeVYCdH+vjc1FotLci9UxhFkDJasTeb5SVEQ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761590664; c=relaxed/simple;
-	bh=Zs3aEbMU8xdFS+S6g1TKfawI1lA2C6q/kp8T/ygo6sc=;
+	s=arc-20240116; t=1761590672; c=relaxed/simple;
+	bh=WJU30gO6W3kNaTGBwVkW6239xs1cFPm9FiMhSPS+Y6U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sEOfJ2QpCt5RXnQH9fv9LIAMdVw9dr/L/LpyGN9PczJSr58ua+mZzJx7QaN/hEcEuX3AdDyMSIw1p4KHva7xany20SPjUTkrmIQXmf3v1WSNEtn7SdwN84/0u8fgzA7FCcoUGYgtK2QCZwNwYUEsnmI6VEhVBu+lJ2XewujlKZ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VVq5qjoH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 113D3C4CEF1;
-	Mon, 27 Oct 2025 18:44:23 +0000 (UTC)
+	 MIME-Version; b=BucrjYQAlL2w/Sw1FC9dZGmUSWWlVuRpm7OeZLP7EUGpe4xVMKh7FwZwlv8SINWVITrYOPxbUhqomonszUdr/VMl865BKSfh9cpw3HzTm2ol09V6+i3rZM76HR681uVkea2TuGlV+S5/SOL6RlmaxYrCoqu+U/HP1c8Rt2YdemA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=elzGT9z7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2356C113D0;
+	Mon, 27 Oct 2025 18:44:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761590664;
-	bh=Zs3aEbMU8xdFS+S6g1TKfawI1lA2C6q/kp8T/ygo6sc=;
+	s=korg; t=1761590672;
+	bh=WJU30gO6W3kNaTGBwVkW6239xs1cFPm9FiMhSPS+Y6U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VVq5qjoHlm1tRvKcZ8jaM/Vn7eaJem0wI87ddQ3Z6lAmR020wuCDhLtQQO7FHSihq
-	 kCuQxsvsaK5Ni0Rdr+xCOIitykLEV/7iitglU6XWrDhaRRRGELp+9rG3STt2AMeegk
-	 +/T96zD4q12L4BSgS8Xy2HwknDcslBiNgrzFOZUQ=
+	b=elzGT9z7hd5OcpBiMk7Oxy1amD1KzXXaph0v1xM+UjoKY9zZ85Q7BVEogsOK2Qtxr
+	 WJ3oXhZIgAVARNM6R8h2Xx4czPMAbcVa1kDCKvGrECSji6l5MtWWycsHWnk6MbYsfC
+	 vMdJcAaDeSUcSIZQJeZilQW8UjpQLRQuVeTdnmeU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lukas Wunner <lukas@wunner.de>,
-	"Rafael J. Wysocki (Intel)" <rafael@kernel.org>,
-	Juergen Gross <jgross@suse.com>
-Subject: [PATCH 5.4 103/224] xen/manage: Fix suspend error path
-Date: Mon, 27 Oct 2025 19:34:09 +0100
-Message-ID: <20251027183511.745411436@linuxfoundation.org>
+	Carlo Caione <ccaione@baylibre.com>,
+	Johan Hovold <johan@kernel.org>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>
+Subject: [PATCH 5.4 104/224] firmware: meson_sm: fix device leak at probe
+Date: Mon, 27 Oct 2025 19:34:10 +0100
+Message-ID: <20251027183511.772135336@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251027183508.963233542@linuxfoundation.org>
 References: <20251027183508.963233542@linuxfoundation.org>
@@ -66,55 +67,50 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Lukas Wunner <lukas@wunner.de>
+From: Johan Hovold <johan@kernel.org>
 
-commit f770c3d858687252f1270265ba152d5c622e793f upstream.
+commit 8ece3173f87df03935906d0c612c2aeda9db92ca upstream.
 
-The device power management API has the following asymmetry:
-* dpm_suspend_start() does not clean up on failure
-  (it requires a call to dpm_resume_end())
-* dpm_suspend_end() does clean up on failure
-  (it does not require a call to dpm_resume_start())
+Make sure to drop the reference to the secure monitor device taken by
+of_find_device_by_node() when looking up its driver data on behalf of
+other drivers (e.g. during probe).
 
-The asymmetry was introduced by commit d8f3de0d2412 ("Suspend-related
-patches for 2.6.27") in June 2008:  It removed a call to device_resume()
-from device_suspend() (which was later renamed to dpm_suspend_start()).
+Note that holding a reference to the platform device does not prevent
+its driver data from going away so there is no point in keeping the
+reference after the helper returns.
 
-When Xen began using the device power management API in May 2008 with
-commit 0e91398f2a5d ("xen: implement save/restore"), the asymmetry did
-not yet exist.  But since it was introduced, a call to dpm_resume_end()
-is missing in the error path of dpm_suspend_start().  Fix it.
-
-Fixes: d8f3de0d2412 ("Suspend-related patches for 2.6.27")
-Signed-off-by: Lukas Wunner <lukas@wunner.de>
-Cc: stable@vger.kernel.org  # v2.6.27
-Reviewed-by: "Rafael J. Wysocki (Intel)" <rafael@kernel.org>
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Message-ID: <22453676d1ddcebbe81641bb68ddf587fee7e21e.1756990799.git.lukas@wunner.de>
+Fixes: 8cde3c2153e8 ("firmware: meson_sm: Rework driver as a proper platform driver")
+Cc: stable@vger.kernel.org	# 5.5
+Cc: Carlo Caione <ccaione@baylibre.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Acked-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Link: https://lore.kernel.org/r/20250725074019.8765-1-johan@kernel.org
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/xen/manage.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/firmware/meson/meson_sm.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/drivers/xen/manage.c
-+++ b/drivers/xen/manage.c
-@@ -116,7 +116,7 @@ static void do_suspend(void)
- 	err = dpm_suspend_start(PMSG_FREEZE);
- 	if (err) {
- 		pr_err("%s: dpm_suspend_start %d\n", __func__, err);
--		goto out_thaw;
-+		goto out_resume_end;
- 	}
+--- a/drivers/firmware/meson/meson_sm.c
++++ b/drivers/firmware/meson/meson_sm.c
+@@ -223,11 +223,16 @@ EXPORT_SYMBOL(meson_sm_call_write);
+ struct meson_sm_firmware *meson_sm_get(struct device_node *sm_node)
+ {
+ 	struct platform_device *pdev = of_find_device_by_node(sm_node);
++	struct meson_sm_firmware *fw;
  
- 	printk(KERN_DEBUG "suspending xenstore...\n");
-@@ -156,6 +156,7 @@ out_resume:
- 	else
- 		xs_suspend_cancel();
+ 	if (!pdev)
+ 		return NULL;
  
-+out_resume_end:
- 	dpm_resume_end(si.cancelled ? PMSG_THAW : PMSG_RESTORE);
+-	return platform_get_drvdata(pdev);
++	fw = platform_get_drvdata(pdev);
++
++	put_device(&pdev->dev);
++
++	return fw;
+ }
+ EXPORT_SYMBOL_GPL(meson_sm_get);
  
- out_thaw:
 
 
 
