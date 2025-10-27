@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-191270-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191107-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D7BAC11240
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:37:09 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AB0EC110D2
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:32:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D7474188355A
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:33:27 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 96100502B4D
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:25:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 438DF32ABF6;
-	Mon, 27 Oct 2025 19:31:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8180231E107;
+	Mon, 27 Oct 2025 19:23:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EpQ652No"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WzPuLz37"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1FBB18A6A5;
-	Mon, 27 Oct 2025 19:31:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DA32233735;
+	Mon, 27 Oct 2025 19:23:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761593478; cv=none; b=WMcFfbNghkD7z0ZO/VNW7tiQN+m4dCND7ml/2MrwXIYEeAzI0BFJ9j5WQ4Mol+qxLab7xK7nAkRM70D9MOp1W7MtBdjfy2xySbdrSPQCve4NMVwXPvKfcHzdvZ1t3npvwO90H92ImfGKX8j9bV9hkBM5Kl99/fbKJpRayaOArnU=
+	t=1761593028; cv=none; b=PSQ3NwYJCrG0xWsizk09cwyKtqO1EEwm6EegIWMstqu/EhNlzRNMkLnRXQIGLkwvvjEv7O2ZEnpd2gCRWSCK5vNV1XTAaYJ2MPzLtKsdNSJnqb9WjGwExn1TKxxeTyNZIKfuoPsqDAGXQNMh4KdYxBnmRqmIz5BjOGmWGS8kjPc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761593478; c=relaxed/simple;
-	bh=jUF8LeVFwI9iMfzdyZyqZThNjt1WPuLyu2WzNFQrt7g=;
+	s=arc-20240116; t=1761593028; c=relaxed/simple;
+	bh=S5ZAutcr7l39/ciU9WTL2qZmQk2rn1wHS6HPqu4eGe4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Rm1PF2csOnqXASh6GOzamAmRfPv9GG9gqzqcJCWXIgPzGxNRoivuoNFRbqgxxgfyJQHK5pbvqWGbPh8wcLHkEWGuVk1Mm4wmHIsmI0tNh1dgTDLlsG3/o7DFRLFOHgAaP2XmMc8jdKdY81+oPPOKuJlfpG5Obn4nwv2PCNK6Fd8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EpQ652No; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7390EC4CEF1;
-	Mon, 27 Oct 2025 19:31:17 +0000 (UTC)
+	 MIME-Version; b=sm85aOhCLd6sabbvyolPLCZ/GRl3NEQO+ldS2lbY8f2znJko4EuvEjq87w+2fSt0hyEXdPG5m8m1Gx3WQFLZSTzJlyJTFPb66QRFCqCIjYAT108AWWBhtndhG8KuilRA4ISxqOE0Cf13X3lA+QhSUoOPHlkVg8OBkwV+KQAKlUQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WzPuLz37; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5910C113D0;
+	Mon, 27 Oct 2025 19:23:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761593477;
-	bh=jUF8LeVFwI9iMfzdyZyqZThNjt1WPuLyu2WzNFQrt7g=;
+	s=korg; t=1761593028;
+	bh=S5ZAutcr7l39/ciU9WTL2qZmQk2rn1wHS6HPqu4eGe4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EpQ652NoPf5BXj++3Flj/fwJCQVMDrTt0kZE4Myzanio7E0/ajA638qxHIET60ru5
-	 HL9jJEu9sCifiibbGOOsZQa0+7oOyrSbbVVIEbzf/KtTGCMjRi4xFb5A4qqtx+xpVR
-	 KSuPkzWSD5W1nFlCfbYdAazkVVp6l8pCufmuKuXw=
+	b=WzPuLz37PaqdNq3R6s7/AB/IHben8zG7eTWX+pfTBPuMbi8aJ3ONuP1G6eytbKo98
+	 0USecphh+4f9V37LVOvWZvz8oz1R0EKOj57KVlcZJpOV0OqldWDjNq5pEajC7OrWkH
+	 Y7AKFLq0CczSAm4EiC2WKqAtgjnrI0qNWHhjOTFA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Keith Busch <kbusch@kernel.org>,
-	Jens Axboe <axboe@kernel.dk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 145/184] block: require LBA dma_alignment when using PI
+	Andrew Cooper <andrew.cooper3@citrix.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	stable@kernel.org
+Subject: [PATCH 6.12 101/117] x86/microcode: Fix Entrysign revision check for Zen1/Naples
 Date: Mon, 27 Oct 2025 19:37:07 +0100
-Message-ID: <20251027183518.844914462@linuxfoundation.org>
+Message-ID: <20251027183456.753730862@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
-References: <20251027183514.934710872@linuxfoundation.org>
+In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
+References: <20251027183453.919157109@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,62 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Andrew Cooper <andrew.cooper3@citrix.com>
 
-[ Upstream commit 4c8cf6bd28d6fea23819f082ddc8063fd6fa963a ]
+commit 876f0d43af78639790bee0e57b39d498ae35adcf upstream.
 
-The block layer PI generation / verification code expects the bio_vecs
-to have at least LBA size (or more correctly integrity internal)
-granularity.  With the direct I/O alignment relaxation in 2022, user
-space can now feed bios with less alignment than that, leading to
-scribbling outside the PI buffers.  Apparently this wasn't noticed so far
-because none of the tests generate such buffers, but since 851c4c96db00
-("xfs: implement XFS_IOC_DIOINFO in terms of vfs_getattr"), xfstests
-generic/013 by default generates such I/O now that the relaxed alignment
-is advertised by the XFS_IOC_DIOINFO ioctl.
+... to match AMD's statement here:
 
-Fix this by increasing the required alignment when using PI, although
-handling arbitrary alignment in the long run would be even nicer.
+https://www.amd.com/en/resources/product-security/bulletin/amd-sb-7033.html
 
-Fixes: bf8d08532bc1 ("iomap: add support for dma aligned direct-io")
-Fixes: b1a000d3b8ec ("block: relax direct io memory alignment")
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
-Reviewed-by: Keith Busch <kbusch@kernel.org>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 50cef76d5cb0 ("x86/microcode/AMD: Load only SHA256-checksummed patches")
+Signed-off-by: Andrew Cooper <andrew.cooper3@citrix.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: <stable@kernel.org>
+Link: https://patch.msgid.link/20251020144124.2930784-1-andrew.cooper3@citrix.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- block/blk-settings.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ arch/x86/kernel/cpu/microcode/amd.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/block/blk-settings.c b/block/blk-settings.c
-index 8fa52914e16b0..c3e131f4f9083 100644
---- a/block/blk-settings.c
-+++ b/block/blk-settings.c
-@@ -184,6 +184,16 @@ static int blk_validate_integrity_limits(struct queue_limits *lim)
- 	if (!bi->interval_exp)
- 		bi->interval_exp = ilog2(lim->logical_block_size);
+--- a/arch/x86/kernel/cpu/microcode/amd.c
++++ b/arch/x86/kernel/cpu/microcode/amd.c
+@@ -182,7 +182,7 @@ static bool need_sha_check(u32 cur_rev)
+ 	}
  
-+	/*
-+	 * The PI generation / validation helpers do not expect intervals to
-+	 * straddle multiple bio_vecs.  Enforce alignment so that those are
-+	 * never generated, and that each buffer is aligned as expected.
-+	 */
-+	if (bi->csum_type) {
-+		lim->dma_alignment = max(lim->dma_alignment,
-+					(1U << bi->interval_exp) - 1);
-+	}
-+
- 	return 0;
- }
- 
--- 
-2.51.0
-
+ 	switch (cur_rev >> 8) {
+-	case 0x80012: return cur_rev <= 0x800126f; break;
++	case 0x80012: return cur_rev <= 0x8001277; break;
+ 	case 0x80082: return cur_rev <= 0x800820f; break;
+ 	case 0x83010: return cur_rev <= 0x830107c; break;
+ 	case 0x86001: return cur_rev <= 0x860010e; break;
 
 
 
