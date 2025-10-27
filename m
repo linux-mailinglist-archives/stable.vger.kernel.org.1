@@ -1,62 +1,57 @@
-Return-Path: <stable+bounces-191220-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190625-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31688C111B6
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:34:55 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76EE8C109A5
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:12:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7C4CC1896422
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:31:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3D578563F01
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:06:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B10432ABC5;
-	Mon, 27 Oct 2025 19:28:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F5DA317711;
+	Mon, 27 Oct 2025 19:02:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zlSk1eKJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jjCDtQ4b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17AF1322C8A;
-	Mon, 27 Oct 2025 19:28:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFAEE30DEB8;
+	Mon, 27 Oct 2025 19:02:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761593317; cv=none; b=LBp3qsNC+zd/bfbgrHmZyu95qBMOp6OTNezeWnVy/jeSdHTRjAig9QXZD67LJLBYRXVYm0682Ww+qiYrM/4R3LFOo4HCba/LGGY3H0Re5Eky7rfT1P+vSD3GnzARtPW5NqqJOui2nNcOxTRfQ3dprAz/Hc52fEUxoTlvl841y+o=
+	t=1761591774; cv=none; b=u9SF328N4ikUBMuWS1Gpj61vFT56bKOixijMHfDF3zveHe7fi6PPkD5BotvpeX5QTSneQPtR9FA3ZXhpBTSE1QANhGbuETSugzcwCcmoorf/ToJlkx1udJqGd7hbz6UdfLQNMG44tbpXM918KS7lLoW6q8X4fxYG1ywuemLMufg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761593317; c=relaxed/simple;
-	bh=gDArKzLF5qfyVkb15xL8ZgrV74YfZ8OXmg9dWjTvI0c=;
+	s=arc-20240116; t=1761591774; c=relaxed/simple;
+	bh=Za4LY3ysf441Np4yXDpVI93p7yDvNIi66gUkEa0SOp4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GW3zR9cWtCNhWMZZ5lI4E0sRg0MBk8Esq4DjlNbDaer9uspvnIznNiHJyaqT3V5mDnGPK7AfZG4tjq4SJ7MZ/ygvHq4xt1PDJ2QgFCDMfKIzIQ9FKqWUOywqxQSGsyW4nWzjBnwMCd3rSazAOM1L1sZm9phu7IM70ipc6VTdCyA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zlSk1eKJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 953ABC4CEF1;
-	Mon, 27 Oct 2025 19:28:36 +0000 (UTC)
+	 MIME-Version; b=qvCNPH8Vxj/0kIzSy7FAgZd8jZUU60hFOoZWKJCMsW+U/jICd+gM8c1qFzw9y32U2MV2sokw7dkjmhDMAtuhyTh6QjbwmU3N2hWhyMNh6yo/TJWeDQQxMBJI1woAATsdV/KJrRg8dyRMmoLB7wXwdJW05XoL8AsYZQDpC+pfiQ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jjCDtQ4b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 586C2C4CEF1;
+	Mon, 27 Oct 2025 19:02:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761593316;
-	bh=gDArKzLF5qfyVkb15xL8ZgrV74YfZ8OXmg9dWjTvI0c=;
+	s=korg; t=1761591774;
+	bh=Za4LY3ysf441Np4yXDpVI93p7yDvNIi66gUkEa0SOp4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zlSk1eKJAUy9VIbYL+6UZlAKhOL0klYcmsfyKe8zqylJmmrCTfhLreyj2ZzeiOkVN
-	 DhocU/t6SiJLTM1yuxNt9ASBvJTiuM/qHE7Easy27Otl7PF0J6//l/H6klgUQwpugS
-	 KrPFQrZ0MI1/treC7Qrjkux8pTL5pikCi8YN3PCE=
+	b=jjCDtQ4b0IeQOBLSTuE9IwySD7g6uyNEkOLAcZ4h6AVKCVxWMU5SaevTDmozgRMRQ
+	 WCQEJvJGCT5sQrFbOlVKvmKjS3LAgPW/uUPdzITt6kCy0Z5orbItCn8BnFo8Tnjj7C
+	 t768+V+4OHOAaU+lmRLpoRwfY2rvPr4cMTUi4+/M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Horman <horms@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	Tonghao Zhang <tonghao@bamaicloud.com>,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Jay Vosburgh <jv@jvosburgh.net>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.17 096/184] net: bonding: update the slave array for broadcast mode
+	Gui-Dong Han <hanguidong02@gmail.com>,
+	Felix Kuehling <felix.kuehling@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 325/332] drm/amdgpu: use atomic functions with memory barriers for vm fault info
 Date: Mon, 27 Oct 2025 19:36:18 +0100
-Message-ID: <20251027183517.490461055@linuxfoundation.org>
+Message-ID: <20251027183533.463048063@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
-References: <20251027183514.934710872@linuxfoundation.org>
+In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
+References: <20251027183524.611456697@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,61 +63,126 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tonghao Zhang <tonghao@bamaicloud.com>
+From: Gui-Dong Han <hanguidong02@gmail.com>
 
-commit e0caeb24f538c3c9c94f471882ceeb43d9dc2739 upstream.
+[ Upstream commit 6df8e84aa6b5b1812cc2cacd6b3f5ccbb18cda2b ]
 
-This patch fixes ce7a381697cb ("net: bonding: add broadcast_neighbor option for 802.3ad").
-Before this commit, on the broadcast mode, all devices were traversed using the
-bond_for_each_slave_rcu. This patch supports traversing devices by using all_slaves.
-Therefore, we need to update the slave array when enslave or release slave.
+The atomic variable vm_fault_info_updated is used to synchronize access to
+adev->gmc.vm_fault_info between the interrupt handler and
+get_vm_fault_info().
 
-Fixes: ce7a381697cb ("net: bonding: add broadcast_neighbor option for 802.3ad")
-Cc: Simon Horman <horms@kernel.org>
-Cc: Jonathan Corbet <corbet@lwn.net>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>
-Cc: <stable@vger.kernel.org>
-Reported-by: Jiri Slaby <jirislaby@kernel.org>
-Tested-by: Jiri Slaby <jirislaby@kernel.org>
-Link: https://lore.kernel.org/all/a97e6e1e-81bc-4a79-8352-9e4794b0d2ca@kernel.org/
-Signed-off-by: Tonghao Zhang <tonghao@bamaicloud.com>
-Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
-Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
-Acked-by: Jay Vosburgh <jv@jvosburgh.net>
-Link: https://patch.msgid.link/20251016125136.16568-1-tonghao@bamaicloud.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+The default atomic functions like atomic_set() and atomic_read() do not
+provide memory barriers. This allows for CPU instruction reordering,
+meaning the memory accesses to vm_fault_info and the vm_fault_info_updated
+flag are not guaranteed to occur in the intended order. This creates a
+race condition that can lead to inconsistent or stale data being used.
+
+The previous implementation, which used an explicit mb(), was incomplete
+and inefficient. It failed to account for all potential CPU reorderings,
+such as the access of vm_fault_info being reordered before the atomic_read
+of the flag. This approach is also more verbose and less performant than
+using the proper atomic functions with acquire/release semantics.
+
+Fix this by switching to atomic_set_release() and atomic_read_acquire().
+These functions provide the necessary acquire and release semantics,
+which act as memory barriers to ensure the correct order of operations.
+It is also more efficient and idiomatic than using explicit full memory
+barriers.
+
+Fixes: b97dfa27ef3a ("drm/amdgpu: save vm fault information for amdkfd")
+Cc: stable@vger.kernel.org
+Signed-off-by: Gui-Dong Han <hanguidong02@gmail.com>
+Signed-off-by: Felix Kuehling <felix.kuehling@amd.com>
+Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+[ kept kgd_dev parameter and adev cast in amdgpu_amdkfd_gpuvm_get_vm_fault_info ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/bonding/bond_main.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c |    5 ++---
+ drivers/gpu/drm/amd/amdgpu/gmc_v7_0.c            |    7 +++----
+ drivers/gpu/drm/amd/amdgpu/gmc_v8_0.c            |    7 +++----
+ 3 files changed, 8 insertions(+), 11 deletions(-)
 
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -2385,7 +2385,9 @@ skip_mac_set:
- 		unblock_netpoll_tx();
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
+@@ -1640,10 +1640,9 @@ int amdgpu_amdkfd_gpuvm_get_vm_fault_inf
+ 	struct amdgpu_device *adev;
+ 
+ 	adev = (struct amdgpu_device *)kgd;
+-	if (atomic_read(&adev->gmc.vm_fault_info_updated) == 1) {
++	if (atomic_read_acquire(&adev->gmc.vm_fault_info_updated) == 1) {
+ 		*mem = *adev->gmc.vm_fault_info;
+-		mb();
+-		atomic_set(&adev->gmc.vm_fault_info_updated, 0);
++		atomic_set_release(&adev->gmc.vm_fault_info_updated, 0);
+ 	}
+ 	return 0;
+ }
+--- a/drivers/gpu/drm/amd/amdgpu/gmc_v7_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gmc_v7_0.c
+@@ -1067,7 +1067,7 @@ static int gmc_v7_0_sw_init(void *handle
+ 					GFP_KERNEL);
+ 	if (!adev->gmc.vm_fault_info)
+ 		return -ENOMEM;
+-	atomic_set(&adev->gmc.vm_fault_info_updated, 0);
++	atomic_set_release(&adev->gmc.vm_fault_info_updated, 0);
+ 
+ 	return 0;
+ }
+@@ -1297,7 +1297,7 @@ static int gmc_v7_0_process_interrupt(st
+ 	vmid = REG_GET_FIELD(status, VM_CONTEXT1_PROTECTION_FAULT_STATUS,
+ 			     VMID);
+ 	if (amdgpu_amdkfd_is_kfd_vmid(adev, vmid)
+-		&& !atomic_read(&adev->gmc.vm_fault_info_updated)) {
++		&& !atomic_read_acquire(&adev->gmc.vm_fault_info_updated)) {
+ 		struct kfd_vm_fault_info *info = adev->gmc.vm_fault_info;
+ 		u32 protections = REG_GET_FIELD(status,
+ 					VM_CONTEXT1_PROTECTION_FAULT_STATUS,
+@@ -1313,8 +1313,7 @@ static int gmc_v7_0_process_interrupt(st
+ 		info->prot_read = protections & 0x8 ? true : false;
+ 		info->prot_write = protections & 0x10 ? true : false;
+ 		info->prot_exec = protections & 0x20 ? true : false;
+-		mb();
+-		atomic_set(&adev->gmc.vm_fault_info_updated, 1);
++		atomic_set_release(&adev->gmc.vm_fault_info_updated, 1);
  	}
  
--	if (bond_mode_can_use_xmit_hash(bond))
-+	/* broadcast mode uses the all_slaves to loop through slaves. */
-+	if (bond_mode_can_use_xmit_hash(bond) ||
-+	    BOND_MODE(bond) == BOND_MODE_BROADCAST)
- 		bond_update_slave_arr(bond, NULL);
+ 	return 0;
+--- a/drivers/gpu/drm/amd/amdgpu/gmc_v8_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gmc_v8_0.c
+@@ -1199,7 +1199,7 @@ static int gmc_v8_0_sw_init(void *handle
+ 					GFP_KERNEL);
+ 	if (!adev->gmc.vm_fault_info)
+ 		return -ENOMEM;
+-	atomic_set(&adev->gmc.vm_fault_info_updated, 0);
++	atomic_set_release(&adev->gmc.vm_fault_info_updated, 0);
  
- 	if (!slave_dev->netdev_ops->ndo_bpf ||
-@@ -2561,7 +2563,8 @@ static int __bond_release_one(struct net
+ 	return 0;
+ }
+@@ -1488,7 +1488,7 @@ static int gmc_v8_0_process_interrupt(st
+ 	vmid = REG_GET_FIELD(status, VM_CONTEXT1_PROTECTION_FAULT_STATUS,
+ 			     VMID);
+ 	if (amdgpu_amdkfd_is_kfd_vmid(adev, vmid)
+-		&& !atomic_read(&adev->gmc.vm_fault_info_updated)) {
++		&& !atomic_read_acquire(&adev->gmc.vm_fault_info_updated)) {
+ 		struct kfd_vm_fault_info *info = adev->gmc.vm_fault_info;
+ 		u32 protections = REG_GET_FIELD(status,
+ 					VM_CONTEXT1_PROTECTION_FAULT_STATUS,
+@@ -1504,8 +1504,7 @@ static int gmc_v8_0_process_interrupt(st
+ 		info->prot_read = protections & 0x8 ? true : false;
+ 		info->prot_write = protections & 0x10 ? true : false;
+ 		info->prot_exec = protections & 0x20 ? true : false;
+-		mb();
+-		atomic_set(&adev->gmc.vm_fault_info_updated, 1);
++		atomic_set_release(&adev->gmc.vm_fault_info_updated, 1);
+ 	}
  
- 	bond_upper_dev_unlink(bond, slave);
- 
--	if (bond_mode_can_use_xmit_hash(bond))
-+	if (bond_mode_can_use_xmit_hash(bond) ||
-+	    BOND_MODE(bond) == BOND_MODE_BROADCAST)
- 		bond_update_slave_arr(bond, slave);
- 
- 	slave_info(bond_dev, slave_dev, "Releasing %s interface\n",
+ 	return 0;
 
 
 
