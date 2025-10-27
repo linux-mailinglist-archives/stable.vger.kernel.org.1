@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-191150-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190699-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB9BFC11309
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:40:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66FACC10A4F
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:14:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id DDF8A56180C
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:27:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D5FA51A616AD
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:09:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAFA031B824;
-	Mon, 27 Oct 2025 19:25:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 154BD2F5A1B;
+	Mon, 27 Oct 2025 19:06:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qR4+CzVF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UaMTMVFY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76E5427FD62;
-	Mon, 27 Oct 2025 19:25:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6D5B306D37;
+	Mon, 27 Oct 2025 19:06:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761593138; cv=none; b=ExCCyk8OsmI8Ph+coMCP50UfGXcYTDmUmgK4Zapsnd1gmPXhk1NYJENxmrL97jHLAFR/2yZzt0xlU/tzU5P7URBP972kjptHUWOP4wG22QQ7Di+xTpRtXU0og8xCCZjo2DEH+JMQneucL15onNj+PVipZRBASJKqhg/6+GNDAN8=
+	t=1761591963; cv=none; b=RhNQR+NLgVzcFljaTJa44l1LIj5vU7iQswR7fN6P2s9Z+mWgJt4H9Q0I/jMbG4B+LAAJWjq+M+m92eVNsMP4y2kfqhvseGd99EAJc/9sbOEtf4O/zO8I0coxQ9C7Ssg1trsNMfrne8miRlnuPmYcQZxN1Xl0b/J1JV/j63umCZk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761593138; c=relaxed/simple;
-	bh=GcE8wO/pCMUl5QmbGdCM3opfjDx3SkkqXxmGP/vvtwY=;
+	s=arc-20240116; t=1761591963; c=relaxed/simple;
+	bh=1Hka3bpoh71dCYNtRq31PpZtsfy8Y8oo4Dmz88Y5LUk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LpmtCUp+pq8o8fL2qJFC029yMNh0o15jmAunuHI/MMyd55udLqmFgKVNZ+RzK/aXkn87AsFI5FU+32g7RIDtgWi3DC+pB8aY8LIBS81lvq+q1YC+5LcRqn0aSIfVNyV885VgRQElMvtXR9cW0LK3tmaMKEOokhmTka9JN+TqJJI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qR4+CzVF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A060C4CEF1;
-	Mon, 27 Oct 2025 19:25:37 +0000 (UTC)
+	 MIME-Version; b=iu2MRk3xLPuZEdMYQ7gbb/+YLz7mVLMTI5daNh+CPM0x5Ha5B/2I7ty/ZTmSpaCsXf60o6xUSbCzCXjoh90bLjrGCXQjL5K3xv229eOdCncU5gg1U7wblNGBavfOwtR5xayBMLiytrIIYjYozUa9JQoCsHjt6TDBVTODszzYhc8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UaMTMVFY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58C21C4CEF1;
+	Mon, 27 Oct 2025 19:06:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761593138;
-	bh=GcE8wO/pCMUl5QmbGdCM3opfjDx3SkkqXxmGP/vvtwY=;
+	s=korg; t=1761591963;
+	bh=1Hka3bpoh71dCYNtRq31PpZtsfy8Y8oo4Dmz88Y5LUk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qR4+CzVFslMiZQ1LkxBcBDD8osEInwpp+WpcNT9dKDKFsG6ja1OBIQ9U4M3ktJ97+
-	 BrcnyYnUk5nacBHwhRA4QApbr8CF2j8pPh3KMoTvISf11lDe/u5+6bI7mCpe9YvVLA
-	 Pn5Jgr24OUOk0YjCfSEbruyXF3G7f2Y0xGzvEBZc=
+	b=UaMTMVFY/8h5ub8QY3+lYcxn3nel3iknLdZNy8kKqvEytU9RZexPeyV7IxkfHpjyA
+	 9aXD21uCyMVKd4sZ694z6y98m8pDrjNkDG9GtpdBT+OY664zLvlabFAvgrtA9zSnZA
+	 tTujOEsu2tO6rh/GqsSCgMZ5abxZOrFoS9p5Lqwk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 027/184] s390/mm: Use __GFP_ACCOUNT for user page table allocations
+Subject: [PATCH 5.15 029/123] net: usb: use eth_hw_addr_set() instead of ether_addr_copy()
 Date: Mon, 27 Oct 2025 19:35:09 +0100
-Message-ID: <20251027183515.657473164@linuxfoundation.org>
+Message-ID: <20251027183447.179980260@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
-References: <20251027183514.934710872@linuxfoundation.org>
+In-Reply-To: <20251027183446.381986645@linuxfoundation.org>
+References: <20251027183446.381986645@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +62,113 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiko Carstens <hca@linux.ibm.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit 5671ce2a1fc6b4a16cff962423bc416b92cac3c8 ]
+[ Upstream commit af804e6db9f60b923ff5149d9bf782e0baa82a2b ]
 
-Add missing kmemcg accounting of user page table allocations.
+Commit 406f42fa0d3c ("net-next: When a bond have a massive amount
+of VLANs...") introduced a rbtree for faster Ethernet address look
+up. To maintain netdev->dev_addr in this tree we need to make all
+the writes to it got through appropriate helpers.
 
-Reviewed-by: Alexander Gordeev <agordeev@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Convert net/usb from ether_addr_copy() to eth_hw_addr_set():
+
+  @@
+  expression dev, np;
+  @@
+  - ether_addr_copy(dev->dev_addr, np)
+  + eth_hw_addr_set(dev, np)
+
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 8d93ff40d49d ("net: usb: lan78xx: fix use of improperly initialized dev->chipid in lan78xx_reset")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/mm/pgalloc.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ drivers/net/usb/aqc111.c     | 2 +-
+ drivers/net/usb/lan78xx.c    | 4 ++--
+ drivers/net/usb/r8152.c      | 2 +-
+ drivers/net/usb/rndis_host.c | 2 +-
+ drivers/net/usb/rtl8150.c    | 2 +-
+ 5 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/arch/s390/mm/pgalloc.c b/arch/s390/mm/pgalloc.c
-index d2f6f1f6d2fcb..ad3e0f7f7fc1f 100644
---- a/arch/s390/mm/pgalloc.c
-+++ b/arch/s390/mm/pgalloc.c
-@@ -16,9 +16,13 @@
+diff --git a/drivers/net/usb/aqc111.c b/drivers/net/usb/aqc111.c
+index 6be07557bc63d..00aba7e1d0b95 100644
+--- a/drivers/net/usb/aqc111.c
++++ b/drivers/net/usb/aqc111.c
+@@ -720,7 +720,7 @@ static int aqc111_bind(struct usbnet *dev, struct usb_interface *intf)
+ 	if (ret)
+ 		goto out;
  
- unsigned long *crst_table_alloc(struct mm_struct *mm)
- {
--	struct ptdesc *ptdesc = pagetable_alloc(GFP_KERNEL, CRST_ALLOC_ORDER);
-+	gfp_t gfp = GFP_KERNEL_ACCOUNT;
-+	struct ptdesc *ptdesc;
- 	unsigned long *table;
+-	ether_addr_copy(dev->net->dev_addr, dev->net->perm_addr);
++	eth_hw_addr_set(dev->net, dev->net->perm_addr);
  
-+	if (mm == &init_mm)
-+		gfp &= ~__GFP_ACCOUNT;
-+	ptdesc = pagetable_alloc(gfp, CRST_ALLOC_ORDER);
- 	if (!ptdesc)
- 		return NULL;
- 	table = ptdesc_to_virt(ptdesc);
-@@ -117,7 +121,7 @@ struct ptdesc *page_table_alloc_pgste(struct mm_struct *mm)
- 	struct ptdesc *ptdesc;
- 	u64 *table;
+ 	/* Set Rx urb size */
+ 	dev->rx_urb_size = URB_SIZE;
+diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
+index 2279a4b8cd4e3..4be15489a2c2a 100644
+--- a/drivers/net/usb/lan78xx.c
++++ b/drivers/net/usb/lan78xx.c
+@@ -1819,7 +1819,7 @@ static void lan78xx_init_mac_address(struct lan78xx_net *dev)
+ 	lan78xx_write_reg(dev, MAF_LO(0), addr_lo);
+ 	lan78xx_write_reg(dev, MAF_HI(0), addr_hi | MAF_HI_VALID_);
  
--	ptdesc = pagetable_alloc(GFP_KERNEL, 0);
-+	ptdesc = pagetable_alloc(GFP_KERNEL_ACCOUNT, 0);
- 	if (ptdesc) {
- 		table = (u64 *)ptdesc_to_virt(ptdesc);
- 		__arch_set_page_dat(table, 1);
-@@ -136,10 +140,13 @@ void page_table_free_pgste(struct ptdesc *ptdesc)
+-	ether_addr_copy(dev->net->dev_addr, addr);
++	eth_hw_addr_set(dev->net, addr);
+ }
  
- unsigned long *page_table_alloc(struct mm_struct *mm)
- {
-+	gfp_t gfp = GFP_KERNEL_ACCOUNT;
- 	struct ptdesc *ptdesc;
- 	unsigned long *table;
+ /* MDIO read and write wrappers for phylib */
+@@ -2394,7 +2394,7 @@ static int lan78xx_set_mac_addr(struct net_device *netdev, void *p)
+ 	if (!is_valid_ether_addr(addr->sa_data))
+ 		return -EADDRNOTAVAIL;
  
--	ptdesc = pagetable_alloc(GFP_KERNEL, 0);
-+	if (mm == &init_mm)
-+		gfp &= ~__GFP_ACCOUNT;
-+	ptdesc = pagetable_alloc(gfp, 0);
- 	if (!ptdesc)
- 		return NULL;
- 	if (!pagetable_pte_ctor(mm, ptdesc)) {
+-	ether_addr_copy(netdev->dev_addr, addr->sa_data);
++	eth_hw_addr_set(netdev, addr->sa_data);
+ 
+ 	addr_lo = netdev->dev_addr[0] |
+ 		  netdev->dev_addr[1] << 8 |
+diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
+index 1dfa0091fa307..1bd18a6292803 100644
+--- a/drivers/net/usb/r8152.c
++++ b/drivers/net/usb/r8152.c
+@@ -1724,7 +1724,7 @@ static int set_ethernet_addr(struct r8152 *tp, bool in_resume)
+ 		return ret;
+ 
+ 	if (tp->version == RTL_VER_01)
+-		ether_addr_copy(dev->dev_addr, sa.sa_data);
++		eth_hw_addr_set(dev, sa.sa_data);
+ 	else
+ 		ret = __rtl8152_set_mac_address(dev, &sa, in_resume);
+ 
+diff --git a/drivers/net/usb/rndis_host.c b/drivers/net/usb/rndis_host.c
+index e5f6614da5acc..f3e4a68b6c947 100644
+--- a/drivers/net/usb/rndis_host.c
++++ b/drivers/net/usb/rndis_host.c
+@@ -422,7 +422,7 @@ generic_rndis_bind(struct usbnet *dev, struct usb_interface *intf, int flags)
+ 	if (bp[0] & 0x02)
+ 		eth_hw_addr_random(net);
+ 	else
+-		ether_addr_copy(net->dev_addr, bp);
++		eth_hw_addr_set(net, bp);
+ 
+ 	/* set a nonzero filter to enable data transfers */
+ 	memset(u.set, 0, sizeof *u.set);
+diff --git a/drivers/net/usb/rtl8150.c b/drivers/net/usb/rtl8150.c
+index 324bec0c22fb4..57f1056a27b14 100644
+--- a/drivers/net/usb/rtl8150.c
++++ b/drivers/net/usb/rtl8150.c
+@@ -270,7 +270,7 @@ static void set_ethernet_addr(rtl8150_t *dev)
+ 	ret = get_registers(dev, IDR, sizeof(node_id), node_id);
+ 
+ 	if (!ret) {
+-		ether_addr_copy(dev->netdev->dev_addr, node_id);
++		eth_hw_addr_set(dev->netdev, node_id);
+ 	} else {
+ 		eth_hw_addr_random(dev->netdev);
+ 		netdev_notice(dev->netdev, "Assigned a random MAC address: %pM\n",
 -- 
 2.51.0
 
