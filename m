@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-191259-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190922-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A491AC11225
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:36:42 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD2CCC10E01
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:23:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 115C11A26BA0
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:33:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9655958231D
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:17:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CDD2329C41;
-	Mon, 27 Oct 2025 19:30:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 790D3321440;
+	Mon, 27 Oct 2025 19:15:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZEue1QG+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DZDIiBN9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 386AD32A3D7;
-	Mon, 27 Oct 2025 19:30:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D17117F4F6;
+	Mon, 27 Oct 2025 19:15:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761593443; cv=none; b=DawCbdzUENFukrzcxM6t/nBFJ7Vb1xjoTftks0S43uPqJ0RFCfkfnyufYIrbEFP08jnaeM1IRiz/oJjzk3cc35yXfWT1sxuV4yD55tTpxwWx+m1LOHBfeG3Cqk923K9jX8hXo0DZoHkItRJMbvgH429Ka1aNqJr62VqJqdMTZog=
+	t=1761592550; cv=none; b=jYobUzt+kd/Bw94nQ+90gs16M0qsIK8Y2hYhIPWQ3leHNJofGGWxUSa+o4SSzFqSFoVaHNyh/hHmhlofEHJZ+bPgAsruZk4SVcfpMYNIX7NVmBi4lWCE7WRhki+jxw14F9wjb7DoudmliVnmVp8tPu+69nuZhGke5ib3oRoad84=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761593443; c=relaxed/simple;
-	bh=QPGFrIvuj+WlZN8A1i0ODoWlczDJ8hBmxowwqPAChL0=;
+	s=arc-20240116; t=1761592550; c=relaxed/simple;
+	bh=tVcG+aUPqzTAsqtBg/lHAIrZ/eAoafLA/Hnr9Ki7FFs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lsVEoD4EHZswxWmR42cJJK34cCjT6Xrpwrikml+WBl8P0IDQ7jHnYPpLmF9AdTxIVTJyIND29zF51OcuPMJRS7s7p03OcuijDwmqzZziOOBoinb7AeqwOtlIiSa/lpqRaBqrYD3bOL3uUj1o1wXWs3oyrleqo6QuAv1S6Ji2lNs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZEue1QG+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABC3CC113D0;
-	Mon, 27 Oct 2025 19:30:42 +0000 (UTC)
+	 MIME-Version; b=io7+0ybZm5JivLTL7QpS1tmLBEctaeRmR205zWqFPKQhTx+8eoOGCutgBsdTVbCdTJ71nz68xk2bBZaQiuGyK6RfwKiC8c1U5SLG+QizpfI1Wi2Ki2erSg3Y0k5qwIxSK4ey3jEUn2JzNqJsGAewH4volnKb+Sd5Wonp8e2W1lQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DZDIiBN9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B719CC4CEF1;
+	Mon, 27 Oct 2025 19:15:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761593443;
-	bh=QPGFrIvuj+WlZN8A1i0ODoWlczDJ8hBmxowwqPAChL0=;
+	s=korg; t=1761592550;
+	bh=tVcG+aUPqzTAsqtBg/lHAIrZ/eAoafLA/Hnr9Ki7FFs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZEue1QG+OAe5RUOY2ojfJ5FiiATy566bRe0yO+rNOKV4OGrWLMMtrZaJ7iYpix6SH
-	 dGSj/7DTdUJ+C/FLQZDNZl42nko1mVGCU5JLQm1nkIKQzdrrn0vyapihaH8mHIM/o/
-	 0ND1UU1nquWlQaA+GaWaoFl5y1xQwAmTv22jyDSM=
+	b=DZDIiBN98/prqcXIvQ78Iii4AKLqnO5KpfVBpLUGt9oMhSzLiITZauLJQ6M4cjaoK
+	 TMPF108FGy9/y1f/pu1MDMKaJjjq9RlKV4hSLo+SsV+Vd2ZEc355nKh7ayC9F0Wo5I
+	 8vIT90p+4QnfgzBI8Qa5jELRz1N8tBvuzz9pKwRs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Erick Karanja <karanja99erick@gmail.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 135/184] hwmon: (pmbus/isl68137) Fix child node reference leak on early return
+	Mark Rutland <mark.rutland@arm.com>,
+	James Morse <james.morse@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Ryan Roberts <ryan.roberts@arm.com>
+Subject: [PATCH 6.1 156/157] arm64: cputype: Add Neoverse-V3AE definitions
 Date: Mon, 27 Oct 2025 19:36:57 +0100
-Message-ID: <20251027183518.581183953@linuxfoundation.org>
+Message-ID: <20251027183505.481045711@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
-References: <20251027183514.934710872@linuxfoundation.org>
+In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
+References: <20251027183501.227243846@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +64,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Erick Karanja <karanja99erick@gmail.com>
+From: Mark Rutland <mark.rutland@arm.com>
 
-[ Upstream commit 57f6f47920ef2f598c46d0a04bd9c8984c98e6df ]
+commit 3bbf004c4808e2c3241e5c1ad6cc102f38a03c39 upstream.
 
-In the case of an early return, the reference to the child node needs
-to be released.
+Add cputype definitions for Neoverse-V3AE. These will be used for errata
+detection in subsequent patches.
 
-Use for_each_child_of_node_scoped to fix the issue.
+These values can be found in the Neoverse-V3AE TRM:
 
-Fixes: 3996187f80a0e ("hwmon: (pmbus/isl68137) add support for voltage divider on Vout")
-Signed-off-by: Erick Karanja <karanja99erick@gmail.com>
-Link: https://lore.kernel.org/r/20251012181249.359401-1-karanja99erick@gmail.com
-[groeck: Updated subject/description]
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  https://developer.arm.com/documentation/SDEN-2615521/9-0/
+
+... in section A.6.1 ("MIDR_EL1, Main ID Register").
+
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Cc: James Morse <james.morse@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+Signed-off-by: Will Deacon <will@kernel.org>
+[ Ryan: Trivial backport ]
+Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/pmbus/isl68137.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ arch/arm64/include/asm/cputype.h |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/hwmon/pmbus/isl68137.c b/drivers/hwmon/pmbus/isl68137.c
-index c52c55d2e7f48..0c6b31ee755b9 100644
---- a/drivers/hwmon/pmbus/isl68137.c
-+++ b/drivers/hwmon/pmbus/isl68137.c
-@@ -334,10 +334,9 @@ static int isl68137_probe_from_dt(struct device *dev,
- 				  struct isl68137_data *data)
- {
- 	const struct device_node *np = dev->of_node;
--	struct device_node *child;
- 	int err;
- 
--	for_each_child_of_node(np, child) {
-+	for_each_child_of_node_scoped(np, child) {
- 		if (strcmp(child->name, "channel"))
- 			continue;
- 
--- 
-2.51.0
-
+--- a/arch/arm64/include/asm/cputype.h
++++ b/arch/arm64/include/asm/cputype.h
+@@ -93,6 +93,7 @@
+ #define ARM_CPU_PART_NEOVERSE_V2	0xD4F
+ #define ARM_CPU_PART_CORTEX_A720	0xD81
+ #define ARM_CPU_PART_CORTEX_X4		0xD82
++#define ARM_CPU_PART_NEOVERSE_V3AE	0xD83
+ #define ARM_CPU_PART_NEOVERSE_V3	0xD84
+ #define ARM_CPU_PART_CORTEX_X925	0xD85
+ #define ARM_CPU_PART_CORTEX_A725	0xD87
+@@ -173,6 +174,7 @@
+ #define MIDR_NEOVERSE_V2 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_V2)
+ #define MIDR_CORTEX_A720 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A720)
+ #define MIDR_CORTEX_X4 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X4)
++#define MIDR_NEOVERSE_V3AE	MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_V3AE)
+ #define MIDR_NEOVERSE_V3 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_V3)
+ #define MIDR_CORTEX_X925 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X925)
+ #define MIDR_CORTEX_A725 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A725)
 
 
 
