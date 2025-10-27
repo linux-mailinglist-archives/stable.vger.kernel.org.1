@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-190584-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190878-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0800AC10936
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:10:54 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id DAE2BC10DB7
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:22:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 79F7E5678A5
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:05:25 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B094850405F
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:15:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75C2632861A;
-	Mon, 27 Oct 2025 19:01:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 251F332862C;
+	Mon, 27 Oct 2025 19:13:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mPORpJLc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FjMABqlg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D9CF3233ED;
-	Mon, 27 Oct 2025 19:01:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D68DB31CA7E;
+	Mon, 27 Oct 2025 19:13:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591669; cv=none; b=mPX2QaZNK2PsTmiZq2+cvInAiWRiPD5kYARkaeXgNkY7B0R0leUnwLevt3Pyh/IqPn7xIYp+/fB0Lyqj5VIPTP9hcjckife07HkHUoZ24aIB930iEEnbHA/96o8Es5uaDqswXaZdlpuzV1LxZyVRki2Sxz46VkawHEJsfIob+0Y=
+	t=1761592436; cv=none; b=jzM518/3BbGud2b2jAmXKuPc62SfX2sYNB8Q1kyv8SJPT+3gqfwnAC7Fty0umlA4FKvfDHMTCG26M0FWuy2/mgWGog6Nk+Kjyo2tE/ebkYlT3k8GyDZkFPsSi9y7FwZ0Vhpl3tNRbwZk3JULUucN5VhqoSxDKM1ct5zIG53ZGew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591669; c=relaxed/simple;
-	bh=o/HKvfedrIkhKnrXaubNvLMVB3XD9MOXcrxL6asBlJA=;
+	s=arc-20240116; t=1761592436; c=relaxed/simple;
+	bh=zFOWTEwyZO8OWFGbTwrQyK5zwimvJDcm1ae47yPRIaY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pmaNL7cbyACtvx09jTjwNKY9AmkTvJsPMTg70v2Xwf8eeDgBngAmrxAwpamrAX+jklovXIAErv2py5fidVmM135WnqjJTIt3w9B6Yrm1WYIGVaVD3MX1CRYkK3xOGrn2HsomTnIxO6MSu88lwljQyeBJPUGBaEpU0+EmyjuX26E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mPORpJLc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B215CC4CEFD;
-	Mon, 27 Oct 2025 19:01:08 +0000 (UTC)
+	 MIME-Version; b=Y4Cg4tzPutQTdY6kv+U6dZln7q9AybEB2NwsU0V5ha+5WZHZGvLOEeXwFA9UR5PUO2GahneITaoEeMAmICjy1SrlX7lNqUDJvRfNwKO0DsqpDpCJL1bMSIwPLuCpM26TkFhR1DZuw1sCMhCyHLLCfp2tIKfwiEQHuCGJ1tRBEvo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FjMABqlg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66286C113D0;
+	Mon, 27 Oct 2025 19:13:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591669;
-	bh=o/HKvfedrIkhKnrXaubNvLMVB3XD9MOXcrxL6asBlJA=;
+	s=korg; t=1761592436;
+	bh=zFOWTEwyZO8OWFGbTwrQyK5zwimvJDcm1ae47yPRIaY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mPORpJLcSVTNp0ICHKBwc8WWkc6Bx6yRZ9TLopp85qPHT4t8JFcnQTZB2VcClGZn1
-	 m0hoUACzRCZAArGz1MEnJj2K+k61zAMCAL9xAJrx5s77I2o/LlmSRMwN7jfXruqvdp
-	 1sqBLkySPKGxovRxjgMYxNSVex1ztzAQjVwMLUqA=
+	b=FjMABqlgWO85sO1XHT6wafEHZvBrdMbW1nx9o/yOOBnu/IeqU3lyq5QBmQhrgIt3M
+	 /W4CL3rIigDhQ11/xolpxhrlKWB8F6EESGloq/y/wrRhQyW0grJno8HxCYc0mZS9zV
+	 uTj8ApTpsfNcPUixl+yx/DwLqjRjdkVDRWql7IPQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.10 285/332] net: ravb: Ensure memory write completes before ringing TX doorbell
+	Junjie Cao <junjie.cao@intel.com>,
+	Kees Cook <kees@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 077/157] lkdtm: fortify: Fix potential NULL dereference on kmalloc failure
 Date: Mon, 27 Oct 2025 19:35:38 +0100
-Message-ID: <20251027183532.382806714@linuxfoundation.org>
+Message-ID: <20251027183503.342771568@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
-References: <20251027183524.611456697@linuxfoundation.org>
+In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
+References: <20251027183501.227243846@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,57 +60,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+From: Junjie Cao <junjie.cao@intel.com>
 
-commit 706136c5723626fcde8dd8f598a4dcd251e24927 upstream.
+[ Upstream commit 01c7344e21c2140e72282d9d16d79a61f840fc20 ]
 
-Add a final dma_wmb() barrier before triggering the transmit request
-(TCCR_TSRQ) to ensure all descriptor and buffer writes are visible to
-the DMA engine.
+Add missing NULL pointer checks after kmalloc() calls in
+lkdtm_FORTIFY_STR_MEMBER() and lkdtm_FORTIFY_MEM_MEMBER() functions.
 
-According to the hardware manual, a read-back operation is required
-before writing to the doorbell register to guarantee completion of
-previous writes. Instead of performing a dummy read, a dma_wmb() is
-used to both enforce the same ordering semantics on the CPU side and
-also to ensure completion of writes.
-
-Fixes: c156633f1353 ("Renesas Ethernet AVB driver proper")
-Cc: stable@vger.kernel.org
-Co-developed-by: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
-Signed-off-by: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
-Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Reviewed-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
-Link: https://patch.msgid.link/20251017151830.171062-5-prabhakar.mahadev-lad.rj@bp.renesas.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Junjie Cao <junjie.cao@intel.com>
+Link: https://lore.kernel.org/r/20250814060605.5264-1-junjie.cao@intel.com
+Signed-off-by: Kees Cook <kees@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/renesas/ravb_main.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/misc/lkdtm/fortify.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/net/ethernet/renesas/ravb_main.c
-+++ b/drivers/net/ethernet/renesas/ravb_main.c
-@@ -1605,6 +1605,14 @@ static netdev_tx_t ravb_start_xmit(struc
- 	} else {
- 		desc->die_dt = DT_FSINGLE;
- 	}
-+
-+	/* Before ringing the doorbell we need to make sure that the latest
-+	 * writes have been committed to memory, otherwise it could delay
-+	 * things until the doorbell is rang again.
-+	 * This is in replacement of the read operation mentioned in the HW
-+	 * manuals.
-+	 */
-+	dma_wmb();
- 	ravb_modify(ndev, TCCR, TCCR_TSRQ0 << q, TCCR_TSRQ0 << q);
+diff --git a/drivers/misc/lkdtm/fortify.c b/drivers/misc/lkdtm/fortify.c
+index 0159276656780..00ed2147113e6 100644
+--- a/drivers/misc/lkdtm/fortify.c
++++ b/drivers/misc/lkdtm/fortify.c
+@@ -44,6 +44,9 @@ static void lkdtm_FORTIFY_STR_MEMBER(void)
+ 	char *src;
  
- 	priv->cur_tx[q] += num_tx_desc;
+ 	src = kmalloc(size, GFP_KERNEL);
++	if (!src)
++		return;
++
+ 	strscpy(src, "over ten bytes", size);
+ 	size = strlen(src) + 1;
+ 
+@@ -109,6 +112,9 @@ static void lkdtm_FORTIFY_MEM_MEMBER(void)
+ 	char *src;
+ 
+ 	src = kmalloc(size, GFP_KERNEL);
++	if (!src)
++		return;
++
+ 	strscpy(src, "over ten bytes", size);
+ 	size = strlen(src) + 1;
+ 
+-- 
+2.51.0
+
 
 
 
