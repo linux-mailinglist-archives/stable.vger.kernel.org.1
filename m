@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-191228-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190952-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8555FC111EF
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:35:54 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F36AC10E77
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:24:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 952F658372A
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:31:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AFFF3564505
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:18:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F03E832BF25;
-	Mon, 27 Oct 2025 19:29:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 699FF327783;
+	Mon, 27 Oct 2025 19:17:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bXSNcRz9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MKRSMAph"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC77F1DDC1B;
-	Mon, 27 Oct 2025 19:29:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 216DE23EA92;
+	Mon, 27 Oct 2025 19:17:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761593344; cv=none; b=l2LoEfW6IOPiMTdBGv4t5z2M4RhSNv2n+4krJ+xzlHmAhVrQHIZLb6a1Saxq2UEfnqFNDgFoXdXn1QuzvwvqEMK7LWRjlvzSj327hI23kotg8MJ0K5FLyOLUIdxzYXwyULScfrEJ9FjKyXPFEJy8plbEy/izA/yWNsSQVnQhr1c=
+	t=1761592629; cv=none; b=MViErMuG7EFArpKVN16p5S2fdiYxdwysdWW7U21GXXdihUn04VkxrFR+w6nHLc0vv4raDI3dVWttk9kHRu/wm5sTKTh9yJ3PJ6QdZgPaC9y9meor0Ybiq2UZBwMtbiOmwRx7+6jUIghsI0aymIwCIvCKlfrjis1R80RFnPL7EIk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761593344; c=relaxed/simple;
-	bh=JU7bvz01YUebkjHpNO+a/GA1VjiuSv89OjEqrVgnXFM=;
+	s=arc-20240116; t=1761592629; c=relaxed/simple;
+	bh=UhwdTEXKDhdGSjtJXPJWXwh/tBkDi3EP2wPjlrNC5Pc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VoM/q4sFNDhXyFVT1jnG57TeA5To4ia3PmGTf7vxWOyEpCdFRB6RyfhV5O06FqV9eSKp9P+cd28cVmNmkjhw/ULd6muYWn5Y6tC7HRfs5E/Gq7y7HwxzKgAK4lDHGktXTB2eFOa+En4jez81hO6RfsDSEogIivdlr/gVEqPFXvU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bXSNcRz9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5642C4CEF1;
-	Mon, 27 Oct 2025 19:29:03 +0000 (UTC)
+	 MIME-Version; b=I0L/v4aFPusyzbApS6V+asqdZLVxFF/JU7/2F7k/rFflzye8EprZRx44A1a1Q3J0ml+X6ngV3yWNy4t8ZOHmkQjXf3Y7UuqKQ9yMkJ0UhhZXTJxIjXZq1EdlluzJ30h/o/bxEkXgUme0jYh6SGLFAvDmfvie3VLbb19jLVmwHkA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MKRSMAph; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 301F5C4CEF1;
+	Mon, 27 Oct 2025 19:17:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761593344;
-	bh=JU7bvz01YUebkjHpNO+a/GA1VjiuSv89OjEqrVgnXFM=;
+	s=korg; t=1761592627;
+	bh=UhwdTEXKDhdGSjtJXPJWXwh/tBkDi3EP2wPjlrNC5Pc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bXSNcRz9xXxCBXKrvlB+siC5VPlJfivTXO5P8lve4D0wRIVdBlf34KWJTGJU6Raeb
-	 bVG/ZRRo6Mp6B5ZBpRL7U/CQXIWxpNpZm5xEoB8ZB2ReR6FQtMS4hYfqkABP0k+i2B
-	 Qd0JRWxSfxt0dui+icApn+TMg358BCx+26Des9u4=
+	b=MKRSMAphyWBkUnh5iCMPgIr2uo1zzUMvqsobolTd0oU7XHX96/gu2D0to3YPFsGyG
+	 OoW5pomZ/e2EjcszboGLqSKoBY1ul0BiMEbzPC9YQFwIey7ffukFN2D2vEWe5XTq7C
+	 /n2RJyXU5S/R2JNRVlSl6BC8S7SjgbxzPRYDdy/k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geliang Tang <geliang@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.17 103/184] selftests: mptcp: join: mark implicit tests as skipped if not supported
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.6 36/84] Revert "cpuidle: menu: Avoid discarding useful information"
 Date: Mon, 27 Oct 2025 19:36:25 +0100
-Message-ID: <20251027183517.689060666@linuxfoundation.org>
+Message-ID: <20251027183439.781532327@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
-References: <20251027183514.934710872@linuxfoundation.org>
+In-Reply-To: <20251027183438.817309828@linuxfoundation.org>
+References: <20251027183438.817309828@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +61,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-commit 973f80d715bd2504b4db6e049f292e694145cd79 upstream.
+commit 10fad4012234a7dea621ae17c0c9486824f645a0 upstream.
 
-The call to 'continue_if' was missing: it properly marks a subtest as
-'skipped' if the attached condition is not valid.
+It is reported that commit 85975daeaa4d ("cpuidle: menu: Avoid discarding
+useful information") led to a performance regression on Intel Jasper Lake
+systems because it reduced the time spent by CPUs in idle state C7 which
+is correlated to the maximum frequency the CPUs can get to because of an
+average running power limit [1].
 
-Without that, the test is wrongly marked as passed on older kernels.
+Before that commit, get_typical_interval() would have returned UINT_MAX
+whenever it had been unable to make a high-confidence prediction which
+had led to selecting the deepest available idle state too often and
+both power and performance had been inadequate as a result of that on
+some systems.  However, this had not been a problem on systems with
+relatively aggressive average running power limits, like the Jasper Lake
+systems in question, because on those systems it was compensated by the
+ability to run CPUs faster.
 
-Fixes: 36c4127ae8dd ("selftests: mptcp: join: skip implicit tests if not supported")
-Cc: stable@vger.kernel.org
-Reviewed-by: Geliang Tang <geliang@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20251020-net-mptcp-c-flag-late-add-addr-v1-3-8207030cb0e8@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+It was addressed by causing get_typical_interval() to return a number
+based on the recent idle duration information available to it even if it
+could not make a high-confidence prediction, but that clearly did not
+take the possible correlation between idle power and available CPU
+capacity into account.
+
+For this reason, revert most of the changes made by commit 85975daeaa4d,
+except for one cosmetic cleanup, and add a comment explaining the
+rationale for returning UINT_MAX from get_typical_interval() when it
+is unable to make a high-confidence prediction.
+
+Fixes: 85975daeaa4d ("cpuidle: menu: Avoid discarding useful information")
+Closes: https://lore.kernel.org/linux-pm/36iykr223vmcfsoysexug6s274nq2oimcu55ybn6ww4il3g3cv@cohflgdbpnq7/ [1]
+Reported-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: All applicable <stable@vger.kernel.org>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Link: https://patch.msgid.link/3663603.iIbC2pHGDl@rafael.j.wysocki
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/mptcp/mptcp_join.sh |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/cpuidle/governors/menu.c |   21 +++++++++------------
+ 1 file changed, 9 insertions(+), 12 deletions(-)
 
---- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-@@ -3751,7 +3751,7 @@ endpoint_tests()
- 	# subflow_rebuild_header is needed to support the implicit flag
- 	# userspace pm type prevents add_addr
- 	if reset "implicit EP" &&
--	   mptcp_lib_kallsyms_has "subflow_rebuild_header$"; then
-+	   continue_if mptcp_lib_kallsyms_has "subflow_rebuild_header$"; then
- 		pm_nl_set_limits $ns1 2 2
- 		pm_nl_set_limits $ns2 2 2
- 		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal
-@@ -3776,7 +3776,7 @@ endpoint_tests()
- 	fi
+--- a/drivers/cpuidle/governors/menu.c
++++ b/drivers/cpuidle/governors/menu.c
+@@ -230,20 +230,17 @@ again:
+ 	 *
+ 	 * This can deal with workloads that have long pauses interspersed
+ 	 * with sporadic activity with a bunch of short pauses.
++	 *
++	 * However, if the number of remaining samples is too small to exclude
++	 * any more outliers, allow the deepest available idle state to be
++	 * selected because there are systems where the time spent by CPUs in
++	 * deep idle states is correlated to the maximum frequency the CPUs
++	 * can get to.  On those systems, shallow idle states should be avoided
++	 * unless there is a clear indication that the given CPU is most likley
++	 * going to be woken up shortly.
+ 	 */
+-	if (divisor * 4 <= INTERVALS * 3) {
+-		/*
+-		 * If there are sufficiently many data points still under
+-		 * consideration after the outliers have been eliminated,
+-		 * returning without a prediction would be a mistake because it
+-		 * is likely that the next interval will not exceed the current
+-		 * maximum, so return the latter in that case.
+-		 */
+-		if (divisor >= INTERVALS / 2)
+-			return max;
+-
++	if (divisor * 4 <= INTERVALS * 3)
+ 		return UINT_MAX;
+-	}
  
- 	if reset_with_tcp_filter "delete and re-add" ns2 10.0.3.2 REJECT OUTPUT &&
--	   mptcp_lib_kallsyms_has "subflow_rebuild_header$"; then
-+	   continue_if mptcp_lib_kallsyms_has "subflow_rebuild_header$"; then
- 		start_events
- 		pm_nl_set_limits $ns1 0 3
- 		pm_nl_set_limits $ns2 0 3
+ 	thresh = max - 1;
+ 	goto again;
 
 
 
