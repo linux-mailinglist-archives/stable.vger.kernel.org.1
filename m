@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-190560-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191152-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1DDAC108A6
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:09:33 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D27D1C110B8
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:31:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6CB67505DC8
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:04:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E59801A606B5
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:27:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC1D427FD62;
-	Mon, 27 Oct 2025 19:00:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E54E427FD62;
+	Mon, 27 Oct 2025 19:25:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iyL8MrqA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="13JCKVXk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98A6F31BC96;
-	Mon, 27 Oct 2025 19:00:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1851274FD0;
+	Mon, 27 Oct 2025 19:25:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591609; cv=none; b=SzNiXMPmIXibTu7GbmriRbfNWAd9Q7Z5cGc0tJc4VkWBnlQxn7O3xlMx4LRtK5GI12nVva5nI2iCazq1oEt4wtVtwYMlxcFEqt0Hsr/vLW3ZEj8+v+6DhxyUH4uaA9lGxxR7cAttrw0ZDY+vnGrlM9+nHj5ufPRtIuGEfEQpJJc=
+	t=1761593143; cv=none; b=GM4rblzCmQCdWf+N04gVsxnJF1KkplD4spszdLUkCQguFc4/cbmY8KzcgoAdm8yuSaUYCpCmJbmbPd6lZA+hIyFBPzEHrV/qYvKg54cPq8qQtz/3AZte63mcH5wzISF2Qvdl5zhq/9zpL0ogl090WmP5ApWLIdRZceawpKxqOOU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591609; c=relaxed/simple;
-	bh=EUpB7LEeXzbfqQpIqEq+0dioOHWkCbmV1gKJgmvkjYA=;
+	s=arc-20240116; t=1761593143; c=relaxed/simple;
+	bh=pFtvzygCfMOCdUq7W5a23sIkJG7GbZfx7HvOq/5w6J8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fB4Qt7X2AXVOC8ZL+Rvij35YhBccRxTk5Y+djIUC8COibn8utT0Nf5bWsHvfjvrJYHTWDpfB/Uell8DFy+UxmuZx6MF5EcmlF0JqnaqBKVtug8RAyLPce9z5ITDh6Tg0et/AL6HE0VRofIjYkhj7i1L8Q7FjEbDYrMWtFJ/dmdI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iyL8MrqA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A2A9C4CEF1;
-	Mon, 27 Oct 2025 19:00:09 +0000 (UTC)
+	 MIME-Version; b=oo6drF7WrPLZZQ5MhLSAzw6voaFhYgo0VBqYeTegZCJW3TrQIWg16UhWdeJ0vebziU2uJihRxcvUWZ3Wy9iS/vb7tfoaiaeCrpmk7dixq07/Sis50J1Qya+b1qoGnU/RIuM/x2Eu2c4NGeN5CPEr8d7GHMCiYJQi0iTQZZ+qiBs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=13JCKVXk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33085C4CEF1;
+	Mon, 27 Oct 2025 19:25:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591609;
-	bh=EUpB7LEeXzbfqQpIqEq+0dioOHWkCbmV1gKJgmvkjYA=;
+	s=korg; t=1761593143;
+	bh=pFtvzygCfMOCdUq7W5a23sIkJG7GbZfx7HvOq/5w6J8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iyL8MrqA1hgio7FwJZxiLUnhV+chsCkNUFX1nRlzn5Sbvz9xLQdeO7U02YeUXcGdH
-	 IMSxRQr6Cmqn9+CZ3hrOo9oL+Qav9a28fqSh2ydDTw+1ryDhSfgc3AM3cBmdRcePmG
-	 HoY5EDibIA9trJXZO8LBW3OdjDlvjZ/U/nC4+F1M=
+	b=13JCKVXkWxCVNDrHLLakrCGt9iBgZHLYCL31Gx6iA7cD6hMQwQ7pKCyExsvGvt01v
+	 HbiPou4vG3iELwUbbTL7XS/Zs9dVotcD0w2RKluanJZyJP/pbKsRrK4VpAeKGhOquU
+	 GOY/NuCn2ggBoe3jz57Gms/LR/uuOipK0YK1lk+g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anderson Nascimento <anderson@allelesecurity.com>,
-	David Sterba <dsterba@suse.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Amir Goldstein <amir73il@gmail.com>,
+	Jan Kara <jack@suse.cz>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 231/332] btrfs: avoid potential out-of-bounds in btrfs_encode_fh()
-Date: Mon, 27 Oct 2025 19:34:44 +0100
-Message-ID: <20251027183530.904318939@linuxfoundation.org>
+Subject: [PATCH 6.17 003/184] expfs: Fix exportfs_can_encode_fh() for EXPORT_FH_FID
+Date: Mon, 27 Oct 2025 19:34:45 +0100
+Message-ID: <20251027183515.035091721@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
-References: <20251027183524.611456697@linuxfoundation.org>
+In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
+References: <20251027183514.934710872@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,78 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anderson Nascimento <anderson@allelesecurity.com>
+From: Jan Kara <jack@suse.cz>
 
-[ Upstream commit dff4f9ff5d7f289e4545cc936362e01ed3252742 ]
+[ Upstream commit 48b77733d0dbaf8cd0a122712072f92b2d95d894 ]
 
-The function btrfs_encode_fh() does not properly account for the three
-cases it handles.
+After commit 5402c4d4d200 ("exportfs: require ->fh_to_parent() to encode
+connectable file handles") we will fail to create non-decodable file
+handles for filesystems without export operations. Fix it.
 
-Before writing to the file handle (fh), the function only returns to the
-user BTRFS_FID_SIZE_NON_CONNECTABLE (5 dwords, 20 bytes) or
-BTRFS_FID_SIZE_CONNECTABLE (8 dwords, 32 bytes).
-
-However, when a parent exists and the root ID of the parent and the
-inode are different, the function writes BTRFS_FID_SIZE_CONNECTABLE_ROOT
-(10 dwords, 40 bytes).
-
-If *max_len is not large enough, this write goes out of bounds because
-BTRFS_FID_SIZE_CONNECTABLE_ROOT is greater than
-BTRFS_FID_SIZE_CONNECTABLE originally returned.
-
-This results in an 8-byte out-of-bounds write at
-fid->parent_root_objectid = parent_root_id.
-
-A previous attempt to fix this issue was made but was lost.
-
-https://lore.kernel.org/all/4CADAEEC020000780001B32C@vpn.id2.novell.com/
-
-Although this issue does not seem to be easily triggerable, it is a
-potential memory corruption bug that should be fixed. This patch
-resolves the issue by ensuring the function returns the appropriate size
-for all three cases and validates that *max_len is large enough before
-writing any data.
-
-Fixes: be6e8dc0ba84 ("NFS support for btrfs - v3")
-CC: stable@vger.kernel.org # 3.0+
-Signed-off-by: Anderson Nascimento <anderson@allelesecurity.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-[ replaced btrfs_root_id() calls with direct ->root->root_key.objectid access ]
+Fixes: 5402c4d4d200 ("exportfs: require ->fh_to_parent() to encode connectable file handles")
+Reviewed-by: Christian Brauner <brauner@kernel.org>
+Reviewed-by: Amir Goldstein <amir73il@gmail.com>
+Signed-off-by: Jan Kara <jack@suse.cz>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/export.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ include/linux/exportfs.h | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/fs/btrfs/export.c
-+++ b/fs/btrfs/export.c
-@@ -22,7 +22,11 @@ static int btrfs_encode_fh(struct inode
- 	int type;
+diff --git a/include/linux/exportfs.h b/include/linux/exportfs.h
+index cfb0dd1ea49c7..b80286a73d0a9 100644
+--- a/include/linux/exportfs.h
++++ b/include/linux/exportfs.h
+@@ -314,9 +314,6 @@ static inline bool exportfs_can_decode_fh(const struct export_operations *nop)
+ static inline bool exportfs_can_encode_fh(const struct export_operations *nop,
+ 					  int fh_flags)
+ {
+-	if (!nop)
+-		return false;
+-
+ 	/*
+ 	 * If a non-decodeable file handle was requested, we only need to make
+ 	 * sure that filesystem did not opt-out of encoding fid.
+@@ -324,6 +321,10 @@ static inline bool exportfs_can_encode_fh(const struct export_operations *nop,
+ 	if (fh_flags & EXPORT_FH_FID)
+ 		return exportfs_can_encode_fid(nop);
  
- 	if (parent && (len < BTRFS_FID_SIZE_CONNECTABLE)) {
--		*max_len = BTRFS_FID_SIZE_CONNECTABLE;
-+		if (BTRFS_I(inode)->root->root_key.objectid !=
-+		    BTRFS_I(parent)->root->root_key.objectid)
-+			*max_len = BTRFS_FID_SIZE_CONNECTABLE_ROOT;
-+		else
-+			*max_len = BTRFS_FID_SIZE_CONNECTABLE;
- 		return FILEID_INVALID;
- 	} else if (len < BTRFS_FID_SIZE_NON_CONNECTABLE) {
- 		*max_len = BTRFS_FID_SIZE_NON_CONNECTABLE;
-@@ -44,6 +48,8 @@ static int btrfs_encode_fh(struct inode
- 		parent_root_id = BTRFS_I(parent)->root->root_key.objectid;
- 
- 		if (parent_root_id != fid->root_objectid) {
-+			if (*max_len < BTRFS_FID_SIZE_CONNECTABLE_ROOT)
-+				return FILEID_INVALID;
- 			fid->parent_root_objectid = parent_root_id;
- 			len = BTRFS_FID_SIZE_CONNECTABLE_ROOT;
- 			type = FILEID_BTRFS_WITH_PARENT_ROOT;
++	/* Normal file handles cannot be created without export ops */
++	if (!nop)
++		return false;
++
+ 	/*
+ 	 * If a connectable file handle was requested, we need to make sure that
+ 	 * filesystem can also decode connected file handles.
+-- 
+2.51.0
+
 
 
 
