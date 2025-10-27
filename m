@@ -1,99 +1,96 @@
-Return-Path: <stable+bounces-190293-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190149-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA590C104D9
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:56:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 025F6C10077
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:44:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8733019C3B25
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:53:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 923AF462C15
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:43:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D721731D740;
-	Mon, 27 Oct 2025 18:48:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EF04320A33;
+	Mon, 27 Oct 2025 18:42:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fFGsn7pb"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OIvQ3cje"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BB7131B823;
-	Mon, 27 Oct 2025 18:48:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30633320A0D
+	for <stable@vger.kernel.org>; Mon, 27 Oct 2025 18:42:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761590923; cv=none; b=YGC2a7J5KoKnBBEc2HOJ6JNu8lXytpFR9CDbx17GySrbOx8GHa7N24WcR1IJYVC1L1TaIXZW3kVlpcmCZaHPI6c6HZHSJR+7X3ihIf2Ye7/d+Rh9mR8023WMprEPXpwyzB22NMgLfKL7yUHR31UvrqB8L7WV8OzOaX20AdmkXy0=
+	t=1761590569; cv=none; b=CrqFgAEqYGX6RDreM5Sd7aWJSVJ2GsGN3DFdF/YBHsWe3b7/JZa9HgpppM9yODSbsKubVJZ/5q5rLxL8Md4ZD/gXwqdfHz89nVGHoxq+moueDK3sGse3IMfdoQyuCXbNLMB0P0APq6Bg2v6Xe2/JtUZ6HsTYg6hFnQtNqzFaxrw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761590923; c=relaxed/simple;
-	bh=HP7ldfafJ1WdHn3lmXYBr15DlninjqnKnJaE09l+/O4=;
+	s=arc-20240116; t=1761590569; c=relaxed/simple;
+	bh=EKxwyn/d7HnFKrBgrdUjGIMxtqsZe/54qqcOYZmwSq0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ge5MeqnPFwDqaGf0u5jDfCAAbdbgx8yJKWvqkGL2uC0sqw/8715HQ5ok3SeAH4MWcW4mdeqdNQZF78lIBUvwr3z5rH1iJA3OOdZVzfLUSgvBhZIWlbAQKXFLMe5E7ax+6TQOtDd9pBYj8mfIZX5WSlaLt5nZ0y+Zk9IahvBwhOA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fFGsn7pb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44C4DC4CEF1;
-	Mon, 27 Oct 2025 18:48:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761590922;
-	bh=HP7ldfafJ1WdHn3lmXYBr15DlninjqnKnJaE09l+/O4=;
+	 MIME-Version:Content-Type; b=Tb5moDCpblP/U2fj7Fh4OSqnX0aMF8v30Jb/yur+Nd9lugWyus/k22coLgVW3ubztNI9BSqdF7VSPHtStYqDAxom6cDNiMHInNFZaKmcUUkQVzcjaFoPvWpgfOJ+AGNH5c4NJvBUmMKnQyYPLACEXwLe2qXEkVviTGhmvVVFta8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OIvQ3cje; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7046CC116C6;
+	Mon, 27 Oct 2025 18:42:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761590569;
+	bh=EKxwyn/d7HnFKrBgrdUjGIMxtqsZe/54qqcOYZmwSq0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fFGsn7pbV7gVA84hIeiBCkN2fKXrgEAL5Tzgqw1Q6aVYMcpQ0j2efyq9my+jgzF2Y
-	 ViHbsGbzV3/nKFtSqp6x2lGqM3KOOhIiWAT3B8TplUEkiH3NAnrgx22fMnyMzIdLnx
-	 sZ6doQsJc7GNv1dxuigucFiBZmfZ4jtJ+LvDkv7w=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+	b=OIvQ3cjeYKy9OqxxyAVbkEp1N6skNcH634rBzPanI8xOi+vcsMM0CKnwb21lO1MB4
+	 ch24NLTXCo06EKe5liF3qYbp6oNKE5VvK7mEfCCvywb6+sqkEBqbCifIDy+kyzqpN5
+	 6IY+T+GpdZVS54zYn9R7d/lCDpHx0oypKtTtdRWpX7kZS1kHaFUgJbGn/V0NNWpB6o
+	 Dc3uvfcQ7qhazQDril5cNmhwFDFDRE6N8JmBCjMer93S6AUly2HoER2iUWp8IoV6Mb
+	 5BPSgJNZ/NM3CqsoI6/Vx82YZNFmFDXLs/ccmsZqCHYqVWc1rDDFXwPE+FHlQ5juEn
+	 /zIE3XlqyVdcQ==
+From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Zhengchao Shao <shaozhengchao@huawei.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.4 224/224] net: rtnetlink: fix module reference count leak issue in rtnetlink_rcv_msg
-Date: Mon, 27 Oct 2025 19:36:10 +0100
-Message-ID: <20251027183514.716722542@linuxfoundation.org>
-X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183508.963233542@linuxfoundation.org>
-References: <20251027183508.963233542@linuxfoundation.org>
-User-Agent: quilt/0.69
-X-stable: review
-X-Patchwork-Hint: ignore
+Cc: Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6.y 1/4] serial: sc16is7xx: remove unused to_sc16is7xx_port macro
+Date: Mon, 27 Oct 2025 14:42:43 -0400
+Message-ID: <20251027184246.638748-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2025102739-casualty-hankering-f9ab@gregkh>
+References: <2025102739-casualty-hankering-f9ab@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
 
-------------------
+[ Upstream commit 22a048b0749346b6e3291892d06b95278d5ba84a ]
 
-From: Zhengchao Shao <shaozhengchao@huawei.com>
+This macro is not used anywhere.
 
-commit 5b22f62724a0a09e00d301abf5b57b0c12be8a16 upstream.
-
-When bulk delete command is received in the rtnetlink_rcv_msg function,
-if bulk delete is not supported, module_put is not called to release
-the reference counting. As a result, module reference count is leaked.
-
-Fixes: a6cec0bcd342 ("net: rtnetlink: add bulk delete support flag")
-Signed-off-by: Zhengchao Shao <shaozhengchao@huawei.com>
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://lore.kernel.org/r/20220815024629.240367-1-shaozhengchao@huawei.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Link: https://lore.kernel.org/r/20230905181649.134720-1-hugo@hugovil.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 1c05bf6c0262 ("serial: sc16is7xx: remove useless enable of enhanced features")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/rtnetlink.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/tty/serial/sc16is7xx.c | 1 -
+ 1 file changed, 1 deletion(-)
 
---- a/net/core/rtnetlink.c
-+++ b/net/core/rtnetlink.c
-@@ -5304,6 +5304,7 @@ static int rtnetlink_rcv_msg(struct sk_b
- 	if (kind == RTNL_KIND_DEL && (nlh->nlmsg_flags & NLM_F_BULK) &&
- 	    !(flags & RTNL_FLAG_BULK_DEL_SUPPORTED)) {
- 		NL_SET_ERR_MSG(extack, "Bulk delete is not supported");
-+		module_put(owner);
- 		goto err_unlock;
- 	}
+diff --git a/drivers/tty/serial/sc16is7xx.c b/drivers/tty/serial/sc16is7xx.c
+index 66a88bba8f15b..847ed5b155aad 100644
+--- a/drivers/tty/serial/sc16is7xx.c
++++ b/drivers/tty/serial/sc16is7xx.c
+@@ -358,7 +358,6 @@ static struct uart_driver sc16is7xx_uart = {
+ static void sc16is7xx_ier_set(struct uart_port *port, u8 bit);
+ static void sc16is7xx_stop_tx(struct uart_port *port);
  
-
+-#define to_sc16is7xx_port(p,e)	((container_of((p), struct sc16is7xx_port, e)))
+ #define to_sc16is7xx_one(p,e)	((container_of((p), struct sc16is7xx_one, e)))
+ 
+ static u8 sc16is7xx_port_read(struct uart_port *port, u8 reg)
+-- 
+2.51.0
 
 
