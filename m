@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-190847-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190936-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98E13C10CBB
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:20:21 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6AC9C10EA1
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:25:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DE2991A27230
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:15:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 85F7D4631AC
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:17:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86F3A324B19;
-	Mon, 27 Oct 2025 19:12:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0A9930147E;
+	Mon, 27 Oct 2025 19:16:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TS27N/MG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HoAF7NOa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 458373064AA;
-	Mon, 27 Oct 2025 19:12:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DB0E21576E;
+	Mon, 27 Oct 2025 19:16:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592354; cv=none; b=brL6QIO126xTiSFbaWtmpCkUSIy/+6+PQ8cs3IjKTbvTOxb+uFKAv0LHstcNNyf2sWIaze37uWX9TL9dN99yFdJcLOKvxxGVi+/fqNtt2oWKlcTJQdF4o5bmDGfEjM/UtChLZqUcR11aZLjSpSJ57Hf1yea93op7CS2zqRfR0/Y=
+	t=1761592586; cv=none; b=nKZeMKBdbXz5ywPgMwVA2SJycn9odXT4ePPt5lWU4lJu5vm/aZHgfePdCFvHTuB4iYH9//luFN3OkRYRIqEMxhlMUP43zHlbpiVYoN8LiAZ4n3cYBKru0+c/fQ36voWbFlhCKENwflr+17Wt55Zhg7QJDHDw2dry7qHYEobScic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592354; c=relaxed/simple;
-	bh=2GLVcb/VzMP2WW5eqio5u69YTbOWQOqTSPjRBHJk0wk=;
+	s=arc-20240116; t=1761592586; c=relaxed/simple;
+	bh=6bS/9IDZvQ59383AOb0msmKKbW8ZtcyRT1PiyFLvQ3g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O7AQUNUHZWvNImBO7hIcVNWr2kwOQpuksaXHKV6QL1q2CJyw3xP5K4mzXEZezKSz0bGALeQtBeexxktJ7YvX7ERQpDBwLovv4uciY6f+lOrbeBKB2sITHk+Yq3kezO9MQ5ODfl1L052CVk+EzR9vQv51RBZnnyR63ERiN6GtXF0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TS27N/MG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA177C4CEF1;
-	Mon, 27 Oct 2025 19:12:33 +0000 (UTC)
+	 MIME-Version; b=LhiJJb43UcUwWu3QYh9NqznDWXzOtE2vzvaFui+wNxi7uUg7WWQyrTadprgiaDQeaU6br8OibrzNkodi7I+8x84ysu1IW+X6x5HKYlM2NPYiel7xp02YsCqHUcmmSiJO2jN7kz4GIJv0Tl5fDnafIFhjqX7qXaX5nmYDu0dlc/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HoAF7NOa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E21CC4CEF1;
+	Mon, 27 Oct 2025 19:16:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592354;
-	bh=2GLVcb/VzMP2WW5eqio5u69YTbOWQOqTSPjRBHJk0wk=;
+	s=korg; t=1761592585;
+	bh=6bS/9IDZvQ59383AOb0msmKKbW8ZtcyRT1PiyFLvQ3g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TS27N/MG9GwoMXK4986/gZM38cCioUO53tndBrT1J6MhNw0O5uFsTMBMcpEyJQ90P
-	 +aLtsJA4x5LtF8nTUJok5ZHTPykkB+snkXv2J+MGbl/O6vF5zbCZK8lgAXKxKskJ1d
-	 0vmGozZe7+/WNwjA8Mqg8OfaeHkhS42ygJuxtmS4=
+	b=HoAF7NOaovOKyLPksTIbPR/kKHnyNbbNMwEUuEk1Vqj7dT4g5qZ/ZqNdM0xqoYKzX
+	 bODj7G552qXHaRUa298XfM6G/Ql5hKklf0YFHlZlujTzMK/xLX+nbEXoPrKYpfHV3Y
+	 zXNdI8ytne9kFroRo8ysxgLwkak2wq8lWyvdC1Es=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrei Lalaev <andrey.lalaev@gmail.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH 6.1 090/157] can: netlink: can_changelink(): allow disabling of automatic restart
+	Simon Schuster <schuster.simon@siemens-energy.com>,
+	Andreas Oetken <andreas.oetken@siemens-energy.com>,
+	Dinh Nguyen <dinguyen@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 02/84] nios2: ensure that memblock.current_limit is set when setting pfn limits
 Date: Mon, 27 Oct 2025 19:35:51 +0100
-Message-ID: <20251027183503.683885982@linuxfoundation.org>
+Message-ID: <20251027183438.884074461@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
-References: <20251027183501.227243846@linuxfoundation.org>
+In-Reply-To: <20251027183438.817309828@linuxfoundation.org>
+References: <20251027183438.817309828@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,67 +63,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Kleine-Budde <mkl@pengutronix.de>
+From: Simon Schuster <schuster.simon@siemens-energy.com>
 
-commit 8e93ac51e4c6dc399fad59ec21f55f2cfb46d27c upstream.
+[ Upstream commit a20b83cf45be2057f3d073506779e52c7fa17f94 ]
 
-Since the commit c1f3f9797c1f ("can: netlink: can_changelink(): fix NULL
-pointer deref of struct can_priv::do_set_mode"), the automatic restart
-delay can only be set for devices that implement the restart handler struct
-can_priv::do_set_mode. As it makes no sense to configure a automatic
-restart for devices that doesn't support it.
+On nios2, with CONFIG_FLATMEM set, the kernel relies on
+memblock_get_current_limit() to determine the limits of mem_map, in
+particular for max_low_pfn.
+Unfortunately, memblock.current_limit is only default initialized to
+MEMBLOCK_ALLOC_ANYWHERE at this point of the bootup, potentially leading
+to situations where max_low_pfn can erroneously exceed the value of
+max_pfn and, thus, the valid range of available DRAM.
 
-However, since systemd commit 13ce5d4632e3 ("network/can: properly handle
-CAN.RestartSec=0") [1], systemd-networkd correctly handles a restart delay
-of "0" (i.e. the restart is disabled). Which means that a disabled restart
-is always configured in the kernel.
+This can in turn cause kernel-level paging failures, e.g.:
 
-On systems with both changes active this causes that CAN interfaces that
-don't implement a restart handler cannot be brought up by systemd-networkd.
+[   76.900000] Unable to handle kernel paging request at virtual address 20303000
+[   76.900000] ea = c0080890, ra = c000462c, cause = 14
+[   76.900000] Kernel panic - not syncing: Oops
+[   76.900000] ---[ end Kernel panic - not syncing: Oops ]---
 
-Solve this problem by allowing a delay of "0" to be configured, even if the
-device does not implement a restart handler.
+This patch fixes this by pre-calculating memblock.current_limit
+based on the upper limits of the available memory ranges via
+adjust_lowmem_bounds, a simplified version of the equivalent
+implementation within the arm architecture.
 
-[1] https://github.com/systemd/systemd/commit/13ce5d4632e395521e6205c954493c7fc1c4c6e0
-
-Cc: stable@vger.kernel.org
-Cc: Andrei Lalaev <andrey.lalaev@gmail.com>
-Reported-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Closes: https://lore.kernel.org/all/20251020-certain-arrogant-vole-of-sunshine-141841-mkl@pengutronix.de
-Fixes: c1f3f9797c1f ("can: netlink: can_changelink(): fix NULL pointer deref of struct can_priv::do_set_mode")
-Link: https://patch.msgid.link/20251020-netlink-fix-restart-v1-1-3f53c7f8520b@pengutronix.de
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Simon Schuster <schuster.simon@siemens-energy.com>
+Signed-off-by: Andreas Oetken <andreas.oetken@siemens-energy.com>
+Signed-off-by: Dinh Nguyen <dinguyen@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/can/dev/netlink.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ arch/nios2/kernel/setup.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
---- a/drivers/net/can/dev/netlink.c
-+++ b/drivers/net/can/dev/netlink.c
-@@ -252,7 +252,9 @@ static int can_changelink(struct net_dev
- 	}
+diff --git a/arch/nios2/kernel/setup.c b/arch/nios2/kernel/setup.c
+index 8582ed9658447..5308c76122817 100644
+--- a/arch/nios2/kernel/setup.c
++++ b/arch/nios2/kernel/setup.c
+@@ -147,6 +147,20 @@ static void __init find_limits(unsigned long *min, unsigned long *max_low,
+ 	*max_high = PFN_DOWN(memblock_end_of_DRAM());
+ }
  
- 	if (data[IFLA_CAN_RESTART_MS]) {
--		if (!priv->do_set_mode) {
-+		unsigned int restart_ms = nla_get_u32(data[IFLA_CAN_RESTART_MS]);
++static void __init adjust_lowmem_bounds(void)
++{
++	phys_addr_t block_start, block_end;
++	u64 i;
++	phys_addr_t memblock_limit = 0;
 +
-+		if (restart_ms != 0 && !priv->do_set_mode) {
- 			NL_SET_ERR_MSG(extack,
- 				       "Device doesn't support restart from Bus Off");
- 			return -EOPNOTSUPP;
-@@ -261,7 +263,7 @@ static int can_changelink(struct net_dev
- 		/* Do not allow changing restart delay while running */
- 		if (dev->flags & IFF_UP)
- 			return -EBUSY;
--		priv->restart_ms = nla_get_u32(data[IFLA_CAN_RESTART_MS]);
-+		priv->restart_ms = restart_ms;
- 	}
++	for_each_mem_range(i, &block_start, &block_end) {
++		if (block_end > memblock_limit)
++			memblock_limit = block_end;
++	}
++
++	memblock_set_current_limit(memblock_limit);
++}
++
+ void __init setup_arch(char **cmdline_p)
+ {
+ 	console_verbose();
+@@ -160,6 +174,7 @@ void __init setup_arch(char **cmdline_p)
+ 	/* Keep a copy of command line */
+ 	*cmdline_p = boot_command_line;
  
- 	if (data[IFLA_CAN_RESTART]) {
++	adjust_lowmem_bounds();
+ 	find_limits(&min_low_pfn, &max_low_pfn, &max_pfn);
+ 	max_mapnr = max_low_pfn;
+ 
+-- 
+2.51.0
+
 
 
 
