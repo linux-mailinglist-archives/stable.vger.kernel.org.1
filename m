@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-190714-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190858-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2192EC10AC8
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:15:13 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86A41C10D2A
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:21:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3124E188B004
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:10:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B2846562304
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:15:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38B98328B41;
-	Mon, 27 Oct 2025 19:06:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0719031D751;
+	Mon, 27 Oct 2025 19:13:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cWvPifu1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cvvVGAyt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA9C83074AC;
-	Mon, 27 Oct 2025 19:06:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B85071FBC92;
+	Mon, 27 Oct 2025 19:13:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592003; cv=none; b=L2OTKydIWOBg6r24poordK6izY58sJoT6FTFI9k52wgZTJb7kos6tBjZJShvL+t3OmnAc03lring+QldxcXldvd32d9SxouMbZNNp+1gxLK0AVKjS36PNRWHJxu+iwOim23/aziUNMPhN8kI7aBVKWfx9S7Qc29Us2l9DOt8l/8=
+	t=1761592384; cv=none; b=RK72Mb7x+K/v0rPUuPWHxrJhvsxg8w/hFFef3WFIXLllVKOsGjSlz1KDYoPaTfcX4GPZffv5cr1epLvDpH5MlcjpSTU+lnKM7xHTcAZtv7wUdVVhZTNwP0mY6Wzw5jlXz4fcssraqQfokaCDcoNBFrrV0YliFix/ffIFlhLDTjQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592003; c=relaxed/simple;
-	bh=PNVs1+schTPRYJ9QVvtY5HrH5Dg9muMj0l+6eKPGr6g=;
+	s=arc-20240116; t=1761592384; c=relaxed/simple;
+	bh=HRJCLDY6QxOFQfjObeL1prKbGPGEXPpSGH53ZNSwv7E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G4PsuML27OASJpVpNj3OBhGyFKWVu3EuUafWvJOfpFYBLuVYQDk+WiVwznlYuTKyLy1MPb9NIXHRoeLgmeagiWsDb5Q8WxOx7Af7a8NBkCs+MAT0HSJGCvWPj3RRPvzsR5QDjwEiALb/5vOaH3yM9j+Xlh8hHCahiR42muFBN3Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cWvPifu1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F223C4CEF1;
-	Mon, 27 Oct 2025 19:06:42 +0000 (UTC)
+	 MIME-Version; b=tH/0CWeqYluZBhFXKBbpCxjiEkmERigfGbjoFMqRQpL0pIFQEu5mrDN13idY8HuvRSa9DbYHNKMnPgyXCmXQ8ZuwHikLRs+TeF819RvMjERiqukw8JQDuQZD4YkRSYr2TS8p9Vy5AzHEe0fxKRoWC30Ffd1iNOOFHcmbU38M25I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cvvVGAyt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20810C4CEF1;
+	Mon, 27 Oct 2025 19:13:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592002;
-	bh=PNVs1+schTPRYJ9QVvtY5HrH5Dg9muMj0l+6eKPGr6g=;
+	s=korg; t=1761592384;
+	bh=HRJCLDY6QxOFQfjObeL1prKbGPGEXPpSGH53ZNSwv7E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cWvPifu1lJ1jy/HK7xhwcN5Z0xpeZtgqI6p9ThN9Kpz0GIruv0H3GKV8Upvk3ddXs
-	 2NZcdN1kllxJDJVHtguNusRvNvRAR1IBLaPvVpbl9jXPpeWZnje5G0x9P9TW66vLY0
-	 /zm7s4y33YEJhuEbK+dl0HyNwC0YBBcATOuxJKfQ=
+	b=cvvVGAytEDYrqn1IffSiy4Qr3IScpTsVmqVwRBWUcjA9jf04eH6YRGgrQ9XJ8u7gp
+	 CrSFHRvCFwWDLIEXL+uGKgkcUproNuUlu2u9gx6xRrYyMUC4gUkvELiYtaYmBpN4+t
+	 DOXXBzKEhTfz08WuNbtzj6s+l+eLGIekIZfMv7hw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu-Ting Tseng <yutingtseng@google.com>,
-	Alice Ryhl <aliceryhl@google.com>
-Subject: [PATCH 5.15 081/123] binder: remove "invalid inc weak" check
+	Anup Patel <apatel@ventanamicro.com>,
+	Han Gao <rabenda.cn@gmail.com>,
+	"Guo Ren (Alibaba DAMO Academy)" <guoren@kernel.org>,
+	Paul Walmsley <pjw@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 100/157] RISC-V: Define pgprot_dmacoherent() for non-coherent devices
 Date: Mon, 27 Oct 2025 19:36:01 +0100
-Message-ID: <20251027183448.559288758@linuxfoundation.org>
+Message-ID: <20251027183503.945373670@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183446.381986645@linuxfoundation.org>
-References: <20251027183446.381986645@linuxfoundation.org>
+In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
+References: <20251027183501.227243846@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,60 +64,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alice Ryhl <aliceryhl@google.com>
+From: Anup Patel <apatel@ventanamicro.com>
 
-commit d90eeb8ecd227c204ab6c34a17b372bd950b7aa2 upstream.
+[ Upstream commit ca525d53f994d45c8140968b571372c45f555ac1 ]
 
-There are no scenarios where a weak increment is invalid on binder_node.
-The only possible case where it could be invalid is if the kernel
-delivers BR_DECREFS to the process that owns the node, and then
-increments the weak refcount again, effectively "reviving" a dead node.
+The pgprot_dmacoherent() is used when allocating memory for
+non-coherent devices and by default pgprot_dmacoherent() is
+same as pgprot_noncached() unless architecture overrides it.
 
-However, that is not possible: when the BR_DECREFS command is delivered,
-the kernel removes and frees the binder_node. The fact that you were
-able to call binder_inc_node_nilocked() implies that the node is not yet
-destroyed, which implies that BR_DECREFS has not been delivered to
-userspace, so incrementing the weak refcount is valid.
+Currently, there is no pgprot_dmacoherent() definition for
+RISC-V hence non-coherent device memory is being mapped as
+IO thereby making CPU access to such memory slow.
 
-Note that it's currently possible to trigger this condition if the owner
-calls BINDER_THREAD_EXIT while node->has_weak_ref is true. This causes
-BC_INCREFS on binder_ref instances to fail when they should not.
+Define pgprot_dmacoherent() to be same as pgprot_writecombine()
+for RISC-V so that CPU access non-coherent device memory as
+NOCACHE which is better than accessing it as IO.
 
-Cc: stable@vger.kernel.org
-Fixes: 457b9a6f09f0 ("Staging: android: add binder driver")
-Reported-by: Yu-Ting Tseng <yutingtseng@google.com>
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-Link: https://patch.msgid.link/20251015-binder-weak-inc-v1-1-7914b092c371@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: ff689fd21cb1 ("riscv: add RISC-V Svpbmt extension support")
+Signed-off-by: Anup Patel <apatel@ventanamicro.com>
+Tested-by: Han Gao <rabenda.cn@gmail.com>
+Tested-by: Guo Ren (Alibaba DAMO Academy) <guoren@kernel.org>
+Link: https://lore.kernel.org/r/20250820152316.1012757-1-apatel@ventanamicro.com
+Signed-off-by: Paul Walmsley <pjw@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/android/binder.c |   11 +----------
- 1 file changed, 1 insertion(+), 10 deletions(-)
+ arch/riscv/include/asm/pgtable.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/android/binder.c
-+++ b/drivers/android/binder.c
-@@ -818,17 +818,8 @@ static int binder_inc_node_nilocked(stru
- 	} else {
- 		if (!internal)
- 			node->local_weak_refs++;
--		if (!node->has_weak_ref && list_empty(&node->work.entry)) {
--			if (target_list == NULL) {
--				pr_err("invalid inc weak node for %d\n",
--					node->debug_id);
--				return -EINVAL;
--			}
--			/*
--			 * See comment above
--			 */
-+		if (!node->has_weak_ref && target_list && list_empty(&node->work.entry))
- 			binder_enqueue_work_ilocked(&node->work, target_list);
--		}
- 	}
- 	return 0;
+diff --git a/arch/riscv/include/asm/pgtable.h b/arch/riscv/include/asm/pgtable.h
+index bb19a643c5c2a..1a94e633c1445 100644
+--- a/arch/riscv/include/asm/pgtable.h
++++ b/arch/riscv/include/asm/pgtable.h
+@@ -555,6 +555,8 @@ static inline pgprot_t pgprot_writecombine(pgprot_t _prot)
+ 	return __pgprot(prot);
  }
+ 
++#define pgprot_dmacoherent pgprot_writecombine
++
+ /*
+  * THP functions
+  */
+-- 
+2.51.0
+
 
 
 
