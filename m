@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-190196-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190520-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23498C10260
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:49:12 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63362C10691
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:03:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 3E88E4FFD9C
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:47:32 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id D4028352014
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:02:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDC7C322539;
-	Mon, 27 Oct 2025 18:44:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24D7032F778;
+	Mon, 27 Oct 2025 18:58:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rMPFDjB6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wx+Kr8nj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7B48320CA9;
-	Mon, 27 Oct 2025 18:44:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9517932E6B5;
+	Mon, 27 Oct 2025 18:58:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761590659; cv=none; b=fzK98VXUBRLLR2k3jMhrjqpB7hn5nmwMNMDXwY/5K8qamZcwa34wZsn4Osv4u+HVeIrP62ojccSyUv6KbrzTX/CutdXTl8aVN6d9WHAyYayeEIDNIDJ/QkIAxjMLgXuUfCAbnWEh5WMU4N0mtFNU/b4uYtKmobd6BTlTjASvc9s=
+	t=1761591505; cv=none; b=lSWaMky+baPqTDao0JqBr1waBPKhCQNKB7bgLdFnnK/weGNSSpfGeLsKLJhw8tyle/azt3CNvfG5zf2JNi5BEXSDpvFvHa3lxnxxXVHySWJmeYfdxxzqPcnhuuxnnzxKSZBdxyydkv40Z+9fUxLZNbuidEcchlzNQP/woq4pi0M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761590659; c=relaxed/simple;
-	bh=lfCK//cGQun0Dbj6pDtEi9PUpfmoLzkvcTXTjNXD1Ho=;
+	s=arc-20240116; t=1761591505; c=relaxed/simple;
+	bh=/kvfgnvQOisSTdj7tXJuY7egDzpvryBBtXAPuoobLIk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fI3kzbK/ckLa5NTiIaA9YKyc0idm+0WcOwbx7z93fbkjSAHEPAjD4sl1XS5CT0iDhQLU4q8M9RCaYLr3Al6Zl1dZzc48hI9iOf5VopEEfaTgOlry4QadWFxTqx7WvxCdiLKfsmAXUjmosTC97gsmo1Nss3Q/nQ4ukgzIcEYdKDs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rMPFDjB6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9D7CC4CEF1;
-	Mon, 27 Oct 2025 18:44:18 +0000 (UTC)
+	 MIME-Version; b=VoPxUW1jT+E7eeWnSgCpQesRkQUcte32WU700uahYdhUYR9raKIqDUbjoNEcxKw6V52QdwcPUrTy/vDLZISMjPGdxqayj18ZMoeWhQJ8hgZyDSQSLsJX0by1wUbZegDYKmUhISP+hAbLcTLUew0fGSf6yTMXxx2TH5T4Wpl98/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wx+Kr8nj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C16DC4CEF1;
+	Mon, 27 Oct 2025 18:58:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761590659;
-	bh=lfCK//cGQun0Dbj6pDtEi9PUpfmoLzkvcTXTjNXD1Ho=;
+	s=korg; t=1761591504;
+	bh=/kvfgnvQOisSTdj7tXJuY7egDzpvryBBtXAPuoobLIk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rMPFDjB6kqlVfuoDI31lNTAtERX2CK30+BkDvIQ4UzkhCI7BEpr8Jru0c63wJQ6jV
-	 OqSInF+Pzqys14dHzH2EZDCFRxQCRLaU9xD945oL9Ua5OlczoLfaET0grIqPrqqy9G
-	 EKg35W2ti+iHcIHwzZ5wS2UCzH0qoQ9/qozjS64g=
+	b=Wx+Kr8njA4kTb60torlar9hYZnDPJdDvRJE1vV/bCR3PdN/3/b2Dc5X/Z4nKqRJtE
+	 +0T/35vQ3bLb6ksxo7ZtGJZvQwqN74WQ+kWikWsk2Z1rZG3gZqZiNHij5AOsYEIhcl
+	 f1iQrJ02Hd+YTgHWuwzcQsK1yfmmsw+gJdGYjPdg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Olga Kornievskaia <okorniev@redhat.com>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.4 128/224] nfsd: nfserr_jukebox in nlm_fopen should lead to a retry
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 221/332] media: pci/ivtv: switch from pci_ to dma_ API
 Date: Mon, 27 Oct 2025 19:34:34 +0100
-Message-ID: <20251027183512.404430792@linuxfoundation.org>
+Message-ID: <20251027183530.616996645@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183508.963233542@linuxfoundation.org>
-References: <20251027183508.963233542@linuxfoundation.org>
+In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
+References: <20251027183524.611456697@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +63,395 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Olga Kornievskaia <okorniev@redhat.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-commit a082e4b4d08a4a0e656d90c2c05da85f23e6d0c9 upstream.
+[ Upstream commit 1932dc2f4cf6ac23e48e5fcc24d21adbe35691d1 ]
 
-When v3 NLM request finds a conflicting delegation, it triggers
-a delegation recall and nfsd_open fails with EAGAIN. nfsd_open
-then translates EAGAIN into nfserr_jukebox. In nlm_fopen, instead
-of returning nlm_failed for when there is a conflicting delegation,
-drop this NLM request so that the client retries. Once delegation
-is recalled and if a local lock is claimed, a retry would lead to
-nfsd returning a nlm_lck_blocked error or a successful nlm lock.
+The wrappers in include/linux/pci-dma-compat.h should go away.
 
-Fixes: d343fce148a4 ("[PATCH] knfsd: Allow lockd to drop replies as appropriate")
-Cc: stable@vger.kernel.org # v6.6
-Signed-off-by: Olga Kornievskaia <okorniev@redhat.com>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+The patch has been generated with the coccinelle script below.
+It has been compile tested.
+
+No memory allocation in involved in this patch, so no GFP_ tweak is needed.
+
+@@ @@
+-    PCI_DMA_BIDIRECTIONAL
++    DMA_BIDIRECTIONAL
+
+@@ @@
+-    PCI_DMA_TODEVICE
++    DMA_TO_DEVICE
+
+@@ @@
+-    PCI_DMA_FROMDEVICE
++    DMA_FROM_DEVICE
+
+@@ @@
+-    PCI_DMA_NONE
++    DMA_NONE
+
+@@
+expression e1, e2, e3;
+@@
+-    pci_alloc_consistent(e1, e2, e3)
++    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
+
+@@
+expression e1, e2, e3;
+@@
+-    pci_zalloc_consistent(e1, e2, e3)
++    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_free_consistent(e1, e2, e3, e4)
++    dma_free_coherent(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_map_single(e1, e2, e3, e4)
++    dma_map_single(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_unmap_single(e1, e2, e3, e4)
++    dma_unmap_single(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4, e5;
+@@
+-    pci_map_page(e1, e2, e3, e4, e5)
++    dma_map_page(&e1->dev, e2, e3, e4, e5)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_unmap_page(e1, e2, e3, e4)
++    dma_unmap_page(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_map_sg(e1, e2, e3, e4)
++    dma_map_sg(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_unmap_sg(e1, e2, e3, e4)
++    dma_unmap_sg(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_dma_sync_single_for_cpu(e1, e2, e3, e4)
++    dma_sync_single_for_cpu(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_dma_sync_single_for_device(e1, e2, e3, e4)
++    dma_sync_single_for_device(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_dma_sync_sg_for_cpu(e1, e2, e3, e4)
++    dma_sync_sg_for_cpu(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_dma_sync_sg_for_device(e1, e2, e3, e4)
++    dma_sync_sg_for_device(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2;
+@@
+-    pci_dma_mapping_error(e1, e2)
++    dma_mapping_error(&e1->dev, e2)
+
+@@
+expression e1, e2;
+@@
+-    pci_set_dma_mask(e1, e2)
++    dma_set_mask(&e1->dev, e2)
+
+@@
+expression e1, e2;
+@@
+-    pci_set_consistent_dma_mask(e1, e2)
++    dma_set_coherent_mask(&e1->dev, e2)
+
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Stable-dep-of: 1069a4fe637d ("media: pci: ivtv: Add missing check after DMA map")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/lockd.c |   15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ drivers/media/pci/ivtv/ivtv-driver.c  |    2 +-
+ drivers/media/pci/ivtv/ivtv-queue.c   |   18 ++++++++++--------
+ drivers/media/pci/ivtv/ivtv-streams.c |   22 +++++++++++-----------
+ drivers/media/pci/ivtv/ivtv-udma.c    |   19 ++++++++++++-------
+ drivers/media/pci/ivtv/ivtv-yuv.c     |   10 +++++++---
+ 5 files changed, 41 insertions(+), 30 deletions(-)
 
---- a/fs/nfsd/lockd.c
-+++ b/fs/nfsd/lockd.c
-@@ -44,6 +44,21 @@ nlm_fopen(struct svc_rqst *rqstp, struct
- 	switch (nfserr) {
- 	case nfs_ok:
+--- a/drivers/media/pci/ivtv/ivtv-driver.c
++++ b/drivers/media/pci/ivtv/ivtv-driver.c
+@@ -840,7 +840,7 @@ static int ivtv_setup_pci(struct ivtv *i
+ 		IVTV_ERR("Can't enable device!\n");
+ 		return -EIO;
+ 	}
+-	if (pci_set_dma_mask(pdev, DMA_BIT_MASK(32))) {
++	if (dma_set_mask(&pdev->dev, DMA_BIT_MASK(32))) {
+ 		IVTV_ERR("No suitable DMA available.\n");
+ 		return -EIO;
+ 	}
+--- a/drivers/media/pci/ivtv/ivtv-queue.c
++++ b/drivers/media/pci/ivtv/ivtv-queue.c
+@@ -188,7 +188,7 @@ int ivtv_stream_alloc(struct ivtv_stream
  		return 0;
-+	case nfserr_jukebox:
-+		/* this error can indicate a presence of a conflicting
-+		 * delegation to an NLM lock request. Options are:
-+		 * (1) For now, drop this request and make the client
-+		 * retry. When delegation is returned, client's lock retry
-+		 * will complete.
-+		 * (2) NLM4_DENIED as per "spec" signals to the client
-+		 * that the lock is unavailable now but client can retry.
-+		 * Linux client implementation does not. It treats
-+		 * NLM4_DENIED same as NLM4_FAILED and errors the request.
-+		 * (3) For the future, treat this as blocked lock and try
-+		 * to callback when the delegation is returned but might
-+		 * not have a proper lock request to block on.
-+		 */
-+		fallthrough;
- 	case nfserr_dropit:
- 		return nlm_drop_reply;
- 	case nfserr_stale:
+ 
+ 	IVTV_DEBUG_INFO("Allocate %s%s stream: %d x %d buffers (%dkB total)\n",
+-		s->dma != PCI_DMA_NONE ? "DMA " : "",
++		s->dma != DMA_NONE ? "DMA " : "",
+ 		s->name, s->buffers, s->buf_size, s->buffers * s->buf_size / 1024);
+ 
+ 	s->sg_pending = kzalloc(SGsize, GFP_KERNEL|__GFP_NOWARN);
+@@ -218,8 +218,9 @@ int ivtv_stream_alloc(struct ivtv_stream
+ 		return -ENOMEM;
+ 	}
+ 	if (ivtv_might_use_dma(s)) {
+-		s->sg_handle = pci_map_single(itv->pdev, s->sg_dma,
+-				sizeof(struct ivtv_sg_element), PCI_DMA_TODEVICE);
++		s->sg_handle = dma_map_single(&itv->pdev->dev, s->sg_dma,
++					      sizeof(struct ivtv_sg_element),
++					      DMA_TO_DEVICE);
+ 		ivtv_stream_sync_for_cpu(s);
+ 	}
+ 
+@@ -237,7 +238,7 @@ int ivtv_stream_alloc(struct ivtv_stream
+ 		}
+ 		INIT_LIST_HEAD(&buf->list);
+ 		if (ivtv_might_use_dma(s)) {
+-			buf->dma_handle = pci_map_single(s->itv->pdev,
++			buf->dma_handle = dma_map_single(&s->itv->pdev->dev,
+ 				buf->buf, s->buf_size + 256, s->dma);
+ 			ivtv_buf_sync_for_cpu(s, buf);
+ 		}
+@@ -260,8 +261,8 @@ void ivtv_stream_free(struct ivtv_stream
+ 	/* empty q_free */
+ 	while ((buf = ivtv_dequeue(s, &s->q_free))) {
+ 		if (ivtv_might_use_dma(s))
+-			pci_unmap_single(s->itv->pdev, buf->dma_handle,
+-				s->buf_size + 256, s->dma);
++			dma_unmap_single(&s->itv->pdev->dev, buf->dma_handle,
++					 s->buf_size + 256, s->dma);
+ 		kfree(buf->buf);
+ 		kfree(buf);
+ 	}
+@@ -269,8 +270,9 @@ void ivtv_stream_free(struct ivtv_stream
+ 	/* Free SG Array/Lists */
+ 	if (s->sg_dma != NULL) {
+ 		if (s->sg_handle != IVTV_DMA_UNMAPPED) {
+-			pci_unmap_single(s->itv->pdev, s->sg_handle,
+-				 sizeof(struct ivtv_sg_element), PCI_DMA_TODEVICE);
++			dma_unmap_single(&s->itv->pdev->dev, s->sg_handle,
++					 sizeof(struct ivtv_sg_element),
++					 DMA_TO_DEVICE);
+ 			s->sg_handle = IVTV_DMA_UNMAPPED;
+ 		}
+ 		kfree(s->sg_pending);
+--- a/drivers/media/pci/ivtv/ivtv-streams.c
++++ b/drivers/media/pci/ivtv/ivtv-streams.c
+@@ -100,7 +100,7 @@ static struct {
+ 	{	/* IVTV_ENC_STREAM_TYPE_MPG */
+ 		"encoder MPG",
+ 		VFL_TYPE_VIDEO, 0,
+-		PCI_DMA_FROMDEVICE, 0,
++		DMA_FROM_DEVICE, 0,
+ 		V4L2_CAP_VIDEO_CAPTURE | V4L2_CAP_TUNER |
+ 			V4L2_CAP_AUDIO | V4L2_CAP_READWRITE,
+ 		&ivtv_v4l2_enc_fops
+@@ -108,7 +108,7 @@ static struct {
+ 	{	/* IVTV_ENC_STREAM_TYPE_YUV */
+ 		"encoder YUV",
+ 		VFL_TYPE_VIDEO, IVTV_V4L2_ENC_YUV_OFFSET,
+-		PCI_DMA_FROMDEVICE, 0,
++		DMA_FROM_DEVICE, 0,
+ 		V4L2_CAP_VIDEO_CAPTURE | V4L2_CAP_TUNER |
+ 			V4L2_CAP_AUDIO | V4L2_CAP_READWRITE,
+ 		&ivtv_v4l2_enc_fops
+@@ -116,7 +116,7 @@ static struct {
+ 	{	/* IVTV_ENC_STREAM_TYPE_VBI */
+ 		"encoder VBI",
+ 		VFL_TYPE_VBI, 0,
+-		PCI_DMA_FROMDEVICE, 0,
++		DMA_FROM_DEVICE, 0,
+ 		V4L2_CAP_VBI_CAPTURE | V4L2_CAP_SLICED_VBI_CAPTURE | V4L2_CAP_TUNER |
+ 			V4L2_CAP_AUDIO | V4L2_CAP_READWRITE,
+ 		&ivtv_v4l2_enc_fops
+@@ -124,42 +124,42 @@ static struct {
+ 	{	/* IVTV_ENC_STREAM_TYPE_PCM */
+ 		"encoder PCM",
+ 		VFL_TYPE_VIDEO, IVTV_V4L2_ENC_PCM_OFFSET,
+-		PCI_DMA_FROMDEVICE, 0,
++		DMA_FROM_DEVICE, 0,
+ 		V4L2_CAP_TUNER | V4L2_CAP_AUDIO | V4L2_CAP_READWRITE,
+ 		&ivtv_v4l2_enc_fops
+ 	},
+ 	{	/* IVTV_ENC_STREAM_TYPE_RAD */
+ 		"encoder radio",
+ 		VFL_TYPE_RADIO, 0,
+-		PCI_DMA_NONE, 1,
++		DMA_NONE, 1,
+ 		V4L2_CAP_RADIO | V4L2_CAP_TUNER,
+ 		&ivtv_v4l2_radio_fops
+ 	},
+ 	{	/* IVTV_DEC_STREAM_TYPE_MPG */
+ 		"decoder MPG",
+ 		VFL_TYPE_VIDEO, IVTV_V4L2_DEC_MPG_OFFSET,
+-		PCI_DMA_TODEVICE, 0,
++		DMA_TO_DEVICE, 0,
+ 		V4L2_CAP_VIDEO_OUTPUT | V4L2_CAP_AUDIO | V4L2_CAP_READWRITE,
+ 		&ivtv_v4l2_dec_fops
+ 	},
+ 	{	/* IVTV_DEC_STREAM_TYPE_VBI */
+ 		"decoder VBI",
+ 		VFL_TYPE_VBI, IVTV_V4L2_DEC_VBI_OFFSET,
+-		PCI_DMA_NONE, 1,
++		DMA_NONE, 1,
+ 		V4L2_CAP_SLICED_VBI_CAPTURE | V4L2_CAP_READWRITE,
+ 		&ivtv_v4l2_enc_fops
+ 	},
+ 	{	/* IVTV_DEC_STREAM_TYPE_VOUT */
+ 		"decoder VOUT",
+ 		VFL_TYPE_VBI, IVTV_V4L2_DEC_VOUT_OFFSET,
+-		PCI_DMA_NONE, 1,
++		DMA_NONE, 1,
+ 		V4L2_CAP_SLICED_VBI_OUTPUT | V4L2_CAP_AUDIO | V4L2_CAP_READWRITE,
+ 		&ivtv_v4l2_dec_fops
+ 	},
+ 	{	/* IVTV_DEC_STREAM_TYPE_YUV */
+ 		"decoder YUV",
+ 		VFL_TYPE_VIDEO, IVTV_V4L2_DEC_YUV_OFFSET,
+-		PCI_DMA_TODEVICE, 0,
++		DMA_TO_DEVICE, 0,
+ 		V4L2_CAP_VIDEO_OUTPUT | V4L2_CAP_AUDIO | V4L2_CAP_READWRITE,
+ 		&ivtv_v4l2_dec_fops
+ 	}
+@@ -179,7 +179,7 @@ static void ivtv_stream_init(struct ivtv
+ 	s->vdev.device_caps = ivtv_stream_info[type].v4l2_caps;
+ 
+ 	if (ivtv_stream_info[type].pio)
+-		s->dma = PCI_DMA_NONE;
++		s->dma = DMA_NONE;
+ 	else
+ 		s->dma = ivtv_stream_info[type].dma;
+ 	s->buf_size = itv->stream_buf_size[type];
+@@ -217,7 +217,7 @@ static int ivtv_prep_dev(struct ivtv *it
+ 
+ 	/* User explicitly selected 0 buffers for these streams, so don't
+ 	   create them. */
+-	if (ivtv_stream_info[type].dma != PCI_DMA_NONE &&
++	if (ivtv_stream_info[type].dma != DMA_NONE &&
+ 	    itv->options.kilobytes[type] == 0) {
+ 		IVTV_INFO("Disabled %s device\n", ivtv_stream_info[type].name);
+ 		return 0;
+--- a/drivers/media/pci/ivtv/ivtv-udma.c
++++ b/drivers/media/pci/ivtv/ivtv-udma.c
+@@ -81,8 +81,10 @@ void ivtv_udma_alloc(struct ivtv *itv)
+ {
+ 	if (itv->udma.SG_handle == 0) {
+ 		/* Map DMA Page Array Buffer */
+-		itv->udma.SG_handle = pci_map_single(itv->pdev, itv->udma.SGarray,
+-			   sizeof(itv->udma.SGarray), PCI_DMA_TODEVICE);
++		itv->udma.SG_handle = dma_map_single(&itv->pdev->dev,
++						     itv->udma.SGarray,
++						     sizeof(itv->udma.SGarray),
++						     DMA_TO_DEVICE);
+ 		ivtv_udma_sync_for_cpu(itv);
+ 	}
+ }
+@@ -135,7 +137,8 @@ int ivtv_udma_setup(struct ivtv *itv, un
+ 	}
+ 
+ 	/* Map SG List */
+-	dma->SG_length = pci_map_sg(itv->pdev, dma->SGlist, dma->page_count, PCI_DMA_TODEVICE);
++	dma->SG_length = dma_map_sg(&itv->pdev->dev, dma->SGlist,
++				    dma->page_count, DMA_TO_DEVICE);
+ 
+ 	/* Fill SG Array with new values */
+ 	ivtv_udma_fill_sg_array (dma, ivtv_dest_addr, 0, -1);
+@@ -159,7 +162,8 @@ void ivtv_udma_unmap(struct ivtv *itv)
+ 
+ 	/* Unmap Scatterlist */
+ 	if (dma->SG_length) {
+-		pci_unmap_sg(itv->pdev, dma->SGlist, dma->page_count, PCI_DMA_TODEVICE);
++		dma_unmap_sg(&itv->pdev->dev, dma->SGlist, dma->page_count,
++			     DMA_TO_DEVICE);
+ 		dma->SG_length = 0;
+ 	}
+ 	/* sync DMA */
+@@ -175,13 +179,14 @@ void ivtv_udma_free(struct ivtv *itv)
+ 
+ 	/* Unmap SG Array */
+ 	if (itv->udma.SG_handle) {
+-		pci_unmap_single(itv->pdev, itv->udma.SG_handle,
+-			 sizeof(itv->udma.SGarray), PCI_DMA_TODEVICE);
++		dma_unmap_single(&itv->pdev->dev, itv->udma.SG_handle,
++				 sizeof(itv->udma.SGarray), DMA_TO_DEVICE);
+ 	}
+ 
+ 	/* Unmap Scatterlist */
+ 	if (itv->udma.SG_length) {
+-		pci_unmap_sg(itv->pdev, itv->udma.SGlist, itv->udma.page_count, PCI_DMA_TODEVICE);
++		dma_unmap_sg(&itv->pdev->dev, itv->udma.SGlist,
++			     itv->udma.page_count, DMA_TO_DEVICE);
+ 	}
+ 
+ 	for (i = 0; i < IVTV_DMA_SG_OSD_ENT; i++) {
+--- a/drivers/media/pci/ivtv/ivtv-yuv.c
++++ b/drivers/media/pci/ivtv/ivtv-yuv.c
+@@ -113,7 +113,8 @@ static int ivtv_yuv_prep_user_dma(struct
+ 		dma->page_count = 0;
+ 		return -ENOMEM;
+ 	}
+-	dma->SG_length = pci_map_sg(itv->pdev, dma->SGlist, dma->page_count, PCI_DMA_TODEVICE);
++	dma->SG_length = dma_map_sg(&itv->pdev->dev, dma->SGlist,
++				    dma->page_count, DMA_TO_DEVICE);
+ 
+ 	/* Fill SG Array with new values */
+ 	ivtv_udma_fill_sg_array(dma, y_buffer_offset, uv_buffer_offset, y_size);
+@@ -920,7 +921,9 @@ static void ivtv_yuv_init(struct ivtv *i
+ 	/* We need a buffer for blanking when Y plane is offset - non-fatal if we can't get one */
+ 	yi->blanking_ptr = kzalloc(720 * 16, GFP_ATOMIC|__GFP_NOWARN);
+ 	if (yi->blanking_ptr) {
+-		yi->blanking_dmaptr = pci_map_single(itv->pdev, yi->blanking_ptr, 720*16, PCI_DMA_TODEVICE);
++		yi->blanking_dmaptr = dma_map_single(&itv->pdev->dev,
++						     yi->blanking_ptr,
++						     720 * 16, DMA_TO_DEVICE);
+ 	} else {
+ 		yi->blanking_dmaptr = 0;
+ 		IVTV_DEBUG_WARN("Failed to allocate yuv blanking buffer\n");
+@@ -1264,7 +1267,8 @@ void ivtv_yuv_close(struct ivtv *itv)
+ 	if (yi->blanking_ptr) {
+ 		kfree(yi->blanking_ptr);
+ 		yi->blanking_ptr = NULL;
+-		pci_unmap_single(itv->pdev, yi->blanking_dmaptr, 720*16, PCI_DMA_TODEVICE);
++		dma_unmap_single(&itv->pdev->dev, yi->blanking_dmaptr,
++				 720 * 16, DMA_TO_DEVICE);
+ 	}
+ 
+ 	/* Invalidate the old dimension information */
 
 
 
