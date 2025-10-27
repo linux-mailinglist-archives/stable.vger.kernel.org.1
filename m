@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-191238-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190637-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9459C111E3
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:35:37 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77EC7C109C9
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:12:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 55F7319A6BC9
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:31:57 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id AD5C2502688
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:06:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFFF1314B8F;
-	Mon, 27 Oct 2025 19:29:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93A6F32C943;
+	Mon, 27 Oct 2025 19:03:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kGiG/BAX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VG0gpmDs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D11330C62D;
-	Mon, 27 Oct 2025 19:29:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFD4D32D0C5;
+	Mon, 27 Oct 2025 19:03:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761593376; cv=none; b=YgKfs0htAdv443P1oEwOrnxnNrfitRqR4yDXG9Zs2BB3XdtBjdxoX0OfuFM4X+BcgE/+UbLSK62x/KoDRGIesSrq44MyZNdHMltP3s+3QBeHy9h3vHS8an/qcnssEEphiIn2S9FzgfOx5kIo4BLMfrbZgeC099enJaWp4o7M4Wg=
+	t=1761591803; cv=none; b=Cd+lUwRgDOLtPwmW2YU9/5ynrUPGpzpvGDudgKW29oi8OKMkXbveck/DFBwfGA8tK1ruGTaB0+eoLEpTIXNG+efygbDzwiDE+Mn2AesqtSxyd3KIWqaduSeoel7F6/Psl8XlXBsDfMV14FvGMBBcvBuqyjCOajgLPHMzUMmGijY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761593376; c=relaxed/simple;
-	bh=m4a0Oabl5TsXAZJT54G9r2Gfl3nIPVu44+g+30v8rhw=;
+	s=arc-20240116; t=1761591803; c=relaxed/simple;
+	bh=3W+Xp35AzNhXVDcjCbMH4C7LX1nkCk3jmYB4X4Yp4Jo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tRBu2+PTU2XohS/kwz3EBVSlPbPG62puhzEEeLSgD5bzQw6xNJREBiGgLY79DEAbyeQbP+4IYy19d9mOo5CmtHZb8A/P+d8nCRNoub21YJBeVIr4QG4zFH1JP9OLTfN0NN5xY0VPt7YTM4i8XGPAAGUvdqILP3/38zN0UNBAXqg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kGiG/BAX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C920C4CEF1;
-	Mon, 27 Oct 2025 19:29:35 +0000 (UTC)
+	 MIME-Version; b=NLW8phTlYFM11IutGDfTsW50L3sPe1Ckzkk9I6vMWxsyE0AD9ahh8MJKnJv7rh4D+ibunSG5L3jf3R38FiG4BSJSTrUeLEtwIVH9JL2nPbml9PirLgNAkKDzMEwWiROdKnJP89lF6aImcv8GFfCkrSVnQvJfsFSh2UyHpH49ySM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VG0gpmDs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7F46C4CEF1;
+	Mon, 27 Oct 2025 19:03:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761593376;
-	bh=m4a0Oabl5TsXAZJT54G9r2Gfl3nIPVu44+g+30v8rhw=;
+	s=korg; t=1761591803;
+	bh=3W+Xp35AzNhXVDcjCbMH4C7LX1nkCk3jmYB4X4Yp4Jo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kGiG/BAXba/ixn4umn/NOKcHO3DxY5cFwxFAERx2PI0xL2kHokFA32nlg1ft1mFjy
-	 2f+4Yr4OvTnhGLU6mYIGFY2+hh0nflEShgqhKavvpjglrtK16G22tC+ENO0MJVHN4D
-	 YkWTBaDCO0LhCxufaRYbDeNItl2tG4Ccm6ptAW58=
+	b=VG0gpmDseDfTR1OpXT/SprDZqVpNzeBLcISAuPRNKS3FNxxkNo1ml04vLKG+tNw/n
+	 9UK3X5WS8cKG+6kTlwM5T8M5MelVof5TqMTgjox6cOZm1GNad/+t3Sv0thTwMBsfsu
+	 HoUXbgYMxeovhK9nWb+/fXx92GaZcEbUSwceI/1s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gal Hammer <galhammer@gmail.com>,
-	Kurt Borja <kuurtb@gmail.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Subject: [PATCH 6.17 078/184] platform/x86: alienware-wmi-wmax: Fix NULL pointer dereference in sleep handlers
+	Xiao Liang <shaw.leon@gmail.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 307/332] padata: Reset next CPU when reorder sequence wraps around
 Date: Mon, 27 Oct 2025 19:36:00 +0100
-Message-ID: <20251027183517.003000400@linuxfoundation.org>
+Message-ID: <20251027183532.958690848@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
-References: <20251027183514.934710872@linuxfoundation.org>
+In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
+References: <20251027183524.611456697@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,53 +60,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kurt Borja <kuurtb@gmail.com>
+From: Xiao Liang <shaw.leon@gmail.com>
 
-commit a49c4d48c3b60926e6a8cec217bf95aa65388ecc upstream.
+[ Upstream commit 501302d5cee0d8e8ec2c4a5919c37e0df9abc99b ]
 
-Devices without the AWCC interface don't initialize `awcc`. Add a check
-before dereferencing it in sleep handlers.
+When seq_nr wraps around, the next reorder job with seq 0 is hashed to
+the first CPU in padata_do_serial(). Correspondingly, need reset pd->cpu
+to the first one when pd->processed wraps around. Otherwise, if the
+number of used CPUs is not a power of 2, padata_find_next() will be
+checking a wrong list, hence deadlock.
 
-Cc: stable@vger.kernel.org
-Reported-by: Gal Hammer <galhammer@gmail.com>
-Tested-by: Gal Hammer <galhammer@gmail.com>
-Fixes: 07ac275981b1 ("platform/x86: alienware-wmi-wmax: Add support for manual fan control")
-Signed-off-by: Kurt Borja <kuurtb@gmail.com>
-Link: https://patch.msgid.link/20251014-sleep-fix-v3-1-b5cb58da4638@gmail.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Fixes: 6fc4dbcf0276 ("padata: Replace delayed timer with immediate workqueue in padata_reorder")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Xiao Liang <shaw.leon@gmail.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+[ moved from padata_reorder() local variables to padata_find_next() using pd->processed and pd->cpu struct members ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/dell/alienware-wmi-wmax.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ kernel/padata.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/drivers/platform/x86/dell/alienware-wmi-wmax.c
-+++ b/drivers/platform/x86/dell/alienware-wmi-wmax.c
-@@ -1647,7 +1647,7 @@ static int wmax_wmi_probe(struct wmi_dev
+--- a/kernel/padata.c
++++ b/kernel/padata.c
+@@ -295,7 +295,11 @@ static struct padata_priv *padata_find_n
+ 	if (remove_object) {
+ 		list_del_init(&padata->list);
+ 		++pd->processed;
+-		pd->cpu = cpumask_next_wrap(cpu, pd->cpumask.pcpu, -1, false);
++		/* When sequence wraps around, reset to the first CPU. */
++		if (unlikely(pd->processed == 0))
++			pd->cpu = cpumask_first(pd->cpumask.pcpu);
++		else
++			pd->cpu = cpumask_next_wrap(cpu, pd->cpumask.pcpu, -1, false);
+ 	}
  
- static int wmax_wmi_suspend(struct device *dev)
- {
--	if (awcc->hwmon)
-+	if (awcc && awcc->hwmon)
- 		awcc_hwmon_suspend(dev);
- 
- 	return 0;
-@@ -1655,7 +1655,7 @@ static int wmax_wmi_suspend(struct devic
- 
- static int wmax_wmi_resume(struct device *dev)
- {
--	if (awcc->hwmon)
-+	if (awcc && awcc->hwmon)
- 		awcc_hwmon_resume(dev);
- 
- 	return 0;
+ 	spin_unlock(&reorder->lock);
 
 
 
