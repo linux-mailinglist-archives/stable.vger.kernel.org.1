@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-190784-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190564-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7A45C10C2B
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:18:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE115C108AF
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:09:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 3A493502724
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:12:35 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 47754505E58
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:04:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBD18329C60;
-	Mon, 27 Oct 2025 19:09:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B05E339B45;
+	Mon, 27 Oct 2025 19:00:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sr1SG/sH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cC/oYD1m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3087328639;
-	Mon, 27 Oct 2025 19:09:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06F50339B30;
+	Mon, 27 Oct 2025 19:00:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592187; cv=none; b=BKYvhKjSHt9voxitXIPWz+fyf0QbwjqBnsUl3zrlLGSzhbn7sA9AKVlUo74gXtpOPhyEEGyUXxKiubodh4d2ujixMP1T3L32+TsxtxlP7B29YaOaQBWnNu+OMeoWQ86h+Yu6fpA4O0QaUS9u5Q5xPQMnOqGhm7klzjKDLXQ6zR0=
+	t=1761591620; cv=none; b=mmLL7MnuwD9b/wvvYrKcTMi3zK0whjTEHs3PqZBtyWLtD55MypDJvXqS4UugJekJUMblOOreulB8T+CCSwSFPEao/DXiq5kE6X6wMOZqdFeM7424lc5+OYfnUKhMC5owilcTQZU6Zg5y+V8UlVFs7OVLsVPNarTeHsQaizIhE7k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592187; c=relaxed/simple;
-	bh=Jk3vk0WkVz8Mc5jvmhDayM0C3ycd1mmFjoRFrDlT3uY=;
+	s=arc-20240116; t=1761591620; c=relaxed/simple;
+	bh=As7LL+nhcFgc5OR+ze0oVGgHpYvKhO8LnbBiY1V2aH0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PV32yjD1KruogGcrgb8NV5eOMna3EmbfCNWy1ijgcfmK9TpyZMngHLdE/tAqk0z8HCO0oVtvbeYJG9Uc3gnnzUzKZI9e5gbaZoqpEk37kzX3NW21SSJUSVKGpJtQDFEXGJiM0rnSh1HYJ5ccGhXccp0tZ6y5Dx2RrC8tM47ZvZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sr1SG/sH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A05FC4CEF1;
-	Mon, 27 Oct 2025 19:09:47 +0000 (UTC)
+	 MIME-Version; b=l43ny4+x9BJLcFs68FS5Rb/GVTyHPuEEMFfYTs3/2n4gX+4H9KtdJi2a8oFZWxSlsU53FjQQRPVjynv78p3GzNUImWrYLXNMDXVs+qct3B3QCtdDydvzCKY75DCLrZKfK2AhYwluiLomX6Ci0mJ3B59HIk8AXjlfVa8l06X8WAc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cC/oYD1m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86D2AC4CEF1;
+	Mon, 27 Oct 2025 19:00:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592187;
-	bh=Jk3vk0WkVz8Mc5jvmhDayM0C3ycd1mmFjoRFrDlT3uY=;
+	s=korg; t=1761591619;
+	bh=As7LL+nhcFgc5OR+ze0oVGgHpYvKhO8LnbBiY1V2aH0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sr1SG/sHJchR/DqJ/FUBlMIXRU08PCrFdd6+m3YiV7KyIEXxVcAs8Mz5z8G6uQRkg
-	 5EcAlR8lMZtIgkCYUev67Qt5Erc2Ygmb+RUyKHyr0UDFaCfNqln2ygdZniZwMf1n0X
-	 5iaDvqLzcmniKvyXqXdW1TeJKEcdcuIEjFLwOl2A=
+	b=cC/oYD1mwhAe7CStOvG0QvQi0h6yvKLng7+9vEM3zxzoQl3L0zqielLTBi6XYdLcc
+	 uXKiVkQMUpjktq6HsoHgAQTHxYtFfljiGJFdPXluhGkqgVcXpPuR670uIn+yUFEcb3
+	 q3FX5vQEG/2oOWtLT2FbYQ4S/ttwuZJwtmgjmr3A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Anna-Maria Behnsen <anna-maria@linutronix.de>,
-	Jeongjun Park <aha310510@gmail.com>
-Subject: [PATCH 6.1 027/157] timers: Replace BUG_ON()s
+	Ma Ke <make24@iscas.ac.cn>,
+	Sean Young <sean@mess.org>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 235/332] media: lirc: Fix error handling in lirc_register()
 Date: Mon, 27 Oct 2025 19:34:48 +0100
-Message-ID: <20251027183502.013783510@linuxfoundation.org>
+Message-ID: <20251027183531.024178741@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
-References: <20251027183501.227243846@linuxfoundation.org>
+In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
+References: <20251027183524.611456697@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,77 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Ma Ke <make24@iscas.ac.cn>
 
-[ Upstream commit 82ed6f7ef58f9634fe4462dd721902c580f01569 ]
+[ Upstream commit 4f4098c57e139ad972154077fb45c3e3141555dd ]
 
-The timer code still has a few BUG_ON()s left which are crashing the kernel
-in situations where it still can recover or simply refuse to take an
-action.
+When cdev_device_add() failed, calling put_device() to explicitly
+release dev->lirc_dev. Otherwise, it could cause the fault of the
+reference count.
 
-Remove the one in the hotplug callback which checks for the CPU being
-offline. If that happens then the whole hotplug machinery will explode in
-colourful ways.
+Found by code review.
 
-Replace the rest with WARN_ON_ONCE() and conditional returns where
-appropriate.
-
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Guenter Roeck <linux@roeck-us.net>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Reviewed-by: Anna-Maria Behnsen <anna-maria@linutronix.de>
-Link: https://lore.kernel.org/r/20221123201624.769128888@linutronix.de
-Signed-off-by: Jeongjun Park <aha310510@gmail.com>
+Cc: stable@vger.kernel.org
+Fixes: a6ddd4fecbb0 ("media: lirc: remove last remnants of lirc kapi")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Signed-off-by: Sean Young <sean@mess.org>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/time/timer.c |   11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ drivers/media/rc/lirc_dev.c |    9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
---- a/kernel/time/timer.c
-+++ b/kernel/time/timer.c
-@@ -1208,7 +1208,8 @@ EXPORT_SYMBOL(timer_reduce);
-  */
- void add_timer(struct timer_list *timer)
- {
--	BUG_ON(timer_pending(timer));
-+	if (WARN_ON_ONCE(timer_pending(timer)))
-+		return;
- 	__mod_timer(timer, timer->expires, MOD_TIMER_NOTPENDING);
- }
- EXPORT_SYMBOL(add_timer);
-@@ -1227,7 +1228,8 @@ void add_timer_on(struct timer_list *tim
- 	struct timer_base *new_base, *base;
- 	unsigned long flags;
+--- a/drivers/media/rc/lirc_dev.c
++++ b/drivers/media/rc/lirc_dev.c
+@@ -747,11 +747,11 @@ int lirc_register(struct rc_dev *dev)
  
--	BUG_ON(timer_pending(timer) || !timer->function);
-+	if (WARN_ON_ONCE(timer_pending(timer) || !timer->function))
-+		return;
+ 	cdev_init(&dev->lirc_cdev, &lirc_fops);
  
- 	new_base = get_timer_cpu_base(timer->flags, cpu);
- 
-@@ -2047,8 +2049,6 @@ int timers_dead_cpu(unsigned int cpu)
- 	struct timer_base *new_base;
- 	int b, i;
- 
--	BUG_ON(cpu_online(cpu));
++	get_device(&dev->dev);
++
+ 	err = cdev_device_add(&dev->lirc_cdev, &dev->lirc_dev);
+ 	if (err)
+-		goto out_ida;
 -
- 	for (b = 0; b < NR_BASES; b++) {
- 		old_base = per_cpu_ptr(&timer_bases[b], cpu);
- 		new_base = get_cpu_ptr(&timer_bases[b]);
-@@ -2065,7 +2065,8 @@ int timers_dead_cpu(unsigned int cpu)
- 		 */
- 		forward_timer_base(new_base);
+-	get_device(&dev->dev);
++		goto out_put_device;
  
--		BUG_ON(old_base->running_timer);
-+		WARN_ON_ONCE(old_base->running_timer);
-+		old_base->running_timer = NULL;
+ 	switch (dev->driver_type) {
+ 	case RC_DRIVER_SCANCODE:
+@@ -775,7 +775,8 @@ int lirc_register(struct rc_dev *dev)
  
- 		for (i = 0; i < WHEEL_SIZE; i++)
- 			migrate_timer_list(new_base, old_base->vectors + i);
+ 	return 0;
+ 
+-out_ida:
++out_put_device:
++	put_device(&dev->lirc_dev);
+ 	ida_free(&lirc_ida, minor);
+ 	return err;
+ }
 
 
 
