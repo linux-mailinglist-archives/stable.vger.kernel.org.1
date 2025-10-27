@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-190629-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190761-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 707D4C1090C
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:10:19 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 481AFC10BA7
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:17:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3EAB01A250F5
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:06:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A6113580B19
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:11:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71869329C41;
-	Mon, 27 Oct 2025 19:03:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC3BA31B80E;
+	Mon, 27 Oct 2025 19:08:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iuu+/Zwl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EOJ+QtrW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EEF82F8BD1;
-	Mon, 27 Oct 2025 19:03:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67EFC2D6E70;
+	Mon, 27 Oct 2025 19:08:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591785; cv=none; b=u6s5RYh0EDHFSy8U5CoLeFQtfaX9O0pKbduEHN2iTGD/wSpIzZnGb7Gl8xZP/tAtzoquhg4EbHCnz+9K+cFPVgGRNgs/2QtOO2KjV2q8WfW0Asin3qjQRBxvQXU2PI7AWSkjSir0+a2NdUFtcLLj3HXbmPcu2iTs6nSjPxnFO1A=
+	t=1761592128; cv=none; b=NovoUF5c9N6F8HM1CW5IaX0Mf4PPqNzdZxMuw18BzE/bkQYBmifxx1AKJw/nK0qJb/wJqvmOQMkiZAiQRUodGCiAbyqrBVp6mKiHhMTe5dHjd2gZNLl5mO9Yq3WLvZ1XvkHKHhOg3BhBbW1zOqqIrg8pNZ6r6TvyJMLKtviZgQ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591785; c=relaxed/simple;
-	bh=1b9thl9ghh5YWJz4rKdfbM6pAfaWY3jhCh40zr4kdAI=;
+	s=arc-20240116; t=1761592128; c=relaxed/simple;
+	bh=1TsHgw3UBX/dEKgE+fRb+VdrVraqadrdYwstlUJ//ss=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=as4aGNG5mdUSIwz0FrGEuHh4toTEIpKAMGNh1zoJrg7JmfOf1Gnaj/zdxKwh5uJHqbjabP3+42CnrCi6j2JJhJZHhqKuK+pIXaq2LaSnoCukmNkp8uthiB3PWHNK12SRPCFwJbpcEZTOUVOfEUgiMVEb0830QMX5dmgf/Pp+wt8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iuu+/Zwl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B70D6C4CEF1;
-	Mon, 27 Oct 2025 19:03:04 +0000 (UTC)
+	 MIME-Version:Content-Type; b=JikScMkWG9rGYXZqs3IYsF72VxQMDuwC2YtU5aqGHG6Ugj7xIwOMUjF8jDpl3tg/1CCKFiuEjFMABxABkVPBmsghpA+/WtZGQy4DDRnz1f3aC7PmUu41dUwI/JFZWsJuKGyar29vF7F7xhmHLcCqIDNGqOFC/Gbka4HPrGE8vvU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EOJ+QtrW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FD0AC4CEF1;
+	Mon, 27 Oct 2025 19:08:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591785;
-	bh=1b9thl9ghh5YWJz4rKdfbM6pAfaWY3jhCh40zr4kdAI=;
+	s=korg; t=1761592127;
+	bh=1TsHgw3UBX/dEKgE+fRb+VdrVraqadrdYwstlUJ//ss=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iuu+/ZwlR9RsQep7M9IXfL5oZsmNEOOjIgHXZ+swiP8nGL5J7/7w5KIkttItD5dld
-	 5BdRqykv8e30o8MVHWCZAUeZ9/iOiDO67uq2JwpyUS2CNTaOlF2yuXNFuSVWmolXY/
-	 GwfsTYo06RfQgpcoT9/bKrGW2Mdv5sRkMHxOSN7U=
+	b=EOJ+QtrWr7ih1HYTS5MoEhdZNyeUtlQWq3iE1G+o+vLNV4KyEv9fCEW0qaBeJw5EP
+	 89KRAb+38aohIhBNTFGtfYpE9Q7TMyRT3PTY80V1gn892vBu/CafisOGC9ftHPijkF
+	 /cJ6iKcOgCB0JoPQJFQ7UFGVkzooq4jF9dI+L4o0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Kaushlendra Kumar <kaushlendra.kumar@intel.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 329/332] arch_topology: Fix incorrect error check in topology_parse_cpu_capacity()
+Subject: [PATCH 5.15 102/123] PCI: j721e: Enable ACSPCIE Refclk if "ti,syscon-acspcie-proxy-ctrl" exists
 Date: Mon, 27 Oct 2025 19:36:22 +0100
-Message-ID: <20251027183533.579869547@linuxfoundation.org>
+Message-ID: <20251027183449.118782130@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
-References: <20251027183524.611456697@linuxfoundation.org>
+In-Reply-To: <20251027183446.381986645@linuxfoundation.org>
+References: <20251027183446.381986645@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,57 +61,99 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
+From: Siddharth Vadapalli <s-vadapalli@ti.com>
 
-[ Upstream commit 2eead19334516c8e9927c11b448fbe512b1f18a1 ]
+[ Upstream commit 82c4be4168e26a5593aaa1002b5678128a638824 ]
 
-Fix incorrect use of PTR_ERR_OR_ZERO() in topology_parse_cpu_capacity()
-which causes the code to proceed with NULL clock pointers. The current
-logic uses !PTR_ERR_OR_ZERO(cpu_clk) which evaluates to true for both
-valid pointers and NULL, leading to potential NULL pointer dereference
-in clk_get_rate().
+The ACSPCIE module is capable of driving the reference clock required by
+the PCIe Endpoint device. It is an alternative to on-board and external
+reference clock generators. Enabling the output from the ACSPCIE module's
+PAD IO Buffers requires clearing the "PAD IO disable" bits of the
+ACSPCIE_PROXY_CTRL register in the CTRL_MMR register space.
 
-Per include/linux/err.h documentation, PTR_ERR_OR_ZERO(ptr) returns:
-"The error code within @ptr if it is an error pointer; 0 otherwise."
+Add support to enable the ACSPCIE reference clock output using the optional
+device-tree property "ti,syscon-acspcie-proxy-ctrl".
 
-This means PTR_ERR_OR_ZERO() returns 0 for both valid pointers AND NULL
-pointers. Therefore !PTR_ERR_OR_ZERO(cpu_clk) evaluates to true (proceed)
-when cpu_clk is either valid or NULL, causing clk_get_rate(NULL) to be
-called when of_clk_get() returns NULL.
-
-Replace with !IS_ERR_OR_NULL(cpu_clk) which only proceeds for valid
-pointers, preventing potential NULL pointer dereference in clk_get_rate().
-
-Cc: stable <stable@kernel.org>
-Signed-off-by: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
-Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
-Fixes: b8fe128dad8f ("arch_topology: Adjust initial CPU capacities with current freq")
-Link: https://patch.msgid.link/20250923174308.1771906-1-kaushlendra.kumar@intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-[ Adjust context ]
+Link: https://lore.kernel.org/linux-pci/20240829105316.1483684-3-s-vadapalli@ti.com
+Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Stable-dep-of: f842d3313ba1 ("PCI: j721e: Fix programming sequence of "strap" settings")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/base/arch_topology.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pci/controller/cadence/pci-j721e.c |   39 ++++++++++++++++++++++++++++-
+ 1 file changed, 38 insertions(+), 1 deletion(-)
 
---- a/drivers/base/arch_topology.c
-+++ b/drivers/base/arch_topology.c
-@@ -196,7 +196,7 @@ bool __init topology_parse_cpu_capacity(
- 		 * frequency (by keeping the initial freq_factor value).
- 		 */
- 		cpu_clk = of_clk_get(cpu_node, 0);
--		if (!PTR_ERR_OR_ZERO(cpu_clk)) {
-+		if (!IS_ERR_OR_NULL(cpu_clk)) {
- 			per_cpu(freq_factor, cpu) =
- 				clk_get_rate(cpu_clk) / 1000;
- 			clk_put(cpu_clk);
+--- a/drivers/pci/controller/cadence/pci-j721e.c
++++ b/drivers/pci/controller/cadence/pci-j721e.c
+@@ -46,6 +46,7 @@ enum link_status {
+ #define LANE_COUNT_MASK			BIT(8)
+ #define LANE_COUNT(n)			((n) << 8)
+ 
++#define ACSPCIE_PAD_DISABLE_MASK	GENMASK(1, 0)
+ #define GENERATION_SEL_MASK		GENMASK(1, 0)
+ 
+ #define MAX_LANES			2
+@@ -218,6 +219,36 @@ static int j721e_pcie_set_lane_count(str
+ 	return ret;
+ }
+ 
++static int j721e_enable_acspcie_refclk(struct j721e_pcie *pcie,
++				       struct regmap *syscon)
++{
++	struct device *dev = pcie->cdns_pcie->dev;
++	struct device_node *node = dev->of_node;
++	u32 mask = ACSPCIE_PAD_DISABLE_MASK;
++	struct of_phandle_args args;
++	u32 val;
++	int ret;
++
++	ret = of_parse_phandle_with_fixed_args(node,
++					       "ti,syscon-acspcie-proxy-ctrl",
++					       1, 0, &args);
++	if (ret) {
++		dev_err(dev,
++			"ti,syscon-acspcie-proxy-ctrl has invalid arguments\n");
++		return ret;
++	}
++
++	/* Clear PAD IO disable bits to enable refclk output */
++	val = ~(args.args[0]);
++	ret = regmap_update_bits(syscon, 0, mask, val);
++	if (ret) {
++		dev_err(dev, "failed to enable ACSPCIE refclk: %d\n", ret);
++		return ret;
++	}
++
++	return 0;
++}
++
+ static int j721e_pcie_ctrl_init(struct j721e_pcie *pcie)
+ {
+ 	struct device *dev = pcie->dev;
+@@ -257,7 +288,13 @@ static int j721e_pcie_ctrl_init(struct j
+ 		return ret;
+ 	}
+ 
+-	return 0;
++	/* Enable ACSPCIE refclk output if the optional property exists */
++	syscon = syscon_regmap_lookup_by_phandle_optional(node,
++						"ti,syscon-acspcie-proxy-ctrl");
++	if (!syscon)
++		return 0;
++
++	return j721e_enable_acspcie_refclk(pcie, syscon);
+ }
+ 
+ static int cdns_ti_pcie_config_read(struct pci_bus *bus, unsigned int devfn,
 
 
 
