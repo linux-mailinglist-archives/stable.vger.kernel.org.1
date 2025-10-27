@@ -1,65 +1,62 @@
-Return-Path: <stable+bounces-190876-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190717-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E160C10D75
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:21:54 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF8BBC10AE9
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:15:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B4553505C02
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:15:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 794B4567584
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:09:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E32AB321434;
-	Mon, 27 Oct 2025 19:13:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2D87329C55;
+	Mon, 27 Oct 2025 19:06:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r9DI4hEk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="khbEqMQK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E31930F526;
-	Mon, 27 Oct 2025 19:13:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E5C22D5A14;
+	Mon, 27 Oct 2025 19:06:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592431; cv=none; b=ArHPYHkYyVQ45h/uaBh27CFid4xIjURwPdiU0cisUvO81QT3jl4iNGDFLq7wWPqbLX/U3bk5tvWI29tZj76KKAy7WMZNwSNvRV5RkWWrVEmUWrikoPEjQtS+owKjKG2cSFfsovF7rg+SS7ByU/6ka/1gJlcbMT2mQcjWz7Js/Pk=
+	t=1761592010; cv=none; b=uiZRJ+WirTKd7YqiClrfYwT4xUN50tXrB87xZg8Qbdc2c5JVLaLm2gpwes/Y/ayaLAq58Q3uSkK/UJmQvHmu/oKH3N4z2rb6kwawccpESiCAwduWx0vjw8c/hVY+x2nzmaRNm9mXZXx0zM3OE/11wif0WXonKiXuBO6dIeyO4EE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592431; c=relaxed/simple;
-	bh=bMimpoJlR+P0WrJFlVcbVT1/JxN3rw+nSMPMAhbBmQM=;
+	s=arc-20240116; t=1761592010; c=relaxed/simple;
+	bh=h1JlbebYpZhj8OZ34iimeet0I1BiA4JOoBbHtATM9WE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A3MIs9vRtNR1WbUOQn4278Ldqq9ZQRoMYuvwrsFv6dxMdm7ngBpLlDlDK9aana8y0k3w3MPz0f3yVcO0Gi37mj5vfCB03jYQOBkWTVwBoiHALtBNAKGubL3q6k2epZ5Xo9EHH2O9MXkdmuU/mTu3N5PurVqZzjuFtCI7j3Ve/ew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r9DI4hEk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C749C4CEF1;
-	Mon, 27 Oct 2025 19:13:51 +0000 (UTC)
+	 MIME-Version; b=o7eQJIbGYdnikWB7Fmd+R1B6z5oKHWk57qqiBCWERFi3WRir0V4baz9b33gNyKmU6p1aaj2ac3b7EVDejn73MHez5X6VHzHExQSWyIcrFWvPdfiYxNVF7G8hd2GY67ek5uKVM8MQemPOyhVhqsioMhpLlNt77wCKwdQxupKUXaw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=khbEqMQK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E9CCC4CEF1;
+	Mon, 27 Oct 2025 19:06:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592431;
-	bh=bMimpoJlR+P0WrJFlVcbVT1/JxN3rw+nSMPMAhbBmQM=;
+	s=korg; t=1761592010;
+	bh=h1JlbebYpZhj8OZ34iimeet0I1BiA4JOoBbHtATM9WE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r9DI4hEkFXiQqyhAidHrVMR24297TydLQXyJr4qr/CiVWWORTJ9Q4B+7y19jS0ggS
-	 azBwFo9ZHJqpPRLVWiMiaYvqrA8Jq0CoGpSP80MCyI/VUdurBzSJ3Hpec8eerHmt7I
-	 qD2EW1j+QwyDq0DnStA6Ur6/YMomnwFlG8Tb+fIQ=
+	b=khbEqMQKwEiOEtf9XMr4OCroylKYHY347vdf6AFuLXwErVaJTcCFYdXjCLrzjoKVr
+	 /alLvIdETYzK5celIHTtjQYepP8dIQVS9R8Bcl2mPM/Kc/AxWuYkYcJJbOJeG83P9T
+	 uMuVICPk/qwiCKuQbSDdoLjRCAb+tX9s0N+P/E6Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Huang Ying <ying.huang@linux.alibaba.com>,
-	Will Deacon <will@kernel.org>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Gavin Shan <gshan@redhat.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Yicong Yang <yangyicong@hisilicon.com>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 085/157] arm64, mm: avoid always making PTE dirty in pte_mkwrite()
+	Deepanshu Kartikey <kartikey406@gmail.com>,
+	syzbot+6fdd8fa3380730a4b22c@syzkaller.appspotmail.com,
+	Mark Fasheh <mark@fasheh.com>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Jun Piao <piaojun@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.15 066/123] ocfs2: clear extent cache after moving/defragmenting extents
 Date: Mon, 27 Oct 2025 19:35:46 +0100
-Message-ID: <20251027183503.554043304@linuxfoundation.org>
+Message-ID: <20251027183448.164375099@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
-References: <20251027183501.227243846@linuxfoundation.org>
+In-Reply-To: <20251027183446.381986645@linuxfoundation.org>
+References: <20251027183446.381986645@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,76 +68,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huang Ying <ying.huang@linux.alibaba.com>
+From: Deepanshu Kartikey <kartikey406@gmail.com>
 
-[ Upstream commit 143937ca51cc6ae2fccc61a1cb916abb24cd34f5 ]
+commit 78a63493f8e352296dbc7cb7b3f4973105e8679e upstream.
 
-Current pte_mkwrite_novma() makes PTE dirty unconditionally.  This may
-mark some pages that are never written dirty wrongly.  For example,
-do_swap_page() may map the exclusive pages with writable and clean PTEs
-if the VMA is writable and the page fault is for read access.
-However, current pte_mkwrite_novma() implementation always dirties the
-PTE.  This may cause unnecessary disk writing if the pages are
-never written before being reclaimed.
+The extent map cache can become stale when extents are moved or
+defragmented, causing subsequent operations to see outdated extent flags.
+This triggers a BUG_ON in ocfs2_refcount_cal_cow_clusters().
 
-So, change pte_mkwrite_novma() to clear the PTE_RDONLY bit only if the
-PTE_DIRTY bit is set to make it possible to make the PTE writable and
-clean.
+The problem occurs when:
+1. copy_file_range() creates a reflinked extent with OCFS2_EXT_REFCOUNTED
+2. ioctl(FITRIM) triggers ocfs2_move_extents()
+3. __ocfs2_move_extents_range() reads and caches the extent (flags=0x2)
+4. ocfs2_move_extent()/ocfs2_defrag_extent() calls __ocfs2_move_extent()
+   which clears OCFS2_EXT_REFCOUNTED flag on disk (flags=0x0)
+5. The extent map cache is not invalidated after the move
+6. Later write() operations read stale cached flags (0x2) but disk has
+   updated flags (0x0), causing a mismatch
+7. BUG_ON(!(rec->e_flags & OCFS2_EXT_REFCOUNTED)) triggers
 
-The current behavior was introduced in commit 73e86cb03cf2 ("arm64:
-Move PTE_RDONLY bit handling out of set_pte_at()").  Before that,
-pte_mkwrite() only sets the PTE_WRITE bit, while set_pte_at() only
-clears the PTE_RDONLY bit if both the PTE_WRITE and the PTE_DIRTY bits
-are set.
+Fix by clearing the extent map cache after each extent move/defrag
+operation in __ocfs2_move_extents_range().  This ensures subsequent
+operations read fresh extent data from disk.
 
-To test the performance impact of the patch, on an arm64 server
-machine, run 16 redis-server processes on socket 1 and 16
-memtier_benchmark processes on socket 0 with mostly get
-transactions (that is, redis-server will mostly read memory only).
-The memory footprint of redis-server is larger than the available
-memory, so swap out/in will be triggered.  Test results show that the
-patch can avoid most swapping out because the pages are mostly clean.
-And the benchmark throughput improves ~23.9% in the test.
-
-Fixes: 73e86cb03cf2 ("arm64: Move PTE_RDONLY bit handling out of set_pte_at()")
-Signed-off-by: Huang Ying <ying.huang@linux.alibaba.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: Anshuman Khandual <anshuman.khandual@arm.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Gavin Shan <gshan@redhat.com>
-Cc: Ard Biesheuvel <ardb@kernel.org>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Yicong Yang <yangyicong@hisilicon.com>
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-kernel@vger.kernel.org
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lore.kernel.org/all/20251009142917.517229-1-kartikey406@gmail.com/T/
+Link: https://lkml.kernel.org/r/20251009154903.522339-1-kartikey406@gmail.com
+Fixes: 53069d4e7695 ("Ocfs2/move_extents: move/defrag extents within a certain range.")
+Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
+Reported-by: syzbot+6fdd8fa3380730a4b22c@syzkaller.appspotmail.com
+Tested-by: syzbot+6fdd8fa3380730a4b22c@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?id=2959889e1f6e216585ce522f7e8bc002b46ad9e7
+Reviewed-by: Mark Fasheh <mark@fasheh.com>
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/include/asm/pgtable.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/ocfs2/move_extents.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
-index 426c3cb3e3bb1..62326f249aa71 100644
---- a/arch/arm64/include/asm/pgtable.h
-+++ b/arch/arm64/include/asm/pgtable.h
-@@ -183,7 +183,8 @@ static inline pmd_t set_pmd_bit(pmd_t pmd, pgprot_t prot)
- static inline pte_t pte_mkwrite(pte_t pte)
- {
- 	pte = set_pte_bit(pte, __pgprot(PTE_WRITE));
--	pte = clear_pte_bit(pte, __pgprot(PTE_RDONLY));
-+	if (pte_sw_dirty(pte))
-+		pte = clear_pte_bit(pte, __pgprot(PTE_RDONLY));
- 	return pte;
- }
+--- a/fs/ocfs2/move_extents.c
++++ b/fs/ocfs2/move_extents.c
+@@ -868,6 +868,11 @@ static int __ocfs2_move_extents_range(st
+ 			mlog_errno(ret);
+ 			goto out;
+ 		}
++		/*
++		 * Invalidate extent cache after moving/defragging to prevent
++		 * stale cached data with outdated extent flags.
++		 */
++		ocfs2_extent_map_trunc(inode, cpos);
  
--- 
-2.51.0
-
+ 		context->clusters_moved += alloc_size;
+ next:
 
 
 
