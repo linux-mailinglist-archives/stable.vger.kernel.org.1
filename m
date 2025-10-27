@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-191007-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191094-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C05F4C10F80
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:27:54 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA8D7C110AE
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:31:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 741705834FF
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:20:54 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 26F0B504B90
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:24:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DE4E320CA8;
-	Mon, 27 Oct 2025 19:19:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F3C51FBC92;
+	Mon, 27 Oct 2025 19:23:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d7tqWJaQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HOuzuOv/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE12531BCBC;
-	Mon, 27 Oct 2025 19:19:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAFC6304BD3;
+	Mon, 27 Oct 2025 19:23:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592771; cv=none; b=cOqBlkAg2bZxMI/RIr0GeXRX6LjMyBFP/SGqvUESC+0l7w5jKzONto0A5f3Zi5eFFparShI2mrMwBGbdozVebo5Rix8lDyAF4g+CAV201ffYyAjL55A/nIKanQhiZccrxYHcX4QSNoUfz/3M49GK5Wf+EG3VQeQD52wlCRGi4jU=
+	t=1761592991; cv=none; b=pEsY1wMpsi2084ZCLRa5DMyGzNlpeMETJqUr2EidH6Jubw2L1hQ7E8V9kKdNdJkJBcHg8xY0xC3XQk9BmROeVxrhOmeARIg0pgible5XgReLSQYA65zF+uMJHwhMka/enKf3fSL+JAouHCnrM83k0rWMDU+61K9lLP8Q1tj5a5A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592771; c=relaxed/simple;
-	bh=XNfPsptp+osDJFegjYd457oaiqFL48/7AgTnuTxOamw=;
+	s=arc-20240116; t=1761592991; c=relaxed/simple;
+	bh=THiRIQoHt0UbS1XgfdZqNN1+GdX9sH1Gtw6czyjDlIg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l7nY2lOHw9+C8PTURKMN6W9vwpdYIArNWkBhiE60rr0EzHj4iittPCLeTkGl88mtSpzc9D8wLDSH3gMwOVe5wiNdjY7mimcO5a1oR3wUzhx87hosPQ1hyVuJwzmPv13FTUFNtIx/0QvSNoRe9oj2POQbs1LvZdkn0+zQMIIWZ84=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d7tqWJaQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C29CC4CEF1;
-	Mon, 27 Oct 2025 19:19:31 +0000 (UTC)
+	 MIME-Version; b=IDBU7NZHWOvMYx/azIarEFgfhJmPRR/6rZEGGPU/f844OiccQf63T3jx2ilx9Y46Jh5ioNOdgy2dXy2vTrC9GgGiGmIZbVEWlXYnz/els724yrzGsET8Zec3OsxAkC1s5GAm+TIo8PtjQfnc3KIGoFIeiBlef3tlsuM/L0FUU8U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HOuzuOv/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4E70C4CEF1;
+	Mon, 27 Oct 2025 19:23:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592771;
-	bh=XNfPsptp+osDJFegjYd457oaiqFL48/7AgTnuTxOamw=;
+	s=korg; t=1761592991;
+	bh=THiRIQoHt0UbS1XgfdZqNN1+GdX9sH1Gtw6czyjDlIg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d7tqWJaQlXB8o2oECfrD7E5lhnlSNw9U2GawmzjJMyAer3KuC+kyCjeAhih9/iA7U
-	 KDGCfYDMQnggYNypU1dc9MyVGZiZhUerx55PVbYeS3V5i44vLS/ULb+EancK5Eqb59
-	 hgbvC1NNe3wtkMvDGN/AgqlcZLLy5mZjTQAt00WQ=
+	b=HOuzuOv/B0aFA+1/Nm89Wp0myx4nONhxGrvBWuSrC6m4DgqOum2VxKoheRF0MBvuV
+	 YRqEhgA4/D5HpaBbhpG8Z/pRrjME4r4hw173kiWxnB1DAJN5gkYArl184nuE8OaJyF
+	 FmTGqg9WLKT6C8aW8r4Z3bDhLlPfJn8itqdBGCAc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu-Ting Tseng <yutingtseng@google.com>,
-	Alice Ryhl <aliceryhl@google.com>
-Subject: [PATCH 6.6 66/84] binder: remove "invalid inc weak" check
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Eric Biggers <ebiggers@kernel.org>,
+	Breno Leitao <leitao@debian.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 089/117] sched: Remove never used code in mm_cid_get()
 Date: Mon, 27 Oct 2025 19:36:55 +0100
-Message-ID: <20251027183440.572114775@linuxfoundation.org>
+Message-ID: <20251027183456.432711613@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183438.817309828@linuxfoundation.org>
-References: <20251027183438.817309828@linuxfoundation.org>
+In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
+References: <20251027183453.919157109@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,60 +64,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alice Ryhl <aliceryhl@google.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-commit d90eeb8ecd227c204ab6c34a17b372bd950b7aa2 upstream.
+[ Upstream commit 53abe3e1c154628cc74e33a1bfcd865656e433a5 ]
 
-There are no scenarios where a weak increment is invalid on binder_node.
-The only possible case where it could be invalid is if the kernel
-delivers BR_DECREFS to the process that owns the node, and then
-increments the weak refcount again, effectively "reviving" a dead node.
+Clang is not happy with set but unused variable (this is visible
+with `make W=1` build:
 
-However, that is not possible: when the BR_DECREFS command is delivered,
-the kernel removes and frees the binder_node. The fact that you were
-able to call binder_inc_node_nilocked() implies that the node is not yet
-destroyed, which implies that BR_DECREFS has not been delivered to
-userspace, so incrementing the weak refcount is valid.
+  kernel/sched/sched.h:3744:18: error: variable 'cpumask' set but not used [-Werror,-Wunused-but-set-variable]
 
-Note that it's currently possible to trigger this condition if the owner
-calls BINDER_THREAD_EXIT while node->has_weak_ref is true. This causes
-BC_INCREFS on binder_ref instances to fail when they should not.
+It seems like the variable was never used along with the assignment
+that does not have side effects as far as I can see.  Remove those
+altogether.
 
-Cc: stable@vger.kernel.org
-Fixes: 457b9a6f09f0 ("Staging: android: add binder driver")
-Reported-by: Yu-Ting Tseng <yutingtseng@google.com>
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-Link: https://patch.msgid.link/20251015-binder-weak-inc-v1-1-7914b092c371@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 223baf9d17f2 ("sched: Fix performance regression introduced by mm_cid")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Tested-by: Eric Biggers <ebiggers@kernel.org>
+Reviewed-by: Breno Leitao <leitao@debian.org>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/android/binder.c |   11 +----------
- 1 file changed, 1 insertion(+), 10 deletions(-)
+ kernel/sched/sched.h | 2 --
+ 1 file changed, 2 deletions(-)
 
---- a/drivers/android/binder.c
-+++ b/drivers/android/binder.c
-@@ -846,17 +846,8 @@ static int binder_inc_node_nilocked(stru
- 	} else {
- 		if (!internal)
- 			node->local_weak_refs++;
--		if (!node->has_weak_ref && list_empty(&node->work.entry)) {
--			if (target_list == NULL) {
--				pr_err("invalid inc weak node for %d\n",
--					node->debug_id);
--				return -EINVAL;
--			}
--			/*
--			 * See comment above
--			 */
-+		if (!node->has_weak_ref && target_list && list_empty(&node->work.entry))
- 			binder_enqueue_work_ilocked(&node->work, target_list);
--		}
- 	}
- 	return 0;
- }
+diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
+index a441990fe808d..cf541c4502d92 100644
+--- a/kernel/sched/sched.h
++++ b/kernel/sched/sched.h
+@@ -3731,11 +3731,9 @@ static inline int __mm_cid_get(struct rq *rq, struct mm_struct *mm)
+ static inline int mm_cid_get(struct rq *rq, struct mm_struct *mm)
+ {
+ 	struct mm_cid __percpu *pcpu_cid = mm->pcpu_cid;
+-	struct cpumask *cpumask;
+ 	int cid;
+ 
+ 	lockdep_assert_rq_held(rq);
+-	cpumask = mm_cidmask(mm);
+ 	cid = __this_cpu_read(pcpu_cid->cid);
+ 	if (mm_cid_is_valid(cid)) {
+ 		mm_cid_snapshot_time(rq, mm);
+-- 
+2.51.0
+
 
 
 
