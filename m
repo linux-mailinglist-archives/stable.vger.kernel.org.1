@@ -1,63 +1,58 @@
-Return-Path: <stable+bounces-189994-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-189995-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94FCFC0E597
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 15:18:10 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7101C0E42B
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 15:09:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 38530461578
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 14:08:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F013419A2F01
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 14:10:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4BC730DD36;
-	Mon, 27 Oct 2025 14:06:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CA533101B6;
+	Mon, 27 Oct 2025 14:06:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qew9c9jJ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NjvchMdj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6637B30CDA0;
-	Mon, 27 Oct 2025 14:06:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 153CF30FF20;
+	Mon, 27 Oct 2025 14:06:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761573999; cv=none; b=G1zobqkK8e48apuq7EFVmma7nloVQycO6ql0j9Nd1OgVG/QdsOTIvIJUZVjzbobtwJmO9ebf6Z2QpXBVMo0SlPuMPkg6ji3PUk2xpLLyyRAGqJMoLZ8uC9KcEQbo9KIzCMDrnjUjzJOg69N36ErgIAT79LxSCU2Isx4J6Dt+Y+c=
+	t=1761574005; cv=none; b=DcvGKG1Uz5C4hJRAcoPBK0gB2GGv9FSfNq02pKJXT3B6EwLCggIXV0V5vy9I9VpKgcBM2PSiq8R9wuYWu2a9EGpWvl2ZNAxGPVX1EiCIkq2e6QkfLjVMfGSwv9uoZyYCObV7Ktc5IZ3PnPcEWelqJXAzyme1fyM2ZZziOP8S/SU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761573999; c=relaxed/simple;
-	bh=b/eAFThjMpzWZeJJoAe5hP8+7S7Q7G4nzKJj3iBtVNI=;
+	s=arc-20240116; t=1761574005; c=relaxed/simple;
+	bh=GzpiT56KBSBWsUtFmdMudRRj8LdJ2oSQeEs0Kv5Wqj0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lrNEE9eiyTmwasnr5ykSNsccUmWSvwTU/Efn2AryphVcsJDbBRHQrxz7WQUpT+sflElE4Aq147r5r27c/6dZEq54mOEN+70NcyD2CBahZy9SC1fKqzMEagzxURpEH235cBxTkR48CuKx4QHK4/U8eLTTcryTI4EGPyqPvc833WI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qew9c9jJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D5F7C116C6;
-	Mon, 27 Oct 2025 14:06:38 +0000 (UTC)
+	 MIME-Version:Content-Type; b=oOS90cthnUpzzf0M71CFO1p1PZe4V/mDaKRW7tUaAvnG/m0D62GxYxPLiGDJoSsCWmtM+7gLcC5hiGdDgvM0PHbLhf1uVzx3vz/MYaeU5vXGF9Ofo6uzPUtX4QIE/+kjHmsVgjIh/UMrcp1LCRkzMMVFOmZ1u8fZAnQlTlHm3gQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NjvchMdj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 821C4C113D0;
+	Mon, 27 Oct 2025 14:06:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761573999;
-	bh=b/eAFThjMpzWZeJJoAe5hP8+7S7Q7G4nzKJj3iBtVNI=;
+	s=k20201202; t=1761574005;
+	bh=GzpiT56KBSBWsUtFmdMudRRj8LdJ2oSQeEs0Kv5Wqj0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qew9c9jJ7L+FLFBJMi97WLJPncTHOd2nMeIUkXid8gPeQPX10+yJWWsE37O63zDQl
-	 a80q04U2MKNTDIVZZex6ZfVwHJ2ul/AZAV122L/J2mTuFsiLi+vqwrzuDMjX0FNt89
-	 uGFaLaNPU0gfTTzjjbVMd9ANMLt14DoECvJXhRNcvvOesbKIu08RLQjwG5bqFPN0zk
-	 Dp7dsANW9fSSPMsR6HGP+98NHtLUd0iI1T7Xmr+1lkyRBxU1S4FPQ82nMQjf/wlLLP
-	 HJXt41sdCFidNCbi0KrkQdTAyMiPqzyn8RE0m3WJcEOpSlf8DHzuODy1emCBwTtKc8
-	 MOI7+sce8nXlA==
+	b=NjvchMdjV0/NhVM6waJAAI0tG7qolGqH7YLhBIFbLZPQsso66EU66+h7/KsMfHv/R
+	 sQmhnJZmK4xXF9PbeY33iusG2+VjUb1cEvX2JvnRtT0CVmtowOHp9AM7loPa+nTGr8
+	 ZU6HzkDc41vaQD98NIsTJSejtZPpFJDQB91azQYrft3VRusnyx7mVdIcaEGIdRfLqz
+	 nlCsToxznHTNakqtJVmyyFjzJ0btmX6ktSTVqDDS43NlYJe5m5FPfS+1A2sKROoNTv
+	 l3rmfBiSp2iorrcZzJlLHOA+DZDv/bgqQvoD3knj9lUSfWlYRKKFQ0pyJ20T2y4D1C
+	 uXYGPOojSRYeA==
 From: Bjorn Andersson <andersson@kernel.org>
-To: Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Taniya Das <quic_tdas@quicinc.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Nathan Chancellor <nathan@kernel.org>
+To: Konrad Dybcio <konradybcio@kernel.org>,
+	Haotian Zhang <vulab@iscas.ac.cn>
 Cc: linux-arm-msm@vger.kernel.org,
-	linux-clk@vger.kernel.org,
-	patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: Re: [PATCH 0/2] Kconfig fixes for QCOM clk drivers when targeting ARCH=arm
-Date: Mon, 27 Oct 2025 09:09:13 -0500
-Message-ID: <176157405453.8818.5432788260760736209.b4-ty@kernel.org>
+Subject: Re: [PATCH] soc: qcom: gsbi: fix double disable caused by devm
+Date: Mon, 27 Oct 2025 09:09:18 -0500
+Message-ID: <176157405469.8818.1747544601110229644.b4-ty@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930-clk-qcom-kconfig-fixes-arm-v1-0-15ae1ae9ec9f@kernel.org>
-References: <20250930-clk-qcom-kconfig-fixes-arm-v1-0-15ae1ae9ec9f@kernel.org>
+In-Reply-To: <20251020160215.523-1-vulab@iscas.ac.cn>
+References: <20251020160215.523-1-vulab@iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -68,18 +63,24 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 
 
-On Tue, 30 Sep 2025 11:56:07 -0700, Nathan Chancellor wrote:
-> This series resolves two new Kconfig warnings that I see in my test
-> framework from an ARM configuration getting bumped to 6.17 and enabling
-> these configurations in the process.
+On Tue, 21 Oct 2025 00:02:15 +0800, Haotian Zhang wrote:
+> In the commit referenced by the Fixes tag, devm_clk_get_enabled() was
+> introduced to replace devm_clk_get() and clk_prepare_enable(). While
+> the clk_disable_unprepare() call in the error path was correctly
+> removed, the one in the remove function was overlooked, leading to a
+> double disable issue.
 > 
+> Remove the redundant clk_disable_unprepare() call from gsbi_remove()
+> to fix this issue. Since all resources are now managed by devres
+> and will be automatically released, the remove function serves no purpose
+> and can be deleted entirely.
+> 
+> [...]
 
 Applied, thanks!
 
-[1/2] clk: qcom: Fix SM_VIDEOCC_6350 dependencies
-      commit: f0691a3f7558d33b5b4a900e8312613fbe4afb9d
-[2/2] clk: qcom: Fix dependencies of QCS_{DISP,GPU,VIDEO}CC_615
-      commit: 7ec1ba01ae37897f0ecf6ab0c980378cb8a2f388
+[1/1] soc: qcom: gsbi: fix double disable caused by devm
+      commit: 2286e18e3937c69cc103308a8c1d4898d8a7b04f
 
 Best regards,
 -- 
