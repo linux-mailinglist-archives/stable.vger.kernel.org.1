@@ -1,70 +1,53 @@
-Return-Path: <stable+bounces-190530-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190492-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A96BC10813
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:08:07 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0651C107E0
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:07:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 1FEEF4FFD13
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:03:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BB67C561549
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:01:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 597B731D751;
-	Mon, 27 Oct 2025 18:58:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A61313254BC;
+	Mon, 27 Oct 2025 18:57:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ti/1nyfv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rgf0Bl8u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEB14320A00;
-	Mon, 27 Oct 2025 18:58:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61580325493;
+	Mon, 27 Oct 2025 18:57:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591531; cv=none; b=O8KkqSULVsFYlLN0BZJj1bnuvEChpePPjpitTXQHc9b9A5wbco59bKtnFaQvSWXPIvxt5N99HGpGd6wa7+nXHwcNhLhdQ8/pl3BxG5zxivlbLfjgCSFMPoqwhvwjqkLqW+S4uA8R6JY8+cvQgUJG95+tPdW+H57r3fxuiuJDbfs=
+	t=1761591431; cv=none; b=XVKaqf9FaBZvbQ4BIJTOL8oT91hWARMHP3qugxaa0MS8rFk/9j77RnfKbmnnkyLqffmsui8vMnkXGhRosZ+G3cSQnJ6FUNo2Ph4b4U/ZLY24dYrD5DV/WXZE/uz6YuR/4QEu/OXdObx14vC8TFPYtriOJI/6FHTZkNVavKTE6jA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591531; c=relaxed/simple;
-	bh=c+qDXSQQm6c3mutdKHQS8Z1Xl1+N/CDye03pg2SH9MY=;
+	s=arc-20240116; t=1761591431; c=relaxed/simple;
+	bh=cGRvibBMuBCOSCjPrC6I++jhvhwFiKfZ6U70QuD29M8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S7Ns4SstW665nhTBFvSgDcwpDGsADhdVcRAbG7tAgNv132OHm6FgpUMxenErhEh1AACx+yeGmeYVmE1cdthug7Jvi2GCE5Kkt/cLBztgdQQsFoRnXeSfhlSl/9/8cgWL31VSeG3J7/pE1JbD6+M3dTbtPju3Gci+D5EyTIUPqoE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ti/1nyfv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D52FC4CEF1;
-	Mon, 27 Oct 2025 18:58:50 +0000 (UTC)
+	 MIME-Version; b=ZLIAOaK9aL4gs5CFhKe+T2l0wzHkGp0eN63gz2hg8fG1kjdSIYowESqwc4oNVtkyqvNQ5CvTq02ruSu3hIvsmS8Acc9ZkuVZxbtwya0mjqE3Mcip7lNs6CZ/K8A6xiB6jBhTkFN91aJtNz7xufowlpdTrw17hCqP3gpODnrgM8Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rgf0Bl8u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA9E2C4CEF1;
+	Mon, 27 Oct 2025 18:57:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591530;
-	bh=c+qDXSQQm6c3mutdKHQS8Z1Xl1+N/CDye03pg2SH9MY=;
+	s=korg; t=1761591431;
+	bh=cGRvibBMuBCOSCjPrC6I++jhvhwFiKfZ6U70QuD29M8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ti/1nyfvOd6wy6xS+wydctU92UqLo+f5d6+pPbIgUgPnD519Omc1J6nA9KTiFwzry
-	 0dfn4NUTQ6rUsECrSudvW+22jzBMcwSJSR7U80Gsvwy8kQ//2zNsivPkVpDuFZKJZ9
-	 zWNUucqRBDpvV0dOK+E+LjTtSMAuzJG1F8VUzPrA=
+	b=rgf0Bl8uY2oA1+QKBh9xU/VUwKKP0KxuVdL7aWOI3gXoiMFcrM7qzLCYlI7awUVM2
+	 yGJwci+s20witFg1bH9W+3W2FvcyApK+/Di+KW49vMz9v+FBL4R/DUejKm9InvDJDx
+	 3jPXehVwCqGtOpMjuwVgoIoYW9Ud1aN5Ox/r0LeM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Isabella Basso <isabbasso@riseup.net>,
-	"Jason A. Donenfeld" <Jason@zx2c4.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Luc Van Oostenryck <luc.vanoostenryck@gmail.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	Sander Vanheule <sander@svanheule.net>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Yury Norov <yury.norov@gmail.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Kees Cook <keescook@chromium.org>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	David Sterba <dsterba@suse.com>,
 	Eliav Farber <farbere@amazon.com>
-Subject: [PATCH 5.10 194/332] overflow, tracing: Define the is_signed_type() macro once
-Date: Mon, 27 Oct 2025 19:34:07 +0100
-Message-ID: <20251027183529.816948999@linuxfoundation.org>
+Subject: [PATCH 5.10 195/332] btrfs: remove duplicated in_range() macro
+Date: Mon, 27 Oct 2025 19:34:08 +0100
+Message-ID: <20251027183529.850039237@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
 References: <20251027183524.611456697@linuxfoundation.org>
@@ -83,85 +66,68 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: Johannes Thumshirn <johannes.thumshirn@wdc.com>
 
-[ Upstream commit 92d23c6e94157739b997cacce151586a0d07bb8a ]
+[ Upstream commit cea628008fc8c6c9c7b53902f6659e040f33c790 ]
 
-There are two definitions of the is_signed_type() macro: one in
-<linux/overflow.h> and a second definition in <linux/trace_events.h>.
+The in_range() macro is defined twice in btrfs' source, once in ctree.h
+and once in misc.h.
 
-As suggested by Linus Torvalds, move the definition of the
-is_signed_type() macro into the <linux/compiler.h> header file. Change
-the definition of the is_signed_type() macro to make sure that it does
-not trigger any sparse warnings with future versions of sparse for
-bitwise types. See also:
-https://lore.kernel.org/all/CAHk-=whjH6p+qzwUdx5SOVVHjS3WvzJQr6mDUwhEyTf6pJWzaQ@mail.gmail.com/
-https://lore.kernel.org/all/CAHk-=wjQGnVfb4jehFR0XyZikdQvCZouE96xR_nnf5kqaM5qqQ@mail.gmail.com/
+Remove the definition in ctree.h and include misc.h in the files depending
+on it.
 
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Dan Williams <dan.j.williams@intel.com>
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Isabella Basso <isabbasso@riseup.net>
-Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>
-Cc: Josh Poimboeuf <jpoimboe@kernel.org>
-Cc: Luc Van Oostenryck <luc.vanoostenryck@gmail.com>
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Nathan Chancellor <nathan@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-Cc: Sander Vanheule <sander@svanheule.net>
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Yury Norov <yury.norov@gmail.com>
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Kees Cook <keescook@chromium.org>
-Link: https://lore.kernel.org/r/20220826162116.1050972-3-bvanassche@acm.org
+Signed-off-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Eliav Farber <farbere@amazon.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/compiler.h     |    6 ++++++
- include/linux/overflow.h     |    1 -
- include/linux/trace_events.h |    2 --
- 3 files changed, 6 insertions(+), 3 deletions(-)
+ fs/btrfs/ctree.h     |    2 --
+ fs/btrfs/extent_io.c |    1 +
+ fs/btrfs/file-item.c |    1 +
+ fs/btrfs/raid56.c    |    1 +
+ 4 files changed, 3 insertions(+), 2 deletions(-)
 
---- a/include/linux/compiler.h
-+++ b/include/linux/compiler.h
-@@ -246,6 +246,12 @@ static inline void *offset_to_ptr(const
- #define __must_be_array(a)	BUILD_BUG_ON_ZERO(__same_type((a), &(a)[0]))
+--- a/fs/btrfs/ctree.h
++++ b/fs/btrfs/ctree.h
+@@ -3597,8 +3597,6 @@ static inline int btrfs_defrag_cancelled
+ 	return signal_pending(current);
+ }
  
- /*
-+ * Whether 'type' is a signed type or an unsigned type. Supports scalar types,
-+ * bool and also pointer types.
-+ */
-+#define is_signed_type(type) (((type)(-1)) < (__force type)1)
-+
-+/*
-  * This is needed in functions which generate the stack canary, see
-  * arch/x86/kernel/smpboot.c::start_secondary() for an example.
-  */
---- a/include/linux/overflow.h
-+++ b/include/linux/overflow.h
-@@ -29,7 +29,6 @@
-  * https://mail-index.netbsd.org/tech-misc/2007/02/05/0000.html -
-  * credit to Christian Biere.
-  */
--#define is_signed_type(type)       (((type)(-1)) < (type)1)
- #define __type_half_max(type) ((type)1 << (8*sizeof(type) - 1 - is_signed_type(type)))
- #define type_max(T) ((T)((__type_half_max(T) - 1) + __type_half_max(T)))
- #define type_min(T) ((T)((T)-type_max(T)-(T)1))
---- a/include/linux/trace_events.h
-+++ b/include/linux/trace_events.h
-@@ -700,8 +700,6 @@ extern int trace_add_event_call(struct t
- extern int trace_remove_event_call(struct trace_event_call *call);
- extern int trace_event_get_offsets(struct trace_event_call *call);
- 
--#define is_signed_type(type)	(((type)(-1)) < (type)1)
+-#define in_range(b, first, len) ((b) >= (first) && (b) < (first) + (len))
 -
- int ftrace_set_clr_event(struct trace_array *tr, char *buf, int set);
- int trace_set_clr_event(const char *system, const char *event, int set);
- int trace_array_set_clr_event(struct trace_array *tr, const char *system,
+ /* Sanity test specific functions */
+ #ifdef CONFIG_BTRFS_FS_RUN_SANITY_TESTS
+ void btrfs_test_destroy_inode(struct inode *inode);
+--- a/fs/btrfs/extent_io.c
++++ b/fs/btrfs/extent_io.c
+@@ -13,6 +13,7 @@
+ #include <linux/pagevec.h>
+ #include <linux/prefetch.h>
+ #include <linux/cleancache.h>
++#include "misc.h"
+ #include "extent_io.h"
+ #include "extent-io-tree.h"
+ #include "extent_map.h"
+--- a/fs/btrfs/file-item.c
++++ b/fs/btrfs/file-item.c
+@@ -9,6 +9,7 @@
+ #include <linux/highmem.h>
+ #include <linux/sched/mm.h>
+ #include <crypto/hash.h>
++#include "misc.h"
+ #include "ctree.h"
+ #include "disk-io.h"
+ #include "transaction.h"
+--- a/fs/btrfs/raid56.c
++++ b/fs/btrfs/raid56.c
+@@ -13,6 +13,7 @@
+ #include <linux/list_sort.h>
+ #include <linux/raid/xor.h>
+ #include <linux/mm.h>
++#include "misc.h"
+ #include "ctree.h"
+ #include "disk-io.h"
+ #include "volumes.h"
 
 
 
