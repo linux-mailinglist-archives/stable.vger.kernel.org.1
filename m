@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-190799-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190655-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09F96C10C04
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:18:35 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12290C107E9
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:07:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3559F1A63842
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:13:28 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id B2031351630
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:07:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF1B63203B0;
-	Mon, 27 Oct 2025 19:10:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 115C132E13F;
+	Mon, 27 Oct 2025 19:04:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TixgTo8N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dtXl/cO4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 884813074AC;
-	Mon, 27 Oct 2025 19:10:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C281431B81D;
+	Mon, 27 Oct 2025 19:04:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592226; cv=none; b=j7FleoleoCoNiPW116Hkvg8ytLujv5L9/2fTemhtTlUGyX/6HuSJht80SYw6LIqKR6SOASMQv6fLkvFf+9f/35eoLvhsh0p2sGkC2J+M3QaN2wVvt9oy0cOQxbitGxn6Pq+T9TFcYKWrfexCTs6+tvaZBsUp5wVh1w8Eb9tiKJA=
+	t=1761591849; cv=none; b=BEvmVOh0iMr5Sc57uizGhlTRX+iYRPrxfo5+5dSsfjp6ZaorYsbqO3COyL68uzuvSYK45qr2pf1UTniwYC1bElvXgp+/tpD+jE06RVk1lXkFRq4xtQaFZpRtHQah3TNCJh0lQCKCdRkxDo3xrWvrM+DtfHD/6YdNUIxbfooAH10=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592226; c=relaxed/simple;
-	bh=GqPCnFGgkoJmtLshweIO1jDqKjYeglw0stjQYbzbmLU=;
+	s=arc-20240116; t=1761591849; c=relaxed/simple;
+	bh=V3RdiXDsVxN8DDxEFVX3yUm8PVf5O1QkNQBdj0E9qqQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F3RPFKtdHwLtuEVRnUQ3uCjqzvRi0jhui7Ux1cGrM+iAz1s/4X29Wa/ilF1MaBx95nCHG7wrls9NtsYPsVCMxhHnDPetOCWzrsAdhfGlGy6nieJ4IoxzTR7sk674uKjZD0sj3rOFNIqfLrPwdUl1qwpiK0V65ZYP5xa0OkB0ig0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TixgTo8N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C0A7C4CEF1;
-	Mon, 27 Oct 2025 19:10:25 +0000 (UTC)
+	 MIME-Version; b=Qyl3sOK0w0Rd7ZzbAhQz+QjhLkeBgIkKHler/ci8TbWeKDgCVjiAhBsxkseTQbTqDIeFxAT0vdradN4mOYQ76D12BxNS3fF4ClPf7wK3ZYFkVPr0FtAVMteEhd8vcAs/auEYiqRGEw038XLNDlWGFlmUbYEIH4J0eXNlGzId5r8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dtXl/cO4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E3BDC4CEF1;
+	Mon, 27 Oct 2025 19:04:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592226;
-	bh=GqPCnFGgkoJmtLshweIO1jDqKjYeglw0stjQYbzbmLU=;
+	s=korg; t=1761591849;
+	bh=V3RdiXDsVxN8DDxEFVX3yUm8PVf5O1QkNQBdj0E9qqQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TixgTo8NU0IH916KCdjEih5HSjHW3GReuicEOEsH6F2VxLtVIKd4eciZhOhRiSTeJ
-	 pugd90NqKWXRKIDu9fZj2IdaZFtaZ3dkWmXLeN29UfIXvt6dC5Rvfyp1n5Y8a9RwMP
-	 IZJ5nWIJDs/sj6mZYPWG/qGcj6s7TM3ck0natkBY=
+	b=dtXl/cO4AmraGn2x+urnUBDdgvS/2+C2a7fjp5YOjuRfCPqla2oXb6mt9slsyAfIA
+	 SAKwTU/lSwqNll8X7BcrO8zJLGRD2dpSp8wtzILex1q7cDNmKmvclasp2eUTXxg8rW
+	 Lv3vg+nNCpKIEAWADKQR4AzkhSPJQhPaUHkW4jVM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Linmao Li <lilinmao@kylinos.cn>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Raju Rangoju <Raju.Rangoju@amd.com>,
+	Dawid Osuchowski <dawid.osuchowski@linux.intel.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 040/157] r8169: fix packet truncation after S4 resume on RTL8168H/RTL8111H
+Subject: [PATCH 5.15 021/123] amd-xgbe: Avoid spurious link down messages during interface toggle
 Date: Mon, 27 Oct 2025 19:35:01 +0100
-Message-ID: <20251027183502.371869287@linuxfoundation.org>
+Message-ID: <20251027183446.966932312@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
-References: <20251027183501.227243846@linuxfoundation.org>
+In-Reply-To: <20251027183446.381986645@linuxfoundation.org>
+References: <20251027183446.381986645@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,53 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Linmao Li <lilinmao@kylinos.cn>
+From: Raju Rangoju <Raju.Rangoju@amd.com>
 
-[ Upstream commit 70f92ab97042f243e1c8da1c457ff56b9b3e49f1 ]
+[ Upstream commit 2616222e423398bb374ffcb5d23dea4ba2c3e524 ]
 
-After resume from S4 (hibernate), RTL8168H/RTL8111H truncates incoming
-packets. Packet captures show messages like "IP truncated-ip - 146 bytes
-missing!".
+During interface toggle operations (ifdown/ifup), the driver currently
+resets the local helper variable 'phy_link' to -1. This causes the link
+state machine to incorrectly interpret the state as a link change event,
+resulting in spurious "Link is down" messages being logged when the
+interface is brought back up.
 
-The issue is caused by RxConfig not being properly re-initialized after
-resume. Re-initializing the RxConfig register before the chip
-re-initialization sequence avoids the truncation and restores correct
-packet reception.
+Preserve the phy_link state across interface toggles to avoid treating
+the -1 sentinel value as a legitimate link state transition.
 
-This follows the same pattern as commit ef9da46ddef0 ("r8169: fix data
-corruption issue on RTL8402").
-
-Fixes: 6e1d0b898818 ("r8169:add support for RTL8168H and RTL8107E")
-Signed-off-by: Linmao Li <lilinmao@kylinos.cn>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Reviewed-by: Heiner Kallweit <hkallweit1@gmail.com>
-Link: https://patch.msgid.link/20251009122549.3955845-1-lilinmao@kylinos.cn
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 88131a812b16 ("amd-xgbe: Perform phy connect/disconnect at dev open/stop")
+Signed-off-by: Raju Rangoju <Raju.Rangoju@amd.com>
+Reviewed-by: Dawid Osuchowski <dawid.osuchowski@linux.intel.com>
+Link: https://patch.msgid.link/20251010065142.1189310-1-Raju.Rangoju@amd.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/realtek/r8169_main.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/amd/xgbe/xgbe-drv.c  | 1 -
+ drivers/net/ethernet/amd/xgbe/xgbe-mdio.c | 1 +
+ 2 files changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
-index 6346821d480bd..6879660e44fad 100644
---- a/drivers/net/ethernet/realtek/r8169_main.c
-+++ b/drivers/net/ethernet/realtek/r8169_main.c
-@@ -4950,8 +4950,9 @@ static int rtl8169_resume(struct device *device)
- 	if (!device_may_wakeup(tp_to_dev(tp)))
- 		clk_prepare_enable(tp->clk);
+diff --git a/drivers/net/ethernet/amd/xgbe/xgbe-drv.c b/drivers/net/ethernet/amd/xgbe/xgbe-drv.c
+index af04c035633ff..32397517807b0 100644
+--- a/drivers/net/ethernet/amd/xgbe/xgbe-drv.c
++++ b/drivers/net/ethernet/amd/xgbe/xgbe-drv.c
+@@ -1172,7 +1172,6 @@ static void xgbe_free_rx_data(struct xgbe_prv_data *pdata)
  
--	/* Reportedly at least Asus X453MA truncates packets otherwise */
--	if (tp->mac_version == RTL_GIGA_MAC_VER_37)
-+	/* Some chip versions may truncate packets without this initialization */
-+	if (tp->mac_version == RTL_GIGA_MAC_VER_37 ||
-+	    tp->mac_version == RTL_GIGA_MAC_VER_46)
- 		rtl_init_rxcfg(tp);
+ static int xgbe_phy_reset(struct xgbe_prv_data *pdata)
+ {
+-	pdata->phy_link = -1;
+ 	pdata->phy_speed = SPEED_UNKNOWN;
  
- 	return rtl8169_runtime_resume(device);
+ 	return pdata->phy_if.phy_reset(pdata);
+diff --git a/drivers/net/ethernet/amd/xgbe/xgbe-mdio.c b/drivers/net/ethernet/amd/xgbe/xgbe-mdio.c
+index 19fed56b6ee3f..ebb8b3e5b9a88 100644
+--- a/drivers/net/ethernet/amd/xgbe/xgbe-mdio.c
++++ b/drivers/net/ethernet/amd/xgbe/xgbe-mdio.c
+@@ -1636,6 +1636,7 @@ static int xgbe_phy_init(struct xgbe_prv_data *pdata)
+ 		pdata->phy.duplex = DUPLEX_FULL;
+ 	}
+ 
++	pdata->phy_link = 0;
+ 	pdata->phy.link = 0;
+ 
+ 	pdata->phy.pause_autoneg = pdata->pause_autoneg;
 -- 
 2.51.0
 
