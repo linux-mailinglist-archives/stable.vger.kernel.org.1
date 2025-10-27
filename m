@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-191080-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190974-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA5AEC10FA9
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:28:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FF6AC10E5F
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:24:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C52BB1896E4A
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:24:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F121C18973F9
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:20:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2846332AAB1;
-	Mon, 27 Oct 2025 19:22:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0724432779A;
+	Mon, 27 Oct 2025 19:18:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zVdYkCVl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y/ae2QN8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8AB130CD92;
-	Mon, 27 Oct 2025 19:22:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B840A2D8377;
+	Mon, 27 Oct 2025 19:18:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592960; cv=none; b=Z+ZWXUpNJLEYoQmXr2iZj1pzkJq+XYBwnyS19v6PFsvLGVJpZ9z2gfaBzDPU9gPUwpU08u2OFqahJfPp2EK30WutWVgFP3fPWFvEOR3s6lrpq9RR+oZ7oNtrDFsZnBoP82W5UgcMH+wg+M2fc4ayVnlOW1lCZnPZaEykDmkmU/8=
+	t=1761592686; cv=none; b=RdyX3EBKi6L5zxc0lZiLx8wJ0X9LkbB7L/3CAMUahoxosXxKg0kJWbAZBAb++mWdnJlpVLRajYessgbPCAjLmItjz3BXIoPZLtAuLq4X4IywMAdCvEx571+pKIA0+kQitHkPMRzUdcY5Q+ykkR5BWclj9n+I/vEPqJS8DKzsks8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592960; c=relaxed/simple;
-	bh=yBgHncSkiIXHfz+/0qgFa5gzdaqI8h4t+O9EkFGsUss=;
+	s=arc-20240116; t=1761592686; c=relaxed/simple;
+	bh=NsIhEHBJmTIKG0I2qzGFqcm1wkijAspUgebsWeZu1CM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RFC7q7N4QeX2Si1Gwx1egKElWsVWfd3qgt/lPXFsd5AlEFWsr9wxuDAeME49F/kiifWK+G1l7jSUkG9YmW/pwqNSTkoWpwVV8fj8hbez3TiMFry+8N6Fi5xf6MBnCT6kK9eQxQqQ4HENictvLn9lZAuS2kPgwy0NYdKLdj/T7EE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zVdYkCVl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63589C113D0;
-	Mon, 27 Oct 2025 19:22:40 +0000 (UTC)
+	 MIME-Version; b=gJBVHyJL6D/iNGPZU0fOrySd7L6gbdpg0ZwX7PbWTI99suEksvEI3R8AGJvZgjUck+dFYoIA7sllitV2PE0Xoug3GZ0o2i97hNDFdC2JTjWaPTlJfhiMLJI/2mhKofQ+btdTehEKDEmdPcRIsHmU7VnaSC62kRK3QvnE5ydfT1A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y/ae2QN8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01DC2C4CEF1;
+	Mon, 27 Oct 2025 19:18:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592960;
-	bh=yBgHncSkiIXHfz+/0qgFa5gzdaqI8h4t+O9EkFGsUss=;
+	s=korg; t=1761592686;
+	bh=NsIhEHBJmTIKG0I2qzGFqcm1wkijAspUgebsWeZu1CM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zVdYkCVlL0dpIVBII6Qfg/JSHwc0d2ogJADcscHWrT8tRkZOddE8gd+Ch7IAGYfUt
-	 sU8B2LRBo4uVWK+XH4I9ToM22nE1qbV4Bjhh7dZhLKhpiPptTKwjpwv6JzZUymw3o4
-	 xBA8eZlv4b7vbKzHq96MOb+z9yhN4abfanMR8a84=
+	b=Y/ae2QN8TdaPdlfonW0xagILpsngQGR1W30MnHxscLec1yWyXayvBYibKWwdsWNQb
+	 VghZ3fek4M11TJgTZfsXIMuIixxVw0iVmDZC/otKT7c2Cffd4gULvDPpczYVPJk3C9
+	 /teqssn44j/5gDUfSq9KL1o2RheI09727K+RRq1w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Akash Goel <akash.goel@arm.com>,
-	Boris Brezillon <boris.brezillon@collabora.com>,
-	Liviu Dudau <liviu.dudau@arm.com>,
-	Steven Price <steven.price@arm.com>,
+	Haotian Zhang <vulab@iscas.ac.cn>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 079/117] drm/panthor: Fix kernel panic on partial unmap of a GPU VA region
+Subject: [PATCH 6.6 56/84] gpio: ljca: Fix duplicated IRQ mapping
 Date: Mon, 27 Oct 2025 19:36:45 +0100
-Message-ID: <20251027183456.162510280@linuxfoundation.org>
+Message-ID: <20251027183440.312955394@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
-References: <20251027183453.919157109@linuxfoundation.org>
+In-Reply-To: <20251027183438.817309828@linuxfoundation.org>
+References: <20251027183438.817309828@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,106 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Akash Goel <akash.goel@arm.com>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-[ Upstream commit 4eabd0d8791eaf9a7b114ccbf56eb488aefe7b1f ]
+[ Upstream commit 4c4e6ea4a120cc5ab58e437c6ba123cbfc357d45 ]
 
-This commit address a kernel panic issue that can happen if Userspace
-tries to partially unmap a GPU virtual region (aka drm_gpuva).
-The VM_BIND interface allows partial unmapping of a BO.
+The generic_handle_domain_irq() function resolves the hardware IRQ
+internally. The driver performed a duplicative mapping by calling
+irq_find_mapping() first, which could lead to an RCU stall.
 
-Panthor driver pre-allocates memory for the new drm_gpuva structures
-that would be needed for the map/unmap operation, done using drm_gpuvm
-layer. It expected that only one new drm_gpuva would be needed on umap
-but a partial unmap can require 2 new drm_gpuva and that's why it
-ended up doing a NULL pointer dereference causing a kernel panic.
+Delete the redundant irq_find_mapping() call and pass the hardware IRQ
+directly to generic_handle_domain_irq().
 
-Following dump was seen when partial unmap was exercised.
- Unable to handle kernel NULL pointer dereference at virtual address 0000000000000078
- Mem abort info:
-   ESR = 0x0000000096000046
-   EC = 0x25: DABT (current EL), IL = 32 bits
-   SET = 0, FnV = 0
-   EA = 0, S1PTW = 0
-   FSC = 0x06: level 2 translation fault
- Data abort info:
-   ISV = 0, ISS = 0x00000046, ISS2 = 0x00000000
-   CM = 0, WnR = 1, TnD = 0, TagAccess = 0
-   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
- user pgtable: 4k pages, 48-bit VAs, pgdp=000000088a863000
- [000000000000078] pgd=080000088a842003, p4d=080000088a842003, pud=0800000884bf5003, pmd=0000000000000000
- Internal error: Oops: 0000000096000046 [#1] PREEMPT SMP
- <snip>
- pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
- pc : panthor_gpuva_sm_step_remap+0xe4/0x330 [panthor]
- lr : panthor_gpuva_sm_step_remap+0x6c/0x330 [panthor]
- sp : ffff800085d43970
- x29: ffff800085d43970 x28: ffff00080363e440 x27: ffff0008090c6000
- x26: 0000000000000030 x25: ffff800085d439f8 x24: ffff00080d402000
- x23: ffff800085d43b60 x22: ffff800085d439e0 x21: ffff00080abdb180
- x20: 0000000000000000 x19: 0000000000000000 x18: 0000000000000010
- x17: 6e656c202c303030 x16: 3666666666646466 x15: 393d61766f69202c
- x14: 312d3d7361203a70 x13: 303030323d6e656c x12: ffff80008324bf58
- x11: 0000000000000003 x10: 0000000000000002 x9 : ffff8000801a6a9c
- x8 : ffff00080360b300 x7 : 0000000000000000 x6 : 000000088aa35fc7
- x5 : fff1000080000000 x4 : ffff8000842ddd30 x3 : 0000000000000001
- x2 : 0000000100000000 x1 : 0000000000000001 x0 : 0000000000000078
- Call trace:
-  panthor_gpuva_sm_step_remap+0xe4/0x330 [panthor]
-  op_remap_cb.isra.22+0x50/0x80
-  __drm_gpuvm_sm_unmap+0x10c/0x1c8
-  drm_gpuvm_sm_unmap+0x40/0x60
-  panthor_vm_exec_op+0xb4/0x3d0 [panthor]
-  panthor_vm_bind_exec_sync_op+0x154/0x278 [panthor]
-  panthor_ioctl_vm_bind+0x160/0x4a0 [panthor]
-  drm_ioctl_kernel+0xbc/0x138
-  drm_ioctl+0x240/0x500
-  __arm64_sys_ioctl+0xb0/0xf8
-  invoke_syscall+0x4c/0x110
-  el0_svc_common.constprop.1+0x98/0xf8
-  do_el0_svc+0x24/0x38
-  el0_svc+0x40/0xf8
-  el0t_64_sync_handler+0xa0/0xc8
-  el0t_64_sync+0x174/0x178
-
-Signed-off-by: Akash Goel <akash.goel@arm.com>
-Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
-Reviewed-by: Liviu Dudau <liviu.dudau@arm.com>
-Fixes: 647810ec2476 ("drm/panthor: Add the MMU/VM logical block")
-Reviewed-by: Steven Price <steven.price@arm.com>
-Signed-off-by: Steven Price <steven.price@arm.com>
-Link: https://lore.kernel.org/r/20251017102922.670084-1-akash.goel@arm.com
+Fixes: c5a4b6fd31e8 ("gpio: Add support for Intel LJCA USB GPIO driver")
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Link: https://lore.kernel.org/r/20251023070231.1305-1-vulab@iscas.ac.cn
+[Bartosz: remove unused variable]
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/panthor/panthor_mmu.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ drivers/gpio/gpio-ljca.c | 14 +++-----------
+ 1 file changed, 3 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/gpu/drm/panthor/panthor_mmu.c b/drivers/gpu/drm/panthor/panthor_mmu.c
-index b57824abeb9ee..2214dbf472fa4 100644
---- a/drivers/gpu/drm/panthor/panthor_mmu.c
-+++ b/drivers/gpu/drm/panthor/panthor_mmu.c
-@@ -1168,10 +1168,14 @@ panthor_vm_op_ctx_prealloc_vmas(struct panthor_vm_op_ctx *op_ctx)
- 		break;
+diff --git a/drivers/gpio/gpio-ljca.c b/drivers/gpio/gpio-ljca.c
+index dfec9fbfc7a9b..ddd73b8b790e7 100644
+--- a/drivers/gpio/gpio-ljca.c
++++ b/drivers/gpio/gpio-ljca.c
+@@ -281,22 +281,14 @@ static void ljca_gpio_event_cb(void *context, u8 cmd, const void *evt_data,
+ {
+ 	const struct ljca_gpio_packet *packet = evt_data;
+ 	struct ljca_gpio_dev *ljca_gpio = context;
+-	int i, irq;
++	int i;
  
- 	case DRM_PANTHOR_VM_BIND_OP_TYPE_UNMAP:
--		/* Partial unmaps might trigger a remap with either a prev or a next VA,
--		 * but not both.
-+		/* Two VMAs can be needed for an unmap, as an unmap can happen
-+		 * in the middle of a drm_gpuva, requiring a remap with both
-+		 * prev & next VA. Or an unmap can span more than one drm_gpuva
-+		 * where the first and last ones are covered partially, requring
-+		 * a remap for the first with a prev VA and remap for the last
-+		 * with a next VA.
- 		 */
--		vma_count = 1;
-+		vma_count = 2;
- 		break;
+ 	if (cmd != LJCA_GPIO_INT_EVENT)
+ 		return;
  
- 	default:
+ 	for (i = 0; i < packet->num; i++) {
+-		irq = irq_find_mapping(ljca_gpio->gc.irq.domain,
+-				       packet->item[i].index);
+-		if (!irq) {
+-			dev_err(ljca_gpio->gc.parent,
+-				"gpio_id %u does not mapped to IRQ yet\n",
+-				packet->item[i].index);
+-			return;
+-		}
+-
+-		generic_handle_domain_irq(ljca_gpio->gc.irq.domain, irq);
++		generic_handle_domain_irq(ljca_gpio->gc.irq.domain,
++					packet->item[i].index);
+ 		set_bit(packet->item[i].index, ljca_gpio->reenable_irqs);
+ 	}
+ 
 -- 
 2.51.0
 
