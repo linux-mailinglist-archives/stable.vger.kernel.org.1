@@ -1,55 +1,62 @@
-Return-Path: <stable+bounces-190868-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191046-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3EE2C10AD7
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:15:19 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3820C11048
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:30:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 7095F352058
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:15:19 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 27C5F548269
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:23:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01C562C11DF;
-	Mon, 27 Oct 2025 19:13:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39AA432E157;
+	Mon, 27 Oct 2025 19:21:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XnsHZLqt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P9XvR7S9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0D49221DAC;
-	Mon, 27 Oct 2025 19:13:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8D09315D44;
+	Mon, 27 Oct 2025 19:21:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592410; cv=none; b=Es3U/qgRLA0+UenMTm8W08VcITl45iVMq+uf2TLm3FkipirQuil58cbGrG8/X21Mmi+JdK4z4PdVS0bG84evQWSz62VUAs9IJUIOFt/MDZ/PJ8UvJ+zdRc/sqMrNrkBDQfSydPHuyx9OK6GWRjOmbe8874xD2UqhpJY5ym7oIIE=
+	t=1761592873; cv=none; b=UCc7CrYzxkzNlsoK/pHUpn726lTOrcYze8oS316VECYhhdPTxDqaLaVsxp2kWDDGeIEnEF0Pm1T+JIwspaDF8jY1/4CVX2OK2F2R6m2Wyb2tnA/EOdmYSpJj8r69tOMOqAz+ty4x6nN/ujlACKuZVobZ2RVy1g4EI7PpDXIv6bM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592410; c=relaxed/simple;
-	bh=GT0XK8Hku8JXHMFO7+Zqm1DyvoyqxNROojfCpYt3WWI=;
+	s=arc-20240116; t=1761592873; c=relaxed/simple;
+	bh=tozWThGsbSJn6ZkPMvPThlIwp0HIVOIOuQBHSSG/bOY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U0up+OyLptzlUxW4+/y87q+FO6L4ZmZ3zUvZwFfA+N5/HpPeOsQWNdTuqgtv2AooV9nEhZhNWCJ5/s7HzM0rrkkAMsv2rVa/9ZYOtGP/kuf5hiGNjhVSpcRMXJY27aSmC4T04+O4ku6cfSv3zLlou59ykwu1pKW5c3pCtu/lGEQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XnsHZLqt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 445CAC4CEF1;
-	Mon, 27 Oct 2025 19:13:30 +0000 (UTC)
+	 MIME-Version; b=EBcV1QLMpH2GZeaDOwSLOJU9/oMO+JapPQsdJFqzvAHyvJfrDAjfGF0flJqUj3J3UW9Hdu5GVfPEp/iYi0UNtsWvsypFOMSz9rQ3tINVyUXJmysnZwUvewSd8vgQPEutHrZHgIcW2ZwrYEM5cFe5py3nYc4TJziO+ztkgeSd6N0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P9XvR7S9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D355C4CEF1;
+	Mon, 27 Oct 2025 19:21:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592410;
-	bh=GT0XK8Hku8JXHMFO7+Zqm1DyvoyqxNROojfCpYt3WWI=;
+	s=korg; t=1761592872;
+	bh=tozWThGsbSJn6ZkPMvPThlIwp0HIVOIOuQBHSSG/bOY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XnsHZLqtz6NcHOu9zvsLFWEVza7lzqrXUlQMwGEqHvPlcb4npyM+NwdYaFBDpwjFW
-	 uvXEaxHKj/8HKm6m53UNt0w4aujRhMxCda4FR5jCn71SJhYQMgdUFEt8ms27az2TAZ
-	 3aH7opOXKis4wAsbdoYpc55lxX7TMPSyEjTOpoII=
+	b=P9XvR7S9ks/Y1AqSGh4lT7kh2LYUSE43OlJe51ILr9a9TpIQPCjzkFfyffBFDdniU
+	 AQOYbXY3mmZqIL0fJOdUMv4rM65ajrMBIWkvKh9mYRIrFi86l1FqIHY+ggpyP15uaq
+	 GXc1bUAu1pYbjDryyeXUtJAykuM/1J7XXeKlDecQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu-Ting Tseng <yutingtseng@google.com>,
-	Alice Ryhl <aliceryhl@google.com>
-Subject: [PATCH 6.1 109/157] binder: remove "invalid inc weak" check
-Date: Mon, 27 Oct 2025 19:36:10 +0100
-Message-ID: <20251027183504.177173941@linuxfoundation.org>
+	Jay Vosburgh <jv@jvosburgh.net>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Vincent Bernat <vincent@bernat.ch>,
+	Tonghao Zhang <tonghao@bamaicloud.com>
+Subject: [PATCH 6.12 045/117] net: bonding: fix possible peer notify event loss or dup issue
+Date: Mon, 27 Oct 2025 19:36:11 +0100
+Message-ID: <20251027183455.210234466@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
-References: <20251027183501.227243846@linuxfoundation.org>
+In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
+References: <20251027183453.919157109@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,60 +68,118 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alice Ryhl <aliceryhl@google.com>
+From: Tonghao Zhang <tonghao@bamaicloud.com>
 
-commit d90eeb8ecd227c204ab6c34a17b372bd950b7aa2 upstream.
+commit 10843e1492e474c02b91314963161731fa92af91 upstream.
 
-There are no scenarios where a weak increment is invalid on binder_node.
-The only possible case where it could be invalid is if the kernel
-delivers BR_DECREFS to the process that owns the node, and then
-increments the weak refcount again, effectively "reviving" a dead node.
+If the send_peer_notif counter and the peer event notify are not synchronized.
+It may cause problems such as the loss or dup of peer notify event.
 
-However, that is not possible: when the BR_DECREFS command is delivered,
-the kernel removes and frees the binder_node. The fact that you were
-able to call binder_inc_node_nilocked() implies that the node is not yet
-destroyed, which implies that BR_DECREFS has not been delivered to
-userspace, so incrementing the weak refcount is valid.
+Before this patch:
+- If should_notify_peers is true and the lock for send_peer_notif-- fails, peer
+  event may be sent again in next mii_monitor loop, because should_notify_peers
+  is still true.
+- If should_notify_peers is true and the lock for send_peer_notif-- succeeded,
+  but the lock for peer event fails, the peer event will be lost.
 
-Note that it's currently possible to trigger this condition if the owner
-calls BINDER_THREAD_EXIT while node->has_weak_ref is true. This causes
-BC_INCREFS on binder_ref instances to fail when they should not.
+This patch locks the RTNL for send_peer_notif, events, and commit simultaneously.
 
-Cc: stable@vger.kernel.org
-Fixes: 457b9a6f09f0 ("Staging: android: add binder driver")
-Reported-by: Yu-Ting Tseng <yutingtseng@google.com>
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-Link: https://patch.msgid.link/20251015-binder-weak-inc-v1-1-7914b092c371@google.com
+Fixes: 07a4ddec3ce9 ("bonding: add an option to specify a delay between peer notifications")
+Cc: Jay Vosburgh <jv@jvosburgh.net>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: Hangbin Liu <liuhangbin@gmail.com>
+Cc: Nikolay Aleksandrov <razor@blackwall.org>
+Cc: Vincent Bernat <vincent@bernat.ch>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Tonghao Zhang <tonghao@bamaicloud.com>
+Acked-by: Jay Vosburgh <jv@jvosburgh.net>
+Link: https://patch.msgid.link/20251021050933.46412-1-tonghao@bamaicloud.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/android/binder.c |   11 +----------
- 1 file changed, 1 insertion(+), 10 deletions(-)
+ drivers/net/bonding/bond_main.c |   40 ++++++++++++++++++----------------------
+ 1 file changed, 18 insertions(+), 22 deletions(-)
 
---- a/drivers/android/binder.c
-+++ b/drivers/android/binder.c
-@@ -845,17 +845,8 @@ static int binder_inc_node_nilocked(stru
- 	} else {
- 		if (!internal)
- 			node->local_weak_refs++;
--		if (!node->has_weak_ref && list_empty(&node->work.entry)) {
--			if (target_list == NULL) {
--				pr_err("invalid inc weak node for %d\n",
--					node->debug_id);
--				return -EINVAL;
--			}
--			/*
--			 * See comment above
--			 */
-+		if (!node->has_weak_ref && target_list && list_empty(&node->work.entry))
- 			binder_enqueue_work_ilocked(&node->work, target_list);
+--- a/drivers/net/bonding/bond_main.c
++++ b/drivers/net/bonding/bond_main.c
+@@ -2951,7 +2951,7 @@ static void bond_mii_monitor(struct work
+ {
+ 	struct bonding *bond = container_of(work, struct bonding,
+ 					    mii_work.work);
+-	bool should_notify_peers = false;
++	bool should_notify_peers;
+ 	bool commit;
+ 	unsigned long delay;
+ 	struct slave *slave;
+@@ -2963,30 +2963,33 @@ static void bond_mii_monitor(struct work
+ 		goto re_arm;
+ 
+ 	rcu_read_lock();
++
+ 	should_notify_peers = bond_should_notify_peers(bond);
+ 	commit = !!bond_miimon_inspect(bond);
+-	if (bond->send_peer_notif) {
+-		rcu_read_unlock();
+-		if (rtnl_trylock()) {
+-			bond->send_peer_notif--;
+-			rtnl_unlock();
 -		}
+-	} else {
+-		rcu_read_unlock();
+-	}
+ 
+-	if (commit) {
++	rcu_read_unlock();
++
++	if (commit || bond->send_peer_notif) {
+ 		/* Race avoidance with bond_close cancel of workqueue */
+ 		if (!rtnl_trylock()) {
+ 			delay = 1;
+-			should_notify_peers = false;
+ 			goto re_arm;
+ 		}
+ 
+-		bond_for_each_slave(bond, slave, iter) {
+-			bond_commit_link_state(slave, BOND_SLAVE_NOTIFY_LATER);
++		if (commit) {
++			bond_for_each_slave(bond, slave, iter) {
++				bond_commit_link_state(slave,
++						       BOND_SLAVE_NOTIFY_LATER);
++			}
++			bond_miimon_commit(bond);
++		}
++
++		if (bond->send_peer_notif) {
++			bond->send_peer_notif--;
++			if (should_notify_peers)
++				call_netdevice_notifiers(NETDEV_NOTIFY_PEERS,
++							 bond->dev);
+ 		}
+-		bond_miimon_commit(bond);
+ 
+ 		rtnl_unlock();	/* might sleep, hold no other locks */
  	}
- 	return 0;
+@@ -2994,13 +2997,6 @@ static void bond_mii_monitor(struct work
+ re_arm:
+ 	if (bond->params.miimon)
+ 		queue_delayed_work(bond->wq, &bond->mii_work, delay);
+-
+-	if (should_notify_peers) {
+-		if (!rtnl_trylock())
+-			return;
+-		call_netdevice_notifiers(NETDEV_NOTIFY_PEERS, bond->dev);
+-		rtnl_unlock();
+-	}
  }
+ 
+ static int bond_upper_dev_walk(struct net_device *upper,
 
 
 
