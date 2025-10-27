@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-191078-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190901-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFCA2C10F9D
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:28:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 79817C10D67
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:21:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 221361A24804
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:24:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 503291A62524
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:17:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DE1D329C46;
-	Mon, 27 Oct 2025 19:22:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A827132B990;
+	Mon, 27 Oct 2025 19:14:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mBBoMziv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H13eiS9R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDD1931D753;
-	Mon, 27 Oct 2025 19:22:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6412D329C64;
+	Mon, 27 Oct 2025 19:14:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592955; cv=none; b=mdMhotWTrYPlO4ElSyfmTFCA1krJjzjN6f5u0uDsSLSnhSSPXJe7vgY5/O23cuSLiMq/8CC5+djXAFUJsaVDsUg/9m6xfeI5a+g+NVNB6iIWNU70Iwg3MhS6tNiuniF3iwPR/TsYUsF5iB2VVX+d1nBT3Xx/yRuPtorB/N7HQqg=
+	t=1761592494; cv=none; b=FYwMt+n278vvTN/PqPcITkNjCjMZWqEV7D7oOyb1VA+sVgRLN7LD4v3wsBydrvu2AN/ewg4EuVdXg7tD79isgrrEXrXT8Q8jy/HSqc6b9LeImT6qjY62qetoRJ3ruRiyjJk/phH/v7jVra+68RZSsqSBE5ZNwD729G5QwrYG9R0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592955; c=relaxed/simple;
-	bh=vBuHsqY2snZe4YtbT2uv1f8DGotOcO3fOLQddhlOmB8=;
+	s=arc-20240116; t=1761592494; c=relaxed/simple;
+	bh=qJ3NkHMcAEFmAAOrNlsTN2Gl3geovStLTPm8mUjmXNQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tPY2Z9/NEDd9KF9XrWId2xJRgpFSPaawMO2EIkH+qNgR6SOZTYt0uN2Q2kVSibiZgG+GYKpd3zBOkRB2BORrYOJ940AVC7jyh284Z4cD+776xDM0Y58pvzOlV3XjgnfWOsoB06FHnY/bszHGRi75FIEK3RDFx6Lp5bBHy4unrlQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mBBoMziv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50647C4CEF1;
-	Mon, 27 Oct 2025 19:22:35 +0000 (UTC)
+	 MIME-Version; b=QqvzCIbRekmt+DVIBLAdMRrkuFrSOiEhf9X3QTu2sz4A5LpgSozt8NoVSElTdt3EhU+W0khxzWKnIZcSmDbOn8kisebH9+l4KYmYxA9YmdXWhmlkLZZsW5a8hlXwpYrTk1IuBxJSf/D5h941oCqA7yqctNMS3kVeBM/jtcaD3Ko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H13eiS9R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB414C4CEF1;
+	Mon, 27 Oct 2025 19:14:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592955;
-	bh=vBuHsqY2snZe4YtbT2uv1f8DGotOcO3fOLQddhlOmB8=;
+	s=korg; t=1761592494;
+	bh=qJ3NkHMcAEFmAAOrNlsTN2Gl3geovStLTPm8mUjmXNQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mBBoMziv3w0RgIP4oL+Gj3W9hKWT3A7/4WOlQMfguH89zjTyaReAeL2xV4wY081/5
-	 GbKLPODdCsaP684eCNw0bIcM3/s/+7XBBPi/wfti29xNfJ5A+82em6RD2z34medm/D
-	 mmzPBMlQuAvO4wULLlQ4NHsTvk5CzIgy+Mq1XR/o=
+	b=H13eiS9RB+b6nv5fCu1zG9vPEnVNzu+ApxwtrtAjyYdwAxohLITbebCHhEbWp2c/L
+	 9psVRCUdGrS22iR7wiCoYty+Y0tz3SKgTAlfHyoQWQmG1vPaTYGeIyPmrrLjnaXOij
+	 j9lY/BGikFrqREYBmQs7qhf7X+A6jcSq00ihwMZw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikhail Kshevetskiy <mikhail.kshevetskiy@iopsys.eu>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Mark Brown <broonie@kernel.org>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 077/117] spi: airoha: switch back to non-dma mode in the case of error
+Subject: [PATCH 6.1 142/157] f2fs: fix wrong block mapping for multi-devices
 Date: Mon, 27 Oct 2025 19:36:43 +0100
-Message-ID: <20251027183456.113131380@linuxfoundation.org>
+Message-ID: <20251027183505.086922799@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
-References: <20251027183453.919157109@linuxfoundation.org>
+In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
+References: <20251027183501.227243846@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,70 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikhail Kshevetskiy <mikhail.kshevetskiy@iopsys.eu>
+From: Jaegeuk Kim <jaegeuk@kernel.org>
 
-[ Upstream commit 20d7b236b78c7ec685a22db5689b9c829975e0c3 ]
+[ Upstream commit 9d5c4f5c7a2c7677e1b3942772122b032c265aae ]
 
-Current dirmap code does not switch back to non-dma mode in the case of
-error. This is wrong.
+Assuming the disk layout as below,
 
-This patch fixes dirmap read/write error path.
+disk0: 0            --- 0x00035abfff
+disk1: 0x00035ac000 --- 0x00037abfff
+disk2: 0x00037ac000 --- 0x00037ebfff
 
-Fixes: a403997c12019 ("spi: airoha: add SPI-NAND Flash controller driver")
-Signed-off-by: Mikhail Kshevetskiy <mikhail.kshevetskiy@iopsys.eu>
-Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://patch.msgid.link/20251012121707.2296160-6-mikhail.kshevetskiy@iopsys.eu
-Signed-off-by: Mark Brown <broonie@kernel.org>
+and we want to read data from offset=13568 having len=128 across the block
+devices, we can illustrate the block addresses like below.
+
+0 .. 0x00037ac000 ------------------- 0x00037ebfff, 0x00037ec000 -------
+          |          ^            ^                                ^
+          |   fofs   0            13568                            13568+128
+          |       ------------------------------------------------------
+          |   LBA    0x37e8aa9    0x37ebfa9                        0x37ec029
+          --- map    0x3caa9      0x3ffa9
+
+In this example, we should give the relative map of the target block device
+ranging from 0x3caa9 to 0x3ffa9 where the length should be calculated by
+0x37ebfff + 1 - 0x37ebfa9.
+
+In the below equation, however, map->m_pblk was supposed to be the original
+address instead of the one from the target block address.
+
+ - map->m_len = min(map->m_len, dev->end_blk + 1 - map->m_pblk);
+
+Cc: stable@vger.kernel.org
+Fixes: 71f2c8206202 ("f2fs: multidevice: support direct IO")
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-airoha-snfi.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ fs/f2fs/data.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-airoha-snfi.c b/drivers/spi/spi-airoha-snfi.c
-index 0b89dc42545b1..8143fbb0cf4e6 100644
---- a/drivers/spi/spi-airoha-snfi.c
-+++ b/drivers/spi/spi-airoha-snfi.c
-@@ -698,13 +698,13 @@ static ssize_t airoha_snand_dirmap_read(struct spi_mem_dirmap_desc *desc,
+--- a/fs/f2fs/data.c
++++ b/fs/f2fs/data.c
+@@ -1486,8 +1486,8 @@ static bool f2fs_map_blocks_cached(struc
+ 		struct f2fs_dev_info *dev = &sbi->devs[bidx];
  
- 	err = airoha_snand_nfi_config(as_ctrl);
- 	if (err)
--		return err;
-+		goto error_dma_mode_off;
- 
- 	dma_addr = dma_map_single(as_ctrl->dev, txrx_buf, SPI_NAND_CACHE_SIZE,
- 				  DMA_FROM_DEVICE);
- 	err = dma_mapping_error(as_ctrl->dev, dma_addr);
- 	if (err)
--		return err;
-+		goto error_dma_mode_off;
- 
- 	/* set dma addr */
- 	err = regmap_write(as_ctrl->regmap_nfi, REG_SPI_NFI_STRADDR,
-@@ -804,6 +804,8 @@ static ssize_t airoha_snand_dirmap_read(struct spi_mem_dirmap_desc *desc,
- error_dma_unmap:
- 	dma_unmap_single(as_ctrl->dev, dma_addr, SPI_NAND_CACHE_SIZE,
- 			 DMA_FROM_DEVICE);
-+error_dma_mode_off:
-+	airoha_snand_set_mode(as_ctrl, SPI_MODE_MANUAL);
- 	return err;
- }
- 
-@@ -936,6 +938,7 @@ static ssize_t airoha_snand_dirmap_write(struct spi_mem_dirmap_desc *desc,
- error_dma_unmap:
- 	dma_unmap_single(as_ctrl->dev, dma_addr, SPI_NAND_CACHE_SIZE,
- 			 DMA_TO_DEVICE);
-+	airoha_snand_set_mode(as_ctrl, SPI_MODE_MANUAL);
- 	return err;
- }
- 
--- 
-2.51.0
-
+ 		map->m_bdev = dev->bdev;
+-		map->m_pblk -= dev->start_blk;
+ 		map->m_len = min(map->m_len, dev->end_blk + 1 - map->m_pblk);
++		map->m_pblk -= dev->start_blk;
+ 	} else {
+ 		map->m_bdev = inode->i_sb->s_bdev;
+ 	}
 
 
 
