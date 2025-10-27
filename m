@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-190442-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190105-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00FDDC105FA
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:00:33 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E92AC0FF84
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:41:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7CD464FFEBA
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:58:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2DDDA46231B
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:41:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B75B328B41;
-	Mon, 27 Oct 2025 18:55:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10F3931B804;
+	Mon, 27 Oct 2025 18:40:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PGgVK0+I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="janFtG3l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06223331A4D;
-	Mon, 27 Oct 2025 18:55:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C207D313520;
+	Mon, 27 Oct 2025 18:40:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591302; cv=none; b=U8QhKLw9nhxeNFGfZq8Xdt09Rv+NUyVuvdSPv/OOsT/mDQWJchF/tLhCjpl/Qmf6zUtaZA3Osnj8eMBjXtqD4R1cMg+hGEQBIrG+UmiXo1Z/UOdrz65DBnaEUqzmPoXmqKDmAHvRJyMLDkHr7eYoKnKhHFHvSRrMsj2bQv1a0G8=
+	t=1761590449; cv=none; b=Eoa2fZ5ecU/4IiNjHkNELEnS57KtHZj2lRxZDxGf0eNl7VpEn+4aPu/fffF9Z4AIQDEU6NMB6Sw21XhUPePtVFD/de6x2jsdDkj/4JzHXoHIf2nqf7V3+UWDLDcJ1TOnepa6Rc795VdGTdL1PTmssKQjCeAR3lHfhhdeFM6fa0w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591302; c=relaxed/simple;
-	bh=Axl0M9bttNiWB/8Mw4zYBj3g1uE/A6yWsc7b1harRIA=;
+	s=arc-20240116; t=1761590449; c=relaxed/simple;
+	bh=V7uNahHcoHHurRXFNabyxQKqpAYT8PLnEdmacGCaLFo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pmGmUBrSn9glF+Y/VPZFbME7FxNGt2jIITscg/aPa8eOwB+p2O5ugVtkFU/GoROsgH/ag8+AaN6eP9drXkn6QVqoXK/YGQYQq07cETekNYOq7wUE3Xh0GTKnDG61xYw0P9mC6LrIVhRvop6de3MODPQzrtq+amUsUSL8yVEYydU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PGgVK0+I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E5CCC4CEF1;
-	Mon, 27 Oct 2025 18:55:01 +0000 (UTC)
+	 MIME-Version; b=sea2pVC2QKkc4+jJMwRJS90K9kz11GCburWDlhufWrRKPgW5diAbML8XFE9hrLksag83aqKwR0fodxtBBmh6rPaOkJWxAXslZjQEpbX8HCtehbn+KmEgXYYS/2mSX+QwtMFrpgz+tUDpJ+BRvwKjb+yLZQ/Y1TkKEO6Ydkt5Knc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=janFtG3l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53B44C4CEF1;
+	Mon, 27 Oct 2025 18:40:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591301;
-	bh=Axl0M9bttNiWB/8Mw4zYBj3g1uE/A6yWsc7b1harRIA=;
+	s=korg; t=1761590449;
+	bh=V7uNahHcoHHurRXFNabyxQKqpAYT8PLnEdmacGCaLFo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PGgVK0+IddUcHjBJp0sE3Ac9+BolPEewtGk0c2OWtyzamShnYsxradndtI5EcoMnk
-	 4p6szWCLsqnek/2cneXvKNIDELEuk0Dj5jM6L/2Ygtu6jXLlCo8A/493+GySg45UGX
-	 +ahH0mFolX2L/hvVe+KQP9FYKPu3SsubytN6F+O8=
+	b=janFtG3lhSb7+MeG+G9xKJp5qfl++pkXeKBo8edrAD5KTQcM/u2VWRC0fowliYjG8
+	 DgV8txbbGPaKntScujfI8w1JSpKNj+meHkAsZMTM0eKICybhmy6Eo56rH6+ksly9qN
+	 4uk1BX+hyUd1aT12gqIRNqmVSdVJqOF1LDsbEIL4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Nyekjaer <sean@geanix.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 5.10 143/332] iio: imu: inv_icm42600: Drop redundant pm_runtime reinitialization in resume
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Wim Van Sebroeck <wim@linux-watchdog.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 050/224] watchdog: mpc8xxx_wdt: Reload the watchdog timer when enabling the watchdog
 Date: Mon, 27 Oct 2025 19:33:16 +0100
-Message-ID: <20251027183528.409528655@linuxfoundation.org>
+Message-ID: <20251027183510.337980399@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
-References: <20251027183524.611456697@linuxfoundation.org>
+In-Reply-To: <20251027183508.963233542@linuxfoundation.org>
+References: <20251027183508.963233542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Nyekjaer <sean@geanix.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-commit a95a0b4e471a6d8860f40c6ac8f1cad9dde3189a upstream.
+[ Upstream commit 7dfd80f70ef00d871df5af7c391133f7ba61ad9b ]
 
-Remove unnecessary calls to pm_runtime_disable(), pm_runtime_set_active(),
-and pm_runtime_enable() from the resume path. These operations are not
-required here and can interfere with proper pm_runtime state handling,
-especially when resuming from a pm_runtime suspended state.
+When the watchdog gets enabled with this driver, it leaves enough time
+for the core watchdog subsystem to start pinging it. But when the
+watchdog is already started by hardware or by the boot loader, little
+time remains before it fires and it happens that the core watchdog
+subsystem doesn't have time to start pinging it.
 
-Fixes: 31c24c1e93c3 ("iio: imu: inv_icm42600: add core of new inv_icm42600 driver")
-Signed-off-by: Sean Nyekjaer <sean@geanix.com>
-Link: https://patch.msgid.link/20250901-icm42pmreg-v3-2-ef1336246960@geanix.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Until commit 19ce9490aa84 ("watchdog: mpc8xxx: use the core worker
+function") pinging was managed by the driver itself and the watchdog
+was immediately pinged by setting the timer expiry to 0.
+
+So restore similar behaviour by pinging it when enabling it so that
+if it was already enabled the watchdog timer counter is reloaded.
+
+Fixes: 19ce9490aa84 ("watchdog: mpc8xxx: use the core worker function")
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/imu/inv_icm42600/inv_icm42600_core.c |    4 ----
- 1 file changed, 4 deletions(-)
+ drivers/watchdog/mpc8xxx_wdt.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
-@@ -730,10 +730,6 @@ static int __maybe_unused inv_icm42600_r
- 	if (ret)
- 		goto out_unlock;
+diff --git a/drivers/watchdog/mpc8xxx_wdt.c b/drivers/watchdog/mpc8xxx_wdt.c
+index 3fc457bc16db3..18349ec0c1010 100644
+--- a/drivers/watchdog/mpc8xxx_wdt.c
++++ b/drivers/watchdog/mpc8xxx_wdt.c
+@@ -100,6 +100,8 @@ static int mpc8xxx_wdt_start(struct watchdog_device *w)
+ 	ddata->swtc = tmp >> 16;
+ 	set_bit(WDOG_HW_RUNNING, &ddata->wdd.status);
  
--	pm_runtime_disable(dev);
--	pm_runtime_set_active(dev);
--	pm_runtime_enable(dev);
--
- 	/* restore sensors state */
- 	ret = inv_icm42600_set_pwr_mgmt0(st, st->suspended.gyro,
- 					 st->suspended.accel,
++	mpc8xxx_wdt_keepalive(ddata);
++
+ 	return 0;
+ }
+ 
+-- 
+2.51.0
+
 
 
 
