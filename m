@@ -1,163 +1,455 @@
-Return-Path: <stable+bounces-189903-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-189904-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C5BFC0B92E
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 02:12:08 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FA66C0B952
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 02:15:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 844474E55AB
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 01:12:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 03A813ABFE7
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 01:15:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A7A7237A4F;
-	Mon, 27 Oct 2025 01:11:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAD0823BD17;
+	Mon, 27 Oct 2025 01:15:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="OhXaW/x7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Lbtk5c2Q"
 X-Original-To: stable@vger.kernel.org
-Received: from out30-131.freemail.mail.aliyun.com (out30-131.freemail.mail.aliyun.com [115.124.30.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F94623645D;
-	Mon, 27 Oct 2025 01:11:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BA25239E63;
+	Mon, 27 Oct 2025 01:15:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761527517; cv=none; b=fhrm4+gXB2LgEL/miqI/JD5mdyLVUzgzTZBhC0HK6aiBRva7AZfHpdvZ8n8JjsSPNcBNa0mr99/vGb1lU7l5x76T4kLnc/SL9EQOJLR5QOiRpDgaNWQ/iJgFJYV6sA58PacbRTnS98iYeJ2lvdMf5wARodK5SIOkCXuP/FGLxto=
+	t=1761527706; cv=none; b=nKglg0wyodhhv7WU7KavzBNkJbF9sD5oAL6ajYnkU7Fjb4fdJoDhRUGGohNldSdqE5keQyNv9bpufJEXLNe0N5l515eAS47KGeLRG/O6ms7yL2bA6iiO+hu/wNUZ0p87bm2vVAZN494K01UNhaM/jc7qvjynULWtH4nAixGvb/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761527517; c=relaxed/simple;
-	bh=f0FbD/KBEVC/wmzpqn+qUp2CmfbQCTx+VZi6wwEc2Qg=;
-	h=Message-ID:Subject:Date:From:To:Cc:References:In-Reply-To; b=fDmKVCl0RIfnqJa0A5PxXZBOvXqEnTwNGG9A0ehOqdDBS93lOmxhCijfDkh5LMSTa9tHHCpN/THLZL+LaKFPUECUI2RWhvqUZsNwhzEfoyWAwxZMNbrFju7X8oWNsRK+DB4rYVP2CWDzEeZsvEwWFqc9Y70FYtx080tTylt9b8k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=OhXaW/x7; arc=none smtp.client-ip=115.124.30.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1761527505; h=Message-ID:Subject:Date:From:To;
-	bh=sjBcHr5ZOwGk5Nuy3x8242YaFWFprMrxE6xIBZsgAP4=;
-	b=OhXaW/x7UKJDHdqr+xCF9Eh/EnFParWCLS71xAHhBe9g8rS5bRoG7qj6/xfrzzMUY6ePOAEhX55nQqsF1zHOjr7kXjTuMobNeVcUDkGNNqMztJ8aFWrSkKuV0Ln/ZJVS3M+b8JCNwU306O/fXiObKojJJ/pcB3gN96HbheE7Baw=
-Received: from localhost(mailfrom:xuanzhuo@linux.alibaba.com fp:SMTPD_---0Wr-QfaA_1761527504 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Mon, 27 Oct 2025 09:11:45 +0800
-Message-ID: <1761527437.6478114-1-xuanzhuo@linux.alibaba.com>
-Subject: Re: [PATCH net v5] virtio-net: fix received length check in big packets
-Date: Mon, 27 Oct 2025 09:10:37 +0800
-From: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-To: Bui Quang Minh <minhquangbui99@gmail.com>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>,
- Jason Wang <jasowang@redhat.com>,
- =?utf-8?q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>,
- Gavin Li <gavinl@nvidia.com>,
- Gavi Teitz <gavi@nvidia.com>,
- Parav Pandit <parav@nvidia.com>,
- virtualization@lists.linux.dev,
- linux-kernel@vger.kernel.org,
- Bui Quang Minh <minhquangbui99@gmail.com>,
- stable@vger.kernel.org,
- netdev@vger.kernel.org
-References: <20251024150649.22906-1-minhquangbui99@gmail.com>
-In-Reply-To: <20251024150649.22906-1-minhquangbui99@gmail.com>
+	s=arc-20240116; t=1761527706; c=relaxed/simple;
+	bh=b93euEktbvWmw5VqsulGkT7QAANQALu8s7b1KyHJ7Xw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=MCXR3IvoIDFfjZxcOuhq7sfxuf4/TrHPWk/9AohZVy1CTV4EBc0nIvV/iC/qEMNBmKqhYoGwk74hAYBY0Bw2QqEGLC96pyAJvAhdGZsjMCNjWzDaTd1JEQ+9CXf9oZY5JUSkmtV2exfcTRquYJ0j3rcMGuGqfZYNJQy2xUYzaWk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Lbtk5c2Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B11EBC4CEE7;
+	Mon, 27 Oct 2025 01:15:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761527703;
+	bh=b93euEktbvWmw5VqsulGkT7QAANQALu8s7b1KyHJ7Xw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Lbtk5c2QpZzy5iCTBheDnV4vhfMoEQJhyResC8w9UE/tGUX94H6lq0rY9r4oM3LmG
+	 xUO19aBgmsuOnotUYRtPDoY3Or9W6ltXhnTQPUP/eZHQbK1aUlMgiOJqK7utIcQ9mH
+	 A3+JpyvrpufSk1FkaRbPcVdWKO9du23m2AMMYtaFaEJ9Ztcgrpmllsk340JF9C21hq
+	 iFdrv+JcbUr/aT5U9BjrO5aZ5LcL7Cv7rxjXu3+V7FvTV3P27f6T4xNRBmR96R/fkS
+	 3H23jqybrMMvMG40mKZFqzFdQHHvgpQ+qn0jnI5h42tBnTSsZqjXAUNGI1f7KenB3u
+	 HZi6CqBdRqCmg==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Maarten Lankhorst <dev@lankhorst.se>,
+	Mukesh Ojha <quic_mojha@quicinc.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	Matthew Brost <matthew.brost@intel.com>,
+	Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15.y] devcoredump: Fix circular locking dependency with devcd->mutex.
+Date: Sun, 26 Oct 2025 21:15:01 -0400
+Message-ID: <20251027011501.314221-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2025102623-science-evergreen-c201@gregkh>
+References: <2025102623-science-evergreen-c201@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Fri, 24 Oct 2025 22:06:49 +0700, Bui Quang Minh <minhquangbui99@gmail.com> wrote:
-> Since commit 4959aebba8c0 ("virtio-net: use mtu size as buffer length
-> for big packets"), when guest gso is off, the allocated size for big
-> packets is not MAX_SKB_FRAGS * PAGE_SIZE anymore but depends on
-> negotiated MTU. The number of allocated frags for big packets is stored
-> in vi->big_packets_num_skbfrags.
->
-> Because the host announced buffer length can be malicious (e.g. the host
-> vhost_net driver's get_rx_bufs is modified to announce incorrect
-> length), we need a check in virtio_net receive path. Currently, the
-> check is not adapted to the new change which can lead to NULL page
-> pointer dereference in the below while loop when receiving length that
-> is larger than the allocated one.
->
-> This commit fixes the received length check corresponding to the new
-> change.
->
-> Fixes: 4959aebba8c0 ("virtio-net: use mtu size as buffer length for big packets")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Bui Quang Minh <minhquangbui99@gmail.com>
-> ---
-> Changes in v5:
-> - Move the length check to receive_big
-> - Link to v4: https://lore.kernel.org/netdev/20251022160623.51191-1-minhquangbui99@gmail.com/
-> Changes in v4:
-> - Remove unrelated changes, add more comments
-> - Link to v3: https://lore.kernel.org/netdev/20251021154534.53045-1-minhquangbui99@gmail.com/
-> Changes in v3:
-> - Convert BUG_ON to WARN_ON_ONCE
-> - Link to v2: https://lore.kernel.org/netdev/20250708144206.95091-1-minhquangbui99@gmail.com/
-> Changes in v2:
-> - Remove incorrect give_pages call
-> - Link to v1: https://lore.kernel.org/netdev/20250706141150.25344-1-minhquangbui99@gmail.com/
-> ---
->  drivers/net/virtio_net.c | 25 ++++++++++++-------------
->  1 file changed, 12 insertions(+), 13 deletions(-)
->
-> diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-> index a757cbcab87f..2c3f544add5e 100644
-> --- a/drivers/net/virtio_net.c
-> +++ b/drivers/net/virtio_net.c
-> @@ -910,17 +910,6 @@ static struct sk_buff *page_to_skb(struct virtnet_info *vi,
->  		goto ok;
->  	}
->
-> -	/*
-> -	 * Verify that we can indeed put this data into a skb.
-> -	 * This is here to handle cases when the device erroneously
-> -	 * tries to receive more than is possible. This is usually
-> -	 * the case of a broken device.
-> -	 */
-> -	if (unlikely(len > MAX_SKB_FRAGS * PAGE_SIZE)) {
-> -		net_dbg_ratelimited("%s: too much data\n", skb->dev->name);
-> -		dev_kfree_skb(skb);
-> -		return NULL;
-> -	}
->  	BUG_ON(offset >= PAGE_SIZE);
->  	while (len) {
->  		unsigned int frag_size = min((unsigned)PAGE_SIZE - offset, len);
-> @@ -2107,9 +2096,19 @@ static struct sk_buff *receive_big(struct net_device *dev,
->  				   struct virtnet_rq_stats *stats)
->  {
->  	struct page *page = buf;
-> -	struct sk_buff *skb =
-> -		page_to_skb(vi, rq, page, 0, len, PAGE_SIZE, 0);
-> +	struct sk_buff *skb;
-> +
-> +	/* Make sure that len does not exceed the allocated size in
-> +	 * add_recvbuf_big.
-> +	 */
-> +	if (unlikely(len > vi->big_packets_num_skbfrags * PAGE_SIZE)) {
+From: Maarten Lankhorst <dev@lankhorst.se>
 
+[ Upstream commit a91c8096590bd7801a26454789f2992094fe36da ]
 
-I think should be:
+The original code causes a circular locking dependency found by lockdep.
 
-	if (unlikely(len > (vi->big_packets_num_skbfrags + 1) * PAGE_SIZE)) {
+======================================================
+WARNING: possible circular locking dependency detected
+6.16.0-rc6-lgci-xe-xe-pw-151626v3+ #1 Tainted: G S   U
+------------------------------------------------------
+xe_fault_inject/5091 is trying to acquire lock:
+ffff888156815688 ((work_completion)(&(&devcd->del_wk)->work)){+.+.}-{0:0}, at: __flush_work+0x25d/0x660
 
-Thanks
+but task is already holding lock:
 
+ffff888156815620 (&devcd->mutex){+.+.}-{3:3}, at: dev_coredump_put+0x3f/0xa0
+which lock already depends on the new lock.
+the existing dependency chain (in reverse order) is:
+-> #2 (&devcd->mutex){+.+.}-{3:3}:
+       mutex_lock_nested+0x4e/0xc0
+       devcd_data_write+0x27/0x90
+       sysfs_kf_bin_write+0x80/0xf0
+       kernfs_fop_write_iter+0x169/0x220
+       vfs_write+0x293/0x560
+       ksys_write+0x72/0xf0
+       __x64_sys_write+0x19/0x30
+       x64_sys_call+0x2bf/0x2660
+       do_syscall_64+0x93/0xb60
+       entry_SYSCALL_64_after_hwframe+0x76/0x7e
+-> #1 (kn->active#236){++++}-{0:0}:
+       kernfs_drain+0x1e2/0x200
+       __kernfs_remove+0xae/0x400
+       kernfs_remove_by_name_ns+0x5d/0xc0
+       remove_files+0x54/0x70
+       sysfs_remove_group+0x3d/0xa0
+       sysfs_remove_groups+0x2e/0x60
+       device_remove_attrs+0xc7/0x100
+       device_del+0x15d/0x3b0
+       devcd_del+0x19/0x30
+       process_one_work+0x22b/0x6f0
+       worker_thread+0x1e8/0x3d0
+       kthread+0x11c/0x250
+       ret_from_fork+0x26c/0x2e0
+       ret_from_fork_asm+0x1a/0x30
+-> #0 ((work_completion)(&(&devcd->del_wk)->work)){+.+.}-{0:0}:
+       __lock_acquire+0x1661/0x2860
+       lock_acquire+0xc4/0x2f0
+       __flush_work+0x27a/0x660
+       flush_delayed_work+0x5d/0xa0
+       dev_coredump_put+0x63/0xa0
+       xe_driver_devcoredump_fini+0x12/0x20 [xe]
+       devm_action_release+0x12/0x30
+       release_nodes+0x3a/0x120
+       devres_release_all+0x8a/0xd0
+       device_unbind_cleanup+0x12/0x80
+       device_release_driver_internal+0x23a/0x280
+       device_driver_detach+0x14/0x20
+       unbind_store+0xaf/0xc0
+       drv_attr_store+0x21/0x50
+       sysfs_kf_write+0x4a/0x80
+       kernfs_fop_write_iter+0x169/0x220
+       vfs_write+0x293/0x560
+       ksys_write+0x72/0xf0
+       __x64_sys_write+0x19/0x30
+       x64_sys_call+0x2bf/0x2660
+       do_syscall_64+0x93/0xb60
+       entry_SYSCALL_64_after_hwframe+0x76/0x7e
+other info that might help us debug this:
+Chain exists of: (work_completion)(&(&devcd->del_wk)->work) --> kn->active#236 --> &devcd->mutex
+ Possible unsafe locking scenario:
+       CPU0                    CPU1
+       ----                    ----
+  lock(&devcd->mutex);
+                               lock(kn->active#236);
+                               lock(&devcd->mutex);
+  lock((work_completion)(&(&devcd->del_wk)->work));
+ *** DEADLOCK ***
+5 locks held by xe_fault_inject/5091:
+ #0: ffff8881129f9488 (sb_writers#5){.+.+}-{0:0}, at: ksys_write+0x72/0xf0
+ #1: ffff88810c755078 (&of->mutex#2){+.+.}-{3:3}, at: kernfs_fop_write_iter+0x123/0x220
+ #2: ffff8881054811a0 (&dev->mutex){....}-{3:3}, at: device_release_driver_internal+0x55/0x280
+ #3: ffff888156815620 (&devcd->mutex){+.+.}-{3:3}, at: dev_coredump_put+0x3f/0xa0
+ #4: ffffffff8359e020 (rcu_read_lock){....}-{1:2}, at: __flush_work+0x72/0x660
+stack backtrace:
+CPU: 14 UID: 0 PID: 5091 Comm: xe_fault_inject Tainted: G S   U              6.16.0-rc6-lgci-xe-xe-pw-151626v3+ #1 PREEMPT_{RT,(lazy)}
+Tainted: [S]=CPU_OUT_OF_SPEC, [U]=USER
+Hardware name: Micro-Star International Co., Ltd. MS-7D25/PRO Z690-A DDR4(MS-7D25), BIOS 1.10 12/13/2021
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x91/0xf0
+ dump_stack+0x10/0x20
+ print_circular_bug+0x285/0x360
+ check_noncircular+0x135/0x150
+ ? register_lock_class+0x48/0x4a0
+ __lock_acquire+0x1661/0x2860
+ lock_acquire+0xc4/0x2f0
+ ? __flush_work+0x25d/0x660
+ ? mark_held_locks+0x46/0x90
+ ? __flush_work+0x25d/0x660
+ __flush_work+0x27a/0x660
+ ? __flush_work+0x25d/0x660
+ ? trace_hardirqs_on+0x1e/0xd0
+ ? __pfx_wq_barrier_func+0x10/0x10
+ flush_delayed_work+0x5d/0xa0
+ dev_coredump_put+0x63/0xa0
+ xe_driver_devcoredump_fini+0x12/0x20 [xe]
+ devm_action_release+0x12/0x30
+ release_nodes+0x3a/0x120
+ devres_release_all+0x8a/0xd0
+ device_unbind_cleanup+0x12/0x80
+ device_release_driver_internal+0x23a/0x280
+ ? bus_find_device+0xa8/0xe0
+ device_driver_detach+0x14/0x20
+ unbind_store+0xaf/0xc0
+ drv_attr_store+0x21/0x50
+ sysfs_kf_write+0x4a/0x80
+ kernfs_fop_write_iter+0x169/0x220
+ vfs_write+0x293/0x560
+ ksys_write+0x72/0xf0
+ __x64_sys_write+0x19/0x30
+ x64_sys_call+0x2bf/0x2660
+ do_syscall_64+0x93/0xb60
+ ? __f_unlock_pos+0x15/0x20
+ ? __x64_sys_getdents64+0x9b/0x130
+ ? __pfx_filldir64+0x10/0x10
+ ? do_syscall_64+0x1a2/0xb60
+ ? clear_bhb_loop+0x30/0x80
+ ? clear_bhb_loop+0x30/0x80
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+RIP: 0033:0x76e292edd574
+Code: c7 00 16 00 00 00 b8 ff ff ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 f3 0f 1e fa 80 3d d5 ea 0e 00 00 74 13 b8 01 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 54 c3 0f 1f 00 55 48 89 e5 48 83 ec 20 48 89
+RSP: 002b:00007fffe247a828 EFLAGS: 00000202 ORIG_RAX: 0000000000000001
+RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 000076e292edd574
+RDX: 000000000000000c RSI: 00006267f6306063 RDI: 000000000000000b
+RBP: 000000000000000c R08: 000076e292fc4b20 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000202 R12: 00006267f6306063
+R13: 000000000000000b R14: 00006267e6859c00 R15: 000076e29322a000
+ </TASK>
+xe 0000:03:00.0: [drm] Xe device coredump has been deleted.
 
-> +		pr_debug("%s: rx error: len %u exceeds allocate size %lu\n",
-> +			 dev->name, len,
-> +			 vi->big_packets_num_skbfrags * PAGE_SIZE);
-> +		goto err;
-> +	}
->
-> +	skb = page_to_skb(vi, rq, page, 0, len, PAGE_SIZE, 0);
->  	u64_stats_add(&stats->bytes, len - vi->hdr_len);
->  	if (unlikely(!skb))
->  		goto err;
-> --
-> 2.43.0
->
+Fixes: 01daccf74832 ("devcoredump : Serialize devcd_del work")
+Cc: Mukesh Ojha <quic_mojha@quicinc.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Johannes Berg <johannes@sipsolutions.net>
+Cc: Rafael J. Wysocki <rafael@kernel.org>
+Cc: Danilo Krummrich <dakr@kernel.org>
+Cc: linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org # v6.1+
+Signed-off-by: Maarten Lankhorst <dev@lankhorst.se>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Acked-by: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250723142416.1020423-1-dev@lankhorst.se
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[ replaced disable_delayed_work_sync() with cancel_delayed_work_sync() ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/base/devcoredump.c | 138 ++++++++++++++++++++++---------------
+ 1 file changed, 84 insertions(+), 54 deletions(-)
+
+diff --git a/drivers/base/devcoredump.c b/drivers/base/devcoredump.c
+index f3bd9f104bd12..48754841fd868 100644
+--- a/drivers/base/devcoredump.c
++++ b/drivers/base/devcoredump.c
+@@ -26,50 +26,46 @@ struct devcd_entry {
+ 	void *data;
+ 	size_t datalen;
+ 	/*
+-	 * Here, mutex is required to serialize the calls to del_wk work between
+-	 * user/kernel space which happens when devcd is added with device_add()
+-	 * and that sends uevent to user space. User space reads the uevents,
+-	 * and calls to devcd_data_write() which try to modify the work which is
+-	 * not even initialized/queued from devcoredump.
++	 * There are 2 races for which mutex is required.
+ 	 *
++	 * The first race is between device creation and userspace writing to
++	 * schedule immediately destruction.
+ 	 *
++	 * This race is handled by arming the timer before device creation, but
++	 * when device creation fails the timer still exists.
+ 	 *
+-	 *        cpu0(X)                                 cpu1(Y)
++	 * To solve this, hold the mutex during device_add(), and set
++	 * init_completed on success before releasing the mutex.
+ 	 *
+-	 *        dev_coredump() uevent sent to user space
+-	 *        device_add()  ======================> user space process Y reads the
+-	 *                                              uevents writes to devcd fd
+-	 *                                              which results into writes to
++	 * That way the timer will never fire until device_add() is called,
++	 * it will do nothing if init_completed is not set. The timer is also
++	 * cancelled in that case.
+ 	 *
+-	 *                                             devcd_data_write()
+-	 *                                               mod_delayed_work()
+-	 *                                                 try_to_grab_pending()
+-	 *                                                   del_timer()
+-	 *                                                     debug_assert_init()
+-	 *       INIT_DELAYED_WORK()
+-	 *       schedule_delayed_work()
+-	 *
+-	 *
+-	 * Also, mutex alone would not be enough to avoid scheduling of
+-	 * del_wk work after it get flush from a call to devcd_free()
+-	 * mentioned as below.
+-	 *
+-	 *	disabled_store()
+-	 *        devcd_free()
+-	 *          mutex_lock()             devcd_data_write()
+-	 *          flush_delayed_work()
+-	 *          mutex_unlock()
+-	 *                                   mutex_lock()
+-	 *                                   mod_delayed_work()
+-	 *                                   mutex_unlock()
+-	 * So, delete_work flag is required.
++	 * The second race involves multiple parallel invocations of devcd_free(),
++	 * add a deleted flag so only 1 can call the destructor.
+ 	 */
+ 	struct mutex mutex;
+-	bool delete_work;
++	bool init_completed, deleted;
+ 	struct module *owner;
+ 	ssize_t (*read)(char *buffer, loff_t offset, size_t count,
+ 			void *data, size_t datalen);
+ 	void (*free)(void *data);
++	/*
++	 * If nothing interferes and device_add() was returns success,
++	 * del_wk will destroy the device after the timer fires.
++	 *
++	 * Multiple userspace processes can interfere in the working of the timer:
++	 * - Writing to the coredump will reschedule the timer to run immediately,
++	 *   if still armed.
++	 *
++	 *   This is handled by using "if (cancel_delayed_work()) {
++	 *   schedule_delayed_work() }", to prevent re-arming after having
++	 *   been previously fired.
++	 * - Writing to /sys/class/devcoredump/disabled will destroy the
++	 *   coredump synchronously.
++	 *   This is handled by using disable_delayed_work_sync(), and then
++	 *   checking if deleted flag is set with &devcd->mutex held.
++	 */
+ 	struct delayed_work del_wk;
+ 	struct device *failing_dev;
+ };
+@@ -98,14 +94,27 @@ static void devcd_dev_release(struct device *dev)
+ 	kfree(devcd);
+ }
+ 
++static void __devcd_del(struct devcd_entry *devcd)
++{
++	devcd->deleted = true;
++	device_del(&devcd->devcd_dev);
++	put_device(&devcd->devcd_dev);
++}
++
+ static void devcd_del(struct work_struct *wk)
+ {
+ 	struct devcd_entry *devcd;
++	bool init_completed;
+ 
+ 	devcd = container_of(wk, struct devcd_entry, del_wk.work);
+ 
+-	device_del(&devcd->devcd_dev);
+-	put_device(&devcd->devcd_dev);
++	/* devcd->mutex serializes against dev_coredumpm_timeout */
++	mutex_lock(&devcd->mutex);
++	init_completed = devcd->init_completed;
++	mutex_unlock(&devcd->mutex);
++
++	if (init_completed)
++		__devcd_del(devcd);
+ }
+ 
+ static ssize_t devcd_data_read(struct file *filp, struct kobject *kobj,
+@@ -125,12 +134,12 @@ static ssize_t devcd_data_write(struct file *filp, struct kobject *kobj,
+ 	struct device *dev = kobj_to_dev(kobj);
+ 	struct devcd_entry *devcd = dev_to_devcd(dev);
+ 
+-	mutex_lock(&devcd->mutex);
+-	if (!devcd->delete_work) {
+-		devcd->delete_work = true;
+-		mod_delayed_work(system_wq, &devcd->del_wk, 0);
+-	}
+-	mutex_unlock(&devcd->mutex);
++	/*
++	 * Although it's tempting to use mod_delayed work here,
++	 * that will cause a reschedule if the timer already fired.
++	 */
++	if (cancel_delayed_work(&devcd->del_wk))
++		schedule_delayed_work(&devcd->del_wk, 0);
+ 
+ 	return count;
+ }
+@@ -158,11 +167,21 @@ static int devcd_free(struct device *dev, void *data)
+ {
+ 	struct devcd_entry *devcd = dev_to_devcd(dev);
+ 
++	/*
++	 * To prevent a race with devcd_data_write(), cancel work and
++	 * complete manually instead.
++	 *
++	 * We cannot rely on the return value of
++	 * cancel_delayed_work_sync() here, because it might be in the
++	 * middle of a cancel_delayed_work + schedule_delayed_work pair.
++	 *
++	 * devcd->mutex here guards against multiple parallel invocations
++	 * of devcd_free().
++	 */
++	cancel_delayed_work_sync(&devcd->del_wk);
+ 	mutex_lock(&devcd->mutex);
+-	if (!devcd->delete_work)
+-		devcd->delete_work = true;
+-
+-	flush_delayed_work(&devcd->del_wk);
++	if (!devcd->deleted)
++		__devcd_del(devcd);
+ 	mutex_unlock(&devcd->mutex);
+ 	return 0;
+ }
+@@ -186,12 +205,10 @@ static ssize_t disabled_show(struct class *class, struct class_attribute *attr,
+  *                                                                 put_device() <- last reference
+  *             error = fn(dev, data)                           devcd_dev_release()
+  *             devcd_free(dev, data)                           kfree(devcd)
+- *             mutex_lock(&devcd->mutex);
+  *
+  *
+- * In the above diagram, It looks like disabled_store() would be racing with parallely
+- * running devcd_del() and result in memory abort while acquiring devcd->mutex which
+- * is called after kfree of devcd memory  after dropping its last reference with
++ * In the above diagram, it looks like disabled_store() would be racing with parallelly
++ * running devcd_del() and result in memory abort after dropping its last reference with
+  * put_device(). However, this will not happens as fn(dev, data) runs
+  * with its own reference to device via klist_node so it is not its last reference.
+  * so, above situation would not occur.
+@@ -353,7 +370,7 @@ void dev_coredumpm(struct device *dev, struct module *owner,
+ 	devcd->read = read;
+ 	devcd->free = free;
+ 	devcd->failing_dev = get_device(dev);
+-	devcd->delete_work = false;
++	devcd->deleted = false;
+ 
+ 	mutex_init(&devcd->mutex);
+ 	device_initialize(&devcd->devcd_dev);
+@@ -362,8 +379,14 @@ void dev_coredumpm(struct device *dev, struct module *owner,
+ 		     atomic_inc_return(&devcd_count));
+ 	devcd->devcd_dev.class = &devcd_class;
+ 
+-	mutex_lock(&devcd->mutex);
+ 	dev_set_uevent_suppress(&devcd->devcd_dev, true);
++
++	/* devcd->mutex prevents devcd_del() completing until init finishes */
++	mutex_lock(&devcd->mutex);
++	devcd->init_completed = false;
++	INIT_DELAYED_WORK(&devcd->del_wk, devcd_del);
++	schedule_delayed_work(&devcd->del_wk, DEVCD_TIMEOUT);
++
+ 	if (device_add(&devcd->devcd_dev))
+ 		goto put_device;
+ 
+@@ -380,13 +403,20 @@ void dev_coredumpm(struct device *dev, struct module *owner,
+ 
+ 	dev_set_uevent_suppress(&devcd->devcd_dev, false);
+ 	kobject_uevent(&devcd->devcd_dev.kobj, KOBJ_ADD);
+-	INIT_DELAYED_WORK(&devcd->del_wk, devcd_del);
+-	schedule_delayed_work(&devcd->del_wk, DEVCD_TIMEOUT);
++
++	/*
++	 * Safe to run devcd_del() now that we are done with devcd_dev.
++	 * Alternatively we could have taken a ref on devcd_dev before
++	 * dropping the lock.
++	 */
++	devcd->init_completed = true;
+ 	mutex_unlock(&devcd->mutex);
+ 	return;
+  put_device:
+-	put_device(&devcd->devcd_dev);
+ 	mutex_unlock(&devcd->mutex);
++	cancel_delayed_work_sync(&devcd->del_wk);
++	put_device(&devcd->devcd_dev);
++
+  put_module:
+ 	module_put(owner);
+  free:
+-- 
+2.51.0
+
 
