@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-190675-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190607-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DA74C109EA
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:13:08 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8296C1096C
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:11:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2227D188A4A7
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:08:51 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 80B66506E34
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:06:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 373D6331A54;
-	Mon, 27 Oct 2025 19:05:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 911D23203AF;
+	Mon, 27 Oct 2025 19:02:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZJs6XrI5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ccFc/kXS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E88C13314DD;
-	Mon, 27 Oct 2025 19:05:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ECED2D5C95;
+	Mon, 27 Oct 2025 19:02:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591902; cv=none; b=ElCdhfcQ9bnQmOhP7xiCHmvCEK3Ld03ggkIOEoVtbbAyGAV3NP2eivVW3JVURPLpcpxXVefoawl+B7/RqjO3e7qp1Gho5Fy3gS+VLF90cY6vAwKgtuXeVoABID1yQwTfDNai+GT6+CkgR6kiO2Z5OdigavLcDwWkt7akos5rJdI=
+	t=1761591726; cv=none; b=guo22xrMwf3Uu9IYJxeEynsn1vF7+OrK8MPvU1eLHczJsgQIjs3zHDHphQr9ljBswJ435Yfe+SLKZRBGttfZMHQHYgJbxI8D7jAekFXe59eHHFKgmMFbMG1PzZmQRtKIJ30JdR8a++Eo93AJZgTAUZHzOJDHa0/iLysKGuyTUCQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591902; c=relaxed/simple;
-	bh=4JDtOfiZbYihCzsoQGpX6yBp1u2A557WPMXU71kLU+U=;
+	s=arc-20240116; t=1761591726; c=relaxed/simple;
+	bh=px+jiTLMUCPUz8sph1+W9URHYSjrru+O57K2M1B7cpk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZewuNv0HTZPI+2i4C7dFyzUdM3T5ygr9sQt8rAKDgxpSdQDVQoLwTUfnyw4t1BFE1KxByk+wxcAhfg1yifsBeZCJVq+GtevSHrCPPzkjJDI0tkJEkFtR9DVtsSQb+Iz7w622JSYMcaj11SD/W+we9dMInA0vz5H9jU0REmtcFu4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZJs6XrI5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7914DC4CEF1;
-	Mon, 27 Oct 2025 19:05:01 +0000 (UTC)
+	 MIME-Version; b=hifZHKhpORsLtPE1DXCwa4t+qCIJ7SybN94s2TM2Cg6Vexm8EGXoAbzt7zsDttqtH5UtnNwV3ZiGSeqGVhqrCazZ9kTWaxaKuIxO7AhHN7qbWhDoMIza1Z5xayMkpA8djrcv63/0gJ4FNavIQDx/reghhRLP2VHx0kcxitX67Mw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ccFc/kXS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2B3FC4CEF1;
+	Mon, 27 Oct 2025 19:02:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591901;
-	bh=4JDtOfiZbYihCzsoQGpX6yBp1u2A557WPMXU71kLU+U=;
+	s=korg; t=1761591726;
+	bh=px+jiTLMUCPUz8sph1+W9URHYSjrru+O57K2M1B7cpk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZJs6XrI5U6+HUY9cUrgb/2H29yyTbaTnIAxmXNVuGOkjO1u9bQUP+qnmucAnM+wzZ
-	 o1JVJrl0/X8UyioCLrUqaGCLAjkssDYWEW9ISdqhNLy2fIDH8frqP1BZYIBBsHGYiB
-	 8W0v/sF949GobppFwl9ETOzAQ9aYbFTSQ+c5pcng=
+	b=ccFc/kXSUXPgtFqADN7mR7FvDOcR1B9vB8WUpKs0/bMLctTLOFEsRdCNfQIFhmDku
+	 xd4uQ5wZtf7vRCWK0+DGxIpBZrPqehNBzUJbq4qgqUeWl6shHXBMssdNg4GC/854m8
+	 Ukj4G8NeCkA3KajeiCXlTIIWYlx3jUxJTbuhYMMU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Schuster <schuster.simon@siemens-energy.com>,
-	Andreas Oetken <andreas.oetken@siemens-energy.com>,
-	Dinh Nguyen <dinguyen@kernel.org>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 042/123] nios2: ensure that memblock.current_limit is set when setting pfn limits
+Subject: [PATCH 5.10 269/332] net: rtnetlink: add helper to extract msg types kind
 Date: Mon, 27 Oct 2025 19:35:22 +0100
-Message-ID: <20251027183447.528372867@linuxfoundation.org>
+Message-ID: <20251027183531.961940908@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183446.381986645@linuxfoundation.org>
-References: <20251027183446.381986645@linuxfoundation.org>
+In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
+References: <20251027183524.611456697@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,75 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Simon Schuster <schuster.simon@siemens-energy.com>
+From: Nikolay Aleksandrov <razor@blackwall.org>
 
-[ Upstream commit a20b83cf45be2057f3d073506779e52c7fa17f94 ]
+[ Upstream commit 2e9ea3e30f696fd438319c07836422bb0bbb4608 ]
 
-On nios2, with CONFIG_FLATMEM set, the kernel relies on
-memblock_get_current_limit() to determine the limits of mem_map, in
-particular for max_low_pfn.
-Unfortunately, memblock.current_limit is only default initialized to
-MEMBLOCK_ALLOC_ANYWHERE at this point of the bootup, potentially leading
-to situations where max_low_pfn can erroneously exceed the value of
-max_pfn and, thus, the valid range of available DRAM.
+Add a helper which extracts the msg type's kind using the kind mask (0x3).
 
-This can in turn cause kernel-level paging failures, e.g.:
-
-[   76.900000] Unable to handle kernel paging request at virtual address 20303000
-[   76.900000] ea = c0080890, ra = c000462c, cause = 14
-[   76.900000] Kernel panic - not syncing: Oops
-[   76.900000] ---[ end Kernel panic - not syncing: Oops ]---
-
-This patch fixes this by pre-calculating memblock.current_limit
-based on the upper limits of the available memory ranges via
-adjust_lowmem_bounds, a simplified version of the equivalent
-implementation within the arm architecture.
-
-Signed-off-by: Simon Schuster <schuster.simon@siemens-energy.com>
-Signed-off-by: Andreas Oetken <andreas.oetken@siemens-energy.com>
-Signed-off-by: Dinh Nguyen <dinguyen@kernel.org>
+Signed-off-by: Nikolay Aleksandrov <razor@blackwall.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: bf29555f5bdc ("rtnetlink: Allow deleting FDB entries in user namespace")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/nios2/kernel/setup.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ include/net/rtnetlink.h | 6 ++++++
+ net/core/rtnetlink.c    | 2 +-
+ 2 files changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/arch/nios2/kernel/setup.c b/arch/nios2/kernel/setup.c
-index 40bc8fb75e0b5..e2fc4b59d93ea 100644
---- a/arch/nios2/kernel/setup.c
-+++ b/arch/nios2/kernel/setup.c
-@@ -147,6 +147,20 @@ static void __init find_limits(unsigned long *min, unsigned long *max_low,
- 	*max_high = PFN_DOWN(memblock_end_of_DRAM());
- }
- 
-+static void __init adjust_lowmem_bounds(void)
+diff --git a/include/net/rtnetlink.h b/include/net/rtnetlink.h
+index 74eff5259b361..02b0636a4523d 100644
+--- a/include/net/rtnetlink.h
++++ b/include/net/rtnetlink.h
+@@ -19,6 +19,12 @@ enum rtnl_kinds {
+ 	RTNL_KIND_GET,
+ 	RTNL_KIND_SET
+ };
++#define RTNL_KIND_MASK 0x3
++
++static inline enum rtnl_kinds rtnl_msgtype_kind(int msgtype)
 +{
-+	phys_addr_t block_start, block_end;
-+	u64 i;
-+	phys_addr_t memblock_limit = 0;
-+
-+	for_each_mem_range(i, &block_start, &block_end) {
-+		if (block_end > memblock_limit)
-+			memblock_limit = block_end;
-+	}
-+
-+	memblock_set_current_limit(memblock_limit);
++	return msgtype & RTNL_KIND_MASK;
 +}
-+
- void __init setup_arch(char **cmdline_p)
- {
- 	console_verbose();
-@@ -160,6 +174,7 @@ void __init setup_arch(char **cmdline_p)
- 	/* Keep a copy of command line */
- 	*cmdline_p = boot_command_line;
  
-+	adjust_lowmem_bounds();
- 	find_limits(&min_low_pfn, &max_low_pfn, &max_pfn);
- 	max_mapnr = max_low_pfn;
+ void rtnl_register(int protocol, int msgtype,
+ 		   rtnl_doit_func, rtnl_dumpit_func, unsigned int flags);
+diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
+index c0a3cf3ed8f34..2cd4990ac8bc3 100644
+--- a/net/core/rtnetlink.c
++++ b/net/core/rtnetlink.c
+@@ -5532,7 +5532,7 @@ static int rtnetlink_rcv_msg(struct sk_buff *skb, struct nlmsghdr *nlh,
+ 		return 0;
  
+ 	family = ((struct rtgenmsg *)nlmsg_data(nlh))->rtgen_family;
+-	kind = type&3;
++	kind = rtnl_msgtype_kind(type);
+ 
+ 	if (kind != RTNL_KIND_GET && !netlink_net_capable(skb, CAP_NET_ADMIN))
+ 		return -EPERM;
 -- 
 2.51.0
 
