@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-191170-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190574-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C30CC110FA
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:32:34 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34456C1086A
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:08:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E48F71A210AB
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:28:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F17DB1A26A73
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:05:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89984328B41;
-	Mon, 27 Oct 2025 19:26:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2611433508A;
+	Mon, 27 Oct 2025 19:00:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i67B30hz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qBqcsc06"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46E7A328634;
-	Mon, 27 Oct 2025 19:26:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D56B92D6E70;
+	Mon, 27 Oct 2025 19:00:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761593190; cv=none; b=YdCukC20qtaVyUtfkJ6m+mtofUMTQrQwjtt3XOk+8N5HtkOW1809yqOMNkOH8z3itErvu8JjrbUMdm+QneldsHVZzd34cOR3kS2WXRCIPxlptjJ8WSb/KjKkFip1bvkb6jmkenyWbBIH5V4+Ho6Lrmcy7ZmlXSbR18Dcnme2N3w=
+	t=1761591645; cv=none; b=ltInWmVt5OoD8z6eTRdcdTIFka1KLzu6yHAdOWj/i8H1WNoKx/xbABBv9k6VqWAxqt/3jEiTeBMPz5gBfeuEgbuliQ0RZj6tuY+JSCSWu1K48yQP/BIlLGzVhXbkBD4LkE0udaHedo04X2TaYn/Prt+RgBx4AFZRoJhhwSthSSU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761593190; c=relaxed/simple;
-	bh=4mHsvjyvLUmXYAr0PQNz3n6TDgCPhnv5kf9uYXOmu20=;
+	s=arc-20240116; t=1761591645; c=relaxed/simple;
+	bh=lb5zP4ucTMTSY/rnJ2FuyOsfw3WO/rdALY/i74Vcjaw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=stJ9EiW/BAwsN/x0sRAaWlAlN62icNFVk/JjQAb7EED6Gt4JYArp7xT3S1MIJ3ou1Sk4Y7MDRwCQqYCcj2llA6EASQaK9veyJ7vqKCaCIVd2cxMg4BS1Y221mkoynHCKPO1drv/CHyHdWWZwzWph8f/rcpBWI8VB6dBZKht8dBE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i67B30hz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF713C4CEF1;
-	Mon, 27 Oct 2025 19:26:29 +0000 (UTC)
+	 MIME-Version; b=CQBK/LkzFarP7MU/F61DUyxKCo68YrNdy4OXomKDjXCTAPrVD93celX6pvuk2pnvojBz8PcYzJJ2yqDB9XUiAH1oab3ve2LVd+c9PWVl+wHROgZZsP1tWhUWTuxq2nxuqlea49TQAGt+Mja5S+m7yEXI4Kb6OOlanOooiZNRsXU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qBqcsc06; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6728AC4CEF1;
+	Mon, 27 Oct 2025 19:00:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761593190;
-	bh=4mHsvjyvLUmXYAr0PQNz3n6TDgCPhnv5kf9uYXOmu20=;
+	s=korg; t=1761591645;
+	bh=lb5zP4ucTMTSY/rnJ2FuyOsfw3WO/rdALY/i74Vcjaw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i67B30hzgAdsBUOCS9mIOQ+tlWw15/8e7aqay4nd3X2MhWZE4CaCzKqO3cqQX5GG5
-	 9dS2E27EunsP2iXEM8gvnQIR12VWUkb6Hm7U/fo+24kSUiuZSMqXeMczx867kE4yml
-	 LS7Kb20tH9Gobh3uXiX0+/9dMrXEOfAgG/Rt0fGU=
+	b=qBqcsc06YbIoQ+s9NbO3yWc6w/zbbNyHv0+43Zxp5Vo3j6W2dCMFyyfb1jWC6kt98
+	 IDIOX8q2g50NsTUZvG05ctbUgTG1C8U6jz3p9bTfUvm1H5zN6atJ1fuIdD6bhfcZYe
+	 A9dir03vjj67T+lu1rsfTZzL70M8oV1og2eqfWAI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+f775be4458668f7d220e@syzkaller.appspotmail.com,
-	Wang Liang <wangliang74@huawei.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Eric Dumazet <edumazet@google.com>,
-	"D. Wythe" <alibuda@linux.alibaba.com>,
+	Ioana Ciornei <ioana.ciornei@nxp.com>,
+	Mathew McBride <matt@traverse.com.au>,
+	Simon Horman <horms@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 048/184] net/smc: fix general protection fault in __smc_diag_dump
+Subject: [PATCH 5.10 277/332] dpaa2-eth: fix the pointer passed to PTR_ALIGN on Tx path
 Date: Mon, 27 Oct 2025 19:35:30 +0100
-Message-ID: <20251027183516.195038164@linuxfoundation.org>
+Message-ID: <20251027183532.175136080@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
-References: <20251027183514.934710872@linuxfoundation.org>
+In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
+References: <20251027183524.611456697@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,133 +64,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wang Liang <wangliang74@huawei.com>
+From: Ioana Ciornei <ioana.ciornei@nxp.com>
 
-[ Upstream commit f584239a9ed25057496bf397c370cc5163dde419 ]
+[ Upstream commit 902e81e679d86846a2404630d349709ad9372d0d ]
 
-The syzbot report a crash:
+The blamed commit increased the needed headroom to account for
+alignment. This means that the size required to always align a Tx buffer
+was added inside the dpaa2_eth_needed_headroom() function. By doing
+that, a manual adjustment of the pointer passed to PTR_ALIGN() was no
+longer correct since the 'buffer_start' variable was already pointing
+to the start of the skb's memory.
 
-  Oops: general protection fault, probably for non-canonical address 0xfbd5a5d5a0000003: 0000 [#1] SMP KASAN NOPTI
-  KASAN: maybe wild-memory-access in range [0xdead4ead00000018-0xdead4ead0000001f]
-  CPU: 1 UID: 0 PID: 6949 Comm: syz.0.335 Not tainted syzkaller #0 PREEMPT(full)
-  Hardware name: Google Compute Engine/Google Compute Engine, BIOS Google 08/18/2025
-  RIP: 0010:smc_diag_msg_common_fill net/smc/smc_diag.c:44 [inline]
-  RIP: 0010:__smc_diag_dump.constprop.0+0x3ca/0x2550 net/smc/smc_diag.c:89
-  Call Trace:
-   <TASK>
-   smc_diag_dump_proto+0x26d/0x420 net/smc/smc_diag.c:217
-   smc_diag_dump+0x27/0x90 net/smc/smc_diag.c:234
-   netlink_dump+0x539/0xd30 net/netlink/af_netlink.c:2327
-   __netlink_dump_start+0x6d6/0x990 net/netlink/af_netlink.c:2442
-   netlink_dump_start include/linux/netlink.h:341 [inline]
-   smc_diag_handler_dump+0x1f9/0x240 net/smc/smc_diag.c:251
-   __sock_diag_cmd net/core/sock_diag.c:249 [inline]
-   sock_diag_rcv_msg+0x438/0x790 net/core/sock_diag.c:285
-   netlink_rcv_skb+0x158/0x420 net/netlink/af_netlink.c:2552
-   netlink_unicast_kernel net/netlink/af_netlink.c:1320 [inline]
-   netlink_unicast+0x5a7/0x870 net/netlink/af_netlink.c:1346
-   netlink_sendmsg+0x8d1/0xdd0 net/netlink/af_netlink.c:1896
-   sock_sendmsg_nosec net/socket.c:714 [inline]
-   __sock_sendmsg net/socket.c:729 [inline]
-   ____sys_sendmsg+0xa95/0xc70 net/socket.c:2614
-   ___sys_sendmsg+0x134/0x1d0 net/socket.c:2668
-   __sys_sendmsg+0x16d/0x220 net/socket.c:2700
-   do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
-   do_syscall_64+0xcd/0x4e0 arch/x86/entry/syscall_64.c:94
-   entry_SYSCALL_64_after_hwframe+0x77/0x7f
-   </TASK>
+The behavior of the dpaa2-eth driver without this patch was to drop
+frames on Tx even when the headroom was matching the 128 bytes
+necessary. Fix this by removing the manual adjust of 'buffer_start' from
+the PTR_MODE call.
 
-The process like this:
-
-               (CPU1)              |             (CPU2)
-  ---------------------------------|-------------------------------
-  inet_create()                    |
-    // init clcsock to NULL        |
-    sk = sk_alloc()                |
-                                   |
-    // unexpectedly change clcsock |
-    inet_init_csk_locks()          |
-                                   |
-    // add sk to hash table        |
-    smc_inet_init_sock()           |
-      smc_sk_init()                |
-        smc_hash_sk()              |
-                                   | // traverse the hash table
-                                   | smc_diag_dump_proto
-                                   |   __smc_diag_dump()
-                                   |     // visit wrong clcsock
-                                   |     smc_diag_msg_common_fill()
-    // alloc clcsock               |
-    smc_create_clcsk               |
-      sock_create_kern             |
-
-With CONFIG_DEBUG_LOCK_ALLOC=y, the smc->clcsock is unexpectedly changed
-in inet_init_csk_locks(). The INET_PROTOSW_ICSK flag is no need by smc,
-just remove it.
-
-After removing the INET_PROTOSW_ICSK flag, this patch alse revert
-commit 6fd27ea183c2 ("net/smc: fix lacks of icsk_syn_mss with IPPROTO_SMC")
-to avoid casting smc_sock to inet_connection_sock.
-
-Reported-by: syzbot+f775be4458668f7d220e@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=f775be4458668f7d220e
-Tested-by: syzbot+f775be4458668f7d220e@syzkaller.appspotmail.com
-Fixes: d25a92ccae6b ("net/smc: Introduce IPPROTO_SMC")
-Signed-off-by: Wang Liang <wangliang74@huawei.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: D. Wythe <alibuda@linux.alibaba.com>
-Link: https://patch.msgid.link/20251017024827.3137512-1-wangliang74@huawei.com
+Closes: https://lore.kernel.org/netdev/70f0dcd9-1906-4d13-82df-7bbbbe7194c6@app.fastmail.com/T/#u
+Fixes: f422abe3f23d ("dpaa2-eth: increase the needed headroom to account for alignment")
+Signed-off-by: Ioana Ciornei <ioana.ciornei@nxp.com>
+Tested-by: Mathew McBride <matt@traverse.com.au>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20251016135807.360978-1-ioana.ciornei@nxp.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/smc/smc_inet.c | 13 -------------
- 1 file changed, 13 deletions(-)
+ drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/net/smc/smc_inet.c b/net/smc/smc_inet.c
-index a944e7dcb8b96..a94084b4a498e 100644
---- a/net/smc/smc_inet.c
-+++ b/net/smc/smc_inet.c
-@@ -56,7 +56,6 @@ static struct inet_protosw smc_inet_protosw = {
- 	.protocol	= IPPROTO_SMC,
- 	.prot		= &smc_inet_prot,
- 	.ops		= &smc_inet_stream_ops,
--	.flags		= INET_PROTOSW_ICSK,
- };
+diff --git a/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c b/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c
+index 0a1a7d94583b4..d27f5a8e59dcd 100644
+--- a/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c
++++ b/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c
+@@ -994,8 +994,7 @@ static int dpaa2_eth_build_single_fd(struct dpaa2_eth_priv *priv,
+ 	dma_addr_t addr;
  
- #if IS_ENABLED(CONFIG_IPV6)
-@@ -104,27 +103,15 @@ static struct inet_protosw smc_inet6_protosw = {
- 	.protocol	= IPPROTO_SMC,
- 	.prot		= &smc_inet6_prot,
- 	.ops		= &smc_inet6_stream_ops,
--	.flags		= INET_PROTOSW_ICSK,
- };
- #endif /* CONFIG_IPV6 */
- 
--static unsigned int smc_sync_mss(struct sock *sk, u32 pmtu)
--{
--	/* No need pass it through to clcsock, mss can always be set by
--	 * sock_create_kern or smc_setsockopt.
--	 */
--	return 0;
--}
--
- static int smc_inet_init_sock(struct sock *sk)
- {
- 	struct net *net = sock_net(sk);
- 
- 	/* init common smc sock */
- 	smc_sk_init(net, sk, IPPROTO_SMC);
--
--	inet_csk(sk)->icsk_sync_mss = smc_sync_mss;
--
- 	/* create clcsock */
- 	return smc_create_clcsk(net, sk, sk->sk_family);
- }
+ 	buffer_start = skb->data - dpaa2_eth_needed_headroom(skb);
+-	aligned_start = PTR_ALIGN(buffer_start - DPAA2_ETH_TX_BUF_ALIGN,
+-				  DPAA2_ETH_TX_BUF_ALIGN);
++	aligned_start = PTR_ALIGN(buffer_start, DPAA2_ETH_TX_BUF_ALIGN);
+ 	if (aligned_start >= skb->head)
+ 		buffer_start = aligned_start;
+ 	else
 -- 
 2.51.0
 
