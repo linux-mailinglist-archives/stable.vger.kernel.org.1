@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-190978-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191223-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9162C10C82
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:19:50 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76A60C111BF
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:34:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 660EB35263D
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:19:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F16B31A62AC5
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:31:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CC0C31BCAE;
-	Mon, 27 Oct 2025 19:18:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C2CF32ABCD;
+	Mon, 27 Oct 2025 19:28:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XyNkgsXp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bWsBTGTY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C43A22D5A14;
-	Mon, 27 Oct 2025 19:18:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB76A329C43;
+	Mon, 27 Oct 2025 19:28:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592696; cv=none; b=dRbq39feY9gF/i9MPyWVsJGgisdRwUmTL5rKdm0kZ62AL6sqzfvijSXNayPKQYWbAC/Cqv8svAT/IOBYrnyvP9rOIW2iqWXqBOpQXgcj04qVu9bG+QDALi0EiDWtPr9HbPs19C4Y9WKETjSfFSPJ82oozi6MiyDcLP5rFthmtCQ=
+	t=1761593328; cv=none; b=nWH2cffYV1sb65k6dNsjx4oaAhXfuB4Z0vvqrUvH46EMe9yOimJm7vQfGi+MeQO1NjlWp3M5KRLZ70WkXXpevAuaBZQdOgXS5UrlDKlMGbUbG5ulZM/b8T1/qnKlx1cVBlcncJEzdNKbKmOvi0X2zzp+E91h+WKuwYFy5Ji0Pao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592696; c=relaxed/simple;
-	bh=9O7qHmvV2bRIFwwAdku3QP+JQ6CQOy7+daJgLucuRpo=;
+	s=arc-20240116; t=1761593328; c=relaxed/simple;
+	bh=4cy9J1q5g8IHSoFogXYOXF8CqlbO4hzRslj73B2HHl8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r83IcspnqulgfX4y88EnuSP9e7QOIYgXK119Da2cxj272fIkgRotHcJFgLkVL7D31anllK4oSDWZTqEIlpBkJOYWWsx/OCdWz3sO8bDbQPDAp1gpXW6eQwIi8Ko50ZgQO82Auez9ocD5CfBxokq8in5hBiQjPmS3l6ST/Piyzas=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XyNkgsXp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49E29C4CEF1;
-	Mon, 27 Oct 2025 19:18:16 +0000 (UTC)
+	 MIME-Version:Content-Type; b=WUneqsCEzdx+gHqJtlk4ttVwHNrPhkjjbxs31wppkcZtGNTUi3lxQx8fzj5xOA5zjixVokF/DV561uhVDjPovwpju/VSv2X+2Bo2DOH5yhVhgQm+YJWuw9gEZO4Ms6SQ985ZTTVZ5dF5dyiwi2WOLI9mAEn9Nc6MeejdgUxYbxA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bWsBTGTY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E17CEC4CEF1;
+	Mon, 27 Oct 2025 19:28:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592696;
-	bh=9O7qHmvV2bRIFwwAdku3QP+JQ6CQOy7+daJgLucuRpo=;
+	s=korg; t=1761593327;
+	bh=4cy9J1q5g8IHSoFogXYOXF8CqlbO4hzRslj73B2HHl8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XyNkgsXpx0sfr9hFAmpLkaoDNmuLksbOYJ7pJx9XZWzmZxWfFDgIw8y2Qw+8MQxP5
-	 r+G14gRYXmAlainy4h3gWk6WK0iCh2jlMpi8Cdy+nTzZMQKUweH4r9YfPxxir8pWtr
-	 6x3XZfnS0AXPi9gp6eckoMvaxqNwVYweZA+H/y4Y=
+	b=bWsBTGTYhvMQyYTZGJnDbaNzVo/rXgRJe2WwTZJSLHomgYKl+T47HUqKLd57t7dwM
+	 FpcW+bVKGFkjSJtKZ/5BtfKZYtBqCt1HgJe5Yj+lcH0ZFer+8H4EMuiyDfcVQ1dcfn
+	 v8XKFKzLeNFxbyKSqg+30ry+ZA6XUhF1hCRcasdI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Robin Murohy <robin.murphy@arm.com>,
-	"Isaac J. Manjarres" <isaacmanjarres@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 32/84] dma-debug: dont report false positives with DMA_BOUNCE_UNALIGNED_KMALLOC
+	Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.17 099/184] net: ravb: Enforce descriptor type ordering
 Date: Mon, 27 Oct 2025 19:36:21 +0100
-Message-ID: <20251027183439.676910418@linuxfoundation.org>
+Message-ID: <20251027183517.578591273@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183438.817309828@linuxfoundation.org>
-References: <20251027183438.817309828@linuxfoundation.org>
+In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
+References: <20251027183514.934710872@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,66 +61,78 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Szyprowski <m.szyprowski@samsung.com>
+From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
 
-commit 03521c892bb8d0712c23e158ae9bdf8705897df8 upstream.
+commit 5370c31e84b0e0999c7b5ff949f4e104def35584 upstream.
 
-Commit 370645f41e6e ("dma-mapping: force bouncing if the kmalloc() size is
-not cache-line-aligned") introduced DMA_BOUNCE_UNALIGNED_KMALLOC feature
-and permitted architecture specific code configure kmalloc slabs with
-sizes smaller than the value of dma_get_cache_alignment().
+Ensure the TX descriptor type fields are published in a safe order so the
+DMA engine never begins processing a descriptor chain before all descriptor
+fields are fully initialised.
 
-When that feature is enabled, the physical address of some small
-kmalloc()-ed buffers might be not aligned to the CPU cachelines, thus not
-really suitable for typical DMA.  To properly handle that case a SWIOTLB
-buffer bouncing is used, so no CPU cache corruption occurs.  When that
-happens, there is no point reporting a false-positive DMA-API warning that
-the buffer is not properly aligned, as this is not a client driver fault.
+For multi-descriptor transmits the driver writes DT_FEND into the last
+descriptor and DT_FSTART into the first. The DMA engine begins processing
+when it observes DT_FSTART. Move the dma_wmb() barrier so it executes
+immediately after DT_FEND and immediately before writing DT_FSTART
+(and before DT_FSINGLE in the single-descriptor case). This guarantees
+that all prior CPU writes to the descriptor memory are visible to the
+device before DT_FSTART is seen.
 
-[m.szyprowski@samsung.com: replace is_swiotlb_allocated() with is_swiotlb_active(), per Catalin]
-  Link: https://lkml.kernel.org/r/20251010173009.3916215-1-m.szyprowski@samsung.com
-Link: https://lkml.kernel.org/r/20251009141508.2342138-1-m.szyprowski@samsung.com
-Fixes: 370645f41e6e ("dma-mapping: force bouncing if the kmalloc() size is not cache-line-aligned")
-Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Christoph Hellwig <hch@lst.de>
-Cc: Inki Dae <m.szyprowski@samsung.com>
-Cc: Robin Murohy <robin.murphy@arm.com>
-Cc: "Isaac J. Manjarres" <isaacmanjarres@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+This avoids a situation where compiler/CPU reordering could publish
+DT_FSTART ahead of DT_FEND or other descriptor fields, allowing the DMA to
+start on a partially initialised chain and causing corrupted transmissions
+or TX timeouts. Such a failure was observed on RZ/G2L with an RT kernel as
+transmit queue timeouts and device resets.
+
+Fixes: 2f45d1902acf ("ravb: minimize TX data copying")
+Cc: stable@vger.kernel.org
+Co-developed-by: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
+Signed-off-by: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
+Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Reviewed-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+Link: https://patch.msgid.link/20251017151830.171062-4-prabhakar.mahadev-lad.rj@bp.renesas.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/dma/debug.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/renesas/ravb_main.c |   16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
 
---- a/kernel/dma/debug.c
-+++ b/kernel/dma/debug.c
-@@ -23,6 +23,7 @@
- #include <linux/ctype.h>
- #include <linux/list.h>
- #include <linux/slab.h>
-+#include <linux/swiotlb.h>
- #include <asm/sections.h>
- #include "debug.h"
+--- a/drivers/net/ethernet/renesas/ravb_main.c
++++ b/drivers/net/ethernet/renesas/ravb_main.c
+@@ -2210,13 +2210,25 @@ static netdev_tx_t ravb_start_xmit(struc
  
-@@ -601,7 +602,9 @@ static void add_dma_entry(struct dma_deb
- 	if (rc == -ENOMEM) {
- 		pr_err_once("cacheline tracking ENOMEM, dma-debug disabled\n");
- 		global_disable = true;
--	} else if (rc == -EEXIST && !(attrs & DMA_ATTR_SKIP_CPU_SYNC)) {
-+	} else if (rc == -EEXIST && !(attrs & DMA_ATTR_SKIP_CPU_SYNC) &&
-+		   !(IS_ENABLED(CONFIG_DMA_BOUNCE_UNALIGNED_KMALLOC) &&
-+		     is_swiotlb_active(entry->dev))) {
- 		err_printk(entry->dev, entry,
- 			"cacheline tracking EEXIST, overlapping mappings aren't supported\n");
+ 		skb_tx_timestamp(skb);
  	}
+-	/* Descriptor type must be set after all the above writes */
+-	dma_wmb();
++
+ 	if (num_tx_desc > 1) {
+ 		desc->die_dt = DT_FEND;
+ 		desc--;
++		/* When using multi-descriptors, DT_FEND needs to get written
++		 * before DT_FSTART, but the compiler may reorder the memory
++		 * writes in an attempt to optimize the code.
++		 * Use a dma_wmb() barrier to make sure DT_FEND and DT_FSTART
++		 * are written exactly in the order shown in the code.
++		 * This is particularly important for cases where the DMA engine
++		 * is already running when we are running this code. If the DMA
++		 * sees DT_FSTART without the corresponding DT_FEND it will enter
++		 * an error condition.
++		 */
++		dma_wmb();
+ 		desc->die_dt = DT_FSTART;
+ 	} else {
++		/* Descriptor type must be set after all the above writes */
++		dma_wmb();
+ 		desc->die_dt = DT_FSINGLE;
+ 	}
+ 	ravb_modify(ndev, TCCR, TCCR_TSRQ0 << q, TCCR_TSRQ0 << q);
 
 
 
