@@ -1,52 +1,54 @@
-Return-Path: <stable+bounces-190176-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190187-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64D83C10164
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:46:19 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DB0AC101E0
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:47:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 42ABA46496C
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:45:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6F7AC42855A
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:46:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1423F326D69;
-	Mon, 27 Oct 2025 18:43:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A032432A3D7;
+	Mon, 27 Oct 2025 18:43:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wQYcYgoH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1FeqN9dd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C378231B83D;
-	Mon, 27 Oct 2025 18:43:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B7B2320CAC;
+	Mon, 27 Oct 2025 18:43:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761590607; cv=none; b=djt+tQvN533cw0lQ3ciJVvdHc6BmUnVisbY0nIb2e1GuQmWMVbF09dhngKIbp5FqAV5ee8aWs8EDlUABwPsL4gsBmP26JFbqWwNdjnwV/GGTBFFriUnV6J/PgS6OWJAjPkRNxYNhiMo151Ob08et4uueGU631WFtz5pbVaOj7rg=
+	t=1761590636; cv=none; b=t6JA2qwulAjUgtftC/2h5OIKpG0cPDaqp844i78yby3dSrsbJIZ6zK1BmngoAZ7neXitHX+ZNNA/YFQ7tl8yCJpKxeTkeRvXIBPmSAfA/bBUWA/5wtYFmuiUr7Ed9Bos4ieY/fG+3U/Rvolhs6qGIi1V7iLc78CJfyJvsHSOSNI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761590607; c=relaxed/simple;
-	bh=q5tP2H+XT5FzTQdcHmFD0ApD1gM/u+RchKZPuFVP2QQ=;
+	s=arc-20240116; t=1761590636; c=relaxed/simple;
+	bh=+6TQgRtIGhxDt7x6ftUF8OpKVu7ss5gpdd4/CqQDoyA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ah8gHrZm/ZbKXYS82cmsRIEs5P9AMNPGwGFcjn7xZwj/G4bLJ3jIMyB6uGGBPbirEa/YaL96Sfd8f1gXQjl6vw/3d2qmYwr6JsWT7pssTih3BQor7OoGRiWLB/WHKO2dpz2NVdCoTUhFELHlZMEJTg+M2COfEmptikwvCf40CLI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wQYcYgoH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58838C116B1;
-	Mon, 27 Oct 2025 18:43:27 +0000 (UTC)
+	 MIME-Version; b=ex8+bA78eTJvHCWfXJMiCeUUcZ9Sp6NCG0EMqVkKm+Ln54PQ5XkSHppHwRSo2bB9kuCPKo1oWmYshdSbV7BopB/12eUe81ffkKxCSwxr2NnHw5DPWHxK86jb5tyLQcPXi0H9/0IYAuV2TLzSla5YwQb/BAOT0sEYaD8xIyjfl/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1FeqN9dd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E491AC4CEF1;
+	Mon, 27 Oct 2025 18:43:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761590607;
-	bh=q5tP2H+XT5FzTQdcHmFD0ApD1gM/u+RchKZPuFVP2QQ=;
+	s=korg; t=1761590636;
+	bh=+6TQgRtIGhxDt7x6ftUF8OpKVu7ss5gpdd4/CqQDoyA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wQYcYgoHiBsbTTHvqX7CMpm4tfjDoIX8gtq5ywjDemeDccHYoC/Lcu2OPvPfACUXc
-	 Z0Lhfur7HIrYqnkRNQpiEIJGlRAUSnj0gYLwO6xNPNNmDVIz1Ttv+h1SGuaGvN7uGT
-	 d5P8jsqW8lRGmWP92NDewudPuTV+5XYtRMyCB5u8=
+	b=1FeqN9dddc4zCSOgPGQfpEqI/CuA2HqxKP3bHooJvhEzvkRWkjPkHqc3s6Z2p3ZE4
+	 6mu5N7VIzFIBhOtap2jefzo2//KzT/kNHM24sDwesowu+n1ec6R5TnxcR8yh+MO6I3
+	 lPaPJxdVYMCHySdsvbXZrJzYINY1a9v+Ih9l934w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Amir Mohammad Jahangirzad <a.jahangirzad@gmail.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 5.4 101/224] ACPI: debug: fix signedness issues in read/write helpers
-Date: Mon, 27 Oct 2025 19:34:07 +0100
-Message-ID: <20251027183511.692374444@linuxfoundation.org>
+	Stephan Gerhold <stephan.gerhold@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 5.4 102/224] arm64: dts: qcom: msm8916: Add missing MDSS reset
+Date: Mon, 27 Oct 2025 19:34:08 +0100
+Message-ID: <20251027183511.719524587@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251027183508.963233542@linuxfoundation.org>
 References: <20251027183508.963233542@linuxfoundation.org>
@@ -65,126 +67,55 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Amir Mohammad Jahangirzad <a.jahangirzad@gmail.com>
+From: Stephan Gerhold <stephan.gerhold@linaro.org>
 
-commit 496f9372eae14775e0524e83e952814691fe850a upstream.
+commit 99b78773c2ae55dcc01025f94eae8ce9700ae985 upstream.
 
-In the ACPI debugger interface, the helper functions for read and write
-operations use "int" as the length parameter data type. When a large
-"size_t count" is passed from the file operations, this cast to "int"
-results in truncation and a negative value due to signed integer
-representation.
+On most MSM8916 devices (aside from the DragonBoard 410c), the bootloader
+already initializes the display to show the boot splash screen. In this
+situation, MDSS is already configured and left running when starting Linux.
+To avoid side effects from the bootloader configuration, the MDSS reset can
+be specified in the device tree to start again with a clean hardware state.
 
-Logically, this negative number propagates to the min() calculation,
-where it is selected over the positive buffer space value, leading to
-unexpected behavior. Subsequently, when this negative value is used in
-copy_to_user() or copy_from_user(), it is interpreted as a large positive
-value due to the unsigned nature of the size parameter in these functions,
-causing the copy operations to attempt handling sizes far beyond the
-intended buffer limits.
+The reset for MDSS is currently missing in msm8916.dtsi, which causes
+errors when the MDSS driver tries to re-initialize the registers:
 
-Address the issue by:
- - Changing the length parameters in acpi_aml_read_user() and
-   acpi_aml_write_user() from "int" to "size_t", aligning with the
-   expected unsigned size semantics.
- - Updating return types and local variables in acpi_aml_read() and
-   acpi_aml_write() to "ssize_t" for consistency with kernel file
-   operation conventions.
- - Using "size_t" for the "n" variable to ensure calculations remain
-   unsigned.
- - Using min_t() for circ_count_to_end() and circ_space_to_end() to
-   ensure type-safe comparisons and prevent integer overflow.
+ dsi_err_worker: status=6
+ dsi_err_worker: status=6
+ dsi_err_worker: status=6
+ ...
 
-Signed-off-by: Amir Mohammad Jahangirzad <a.jahangirzad@gmail.com>
-Link: https://patch.msgid.link/20250923013113.20615-1-a.jahangirzad@gmail.com
-[ rjw: Changelog tweaks, local variable definitions ordering adjustments ]
-Fixes: 8cfb0cdf07e2 ("ACPI / debugger: Add IO interface to access debugger functionalities")
-Cc: 4.5+ <stable@vger.kernel.org> # 4.5+
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+It turns out that we have always indirectly worked around this by building
+the MDSS driver as a module. Before v6.17, the power domain was temporarily
+turned off until the module was loaded, long enough to clear the register
+contents. In v6.17, power domains are not turned off during boot until
+sync_state() happens, so this is no longer working. Even before v6.17 this
+resulted in broken behavior, but notably only when the MDSS driver was
+built-in instead of a module.
+
+Cc: stable@vger.kernel.org
+Fixes: 305410ffd1b2 ("arm64: dts: msm8916: Add display support")
+Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250915-msm8916-resets-v1-1-a5c705df0c45@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/acpi_dbg.c |   26 +++++++++++++-------------
- 1 file changed, 13 insertions(+), 13 deletions(-)
+ arch/arm64/boot/dts/qcom/msm8916.dtsi |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/acpi/acpi_dbg.c
-+++ b/drivers/acpi/acpi_dbg.c
-@@ -576,11 +576,11 @@ static int acpi_aml_release(struct inode
- 	return 0;
- }
+--- a/arch/arm64/boot/dts/qcom/msm8916.dtsi
++++ b/arch/arm64/boot/dts/qcom/msm8916.dtsi
+@@ -1599,6 +1599,8 @@
+ 		hexagon_smp2p_in: slave-kernel {
+ 			qcom,entry-name = "slave-kernel";
  
--static int acpi_aml_read_user(char __user *buf, int len)
-+static ssize_t acpi_aml_read_user(char __user *buf, size_t len)
- {
--	int ret;
- 	struct circ_buf *crc = &acpi_aml_io.out_crc;
--	int n;
-+	ssize_t ret;
-+	size_t n;
- 	char *p;
- 
- 	ret = acpi_aml_lock_read(crc, ACPI_AML_OUT_USER);
-@@ -589,7 +589,7 @@ static int acpi_aml_read_user(char __use
- 	/* sync head before removing logs */
- 	smp_rmb();
- 	p = &crc->buf[crc->tail];
--	n = min(len, circ_count_to_end(crc));
-+	n = min_t(size_t, len, circ_count_to_end(crc));
- 	if (copy_to_user(buf, p, n)) {
- 		ret = -EFAULT;
- 		goto out;
-@@ -606,8 +606,8 @@ out:
- static ssize_t acpi_aml_read(struct file *file, char __user *buf,
- 			     size_t count, loff_t *ppos)
- {
--	int ret = 0;
--	int size = 0;
-+	ssize_t ret = 0;
-+	ssize_t size = 0;
- 
- 	if (!count)
- 		return 0;
-@@ -646,11 +646,11 @@ again:
- 	return size > 0 ? size : ret;
- }
- 
--static int acpi_aml_write_user(const char __user *buf, int len)
-+static ssize_t acpi_aml_write_user(const char __user *buf, size_t len)
- {
--	int ret;
- 	struct circ_buf *crc = &acpi_aml_io.in_crc;
--	int n;
-+	ssize_t ret;
-+	size_t n;
- 	char *p;
- 
- 	ret = acpi_aml_lock_write(crc, ACPI_AML_IN_USER);
-@@ -659,7 +659,7 @@ static int acpi_aml_write_user(const cha
- 	/* sync tail before inserting cmds */
- 	smp_mb();
- 	p = &crc->buf[crc->head];
--	n = min(len, circ_space_to_end(crc));
-+	n = min_t(size_t, len, circ_space_to_end(crc));
- 	if (copy_from_user(p, buf, n)) {
- 		ret = -EFAULT;
- 		goto out;
-@@ -670,14 +670,14 @@ static int acpi_aml_write_user(const cha
- 	ret = n;
- out:
- 	acpi_aml_unlock_fifo(ACPI_AML_IN_USER, ret >= 0);
--	return n;
-+	return ret;
- }
- 
- static ssize_t acpi_aml_write(struct file *file, const char __user *buf,
- 			      size_t count, loff_t *ppos)
- {
--	int ret = 0;
--	int size = 0;
-+	ssize_t ret = 0;
-+	ssize_t size = 0;
- 
- 	if (!count)
- 		return 0;
++			resets = <&gcc GCC_MDSS_BCR>;
++
+ 			interrupt-controller;
+ 			#interrupt-cells = <2>;
+ 		};
 
 
 
