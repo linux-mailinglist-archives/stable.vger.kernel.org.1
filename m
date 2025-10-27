@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-191133-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190790-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3EACC112DF
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:39:32 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FE1AC10C3D
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:19:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6D944561084
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:26:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 41C71580ECE
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:12:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C3DC32C944;
-	Mon, 27 Oct 2025 19:24:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97111329C55;
+	Mon, 27 Oct 2025 19:10:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NZ9IC33h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MkEs9Qle"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1582F32C326;
-	Mon, 27 Oct 2025 19:24:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5176A326D6E;
+	Mon, 27 Oct 2025 19:10:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761593095; cv=none; b=dJvLXMfh5LnJ9iUl6fDo8g8cP23DSA8f9bUNumtDuIH97lhElM+KIkAZcLcQO2/NCHSztDouc+MsihBJoZVcT6C51zfPpgh/VREK9N8cRdMVOLntC8VkJM+m4ZQlUyUh/5gRtJdurXlnRVt0yu8mkzLKOkSFdU73GTAI/YBXYhI=
+	t=1761592203; cv=none; b=VufUektvPGc6jG7f54/yK4QZ8AdOH+9lAuPHbak+gfDcf+C1Ea0u3mEYJ9XDgBuzGe2E/EPHvRrkt3MhGrMw4JjlqGaTpfYdKv3eXtdWoZSdCM+I0/TGV6KdFr1AsWLkg/hvqbP6d1WHVrwhymF/T+B2QYKjF1wlRA3efCmn7LI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761593095; c=relaxed/simple;
-	bh=V6HIxePimzQU/bw141ANazeAml8oHDQFLujez+qYjiY=;
+	s=arc-20240116; t=1761592203; c=relaxed/simple;
+	bh=AYZQWVrJ+rrUx+aOsWlzqrQNiSFh4FWGyAsmlYfeB/A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jzJVYP3MN1h1Ffd3JNLy5eCfLtrj69sqyP7VppUajdL4DKPb1KcHTw2suFqjqLsPFWAhAZ8tFVY8jZoxdiFJ69LN4fNhtZSpYU7i+skVUFv9VXVhPr7XolfeGvHMxDc+7TUemw7R9oFHGFIU2/GERkYkRbf8nND2Q/dUlhtnFKY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NZ9IC33h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96A25C4CEF1;
-	Mon, 27 Oct 2025 19:24:54 +0000 (UTC)
+	 MIME-Version; b=UbaZ1q8bX8bE2NF/Uj9WphZ2BtbJHdVB8MwFMIstdk3thy7NpAhxGeu6X/8vGmyxYg1drRwWSYoVZZIdJsQo1H5IQVsfWD0Uss5akUei7JuJU7lLYHyAFw/q2j1P6GxxUK1Da5+3re0l9cDsB0yVa46ur465TBxuM/5IaX8eNJc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MkEs9Qle; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D71CBC4CEF1;
+	Mon, 27 Oct 2025 19:10:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761593094;
-	bh=V6HIxePimzQU/bw141ANazeAml8oHDQFLujez+qYjiY=;
+	s=korg; t=1761592203;
+	bh=AYZQWVrJ+rrUx+aOsWlzqrQNiSFh4FWGyAsmlYfeB/A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NZ9IC33hsZck9eP8/M6tBPdkL6Xl+FrVljvYadmZ2xUb4eb0y2604Uz3EhsCE0PPl
-	 xgl9t2R5yhgbFoMIjt/n4EcCfSIUOE5NrEYRQOi6k0Ss5CoihETbYUutLE3CCG4spT
-	 hFJ2lc6tfZxbCqzE/w28H6ldjHVY+l6xLIzZZ8ok=
+	b=MkEs9QleWVHxnZJna4wLWQw4kgfiq6bx/A+LGjxwv2Nap2lZY9fbN/CscJB8P5y3p
+	 QwbV7JUW1CmP1L6U1UBUU/jqFDXncF4zyH6s3yy5VnbcKFUJzOClWeZDSiYDKXk8EM
+	 pzn57JGK9RqlB2Ds5o/vEU3g2cqAtNVc4j9cvP0c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzbot+55ad87f38795d6787521@syzkaller.appspotmail.com>,
-	Viacheslav Dubeyko <slava@dubeyko.com>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	Yangtao Li <frank.li@vivo.com>,
-	linux-fsdevel@vger.kernel.org,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 011/184] hfsplus: fix KMSAN uninit-value issue in __hfsplus_ext_cache_extent()
+	Steven Rostedt <rostedt@goodmis.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Anna-Maria Behnsen <anna-maria@linutronix.de>,
+	Jeongjun Park <aha310510@gmail.com>
+Subject: [PATCH 6.1 032/157] timers: Provide timer_shutdown[_sync]()
 Date: Mon, 27 Oct 2025 19:34:53 +0100
-Message-ID: <20251027183515.242623440@linuxfoundation.org>
+Message-ID: <20251027183502.153586504@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
-References: <20251027183514.934710872@linuxfoundation.org>
+In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
+References: <20251027183501.227243846@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,219 +65,150 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Viacheslav Dubeyko <slava@dubeyko.com>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-[ Upstream commit 4840ceadef4290c56cc422f0fc697655f3cbf070 ]
+[ Upstream commit f571faf6e443b6011ccb585d57866177af1f643c ]
 
-The syzbot reported issue in __hfsplus_ext_cache_extent():
+Tearing down timers which have circular dependencies to other
+functionality, e.g. workqueues, where the timer can schedule work and work
+can arm timers, is not trivial.
 
-[   70.194323][ T9350] BUG: KMSAN: uninit-value in __hfsplus_ext_cache_extent+0x7d0/0x990
-[   70.195022][ T9350]  __hfsplus_ext_cache_extent+0x7d0/0x990
-[   70.195530][ T9350]  hfsplus_file_extend+0x74f/0x1cf0
-[   70.195998][ T9350]  hfsplus_get_block+0xe16/0x17b0
-[   70.196458][ T9350]  __block_write_begin_int+0x962/0x2ce0
-[   70.196959][ T9350]  cont_write_begin+0x1000/0x1950
-[   70.197416][ T9350]  hfsplus_write_begin+0x85/0x130
-[   70.197873][ T9350]  generic_perform_write+0x3e8/0x1060
-[   70.198374][ T9350]  __generic_file_write_iter+0x215/0x460
-[   70.198892][ T9350]  generic_file_write_iter+0x109/0x5e0
-[   70.199393][ T9350]  vfs_write+0xb0f/0x14e0
-[   70.199771][ T9350]  ksys_write+0x23e/0x490
-[   70.200149][ T9350]  __x64_sys_write+0x97/0xf0
-[   70.200570][ T9350]  x64_sys_call+0x3015/0x3cf0
-[   70.201065][ T9350]  do_syscall_64+0xd9/0x1d0
-[   70.201506][ T9350]  entry_SYSCALL_64_after_hwframe+0x77/0x7f
-[   70.202054][ T9350]
-[   70.202279][ T9350] Uninit was created at:
-[   70.202693][ T9350]  __kmalloc_noprof+0x621/0xf80
-[   70.203149][ T9350]  hfsplus_find_init+0x8d/0x1d0
-[   70.203602][ T9350]  hfsplus_file_extend+0x6ca/0x1cf0
-[   70.204087][ T9350]  hfsplus_get_block+0xe16/0x17b0
-[   70.204561][ T9350]  __block_write_begin_int+0x962/0x2ce0
-[   70.205074][ T9350]  cont_write_begin+0x1000/0x1950
-[   70.205547][ T9350]  hfsplus_write_begin+0x85/0x130
-[   70.206017][ T9350]  generic_perform_write+0x3e8/0x1060
-[   70.206519][ T9350]  __generic_file_write_iter+0x215/0x460
-[   70.207042][ T9350]  generic_file_write_iter+0x109/0x5e0
-[   70.207552][ T9350]  vfs_write+0xb0f/0x14e0
-[   70.207961][ T9350]  ksys_write+0x23e/0x490
-[   70.208375][ T9350]  __x64_sys_write+0x97/0xf0
-[   70.208810][ T9350]  x64_sys_call+0x3015/0x3cf0
-[   70.209255][ T9350]  do_syscall_64+0xd9/0x1d0
-[   70.209680][ T9350]  entry_SYSCALL_64_after_hwframe+0x77/0x7f
-[   70.210230][ T9350]
-[   70.210454][ T9350] CPU: 2 UID: 0 PID: 9350 Comm: repro Not tainted 6.12.0-rc5 #5
-[   70.211174][ T9350] Hardware name: QEMU Ubuntu 24.04 PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-[   70.212115][ T9350] =====================================================
-[   70.212734][ T9350] Disabling lock debugging due to kernel taint
-[   70.213284][ T9350] Kernel panic - not syncing: kmsan.panic set ...
-[   70.213858][ T9350] CPU: 2 UID: 0 PID: 9350 Comm: repro Tainted: G    B              6.12.0-rc5 #5
-[   70.214679][ T9350] Tainted: [B]=BAD_PAGE
-[   70.215057][ T9350] Hardware name: QEMU Ubuntu 24.04 PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-[   70.215999][ T9350] Call Trace:
-[   70.216309][ T9350]  <TASK>
-[   70.216585][ T9350]  dump_stack_lvl+0x1fd/0x2b0
-[   70.217025][ T9350]  dump_stack+0x1e/0x30
-[   70.217421][ T9350]  panic+0x502/0xca0
-[   70.217803][ T9350]  ? kmsan_get_metadata+0x13e/0x1c0
+In those cases it is desired to shutdown the timer in a way which prevents
+rearming of the timer. The mechanism to do so is to set timer->function to
+NULL and use this as an indicator for the timer arming functions to ignore
+the (re)arm request.
 
-[   70.218294][ Message fromT sy9350]  kmsan_report+0x296/slogd@syzkaller 0x2aat Aug 18 22:11:058 ...
- kernel
-:[   70.213284][ T9350] Kernel panic - not syncing: kmsan.panic [   70.220179][ T9350]  ? kmsan_get_metadata+0x13e/0x1c0
-set ...
-[   70.221254][ T9350]  ? __msan_warning+0x96/0x120
-[   70.222066][ T9350]  ? __hfsplus_ext_cache_extent+0x7d0/0x990
-[   70.223023][ T9350]  ? hfsplus_file_extend+0x74f/0x1cf0
-[   70.224120][ T9350]  ? hfsplus_get_block+0xe16/0x17b0
-[   70.224946][ T9350]  ? __block_write_begin_int+0x962/0x2ce0
-[   70.225756][ T9350]  ? cont_write_begin+0x1000/0x1950
-[   70.226337][ T9350]  ? hfsplus_write_begin+0x85/0x130
-[   70.226852][ T9350]  ? generic_perform_write+0x3e8/0x1060
-[   70.227405][ T9350]  ? __generic_file_write_iter+0x215/0x460
-[   70.227979][ T9350]  ? generic_file_write_iter+0x109/0x5e0
-[   70.228540][ T9350]  ? vfs_write+0xb0f/0x14e0
-[   70.228997][ T9350]  ? ksys_write+0x23e/0x490
-[   70.229458][ T9350]  ? __x64_sys_write+0x97/0xf0
-[   70.229939][ T9350]  ? x64_sys_call+0x3015/0x3cf0
-[   70.230432][ T9350]  ? do_syscall_64+0xd9/0x1d0
-[   70.230941][ T9350]  ? entry_SYSCALL_64_after_hwframe+0x77/0x7f
-[   70.231926][ T9350]  ? kmsan_get_metadata+0x13e/0x1c0
-[   70.232738][ T9350]  ? kmsan_internal_set_shadow_origin+0x77/0x110
-[   70.233711][ T9350]  ? kmsan_get_metadata+0x13e/0x1c0
-[   70.234516][ T9350]  ? kmsan_get_shadow_origin_ptr+0x4a/0xb0
-[   70.235398][ T9350]  ? __msan_metadata_ptr_for_load_4+0x24/0x40
-[   70.236323][ T9350]  ? hfsplus_brec_find+0x218/0x9f0
-[   70.237090][ T9350]  ? __pfx_hfs_find_rec_by_key+0x10/0x10
-[   70.237938][ T9350]  ? __msan_instrument_asm_store+0xbf/0xf0
-[   70.238827][ T9350]  ? __msan_metadata_ptr_for_store_4+0x27/0x40
-[   70.239772][ T9350]  ? __hfsplus_ext_write_extent+0x536/0x620
-[   70.240666][ T9350]  ? kmsan_get_metadata+0x13e/0x1c0
-[   70.241175][ T9350]  __msan_warning+0x96/0x120
-[   70.241645][ T9350]  __hfsplus_ext_cache_extent+0x7d0/0x990
-[   70.242223][ T9350]  hfsplus_file_extend+0x74f/0x1cf0
-[   70.242748][ T9350]  hfsplus_get_block+0xe16/0x17b0
-[   70.243255][ T9350]  ? kmsan_internal_set_shadow_origin+0x77/0x110
-[   70.243878][ T9350]  ? kmsan_get_metadata+0x13e/0x1c0
-[   70.244400][ T9350]  ? kmsan_get_shadow_origin_ptr+0x4a/0xb0
-[   70.244967][ T9350]  __block_write_begin_int+0x962/0x2ce0
-[   70.245531][ T9350]  ? __pfx_hfsplus_get_block+0x10/0x10
-[   70.246079][ T9350]  cont_write_begin+0x1000/0x1950
-[   70.246598][ T9350]  hfsplus_write_begin+0x85/0x130
-[   70.247105][ T9350]  ? __pfx_hfsplus_get_block+0x10/0x10
-[   70.247650][ T9350]  ? __pfx_hfsplus_write_begin+0x10/0x10
-[   70.248211][ T9350]  generic_perform_write+0x3e8/0x1060
-[   70.248752][ T9350]  __generic_file_write_iter+0x215/0x460
-[   70.249314][ T9350]  generic_file_write_iter+0x109/0x5e0
-[   70.249856][ T9350]  ? kmsan_internal_set_shadow_origin+0x77/0x110
-[   70.250487][ T9350]  vfs_write+0xb0f/0x14e0
-[   70.250930][ T9350]  ? __pfx_generic_file_write_iter+0x10/0x10
-[   70.251530][ T9350]  ksys_write+0x23e/0x490
-[   70.251974][ T9350]  __x64_sys_write+0x97/0xf0
-[   70.252450][ T9350]  x64_sys_call+0x3015/0x3cf0
-[   70.252924][ T9350]  do_syscall_64+0xd9/0x1d0
-[   70.253384][ T9350]  ? irqentry_exit+0x16/0x60
-[   70.253844][ T9350]  entry_SYSCALL_64_after_hwframe+0x77/0x7f
-[   70.254430][ T9350] RIP: 0033:0x7f7a92adffc9
-[   70.254873][ T9350] Code: 00 c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 48
-[   70.256674][ T9350] RSP: 002b:00007fff0bca3188 EFLAGS: 00000202 ORIG_RAX: 0000000000000001
-[   70.257485][ T9350] RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007f7a92adffc9
-[   70.258246][ T9350] RDX: 000000000208e24b RSI: 0000000020000100 RDI: 0000000000000004
-[   70.258998][ T9350] RBP: 00007fff0bca31a0 R08: 00007fff0bca31a0 R09: 00007fff0bca31a0
-[   70.259769][ T9350] R10: 0000000000000000 R11: 0000000000000202 R12: 000055e0d75f8250
-[   70.260520][ T9350] R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
-[   70.261286][ T9350]  </TASK>
-[   70.262026][ T9350] Kernel Offset: disabled
+Expose new interfaces for this: timer_shutdown_sync() and timer_shutdown().
 
-(gdb) l *__hfsplus_ext_cache_extent+0x7d0
-0xffffffff8318aef0 is in __hfsplus_ext_cache_extent (fs/hfsplus/extents.c:168).
-163		fd->key->ext.cnid = 0;
-164		res = hfs_brec_find(fd, hfs_find_rec_by_key);
-165		if (res && res != -ENOENT)
-166			return res;
-167		if (fd->key->ext.cnid != fd->search_key->ext.cnid ||
-168		    fd->key->ext.fork_type != fd->search_key->ext.fork_type)
-169			return -ENOENT;
-170		if (fd->entrylength != sizeof(hfsplus_extent_rec))
-171			return -EIO;
-172		hfs_bnode_read(fd->bnode, extent, fd->entryoffset,
+timer_shutdown_sync() has the same functionality as timer_delete_sync()
+plus the NULL-ification of the timer function.
 
-The __hfsplus_ext_cache_extent() calls __hfsplus_ext_read_extent():
+timer_shutdown() has the same functionality as timer_delete() plus the
+NULL-ification of the timer function.
 
-res = __hfsplus_ext_read_extent(fd, hip->cached_extents, inode->i_ino,
-				block, HFSPLUS_IS_RSRC(inode) ?
-					HFSPLUS_TYPE_RSRC :
-					HFSPLUS_TYPE_DATA);
+In both cases the rearming of the timer is prevented by silently discarding
+rearm attempts due to timer->function being NULL.
 
-And if inode->i_ino could be equal to zero or any non-available CNID,
-then hfs_brec_find() could not find the record in the tree. As a result,
-fd->key could be compared with fd->search_key. But hfsplus_find_init()
-uses kmalloc() for fd->key and fd->search_key allocation:
-
-int hfs_find_init(struct hfs_btree *tree, struct hfs_find_data *fd)
-{
-<skipped>
-        ptr = kmalloc(tree->max_key_len * 2 + 4, GFP_KERNEL);
-        if (!ptr)
-                return -ENOMEM;
-        fd->search_key = ptr;
-        fd->key = ptr + tree->max_key_len + 2;
-<skipped>
-}
-
-Finally, fd->key is still not initialized if hfs_brec_find()
-has found nothing.
-
-This patch changes kmalloc() on kzalloc() in hfs_find_init()
-and intializes fd->record, fd->keyoffset, fd->keylength,
-fd->entryoffset, fd->entrylength for the case if hfs_brec_find()
-has been found nothing in the b-tree node.
-
-Reported-by: syzbot <syzbot+55ad87f38795d6787521@syzkaller.appspotmail.com>
-Closes: https://syzkaller.appspot.com/bug?extid=55ad87f38795d6787521
-Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
-cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-cc: Yangtao Li <frank.li@vivo.com>
-cc: linux-fsdevel@vger.kernel.org
-Link: https://lore.kernel.org/r/20250818225232.126402-1-slava@dubeyko.com
-Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Co-developed-by: Steven Rostedt <rostedt@goodmis.org>
+Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Guenter Roeck <linux@roeck-us.net>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Reviewed-by: Anna-Maria Behnsen <anna-maria@linutronix.de>
+Link: https://lore.kernel.org/all/20220407161745.7d6754b3@gandalf.local.home
+Link: https://lore.kernel.org/all/20221110064101.429013735@goodmis.org
+Link: https://lore.kernel.org/r/20221123201625.314230270@linutronix.de
+Signed-off-by: Jeongjun Park <aha310510@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/hfsplus/bfind.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ include/linux/timer.h |    2 +
+ kernel/time/timer.c   |   66 ++++++++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 68 insertions(+)
 
-diff --git a/fs/hfsplus/bfind.c b/fs/hfsplus/bfind.c
-index 901e83d65d202..26ebac4c60424 100644
---- a/fs/hfsplus/bfind.c
-+++ b/fs/hfsplus/bfind.c
-@@ -18,7 +18,7 @@ int hfs_find_init(struct hfs_btree *tree, struct hfs_find_data *fd)
+--- a/include/linux/timer.h
++++ b/include/linux/timer.h
+@@ -184,6 +184,8 @@ extern void add_timer(struct timer_list
+ extern int try_to_del_timer_sync(struct timer_list *timer);
+ extern int timer_delete_sync(struct timer_list *timer);
+ extern int timer_delete(struct timer_list *timer);
++extern int timer_shutdown_sync(struct timer_list *timer);
++extern int timer_shutdown(struct timer_list *timer);
  
- 	fd->tree = tree;
- 	fd->bnode = NULL;
--	ptr = kmalloc(tree->max_key_len * 2 + 4, GFP_KERNEL);
-+	ptr = kzalloc(tree->max_key_len * 2 + 4, GFP_KERNEL);
- 	if (!ptr)
- 		return -ENOMEM;
- 	fd->search_key = ptr;
-@@ -158,6 +158,12 @@ int hfs_brec_find(struct hfs_find_data *fd, search_strategy_t do_key_compare)
- 	__be32 data;
- 	int height, res;
+ /**
+  * del_timer_sync - Delete a pending timer and wait for a running callback
+--- a/kernel/time/timer.c
++++ b/kernel/time/timer.c
+@@ -1363,6 +1363,27 @@ int timer_delete(struct timer_list *time
+ EXPORT_SYMBOL(timer_delete);
  
-+	fd->record = -1;
-+	fd->keyoffset = -1;
-+	fd->keylength = -1;
-+	fd->entryoffset = -1;
-+	fd->entrylength = -1;
+ /**
++ * timer_shutdown - Deactivate a timer and prevent rearming
++ * @timer:	The timer to be deactivated
++ *
++ * The function does not wait for an eventually running timer callback on a
++ * different CPU but it prevents rearming of the timer. Any attempt to arm
++ * @timer after this function returns will be silently ignored.
++ *
++ * This function is useful for teardown code and should only be used when
++ * timer_shutdown_sync() cannot be invoked due to locking or context constraints.
++ *
++ * Return:
++ * * %0 - The timer was not pending
++ * * %1 - The timer was pending
++ */
++int timer_shutdown(struct timer_list *timer)
++{
++	return __timer_delete(timer, true);
++}
++EXPORT_SYMBOL_GPL(timer_shutdown);
 +
- 	tree = fd->tree;
- 	if (fd->bnode)
- 		hfs_bnode_put(fd->bnode);
--- 
-2.51.0
-
++/**
+  * __try_to_del_timer_sync - Internal function: Try to deactivate a timer
+  * @timer:	Timer to deactivate
+  * @shutdown:	If true, this indicates that the timer is about to be
+@@ -1595,6 +1616,9 @@ static int __timer_delete_sync(struct ti
+  * lock. If there is the possibility of a concurrent rearm then the return
+  * value of the function is meaningless.
+  *
++ * If such a guarantee is needed, e.g. for teardown situations then use
++ * timer_shutdown_sync() instead.
++ *
+  * Return:
+  * * %0	- The timer was not pending
+  * * %1	- The timer was pending and deactivated
+@@ -1605,6 +1629,48 @@ int timer_delete_sync(struct timer_list
+ }
+ EXPORT_SYMBOL(timer_delete_sync);
+ 
++/**
++ * timer_shutdown_sync - Shutdown a timer and prevent rearming
++ * @timer: The timer to be shutdown
++ *
++ * When the function returns it is guaranteed that:
++ *   - @timer is not queued
++ *   - The callback function of @timer is not running
++ *   - @timer cannot be enqueued again. Any attempt to rearm
++ *     @timer is silently ignored.
++ *
++ * See timer_delete_sync() for synchronization rules.
++ *
++ * This function is useful for final teardown of an infrastructure where
++ * the timer is subject to a circular dependency problem.
++ *
++ * A common pattern for this is a timer and a workqueue where the timer can
++ * schedule work and work can arm the timer. On shutdown the workqueue must
++ * be destroyed and the timer must be prevented from rearming. Unless the
++ * code has conditionals like 'if (mything->in_shutdown)' to prevent that
++ * there is no way to get this correct with timer_delete_sync().
++ *
++ * timer_shutdown_sync() is solving the problem. The correct ordering of
++ * calls in this case is:
++ *
++ *	timer_shutdown_sync(&mything->timer);
++ *	workqueue_destroy(&mything->workqueue);
++ *
++ * After this 'mything' can be safely freed.
++ *
++ * This obviously implies that the timer is not required to be functional
++ * for the rest of the shutdown operation.
++ *
++ * Return:
++ * * %0 - The timer was not pending
++ * * %1 - The timer was pending
++ */
++int timer_shutdown_sync(struct timer_list *timer)
++{
++	return __timer_delete_sync(timer, true);
++}
++EXPORT_SYMBOL_GPL(timer_shutdown_sync);
++
+ static void call_timer_fn(struct timer_list *timer,
+ 			  void (*fn)(struct timer_list *),
+ 			  unsigned long baseclk)
 
 
 
