@@ -1,70 +1,56 @@
-Return-Path: <stable+bounces-191230-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190883-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03BFDC1137E
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:43:27 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCDDDC10E17
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:23:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 1F6C7508485
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:31:22 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id BE3D6504141
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:15:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1829F31D742;
-	Mon, 27 Oct 2025 19:29:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EC95321F48;
+	Mon, 27 Oct 2025 19:14:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hLrgZePP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YQinwap0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA15A2DC33D;
-	Mon, 27 Oct 2025 19:29:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19C243254B1;
+	Mon, 27 Oct 2025 19:14:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761593350; cv=none; b=bZh6YgZjXEYBNhNfu4Be6pSX/0HPoCsqLh3PegQEHBDBRUNEXwoRTsaDv5KMlTBBrtkpHvN3vGjakv4LhgRjRq2amsiDoKlHTo8tOJwC0Y/f5aY4HWn55m0NqogUDsTxepwizMXYP4XXqbLKmFW2ZL7EAlIIoSILvKyFd2FDlN0=
+	t=1761592450; cv=none; b=SnOqmAgaWNXwFsNAgAzf7cxeUIMwnrfkb3zbHbdD3ADjdWme7S5LYrx8ZrCABrSh2izwkFQCV5TUnWuPlLU1OHN8LyaoydLkchheV5vGRCgsZk0qqb5ogLyQPSN+ey3I9A/L90fCyExKfpuLTNTU25IzY1vrwu1zT71xKLV/1Bs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761593350; c=relaxed/simple;
-	bh=dfyAeGWCN/PCwQ4+Woi+eUbA4V9bFHbCh/4xYG/peG0=;
+	s=arc-20240116; t=1761592450; c=relaxed/simple;
+	bh=e2uFfYMQaHrcq6Jkl9b3c8eZMqCsVBTKSjjFhqFMQvI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NQ/QcS7ukfdR1YMZBKthbhnekhPCf38U5pJXdT1OVB5Ysk7PL/Iaexka4rJK1Qcr2IENDXf885i4i9VBMcTvLFjBk6je8ah40ypFMl3D3yWpdFneIADbcIUrHMvozunqbtg2n17pgvRM/O16NOD9+DkzA0oK5EV+wkj4BzzJd+w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hLrgZePP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16B2DC4CEF1;
-	Mon, 27 Oct 2025 19:29:10 +0000 (UTC)
+	 MIME-Version; b=rMZjavEQgBKBmtYv4mWCkNIc0yHQv9xZL3SceQlfkUpm8B5cIxrUNk3/iS4fgVtL4QOawUD9ATCtEfdLD2w1dFEp9bc+qu9UsL3CQItuM4d6DRbB9dN582sVSAMroZsxf8jcAZssXKCZm6wyta49/H7Os93jqlbxZ2OoVh6STwk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YQinwap0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A31FEC4CEF1;
+	Mon, 27 Oct 2025 19:14:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761593350;
-	bh=dfyAeGWCN/PCwQ4+Woi+eUbA4V9bFHbCh/4xYG/peG0=;
+	s=korg; t=1761592450;
+	bh=e2uFfYMQaHrcq6Jkl9b3c8eZMqCsVBTKSjjFhqFMQvI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hLrgZePP+x7lATv8MrerdDk6K0whi/gWV5rd3BE1D6oMExu5l/xq93s3CqYBPPD2n
-	 +Qt3RIuZpZxW27vJhncmDHJEjEoL4vj4mxjSK9vsBbhaBE3vfRyYOsRgXtYGj2lSnn
-	 UxXGRJjKZEfGDAj1QET7xu0+rpaHPQCv14rHkDwo=
+	b=YQinwap00/6UCmAJDYUvta7ooZLMBuPjzlAog2A/+RRF0dT9lJI4rjw1wM59hTdwY
+	 /e6Jgk94agab/oRlqG9JMByCaWeJwnxS4/WJYvHD/i50oxaIkWUR0SAB2TqT0dY+mV
+	 boOaJcVONOMFKW8XyUKNDgBe3TpWAT6jzvQN4xCs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
-	Farrah Chen <farrah.chen@intel.com>,
-	David Hildenbrand <david@redhat.com>,
-	Lance Yang <lance.yang@linux.dev>,
-	Wei Yang <richard.weiyang@gmail.com>,
-	Zi Yan <ziy@nvidia.com>,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	Barry Song <baohua@kernel.org>,
-	Dev Jain <dev.jain@arm.com>,
-	Jiaqi Yan <jiaqiyan@google.com>,
-	Liam Howlett <liam.howlett@oracle.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Luck, Tony" <tony.luck@intel.com>,
-	Mariano Pache <npache@redhat.com>,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.17 105/184] mm: prevent poison consumption when splitting THP
+	Amir Goldstein <amir73il@gmail.com>,
+	Miklos Szeredi <mszeredi@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 126/157] fuse: allocate ff->release_args only if release is needed
 Date: Mon, 27 Oct 2025 19:36:27 +0100
-Message-ID: <20251027183517.745158535@linuxfoundation.org>
+Message-ID: <20251027183504.630545833@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
-References: <20251027183514.934710872@linuxfoundation.org>
+In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
+References: <20251027183501.227243846@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -76,130 +62,243 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+From: Amir Goldstein <amir73il@gmail.com>
 
-commit 841a8bfcbad94bb1ba60f59ce34f75259074ae0d upstream.
+[ Upstream commit e26ee4efbc79610b20e7abe9d96c87f33dacc1ff ]
 
-When performing memory error injection on a THP (Transparent Huge Page)
-mapped to userspace on an x86 server, the kernel panics with the following
-trace.  The expected behavior is to terminate the affected process instead
-of panicking the kernel, as the x86 Machine Check code can recover from an
-in-userspace #MC.
+This removed the need to pass isdir argument to fuse_put_file().
 
-  mce: [Hardware Error]: CPU 0: Machine Check Exception: f Bank 3: bd80000000070134
-  mce: [Hardware Error]: RIP 10:<ffffffff8372f8bc> {memchr_inv+0x4c/0xf0}
-  mce: [Hardware Error]: TSC afff7bbff88a ADDR 1d301b000 MISC 80 PPIN 1e741e77539027db
-  mce: [Hardware Error]: PROCESSOR 0:d06d0 TIME 1758093249 SOCKET 0 APIC 0 microcode 80000320
-  mce: [Hardware Error]: Run the above through 'mcelog --ascii'
-  mce: [Hardware Error]: Machine check: Data load in unrecoverable area of kernel
-  Kernel panic - not syncing: Fatal local machine check
-
-The root cause of this panic is that handling a memory failure triggered
-by an in-userspace #MC necessitates splitting the THP.  The splitting
-process employs a mechanism, implemented in
-try_to_map_unused_to_zeropage(), which reads the pages in the THP to
-identify zero-filled pages.  However, reading the pages in the THP results
-in a second in-kernel #MC, occurring before the initial memory_failure()
-completes, ultimately leading to a kernel panic.  See the kernel panic
-call trace on the two #MCs.
-
-  First Machine Check occurs // [1]
-    memory_failure()         // [2]
-      try_to_split_thp_page()
-        split_huge_page()
-          split_huge_page_to_list_to_order()
-            __folio_split()  // [3]
-              remap_page()
-                remove_migration_ptes()
-                  remove_migration_pte()
-                    try_to_map_unused_to_zeropage()  // [4]
-                      memchr_inv()                   // [5]
-                        Second Machine Check occurs  // [6]
-                          Kernel panic
-
-[1] Triggered by accessing a hardware-poisoned THP in userspace, which is
-    typically recoverable by terminating the affected process.
-
-[2] Call folio_set_has_hwpoisoned() before try_to_split_thp_page().
-
-[3] Pass the RMP_USE_SHARED_ZEROPAGE remap flag to remap_page().
-
-[4] Try to map the unused THP to zeropage.
-
-[5] Re-access pages in the hw-poisoned THP in the kernel.
-
-[6] Triggered in-kernel, leading to a panic kernel.
-
-In Step[2], memory_failure() sets the poisoned flag on the page in the THP
-by TestSetPageHWPoison() before calling try_to_split_thp_page().
-
-As suggested by David Hildenbrand, fix this panic by not accessing to the
-poisoned page in the THP during zeropage identification, while continuing
-to scan unaffected pages in the THP for possible zeropage mapping.  This
-prevents a second in-kernel #MC that would cause kernel panic in Step[4].
-
-Thanks to Andrew Zaborowski for his initial work on fixing this issue.
-
-Link: https://lkml.kernel.org/r/20251015064926.1887643-1-qiuxu.zhuo@intel.com
-Link: https://lkml.kernel.org/r/20251011075520.320862-1-qiuxu.zhuo@intel.com
-Fixes: b1f202060afe ("mm: remap unused subpages to shared zeropage when splitting isolated thp")
-Signed-off-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
-Reported-by: Farrah Chen <farrah.chen@intel.com>
-Suggested-by: David Hildenbrand <david@redhat.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Tested-by: Farrah Chen <farrah.chen@intel.com>
-Tested-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
-Acked-by: Lance Yang <lance.yang@linux.dev>
-Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
-Acked-by: Zi Yan <ziy@nvidia.com>
-Reviewed-by: Miaohe Lin <linmiaohe@huawei.com>
-Cc: Barry Song <baohua@kernel.org>
-Cc: Dev Jain <dev.jain@arm.com>
-Cc: Jiaqi Yan <jiaqiyan@google.com>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: "Luck, Tony" <tony.luck@intel.com>
-Cc: Mariano Pache <npache@redhat.com>
-Cc: Miaohe Lin <linmiaohe@huawei.com>
-Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Amir Goldstein <amir73il@gmail.com>
+Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+Stable-dep-of: 26e5c67deb2e ("fuse: fix livelock in synchronous file put from fuseblk workers")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/huge_memory.c |    3 +++
- mm/migrate.c     |    3 ++-
- 2 files changed, 5 insertions(+), 1 deletion(-)
+ fs/fuse/dir.c    |    2 -
+ fs/fuse/file.c   |   69 +++++++++++++++++++++++++++++++------------------------
+ fs/fuse/fuse_i.h |    2 -
+ 3 files changed, 41 insertions(+), 32 deletions(-)
 
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -4120,6 +4120,9 @@ static bool thp_underused(struct folio *
- 	if (khugepaged_max_ptes_none == HPAGE_PMD_NR - 1)
- 		return false;
+--- a/fs/fuse/dir.c
++++ b/fs/fuse/dir.c
+@@ -584,7 +584,7 @@ static int fuse_create_open(struct inode
+ 		goto out_err;
  
-+	if (folio_contain_hwpoisoned_page(folio))
-+		return false;
-+
- 	for (i = 0; i < folio_nr_pages(folio); i++) {
- 		if (pages_identical(folio_page(folio, i), ZERO_PAGE(0))) {
- 			if (++num_zero_pages > khugepaged_max_ptes_none)
---- a/mm/migrate.c
-+++ b/mm/migrate.c
-@@ -302,8 +302,9 @@ static bool try_to_map_unused_to_zeropag
- 	struct page *page = folio_page(folio, idx);
- 	pte_t newpte;
+ 	err = -ENOMEM;
+-	ff = fuse_file_alloc(fm);
++	ff = fuse_file_alloc(fm, true);
+ 	if (!ff)
+ 		goto out_put_forget_req;
  
--	if (PageCompound(page))
-+	if (PageCompound(page) || PageHWPoison(page))
- 		return false;
+--- a/fs/fuse/file.c
++++ b/fs/fuse/file.c
+@@ -54,7 +54,7 @@ struct fuse_release_args {
+ 	struct inode *inode;
+ };
+ 
+-struct fuse_file *fuse_file_alloc(struct fuse_mount *fm)
++struct fuse_file *fuse_file_alloc(struct fuse_mount *fm, bool release)
+ {
+ 	struct fuse_file *ff;
+ 
+@@ -63,11 +63,13 @@ struct fuse_file *fuse_file_alloc(struct
+ 		return NULL;
+ 
+ 	ff->fm = fm;
+-	ff->release_args = kzalloc(sizeof(*ff->release_args),
+-				   GFP_KERNEL_ACCOUNT);
+-	if (!ff->release_args) {
+-		kfree(ff);
+-		return NULL;
++	if (release) {
++		ff->release_args = kzalloc(sizeof(*ff->release_args),
++					   GFP_KERNEL_ACCOUNT);
++		if (!ff->release_args) {
++			kfree(ff);
++			return NULL;
++		}
+ 	}
+ 
+ 	INIT_LIST_HEAD(&ff->write_entry);
+@@ -103,14 +105,14 @@ static void fuse_release_end(struct fuse
+ 	kfree(ra);
+ }
+ 
+-static void fuse_file_put(struct fuse_file *ff, bool sync, bool isdir)
++static void fuse_file_put(struct fuse_file *ff, bool sync)
+ {
+ 	if (refcount_dec_and_test(&ff->count)) {
+-		struct fuse_args *args = &ff->release_args->args;
++		struct fuse_release_args *ra = ff->release_args;
++		struct fuse_args *args = (ra ? &ra->args : NULL);
+ 
+-		if (isdir ? ff->fm->fc->no_opendir : ff->fm->fc->no_open) {
+-			/* Do nothing when client does not implement 'open' */
+-			fuse_release_end(ff->fm, args, 0);
++		if (!args) {
++			/* Do nothing when server does not implement 'open' */
+ 		} else if (sync) {
+ 			fuse_simple_request(ff->fm, args);
+ 			fuse_release_end(ff->fm, args, 0);
+@@ -130,15 +132,16 @@ struct fuse_file *fuse_file_open(struct
+ 	struct fuse_conn *fc = fm->fc;
+ 	struct fuse_file *ff;
+ 	int opcode = isdir ? FUSE_OPENDIR : FUSE_OPEN;
++	bool open = isdir ? !fc->no_opendir : !fc->no_open;
+ 
+-	ff = fuse_file_alloc(fm);
++	ff = fuse_file_alloc(fm, open);
+ 	if (!ff)
+ 		return ERR_PTR(-ENOMEM);
+ 
+ 	ff->fh = 0;
+ 	/* Default for no-open */
+ 	ff->open_flags = FOPEN_KEEP_CACHE | (isdir ? FOPEN_CACHE_DIR : 0);
+-	if (isdir ? !fc->no_opendir : !fc->no_open) {
++	if (open) {
+ 		struct fuse_open_out outarg;
+ 		int err;
+ 
+@@ -146,11 +149,13 @@ struct fuse_file *fuse_file_open(struct
+ 		if (!err) {
+ 			ff->fh = outarg.fh;
+ 			ff->open_flags = outarg.open_flags;
+-
+ 		} else if (err != -ENOSYS) {
+ 			fuse_file_free(ff);
+ 			return ERR_PTR(err);
+ 		} else {
++			/* No release needed */
++			kfree(ff->release_args);
++			ff->release_args = NULL;
+ 			if (isdir)
+ 				fc->no_opendir = 1;
+ 			else
+@@ -272,7 +277,7 @@ out_inode_unlock:
+ }
+ 
+ static void fuse_prepare_release(struct fuse_inode *fi, struct fuse_file *ff,
+-				 unsigned int flags, int opcode)
++				 unsigned int flags, int opcode, bool sync)
+ {
+ 	struct fuse_conn *fc = ff->fm->fc;
+ 	struct fuse_release_args *ra = ff->release_args;
+@@ -290,6 +295,9 @@ static void fuse_prepare_release(struct
+ 
+ 	wake_up_interruptible_all(&ff->poll_wait);
+ 
++	if (!ra)
++		return;
 +
- 	VM_BUG_ON_PAGE(!PageAnon(page), page);
- 	VM_BUG_ON_PAGE(!PageLocked(page), page);
- 	VM_BUG_ON_PAGE(pte_present(old_pte), page);
+ 	ra->inarg.fh = ff->fh;
+ 	ra->inarg.flags = flags;
+ 	ra->args.in_numargs = 1;
+@@ -299,6 +307,13 @@ static void fuse_prepare_release(struct
+ 	ra->args.nodeid = ff->nodeid;
+ 	ra->args.force = true;
+ 	ra->args.nocreds = true;
++
++	/*
++	 * Hold inode until release is finished.
++	 * From fuse_sync_release() the refcount is 1 and everything's
++	 * synchronous, so we are fine with not doing igrab() here.
++	 */
++	ra->inode = sync ? NULL : igrab(&fi->inode);
+ }
+ 
+ void fuse_file_release(struct inode *inode, struct fuse_file *ff,
+@@ -308,14 +323,12 @@ void fuse_file_release(struct inode *ino
+ 	struct fuse_release_args *ra = ff->release_args;
+ 	int opcode = isdir ? FUSE_RELEASEDIR : FUSE_RELEASE;
+ 
+-	fuse_prepare_release(fi, ff, open_flags, opcode);
++	fuse_prepare_release(fi, ff, open_flags, opcode, false);
+ 
+-	if (ff->flock) {
++	if (ra && ff->flock) {
+ 		ra->inarg.release_flags |= FUSE_RELEASE_FLOCK_UNLOCK;
+ 		ra->inarg.lock_owner = fuse_lock_owner_id(ff->fm->fc, id);
+ 	}
+-	/* Hold inode until release is finished */
+-	ra->inode = igrab(inode);
+ 
+ 	/*
+ 	 * Normally this will send the RELEASE request, however if
+@@ -326,7 +339,7 @@ void fuse_file_release(struct inode *ino
+ 	 * synchronous RELEASE is allowed (and desirable) in this case
+ 	 * because the server can be trusted not to screw up.
+ 	 */
+-	fuse_file_put(ff, ff->fm->fc->destroy, isdir);
++	fuse_file_put(ff, ff->fm->fc->destroy);
+ }
+ 
+ void fuse_release_common(struct file *file, bool isdir)
+@@ -361,12 +374,8 @@ void fuse_sync_release(struct fuse_inode
+ 		       unsigned int flags)
+ {
+ 	WARN_ON(refcount_read(&ff->count) > 1);
+-	fuse_prepare_release(fi, ff, flags, FUSE_RELEASE);
+-	/*
+-	 * iput(NULL) is a no-op and since the refcount is 1 and everything's
+-	 * synchronous, we are fine with not doing igrab() here"
+-	 */
+-	fuse_file_put(ff, true, false);
++	fuse_prepare_release(fi, ff, flags, FUSE_RELEASE, true);
++	fuse_file_put(ff, true);
+ }
+ EXPORT_SYMBOL_GPL(fuse_sync_release);
+ 
+@@ -923,7 +932,7 @@ static void fuse_readpages_end(struct fu
+ 		put_page(page);
+ 	}
+ 	if (ia->ff)
+-		fuse_file_put(ia->ff, false, false);
++		fuse_file_put(ia->ff, false);
+ 
+ 	fuse_io_free(ia);
+ }
+@@ -1670,7 +1679,7 @@ static void fuse_writepage_free(struct f
+ 		__free_page(ap->pages[i]);
+ 
+ 	if (wpa->ia.ff)
+-		fuse_file_put(wpa->ia.ff, false, false);
++		fuse_file_put(wpa->ia.ff, false);
+ 
+ 	kfree(ap->pages);
+ 	kfree(wpa);
+@@ -1918,7 +1927,7 @@ int fuse_write_inode(struct inode *inode
+ 	ff = __fuse_write_file_get(fi);
+ 	err = fuse_flush_times(inode, ff);
+ 	if (ff)
+-		fuse_file_put(ff, false, false);
++		fuse_file_put(ff, false);
+ 
+ 	return err;
+ }
+@@ -2316,7 +2325,7 @@ static int fuse_writepages(struct addres
+ 		fuse_writepages_send(&data);
+ 	}
+ 	if (data.ff)
+-		fuse_file_put(data.ff, false, false);
++		fuse_file_put(data.ff, false);
+ 
+ 	kfree(data.orig_pages);
+ out:
+--- a/fs/fuse/fuse_i.h
++++ b/fs/fuse/fuse_i.h
+@@ -1022,7 +1022,7 @@ void fuse_read_args_fill(struct fuse_io_
+  */
+ int fuse_open_common(struct inode *inode, struct file *file, bool isdir);
+ 
+-struct fuse_file *fuse_file_alloc(struct fuse_mount *fm);
++struct fuse_file *fuse_file_alloc(struct fuse_mount *fm, bool release);
+ void fuse_file_free(struct fuse_file *ff);
+ void fuse_finish_open(struct inode *inode, struct file *file);
+ 
 
 
 
