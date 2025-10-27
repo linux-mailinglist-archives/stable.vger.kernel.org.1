@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-190510-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190770-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24C03C10815
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:08:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 42D17C10BEA
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:18:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C2FE8565F31
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:02:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6BA36563B52
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:11:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4EB032B9AA;
-	Mon, 27 Oct 2025 18:58:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6535331D39A;
+	Mon, 27 Oct 2025 19:09:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ij+7Yzch"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F/dAAxVD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A179732D7DA;
-	Mon, 27 Oct 2025 18:57:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 211FB2C15BB;
+	Mon, 27 Oct 2025 19:09:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591480; cv=none; b=QN9K+jc/GuIujjL+Gc2Ma+HU9p8azZbqwxx7t/3PtGbSLJTTwQkwNHrH0f4CDV3WWHG9Q0yztANOBTtu5z0/xyevo/6l8gy5w2znVhWM6rk6xp9T5lnUY18dNBwAyfjp5Ux1ifsXgOFKRoY9o0g0W8AAa8HTSDp1SMNEHhnDpWw=
+	t=1761592151; cv=none; b=A15ZlYtKMQgSIf4XMrTjtt+d9EmOoDNkimev1TBNOtrOd9oEH+5KGCTQGL23B9Y91i8UKUnp3P5Ofwi0SXAN+i12eG+Zyk5mnJinUDfbwl+FvKonSKDp10ULbWM8Bgfc6KQ8EwkzmJ+ue95IMbAXLphcbFgbnGHtplduRxpbly0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591480; c=relaxed/simple;
-	bh=U3pDxVB6M5IK2+hcTmCHfu3vgsw9BYJIMmoOQxc3FpI=;
+	s=arc-20240116; t=1761592151; c=relaxed/simple;
+	bh=iTiAXvWkW6annGtt9UnqGOj3g5esa0My+6bJsx46dG0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LZmEcSpkZDZKXy3qVBN/4nDk9cqGI3RjncqnVfwAl75YH4cGSctJzNv2gzvJkdXvTjRS2mQLVcQ2m0Z8SKXiDJzrI5VfiWxtnRZPdkOH2Z0OOQW5Jk8OzZ7xHlZ4mK1cAG8ccYooqbI4YpxbgdWgVwAtkodGiGQ3/vVyWHTpLrM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ij+7Yzch; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2731C4CEF1;
-	Mon, 27 Oct 2025 18:57:58 +0000 (UTC)
+	 MIME-Version; b=VYFgebX+wNZjdYx1DdtBEu1cqPgXRvIjfRJTcTbp8BCnjwhHh1SDUsTQJBWHdruKosgkeGUHaYRaM9DsMZec0STuVmcGT0TR9l72bRFuuuTtqoOgDXufjMvU+GIxm6z9VcdfDflcAOgwNYPZTbWDl5CbXpu6eMEEzQOqzUa5S2I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F/dAAxVD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C1ACC4CEF1;
+	Mon, 27 Oct 2025 19:09:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591479;
-	bh=U3pDxVB6M5IK2+hcTmCHfu3vgsw9BYJIMmoOQxc3FpI=;
+	s=korg; t=1761592150;
+	bh=iTiAXvWkW6annGtt9UnqGOj3g5esa0My+6bJsx46dG0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ij+7YzchV6AqR1JWtCj578JKcA9eb0WoDjJkJv8tsSF43Zyln0vqe5Ue/NmInw9mg
-	 1GgALw+G7lP3/8xgGpE3YkEdQf+g+GZTCtMV6TUFzjJfJevr0BQKRKHwUDI8ToLe8Y
-	 2DUb3fyH5C4Wn7oh01hvZXDK+wV9QFKao5hRYHn0=
+	b=F/dAAxVDXm3p3KhoaI5umOSLa/KROzyWFMU9IeEtHnr00h8ZTyInde1NvfNOCMMvo
+	 nrkCrqiI+nFvAydKyD3f5EBsceCcCqhe2gnlx8eqXvvbJY6HKeypdZ8tx2sxI0PQBr
+	 QquJWCOJamWlA8NqjidUPtG1A45nJ3heymRshdGA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@kernel.org>,
-	David Laight <David.Laight@aculab.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Eliav Farber <farbere@amazon.com>
-Subject: [PATCH 5.10 212/332] minmax: improve macro expansion and type checking
-Date: Mon, 27 Oct 2025 19:34:25 +0100
-Message-ID: <20251027183530.347071957@linuxfoundation.org>
+	stable@kernel.org,
+	Zhang Yi <yi.zhang@huawei.com>,
+	Deepanshu Kartikey <kartikey406@gmail.com>,
+	Theodore Tso <tytso@mit.edu>,
+	syzbot+038b7bf43423e132b308@syzkaller.appspotmail.com
+Subject: [PATCH 6.1 005/157] ext4: detect invalid INLINE_DATA + EXTENTS flag combination
+Date: Mon, 27 Oct 2025 19:34:26 +0100
+Message-ID: <20251027183501.383311755@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
-References: <20251027183524.611456697@linuxfoundation.org>
+In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
+References: <20251027183501.227243846@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,204 +64,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Linus Torvalds <torvalds@linux-foundation.org>
+From: Deepanshu Kartikey <kartikey406@gmail.com>
 
-[ Upstream commit 22f5468731491e53356ba7c028f0fdea20b18e2c ]
+commit 1d3ad183943b38eec2acf72a0ae98e635dc8456b upstream.
 
-This clarifies the rules for min()/max()/clamp() type checking and makes
-them a much more efficient macro expansion.
+syzbot reported a BUG_ON in ext4_es_cache_extent() when opening a verity
+file on a corrupted ext4 filesystem mounted without a journal.
 
-In particular, we now look at the type and range of the inputs to see
-whether they work together, generating a mask of acceptable comparisons,
-and then just verifying that the inputs have a shared case:
+The issue is that the filesystem has an inode with both the INLINE_DATA
+and EXTENTS flags set:
 
- - an expression with a signed type can be used for
-    (1) signed comparisons
-    (2) unsigned comparisons if it is statically known to have a
-        non-negative value
+    EXT4-fs error (device loop0): ext4_cache_extents:545: inode #15:
+    comm syz.0.17: corrupted extent tree: lblk 0 < prev 66
 
- - an expression with an unsigned type can be used for
-    (3) unsigned comparison
-    (4) signed comparisons if the type is smaller than 'int' and thus
-        the C integer promotion rules will make it signed anyway
+Investigation revealed that the inode has both flags set:
+    DEBUG: inode 15 - flag=1, i_inline_off=164, has_inline=1, extents_flag=1
 
-Here rule (1) and (3) are obvious, and rule (2) is important in order to
-allow obvious trivial constants to be used together with unsigned
-values.
+This is an invalid combination since an inode should have either:
+- INLINE_DATA: data stored directly in the inode
+- EXTENTS: data stored in extent-mapped blocks
 
-Rule (4) is not necessarily a good idea, but matches what we used to do,
-and we have extant cases of this situation in the kernel.  Notably with
-bcachefs having an expression like
+Having both flags causes ext4_has_inline_data() to return true, skipping
+extent tree validation in __ext4_iget(). The unvalidated out-of-order
+extents then trigger a BUG_ON in ext4_es_cache_extent() due to integer
+underflow when calculating hole sizes.
 
-	min(bch2_bucket_sectors_dirty(a), ca->mi.bucket_size)
+Fix this by detecting this invalid flag combination early in ext4_iget()
+and rejecting the corrupted inode.
 
-where bch2_bucket_sectors_dirty() returns an 's64', and
-'ca->mi.bucket_size' is of type 'u16'.
-
-Technically that bcachefs comparison is clearly sensible on a C type
-level, because the 'u16' will go through the normal C integer promotion,
-and become 'int', and then we're comparing two signed values and
-everything looks sane.
-
-However, it's not entirely clear that a 'min(s64,u16)' operation makes a
-lot of conceptual sense, and it's possible that we will remove rule (4).
-After all, the _reason_ we have these complicated type checks is exactly
-that the C type promotion rules are not very intuitive.
-
-But at least for now the rule is in place for backwards compatibility.
-
-Also note that rule (2) existed before, but is hugely relaxed by this
-commit.  It used to be true only for the simplest compile-time
-non-negative integer constants.  The new macro model will allow cases
-where the compiler can trivially see that an expression is non-negative
-even if it isn't necessarily a constant.
-
-For example, the amdgpu driver does
-
-	min_t(size_t, sizeof(fru_info->serial), pia[addr] & 0x3F));
-
-because our old 'min()' macro would see that 'pia[addr] & 0x3F' is of
-type 'int' and clearly not a C constant expression, so doing a 'min()'
-with a 'size_t' is a signedness violation.
-
-Our new 'min()' macro still sees that 'pia[addr] & 0x3F' is of type
-'int', but is smart enough to also see that it is clearly non-negative,
-and thus would allow that case without any complaints.
-
-Cc: Arnd Bergmann <arnd@kernel.org>
-Cc: David Laight <David.Laight@aculab.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Eliav Farber <farbere@amazon.com>
+Cc: stable@kernel.org
+Reported-and-tested-by: syzbot+038b7bf43423e132b308@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=038b7bf43423e132b308
+Suggested-by: Zhang Yi <yi.zhang@huawei.com>
+Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
+Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
+Message-ID: <20250930112810.315095-1-kartikey406@gmail.com>
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/compiler.h |    9 +++++
- include/linux/minmax.h   |   78 ++++++++++++++++++++++++++++++++++++-----------
- 2 files changed, 70 insertions(+), 17 deletions(-)
+ fs/ext4/inode.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/include/linux/compiler.h
-+++ b/include/linux/compiler.h
-@@ -252,6 +252,15 @@ static inline void *offset_to_ptr(const
- #define is_signed_type(type) (((type)(-1)) < (__force type)1)
- 
- /*
-+ * Useful shorthand for "is this condition known at compile-time?"
-+ *
-+ * Note that the condition may involve non-constant values,
-+ * but the compiler may know enough about the details of the
-+ * values to determine that the condition is statically true.
-+ */
-+#define statically_true(x) (__builtin_constant_p(x) && (x))
-+
-+/*
-  * This is needed in functions which generate the stack canary, see
-  * arch/x86/kernel/smpboot.c::start_secondary() for an example.
-  */
---- a/include/linux/minmax.h
-+++ b/include/linux/minmax.h
-@@ -26,19 +26,63 @@
- #define __typecheck(x, y) \
- 	(!!(sizeof((typeof(x) *)1 == (typeof(y) *)1)))
- 
--/* is_signed_type() isn't a constexpr for pointer types */
--#define __is_signed(x) 								\
--	__builtin_choose_expr(__is_constexpr(is_signed_type(typeof(x))),	\
--		is_signed_type(typeof(x)), 0)
--
--/* True for a non-negative signed int constant */
--#define __is_noneg_int(x)	\
--	(__builtin_choose_expr(__is_constexpr(x) && __is_signed(x), x, -1) >= 0)
--
--#define __types_ok(x, y, ux, uy) 				\
--	(__is_signed(ux) == __is_signed(uy) ||			\
--	 __is_signed((ux) + 0) == __is_signed((uy) + 0) ||	\
--	 __is_noneg_int(x) || __is_noneg_int(y))
-+/*
-+ * __sign_use for integer expressions:
-+ *   bit #0 set if ok for unsigned comparisons
-+ *   bit #1 set if ok for signed comparisons
-+ *
-+ * In particular, statically non-negative signed integer
-+ * expressions are ok for both.
-+ *
-+ * NOTE! Unsigned types smaller than 'int' are implicitly
-+ * converted to 'int' in expressions, and are accepted for
-+ * signed conversions for now. This is debatable.
-+ *
-+ * Note that 'x' is the original expression, and 'ux' is
-+ * the unique variable that contains the value.
-+ *
-+ * We use 'ux' for pure type checking, and 'x' for when
-+ * we need to look at the value (but without evaluating
-+ * it for side effects! Careful to only ever evaluate it
-+ * with sizeof() or __builtin_constant_p() etc).
-+ *
-+ * Pointers end up being checked by the normal C type
-+ * rules at the actual comparison, and these expressions
-+ * only need to be careful to not cause warnings for
-+ * pointer use.
-+ */
-+#define __signed_type_use(x,ux) (2+__is_nonneg(x,ux))
-+#define __unsigned_type_use(x,ux) (1+2*(sizeof(ux)<4))
-+#define __sign_use(x,ux) (is_signed_type(typeof(ux))? \
-+	__signed_type_use(x,ux):__unsigned_type_use(x,ux))
-+
-+/*
-+ * To avoid warnings about casting pointers to integers
-+ * of different sizes, we need that special sign type.
-+ *
-+ * On 64-bit we can just always use 'long', since any
-+ * integer or pointer type can just be cast to that.
-+ *
-+ * This does not work for 128-bit signed integers since
-+ * the cast would truncate them, but we do not use s128
-+ * types in the kernel (we do use 'u128', but they will
-+ * be handled by the !is_signed_type() case).
-+ *
-+ * NOTE! The cast is there only to avoid any warnings
-+ * from when values that aren't signed integer types.
-+ */
-+#ifdef CONFIG_64BIT
-+  #define __signed_type(ux) long
-+#else
-+  #define __signed_type(ux) typeof(__builtin_choose_expr(sizeof(ux)>4,1LL,1L))
-+#endif
-+#define __is_nonneg(x,ux) statically_true((__signed_type(ux))(x)>=0)
-+
-+#define __types_ok(x,y,ux,uy) \
-+	(__sign_use(x,ux) & __sign_use(y,uy))
-+
-+#define __types_ok3(x,y,z,ux,uy,uz) \
-+	(__sign_use(x,ux) & __sign_use(y,uy) & __sign_use(z,uz))
- 
- #define __cmp_op_min <
- #define __cmp_op_max >
-@@ -53,8 +97,8 @@
- 
- #define __careful_cmp_once(op, x, y, ux, uy) ({		\
- 	__auto_type ux = (x); __auto_type uy = (y);	\
--	static_assert(__types_ok(x, y, ux, uy),		\
--		#op "(" #x ", " #y ") signedness error, fix types or consider u" #op "() before " #op "_t()"); \
-+	BUILD_BUG_ON_MSG(!__types_ok(x,y,ux,uy),	\
-+		#op"("#x", "#y") signedness error");	\
- 	__cmp(op, ux, uy); })
- 
- #define __careful_cmp(op, x, y) \
-@@ -70,8 +114,8 @@
- 	static_assert(__builtin_choose_expr(__is_constexpr((lo) > (hi)), 	\
- 			(lo) <= (hi), true),					\
- 		"clamp() low limit " #lo " greater than high limit " #hi);	\
--	static_assert(__types_ok(uval, lo, uval, ulo), "clamp() 'lo' signedness error");	\
--	static_assert(__types_ok(uval, hi, uval, uhi), "clamp() 'hi' signedness error");	\
-+	BUILD_BUG_ON_MSG(!__types_ok3(val,lo,hi,uval,ulo,uhi),			\
-+		"clamp("#val", "#lo", "#hi") signedness error");		\
- 	__clamp(uval, ulo, uhi); })
- 
- #define __careful_clamp(val, lo, hi) \
+--- a/fs/ext4/inode.c
++++ b/fs/ext4/inode.c
+@@ -4968,6 +4968,14 @@ struct inode *__ext4_iget(struct super_b
+ 	}
+ 	ei->i_flags = le32_to_cpu(raw_inode->i_flags);
+ 	ext4_set_inode_flags(inode, true);
++	/* Detect invalid flag combination - can't have both inline data and extents */
++	if (ext4_test_inode_flag(inode, EXT4_INODE_INLINE_DATA) &&
++	    ext4_test_inode_flag(inode, EXT4_INODE_EXTENTS)) {
++		ext4_error_inode(inode, function, line, 0,
++			"inode has both inline data and extents flags");
++		ret = -EFSCORRUPTED;
++		goto bad_inode;
++	}
+ 	inode->i_blocks = ext4_inode_blocks(raw_inode, ei);
+ 	ei->i_file_acl = le32_to_cpu(raw_inode->i_file_acl_lo);
+ 	if (ext4_has_feature_64bit(sb))
 
 
 
