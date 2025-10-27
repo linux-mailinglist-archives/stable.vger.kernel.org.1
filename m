@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-190423-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190090-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BAA6C10542
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:58:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BEE7C0FF51
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:40:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id CB4654FAAAD
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:57:13 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7BCD54EFC1B
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:40:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 003D8326D50;
-	Mon, 27 Oct 2025 18:54:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBE293191BF;
+	Mon, 27 Oct 2025 18:40:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JnGVxWbT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NGCgOtys"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A974C246BB7;
-	Mon, 27 Oct 2025 18:54:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7495218EB1;
+	Mon, 27 Oct 2025 18:40:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591252; cv=none; b=WmHatrgUx7BBpu9jMUksjD9v6M8ebQMBeAdjpYWS3VfxRGFEcr6/wpvbhj6dDrUMzt2esaWbwmnmvMRychRftG9PKMNUv3pKLN1IhSCE8Co5KD17qFIhxw2Xh78onyUwsOPGMLPGYz5cnMWelM0B+Yu+pMpF5ZPx8gEooY3KXKk=
+	t=1761590409; cv=none; b=j92NLSZkAOTKEUpdW+EonhedZteEur4IwR5Bf9X6+0xp0jbJBEk5TdBqKAluu0NfbwbFgGNwVywoVF+Gc7E3xMcRo9XUe8Q8b6gGYzIMD31lQd/xumIwwVaSpO+QOuH0ASfB+f92v+VcicfsHdHyL3GF+TpdGafI6byonx6cqpc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591252; c=relaxed/simple;
-	bh=qDhBSHD+8GfOjzxYNE9MOafgv9TQZ83kJPkrAXsbDJw=;
+	s=arc-20240116; t=1761590409; c=relaxed/simple;
+	bh=rgXa+i+8Q9t/Lky4eBRoKbL3u57tcLtCRslXusZu+SA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D0JzBfLsk9At1bpGPfaJRDDW6y843fRCzTSZ4p9c74xL5LYcBoa/AdeBaC8BroU8repq3CofzEmtSrJUXjFGZg9k80O5aCgKgrNQqn+p15nIHUeKULeysCJfKcDVo5GAD/ZdCW7q5npIwDcpg2asr9bcBG1xnei/1U7ULEUw+8o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JnGVxWbT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 359EFC4CEF1;
-	Mon, 27 Oct 2025 18:54:12 +0000 (UTC)
+	 MIME-Version; b=gZ81LzJxkWSwAUzbuDZjstgBynIzH38tkMkVp3GwXkfbqV9G84rusUKQfEJgZMoeAZ+skrSpzwTRbXOabJvGcAGBT5aBpIeLyxVCBHaYATAFwMF5YLx7iiPhg9/o5GlTQV8BEdM08PV1Jwv1zDNVwDHsaYXz29/bNMXObtriTMo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NGCgOtys; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3931CC4CEF1;
+	Mon, 27 Oct 2025 18:40:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591252;
-	bh=qDhBSHD+8GfOjzxYNE9MOafgv9TQZ83kJPkrAXsbDJw=;
+	s=korg; t=1761590409;
+	bh=rgXa+i+8Q9t/Lky4eBRoKbL3u57tcLtCRslXusZu+SA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JnGVxWbT2wNjHcb6QFdrwqjaz/dx9oF5VHYc8Ge3a9jI9Iw/muMJ4uGRV8vStVchc
-	 vBprDwz4/BrRMp+MhsvnsqqfEKouwTFu3pGIYycAtgWH/10Q9rC2Yapph/WEZPex8r
-	 aKVRC2qdUApDJTOcwW1zWtM8v70JQPP4++TQ1mwk=
+	b=NGCgOtys5rWDBCdZOpit2Mn22SKiMlst0UfI0mPowABAmd9siKzbRLkqOJb2nSFrP
+	 LNpvjHYcfhM+V+DT4iTdP3SYhSnPKpMmzdYlTVEI3eAxgBqC1+PS6z3HQgnXjKR6VK
+	 OldSEXbalqjVr/5R8Yvc3hUjc+lMppPrlf0l9QOE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 126/332] gpio: wcd934x: mark the GPIO controller as sleeping
+Subject: [PATCH 5.4 033/224] serial: max310x: Add error checking in probe()
 Date: Mon, 27 Oct 2025 19:32:59 +0100
-Message-ID: <20251027183527.938731851@linuxfoundation.org>
+Message-ID: <20251027183509.892836543@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
-References: <20251027183524.611456697@linuxfoundation.org>
+In-Reply-To: <20251027183508.963233542@linuxfoundation.org>
+References: <20251027183508.963233542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit b5f8aa8d4bde0cf3e4595af5a536da337e5f1c78 ]
+[ Upstream commit 672a37ba8af1f2ebcedeb94aea2cdd047f805f30 ]
 
-The slimbus regmap passed to the GPIO driver down from MFD does not use
-fast_io. This means a mutex is used for locking and thus this GPIO chip
-must not be used in atomic context. Change the can_sleep switch in
-struct gpio_chip to true.
+Check if devm_i2c_new_dummy_device() fails.
 
-Fixes: 59c324683400 ("gpio: wcd934x: Add support to wcd934x gpio controller")
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Fixes: 2e1f2d9a9bdb ("serial: max310x: implement I2C support")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/aJTMPZiKqeXSE-KM@stanley.mountain
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpio-wcd934x.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/tty/serial/max310x.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpio/gpio-wcd934x.c b/drivers/gpio/gpio-wcd934x.c
-index cbbbd105a5a7b..26d70ac90933c 100644
---- a/drivers/gpio/gpio-wcd934x.c
-+++ b/drivers/gpio/gpio-wcd934x.c
-@@ -101,7 +101,7 @@ static int wcd_gpio_probe(struct platform_device *pdev)
- 	chip->base = -1;
- 	chip->ngpio = WCD934X_NPINS;
- 	chip->label = dev_name(dev);
--	chip->can_sleep = false;
-+	chip->can_sleep = true;
+diff --git a/drivers/tty/serial/max310x.c b/drivers/tty/serial/max310x.c
+index 363b68555fe62..4ef2762347f62 100644
+--- a/drivers/tty/serial/max310x.c
++++ b/drivers/tty/serial/max310x.c
+@@ -1660,6 +1660,8 @@ static int max310x_i2c_probe(struct i2c_client *client)
+ 		port_client = devm_i2c_new_dummy_device(&client->dev,
+ 							client->adapter,
+ 							port_addr);
++		if (IS_ERR(port_client))
++			return PTR_ERR(port_client);
  
- 	return devm_gpiochip_add_data(dev, chip, data);
- }
+ 		regmaps[i] = devm_regmap_init_i2c(port_client, &regcfg_i2c);
+ 	}
 -- 
 2.51.0
 
