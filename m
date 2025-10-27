@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-190537-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190215-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id C108FC106CC
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:03:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C28E1C10341
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:51:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 6D89A3486E6
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:03:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E13CF466893
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:49:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35156328B7F;
-	Mon, 27 Oct 2025 18:59:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31C4E3081BE;
+	Mon, 27 Oct 2025 18:45:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JHgj/hqF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x0AZn2ou"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC976328627;
-	Mon, 27 Oct 2025 18:59:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA5561EA7DF;
+	Mon, 27 Oct 2025 18:45:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591548; cv=none; b=jxtEPK5sMdDhMG88so8NhCH4O68uXi1pW2pY+4vM4NddFzmdVMci/a8Ovlhyir6GYb11FVCue21XKtapwoVdbxmCMxGe1zQVDWhVGCyTMcjFxfiB3FwuK5M8mt+5R1IDilH85vOzYuiRVfmClQKyf3U9+2rnW8NykCOLfNIF1JA=
+	t=1761590708; cv=none; b=cbujhR+zmG3l+8l0SI1/usP39vNqMvnDph6EHaYxEHF3ScKwQ/Zptl7n68x+yKobsVaLg/UFTJtHSLGVyM2byakMrDEuAQkoQgeSiVT4sd2DpRc0wJQhga0p8xzQKCVk3vRV5CPS5St+Nm0k4QMHEt32cA1ESMOltifA+0X7bOc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591548; c=relaxed/simple;
-	bh=CTHG3zaZBAohLBBfHt36CXMhWK/Lq2FNj/RyJP6aJGw=;
+	s=arc-20240116; t=1761590708; c=relaxed/simple;
+	bh=GxzU/N1HDmHka/MuZrB6l9qqD6Kfpyj4JMxpV8Bej/0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RpL5Kh20PtLHKIkk+MDIKY5uojhWrTKqDvrmsj9c8z2XnLtgnQgGh4G0MfXoI0ZF5ttZstUIQXZmMfelutwnhWPfdglVdjq8efmh1vOWHXd8dFgo+vn2MPmRBWkXaWp0gs+r0UeDYlDGrJGCYqCRI9+x1VamVyAhuaQC9gPNjhs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JHgj/hqF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6329CC4CEF1;
-	Mon, 27 Oct 2025 18:59:08 +0000 (UTC)
+	 MIME-Version; b=eaFkQGFys+GNxpZeAWKHZCSnU3MXkE0wR1kPLGOXBQFPsl/bvnrJD8ZTjEYsaSpQPkxL2YaHGcTI5WdxGPG7ey3KWlVFxlgZVa34HEsoHOXe3jvouFWKwJPgXx1OVqK+IrLN9Dnk2GGeTCSVpG6R7tQtFsVApv+e5WiBC5M4+ME=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x0AZn2ou; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 094FEC4CEF1;
+	Mon, 27 Oct 2025 18:45:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591548;
-	bh=CTHG3zaZBAohLBBfHt36CXMhWK/Lq2FNj/RyJP6aJGw=;
+	s=korg; t=1761590708;
+	bh=GxzU/N1HDmHka/MuZrB6l9qqD6Kfpyj4JMxpV8Bej/0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JHgj/hqFewqlg3O0ASniifII3IFC+AXJ5V6Lgj+RzrQSn3uuwsce5AF5N29Nn9T+S
-	 pOkZBS8mIPQ2v1qaSP5wFThzdq6+4C9G161lGMUbn5MJxfHAuiG9HchmzUc2KUPKYM
-	 hnjh1STASEFEe1PGUlKUwSw39W7msrnieGaQm6o4=
+	b=x0AZn2ouk2CZ+VqWVais93Eo/xNTS/FEufX4VbD/A9IOf9ctcWf49f+28hA0y8Vji
+	 d5rDMAZp+wNMSIn+6fGw9+RlhrlMWhxDCQMaT094qAWSf4txhy6C+4JwEBLmlMamZy
+	 dUKgg+a3rtm6a/3byWJmDDEZUMHHR/6t7GSWPkuY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuezhang Mo <Yuezhang.Mo@sony.com>,
-	Friendy Su <friendy.su@sony.com>,
-	Daniel Palmer <daniel.palmer@sony.com>,
-	Gao Xiang <hsiangkao@linux.alibaba.com>,
-	Christian Brauner <brauner@kernel.org>,
+	Jason Andryuk <jason.andryuk@amd.com>,
+	Jan Beulich <jbeulich@suse.com>,
+	Juergen Gross <jgross@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 240/332] dax: skip read lock assertion for read-only filesystems
-Date: Mon, 27 Oct 2025 19:34:53 +0100
-Message-ID: <20251027183531.167578086@linuxfoundation.org>
+Subject: [PATCH 5.4 148/224] xen/events: Cleanup find_virq() return codes
+Date: Mon, 27 Oct 2025 19:34:54 +0100
+Message-ID: <20251027183512.929635929@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
-References: <20251027183524.611456697@linuxfoundation.org>
+In-Reply-To: <20251027183508.963233542@linuxfoundation.org>
+References: <20251027183508.963233542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,51 +63,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuezhang Mo <Yuezhang.Mo@sony.com>
+From: Jason Andryuk <jason.andryuk@amd.com>
 
-[ Upstream commit 154d1e7ad9e5ce4b2aaefd3862b3dba545ad978d ]
+[ Upstream commit 08df2d7dd4ab2db8a172d824cda7872d5eca460a ]
 
-The commit 168316db3583("dax: assert that i_rwsem is held
-exclusive for writes") added lock assertions to ensure proper
-locking in DAX operations. However, these assertions trigger
-false-positive lockdep warnings since read lock is unnecessary
-on read-only filesystems(e.g., erofs).
+rc is overwritten by the evtchn_status hypercall in each iteration, so
+the return value will be whatever the last iteration is.  This could
+incorrectly return success even if the event channel was not found.
+Change to an explicit -ENOENT for an un-found virq and return 0 on a
+successful match.
 
-This patch skips the read lock assertion for read-only filesystems,
-eliminating the spurious warnings while maintaining the integrity
-checks for writable filesystems.
-
-Fixes: 168316db3583 ("dax: assert that i_rwsem is held exclusive for writes")
-Signed-off-by: Yuezhang Mo <Yuezhang.Mo@sony.com>
-Reviewed-by: Friendy Su <friendy.su@sony.com>
-Reviewed-by: Daniel Palmer <daniel.palmer@sony.com>
-Reviewed-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Fixes: 62cc5fc7b2e0 ("xen/pv-on-hvm kexec: rebind virqs to existing eventchannel ports")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jason Andryuk <jason.andryuk@amd.com>
+Reviewed-by: Jan Beulich <jbeulich@suse.com>
+Reviewed-by: Juergen Gross <jgross@suse.com>
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Message-ID: <20250828003604.8949-2-jason.andryuk@amd.com>
+[ converted evtchn pointer output parameter to direct port return value ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/dax.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/xen/events/events_base.c |   12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/fs/dax.c b/fs/dax.c
-index 6619a71b57bbe..a6f481f1517dd 100644
---- a/fs/dax.c
-+++ b/fs/dax.c
-@@ -1222,7 +1222,7 @@ dax_iomap_rw(struct kiocb *iocb, struct iov_iter *iter,
- 	if (iov_iter_rw(iter) == WRITE) {
- 		lockdep_assert_held_write(&iomi.inode->i_rwsem);
- 		iomi.flags |= IOMAP_WRITE;
--	} else {
-+	} else if (!sb_rdonly(iomi.inode->i_sb)) {
- 		lockdep_assert_held(&iomi.inode->i_rwsem);
- 	}
+--- a/drivers/xen/events/events_base.c
++++ b/drivers/xen/events/events_base.c
+@@ -1210,10 +1210,12 @@ EXPORT_SYMBOL_GPL(bind_interdomain_evtch
+ static int find_virq(unsigned int virq, unsigned int cpu)
+ {
+ 	struct evtchn_status status;
+-	int port, rc = -ENOENT;
++	int port;
  
--- 
-2.51.0
-
+ 	memset(&status, 0, sizeof(status));
+ 	for (port = 0; port < xen_evtchn_max_channels(); port++) {
++		int rc;
++
+ 		status.dom = DOMID_SELF;
+ 		status.port = port;
+ 		rc = HYPERVISOR_event_channel_op(EVTCHNOP_status, &status);
+@@ -1221,12 +1223,10 @@ static int find_virq(unsigned int virq,
+ 			continue;
+ 		if (status.status != EVTCHNSTAT_virq)
+ 			continue;
+-		if (status.u.virq == virq && status.vcpu == xen_vcpu_nr(cpu)) {
+-			rc = port;
+-			break;
+-		}
++		if (status.u.virq == virq && status.vcpu == xen_vcpu_nr(cpu))
++			return port;
+ 	}
+-	return rc;
++	return -ENOENT;
+ }
+ 
+ /**
 
 
 
