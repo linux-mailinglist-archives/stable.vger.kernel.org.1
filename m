@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-190846-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190733-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89E3DC10D34
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:21:29 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E30B2C10AFE
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:15:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 60BFE5458C2
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:14:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8A8681A61F75
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:10:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD8AC322DB7;
-	Mon, 27 Oct 2025 19:12:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60345324B09;
+	Mon, 27 Oct 2025 19:07:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wMFXp8xA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p7QZ96Mn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BB1E21C160;
-	Mon, 27 Oct 2025 19:12:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BF6A302748;
+	Mon, 27 Oct 2025 19:07:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592351; cv=none; b=Sfy1QDwNkF9xPkADqAnLoY1mUHW6vJgSJFZtBWw99aJBUZ3mtep7R3VTr4BmkutxhHufMXmQxQQ194f6bCN6IllrNM4HX0MFaKmcEG3pQFRhoowTLz/BP54U4vEVvTko95a9dLONF1J3hxl9vr32EgVB2NU9fg4DkDzcfLv+Qhs=
+	t=1761592052; cv=none; b=cN7G8qEMIvQxXrjkSCTe1MZJWb6eo2qLeKX61vVays6Rdck2I82j9jSmO3rxJ0q2NpHd0taxNl3ctlZE1kxiI1lGWWcUamNmdeirUSvmGrFGpknwWAqXc38zqt8rYHrZCLEoIxbJwe/tPdqZbH/qEKi9nbdMfUudWkXTyZbZI1k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592351; c=relaxed/simple;
-	bh=IJj1gDkAeegAAUgCAWQ7+GE4YZ38dWJdNpSfuMKDi9E=;
+	s=arc-20240116; t=1761592052; c=relaxed/simple;
+	bh=PbSM5Goroah3kg+eVMNFshrN2EhgSvGlXNZQZDE60SM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=odwXtEs794rK04F4IS4VVWbfVyPJVv6CZ0tZZv7ECsfot5L0DNG7XplUzE+tU3ghJ4M+VTlWSmsfwxsBO3byMeKtM2IZ9lFsEKDhzouyREVQ27SH8OZcsybAlR0uM4iqCwNTzdwNjFfQ6iaTx8PW8nfbR7As5rIeLHgVEr09cDM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wMFXp8xA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 301F3C4CEF1;
-	Mon, 27 Oct 2025 19:12:31 +0000 (UTC)
+	 MIME-Version; b=ASlDl9p7Yw1zLdTX+TKa9l3Rtj14Z/Pfa0kRkQBPM0/Za8d0M3ePYBfMOR1lyh+n+uLAhb3bUAAaGdvzc5PjrhFNsfsvJ1knPEnr+wbtXZmN1FWtb25AfZ80/m0kZS+/S/P3NIRvij5FwyeVGkb6LRCpxqmMaEDDSb6JbofzrJo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p7QZ96Mn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5CA1C4CEF1;
+	Mon, 27 Oct 2025 19:07:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592351;
-	bh=IJj1gDkAeegAAUgCAWQ7+GE4YZ38dWJdNpSfuMKDi9E=;
+	s=korg; t=1761592052;
+	bh=PbSM5Goroah3kg+eVMNFshrN2EhgSvGlXNZQZDE60SM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wMFXp8xAxX/ruMxiuPFCxEvbXC4XiIUQYG/O1sjf22zK4Sy00vGwjAb3Zle1k+3ko
-	 dFR8wi4RHYdMDjZWgMW/UXnEEvoA9gBwEvqay5qpCsnx8iTNROPqk2T2ZgKXtNCarh
-	 QAbWEP2kP3GKZiEi3raCd8ljI/M++fLE6X0Q3T9c=
+	b=p7QZ96Mnxzfza4/gc8yBSPC76BDRgHUbR72Nedm9ak0i72qa8bClcGtm1hcwSaQ8d
+	 k8vV+8QQg9QhopOYHdvn1WWh4qa+3jGieS9ztKnicjwJYcmjjZlWWwyFoj7m4bNXgI
+	 UNGXh6wPsuRIlwYLueTnAVil2TiCz0zuDky+yuvI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Saket Dumbre <saket.dumbre@intel.com>,
-	Xi Ruoyao <xry111@xry111.site>,
-	Huacai Chen <chenhuacai@loongson.cn>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.1 089/157] ACPICA: Work around bogus -Wstringop-overread warning since GCC 11
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	linux-riscv@lists.infradead.org,
+	Rob Herring <robh@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 070/123] riscv: Use of_get_cpu_hwid()
 Date: Mon, 27 Oct 2025 19:35:50 +0100
-Message-ID: <20251027183503.658380259@linuxfoundation.org>
+Message-ID: <20251027183448.271242205@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
-References: <20251027183501.227243846@linuxfoundation.org>
+In-Reply-To: <20251027183446.381986645@linuxfoundation.org>
+References: <20251027183446.381986645@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +65,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xi Ruoyao <xry111@xry111.site>
+From: Rob Herring <robh@kernel.org>
 
-commit 6e3a4754717a74e931a9f00b5f953be708e07acb upstream.
+[ Upstream commit bd2259ee458e299ec14061da7faddcfb0d54d154 ]
 
-When ACPI_MISALIGNMENT_NOT_SUPPORTED is set, GCC can produce a bogus
--Wstringop-overread warning, see [1].
+Replace open coded parsing of CPU nodes' 'reg' property with
+of_get_cpu_hwid().
 
-To me, it's very clear that we have a compiler bug here, thus just
-disable the warning.
-
-Fixes: a9d13433fe17 ("LoongArch: Align ACPI structures if ARCH_STRICT_ALIGN enabled")
-Link: https://lore.kernel.org/all/899f2dec-e8b9-44f4-ab8d-001e160a2aed@roeck-us.net/
-Link: https://github.com/acpica/acpica/commit/abf5b573
-Link: https://gcc.gnu.org/PR122073 [1]
-Co-developed-by: Saket Dumbre <saket.dumbre@intel.com>
-Signed-off-by: Saket Dumbre <saket.dumbre@intel.com>
-Signed-off-by: Xi Ruoyao <xry111@xry111.site>
-Acked-by: Huacai Chen <chenhuacai@loongson.cn>
-Cc: All applicable <stable@vger.kernel.org>
-[ rjw: Subject and changelog edits ]
-Link: https://patch.msgid.link/20251021092825.822007-1-xry111@xry111.site
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Paul Walmsley <paul.walmsley@sifive.com>
+Cc: Palmer Dabbelt <palmer@dabbelt.com>
+Cc: Albert Ou <aou@eecs.berkeley.edu>
+Cc: linux-riscv@lists.infradead.org
+Signed-off-by: Rob Herring <robh@kernel.org>
+Link: https://lore.kernel.org/r/20211006164332.1981454-9-robh@kernel.org
+Stable-dep-of: d2721bb165b3 ("RISC-V: Don't print details of CPUs disabled in DT")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/acpica/tbprint.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ arch/riscv/kernel/cpu.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/acpi/acpica/tbprint.c
-+++ b/drivers/acpi/acpica/tbprint.c
-@@ -94,6 +94,11 @@ acpi_tb_print_table_header(acpi_physical
- {
- 	struct acpi_table_header local_header;
- 
-+#pragma GCC diagnostic push
-+#if defined(__GNUC__) && __GNUC__ >= 11
-+#pragma GCC diagnostic ignored "-Wstringop-overread"
-+#endif
-+
- 	if (ACPI_COMPARE_NAMESEG(header->signature, ACPI_SIG_FACS)) {
- 
- 		/* FACS only has signature and length fields */
-@@ -134,6 +139,7 @@ acpi_tb_print_table_header(acpi_physical
- 			   local_header.asl_compiler_id,
- 			   local_header.asl_compiler_revision));
+diff --git a/arch/riscv/kernel/cpu.c b/arch/riscv/kernel/cpu.c
+index 6d59e6906fddf..f13b2c9ea912d 100644
+--- a/arch/riscv/kernel/cpu.c
++++ b/arch/riscv/kernel/cpu.c
+@@ -22,7 +22,8 @@ int riscv_of_processor_hartid(struct device_node *node)
+ 		return -ENODEV;
  	}
-+#pragma GCC diagnostic pop
- }
  
- /*******************************************************************************
+-	if (of_property_read_u32(node, "reg", &hart)) {
++	hart = of_get_cpu_hwid(node, 0);
++	if (hart == ~0U) {
+ 		pr_warn("Found CPU without hart ID\n");
+ 		return -ENODEV;
+ 	}
+-- 
+2.51.0
+
 
 
 
