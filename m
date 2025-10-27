@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-190160-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190156-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05E95C100A4
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:44:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B600BC100FE
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:45:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1FAA3462617
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:44:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 184AE1A201B3
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:44:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1ECCD321F5F;
-	Mon, 27 Oct 2025 18:42:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BAF2321445;
+	Mon, 27 Oct 2025 18:42:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O/HGAVBL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eYUyvvMF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D153F31D377
-	for <stable@vger.kernel.org>; Mon, 27 Oct 2025 18:42:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF0A43203A9
+	for <stable@vger.kernel.org>; Mon, 27 Oct 2025 18:42:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761590576; cv=none; b=m7xjIjoJMUJrVw+hLVSlYonlAyun9ZFTVumODGFyiaIK7A0ubX1zjYpV2kLKfJxqyDGgeJsA44uUlVXj1ePbE+P5aq12VclJuWwWwwRGMtLp5HFfy+hFJw/oF9BjDtvVjcu/TjsvviEPNQKJGDHryMV6AV91NQJYP1MwadOtjmE=
+	t=1761590572; cv=none; b=dPPrKPkhblLTIsqoa5kX2AcMRRzPlmpRIpTQWDd5t+YPsNLP2R27ZSitzM/mjvdKY5nmymRNA718t7vpDRqxkeOf3cV55ILSabPoMNZ1HQdQQA9tNJ2JSQ187OsnWz9y5nS0fWb+j3AGdHv00oX8i2RXbWO62ils3ryloH8/G8w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761590576; c=relaxed/simple;
-	bh=dT7NFPo/BVjeqjFiNQKUUZRZjQzlhzwBdprkkFb18RI=;
+	s=arc-20240116; t=1761590572; c=relaxed/simple;
+	bh=V0mYzgJ7yGRljKMAIZLCucOM55qx4iwM8oW1ieCk1ZY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DD8fDfa0KAEOa6jy+keb13D8DWM8JPmIQbaAU1Gn3D52Zx/G16Adnrke3Lq//LW0kNmlVue5dEmBMxECMyI0ksbljUrmC1Zy3V3X4AOuJNGuYYlvq3sE8K4XlJfu3xUHTEGrlvQcSkKDK81CORkwZvZW5ZJQjhzcpXiQAO9JHa4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O/HGAVBL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E77A3C116B1;
-	Mon, 27 Oct 2025 18:42:55 +0000 (UTC)
+	 MIME-Version; b=rvNamBfXiAqvuIjw67Yd/a7+qLckzdE9a3WV7rSOItkstBZNn8l20MvdKevrxh+OaGtYp8N8vM7EQfYmHyAATxqpQ6caooaO/tQXzOgMSSPleddBKjPJf2Ae1DuHXIbI5awRqYR+C14Rv0Z/FclQJb0fP9WbC0lxC/iWMKKk5CI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eYUyvvMF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC894C116D0;
+	Mon, 27 Oct 2025 18:42:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761590576;
-	bh=dT7NFPo/BVjeqjFiNQKUUZRZjQzlhzwBdprkkFb18RI=;
+	s=k20201202; t=1761590572;
+	bh=V0mYzgJ7yGRljKMAIZLCucOM55qx4iwM8oW1ieCk1ZY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O/HGAVBLIZJ4aJpAQLEXQG9dM0pQK1hIsOtjfFP2KjaqXG4mCkJXTW1MQzg+HeDuK
-	 vvPMIqlW5gpNx+E4LKJkyp18QlxZNcHjrdbIhbvd+NhfgjjfGYMh7jWu0GmDRwzCri
-	 WKh1vnTwe29eq9FvkVNHKPrQM8Pt6IoYtf2iu1zyBGOKjyym5bPv475cdOk8qwy1Ah
-	 SyUIq87Ps1MBbKB4zn5Ux/zQoqd32Tdu149kzRNYRp0ZLfUloZJZSVo34WYH99Ypwa
-	 5sDYUjys35YQJIdulcVOjHRlptE+RjnywX/sU1khXztIheeeFrdj+h1CL9RmQQle48
-	 6ib6Q7VBQ7rWA==
+	b=eYUyvvMFJ3IIEsers4JgxajlUXiWWuLZfW9HwF/WI/i8gCiNQvIWpbnm9QrQ0gMmZ
+	 F99Zytq2aArck0PurgQng2OzLsKdvzVYWga/RBdCNCwxaC1FmCtzOVBVjCa20cJGso
+	 nE3yVIgNFVumTi/LJT7Bct4i4o7ZuiAv5xPLpkMDUw02LjjfFEarBg+jhnZqYmuoY5
+	 pD04Bf0eo4dwnbRm10MQZqwDy9YvKB3OqOUV08fY2thJuKOBHQBbrrh+Rq3kaB7EAE
+	 xOz4VKgYmee59/z4ce7Kr9WmNPgkUpw89XZKo8DWo7JuoNOeT58xvpLV8xDHBB03xV
+	 SIpkadkcj1J5g==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Uday M Bhat <uday.m.bhat@intel.com>,
-	Samuel Jacob <samjaco@google.com>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>,
+Cc: Artem Shimko <a.shimko.dev@gmail.com>,
+	stable <stable@kernel.org>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y 3/6] xhci: dbc: Allow users to modify DbC poll interval via sysfs
+Subject: [PATCH 5.10.y 2/2] serial: 8250_dw: handle reset control deassert error
 Date: Mon, 27 Oct 2025 14:42:49 -0400
-Message-ID: <20251027184252.639069-3-sashal@kernel.org>
+Message-ID: <20251027184249.638796-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251027184252.639069-1-sashal@kernel.org>
-References: <2025102714-patriot-eel-32c8@gregkh>
- <20251027184252.639069-1-sashal@kernel.org>
+In-Reply-To: <20251027184249.638796-1-sashal@kernel.org>
+References: <2025102700-sleep-robotics-c9e3@gregkh>
+ <20251027184249.638796-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,134 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Uday M Bhat <uday.m.bhat@intel.com>
+From: Artem Shimko <a.shimko.dev@gmail.com>
 
-[ Upstream commit de3edd47a18fe05a560847cc3165871474e08196 ]
+[ Upstream commit daeb4037adf7d3349b4a1fb792f4bc9824686a4b ]
 
-xhci DbC driver polls the host controller for DbC events at a reduced
-rate when DbC is enabled but there are no active data transfers.
+Check the return value of reset_control_deassert() in the probe
+function to prevent continuing probe when reset deassertion fails.
 
-Allow users to modify this reduced poll interval via dbc_poll_interval_ms
-sysfs entry. Unit is milliseconds and accepted range is 0 to 5000.
-Max interval of 5000 ms is selected as it matches the common 5 second
-timeout used in usb stack.
-Default value is 64 milliseconds.
+Previously, reset_control_deassert() was called without checking its
+return value, which could lead to probe continuing even when the
+device reset wasn't properly deasserted.
 
-A long interval is useful when users know there won't be any activity
-on systems connected via DbC for long periods, and want to avoid
-battery drainage due to unnecessary CPU usage.
+The fix checks the return value and returns an error with dev_err_probe()
+if reset deassertion fails, providing better error handling and
+diagnostics.
 
-Example being Android Debugger (ADB) usage over DbC on ChromeOS systems
-running Android Runtime.
-
-[minor changes and rewording -Mathias]
-
-Co-developed-by: Samuel Jacob <samjaco@google.com>
-Signed-off-by: Samuel Jacob <samjaco@google.com>
-Signed-off-by: Uday M Bhat <uday.m.bhat@intel.com>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20240626124835.1023046-5-mathias.nyman@linux.intel.com
+Fixes: acbdad8dd1ab ("serial: 8250_dw: simplify optional reset handling")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Artem Shimko <a.shimko.dev@gmail.com>
+Link: https://patch.msgid.link/20251019095131.252848-1-a.shimko.dev@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: f3d12ec847b9 ("xhci: dbc: fix bogus 1024 byte prefix if ttyDBC read races with stall event")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../testing/sysfs-bus-pci-drivers-xhci_hcd    | 10 +++++
- drivers/usb/host/xhci-dbgcap.c                | 38 +++++++++++++++++++
- drivers/usb/host/xhci-dbgcap.h                |  2 +-
- 3 files changed, 49 insertions(+), 1 deletion(-)
+ drivers/tty/serial/8250/8250_dw.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/ABI/testing/sysfs-bus-pci-drivers-xhci_hcd b/Documentation/ABI/testing/sysfs-bus-pci-drivers-xhci_hcd
-index 5a775b8f65435..fc82aa4e54b00 100644
---- a/Documentation/ABI/testing/sysfs-bus-pci-drivers-xhci_hcd
-+++ b/Documentation/ABI/testing/sysfs-bus-pci-drivers-xhci_hcd
-@@ -75,3 +75,13 @@ Description:
- 		The default value is 1  (GNU Remote Debug command).
- 		Other permissible value is 0 which is for vendor defined debug
- 		target.
-+
-+What:		/sys/bus/pci/drivers/xhci_hcd/.../dbc_poll_interval_ms
-+Date:		February 2024
-+Contact:	Mathias Nyman <mathias.nyman@linux.intel.com>
-+Description:
-+		This attribute adjust the polling interval used to check for
-+		DbC events. Unit is milliseconds. Accepted values range from 0
-+		up to 5000. The default value is 64 ms.
-+		This polling interval is used while DbC is enabled but has no
-+		active data transfers.
-diff --git a/drivers/usb/host/xhci-dbgcap.c b/drivers/usb/host/xhci-dbgcap.c
-index fa4ef738d9e62..004e69f424860 100644
---- a/drivers/usb/host/xhci-dbgcap.c
-+++ b/drivers/usb/host/xhci-dbgcap.c
-@@ -1214,11 +1214,48 @@ static ssize_t dbc_bInterfaceProtocol_store(struct device *dev,
- 	return size;
- }
+diff --git a/drivers/tty/serial/8250/8250_dw.c b/drivers/tty/serial/8250/8250_dw.c
+index 6abdebb63ecbe..bcf770f344dac 100644
+--- a/drivers/tty/serial/8250/8250_dw.c
++++ b/drivers/tty/serial/8250/8250_dw.c
+@@ -580,7 +580,9 @@ static int dw8250_probe(struct platform_device *pdev)
+ 	if (IS_ERR(data->rst))
+ 		return PTR_ERR(data->rst);
  
-+static ssize_t dbc_poll_interval_ms_show(struct device *dev,
-+					 struct device_attribute *attr,
-+					 char *buf)
-+{
-+	struct xhci_dbc *dbc;
-+	struct xhci_hcd *xhci;
-+
-+	xhci = hcd_to_xhci(dev_get_drvdata(dev));
-+	dbc = xhci->dbc;
-+
-+	return sysfs_emit(buf, "%u\n", dbc->poll_interval);
-+}
-+
-+static ssize_t dbc_poll_interval_ms_store(struct device *dev,
-+					  struct device_attribute *attr,
-+					  const char *buf, size_t size)
-+{
-+	struct xhci_dbc *dbc;
-+	struct xhci_hcd *xhci;
-+	u32 value;
-+	int ret;
-+
-+	ret = kstrtou32(buf, 0, &value);
-+	if (ret || value > DBC_POLL_INTERVAL_MAX)
-+		return -EINVAL;
-+
-+	xhci = hcd_to_xhci(dev_get_drvdata(dev));
-+	dbc = xhci->dbc;
-+
-+	dbc->poll_interval = value;
-+
-+	mod_delayed_work(system_wq, &dbc->event_work, 0);
-+
-+	return size;
-+}
-+
- static DEVICE_ATTR_RW(dbc);
- static DEVICE_ATTR_RW(dbc_idVendor);
- static DEVICE_ATTR_RW(dbc_idProduct);
- static DEVICE_ATTR_RW(dbc_bcdDevice);
- static DEVICE_ATTR_RW(dbc_bInterfaceProtocol);
-+static DEVICE_ATTR_RW(dbc_poll_interval_ms);
+-	reset_control_deassert(data->rst);
++	err = reset_control_deassert(data->rst);
++	if (err)
++		return dev_err_probe(dev, err, "failed to deassert resets\n");
  
- static struct attribute *dbc_dev_attributes[] = {
- 	&dev_attr_dbc.attr,
-@@ -1226,6 +1263,7 @@ static struct attribute *dbc_dev_attributes[] = {
- 	&dev_attr_dbc_idProduct.attr,
- 	&dev_attr_dbc_bcdDevice.attr,
- 	&dev_attr_dbc_bInterfaceProtocol.attr,
-+	&dev_attr_dbc_poll_interval_ms.attr,
- 	NULL
- };
- 
-diff --git a/drivers/usb/host/xhci-dbgcap.h b/drivers/usb/host/xhci-dbgcap.h
-index 86312043552df..abafd31e04e05 100644
---- a/drivers/usb/host/xhci-dbgcap.h
-+++ b/drivers/usb/host/xhci-dbgcap.h
-@@ -94,7 +94,7 @@ struct dbc_ep {
- #define DBC_QUEUE_SIZE			16
- #define DBC_WRITE_BUF_SIZE		8192
- #define DBC_POLL_INTERVAL_DEFAULT	64	/* milliseconds */
--
-+#define DBC_POLL_INTERVAL_MAX		5000	/* milliseconds */
- /*
-  * Private structure for DbC hardware state:
-  */
+ 	err = devm_add_action_or_reset(dev, dw8250_reset_control_assert, data->rst);
+ 	if (err)
 -- 
 2.51.0
 
