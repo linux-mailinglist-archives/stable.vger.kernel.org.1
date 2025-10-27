@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-190925-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190846-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8857FC10DA2
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:22:19 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89E3DC10D34
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:21:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE8FA1A62A4D
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:17:42 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 60BFE5458C2
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:14:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19858320CCE;
-	Mon, 27 Oct 2025 19:15:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD8AC322DB7;
+	Mon, 27 Oct 2025 19:12:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OJpFj4xv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wMFXp8xA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C829E314B8F;
-	Mon, 27 Oct 2025 19:15:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BB1E21C160;
+	Mon, 27 Oct 2025 19:12:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592557; cv=none; b=LJfHu5BQmSfppht88T782O3aMrbyfN/V//CLp7VwNf5ulvXJtu+YXUrxTi5OnyEiAGcoTv/b3w9ozghchip8ALOZ8EDwlVYrDXHEjeRo2AaZKd3kDNJOGF8wcSuJto6Eh1xZAkwhrdKj/N2EvFbbUBKY+8WNBBJ7I5kkF6WpLrI=
+	t=1761592351; cv=none; b=Sfy1QDwNkF9xPkADqAnLoY1mUHW6vJgSJFZtBWw99aJBUZ3mtep7R3VTr4BmkutxhHufMXmQxQQ194f6bCN6IllrNM4HX0MFaKmcEG3pQFRhoowTLz/BP54U4vEVvTko95a9dLONF1J3hxl9vr32EgVB2NU9fg4DkDzcfLv+Qhs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592557; c=relaxed/simple;
-	bh=ihV5q9MTLJ9YRbxhZTg1Qb+rjATeutviE6tAr2UGTLs=;
+	s=arc-20240116; t=1761592351; c=relaxed/simple;
+	bh=IJj1gDkAeegAAUgCAWQ7+GE4YZ38dWJdNpSfuMKDi9E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Nn8zd9x8Kh+q492sLIS7/aGsumyTSSt/VaE1QYiLFefnLPEfJQbWOGX/QVR2uht0dXsZXDIDHEbE/18iXxrFcHvqTrcMAtMis+BMgu6Nj5vzNqVTUOYwtz8lehZDln2HMmwlAuzlQvcWo3MJz1FKWr32UAivQHKzY3iSGG7lQVw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OJpFj4xv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E696C4CEF1;
-	Mon, 27 Oct 2025 19:15:57 +0000 (UTC)
+	 MIME-Version; b=odwXtEs794rK04F4IS4VVWbfVyPJVv6CZ0tZZv7ECsfot5L0DNG7XplUzE+tU3ghJ4M+VTlWSmsfwxsBO3byMeKtM2IZ9lFsEKDhzouyREVQ27SH8OZcsybAlR0uM4iqCwNTzdwNjFfQ6iaTx8PW8nfbR7As5rIeLHgVEr09cDM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wMFXp8xA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 301F3C4CEF1;
+	Mon, 27 Oct 2025 19:12:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592557;
-	bh=ihV5q9MTLJ9YRbxhZTg1Qb+rjATeutviE6tAr2UGTLs=;
+	s=korg; t=1761592351;
+	bh=IJj1gDkAeegAAUgCAWQ7+GE4YZ38dWJdNpSfuMKDi9E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OJpFj4xvl+ku19Qo52Tt09e8Jie9bx7GbeL/WPM0eiL2XGV0BPTYr3RADXIRH3uuy
-	 zpHpRW7yL7pAhr1pJlI1NquG6w4TG4jy10uK3xPlaPYRQvIWP/640EGwebw6fgEKuJ
-	 0nbvDpXSCfZYicTiERNdbTFmyV14ap4MQlJESL4Y=
+	b=wMFXp8xAxX/ruMxiuPFCxEvbXC4XiIUQYG/O1sjf22zK4Sy00vGwjAb3Zle1k+3ko
+	 dFR8wi4RHYdMDjZWgMW/UXnEEvoA9gBwEvqay5qpCsnx8iTNROPqk2T2ZgKXtNCarh
+	 QAbWEP2kP3GKZiEi3raCd8ljI/M++fLE6X0Q3T9c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xichao Zhao <zhao.xichao@vivo.com>,
-	Jan Kara <jack@suse.cz>,
-	Kees Cook <kees@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 01/84] exec: Fix incorrect type for ret
+	Saket Dumbre <saket.dumbre@intel.com>,
+	Xi Ruoyao <xry111@xry111.site>,
+	Huacai Chen <chenhuacai@loongson.cn>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.1 089/157] ACPICA: Work around bogus -Wstringop-overread warning since GCC 11
 Date: Mon, 27 Oct 2025 19:35:50 +0100
-Message-ID: <20251027183438.858252914@linuxfoundation.org>
+Message-ID: <20251027183503.658380259@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183438.817309828@linuxfoundation.org>
-References: <20251027183438.817309828@linuxfoundation.org>
+In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
+References: <20251027183501.227243846@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xichao Zhao <zhao.xichao@vivo.com>
+From: Xi Ruoyao <xry111@xry111.site>
 
-[ Upstream commit 5e088248375d171b80c643051e77ade6b97bc386 ]
+commit 6e3a4754717a74e931a9f00b5f953be708e07acb upstream.
 
-In the setup_arg_pages(), ret is declared as an unsigned long.
-The ret might take a negative value. Therefore, its type should
-be changed to int.
+When ACPI_MISALIGNMENT_NOT_SUPPORTED is set, GCC can produce a bogus
+-Wstringop-overread warning, see [1].
 
-Signed-off-by: Xichao Zhao <zhao.xichao@vivo.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20250825073609.219855-1-zhao.xichao@vivo.com
-Signed-off-by: Kees Cook <kees@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+To me, it's very clear that we have a compiler bug here, thus just
+disable the warning.
+
+Fixes: a9d13433fe17 ("LoongArch: Align ACPI structures if ARCH_STRICT_ALIGN enabled")
+Link: https://lore.kernel.org/all/899f2dec-e8b9-44f4-ab8d-001e160a2aed@roeck-us.net/
+Link: https://github.com/acpica/acpica/commit/abf5b573
+Link: https://gcc.gnu.org/PR122073 [1]
+Co-developed-by: Saket Dumbre <saket.dumbre@intel.com>
+Signed-off-by: Saket Dumbre <saket.dumbre@intel.com>
+Signed-off-by: Xi Ruoyao <xry111@xry111.site>
+Acked-by: Huacai Chen <chenhuacai@loongson.cn>
+Cc: All applicable <stable@vger.kernel.org>
+[ rjw: Subject and changelog edits ]
+Link: https://patch.msgid.link/20251021092825.822007-1-xry111@xry111.site
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/exec.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/acpi/acpica/tbprint.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/fs/exec.c b/fs/exec.c
-index ee71a315cc51f..a7dfac338a22c 100644
---- a/fs/exec.c
-+++ b/fs/exec.c
-@@ -748,7 +748,7 @@ int setup_arg_pages(struct linux_binprm *bprm,
- 		    unsigned long stack_top,
- 		    int executable_stack)
+--- a/drivers/acpi/acpica/tbprint.c
++++ b/drivers/acpi/acpica/tbprint.c
+@@ -94,6 +94,11 @@ acpi_tb_print_table_header(acpi_physical
  {
--	unsigned long ret;
-+	int ret;
- 	unsigned long stack_shift;
- 	struct mm_struct *mm = current->mm;
- 	struct vm_area_struct *vma = bprm->vma;
--- 
-2.51.0
-
+ 	struct acpi_table_header local_header;
+ 
++#pragma GCC diagnostic push
++#if defined(__GNUC__) && __GNUC__ >= 11
++#pragma GCC diagnostic ignored "-Wstringop-overread"
++#endif
++
+ 	if (ACPI_COMPARE_NAMESEG(header->signature, ACPI_SIG_FACS)) {
+ 
+ 		/* FACS only has signature and length fields */
+@@ -134,6 +139,7 @@ acpi_tb_print_table_header(acpi_physical
+ 			   local_header.asl_compiler_id,
+ 			   local_header.asl_compiler_revision));
+ 	}
++#pragma GCC diagnostic pop
+ }
+ 
+ /*******************************************************************************
 
 
 
