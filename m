@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-191104-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190991-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4894C11018
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:29:44 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20C7BC10CAC
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:20:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C4D701889E6E
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:25:54 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id C0CEF352768
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:20:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D277831E0E4;
-	Mon, 27 Oct 2025 19:23:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A5DC31CA72;
+	Mon, 27 Oct 2025 19:18:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EBq0zRXk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DK5iZlcF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D0912C3749;
-	Mon, 27 Oct 2025 19:23:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56F5F2E7F05;
+	Mon, 27 Oct 2025 19:18:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761593017; cv=none; b=QgOyHPFUr2iPbtegnRH68fLbdD9c7oMvI7YQTKgETbhvdYrMgUYZaCCe4ywPE6qBThNBQ0uv/sY3imK1cBpkif3pwi0VOwHa95kJLAk3ezuLmnxSJoEZAiwkg7gW4ic8GPCkaTogz8jtke7SNgTvKXVkJ/YEX6W92ZIjTCHyAA4=
+	t=1761592730; cv=none; b=fUH1LjSKJwWszhNmlvF7IGjC4s9FlYLPHytf97ZriRoyDGPHQLyxugwz//LRlDZpgW1YDo9mfy4CddsdtfZsTBtXtZV54uL1xtgzmrnb4Uh9tNplfhDYFT7rUshSYZIccJvvdLfq2kKlT5JG2m/AHXFROJkwMHnLBrEP/tmMfLw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761593017; c=relaxed/simple;
-	bh=1SC3e/dNSE8ETGquoWmnRAqAe1W2UmgsIOWJWUnzp8Q=;
+	s=arc-20240116; t=1761592730; c=relaxed/simple;
+	bh=CzkingulcRW7S1fUF3sXXjKc9sp/2kh1vN+VNHEnGUQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JNKLN/EArt2bOHN6bHi21uxtFQ2p+mPDO3fXBgMmDCpejfCb/sp6yLVpZcjbz7XAysFakvlDCbVHY34ekO34tJy9NIQ0v1JXU2xBGC2XgCbGEhyaNDrKgMcdYXSd3t5gS0PXk0zKHXzKR7S48t37nXlTxkjR7Nlev4GzmuUpMlI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EBq0zRXk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F522C4CEF1;
-	Mon, 27 Oct 2025 19:23:36 +0000 (UTC)
+	 MIME-Version; b=ENrBA2DYqfd+B+DXJL7MXpstu9y7w/7lkpowDfy0nDLhlNL4Its2OjMphfGeCxm36NFRyt+okhpM2yCoM9e1Q0f7Nm3YL4luusUZMjh7o9xL8dXVnPtB+XGMHWLweOCdEQ0AUpAKCrdOq6go0G2fkQhtZOr4BCulvqAdAxQCUsM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DK5iZlcF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCF1BC4CEF1;
+	Mon, 27 Oct 2025 19:18:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761593017;
-	bh=1SC3e/dNSE8ETGquoWmnRAqAe1W2UmgsIOWJWUnzp8Q=;
+	s=korg; t=1761592730;
+	bh=CzkingulcRW7S1fUF3sXXjKc9sp/2kh1vN+VNHEnGUQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EBq0zRXkIFfqt2iIqdgeRVZCDovWOXjQRTwfsOB3uw3EegtqTALAoiytOOsNJ0rlb
-	 ncadxCIdbOdfbN3RDJarKVUP9Y6nPPXL9BMOAqyn1DCTyES/H6GiRkMh9JDVYt+D2z
-	 jTj8+8D++BQzEKByujtPTt8kDaHwb7gdZA5yETnM=
+	b=DK5iZlcFe0EkcwkQhbdW9ljuUkXmiwuGaxDNvab4duC0x/OtN2gpETBZd9qfwDT0b
+	 2eiXqnKiB7ix7MP8oZSKeE95saU+ywxZzNiyYCZ8oFYY75+BQ9zM9TNRXmbhzrGt/m
+	 nUYQOpFl18GnwWSoegOX1MGLdd9XZTIanIWFb1HI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Andrey Konovalov <andreyknvl@gmail.com>
-Subject: [PATCH 6.12 098/117] usb: raw-gadget: do not limit transfer length
+	Florian Eckert <fe@dev.tdt.de>,
+	stable <stable@kernel.org>
+Subject: [PATCH 6.6 75/84] serial: 8250_exar: add support for Advantech 2 port card with Device ID 0x0018
 Date: Mon, 27 Oct 2025 19:37:04 +0100
-Message-ID: <20251027183456.669378654@linuxfoundation.org>
+Message-ID: <20251027183440.805570153@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
-References: <20251027183453.919157109@linuxfoundation.org>
+In-Reply-To: <20251027183438.817309828@linuxfoundation.org>
+References: <20251027183438.817309828@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +61,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrey Konovalov <andreyknvl@gmail.com>
+From: Florian Eckert <fe@dev.tdt.de>
 
-commit 37b9dd0d114a0e38c502695e30f55a74fb0c37d0 upstream.
+commit e7cbce761fe3fcbcb49bcf30d4f8ca5e1a9ee2a0 upstream.
 
-Drop the check on the maximum transfer length in Raw Gadget for both
-control and non-control transfers.
+The Advantech 2-port serial card with PCI vendor=0x13fe and device=0x0018
+has a 'XR17V35X' chip installed on the circuit board. Therefore, this
+driver can be used instead of theu outdated out-of-tree driver from the
+manufacturer.
 
-Limiting the transfer length causes a problem with emulating USB devices
-whose full configuration descriptor exceeds PAGE_SIZE in length.
-
-Overall, there does not appear to be any reason to enforce any kind of
-transfer length limit on the Raw Gadget side for either control or
-non-control transfers, so let's just drop the related check.
-
+Signed-off-by: Florian Eckert <fe@dev.tdt.de>
 Cc: stable <stable@kernel.org>
-Fixes: f2c2e717642c ("usb: gadget: add raw-gadget interface")
-Signed-off-by: Andrey Konovalov <andreyknvl@gmail.com>
-Link: https://patch.msgid.link/a6024e8eab679043e9b8a5defdb41c4bda62f02b.1761085528.git.andreyknvl@gmail.com
+Link: https://patch.msgid.link/20250924134115.2667650-1-fe@dev.tdt.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/legacy/raw_gadget.c |    2 --
- 1 file changed, 2 deletions(-)
+ drivers/tty/serial/8250/8250_exar.c |   11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
---- a/drivers/usb/gadget/legacy/raw_gadget.c
-+++ b/drivers/usb/gadget/legacy/raw_gadget.c
-@@ -667,8 +667,6 @@ static void *raw_alloc_io_data(struct us
- 		return ERR_PTR(-EINVAL);
- 	if (!usb_raw_io_flags_valid(io->flags))
- 		return ERR_PTR(-EINVAL);
--	if (io->length > PAGE_SIZE)
--		return ERR_PTR(-EINVAL);
- 	if (get_from_user)
- 		data = memdup_user(ptr + sizeof(*io), io->length);
- 	else {
+--- a/drivers/tty/serial/8250/8250_exar.c
++++ b/drivers/tty/serial/8250/8250_exar.c
+@@ -33,6 +33,8 @@
+ #define PCI_DEVICE_ID_ACCESSIO_COM_4SM		0x10db
+ #define PCI_DEVICE_ID_ACCESSIO_COM_8SM		0x10ea
+ 
++#define PCI_DEVICE_ID_ADVANTECH_XR17V352	0x0018
++
+ #define PCI_DEVICE_ID_COMMTECH_4224PCI335	0x0002
+ #define PCI_DEVICE_ID_COMMTECH_4222PCI335	0x0004
+ #define PCI_DEVICE_ID_COMMTECH_2324PCI335	0x000a
+@@ -845,6 +847,12 @@ static const struct exar8250_board pbn_f
+ 	.exit		= pci_xr17v35x_exit,
+ };
+ 
++static const struct exar8250_board pbn_adv_XR17V352 = {
++	.num_ports	= 2,
++	.setup		= pci_xr17v35x_setup,
++	.exit		= pci_xr17v35x_exit,
++};
++
+ static const struct exar8250_board pbn_exar_XR17V4358 = {
+ 	.num_ports	= 12,
+ 	.setup		= pci_xr17v35x_setup,
+@@ -914,6 +922,9 @@ static const struct pci_device_id exar_p
+ 	USR_DEVICE(XR17C152, 2980, pbn_exar_XR17C15x),
+ 	USR_DEVICE(XR17C152, 2981, pbn_exar_XR17C15x),
+ 
++	/* ADVANTECH devices */
++	EXAR_DEVICE(ADVANTECH, XR17V352, pbn_adv_XR17V352),
++
+ 	/* Exar Corp. XR17C15[248] Dual/Quad/Octal UART */
+ 	EXAR_DEVICE(EXAR, XR17C152, pbn_exar_XR17C15x),
+ 	EXAR_DEVICE(EXAR, XR17C154, pbn_exar_XR17C15x),
 
 
 
