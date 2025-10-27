@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-190123-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190175-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DBF4C0FFCC
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:42:27 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50A4FC101AC
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:47:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4BB5419C302D
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:42:05 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 91E764FFBFC
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:45:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE22E317711;
-	Mon, 27 Oct 2025 18:41:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81075317711;
+	Mon, 27 Oct 2025 18:43:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O7AE72yt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dUf/ZbK2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98C0030FC0F;
-	Mon, 27 Oct 2025 18:41:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D54231B83D;
+	Mon, 27 Oct 2025 18:43:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761590498; cv=none; b=ZRn9DT9qNkASeA/KFnh2wzCtx6a8K3mFs9vgs0LBUd2JdQ73iWqGUAVFk4ZEQlT53oi0PkTIjjHdobaKOh2eLW727KYpyJcSWAvekZqlOIAGuNHmdcSrrv97qK5BHEH8UlAfxMZGvrZTrTKHY9EOTNOmufQMVJn+d8GwlH8/E7k=
+	t=1761590605; cv=none; b=jcevFiSBZmuiw+oKHsOIWhPPtBUIZ/iHOSAanbfrE2mwZy9Yy9isJ35mwzJx0o0CRY1Wz1xzhuLUxrKrQh277s3crsxVMZQKg9qJ47MQiGzfWoYMFQid7peOB/S9LQBv90FR5x22Km9is9srXoHe8mdTmBHWHJNLbVCDzbh8w5U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761590498; c=relaxed/simple;
-	bh=e4nTp3USOQHomT52tXqRub/ofrJJemGMAYS6hplYSuY=;
+	s=arc-20240116; t=1761590605; c=relaxed/simple;
+	bh=noxAQTNpQpwri51Bx/pj0OIhBngsfGmpDR7pKXHaw1s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DCCrmwWiGm9eqhUzxEDGiMxBwO0O7axEIxRKPK/tsrQX3LlsHzg2SceGkcJtjeHottfYruxzWC04S0+eqSZOystIaeaAWvxuhHQefb3y3iJQcWj8YEPMaEfpZ47N8PR/gayDSejCljLNiX5oQ9k/fzIlZF2IPTnU/RjKhE/Cf1E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O7AE72yt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2639BC4CEF1;
-	Mon, 27 Oct 2025 18:41:37 +0000 (UTC)
+	 MIME-Version; b=NJcObaA4zU9lq+ZK3cTBDIQSnGLUymUllTFiwB5ISKulpxJZMtWpcUsIHIeKokIr7BqKlekkjNT9/XkSzeC+5dEDqr91qi7OYYbxOTe1n8p5+ga/nMAK8tKyBENhHRW3zzsKvNtVohNpQrItPkTGwG6CmWGYMr1XdzheagcK8k0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dUf/ZbK2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4CB1C113D0;
+	Mon, 27 Oct 2025 18:43:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761590498;
-	bh=e4nTp3USOQHomT52tXqRub/ofrJJemGMAYS6hplYSuY=;
+	s=korg; t=1761590605;
+	bh=noxAQTNpQpwri51Bx/pj0OIhBngsfGmpDR7pKXHaw1s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O7AE72ytCbPCi1q6cD5RyNPdCFWWHBc7+nF8VteCszoxrRDJvcv6+ZjS9+rfM9qTo
-	 rj+iyBre11G1ufn+7RvmfDNn/hlHAcv1jh6wHN7wKSb3DCuZ8xtGxPso/BIgpmmJeg
-	 iN4s4cfJHRVJz3Cig8s9lUz//oVvNvYEwqly9SYE=
+	b=dUf/ZbK2KIpfZhGKZo3P2MEzV1M+asK0GRrNwbPbO/g304StdzVAvlG61ej3Qmxmu
+	 fzX1d+/BjcqwsuQnCmDgP3pQ3xvnOhktrbyOJ1BBOfSgbNjo8Wz0yFNq5Dmlck+GBi
+	 ol87XPIO5TD/xY8r13sHNfxTlEf0u/5StP0oZwO8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Metzmacher <metze@samba.org>,
-	Bernard Metzler <bernard.metzler@linux.dev>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 066/224] RDMA/siw: Always report immediate post SQ errors
-Date: Mon, 27 Oct 2025 19:33:32 +0100
-Message-ID: <20251027183510.772293643@linuxfoundation.org>
+	Michal Pecio <michal.pecio@gmail.com>,
+	I Viswanath <viswanathiyyappan@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	syzbot+78cae3f37c62ad092caa@syzkaller.appspotmail.com
+Subject: [PATCH 5.4 067/224] net: usb: Remove disruptive netif_wake_queue in rtl8150_set_multicast
+Date: Mon, 27 Oct 2025 19:33:33 +0100
+Message-ID: <20251027183510.798315845@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251027183508.963233542@linuxfoundation.org>
 References: <20251027183508.963233542@linuxfoundation.org>
@@ -67,83 +68,67 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Bernard Metzler <bernard.metzler@linux.dev>
+From: I Viswanath <viswanathiyyappan@gmail.com>
 
-[ Upstream commit fdd0fe94d68649322e391c5c27dd9f436b4e955e ]
+[ Upstream commit 958baf5eaee394e5fd976979b0791a875f14a179 ]
 
-In siw_post_send(), any immediate error encountered during processing of
-the work request list must be reported to the caller, even if previous
-work requests in that list were just accepted and added to the send queue.
+syzbot reported WARNING in rtl8150_start_xmit/usb_submit_urb.
+This is the sequence of events that leads to the warning:
 
-Not reporting those errors confuses the caller, which would wait
-indefinitely for the failing and potentially subsequently aborted work
-requests completion.
+rtl8150_start_xmit() {
+	netif_stop_queue();
+	usb_submit_urb(dev->tx_urb);
+}
 
-This fixes a case where immediate errors were overwritten by subsequent
-code in siw_post_send().
+rtl8150_set_multicast() {
+	netif_stop_queue();
+	netif_wake_queue();		<-- wakes up TX queue before URB is done
+}
 
-Fixes: 303ae1cdfdf7 ("rdma/siw: application interface")
-Link: https://patch.msgid.link/r/20250923144536.103825-1-bernard.metzler@linux.dev
-Suggested-by: Stefan Metzmacher <metze@samba.org>
-Signed-off-by: Bernard Metzler <bernard.metzler@linux.dev>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+rtl8150_start_xmit() {
+	netif_stop_queue();
+	usb_submit_urb(dev->tx_urb);	<-- double submission
+}
+
+rtl8150_set_multicast being the ndo_set_rx_mode callback should not be
+calling netif_stop_queue and notif_start_queue as these handle
+TX queue synchronization.
+
+The net core function dev_set_rx_mode handles the synchronization
+for rtl8150_set_multicast making it safe to remove these locks.
+
+Reported-and-tested-by: syzbot+78cae3f37c62ad092caa@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=78cae3f37c62ad092caa
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Tested-by: Michal Pecio <michal.pecio@gmail.com>
+Signed-off-by: I Viswanath <viswanathiyyappan@gmail.com>
+Link: https://patch.msgid.link/20250924134350.264597-1-viswanathiyyappan@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/sw/siw/siw_verbs.c | 25 ++++++++++++++-----------
- 1 file changed, 14 insertions(+), 11 deletions(-)
+ drivers/net/usb/rtl8150.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/infiniband/sw/siw/siw_verbs.c b/drivers/infiniband/sw/siw/siw_verbs.c
-index 236f9efaa75ce..b5a845985ba4c 100644
---- a/drivers/infiniband/sw/siw/siw_verbs.c
-+++ b/drivers/infiniband/sw/siw/siw_verbs.c
-@@ -779,7 +779,7 @@ int siw_post_send(struct ib_qp *base_qp, const struct ib_send_wr *wr,
- 	struct siw_wqe *wqe = tx_wqe(qp);
+diff --git a/drivers/net/usb/rtl8150.c b/drivers/net/usb/rtl8150.c
+index 3829b7eb3fc90..1df289e7c1304 100644
+--- a/drivers/net/usb/rtl8150.c
++++ b/drivers/net/usb/rtl8150.c
+@@ -684,7 +684,6 @@ static void rtl8150_set_multicast(struct net_device *netdev)
+ 	rtl8150_t *dev = netdev_priv(netdev);
+ 	u16 rx_creg = 0x9e;
  
- 	unsigned long flags;
--	int rv = 0;
-+	int rv = 0, imm_err = 0;
- 
- 	if (wr && !qp->kernel_verbs) {
- 		siw_dbg_qp(qp, "wr must be empty for user mapped sq\n");
-@@ -965,9 +965,17 @@ int siw_post_send(struct ib_qp *base_qp, const struct ib_send_wr *wr,
- 	 * Send directly if SQ processing is not in progress.
- 	 * Eventual immediate errors (rv < 0) do not affect the involved
- 	 * RI resources (Verbs, 8.3.1) and thus do not prevent from SQ
--	 * processing, if new work is already pending. But rv must be passed
--	 * to caller.
-+	 * processing, if new work is already pending. But rv and pointer
-+	 * to failed work request must be passed to caller.
- 	 */
-+	if (unlikely(rv < 0)) {
-+		/*
-+		 * Immediate error
-+		 */
-+		siw_dbg_qp(qp, "Immediate error %d\n", rv);
-+		imm_err = rv;
-+		*bad_wr = wr;
-+	}
- 	if (wqe->wr_status != SIW_WR_IDLE) {
- 		spin_unlock_irqrestore(&qp->sq_lock, flags);
- 		goto skip_direct_sending;
-@@ -992,15 +1000,10 @@ int siw_post_send(struct ib_qp *base_qp, const struct ib_send_wr *wr,
- 
- 	up_read(&qp->state_lock);
- 
--	if (rv >= 0)
--		return 0;
--	/*
--	 * Immediate error
--	 */
--	siw_dbg_qp(qp, "error %d\n", rv);
-+	if (unlikely(imm_err))
-+		return imm_err;
- 
--	*bad_wr = wr;
--	return rv;
-+	return (rv >= 0) ? 0 : rv;
+-	netif_stop_queue(netdev);
+ 	if (netdev->flags & IFF_PROMISC) {
+ 		rx_creg |= 0x0001;
+ 		dev_info(&netdev->dev, "%s: promiscuous mode\n", netdev->name);
+@@ -698,7 +697,6 @@ static void rtl8150_set_multicast(struct net_device *netdev)
+ 		rx_creg &= 0x00fc;
+ 	}
+ 	async_set_registers(dev, RCR, sizeof(rx_creg), rx_creg);
+-	netif_wake_queue(netdev);
  }
  
- /*
+ static netdev_tx_t rtl8150_start_xmit(struct sk_buff *skb,
 -- 
 2.51.0
 
