@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-190981-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190763-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95C98C10F3D
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:27:17 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A447FC10B52
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:16:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 3FAAD5035A9
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:19:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 605271892D9C
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:11:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 388C12D7DDA;
-	Mon, 27 Oct 2025 19:18:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD5C332D43D;
+	Mon, 27 Oct 2025 19:08:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V2EHZnj4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W3deaqUx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E79AE2D5A14;
-	Mon, 27 Oct 2025 19:18:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B56F2BD033;
+	Mon, 27 Oct 2025 19:08:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592705; cv=none; b=n3hWhtIzI1dsGA0XwEkf4VfxraqqNKaUt51Ll0hUhIUJrHKm4fvqInf2V70RtEg6Ax2nn+m4k7tCAiFpRmhCRtviPz9f2cHL9YTcLL0z1pCxjRusk5dAUlOh8JXj0+xmpRXQ8WYUdTmyiN4sXGxvOUZZBXqmVqG5++zZhLH3bdc=
+	t=1761592132; cv=none; b=Xhal322l79g2d/sZXdiWt7OO+1XMKEbCGbJMj4Je41S6bPt2JTOVGqn/C337h/kNMwGx49rwgjqU30zPposdS4sMMHSVnZm0Amm2gm5AKPQX+Nl/RBJYMAQzzOU5MTJFKeleSup6LrNJZibNkVSpyIlFVldV4fYAcUdk50nBBEA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592705; c=relaxed/simple;
-	bh=FVCficxlZM4mxxaM8zqDqidTxFbUSMKV8V22IcXdzCA=;
+	s=arc-20240116; t=1761592132; c=relaxed/simple;
+	bh=DFUDXIr4HokyZMICOVHr3/6BuB+VN5eMagMBRc4GGM0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u3GVjDf9+6cRu7DwFInjrRSa/ZA0GMhnVJvmBFr10aMzj8nH42fE3UhVWHBcxQ2NvRP4onApiqKi6ki+UqzqAku7vQ4y9Yv5H/hia7qrJ0SNwfJmjTNF0yKR5Fv2jylinMWJi6FH87C3yqFPfFlt7WjrYg2vKfnhlTsj/3eREu8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V2EHZnj4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31774C4CEF1;
-	Mon, 27 Oct 2025 19:18:24 +0000 (UTC)
+	 MIME-Version; b=bKALtJ8tSP+OcWcFi+KDIKvcv7XzNp9lsUv6bt5FoXmnsjM4giBNxiqeQW0zFvt9vhjrzpLGkpbOQmq17qCdbWbE4SWD1YcfCPy/QraTyNydXYrfQ/shmuyEe1MUHX1oe1Bp07Qw8DSr36n08Wmr9Gs0nGaSfxA4ZjZIC5lrGGs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W3deaqUx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9322C4CEF1;
+	Mon, 27 Oct 2025 19:08:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592704;
-	bh=FVCficxlZM4mxxaM8zqDqidTxFbUSMKV8V22IcXdzCA=;
+	s=korg; t=1761592132;
+	bh=DFUDXIr4HokyZMICOVHr3/6BuB+VN5eMagMBRc4GGM0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V2EHZnj4Ftzd1cFjPf0S72qzmF1jCYxhNmVJjYPcJyocEmrx3zP3sp43OkX7Bpf9G
-	 1ZSWbEp6k25ax6tBoHI2iHXNH4Sv1bdzhjYBxWrqtFOfOR5aqqtR2PJs8l8MQqccly
-	 TGJw8psLJW/ws/IGiUhHhoS5F4pgy24o1cWCA3Bo=
+	b=W3deaqUxf6Rl0SdSWVfrcua5lbBmeoTbm4aYt10VmTyBxiojMtJka+326iMRdnZeI
+	 JCHOQuGLNMB5d28qHnuR2njUocTX3VPVE10ZWax7PwUjpa5DDh22Rt41z/igLxP6Bm
+	 X70ZpYQVxYjXtRVaXb4aTuguLPm4o9p0zdVrryoo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Cave-Ayland <mark.caveayland@nutanix.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	William Breathitt Gray <wbg@kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: [PATCH 6.6 35/84] gpio: 104-idio-16: Define maximum valid register address offset
+	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
+	Muhammad Usama Anjum <usama.anjum@collabora.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 104/123] wifi: ath11k: HAL SRNG: dont deinitialize and re-initialize again
 Date: Mon, 27 Oct 2025 19:36:24 +0100
-Message-ID: <20251027183439.755351026@linuxfoundation.org>
+Message-ID: <20251027183449.173691506@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183438.817309828@linuxfoundation.org>
-References: <20251027183438.817309828@linuxfoundation.org>
+In-Reply-To: <20251027183446.381986645@linuxfoundation.org>
+References: <20251027183446.381986645@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,49 +63,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: William Breathitt Gray <wbg@kernel.org>
+From: Muhammad Usama Anjum <usama.anjum@collabora.com>
 
-commit c4d35e635f3a65aec291a6045cae8c99cede5bba upstream.
+[ Upstream commit 32be3ca4cf78b309dfe7ba52fe2d7cc3c23c5634 ]
 
-Attempting to load the 104-idio-16 module fails during regmap
-initialization with a return error -EINVAL. This is a result of the
-regmap cache failing initialization. Set the idio_16_regmap_config
-max_register member to fix this failure.
+Don't deinitialize and reinitialize the HAL helpers. The dma memory is
+deallocated and there is high possibility that we'll not be able to get
+the same memory allocated from dma when there is high memory pressure.
 
-Fixes: 2c210c9a34a3 ("gpio: 104-idio-16: Migrate to the regmap API")
-Reported-by: Mark Cave-Ayland <mark.caveayland@nutanix.com>
-Closes: https://lore.kernel.org/r/9b0375fd-235f-4ee1-a7fa-daca296ef6bf@nutanix.com
-Suggested-by: Mark Cave-Ayland <mark.caveayland@nutanix.com>
+Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03926.13-QCAHSPSWPL_V2_SILICONZ_CE-2.52297.6
+
+Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
 Cc: stable@vger.kernel.org
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: William Breathitt Gray <wbg@kernel.org>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Link: https://lore.kernel.org/r/20251020-fix-gpio-idio-16-regmap-v2-1-ebeb50e93c33@kernel.org
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Cc: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Link: https://patch.msgid.link/20250722053121.1145001-1-usama.anjum@collabora.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpio/gpio-104-idio-16.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wireless/ath/ath11k/core.c |    6 +-----
+ drivers/net/wireless/ath/ath11k/hal.c  |   16 ++++++++++++++++
+ drivers/net/wireless/ath/ath11k/hal.h  |    1 +
+ 3 files changed, 18 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/gpio/gpio-104-idio-16.c b/drivers/gpio/gpio-104-idio-16.c
-index ffe7e1cb6b23..fe5c10cd5c32 100644
---- a/drivers/gpio/gpio-104-idio-16.c
-+++ b/drivers/gpio/gpio-104-idio-16.c
-@@ -59,6 +59,7 @@ static const struct regmap_config idio_16_regmap_config = {
- 	.reg_stride = 1,
- 	.val_bits = 8,
- 	.io_port = true,
-+	.max_register = 0x5,
- 	.wr_table = &idio_16_wr_table,
- 	.rd_table = &idio_16_rd_table,
- 	.volatile_table = &idio_16_rd_table,
--- 
-2.51.1
-
+--- a/drivers/net/wireless/ath/ath11k/core.c
++++ b/drivers/net/wireless/ath/ath11k/core.c
+@@ -942,14 +942,10 @@ static int ath11k_core_reconfigure_on_cr
+ 	mutex_unlock(&ab->core_lock);
+ 
+ 	ath11k_dp_free(ab);
+-	ath11k_hal_srng_deinit(ab);
++	ath11k_hal_srng_clear(ab);
+ 
+ 	ab->free_vdev_map = (1LL << (ab->num_radios * TARGET_NUM_VDEVS)) - 1;
+ 
+-	ret = ath11k_hal_srng_init(ab);
+-	if (ret)
+-		return ret;
+-
+ 	clear_bit(ATH11K_FLAG_CRASH_FLUSH, &ab->dev_flags);
+ 
+ 	ret = ath11k_core_qmi_firmware_ready(ab);
+--- a/drivers/net/wireless/ath/ath11k/hal.c
++++ b/drivers/net/wireless/ath/ath11k/hal.c
+@@ -1313,6 +1313,22 @@ void ath11k_hal_srng_deinit(struct ath11
+ }
+ EXPORT_SYMBOL(ath11k_hal_srng_deinit);
+ 
++void ath11k_hal_srng_clear(struct ath11k_base *ab)
++{
++	/* No need to memset rdp and wrp memory since each individual
++	 * segment would get cleared in ath11k_hal_srng_src_hw_init()
++	 * and ath11k_hal_srng_dst_hw_init().
++	 */
++	memset(ab->hal.srng_list, 0,
++	       sizeof(ab->hal.srng_list));
++	memset(ab->hal.shadow_reg_addr, 0,
++	       sizeof(ab->hal.shadow_reg_addr));
++	ab->hal.avail_blk_resource = 0;
++	ab->hal.current_blk_index = 0;
++	ab->hal.num_shadow_reg_configured = 0;
++}
++EXPORT_SYMBOL(ath11k_hal_srng_clear);
++
+ void ath11k_hal_dump_srng_stats(struct ath11k_base *ab)
+ {
+ 	struct hal_srng *srng;
+--- a/drivers/net/wireless/ath/ath11k/hal.h
++++ b/drivers/net/wireless/ath/ath11k/hal.h
+@@ -952,6 +952,7 @@ int ath11k_hal_srng_setup(struct ath11k_
+ 			  struct hal_srng_params *params);
+ int ath11k_hal_srng_init(struct ath11k_base *ath11k);
+ void ath11k_hal_srng_deinit(struct ath11k_base *ath11k);
++void ath11k_hal_srng_clear(struct ath11k_base *ab);
+ void ath11k_hal_dump_srng_stats(struct ath11k_base *ab);
+ void ath11k_hal_srng_get_shadow_config(struct ath11k_base *ab,
+ 				       u32 **cfg, u32 *len);
 
 
 
