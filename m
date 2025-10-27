@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-190300-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190276-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE84BC104E2
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:57:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 65054C104B2
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:56:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8A48D19C5917
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:53:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C766C1894207
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:53:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72B593074AC;
-	Mon, 27 Oct 2025 18:49:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C306D32B998;
+	Mon, 27 Oct 2025 18:47:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tfIOy0UH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gUOcq4Z5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C3F8324B24;
-	Mon, 27 Oct 2025 18:49:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73624322A27;
+	Mon, 27 Oct 2025 18:47:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761590941; cv=none; b=mniO+WlERdEogYCqqo9zGti+sjEmkxtAm3j0y+jlq98/4fnwiauZA/KFLlsQIkMh+2SMjk8xtSNDQpYPcY5daKdtqN9+aEcz+ZzRmMtlcIR5aT7TRYHAWBYkniwT1aqVN0BQT9KwmD9rKsd4b0arbnEiyDozoQi+KdLleb2KO2Y=
+	t=1761590874; cv=none; b=prA2rLkuQ4vMjqvObpKHnw5QEn9Urj5pvnLdxnRcf6K+oKPnQGRMAEHdGKnAuE9HTJX1HwKUa3G/BCuVNXiTZ/ibv+ff7Wx3b1equ/4tcgsTB6gjk5CAwjfJ37i27foUdowA7oRVZNxusVqZVbpeKpM48mjnD6/x+wrqEbxCCbY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761590941; c=relaxed/simple;
-	bh=bG9a4tWe2v0mNmHSW4H+CaE4AIUCmK3mEy5s2adXmM0=;
+	s=arc-20240116; t=1761590874; c=relaxed/simple;
+	bh=jqjl4X2RymuhN2PUKeCbJUEhMkwRhmyxJ/fKTjYBTFI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M6d22oPu5mocBovmCZ9YiAQ5Nx3o4ZMX2M0T2Kc7qa3knwL2U25yG1jVYTKbmC4WxqH+UYHuBwmyvL2UqKIqxamw37UFPTfSLbllVJV9Yx8tXYWHkqVe7vZNhk8gIKGbq1xmE6aLdo0o6w3Lkp+yGJPMsjR0EK98Tp2R0ZEYGmI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tfIOy0UH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABEA9C4CEFD;
-	Mon, 27 Oct 2025 18:49:00 +0000 (UTC)
+	 MIME-Version; b=sM7cHi6s31KHl/NKmaTb45IzX3sAEIkw/oAl0EqEecKxk6+fMMrebnugyVtNqjoMBKt4XsbeyEBKNRokHH6lk3+flnrxnUB1OnNjOWe1glavsTbDpxyDYfNOAs4zBU/9ph6lZWUMLYmplJCkEfoA/GfLkFZafgh9o72mLVRCDxM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gUOcq4Z5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01A68C4CEF1;
+	Mon, 27 Oct 2025 18:47:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761590941;
-	bh=bG9a4tWe2v0mNmHSW4H+CaE4AIUCmK3mEy5s2adXmM0=;
+	s=korg; t=1761590874;
+	bh=jqjl4X2RymuhN2PUKeCbJUEhMkwRhmyxJ/fKTjYBTFI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tfIOy0UHl8PjIoR92YUY2B+WE+JEuluyRob709tojgQlKLBDkyea7DqTLOqG2d7WT
-	 D4fJPBo4Jb2dzwsKu8ThddKX+IyXLlpZjIkpB9z2Rz1bSOTnQO6K7CuebGXchub5Vq
-	 O8NLb3vUmRCavKzMs5a5N4kNOKz6xfaKh6EYppUk=
+	b=gUOcq4Z52mmFaiVRjCPzbipmjjsPU9g3ji9YpsEOT0TAAVnrvrQszdJ7BRMHfc0HO
+	 uNfNprallhm4YefQFf5IF1HZugvca+bgjAiFFemxSAdE8btzHpWGrPKpOzv4CVP2zF
+	 ik463rKt/ra7zefWN/5kS6ABXngRmJHyBTGDaxWo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -47,9 +47,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Will Deacon <will@kernel.org>,
 	Catalin Marinas <catalin.marinas@arm.com>,
 	Ryan Roberts <ryan.roberts@arm.com>
-Subject: [PATCH 5.4 207/224] arm64: cputype: Add Neoverse-V3AE definitions
-Date: Mon, 27 Oct 2025 19:35:53 +0100
-Message-ID: <20251027183514.313070308@linuxfoundation.org>
+Subject: [PATCH 5.4 208/224] arm64: errata: Apply workarounds for Neoverse-V3AE
+Date: Mon, 27 Oct 2025 19:35:54 +0100
+Message-ID: <20251027183514.335422544@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251027183508.963233542@linuxfoundation.org>
 References: <20251027183508.963233542@linuxfoundation.org>
@@ -70,16 +70,15 @@ Content-Transfer-Encoding: 8bit
 
 From: Mark Rutland <mark.rutland@arm.com>
 
-commit 3bbf004c4808e2c3241e5c1ad6cc102f38a03c39 upstream.
+commit 0c33aa1804d101c11ba1992504f17a42233f0e11 upstream.
 
-Add cputype definitions for Neoverse-V3AE. These will be used for errata
-detection in subsequent patches.
+Neoverse-V3AE is also affected by erratum #3312417, as described in its
+Software Developer Errata Notice (SDEN) document:
 
-These values can be found in the Neoverse-V3AE TRM:
-
+  Neoverse V3AE (MP172) SDEN v9.0, erratum 3312417
   https://developer.arm.com/documentation/SDEN-2615521/9-0/
 
-... in section A.6.1 ("MIDR_EL1, Main ID Register").
+Enable the workaround for Neoverse-V3AE, and document this.
 
 Signed-off-by: Mark Rutland <mark.rutland@arm.com>
 Cc: James Morse <james.morse@arm.com>
@@ -91,27 +90,42 @@ Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/include/asm/cputype.h |    2 ++
- 1 file changed, 2 insertions(+)
+ Documentation/arm64/silicon-errata.rst |    2 ++
+ arch/arm64/Kconfig                     |    1 +
+ arch/arm64/kernel/cpu_errata.c         |    1 +
+ 3 files changed, 4 insertions(+)
 
---- a/arch/arm64/include/asm/cputype.h
-+++ b/arch/arm64/include/asm/cputype.h
-@@ -87,6 +87,7 @@
- #define ARM_CPU_PART_NEOVERSE_V2	0xD4F
- #define ARM_CPU_PART_CORTEX_A720	0xD81
- #define ARM_CPU_PART_CORTEX_X4		0xD82
-+#define ARM_CPU_PART_NEOVERSE_V3AE	0xD83
- #define ARM_CPU_PART_NEOVERSE_V3	0xD84
- #define ARM_CPU_PART_CORTEX_X925	0xD85
- #define ARM_CPU_PART_CORTEX_A725	0xD87
-@@ -139,6 +140,7 @@
- #define MIDR_NEOVERSE_V2 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_V2)
- #define MIDR_CORTEX_A720 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A720)
- #define MIDR_CORTEX_X4 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X4)
-+#define MIDR_NEOVERSE_V3AE	MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_V3AE)
- #define MIDR_NEOVERSE_V3 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_V3)
- #define MIDR_CORTEX_X925 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X925)
- #define MIDR_CORTEX_A725 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A725)
+--- a/Documentation/arm64/silicon-errata.rst
++++ b/Documentation/arm64/silicon-errata.rst
+@@ -134,6 +134,8 @@ stable kernels.
+ +----------------+-----------------+-----------------+-----------------------------+
+ | ARM            | Neoverse-V3     | #3312417        | ARM64_ERRATUM_3194386       |
+ +----------------+-----------------+-----------------+-----------------------------+
++| ARM            | Neoverse-V3AE   | #3312417        | ARM64_ERRATUM_3194386       |
+++----------------+-----------------+-----------------+-----------------------------+
+ | ARM            | MMU-500         | #841119,826419  | N/A                         |
+ +----------------+-----------------+-----------------+-----------------------------+
+ +----------------+-----------------+-----------------+-----------------------------+
+--- a/arch/arm64/Kconfig
++++ b/arch/arm64/Kconfig
+@@ -617,6 +617,7 @@ config ARM64_ERRATUM_3194386
+ 	  * ARM Neoverse-V1 erratum 3324341
+ 	  * ARM Neoverse V2 erratum 3324336
+ 	  * ARM Neoverse-V3 erratum 3312417
++	  * ARM Neoverse-V3AE erratum 3312417
+ 
+ 	  On affected cores "MSR SSBS, #0" instructions may not affect
+ 	  subsequent speculative instructions, which may permit unexepected
+--- a/arch/arm64/kernel/cpu_errata.c
++++ b/arch/arm64/kernel/cpu_errata.c
+@@ -863,6 +863,7 @@ static const struct midr_range erratum_s
+ 	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V1),
+ 	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V2),
+ 	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V3),
++	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V3AE),
+ 	{}
+ };
+ #endif
 
 
 
