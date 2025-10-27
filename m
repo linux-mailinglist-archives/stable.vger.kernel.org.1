@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-191025-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191192-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FEA2C10FB8
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:28:34 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17FB1C111E0
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:35:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E8D13547A21
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:21:46 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 95684546299
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:29:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AB7D32B9B0;
-	Mon, 27 Oct 2025 19:20:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F1172D7DDA;
+	Mon, 27 Oct 2025 19:27:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VngZSRUM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CHEgYFBF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B964232142B;
-	Mon, 27 Oct 2025 19:20:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 533B51BC4E;
+	Mon, 27 Oct 2025 19:27:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592818; cv=none; b=K1BKC0BjbXTdwto4NpBMBfEbBFS5WRXfngzRGK8yAzkKRfxDTKLqgZEPBm4ynr+WyU1sCUh8fUfW65iod+xzzZUK1yND8Uho4EKn8cDVxOhYQcBkE3cWf0RtCU18Hmt0IjSsNU7FgWGW4kMn9aiO8l2pRTES6OipuQiNW4/+DKo=
+	t=1761593244; cv=none; b=Gw0Pto8IzeQ5B6Uygs2A/vGYGbvZjh//SprigWmfv1XdF6QL4nZnv3Josz3BCbKPHbQxGWd05r7wRSLevANegqfTLv2x4NoJzX2loBs7bYYMrSx2HTQ1s03XKd6A/AF+l0SNRUgeEn/HrvUDwH1YJ8+xeuJMHYQsNUI3pvF2STw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592818; c=relaxed/simple;
-	bh=yMhQDGrkvS57rcHpsvlRmJLeZ6Ttc7f0QSTHR9AnC4Q=;
+	s=arc-20240116; t=1761593244; c=relaxed/simple;
+	bh=mMKjImRKHaWNZYdZ8goejC0DqFytXKhIuDdbFG3VgkY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QjgaamQFzchKWINLVQ6wygfchWwl5C/3Z18+VTcAMErXf4L6dZiul/qhyVaJ2GFLqBNDuJEq4/qqNoPUNeJ1TEsMC65AVvb4CNBbyzb2c1pi3q65aYrpk0Svih+Ipr3ZKBW4s2AshttIGeasOxo2GBUvUR65G02lr8hSGxzoTdg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VngZSRUM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 486B9C4CEFD;
-	Mon, 27 Oct 2025 19:20:18 +0000 (UTC)
+	 MIME-Version; b=O6QmbEYbQkbxPWXFsWWvPWe5E74YR4tMqe3HArWUeF0y/q+kXvtnI8QTSjra+r7amA5NFtXvI4mwKbNMDYiUOHM4k0aCxDDH2lLd5+HRl3IprI4lxpXkmB2nB8v1kd8MwULNoIoqHw02K+xiOrF0XgtzZOlZOZFFLlg9728JuPg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CHEgYFBF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D91A4C4CEF1;
+	Mon, 27 Oct 2025 19:27:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592818;
-	bh=yMhQDGrkvS57rcHpsvlRmJLeZ6Ttc7f0QSTHR9AnC4Q=;
+	s=korg; t=1761593244;
+	bh=mMKjImRKHaWNZYdZ8goejC0DqFytXKhIuDdbFG3VgkY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VngZSRUM27OJUXYQUd84apTyr+/zm7MncxwwiCty6FEAr8DxKcqRBpCRrrQfGwerk
-	 H9esJE/vbXqVocn6X5vabdJwdWOqNJT/BPKZZ9wUevuG34tBQKEJ1T0+U0Tm1OJYVd
-	 JYpCJ7j0XzyAGGNhz6iyumnVGSj5zM0MHpLFlCbo=
+	b=CHEgYFBFLvgJotfmU7eD1mxGNOP2JVcHF5Z27ccPIMzXoFtJISQ+AzJt/vdSwg7zx
+	 JeAe6MDsN7f2eUY1abLbkJnUc7HXdNWkqDdMZvOygu51yXycR+s7j6NpOYPFZ8olDf
+	 FJl4Ylis2JCBAWxyOymlEE1n/r1bVBvXfCiXCyb8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Lukasz Luba <lukasz.luba@arm.com>,
-	Christian Loehle <christian.loehle@arm.com>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 023/117] PM: EM: Move CPU capacity check to em_adjust_new_capacity()
+	stable <stable@kernel.org>,
+	Kaushlendra Kumar <kaushlendra.kumar@intel.com>,
+	Sudeep Holla <sudeep.holla@arm.com>
+Subject: [PATCH 6.17 067/184] arch_topology: Fix incorrect error check in topology_parse_cpu_capacity()
 Date: Mon, 27 Oct 2025 19:35:49 +0100
-Message-ID: <20251027183454.588654451@linuxfoundation.org>
+Message-ID: <20251027183516.696406930@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
-References: <20251027183453.919157109@linuxfoundation.org>
+In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
+References: <20251027183514.934710872@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,111 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+From: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
 
-[ Upstream commit 3e3ba654d3097e0031f2add215b12ff81c23814e ]
+commit 2eead19334516c8e9927c11b448fbe512b1f18a1 upstream.
 
-Move the check of the CPU capacity currently stored in the energy model
-against the arch_scale_cpu_capacity() value to em_adjust_new_capacity()
-so it will be done regardless of where the latter is called from.
+Fix incorrect use of PTR_ERR_OR_ZERO() in topology_parse_cpu_capacity()
+which causes the code to proceed with NULL clock pointers. The current
+logic uses !PTR_ERR_OR_ZERO(cpu_clk) which evaluates to true for both
+valid pointers and NULL, leading to potential NULL pointer dereference
+in clk_get_rate().
 
-This will be useful when a new em_adjust_new_capacity() caller is added
-subsequently.
+Per include/linux/err.h documentation, PTR_ERR_OR_ZERO(ptr) returns:
+"The error code within @ptr if it is an error pointer; 0 otherwise."
 
-While at it, move the pd local variable declaration in
-em_check_capacity_update() into the loop in which it is used.
+This means PTR_ERR_OR_ZERO() returns 0 for both valid pointers AND NULL
+pointers. Therefore !PTR_ERR_OR_ZERO(cpu_clk) evaluates to true (proceed)
+when cpu_clk is either valid or NULL, causing clk_get_rate(NULL) to be
+called when of_clk_get() returns NULL.
 
-No intentional functional impact.
+Replace with !IS_ERR_OR_NULL(cpu_clk) which only proceeds for valid
+pointers, preventing potential NULL pointer dereference in clk_get_rate().
 
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Lukasz Luba <lukasz.luba@arm.com>
-Tested-by: Christian Loehle <christian.loehle@arm.com>
-Reviewed-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
-Link: https://patch.msgid.link/7810787.EvYhyI6sBW@rjwysocki.net
-Stable-dep-of: 1ebe8f7e7825 ("PM: EM: Fix late boot with holes in CPU topology")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable <stable@kernel.org>
+Signed-off-by: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
+Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
+Fixes: b8fe128dad8f ("arch_topology: Adjust initial CPU capacities with current freq")
+Link: https://patch.msgid.link/20250923174308.1771906-1-kaushlendra.kumar@intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/power/energy_model.c |   40 +++++++++++++++++-----------------------
- 1 file changed, 17 insertions(+), 23 deletions(-)
+ drivers/base/arch_topology.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/kernel/power/energy_model.c
-+++ b/kernel/power/energy_model.c
-@@ -722,10 +722,24 @@ free_em_table:
-  * Adjustment of CPU performance values after boot, when all CPUs capacites
-  * are correctly calculated.
-  */
--static void em_adjust_new_capacity(struct device *dev,
-+static void em_adjust_new_capacity(unsigned int cpu, struct device *dev,
- 				   struct em_perf_domain *pd)
- {
-+	unsigned long cpu_capacity = arch_scale_cpu_capacity(cpu);
- 	struct em_perf_table *em_table;
-+	struct em_perf_state *table;
-+	unsigned long em_max_perf;
-+
-+	rcu_read_lock();
-+	table = em_perf_state_from_pd(pd);
-+	em_max_perf = table[pd->nr_perf_states - 1].performance;
-+	rcu_read_unlock();
-+
-+	if (em_max_perf == cpu_capacity)
-+		return;
-+
-+	pr_debug("updating cpu%d cpu_cap=%lu old capacity=%lu\n", cpu,
-+		 cpu_capacity, em_max_perf);
- 
- 	em_table = em_table_dup(pd);
- 	if (!em_table) {
-@@ -741,9 +755,6 @@ static void em_adjust_new_capacity(struc
- static void em_check_capacity_update(void)
- {
- 	cpumask_var_t cpu_done_mask;
--	struct em_perf_state *table;
--	struct em_perf_domain *pd;
--	unsigned long cpu_capacity;
- 	int cpu;
- 
- 	if (!zalloc_cpumask_var(&cpu_done_mask, GFP_KERNEL)) {
-@@ -754,7 +765,7 @@ static void em_check_capacity_update(voi
- 	/* Check if CPUs capacity has changed than update EM */
- 	for_each_possible_cpu(cpu) {
- 		struct cpufreq_policy *policy;
--		unsigned long em_max_perf;
-+		struct em_perf_domain *pd;
- 		struct device *dev;
- 
- 		if (cpumask_test_cpu(cpu, cpu_done_mask))
-@@ -777,24 +788,7 @@ static void em_check_capacity_update(voi
- 		cpumask_or(cpu_done_mask, cpu_done_mask,
- 			   em_span_cpus(pd));
- 
--		cpu_capacity = arch_scale_cpu_capacity(cpu);
--
--		rcu_read_lock();
--		table = em_perf_state_from_pd(pd);
--		em_max_perf = table[pd->nr_perf_states - 1].performance;
--		rcu_read_unlock();
--
--		/*
--		 * Check if the CPU capacity has been adjusted during boot
--		 * and trigger the update for new performance values.
--		 */
--		if (em_max_perf == cpu_capacity)
--			continue;
--
--		pr_debug("updating cpu%d cpu_cap=%lu old capacity=%lu\n",
--			 cpu, cpu_capacity, em_max_perf);
--
--		em_adjust_new_capacity(dev, pd);
-+		em_adjust_new_capacity(cpu, dev, pd);
- 	}
- 
- 	free_cpumask_var(cpu_done_mask);
+--- a/drivers/base/arch_topology.c
++++ b/drivers/base/arch_topology.c
+@@ -292,7 +292,7 @@ bool __init topology_parse_cpu_capacity(
+ 		 * frequency (by keeping the initial capacity_freq_ref value).
+ 		 */
+ 		cpu_clk = of_clk_get(cpu_node, 0);
+-		if (!PTR_ERR_OR_ZERO(cpu_clk)) {
++		if (!IS_ERR_OR_NULL(cpu_clk)) {
+ 			per_cpu(capacity_freq_ref, cpu) =
+ 				clk_get_rate(cpu_clk) / HZ_PER_KHZ;
+ 			clk_put(cpu_clk);
 
 
 
