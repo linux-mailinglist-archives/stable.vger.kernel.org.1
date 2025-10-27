@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-191248-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190983-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C91EC11318
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:40:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F116C10F7F
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:27:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 036BE565630
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:32:08 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E8B8A547271
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:19:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAFC92DA740;
-	Mon, 27 Oct 2025 19:30:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65C7E3203BA;
+	Mon, 27 Oct 2025 19:18:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xgXgscn7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0naIEddT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D7D91B424F;
-	Mon, 27 Oct 2025 19:30:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 234851BC4E;
+	Mon, 27 Oct 2025 19:18:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761593408; cv=none; b=auRNp6bZaDXxMNYSQFd0MKG3Jr+6CGywoEmUrWv5z0bH+bHP/av4thWmlI63j1ZUmlSE+S+PcL58cqELm3YoosFXSohE1hEXGHd+D6JB5ORH1WWNFFgVhCrOO0gBO17UMrn4gTNk5EtwTLFYnvjk0zW75l2AgKarh8fIxrsHoHs=
+	t=1761592710; cv=none; b=QRFHm+sfvcKSBT2GWsSDFTObhyEub++SZ9Fli7AZyMIGuKZFqflv7Rddiq/Om/a/wOLCAEGTYdKPZRhxpBrQS+0bv2kfWLd0yhjiqp/nrlyIkk1P//fN0irMnRJ1pd2Ec8t5rxgSPspI/9/01+/6zY9L0HD7bWzvgaq3qi6niyQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761593408; c=relaxed/simple;
-	bh=9oFsYGw38X7HDdIGKBP1diUFaCssbkmF/zUAC+MOvlI=;
+	s=arc-20240116; t=1761592710; c=relaxed/simple;
+	bh=SvLyZu46k3QjFMGDz04hy4p0lTm0i3rNnuvqdMho9Ns=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Yi5grEYd0pcdd7FGgUB3kL73xbugX94czI1mieTd2OYSDxzOQwSWIshWktXFr17B5zJYiBG7fiYerUIOEABF+GER9rqTfIdKk+CTcHpTxC02UDV0uwvU7rymvpgMiSG7JU2mQHD5cwIj8KF242QShlrV/ncnY/TeDVf4olHJrWw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xgXgscn7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1F9FC4CEF1;
-	Mon, 27 Oct 2025 19:30:07 +0000 (UTC)
+	 MIME-Version; b=IkqxGexywhP+SfgrE/IPdNRuiOrp0IpwYNQrDIJk0llAI1RJ7tKmNbQ1OL5sNDa+2N+4YklqUGdZJNXzYzbZiVRR53PbbGuKMaWHqRrZ2l9rPAyyKHWefCUlTCe5qkaBjaJktAVsk5t/65F7JUSV+nu1xm9GtfnpER7lZlaXpbA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0naIEddT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 591CAC4CEF1;
+	Mon, 27 Oct 2025 19:18:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761593408;
-	bh=9oFsYGw38X7HDdIGKBP1diUFaCssbkmF/zUAC+MOvlI=;
+	s=korg; t=1761592709;
+	bh=SvLyZu46k3QjFMGDz04hy4p0lTm0i3rNnuvqdMho9Ns=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xgXgscn7qIRzIV5/YmHAhqLNSQxP+dg6zfe6X3/H+GX5z2cxT7fHfivLHwfp7UeqB
-	 LnMBIT0puwuOom7KW+WEfu4/IhFUAHvBeuczenWF/PmCvLpu972BUT36ySEddUjuhx
-	 UIku/XLUae+43cT2U2Nm8itOy0/4VA/vDkdqYWQY=
+	b=0naIEddTt3pFjKWEI/0R9s44CSarxBiNEcmjjCCbukswAcIEn8bbxD/ycVryn1P7i
+	 ebZKwKcfHuXnGbV7g8+o7FRF4RR1WkT5PFrDUMP6GbDNDpM4UcLPNcb1XjPcqY28xn
+	 IU9dzjl0CQhHQ/5jNJLhyu25z9cyqAR3zxG9wHFY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cristian Marussi <cristian.marussi@arm.com>,
-	Artem Shimko <a.shimko.dev@gmail.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 125/184] firmware: arm_scmi: Fix premature SCMI_XFER_FLAG_IS_RAW clearing in raw mode
-Date: Mon, 27 Oct 2025 19:36:47 +0100
-Message-ID: <20251027183518.309735950@linuxfoundation.org>
+	Renjun Wang <renjunw0@foxmail.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.6 59/84] USB: serial: option: add UNISOC UIS7720
+Date: Mon, 27 Oct 2025 19:36:48 +0100
+Message-ID: <20251027183440.391663146@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
-References: <20251027183514.934710872@linuxfoundation.org>
+In-Reply-To: <20251027183438.817309828@linuxfoundation.org>
+References: <20251027183438.817309828@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +61,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Artem Shimko <a.shimko.dev@gmail.com>
+From: Renjun Wang <renjunw0@foxmail.com>
 
-[ Upstream commit 20b93a0088a595bceed4a026d527cbbac4e876c5 ]
+commit 71c07570b918f000de5d0f7f1bf17a2887e303b5 upstream.
 
-The SCMI_XFER_FLAG_IS_RAW flag was being cleared prematurely in
-scmi_xfer_raw_put() before the transfer completion was properly
-acknowledged by the raw message handlers.
+Add support for UNISOC (Spreadtrum) UIS7720 (A7720) module.
 
-Move the clearing of SCMI_XFER_FLAG_IS_RAW and SCMI_XFER_FLAG_CHAN_SET
-from scmi_xfer_raw_put() to __scmi_xfer_put() to ensure the flags remain
-set throughout the entire raw message processing pipeline until the
-transfer is returned to the free pool.
+T:  Bus=05 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  5 Spd=480 MxCh= 0
+D:  Ver= 2.10 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=1782 ProdID=4064 Rev=04.04
+S:  Manufacturer=Unisoc-phone
+S:  Product=Unisoc-phone
+S:  SerialNumber=0123456789ABCDEF
+C:  #Ifs= 9 Cfg#= 1 Atr=c0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 1 Cls=e0(wlcon) Sub=01 Prot=03 Driver=rndis_host
+E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+I:  If#= 1 Alt= 0 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=rndis_host
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 6 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=06(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 7 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=07(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=88(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 8 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
+E:  Ad=08(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=89(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
 
-Fixes: 3095a3e25d8f ("firmware: arm_scmi: Add xfer helpers to provide raw access")
-Suggested-by: Cristian Marussi <cristian.marussi@arm.com>
-Signed-off-by: Artem Shimko <a.shimko.dev@gmail.com>
-Reviewed-by: Cristian Marussi <cristian.marussi@arm.com>
-Message-Id: <20251008091057.1969260-1-a.shimko.dev@gmail.com>
-Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+0&1: RNDIS, 2: LOG, 3: DIAG, 4&5: AT Ports, 6&7: AT2 Ports, 8: ADB
+
+Signed-off-by: Renjun Wang <renjunw0@foxmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/firmware/arm_scmi/driver.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/usb/serial/option.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/firmware/arm_scmi/driver.c b/drivers/firmware/arm_scmi/driver.c
-index 1cd15412024cd..a8f2247feab9d 100644
---- a/drivers/firmware/arm_scmi/driver.c
-+++ b/drivers/firmware/arm_scmi/driver.c
-@@ -805,6 +805,7 @@ __scmi_xfer_put(struct scmi_xfers_info *minfo, struct scmi_xfer *xfer)
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -617,6 +617,7 @@ static void option_instat_callback(struc
+ #define UNISOC_VENDOR_ID			0x1782
+ /* TOZED LT70-C based on UNISOC SL8563 uses UNISOC's vendor ID */
+ #define TOZED_PRODUCT_LT70C			0x4055
++#define UNISOC_PRODUCT_UIS7720			0x4064
+ /* Luat Air72*U series based on UNISOC UIS8910 uses UNISOC's vendor ID */
+ #define LUAT_PRODUCT_AIR720U			0x4e00
  
- 			scmi_dec_count(info->dbg, XFERS_INFLIGHT);
- 		}
-+		xfer->flags = 0;
- 		hlist_add_head(&xfer->node, &minfo->free_xfers);
- 	}
- 	spin_unlock_irqrestore(&minfo->xfer_lock, flags);
-@@ -823,8 +824,6 @@ void scmi_xfer_raw_put(const struct scmi_handle *handle, struct scmi_xfer *xfer)
- {
- 	struct scmi_info *info = handle_to_scmi_info(handle);
- 
--	xfer->flags &= ~SCMI_XFER_FLAG_IS_RAW;
--	xfer->flags &= ~SCMI_XFER_FLAG_CHAN_SET;
- 	return __scmi_xfer_put(&info->tx_minfo, xfer);
- }
- 
--- 
-2.51.0
-
+@@ -2466,6 +2467,7 @@ static const struct usb_device_id option
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9291, 0xff, 0xff, 0x30) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9291, 0xff, 0xff, 0x40) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(UNISOC_VENDOR_ID, TOZED_PRODUCT_LT70C, 0xff, 0, 0) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(UNISOC_VENDOR_ID, UNISOC_PRODUCT_UIS7720, 0xff, 0, 0) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(UNISOC_VENDOR_ID, LUAT_PRODUCT_AIR720U, 0xff, 0, 0) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x1bbb, 0x0530, 0xff),			/* TCL IK512 MBIM */
+ 	  .driver_info = NCTRL(1) },
 
 
 
