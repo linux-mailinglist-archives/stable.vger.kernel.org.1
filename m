@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-191050-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190729-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19D45C1100C
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:29:37 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B5D5C10B3A
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:16:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 36EED5826E3
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:23:28 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 3AB565018F5
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:10:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B860C23D2A3;
-	Mon, 27 Oct 2025 19:21:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D1AE32BF21;
+	Mon, 27 Oct 2025 19:07:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wENvV4Es"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GCJEz8nI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7221F31E0E0;
-	Mon, 27 Oct 2025 19:21:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC732328B44;
+	Mon, 27 Oct 2025 19:07:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592883; cv=none; b=uVLqLd5zlmjFDB2hNopsoO5nqUUcXAtCmJbzSjy6P6QCCckKwwnbA9SgTeF4addOrubc373hSD9djyWYNOJJYCb5raIbdaskAUQvHDI4hkUwog66RI+U6UM+h7OAEFRq/wWqsmNiQVjZZH9rSXQmvV14+eZyyKSF4He89DG1MgM=
+	t=1761592042; cv=none; b=nWEmul+bPTbJf4OC28RxMWW7ym/ycbKTrgbuIY4N7OCr79Ak9ElQ4IO24i0bMbozqA9hXartFxKmHZCh1+sRaB1O1JupA21RmD8YUN1SPB2LV3OEsZMwL97bTYqif34xL+njv/lpHcS3V5Kqv+GzULdDogC54Gq9mXys3BhIbDE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592883; c=relaxed/simple;
-	bh=2eG6NAvApt82IPALesV5qmG6GM/ZYXgh53YR5GdMeRo=;
+	s=arc-20240116; t=1761592042; c=relaxed/simple;
+	bh=mmgEdNaOwJ9cQ4O78nuUdEcN9cS+DEsPCLqfQbMm9Y0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OSVXzdi0x5VMUWOC8DVVq9ihZM+fXqDkKkAtpjHtm3W3ql9Jy3ZJzqt1p/1CJf9ylQWo8t2FNn9dJdaQWDuCxBxRVxD6KORomE7U2vx7adZLSW+ihWsQ/ad0uruZd+MVT8opaqZLjEKoWc9rTYkXpnyDrxmh9e2URxILli+7sRw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wENvV4Es; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F204AC4CEF1;
-	Mon, 27 Oct 2025 19:21:22 +0000 (UTC)
+	 MIME-Version; b=cC94SK3NF+Sc4P+9YXlos8SUdhLZ96h2iz9h6c0fEqYlnG2nnQx2O/HxbwNi3HwAn6sft9bkwdDxiK/wo/uGE/3SoKoE9RG1Yd/ejBl4mWHlLms5i82rUB1eM+8mvxsBhrmH0IcOAQuLJN3IUS5wh4zA7Z8UkMQhKkywQBrJJHU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GCJEz8nI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FF8EC4CEF1;
+	Mon, 27 Oct 2025 19:07:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592883;
-	bh=2eG6NAvApt82IPALesV5qmG6GM/ZYXgh53YR5GdMeRo=;
+	s=korg; t=1761592041;
+	bh=mmgEdNaOwJ9cQ4O78nuUdEcN9cS+DEsPCLqfQbMm9Y0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wENvV4Esch1J0vnSTuJeNjAn0GDR5lHEwlNVRsjSu+rxRC70/l1RuemhEkhuOCINH
-	 E3XfflfvQfdLJzQgWt8DyU0U7mGd6KmWMYozar1ZBVAogQ+Mlbrcjpz7hDltCeO1VG
-	 NpbM5tomwLz3wp/7GFGHTiX6QpCdKNsezEKv+UP0=
+	b=GCJEz8nIpNHjKc3ukk3bNtqepk6+DAWPUhnD2bBWuCBCHk2rhLX45z3gS9FEZz4Jy
+	 1CAP5NJHW2NpEz2qUrud11Qqeo0VkhVR3T95ERrdVzvEMJeqjLfhLqQcCug2ZLiqzQ
+	 AFCsUwrkhExlKj0ssQB8ckUBK6VauuDsT3/dcFlk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Vacek <neelx@suse.com>,
-	Qu Wenruo <wqu@suse.com>,
-	Dewei Meng <mengdewei@cqsoftware.com.cn>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.12 048/117] btrfs: directly free partially initialized fs_info in btrfs_check_leaked_roots()
+	Konstantin Evtushenko <koevtushenko@yandex.com>,
+	Sergey Bashirov <sergeybashirov@gmail.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 094/123] NFSD: Fix last write offset handling in layoutcommit
 Date: Mon, 27 Oct 2025 19:36:14 +0100
-Message-ID: <20251027183455.294071383@linuxfoundation.org>
+Message-ID: <20251027183448.903900980@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
-References: <20251027183453.919157109@linuxfoundation.org>
+In-Reply-To: <20251027183446.381986645@linuxfoundation.org>
+References: <20251027183446.381986645@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,81 +65,116 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dewei Meng <mengdewei@cqsoftware.com.cn>
+From: Sergey Bashirov <sergeybashirov@gmail.com>
 
-commit 17679ac6df6c4830ba711835aa8cf961be36cfa1 upstream.
+[ Upstream commit d68886bae76a4b9b3484d23e5b7df086f940fa38 ]
 
-If fs_info->super_copy or fs_info->super_for_commit allocated failed in
-btrfs_get_tree_subvol(), then no need to call btrfs_free_fs_info().
-Otherwise btrfs_check_leaked_roots() would access NULL pointer because
-fs_info->allocated_roots had not been initialised.
+The data type of loca_last_write_offset is newoffset4 and is switched
+on a boolean value, no_newoffset, that indicates if a previous write
+occurred or not. If no_newoffset is FALSE, an offset is not given.
+This means that client does not try to update the file size. Thus,
+server should not try to calculate new file size and check if it fits
+into the segment range. See RFC 8881, section 12.5.4.2.
 
-syzkaller reported the following information:
-  ------------[ cut here ]------------
-  BUG: unable to handle page fault for address: fffffffffffffbb0
-  #PF: supervisor read access in kernel mode
-  #PF: error_code(0x0000) - not-present page
-  PGD 64c9067 P4D 64c9067 PUD 64cb067 PMD 0
-  Oops: Oops: 0000 [#1] SMP KASAN PTI
-  CPU: 0 UID: 0 PID: 1402 Comm: syz.1.35 Not tainted 6.15.8 #4 PREEMPT(lazy)
-  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), (...)
-  RIP: 0010:arch_atomic_read arch/x86/include/asm/atomic.h:23 [inline]
-  RIP: 0010:raw_atomic_read include/linux/atomic/atomic-arch-fallback.h:457 [inline]
-  RIP: 0010:atomic_read include/linux/atomic/atomic-instrumented.h:33 [inline]
-  RIP: 0010:refcount_read include/linux/refcount.h:170 [inline]
-  RIP: 0010:btrfs_check_leaked_roots+0x18f/0x2c0 fs/btrfs/disk-io.c:1230
-  [...]
-  Call Trace:
-   <TASK>
-   btrfs_free_fs_info+0x310/0x410 fs/btrfs/disk-io.c:1280
-   btrfs_get_tree_subvol+0x592/0x6b0 fs/btrfs/super.c:2029
-   btrfs_get_tree+0x63/0x80 fs/btrfs/super.c:2097
-   vfs_get_tree+0x98/0x320 fs/super.c:1759
-   do_new_mount+0x357/0x660 fs/namespace.c:3899
-   path_mount+0x716/0x19c0 fs/namespace.c:4226
-   do_mount fs/namespace.c:4239 [inline]
-   __do_sys_mount fs/namespace.c:4450 [inline]
-   __se_sys_mount fs/namespace.c:4427 [inline]
-   __x64_sys_mount+0x28c/0x310 fs/namespace.c:4427
-   do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
-   do_syscall_64+0x92/0x180 arch/x86/entry/syscall_64.c:94
-   entry_SYSCALL_64_after_hwframe+0x76/0x7e
-  RIP: 0033:0x7f032eaffa8d
-  [...]
+Sometimes the current incorrect logic may cause clients to hang when
+trying to sync an inode. If layoutcommit fails, the client marks the
+inode as dirty again.
 
-Fixes: 3bb17a25bcb0 ("btrfs: add get_tree callback for new mount API")
-CC: stable@vger.kernel.org # 6.12+
-Reviewed-by: Daniel Vacek <neelx@suse.com>
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Dewei Meng <mengdewei@cqsoftware.com.cn>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fixes: 9cf514ccfacb ("nfsd: implement pNFS operations")
+Cc: stable@vger.kernel.org
+Co-developed-by: Konstantin Evtushenko <koevtushenko@yandex.com>
+Signed-off-by: Konstantin Evtushenko <koevtushenko@yandex.com>
+Signed-off-by: Sergey Bashirov <sergeybashirov@gmail.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+[ adapted for direct inode->i_mtime access and 2-parameter proc_layoutcommit callback ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/super.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ fs/nfsd/blocklayout.c |    5 ++---
+ fs/nfsd/nfs4proc.c    |   30 +++++++++++++++---------------
+ 2 files changed, 17 insertions(+), 18 deletions(-)
 
---- a/fs/btrfs/super.c
-+++ b/fs/btrfs/super.c
-@@ -2029,7 +2029,13 @@ static int btrfs_get_tree_subvol(struct
- 	fs_info->super_copy = kzalloc(BTRFS_SUPER_INFO_SIZE, GFP_KERNEL);
- 	fs_info->super_for_commit = kzalloc(BTRFS_SUPER_INFO_SIZE, GFP_KERNEL);
- 	if (!fs_info->super_copy || !fs_info->super_for_commit) {
--		btrfs_free_fs_info(fs_info);
-+		/*
-+		 * Dont call btrfs_free_fs_info() to free it as it's still
-+		 * initialized partially.
-+		 */
-+		kfree(fs_info->super_copy);
-+		kfree(fs_info->super_for_commit);
-+		kvfree(fs_info);
- 		return -ENOMEM;
+--- a/fs/nfsd/blocklayout.c
++++ b/fs/nfsd/blocklayout.c
+@@ -121,7 +121,6 @@ static __be32
+ nfsd4_block_commit_blocks(struct inode *inode, struct nfsd4_layoutcommit *lcp,
+ 		struct iomap *iomaps, int nr_iomaps)
+ {
+-	loff_t new_size = lcp->lc_last_wr + 1;
+ 	struct iattr iattr = { .ia_valid = 0 };
+ 	int error;
+ 
+@@ -131,9 +130,9 @@ nfsd4_block_commit_blocks(struct inode *
+ 	iattr.ia_valid |= ATTR_ATIME | ATTR_CTIME | ATTR_MTIME;
+ 	iattr.ia_atime = iattr.ia_ctime = iattr.ia_mtime = lcp->lc_mtime;
+ 
+-	if (new_size > i_size_read(inode)) {
++	if (lcp->lc_size_chg) {
+ 		iattr.ia_valid |= ATTR_SIZE;
+-		iattr.ia_size = new_size;
++		iattr.ia_size = lcp->lc_newsize;
  	}
- 	btrfs_init_fs_info(fs_info);
+ 
+ 	error = inode->i_sb->s_export_op->commit_blocks(inode, iomaps,
+--- a/fs/nfsd/nfs4proc.c
++++ b/fs/nfsd/nfs4proc.c
+@@ -2262,7 +2262,6 @@ nfsd4_layoutcommit(struct svc_rqst *rqst
+ 	const struct nfsd4_layout_seg *seg = &lcp->lc_seg;
+ 	struct svc_fh *current_fh = &cstate->current_fh;
+ 	const struct nfsd4_layout_ops *ops;
+-	loff_t new_size = lcp->lc_last_wr + 1;
+ 	struct inode *inode;
+ 	struct nfs4_layout_stateid *ls;
+ 	__be32 nfserr;
+@@ -2277,13 +2276,21 @@ nfsd4_layoutcommit(struct svc_rqst *rqst
+ 		goto out;
+ 	inode = d_inode(current_fh->fh_dentry);
+ 
+-	nfserr = nfserr_inval;
+-	if (new_size <= seg->offset)
+-		goto out;
+-	if (new_size > seg->offset + seg->length)
+-		goto out;
+-	if (!lcp->lc_newoffset && new_size > i_size_read(inode))
+-		goto out;
++	lcp->lc_size_chg = false;
++	if (lcp->lc_newoffset) {
++		loff_t new_size = lcp->lc_last_wr + 1;
++
++		nfserr = nfserr_inval;
++		if (new_size <= seg->offset)
++			goto out;
++		if (new_size > seg->offset + seg->length)
++			goto out;
++
++		if (new_size > i_size_read(inode)) {
++			lcp->lc_size_chg = true;
++			lcp->lc_newsize = new_size;
++		}
++	}
+ 
+ 	nfserr = nfsd4_preprocess_layout_stateid(rqstp, cstate, &lcp->lc_sid,
+ 						false, lcp->lc_layout_type,
+@@ -2299,13 +2306,6 @@ nfsd4_layoutcommit(struct svc_rqst *rqst
+ 	/* LAYOUTCOMMIT does not require any serialization */
+ 	mutex_unlock(&ls->ls_mutex);
+ 
+-	if (new_size > i_size_read(inode)) {
+-		lcp->lc_size_chg = 1;
+-		lcp->lc_newsize = new_size;
+-	} else {
+-		lcp->lc_size_chg = 0;
+-	}
+-
+ 	nfserr = ops->proc_layoutcommit(inode, lcp);
+ 	nfs4_put_stid(&ls->ls_stid);
+ out:
 
 
 
