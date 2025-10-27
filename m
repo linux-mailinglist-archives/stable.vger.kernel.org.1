@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-190673-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191200-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 488B0C10AA9
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:15:02 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id CABBFC11375
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:43:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 50E8E565836
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:08:23 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A058D5633FA
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:29:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5083B331A4D;
-	Mon, 27 Oct 2025 19:04:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 436713164B6;
+	Mon, 27 Oct 2025 19:27:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XPHyO7iz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wd7hJGiW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D2773314DD;
-	Mon, 27 Oct 2025 19:04:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAB91209F43;
+	Mon, 27 Oct 2025 19:27:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591897; cv=none; b=jBeYcr1N8x7/gugK1U2XjkaEJuogmcX2l3GIlz/+hyhPx62Ts9Kv/lqOI9MWquY7EDesr+WyMvuvyFVBhyKsKmir5GQ2fjtT87XHzaSmGYvq78sNyFDB39cpGAODLx3BFzcK+/XFFuS8M118R9VxjZRptomuJdqjP9wm1aov4GM=
+	t=1761593265; cv=none; b=gyy4pr9LcZWyZwyNFDDwmNOv9jp7kmBWwbfpXRRzvnvCboTfwmpwMH0UucABJRmTF4vERiUchJGQCfuZsFb31Tposv3GR6tvUJlxctpKxnISnBo113aPKIxO2Cm39HlibTnSYnDl54qalMerHdpQ2c+VMran/jaXwGDyt7kBPOg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591897; c=relaxed/simple;
-	bh=wPWJHZAsKoJGdU60vaEyogDl8J3YZ5riSLb9bAqPdN0=;
+	s=arc-20240116; t=1761593265; c=relaxed/simple;
+	bh=OV6B5HfVTcStatJmtK11W9Xl5k2g1uIKL72BV57hEAU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZuSNbIfVBknjwOvhIYXHjvmC/Z+CqrdVJBjVQXbPcrc81s72NXY7mzkCCCWSV3EtdztEws3uyv9hA/kSYeOp+VW3DXWezMpK5NfNsFGHZ7uf4yisIXKSew4YZkrmkjPwRlTGVzIqQ2CXstCdH3+0JAlh1K7wkldQF0BK5N/u7H0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XPHyO7iz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 450D5C4CEF1;
-	Mon, 27 Oct 2025 19:04:56 +0000 (UTC)
+	 MIME-Version; b=B3/53w/SfVdrlB5uk12HzDmGSDrns6EE8OVrQdDEqAWt/gFt3EeOsvurRbZsfOWAQIhR74BQrNshHrQtOuBkUWDlN9+BTAuhIPmtUfTemBGZnjecxr/8moY9aP6YpOgxVbn+Lzw7DhLZfIvL6PrBhNhB73Ne3YKxeC/bigwZzGQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wd7hJGiW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77B4EC113D0;
+	Mon, 27 Oct 2025 19:27:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591896;
-	bh=wPWJHZAsKoJGdU60vaEyogDl8J3YZ5riSLb9bAqPdN0=;
+	s=korg; t=1761593264;
+	bh=OV6B5HfVTcStatJmtK11W9Xl5k2g1uIKL72BV57hEAU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XPHyO7izeKiUtCAqrHXS1V2V8Ix+rfqiMBpaaaddDl4+yQ+v8v4/PQEAalDJLXle2
-	 HNTZnEPjgiMBRkQATtKr1pg5SelwP6pYvY7BVThCG2D6HHH1f62RljAa00V0P8gx2b
-	 bCM355lv/W4dsC/zOq5bSoh0UsA42JFAsQRQShBA=
+	b=Wd7hJGiWUVDOc3qzrQBLNeFrW1DNUcc3+NYffuuyd4Manag8Y6QOjwy+IyDf+3xOK
+	 T6yjanF8zhZPwifsBhpMFgsokQIRixigD8mmtSLZFxmn0mLtu6o4yEGEONsqla8OTO
+	 YiuYBmTrsoBjhfCmLyVqVdVpIQXg7R2q8J1uiRTs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"peterz@infradead.org, mingo@redhat.com, acme@kernel.org, mark.rutland@arm.com, alexander.shishkin@linux.intel.com, jolsa@redhat.com, namhyung@kernel.org, irogers@google.com, sashal@kernel.org, Niko Mauno" <niko.mauno@vaisala.com>,
-	Niko Mauno <niko.mauno@vaisala.com>
-Subject: [PATCH 5.15 040/123] Revert "perf test: Dont leak workload gopipe in PERF_RECORD_*"
+	Jianpeng Chang <jianpeng.chang.cn@windriver.com>,
+	Wei Fang <wei.fang@nxp.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.17 038/184] net: enetc: fix the deadlock of enetc_mdio_lock
 Date: Mon, 27 Oct 2025 19:35:20 +0100
-Message-ID: <20251027183447.474391966@linuxfoundation.org>
+Message-ID: <20251027183515.938213030@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183446.381986645@linuxfoundation.org>
-References: <20251027183446.381986645@linuxfoundation.org>
+In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
+References: <20251027183514.934710872@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,66 +63,163 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niko Mauno <niko.mauno@vaisala.com>
+From: Jianpeng Chang <jianpeng.chang.cn@windriver.com>
 
-This reverts commit b7e5c59f3b0971f56ebbceb9d42cc45e9ac1cd94 which is
-commit 48918cacefd226af44373e914e63304927c0e7dc upstream.
+[ Upstream commit 50bd33f6b3922a6b760aa30d409cae891cec8fb5 ]
 
-Commit in question broke building perf followingly with v5.15.195:
+After applying the workaround for err050089, the LS1028A platform
+experiences RCU stalls on RT kernel. This issue is caused by the
+recursive acquisition of the read lock enetc_mdio_lock. Here list some
+of the call stacks identified under the enetc_poll path that may lead to
+a deadlock:
 
-  | ld: perf-in.o: in function `test__PERF_RECORD':
-  | tools/perf/tests/perf-record.c:142: undefined reference to `evlist__cancel_workload'
+enetc_poll
+  -> enetc_lock_mdio
+  -> enetc_clean_rx_ring OR napi_complete_done
+     -> napi_gro_receive
+        -> enetc_start_xmit
+           -> enetc_lock_mdio
+           -> enetc_map_tx_buffs
+           -> enetc_unlock_mdio
+  -> enetc_unlock_mdio
 
-The 'evlist__cancel_workload' seems to be introduced in
-commit e880a70f8046 ("perf stat: Close cork_fd when create_perf_stat_counter() failed")
-which is currently not included in the 5.15 stable series.
+After enetc_poll acquires the read lock, a higher-priority writer attempts
+to acquire the lock, causing preemption. The writer detects that a
+read lock is already held and is scheduled out. However, readers under
+enetc_poll cannot acquire the read lock again because a writer is already
+waiting, leading to a thread hang.
 
-Fixes: b7e5c59f3b09 ("perf test: Don't leak workload gopipe in PERF_RECORD_*")
-Cc: stable@vger.kernel.org # 5.15
-Signed-off-by: Niko Mauno <niko.mauno@vaisala.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Currently, the deadlock is avoided by adjusting enetc_lock_mdio to prevent
+recursive lock acquisition.
+
+Fixes: 6d36ecdbc441 ("net: enetc: take the MDIO lock only once per NAPI poll cycle")
+Signed-off-by: Jianpeng Chang <jianpeng.chang.cn@windriver.com>
+Acked-by: Wei Fang <wei.fang@nxp.com>
+Link: https://patch.msgid.link/20251015021427.180757-1-jianpeng.chang.cn@windriver.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/tests/perf-record.c |    4 ----
- 1 file changed, 4 deletions(-)
+ drivers/net/ethernet/freescale/enetc/enetc.c | 25 ++++++++++++++++----
+ 1 file changed, 21 insertions(+), 4 deletions(-)
 
---- a/tools/perf/tests/perf-record.c
-+++ b/tools/perf/tests/perf-record.c
-@@ -115,7 +115,6 @@ int test__PERF_RECORD(struct test *test
- 	if (err < 0) {
- 		pr_debug("sched__get_first_possible_cpu: %s\n",
- 			 str_error_r(errno, sbuf, sizeof(sbuf)));
--		evlist__cancel_workload(evlist);
- 		goto out_delete_evlist;
+diff --git a/drivers/net/ethernet/freescale/enetc/enetc.c b/drivers/net/ethernet/freescale/enetc/enetc.c
+index e4287725832e0..5496b4cb2a64a 100644
+--- a/drivers/net/ethernet/freescale/enetc/enetc.c
++++ b/drivers/net/ethernet/freescale/enetc/enetc.c
+@@ -1558,6 +1558,8 @@ static int enetc_clean_rx_ring(struct enetc_bdr *rx_ring,
+ 	/* next descriptor to process */
+ 	i = rx_ring->next_to_clean;
+ 
++	enetc_lock_mdio();
++
+ 	while (likely(rx_frm_cnt < work_limit)) {
+ 		union enetc_rx_bd *rxbd;
+ 		struct sk_buff *skb;
+@@ -1593,7 +1595,9 @@ static int enetc_clean_rx_ring(struct enetc_bdr *rx_ring,
+ 		rx_byte_cnt += skb->len + ETH_HLEN;
+ 		rx_frm_cnt++;
+ 
++		enetc_unlock_mdio();
+ 		napi_gro_receive(napi, skb);
++		enetc_lock_mdio();
  	}
  
-@@ -127,7 +126,6 @@ int test__PERF_RECORD(struct test *test
- 	if (sched_setaffinity(evlist->workload.pid, cpu_mask_size, &cpu_mask) < 0) {
- 		pr_debug("sched_setaffinity: %s\n",
- 			 str_error_r(errno, sbuf, sizeof(sbuf)));
--		evlist__cancel_workload(evlist);
- 		goto out_delete_evlist;
- 	}
+ 	rx_ring->next_to_clean = i;
+@@ -1601,6 +1605,8 @@ static int enetc_clean_rx_ring(struct enetc_bdr *rx_ring,
+ 	rx_ring->stats.packets += rx_frm_cnt;
+ 	rx_ring->stats.bytes += rx_byte_cnt;
  
-@@ -139,7 +137,6 @@ int test__PERF_RECORD(struct test *test
- 	if (err < 0) {
- 		pr_debug("perf_evlist__open: %s\n",
- 			 str_error_r(errno, sbuf, sizeof(sbuf)));
--		evlist__cancel_workload(evlist);
- 		goto out_delete_evlist;
- 	}
++	enetc_unlock_mdio();
++
+ 	return rx_frm_cnt;
+ }
  
-@@ -152,7 +149,6 @@ int test__PERF_RECORD(struct test *test
- 	if (err < 0) {
- 		pr_debug("evlist__mmap: %s\n",
- 			 str_error_r(errno, sbuf, sizeof(sbuf)));
--		evlist__cancel_workload(evlist);
- 		goto out_delete_evlist;
- 	}
+@@ -1910,6 +1916,8 @@ static int enetc_clean_rx_ring_xdp(struct enetc_bdr *rx_ring,
+ 	/* next descriptor to process */
+ 	i = rx_ring->next_to_clean;
  
++	enetc_lock_mdio();
++
+ 	while (likely(rx_frm_cnt < work_limit)) {
+ 		union enetc_rx_bd *rxbd, *orig_rxbd;
+ 		struct xdp_buff xdp_buff;
+@@ -1973,7 +1981,9 @@ static int enetc_clean_rx_ring_xdp(struct enetc_bdr *rx_ring,
+ 			 */
+ 			enetc_bulk_flip_buff(rx_ring, orig_i, i);
+ 
++			enetc_unlock_mdio();
+ 			napi_gro_receive(napi, skb);
++			enetc_lock_mdio();
+ 			break;
+ 		case XDP_TX:
+ 			tx_ring = priv->xdp_tx_ring[rx_ring->index];
+@@ -2008,7 +2018,9 @@ static int enetc_clean_rx_ring_xdp(struct enetc_bdr *rx_ring,
+ 			}
+ 			break;
+ 		case XDP_REDIRECT:
++			enetc_unlock_mdio();
+ 			err = xdp_do_redirect(rx_ring->ndev, &xdp_buff, prog);
++			enetc_lock_mdio();
+ 			if (unlikely(err)) {
+ 				enetc_xdp_drop(rx_ring, orig_i, i);
+ 				rx_ring->stats.xdp_redirect_failures++;
+@@ -2028,8 +2040,11 @@ static int enetc_clean_rx_ring_xdp(struct enetc_bdr *rx_ring,
+ 	rx_ring->stats.packets += rx_frm_cnt;
+ 	rx_ring->stats.bytes += rx_byte_cnt;
+ 
+-	if (xdp_redirect_frm_cnt)
++	if (xdp_redirect_frm_cnt) {
++		enetc_unlock_mdio();
+ 		xdp_do_flush();
++		enetc_lock_mdio();
++	}
+ 
+ 	if (xdp_tx_frm_cnt)
+ 		enetc_update_tx_ring_tail(tx_ring);
+@@ -2038,6 +2053,8 @@ static int enetc_clean_rx_ring_xdp(struct enetc_bdr *rx_ring,
+ 		enetc_refill_rx_ring(rx_ring, enetc_bd_unused(rx_ring) -
+ 				     rx_ring->xdp.xdp_tx_in_flight);
+ 
++	enetc_unlock_mdio();
++
+ 	return rx_frm_cnt;
+ }
+ 
+@@ -2056,6 +2073,7 @@ static int enetc_poll(struct napi_struct *napi, int budget)
+ 	for (i = 0; i < v->count_tx_rings; i++)
+ 		if (!enetc_clean_tx_ring(&v->tx_ring[i], budget))
+ 			complete = false;
++	enetc_unlock_mdio();
+ 
+ 	prog = rx_ring->xdp.prog;
+ 	if (prog)
+@@ -2067,10 +2085,8 @@ static int enetc_poll(struct napi_struct *napi, int budget)
+ 	if (work_done)
+ 		v->rx_napi_work = true;
+ 
+-	if (!complete) {
+-		enetc_unlock_mdio();
++	if (!complete)
+ 		return budget;
+-	}
+ 
+ 	napi_complete_done(napi, work_done);
+ 
+@@ -2079,6 +2095,7 @@ static int enetc_poll(struct napi_struct *napi, int budget)
+ 
+ 	v->rx_napi_work = false;
+ 
++	enetc_lock_mdio();
+ 	/* enable interrupts */
+ 	enetc_wr_reg_hot(v->rbier, ENETC_RBIER_RXTIE);
+ 
+-- 
+2.51.0
+
 
 
 
