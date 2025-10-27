@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-190792-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190540-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3323DC10BC8
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:18:01 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8786C107F8
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:07:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 935411A6364D
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:13:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4FE571A20A0F
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:04:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C58DE2D5A14;
-	Mon, 27 Oct 2025 19:10:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08C77324B09;
+	Mon, 27 Oct 2025 18:59:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CCjkrJ7J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y+eBu2oc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FBA63074AC;
-	Mon, 27 Oct 2025 19:10:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B794932AAD9;
+	Mon, 27 Oct 2025 18:59:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592208; cv=none; b=szOxDVJ8FaudK+64gSYQi95dbF7vCNwp4i4c7CPueJ8tcJERWwopuzCLSDiehT7lgxjyXlFdT+kjubaBS/ktrIm68wW7130nPdH019Xm6oJ/XHg15iKCrByvgwk47yGpmNaRHL7T38EAv5miB+1HazFsxZOVt+jtOoFrYvYZcOI=
+	t=1761591556; cv=none; b=iwXgwv5MVfUENQyRgSye7/H3yg3RE2zhmBW2cAMoWXEbtzqr+aTco8YvPhe1UpXgVAkaJ7e3kIznAMOPgNmFArSGmJhDkVGTNB5RFozTvTGUwtk39vKTzAl0qjnKdrpRNZexcxDDOkb4XkjWKw9tGxu91MmIe2vakNsyks2+3XM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592208; c=relaxed/simple;
-	bh=4HuM35JKgOLbZNSiVnP34JhCsGpMmKG13gMlKSYRp7A=;
+	s=arc-20240116; t=1761591556; c=relaxed/simple;
+	bh=2iX1smDxb1JeRav9S2Z72JZ9FaOF8qLeakWD2v4vVBw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JvaLAlZbOcrEzlUvD5mtgm+MpGrQZch3zNeGGj9c31e65YT+zdPIe2hD7/Nqv2Ze6VcvuRXWzIqTDLGmIHczrT7twuc3fFbjhTunD7n4tsL7QYnUH0BNqfJ4NlLl5nUHR2V3fR4p9t9DbJjiEHWWaw3qP8vBKvyW1JO+JEsPT+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CCjkrJ7J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13848C4CEF1;
-	Mon, 27 Oct 2025 19:10:07 +0000 (UTC)
+	 MIME-Version; b=Mesgq+FnpejpBRoIt9M+8uEzqRJe+BZDuETS/8kOD+iu/wElqZ43PB4kJQiLR1feDsMTa/8HIihbuohQ/SDKOQ9qbhpfuoxFV9TQAycj8FevoGLbjcv6CQWuuiVaJBiDZ/as0bg+KSh3osZ6k3RkaJaQr4JdQEcb8jlrelCtNqo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y+eBu2oc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4138EC4CEF1;
+	Mon, 27 Oct 2025 18:59:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592208;
-	bh=4HuM35JKgOLbZNSiVnP34JhCsGpMmKG13gMlKSYRp7A=;
+	s=korg; t=1761591556;
+	bh=2iX1smDxb1JeRav9S2Z72JZ9FaOF8qLeakWD2v4vVBw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CCjkrJ7JjrajwtCEXq0NRTg9BOCKjPrCkQogBTFhalAV4WHQJsnQwRpcQqQvu9O5H
-	 dfpcGhXjiaJSg92xj4z6d9zrm8l0SvGfpqPewk9jBgtkwE1ueyS0/0FUH+oXDcxAgj
-	 uiIn7/Qi6DxNJozvgpfKSy4oSjn7nj3BoQ2OsBuA=
+	b=y+eBu2ocAoouMnrpg2uDEzFEsS2NyaszZyiiNmB3ezBB1hQhTN+GYBbB0Om86M3Pt
+	 pxrLJBW5d2gmqvDzc9pvlsltO5lpJNgQxFwJSvWYvNKSrISbye+DTiG4Uet/hHLd7/
+	 qWLpnhU8aD13kMeG3TtP+saWMi8jfB2L17l7SJug=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Anna-Maria Behnsen <anna-maria@linutronix.de>,
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-	Jeongjun Park <aha310510@gmail.com>
-Subject: [PATCH 6.1 034/157] Bluetooth: hci_qca: Fix the teardown problem for real
-Date: Mon, 27 Oct 2025 19:34:55 +0100
-Message-ID: <20251027183502.211470083@linuxfoundation.org>
+	Florian Westphal <fw@strlen.de>,
+	Francesco Ruggeri <fruggeri05@gmail.com>,
+	Dmitry Safonov <dima@arista.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 243/332] net/ip6_tunnel: Prevent perpetual tunnel growth
+Date: Mon, 27 Oct 2025 19:34:56 +0100
+Message-ID: <20251027183531.249897624@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
-References: <20251027183501.227243846@linuxfoundation.org>
+In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
+References: <20251027183524.611456697@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,80 +64,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Dmitry Safonov <dima@arista.com>
 
-[ Upstream commit e0d3da982c96aeddc1bbf1cf9469dbb9ebdca657 ]
+[ Upstream commit 21f4d45eba0b2dcae5dbc9e5e0ad08735c993f16 ]
 
-While discussing solutions for the teardown problem which results from
-circular dependencies between timers and workqueues, where timers schedule
-work from their timer callback and workqueues arm the timers from work
-items, it was discovered that the recent fix to the QCA code is incorrect.
+Similarly to ipv4 tunnel, ipv6 version updates dev->needed_headroom, too.
+While ipv4 tunnel headroom adjustment growth was limited in
+commit 5ae1e9922bbd ("net: ip_tunnel: prevent perpetual headroom growth"),
+ipv6 tunnel yet increases the headroom without any ceiling.
 
-That commit fixes the obvious problem of using del_timer() instead of
-del_timer_sync() and reorders the teardown calls to
+Reflect ipv4 tunnel headroom adjustment limit on ipv6 version.
 
-   destroy_workqueue(wq);
-   del_timer_sync(t);
+Credits to Francesco Ruggeri, who was originally debugging this issue
+and wrote local Arista-specific patch and a reproducer.
 
-This makes it less likely to explode, but it's still broken:
-
-   destroy_workqueue(wq);
-   /* After this point @wq cannot be touched anymore */
-
-   ---> timer expires
-         queue_work(wq) <---- Results in a NULL pointer dereference
-			      deep in the work queue core code.
-   del_timer_sync(t);
-
-Use the new timer_shutdown_sync() function to ensure that the timers are
-disarmed, no timer callbacks are running and the timers cannot be armed
-again. This restores the original teardown sequence:
-
-   timer_shutdown_sync(t);
-   destroy_workqueue(wq);
-
-which is now correct because the timer core silently ignores potential
-rearming attempts which can happen when destroy_workqueue() drains pending
-work before mopping up the workqueue.
-
-Fixes: 72ef98445aca ("Bluetooth: hci_qca: Use del_timer_sync() before freeing")
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Guenter Roeck <linux@roeck-us.net>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Reviewed-by: Anna-Maria Behnsen <anna-maria@linutronix.de>
-Acked-by: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
-Link: https://lore.kernel.org/all/87iljhsftt.ffs@tglx
-Link: https://lore.kernel.org/r/20221123201625.435907114@linutronix.de
-Signed-off-by: Jeongjun Park <aha310510@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 8eb30be0352d ("ipv6: Create ip6_tnl_xmit")
+Cc: Florian Westphal <fw@strlen.de>
+Cc: Francesco Ruggeri <fruggeri05@gmail.com>
+Signed-off-by: Dmitry Safonov <dima@arista.com>
+Link: https://patch.msgid.link/20251009-ip6_tunnel-headroom-v2-1-8e4dbd8f7e35@arista.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/hci_qca.c |   10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ include/net/ip_tunnels.h | 15 +++++++++++++++
+ net/ipv4/ip_tunnel.c     | 14 --------------
+ net/ipv6/ip6_tunnel.c    |  3 +--
+ 3 files changed, 16 insertions(+), 16 deletions(-)
 
---- a/drivers/bluetooth/hci_qca.c
-+++ b/drivers/bluetooth/hci_qca.c
-@@ -710,9 +710,15 @@ static int qca_close(struct hci_uart *hu
- 	skb_queue_purge(&qca->tx_wait_q);
- 	skb_queue_purge(&qca->txq);
- 	skb_queue_purge(&qca->rx_memdump_q);
-+	/*
-+	 * Shut the timers down so they can't be rearmed when
-+	 * destroy_workqueue() drains pending work which in turn might try
-+	 * to arm a timer.  After shutdown rearm attempts are silently
-+	 * ignored by the timer core code.
-+	 */
-+	timer_shutdown_sync(&qca->tx_idle_timer);
-+	timer_shutdown_sync(&qca->wake_retrans_timer);
- 	destroy_workqueue(qca->workqueue);
--	del_timer_sync(&qca->tx_idle_timer);
--	del_timer_sync(&qca->wake_retrans_timer);
- 	qca->hu = NULL;
+diff --git a/include/net/ip_tunnels.h b/include/net/ip_tunnels.h
+index cedf72924f19e..d7a037d32bcc2 100644
+--- a/include/net/ip_tunnels.h
++++ b/include/net/ip_tunnels.h
+@@ -468,6 +468,21 @@ struct metadata_dst *iptunnel_metadata_reply(struct metadata_dst *md,
+ int skb_tunnel_check_pmtu(struct sk_buff *skb, struct dst_entry *encap_dst,
+ 			  int headroom, bool reply);
  
- 	kfree_skb(qca->rx_skb);
++static inline void ip_tunnel_adj_headroom(struct net_device *dev,
++					  unsigned int headroom)
++{
++	/* we must cap headroom to some upperlimit, else pskb_expand_head
++	 * will overflow header offsets in skb_headers_offset_update().
++	 */
++	const unsigned int max_allowed = 512;
++
++	if (headroom > max_allowed)
++		headroom = max_allowed;
++
++	if (headroom > READ_ONCE(dev->needed_headroom))
++		WRITE_ONCE(dev->needed_headroom, headroom);
++}
++
+ int iptunnel_handle_offloads(struct sk_buff *skb, int gso_type_mask);
+ 
+ static inline int iptunnel_pull_offloads(struct sk_buff *skb)
+diff --git a/net/ipv4/ip_tunnel.c b/net/ipv4/ip_tunnel.c
+index cf9184928eded..6a85200002969 100644
+--- a/net/ipv4/ip_tunnel.c
++++ b/net/ipv4/ip_tunnel.c
+@@ -553,20 +553,6 @@ static int tnl_update_pmtu(struct net_device *dev, struct sk_buff *skb,
+ 	return 0;
+ }
+ 
+-static void ip_tunnel_adj_headroom(struct net_device *dev, unsigned int headroom)
+-{
+-	/* we must cap headroom to some upperlimit, else pskb_expand_head
+-	 * will overflow header offsets in skb_headers_offset_update().
+-	 */
+-	static const unsigned int max_allowed = 512;
+-
+-	if (headroom > max_allowed)
+-		headroom = max_allowed;
+-
+-	if (headroom > READ_ONCE(dev->needed_headroom))
+-		WRITE_ONCE(dev->needed_headroom, headroom);
+-}
+-
+ void ip_md_tunnel_xmit(struct sk_buff *skb, struct net_device *dev,
+ 		       u8 proto, int tunnel_hlen)
+ {
+diff --git a/net/ipv6/ip6_tunnel.c b/net/ipv6/ip6_tunnel.c
+index bd27204725ed8..6efad8d6653b6 100644
+--- a/net/ipv6/ip6_tunnel.c
++++ b/net/ipv6/ip6_tunnel.c
+@@ -1277,8 +1277,7 @@ int ip6_tnl_xmit(struct sk_buff *skb, struct net_device *dev, __u8 dsfield,
+ 	 */
+ 	max_headroom = LL_RESERVED_SPACE(dst->dev) + sizeof(struct ipv6hdr)
+ 			+ dst->header_len + t->hlen;
+-	if (max_headroom > READ_ONCE(dev->needed_headroom))
+-		WRITE_ONCE(dev->needed_headroom, max_headroom);
++	ip_tunnel_adj_headroom(dev, max_headroom);
+ 
+ 	err = ip6_tnl_encap(skb, t, &proto, fl6);
+ 	if (err)
+-- 
+2.51.0
+
 
 
 
