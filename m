@@ -1,55 +1,62 @@
-Return-Path: <stable+bounces-191054-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191220-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0381C10F49
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:27:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31688C111B6
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:34:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2176C1899C4C
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:23:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7C4CC1896422
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:31:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECF82321445;
-	Mon, 27 Oct 2025 19:21:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B10432ABC5;
+	Mon, 27 Oct 2025 19:28:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fyDaEbpx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zlSk1eKJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99FE131E107;
-	Mon, 27 Oct 2025 19:21:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17AF1322C8A;
+	Mon, 27 Oct 2025 19:28:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592893; cv=none; b=elKIJVWtOkE9xeZ3xXJpKAbm2UnxB1dVDaRkpwLWb/ugNAv7IVtbtnFePhkX2chsxKW0o0TIZ6yrjHuO5hjCgFAHPClKlu/R/Wk5/R3mqU6XWqqh6La+5DK9jzvSfITVfxOsj6T4qkU67DwqtJZ9iQLywtkwjXcban2Io2MuWUI=
+	t=1761593317; cv=none; b=LBp3qsNC+zd/bfbgrHmZyu95qBMOp6OTNezeWnVy/jeSdHTRjAig9QXZD67LJLBYRXVYm0682Ww+qiYrM/4R3LFOo4HCba/LGGY3H0Re5Eky7rfT1P+vSD3GnzARtPW5NqqJOui2nNcOxTRfQ3dprAz/Hc52fEUxoTlvl841y+o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592893; c=relaxed/simple;
-	bh=FBTt/RY6MyGUCttokx96deFBvFrPhxbKX6PAKKWoO4s=;
+	s=arc-20240116; t=1761593317; c=relaxed/simple;
+	bh=gDArKzLF5qfyVkb15xL8ZgrV74YfZ8OXmg9dWjTvI0c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CVBUxJeL4EgdVmvWQknozaISDyrS/zub1VVEWY1BxJfOZHcy7rLRdtPTdRkxwxMaT8SUsAyB87RORG1asDMvJuPLd3MgZJB65yhsFcQsX/lY8yRw91/VJvMiiET9xq9RbwMAo24UgHkTbUS4NCGj8gnLqoONe6IFnrSKTIxbZDM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fyDaEbpx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E673C4CEF1;
-	Mon, 27 Oct 2025 19:21:33 +0000 (UTC)
+	 MIME-Version; b=GW3zR9cWtCNhWMZZ5lI4E0sRg0MBk8Esq4DjlNbDaer9uspvnIznNiHJyaqT3V5mDnGPK7AfZG4tjq4SJ7MZ/ygvHq4xt1PDJ2QgFCDMfKIzIQ9FKqWUOywqxQSGsyW4nWzjBnwMCd3rSazAOM1L1sZm9phu7IM70ipc6VTdCyA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zlSk1eKJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 953ABC4CEF1;
+	Mon, 27 Oct 2025 19:28:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592893;
-	bh=FBTt/RY6MyGUCttokx96deFBvFrPhxbKX6PAKKWoO4s=;
+	s=korg; t=1761593316;
+	bh=gDArKzLF5qfyVkb15xL8ZgrV74YfZ8OXmg9dWjTvI0c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fyDaEbpxbVTUGl/Uw6xH9zytmJaNdL1jebTw8u0Qd/zKM4+C8syNM1V5+Eeh76E/B
-	 y6z21HotT8gQznFyb0cHkqPxyCaDxlyQMcYXwpCgiaLFXJ2JtoGSEfrPz5/Ok5NTQf
-	 wdLpHRsMvDmUkfpHKcR+G5Oeuh+hvOKqleSL3gko=
+	b=zlSk1eKJAUy9VIbYL+6UZlAKhOL0klYcmsfyKe8zqylJmmrCTfhLreyj2ZzeiOkVN
+	 DhocU/t6SiJLTM1yuxNt9ASBvJTiuM/qHE7Easy27Otl7PF0J6//l/H6klgUQwpugS
+	 KrPFQrZ0MI1/treC7Qrjkux8pTL5pikCi8YN3PCE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.12 052/117] Revert "cpuidle: menu: Avoid discarding useful information"
+	Simon Horman <horms@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Jiri Slaby <jirislaby@kernel.org>,
+	Tonghao Zhang <tonghao@bamaicloud.com>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Jay Vosburgh <jv@jvosburgh.net>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.17 096/184] net: bonding: update the slave array for broadcast mode
 Date: Mon, 27 Oct 2025 19:36:18 +0100
-Message-ID: <20251027183455.416267806@linuxfoundation.org>
+Message-ID: <20251027183517.490461055@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
-References: <20251027183453.919157109@linuxfoundation.org>
+In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
+References: <20251027183514.934710872@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,83 +68,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Tonghao Zhang <tonghao@bamaicloud.com>
 
-commit 10fad4012234a7dea621ae17c0c9486824f645a0 upstream.
+commit e0caeb24f538c3c9c94f471882ceeb43d9dc2739 upstream.
 
-It is reported that commit 85975daeaa4d ("cpuidle: menu: Avoid discarding
-useful information") led to a performance regression on Intel Jasper Lake
-systems because it reduced the time spent by CPUs in idle state C7 which
-is correlated to the maximum frequency the CPUs can get to because of an
-average running power limit [1].
+This patch fixes ce7a381697cb ("net: bonding: add broadcast_neighbor option for 802.3ad").
+Before this commit, on the broadcast mode, all devices were traversed using the
+bond_for_each_slave_rcu. This patch supports traversing devices by using all_slaves.
+Therefore, we need to update the slave array when enslave or release slave.
 
-Before that commit, get_typical_interval() would have returned UINT_MAX
-whenever it had been unable to make a high-confidence prediction which
-had led to selecting the deepest available idle state too often and
-both power and performance had been inadequate as a result of that on
-some systems.  However, this had not been a problem on systems with
-relatively aggressive average running power limits, like the Jasper Lake
-systems in question, because on those systems it was compensated by the
-ability to run CPUs faster.
-
-It was addressed by causing get_typical_interval() to return a number
-based on the recent idle duration information available to it even if it
-could not make a high-confidence prediction, but that clearly did not
-take the possible correlation between idle power and available CPU
-capacity into account.
-
-For this reason, revert most of the changes made by commit 85975daeaa4d,
-except for one cosmetic cleanup, and add a comment explaining the
-rationale for returning UINT_MAX from get_typical_interval() when it
-is unable to make a high-confidence prediction.
-
-Fixes: 85975daeaa4d ("cpuidle: menu: Avoid discarding useful information")
-Closes: https://lore.kernel.org/linux-pm/36iykr223vmcfsoysexug6s274nq2oimcu55ybn6ww4il3g3cv@cohflgdbpnq7/ [1]
-Reported-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: All applicable <stable@vger.kernel.org>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Link: https://patch.msgid.link/3663603.iIbC2pHGDl@rafael.j.wysocki
+Fixes: ce7a381697cb ("net: bonding: add broadcast_neighbor option for 802.3ad")
+Cc: Simon Horman <horms@kernel.org>
+Cc: Jonathan Corbet <corbet@lwn.net>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>
+Cc: <stable@vger.kernel.org>
+Reported-by: Jiri Slaby <jirislaby@kernel.org>
+Tested-by: Jiri Slaby <jirislaby@kernel.org>
+Link: https://lore.kernel.org/all/a97e6e1e-81bc-4a79-8352-9e4794b0d2ca@kernel.org/
+Signed-off-by: Tonghao Zhang <tonghao@bamaicloud.com>
+Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
+Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
+Acked-by: Jay Vosburgh <jv@jvosburgh.net>
+Link: https://patch.msgid.link/20251016125136.16568-1-tonghao@bamaicloud.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cpuidle/governors/menu.c |   21 +++++++++------------
- 1 file changed, 9 insertions(+), 12 deletions(-)
+ drivers/net/bonding/bond_main.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/drivers/cpuidle/governors/menu.c
-+++ b/drivers/cpuidle/governors/menu.c
-@@ -199,20 +199,17 @@ again:
- 	 *
- 	 * This can deal with workloads that have long pauses interspersed
- 	 * with sporadic activity with a bunch of short pauses.
-+	 *
-+	 * However, if the number of remaining samples is too small to exclude
-+	 * any more outliers, allow the deepest available idle state to be
-+	 * selected because there are systems where the time spent by CPUs in
-+	 * deep idle states is correlated to the maximum frequency the CPUs
-+	 * can get to.  On those systems, shallow idle states should be avoided
-+	 * unless there is a clear indication that the given CPU is most likley
-+	 * going to be woken up shortly.
- 	 */
--	if (divisor * 4 <= INTERVALS * 3) {
--		/*
--		 * If there are sufficiently many data points still under
--		 * consideration after the outliers have been eliminated,
--		 * returning without a prediction would be a mistake because it
--		 * is likely that the next interval will not exceed the current
--		 * maximum, so return the latter in that case.
--		 */
--		if (divisor >= INTERVALS / 2)
--			return max;
--
-+	if (divisor * 4 <= INTERVALS * 3)
- 		return UINT_MAX;
--	}
+--- a/drivers/net/bonding/bond_main.c
++++ b/drivers/net/bonding/bond_main.c
+@@ -2385,7 +2385,9 @@ skip_mac_set:
+ 		unblock_netpoll_tx();
+ 	}
  
- 	thresh = max - 1;
- 	goto again;
+-	if (bond_mode_can_use_xmit_hash(bond))
++	/* broadcast mode uses the all_slaves to loop through slaves. */
++	if (bond_mode_can_use_xmit_hash(bond) ||
++	    BOND_MODE(bond) == BOND_MODE_BROADCAST)
+ 		bond_update_slave_arr(bond, NULL);
+ 
+ 	if (!slave_dev->netdev_ops->ndo_bpf ||
+@@ -2561,7 +2563,8 @@ static int __bond_release_one(struct net
+ 
+ 	bond_upper_dev_unlink(bond, slave);
+ 
+-	if (bond_mode_can_use_xmit_hash(bond))
++	if (bond_mode_can_use_xmit_hash(bond) ||
++	    BOND_MODE(bond) == BOND_MODE_BROADCAST)
+ 		bond_update_slave_arr(bond, slave);
+ 
+ 	slave_info(bond_dev, slave_dev, "Releasing %s interface\n",
 
 
 
