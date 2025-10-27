@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-190818-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190675-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49CE5C10C4D
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:19:11 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DA74C109EA
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:13:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 56DC9567C15
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:13:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2227D188A4A7
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:08:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51FFC32B993;
-	Mon, 27 Oct 2025 19:11:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 373D6331A54;
+	Mon, 27 Oct 2025 19:05:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JLuPaRu0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZJs6XrI5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E0AC32ABDC;
-	Mon, 27 Oct 2025 19:11:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E88C13314DD;
+	Mon, 27 Oct 2025 19:05:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592277; cv=none; b=cfcRbeRntyf/kvxshZFjNkjfoN5BMBngVZ+JIe5Lnk+COC2O+T900j4E2ifMv2Eq4QSVYAgje4y4TETVcz0xpH5JE3Iz6CHV7MZnFRr3lI2Jl2Un5FsJ8dmt4GBk22V9TrCvtCApRNILWHAvHbJwLwDh+CaCoex7/50j9umjrdA=
+	t=1761591902; cv=none; b=ElCdhfcQ9bnQmOhP7xiCHmvCEK3Ld03ggkIOEoVtbbAyGAV3NP2eivVW3JVURPLpcpxXVefoawl+B7/RqjO3e7qp1Gho5Fy3gS+VLF90cY6vAwKgtuXeVoABID1yQwTfDNai+GT6+CkgR6kiO2Z5OdigavLcDwWkt7akos5rJdI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592277; c=relaxed/simple;
-	bh=70SAgvE2eE1JDZWmx6H+rWwX7VSQ5iS74BU4ARsEvjg=;
+	s=arc-20240116; t=1761591902; c=relaxed/simple;
+	bh=4JDtOfiZbYihCzsoQGpX6yBp1u2A557WPMXU71kLU+U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QcCfYdp2bGMuDMo9Ya2rZLGeLcT30bpp5j8gjjolMX6XlDuGT4uG6OhyurpYUtxxtpuMe/a/zl9QbHImzudifU2eTwX8ZZeFloJMXJ65/nHlEHIcP55NgYrySfC1Nl7LteuuqU01NfY2iva3jhoGwmN3ITYt3x56u02JuMUbHO8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JLuPaRu0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EAE2C4CEF1;
-	Mon, 27 Oct 2025 19:11:16 +0000 (UTC)
+	 MIME-Version; b=ZewuNv0HTZPI+2i4C7dFyzUdM3T5ygr9sQt8rAKDgxpSdQDVQoLwTUfnyw4t1BFE1KxByk+wxcAhfg1yifsBeZCJVq+GtevSHrCPPzkjJDI0tkJEkFtR9DVtsSQb+Iz7w622JSYMcaj11SD/W+we9dMInA0vz5H9jU0REmtcFu4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZJs6XrI5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7914DC4CEF1;
+	Mon, 27 Oct 2025 19:05:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592276;
-	bh=70SAgvE2eE1JDZWmx6H+rWwX7VSQ5iS74BU4ARsEvjg=;
+	s=korg; t=1761591901;
+	bh=4JDtOfiZbYihCzsoQGpX6yBp1u2A557WPMXU71kLU+U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JLuPaRu0lGYysxWDHDFOU5xBAVGsaAvPajjty5bnuwCPPbF+s/7KvusZE656gEcyW
-	 KVry0+bER8TTguNVEJ67BxvnkWPuEiz0A5BIKRo66TVPo6LKvaxyRBpe2ePBZJI6FZ
-	 Ur2ABXtK3VfbH3deCKIHTZsAhvSPo3V7QXT5DYo0=
+	b=ZJs6XrI5U6+HUY9cUrgb/2H29yyTbaTnIAxmXNVuGOkjO1u9bQUP+qnmucAnM+wzZ
+	 o1JVJrl0/X8UyioCLrUqaGCLAjkssDYWEW9ISdqhNLy2fIDH8frqP1BZYIBBsHGYiB
+	 8W0v/sF949GobppFwl9ETOzAQ9aYbFTSQ+c5pcng=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Takashi Sakamoto <o-takashi@sakamocchi.jp>,
-	Takashi Iwai <tiwai@suse.de>,
+	Simon Schuster <schuster.simon@siemens-energy.com>,
+	Andreas Oetken <andreas.oetken@siemens-energy.com>,
+	Dinh Nguyen <dinguyen@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 061/157] ALSA: firewire: amdtp-stream: fix enum kernel-doc warnings
+Subject: [PATCH 5.15 042/123] nios2: ensure that memblock.current_limit is set when setting pfn limits
 Date: Mon, 27 Oct 2025 19:35:22 +0100
-Message-ID: <20251027183502.922666822@linuxfoundation.org>
+Message-ID: <20251027183447.528372867@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
-References: <20251027183501.227243846@linuxfoundation.org>
+In-Reply-To: <20251027183446.381986645@linuxfoundation.org>
+References: <20251027183446.381986645@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +63,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Simon Schuster <schuster.simon@siemens-energy.com>
 
-[ Upstream commit d41f68dff783d181a8fd462e612bda0fbab7f735 ]
+[ Upstream commit a20b83cf45be2057f3d073506779e52c7fa17f94 ]
 
-Fix spelling of CIP_NO_HEADER to prevent a kernel-doc warning.
+On nios2, with CONFIG_FLATMEM set, the kernel relies on
+memblock_get_current_limit() to determine the limits of mem_map, in
+particular for max_low_pfn.
+Unfortunately, memblock.current_limit is only default initialized to
+MEMBLOCK_ALLOC_ANYWHERE at this point of the bootup, potentially leading
+to situations where max_low_pfn can erroneously exceed the value of
+max_pfn and, thus, the valid range of available DRAM.
 
-Warning: amdtp-stream.h:57 Enum value 'CIP_NO_HEADER' not described in enum 'cip_flags'
-Warning: amdtp-stream.h:57 Excess enum value '%CIP_NO_HEADERS' description in 'cip_flags'
+This can in turn cause kernel-level paging failures, e.g.:
 
-Fixes: 3b196c394dd9f ("ALSA: firewire-lib: add no-header packet processing")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Reviewed-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+[   76.900000] Unable to handle kernel paging request at virtual address 20303000
+[   76.900000] ea = c0080890, ra = c000462c, cause = 14
+[   76.900000] Kernel panic - not syncing: Oops
+[   76.900000] ---[ end Kernel panic - not syncing: Oops ]---
+
+This patch fixes this by pre-calculating memblock.current_limit
+based on the upper limits of the available memory ranges via
+adjust_lowmem_bounds, a simplified version of the equivalent
+implementation within the arm architecture.
+
+Signed-off-by: Simon Schuster <schuster.simon@siemens-energy.com>
+Signed-off-by: Andreas Oetken <andreas.oetken@siemens-energy.com>
+Signed-off-by: Dinh Nguyen <dinguyen@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/firewire/amdtp-stream.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/nios2/kernel/setup.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/sound/firewire/amdtp-stream.h b/sound/firewire/amdtp-stream.h
-index 011d0f0c39415..dc70256ca2203 100644
---- a/sound/firewire/amdtp-stream.h
-+++ b/sound/firewire/amdtp-stream.h
-@@ -32,7 +32,7 @@
-  *	allows 5 times as large as IEC 61883-6 defines.
-  * @CIP_HEADER_WITHOUT_EOH: Only for in-stream. CIP Header doesn't include
-  *	valid EOH.
-- * @CIP_NO_HEADERS: a lack of headers in packets
-+ * @CIP_NO_HEADER: a lack of headers in packets
-  * @CIP_UNALIGHED_DBC: Only for in-stream. The value of dbc is not alighed to
-  *	the value of current SYT_INTERVAL; e.g. initial value is not zero.
-  * @CIP_UNAWARE_SYT: For outgoing packet, the value in SYT field of CIP is 0xffff.
+diff --git a/arch/nios2/kernel/setup.c b/arch/nios2/kernel/setup.c
+index 40bc8fb75e0b5..e2fc4b59d93ea 100644
+--- a/arch/nios2/kernel/setup.c
++++ b/arch/nios2/kernel/setup.c
+@@ -147,6 +147,20 @@ static void __init find_limits(unsigned long *min, unsigned long *max_low,
+ 	*max_high = PFN_DOWN(memblock_end_of_DRAM());
+ }
+ 
++static void __init adjust_lowmem_bounds(void)
++{
++	phys_addr_t block_start, block_end;
++	u64 i;
++	phys_addr_t memblock_limit = 0;
++
++	for_each_mem_range(i, &block_start, &block_end) {
++		if (block_end > memblock_limit)
++			memblock_limit = block_end;
++	}
++
++	memblock_set_current_limit(memblock_limit);
++}
++
+ void __init setup_arch(char **cmdline_p)
+ {
+ 	console_verbose();
+@@ -160,6 +174,7 @@ void __init setup_arch(char **cmdline_p)
+ 	/* Keep a copy of command line */
+ 	*cmdline_p = boot_command_line;
+ 
++	adjust_lowmem_bounds();
+ 	find_limits(&min_low_pfn, &max_low_pfn, &max_pfn);
+ 	max_mapnr = max_low_pfn;
+ 
 -- 
 2.51.0
 
