@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-190431-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190125-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E2F8C10524
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:57:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BAC2EC0FFAB
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:41:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id A5AF6352F7F
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:57:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7A3FF46248C
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:41:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A53B03314AB;
-	Mon, 27 Oct 2025 18:54:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BC993191BF;
+	Mon, 27 Oct 2025 18:41:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a6yvGwrw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BGQ6GX+P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 634AE31BC91;
-	Mon, 27 Oct 2025 18:54:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9FEB313520;
+	Mon, 27 Oct 2025 18:41:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591273; cv=none; b=OEy1gsOEDp41ofvxEE20B3OrzFMcF2oJ4iUCHszeY5abIaM1YqzEAmgvicWidmWgd8z1fizEQL4tCvRUNuSoCtDeByKB/GxBwZiOjcEHe1HXFF5jEPQgVQxtK5yN7Oswjgorr2DoviUiudJ9OitJe/mja7NJVI2uBoLB9bYTon0=
+	t=1761590503; cv=none; b=ozFiykg+mmxthMpKr06TgsPG6qApO7IQwrCmxyazEFPoJ5/sJ7ETinJK9qgcfAU1D+iCRN7c552yaLDdtEM8ss73ZD5cPIil4dAyrcJ9HSYcNyeMYGM7CNOZ3TFOSv9BE2G7NAw0G1FD0ADNwPb5qd7sNmiqHN1OBCQDQqL0/QY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591273; c=relaxed/simple;
-	bh=L4b/F9EOZyJD6hh7oDwEd0BSO/3zMCCZBbOl25lX4QA=;
+	s=arc-20240116; t=1761590503; c=relaxed/simple;
+	bh=tmM4SBvXnBX9OwY5DKAgI0KWq81V4UfrR69REABzu0g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A4XuzuOaj3+w8yLc3ztjLZ+AZkRZPAZAziaqaZZoUlmNINp74Yb/GadChSDCX3oDJXe8dA95UCrcFAAakmI3BDriPqq6HaVjl1fCoxvNy+6t1jZ3X/cl17Xpw+aRyo4nbYkt4CqDD3orwWNwK6P+XSMOOPyZKOW0S22egmNFBBE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a6yvGwrw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8012C4CEF1;
-	Mon, 27 Oct 2025 18:54:32 +0000 (UTC)
+	 MIME-Version; b=JtKHalA0md2t/j1if9U2Sbk96acqY++jo05M4zMbGZi61S8f/q9MWksYA+eaCNVflI9findvjDtNyydk22ypmTjXd95A8x6+3gmTv56Ji6S4g28zOqwwEWV2xT/km8LPC7dgciqWcD9Q94kFZg2LZsTdCKiV82GkgBBHDa9IVls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BGQ6GX+P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F79AC4CEF1;
+	Mon, 27 Oct 2025 18:41:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591273;
-	bh=L4b/F9EOZyJD6hh7oDwEd0BSO/3zMCCZBbOl25lX4QA=;
+	s=korg; t=1761590503;
+	bh=tmM4SBvXnBX9OwY5DKAgI0KWq81V4UfrR69REABzu0g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a6yvGwrwca/ifx3hLPmZ8XyYf+Mt1OPaEwmBCjyx1P2FVvQQA0G4SpLjpqoGMoesD
-	 BhNAu9f9xWb7y16oqv0BwZkwhxlDIU/eoxXwIHhUr/fW1Ur0Jin2E54ibYok3XZGEK
-	 ecPWUcHGQYJ9dkkrbkpeUsoPJ09d0SuErzoVo10g=
+	b=BGQ6GX+P9sG/GgiVxZDP9y6XiRDz1LBYMRfbRMITRwsRmjNcrQvy0ptIvBR+6WAsq
+	 LXFcz01Mxypi0C0e309Bz/Fsf1kvIwzrn8Oj3VutcwQKx5ePLfvLVFh8O2R6Q1l4dL
+	 oc6XZ3cJ/VlJMSYadvlsF50f3BkhoBSDXt4H/mtY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Carlo Caione <ccaione@baylibre.com>,
-	Johan Hovold <johan@kernel.org>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>
-Subject: [PATCH 5.10 133/332] firmware: meson_sm: fix device leak at probe
+	Eric Dumazet <edumazet@google.com>,
+	Neal Cardwell <ncardwell@google.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Jason Xing <kerneljasonxing@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 040/224] tcp: fix __tcp_close() to only send RST when required
 Date: Mon, 27 Oct 2025 19:33:06 +0100
-Message-ID: <20251027183528.143389101@linuxfoundation.org>
+Message-ID: <20251027183510.079800548@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
-References: <20251027183524.611456697@linuxfoundation.org>
+In-Reply-To: <20251027183508.963233542@linuxfoundation.org>
+References: <20251027183508.963233542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +65,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 8ece3173f87df03935906d0c612c2aeda9db92ca upstream.
+[ Upstream commit 5f9238530970f2993b23dd67fdaffc552a2d2e98 ]
 
-Make sure to drop the reference to the secure monitor device taken by
-of_find_device_by_node() when looking up its driver data on behalf of
-other drivers (e.g. during probe).
+If the receive queue contains payload that was already
+received, __tcp_close() can send an unexpected RST.
 
-Note that holding a reference to the platform device does not prevent
-its driver data from going away so there is no point in keeping the
-reference after the helper returns.
+Refine the code to take tp->copied_seq into account,
+as we already do in tcp recvmsg().
 
-Fixes: 8cde3c2153e8 ("firmware: meson_sm: Rework driver as a proper platform driver")
-Cc: stable@vger.kernel.org	# 5.5
-Cc: Carlo Caione <ccaione@baylibre.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Acked-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Link: https://lore.kernel.org/r/20250725074019.8765-1-johan@kernel.org
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Neal Cardwell <ncardwell@google.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Reviewed-by: Jason Xing <kerneljasonxing@gmail.com>
+Link: https://patch.msgid.link/20250903084720.1168904-2-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/meson/meson_sm.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ net/ipv4/tcp.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
---- a/drivers/firmware/meson/meson_sm.c
-+++ b/drivers/firmware/meson/meson_sm.c
-@@ -225,11 +225,16 @@ EXPORT_SYMBOL(meson_sm_call_write);
- struct meson_sm_firmware *meson_sm_get(struct device_node *sm_node)
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index cc0efcb4a553c..a0a5590573b03 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -2359,8 +2359,8 @@ bool tcp_check_oom(struct sock *sk, int shift)
+ 
+ void __tcp_close(struct sock *sk, long timeout)
  {
- 	struct platform_device *pdev = of_find_device_by_node(sm_node);
-+	struct meson_sm_firmware *fw;
++	bool data_was_unread = false;
+ 	struct sk_buff *skb;
+-	int data_was_unread = 0;
+ 	int state;
  
- 	if (!pdev)
- 		return NULL;
+ 	WRITE_ONCE(sk->sk_shutdown, SHUTDOWN_MASK);
+@@ -2379,11 +2379,12 @@ void __tcp_close(struct sock *sk, long timeout)
+ 	 *  reader process may not have drained the data yet!
+ 	 */
+ 	while ((skb = __skb_dequeue(&sk->sk_receive_queue)) != NULL) {
+-		u32 len = TCP_SKB_CB(skb)->end_seq - TCP_SKB_CB(skb)->seq;
++		u32 end_seq = TCP_SKB_CB(skb)->end_seq;
  
--	return platform_get_drvdata(pdev);
-+	fw = platform_get_drvdata(pdev);
-+
-+	put_device(&pdev->dev);
-+
-+	return fw;
- }
- EXPORT_SYMBOL_GPL(meson_sm_get);
+ 		if (TCP_SKB_CB(skb)->tcp_flags & TCPHDR_FIN)
+-			len--;
+-		data_was_unread += len;
++			end_seq--;
++		if (after(end_seq, tcp_sk(sk)->copied_seq))
++			data_was_unread = true;
+ 		__kfree_skb(skb);
+ 	}
  
+-- 
+2.51.0
+
 
 
 
