@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-191236-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190856-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2270C11390
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:43:42 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24940C10D1E
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:21:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 90554564D18
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:31:29 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5EA2D4FFFC1
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:15:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1F0032C31E;
-	Mon, 27 Oct 2025 19:29:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 044E131D72B;
+	Mon, 27 Oct 2025 19:13:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LJvIEzLR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e6uHzOGP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C142304BD3;
-	Mon, 27 Oct 2025 19:29:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6D992D5A14;
+	Mon, 27 Oct 2025 19:12:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761593370; cv=none; b=no3bgj/QgvnCv1ZjCjOFmoxHB9Xlv8ft9yXQ/IuN7tQWsiecbsiK6ntMEvO/8yoItkAfdDG7AI6Q+DBSksmsNdnZC4udP1fh4HQR4WCbXG/hzVPj51aUsHWXl7regezHwylS2UUvQSIS+RHFZIx80zlJus+cQPmHKEgKiUwRuNw=
+	t=1761592379; cv=none; b=ln9TKIt5zk6K/Pyqn2gQNq+UKVZBAqmGmXOy38hWzRFvxMIfeWl95DIw0IXJOWIM/d6utxDwudPV0f8tv7a/kQzypJvdn6RQCl+lZDNMeAikzjyhuFQQ/cGMlwLyKY9oohDks7742HmZwWn6OxBQGw0IRZ2E3Xy6aUVfi97AsNk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761593370; c=relaxed/simple;
-	bh=8Nc/20Uv/Ki8kabok6cq8tHwpe97n6DpVU+47N4uAaE=;
+	s=arc-20240116; t=1761592379; c=relaxed/simple;
+	bh=nj3yxv5viiaNE7KjZrZob+dJcSSpTSH0Pu0SCrX/+Nc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QwxWZeZtY1dlq9CyybTs+XHFvtBkGsNQx664ISim6jDWsAoPzlnAnJJ3hToHkMcq2zqptGoQMJgZ9j4tkZKuOw/hOxRdZZKLbDedMuAh6PCiwdda/3Z3a4daboTZrrJvetoKK8+XLJM7Yb4AmqsnHwCZPg0stZeUX98miH2WQR4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LJvIEzLR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D765DC4CEF1;
-	Mon, 27 Oct 2025 19:29:29 +0000 (UTC)
+	 MIME-Version; b=IysYaoFD4icZ/SwnjY1mSTkXUoLJ1a0tLJLCMkbpAQu2Ar15pdvZQUHucorFCQn7cd4LG23gTvj/r5XZrlrfv7Siva1viLplKCOwCFLbDNC8e7XQMQ7aWTy6ta92RhPPx5gxhaKF0VnwIlXg0pEZ/SUZ8F8NEKOGDulMvj9Xsuw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e6uHzOGP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E69D9C4CEF1;
+	Mon, 27 Oct 2025 19:12:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761593370;
-	bh=8Nc/20Uv/Ki8kabok6cq8tHwpe97n6DpVU+47N4uAaE=;
+	s=korg; t=1761592379;
+	bh=nj3yxv5viiaNE7KjZrZob+dJcSSpTSH0Pu0SCrX/+Nc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LJvIEzLRbbMlgOhzZALmKHMpICj/PIstd6EitbU1IxFEViZ7KOAjRhB38AJxlxs9K
-	 wvSm4xsak6UmbzJxeMBUHq2WRkyR6zv64xHHP5cbQ6n1NKI9KOAtshZ+HE8l36biKt
-	 dxHrUMafnbnjAxUVbXGKlntVEGZFdYg3twwal6tw=
+	b=e6uHzOGP4fvPjDVggBz51vEtUzHPYiNzJWTMLI5rOH4cCF/rkOJVMDoscUHOciXa7
+	 oQN9hEdBcaPNThFUEuIM09J1meAsTyv35ej8BEdqvfOpeegEQo9yJHkoaa8q8fSC5P
+	 WsF73s7rS0BaohT2ETFxxYPgdpC+bDhCY0+GckbQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Carlos Maiolino <cem@kernel.org>
-Subject: [PATCH 6.17 076/184] xfs: fix locking in xchk_nlinks_collect_dir
-Date: Mon, 27 Oct 2025 19:35:58 +0100
-Message-ID: <20251027183516.946172338@linuxfoundation.org>
+	Geliang Tang <geliang@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 098/157] selftests: mptcp: join: mark flush re-add as skipped if not supported
+Date: Mon, 27 Oct 2025 19:35:59 +0100
+Message-ID: <20251027183503.895462857@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
-References: <20251027183514.934710872@linuxfoundation.org>
+In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
+References: <20251027183501.227243846@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,98 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Darrick J. Wong <djwong@kernel.org>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-commit f477af0cfa0487eddec66ffe10fd9df628ba6f52 upstream.
+commit d68460bc31f9c8c6fc81fbb56ec952bec18409f1 upstream.
 
-On a filesystem with parent pointers, xchk_nlinks_collect_dir walks both
-the directory entries (data fork) and the parent pointers (attr fork) to
-determine the correct link count.  Unfortunately I forgot to update the
-lock mode logic to handle the case of a directory whose attr fork is in
-btree format and has not yet been loaded *and* whose data fork doesn't
-need loading.
+The call to 'continue_if' was missing: it properly marks a subtest as
+'skipped' if the attached condition is not valid.
 
-This leads to a bunch of assertions from xfs/286 in xfs_iread_extents
-because we only took ILOCK_SHARED, not ILOCK_EXCL.  You'd need the rare
-happenstance of a directory with a large number of non-pptr extended
-attributes set and enough memory pressure to cause the directory to be
-evicted and partially reloaded from disk.
+Without that, the test is wrongly marked as passed on older kernels.
 
-I /think/ this only started in 6.18-rc1 because I've started seeing OOM
-errors with the maple tree slab using 70% of memory, and this didn't
-happen in 6.17.  Yay dynamic systems!
-
-Cc: stable@vger.kernel.org # v6.10
-Fixes: 77ede5f44b0d86 ("xfs: walk directory parent pointers to determine backref count")
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Carlos Maiolino <cem@kernel.org>
+Fixes: e06959e9eebd ("selftests: mptcp: join: test for flush/re-add endpoints")
+Cc: stable@vger.kernel.org
+Reviewed-by: Geliang Tang <geliang@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20251020-net-mptcp-c-flag-late-add-addr-v1-2-8207030cb0e8@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/xfs/scrub/nlinks.c |   34 +++++++++++++++++++++++++++++++---
- 1 file changed, 31 insertions(+), 3 deletions(-)
+ tools/testing/selftests/net/mptcp/mptcp_join.sh |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/xfs/scrub/nlinks.c
-+++ b/fs/xfs/scrub/nlinks.c
-@@ -376,6 +376,36 @@ out_incomplete:
- 	return error;
- }
+--- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+@@ -3457,7 +3457,7 @@ endpoint_tests()
  
-+static uint
-+xchk_nlinks_ilock_dir(
-+	struct xfs_inode	*ip)
-+{
-+	uint			lock_mode = XFS_ILOCK_SHARED;
-+
-+	/*
-+	 * We're going to scan the directory entries, so we must be ready to
-+	 * pull the data fork mappings into memory if they aren't already.
-+	 */
-+	if (xfs_need_iread_extents(&ip->i_df))
-+		lock_mode = XFS_ILOCK_EXCL;
-+
-+	/*
-+	 * We're going to scan the parent pointers, so we must be ready to
-+	 * pull the attr fork mappings into memory if they aren't already.
-+	 */
-+	if (xfs_has_parent(ip->i_mount) && xfs_inode_has_attr_fork(ip) &&
-+	    xfs_need_iread_extents(&ip->i_af))
-+		lock_mode = XFS_ILOCK_EXCL;
-+
-+	/*
-+	 * Take the IOLOCK so that other threads cannot start a directory
-+	 * update while we're scanning.
-+	 */
-+	lock_mode |= XFS_IOLOCK_SHARED;
-+	xfs_ilock(ip, lock_mode);
-+	return lock_mode;
-+}
-+
- /* Walk a directory to bump the observed link counts of the children. */
- STATIC int
- xchk_nlinks_collect_dir(
-@@ -394,8 +424,7 @@ xchk_nlinks_collect_dir(
- 		return 0;
- 
- 	/* Prevent anyone from changing this directory while we walk it. */
--	xfs_ilock(dp, XFS_IOLOCK_SHARED);
--	lock_mode = xfs_ilock_data_map_shared(dp);
-+	lock_mode = xchk_nlinks_ilock_dir(dp);
- 
- 	/*
- 	 * The dotdot entry of an unlinked directory still points to the last
-@@ -452,7 +481,6 @@ out_abort:
- 	xchk_iscan_abort(&xnc->collect_iscan);
- out_unlock:
- 	xfs_iunlock(dp, lock_mode);
--	xfs_iunlock(dp, XFS_IOLOCK_SHARED);
- 	return error;
- }
- 
+ 	# flush and re-add
+ 	if reset_with_tcp_filter "flush re-add" ns2 10.0.3.2 REJECT OUTPUT &&
+-	   mptcp_lib_kallsyms_has "subflow_rebuild_header$"; then
++	   continue_if mptcp_lib_kallsyms_has "subflow_rebuild_header$"; then
+ 		pm_nl_set_limits $ns1 0 2
+ 		pm_nl_set_limits $ns2 1 2
+ 		# broadcast IP: no packet for this address will be received on ns1
 
 
 
