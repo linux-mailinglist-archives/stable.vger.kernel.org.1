@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-190938-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190868-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id E80EFC10E98
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:24:59 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3EE2C10AD7
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:15:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 89864546B17
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:17:34 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 7095F352058
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:15:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2FC531D72A;
-	Mon, 27 Oct 2025 19:16:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01C562C11DF;
+	Mon, 27 Oct 2025 19:13:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F/hwFuSP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XnsHZLqt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A3912DC33D;
-	Mon, 27 Oct 2025 19:16:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0D49221DAC;
+	Mon, 27 Oct 2025 19:13:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592591; cv=none; b=Xg3L3osxxHx9vnZF9nhv2hsk4zJyxkCVyWjOaQxusvhTwTwW/f5ZZtfZAgwIMBJI42mxSJ7VeQG8Id1SgM9wC03sE75dzP3mAMVo+Lkk99/+v4kGBBumc0YZZ2yx5t1Y44K12f5U3cANZjVpiHGxQd/PxEhcU9iwZBwGuHnp/0k=
+	t=1761592410; cv=none; b=Es3U/qgRLA0+UenMTm8W08VcITl45iVMq+uf2TLm3FkipirQuil58cbGrG8/X21Mmi+JdK4z4PdVS0bG84evQWSz62VUAs9IJUIOFt/MDZ/PJ8UvJ+zdRc/sqMrNrkBDQfSydPHuyx9OK6GWRjOmbe8874xD2UqhpJY5ym7oIIE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592591; c=relaxed/simple;
-	bh=2awGQTVe6ylerQ3YKE+FEIeA0Q69e0cDEKRFW/Qzwgc=;
+	s=arc-20240116; t=1761592410; c=relaxed/simple;
+	bh=GT0XK8Hku8JXHMFO7+Zqm1DyvoyqxNROojfCpYt3WWI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dX/GXx0cRyDZ2oh8dDBhS+RQr549Cg9G4Jf9OQid/toUqnOZPKoTMd0/i7PY3fAN1ZPVoPrJgu7gJF00H2IbU6cNTA4ucFdVO1OlbtE8rzOgZqE3TffjBQxg64k7ipzyrXdB3X2l0CTLu8NsZX/Wh3ZaSC8D92RJrGwYzygvRlg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F/hwFuSP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC3C4C4CEF1;
-	Mon, 27 Oct 2025 19:16:30 +0000 (UTC)
+	 MIME-Version; b=U0up+OyLptzlUxW4+/y87q+FO6L4ZmZ3zUvZwFfA+N5/HpPeOsQWNdTuqgtv2AooV9nEhZhNWCJ5/s7HzM0rrkkAMsv2rVa/9ZYOtGP/kuf5hiGNjhVSpcRMXJY27aSmC4T04+O4ku6cfSv3zLlou59ykwu1pKW5c3pCtu/lGEQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XnsHZLqt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 445CAC4CEF1;
+	Mon, 27 Oct 2025 19:13:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592591;
-	bh=2awGQTVe6ylerQ3YKE+FEIeA0Q69e0cDEKRFW/Qzwgc=;
+	s=korg; t=1761592410;
+	bh=GT0XK8Hku8JXHMFO7+Zqm1DyvoyqxNROojfCpYt3WWI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F/hwFuSPhy2xzNYOyzp6TRQxS8BIRAWFiP+4w2f9sRhnpuvmJpiyU6VMp/3o2FuMS
-	 w1T6UF4008l17fQYjMex4rfz9vXxZWfMYiycr2KvgCEGDrNMto5+Jgn2LeMOprDbuW
-	 2nXYr443xzx+mQkJ7ZKU2WIA/K5aK/fHGRJuKsG0=
+	b=XnsHZLqtz6NcHOu9zvsLFWEVza7lzqrXUlQMwGEqHvPlcb4npyM+NwdYaFBDpwjFW
+	 uvXEaxHKj/8HKm6m53UNt0w4aujRhMxCda4FR5jCn71SJhYQMgdUFEt8ms27az2TAZ
+	 3aH7opOXKis4wAsbdoYpc55lxX7TMPSyEjTOpoII=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wei Fang <wei.fang@nxp.com>,
-	Claudiu Manoil <claudiu.manoil@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 21/84] net: enetc: correct the value of ENETC_RXB_TRUESIZE
+	Yu-Ting Tseng <yutingtseng@google.com>,
+	Alice Ryhl <aliceryhl@google.com>
+Subject: [PATCH 6.1 109/157] binder: remove "invalid inc weak" check
 Date: Mon, 27 Oct 2025 19:36:10 +0100
-Message-ID: <20251027183439.385661697@linuxfoundation.org>
+Message-ID: <20251027183504.177173941@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183438.817309828@linuxfoundation.org>
-References: <20251027183438.817309828@linuxfoundation.org>
+In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
+References: <20251027183501.227243846@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +61,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wei Fang <wei.fang@nxp.com>
+From: Alice Ryhl <aliceryhl@google.com>
 
-[ Upstream commit e59bc32df2e989f034623a580e30a2a72af33b3f ]
+commit d90eeb8ecd227c204ab6c34a17b372bd950b7aa2 upstream.
 
-The ENETC RX ring uses the page halves flipping mechanism, each page is
-split into two halves for the RX ring to use. And ENETC_RXB_TRUESIZE is
-defined to 2048 to indicate the size of half a page. However, the page
-size is configurable, for ARM64 platform, PAGE_SIZE is default to 4K,
-but it could be configured to 16K or 64K.
+There are no scenarios where a weak increment is invalid on binder_node.
+The only possible case where it could be invalid is if the kernel
+delivers BR_DECREFS to the process that owns the node, and then
+increments the weak refcount again, effectively "reviving" a dead node.
 
-When PAGE_SIZE is set to 16K or 64K, ENETC_RXB_TRUESIZE is not correct,
-and the RX ring will always use the first half of the page. This is not
-consistent with the description in the relevant kernel doc and commit
-messages.
+However, that is not possible: when the BR_DECREFS command is delivered,
+the kernel removes and frees the binder_node. The fact that you were
+able to call binder_inc_node_nilocked() implies that the node is not yet
+destroyed, which implies that BR_DECREFS has not been delivered to
+userspace, so incrementing the weak refcount is valid.
 
-This issue is invisible in most cases, but if users want to increase
-PAGE_SIZE to receive a Jumbo frame with a single buffer for some use
-cases, it will not work as expected, because the buffer size of each
-RX BD is fixed to 2048 bytes.
+Note that it's currently possible to trigger this condition if the owner
+calls BINDER_THREAD_EXIT while node->has_weak_ref is true. This causes
+BC_INCREFS on binder_ref instances to fail when they should not.
 
-Based on the above two points, we expect to correct ENETC_RXB_TRUESIZE
-to (PAGE_SIZE >> 1), as described in the comment.
-
-Fixes: d4fd0404c1c9 ("enetc: Introduce basic PF and VF ENETC ethernet drivers")
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
-Reviewed-by: Claudiu Manoil <claudiu.manoil@nxp.com>
-Link: https://patch.msgid.link/20251016080131.3127122-1-wei.fang@nxp.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 457b9a6f09f0 ("Staging: android: add binder driver")
+Reported-by: Yu-Ting Tseng <yutingtseng@google.com>
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+Link: https://patch.msgid.link/20251015-binder-weak-inc-v1-1-7914b092c371@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/freescale/enetc/enetc.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/android/binder.c |   11 +----------
+ 1 file changed, 1 insertion(+), 10 deletions(-)
 
-diff --git a/drivers/net/ethernet/freescale/enetc/enetc.h b/drivers/net/ethernet/freescale/enetc/enetc.h
-index 860ecee302f1a..dcf3e4b4e3f55 100644
---- a/drivers/net/ethernet/freescale/enetc/enetc.h
-+++ b/drivers/net/ethernet/freescale/enetc/enetc.h
-@@ -41,7 +41,7 @@ struct enetc_tx_swbd {
- };
- 
- #define ENETC_RX_MAXFRM_SIZE	ENETC_MAC_MAXFRM_SIZE
--#define ENETC_RXB_TRUESIZE	2048 /* PAGE_SIZE >> 1 */
-+#define ENETC_RXB_TRUESIZE	(PAGE_SIZE >> 1)
- #define ENETC_RXB_PAD		NET_SKB_PAD /* add extra space if needed */
- #define ENETC_RXB_DMA_SIZE	\
- 	(SKB_WITH_OVERHEAD(ENETC_RXB_TRUESIZE) - ENETC_RXB_PAD)
--- 
-2.51.0
-
+--- a/drivers/android/binder.c
++++ b/drivers/android/binder.c
+@@ -845,17 +845,8 @@ static int binder_inc_node_nilocked(stru
+ 	} else {
+ 		if (!internal)
+ 			node->local_weak_refs++;
+-		if (!node->has_weak_ref && list_empty(&node->work.entry)) {
+-			if (target_list == NULL) {
+-				pr_err("invalid inc weak node for %d\n",
+-					node->debug_id);
+-				return -EINVAL;
+-			}
+-			/*
+-			 * See comment above
+-			 */
++		if (!node->has_weak_ref && target_list && list_empty(&node->work.entry))
+ 			binder_enqueue_work_ilocked(&node->work, target_list);
+-		}
+ 	}
+ 	return 0;
+ }
 
 
 
