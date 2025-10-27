@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-190659-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190559-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DBA9C10A05
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:13:27 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70323C108DF
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:09:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B8C8C504E61
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:07:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 34A5B566808
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:04:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD71B32ED55;
-	Mon, 27 Oct 2025 19:04:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5413530E0C0;
+	Mon, 27 Oct 2025 19:00:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fbNq9EvL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WpUIj1BP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 666EA32E152;
-	Mon, 27 Oct 2025 19:04:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10253334C02;
+	Mon, 27 Oct 2025 19:00:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591860; cv=none; b=Tx5xwCXPBa46Fsr1GgFDfPRflFcGnbTuHhxOGoTZhhoiKSxi0rkYfzvQ1/peR1fSH2eI85Qo9Gi89ylIVbo5ngzzzKf+9WG8DsFyQBjWpywTZL7ygZbTyM4PIpw8egfNeWV9Skm/BV0DU6t9HdcWAQxZ/IGQVjtmnfA//7OnPxM=
+	t=1761591607; cv=none; b=pzlv/qAeg190ieRx5GQOjvIcen00L+/fxGvjhkdL94amYhLK16GAkI3/ZrB0fhrAm650BkzCvKkfcejNvYU155VUL6uUvUgtaf6PAhcdTB+tgySSdbYChzaOKYS0lHE7CNARLoI1AeN0um2vKNTh6x1WkSUGxQIgXPk8Qn7Q6cE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591860; c=relaxed/simple;
-	bh=OYwrldROOMuD4fA+vPkA22cn949UXepSELglbbRzJM8=;
+	s=arc-20240116; t=1761591607; c=relaxed/simple;
+	bh=R0jHBE+vcDkocBenbjmnrAhht8WV2iZXW2KWG3QXM6I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KG6qNCeiyEnhMLqoL3hmvWLN7WP/cn8rAt3b1Eccwc3oQOrCqukDAAQkGxkJd+cjgtl6L+4GwH7SqybNg15RRe56pntumwsQW1PloIPUPJdX1xT13hRj9mORvDjxOHSTqUg9rlzEanXndOC1w2SpvubEndAC/POVPvkn0PvCQeI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fbNq9EvL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7565C4CEF1;
-	Mon, 27 Oct 2025 19:04:19 +0000 (UTC)
+	 MIME-Version; b=UB2q/gWy/Al7jrB4ByT8wa0/dyFgczIGJ9e9DiF5gG0CoE3QCWOXVGpCXCdtIjVxkTE9T70eF6R40f1oxGWJBKz43uUwm3Tw9Pz1HA9Vd2vJHFOUJbF3xicqm0U1buAdQnz06HxCRp6jm4zAUovO8GZPh5Od+IX/v8rQcvIY9vA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WpUIj1BP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8895AC4CEF1;
+	Mon, 27 Oct 2025 19:00:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591860;
-	bh=OYwrldROOMuD4fA+vPkA22cn949UXepSELglbbRzJM8=;
+	s=korg; t=1761591606;
+	bh=R0jHBE+vcDkocBenbjmnrAhht8WV2iZXW2KWG3QXM6I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fbNq9EvL/V1g7NDIOsgmUv/Evrxh9PsBvGPjQ4om5hh45c82H3S/LOy6cMmTgKMoz
-	 N4cRQ5xiQsIIklWNPXr3xJyDbNbb7sDTYTLHmxMWQ7fIj65V66+DMr9tLvZzXsZuel
-	 4Wq62ux5razTvLQZslgZovvzRG4f6f9q+dsSB1hs=
+	b=WpUIj1BPrPRWljCDW8YchT0oxh2Xpqfy5YRXCWZcBSot/1ty+t3LMPa98uGRfRmmr
+	 cjxcqIKyhlbcR52NleCBQkX7vtRQbgk04Fc0oAQ/64pu42x5iaHwBwvKZtJMh4Ps5y
+	 117I3rhaanXQyVww/owBAGRGTpNhEjjSS4YfHN+U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Deepanshu Kartikey <kartikey406@gmail.com>,
-	Theodore Tso <tytso@mit.edu>,
-	syzbot+038b7bf43423e132b308@syzkaller.appspotmail.com
-Subject: [PATCH 5.15 003/123] ext4: detect invalid INLINE_DATA + EXTENTS flag combination
+	Yu Kuai <yukuai3@huawei.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 230/332] blk-crypto: fix missing blktrace bio split events
 Date: Mon, 27 Oct 2025 19:34:43 +0100
-Message-ID: <20251027183446.480449993@linuxfoundation.org>
+Message-ID: <20251027183530.873638933@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183446.381986645@linuxfoundation.org>
-References: <20251027183446.381986645@linuxfoundation.org>
+In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
+References: <20251027183524.611456697@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,68 +64,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Deepanshu Kartikey <kartikey406@gmail.com>
+From: Yu Kuai <yukuai3@huawei.com>
 
-commit 1d3ad183943b38eec2acf72a0ae98e635dc8456b upstream.
+[ Upstream commit 06d712d297649f48ebf1381d19bd24e942813b37 ]
 
-syzbot reported a BUG_ON in ext4_es_cache_extent() when opening a verity
-file on a corrupted ext4 filesystem mounted without a journal.
+trace_block_split() is missing, resulting in blktrace inability to catch
+BIO split events and making it harder to analyze the BIO sequence.
 
-The issue is that the filesystem has an inode with both the INLINE_DATA
-and EXTENTS flags set:
-
-    EXT4-fs error (device loop0): ext4_cache_extents:545: inode #15:
-    comm syz.0.17: corrupted extent tree: lblk 0 < prev 66
-
-Investigation revealed that the inode has both flags set:
-    DEBUG: inode 15 - flag=1, i_inline_off=164, has_inline=1, extents_flag=1
-
-This is an invalid combination since an inode should have either:
-- INLINE_DATA: data stored directly in the inode
-- EXTENTS: data stored in extent-mapped blocks
-
-Having both flags causes ext4_has_inline_data() to return true, skipping
-extent tree validation in __ext4_iget(). The unvalidated out-of-order
-extents then trigger a BUG_ON in ext4_es_cache_extent() due to integer
-underflow when calculating hole sizes.
-
-Fix this by detecting this invalid flag combination early in ext4_iget()
-and rejecting the corrupted inode.
-
-Cc: stable@kernel.org
-Reported-and-tested-by: syzbot+038b7bf43423e132b308@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=038b7bf43423e132b308
-Suggested-by: Zhang Yi <yi.zhang@huawei.com>
-Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
-Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
-Message-ID: <20250930112810.315095-1-kartikey406@gmail.com>
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@vger.kernel.org
+Fixes: 488f6682c832 ("block: blk-crypto-fallback for Inline Encryption")
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+[ added queue parameter to trace_block_split() call ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/inode.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ block/blk-crypto-fallback.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/fs/ext4/inode.c
-+++ b/fs/ext4/inode.c
-@@ -4785,6 +4785,14 @@ struct inode *__ext4_iget(struct super_b
+--- a/block/blk-crypto-fallback.c
++++ b/block/blk-crypto-fallback.c
+@@ -18,6 +18,7 @@
+ #include <linux/mempool.h>
+ #include <linux/module.h>
+ #include <linux/random.h>
++#include <trace/events/block.h>
+ 
+ #include "blk-crypto-internal.h"
+ 
+@@ -227,7 +228,9 @@ static bool blk_crypto_split_bio_if_need
+ 			bio->bi_status = BLK_STS_RESOURCE;
+ 			return false;
+ 		}
++
+ 		bio_chain(split_bio, bio);
++		trace_block_split(bio->bi_disk->queue, split_bio, bio->bi_iter.bi_sector);
+ 		submit_bio_noacct(bio);
+ 		*bio_ptr = split_bio;
  	}
- 	ei->i_flags = le32_to_cpu(raw_inode->i_flags);
- 	ext4_set_inode_flags(inode, true);
-+	/* Detect invalid flag combination - can't have both inline data and extents */
-+	if (ext4_test_inode_flag(inode, EXT4_INODE_INLINE_DATA) &&
-+	    ext4_test_inode_flag(inode, EXT4_INODE_EXTENTS)) {
-+		ext4_error_inode(inode, function, line, 0,
-+			"inode has both inline data and extents flags");
-+		ret = -EFSCORRUPTED;
-+		goto bad_inode;
-+	}
- 	inode->i_blocks = ext4_inode_blocks(raw_inode, ei);
- 	ei->i_file_acl = le32_to_cpu(raw_inode->i_file_acl_lo);
- 	if (ext4_has_feature_64bit(sb))
 
 
 
