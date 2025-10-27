@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-190746-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191252-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89126C10B22
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:16:02 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id E88E2C11396
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:43:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CEAEB1A621EB
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:11:00 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id F090C5657E0
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:32:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CABB31D757;
-	Mon, 27 Oct 2025 19:08:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6EBB1E47CA;
+	Mon, 27 Oct 2025 19:30:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="az2d58M2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tL5EjXdU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D00D632C937;
-	Mon, 27 Oct 2025 19:08:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 928D6320A32;
+	Mon, 27 Oct 2025 19:30:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592087; cv=none; b=Ui0FBOuyiIC69TQmubVl4qOAR0t7RGxtFPrcD5PCk/7GnMnQbqqkxZxxk5LuX5lrDRibP8ZQu5TSzblutPxWs7nfZyZOirV6qKmMKQqP2Y9LHi4nARn7JJPtK1gtHXcIxOpPzClFBUcdmaU9DuUAnhR/jamutJ3nZe8pYM64G+Q=
+	t=1761593420; cv=none; b=V778zJJGg7c5r79b/gxgijLjE7TgqodbzYOmg6IiNTucE46V8e4ejjxaFard3Qt5PPAg9/TwkOBQ8m+4lZGhNQM8nfLtXA+4FqSyzO6R4wzb/ifryOWkojqB0KPrCBAlckbzysQKo+35rqQU7Q/GFXuSIY50bbNX3txhc5Y+WGc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592087; c=relaxed/simple;
-	bh=7Xeu46Hz73p0ba/6inHDEzMo3Kcj9K9m0RilQHAXVWA=;
+	s=arc-20240116; t=1761593420; c=relaxed/simple;
+	bh=LNIftH30L7BDeZcAhu8og8X8hX/vRDGIn2ysU2GjeHw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XbxDPftl+6Pdmjp/7sQ/SOVZzHBqHLsdgoFkKCAYrftOqQITFGbVuCp5nH1RwNoRSjK2RYuyFrILzZ58IKOmCC7X8X8MceE0hJNzwVk6mkUmM5Tch587UwJUtBQtbE0K+Pj8w8f8gMfHem9yeeLRqLkXllGr7oa8HHJVtk+35Vg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=az2d58M2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F78DC4CEF1;
-	Mon, 27 Oct 2025 19:08:07 +0000 (UTC)
+	 MIME-Version; b=BaH/J3rLspBL4CrFu5/1e2kzocPCaUKLTJX+w69KCJrYJTMWUhUsLbJPx8t5a/K+Q6wmWR3W51Hu5NNTZpfvGfQYtyEZr/HGL/+NWkpSG5y70SHWzgVag99HY01NxMTxPvJffh0jDkL0GXFaCyoVzX0oEad3UeXcO0s7MahUBiY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tL5EjXdU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B771C4CEF1;
+	Mon, 27 Oct 2025 19:30:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592087;
-	bh=7Xeu46Hz73p0ba/6inHDEzMo3Kcj9K9m0RilQHAXVWA=;
+	s=korg; t=1761593420;
+	bh=LNIftH30L7BDeZcAhu8og8X8hX/vRDGIn2ysU2GjeHw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=az2d58M2/Aye0Q1vhgJ18n2zPpL6Oles3xcAaGU1+A4VJEJA0QN4VAiHP7gL7pZBG
-	 EmYQakDrw1SdWn03I7RNP/wnZPYgTAG5MFS4p2hoU+x7h2llrndGTeMX2SuVhaVUzp
-	 xpRzAgZHsz/zfexnQRYzlgu7ADatwu6FeX+H8uKo=
+	b=tL5EjXdUgmyjnlLcmEWUsUUwEFNPLBShWFMrVaqg6NVgZmX/aWOWadHGVGxk8idbG
+	 cpbuWsmXYu/pZWNybqXZKozstC8lMoumakTwDaDYO7L6wn4g/SOylUYFIZBOIHICdy
+	 TgKfvt0EcSn53UUmUw2ezVcO0KL9f+lz5yh/lYxE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Niklas Cassel <cassel@kernel.org>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 113/123] PCI: tegra194: Reset BARs when running in PCIe endpoint mode
+	Enze Li <lienze@kylinos.cn>,
+	SeongJae Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.17 111/184] mm/damon/core: fix potential memory leak by cleaning ops_filter in damon_destroy_scheme
 Date: Mon, 27 Oct 2025 19:36:33 +0100
-Message-ID: <20251027183449.410731361@linuxfoundation.org>
+Message-ID: <20251027183517.917382127@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183446.381986645@linuxfoundation.org>
-References: <20251027183446.381986645@linuxfoundation.org>
+In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
+References: <20251027183514.934710872@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,88 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Cassel <cassel@kernel.org>
+From: Enze Li <lienze@kylinos.cn>
 
-[ Upstream commit 42f9c66a6d0cc45758dab77233c5460e1cf003df ]
+commit 7071537159be845a5c4ed5fb7d3db25aa4bd04a3 upstream.
 
-Tegra already defines all BARs except BAR0 as BAR_RESERVED.  This is
-sufficient for pci-epf-test to not allocate backing memory and to not call
-set_bar() for those BARs. However, marking a BAR as BAR_RESERVED does not
-mean that the BAR gets disabled.
+Currently, damon_destroy_scheme() only cleans up the filter list but
+leaves ops_filter untouched, which could lead to memory leaks when a
+scheme is destroyed.
 
-The host side driver, pci_endpoint_test, simply does an ioremap for all
-enabled BARs and will run tests against all enabled BARs, so it will run
-tests against the BARs marked as BAR_RESERVED.
+This patch ensures both filter and ops_filter are properly freed in
+damon_destroy_scheme(), preventing potential memory leaks.
 
-After running the BAR tests (which will write to all enabled BARs), the
-inbound address translation is broken. This is because the tegra controller
-exposes the ATU Port Logic Structure in BAR4, so when BAR4 is written, the
-inbound address translation settings get overwritten.
-
-To avoid this, implement the dw_pcie_ep_ops .init() callback and start off
-by disabling all BARs (pci-epf-test will later enable/configure BARs that
-are not defined as BAR_RESERVED).
-
-This matches the behavior of other PCIe endpoint drivers: dra7xx, imx6,
-layerscape-ep, artpec6, dw-rockchip, qcom-ep, rcar-gen4, and uniphier-ep.
-
-With this, the PCI endpoint kselftest test case CONSECUTIVE_BAR_TEST (which
-was specifically made to detect address translation issues) passes.
-
-Fixes: c57247f940e8 ("PCI: tegra: Add support for PCIe endpoint mode in Tegra194")
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20250922140822.519796-7-cassel@kernel.org
-[ changed dw_pcie_ep_ops .init to .ep_init and exported dw_pcie_ep_reset_bar ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20251014084225.313313-1-lienze@kylinos.cn
+Fixes: ab82e57981d0 ("mm/damon/core: introduce damos->ops_filters")
+Signed-off-by: Enze Li <lienze@kylinos.cn>
+Reviewed-by: SeongJae Park <sj@kernel.org>
+Tested-by: SeongJae Park <sj@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/controller/dwc/pcie-designware-ep.c |    1 +
- drivers/pci/controller/dwc/pcie-tegra194.c      |   10 ++++++++++
- 2 files changed, 11 insertions(+)
+ mm/damon/core.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/pci/controller/dwc/pcie-designware-ep.c
-+++ b/drivers/pci/controller/dwc/pcie-designware-ep.c
-@@ -84,6 +84,7 @@ void dw_pcie_ep_reset_bar(struct dw_pcie
- 	for (func_no = 0; func_no < funcs; func_no++)
- 		__dw_pcie_ep_reset_bar(pci, func_no, bar, 0);
- }
-+EXPORT_SYMBOL_GPL(dw_pcie_ep_reset_bar);
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -451,6 +451,9 @@ void damon_destroy_scheme(struct damos *
+ 	damos_for_each_filter_safe(f, next, s)
+ 		damos_destroy_filter(f);
  
- static u8 __dw_pcie_ep_find_next_cap(struct dw_pcie_ep *ep, u8 func_no,
- 		u8 cap_ptr, u8 cap)
---- a/drivers/pci/controller/dwc/pcie-tegra194.c
-+++ b/drivers/pci/controller/dwc/pcie-tegra194.c
-@@ -1839,6 +1839,15 @@ static irqreturn_t tegra_pcie_ep_pex_rst
- 	return IRQ_HANDLED;
- }
- 
-+static void tegra_pcie_ep_init(struct dw_pcie_ep *ep)
-+{
-+	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
-+	enum pci_barno bar;
++	damos_for_each_ops_filter_safe(f, next, s)
++		damos_destroy_filter(f);
 +
-+	for (bar = 0; bar < PCI_STD_NUM_BARS; bar++)
-+		dw_pcie_ep_reset_bar(pci, bar);
-+};
-+
- static int tegra_pcie_ep_raise_legacy_irq(struct tegra_pcie_dw *pcie, u16 irq)
- {
- 	/* Tegra194 supports only INTA */
-@@ -1912,6 +1921,7 @@ tegra_pcie_ep_get_features(struct dw_pci
- }
- 
- static const struct dw_pcie_ep_ops pcie_ep_ops = {
-+	.ep_init = tegra_pcie_ep_init,
- 	.raise_irq = tegra_pcie_ep_raise_irq,
- 	.get_features = tegra_pcie_ep_get_features,
- };
+ 	kfree(s->migrate_dests.node_id_arr);
+ 	kfree(s->migrate_dests.weight_arr);
+ 	damon_del_scheme(s);
 
 
 
