@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-190683-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190827-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 494D8C10A1A
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:13:51 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DE32C10A38
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:14:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D5ED81A261DA
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:09:13 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 1397B351D73
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:14:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E10513328FE;
-	Mon, 27 Oct 2025 19:05:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A42732D0D1;
+	Mon, 27 Oct 2025 19:11:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xImm4EuY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PcyNAWsR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 993D1322DCB;
-	Mon, 27 Oct 2025 19:05:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 542C631E0E0;
+	Mon, 27 Oct 2025 19:11:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591922; cv=none; b=LL6XeJL4VXnjTFbhWWkTlAIXvsGnaO3RnnuxYobUsLePmv7ga34iRs4H+jdcEtTjWnIhTXPMVSUWeLpjtNLeXynwLboJnMjauXAUe4GT94MZfXECvB/4sCWe8j/D27VsCc/e0We5ajbLjZGS2cF1NMLbQgTk3SIfWshCpu3NQzs=
+	t=1761592302; cv=none; b=ICi1KIiu2z1qd4KNGMl72UUsp8Cs7AFI5n8uBTZchCVJAe/gVJlCdCGvdGpoTzLSNRYj0IWFVUqPrwsTJYX478tOVxRkWcgOoVhJnr4HSN2plRYOyP8+1hlcHvoaKpjiqXNGE0Ru8f3gnxD8pwp2TErApVqlOdv3CvYGDkKz8ck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591922; c=relaxed/simple;
-	bh=rNAFOXYP84UXaVGrJr8JXTd/YzbGRPiP5FlTLBIuywE=;
+	s=arc-20240116; t=1761592302; c=relaxed/simple;
+	bh=GaKPNpbeTKpUrcMFI9VrpfsSBoa6yIgeJrarTli+RUo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NWQmXnMWRwE5RJivinGNvBRvlMfb3MA8lo7uapZ012qYiMG2f/5UV3kvRDH7vufZOPyxoqeXAE1B9U97E07bJauvFsDkah83BnFgcCym88EpOzWy4VXGkoTDjdoCduaJP5ntQU6Yv3zl1o+S46y9Vwp0Iu+yS5uRMARyUgJMaYs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xImm4EuY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29BE6C4CEF1;
-	Mon, 27 Oct 2025 19:05:22 +0000 (UTC)
+	 MIME-Version; b=HgGeqsiAH2lx+4hB8bdAtm+SxSs/JC9MyAuVByetvebIbJYgsjkLnbvxpnN3kXtSiapolKcG2qkvUK754sm/r1rcxbMLPheovm0WsltTmgpbTJkhlphKh1lAckpqzknyU8Oi9RTVyOZcbXDVOTcRmU/dTHSHZUWLUvryFpsUe4A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PcyNAWsR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD014C4CEF1;
+	Mon, 27 Oct 2025 19:11:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591922;
-	bh=rNAFOXYP84UXaVGrJr8JXTd/YzbGRPiP5FlTLBIuywE=;
+	s=korg; t=1761592302;
+	bh=GaKPNpbeTKpUrcMFI9VrpfsSBoa6yIgeJrarTli+RUo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xImm4EuY3Ebiqkq24Tzpuib2THPft/rhsPqYBAjIxsQLhRMf6jZky0EzgTC2ya+iQ
-	 0py+uMjq992gWaFERKS7QyBDNwMEtAAXkaYrfAQUzGFKczbV5HAhVKfDuSFv1FwQoM
-	 GmOqdmm4w5eJQ25NWPPjcL7w/Qdix35pjApcATEk=
+	b=PcyNAWsRCF5p2AMosa+1SaJTUqf5h0jE9uqCYKUnSl5SdGlPo7Z3ljnqf7eUCYz1Z
+	 azquVnnHFRONBO1qJHjZc8FJXFC4SzvShpyN9ba3soW7o5Iw4W3dHLnioYPajakMsi
+	 kldU8b+S5AW/zyKwnp42M7nXSmY3ZQdpz8V4VxSw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzbot+773fa9d79b29bd8b6831@syzkaller.appspotmail.com>,
 	Viacheslav Dubeyko <slava@dubeyko.com>,
 	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
 	Yangtao Li <frank.li@vivo.com>,
 	linux-fsdevel@vger.kernel.org,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 049/123] hfs: fix KMSAN uninit-value issue in hfs_find_set_zero_bits()
-Date: Mon, 27 Oct 2025 19:35:29 +0100
-Message-ID: <20251027183447.709819459@linuxfoundation.org>
+Subject: [PATCH 6.1 069/157] hfs: clear offset and space out of valid records in b-tree node
+Date: Mon, 27 Oct 2025 19:35:30 +0100
+Message-ID: <20251027183503.136091146@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183446.381986645@linuxfoundation.org>
-References: <20251027183446.381986645@linuxfoundation.org>
+In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
+References: <20251027183501.227243846@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,114 +64,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Viacheslav Dubeyko <slava@dubeyko.com>
 
-[ Upstream commit 2048ec5b98dbdfe0b929d2e42dc7a54c389c53dd ]
+[ Upstream commit 18b07c44f245beb03588b00b212b38fce9af7cc9 ]
 
-The syzbot reported issue in hfs_find_set_zero_bits():
+Currently, hfs_brec_remove() executes moving records
+towards the location of deleted record and it updates
+offsets of moved records. However, the hfs_brec_remove()
+logic ignores the "mess" of b-tree node's free space and
+it doesn't touch the offsets out of records number.
+Potentially, it could confuse fsck or driver logic or
+to be a reason of potential corruption cases.
 
-=====================================================
-BUG: KMSAN: uninit-value in hfs_find_set_zero_bits+0x74d/0xb60 fs/hfs/bitmap.c:45
- hfs_find_set_zero_bits+0x74d/0xb60 fs/hfs/bitmap.c:45
- hfs_vbm_search_free+0x13c/0x5b0 fs/hfs/bitmap.c:151
- hfs_extend_file+0x6a5/0x1b00 fs/hfs/extent.c:408
- hfs_get_block+0x435/0x1150 fs/hfs/extent.c:353
- __block_write_begin_int+0xa76/0x3030 fs/buffer.c:2151
- block_write_begin fs/buffer.c:2262 [inline]
- cont_write_begin+0x10e1/0x1bc0 fs/buffer.c:2601
- hfs_write_begin+0x85/0x130 fs/hfs/inode.c:52
- cont_expand_zero fs/buffer.c:2528 [inline]
- cont_write_begin+0x35a/0x1bc0 fs/buffer.c:2591
- hfs_write_begin+0x85/0x130 fs/hfs/inode.c:52
- hfs_file_truncate+0x1d6/0xe60 fs/hfs/extent.c:494
- hfs_inode_setattr+0x964/0xaa0 fs/hfs/inode.c:654
- notify_change+0x1993/0x1aa0 fs/attr.c:552
- do_truncate+0x28f/0x310 fs/open.c:68
- do_ftruncate+0x698/0x730 fs/open.c:195
- do_sys_ftruncate fs/open.c:210 [inline]
- __do_sys_ftruncate fs/open.c:215 [inline]
- __se_sys_ftruncate fs/open.c:213 [inline]
- __x64_sys_ftruncate+0x11b/0x250 fs/open.c:213
- x64_sys_call+0xfe3/0x3db0 arch/x86/include/generated/asm/syscalls_64.h:78
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xd9/0x210 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
+This patch reworks the logic of hfs_brec_remove()
+by means of clearing freed space of b-tree node
+after the records moving. And it clear the last
+offset that keeping old location of free space
+because now the offset before this one is keeping
+the actual offset to the free space after the record
+deletion.
 
-Uninit was created at:
- slab_post_alloc_hook mm/slub.c:4154 [inline]
- slab_alloc_node mm/slub.c:4197 [inline]
- __kmalloc_cache_noprof+0x7f7/0xed0 mm/slub.c:4354
- kmalloc_noprof include/linux/slab.h:905 [inline]
- hfs_mdb_get+0x1cc8/0x2a90 fs/hfs/mdb.c:175
- hfs_fill_super+0x3d0/0xb80 fs/hfs/super.c:337
- get_tree_bdev_flags+0x6e3/0x920 fs/super.c:1681
- get_tree_bdev+0x38/0x50 fs/super.c:1704
- hfs_get_tree+0x35/0x40 fs/hfs/super.c:388
- vfs_get_tree+0xb0/0x5c0 fs/super.c:1804
- do_new_mount+0x738/0x1610 fs/namespace.c:3902
- path_mount+0x6db/0x1e90 fs/namespace.c:4226
- do_mount fs/namespace.c:4239 [inline]
- __do_sys_mount fs/namespace.c:4450 [inline]
- __se_sys_mount+0x6eb/0x7d0 fs/namespace.c:4427
- __x64_sys_mount+0xe4/0x150 fs/namespace.c:4427
- x64_sys_call+0xfa7/0x3db0 arch/x86/include/generated/asm/syscalls_64.h:166
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xd9/0x210 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-CPU: 1 UID: 0 PID: 12609 Comm: syz.1.2692 Not tainted 6.16.0-syzkaller #0 PREEMPT(none)
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/12/2025
-=====================================================
-
-The HFS_SB(sb)->bitmap buffer is allocated in hfs_mdb_get():
-
-HFS_SB(sb)->bitmap = kmalloc(8192, GFP_KERNEL);
-
-Finally, it can trigger the reported issue because kmalloc()
-doesn't clear the allocated memory. If allocated memory contains
-only zeros, then everything will work pretty fine.
-But if the allocated memory contains the "garbage", then
-it can affect the bitmap operations and it triggers
-the reported issue.
-
-This patch simply exchanges the kmalloc() on kzalloc()
-with the goal to guarantee the correctness of bitmap operations.
-Because, newly created allocation bitmap should have all
-available blocks free. Potentially, initialization bitmap's read
-operation could not fill the whole allocated memory and
-"garbage" in the not initialized memory will be the reason of
-volume coruptions and file system driver bugs.
-
-Reported-by: syzbot <syzbot+773fa9d79b29bd8b6831@syzkaller.appspotmail.com>
-Closes: https://syzkaller.appspot.com/bug?extid=773fa9d79b29bd8b6831
 Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
 cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
 cc: Yangtao Li <frank.li@vivo.com>
 cc: linux-fsdevel@vger.kernel.org
-Link: https://lore.kernel.org/r/20250820230636.179085-1-slava@dubeyko.com
+Link: https://lore.kernel.org/r/20250815194918.38165-1-slava@dubeyko.com
 Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/hfs/mdb.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/hfs/brec.c | 27 +++++++++++++++++++++++----
+ 1 file changed, 23 insertions(+), 4 deletions(-)
 
-diff --git a/fs/hfs/mdb.c b/fs/hfs/mdb.c
-index cdf0edeeb2781..f8f976afcc740 100644
---- a/fs/hfs/mdb.c
-+++ b/fs/hfs/mdb.c
-@@ -172,7 +172,7 @@ int hfs_mdb_get(struct super_block *sb)
- 		pr_warn("continuing without an alternate MDB\n");
+diff --git a/fs/hfs/brec.c b/fs/hfs/brec.c
+index 896396554bcc1..b01db1fae147c 100644
+--- a/fs/hfs/brec.c
++++ b/fs/hfs/brec.c
+@@ -179,6 +179,7 @@ int hfs_brec_remove(struct hfs_find_data *fd)
+ 	struct hfs_btree *tree;
+ 	struct hfs_bnode *node, *parent;
+ 	int end_off, rec_off, data_off, size;
++	int src, dst, len;
+ 
+ 	tree = fd->tree;
+ 	node = fd->bnode;
+@@ -208,10 +209,14 @@ int hfs_brec_remove(struct hfs_find_data *fd)
  	}
+ 	hfs_bnode_write_u16(node, offsetof(struct hfs_bnode_desc, num_recs), node->num_recs);
  
--	HFS_SB(sb)->bitmap = kmalloc(8192, GFP_KERNEL);
-+	HFS_SB(sb)->bitmap = kzalloc(8192, GFP_KERNEL);
- 	if (!HFS_SB(sb)->bitmap)
- 		goto out;
+-	if (rec_off == end_off)
+-		goto skip;
+ 	size = fd->keylength + fd->entrylength;
  
++	if (rec_off == end_off) {
++		src = fd->keyoffset;
++		hfs_bnode_clear(node, src, size);
++		goto skip;
++	}
++
+ 	do {
+ 		data_off = hfs_bnode_read_u16(node, rec_off);
+ 		hfs_bnode_write_u16(node, rec_off + 2, data_off - size);
+@@ -219,9 +224,23 @@ int hfs_brec_remove(struct hfs_find_data *fd)
+ 	} while (rec_off >= end_off);
+ 
+ 	/* fill hole */
+-	hfs_bnode_move(node, fd->keyoffset, fd->keyoffset + size,
+-		       data_off - fd->keyoffset - size);
++	dst = fd->keyoffset;
++	src = fd->keyoffset + size;
++	len = data_off - src;
++
++	hfs_bnode_move(node, dst, src, len);
++
++	src = dst + len;
++	len = data_off - src;
++
++	hfs_bnode_clear(node, src, len);
++
+ skip:
++	/*
++	 * Remove the obsolete offset to free space.
++	 */
++	hfs_bnode_write_u16(node, end_off, 0);
++
+ 	hfs_bnode_dump(node);
+ 	if (!fd->record)
+ 		hfs_brec_update_parent(fd);
 -- 
 2.51.0
 
