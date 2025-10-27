@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-190036-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190037-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37D4AC0F536
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 17:34:52 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 872A0C0F470
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 17:29:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7BABE460E8E
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 16:29:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F142188CF6F
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 16:29:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0859530EF90;
-	Mon, 27 Oct 2025 16:28:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AC8B30E82B;
+	Mon, 27 Oct 2025 16:29:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jx+IRf82"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aFHSNwt7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB47D3101CD
-	for <stable@vger.kernel.org>; Mon, 27 Oct 2025 16:28:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A52B307AFC
+	for <stable@vger.kernel.org>; Mon, 27 Oct 2025 16:29:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761582538; cv=none; b=QbX7FAurgDcFeOkBlVLSg2TLOffakm0e7NouvfJHiNuL3GV6AhR9Dy7KPevJ2iWGZOlTdzhcVjzsU28NzI5nBO1TuWQ+X5J5vbUcq1qCo13vXSuJlu70Ua4q1G/XeEDF26OfP/oskVdOOYZ9NG9XX3EOYBvEwJ/AoOIcGrF8YHI=
+	t=1761582542; cv=none; b=cEfsCzIqikveT+THf6RSxXnNa6evEwZAPv1E9Mq3cDbEMzNbpsI/ZSU7K3vo7m8XQ12YKLlJr/cDhLsnA2myyNG77eA+LRBC3bwk2W/IsjP8VrEbdWTBaRsDbhWkPnnTlOXrgMNYObh/Izy9dKvc6oUlJfaNOWi6ev+qQcmuvo4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761582538; c=relaxed/simple;
-	bh=ar9CgaIixK+ONIh9qGbem7oPOmVK7TK+LA4aicrp/6Y=;
+	s=arc-20240116; t=1761582542; c=relaxed/simple;
+	bh=DCOqxa9UzgR/ESPWKHhR7LZzVThxTMIJJ//KVQUqiVI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IAVCeUA5FURc68EPpmQODqB1L9kK7+JVbe9LkBlhfLfa08fnjQ+7neBPBcWSMCJIONRVEDxyY/F0oth7FP9Ue8qJkoVZ4L9YB3o82t3w/U4cwJnjztXohRFy0CeG/yyZNhb6aN7uZvPPeyiVglZOliUrcGbGqs6Q6pGAN2OckjY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jx+IRf82; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF080C4CEF1;
-	Mon, 27 Oct 2025 16:28:57 +0000 (UTC)
+	 MIME-Version; b=VzMmp5SVdgt6o5PCg7rwg6FhOlmG56j8aXaBhk8Uaeq4ihvr/wSYmFPDY/9IhXvSBICs25b23VkCDx+HWabvn6jf6oMN0ockTw+cABaeh+D8Iewnag1qdTyr9+Je/8sDxEAJnTCKLjcYJnBeOh4SNUuY3K5pOjkf7HmfHn9S8mo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aFHSNwt7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3ED8C4CEF1;
+	Mon, 27 Oct 2025 16:29:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761582538;
-	bh=ar9CgaIixK+ONIh9qGbem7oPOmVK7TK+LA4aicrp/6Y=;
+	s=k20201202; t=1761582541;
+	bh=DCOqxa9UzgR/ESPWKHhR7LZzVThxTMIJJ//KVQUqiVI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jx+IRf82HM+buX4dIpJtMNzgOcE7JDv0dcgZEPnAruThI03kcEFym5qZat69pwMCe
-	 Av9x1QAJtqmEwmp77rMVqgyDsiYWLhZbiPeBA0LBQGL1XFOVqPmzN9JZxXtifjyVfF
-	 RvpnL2iFlfduy5xh5ZkuDCbkZGN5ll5tqmfco0cG3jR6nvRV+kd23lpahXpmrJmqHy
-	 XcJmoNBIpArfrYjy+C2andIc2j5LX+SfwXZoFvq8fwiD9yR82L+RTeKMAEhp8vg+W2
-	 FWDrJ+0SZ+KMX1qRdfZWFl8bcxccEaux6cv4eujvdfczsGSEjA6utsFtIhLGbvyJzl
-	 10OSkVSzYDtPw==
+	b=aFHSNwt7HA8PsHgF8flHsnU76SWiD7n0WMybNAdmTf0Kmn1JuUpqgen8fp7nCJWiZ
+	 smfT+0QIQzr47BXCUGnr/MHKo1/ilrfkvV2JG21spFqGLHPOC39w9meA6F8mTHg4SE
+	 73emMrPQAn6IcF9M4mzuOy/AY2YtVpI24JGvor7ijCHTVt7Ba22oUERTH5XLZB3Agd
+	 6ePEHxsL9+kJ5YAWd8LLcYhNdN+xH4lOFGRUUJMC640ucKiGWLf5pMaOwZs4SHzNGQ
+	 Sf3Cc7F/znKJySi11Y4R3eJpAgr03VZOMBYBDgxGrxHuijCaB5NhSWgdYUjqwqOtpJ
+	 sd6g1R7JD3sRQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Geliang Tang <geliang@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+Cc: Xu Yang <xu.yang_2@nxp.com>,
+	stable <stable@kernel.org>,
+	Jun Li <jun.li@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y] mptcp: pm: in-kernel: C-flag: handle late ADD_ADDR
-Date: Mon, 27 Oct 2025 12:28:55 -0400
-Message-ID: <20251027162855.577684-1-sashal@kernel.org>
+Subject: [PATCH 5.15.y] dt-bindings: usb: dwc3-imx8mp: dma-range is required only for imx8mp
+Date: Mon, 27 Oct 2025 12:28:58 -0400
+Message-ID: <20251027162858.577729-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025102638-brewery-wanting-8089@gregkh>
-References: <2025102638-brewery-wanting-8089@gregkh>
+In-Reply-To: <2025102701-congrats-attire-807b@gregkh>
+References: <2025102701-congrats-attire-807b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,85 +64,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+From: Xu Yang <xu.yang_2@nxp.com>
 
-[ Upstream commit e84cb860ac3ce67ec6ecc364433fd5b412c448bc ]
+[ Upstream commit 268eb6fb908bc82ce479e4dba9a2cad11f536c9c ]
 
-The special C-flag case expects the ADD_ADDR to be received when
-switching to 'fully-established'. But for various reasons, the ADD_ADDR
-could be sent after the "4th ACK", and the special case doesn't work.
+Only i.MX8MP need dma-range property to let USB controller work properly.
+Remove dma-range from required list and add limitation for imx8mp.
 
-On NIPA, the new test validating this special case for the C-flag failed
-a few times, e.g.
-
-  102 default limits, server deny join id 0
-        syn rx                 [FAIL] got 0 JOIN[s] syn rx expected 2
-
-  Server ns stats
-  (...)
-  MPTcpExtAddAddrTx  1
-  MPTcpExtEchoAdd    1
-
-  Client ns stats
-  (...)
-  MPTcpExtAddAddr    1
-  MPTcpExtEchoAddTx  1
-
-        synack rx              [FAIL] got 0 JOIN[s] synack rx expected 2
-        ack rx                 [FAIL] got 0 JOIN[s] ack rx expected 2
-        join Rx                [FAIL] see above
-        syn tx                 [FAIL] got 0 JOIN[s] syn tx expected 2
-        join Tx                [FAIL] see above
-
-I had a suspicion about what the issue could be: the ADD_ADDR might have
-been received after the switch to the 'fully-established' state. The
-issue was not easy to reproduce. The packet capture shown that the
-ADD_ADDR can indeed be sent with a delay, and the client would not try
-to establish subflows to it as expected.
-
-A simple fix is not to mark the endpoints as 'used' in the C-flag case,
-when looking at creating subflows to the remote initial IP address and
-port. In this case, there is no need to try.
-
-Note: newly added fullmesh endpoints will still continue to be used as
-expected, thanks to the conditions behind mptcp_pm_add_addr_c_flag_case.
-
-Fixes: 4b1ff850e0c1 ("mptcp: pm: in-kernel: usable client side with C-flag")
-Cc: stable@vger.kernel.org
-Reviewed-by: Geliang Tang <geliang@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20251020-net-mptcp-c-flag-late-add-addr-v1-1-8207030cb0e8@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ applied to pm_netlink.c instead of pm_kernel.c ]
+Fixes: d2a704e29711 ("dt-bindings: usb: dwc3-imx8mp: add imx8mp dwc3 glue bindings")
+Cc: stable <stable@kernel.org>
+Reviewed-by: Jun Li <jun.li@nxp.com>
+Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/pm_netlink.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ .../devicetree/bindings/usb/fsl,imx8mp-dwc3.yaml       | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/net/mptcp/pm_netlink.c b/net/mptcp/pm_netlink.c
-index 9d2c38421f7a2..7fd6714f41fe7 100644
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -619,6 +619,10 @@ static void mptcp_pm_create_subflow_or_signal_addr(struct mptcp_sock *msk)
- 	}
+diff --git a/Documentation/devicetree/bindings/usb/fsl,imx8mp-dwc3.yaml b/Documentation/devicetree/bindings/usb/fsl,imx8mp-dwc3.yaml
+index 974032b1fda04..70c657ffedb10 100644
+--- a/Documentation/devicetree/bindings/usb/fsl,imx8mp-dwc3.yaml
++++ b/Documentation/devicetree/bindings/usb/fsl,imx8mp-dwc3.yaml
+@@ -60,12 +60,20 @@ required:
+   - reg
+   - "#address-cells"
+   - "#size-cells"
+-  - dma-ranges
+   - ranges
+   - clocks
+   - clock-names
+   - interrupts
  
- subflow:
-+	/* No need to try establishing subflows to remote id0 if not allowed */
-+	if (mptcp_pm_add_addr_c_flag_case(msk))
-+		goto exit;
++allOf:
++  - if:
++      properties:
++        compatible:
++          const: fsl,imx8mp-dwc3
++    then:
++      required:
++        - dma-ranges
 +
- 	/* check if should create a new subflow */
- 	while (msk->pm.local_addr_used < local_addr_max &&
- 	       msk->pm.subflows < subflows_max) {
-@@ -650,6 +654,8 @@ static void mptcp_pm_create_subflow_or_signal_addr(struct mptcp_sock *msk)
- 			__mptcp_subflow_connect(sk, &local.addr, &addrs[i]);
- 		spin_lock_bh(&msk->pm.lock);
- 	}
-+
-+exit:
- 	mptcp_pm_nl_check_work_pending(msk);
- }
+ additionalProperties: false
  
+ examples:
 -- 
 2.51.0
 
