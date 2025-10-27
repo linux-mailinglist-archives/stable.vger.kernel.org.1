@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-190088-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190421-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC67FC0FF4B
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:40:07 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3997FC10540
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:58:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id E9AF434E981
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:40:05 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 79D1B5002A7
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:57:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EC46313520;
-	Mon, 27 Oct 2025 18:40:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2BF232142A;
+	Mon, 27 Oct 2025 18:54:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y1yf3pQX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i7F9Im4W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A5612D7806;
-	Mon, 27 Oct 2025 18:40:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 832CE3128D5;
+	Mon, 27 Oct 2025 18:54:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761590404; cv=none; b=IyZr4nq+ZAm3oeWT4Z1J+F1x1TN/YZXQ0Dh7+woDRn+s+zpAY3q4R++zFw9z/v1kUaenD8PetvhvbZsY1B6jTQk55Kkb2R8HGhwQ0ryQCj4uGU3wBI4/hNu0s/N8igEb2UKp6Et3j4Cfg5QXWhkDQCZGLHNvnTkJ5wNA/oSQyIk=
+	t=1761591247; cv=none; b=B+lTnGT8K6nVFwsIAb9qX1zCqbA3ed3U+jkbtjkbminh1MYDOIAQNVQxJaHHD/1No6RgkB+CDp+R9G0mx0XpDBc7c/iNz/HRChmxJNYgJ1o/UCvhKy7vTtNqjiTOafvfG6M9e/8CZAcAtsnwkIcqZMzZeyaywQFEgXgo4ZhSsBk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761590404; c=relaxed/simple;
-	bh=Q92jqN9vbUUHKv+wVNObyz7mKUqB9vljAfIDvejwvfs=;
+	s=arc-20240116; t=1761591247; c=relaxed/simple;
+	bh=T1219g+8EIPQDNtnE1k6klGgUlp5SEr3L/fdjwYfTjU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=K6LpacHqEovdCgry1g9I+KdSZKoK9s5kKXxJ+4F4/HmEFWpT/N4WkOlnjoFFGmGoarzsuYwpuz6H0KWOFXy5xhTsu7YggFdgL85dZbSu2JzkySWu+cgtBk5A624HHOLBIJE+h67X8chRT716ViRrCyRjpbbBU4c+ii9z/aHj+Jg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y1yf3pQX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0EC0C4CEF1;
-	Mon, 27 Oct 2025 18:40:03 +0000 (UTC)
+	 MIME-Version; b=dmEcS1gulxF5S44zVX38DIAihuRaUGUxJzcN7XkuCt2uJFQBPwIXeTuGTiSOhnyVuQfMajeOzfNidz5nC8fcHgu5LSWEondgcdBnEEM0CL/1pCXufgUjcQqcriidxNRcB0ME4JdE1UOnnxA0UXtjSA+xK0XGOIzwwA4abLBTgqY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i7F9Im4W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC6BEC4CEF1;
+	Mon, 27 Oct 2025 18:54:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761590404;
-	bh=Q92jqN9vbUUHKv+wVNObyz7mKUqB9vljAfIDvejwvfs=;
+	s=korg; t=1761591247;
+	bh=T1219g+8EIPQDNtnE1k6klGgUlp5SEr3L/fdjwYfTjU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y1yf3pQX0Tq5AFrNVJyIyLYg+dAkWJtzgXx6EiaX9Egs8d771cLQ5/qJEBNmB7BXM
-	 BAwKSCIYr8+8F7VnI0JUKUHRd/tM0fY8ZwYQtgfwEPrvC9iIpADiyJrg3VqmUOWxG3
-	 ouVTz30mZOHhhyZBkzzIYAPjjpbODZ6DHteiZA28=
+	b=i7F9Im4WSNg0EAhLSX8vSMK4GOY24UWKXUSquHygF8jVXZyXpgViX1KNCVztBnog5
+	 y+ee/KvTGoaARKxIw/JKQPe+1JLAUkxw1QxWu4Y8n6ovwcje051m0UrkMkKKGuZrvZ
+	 98j/bqVVas9OrytnE+aFvBSdOUVmE7yfNk4NeLmk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Brahmajit Das <listout@listout.xyz>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Gunnar Kudrjavets <gunnarku@amazon.com>,
+	Justinien Bouron <jbouron@amazon.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 031/224] drm/radeon/r600_cs: clean up of dead code in r600_cs
+Subject: [PATCH 5.10 124/332] tpm_tis: Fix incorrect arguments in tpm_tis_probe_irq_single
 Date: Mon, 27 Oct 2025 19:32:57 +0100
-Message-ID: <20251027183509.838843769@linuxfoundation.org>
+Message-ID: <20251027183527.885891952@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183508.963233542@linuxfoundation.org>
-References: <20251027183508.963233542@linuxfoundation.org>
+In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
+References: <20251027183524.611456697@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,61 +62,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brahmajit Das <listout@listout.xyz>
+From: Gunnar Kudrjavets <gunnarku@amazon.com>
 
-[ Upstream commit 260dcf5b06d519bcf27a5dfdb5c626821a55c170 ]
+[ Upstream commit 8a81236f2cb0882c7ea6c621ce357f7f3f601fe5 ]
 
-GCC 16 enables -Werror=unused-but-set-variable= which results in build
-error with the following message.
+The tpm_tis_write8() call specifies arguments in wrong order. Should be
+(data, addr, value) not (data, value, addr). The initial correct order
+was changed during the major refactoring when the code was split.
 
-drivers/gpu/drm/radeon/r600_cs.c: In function ‘r600_texture_size’:
-drivers/gpu/drm/radeon/r600_cs.c:1411:29: error: variable ‘level’ set but not used [-Werror=unused-but-set-variable=]
- 1411 |         unsigned offset, i, level;
-      |                             ^~~~~
-cc1: all warnings being treated as errors
-make[6]: *** [scripts/Makefile.build:287: drivers/gpu/drm/radeon/r600_cs.o] Error 1
-
-level although is set, but in never used in the function
-r600_texture_size. Thus resulting in dead code and this error getting
-triggered.
-
-Fixes: 60b212f8ddcd ("drm/radeon: overhaul texture checking. (v3)")
-Acked-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Brahmajit Das <listout@listout.xyz>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 41a5e1cf1fe1 ("tpm/tpm_tis: Split tpm_tis driver into a core and TCG TIS compliant phy")
+Signed-off-by: Gunnar Kudrjavets <gunnarku@amazon.com>
+Reviewed-by: Justinien Bouron <jbouron@amazon.com>
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/radeon/r600_cs.c | 4 ++--
+ drivers/char/tpm/tpm_tis_core.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/radeon/r600_cs.c b/drivers/gpu/drm/radeon/r600_cs.c
-index a85470213b27f..637a4f2a30af9 100644
---- a/drivers/gpu/drm/radeon/r600_cs.c
-+++ b/drivers/gpu/drm/radeon/r600_cs.c
-@@ -1411,7 +1411,7 @@ static void r600_texture_size(unsigned nfaces, unsigned blevel, unsigned llevel,
- 			      unsigned block_align, unsigned height_align, unsigned base_align,
- 			      unsigned *l0_size, unsigned *mipmap_size)
- {
--	unsigned offset, i, level;
-+	unsigned offset, i;
- 	unsigned width, height, depth, size;
- 	unsigned blocksize;
- 	unsigned nbx, nby;
-@@ -1423,7 +1423,7 @@ static void r600_texture_size(unsigned nfaces, unsigned blevel, unsigned llevel,
- 	w0 = r600_mip_minify(w0, 0);
- 	h0 = r600_mip_minify(h0, 0);
- 	d0 = r600_mip_minify(d0, 0);
--	for(i = 0, offset = 0, level = blevel; i < nlevels; i++, level++) {
-+	for (i = 0, offset = 0; i < nlevels; i++) {
- 		width = r600_mip_minify(w0, i);
- 		nbx = r600_fmt_get_nblocksx(format, width);
+diff --git a/drivers/char/tpm/tpm_tis_core.c b/drivers/char/tpm/tpm_tis_core.c
+index b3452259d6e0b..c8c68301543b2 100644
+--- a/drivers/char/tpm/tpm_tis_core.c
++++ b/drivers/char/tpm/tpm_tis_core.c
+@@ -831,8 +831,8 @@ static int tpm_tis_probe_irq_single(struct tpm_chip *chip, u32 intmask,
+ 	 * will call disable_irq which undoes all of the above.
+ 	 */
+ 	if (!(chip->flags & TPM_CHIP_FLAG_IRQ)) {
+-		tpm_tis_write8(priv, original_int_vec,
+-			       TPM_INT_VECTOR(priv->locality));
++		tpm_tis_write8(priv, TPM_INT_VECTOR(priv->locality),
++			       original_int_vec);
+ 		rc = -1;
+ 	}
  
 -- 
 2.51.0
