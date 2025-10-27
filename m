@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-190073-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190411-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8210C0FF1B
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:39:26 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6E34C10515
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:57:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E72A719C4F26
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:39:50 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id CF37F4FF4A4
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:56:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CA00308F3A;
-	Mon, 27 Oct 2025 18:39:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FBC832C924;
+	Mon, 27 Oct 2025 18:53:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y+oF7ohn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UrdIejgq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAD13218EB1;
-	Mon, 27 Oct 2025 18:39:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D76731D72A;
+	Mon, 27 Oct 2025 18:53:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761590364; cv=none; b=CqxASKIYHecrEs+q8rtVwgQoPecAMBwKRofyb/RCFq3xL0XsdWwkZXpHcOc25JfnDG+ovFZw1LLMe2UAscNR6AvXCZanIonNF4B2YsujeYGHi7zF6h2WzkKEAdT8Ez5HipVqgE1nLQM4+XLRPvfUy6ZsuryofasbWwp4xQ+cBQw=
+	t=1761591221; cv=none; b=Xgs1igK4g++/KYDwqcTafmKCpB7yQBgTEV/UbFsAWHI3BkYZ4MOCI1eTuc0FN3XFWYfqDJqN5yxpacPbzWqgKgbSBsFeEuFBvMNZTGFyqs8yKe5XT5jG7dd6i6tJ8ym9+Rz4h0gQBMlOBPKTHI9di3rRa9oT4pBzIeIFi3mCuMo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761590364; c=relaxed/simple;
-	bh=5hwQQJ20oYszOFB+gJWk10vzl2YcFldq1JR4QPk4Zxw=;
+	s=arc-20240116; t=1761591221; c=relaxed/simple;
+	bh=GA2I6VCuALDTsYwuWA8lWVLAcYwaRJ8YnGtgQcE99oI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n7j/p77zcQCZOVjjwjib3hIe/d3T3B+o4bBv0QuCkK3v/a17+Z7W3BzkfGlje12XEJ2Wr3OfgrMHKacFwYOYUPn4vYLVOBV0iz6QQVedx0iXrx4DyNk1CptWdOD2b1OxXJBDQQmP9hetu0cgMCiIIUuv5aJyMGh1dRjOb2qc3Jc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y+oF7ohn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55E16C4CEF1;
-	Mon, 27 Oct 2025 18:39:24 +0000 (UTC)
+	 MIME-Version; b=Tbg8Do0NvjJEMdavwD1CvmrYdW9kYPG05mnVVdyvUxN5E/LjLMvmsqcrphrt3p+jv0vTWTsPax8Nigz0SLtoOmoEHYTa+sLW1GdR8fL+i0PbV8/FpkI9ZaTDhtKsNexuRxuHNrYPmHlNZb2ZlbYjFbmnwveocY28wIi4kF3yvT8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UrdIejgq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B93FFC4CEF1;
+	Mon, 27 Oct 2025 18:53:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761590364;
-	bh=5hwQQJ20oYszOFB+gJWk10vzl2YcFldq1JR4QPk4Zxw=;
+	s=korg; t=1761591221;
+	bh=GA2I6VCuALDTsYwuWA8lWVLAcYwaRJ8YnGtgQcE99oI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y+oF7ohnrIp7y5vARgXkdIKlyqTOFwvoUtgsBvnBEqGp6WootcLrfPmKPvPCd+Ahg
-	 PEXvkugIXY5+Wqdeapd77q2Oh+xC5U37rFzR/Vc4hhTcpgL/WFkzZ/nUpWxkIe6TMb
-	 a6TlTuQyT49Gqpk4BGO0xwgLLWVr1NGoa0ISXyVc=
+	b=UrdIejgqEUL+mEPo5RAZO9WQOkk6/XFNVf2d8DKOw9UaohCYKZenxFlr8IXvnxRlK
+	 eKabN6XflTvkL3V1Zbynie4mEviG0iDFWRwU7jklFD59UOFMgk189y1rXvG8pzC6d7
+	 HWmpvKg8Nrl0Qz0Bkt24hoYVTstFaLzcbK9lS9xg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leo Yan <leo.yan@arm.com>,
-	Will Deacon <will@kernel.org>,
+	Kuzey Arda Bulut <kuzeyardabulut@gmail.com>,
+	Ian Forbes <ian.forbes@broadcom.com>,
+	Zack Rusin <zack.rusin@broadcom.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 018/224] perf: arm_spe: Prevent overflow in PERF_IDX2OFF()
+Subject: [PATCH 5.10 111/332] drm/vmwgfx: Fix Use-after-free in validation
 Date: Mon, 27 Oct 2025 19:32:44 +0100
-Message-ID: <20251027183509.483678767@linuxfoundation.org>
+Message-ID: <20251027183527.547561774@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183508.963233542@linuxfoundation.org>
-References: <20251027183508.963233542@linuxfoundation.org>
+In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
+References: <20251027183524.611456697@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leo Yan <leo.yan@arm.com>
+From: Ian Forbes <ian.forbes@broadcom.com>
 
-[ Upstream commit a29fea30dd93da16652930162b177941abd8c75e ]
+[ Upstream commit dfe1323ab3c8a4dd5625ebfdba44dc47df84512a ]
 
-Cast nr_pages to unsigned long to avoid overflow when handling large
-AUX buffer sizes (>= 2 GiB).
+Nodes stored in the validation duplicates hashtable come from an arena
+allocator that is cleared at the end of vmw_execbuf_process. All nodes
+are expected to be cleared in vmw_validation_drop_ht but this node escaped
+because its resource was destroyed prematurely.
 
-Fixes: d5d9696b0380 ("drivers/perf: Add support for ARMv8.2 Statistical Profiling Extension")
-Signed-off-by: Leo Yan <leo.yan@arm.com>
-Signed-off-by: Will Deacon <will@kernel.org>
+Fixes: 64ad2abfe9a6 ("drm/vmwgfx: Adapt validation code for reference-free lookups")
+Reported-by: Kuzey Arda Bulut <kuzeyardabulut@gmail.com>
+Signed-off-by: Ian Forbes <ian.forbes@broadcom.com>
+Reviewed-by: Zack Rusin <zack.rusin@broadcom.com>
+Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
+Link: https://lore.kernel.org/r/20250926195427.1405237-1-ian.forbes@broadcom.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/perf/arm_spe_pmu.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/vmwgfx/vmwgfx_validation.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/perf/arm_spe_pmu.c b/drivers/perf/arm_spe_pmu.c
-index 079701e8de186..91a6631af5567 100644
---- a/drivers/perf/arm_spe_pmu.c
-+++ b/drivers/perf/arm_spe_pmu.c
-@@ -75,7 +75,8 @@ struct arm_spe_pmu {
- #define to_spe_pmu(p) (container_of(p, struct arm_spe_pmu, pmu))
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_validation.c b/drivers/gpu/drm/vmwgfx/vmwgfx_validation.c
+index cc1cfc827bb9a..44bb3ccc31574 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_validation.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_validation.c
+@@ -342,8 +342,10 @@ int vmw_validation_add_resource(struct vmw_validation_context *ctx,
+ 		}
+ 	}
+ 	node->res = vmw_resource_reference_unless_doomed(res);
+-	if (!node->res)
++	if (!node->res) {
++		hash_del_rcu(&node->hash.head);
+ 		return -ESRCH;
++	}
  
- /* Convert a free-running index from perf into an SPE buffer offset */
--#define PERF_IDX2OFF(idx, buf)	((idx) % ((buf)->nr_pages << PAGE_SHIFT))
-+#define PERF_IDX2OFF(idx, buf) \
-+	((idx) % ((unsigned long)(buf)->nr_pages << PAGE_SHIFT))
- 
- /* Keep track of our dynamic hotplug state */
- static enum cpuhp_state arm_spe_pmu_online;
+ 	node->first_usage = 1;
+ 	if (!res->dev_priv->has_mob) {
 -- 
 2.51.0
 
