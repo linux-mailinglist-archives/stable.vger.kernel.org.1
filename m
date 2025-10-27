@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-190127-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190434-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2D1CC10021
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:43:20 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 989B5C10633
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:01:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 83B4A4FC9AD
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:41:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 634B21A2322F
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:58:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 454923191BF;
-	Mon, 27 Oct 2025 18:41:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D69332D0F3;
+	Mon, 27 Oct 2025 18:54:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z571NgxK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SXoag1jj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3E142D8DB9;
-	Mon, 27 Oct 2025 18:41:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47C7133030F;
+	Mon, 27 Oct 2025 18:54:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761590509; cv=none; b=jawbqMIRTI8uuqBtj1KQFV2zoFFsbNJQACv3fXGnPPUfVAQHAKIZtbqELnoT+RdOF6BKCr+lX4XgpD6A7AoiPycbtgy0WJ7owS4f6XoEig/tNY2IiNyCKV7Dyx196R8Zg72HBn7JjR0kPDbwsbM7b47H+33YTMvurYXlT2C8KVc=
+	t=1761591281; cv=none; b=fzO/slv/1v30ohYOQkvUIvVtW+Vp9UdJoiy/I1jUvfbFQzAWZLzGOJJydTKeLLc0G/vnClvfpW9L0PIAgAxu3rRPe7dxAd579wD2HBufmnt40FamZilofruBKXjY15guOUSvDk/osV0h/BgnNZw5vY56BcR0NeN8xfOoOmM39/M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761590509; c=relaxed/simple;
-	bh=v7+pBvYFyWxkOTI/nYuE/+WG4XpWl6EJxwnWugm1kRE=;
+	s=arc-20240116; t=1761591281; c=relaxed/simple;
+	bh=sRPLYqwbnBIytY52Sg4uNqQ62mrBCQpQmJhb1lEwA0A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t9poPiocXbBuSwe3NQ8wXP1ALv1SBQKabwr/Qk5rbfk7VCwgDxCIR0kj+kGCxdgdXeDiBX75wJSv7vGfDcSbQfDfcTpSWBlnQA6nGJ+6leARaEYyNDa6dwaVUSovPJCOAVZV4N7Cr4FiiTpF2mvDBHQSygSdjVfiWqfTNyp3YFk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z571NgxK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89874C4CEF1;
-	Mon, 27 Oct 2025 18:41:48 +0000 (UTC)
+	 MIME-Version; b=VowPF3xNMU6YuSvqJv2z1pGONIJj02zE4pHz1bWA2ES+lqJCUh135UTh+sj4jFgH2hGZAIZEao221G74FCs4m+mF2fjkRjyL8Ecaz2wrt1YpqU02k0gi0NhTCWpyFol6gJIiIOqcvEh6KIfOoVzUjvBnBxPtnRAvHOngICQlevg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SXoag1jj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE727C4CEFD;
+	Mon, 27 Oct 2025 18:54:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761590508;
-	bh=v7+pBvYFyWxkOTI/nYuE/+WG4XpWl6EJxwnWugm1kRE=;
+	s=korg; t=1761591281;
+	bh=sRPLYqwbnBIytY52Sg4uNqQ62mrBCQpQmJhb1lEwA0A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z571NgxKV5H7p/fwbnTWZLxPF1sJtmHcm8LXGju9NBO+f4TtbSX08SjOP79v7Bud6
-	 8M/UQedQmOKX5SR0JZ7ByC3SAHE1QpI98WPl7SW/Pm6j1uxkJEHpKpfCfdi6de3+XH
-	 WR7V3HW+SlcdJPsnkoKEKsuGbMfPEs8U4CRvHdOY=
+	b=SXoag1jjrwYbQ9TwOd45jsumX+Jz8FS8Ns+QLU+rxQuy+nkuUiDZ+mpD1EFQvJRih
+	 CSxwu51/eTk8w7TNXFaYeutX1Mev8uhoeqj41yiOvnODWbOBTDHyzRGrtXllbY88pc
+	 O3wWwfKNAQaA86WN3ll6CSjKzA5rQh9XEhJ+ePvU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	William Wu <william.wu@rock-chips.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 042/224] usb: gadget: configfs: Correctly set use_os_string at bind
-Date: Mon, 27 Oct 2025 19:33:08 +0100
-Message-ID: <20251027183510.131302353@linuxfoundation.org>
+	Simon Schuster <schuster.simon@siemens-energy.com>,
+	David Hildenbrand <david@redhat.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 5.10 136/332] copy_sighand: Handle architectures where sizeof(unsigned long) < sizeof(u64)
+Date: Mon, 27 Oct 2025 19:33:09 +0100
+Message-ID: <20251027183528.224596132@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183508.963233542@linuxfoundation.org>
-References: <20251027183508.963233542@linuxfoundation.org>
+In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
+References: <20251027183524.611456697@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,63 +64,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: William Wu <william.wu@rock-chips.com>
+From: Simon Schuster <schuster.simon@siemens-energy.com>
 
-[ Upstream commit e271cc0d25015f4be6c88bd7731444644eb352c2 ]
+commit 04ff48239f46e8b493571e260bd0e6c3a6400371 upstream.
 
-Once the use_os_string flag is set to true for some functions
-(e.g. adb/mtp) which need to response the OS string, and then
-if we re-bind the ConfigFS gadget to use the other functions
-(e.g. hid) which should not to response the OS string, however,
-because the use_os_string flag is still true, so the usb gadget
-response the OS string descriptor incorrectly, this can cause
-the USB device to be unrecognizable on the Windows system.
+With the introduction of clone3 in commit 7f192e3cd316 ("fork: add
+clone3") the effective bit width of clone_flags on all architectures was
+increased from 32-bit to 64-bit. However, the signature of the copy_*
+helper functions (e.g., copy_sighand) used by copy_process was not
+adapted.
 
-An example of this as follows:
+As such, they truncate the flags on any 32-bit architectures that
+supports clone3 (arc, arm, csky, m68k, microblaze, mips32, openrisc,
+parisc32, powerpc32, riscv32, x86-32 and xtensa).
 
-echo 1 > os_desc/use
-ln -s functions/ffs.adb configs/b.1/function0
-start adbd
-echo "<udc device>" > UDC   #succeed
+For copy_sighand with CLONE_CLEAR_SIGHAND being an actual u64
+constant, this triggers an observable bug in kernel selftest
+clone3_clear_sighand:
 
-stop adbd
-rm configs/b.1/function0
-echo 0 > os_desc/use
-ln -s functions/hid.gs0 configs/b.1/function0
-echo "<udc device>" > UDC  #fail to connect on Windows
+        if (clone_flags & CLONE_CLEAR_SIGHAND)
 
-This patch sets the use_os_string flag to false at bind if
-the functions not support OS Descriptors.
+in function copy_sighand within fork.c will always fail given:
 
-Signed-off-by: William Wu <william.wu@rock-chips.com>
-Fixes: 87213d388e92 ("usb: gadget: configfs: OS String support")
-Link: https://lore.kernel.org/r/1755833769-25434-1-git-send-email-william.wu@rock-chips.com
+        unsigned long /* == uint32_t */ clone_flags
+        #define CLONE_CLEAR_SIGHAND 0x100000000ULL
+
+This commit fixes the bug by always passing clone_flags to copy_sighand
+via their declared u64 type, invariant of architecture-dependent integer
+sizes.
+
+Fixes: b612e5df4587 ("clone3: add CLONE_CLEAR_SIGHAND")
+Cc: stable@vger.kernel.org # linux-5.5+
+Signed-off-by: Simon Schuster <schuster.simon@siemens-energy.com>
+Link: https://lore.kernel.org/20250901-nios2-implement-clone3-v2-1-53fcf5577d57@siemens-energy.com
+Acked-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/configfs.c | 2 ++
- 1 file changed, 2 insertions(+)
+ kernel/fork.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/usb/gadget/configfs.c b/drivers/usb/gadget/configfs.c
-index 476a22728e8d1..d2be874af7d3c 100644
---- a/drivers/usb/gadget/configfs.c
-+++ b/drivers/usb/gadget/configfs.c
-@@ -1327,6 +1327,8 @@ static int configfs_composite_bind(struct usb_gadget *gadget,
- 		cdev->use_os_string = true;
- 		cdev->b_vendor_code = gi->b_vendor_code;
- 		memcpy(cdev->qw_sign, gi->qw_sign, OS_STRING_QW_SIGN_LEN);
-+	} else {
-+		cdev->use_os_string = false;
- 	}
+--- a/kernel/fork.c
++++ b/kernel/fork.c
+@@ -1519,7 +1519,7 @@ static int copy_io(unsigned long clone_f
+ 	return 0;
+ }
  
- 	if (gadget_is_otg(gadget) && !otg_desc[0]) {
--- 
-2.51.0
-
+-static int copy_sighand(unsigned long clone_flags, struct task_struct *tsk)
++static int copy_sighand(u64 clone_flags, struct task_struct *tsk)
+ {
+ 	struct sighand_struct *sig;
+ 
 
 
 
