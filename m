@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-190757-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191244-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB3F6C10B4F
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:16:31 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id B47ADC113D8
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:45:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 084021A603EB
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:11:26 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7FFEB5066C2
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:31:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC1BB29E110;
-	Mon, 27 Oct 2025 19:08:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A53E031BCAE;
+	Mon, 27 Oct 2025 19:29:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LsR4SP28"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mGw77gr0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 664742C11DF;
-	Mon, 27 Oct 2025 19:08:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60C9231D740;
+	Mon, 27 Oct 2025 19:29:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592116; cv=none; b=Xn1ZosDN15B4Bvj5dTp2yc6qnWyhbdV9ITTPSsY0s2H1KCItqnvZ9PTp5m39AA5EheSBFpVxjczeRAj6JMp2KjuBC/lWPqSBpcGmXrWpCQ/sylsHhcdWBzHc60ZEFN55CHIGALfXuXCS6aqb3fI79r45xVAe3Ns6NAelCkhY1Fw=
+	t=1761593395; cv=none; b=XeKU/HSL55+AfER308H8KAL2JJpZuGxsM6DcF0VJHZylZKKJPQG7qKPv1b2vTY+FhsNOuEoy9AqlPBmBIHweLOJ+spqMDWUpQDQQQ85x7XGH4YcDxVGrX82yOhBtlSYS4y4EJLSgtyMVaKNVUNJm4SjjE8j7VppDML0h11M8qYA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592116; c=relaxed/simple;
-	bh=yoU/DdN1dcdDWsB8loECDLQllI7pMpQ3AK80EHC8FT4=;
+	s=arc-20240116; t=1761593395; c=relaxed/simple;
+	bh=Dwr0VNQ5vWgRynBEPBqvcVJDUsCdWsFIJop3pC7h/aQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TyfcgQGNCeHvOdiWAYXp+HvpGTNPPwWKUGkhoPzLGoqjtJHPo5UgIes0wiz+jRb3W6Qq6EL8wBMNr5A2lmimWYmypPQwt0DwinYtgDJ5NbhUNnflKRpzQ7I/voskbCcpeZnv7zBNPQi8pxSK4X8lTF1MXNFe2KCzKTqj7Y5ql+w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LsR4SP28; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC103C4CEF1;
-	Mon, 27 Oct 2025 19:08:35 +0000 (UTC)
+	 MIME-Version; b=O3YeWnoGZuVdkq77TQj8huhNbc1G68S6OJTl82f0NKGvVkVtto+gPeyAZK2w2fQ1MSL/pfgkpCQhKz8yrRp+Ee54np0e8kXIxDEwkDM7MBpdUkIz55rtNYpfIJaKUvqtWsr987zqk+++Z9PC6jyc5rVRFgMcUCBH5QzG4CXr8ks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mGw77gr0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C96B5C4CEF1;
+	Mon, 27 Oct 2025 19:29:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592116;
-	bh=yoU/DdN1dcdDWsB8loECDLQllI7pMpQ3AK80EHC8FT4=;
+	s=korg; t=1761593395;
+	bh=Dwr0VNQ5vWgRynBEPBqvcVJDUsCdWsFIJop3pC7h/aQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LsR4SP28iHVf2KqofPp3suaF5d2TSchxgkCN89DUvZPW9Hi7gYf8+ZcL29bR23Z1S
-	 HGXrOU9l//qVTNXnravPavm9zgfnyDwcAp7R8oux6wb1R2RXrTQMfFto2mdJVYspUK
-	 rh5HgDx+m9Kwu4A61hROOq55ERs+DmbZYdQAUzfw=
+	b=mGw77gr0+QWvOKOT2cdjtJ+hfh05OmhmJa3OC61YzVTsSKxdHpQPzXkrn18bj5anP
+	 bzeQJ3XxljQFPIP2AyBrIQHxRf3IAJZ9SNBAFvJfDIHT9alIHvXaQSfrjqgaq+t584
+	 3Pn4B4w2f6fsIcfUynOHICOAfGKLwFBlfyJEPcYw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anup Patel <apatel@ventanamicro.com>,
-	Atish Patra <atishp@rivosinc.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>
-Subject: [PATCH 5.15 123/123] RISC-V: Dont fail in riscv_of_parent_hartid() for disabled HARTs
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.17 121/184] arm64: dts: broadcom: bcm2712: Add default GIC address cells
 Date: Mon, 27 Oct 2025 19:36:43 +0100
-Message-ID: <20251027183449.672926685@linuxfoundation.org>
+Message-ID: <20251027183518.202386798@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183446.381986645@linuxfoundation.org>
-References: <20251027183446.381986645@linuxfoundation.org>
+In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
+References: <20251027183514.934710872@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anup Patel <apatel@ventanamicro.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit c4676f8dc1e12e68d6511f9ed89707fdad4c962c upstream.
+[ Upstream commit 278b6cabf18bd804f956b98a2f1068717acdbfe3 ]
 
-The riscv_of_processor_hartid() used by riscv_of_parent_hartid() fails
-for HARTs disabled in the DT. This results in the following warning
-thrown by the RISC-V INTC driver for the E-core on SiFive boards:
+Add missing address-cells 0 to GIC interrupt node to silence W=1
+warning:
 
-[    0.000000] riscv-intc: unable to find hart id for /cpus/cpu@0/interrupt-controller
+  bcm2712.dtsi:494.4-497.31: Warning (interrupt_map): /axi/pcie@1000110000:interrupt-map:
+    Missing property '#address-cells' in node /soc@107c000000/interrupt-controller@7fff9000, using 0 as fallback
 
-The riscv_of_parent_hartid() is only expected to read the hartid
-from the DT so we directly call of_get_cpu_hwid() instead of calling
-riscv_of_processor_hartid().
+Value '0' is correct because:
+1. GIC interrupt controller does not have children,
+2. interrupt-map property (in PCI node) consists of five components and
+   the fourth component "parent unit address", which size is defined by
+   '#address-cells' of the node pointed to by the interrupt-parent
+   component, is not used (=0)
 
-Fixes: ad635e723e17 ("riscv: cpu: Add 64bit hartid support on RV64")
-Signed-off-by: Anup Patel <apatel@ventanamicro.com>
-Reviewed-by: Atish Patra <atishp@rivosinc.com>
-Link: https://lore.kernel.org/r/20231027154254.355853-2-apatel@ventanamicro.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20250822133407.312505-2-krzysztof.kozlowski@linaro.org
+Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Stable-dep-of: aa960b597600 ("arm64: dts: broadcom: bcm2712: Define VGIC interrupt")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kernel/cpu.c |   11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ arch/arm64/boot/dts/broadcom/bcm2712.dtsi | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/riscv/kernel/cpu.c
-+++ b/arch/riscv/kernel/cpu.c
-@@ -50,13 +50,14 @@ int riscv_of_processor_hartid(struct dev
-  */
- int riscv_of_parent_hartid(struct device_node *node, unsigned long *hartid)
- {
--	int rc;
--
- 	for (; node; node = node->parent) {
- 		if (of_device_is_compatible(node, "riscv")) {
--			rc = riscv_of_processor_hartid(node, hartid);
--			if (!rc)
--				return 0;
-+			*hartid = (unsigned long)of_get_cpu_hwid(node, 0);
-+			if (*hartid == ~0UL) {
-+				pr_warn("Found CPU without hart ID\n");
-+				return -ENODEV;
-+			}
-+			return 0;
- 		}
- 	}
+diff --git a/arch/arm64/boot/dts/broadcom/bcm2712.dtsi b/arch/arm64/boot/dts/broadcom/bcm2712.dtsi
+index 0a9212d3106f1..940f1c4831988 100644
+--- a/arch/arm64/boot/dts/broadcom/bcm2712.dtsi
++++ b/arch/arm64/boot/dts/broadcom/bcm2712.dtsi
+@@ -270,6 +270,7 @@
+ 			      <0x7fffc000 0x2000>,
+ 			      <0x7fffe000 0x2000>;
+ 			interrupt-controller;
++			#address-cells = <0>;
+ 			#interrupt-cells = <3>;
+ 		};
  
+-- 
+2.51.0
+
 
 
 
