@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-190596-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190731-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29EF3C10948
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:11:07 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7254C10B40
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:16:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2064B464375
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:05:46 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id AC0585077B4
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:10:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D58DA31DDBC;
-	Mon, 27 Oct 2025 19:01:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CEE931B83D;
+	Mon, 27 Oct 2025 19:07:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ha/nAIy7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S8VBMdlb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AA6231D742;
-	Mon, 27 Oct 2025 19:01:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0981F320A00;
+	Mon, 27 Oct 2025 19:07:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591697; cv=none; b=WhZuhiHM/TpBxiV5Vyk/8B2sINgJEC9azDowaCJNYC17+NCUCyfkU8CQbU8kTpIfTefCluDSvJDZwzfD8IRup8NzN4Dg4GCBD0LmnL9waQz5VBOWh2PqWyx1ytNugicv9x4oHsjPaizi3NNIwGLI3FBBS7kZXwnl2S9PHGthIeo=
+	t=1761592047; cv=none; b=ldRbMu6nO+BnSS0G00tyP8JZWIIjIcPhLLj71jUvhLUgdMq5+WBCBTVN/yDvvejQIhsxGill/IO1dzaiNr5hxPWw7Hg3CPBcINTpFOw85Jev75xFbE7SgrWoA7HG5dnwYRrsX8shiotOcN9ZRSG/v3xdYVttk8DN3gQ6ELNg07c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591697; c=relaxed/simple;
-	bh=F5CJ41SJdWGLpPflC7nlq18g6+N0lTDE0T8PHVYcDcA=;
+	s=arc-20240116; t=1761592047; c=relaxed/simple;
+	bh=dHcZWf6qD12NuGpC29iz+XEzxkztlIbJ2n0X66CU1PA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rUeM1xRkKj7li+FgtTXBL4AYdHBSrP88C0rK2jp3mnLytB4Fv3Jc4A7pMaKopI8HD17MYL+HK6Xt4HKHD/rKssjRJvkKTrwkiFbKIf8Fou4+kcvjETsKYXOgylwdGDPJgU0XHyFAllHqGt4i+JSZTcAFGA5K+wmE91d4BFYinrs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ha/nAIy7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B858C4CEF1;
-	Mon, 27 Oct 2025 19:01:36 +0000 (UTC)
+	 MIME-Version; b=WncvUNsGlxKnWDHrD7z3SRJ9CERSf0a2nFxwwbZC25IcObHEMlPRT8bXZcRzYhs+IoyCcfyXZljO0emCgB1wfgZOm0PDF8dCMlGGlipI6blhQ3U2skR99WilLCz9iwn4HnWRD4RGX2cisnQ0Kp2Iqt5zlwZryRStblHQ9DLkK9s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S8VBMdlb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 927D1C4CEF1;
+	Mon, 27 Oct 2025 19:07:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591697;
-	bh=F5CJ41SJdWGLpPflC7nlq18g6+N0lTDE0T8PHVYcDcA=;
+	s=korg; t=1761592046;
+	bh=dHcZWf6qD12NuGpC29iz+XEzxkztlIbJ2n0X66CU1PA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ha/nAIy7TuT0uvHpnTPp0VdVwE5TlggguaPKTHk5Zy5ImRyPZ+tPapDbChmdOBROj
-	 FET9I41g+2tWr7vDEcij7v1YWJeWsNytSdsd7Hoxv78Zy45pytNYQ4jHVzVmwuBxE/
-	 VGozXESh/pWD1ttvMY6G9+2WRSfGpGy9tWmORLcI=
+	b=S8VBMdlbjZdKYr1X+53hKAA+20xwe9CXTqBoiKei3o00DXVpbUhY4IUQn0c3nBPsb
+	 1NTneZ16VtbhVrVuAF32A9wTSDf9ueg/qUW4Q3YtdGhdwB2EtWKGeAtZOs2ZdunH5J
+	 bCvAspAOxzKrH3vXyoJZ06+3AAMYzXRpKOnTd9VQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Andrey Konovalov <andreyknvl@gmail.com>
-Subject: [PATCH 5.10 295/332] usb: raw-gadget: do not limit transfer length
+	Michal Pecio <michal.pecio@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.15 068/123] net: usb: rtl8150: Fix frame padding
 Date: Mon, 27 Oct 2025 19:35:48 +0100
-Message-ID: <20251027183532.642119254@linuxfoundation.org>
+Message-ID: <20251027183448.217290986@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
-References: <20251027183524.611456697@linuxfoundation.org>
+In-Reply-To: <20251027183446.381986645@linuxfoundation.org>
+References: <20251027183446.381986645@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrey Konovalov <andreyknvl@gmail.com>
+From: Michal Pecio <michal.pecio@gmail.com>
 
-commit 37b9dd0d114a0e38c502695e30f55a74fb0c37d0 upstream.
+commit 75cea9860aa6b2350d90a8d78fed114d27c7eca2 upstream.
 
-Drop the check on the maximum transfer length in Raw Gadget for both
-control and non-control transfers.
+TX frames aren't padded and unknown memory is sent into the ether.
 
-Limiting the transfer length causes a problem with emulating USB devices
-whose full configuration descriptor exceeds PAGE_SIZE in length.
+Theoretically, it isn't even guaranteed that the extra memory exists
+and can be sent out, which could cause further problems. In practice,
+I found that plenty of tailroom exists in the skb itself (in my test
+with ping at least) and skb_padto() easily succeeds, so use it here.
 
-Overall, there does not appear to be any reason to enforce any kind of
-transfer length limit on the Raw Gadget side for either control or
-non-control transfers, so let's just drop the related check.
+In the event of -ENOMEM drop the frame like other drivers do.
 
-Cc: stable <stable@kernel.org>
-Fixes: f2c2e717642c ("usb: gadget: add raw-gadget interface")
-Signed-off-by: Andrey Konovalov <andreyknvl@gmail.com>
-Link: https://patch.msgid.link/a6024e8eab679043e9b8a5defdb41c4bda62f02b.1761085528.git.andreyknvl@gmail.com
+The use of one more padding byte instead of a USB zero-length packet
+is retained to avoid regression. I have a dodgy Etron xHCI controller
+which doesn't seem to support sending ZLPs at all.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@vger.kernel.org
+Signed-off-by: Michal Pecio <michal.pecio@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20251014203528.3f9783c4.michal.pecio@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/legacy/raw_gadget.c |    2 --
- 1 file changed, 2 deletions(-)
+ drivers/net/usb/rtl8150.c |   11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/gadget/legacy/raw_gadget.c
-+++ b/drivers/usb/gadget/legacy/raw_gadget.c
-@@ -619,8 +619,6 @@ static void *raw_alloc_io_data(struct us
- 		return ERR_PTR(-EINVAL);
- 	if (!usb_raw_io_flags_valid(io->flags))
- 		return ERR_PTR(-EINVAL);
--	if (io->length > PAGE_SIZE)
--		return ERR_PTR(-EINVAL);
- 	if (get_from_user)
- 		data = memdup_user(ptr + sizeof(*io), io->length);
- 	else {
+--- a/drivers/net/usb/rtl8150.c
++++ b/drivers/net/usb/rtl8150.c
+@@ -685,9 +685,16 @@ static netdev_tx_t rtl8150_start_xmit(st
+ 	rtl8150_t *dev = netdev_priv(netdev);
+ 	int count, res;
+ 
++	/* pad the frame and ensure terminating USB packet, datasheet 9.2.3 */
++	count = max(skb->len, ETH_ZLEN);
++	if (count % 64 == 0)
++		count++;
++	if (skb_padto(skb, count)) {
++		netdev->stats.tx_dropped++;
++		return NETDEV_TX_OK;
++	}
++
+ 	netif_stop_queue(netdev);
+-	count = (skb->len < 60) ? 60 : skb->len;
+-	count = (count & 0x3f) ? count : count + 1;
+ 	dev->tx_skb = skb;
+ 	usb_fill_bulk_urb(dev->tx_urb, dev->udev, usb_sndbulkpipe(dev->udev, 2),
+ 		      skb->data, count, write_bulk_callback, dev);
 
 
 
