@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-191021-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190682-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 238D3C10FAC
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:28:19 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BE12C10A89
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:14:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9B4ED5664A4
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:21:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BF7BF561486
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:08:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D31B23D2A3;
-	Mon, 27 Oct 2025 19:20:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD5CE332903;
+	Mon, 27 Oct 2025 19:05:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MpCIXU3G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rnqPgdIj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4979F2EDD62;
-	Mon, 27 Oct 2025 19:20:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C6A6322DCB;
+	Mon, 27 Oct 2025 19:05:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592808; cv=none; b=X4gVU5trDDi23CVX3ke0D0VO/Du+fGy8E7PgDSMpN4jY/FfEK1EyGexLdaSrcePXoi2V5oduUPVHEKr1GwRfvBT4OkFjJIoqHclXDl3RjG/A8cLvSIaFYphcP+clZlZPvefj9dOCNwDmRCB3I2qeazmGeHLAKC8zIxtg1mfbJGQ=
+	t=1761591920; cv=none; b=atWA38TAJq9225yTIU/xHgwupDoXyTqCfZzOVoCNuOnSFk6JhgQ8QOFh8uBZyW9mlBDELwOYr2EYsH48zo5xQmMIm0lo0tf4hbCad0nZtpMjFFrtlU26BchUs/iMCL6E6DQMzzfw181bwGl0usgow1ML7IqHtrCNyGDHpAc+Kbc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592808; c=relaxed/simple;
-	bh=PMe4Ub8qRZgVu94FE2TkMyBn2H+PoidHQgBnu8hU5VQ=;
+	s=arc-20240116; t=1761591920; c=relaxed/simple;
+	bh=FRbEd9TwZy5Q0+mqewBBs3iJhCEEe4Anp1Xw2/lgFBI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mG/rHJTZl/v8ROl7lPTrKyKa282PWQ7czb85yHcLxz8rAARy7VE62Z82JNkE2kIPGQpZ2aKQgj6ILaZx+hbpwhKro6CRhyIqrcSpMB9hk/9iboOwHSBufOdL9hewS/EXQAOLU9EX2kYuMT3fV1ZXqgXBoscwGjtAUF5kz0RMits=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MpCIXU3G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5B14C4CEF1;
-	Mon, 27 Oct 2025 19:20:07 +0000 (UTC)
+	 MIME-Version; b=ilyubuO/tCEyhslOwMo3EFr30b6BL2BSR3gmlWIkh3A637SLMX3eO8hmvU7J5C2F7TRS8dj8nH1xcW/7s2XddTLCTSyuuQ54SGJ0QgcLKCcsxnb4AEZ26tteeay+J++CHcTXsW8+DxQNaz4foZdY1FONcyM5CohCxJl6Z0K2H18=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rnqPgdIj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1D93C4CEF1;
+	Mon, 27 Oct 2025 19:05:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592808;
-	bh=PMe4Ub8qRZgVu94FE2TkMyBn2H+PoidHQgBnu8hU5VQ=;
+	s=korg; t=1761591920;
+	bh=FRbEd9TwZy5Q0+mqewBBs3iJhCEEe4Anp1Xw2/lgFBI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MpCIXU3GrUaeKjulIa7ZtJ0yh53MKAGuicGJ9iUc8Gku1Iu28eVOOhMojpBan9px7
-	 9rwiwC0UjADwooIFtUnfS0/CeFGepCjj2EU1LFKrvmH5qnBe5D1c8+Fq4yUfsX8csQ
-	 tJMZBaayfDeTWmMrWh9dmEomy9yuiqj12isxrHuo=
+	b=rnqPgdIjP3lpzEjC6nowfOF4WytK5zPuSvBke8OpjxGxlrhICE2PXRR7jfzoYMR/h
+	 I+JmZItqu9uZYVaW/mdkWflH0BGdns4rr+8oYwy6Y+aP0QRAQcJXvsos8D8k/odMzN
+	 cSfcgBQLWkR4fpe5h2z61LqM4xwcDUWUs4mgx+Ng=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Schuster <schuster.simon@siemens-energy.com>,
-	Andreas Oetken <andreas.oetken@siemens-energy.com>,
-	Dinh Nguyen <dinguyen@kernel.org>,
+	Alexander Aring <aahringo@redhat.com>,
+	David Teigland <teigland@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 002/117] nios2: ensure that memblock.current_limit is set when setting pfn limits
+Subject: [PATCH 5.15 048/123] dlm: check for defined force value in dlm_lockspace_release
 Date: Mon, 27 Oct 2025 19:35:28 +0100
-Message-ID: <20251027183453.993633300@linuxfoundation.org>
+Message-ID: <20251027183447.683517053@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
-References: <20251027183453.919157109@linuxfoundation.org>
+In-Reply-To: <20251027183446.381986645@linuxfoundation.org>
+References: <20251027183446.381986645@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,75 +62,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Simon Schuster <schuster.simon@siemens-energy.com>
+From: Alexander Aring <aahringo@redhat.com>
 
-[ Upstream commit a20b83cf45be2057f3d073506779e52c7fa17f94 ]
+[ Upstream commit 6af515c9f3ccec3eb8a262ca86bef2c499d07951 ]
 
-On nios2, with CONFIG_FLATMEM set, the kernel relies on
-memblock_get_current_limit() to determine the limits of mem_map, in
-particular for max_low_pfn.
-Unfortunately, memblock.current_limit is only default initialized to
-MEMBLOCK_ALLOC_ANYWHERE at this point of the bootup, potentially leading
-to situations where max_low_pfn can erroneously exceed the value of
-max_pfn and, thus, the valid range of available DRAM.
+Force values over 3 are undefined, so don't treat them as 3.
 
-This can in turn cause kernel-level paging failures, e.g.:
-
-[   76.900000] Unable to handle kernel paging request at virtual address 20303000
-[   76.900000] ea = c0080890, ra = c000462c, cause = 14
-[   76.900000] Kernel panic - not syncing: Oops
-[   76.900000] ---[ end Kernel panic - not syncing: Oops ]---
-
-This patch fixes this by pre-calculating memblock.current_limit
-based on the upper limits of the available memory ranges via
-adjust_lowmem_bounds, a simplified version of the equivalent
-implementation within the arm architecture.
-
-Signed-off-by: Simon Schuster <schuster.simon@siemens-energy.com>
-Signed-off-by: Andreas Oetken <andreas.oetken@siemens-energy.com>
-Signed-off-by: Dinh Nguyen <dinguyen@kernel.org>
+Signed-off-by: Alexander Aring <aahringo@redhat.com>
+Signed-off-by: David Teigland <teigland@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/nios2/kernel/setup.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ fs/dlm/lockspace.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/nios2/kernel/setup.c b/arch/nios2/kernel/setup.c
-index da122a5fa43b2..8528ab1f222cd 100644
---- a/arch/nios2/kernel/setup.c
-+++ b/arch/nios2/kernel/setup.c
-@@ -142,6 +142,20 @@ static void __init find_limits(unsigned long *min, unsigned long *max_low,
- 	*max_high = PFN_DOWN(memblock_end_of_DRAM());
- }
+diff --git a/fs/dlm/lockspace.c b/fs/dlm/lockspace.c
+index fa086a81a8476..5394c5713975d 100644
+--- a/fs/dlm/lockspace.c
++++ b/fs/dlm/lockspace.c
+@@ -785,7 +785,7 @@ static int release_lockspace(struct dlm_ls *ls, int force)
  
-+static void __init adjust_lowmem_bounds(void)
-+{
-+	phys_addr_t block_start, block_end;
-+	u64 i;
-+	phys_addr_t memblock_limit = 0;
-+
-+	for_each_mem_range(i, &block_start, &block_end) {
-+		if (block_end > memblock_limit)
-+			memblock_limit = block_end;
-+	}
-+
-+	memblock_set_current_limit(memblock_limit);
-+}
-+
- void __init setup_arch(char **cmdline_p)
- {
- 	console_verbose();
-@@ -155,6 +169,7 @@ void __init setup_arch(char **cmdline_p)
- 	/* Keep a copy of command line */
- 	*cmdline_p = boot_command_line;
+ 	dlm_device_deregister(ls);
  
-+	adjust_lowmem_bounds();
- 	find_limits(&min_low_pfn, &max_low_pfn, &max_pfn);
- 	max_mapnr = max_low_pfn;
+-	if (force < 3 && dlm_user_daemon_available())
++	if (force != 3 && dlm_user_daemon_available())
+ 		do_uevent(ls, 0);
  
+ 	dlm_recoverd_stop(ls);
 -- 
 2.51.0
 
