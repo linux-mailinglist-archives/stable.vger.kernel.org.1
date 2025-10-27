@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-190541-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190650-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3AEEC107FB
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:07:47 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id A36DBC109F0
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:13:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7F17418983BC
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:04:15 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4897D502B30
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:07:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2176323411;
-	Mon, 27 Oct 2025 18:59:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AF9532E12A;
+	Mon, 27 Oct 2025 19:03:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WmXq+xG0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iowJGdid"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E75932E72F;
-	Mon, 27 Oct 2025 18:59:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC74531CA50;
+	Mon, 27 Oct 2025 19:03:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591559; cv=none; b=TQcvixW/kBzl4+wW8DKms8So3DyU4i2mFTjmxE0ntmDbcQb2cuxBiIhSuG/3CxDLlsKZGx4vQmwxWDzzgnpPyCFRnw+cny7gL4Fpy91mnlrYKcVghRX8W/7lk38zX3kld2gjqnXfj0xpUZkr+kR9GZ1sWIbUW+o6UcVbBpiu9N4=
+	t=1761591836; cv=none; b=Agkl7IoVmqRTnpENZ4L+x85BnBOQSR5rRXvJ+F6FwaLsWJRnFs3kUVW0JcxvNMEglAddRvvMkYM/cVC+qoDwtMG9+vy1hcsimN+VXcOJ3cZMRFGW8euAQX1rjqFNhwZpgmkRTkhY9s4x+rDfPDJzLMX4gzgS5yAGdEuHui4H0mE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591559; c=relaxed/simple;
-	bh=0BvY4EVVjVOjBAZGG+1i2C79u0Z+IS/wOa4P/8je/Rg=;
+	s=arc-20240116; t=1761591836; c=relaxed/simple;
+	bh=VoIS9sX6ofJxd5JEQAse6wvaQ3ly2cyC29NWScLZ1KU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XBx/dXuU8vXpnj009qSZFE8jVnZi9cbU/RElmRKcF4WhTEuRC3I/QNq72UQ6fPwVMLVTEbauuTJopv30/bPWO4rhtW72f6bKVE+2/d7jNRG8GPYItTgmgNUvQu0muzgj4+TXFCfaXHCJYFYcO8VPYt0wbxytOMxYZfLXS1h+wsk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WmXq+xG0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E66EEC4CEF1;
-	Mon, 27 Oct 2025 18:59:18 +0000 (UTC)
+	 MIME-Version; b=Sw/ksDnq47+J3NhzPsZy++6+N16MPn/u5UIoeyDQL3/tEbzHVUrq9J+xxdNOzbsSSBEbWLasq9bxtXAw8GqWYFonspY5Z/i5momlHjt3hyv2581Ry3MVuNJHJSyUEr8AF1XuPqJEKDDZqZZnWYZpKr3Wa/OKAROgcjhtVmV3R9g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iowJGdid; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71F51C4CEF1;
+	Mon, 27 Oct 2025 19:03:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591559;
-	bh=0BvY4EVVjVOjBAZGG+1i2C79u0Z+IS/wOa4P/8je/Rg=;
+	s=korg; t=1761591836;
+	bh=VoIS9sX6ofJxd5JEQAse6wvaQ3ly2cyC29NWScLZ1KU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WmXq+xG06oYaxy4SFNiITY7PnvHp5Du5Xgnv5qYnmhq5STeHhX64llCNj0KDteCCN
-	 ycDkQ88gNPyscPPLVgV6FEGN2lW12kYfuyeTPduQ/2jKgQA1+jMRueqNgbS8XRtNcB
-	 TcUOSf9hCnizn2VT1QY38pdqGFIH5AaS85CQFEX0=
+	b=iowJGdidsXxR8Y10dfcg6rPtp5u6lodHqmQjLVX71G/iU2Q+DO01D+Vu9Yg56+xWZ
+	 p5KYZ405U4KXiBPI5oo1ndyiFNIUdm3VvF8iiMEAN5DBPEF3VjRb3Y8YX11oMkl9jM
+	 DAbrTYnUy/WKUal90OOKI+DdqZpHimatlBzJ7s0c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Raju Rangoju <Raju.Rangoju@amd.com>,
-	Dawid Osuchowski <dawid.osuchowski@linux.intel.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Yeounsu Moon <yyyynoom@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 244/332] amd-xgbe: Avoid spurious link down messages during interface toggle
+Subject: [PATCH 5.15 017/123] net: dlink: handle dma_map_single() failure properly
 Date: Mon, 27 Oct 2025 19:34:57 +0100
-Message-ID: <20251027183531.276886294@linuxfoundation.org>
+Message-ID: <20251027183446.861334437@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
-References: <20251027183524.611456697@linuxfoundation.org>
+In-Reply-To: <20251027183446.381986645@linuxfoundation.org>
+References: <20251027183446.381986645@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +63,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Raju Rangoju <Raju.Rangoju@amd.com>
+From: Yeounsu Moon <yyyynoom@gmail.com>
 
-[ Upstream commit 2616222e423398bb374ffcb5d23dea4ba2c3e524 ]
+[ Upstream commit 65946eac6d888d50ae527c4e5c237dbe5cc3a2f2 ]
 
-During interface toggle operations (ifdown/ifup), the driver currently
-resets the local helper variable 'phy_link' to -1. This causes the link
-state machine to incorrectly interpret the state as a link change event,
-resulting in spurious "Link is down" messages being logged when the
-interface is brought back up.
+There is no error handling for `dma_map_single()` failures.
 
-Preserve the phy_link state across interface toggles to avoid treating
-the -1 sentinel value as a legitimate link state transition.
+Add error handling by checking `dma_mapping_error()` and freeing
+the `skb` using `dev_kfree_skb()` (process context) when it fails.
 
-Fixes: 88131a812b16 ("amd-xgbe: Perform phy connect/disconnect at dev open/stop")
-Signed-off-by: Raju Rangoju <Raju.Rangoju@amd.com>
-Reviewed-by: Dawid Osuchowski <dawid.osuchowski@linux.intel.com>
-Link: https://patch.msgid.link/20251010065142.1189310-1-Raju.Rangoju@amd.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Yeounsu Moon <yyyynoom@gmail.com>
+Tested-on: D-Link DGE-550T Rev-A3
+Suggested-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/amd/xgbe/xgbe-drv.c  | 1 -
- drivers/net/ethernet/amd/xgbe/xgbe-mdio.c | 1 +
- 2 files changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/dlink/dl2k.c | 23 ++++++++++++++++-------
+ 1 file changed, 16 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/ethernet/amd/xgbe/xgbe-drv.c b/drivers/net/ethernet/amd/xgbe/xgbe-drv.c
-index 8926011604e39..9cd6dac033630 100644
---- a/drivers/net/ethernet/amd/xgbe/xgbe-drv.c
-+++ b/drivers/net/ethernet/amd/xgbe/xgbe-drv.c
-@@ -1172,7 +1172,6 @@ static void xgbe_free_rx_data(struct xgbe_prv_data *pdata)
+diff --git a/drivers/net/ethernet/dlink/dl2k.c b/drivers/net/ethernet/dlink/dl2k.c
+index ca8bfd1b8278e..59db32dcf9f3d 100644
+--- a/drivers/net/ethernet/dlink/dl2k.c
++++ b/drivers/net/ethernet/dlink/dl2k.c
+@@ -499,25 +499,34 @@ static int alloc_list(struct net_device *dev)
+ 	for (i = 0; i < RX_RING_SIZE; i++) {
+ 		/* Allocated fixed size of skbuff */
+ 		struct sk_buff *skb;
++		dma_addr_t addr;
  
- static int xgbe_phy_reset(struct xgbe_prv_data *pdata)
- {
--	pdata->phy_link = -1;
- 	pdata->phy_speed = SPEED_UNKNOWN;
+ 		skb = netdev_alloc_skb_ip_align(dev, np->rx_buf_sz);
+ 		np->rx_skbuff[i] = skb;
+-		if (!skb) {
+-			free_list(dev);
+-			return -ENOMEM;
+-		}
++		if (!skb)
++			goto err_free_list;
++
++		addr = dma_map_single(&np->pdev->dev, skb->data,
++				      np->rx_buf_sz, DMA_FROM_DEVICE);
++		if (dma_mapping_error(&np->pdev->dev, addr))
++			goto err_kfree_skb;
  
- 	return pdata->phy_if.phy_reset(pdata);
-diff --git a/drivers/net/ethernet/amd/xgbe/xgbe-mdio.c b/drivers/net/ethernet/amd/xgbe/xgbe-mdio.c
-index 19fed56b6ee3f..ebb8b3e5b9a88 100644
---- a/drivers/net/ethernet/amd/xgbe/xgbe-mdio.c
-+++ b/drivers/net/ethernet/amd/xgbe/xgbe-mdio.c
-@@ -1636,6 +1636,7 @@ static int xgbe_phy_init(struct xgbe_prv_data *pdata)
- 		pdata->phy.duplex = DUPLEX_FULL;
+ 		np->rx_ring[i].next_desc = cpu_to_le64(np->rx_ring_dma +
+ 						((i + 1) % RX_RING_SIZE) *
+ 						sizeof(struct netdev_desc));
+ 		/* Rubicon now supports 40 bits of addressing space. */
+-		np->rx_ring[i].fraginfo =
+-		    cpu_to_le64(dma_map_single(&np->pdev->dev, skb->data,
+-					       np->rx_buf_sz, DMA_FROM_DEVICE));
++		np->rx_ring[i].fraginfo = cpu_to_le64(addr);
+ 		np->rx_ring[i].fraginfo |= cpu_to_le64((u64)np->rx_buf_sz << 48);
  	}
  
-+	pdata->phy_link = 0;
- 	pdata->phy.link = 0;
+ 	return 0;
++
++err_kfree_skb:
++	dev_kfree_skb(np->rx_skbuff[i]);
++	np->rx_skbuff[i] = NULL;
++err_free_list:
++	free_list(dev);
++	return -ENOMEM;
+ }
  
- 	pdata->phy.pause_autoneg = pdata->pause_autoneg;
+ static void rio_hw_init(struct net_device *dev)
 -- 
 2.51.0
 
