@@ -1,118 +1,120 @@
-Return-Path: <stable+bounces-189932-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-189934-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E48FC0C1F0
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 08:26:43 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E3C8C0C2EE
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 08:50:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id DCB8A4F0897
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 07:26:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 10DF43BCBD2
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 07:50:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80AFF2DCBF1;
-	Mon, 27 Oct 2025 07:25:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 023282E3AE5;
+	Mon, 27 Oct 2025 07:50:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S/j16NL5"
+	dkim=pass (1024-bit key) header.d=yandex-team.ru header.i=@yandex-team.ru header.b="P49fEwis"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from forwardcorp1b.mail.yandex.net (forwardcorp1b.mail.yandex.net [178.154.239.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 337A02DCF77
-	for <stable@vger.kernel.org>; Mon, 27 Oct 2025 07:25:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C1402E36E9;
+	Mon, 27 Oct 2025 07:50:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761549957; cv=none; b=tr9NbOULtsXeDfzuJKGmsDmeHU/9I2yawca1GYslXKgPE01e5FzEa64luyYD8zKGLcFxJ4G6aXG6MWEvx1pHwjCqBHTPeGm/gIDNcUgSM59ltM1/Y9Ln961GZ1HQdqCfOACLnkWjaXrp7VsRBy6gzu/aT72SUjK65/igPT1/Rvw=
+	t=1761551407; cv=none; b=Lil4JVIteMms4UmwfkeSygN+LDKjCNZMIjq7zaVCd6wepCJzgKzsunOGxBkvGWFi06PfZ/6F+xGE9xDEI1twYmsGUOEjH1R4ikZWcHt+xhWm6jIqa517+oECIXUoAHxDpKnNO1rxStHPWP6KndW5L1L9YtSqHX6vukRUIGpFiVY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761549957; c=relaxed/simple;
-	bh=i5JkEQeh/PyshRNknfWog6loFTBm7EwXHfGOtiMJB8A=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Mdc0FQjup45fYPtEj4aVQIBv0SQj/TstO2ApJCvX2w1t0aGN9N0X8Nr/oIKYWGyRfMVhWJ7f6nKQZNAbhf2mEpldJLPgHcjlwt+cF2SqIJV4gp4Guc6/GLK8ZvSGEEBBWcDDsZqNHJqOgc6NTEiwkKBfpVizZjQImBkx8to+HBk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S/j16NL5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51561C4CEF1;
-	Mon, 27 Oct 2025 07:25:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761549956;
-	bh=i5JkEQeh/PyshRNknfWog6loFTBm7EwXHfGOtiMJB8A=;
-	h=Subject:To:Cc:From:Date:From;
-	b=S/j16NL5vU/9JVZ1T9Wp1+vWkvCZdClgL3iyQZIAzessR+OX3sV5ujWOfB+QpLckH
-	 lkaRBpfk8SX8G+l9QKH68JJU7DNOm7YeI7J0CRPIyjPWDk4LERQyc+GKC1/tBwPuKn
-	 /SVpMzcwozXRCmGXt0jnVWaCehNoCxawx+3mLN6I=
-Subject: FAILED: patch "[PATCH] serial: sc16is7xx: remove useless enable of enhanced features" failed to apply to 5.4-stable tree
-To: hvilleneuve@dimonoff.com,gregkh@linuxfoundation.org,stable@kernel.org
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 27 Oct 2025 08:25:40 +0100
-Message-ID: <2025102740-dumpster-clapper-519c@gregkh>
+	s=arc-20240116; t=1761551407; c=relaxed/simple;
+	bh=LoBHsGmeGqpRdc2DqMLx1eBbSSn9xowv31K/JbZQ9D4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=UG1KgAhxtW0OAp6J/30y8oUwq6exzfUE8W1RnWezyfUifatMsPubnNa/Cd877bc9oLz4Ck1qlvOvqiVK8/egju2Dyqsr98DOO7eU4qUDCsjT9QzoYTLjmyhr4IreT7IY3FhledIzAQOFR8zvLnRRom0vd2IHj+a5TxCwtZaJoUM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex-team.ru; spf=pass smtp.mailfrom=yandex-team.ru; dkim=pass (1024-bit key) header.d=yandex-team.ru header.i=@yandex-team.ru header.b=P49fEwis; arc=none smtp.client-ip=178.154.239.136
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex-team.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex-team.ru
+Received: from mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net (mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net [IPv6:2a02:6b8:c0c:1a8f:0:640:2fa2:0])
+	by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id 9E260804B3;
+	Mon, 27 Oct 2025 10:48:03 +0300 (MSK)
+Received: from i111667286.ld.yandex.ru (unknown [2a02:6bf:8080:994::1:8])
+	by mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net (smtpcorp/Yandex) with ESMTPSA id 0mW16e1FpuQ0-LqkXLN0L;
+	Mon, 27 Oct 2025 10:48:02 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+	s=default; t=1761551282;
+	bh=0w2fmspoFXzBsApnGldGOaGahnNb+24s0WLPhF3empo=;
+	h=Message-ID:Date:Cc:Subject:To:From;
+	b=P49fEwisOYO7W+IztiTmu46vQWxujnBUZ9jVNSUg2xIsZMI4cRkURnjAr1PyHmKlk
+	 B500oLyWSwLEUbPIhzm+MhF0HJ1slQ6q8IUpm5so09zCcF2SQ8SR0WMeAB+uaboNQ0
+	 InHQ+2k1TujbP5Lpg8Tf60dPKX03bB6Lq/RiGjlA=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net; dkim=pass header.i=@yandex-team.ru
+From: Andrey Troshin <drtrosh@yandex-team.ru>
+To: stable@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Andrey Troshin <drtrosh@yandex-team.ru>,
+	"Martin K . Petersen" <martin.petersen@oracle.com>,
+	linux-scsi@vger.kernel.org,
+	target-devel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	lvc-project@linuxtesting.org
+Subject: [PATCH 5.10] scsi: target: target_core_configfs: Add length check to avoid buffer overflow
+Date: Mon, 27 Oct 2025 10:48:06 +0300
+Message-ID: <20251027074806.2036-1-drtrosh@yandex-team.ru>
+X-Mailer: git-send-email 2.51.0.windows.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
+From: Wang Haoran <haoranwangsec@gmail.com>
 
-The patch below does not apply to the 5.4-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+commit 27e06650a5eafe832a90fd2604f0c5e920857fae upstream.
 
-To reproduce the conflict and resubmit, you may use the following commands:
+A buffer overflow arises from the usage of snprintf to write into the
+buffer "buf" in target_lu_gp_members_show function located in
+/drivers/target/target_core_configfs.c. This buffer is allocated with
+size LU_GROUP_NAME_BUF (256 bytes).
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
-git checkout FETCH_HEAD
-git cherry-pick -x 1c05bf6c0262f946571a37678250193e46b1ff0f
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025102740-dumpster-clapper-519c@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+snprintf(...) formats multiple strings into buf with the HBA name
+(hba->hba_group.cg_item), a slash character, a devicename (dev->
+dev_group.cg_item) and a newline character, the total formatted string
+length may exceed the buffer size of 256 bytes.
 
-Possible dependencies:
+Since snprintf() returns the total number of bytes that would have been
+written (the length of %s/%sn ), this value may exceed the buffer length
+(256 bytes) passed to memcpy(), this will ultimately cause function
+memcpy reporting a buffer overflow error.
 
+An additional check of the return value of snprintf() can avoid this
+buffer overflow.
 
+Reported-by: Wang Haoran <haoranwangsec@gmail.com>
+Reported-by: ziiiro <yuanmingbuaa@gmail.com>
+Signed-off-by: Wang Haoran <haoranwangsec@gmail.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+[Andrey Troshin: patch adaptation for linux-5.10]
+Signed-off-by: Andrey Troshin <drtrosh@yandex-team.ru>
+---
+Backport fix for CVE-2025-39998
+Link: https://nvd.nist.gov/vuln/detail/CVE-2025-39998
+---
+ drivers/target/target_core_configfs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 1c05bf6c0262f946571a37678250193e46b1ff0f Mon Sep 17 00:00:00 2001
-From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Date: Mon, 6 Oct 2025 10:20:02 -0400
-Subject: [PATCH] serial: sc16is7xx: remove useless enable of enhanced features
-
-Commit 43c51bb573aa ("sc16is7xx: make sure device is in suspend once
-probed") permanently enabled access to the enhanced features in
-sc16is7xx_probe(), and it is never disabled after that.
-
-Therefore, remove re-enable of enhanced features in
-sc16is7xx_set_baud(). This eliminates a potential useless read + write
-cycle each time the baud rate is reconfigured.
-
-Fixes: 43c51bb573aa ("sc16is7xx: make sure device is in suspend once probed")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Link: https://patch.msgid.link/20251006142002.177475-1-hugo@hugovil.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
-diff --git a/drivers/tty/serial/sc16is7xx.c b/drivers/tty/serial/sc16is7xx.c
-index 1a2c4c14f6aa..c7435595dce1 100644
---- a/drivers/tty/serial/sc16is7xx.c
-+++ b/drivers/tty/serial/sc16is7xx.c
-@@ -588,13 +588,6 @@ static int sc16is7xx_set_baud(struct uart_port *port, int baud)
- 		div /= prescaler;
- 	}
+diff --git a/drivers/target/target_core_configfs.c b/drivers/target/target_core_configfs.c
+index 4d2fbe1429b6..e6996428c07d 100644
+--- a/drivers/target/target_core_configfs.c
++++ b/drivers/target/target_core_configfs.c
+@@ -2637,7 +2637,7 @@ static ssize_t target_lu_gp_members_show(struct config_item *item, char *page)
+ 			config_item_name(&dev->dev_group.cg_item));
+ 		cur_len++; /* Extra byte for NULL terminator */
  
--	/* Enable enhanced features */
--	sc16is7xx_efr_lock(port);
--	sc16is7xx_port_update(port, SC16IS7XX_EFR_REG,
--			      SC16IS7XX_EFR_ENABLE_BIT,
--			      SC16IS7XX_EFR_ENABLE_BIT);
--	sc16is7xx_efr_unlock(port);
--
- 	/* If bit MCR_CLKSEL is set, the divide by 4 prescaler is activated. */
- 	sc16is7xx_port_update(port, SC16IS7XX_MCR_REG,
- 			      SC16IS7XX_MCR_CLKSEL_BIT,
+-		if ((cur_len + len) > PAGE_SIZE) {
++		if ((cur_len + len) > PAGE_SIZE || cur_len > LU_GROUP_NAME_BUF) {
+ 			pr_warn("Ran out of lu_gp_show_attr"
+ 				"_members buffer\n");
+ 			break;
+-- 
+2.34.1
 
 
