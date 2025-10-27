@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-190589-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191185-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88BA0C1091D
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:10:37 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2BAFC1116B
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:33:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 10327501A61
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:05:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 20BBB581917
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:29:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAB012C3749;
-	Mon, 27 Oct 2025 19:01:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB12B322547;
+	Mon, 27 Oct 2025 19:27:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tZgNcAdb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yztxfTTH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 771CB27978C;
-	Mon, 27 Oct 2025 19:01:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 995892BE037;
+	Mon, 27 Oct 2025 19:27:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591679; cv=none; b=GHmby58rLokwIvSN716WieUIPp1LnLT3A/FM0c/gQQAptkuUIABI92UzjzGasoEOQyPrivzjkb8iirOBMNyZFsa8wvv/UYHoOZmjV1+fa6i3tYJXcNiMtnt8Ae2siGn0tKu1zBg+67iyYMMGUlFQe6gQpFhfn1EE3OJ3RQnuUc8=
+	t=1761593226; cv=none; b=nsCE74SPGfRnrx5ZtH8sngzEfkDPnTJ/zgimueetL89Rk4ypW8w7srdRqWDSdclUHw67xh1MCWfXZl1xRRSV0Nv5e3LWorrRlH5IPLrno1hGnifHJnX1fgfSwtHjZr5BCz4Txiq5CT+juvprQjd5+9BljVApg7ZQFZ9dpDThFZg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591679; c=relaxed/simple;
-	bh=QFL6x9NCX5Aom62c6jC196CjU5wCaewaA8Lc6SGY/qo=;
+	s=arc-20240116; t=1761593226; c=relaxed/simple;
+	bh=ypfBJboPHltRxYASx6MrFZ0e2WSbdnJCC1l7uFCjgok=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qoCe1lvbusdYyCliDC4CSIdCTDLU71K7CR8+ZKjz1n2EwtBoiZ0jQkzXLwQ/Yj/RnuKBr3uugAPKJqFng9GDLbkuBHNhN8lLp9+CDepizWf3Wm8VBqILDfuG59tACw3Ktm0wq8zrUVzqT1pqw2TtnRHFxI1W8+ull0WMiLzE7B4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tZgNcAdb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BD3FC4CEF1;
-	Mon, 27 Oct 2025 19:01:18 +0000 (UTC)
+	 MIME-Version; b=kzBcBkwEdNjZaEThSHlhYPGu6LumFUzmKj7TtsxCHaB6qv4QCaDyRhJlz7Rc7OAdX/M4AbDdgceKKmFe/ErayZsZWZLEDFEW65iQ1qN/vhKzqYerbqFmtYxS3xQzXZBetRqdBAhtjzDOPr73Ib+/HoOLUwlP1yxp+b/qp2jq2Is=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yztxfTTH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2E5CC4CEF1;
+	Mon, 27 Oct 2025 19:27:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591679;
-	bh=QFL6x9NCX5Aom62c6jC196CjU5wCaewaA8Lc6SGY/qo=;
+	s=korg; t=1761593226;
+	bh=ypfBJboPHltRxYASx6MrFZ0e2WSbdnJCC1l7uFCjgok=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tZgNcAdbkqZsJV5Xjn7ok4YDlpt1RZH9HnbZqyxSULldUdI90CNFV6md1GbAZskKC
-	 30lkLF4xCwoXXwADHXbmLjOWVc08FQ6KpgBcY/RSZOdDPpnIaFvRvt93p/H0wtBow7
-	 VhDDy6nwWIRB8Mu5hxnd1f7+bCFKA/8Iu93TXH0M=
+	b=yztxfTTHU0xieNppkAWKyq9mFD0uNDytyg8chd9kmNiZqohRhPm7QXpKUFJEaEz2q
+	 jXBsQZkVtGGz0Kf8aPXbxSDvbO2Ek8aijFGJcs2cv8rroiZ3vxBk4g5yrVS83xk10d
+	 Nk+24hu0vZ6IhJzfx3kcaKQ6lCqRVNufjwzC8uTk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sunil V L <sunilvl@ventanamicro.com>,
-	Atish Patra <atishp@rivosinc.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
+	Patrisious Haddad <phaddad@nvidia.com>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 289/332] riscv: cpu: Add 64bit hartid support on RV64
+Subject: [PATCH 6.17 060/184] net/mlx5: Fix IPsec cleanup over MPV device
 Date: Mon, 27 Oct 2025 19:35:42 +0100
-Message-ID: <20251027183532.488170688@linuxfoundation.org>
+Message-ID: <20251027183516.505581804@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
-References: <20251027183524.611456697@linuxfoundation.org>
+In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
+References: <20251027183514.934710872@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,262 +64,203 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sunil V L <sunilvl@ventanamicro.com>
+From: Patrisious Haddad <phaddad@nvidia.com>
 
-[ Upstream commit ad635e723e17379b192a5ba9c182e3eedfc24d16 ]
+[ Upstream commit 664f76be38a18c61151d0ef248c7e2f3afb4f3c7 ]
 
-The hartid can be a 64bit value on RV64 platforms.
+When we do mlx5e_detach_netdev() we eventually disable blocking events
+notifier, among those events are IPsec MPV events from IB to core.
 
-Add support for 64bit hartid in riscv_of_processor_hartid() and
-update its callers.
+So before disabling those blocking events, make sure to also unregister
+the devcom device and mark all this device operations as complete,
+in order to prevent the other device from using invalid netdev
+during future devcom events which could cause the trace below.
 
-Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
-Reviewed-by: Atish Patra <atishp@rivosinc.com>
-Link: https://lore.kernel.org/r/20220527051743.2829940-5-sunilvl@ventanamicro.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
-Stable-dep-of: d2721bb165b3 ("RISC-V: Don't print details of CPUs disabled in DT")
+BUG: kernel NULL pointer dereference, address: 0000000000000010
+PGD 146427067 P4D 146427067 PUD 146488067 PMD 0
+Oops: Oops: 0000 [#1] SMP
+CPU: 1 UID: 0 PID: 7735 Comm: devlink Tainted: GW 6.12.0-rc6_for_upstream_min_debug_2024_11_08_00_46 #1
+Tainted: [W]=WARN
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.13.0-0-gf21b5a4aeb02-prebuilt.qemu.org 04/01/2014
+RIP: 0010:mlx5_devcom_comp_set_ready+0x5/0x40 [mlx5_core]
+Code: 00 01 48 83 05 23 32 1e 00 01 41 b8 ed ff ff ff e9 60 ff ff ff 48 83 05 00 32 1e 00 01 eb e3 66 0f 1f 44 00 00 0f 1f 44 00 00 <48> 8b 47 10 48 83 05 5f 32 1e 00 01 48 8b 50 40 48 85 d2 74 05 40
+RSP: 0018:ffff88811a5c35f8 EFLAGS: 00010206
+RAX: ffff888106e8ab80 RBX: ffff888107d7e200 RCX: ffff88810d6f0a00
+RDX: ffff88810d6f0a00 RSI: 0000000000000001 RDI: 0000000000000000
+RBP: ffff88811a17e620 R08: 0000000000000040 R09: 0000000000000000
+R10: ffff88811a5c3618 R11: 0000000de85d51bd R12: ffff88811a17e600
+R13: ffff88810d6f0a00 R14: 0000000000000000 R15: ffff8881034bda80
+FS:  00007f27bdf89180(0000) GS:ffff88852c880000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000000000000010 CR3: 000000010f159005 CR4: 0000000000372eb0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ ? __die+0x20/0x60
+ ? page_fault_oops+0x150/0x3e0
+ ? exc_page_fault+0x74/0x130
+ ? asm_exc_page_fault+0x22/0x30
+ ? mlx5_devcom_comp_set_ready+0x5/0x40 [mlx5_core]
+ mlx5e_devcom_event_mpv+0x42/0x60 [mlx5_core]
+ mlx5_devcom_send_event+0x8c/0x170 [mlx5_core]
+ blocking_event+0x17b/0x230 [mlx5_core]
+ notifier_call_chain+0x35/0xa0
+ blocking_notifier_call_chain+0x3d/0x60
+ mlx5_blocking_notifier_call_chain+0x22/0x30 [mlx5_core]
+ mlx5_core_mp_event_replay+0x12/0x20 [mlx5_core]
+ mlx5_ib_bind_slave_port+0x228/0x2c0 [mlx5_ib]
+ mlx5_ib_stage_init_init+0x664/0x9d0 [mlx5_ib]
+ ? idr_alloc_cyclic+0x50/0xb0
+ ? __kmalloc_cache_noprof+0x167/0x340
+ ? __kmalloc_noprof+0x1a7/0x430
+ __mlx5_ib_add+0x34/0xd0 [mlx5_ib]
+ mlx5r_probe+0xe9/0x310 [mlx5_ib]
+ ? kernfs_add_one+0x107/0x150
+ ? __mlx5_ib_add+0xd0/0xd0 [mlx5_ib]
+ auxiliary_bus_probe+0x3e/0x90
+ really_probe+0xc5/0x3a0
+ ? driver_probe_device+0x90/0x90
+ __driver_probe_device+0x80/0x160
+ driver_probe_device+0x1e/0x90
+ __device_attach_driver+0x7d/0x100
+ bus_for_each_drv+0x80/0xd0
+ __device_attach+0xbc/0x1f0
+ bus_probe_device+0x86/0xa0
+ device_add+0x62d/0x830
+ __auxiliary_device_add+0x3b/0xa0
+ ? auxiliary_device_init+0x41/0x90
+ add_adev+0xd1/0x150 [mlx5_core]
+ mlx5_rescan_drivers_locked+0x21c/0x300 [mlx5_core]
+ esw_mode_change+0x6c/0xc0 [mlx5_core]
+ mlx5_devlink_eswitch_mode_set+0x21e/0x640 [mlx5_core]
+ devlink_nl_eswitch_set_doit+0x60/0xe0
+ genl_family_rcv_msg_doit+0xd0/0x120
+ genl_rcv_msg+0x180/0x2b0
+ ? devlink_get_from_attrs_lock+0x170/0x170
+ ? devlink_nl_eswitch_get_doit+0x290/0x290
+ ? devlink_nl_pre_doit_port_optional+0x50/0x50
+ ? genl_family_rcv_msg_dumpit+0xf0/0xf0
+ netlink_rcv_skb+0x54/0x100
+ genl_rcv+0x24/0x40
+ netlink_unicast+0x1fc/0x2d0
+ netlink_sendmsg+0x1e4/0x410
+ __sock_sendmsg+0x38/0x60
+ ? sockfd_lookup_light+0x12/0x60
+ __sys_sendto+0x105/0x160
+ ? __sys_recvmsg+0x4e/0x90
+ __x64_sys_sendto+0x20/0x30
+ do_syscall_64+0x4c/0x100
+ entry_SYSCALL_64_after_hwframe+0x4b/0x53
+RIP: 0033:0x7f27bc91b13a
+Code: bb 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 8b 05 fa 96 2c 00 45 89 c9 4c 63 d1 48 63 ff 85 c0 75 15 b8 2c 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 76 f3 c3 0f 1f 40 00 41 55 41 54 4d 89 c5 55
+RSP: 002b:00007fff369557e8 EFLAGS: 00000246 ORIG_RAX: 000000000000002c
+RAX: ffffffffffffffda RBX: 0000000009c54b10 RCX: 00007f27bc91b13a
+RDX: 0000000000000038 RSI: 0000000009c54b10 RDI: 0000000000000006
+RBP: 0000000009c54920 R08: 00007f27bd0030e0 R09: 000000000000000c
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000001
+ </TASK>
+Modules linked in: mlx5_vdpa vringh vhost_iotlb vdpa xt_MASQUERADE nf_conntrack_netlink nfnetlink iptable_nat xt_addrtype xt_conntrack nf_nat br_netfilter rpcsec_gss_krb5 auth_rpcgss oid_registry overlay rpcrdma rdma_ucm ib_iser libiscsi ib_umad scsi_transport_iscsi ib_ipoib rdma_cm iw_cm ib_cm mlx5_fwctl mlx5_ib ib_uverbs ib_core mlx5_core
+CR2: 0000000000000010
+
+Fixes: 82f9378c443c ("net/mlx5: Handle IPsec steering upon master unbind/bind")
+Signed-off-by: Patrisious Haddad <phaddad@nvidia.com>
+Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/1761136182-918470-5-git-send-email-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/include/asm/processor.h |  4 ++--
- arch/riscv/kernel/cpu.c            | 26 +++++++++++++++-----------
- arch/riscv/kernel/cpufeature.c     |  6 ++++--
- arch/riscv/kernel/smpboot.c        |  9 +++++----
- drivers/clocksource/timer-riscv.c  | 15 ++++++++-------
- drivers/irqchip/irq-riscv-intc.c   |  7 ++++---
- drivers/irqchip/irq-sifive-plic.c  |  7 ++++---
- 7 files changed, 42 insertions(+), 32 deletions(-)
+ .../mellanox/mlx5/core/en_accel/ipsec.h       |  5 ++++
+ .../mellanox/mlx5/core/en_accel/ipsec_fs.c    | 25 +++++++++++++++++--
+ .../net/ethernet/mellanox/mlx5/core/en_main.c |  2 ++
+ 3 files changed, 30 insertions(+), 2 deletions(-)
 
-diff --git a/arch/riscv/include/asm/processor.h b/arch/riscv/include/asm/processor.h
-index bdddcd5c1b71d..b5295806643b1 100644
---- a/arch/riscv/include/asm/processor.h
-+++ b/arch/riscv/include/asm/processor.h
-@@ -66,8 +66,8 @@ static inline void wait_for_interrupt(void)
- }
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.h b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.h
+index 5d7c15abfcaf6..f8eaaf37963b1 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.h
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.h
+@@ -342,6 +342,7 @@ void mlx5e_ipsec_build_accel_xfrm_attrs(struct mlx5e_ipsec_sa_entry *sa_entry,
+ void mlx5e_ipsec_handle_mpv_event(int event, struct mlx5e_priv *slave_priv,
+ 				  struct mlx5e_priv *master_priv);
+ void mlx5e_ipsec_send_event(struct mlx5e_priv *priv, int event);
++void mlx5e_ipsec_disable_events(struct mlx5e_priv *priv);
  
- struct device_node;
--int riscv_of_processor_hartid(struct device_node *node);
--int riscv_of_parent_hartid(struct device_node *node);
-+int riscv_of_processor_hartid(struct device_node *node, unsigned long *hartid);
-+int riscv_of_parent_hartid(struct device_node *node, unsigned long *hartid);
- 
- extern void riscv_fill_hwcap(void);
- 
-diff --git a/arch/riscv/kernel/cpu.c b/arch/riscv/kernel/cpu.c
-index f13b2c9ea912d..11d6d6cc61d51 100644
---- a/arch/riscv/kernel/cpu.c
-+++ b/arch/riscv/kernel/cpu.c
-@@ -12,37 +12,36 @@
-  * Returns the hart ID of the given device tree node, or -ENODEV if the node
-  * isn't an enabled and valid RISC-V hart node.
-  */
--int riscv_of_processor_hartid(struct device_node *node)
-+int riscv_of_processor_hartid(struct device_node *node, unsigned long *hart)
+ static inline struct mlx5_core_dev *
+ mlx5e_ipsec_sa2dev(struct mlx5e_ipsec_sa_entry *sa_entry)
+@@ -387,6 +388,10 @@ static inline void mlx5e_ipsec_handle_mpv_event(int event, struct mlx5e_priv *sl
+ static inline void mlx5e_ipsec_send_event(struct mlx5e_priv *priv, int event)
  {
- 	const char *isa;
--	u32 hart;
- 
- 	if (!of_device_is_compatible(node, "riscv")) {
- 		pr_warn("Found incompatible CPU\n");
- 		return -ENODEV;
- 	}
- 
--	hart = of_get_cpu_hwid(node, 0);
--	if (hart == ~0U) {
-+	*hart = (unsigned long) of_get_cpu_hwid(node, 0);
-+	if (*hart == ~0UL) {
- 		pr_warn("Found CPU without hart ID\n");
- 		return -ENODEV;
- 	}
- 
- 	if (!of_device_is_available(node)) {
--		pr_info("CPU with hartid=%d is not available\n", hart);
-+		pr_info("CPU with hartid=%lu is not available\n", *hart);
- 		return -ENODEV;
- 	}
- 
- 	if (of_property_read_string(node, "riscv,isa", &isa)) {
--		pr_warn("CPU with hartid=%d has no \"riscv,isa\" property\n", hart);
-+		pr_warn("CPU with hartid=%lu has no \"riscv,isa\" property\n", *hart);
- 		return -ENODEV;
- 	}
- 	if (isa[0] != 'r' || isa[1] != 'v') {
--		pr_warn("CPU with hartid=%d has an invalid ISA of \"%s\"\n", hart, isa);
-+		pr_warn("CPU with hartid=%lu has an invalid ISA of \"%s\"\n", *hart, isa);
- 		return -ENODEV;
- 	}
- 
--	return hart;
-+	return 0;
  }
- 
- /*
-@@ -51,11 +50,16 @@ int riscv_of_processor_hartid(struct device_node *node)
-  * To achieve this, we walk up the DT tree until we find an active
-  * RISC-V core (HART) node and extract the cpuid from it.
-  */
--int riscv_of_parent_hartid(struct device_node *node)
-+int riscv_of_parent_hartid(struct device_node *node, unsigned long *hartid)
- {
-+	int rc;
 +
- 	for (; node; node = node->parent) {
--		if (of_device_is_compatible(node, "riscv"))
--			return riscv_of_processor_hartid(node);
-+		if (of_device_is_compatible(node, "riscv")) {
-+			rc = riscv_of_processor_hartid(node, hartid);
-+			if (!rc)
-+				return 0;
-+		}
- 	}
++static inline void mlx5e_ipsec_disable_events(struct mlx5e_priv *priv)
++{
++}
+ #endif
  
- 	return -1;
-diff --git a/arch/riscv/kernel/cpufeature.c b/arch/riscv/kernel/cpufeature.c
-index 54d230bdaf976..f46efff26e3dc 100644
---- a/arch/riscv/kernel/cpufeature.c
-+++ b/arch/riscv/kernel/cpufeature.c
-@@ -67,8 +67,9 @@ void riscv_fill_hwcap(void)
- 	struct device_node *node;
- 	const char *isa;
- 	char print_str[NUM_ALPHA_EXTS + 1];
--	int i, j;
-+	int i, j, rc;
- 	static unsigned long isa2hwcap[256] = {0};
-+	unsigned long hartid;
+ #endif	/* __MLX5E_IPSEC_H__ */
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_fs.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_fs.c
+index 9e23652535638..f1297b5a04082 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_fs.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_fs.c
+@@ -2869,9 +2869,30 @@ void mlx5e_ipsec_handle_mpv_event(int event, struct mlx5e_priv *slave_priv,
  
- 	isa2hwcap['i'] = isa2hwcap['I'] = COMPAT_HWCAP_ISA_I;
- 	isa2hwcap['m'] = isa2hwcap['M'] = COMPAT_HWCAP_ISA_M;
-@@ -85,7 +86,8 @@ void riscv_fill_hwcap(void)
- 		unsigned long this_hwcap = 0;
- 		unsigned long this_isa = 0;
- 
--		if (riscv_of_processor_hartid(node) < 0)
-+		rc = riscv_of_processor_hartid(node, &hartid);
-+		if (rc < 0)
- 			continue;
- 
- 		if (of_property_read_string(node, "riscv,isa", &isa)) {
-diff --git a/arch/riscv/kernel/smpboot.c b/arch/riscv/kernel/smpboot.c
-index 0e0aed380e281..9df6413771923 100644
---- a/arch/riscv/kernel/smpboot.c
-+++ b/arch/riscv/kernel/smpboot.c
-@@ -67,15 +67,16 @@ void __init smp_prepare_cpus(unsigned int max_cpus)
- void __init setup_smp(void)
+ void mlx5e_ipsec_send_event(struct mlx5e_priv *priv, int event)
  {
- 	struct device_node *dn;
--	int hart;
-+	unsigned long hart;
- 	bool found_boot_cpu = false;
- 	int cpuid = 1;
-+	int rc;
+-	if (!priv->ipsec)
+-		return; /* IPsec not supported */
++	if (!priv->ipsec || mlx5_devcom_comp_get_size(priv->devcom) < 2)
++		return; /* IPsec not supported or no peers */
  
- 	cpu_set_ops(0);
- 
- 	for_each_of_cpu_node(dn) {
--		hart = riscv_of_processor_hartid(dn);
--		if (hart < 0)
-+		rc = riscv_of_processor_hartid(dn, &hart);
-+		if (rc < 0)
- 			continue;
- 
- 		if (hart == cpuid_to_hartid_map(0)) {
-@@ -84,7 +85,7 @@ void __init setup_smp(void)
- 			continue;
- 		}
- 		if (cpuid >= NR_CPUS) {
--			pr_warn("Invalid cpuid [%d] for hartid [%d]\n",
-+			pr_warn("Invalid cpuid [%d] for hartid [%lu]\n",
- 				cpuid, hart);
- 			break;
- 		}
-diff --git a/drivers/clocksource/timer-riscv.c b/drivers/clocksource/timer-riscv.c
-index c51c5ed15aa75..4930d08c9374a 100644
---- a/drivers/clocksource/timer-riscv.c
-+++ b/drivers/clocksource/timer-riscv.c
-@@ -92,20 +92,21 @@ static irqreturn_t riscv_timer_interrupt(int irq, void *dev_id)
- 
- static int __init riscv_timer_init_dt(struct device_node *n)
- {
--	int cpuid, hartid, error;
-+	int cpuid, error;
-+	unsigned long hartid;
- 	struct device_node *child;
- 	struct irq_domain *domain;
- 
--	hartid = riscv_of_processor_hartid(n);
--	if (hartid < 0) {
--		pr_warn("Not valid hartid for node [%pOF] error = [%d]\n",
-+	error = riscv_of_processor_hartid(n, &hartid);
-+	if (error < 0) {
-+		pr_warn("Not valid hartid for node [%pOF] error = [%lu]\n",
- 			n, hartid);
--		return hartid;
-+		return error;
+ 	mlx5_devcom_send_event(priv->devcom, event, event, priv);
+ 	wait_for_completion(&priv->ipsec->comp);
+ }
++
++void mlx5e_ipsec_disable_events(struct mlx5e_priv *priv)
++{
++	struct mlx5_devcom_comp_dev *tmp = NULL;
++	struct mlx5e_priv *peer_priv;
++
++	if (!priv->devcom)
++		return;
++
++	if (!mlx5_devcom_for_each_peer_begin(priv->devcom))
++		goto out;
++
++	peer_priv = mlx5_devcom_get_next_peer_data(priv->devcom, &tmp);
++	if (peer_priv)
++		complete_all(&peer_priv->ipsec->comp);
++
++	mlx5_devcom_for_each_peer_end(priv->devcom);
++out:
++	mlx5_devcom_unregister_component(priv->devcom);
++	priv->devcom = NULL;
++}
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+index 21bb88c5d3dce..8a63e62938e73 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+@@ -261,6 +261,7 @@ static void mlx5e_devcom_cleanup_mpv(struct mlx5e_priv *priv)
  	}
  
- 	cpuid = riscv_hartid_to_cpuid(hartid);
- 	if (cpuid < 0) {
--		pr_warn("Invalid cpuid for hartid [%d]\n", hartid);
-+		pr_warn("Invalid cpuid for hartid [%lu]\n", hartid);
- 		return cpuid;
- 	}
+ 	mlx5_devcom_unregister_component(priv->devcom);
++	priv->devcom = NULL;
+ }
  
-@@ -131,7 +132,7 @@ static int __init riscv_timer_init_dt(struct device_node *n)
- 		return -ENODEV;
- 	}
+ static int blocking_event(struct notifier_block *nb, unsigned long event, void *data)
+@@ -6068,6 +6069,7 @@ static void mlx5e_nic_disable(struct mlx5e_priv *priv)
+ 	if (mlx5e_monitor_counter_supported(priv))
+ 		mlx5e_monitor_counter_cleanup(priv);
  
--	pr_info("%s: Registering clocksource cpuid [%d] hartid [%d]\n",
-+	pr_info("%s: Registering clocksource cpuid [%d] hartid [%lu]\n",
- 	       __func__, cpuid, hartid);
- 	error = clocksource_register_hz(&riscv_clocksource, riscv_timebase);
- 	if (error) {
-diff --git a/drivers/irqchip/irq-riscv-intc.c b/drivers/irqchip/irq-riscv-intc.c
-index 8017f6d32d52b..edbf90a7565f6 100644
---- a/drivers/irqchip/irq-riscv-intc.c
-+++ b/drivers/irqchip/irq-riscv-intc.c
-@@ -95,10 +95,11 @@ static const struct irq_domain_ops riscv_intc_domain_ops = {
- static int __init riscv_intc_init(struct device_node *node,
- 				  struct device_node *parent)
- {
--	int rc, hartid;
-+	int rc;
-+	unsigned long hartid;
- 
--	hartid = riscv_of_parent_hartid(node);
--	if (hartid < 0) {
-+	rc = riscv_of_parent_hartid(node, &hartid);
-+	if (rc < 0) {
- 		pr_warn("unable to find hart id for %pOF\n", node);
- 		return 0;
- 	}
-diff --git a/drivers/irqchip/irq-sifive-plic.c b/drivers/irqchip/irq-sifive-plic.c
-index bd99ee0ae433d..5fdf0eae48f7d 100644
---- a/drivers/irqchip/irq-sifive-plic.c
-+++ b/drivers/irqchip/irq-sifive-plic.c
-@@ -315,7 +315,8 @@ static int __init plic_init(struct device_node *node,
- 	for (i = 0; i < nr_contexts; i++) {
- 		struct of_phandle_args parent;
- 		irq_hw_number_t hwirq;
--		int cpu, hartid;
-+		int cpu;
-+		unsigned long hartid;
- 
- 		if (of_irq_parse_one(node, i, &parent)) {
- 			pr_err("failed to parse parent for context %d.\n", i);
-@@ -329,8 +330,8 @@ static int __init plic_init(struct device_node *node,
- 		if (parent.args[0] != RV_IRQ_EXT)
- 			continue;
- 
--		hartid = riscv_of_parent_hartid(parent.np);
--		if (hartid < 0) {
-+		error = riscv_of_parent_hartid(parent.np, &hartid);
-+		if (error < 0) {
- 			pr_warn("failed to parse hart ID for context %d.\n", i);
- 			continue;
- 		}
++	mlx5e_ipsec_disable_events(priv);
+ 	mlx5e_disable_blocking_events(priv);
+ 	mlx5e_disable_async_events(priv);
+ 	mlx5_lag_remove_netdev(mdev, priv->netdev);
 -- 
 2.51.0
 
