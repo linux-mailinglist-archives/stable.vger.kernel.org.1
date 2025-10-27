@@ -1,58 +1,66 @@
-Return-Path: <stable+bounces-190191-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190515-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37DEAC10212
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:48:11 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F8D5C1067F
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:02:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 83D9C1A20D67
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:47:35 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id D22BB351FA7
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:02:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 407443203A9;
-	Mon, 27 Oct 2025 18:44:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F09432F754;
+	Mon, 27 Oct 2025 18:58:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A140wuuL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FYJJykYD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1DA631B82B;
-	Mon, 27 Oct 2025 18:44:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46A543203BB;
+	Mon, 27 Oct 2025 18:58:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761590647; cv=none; b=VJFhSbJzmzQimrBKw4af1YfOycWWW8r3OAD60mYpI/UECOIgOkccS0EQ4V22DnKePRMUBn85nO3hAUOIBYe9iv6moRhaDJQCuq7kTZBbbXpLtDvTtd1eWiH+LfqraJ6S9mCGMD15DcC9mbzSxw9AS7MWDH6ezXiwQR8YHnAPX6k=
+	t=1761591492; cv=none; b=RVU9OcnK5SHyOXbmxiQ/vDqwdXQJSuFUOTK1/dPoeQ/34fYaiqqzK56h35YDBHJzuoezavigg5szy0ik0trgXCLHXNQ9box+jQc70bC9zRu414vBq4eutEkmr+sH0+vNZXpYCeaaT2rIJxvng3zxqBWHdnO8wV/X2TLMuMpcdag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761590647; c=relaxed/simple;
-	bh=LsrAqeh+avUHEwlcu9sB4P+tQ9jjCglwc+C/nYER/u8=;
+	s=arc-20240116; t=1761591492; c=relaxed/simple;
+	bh=DZRX1voD3lc14K7CVZ3YCt6Ul7Yha88YINYv0c1rGhM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DeWKitCx2yHZG6vn9dML5iHtj5UiyhfGTR9JZC2W5QXS8QROKdzUflDhOzdi3bWaJVWfjWNe2LIGDZFQHCxxgUtAnvwCfXVqFNsIVZBZYgMjRjKJ6J3H//2MGOXUVTETNLicRiPvsRtFnh/tuLfq66lNo9Gcx6obsk3CHLIqekk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A140wuuL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E3D9C4CEFD;
-	Mon, 27 Oct 2025 18:44:06 +0000 (UTC)
+	 MIME-Version; b=fEKdrNDcm9rZdeYugkOdAuztDwC9SOsK2LPfD+eKOkmHr9MC7lzCr55qoPJ16fSog5ftoWYudYhp1hQaO53YfbRngq75Z5q8ZejUg5MpKEz/MCcfnik2ZzuXbJMtNToqwCdzxjiQXeEuTJ1a8LS8AAVWxzb6VnvOd9EYrzofJ48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FYJJykYD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A237FC4CEF1;
+	Mon, 27 Oct 2025 18:58:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761590646;
-	bh=LsrAqeh+avUHEwlcu9sB4P+tQ9jjCglwc+C/nYER/u8=;
+	s=korg; t=1761591492;
+	bh=DZRX1voD3lc14K7CVZ3YCt6Ul7Yha88YINYv0c1rGhM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A140wuuLPgJIJnV+Oumom+P6AjCeCPvT4VhREaE+S4uBqzdKsPQMeMMPGyr2oitRC
-	 37o6Ol/naXS7Iuk+8WP9zaj6zWP5TsSjmUrNdypRGqe0R8LY0Os8xErzUhuA5uwlTM
-	 /3rO8QHKeKckdlCrJXcCFX1tv5ro97DJQeoO5ouc=
+	b=FYJJykYDNiST3ucZlohuyMWXrPZqx0qnF+ze0idQxvx0ggxBZMojEjKw1leQ9FN2s
+	 xuX4Pd+arNT1pCzrOhRdluaPlASQDkAfWgcp4N9ubGQAFDuF2ikGed4g65oqY1QcWn
+	 y4j7xKDurUQfWrG46SqmEO2lvZX23t1SRZcQq5Ag=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Niklas Schnelle <schnelle@linux.ibm.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Benjamin Block <bblock@linux.ibm.com>,
-	Farhan Ali <alifm@linux.ibm.com>,
-	Julian Ruess <julianr@linux.ibm.com>
-Subject: [PATCH 5.4 123/224] PCI/IOV: Add PCI rescan-remove locking when enabling/disabling SR-IOV
+	David Laight <david.laight@aculab.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Arnd Bergmann <arnd@kernel.org>,
+	Christoph Hellwig <hch@infradead.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	"Jason A. Donenfeld" <Jason@zx2c4.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Mateusz Guzik <mjguzik@gmail.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Pedro Falcato <pedro.falcato@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Eliav Farber <farbere@amazon.com>
+Subject: [PATCH 5.10 216/332] minmax.h: reduce the #define expansion of min(), max() and clamp()
 Date: Mon, 27 Oct 2025 19:34:29 +0100
-Message-ID: <20251027183512.275456035@linuxfoundation.org>
+Message-ID: <20251027183530.462700198@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183508.963233542@linuxfoundation.org>
-References: <20251027183508.963233542@linuxfoundation.org>
+In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
+References: <20251027183524.611456697@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,110 +72,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Schnelle <schnelle@linux.ibm.com>
+From: David Laight <David.Laight@ACULAB.COM>
 
-commit 05703271c3cdcc0f2a8cf6ebdc45892b8ca83520 upstream.
+[ Upstream commit b280bb27a9f7c91ddab730e1ad91a9c18a051f41 ]
 
-Before disabling SR-IOV via config space accesses to the parent PF,
-sriov_disable() first removes the PCI devices representing the VFs.
+Since the test for signed values being non-negative only relies on
+__builtion_constant_p() (not is_constexpr()) it can use the 'ux' variable
+instead of the caller supplied expression.  This means that the #define
+parameters are only expanded twice.  Once in the code and once quoted in
+the error message.
 
-Since commit 9d16947b7583 ("PCI: Add global pci_lock_rescan_remove()")
-such removal operations are serialized against concurrent remove and
-rescan using the pci_rescan_remove_lock. No such locking was ever added
-in sriov_disable() however. In particular when commit 18f9e9d150fc
-("PCI/IOV: Factor out sriov_add_vfs()") factored out the PCI device
-removal into sriov_del_vfs() there was still no locking around the
-pci_iov_remove_virtfn() calls.
-
-On s390 the lack of serialization in sriov_disable() may cause double
-remove and list corruption with the below (amended) trace being observed:
-
-  PSW:  0704c00180000000 0000000c914e4b38 (klist_put+56)
-  GPRS: 000003800313fb48 0000000000000000 0000000100000001 0000000000000001
-	00000000f9b520a8 0000000000000000 0000000000002fbd 00000000f4cc9480
-	0000000000000001 0000000000000000 0000000000000000 0000000180692828
-	00000000818e8000 000003800313fe2c 000003800313fb20 000003800313fad8
-  #0 [3800313fb20] device_del at c9158ad5c
-  #1 [3800313fb88] pci_remove_bus_device at c915105ba
-  #2 [3800313fbd0] pci_iov_remove_virtfn at c9152f198
-  #3 [3800313fc28] zpci_iov_remove_virtfn at c90fb67c0
-  #4 [3800313fc60] zpci_bus_remove_device at c90fb6104
-  #5 [3800313fca0] __zpci_event_availability at c90fb3dca
-  #6 [3800313fd08] chsc_process_sei_nt0 at c918fe4a2
-  #7 [3800313fd60] crw_collect_info at c91905822
-  #8 [3800313fe10] kthread at c90feb390
-  #9 [3800313fe68] __ret_from_fork at c90f6aa64
-  #10 [3800313fe98] ret_from_fork at c9194f3f2.
-
-This is because in addition to sriov_disable() removing the VFs, the
-platform also generates hot-unplug events for the VFs. This being the
-reverse operation to the hotplug events generated by sriov_enable() and
-handled via pdev->no_vf_scan. And while the event processing takes
-pci_rescan_remove_lock and checks whether the struct pci_dev still exists,
-the lack of synchronization makes this checking racy.
-
-Other races may also be possible of course though given that this lack of
-locking persisted so long observable races seem very rare. Even on s390 the
-list corruption was only observed with certain devices since the platform
-events are only triggered by config accesses after the removal, so as long
-as the removal finished synchronously they would not race. Either way the
-locking is missing so fix this by adding it to the sriov_del_vfs() helper.
-
-Just like PCI rescan-remove, locking is also missing in sriov_add_vfs()
-including for the error case where pci_stop_and_remove_bus_device() is
-called without the PCI rescan-remove lock being held. Even in the non-error
-case, adding new PCI devices and buses should be serialized via the PCI
-rescan-remove lock. Add the necessary locking.
-
-Fixes: 18f9e9d150fc ("PCI/IOV: Factor out sriov_add_vfs()")
-Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Benjamin Block <bblock@linux.ibm.com>
-Reviewed-by: Farhan Ali <alifm@linux.ibm.com>
-Reviewed-by: Julian Ruess <julianr@linux.ibm.com>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20250826-pci_fix_sriov_disable-v1-1-2d0bc938f2a3@linux.ibm.com
+Link: https://lkml.kernel.org/r/051afc171806425da991908ed8688a98@AcuMS.aculab.com
+Signed-off-by: David Laight <david.laight@aculab.com>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Arnd Bergmann <arnd@kernel.org>
+Cc: Christoph Hellwig <hch@infradead.org>
+Cc: Dan Carpenter <dan.carpenter@linaro.org>
+Cc: Jason A. Donenfeld <Jason@zx2c4.com>
+Cc: Jens Axboe <axboe@kernel.dk>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Mateusz Guzik <mjguzik@gmail.com>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: Pedro Falcato <pedro.falcato@gmail.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Eliav Farber <farbere@amazon.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/iov.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ include/linux/minmax.h |   24 ++++++++++++------------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
 
---- a/drivers/pci/iov.c
-+++ b/drivers/pci/iov.c
-@@ -431,15 +431,18 @@ static int sriov_add_vfs(struct pci_dev
- 	if (dev->no_vf_scan)
- 		return 0;
+--- a/include/linux/minmax.h
++++ b/include/linux/minmax.h
+@@ -46,10 +46,10 @@
+  * comparison, and these expressions only need to be careful to not cause
+  * warnings for pointer use.
+  */
+-#define __signed_type_use(x, ux) (2 + __is_nonneg(x, ux))
+-#define __unsigned_type_use(x, ux) (1 + 2 * (sizeof(ux) < 4))
+-#define __sign_use(x, ux) (is_signed_type(typeof(ux)) ? \
+-	__signed_type_use(x, ux) : __unsigned_type_use(x, ux))
++#define __signed_type_use(ux) (2 + __is_nonneg(ux))
++#define __unsigned_type_use(ux) (1 + 2 * (sizeof(ux) < 4))
++#define __sign_use(ux) (is_signed_type(typeof(ux)) ? \
++	__signed_type_use(ux) : __unsigned_type_use(ux))
  
-+	pci_lock_rescan_remove();
- 	for (i = 0; i < num_vfs; i++) {
- 		rc = pci_iov_add_virtfn(dev, i);
- 		if (rc)
- 			goto failed;
- 	}
-+	pci_unlock_rescan_remove();
- 	return 0;
- failed:
- 	while (i--)
- 		pci_iov_remove_virtfn(dev, i);
-+	pci_unlock_rescan_remove();
+ /*
+  * Check whether a signed value is always non-negative.
+@@ -71,13 +71,13 @@
+ #else
+   #define __signed_type(ux) typeof(__builtin_choose_expr(sizeof(ux) > 4, 1LL, 1L))
+ #endif
+-#define __is_nonneg(x, ux) statically_true((__signed_type(ux))(x) >= 0)
++#define __is_nonneg(ux) statically_true((__signed_type(ux))(ux) >= 0)
  
- 	return rc;
- }
-@@ -562,8 +565,10 @@ static void sriov_del_vfs(struct pci_dev
- 	if (dev->no_vf_scan)
- 		return;
+-#define __types_ok(x, y, ux, uy) \
+-	(__sign_use(x, ux) & __sign_use(y, uy))
++#define __types_ok(ux, uy) \
++	(__sign_use(ux) & __sign_use(uy))
  
-+	pci_lock_rescan_remove();
- 	for (i = 0; i < iov->num_VFs; i++)
- 		pci_iov_remove_virtfn(dev, i);
-+	pci_unlock_rescan_remove();
- }
+-#define __types_ok3(x, y, z, ux, uy, uz) \
+-	(__sign_use(x, ux) & __sign_use(y, uy) & __sign_use(z, uz))
++#define __types_ok3(ux, uy, uz) \
++	(__sign_use(ux) & __sign_use(uy) & __sign_use(uz))
  
- static void sriov_disable(struct pci_dev *dev)
+ #define __cmp_op_min <
+ #define __cmp_op_max >
+@@ -92,7 +92,7 @@
+ 
+ #define __careful_cmp_once(op, x, y, ux, uy) ({		\
+ 	__auto_type ux = (x); __auto_type uy = (y);	\
+-	BUILD_BUG_ON_MSG(!__types_ok(x, y, ux, uy),	\
++	BUILD_BUG_ON_MSG(!__types_ok(ux, uy),		\
+ 		#op"("#x", "#y") signedness error");	\
+ 	__cmp(op, ux, uy); })
+ 
+@@ -109,7 +109,7 @@
+ 	static_assert(__builtin_choose_expr(__is_constexpr((lo) > (hi)), 	\
+ 			(lo) <= (hi), true),					\
+ 		"clamp() low limit " #lo " greater than high limit " #hi);	\
+-	BUILD_BUG_ON_MSG(!__types_ok3(val, lo, hi, uval, ulo, uhi),		\
++	BUILD_BUG_ON_MSG(!__types_ok3(uval, ulo, uhi),				\
+ 		"clamp("#val", "#lo", "#hi") signedness error");		\
+ 	__clamp(uval, ulo, uhi); })
+ 
+@@ -149,7 +149,7 @@
+ 
+ #define __careful_op3(op, x, y, z, ux, uy, uz) ({			\
+ 	__auto_type ux = (x); __auto_type uy = (y);__auto_type uz = (z);\
+-	BUILD_BUG_ON_MSG(!__types_ok3(x, y, z, ux, uy, uz),		\
++	BUILD_BUG_ON_MSG(!__types_ok3(ux, uy, uz),			\
+ 		#op"3("#x", "#y", "#z") signedness error");		\
+ 	__cmp(op, ux, __cmp(op, uy, uz)); })
+ 
 
 
 
