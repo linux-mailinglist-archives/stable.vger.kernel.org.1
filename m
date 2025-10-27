@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-190764-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191228-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F30DC10BA2
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:17:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8555FC111EF
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:35:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 066E53AA678
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:11:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 952F658372A
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:31:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45F222BD033;
-	Mon, 27 Oct 2025 19:08:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F03E832BF25;
+	Mon, 27 Oct 2025 19:29:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FrNsb1qt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bXSNcRz9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F4101321431;
-	Mon, 27 Oct 2025 19:08:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC77F1DDC1B;
+	Mon, 27 Oct 2025 19:29:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592135; cv=none; b=pC5d5Cbr+fwwqmSjJrwH4RIBsEuBW4oVWaSeWA8qp0G1wPrYoRN6/Gjsh9DOAMyPkw2+Y0ULS72Y+/Wcfm4uK7ZwTZJFpxUT7rhpoNYWgxFQrt0MmAYwi0oj77Xxmd99vqYLcOn0f5sc6SsVl6i6X66r1yEOFIy3VJxEmfs8NIc=
+	t=1761593344; cv=none; b=l2LoEfW6IOPiMTdBGv4t5z2M4RhSNv2n+4krJ+xzlHmAhVrQHIZLb6a1Saxq2UEfnqFNDgFoXdXn1QuzvwvqEMK7LWRjlvzSj327hI23kotg8MJ0K5FLyOLUIdxzYXwyULScfrEJ9FjKyXPFEJy8plbEy/izA/yWNsSQVnQhr1c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592135; c=relaxed/simple;
-	bh=OA0TAMm4vOIPTGTeG2jfnC84hlAavi51U9nZGJwJFPA=;
+	s=arc-20240116; t=1761593344; c=relaxed/simple;
+	bh=JU7bvz01YUebkjHpNO+a/GA1VjiuSv89OjEqrVgnXFM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KVpcQOPetsFl1yA9TvlBN78woRtQD++mrRT1ju5RxTEzRKf8Ffo52J3azNlIOVCnLvE+HcY6+m6vH6fdoIFPVZ8dzwJj+Rn/86PH5tRLkhbZC/O28jErvjXK2ZZsXnQFVelANrCwWGbSLt0VRwzUZ5sOpzSdhFTdBVSMfc4RNr4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FrNsb1qt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8574CC4CEF1;
-	Mon, 27 Oct 2025 19:08:54 +0000 (UTC)
+	 MIME-Version; b=VoM/q4sFNDhXyFVT1jnG57TeA5To4ia3PmGTf7vxWOyEpCdFRB6RyfhV5O06FqV9eSKp9P+cd28cVmNmkjhw/ULd6muYWn5Y6tC7HRfs5E/Gq7y7HwxzKgAK4lDHGktXTB2eFOa+En4jez81hO6RfsDSEogIivdlr/gVEqPFXvU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bXSNcRz9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5642C4CEF1;
+	Mon, 27 Oct 2025 19:29:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592134;
-	bh=OA0TAMm4vOIPTGTeG2jfnC84hlAavi51U9nZGJwJFPA=;
+	s=korg; t=1761593344;
+	bh=JU7bvz01YUebkjHpNO+a/GA1VjiuSv89OjEqrVgnXFM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FrNsb1qtLrZX7e6Yjf6makWnhI+KJAaiyN9wJKeRyWZcgBaDDMMmP1oju1tmTpmiJ
-	 kCjlvJrE9TwTYeZZCkjhtpljnTi3eeSdj6wYqq2MhFYRJmv1hwtkWreEV2726j23Z0
-	 ltQsHMSHhu4bvMs2lrzdkj3B5wGcoV89s1KD6E0E=
+	b=bXSNcRz9xXxCBXKrvlB+siC5VPlJfivTXO5P8lve4D0wRIVdBlf34KWJTGJU6Raeb
+	 bVG/ZRRo6Mp6B5ZBpRL7U/CQXIWxpNpZm5xEoB8ZB2ReR6FQtMS4hYfqkABP0k+i2B
+	 Qd0JRWxSfxt0dui+icApn+TMg358BCx+26Des9u4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Duy Nguyen <duy.nguyen.rh@renesas.com>,
-	Thuan Nguyen <thuan.nguyen-hong@banvien.com.vn>,
-	Marek Vasut <marek.vasut+renesas@mailbox.org>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Marc Zyngier <maz@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 105/123] PCI: rcar-host: Convert struct rcar_msi mask_lock into raw spinlock
+	Geliang Tang <geliang@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.17 103/184] selftests: mptcp: join: mark implicit tests as skipped if not supported
 Date: Mon, 27 Oct 2025 19:36:25 +0100
-Message-ID: <20251027183449.201314197@linuxfoundation.org>
+Message-ID: <20251027183517.689060666@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183446.381986645@linuxfoundation.org>
-References: <20251027183446.381986645@linuxfoundation.org>
+In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
+References: <20251027183514.934710872@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,90 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Vasut <marek.vasut+renesas@mailbox.org>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-[ Upstream commit 5ed35b4d490d8735021cce9b715b62a418310864 ]
+commit 973f80d715bd2504b4db6e049f292e694145cd79 upstream.
 
-The rcar_msi_irq_unmask() function may be called from a PCI driver
-request_threaded_irq() function. This triggers kernel/irq/manage.c
-__setup_irq() which locks raw spinlock &desc->lock descriptor lock
-and with that descriptor lock held, calls rcar_msi_irq_unmask().
+The call to 'continue_if' was missing: it properly marks a subtest as
+'skipped' if the attached condition is not valid.
 
-Since the &desc->lock descriptor lock is a raw spinlock, and the rcar_msi
-.mask_lock is not a raw spinlock, this setup triggers 'BUG: Invalid wait
-context' with CONFIG_PROVE_RAW_LOCK_NESTING=y.
+Without that, the test is wrongly marked as passed on older kernels.
 
-Use scoped_guard() to simplify the locking.
-
-Fixes: 83ed8d4fa656 ("PCI: rcar: Convert to MSI domains")
-Reported-by: Duy Nguyen <duy.nguyen.rh@renesas.com>
-Reported-by: Thuan Nguyen <thuan.nguyen-hong@banvien.com.vn>
-Signed-off-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Acked-by: Marc Zyngier <maz@kernel.org>
+Fixes: 36c4127ae8dd ("selftests: mptcp: join: skip implicit tests if not supported")
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20250909162707.13927-2-marek.vasut+renesas@mailbox.org
-[ replaced scoped_guard() with explicit raw_spin_lock_irqsave()/raw_spin_unlock_irqrestore() calls ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Geliang Tang <geliang@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20251020-net-mptcp-c-flag-late-add-addr-v1-3-8207030cb0e8@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/controller/pcie-rcar-host.c |   12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ tools/testing/selftests/net/mptcp/mptcp_join.sh |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/pci/controller/pcie-rcar-host.c
-+++ b/drivers/pci/controller/pcie-rcar-host.c
-@@ -38,7 +38,7 @@ struct rcar_msi {
- 	DECLARE_BITMAP(used, INT_PCI_MSI_NR);
- 	struct irq_domain *domain;
- 	struct mutex map_lock;
--	spinlock_t mask_lock;
-+	raw_spinlock_t mask_lock;
- 	int irq1;
- 	int irq2;
- };
-@@ -559,11 +559,11 @@ static void rcar_msi_irq_mask(struct irq
- 	unsigned long flags;
- 	u32 value;
+--- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+@@ -3751,7 +3751,7 @@ endpoint_tests()
+ 	# subflow_rebuild_header is needed to support the implicit flag
+ 	# userspace pm type prevents add_addr
+ 	if reset "implicit EP" &&
+-	   mptcp_lib_kallsyms_has "subflow_rebuild_header$"; then
++	   continue_if mptcp_lib_kallsyms_has "subflow_rebuild_header$"; then
+ 		pm_nl_set_limits $ns1 2 2
+ 		pm_nl_set_limits $ns2 2 2
+ 		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal
+@@ -3776,7 +3776,7 @@ endpoint_tests()
+ 	fi
  
--	spin_lock_irqsave(&msi->mask_lock, flags);
-+	raw_spin_lock_irqsave(&msi->mask_lock, flags);
- 	value = rcar_pci_read_reg(pcie, PCIEMSIIER);
- 	value &= ~BIT(d->hwirq);
- 	rcar_pci_write_reg(pcie, value, PCIEMSIIER);
--	spin_unlock_irqrestore(&msi->mask_lock, flags);
-+	raw_spin_unlock_irqrestore(&msi->mask_lock, flags);
- }
- 
- static void rcar_msi_irq_unmask(struct irq_data *d)
-@@ -573,11 +573,11 @@ static void rcar_msi_irq_unmask(struct i
- 	unsigned long flags;
- 	u32 value;
- 
--	spin_lock_irqsave(&msi->mask_lock, flags);
-+	raw_spin_lock_irqsave(&msi->mask_lock, flags);
- 	value = rcar_pci_read_reg(pcie, PCIEMSIIER);
- 	value |= BIT(d->hwirq);
- 	rcar_pci_write_reg(pcie, value, PCIEMSIIER);
--	spin_unlock_irqrestore(&msi->mask_lock, flags);
-+	raw_spin_unlock_irqrestore(&msi->mask_lock, flags);
- }
- 
- static int rcar_msi_set_affinity(struct irq_data *d, const struct cpumask *mask, bool force)
-@@ -693,7 +693,7 @@ static int rcar_pcie_enable_msi(struct r
- 	int err;
- 
- 	mutex_init(&msi->map_lock);
--	spin_lock_init(&msi->mask_lock);
-+	raw_spin_lock_init(&msi->mask_lock);
- 
- 	err = of_address_to_resource(dev->of_node, 0, &res);
- 	if (err)
+ 	if reset_with_tcp_filter "delete and re-add" ns2 10.0.3.2 REJECT OUTPUT &&
+-	   mptcp_lib_kallsyms_has "subflow_rebuild_header$"; then
++	   continue_if mptcp_lib_kallsyms_has "subflow_rebuild_header$"; then
+ 		start_events
+ 		pm_nl_set_limits $ns1 0 3
+ 		pm_nl_set_limits $ns2 0 3
 
 
 
