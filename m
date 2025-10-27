@@ -1,57 +1,62 @@
-Return-Path: <stable+bounces-190555-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191151-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C63FC10824
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:08:29 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D92F9C110ED
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:32:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E58A19C6045
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:04:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5BD2F567EBF
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:27:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D51FC33439F;
-	Mon, 27 Oct 2025 18:59:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2CE331D72E;
+	Mon, 27 Oct 2025 19:25:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f2BGLHL6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o5RCG0MR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91AC3332EC9;
-	Mon, 27 Oct 2025 18:59:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78A1331A811;
+	Mon, 27 Oct 2025 19:25:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591595; cv=none; b=UL1R+uiSfx+jm7jv/X/yHpb7NazwiLWS/MxTgfVX0JK+Ujt2rS0OFYvFKQd3VeeTr+bgh+ICXg18e/xtfDcCWPKjKVWOMQs1E0dfJDcprUInN+cfg7ZQwLW1+Hln52OR+qAfE3+/NVEDbR2+X5EKmgUrwFiJN8XCwOpawrib18M=
+	t=1761593141; cv=none; b=gXbxXr2ZK2tw8HHlI/EaGCxDqfncXEqfVwuiz6eZ+w3cHiTtptZKEIFm/CngjGcCZxOSFyoKtea6hiNkNzNA8adDx/FBeN0fGrtA5O1F5b9U5P66dx/a1M2/4be+F7cNDW3XvcSwDrEX3WhEyrhg8tZ//b42BFzeCHNru8VnJzE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591595; c=relaxed/simple;
-	bh=w5XeRXujR4BL5YhrNSYmmrvt6n4JG+s+qA+qVhrc+Pc=;
+	s=arc-20240116; t=1761593141; c=relaxed/simple;
+	bh=/jPUWmxo0VsjT6h2b9u+FNLBt4K07fC4ilAGpmT9MB4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JXcRPTvY6YeLi2/k6qjb49tsaYChSioCj7Cu0VJ94Pdf0/Wewb3ewgNfhCWpUtZlRIeP0yocc7RStGFW3ohH4TqujfAWfEM9ThiM6g+kuFPPdWNNNF7FlLQ1N1uOxtezv1NLdAse0gq8kxVRJNGzzvRfyUeBHGD4vytuWG0DmOA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f2BGLHL6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2467CC4CEF1;
-	Mon, 27 Oct 2025 18:59:54 +0000 (UTC)
+	 MIME-Version; b=KoSZfSwv1fglPJYSywVxxTUfMo4fp0egFNEpOZP46yyzoCgScg7xmFKU8YTV99XtMzXUCN7wIuC0BSmM6wP35uihS+Vq3RPjzFag/1NfJDHH0riS973u5gt45Lxl/XisP3ty1PSMgNbWj+GHSwfHwWTFRW4dXTvkTOBUJpMMtSM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o5RCG0MR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B17AC4CEF1;
+	Mon, 27 Oct 2025 19:25:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591595;
-	bh=w5XeRXujR4BL5YhrNSYmmrvt6n4JG+s+qA+qVhrc+Pc=;
+	s=korg; t=1761593140;
+	bh=/jPUWmxo0VsjT6h2b9u+FNLBt4K07fC4ilAGpmT9MB4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f2BGLHL6pCGN2F/ypOMAHA+cZAhpZapxMz3Ddf9h6mW1sIoHJXR8LualUPucjH2eD
-	 AxkwQlvpCeGb/NIuFsM1hBcVXyVPZKNh3DAZ6CETxqXuJI11rLZEcxlDYGC2byaJlX
-	 ++xv6Tto9Yg8C/KOavNDa8UUjchzTX3xhCYDfdAo=
+	b=o5RCG0MR5xC6ymAzwwRYoD6SIOGLPmNZYdja62T+dNF/B3zM9es+o3A0BUPhOgNjt
+	 LHHuTrbejizKKHDKXy5f/ana0S2ubpiLVfyVAxhv47Al2jeOPxffmaCZbWfjuqBpcS
+	 x0gVRa368yy0iDEbg0CrbndvvIP+ZW8gVnWj5pTU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Takashi Sakamoto <o-takashi@sakamocchi.jp>,
-	Takashi Iwai <tiwai@suse.de>,
+	Steve French <smfrench@gmail.com>,
+	Tom Talpey <tom@talpey.com>,
+	Long Li <longli@microsoft.com>,
+	linux-cifs@vger.kernel.org,
+	samba-technical@lists.samba.org,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Stefan Metzmacher <metze@samba.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 256/332] ALSA: firewire: amdtp-stream: fix enum kernel-doc warnings
-Date: Mon, 27 Oct 2025 19:35:09 +0100
-Message-ID: <20251027183531.603408706@linuxfoundation.org>
+Subject: [PATCH 6.17 028/184] smb: client: queue post_recv_credits_work also if the peer raises the credit target
+Date: Mon, 27 Oct 2025 19:35:10 +0100
+Message-ID: <20251027183515.683750637@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
-References: <20251027183524.611456697@linuxfoundation.org>
+In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
+References: <20251027183514.934710872@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +68,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Stefan Metzmacher <metze@samba.org>
 
-[ Upstream commit d41f68dff783d181a8fd462e612bda0fbab7f735 ]
+[ Upstream commit 02548c477a90481c1fd0d6e7c84b4504ec2fcc12 ]
 
-Fix spelling of CIP_NO_HEADER to prevent a kernel-doc warning.
+This is already handled in the server, but currently it done
+in a very complex way there. So we do it much simpler.
 
-Warning: amdtp-stream.h:57 Enum value 'CIP_NO_HEADER' not described in enum 'cip_flags'
-Warning: amdtp-stream.h:57 Excess enum value '%CIP_NO_HEADERS' description in 'cip_flags'
+Note that put_receive_buffer() will take care of it
+in case data_length is 0.
 
-Fixes: 3b196c394dd9f ("ALSA: firewire-lib: add no-header packet processing")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Reviewed-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Cc: Steve French <smfrench@gmail.com>
+Cc: Tom Talpey <tom@talpey.com>
+Cc: Long Li <longli@microsoft.com>
+Cc: linux-cifs@vger.kernel.org
+Cc: samba-technical@lists.samba.org
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Stefan Metzmacher <metze@samba.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/firewire/amdtp-stream.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/smb/client/smbdirect.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/sound/firewire/amdtp-stream.h b/sound/firewire/amdtp-stream.h
-index 2ceb57d1d58ee..1332089683da0 100644
---- a/sound/firewire/amdtp-stream.h
-+++ b/sound/firewire/amdtp-stream.h
-@@ -32,7 +32,7 @@
-  *	allows 5 times as large as IEC 61883-6 defines.
-  * @CIP_HEADER_WITHOUT_EOH: Only for in-stream. CIP Header doesn't include
-  *	valid EOH.
-- * @CIP_NO_HEADERS: a lack of headers in packets
-+ * @CIP_NO_HEADER: a lack of headers in packets
-  * @CIP_UNALIGHED_DBC: Only for in-stream. The value of dbc is not alighed to
-  *	the value of current SYT_INTERVAL; e.g. initial value is not zero.
-  */
+diff --git a/fs/smb/client/smbdirect.c b/fs/smb/client/smbdirect.c
+index 6480945c24592..b3e04b410afe6 100644
+--- a/fs/smb/client/smbdirect.c
++++ b/fs/smb/client/smbdirect.c
+@@ -537,6 +537,7 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
+ 	struct smbdirect_socket_parameters *sp = &sc->parameters;
+ 	struct smbd_connection *info =
+ 		container_of(sc, struct smbd_connection, socket);
++	int old_recv_credit_target;
+ 	u32 data_offset = 0;
+ 	u32 data_length = 0;
+ 	u32 remaining_data_length = 0;
+@@ -599,6 +600,7 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
+ 		}
+ 
+ 		atomic_dec(&info->receive_credits);
++		old_recv_credit_target = info->receive_credit_target;
+ 		info->receive_credit_target =
+ 			le16_to_cpu(data_transfer->credits_requested);
+ 		if (le16_to_cpu(data_transfer->credits_granted)) {
+@@ -629,6 +631,9 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
+ 		 * reassembly queue and wake up the reading thread
+ 		 */
+ 		if (data_length) {
++			if (info->receive_credit_target > old_recv_credit_target)
++				queue_work(info->workqueue, &info->post_send_credits_work);
++
+ 			enqueue_reassembly(info, response, data_length);
+ 			wake_up_interruptible(&sc->recv_io.reassembly.wait_queue);
+ 		} else
 -- 
 2.51.0
 
