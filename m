@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-190738-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190902-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7C78C10B0A
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:15:47 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADF52C10D6C
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:21:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BC4EF1A62080
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:10:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0AB6C1A62580
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:17:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 610E532C317;
-	Mon, 27 Oct 2025 19:07:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B9E93254AC;
+	Mon, 27 Oct 2025 19:14:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h+3mEo8v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x7jZTeC5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B7DE32B988;
-	Mon, 27 Oct 2025 19:07:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 172F9324B2F;
+	Mon, 27 Oct 2025 19:14:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592067; cv=none; b=JKqnJEB9PVywhlp9sE3dM2htcxXyIgr0muB9VRv9cn1IJAdCgvoH+cVxHdpxX0aYMll92rUraXRZed7RLxW3HgTMtcKqVVQzICcN/RZoViLNOBXE56ZZP/syHoG98MA/o+HpszChW6uGduIQSYY9EIKz75SNtrRuUfHU8QeVMXc=
+	t=1761592497; cv=none; b=VNO4yy7KM3+IdUPVFY4eB32BuTpi1Rxcd5w1q6bAMCtbKdUAMfucNWn29pZcT7iKRNZtLus+OILvVOAwJhBloEXBc/8/Vpwz9QSTIUV3JPHQh5CpyZsLieNivpfVWDJmAsVAgQa7l9hcwrxWnilP59WNpqhOn6AdRc0XYSi6Prc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592067; c=relaxed/simple;
-	bh=3CWPqzeqBEFW54f3cNj3kf+Ew0fO8hW2v8tO76ofFfY=;
+	s=arc-20240116; t=1761592497; c=relaxed/simple;
+	bh=iN1/JEqna0xMLSC4/unfyd8iENyCJ/eKJuxQZMfP2z0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ar6XAoWmQacVzuPhwbB1Gbl2f5MdY6qZo1jTfWLR/fOJDarMCpsSQT04fvmT/B352qw6n0JApozPekGYPZKXbQvjGMqjCqFBL+Ds5cSbbYT2IIqGzxMy4IJk9jAzGNyfFRxQytXnygKBX8WzpH7o33EMmfqiJZjq3Ie2DIYV9FA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h+3mEo8v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C14BC116B1;
-	Mon, 27 Oct 2025 19:07:46 +0000 (UTC)
+	 MIME-Version; b=FJE287RLENOXkbg7lBwySRsZYIMYA9Y67yhN8Rg2oz6lNbhoNHBE5coEy59N6dNQgj50sX1Al0w3V1sIEy8SlVVmi5SiY0VXtZ8aPPT6j0duyhVHzHAVYgKr7N7R4BrN3QTjAO3XL3djss9H6fT20Cp5A7PEXXY/URvMlkxmpHA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x7jZTeC5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F6DEC4CEF1;
+	Mon, 27 Oct 2025 19:14:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592067;
-	bh=3CWPqzeqBEFW54f3cNj3kf+Ew0fO8hW2v8tO76ofFfY=;
+	s=korg; t=1761592497;
+	bh=iN1/JEqna0xMLSC4/unfyd8iENyCJ/eKJuxQZMfP2z0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h+3mEo8vTDWH22MPiWNEIQVF79R9wvlzVqT4m983xsyjLHRpdmNV8L7/gC0deXm0t
-	 ILj1CXhdWCf4x2pq2vSXLyW3xIjSBuViTiuQeEMTJKpjKWDtNKIj2QcXk0KZnAzP11
-	 z15SWZ0oDOoOOODVANL3l11ovDbCPB4hhdhlD3PE=
+	b=x7jZTeC5u00CnjvK3WpMyPQd3B5bwK5SDfzNnL0PXRY7ylZpSiunZ8sAHkjOc0P6B
+	 cJelYlX1zGFmdWZwj+J3lbEY4TnWULuYcAA+Ywh0Td814OVcojQLCFwANxr+ntI5xP
+	 LtXme16S86OrHihSQMnNeGLfQnPvgrpJjCneXJSA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Bence=20Cs=C3=B3k=C3=A1s?= <csokas.bence@prolan.hu>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 097/123] PM: runtime: Add new devm functions
+	Florian Eckert <fe@dev.tdt.de>,
+	stable <stable@kernel.org>
+Subject: [PATCH 6.1 116/157] serial: 8250_exar: add support for Advantech 2 port card with Device ID 0x0018
 Date: Mon, 27 Oct 2025 19:36:17 +0100
-Message-ID: <20251027183448.986564838@linuxfoundation.org>
+Message-ID: <20251027183504.359525260@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183446.381986645@linuxfoundation.org>
-References: <20251027183446.381986645@linuxfoundation.org>
+In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
+References: <20251027183501.227243846@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,114 +59,63 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bence Csókás <csokas.bence@prolan.hu>
+From: Florian Eckert <fe@dev.tdt.de>
 
-[ Upstream commit 73db799bf5efc5a04654bb3ff6c9bf63a0dfa473 ]
+commit e7cbce761fe3fcbcb49bcf30d4f8ca5e1a9ee2a0 upstream.
 
-Add `devm_pm_runtime_set_active_enabled()` and
-`devm_pm_runtime_get_noresume()` for simplifying
-common cases in drivers.
+The Advantech 2-port serial card with PCI vendor=0x13fe and device=0x0018
+has a 'XR17V35X' chip installed on the circuit board. Therefore, this
+driver can be used instead of theu outdated out-of-tree driver from the
+manufacturer.
 
-Signed-off-by: Bence Csókás <csokas.bence@prolan.hu>
-Link: https://patch.msgid.link/20250327195928.680771-3-csokas.bence@prolan.hu
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Stable-dep-of: 0792c1984a45 ("iio: imu: inv_icm42600: Simplify pm_runtime setup")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Florian Eckert <fe@dev.tdt.de>
+Cc: stable <stable@kernel.org>
+Link: https://patch.msgid.link/20250924134115.2667650-1-fe@dev.tdt.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/base/power/runtime.c |   44 +++++++++++++++++++++++++++++++++++++++++++
- include/linux/pm_runtime.h   |    4 +++
- 2 files changed, 48 insertions(+)
+ drivers/tty/serial/8250/8250_exar.c |   11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
---- a/drivers/base/power/runtime.c
-+++ b/drivers/base/power/runtime.c
-@@ -1477,6 +1477,32 @@ void pm_runtime_enable(struct device *de
- }
- EXPORT_SYMBOL_GPL(pm_runtime_enable);
+--- a/drivers/tty/serial/8250/8250_exar.c
++++ b/drivers/tty/serial/8250/8250_exar.c
+@@ -33,6 +33,8 @@
+ #define PCI_DEVICE_ID_ACCESSIO_COM_4SM		0x10db
+ #define PCI_DEVICE_ID_ACCESSIO_COM_8SM		0x10ea
  
-+static void pm_runtime_set_suspended_action(void *data)
-+{
-+	pm_runtime_set_suspended(data);
-+}
++#define PCI_DEVICE_ID_ADVANTECH_XR17V352	0x0018
 +
-+/**
-+ * devm_pm_runtime_set_active_enabled - set_active version of devm_pm_runtime_enable.
-+ *
-+ * @dev: Device to handle.
-+ */
-+int devm_pm_runtime_set_active_enabled(struct device *dev)
-+{
-+	int err;
-+
-+	err = pm_runtime_set_active(dev);
-+	if (err)
-+		return err;
-+
-+	err = devm_add_action_or_reset(dev, pm_runtime_set_suspended_action, dev);
-+	if (err)
-+		return err;
-+
-+	return devm_pm_runtime_enable(dev);
-+}
-+EXPORT_SYMBOL_GPL(devm_pm_runtime_set_active_enabled);
-+
- static void pm_runtime_disable_action(void *data)
- {
- 	pm_runtime_dont_use_autosuspend(data);
-@@ -1499,6 +1525,24 @@ int devm_pm_runtime_enable(struct device
- }
- EXPORT_SYMBOL_GPL(devm_pm_runtime_enable);
+ #define PCI_DEVICE_ID_COMMTECH_4224PCI335	0x0002
+ #define PCI_DEVICE_ID_COMMTECH_4222PCI335	0x0004
+ #define PCI_DEVICE_ID_COMMTECH_2324PCI335	0x000a
+@@ -841,6 +843,12 @@ static const struct exar8250_board pbn_f
+ 	.exit		= pci_xr17v35x_exit,
+ };
  
-+static void pm_runtime_put_noidle_action(void *data)
-+{
-+	pm_runtime_put_noidle(data);
-+}
++static const struct exar8250_board pbn_adv_XR17V352 = {
++	.num_ports	= 2,
++	.setup		= pci_xr17v35x_setup,
++	.exit		= pci_xr17v35x_exit,
++};
 +
-+/**
-+ * devm_pm_runtime_get_noresume - devres-enabled version of pm_runtime_get_noresume.
-+ *
-+ * @dev: Device to handle.
-+ */
-+int devm_pm_runtime_get_noresume(struct device *dev)
-+{
-+	pm_runtime_get_noresume(dev);
+ static const struct exar8250_board pbn_exar_XR17V4358 = {
+ 	.num_ports	= 12,
+ 	.setup		= pci_xr17v35x_setup,
+@@ -910,6 +918,9 @@ static const struct pci_device_id exar_p
+ 	USR_DEVICE(XR17C152, 2980, pbn_exar_XR17C15x),
+ 	USR_DEVICE(XR17C152, 2981, pbn_exar_XR17C15x),
+ 
++	/* ADVANTECH devices */
++	EXAR_DEVICE(ADVANTECH, XR17V352, pbn_adv_XR17V352),
 +
-+	return devm_add_action_or_reset(dev, pm_runtime_put_noidle_action, dev);
-+}
-+EXPORT_SYMBOL_GPL(devm_pm_runtime_get_noresume);
-+
- /**
-  * pm_runtime_forbid - Block runtime PM of a device.
-  * @dev: Device to handle.
---- a/include/linux/pm_runtime.h
-+++ b/include/linux/pm_runtime.h
-@@ -75,7 +75,9 @@ extern void pm_runtime_new_link(struct d
- extern void pm_runtime_drop_link(struct device_link *link);
- extern void pm_runtime_release_supplier(struct device_link *link);
- 
-+int devm_pm_runtime_set_active_enabled(struct device *dev);
- extern int devm_pm_runtime_enable(struct device *dev);
-+int devm_pm_runtime_get_noresume(struct device *dev);
- 
- /**
-  * pm_runtime_get_if_in_use - Conditionally bump up runtime PM usage counter.
-@@ -272,7 +274,9 @@ static inline void __pm_runtime_disable(
- static inline void pm_runtime_allow(struct device *dev) {}
- static inline void pm_runtime_forbid(struct device *dev) {}
- 
-+static inline int devm_pm_runtime_set_active_enabled(struct device *dev) { return 0; }
- static inline int devm_pm_runtime_enable(struct device *dev) { return 0; }
-+static inline int devm_pm_runtime_get_noresume(struct device *dev) { return 0; }
- 
- static inline void pm_suspend_ignore_children(struct device *dev, bool enable) {}
- static inline void pm_runtime_get_noresume(struct device *dev) {}
+ 	/* Exar Corp. XR17C15[248] Dual/Quad/Octal UART */
+ 	EXAR_DEVICE(EXAR, XR17C152, pbn_exar_XR17C15x),
+ 	EXAR_DEVICE(EXAR, XR17C154, pbn_exar_XR17C15x),
 
 
 
