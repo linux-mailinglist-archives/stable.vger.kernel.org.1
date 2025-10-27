@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-190933-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191041-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDC54C10DB1
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:22:30 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D37ADC10FE5
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:29:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 103E11A60935
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:17:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C4F18581DD1
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:23:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9243A31D740;
-	Mon, 27 Oct 2025 19:16:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7ADBA32E131;
+	Mon, 27 Oct 2025 19:21:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UF2c79/L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DXOHafHh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BDF031D36D;
-	Mon, 27 Oct 2025 19:16:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34E6A32D45C;
+	Mon, 27 Oct 2025 19:21:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592578; cv=none; b=tRPkAYdLkYJQGomdVHceKLjuR0DJ/6hknJv/SPwLxzei1Aas0x6Z7aCKxtgk/UHsoOg+luEfKDGuXdj1FiUyWuizixRjR/OzkS1Ai9Cx9BrqXaTiaekwiI069eqECJfbY9mB1e3dyl7AI4qju0jmUNyf9DWQn8XfwxdAkclC1d8=
+	t=1761592860; cv=none; b=bjgR5ICcbRgnSoZxPx6pI30hksdf00NflFPWF6bJ3/jcKn00A1Kl9mr1Dk5ynlEUpU8O7N0I6YYyMLjKR4Wz+3r90imjg0umaMr1SZ/rHZwe7iqsdzxqWBY3APhO+Yy/RxjTe59yZeWV2afShZ8Wf45mPfoJDgtnrnL3sYruCm8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592578; c=relaxed/simple;
-	bh=unIlzx6mWMTeRFKVrvFqlQ2oq10dlpfXS0Dc0TdqeEE=;
+	s=arc-20240116; t=1761592860; c=relaxed/simple;
+	bh=s00QPazGtlnxOLEQaVPTQPev2OpK+paZmnbCYgBHoyQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e2VN5XVi9iSviALYWbIudHd1rng+ylBDusoyZRPLBvjmG8p0EsCp5owuuCuuRzygJ3dCYtyq7lJhXHTnTHvmJX1HpkSSglbpT3WbtVxg1MtBICz/oDNUm5ZxYVZ8kHRErw6aUiQHM7k/1317s4WXOvrd3YNnACkdYeO5/TKTeMU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UF2c79/L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7F17C4CEF1;
-	Mon, 27 Oct 2025 19:16:17 +0000 (UTC)
+	 MIME-Version; b=WD3hcoRVHDIW/SowKrjgKv2TEdwZAY4ltxvYP2dGns3Y6sSivv/g0q9eC5dTeHQrPzius1btn1PqCdzwGCtAya0ifktRyV6kMjCp48S9i7Kpr2FM6FCxRiTTG4nOlHeBngRJEA3UFd1RM/QSzTJ1B6uCUKEs+82iu4UkcTUjgMI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DXOHafHh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE720C4CEF1;
+	Mon, 27 Oct 2025 19:20:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592578;
-	bh=unIlzx6mWMTeRFKVrvFqlQ2oq10dlpfXS0Dc0TdqeEE=;
+	s=korg; t=1761592860;
+	bh=s00QPazGtlnxOLEQaVPTQPev2OpK+paZmnbCYgBHoyQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UF2c79/LaN13fVT9MHSMShemYYgMGumre4xd+PlxHwkWte/sOpg3XMp/WsZLhWjsy
-	 Iu5yQ3FvBiU+HnD3wwAd0U942izC2EozZgswTsk7W2j+krWKLQlImtU5YccDszvDh2
-	 4gbZCIk0B/x7rcQ+kKmRCwvSJaDCBCDHVdEhcDPg=
+	b=DXOHafHhpX3ZIBiLHQH2nsF8SSORLOAI0F3NHj+Gg1awoiuWwRz8fq3ooQ2jrY28Q
+	 zGVx/C+u8FUQDFy5UET4ARUX05GRP00KnZw2Ng1n/XYl0Y0gmCcm/oT4sqm3cS75k8
+	 6VN3NXxZBy4nUylvqoyJ1f24igG2mMnhMMa9q9Xs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	Tariq Toukan <tariqt@nvidia.com>,
+	Jiasheng Jiang <jiashengjiangcool@gmail.com>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 17/84] net/mlx5e: Return 1 instead of 0 in invalid case in mlx5e_mpwrq_umr_entry_size()
+Subject: [PATCH 6.12 040/117] ptp: ocp: Fix typo using index 1 instead of i in SMA initialization loop
 Date: Mon, 27 Oct 2025 19:36:06 +0100
-Message-ID: <20251027183439.273729540@linuxfoundation.org>
+Message-ID: <20251027183455.067165190@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183438.817309828@linuxfoundation.org>
-References: <20251027183438.817309828@linuxfoundation.org>
+In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
+References: <20251027183453.919157109@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,66 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Jiasheng Jiang <jiashengjiangcool@gmail.com>
 
-[ Upstream commit aaf043a5688114703ae2c1482b92e7e0754d684e ]
+[ Upstream commit a767957e7a83f9e742be196aa52a48de8ac5a7e4 ]
 
-When building with Clang 20 or newer, there are some objtool warnings
-from unexpected fallthroughs to other functions:
+In ptp_ocp_sma_fb_init(), the code mistakenly used bp->sma[1]
+instead of bp->sma[i] inside a for-loop, which caused only SMA[1]
+to have its DIRECTION_CAN_CHANGE capability cleared. This led to
+inconsistent capability flags across SMA pins.
 
-  vmlinux.o: warning: objtool: mlx5e_mpwrq_mtts_per_wqe() falls through to next function mlx5e_mpwrq_max_num_entries()
-  vmlinux.o: warning: objtool: mlx5e_mpwrq_max_log_rq_size() falls through to next function mlx5e_get_linear_rq_headroom()
-
-LLVM 20 contains an (admittedly problematic [1]) optimization [2] to
-convert divide by zero into the equivalent of __builtin_unreachable(),
-which invokes undefined behavior and destroys code generation when it is
-encountered in a control flow graph.
-
-mlx5e_mpwrq_umr_entry_size() returns 0 in the default case of an
-unrecognized mlx5e_mpwrq_umr_mode value. mlx5e_mpwrq_mtts_per_wqe(),
-which is inlined into mlx5e_mpwrq_max_log_rq_size(), uses the result of
-mlx5e_mpwrq_umr_entry_size() in a divide operation without checking for
-zero, so LLVM is able to infer there will be a divide by zero in this
-case and invokes undefined behavior. While there is some proposed work
-to isolate this undefined behavior and avoid the destructive code
-generation that results in these objtool warnings, code should still be
-defensive against divide by zero.
-
-As the WARN_ONCE() implies that an invalid value should be handled
-gracefully, return 1 instead of 0 in the default case so that the
-results of this division operation is always valid.
-
-Fixes: 168723c1f8d6 ("net/mlx5e: xsk: Use umr_mode to calculate striding RQ parameters")
-Link: https://lore.kernel.org/CAGG=3QUk8-Ak7YKnRziO4=0z=1C_7+4jF+6ZeDQ9yF+kuTOHOQ@mail.gmail.com/ [1]
-Link: https://github.com/llvm/llvm-project/commit/37932643abab699e8bb1def08b7eb4eae7ff1448 [2]
-Closes: https://github.com/ClangBuiltLinux/linux/issues/2131
-Closes: https://github.com/ClangBuiltLinux/linux/issues/2132
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/20251014-mlx5e-avoid-zero-div-from-mlx5e_mpwrq_umr_entry_size-v1-1-dc186b8819ef@kernel.org
+Fixes: 09eeb3aecc6c ("ptp_ocp: implement DPLL ops")
+Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Link: https://patch.msgid.link/20251021182456.9729-1-jiashengjiangcool@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en/params.c | 2 +-
+ drivers/ptp/ptp_ocp.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/params.c b/drivers/net/ethernet/mellanox/mlx5/core/en/params.c
-index dcd5db907f102..9c22d64af6853 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/params.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/params.c
-@@ -98,7 +98,7 @@ u8 mlx5e_mpwrq_umr_entry_size(enum mlx5e_mpwrq_umr_mode mode)
- 		return sizeof(struct mlx5_ksm) * 4;
- 	}
- 	WARN_ONCE(1, "MPWRQ UMR mode %d is not known\n", mode);
--	return 0;
-+	return 1;
- }
- 
- u8 mlx5e_mpwrq_log_wqe_sz(struct mlx5_core_dev *mdev, u8 page_shift,
+diff --git a/drivers/ptp/ptp_ocp.c b/drivers/ptp/ptp_ocp.c
+index efbd80db778d6..bd9919c01e502 100644
+--- a/drivers/ptp/ptp_ocp.c
++++ b/drivers/ptp/ptp_ocp.c
+@@ -2546,7 +2546,7 @@ ptp_ocp_sma_fb_init(struct ptp_ocp *bp)
+ 		for (i = 0; i < OCP_SMA_NUM; i++) {
+ 			bp->sma[i].fixed_fcn = true;
+ 			bp->sma[i].fixed_dir = true;
+-			bp->sma[1].dpll_prop.capabilities &=
++			bp->sma[i].dpll_prop.capabilities &=
+ 				~DPLL_PIN_CAPABILITIES_DIRECTION_CAN_CHANGE;
+ 		}
+ 		return;
 -- 
 2.51.0
 
