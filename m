@@ -1,205 +1,144 @@
-Return-Path: <stable+bounces-189957-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-189958-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73D67C0D5ED
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 13:03:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A7F99C0D615
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 13:03:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 85B9F3A9D2B
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 11:53:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA6D0420667
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 11:55:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70D0A2FE58E;
-	Mon, 27 Oct 2025 11:53:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94D712FF161;
+	Mon, 27 Oct 2025 11:55:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Xi/iZA5L"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gSWUjy9M"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oo1-f48.google.com (mail-oo1-f48.google.com [209.85.161.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AD14284890
-	for <stable@vger.kernel.org>; Mon, 27 Oct 2025 11:53:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A8602EF66A;
+	Mon, 27 Oct 2025 11:55:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761566026; cv=none; b=moSZYhdPF6Z99RgEN+PkUfzL9p9BRNBjHZq0j0t+7ADMpZXggztbNyqUc8Jj6GcBXeEpzaUzsBFb4Pv+oorjJDiO41UxK+Neove4qiBHsaQVfPDgf0WjFGVu47A0sJ8gjDFM5ehPmL8AlQ/ErvmhUhfMjkciWYbSkDkVATrmSZM=
+	t=1761566130; cv=none; b=iGBOk7J1oH7mfdheF/zSir3Kh9aJwl7G/KvRqG8q7z8CEcs0qeekx2ZtE0pqqargZeJMFkCiSY+1IhHWo7cQrQ477emunz2UES2rqQHMGKo+PEvlquy6Dc/VOOy4I/6trqYSo88TS4Rm3Bns1+zz3Z+mAU7LiRKS6omXV2qP52M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761566026; c=relaxed/simple;
-	bh=7BjcZ05zih1jpYLlSr+edVVRV3ZK4520Ony0YbCJSws=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=PBqnYpscot7UaqwQyw2rwnvZ1KzowV89suUkicNgOM9gOteUjU5+Chhtw9R5kH9DaC3tErMZc/crz0x1d9nU67p30AkLmNAsmuPAeeORQsd7rZ8X3TWMMxOsvgyXZv3whAvb0JDTQHaf0c/Xk9sAIwHTyfQdspuuGxPBiDQlRIw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Xi/iZA5L; arc=none smtp.client-ip=209.85.161.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oo1-f48.google.com with SMTP id 006d021491bc7-65363319bacso2420624eaf.2
-        for <stable@vger.kernel.org>; Mon, 27 Oct 2025 04:53:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761566024; x=1762170824; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=r+JCIx9N9UMsFHoni9806vgCcOX0IuOoBw4ayA9zElg=;
-        b=Xi/iZA5LrMo02Ru7qhvyShPGjupfB7AWE1Ohmrvz6h3asuyiA/Kc0hOsM3l+X8JzEN
-         scF5rxLlULrb8bToDVaKCKk5ZsJIz2dp/67Myj/6JeQT6w2Fgxt7YFlVr0q7IV4SYxr/
-         k+/vA3aFuj5ipJs7W7hjlKp6qY+A8azt4udrEJzsIzRApiACBZRSR25gWqQfp/WtwDy7
-         He917/CwLUKlPnzCOqHM29j2JR2kyIVIoNd9JJqTPHQ/iv6Z5Y1vwbNSkldQMsZbg2Cd
-         Up1rLqFQrn7kBqRjOb5mBCOtF6MBMRmpt8I0gy9dHGuZVErJU3hEy6c793dYaB4a344Z
-         r29g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761566024; x=1762170824;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=r+JCIx9N9UMsFHoni9806vgCcOX0IuOoBw4ayA9zElg=;
-        b=VHvRbT8QOcdc/RSQut0gQeZKRJq9AmC0il9HSE65ybhgJoBB91lyNnClE0VIBoA4Nv
-         Bhf+2uaHahDhrPnHC5hxwVFNaxb4qvmTmN8+yflGO9LefUFr83AvTpBDRsFlfo1FSFdr
-         weA8QSsIlqdZm3gKDZ0jMfUhpIkey0JO4vLSh5e79DB2ppbNuLCP6zvJopOgB6RnzzWS
-         1akCMRFaN8HPX0r8wbQL9b+gjNkHBJKVDOC1zYd95EGQMChwRdmU3dv0MpJF4/U6sULQ
-         +SUxxGVpd96XnQm6Mgw12Flj23rCZJJ5eSlv8k0XM/zAW63SFusiOdvBzIztesT/KEiN
-         7CnQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWpqZFSwFHA1pX/iZ921aOqwjh4+qFsyGusJzACUFfH91CRwADICtZpY7f+nIlFto/zHx945vU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YycyCI+AVtQACSlQ5xGxEPspt57bMkJ/zap9cNeiEeMk7s0eGDM
-	P6Jan66HEc5eljC3EJn3tXNDWo9Dd0qcAkuiRvvwS7+2nYCCW5sIGbLVrFrMVgNmSGnj2H+ehxV
-	msXUnsamu5uTBrpX6cU+FwdnWfUqA+c8=
-X-Gm-Gg: ASbGnct6PNyzE9L+WGpkB5bxpaiV3l4LMUE8mCxUs2uaOiOp4Kf1MDfFAW6F1TmRDXS
-	PyWw7PTzDLL09reRc1LZWMfzmUK6EdMY7ZbKR8kmFw2cyeiNzxBCiWYKKhDNfJrSn9Bg+34RhVa
-	SJjA1bGpzEj/KDh+kau8FhaXBVAaoMxhBOd5rSSHCwwbSPoyowPwvF2fTz3M7pzg2L3EWrr5q3t
-	ornpMQ5JuZxPY6jBGKkg5D0YZsly68s3/AS/vIfOzcRhih070zzybE9426vJ71P0OV3Bp/Mr8VD
-	yC/mcKo=
-X-Google-Smtp-Source: AGHT+IH0iPJMGQvhOuM8mY0VFND0YjjgxyBg4rxvudWNKZ8wuD0Q5l+0cNUItegjBjtjC9hU+uux9lD/gtOpDc0CMps=
-X-Received: by 2002:a05:6820:2918:b0:654:fd90:bdcb with SMTP id
- 006d021491bc7-654fd90c601mr1447002eaf.5.1761566023690; Mon, 27 Oct 2025
- 04:53:43 -0700 (PDT)
+	s=arc-20240116; t=1761566130; c=relaxed/simple;
+	bh=NAtU0QBJGB4qkpNyrP6hOV6yXYgOm3g3QcU+ldfi3as=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=k/BsP9BXdOfjrbEztYTG3oq0tnLUX1d356j4b4ktVzCO11YrYDcmX4wevT81FIOUgh8R46ZDNPHtFMMign0/iRG9m4YQyMyRhssDcbJngaS5hBx00GcQbrwWz/LZ+ktOrE2fqC2HFVDTDImjcyWSYfNdskPMU08K2nc73Y91DbU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gSWUjy9M; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1761566128; x=1793102128;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=NAtU0QBJGB4qkpNyrP6hOV6yXYgOm3g3QcU+ldfi3as=;
+  b=gSWUjy9MMZZdqWjIfxHDBD5z0QWBu5KYdhle4qUqlzdRKsIp7IiCkmvE
+   m6X2VKBMKxcbiSL4NycDuCWEhptGpB/L0pL1ahdHCIXBolmVRBxaGJMaI
+   8wSifKDissyCpBjHwBHTtUZpU/fvnC7FmcJ8E68mmdC6jNWDi57mY8HfJ
+   Thl295qL94xdT5wSus8XnAPSHgru23+oYlk5cYFSaIJe0kGaXo3KCgTJm
+   pj5Qo0u5mCS5//Mpjd2pPxiLwoNyqNvoe6H6LRqsi2dKUPwC+wQ3zG68I
+   B81R0cdPq5ZerpDRqwbPnwmMUDcugR/SV5Yt2FoSz6kVhxHJOsvP4iv4c
+   w==;
+X-CSE-ConnectionGUID: 1jyl6BEfT7aur2qgnemEyQ==
+X-CSE-MsgGUID: pX0BLgf1Tv6nwCF73V4NCA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="62848294"
+X-IronPort-AV: E=Sophos;i="6.19,258,1754982000"; 
+   d="scan'208";a="62848294"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2025 04:55:27 -0700
+X-CSE-ConnectionGUID: 5+U2GBq8QbSgUmCCyn2NwQ==
+X-CSE-MsgGUID: A3T40CaPSIa98iIf+2Gc0w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,258,1754982000"; 
+   d="scan'208";a="222233287"
+Received: from egrumbac-mobl6.ger.corp.intel.com (HELO ashevche-desk.local) ([10.245.244.5])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2025 04:55:25 -0700
+Received: from andy by ashevche-desk.local with local (Exim 4.98.2)
+	(envelope-from <andriy.shevchenko@intel.com>)
+	id 1vDLoo-000000030IO-2NHH;
+	Mon, 27 Oct 2025 13:55:22 +0200
+Date: Mon, 27 Oct 2025 13:55:22 +0200
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Linus Walleij <linus.walleij@linaro.org>
+Cc: Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	Matti Vaittinen <mazziesaccount@gmail.com>,
+	Stephan Gerhold <stephan@gerhold.net>, linux-iio@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] iio: accel: bmc150: Fix irq assumption regression
+Message-ID: <aP9dqnGb_tdWdr7y@smile.fi.intel.com>
+References: <20251027-fix-bmc150-v1-1-ccdc968e8c37@linaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251026091351.36275-1-linmq006@gmail.com> <20251027101451.14551A49-hca@linux.ibm.com>
-In-Reply-To: <20251027101451.14551A49-hca@linux.ibm.com>
-From: =?UTF-8?B?5p6X5aaZ5YCp?= <linmq006@gmail.com>
-Date: Mon, 27 Oct 2025 19:53:25 +0800
-X-Gm-Features: AWmQ_blk3uq_5rtQV412EY7V2h_deFBjeohYtVY_FLPkTWCodoGGNeoKyoGDHBc
-Message-ID: <CAH-r-ZG8vP=6qH42ew26BMBL9dRB3OtLUeFmMmKXzp1tnKvkxQ@mail.gmail.com>
-Subject: Re: [PATCH] s390/mm: Fix memory leak in add_marker() when kvrealloc fails
-To: Heiko Carstens <hca@linux.ibm.com>
-Cc: Alexander Gordeev <agordeev@linux.ibm.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>, 
-	Vasily Gorbik <gor@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
-	Sven Schnelle <svens@linux.ibm.com>, linux-s390@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, bpf@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20251027-fix-bmc150-v1-1-ccdc968e8c37@linaro.org>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-Hi, Heiko
+On Mon, Oct 27, 2025 at 11:18:17AM +0100, Linus Walleij wrote:
 
-Thank you for the feedback.
+Hmm... Isn't this already being discussed somewhere? I have some déjà-vu.
 
-Heiko Carstens <hca@linux.ibm.com> =E4=BA=8E2025=E5=B9=B410=E6=9C=8827=E6=
-=97=A5=E5=91=A8=E4=B8=80 18:15=E5=86=99=E9=81=93=EF=BC=9A
->
-> On Sun, Oct 26, 2025 at 05:13:51PM +0800, Miaoqian Lin wrote:
-> > When kvrealloc() fails, the original markers memory is leaked
-> > because the function directly assigns the NULL to the markers pointer,
-> > losing the reference to the original memory.
-> >
-> > As a result, the kvfree() in pt_dump_init() ends up freeing NULL instea=
-d
-> > of the previously allocated memory.
-> >
-> > Fix this by using a temporary variable to store kvrealloc()'s return
-> > value and only update the markers pointer on success.
-> >
-> > Found via static anlaysis and this is similar to commit 42378a9ca553
-> > ("bpf, verifier: Fix memory leak in array reallocation for stack state"=
-)
-> >
-> > Fixes: d0e7915d2ad3 ("s390/mm/ptdump: Generate address marker array dyn=
-amically")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
-> > ---
-> >  arch/s390/mm/dump_pagetables.c | 9 ++++++---
-> >  1 file changed, 6 insertions(+), 3 deletions(-)
-> >
-> > diff --git a/arch/s390/mm/dump_pagetables.c b/arch/s390/mm/dump_pagetab=
-les.c
-> > index 9af2aae0a515..0f2e0c93a1e0 100644
-> > --- a/arch/s390/mm/dump_pagetables.c
-> > +++ b/arch/s390/mm/dump_pagetables.c
-> > @@ -291,16 +291,19 @@ static int ptdump_cmp(const void *a, const void *=
-b)
-> >
-> >  static int add_marker(unsigned long start, unsigned long end, const ch=
-ar *name)
-> >  {
-> > +     struct addr_marker *new_markers;
-> >       size_t oldsize, newsize;
-> >
-> >       oldsize =3D markers_cnt * sizeof(*markers);
-> >       newsize =3D oldsize + 2 * sizeof(*markers);
-> >       if (!oldsize)
-> > -             markers =3D kvmalloc(newsize, GFP_KERNEL);
-> > +             new_markers =3D kvmalloc(newsize, GFP_KERNEL);
-> >       else
-> > -             markers =3D kvrealloc(markers, newsize, GFP_KERNEL);
-> > -     if (!markers)
-> > +             new_markers =3D kvrealloc(markers, newsize, GFP_KERNEL);
-> > +     if (!new_markers)
-> >               goto error;
-> > +
-> > +     markers =3D new_markers;
->
-> This is not better to the situation before. If the allocation fails,
-> markers_cnt will be set to zero, but the old valid markers pointer will s=
-tay,
-> which means that the next call to add_marker() will allocate a new area v=
-ia
-> kvmalloc() instead of kvrealloc(), and thus leaking the old area too.
->
-> add_marker() needs to changes to return in a manner that both marker and
-> marker_cnt correlate with each other. And I guess it is also easily possi=
-ble
-> to get rid of the two different allocation paths.
->
-> Care to send a new version?
+> The code in bmc150-accel-core.c unconditionally calls
+> bmc150_accel_set_interrupt() in the iio_buffer_setup_ops,
+> such as on the runtime PM resume path giving a kernel
+> splat like this if the device has no interrupts:
+> 
+> Unable to handle kernel NULL pointer dereference at virtual
+>   address 00000001 when read
+> CPU: 0 UID: 0 PID: 393 Comm: iio-sensor-prox Not tainted
+>   6.18.0-rc1-postmarketos-stericsson-00001-g6b43386e3737 #73 PREEMPT
+> Hardware name: ST-Ericsson Ux5x0 platform (Device Tree Support)
+> PC is at bmc150_accel_set_interrupt+0x98/0x194
+> LR is at __pm_runtime_resume+0x5c/0x64
+> (...)
+> Call trace:
+> bmc150_accel_set_interrupt from bmc150_accel_buffer_postenable+0x40/0x108
+> bmc150_accel_buffer_postenable from __iio_update_buffers+0xbe0/0xcbc
+> __iio_update_buffers from enable_store+0x84/0xc8
 
-I'm not sure if I can make it right.
-Do you think this way can fix the leak correctly? Thanks.
+> enable_store from kernfs_fop_write_iter+0x154/0x1b4
+> kernfs_fop_write_iter from do_iter_readv_writev+0x178/0x1e4
+> do_iter_readv_writev from vfs_writev+0x158/0x3f4
+> vfs_writev from do_writev+0x74/0xe4
+> do_writev from __sys_trace_return+0x0/0x10
 
-```diff
-static int add_marker(unsigned long start, unsigned long end, const char *n=
-ame)
- {
--       size_t oldsize, newsize;
--
--       oldsize =3D markers_cnt * sizeof(*markers);
--       newsize =3D oldsize + 2 * sizeof(*markers);
--       if (!oldsize)
--               markers =3D kvmalloc(newsize, GFP_KERNEL);
--       else
--               markers =3D kvrealloc(markers, newsize, GFP_KERNEL);
--       if (!markers)
--               goto error;
-+       struct addr_marker *new_markers;
-+       size_t newsize;
-+
-+       newsize =3D (markers_cnt + 2) * sizeof(*markers);
-+       new_markers =3D kvrealloc(markers, newsize, GFP_KERNEL);
-+       if (!new_markers)
-+               return -ENOMEM;
-+
-+       markers =3D new_markers;
-        markers[markers_cnt].is_start =3D 1;
-        markers[markers_cnt].start_address =3D start;
-        markers[markers_cnt].size =3D end - start;
-@@ -312,9 +311,6 @@ static int add_marker(unsigned long start,
-unsigned long end, const char *name)
-        markers[markers_cnt].name =3D name;
-        markers_cnt++;
-        return 0;
--error:
--       markers_cnt =3D 0;
--       return -ENOMEM;
- }
+I believe the above 5 lines are not needed.
+
+> This bug seems to have been in the driver since the beginning,
+> but it only manifests recently, I do not know why.
+
+...
+
+> +	/* We do not always have an IRQ */
+> +	if (!data->has_irq)
+
+Wouldn't check for 0 be enough?
+
+	if (!data->irq)
+
+> +		return 0;
+
+This will require to store just an irq (and perhaps we may read of local
+variable in ->probe(), who knows?). But size wise it's the same as current
+standalone boolean.
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
 
