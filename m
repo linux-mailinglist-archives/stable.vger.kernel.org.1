@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-191001-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191123-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B499C10FBC
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:28:46 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 046CFC11051
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:30:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 02C4850126D
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:20:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C7DF2189ED10
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:26:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8660C32AAD9;
-	Mon, 27 Oct 2025 19:19:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDDDB324B2E;
+	Mon, 27 Oct 2025 19:24:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iKNZACVB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dQ6PQuQc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41C9131D399;
-	Mon, 27 Oct 2025 19:19:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B2E632862C;
+	Mon, 27 Oct 2025 19:24:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592756; cv=none; b=tsSk7e2EuloCovoe74YBLKOkFX3JNzjuO1kLOstmRDB/Sl6ix9oGpsv5+X7zMA2elSbISEwLe55Ts/JXleNQFoPBCp4w1M8uH5Su1DCUXzqc1g5kBDy6YgMKlieIYkqichDnVV0r9PpnmkGB5cug7Ee3AX6HFglK3bd8FrLAkMI=
+	t=1761593069; cv=none; b=OURNi+ObxVvM8wJsLtemsVs6Q+0SQY3dcZOEooxaNMnmBG3cBbAllqOoVefE03qMCnWo3BWdMKx1ivzXwYAlCdB1+z+qcYIO8neLf+Li8DOq+p+Ft55dR+ajXLjzT05rZh9oGfz8MJ+Ry97fkqIU0R+c81aH+mwQPi5R6ZZyBTg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592756; c=relaxed/simple;
-	bh=xUUkteqWcu9hH5Hn00e9CklNpb08idsw3Y8Z1VsfKoI=;
+	s=arc-20240116; t=1761593069; c=relaxed/simple;
+	bh=/fmUDwhsb4NGyDCCLOyAjn1wuRWBTCMeIls0mJW/wU8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UpCmzwC3qfr9IiJn6Y27Ps7xAU81UjmH1ywOAEmhYdsmJ8Dnj8I+wmk4oXh64TNGF4TsNuuOfhU0z0vasNYb+UeF3W/PsiSDlFUUuEk8V1Iq0nFPYeKyvPyZSD/FVY91Z/izgA6o6vsZ3OGDOKcSRcr4Xvbol3H0DA8DrBPkAYU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iKNZACVB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB17EC4CEF1;
-	Mon, 27 Oct 2025 19:19:15 +0000 (UTC)
+	 MIME-Version; b=b58pwkeR8DyEInV0d+1R/CoSgBbgwdgvbeMRYwwY2A2rBdZnTEra5MgyV2NgEk3ng/pqQyDQkLLYNvQcDWZLMbFdVJCFld6Xm8LQC+i1OrR1tp0ypPXZHDvC6vDjhbwKqjy31j4IsoQCvhuVM1voJ/SUtn7ANR3zsGvLWfsWdgk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dQ6PQuQc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30AE5C4CEF1;
+	Mon, 27 Oct 2025 19:24:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592756;
-	bh=xUUkteqWcu9hH5Hn00e9CklNpb08idsw3Y8Z1VsfKoI=;
+	s=korg; t=1761593069;
+	bh=/fmUDwhsb4NGyDCCLOyAjn1wuRWBTCMeIls0mJW/wU8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iKNZACVBGYbdbv+lR4wrvtRP8rwN0NHJfIxfR1CoifxsZMNPkTA9A0pQjt3wIEdZz
-	 C04mMDTaj8Q6solY8nEAStmyM1yhpRY9Pqr0NajnGx62G7IcRdKcBlJ/9yd2TNM3+k
-	 SOV9HVau0r9fw2XCIpffd0y8nmULY5UYrJOaXrME=
+	b=dQ6PQuQc2gJc1YMjn00eLzCZApnIvpdf2ksb6XbkYhuBm9jRdeiqnfzAeH6mpNTTg
+	 46vJYi/zB6Tek9kJM4Xc1zw16cKpjK6dT2p3QeeJ478V2fgnAcR5KChnkxFZ6beW/s
+	 72+zGDldK3GZBurq3GtSo8yzsMlgVKDJgYdOts0I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haoyu Li <lihaoyu499@gmail.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: [PATCH 6.6 84/84] gpio: ljca: Initialize num before accessing item in ljca_gpio_config
-Date: Mon, 27 Oct 2025 19:37:13 +0100
-Message-ID: <20251027183441.053437059@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Victoria Votokina <Victoria.Votokina@kaspersky.com>
+Subject: [PATCH 6.12 108/117] most: usb: hdm_probe: Fix calling put_device() before device initialization
+Date: Mon, 27 Oct 2025 19:37:14 +0100
+Message-ID: <20251027183456.947576498@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183438.817309828@linuxfoundation.org>
-References: <20251027183438.817309828@linuxfoundation.org>
+In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
+References: <20251027183453.919157109@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haoyu Li <lihaoyu499@gmail.com>
+From: Victoria Votokina <Victoria.Votokina@kaspersky.com>
 
-commit 3396995f9fb6bcbe0004a68118a22f98bab6e2b9 upstream.
+commit a8cc9e5fcb0e2eef21513a4fec888f5712cb8162 upstream.
 
-With the new __counted_by annocation in ljca_gpio_packet, the "num"
-struct member must be set before accessing the "item" array. Failing to
-do so will trigger a runtime warning when enabling CONFIG_UBSAN_BOUNDS
-and CONFIG_FORTIFY_SOURCE.
+The early error path in hdm_probe() can jump to err_free_mdev before
+&mdev->dev has been initialized with device_initialize(). Calling
+put_device(&mdev->dev) there triggers a device core WARN and ends up
+invoking kref_put(&kobj->kref, kobject_release) on an uninitialized
+kobject.
 
-Fixes: 1034cc423f1b ("gpio: update Intel LJCA USB GPIO driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Haoyu Li <lihaoyu499@gmail.com>
-Link: https://lore.kernel.org/stable/20241203141451.342316-1-lihaoyu499%40gmail.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+In this path the private struct was only kmalloc'ed and the intended
+release is effectively kfree(mdev) anyway, so free it directly instead
+of calling put_device() on an uninitialized device.
+
+This removes the WARNING and fixes the pre-initialization error path.
+
+Fixes: 97a6f772f36b ("drivers: most: add USB adapter driver")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Victoria Votokina <Victoria.Votokina@kaspersky.com>
+Link: https://patch.msgid.link/20251010105241.4087114-3-Victoria.Votokina@kaspersky.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpio/gpio-ljca.c |    2 +-
+ drivers/most/most_usb.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpio/gpio-ljca.c
-+++ b/drivers/gpio/gpio-ljca.c
-@@ -82,9 +82,9 @@ static int ljca_gpio_config(struct ljca_
- 	int ret;
+--- a/drivers/most/most_usb.c
++++ b/drivers/most/most_usb.c
+@@ -1097,7 +1097,7 @@ err_free_cap:
+ err_free_conf:
+ 	kfree(mdev->conf);
+ err_free_mdev:
+-	put_device(&mdev->dev);
++	kfree(mdev);
+ 	return ret;
+ }
  
- 	mutex_lock(&ljca_gpio->trans_lock);
-+	packet->num = 1;
- 	packet->item[0].index = gpio_id;
- 	packet->item[0].value = config | ljca_gpio->connect_mode[gpio_id];
--	packet->num = 1;
- 
- 	ret = ljca_transfer(ljca_gpio->ljca, LJCA_GPIO_CONFIG, (u8 *)packet,
- 			    struct_size(packet, item, packet->num), NULL, 0);
 
 
 
