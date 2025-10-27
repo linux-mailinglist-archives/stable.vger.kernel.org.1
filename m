@@ -1,116 +1,227 @@
-Return-Path: <stable+bounces-190891-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191083-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73D9DC10D39
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:21:31 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id D90AEC11063
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:30:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B002B562A19
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:16:10 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 786B3501E87
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:24:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11C1332ABDC;
-	Mon, 27 Oct 2025 19:14:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BBD632BF52;
+	Mon, 27 Oct 2025 19:22:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lUDbXyGe"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bqVTvnx0"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEDB631D386;
-	Mon, 27 Oct 2025 19:14:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BB8432ABF1
+	for <stable@vger.kernel.org>; Mon, 27 Oct 2025 19:22:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592470; cv=none; b=Z3tUYB+AAjSJHGY5WkOfVFutD5zwAEgx3hGYbd2DDMLYQMfsGoNfBlp4BzU6KW9yNrwJV1gYpCeWhrbUd6YpE6O7F6hEVUT2z/nEg+9oXkb0HmBvUoSmJqAApOP8J4BcOaKs21vB5AaBT1RuTZ65WfABeMeLjNIWd3MeQ6nNsfI=
+	t=1761592968; cv=none; b=pLa/T2zcPhBCU7sA1ms61jjJbdkDhAwIsgZV4R5tTAxmKCmUJGt0LvWy4rqFvQdYOBIlpDU3mhKO2mRJ0ARRSv6a+mP29KUnPx7q3vHtWP0JgvZHDkYPw9ae4GU0AnKEBb323D3vxkj29ueGpAomWtElBGXXCfOl9ChSlmuTFY8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592470; c=relaxed/simple;
-	bh=8mRpLE0o9FY+yBHT7Kxcga55BIh/Tobu9nuLuF6N0ro=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hPbC/Ct/8TtCOZkNfiCoGFRx0KdibQfPap05rCsyaGiuL/B6EGHlkW/sECulYhvl4oIJL5JppMNS4zSMNmaIum92FVqZH343Ljt8NxzCKheJcN9RHu9nQ/rCvyNwsJnbBrEuSs1B4v2FFJ6YCHMTMoh4sHH8KWJC4LqQ4Itt+MM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lUDbXyGe; arc=none smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1761592469; x=1793128469;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=8mRpLE0o9FY+yBHT7Kxcga55BIh/Tobu9nuLuF6N0ro=;
-  b=lUDbXyGeCZcrcajZzvzJy1IOWy+hW2ihFeAE1cA2GB9pR9jqaU/BWmxR
-   dhGYKYG92yNbF/1ll1I2syC5X1mQb17Ui48B9JQGc1/ncW5IY46jESyd0
-   E/IXzCvUZVtACaW1d3IiTzEokCL+9zIiB4p3ZaXtY1YKqhJ5+FddEpDFk
-   36WYRt1CKpkcJ3sx82sDjd8zaSardzzmf/J2NIVfDDZmOmOZEpSZ++ekQ
-   A6g+ZSoFQ9D6yz8A4qx/EB4XydgGAvx6Fy2RurA/lXbSqjuuYGfSGV+IE
-   1kCRMzB5vOGVZUkbSCFSyiuUVo+SMdFHsfZfyF/Rp0ZNV+f/Rv2GhdyQo
-   g==;
-X-CSE-ConnectionGUID: Cv3vxbTOQjOF8sRDwEnlSA==
-X-CSE-MsgGUID: i79gds8rSteqmrsQsEzNiQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="51259141"
-X-IronPort-AV: E=Sophos;i="6.19,259,1754982000"; 
-   d="scan'208";a="51259141"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2025 12:14:28 -0700
-X-CSE-ConnectionGUID: mR27ZqQsTDW8H2S8I4AqAA==
-X-CSE-MsgGUID: xsvN/l4ARLukx3ouXhuAXg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,259,1754982000"; 
-   d="scan'208";a="184754834"
-Received: from cpetruta-mobl1.ger.corp.intel.com (HELO mdjait-mobl) ([10.245.244.83])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2025 12:14:27 -0700
-Date: Mon, 27 Oct 2025 20:14:19 +0100
-From: Mehdi Djait <mehdi.djait@linux.intel.com>
-To: Hans de Goede <hansg@kernel.org>
-Cc: Bingbu Cao <bingbu.cao@intel.com>, 
-	Sakari Ailus <sakari.ailus@linux.intel.com>, linux-media@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH 03/25] media: i2c: ov01a10: Fix gain range
-Message-ID: <ehz4qjj76a2tjv35gjs6aa3ofb6d5n2pj6zqdotnd3ic4vyjho@5ytlsplk7gus>
-References: <20251014174033.20534-1-hansg@kernel.org>
- <20251014174033.20534-4-hansg@kernel.org>
+	s=arc-20240116; t=1761592968; c=relaxed/simple;
+	bh=TsnjcNBrc5m64G4wdAVLD8TLsvgdYo5aVSJ4KISGt5w=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=LhWcs6/8TMRl81h6b6HaQwtcgsTCbwUDmni6GkHg3HNReBYoLW0LEVWpQtjgmHhqJb72zDiTrloZ0agRqTgnti0ujralYynBNR7wFCYlwuO6g8JxGWmtQGdphT89n28ECDFh7NKklYGqgL+UGgdfQxJBXAB0VqjbTXQNbIEWaOo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bqVTvnx0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9215FC4CEFD;
+	Mon, 27 Oct 2025 19:22:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761592968;
+	bh=TsnjcNBrc5m64G4wdAVLD8TLsvgdYo5aVSJ4KISGt5w=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=bqVTvnx0LJau1IKmXVXa2++1tvOxjIxH1m+eILynaSft8NUHu+pDGyCITU55m/Lce
+	 B0WagS8eRq0KW1XqqCGXHAomKdlIzX5UwdG/iIb03U5BpZSYpA55YShNXTKWKOZTAm
+	 vZcpoGHircoZixCvsr2e1+Eel4ScOf6xU29/0LRIoJjWXcEFjyYEpJYBBd9zHngKLx
+	 HXjCLYQYI3L4atoEg1RlsxpEXg0McdvNw/zpXLO0oFWdpmUIrlCB6pCXa3pq7mOHBk
+	 r/MZTq5H0QbAcccN5ME2OOvEVDO4m8S2v7hnUaTBVltheQ0esEBVUso5bDA55gAIuN
+	 rrNV1pyACB70g==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4.y 1/3] serial: 8250_dw: Use devm_clk_get_optional() to get the input clock
+Date: Mon, 27 Oct 2025 15:22:43 -0400
+Message-ID: <20251027192245.660757-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2025102701-scabby-entrust-a162@gregkh>
+References: <2025102701-scabby-entrust-a162@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251014174033.20534-4-hansg@kernel.org>
+Content-Transfer-Encoding: 8bit
 
-Hello Hans,
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-Thank you for the patches,
+[ Upstream commit a8afc193558a42d5df724c84436ae3b2446d8a30 ]
 
+Simplify the code which fetches the input clock by using
+devm_clk_get_optional(). This comes with a small functional change: previously
+all errors were ignored except deferred probe. Now all errors are
+treated as errors. If no input clock is present devm_clk_get_optional() will
+return NULL instead of an error which matches the behavior of the old code.
 
-On Tue, Oct 14, 2025 at 07:40:11PM +0200, Hans de Goede wrote:
-> A maximum gain of 0xffff / 65525 seems unlikely and testing indeed shows
-> that the gain control wraps-around at 4096, so set the maximum gain to
-> 0xfff / 4095.
-> 
-> The minimum gain of 0x100 is correct. Setting bits 8-11 to 0x0 results
-> in the same gain values as setting these bits to 0x1, with bits 0-7
-> still increasing the gain when going from 0x000 - 0x0ff in the exact
-> same range as when going from 0x100 - 0x1ff.
-> 
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20190925162617.30368-1-andriy.shevchenko@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: daeb4037adf7 ("serial: 8250_dw: handle reset control deassert error")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/tty/serial/8250/8250_dw.c | 75 +++++++++++++------------------
+ 1 file changed, 32 insertions(+), 43 deletions(-)
 
-Two things:
+diff --git a/drivers/tty/serial/8250/8250_dw.c b/drivers/tty/serial/8250/8250_dw.c
+index 2d5a039229acf..bd2901798f316 100644
+--- a/drivers/tty/serial/8250/8250_dw.c
++++ b/drivers/tty/serial/8250/8250_dw.c
+@@ -283,9 +283,6 @@ static void dw8250_set_termios(struct uart_port *p, struct ktermios *termios,
+ 	long rate;
+ 	int ret;
+ 
+-	if (IS_ERR(d->clk))
+-		goto out;
+-
+ 	clk_disable_unprepare(d->clk);
+ 	rate = clk_round_rate(d->clk, baud * 16);
+ 	if (rate < 0)
+@@ -296,8 +293,10 @@ static void dw8250_set_termios(struct uart_port *p, struct ktermios *termios,
+ 		ret = clk_set_rate(d->clk, rate);
+ 	clk_prepare_enable(d->clk);
+ 
+-	if (!ret)
+-		p->uartclk = rate;
++	if (ret)
++		goto out;
++
++	p->uartclk = rate;
+ 
+ out:
+ 	p->status &= ~UPSTAT_AUTOCTS;
+@@ -473,19 +472,18 @@ static int dw8250_probe(struct platform_device *pdev)
+ 	device_property_read_u32(dev, "clock-frequency", &p->uartclk);
+ 
+ 	/* If there is separate baudclk, get the rate from it. */
+-	data->clk = devm_clk_get(dev, "baudclk");
+-	if (IS_ERR(data->clk) && PTR_ERR(data->clk) != -EPROBE_DEFER)
+-		data->clk = devm_clk_get(dev, NULL);
+-	if (IS_ERR(data->clk) && PTR_ERR(data->clk) == -EPROBE_DEFER)
+-		return -EPROBE_DEFER;
+-	if (!IS_ERR_OR_NULL(data->clk)) {
+-		err = clk_prepare_enable(data->clk);
+-		if (err)
+-			dev_warn(dev, "could not enable optional baudclk: %d\n",
+-				 err);
+-		else
+-			p->uartclk = clk_get_rate(data->clk);
+-	}
++	data->clk = devm_clk_get_optional(dev, "baudclk");
++	if (data->clk == NULL)
++		data->clk = devm_clk_get_optional(dev, NULL);
++	if (IS_ERR(data->clk))
++		return PTR_ERR(data->clk);
++
++	err = clk_prepare_enable(data->clk);
++	if (err)
++		dev_warn(dev, "could not enable optional baudclk: %d\n", err);
++
++	if (data->clk)
++		p->uartclk = clk_get_rate(data->clk);
+ 
+ 	/* If no clock rate is defined, fail. */
+ 	if (!p->uartclk) {
+@@ -494,17 +492,16 @@ static int dw8250_probe(struct platform_device *pdev)
+ 		goto err_clk;
+ 	}
+ 
+-	data->pclk = devm_clk_get(dev, "apb_pclk");
+-	if (IS_ERR(data->pclk) && PTR_ERR(data->pclk) == -EPROBE_DEFER) {
+-		err = -EPROBE_DEFER;
++	data->pclk = devm_clk_get_optional(dev, "apb_pclk");
++	if (IS_ERR(data->pclk)) {
++		err = PTR_ERR(data->pclk);
+ 		goto err_clk;
+ 	}
+-	if (!IS_ERR(data->pclk)) {
+-		err = clk_prepare_enable(data->pclk);
+-		if (err) {
+-			dev_err(dev, "could not enable apb_pclk\n");
+-			goto err_clk;
+-		}
++
++	err = clk_prepare_enable(data->pclk);
++	if (err) {
++		dev_err(dev, "could not enable apb_pclk\n");
++		goto err_clk;
+ 	}
+ 
+ 	data->rst = devm_reset_control_get_optional_exclusive(dev, NULL);
+@@ -547,12 +544,10 @@ static int dw8250_probe(struct platform_device *pdev)
+ 	reset_control_assert(data->rst);
+ 
+ err_pclk:
+-	if (!IS_ERR(data->pclk))
+-		clk_disable_unprepare(data->pclk);
++	clk_disable_unprepare(data->pclk);
+ 
+ err_clk:
+-	if (!IS_ERR(data->clk))
+-		clk_disable_unprepare(data->clk);
++	clk_disable_unprepare(data->clk);
+ 
+ 	return err;
+ }
+@@ -568,11 +563,9 @@ static int dw8250_remove(struct platform_device *pdev)
+ 
+ 	reset_control_assert(data->rst);
+ 
+-	if (!IS_ERR(data->pclk))
+-		clk_disable_unprepare(data->pclk);
++	clk_disable_unprepare(data->pclk);
+ 
+-	if (!IS_ERR(data->clk))
+-		clk_disable_unprepare(data->clk);
++	clk_disable_unprepare(data->clk);
+ 
+ 	pm_runtime_disable(dev);
+ 	pm_runtime_put_noidle(dev);
+@@ -605,11 +598,9 @@ static int dw8250_runtime_suspend(struct device *dev)
+ {
+ 	struct dw8250_data *data = dev_get_drvdata(dev);
+ 
+-	if (!IS_ERR(data->clk))
+-		clk_disable_unprepare(data->clk);
++	clk_disable_unprepare(data->clk);
+ 
+-	if (!IS_ERR(data->pclk))
+-		clk_disable_unprepare(data->pclk);
++	clk_disable_unprepare(data->pclk);
+ 
+ 	return 0;
+ }
+@@ -618,11 +609,9 @@ static int dw8250_runtime_resume(struct device *dev)
+ {
+ 	struct dw8250_data *data = dev_get_drvdata(dev);
+ 
+-	if (!IS_ERR(data->pclk))
+-		clk_prepare_enable(data->pclk);
++	clk_prepare_enable(data->pclk);
+ 
+-	if (!IS_ERR(data->clk))
+-		clk_prepare_enable(data->clk);
++	clk_prepare_enable(data->clk);
+ 
+ 	return 0;
+ }
+-- 
+2.51.0
 
-1 - You could mention in the commit msg that this is about the analog gain.
-
-2 - You can add a patch for the max digital gain: which is defined as
-    follows:
-
-#define OV01A10_DGTL_GAIN_MAX		0x3ffff
-
-My testing shows that the digital_gain ctrl wraps-around at
-16383 = 0x3fff
-
-with that:
-
-Tested-by: Mehdi Djait <mehdi.djait@linux.intel.com> # Dell XPS 9315
-Reviewed-by: Mehdi Djait <mehdi.djait@linux.intel.com>
-
-> Fixes: 0827b58dabff ("media: i2c: add ov01a10 image sensor driver")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Hans de Goede <hansg@kernel.org>
 
