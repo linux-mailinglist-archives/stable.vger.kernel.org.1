@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-190091-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190424-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A57DC0FF54
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:40:15 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id B964AC1055A
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:58:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E7BAB46219E
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:40:13 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 119055004C0
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:57:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9699130FC0F;
-	Mon, 27 Oct 2025 18:40:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8335031DD94;
+	Mon, 27 Oct 2025 18:54:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2cI25ZaO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gbXPwyC7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AAD42D7806;
-	Mon, 27 Oct 2025 18:40:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E161246BB7;
+	Mon, 27 Oct 2025 18:54:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761590412; cv=none; b=jQcoslyGyq2U2KUChjzFwXaA40m6IgBW45gP0n2FJdnELsPjA4Q6VzVYcx5VUQtXrlWGAjea7Gg8CWnbA22ldKiEHiVolMbn7nGlRlL9zIc/Bj0AmhjnqS2Kas/22K3aHcK/fG6utxDJ42B/NUkFlxOelcj91bo5CGODWHtpS2Q=
+	t=1761591255; cv=none; b=Z70WeE+9leihEZL3+mp9y9YIQ+eSet/yCA49RyfbD37LD6qdciqLDIKCc6pqZeZ+YQXQaRlBpe0dSiFM1mKnMAfQyvTf1Qw8JKP79L0xFj8rTnBLM2w7DqUQLuDJTVCUopnMTmv+wDiJFcW8hwOOkXD8K0Odq4bRXJyKLVJ5s3Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761590412; c=relaxed/simple;
-	bh=K1ngfzWmPz6qPvwx9Z7znmOtO0KSqVEQ0fq9G9Go+y4=;
+	s=arc-20240116; t=1761591255; c=relaxed/simple;
+	bh=roBlNR6RNMqTHJRopVl4kMQ8Won8J2w/TFGyJNY+DW0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vECf40sFVjq3FGLxI5Q88vM1WnsjZq5TRV4OwunzBckELD1LjlQoGN/GwrDJZs+tHLZecha5Uc0zDPRoMth2jSrnW0NkTANZhm2J2Zvf1sumB3AFn5dgZLHdUyOYzGEHjOcTqdUTqy+zgoiq+RMC1eeN9e914SRV/eGfcss4cZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2cI25ZaO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8B02C4CEF1;
-	Mon, 27 Oct 2025 18:40:11 +0000 (UTC)
+	 MIME-Version; b=cKI/R9FrnHm4c8OdhwVTQtm1lnqrzFEgtByY1BtHZYtI88tBJXimtrfIJOsYXSd/a7kDiI8oSii9nzv3Tg8VjwsQLrw7lvoyKXU6A/L7YEJK0HKGoVXd0YuXEDdTB/wEWcPM6Eix7r/cBljakmIOwePdB3G/+pk2cr2id3BzAro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gbXPwyC7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C50F7C4CEF1;
+	Mon, 27 Oct 2025 18:54:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761590412;
-	bh=K1ngfzWmPz6qPvwx9Z7znmOtO0KSqVEQ0fq9G9Go+y4=;
+	s=korg; t=1761591255;
+	bh=roBlNR6RNMqTHJRopVl4kMQ8Won8J2w/TFGyJNY+DW0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2cI25ZaOYZRqVhcfdhHTTErftFhfPDqnD/SZYlx6jSpdUQtEUZutDxpEpBRVmv9Lj
-	 DFZ8VbjbvU4Evq+qJXB9EXYNHET7ruRdIfNrhh1jZ21Q6z/7kl2ZMZMTTzq5DAsjZq
-	 zXd4MY/9TxfGrx9KS6w3l2CPPJmdLXzFniZDalek=
+	b=gbXPwyC7+1BhZcni4Dr8WjkZ9JgyBXq5+ScgWvp2zCvQf52xj7st5XkjK6oA0THGm
+	 7zInAz/jfd9NUDNJYfVkJKLg3NR3ia4uYaoZziu2A8KhiRLZks6zdZiq8pOd2IM3ag
+	 iLaCWPcV1C3syjNGMSKZ9xuxbRzN7tuTTFfBKjwg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Igor Pylypiv <ipylypiv@google.com>,
-	Niklas Cassel <cassel@kernel.org>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 034/224] scsi: pm80xx: Fix array-index-out-of-of-bounds on rmmod
+	Daniel Tang <danielzgtg.opensource@gmail.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 5.10 127/332] ACPI: TAD: Add missing sysfs_remove_group() for ACPI_TAD_RT
 Date: Mon, 27 Oct 2025 19:33:00 +0100
-Message-ID: <20251027183509.919843022@linuxfoundation.org>
+Message-ID: <20251027183527.963006337@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183508.963233542@linuxfoundation.org>
-References: <20251027183508.963233542@linuxfoundation.org>
+In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
+References: <20251027183524.611456697@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,84 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Cassel <cassel@kernel.org>
+From: Daniel Tang <danielzgtg.opensource@gmail.com>
 
-[ Upstream commit 251be2f6037fb7ab399f68cd7428ff274133d693 ]
+commit 4aac453deca0d9c61df18d968f8864c3ae7d3d8d upstream.
 
-Since commit f7b705c238d1 ("scsi: pm80xx: Set phy_attached to zero when
-device is gone") UBSAN reports:
+Previously, after `rmmod acpi_tad`, `modprobe acpi_tad` would fail
+with this dmesg:
 
-  UBSAN: array-index-out-of-bounds in drivers/scsi/pm8001/pm8001_sas.c:786:17
-  index 28 is out of range for type 'pm8001_phy [16]'
+sysfs: cannot create duplicate filename '/devices/platform/ACPI000E:00/time'
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x6c/0x90
+ dump_stack+0x10/0x20
+ sysfs_warn_dup+0x8b/0xa0
+ sysfs_add_file_mode_ns+0x122/0x130
+ internal_create_group+0x1dd/0x4c0
+ sysfs_create_group+0x13/0x20
+ acpi_tad_probe+0x147/0x1f0 [acpi_tad]
+ platform_probe+0x42/0xb0
+ </TASK>
+acpi-tad ACPI000E:00: probe with driver acpi-tad failed with error -17
 
-on rmmod when using an expander.
-
-For a direct attached device, attached_phy contains the local phy id.
-For a device behind an expander, attached_phy contains the remote phy
-id, not the local phy id.
-
-I.e. while pm8001_ha will have pm8001_ha->chip->n_phy local phys, for a
-device behind an expander, attached_phy can be much larger than
-pm8001_ha->chip->n_phy (depending on the amount of phys of the
-expander).
-
-E.g. on my system pm8001_ha has 8 phys with phy ids 0-7.  One of the
-ports has an expander connected.  The expander has 31 phys with phy ids
-0-30.
-
-The pm8001_ha->phy array only contains the phys of the HBA.  It does not
-contain the phys of the expander.  Thus, it is wrong to use attached_phy
-to index the pm8001_ha->phy array for a device behind an expander.
-
-Thus, we can only clear phy_attached for devices that are directly
-attached.
-
-Fixes: f7b705c238d1 ("scsi: pm80xx: Set phy_attached to zero when device is gone")
-Reviewed-by: Igor Pylypiv <ipylypiv@google.com>
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
-Link: https://lore.kernel.org/r/20250814173215.1765055-14-cassel@kernel.org
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Tested-by: Damien Le Moal <dlemoal@kernel.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 3230b2b3c1ab ("ACPI: TAD: Add low-level support for real time capability")
+Signed-off-by: Daniel Tang <danielzgtg.opensource@gmail.com>
+Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Link: https://patch.msgid.link/2881298.hMirdbgypa@daniel-desktop3
+Cc: 5.2+ <stable@vger.kernel.org> # 5.2+
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/pm8001/pm8001_sas.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/acpi/acpi_tad.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/scsi/pm8001/pm8001_sas.c b/drivers/scsi/pm8001/pm8001_sas.c
-index 1215fc36862da..45b1af5a8d748 100644
---- a/drivers/scsi/pm8001/pm8001_sas.c
-+++ b/drivers/scsi/pm8001/pm8001_sas.c
-@@ -875,6 +875,7 @@ static void pm8001_dev_gone_notify(struct domain_device *dev)
- 	unsigned long flags = 0;
- 	struct pm8001_hba_info *pm8001_ha;
- 	struct pm8001_device *pm8001_dev = dev->lldd_dev;
-+	struct domain_device *parent_dev = dev->parent;
+--- a/drivers/acpi/acpi_tad.c
++++ b/drivers/acpi/acpi_tad.c
+@@ -563,6 +563,9 @@ static int acpi_tad_remove(struct platfo
  
- 	pm8001_ha = pm8001_find_ha_by_dev(dev);
- 	spin_lock_irqsave(&pm8001_ha->lock, flags);
-@@ -893,7 +894,13 @@ static void pm8001_dev_gone_notify(struct domain_device *dev)
- 			spin_lock_irqsave(&pm8001_ha->lock, flags);
- 		}
- 		PM8001_CHIP_DISP->dereg_dev_req(pm8001_ha, device_id);
--		pm8001_ha->phy[pm8001_dev->attached_phy].phy_attached = 0;
+ 	pm_runtime_get_sync(dev);
+ 
++	if (dd->capabilities & ACPI_TAD_RT)
++		sysfs_remove_group(&dev->kobj, &acpi_tad_time_attr_group);
 +
-+		/*
-+		 * The phy array only contains local phys. Thus, we cannot clear
-+		 * phy_attached for a device behind an expander.
-+		 */
-+		if (!(parent_dev && dev_is_expander(parent_dev->dev_type)))
-+			pm8001_ha->phy[pm8001_dev->attached_phy].phy_attached = 0;
- 		pm8001_free_dev(pm8001_dev);
- 	} else {
- 		PM8001_DISC_DBG(pm8001_ha,
--- 
-2.51.0
-
+ 	if (dd->capabilities & ACPI_TAD_DC_WAKE)
+ 		sysfs_remove_group(&dev->kobj, &acpi_tad_dc_attr_group);
+ 
 
 
 
