@@ -1,196 +1,115 @@
-Return-Path: <stable+bounces-189966-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-189967-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00A7FC0D9C6
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 13:41:00 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A60CEC0DADA
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 13:50:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 78AC234DE80
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 12:41:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2A2833B5EB7
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 12:45:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DF0E3019D0;
-	Mon, 27 Oct 2025 12:39:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BDD61C5F1B;
+	Mon, 27 Oct 2025 12:45:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kzzw1vjO"
+	dkim=pass (2048-bit key) header.d=sladewatkins.com header.i=@sladewatkins.com header.b="GDRsHd5O"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E44C2F692F;
-	Mon, 27 Oct 2025 12:39:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCEFB2AE8E
+	for <stable@vger.kernel.org>; Mon, 27 Oct 2025 12:45:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761568775; cv=none; b=MluuOwUS8wG0zKKwiYuXFiDkXvTBFQCLtKl1IFWbDyPoP+Zo/hmdTw/Fo1OPx7o61ra+aqaec9ztsa5girp0I6a1DhNrPHfyhVDUTXERZ8sd/9UNjVXW2CQzt7Nn0bKTu/rXbxDi8gAnJjCCXgRS8Lt9jnbR57rGcMu4p0IrmG8=
+	t=1761569113; cv=none; b=fEYZz8VN8xYAvlJnFVzyPiIQ8lD0a0c/48hxnOm0qoQ5SLUvhVWdI9JIPLJlNIOEqjRAjLaVCqgFl3PcK471gV4/cbIl5/eveJQ3ubfjdYnAWSC58//ArHA0FCSrllkH131FyHAmtlLhc86B6zRz+ba6ctGKLtq5Y4+kHWbg1CE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761568775; c=relaxed/simple;
-	bh=yecWNA4wwbIRwYTkZaHccVrAfGqGyJNVVjd0Nl0ezqI=;
-	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=pMzCbcWkQATMW7mEDjIpjdcNbHRceySWH7zl9Q8n8XGQqQnu3prZeOyp+VA1iiASWJBQGogxmkZ2+swRf1a4xr09vjElftQmX7u8qybHYuSWTKRhEsNfmVpYq+bPFMDx1hwrp9AqGB/1IRwUtl1Wfliznj7WUSVXJtyTczUqzkE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kzzw1vjO; arc=none smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1761568773; x=1793104773;
-  h=from:date:to:cc:subject:in-reply-to:message-id:
-   references:mime-version:content-id;
-  bh=yecWNA4wwbIRwYTkZaHccVrAfGqGyJNVVjd0Nl0ezqI=;
-  b=kzzw1vjOguKeH7t8znItpOhZNkol0wTHbQQfGiiKQskIGe7H4IppQo8K
-   EBro3w4/tntfYvsbuQVMTQUYTi1ThMKJcNzyfoOEyOibg2upyhPyaZBpJ
-   myq43xApGwQ593QAEqs4UpkGhK+vk8JWdWPRrxgBPxHDP5Gs/FUyx5Xhn
-   +dSMrInc+32VVOKVajIalfiF9l2ZWdydts/v6FX6od9u3z4Lwv9P2vlhq
-   HevD9q1tVl3+dA9hKhnXhK12LW89zcCNjy6apAvgQTpLuB1E89fRlUnf4
-   L3AoL3vyWGtqdiSIg4uhz62uDjHtiGleOL8Bx4AOFl+zOJ9T6vQD4+VOi
-   w==;
-X-CSE-ConnectionGUID: I/A6WfjHQImYW85NTnXOMw==
-X-CSE-MsgGUID: zmR8185wSgaGR7hyK12YAA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="63545274"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
-   d="scan'208";a="63545274"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2025 05:39:33 -0700
-X-CSE-ConnectionGUID: AfKdF+xtQ1qvXv7IYHj5gQ==
-X-CSE-MsgGUID: IwRhMD4yQpeHU9lAlDwbfg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,258,1754982000"; 
-   d="scan'208";a="184259452"
-Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.244.41])
-  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2025 05:39:31 -0700
-From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Date: Mon, 27 Oct 2025 14:39:27 +0200 (EET)
-To: Sasha Levin <sashal@kernel.org>
-cc: patches@lists.linux.dev, stable@vger.kernel.org, 
-    Bjorn Helgaas <bhelgaas@google.com>, linux-pci@vger.kernel.org
-Subject: Re: [PATCH AUTOSEL 6.17-6.12] PCI: Set up bridge resources earlier
-In-Reply-To: <20251025160905.3857885-86-sashal@kernel.org>
-Message-ID: <4b5020d1-51c1-a556-175b-a4c4e1995c61@linux.intel.com>
-References: <20251025160905.3857885-1-sashal@kernel.org> <20251025160905.3857885-86-sashal@kernel.org>
+	s=arc-20240116; t=1761569113; c=relaxed/simple;
+	bh=CyJi7fD5c1oeDNr7Tv93fobuOYeks19v4JQC0j1f4wQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nYsOqcDlY1tbylPDuzae4F1lDJFuHVnCRqPX/WMHPF0ioezEV+blgBf5cX+49xG3XQyp0eqcyjyFQ8+Xx9FXWX8c/dvkZA6Dx1/nNDqxQqYbo3fZUaCjcYNVUwGf9IfCRlLZQ6ozmPZMHWzjpNPpOt7W39+Mit5M++C5aVfUAq4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=sladewatkins.com; spf=pass smtp.mailfrom=sladewatkins.com; dkim=pass (2048-bit key) header.d=sladewatkins.com header.i=@sladewatkins.com header.b=GDRsHd5O; arc=none smtp.client-ip=209.85.222.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=sladewatkins.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sladewatkins.com
+Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-89f54569415so249396585a.1
+        for <stable@vger.kernel.org>; Mon, 27 Oct 2025 05:45:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=sladewatkins.com; s=google; t=1761569108; x=1762173908; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=aIdlKHiNBcRsOdk0zhitg+CbnPREM81y40dFklcyMDo=;
+        b=GDRsHd5O+w6etjDabOKAEampnhf/pf/GtJ5/u9DK9ksEkyAhjIL9T6WIaFDsNLJCby
+         +34YlrQe3BE7Up7DxlkWnv/N7G1plhQY5+noIdPwp+9BxCvkyWRKZvOXF4jAOJuzBsfH
+         Lt58wJlPcNThI6ar8eHQ0HCSlMKFygeeA9MFh9FeutoX4pzZgkxz9cv53Y4aEVje+Ky1
+         EmEN404KreHSRzM5iy44CkCdCG821yxygNShYmFt9nCqaPxcdEr6VsN8OB0rvgE7o1mn
+         rIqMRNVpigRE6hlQimzcGpHpoeXA0MGp7x/msYQSopBx45hGyeuMFIez+DAInJ1yDozS
+         2U1g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761569108; x=1762173908;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=aIdlKHiNBcRsOdk0zhitg+CbnPREM81y40dFklcyMDo=;
+        b=R7Lxbi00U1Ar5er5h0rslniQBoxEbHkV9I/Rgoyi9k+XPYDd/IEfy/pYLvA/ptLo4e
+         01i/KowZcbUuxSYBBg9K1Tvu/VNHqY6gRfmqF51KKXszhHLDDVnYEynQqeFpywaYu1L4
+         vWR1okWf07Q4cI3MZXUmvQ4zxb30tZI5kFXKUzGJeyjxmwsp9ymqY5eVsbotCxlKM+vc
+         3jFdEAxhHiKyK62oO0KJplErUywxLU70d/LnrBZvrXk/kXJNxT+uCn3Gm4zeXcs8gr8P
+         RAv21SeNBaG5q1j0itGztKlw5L3rDmmPMp1xnBXnOdKsRRT9BISjWoecMQT1h4GyTK4P
+         XStg==
+X-Gm-Message-State: AOJu0YwIBTikoKd69ATbzEAFHAxjIMGNb69gd5KR5zq2GamkxwKp3FN5
+	ter7KL4I7ihUgufUUMB7HqdGA67RRsObQXm6vUqmqhv49ogLAShSD31SqACTbYtVunJrK2KyqIv
+	1StSmounGYA==
+X-Gm-Gg: ASbGncvJ9wGS2sXhlulOj9TNw7fTW2rFQ/C8WorId7lTUOZWITSC1jIsvyhin10V13c
+	vjp1+VWP74AO6SaodsRmD+N0p8lGXwVom8WeegTDsvZ0d0fzMt5/EBofpaSFYMUiHX3iUHpisBE
+	KusirKj76sS0GAclZtUrpZbPyJv4sNyPo7DerYjHjUqa5/9JkqsIOI19uNJKzy1jajLp/K6VpEK
+	AOFqkQWMftzdALcK1BNlQbsyoImi6FyUV5sS6GxLU4RIIN6opPAlm+/GZcUsI4jTDZEjuszcc+o
+	km6ELD2gg1D9NuwmPQciszWFszfzr6C2JOgp3gP0w2Vm+9Wqj7oEpZRAPheYtQyQUeuJpve0+QA
+	BG7tQMod0yVJE/b03oh4yUF3V3zBkzeq3LCypR0s0gjj7bfKcNmh10oG0JYT82KU5ZshcnQwaNe
+	aRGftQ2o918y+DREUETdunVVYRp6U0T661crU0rOuMFGz/+0o=
+X-Google-Smtp-Source: AGHT+IEZhjPGg1BpMMX5sywEWMxaSYP7zsSMNgHJZTljZw9RTDV523RchX7AdFlPaKqJfcDbVN/MEQ==
+X-Received: by 2002:a05:620a:190e:b0:8a2:473c:39d6 with SMTP id af79cd13be357-8a2473c4256mr511664885a.24.1761569108473;
+        Mon, 27 Oct 2025 05:45:08 -0700 (PDT)
+Received: from localhost.localdomain ([174.97.1.113])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-89f247fe594sm594170285a.16.2025.10.27.05.45.07
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Mon, 27 Oct 2025 05:45:08 -0700 (PDT)
+From: Slade Watkins <sr@sladewatkins.com>
+To: gregkh@linuxfoundation.org
+Cc: stable@vger.kernel.org,
+	Slade Watkins <sr@sladewatkins.com>
+Subject: [PATCH] scripts/quilt-mail: add my new email address
+Date: Mon, 27 Oct 2025 08:44:57 -0400
+Message-ID: <20251027124457.36664-1-sr@sladewatkins.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; BOUNDARY="8323328-1686847934-1761568758=:970"
-Content-ID: <e73c78d0-09b7-c25a-0213-7ad3643b78bb@linux.intel.com>
+Content-Transfer-Encoding: 8bit
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+My old email address is no longer valid and was bouncing. Add my new one instead.
 
---8323328-1686847934-1761568758=:970
-Content-Type: text/plain; CHARSET=UTF-8
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Content-ID: <52d35f17-b4f8-7315-e5bb-d31a6e9aa655@linux.intel.com>
+Signed-off-by: Slade Watkins <sr@sladewatkins.com>
+---
+ scripts/quilt-mail | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-On Sat, 25 Oct 2025, Sasha Levin wrote:
+diff --git a/scripts/quilt-mail b/scripts/quilt-mail
+index 9790b65f0f..7ef3f2fdbc 100755
+--- a/scripts/quilt-mail
++++ b/scripts/quilt-mail
+@@ -181,7 +181,8 @@ CC_NAMES=("linux-kernel@vger\.kernel\.org"
+ 	  "conor@kernel\.org"
+ 	  "hargar@microsoft\.com"
+ 	  "broonie@kernel\.org"
+-	  "achill@achill\.org")
++	  "achill@achill\.org"
++	  "sr@sladewatkins\.com")
+ 
+ #CC_LIST="stable@vger\.kernel\.org"
+ CC_LIST="patches@lists.linux.dev"
+-- 
+2.50.1 (Apple Git-155)
 
-> From: Ilpo J=C3=A4rvinen <ilpo.jarvinen@linux.intel.com>
->=20
-> [ Upstream commit a43ac325c7cbbfe72bdf9178059b3ee9f5a2c7dd ]
->=20
-> Bridge windows are read twice from PCI Config Space, the first time from
-> pci_read_bridge_windows(), which does not set up the device's resources.
-> This causes problems down the road as child resources of the bridge canno=
-t
-> check whether they reside within the bridge window or not.
->=20
-> Set up the bridge windows already in pci_read_bridge_windows().
->=20
-> Signed-off-by: Ilpo J=C3=A4rvinen <ilpo.jarvinen@linux.intel.com>
-> Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-> Link: https://patch.msgid.link/20250924134228.1663-2-ilpo.jarvinen@linux.=
-intel.com
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-
-This change was reverted by the commit 469276c06aff ("PCI: Revert early=20
-bridge resource set up").
-
---
- i.
-
-
-> ---
->=20
-> LLM Generated explanations, may be completely bogus:
->=20
-> YES
-> - `pci_alloc_child_bus()` copies each subordinate bus window to
->   `child->resource[i] =3D &bridge->resource[PCI_BRIDGE_RESOURCES+i]`
->   before any child is scanned (`drivers/pci/probe.c:1245-1248`). Without
->   this patch, those `bridge->resource[...]` entries are still zeroed;
->   the first call to `pci_read_bridge_windows()` only logged with a
->   stack-local `struct resource`.
-> - Child drivers often probe immediately (device_add =E2=86=92 bus_probe_d=
-evice)
->   while the bus scan is still in progress. During their
->   `pci_enable_device()` they hit `pci_claim_resource()`
->   (`drivers/pci/setup-res.c:154-169`), which calls
->   `pci_find_parent_resource()` to make sure the BAR sits inside an
->   upstream bridge window (`drivers/pci/pci.c:737-767`). Because
->   `pcibios_fixup_bus()` (the point where `pci_read_bridge_bases()` re-
->   reads the window into the real resource) runs only after the entire
->   bus has been scanned (`drivers/pci/probe.c:3091-3106`), the parent
->   window is still zero and the containment test fails. Result:
->   `pci_enable_device()` reports =E2=80=9Ccan't claim; no compatible bridg=
-e
->   window=E2=80=9D and the device never comes up behind that bridge.
-> - The patch fixes that race by writing the values directly into the
->   bridge=E2=80=99s real resources the first time we read config space
->   (`drivers/pci/probe.c:540-588`). When the subordinate bus is created,
->   the copied pointers already describe the real aperture, so drivers can
->   claim their BARs successfully even if they probe before the later
->   fixup.
-> - Behavioural risk is negligible: we still populate the same resource
->   structures with the same data, only earlier; the later
->   `pci_read_bridge_bases()` call simply refreshes them with `log=3Dfalse`=
-=2E
->   No new dependencies or behavioural changes outside this bug fix path,
->   making it safe for stable.
->=20
-> Natural next step: consider tagging with a `Fixes` reference upstream to
-> ease stable selection.
->
->  drivers/pci/probe.c | 13 ++++++++++---
->  1 file changed, 10 insertions(+), 3 deletions(-)
->=20
-> diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
-> index a56dfa1c9b6ff..0b8c82c610baa 100644
-> --- a/drivers/pci/probe.c
-> +++ b/drivers/pci/probe.c
-> @@ -524,10 +524,14 @@ static void pci_read_bridge_windows(struct pci_dev =
-*bridge)
->  =09}
->  =09if (io) {
->  =09=09bridge->io_window =3D 1;
-> -=09=09pci_read_bridge_io(bridge, &res, true);
-> +=09=09pci_read_bridge_io(bridge,
-> +=09=09=09=09   pci_resource_n(bridge, PCI_BRIDGE_IO_WINDOW),
-> +=09=09=09=09   true);
->  =09}
-> =20
-> -=09pci_read_bridge_mmio(bridge, &res, true);
-> +=09pci_read_bridge_mmio(bridge,
-> +=09=09=09     pci_resource_n(bridge, PCI_BRIDGE_MEM_WINDOW),
-> +=09=09=09     true);
-> =20
->  =09/*
->  =09 * DECchip 21050 pass 2 errata: the bridge may miss an address
-> @@ -565,7 +569,10 @@ static void pci_read_bridge_windows(struct pci_dev *=
-bridge)
->  =09=09=09bridge->pref_64_window =3D 1;
->  =09}
-> =20
-> -=09pci_read_bridge_mmio_pref(bridge, &res, true);
-> +=09pci_read_bridge_mmio_pref(bridge,
-> +=09=09=09=09  pci_resource_n(bridge,
-> +=09=09=09=09=09=09 PCI_BRIDGE_PREF_MEM_WINDOW),
-> +=09=09=09=09  true);
->  }
-> =20
->  void pci_read_bridge_bases(struct pci_bus *child)
->=20
-
---8323328-1686847934-1761568758=:970--
 
