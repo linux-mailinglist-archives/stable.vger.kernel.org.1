@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-191122-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191277-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC955C110A8
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:31:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FD10C11243
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:37:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A0679507CC9
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:26:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CEF4F1A631C5
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:33:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60A37328639;
-	Mon, 27 Oct 2025 19:24:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57A001FBC92;
+	Mon, 27 Oct 2025 19:31:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wkM8JP/o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RzphRkUG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AFCF324B2E;
-	Mon, 27 Oct 2025 19:24:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E58622A4DB;
+	Mon, 27 Oct 2025 19:31:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761593067; cv=none; b=eEoSgqv/O42jzz/8vDB1FGfhBJZriO+aKN0fK1YVh6jK75Lub6+DGNJqr+SwNWQ0pGiu02xTgKvpAWwkrAVo6db53zk6+HseYixUk+/YV8KYnhcQxBk4vR0JaynK4jjC/vjDGcZIKdAIljPGE6kzwLMEesFBPw5EGpCMocxyEPk=
+	t=1761593500; cv=none; b=UB1la0iXTIr4yP6hEupwkcW3DsPH4bhpfmJFxUE8qhGOqxkUy5eFwxYzik8dB+UF26hPGMmSxvA2ADX9CeETHi6H/8gKk1cbGXqKEnS142eZG3qMJOQbdkBp3iVNNaLeblnZpUeZoqKOmQmFBC4Cc0riAiOOVzJzk56zgRthur4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761593067; c=relaxed/simple;
-	bh=rLUwKBl6XRVzmL6aNoI1LJMX1sIEZvdVMHThWuAo4+g=;
+	s=arc-20240116; t=1761593500; c=relaxed/simple;
+	bh=6xDQpaZIoq6jIC0tX0pfoJLMuMcrP4O6sTTI/5ganaA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ly1YpulEvXdE1O43Ym6haz99uJhJ8mLInLRTda4gqgy6enoEp4EAM4eLhByIg3InWJWEQGqRui/KqqqSLLZC2Drqtm6Xlenhz8rq7puy8c3lbrhGl1bd01IX4qNpw8fPio25cZyHfy89jUi3t9iL8EOFKPgonoDnzMTwdP3TXfw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wkM8JP/o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 951BDC4CEF1;
-	Mon, 27 Oct 2025 19:24:26 +0000 (UTC)
+	 MIME-Version; b=iLXnxbSZJsvEYbV1ylYFaO0I9XQmSn0ZfhHqDy425M/lMWrrq0Ge+1OZ74Ji3NS6zYosxv7er6ukv9wJcxfVXPuSW3E+h4owqw2FYzFIv4tHice7kErOA6ButywNuWDgSQX5cB1bsMJL5NAMqMlmuX2CcL94mz2MC10RIzvFx8g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RzphRkUG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C9B1C4CEF1;
+	Mon, 27 Oct 2025 19:31:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761593066;
-	bh=rLUwKBl6XRVzmL6aNoI1LJMX1sIEZvdVMHThWuAo4+g=;
+	s=korg; t=1761593499;
+	bh=6xDQpaZIoq6jIC0tX0pfoJLMuMcrP4O6sTTI/5ganaA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wkM8JP/oZTtJb7L18M8eArJjTExEGhylr8zieqvnci+4U8dH1qUdNvPsWg8SRN8YH
-	 IjAMfUr5MMXVARcIHid4E3jCJBcr7rV4JOgvhvyRBOvtPBqML3B4lcC1uUuT1D4Px0
-	 WMHlv1kVOhVOczunrjvlCid+IblQXr1tkKvRAR0o=
+	b=RzphRkUGBULKMVsep9cdd94JjNqYfq51IYLHKTBV5H7Zev5R8k29MFgVB2mZcO9/c
+	 Xol0jNuZyr3M1UvM11eSB/pSGSCBJOnG1lrMcrQj5xzDRCl2xZu2wV5KJs8x386On1
+	 Na8TDhXCLVVqxCMMFkddAENoCCbqi9BgsgsecY48=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+916742d5d24f6c254761@syzkaller.appspotmail.com,
-	stable <stable@kernel.org>,
-	Victoria Votokina <Victoria.Votokina@kaspersky.com>
-Subject: [PATCH 6.12 107/117] most: usb: Fix use-after-free in hdm_disconnect
+	LI Qingwu <Qing-wu.Li@leica-geosystems.com.cn>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.17 151/184] USB: serial: option: add Telit FN920C04 ECM compositions
 Date: Mon, 27 Oct 2025 19:37:13 +0100
-Message-ID: <20251027183456.917653993@linuxfoundation.org>
+Message-ID: <20251027183518.998790603@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
-References: <20251027183453.919157109@linuxfoundation.org>
+In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
+References: <20251027183514.934710872@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +61,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Victoria Votokina <Victoria.Votokina@kaspersky.com>
+From: LI Qingwu <Qing-wu.Li@leica-geosystems.com.cn>
 
-commit 4b1270902609ef0d935ed2faa2ea6d122bd148f5 upstream.
+commit 622865c73ae30f254abdf182f4b66cccbe3e0f10 upstream.
 
-hdm_disconnect() calls most_deregister_interface(), which eventually
-unregisters the MOST interface device with device_unregister(iface->dev).
-If that drops the last reference, the device core may call release_mdev()
-immediately while hdm_disconnect() is still executing.
+Add support for the Telit Cinterion FN920C04 module when operating in
+ECM (Ethernet Control Model) mode. The following USB product IDs are
+used by the module when AT#USBCFG is set to 3 or 7.
 
-The old code also freed several mdev-owned allocations in
-hdm_disconnect() and then performed additional put_device() calls.
-Depending on refcount order, this could lead to use-after-free or
-double-free when release_mdev() ran (or when unregister paths also
-performed puts).
+0x10A3: ECM + tty (NMEA) + tty (DUN) [+ tty (DIAG)]
+T:  Bus=01 Lev=02 Prnt=02 Port=00 Cnt=01 Dev#=  3 Spd=480  MxCh= 0
+D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=1bc7 ProdID=10a3 Rev= 5.15
+S:  Manufacturer=Telit Cinterion
+S:  Product=FN920
+S:  SerialNumber=76e7cb38
+C:* #Ifs= 5 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:* If#= 0 Alt= 0 #EPs= 1 Cls=02(comm.) Sub=06 Prot=00 Driver=cdc_ether
+E:  Ad=82(I) Atr=03(Int.) MxPS=  16 Ivl=32ms
+I:  If#= 1 Alt= 0 #EPs= 0 Cls=0a(data ) Sub=00 Prot=00 Driver=cdc_ether
+I:* If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=cdc_ether
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=60 Driver=option
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
 
-Fix by moving the frees of mdev-owned allocations into release_mdev(),
-so they happen exactly once when the device is truly released, and by
-dropping the extra put_device() calls in hdm_disconnect() that are
-redundant after device_unregister() and most_deregister_interface().
+0x10A8: ECM + tty (DUN) + tty (AUX) [+ tty (DIAG)]
+T:  Bus=03 Lev=02 Prnt=02 Port=00 Cnt=01 Dev#=  3 Spd=480  MxCh= 0
+D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=1bc7 ProdID=10a8 Rev= 5.15
+S:  Manufacturer=Telit Cinterion
+S:  Product=FN920
+S:  SerialNumber=76e7cb38
+C:* #Ifs= 5 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:* If#= 0 Alt= 0 #EPs= 1 Cls=02(comm.) Sub=06 Prot=00 Driver=cdc_ether
+E:  Ad=82(I) Atr=03(Int.) MxPS=  16 Ivl=32ms
+I:  If#= 1 Alt= 0 #EPs= 0 Cls=0a(data ) Sub=00 Prot=00 Driver=cdc_ether
+I:* If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=cdc_ether
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
 
-This addresses the KASAN slab-use-after-free reported by syzbot in
-hdm_disconnect(). See report and stack traces in the bug link below.
+Adding these IDs allows the option driver to automatically create the
+corresponding /dev/ttyUSB* ports under ECM mode.
 
-Reported-by: syzbot+916742d5d24f6c254761@syzkaller.appspotmail.com
-Cc: stable <stable@kernel.org>
-Closes: https://syzkaller.appspot.com/bug?extid=916742d5d24f6c254761
-Fixes: 97a6f772f36b ("drivers: most: add USB adapter driver")
-Signed-off-by: Victoria Votokina <Victoria.Votokina@kaspersky.com>
-Link: https://patch.msgid.link/20251010105241.4087114-2-Victoria.Votokina@kaspersky.com
+Tested with FN920C04 under ECM configuration (USBCFG=3 and 7).
+
+Signed-off-by: LI Qingwu <Qing-wu.Li@leica-geosystems.com.cn>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/most/most_usb.c |   11 ++++-------
- 1 file changed, 4 insertions(+), 7 deletions(-)
+ drivers/usb/serial/option.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/most/most_usb.c
-+++ b/drivers/most/most_usb.c
-@@ -929,6 +929,10 @@ static void release_mdev(struct device *
- {
- 	struct most_dev *mdev = to_mdev_from_dev(dev);
- 
-+	kfree(mdev->busy_urbs);
-+	kfree(mdev->cap);
-+	kfree(mdev->conf);
-+	kfree(mdev->ep_address);
- 	kfree(mdev);
- }
- /**
-@@ -1121,13 +1125,6 @@ static void hdm_disconnect(struct usb_in
- 	if (mdev->dci)
- 		device_unregister(&mdev->dci->dev);
- 	most_deregister_interface(&mdev->iface);
--
--	kfree(mdev->busy_urbs);
--	kfree(mdev->cap);
--	kfree(mdev->conf);
--	kfree(mdev->ep_address);
--	put_device(&mdev->dci->dev);
--	put_device(&mdev->dev);
- }
- 
- static int hdm_suspend(struct usb_interface *interface, pm_message_t message)
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -1403,10 +1403,14 @@ static const struct usb_device_id option
+ 	  .driver_info = RSVD(0) | NCTRL(3) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10a2, 0xff),	/* Telit FN920C04 (MBIM) */
+ 	  .driver_info = NCTRL(4) },
++	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10a3, 0xff),	/* Telit FN920C04 (ECM) */
++	  .driver_info = NCTRL(4) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10a4, 0xff),	/* Telit FN20C04 (rmnet) */
+ 	  .driver_info = RSVD(0) | NCTRL(3) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10a7, 0xff),	/* Telit FN920C04 (MBIM) */
+ 	  .driver_info = NCTRL(4) },
++	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10a8, 0xff),	/* Telit FN920C04 (ECM) */
++	  .driver_info = NCTRL(4) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10a9, 0xff),	/* Telit FN20C04 (rmnet) */
+ 	  .driver_info = RSVD(0) | NCTRL(2) | RSVD(3) | RSVD(4) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10aa, 0xff),	/* Telit FN920C04 (MBIM) */
 
 
 
