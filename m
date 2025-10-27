@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-191139-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190652-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id C91CBC111E6
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:35:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44E47C109FC
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:13:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6796E561534
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:27:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5C36F56178F
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:07:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B02432E13F;
-	Mon, 27 Oct 2025 19:25:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 379E332E12D;
+	Mon, 27 Oct 2025 19:04:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="02/Rc+x+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hVBdOfVC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57DD432C951;
-	Mon, 27 Oct 2025 19:25:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E73DB14A4F0;
+	Mon, 27 Oct 2025 19:04:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761593110; cv=none; b=L8f+y/aoAX2KnpbWh2yJutaOG4sYcn40upHUy6WtB3t7vuE5/XKO4WYLaRkmP1bkOJOL3hBy9bfowWQ7Z404m8oMQR6CquAezFUfq0E8LXX70d9UFhb1Hsxe/ZTuqVsgxZyna4eeFGHNafrG5VMLcCG2dVF7/QFfQ9qddb5iPOE=
+	t=1761591842; cv=none; b=bmO9tDBcRA3JknqLSyIwk31LjTdNCXD+stI2z0rTAFat+8asQWwviMyyOXwS4Q0cmgDz4lnI5nhS8qvTSF/KHn7+JEFwhFXawBWNhpeWcygKJJfVDQXMkBICPrnjIScaL1z+h/4JjqYD56rNBJ1f7J8hwncAasIkhunF0/OrwFU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761593110; c=relaxed/simple;
-	bh=3PA0atN6I0z8gh9tuiDwNWh68bpKvFn9voOEKWQEcDU=;
+	s=arc-20240116; t=1761591842; c=relaxed/simple;
+	bh=ipR2KQZ60YjQ5FULlncfgePZAdewBnjBlux3lfM0S2o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nbOrSqJ9+cKyvfM4w/X24DU595zsdCiC5CRJHkVbrrFIvqQpgWP6lGxbRqlTRN1+dPJ/OxuOLzzOuOAtojPD/2x6OYUKsTxIpODq64WMAJ6bp/jWHP2vRWFE58ReUE5gC7dW261DIJXyxQUZ5PVq5+aOQ9y5EktNyrHv0+QmHkw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=02/Rc+x+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD34CC4CEF1;
-	Mon, 27 Oct 2025 19:25:09 +0000 (UTC)
+	 MIME-Version; b=X4eUJfaR1CUSlpqWhBAcys1qf5gBY1ACjN+B0J5yiiOhkhgBeRAqNDVQiB0akJriYzVWmpGqCvtaIkmomUtTx6aHNXTWvczSmmyWOSPHXx89osqid7/31ml1dGlHn57i+04UKLDO+xpqiY+pPPottWPPUCrzHb+KLgg0SXBB9Ac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hVBdOfVC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B822C4CEF1;
+	Mon, 27 Oct 2025 19:04:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761593110;
-	bh=3PA0atN6I0z8gh9tuiDwNWh68bpKvFn9voOEKWQEcDU=;
+	s=korg; t=1761591841;
+	bh=ipR2KQZ60YjQ5FULlncfgePZAdewBnjBlux3lfM0S2o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=02/Rc+x+csnN3so0DRpammPwgFT2pG0dTq/tx3e4n15bGhhYVtAqHNZNnFbfLc4rG
-	 4OZyGk1/7mYwEQJH0WaPhCabLzrbazR+gyWs2Aj6PTXrsUBpjSmpdN+aioif4qON2v
-	 XqDCJsUGpXt71tNWrRMVsyH+NN8wQwReNFkCbOxs=
+	b=hVBdOfVCeO5AKCjWjd5xnhY/VSV+RgcwtNH6BGa1elGaaaD/HDWpR+XGIARwDNswg
+	 v5I8xMFChbrdKh+pzlYsTKVHzZCFENsZOzMnb36R+hcuPJEEl2VTha46Tn2k5fZ7JV
+	 mcYyJcw7PbXvL1/zHjRQFg86Z48GMBvyYnfLp49Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Linux Kernel Functional Testing <lkft@linaro.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Kees Cook <kees@kernel.org>,
+	Linmao Li <lilinmao@kylinos.cn>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 017/184] PCI: Test for bit underflow in pcie_set_readrq()
+Subject: [PATCH 5.15 019/123] r8169: fix packet truncation after S4 resume on RTL8168H/RTL8111H
 Date: Mon, 27 Oct 2025 19:34:59 +0100
-Message-ID: <20251027183515.398503755@linuxfoundation.org>
+Message-ID: <20251027183446.913664982@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
-References: <20251027183514.934710872@linuxfoundation.org>
+In-Reply-To: <20251027183446.381986645@linuxfoundation.org>
+References: <20251027183446.381986645@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,69 +64,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <kees@kernel.org>
+From: Linmao Li <lilinmao@kylinos.cn>
 
-[ Upstream commit 00e58ff924b3a684b076f9512fe2753be87b50e1 ]
+[ Upstream commit 70f92ab97042f243e1c8da1c457ff56b9b3e49f1 ]
 
-In preparation for the future commit ("bitops: Add __attribute_const__ to generic
-ffs()-family implementations"), which allows GCC's value range tracker
-to see past ffs(), GCC 8 on ARM thinks that it might be possible that
-"ffs(rq) - 8" used here:
+After resume from S4 (hibernate), RTL8168H/RTL8111H truncates incoming
+packets. Packet captures show messages like "IP truncated-ip - 146 bytes
+missing!".
 
-	v = FIELD_PREP(PCI_EXP_DEVCTL_READRQ, ffs(rq) - 8);
+The issue is caused by RxConfig not being properly re-initialized after
+resume. Re-initializing the RxConfig register before the chip
+re-initialization sequence avoids the truncation and restores correct
+packet reception.
 
-could wrap below 0, leading to a very large value, which would be out of
-range for the FIELD_PREP() usage:
+This follows the same pattern as commit ef9da46ddef0 ("r8169: fix data
+corruption issue on RTL8402").
 
-drivers/pci/pci.c: In function 'pcie_set_readrq':
-include/linux/compiler_types.h:572:38: error: call to '__compiletime_assert_471' declared with attribute error: FIELD_PREP: value too large for the field
-...
-drivers/pci/pci.c:5896:6: note: in expansion of macro 'FIELD_PREP'
-  v = FIELD_PREP(PCI_EXP_DEVCTL_READRQ, ffs(rq) - 8);
-      ^~~~~~~~~~
-
-If the result of the ffs() is bounds checked before being used in
-FIELD_PREP(), the value tracker seems happy again. :)
-
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-Closes: https://lore.kernel.org/linux-pci/CA+G9fYuysVr6qT8bjF6f08WLyCJRG7aXAeSd2F7=zTaHHd7L+Q@mail.gmail.com/
-Acked-by: Bjorn Helgaas <bhelgaas@google.com>
-Acked-by: Arnd Bergmann <arnd@arndb.de>
-Link: https://lore.kernel.org/r/20250905052836.work.425-kees@kernel.org
-Signed-off-by: Kees Cook <kees@kernel.org>
+Fixes: 6e1d0b898818 ("r8169:add support for RTL8168H and RTL8107E")
+Signed-off-by: Linmao Li <lilinmao@kylinos.cn>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Reviewed-by: Heiner Kallweit <hkallweit1@gmail.com>
+Link: https://patch.msgid.link/20251009122549.3955845-1-lilinmao@kylinos.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/pci.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/realtek/r8169_main.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-index b0f4d98036cdd..005b92e6585e9 100644
---- a/drivers/pci/pci.c
-+++ b/drivers/pci/pci.c
-@@ -5932,6 +5932,7 @@ int pcie_set_readrq(struct pci_dev *dev, int rq)
- {
- 	u16 v;
- 	int ret;
-+	unsigned int firstbit;
- 	struct pci_host_bridge *bridge = pci_find_host_bridge(dev->bus);
+diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
+index 1ea30c9b8c07c..07dc9fdeea54c 100644
+--- a/drivers/net/ethernet/realtek/r8169_main.c
++++ b/drivers/net/ethernet/realtek/r8169_main.c
+@@ -4962,8 +4962,9 @@ static int rtl8169_resume(struct device *device)
+ 	if (!device_may_wakeup(tp_to_dev(tp)))
+ 		clk_prepare_enable(tp->clk);
  
- 	if (rq < 128 || rq > 4096 || !is_power_of_2(rq))
-@@ -5949,7 +5950,10 @@ int pcie_set_readrq(struct pci_dev *dev, int rq)
- 			rq = mps;
- 	}
+-	/* Reportedly at least Asus X453MA truncates packets otherwise */
+-	if (tp->mac_version == RTL_GIGA_MAC_VER_37)
++	/* Some chip versions may truncate packets without this initialization */
++	if (tp->mac_version == RTL_GIGA_MAC_VER_37 ||
++	    tp->mac_version == RTL_GIGA_MAC_VER_46)
+ 		rtl_init_rxcfg(tp);
  
--	v = FIELD_PREP(PCI_EXP_DEVCTL_READRQ, ffs(rq) - 8);
-+	firstbit = ffs(rq);
-+	if (firstbit < 8)
-+		return -EINVAL;
-+	v = FIELD_PREP(PCI_EXP_DEVCTL_READRQ, firstbit - 8);
- 
- 	if (bridge->no_inc_mrrs) {
- 		int max_mrrs = pcie_get_readrq(dev);
+ 	return rtl8169_runtime_resume(device);
 -- 
 2.51.0
 
