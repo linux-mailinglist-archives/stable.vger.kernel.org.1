@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-190890-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190623-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC9B1C10DE1
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:23:09 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0A1CC109C3
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:12:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0BF50506159
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:16:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8C472563F57
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:06:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83DC832A3D1;
-	Mon, 27 Oct 2025 19:14:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC9F532ABF6;
+	Mon, 27 Oct 2025 19:02:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oiTz6Nv5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DZT8HNgm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37540329C7B;
-	Mon, 27 Oct 2025 19:14:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AD0F329C6A;
+	Mon, 27 Oct 2025 19:02:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592468; cv=none; b=WTFY2SGv2fdqjUq8uUmHsLlmUQpFSVkwIsbgKZgNyUpbzj/jNMLRdpDtcWCP26hgB9Zx33xfuUMxJjJxtSXhov/rxUYEyiYEQE+FCHXFfs5DBM9WfwbkfT3kiH9EKUH1Lr3nZZMYWKr6CNwj2LvdxFq6MCiKSL11pce7C8/xhPA=
+	t=1761591769; cv=none; b=CRnFqPVq6WbTL0RfwCCRHsYi9uVIi/1w6jDnau9xeD0lk034cx5VP07GpzCSIjuI7teqg+6cPN2TT7xxh7tKlxlXX7nZrZZg+yBpsQSH/rTMXWvB1zf74wcFSnRkOnABHh8wXNuiJMJc7a/MophooFJcW7roQEOIzDVjuk2vbRw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592468; c=relaxed/simple;
-	bh=O+TFzeqgXcAnazkTKTyt4aObLwMCxmo9YM4hpN4c3bU=;
+	s=arc-20240116; t=1761591769; c=relaxed/simple;
+	bh=E1O2ojcwXxLD4mF9HPgn071Z8rHs2K5e6xPalyU+hBE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZBBitd9jcYzzreu/N0TJ7hlaEFQzieuDNo2mOSeNGGR3G73sILDTuy0LgZXt/TWHekH5JWktVM4fGwRJJhgJrwFep+LTSZ2SkW5STOiEdN0/dEnp+8X51rKhKXfOJbWiYdGbGMG0OmCWpd4wgbQzr4g+E6RsG1wb/LY8akpzfZY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oiTz6Nv5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9308C116B1;
-	Mon, 27 Oct 2025 19:14:27 +0000 (UTC)
+	 MIME-Version; b=KB41eOgGgNX13hA0Go0Yg3tuRa4M76YO8G8MUV0PXhvSCsLRgMDbR/kQ0QFcq3r7Gqm0cW0f4BAdKLJGriUyn5GUH0F3a3mtIJ8+OzWppKykVhfkdEVrElYQNC8eeb0ys9c7174RfnZBApuCrEIDw487DN9oibtyZrZo0C3JXmk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DZT8HNgm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25D35C4CEF1;
+	Mon, 27 Oct 2025 19:02:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592468;
-	bh=O+TFzeqgXcAnazkTKTyt4aObLwMCxmo9YM4hpN4c3bU=;
+	s=korg; t=1761591769;
+	bh=E1O2ojcwXxLD4mF9HPgn071Z8rHs2K5e6xPalyU+hBE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oiTz6Nv5ttMicSJYDQ0qbdqCeibVo2eOmvZ867BcuS/PlNvuOek71e9xfYfIiwmUd
-	 h0wvM3RTKMu36iRhNo6tKaY734fJZEbGKNKsURCy5cr6RcHYGAyA4aS/05x55Icuwo
-	 slkLtiyN86qZ0OT03HCfhxrBVUrP5mKfgG0MkDEs=
+	b=DZT8HNgmKSyLG+RogcyPWy18muUj1/ZiwKS+IR9fAs7PiCL0b4YLM/s193NitbdW2
+	 HUtSCd3cadJtAKxl36jRLQiB5LUiLZQX/GqKrut3QFFe8SO4AfnVNWDnRYh6bMuh9q
+	 SJPx0iHBZNYVbDbjGSb268YbQXVyNpQm1SN1kWSo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Artem Shimko <a.shimko.dev@gmail.com>
-Subject: [PATCH 6.1 115/157] serial: 8250_dw: handle reset control deassert error
+	Jan Kara <jack@suse.cz>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Theodore Tso <tytso@mit.edu>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 323/332] ext4: avoid potential buffer over-read in parse_apply_sb_mount_options()
 Date: Mon, 27 Oct 2025 19:36:16 +0100
-Message-ID: <20251027183504.332942649@linuxfoundation.org>
+Message-ID: <20251027183533.400735831@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
-References: <20251027183501.227243846@linuxfoundation.org>
+In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
+References: <20251027183524.611456697@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Artem Shimko <a.shimko.dev@gmail.com>
+From: Theodore Ts'o <tytso@mit.edu>
 
-commit daeb4037adf7d3349b4a1fb792f4bc9824686a4b upstream.
+[ Upstream commit 8ecb790ea8c3fc69e77bace57f14cf0d7c177bd8 ]
 
-Check the return value of reset_control_deassert() in the probe
-function to prevent continuing probe when reset deassertion fails.
+Unlike other strings in the ext4 superblock, we rely on tune2fs to
+make sure s_mount_opts is NUL terminated.  Harden
+parse_apply_sb_mount_options() by treating s_mount_opts as a potential
+__nonstring.
 
-Previously, reset_control_deassert() was called without checking its
-return value, which could lead to probe continuing even when the
-device reset wasn't properly deasserted.
-
-The fix checks the return value and returns an error with dev_err_probe()
-if reset deassertion fails, providing better error handling and
-diagnostics.
-
-Fixes: acbdad8dd1ab ("serial: 8250_dw: simplify optional reset handling")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Artem Shimko <a.shimko.dev@gmail.com>
-Link: https://patch.msgid.link/20251019095131.252848-1-a.shimko.dev@gmail.com
+Cc: stable@vger.kernel.org
+Fixes: 8b67f04ab9de ("ext4: Add mount options in superblock")
+Reviewed-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Message-ID: <20250916-tune2fs-v2-1-d594dc7486f0@mit.edu>
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+[ applied to ext4_fill_super() instead of parse_apply_sb_mount_options() ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/8250/8250_dw.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/ext4/super.c |   10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
---- a/drivers/tty/serial/8250/8250_dw.c
-+++ b/drivers/tty/serial/8250/8250_dw.c
-@@ -638,7 +638,9 @@ static int dw8250_probe(struct platform_
- 	if (IS_ERR(data->rst))
- 		return PTR_ERR(data->rst);
+--- a/fs/ext4/super.c
++++ b/fs/ext4/super.c
+@@ -4282,18 +4282,16 @@ static int ext4_fill_super(struct super_
+ 	}
  
--	reset_control_deassert(data->rst);
-+	err = reset_control_deassert(data->rst);
-+	if (err)
-+		return dev_err_probe(dev, err, "failed to deassert resets\n");
- 
- 	err = devm_add_action_or_reset(dev, dw8250_reset_control_assert, data->rst);
- 	if (err)
+ 	if (sbi->s_es->s_mount_opts[0]) {
+-		char *s_mount_opts = kstrndup(sbi->s_es->s_mount_opts,
+-					      sizeof(sbi->s_es->s_mount_opts),
+-					      GFP_KERNEL);
+-		if (!s_mount_opts)
+-			goto failed_mount;
++		char s_mount_opts[65];
++
++		strscpy_pad(s_mount_opts, sbi->s_es->s_mount_opts,
++			    sizeof(s_mount_opts));
+ 		if (!parse_options(s_mount_opts, sb, &journal_devnum,
+ 				   &journal_ioprio, 0)) {
+ 			ext4_msg(sb, KERN_WARNING,
+ 				 "failed to parse options in superblock: %s",
+ 				 s_mount_opts);
+ 		}
+-		kfree(s_mount_opts);
+ 	}
+ 	sbi->s_def_mount_opt = sbi->s_mount_opt;
+ 	if (!parse_options((char *) data, sb, &journal_devnum,
 
 
 
