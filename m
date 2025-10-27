@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-190422-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190089-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14728C10600
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:00:44 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EEE9C0FF4E
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:40:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CBBDC19C6031
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:57:37 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id F15034ECE2F
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:40:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B5D932D7DA;
-	Mon, 27 Oct 2025 18:54:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59AB830FC0F;
+	Mon, 27 Oct 2025 18:40:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SDgJD9W5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wGNYIAu3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1728F32549E;
-	Mon, 27 Oct 2025 18:54:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13B412EDD62;
+	Mon, 27 Oct 2025 18:40:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591250; cv=none; b=OJUn37chJhOoWnO14W50BdPr1fw3wpIFAzId15W/7+hMP/K8MnCw3fqeM4pRKreuOOUc1d0Pxp8jKrQnFD38hCtEoXUoZuZoVI9nShdFxcbuPtyj2pUzRAL/Fq7Ui6NBk2P0Wr7tD7MAGeF1ThHPxL/awIp10vBqxJxKE+iV0CI=
+	t=1761590407; cv=none; b=X9olm7xje0Njwn/Axz7wX7lrdDUaIEWZibgv3RGMx7nTelMLLTPtSC49uG0GhPhcUVhTvp66KV6UVeL5M6rtM5Iia9hMWiJ9Fig2mMGBqNw8Zm88kED6SPZJpnwjPHi1KtjBZlTSyJnHpL/C4Lgzkke72Z7H4g+CQKFkcI2RYxc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591250; c=relaxed/simple;
-	bh=lc7rr2b++eJGRW+S0Nn1K6fdDOYQwETtbLVb63nT7ts=;
+	s=arc-20240116; t=1761590407; c=relaxed/simple;
+	bh=pjyyoAS8/r1n094quXNclhWktytgON5vWS8DN5O8R3I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IhDxtA16cxuYuwo4uARm6rQueHJCsQPYqA9VpND3V6gK0A4+PY7+g7hr3Il6DS9AE6SyDfxauUoPL3braFgvcK7dTUt3mKLUNVYlVw4M+Q0dvNiPbJwZfExtwS94XLGc7kZig+mbZ7ZjMnA/Sejy/47Lw9SSqdiVM+y9eUO2oLU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SDgJD9W5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F4D5C4CEF1;
-	Mon, 27 Oct 2025 18:54:09 +0000 (UTC)
+	 MIME-Version; b=sm2B1HBVDArDx4wozVsL/kuE2cfkSNfHyCrMhzxPQ3Eq1ozP+gVHhATNgb/ahP2MZoVjAtfMysx9qRl2QP5reGzmXnS0z66o/MtzcEl6ic+ko6ODXzHQPWtwTwIi0VzKttpwuYXZc/FyAUv0Qg324f1rLpKkjQwSdPCpK3YcoUQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wGNYIAu3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9459BC4CEF1;
+	Mon, 27 Oct 2025 18:40:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591250;
-	bh=lc7rr2b++eJGRW+S0Nn1K6fdDOYQwETtbLVb63nT7ts=;
+	s=korg; t=1761590406;
+	bh=pjyyoAS8/r1n094quXNclhWktytgON5vWS8DN5O8R3I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SDgJD9W5yJjEhkhHbuwfQz1z7IGeakufxBsNsZJ8JY9dui7pW7bUOADHzOaSOvJSL
-	 MyTL1ZukV+rqOzSyQoGdG9eEFjDIClMJxISw8UHGDp1Qa5b8hxAcdObg5MzQ8mVW70
-	 fbsuTZ5WDIzZ3Zdoz2U9Km01yLnFfNWxu3b54AGc=
+	b=wGNYIAu3W8xx9q4hBVGmlwzzC9RekE4HbjZz1CsvZVKlrWd4wW7QE0Jy63a5x+ZFD
+	 olt1qzle9B06ET3HgrxeoHxJ6jogMZlZpxzfUs49bAxM0eui67IBSuE25qKXAK5FYF
+	 XEOlnP0D86/xEVMyyjvJXlaJZTsvBvH/RngWjcQU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 125/332] gpio: wcd934x: Remove duplicate assignment of of_gpio_n_cells
+Subject: [PATCH 5.4 032/224] usb: host: max3421-hcd: Fix error pointer dereference in probe cleanup
 Date: Mon, 27 Oct 2025 19:32:58 +0100
-Message-ID: <20251027183527.913577571@linuxfoundation.org>
+Message-ID: <20251027183509.864788796@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
-References: <20251027183524.611456697@linuxfoundation.org>
+In-Reply-To: <20251027183508.963233542@linuxfoundation.org>
+References: <20251027183508.963233542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,37 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit a060dc6620c13435b78e92cd2ebdbb6d11af237a ]
+[ Upstream commit 186e8f2bdba551f3ae23396caccd452d985c23e3 ]
 
-The of_gpio_n_cells default is 2 when ->of_xlate() callback is
-not defined. No need to assign it explicitly in the driver.
+The kthread_run() function returns error pointers so the
+max3421_hcd->spi_thread pointer can be either error pointers or NULL.
+Check for both before dereferencing it.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Stable-dep-of: b5f8aa8d4bde ("gpio: wcd934x: mark the GPIO controller as sleeping")
+Fixes: 05dfa5c9bc37 ("usb: host: max3421-hcd: fix "spi_rd8" uses dynamic stack allocation warning")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/aJTMVAPtRe5H6jug@stanley.mountain
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpio-wcd934x.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/usb/host/max3421-hcd.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpio/gpio-wcd934x.c b/drivers/gpio/gpio-wcd934x.c
-index c00968ce7a569..cbbbd105a5a7b 100644
---- a/drivers/gpio/gpio-wcd934x.c
-+++ b/drivers/gpio/gpio-wcd934x.c
-@@ -101,7 +101,6 @@ static int wcd_gpio_probe(struct platform_device *pdev)
- 	chip->base = -1;
- 	chip->ngpio = WCD934X_NPINS;
- 	chip->label = dev_name(dev);
--	chip->of_gpio_n_cells = 2;
- 	chip->can_sleep = false;
- 
- 	return devm_gpiochip_add_data(dev, chip, data);
+diff --git a/drivers/usb/host/max3421-hcd.c b/drivers/usb/host/max3421-hcd.c
+index 5a21777197e95..cfdbe90f867e0 100644
+--- a/drivers/usb/host/max3421-hcd.c
++++ b/drivers/usb/host/max3421-hcd.c
+@@ -1925,7 +1925,7 @@ max3421_probe(struct spi_device *spi)
+ 	if (hcd) {
+ 		kfree(max3421_hcd->tx);
+ 		kfree(max3421_hcd->rx);
+-		if (max3421_hcd->spi_thread)
++		if (!IS_ERR_OR_NULL(max3421_hcd->spi_thread))
+ 			kthread_stop(max3421_hcd->spi_thread);
+ 		usb_put_hcd(hcd);
+ 	}
 -- 
 2.51.0
 
