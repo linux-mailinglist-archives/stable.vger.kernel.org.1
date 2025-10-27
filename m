@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-191218-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190765-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DB30C11351
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:42:20 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 794C6C10BA8
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:17:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D39255642AB
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:30:42 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4FEC34FC12D
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:11:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 343DF32A3F9;
-	Mon, 27 Oct 2025 19:28:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 174DD32E13F;
+	Mon, 27 Oct 2025 19:08:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LVlv37en"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fbNDF+jJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD130313546;
-	Mon, 27 Oct 2025 19:28:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7FDF32D7DE;
+	Mon, 27 Oct 2025 19:08:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761593312; cv=none; b=H0UbfZWW/aGoFbvrX0xA3EYIBnM/G5xNUP18quKV9LSw8YKEcOOMo+l/Ae5Q2YLYtvqXotAtIKkc/LjvCQOEj6hQMHVIQXqcEBGJQh1+rtMqxmz0w1H+Y/GzH3EOyn6r5d3YjsY7MBMSoQOC067SOqAGFyWm3BWTdg7Hv8Q6K60=
+	t=1761592137; cv=none; b=rTmlmXm3EzFyBQKG+153CuywOt4MwZV+4rAzW6mO+mD4y9YqUp2hlSi3pwJCYnrEM9s7OG2tRCRbCI0SSFuvT9C62umCt0LiDvRpF9SjoFy5RrOND0EuBbf7jMv0HMRmmjOjuBPtQA/oaCji0ahb0cASrIf+NMFKgxY5bFiOcbk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761593312; c=relaxed/simple;
-	bh=8rO9UwtA+mdgzqrMvr17LaoWatG9kO8T0wzswi6CwPA=;
+	s=arc-20240116; t=1761592137; c=relaxed/simple;
+	bh=hnw+b0o7KHIfSqz8PwgC+HA2+kIKtqV1Pzwy/6f9HSc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fTEFFpJiSv1vvAZlikR1jhoeJixi9Zt4JmtZI3+LxRMksq2Z4JstxZriiMRcOYQnBsQR+sQksZ/hoayvpydjrWlT6qHxk73XxG1/nDqTJCnQn7vwho2iMALTWwCGjzAeOGcdhH1e0QqWzTj+uNVai9Wphf1lrftDuHAr3aul1lE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LVlv37en; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72F3FC4CEF1;
-	Mon, 27 Oct 2025 19:28:31 +0000 (UTC)
+	 MIME-Version; b=Yp1s7USC3xIbf9RYSQlwAnU9KSwGycDA5VSp9noyw0AmFYzP2oA1vzyrAZavjECcv9E2a6gfYsJhr6/xtxPHnPcQ0TZ6ruzngPYYkB7SNn0OL9hgHIK58OPf+GtU7ohhsWzQiUXVSbb1yofdEWeqV10DX+6OgrwpZLM6nUbULmk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fbNDF+jJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22370C4CEF1;
+	Mon, 27 Oct 2025 19:08:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761593311;
-	bh=8rO9UwtA+mdgzqrMvr17LaoWatG9kO8T0wzswi6CwPA=;
+	s=korg; t=1761592137;
+	bh=hnw+b0o7KHIfSqz8PwgC+HA2+kIKtqV1Pzwy/6f9HSc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LVlv37enSJb5OwS1rRMDnWFMo6/VgLURBnvM2ko4zmj8Fa9IRGFII1mm7HDPyaXMk
-	 KurEGVn8g3BQqJG+qSpGfPYzCyehmDHDrxIbFt+yH3Dgv/oEYOFsIiCPaY9tgJmxRC
-	 ZTACVtKtkh+6wz5isQYTTV8FXVogBeLTiAPYEyuU=
+	b=fbNDF+jJEThZ4tKRIX7F0ovqqMUWoLfzcTKDzq9id+GN5rdPa5fuDpWynbruGoFCP
+	 Y4jU+wTNUXmJQIB52qNiAIpv+ufqfJX6kHW8T70sA7KDeSxeSbTpQ9HgkVt86iW6yD
+	 FerOJ8EQCBHUPoQLNXp67w1CAOxhB9k6hnR8SgeA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nam Cao <namcao@linutronix.de>,
-	kernel test robot <lkp@intel.com>,
-	Gabriele Monaco <gmonaco@redhat.com>
-Subject: [PATCH 6.17 094/184] rv: Make rtapp/pagefault monitor depends on CONFIG_MMU
+	Sean Nyekjaer <sean@geanix.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 096/123] iio: imu: inv_icm42600: Avoid configuring if already pm_runtime suspended
 Date: Mon, 27 Oct 2025 19:36:16 +0100
-Message-ID: <20251027183517.433890638@linuxfoundation.org>
+Message-ID: <20251027183448.958386487@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
-References: <20251027183514.934710872@linuxfoundation.org>
+In-Reply-To: <20251027183446.381986645@linuxfoundation.org>
+References: <20251027183446.381986645@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +63,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nam Cao <namcao@linutronix.de>
+From: Sean Nyekjaer <sean@geanix.com>
 
-commit 3d62f95bd8450cebb4a4741bf83949cd54edd4a3 upstream.
+[ Upstream commit 466f7a2fef2a4e426f809f79845a1ec1aeb558f4 ]
 
-There is no page fault without MMU. Compiling the rtapp/pagefault monitor
-without CONFIG_MMU fails as page fault tracepoints' definitions are not
-available.
+Do as in suspend, skip resume configuration steps if the device is already
+pm_runtime suspended. This avoids reconfiguring a device that is already
+in the correct low-power state and ensures that pm_runtime handles the
+power state transitions properly.
 
-Make rtapp/pagefault monitor depends on CONFIG_MMU.
-
-Fixes: 9162620eb604 ("rv: Add rtapp_pagefault monitor")
-Signed-off-by: Nam Cao <namcao@linutronix.de>
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202509260455.6Z9Vkty4-lkp@intel.com/
-Cc: stable@vger.kernel.org
-Reviewed-by: Gabriele Monaco <gmonaco@redhat.com>
-Link: https://lore.kernel.org/r/20251002082317.973839-1-namcao@linutronix.de
-Signed-off-by: Gabriele Monaco <gmonaco@redhat.com>
+Fixes: 31c24c1e93c3 ("iio: imu: inv_icm42600: add core of new inv_icm42600 driver")
+Signed-off-by: Sean Nyekjaer <sean@geanix.com>
+Link: https://patch.msgid.link/20250901-icm42pmreg-v3-3-ef1336246960@geanix.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+[ Placed early return before regulator enable instead of APEX wakeup logic ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/rv/monitors/pagefault/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/iio/imu/inv_icm42600/inv_icm42600_core.c |   11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/kernel/trace/rv/monitors/pagefault/Kconfig b/kernel/trace/rv/monitors/pagefault/Kconfig
-index 5e16625f1653..0e013f00c33b 100644
---- a/kernel/trace/rv/monitors/pagefault/Kconfig
-+++ b/kernel/trace/rv/monitors/pagefault/Kconfig
-@@ -5,6 +5,7 @@ config RV_MON_PAGEFAULT
- 	select RV_LTL_MONITOR
- 	depends on RV_MON_RTAPP
- 	depends on X86 || RISCV
-+	depends on MMU
- 	default y
- 	select LTL_MON_EVENTS_ID
- 	bool "pagefault monitor"
--- 
-2.51.1
-
+--- a/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
++++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
+@@ -680,17 +680,15 @@ EXPORT_SYMBOL_GPL(inv_icm42600_core_prob
+ static int __maybe_unused inv_icm42600_suspend(struct device *dev)
+ {
+ 	struct inv_icm42600_state *st = dev_get_drvdata(dev);
+-	int ret;
++	int ret = 0;
+ 
+ 	mutex_lock(&st->lock);
+ 
+ 	st->suspended.gyro = st->conf.gyro.mode;
+ 	st->suspended.accel = st->conf.accel.mode;
+ 	st->suspended.temp = st->conf.temp_en;
+-	if (pm_runtime_suspended(dev)) {
+-		ret = 0;
++	if (pm_runtime_suspended(dev))
+ 		goto out_unlock;
+-	}
+ 
+ 	/* disable FIFO data streaming */
+ 	if (st->fifo.on) {
+@@ -722,10 +720,13 @@ static int __maybe_unused inv_icm42600_r
+ 	struct inv_icm42600_state *st = dev_get_drvdata(dev);
+ 	struct inv_icm42600_timestamp *gyro_ts = iio_priv(st->indio_gyro);
+ 	struct inv_icm42600_timestamp *accel_ts = iio_priv(st->indio_accel);
+-	int ret;
++	int ret = 0;
+ 
+ 	mutex_lock(&st->lock);
+ 
++	if (pm_runtime_suspended(dev))
++		goto out_unlock;
++
+ 	ret = inv_icm42600_enable_regulator_vddio(st);
+ 	if (ret)
+ 		goto out_unlock;
 
 
 
