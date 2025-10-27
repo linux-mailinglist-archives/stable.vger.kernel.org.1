@@ -1,57 +1,62 @@
-Return-Path: <stable+bounces-190837-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191201-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C147C10A6E
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:14:41 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBF61C11216
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:36:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id CAC1B351F70
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:14:40 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 81B28563571
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:29:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADDF918A6A5;
-	Mon, 27 Oct 2025 19:12:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD10831D72B;
+	Mon, 27 Oct 2025 19:27:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hDFK31Fn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X9GP9ycR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F6C132143F;
-	Mon, 27 Oct 2025 19:12:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91D8B19D07A;
+	Mon, 27 Oct 2025 19:27:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592328; cv=none; b=WL3R2uKOjA0452th1vQ8txpwSxZ+PHNlB4Ep4wpl/E7L/DHgmM98R2WbbR+Hhph5eS1r3uNm+0tK2Is8Won9LrICvQkJmreuYWP9e9G5FpAU17zuoj9FICHWhAGgHAxYI1BmAfTrJUUf+Se3Jbx8tXUTJZkuM3wcScN+F61fMBY=
+	t=1761593267; cv=none; b=XqpBKvJHVpjRHmE+mhiCviGlb9hPV89czKUKHluUH/LzkLAtP7YlD+mQTcrPt2cXdnjfOM+lH4svI+j189RbtoKo55Nya/OAexETX18+w+1ERpZjYrcqjQN/PLZx5VyMfQAqVCjtzweEr+WtrQTljzNPC5YcGYEZ1AL0Vo0KGcs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592328; c=relaxed/simple;
-	bh=SUkhqzpTy5OhMOcx7zV20uhCJkXwYL62javajhYgogU=;
+	s=arc-20240116; t=1761593267; c=relaxed/simple;
+	bh=uTdsn9gl3a9gH8Q/bdU8NHVTigpfkcc25nTSNG7CqjQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rC+DltC0Mmzz4ZXtUNkjfv47Yw5R1RsQ429Yzr1Ta0h4CdmVGw3l/WhBbpAaCo7i9GOxsMXQzrqhyoCsSTs1H8sx5x5FyUhFwsJrypFuGWoQXAJqidOXNlTcK9RCnANFHyNn2TAFBTyJzj5m90F3WLexOBACiDLtO+JxIq/gCcA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hDFK31Fn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCA6BC4CEFD;
-	Mon, 27 Oct 2025 19:12:07 +0000 (UTC)
+	 MIME-Version; b=pU27uyUZFwhqGk2MYk+dtW4hgmTu23QE7z/qn5YqygMhVOkFDF3UTxwDifV9fU2nyi6UebGdobEfo9NAB4je6uWXH0bus04m9zFIqaMFPKSbdOeL9p2ylUn/GkwApB+yMSTn3NZLBN6amK+JpSH3ossDizfcUlXAjTt0X5u/nvg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X9GP9ycR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC8CBC4CEF1;
+	Mon, 27 Oct 2025 19:27:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592328;
-	bh=SUkhqzpTy5OhMOcx7zV20uhCJkXwYL62javajhYgogU=;
+	s=korg; t=1761593267;
+	bh=uTdsn9gl3a9gH8Q/bdU8NHVTigpfkcc25nTSNG7CqjQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hDFK31FntgWEgPEo6KoLoK6owAe99qamMYjWTHt0VO0Ao/FfMNAyQw5td0Bxx8bqM
-	 Pa3/jISe7LnZdDEwuymP6+esIJBvlz+EGyDvPloIHz4cSx76SftQccagoew6dcDY9k
-	 /SOoc75epvoXM6KS1wm85R+bIT8CNMLhEIHZ6uwY=
+	b=X9GP9ycRR3vQF4tVf9fHivFGX72yReeDK3Z1uAhon2XGIUaTtnp4PhxfbrNYcmqvX
+	 I8R0NF8mYUqaEwA8uLittiBu84ceZyhyZQ3ZA7sV7430biPbM29bnOJ6k1NSErbSUf
+	 rz4eRbuP7uT5dz4fM1ilDBUJWeUHzQTyihsX8jj8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Steve French <smfrench@gmail.com>,
+	Tom Talpey <tom@talpey.com>,
+	Long Li <longli@microsoft.com>,
+	linux-cifs@vger.kernel.org,
+	samba-technical@lists.samba.org,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Stefan Metzmacher <metze@samba.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 050/157] net: usb: lan78xx: Add error handling to lan78xx_init_mac_address
+Subject: [PATCH 6.17 029/184] smb: client: limit the range of info->receive_credit_target
 Date: Mon, 27 Oct 2025 19:35:11 +0100
-Message-ID: <20251027183502.633545757@linuxfoundation.org>
+Message-ID: <20251027183515.709498571@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
-References: <20251027183501.227243846@linuxfoundation.org>
+In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
+References: <20251027183514.934710872@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,98 +68,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleksij Rempel <o.rempel@pengutronix.de>
+From: Stefan Metzmacher <metze@samba.org>
 
-[ Upstream commit 6f31135894ec96481e2bda93a1da70712f5e57c1 ]
+[ Upstream commit 9219f8cac296769324bbe8a28c289586114244c4 ]
 
-Convert `lan78xx_init_mac_address` to return error codes and handle
-failures in register read and write operations. Update `lan78xx_reset`
-to check for errors during MAC address initialization and propagate them
-appropriately.
+This simplifies further changes...
 
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20241209130751.703182-3-o.rempel@pengutronix.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 8d93ff40d49d ("net: usb: lan78xx: fix use of improperly initialized dev->chipid in lan78xx_reset")
+Cc: Steve French <smfrench@gmail.com>
+Cc: Tom Talpey <tom@talpey.com>
+Cc: Long Li <longli@microsoft.com>
+Cc: linux-cifs@vger.kernel.org
+Cc: samba-technical@lists.samba.org
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Stefan Metzmacher <metze@samba.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/lan78xx.c | 36 ++++++++++++++++++++++++++++--------
- 1 file changed, 28 insertions(+), 8 deletions(-)
+ fs/smb/client/smbdirect.c | 7 ++++++-
+ fs/smb/client/smbdirect.h | 2 +-
+ 2 files changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
-index 0f1c9009d793e..08fb03bcf4952 100644
---- a/drivers/net/usb/lan78xx.c
-+++ b/drivers/net/usb/lan78xx.c
-@@ -1940,13 +1940,19 @@ static const struct ethtool_ops lan78xx_ethtool_ops = {
- 	.get_regs	= lan78xx_get_regs,
- };
- 
--static void lan78xx_init_mac_address(struct lan78xx_net *dev)
-+static int lan78xx_init_mac_address(struct lan78xx_net *dev)
- {
- 	u32 addr_lo, addr_hi;
- 	u8 addr[6];
-+	int ret;
-+
-+	ret = lan78xx_read_reg(dev, RX_ADDRL, &addr_lo);
-+	if (ret < 0)
-+		return ret;
- 
--	lan78xx_read_reg(dev, RX_ADDRL, &addr_lo);
--	lan78xx_read_reg(dev, RX_ADDRH, &addr_hi);
-+	ret = lan78xx_read_reg(dev, RX_ADDRH, &addr_hi);
-+	if (ret < 0)
-+		return ret;
- 
- 	addr[0] = addr_lo & 0xFF;
- 	addr[1] = (addr_lo >> 8) & 0xFF;
-@@ -1979,14 +1985,26 @@ static void lan78xx_init_mac_address(struct lan78xx_net *dev)
- 			  (addr[2] << 16) | (addr[3] << 24);
- 		addr_hi = addr[4] | (addr[5] << 8);
- 
--		lan78xx_write_reg(dev, RX_ADDRL, addr_lo);
--		lan78xx_write_reg(dev, RX_ADDRH, addr_hi);
-+		ret = lan78xx_write_reg(dev, RX_ADDRL, addr_lo);
-+		if (ret < 0)
-+			return ret;
-+
-+		ret = lan78xx_write_reg(dev, RX_ADDRH, addr_hi);
-+		if (ret < 0)
-+			return ret;
+diff --git a/fs/smb/client/smbdirect.c b/fs/smb/client/smbdirect.c
+index b3e04b410afe6..cbf1deff11065 100644
+--- a/fs/smb/client/smbdirect.c
++++ b/fs/smb/client/smbdirect.c
+@@ -429,6 +429,7 @@ static bool process_negotiation_response(
+ 		return false;
  	}
+ 	info->receive_credit_target = le16_to_cpu(packet->credits_requested);
++	info->receive_credit_target = min_t(u16, info->receive_credit_target, sp->recv_credit_max);
  
--	lan78xx_write_reg(dev, MAF_LO(0), addr_lo);
--	lan78xx_write_reg(dev, MAF_HI(0), addr_hi | MAF_HI_VALID_);
-+	ret = lan78xx_write_reg(dev, MAF_LO(0), addr_lo);
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = lan78xx_write_reg(dev, MAF_HI(0), addr_hi | MAF_HI_VALID_);
-+	if (ret < 0)
-+		return ret;
+ 	if (packet->credits_granted == 0) {
+ 		log_rdma_event(ERR, "error: credits_granted==0\n");
+@@ -537,7 +538,7 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
+ 	struct smbdirect_socket_parameters *sp = &sc->parameters;
+ 	struct smbd_connection *info =
+ 		container_of(sc, struct smbd_connection, socket);
+-	int old_recv_credit_target;
++	u16 old_recv_credit_target;
+ 	u32 data_offset = 0;
+ 	u32 data_length = 0;
+ 	u32 remaining_data_length = 0;
+@@ -603,6 +604,10 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
+ 		old_recv_credit_target = info->receive_credit_target;
+ 		info->receive_credit_target =
+ 			le16_to_cpu(data_transfer->credits_requested);
++		info->receive_credit_target =
++			min_t(u16, info->receive_credit_target, sp->recv_credit_max);
++		info->receive_credit_target =
++			max_t(u16, info->receive_credit_target, 1);
+ 		if (le16_to_cpu(data_transfer->credits_granted)) {
+ 			atomic_add(le16_to_cpu(data_transfer->credits_granted),
+ 				&info->send_credits);
+diff --git a/fs/smb/client/smbdirect.h b/fs/smb/client/smbdirect.h
+index 4ca9b2b2c57f9..ed362267dd11d 100644
+--- a/fs/smb/client/smbdirect.h
++++ b/fs/smb/client/smbdirect.h
+@@ -63,7 +63,7 @@ struct smbd_connection {
+ 	int protocol;
+ 	atomic_t send_credits;
+ 	atomic_t receive_credits;
+-	int receive_credit_target;
++	u16 receive_credit_target;
  
- 	eth_hw_addr_set(dev->net, addr);
-+
-+	return 0;
- }
- 
- /* MDIO read and write wrappers for phylib */
-@@ -2910,7 +2928,9 @@ static int lan78xx_reset(struct lan78xx_net *dev)
- 		}
- 	} while (buf & HW_CFG_LRST_);
- 
--	lan78xx_init_mac_address(dev);
-+	ret = lan78xx_init_mac_address(dev);
-+	if (ret < 0)
-+		return ret;
- 
- 	/* save DEVID for later usage */
- 	ret = lan78xx_read_reg(dev, ID_REV, &buf);
+ 	/* Memory registrations */
+ 	/* Maximum number of RDMA read/write outstanding on this connection */
 -- 
 2.51.0
 
