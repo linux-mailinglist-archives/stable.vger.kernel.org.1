@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-191257-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191007-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id B43EFC11331
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:41:29 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C05F4C10F80
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:27:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id EB166506CBD
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:32:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 741705834FF
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:20:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B40C4328604;
-	Mon, 27 Oct 2025 19:30:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DE4E320CA8;
+	Mon, 27 Oct 2025 19:19:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f4+CVzVX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d7tqWJaQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E5CF326D6F;
-	Mon, 27 Oct 2025 19:30:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE12531BCBC;
+	Mon, 27 Oct 2025 19:19:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761593437; cv=none; b=L411HN5ikH2DM4Wa91+3TpXB+wtPbVu9IN7EJvLenefl5VapEOfa/FpAa8OGE3aFQFeaWA+p8QoP628wuE8nIj6S/pQajNPRwdflG4QW8zgPaGZcn68xvFv3xJl+AhYYQve5EG1TNaMKblWMID+U7xLjM6Qbvtjyf2B5jaZIH+Y=
+	t=1761592771; cv=none; b=cOqBlkAg2bZxMI/RIr0GeXRX6LjMyBFP/SGqvUESC+0l7w5jKzONto0A5f3Zi5eFFparShI2mrMwBGbdozVebo5Rix8lDyAF4g+CAV201ffYyAjL55A/nIKanQhiZccrxYHcX4QSNoUfz/3M49GK5Wf+EG3VQeQD52wlCRGi4jU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761593437; c=relaxed/simple;
-	bh=AAJ4FEEJkLDMk/C9ihkXdgVQ0dzGsvq/qKuR24PcaCo=;
+	s=arc-20240116; t=1761592771; c=relaxed/simple;
+	bh=XNfPsptp+osDJFegjYd457oaiqFL48/7AgTnuTxOamw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Obu5xBjXbHrt69Znm7O/OePd+bLoGgMsbNUvRraIYuIepsIs83Y3RlOau1S/Y0Fdb1SmW2HTJHjeOUyUGfjo6UWu5n0oNjBtXMuB9DmOYSntai7yY3kZ7MTq9PT9MXE2JbPEjlIk9deLcUNi4pWf+oRrZc1HNF0dro/3pAJlHsY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f4+CVzVX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 807BEC4CEF1;
-	Mon, 27 Oct 2025 19:30:36 +0000 (UTC)
+	 MIME-Version; b=l7nY2lOHw9+C8PTURKMN6W9vwpdYIArNWkBhiE60rr0EzHj4iittPCLeTkGl88mtSpzc9D8wLDSH3gMwOVe5wiNdjY7mimcO5a1oR3wUzhx87hosPQ1hyVuJwzmPv13FTUFNtIx/0QvSNoRe9oj2POQbs1LvZdkn0+zQMIIWZ84=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d7tqWJaQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C29CC4CEF1;
+	Mon, 27 Oct 2025 19:19:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761593436;
-	bh=AAJ4FEEJkLDMk/C9ihkXdgVQ0dzGsvq/qKuR24PcaCo=;
+	s=korg; t=1761592771;
+	bh=XNfPsptp+osDJFegjYd457oaiqFL48/7AgTnuTxOamw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f4+CVzVXJAtIOmIAtj/yP4gZhE6aiF2R4Gs8IKKEE2s1GbZ9+DwNxaBvkAL1w1pMS
-	 j2dPyZ1kwvnaRH0lLMXAqL792zdmcee8C3rzBfIx6I28+iaML2YCcBLaJep0uCh9NS
-	 alRGzKvGWsqtSNjrEEYw4LBUhY019NR0OU1O2rsk=
+	b=d7tqWJaQlXB8o2oECfrD7E5lhnlSNw9U2GawmzjJMyAer3KuC+kyCjeAhih9/iA7U
+	 KDGCfYDMQnggYNypU1dc9MyVGZiZhUerx55PVbYeS3V5i44vLS/ULb+EancK5Eqb59
+	 hgbvC1NNe3wtkMvDGN/AgqlcZLLy5mZjTQAt00WQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anup Patel <apatel@ventanamicro.com>,
-	Andrew Jones <ajones@ventanamicro.com>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Paul Walmsley <pjw@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 133/184] RISC-V: Dont print details of CPUs disabled in DT
+	Yu-Ting Tseng <yutingtseng@google.com>,
+	Alice Ryhl <aliceryhl@google.com>
+Subject: [PATCH 6.6 66/84] binder: remove "invalid inc weak" check
 Date: Mon, 27 Oct 2025 19:36:55 +0100
-Message-ID: <20251027183518.528281127@linuxfoundation.org>
+Message-ID: <20251027183440.572114775@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
-References: <20251027183514.934710872@linuxfoundation.org>
+In-Reply-To: <20251027183438.817309828@linuxfoundation.org>
+References: <20251027183438.817309828@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,51 +61,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anup Patel <apatel@ventanamicro.com>
+From: Alice Ryhl <aliceryhl@google.com>
 
-[ Upstream commit d2721bb165b3ee00dd23525885381af07fec852a ]
+commit d90eeb8ecd227c204ab6c34a17b372bd950b7aa2 upstream.
 
-Early boot stages may disable CPU DT nodes for unavailable
-CPUs based on SKU, pinstraps, eFuse, etc. Currently, the
-riscv_early_of_processor_hartid() prints details of a CPU
-if it is disabled in DT which has no value and gives a
-false impression to the users that there some issue with
-the CPU.
+There are no scenarios where a weak increment is invalid on binder_node.
+The only possible case where it could be invalid is if the kernel
+delivers BR_DECREFS to the process that owns the node, and then
+increments the weak refcount again, effectively "reviving" a dead node.
 
-Fixes: e3d794d555cd ("riscv: treat cpu devicetree nodes without status as enabled")
-Signed-off-by: Anup Patel <apatel@ventanamicro.com>
-Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
-Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
-Link: https://lore.kernel.org/r/20251014163009.182381-1-apatel@ventanamicro.com
-Signed-off-by: Paul Walmsley <pjw@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+However, that is not possible: when the BR_DECREFS command is delivered,
+the kernel removes and frees the binder_node. The fact that you were
+able to call binder_inc_node_nilocked() implies that the node is not yet
+destroyed, which implies that BR_DECREFS has not been delivered to
+userspace, so incrementing the weak refcount is valid.
+
+Note that it's currently possible to trigger this condition if the owner
+calls BINDER_THREAD_EXIT while node->has_weak_ref is true. This causes
+BC_INCREFS on binder_ref instances to fail when they should not.
+
+Cc: stable@vger.kernel.org
+Fixes: 457b9a6f09f0 ("Staging: android: add binder driver")
+Reported-by: Yu-Ting Tseng <yutingtseng@google.com>
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+Link: https://patch.msgid.link/20251015-binder-weak-inc-v1-1-7914b092c371@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/riscv/kernel/cpu.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/android/binder.c |   11 +----------
+ 1 file changed, 1 insertion(+), 10 deletions(-)
 
-diff --git a/arch/riscv/kernel/cpu.c b/arch/riscv/kernel/cpu.c
-index f6b13e9f5e6cb..3dbc8cc557dd1 100644
---- a/arch/riscv/kernel/cpu.c
-+++ b/arch/riscv/kernel/cpu.c
-@@ -62,10 +62,8 @@ int __init riscv_early_of_processor_hartid(struct device_node *node, unsigned lo
- 		return -ENODEV;
+--- a/drivers/android/binder.c
++++ b/drivers/android/binder.c
+@@ -846,17 +846,8 @@ static int binder_inc_node_nilocked(stru
+ 	} else {
+ 		if (!internal)
+ 			node->local_weak_refs++;
+-		if (!node->has_weak_ref && list_empty(&node->work.entry)) {
+-			if (target_list == NULL) {
+-				pr_err("invalid inc weak node for %d\n",
+-					node->debug_id);
+-				return -EINVAL;
+-			}
+-			/*
+-			 * See comment above
+-			 */
++		if (!node->has_weak_ref && target_list && list_empty(&node->work.entry))
+ 			binder_enqueue_work_ilocked(&node->work, target_list);
+-		}
  	}
- 
--	if (!of_device_is_available(node)) {
--		pr_info("CPU with hartid=%lu is not available\n", *hart);
-+	if (!of_device_is_available(node))
- 		return -ENODEV;
--	}
- 
- 	if (of_property_read_string(node, "riscv,isa-base", &isa))
- 		goto old_interface;
--- 
-2.51.0
-
+ 	return 0;
+ }
 
 
 
