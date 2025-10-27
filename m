@@ -1,231 +1,248 @@
-Return-Path: <stable+bounces-189980-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-189981-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F1D4C0DF52
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 14:17:13 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B237C0E01E
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 14:27:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 814633A68D1
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 13:12:56 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E28F84F921A
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 13:21:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 074C5259CBB;
-	Mon, 27 Oct 2025 13:12:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28AF92C235B;
+	Mon, 27 Oct 2025 13:20:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=coelacanthus.name header.i=@coelacanthus.name header.b="Z7v6A9Au";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="fw4Oari4"
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=sebastian.reichel@collabora.com header.b="hynv0x2d"
 X-Original-To: stable@vger.kernel.org
-Received: from fout-a6-smtp.messagingengine.com (fout-a6-smtp.messagingengine.com [103.168.172.149])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D28E6258EFC
-	for <stable@vger.kernel.org>; Mon, 27 Oct 2025 13:12:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.149
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761570771; cv=none; b=TTbCoRWGeY5eLE58tGGV+IEfCLogsWydcQepfoewei2ZpLuiTkrPu3N5bmG2I5J4ppCt3A9h/sAueLHl5+18nvIgcJHDOJ9I0Fkh3AzRZp3PmoNjkl0oZmQkWBbws4vX1FyldlhO8soXfpBbo3Tc2tLURbG2Zwyx52eHRlB0lPA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761570771; c=relaxed/simple;
-	bh=Bz6kmj+ur2LqoT7ZrXDtExMxZuptE4aMiCFfw0vOe4o=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JarWWybnre6tvvNqgdX9Db1e82GOxGSCFqwMYI+gv7UZjng7GCbn1cto6M5qjJo4SgljnC5dtv35iGNOylTXZ9MHWgervrkU1zO+GCQhkaywQwnhMA8uW8eJDF7QGqbaOjft0XkvaPMZfLe7adhP6xCRSSrN2m7kqHzZqrH9Lu4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=coelacanthus.name; spf=pass smtp.mailfrom=coelacanthus.name; dkim=pass (2048-bit key) header.d=coelacanthus.name header.i=@coelacanthus.name header.b=Z7v6A9Au; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=fw4Oari4; arc=none smtp.client-ip=103.168.172.149
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=coelacanthus.name
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=coelacanthus.name
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfout.phl.internal (Postfix) with ESMTP id D8E7BEC033A;
-	Mon, 27 Oct 2025 09:12:47 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-04.internal (MEProxy); Mon, 27 Oct 2025 09:12:47 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	coelacanthus.name; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm3; t=1761570767; x=1761657167; bh=tjn5qBaZqF
-	RTCvYPUdaIg0qwQDChJ0z3F8r0zDZXl5I=; b=Z7v6A9Au8fQ9nBjG4A8LTcyxdi
-	mR05Qk+M/40eamLbqcpF1B+IPqnsgsSnwR1a7jnlC864S/PO2EwgD3wKD7CHEGXN
-	RbWleWIvF2DlzcuDh/DHNsvntbOESQFQh309XSNnjbaAeTfsL5NlynvronB0fRa7
-	UmpfkFdj7Ax8g/3xKX6rnArIA4zsPSAjc+KQPge8mg1OTy4lSimHj0rz+/jd+WxM
-	yFIEMQXHaCiLyjSjYlqTHm83S6ln1cnVzfahQg4bEFwCSgs1gE0oqr0/AVWOVjGr
-	ugq+rYhWJoTBuKtde6ZkPq4vsYTC7Ly3hbboyqce3VZwR5lwwi6Jsk+cC6+w==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1761570767; x=
-	1761657167; bh=tjn5qBaZqFRTCvYPUdaIg0qwQDChJ0z3F8r0zDZXl5I=; b=f
-	w4Oari4TqFAup5HpTxmiSvwQ5ANQy3MPTVrh2orrAoqbe5QMoHTEJz8952HAqtip
-	26zzjeKZ7ozgnAIqvrQ7PHdV6hcW/tZ2AOfSqCEeypzup6XwD2tYPCU48MYZbkJm
-	ryXGFTmAoNblRJhD7yuge9ntW6I5CbGeXWgRCucvUivXy/z5DVy68S67EuTTXTLI
-	1Deaqs/RQOwIhE8Z/HZ3uIlXR56JWHb8mtbfekXyWXpQwUq6Mtx7gUrIY7VACOgv
-	5eBp2TkFZvhV1X7+DFTloph3uZ+s6NMEyqGnTw+uxbTljb1a8r1s86wKGK090esg
-	VKeVvuZtQsOaOdUUT/tEQ==
-X-ME-Sender: <xms:z2__aHh3wYERnyIdsM9M7ME_KqLKzNeMPpcz1vIS1YTWIe4GtHsiXQ>
-    <xme:z2__aK6Ugl6QKShzb0WxeRuI2loxI7PDK-ug3Mtf-hi1AecaTEuemgtufzxBvjayI
-    UHg_xGeFkfBI_hFi6IKo_gnai0R1Lb3UiEnkq_GvuciITqRyL5Hj9CL>
-X-ME-Received: <xmr:z2__aPY0qCaqzUZDu2Uq9R7eMJGi838NxZipmJ6wR6VJ5exwb2wvsqbpu51c52C9>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdduheektdeiucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepkfffgggfuffvvehfhfgjtgfgsehtjeertddtvdejnecuhfhrohhmpeevvghlvghs
-    thgvucfnihhuuceouhifuhestghovghlrggtrghnthhhuhhsrdhnrghmvgeqnecuggftrf
-    grthhtvghrnhepfeevkeduhfdujeetueettdekuedvvddugeeuudeiueejjeeljeetteej
-    ueduffeunecuffhomhgrihhnpehgihhthhhusgdrtghomhdpmhhsghhiugdrlhhinhhkne
-    cuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepuhifuhes
-    tghovghlrggtrghnthhhuhhsrdhnrghmvgdpnhgspghrtghpthhtohephedpmhhouggvpe
-    hsmhhtphhouhhtpdhrtghpthhtohepghhrvghgkhhhsehlihhnuhigfhhouhhnuggrthhi
-    ohhnrdhorhhgpdhrtghpthhtohepshhtrggslhgvsehvghgvrhdrkhgvrhhnvghlrdhorh
-    hgpdhrtghpthhtoheprhhunhgthhgvnhhgrdhluheshhhpmhhitghrohdrtghomhdprhgt
-    phhtthhopehmrghilhhhohhlsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehmkhhlse
-    hpvghnghhuthhrohhnihigrdguvg
-X-ME-Proxy: <xmx:z2__aP66nEG0srXhC-Fn9cDA_FJLf0MOJSPLNsEbafATU2OPT0hfOw>
-    <xmx:z2__aCCP-ZrLFZuk32RGFfGyf6f3V2FGnyy_gKzDWekGe17Pd3xung>
-    <xmx:z2__aFcKVejIm7M-itTjNQDNjXNGG_bdg6nSeUOHx0_RqJnAvW8xiw>
-    <xmx:z2__aBLZ7KMzwFQhoQ3P2EYs7A1XGAekyv4BS9RxOODA8BmzGVj9fw>
-    <xmx:z2__aKVfbzIWsG9PWbWmrIzsBZ-bl-pSViolo1U7XB5mjyqKZTK8mEdW>
-Feedback-ID: i95c648bc:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 27 Oct 2025 09:12:45 -0400 (EDT)
-Message-ID: <d92fd187-6fbe-4bce-b98c-31dad249cda7@coelacanthus.name>
-Date: Mon, 27 Oct 2025 21:12:42 +0800
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D438828853A;
+	Mon, 27 Oct 2025 13:20:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1761571248; cv=pass; b=o6/I924+91KwPjlf2WFTn4uZGQ9uZ7wfQDJFPmPQHOV6C96Y0XPlNOLwqSrG94xdt9pkIjQCNoehiQHES6XpG/SRBWeZ6EULcRadnZbiwp6XRlhu5lEeZzM534D8y3hKq1MmmsWhh2u5Si6IgjNx9UEQ32fCT1mXzx5K385KdOg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1761571248; c=relaxed/simple;
+	bh=5txGfbTK/lJoBk2qelxH7eykCHfeYquItBjY1BiZINU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=b566Z18+zloXwp5C2e0kPc0f3GqiDuHWR+EEwu+l8rC5d/YUSS99v0u1q4ZDCCGzTqnMHShi07Iqebmj63TMS3sM332XE/B7/ENbsMt8Mqom9TBDNRkit3Z5BqN2Ge0CrPLTW1nvvWa/9DM+/2miHZQa2zv0kN1uRucDL+W8bQ0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=sebastian.reichel@collabora.com header.b=hynv0x2d; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+ARC-Seal: i=1; a=rsa-sha256; t=1761571224; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=Asloh+xn+knVNYl9BHFuXQ4FNT/zWj6LaO2R6Alg4JGqgAfAFe3irG7u6St8zFeznz7lbtasssruZADw6vBqNEi6WY458LX9tM/KtPGNWOJ4XC4Q6aEZU1WGhNZcROIo80iU3C3RYQa7TfvNyzVvnfQm5r10jrfeAyAPAXi17bc=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1761571224; h=Content-Type:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=3fBwlxqF1rMthy0kfk2jdGLzMVHGBv5ddKjWRByDHHw=; 
+	b=T38z2Dd22vCdc82ezGP2rK9ar1EGYu+6WE/xztT6zw4Z6dYM+ReniX1j9iP43+Wy7sMxPEf7oLoffFmhzrxWDhYz9XbuanwNbXkEagS9YozakkzrL4UXZnLtkrjcxn43fQMRNbB91wc6B9yG6CUgfYmDc4EW2OClmj1+nh6Rgoo=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=sebastian.reichel@collabora.com;
+	dmarc=pass header.from=<sebastian.reichel@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1761571224;
+	s=zohomail; d=collabora.com; i=sebastian.reichel@collabora.com;
+	h=Date:Date:From:From:To:To:Cc:Cc:Subject:Subject:Message-ID:References:MIME-Version:Content-Type:In-Reply-To:Message-Id:Reply-To;
+	bh=3fBwlxqF1rMthy0kfk2jdGLzMVHGBv5ddKjWRByDHHw=;
+	b=hynv0x2dC17SoDNCyeTypjQ1ySmLQnPXS/ZK6AtDaw5TYJHK0OGF9OTJrHSYBCWb
+	kV0t6zcc5sq5KFytwYI17Z2h7+1ZyFYAdZQb8Hfubn6qwbXMQ+MHURMDmWVSFGG9hcK
+	WcLhVH962QXQ7pWTTU0YxbfoFRGc7ijmjSD4yo9o=
+Received: by mx.zohomail.com with SMTPS id 1761571221990644.5175832769804;
+	Mon, 27 Oct 2025 06:20:21 -0700 (PDT)
+Received: by venus (Postfix, from userid 1000)
+	id E09E3180E8B; Mon, 27 Oct 2025 14:20:15 +0100 (CET)
+Date: Mon, 27 Oct 2025 14:20:15 +0100
+From: Sebastian Reichel <sebastian.reichel@collabora.com>
+To: Andy Yan <andyshrk@163.com>
+Cc: Heiko Stuebner <heiko@sntech.de>, 
+	Quentin Schulz <quentin.schulz@cherry.de>, mturquette@baylibre.com, sboyd@kernel.org, 
+	zhangqing@rock-chips.com, linux-clk@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	Andy Yan <andy.yan@rock-chips.com>
+Subject: Re: [PATCH] clk: rockchip: rk3588: Don't change PLL rates when
+ setting dclk_vop2_src
+Message-ID: <w3ttg7rmkut44gbys7m7rcwvsa67d4bqyez5fie3cxgbtjs6ib@pyelryb6gth2>
+References: <20251008133135.3745785-1-heiko@sntech.de>
+ <2749454.BddDVKsqQX@diego>
+ <eumxn7lvp34si2gik33hcavcrsstqqoxixiznjbertxars7zcx@xsycorjhj3id>
+ <4856104.usQuhbGJ8B@phil>
+ <j6ondk5xnwbm36isdoni5vtdq5mf5ak4kp63ratqlnpwsgrqj2@paw5lzwqa2ze>
+ <7fb0eadb.1d09.19a23686d5a.Coremail.andyshrk@163.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5.4.y] can: gs_usb: increase max interface to U8_MAX
-Content-Language: en-GB-large
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, Runcheng Lu <runcheng.lu@hpmicro.com>,
- Vincent Mailhol <mailhol@kernel.org>, Marc Kleine-Budde <mkl@pengutronix.de>
-References: <2025102041-mounting-pursuit-e9d3@gregkh>
- <20251020122237.1517578-2-uwu@coelacanthus.name>
- <2025102739-gout-copilot-7469@gregkh>
-From: Celeste Liu <uwu@coelacanthus.name>
-In-Reply-To: <2025102739-gout-copilot-7469@gregkh>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="kppsckzt35vuaz7b"
+Content-Disposition: inline
+In-Reply-To: <7fb0eadb.1d09.19a23686d5a.Coremail.andyshrk@163.com>
+X-Zoho-Virus-Status: 1
+X-Zoho-Virus-Status: 1
+X-Zoho-AV-Stamp: zmail-av-1.4.3/261.561.22
+X-ZohoMailClient: External
 
-On 2025-10-27 19:40, Greg KH wrote:
-> On Mon, Oct 20, 2025 at 08:22:38PM +0800, Celeste Liu wrote:
->> commit 2a27f6a8fb5722223d526843040f747e9b0e8060 upstream
->>
->> This issue was found by Runcheng Lu when develop HSCanT USB to CAN FD
->> converter[1]. The original developers may have only 3 interfaces
->> device to test so they write 3 here and wait for future change.
->>
->> During the HSCanT development, we actually used 4 interfaces, so the
->> limitation of 3 is not enough now. But just increase one is not
->> future-proofed. Since the channel index type in gs_host_frame is u8,
->> just make canch[] become a flexible array with a u8 index, so it
->> naturally constraint by U8_MAX and avoid statically allocate 256
->> pointer for every gs_usb device.
->>
->> [1]: https://github.com/cherry-embedded/HSCanT-hardware
->>
->> Fixes: d08e973a77d1 ("can: gs_usb: Added support for the GS_USB CAN devices")
->> Reported-by: Runcheng Lu <runcheng.lu@hpmicro.com>
->> Cc: stable@vger.kernel.org
->> Reviewed-by: Vincent Mailhol <mailhol@kernel.org>
->> Signed-off-by: Celeste Liu <uwu@coelacanthus.name>
->> Link: https://patch.msgid.link/20250930-gs-usb-max-if-v5-1-863330bf6666@coelacanthus.name
->> Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
->> ---
->>  drivers/net/can/usb/gs_usb.c | 23 +++++++++++------------
->>  1 file changed, 11 insertions(+), 12 deletions(-)
->>
->> diff --git a/drivers/net/can/usb/gs_usb.c b/drivers/net/can/usb/gs_usb.c
->> index 1a24c1d9dd8f..509b0c83ebb8 100644
->> --- a/drivers/net/can/usb/gs_usb.c
->> +++ b/drivers/net/can/usb/gs_usb.c
->> @@ -156,10 +156,6 @@ struct gs_host_frame {
->>  #define GS_MAX_TX_URBS 10
->>  /* Only launch a max of GS_MAX_RX_URBS usb requests at a time. */
->>  #define GS_MAX_RX_URBS 30
->> -/* Maximum number of interfaces the driver supports per device.
->> - * Current hardware only supports 2 interfaces. The future may vary.
->> - */
->> -#define GS_MAX_INTF 2
->>  
->>  struct gs_tx_context {
->>  	struct gs_can *dev;
->> @@ -190,10 +186,11 @@ struct gs_can {
->>  
->>  /* usb interface struct */
->>  struct gs_usb {
->> -	struct gs_can *canch[GS_MAX_INTF];
->>  	struct usb_anchor rx_submitted;
->>  	struct usb_device *udev;
->>  	u8 active_channels;
->> +	u8 channel_cnt;
->> +	struct gs_can *canch[] __counted_by(channel_cnt);
->>  };
->>  
->>  /* 'allocate' a tx context.
->> @@ -321,7 +318,7 @@ static void gs_usb_receive_bulk_callback(struct urb *urb)
->>  	}
->>  
->>  	/* device reports out of range channel id */
->> -	if (hf->channel >= GS_MAX_INTF)
->> +	if (hf->channel >= usbcan->channel_cnt)
->>  		goto device_detach;
->>  
->>  	dev = usbcan->canch[hf->channel];
->> @@ -409,7 +406,7 @@ static void gs_usb_receive_bulk_callback(struct urb *urb)
->>  	/* USB failure take down all interfaces */
->>  	if (rc == -ENODEV) {
->>   device_detach:
->> -		for (rc = 0; rc < GS_MAX_INTF; rc++) {
->> +		for (rc = 0; rc < usbcan->channel_cnt; rc++) {
->>  			if (usbcan->canch[rc])
->>  				netif_device_detach(usbcan->canch[rc]->netdev);
->>  		}
->> @@ -991,20 +988,22 @@ static int gs_usb_probe(struct usb_interface *intf,
->>  	icount = dconf->icount + 1;
->>  	dev_info(&intf->dev, "Configuring for %d interfaces\n", icount);
->>  
->> -	if (icount > GS_MAX_INTF) {
->> +	if (icount > type_max(typeof(dev->channel_cnt))) {
->>  		dev_err(&intf->dev,
->> -			"Driver cannot handle more that %d CAN interfaces\n",
->> -			GS_MAX_INTF);
->> +			"Driver cannot handle more that %u CAN interfaces\n",
->> +			type_max(typeof(dev->channel_cnt)));
->>  		kfree(dconf);
->>  		return -EINVAL;
->>  	}
->>  
->> -	dev = kzalloc(sizeof(*dev), GFP_KERNEL);
->> +	dev = kzalloc(struct_size(dev, canch, icount), GFP_KERNEL);
->>  	if (!dev) {
->>  		kfree(dconf);
->>  		return -ENOMEM;
->>  	}
->>  
->> +	dev->channel_cnt = icount;
->> +
->>  	init_usb_anchor(&dev->rx_submitted);
->>  
->>  	usb_set_intfdata(intf, dev);
->> @@ -1045,7 +1044,7 @@ static void gs_usb_disconnect(struct usb_interface *intf)
->>  		return;
->>  	}
->>  
->> -	for (i = 0; i < GS_MAX_INTF; i++)
->> +	for (i = 0; i < dev->channel_cnt; i++)
->>  		if (dev->canch[i])
->>  			gs_destroy_candev(dev->canch[i]);
->>  
->> -- 
->> 2.51.1.dirty
->>
->>
-> 
-> Again, not going to try :)
 
-Sorry, fixed version sent. In 5.4, lack -std flags issue is even worse, not only
-in REALMODE_FLAGS, but also in drivers/firmware/efi/libstub/Makefile and arch/x86/boot/compressed/Makefile
+--kppsckzt35vuaz7b
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH] clk: rockchip: rk3588: Don't change PLL rates when
+ setting dclk_vop2_src
+MIME-Version: 1.0
+
+Hi,
+
+On Mon, Oct 27, 2025 at 10:03:57AM +0800, Andy Yan wrote:
+> At 2025-10-21 00:00:59, "Sebastian Reichel" <sebastian.reichel@collabora.=
+com> wrote:
+> >On Mon, Oct 20, 2025 at 02:49:10PM +0200, Heiko Stuebner wrote:
+> >> Am Donnerstag, 16. Oktober 2025, 00:57:15 Mitteleurop=C3=A4ische Somme=
+rzeit schrieb Sebastian Reichel:
+> >> > On Wed, Oct 15, 2025 at 03:27:12PM +0200, Heiko St=C3=BCbner wrote:
+> >> > > Am Mittwoch, 15. Oktober 2025, 14:58:46 Mitteleurop=C3=A4ische Som=
+merzeit schrieb Quentin Schulz:
+> >> > > > On 10/8/25 3:31 PM, Heiko Stuebner wrote:
+> >> > > > > dclk_vop2_src currently has CLK_SET_RATE_PARENT | CLK_SET_RATE=
+_NO_REPARENT
+> >> > > > > flags set, which is vastly different than dclk_vop0_src or dcl=
+k_vop1_src,
+> >> > > > > which have none of those.
+> >> > > > >=20
+> >> > > > > With these flags in dclk_vop2_src, actually setting the clock =
+then results
+> >> > > > > in a lot of other peripherals breaking, because setting the ra=
+te results
+> >> > > > > in the PLL source getting changed:
+> >> > > > >=20
+> >> > > > > [   14.898718] clk_core_set_rate_nolock: setting rate for dclk=
+_vop2 to 152840000
+> >> > > > > [   15.155017] clk_change_rate: setting rate for pll_gpll to 1=
+680000000
+> >> > > > > [ clk adjusting every gpll user ]
+> >> > > > >=20
+> >> > > > > This includes possibly the other vops, i2s, spdif and even the=
+ uarts.
+> >> > > > > Among other possible things, this breaks the uart console on a=
+ board
+> >> > > > > I use. Sometimes it recovers later on, but there will be a big=
+ block
+> >> > > >=20
+> >> > > > I can reproduce on the same board as yours and this fixes the is=
+sue=20
+> >> > > > indeed (note I can only reproduce for now when display the modet=
+est=20
+> >> > > > pattern, otherwise after boot the console seems fine to me).
+> >> > >=20
+> >> > > I boot into a Debian rootfs with fbcon on my system, and the serial
+> >> > > console produces garbled output when the vop adjusts the clock
+> >> > >=20
+> >> > > Sometimes it recovers after a bit, but other times it doesn't
+> >> > >=20
+> >> > > > Reviewed-by: Quentin Schulz <quentin.schulz@cherry.de>
+> >> > > > Tested-by: Quentin Schulz <quentin.schulz@cherry.de> # RK3588 Ti=
+ger w/DP carrierboard
+> >> >=20
+> >> > I'm pretty sure I've seen this while playing with USB-C DP AltMode
+> >> > on Rock 5B. So far I had no time to investigate further.
+> >> >=20
+> >> > What I'm missing in the commit message is the impact on VOP. Also
+> >> > it might be a good idea to have Andy in Cc, so I've added him.
+> >>=20
+> >> Hmm, it brings VP2 in line with the other two VPs, only VP2 had this
+> >> special setting - even right from the start, so it could very well
+> >> have been left there accidentially during submission.
+> >
+> >I did the initial upstream submission based on downstream (the TRM
+> >is quite bad regading describing the clock trees, so not much
+> >validation has been done by me). The old vendor kernel tree had it
+> >like this, but that also changed a bit over time afterwards and no
+> >longer has any special handling for VP2. OTOH it does set
+> >CLK_SET_RATE_NO_REPARENT for all dclk_vop<number>_src, which you
+> >are now removing for VP2.
+> >
+> >FWIW these are the two flags:
+> >
+> >#define CLK_SET_RATE_PARENT     BIT(2) /* propagate rate change up one l=
+evel */
+> >#define CLK_SET_RATE_NO_REPARENT BIT(7) /* don't re-parent on rate chang=
+e */
+> >
+> >So by removing CLK_SET_RATE_NO_REPARENT you are allowing dclk_vop2_src
+> >to be switched to a different PLL when a different rate is being
+> >requested. That change is completley unrelated to the bug you are
+> >seeing right now?
+> >
+> >> So in the end VP2 will have to deal with this, because when the VP
+> >> causes a rate change in the GPLL, this changes so many clocks of
+> >> other possibly running devices. Not only the uart, but also emmc
+> >> and many more. And all those devices do not like if their clock gets
+> >> changed under them I think.
+> >
+> >It's certainly weird, that VP2 was (and still is in upstream) handled
+> >special. Note that GPLL being changed is not really necessary.
+> >dclk_vop2_src parent can be GPLL, CPLL, V0PLL or AUPLL. Effects on
+> >other hardware IP very much depends on the parent setup. What I try
+> >to understand is if there is also a bug in the rockchipdrm driver
+> >and/or if removing CLK_SET_RATE_NO_REPARENT is a good idea. That's
+> >why I hoped Andy could chime in and provide some background :)
+>=20
+> The main limitation is that there are not enough PLLs on the SoC
+> to be used for the display side. In our downstream code
+> implementation, we usually exclusively assign V0PLL to a certain
+> VP. Other VPs generally need to share the PLL with other
+> peripherals , or use the HDMI PHY PLL.
+>=20
+> For GPLL and CPLL,  they will be set to a fixed frequency during
+> the system startup stage, and they should not be modified again as
+> these two PLL always shared by other peripherals.
+>=20
+> When shared with other peripherals,  we can not do
+> CLK_SET_RATE_PARENT,. However, when we need a relatively precise
+> frequency in certain scenarios, such as driving an eDP or DSI
+> panel=EF=BC=88see what we do for eDP on rk3588s-evb1-v10.dts and
+> rk3588-coolpi-cm5-genbook.dts =EF=BC=89, we tend to use V0PLL. But since
+> V0PLL does not proper initializated at system startup, we then
+> need CLK_SET_RATE_PARENT. This does indeed seem to be a
+> contradiction.
+
+I suppose for eDP and DSI, which are more or less fixed, it would
+be possible to assign a board specific fixed frequency like this
+and get the frequency initialized without relying on VOP setting
+the PLL rate via CLK_SET_RATE_PARENT from the driver:
+
+&vop {
+    assigned-clocks =3D <&cru DCLK_VOP2_SRC>, <&cru PLL_V0PLL>;
+    assigned-clock-parents =3D <&cru PLL_V0PLL>;
+    assigned-clock-rates =3D <0>, <1337>;
+};
+
+Greetings,
+
+-- Sebastian
+
+--kppsckzt35vuaz7b
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAmj/cYwACgkQ2O7X88g7
++pqeExAAopKE8fQlZFA9f5GoOW/acdzUtKRTxdt/L8XQdwB+pJ0uky/rYvk6m4q/
+eeSP4wJ9fLwCOt9clKNaaKqcD3gYZfXrnUKtC4ya6R7p0rXi/okSZw/Fu+PZPQOm
+F5eWlZpfJRph+b8v+qF0+uo8XFreZom+KDoIHdm94fp9Ow35p1+zTHNNAxmWuNRZ
+HKTvgm0mw4MbDCjqkAqzRhhVNW4X6L3A2CZUsRppUDNApecM/DqUSW5z/SgR8qKM
+3hNcZ83/qLWgmBWugp1lD2lijRsXYJkvquC0QVcrNfbna86hI80SEly3/Hvzo5gm
+vHieEuKjPWtMqHsR3T+vavhS572tQBLPfB7WoV9gdT5pDcU3fRK9NyF+bjfVtl2i
+D8hoIfzXJon2o409APanLUpioyxvJL30pTs8rzsS2jlj81oasv3Xaj8fAEi+hhQ8
+p1qJFGi1AgMAtEaNuy6iftpGmaYYelHxwNkSXePaoKVG7DI9hK+e58zop7+KNsHQ
+eR6Rq713wT2d4cQuQcR3GDCR1KD8+otrpAkRFHfXWuoe2jWiG7O2AxYGHmZewzEz
+sYhf7UGdgHzs53ElculKFlH6N/j+7xZHxT9XL5d2C2xTcwZcE/aoKXmSBGc9KaMn
+1idkp+olhSDElrlx2R+qjg4mN/7xIjuf19yLm7BUmblRo7umtXI=
+=ErWp
+-----END PGP SIGNATURE-----
+
+--kppsckzt35vuaz7b--
 
