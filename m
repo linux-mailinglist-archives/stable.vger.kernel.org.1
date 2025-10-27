@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-190789-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190536-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 229AAC10C1F
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:18:41 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27C1DC107F5
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:07:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0F7B7580E6F
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:12:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ADE1B1896155
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:04:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3380323406;
-	Mon, 27 Oct 2025 19:10:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88FF6331A4A;
+	Mon, 27 Oct 2025 18:59:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uyTxxsYp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y8ACcd5I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B096930E825;
-	Mon, 27 Oct 2025 19:10:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4650C328627;
+	Mon, 27 Oct 2025 18:59:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592200; cv=none; b=YYWDKUhN9sfwiWkw/FOrP+PNis4LivKpK0A19ljr/Ogx/8Xzes1TmaJuf1Xgu25n+vO+oEsorb6oWQICzpjORiMBPTMJa4/r6UzZT6U2iEPlVnBbEo4kld99i6W31h33robQipOgW8D6oIUL35yKw6isfvCJe1K+h1sNjhvP7kE=
+	t=1761591546; cv=none; b=skMXRF1oQt/NOLY/nU+7kUebIHuT/d0sU9Lvu7HY6X2gBwhI+I5+rBn8PhWRvZ5p0dIQLgJTU7/5ITZm9U/oWxlC6FqOg1T4aYp6MPkHe/5Sy2zKonvX58R+NsxnkkZnkjx0NsfjORm16/ooVpYdkHQkupVWdyCb64zoRwSguPQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592200; c=relaxed/simple;
-	bh=F5/1cwaaDf6hHECTzlcCtVXYcmHQWzpVoc/bjcfxy8U=;
+	s=arc-20240116; t=1761591546; c=relaxed/simple;
+	bh=wg/5ZqdqDxzDT8EVU8Eu7P+pdRTNpvTaXchX7HVsUZ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bkE8BEAtnMVo1IvK2UsXcWQ1GCxb4dlahg1dE9IdTX70VRlMnviX7uoC1GL7X88XNQkgCQ9WOVxDTgc19ysvShflXUMUFP72q6LLkWTeVF5EKriRUDT5kTYteWsM/Huhdthd0meOKX09tyds4jA/IIEaAjGW90lOzt3IorbkbL0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uyTxxsYp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4247EC4CEF1;
-	Mon, 27 Oct 2025 19:10:00 +0000 (UTC)
+	 MIME-Version; b=bcynfXfs7E/T/srAzOiqTZaEYc64vHT7uYDMTLzv8UfkXRv1SST+4Zu2NTQPGz2XLyjcxu0YHJMZoHyfMHjcWR6fEFNgQZsISWiv1yhRoSXWm4PVe3RGhCQkgngAjesG4k+sZ/xQABmN6ZPg4YS85VgxBYnFp4ZGiLQhJxSnxQ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y8ACcd5I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEC2EC4CEF1;
+	Mon, 27 Oct 2025 18:59:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592200;
-	bh=F5/1cwaaDf6hHECTzlcCtVXYcmHQWzpVoc/bjcfxy8U=;
+	s=korg; t=1761591546;
+	bh=wg/5ZqdqDxzDT8EVU8Eu7P+pdRTNpvTaXchX7HVsUZ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uyTxxsYpCsxxeppCz/9kqy2r6Gp40V2puO5xnG+41I1zKBrcDTv1ZucdpNGiPSyXl
-	 x3gr8ZfaCo0TOllYfTzXgR9AFP6XoQEcbUq7T2EUEcDCaKC7j/jNpHme8OzyHRgHHr
-	 aEini72sBDztVaHGSeuJLHMJ3c8ytzjNOPtqLrLY=
+	b=y8ACcd5IZKNSdtwTDcdl4IZAh6yLuOtWg4EgBO7CwzlP81jIAldiZQhyG3I9PNYAL
+	 wb1rxzgJNQ+5drB92/i4+QPjKtR/xQZ5Kr91IhRTpe86yPjK3+QH+AksqEbX5MJoPN
+	 F88YOUwi9NCKEw826PTMKohTHrHhiojJeUEltGck=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Anna-Maria Behnsen <anna-maria@linutronix.de>,
-	Jeongjun Park <aha310510@gmail.com>
-Subject: [PATCH 6.1 031/157] timers: Add shutdown mechanism to the internal functions
+	Christoph Hellwig <hch@lst.de>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 239/332] fsdax: switch dax_iomap_rw to use iomap_iter
 Date: Mon, 27 Oct 2025 19:34:52 +0100
-Message-ID: <20251027183502.126410240@linuxfoundation.org>
+Message-ID: <20251027183531.141165261@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
-References: <20251027183501.227243846@linuxfoundation.org>
+In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
+References: <20251027183524.611456697@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,186 +62,133 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit 0cc04e80458a822300b93f82ed861a513edde194 ]
+[ Upstream commit ca289e0b95afa973d204c77a4ad5c37e06145fbf ]
 
-Tearing down timers which have circular dependencies to other
-functionality, e.g. workqueues, where the timer can schedule work and work
-can arm timers, is not trivial.
+Switch the dax_iomap_rw implementation to use iomap_iter.
 
-In those cases it is desired to shutdown the timer in a way which prevents
-rearming of the timer. The mechanism to do so is to set timer->function to
-NULL and use this as an indicator for the timer arming functions to ignore
-the (re)arm request.
-
-Add a shutdown argument to the relevant internal functions which makes the
-actual deactivation code set timer->function to NULL which in turn prevents
-rearming of the timer.
-
-Co-developed-by: Steven Rostedt <rostedt@goodmis.org>
-Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Guenter Roeck <linux@roeck-us.net>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Reviewed-by: Anna-Maria Behnsen <anna-maria@linutronix.de>
-Link: https://lore.kernel.org/all/20220407161745.7d6754b3@gandalf.local.home
-Link: https://lore.kernel.org/all/20221110064101.429013735@goodmis.org
-Link: https://lore.kernel.org/r/20221123201625.253883224@linutronix.de
-Signed-off-by: Jeongjun Park <aha310510@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+Stable-dep-of: 154d1e7ad9e5 ("dax: skip read lock assertion for read-only filesystems")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/time/timer.c |   62 +++++++++++++++++++++++++++++++++++++++++++++-------
- 1 file changed, 54 insertions(+), 8 deletions(-)
+ fs/dax.c | 49 ++++++++++++++++++++++++-------------------------
+ 1 file changed, 24 insertions(+), 25 deletions(-)
 
---- a/kernel/time/timer.c
-+++ b/kernel/time/timer.c
-@@ -1300,12 +1300,19 @@ EXPORT_SYMBOL_GPL(add_timer_on);
- /**
-  * __timer_delete - Internal function: Deactivate a timer
-  * @timer:	The timer to be deactivated
-+ * @shutdown:	If true, this indicates that the timer is about to be
-+ *		shutdown permanently.
-+ *
-+ * If @shutdown is true then @timer->function is set to NULL under the
-+ * timer base lock which prevents further rearming of the time. In that
-+ * case any attempt to rearm @timer after this function returns will be
-+ * silently ignored.
-  *
-  * Return:
-  * * %0 - The timer was not pending
-  * * %1 - The timer was pending and deactivated
-  */
--static int __timer_delete(struct timer_list *timer)
-+static int __timer_delete(struct timer_list *timer, bool shutdown)
+diff --git a/fs/dax.c b/fs/dax.c
+index 3e7e9a57fd28c..6619a71b57bbe 100644
+--- a/fs/dax.c
++++ b/fs/dax.c
+@@ -1104,20 +1104,21 @@ s64 dax_iomap_zero(loff_t pos, u64 length, struct iomap *iomap)
+ 	return size;
+ }
+ 
+-static loff_t
+-dax_iomap_actor(struct inode *inode, loff_t pos, loff_t length, void *data,
+-		struct iomap *iomap, struct iomap *srcmap)
++static loff_t dax_iomap_iter(const struct iomap_iter *iomi,
++		struct iov_iter *iter)
  {
- 	struct timer_base *base;
- 	unsigned long flags;
-@@ -1313,9 +1320,22 @@ static int __timer_delete(struct timer_l
++	const struct iomap *iomap = &iomi->iomap;
++	loff_t length = iomap_length(iomi);
++	loff_t pos = iomi->pos;
+ 	struct block_device *bdev = iomap->bdev;
+ 	struct dax_device *dax_dev = iomap->dax_dev;
+-	struct iov_iter *iter = data;
+ 	loff_t end = pos + length, done = 0;
+ 	ssize_t ret = 0;
+ 	size_t xfer;
+ 	int id;
  
- 	debug_assert_init(timer);
+ 	if (iov_iter_rw(iter) == READ) {
+-		end = min(end, i_size_read(inode));
++		end = min(end, i_size_read(iomi->inode));
+ 		if (pos >= end)
+ 			return 0;
  
--	if (timer_pending(timer)) {
-+	/*
-+	 * If @shutdown is set then the lock has to be taken whether the
-+	 * timer is pending or not to protect against a concurrent rearm
-+	 * which might hit between the lockless pending check and the lock
-+	 * aquisition. By taking the lock it is ensured that such a newly
-+	 * enqueued timer is dequeued and cannot end up with
-+	 * timer->function == NULL in the expiry code.
-+	 *
-+	 * If timer->function is currently executed, then this makes sure
-+	 * that the callback cannot requeue the timer.
-+	 */
-+	if (timer_pending(timer) || shutdown) {
- 		base = lock_timer_base(timer, &flags);
- 		ret = detach_if_pending(timer, base, true);
-+		if (shutdown)
-+			timer->function = NULL;
- 		raw_spin_unlock_irqrestore(&base->lock, flags);
+@@ -1134,7 +1135,7 @@ dax_iomap_actor(struct inode *inode, loff_t pos, loff_t length, void *data,
+ 	 * written by write(2) is visible in mmap.
+ 	 */
+ 	if (iomap->flags & IOMAP_F_NEW) {
+-		invalidate_inode_pages2_range(inode->i_mapping,
++		invalidate_inode_pages2_range(iomi->inode->i_mapping,
+ 					      pos >> PAGE_SHIFT,
+ 					      (end - 1) >> PAGE_SHIFT);
+ 	}
+@@ -1210,31 +1211,29 @@ ssize_t
+ dax_iomap_rw(struct kiocb *iocb, struct iov_iter *iter,
+ 		const struct iomap_ops *ops)
+ {
+-	struct address_space *mapping = iocb->ki_filp->f_mapping;
+-	struct inode *inode = mapping->host;
+-	loff_t pos = iocb->ki_pos, ret = 0, done = 0;
+-	unsigned flags = 0;
++	struct iomap_iter iomi = {
++		.inode		= iocb->ki_filp->f_mapping->host,
++		.pos		= iocb->ki_pos,
++		.len		= iov_iter_count(iter),
++	};
++	loff_t done = 0;
++	int ret;
+ 
+ 	if (iov_iter_rw(iter) == WRITE) {
+-		lockdep_assert_held_write(&inode->i_rwsem);
+-		flags |= IOMAP_WRITE;
++		lockdep_assert_held_write(&iomi.inode->i_rwsem);
++		iomi.flags |= IOMAP_WRITE;
+ 	} else {
+-		lockdep_assert_held(&inode->i_rwsem);
++		lockdep_assert_held(&iomi.inode->i_rwsem);
  	}
  
-@@ -1338,20 +1358,31 @@ static int __timer_delete(struct timer_l
-  */
- int timer_delete(struct timer_list *timer)
- {
--	return __timer_delete(timer);
-+	return __timer_delete(timer, false);
+ 	if (iocb->ki_flags & IOCB_NOWAIT)
+-		flags |= IOMAP_NOWAIT;
++		iomi.flags |= IOMAP_NOWAIT;
+ 
+-	while (iov_iter_count(iter)) {
+-		ret = iomap_apply(inode, pos, iov_iter_count(iter), flags, ops,
+-				iter, dax_iomap_actor);
+-		if (ret <= 0)
+-			break;
+-		pos += ret;
+-		done += ret;
+-	}
++	while ((ret = iomap_iter(&iomi, ops)) > 0)
++		iomi.processed = dax_iomap_iter(&iomi, iter);
+ 
+-	iocb->ki_pos += done;
++	done = iomi.pos - iocb->ki_pos;
++	iocb->ki_pos = iomi.pos;
+ 	return done ? done : ret;
  }
- EXPORT_SYMBOL(timer_delete);
+ EXPORT_SYMBOL_GPL(dax_iomap_rw);
+@@ -1308,7 +1307,7 @@ static vm_fault_t dax_iomap_pte_fault(struct vm_fault *vmf, pfn_t *pfnp,
+ 	}
  
- /**
-  * __try_to_del_timer_sync - Internal function: Try to deactivate a timer
-  * @timer:	Timer to deactivate
-+ * @shutdown:	If true, this indicates that the timer is about to be
-+ *		shutdown permanently.
-+ *
-+ * If @shutdown is true then @timer->function is set to NULL under the
-+ * timer base lock which prevents further rearming of the timer. Any
-+ * attempt to rearm @timer after this function returns will be silently
-+ * ignored.
-+ *
-+ * This function cannot guarantee that the timer cannot be rearmed
-+ * right after dropping the base lock if @shutdown is false. That
-+ * needs to be prevented by the calling code if necessary.
-  *
-  * Return:
-  * * %0  - The timer was not pending
-  * * %1  - The timer was pending and deactivated
-  * * %-1 - The timer callback function is running on a different CPU
-  */
--static int __try_to_del_timer_sync(struct timer_list *timer)
-+static int __try_to_del_timer_sync(struct timer_list *timer, bool shutdown)
- {
- 	struct timer_base *base;
- 	unsigned long flags;
-@@ -1363,6 +1394,8 @@ static int __try_to_del_timer_sync(struc
+ 	/*
+-	 * Note that we don't bother to use iomap_apply here: DAX required
++	 * Note that we don't bother to use iomap_iter here: DAX required
+ 	 * the file system block size to be equal the page size, which means
+ 	 * that we never have to deal with more than a single extent here.
+ 	 */
+@@ -1562,7 +1561,7 @@ static vm_fault_t dax_iomap_pmd_fault(struct vm_fault *vmf, pfn_t *pfnp,
+ 	}
  
- 	if (base->running_timer != timer)
- 		ret = detach_if_pending(timer, base, true);
-+	if (shutdown)
-+		timer->function = NULL;
- 
- 	raw_spin_unlock_irqrestore(&base->lock, flags);
- 
-@@ -1387,7 +1420,7 @@ static int __try_to_del_timer_sync(struc
-  */
- int try_to_del_timer_sync(struct timer_list *timer)
- {
--	return __try_to_del_timer_sync(timer);
-+	return __try_to_del_timer_sync(timer, false);
- }
- EXPORT_SYMBOL(try_to_del_timer_sync);
- 
-@@ -1468,12 +1501,25 @@ static inline void del_timer_wait_runnin
-  * __timer_delete_sync - Internal function: Deactivate a timer and wait
-  *			 for the handler to finish.
-  * @timer:	The timer to be deactivated
-+ * @shutdown:	If true, @timer->function will be set to NULL under the
-+ *		timer base lock which prevents rearming of @timer
-+ *
-+ * If @shutdown is not set the timer can be rearmed later. If the timer can
-+ * be rearmed concurrently, i.e. after dropping the base lock then the
-+ * return value is meaningless.
-+ *
-+ * If @shutdown is set then @timer->function is set to NULL under timer
-+ * base lock which prevents rearming of the timer. Any attempt to rearm
-+ * a shutdown timer is silently ignored.
-+ *
-+ * If the timer should be reused after shutdown it has to be initialized
-+ * again.
-  *
-  * Return:
-  * * %0	- The timer was not pending
-  * * %1	- The timer was pending and deactivated
-  */
--static int __timer_delete_sync(struct timer_list *timer)
-+static int __timer_delete_sync(struct timer_list *timer, bool shutdown)
- {
- 	int ret;
- 
-@@ -1503,7 +1549,7 @@ static int __timer_delete_sync(struct ti
- 		lockdep_assert_preemption_enabled();
- 
- 	do {
--		ret = __try_to_del_timer_sync(timer);
-+		ret = __try_to_del_timer_sync(timer, shutdown);
- 
- 		if (unlikely(ret < 0)) {
- 			del_timer_wait_running(timer);
-@@ -1555,7 +1601,7 @@ static int __timer_delete_sync(struct ti
-  */
- int timer_delete_sync(struct timer_list *timer)
- {
--	return __timer_delete_sync(timer);
-+	return __timer_delete_sync(timer, false);
- }
- EXPORT_SYMBOL(timer_delete_sync);
- 
+ 	/*
+-	 * Note that we don't use iomap_apply here.  We aren't doing I/O, only
++	 * Note that we don't use iomap_iter here.  We aren't doing I/O, only
+ 	 * setting up a mapping, so really we're using iomap_begin() as a way
+ 	 * to look up our filesystem block.
+ 	 */
+-- 
+2.51.0
+
 
 
 
