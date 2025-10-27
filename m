@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-190662-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191154-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F729C10A0B
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:13:33 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC63BC110F9
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:32:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6B455504EF6
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:07:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D1E0F561AA2
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:27:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 875B932F753;
-	Mon, 27 Oct 2025 19:04:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 598B2302CB9;
+	Mon, 27 Oct 2025 19:25:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RJ5PWyAv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VMcJBqh6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4252F32ED2E;
-	Mon, 27 Oct 2025 19:04:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EE30274FD0;
+	Mon, 27 Oct 2025 19:25:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591868; cv=none; b=IIsVxARgKw5OoUsPiEhc9D1SI8GIS3AkehTzUve1yqjsPWT4fr6JjoBDpr56e7lekeSwbLK4ls+OTpEtSDWrBJEAMHkkGL+pE5PbPaRPXUawir5q59uG3z4Sx+YzlbiMsInlFIkctfAYmJJLT9lRjzD6sJ2/LoKqQbJUsY88Xkw=
+	t=1761593149; cv=none; b=LfmSbVx9llw89NzNH752vOjerhMajbgU9zNS/1SOFcCSS81i2jNKFydcALQVu3BZ6vPWVS/Q7k7+b72tstVWD311gpIq3cBo9a9EFJMkJB2ej+r/5kCaFTNB8vT1N/nu7WeO7IyQIKOHQdaFEUK4CxaPa+5ZHJ51b2rGpgKEVYk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591868; c=relaxed/simple;
-	bh=BPQ7fv4msYuvJgoINuwT/ozRuL2WGLcQH8U32vaen/E=;
+	s=arc-20240116; t=1761593149; c=relaxed/simple;
+	bh=o5wFBb0DnE+HtdSCEXjuXyHdoL+yt7WZw7pwXQpgSbw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oY9Y0p61YIkQsmT8/FniByotyKIjbpRsJkEBC/IqEmGThWOM7kBzxXM7KN0kLYkrQ5g8XnO/6OisRf/XGS4Nue1jYNbVpdQu92Rdtg1jBDpZRm1WUhvEb1gbfMX6eLIWv8sG8MBVDUY9m47al2qTVaun0Ery0Q4BiJJIBlhyJy8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RJ5PWyAv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90C8BC4CEF1;
-	Mon, 27 Oct 2025 19:04:27 +0000 (UTC)
+	 MIME-Version; b=us993kPCx3t2fJ7rPjrfAkMth4kwD5cPgoEisp3ONBe1022LFsmbGkJhsgA/+YnuW5Ht/hckezN04ri/sykTmBSVxxvRL5pqFLwZsZ4YwXCzDPGHKV5TcgR33kc88PnhdjEUwoXX0+2eAmHzFZ9CuhhNebRX0XPd2/pn7rylPE0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VMcJBqh6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C8F0C4CEF1;
+	Mon, 27 Oct 2025 19:25:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591868;
-	bh=BPQ7fv4msYuvJgoINuwT/ozRuL2WGLcQH8U32vaen/E=;
+	s=korg; t=1761593148;
+	bh=o5wFBb0DnE+HtdSCEXjuXyHdoL+yt7WZw7pwXQpgSbw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RJ5PWyAvtEI7Vas/6fzdvcrEh4OgHSFGFoZm4sXP12rJzKHuJ/afi1XQKTNF1g7HX
-	 3ykLQbeVD98i31oe7L0Gund3l+H0Exsk5S5VgOThUA1wyoLdV+PDyRySptJRUQrCag
-	 RSCqORkbCjFZyRDqie8AyAAyg4UKqf0DSdrnXmWA=
+	b=VMcJBqh6wjdjRcDw+ea7mLHmMMeKy9MHxbfHiF1Ag1A4A9oGGyRkC5S4N8r6DpVMT
+	 5bPOOpAz4sPDtHOpeJr7AR65OmWmV0RpmeignqCRralmAX8uYr90fF25Tqdz6gYVVg
+	 haw9cfjWMoaD2V0hmP81LcrlPDK8sGu2VHgZHiEI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	keliu <liuke94@huawei.com>,
-	Sean Young <sean@mess.org>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Alexander Aring <aahringo@redhat.com>,
+	David Teigland <teigland@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 006/123] media: rc: Directly use ida_free()
-Date: Mon, 27 Oct 2025 19:34:46 +0100
-Message-ID: <20251027183446.561458746@linuxfoundation.org>
+Subject: [PATCH 6.17 005/184] dlm: move to rinfo for all middle conversion cases
+Date: Mon, 27 Oct 2025 19:34:47 +0100
+Message-ID: <20251027183515.085263742@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183446.381986645@linuxfoundation.org>
-References: <20251027183446.381986645@linuxfoundation.org>
+In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
+References: <20251027183514.934710872@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,86 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: keliu <liuke94@huawei.com>
+From: Alexander Aring <aahringo@redhat.com>
 
-[ Upstream commit cd54ff938091d890edf78e6555ec30c63dcd2eb5 ]
+[ Upstream commit a8abcff174f7f9ce4587c6451b1a2450d01f52c9 ]
 
-Use ida_alloc() and ida_free() instead of the deprecated
-ida_simple_get() and ida_simple_remove().
+Since commit f74dacb4c8116 ("dlm: fix recovery of middle conversions")
+we introduced additional debugging information if we hit the middle
+conversion by using log_limit(). The DLM log_limit() functionality
+requires a DLM debug option being enabled. As this case is so rarely and
+excempt any potential introduced new issue with recovery we switching it
+to log_rinfo() ad this is ratelimited under normal DLM loglevel.
 
-Signed-off-by: keliu <liuke94@huawei.com>
-Signed-off-by: Sean Young <sean@mess.org>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-Stable-dep-of: 4f4098c57e13 ("media: lirc: Fix error handling in lirc_register()")
+Signed-off-by: Alexander Aring <aahringo@redhat.com>
+Signed-off-by: David Teigland <teigland@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/rc/lirc_dev.c |    6 +++---
- drivers/media/rc/rc-main.c  |    6 +++---
- 2 files changed, 6 insertions(+), 6 deletions(-)
+ fs/dlm/lock.c    | 2 +-
+ fs/dlm/recover.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/media/rc/lirc_dev.c
-+++ b/drivers/media/rc/lirc_dev.c
-@@ -732,7 +732,7 @@ int lirc_register(struct rc_dev *dev)
- 	const char *rx_type, *tx_type;
- 	int err, minor;
+diff --git a/fs/dlm/lock.c b/fs/dlm/lock.c
+index 6dd3a524cd352..be938fdf17d96 100644
+--- a/fs/dlm/lock.c
++++ b/fs/dlm/lock.c
+@@ -5576,7 +5576,7 @@ static int receive_rcom_lock_args(struct dlm_ls *ls, struct dlm_lkb *lkb,
  
--	minor = ida_simple_get(&lirc_ida, 0, RC_DEV_MAX, GFP_KERNEL);
-+	minor = ida_alloc_max(&lirc_ida, RC_DEV_MAX - 1, GFP_KERNEL);
- 	if (minor < 0)
- 		return minor;
- 
-@@ -777,7 +777,7 @@ int lirc_register(struct rc_dev *dev)
- 	return 0;
- 
- out_ida:
--	ida_simple_remove(&lirc_ida, minor);
-+	ida_free(&lirc_ida, minor);
- 	return err;
- }
- 
-@@ -795,7 +795,7 @@ void lirc_unregister(struct rc_dev *dev)
- 	spin_unlock_irqrestore(&dev->lirc_fh_lock, flags);
- 
- 	cdev_device_del(&dev->lirc_cdev, &dev->lirc_dev);
--	ida_simple_remove(&lirc_ida, MINOR(dev->lirc_dev.devt));
-+	ida_free(&lirc_ida, MINOR(dev->lirc_dev.devt));
- }
- 
- int __init lirc_dev_init(void)
---- a/drivers/media/rc/rc-main.c
-+++ b/drivers/media/rc/rc-main.c
-@@ -1897,7 +1897,7 @@ int rc_register_device(struct rc_dev *de
- 	if (!dev)
- 		return -EINVAL;
- 
--	minor = ida_simple_get(&rc_ida, 0, RC_DEV_MAX, GFP_KERNEL);
-+	minor = ida_alloc_max(&rc_ida, RC_DEV_MAX - 1, GFP_KERNEL);
- 	if (minor < 0)
- 		return minor;
- 
-@@ -1980,7 +1980,7 @@ out_rx_free:
- out_raw:
- 	ir_raw_event_free(dev);
- out_minor:
--	ida_simple_remove(&rc_ida, minor);
-+	ida_free(&rc_ida, minor);
- 	return rc;
- }
- EXPORT_SYMBOL_GPL(rc_register_device);
-@@ -2040,7 +2040,7 @@ void rc_unregister_device(struct rc_dev
- 
- 	device_del(&dev->dev);
- 
--	ida_simple_remove(&rc_ida, dev->minor);
-+	ida_free(&rc_ida, dev->minor);
- 
- 	if (!dev->managed_alloc)
- 		rc_free_device(dev);
+ 	if (rl->rl_status == DLM_LKSTS_CONVERT && middle_conversion(lkb)) {
+ 		/* We may need to adjust grmode depending on other granted locks. */
+-		log_limit(ls, "%s %x middle convert gr %d rq %d remote %d %x",
++		log_rinfo(ls, "%s %x middle convert gr %d rq %d remote %d %x",
+ 			  __func__, lkb->lkb_id, lkb->lkb_grmode,
+ 			  lkb->lkb_rqmode, lkb->lkb_nodeid, lkb->lkb_remid);
+ 		rsb_set_flag(r, RSB_RECOVER_CONVERT);
+diff --git a/fs/dlm/recover.c b/fs/dlm/recover.c
+index be4240f09abd4..3ac020fb8139e 100644
+--- a/fs/dlm/recover.c
++++ b/fs/dlm/recover.c
+@@ -842,7 +842,7 @@ static void recover_conversion(struct dlm_rsb *r)
+ 		 */
+ 		if (((lkb->lkb_grmode == DLM_LOCK_PR) && (other_grmode == DLM_LOCK_CW)) ||
+ 		    ((lkb->lkb_grmode == DLM_LOCK_CW) && (other_grmode == DLM_LOCK_PR))) {
+-			log_limit(ls, "%s %x gr %d rq %d, remote %d %x, other_lkid %u, other gr %d, set gr=NL",
++			log_rinfo(ls, "%s %x gr %d rq %d, remote %d %x, other_lkid %u, other gr %d, set gr=NL",
+ 				  __func__, lkb->lkb_id, lkb->lkb_grmode,
+ 				  lkb->lkb_rqmode, lkb->lkb_nodeid,
+ 				  lkb->lkb_remid, other_lkid, other_grmode);
+-- 
+2.51.0
+
 
 
 
