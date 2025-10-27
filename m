@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-191224-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190851-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9246FC111D1
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:35:22 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6318FC10A98
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:14:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 43F365642C8
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:30:50 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 0EBD5351FE0
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:14:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6550932ABE1;
-	Mon, 27 Oct 2025 19:28:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A81FE326D45;
+	Mon, 27 Oct 2025 19:12:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="afNZzWP5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hZAByN1W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 218882EDD62;
-	Mon, 27 Oct 2025 19:28:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64AD031C58E;
+	Mon, 27 Oct 2025 19:12:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761593332; cv=none; b=U81UBnh99M0KP4uPGmKQo8jHin5Q8seOL3XJpXFCEtCZvsnIujjiFbwNbRR4gbwJZvrBkmUEwkbUFIsIrXaa770nUleibHrKkfZ5uYKIIwUoSQ5wCBBIZu5RVF/4CSaa68EOF0p59WGP+xBBlnhFRoJWQW6peXI8kkfCdSd1hGg=
+	t=1761592366; cv=none; b=Mvsg2Z6noauG+SgjmmUuwyXBitO7PobKz7hndHJwI8jSh3xcq+/LifW02FIgajR7l5IjHxTCD7bOS2/JCEFI6+Rshc4UaDn1NnYgSm1owrHGleiVKKZVMkX8KKDybXLXXzu7HvMs0cR4idmrEXFCHHOlihuK1bkMYPn/Kp7sq/8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761593332; c=relaxed/simple;
-	bh=fxzkH+q6gPNqJ2PO2Oe53YF4gbmQvMmRugNTNjnqjb8=;
+	s=arc-20240116; t=1761592366; c=relaxed/simple;
+	bh=/3jb4vBwGPOP7dJKTic0bsfqWKHmnkEVPk7PEkZtB84=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Dena4bsgyv1rE+Gbw2SRBblP9j23M5DiKV27JSDhyfIXBhBGN9L2AiNk1zyCCzF2zkXyPg9vynljnOtazUQzLaNZNSiPUTMW4/6xEiAQPr82XNGA6gaJeElTKT53K1ivaN2xKsclXwxtA7sRVb13MF8lsuJLFQj2lsNnyVl8Gxs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=afNZzWP5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95067C4CEFD;
-	Mon, 27 Oct 2025 19:28:51 +0000 (UTC)
+	 MIME-Version; b=QQAKiT3ImeoziK8JRUAw3e2yurV6bDoHzqOrvJ8ryPsgYUFiyytZQh1pd3Eq2Fw3FyKcCrLOMWtVSDzTzLdvtNx7tHM9ZsrvjorSo2ZZgePY3eo9dDtJhyEt7mruaP5Co38OtKf6QCzDrkOMi5fRnDGP+fvWyMtlSIyj6ocO+OE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hZAByN1W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E434DC4CEF1;
+	Mon, 27 Oct 2025 19:12:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761593332;
-	bh=fxzkH+q6gPNqJ2PO2Oe53YF4gbmQvMmRugNTNjnqjb8=;
+	s=korg; t=1761592366;
+	bh=/3jb4vBwGPOP7dJKTic0bsfqWKHmnkEVPk7PEkZtB84=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=afNZzWP5FuniXR7qluVpC5asOgf7GDIfBS5xprtPHljK9SLPA8/37edTjzZZsflsd
-	 rOm7vn39VkjVS0B0zAf9fN6UCnwevS6U1zAN1jR8+mSGd4AxPfjx4UGO8Lv3VUur6+
-	 eQJrsamA7i4vzmv2tMu8oT5MF3k6+1NPgoJlZfXk=
+	b=hZAByN1Ws8ymv+uHqVtmHPrKTUGsUOLDthgY2Aye+UM/xOwpebCuAIJVV5HZbvLQ9
+	 jh3enPshublCaipE37iRoYobIl/cG/6k+fQdnE2hd1bV9xA8cuXt0Xwin/hr7RDgsG
+	 26RDppdm9e/TPYwX860sjQqFPqdVGVLhOPhaLJR8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Amit Dhingra <mechanicalamit@gmail.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.17 073/184] btrfs: ref-verify: fix IS_ERR() vs NULL check in btrfs_build_ref_tree()
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 094/157] net: stmmac: dwmac-rk: Fix disabling set_clock_selection
 Date: Mon, 27 Oct 2025 19:35:55 +0100
-Message-ID: <20251027183516.861551799@linuxfoundation.org>
+Message-ID: <20251027183503.789204840@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
-References: <20251027183514.934710872@linuxfoundation.org>
+In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
+References: <20251027183501.227243846@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amit Dhingra <mechanicalamit@gmail.com>
+From: Sebastian Reichel <sebastian.reichel@collabora.com>
 
-commit ada7d45b568abe4f1fd9c53d66e05fbea300674b upstream.
+commit 7f864458e9a6d2000b726d14b3d3a706ac92a3b0 upstream.
 
-btrfs_extent_root()/btrfs_global_root() does not return error pointers,
-it returns NULL on error.
+On all platforms set_clock_selection() writes to a GRF register. This
+requires certain clocks running and thus should happen before the
+clocks are disabled.
 
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/all/aNJfvxj0anEnk9Dm@stanley.mountain/
-Fixes : ed4e6b5d644c ("btrfs: ref-verify: handle damaged extent root tree")
-CC: stable@vger.kernel.org # 6.17+
-Signed-off-by: Amit Dhingra <mechanicalamit@gmail.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+This has been noticed on RK3576 Sige5, which hangs during system suspend
+when trying to suspend the second network interface. Note, that
+suspending the first interface works, because the second device ensures
+that the necessary clocks for the GRF are enabled.
+
+Cc: stable@vger.kernel.org
+Fixes: 2f2b60a0ec28 ("net: ethernet: stmmac: dwmac-rk: Add gmac support for rk3588")
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20251014-rockchip-network-clock-fix-v1-1-c257b4afdf75@collabora.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/ref-verify.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c |    9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/fs/btrfs/ref-verify.c b/fs/btrfs/ref-verify.c
-index de4cb0f3fbd0..e9224145d754 100644
---- a/fs/btrfs/ref-verify.c
-+++ b/fs/btrfs/ref-verify.c
-@@ -982,7 +982,7 @@ int btrfs_build_ref_tree(struct btrfs_fs_info *fs_info)
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c
+@@ -1565,14 +1565,15 @@ static int gmac_clk_enable(struct rk_pri
+ 		}
+ 	} else {
+ 		if (bsp_priv->clk_enabled) {
++			if (bsp_priv->ops && bsp_priv->ops->set_clock_selection) {
++				bsp_priv->ops->set_clock_selection(bsp_priv,
++					      bsp_priv->clock_input, false);
++			}
++
+ 			clk_bulk_disable_unprepare(bsp_priv->num_clks,
+ 						   bsp_priv->clks);
+ 			clk_disable_unprepare(bsp_priv->clk_phy);
  
- 	extent_root = btrfs_extent_root(fs_info, 0);
- 	/* If the extent tree is damaged we cannot ignore it (IGNOREBADROOTS). */
--	if (IS_ERR(extent_root)) {
-+	if (!extent_root) {
- 		btrfs_warn(fs_info, "ref-verify: extent tree not available, disabling");
- 		btrfs_clear_opt(fs_info->mount_opt, REF_VERIFY);
- 		return 0;
--- 
-2.51.1
-
+-			if (bsp_priv->ops && bsp_priv->ops->set_clock_selection)
+-				bsp_priv->ops->set_clock_selection(bsp_priv,
+-					      bsp_priv->clock_input, false);
+-
+ 			bsp_priv->clk_enabled = false;
+ 		}
+ 	}
 
 
 
