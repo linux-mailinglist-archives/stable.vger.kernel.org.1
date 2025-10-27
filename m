@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-190835-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191179-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB0BAC10C73
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:19:44 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65D60C1115F
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:33:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2FD611A64278
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:15:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ABEEA5817BC
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:29:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E50231D36D;
-	Mon, 27 Oct 2025 19:12:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AFE62D73B1;
+	Mon, 27 Oct 2025 19:26:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EF/yTbXw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r2n/Zfc5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 292182C15BB;
-	Mon, 27 Oct 2025 19:12:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27B4932B9B2;
+	Mon, 27 Oct 2025 19:26:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592323; cv=none; b=AQHfUk4Ye55R3WvjatVWLdt5sXnhhmdPFUcuqrWfXBsXXbu6M781ho5jmfauk5SWaZOa1ch8uPPfnW3MTMqP+Y9g1G7/qtp/v14c/4yAFzgp0h3fY2F/EZHSzMVz5yb7QGoR9cFBY5Ikq21FnPdzGt0GR2eqMg2fFs9Tb/LlxP4=
+	t=1761593211; cv=none; b=tldXlf0h36eVfSyFQpmBXihriVCxYpv1mr+unj1oVHSwtIdJ7tPTQNr6V7GiY1zLGPpUJq25qnmaIhtzKue+WDAbgNQAeOwwaiZnFDc7QhI8980XYVPmIohtT+HnAWkSF5lePN9/yGaqJOV6gi3E1IZeOTvDwQgPnoaNEexWb7c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592323; c=relaxed/simple;
-	bh=WH5BgjoVWV/XrYuk4LcKg0bPiXcv4h00alWx8qPLCZ0=;
+	s=arc-20240116; t=1761593211; c=relaxed/simple;
+	bh=Vs5rJc/YYAC1zS9DMvQrbqOxMEO9M55f1CwRDEgNt/I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZG/AMPuGHMBddaceXzbnChhhf0nss9rKGKzGlWKGh+/T/0tzU1aL4Y43vZqvTFilHk1djiXVX8ZDbSrXUIBnn+qkKAW91oFDhNST1GBVlSjDbcIGTo+owo5Lk/ttcXRQIMeIB83pXmKX9u6a61Fi+sFqkP53OYgOhIcOVewU7hg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EF/yTbXw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85D69C4CEF1;
-	Mon, 27 Oct 2025 19:12:02 +0000 (UTC)
+	 MIME-Version; b=NOjKm8tftZRjNL9cry373a+PGBIFhMF7KDnydGZUf1lsLWCp6eOddeVKSwmq3Wqes1sIU6Qnh/eFKjSUHnTdiaHxO2Bb5ORf/aNL8FCEqtwI9zeRS1VToHXeoHhHV4G17tqYwUMSDNxOv46S5+eILTiL5yzNBLplj4/naoCUP8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r2n/Zfc5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70FF5C4CEF1;
+	Mon, 27 Oct 2025 19:26:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592323;
-	bh=WH5BgjoVWV/XrYuk4LcKg0bPiXcv4h00alWx8qPLCZ0=;
+	s=korg; t=1761593210;
+	bh=Vs5rJc/YYAC1zS9DMvQrbqOxMEO9M55f1CwRDEgNt/I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EF/yTbXwXbJ/wojVqVTfUHyB3hVxADk0vljyiv0ssX9yowLcrWCCOoQE8o5VTKedC
-	 URRw8yIynP+M6aCGSk2innuJzTVErl/sYuxsWC9bf35XiLbRHXSD+8VrmQyFcmfxVl
-	 p4mnu1CISaQZOqIKCvakO38QuWHEAOjcYT0bqCqE=
+	b=r2n/Zfc5SlI7JUZvQCo28Xti4aLj87Yq+D8bnI4apWeXwDT4BgLRohhM1UO17Sjsu
+	 zP2tIxv3N3Csr4/YPGOh54ZXz8+9P6RS7PeGzME/Qra2bTNxNr/d8Yj5RrIBsaeqfu
+	 w+K49Ryj0pmRrMOni+MK9cdkUCur/sot8gQsq6/s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yangtao Li <frank.li@vivo.com>,
-	Viacheslav Dubeyko <slava@dubeyko.com>,
+	Fernando Fernandez Mancera <fmancera@suse.de>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 076/157] hfsplus: return EIO when type of hidden directory mismatch in hfsplus_fill_super()
+Subject: [PATCH 6.17 055/184] net: hsr: prevent creation of HSR device with slaves from another netns
 Date: Mon, 27 Oct 2025 19:35:37 +0100
-Message-ID: <20251027183503.317624411@linuxfoundation.org>
+Message-ID: <20251027183516.381140184@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
-References: <20251027183501.227243846@linuxfoundation.org>
+In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
+References: <20251027183514.934710872@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yangtao Li <frank.li@vivo.com>
+From: Fernando Fernandez Mancera <fmancera@suse.de>
 
-[ Upstream commit 9282bc905f0949fab8cf86c0f620ca988761254c ]
+[ Upstream commit c0178eec8884231a5ae0592b9fce827bccb77e86 ]
 
-If Catalog File contains corrupted record for the case of
-hidden directory's type, regard it as I/O error instead of
-Invalid argument.
+HSR/PRP driver does not handle correctly having slaves/interlink devices
+in a different net namespace. Currently, it is possible to create a HSR
+link in a different net namespace than the slaves/interlink with the
+following command:
 
-Signed-off-by: Yangtao Li <frank.li@vivo.com>
-Reviewed-by: Viacheslav Dubeyko <slava@dubeyko.com>
-Link: https://lore.kernel.org/r/20250805165905.3390154-1-frank.li@vivo.com
-Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
+ ip link add hsr0 netns hsr-ns type hsr slave1 eth1 slave2 eth2
+
+As there is no use-case on supporting this scenario, enforce that HSR
+device link matches netns defined by IFLA_LINK_NETNSID.
+
+The iproute2 command mentioned above will throw the following error:
+
+ Error: hsr: HSR slaves/interlink must be on the same net namespace than HSR link.
+
+Fixes: f421436a591d ("net/hsr: Add support for the High-availability Seamless Redundancy protocol (HSRv0)")
+Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
+Link: https://patch.msgid.link/20251020135533.9373-1-fmancera@suse.de
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/hfsplus/super.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/hsr/hsr_netlink.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/fs/hfsplus/super.c b/fs/hfsplus/super.c
-index 8c086f16dd589..7e889820a63d0 100644
---- a/fs/hfsplus/super.c
-+++ b/fs/hfsplus/super.c
-@@ -538,7 +538,7 @@ static int hfsplus_fill_super(struct super_block *sb, void *data, int silent)
- 	if (!hfs_brec_read(&fd, &entry, sizeof(entry))) {
- 		hfs_find_exit(&fd);
- 		if (entry.type != cpu_to_be16(HFSPLUS_FOLDER)) {
--			err = -EINVAL;
-+			err = -EIO;
- 			goto out_put_root;
- 		}
- 		inode = hfsplus_iget(sb, be32_to_cpu(entry.folder.id));
+diff --git a/net/hsr/hsr_netlink.c b/net/hsr/hsr_netlink.c
+index b120470246cc5..c96b63adf96ff 100644
+--- a/net/hsr/hsr_netlink.c
++++ b/net/hsr/hsr_netlink.c
+@@ -34,12 +34,18 @@ static int hsr_newlink(struct net_device *dev,
+ 		       struct netlink_ext_ack *extack)
+ {
+ 	struct net *link_net = rtnl_newlink_link_net(params);
++	struct net_device *link[2], *interlink = NULL;
+ 	struct nlattr **data = params->data;
+ 	enum hsr_version proto_version;
+ 	unsigned char multicast_spec;
+ 	u8 proto = HSR_PROTOCOL_HSR;
+ 
+-	struct net_device *link[2], *interlink = NULL;
++	if (!net_eq(link_net, dev_net(dev))) {
++		NL_SET_ERR_MSG_MOD(extack,
++				   "HSR slaves/interlink must be on the same net namespace than HSR link");
++		return -EINVAL;
++	}
++
+ 	if (!data) {
+ 		NL_SET_ERR_MSG_MOD(extack, "No slave devices specified");
+ 		return -EINVAL;
 -- 
 2.51.0
 
