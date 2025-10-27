@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-190692-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191180-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6B7FC10AB3
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:15:04 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 141BCC11262
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:37:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AC4315670CF
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:09:01 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 2361D501250
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:29:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27258314B8F;
-	Mon, 27 Oct 2025 19:05:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B289232C31E;
+	Mon, 27 Oct 2025 19:26:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y0ZPHZLJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q5t3PNIC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D55812D839A;
-	Mon, 27 Oct 2025 19:05:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F4D831D75F;
+	Mon, 27 Oct 2025 19:26:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591945; cv=none; b=jCCYT/q1KgELx1RUGChR1IQWk54wrdzLJJdDWgeBPpfPFZzMFfEyQ61hae5Q+yMNbuDgMaB5SsPQOjYneYEJsTjqv+v3vgu/Q6FvCr+Ky7TLVTtASXFZIPGaCgjg6HKoSz4+AzKDO5w7lCJmaYv3U6m6tXs9fvExeq4mznE0354=
+	t=1761593213; cv=none; b=ZrTjJ7ZQzqG/kiKOoLIl6qNyRn0PShfCG/lllFWZeVXxV7M8xu5o4IBpquJJNkFTxKLUwDIXjpOqug9IZCooHx4/vzuwl2YrunmJVEnTQ2iPyT85kWVAT7pFBzkTdzjoy8JFLi/xbC5vMHAMH003S5oImN312m8mC7yGf1S+0yY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591945; c=relaxed/simple;
-	bh=21nQ9xe+GBBB+61ccZAgz1OCsYA2pu4uqS4lyN1Ti+U=;
+	s=arc-20240116; t=1761593213; c=relaxed/simple;
+	bh=WVO2szA3Yq+6SqR8XJIISuS/4b7ufSal/1OiM4p9aqA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D9q90yfnfCSA+Xo1NO3Bubz5QNJ4wxe2hIwkpi4XW+A29xKt9rLQvf4b07uPLv9woBXOpoz26CdjCT/bfa+cAUPff18qnz7QZ9eVAo5U7ULjBoZBrNpI8iOH8liz/jiRI5IvQ+XTlQYcmaSkKWRaugSYLZJV9tuVGfDC1M4761A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y0ZPHZLJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69F9DC4CEF1;
-	Mon, 27 Oct 2025 19:05:45 +0000 (UTC)
+	 MIME-Version; b=twCssl1O+67gxF0Z+ugv50CmB+3w1RnNwkHvt7qzLAyuDcb15h5AD+xoitebs4zei1A5Urr62fQzI4iPuZt8MUqEdkasbhaqhHS4XXL2r01lt/Cn38HS/48q58fCxP98gIg2YG1AE1u/1Lp40sqtrfkSzyF7HWXVbV53mGdBY6A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q5t3PNIC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02FA1C4CEF1;
+	Mon, 27 Oct 2025 19:26:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591945;
-	bh=21nQ9xe+GBBB+61ccZAgz1OCsYA2pu4uqS4lyN1Ti+U=;
+	s=korg; t=1761593213;
+	bh=WVO2szA3Yq+6SqR8XJIISuS/4b7ufSal/1OiM4p9aqA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y0ZPHZLJQGIco0N0WlCUvrWGSFvG0lh6bYECVhhDBPon3OKxfAioIr/it2tnmh/e3
-	 oBHlWrTPESpF6V5bpNrZHD3J7zJaA0CPHWLQO0vaciRSUrE4b8k7ppOHaVirEmjZqS
-	 55kCBCXUwyHFaBi0HPCxpBFEveVNLdnEBQhk+Dyw=
+	b=q5t3PNICVcNZEH5rotvbxmmw2wzRpHXKIYVDjiALBJR9L5iQ7N+QmQVWqahVcXqMc
+	 uBVV39/QKDYI11FHtFWA1QhCMmks4RBYXMFePR840PRpr+4LjhP4QoGdz5bb6gvV9U
+	 rAjjZOQekGEF8P+36NPxARO2lLVvQHD5gvFCkI6Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	Ralf Lici <ralf@mandelbit.com>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 057/123] net: rtnetlink: add NLM_F_BULK support to rtnl_fdb_del
-Date: Mon, 27 Oct 2025 19:35:37 +0100
-Message-ID: <20251027183447.919808905@linuxfoundation.org>
+Subject: [PATCH 6.17 056/184] espintcp: use datagram_poll_queue for socket readiness
+Date: Mon, 27 Oct 2025 19:35:38 +0100
+Message-ID: <20251027183516.409515628@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183446.381986645@linuxfoundation.org>
-References: <20251027183446.381986645@linuxfoundation.org>
+In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
+References: <20251027183514.934710872@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,161 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikolay Aleksandrov <razor@blackwall.org>
+From: Ralf Lici <ralf@mandelbit.com>
 
-[ Upstream commit 9e83425993f38bb89e0ea07849ba0039a748e85b ]
+[ Upstream commit 0fc3e32c2c069f541f2724d91f5e98480b640326 ]
 
-When NLM_F_BULK is specified in a fdb del message we need to handle it
-differently. First since this is a new call we can strictly validate the
-passed attributes, at first only ifindex and vlan are allowed as these
-will be the initially supported filter attributes, any other attribute
-is rejected. The mac address is no longer mandatory, but we use it
-to error out in older kernels because it cannot be specified with bulk
-request (the attribute is not allowed) and then we have to dispatch
-the call to ndo_fdb_del_bulk if the device supports it. The del bulk
-callback can do further validation of the attributes if necessary.
+espintcp uses a custom queue (ike_queue) to deliver packets to
+userspace. The polling logic relies on datagram_poll, which checks
+sk_receive_queue, which can lead to false readiness signals when that
+queue contains non-userspace packets.
 
-Signed-off-by: Nikolay Aleksandrov <razor@blackwall.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: bf29555f5bdc ("rtnetlink: Allow deleting FDB entries in user namespace")
+Switch espintcp_poll to use datagram_poll_queue with ike_queue, ensuring
+poll only signals readiness when userspace data is actually available.
+
+Fixes: e27cca96cd68 ("xfrm: add espintcp (RFC 8229)")
+Signed-off-by: Ralf Lici <ralf@mandelbit.com>
+Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
+Link: https://patch.msgid.link/20251021100942.195010-3-ralf@mandelbit.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/rtnetlink.c | 67 +++++++++++++++++++++++++++++++-------------
- 1 file changed, 48 insertions(+), 19 deletions(-)
+ net/xfrm/espintcp.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
-index 61ab0497ac755..08bb8e09994db 100644
---- a/net/core/rtnetlink.c
-+++ b/net/core/rtnetlink.c
-@@ -4174,22 +4174,34 @@ int ndo_dflt_fdb_del(struct ndmsg *ndm,
- }
- EXPORT_SYMBOL(ndo_dflt_fdb_del);
- 
-+static const struct nla_policy fdb_del_bulk_policy[NDA_MAX + 1] = {
-+	[NDA_VLAN]	= { .type = NLA_U16 },
-+	[NDA_IFINDEX]	= NLA_POLICY_MIN(NLA_S32, 1),
-+};
-+
- static int rtnl_fdb_del(struct sk_buff *skb, struct nlmsghdr *nlh,
- 			struct netlink_ext_ack *extack)
+diff --git a/net/xfrm/espintcp.c b/net/xfrm/espintcp.c
+index fc7a603b04f13..bf744ac9d5a73 100644
+--- a/net/xfrm/espintcp.c
++++ b/net/xfrm/espintcp.c
+@@ -555,14 +555,10 @@ static void espintcp_close(struct sock *sk, long timeout)
+ static __poll_t espintcp_poll(struct file *file, struct socket *sock,
+ 			      poll_table *wait)
  {
-+	bool del_bulk = !!(nlh->nlmsg_flags & NLM_F_BULK);
- 	struct net *net = sock_net(skb->sk);
-+	const struct net_device_ops *ops;
- 	struct ndmsg *ndm;
- 	struct nlattr *tb[NDA_MAX+1];
- 	struct net_device *dev;
--	__u8 *addr;
-+	__u8 *addr = NULL;
- 	int err;
- 	u16 vid;
+-	__poll_t mask = datagram_poll(file, sock, wait);
+ 	struct sock *sk = sock->sk;
+ 	struct espintcp_ctx *ctx = espintcp_getctx(sk);
  
- 	if (!netlink_capable(skb, CAP_NET_ADMIN))
- 		return -EPERM;
- 
--	err = nlmsg_parse_deprecated(nlh, sizeof(*ndm), tb, NDA_MAX, NULL,
--				     extack);
-+	if (!del_bulk) {
-+		err = nlmsg_parse_deprecated(nlh, sizeof(*ndm), tb, NDA_MAX,
-+					     NULL, extack);
-+	} else {
-+		err = nlmsg_parse(nlh, sizeof(*ndm), tb, NDA_MAX,
-+				  fdb_del_bulk_policy, extack);
-+	}
- 	if (err < 0)
- 		return err;
- 
-@@ -4205,9 +4217,12 @@ static int rtnl_fdb_del(struct sk_buff *skb, struct nlmsghdr *nlh,
- 		return -ENODEV;
- 	}
- 
--	if (!tb[NDA_LLADDR] || nla_len(tb[NDA_LLADDR]) != ETH_ALEN) {
--		NL_SET_ERR_MSG(extack, "invalid address");
--		return -EINVAL;
-+	if (!del_bulk) {
-+		if (!tb[NDA_LLADDR] || nla_len(tb[NDA_LLADDR]) != ETH_ALEN) {
-+			NL_SET_ERR_MSG(extack, "invalid address");
-+			return -EINVAL;
-+		}
-+		addr = nla_data(tb[NDA_LLADDR]);
- 	}
- 
- 	if (dev->type != ARPHRD_ETHER) {
-@@ -4215,8 +4230,6 @@ static int rtnl_fdb_del(struct sk_buff *skb, struct nlmsghdr *nlh,
- 		return -EINVAL;
- 	}
- 
--	addr = nla_data(tb[NDA_LLADDR]);
+-	if (!skb_queue_empty(&ctx->ike_queue))
+-		mask |= EPOLLIN | EPOLLRDNORM;
 -
- 	err = fdb_vid_parse(tb[NDA_VLAN], &vid, extack);
- 	if (err)
- 		return err;
-@@ -4227,10 +4240,16 @@ static int rtnl_fdb_del(struct sk_buff *skb, struct nlmsghdr *nlh,
- 	if ((!ndm->ndm_flags || ndm->ndm_flags & NTF_MASTER) &&
- 	    netif_is_bridge_port(dev)) {
- 		struct net_device *br_dev = netdev_master_upper_dev_get(dev);
--		const struct net_device_ops *ops = br_dev->netdev_ops;
+-	return mask;
++	return datagram_poll_queue(file, sock, wait, &ctx->ike_queue);
+ }
  
--		if (ops->ndo_fdb_del)
--			err = ops->ndo_fdb_del(ndm, tb, dev, addr, vid);
-+		ops = br_dev->netdev_ops;
-+		if (!del_bulk) {
-+			if (ops->ndo_fdb_del)
-+				err = ops->ndo_fdb_del(ndm, tb, dev, addr, vid);
-+		} else {
-+			if (ops->ndo_fdb_del_bulk)
-+				err = ops->ndo_fdb_del_bulk(ndm, tb, dev, vid,
-+							    extack);
-+		}
- 
- 		if (err)
- 			goto out;
-@@ -4240,15 +4259,24 @@ static int rtnl_fdb_del(struct sk_buff *skb, struct nlmsghdr *nlh,
- 
- 	/* Embedded bridge, macvlan, and any other device support */
- 	if (ndm->ndm_flags & NTF_SELF) {
--		if (dev->netdev_ops->ndo_fdb_del)
--			err = dev->netdev_ops->ndo_fdb_del(ndm, tb, dev, addr,
--							   vid);
--		else
--			err = ndo_dflt_fdb_del(ndm, tb, dev, addr, vid);
-+		ops = dev->netdev_ops;
-+		if (!del_bulk) {
-+			if (ops->ndo_fdb_del)
-+				err = ops->ndo_fdb_del(ndm, tb, dev, addr, vid);
-+			else
-+				err = ndo_dflt_fdb_del(ndm, tb, dev, addr, vid);
-+		} else {
-+			/* in case err was cleared by NTF_MASTER call */
-+			err = -EOPNOTSUPP;
-+			if (ops->ndo_fdb_del_bulk)
-+				err = ops->ndo_fdb_del_bulk(ndm, tb, dev, vid,
-+							    extack);
-+		}
- 
- 		if (!err) {
--			rtnl_fdb_notify(dev, addr, vid, RTM_DELNEIGH,
--					ndm->ndm_state);
-+			if (!del_bulk)
-+				rtnl_fdb_notify(dev, addr, vid, RTM_DELNEIGH,
-+						ndm->ndm_state);
- 			ndm->ndm_flags &= ~NTF_SELF;
- 		}
- 	}
-@@ -5770,7 +5798,8 @@ void __init rtnetlink_init(void)
- 	rtnl_register(PF_UNSPEC, RTM_DELLINKPROP, rtnl_dellinkprop, NULL, 0);
- 
- 	rtnl_register(PF_BRIDGE, RTM_NEWNEIGH, rtnl_fdb_add, NULL, 0);
--	rtnl_register(PF_BRIDGE, RTM_DELNEIGH, rtnl_fdb_del, NULL, 0);
-+	rtnl_register(PF_BRIDGE, RTM_DELNEIGH, rtnl_fdb_del, NULL,
-+		      RTNL_FLAG_BULK_DEL_SUPPORTED);
- 	rtnl_register(PF_BRIDGE, RTM_GETNEIGH, rtnl_fdb_get, rtnl_fdb_dump, 0);
- 
- 	rtnl_register(PF_BRIDGE, RTM_GETLINK, NULL, rtnl_bridge_getlink, 0);
+ static void build_protos(struct proto *espintcp_prot,
 -- 
 2.51.0
 
