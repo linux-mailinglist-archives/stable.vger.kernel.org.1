@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-191285-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190959-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 331DAC11256
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:37:36 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65D00C10C28
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:18:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 274771895D37
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:33:55 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 12D943524DD
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:18:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DDD42D94B2;
-	Mon, 27 Oct 2025 19:32:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECF0D30F534;
+	Mon, 27 Oct 2025 19:17:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ixi9kzS6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WIbMH2zf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AEA123EA92;
-	Mon, 27 Oct 2025 19:32:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB6C62C3745;
+	Mon, 27 Oct 2025 19:17:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761593522; cv=none; b=ne7lwTMQISdfTyLLRmJ/pCMJdrUDZZpLSmhzwWbu93wtuIo6s72BGc+XB7zXWklcqXPl79Zp18YZ1/nI8f+Hzv3mvcAHWqIDPnqX9X6pziaExaQGCgfuHuiVcl/1+s+JspJn8ngFzm3LhoS3jjsn8WDmNrUPZ0DuEZGin9bX1uk=
+	t=1761592645; cv=none; b=duW0xhjOXdCOCI1M6m7Hd2B1XcbODgnbwi1XYB/T2MvY/QzXfffU94d5ZybydzcqXJcaIU3emQmXDgVMTbA9jrbkkwe9xF6FZvpcIAfGX3+sEH60Xd0FMWQzXV6njfKFA04Uex4YrvcVtHLwcnBBZJRV5LvS2l+UgFnU8cyFsz0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761593522; c=relaxed/simple;
-	bh=ocHmNAMGYSZR+Vd6lMKdggo8W9ieo4dqVfUbbiCB4Tg=;
+	s=arc-20240116; t=1761592645; c=relaxed/simple;
+	bh=SAWP7Em/a91+YdybyN8p8jPFERYCL2ZHbPNMqhr/X2w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SRJYpCGNiKbnfU8eTBV5YMRMV+jxiV+DuCMxYJG31NaBsCVWg7VNzTNxhgQbUbV84Y4KnO95QamO1/45Hzkk6xLbb7VdZ8JDa/f+6SlD26UQMWK6L1s85FzaQ7bL7dXfstzCAZdLXnsQxXIgFT2yOSFAQMqzNzNX4HOONlnTV50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ixi9kzS6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A78C9C4CEF1;
-	Mon, 27 Oct 2025 19:32:01 +0000 (UTC)
+	 MIME-Version; b=ZpiQ9VtKjkj4E0TMBKHAc48t7vRZalLNqPRls639CZAlMIdqUnQ63hivd+h/qKHxdWZRgjVVrlXIq/I954Wa3qGDSvjXR334ECw4wZgUJagFl0NdElZkCaVKhtmffQDC87KEX7YaZvlIu6/x8UMz5IDC0904UAFOi5+cqvv7TLo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WIbMH2zf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34A86C4CEF1;
+	Mon, 27 Oct 2025 19:17:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761593522;
-	bh=ocHmNAMGYSZR+Vd6lMKdggo8W9ieo4dqVfUbbiCB4Tg=;
+	s=korg; t=1761592645;
+	bh=SAWP7Em/a91+YdybyN8p8jPFERYCL2ZHbPNMqhr/X2w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ixi9kzS6xzExpVbeiX+UuEFVEWoDDHPQVF8fVzOBUB8cD0mC7Epfpq2Boy3wCkV+3
-	 DqBs4jpgrb4Zszupe/KXpX6bBmrMPu1gPZkBLOFMirPbWMefGXBP4YQyCe+UT+vbyL
-	 47SlPHAvlOq5p4QUgs8guNQsbSEkaPiFTJYWCKww=
+	b=WIbMH2zfQMRm0Mne/diGdOExcnn+sBeHBTdWtuCDaD1/++zdDwiCFwGMJLvQMa2zs
+	 qGsfwGO4WNdtqlLTlH1TiPDYj9tINIKjDNM9TqSmoMakqIiMxQmHWm8rZp5ODB8Kv+
+	 HJeAbxR4T8StIZRZcDPt2Ba/LOieCxjw6y6ZgRdk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.17 109/184] mm/damon/core: use damos_commit_quota_goal() for new goal commit
-Date: Mon, 27 Oct 2025 19:36:31 +0100
-Message-ID: <20251027183517.857332901@linuxfoundation.org>
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 43/84] net: stmmac: dwmac-rk: Fix disabling set_clock_selection
+Date: Mon, 27 Oct 2025 19:36:32 +0100
+Message-ID: <20251027183439.966096787@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
-References: <20251027183514.934710872@linuxfoundation.org>
+In-Reply-To: <20251027183438.817309828@linuxfoundation.org>
+References: <20251027183438.817309828@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: SeongJae Park <sj@kernel.org>
+From: Sebastian Reichel <sebastian.reichel@collabora.com>
 
-commit 7eca961dd7188f20fdf8ce9ed5018280f79b2438 upstream.
+commit 7f864458e9a6d2000b726d14b3d3a706ac92a3b0 upstream.
 
-When damos_commit_quota_goals() is called for adding new DAMOS quota goals
-of DAMOS_QUOTA_USER_INPUT metric, current_value fields of the new goals
-should be also set as requested.
+On all platforms set_clock_selection() writes to a GRF register. This
+requires certain clocks running and thus should happen before the
+clocks are disabled.
 
-However, damos_commit_quota_goals() is not updating the field for the
-case, since it is setting only metrics and target values using
-damos_new_quota_goal(), and metric-optional union fields using
-damos_commit_quota_goal_union().  As a result, users could see the first
-current_value parameter that committed online with a new quota goal is
-ignored.  Users are assumed to commit the current_value for
-DAMOS_QUOTA_USER_INPUT quota goals, since it is being used as a feedback.
-Hence the real impact would be subtle.  That said, this is obviously not
-intended behavior.
+This has been noticed on RK3576 Sige5, which hangs during system suspend
+when trying to suspend the second network interface. Note, that
+suspending the first interface works, because the second device ensures
+that the necessary clocks for the GRF are enabled.
 
-Fix the issue by using damos_commit_quota_goal() which sets all quota goal
-parameters, instead of damos_commit_quota_goal_union(), which sets only
-the union fields.
-
-Link: https://lkml.kernel.org/r/20251014001846.279282-1-sj@kernel.org
-Fixes: 1aef9df0ee90 ("mm/damon/core: commit damos_quota_goal->nid")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: <stable@vger.kernel.org>	[6.16+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@vger.kernel.org
+Fixes: 2f2b60a0ec28 ("net: ethernet: stmmac: dwmac-rk: Add gmac support for rk3588")
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20251014-rockchip-network-clock-fix-v1-1-c257b4afdf75@collabora.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/damon/core.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c |    9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -811,7 +811,7 @@ int damos_commit_quota_goals(struct damo
- 				src_goal->metric, src_goal->target_value);
- 		if (!new_goal)
- 			return -ENOMEM;
--		damos_commit_quota_goal_union(new_goal, src_goal);
-+		damos_commit_quota_goal(new_goal, src_goal);
- 		damos_add_quota_goal(dst, new_goal);
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c
+@@ -1565,14 +1565,15 @@ static int gmac_clk_enable(struct rk_pri
+ 		}
+ 	} else {
+ 		if (bsp_priv->clk_enabled) {
++			if (bsp_priv->ops && bsp_priv->ops->set_clock_selection) {
++				bsp_priv->ops->set_clock_selection(bsp_priv,
++					      bsp_priv->clock_input, false);
++			}
++
+ 			clk_bulk_disable_unprepare(bsp_priv->num_clks,
+ 						   bsp_priv->clks);
+ 			clk_disable_unprepare(bsp_priv->clk_phy);
+ 
+-			if (bsp_priv->ops && bsp_priv->ops->set_clock_selection)
+-				bsp_priv->ops->set_clock_selection(bsp_priv,
+-					      bsp_priv->clock_input, false);
+-
+ 			bsp_priv->clk_enabled = false;
+ 		}
  	}
- 	return 0;
 
 
 
