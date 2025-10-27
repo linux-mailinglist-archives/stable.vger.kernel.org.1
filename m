@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-190648-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190792-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECC15C109ED
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:13:08 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3323DC10BC8
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:18:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AB3DA5681AA
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:07:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 935411A6364D
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:13:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08D97329C42;
-	Mon, 27 Oct 2025 19:03:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C58DE2D5A14;
+	Mon, 27 Oct 2025 19:10:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XjLMKbD1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CCjkrJ7J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8D5A31D72B;
-	Mon, 27 Oct 2025 19:03:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FBA63074AC;
+	Mon, 27 Oct 2025 19:10:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591831; cv=none; b=OYlBIIxGMsQ9x3aI6lRcMWds7+cbZipAWjkRR8N1zsrfTizAZAGZt4naOUvOgv0TlwnL+iQn5LbOnO8xB+t0Pq09UnHVGTeAO1N/CBegozQM3wm0fjL4bBjMLOiQD5KsAPouvZLEcYGbAssKr42GlepGyy/wyammBOeuNlYQMyA=
+	t=1761592208; cv=none; b=szOxDVJ8FaudK+64gSYQi95dbF7vCNwp4i4c7CPueJ8tcJERWwopuzCLSDiehT7lgxjyXlFdT+kjubaBS/ktrIm68wW7130nPdH019Xm6oJ/XHg15iKCrByvgwk47yGpmNaRHL7T38EAv5miB+1HazFsxZOVt+jtOoFrYvYZcOI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591831; c=relaxed/simple;
-	bh=1K86Bmu4wQb4e3dgD4R1L5m/aWuIgAetwyIEHB7OToA=;
+	s=arc-20240116; t=1761592208; c=relaxed/simple;
+	bh=4HuM35JKgOLbZNSiVnP34JhCsGpMmKG13gMlKSYRp7A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y5vyn69qeI5Xjd96t3Hj+AZrPtFqz7bq9HCnwXyM1KbF+PgnvDPR6sTjxgbSu4k0bpWh7WHElZBLPcHFuQHFSGOnhzv/xQTEuifcL8ZhN3yxN/sW9Yaj8zcr+WslWoTpAlY/ZH8lVUu/FdBZbDcYI5iJs4VWlWrWn97lr8ETMoQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XjLMKbD1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B589C4CEF1;
-	Mon, 27 Oct 2025 19:03:51 +0000 (UTC)
+	 MIME-Version; b=JvaLAlZbOcrEzlUvD5mtgm+MpGrQZch3zNeGGj9c31e65YT+zdPIe2hD7/Nqv2Ze6VcvuRXWzIqTDLGmIHczrT7twuc3fFbjhTunD7n4tsL7QYnUH0BNqfJ4NlLl5nUHR2V3fR4p9t9DbJjiEHWWaw3qP8vBKvyW1JO+JEsPT+U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CCjkrJ7J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13848C4CEF1;
+	Mon, 27 Oct 2025 19:10:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591831;
-	bh=1K86Bmu4wQb4e3dgD4R1L5m/aWuIgAetwyIEHB7OToA=;
+	s=korg; t=1761592208;
+	bh=4HuM35JKgOLbZNSiVnP34JhCsGpMmKG13gMlKSYRp7A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XjLMKbD1l8/nhUP1WtTfybw3/FYPIYbJey4OPYL6ELICpkRZBt5/74WH54L6V9zMS
-	 g+QyfzFbcr1vQLSrvJYQlFPZdHfp1PPf2+6esMKDKcdNIBzJnVmJL1cquEB6vEvzMc
-	 qGM447wfKZdVyjLhYDuBxaYRxyiGOpW1idaoKHqY=
+	b=CCjkrJ7JjrajwtCEXq0NRTg9BOCKjPrCkQogBTFhalAV4WHQJsnQwRpcQqQvu9O5H
+	 dfpcGhXjiaJSg92xj4z6d9zrm8l0SvGfpqPewk9jBgtkwE1ueyS0/0FUH+oXDcxAgj
+	 uiIn7/Qi6DxNJozvgpfKSy4oSjn7nj3BoQ2OsBuA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuezhang Mo <Yuezhang.Mo@sony.com>,
-	Friendy Su <friendy.su@sony.com>,
-	Daniel Palmer <daniel.palmer@sony.com>,
-	Gao Xiang <hsiangkao@linux.alibaba.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 015/123] dax: skip read lock assertion for read-only filesystems
+	Thomas Gleixner <tglx@linutronix.de>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Anna-Maria Behnsen <anna-maria@linutronix.de>,
+	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+	Jeongjun Park <aha310510@gmail.com>
+Subject: [PATCH 6.1 034/157] Bluetooth: hci_qca: Fix the teardown problem for real
 Date: Mon, 27 Oct 2025 19:34:55 +0100
-Message-ID: <20251027183446.808113412@linuxfoundation.org>
+Message-ID: <20251027183502.211470083@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183446.381986645@linuxfoundation.org>
-References: <20251027183446.381986645@linuxfoundation.org>
+In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
+References: <20251027183501.227243846@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,51 +65,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuezhang Mo <Yuezhang.Mo@sony.com>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-[ Upstream commit 154d1e7ad9e5ce4b2aaefd3862b3dba545ad978d ]
+[ Upstream commit e0d3da982c96aeddc1bbf1cf9469dbb9ebdca657 ]
 
-The commit 168316db3583("dax: assert that i_rwsem is held
-exclusive for writes") added lock assertions to ensure proper
-locking in DAX operations. However, these assertions trigger
-false-positive lockdep warnings since read lock is unnecessary
-on read-only filesystems(e.g., erofs).
+While discussing solutions for the teardown problem which results from
+circular dependencies between timers and workqueues, where timers schedule
+work from their timer callback and workqueues arm the timers from work
+items, it was discovered that the recent fix to the QCA code is incorrect.
 
-This patch skips the read lock assertion for read-only filesystems,
-eliminating the spurious warnings while maintaining the integrity
-checks for writable filesystems.
+That commit fixes the obvious problem of using del_timer() instead of
+del_timer_sync() and reorders the teardown calls to
 
-Fixes: 168316db3583 ("dax: assert that i_rwsem is held exclusive for writes")
-Signed-off-by: Yuezhang Mo <Yuezhang.Mo@sony.com>
-Reviewed-by: Friendy Su <friendy.su@sony.com>
-Reviewed-by: Daniel Palmer <daniel.palmer@sony.com>
-Reviewed-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+   destroy_workqueue(wq);
+   del_timer_sync(t);
+
+This makes it less likely to explode, but it's still broken:
+
+   destroy_workqueue(wq);
+   /* After this point @wq cannot be touched anymore */
+
+   ---> timer expires
+         queue_work(wq) <---- Results in a NULL pointer dereference
+			      deep in the work queue core code.
+   del_timer_sync(t);
+
+Use the new timer_shutdown_sync() function to ensure that the timers are
+disarmed, no timer callbacks are running and the timers cannot be armed
+again. This restores the original teardown sequence:
+
+   timer_shutdown_sync(t);
+   destroy_workqueue(wq);
+
+which is now correct because the timer core silently ignores potential
+rearming attempts which can happen when destroy_workqueue() drains pending
+work before mopping up the workqueue.
+
+Fixes: 72ef98445aca ("Bluetooth: hci_qca: Use del_timer_sync() before freeing")
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Guenter Roeck <linux@roeck-us.net>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Reviewed-by: Anna-Maria Behnsen <anna-maria@linutronix.de>
+Acked-by: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
+Link: https://lore.kernel.org/all/87iljhsftt.ffs@tglx
+Link: https://lore.kernel.org/r/20221123201625.435907114@linutronix.de
+Signed-off-by: Jeongjun Park <aha310510@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/dax.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/bluetooth/hci_qca.c |   10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/fs/dax.c b/fs/dax.c
-index 4ab1c493c73f1..504114394995c 100644
---- a/fs/dax.c
-+++ b/fs/dax.c
-@@ -1285,7 +1285,7 @@ dax_iomap_rw(struct kiocb *iocb, struct iov_iter *iter,
- 	if (iov_iter_rw(iter) == WRITE) {
- 		lockdep_assert_held_write(&iomi.inode->i_rwsem);
- 		iomi.flags |= IOMAP_WRITE;
--	} else {
-+	} else if (!sb_rdonly(iomi.inode->i_sb)) {
- 		lockdep_assert_held(&iomi.inode->i_rwsem);
- 	}
+--- a/drivers/bluetooth/hci_qca.c
++++ b/drivers/bluetooth/hci_qca.c
+@@ -710,9 +710,15 @@ static int qca_close(struct hci_uart *hu
+ 	skb_queue_purge(&qca->tx_wait_q);
+ 	skb_queue_purge(&qca->txq);
+ 	skb_queue_purge(&qca->rx_memdump_q);
++	/*
++	 * Shut the timers down so they can't be rearmed when
++	 * destroy_workqueue() drains pending work which in turn might try
++	 * to arm a timer.  After shutdown rearm attempts are silently
++	 * ignored by the timer core code.
++	 */
++	timer_shutdown_sync(&qca->tx_idle_timer);
++	timer_shutdown_sync(&qca->wake_retrans_timer);
+ 	destroy_workqueue(qca->workqueue);
+-	del_timer_sync(&qca->tx_idle_timer);
+-	del_timer_sync(&qca->wake_retrans_timer);
+ 	qca->hu = NULL;
  
--- 
-2.51.0
-
+ 	kfree_skb(qca->rx_skb);
 
 
 
