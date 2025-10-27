@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-190133-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190468-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA754C1003B
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:43:39 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91C77C1070E
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:05:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 1E4E94EF6F5
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:42:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 15F891A20F06
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:01:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23D16319611;
-	Mon, 27 Oct 2025 18:42:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF3EE31D375;
+	Mon, 27 Oct 2025 18:56:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o1zqlsMi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fFdPTr+8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D723F30FC0F;
-	Mon, 27 Oct 2025 18:42:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8571E314B8F;
+	Mon, 27 Oct 2025 18:56:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761590526; cv=none; b=cRO0CH78jBv3xTVtGPMbxZGJPkitQu9QpGmiA85H19y3nvCeGwddrZq1S+u9bDYBDzIjokBv9ANDSQP3Ff7YTa+kp3AP7f4Z3a1LFs/2g6VukprTMCvdPZ2Qp7yhGA/v18FWMFXNtZ+TIItB1Akc9ss7g1tR3S6JlTK4Hb+kxsA=
+	t=1761591369; cv=none; b=hZj5RdC5oyWavGWXfc2QbdMDC42p4E6RTNjm56vq6huuQdpR7KMbNqkiwaboP7JAUeoZqoBlgVO+A4w41tq7r731/aEaD3Ki9WkigF4Su34hxnHibfiFVAUOpKlZiAmUczSOzmMq9f8horwZD4zFOKZCXRFS7nUhB/xWLo+AfZI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761590526; c=relaxed/simple;
-	bh=siW3Ukwt0GJf76IFPreWSViEhLPZogpQeaeMKRGTrXw=;
+	s=arc-20240116; t=1761591369; c=relaxed/simple;
+	bh=I76MVyUJth0efiQHch7pCWTxE0msN/vwuN99GYMeJdQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OAt4wXYDSyC+wHEVFXvsz2DLElUF70eaZENUbbGtZ1cOBnoDuTBNFLbipCk2/WQZzMRCVoIL6UTw2+ImXTXY9BI+H/S0P4A61jkp+EhNyMejbm2VrROSsIPnwWJXMC6HbEcQfR42xyklQNuOsnMTqqEjiXImvUaSKl+o07Y+4fU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o1zqlsMi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62FA5C4CEFD;
-	Mon, 27 Oct 2025 18:42:06 +0000 (UTC)
+	 MIME-Version; b=cM2YMUYwDcwjxodVxZNBrHVRL+Ei/ER7Jx1cFy+7CNWh7yrlHrg3oZ6UsIY2S67kitSa9Kt6SVbr49aHeB4UoD4Egt68/xxTxdWEsVnoEhUEyp8J9Y0Rv24/dWasDayQUtIfzYy7pG+NDcq8nPD1TAdZ6uGoIoHYwZLjZVZpL+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fFdPTr+8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAC47C4CEF1;
+	Mon, 27 Oct 2025 18:56:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761590526;
-	bh=siW3Ukwt0GJf76IFPreWSViEhLPZogpQeaeMKRGTrXw=;
+	s=korg; t=1761591369;
+	bh=I76MVyUJth0efiQHch7pCWTxE0msN/vwuN99GYMeJdQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o1zqlsMiS+r7AlUMdbQ2Xr78YOQ29K6eS2wg2q0i81y0snyx9sx5EC2cE10W5/R7/
-	 T+R6uWQMDB3juAyGOSE+RQg5ZgofMBQu/8T4fFckPH3zUZJkwGKanrpiJOAaX/jsgO
-	 kt179jvTUm4r0oWbgk4u/ZP2EqDuy6GvlfEVSHeg=
+	b=fFdPTr+8B09kGHoiX+pW37XQ6AlUm1jCQc4nCEtDZpTPl4tiAGp9NecD0xh0WYD+P
+	 sWW3yla4z7S5zEs2FdWkb1AS4MbNFR/DtFzal1EeQvHq0ogt3tUb0Ns8p9SQnz4zpx
+	 vCtJ35EKpN8PAFQjjA6exuieBl2cs8SZCJRBcO/M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhen Ni <zhen.ni@easystack.cn>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>
-Subject: [PATCH 5.4 078/224] clocksource/drivers/clps711x: Fix resource leaks in error paths
+	Nathan Chancellor <nathan@kernel.org>,
+	"Jason A. Donenfeld" <Jason@zx2c4.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Eric Biggers <ebiggers@google.com>
+Subject: [PATCH 5.10 171/332] lib/crypto/curve25519-hacl64: Disable KASAN with clang-17 and older
 Date: Mon, 27 Oct 2025 19:33:44 +0100
-Message-ID: <20251027183511.086238917@linuxfoundation.org>
+Message-ID: <20251027183529.142271445@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183508.963233542@linuxfoundation.org>
-References: <20251027183508.963233542@linuxfoundation.org>
+In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
+References: <20251027183524.611456697@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,72 +63,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhen Ni <zhen.ni@easystack.cn>
+From: Nathan Chancellor <nathan@kernel.org>
 
-commit cd32e596f02fc981674573402c1138f616df1728 upstream.
+commit 2f13daee2a72bb962f5fd356c3a263a6f16da965 upstream.
 
-The current implementation of clps711x_timer_init() has multiple error
-paths that directly return without releasing the base I/O memory mapped
-via of_iomap(). Fix of_iomap leaks in error paths.
+After commit 6f110a5e4f99 ("Disable SLUB_TINY for build testing"), which
+causes CONFIG_KASAN to be enabled in allmodconfig again, arm64
+allmodconfig builds with clang-17 and older show an instance of
+-Wframe-larger-than (which breaks the build with CONFIG_WERROR=y):
 
-Fixes: 04410efbb6bc ("clocksource/drivers/clps711x: Convert init function to return error")
-Fixes: 2a6a8e2d9004 ("clocksource/drivers/clps711x: Remove board support")
-Signed-off-by: Zhen Ni <zhen.ni@easystack.cn>
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250814123324.1516495-1-zhen.ni@easystack.cn
+  lib/crypto/curve25519-hacl64.c:757:6: error: stack frame size (2336) exceeds limit (2048) in 'curve25519_generic' [-Werror,-Wframe-larger-than]
+    757 | void curve25519_generic(u8 mypublic[CURVE25519_KEY_SIZE],
+        |      ^
+
+When KASAN is disabled, the stack usage is roughly quartered:
+
+  lib/crypto/curve25519-hacl64.c:757:6: error: stack frame size (608) exceeds limit (128) in 'curve25519_generic' [-Werror,-Wframe-larger-than]
+    757 | void curve25519_generic(u8 mypublic[CURVE25519_KEY_SIZE],
+        |      ^
+
+Using '-Rpass-analysis=stack-frame-layout' shows the following variables
+and many, many 8-byte spills when KASAN is enabled:
+
+  Offset: [SP-144], Type: Variable, Align: 8, Size: 40
+  Offset: [SP-464], Type: Variable, Align: 8, Size: 320
+  Offset: [SP-784], Type: Variable, Align: 8, Size: 320
+  Offset: [SP-864], Type: Variable, Align: 32, Size: 80
+  Offset: [SP-896], Type: Variable, Align: 32, Size: 32
+  Offset: [SP-1016], Type: Variable, Align: 8, Size: 120
+
+When KASAN is disabled, there are still spills but not at many and the
+variables list is smaller:
+
+  Offset: [SP-192], Type: Variable, Align: 32, Size: 80
+  Offset: [SP-224], Type: Variable, Align: 32, Size: 32
+  Offset: [SP-344], Type: Variable, Align: 8, Size: 120
+
+Disable KASAN for this file when using clang-17 or older to avoid
+blowing out the stack, clearing up the warning.
+
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Acked-by: "Jason A. Donenfeld" <Jason@zx2c4.com>
+Acked-by: Ard Biesheuvel <ardb@kernel.org>
+Link: https://lore.kernel.org/r/20250609-curve25519-hacl64-disable-kasan-clang-v1-1-08ea0ac5ccff@kernel.org
+Signed-off-by: Eric Biggers <ebiggers@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clocksource/clps711x-timer.c |   23 ++++++++++++++++-------
- 1 file changed, 16 insertions(+), 7 deletions(-)
+ lib/crypto/Makefile |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/clocksource/clps711x-timer.c
-+++ b/drivers/clocksource/clps711x-timer.c
-@@ -78,24 +78,33 @@ static int __init clps711x_timer_init(st
- 	unsigned int irq = irq_of_parse_and_map(np, 0);
- 	struct clk *clock = of_clk_get(np, 0);
- 	void __iomem *base = of_iomap(np, 0);
-+	int ret = 0;
+--- a/lib/crypto/Makefile
++++ b/lib/crypto/Makefile
+@@ -22,6 +22,10 @@ obj-$(CONFIG_CRYPTO_LIB_CURVE25519_GENER
+ libcurve25519-generic-y				:= curve25519-fiat32.o
+ libcurve25519-generic-$(CONFIG_ARCH_SUPPORTS_INT128)	:= curve25519-hacl64.o
+ libcurve25519-generic-y				+= curve25519-generic.o
++# clang versions prior to 18 may blow out the stack with KASAN
++ifeq ($(call clang-min-version, 180000),)
++KASAN_SANITIZE_curve25519-hacl64.o := n
++endif
  
- 	if (!base)
- 		return -ENOMEM;
--	if (!irq)
--		return -EINVAL;
--	if (IS_ERR(clock))
--		return PTR_ERR(clock);
-+	if (!irq) {
-+		ret = -EINVAL;
-+		goto unmap_io;
-+	}
-+	if (IS_ERR(clock)) {
-+		ret = PTR_ERR(clock);
-+		goto unmap_io;
-+	}
- 
- 	switch (of_alias_get_id(np, "timer")) {
- 	case CLPS711X_CLKSRC_CLOCKSOURCE:
- 		clps711x_clksrc_init(clock, base);
- 		break;
- 	case CLPS711X_CLKSRC_CLOCKEVENT:
--		return _clps711x_clkevt_init(clock, base, irq);
-+		ret =  _clps711x_clkevt_init(clock, base, irq);
-+		break;
- 	default:
--		return -EINVAL;
-+		ret = -EINVAL;
-+		break;
- 	}
- 
--	return 0;
-+unmap_io:
-+	iounmap(base);
-+	return ret;
- }
- TIMER_OF_DECLARE(clps711x, "cirrus,ep7209-timer", clps711x_timer_init);
+ obj-$(CONFIG_CRYPTO_LIB_CURVE25519)		+= libcurve25519.o
+ libcurve25519-y					+= curve25519.o
 
 
 
