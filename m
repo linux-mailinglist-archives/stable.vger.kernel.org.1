@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-190959-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191069-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65D00C10C28
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:18:45 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89A8FC11057
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:30:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 12D943524DD
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:18:45 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B78F5548731
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:23:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECF0D30F534;
-	Mon, 27 Oct 2025 19:17:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CA29328627;
+	Mon, 27 Oct 2025 19:22:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WIbMH2zf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q3PUItHx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB6C62C3745;
-	Mon, 27 Oct 2025 19:17:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43538328634;
+	Mon, 27 Oct 2025 19:22:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592645; cv=none; b=duW0xhjOXdCOCI1M6m7Hd2B1XcbODgnbwi1XYB/T2MvY/QzXfffU94d5ZybydzcqXJcaIU3emQmXDgVMTbA9jrbkkwe9xF6FZvpcIAfGX3+sEH60Xd0FMWQzXV6njfKFA04Uex4YrvcVtHLwcnBBZJRV5LvS2l+UgFnU8cyFsz0=
+	t=1761592932; cv=none; b=DZGS/kbu9gBb8DyuUbAj66/7Fli5V9vcekq914TbBmqnNIGyB8+bKZUjhBYn4Wtci5VJ5/cg2UdPT/RcuiUMcfoIJVd5O/Ew+8+wfH7cFkC3Ubcy6V40mnJ48lhMQXjQ+dyPQlEkMbJWGzHlNVrBNVtKeLmmaq5H/okrNYhTtcE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592645; c=relaxed/simple;
-	bh=SAWP7Em/a91+YdybyN8p8jPFERYCL2ZHbPNMqhr/X2w=;
+	s=arc-20240116; t=1761592932; c=relaxed/simple;
+	bh=nvCt6M2rsKUeQZSvc/4ud2Ud0LOqqThP6Adb4Hvo0xQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZpiQ9VtKjkj4E0TMBKHAc48t7vRZalLNqPRls639CZAlMIdqUnQ63hivd+h/qKHxdWZRgjVVrlXIq/I954Wa3qGDSvjXR334ECw4wZgUJagFl0NdElZkCaVKhtmffQDC87KEX7YaZvlIu6/x8UMz5IDC0904UAFOi5+cqvv7TLo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WIbMH2zf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34A86C4CEF1;
-	Mon, 27 Oct 2025 19:17:25 +0000 (UTC)
+	 MIME-Version; b=KVu6tbeJPEF9vDcDToLq3Sgfsfdj4rUTZJ4vqTVKQR6eVifexMKy1wdkLSSLkQr6PojlYe5F1+C8zoPJtPAILhBsfthCZIW2DjT39VEs1C90keC4hObuvryCoc9HPAEPVGpjyAKcffshjbT7VBE4OlFQ46bov3UGuRTe0ySh7b8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q3PUItHx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0861C4CEF1;
+	Mon, 27 Oct 2025 19:22:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592645;
-	bh=SAWP7Em/a91+YdybyN8p8jPFERYCL2ZHbPNMqhr/X2w=;
+	s=korg; t=1761592932;
+	bh=nvCt6M2rsKUeQZSvc/4ud2Ud0LOqqThP6Adb4Hvo0xQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WIbMH2zfQMRm0Mne/diGdOExcnn+sBeHBTdWtuCDaD1/++zdDwiCFwGMJLvQMa2zs
-	 qGsfwGO4WNdtqlLTlH1TiPDYj9tINIKjDNM9TqSmoMakqIiMxQmHWm8rZp5ODB8Kv+
-	 HJeAbxR4T8StIZRZcDPt2Ba/LOieCxjw6y6ZgRdk=
+	b=Q3PUItHxaCOIGsFRpFAT4yQi3E55gFHcuA42uJWgbkmTqwpkeIPEAJZiyGeWZv1AJ
+	 kNOdQv3b03pnAU2A+B4xqd0mNa2+f9PzUxgmFMvlhzd8Fmd6uQKCHYImpP6bbgq5Ae
+	 1s8YmETmT8s6MNSAaOoaeHB80Lo4xXtPVHXqCEc4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
-	Simon Horman <horms@kernel.org>,
+	Geliang Tang <geliang@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 43/84] net: stmmac: dwmac-rk: Fix disabling set_clock_selection
+Subject: [PATCH 6.12 066/117] selftests: mptcp: join: mark implicit tests as skipped if not supported
 Date: Mon, 27 Oct 2025 19:36:32 +0100
-Message-ID: <20251027183439.966096787@linuxfoundation.org>
+Message-ID: <20251027183455.793554709@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183438.817309828@linuxfoundation.org>
-References: <20251027183438.817309828@linuxfoundation.org>
+In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
+References: <20251027183453.919157109@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sebastian Reichel <sebastian.reichel@collabora.com>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-commit 7f864458e9a6d2000b726d14b3d3a706ac92a3b0 upstream.
+commit 973f80d715bd2504b4db6e049f292e694145cd79 upstream.
 
-On all platforms set_clock_selection() writes to a GRF register. This
-requires certain clocks running and thus should happen before the
-clocks are disabled.
+The call to 'continue_if' was missing: it properly marks a subtest as
+'skipped' if the attached condition is not valid.
 
-This has been noticed on RK3576 Sige5, which hangs during system suspend
-when trying to suspend the second network interface. Note, that
-suspending the first interface works, because the second device ensures
-that the necessary clocks for the GRF are enabled.
+Without that, the test is wrongly marked as passed on older kernels.
 
+Fixes: 36c4127ae8dd ("selftests: mptcp: join: skip implicit tests if not supported")
 Cc: stable@vger.kernel.org
-Fixes: 2f2b60a0ec28 ("net: ethernet: stmmac: dwmac-rk: Add gmac support for rk3588")
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20251014-rockchip-network-clock-fix-v1-1-c257b4afdf75@collabora.com
+Reviewed-by: Geliang Tang <geliang@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20251020-net-mptcp-c-flag-late-add-addr-v1-3-8207030cb0e8@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c |    9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ tools/testing/selftests/net/mptcp/mptcp_join.sh |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c
-@@ -1565,14 +1565,15 @@ static int gmac_clk_enable(struct rk_pri
- 		}
- 	} else {
- 		if (bsp_priv->clk_enabled) {
-+			if (bsp_priv->ops && bsp_priv->ops->set_clock_selection) {
-+				bsp_priv->ops->set_clock_selection(bsp_priv,
-+					      bsp_priv->clock_input, false);
-+			}
-+
- 			clk_bulk_disable_unprepare(bsp_priv->num_clks,
- 						   bsp_priv->clks);
- 			clk_disable_unprepare(bsp_priv->clk_phy);
+--- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+@@ -3722,7 +3722,7 @@ endpoint_tests()
+ 	# subflow_rebuild_header is needed to support the implicit flag
+ 	# userspace pm type prevents add_addr
+ 	if reset "implicit EP" &&
+-	   mptcp_lib_kallsyms_has "subflow_rebuild_header$"; then
++	   continue_if mptcp_lib_kallsyms_has "subflow_rebuild_header$"; then
+ 		pm_nl_set_limits $ns1 2 2
+ 		pm_nl_set_limits $ns2 2 2
+ 		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal
+@@ -3747,7 +3747,7 @@ endpoint_tests()
+ 	fi
  
--			if (bsp_priv->ops && bsp_priv->ops->set_clock_selection)
--				bsp_priv->ops->set_clock_selection(bsp_priv,
--					      bsp_priv->clock_input, false);
--
- 			bsp_priv->clk_enabled = false;
- 		}
- 	}
+ 	if reset_with_tcp_filter "delete and re-add" ns2 10.0.3.2 REJECT OUTPUT &&
+-	   mptcp_lib_kallsyms_has "subflow_rebuild_header$"; then
++	   continue_if mptcp_lib_kallsyms_has "subflow_rebuild_header$"; then
+ 		start_events
+ 		pm_nl_set_limits $ns1 0 3
+ 		pm_nl_set_limits $ns2 0 3
 
 
 
