@@ -1,148 +1,179 @@
-Return-Path: <stable+bounces-189949-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-189950-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5DA6C0CA7A
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 10:30:16 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7056DC0CE8B
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 11:16:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 93FCC3B12E4
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 09:25:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C69573BE58D
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 10:15:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2D232F12BD;
-	Mon, 27 Oct 2025 09:25:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 965842F360B;
+	Mon, 27 Oct 2025 10:15:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="bpHDlK+e";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="z5kx0sue"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="rTOPVYaH"
 X-Original-To: stable@vger.kernel.org
-Received: from fout-b4-smtp.messagingengine.com (fout-b4-smtp.messagingengine.com [202.12.124.147])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4892C2F068F;
-	Mon, 27 Oct 2025 09:25:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.147
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8F9E481B1;
+	Mon, 27 Oct 2025 10:15:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761557113; cv=none; b=fcIQhbzUyfAbE45BMqIBJx34aXZTTJGvW1hcfRt7eYAocVLcJW+LpjbCvUEF2fRjMA9TEv8/2yRhKw/Lr3goo9KGoEQbsrkeKRNipHFb8xEmr9jYT2diotI1Kwam7bFmcJmqH+nRHpchXKviPCsmUiJzB+mtQ8rFAW+mceMDdjc=
+	t=1761560102; cv=none; b=pNzGz+/xOEF2ehdxhcNOaCzvfGzx86iy7VXXVV5dk6VM3X/T57V2ilFKg3Q5Wj3Oj6MT5Nwwc6h2GDa/ujIfgQ71Kng4jbQtF2QTGvOqYg/RO730jCYslDa+1P3WH2PBfH3G0R+AQtqXi0sK5aL4kIk7HCAkDy7N+5qaZh6kK7Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761557113; c=relaxed/simple;
-	bh=2kNSuTrjCgbC9sjJyzFtLI/aV32xV70+Q2oAydZo2tU=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=KdAuatOw0Tnp+daZsEcs/UX9+JIOph2BT1snxMJHnFCA4KK2L6A+EkNoxwUHLWPlRn6AUjrxlIxhbFIlGjndDRvmBFuE9AxAkWFdqc5w77PaeRncWV7oTaPKFPPKx5DNdcWgIgd7TPUXGDDuSuG9Q37qdulpWwe8qWw0iCDyQk8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=bpHDlK+e; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=z5kx0sue; arc=none smtp.client-ip=202.12.124.147
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfout.stl.internal (Postfix) with ESMTP id 3F80B1D0019D;
-	Mon, 27 Oct 2025 05:25:09 -0400 (EDT)
-Received: from phl-imap-02 ([10.202.2.81])
-  by phl-compute-05.internal (MEProxy); Mon, 27 Oct 2025 05:25:09 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1761557109;
-	 x=1761643509; bh=ZYSCNPujoeIiPWnOTZjTYJpArRoI/1XTQNC5cifNrY8=; b=
-	bpHDlK+e2BQpLKdubW02HncVR8ATSomqcnFO5m8zqXyhyzDX+V//nziPsVsdKugs
-	UEFPnjzGiFq/wUnVjOoj88jCACHeD13Y4bzQs1OaRHujmeVvXLk3i8WM8GUAp9BS
-	+pcQ1G5denRN/zapsqmHaqZIkjk5+fNjTPoSEULCai0GyhB8Q7rtM5c5cbc2CXHw
-	YLQJB9B3/Dyg3BU/PYo2SnsIbWQib2wXBMsPlsBzFjEt7FLWsWju/WWiW7OJBR+t
-	dlNFl/h7tZYhJij4nHn/3HPdGKJsc/KSQqAErLEbwMDo06vbTPianmx1/H+gGJyM
-	uXZySzwLiCuvPumZ8ZjsRg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1761557109; x=
-	1761643509; bh=ZYSCNPujoeIiPWnOTZjTYJpArRoI/1XTQNC5cifNrY8=; b=z
-	5kx0sueU92/8ZB4Y1+So2NtvVpd0RzT2/XFY+8G/TKAC+r2oPNuM82UaE5Ozdd1Q
-	qgGAw1zsBzn3xhBDEKi4Mi6NkHEzL5YyWx6qUqXGSL3PhhBhgRyyRPHDmBZtciFh
-	wvKkmS++NeqHyABuyOqUVInsT023Z/y72Q8U8MKs9eQWBsw54NA7FszK/idpVSB0
-	Or3JjQK7l8Eth8wIck/tLfoeINdS+FepoDUW6Vevjg5CjtSTk9QeAzs3KmdTkFLm
-	KQZ6w1/u9rRtx98HYNY6y9oDOEXrjju+9nELa1yd4G0EpoxQUKVRUt/RsTEW3/w9
-	CZEeKiy+7BpSPbwz8X8aQ==
-X-ME-Sender: <xms:dDr_aAAspsxFdYagS9g1uY1_gt0AqI7hkzJ0edM5kLjVNtoz9Qs7zA>
-    <xme:dDr_aNWP19nnB0b_J1ShTguNywZN876J9nNYijDVy4et8vff34CsVHzIGFHqwVyAO
-    GE2IkMZDcxXfXiTLcdAEsERlbS7lIkLrcV-XHJXyA4D7zuMOb6Webg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdduheejiedtucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepofggfffhvfevkfgjfhfutgfgsehtjeertdertddtnecuhfhrohhmpedftehrnhgu
-    uceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrthhtvg
-    hrnhephfdthfdvtdefhedukeetgefggffhjeeggeetfefggfevudegudevledvkefhvdei
-    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprghrnh
-    gusegrrhhnuggsrdguvgdpnhgspghrtghpthhtohepledpmhhouggvpehsmhhtphhouhht
-    pdhrtghpthhtohepsghrghhlsegsghguvghvrdhplhdprhgtphhtthhopehhvhgvrhhkuh
-    hilhdotghishgtoheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepmhgthhgvhhgrsges
-    khgvrhhnvghlrdhorhhgpdhrtghpthhtohepshgrshhhrghlsehkvghrnhgvlhdrohhrgh
-    dprhgtphhtthhopehlihhnuhhsrdifrghllhgvihhjsehlihhnrghrohdrohhrghdprhgt
-    phhtthhopehprghttghhvghssehlihhsthhsrdhlihhnuhigrdguvghvpdhrtghpthhtoh
-    eplhhinhhugidqghhpihhosehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohep
-    lhhinhhugidqmhgvughirgesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhope
-    hsthgrsghlvgesvhhgvghrrdhkvghrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:dDr_aLhPGMKNkWUV57WN_ZtZ6siWhauizoBDd04LyzGN40gVDc00hQ>
-    <xmx:dDr_aLFCDro3aQH8HctY4QY7R0N-cS02TwnM2aIpZE-aayb3Yq_D4w>
-    <xmx:dDr_aFtDR13vGNTG08ovVXCQnjvUzeRLvpcGthbD3Umkxk2GVHZ8vQ>
-    <xmx:dDr_aEfnwZiTSSB8NYUfZGnZpSl5_V0vKg4-2YsSxqNU5uogejvZFw>
-    <xmx:dTr_aMbpvIiTl54Oox5j49mvDHVSx9YSoTLNP_RaZipaHXJwD-7k63X4>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id BE7C1700054; Mon, 27 Oct 2025 05:25:08 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	s=arc-20240116; t=1761560102; c=relaxed/simple;
+	bh=YxD/X+Zkz5NAxSDIV78g1kUEZbNuMcFdoxtofLlVpWg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PUkW3EElp6vb4xkIhxnbw1ryCyh8iGWfHBInGGBhs6NH0QSx5eU0pU6EsYYtOijz/XOvYJ/k9X+zCuQLGJcoPFfdyMCEpbe5k61/Ls0q+Uutl0nWknfBRSzOJvqzH4cHf0XK0u0iu370Cglmb7AbRrvWilkelPLF6gXyDZD2Yjo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=rTOPVYaH; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59QJEFTd026055;
+	Mon, 27 Oct 2025 10:15:00 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=rWBDg1fyrFQM4Iw+1y1rcnG/tHO8KV
+	uI29ViOAB18wo=; b=rTOPVYaHMCmt307F50YAOucrUvwc0JUpLCAyNMYL8xUr2r
+	rnNQ1UIDkCMcABGQXNVg6k5qPHn40SxaNxdGP3B4IAn0uRMYmxdfBJUHH0ri1YWh
+	q7bKpuqPYQLH2mPDSUj0DiLQjy1kZUGuKgvkxonlYQsG3uyjM/a/PFqMQ7XDe2C9
+	i8huDCOUdaqWYidaic+sd9FLfdpYyCv9VNTbd3KI5HORwkXiS0BVSJOicN1GdouG
+	I3Y3u1n08wDYkUnMI+BLngDGBN04lxxXrt7xL9tddrVzU/oQs6dwnsTQskqK7J7f
+	Rv4gWLgMm5D2SHZEE4xuwQrQ1fu4fBof3EVIRBgw==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a0p98x6qg-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 27 Oct 2025 10:14:59 +0000 (GMT)
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 59RA67s2004845;
+	Mon, 27 Oct 2025 10:14:59 GMT
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a0p98x6qd-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 27 Oct 2025 10:14:59 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59R7eV70030460;
+	Mon, 27 Oct 2025 10:14:58 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4a1acjmxgh-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 27 Oct 2025 10:14:58 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 59RAEraG59638056
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 27 Oct 2025 10:14:53 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9A13020043;
+	Mon, 27 Oct 2025 10:14:53 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 0CDA320040;
+	Mon, 27 Oct 2025 10:14:53 +0000 (GMT)
+Received: from osiris (unknown [9.111.14.160])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Mon, 27 Oct 2025 10:14:52 +0000 (GMT)
+Date: Mon, 27 Oct 2025 11:14:51 +0100
+From: Heiko Carstens <hca@linux.ibm.com>
+To: Miaoqian Lin <linmq006@gmail.com>
+Cc: Alexander Gordeev <agordeev@linux.ibm.com>,
+        Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>, linux-s390@vger.kernel.org,
+        linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
+        stable@vger.kernel.org
+Subject: Re: [PATCH] s390/mm: Fix memory leak in add_marker() when kvrealloc
+ fails
+Message-ID: <20251027101451.14551A49-hca@linux.ibm.com>
+References: <20251026091351.36275-1-linmq006@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ThreadId: AcW5hAlZpVq3
-Date: Mon, 27 Oct 2025 10:24:47 +0100
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Sasha Levin" <sashal@kernel.org>, patches@lists.linux.dev,
- stable@vger.kernel.org
-Cc: "Hans Verkuil" <hverkuil+cisco@kernel.org>,
- "Mauro Carvalho Chehab" <mchehab@kernel.org>,
- "Linus Walleij" <linus.walleij@linaro.org>,
- "Bartosz Golaszewski" <brgl@bgdev.pl>, linux-media@vger.kernel.org,
- "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>
-Message-Id: <d08ad8bb-d94a-41c7-8bfd-9c4e8c054785@app.fastmail.com>
-In-Reply-To: <20251025160905.3857885-118-sashal@kernel.org>
-References: <20251025160905.3857885-1-sashal@kernel.org>
- <20251025160905.3857885-118-sashal@kernel.org>
-Subject: Re: [PATCH AUTOSEL 6.17-5.15] media: em28xx: add special case for legacy
- gpiolib interface
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251026091351.36275-1-linmq006@gmail.com>
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=JqL8bc4C c=1 sm=1 tr=0 ts=68ff4623 cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=kj9zAlcOel0A:10 a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=VwQbUJbxAAAA:8 a=pGLkceISAAAA:8 a=jc1liYX81a5ejJq0xPAA:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-GUID: nqp_ljURjxT5ZWM6dC13yGjre5M5eLG0
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDI1MDAxOSBTYWx0ZWRfX9xedVJW1l3eK
+ pJxCjmXAlXe18IdzuCBgVrB/y+gQuw2Tjm6OLlSRNCoRqhIBSIN7iPDI+rraP7LIQ4TZOvVNYU9
+ D6WaCRBGslLeUPz1TBH7KYoGPYkREZaN59RAcIVozYlmDO0XDvLg8wrD+dSlkkQQ9v5DWX62Tus
+ rr1aKCd6IBNWS5NQ+Xfo05KER8TiA3s3fno2lKwjysfljaDEjz744ynHo1gN8rsjgQNQNx030ug
+ 5ih1Di/y1uFBT/zMzhu+FKhEoBxhpssS6sEmTac7rfWeuhlYUGBasuqZR7YWlj8rijA2alkA+yl
+ 6pEvarZQnRVzUQ5SRsr+pz0ucfqoIPMdb7rmnuUFqQFxTFcXNi5o+JmHTLiTr7WuVrb8yAQavYh
+ rykhvSVJhoxv16WkEZzTkiX/fH3zNQ==
+X-Proofpoint-ORIG-GUID: xxSUkK-B4XJutQ9f-DCOJClNhNQBOaok
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-10-27_04,2025-10-22_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 clxscore=1011 lowpriorityscore=0 malwarescore=0 bulkscore=0
+ priorityscore=1501 spamscore=0 adultscore=0 phishscore=0 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510250019
 
-On Sat, Oct 25, 2025, at 17:55, Sasha Levin wrote:
-> From: Arnd Bergmann <arnd@arndb.de>
->
-> [ Upstream commit d5d299e7e7f6b4ead31383d4abffca34e4296df0 ]
->
-> The em28xx driver uses the old-style gpio_request_one() interface to
-> switch the lna on the PCTV 290E card.
->
-> This interface is becoming optional and should no longer be called by
-> portable drivers. As I could not figure out an obvious replacement,
-> select the new GPIOLIB_LEGACY symbol as a workaround.
->
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-> Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
+On Sun, Oct 26, 2025 at 05:13:51PM +0800, Miaoqian Lin wrote:
+> When kvrealloc() fails, the original markers memory is leaked
+> because the function directly assigns the NULL to the markers pointer,
+> losing the reference to the original memory.
+> 
+> As a result, the kvfree() in pt_dump_init() ends up freeing NULL instead
+> of the previously allocated memory.
+> 
+> Fix this by using a temporary variable to store kvrealloc()'s return
+> value and only update the markers pointer on success.
+> 
+> Found via static anlaysis and this is similar to commit 42378a9ca553
+> ("bpf, verifier: Fix memory leak in array reallocation for stack state")
+> 
+> Fixes: d0e7915d2ad3 ("s390/mm/ptdump: Generate address marker array dynamically")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
 > ---
->
-> LLM Generated explanations, may be completely bogus:
->
-> YES
->
-> - What it fixes: Prevents build breakage when `GPIOLIB=y` but the legacy
->   GPIO consumer API is disabled. `gpio_request_one()` is only declared
->   when `CONFIG_GPIOLIB_LEGACY` is enabled (see
->   `include/linux/gpio.h:88`), so compiling code guarded only by
->   `CONFIG_GPIOLIB` fails if legacy support is off.
+>  arch/s390/mm/dump_pagetables.c | 9 ++++++---
+>  1 file changed, 6 insertions(+), 3 deletions(-)
+> 
+> diff --git a/arch/s390/mm/dump_pagetables.c b/arch/s390/mm/dump_pagetables.c
+> index 9af2aae0a515..0f2e0c93a1e0 100644
+> --- a/arch/s390/mm/dump_pagetables.c
+> +++ b/arch/s390/mm/dump_pagetables.c
+> @@ -291,16 +291,19 @@ static int ptdump_cmp(const void *a, const void *b)
+>  
+>  static int add_marker(unsigned long start, unsigned long end, const char *name)
+>  {
+> +	struct addr_marker *new_markers;
+>  	size_t oldsize, newsize;
+>  
+>  	oldsize = markers_cnt * sizeof(*markers);
+>  	newsize = oldsize + 2 * sizeof(*markers);
+>  	if (!oldsize)
+> -		markers = kvmalloc(newsize, GFP_KERNEL);
+> +		new_markers = kvmalloc(newsize, GFP_KERNEL);
+>  	else
+> -		markers = kvrealloc(markers, newsize, GFP_KERNEL);
+> -	if (!markers)
+> +		new_markers = kvrealloc(markers, newsize, GFP_KERNEL);
+> +	if (!new_markers)
+>  		goto error;
+> +
+> +	markers = new_markers;
 
-It's not needed for stable and has no effect in 6.17. This is
-only a preparation for a later change.
+This is not better to the situation before. If the allocation fails,
+markers_cnt will be set to zero, but the old valid markers pointer will stay,
+which means that the next call to add_marker() will allocate a new area via
+kvmalloc() instead of kvrealloc(), and thus leaking the old area too.
 
-         Arnd
+add_marker() needs to changes to return in a manner that both marker and
+marker_cnt correlate with each other. And I guess it is also easily possible
+to get rid of the two different allocation paths.
+
+Care to send a new version?
 
