@@ -1,62 +1,56 @@
-Return-Path: <stable+bounces-190996-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191271-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05C42C10EFB
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:26:15 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 044AEC11261
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:37:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id AD1084FF23A
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:20:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 99B0556675E
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:33:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB9E0328B53;
-	Mon, 27 Oct 2025 19:19:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDD0A302158;
+	Mon, 27 Oct 2025 19:31:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L1G4dBAT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SatoigoQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A5D11E47CA;
-	Mon, 27 Oct 2025 19:19:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 798B018A6A5;
+	Mon, 27 Oct 2025 19:31:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592743; cv=none; b=UhdLISIFXO/rdR42/0HsMaxfoRvsa6LKaBxOpFl4o8fRbgFcl3e1ZibqpMjczeZld3XcHr20ErSaPjkcAR1tIeoKvZFhFp2aLjc2RwMdtl1UDIedgoK9iKgp4FtOhwe0JPqqxs9EZTgVTV0pJLHxzepOu8FRkCbecYjhlDu0pLg=
+	t=1761593481; cv=none; b=bCUw8n69k/Y092n5AeEbYukm6j0grcSupPK3FYtHHDx+yqQM6rOc4v9uwSI3gXEUK21TkiHQpust2cOoycH4GR1OZw2iSkoZ7IU0zSwN24Qw8XTh2Dhoo3QiCNmIFc/ZsuA2t0U8ujwJpnNTwgH+1FGK6++zjtflpQjIiwh2CgQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592743; c=relaxed/simple;
-	bh=y4pka1w29PC/VgsouxsFLMaNNFTMzKtWMoz4Zr3Jqxo=;
+	s=arc-20240116; t=1761593481; c=relaxed/simple;
+	bh=h7Rsys6sTpyYZpgxtWrdQMams7ANa7ghIw5vaIMbyNo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f9nSDq7SIqRfMPAH9sXbAcdiazRCUONl1mURacuEh8pB1ynH22j63Bfn/LeyWzlPH3aPXMSZxAtgUy9gpuncidQPLnJjMp6ahPrAL+SWwBPEtxGW0+WiJSeRi17dydcRGUzBFLI7bWoLFdEhrD3MFqzUxekO450tuRlAED1k54k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L1G4dBAT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA8CAC4CEFD;
-	Mon, 27 Oct 2025 19:19:02 +0000 (UTC)
+	 MIME-Version; b=Kf7CcsXhDSDqdVDRH/XTQ5EVxpvJSYt5MXUbxEWiIeW2dD/ad6wVUQ8sm+MZzIrz0LWRAG0Z3bLcVCprx1xgUpIvGjlHfKRyW0eJpjUL8AaI9tmmYhGtfg76RPgzOF9fWE7+aYIX5e/v8Mv5Yp9E/F/Nd59HMDw130nCM2Zo9V4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SatoigoQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8520DC4CEF1;
+	Mon, 27 Oct 2025 19:31:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592743;
-	bh=y4pka1w29PC/VgsouxsFLMaNNFTMzKtWMoz4Zr3Jqxo=;
+	s=korg; t=1761593480;
+	bh=h7Rsys6sTpyYZpgxtWrdQMams7ANa7ghIw5vaIMbyNo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L1G4dBATTGfJrDh7mJpehGV8jJNGGUJWyuwTouE2nvyrfcUyNwqjjFcAtaMZeh6j2
-	 KF6CwVv/lZGhx17vn0BaoCk0RsIewnTKCi4VMYtIgzKWmwZRZC3I6FYRAJGL+Qn7RJ
-	 kaMA1Y3IG7IvqTJkgBB6kT21Hr7XE1UoaddRa2Vw=
+	b=SatoigoQqVV+jPmPr+TiNC9oi9sQYusrfnNlMRBA5bvLB4G9d/BKP27pKG1w9wgmG
+	 +eVmeepBjbsDBLnNFgMu5G8A3bNcy0UuRUxfHSlJqY0iS6vCZMC5hlaUhXCZFLbY53
+	 ehD0kpWU4UmJ/F8F2XSOcuCTL8SVcIm5rThIs/h4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Acs <acsjakub@amazon.de>,
-	Jan Kara <jack@suse.cz>,
-	Amir Goldstein <amir73il@gmail.com>,
-	Miklos Szeredi <miklos@szeredi.hu>,
-	Christian Brauner <brauner@kernel.org>,
-	linux-unionfs@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
+	Haotian Zhang <vulab@iscas.ac.cn>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 79/84] fs/notify: call exportfs_encode_fid with s_umount
+Subject: [PATCH 6.17 146/184] gpio: ljca: Fix duplicated IRQ mapping
 Date: Mon, 27 Oct 2025 19:37:08 +0100
-Message-ID: <20251027183440.915948125@linuxfoundation.org>
+Message-ID: <20251027183518.871035211@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183438.817309828@linuxfoundation.org>
-References: <20251027183438.817309828@linuxfoundation.org>
+In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
+References: <20251027183514.934710872@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,113 +62,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Acs <acsjakub@amazon.de>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-[ Upstream commit a7c4bb43bfdc2b9f06ee9d036028ed13a83df42a ]
+[ Upstream commit 4c4e6ea4a120cc5ab58e437c6ba123cbfc357d45 ]
 
-Calling intotify_show_fdinfo() on fd watching an overlayfs inode, while
-the overlayfs is being unmounted, can lead to dereferencing NULL ptr.
+The generic_handle_domain_irq() function resolves the hardware IRQ
+internally. The driver performed a duplicative mapping by calling
+irq_find_mapping() first, which could lead to an RCU stall.
 
-This issue was found by syzkaller.
+Delete the redundant irq_find_mapping() call and pass the hardware IRQ
+directly to generic_handle_domain_irq().
 
-Race Condition Diagram:
-
-Thread 1                           Thread 2
---------                           --------
-
-generic_shutdown_super()
- shrink_dcache_for_umount
-  sb->s_root = NULL
-
-                    |
-                    |             vfs_read()
-                    |              inotify_fdinfo()
-                    |               * inode get from mark *
-                    |               show_mark_fhandle(m, inode)
-                    |                exportfs_encode_fid(inode, ..)
-                    |                 ovl_encode_fh(inode, ..)
-                    |                  ovl_check_encode_origin(inode)
-                    |                   * deref i_sb->s_root *
-                    |
-                    |
-                    v
- fsnotify_sb_delete(sb)
-
-Which then leads to:
-
-[   32.133461] Oops: general protection fault, probably for non-canonical address 0xdffffc0000000006: 0000 [#1] SMP DEBUG_PAGEALLOC KASAN NOPTI
-[   32.134438] KASAN: null-ptr-deref in range [0x0000000000000030-0x0000000000000037]
-[   32.135032] CPU: 1 UID: 0 PID: 4468 Comm: systemd-coredum Not tainted 6.17.0-rc6 #22 PREEMPT(none)
-
-<snip registers, unreliable trace>
-
-[   32.143353] Call Trace:
-[   32.143732]  ovl_encode_fh+0xd5/0x170
-[   32.144031]  exportfs_encode_inode_fh+0x12f/0x300
-[   32.144425]  show_mark_fhandle+0xbe/0x1f0
-[   32.145805]  inotify_fdinfo+0x226/0x2d0
-[   32.146442]  inotify_show_fdinfo+0x1c5/0x350
-[   32.147168]  seq_show+0x530/0x6f0
-[   32.147449]  seq_read_iter+0x503/0x12a0
-[   32.148419]  seq_read+0x31f/0x410
-[   32.150714]  vfs_read+0x1f0/0x9e0
-[   32.152297]  ksys_read+0x125/0x240
-
-IOW ovl_check_encode_origin derefs inode->i_sb->s_root, after it was set
-to NULL in the unmount path.
-
-Fix it by protecting calling exportfs_encode_fid() from
-show_mark_fhandle() with s_umount lock.
-
-This form of fix was suggested by Amir in [1].
-
-[1]: https://lore.kernel.org/all/CAOQ4uxhbDwhb+2Brs1UdkoF0a3NSdBAOQPNfEHjahrgoKJpLEw@mail.gmail.com/
-
-Fixes: c45beebfde34 ("ovl: support encoding fid from inode with no alias")
-Signed-off-by: Jakub Acs <acsjakub@amazon.de>
-Cc: Jan Kara <jack@suse.cz>
-Cc: Amir Goldstein <amir73il@gmail.com>
-Cc: Miklos Szeredi <miklos@szeredi.hu>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: linux-unionfs@vger.kernel.org
-Cc: linux-fsdevel@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Cc: stable@vger.kernel.org
-Signed-off-by: Jan Kara <jack@suse.cz>
-[ Adjust context ]
+Fixes: c5a4b6fd31e8 ("gpio: Add support for Intel LJCA USB GPIO driver")
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Link: https://lore.kernel.org/r/20251023070231.1305-1-vulab@iscas.ac.cn
+[Bartosz: remove unused variable]
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/notify/fdinfo.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/gpio/gpio-ljca.c | 14 +++-----------
+ 1 file changed, 3 insertions(+), 11 deletions(-)
 
---- a/fs/notify/fdinfo.c
-+++ b/fs/notify/fdinfo.c
-@@ -17,6 +17,7 @@
- #include "fanotify/fanotify.h"
- #include "fdinfo.h"
- #include "fsnotify.h"
-+#include "../internal.h"
+diff --git a/drivers/gpio/gpio-ljca.c b/drivers/gpio/gpio-ljca.c
+index 3b4f8830c7411..f32d1d237795b 100644
+--- a/drivers/gpio/gpio-ljca.c
++++ b/drivers/gpio/gpio-ljca.c
+@@ -286,22 +286,14 @@ static void ljca_gpio_event_cb(void *context, u8 cmd, const void *evt_data,
+ {
+ 	const struct ljca_gpio_packet *packet = evt_data;
+ 	struct ljca_gpio_dev *ljca_gpio = context;
+-	int i, irq;
++	int i;
  
- #if defined(CONFIG_PROC_FS)
- 
-@@ -50,7 +51,12 @@ static void show_mark_fhandle(struct seq
- 	f.handle.handle_bytes = sizeof(f.pad);
- 	size = f.handle.handle_bytes >> 2;
- 
-+	if (!super_trylock_shared(inode->i_sb))
-+		return;
-+
- 	ret = exportfs_encode_fid(inode, (struct fid *)f.handle.f_handle, &size);
-+	up_read(&inode->i_sb->s_umount);
-+
- 	if ((ret == FILEID_INVALID) || (ret < 0))
+ 	if (cmd != LJCA_GPIO_INT_EVENT)
  		return;
  
+ 	for (i = 0; i < packet->num; i++) {
+-		irq = irq_find_mapping(ljca_gpio->gc.irq.domain,
+-				       packet->item[i].index);
+-		if (!irq) {
+-			dev_err(ljca_gpio->gc.parent,
+-				"gpio_id %u does not mapped to IRQ yet\n",
+-				packet->item[i].index);
+-			return;
+-		}
+-
+-		generic_handle_domain_irq(ljca_gpio->gc.irq.domain, irq);
++		generic_handle_domain_irq(ljca_gpio->gc.irq.domain,
++					packet->item[i].index);
+ 		set_bit(packet->item[i].index, ljca_gpio->reenable_irqs);
+ 	}
+ 
+-- 
+2.51.0
+
 
 
 
