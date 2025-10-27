@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-190614-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191209-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71622C108E2
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:09:58 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EEF8C1119E
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:34:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 16E8A19C787F
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:06:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6C605564010
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:30:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9D832D5C95;
-	Mon, 27 Oct 2025 19:02:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C906B325481;
+	Mon, 27 Oct 2025 19:28:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LjHaM3+B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mE/wcT1L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9488031CA42;
-	Mon, 27 Oct 2025 19:02:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 792B8324B37;
+	Mon, 27 Oct 2025 19:28:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591744; cv=none; b=OqexhKAB0mVObKzyPdf4DyIeWOiUxM1XWIhCV57kchRQrG+42UncmS4mnHd5LmEWDGAupWsK78/b2LpKZdqmJQ4YXKE+6Wwuh/GAWS9HBXXwEVVukLoDjijQJZtCaJAoZ+V7W+YH6G/XAWaqddOw0wUtCvbUWglQ6w9Dda1sWt8=
+	t=1761593288; cv=none; b=ndlUl3rH7BvnIQbacqX+/UGc9yHMyINzolN9THbnE5hj3LVM05wvix6Yy55eIj7mTxq0o3HaLd/2NkMssJykikW6FbZChRai4dPlbLuxqK1RsTZ6eyYzFZwnKuTOPrHASR5PmC3l3gZ2PgDcO08pVFdaHjMZKV2zcR3pg0/grU4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591744; c=relaxed/simple;
-	bh=BkdFrpAZygrlRbKIEbAFDY9JDtG5cgfPHMmAGr3fR1w=;
+	s=arc-20240116; t=1761593288; c=relaxed/simple;
+	bh=Sz+n876W0MOY/YYG6vzBs8BmVfuWIcsAWwIvOhQxUhY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vf1F7q8EwMKOEPdbxrFTf92n6AeBOLWhgjmOq++4lqSAI6sP1UIrrrslap4sPPGIuqX/6Nw67YCcFb06iG9y9aYOd6MDQpp8lgFlS9hRsYqaicHJxjeKfm9bjbQTXEThah5TTUNxx6BVW4IZ9Q0Q9amCEZwVXxX/+DVXedhAwXA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LjHaM3+B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2763FC4CEF1;
-	Mon, 27 Oct 2025 19:02:24 +0000 (UTC)
+	 MIME-Version; b=o0/T1w6izDGUNqYvyDtBLjOTRK8XdvegyQq+oXQOnAvQRG5nnBouR4EgxvPbGSTgnn2d4xmb3nHmyvGQ/oItApiOKQgWDNyNxajkIYgvCxfzssgvTR0QZPUx8Wj0PK0KrPlMDl11ch3nSfUjamKS7lMZDpTbnp93UD3yNBXUWcQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mE/wcT1L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D431C4CEFD;
+	Mon, 27 Oct 2025 19:28:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591744;
-	bh=BkdFrpAZygrlRbKIEbAFDY9JDtG5cgfPHMmAGr3fR1w=;
+	s=korg; t=1761593288;
+	bh=Sz+n876W0MOY/YYG6vzBs8BmVfuWIcsAWwIvOhQxUhY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LjHaM3+ByiQm4HR/BFNRw6wN1m+kK9hhNENWw1x0srYWKOjQVg8lh/ro35Hnd/qGT
-	 AIFgkVRVgYbY9NHKTCjKcutZupE2f9d8Gua0aiUOgUWcbFuYTCC9lQLL028Qgh1Dme
-	 45K6nHK2+ujcHsqh7Uzo8CVud0Ae+0gDFdHnIxN8=
+	b=mE/wcT1LOb1ZBwU3G5plXGTgNRytYv0c2diur05i+CaqMxbr9JprlPAJbZMA/Xhp7
+	 fUXTEIispibAB7r4I1MRGNwdDwihw5d1Qb84+0Cl3npanTrJEgfz+AhqEfgedjECty
+	 X7tEZIy7UlnrXyWw+MG0Pm7XMcuy28bCPpIt5AfA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Biggers <ebiggers@kernel.org>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 315/332] KEYS: trusted_tpm1: Compare HMAC values in constant time
+	syzbot+d1974fc28545a3e6218b@syzkaller.appspotmail.com,
+	David Hildenbrand <david@redhat.com>,
+	Will Deacon <will@kernel.org>,
+	Kefeng Wang <wangkefeng.wang@huawei.com>,
+	Yang Shi <yang@os.amperecomputing.com>,
+	Catalin Marinas <catalin.marinas@arm.com>
+Subject: [PATCH 6.17 086/184] arm64: mte: Do not warn if the page is already tagged in copy_highpage()
 Date: Mon, 27 Oct 2025 19:36:08 +0100
-Message-ID: <20251027183533.178936248@linuxfoundation.org>
+Message-ID: <20251027183517.212593284@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
-References: <20251027183524.611456697@linuxfoundation.org>
+In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
+References: <20251027183514.934710872@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,70 +65,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Biggers <ebiggers@kernel.org>
+From: Catalin Marinas <catalin.marinas@arm.com>
 
-[ Upstream commit eed0e3d305530066b4fc5370107cff8ef1a0d229 ]
+commit b98c94eed4a975e0c80b7e90a649a46967376f58 upstream.
 
-To prevent timing attacks, HMAC value comparison needs to be constant
-time.  Replace the memcmp() with the correct function, crypto_memneq().
+The arm64 copy_highpage() assumes that the destination page is newly
+allocated and not MTE-tagged (PG_mte_tagged unset) and warns
+accordingly. However, following commit 060913999d7a ("mm: migrate:
+support poisoned recover from migrate folio"), folio_mc_copy() is called
+before __folio_migrate_mapping(). If the latter fails (-EAGAIN), the
+copy will be done again to the same destination page. Since
+copy_highpage() already set the PG_mte_tagged flag, this second copy
+will warn.
 
-[For the Fixes commit I used the commit that introduced the memcmp().
-It predates the introduction of crypto_memneq(), but it was still a bug
-at the time even though a helper function didn't exist yet.]
+Replace the WARN_ON_ONCE(page already tagged) in the arm64
+copy_highpage() with a comment.
 
-Fixes: d00a1c72f7f4 ("keys: add new trusted key-type")
-Cc: stable@vger.kernel.org
-Signed-off-by: Eric Biggers <ebiggers@kernel.org>
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
-[ replaced crypto/utils.h include with crypto/algapi.h ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: syzbot+d1974fc28545a3e6218b@syzkaller.appspotmail.com
+Link: https://lore.kernel.org/r/68dda1ae.a00a0220.102ee.0065.GAE@google.com
+Reviewed-by: David Hildenbrand <david@redhat.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: stable@vger.kernel.org # 6.12.x
+Reviewed-by: Yang Shi <yang@os.amperecomputing.com>
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- security/keys/trusted-keys/trusted_tpm1.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ arch/arm64/mm/copypage.c |   11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
---- a/security/keys/trusted-keys/trusted_tpm1.c
-+++ b/security/keys/trusted-keys/trusted_tpm1.c
-@@ -9,6 +9,7 @@
-  */
+--- a/arch/arm64/mm/copypage.c
++++ b/arch/arm64/mm/copypage.c
+@@ -35,7 +35,7 @@ void copy_highpage(struct page *to, stru
+ 		    from != folio_page(src, 0))
+ 			return;
  
- #include <crypto/hash_info.h>
-+#include <crypto/algapi.h>
- #include <linux/uaccess.h>
- #include <linux/module.h>
- #include <linux/init.h>
-@@ -248,7 +249,7 @@ int TSS_checkhmac1(unsigned char *buffer
- 	if (ret < 0)
- 		goto out;
+-		WARN_ON_ONCE(!folio_try_hugetlb_mte_tagging(dst));
++		folio_try_hugetlb_mte_tagging(dst);
  
--	if (memcmp(testhmac, authdata, SHA1_DIGEST_SIZE))
-+	if (crypto_memneq(testhmac, authdata, SHA1_DIGEST_SIZE))
- 		ret = -EINVAL;
- out:
- 	kfree_sensitive(sdesc);
-@@ -341,7 +342,7 @@ static int TSS_checkhmac2(unsigned char
- 			  TPM_NONCE_SIZE, ononce, 1, continueflag1, 0, 0);
- 	if (ret < 0)
- 		goto out;
--	if (memcmp(testhmac1, authdata1, SHA1_DIGEST_SIZE)) {
-+	if (crypto_memneq(testhmac1, authdata1, SHA1_DIGEST_SIZE)) {
- 		ret = -EINVAL;
- 		goto out;
- 	}
-@@ -350,7 +351,7 @@ static int TSS_checkhmac2(unsigned char
- 			  TPM_NONCE_SIZE, ononce, 1, continueflag2, 0, 0);
- 	if (ret < 0)
- 		goto out;
--	if (memcmp(testhmac2, authdata2, SHA1_DIGEST_SIZE))
-+	if (crypto_memneq(testhmac2, authdata2, SHA1_DIGEST_SIZE))
- 		ret = -EINVAL;
- out:
- 	kfree_sensitive(sdesc);
+ 		/*
+ 		 * Populate tags for all subpages.
+@@ -51,8 +51,13 @@ void copy_highpage(struct page *to, stru
+ 		}
+ 		folio_set_hugetlb_mte_tagged(dst);
+ 	} else if (page_mte_tagged(from)) {
+-		/* It's a new page, shouldn't have been tagged yet */
+-		WARN_ON_ONCE(!try_page_mte_tagging(to));
++		/*
++		 * Most of the time it's a new page that shouldn't have been
++		 * tagged yet. However, folio migration can end up reusing the
++		 * same page without untagging it. Ignore the warning if the
++		 * page is already tagged.
++		 */
++		try_page_mte_tagging(to);
+ 
+ 		mte_copy_page_tags(kto, kfrom);
+ 		set_page_mte_tagged(to);
 
 
 
