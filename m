@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-190902-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191053-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADF52C10D6C
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:21:49 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5163C10F46
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:27:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0AB6C1A62580
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:17:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 027531881F8F
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:23:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B9E93254AC;
-	Mon, 27 Oct 2025 19:14:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC596274FD0;
+	Mon, 27 Oct 2025 19:21:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x7jZTeC5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bix+IemV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 172F9324B2F;
-	Mon, 27 Oct 2025 19:14:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58E4E31CA7E;
+	Mon, 27 Oct 2025 19:21:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592497; cv=none; b=VNO4yy7KM3+IdUPVFY4eB32BuTpi1Rxcd5w1q6bAMCtbKdUAMfucNWn29pZcT7iKRNZtLus+OILvVOAwJhBloEXBc/8/Vpwz9QSTIUV3JPHQh5CpyZsLieNivpfVWDJmAsVAgQa7l9hcwrxWnilP59WNpqhOn6AdRc0XYSi6Prc=
+	t=1761592891; cv=none; b=bKf9OXt90qxcQllr0Ij2/RjcGPND0vgo7xjAGQ+D10yRz7y+f0ONLh/jLYQONThVx+fVxYsqjsDdN9e0HtZTH1EpjOjaj9u+4EHZAbi/a91GLqMI+PEkPeh0t7xblWg6zvrQG6VUQHoY4UA3Ye2abb4X9RpGCej1tHDKJjJyhT8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592497; c=relaxed/simple;
-	bh=iN1/JEqna0xMLSC4/unfyd8iENyCJ/eKJuxQZMfP2z0=;
+	s=arc-20240116; t=1761592891; c=relaxed/simple;
+	bh=YO6RWbNRUD/D7CDHYa5TME9dUFrZluyG1zuXVuflpmA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FJE287RLENOXkbg7lBwySRsZYIMYA9Y67yhN8Rg2oz6lNbhoNHBE5coEy59N6dNQgj50sX1Al0w3V1sIEy8SlVVmi5SiY0VXtZ8aPPT6j0duyhVHzHAVYgKr7N7R4BrN3QTjAO3XL3djss9H6fT20Cp5A7PEXXY/URvMlkxmpHA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x7jZTeC5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F6DEC4CEF1;
-	Mon, 27 Oct 2025 19:14:56 +0000 (UTC)
+	 MIME-Version; b=chJ02DiY5e7HA2WFEVJrkpnkYZ9d1VE7uJt/+rdH5ViYWs8oFF+dP+2fMjwSq/5iGg8wUhd5y0lZ5+ISMcuXf8Iho/bNZ5kEDcaPlb87V2fv2J61Ea4IvMs4FD1kRdM08qQAymWelddCv/RLujPNeTuAGOP2P1weUj9UXnVUu8g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bix+IemV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0A6AC4CEF1;
+	Mon, 27 Oct 2025 19:21:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592497;
-	bh=iN1/JEqna0xMLSC4/unfyd8iENyCJ/eKJuxQZMfP2z0=;
+	s=korg; t=1761592891;
+	bh=YO6RWbNRUD/D7CDHYa5TME9dUFrZluyG1zuXVuflpmA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x7jZTeC5u00CnjvK3WpMyPQd3B5bwK5SDfzNnL0PXRY7ylZpSiunZ8sAHkjOc0P6B
-	 cJelYlX1zGFmdWZwj+J3lbEY4TnWULuYcAA+Ywh0Td814OVcojQLCFwANxr+ntI5xP
-	 LtXme16S86OrHihSQMnNeGLfQnPvgrpJjCneXJSA=
+	b=bix+IemVdJll2iMQMBC2D1AY2ScYvd1a0yFZyKhq25TzWKFfG77k4w0iabFnJrTpi
+	 z9jbcD7sUGNmnAbXjsQdjM8kcA5DYKkzHEbg1XB2kN479+9iwGMWxN+1oijjNdWSHn
+	 EI8kf8icEHUpvmlELEyu30GDgY44rpOh0UXFmyBc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Eckert <fe@dev.tdt.de>,
-	stable <stable@kernel.org>
-Subject: [PATCH 6.1 116/157] serial: 8250_exar: add support for Advantech 2 port card with Device ID 0x0018
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Carlos Maiolino <cem@kernel.org>
+Subject: [PATCH 6.12 051/117] xfs: fix locking in xchk_nlinks_collect_dir
 Date: Mon, 27 Oct 2025 19:36:17 +0100
-Message-ID: <20251027183504.359525260@linuxfoundation.org>
+Message-ID: <20251027183455.388518072@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
-References: <20251027183501.227243846@linuxfoundation.org>
+In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
+References: <20251027183453.919157109@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,61 +62,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Eckert <fe@dev.tdt.de>
+From: Darrick J. Wong <djwong@kernel.org>
 
-commit e7cbce761fe3fcbcb49bcf30d4f8ca5e1a9ee2a0 upstream.
+commit f477af0cfa0487eddec66ffe10fd9df628ba6f52 upstream.
 
-The Advantech 2-port serial card with PCI vendor=0x13fe and device=0x0018
-has a 'XR17V35X' chip installed on the circuit board. Therefore, this
-driver can be used instead of theu outdated out-of-tree driver from the
-manufacturer.
+On a filesystem with parent pointers, xchk_nlinks_collect_dir walks both
+the directory entries (data fork) and the parent pointers (attr fork) to
+determine the correct link count.  Unfortunately I forgot to update the
+lock mode logic to handle the case of a directory whose attr fork is in
+btree format and has not yet been loaded *and* whose data fork doesn't
+need loading.
 
-Signed-off-by: Florian Eckert <fe@dev.tdt.de>
-Cc: stable <stable@kernel.org>
-Link: https://patch.msgid.link/20250924134115.2667650-1-fe@dev.tdt.de
+This leads to a bunch of assertions from xfs/286 in xfs_iread_extents
+because we only took ILOCK_SHARED, not ILOCK_EXCL.  You'd need the rare
+happenstance of a directory with a large number of non-pptr extended
+attributes set and enough memory pressure to cause the directory to be
+evicted and partially reloaded from disk.
+
+I /think/ this only started in 6.18-rc1 because I've started seeing OOM
+errors with the maple tree slab using 70% of memory, and this didn't
+happen in 6.17.  Yay dynamic systems!
+
+Cc: stable@vger.kernel.org # v6.10
+Fixes: 77ede5f44b0d86 ("xfs: walk directory parent pointers to determine backref count")
+Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Carlos Maiolino <cem@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/8250/8250_exar.c |   11 +++++++++++
- 1 file changed, 11 insertions(+)
+ fs/xfs/scrub/nlinks.c | 34 +++++++++++++++++++++++++++++++---
+ 1 file changed, 31 insertions(+), 3 deletions(-)
 
---- a/drivers/tty/serial/8250/8250_exar.c
-+++ b/drivers/tty/serial/8250/8250_exar.c
-@@ -33,6 +33,8 @@
- #define PCI_DEVICE_ID_ACCESSIO_COM_4SM		0x10db
- #define PCI_DEVICE_ID_ACCESSIO_COM_8SM		0x10ea
+diff --git a/fs/xfs/scrub/nlinks.c b/fs/xfs/scrub/nlinks.c
+index 26721fab5cab..091c79e432e5 100644
+--- a/fs/xfs/scrub/nlinks.c
++++ b/fs/xfs/scrub/nlinks.c
+@@ -376,6 +376,36 @@ xchk_nlinks_collect_pptr(
+ 	return error;
+ }
  
-+#define PCI_DEVICE_ID_ADVANTECH_XR17V352	0x0018
++static uint
++xchk_nlinks_ilock_dir(
++	struct xfs_inode	*ip)
++{
++	uint			lock_mode = XFS_ILOCK_SHARED;
 +
- #define PCI_DEVICE_ID_COMMTECH_4224PCI335	0x0002
- #define PCI_DEVICE_ID_COMMTECH_4222PCI335	0x0004
- #define PCI_DEVICE_ID_COMMTECH_2324PCI335	0x000a
-@@ -841,6 +843,12 @@ static const struct exar8250_board pbn_f
- 	.exit		= pci_xr17v35x_exit,
- };
++	/*
++	 * We're going to scan the directory entries, so we must be ready to
++	 * pull the data fork mappings into memory if they aren't already.
++	 */
++	if (xfs_need_iread_extents(&ip->i_df))
++		lock_mode = XFS_ILOCK_EXCL;
++
++	/*
++	 * We're going to scan the parent pointers, so we must be ready to
++	 * pull the attr fork mappings into memory if they aren't already.
++	 */
++	if (xfs_has_parent(ip->i_mount) && xfs_inode_has_attr_fork(ip) &&
++	    xfs_need_iread_extents(&ip->i_af))
++		lock_mode = XFS_ILOCK_EXCL;
++
++	/*
++	 * Take the IOLOCK so that other threads cannot start a directory
++	 * update while we're scanning.
++	 */
++	lock_mode |= XFS_IOLOCK_SHARED;
++	xfs_ilock(ip, lock_mode);
++	return lock_mode;
++}
++
+ /* Walk a directory to bump the observed link counts of the children. */
+ STATIC int
+ xchk_nlinks_collect_dir(
+@@ -394,8 +424,7 @@ xchk_nlinks_collect_dir(
+ 		return 0;
  
-+static const struct exar8250_board pbn_adv_XR17V352 = {
-+	.num_ports	= 2,
-+	.setup		= pci_xr17v35x_setup,
-+	.exit		= pci_xr17v35x_exit,
-+};
-+
- static const struct exar8250_board pbn_exar_XR17V4358 = {
- 	.num_ports	= 12,
- 	.setup		= pci_xr17v35x_setup,
-@@ -910,6 +918,9 @@ static const struct pci_device_id exar_p
- 	USR_DEVICE(XR17C152, 2980, pbn_exar_XR17C15x),
- 	USR_DEVICE(XR17C152, 2981, pbn_exar_XR17C15x),
+ 	/* Prevent anyone from changing this directory while we walk it. */
+-	xfs_ilock(dp, XFS_IOLOCK_SHARED);
+-	lock_mode = xfs_ilock_data_map_shared(dp);
++	lock_mode = xchk_nlinks_ilock_dir(dp);
  
-+	/* ADVANTECH devices */
-+	EXAR_DEVICE(ADVANTECH, XR17V352, pbn_adv_XR17V352),
-+
- 	/* Exar Corp. XR17C15[248] Dual/Quad/Octal UART */
- 	EXAR_DEVICE(EXAR, XR17C152, pbn_exar_XR17C15x),
- 	EXAR_DEVICE(EXAR, XR17C154, pbn_exar_XR17C15x),
+ 	/*
+ 	 * The dotdot entry of an unlinked directory still points to the last
+@@ -452,7 +481,6 @@ xchk_nlinks_collect_dir(
+ 	xchk_iscan_abort(&xnc->collect_iscan);
+ out_unlock:
+ 	xfs_iunlock(dp, lock_mode);
+-	xfs_iunlock(dp, XFS_IOLOCK_SHARED);
+ 	return error;
+ }
+ 
+-- 
+2.51.1
+
 
 
 
