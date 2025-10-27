@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-191012-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190582-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id C822EC10F85
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:27:57 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id ABBD8C10912
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:10:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C7C1A5476EB
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:21:00 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6F3865066BE
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:05:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E4843054D2;
-	Mon, 27 Oct 2025 19:19:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE6E9329C45;
+	Mon, 27 Oct 2025 19:01:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ABLJXn8w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OuyP2Fbt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFDF61FBC92;
-	Mon, 27 Oct 2025 19:19:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 892DE32E14F;
+	Mon, 27 Oct 2025 19:01:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592785; cv=none; b=RFHY9pv5JJG8B63ScAvTXJ628ipIy5WnN5V0gksWf/h9TDO6w/Vdmwp3oVkMD7cgGz6Col3sJcXrWCtjVehXy4PDx/RIwLJz0MwdU28INCxbzY860wG5O5toxcTvoX3rN1Ma+TBdddGg9y8zs2TU90e3GhD3iirgxvuykadGHks=
+	t=1761591666; cv=none; b=CkRubz82dTQzehq5cZHpAEYwcX0Liiq6SdJ+V3nZXIwDkP6Cq0luJXy+8qlgOcF20EFIHdeLefdr+xv0xT69/ZLoKO/0TicICzkkeXu+zMBKifXw5Im3k+AtlGEA0VbwhR6aVlGuMNUpPa2HpSuOMkcsav8+nsKGk/59Hi45eBM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592785; c=relaxed/simple;
-	bh=jia6LqX1YRf0dHxLyZpudoF0At1wiWp3heOnYKm46bg=;
+	s=arc-20240116; t=1761591666; c=relaxed/simple;
+	bh=7CNT23NA28eD1F5dor+KXE7DTt6RD15Mw2UfKPwnW2A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ht/dBlDUihU/WEX6jjv+nXwHCJDDx1kNPJpxmmTYqkhu5YOsBzpHe8sBKfUJijdgCpHD/Tfry/wsnY0UlufHxmv0EOG73vgbv9HYKoljgF/PjCo7WkBiWDCEYXoibD2ugARucMFJOF6MTF6qnWeSFuJQzz1tF1YVgfaeIp90Wrc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ABLJXn8w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87D7FC4CEF1;
-	Mon, 27 Oct 2025 19:19:44 +0000 (UTC)
+	 MIME-Version; b=suy91X9sCiqROhyidOs9V7oCU4b3ldZKNUApINhHbOc3XX+uRB2iegtZwIt3A8uwITvXLcjDbab+Q2trcjikUXRrD0a8RxwQQM8DA6zigsvdubALpN6y2qyh7OJqWAoWf1J/GHAL+J1G/Y6UOKXasPaO43/mrqDgcd09quswlXs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OuyP2Fbt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D1DEC4CEF1;
+	Mon, 27 Oct 2025 19:01:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592784;
-	bh=jia6LqX1YRf0dHxLyZpudoF0At1wiWp3heOnYKm46bg=;
+	s=korg; t=1761591666;
+	bh=7CNT23NA28eD1F5dor+KXE7DTt6RD15Mw2UfKPwnW2A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ABLJXn8wMvuLkRYux3qYcRW8igci3m6KfpAi11oQO+e5dd0fqW6Jez7DiqRcxTDWE
-	 90Y4On1/E3SQSveoBcDETeZsZo2NlbDXtWNlTeHk7rUdE2DvXYTvZ07aDlwppJ+GgY
-	 PXC7XSLPjTCcP290+Jg/NIFISAKGWrF+A5gRqdPg=
+	b=OuyP2FbtvBilULa/yrwL7n0/kICLcug7zt1P8BSSraxRu80roqurAOqfBJiJZ6F0R
+	 bAZZdbOa6kS+jSDfPty8JIZE+ER8N+rvnSilffK3b/Rn71fngEDVrVcE3riGQmsBVe
+	 9YaY7SwI18g2bu9Aj56F0S2ajvL9NoCKW+NacLUA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Linux Kernel Functional Testing <lkft@linaro.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Kees Cook <kees@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 011/117] PCI: Test for bit underflow in pcie_set_readrq()
+	Michal Pecio <michal.pecio@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.10 284/332] net: usb: rtl8150: Fix frame padding
 Date: Mon, 27 Oct 2025 19:35:37 +0100
-Message-ID: <20251027183454.246397846@linuxfoundation.org>
+Message-ID: <20251027183532.357974193@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
-References: <20251027183453.919157109@linuxfoundation.org>
+In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
+References: <20251027183524.611456697@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,72 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <kees@kernel.org>
+From: Michal Pecio <michal.pecio@gmail.com>
 
-[ Upstream commit 00e58ff924b3a684b076f9512fe2753be87b50e1 ]
+commit 75cea9860aa6b2350d90a8d78fed114d27c7eca2 upstream.
 
-In preparation for the future commit ("bitops: Add __attribute_const__ to generic
-ffs()-family implementations"), which allows GCC's value range tracker
-to see past ffs(), GCC 8 on ARM thinks that it might be possible that
-"ffs(rq) - 8" used here:
+TX frames aren't padded and unknown memory is sent into the ether.
 
-	v = FIELD_PREP(PCI_EXP_DEVCTL_READRQ, ffs(rq) - 8);
+Theoretically, it isn't even guaranteed that the extra memory exists
+and can be sent out, which could cause further problems. In practice,
+I found that plenty of tailroom exists in the skb itself (in my test
+with ping at least) and skb_padto() easily succeeds, so use it here.
 
-could wrap below 0, leading to a very large value, which would be out of
-range for the FIELD_PREP() usage:
+In the event of -ENOMEM drop the frame like other drivers do.
 
-drivers/pci/pci.c: In function 'pcie_set_readrq':
-include/linux/compiler_types.h:572:38: error: call to '__compiletime_assert_471' declared with attribute error: FIELD_PREP: value too large for the field
-...
-drivers/pci/pci.c:5896:6: note: in expansion of macro 'FIELD_PREP'
-  v = FIELD_PREP(PCI_EXP_DEVCTL_READRQ, ffs(rq) - 8);
-      ^~~~~~~~~~
+The use of one more padding byte instead of a USB zero-length packet
+is retained to avoid regression. I have a dodgy Etron xHCI controller
+which doesn't seem to support sending ZLPs at all.
 
-If the result of the ffs() is bounds checked before being used in
-FIELD_PREP(), the value tracker seems happy again. :)
-
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-Closes: https://lore.kernel.org/linux-pci/CA+G9fYuysVr6qT8bjF6f08WLyCJRG7aXAeSd2F7=zTaHHd7L+Q@mail.gmail.com/
-Acked-by: Bjorn Helgaas <bhelgaas@google.com>
-Acked-by: Arnd Bergmann <arnd@arndb.de>
-Link: https://lore.kernel.org/r/20250905052836.work.425-kees@kernel.org
-Signed-off-by: Kees Cook <kees@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@vger.kernel.org
+Signed-off-by: Michal Pecio <michal.pecio@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20251014203528.3f9783c4.michal.pecio@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/pci.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/net/usb/rtl8150.c |   11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-index 3d1365f558d3a..0dd548e2b3676 100644
---- a/drivers/pci/pci.c
-+++ b/drivers/pci/pci.c
-@@ -6048,6 +6048,7 @@ int pcie_set_readrq(struct pci_dev *dev, int rq)
- {
- 	u16 v;
- 	int ret;
-+	unsigned int firstbit;
- 	struct pci_host_bridge *bridge = pci_find_host_bridge(dev->bus);
+--- a/drivers/net/usb/rtl8150.c
++++ b/drivers/net/usb/rtl8150.c
+@@ -685,9 +685,16 @@ static netdev_tx_t rtl8150_start_xmit(st
+ 	rtl8150_t *dev = netdev_priv(netdev);
+ 	int count, res;
  
- 	if (rq < 128 || rq > 4096 || !is_power_of_2(rq))
-@@ -6065,7 +6066,10 @@ int pcie_set_readrq(struct pci_dev *dev, int rq)
- 			rq = mps;
- 	}
- 
--	v = FIELD_PREP(PCI_EXP_DEVCTL_READRQ, ffs(rq) - 8);
-+	firstbit = ffs(rq);
-+	if (firstbit < 8)
-+		return -EINVAL;
-+	v = FIELD_PREP(PCI_EXP_DEVCTL_READRQ, firstbit - 8);
- 
- 	if (bridge->no_inc_mrrs) {
- 		int max_mrrs = pcie_get_readrq(dev);
--- 
-2.51.0
-
++	/* pad the frame and ensure terminating USB packet, datasheet 9.2.3 */
++	count = max(skb->len, ETH_ZLEN);
++	if (count % 64 == 0)
++		count++;
++	if (skb_padto(skb, count)) {
++		netdev->stats.tx_dropped++;
++		return NETDEV_TX_OK;
++	}
++
+ 	netif_stop_queue(netdev);
+-	count = (skb->len < 60) ? 60 : skb->len;
+-	count = (count & 0x3f) ? count : count + 1;
+ 	dev->tx_skb = skb;
+ 	usb_fill_bulk_urb(dev->tx_urb, dev->udev, usb_sndbulkpipe(dev->udev, 2),
+ 		      skb->data, count, write_bulk_callback, dev);
 
 
 
