@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-191029-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191202-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CC13C10F43
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:27:24 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13BF3C11192
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:34:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 947B7505863
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:21:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 476DC581FC9
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:29:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC692324B09;
-	Mon, 27 Oct 2025 19:20:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55DB5309EF7;
+	Mon, 27 Oct 2025 19:27:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RD6V+EZC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kKZWYzrS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67E5C31D393;
-	Mon, 27 Oct 2025 19:20:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1172431E0F2;
+	Mon, 27 Oct 2025 19:27:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592829; cv=none; b=MidmEx8otSleB/Z3PByfOoI6GKJm/rRAMwdiTHytchn4TcSNBuEpPiXEbsiTlrPqSox53pe3HAyz6BmNd5HIsURZkno8j0r/lewd8da+4LXBMIMkyQ+AgGo7NEOqG8MoP6KjhVOAlauIBcgf+T0bBXnRJvqkzlKvGs9279uWEfk=
+	t=1761593270; cv=none; b=YZGRnAdFzvVhvMqyF62aicARUdIO9Uxy2stLjDs24JE0+EJ9sj8MxRE1Hpec6VpBGXnco2+e3tgmdzR2iVj4i/WRWGeAgoWThhuHIrMaQQbRRuIhGOPY0QkTaMscv79vUr6ZKRxAPxcmKUeazHQCB+jMtSNx5NSNkRIUtaSCh34=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592829; c=relaxed/simple;
-	bh=uLswryaAHFQmz0xuuQ985dmLUuSqOwmtr4B50F4Omqk=;
+	s=arc-20240116; t=1761593270; c=relaxed/simple;
+	bh=5X9BKoueeCCsr5HWB4IYOTsNEqYwWUVcYKPLxPg/Cl4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sFe1yzr+LMIJSgy6A3/YIaH7e6Z+FC3D10KyQkYuiRfE+yp5UIHsaiWGaync4c6eIRL0+vu+8ZNfErXIlmuHzhHPutPdsAuWZPXp/lfMA4p5rLn5tb25qn0cbpUnCruu3j/VnJHDKDpq6KD8gO08GfY3Gml+52WLcyQG2Ik7eqU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RD6V+EZC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94FBBC4CEF1;
-	Mon, 27 Oct 2025 19:20:28 +0000 (UTC)
+	 MIME-Version; b=ZNfEloKha+UdXMEKHlS2E8G90LJdYAJv8aH2KkjhT0y/Rc5bs+6XS2mQXFawTy3dSrljb1Y7bBGtU0u5gn12vyeYUaHk9FSqk7wdylwO5NV9SIMn2ek6139p306gIEAelyRdNpZSOnPgA83487Vye/hNTTS1NxHHGKitK+hGSc0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kKZWYzrS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98290C4CEFD;
+	Mon, 27 Oct 2025 19:27:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592828;
-	bh=uLswryaAHFQmz0xuuQ985dmLUuSqOwmtr4B50F4Omqk=;
+	s=korg; t=1761593269;
+	bh=5X9BKoueeCCsr5HWB4IYOTsNEqYwWUVcYKPLxPg/Cl4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RD6V+EZC/POR3u12Np8jL1ciYzsIEwhqzxJB2fVuzLvElLvRsZcXKUUdoj+FcdSw7
-	 LCZHFRkqagMhL0rjFkntb+nPBeCaIj4jvdUMi2OnF0YzBLwJ48Td+nsiV4erjK3w+I
-	 QDYoNggWt2Hc4ewzk96n0i/sYaUidSTbitpUdtiE=
+	b=kKZWYzrSjZUEhC52yvdc2ZZeBYr0T3jPxf1HvZwJxNCczf4U8NlxBT16qArrZMQeg
+	 hJYeraUCJ+iMgAgEx4Uov+pbbCHfWNrphHOXCxmrGMhQRV3K6J74jVddWJSI2Qbjqo
+	 ILKQ0/kTTFG33birCqbL8fcXXRH0EQeR7ZEgChCw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jianpeng Chang <jianpeng.chang.cn@windriver.com>,
-	Wei Fang <wei.fang@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 027/117] net: enetc: fix the deadlock of enetc_mdio_lock
+	Daniel Vacek <neelx@suse.com>,
+	Qu Wenruo <wqu@suse.com>,
+	Dewei Meng <mengdewei@cqsoftware.com.cn>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.17 071/184] btrfs: directly free partially initialized fs_info in btrfs_check_leaked_roots()
 Date: Mon, 27 Oct 2025 19:35:53 +0100
-Message-ID: <20251027183454.700074878@linuxfoundation.org>
+Message-ID: <20251027183516.804195385@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
-References: <20251027183453.919157109@linuxfoundation.org>
+In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
+References: <20251027183514.934710872@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,163 +63,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jianpeng Chang <jianpeng.chang.cn@windriver.com>
+From: Dewei Meng <mengdewei@cqsoftware.com.cn>
 
-[ Upstream commit 50bd33f6b3922a6b760aa30d409cae891cec8fb5 ]
+commit 17679ac6df6c4830ba711835aa8cf961be36cfa1 upstream.
 
-After applying the workaround for err050089, the LS1028A platform
-experiences RCU stalls on RT kernel. This issue is caused by the
-recursive acquisition of the read lock enetc_mdio_lock. Here list some
-of the call stacks identified under the enetc_poll path that may lead to
-a deadlock:
+If fs_info->super_copy or fs_info->super_for_commit allocated failed in
+btrfs_get_tree_subvol(), then no need to call btrfs_free_fs_info().
+Otherwise btrfs_check_leaked_roots() would access NULL pointer because
+fs_info->allocated_roots had not been initialised.
 
-enetc_poll
-  -> enetc_lock_mdio
-  -> enetc_clean_rx_ring OR napi_complete_done
-     -> napi_gro_receive
-        -> enetc_start_xmit
-           -> enetc_lock_mdio
-           -> enetc_map_tx_buffs
-           -> enetc_unlock_mdio
-  -> enetc_unlock_mdio
+syzkaller reported the following information:
+  ------------[ cut here ]------------
+  BUG: unable to handle page fault for address: fffffffffffffbb0
+  #PF: supervisor read access in kernel mode
+  #PF: error_code(0x0000) - not-present page
+  PGD 64c9067 P4D 64c9067 PUD 64cb067 PMD 0
+  Oops: Oops: 0000 [#1] SMP KASAN PTI
+  CPU: 0 UID: 0 PID: 1402 Comm: syz.1.35 Not tainted 6.15.8 #4 PREEMPT(lazy)
+  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), (...)
+  RIP: 0010:arch_atomic_read arch/x86/include/asm/atomic.h:23 [inline]
+  RIP: 0010:raw_atomic_read include/linux/atomic/atomic-arch-fallback.h:457 [inline]
+  RIP: 0010:atomic_read include/linux/atomic/atomic-instrumented.h:33 [inline]
+  RIP: 0010:refcount_read include/linux/refcount.h:170 [inline]
+  RIP: 0010:btrfs_check_leaked_roots+0x18f/0x2c0 fs/btrfs/disk-io.c:1230
+  [...]
+  Call Trace:
+   <TASK>
+   btrfs_free_fs_info+0x310/0x410 fs/btrfs/disk-io.c:1280
+   btrfs_get_tree_subvol+0x592/0x6b0 fs/btrfs/super.c:2029
+   btrfs_get_tree+0x63/0x80 fs/btrfs/super.c:2097
+   vfs_get_tree+0x98/0x320 fs/super.c:1759
+   do_new_mount+0x357/0x660 fs/namespace.c:3899
+   path_mount+0x716/0x19c0 fs/namespace.c:4226
+   do_mount fs/namespace.c:4239 [inline]
+   __do_sys_mount fs/namespace.c:4450 [inline]
+   __se_sys_mount fs/namespace.c:4427 [inline]
+   __x64_sys_mount+0x28c/0x310 fs/namespace.c:4427
+   do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+   do_syscall_64+0x92/0x180 arch/x86/entry/syscall_64.c:94
+   entry_SYSCALL_64_after_hwframe+0x76/0x7e
+  RIP: 0033:0x7f032eaffa8d
+  [...]
 
-After enetc_poll acquires the read lock, a higher-priority writer attempts
-to acquire the lock, causing preemption. The writer detects that a
-read lock is already held and is scheduled out. However, readers under
-enetc_poll cannot acquire the read lock again because a writer is already
-waiting, leading to a thread hang.
-
-Currently, the deadlock is avoided by adjusting enetc_lock_mdio to prevent
-recursive lock acquisition.
-
-Fixes: 6d36ecdbc441 ("net: enetc: take the MDIO lock only once per NAPI poll cycle")
-Signed-off-by: Jianpeng Chang <jianpeng.chang.cn@windriver.com>
-Acked-by: Wei Fang <wei.fang@nxp.com>
-Link: https://patch.msgid.link/20251015021427.180757-1-jianpeng.chang.cn@windriver.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 3bb17a25bcb0 ("btrfs: add get_tree callback for new mount API")
+CC: stable@vger.kernel.org # 6.12+
+Reviewed-by: Daniel Vacek <neelx@suse.com>
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Dewei Meng <mengdewei@cqsoftware.com.cn>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/freescale/enetc/enetc.c | 25 ++++++++++++++++----
- 1 file changed, 21 insertions(+), 4 deletions(-)
+ fs/btrfs/super.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/freescale/enetc/enetc.c b/drivers/net/ethernet/freescale/enetc/enetc.c
-index d8272b7a55fcb..749b65aab14a9 100644
---- a/drivers/net/ethernet/freescale/enetc/enetc.c
-+++ b/drivers/net/ethernet/freescale/enetc/enetc.c
-@@ -1246,6 +1246,8 @@ static int enetc_clean_rx_ring(struct enetc_bdr *rx_ring,
- 	/* next descriptor to process */
- 	i = rx_ring->next_to_clean;
- 
-+	enetc_lock_mdio();
-+
- 	while (likely(rx_frm_cnt < work_limit)) {
- 		union enetc_rx_bd *rxbd;
- 		struct sk_buff *skb;
-@@ -1281,7 +1283,9 @@ static int enetc_clean_rx_ring(struct enetc_bdr *rx_ring,
- 		rx_byte_cnt += skb->len + ETH_HLEN;
- 		rx_frm_cnt++;
- 
-+		enetc_unlock_mdio();
- 		napi_gro_receive(napi, skb);
-+		enetc_lock_mdio();
+--- a/fs/btrfs/super.c
++++ b/fs/btrfs/super.c
+@@ -2070,7 +2070,13 @@ static int btrfs_get_tree_subvol(struct
+ 	fs_info->super_copy = kzalloc(BTRFS_SUPER_INFO_SIZE, GFP_KERNEL);
+ 	fs_info->super_for_commit = kzalloc(BTRFS_SUPER_INFO_SIZE, GFP_KERNEL);
+ 	if (!fs_info->super_copy || !fs_info->super_for_commit) {
+-		btrfs_free_fs_info(fs_info);
++		/*
++		 * Dont call btrfs_free_fs_info() to free it as it's still
++		 * initialized partially.
++		 */
++		kfree(fs_info->super_copy);
++		kfree(fs_info->super_for_commit);
++		kvfree(fs_info);
+ 		return -ENOMEM;
  	}
- 
- 	rx_ring->next_to_clean = i;
-@@ -1289,6 +1293,8 @@ static int enetc_clean_rx_ring(struct enetc_bdr *rx_ring,
- 	rx_ring->stats.packets += rx_frm_cnt;
- 	rx_ring->stats.bytes += rx_byte_cnt;
- 
-+	enetc_unlock_mdio();
-+
- 	return rx_frm_cnt;
- }
- 
-@@ -1598,6 +1604,8 @@ static int enetc_clean_rx_ring_xdp(struct enetc_bdr *rx_ring,
- 	/* next descriptor to process */
- 	i = rx_ring->next_to_clean;
- 
-+	enetc_lock_mdio();
-+
- 	while (likely(rx_frm_cnt < work_limit)) {
- 		union enetc_rx_bd *rxbd, *orig_rxbd;
- 		int orig_i, orig_cleaned_cnt;
-@@ -1657,7 +1665,9 @@ static int enetc_clean_rx_ring_xdp(struct enetc_bdr *rx_ring,
- 			if (unlikely(!skb))
- 				goto out;
- 
-+			enetc_unlock_mdio();
- 			napi_gro_receive(napi, skb);
-+			enetc_lock_mdio();
- 			break;
- 		case XDP_TX:
- 			tx_ring = priv->xdp_tx_ring[rx_ring->index];
-@@ -1692,7 +1702,9 @@ static int enetc_clean_rx_ring_xdp(struct enetc_bdr *rx_ring,
- 			}
- 			break;
- 		case XDP_REDIRECT:
-+			enetc_unlock_mdio();
- 			err = xdp_do_redirect(rx_ring->ndev, &xdp_buff, prog);
-+			enetc_lock_mdio();
- 			if (unlikely(err)) {
- 				enetc_xdp_drop(rx_ring, orig_i, i);
- 				rx_ring->stats.xdp_redirect_failures++;
-@@ -1712,8 +1724,11 @@ static int enetc_clean_rx_ring_xdp(struct enetc_bdr *rx_ring,
- 	rx_ring->stats.packets += rx_frm_cnt;
- 	rx_ring->stats.bytes += rx_byte_cnt;
- 
--	if (xdp_redirect_frm_cnt)
-+	if (xdp_redirect_frm_cnt) {
-+		enetc_unlock_mdio();
- 		xdp_do_flush();
-+		enetc_lock_mdio();
-+	}
- 
- 	if (xdp_tx_frm_cnt)
- 		enetc_update_tx_ring_tail(tx_ring);
-@@ -1722,6 +1737,8 @@ static int enetc_clean_rx_ring_xdp(struct enetc_bdr *rx_ring,
- 		enetc_refill_rx_ring(rx_ring, enetc_bd_unused(rx_ring) -
- 				     rx_ring->xdp.xdp_tx_in_flight);
- 
-+	enetc_unlock_mdio();
-+
- 	return rx_frm_cnt;
- }
- 
-@@ -1740,6 +1757,7 @@ static int enetc_poll(struct napi_struct *napi, int budget)
- 	for (i = 0; i < v->count_tx_rings; i++)
- 		if (!enetc_clean_tx_ring(&v->tx_ring[i], budget))
- 			complete = false;
-+	enetc_unlock_mdio();
- 
- 	prog = rx_ring->xdp.prog;
- 	if (prog)
-@@ -1751,10 +1769,8 @@ static int enetc_poll(struct napi_struct *napi, int budget)
- 	if (work_done)
- 		v->rx_napi_work = true;
- 
--	if (!complete) {
--		enetc_unlock_mdio();
-+	if (!complete)
- 		return budget;
--	}
- 
- 	napi_complete_done(napi, work_done);
- 
-@@ -1763,6 +1779,7 @@ static int enetc_poll(struct napi_struct *napi, int budget)
- 
- 	v->rx_napi_work = false;
- 
-+	enetc_lock_mdio();
- 	/* enable interrupts */
- 	enetc_wr_reg_hot(v->rbier, ENETC_RBIER_RXTIE);
- 
--- 
-2.51.0
-
+ 	btrfs_init_fs_info(fs_info);
 
 
 
