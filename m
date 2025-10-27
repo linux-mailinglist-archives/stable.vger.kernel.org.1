@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-191331-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191332-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BF5AC11E69
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 23:52:00 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DCC7C11E1E
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 23:50:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 162DA56801F
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 22:48:11 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B36484EC398
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 22:48:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06D9C3328EA;
-	Mon, 27 Oct 2025 22:44:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BE9A332EB4;
+	Mon, 27 Oct 2025 22:44:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="ZI/NFGja"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="ZGi7U6Nr"
 X-Original-To: stable@vger.kernel.org
 Received: from relay.smtp-ext.broadcom.com (relay.smtp-ext.broadcom.com [192.19.144.207])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6D503128BA;
-	Mon, 27 Oct 2025 22:44:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8444A332915;
+	Mon, 27 Oct 2025 22:44:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.19.144.207
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761605056; cv=none; b=rJZRXWOPS8sKY+W0MQXUF5W+aL7LHD4xBIYn81v+AFaniwCdXS9Eo3KxBYFViV2UJFpjCoBwdwk0CebRmU/+iEpWz+CaQEKsccUQEQjGTOEBsNaZoFyc3zfo3pqIfSuvRGl54mjhU9VjDTJuOn5gV6PGkLBdx6tjRnQFe7GT6Ww=
+	t=1761605080; cv=none; b=H2IjCZi7UGo97CmUhv6xLK796mckW1G/OtTSFDZazW1MHIc5TIh61DLTaExep6r2zZXcrrGaJDenhu+wmBmp6/6TDZa1mAxPLyvDfeIFlzSvxaJx7+7AgCEGAVnSgOH/BPKOKGaLZXyZPRksfKDn5iQl6rlXre8uwjWS19kP8Y8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761605056; c=relaxed/simple;
-	bh=w80q5QFPKH0i4Qtuc5Mq5MdxEzAAVj/8/RDwVZDVe1E=;
+	s=arc-20240116; t=1761605080; c=relaxed/simple;
+	bh=zmbCaPOzgGv6cTQN82X12pgX4PFQ+szt+cRvH1+ZgjY=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=JUdO+7UpBDeMcrGZh5xEgfD82EkJmt2CGy/tra3a62JXgxh/BKfqqh7qlPHaMryK56atd31zgi5fIJEjXQNF59VJmIzmcGp/vmtZ3aL+IRltNy96Y8lJ6AdtEch9p9UwJrXbFkyPYi+U/LVZndIAC/UueEZNxznrAPRcJ8z8QKY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=ZI/NFGja; arc=none smtp.client-ip=192.19.144.207
+	 MIME-Version; b=mubqv04SdDwtL4j47gFEzHbWI9LbFSvOjuZf/yEYcwESppGOJ6tjTtPN6DmwxDoNaWZcXu16KF/4Wl6tq6No5t8Fztf+khGHHbB++AU1m9vJJe2EDCTDeoKMjzuqJgujbJRnl4tECioxY+3KxEg3Z44Ng3ydOODUkIMa4IiQbj8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=ZGi7U6Nr; arc=none smtp.client-ip=192.19.144.207
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Received: from mail-lvn-it-01.broadcom.com (mail-lvn-it-01.lvn.broadcom.net [10.36.132.253])
-	by relay.smtp-ext.broadcom.com (Postfix) with ESMTP id 66247C0003F6;
-	Mon, 27 Oct 2025 15:44:07 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 relay.smtp-ext.broadcom.com 66247C0003F6
+	by relay.smtp-ext.broadcom.com (Postfix) with ESMTP id A016DC0003F8;
+	Mon, 27 Oct 2025 15:44:37 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 relay.smtp-ext.broadcom.com A016DC0003F8
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=broadcom.com;
-	s=dkimrelay; t=1761605047;
-	bh=w80q5QFPKH0i4Qtuc5Mq5MdxEzAAVj/8/RDwVZDVe1E=;
+	s=dkimrelay; t=1761605077;
+	bh=zmbCaPOzgGv6cTQN82X12pgX4PFQ+szt+cRvH1+ZgjY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZI/NFGjaRFRQkEM/TjW9F7JQNirnkBHA9IlgNQ0nNCa2BrxSpOdA5ZILWmmQs2Oto
-	 ENRStykAKrfj9M2DGoava2TrLltIvSJksTxx1E721s+Cb+Lh6Uu53wuOoAv0AjX2Eh
-	 U+0n+XcqulFaFEDK/52DbeM15RwCCXcErvqKaZVc=
+	b=ZGi7U6NrJNRAvOKvqAdUIfJdE4i5yg8CGQbgEG7XP/Sj90KN4AYPhHS63JDFUMP1N
+	 UJQo8SfzcDZwyYlfm9DhrAfIqd7x9HPBMiiV4g3CExqwYzn3eM0M6qcXUDb806QFWn
+	 PwpgqaQbdIKhJKpBlorKiRmWkfn6J5aduHqa4BJU=
 Received: from stbirv-lnx-1.igp.broadcom.net (stbirv-lnx-1.igp.broadcom.net [10.67.48.32])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail-lvn-it-01.broadcom.com (Postfix) with ESMTPSA id 0C56718000530;
+	by mail-lvn-it-01.broadcom.com (Postfix) with ESMTPSA id 3EFEA1800053F;
 	Mon, 27 Oct 2025 15:44:07 -0700 (PDT)
 From: Florian Fainelli <florian.fainelli@broadcom.com>
 To: stable@vger.kernel.org
 Cc: Doug Berger <opendmb@gmail.com>,
 	Peter Zijlstra <peterz@infradead.org>,
-	Doug Berger <doug.berger@broadcom.com>,
 	Florian Fainelli <florian.fainelli@broadcom.com>,
 	Ingo Molnar <mingo@redhat.com>,
 	Juri Lelli <juri.lelli@redhat.com>,
@@ -66,9 +65,9 @@ Cc: Doug Berger <opendmb@gmail.com>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>,
 	bcm-kernel-feedback-list@broadcom.com
-Subject: [PATCH stable 5.15] sched/deadline: only set free_cpus for online runqueues
-Date: Mon, 27 Oct 2025 15:43:46 -0700
-Message-Id: <20251027224351.2893946-2-florian.fainelli@broadcom.com>
+Subject: [PATCH stable 5.4] sched/deadline: only set free_cpus for online runqueues
+Date: Mon, 27 Oct 2025 15:43:47 -0700
+Message-Id: <20251027224351.2893946-3-florian.fainelli@broadcom.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20251027224351.2893946-1-florian.fainelli@broadcom.com>
 References: <20251027224351.2893946-1-florian.fainelli@broadcom.com>
@@ -123,10 +122,8 @@ functions are removed. In addition, since the free_cpus mask is
 now only updated under the cpudl lock the code was changed to
 use the non-atomic __cpumask functions.
 
-
 Signed-off-by: Doug Berger <opendmb@gmail.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Doug Berger <doug.berger@broadcom.com>
 Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
 ---
  kernel/sched/cpudeadline.c | 34 +++++++++-------------------------
@@ -135,10 +132,10 @@ Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
  3 files changed, 14 insertions(+), 32 deletions(-)
 
 diff --git a/kernel/sched/cpudeadline.c b/kernel/sched/cpudeadline.c
-index 221ca1050573..219cec91ecee 100644
+index 5cc4012572ec..af0048b08ea0 100644
 --- a/kernel/sched/cpudeadline.c
 +++ b/kernel/sched/cpudeadline.c
-@@ -166,12 +166,13 @@ int cpudl_find(struct cpudl *cp, struct task_struct *p,
+@@ -142,12 +142,13 @@ int cpudl_find(struct cpudl *cp, struct task_struct *p,
   * cpudl_clear - remove a CPU from the cpudl max-heap
   * @cp: the cpudl max-heap context
   * @cpu: the target CPU
@@ -153,7 +150,7 @@ index 221ca1050573..219cec91ecee 100644
  {
  	int old_idx, new_cpu;
  	unsigned long flags;
-@@ -184,7 +185,7 @@ void cpudl_clear(struct cpudl *cp, int cpu)
+@@ -160,7 +161,7 @@ void cpudl_clear(struct cpudl *cp, int cpu)
  	if (old_idx == IDX_INVALID) {
  		/*
  		 * Nothing to remove if old_idx was invalid.
@@ -162,7 +159,7 @@ index 221ca1050573..219cec91ecee 100644
  		 * called for a CPU without -dl tasks running.
  		 */
  	} else {
-@@ -195,9 +196,12 @@ void cpudl_clear(struct cpudl *cp, int cpu)
+@@ -171,9 +172,12 @@ void cpudl_clear(struct cpudl *cp, int cpu)
  		cp->elements[new_cpu].idx = old_idx;
  		cp->elements[cpu].idx = IDX_INVALID;
  		cpudl_heapify(cp, old_idx);
@@ -177,7 +174,7 @@ index 221ca1050573..219cec91ecee 100644
  	raw_spin_unlock_irqrestore(&cp->lock, flags);
  }
  
-@@ -228,7 +232,7 @@ void cpudl_set(struct cpudl *cp, int cpu, u64 dl)
+@@ -204,7 +208,7 @@ void cpudl_set(struct cpudl *cp, int cpu, u64 dl)
  		cp->elements[new_idx].cpu = cpu;
  		cp->elements[cpu].idx = new_idx;
  		cpudl_heapify_up(cp, new_idx);
@@ -186,7 +183,7 @@ index 221ca1050573..219cec91ecee 100644
  	} else {
  		cp->elements[old_idx].dl = dl;
  		cpudl_heapify(cp, old_idx);
-@@ -237,26 +241,6 @@ void cpudl_set(struct cpudl *cp, int cpu, u64 dl)
+@@ -213,26 +217,6 @@ void cpudl_set(struct cpudl *cp, int cpu, u64 dl)
  	raw_spin_unlock_irqrestore(&cp->lock, flags);
  }
  
@@ -229,19 +226,19 @@ index 0adeda93b5fb..ecff718d94ae 100644
  void cpudl_cleanup(struct cpudl *cp);
  #endif /* CONFIG_SMP */
 diff --git a/kernel/sched/deadline.c b/kernel/sched/deadline.c
-index 708c3960bd06..923ac2244d4b 100644
+index 023d52d2a0f1..fd4acba1a98b 100644
 --- a/kernel/sched/deadline.c
 +++ b/kernel/sched/deadline.c
-@@ -1418,7 +1418,7 @@ static void dec_dl_deadline(struct dl_rq *dl_rq, u64 deadline)
+@@ -1372,7 +1372,7 @@ static void dec_dl_deadline(struct dl_rq *dl_rq, u64 deadline)
  	if (!dl_rq->dl_nr_running) {
  		dl_rq->earliest_dl.curr = 0;
  		dl_rq->earliest_dl.next = 0;
 -		cpudl_clear(&rq->rd->cpudl, rq->cpu);
 +		cpudl_clear(&rq->rd->cpudl, rq->cpu, rq->online);
- 		cpupri_set(&rq->rd->cpupri, rq->cpu, rq->rt.highest_prio.curr);
  	} else {
  		struct rb_node *leftmost = dl_rq->root.rb_leftmost;
-@@ -2377,9 +2377,10 @@ static void rq_online_dl(struct rq *rq)
+ 		struct sched_dl_entity *entry;
+@@ -2297,9 +2297,10 @@ static void rq_online_dl(struct rq *rq)
  	if (rq->dl.overloaded)
  		dl_set_overload(rq);
  
@@ -253,7 +250,7 @@ index 708c3960bd06..923ac2244d4b 100644
  }
  
  /* Assumes rq->lock is held */
-@@ -2388,8 +2389,7 @@ static void rq_offline_dl(struct rq *rq)
+@@ -2308,8 +2309,7 @@ static void rq_offline_dl(struct rq *rq)
  	if (rq->dl.overloaded)
  		dl_clear_overload(rq);
  
