@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-190587-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191182-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AD4AC10918
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:10:34 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6413FC11150
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:33:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D4A564F7D61
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:05:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CAE111A26F0E
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:29:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9588D3218B2;
-	Mon, 27 Oct 2025 19:01:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8AB832C326;
+	Mon, 27 Oct 2025 19:26:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PH7qMVNQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j7A9Tgt9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5116C2C3745;
-	Mon, 27 Oct 2025 19:01:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9934432C92A;
+	Mon, 27 Oct 2025 19:26:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591674; cv=none; b=TFr25H9w+63a/z9tpAsP3Q6JoCJ6+K4B8jHUOIxvHt3q7j9r+LU7T9ERvDI4ftKE7erSzBFJ0gM9mH3ufJ4EMh8kD2wWlqUEmHA47SR7BIQDehetSuD7MoPECk0PKKPXMLJfMoKNFCxivXM7aAC5lZ92NKynFcUu4tPJx4fLpVk=
+	t=1761593218; cv=none; b=L6qOfVMniAKGZ9RPd+xTXM7kKysG5jP25SU9sNhsiiSDR5Jk6Utj4fAPQlRMkzBb7E0wJLz54iJfXR/8al5+u/hiATcDvupg4H/uoRPNVS63lFqSvIU8Nt/mtyadinB0XnyvTxzPyiALBbMhM66rxDbLu2v/HpEfFWw76MQXNsw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591674; c=relaxed/simple;
-	bh=KqduGBqKlYyl2Sd6bNpNcLS/2n0t5y0gsmFsaC+By74=;
+	s=arc-20240116; t=1761593218; c=relaxed/simple;
+	bh=TTqXzHdkxqhJS6z0N22hTR1wGSijiSuAg/TtkKdOR9U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SOHJD2Twth+p9faiiNngCa4i2GX4nIBveDus/VHDrrHedvOUsilnubVVAbHQdSmIURmRXPka9ZC6RP1pv4xPuAyxPFF0XsWBwD1HTEDibKREzkY/Uh+o951dq3cIfLhi0kv1slMAwfrREtUZIXILghMIYLCjpM2AnIKVup2YIZc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PH7qMVNQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFA26C4CEF1;
-	Mon, 27 Oct 2025 19:01:13 +0000 (UTC)
+	 MIME-Version; b=SgiO29oOLswFuo/KrnbccuzeG95HaHtpgDI0OpXZka0Eug07XiKTWHZKpYT6HgQxHJTsVsy6nnbfYtg8CxQjI/1jd6rtzRZ4HhpeklWJ6JB0FBLMNcR6Djkb7N4dVbtNwJ2ehH7iaLDiB9hJjjmsTa/kXwq35YgbV17R46jhpB0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j7A9Tgt9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C7D6C4CEF1;
+	Mon, 27 Oct 2025 19:26:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591674;
-	bh=KqduGBqKlYyl2Sd6bNpNcLS/2n0t5y0gsmFsaC+By74=;
+	s=korg; t=1761593218;
+	bh=TTqXzHdkxqhJS6z0N22hTR1wGSijiSuAg/TtkKdOR9U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PH7qMVNQm8KMbbItcorMEZIoping7lggX9hWmgPUETC6sTIk7mYImySPcDNe6w/cq
-	 KpzHrfQ3tOEFrTFWeH/cPCebMo9qvA3JPKCU8hg/lhsXR9PIMIpiW/QgII7gnfGAvt
-	 0v1res6pIdtDqF7aQc+fr8jElS5fYS+/cN2swq6A=
+	b=j7A9Tgt9M9ZtE9nICXkoF6FND5gSx6VhEXe/n1KK/TAFktm19wN0Rhi2cnbiq9NTv
+	 NFv7P25joscagMfXqCEBUz/qDEHQLjYNE/5Zx+xNkSZcr6f2HQICDBPXF7ARK5BRsp
+	 0aZrkkhLHSAdjHsRE0qv4hZ0voYGlfE2z1m4KdVY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anup Patel <anup@brainfault.org>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Tsukasa OI <research_trasio@irq.a4lg.com>,
-	Atish Patra <atishp@rivosinc.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
+	Antonio Quartulli <antonio@openvpn.net>,
+	Ralf Lici <ralf@mandelbit.com>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 287/332] RISC-V: Correctly print supported extensions
+Subject: [PATCH 6.17 058/184] ovpn: use datagram_poll_queue for socket readiness in TCP
 Date: Mon, 27 Oct 2025 19:35:40 +0100
-Message-ID: <20251027183532.436417175@linuxfoundation.org>
+Message-ID: <20251027183516.458557333@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
-References: <20251027183524.611456697@linuxfoundation.org>
+In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
+References: <20251027183514.934710872@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,72 +64,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tsukasa OI <research_trasio@irq.a4lg.com>
+From: Ralf Lici <ralf@mandelbit.com>
 
-[ Upstream commit 58004f266918912771ee71f46bfb92bf64ab9108 ]
+[ Upstream commit efd729408bc7d57e0c8d027b9ff514187fc1a05b ]
 
-This commit replaces BITS_PER_LONG with number of alphabet letters.
+openvpn TCP encapsulation uses a custom queue to deliver packets to
+userspace. Currently it relies on datagram_poll, which checks
+sk_receive_queue, leading to false readiness signals when that queue
+contains non-userspace packets.
 
-Current ISA pretty-printing code expects extension 'a' (bit 0) through
-'z' (bit 25).  Although bit 26 and higher is not currently used (thus never
-cause an issue in practice), it will be an annoying problem if we start to
-use those in the future.
+Switch ovpn_tcp_poll to use datagram_poll_queue with the peer's
+user_queue, ensuring poll only signals readiness when userspace data is
+actually available. Also refactor ovpn_tcp_poll in order to enforce the
+assumption we can make on the lifetime of ovpn_sock and peer.
 
-This commit disables printing high bits for now.
-
-Reviewed-by: Anup Patel <anup@brainfault.org>
-Tested-by: Heiko Stuebner <heiko@sntech.de>
-Signed-off-by: Tsukasa OI <research_trasio@irq.a4lg.com>
-Signed-off-by: Atish Patra <atishp@rivosinc.com>
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
-Stable-dep-of: d2721bb165b3 ("RISC-V: Don't print details of CPUs disabled in DT")
+Fixes: 11851cbd60ea ("ovpn: implement TCP transport")
+Signed-off-by: Antonio Quartulli <antonio@openvpn.net>
+Signed-off-by: Ralf Lici <ralf@mandelbit.com>
+Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
+Link: https://patch.msgid.link/20251021100942.195010-4-ralf@mandelbit.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kernel/cpufeature.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/net/ovpn/tcp.c | 26 ++++++++++++++++++++++----
+ 1 file changed, 22 insertions(+), 4 deletions(-)
 
-diff --git a/arch/riscv/kernel/cpufeature.c b/arch/riscv/kernel/cpufeature.c
-index ac202f44a6702..ece126dad3547 100644
---- a/arch/riscv/kernel/cpufeature.c
-+++ b/arch/riscv/kernel/cpufeature.c
-@@ -13,6 +13,8 @@
- #include <asm/smp.h>
- #include <asm/switch_to.h>
- 
-+#define NUM_ALPHA_EXTS ('z' - 'a' + 1)
-+
- unsigned long elf_hwcap __read_mostly;
- 
- /* Host ISA bitmap */
-@@ -63,7 +65,7 @@ void riscv_fill_hwcap(void)
+diff --git a/drivers/net/ovpn/tcp.c b/drivers/net/ovpn/tcp.c
+index 289f62c5d2c70..0d7f30360d874 100644
+--- a/drivers/net/ovpn/tcp.c
++++ b/drivers/net/ovpn/tcp.c
+@@ -560,16 +560,34 @@ static void ovpn_tcp_close(struct sock *sk, long timeout)
+ static __poll_t ovpn_tcp_poll(struct file *file, struct socket *sock,
+ 			      poll_table *wait)
  {
- 	struct device_node *node;
- 	const char *isa;
--	char print_str[BITS_PER_LONG + 1];
-+	char print_str[NUM_ALPHA_EXTS + 1];
- 	size_t i, j, isa_len;
- 	static unsigned long isa2hwcap[256] = {0};
+-	__poll_t mask = datagram_poll(file, sock, wait);
++	struct sk_buff_head *queue = &sock->sk->sk_receive_queue;
+ 	struct ovpn_socket *ovpn_sock;
++	struct ovpn_peer *peer = NULL;
++	__poll_t mask;
  
-@@ -133,13 +135,13 @@ void riscv_fill_hwcap(void)
- 	}
+ 	rcu_read_lock();
+ 	ovpn_sock = rcu_dereference_sk_user_data(sock->sk);
+-	if (ovpn_sock && ovpn_sock->peer &&
+-	    !skb_queue_empty(&ovpn_sock->peer->tcp.user_queue))
+-		mask |= EPOLLIN | EPOLLRDNORM;
++	/* if we landed in this callback, we expect to have a
++	 * meaningful state. The ovpn_socket lifecycle would
++	 * prevent it otherwise.
++	 */
++	if (WARN(!ovpn_sock || !ovpn_sock->peer,
++		 "ovpn: null state in ovpn_tcp_poll!")) {
++		rcu_read_unlock();
++		return 0;
++	}
++
++	if (ovpn_peer_hold(ovpn_sock->peer)) {
++		peer = ovpn_sock->peer;
++		queue = &peer->tcp.user_queue;
++	}
+ 	rcu_read_unlock();
  
- 	memset(print_str, 0, sizeof(print_str));
--	for (i = 0, j = 0; i < BITS_PER_LONG; i++)
-+	for (i = 0, j = 0; i < NUM_ALPHA_EXTS; i++)
- 		if (riscv_isa[0] & BIT_MASK(i))
- 			print_str[j++] = (char)('a' + i);
- 	pr_info("riscv: ISA extensions %s\n", print_str);
++	mask = datagram_poll_queue(file, sock, wait, queue);
++
++	if (peer)
++		ovpn_peer_put(peer);
++
+ 	return mask;
+ }
  
- 	memset(print_str, 0, sizeof(print_str));
--	for (i = 0, j = 0; i < BITS_PER_LONG; i++)
-+	for (i = 0, j = 0; i < NUM_ALPHA_EXTS; i++)
- 		if (elf_hwcap & BIT_MASK(i))
- 			print_str[j++] = (char)('a' + i);
- 	pr_info("riscv: ELF capabilities %s\n", print_str);
 -- 
 2.51.0
 
