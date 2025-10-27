@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-191016-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191184-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9149C10F2A
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:27:07 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71A99C11156
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:33:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AEC5F56243C
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:21:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 75CAB1893442
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:29:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78E6E2C326C;
-	Mon, 27 Oct 2025 19:19:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D8CB2DC33D;
+	Mon, 27 Oct 2025 19:27:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zx4Kn4Xx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wea3GscR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 352601FBC92;
-	Mon, 27 Oct 2025 19:19:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDB1F238145;
+	Mon, 27 Oct 2025 19:27:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592795; cv=none; b=G4ee/XnXHCBF5PEnoB4UNNivzIytrr2d64oeGl1b7iYv+9cyUAZ4cFZ0rTlgs5GMHN4dqAAC4VDwaw9mfWdmZ5SHg6dFnnfOQHwGnmSqMi9BltmwLQwaLKZaET3qE37+gF5j8sRP/o36wr+1sw7g1z/U/6JnV4MxyTogydVZNKQ=
+	t=1761593223; cv=none; b=r9qktUCUNtnPX+ubdBRaumBOyj+QC4GHwTnqdE2TiQy1pjogPXK/nM/GtkWgnSoeYwZHbUbLC+FDYDQsWy7DrmYDT9Gd+4vBosPRVMtMs2PX4d57+1/YRnvdRQDy9bRxDC7TK0znHSNhVxv2MQDSr1XuKn+mm52hW/NsyHcAG7s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592795; c=relaxed/simple;
-	bh=R4lU7XLzFMjYgJC5ErH7eIbmEDczDtokM6nvCeh+6sA=;
+	s=arc-20240116; t=1761593223; c=relaxed/simple;
+	bh=d5SyBonPkMYBiX6jFlSmoOx8+a+AFkfJXnXzNRs82d0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N/+ppY8ga1qkbeh0w0qyYVnMdYgiw1jcN19uWZuEoiPpM1pjwaAfpB+imRQeksH26eD/I1diTUF6Dp2EguEEnVH9ZaaXmIzwxvu4eSLMd24oP5axQnQltoqzH0T7QZFHTR/PPvZ/M0VCP6OWmZfkzbpSyIiRkbVb49mlpTyGnGI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zx4Kn4Xx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B55DFC4CEF1;
-	Mon, 27 Oct 2025 19:19:54 +0000 (UTC)
+	 MIME-Version; b=duL/cjQu/e5iQQhcorgsWRiTF+L9KDmwSvToM9OkUdV76jCkPqLUTCfQ2OYMFSlDFNdt65e+wfKxxBl4+EzERs0a68tIUpySlVAmPi0ScBPiLrmreJO/ZwR53mhrLsq4WvqEzu4j0zTKqhlA7/+ort1NSnY0A8G9i2la2ip6Zro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wea3GscR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 519B6C4CEF1;
+	Mon, 27 Oct 2025 19:27:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592795;
-	bh=R4lU7XLzFMjYgJC5ErH7eIbmEDczDtokM6nvCeh+6sA=;
+	s=korg; t=1761593223;
+	bh=d5SyBonPkMYBiX6jFlSmoOx8+a+AFkfJXnXzNRs82d0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zx4Kn4XxjQE9PnLPNqi2czbqwsDadepwPMjWhUNbanRCILtpjpLxlWH8kl3oUTEe3
-	 Lrd09qIHtFPPDRw4AwvXItp9ahECYTknH438dwLLNxrKTmzZvy040MhpY3mYA2Ea+Q
-	 Z7gHwZy6ohqU/v4me9Nv+SAnrqOomYcuiJ6USLbA=
+	b=wea3GscR7KHaM/aFcQS/EBBZ/pxWr+YLSlWhXrm8RnvGNlL7uzGFGlSzAQAmRRKLv
+	 8VlDpjlbwUos8i07RI6S3TZXFNsFpNqmcjYzpmm864S62AgF+7ShURs7JaY4ZGkJGH
+	 5ik7ydmJfetAKsJ7uv42Y++GEHKqrM5R3PFQG+Ls=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	"Yury Norov (NVIDIA)" <yury.norov@gmail.com>,
+	Robert Marko <robert.marko@sartura.hr>,
+	Horatiu Vultur <horatiu.vultur@microchip.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 015/117] m68k: bitops: Fix find_*_bit() signatures
+Subject: [PATCH 6.17 059/184] net: phy: micrel: always set shared->phydev for LAN8814
 Date: Mon, 27 Oct 2025 19:35:41 +0100
-Message-ID: <20251027183454.354415452@linuxfoundation.org>
+Message-ID: <20251027183516.481934215@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
-References: <20251027183453.919157109@linuxfoundation.org>
+In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
+References: <20251027183514.934710872@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,92 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert@linux-m68k.org>
+From: Robert Marko <robert.marko@sartura.hr>
 
-[ Upstream commit 6d5674090543b89aac0c177d67e5fb32ddc53804 ]
+[ Upstream commit 399d10934740ae8cdaa4e3245f7c5f6c332da844 ]
 
-The function signatures of the m68k-optimized implementations of the
-find_{first,next}_{,zero_}bit() helpers do not match the generic
-variants.
+Currently, during the LAN8814 PTP probe shared->phydev is only set if PTP
+clock gets actually set, otherwise the function will return before setting
+it.
 
-Fix this by changing all non-pointer inputs and outputs to "unsigned
-long", and updating a few local variables.
+This is an issue as shared->phydev is unconditionally being used when IRQ
+is being handled, especially in lan8814_gpio_process_cap and since it was
+not set it will cause a NULL pointer exception and crash the kernel.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202509092305.ncd9mzaZ-lkp@intel.com/
-Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Acked-by: "Yury Norov (NVIDIA)" <yury.norov@gmail.com>
-Link: https://patch.msgid.link/de6919554fbb4cd1427155c6bafbac8a9df822c8.1757517135.git.geert@linux-m68k.org
+So, simply always set shared->phydev to avoid the NULL pointer exception.
+
+Fixes: b3f1a08fcf0d ("net: phy: micrel: Add support for PTP_PF_EXTTS for lan8814")
+Signed-off-by: Robert Marko <robert.marko@sartura.hr>
+Tested-by: Horatiu Vultur <horatiu.vultur@microchip.com>
+Link: https://patch.msgid.link/20251021132034.983936-1-robert.marko@sartura.hr
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/m68k/include/asm/bitops.h | 25 ++++++++++++++-----------
- 1 file changed, 14 insertions(+), 11 deletions(-)
+ drivers/net/phy/micrel.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/m68k/include/asm/bitops.h b/arch/m68k/include/asm/bitops.h
-index 14c64a6f12176..50ec92651d5a5 100644
---- a/arch/m68k/include/asm/bitops.h
-+++ b/arch/m68k/include/asm/bitops.h
-@@ -350,12 +350,12 @@ static inline bool xor_unlock_is_negative_byte(unsigned long mask,
- #include <asm-generic/bitops/ffz.h>
- #else
- 
--static inline int find_first_zero_bit(const unsigned long *vaddr,
--				      unsigned size)
-+static inline unsigned long find_first_zero_bit(const unsigned long *vaddr,
-+						unsigned long size)
+diff --git a/drivers/net/phy/micrel.c b/drivers/net/phy/micrel.c
+index 605b0315b4cb0..99f8374fd32a7 100644
+--- a/drivers/net/phy/micrel.c
++++ b/drivers/net/phy/micrel.c
+@@ -4109,6 +4109,8 @@ static int lan8814_ptp_probe_once(struct phy_device *phydev)
  {
- 	const unsigned long *p = vaddr;
--	int res = 32;
--	unsigned int words;
-+	unsigned long res = 32;
-+	unsigned long words;
- 	unsigned long num;
+ 	struct lan8814_shared_priv *shared = phy_package_get_priv(phydev);
  
- 	if (!size)
-@@ -376,8 +376,9 @@ static inline int find_first_zero_bit(const unsigned long *vaddr,
- }
- #define find_first_zero_bit find_first_zero_bit
++	shared->phydev = phydev;
++
+ 	/* Initialise shared lock for clock*/
+ 	mutex_init(&shared->shared_lock);
  
--static inline int find_next_zero_bit(const unsigned long *vaddr, int size,
--				     int offset)
-+static inline unsigned long find_next_zero_bit(const unsigned long *vaddr,
-+					       unsigned long size,
-+					       unsigned long offset)
- {
- 	const unsigned long *p = vaddr + (offset >> 5);
- 	int bit = offset & 31UL, res;
-@@ -406,11 +407,12 @@ static inline int find_next_zero_bit(const unsigned long *vaddr, int size,
- }
- #define find_next_zero_bit find_next_zero_bit
+@@ -4164,8 +4166,6 @@ static int lan8814_ptp_probe_once(struct phy_device *phydev)
  
--static inline int find_first_bit(const unsigned long *vaddr, unsigned size)
-+static inline unsigned long find_first_bit(const unsigned long *vaddr,
-+					   unsigned long size)
- {
- 	const unsigned long *p = vaddr;
--	int res = 32;
--	unsigned int words;
-+	unsigned long res = 32;
-+	unsigned long words;
- 	unsigned long num;
+ 	phydev_dbg(phydev, "successfully registered ptp clock\n");
  
- 	if (!size)
-@@ -431,8 +433,9 @@ static inline int find_first_bit(const unsigned long *vaddr, unsigned size)
- }
- #define find_first_bit find_first_bit
- 
--static inline int find_next_bit(const unsigned long *vaddr, int size,
--				int offset)
-+static inline unsigned long find_next_bit(const unsigned long *vaddr,
-+					  unsigned long size,
-+					  unsigned long offset)
- {
- 	const unsigned long *p = vaddr + (offset >> 5);
- 	int bit = offset & 31UL, res;
+-	shared->phydev = phydev;
+-
+ 	/* The EP.4 is shared between all the PHYs in the package and also it
+ 	 * can be accessed by any of the PHYs
+ 	 */
 -- 
 2.51.0
 
