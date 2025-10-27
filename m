@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-191148-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190552-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A84FC110E7
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:32:25 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20CF7C108BE
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:09:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 67EF1583126
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:27:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3DF34566821
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:04:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFD97315D44;
-	Mon, 27 Oct 2025 19:25:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15710334374;
+	Mon, 27 Oct 2025 18:59:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WL10WBpB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JEh9kzn2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F4E52D5C95;
-	Mon, 27 Oct 2025 19:25:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7BB033375A;
+	Mon, 27 Oct 2025 18:59:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761593133; cv=none; b=tO+yNd4hDZKAnVUAb0yTKRhyKLPKVDaBvF3IIKDSDEZiHKzKu3Glvs1p0afZ0tSimelet3DYkOpEElWPIdPLhUv30Z+GHzwYjWrOTj/56yyQ4mVYygNxr+lgp+zF+940tblEpm+vIuPl/DyMkYF1hdDsSTD6AXnNedFzY/T+OWk=
+	t=1761591587; cv=none; b=bzdxshOsndOeKm4/uRohj1+j0dZjHxU8jojGnQJJ6TaXmuTyMLzF2D4yEjt2OON3fSAvF5QnMttTbG3H9TzQWeAVbWu75iJwqhMZeuNopfCy6weRCGx7CQZ7w6p8mCMj1HTttfLY25F2H/Iw2i4V5kSuCDGZixMiNLw+uD+leuI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761593133; c=relaxed/simple;
-	bh=2PgAkErSLldYf5JOpWaIT0H1+3w/J0e5Hb8Fxse/Jb0=;
+	s=arc-20240116; t=1761591587; c=relaxed/simple;
+	bh=JNMs0SGTheIVeCRqgOq7iKawpjfhkWQHcA2BAhuqMhI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=haUjzYIF6Vph+IqAlFrCuW/CPycX0qySf46gZfXPtppjvZoMzTHXcG0slA2yMNil45v3mGFbis3fFlct1ax+8K4ykN0swxchUVKKtrajJ7UOp6gRmew8jx5U6w4FVBTnuztg380Yo6q+Tlm6UUhsS0RlR7YQlTiFIigqh+jdhDQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WL10WBpB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2518C4CEF1;
-	Mon, 27 Oct 2025 19:25:32 +0000 (UTC)
+	 MIME-Version; b=ADO9mixS9vc2c1Ybs0z2nTcgrQ4Wt5YHhvvc3z4VNtZB4sUJOw8vv5eAZdNTZZsM3SSzJWyGn99vtM/fwecJb7Awj2Mk1KO4dlkCtDZyXFvswH9DMJ7aOmtpiIHhokYAm0BqqDim3yWdF1EuEFGKXbT4123tNRneVUpiljYuA+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JEh9kzn2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59010C4CEF1;
+	Mon, 27 Oct 2025 18:59:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761593133;
-	bh=2PgAkErSLldYf5JOpWaIT0H1+3w/J0e5Hb8Fxse/Jb0=;
+	s=korg; t=1761591587;
+	bh=JNMs0SGTheIVeCRqgOq7iKawpjfhkWQHcA2BAhuqMhI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WL10WBpBpGN+kpmP1frT9OUcz1uaTbvtt3BFRM9zU6SidLBL/f6JHX7uRsIuaJ4Z5
-	 zafq6PRNBYgTchmACb4DXM3IOAKuvEEgQQMUN/rYBXN0aqaZx8+facbcGWiHyc01qh
-	 nNrUoBGar7U/uYvYPtyow/M0UaLdfTuUbx8fs1H8=
+	b=JEh9kzn2xKI1oVLf1g/xlmNiYoI0HcXwPLSKY4/d7N+ehet9n5TaQyPJWTfHa/Gyc
+	 0kgPV8BD+TGJrN0QvEy7wzIIvDBuJyhFCEWDz71nmpVRF07rKZWwnPt88WPW5qaD03
+	 CVYWa/zCzxcXXmocwKfqmP/vBRhN8pdbd50i7QOw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Paul Walmsley <pjw@kernel.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Shrikanth Hegde <sshegde@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 025/184] riscv: cpufeature: add validation for zfa, zfh and zfhmin
+Subject: [PATCH 5.10 254/332] sched/balancing: Rename newidle_balance() => sched_balance_newidle()
 Date: Mon, 27 Oct 2025 19:35:07 +0100
-Message-ID: <20251027183515.605036950@linuxfoundation.org>
+Message-ID: <20251027183531.550110507@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
-References: <20251027183514.934710872@linuxfoundation.org>
+In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
+References: <20251027183524.611456697@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,75 +60,99 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Clément Léger <cleger@rivosinc.com>
+From: Ingo Molnar <mingo@kernel.org>
 
-[ Upstream commit 2e2cf5581fccc562f7faf174ffb9866fed5cafbd ]
+[ Upstream commit 7d058285cd77cc1411c91efd1b1673530bb1bee8 ]
 
-These extensions depends on the F one. Add a validation callback
-checking for the F extension to be present. Now that extensions are
-correctly reported using the F/D presence, we can remove the
-has_fpu() check in hwprobe_isa_ext0().
+Standardize scheduler load-balancing function names on the
+sched_balance_() prefix.
 
-Signed-off-by: Clément Léger <cleger@rivosinc.com>
-Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
-Link: https://lore.kernel.org/r/20250527100001.33284-1-cleger@rivosinc.com
-Signed-off-by: Paul Walmsley <pjw@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Shrikanth Hegde <sshegde@linux.ibm.com>
+Link: https://lore.kernel.org/r/20240308111819.1101550-11-mingo@kernel.org
+Stable-dep-of: 17e3e88ed0b6 ("sched/fair: Fix pelt lost idle time detection")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kernel/cpufeature.c  |  6 +++---
- arch/riscv/kernel/sys_hwprobe.c | 14 ++++++--------
- 2 files changed, 9 insertions(+), 11 deletions(-)
+ kernel/sched/fair.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/arch/riscv/kernel/cpufeature.c b/arch/riscv/kernel/cpufeature.c
-index 743d53415572e..67b59699357da 100644
---- a/arch/riscv/kernel/cpufeature.c
-+++ b/arch/riscv/kernel/cpufeature.c
-@@ -474,10 +474,10 @@ const struct riscv_isa_ext_data riscv_isa_ext[] = {
- 	__RISCV_ISA_EXT_DATA(zacas, RISCV_ISA_EXT_ZACAS),
- 	__RISCV_ISA_EXT_DATA(zalrsc, RISCV_ISA_EXT_ZALRSC),
- 	__RISCV_ISA_EXT_DATA(zawrs, RISCV_ISA_EXT_ZAWRS),
--	__RISCV_ISA_EXT_DATA(zfa, RISCV_ISA_EXT_ZFA),
-+	__RISCV_ISA_EXT_DATA_VALIDATE(zfa, RISCV_ISA_EXT_ZFA, riscv_ext_f_depends),
- 	__RISCV_ISA_EXT_DATA_VALIDATE(zfbfmin, RISCV_ISA_EXT_ZFBFMIN, riscv_ext_f_depends),
--	__RISCV_ISA_EXT_DATA(zfh, RISCV_ISA_EXT_ZFH),
--	__RISCV_ISA_EXT_DATA(zfhmin, RISCV_ISA_EXT_ZFHMIN),
-+	__RISCV_ISA_EXT_DATA_VALIDATE(zfh, RISCV_ISA_EXT_ZFH, riscv_ext_f_depends),
-+	__RISCV_ISA_EXT_DATA_VALIDATE(zfhmin, RISCV_ISA_EXT_ZFHMIN, riscv_ext_f_depends),
- 	__RISCV_ISA_EXT_DATA(zca, RISCV_ISA_EXT_ZCA),
- 	__RISCV_ISA_EXT_DATA_VALIDATE(zcb, RISCV_ISA_EXT_ZCB, riscv_ext_zca_depends),
- 	__RISCV_ISA_EXT_DATA_VALIDATE(zcd, RISCV_ISA_EXT_ZCD, riscv_ext_zcd_validate),
-diff --git a/arch/riscv/kernel/sys_hwprobe.c b/arch/riscv/kernel/sys_hwprobe.c
-index 0b170e18a2beb..3e9259790816e 100644
---- a/arch/riscv/kernel/sys_hwprobe.c
-+++ b/arch/riscv/kernel/sys_hwprobe.c
-@@ -153,14 +153,12 @@ static void hwprobe_isa_ext0(struct riscv_hwprobe *pair,
- 			EXT_KEY(ZVKT);
- 		}
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index 802c97a05f57e..952a3fd41a6fe 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -3907,7 +3907,7 @@ static inline unsigned long cfs_rq_load_avg(struct cfs_rq *cfs_rq)
+ 	return cfs_rq->avg.load_avg;
+ }
  
--		if (has_fpu()) {
--			EXT_KEY(ZCD);
--			EXT_KEY(ZCF);
--			EXT_KEY(ZFA);
--			EXT_KEY(ZFBFMIN);
--			EXT_KEY(ZFH);
--			EXT_KEY(ZFHMIN);
--		}
-+		EXT_KEY(ZCD);
-+		EXT_KEY(ZCF);
-+		EXT_KEY(ZFA);
-+		EXT_KEY(ZFBFMIN);
-+		EXT_KEY(ZFH);
-+		EXT_KEY(ZFHMIN);
+-static int newidle_balance(struct rq *this_rq, struct rq_flags *rf);
++static int sched_balance_newidle(struct rq *this_rq, struct rq_flags *rf);
  
- 		if (IS_ENABLED(CONFIG_RISCV_ISA_SUPM))
- 			EXT_KEY(SUPM);
+ static inline unsigned long task_util(struct task_struct *p)
+ {
+@@ -4234,7 +4234,7 @@ attach_entity_load_avg(struct cfs_rq *cfs_rq, struct sched_entity *se) {}
+ static inline void
+ detach_entity_load_avg(struct cfs_rq *cfs_rq, struct sched_entity *se) {}
+ 
+-static inline int newidle_balance(struct rq *rq, struct rq_flags *rf)
++static inline int sched_balance_newidle(struct rq *rq, struct rq_flags *rf)
+ {
+ 	return 0;
+ }
+@@ -7065,7 +7065,7 @@ balance_fair(struct rq *rq, struct task_struct *prev, struct rq_flags *rf)
+ 	if (rq->nr_running)
+ 		return 1;
+ 
+-	return newidle_balance(rq, rf) != 0;
++	return sched_balance_newidle(rq, rf) != 0;
+ }
+ #endif /* CONFIG_SMP */
+ 
+@@ -7356,10 +7356,10 @@ done: __maybe_unused;
+ 	if (!rf)
+ 		return NULL;
+ 
+-	new_tasks = newidle_balance(rq, rf);
++	new_tasks = sched_balance_newidle(rq, rf);
+ 
+ 	/*
+-	 * Because newidle_balance() releases (and re-acquires) rq->lock, it is
++	 * Because sched_balance_newidle() releases (and re-acquires) rq->lock, it is
+ 	 * possible for any higher priority task to appear. In that case we
+ 	 * must re-start the pick_next_entity() loop.
+ 	 */
+@@ -10090,7 +10090,7 @@ static int load_balance(int this_cpu, struct rq *this_rq,
+ 	ld_moved = 0;
+ 
+ 	/*
+-	 * newidle_balance() disregards balance intervals, so we could
++	 * sched_balance_newidle() disregards balance intervals, so we could
+ 	 * repeatedly reach this code, which would lead to balance_interval
+ 	 * skyrocketting in a short amount of time. Skip the balance_interval
+ 	 * increase logic to avoid that.
+@@ -10808,7 +10808,7 @@ static inline void nohz_newidle_balance(struct rq *this_rq) { }
+ #endif /* CONFIG_NO_HZ_COMMON */
+ 
+ /*
+- * newidle_balance is called by schedule() if this_cpu is about to become
++ * sched_balance_newidle is called by schedule() if this_cpu is about to become
+  * idle. Attempts to pull tasks from other CPUs.
+  *
+  * Returns:
+@@ -10816,7 +10816,7 @@ static inline void nohz_newidle_balance(struct rq *this_rq) { }
+  *     0 - failed, no new tasks
+  *   > 0 - success, new (fair) tasks present
+  */
+-static int newidle_balance(struct rq *this_rq, struct rq_flags *rf)
++static int sched_balance_newidle(struct rq *this_rq, struct rq_flags *rf)
+ {
+ 	unsigned long next_balance = jiffies + HZ;
+ 	int this_cpu = this_rq->cpu;
 -- 
 2.51.0
 
