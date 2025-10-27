@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-190445-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190108-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1684C10646
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:01:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2CD0C0FF87
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:41:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 2F09A501EC4
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:58:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 787AE462362
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:41:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CCE1334366;
-	Mon, 27 Oct 2025 18:55:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B78431B11E;
+	Mon, 27 Oct 2025 18:40:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LF1kJrJ8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lfuH0O0w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAA6E33345A;
-	Mon, 27 Oct 2025 18:55:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAD642EDD62;
+	Mon, 27 Oct 2025 18:40:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591309; cv=none; b=p9sWLYs5t5EUzf8BsKmBXSnUXsWPiBe7z+OJL1Fw9T0VtZkC9vrjc5fyeraeIKdQsVrhtdoKM2/pz68t3X44mmlVheFadWSeQnj14GwM+uk7oRxlRw/tSA+u9k3dh1ef37fUgRql4qhRz3c0HpuujRnORzXxXXQEf0jRpgudO24=
+	t=1761590457; cv=none; b=tQi04KjmEZGF+qKxAPesOxq5DYvduXwiBSDy7UgbGMtGhyyvueuhnK+Z4n/h2IK22ksjGCBuUo8vJgdIILb3AOTOJ0/pvGecfiIXNoYsz9l8M2Bb8P3l0IdLIm+dqdU/NsleDnVbFr1DUBoKyaTvsYhL1EQiKoUDrmwpfQvfWNo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591309; c=relaxed/simple;
-	bh=HA52Ai5HDdzdajF5/h4JolkAaazksfQ5y7H2cPPGTwo=;
+	s=arc-20240116; t=1761590457; c=relaxed/simple;
+	bh=drNRIW+Lvi40vnhCxRsvlvX2FcCWk8Cb7EjNCbLsWgU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l36MmsIpuZUFZNgA5JbeZf2soqOmLdpVUXEsfa9qF5RpjHl+xe0oGrwekr9EPAYYViMrBD3Xf1X7/MY8VSmed2RRHMhjeC4mFO9McpHMwzd4sbezzoKRWd38VspJQDLEbdjR/9/v4O5bT13/g23CnkM9MwJT7IApiCD92Ng2KvI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LF1kJrJ8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C256C116C6;
-	Mon, 27 Oct 2025 18:55:09 +0000 (UTC)
+	 MIME-Version; b=dVekpy0kntMY0kVsGgsB2ya/dy6ttdEKrSPseWOZBtNhADQTg/df5M1xsHw7ICHk9VdFa4hC1bfCZFqxhJqlh/TJleOH/N0FVsolq7hDNVqe+JV0VutXanlA2eOJcEgBn5Ec4zPcv8hyiRHExbcjX4HUNZlNgNk63atwkDf/feE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lfuH0O0w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1114DC4CEF1;
+	Mon, 27 Oct 2025 18:40:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591309;
-	bh=HA52Ai5HDdzdajF5/h4JolkAaazksfQ5y7H2cPPGTwo=;
+	s=korg; t=1761590457;
+	bh=drNRIW+Lvi40vnhCxRsvlvX2FcCWk8Cb7EjNCbLsWgU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LF1kJrJ8cewsmh9BeWCkXzeGUL8QGZYi9g1xMIB6KVEH72vU6NTk9ddGOBON8r/fv
-	 7tZJ/eR8eSuqHY7agCSfZtb+P+UhXVH73zSA1AhCEA7Wn+9D+jwjN7559FCwj33OSj
-	 xDsAVcVuTgW8w6gubMt3+JMQCrppvFL5XTb6SQ9o=
+	b=lfuH0O0wWcUw0OegrR3BV5XjKALpWnuZVU3Fk4q7/yAaEkDoNrMgOtawrNQjrw2hg
+	 /D3XXg/WuOBsku1ZYNkRVs/rfuSCFSlRAj2zd47u+mefwRzlPLYC/4l9b+QfD3GoxC
+	 opVnKZwG0CL7B8q8s9d87nZtk31G1a2LiQkcn+Ro=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sam James <sam@gentoo.org>,
-	Helge Deller <deller@gmx.de>,
-	Stian Halseth <stian@itx.no>
-Subject: [PATCH 5.10 146/332] parisc: dont reference obsolete termio struct for TC* constants
+	Parav Pandit <parav@nvidia.com>,
+	Vlad Dumitrescu <vdumitrescu@nvidia.com>,
+	Edward Srouji <edwards@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 053/224] RDMA/core: Resolve MAC of next-hop device without ARP support
 Date: Mon, 27 Oct 2025 19:33:19 +0100
-Message-ID: <20251027183528.490749934@linuxfoundation.org>
+Message-ID: <20251027183510.418800369@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
-References: <20251027183524.611456697@linuxfoundation.org>
+In-Reply-To: <20251027183508.963233542@linuxfoundation.org>
+References: <20251027183508.963233542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +64,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sam James <sam@gentoo.org>
+From: Parav Pandit <parav@nvidia.com>
 
-commit 8ec5a066f88f89bd52094ba18792b34c49dcd55a upstream.
+[ Upstream commit 200651b9b8aadfbbec852f0e5d042d9abe75e2ab ]
 
-Similar in nature to ab107276607af90b13a5994997e19b7b9731e251. glibc-2.42
-drops the legacy termio struct, but the ioctls.h header still defines some
-TC* constants in terms of termio (via sizeof). Hardcode the values instead.
+Currently, if the next-hop netdevice does not support ARP resolution,
+the destination MAC address is silently set to zero without reporting
+an error. This leads to incorrect behavior and may result in packet
+transmission failures.
 
-This fixes building Python for example, which falls over like:
-  ./Modules/termios.c:1119:16: error: invalid application of 'sizeof' to incomplete type 'struct termio'
+Fix this by deferring MAC resolution to the IP stack via neighbour
+lookup, allowing proper resolution or error reporting as appropriate.
 
-Link: https://bugs.gentoo.org/961769
-Link: https://bugs.gentoo.org/962600
-Co-authored-by: Stian Halseth <stian@itx.no>
-Cc: stable@vger.kernel.org
-Signed-off-by: Sam James <sam@gentoo.org>
-Signed-off-by: Helge Deller <deller@gmx.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 7025fcd36bd6 ("IB: address translation to map IP toIB addresses (GIDs)")
+Signed-off-by: Parav Pandit <parav@nvidia.com>
+Reviewed-by: Vlad Dumitrescu <vdumitrescu@nvidia.com>
+Signed-off-by: Edward Srouji <edwards@nvidia.com>
+Link: https://patch.msgid.link/20250916111103.84069-3-edwards@nvidia.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/parisc/include/uapi/asm/ioctls.h |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/infiniband/core/addr.c | 10 +++-------
+ 1 file changed, 3 insertions(+), 7 deletions(-)
 
---- a/arch/parisc/include/uapi/asm/ioctls.h
-+++ b/arch/parisc/include/uapi/asm/ioctls.h
-@@ -10,10 +10,10 @@
- #define TCSETS		_IOW('T', 17, struct termios) /* TCSETATTR */
- #define TCSETSW		_IOW('T', 18, struct termios) /* TCSETATTRD */
- #define TCSETSF		_IOW('T', 19, struct termios) /* TCSETATTRF */
--#define TCGETA		_IOR('T', 1, struct termio)
--#define TCSETA		_IOW('T', 2, struct termio)
--#define TCSETAW		_IOW('T', 3, struct termio)
--#define TCSETAF		_IOW('T', 4, struct termio)
-+#define TCGETA          0x40125401
-+#define TCSETA          0x80125402
-+#define TCSETAW         0x80125403
-+#define TCSETAF         0x80125404
- #define TCSBRK		_IO('T', 5)
- #define TCXONC		_IO('T', 6)
- #define TCFLSH		_IO('T', 7)
+diff --git a/drivers/infiniband/core/addr.c b/drivers/infiniband/core/addr.c
+index c9e63c692b6e8..48de2285922f8 100644
+--- a/drivers/infiniband/core/addr.c
++++ b/drivers/infiniband/core/addr.c
+@@ -459,14 +459,10 @@ static int addr_resolve_neigh(const struct dst_entry *dst,
+ {
+ 	int ret = 0;
+ 
+-	if (ndev_flags & IFF_LOOPBACK) {
++	if (ndev_flags & IFF_LOOPBACK)
+ 		memcpy(addr->dst_dev_addr, addr->src_dev_addr, MAX_ADDR_LEN);
+-	} else {
+-		if (!(ndev_flags & IFF_NOARP)) {
+-			/* If the device doesn't do ARP internally */
+-			ret = fetch_ha(dst, addr, dst_in, seq);
+-		}
+-	}
++	else
++		ret = fetch_ha(dst, addr, dst_in, seq);
+ 	return ret;
+ }
+ 
+-- 
+2.51.0
+
 
 
 
