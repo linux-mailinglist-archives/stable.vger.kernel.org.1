@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-190086-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190390-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F171C0FF45
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:40:03 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31E42C10663
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:02:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8081B19C50E0
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:40:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B835F564E6B
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:56:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EEE4317711;
-	Mon, 27 Oct 2025 18:39:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A901E2F25F1;
+	Mon, 27 Oct 2025 18:52:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SlqwhGS+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2pgxvMOK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3992030FC0F;
-	Mon, 27 Oct 2025 18:39:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37D8932ABE1;
+	Mon, 27 Oct 2025 18:52:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761590399; cv=none; b=ud56PCuPSpfLIVVB606lwrIrn784G/umyicUBhaMgbpQrrMjfiVXULSEoR5bb7r+9rWaAJxpi+kh6LK2yKZIMIo2Oec81jjWnsL26o325pZCtlcLIWzsozAkbh7WdBWkoXXuINc14QmK1IYpRVS+xkGvprPSEJQMz3ez6jte/yY=
+	t=1761591177; cv=none; b=V1wGUBrukOSa1TGD1NYUUbOKxXa/bq1ypazctsLx8JazRi7aBfTBAdCRLYSj7xsrzpmAlrN9Ro3Pcf1WQSpWxISFhEL06EzqpFCrOcZDnB0t+lPIZ/PcsR6pwCOcYpmT3/0oU/lm0fIonQCcwkIOfj/t/WAqlyhGNB8X+qnhnXM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761590399; c=relaxed/simple;
-	bh=HX5/yP8ozAj+9mQoyWP7pKzJteyP7UbdCKbo2kZziXk=;
+	s=arc-20240116; t=1761591177; c=relaxed/simple;
+	bh=qANkAEANtYvaoUrxCaDDj7zYk2ZQ2IZ4qbpB339OZd0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IKTFmDN7b0FY+b0eE550C3xZK7s6Uv9WvUN9qK/y/mjKYnaa7Q580A4z0FWZmCVrC8aAz2SX0DXsxmAw6ZEeREfS3N95AgOzWz76SZ5gyRSyuXSOFIyYqNagTAHxMNB/JqXPTjtwVmw89d4/tpvxQG0q2wR65ndRxlZ6dc3im/o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SlqwhGS+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5087C4CEF1;
-	Mon, 27 Oct 2025 18:39:58 +0000 (UTC)
+	 MIME-Version:Content-Type; b=pTGJKt2eFVxtM06sJ7TZqaQZymPVBDELcP+MGmHZbQ0+zFA+S+ObcVrXrt5ftboINe9Fs1lE4JjjE1wbJnXgYRN85rzUIjl8yx/hovZ6GB8N1XtOSU0lJhwFg03hj56j0j+vpEpbhM9/Qa3h16Zm6oD+GUAk/rCcZWvmouV942k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2pgxvMOK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF9B1C4CEF1;
+	Mon, 27 Oct 2025 18:52:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761590399;
-	bh=HX5/yP8ozAj+9mQoyWP7pKzJteyP7UbdCKbo2kZziXk=;
+	s=korg; t=1761591177;
+	bh=qANkAEANtYvaoUrxCaDDj7zYk2ZQ2IZ4qbpB339OZd0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SlqwhGS+z9V1OVUe2hZHMMtIAvWi+ZGHKykw6RC0+bfbQCTaAZnHLq2aGeANL3FCL
-	 R7+Qqo7MBhPIuK5mThMd8uGmMO700+dmRl6sli5S8sI2VKCp7P/WFxiL282SZokn+q
-	 J5cJxHZyZCNe8EPBoMioTWnIQT45r2jQbbTcDQO0=
+	b=2pgxvMOKLJ9Xa7qIGUixFCyosSipIXQafRbT5f01U8KZ0t06WZaSnykbZ7TAb77z4
+	 bzkIQ1ySUEHAj6EWF2ScmhUeFMNKiSldsJH13y5m4AAk4cmwpL6TicKBOd9S0evvBF
+	 +JtY0GI00YYn9diZw/zFheHR0r+AsV/tG4ZrHoJo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matt Dowling <madowlin@amazon.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Yifei Liu <yifei.l.liu@oracle.com>
-Subject: [PATCH 5.4 003/224] udp: Fix memory accounting leak.
+	Al Viro <viro@zeniv.linux.org.uk>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 5.10 096/332] fs: always return zero on success from replace_fd()
 Date: Mon, 27 Oct 2025 19:32:29 +0100
-Message-ID: <20251027183509.063825731@linuxfoundation.org>
+Message-ID: <20251027183527.156481932@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183508.963233542@linuxfoundation.org>
-References: <20251027183508.963233542@linuxfoundation.org>
+In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
+References: <20251027183524.611456697@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,175 +60,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 
-commit df207de9d9e7a4d92f8567e2c539d9c8c12fd99d upstream.
+commit 708c04a5c2b78e22f56e2350de41feba74dfccd9 upstream.
 
-Matt Dowling reported a weird UDP memory usage issue.
+replace_fd() returns the number of the new file descriptor through the
+return value of do_dup2(). However its callers never care about the
+specific returned number. In fact the caller in receive_fd_replace() treats
+any non-zero return value as an error and therefore never calls
+__receive_sock() for most file descriptors, which is a bug.
 
-Under normal operation, the UDP memory usage reported in /proc/net/sockstat
-remains close to zero.  However, it occasionally spiked to 524,288 pages
-and never dropped.  Moreover, the value doubled when the application was
-terminated.  Finally, it caused intermittent packet drops.
+To fix the bug in receive_fd_replace() and to avoid the same issue
+happening in future callers, signal success through a plain zero.
 
-We can reproduce the issue with the script below [0]:
-
-  1. /proc/net/sockstat reports 0 pages
-
-    # cat /proc/net/sockstat | grep UDP:
-    UDP: inuse 1 mem 0
-
-  2. Run the script till the report reaches 524,288
-
-    # python3 test.py & sleep 5
-    # cat /proc/net/sockstat | grep UDP:
-    UDP: inuse 3 mem 524288  <-- (INT_MAX + 1) >> PAGE_SHIFT
-
-  3. Kill the socket and confirm the number never drops
-
-    # pkill python3 && sleep 5
-    # cat /proc/net/sockstat | grep UDP:
-    UDP: inuse 1 mem 524288
-
-  4. (necessary since v6.0) Trigger proto_memory_pcpu_drain()
-
-    # python3 test.py & sleep 1 && pkill python3
-
-  5. The number doubles
-
-    # cat /proc/net/sockstat | grep UDP:
-    UDP: inuse 1 mem 1048577
-
-The application set INT_MAX to SO_RCVBUF, which triggered an integer
-overflow in udp_rmem_release().
-
-When a socket is close()d, udp_destruct_common() purges its receive
-queue and sums up skb->truesize in the queue.  This total is calculated
-and stored in a local unsigned integer variable.
-
-The total size is then passed to udp_rmem_release() to adjust memory
-accounting.  However, because the function takes a signed integer
-argument, the total size can wrap around, causing an overflow.
-
-Then, the released amount is calculated as follows:
-
-  1) Add size to sk->sk_forward_alloc.
-  2) Round down sk->sk_forward_alloc to the nearest lower multiple of
-      PAGE_SIZE and assign it to amount.
-  3) Subtract amount from sk->sk_forward_alloc.
-  4) Pass amount >> PAGE_SHIFT to __sk_mem_reduce_allocated().
-
-When the issue occurred, the total in udp_destruct_common() was 2147484480
-(INT_MAX + 833), which was cast to -2147482816 in udp_rmem_release().
-
-At 1) sk->sk_forward_alloc is changed from 3264 to -2147479552, and
-2) sets -2147479552 to amount.  3) reverts the wraparound, so we don't
-see a warning in inet_sock_destruct().  However, udp_memory_allocated
-ends up doubling at 4).
-
-Since commit 3cd3399dd7a8 ("net: implement per-cpu reserves for
-memory_allocated"), memory usage no longer doubles immediately after
-a socket is close()d because __sk_mem_reduce_allocated() caches the
-amount in udp_memory_per_cpu_fw_alloc.  However, the next time a UDP
-socket receives a packet, the subtraction takes effect, causing UDP
-memory usage to double.
-
-This issue makes further memory allocation fail once the socket's
-sk->sk_rmem_alloc exceeds net.ipv4.udp_rmem_min, resulting in packet
-drops.
-
-To prevent this issue, let's use unsigned int for the calculation and
-call sk_forward_alloc_add() only once for the small delta.
-
-Note that first_packet_length() also potentially has the same problem.
-
-[0]:
-from socket import *
-
-SO_RCVBUFFORCE = 33
-INT_MAX = (2 ** 31) - 1
-
-s = socket(AF_INET, SOCK_DGRAM)
-s.bind(('', 0))
-s.setsockopt(SOL_SOCKET, SO_RCVBUFFORCE, INT_MAX)
-
-c = socket(AF_INET, SOCK_DGRAM)
-c.connect(s.getsockname())
-
-data = b'a' * 100
-
-while True:
-    c.send(data)
-
-Fixes: f970bd9e3a06 ("udp: implement memory accounting helpers")
-Reported-by: Matt Dowling <madowlin@amazon.com>
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://patch.msgid.link/20250401184501.67377-3-kuniyu@amazon.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Yifei: resolve minor conflicts ]
-Signed-off-by: Yifei Liu <yifei.l.liu@oracle.com>
+Suggested-by: Al Viro <viro@zeniv.linux.org.uk>
+Link: https://lore.kernel.org/lkml/20250801220215.GS222315@ZenIV/
+Fixes: 173817151b15 ("fs: Expand __receive_fd() to accept existing fd")
+Fixes: 42eb0d54c08a ("fs: split receive_fd_replace from __receive_fd")
+Cc: stable@vger.kernel.org
+Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+Link: https://lore.kernel.org/20250805-fix-receive_fd_replace-v3-1-b72ba8b34bac@linutronix.de
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/udp.c |   16 +++++++---------
- 1 file changed, 7 insertions(+), 9 deletions(-)
+ fs/file.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/net/ipv4/udp.c
-+++ b/net/ipv4/udp.c
-@@ -1371,12 +1371,12 @@ static bool udp_skb_has_head_state(struc
- }
+--- a/fs/file.c
++++ b/fs/file.c
+@@ -1095,7 +1095,10 @@ int replace_fd(unsigned fd, struct file
+ 	err = expand_files(files, fd);
+ 	if (unlikely(err < 0))
+ 		goto out_unlock;
+-	return do_dup2(files, file, fd, flags);
++	err = do_dup2(files, file, fd, flags);
++	if (err < 0)
++		return err;
++	return 0;
  
- /* fully reclaim rmem/fwd memory allocated for skb */
--static void udp_rmem_release(struct sock *sk, int size, int partial,
--			     bool rx_queue_lock_held)
-+static void udp_rmem_release(struct sock *sk, unsigned int size,
-+			     int partial, bool rx_queue_lock_held)
- {
- 	struct udp_sock *up = udp_sk(sk);
- 	struct sk_buff_head *sk_queue;
--	int amt;
-+	unsigned int amt;
- 
- 	if (likely(partial)) {
- 		up->forward_deficit += size;
-@@ -1396,10 +1396,8 @@ static void udp_rmem_release(struct sock
- 	if (!rx_queue_lock_held)
- 		spin_lock(&sk_queue->lock);
- 
--
--	sk->sk_forward_alloc += size;
--	amt = (sk->sk_forward_alloc - partial) & ~(SK_MEM_QUANTUM - 1);
--	sk->sk_forward_alloc -= amt;
-+	amt = (size + sk->sk_forward_alloc - partial) & ~(PAGE_SIZE - 1);
-+	sk->sk_forward_alloc += size - amt;
- 
- 	if (amt)
- 		__sk_mem_reduce_allocated(sk, amt >> SK_MEM_QUANTUM_SHIFT);
-@@ -1583,7 +1581,7 @@ EXPORT_SYMBOL_GPL(skb_consume_udp);
- 
- static struct sk_buff *__first_packet_length(struct sock *sk,
- 					     struct sk_buff_head *rcvq,
--					     int *total)
-+					     unsigned int *total)
- {
- 	struct sk_buff *skb;
- 
-@@ -1616,8 +1614,8 @@ static int first_packet_length(struct so
- {
- 	struct sk_buff_head *rcvq = &udp_sk(sk)->reader_queue;
- 	struct sk_buff_head *sk_queue = &sk->sk_receive_queue;
-+	unsigned int total = 0;
- 	struct sk_buff *skb;
--	int total = 0;
- 	int res;
- 
- 	spin_lock_bh(&rcvq->lock);
+ out_unlock:
+ 	spin_unlock(&files->file_lock);
 
 
 
