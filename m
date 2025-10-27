@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-190577-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190812-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4477FC1091B
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:10:37 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E95EC10C25
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:18:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5E288463454
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:05:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CA2A31A63BC2
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:13:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA40F337B85;
-	Mon, 27 Oct 2025 19:00:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F2FC302CD6;
+	Mon, 27 Oct 2025 19:11:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G1WsWJOc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bH2fn3rG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 966E73376A7;
-	Mon, 27 Oct 2025 19:00:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47CFC2D542A;
+	Mon, 27 Oct 2025 19:11:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591653; cv=none; b=kryaauTSY6KgGACAA2Sp08UBL85aCwhvr1zq6apKwzlJBeP2jXeih7z0l3gfKHwvv7KzqQiuRIJkQwwK5Xbhchw7/dxxljc94PDUDNlN+ZviTxYzZuUbU4rFjIOPS7FLNqFZhmQZI/DHz6NKRJpZ28kaa4Nos5b+/2q+hWL1rhE=
+	t=1761592261; cv=none; b=QszYC1qC0xdWayAi4Mz0nq7QBtETf7re9I/hmxlVIVZGjMBdlGry4p/XDgHiFxXlI/ylL6xxd2bOBfmDpx/baZlukATRmPTnHmaJG6Qtl1Bz7GEeqozbqug9DKVoSdE7V1okvYyF4lLYZQxEOSuSCPOda1sxlmFCb1FY3o6MdMc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591653; c=relaxed/simple;
-	bh=NLJvzzF4XCZfN+oM1G1FKfpLnsPbAmic2bQnP+K69pY=;
+	s=arc-20240116; t=1761592261; c=relaxed/simple;
+	bh=Xj/F6FarKE4wpU9NQODb0z7VYgEA3heDcMwcwqswmy8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LftF2KF8US3Mddy1wlPfLMtsOrOJ6ZCqfHsRJ8uJDEsb2ZbUIjphCiECjeC1e/Zib0u3WGO/qNa/NfvjQ1tGP3wzZAbTwY1qL8lLYLjihnHn8q1A8QYgsAlGmlJOZpXkS1VvtiYlnFNdB+q171FERXlRNoRtYBs+Klxrdz7PzD4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G1WsWJOc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27044C4CEFD;
-	Mon, 27 Oct 2025 19:00:52 +0000 (UTC)
+	 MIME-Version; b=Ma5U84/tYg8tkMhClJhU8+BQALDELPDC4IgeQGudUoh7akwAxuqk9SIxbmuydaRkm3WJmwCo9XPrya4I2b6yENAnzyo7yT99eyk24ZhpC91Rxn4lzpeiSZfJvqfxy2yF5ersTgdHxTBpN86W3qjDcl5tw/8eSsejzoTl8emGshI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bH2fn3rG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0817C4CEF1;
+	Mon, 27 Oct 2025 19:11:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591653;
-	bh=NLJvzzF4XCZfN+oM1G1FKfpLnsPbAmic2bQnP+K69pY=;
+	s=korg; t=1761592261;
+	bh=Xj/F6FarKE4wpU9NQODb0z7VYgEA3heDcMwcwqswmy8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G1WsWJOcAwBw/GY9q4HDqGqvrWK7+kDXBENu4Utel58RdTg5iPL2YToX9fAdu94qf
-	 +U/hSclZxV6yFnERcNd8Luf0Yazgf2397eobVF4QBYIPk4Mc+VfTYz02VsenLvnslg
-	 P28jzGPF919tC8A6npO/w1A6CwP4T74BdpeEI34I=
+	b=bH2fn3rGp7Q74qRX5a46rFtmZyh4pZK8KAhpNHtRa4iCRh33z98FE1RX36krrePFE
+	 13WDxcOU9oqT5I7fBn4XRr0fbEgxChUiBvQO4y/wuqUIu5tFnTSVwQOkIAtLVHyRFA
+	 tyM5gPFApIapT2fT6l2kFlyf/GVsF2YNQ22kWErw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+356aed408415a56543cd@syzkaller.appspotmail.com,
-	Yang Chenzhi <yang.chenzhi@vivo.com>,
-	Viacheslav Dubeyko <slava@dubeyko.com>,
+	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 262/332] hfs: validate record offset in hfsplus_bmap_alloc
-Date: Mon, 27 Oct 2025 19:35:15 +0100
-Message-ID: <20251027183531.769471363@linuxfoundation.org>
+Subject: [PATCH 6.1 055/157] ASoC: nau8821: Generalize helper to clear IRQ status
+Date: Mon, 27 Oct 2025 19:35:16 +0100
+Message-ID: <20251027183502.765988637@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
-References: <20251027183524.611456697@linuxfoundation.org>
+In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
+References: <20251027183501.227243846@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,219 +62,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Chenzhi <yang.chenzhi@vivo.com>
+From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
 
-[ Upstream commit 738d5a51864ed8d7a68600b8c0c63fe6fe5c4f20 ]
+[ Upstream commit 9273aa85b35cc02d0953a1ba3b7bd694e5a2c10e ]
 
-hfsplus_bmap_alloc can trigger a crash if a
-record offset or length is larger than node_size
+Instead of adding yet another utility function for dealing with the
+interrupt clearing register, generalize nau8821_int_status_clear_all()
+by renaming it to nau8821_irq_status_clear(), whilst introducing a
+second parameter to allow restricting the operation scope to a single
+interrupt instead of the whole range of active IRQs.
 
-[   15.264282] BUG: KASAN: slab-out-of-bounds in hfsplus_bmap_alloc+0x887/0x8b0
-[   15.265192] Read of size 8 at addr ffff8881085ca188 by task test/183
-[   15.265949]
-[   15.266163] CPU: 0 UID: 0 PID: 183 Comm: test Not tainted 6.17.0-rc2-gc17b750b3ad9 #14 PREEMPT(voluntary)
-[   15.266165] Hardware name: QEMU Ubuntu 24.04 PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-[   15.266167] Call Trace:
-[   15.266168]  <TASK>
-[   15.266169]  dump_stack_lvl+0x53/0x70
-[   15.266173]  print_report+0xd0/0x660
-[   15.266181]  kasan_report+0xce/0x100
-[   15.266185]  hfsplus_bmap_alloc+0x887/0x8b0
-[   15.266208]  hfs_btree_inc_height.isra.0+0xd5/0x7c0
-[   15.266217]  hfsplus_brec_insert+0x870/0xb00
-[   15.266222]  __hfsplus_ext_write_extent+0x428/0x570
-[   15.266225]  __hfsplus_ext_cache_extent+0x5e/0x910
-[   15.266227]  hfsplus_ext_read_extent+0x1b2/0x200
-[   15.266233]  hfsplus_file_extend+0x5a7/0x1000
-[   15.266237]  hfsplus_get_block+0x12b/0x8c0
-[   15.266238]  __block_write_begin_int+0x36b/0x12c0
-[   15.266251]  block_write_begin+0x77/0x110
-[   15.266252]  cont_write_begin+0x428/0x720
-[   15.266259]  hfsplus_write_begin+0x51/0x100
-[   15.266262]  cont_write_begin+0x272/0x720
-[   15.266270]  hfsplus_write_begin+0x51/0x100
-[   15.266274]  generic_perform_write+0x321/0x750
-[   15.266285]  generic_file_write_iter+0xc3/0x310
-[   15.266289]  __kernel_write_iter+0x2fd/0x800
-[   15.266296]  dump_user_range+0x2ea/0x910
-[   15.266301]  elf_core_dump+0x2a94/0x2ed0
-[   15.266320]  vfs_coredump+0x1d85/0x45e0
-[   15.266349]  get_signal+0x12e3/0x1990
-[   15.266357]  arch_do_signal_or_restart+0x89/0x580
-[   15.266362]  irqentry_exit_to_user_mode+0xab/0x110
-[   15.266364]  asm_exc_page_fault+0x26/0x30
-[   15.266366] RIP: 0033:0x41bd35
-[   15.266367] Code: bc d1 f3 0f 7f 27 f3 0f 7f 6f 10 f3 0f 7f 77 20 f3 0f 7f 7f 30 49 83 c0 0f 49 29 d0 48 8d 7c 17 31 e9 9f 0b 00 00 66 0f ef c0 <f3> 0f 6f 0e f3 0f 6f 56 10 66 0f 74 c1 66 0f d7 d0 49 83 f8f
-[   15.266369] RSP: 002b:00007ffc9e62d078 EFLAGS: 00010283
-[   15.266371] RAX: 00007ffc9e62d100 RBX: 0000000000000000 RCX: 0000000000000000
-[   15.266372] RDX: 00000000000000e0 RSI: 0000000000000000 RDI: 00007ffc9e62d100
-[   15.266373] RBP: 0000400000000040 R08: 00000000000000e0 R09: 0000000000000000
-[   15.266374] R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-[   15.266375] R13: 0000000000000000 R14: 0000000000000000 R15: 0000400000000000
-[   15.266376]  </TASK>
+While at it, also fix a spelling typo in the comment block.
 
-When calling hfsplus_bmap_alloc to allocate a free node, this function
-first retrieves the bitmap from header node and map node using node->page
-together with the offset and length from hfs_brec_lenoff
+Note this is mainly a prerequisite for subsequent patches aiming to
+address some deficiencies in the implementation of the interrupt
+handler.  Thus the presence of the Fixes tag below is intentional, to
+facilitate backporting.
 
-```
-len = hfs_brec_lenoff(node, 2, &off16);
-off = off16;
-
-off += node->page_offset;
-pagep = node->page + (off >> PAGE_SHIFT);
-data = kmap_local_page(*pagep);
-```
-
-However, if the retrieved offset or length is invalid(i.e. exceeds
-node_size), the code may end up accessing pages outside the allocated
-range for this node.
-
-This patch adds proper validation of both offset and length before use,
-preventing out-of-bounds page access. Move is_bnode_offset_valid and
-check_and_correct_requested_length to hfsplus_fs.h, as they may be
-required by other functions.
-
-Reported-by: syzbot+356aed408415a56543cd@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/67bcb4a6.050a0220.bbfd1.008f.GAE@google.com/
-Signed-off-by: Yang Chenzhi <yang.chenzhi@vivo.com>
-Reviewed-by: Viacheslav Dubeyko <slava@dubeyko.com>
-Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
-Link: https://lore.kernel.org/r/20250818141734.8559-2-yang.chenzhi@vivo.com
-Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
+Fixes: aab1ad11d69f ("ASoC: nau8821: new driver")
+Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+Link: https://patch.msgid.link/20251003-nau8821-jdet-fixes-v1-2-f7b0e2543f09@collabora.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/hfsplus/bnode.c      | 41 ----------------------------------------
- fs/hfsplus/btree.c      |  6 ++++++
- fs/hfsplus/hfsplus_fs.h | 42 +++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 48 insertions(+), 41 deletions(-)
+ sound/soc/codecs/nau8821.c | 17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
-diff --git a/fs/hfsplus/bnode.c b/fs/hfsplus/bnode.c
-index c9c38fddf505b..e566cea238279 100644
---- a/fs/hfsplus/bnode.c
-+++ b/fs/hfsplus/bnode.c
-@@ -18,47 +18,6 @@
- #include "hfsplus_fs.h"
- #include "hfsplus_raw.h"
- 
--static inline
--bool is_bnode_offset_valid(struct hfs_bnode *node, int off)
--{
--	bool is_valid = off < node->tree->node_size;
--
--	if (!is_valid) {
--		pr_err("requested invalid offset: "
--		       "NODE: id %u, type %#x, height %u, "
--		       "node_size %u, offset %d\n",
--		       node->this, node->type, node->height,
--		       node->tree->node_size, off);
--	}
--
--	return is_valid;
--}
--
--static inline
--int check_and_correct_requested_length(struct hfs_bnode *node, int off, int len)
--{
--	unsigned int node_size;
--
--	if (!is_bnode_offset_valid(node, off))
--		return 0;
--
--	node_size = node->tree->node_size;
--
--	if ((off + len) > node_size) {
--		int new_len = (int)node_size - off;
--
--		pr_err("requested length has been corrected: "
--		       "NODE: id %u, type %#x, height %u, "
--		       "node_size %u, offset %d, "
--		       "requested_len %d, corrected_len %d\n",
--		       node->this, node->type, node->height,
--		       node->tree->node_size, off, len, new_len);
--
--		return new_len;
--	}
--
--	return len;
--}
- 
- /* Copy a specified range of bytes from the raw data of a node */
- void hfs_bnode_read(struct hfs_bnode *node, void *buf, int off, int len)
-diff --git a/fs/hfsplus/btree.c b/fs/hfsplus/btree.c
-index 66774f4cb4fd5..2211907537fec 100644
---- a/fs/hfsplus/btree.c
-+++ b/fs/hfsplus/btree.c
-@@ -392,6 +392,12 @@ struct hfs_bnode *hfs_bmap_alloc(struct hfs_btree *tree)
- 	len = hfs_brec_lenoff(node, 2, &off16);
- 	off = off16;
- 
-+	if (!is_bnode_offset_valid(node, off)) {
-+		hfs_bnode_put(node);
-+		return ERR_PTR(-EIO);
-+	}
-+	len = check_and_correct_requested_length(node, off, len);
-+
- 	off += node->page_offset;
- 	pagep = node->page + (off >> PAGE_SHIFT);
- 	data = kmap(*pagep);
-diff --git a/fs/hfsplus/hfsplus_fs.h b/fs/hfsplus/hfsplus_fs.h
-index c37a2f3d88af0..27fcadf4e9f82 100644
---- a/fs/hfsplus/hfsplus_fs.h
-+++ b/fs/hfsplus/hfsplus_fs.h
-@@ -579,6 +579,48 @@ hfsplus_btree_lock_class(struct hfs_btree *tree)
- 	return class;
+diff --git a/sound/soc/codecs/nau8821.c b/sound/soc/codecs/nau8821.c
+index ae2becb30beaa..380ceac4d8700 100644
+--- a/sound/soc/codecs/nau8821.c
++++ b/sound/soc/codecs/nau8821.c
+@@ -902,12 +902,17 @@ static bool nau8821_is_jack_inserted(struct regmap *regmap)
+ 	return active_high == is_high;
  }
  
-+static inline
-+bool is_bnode_offset_valid(struct hfs_bnode *node, int off)
-+{
-+	bool is_valid = off < node->tree->node_size;
-+
-+	if (!is_valid) {
-+		pr_err("requested invalid offset: "
-+		       "NODE: id %u, type %#x, height %u, "
-+		       "node_size %u, offset %d\n",
-+		       node->this, node->type, node->height,
-+		       node->tree->node_size, off);
+-static void nau8821_int_status_clear_all(struct regmap *regmap)
++static void nau8821_irq_status_clear(struct regmap *regmap, int active_irq)
+ {
+-	int active_irq, clear_irq, i;
++	int clear_irq, i;
+ 
+-	/* Reset the intrruption status from rightmost bit if the corres-
+-	 * ponding irq event occurs.
++	if (active_irq) {
++		regmap_write(regmap, NAU8821_R11_INT_CLR_KEY_STATUS, active_irq);
++		return;
 +	}
 +
-+	return is_valid;
-+}
-+
-+static inline
-+int check_and_correct_requested_length(struct hfs_bnode *node, int off, int len)
-+{
-+	unsigned int node_size;
-+
-+	if (!is_bnode_offset_valid(node, off))
-+		return 0;
-+
-+	node_size = node->tree->node_size;
-+
-+	if ((off + len) > node_size) {
-+		int new_len = (int)node_size - off;
-+
-+		pr_err("requested length has been corrected: "
-+		       "NODE: id %u, type %#x, height %u, "
-+		       "node_size %u, offset %d, "
-+		       "requested_len %d, corrected_len %d\n",
-+		       node->this, node->type, node->height,
-+		       node->tree->node_size, off, len, new_len);
-+
-+		return new_len;
-+	}
-+
-+	return len;
-+}
-+
- /* compatibility */
- #define hfsp_mt2ut(t)		(struct timespec64){ .tv_sec = __hfsp_mt2ut(t) }
- #define hfsp_ut2mt(t)		__hfsp_ut2mt((t).tv_sec)
++	/* Reset the interruption status from rightmost bit if the
++	 * corresponding irq event occurs.
+ 	 */
+ 	regmap_read(regmap, NAU8821_R10_IRQ_STATUS, &active_irq);
+ 	for (i = 0; i < NAU8821_REG_DATA_LEN; i++) {
+@@ -934,7 +939,7 @@ static void nau8821_eject_jack(struct nau8821 *nau8821)
+ 	snd_soc_dapm_sync(dapm);
+ 
+ 	/* Clear all interruption status */
+-	nau8821_int_status_clear_all(regmap);
++	nau8821_irq_status_clear(regmap, 0);
+ 
+ 	/* Enable the insertion interruption, disable the ejection inter-
+ 	 * ruption, and then bypass de-bounce circuit.
+@@ -1400,7 +1405,7 @@ static int nau8821_resume_setup(struct nau8821 *nau8821)
+ 	nau8821_configure_sysclk(nau8821, NAU8821_CLK_DIS, 0);
+ 	if (nau8821->irq) {
+ 		/* Clear all interruption status */
+-		nau8821_int_status_clear_all(regmap);
++		nau8821_irq_status_clear(regmap, 0);
+ 
+ 		/* Enable both insertion and ejection interruptions, and then
+ 		 * bypass de-bounce circuit.
 -- 
 2.51.0
 
