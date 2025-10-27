@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-190405-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190457-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C777C10678
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:02:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46968C10784
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:06:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B68FA565FC8
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:56:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D25F55644CC
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:01:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 415C132B991;
-	Mon, 27 Oct 2025 18:53:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68541261B99;
+	Mon, 27 Oct 2025 18:55:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IqMOTpb8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WXpzfgdh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3E2C32AAC5
-	for <stable@vger.kernel.org>; Mon, 27 Oct 2025 18:53:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FCC3320CCE;
+	Mon, 27 Oct 2025 18:55:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591207; cv=none; b=i6Vzqn/ZW1g7Ra6XvnEBLnFEsaGoG9I20cTE/l//VRQd1rk9qiRd5wmdd99Y2L8huUfjrVhMnbQ5k3hf04jLFAR9u3ppG5cnPNbsfY+JjgbcRh836HZkDvkCanTbTk/KtJBlO+JHz17ZMiDIuGpxxbh3BXCDUhOffiqQNDv2KCw=
+	t=1761591341; cv=none; b=pt2/aABM4LSIqMolNgky+QKa3pUM/pcjGlbnVGk4XPPalOU13pr19vtMdc7wm5wdLQUobilKx2ir2etcOmHFkdT0NjMjHRVB8Kd39CRpFXgR8+tDIUlonUGgu6UWIm6aqj4DcCqy3elY32f3qpXdvAyI2jv0UvyqyC8zeDf5TiY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591207; c=relaxed/simple;
-	bh=gIh5o5zJqzGWp1zvTNPnh2/YBlWC9vARpvjPU7RFYCY=;
+	s=arc-20240116; t=1761591341; c=relaxed/simple;
+	bh=4swgux+ajW7VafFN516i1MPARhYv8F5Hn2qHurGm4qY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ETD5SOlWt3kzsneng/kndqNUC9jZr6F/zK/iySW+M1X4SPWdijXtsZzbRp++RwMrTV3bdOayHWP7JXFk2ZsAxAFxhDWq6n2hxxVsFZi/AhRWIQUXFggG1Gf39HydolcXTY13QSPA2cCtzDHTGRcq1tOuYeTqTI1MEsZaDLWOVY8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IqMOTpb8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2A37C116D0;
-	Mon, 27 Oct 2025 18:53:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761591206;
-	bh=gIh5o5zJqzGWp1zvTNPnh2/YBlWC9vARpvjPU7RFYCY=;
+	 MIME-Version; b=FHB8XX7ZPcMoGVDqY6+fhWcOuqnpPI6EphCJr7EMWPlB7O1r7hM1e2/juZoaM+YmLuzseeZ43mFZjGNANyCRfrBHWf6/IAA5/YwGPs60qyOY5DwdbmBuUcBd1Xk67kDF8h/FZrNNp9Uh+d0/akCibpr3GoUVbkXes8/OtJ6khqA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WXpzfgdh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51032C4CEF1;
+	Mon, 27 Oct 2025 18:55:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1761591340;
+	bh=4swgux+ajW7VafFN516i1MPARhYv8F5Hn2qHurGm4qY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IqMOTpb88LWDPITZ5J6xmvZ4qjE2DYF4T5oqKJxnqmorOkauqav6tlkV18tC+1mlt
-	 yMr7Arn8cik5Iv+qz1Q6PZUw+LQAtp/zFbuh5o8gZlHsaQBP3FZ8213FQ3H93AL26V
-	 lj/3nwQKme8tVCPrMLVTYgatg/LSHKjJ+hUGkt2osJLRH7Mvhcqt9aRfvctHpntvvd
-	 NogYmO/S9GxnsKOBz1yfYuZNTHlev76TyBZMIkfM2TY88QHrtwtQJ+C8c21dLTtKf6
-	 hECFmGkjV/q/cQo5edOFaJzkMmqk6COWyJhkfzQMvhOgr8eFarHbMnL2sRGKMG3upn
-	 u082Sb0EwZHew==
-From: Sasha Levin <sashal@kernel.org>
+	b=WXpzfgdhhC9sHqoEpZ5w1uVUIE3fPo7aEb0xSCz7Jy1bMq+i8rLxyDISy0OJuO14h
+	 aJKCiT9U2I3ZXkwcjpQYQNlasXE8ESAb6iOIBNlDa6vYH4IncitK3PQwsnXhVy3LuZ
+	 +67IEPPyK1bG/ysp6V7iGA1r0Xzn8ZiyTQmKZUNc=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
-Cc: Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-	stable <stable@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	syzkaller <syzkaller@googlegroups.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y 4/4] serial: sc16is7xx: remove useless enable of enhanced features
-Date: Mon, 27 Oct 2025 14:53:21 -0400
-Message-ID: <20251027185321.644316-4-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251027185321.644316-1-sashal@kernel.org>
-References: <2025102739-fable-reroute-e6a6@gregkh>
- <20251027185321.644316-1-sashal@kernel.org>
+Subject: [PATCH 5.10 113/332] tcp: Dont call reqsk_fastopen_remove() in tcp_conn_request().
+Date: Mon, 27 Oct 2025 19:32:46 +0100
+Message-ID: <20251027183527.599259484@linuxfoundation.org>
+X-Mailer: git-send-email 2.51.1
+In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
+References: <20251027183524.611456697@linuxfoundation.org>
+User-Agent: quilt/0.69
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,47 +63,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
-[ Upstream commit 1c05bf6c0262f946571a37678250193e46b1ff0f ]
+------------------
 
-Commit 43c51bb573aa ("sc16is7xx: make sure device is in suspend once
-probed") permanently enabled access to the enhanced features in
-sc16is7xx_probe(), and it is never disabled after that.
+From: Kuniyuki Iwashima <kuniyu@google.com>
 
-Therefore, remove re-enable of enhanced features in
-sc16is7xx_set_baud(). This eliminates a potential useless read + write
-cycle each time the baud rate is reconfigured.
+[ Upstream commit 2e7cbbbe3d61c63606994b7ff73c72537afe2e1c ]
 
-Fixes: 43c51bb573aa ("sc16is7xx: make sure device is in suspend once probed")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Link: https://patch.msgid.link/20251006142002.177475-1-hugo@hugovil.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+syzbot reported the splat below in tcp_conn_request(). [0]
+
+If a listener is close()d while a TFO socket is being processed in
+tcp_conn_request(), inet_csk_reqsk_queue_add() does not set reqsk->sk
+and calls inet_child_forget(), which calls tcp_disconnect() for the
+TFO socket.
+
+After the cited commit, tcp_disconnect() calls reqsk_fastopen_remove(),
+where reqsk_put() is called due to !reqsk->sk.
+
+Then, reqsk_fastopen_remove() in tcp_conn_request() decrements the
+last req->rsk_refcnt and frees reqsk, and __reqsk_free() at the
+drop_and_free label causes the refcount underflow for the listener
+and double-free of the reqsk.
+
+Let's remove reqsk_fastopen_remove() in tcp_conn_request().
+
+Note that other callers make sure tp->fastopen_rsk is not NULL.
+
+[0]:
+refcount_t: underflow; use-after-free.
+WARNING: CPU: 12 PID: 5563 at lib/refcount.c:28 refcount_warn_saturate (lib/refcount.c:28)
+Modules linked in:
+CPU: 12 UID: 0 PID: 5563 Comm: syz-executor Not tainted syzkaller #0 PREEMPT(full)
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/12/2025
+RIP: 0010:refcount_warn_saturate (lib/refcount.c:28)
+Code: ab e8 8e b4 98 ff 0f 0b c3 cc cc cc cc cc 80 3d a4 e4 d6 01 00 75 9c c6 05 9b e4 d6 01 01 48 c7 c7 e8 df fb ab e8 6a b4 98 ff <0f> 0b e9 03 5b 76 00 cc 80 3d 7d e4 d6 01 00 0f 85 74 ff ff ff c6
+RSP: 0018:ffffa79fc0304a98 EFLAGS: 00010246
+RAX: d83af4db1c6b3900 RBX: ffff9f65c7a69020 RCX: d83af4db1c6b3900
+RDX: 0000000000000000 RSI: 00000000ffff7fff RDI: ffffffffac78a280
+RBP: 000000009d781b60 R08: 0000000000007fff R09: ffffffffac6ca280
+R10: 0000000000017ffd R11: 0000000000000004 R12: ffff9f65c7b4f100
+R13: ffff9f65c7d23c00 R14: ffff9f65c7d26000 R15: ffff9f65c7a64ef8
+FS:  00007f9f962176c0(0000) GS:ffff9f65fcf00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000200000000180 CR3: 000000000dbbe006 CR4: 0000000000372ef0
+Call Trace:
+ <IRQ>
+ tcp_conn_request (./include/linux/refcount.h:400 ./include/linux/refcount.h:432 ./include/linux/refcount.h:450 ./include/net/sock.h:1965 ./include/net/request_sock.h:131 net/ipv4/tcp_input.c:7301)
+ tcp_rcv_state_process (net/ipv4/tcp_input.c:6708)
+ tcp_v6_do_rcv (net/ipv6/tcp_ipv6.c:1670)
+ tcp_v6_rcv (net/ipv6/tcp_ipv6.c:1906)
+ ip6_protocol_deliver_rcu (net/ipv6/ip6_input.c:438)
+ ip6_input (net/ipv6/ip6_input.c:500)
+ ipv6_rcv (net/ipv6/ip6_input.c:311)
+ __netif_receive_skb (net/core/dev.c:6104)
+ process_backlog (net/core/dev.c:6456)
+ __napi_poll (net/core/dev.c:7506)
+ net_rx_action (net/core/dev.c:7569 net/core/dev.c:7696)
+ handle_softirqs (kernel/softirq.c:579)
+ do_softirq (kernel/softirq.c:480)
+ </IRQ>
+
+Fixes: 45c8a6cc2bcd ("tcp: Clear tcp_sk(sk)->fastopen_rsk in tcp_disconnect().")
+Reported-by: syzkaller <syzkaller@googlegroups.com>
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Link: https://patch.msgid.link/20251001233755.1340927-1-kuniyu@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/sc16is7xx.c | 7 -------
- 1 file changed, 7 deletions(-)
+ net/ipv4/tcp_input.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/tty/serial/sc16is7xx.c b/drivers/tty/serial/sc16is7xx.c
-index c0c2c1450e88d..458bf16543724 100644
---- a/drivers/tty/serial/sc16is7xx.c
-+++ b/drivers/tty/serial/sc16is7xx.c
-@@ -582,13 +582,6 @@ static int sc16is7xx_set_baud(struct uart_port *port, int baud)
- 		div /= prescaler;
- 	}
- 
--	/* Enable enhanced features */
--	sc16is7xx_efr_lock(port);
--	sc16is7xx_port_update(port, SC16IS7XX_EFR_REG,
--			      SC16IS7XX_EFR_ENABLE_BIT,
--			      SC16IS7XX_EFR_ENABLE_BIT);
--	sc16is7xx_efr_unlock(port);
--
- 	/* If bit MCR_CLKSEL is set, the divide by 4 prescaler is activated. */
- 	sc16is7xx_port_update(port, SC16IS7XX_MCR_REG,
- 			      SC16IS7XX_MCR_CLKSEL_BIT,
+diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+index 64a87a39287a1..50af55778617c 100644
+--- a/net/ipv4/tcp_input.c
++++ b/net/ipv4/tcp_input.c
+@@ -7000,7 +7000,6 @@ int tcp_conn_request(struct request_sock_ops *rsk_ops,
+ 				    &foc, TCP_SYNACK_FASTOPEN, skb);
+ 		/* Add the child socket directly into the accept queue */
+ 		if (!inet_csk_reqsk_queue_add(sk, req, fastopen_sk)) {
+-			reqsk_fastopen_remove(fastopen_sk, req, false);
+ 			bh_unlock_sock(fastopen_sk);
+ 			sock_put(fastopen_sk);
+ 			goto drop_and_free;
 -- 
 2.51.0
+
+
 
 
