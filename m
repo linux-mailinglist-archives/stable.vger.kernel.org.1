@@ -1,52 +1,54 @@
-Return-Path: <stable+bounces-190417-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190374-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D7FEC10690
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:03:00 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8846C1047C
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:55:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 727CE5662C9
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:57:06 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id AE5674E3044
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:55:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25007328619;
-	Mon, 27 Oct 2025 18:53:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B927B31B82E;
+	Mon, 27 Oct 2025 18:52:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CRQA8x6A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZFx/PbUC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D148732549E;
-	Mon, 27 Oct 2025 18:53:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62A07328639;
+	Mon, 27 Oct 2025 18:52:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591236; cv=none; b=LrX/PP1MpgQlh458WHsx+oKPNFEnEWMVibcdhIGscLiAQUg4nPx1xvTTTQZJtKTXSUYsoX2clLKI9PXiwasO4PZuVDoZ+sCcLMQczWmTqWB1++socbZwpZMwheGhYFjHd7EeTskWxd8g5pXmuX7TmKxEZJUhLBhT9h/TE2hWu88=
+	t=1761591133; cv=none; b=ifAjpPB/Xj59ObT6mRS7JaUlBJDK0eBJotZhMp/bhB6ll9Az7jF98O51aLXLqaTeDsc5Ced9IXNb7zouDWASnAP7xoF8cVwrgh4CGflckkKZENqQrdGVaWnco2wdizfJitg2Tvqa87G97M3d5kpu95XhgQ5AoEbJdiUKYFODRlU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591236; c=relaxed/simple;
-	bh=eAOGOu7+3WX8bo3hox2o2uBTfpdhNINy1yUEzAsCVoc=;
+	s=arc-20240116; t=1761591133; c=relaxed/simple;
+	bh=FI/fR5x5Hux4KWQtcc78ljw869A/ALsj0SgYiIEvseM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Cp9M58vTbIG2dUUNo5gBOf7+1cKuqZex48pV6iZk4EClU27Eq6fkftGk26d7uCiOxRwt/CwOBaPXpHb6G4wFvMzccavA3d+9CIockq4+zy1CqoY7d2SEmtyBImhYucbGkIV7lDNWfI6Anqn44qnc5j/4sTwFziR7IHP+LbzHmQ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CRQA8x6A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E7EFC4CEF1;
-	Mon, 27 Oct 2025 18:53:56 +0000 (UTC)
+	 MIME-Version; b=k1Upt0pz9cDNtBrhW4jDkidX8oY9wk/JGQKA0+Z+EFmNcWxA5OSVuhfEOr6FjgJICpexpYBnnkYKetM4+EmRa4GGDcz4AXbCeVejZOGuyqjw48vyPGNzXxK0hV2jpKZHNutLsSt6/p5vnZ0+Agnk0Kuldb0NDk32LA5cTBFaWaY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZFx/PbUC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0F61C4CEF1;
+	Mon, 27 Oct 2025 18:52:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591236;
-	bh=eAOGOu7+3WX8bo3hox2o2uBTfpdhNINy1yUEzAsCVoc=;
+	s=korg; t=1761591133;
+	bh=FI/fR5x5Hux4KWQtcc78ljw869A/ALsj0SgYiIEvseM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CRQA8x6ANx4OcSSW6V9HVeDW1ib/w6KNSlH1/h5XfPPJkDVFCcHkyvnwSeiv6E3g7
-	 zHHOTCu5lNynuu82jeOHXDOTc19BuEwsGL+UMmsIFIQuEbQfc6OLVwJXAO94qWisQU
-	 hJPiwsrvGsPlYoCubVtjaD+tJFZqSouECgSrH2oE=
+	b=ZFx/PbUC6Rr2pl/fJK+t55NBLKtnWZpo2DD/GlqohkbRp9mjiFZC8Nwx3c9oWMdtN
+	 WkC8ScMtSKfyAekxH8mxDQHfsTxYFLPmYwGcCPeFlprZ7Y6vjd4zmrjqlLNs3qbXHp
+	 qARTCCeIjXNxUiRZThaVCR1RDYdpq+e53ldt8kdw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Nishanth Menon <nm@ti.com>,
+	Alexander Sverdlin <alexander.sverdlin@gmail.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 080/332] Bluetooth: MGMT: Fix not exposing debug UUID on MGMT_OP_READ_EXP_FEATURES_INFO
-Date: Mon, 27 Oct 2025 19:32:13 +0100
-Message-ID: <20251027183526.733180960@linuxfoundation.org>
+Subject: [PATCH 5.10 081/332] hwrng: ks-sa - fix division by zero in ks_sa_rng_init
+Date: Mon, 27 Oct 2025 19:32:14 +0100
+Message-ID: <20251027183526.758531146@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
 References: <20251027183524.611456697@linuxfoundation.org>
@@ -65,45 +67,45 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Nishanth Menon <nm@ti.com>
 
-[ Upstream commit 79e562a52adea4afa0601a15964498fae66c823c ]
+[ Upstream commit 612b1dfeb414dfa780a6316014ceddf9a74ff5c0 ]
 
-The debug UUID was only getting set if MGMT_OP_READ_EXP_FEATURES_INFO
-was not called with a specific index which breaks the likes of
-bluetoothd since it only invokes MGMT_OP_READ_EXP_FEATURES_INFO when an
-adapter is plugged, so instead of depending hdev not to be set just
-enable the UUID on any index like it was done with iso_sock_uuid.
+Fix division by zero in ks_sa_rng_init caused by missing clock
+pointer initialization. The clk_get_rate() call is performed on
+an uninitialized clk pointer, resulting in division by zero when
+calculating delay values.
 
-Fixes: e625e50ceee1 ("Bluetooth: Introduce debug feature when dynamic debug is disabled")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Add clock initialization code before using the clock.
+
+Fixes: 6d01d8511dce ("hwrng: ks-sa - Add minimum sleep time before ready-polling")
+Signed-off-by: Nishanth Menon <nm@ti.com>
+
+ drivers/char/hw_random/ks-sa-rng.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
+Reviewed-by: Alexander Sverdlin <alexander.sverdlin@gmail.com>
+
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/mgmt.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ drivers/char/hw_random/ks-sa-rng.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/net/bluetooth/mgmt.c b/net/bluetooth/mgmt.c
-index 51b16c2a279f4..fda0bd990dcb7 100644
---- a/net/bluetooth/mgmt.c
-+++ b/net/bluetooth/mgmt.c
-@@ -3801,13 +3801,11 @@ static int read_exp_features_info(struct sock *sk, struct hci_dev *hdev,
- 	memset(&buf, 0, sizeof(buf));
+diff --git a/drivers/char/hw_random/ks-sa-rng.c b/drivers/char/hw_random/ks-sa-rng.c
+index 8f1d47ff97996..994cfdf346e15 100644
+--- a/drivers/char/hw_random/ks-sa-rng.c
++++ b/drivers/char/hw_random/ks-sa-rng.c
+@@ -240,6 +240,10 @@ static int ks_sa_rng_probe(struct platform_device *pdev)
+ 		return -EINVAL;
+ 	}
  
- #ifdef CONFIG_BT_FEATURE_DEBUG
--	if (!hdev) {
--		flags = bt_dbg_get() ? BIT(0) : 0;
-+	flags = bt_dbg_get() ? BIT(0) : 0;
- 
--		memcpy(rp->features[idx].uuid, debug_uuid, 16);
--		rp->features[idx].flags = cpu_to_le32(flags);
--		idx++;
--	}
-+	memcpy(rp->features[idx].uuid, debug_uuid, 16);
-+	rp->features[idx].flags = cpu_to_le32(flags);
-+	idx++;
- #endif
- 
- 	if (hdev) {
++	ks_sa_rng->clk = devm_clk_get_enabled(dev, NULL);
++	if (IS_ERR(ks_sa_rng->clk))
++		return dev_err_probe(dev, PTR_ERR(ks_sa_rng->clk), "Failed to get clock\n");
++
+ 	pm_runtime_enable(dev);
+ 	ret = pm_runtime_get_sync(dev);
+ 	if (ret < 0) {
 -- 
 2.51.0
 
