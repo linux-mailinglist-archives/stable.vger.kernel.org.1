@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-190983-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190907-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F116C10F7F
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:27:54 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4E84C10DC9
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:22:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E8B8A547271
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:19:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B16DD46065B
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:16:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65C7E3203BA;
-	Mon, 27 Oct 2025 19:18:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F54E1FBC92;
+	Mon, 27 Oct 2025 19:15:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0naIEddT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U6Mjpjd+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 234851BC4E;
-	Mon, 27 Oct 2025 19:18:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AAB02D8384;
+	Mon, 27 Oct 2025 19:15:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592710; cv=none; b=QRFHm+sfvcKSBT2GWsSDFTObhyEub++SZ9Fli7AZyMIGuKZFqflv7Rddiq/Om/a/wOLCAEGTYdKPZRhxpBrQS+0bv2kfWLd0yhjiqp/nrlyIkk1P//fN0irMnRJ1pd2Ec8t5rxgSPspI/9/01+/6zY9L0HD7bWzvgaq3qi6niyQ=
+	t=1761592510; cv=none; b=hUdBmOg6Zu3OzZSo8hjrec6zgOiUFKgKCCKqk34lQAVNMKlwNQ4FE+7CeBnuUnYZhgtGmseX1OqsDeKTH3q42Ykcrs58qENrrcy4esSIgCUESWZ/6s2vglNcPWLUontzn9AdBTFt7RizwLEpMqDuEF3PCLnY5jsYuSQwFG2eHJs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592710; c=relaxed/simple;
-	bh=SvLyZu46k3QjFMGDz04hy4p0lTm0i3rNnuvqdMho9Ns=;
+	s=arc-20240116; t=1761592510; c=relaxed/simple;
+	bh=ALyAamCzpMNWs99TU8Pdn3/+y5yJPgn3qAaSOs131n0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IkqxGexywhP+SfgrE/IPdNRuiOrp0IpwYNQrDIJk0llAI1RJ7tKmNbQ1OL5sNDa+2N+4YklqUGdZJNXzYzbZiVRR53PbbGuKMaWHqRrZ2l9rPAyyKHWefCUlTCe5qkaBjaJktAVsk5t/65F7JUSV+nu1xm9GtfnpER7lZlaXpbA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0naIEddT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 591CAC4CEF1;
-	Mon, 27 Oct 2025 19:18:29 +0000 (UTC)
+	 MIME-Version; b=qnBWiXVccBdnfrC2wtNH+Pl9dIMQ55IhsQDEIzlwN7ove6V1u+4zE6yBNA/XYQS2FzEQ1a9QPtw4/wa0MaBMuRC1mONE0VXe1jtzs13xbXs47UHOSMEnOi91IZ+6nj1WsM+1i0/v3L1pGIFnfmKubGFfm9XFLE714z73TwpL0bQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U6Mjpjd+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3168C4CEF1;
+	Mon, 27 Oct 2025 19:15:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592709;
-	bh=SvLyZu46k3QjFMGDz04hy4p0lTm0i3rNnuvqdMho9Ns=;
+	s=korg; t=1761592510;
+	bh=ALyAamCzpMNWs99TU8Pdn3/+y5yJPgn3qAaSOs131n0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0naIEddTt3pFjKWEI/0R9s44CSarxBiNEcmjjCCbukswAcIEn8bbxD/ycVryn1P7i
-	 ebZKwKcfHuXnGbV7g8+o7FRF4RR1WkT5PFrDUMP6GbDNDpM4UcLPNcb1XjPcqY28xn
-	 IU9dzjl0CQhHQ/5jNJLhyu25z9cyqAR3zxG9wHFY=
+	b=U6Mjpjd++ju550J0IRLET8uUkETU1OB4v2QifQdSNFUVnrw8ijho6f/07O5fSfy6d
+	 QPqoa4mVZ9LgKoh/hmgnJoa7aY1B0kEDo80mcUWLGQxaMHX4mgqXNfoUALv19KYBbv
+	 0+DzXs7EdsYr+PghMSTK4Xzb5+0MHEbtegZ4K9Ek=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Renjun Wang <renjunw0@foxmail.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.6 59/84] USB: serial: option: add UNISOC UIS7720
+	Devarsh Thakkar <devarsht@ti.com>,
+	Harikrishna Shenoy <h-shenoy@ti.com>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 147/157] phy: cadence: cdns-dphy: Update calibration wait time for startup state machine
 Date: Mon, 27 Oct 2025 19:36:48 +0100
-Message-ID: <20251027183440.391663146@linuxfoundation.org>
+Message-ID: <20251027183505.232614835@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183438.817309828@linuxfoundation.org>
-References: <20251027183438.817309828@linuxfoundation.org>
+In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
+References: <20251027183501.227243846@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,78 +64,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Renjun Wang <renjunw0@foxmail.com>
+From: Devarsh Thakkar <devarsht@ti.com>
 
-commit 71c07570b918f000de5d0f7f1bf17a2887e303b5 upstream.
+[ Upstream commit 2c27aaee934a1b5229152fe33a14f1fdf50da143 ]
 
-Add support for UNISOC (Spreadtrum) UIS7720 (A7720) module.
+Do read-modify-write so that we re-use the characterized reset value as
+specified in TRM [1] to program calibration wait time which defines number
+of cycles to wait for after startup state machine is in bandgap enable
+state.
 
-T:  Bus=05 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  5 Spd=480 MxCh= 0
-D:  Ver= 2.10 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1782 ProdID=4064 Rev=04.04
-S:  Manufacturer=Unisoc-phone
-S:  Product=Unisoc-phone
-S:  SerialNumber=0123456789ABCDEF
-C:  #Ifs= 9 Cfg#= 1 Atr=c0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 1 Cls=e0(wlcon) Sub=01 Prot=03 Driver=rndis_host
-E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-I:  If#= 1 Alt= 0 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=rndis_host
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 6 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=06(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 7 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=07(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=88(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 8 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
-E:  Ad=08(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=89(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+This fixes PLL lock timeout error faced while using RPi DSI Panel on TI's
+AM62L and J721E SoC since earlier calibration wait time was getting
+overwritten to zero value thus failing the PLL to lockup and causing
+timeout.
 
-0&1: RNDIS, 2: LOG, 3: DIAG, 4&5: AT Ports, 6&7: AT2 Ports, 8: ADB
+[1] AM62P TRM (Section 14.8.6.3.2.1.1 DPHY_TX_DPHYTX_CMN0_CMN_DIG_TBIT2):
+Link: https://www.ti.com/lit/pdf/spruj83
 
-Signed-off-by: Renjun Wang <renjunw0@foxmail.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
+Fixes: 7a343c8bf4b5 ("phy: Add Cadence D-PHY support")
+Signed-off-by: Devarsh Thakkar <devarsht@ti.com>
+Tested-by: Harikrishna Shenoy <h-shenoy@ti.com>
+Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Link: https://lore.kernel.org/r/20250704125915.1224738-3-devarsht@ti.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/option.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/phy/cadence/cdns-dphy.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -617,6 +617,7 @@ static void option_instat_callback(struc
- #define UNISOC_VENDOR_ID			0x1782
- /* TOZED LT70-C based on UNISOC SL8563 uses UNISOC's vendor ID */
- #define TOZED_PRODUCT_LT70C			0x4055
-+#define UNISOC_PRODUCT_UIS7720			0x4064
- /* Luat Air72*U series based on UNISOC UIS8910 uses UNISOC's vendor ID */
- #define LUAT_PRODUCT_AIR720U			0x4e00
+--- a/drivers/phy/cadence/cdns-dphy.c
++++ b/drivers/phy/cadence/cdns-dphy.c
+@@ -31,6 +31,7 @@
  
-@@ -2466,6 +2467,7 @@ static const struct usb_device_id option
- 	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9291, 0xff, 0xff, 0x30) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9291, 0xff, 0xff, 0x40) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(UNISOC_VENDOR_ID, TOZED_PRODUCT_LT70C, 0xff, 0, 0) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(UNISOC_VENDOR_ID, UNISOC_PRODUCT_UIS7720, 0xff, 0, 0) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(UNISOC_VENDOR_ID, LUAT_PRODUCT_AIR720U, 0xff, 0, 0) },
- 	{ USB_DEVICE_INTERFACE_CLASS(0x1bbb, 0x0530, 0xff),			/* TCL IK512 MBIM */
- 	  .driver_info = NCTRL(1) },
+ #define DPHY_CMN_SSM			DPHY_PMA_CMN(0x20)
+ #define DPHY_CMN_SSM_EN			BIT(0)
++#define DPHY_CMN_SSM_CAL_WAIT_TIME	GENMASK(8, 1)
+ #define DPHY_CMN_TX_MODE_EN		BIT(9)
+ 
+ #define DPHY_CMN_PWM			DPHY_PMA_CMN(0x40)
+@@ -422,7 +423,8 @@ static int cdns_dphy_power_on(struct phy
+ 	writel(reg, dphy->regs + DPHY_BAND_CFG);
+ 
+ 	/* Start TX state machine. */
+-	writel(DPHY_CMN_SSM_EN | DPHY_CMN_TX_MODE_EN,
++	reg = readl(dphy->regs + DPHY_CMN_SSM);
++	writel((reg & DPHY_CMN_SSM_CAL_WAIT_TIME) | DPHY_CMN_SSM_EN | DPHY_CMN_TX_MODE_EN,
+ 	       dphy->regs + DPHY_CMN_SSM);
+ 
+ 	ret = cdns_dphy_wait_for_pll_lock(dphy);
 
 
 
