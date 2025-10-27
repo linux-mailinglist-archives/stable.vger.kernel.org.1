@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-190075-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190389-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DB64C0FF21
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:39:35 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2AD7C10657
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:01:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A09884EDB02
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:39:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 83477564DDE
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:56:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FA3230217A;
-	Mon, 27 Oct 2025 18:39:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5E3B3233F5;
+	Mon, 27 Oct 2025 18:52:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QLFw8MTi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gx3+NZ0T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BD8B218EB1;
-	Mon, 27 Oct 2025 18:39:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99FF831D389;
+	Mon, 27 Oct 2025 18:52:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761590370; cv=none; b=gF/CkSVf3i2ac5qg2j85ap3+D/xrZCdbd/gfRqikCG6OrfjqfyX04BCzZWseYtlB+sK9APQmcLEd5V78DwLzcvo+uWzzKXaeoS6ZoEZvsxQtPMXUzoxKrw48GmqaHdAevYUpgP82lLgsosHEaEXEmodaN4DYXeKZo3Sqvugo07w=
+	t=1761591174; cv=none; b=dEoLhoPcmxYGdFIZPLVVSBEO6Pke98CtG3PfZO41cnZ83Y5KJtSqn6SMi4S6bKZMuKl2l8KufTnjfVlBbCWEViyQ6640T0he58YzJ80QnT8AP+WZ/vOIEIOVgCkasaSI+cjPi770XIv8ZaN8onZzGn97PUj8LZohthIbm9P68QA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761590370; c=relaxed/simple;
-	bh=OSnUwXFW446t4WeiMwWZFEzQRSRPY9Pt8XVmc2FcRuE=;
+	s=arc-20240116; t=1761591174; c=relaxed/simple;
+	bh=pNqmFDw/zIOLrtz+d30pP4IyIC2htivT3hXAxQRvRac=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oi18UJEum822t/kgjL2RFnRXJOZoLDzGt5hypwrf/bmPec635dWN3LXmMPNn4jU613HER3RuNCJGGIG05vC5i/xELxf8UHEcpFn4mJiOpCXGpyFquVZe4PtzCmH0ZIjS3+bDwdp+Fx1/o8W1geajcwpvv5t5kSFutiWeXFWsnOk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QLFw8MTi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E240AC4CEF1;
-	Mon, 27 Oct 2025 18:39:29 +0000 (UTC)
+	 MIME-Version; b=MhGyRKZQpBuG0Tjv5NnUmIVrpVK+5PCegGNSHLLnZEzEDmgnTmMcgJ9Z/JYMb3qAv06bHa+lSeZAoxh2wY0LbBMYsMXCR9vC5I1DJhjkeop1E1PJjTOVMKQ0sOyIZcTj1YoB72znrDUpEW2jqIhy+GQZVaj8WKI5nvYVGNH7g4I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gx3+NZ0T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 260C5C4CEF1;
+	Mon, 27 Oct 2025 18:52:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761590370;
-	bh=OSnUwXFW446t4WeiMwWZFEzQRSRPY9Pt8XVmc2FcRuE=;
+	s=korg; t=1761591174;
+	bh=pNqmFDw/zIOLrtz+d30pP4IyIC2htivT3hXAxQRvRac=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QLFw8MTiqwKbAF7sB5BnJfeh7KFqoOy7Vz/vwA0RxMbgzMYRqUMxey6QRZy3Ki56R
-	 ddr8HJF8Gx+TMrDoba628Z5qlemXq62eMYMFlRjtr0yFmaHIT76LlBjPacW1WUBpyx
-	 xkWUTLpIpgbDHAZ6zuH2EMKIqKLJDg/dBOTfK+A8=
+	b=Gx3+NZ0T7B88wNgSAxay7rlPZ2FEXaBFyosDH1WkugZ+ocAeSIsVl2MeIKgVdtm2u
+	 0ZUolxbPVhF+gGiK92X/ueDmnMGUesIU1I7qdwVdk7QdpDhm0K4fy3+hdLJ8o1i3oJ
+	 4X0DaWOVTHo3ft/TynoEgkSNl0klA0pfqX9DfIIE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Duoming Zhou <duoming@zju.edu.cn>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 5.4 002/224] media: b2c2: Fix use-after-free causing by irq_check_work in flexcop_pci_remove
+	Salah Triki <salah.triki@gmail.com>,
+	Ioana Ciornei <ioana.ciornei@nxp.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: [PATCH 5.10 095/332] bus: fsl-mc: Check return value of platform_get_resource()
 Date: Mon, 27 Oct 2025 19:32:28 +0100
-Message-ID: <20251027183509.037074523@linuxfoundation.org>
+Message-ID: <20251027183527.129259363@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183508.963233542@linuxfoundation.org>
-References: <20251027183508.963233542@linuxfoundation.org>
+In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
+References: <20251027183524.611456697@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,124 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Duoming Zhou <duoming@zju.edu.cn>
+From: Salah Triki <salah.triki@gmail.com>
 
-commit 01e03fb7db419d39e18d6090d4873c1bff103914 upstream.
+commit 25f526507b8ccc6ac3a43bc094d09b1f9b0b90ae upstream.
 
-The original code uses cancel_delayed_work() in flexcop_pci_remove(), which
-does not guarantee that the delayed work item irq_check_work has fully
-completed if it was already running. This leads to use-after-free scenarios
-where flexcop_pci_remove() may free the flexcop_device while irq_check_work
-is still active and attempts to dereference the device.
+platform_get_resource() returns NULL in case of failure, so check its
+return value and propagate the error in order to prevent NULL pointer
+dereference.
 
-A typical race condition is illustrated below:
-
-CPU 0 (remove)                         | CPU 1 (delayed work callback)
-flexcop_pci_remove()                   | flexcop_pci_irq_check_work()
-  cancel_delayed_work()                |
-  flexcop_device_kfree(fc_pci->fc_dev) |
-                                       |   fc = fc_pci->fc_dev; // UAF
-
-This is confirmed by a KASAN report:
-
-==================================================================
-BUG: KASAN: slab-use-after-free in __run_timer_base.part.0+0x7d7/0x8c0
-Write of size 8 at addr ffff8880093aa8c8 by task bash/135
-...
-Call Trace:
- <IRQ>
- dump_stack_lvl+0x55/0x70
- print_report+0xcf/0x610
- ? __run_timer_base.part.0+0x7d7/0x8c0
- kasan_report+0xb8/0xf0
- ? __run_timer_base.part.0+0x7d7/0x8c0
- __run_timer_base.part.0+0x7d7/0x8c0
- ? __pfx___run_timer_base.part.0+0x10/0x10
- ? __pfx_read_tsc+0x10/0x10
- ? ktime_get+0x60/0x140
- ? lapic_next_event+0x11/0x20
- ? clockevents_program_event+0x1d4/0x2a0
- run_timer_softirq+0xd1/0x190
- handle_softirqs+0x16a/0x550
- irq_exit_rcu+0xaf/0xe0
- sysvec_apic_timer_interrupt+0x70/0x80
- </IRQ>
-...
-
-Allocated by task 1:
- kasan_save_stack+0x24/0x50
- kasan_save_track+0x14/0x30
- __kasan_kmalloc+0x7f/0x90
- __kmalloc_noprof+0x1be/0x460
- flexcop_device_kmalloc+0x54/0xe0
- flexcop_pci_probe+0x1f/0x9d0
- local_pci_probe+0xdc/0x190
- pci_device_probe+0x2fe/0x470
- really_probe+0x1ca/0x5c0
- __driver_probe_device+0x248/0x310
- driver_probe_device+0x44/0x120
- __driver_attach+0xd2/0x310
- bus_for_each_dev+0xed/0x170
- bus_add_driver+0x208/0x500
- driver_register+0x132/0x460
- do_one_initcall+0x89/0x300
- kernel_init_freeable+0x40d/0x720
- kernel_init+0x1a/0x150
- ret_from_fork+0x10c/0x1a0
- ret_from_fork_asm+0x1a/0x30
-
-Freed by task 135:
- kasan_save_stack+0x24/0x50
- kasan_save_track+0x14/0x30
- kasan_save_free_info+0x3a/0x60
- __kasan_slab_free+0x3f/0x50
- kfree+0x137/0x370
- flexcop_device_kfree+0x32/0x50
- pci_device_remove+0xa6/0x1d0
- device_release_driver_internal+0xf8/0x210
- pci_stop_bus_device+0x105/0x150
- pci_stop_and_remove_bus_device_locked+0x15/0x30
- remove_store+0xcc/0xe0
- kernfs_fop_write_iter+0x2c3/0x440
- vfs_write+0x871/0xd70
- ksys_write+0xee/0x1c0
- do_syscall_64+0xac/0x280
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-...
-
-Replace cancel_delayed_work() with cancel_delayed_work_sync() to ensure
-that the delayed work item is properly canceled and any executing delayed
-work has finished before the device memory is deallocated.
-
-This bug was initially identified through static analysis. To reproduce
-and test it, I simulated the B2C2 FlexCop PCI device in QEMU and introduced
-artificial delays within the flexcop_pci_irq_check_work() function to
-increase the likelihood of triggering the bug.
-
-Fixes: 382c5546d618 ("V4L/DVB (10694): [PATCH] software IRQ watchdog for Flexcop B2C2 DVB PCI cards")
+Fixes: 6305166c8771 ("bus: fsl-mc: Add ACPI support for fsl-mc")
 Cc: stable@vger.kernel.org
-Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Signed-off-by: Salah Triki <salah.triki@gmail.com>
+Acked-by: Ioana Ciornei <ioana.ciornei@nxp.com>
+Link: https://lore.kernel.org/r/aKwuK6TRr5XNYQ8u@pc
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/pci/b2c2/flexcop-pci.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/bus/fsl-mc/fsl-mc-bus.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/media/pci/b2c2/flexcop-pci.c
-+++ b/drivers/media/pci/b2c2/flexcop-pci.c
-@@ -411,7 +411,7 @@ static void flexcop_pci_remove(struct pc
- 	struct flexcop_pci *fc_pci = pci_get_drvdata(pdev);
- 
- 	if (irq_chk_intv > 0)
--		cancel_delayed_work(&fc_pci->irq_check_work);
-+		cancel_delayed_work_sync(&fc_pci->irq_check_work);
- 
- 	flexcop_pci_dma_exit(fc_pci);
- 	flexcop_device_exit(fc_pci->fc_dev);
+--- a/drivers/bus/fsl-mc/fsl-mc-bus.c
++++ b/drivers/bus/fsl-mc/fsl-mc-bus.c
+@@ -1014,6 +1014,9 @@ static int fsl_mc_bus_probe(struct platf
+ 	 * Get physical address of MC portal for the root DPRC:
+ 	 */
+ 	plat_res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
++	if (!plat_res)
++		return -EINVAL;
++
+ 	mc_portal_phys_addr = plat_res->start;
+ 	mc_portal_size = resource_size(plat_res);
+ 	mc_portal_base_phys_addr = mc_portal_phys_addr & ~0x3ffffff;
 
 
 
