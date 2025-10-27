@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-190768-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190509-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DA0DC10BCF
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:18:06 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1B0FC1078F
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:06:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 390C95020B1
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:11:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 04C5C1A604BE
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:03:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53F482C3745;
-	Mon, 27 Oct 2025 19:09:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FD7D32D438;
+	Mon, 27 Oct 2025 18:57:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PKMFcORk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uk7sNeL5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E88723081AE;
-	Mon, 27 Oct 2025 19:09:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13AA332D7C7;
+	Mon, 27 Oct 2025 18:57:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592146; cv=none; b=WO7Ya9Qtab4WuFfanusVAsaAkD4Z3GTFTMHCerBW8kMicrwHA4AysfR+KJ6/22EiGhhgSt+NWlDGk/7DiRlazk56mf+2M5JqPX7/EIsKRgSdBaEXwk5UsbAg8Xt1iKG2oYoGCNwPAgflm+kVymRwIZsTOOPGMTQ6t93cCjcl7lY=
+	t=1761591477; cv=none; b=TgPx7kDsBaGVcLBpI2WyHXJBHoeK5AtllWZvX1JJ7IAOcGTOdGexc5UQkfl/rWzNnC+91cBFBQQWK4uCSgOHcyM0MATdG1oac7+GwXluZF6lANM+9Aic+zLS4ubUOjW2pS2xzqCq//tHKrCPKdyFYSSKvmZb828HqTJQWkU7quw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592146; c=relaxed/simple;
-	bh=hHdWOxDxdPgH52yK4db30ns1fBb9JYXXgWW2DNuEiEI=;
+	s=arc-20240116; t=1761591477; c=relaxed/simple;
+	bh=iiIzCiWb5Nb8uTgO1yf6u5UidUsNuP7hh4L4bbz3x24=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hj83jACEm+srM97mbQbgSV03uiWEcYfuzEZlanT8ZDSnVZELnR74uNNsA5lGDLhVC31jdXyDrVm1ymMDLtWjOnS602KsrH07LTFooCMt4agjHH5JCiZL+3lvfzLaUQhSrTh1UgGuhrce2cNlxCl7X9/DVGhBTX8L2uCfYhk2OzQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PKMFcORk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 360E5C4CEFD;
-	Mon, 27 Oct 2025 19:09:05 +0000 (UTC)
+	 MIME-Version; b=DV+/mgBk3Wm1wWHWrCO+g/mXjmUb9Gn0QidzkeZG0dl89BQtLvkIdOUg9bL9faeFkPTCwfDIYIHd5Khk8NW0Ha/1hKeUw06zt0Nlc4f77vXW1anV1xZPWYReaIQx/OPzZ1yeGiXCOA031pWd5hPACdqCM0rr+ftZgoWVsid7GIg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uk7sNeL5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AAFBC4CEF1;
+	Mon, 27 Oct 2025 18:57:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592145;
-	bh=hHdWOxDxdPgH52yK4db30ns1fBb9JYXXgWW2DNuEiEI=;
+	s=korg; t=1761591476;
+	bh=iiIzCiWb5Nb8uTgO1yf6u5UidUsNuP7hh4L4bbz3x24=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PKMFcORkhvTeY27S6YRUMFCnbXkmh2hlpfo7ae2ZssDtUcuTJQ6HSVQIuVlbMDSfm
-	 ZwTgEQRbtOe0kIGUeiHp9tGiwvZePf7o3WDoy7WfUs9K6Ri3oXyxBut7Xzs5pparK3
-	 gNXfifTXhGhCnea9zRQKHIZP9LsGybQI8S4OWBPQ=
+	b=uk7sNeL578LOuPKH6R5oA9KuKd+RGn8DJznNEm7KmUTiyJz+lY0LSyOxdAsi9oSPq
+	 8RanxmHvgyfHRdkEvEMz8zl0qj8pBfcSrETZQKftbIcGKBESGufjXgd3827s+kgPnA
+	 mSQG1BOsN5a35hSq+jE1k9J/W2HW3L/KpnxOwudI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Jan Kara <jack@suse.cz>,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.1 003/157] jbd2: ensure that all ongoing I/O complete before freeing blocks
+	David Laight <David.Laight@aculab.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Eliav Farber <farbere@amazon.com>
+Subject: [PATCH 5.10 211/332] minmax: simplify min()/max()/clamp() implementation
 Date: Mon, 27 Oct 2025 19:34:24 +0100
-Message-ID: <20251027183501.326248606@linuxfoundation.org>
+Message-ID: <20251027183530.318578970@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
-References: <20251027183501.227243846@linuxfoundation.org>
+In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
+References: <20251027183524.611456697@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,90 +63,142 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Yi <yi.zhang@huawei.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
 
-commit 3c652c3a71de1d30d72dc82c3bead8deb48eb749 upstream.
+[ Upstream commit dc1c8034e31b14a2e5e212104ec508aec44ce1b9 ]
 
-When releasing file system metadata blocks in jbd2_journal_forget(), if
-this buffer has not yet been checkpointed, it may have already been
-written back, currently be in the process of being written back, or has
-not yet written back.  jbd2_journal_forget() calls
-jbd2_journal_try_remove_checkpoint() to check the buffer's status and
-add it to the current transaction if it has not been written back. This
-buffer can only be reallocated after the transaction is committed.
+Now that we no longer have any C constant expression contexts (ie array
+size declarations or static initializers) that use min() or max(), we
+can simpify the implementation by not having to worry about the result
+staying as a C constant expression.
 
-jbd2_journal_try_remove_checkpoint() attempts to lock the buffer and
-check its dirty status while holding the buffer lock. If the buffer has
-already been written back, everything proceeds normally. However, there
-are two issues. First, the function returns immediately if the buffer is
-locked by the write-back process. It does not wait for the write-back to
-complete. Consequently, until the current transaction is committed and
-the block is reallocated, there is no guarantee that the I/O will
-complete. This means that ongoing I/O could write stale metadata to the
-newly allocated block, potentially corrupting data. Second, the function
-unlocks the buffer as soon as it detects that the buffer is still dirty.
-If a concurrent write-back occurs immediately after this unlocking and
-before clear_buffer_dirty() is called in jbd2_journal_forget(), data
-corruption can theoretically still occur.
+So now we can unconditionally just use temporary variables of the right
+type, and get rid of the excessive expansion that used to come from the
+use of
 
-Although these two issues are unlikely to occur in practice since the
-undergoing metadata writeback I/O does not take this long to complete,
-it's better to explicitly ensure that all ongoing I/O operations are
-completed.
+   __builtin_choose_expr(__is_constexpr(...), ..
 
-Fixes: 597599268e3b ("jbd2: discard dirty data when forgetting an un-journalled buffer")
-Cc: stable@kernel.org
-Suggested-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Message-ID: <20250916093337.3161016-2-yi.zhang@huaweicloud.com>
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+to pick the specialized code for constant expressions.
+
+Another expansion simplification is to pass the temporary variables (in
+addition to the original expression) to our __types_ok() macro.  That
+may superficially look like it complicates the macro, but when we only
+want the type of the expression, expanding the temporary variable names
+is much simpler and smaller than expanding the potentially complicated
+original expression.
+
+As a result, on my machine, doing a
+
+  $ time make drivers/staging/media/atomisp/pci/isp/kernels/ynr/ynr_1.0/ia_css_ynr.host.i
+
+goes from
+
+	real	0m16.621s
+	user	0m15.360s
+	sys	0m1.221s
+
+to
+
+	real	0m2.532s
+	user	0m2.091s
+	sys	0m0.452s
+
+because the token expansion goes down dramatically.
+
+In particular, the longest line expansion (which was line 71 of that
+'ia_css_ynr.host.c' file) shrinks from 23,338kB (yes, 23MB for one
+single line) to "just" 1,444kB (now "only" 1.4MB).
+
+And yes, that line is still the line from hell, because it's doing
+multiple levels of "min()/max()" expansion thanks to some of them being
+hidden inside the uDIGIT_FITTING() macro.
+
+Lorenzo has a nice cleanup patch that makes that driver use inline
+functions instead of macros for sDIGIT_FITTING() and uDIGIT_FITTING(),
+which will fix that line once and for all, but the 16-fold reduction in
+this case does show why we need to simplify these helpers.
+
+Cc: David Laight <David.Laight@aculab.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Eliav Farber <farbere@amazon.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/jbd2/transaction.c |   13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ include/linux/minmax.h |   43 ++++++++++++++++++++-----------------------
+ 1 file changed, 20 insertions(+), 23 deletions(-)
 
---- a/fs/jbd2/transaction.c
-+++ b/fs/jbd2/transaction.c
-@@ -1668,6 +1668,7 @@ int jbd2_journal_forget(handle_t *handle
- 	int drop_reserve = 0;
- 	int err = 0;
- 	int was_modified = 0;
-+	int wait_for_writeback = 0;
+--- a/include/linux/minmax.h
++++ b/include/linux/minmax.h
+@@ -35,10 +35,10 @@
+ #define __is_noneg_int(x)	\
+ 	(__builtin_choose_expr(__is_constexpr(x) && __is_signed(x), x, -1) >= 0)
  
- 	if (is_handle_aborted(handle))
- 		return -EROFS;
-@@ -1791,18 +1792,22 @@ int jbd2_journal_forget(handle_t *handle
- 		}
+-#define __types_ok(x, y) 					\
+-	(__is_signed(x) == __is_signed(y) ||			\
+-		__is_signed((x) + 0) == __is_signed((y) + 0) ||	\
+-		__is_noneg_int(x) || __is_noneg_int(y))
++#define __types_ok(x, y, ux, uy) 				\
++	(__is_signed(ux) == __is_signed(uy) ||			\
++	 __is_signed((ux) + 0) == __is_signed((uy) + 0) ||	\
++	 __is_noneg_int(x) || __is_noneg_int(y))
  
- 		/*
--		 * The buffer is still not written to disk, we should
--		 * attach this buffer to current transaction so that the
--		 * buffer can be checkpointed only after the current
--		 * transaction commits.
-+		 * The buffer has not yet been written to disk. We should
-+		 * either clear the buffer or ensure that the ongoing I/O
-+		 * is completed, and attach this buffer to current
-+		 * transaction so that the buffer can be checkpointed only
-+		 * after the current transaction commits.
- 		 */
- 		clear_buffer_dirty(bh);
-+		wait_for_writeback = 1;
- 		__jbd2_journal_file_buffer(jh, transaction, BJ_Forget);
- 		spin_unlock(&journal->j_list_lock);
- 	}
- drop:
- 	__brelse(bh);
- 	spin_unlock(&jh->b_state_lock);
-+	if (wait_for_writeback)
-+		wait_on_buffer(bh);
- 	jbd2_journal_put_journal_head(jh);
- 	if (drop_reserve) {
- 		/* no need to reserve log space for this block -bzzz */
+ #define __cmp_op_min <
+ #define __cmp_op_max >
+@@ -51,34 +51,31 @@
+ #define __cmp_once(op, type, x, y) \
+ 	__cmp_once_unique(op, type, x, y, __UNIQUE_ID(x_), __UNIQUE_ID(y_))
+ 
+-#define __careful_cmp_once(op, x, y) ({			\
+-	static_assert(__types_ok(x, y),			\
++#define __careful_cmp_once(op, x, y, ux, uy) ({		\
++	__auto_type ux = (x); __auto_type uy = (y);	\
++	static_assert(__types_ok(x, y, ux, uy),		\
+ 		#op "(" #x ", " #y ") signedness error, fix types or consider u" #op "() before " #op "_t()"); \
+-	__cmp_once(op, __auto_type, x, y); })
++	__cmp(op, ux, uy); })
+ 
+-#define __careful_cmp(op, x, y)					\
+-	__builtin_choose_expr(__is_constexpr((x) - (y)),	\
+-		__cmp(op, x, y), __careful_cmp_once(op, x, y))
++#define __careful_cmp(op, x, y) \
++	__careful_cmp_once(op, x, y, __UNIQUE_ID(x_), __UNIQUE_ID(y_))
+ 
+ #define __clamp(val, lo, hi)	\
+ 	((val) >= (hi) ? (hi) : ((val) <= (lo) ? (lo) : (val)))
+ 
+-#define __clamp_once(val, lo, hi, unique_val, unique_lo, unique_hi) ({		\
+-	typeof(val) unique_val = (val);						\
+-	typeof(lo) unique_lo = (lo);						\
+-	typeof(hi) unique_hi = (hi);						\
++#define __clamp_once(val, lo, hi, uval, ulo, uhi) ({				\
++	__auto_type uval = (val);						\
++	__auto_type ulo = (lo);							\
++	__auto_type uhi = (hi);							\
+ 	static_assert(__builtin_choose_expr(__is_constexpr((lo) > (hi)), 	\
+ 			(lo) <= (hi), true),					\
+ 		"clamp() low limit " #lo " greater than high limit " #hi);	\
+-	static_assert(__types_ok(val, lo), "clamp() 'lo' signedness error");	\
+-	static_assert(__types_ok(val, hi), "clamp() 'hi' signedness error");	\
+-	__clamp(unique_val, unique_lo, unique_hi); })
+-
+-#define __careful_clamp(val, lo, hi) ({					\
+-	__builtin_choose_expr(__is_constexpr((val) - (lo) + (hi)),	\
+-		__clamp(val, lo, hi),					\
+-		__clamp_once(val, lo, hi, __UNIQUE_ID(__val),		\
+-			     __UNIQUE_ID(__lo), __UNIQUE_ID(__hi))); })
++	static_assert(__types_ok(uval, lo, uval, ulo), "clamp() 'lo' signedness error");	\
++	static_assert(__types_ok(uval, hi, uval, uhi), "clamp() 'hi' signedness error");	\
++	__clamp(uval, ulo, uhi); })
++
++#define __careful_clamp(val, lo, hi) \
++	__clamp_once(val, lo, hi, __UNIQUE_ID(v_), __UNIQUE_ID(l_), __UNIQUE_ID(h_))
+ 
+ /**
+  * min - return minimum of two values of the same or compatible types
 
 
 
