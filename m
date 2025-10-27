@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-191222-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190627-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D2B0C111BC
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:34:56 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47CDAC109AB
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:12:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0F08B1A62AAE
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:31:13 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 8A778502385
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:06:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B5DA248898;
-	Mon, 27 Oct 2025 19:28:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6759832B991;
+	Mon, 27 Oct 2025 19:03:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wG4z/3mQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cclfSUkE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46147329C7B;
-	Mon, 27 Oct 2025 19:28:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F396331B83D;
+	Mon, 27 Oct 2025 19:02:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761593323; cv=none; b=e8S9VVWS1XBLSOahBxAF8HGEqFSdKFFoRI3kEyJ0uo/qYqCGTZcS+Lqh2j8tVtAAcuUq0njrftzksgKlxBcsQLXP1v8XHFHBnql2iNKom8tC9eD2ySD0T8nXLgPFInJQLQj1JN0IA1kaDggIjqgZIdEe7nRrAMgrqsmQjWisoKs=
+	t=1761591780; cv=none; b=CuE5Qjctwz0MAYH5QOAljMUxC2I+h6yGj+MJ5HGcVXxK17F1RGOvOYdewn/CeSBr762q63NZyDRBUPLxh9llDZMX+S0qRrFKD1vZkCZ5s2cxKazNYtaliB7RBTgdLCdvXSAjhRvDH9YbOlM+dUk79uzxwRdb2SER9sofdxQPBRw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761593323; c=relaxed/simple;
-	bh=pMLFwJ/41cvXwFLIHE7dCSeVZM3lwRBwVfYZVTLNIvY=;
+	s=arc-20240116; t=1761591780; c=relaxed/simple;
+	bh=sIfbvCCA2rBBHnCmr9heA1/8pserYi0YMYm8gdakBMI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p77Ednww5CzaS+ZI6n48FyVmUqIVRdvNJ55gsv6LnsQ1ZjlF5u/PGOuX+Krxl8/DUzsn9z3tV6qub6dSG8qZx/UkzvWA0tTYA2XaTNBmQ5ZDi7hCNVqiiM08BlLojKwm65ewc2F558PnqYn5kd2BUXalvi6R5ZBbL00gqeRMCbM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wG4z/3mQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5572C4CEF1;
-	Mon, 27 Oct 2025 19:28:42 +0000 (UTC)
+	 MIME-Version; b=e3ER1PUZiHZNpG6bZxfeqzSWejJ3SYopS6Ffk3PUg5f03CHVsuoaP/ZJ5y/snlmO2+y/t7w4Y4IgekqEZSLzCLlbBEwdIBHRo8w3g/e5frTlhNNjMZf4fex6sJr08Lqr+4P/GuvZbLB1Tzyfxl43woWw6HSQ/s+WQlGvEpVIM3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cclfSUkE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DB54C4CEF1;
+	Mon, 27 Oct 2025 19:02:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761593323;
-	bh=pMLFwJ/41cvXwFLIHE7dCSeVZM3lwRBwVfYZVTLNIvY=;
+	s=korg; t=1761591779;
+	bh=sIfbvCCA2rBBHnCmr9heA1/8pserYi0YMYm8gdakBMI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wG4z/3mQ3HJqB5ewdhpbSa+LsEv+DhDmWcjU7gmQdXWAwzQgrcQL564NR9Fs0wHgp
-	 eRv5+5intefYg80slxqiqCQ/P+7MdF+ZLeRwc7Ag1lEbcw1t/1bsh6nBqLVGAI5ssO
-	 uu+wpJ3V15mA6PM7SoRfxRdHOZ2vtNeD2fUImGUE=
+	b=cclfSUkEnkFyXGgss1At1VktKTcEYps38Jdgy9GKpUAAYPAKFngTlSjm0s7WpbIgp
+	 FYLmooGUJPAlrB6FyoBeySzvmHSiuOUuC/eNbQ2/rLLeybpyk5y0Il4IfacA0EFZX9
+	 F3DH0WDxwduR9xcAXZVFK3tRi5+zX9/X5vx686T4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Pecio <michal.pecio@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.17 098/184] net: usb: rtl8150: Fix frame padding
+	Robert Morris <rtm@csail.mit.edu>,
+	Thomas Haynes <loghyr@hammerspace.com>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 327/332] NFSD: Define a proc_layoutcommit for the FlexFiles layout type
 Date: Mon, 27 Oct 2025 19:36:20 +0100
-Message-ID: <20251027183517.548880109@linuxfoundation.org>
+Message-ID: <20251027183533.521426748@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
-References: <20251027183514.934710872@linuxfoundation.org>
+In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
+References: <20251027183524.611456697@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Pecio <michal.pecio@gmail.com>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-commit 75cea9860aa6b2350d90a8d78fed114d27c7eca2 upstream.
+[ Upstream commit 4b47a8601b71ad98833b447d465592d847b4dc77 ]
 
-TX frames aren't padded and unknown memory is sent into the ether.
+Avoid a crash if a pNFS client should happen to send a LAYOUTCOMMIT
+operation on a FlexFiles layout.
 
-Theoretically, it isn't even guaranteed that the extra memory exists
-and can be sent out, which could cause further problems. In practice,
-I found that plenty of tailroom exists in the skb itself (in my test
-with ping at least) and skb_padto() easily succeeds, so use it here.
-
-In the event of -ENOMEM drop the frame like other drivers do.
-
-The use of one more padding byte instead of a USB zero-length packet
-is retained to avoid regression. I have a dodgy Etron xHCI controller
-which doesn't seem to support sending ZLPs at all.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: Robert Morris <rtm@csail.mit.edu>
+Closes: https://lore.kernel.org/linux-nfs/152f99b2-ba35-4dec-93a9-4690e625dccd@oracle.com/T/#t
+Cc: Thomas Haynes <loghyr@hammerspace.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Michal Pecio <michal.pecio@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20251014203528.3f9783c4.michal.pecio@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 9b9960a0ca47 ("nfsd: Add a super simple flex file server")
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+[ removed struct svc_rqst parameter from nfsd4_ff_proc_layoutcommit ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/usb/rtl8150.c |   11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ fs/nfsd/flexfilelayout.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/drivers/net/usb/rtl8150.c
-+++ b/drivers/net/usb/rtl8150.c
-@@ -685,9 +685,16 @@ static netdev_tx_t rtl8150_start_xmit(st
- 	rtl8150_t *dev = netdev_priv(netdev);
- 	int count, res;
+--- a/fs/nfsd/flexfilelayout.c
++++ b/fs/nfsd/flexfilelayout.c
+@@ -125,6 +125,13 @@ nfsd4_ff_proc_getdeviceinfo(struct super
+ 	return 0;
+ }
  
-+	/* pad the frame and ensure terminating USB packet, datasheet 9.2.3 */
-+	count = max(skb->len, ETH_ZLEN);
-+	if (count % 64 == 0)
-+		count++;
-+	if (skb_padto(skb, count)) {
-+		netdev->stats.tx_dropped++;
-+		return NETDEV_TX_OK;
-+	}
++static __be32
++nfsd4_ff_proc_layoutcommit(struct inode *inode,
++		struct nfsd4_layoutcommit *lcp)
++{
++	return nfs_ok;
++}
 +
- 	netif_stop_queue(netdev);
--	count = (skb->len < 60) ? 60 : skb->len;
--	count = (count & 0x3f) ? count : count + 1;
- 	dev->tx_skb = skb;
- 	usb_fill_bulk_urb(dev->tx_urb, dev->udev, usb_sndbulkpipe(dev->udev, 2),
- 		      skb->data, count, write_bulk_callback, dev);
+ const struct nfsd4_layout_ops ff_layout_ops = {
+ 	.notify_types		=
+ 			NOTIFY_DEVICEID4_DELETE | NOTIFY_DEVICEID4_CHANGE,
+@@ -133,4 +140,5 @@ const struct nfsd4_layout_ops ff_layout_
+ 	.encode_getdeviceinfo	= nfsd4_ff_encode_getdeviceinfo,
+ 	.proc_layoutget		= nfsd4_ff_proc_layoutget,
+ 	.encode_layoutget	= nfsd4_ff_encode_layoutget,
++	.proc_layoutcommit	= nfsd4_ff_proc_layoutcommit,
+ };
 
 
 
