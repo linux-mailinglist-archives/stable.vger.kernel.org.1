@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-191240-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190943-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3B81C11404
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:48:42 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AF05C10DC3
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:22:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5CFF5506BEB
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:31:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E4CBC1A62EBD
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:18:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1DB22D5C95;
-	Mon, 27 Oct 2025 19:29:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B8883203A7;
+	Mon, 27 Oct 2025 19:16:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YU+TOZDp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D9+loaUk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0FFD246BB7;
-	Mon, 27 Oct 2025 19:29:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 234CF202963;
+	Mon, 27 Oct 2025 19:16:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761593382; cv=none; b=srgK8ChlO3joRwN89M/BCWJymMO/r25KfEE54JpA+ZVuHRos1JNt5WziCOSlHmk0+rQzhD14T5/6f15HigWi+YhJFtASQAk45K4Gc6y9+4M0t+GBoz56kUpgnv/gimRxTMc0stHSfPyBcRYOWZc3A27qhk8Asg8TLdzd992Xvzg=
+	t=1761592604; cv=none; b=tMEpa5/N5XRdxN+s/QIeWPmJTmuLs6jbExQqcorwdG9hmoutGHMoSR6Cz2Z9AfUJ8bXLisCGkyyOo52zejESw2dvTvTU9hFrkN7/Tc5+xZ3JcgwBS5hVQZ3YH+L6z8aikc1lYrRz6/JhMbaKWL/jH3fUcSQ6r6m1sOmdlwEGzpc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761593382; c=relaxed/simple;
-	bh=jAB3PGpaqrQ6MwHTVOuC1VCpg+YIttKFlMimoXGvvB4=;
+	s=arc-20240116; t=1761592604; c=relaxed/simple;
+	bh=2AZYDrMiawjiuqQBgevB7dQD6cXb/QXZrKUry77YOMI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=izDuxe168iOME9vNilWDH5XD2dSwApL20YRUWejV4EYW/swGRqht2bjcAbfSes1kObbuep+L4sEB4y/DyBLUBb7hR+/B5w6fd7EVTYtnJUskschtpiDxWSP5kNupKGJ2Ss0BfFdlp95tq/J7xHFVHpaSV/2t43VGWYibaMkLVeM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YU+TOZDp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3259EC4CEF1;
-	Mon, 27 Oct 2025 19:29:42 +0000 (UTC)
+	 MIME-Version; b=TBtNu2lIGwiUwkV73eCofBL3KDxuo1lKMKr7zEzyDK7qTWxGDTbF3m1BmMSrOnAHbEoW2JOYFvWR1cEqnS57rhoFQXxg8QlJnLT5URBldsQFfpVsyfUIiR59bsoosN6XmXrDuAcHR42Q3ZnUaLQWnikA4/M8IDrO0RWWQwwUpLU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D9+loaUk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAE38C4CEFD;
+	Mon, 27 Oct 2025 19:16:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761593382;
-	bh=jAB3PGpaqrQ6MwHTVOuC1VCpg+YIttKFlMimoXGvvB4=;
+	s=korg; t=1761592604;
+	bh=2AZYDrMiawjiuqQBgevB7dQD6cXb/QXZrKUry77YOMI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YU+TOZDp/k/w4wx9Fg7ZGlC/BLrkmmHlvEAvUxWsHdfwTky7pf3bQpnupEDApyMUa
-	 zKLSOei8Qi/53yYYIcuqkcHwhX+eCWHUZRitR+3yMiRJ1gWztEGVltY79T5HgdimCK
-	 yZxeMG7fe/3VRnkKvP1lQWAyvKNgVrwYebokbIKI=
+	b=D9+loaUkycEYwIfbdCslxfLLshmNpgF9Wyjb0M0LkZ9ExZNtN6+e5P9nIV4KWeNzg
+	 tbn8faUab6XR+kxsC5qE53UIXTUaa3g79M64ViFUqrLDGifo9dm9wIylalJ9yWBd81
+	 T0HcODR2lp3VZN7OvLw2fDlBgn+5NF416CVsg9As=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fengnan Chang <changfengnan@bytedance.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.17 070/184] io_uring/sqpoll: be smarter on when to update the stime usage
+	Viacheslav Dubeyko <slava@dubeyko.com>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	Yangtao Li <frank.li@vivo.com>,
+	linux-fsdevel@vger.kernel.org,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 03/84] hfs: clear offset and space out of valid records in b-tree node
 Date: Mon, 27 Oct 2025 19:35:52 +0100
-Message-ID: <20251027183516.777035744@linuxfoundation.org>
+Message-ID: <20251027183438.910632139@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
-References: <20251027183514.934710872@linuxfoundation.org>
+In-Reply-To: <20251027183438.817309828@linuxfoundation.org>
+References: <20251027183438.817309828@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,155 +64,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Viacheslav Dubeyko <slava@dubeyko.com>
 
-commit a94e0657269c5b8e1a90b17aa2c048b3d276e16d upstream.
+[ Upstream commit 18b07c44f245beb03588b00b212b38fce9af7cc9 ]
 
-The current approach is a bit naive, and hence calls the time querying
-way too often. Only start the "doing work" timer when there's actual
-work to do, and then use that information to terminate (and account) the
-work time once done. This greatly reduces the frequency of these calls,
-when they cannot have changed anyway.
+Currently, hfs_brec_remove() executes moving records
+towards the location of deleted record and it updates
+offsets of moved records. However, the hfs_brec_remove()
+logic ignores the "mess" of b-tree node's free space and
+it doesn't touch the offsets out of records number.
+Potentially, it could confuse fsck or driver logic or
+to be a reason of potential corruption cases.
 
-Running a basic random reader that is setup to use SQPOLL, a profile
-before this change shows these as the top cycle consumers:
+This patch reworks the logic of hfs_brec_remove()
+by means of clearing freed space of b-tree node
+after the records moving. And it clear the last
+offset that keeping old location of free space
+because now the offset before this one is keeping
+the actual offset to the free space after the record
+deletion.
 
-+   32.60%  iou-sqp-1074  [kernel.kallsyms]  [k] thread_group_cputime_adjusted
-+   19.97%  iou-sqp-1074  [kernel.kallsyms]  [k] thread_group_cputime
-+   12.20%  io_uring      io_uring           [.] submitter_uring_fn
-+    4.13%  iou-sqp-1074  [kernel.kallsyms]  [k] getrusage
-+    2.45%  iou-sqp-1074  [kernel.kallsyms]  [k] io_submit_sqes
-+    2.18%  iou-sqp-1074  [kernel.kallsyms]  [k] __pi_memset_generic
-+    2.09%  iou-sqp-1074  [kernel.kallsyms]  [k] cputime_adjust
-
-and after this change, top of profile looks as follows:
-
-+   36.23%  io_uring     io_uring           [.] submitter_uring_fn
-+   23.26%  iou-sqp-819  [kernel.kallsyms]  [k] io_sq_thread
-+   10.14%  iou-sqp-819  [kernel.kallsyms]  [k] io_sq_tw
-+    6.52%  iou-sqp-819  [kernel.kallsyms]  [k] tctx_task_work_run
-+    4.82%  iou-sqp-819  [kernel.kallsyms]  [k] nvme_submit_cmds.part.0
-+    2.91%  iou-sqp-819  [kernel.kallsyms]  [k] io_submit_sqes
-[...]
-     0.02%  iou-sqp-819  [kernel.kallsyms]  [k] cputime_adjust
-
-where it's spending the cycles on things that actually matter.
-
-Reported-by: Fengnan Chang <changfengnan@bytedance.com>
-Cc: stable@vger.kernel.org
-Fixes: 3fcb9d17206e ("io_uring/sqpoll: statistics of the true utilization of sq threads")
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
+cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+cc: Yangtao Li <frank.li@vivo.com>
+cc: linux-fsdevel@vger.kernel.org
+Link: https://lore.kernel.org/r/20250815194918.38165-1-slava@dubeyko.com
+Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/sqpoll.c |   43 ++++++++++++++++++++++++++++++++-----------
- 1 file changed, 32 insertions(+), 11 deletions(-)
+ fs/hfs/brec.c | 27 +++++++++++++++++++++++----
+ 1 file changed, 23 insertions(+), 4 deletions(-)
 
---- a/io_uring/sqpoll.c
-+++ b/io_uring/sqpoll.c
-@@ -170,6 +170,11 @@ static inline bool io_sqd_events_pending
- 	return READ_ONCE(sqd->state);
- }
+diff --git a/fs/hfs/brec.c b/fs/hfs/brec.c
+index 896396554bcc1..b01db1fae147c 100644
+--- a/fs/hfs/brec.c
++++ b/fs/hfs/brec.c
+@@ -179,6 +179,7 @@ int hfs_brec_remove(struct hfs_find_data *fd)
+ 	struct hfs_btree *tree;
+ 	struct hfs_bnode *node, *parent;
+ 	int end_off, rec_off, data_off, size;
++	int src, dst, len;
  
-+struct io_sq_time {
-+	bool started;
-+	u64 usec;
-+};
+ 	tree = fd->tree;
+ 	node = fd->bnode;
+@@ -208,10 +209,14 @@ int hfs_brec_remove(struct hfs_find_data *fd)
+ 	}
+ 	hfs_bnode_write_u16(node, offsetof(struct hfs_bnode_desc, num_recs), node->num_recs);
+ 
+-	if (rec_off == end_off)
+-		goto skip;
+ 	size = fd->keylength + fd->entrylength;
+ 
++	if (rec_off == end_off) {
++		src = fd->keyoffset;
++		hfs_bnode_clear(node, src, size);
++		goto skip;
++	}
 +
- u64 io_sq_cpu_usec(struct task_struct *tsk)
- {
- 	u64 utime, stime;
-@@ -179,12 +184,24 @@ u64 io_sq_cpu_usec(struct task_struct *t
- 	return stime;
- }
+ 	do {
+ 		data_off = hfs_bnode_read_u16(node, rec_off);
+ 		hfs_bnode_write_u16(node, rec_off + 2, data_off - size);
+@@ -219,9 +224,23 @@ int hfs_brec_remove(struct hfs_find_data *fd)
+ 	} while (rec_off >= end_off);
  
--static void io_sq_update_worktime(struct io_sq_data *sqd, u64 usec)
-+static void io_sq_update_worktime(struct io_sq_data *sqd, struct io_sq_time *ist)
- {
--	sqd->work_time += io_sq_cpu_usec(current) - usec;
-+	if (!ist->started)
-+		return;
-+	ist->started = false;
-+	sqd->work_time += io_sq_cpu_usec(current) - ist->usec;
- }
- 
--static int __io_sq_thread(struct io_ring_ctx *ctx, bool cap_entries)
-+static void io_sq_start_worktime(struct io_sq_time *ist)
-+{
-+	if (ist->started)
-+		return;
-+	ist->started = true;
-+	ist->usec = io_sq_cpu_usec(current);
-+}
+ 	/* fill hole */
+-	hfs_bnode_move(node, fd->keyoffset, fd->keyoffset + size,
+-		       data_off - fd->keyoffset - size);
++	dst = fd->keyoffset;
++	src = fd->keyoffset + size;
++	len = data_off - src;
 +
-+static int __io_sq_thread(struct io_ring_ctx *ctx, struct io_sq_data *sqd,
-+			  bool cap_entries, struct io_sq_time *ist)
- {
- 	unsigned int to_submit;
- 	int ret = 0;
-@@ -197,6 +214,8 @@ static int __io_sq_thread(struct io_ring
- 	if (to_submit || !wq_list_empty(&ctx->iopoll_list)) {
- 		const struct cred *creds = NULL;
- 
-+		io_sq_start_worktime(ist);
++	hfs_bnode_move(node, dst, src, len);
 +
- 		if (ctx->sq_creds != current_cred())
- 			creds = override_creds(ctx->sq_creds);
- 
-@@ -278,7 +297,6 @@ static int io_sq_thread(void *data)
- 	unsigned long timeout = 0;
- 	char buf[TASK_COMM_LEN] = {};
- 	DEFINE_WAIT(wait);
--	u64 start;
- 
- 	/* offload context creation failed, just exit */
- 	if (!current->io_uring) {
-@@ -313,6 +331,7 @@ static int io_sq_thread(void *data)
- 	mutex_lock(&sqd->lock);
- 	while (1) {
- 		bool cap_entries, sqt_spin = false;
-+		struct io_sq_time ist = { };
- 
- 		if (io_sqd_events_pending(sqd) || signal_pending(current)) {
- 			if (io_sqd_handle_event(sqd))
-@@ -321,9 +340,8 @@ static int io_sq_thread(void *data)
- 		}
- 
- 		cap_entries = !list_is_singular(&sqd->ctx_list);
--		start = io_sq_cpu_usec(current);
- 		list_for_each_entry(ctx, &sqd->ctx_list, sqd_list) {
--			int ret = __io_sq_thread(ctx, cap_entries);
-+			int ret = __io_sq_thread(ctx, sqd, cap_entries, &ist);
- 
- 			if (!sqt_spin && (ret > 0 || !wq_list_empty(&ctx->iopoll_list)))
- 				sqt_spin = true;
-@@ -331,15 +349,18 @@ static int io_sq_thread(void *data)
- 		if (io_sq_tw(&retry_list, IORING_TW_CAP_ENTRIES_VALUE))
- 			sqt_spin = true;
- 
--		list_for_each_entry(ctx, &sqd->ctx_list, sqd_list)
--			if (io_napi(ctx))
-+		list_for_each_entry(ctx, &sqd->ctx_list, sqd_list) {
-+			if (io_napi(ctx)) {
-+				io_sq_start_worktime(&ist);
- 				io_napi_sqpoll_busy_poll(ctx);
-+			}
-+		}
++	src = dst + len;
++	len = data_off - src;
 +
-+		io_sq_update_worktime(sqd, &ist);
- 
- 		if (sqt_spin || !time_after(jiffies, timeout)) {
--			if (sqt_spin) {
--				io_sq_update_worktime(sqd, start);
-+			if (sqt_spin)
- 				timeout = jiffies + sqd->sq_thread_idle;
--			}
- 			if (unlikely(need_resched())) {
- 				mutex_unlock(&sqd->lock);
- 				cond_resched();
++	hfs_bnode_clear(node, src, len);
++
+ skip:
++	/*
++	 * Remove the obsolete offset to free space.
++	 */
++	hfs_bnode_write_u16(node, end_off, 0);
++
+ 	hfs_bnode_dump(node);
+ 	if (!fd->record)
+ 		hfs_brec_update_parent(fd);
+-- 
+2.51.0
+
 
 
 
