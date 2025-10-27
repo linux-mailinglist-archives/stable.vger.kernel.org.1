@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-191059-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190917-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1227DC11087
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:31:13 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DEC4BC10D93
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:22:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E75B35485E4
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:23:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 03944188C41C
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:17:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B56A832145A;
-	Mon, 27 Oct 2025 19:21:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB91831B80E;
+	Mon, 27 Oct 2025 19:15:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g2MCPM5p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nNTcOj2P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ED9E30147E;
-	Mon, 27 Oct 2025 19:21:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 678522D7DDA;
+	Mon, 27 Oct 2025 19:15:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592906; cv=none; b=T98uIbWoH5wB9hKklelxx7lq1wV86ud2AVrJEAkG1t/1lR4VvwqzdwC1JVQoSjF0ayhJILZweu4+W3CZCu/+X1mwgmumTmp9qU1AzGxptyYslZDqMgNxJ98YyAjbXrqQRkQ95v8sLxeIRl6Dk9qka5UCmSlFKmfvtK/+yDNovUs=
+	t=1761592536; cv=none; b=H3t50lxoMxmrdDQ6bnb5wCm/Ut1iQKUr7YvoVuqNtGm2DGuv7ikWjoLXTvIEprTwS2X/DK5BFjK1uESHG7TPNn5QeUCvYpw/wxePOR6s8cLrzYVM3aewbZbTuphKLJsiZtJIXtM5YHlYlbYVZHbjkiPOSVPygv+ajHvSJ0NClts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592906; c=relaxed/simple;
-	bh=yKscy3qWjd4C5ImZlPftKLgAGOz+4A6JohXtXu3n9SI=;
+	s=arc-20240116; t=1761592536; c=relaxed/simple;
+	bh=GZOLv90Z205qYfQvLdzeKByGLLhJ/2lvwKv+hpbVntI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mJy60O9wGrIG/BsLRPH8l4Q71ce7DJG1UqKwvFSopjF3q1zk/05aN2ao2ksN6xNysFmEGeykRoOvibO3si7ArlkoDXTo3udxp03Z2S0R2KUU29pZTAT8hejQNfBuXwpt3xvy3yLJh9GLSSPIIuDKwNpNL5HX8yl4Dz8UScUM4Lg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g2MCPM5p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 049D8C4CEF1;
-	Mon, 27 Oct 2025 19:21:45 +0000 (UTC)
+	 MIME-Version; b=gLj8Igmg4Cp65ts0bheNtNBfGVvc51xN6JLpNFsuvlcKVwkKEYqlSpKoP8GVC9IIlYRj81EOmujRNP+HXqXAT8FaB/3mLwcoE+UUBRiVyh+oaln2p5MAq22MM/DjQPOCXGcQZrnxiO09XNpos1jCPdlkQ00WEayMKjYYwaLbfH4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nNTcOj2P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8CB4C4CEF1;
+	Mon, 27 Oct 2025 19:15:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592906;
-	bh=yKscy3qWjd4C5ImZlPftKLgAGOz+4A6JohXtXu3n9SI=;
+	s=korg; t=1761592536;
+	bh=GZOLv90Z205qYfQvLdzeKByGLLhJ/2lvwKv+hpbVntI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g2MCPM5pYrgBLoA6NbNWdbhsNPWNy38wKWYUM1cwMvK3zElS1d5PLldHvl4DxHqTZ
-	 T0Hrn6tFU2tuhkzaxtcpjYr5QfF0f5Y7ja5VVERpKlOv+yuYUeLeZAsP+MZ5DsIa6p
-	 UHfpvw4py+WvXDOEr6bPulOl+HmI29IuUnIrTTgo=
+	b=nNTcOj2Pls38UomEiTLY+Kv1b9DZp4RSrdpzJRHIp5Xsou4NCze1O6pTwbXjUunaK
+	 na9rywvzPTOrrnoZ5MQMk4yqLcQB3xInBMd/No7nEzVfQcPFRF3redY7FBEhLUdhPZ
+	 4TXwqlwHElESt+wEuvmx6txPfJHTp50L6rGDc0RE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	linux-cifs@vger.kernel.org,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
-	Pavel Shilovskiy <pshilovskiy@microsoft.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.12 057/117] cifs: Fix TCP_Server_Info::credits to be signed
+	Sean Nyekjaer <sean@geanix.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 122/157] iio: imu: inv_icm42600: Simplify pm_runtime setup
 Date: Mon, 27 Oct 2025 19:36:23 +0100
-Message-ID: <20251027183455.558391985@linuxfoundation.org>
+Message-ID: <20251027183504.520271158@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
-References: <20251027183453.919157109@linuxfoundation.org>
+In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
+References: <20251027183501.227243846@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,42 +63,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Sean Nyekjaer <sean@geanix.com>
 
-commit 5b2ff4873aeab972f919d5aea11c51393322bf58 upstream.
+[ Upstream commit 0792c1984a45ccd7a296d6b8cb78088bc99a212e ]
 
-Fix TCP_Server_Info::credits to be signed, just as echo_credits and
-oplock_credits are.  This also fixes what ought to get at least a
-compilation warning if not an outright error in *get_credits_field() as a
-pointer to the unsigned server->credits field is passed back as a pointer
-to a signed int.
+Rework the power management in inv_icm42600_core_probe() to use
+devm_pm_runtime_set_active_enabled(), which simplifies the runtime PM
+setup by handling activation and enabling in one step.
+Remove the separate inv_icm42600_disable_pm callback, as it's no longer
+needed with the devm-managed approach.
+Using devm_pm_runtime_enable() also fixes the missing disable of
+autosuspend.
+Update inv_icm42600_disable_vddio_reg() to only disable the regulator if
+the device is not suspended i.e. powered-down, preventing unbalanced
+disables.
+Also remove redundant error msg on regulator_disable(), the regulator
+framework already emits an error message when regulator_disable() fails.
 
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: linux-cifs@vger.kernel.org
-Cc: stable@vger.kernel.org
-Acked-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
-Acked-by: Pavel Shilovskiy <pshilovskiy@microsoft.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+This simplifies the PM setup and avoids manipulating the usage counter
+unnecessarily.
+
+Fixes: 31c24c1e93c3 ("iio: imu: inv_icm42600: add core of new inv_icm42600 driver")
+Signed-off-by: Sean Nyekjaer <sean@geanix.com>
+Link: https://patch.msgid.link/20250901-icm42pmreg-v3-1-ef1336246960@geanix.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/cifsglob.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/imu/inv_icm42600/inv_icm42600_core.c |   24 ++++++-----------------
+ 1 file changed, 7 insertions(+), 17 deletions(-)
 
---- a/fs/smb/client/cifsglob.h
-+++ b/fs/smb/client/cifsglob.h
-@@ -703,7 +703,7 @@ struct TCP_Server_Info {
- 	bool nosharesock;
- 	bool tcp_nodelay;
- 	bool terminate;
--	unsigned int credits;  /* send no more requests at once */
-+	int credits;  /* send no more requests at once */
- 	unsigned int max_credits; /* can override large 32000 default at mnt */
- 	unsigned int in_flight;  /* number of requests on the wire to server */
- 	unsigned int max_in_flight; /* max number of requests that were on wire */
+--- a/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
++++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
+@@ -550,20 +550,12 @@ static void inv_icm42600_disable_vdd_reg
+ static void inv_icm42600_disable_vddio_reg(void *_data)
+ {
+ 	struct inv_icm42600_state *st = _data;
+-	const struct device *dev = regmap_get_device(st->map);
+-	int ret;
+-
+-	ret = regulator_disable(st->vddio_supply);
+-	if (ret)
+-		dev_err(dev, "failed to disable vddio error %d\n", ret);
+-}
++	struct device *dev = regmap_get_device(st->map);
+ 
+-static void inv_icm42600_disable_pm(void *_data)
+-{
+-	struct device *dev = _data;
++	if (pm_runtime_status_suspended(dev))
++		return;
+ 
+-	pm_runtime_put_sync(dev);
+-	pm_runtime_disable(dev);
++	regulator_disable(st->vddio_supply);
+ }
+ 
+ int inv_icm42600_core_probe(struct regmap *regmap, int chip, int irq,
+@@ -660,16 +652,14 @@ int inv_icm42600_core_probe(struct regma
+ 		return ret;
+ 
+ 	/* setup runtime power management */
+-	ret = pm_runtime_set_active(dev);
++	ret = devm_pm_runtime_set_active_enabled(dev);
+ 	if (ret)
+ 		return ret;
+-	pm_runtime_get_noresume(dev);
+-	pm_runtime_enable(dev);
++
+ 	pm_runtime_set_autosuspend_delay(dev, INV_ICM42600_SUSPEND_DELAY_MS);
+ 	pm_runtime_use_autosuspend(dev);
+-	pm_runtime_put(dev);
+ 
+-	return devm_add_action_or_reset(dev, inv_icm42600_disable_pm, dev);
++	return ret;
+ }
+ EXPORT_SYMBOL_GPL(inv_icm42600_core_probe);
+ 
 
 
 
