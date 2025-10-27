@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-190174-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190466-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F44DC1016D
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:46:22 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id A857AC1062A
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:01:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6032719C80CE
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:45:39 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 4BC99351D32
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:01:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC48131C56F;
-	Mon, 27 Oct 2025 18:43:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 630BA322539;
+	Mon, 27 Oct 2025 18:56:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ByWBP+te"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QwNjdESy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99EF431BC91;
-	Mon, 27 Oct 2025 18:43:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C9AC320CBE;
+	Mon, 27 Oct 2025 18:56:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761590602; cv=none; b=oWdrl26kJvVsAbzp3FchXqg2ImQqkm/C13uWQRySt2pF9RqMbEIoIzY+jlYVfZ/u6Pp7BWbYJh1rSvyRCe0BehepfIQ7UCAvAi1niSzMOsayYnVY//uuZ70KWVwXxaJaU0SH5QpV6hizgaOdfvjtYzFjP25yCiBr30vTPSxTFhw=
+	t=1761591364; cv=none; b=JvzOzvagM7OVxMVET345r3b+0ssbI7iD5Co22zrsfTibULSszMY4tpP/3nC1dA2YCSo5qtqHjscgCBVBnGuOrygc0p1d13LprG74xUO84GbeRLwD057gUTJY4AEbQfSdYGgds+JLEyDpkjKLdOhLH1GbdgOi4mG4JClZ66coik0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761590602; c=relaxed/simple;
-	bh=vNLKUsFt+t3SWg0rb5WLCQPdZ+HL1CRkUQZG+6KdQyM=;
+	s=arc-20240116; t=1761591364; c=relaxed/simple;
+	bh=lCUOwSQG2bRXFTv9IXXqhdWLUchtNuI0y5VZSVtunIw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Dg/0Y9oDuMITXuZcMDIPmiGr5R78+EVgIeE2ar3PlQ3kLqjeIpashfALQjpl4/JlXaztK7tvpo7uJnd6IPSAPIPeK08vI25Cr0DeyoFJIpNDqraVOnBUmbbkpwzOwpAOjDFbire6vXwxQCYUjfzupdgFsVmokc0d1tcDkkWs3rw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ByWBP+te; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FF80C113D0;
-	Mon, 27 Oct 2025 18:43:22 +0000 (UTC)
+	 MIME-Version; b=gJXIkpnUxsMPwgQ25zRI4Rol/a6gvtX+Q+mEBGQvwskkB9zJa26l1MIjVFPV/gpMRj2ZgqUz51MGxrHRLxZPcFgn5veAUFydaqMU1hqrSSR6d7Xd3zY4SOKHwfVVp3ZqzPSxTh9ZSi03/SWu6lO2GUmPOpgdY79MDgcvVxSVJQg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QwNjdESy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99231C4CEF1;
+	Mon, 27 Oct 2025 18:56:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761590602;
-	bh=vNLKUsFt+t3SWg0rb5WLCQPdZ+HL1CRkUQZG+6KdQyM=;
+	s=korg; t=1761591363;
+	bh=lCUOwSQG2bRXFTv9IXXqhdWLUchtNuI0y5VZSVtunIw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ByWBP+teDzM65ThK7JWe2jl3dPMpr0ZFR5TBNBjeedU0TQ5/3dtMagDIoq1sIuA1n
-	 ivU8OKK5mEJdeo1rmaoRM4EF0hfjbRQc2Nb7egThOZ/W9I8CtEPCYti18c0v7ZIj/8
-	 u/xnqqsBHpwmP63j4zeIY2oJ1OWgQ/t8pSvB+f6g=
+	b=QwNjdESy0t+i+lnsJzJ6LtymmAuf5OamJyuFQGRALpf/ZcuAKj5SB2pnAI84Oi3Qk
+	 4x4tIglv6cmO2p3Lbvn2Do8UXzRDk0ckseoRx8+Cssw+PjMz8MxJrLDyPPf8Dricco
+	 k28mgI3WDyMNRSECLC6zGwGFfABWvpYiXhQgmwFE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhen Ni <zhen.ni@easystack.cn>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 5.4 076/224] Input: uinput - zero-initialize uinput_ff_upload_compat to avoid info leak
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	stable@kernel.org,
+	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 5.10 169/332] ext4: correctly handle queries for metadata mappings
 Date: Mon, 27 Oct 2025 19:33:42 +0100
-Message-ID: <20251027183511.032691383@linuxfoundation.org>
+Message-ID: <20251027183529.085915930@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183508.963233542@linuxfoundation.org>
-References: <20251027183508.963233542@linuxfoundation.org>
+In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
+References: <20251027183524.611456697@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +63,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhen Ni <zhen.ni@easystack.cn>
+From: Ojaswin Mujoo <ojaswin@linux.ibm.com>
 
-commit d3366a04770eea807f2826cbdb96934dd8c9bf79 upstream.
+commit 46c22a8bb4cb03211da1100d7ee4a2005bf77c70 upstream.
 
-Struct ff_effect_compat is embedded twice inside
-uinput_ff_upload_compat, contains internal padding. In particular, there
-is a hole after struct ff_replay to satisfy alignment requirements for
-the following union member. Without clearing the structure,
-copy_to_user() may leak stack data to userspace.
+Currently, our handling of metadata is _ambiguous_ in some scenarios,
+that is, we end up returning unknown if the range only covers the
+mapping partially.
 
-Initialize ff_up_compat to zero before filling valid fields.
+For example, in the following case:
 
-Fixes: 2d56f3a32c0e ("Input: refactor evdev 32bit compat to be shareable with uinput")
-Cc: stable@vger.kernel.org
-Signed-off-by: Zhen Ni <zhen.ni@easystack.cn>
-Link: https://lore.kernel.org/r/20250928063737.74590-1-zhen.ni@easystack.cn
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+$ xfs_io -c fsmap -d
+
+  0: 254:16 [0..7]: static fs metadata 8
+  1: 254:16 [8..15]: special 102:1 8
+  2: 254:16 [16..5127]: special 102:2 5112
+  3: 254:16 [5128..5255]: special 102:3 128
+  4: 254:16 [5256..5383]: special 102:4 128
+  5: 254:16 [5384..70919]: inodes 65536
+  6: 254:16 [70920..70967]: unknown 48
+  ...
+
+$ xfs_io -c fsmap -d 24 33
+
+  0: 254:16 [24..39]: unknown 16  <--- incomplete reporting
+
+$ xfs_io -c fsmap -d 24 33  (With patch)
+
+    0: 254:16 [16..5127]: special 102:2 5112
+
+This is because earlier in ext4_getfsmap_meta_helper, we end up ignoring
+any extent that starts before our queried range, but overlaps it. While
+the man page [1] is a bit ambiguous on this, this fix makes the output
+make more sense since we are anyways returning an "unknown" extent. This
+is also consistent to how XFS does it:
+
+$ xfs_io -c fsmap -d
+
+  ...
+  6: 254:16 [104..127]: free space 24
+  7: 254:16 [128..191]: inodes 64
+  ...
+
+$ xfs_io -c fsmap -d 137 150
+
+  0: 254:16 [128..191]: inodes 64   <-- full extent returned
+
+ [1] https://man7.org/linux/man-pages/man2/ioctl_getfsmap.2.html
+
+Reported-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Cc: stable@kernel.org
+Signed-off-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+Message-ID: <023f37e35ee280cd9baac0296cbadcbe10995cab.1757058211.git.ojaswin@linux.ibm.com>
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/misc/uinput.c |    1 +
- 1 file changed, 1 insertion(+)
+ fs/ext4/fsmap.c |   14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
---- a/drivers/input/misc/uinput.c
-+++ b/drivers/input/misc/uinput.c
-@@ -740,6 +740,7 @@ static int uinput_ff_upload_to_user(char
- 	if (in_compat_syscall()) {
- 		struct uinput_ff_upload_compat ff_up_compat;
+--- a/fs/ext4/fsmap.c
++++ b/fs/ext4/fsmap.c
+@@ -74,7 +74,8 @@ static int ext4_getfsmap_dev_compare(con
+ static bool ext4_getfsmap_rec_before_low_key(struct ext4_getfsmap_info *info,
+ 					     struct ext4_fsmap *rec)
+ {
+-	return rec->fmr_physical < info->gfi_low.fmr_physical;
++	return rec->fmr_physical + rec->fmr_length <=
++	       info->gfi_low.fmr_physical;
+ }
  
-+		memset(&ff_up_compat, 0, sizeof(ff_up_compat));
- 		ff_up_compat.request_id = ff_up->request_id;
- 		ff_up_compat.retval = ff_up->retval;
- 		/*
+ /*
+@@ -200,15 +201,18 @@ static int ext4_getfsmap_meta_helper(str
+ 			  ext4_group_first_block_no(sb, agno));
+ 	fs_end = fs_start + EXT4_C2B(sbi, len);
+ 
+-	/* Return relevant extents from the meta_list */
++	/*
++	 * Return relevant extents from the meta_list. We emit all extents that
++	 * partially/fully overlap with the query range
++	 */
+ 	list_for_each_entry_safe(p, tmp, &info->gfi_meta_list, fmr_list) {
+-		if (p->fmr_physical < info->gfi_next_fsblk) {
++		if (p->fmr_physical + p->fmr_length <= info->gfi_next_fsblk) {
+ 			list_del(&p->fmr_list);
+ 			kfree(p);
+ 			continue;
+ 		}
+-		if (p->fmr_physical <= fs_start ||
+-		    p->fmr_physical + p->fmr_length <= fs_end) {
++		if (p->fmr_physical <= fs_end &&
++		    p->fmr_physical + p->fmr_length > fs_start) {
+ 			/* Emit the retained free extent record if present */
+ 			if (info->gfi_lastfree.fmr_owner) {
+ 				error = ext4_getfsmap_helper(sb, info,
 
 
 
