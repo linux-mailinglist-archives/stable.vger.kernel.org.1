@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-190680-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191167-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F865C10A14
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:13:41 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B8DBC112F1
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:40:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E3641A25BCB
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:09:06 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A80D1507397
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:28:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2629D3328EA;
-	Mon, 27 Oct 2025 19:05:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF4DC320A02;
+	Mon, 27 Oct 2025 19:26:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M6k6y05G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hC0yhDjP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D85A33314DD;
-	Mon, 27 Oct 2025 19:05:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AF3232548B;
+	Mon, 27 Oct 2025 19:26:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591914; cv=none; b=WDbHre3fUDshegQbqTYy/95in2RDJYfnh7tPE+XyqPkeUeB/unPEoAzggZPGqEcKtZjZTedhxM5zPJE0X7pK0Nfvi5NCk6L6zsbNPUe1487cY3ScMVafrV+rU8kOmUInCZnw+ShNuUB8vN1Gh6sWAYvkc/XTH5Pqentl/8B3ThM=
+	t=1761593182; cv=none; b=K3g7ZHtAVcSRWxRfFrIy6OeTJJMc91vwf16q74YLcNuBWuqrroBRRUW4NxWtNV5qfBEIFZXYgjjyKy8HRMbXOaOi78OTqw8vCs28Jj4KLF0sik0HckXYNtlAm3eKxSof1ZDNscImwBZl8rnqUgQ6VKMCT4RUy3HC8oCG/zOG9Ik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591914; c=relaxed/simple;
-	bh=cUHJQGDnHXTVwiO89N31F6jM+yKBSiVQ1fIu4HFLDQk=;
+	s=arc-20240116; t=1761593182; c=relaxed/simple;
+	bh=UJ0PnHYYYXcdUan7R2622lOzmQYlUrgCUZb1LVUXe2c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oqeiVWIs9W7OUvzrYRY7ePlnNT8Fpv0rKZ7fJhYpiQposMx3KEzAJjPWBm87kUWX7coX66zrttROsw4WJDPeR1M7RLXgjp2dziMnU6qugUd/oLk7zbA5qKRndaY3j+bd8p+XJvMNZ7drGg0oMdv/pLsXdhklqTXQLOtqsI4FRtg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M6k6y05G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B411C4CEF1;
-	Mon, 27 Oct 2025 19:05:14 +0000 (UTC)
+	 MIME-Version:Content-Type; b=plPrEiubRNOuOw4KoT2qndtOpy4Q2yGQNwq0BjpMQdj+GB06aYDsfpCOHUBG+ZJV9r4MCSHCZjVqMTORxzHYQriVCoeUDmtLhOuSNvP/1llHGNvlhbXj9pFQ0/Y/cG97cpdtxWv5E51z65pUsBEfAlq5fiEQ+fR2kTaxSWYbFlk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hC0yhDjP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1098FC4CEF1;
+	Mon, 27 Oct 2025 19:26:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591914;
-	bh=cUHJQGDnHXTVwiO89N31F6jM+yKBSiVQ1fIu4HFLDQk=;
+	s=korg; t=1761593182;
+	bh=UJ0PnHYYYXcdUan7R2622lOzmQYlUrgCUZb1LVUXe2c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M6k6y05GfsCng7UcEGYs8hrTat0HrkPgBGwVK6wYg1u6JGZCqfkEWWqsVkh7IWCkm
-	 RGOIfUJwkQ84w7e7kcdcbdEAJQB2ZIV3jnQky8siVR5VRf0GWHDfGHPGgvY20u9k48
-	 vH3Dd80SFdxfEidDNbOxodfHqBdX83N8lm72dGWY=
+	b=hC0yhDjPnBIFp1YBrs2OiBnpssDLlXYsLaV3Q0S/H3Y/InWor9oM+H9zrJvzRUbd7
+	 RscIoc7R135D0xCAsD/WWz6vnp0EyQy6bOQOegOST2WS4uO9YlR9h7A0e9VWLtBoTm
+	 Uw1cc+bGn517jZGhh/EiYnXK/aFydMp0fRu9Bamc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+356aed408415a56543cd@syzkaller.appspotmail.com,
-	Yang Chenzhi <yang.chenzhi@vivo.com>,
-	Viacheslav Dubeyko <slava@dubeyko.com>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Xin Long <lucien.xin@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 046/123] hfs: validate record offset in hfsplus_bmap_alloc
-Date: Mon, 27 Oct 2025 19:35:26 +0100
-Message-ID: <20251027183447.631497582@linuxfoundation.org>
+Subject: [PATCH 6.17 045/184] selftests: net: fix server bind failure in sctp_vrf.sh
+Date: Mon, 27 Oct 2025 19:35:27 +0100
+Message-ID: <20251027183516.119356858@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183446.381986645@linuxfoundation.org>
-References: <20251027183446.381986645@linuxfoundation.org>
+In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
+References: <20251027183514.934710872@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,221 +61,243 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Chenzhi <yang.chenzhi@vivo.com>
+From: Xin Long <lucien.xin@gmail.com>
 
-[ Upstream commit 738d5a51864ed8d7a68600b8c0c63fe6fe5c4f20 ]
+[ Upstream commit a73ca0449bcb7c238097cc6a1bf3fd82a78374df ]
 
-hfsplus_bmap_alloc can trigger a crash if a
-record offset or length is larger than node_size
+sctp_vrf.sh could fail:
 
-[   15.264282] BUG: KASAN: slab-out-of-bounds in hfsplus_bmap_alloc+0x887/0x8b0
-[   15.265192] Read of size 8 at addr ffff8881085ca188 by task test/183
-[   15.265949]
-[   15.266163] CPU: 0 UID: 0 PID: 183 Comm: test Not tainted 6.17.0-rc2-gc17b750b3ad9 #14 PREEMPT(voluntary)
-[   15.266165] Hardware name: QEMU Ubuntu 24.04 PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-[   15.266167] Call Trace:
-[   15.266168]  <TASK>
-[   15.266169]  dump_stack_lvl+0x53/0x70
-[   15.266173]  print_report+0xd0/0x660
-[   15.266181]  kasan_report+0xce/0x100
-[   15.266185]  hfsplus_bmap_alloc+0x887/0x8b0
-[   15.266208]  hfs_btree_inc_height.isra.0+0xd5/0x7c0
-[   15.266217]  hfsplus_brec_insert+0x870/0xb00
-[   15.266222]  __hfsplus_ext_write_extent+0x428/0x570
-[   15.266225]  __hfsplus_ext_cache_extent+0x5e/0x910
-[   15.266227]  hfsplus_ext_read_extent+0x1b2/0x200
-[   15.266233]  hfsplus_file_extend+0x5a7/0x1000
-[   15.266237]  hfsplus_get_block+0x12b/0x8c0
-[   15.266238]  __block_write_begin_int+0x36b/0x12c0
-[   15.266251]  block_write_begin+0x77/0x110
-[   15.266252]  cont_write_begin+0x428/0x720
-[   15.266259]  hfsplus_write_begin+0x51/0x100
-[   15.266262]  cont_write_begin+0x272/0x720
-[   15.266270]  hfsplus_write_begin+0x51/0x100
-[   15.266274]  generic_perform_write+0x321/0x750
-[   15.266285]  generic_file_write_iter+0xc3/0x310
-[   15.266289]  __kernel_write_iter+0x2fd/0x800
-[   15.266296]  dump_user_range+0x2ea/0x910
-[   15.266301]  elf_core_dump+0x2a94/0x2ed0
-[   15.266320]  vfs_coredump+0x1d85/0x45e0
-[   15.266349]  get_signal+0x12e3/0x1990
-[   15.266357]  arch_do_signal_or_restart+0x89/0x580
-[   15.266362]  irqentry_exit_to_user_mode+0xab/0x110
-[   15.266364]  asm_exc_page_fault+0x26/0x30
-[   15.266366] RIP: 0033:0x41bd35
-[   15.266367] Code: bc d1 f3 0f 7f 27 f3 0f 7f 6f 10 f3 0f 7f 77 20 f3 0f 7f 7f 30 49 83 c0 0f 49 29 d0 48 8d 7c 17 31 e9 9f 0b 00 00 66 0f ef c0 <f3> 0f 6f 0e f3 0f 6f 56 10 66 0f 74 c1 66 0f d7 d0 49 83 f8f
-[   15.266369] RSP: 002b:00007ffc9e62d078 EFLAGS: 00010283
-[   15.266371] RAX: 00007ffc9e62d100 RBX: 0000000000000000 RCX: 0000000000000000
-[   15.266372] RDX: 00000000000000e0 RSI: 0000000000000000 RDI: 00007ffc9e62d100
-[   15.266373] RBP: 0000400000000040 R08: 00000000000000e0 R09: 0000000000000000
-[   15.266374] R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-[   15.266375] R13: 0000000000000000 R14: 0000000000000000 R15: 0000400000000000
-[   15.266376]  </TASK>
+  TEST 12: bind vrf-2 & 1 in server, connect from client 1 & 2, N [FAIL]
+  not ok 1 selftests: net: sctp_vrf.sh # exit=3
 
-When calling hfsplus_bmap_alloc to allocate a free node, this function
-first retrieves the bitmap from header node and map node using node->page
-together with the offset and length from hfs_brec_lenoff
+The failure happens when the server bind in a new run conflicts with an
+existing association from the previous run:
 
-```
-len = hfs_brec_lenoff(node, 2, &off16);
-off = off16;
+[1] ip netns exec $SERVER_NS ./sctp_hello server ...
+[2] ip netns exec $CLIENT_NS ./sctp_hello client ...
+[3] ip netns exec $SERVER_NS pkill sctp_hello ...
+[4] ip netns exec $SERVER_NS ./sctp_hello server ...
 
-off += node->page_offset;
-pagep = node->page + (off >> PAGE_SHIFT);
-data = kmap_local_page(*pagep);
-```
+It occurs if the client in [2] sends a message and closes immediately.
+With the message unacked, no SHUTDOWN is sent. Killing the server in [3]
+triggers a SHUTDOWN the client also ignores due to the unacked message,
+leaving the old association alive. This causes the bind at [4] to fail
+until the message is acked and the client responds to a second SHUTDOWN
+after the server’s T2 timer expires (3s).
 
-However, if the retrieved offset or length is invalid(i.e. exceeds
-node_size), the code may end up accessing pages outside the allocated
-range for this node.
+This patch fixes the issue by preventing the client from sending data.
+Instead, the client blocks on recv() and waits for the server to close.
+It also waits until both the server and the client sockets are fully
+released in stop_server and wait_client before restarting.
 
-This patch adds proper validation of both offset and length before use,
-preventing out-of-bounds page access. Move is_bnode_offset_valid and
-check_and_correct_requested_length to hfsplus_fs.h, as they may be
-required by other functions.
+Additionally, replace 2>&1 >/dev/null with -q in sysctl and grep, and
+drop other redundant 2>&1 >/dev/null redirections, and fix a typo from
+N to Y (connect successfully) in the description of the last test.
 
-Reported-by: syzbot+356aed408415a56543cd@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/67bcb4a6.050a0220.bbfd1.008f.GAE@google.com/
-Signed-off-by: Yang Chenzhi <yang.chenzhi@vivo.com>
-Reviewed-by: Viacheslav Dubeyko <slava@dubeyko.com>
-Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
-Link: https://lore.kernel.org/r/20250818141734.8559-2-yang.chenzhi@vivo.com
-Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
+Fixes: a61bd7b9fef3 ("selftests: add a selftest for sctp vrf")
+Reported-by: Hangbin Liu <liuhangbin@gmail.com>
+Tested-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Xin Long <lucien.xin@gmail.com>
+Link: https://patch.msgid.link/be2dacf52d0917c4ba5e2e8c5a9cb640740ad2b6.1760731574.git.lucien.xin@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/hfsplus/bnode.c      | 41 ----------------------------------------
- fs/hfsplus/btree.c      |  6 ++++++
- fs/hfsplus/hfsplus_fs.h | 42 +++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 48 insertions(+), 41 deletions(-)
+ tools/testing/selftests/net/sctp_hello.c | 17 +-----
+ tools/testing/selftests/net/sctp_vrf.sh  | 73 +++++++++++++++---------
+ 2 files changed, 47 insertions(+), 43 deletions(-)
 
-diff --git a/fs/hfsplus/bnode.c b/fs/hfsplus/bnode.c
-index c9c38fddf505b..e566cea238279 100644
---- a/fs/hfsplus/bnode.c
-+++ b/fs/hfsplus/bnode.c
-@@ -18,47 +18,6 @@
- #include "hfsplus_fs.h"
- #include "hfsplus_raw.h"
+diff --git a/tools/testing/selftests/net/sctp_hello.c b/tools/testing/selftests/net/sctp_hello.c
+index f02f1f95d2275..a04dac0b8027d 100644
+--- a/tools/testing/selftests/net/sctp_hello.c
++++ b/tools/testing/selftests/net/sctp_hello.c
+@@ -29,7 +29,6 @@ static void set_addr(struct sockaddr_storage *ss, char *ip, char *port, int *len
+ static int do_client(int argc, char *argv[])
+ {
+ 	struct sockaddr_storage ss;
+-	char buf[] = "hello";
+ 	int csk, ret, len;
  
--static inline
--bool is_bnode_offset_valid(struct hfs_bnode *node, int off)
--{
--	bool is_valid = off < node->tree->node_size;
--
--	if (!is_valid) {
--		pr_err("requested invalid offset: "
--		       "NODE: id %u, type %#x, height %u, "
--		       "node_size %u, offset %d\n",
--		       node->this, node->type, node->height,
--		       node->tree->node_size, off);
+ 	if (argc < 5) {
+@@ -56,16 +55,10 @@ static int do_client(int argc, char *argv[])
+ 
+ 	set_addr(&ss, argv[3], argv[4], &len);
+ 	ret = connect(csk, (struct sockaddr *)&ss, len);
+-	if (ret < 0) {
+-		printf("failed to connect to peer\n");
++	if (ret < 0)
+ 		return -1;
 -	}
--
--	return is_valid;
--}
--
--static inline
--int check_and_correct_requested_length(struct hfs_bnode *node, int off, int len)
--{
--	unsigned int node_size;
--
--	if (!is_bnode_offset_valid(node, off))
--		return 0;
--
--	node_size = node->tree->node_size;
--
--	if ((off + len) > node_size) {
--		int new_len = (int)node_size - off;
--
--		pr_err("requested length has been corrected: "
--		       "NODE: id %u, type %#x, height %u, "
--		       "node_size %u, offset %d, "
--		       "requested_len %d, corrected_len %d\n",
--		       node->this, node->type, node->height,
--		       node->tree->node_size, off, len, new_len);
--
--		return new_len;
+ 
+-	ret = send(csk, buf, strlen(buf) + 1, 0);
+-	if (ret < 0) {
+-		printf("failed to send msg %d\n", ret);
+-		return -1;
 -	}
--
--	return len;
--}
++	recv(csk, NULL, 0, 0);
+ 	close(csk);
  
- /* Copy a specified range of bytes from the raw data of a node */
- void hfs_bnode_read(struct hfs_bnode *node, void *buf, int off, int len)
-diff --git a/fs/hfsplus/btree.c b/fs/hfsplus/btree.c
-index 66774f4cb4fd5..2211907537fec 100644
---- a/fs/hfsplus/btree.c
-+++ b/fs/hfsplus/btree.c
-@@ -392,6 +392,12 @@ struct hfs_bnode *hfs_bmap_alloc(struct hfs_btree *tree)
- 	len = hfs_brec_lenoff(node, 2, &off16);
- 	off = off16;
+ 	return 0;
+@@ -75,7 +68,6 @@ int main(int argc, char *argv[])
+ {
+ 	struct sockaddr_storage ss;
+ 	int lsk, csk, ret, len;
+-	char buf[20];
  
-+	if (!is_bnode_offset_valid(node, off)) {
-+		hfs_bnode_put(node);
-+		return ERR_PTR(-EIO);
-+	}
-+	len = check_and_correct_requested_length(node, off, len);
-+
- 	off += node->page_offset;
- 	pagep = node->page + (off >> PAGE_SHIFT);
- 	data = kmap(*pagep);
-diff --git a/fs/hfsplus/hfsplus_fs.h b/fs/hfsplus/hfsplus_fs.h
-index c01bf9ff56a96..8396964b056f0 100644
---- a/fs/hfsplus/hfsplus_fs.h
-+++ b/fs/hfsplus/hfsplus_fs.h
-@@ -572,6 +572,48 @@ hfsplus_btree_lock_class(struct hfs_btree *tree)
- 	return class;
+ 	if (argc < 2 || (strcmp(argv[1], "server") && strcmp(argv[1], "client"))) {
+ 		printf("%s server|client ...\n", argv[0]);
+@@ -125,11 +117,6 @@ int main(int argc, char *argv[])
+ 		return -1;
+ 	}
+ 
+-	ret = recv(csk, buf, sizeof(buf), 0);
+-	if (ret <= 0) {
+-		printf("failed to recv msg %d\n", ret);
+-		return -1;
+-	}
+ 	close(csk);
+ 	close(lsk);
+ 
+diff --git a/tools/testing/selftests/net/sctp_vrf.sh b/tools/testing/selftests/net/sctp_vrf.sh
+index c854034b6aa16..667b211aa8a11 100755
+--- a/tools/testing/selftests/net/sctp_vrf.sh
++++ b/tools/testing/selftests/net/sctp_vrf.sh
+@@ -20,9 +20,9 @@ setup() {
+ 	modprobe sctp_diag
+ 	setup_ns CLIENT_NS1 CLIENT_NS2 SERVER_NS
+ 
+-	ip net exec $CLIENT_NS1 sysctl -w net.ipv6.conf.default.accept_dad=0 2>&1 >/dev/null
+-	ip net exec $CLIENT_NS2 sysctl -w net.ipv6.conf.default.accept_dad=0 2>&1 >/dev/null
+-	ip net exec $SERVER_NS sysctl -w net.ipv6.conf.default.accept_dad=0 2>&1 >/dev/null
++	ip net exec $CLIENT_NS1 sysctl -wq net.ipv6.conf.default.accept_dad=0
++	ip net exec $CLIENT_NS2 sysctl -wq net.ipv6.conf.default.accept_dad=0
++	ip net exec $SERVER_NS sysctl -wq net.ipv6.conf.default.accept_dad=0
+ 
+ 	ip -n $SERVER_NS link add veth1 type veth peer name veth1 netns $CLIENT_NS1
+ 	ip -n $SERVER_NS link add veth2 type veth peer name veth1 netns $CLIENT_NS2
+@@ -62,17 +62,40 @@ setup() {
  }
  
-+static inline
-+bool is_bnode_offset_valid(struct hfs_bnode *node, int off)
-+{
-+	bool is_valid = off < node->tree->node_size;
-+
-+	if (!is_valid) {
-+		pr_err("requested invalid offset: "
-+		       "NODE: id %u, type %#x, height %u, "
-+		       "node_size %u, offset %d\n",
-+		       node->this, node->type, node->height,
-+		       node->tree->node_size, off);
-+	}
-+
-+	return is_valid;
+ cleanup() {
+-	ip netns exec $SERVER_NS pkill sctp_hello 2>&1 >/dev/null
++	wait_client $CLIENT_NS1
++	wait_client $CLIENT_NS2
++	stop_server
+ 	cleanup_ns $CLIENT_NS1 $CLIENT_NS2 $SERVER_NS
+ }
+ 
+-wait_server() {
++start_server() {
+ 	local IFACE=$1
+ 	local CNT=0
+ 
+-	until ip netns exec $SERVER_NS ss -lS src $SERVER_IP:$SERVER_PORT | \
+-		grep LISTEN | grep "$IFACE" 2>&1 >/dev/null; do
+-		[ $((CNT++)) = "20" ] && { RET=3; return $RET; }
++	ip netns exec $SERVER_NS ./sctp_hello server $AF $SERVER_IP $SERVER_PORT $IFACE &
++	disown
++	until ip netns exec $SERVER_NS ss -SlH | grep -q "$IFACE"; do
++		[ $((CNT++)) -eq 30 ] && { RET=3; return $RET; }
++		sleep 0.1
++	done
 +}
 +
-+static inline
-+int check_and_correct_requested_length(struct hfs_bnode *node, int off, int len)
-+{
-+	unsigned int node_size;
++stop_server() {
++	local CNT=0
 +
-+	if (!is_bnode_offset_valid(node, off))
-+		return 0;
-+
-+	node_size = node->tree->node_size;
-+
-+	if ((off + len) > node_size) {
-+		int new_len = (int)node_size - off;
-+
-+		pr_err("requested length has been corrected: "
-+		       "NODE: id %u, type %#x, height %u, "
-+		       "node_size %u, offset %d, "
-+		       "requested_len %d, corrected_len %d\n",
-+		       node->this, node->type, node->height,
-+		       node->tree->node_size, off, len, new_len);
-+
-+		return new_len;
-+	}
-+
-+	return len;
++	ip netns exec $SERVER_NS pkill sctp_hello
++	while ip netns exec $SERVER_NS ss -SaH | grep -q .; do
++		[ $((CNT++)) -eq 30 ] && break
++		sleep 0.1
++	done
 +}
 +
- /* compatibility */
- #define hfsp_mt2ut(t)		(struct timespec64){ .tv_sec = __hfsp_mt2ut(t) }
- #define hfsp_ut2mt(t)		__hfsp_ut2mt((t).tv_sec)
++wait_client() {
++	local CLIENT_NS=$1
++	local CNT=0
++
++	while ip netns exec $CLIENT_NS ss -SaH | grep -q .; do
++		[ $((CNT++)) -eq 30 ] && break
+ 		sleep 0.1
+ 	done
+ }
+@@ -81,14 +104,12 @@ do_test() {
+ 	local CLIENT_NS=$1
+ 	local IFACE=$2
+ 
+-	ip netns exec $SERVER_NS pkill sctp_hello 2>&1 >/dev/null
+-	ip netns exec $SERVER_NS ./sctp_hello server $AF $SERVER_IP \
+-		$SERVER_PORT $IFACE 2>&1 >/dev/null &
+-	disown
+-	wait_server $IFACE || return $RET
++	start_server $IFACE || return $RET
+ 	timeout 3 ip netns exec $CLIENT_NS ./sctp_hello client $AF \
+-		$SERVER_IP $SERVER_PORT $CLIENT_IP $CLIENT_PORT 2>&1 >/dev/null
++		$SERVER_IP $SERVER_PORT $CLIENT_IP $CLIENT_PORT
+ 	RET=$?
++	wait_client $CLIENT_NS
++	stop_server
+ 	return $RET
+ }
+ 
+@@ -96,25 +117,21 @@ do_testx() {
+ 	local IFACE1=$1
+ 	local IFACE2=$2
+ 
+-	ip netns exec $SERVER_NS pkill sctp_hello 2>&1 >/dev/null
+-	ip netns exec $SERVER_NS ./sctp_hello server $AF $SERVER_IP \
+-		$SERVER_PORT $IFACE1 2>&1 >/dev/null &
+-	disown
+-	wait_server $IFACE1 || return $RET
+-	ip netns exec $SERVER_NS ./sctp_hello server $AF $SERVER_IP \
+-		$SERVER_PORT $IFACE2 2>&1 >/dev/null &
+-	disown
+-	wait_server $IFACE2 || return $RET
++	start_server $IFACE1 || return $RET
++	start_server $IFACE2 || return $RET
+ 	timeout 3 ip netns exec $CLIENT_NS1 ./sctp_hello client $AF \
+-		$SERVER_IP $SERVER_PORT $CLIENT_IP $CLIENT_PORT 2>&1 >/dev/null && \
++		$SERVER_IP $SERVER_PORT $CLIENT_IP $CLIENT_PORT && \
+ 	timeout 3 ip netns exec $CLIENT_NS2 ./sctp_hello client $AF \
+-		$SERVER_IP $SERVER_PORT $CLIENT_IP $CLIENT_PORT 2>&1 >/dev/null
++		$SERVER_IP $SERVER_PORT $CLIENT_IP $CLIENT_PORT
+ 	RET=$?
++	wait_client $CLIENT_NS1
++	wait_client $CLIENT_NS2
++	stop_server
+ 	return $RET
+ }
+ 
+ testup() {
+-	ip netns exec $SERVER_NS sysctl -w net.sctp.l3mdev_accept=1 2>&1 >/dev/null
++	ip netns exec $SERVER_NS sysctl -wq net.sctp.l3mdev_accept=1
+ 	echo -n "TEST 01: nobind, connect from client 1, l3mdev_accept=1, Y "
+ 	do_test $CLIENT_NS1 || { echo "[FAIL]"; return $RET; }
+ 	echo "[PASS]"
+@@ -123,7 +140,7 @@ testup() {
+ 	do_test $CLIENT_NS2 && { echo "[FAIL]"; return $RET; }
+ 	echo "[PASS]"
+ 
+-	ip netns exec $SERVER_NS sysctl -w net.sctp.l3mdev_accept=0 2>&1 >/dev/null
++	ip netns exec $SERVER_NS sysctl -wq net.sctp.l3mdev_accept=0
+ 	echo -n "TEST 03: nobind, connect from client 1, l3mdev_accept=0, N "
+ 	do_test $CLIENT_NS1 && { echo "[FAIL]"; return $RET; }
+ 	echo "[PASS]"
+@@ -160,7 +177,7 @@ testup() {
+ 	do_testx vrf-1 vrf-2 || { echo "[FAIL]"; return $RET; }
+ 	echo "[PASS]"
+ 
+-	echo -n "TEST 12: bind vrf-2 & 1 in server, connect from client 1 & 2, N "
++	echo -n "TEST 12: bind vrf-2 & 1 in server, connect from client 1 & 2, Y "
+ 	do_testx vrf-2 vrf-1 || { echo "[FAIL]"; return $RET; }
+ 	echo "[PASS]"
+ }
 -- 
 2.51.0
 
