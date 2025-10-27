@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-191235-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191060-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DF74C11363
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:42:38 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24FB8C1102A
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:29:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 87A3B564CCE
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:31:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E3F44582324
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:23:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9F0E1FBC92;
-	Mon, 27 Oct 2025 19:29:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92E78246BB7;
+	Mon, 27 Oct 2025 19:21:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gYZ977kn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BALGj2g6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58577313E06;
-	Mon, 27 Oct 2025 19:29:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 500C03016F9;
+	Mon, 27 Oct 2025 19:21:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761593367; cv=none; b=CXaYAjcv/OXNvsEOBmFPKAJiVU8J1h79n05at/pAzB2hTZEpgwmltWfKxQTpPStrY6qYH+8rQJMHgtPWlVQv1IYILcxYFFgKzddFvVqLnxrJQjyoslqj1/RU0iM5e0EKrBS1eNsH7G960ihPj+TIQoYR4B8fJt3m58ZGq9CgGaQ=
+	t=1761592910; cv=none; b=iRfaD0duJ4+bwT1pjxueazj07NoAdxgrDNqWbuwnNnDF0ULFucjlTEQR9upSx9myCaKn1+UBbhdQgd2vBIR5hXAAXQ5AekZ+YbpC0vY0ffdiBLTl2dm0Yzc7ot1yVG7JU1ttx04a9EjeY1I7yoJmaDxx2pFP/yl91+x4tWgyzuA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761593367; c=relaxed/simple;
-	bh=Y86vmjTUmTUWVIpzSV5ttXfYd4mrVXcE5JGdmiExX2I=;
+	s=arc-20240116; t=1761592910; c=relaxed/simple;
+	bh=EUDYKZTxXkgT+Uq6GG+tuExma4xLzfKyNiRC+xoVX/M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SdwPxVsmMNda8t7zro5Sao5UIQqgYcxkLWOiRv1xPeH3c6qK98lccddFN81fSPzXwunl5u+la7Hvhzuk+djhJGV0141rGte+UMXrzR2wRkyHhBXkZ2U5ss3dTEnnuX5DJoqsoqmYDBCFK7zuU7ODxXR9CZSPfyhrOBWk8dy6JFo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gYZ977kn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B89D7C4CEF1;
-	Mon, 27 Oct 2025 19:29:26 +0000 (UTC)
+	 MIME-Version; b=LcRVz7KCjDonolSWiq+ymfGu65u/0fXSwlRlXtVdo1mER9XI6pnaMQFqDYd8jFJHBjq+cszu3kLTODOKHqSCc9M/bUKj8DrWnpVDxFwn836S5lvZDBIkpd1SiSaov777ENkGBV5jqT0omuQQ7z1DNhJ+rMWcZy0PGZ1FJ/Wf294=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BALGj2g6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90A92C4CEF1;
+	Mon, 27 Oct 2025 19:21:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761593367;
-	bh=Y86vmjTUmTUWVIpzSV5ttXfYd4mrVXcE5JGdmiExX2I=;
+	s=korg; t=1761592908;
+	bh=EUDYKZTxXkgT+Uq6GG+tuExma4xLzfKyNiRC+xoVX/M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gYZ977knS+kj85CXH2euKtMv67HaRZwxHTACR41HjBh7oFBONMLL4XlJEPr3w2c5I
-	 NjMRbdaIMVex/dbwU5qNWFkqnd4IEzIr3Gs3dF7HP5ANGW5A1+1uWCYZ3jIUtwC0Km
-	 9p6z8TP+axgSWznNk1DLNJ7nnQylLex5XyKsJXuk=
+	b=BALGj2g6C+cqq+csOZUQeFZLFr9yM2+PIEqy26ukb5v6K4LQGulaktsx3pMLfLg8o
+	 U8jJarBP8zbHrU+DMQNXAtLxSfAxQhosiDrNhHCxk/MPYlsmuaedSP4jweMW9Q+1D0
+	 Zbw8yrqx7dH7qLOPp5oFzuShBBhR56hWJZR4G11k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Cave-Ayland <mark.caveayland@nutanix.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	William Breathitt Gray <wbg@kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: [PATCH 6.17 075/184] gpio: 104-idio-16: Define maximum valid register address offset
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 031/117] can: esd: acc_start_xmit(): use can_dev_dropped_skb() instead of can_dropped_invalid_skb()
 Date: Mon, 27 Oct 2025 19:35:57 +0100
-Message-ID: <20251027183516.919057814@linuxfoundation.org>
+Message-ID: <20251027183454.810792419@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
-References: <20251027183514.934710872@linuxfoundation.org>
+In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
+References: <20251027183453.919157109@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,44 +61,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: William Breathitt Gray <wbg@kernel.org>
+From: Marc Kleine-Budde <mkl@pengutronix.de>
 
-commit c4d35e635f3a65aec291a6045cae8c99cede5bba upstream.
+[ Upstream commit 0bee15a5caf36fe513fdeee07fd4f0331e61c064 ]
 
-Attempting to load the 104-idio-16 module fails during regmap
-initialization with a return error -EINVAL. This is a result of the
-regmap cache failing initialization. Set the idio_16_regmap_config
-max_register member to fix this failure.
+In addition to can_dropped_invalid_skb(), the helper function
+can_dev_dropped_skb() checks whether the device is in listen-only mode and
+discards the skb accordingly.
 
-Fixes: 2c210c9a34a3 ("gpio: 104-idio-16: Migrate to the regmap API")
-Reported-by: Mark Cave-Ayland <mark.caveayland@nutanix.com>
-Closes: https://lore.kernel.org/r/9b0375fd-235f-4ee1-a7fa-daca296ef6bf@nutanix.com
-Suggested-by: Mark Cave-Ayland <mark.caveayland@nutanix.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: William Breathitt Gray <wbg@kernel.org>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Link: https://lore.kernel.org/r/20251020-fix-gpio-idio-16-regmap-v2-1-ebeb50e93c33@kernel.org
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Replace can_dropped_invalid_skb() by can_dev_dropped_skb() to also drop
+skbs in for listen-only mode.
+
+Reported-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Closes: https://lore.kernel.org/all/20251017-bizarre-enchanted-quokka-f3c704-mkl@pengutronix.de/
+Fixes: 9721866f07e1 ("can: esd: add support for esd GmbH PCIe/402 CAN interface family")
+Link: https://patch.msgid.link/20251017-fix-skb-drop-check-v1-2-556665793fa4@pengutronix.de
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpio-104-idio-16.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/can/esd/esdacc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpio/gpio-104-idio-16.c
-+++ b/drivers/gpio/gpio-104-idio-16.c
-@@ -59,6 +59,7 @@ static const struct regmap_config idio_1
- 	.reg_stride = 1,
- 	.val_bits = 8,
- 	.io_port = true,
-+	.max_register = 0x5,
- 	.wr_table = &idio_16_wr_table,
- 	.rd_table = &idio_16_rd_table,
- 	.volatile_table = &idio_16_rd_table,
+diff --git a/drivers/net/can/esd/esdacc.c b/drivers/net/can/esd/esdacc.c
+index c80032bc1a521..73e66f9a3781c 100644
+--- a/drivers/net/can/esd/esdacc.c
++++ b/drivers/net/can/esd/esdacc.c
+@@ -254,7 +254,7 @@ netdev_tx_t acc_start_xmit(struct sk_buff *skb, struct net_device *netdev)
+ 	u32 acc_id;
+ 	u32 acc_dlc;
+ 
+-	if (can_dropped_invalid_skb(netdev, skb))
++	if (can_dev_dropped_skb(netdev, skb))
+ 		return NETDEV_TX_OK;
+ 
+ 	/* Access core->tx_fifo_tail only once because it may be changed
+-- 
+2.51.0
+
 
 
 
