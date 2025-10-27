@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-191166-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190570-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC034C11124
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:33:01 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E776C10861
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:08:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 30CC63A5D2B
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:28:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8108D1A208DA
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:05:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DDFA32143E;
-	Mon, 27 Oct 2025 19:26:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C51C02D6401;
+	Mon, 27 Oct 2025 19:00:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AusB6sXe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EaraZPVn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EADE4320A02;
-	Mon, 27 Oct 2025 19:26:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A23D31E0F0;
+	Mon, 27 Oct 2025 19:00:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761593180; cv=none; b=PxlmkuL1GBMBGAkFxtqLvb0z2sG0TqyHA5bkNzaSAuKQKPhP42smYK2lYbBo6qtjoMXM4/B1HgMLgJkhDWUTAS8BMs2Fv1cVLkeHx7JpUHC/ku7oFwFgvS7ecjvTLAY0M6A8XMwACHA5Ffvo+UbkIfMb7sMZOSOKQViQr+lFa2k=
+	t=1761591635; cv=none; b=lBG4c4xeBqJPTWapojYn0OoZoPF0MOwQFBqRVKViT1x3HGqLpnvxa6rhVOv6AS3FsQc7yDe2S/cT3F0bmgvjeYCIaCpYwTp4A/IWZYV+iNtz3cYPGJXVkH4d0zRdQIokHt8/r7Vn9NpDx3qu8XEG/4mSSyGMNdmMkdZSlMrrtKE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761593180; c=relaxed/simple;
-	bh=74cSK6xoRSXGlcgByt+/2Mx3cdrms7iMHgl31KzWjiE=;
+	s=arc-20240116; t=1761591635; c=relaxed/simple;
+	bh=aelxr1Om+kGoBE3fW3y9pviYPAEN0iLwBS/KUWCfMcM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NFP2IcW4v87rF+q8Gno8WLGQCUDHW8Jb9yxICS4DbHE5QCFKFAhw8aAkS4+OKSjgsMuPEZsi3hjYs7J+Kf/VN92RPEILpVtL/31QZk8eHnweFzLP1jsDQZKz9lcc1ZkCRu/2G0hT00Ho0/RkIi9DCe55dQwsVSN/FgpBU5cEyTk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AusB6sXe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F467C4CEF1;
-	Mon, 27 Oct 2025 19:26:19 +0000 (UTC)
+	 MIME-Version; b=iz9ma6UWyH04u/5YjtOUEHu8hZTrLt8EXvta4VO5ldOyZug8ESHAlYUwPn7qdFSUTa3u5M5yALkza2aTV0KFQQzIuhjFk3bA8iNbzxIfCo6HkEqyuM6RMWxq3AJGmaBUMZBTNTRKWyl/qHCDquArlZ8hijjVHJwh7EC6xe7Y//k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EaraZPVn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F5FCC4CEF1;
+	Mon, 27 Oct 2025 19:00:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761593179;
-	bh=74cSK6xoRSXGlcgByt+/2Mx3cdrms7iMHgl31KzWjiE=;
+	s=korg; t=1761591635;
+	bh=aelxr1Om+kGoBE3fW3y9pviYPAEN0iLwBS/KUWCfMcM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AusB6sXemmt47REh2Qwd11Omb4duKpz1vwKiEu0BsFt/M4FgQ/j84xVTFOGhlErWD
-	 rnXWrM4d0Eou1IFZyb394Hjxk7s4llezAJyf5+yZVQo+BT5Mai50GfO0gxCjAYdkKU
-	 /LKsLFChLVFCvYg1Ib2lkUUZIHOMPFnZTbt+Zayw=
+	b=EaraZPVn4CVRPcoX6ulOSpW3E9EGAUhHm0LyvO/z+bca6549o0k9+a9024ZJ/fLa3
+	 aDs5pDDMYmm3qdEwREWA9SptKDHjRVDC4HXJEqXc98iNC26626GOzPOQTvNEcgWzJd
+	 e+RDBCFM3tPS8uqi+JnEWrI6CFPsioLdvLh2i7c8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 044/184] can: rockchip-canfd: rkcanfd_start_xmit(): use can_dev_dropped_skb() instead of can_dropped_invalid_skb()
+Subject: [PATCH 5.10 273/332] net: add ndo_fdb_del_bulk
 Date: Mon, 27 Oct 2025 19:35:26 +0100
-Message-ID: <20251027183516.092879918@linuxfoundation.org>
+Message-ID: <20251027183532.072248828@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
-References: <20251027183514.934710872@linuxfoundation.org>
+In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
+References: <20251027183524.611456697@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Kleine-Budde <mkl@pengutronix.de>
+From: Nikolay Aleksandrov <razor@blackwall.org>
 
-[ Upstream commit 3a3bc9bbb3a0287164a595787df0c70d91e77cfd ]
+[ Upstream commit 1306d5362a591493a2d07f685ed2cc480dcda320 ]
 
-In addition to can_dropped_invalid_skb(), the helper function
-can_dev_dropped_skb() checks whether the device is in listen-only mode and
-discards the skb accordingly.
+Add a new netdev op called ndo_fdb_del_bulk, it will be later used for
+driver-specific bulk delete implementation dispatched from rtnetlink. The
+first user will be the bridge, we need it to signal to rtnetlink from
+the driver that we support bulk delete operation (NLM_F_BULK).
 
-Replace can_dropped_invalid_skb() by can_dev_dropped_skb() to also drop
-skbs in for listen-only mode.
-
-Reported-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Closes: https://lore.kernel.org/all/20251017-bizarre-enchanted-quokka-f3c704-mkl@pengutronix.de/
-Fixes: ff60bfbaf67f ("can: rockchip_canfd: add driver for Rockchip CAN-FD controller")
-Link: https://patch.msgid.link/20251017-fix-skb-drop-check-v1-3-556665793fa4@pengutronix.de
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Nikolay Aleksandrov <razor@blackwall.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: bf29555f5bdc ("rtnetlink: Allow deleting FDB entries in user namespace")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/can/rockchip/rockchip_canfd-tx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/netdevice.h | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/net/can/rockchip/rockchip_canfd-tx.c b/drivers/net/can/rockchip/rockchip_canfd-tx.c
-index 865a15e033a9e..12200dcfd3389 100644
---- a/drivers/net/can/rockchip/rockchip_canfd-tx.c
-+++ b/drivers/net/can/rockchip/rockchip_canfd-tx.c
-@@ -72,7 +72,7 @@ netdev_tx_t rkcanfd_start_xmit(struct sk_buff *skb, struct net_device *ndev)
- 	int err;
- 	u8 i;
- 
--	if (can_dropped_invalid_skb(ndev, skb))
-+	if (can_dev_dropped_skb(ndev, skb))
- 		return NETDEV_TX_OK;
- 
- 	if (!netif_subqueue_maybe_stop(priv->ndev, 0,
+diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
+index 06b37f45b67c9..d3a3e77a18df1 100644
+--- a/include/linux/netdevice.h
++++ b/include/linux/netdevice.h
+@@ -1200,6 +1200,10 @@ struct netdev_net_notifier {
+  *		      struct net_device *dev,
+  *		      const unsigned char *addr, u16 vid)
+  *	Deletes the FDB entry from dev coresponding to addr.
++ * int (*ndo_fdb_del_bulk)(struct ndmsg *ndm, struct nlattr *tb[],
++ *			   struct net_device *dev,
++ *			   u16 vid,
++ *			   struct netlink_ext_ack *extack);
+  * int (*ndo_fdb_dump)(struct sk_buff *skb, struct netlink_callback *cb,
+  *		       struct net_device *dev, struct net_device *filter_dev,
+  *		       int *idx)
+@@ -1452,6 +1456,11 @@ struct net_device_ops {
+ 					       struct net_device *dev,
+ 					       const unsigned char *addr,
+ 					       u16 vid);
++	int			(*ndo_fdb_del_bulk)(struct ndmsg *ndm,
++						    struct nlattr *tb[],
++						    struct net_device *dev,
++						    u16 vid,
++						    struct netlink_ext_ack *extack);
+ 	int			(*ndo_fdb_dump)(struct sk_buff *skb,
+ 						struct netlink_callback *cb,
+ 						struct net_device *dev,
 -- 
 2.51.0
 
