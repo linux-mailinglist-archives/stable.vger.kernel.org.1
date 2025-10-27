@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-190559-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191131-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70323C108DF
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:09:57 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8819CC11141
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:33:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 34A5B566808
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:04:44 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7666D560F82
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:26:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5413530E0C0;
-	Mon, 27 Oct 2025 19:00:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7691932C329;
+	Mon, 27 Oct 2025 19:24:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WpUIj1BP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JFpbWlXV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10253334C02;
-	Mon, 27 Oct 2025 19:00:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 312F632ABF6;
+	Mon, 27 Oct 2025 19:24:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591607; cv=none; b=pzlv/qAeg190ieRx5GQOjvIcen00L+/fxGvjhkdL94amYhLK16GAkI3/ZrB0fhrAm650BkzCvKkfcejNvYU155VUL6uUvUgtaf6PAhcdTB+tgySSdbYChzaOKYS0lHE7CNARLoI1AeN0um2vKNTh6x1WkSUGxQIgXPk8Qn7Q6cE=
+	t=1761593092; cv=none; b=uEmx2QvMpCV2/GO5cG6S+kC5onMlrcqfpA51mu5hAHuZku54zp1tUpXohoFQkv3aJfvvk3leK5AarA7WEAoiPb6y72qSOK3PfVjP94tUwDuWY+XThILGDOWChlIQSWfzJKh1hD3wHUxg6osVczJjFjlw/uGR8IfzWmmykSjDWoE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591607; c=relaxed/simple;
-	bh=R0jHBE+vcDkocBenbjmnrAhht8WV2iZXW2KWG3QXM6I=;
+	s=arc-20240116; t=1761593092; c=relaxed/simple;
+	bh=Ak3EeL3oRmeJY4w8QsiZoDqPdJ9xBxZ64rCSUQOCOLk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UB2q/gWy/Al7jrB4ByT8wa0/dyFgczIGJ9e9DiF5gG0CoE3QCWOXVGpCXCdtIjVxkTE9T70eF6R40f1oxGWJBKz43uUwm3Tw9Pz1HA9Vd2vJHFOUJbF3xicqm0U1buAdQnz06HxCRp6jm4zAUovO8GZPh5Od+IX/v8rQcvIY9vA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WpUIj1BP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8895AC4CEF1;
-	Mon, 27 Oct 2025 19:00:06 +0000 (UTC)
+	 MIME-Version; b=IJ4/3QSeY6Ob9RKYefMJRgAyOkz/5Gbw8YoopbaFdDRZAbYITfDvsEx7Ay4u8FYKSFmZCRtLuRacSWbsBiRBKV6GMszjEQPx+4yPe4Cc2B+R1dNpjl1o1a0bmy7ZfEIttp4yfadfXm++SRcpb9acqugXLrw27rI5T7lqGlPSHgA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JFpbWlXV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73753C113D0;
+	Mon, 27 Oct 2025 19:24:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591606;
-	bh=R0jHBE+vcDkocBenbjmnrAhht8WV2iZXW2KWG3QXM6I=;
+	s=korg; t=1761593089;
+	bh=Ak3EeL3oRmeJY4w8QsiZoDqPdJ9xBxZ64rCSUQOCOLk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WpUIj1BPrPRWljCDW8YchT0oxh2Xpqfy5YRXCWZcBSot/1ty+t3LMPa98uGRfRmmr
-	 cjxcqIKyhlbcR52NleCBQkX7vtRQbgk04Fc0oAQ/64pu42x5iaHwBwvKZtJMh4Ps5y
-	 117I3rhaanXQyVww/owBAGRGTpNhEjjSS4YfHN+U=
+	b=JFpbWlXVVW6JjH+F+1GT+zY7iuCm/qgsjZ4RJag6e8SZ/3/ZXf8gi29QKXRms3ouj
+	 lpLpopCit8RIBaxA5zn9lqaG6Wob3HKlhuskp4P+dQL7KTjuyhZ1SGycnJ4B9rmS1+
+	 0jjmLDoqa3xGp9A6+0TrCfRF3LfaHY4hqhv4QT0M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu Kuai <yukuai3@huawei.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Jens Axboe <axboe@kernel.dk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 230/332] blk-crypto: fix missing blktrace bio split events
+	Matt Fleming <matt@readmodwrite.com>,
+	Matt Fleming <mfleming@cloudflare.com>,
+	K Prateek Nayak <kprateek.nayak@amd.com>
+Subject: [PATCH 6.17 001/184] sched/fair: Block delayed tasks on throttled hierarchy during dequeue
 Date: Mon, 27 Oct 2025 19:34:43 +0100
-Message-ID: <20251027183530.873638933@linuxfoundation.org>
+Message-ID: <20251027183514.979610064@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
-References: <20251027183524.611456697@linuxfoundation.org>
+In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
+References: <20251027183514.934710872@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,50 +62,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu Kuai <yukuai3@huawei.com>
+From: K Prateek Nayak <kprateek.nayak@amd.com>
 
-[ Upstream commit 06d712d297649f48ebf1381d19bd24e942813b37 ]
+Dequeuing a fair task on a throttled hierarchy returns early on
+encountering a throttled cfs_rq since the throttle path has already
+dequeued the hierarchy above and has adjusted the h_nr_* accounting till
+the root cfs_rq.
 
-trace_block_split() is missing, resulting in blktrace inability to catch
-BIO split events and making it harder to analyze the BIO sequence.
+dequeue_entities() crucially misses calling __block_task() for delayed
+tasks being dequeued on the throttled hierarchies, but this was mostly
+harmless until commit b7ca5743a260 ("sched/core: Tweak
+wait_task_inactive() to force dequeue sched_delayed tasks") since all
+existing cases would re-enqueue the task if task_on_rq_queued() returned
+true and the task would eventually be blocked at pick after the
+hierarchy was unthrottled.
+
+wait_task_inactive() is special as it expects the delayed task on
+throttled hierarchy to reach the blocked state on dequeue but since
+__block_task() is never called, task_on_rq_queued() continues to return
+true. Furthermore, since the task is now off the hierarchy, the pick
+never reaches it to fully block the task even after unthrottle leading
+to wait_task_inactive() looping endlessly.
+
+Remedy this by calling __block_task() if a delayed task is being
+dequeued on a throttled hierarchy.
+
+This fix is only required for stabled kernels implementing delay dequeue
+(>= v6.12) before v6.18 since upstream commit e1fad12dcb66 ("sched/fair:
+Switch to task based throttle model") indirectly fixes this by removing
+the early return conditions in dequeue_entities() as part of the per-task
+throttle feature.
 
 Cc: stable@vger.kernel.org
-Fixes: 488f6682c832 ("block: blk-crypto-fallback for Inline Encryption")
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-[ added queue parameter to trace_block_split() call ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Matt Fleming <matt@readmodwrite.com>
+Closes: https://lore.kernel.org/all/20250925133310.1843863-1-matt@readmodwrite.com/
+Fixes: b7ca5743a260 ("sched/core: Tweak wait_task_inactive() to force dequeue sched_delayed tasks")
+Tested-by: Matt Fleming <mfleming@cloudflare.com>
+Signed-off-by: K Prateek Nayak <kprateek.nayak@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- block/blk-crypto-fallback.c |    3 +++
- 1 file changed, 3 insertions(+)
+ kernel/sched/fair.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
---- a/block/blk-crypto-fallback.c
-+++ b/block/blk-crypto-fallback.c
-@@ -18,6 +18,7 @@
- #include <linux/mempool.h>
- #include <linux/module.h>
- #include <linux/random.h>
-+#include <trace/events/block.h>
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index 8ce56a8d507f..f0a4d9d7424d 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -6969,6 +6969,7 @@ static int dequeue_entities(struct rq *rq, struct sched_entity *se, int flags)
+ 	int h_nr_runnable = 0;
+ 	struct cfs_rq *cfs_rq;
+ 	u64 slice = 0;
++	int ret = 0;
  
- #include "blk-crypto-internal.h"
+ 	if (entity_is_task(se)) {
+ 		p = task_of(se);
+@@ -6998,7 +6999,7 @@ static int dequeue_entities(struct rq *rq, struct sched_entity *se, int flags)
  
-@@ -227,7 +228,9 @@ static bool blk_crypto_split_bio_if_need
- 			bio->bi_status = BLK_STS_RESOURCE;
- 			return false;
- 		}
-+
- 		bio_chain(split_bio, bio);
-+		trace_block_split(bio->bi_disk->queue, split_bio, bio->bi_iter.bi_sector);
- 		submit_bio_noacct(bio);
- 		*bio_ptr = split_bio;
+ 		/* end evaluation on encountering a throttled cfs_rq */
+ 		if (cfs_rq_throttled(cfs_rq))
+-			return 0;
++			goto out;
+ 
+ 		/* Don't dequeue parent if it has other entities besides us */
+ 		if (cfs_rq->load.weight) {
+@@ -7039,7 +7040,7 @@ static int dequeue_entities(struct rq *rq, struct sched_entity *se, int flags)
+ 
+ 		/* end evaluation on encountering a throttled cfs_rq */
+ 		if (cfs_rq_throttled(cfs_rq))
+-			return 0;
++			goto out;
  	}
+ 
+ 	sub_nr_running(rq, h_nr_queued);
+@@ -7048,6 +7049,8 @@ static int dequeue_entities(struct rq *rq, struct sched_entity *se, int flags)
+ 	if (unlikely(!was_sched_idle && sched_idle_rq(rq)))
+ 		rq->next_balance = jiffies;
+ 
++	ret = 1;
++out:
+ 	if (p && task_delayed) {
+ 		WARN_ON_ONCE(!task_sleep);
+ 		WARN_ON_ONCE(p->on_rq != 1);
+@@ -7063,7 +7066,7 @@ static int dequeue_entities(struct rq *rq, struct sched_entity *se, int flags)
+ 		__block_task(rq, p);
+ 	}
+ 
+-	return 1;
++	return ret;
+ }
+ 
+ /*
+
+base-commit: 6c7871823908a4330e145d635371582f76ce1407
+-- 
+2.34.1
+
 
 
 
