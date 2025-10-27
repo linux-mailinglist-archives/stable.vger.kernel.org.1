@@ -1,179 +1,178 @@
-Return-Path: <stable+bounces-189950-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-189951-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7056DC0CE8B
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 11:16:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EB066C0CEBF
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 11:18:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C69573BE58D
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 10:15:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CB6873BDBBB
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 10:18:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 965842F360B;
-	Mon, 27 Oct 2025 10:15:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3901283FD8;
+	Mon, 27 Oct 2025 10:18:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="rTOPVYaH"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="vrBLRIYF"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8F9E481B1;
-	Mon, 27 Oct 2025 10:15:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 729EC22424E
+	for <stable@vger.kernel.org>; Mon, 27 Oct 2025 10:18:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761560102; cv=none; b=pNzGz+/xOEF2ehdxhcNOaCzvfGzx86iy7VXXVV5dk6VM3X/T57V2ilFKg3Q5Wj3Oj6MT5Nwwc6h2GDa/ujIfgQ71Kng4jbQtF2QTGvOqYg/RO730jCYslDa+1P3WH2PBfH3G0R+AQtqXi0sK5aL4kIk7HCAkDy7N+5qaZh6kK7Y=
+	t=1761560307; cv=none; b=B87oYatJVLSW98CHAtoqWyg71rOfFLPBQzA+jAQG6B2+q+ZNUhtdEALwPMPr7FyLSAj/hjCPDDZU7sO2vX1f8U8fAwh98+pqsS75gyx1kECfXiV31NaOT20YGW4QiZ0SjifGbHbC1SgHuKRop4mK7CR/e3L6REjA16YcHB8hb6M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761560102; c=relaxed/simple;
-	bh=YxD/X+Zkz5NAxSDIV78g1kUEZbNuMcFdoxtofLlVpWg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PUkW3EElp6vb4xkIhxnbw1ryCyh8iGWfHBInGGBhs6NH0QSx5eU0pU6EsYYtOijz/XOvYJ/k9X+zCuQLGJcoPFfdyMCEpbe5k61/Ls0q+Uutl0nWknfBRSzOJvqzH4cHf0XK0u0iu370Cglmb7AbRrvWilkelPLF6gXyDZD2Yjo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=rTOPVYaH; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59QJEFTd026055;
-	Mon, 27 Oct 2025 10:15:00 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=rWBDg1fyrFQM4Iw+1y1rcnG/tHO8KV
-	uI29ViOAB18wo=; b=rTOPVYaHMCmt307F50YAOucrUvwc0JUpLCAyNMYL8xUr2r
-	rnNQ1UIDkCMcABGQXNVg6k5qPHn40SxaNxdGP3B4IAn0uRMYmxdfBJUHH0ri1YWh
-	q7bKpuqPYQLH2mPDSUj0DiLQjy1kZUGuKgvkxonlYQsG3uyjM/a/PFqMQ7XDe2C9
-	i8huDCOUdaqWYidaic+sd9FLfdpYyCv9VNTbd3KI5HORwkXiS0BVSJOicN1GdouG
-	I3Y3u1n08wDYkUnMI+BLngDGBN04lxxXrt7xL9tddrVzU/oQs6dwnsTQskqK7J7f
-	Rv4gWLgMm5D2SHZEE4xuwQrQ1fu4fBof3EVIRBgw==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a0p98x6qg-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 27 Oct 2025 10:14:59 +0000 (GMT)
-Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 59RA67s2004845;
-	Mon, 27 Oct 2025 10:14:59 GMT
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a0p98x6qd-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 27 Oct 2025 10:14:59 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59R7eV70030460;
-	Mon, 27 Oct 2025 10:14:58 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4a1acjmxgh-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 27 Oct 2025 10:14:58 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 59RAEraG59638056
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 27 Oct 2025 10:14:53 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9A13020043;
-	Mon, 27 Oct 2025 10:14:53 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0CDA320040;
-	Mon, 27 Oct 2025 10:14:53 +0000 (GMT)
-Received: from osiris (unknown [9.111.14.160])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Mon, 27 Oct 2025 10:14:52 +0000 (GMT)
-Date: Mon, 27 Oct 2025 11:14:51 +0100
-From: Heiko Carstens <hca@linux.ibm.com>
-To: Miaoqian Lin <linmq006@gmail.com>
-Cc: Alexander Gordeev <agordeev@linux.ibm.com>,
-        Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>, linux-s390@vger.kernel.org,
-        linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
-        stable@vger.kernel.org
-Subject: Re: [PATCH] s390/mm: Fix memory leak in add_marker() when kvrealloc
- fails
-Message-ID: <20251027101451.14551A49-hca@linux.ibm.com>
-References: <20251026091351.36275-1-linmq006@gmail.com>
+	s=arc-20240116; t=1761560307; c=relaxed/simple;
+	bh=cqrBqLQytVCzcJ7E7kwhYkcYYp2Zs/BePmICGhQ/GWs=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=UrLH7GTkk26gkLHq7RZOeHS3yfuXeYmBLXifW2Z/OnNoEOxxSuOGKupkR9hgDcBZwN5z2B5cPytOtzPgu7QPfwCrOtr5LRoAZH4iWdzDGSH4P/Ri7kxa0WpRhBWybpF1xJhPcmiY0UjTMSiDIPtF9j6BQS65ec9RoVn5UaJsS+8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=vrBLRIYF; arc=none smtp.client-ip=209.85.167.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-592fcf7a1ceso3444341e87.1
+        for <stable@vger.kernel.org>; Mon, 27 Oct 2025 03:18:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1761560303; x=1762165103; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Jx03cUjHaKSnZslq4rOuaP2cLEUlRGHdIcj19b2yJKE=;
+        b=vrBLRIYFYvNdHfOjSecnukcz3DdQK/MAkzO40xpZEuP664+FoHsh/MVlKUQIPj0DsW
+         UYkqH4QSAVoi/hNN4wBCHJaR5B7KA9M9urGa4ONICv2RlV+JHTQUMpLKtGDSOrvd0M9W
+         pLXYAl/a6hUiqu59Nz+mEDTlrmyNRmSzNPE/4ky9Mm+dyIDqnC/G0dYKCBxc3L0RtHV5
+         MhXIlZzjL3LuSYvKdlBaCdeY3xBPlxvckE0oZOQDyMyOBYFRBroYW9/LGM7LoPSSd7eE
+         6aZjA0LE9JuJ7xoWeFFnE957yfVeGf6QmNSv+nGKgGmaGh5HN+IYd2qnepXn1ll/2AEO
+         3GFw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761560303; x=1762165103;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Jx03cUjHaKSnZslq4rOuaP2cLEUlRGHdIcj19b2yJKE=;
+        b=jgEjqRe/FqgFdAxmppJ/l9C1T2R/iCd7JAZJmU29ZsuSeKTawPLO3toytiKk0qZqU+
+         vT27c5cVX+ffUMWLyhzYM9xXjAHoLXi/mhdIgXefNngzyGwSJeaQAG7BSGcNvfOHLhUT
+         5ZPbo2l3Suwt9t0jVCwcy3QUnmS9H3rSBAn2uN2JNpv1tr08chNG1NK29ZJAfUwigw1+
+         KaWeYxHAImi+/0V3Yq7nebPfcCoyK2zSmCF1uE4IljcnHJrJH/YaU4JL7w+OYHN9J9su
+         6rNJO8vhT62bUx5lRmag0NkYBri+Wx6ONJhniKBHXei1WJJclbNHohOR8OSbMCVWCt7i
+         Pprg==
+X-Forwarded-Encrypted: i=1; AJvYcCU0hz3g/YQDYnziM8mSKRpYWR+lTZR6zOaMIn7j2cEEmap+27Olrd/SXIhD6TredM41mtPcwUE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxOmJWTLSwXySo5JokL/IbiuvQLSEb1ilCtYKuMmOnHHiu/WalO
+	IN3kx8LUsAja/1ESernZsuw4Hv06HHcZNkNkXoHEMt8BTPIe7jvvHUPIP12UyJVVT9c=
+X-Gm-Gg: ASbGncu3ZZFxLOIZjUMDVUxiETCdWJHSG0u8/cfcEfW2hExgCWRoZOofP60CfHiNR+1
+	tL9HyiZ5UlnKSbkbyl2YkMOQxEeiJKJ8MME5bNOQe+Air4RALU0EZovcg7RL+bkhW4L/t/XgtCy
+	FmWZsOEGVJZBrGH877cEzThvXswlqFRux3S+Qdc181IM8oZLNBtmuv9Znw1Oa2aTNXcr1AN0jYH
+	1thgJaiBTTVvF8frbnZB1OZarWHwHJgKBEVgTJSbzp/dMFoJG/WH9Ep72hPkYQ1AhhsXFfyh9NZ
+	S7JkQzo5bsV3+dc/cfwZ41ulmvF2cLlIBsCHCO8khS1PejGatKswkaCuhj3/S6vfI+Hu0SRxEBB
+	u13bIUSybQd3g+bv3jnyzPg5UqzcLwTxXlPc5Yy+ar7zXEIUMQiQbdun7vzxdxn0OWp3fsUicOs
+	mWpmlLWW2OKFzw+AkoCgk8GwPuuX3ByPi1PXH9ZeoBchIXyMC3rp63+Toku7tKkFqhnw==
+X-Google-Smtp-Source: AGHT+IH7t8z7lDWKkakNj0SLYuUWwctos1aBtTyjZBDabk0/LlhiEDtCYrfnR0zT5tDvpxsBwbOmzg==
+X-Received: by 2002:a05:6512:3a93:b0:592:f72f:c1d2 with SMTP id 2adb3069b0e04-592fc9d4fa5mr3566258e87.10.1761560303437;
+        Mon, 27 Oct 2025 03:18:23 -0700 (PDT)
+Received: from [192.168.1.2] (c-92-34-217-190.bbcust.telenor.se. [92.34.217.190])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-59301f6e644sm2225342e87.79.2025.10.27.03.18.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 27 Oct 2025 03:18:23 -0700 (PDT)
+From: Linus Walleij <linus.walleij@linaro.org>
+Date: Mon, 27 Oct 2025 11:18:17 +0100
+Subject: [PATCH] iio: accel: bmc150: Fix irq assumption regression
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251026091351.36275-1-linmq006@gmail.com>
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=JqL8bc4C c=1 sm=1 tr=0 ts=68ff4623 cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=kj9zAlcOel0A:10 a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VwQbUJbxAAAA:8 a=pGLkceISAAAA:8 a=jc1liYX81a5ejJq0xPAA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-GUID: nqp_ljURjxT5ZWM6dC13yGjre5M5eLG0
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDI1MDAxOSBTYWx0ZWRfX9xedVJW1l3eK
- pJxCjmXAlXe18IdzuCBgVrB/y+gQuw2Tjm6OLlSRNCoRqhIBSIN7iPDI+rraP7LIQ4TZOvVNYU9
- D6WaCRBGslLeUPz1TBH7KYoGPYkREZaN59RAcIVozYlmDO0XDvLg8wrD+dSlkkQQ9v5DWX62Tus
- rr1aKCd6IBNWS5NQ+Xfo05KER8TiA3s3fno2lKwjysfljaDEjz744ynHo1gN8rsjgQNQNx030ug
- 5ih1Di/y1uFBT/zMzhu+FKhEoBxhpssS6sEmTac7rfWeuhlYUGBasuqZR7YWlj8rijA2alkA+yl
- 6pEvarZQnRVzUQ5SRsr+pz0ucfqoIPMdb7rmnuUFqQFxTFcXNi5o+JmHTLiTr7WuVrb8yAQavYh
- rykhvSVJhoxv16WkEZzTkiX/fH3zNQ==
-X-Proofpoint-ORIG-GUID: xxSUkK-B4XJutQ9f-DCOJClNhNQBOaok
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-10-27_04,2025-10-22_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 clxscore=1011 lowpriorityscore=0 malwarescore=0 bulkscore=0
- priorityscore=1501 spamscore=0 adultscore=0 phishscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510250019
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20251027-fix-bmc150-v1-1-ccdc968e8c37@linaro.org>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1NDAyNz3bTMCt2k3GRDUwNd81RTMwtDI6MkIzNTJaCGgqJUoCzYsOjY2lo
+ AMCLE4VwAAAA=
+X-Change-ID: 20251027-fix-bmc150-7e568122b265
+To: Jonathan Cameron <jic23@kernel.org>, 
+ David Lechner <dlechner@baylibre.com>, 
+ =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
+ Andy Shevchenko <andy@kernel.org>, 
+ Matti Vaittinen <mazziesaccount@gmail.com>, 
+ Stephan Gerhold <stephan@gerhold.net>
+Cc: linux-iio@vger.kernel.org, stable@vger.kernel.org, 
+ Linus Walleij <linus.walleij@linaro.org>
+X-Mailer: b4 0.14.3
 
-On Sun, Oct 26, 2025 at 05:13:51PM +0800, Miaoqian Lin wrote:
-> When kvrealloc() fails, the original markers memory is leaked
-> because the function directly assigns the NULL to the markers pointer,
-> losing the reference to the original memory.
-> 
-> As a result, the kvfree() in pt_dump_init() ends up freeing NULL instead
-> of the previously allocated memory.
-> 
-> Fix this by using a temporary variable to store kvrealloc()'s return
-> value and only update the markers pointer on success.
-> 
-> Found via static anlaysis and this is similar to commit 42378a9ca553
-> ("bpf, verifier: Fix memory leak in array reallocation for stack state")
-> 
-> Fixes: d0e7915d2ad3 ("s390/mm/ptdump: Generate address marker array dynamically")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
-> ---
->  arch/s390/mm/dump_pagetables.c | 9 ++++++---
->  1 file changed, 6 insertions(+), 3 deletions(-)
-> 
-> diff --git a/arch/s390/mm/dump_pagetables.c b/arch/s390/mm/dump_pagetables.c
-> index 9af2aae0a515..0f2e0c93a1e0 100644
-> --- a/arch/s390/mm/dump_pagetables.c
-> +++ b/arch/s390/mm/dump_pagetables.c
-> @@ -291,16 +291,19 @@ static int ptdump_cmp(const void *a, const void *b)
->  
->  static int add_marker(unsigned long start, unsigned long end, const char *name)
->  {
-> +	struct addr_marker *new_markers;
->  	size_t oldsize, newsize;
->  
->  	oldsize = markers_cnt * sizeof(*markers);
->  	newsize = oldsize + 2 * sizeof(*markers);
->  	if (!oldsize)
-> -		markers = kvmalloc(newsize, GFP_KERNEL);
-> +		new_markers = kvmalloc(newsize, GFP_KERNEL);
->  	else
-> -		markers = kvrealloc(markers, newsize, GFP_KERNEL);
-> -	if (!markers)
-> +		new_markers = kvrealloc(markers, newsize, GFP_KERNEL);
-> +	if (!new_markers)
->  		goto error;
-> +
-> +	markers = new_markers;
+The code in bmc150-accel-core.c unconditionally calls
+bmc150_accel_set_interrupt() in the iio_buffer_setup_ops,
+such as on the runtime PM resume path giving a kernel
+splat like this if the device has no interrupts:
 
-This is not better to the situation before. If the allocation fails,
-markers_cnt will be set to zero, but the old valid markers pointer will stay,
-which means that the next call to add_marker() will allocate a new area via
-kvmalloc() instead of kvrealloc(), and thus leaking the old area too.
+Unable to handle kernel NULL pointer dereference at virtual
+  address 00000001 when read
+CPU: 0 UID: 0 PID: 393 Comm: iio-sensor-prox Not tainted
+  6.18.0-rc1-postmarketos-stericsson-00001-g6b43386e3737 #73 PREEMPT
+Hardware name: ST-Ericsson Ux5x0 platform (Device Tree Support)
+PC is at bmc150_accel_set_interrupt+0x98/0x194
+LR is at __pm_runtime_resume+0x5c/0x64
+(...)
+Call trace:
+bmc150_accel_set_interrupt from bmc150_accel_buffer_postenable+0x40/0x108
+bmc150_accel_buffer_postenable from __iio_update_buffers+0xbe0/0xcbc
+__iio_update_buffers from enable_store+0x84/0xc8
+enable_store from kernfs_fop_write_iter+0x154/0x1b4
+kernfs_fop_write_iter from do_iter_readv_writev+0x178/0x1e4
+do_iter_readv_writev from vfs_writev+0x158/0x3f4
+vfs_writev from do_writev+0x74/0xe4
+do_writev from __sys_trace_return+0x0/0x10
 
-add_marker() needs to changes to return in a manner that both marker and
-marker_cnt correlate with each other. And I guess it is also easily possible
-to get rid of the two different allocation paths.
+This bug seems to have been in the driver since the beginning,
+but it only manifests recently, I do not know why.
 
-Care to send a new version?
+Cc: stable@vger.kernel.org
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+---
+ drivers/iio/accel/bmc150-accel-core.c | 5 +++++
+ drivers/iio/accel/bmc150-accel.h      | 1 +
+ 2 files changed, 6 insertions(+)
+
+diff --git a/drivers/iio/accel/bmc150-accel-core.c b/drivers/iio/accel/bmc150-accel-core.c
+index 3c5d1560b163..f4421a3b0ef2 100644
+--- a/drivers/iio/accel/bmc150-accel-core.c
++++ b/drivers/iio/accel/bmc150-accel-core.c
+@@ -523,6 +523,10 @@ static int bmc150_accel_set_interrupt(struct bmc150_accel_data *data, int i,
+ 	const struct bmc150_accel_interrupt_info *info = intr->info;
+ 	int ret;
+ 
++	/* We do not always have an IRQ */
++	if (!data->has_irq)
++		return 0;
++
+ 	if (state) {
+ 		if (atomic_inc_return(&intr->users) > 1)
+ 			return 0;
+@@ -1696,6 +1700,7 @@ int bmc150_accel_core_probe(struct device *dev, struct regmap *regmap, int irq,
+ 	}
+ 
+ 	if (irq > 0) {
++		data->has_irq = true;
+ 		ret = devm_request_threaded_irq(dev, irq,
+ 						bmc150_accel_irq_handler,
+ 						bmc150_accel_irq_thread_handler,
+diff --git a/drivers/iio/accel/bmc150-accel.h b/drivers/iio/accel/bmc150-accel.h
+index 7a7baf52e595..6e9bb69a1fd4 100644
+--- a/drivers/iio/accel/bmc150-accel.h
++++ b/drivers/iio/accel/bmc150-accel.h
+@@ -59,6 +59,7 @@ enum bmc150_accel_trigger_id {
+ struct bmc150_accel_data {
+ 	struct regmap *regmap;
+ 	struct regulator_bulk_data regulators[2];
++	bool has_irq;
+ 	struct bmc150_accel_interrupt interrupts[BMC150_ACCEL_INTERRUPTS];
+ 	struct bmc150_accel_trigger triggers[BMC150_ACCEL_TRIGGERS];
+ 	struct mutex mutex;
+
+---
+base-commit: 3a8660878839faadb4f1a6dd72c3179c1df56787
+change-id: 20251027-fix-bmc150-7e568122b265
+
+Best regards,
+-- 
+Linus Walleij <linus.walleij@linaro.org>
+
 
