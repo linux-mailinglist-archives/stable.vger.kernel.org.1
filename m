@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-191125-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191286-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E129C1118C
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:34:26 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E923C1125B
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:37:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 55FF4560B40
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:26:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6CFD219A6D04
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:33:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 516C632143E;
-	Mon, 27 Oct 2025 19:24:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAB2F31355A;
+	Mon, 27 Oct 2025 19:32:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="myumvO95"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GOW5VL59"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E3F6328B7A;
-	Mon, 27 Oct 2025 19:24:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97FEC2BDC13;
+	Mon, 27 Oct 2025 19:32:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761593075; cv=none; b=JZb8I2jWpDMb09YafRWSm3BR8+Xu8I4OSTWLsLzFeBNx8VvKTzAVaVYrlZYOw7PLGzCLcObkQNQQhHxXLel+tI21SnawGGVzB+1tWfDLQhbeKUA5SD2OYA7gj6YfoHBAy1Ayuke0EWzuAk1Iek5JFFiJ9nmcA8MeLSpNuGTldbE=
+	t=1761593525; cv=none; b=AN2wLENGGmprZdQ/SXrnLyA9rqR8kFlj6A3jY1dcinXTh1sK5LMzu2XQqThbVDwvW/FZIPap2VI12zmwuzG8HcivVo2ygMPodG/1Wxez7B5me60BLy5hcVmN58feaoptnXUUDb04HNRtm07RmO04G4cCKNmF2+6wFZhixMkGmVc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761593075; c=relaxed/simple;
-	bh=k/j4CRNX090r+meiyzxe3P28GDftRQffEb7GU+4XKLs=;
+	s=arc-20240116; t=1761593525; c=relaxed/simple;
+	bh=69SpiKekGjVbnB1SQWyraolkDH5mqAj5XdktBsheCBo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z72eL6LXbLbKBLnvEixZfYgLA9Yb1mwwxzYXJja2Ue1wV6ItNBfyI+3eIy1egRBZ3E/gGbKW20PkKsRPPVbdRayg+ItX4QWF6jCDTWT3ytQDYTHsI+sE3Y6j+zVjqQPff15er5M6p6t9E9GV98Y5N3V19CRsyYvWvTrC6G9Ms2g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=myumvO95; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4815DC4CEF1;
-	Mon, 27 Oct 2025 19:24:34 +0000 (UTC)
+	 MIME-Version:Content-Type; b=DHotTsurgKHVABCQm1W5g7+xlwHC9Hrtjt7K85/XqT/Tz2aWWBLYCIq7+zE6Svoa99aZh8lDZv5BPKTRM6hCWcYd68tj9GlKVMwa89/tG2HBw5kBXTt1nTIT7dXRpF2nOarq4TZdzYlsRAvFrmCMSuUREVSxFs49nsJXQh3//2I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GOW5VL59; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC496C4CEF1;
+	Mon, 27 Oct 2025 19:32:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761593074;
-	bh=k/j4CRNX090r+meiyzxe3P28GDftRQffEb7GU+4XKLs=;
+	s=korg; t=1761593525;
+	bh=69SpiKekGjVbnB1SQWyraolkDH5mqAj5XdktBsheCBo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=myumvO95dV3CYq9Z1BvICR93xRAxOHnU0nvYq04usbRpvywaCOSn8SMXj9aGrFIWH
-	 7mI2WHPs2nMlnY7z/VxONuqlLsOHl9Wj4G8yL/wLcr2lgzJc5Ky0fwX15kK9nEf8W6
-	 4jYV60gWb12/odrqKwV9xlim3g9hP+Q4vTDc5Xfk=
+	b=GOW5VL59rFGA/C7BUhcQn4rvhosvmR4pm903PJ8BVheF/XXmMAiJXAClQRoigAXYE
+	 uzaXE4esdKKtuz5oNBFZxkAOh1YRajFvNaewTv8Ep9MuFxwYRknzuhAwcPn3hlIYg1
+	 blEEuzrUD7nSrrAbd4DFJWx1gM8AbNIqTr6N8pYg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	stable <stable@kernel.org>,
-	Jun Li <jun.li@nxp.com>,
-	Xu Yang <xu.yang_2@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Conor Dooley <conor.dooley@microchip.com>
-Subject: [PATCH 6.12 110/117] dt-bindings: usb: dwc3-imx8mp: dma-range is required only for imx8mp
+	=?UTF-8?q?=C5=81ukasz=20Bartosik?= <ukaszb@chromium.org>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>
+Subject: [PATCH 6.17 154/184] xhci: dbc: enable back DbC in resume if it was enabled before suspend
 Date: Mon, 27 Oct 2025 19:37:16 +0100
-Message-ID: <20251027183457.002999977@linuxfoundation.org>
+Message-ID: <20251027183519.076883329@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
-References: <20251027183453.919157109@linuxfoundation.org>
+In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
+References: <20251027183514.934710872@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +60,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xu Yang <xu.yang_2@nxp.com>
+From: Mathias Nyman <mathias.nyman@linux.intel.com>
 
-commit 268eb6fb908bc82ce479e4dba9a2cad11f536c9c upstream.
+commit 2bbd38fcd29670e46c0fdb9cd0e90507a8a1bf6a upstream.
 
-Only i.MX8MP need dma-range property to let USB controller work properly.
-Remove dma-range from required list and add limitation for imx8mp.
+DbC is currently only enabled back if it's in configured state during
+suspend.
 
-Fixes: d2a704e29711 ("dt-bindings: usb: dwc3-imx8mp: add imx8mp dwc3 glue bindings")
+If system is suspended after DbC is enabled, but before the device is
+properly enumerated by the host, then DbC would not be enabled back in
+resume.
+
+Always enable DbC back in resume if it's suspended in enabled,
+connected, or configured state
+
 Cc: stable <stable@kernel.org>
-Reviewed-by: Jun Li <jun.li@nxp.com>
-Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
+Fixes: dfba2174dc42 ("usb: xhci: Add DbC support in xHCI driver")
+Tested-by: Łukasz Bartosik <ukaszb@chromium.org>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/devicetree/bindings/usb/fsl,imx8mp-dwc3.yaml |   10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ drivers/usb/host/xhci-dbgcap.c |    9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
---- a/Documentation/devicetree/bindings/usb/fsl,imx8mp-dwc3.yaml
-+++ b/Documentation/devicetree/bindings/usb/fsl,imx8mp-dwc3.yaml
-@@ -85,13 +85,21 @@ required:
-   - reg
-   - "#address-cells"
-   - "#size-cells"
--  - dma-ranges
-   - ranges
-   - clocks
-   - clock-names
-   - interrupts
-   - power-domains
+--- a/drivers/usb/host/xhci-dbgcap.c
++++ b/drivers/usb/host/xhci-dbgcap.c
+@@ -1390,8 +1390,15 @@ int xhci_dbc_suspend(struct xhci_hcd *xh
+ 	if (!dbc)
+ 		return 0;
  
-+allOf:
-+  - if:
-+      properties:
-+        compatible:
-+          const: fsl,imx8mp-dwc3
-+    then:
-+      required:
-+        - dma-ranges
-+
- additionalProperties: false
+-	if (dbc->state == DS_CONFIGURED)
++	switch (dbc->state) {
++	case DS_ENABLED:
++	case DS_CONNECTED:
++	case DS_CONFIGURED:
+ 		dbc->resume_required = 1;
++		break;
++	default:
++		break;
++	}
  
- examples:
+ 	xhci_dbc_stop(dbc);
+ 
 
 
 
