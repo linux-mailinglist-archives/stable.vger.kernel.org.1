@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-190822-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191150-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D92AC10C6A
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:19:34 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB9BFC11309
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:40:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3BB5D567CF8
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:13:46 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id DDF8A56180C
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:27:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B18D32B9B0;
-	Mon, 27 Oct 2025 19:11:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAFA031B824;
+	Mon, 27 Oct 2025 19:25:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OaOPQUFZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qR4+CzVF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 487B835965;
-	Mon, 27 Oct 2025 19:11:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76E5427FD62;
+	Mon, 27 Oct 2025 19:25:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592289; cv=none; b=V9XQX7/KzUgYAY9PPtWd+2S1GbBeF0tdgDC/gnjJbektSpjhdZSETD6kHh+jhrrZqUwXRiQMeSZ9Stin3hPUJPcGFXSqlv3wOYs1atwGTQmkqlSDcRXhQEU52ObPXoOTsWl3gY6qeJiedVeZGLxUx5Y8Sk3WZ8WBHr8557ePsmU=
+	t=1761593138; cv=none; b=ExCCyk8OsmI8Ph+coMCP50UfGXcYTDmUmgK4Zapsnd1gmPXhk1NYJENxmrL97jHLAFR/2yZzt0xlU/tzU5P7URBP972kjptHUWOP4wG22QQ7Di+xTpRtXU0og8xCCZjo2DEH+JMQneucL15onNj+PVipZRBASJKqhg/6+GNDAN8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592289; c=relaxed/simple;
-	bh=eKQ1Jm+IiFj4CzIAFwfC0ivVdCZ/f2myOCVVaEsWpso=;
+	s=arc-20240116; t=1761593138; c=relaxed/simple;
+	bh=GcE8wO/pCMUl5QmbGdCM3opfjDx3SkkqXxmGP/vvtwY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q0+A3eeCJhxNpS/NDyQFjBenayb6Ao66/35U+CooMjzxcU7t5KizgvfG+fuP59XeWo5PGNDziSRClTxFgCGmmtnTRj1zTZ1ylALfuZOfnwnH6AEK0YxKE96CMlWBHhqoagqV71kGCN2b7Tq4mlxNB+QkEH5T56MeOKPWswy5Rmk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OaOPQUFZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE7F4C4CEF1;
-	Mon, 27 Oct 2025 19:11:28 +0000 (UTC)
+	 MIME-Version; b=LpmtCUp+pq8o8fL2qJFC029yMNh0o15jmAunuHI/MMyd55udLqmFgKVNZ+RzK/aXkn87AsFI5FU+32g7RIDtgWi3DC+pB8aY8LIBS81lvq+q1YC+5LcRqn0aSIfVNyV885VgRQElMvtXR9cW0LK3tmaMKEOokhmTka9JN+TqJJI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qR4+CzVF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A060C4CEF1;
+	Mon, 27 Oct 2025 19:25:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592289;
-	bh=eKQ1Jm+IiFj4CzIAFwfC0ivVdCZ/f2myOCVVaEsWpso=;
+	s=korg; t=1761593138;
+	bh=GcE8wO/pCMUl5QmbGdCM3opfjDx3SkkqXxmGP/vvtwY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OaOPQUFZwPLlypSZe1roC/G+lWxHu7qI/84SwUcRc41PVBspe8lKzS58RcARa5Bqk
-	 L76QE/F9Vk1qMr95iXk4NRIcpbDK2s5U8jzq6gC79ZqWcQMJdO7o9rraIShuUqPK5O
-	 ZMqSTabtBxmWBHDmiHKwHoYf2w+d69JwtiS+Gnv0=
+	b=qR4+CzVFslMiZQ1LkxBcBDD8osEInwpp+WpcNT9dKDKFsG6ja1OBIQ9U4M3ktJ97+
+	 BrcnyYnUk5nacBHwhRA4QApbr8CF2j8pPh3KMoTvISf11lDe/u5+6bI7mCpe9YvVLA
+	 Pn5Jgr24OUOk0YjCfSEbruyXF3G7f2Y0xGzvEBZc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jann Horn <jannh@google.com>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 047/157] tls: always set record_type in tls_process_cmsg
-Date: Mon, 27 Oct 2025 19:35:08 +0100
-Message-ID: <20251027183502.556307891@linuxfoundation.org>
+Subject: [PATCH 6.17 027/184] s390/mm: Use __GFP_ACCOUNT for user page table allocations
+Date: Mon, 27 Oct 2025 19:35:09 +0100
+Message-ID: <20251027183515.657473164@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
-References: <20251027183501.227243846@linuxfoundation.org>
+In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
+References: <20251027183514.934710872@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +62,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sabrina Dubroca <sd@queasysnail.net>
+From: Heiko Carstens <hca@linux.ibm.com>
 
-[ Upstream commit b6fe4c29bb51cf239ecf48eacf72b924565cb619 ]
+[ Upstream commit 5671ce2a1fc6b4a16cff962423bc416b92cac3c8 ]
 
-When userspace wants to send a non-DATA record (via the
-TLS_SET_RECORD_TYPE cmsg), we need to send any pending data from a
-previous MSG_MORE send() as a separate DATA record. If that DATA record
-is encrypted asynchronously, tls_handle_open_record will return
--EINPROGRESS. This is currently treated as an error by
-tls_process_cmsg, and it will skip setting record_type to the correct
-value, but the caller (tls_sw_sendmsg_locked) handles that return
-value correctly and proceeds with sending the new message with an
-incorrect record_type (DATA instead of whatever was requested in the
-cmsg).
+Add missing kmemcg accounting of user page table allocations.
 
-Always set record_type before handling the open record. If
-tls_handle_open_record returns an error, record_type will be
-ignored. If it succeeds, whether with synchronous crypto (returning 0)
-or asynchronous (returning -EINPROGRESS), the caller will proceed
-correctly.
-
-Fixes: a42055e8d2c3 ("net/tls: Add support for async encryption of records for performance")
-Reported-by: Jann Horn <jannh@google.com>
-Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
-Link: https://patch.msgid.link/0457252e578a10a94e40c72ba6288b3a64f31662.1760432043.git.sd@queasysnail.net
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/tls/tls_main.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ arch/s390/mm/pgalloc.c | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/net/tls/tls_main.c b/net/tls/tls_main.c
-index 14d01558311d2..4797f68b9ec80 100644
---- a/net/tls/tls_main.c
-+++ b/net/tls/tls_main.c
-@@ -208,12 +208,9 @@ int tls_process_cmsg(struct sock *sk, struct msghdr *msg,
- 			if (msg->msg_flags & MSG_MORE)
- 				return -EINVAL;
+diff --git a/arch/s390/mm/pgalloc.c b/arch/s390/mm/pgalloc.c
+index d2f6f1f6d2fcb..ad3e0f7f7fc1f 100644
+--- a/arch/s390/mm/pgalloc.c
++++ b/arch/s390/mm/pgalloc.c
+@@ -16,9 +16,13 @@
  
--			rc = tls_handle_open_record(sk, msg->msg_flags);
--			if (rc)
--				return rc;
--
- 			*record_type = *(unsigned char *)CMSG_DATA(cmsg);
--			rc = 0;
-+
-+			rc = tls_handle_open_record(sk, msg->msg_flags);
- 			break;
- 		default:
- 			return -EINVAL;
+ unsigned long *crst_table_alloc(struct mm_struct *mm)
+ {
+-	struct ptdesc *ptdesc = pagetable_alloc(GFP_KERNEL, CRST_ALLOC_ORDER);
++	gfp_t gfp = GFP_KERNEL_ACCOUNT;
++	struct ptdesc *ptdesc;
+ 	unsigned long *table;
+ 
++	if (mm == &init_mm)
++		gfp &= ~__GFP_ACCOUNT;
++	ptdesc = pagetable_alloc(gfp, CRST_ALLOC_ORDER);
+ 	if (!ptdesc)
+ 		return NULL;
+ 	table = ptdesc_to_virt(ptdesc);
+@@ -117,7 +121,7 @@ struct ptdesc *page_table_alloc_pgste(struct mm_struct *mm)
+ 	struct ptdesc *ptdesc;
+ 	u64 *table;
+ 
+-	ptdesc = pagetable_alloc(GFP_KERNEL, 0);
++	ptdesc = pagetable_alloc(GFP_KERNEL_ACCOUNT, 0);
+ 	if (ptdesc) {
+ 		table = (u64 *)ptdesc_to_virt(ptdesc);
+ 		__arch_set_page_dat(table, 1);
+@@ -136,10 +140,13 @@ void page_table_free_pgste(struct ptdesc *ptdesc)
+ 
+ unsigned long *page_table_alloc(struct mm_struct *mm)
+ {
++	gfp_t gfp = GFP_KERNEL_ACCOUNT;
+ 	struct ptdesc *ptdesc;
+ 	unsigned long *table;
+ 
+-	ptdesc = pagetable_alloc(GFP_KERNEL, 0);
++	if (mm == &init_mm)
++		gfp &= ~__GFP_ACCOUNT;
++	ptdesc = pagetable_alloc(gfp, 0);
+ 	if (!ptdesc)
+ 		return NULL;
+ 	if (!pagetable_pte_ctor(mm, ptdesc)) {
 -- 
 2.51.0
 
