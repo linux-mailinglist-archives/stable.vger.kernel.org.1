@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-191272-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191110-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DA4BC11402
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:48:30 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11704C110DE
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:32:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 3F3B4566290
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:33:05 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 63ACA507C97
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:25:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6809C31E0E6;
-	Mon, 27 Oct 2025 19:31:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49CC32F25F1;
+	Mon, 27 Oct 2025 19:23:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ha+X6p5K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hrTex9dH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24479309F1E;
-	Mon, 27 Oct 2025 19:31:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05D8B302CB9;
+	Mon, 27 Oct 2025 19:23:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761593484; cv=none; b=dpQGAreBBiQFYf8zWaLqioDKABH7e7A4iCDrmg/PnK6hgFYuCXGmZIya6u50VzGERGIOYhBUCPJfpt4CVO4oec20yqTzoP9tH57JlwIP3pf4A0Bxvxe/ZsIL60SMOsE3ykuNP3nCrbzCep77dLI5t0sxKQtrDSutgKJUmffNVDM=
+	t=1761593036; cv=none; b=pHBuqzZZypBPs8aUqx8VzwEY6RhIY+mw8hpPUXg1NY9HqItOvk7MVmuSu+PXyJqBVMbUTrbPcNg+U8uIS06TONRV5LDs3RyGOv47tB0+NdjSY4FnWmKeu62xRRDoT8TxymoQW/YvU/dvE/QBXcNN0h5OTxD0VWQ/93irOH8r+Bk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761593484; c=relaxed/simple;
-	bh=7tZvoC9DSUEuR3/Qq1z0a69jIios6yt/47TFyis5fdY=;
+	s=arc-20240116; t=1761593036; c=relaxed/simple;
+	bh=cSKt53/eBpVsfd5TGSsfqOIZ8QvURi0xrDK98RCaVAA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=in71FWgCHlKEVO8B6Zcr0N6WIpD3E6TjLPU2RXk2slAIe/K/G7QySSw3lpNNtIys92H6R82aeGo9Z5Erdu19gWapTSe/n5NYhz+h7hsDm7pd6p9hmGID1vVf40TDE7DpB1WCWNDbUYux8oUMFMVnIxaFMHlu84epJ27wWWPUTRg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ha+X6p5K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 997E9C4CEF1;
-	Mon, 27 Oct 2025 19:31:23 +0000 (UTC)
+	 MIME-Version; b=EUQ3KW/dgNFGkqXzkgJAp0qQ20AociDa892SUBC4vyDCDurRa01oIs3IdqWiSwiyJWAgU/evHDp1JFsHJQ6vRetGS8HVyGyYZ4YmbNSHf3KEoDprClldHESUaON81p6fEIEn1P3kK06rIBYWiWw1ewJSKhnfyOBUWlT+LhlOGXU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hrTex9dH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84CB4C4CEFD;
+	Mon, 27 Oct 2025 19:23:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761593484;
-	bh=7tZvoC9DSUEuR3/Qq1z0a69jIios6yt/47TFyis5fdY=;
+	s=korg; t=1761593035;
+	bh=cSKt53/eBpVsfd5TGSsfqOIZ8QvURi0xrDK98RCaVAA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ha+X6p5Kfy7FpLFFJABq3eeRU3E+x/QsVqujH31DdFrcDnX7C52NQVdlKS9yj0QBh
-	 C4JL+oR2z2XMTxM62f49sireanFh4ZfjXLHO8m+K8grqofgMVdBknCMN3NIs4vqFv/
-	 pUcHnaaifLlTGP4m10XvxXTd2/g24Db/IePidG7Y=
+	b=hrTex9dH/uWMGP6e5y5TOtcmlXy3sNlx1f0JIKZ8tr003Kn4k8dgk77xfut0+tBkQ
+	 7yt1OXH3xwC1Qu6aiV0M8LIQuD4mNHDgpHY8zSHc5jfwW13LsbwA/8Ek2oIVjThwTn
+	 uuZNmSJtqoEx9/nDerQSZ2oIVkIVg3sN9gODNHP0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 147/184] io_uring: correct __must_hold annotation in io_install_fixed_file
-Date: Mon, 27 Oct 2025 19:37:09 +0100
-Message-ID: <20251027183518.896602674@linuxfoundation.org>
+	Tomas Winkler <tomasw@gmail.com>,
+	Alexander Usyskin <alexander.usyskin@intel.com>
+Subject: [PATCH 6.12 104/117] mei: me: add wildcat lake P DID
+Date: Mon, 27 Oct 2025 19:37:10 +0100
+Message-ID: <20251027183456.836404218@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
-References: <20251027183514.934710872@linuxfoundation.org>
+In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
+References: <20251027183453.919157109@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +61,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+From: Alexander Usyskin <alexander.usyskin@intel.com>
 
-[ Upstream commit c5efc6a0b3940381d67887302ddb87a5cf623685 ]
+commit 410d6c2ad4d1a88efa0acbb9966693725b564933 upstream.
 
-The __must_hold annotation references &req->ctx->uring_lock, but req
-is not in scope in io_install_fixed_file. This change updates the
-annotation to reference the correct ctx->uring_lock.
-improving code clarity.
+Add Wildcat Lake P device id.
 
-Fixes: f110ed8498af ("io_uring: split out fixed file installation and removal")
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Co-developed-by: Tomas Winkler <tomasw@gmail.com>
+Signed-off-by: Tomas Winkler <tomasw@gmail.com>
+Signed-off-by: Alexander Usyskin <alexander.usyskin@intel.com>
+Link: https://patch.msgid.link/20251016125912.2146136-1-alexander.usyskin@intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/filetable.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/misc/mei/hw-me-regs.h |    2 ++
+ drivers/misc/mei/pci-me.c     |    2 ++
+ 2 files changed, 4 insertions(+)
 
-diff --git a/io_uring/filetable.c b/io_uring/filetable.c
-index a21660e3145ab..794ef95df293c 100644
---- a/io_uring/filetable.c
-+++ b/io_uring/filetable.c
-@@ -57,7 +57,7 @@ void io_free_file_tables(struct io_ring_ctx *ctx, struct io_file_table *table)
+--- a/drivers/misc/mei/hw-me-regs.h
++++ b/drivers/misc/mei/hw-me-regs.h
+@@ -120,6 +120,8 @@
+ #define MEI_DEV_ID_PTL_H      0xE370  /* Panther Lake H */
+ #define MEI_DEV_ID_PTL_P      0xE470  /* Panther Lake P */
  
- static int io_install_fixed_file(struct io_ring_ctx *ctx, struct file *file,
- 				 u32 slot_index)
--	__must_hold(&req->ctx->uring_lock)
-+	__must_hold(&ctx->uring_lock)
- {
- 	struct io_rsrc_node *node;
++#define MEI_DEV_ID_WCL_P      0x4D70  /* Wildcat Lake P */
++
+ /*
+  * MEI HW Section
+  */
+--- a/drivers/misc/mei/pci-me.c
++++ b/drivers/misc/mei/pci-me.c
+@@ -127,6 +127,8 @@ static const struct pci_device_id mei_me
+ 	{MEI_PCI_DEVICE(MEI_DEV_ID_PTL_H, MEI_ME_PCH15_CFG)},
+ 	{MEI_PCI_DEVICE(MEI_DEV_ID_PTL_P, MEI_ME_PCH15_CFG)},
  
--- 
-2.51.0
-
++	{MEI_PCI_DEVICE(MEI_DEV_ID_WCL_P, MEI_ME_PCH15_CFG)},
++
+ 	/* required last entry */
+ 	{0, }
+ };
 
 
 
