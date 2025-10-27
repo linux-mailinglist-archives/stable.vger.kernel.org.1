@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-190140-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190477-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5BB9C1008D
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:44:28 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E7AFC10636
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:01:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 2F21D4FBC33
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 18:42:47 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 4B1B9351E2A
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:01:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 525753191CC;
-	Mon, 27 Oct 2025 18:42:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8C80329C60;
+	Mon, 27 Oct 2025 18:56:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cMxSAEMi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EA+Mdkod"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EBB52BD033;
-	Mon, 27 Oct 2025 18:42:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 931C632A3C3;
+	Mon, 27 Oct 2025 18:56:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761590546; cv=none; b=C/rvqtcQbwhg6oMDlLtKhtNHezAqxA6rDS3Rcv6PCeLP3vuu+GgkhFRiSrPwT6pwVYwfi6Hxcd/C48J3iZfWkdfhG1rtPYsNDEctUk9uB21f6vL/jVwsVPpDuJjvHd2s2xX1inVUVqBvYOxySk18H4sZ5qaDlDxerZ1qApkm3ws=
+	t=1761591392; cv=none; b=TX9jI3AIktFQxWH67TDL8atjtSfhkMjbvRVlN0ChehN2xomG7vFiOtoG6bc6mcln1UXjIYWDqx6+SJ9OmV/3XyzwCl1UISf5ofdn3FIoBrHoo0Iho+jdUSR/xD6Ts16PBUmxeYrhLkx77NnDiuE7t9ZRRonTsYOtb/eCCCU+zMc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761590546; c=relaxed/simple;
-	bh=Sz77OevdIvfVc8mfOUOLYClOsRJOKrR345LG4ro1J6Y=;
+	s=arc-20240116; t=1761591392; c=relaxed/simple;
+	bh=5O2Cs0uXawHxHxPdszKaBes/zSpbv6em4mI1Wylhs3w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UjO3rrLdLl8X95q258Q7O8IC4Zzf640X7g9f2Fs10sswG0NP6lokGebY1oexFrYz2CrMf3fJIB/TOoRzN11N5Z4llYNNvXhuvjA6aucRiDNuDBz4bd3t96gwIlthcLwz23ZEKAt2kKMwZR+hIcL53xe4G2HWf/5ATzENtVEYrUI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cMxSAEMi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56EA6C4CEF1;
-	Mon, 27 Oct 2025 18:42:25 +0000 (UTC)
+	 MIME-Version; b=SS5XzHdKxXueuw0Mlo3RbMmX73WLncrilL16+5cvPojL1pRBkfbFCqZnPzv9OhnX4k541YAJP1EoPeghEmr6zxEBPhuUGA1yJgp4ObSMJxuFdrOYspsxCe4tfXJ4MOsp3L8YEOyMlvwF53nPFy03+dk5mAYvas6V/ttmdlYbFHk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EA+Mdkod; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D3AEC4CEF1;
+	Mon, 27 Oct 2025 18:56:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761590545;
-	bh=Sz77OevdIvfVc8mfOUOLYClOsRJOKrR345LG4ro1J6Y=;
+	s=korg; t=1761591392;
+	bh=5O2Cs0uXawHxHxPdszKaBes/zSpbv6em4mI1Wylhs3w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cMxSAEMiD8Mi1zx0guloQOIUraK8KIdBpG75KmfFkpG/Y70MVh8vg91r9zl3NE/zI
-	 zO5tseS4roYE8Wqq2WT9i1kkIYx0xnuRoFQqeXhx4piUs4vAIKukET6OurL7Rfe3+z
-	 vZZ5tFeFo3/y9O9eQSlTxjP/iWGAy57szDNHWQF4=
+	b=EA+Mdkodrg+lT1LhxshJ2IyXjmsOl10SDwE1CMZjwvvZb+pAH08X6WFoRZPqML0w7
+	 /iECQayHmc8hRV4xUOxpKjl8etReTIe2IdNSlVYBngrAV4yx2SHp08JxzL3rKW6U7t
+	 NGV0bIXYpHvrZKE+FRbx5FtjYsE13gpztuYBPjf0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Garry <john.garry@huawei.com>,
-	Jack Wang <jinpu.wang@ionos.com>,
-	Jason Yan <yanaijie@huawei.com>,
-	Hannes Reinecke <hare@suse.de>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Phillip Lougher <phillip@squashfs.org.uk>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 085/224] scsi: libsas: Add sas_task_find_rq()
-Date: Mon, 27 Oct 2025 19:33:51 +0100
-Message-ID: <20251027183511.268900123@linuxfoundation.org>
+Subject: [PATCH 5.10 179/332] Squashfs: add additional inode sanity checking
+Date: Mon, 27 Oct 2025 19:33:52 +0100
+Message-ID: <20251027183529.381379586@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183508.963233542@linuxfoundation.org>
-References: <20251027183508.963233542@linuxfoundation.org>
+In-Reply-To: <20251027183524.611456697@linuxfoundation.org>
+References: <20251027183524.611456697@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,64 +62,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Garry <john.garry@huawei.com>
+From: Phillip Lougher <phillip@squashfs.org.uk>
 
-[ Upstream commit a9ee3f840646e2ec419c734e592ffe997195435e ]
+[ Upstream commit 9ee94bfbe930a1b39df53fa2d7b31141b780eb5a ]
 
-blk-mq already provides a unique tag per request. Some libsas LLDDs - like
-hisi_sas - already use this tag as the unique per-I/O HW tag.
+Patch series "Squashfs: performance improvement and a sanity check".
 
-Add a common function to provide the request associated with a sas_task for
-all libsas LLDDs.
+This patchset adds an additional sanity check when reading regular file
+inodes, and adds support for SEEK_DATA/SEEK_HOLE lseek() whence values.
 
-Signed-off-by: John Garry <john.garry@huawei.com>
-Link: https://lore.kernel.org/r/1666091763-11023-2-git-send-email-john.garry@huawei.com
-Reviewed-by: Jack Wang <jinpu.wang@ionos.com>
-Reviewed-by: Jason Yan <yanaijie@huawei.com>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Stable-dep-of: 60cd16a3b743 ("scsi: mvsas: Fix use-after-free bugs in mvs_work_queue")
+This patch (of 2):
+
+Add an additional sanity check when reading regular file inodes.
+
+A regular file if the file size is an exact multiple of the filesystem
+block size cannot have a fragment.  This is because by definition a
+fragment block stores tailends which are not a whole block in size.
+
+Link: https://lkml.kernel.org/r/20250923220652.568416-1-phillip@squashfs.org.uk
+Link: https://lkml.kernel.org/r/20250923220652.568416-2-phillip@squashfs.org.uk
+Signed-off-by: Phillip Lougher <phillip@squashfs.org.uk>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: 9f1c14c1de1b ("Squashfs: reject negative file sizes in squashfs_read_inode()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/scsi/libsas.h | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ fs/squashfs/inode.c |   20 ++++++++++++++++++--
+ 1 file changed, 18 insertions(+), 2 deletions(-)
 
-diff --git a/include/scsi/libsas.h b/include/scsi/libsas.h
-index 4e2d61e8fb1ed..8461fad88a119 100644
---- a/include/scsi/libsas.h
-+++ b/include/scsi/libsas.h
-@@ -620,6 +620,24 @@ extern struct sas_task *sas_alloc_task(gfp_t flags);
- extern struct sas_task *sas_alloc_slow_task(gfp_t flags);
- extern void sas_free_task(struct sas_task *task);
+--- a/fs/squashfs/inode.c
++++ b/fs/squashfs/inode.c
+@@ -140,8 +140,17 @@ int squashfs_read_inode(struct inode *in
+ 		if (err < 0)
+ 			goto failed_read;
  
-+static inline struct request *sas_task_find_rq(struct sas_task *task)
-+{
-+	struct scsi_cmnd *scmd;
-+
-+	if (task->task_proto & SAS_PROTOCOL_STP_ALL) {
-+		struct ata_queued_cmd *qc = task->uldd_task;
-+
-+		scmd = qc ? qc->scsicmd : NULL;
-+	} else {
-+		scmd = task->uldd_task;
-+	}
-+
-+	if (!scmd)
-+		return NULL;
-+
-+	return scsi_cmd_to_rq(scmd);
-+}
-+
- struct sas_domain_function_template {
- 	/* The class calls these to notify the LLDD of an event. */
- 	void (*lldd_port_formed)(struct asd_sas_phy *);
--- 
-2.51.0
-
++		inode->i_size = le32_to_cpu(sqsh_ino->file_size);
+ 		frag = le32_to_cpu(sqsh_ino->fragment);
+ 		if (frag != SQUASHFS_INVALID_FRAG) {
++			/*
++			 * the file cannot have a fragment (tailend) and have a
++			 * file size a multiple of the block size
++			 */
++			if ((inode->i_size & (msblk->block_size - 1)) == 0) {
++				err = -EINVAL;
++				goto failed_read;
++			}
+ 			frag_offset = le32_to_cpu(sqsh_ino->offset);
+ 			frag_size = squashfs_frag_lookup(sb, frag, &frag_blk);
+ 			if (frag_size < 0) {
+@@ -155,7 +164,6 @@ int squashfs_read_inode(struct inode *in
+ 		}
+ 
+ 		set_nlink(inode, 1);
+-		inode->i_size = le32_to_cpu(sqsh_ino->file_size);
+ 		inode->i_fop = &generic_ro_fops;
+ 		inode->i_mode |= S_IFREG;
+ 		inode->i_blocks = ((inode->i_size - 1) >> 9) + 1;
+@@ -184,8 +192,17 @@ int squashfs_read_inode(struct inode *in
+ 		if (err < 0)
+ 			goto failed_read;
+ 
++		inode->i_size = le64_to_cpu(sqsh_ino->file_size);
+ 		frag = le32_to_cpu(sqsh_ino->fragment);
+ 		if (frag != SQUASHFS_INVALID_FRAG) {
++			/*
++			 * the file cannot have a fragment (tailend) and have a
++			 * file size a multiple of the block size
++			 */
++			if ((inode->i_size & (msblk->block_size - 1)) == 0) {
++				err = -EINVAL;
++				goto failed_read;
++			}
+ 			frag_offset = le32_to_cpu(sqsh_ino->offset);
+ 			frag_size = squashfs_frag_lookup(sb, frag, &frag_blk);
+ 			if (frag_size < 0) {
+@@ -200,7 +217,6 @@ int squashfs_read_inode(struct inode *in
+ 
+ 		xattr_id = le32_to_cpu(sqsh_ino->xattr);
+ 		set_nlink(inode, le32_to_cpu(sqsh_ino->nlink));
+-		inode->i_size = le64_to_cpu(sqsh_ino->file_size);
+ 		inode->i_op = &squashfs_inode_ops;
+ 		inode->i_fop = &generic_ro_fops;
+ 		inode->i_mode |= S_IFREG;
 
 
 
