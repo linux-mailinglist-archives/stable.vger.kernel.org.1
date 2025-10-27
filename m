@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-190649-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-190793-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33FBCC10954
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:11:12 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1D19C10C22
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 20:18:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 596EC18926B9
-	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:07:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D20F9188C746
+	for <lists+stable@lfdr.de>; Mon, 27 Oct 2025 19:13:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CE9F32D7D7;
-	Mon, 27 Oct 2025 19:03:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D058321445;
+	Mon, 27 Oct 2025 19:10:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rmyjDBbh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ozi3svSb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 590CA31D72B;
-	Mon, 27 Oct 2025 19:03:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E4142D73B1;
+	Mon, 27 Oct 2025 19:10:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591834; cv=none; b=GBzG5n5sM0OBO+hjESpzQnIN7cazspphRBT9cXslgYbMega9BV4iRB/ZKhcWOQJXdWMX5Ou9pBnJWMJNTq6e415yDGT3IKAoRrVTHUfdGOoWEc/Q9lUG1X2iDSIF1kDRlZa7snU3Ynf9Ct2nRMAbqEpnFMbPQX/cjfKOl1E1eSA=
+	t=1761592211; cv=none; b=Iep8LfsbJxt80yhlfbLIWn61q6kpSxHLl4Eg102deYBOxKhnfelpFWjS3rx5C5NJndUUYIU81CEUpenTqrmJumjzmX+9SY2EOjiljh0XWPRR8RxuXenButmy12Uib2EsOSATMvjEhg+ZrdZFr5j9IU167qJVOTpnSK1XnqrkhZs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591834; c=relaxed/simple;
-	bh=cV2Ur5+gHWQgw36uWLsktvMT4dJJEx/6wbYXw18XB+M=;
+	s=arc-20240116; t=1761592211; c=relaxed/simple;
+	bh=cfCPONWt/P/2Lwp/YZmcD/w8NhjzeDg5IyejyTS9dHI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M5Lv07hfKiX08ILbGJU/t4z9bmjxO78FomLld4aMrBbcp+IsfGfxUPsj9rjbGIxiJMepz9ErxVDgmqk2Wick6VYbm1LZlJZwhNzC154YxCuN1U1B/v9rNCLJDWw4P/VS88c+QB7n5fPMPHAlVgl04IBpjpRnZC+NBCN++LhkwTY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rmyjDBbh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF4D3C4CEF1;
-	Mon, 27 Oct 2025 19:03:53 +0000 (UTC)
+	 MIME-Version; b=OsydheVqO9MSdnq9JtefelElGFH/qtFAMpYY1c0QJcT5hfHBYTZhTEtnMu8cQk5eXvqRB5kQG4mIX2RKEhJr3P6xi0xTzNxGcMTSz6p68u4eJcObW/kCiEBY6gu9LutETn0mVbcHE28TkylYB61vrP/uZ95MgEKlXxI1sTZWlOs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ozi3svSb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4891C4CEF1;
+	Mon, 27 Oct 2025 19:10:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591834;
-	bh=cV2Ur5+gHWQgw36uWLsktvMT4dJJEx/6wbYXw18XB+M=;
+	s=korg; t=1761592211;
+	bh=cfCPONWt/P/2Lwp/YZmcD/w8NhjzeDg5IyejyTS9dHI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rmyjDBbhhfLjc5zVslwZU51uGMzHiZpm6elqdw4843CwmaGe76RcFzNfOYM8OYUKD
-	 u30a8Qcwy9G0suU78O1V24F5305qlDeHTsD7jOmjrvWwHFHuXungQs0ApdPoGzQ94U
-	 170vwaR9ZNNbaejpFVODADLWZdzEozqMJoAq7h+Y=
+	b=Ozi3svSbC1cRj4jdOf+y3u1fGszYFTQG5TyPSMPY9TobO0yb9wMKRsKjGIvm2Mg8j
+	 pduTVbMF83TUNL2rZs7XPfwdpg6ChddiHAjSoFfZRcQmZGa8mtmT1013DRcdJ//8lb
+	 7w+p2yb2PvzzXiHfV8f1BW8MxA8E9wNitY63TVig=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Patrik Flykt <patrik.flykt@linux.intel.com>,
-	Markus Schneider-Pargmann <msp@baylibre.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 016/123] can: m_can: m_can_plat_remove(): add missing pm_runtime_disable()
+	Benjamin Tissoires <bentiss@kernel.org>,
+	Jiri Kosina <jkosina@suse.com>
+Subject: [PATCH 6.1 035/157] HID: multitouch: fix sticky fingers
 Date: Mon, 27 Oct 2025 19:34:56 +0100
-Message-ID: <20251027183446.833571643@linuxfoundation.org>
+Message-ID: <20251027183502.239042907@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183446.381986645@linuxfoundation.org>
-References: <20251027183446.381986645@linuxfoundation.org>
+In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
+References: <20251027183501.227243846@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +61,116 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Kleine-Budde <mkl@pengutronix.de>
+From: Benjamin Tissoires <bentiss@kernel.org>
 
-[ Upstream commit ba569fb07a7e9e9b71e9282e27e993ba859295c2 ]
+commit 46f781e0d151844589dc2125c8cce3300546f92a upstream.
 
-Commit 227619c3ff7c ("can: m_can: move runtime PM enable/disable to
-m_can_platform") moved the PM runtime enable from the m_can core
-driver into the m_can_platform.
+The sticky fingers quirk (MT_QUIRK_STICKY_FINGERS) was only considering
+the case when slots were not released during the last report.
+This can be problematic if the firmware forgets to release a finger
+while others are still present.
 
-That patch forgot to move the pm_runtime_disable() to
-m_can_plat_remove(), so that unloading the m_can_platform driver
-causes an "Unbalanced pm_runtime_enable!" error message.
+This was observed on the Synaptics DLL0945 touchpad found on the Dell
+XPS 9310 and the Dell Inspiron 5406.
 
-Add the missing pm_runtime_disable() to m_can_plat_remove() to fix the
-problem.
-
-Cc: Patrik Flykt <patrik.flykt@linux.intel.com>
-Fixes: 227619c3ff7c ("can: m_can: move runtime PM enable/disable to m_can_platform")
-Reviewed-by: Markus Schneider-Pargmann <msp@baylibre.com>
-Link: https://patch.msgid.link/20250929-m_can-fix-state-handling-v4-1-682b49b49d9a@pengutronix.de
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 4f4001bc76fd ("HID: multitouch: fix rare Win 8 cases when the touch up event gets missing")
+Cc: stable@vger.kernel.org
+Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/can/m_can/m_can_platform.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/hid/hid-multitouch.c |   27 ++++++++++++++-------------
+ 1 file changed, 14 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/net/can/m_can/m_can_platform.c b/drivers/net/can/m_can/m_can_platform.c
-index de6d8e01bf2e8..71cf3662128a1 100644
---- a/drivers/net/can/m_can/m_can_platform.c
-+++ b/drivers/net/can/m_can/m_can_platform.c
-@@ -170,7 +170,7 @@ static int m_can_plat_remove(struct platform_device *pdev)
- 	struct m_can_classdev *mcan_class = &priv->cdev;
+--- a/drivers/hid/hid-multitouch.c
++++ b/drivers/hid/hid-multitouch.c
+@@ -83,9 +83,8 @@ enum latency_mode {
+ 	HID_LATENCY_HIGH = 1,
+ };
  
- 	m_can_class_unregister(mcan_class);
+-#define MT_IO_FLAGS_RUNNING		0
+-#define MT_IO_FLAGS_ACTIVE_SLOTS	1
+-#define MT_IO_FLAGS_PENDING_SLOTS	2
++#define MT_IO_SLOTS_MASK		GENMASK(7, 0) /* reserve first 8 bits for slot tracking */
++#define MT_IO_FLAGS_RUNNING		32
+ 
+ static const bool mtrue = true;		/* default for true */
+ static const bool mfalse;		/* default for false */
+@@ -161,7 +160,11 @@ struct mt_device {
+ 	struct mt_class mtclass;	/* our mt device class */
+ 	struct timer_list release_timer;	/* to release sticky fingers */
+ 	struct hid_device *hdev;	/* hid_device we're attached to */
+-	unsigned long mt_io_flags;	/* mt flags (MT_IO_FLAGS_*) */
++	unsigned long mt_io_flags;	/* mt flags (MT_IO_FLAGS_RUNNING)
++					 * first 8 bits are reserved for keeping the slot
++					 * states, this is fine because we only support up
++					 * to 250 slots (MT_MAX_MAXCONTACT)
++					 */
+ 	__u8 inputmode_value;	/* InputMode HID feature value */
+ 	__u8 maxcontacts;
+ 	bool is_buttonpad;	/* is this device a button pad? */
+@@ -936,6 +939,7 @@ static void mt_release_pending_palms(str
+ 
+ 	for_each_set_bit(slotnum, app->pending_palm_slots, td->maxcontacts) {
+ 		clear_bit(slotnum, app->pending_palm_slots);
++		clear_bit(slotnum, &td->mt_io_flags);
+ 
+ 		input_mt_slot(input, slotnum);
+ 		input_mt_report_slot_inactive(input);
+@@ -967,12 +971,6 @@ static void mt_sync_frame(struct mt_devi
+ 
+ 	app->num_received = 0;
+ 	app->left_button_state = 0;
 -
-+	pm_runtime_disable(mcan_class->dev);
- 	m_can_class_free_dev(mcan_class->net);
+-	if (test_bit(MT_IO_FLAGS_ACTIVE_SLOTS, &td->mt_io_flags))
+-		set_bit(MT_IO_FLAGS_PENDING_SLOTS, &td->mt_io_flags);
+-	else
+-		clear_bit(MT_IO_FLAGS_PENDING_SLOTS, &td->mt_io_flags);
+-	clear_bit(MT_IO_FLAGS_ACTIVE_SLOTS, &td->mt_io_flags);
+ }
+ 
+ static int mt_compute_timestamp(struct mt_application *app, __s32 value)
+@@ -1147,7 +1145,9 @@ static int mt_process_slot(struct mt_dev
+ 		input_event(input, EV_ABS, ABS_MT_TOUCH_MAJOR, major);
+ 		input_event(input, EV_ABS, ABS_MT_TOUCH_MINOR, minor);
+ 
+-		set_bit(MT_IO_FLAGS_ACTIVE_SLOTS, &td->mt_io_flags);
++		set_bit(slotnum, &td->mt_io_flags);
++	} else {
++		clear_bit(slotnum, &td->mt_io_flags);
+ 	}
  
  	return 0;
--- 
-2.51.0
-
+@@ -1282,7 +1282,7 @@ static void mt_touch_report(struct hid_d
+ 	 * defect.
+ 	 */
+ 	if (app->quirks & MT_QUIRK_STICKY_FINGERS) {
+-		if (test_bit(MT_IO_FLAGS_PENDING_SLOTS, &td->mt_io_flags))
++		if (td->mt_io_flags & MT_IO_SLOTS_MASK)
+ 			mod_timer(&td->release_timer,
+ 				  jiffies + msecs_to_jiffies(100));
+ 		else
+@@ -1729,6 +1729,7 @@ static void mt_release_contacts(struct h
+ 			for (i = 0; i < mt->num_slots; i++) {
+ 				input_mt_slot(input_dev, i);
+ 				input_mt_report_slot_inactive(input_dev);
++				clear_bit(i, &td->mt_io_flags);
+ 			}
+ 			input_mt_sync_frame(input_dev);
+ 			input_sync(input_dev);
+@@ -1751,7 +1752,7 @@ static void mt_expired_timeout(struct ti
+ 	 */
+ 	if (test_and_set_bit_lock(MT_IO_FLAGS_RUNNING, &td->mt_io_flags))
+ 		return;
+-	if (test_bit(MT_IO_FLAGS_PENDING_SLOTS, &td->mt_io_flags))
++	if (td->mt_io_flags & MT_IO_SLOTS_MASK)
+ 		mt_release_contacts(hdev);
+ 	clear_bit_unlock(MT_IO_FLAGS_RUNNING, &td->mt_io_flags);
+ }
 
 
 
