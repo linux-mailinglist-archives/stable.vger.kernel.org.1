@@ -1,129 +1,131 @@
-Return-Path: <stable+bounces-191451-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191452-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44310C14807
-	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 13:02:17 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2608C14866
+	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 13:08:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5CEB64E75B9
-	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 12:02:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 895F2426173
+	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 12:03:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6076C32863F;
-	Tue, 28 Oct 2025 12:01:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAD8132862B;
+	Tue, 28 Oct 2025 12:03:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Wt7egkQV";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="U+U7dZCf"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ka2yzJ6Y"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3AD5302CC2;
-	Tue, 28 Oct 2025 12:01:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8DE3302178
+	for <stable@vger.kernel.org>; Tue, 28 Oct 2025 12:03:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761652917; cv=none; b=hgsFtt/y5lKn9FHzLIVmtQ+gbZJoiya9hbT8L0W/y8Nf4Z12+CiyTnYJR6bI+T8B8QA0FmmJO9u8XgBx8DQkXkbgnExRqDn7zlViatG5VaXetTs6ASjyi+0zqu53Acb7/Z2ySMOZMzjv//KQLyBSK94dt9ZQ7VrCS2SGvSRs5Ko=
+	t=1761653027; cv=none; b=GfFmHyHsAJII/ECpPxWCf1BjVV8oEsjzXdtrHg/N8GPo225/uMYb5C69LDE/PjlGAKd8PDXK3B1A6WHbDliuYx/0YWcj1B9VpkAdwhh37Wn7ujY9WrMj07wlEgo9ib8Ka3LlEFkBKBT/E9ZbNvx32GU+0XFSJXTuV5agZy0w7r4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761652917; c=relaxed/simple;
-	bh=l7vOFpR42jbNSBtXSBdE8trxX9hJseDCpSFfGaihnz0=;
-	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=rHAQtlGm+kWMWidf71aMJ9pjtzXgsKETLEj0k0dJb2vw2UsPZuxYqeKczKJZiUIXYt4UObzgFpSZEbnsYKYyJs9LB6+nMXNH1PggZ5cnahqo7Q/URnmp7IeL/tKfiacEld8Xa6K4cbyN1Ge1heoI+LsgYpzTDaM1IadJgG1N80M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Wt7egkQV; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=U+U7dZCf; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 28 Oct 2025 12:01:51 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1761652913;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=YeVIUNu11cNST0eypHpOvCA3xSe//4ZGBiT4znegk7E=;
-	b=Wt7egkQVxYeOjVaaGNFQYYb4swa8JTcytEMFcYwiILRZqr3LspbEh7y7ir8dOEy+uYDh8l
-	2Nl/yU57JymRi1EPSu/Vh8elYzkX4pm0RU+MIE3CT0VHy44ExmjuTUgGMK2bWqOgunsyNN
-	hH3HUOQ44elZmhBD52bQF4Q8l9mJlYmfSyKsTGS7d5uB1gDkOeEqrKGdk5AJkxdPvT64ZK
-	HvP03ogl350MRZhxR3eXXCLzkQ40P6fQhSXYpoph5NBkACV5fFvuOIywztAf4wE3xsmoIy
-	aOB52y761yGgRQOl9ToFPnfTGYJywKjSAaKZXAt8Q9eDG40hKyurLrSyXprNrQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1761652913;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=YeVIUNu11cNST0eypHpOvCA3xSe//4ZGBiT4znegk7E=;
-	b=U+U7dZCfJEte1jV/md8tZmW5RRpE2XO4lDYPpz2GyP8wwMfFo1qOYl/NEnTetaEz0AKYrK
-	FkFIZcBNSFG8gVDg==
-From: "tip-bot2 for Gregory Price" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/CPU/AMD: Add RDSEED fix for Zen5
-Cc: stable@vger.kernel.org, Gregory Price <gourry@gourry.net>,
- "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
- linux-kernel@vger.kernel.org
+	s=arc-20240116; t=1761653027; c=relaxed/simple;
+	bh=NGL+IZJGTIxbqCDdaa88n3D2XlIAHmLG1x6h5o24+AM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=CSus0mgQEWCDCHXefWQWyFJzRlpkPIIH+vZBPRGQLmcyhUXEsO3Q3ahk77xegl3GFfNRI2msaPb8DrEjbpFk8k7Cq9j9Oqa3Bx9xKJ8JqahphdaxUvjFitGL8dSXhaxB9ynNdWfpemloxbnTlBJ2i5RCJZejxlu+xtWBcgtsywA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ka2yzJ6Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4866AC116B1
+	for <stable@vger.kernel.org>; Tue, 28 Oct 2025 12:03:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761653027;
+	bh=NGL+IZJGTIxbqCDdaa88n3D2XlIAHmLG1x6h5o24+AM=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=Ka2yzJ6YVCcqht6zYotA60ouOMgNIYzL6TW+yPsfl1fLH5835e0SAf6BR/1BJrTL/
+	 jBU+ZDqjQDp3/CW5reGTDVfsTc4SWMGDkceSAnB3pqJpYXo0fp1Ie7md80ZKjnRHqJ
+	 KGtDa+f5MckIXEn81ma31OC83W3hjRmdkE2JnhLihPsNcamMuKKL6X7j3X3am8XGN/
+	 o7lxlMPem3YGGx1YiZ4MAOe99mKElS2Tfu59zzSaQOQpioQk27yrzLYlhwZttr+qyG
+	 bGUlgTo0X8UbVzmhphkA4L38GcLFlQ/i3HdtVJXlb7zoohjNCChvMu0igPhICa9kGl
+	 i7pIww7iLoOEw==
+Received: by mail-ot1-f44.google.com with SMTP id 46e09a7af769-7c67d9577b3so281914a34.2
+        for <stable@vger.kernel.org>; Tue, 28 Oct 2025 05:03:47 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVKs6kgj4XE4lmXpcQD4LfeEFIIczwOnSyWHbbbpPrwDgr8fMN5LuVtdawJvfCNWsbKJLxQr+I=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwfXYQmfyRsjD67+FBQwklAEcqwdz9w4D38FXIqNWQYkruia1aH
+	x/zbmR4Uze3CAIG711fer2TtJDevNY//qxwFOHiQ4iD05verOz+dlR6bgqHucOpr89xMjjNCamp
+	Qq6eTnTBomXAfHXu/WZGZNWGF3Ns9p8U=
+X-Google-Smtp-Source: AGHT+IEbl+yOB806CIHgJBzvgTOTmW/YIaJ+LahZDXUFEDenvFO7sdJjf1V/C6J1whcFN9oW6EKkellD/nj1/P2u1tc=
+X-Received: by 2002:a05:6808:c2a4:b0:441:8f74:fce with SMTP id
+ 5614622812f47-44f6bb54097mr1093233b6e.59.1761653026571; Tue, 28 Oct 2025
+ 05:03:46 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <176165291198.2601451.3074910014537130674.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
+References: <20251028060829.65434-1-linmq006@gmail.com>
+In-Reply-To: <20251028060829.65434-1-linmq006@gmail.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Tue, 28 Oct 2025 13:03:34 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0h3YMqT9uH+aLxu7SKsqY12AN7R04fRrL8Q+Z4wo0JaOA@mail.gmail.com>
+X-Gm-Features: AWmQ_bkQc9jm8EG6beNx1vkq6okGIrtKCtxYZsndpTWZCgkZ3fOY0fn_g05yUDg
+Message-ID: <CAJZ5v0h3YMqT9uH+aLxu7SKsqY12AN7R04fRrL8Q+Z4wo0JaOA@mail.gmail.com>
+Subject: Re: [PATCH] thermal: thermal_of: Fix device node reference leak in thermal_of_cm_lookup
+To: Miaoqian Lin <linmq006@gmail.com>, Daniel Lezcano <daniel.lezcano@linaro.org>, 
+	Lukasz Luba <lukasz.luba@arm.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Zhang Rui <rui.zhang@intel.com>, linux-pm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-The following commit has been merged into the x86/urgent branch of tip:
+On Tue, Oct 28, 2025 at 7:08=E2=80=AFAM Miaoqian Lin <linmq006@gmail.com> w=
+rote:
+>
+> In thermal_of_cm_lookup(), of_parse_phandle() returns a device node with
+> its reference count incremented. The caller is responsible for releasing
+> this reference when the node is no longer needed.
+>
+> Add of_node_put(tr_np) to fix the reference leaks.
+>
+> Found via static analysis.
+>
+> Fixes: 3fd6d6e2b4e8 ("thermal/of: Rework the thermal device tree initiali=
+zation")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+> ---
+>  drivers/thermal/thermal_of.c | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/thermal/thermal_of.c b/drivers/thermal/thermal_of.c
+> index 1a51a4d240ff..2bb1b8e471cf 100644
+> --- a/drivers/thermal/thermal_of.c
+> +++ b/drivers/thermal/thermal_of.c
+> @@ -284,8 +284,11 @@ static bool thermal_of_cm_lookup(struct device_node =
+*cm_np,
+>                 int count, i;
+>
+>                 tr_np =3D of_parse_phandle(child, "trip", 0);
+> -               if (tr_np !=3D trip->priv)
+> +               if (tr_np !=3D trip->priv) {
+> +                       of_node_put(tr_np);
+>                         continue;
+> +               }
+> +               of_node_put(tr_np);
 
-Commit-ID:     607b9fb2ce248cc5b633c5949e0153838992c152
-Gitweb:        https://git.kernel.org/tip/607b9fb2ce248cc5b633c5949e015383899=
-2c152
-Author:        Gregory Price <gourry@gourry.net>
-AuthorDate:    Mon, 20 Oct 2025 11:13:55 +02:00
-Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Tue, 28 Oct 2025 12:37:49 +01:00
+This will also work because tr_np is not dereferenced below:
 
-x86/CPU/AMD: Add RDSEED fix for Zen5
+                tr_np =3D of_parse_phandle(child, "trip", 0);
+                of_node_put(tr_np);
+                if (tr_np !=3D trip->priv)
+                                continue;
 
-There's an issue with RDSEED's 16-bit and 32-bit register output
-variants on Zen5 which return a random value of 0 "at a rate inconsistent
-with randomness while incorrectly signaling success (CF=3D1)". Search the
-web for AMD-SB-7055 for more detail.
+but a more general question is whether or not device nodes used for
+populating thermal zone trip points can be let go.
 
-Add a fix glue which checks microcode revisions.
+If not, then this change needs to be combined with another one that
+will prevent them from going away.
 
-  [ bp: Add microcode revisions checking, rewrite. ]
+Presumably they need to be reference counted in
+thermal_of_populate_trip().  Daniel?
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Gregory Price <gourry@gourry.net>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20251018024010.4112396-1-gourry@gourry.net
----
- arch/x86/kernel/cpu/amd.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
-
-diff --git a/arch/x86/kernel/cpu/amd.c b/arch/x86/kernel/cpu/amd.c
-index ccaa51c..bc29be6 100644
---- a/arch/x86/kernel/cpu/amd.c
-+++ b/arch/x86/kernel/cpu/amd.c
-@@ -1035,8 +1035,18 @@ static void init_amd_zen4(struct cpuinfo_x86 *c)
- 	}
- }
-=20
-+static const struct x86_cpu_id zen5_rdseed_microcode[] =3D {
-+	ZEN_MODEL_STEP_UCODE(0x1a, 0x02, 0x1, 0x0b00215a),
-+	ZEN_MODEL_STEP_UCODE(0x1a, 0x11, 0x0, 0x0b101054),
-+};
-+
- static void init_amd_zen5(struct cpuinfo_x86 *c)
- {
-+	if (!x86_match_min_microcode_rev(zen5_rdseed_microcode)) {
-+		clear_cpu_cap(c, X86_FEATURE_RDSEED);
-+		msr_clear_bit(MSR_AMD64_CPUID_FN_7, 18);
-+		pr_emerg_once("RDSEED32 is broken. Disabling the corresponding CPUID bit.\=
-n");
-+	}
- }
-=20
- static void init_amd(struct cpuinfo_x86 *c)
+>
+>                 /* The trip has been found, look up the cdev. */
+>                 count =3D of_count_phandle_with_args(child, "cooling-devi=
+ce",
+> --
 
