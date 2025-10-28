@@ -1,139 +1,200 @@
-Return-Path: <stable+bounces-191427-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191428-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF4E2C14384
-	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 11:59:54 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C741C14443
+	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 12:07:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E3A91A63A92
-	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 10:54:06 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 63A50565852
+	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 10:58:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CBC93074BE;
-	Tue, 28 Oct 2025 10:49:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 157822FD696;
+	Tue, 28 Oct 2025 10:56:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=futuring-girl.com header.i=@futuring-girl.com header.b="Ao9ZCU5R"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Xoh03vzA"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54302304BD6
-	for <stable@vger.kernel.org>; Tue, 28 Oct 2025 10:49:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42EB9304975;
+	Tue, 28 Oct 2025 10:56:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761648571; cv=none; b=oPx9YoNN9r81LAnc7+cN3WR/H4qqozlFLXiv5ki9RdyLC0s3oZK82819Ug3pOTvlqw0ThHdHt2OO7LAY2LQfEDR4rDe9HN+r1mSVDugWGdL63F1m05ecaVPULAAepq3mnJvd9Bt93p/a/ul7x4S3EehHpreKgsU0Fn3PBae7bhM=
+	t=1761648971; cv=none; b=dQIKEtNfT/Ow8ixCMVlnp20nufSdtfEfFGrEHWRFwiIoBuIRCpvRBF1wKCHToXw/t6L327pVO3ZTJvRH/vS1A8Yr7KX0NdEHpLEjDOBtZp5fT0yJmfVbOstEQBA6rxEz11pdoiV6pjHK2ovK/d/NTJz0mkZxFZfjvDHtio0Sn4E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761648571; c=relaxed/simple;
-	bh=LfGgAPErQXeXoyFHe8PvWIEu71qn/w79FkU6l/R8Cto=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Kx/GeFsG6bS4WlJrqBAO2O3i34dwg3LaY7NOZCzSLy06GjyXrdjTQP53iu12LA3pi6LoCD0RhdeXBv2+ev/pdvG/3JaXwopM4InKAJttvFgrpLwoUqKNLkliMeI0hDfI7GztYDAQDr4UY4As7k6fNHJwAzuVn6rRATQtdn8bgHU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=futuring-girl.com; spf=pass smtp.mailfrom=futuring-girl.com; dkim=pass (2048-bit key) header.d=futuring-girl.com header.i=@futuring-girl.com header.b=Ao9ZCU5R; arc=none smtp.client-ip=209.85.214.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=futuring-girl.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=futuring-girl.com
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-290c2b6a6c2so60726975ad.1
-        for <stable@vger.kernel.org>; Tue, 28 Oct 2025 03:49:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=futuring-girl.com; s=google; t=1761648567; x=1762253367; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RyrXWow90L7YCheeS5gmaxrFltylHWAvgVWWr3hrODA=;
-        b=Ao9ZCU5RVXnwg938UrqPIaYSy2ZGUgd8IuUx7mneUm+y6tVcjGhzLt2JfsMwvg3JsY
-         f3Er6VfEOzUd3nDaeXKXR2Y/juUz9YobcjwaK3IcpVw2W+02nmakoFy6ZTlG6a7LFah5
-         m2Q+0A/wu1rPuP0POzmLndlHrFS8LAmJl6mqMac1C8Sts2+xRHnyLeb6kFYwRZTUKDk1
-         XvH7+4TUWAzfQ4PdI51imLfAbaVfqJGmFBARX3WBzBfxRqOrjAk6vKt4KaWFPT/YU36i
-         GEhq7FZxb/BUTw9t120+vhueOBAoEUs7dK0hS4Y5qkHjqAMkCf/gxp+eBHiSrXq/z1YQ
-         sh6Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761648567; x=1762253367;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=RyrXWow90L7YCheeS5gmaxrFltylHWAvgVWWr3hrODA=;
-        b=uO0fdw+UAmkaTyXntsY6y/LWOW0cTMfABUR0c1XPuoM9IqTeZvlug/DzqGk+dfhxhH
-         /KUL4qXAob/8WstHg/CxsOQpiHXLW/1+wRxyVcoQQq9fT+YyCQL1zXYX9M//StHR4VVN
-         LNwpi2xXcbQ3gjqrezRSkN0n+I1VOak82UPd2Uyhadn8EqY/w8B9AA+6eHeIv/YP/JIC
-         d9gU4LULJxHNSnupoxicA0Yv1W5BScCyccNPBYxzDMdtNwrnp/IVzyraVt31gpjeVELN
-         bzTHwtVbiARMJRSEt/NiWARq1y4BYcTB+zaCtOGWUsFefnoGu2dM/UWTvi4rstZwt3sU
-         AbJw==
-X-Gm-Message-State: AOJu0YwvMHqO0bVyL+0US8gZiM98bbvQK4Lxz6cJN6nUHHIZ9SayJcKf
-	jO4MdO7eEUSv8vebbR0mcWyY2RD2fqlztMZ82entcsI4fMMI2hEmHTaEigC0/n45WKRqGuap0pF
-	+4PFwW3xFg0LLS6wV8ZqCV0+YqvDB7QXTjuq3wEjoZ+RqsS39PHRshdw=
-X-Gm-Gg: ASbGnctq4t8eJBo5Ao+4D8gQIafSsEY4k/1Js6hh0QpLQyi77Q2fCnFH85BqIbVxhVI
-	jys81VhnXkOZZIoiVnjI7MQpotTF9EVg1vfkJibfrrwhObl3It+AaVYyozyQTaklXCvnw0jVeGp
-	ie4IJipKvZn588sNoLW+7/1rnQgNnfX5dprnmCxpDIEm4XcAEMsmoykd5f5n5+oGEACj7lGQ7hP
-	wde7wwFX7SUGxCOGVbCITXY3xlg9+w3u53qwNBRq5aU7+ZdbJpH5MKC9sJx7R2VnX8+n8Ne5xA8
-	zP18SlGp4TdYzTsiag==
-X-Google-Smtp-Source: AGHT+IF3dhR4n5aqKeDp+Vo+LbBF2UMwZi7my529wiBD8hSsnjWc+zt+s30wJlDBzL40QuQ1+dCmkhZugs8gcsNfW9M=
-X-Received: by 2002:a17:903:1249:b0:290:9934:fd04 with SMTP id
- d9443c01a7336-294cb4f2ff4mr35535735ad.28.1761648567248; Tue, 28 Oct 2025
- 03:49:27 -0700 (PDT)
+	s=arc-20240116; t=1761648971; c=relaxed/simple;
+	bh=yvKNly4kNDHA/alqUn5lYahkVt1wQ08+EXTSQGii2ic=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Y9hzOp9ZMMfGqYzVY0neekF7lCKyjSsZbSQjnbFNwCodFW0NOvIfBFELTKqieEOP1ZkbxLb7COwNLF3N/nKtqStRxXLvtqrLgz9+G3ioQXVqGK8fc6Xir4ugyqiujSVQgWF73CvU531+rLfZ+Z7lA0Le+WhugqujkMeVvLjgL5o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Xoh03vzA; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59RNBix4000657;
+	Tue, 28 Oct 2025 10:55:56 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=pp1; bh=hiHeN2x4B81hmvIwx
+	hk14paD4xhooOSCeWVobZBBx9Y=; b=Xoh03vzAY7tZZZa30s9q9zDkAHeU2/GJE
+	QytVs88MCBWGbQQGxuFFL/Ww9dck+Tp0T3uDpYIsszRvHv3bTa8BZrM9oIG97XEY
+	IcN6PtzXFxq/woSCTzeut7hnjrCCh+SlplpG2w+r79KeigLmqfcqLQZmTR5zep5d
+	zeVD/5yZ7YGQgv3Ti85ew0ilAG2zNlQg0iF7hMmUYdfq2SbfEd1KIex4halZeH1b
+	hnEVZ/LzOm5pUzX0M/P/aPMOyhftwadeT9oGGmTyCu7dp0NxpT34e6ZftMmw92dQ
+	m+AyOkHpH+Ys6H65yBwhZfxyW657s5JgoNWuBn+5cG0C5RpimM6RA==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a0p293fas-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 28 Oct 2025 10:55:56 +0000 (GMT)
+Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 59SAt1qa026510;
+	Tue, 28 Oct 2025 10:55:56 GMT
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a0p293fap-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 28 Oct 2025 10:55:56 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59S9Dhan009428;
+	Tue, 28 Oct 2025 10:55:55 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4a1b3j23h2-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 28 Oct 2025 10:55:54 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 59SAtpYn61079834
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 28 Oct 2025 10:55:51 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2ED8A2004D;
+	Tue, 28 Oct 2025 10:55:51 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1C5882004B;
+	Tue, 28 Oct 2025 10:55:48 +0000 (GMT)
+Received: from li-80eaad4c-2afd-11b2-a85c-af8123d033e3.ibm.com (unknown [9.124.209.152])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 28 Oct 2025 10:55:47 +0000 (GMT)
+From: "Nysal Jan K.A." <nysal@linux.ibm.com>
+To: Sourabh Jain <sourabhjain@linux.ibm.com>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Srikar Dronamraju <srikar@linux.ibm.com>,
+        "Nysal Jan K.A." <nysal@linux.ibm.com>,
+        Sachin P Bappalige <sachinpb@linux.ibm.com>, stable@vger.kernel.org,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Laurent Dufour <ldufour@linux.ibm.com>,
+        Thomas Gleixner <tglx@linutronix.de>, linuxppc-dev@lists.ozlabs.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH v2] powerpc/kexec: Enable SMT before waking offline CPUs
+Date: Tue, 28 Oct 2025 16:25:12 +0530
+Message-ID: <20251028105516.26258-1-nysal@linux.ibm.com>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20251025080512.85690-1-nysal@linux.ibm.com>
+References: <20251025080512.85690-1-nysal@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251027183514.934710872@linuxfoundation.org>
-In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
-From: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
-Date: Tue, 28 Oct 2025 19:49:10 +0900
-X-Gm-Features: AWmQ_bkjtaUA0BELjnw4P7h6Xptc718dXITNsaZ_Mm7C6-RhotK2D0-z3iB_A4s
-Message-ID: <CAKL4bV7qVfhVdp=gDShvsjLY4g0asdhTmgsT2gj=FC_4c62pwg@mail.gmail.com>
-Subject: Re: [PATCH 6.17 000/184] 6.17.6-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, 
-	achill@achill.org, sr@sladewatkins.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDI1MDAxOSBTYWx0ZWRfX3HlIKYqMJBCw
+ GiGoZU+Qn6PVA60ZhQ/djUXs1yGbK1b8u0Jlj/DBebpNdojxsuoTGeIc0iP3SOlJv48ugyUmkIE
+ XV2WbYe0kUzwGpECADfsKDUNPEFhoReXqqA9XV+jQOuycYqMuZF50rgxHZDltIGeR4brKcYHGb3
+ E1XA7Psq9rqlJPe9zZa/Tf4rIUwLW69mAKR+zn7EWx1U1xF6czg2Ebh6c5kvOnUmgNWfvGOcuSa
+ fBA+J6CD3SR5Zzyi9pBioj4zUpPbYkODyHRQ6uNHGO5rJzjYruyfzZ7/1ilbDTKPYmrx4Di82PG
+ S91+LPBwY//omJhNrEg8G6tb35zuB0MoM2Z0Jhx7ZxA6UxCHOp39K1ckFp5k8ALulypLUZbSqrX
+ yABUgjTpxX1GpwWlBkbsIs3Fm+c5WA==
+X-Proofpoint-GUID: E9-2bkI_G8UU2zgmOr-_y4VMStsIEBkv
+X-Authority-Analysis: v=2.4 cv=V8ZwEOni c=1 sm=1 tr=0 ts=6900a13c cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=VnNF1IyMAAAA:8 a=VwQbUJbxAAAA:8
+ a=nGyChcL-Hsos-sZBGsMA:9 a=cPQSjfK2_nFv0Q5t_7PE:22
+X-Proofpoint-ORIG-GUID: vaZVXXfJ7prvJcR8iUk7Xt9Hqwqy8q_z
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-10-28_04,2025-10-22_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 phishscore=0 lowpriorityscore=0 malwarescore=0
+ adultscore=0 bulkscore=0 spamscore=0 clxscore=1015 suspectscore=0
+ impostorscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2510020000
+ definitions=main-2510250019
 
-Hi Greg
+If SMT is disabled or a partial SMT state is enabled, when a new kernel
+image is loaded for kexec, on reboot the following warning is observed:
 
-On Tue, Oct 28, 2025 at 4:35=E2=80=AFAM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.17.6 release.
-> There are 184 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Wed, 29 Oct 2025 18:34:15 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.17.6-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.17.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
->
+kexec: Waking offline cpu 228.
+WARNING: CPU: 0 PID: 9062 at arch/powerpc/kexec/core_64.c:223 kexec_prepare_cpus+0x1b0/0x1bc
+[snip]
+ NIP kexec_prepare_cpus+0x1b0/0x1bc
+ LR  kexec_prepare_cpus+0x1a0/0x1bc
+ Call Trace:
+  kexec_prepare_cpus+0x1a0/0x1bc (unreliable)
+  default_machine_kexec+0x160/0x19c
+  machine_kexec+0x80/0x88
+  kernel_kexec+0xd0/0x118
+  __do_sys_reboot+0x210/0x2c4
+  system_call_exception+0x124/0x320
+  system_call_vectored_common+0x15c/0x2ec
 
-6.17.6-rc1 tested.
+This occurs as add_cpu() fails due to cpu_bootable() returning false for
+CPUs that fail the cpu_smt_thread_allowed() check or non primary
+threads if SMT is disabled.
 
-Build successfully completed.
-Boot successfully completed.
-No dmesg regressions.
-Video output normal.
-Sound output normal.
+Fix the issue by enabling SMT and resetting the number of SMT threads to
+the number of threads per core, before attempting to wake up all present
+CPUs.
 
-Lenovo ThinkPad X1 Carbon Gen10(Intel i7-1260P(x86_64) arch linux)
+Fixes: 38253464bc82 ("cpu/SMT: Create topology_smt_thread_allowed()")
+Reported-by: Sachin P Bappalige <sachinpb@linux.ibm.com>
+Cc: stable@vger.kernel.org # v6.6+
+Reviewed-by: Srikar Dronamraju <srikar@linux.ibm.com>
+Signed-off-by: Nysal Jan K.A. <nysal@linux.ibm.com>
+---
+ arch/powerpc/kexec/core_64.c | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
-[    0.000000] Linux version 6.17.6-rc1rv-g10e3f8e671f7
-(takeshi@ThinkPadX1Gen10J0764) (gcc (GCC) 15.2.1 20250813, GNU ld (GNU
-Binutils) 2.45.0) #1 SMP PREEMPT_DYNAMIC Tue Oct 28 19:19:34 JST 2025
+diff --git a/arch/powerpc/kexec/core_64.c b/arch/powerpc/kexec/core_64.c
+index 222aa326dace..825ab8a88f18 100644
+--- a/arch/powerpc/kexec/core_64.c
++++ b/arch/powerpc/kexec/core_64.c
+@@ -202,6 +202,23 @@ static void kexec_prepare_cpus_wait(int wait_state)
+ 	mb();
+ }
+ 
++
++/*
++ * The add_cpu() call in wake_offline_cpus() can fail as cpu_bootable()
++ * returns false for CPUs that fail the cpu_smt_thread_allowed() check
++ * or non primary threads if SMT is disabled. Re-enable SMT and set the
++ * number of SMT threads to threads per core.
++ */
++static void kexec_smt_reenable(void)
++{
++#if defined(CONFIG_SMP) && defined(CONFIG_HOTPLUG_SMT)
++	lock_device_hotplug();
++	cpu_smt_num_threads = threads_per_core;
++	cpu_smt_control = CPU_SMT_ENABLED;
++	unlock_device_hotplug();
++#endif
++}
++
+ /*
+  * We need to make sure each present CPU is online.  The next kernel will scan
+  * the device tree and assume primary threads are online and query secondary
+@@ -216,6 +233,8 @@ static void wake_offline_cpus(void)
+ {
+ 	int cpu = 0;
+ 
++	kexec_smt_reenable();
++
+ 	for_each_present_cpu(cpu) {
+ 		if (!cpu_online(cpu)) {
+ 			printk(KERN_INFO "kexec: Waking offline cpu %d.\n",
+-- 
+2.47.3
 
-Thanks
-
-Tested-by: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
 
