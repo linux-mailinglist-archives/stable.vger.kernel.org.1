@@ -1,126 +1,121 @@
-Return-Path: <stable+bounces-191527-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191528-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2C4EC16388
-	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 18:39:29 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7B1FC16442
+	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 18:45:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C63F1C26FC5
-	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 17:38:58 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 18DA75640DD
+	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 17:41:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D248B34B1A7;
-	Tue, 28 Oct 2025 17:37:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 925A93491C7;
+	Tue, 28 Oct 2025 17:40:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="tRf0bAvU"
+	dkim=pass (1024-bit key) header.d=linuxtx.org header.i=@linuxtx.org header.b="HYu6JTSP"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22D73259CA9
-	for <stable@vger.kernel.org>; Tue, 28 Oct 2025 17:37:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2D1D276024
+	for <stable@vger.kernel.org>; Tue, 28 Oct 2025 17:40:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761673076; cv=none; b=YPau5C3U3HojZt59i8UlKh4PugcTifp+FxUu8/dNQQXLA0JhwP6t0U35af/qdE5cx3bHqNmAhAAF0GNUllixj5ZIn4ocEX2vgP5RLRm1Lfixc7ivzrohv9PTODBAR1XQdQ/D1xrZP0kSSvt9Ns42llg6WR/yEcRLN53Oy+VSI5U=
+	t=1761673248; cv=none; b=sl1yzyER6OkjR0T0OnF74W1kaEIf3CCQFY6fx9Xz/qVbjlCDUOLaHw/n0sUCXVR27O/OYsc8zaWn6VHjemy83bvpMXeUkqXG20I3g8QWuEnex8fclpnfY90dIwPxRfkKTFpHGfnZDk2IV7aIAVYagXhfqxU9EIYUhT7XpOg1FEI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761673076; c=relaxed/simple;
-	bh=WCMg7UUnl6IMP5RsK5bXZua1oQz6K1bVCjhQkkqx5ms=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=C2Jh6e7KdOrqJToRJMk1U8owUXMjRu1eoWzxUwjMLg0YDTztI9yj4QLYV2F8q106+6aGGft6jUHlvn7aD0xjKWZmcIgTj2uZkYH33s//3uIAjlTupFd+zm03L0TaaXotW8GyPHK4IbZYzHMZvM93EgyvzPgWVwaZwvI7tn2cky0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=tRf0bAvU; arc=none smtp.client-ip=209.85.214.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-290d860acbcso133169755ad.1
-        for <stable@vger.kernel.org>; Tue, 28 Oct 2025 10:37:54 -0700 (PDT)
+	s=arc-20240116; t=1761673248; c=relaxed/simple;
+	bh=k2oFcW+F5IbZatog7pgx/F1s8i3ixYSpqpoKtIdHFps=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pWgLZPlTJayFGn3ihQRLBQqz5cFsSkh9Eqca5WGDlhmaVE9xmRKKJM186WNh2rGQYLykOuGDLuqgEXaAJ+s5wX5zwXRft0FvtfUqVPGmItpLXFK+m5yTT4O+oqwu0GCU/eHOyIHqY7BOtFv3Ryb3ouTwR0LuCBVZdRicpyt9xeg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=fedoraproject.org; spf=pass smtp.mailfrom=linuxtx.org; dkim=pass (1024-bit key) header.d=linuxtx.org header.i=@linuxtx.org header.b=HYu6JTSP; arc=none smtp.client-ip=209.85.216.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=fedoraproject.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxtx.org
+Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-339d7c403b6so6159011a91.2
+        for <stable@vger.kernel.org>; Tue, 28 Oct 2025 10:40:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1761673074; x=1762277874; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=8T4o8duS8kLdi84UueGHzy38mnS8VEpOnZiB5sHhaeI=;
-        b=tRf0bAvUAUTSp33Yt3tFnqg5tTnMoOcrM+iA1gfhIIAUknLfs/3w/AEMKzaqifFkRy
-         GxzIM8x7gBENFZliOQvIBf5epa5qQ5xxJ2x8qYVxWux4P9aSKxHSWUdOUaMlvGhpmfeu
-         gPZe5US1VyE7AQZiWrgaNiyYAw7FsbfuqmZK7I13+uL0HXpJrOUcoPP0MpFuFu+HPR4P
-         Iy3Mgv60UelSQhZzE+z/HKCzEIN5L0keOAXpB+zxUgQB5A3v5+7wHY2hGwaDqGLoUA5A
-         PyviehO+MT6kslaopuRZPENzj1E16IgkPQPjw3bVtfISjJ7sEMgQNudwnVpIAteQcl3S
-         gGsg==
+        d=linuxtx.org; s=google; t=1761673245; x=1762278045; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=luiyWuiRrVRfhN7JAiac9EdJ6Gfejadf8kzjmyI1PuM=;
+        b=HYu6JTSPEmM3aFi358p+nHQ7iz5PIhYGu3CEjyHhDufkmGZJfOfYlH6SKOoue/R8k7
+         qk1WHOraf6nH9510V+ZMqEykIEQopNF6hEu6vR16WZsIv5tZjczSl0J5F057Ku3BafTl
+         MlPFUd2+Oo7+OGA68hUNycvRECle4yyA8HiNU=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761673074; x=1762277874;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=8T4o8duS8kLdi84UueGHzy38mnS8VEpOnZiB5sHhaeI=;
-        b=uBCbpXm24Nc5g2q+n+LWMAEi0YrKno0zaV2LfbuDiEBBaMHuKegqXPw30tVg4MevW+
-         H1zYi/QZbDZ4utaHdb6jigX5lRLU665UBybSMapm7Y6QidGXimph19Bn/9FPXwK/rMX/
-         15I1LZ/JWZaOZCHCU5KHrGA9VcYeR9zKf+hcDNYaUc9Tw+R17/QiMWMDXxM5NPBrREvT
-         VdPpr9es/HGXroHc4iNHxiQQpgOMjhukXTMMNSXeVTVZ5AFMLBIcAbym1V2BlvDcHtbt
-         jtHkNCef3yXcTlHxzHdJKSj9U/SN1r8RXj0ZtJjxusKXTFd8YfupnITT1/WKtpz2gBxr
-         SpfA==
-X-Forwarded-Encrypted: i=1; AJvYcCXK0aMnMG7f8p8Za88MD3+uicWogG3ez/qmajgiAdRazyYyKX9bOl5HN3UqCF8xxHyvrBNgZow=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyNK3RoQUDjdyEMhVs0ZJpzD/bCX5VminV4HsvHUEd4DFBxQGBl
-	G7bCaIuIxF3QHQVanb6I88+i9Kgvr9iluzj4YF933MHE42ab7ts8UzYbzz8kFMTxbVqicUw4x5R
-	NHrfMkA==
-X-Google-Smtp-Source: AGHT+IFos7dmlHc5zgyuKwSvkzMGrICMFJHNR7QI6Hf+TJ3vKWf9u68Fb2sJjv7IaagPEHKeX48Q/hD6mEQ=
-X-Received: from plpp9.prod.google.com ([2002:a17:902:c709:b0:292:4a9c:44cf])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:246:b0:27e:e1f3:f853
- with SMTP id d9443c01a7336-294dedd4181mr189615ad.8.1761673074418; Tue, 28 Oct
- 2025 10:37:54 -0700 (PDT)
-Date: Tue, 28 Oct 2025 10:37:53 -0700
-In-Reply-To: <aEeAl9Hp7sSizrl8@intel.com>
+        d=1e100.net; s=20230601; t=1761673245; x=1762278045;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=luiyWuiRrVRfhN7JAiac9EdJ6Gfejadf8kzjmyI1PuM=;
+        b=VaZXRQ8XST6G8D3ZG6cMMrgfUmwf5PpzVbzWNUzoVxpVAg8G9CsVG03N07ae4AeZIA
+         Vwffg1mh5NL0fJtK4anl18KAgzcE5XT6b8++d1wvHqhNaBHHL2bw4RhSWZs2boOp39dq
+         HrZJn/HoAO2orH/dPWId0Pg70tFru/B8Bz7X2fBWviMJE/h91dAyjuqX/y8Nmw0qR2a6
+         E/GPLaj8UlACRMnKy6aiEtc2yansgKyZDwUzxdjpmVaRBaUaUoa7vmJAfT9iJ5flzKKN
+         VAlX4cjp+7NmhwWnZOJMKTjAWIR8WvaopipYy/w1pzv96bC4LJ3OnqE1nBpdEBVTORMT
+         a7ng==
+X-Gm-Message-State: AOJu0YzH+NqMrQpPET38Ft1VaI5GoBPtqHW2b9LG9chHYVt5naOMB8kL
+	LZylLtY7VLlQujVuUcL2Wgm9y3rxu8L+HSB6IXmEdg7F7+Drr+JB0UFuQ2Kmx7ImNw==
+X-Gm-Gg: ASbGncsXL4PMdp/JoRG8YL/XSNRX4id6dedqRT5Non8OQSBy9SjLORCOU8M7PDg17JW
+	Xk9ewgrZUozg/b7o+7yWxrXYEBZDhJ5RqxXuMqInUlNeYp5FivVa2b4dnkUsh7A4ROJRL49uv7B
+	2IM4SJEOFQQ57qFg05jNpSgVLCW49o85+VvEbP3A+oCfHGU0IHV5DS5W1BZ1q88LZdqS4BwKwAo
+	OfS1o9IfsaO7KKr1/c+W5EYt2XjRP78dcaRrwmBhXmkkG6aXl6WrpMbtivsXNtWuduWmIUP4pHf
+	LXr5pF1FbW/uJXVUxXOEkxL49iaIAOq9CtZ6SQQkp8oKIJ9mq2h+HuX6ccwXSTpJkz+aGySNpeJ
+	L9YFBBFm/PfftWix5U4o+8fN0JK0wwX88q+3x8sKd0w962gimUWw2iOF6xLY6so1EpAyrWsJOPZ
+	WPnSsRCJAAtWnXExFMvXqv
+X-Google-Smtp-Source: AGHT+IG5V4vsb7CrJYMRIp5V3RyRMADScln5MWpRKhmnO7Ie2PDaI8M38ch/Qo6ITFZL8KyPH7+JlA==
+X-Received: by 2002:a17:90b:37d0:b0:335:228c:6f1f with SMTP id 98e67ed59e1d1-34027a06cedmr6107636a91.12.1761673244857;
+        Tue, 28 Oct 2025 10:40:44 -0700 (PDT)
+Received: from fedora64.linuxtx.org ([216.147.125.78])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-33fed70a86fsm12863100a91.1.2025.10.28.10.40.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 28 Oct 2025 10:40:44 -0700 (PDT)
+Sender: Justin Forbes <jmforbes@linuxtx.org>
+Date: Tue, 28 Oct 2025 11:40:41 -0600
+From: Justin Forbes <jforbes@fedoraproject.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
+	hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
+	sr@sladewatkins.com
+Subject: Re: [PATCH 6.17 000/184] 6.17.6-rc1 review
+Message-ID: <aQEAGdx7n9tjCu1v@fedora64.linuxtx.org>
+References: <20251027183514.934710872@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250610001700.4097-1-chang.seok.bae@intel.com> <aEeAl9Hp7sSizrl8@intel.com>
-Message-ID: <aQD_cZzqml1vindY@google.com>
-Subject: Re: [PATCH] x86/fpu: Ensure XFD state on signal delivery
-From: Sean Christopherson <seanjc@google.com>
-To: Chao Gao <chao.gao@intel.com>
-Cc: "Chang S. Bae" <chang.seok.bae@intel.com>, mingo@redhat.com, 
-	linux-kernel@vger.kernel.org, x86@kernel.org, tglx@linutronix.de, 
-	bp@alien8.de, dave.hansen@linux.intel.com, stable@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
 
-On Tue, Jun 10, 2025, Chao Gao wrote:
-> On Mon, Jun 09, 2025 at 05:16:59PM -0700, Chang S. Bae wrote:
-> >Sean reported [1] the following splat when running KVM tests:
-> >
-> >   WARNING: CPU: 232 PID: 15391 at xfd_validate_state+0x65/0x70
-> >   Call Trace:
-> >    <TASK>
-> >    fpu__clear_user_states+0x9c/0x100
-> >    arch_do_signal_or_restart+0x142/0x210
-> >    exit_to_user_mode_loop+0x55/0x100
-> >    do_syscall_64+0x205/0x2c0
-> >    entry_SYSCALL_64_after_hwframe+0x4b/0x53
-> >
-> >Chao further identified [2] a reproducible scenarios involving signal
-> >delivery: a non-AMX task is preempted by an AMX-enabled task which
-> >modifies the XFD MSR.
-> >
-> >When the non-AMX task resumes and reloads XSTATE with init values,
-> >a warning is triggered due to a mismatch between fpstate::xfd and the
-> >CPU's current XFD state. fpu__clear_user_states() does not currently
-> >re-synchronize the XFD state after such preemption.
-> >
-> >Invoke xfd_update_state() which detects and corrects the mismatch if the
-> >dynamic feature is enabled.
-> >
-> >This also benefits the sigreturn path, as fpu__restore_sig() may call
-> >fpu__clear_user_states() when the sigframe is inaccessible.
-> >
-> >Fixes: 672365477ae8a ("x86/fpu: Update XFD state where required")
-> >Reported-by: Sean Christopherson <seanjc@google.com>
-> >Closes: https://lore.kernel.org/lkml/aDCo_SczQOUaB2rS@google.com [1]
-> >Tested-by: Chao Gao <chao.gao@intel.com>
-> >Signed-off-by: Chang S. Bae <chang.seok.bae@intel.com>
-> >Cc: stable@vger.kernel.org
-> >Link: https://lore.kernel.org/all/aDWbctO%2FRfTGiCg3@intel.com [2]
+On Mon, Oct 27, 2025 at 07:34:42PM +0100, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.17.6 release.
+> There are 184 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 > 
-> Reviewed-by: Chao Gao <chao.gao@intel.com>
+> Responses should be made by Wed, 29 Oct 2025 18:34:15 +0000.
+> Anything received after that time might be too late.
 > 
-> Thanks for looking into this issue.
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.17.6-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.17.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-Ping.  I _think_ this is still needed?  AFAICT, it just fell through the cracks.
+Tested rc1 against the Fedora build system (aarch64, ppc64le, s390x,
+x86_64), and boot tested x86_64. No regressions noted.
+
+Tested-by: Justin M. Forbes <jforbes@fedoraproject.org>
 
