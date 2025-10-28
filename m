@@ -1,120 +1,129 @@
-Return-Path: <stable+bounces-191409-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191410-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76C82C137DA
-	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 09:18:08 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id A88A5C13840
+	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 09:23:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EF5D11A28110
-	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 08:18:28 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id F1670541BD5
+	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 08:18:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 705762DC766;
-	Tue, 28 Oct 2025 08:17:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1DD42D77FA;
+	Tue, 28 Oct 2025 08:18:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Dt5J+hvo"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Pbb8Z4mA"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E2962DBF76;
-	Tue, 28 Oct 2025 08:17:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07F0C2D6E64;
+	Tue, 28 Oct 2025 08:18:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761639442; cv=none; b=SBl90qWiZXKPatl9qDnJgswgWygJambZUddYNVehSqbdb4aTwx913mIIuBGzsy9Ds5G7SDGpXSeNB1/PLd/TgM2zzKWmAM4Td7ak9ii8n04CVG76M/zD4RzmMrmTuM7qc5RzyYyRA81l5woCAZoIQopUiB/3balfhFW9RIptAjY=
+	t=1761639493; cv=none; b=mqEAR3hiIhEE19iG1lSKLg/zcsnsUIB3QGCp2KQnzsiP3YYPGKJ9wDPmAU/oYNXSvMtbSxBQZ5H6qKfKUYPYNKj3l4Z2uOdrIavAH8/VLdAGe3Oe4+g6oY3vwDUIPEhcyho7t/4zq4xN1V+EeOfN7l/PkSSbF4KEH6P+EAWuvLI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761639442; c=relaxed/simple;
-	bh=MymROo5KMNC0/BGAYHfaUej+w8REkBWRZ3GOvJZswpo=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=SgFKYUr+0HdfhuJ39vlBqPKXJXZh99t1j2AttrFw6WeKyfvh1HFpPpAlDY5a4v9ZAeS99egCOoP++ku6B5zo06vArJN6fyRTDIkpNccD8R8SWXJ01PLLcbUhnXovZUXQaEeK3SkSQ6oYuw+8BCMKWW8217QZpaHeRs9Y2i1rWSY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Dt5J+hvo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3B57C4CEFF;
-	Tue, 28 Oct 2025 08:17:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761639442;
-	bh=MymROo5KMNC0/BGAYHfaUej+w8REkBWRZ3GOvJZswpo=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=Dt5J+hvov2+AXiFEWXlzd1XhrXpk0fkoIepJOlWRibB1vGdf/gCB2LySIVzNNKNA9
-	 y6MREpEXOcK+0vtkqEcMpUvZp8eG0QLEO5LUhMHxvZ50kq1BFrHsr7vjnxPIxd6Pmw
-	 43As6k/b7h2zARafAot6LaveRSL7kj07ue3vDkDY7XiUX1+mR7dgM0oTtHxDuRDBWC
-	 y19sqB9nFDq4X1yCy46i9A/5J6HYB0wx5jlcD62lo7YDyQ/dFI5jI7zXkSQ4d/4KWS
-	 IJc5v5n2sVtV+d3teT8N9z5W1q3yr2ASsNoAD6AG3EbthHCm003GUHs5Us21etGH6s
-	 2dYtf78cbpkzg==
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Date: Tue, 28 Oct 2025 09:16:54 +0100
-Subject: [PATCH net 3/4] mptcp: restore window probe
+	s=arc-20240116; t=1761639493; c=relaxed/simple;
+	bh=MVSFbwblKngEk79Y3sKxyk9wd5p4f7fVCW6a/4FzAi8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Aq4/35Hb7lDQancJF4uHzo2vyCwyvxquCAnBEaFo6KefA2xkKYOXPdZnlLgz9s4D7jbELm0tZ7/oiFBhIfMA5lRo3VUs4noCid9o/1kd0hN+3tyvRLn2OAq0ppGAcmgw6bYz3bF0ssXNpOnNPxa+6tBpNhH4hPI6r62BozYChJA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Pbb8Z4mA; arc=none smtp.client-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1761639492; x=1793175492;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=MVSFbwblKngEk79Y3sKxyk9wd5p4f7fVCW6a/4FzAi8=;
+  b=Pbb8Z4mAShzmp0ccl5xXUWnjg+QYQVkwoWj+nOylUzwACZzS8fNbNeuQ
+   ClwKiJC4nHMKbSg2H42nHpM7klsSEGDumuOZbpctAe5TF0f03dS+f3VuI
+   j//+Iwjs4IRcns5KKx8g78UnIIy7gv3jy4vR+xlUgx8q/BJ4FipARPvBa
+   BLJVg0v2zx6N5Orp1n8eKuCsySq7YYEMnkZBK2biehi45eqoriK5muTuO
+   73Uevim+WrsfUyHgJQg/JlbJssoRd4qBnA0fQRQLbWZkS/CDj7SQCjpPY
+   cjkGFXd14taHke0wW+a3csIMR4+7/DlwbqjzroxCB96nn6ut+TowHpB1k
+   A==;
+X-CSE-ConnectionGUID: IJlYxyk2Q/CxCPyHxhbDyQ==
+X-CSE-MsgGUID: Wme6R/jOT62TLFifrIzjRQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="74851740"
+X-IronPort-AV: E=Sophos;i="6.19,261,1754982000"; 
+   d="scan'208";a="74851740"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2025 01:18:11 -0700
+X-CSE-ConnectionGUID: 4sZzpAyFS9aNK74HnA9pzw==
+X-CSE-MsgGUID: PzQeqeG4QOCrmejYy7V5fg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,261,1754982000"; 
+   d="scan'208";a="189593645"
+Received: from dalessan-mobl3.ger.corp.intel.com (HELO ashevche-desk.local) ([10.245.244.136])
+  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2025 01:18:09 -0700
+Received: from andy by ashevche-desk.local with local (Exim 4.98.2)
+	(envelope-from <andriy.shevchenko@intel.com>)
+	id 1vDeu5-00000003FRh-47UN;
+	Tue, 28 Oct 2025 10:18:05 +0200
+Date: Tue, 28 Oct 2025 10:18:05 +0200
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Miaoqian Lin <linmq006@gmail.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	Angelo Dureghello <adureghello@baylibre.com>,
+	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] iio: dac: ad3552r-hs: fix out-of-bound write in
+ ad3552r_hs_write_data_source
+Message-ID: <aQB8PRlaBY_9-L8d@smile.fi.intel.com>
+References: <20251027150713.59067-1-linmq006@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251028-net-mptcp-send-timeout-v1-3-38ffff5a9ec8@kernel.org>
-References: <20251028-net-mptcp-send-timeout-v1-0-38ffff5a9ec8@kernel.org>
-In-Reply-To: <20251028-net-mptcp-send-timeout-v1-0-38ffff5a9ec8@kernel.org>
-To: Mat Martineau <martineau@kernel.org>, Geliang Tang <geliang@kernel.org>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>, Florian Westphal <fw@strlen.de>, 
- Yonglong Li <liyonglong@chinatelecom.cn>
-Cc: netdev@vger.kernel.org, mptcp@lists.linux.dev, 
- linux-kernel@vger.kernel.org, "Matthieu Baerts (NGI0)" <matttbe@kernel.org>, 
- stable@vger.kernel.org
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1579; i=matttbe@kernel.org;
- h=from:subject:message-id; bh=q1if2Zh0yPb1hHZTezlXTUXfw6KBLXDo86EIQ69syLg=;
- b=owGbwMvMwCVWo/Th0Gd3rumMp9WSGDIZaljZVq7JSbLoUYg526M4l2eJWCx348bpWWVMUU6X/
- xSrtHl2lLIwiHExyIopski3RebPfF7FW+LlZwEzh5UJZAgDF6cATERQgOG/23QPIZ2vm26Knz/7
- 1JFfYeoUFvN9nNavHcSczlbvOFWjz/BXSj1+UtQtv+5u28YPJ9Ku8BkeuPn1Qa+N4snznCsP7nr
- JBQA=
-X-Developer-Key: i=matttbe@kernel.org; a=openpgp;
- fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251027150713.59067-1-linmq006@gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-From: Paolo Abeni <pabeni@redhat.com>
+On Mon, Oct 27, 2025 at 11:07:13PM +0800, Miaoqian Lin wrote:
+> When simple_write_to_buffer() succeeds, it returns the number of bytes
+> actually copied to the buffer, which may be less than the requested
+> 'count' if the buffer size is insufficient. However, the current code
+> incorrectly uses 'count' as the index for null termination instead of
+> the actual bytes copied, leading to out-of-bound write.
+> 
+> Add a check for the count and use the return value as the index.
 
-Since commit 72377ab2d671 ("mptcp: more conservative check for zero
-probes") the MPTCP-level zero window probe check is always disabled, as
-the TCP-level write queue always contains at least the newly allocated
-skb.
+...
 
-Refine the relevant check tacking in account that the above condition
-and that such skb can have zero length.
+> +	if (count >= sizeof(buf))
+> +		return -ENOSPC;
 
-Fixes: 72377ab2d671 ("mptcp: more conservative check for zero probes")
-Cc: stable@vger.kernel.org
-Reported-by: Geliang Tang <geliang@kernel.org>
-Closes: https://lore.kernel.org/d0a814c364e744ca6b836ccd5b6e9146882e8d42.camel@kernel.org
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Tested-by: Geliang Tang <geliang@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
----
- net/mptcp/protocol.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+But this makes the validation too strict now.
 
-diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
-index d6d1553fbd61..2feaf7afba49 100644
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -1290,7 +1290,12 @@ static int mptcp_sendmsg_frag(struct sock *sk, struct sock *ssk,
- 	if (copy == 0) {
- 		u64 snd_una = READ_ONCE(msk->snd_una);
- 
--		if (snd_una != msk->snd_nxt || tcp_write_queue_tail(ssk)) {
-+		/* No need for zero probe if there are any data pending
-+		 * either at the msk or ssk level; skb is the current write
-+		 * queue tail and can be empty at this point.
-+		 */
-+		if (snd_una != msk->snd_nxt || skb->len ||
-+		    skb != tcp_send_head(ssk)) {
- 			tcp_remove_empty_skb(ssk);
- 			return 0;
- 		}
+>  	ret = simple_write_to_buffer(buf, sizeof(buf) - 1, ppos, userbuf,
+>  				     count);
+
+You definitely failed to read the code that implements the above.
+
+>  	if (ret < 0)
+>  		return ret;
+>  
+> -	buf[count] = '\0';
+> +	buf[ret] = '\0';
+
+NAK.
+
+This patch is an unneeded churn.
 
 -- 
-2.51.0
+With Best Regards,
+Andy Shevchenko
+
 
 
