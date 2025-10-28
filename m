@@ -1,125 +1,156 @@
-Return-Path: <stable+bounces-191384-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191385-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDE2FC12CCD
-	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 04:45:36 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F8DFC12D72
+	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 05:09:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6E9594E8C82
-	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 03:45:35 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 8D87A4EEB13
+	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 04:09:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B665278156;
-	Tue, 28 Oct 2025 03:45:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F258286D57;
+	Tue, 28 Oct 2025 04:09:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="KxGpfoRm"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="CGOuvM1F"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89D5D27F754
-	for <stable@vger.kernel.org>; Tue, 28 Oct 2025 03:45:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C607023506A;
+	Tue, 28 Oct 2025 04:09:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761623132; cv=none; b=Q3N9WNcho5XocGSk2Qt7cpCkrnyJbaG+XN3o9POltG7C675D+luPgxVfCagOkfLhKSuJ2i4KOoEt602abZ1PA1cw1Behq0Tk+9a0n+nbTzRKIizJXBKywNwuA316nlIHNVxvI0HPl4xu58OMnew77F/CYuyB16x0HO5DzGjgskw=
+	t=1761624545; cv=none; b=AZYLRlZTELffEX3vslWDMu/hCQ0Zg3+q6X9t2dGTR2kjfGmSaH36Pra89dct9lKM0oHOvONT2Dd559mSTVl3Nc9Ed8wamxzJ6wX16wa4Add3CoeSm+vrRwj92vub3CxCBJl2/YyyBQ83pNwkg2GwRfQmdf+AG3IjC8iDhbl5PA8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761623132; c=relaxed/simple;
-	bh=KidjVKGLgarQNpGF00q4EvUkNmscuvzAOEAk0l1/r60=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Nmb4d9UpHBMyhdc7wgG/PapxpV1QlBMK5EDk26CLloFukX0co1YMLofnQ0G5yalFL8sc/UZeDgZG+aezO0wtwTZZ0laiCuvDEwYyxhH3c+rdlr2ay0aTisIcq+B0CpdtZzRpFRyiEmsKl5NwOVJJedgCLvRQ99j57sjG4N1WI8w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=KxGpfoRm; arc=none smtp.client-ip=209.85.208.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-63c0eb94ac3so9702725a12.2
-        for <stable@vger.kernel.org>; Mon, 27 Oct 2025 20:45:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20230601; t=1761623129; x=1762227929; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=T7GVt1v7G0WDNnH1zdoaYHuIyxA4YtNvwpKhFghPiGA=;
-        b=KxGpfoRmNSQqiBOpeaLnJC/buXlD93KIbdqDC2GtbePPFGdKCU8miwgFdE8u2w0gFZ
-         j7sTsJy7MNviCFHpzMfQ81CkoeLHRLD8XMRyBmN0ySEs1ks4uL2Q8SI+XjoTbqpRiM+b
-         QcStL5fD0KTAZwX0dc2RNrOFw7m+uAtDtKFztK8m/pFRTc1g17bDXT5mMaH58w8QYlTc
-         WDilPkFa2lnNqUhpVMCoxGLdE19DikrbLqPPb0i5+Fc+DQZvDhSMDsC+p4+gC6uz5QsB
-         lXOeTmvJgSGx1NnjpRgw8AZU5CZLYQBcEcAQC2aBixnVC5K+iaJK5skt/6xSodJYwXWY
-         FFJA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761623129; x=1762227929;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=T7GVt1v7G0WDNnH1zdoaYHuIyxA4YtNvwpKhFghPiGA=;
-        b=Y39ZgXxCXEyY0uUIB8Tb8V/x2mD6eTsXiW6uGZHUudpOGGbPe55zvhSQq8EbTj3PeZ
-         Eh/g7yFhe7WsgpU/8UBo7fa4nXoHL4Vsjnv7P+5iS8qNHnvia/ZBV/wIiupl9KR7ehgr
-         s7dL6QeAcmljIpRsn5jyYG6VHW8yQpq4WxcaNP/IoJNnMCg9i2WanjFUkBAZInlajYXd
-         n9MnBgzb7C13F9qix4edQrxDKoc9yHyQSp9hKHzlbwM6l7qwE9YMSTG7pk/+b60Z7uhL
-         P9/YBnFi0dm/POd3GZVpNRl4dUrCJHQrXXwsxFo5HvDQoA5zQkZDgL69Hlau/ujg8L+r
-         xG4g==
-X-Forwarded-Encrypted: i=1; AJvYcCXmm6g8ahcA8EFFtx32XM/YgBNxNQTC89Bcp+/ITxmPwyecA4IC3jw3+Ik6psPirKvdHFTUebs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyszkDwEu/KbT2RBCpzpCq9jCLyggPCSkRTT/GOdz6j11K6qy0K
-	1UnunS4U/XOHftCklKu6iqSZDb/y36cBU8OtzdKaNVLFRoK7WH8I1oA=
-X-Gm-Gg: ASbGncsbMT/rszezFTMWWlzOKPpLz6zBkWA8GsgARbNNMLauJ+e0YOguD5f76k3lri2
-	qLiWrOn2smx8VbtfZYPp4efwFBtb1mvvNYNrLi5EsXROKy/Hyht4bsyOQqdLf4J9ck6mcUDZ9mN
-	MYvJR5Brq7b0zFMdSjVWBa099k9FdS28kVSBFmUWPypNB93HBtCoMLUslZQcS1zXeA7P3/kSQvm
-	SMxCQk5eLxAcGJIncl+TKELU5lD0dQSAY9pDtTrKMUi7sbHnV6sRnvzd3/iDe+JwEiYH4v4yd5t
-	22U/DlVoH2wGnbQuk5uOtQ4QzBfeh9G+x5jFpWLdL3pJFUJ9A/KuGDwFA3tCLPa4DLGf3GeQhKk
-	a5aqyrDX5TAvCuUE5UmaCW/Nqnyb8u46DHak6YOFxomwI30WjXcn+uO6YQDSecN96ngnak3CgHM
-	xSYQSto27a09q5/uU0wz3kbNQMvjMa3hjQ88MQtkHpBPyLHAqYbv3Cxth6uRjmKQ==
-X-Google-Smtp-Source: AGHT+IEgy5yJL7k/IoRzMRfSxNY+mDkwZoZ4I8NMwRQxjmEkNkrb1HgCSFuIbsQrLU16vjMdJiSsag==
-X-Received: by 2002:a05:6402:5cb:b0:639:720d:743 with SMTP id 4fb4d7f45d1cf-63ed8269cb7mr1758049a12.31.1761623128606;
-        Mon, 27 Oct 2025 20:45:28 -0700 (PDT)
-Received: from [192.168.1.3] (p5b057a53.dip0.t-ipconnect.de. [91.5.122.83])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-63e86c6d7d3sm7445083a12.27.2025.10.27.20.45.27
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 27 Oct 2025 20:45:28 -0700 (PDT)
-Message-ID: <cbc3e356-9d9b-4aab-9a2d-4e2b96d76987@googlemail.com>
-Date: Tue, 28 Oct 2025 04:45:27 +0100
+	s=arc-20240116; t=1761624545; c=relaxed/simple;
+	bh=E0QbIt+4QJ75rruQKtxHwYr8u03hGhhf0nJZzbZqKKo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QWGjrBUoQhnkYxgtUxD4G9gWILPfzZYtM8MHAYQ4sRWrW5ZopxLzaWN5aG1WwpK4rRirhmS3PlZhwO0j1ybzhNeluZpD/uKYbIO0FtaZvRYJ2C06Ps2tpOTIUMLWhPBOEM7+Odl+7saltnE65B706vANEtBz1EdfAf/RPZBUeek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=CGOuvM1F; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59RG5CEU018332;
+	Tue, 28 Oct 2025 04:08:47 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:to; s=pp1; bh=SfvUBBMcQUBoZiNBe67HK
+	jBuK6Dm/ZBmLaWAcaap4mE=; b=CGOuvM1F+T5kS0DOGAA1dVFZvYmeJNv4dyngf
+	BrBEdbz9K2zj2OKx4Ht6jZJmvYvZGPPEVzPa65dtaOEqUsJvPhOm0uMPD2jr/ezC
+	PWVy7Nlvc8heV7KYnQNp09hgWYmrOMfkrhFI1T9NytswSGLBLD2Z/nLNNdvzRsUv
+	4hJ2K09gwwUOoMeNAktJNI5cNAVHFM7SIUzYzYRncK9yXDAQurQ4OwQmwUluVU0G
+	V8V8YYY4WSsjT9y/h74T6h1wuTFEpo6XTFULMsjGr6An7OjUxNoXLc47lOWC+i+M
+	MrmYdzf/h0Uj9KX6Kevn67aciiN76Ozg22cEwU5RscKcRTvWg==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a0p991xeq-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 28 Oct 2025 04:08:47 +0000 (GMT)
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 59S45hE9009753;
+	Tue, 28 Oct 2025 04:08:46 GMT
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a0p991xen-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 28 Oct 2025 04:08:46 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59S2R3o0022023;
+	Tue, 28 Oct 2025 04:08:45 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4a18vs12nr-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 28 Oct 2025 04:08:45 +0000
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 59S48fZK51184122
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 28 Oct 2025 04:08:42 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D08D820043;
+	Tue, 28 Oct 2025 04:08:41 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 96CE320040;
+	Tue, 28 Oct 2025 04:08:39 +0000 (GMT)
+Received: from linux.ibm.com (unknown [9.126.150.29])
+	by smtpav01.fra02v.mail.ibm.com (Postfix) with SMTP;
+	Tue, 28 Oct 2025 04:08:39 +0000 (GMT)
+Date: Tue, 28 Oct 2025 09:38:38 +0530
+From: Srikar Dronamraju <srikar@linux.ibm.com>
+To: "Nysal Jan K.A." <nysal@linux.ibm.com>
+Cc: Sourabh Jain <sourabhjain@linux.ibm.com>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Sachin P Bappalige <sachinpb@linux.ibm.com>, stable@vger.kernel.org,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Laurent Dufour <ldufour@linux.ibm.com>,
+        Thomas Gleixner <tglx@linutronix.de>, linuxppc-dev@lists.ozlabs.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] powerpc/kexec: Enable SMT before waking offline CPUs
+Message-ID: <aQBBxlZebkLDhi2e@linux.ibm.com>
+Reply-To: Srikar Dronamraju <srikar@linux.ibm.com>
+References: <20251025080512.85690-1-nysal@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Betterbird (Windows)
-Subject: Re: [PATCH 6.6 00/84] 6.6.115-rc1 review
-Content-Language: de-DE
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
- conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
- achill@achill.org, sr@sladewatkins.com
-References: <20251027183438.817309828@linuxfoundation.org>
-From: Peter Schneider <pschneider1968@googlemail.com>
-In-Reply-To: <20251027183438.817309828@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+In-Reply-To: <20251025080512.85690-1-nysal@linux.ibm.com>
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=JqL8bc4C c=1 sm=1 tr=0 ts=690041cf cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=8nJEP1OIZ-IA:10 a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=VnNF1IyMAAAA:8 a=eMohRQ-KdQCHCDRkyAgA:9 a=wPNLvfGTeEIA:10
+ a=cPQSjfK2_nFv0Q5t_7PE:22
+X-Proofpoint-GUID: t6S93ipUKAohD0zxwgjOAjKz4Lz5HzZN
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDI1MDAxOSBTYWx0ZWRfXytRsWE3y5MiL
+ cLymIho//XHObODNhoDqSk755gVf/wGRaaB4aw/GKUCfAXOBrxQNL/5U9dmtNjTRc1NusopCVm8
+ p5dt/NOKfbSPVJIzXlTdwCMqMlkfdW8AQeJWUi1LQGb6G9a8GjpHCUQCTWBuhAVfSKD3vf9dFHh
+ PW662LWPWr/IFJmquAHceEOv2qQG/KykEpcV+TPjxaAeXi9VMS56+OuYraz15aqeNd9dpuQPnT4
+ KM7yShxtocfo0nGFsjMuBUc6kZ7P3gLco/JTdNBLyO14kyMFg5b45D/TLFKiscJMdLym+Qs9IVx
+ cRYn7Zf/jtRM4wjx0KX61MVnwvcGB1F35Mg1M0TS8WhP2JbTKTi6RglcAK7rlrgBo2TeagMCByS
+ Kfo/fbXz0GSObpOBjO1KY3WXS5wHKw==
+X-Proofpoint-ORIG-GUID: OAhCU3nbnwm1qIWiPiQBU9lbZaSH1Nz6
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-10-28_02,2025-10-22_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 clxscore=1011 lowpriorityscore=0 malwarescore=0 bulkscore=0
+ priorityscore=1501 spamscore=0 adultscore=0 phishscore=0 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510250019
 
-Am 27.10.2025 um 19:35 schrieb Greg Kroah-Hartman:
-> This is the start of the stable review cycle for the 6.6.115 release.
-> There are 84 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+* Nysal Jan K.A. <nysal@linux.ibm.com> [2025-10-25 13:35:09]:
 
-Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg oddities or regressions found.
+> diff --git a/arch/powerpc/kexec/core_64.c b/arch/powerpc/kexec/core_64.c
+> index 222aa326dace..ff6df43720c4 100644
+> --- a/arch/powerpc/kexec/core_64.c
+> +++ b/arch/powerpc/kexec/core_64.c
+> @@ -216,6 +216,11 @@ static void wake_offline_cpus(void)
+>  {
+>  	int cpu = 0;
+>  
+> +	lock_device_hotplug();
+> +	cpu_smt_num_threads = threads_per_core;
+> +	cpu_smt_control = CPU_SMT_ENABLED;
+> +	unlock_device_hotplug();
+> +
 
-Tested-by: Peter Schneider <pschneider1968@googlemail.com>
+Nit: can we add a comment mentioning why we do it and probably move to a
+small helper function of its own.
 
+Otherwise looks good.
 
-Beste Grüße,
-Peter Schneider
+Reviewed-by: Srikar Dronamraju <srikar@linux.ibm.com>
+
+>  	for_each_present_cpu(cpu) {
+>  		if (!cpu_online(cpu)) {
+>  			printk(KERN_INFO "kexec: Waking offline cpu %d.\n",
 
 -- 
-Climb the mountain not to plant your flag, but to embrace the challenge,
-enjoy the air and behold the view. Climb it so you can see the world,
-not so the world can see you.                    -- David McCullough Jr.
-
-OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
-Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
+Thanks and Regards
+Srikar Dronamraju
 
