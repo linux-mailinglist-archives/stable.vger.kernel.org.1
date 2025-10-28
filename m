@@ -1,146 +1,129 @@
-Return-Path: <stable+bounces-191544-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191545-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F514C16A79
-	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 20:44:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7964EC16B36
+	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 20:59:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7BC544EC717
-	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 19:44:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 27F813AE0C3
+	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 19:58:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C8EF34FF71;
-	Tue, 28 Oct 2025 19:44:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4243434DCFC;
+	Tue, 28 Oct 2025 19:58:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="r9JM/5LT";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="umfdoBtP"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="klhNUQeX"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F5571F5827;
-	Tue, 28 Oct 2025 19:44:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78F133491D4
+	for <stable@vger.kernel.org>; Tue, 28 Oct 2025 19:58:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761680679; cv=none; b=nYO3e56E9eLhsgmPBOxXjV8IqO/Jz1rwRBrZHCW3rKri8ggaNNMNrbjn2nx8I36nHg5F8zbSRgeW5pTxCHJtADS4Hi+kh+ETJkNeO2Oy5/MaAKjk2UGMNQbJa5zGYybBMgf+SOLXccwX/F3qbvFoAxlAN3XBDjg1MhbnSIWcaoQ=
+	t=1761681493; cv=none; b=qZWkU0UC5rgqS9eVAeZVx772dZXh+c46Uxa5wBiF7pKX//GH/GXqopVy439/NyEUB/cS1g/kewFffFPmrIM1kvgGy1ZKIjIpFusTJdANcQREacPptO+gsk2oDv7S473tOJZMW5JAd868lb9w8LMDtxKoAFgVLCzkOckKKh4Zwxk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761680679; c=relaxed/simple;
-	bh=Msq9T36ZFxgTo2O/BlSoUqcqG4aEYoQ5fAFhnErLZog=;
-	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=n92lltiUoWiYlS4Lfm65AyM6OFeM7hFf/6y/ZF9kFYUwt2HkhBrUXkh3ROEhMF6ti49psGb/H7UaI3x4OYoVOkjqwgprrz2oQRYpCky7CAc786VnrR+c+dpAALB85WHY219d0L9th8nQtOC7/mOPSVpIJCSRpy17luEmO4FXuJY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=r9JM/5LT; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=umfdoBtP; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 28 Oct 2025 19:44:33 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1761680675;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=p4QVTyWunBvfONVP0Mj//QUzxTGF7UBFnbv9Id8gW9c=;
-	b=r9JM/5LTM4P+ZZhyQmXHArJaIndBwGmVCKFOaqitXu07N3zA+EHBCY6kmZnjtFjt4qcebr
-	3UWzFyQ6wA+YdQNKT14Y6zRmMZFzqystqUMNSB7J0gOJTPybTbu0mOCJuaL7Gb2wqUTUaW
-	C5istUm9vDc0qlgPMDTuRptxDMBRBF6Gx1VJnsxtQ4/6ql2sf1yjMej5vxTWUTqumceuHD
-	bta+C6NxWqeHoRVAODy2p6LGF0J4VhJDTqlahuKWCfxO8HRJx9hwUeCstTKIZJWVDyQkqy
-	ysnmfbkF2C0fDeOHWGkb4W7CrjD10Gf+2UiZ8cH09D07mojaS+UbIXrQy+VJOw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1761680675;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=p4QVTyWunBvfONVP0Mj//QUzxTGF7UBFnbv9Id8gW9c=;
-	b=umfdoBtP4M7kpHwgs/K21Xy2kcgGKP6qjJsAoCfQTXU2ObiEbdJi9CgQyJ6dR/lO5pHExc
-	+ngg/TF0a8eoKdBw==
-From: "tip-bot2 for Chang S. Bae" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/fpu: Ensure XFD state on signal delivery
-Cc: Sean Christopherson <seanjc@google.com>,
- "Chang S. Bae" <chang.seok.bae@intel.com>,
- Dave Hansen <dave.hansen@linux.intel.com>, Chao Gao <chao.gao@intel.com>,
- stable@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org
+	s=arc-20240116; t=1761681493; c=relaxed/simple;
+	bh=81YyA1R5iz4fTfXKoVxn0FrqZs3ZkgPsIoR8QbKYtlE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=coSLFzFdf4bM41ux5osjhilbFr7GCfb7O1j+UOp5h/PGeTK/P96hrlrI3taeDVn8a45MUF87xENPNxGUfxayYU9Cif0mVDZNJRb7qVOHANVio/i22X81hPuFUE9HONmSg7RgNvd/ZyYqesKbU/PjBPljRfUg8uYO2PJr8cEt2Oc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=klhNUQeX; arc=none smtp.client-ip=209.85.160.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-4ecee8ce926so28467621cf.1
+        for <stable@vger.kernel.org>; Tue, 28 Oct 2025 12:58:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1761681490; x=1762286290; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=81YyA1R5iz4fTfXKoVxn0FrqZs3ZkgPsIoR8QbKYtlE=;
+        b=klhNUQeXcc9P3Rds0AJN+5uFxN3wTx84ylKIs9V9/UJPDqyy0bzwnIHef4aITX1ZC3
+         czDNWpRDSQ3j5jma2KsD/xoPC6+uXu7lgqhPF1ByfIyMBADOvht2kHUqpAjRG7uCNWvl
+         LdoqHRTu119vRpbkmNy/0H1DhxcEevg2FU78WjCeV8z1fSGZy1VFV6w9RoimB0OQLCLv
+         8HM5KN3tHUuGc+FPDX7jLHVoSphuYslb/nF6i6/dMmigERrwkCoaqtILfOAsImTDPIHb
+         9Nu/xThmav3SbtN2GX7d2Lt2RdF/YaUGahTeblpr7TJIgcW2Xpza78yIxbye9VSgPY3E
+         vcSw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761681490; x=1762286290;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=81YyA1R5iz4fTfXKoVxn0FrqZs3ZkgPsIoR8QbKYtlE=;
+        b=uqmF22Kum1iPgcp6wmZ5A2cqfMStqm3fbc+kG0DzwQupPu/1NRKrHVKHAOssV6SAAR
+         f3PHXlbzfwkQ8T0Lrxxl3DiLyNu+PJlnjmk3DsRm2ry1WrMNHcRcs7LNYVz9PtAP8ryg
+         Fp5wEVkaOfyQSHvx6lokOO5QzhesuOGI8CMnv84Q+Xu6ASoZ2bI5pd4B3fOBtD3WLJv6
+         sg3wew+oslD32wvAF3imXkkAteDo4mqSLnqdaQ5VKii9gGc2/1XPS9rQWanhY2gn1oXq
+         tyNb/f5AgLrVoDwuz0gyxJAgofm8Z+5Fg5b/tdoZrd/YJGdTEUenYhEmkshz7kA063J5
+         yWWg==
+X-Forwarded-Encrypted: i=1; AJvYcCXjo+wjkLJFPOHYJuFJlzoP5DR4HVmowbhWwldAhT1reUPRlWm3lxeXWRefvAvn/4M56DT6c+U=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwCjl3pvrtcr1dK7sfLmeh1MX4JRzgy6DuIk0DPfAWmFSl2Mml5
+	BoJLlaG2CuP+onGoqnePipsT0Tp2fjmgD8UrRwQacbfkdQBkNb5dvEtybguxoYKT6iGCZG4rRFN
+	FycN3oSefTZ1WjvoEeh8cyFfYeYTEXxo=
+X-Gm-Gg: ASbGncvQ3ZLmFLzV9vbCSP93LW2Qjhkq0wgqqrxaF3vpVeQywN7BoBIdCQQ61aQnLCE
+	cgwNwHrQYteqLq8uiKz2FsOekfxCrg21s2y8grZWqrWhQJutO63MKF7EC+zqKA2bN6B0rUx0mR3
+	QA3T5irFbsqSY7A7xCzU9CIVk7x4PUAgnYjVTzr0iVw7grF58K4exmwQ3XV/sdKr9X8uarXOBKM
+	lpK5WtA4/w4bJvRS0LhN7zBrBCpaR+eLxcWork6o8j8uKBkSqKUggA8ulbpbQNfNcx1fCDunKow
+	k2Kr5lDzYTFVc5CF
+X-Google-Smtp-Source: AGHT+IHcPz7GLTlfScG+sYUJ1uTqk6yOB/+ttx87jCRzATu8J8QMSJqa0UraxFmcF3Kh1FSYEqsvJBW0hVJ7aPr7Kyk=
+X-Received: by 2002:a05:622a:5a09:b0:4e8:846e:2d8b with SMTP id
+ d75a77b69052e-4ed15b757eamr8256071cf.28.1761681490164; Tue, 28 Oct 2025
+ 12:58:10 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <176168067359.2601451.3900540994771276596.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
+References: <20251028120900.2265511-1-xiaqinxin@huawei.com> <20251028120900.2265511-2-xiaqinxin@huawei.com>
+In-Reply-To: <20251028120900.2265511-2-xiaqinxin@huawei.com>
+From: Barry Song <21cnbao@gmail.com>
+Date: Wed, 29 Oct 2025 03:57:59 +0800
+X-Gm-Features: AWmQ_bkDIOr0dScQdWXK4F4cmyPRafg2Akhiis5ZNZevLrtuXc0fPXf9BJv5y_4
+Message-ID: <CAGsJ_4wy2B7=KwLfODySky+FADkLZYowWCNm28FBmri_Opv7ZQ@mail.gmail.com>
+Subject: Re: [PATCH v5 1/2] dma-mapping: benchmark: Restore padding to ensure
+ uABI remained consistent
+To: Qinxin Xia <xiaqinxin@huawei.com>
+Cc: m.szyprowski@samsung.com, robin.murphy@arm.com, prime.zeng@huawei.com, 
+	fanghao11@huawei.com, linux-kernel@vger.kernel.org, linuxarm@huawei.com, 
+	wangzhou1@hisilicon.com, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-The following commit has been merged into the x86/urgent branch of tip:
+On Tue, Oct 28, 2025 at 8:09=E2=80=AFPM Qinxin Xia <xiaqinxin@huawei.com> w=
+rote:
+>
+> The padding field in the structure was previously reserved to
+> maintain a stable interface for potential new fields, ensuring
+> compatibility with user-space shared data structures.
+> However,it was accidentally removed by tiantao in a prior commit,
+> which may lead to incompatibility between user space and the kernel.
+>
+> This patch reinstates the padding to restore the original structure
+> layout and preserve compatibility.
+>
+> Fixes: 8ddde07a3d28 ("dma-mapping: benchmark: extract a common header fil=
+e for map_benchmark definition")
 
-Commit-ID:     388eff894d6bc5f921e9bfff0e4b0ab2684a96e9
-Gitweb:        https://git.kernel.org/tip/388eff894d6bc5f921e9bfff0e4b0ab2684=
-a96e9
-Author:        Chang S. Bae <chang.seok.bae@intel.com>
-AuthorDate:    Mon, 09 Jun 2025 17:16:59 -07:00
-Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-CommitterDate: Tue, 28 Oct 2025 12:10:59 -07:00
+It would be preferable to include the following as well:
 
-x86/fpu: Ensure XFD state on signal delivery
+Reported-by: Barry Song <baohua@kernel.org>
+Closes: https://lore.kernel.org/lkml/CAGsJ_4waiZ2+NBJG+SCnbNk+nQ_ZF13_Q5FHJ=
+qZyxyJTcEop2A@mail.gmail.com/
 
-Sean reported [1] the following splat when running KVM tests:
+> Cc: stable@vger.kernel.org
+> Acked-by: Barry Song <baohua@kernel.org>
+> Signed-off-by: Qinxin Xia <xiaqinxin@huawei.com>
 
-   WARNING: CPU: 232 PID: 15391 at xfd_validate_state+0x65/0x70
-   Call Trace:
-    <TASK>
-    fpu__clear_user_states+0x9c/0x100
-    arch_do_signal_or_restart+0x142/0x210
-    exit_to_user_mode_loop+0x55/0x100
-    do_syscall_64+0x205/0x2c0
-    entry_SYSCALL_64_after_hwframe+0x4b/0x53
+Thank you. We also need to include Jonathan=E2=80=99s tag[1]:
 
-Chao further identified [2] a reproducible scenario involving signal
-delivery: a non-AMX task is preempted by an AMX-enabled task which
-modifies the XFD MSR.
+Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
 
-When the non-AMX task resumes and reloads XSTATE with init values,
-a warning is triggered due to a mismatch between fpstate::xfd and the
-CPU's current XFD state. fpu__clear_user_states() does not currently
-re-synchronize the XFD state after such preemption.
+[1] https://lore.kernel.org/lkml/20250616105318.00001132@huawei.com/
 
-Invoke xfd_update_state() which detects and corrects the mismatch if
-there is a dynamic feature.
+I assume Marek can assist with adding those tags when you apply the patch?
 
-This also benefits the sigreturn path, as fpu__restore_sig() may call
-fpu__clear_user_states() when the sigframe is inaccessible.
-
-[ dhansen: minor changelog munging ]
-
-Closes: https://lore.kernel.org/lkml/aDCo_SczQOUaB2rS@google.com [1]
-Fixes: 672365477ae8a ("x86/fpu: Update XFD state where required")
-Reported-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Chang S. Bae <chang.seok.bae@intel.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Chao Gao <chao.gao@intel.com>
-Tested-by: Chao Gao <chao.gao@intel.com>
-Link: https://lore.kernel.org/all/aDWbctO%2FRfTGiCg3@intel.com [2]
-Cc:stable@vger.kernel.org
-Link: https://patch.msgid.link/20250610001700.4097-1-chang.seok.bae%40intel.c=
-om
----
- arch/x86/kernel/fpu/core.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/arch/x86/kernel/fpu/core.c b/arch/x86/kernel/fpu/core.c
-index 1f71cc1..e88eacb 100644
---- a/arch/x86/kernel/fpu/core.c
-+++ b/arch/x86/kernel/fpu/core.c
-@@ -825,6 +825,9 @@ void fpu__clear_user_states(struct fpu *fpu)
- 	    !fpregs_state_valid(fpu, smp_processor_id()))
- 		os_xrstor_supervisor(fpu->fpstate);
-=20
-+	/* Ensure XFD state is in sync before reloading XSTATE */
-+	xfd_update_state(fpu->fpstate);
-+
- 	/* Reset user states in registers. */
- 	restore_fpregs_from_init_fpstate(XFEATURE_MASK_USER_RESTORE);
-=20
+Thanks
+Barry
 
