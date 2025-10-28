@@ -1,78 +1,78 @@
-Return-Path: <stable+bounces-191514-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191515-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 545ACC15D83
-	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 17:36:10 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDAC3C15D0D
+	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 17:30:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BC0613B243A
-	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 16:28:03 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 53962354CB9
+	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 16:30:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 546BB286885;
-	Tue, 28 Oct 2025 16:28:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93885296BBB;
+	Tue, 28 Oct 2025 16:30:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="IFowc0kq"
+	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="g9jVUgL/"
 X-Original-To: stable@vger.kernel.org
-Received: from SY8PR01CU002.outbound.protection.outlook.com (mail-australiaeastazolkn19010017.outbound.protection.outlook.com [52.103.72.17])
+Received: from SY8PR01CU002.outbound.protection.outlook.com (mail-australiaeastazolkn19010018.outbound.protection.outlook.com [52.103.72.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 206C320DD72;
-	Tue, 28 Oct 2025 16:27:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.72.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 742BB285058;
+	Tue, 28 Oct 2025 16:30:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.72.18
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761668879; cv=fail; b=jsMNZZM+6V8xbIOVYDIHfxwczq8yfUQEwMxcJGBrhf9aQyzc3Rw81yWA5lq+ERPgtg7d4glP24Y6nOqv3ikWOuL1wgXxgQ5Aqf2gvwjebqmdKTrT0DooiDx2fYcda6gjHbCLYU9ek0f2fbqv3nJMRGZODp58qh4WcGwc1pEiG1o=
+	t=1761669027; cv=fail; b=pdw0l3mYjlUn5oJK1okZDIATphShjH8aiwhSlfU9qkSdXZft2yGJ7lUICsaFg9xzlc/eWALWG1UNtPmbIE/lud+a0P+k+vMVpHUdKki8+33OEO99s8V0TcuHYLP92Y659Yw22WWw1GArGQ5/dQM+yy6E0CXJyjI8Q4iBycgwepg=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761668879; c=relaxed/simple;
-	bh=8VLM/Ez7Dr9J6m/tw0wkEKTf0u2MENeGtMZrTZwEsBk=;
-	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=ta1X0Cl7ote79gDpX6wTB2cH9gR82ToR2iIhkGA8eCNuq4b5/LK+9b87d4PORKiltLKCNm30SJGDq4DzkfJEKS6PpDtEEFJvmEi/zJsPCfHLhmIwPmoV4MiZADeSOC9MfnNu68r05RXEwEmPkT0ahsuFT0RWxhfVcfmeoOrmEck=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=IFowc0kq; arc=fail smtp.client-ip=52.103.72.17
+	s=arc-20240116; t=1761669027; c=relaxed/simple;
+	bh=/9Z2X68DcGLALreBlj6sU63ZZvYMsgpP9Bh03XiBicM=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=HhDJajiZsyH6yEdQ/pqWBBvC6SpoOvCU5V7h+v1gYDmWbmwcqbYqbm1sRyNtpwa/4Ha3oFw7vDyjxBgZk1twABWrjJxwypYmJQBbS1goeuMpSBBBVOatOxRyl2HwaM1EqNbqm0YB5AQCsPEJRmJTkJ1I7LI1MUTwyLzw4KqKOwA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=g9jVUgL/; arc=fail smtp.client-ip=52.103.72.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=CixACVl4OfMu1NJKupZdF2GuM1sz7wn/ks0gIv81D3RZfXaAY5I3QiP9TEK6IN/zUx8D1jPUNYviKFA0HLPaIm/HEjuFC6GkLAL9SGZUfizidgYCo1nbtfX6ZINXugB+Td2sIBok1xbf8HT0b+FtqbYqFjNaoCR41fWsTAV+RyEa+NAxfs5RXkiLQ0u3ODiKg9bx32PHi48moF0wGLRWjLh1zzDy7oAWLpxZVM2uNm5wRKuQxk0/yl28vAGny2S8UHbgOmEcWYlyThdiJo3tFUY46rpfsI6ziIouFF4MOK7rld3wdvcFwlZPiVW8w00gmRpDOjdv/nXmlqYuEWGA7w==
+ b=pbF+sFzXGpXvevHmiF4MKk1UsIFChEG09KSHeL7GYdPW8sDLTArXJrTQWFsTLXEo+3JZG190d/dkm6+RpX/izWaaWyVn5v1mimIuf8eUHRRBB+Ztrg2GLTKZG+KNDmZ87rsl/+ftLf2EihskuBIeNMXL6I/Jvg+Q2srahFsRqpyvMqeQac2eb6tM9UUrpxV1lnkJEj/si8t+KsZTUD+1AaGI2gw6HcdzjCtyzWb8RGgcRCEOtrYTJruDYaHCVs2q9kR0S6OefIo5Z7pnh0OjeZKRgGQYNoU1hnJn6j0AL6XXygqtfGreKE5/BVuv73Ov+Izum6FAK6bBGXZNvh/XHg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=eR8YdU3jvu1Q/TsWebPHi+3Qg2h19I52Bia3DyufsCM=;
- b=HzBTaECHC7tr2HmX2pFu3zVDhabnD2Ax9Hr1KL9XiqT4Nf+51Nz9Kf7f2oSOhPnQnY5ABYt+KlEMzNAtISH+/QNCrsBaukLeSU8cx6frLTAtS3Wd8oHPgcNSOENRfRlYcUrd1g5QpXnV9G7HEiPhXP5oEckRerlBMXOd/IYw+2QBOoLjaCQ7DDRH/82yLwksjB8oxPWSfc11qUIr5zX2b6GiNBOfS/fb8oaiV8PyQF1DaAxbkRSaU5cdpDOCacN7RKc/2TP6XOfBUtflqI2hd7sZUIi1XmjUY6V4MQOd5j+P9E8gJ89SbCDqFBlbQcJwOO0saja1i7TIB/+T5mbZLw==
+ bh=1O64jdz4bCMPZi4gObdEnkH3AmIGpFuugBALyAO2Ohk=;
+ b=Mn9vqTi8+qwhB57OYXnJnVA17aeYEeFuFycZz6o8dTllXfjJNuMvrF/CwVc7py/6PpHNQdnn5pEUmCXIVPfvRj3vtm6CA8lX0jjWkVS3hPsejoArBPFazAsZLHeQZUP67k8Z7iN2FGJOXZfhKyEB6ua/e+kX+8Sk86kL8wxuOj0YnSz4WcZ191U7U1rsxyfbg/V8BMxGsabYf9oT1OkxxDda1Pmov2YwRjXrCWC9h0/m3Ts4MQkDkVPOLiXUB8zUmqX3S4Jq4vlXexNplLs3mVMIX1DDLlhQpLM86boDbfACXodQQK07tBiqsoJ4B7XgaCHi1tAKeIQcri8jes46qQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
  dkim=none; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=eR8YdU3jvu1Q/TsWebPHi+3Qg2h19I52Bia3DyufsCM=;
- b=IFowc0kqe7ooQqy5KSuatm007rpTc3m1+w29aIea4v0MgtLO1BTcgHqwS2o65zRmhjh+mbRRKYO7ECPATMnSkxna29Bjh9p49dbrFFPpTYKPORJ1vZ5Aftwdzrr3VXInvaCpsDrtfXCVofcG/oLd95x5LEIn2hK0kaqE9dSMXCSIuejUQwbRr01jUhHK0xZFbmTQc44Cd7925BBXyQEKLYkR4iCvXjCLKxdMbgkcMEITPmU5dGhFrTCf5trEqpDwZa/1uQ4jK3BOgoMqTWDaQpLbeiWfsRPDeIcCk4wgRHhdpOLE7Vosl3pRI+A8+6PgE69NiGD76m8Citdx3ZkvRg==
+ bh=1O64jdz4bCMPZi4gObdEnkH3AmIGpFuugBALyAO2Ohk=;
+ b=g9jVUgL/0m0ivoyJtgkUWa0ujohKcdnU37E+a9g64Tw6qftRbOxr0NeScGRSwBjKlJa+IhD19QfO3aU4GCbXzQOfKd6ocuTDWOqs0yJUXJSzXiHuXVKOiT+ZPm2JrW/oA3XQNAjWPms+dDuw0ymF1CmoqNlRj6yd+TWCdV5qCh2nEuG+wOkf/DEh6aR7/qX64itpnThuLvOHtE5T6okScn3lHrW72B9Max0f82KS7t9QLglrvDIrFZco6ryckSoINBls7pyFw5MqogzhsxtWjKHhhs47AAOvdXm78cMoc1p9kA4ix+xqvcCLCPL7Qr2b8YR700xAHxB1V5i7FqiKtA==
 Received: from ME2PR01MB3156.ausprd01.prod.outlook.com (2603:10c6:220:29::22)
  by MEWPR01MB8833.ausprd01.prod.outlook.com (2603:10c6:220:1f6::5) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9253.20; Tue, 28 Oct
- 2025 16:27:54 +0000
+ 2025 16:30:21 +0000
 Received: from ME2PR01MB3156.ausprd01.prod.outlook.com
  ([fe80::443d:da5:2e96:348d]) by ME2PR01MB3156.ausprd01.prod.outlook.com
  ([fe80::443d:da5:2e96:348d%4]) with mapi id 15.20.9275.011; Tue, 28 Oct 2025
- 16:27:54 +0000
+ 16:30:21 +0000
 From: moonafterrain@outlook.com
-To: Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>
-Cc: linux-sound@vger.kernel.org,
+To: "James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>,
+	"Martin K . Petersen" <martin.petersen@oracle.com>
+Cc: linux-scsi@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org,
 	Yuhao Jiang <danisjiang@gmail.com>,
 	Junrui Luo <moonafterrain@outlook.com>
-Subject: [PATCH] ALSA: wavefront: fix buffer overflow in longname construction
-Date: Wed, 29 Oct 2025 00:26:43 +0800
+Subject: [PATCH] scsi: aic94xx: fix use-after-free in device removal path
+Date: Wed, 29 Oct 2025 00:29:04 +0800
 Message-ID:
- <ME2PR01MB3156CEC4F31F253C9B540FB7AFFDA@ME2PR01MB3156.ausprd01.prod.outlook.com>
+ <ME2PR01MB3156AB7DCACA206C845FC7E8AFFDA@ME2PR01MB3156.ausprd01.prod.outlook.com>
 X-Mailer: git-send-email 2.51.1.dirty
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: PH0P220CA0024.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:510:d3::29) To ME2PR01MB3156.ausprd01.prod.outlook.com
+X-ClientProxiedBy: PH7PR03CA0016.namprd03.prod.outlook.com
+ (2603:10b6:510:339::13) To ME2PR01MB3156.ausprd01.prod.outlook.com
  (2603:10c6:220:29::22)
 X-Microsoft-Original-Message-ID:
- <20251028162643.44453-1-moonafterrain@outlook.com>
+ <20251028162904.44718-1-moonafterrain@outlook.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -82,61 +82,62 @@ MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: ME2PR01MB3156:EE_|MEWPR01MB8833:EE_
-X-MS-Office365-Filtering-Correlation-Id: a5791d70-501f-4719-ef4a-08de163ef204
+X-MS-Office365-Filtering-Correlation-Id: ff2ae6bb-f196-4ffd-c3a5-08de163f49da
 X-Microsoft-Antispam:
-	BCL:0;ARA:14566002|19110799012|15080799012|41001999006|23021999003|461199028|5072599009|8060799015|5062599005|40105399003|53005399003|3412199025|440099028|3430499032|1710799026;
+	BCL:0;ARA:14566002|19110799012|15080799012|23021999003|461199028|5072599009|8060799015|5062599005|40105399003|52005399003|3412199025|440099028|3430499032|18061999006|12091999003|11031999003|1710799026;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?FcSCAKgMnmyjJJ4JGgLKVeQfVM56aiUm+9Q7dHvAoh2+hL1HNWTOtI5ADm/o?=
- =?us-ascii?Q?CZILYVH2TDDOwrPB5AQMJz2utbNQAl0bwr5B4alWiAy14YDJSGXOxpC5xB3M?=
- =?us-ascii?Q?hm7Ijs+Fo7AanZQv/T7l7vKaiy/KeoVykTKiYHvU48cquRC1qHDoBy9p/yrZ?=
- =?us-ascii?Q?FS276iPXC4GtWo7pH6vvG1WikYrflQqtfROcTiZch1kAWuiJ3RHDtfdhjww1?=
- =?us-ascii?Q?7h/hVn0867RLzJOZwC1sliJw1Ib/2pJCdvs3qFCF+dRqPHSfK8WPdOxZs5Mg?=
- =?us-ascii?Q?vVk/ubGUxXBa3PwhPq98RHHyFTSAheSro37lsfY/yHnZPY9SMZ4keXBMrZ/P?=
- =?us-ascii?Q?CeZ8wQWL44+v0FfdHJk0QPELEhlFpfk+DhJ9vW1CVgqYhPWE0eWoE9kJRYov?=
- =?us-ascii?Q?Vw29wTj9+TSVjaw+1ynzgEUmGY18NLtp5VIQshlQGKNSTcqL15Xr+Z+GNFoH?=
- =?us-ascii?Q?RT5SZFqbNS0jokZFHrwYPE/zRv6YMLomv2VwxzqPBVQFZQlY5pESqeDHkhKI?=
- =?us-ascii?Q?fXVD/A+NVlXlgmEMMEUU2dnZbGx8Vw72Mhq7ml9QECKguQOOZHzjxF/bdktI?=
- =?us-ascii?Q?dqJd4rA2unTq0xeLxYMK4wqQV06nxsr3DDXYJ3kwHqDTlP1IZJNj1rplAQya?=
- =?us-ascii?Q?K+Tnqy0I2SJ9gq5ClVpsUb6qbvgdBzybWRS08COAMR+/uWk0cQQtIX7V2YnY?=
- =?us-ascii?Q?CopfjFzBeK2WPT8TP69YxFk4ZhPKb8rWRRX/as6UW21qo9GaaZr2CxOfL3ve?=
- =?us-ascii?Q?AMtoPbPFRis5qjlLuQmj1asQp4ukN5aE4+28uFl8/l+3I3ST5kWuKBwAyM7a?=
- =?us-ascii?Q?lswnuohtBoAW79Cwf7HP7QV9byXelqo9sC0R/gVmHu3OvDhiOCTE8pJN87/O?=
- =?us-ascii?Q?4A2mZoRwTXGdcQxw8InCK8Q+FWgzlmjR0kS9lpSI00WTvcxr5ao/sDjhV5Tx?=
- =?us-ascii?Q?MlscjF2UeiEhKOAOUTgJ/OfP8GPCaMf85fCbbo/WXq0lzCX5wK753xxUW7v1?=
- =?us-ascii?Q?HpWDQmLSmVlRMQNKAJ2yMBhEGSIa6hdabdyP1PQqAnb29mJEV20kpWM63F16?=
- =?us-ascii?Q?aZtt+ObYCI7NGyh5x5yZrjbaNJwjYdlDx+XjSG9sWObWQtuu2S+W9zLnio/X?=
- =?us-ascii?Q?wnwEa8+qSCuz49lOkYdsh7OTis+MD/31nDob74dKDYyNj/+NT90qDEuNfMGb?=
- =?us-ascii?Q?jOxlep7qfiSH1hVMYf8u1aENPhSxqOS2qVjyP59VGLJBF9fa3T7L+ViUR/rd?=
- =?us-ascii?Q?uwXVsoRDHjakxkv5wHnfPASbC9YPBkAlJjI7BADnjw=3D=3D?=
+	=?us-ascii?Q?dyhh85adj/idAwYaWyHKvkcLkRjnohvnxpbiZtW+IOmQJjvr91bX9N9Nx2Ty?=
+ =?us-ascii?Q?2u7vTSYUDJEWktvXEjF4eelHLPlHeaIyPqllJEMkRZUw5KbnP8q+lyvbRe/4?=
+ =?us-ascii?Q?YYubNi0Whg6Qu7aISWN9ALpcJsLJh+itQAGKyv0BQc6EUOJi1jwnouMXBYGH?=
+ =?us-ascii?Q?JQ0XjtTFVBbN1lE5hxTTqMjBRBxvXEXVw35cTNhdLeeTm824NgiZqb4OSYps?=
+ =?us-ascii?Q?KfaR2dYgkEr9KNNxxf7mS2JirGHT7Vx3v0JgnAzXf8hj4Fdh08gpWM2YUmXJ?=
+ =?us-ascii?Q?990H51NlthEEmecMrbJCqGVhOMGhZnQY+R7Y0fwoUSdsN/Ocz5G7HtHvQM9W?=
+ =?us-ascii?Q?BKMVhOFfVdXVZ7G0IS2Of8SazQtTo4oPMEi4C+drigU5sbViweHtzvslF+hO?=
+ =?us-ascii?Q?UtZWWWyv7+0jSJ5DwJ06OEz8Jn3S4vZDxe6NiFNUxbkihx79NXU3XXJd5A2o?=
+ =?us-ascii?Q?1n1zEM/WSSSYgyccMblc+jHW0FLx+kxyc6e9hPgG6mAp3/WWMCXknyPyKDeA?=
+ =?us-ascii?Q?3wWDHZjlEsbu/oKT+Da1av9Dgw0coWKKcaFbGNSZfkzNiR+ofHy39ycRHiV8?=
+ =?us-ascii?Q?VIBsbKVl6YNGMCVPvLXmkPBCboW5uk/9c3zKTOvDN/mcFwvyTs5zP/MZuCSL?=
+ =?us-ascii?Q?eNIaXXcjtOhmsIHlEhdSiz6mtHV/wSxcTehylQ33dnnNtHm6tghMzeeDRuQY?=
+ =?us-ascii?Q?c8rmVGMghjLMuFuvMYD9rVILLOayPCvB8wI+aieFhqrIRYuCax84Y9YT/g27?=
+ =?us-ascii?Q?1ul1DSpnc0ArFSYwnxMUEp3Jyybt6DYTHd8VSxWmWjhwJ5Dnf9LPWNlN28eI?=
+ =?us-ascii?Q?WD40Jp2GJq33eEb8I5LtWLArRt0SOsn2bvkY+GNJGHoeP/XadqqXk5Rvw3Kv?=
+ =?us-ascii?Q?ZjUB1vF0ChuvdSeKH39mcPBaVEe54cvr6UaeUHF1MdNGElMiMDahNvIxNH4B?=
+ =?us-ascii?Q?Eh9wE3BFhJJsZIcnoY5Kz1E14xWkGlbE6yfN4al3+rQfwVZT6aS6l2LhgRKS?=
+ =?us-ascii?Q?HqcINCK8hK65WNiIkqnLra9t3A5cH2HEGqIVvG7WmEKrS91wRyBUy4mzs8/+?=
+ =?us-ascii?Q?t73ouvwvmtXHNdVxR+/DkRPn1e1anvUXDJJG71GTt4OB2ujPYiM9Vmr5lMaM?=
+ =?us-ascii?Q?KhoAd7OWpazdpnH2/DYClZ0IFVgOORFB1l9EZjYMK976Xu66H3nJ/mR59rjX?=
+ =?us-ascii?Q?yfA5iDxY2MeZVcqFEEikb6cSW3vRWXCCgDZWZaqUGwXMr9z4z8LOKCpZXN3Z?=
+ =?us-ascii?Q?afa0bK0x9KjhkS1X90+brxsFqDOiT8/uky+1eDXMYtF3UKlMOre7vkkocWkP?=
+ =?us-ascii?Q?q0KgSEn0PwOPm3LL7pOCQ/ftiNWn0rtNxQteeAs3CKXL/Q=3D=3D?=
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?PltOBdQV2IQ8DfKYrtvEy43+X5kvyr9eXdSQZ/UgthXLD2D7+qoIos+1vM0/?=
- =?us-ascii?Q?Sr/g4Ls0P3WtY719VDqElM8fkA4v3EnGkY7la6gHo0GzZOpYUpwJ2pmvV0x0?=
- =?us-ascii?Q?1oh/lwU3S4VpUlCKhXQifCSJfYQCJGtKRQz4t+m32f1QaXs4Koz2zPWE06FI?=
- =?us-ascii?Q?wOyevJ627IqIMkedmpVwiskwAXfjc+Otyg22YyFokTBtU1U5xZvs5Ivl8zHK?=
- =?us-ascii?Q?mm2jSQZVcMXuoFWKOmsLeksj1MLOD8u36kXZloHHILuBT0EbeUS8MmZNpQRs?=
- =?us-ascii?Q?XqSnnNfhVgMES/vRleO1sjvyaFJORPjEyNETAIM0TOoMSPJ/GSp9sgE6LUpc?=
- =?us-ascii?Q?kHpoVLX6PDUhS7eaN6It+A6iOj89a0iR+/ZVc3cELAWVvSnB4IqYlJDTrAEu?=
- =?us-ascii?Q?cgA4waHMdEIfS23VWW2LVQ+cRB2gMlaUQzbCW1A9xkGiECo1VA80HatLr0Hk?=
- =?us-ascii?Q?IrR0Ba/JKqWUub3zB+/psu7z17bVjNIKh4UQqJC8F4lTNfPU4EBD8Cd3NbYt?=
- =?us-ascii?Q?QW+pWx0wjNOeD5f/j/HvMIE47gz0cw+iq+PTq8qTAmeBHZ6YX83KAe5DkLVI?=
- =?us-ascii?Q?m1hM2HF3t6emIEqVlF+xEOKV5aqXv4oQRzDJtoyKMwRmYfoT1Vf1ENu7adZF?=
- =?us-ascii?Q?ohLb8cC9D1et4ziMA1pbtbn2ShxmiHAKElI/hD0ksSnQRalzgABta7to5imU?=
- =?us-ascii?Q?HlywTqI5ZEsqwBJOeZak2NW2nNDMOPnpi3mwSH3UUSc+ltVkph+5FK4hZSZ4?=
- =?us-ascii?Q?BScknfGo7FONTOmS3ocBZ7l+amyCrHonM6sO6jJSR3YvN3Lrh5Uk6oImrsBA?=
- =?us-ascii?Q?3u6EwVyC4Hw7S8jlESNr417ID8mGijleUWPqMSmxDLrOM1XtSnwwpqk8a7p4?=
- =?us-ascii?Q?dOqOEyi9avVMH0TovlRhbfvoBhbtDCdcNHS17PMErFK17kNSi8Q6HsCrpPPs?=
- =?us-ascii?Q?h17rkllEo8qn+yzvA7E45xnZX4JRKnzkJTi84Vo0k0JDCun+5CfQP5FS/atv?=
- =?us-ascii?Q?T5LwnvDS2DGx8BWYFLpl87+Nxvgr6ipgC3Lc51OFt0gXD0uUDBHE75dcr9Di?=
- =?us-ascii?Q?16qnqNXym7gxpAQxM++x9+1mpMlt+ohQ5TLNqIig9YLLyBe6hHc63nSGvCst?=
- =?us-ascii?Q?3iFuhS1ve4e26EjQer5K6NeunFZLGYvXqNRBZ8sBHgp7RNVXhe9Zxxx8GDNH?=
- =?us-ascii?Q?x+LiWCLmuLxM4Nd81GXEE5O2Y1JBQiki6tRSJPbLV/DJRtwwtsRPVhs+6q+3?=
- =?us-ascii?Q?52PqF3ZiqweYSrh1N2lZ?=
+	=?us-ascii?Q?42UrjPNxouenFHh31lmoic/1bPb+48W1pS4D4QvE9Lqxy7pouoptvSqDXpd9?=
+ =?us-ascii?Q?HdtA7dmOlecAoqF4xjczCHUCPy88MysiC2tJYrUNRo9vjn1TTNtwY7warviG?=
+ =?us-ascii?Q?GXKXS02yxC3anrnufrPFBxPDUUotaXgeALBFkfqbGkQDOiTHsXXk9Py6DqRY?=
+ =?us-ascii?Q?zaBTiNH+UKHsa2fuzDVLMyJmyOGKuTGAMxqKKoRk/5KBUymfeT1LpFMlXvfk?=
+ =?us-ascii?Q?xQKyjpOi5ahUwSBCoQb0BlmEfCJ5i9AjOLZexvBdqjoUTabc1zf/s57JALAf?=
+ =?us-ascii?Q?YzVrkDTqUhvDpJq5Me0ETJeax2d4sijU9AmHoVqVUROfSNHAIig7mXmEF+je?=
+ =?us-ascii?Q?/7u0nkT8tvbfxTmT1qN149u+n+x9BIU8g+cnMdCqll4Sr2HCJXw6QEJCzaGW?=
+ =?us-ascii?Q?dQX3w94zIELLkznX3uUwjRZx0XF8w7LVm2S640bPgPAX7eh5NdrqZ2vEKSYI?=
+ =?us-ascii?Q?mnXeLBl4C/NrfpXTdANMv1ocqKWqUEeIJGmD7IuBjOkZYTe30DZhroZg15bP?=
+ =?us-ascii?Q?3G+Rp2PV3tY5dOifEsouNWIohVX3gIOFVdinHJkLFN7vE8Da96FJGZPY4pWs?=
+ =?us-ascii?Q?pfVUPJWnXV0n1WOK0FPEJ7+Fp9hGeUt08pUP+RB+4MS3nm23HM93JXJ/VzE/?=
+ =?us-ascii?Q?XayaccYdhQ7Ird+5eDjPuTGa3NiumTR4JZbr0aoCZoltcPyYwhfhL7JI5J3J?=
+ =?us-ascii?Q?23RndYLC+0rZMRophG1Q6QZH5VjvnO0m2LfWidN8j7+Pyenb0bcZFr5axFlJ?=
+ =?us-ascii?Q?CZv44mfFpJ/Dw1owGnbKV7FQ0dIoMyU0gvDYuFmV4n7zK3vKqEptkRkcxZth?=
+ =?us-ascii?Q?whTxtuR7soir/LAJdxgvJz4GkLG0sQoMNgCDC/UqAGSXeILd4RBKg2R1xd+g?=
+ =?us-ascii?Q?0A6hfUaV5Mq6cujXklX379uoJ/wEMDnLKl8p50z6cz1X99NOQQnhn2vPW4x0?=
+ =?us-ascii?Q?D8jfmot3HUgKm08AqUS9l0uTF1ehFf2XPG74uQPOhq1bIdEBHIosOJW0bup0?=
+ =?us-ascii?Q?0uFDmBH0o0qzN8kC4Puq9PSZp1zSolkI5xGOO1LOkhBQgRwJYTrlSskzARsc?=
+ =?us-ascii?Q?n0YU7wDYrq+HoY9Zsh17hV5Y5OeMcw+YAsWoPZYat4UMjHTnmDmPATDLyHNG?=
+ =?us-ascii?Q?//uBU+3mqOPfc00uHrXyRam5Zokm+ImHZk8x1nP6vmPOwSOUInHEzWnkvn8V?=
+ =?us-ascii?Q?ZFcV8Ft3jXVQVBtHRrNhax3Gz1d/I4vbUKcRbL2FA/GLelr20Rc0M1ImcQKc?=
+ =?us-ascii?Q?Opxtpdu04c8M2Ws+WnGK?=
 X-OriginatorOrg: outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a5791d70-501f-4719-ef4a-08de163ef204
+X-MS-Exchange-CrossTenant-Network-Message-Id: ff2ae6bb-f196-4ffd-c3a5-08de163f49da
 X-MS-Exchange-CrossTenant-AuthSource: ME2PR01MB3156.ausprd01.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Oct 2025 16:27:54.0504
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Oct 2025 16:30:21.4021
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
@@ -146,88 +147,38 @@ X-MS-Exchange-Transport-CrossTenantHeadersStamped: MEWPR01MB8833
 
 From: Junrui Luo <moonafterrain@outlook.com>
 
-The snd_wavefront_probe() function constructs the card->longname string
-using unsafe sprintf() calls that can overflow the 80-byte buffer when
-module parameters contain large values.
+The asd_pci_remove() function fails to synchronize with pending tasklets
+before freeing the asd_ha structure, leading to a potential use-after-free
+vulnerability.
 
-The vulnerability exists at wavefront.c where multiple sprintf()
-operations append to card->longname without length checking.
+When a device removal is triggered (via hot-unplug or module unload), race condition can occur.
 
-Fix by replacing all sprintf() calls with scnprintf() and proper length
-tracking to ensure writes never exceed sizeof(card->longname).
+The fix adds tasklet_kill() before freeing the asd_ha structure, ensuring
+all scheduled tasklets complete before cleanup proceeds.
 
 Reported-by: Yuhao Jiang <danisjiang@gmail.com>
 Reported-by: Junrui Luo <moonafterrain@outlook.com>
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Fixes: 2908d778ab3e ("[SCSI] aic94xx: new driver")
 Cc: stable@vger.kernel.org
 Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
 ---
- sound/isa/wavefront/wavefront.c | 40 ++++++++++++++++++++-------------
- 1 file changed, 25 insertions(+), 15 deletions(-)
+ drivers/scsi/aic94xx/aic94xx_init.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/sound/isa/wavefront/wavefront.c b/sound/isa/wavefront/wavefront.c
-index 07c68568091d..74ea3a67620c 100644
---- a/sound/isa/wavefront/wavefront.c
-+++ b/sound/isa/wavefront/wavefront.c
-@@ -343,6 +343,7 @@ snd_wavefront_probe (struct snd_card *card, int dev)
- 	struct snd_rawmidi *ics2115_external_rmidi = NULL;
- 	struct snd_hwdep *fx_processor;
- 	int hw_dev = 0, midi_dev = 0, err;
-+	size_t len, rem;
+diff --git a/drivers/scsi/aic94xx/aic94xx_init.c b/drivers/scsi/aic94xx/aic94xx_init.c
+index adf3d9145606..95f3620059f7 100644
+--- a/drivers/scsi/aic94xx/aic94xx_init.c
++++ b/drivers/scsi/aic94xx/aic94xx_init.c
+@@ -882,6 +882,9 @@ static void asd_pci_remove(struct pci_dev *dev)
  
- 	/* --------- PCM --------------- */
+ 	asd_disable_ints(asd_ha);
  
-@@ -492,26 +493,35 @@ snd_wavefront_probe (struct snd_card *card, int dev)
- 	   length restrictions
- 	*/
++	/* Ensure all scheduled tasklets complete before freeing resources */
++	tasklet_kill(&asd_ha->seq.dl_tasklet);
++
+ 	asd_remove_dev_attrs(asd_ha);
  
--	sprintf(card->longname, "%s PCM 0x%lx irq %d dma %d",
--		card->driver,
--		chip->port,
--		cs4232_pcm_irq[dev],
--		dma1[dev]);
-+	len = scnprintf(card->longname, sizeof(card->longname),
-+			"%s PCM 0x%lx irq %d dma %d",
-+			card->driver,
-+			chip->port,
-+			cs4232_pcm_irq[dev],
-+			dma1[dev]);
- 
--	if (dma2[dev] >= 0 && dma2[dev] < 8)
--		sprintf(card->longname + strlen(card->longname), "&%d", dma2[dev]);
-+	if (dma2[dev] >= 0 && dma2[dev] < 8 && len < sizeof(card->longname)) {
-+		rem = sizeof(card->longname) - len;
-+		len += scnprintf(card->longname + len, rem, "&%d", dma2[dev]);
-+	}
- 
- 	if (cs4232_mpu_port[dev] > 0 && cs4232_mpu_port[dev] != SNDRV_AUTO_PORT) {
--		sprintf (card->longname + strlen (card->longname), 
--			 " MPU-401 0x%lx irq %d",
--			 cs4232_mpu_port[dev],
--			 cs4232_mpu_irq[dev]);
-+		if (len < sizeof(card->longname)) {
-+			rem = sizeof(card->longname) - len;
-+			len += scnprintf(card->longname + len, rem,
-+					 " MPU-401 0x%lx irq %d",
-+					 cs4232_mpu_port[dev],
-+					 cs4232_mpu_irq[dev]);
-+		}
- 	}
- 
--	sprintf (card->longname + strlen (card->longname), 
--		 " SYNTH 0x%lx irq %d",
--		 ics2115_port[dev],
--		 ics2115_irq[dev]);
-+	if (len < sizeof(card->longname)) {
-+		rem = sizeof(card->longname) - len;
-+		scnprintf(card->longname + len, rem,
-+			  " SYNTH 0x%lx irq %d",
-+			  ics2115_port[dev],
-+			  ics2115_irq[dev]);
-+	}
- 
- 	return snd_card_register(card);
- }	
+ 	/* XXX more here as needed */
 -- 
 2.51.1.dirty
 
