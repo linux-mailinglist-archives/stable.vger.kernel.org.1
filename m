@@ -1,259 +1,127 @@
-Return-Path: <stable+bounces-191517-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191518-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCE2FC15F5A
-	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 17:52:59 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04717C15FBA
+	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 17:56:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1583A3A60AF
-	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 16:46:49 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 0128B356051
+	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 16:56:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 182B8343218;
-	Tue, 28 Oct 2025 16:46:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C176F33DEE8;
+	Tue, 28 Oct 2025 16:56:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="KzppxNT8";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="ec1Wl7uf";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="grn9GMr4";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="vppjhsK0"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="j7AiJ2Vm"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC0F5340DBB
-	for <stable@vger.kernel.org>; Tue, 28 Oct 2025 16:46:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FB243396FD
+	for <stable@vger.kernel.org>; Tue, 28 Oct 2025 16:56:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761670004; cv=none; b=BQYNXS7ktD15rpDI3YkHMWdpmSuQQUGWHf5+ZssIJQqB41d/l1aL1Ll72kJTHRlGbPPUAm8xjEtkl0GAHjLjyYfWheQ9M9/3G7eiwJ6b2jgWqDQpCYzi0RPqFnNsxb+Dz93GzhTwgKmOa0fJE7WGDd4znGdhjHFSp7xUZnRU2ag=
+	t=1761670600; cv=none; b=EL3iMaYqFMKJXyxDw8Dm7fY6WDAhbJ/Y/KDX7Z6S8H6xCILQ6Ti9Du3zPS5LfB7qcer+WmXdPQlrx3c0+XKAp0wn4YeJ2/4+6H6BRTehzx63DU2iUpcjihI9/SfJ3EJcA/iECBZHx1G8RWcylxGZhxts8NlPwr7bZ5nBLE2etVk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761670004; c=relaxed/simple;
-	bh=p0buOOP4+PhXerrHCnNjXdrU+sJnFopkOp/94saSrlU=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HUkzjifDLNReYTdd8hC2MLAlt0UF5w+mM2/8fkdaextwJwAlXDbOsEA7+siB9jGwVsoQvoMBDljOZ5f+jwW1S3e4L2d8ODiSfRJt4QNp3S9OaXmfgMxxWDqUgE5LTGfhk/FrnXxpt96UWBtAJa6/NunuDwv8IqCJJqeAn/Lc6Ws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=KzppxNT8; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=ec1Wl7uf; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=grn9GMr4; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=vppjhsK0; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id F1C6A1F460;
-	Tue, 28 Oct 2025 16:46:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1761670001; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=tURTOTmAX96NrUuKLC7yzYM8Gc4Vkf8BrHIXVI2ctSI=;
-	b=KzppxNT8GvSjVSjWmLfN1eObhaNw4C1yjNkwSgr2UZkEk1X8ttZaM8bofWj2EPodifnvZo
-	9CmULugVuZAicdFHPEfabBzwq9fu7k+QbFAMqnthErK3sBIPS54NiqekCLqEtrvjloaSAN
-	EMWzxmV4NVw/ELhT80VAuk4ljfaVBXo=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1761670001;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=tURTOTmAX96NrUuKLC7yzYM8Gc4Vkf8BrHIXVI2ctSI=;
-	b=ec1Wl7ufERjeeGS074TAkXqhLNIpC2bBbnfd6tfOAJPfHhiUcidGN2Gp3xSgygdtWGnzgT
-	loQ0TKRxKyrWqECQ==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1761670000; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=tURTOTmAX96NrUuKLC7yzYM8Gc4Vkf8BrHIXVI2ctSI=;
-	b=grn9GMr44vxVVfb7zD3HpnH9SGgAvHAOVHYOqVX+N1vOT0NeISSXQIffwTdVboRmdw1wFn
-	ry7ydooE9GBWSh/Wz6Yar9u18iSKufHwo3pL3l0L4oJMQlkBmfcpYF1phMGas+Is4XyaWt
-	72upRk6Xzer9aoinoXTzOGzI+m17+oU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1761670000;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=tURTOTmAX96NrUuKLC7yzYM8Gc4Vkf8BrHIXVI2ctSI=;
-	b=vppjhsK0uS6oHmFTKeXc5hOZjTzFXFjRXc60dRjbeBuP/fmJwW55CQvf9RdABwSOXY0npK
-	UolmMzBBWC4MlOBw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id BB24D13A8E;
-	Tue, 28 Oct 2025 16:46:40 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id c61qLHDzAGlHKwAAD6G6ig
-	(envelope-from <tiwai@suse.de>); Tue, 28 Oct 2025 16:46:40 +0000
-Date: Tue, 28 Oct 2025 17:46:40 +0100
-Message-ID: <87ikfzezyn.wl-tiwai@suse.de>
-From: Takashi Iwai <tiwai@suse.de>
-To: moonafterrain@outlook.com
-Cc: Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>,
-	linux-sound@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Yuhao Jiang <danisjiang@gmail.com>
-Subject: Re: [PATCH] ALSA: wavefront: fix buffer overflow in longname construction
-In-Reply-To: <ME2PR01MB3156CEC4F31F253C9B540FB7AFFDA@ME2PR01MB3156.ausprd01.prod.outlook.com>
-References: <ME2PR01MB3156CEC4F31F253C9B540FB7AFFDA@ME2PR01MB3156.ausprd01.prod.outlook.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
+	s=arc-20240116; t=1761670600; c=relaxed/simple;
+	bh=p6RyFVKNQkIaQ4ZcnL2+jkSmewms8zqCNQv3TST4Jn8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=QiUlEUd2HgFZJbkH3elhHYBhhs5hyYCfSdLneGrkaEJ6uXbrR4RgT+78+Xk5g/SU9SvsTxDU9n0nMsuKlWCXiKYZZN2YCQ1/GI8vxzdvMoAheEjEzZzMnB9ge/lRlGLtuQeVHSBX81myb6CgDUEboNl5Xbgyo4Jj5YP/p2WTGAQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=j7AiJ2Vm; arc=none smtp.client-ip=209.85.128.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-47114a40161so70123905e9.3
+        for <stable@vger.kernel.org>; Tue, 28 Oct 2025 09:56:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1761670596; x=1762275396; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=RWB3SgEBP2sW+IMp9VjTcvHlAHIvY8hohrCBcP8MjQI=;
+        b=j7AiJ2VmQ5qcCj2/XwGuPPWrQWk8EeOVeRKM5Vpm1kcqj+fJ82nfhNPNCZvEb+gwW4
+         YDyrhbNUIySdvb1NnTsxn0v4BLGJ0ej2Vh26Y/HCz+qTno9HlAVquHD+kN+P+qV9dHRQ
+         4//C9L8JdnWS2yYN/oQgIXTR3MQUafRdwvk+Pi7NbZl12egs5OI4VAgOQEYmxBBtIWsn
+         ub01fHBF81cpM537/I8m1etOTD5tE6AuGi4fmBG+vuoMYjAWNijB7dWkQ/t6E1OHsw7h
+         lO7PErcsIPe+SckMfqpYpuzqlg1p2667beolctEXPJjqwfHHyHiEV8N29qaSZTi6KoJ6
+         B2LA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761670596; x=1762275396;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=RWB3SgEBP2sW+IMp9VjTcvHlAHIvY8hohrCBcP8MjQI=;
+        b=lbFS5mOCYWLsuh2y7oV8XPa5mjU0qcYv5q3KqAQpGShYDYiVlzKPvx/9Ze19Xf0OmC
+         6yqXdLw9uT60lPZDOy0anj+fx4FcYTbNQJjBQilBndrbdyR3Q5BPpxRmjlQzwMDw+2B2
+         2+mWHkroDlN/x2Y4udp+viV1a1oo0RmO/RyxXUBnAUMqs+0bLdrbOHkhM8WPgo64+ga/
+         I70y+Toa3+tTkgjCGPutret2NHH4cIm7RVAfFpzZnvf1ehGyP2cnc4SJcv6gfJTnCgV2
+         SYhwW7/M89lXHU3cFqt3arJ5Km3jN3yfr6lGeJtHL7ksnL3bFoUy0g0p+J2LUge0iFN6
+         PHZQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVt/1MGr2JHIeq2b4yaXZ0FRHF/pkmDsRSUnLFpsiUXzTPnqps8Ot4ZRUhlcVDX2ewpgu8bFq4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyR/ZcNWMSJF0sJxfPorbKj/MFhbtxB4mE3T4AsGW8id7bQ45ZX
+	crL/GhQFmqbidGE4ckwH+T8G+LJQ2hGECkxQYFeFvDZXRjTdzGVhvQES
+X-Gm-Gg: ASbGncsoEcdL5qehzsrrpDIuHXBBIaUd2whC2rF8RjVIu7tcsYCtRTdW+Rc+3QGTiB0
+	wV2HgJ/YDibIfkKwSE8NZ7oXBk840MfOf57D5nOAyEYKUn/jkjz6u2uUx9kUEuJ6JxIYbCaDY+8
+	bfqTLkZBYLi4vumzgVhvDY74O9MPMOl00E0THDm+WU68OXGL3vZ7vj2+RBeHJqR2Gkbd7Dte/0/
+	DHM6lCoSgBsdbw6xmwVbAT+1rA3FPUx0PUxEUzHwp0njVWa13SKS7T1axQ0l40pz3XwrXUfllJm
+	E2DKzhGe5uz0Bi857PD0JrvDlolJrS/oS2btZwV7AJ5o7YV5m5OR044qVZQsulL+PwBI9IKw2bo
+	BOQIaJmUpkWLpR34jwB4Fdkz7oVoHaZ2OpfF3jopkuT0E11McsbaN6XLZP7VMvNrz1aWLtBclsD
+	hprD4pgodjbzfbUxKimu7vE5M7CKg=
+X-Google-Smtp-Source: AGHT+IGzGR4B0wLNVXJkWpJi+gf0J9ZLmHxgn1i3xJss3GSWwRHMfKatObo/0+gt1zOBw+J/Okn6YQ==
+X-Received: by 2002:a05:600d:435c:b0:46f:b42e:e39e with SMTP id 5b1f17b1804b1-4771e3cb792mr378315e9.39.1761670595796;
+        Tue, 28 Oct 2025 09:56:35 -0700 (PDT)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-429952df473sm21333826f8f.42.2025.10.28.09.56.31
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 28 Oct 2025 09:56:35 -0700 (PDT)
+Message-ID: <3c1dfe1c-a1bc-4873-9c5c-4f9904888194@gmail.com>
+Date: Tue, 28 Oct 2025 09:56:29 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-Spam-Level: 
-X-Spamd-Result: default: False [-3.30 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	ARC_NA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_TO(0.00)[outlook.com];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com,outlook.com];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[perex.cz,suse.com,vger.kernel.org,gmail.com];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	FROM_EQ_ENVFROM(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[outlook.com:email,imap1.dmz-prg2.suse.org:helo,suse.de:mid]
-X-Spam-Flag: NO
-X-Spam-Score: -3.30
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5.15 000/117] 5.15.196-rc2 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
+ hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
+ sr@sladewatkins.com
+References: <20251028092823.507383588@linuxfoundation.org>
+Content-Language: en-US, fr-FR
+From: Florian Fainelli <f.fainelli@gmail.com>
+In-Reply-To: <20251028092823.507383588@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Tue, 28 Oct 2025 17:26:43 +0100,
-moonafterrain@outlook.com wrote:
+On 10/28/25 02:29, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 5.15.196 release.
+> There are 117 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 > 
-> From: Junrui Luo <moonafterrain@outlook.com>
+> Responses should be made by Thu, 30 Oct 2025 09:28:07 +0000.
+> Anything received after that time might be too late.
 > 
-> The snd_wavefront_probe() function constructs the card->longname string
-> using unsafe sprintf() calls that can overflow the 80-byte buffer when
-> module parameters contain large values.
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.196-rc2.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
+> and the diffstat can be found below.
 > 
-> The vulnerability exists at wavefront.c where multiple sprintf()
-> operations append to card->longname without length checking.
+> thanks,
 > 
-> Fix by replacing all sprintf() calls with scnprintf() and proper length
-> tracking to ensure writes never exceed sizeof(card->longname).
-> 
-> Reported-by: Yuhao Jiang <danisjiang@gmail.com>
-> Reported-by: Junrui Luo <moonafterrain@outlook.com>
-> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
-> ---
->  sound/isa/wavefront/wavefront.c | 40 ++++++++++++++++++++-------------
->  1 file changed, 25 insertions(+), 15 deletions(-)
-> 
-> diff --git a/sound/isa/wavefront/wavefront.c b/sound/isa/wavefront/wavefront.c
-> index 07c68568091d..74ea3a67620c 100644
-> --- a/sound/isa/wavefront/wavefront.c
-> +++ b/sound/isa/wavefront/wavefront.c
-> @@ -343,6 +343,7 @@ snd_wavefront_probe (struct snd_card *card, int dev)
->  	struct snd_rawmidi *ics2115_external_rmidi = NULL;
->  	struct snd_hwdep *fx_processor;
->  	int hw_dev = 0, midi_dev = 0, err;
-> +	size_t len, rem;
->  
->  	/* --------- PCM --------------- */
->  
-> @@ -492,26 +493,35 @@ snd_wavefront_probe (struct snd_card *card, int dev)
->  	   length restrictions
->  	*/
->  
-> -	sprintf(card->longname, "%s PCM 0x%lx irq %d dma %d",
-> -		card->driver,
-> -		chip->port,
-> -		cs4232_pcm_irq[dev],
-> -		dma1[dev]);
-> +	len = scnprintf(card->longname, sizeof(card->longname),
-> +			"%s PCM 0x%lx irq %d dma %d",
-> +			card->driver,
-> +			chip->port,
-> +			cs4232_pcm_irq[dev],
-> +			dma1[dev]);
->  
-> -	if (dma2[dev] >= 0 && dma2[dev] < 8)
-> -		sprintf(card->longname + strlen(card->longname), "&%d", dma2[dev]);
-> +	if (dma2[dev] >= 0 && dma2[dev] < 8 && len < sizeof(card->longname)) {
-> +		rem = sizeof(card->longname) - len;
-> +		len += scnprintf(card->longname + len, rem, "&%d", dma2[dev]);
-> +	}
->  
->  	if (cs4232_mpu_port[dev] > 0 && cs4232_mpu_port[dev] != SNDRV_AUTO_PORT) {
-> -		sprintf (card->longname + strlen (card->longname), 
-> -			 " MPU-401 0x%lx irq %d",
-> -			 cs4232_mpu_port[dev],
-> -			 cs4232_mpu_irq[dev]);
-> +		if (len < sizeof(card->longname)) {
-> +			rem = sizeof(card->longname) - len;
-> +			len += scnprintf(card->longname + len, rem,
-> +					 " MPU-401 0x%lx irq %d",
-> +					 cs4232_mpu_port[dev],
-> +					 cs4232_mpu_irq[dev]);
-> +		}
->  	}
->  
-> -	sprintf (card->longname + strlen (card->longname), 
-> -		 " SYNTH 0x%lx irq %d",
-> -		 ics2115_port[dev],
-> -		 ics2115_irq[dev]);
-> +	if (len < sizeof(card->longname)) {
-> +		rem = sizeof(card->longname) - len;
-> +		scnprintf(card->longname + len, rem,
-> +			  " SYNTH 0x%lx irq %d",
-> +			  ics2115_port[dev],
-> +			  ics2115_irq[dev]);
-> +	}
->  
->  	return snd_card_register(card);
->  }	
+> greg k-h
 
-Thanks for the patch.  But the code change is way too complex for the
-gain it can have.
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
+BMIPS_GENERIC:
 
-There can't be any overflow in the current code as is, because the
-buffer size is large enough.  snd_card.longname[] is 80 bytes, hence
-even if you count all other fields, it can't overflow, practically
-seen.
-
-If the code change were trivial, such a fix would still make sense.
-But the proposed patch makes the code just harder to understand and
-more error-prone.
-
-If you're still interested in "fixing" such cases, I guess we may
-introduce a new helper to append a format string, e.g.
-
-int scnprintf_append(char *buf, size_t size, const char *fmt, ...)
-{
-	va_list args;
-	size_t len = strlen(buf);
-
-	if (len >= size)
-		return len;
-	va_start(args, fmt);
-	len = vscnprintf(buf + len, size - len, fmt, args);
-	va_end(args);
-	return len;
-}
-
-Then the rest change would be really trivial, just to replace the
-snprintf(buf + strlen()) with this new function call.  There seem many
-other codes doing the similar things, and they can be replaced
-gracefully, too.
-
-
-thanks,
-
-Takashi
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+-- 
+Florian
 
