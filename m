@@ -1,220 +1,245 @@
-Return-Path: <stable+bounces-191525-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191526-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D7D1C1622F
-	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 18:27:23 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B22AC16244
+	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 18:28:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id B4C8B3563B4
-	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 17:27:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9C03E188A84F
+	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 17:28:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19A6334B1A1;
-	Tue, 28 Oct 2025 17:26:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B695E25A633;
+	Tue, 28 Oct 2025 17:28:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="WzIwVWBA"
+	dkim=temperror (0-bit key) header.d=antheas.dev header.i=@antheas.dev header.b="BQhwnOat"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from relay11.grserver.gr (relay11.grserver.gr [78.46.171.57])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90AAE34D927;
-	Tue, 28 Oct 2025 17:26:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABDB0221F20
+	for <stable@vger.kernel.org>; Tue, 28 Oct 2025 17:27:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.46.171.57
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761672394; cv=none; b=hFaXCs3vvAmwB68bNGwdKQ0TGEeUM1zbrL/L6LYAL5UdWrWBpYBfK5sW6x6DYT9OZhMn65VxpV7iRD4ibqrJ74Djktd1vBIkNLFvWILHboErZmS+7b5umWT6gJaurTB8WsY0qGsWg4oIRvsTOtFRRQMDpjbL9U8e4b+5W6eN6zg=
+	t=1761672482; cv=none; b=TtGoLNQ0JiF0yCulubaopx2NWW24tmi9ciJYCTU8dsK2xj0u6AM07F3bh3LVNbm3WkccRI6alwXrTKhsKS5x4a6aUOz5EaTXIt7TRy9X4SzdTJsqLk4semmlQSptOQh5FzY7wJbRmG5vsd6lyeg5uto84ahAOU6C9hie9cYnAw4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761672394; c=relaxed/simple;
-	bh=ahDvdYE446ZK3bHn+e1nbAEWl1n/58FEh6Wm8fpXpM4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SgGhKYs3cCfOFqklVnVgH7gH9VdKji2RhMmL7xITg8nc1C/U4GxG+nTalF2I9AEXocR05lpm4blOR1cfyBRgFrfs/4Jl8//yxyf9oEONpL27nSlZAk+D+hnKZaAiVqxIQQftmCYabISEQp8TQvTwDqKhdtolvWEwvPB2MS7cMxM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=WzIwVWBA; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59SDv0LX022264;
-	Tue, 28 Oct 2025 17:26:15 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=JzsMaB
-	KmsLArqgMlPsIq1urBFGS39cUxRocFpruEJKo=; b=WzIwVWBAwQBqfOXTQqD6x8
-	ypXNyJ8NvXdvi4PLvWBHsTfGhlykHmg76Umm7dgF//2D5uvwo6uFT6sidXenawNS
-	zP/dbNj/QzeTJ1ivGTeLmZsRgtVJTiD/okJj47Kuq9Jc1puyk3awxvKL1it0B6bp
-	Ko7qxSGYdnm0f8e4jcGE7cRjYJN1QvHcauZYRt3y3qMTuMdb/p0QOdXojzAOcrjy
-	+UU3Nnv9zoUMLXMxVe8fMBnlUL6jCxAMxbpSx5VZltEce9eBcM8GM7u55Vwt9c1a
-	yo6+y9PhZPd+fRaBVg+kNIy7pcjuMHKX9uNi7D8+ZUO655QZLywrrFCy9hdBPNPA
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a0p81ww1t-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 28 Oct 2025 17:26:15 +0000 (GMT)
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 59SHNKPP028435;
-	Tue, 28 Oct 2025 17:26:14 GMT
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a0p81ww1r-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 28 Oct 2025 17:26:14 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59SFKNdw030353;
-	Tue, 28 Oct 2025 17:26:13 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4a1acjv60b-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 28 Oct 2025 17:26:13 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 59SHQ9uI31850948
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 28 Oct 2025 17:26:09 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6504E20040;
-	Tue, 28 Oct 2025 17:26:09 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5402620043;
-	Tue, 28 Oct 2025 17:26:06 +0000 (GMT)
-Received: from [9.124.208.105] (unknown [9.124.208.105])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 28 Oct 2025 17:26:06 +0000 (GMT)
-Message-ID: <f19a9080-8d6d-492b-b5de-88f24ce5c015@linux.ibm.com>
-Date: Tue, 28 Oct 2025 22:56:05 +0530
+	s=arc-20240116; t=1761672482; c=relaxed/simple;
+	bh=8wquMDkIHq4Im1b0jco8M/fwii9bGnFoFZqwSeh30y0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=O+jvJB4laJLrxr9B7TMDw2qvZeX8amgVEtVEvSDhXPygaCYSAC0wKOABL2z+Y7WiUb3yBsZnvIAtqrrcJOxfUXGspog+crVVRZKOSIvixgh0OCFh4x/uXzJVdn13mDORI70OYvZlxFeNWgl/e7Y9XDeev3C66rVNttpWZ1tp4FY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=antheas.dev; spf=pass smtp.mailfrom=antheas.dev; dkim=temperror (0-bit key) header.d=antheas.dev header.i=@antheas.dev header.b=BQhwnOat; arc=none smtp.client-ip=78.46.171.57
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=antheas.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=antheas.dev
+Received: from relay11 (localhost.localdomain [127.0.0.1])
+	by relay11.grserver.gr (Proxmox) with ESMTP id B02C3C880E
+	for <stable@vger.kernel.org>; Tue, 28 Oct 2025 19:27:56 +0200 (EET)
+Received: from linux3247.grserver.gr (linux3247.grserver.gr [213.158.90.240])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by relay11.grserver.gr (Proxmox) with ESMTPS id C9D38C883B
+	for <stable@vger.kernel.org>; Tue, 28 Oct 2025 19:27:55 +0200 (EET)
+Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
+	by linux3247.grserver.gr (Postfix) with ESMTPSA id 3D7CF2008B5
+	for <stable@vger.kernel.org>; Tue, 28 Oct 2025 19:27:55 +0200 (EET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=antheas.dev;
+	s=default; t=1761672475;
+	bh=HU9UoBsZbHguHWD5/Van7BmfUQKq6GqEPH0N/82zYvQ=;
+	h=Received:From:Subject:To;
+	b=BQhwnOatw1kLAiaQJ6jtAwF2QeaEVFSFyS392xlqu3AOp6q9Wli1zQDmjClVyK+/P
+	 11yku91Pz19J5QF4QW9+b+yGNXJJm4PTA/X3nhoGjMQPJ9Msrntsmjy8jPqN0P8j3C
+	 I/x98a++fMQDYJsiCwjI/fTFYLtFaheD45Kp0G4kFKcDUGdAaZVl/syfeKwyPb73MY
+	 FQHWX+dNqyc6MAszrmHUJa5gnr/lTf2bTrbxCJ2+6Qpg48SwE0fH97u4RKRUkBXrFE
+	 JNKRJ8Jb3k2UjsPfIkTvnvR2JFCoVeXDsYT1HA1pOjZa6AAZpe4vjjr4UiYmd79uB4
+	 Lhe4UsdKoHLsQ==
+Authentication-Results: linux3247.grserver.gr;
+        spf=pass (sender IP is 209.85.167.42) smtp.mailfrom=lkml@antheas.dev smtp.helo=mail-lf1-f42.google.com
+Received-SPF: pass (linux3247.grserver.gr: connection is authenticated)
+Received: by mail-lf1-f42.google.com with SMTP id
+ 2adb3069b0e04-59303607a3aso4339636e87.0
+        for <stable@vger.kernel.org>; Tue, 28 Oct 2025 10:27:55 -0700 (PDT)
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXY9mMyEu2S6oBJd7k6aZpKTvaoxTUPHHWl1IFm4UDPeQQvMhghRqVjmIVXZLGSlOkPiJf1vfM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz9vWBU0wQvBxNa8Fw7ARNGoQdIFX2VWWynoTzoxuiOr3BmJzpf
+	aV864D9KqojwKIme7bGYiOrhRNo7+HabMEoyqSaobMghNFehaJI0LtS8U7aI1DHeamqN/KngJJX
+	cos3138v8IUafo70lFVPC/J6U+7S8zzM=
+X-Google-Smtp-Source: 
+ AGHT+IHy0bQSvjL9vt4t1fRebvpa51jhls+H0tpgM+NyIsSmCqYDEqgqrovCxhPw24e+mMwJk/l4HHRkUnBcqxQWKzA=
+X-Received: by 2002:a2e:a805:0:b0:376:2802:84ce with SMTP id
+ 38308e7fff4ca-37a052f8c58mr653481fa.47.1761672474783; Tue, 28 Oct 2025
+ 10:27:54 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] powerpc/kexec: Enable SMT before waking offline CPUs
-To: "Nysal Jan K.A." <nysal@linux.ibm.com>
-Cc: Srikar Dronamraju <srikar@linux.ibm.com>,
-        Sachin P Bappalige <sachinpb@linux.ibm.com>, stable@vger.kernel.org,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Laurent Dufour <ldufour@linux.ibm.com>,
-        Thomas Gleixner
- <tglx@linutronix.de>, linuxppc-dev@lists.ozlabs.org,
-        linux-kernel@vger.kernel.org, Sourabh Jain <sourabhjain@linux.ibm.com>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>
-References: <20251025080512.85690-1-nysal@linux.ibm.com>
- <20251028105516.26258-1-nysal@linux.ibm.com>
-Content-Language: en-US
-From: Shrikanth Hegde <sshegde@linux.ibm.com>
-In-Reply-To: <20251028105516.26258-1-nysal@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=fIQ0HJae c=1 sm=1 tr=0 ts=6900fcb7 cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VnNF1IyMAAAA:8 a=VwQbUJbxAAAA:8 a=aw7bS6XWP1gv3QJPQkgA:9 a=QEXdDO2ut3YA:10
- a=cPQSjfK2_nFv0Q5t_7PE:22
-X-Proofpoint-ORIG-GUID: _8HLFSb0f4qF_K5MAkfBhu9h7SzxRH9c
-X-Proofpoint-GUID: AsadqQZSaouQXzeKinTnshKpdWRv88pv
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDI1MDAyNCBTYWx0ZWRfX0u/NDdWUZBBN
- tG1OTiJkqnN8A4ifMFFQasm6RTYT0Z5XJS80lD5k6M8gAbel86k84bTMIcLczHTqyW1v2PamGIB
- xUocTDAI2DfwTqnCEm5BCrl3M3VwVFGgn6T+Mfg98QW9dGBPobRKaBPef/i+F3fRXiw1KKLjVpN
- dN5NtM6b/+4odRdLEf3kgjd78auIxPbYBH11DbGG1VlkqxHaK/4Y4BKS4Enqs8TUjKpmGfJfQXS
- pt3JL1LcMZWYJBVluPYywgahHbe0sk2Iz2Cgl/ZzVoSPFdNKdMDxcvuIg4xP95fFtvkNnro8mrg
- Nz3eLGeVK1EqAtFayskYmEWM4h28ehvXM3yE9+/wvzXSxCL0rTaT0JL14a4N7fj5uNGBISjokaJ
- aBQBIlghpMZRImw3jqN7qj5UHRM6Sg==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-10-28_06,2025-10-22_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 priorityscore=1501 adultscore=0 suspectscore=0 spamscore=0
- clxscore=1011 bulkscore=0 lowpriorityscore=0 phishscore=0 impostorscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510250024
+References: <20251026191635.2447593-1-lkml@antheas.dev>
+ <20251026191635.2447593-2-lkml@antheas.dev>
+ <CAGwozwEwPj9VRRo2U50ccg=_qSM7p-1c_hw2y=OYA-pFc=p13w@mail.gmail.com>
+ <35A5783A-CA60-4B10-8C7B-5820B65307FE@linux.dev>
+ <CAGwozwFtah66p=5oy9rf5phVGdDTiWg0WuJBT3qGpWdP3A62Pg@mail.gmail.com>
+ <eb749233-0342-49a9-a41b-6d18239eb1d9@linux.dev>
+In-Reply-To: <eb749233-0342-49a9-a41b-6d18239eb1d9@linux.dev>
+From: Antheas Kapenekakis <lkml@antheas.dev>
+Date: Tue, 28 Oct 2025 18:27:42 +0100
+X-Gmail-Original-Message-ID: 
+ <CAGwozwEKzurj7qeAnzvWjJbf03da70ij5DtOJ7svZaoJ7vK=aA@mail.gmail.com>
+X-Gm-Features: AWmQ_bkSaMOjigM12P8qgnp_UJNXlYwcZ6Aw14wC6rOeZBYojHWBPQG5b2veNn0
+Message-ID: 
+ <CAGwozwEKzurj7qeAnzvWjJbf03da70ij5DtOJ7svZaoJ7vK=aA@mail.gmail.com>
+Subject: Re: [PATCH v1 2/2] ALSA: hda/realtek: Add match for ASUS Xbox Ally
+ projects
+To: Matthew Schwartz <matthew.schwartz@linux.dev>
+Cc: Shenghao Ding <shenghao-ding@ti.com>, Baojun Xu <baojun.xu@ti.com>,
+	Takashi Iwai <tiwai@suse.com>, linux-sound@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-PPP-Message-ID: 
+ <176167247545.3088139.17026513391022362802@linux3247.grserver.gr>
+X-PPP-Vhost: antheas.dev
+X-Virus-Scanned: clamav-milter 1.4.3 at linux3247.grserver.gr
+X-Virus-Status: Clean
 
-Hi Nysal.
+On Mon, 27 Oct 2025 at 20:58, Matthew Schwartz
+<matthew.schwartz@linux.dev> wrote:
+>
+> On 10/27/25 1:23 AM, Antheas Kapenekakis wrote:
+> > On Mon, 27 Oct 2025 at 07:02, Matthew Schwartz
+> > <matthew.schwartz@linux.dev> wrote:
+> >>
+> >>
+> >>
+> >>> On Oct 26, 2025, at 12:19=E2=80=AFPM, Antheas Kapenekakis <lkml@anthe=
+as.dev> wrote:
+> >>>
+> >>> On Sun, 26 Oct 2025 at 20:16, Antheas Kapenekakis <lkml@antheas.dev> =
+wrote:
+> >>>>
+> >>>> Bind the realtek codec to TAS2781 I2C audio amps on ASUS Xbox Ally
+> >>>> projects. While these projects work without a quirk, adding it incre=
+ases
+> >>>> the output volume significantly.
+> >>>
+> >>> Also, if you can upstream the firmware files:
+> >>> TAS2XXX13840.bin
+> >>> TAS2XXX13841.bin
+> >>> TAS2XXX13940.bin
+> >>> TAS2XXX13941.bin
+> >>
+> >> This is the firmware at [1], correct? I=E2=80=99m testing the series w=
+ith that firmware on my ROG Xbox Ally X, and I found something interesting.
+> >>
+> >> By default, with just your kernel patches and the firmware files hoste=
+d at [1], my unit is loading:
+> >>
+> >> tas2781-hda i2c-TXNW2781:00-tas2781-hda.0: Loaded FW: TAS2XXX13840.bin=
+, sha256: 58cffa36ae23a2d9b2349ecb6c1d4e89627934cd79218f6ada06eaffe6688246
+> >>
+> >> However, with this firmware file,  TAS2XXX13840.bin, there is signific=
+ant audio clipping above 75% speaker level on my individual unit.
+> >>
+> >> Then, I tried renaming the other firmware file, TAS2XXX13841.bin, into=
+ TAS2XXX13840.bin. Now my unit is loading:
+> >>
+> >> tas2781-hda i2c-TXNW2781:00-tas2781-hda.0: Loaded FW: TAS2XXX13840.bin=
+, sha256: 0fda76e7142cb455df1860cfdb19bb3cb6871128b385595fe06b296a070f4b8c
+> >>
+> >> With this firmware file, audio is perfect all the way to 100% speaker =
+level.
+> >>
+> >> If I recall, there have been other ASUS products that required matchin=
+g amplifier hardware with firmware correctly, right? It looks like this mig=
+ht be another case of since it seems my unit is loading the wrong firmware =
+for its amplifiers.
+> >
+> > The original Ally X had a similar setup, yes.
+> >
+> > First patch might not be perfect and your speaker pin might be 1. My
+> > Xbox Ally's pin is 1. It loads:
+> > Loaded FW: TAS2XXX13941.bin, sha256:
+> > 0fda76e7142cb455df1860cfdb19bb3cb6871128b385595fe06b296a070f4b8c
+> >
+> > And it sounds loud and crisp. So the pin is read.
+> >
+> > I had multiple users verify the X works, but perhaps it is not perfect
+> > yet. Make sure you are not using a dsp that might be interfering
+>
+> Seems like there have been other reports similar to mine on Xbox Ally X, =
+where flipping the firmware files by renaming them fixes sound issues for t=
+hem.
+>
+> @TI, Maybe something is different with the conditional logic for the ROG =
+Xbox Ally X? The current GPIO-detected speaker_id doesn't always correspond=
+ to the correct firmware choice on this model it seems.
 
-On 10/28/25 4:25 PM, Nysal Jan K.A. wrote:
-> If SMT is disabled or a partial SMT state is enabled, when a new kernel
-> image is loaded for kexec, on reboot the following warning is observed:
-> 
-> kexec: Waking offline cpu 228.
-> WARNING: CPU: 0 PID: 9062 at arch/powerpc/kexec/core_64.c:223 kexec_prepare_cpus+0x1b0/0x1bc
-> [snip]
->   NIP kexec_prepare_cpus+0x1b0/0x1bc
->   LR  kexec_prepare_cpus+0x1a0/0x1bc
->   Call Trace:
->    kexec_prepare_cpus+0x1a0/0x1bc (unreliable)
->    default_machine_kexec+0x160/0x19c
->    machine_kexec+0x80/0x88
->    kernel_kexec+0xd0/0x118
->    __do_sys_reboot+0x210/0x2c4
->    system_call_exception+0x124/0x320
->    system_call_vectored_common+0x15c/0x2ec
-> 
-> This occurs as add_cpu() fails due to cpu_bootable() returning false for
-> CPUs that fail the cpu_smt_thread_allowed() check or non primary
-> threads if SMT is disabled.
-> 
-> Fix the issue by enabling SMT and resetting the number of SMT threads to
-> the number of threads per core, before attempting to wake up all present
-> CPUs.
-> 
-> Fixes: 38253464bc82 ("cpu/SMT: Create topology_smt_thread_allowed()")
-> Reported-by: Sachin P Bappalige <sachinpb@linux.ibm.com>
-> Cc: stable@vger.kernel.org # v6.6+
-> Reviewed-by: Srikar Dronamraju <srikar@linux.ibm.com>
-> Signed-off-by: Nysal Jan K.A. <nysal@linux.ibm.com>
-> ---
->   arch/powerpc/kexec/core_64.c | 19 +++++++++++++++++++
->   1 file changed, 19 insertions(+)
-> 
-> diff --git a/arch/powerpc/kexec/core_64.c b/arch/powerpc/kexec/core_64.c
-> index 222aa326dace..825ab8a88f18 100644
-> --- a/arch/powerpc/kexec/core_64.c
-> +++ b/arch/powerpc/kexec/core_64.c
-> @@ -202,6 +202,23 @@ static void kexec_prepare_cpus_wait(int wait_state)
->   	mb();
->   }
->   
-> +
-> +/*
-> + * The add_cpu() call in wake_offline_cpus() can fail as cpu_bootable()
-> + * returns false for CPUs that fail the cpu_smt_thread_allowed() check
-> + * or non primary threads if SMT is disabled. Re-enable SMT and set the
-> + * number of SMT threads to threads per core.
-> + */
-> +static void kexec_smt_reenable(void)
-> +{
-> +#if defined(CONFIG_SMP) && defined(CONFIG_HOTPLUG_SMT)
-> +	lock_device_hotplug();
+Yeah, it seems that specifically on the Xbox Ally X, the firmwares are
+swapped around? What could be the case for that?
 
-I was looking at usage of lock_device_hotplug, looks like a good candidate for
-guard() use case. Could be done on its own patch/series.
+I had three users with popping and dropped audio swap the firmware on
+their X and they said the other one fixed it. And another two without
+issues swapping the firmware and saying it does not make a
+quantifiable change.
 
-> +	cpu_smt_num_threads = threads_per_core;
-> +	cpu_smt_control = CPU_SMT_ENABLED;
-> +	unlock_device_hotplug();
-> +#endif
-> +}
+Antheas
 
 
-Will this work too? It might be better since we anyway going to bring that CPU up
-by doing add_cpu afterwords.
+Antheas
 
-	cpu_smt_num_threads = threads_per_core;
-	cpuhp_smt_enable()
-
-> +
->   /*
->    * We need to make sure each present CPU is online.  The next kernel will scan
->    * the device tree and assume primary threads are online and query secondary
-> @@ -216,6 +233,8 @@ static void wake_offline_cpus(void)
->   {
->   	int cpu = 0;
->   
-> +	kexec_smt_reenable();
-> +
-
-If we do above, just change the below logic to complain if any present CPU is offline.
-
->   	for_each_present_cpu(cpu) {
->   		if (!cpu_online(cpu)) {
->   			printk(KERN_INFO "kexec: Waking offline cpu %d.\n",
+> >
+> > Antheas
+> >
+> >> Matt
+> >>
+> >> [1]: https://github.com/hhd-dev/hwfirm
+> >>
+> >>>
+> >>> That would be great :)
+> >>>
+> >>> Antheas
+> >>>
+> >>>> Cc: stable@vger.kernel.org # 6.17
+> >>>> Signed-off-by: Antheas Kapenekakis <lkml@antheas.dev>
+> >>>> ---
+> >>>> sound/hda/codecs/realtek/alc269.c | 2 ++
+> >>>> 1 file changed, 2 insertions(+)
+> >>>>
+> >>>> diff --git a/sound/hda/codecs/realtek/alc269.c b/sound/hda/codecs/re=
+altek/alc269.c
+> >>>> index 8ad5febd822a..d1ad84eee6d1 100644
+> >>>> --- a/sound/hda/codecs/realtek/alc269.c
+> >>>> +++ b/sound/hda/codecs/realtek/alc269.c
+> >>>> @@ -6713,6 +6713,8 @@ static const struct hda_quirk alc269_fixup_tbl=
+[] =3D {
+> >>>>        SND_PCI_QUIRK(0x1043, 0x12f0, "ASUS X541UV", ALC256_FIXUP_ASU=
+S_MIC_NO_PRESENCE),
+> >>>>        SND_PCI_QUIRK(0x1043, 0x1313, "Asus K42JZ", ALC269VB_FIXUP_AS=
+US_MIC_NO_PRESENCE),
+> >>>>        SND_PCI_QUIRK(0x1043, 0x1314, "ASUS GA605K", ALC285_FIXUP_ASU=
+S_GA605K_HEADSET_MIC),
+> >>>> +       SND_PCI_QUIRK(0x1043, 0x1384, "ASUS RC73XA", ALC287_FIXUP_TX=
+NW2781_I2C),
+> >>>> +       SND_PCI_QUIRK(0x1043, 0x1394, "ASUS RC73YA", ALC287_FIXUP_TX=
+NW2781_I2C),
+> >>>>        SND_PCI_QUIRK(0x1043, 0x13b0, "ASUS Z550SA", ALC256_FIXUP_ASU=
+S_MIC_NO_PRESENCE),
+> >>>>        SND_PCI_QUIRK(0x1043, 0x1427, "Asus Zenbook UX31E", ALC269VB_=
+FIXUP_ASUS_ZENBOOK),
+> >>>>        SND_PCI_QUIRK(0x1043, 0x1433, "ASUS GX650PY/PZ/PV/PU/PYV/PZV/=
+PIV/PVV", ALC285_FIXUP_ASUS_I2C_HEADSET_MIC),
+> >>>> --
+> >>>> 2.51.1
+> >>>>
+> >>>>
+> >>>
+> >>>
+> >>
+> >>
+> >
+>
+>
 
 
