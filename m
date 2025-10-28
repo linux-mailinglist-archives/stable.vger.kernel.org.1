@@ -1,245 +1,126 @@
-Return-Path: <stable+bounces-191526-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191527-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B22AC16244
-	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 18:28:52 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2C4EC16388
+	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 18:39:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9C03E188A84F
-	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 17:28:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C63F1C26FC5
+	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 17:38:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B695E25A633;
-	Tue, 28 Oct 2025 17:28:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D248B34B1A7;
+	Tue, 28 Oct 2025 17:37:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=antheas.dev header.i=@antheas.dev header.b="BQhwnOat"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="tRf0bAvU"
 X-Original-To: stable@vger.kernel.org
-Received: from relay11.grserver.gr (relay11.grserver.gr [78.46.171.57])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABDB0221F20
-	for <stable@vger.kernel.org>; Tue, 28 Oct 2025 17:27:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.46.171.57
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22D73259CA9
+	for <stable@vger.kernel.org>; Tue, 28 Oct 2025 17:37:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761672482; cv=none; b=TtGoLNQ0JiF0yCulubaopx2NWW24tmi9ciJYCTU8dsK2xj0u6AM07F3bh3LVNbm3WkccRI6alwXrTKhsKS5x4a6aUOz5EaTXIt7TRy9X4SzdTJsqLk4semmlQSptOQh5FzY7wJbRmG5vsd6lyeg5uto84ahAOU6C9hie9cYnAw4=
+	t=1761673076; cv=none; b=YPau5C3U3HojZt59i8UlKh4PugcTifp+FxUu8/dNQQXLA0JhwP6t0U35af/qdE5cx3bHqNmAhAAF0GNUllixj5ZIn4ocEX2vgP5RLRm1Lfixc7ivzrohv9PTODBAR1XQdQ/D1xrZP0kSSvt9Ns42llg6WR/yEcRLN53Oy+VSI5U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761672482; c=relaxed/simple;
-	bh=8wquMDkIHq4Im1b0jco8M/fwii9bGnFoFZqwSeh30y0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=O+jvJB4laJLrxr9B7TMDw2qvZeX8amgVEtVEvSDhXPygaCYSAC0wKOABL2z+Y7WiUb3yBsZnvIAtqrrcJOxfUXGspog+crVVRZKOSIvixgh0OCFh4x/uXzJVdn13mDORI70OYvZlxFeNWgl/e7Y9XDeev3C66rVNttpWZ1tp4FY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=antheas.dev; spf=pass smtp.mailfrom=antheas.dev; dkim=temperror (0-bit key) header.d=antheas.dev header.i=@antheas.dev header.b=BQhwnOat; arc=none smtp.client-ip=78.46.171.57
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=antheas.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=antheas.dev
-Received: from relay11 (localhost.localdomain [127.0.0.1])
-	by relay11.grserver.gr (Proxmox) with ESMTP id B02C3C880E
-	for <stable@vger.kernel.org>; Tue, 28 Oct 2025 19:27:56 +0200 (EET)
-Received: from linux3247.grserver.gr (linux3247.grserver.gr [213.158.90.240])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by relay11.grserver.gr (Proxmox) with ESMTPS id C9D38C883B
-	for <stable@vger.kernel.org>; Tue, 28 Oct 2025 19:27:55 +0200 (EET)
-Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
-	by linux3247.grserver.gr (Postfix) with ESMTPSA id 3D7CF2008B5
-	for <stable@vger.kernel.org>; Tue, 28 Oct 2025 19:27:55 +0200 (EET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=antheas.dev;
-	s=default; t=1761672475;
-	bh=HU9UoBsZbHguHWD5/Van7BmfUQKq6GqEPH0N/82zYvQ=;
-	h=Received:From:Subject:To;
-	b=BQhwnOatw1kLAiaQJ6jtAwF2QeaEVFSFyS392xlqu3AOp6q9Wli1zQDmjClVyK+/P
-	 11yku91Pz19J5QF4QW9+b+yGNXJJm4PTA/X3nhoGjMQPJ9Msrntsmjy8jPqN0P8j3C
-	 I/x98a++fMQDYJsiCwjI/fTFYLtFaheD45Kp0G4kFKcDUGdAaZVl/syfeKwyPb73MY
-	 FQHWX+dNqyc6MAszrmHUJa5gnr/lTf2bTrbxCJ2+6Qpg48SwE0fH97u4RKRUkBXrFE
-	 JNKRJ8Jb3k2UjsPfIkTvnvR2JFCoVeXDsYT1HA1pOjZa6AAZpe4vjjr4UiYmd79uB4
-	 Lhe4UsdKoHLsQ==
-Authentication-Results: linux3247.grserver.gr;
-        spf=pass (sender IP is 209.85.167.42) smtp.mailfrom=lkml@antheas.dev smtp.helo=mail-lf1-f42.google.com
-Received-SPF: pass (linux3247.grserver.gr: connection is authenticated)
-Received: by mail-lf1-f42.google.com with SMTP id
- 2adb3069b0e04-59303607a3aso4339636e87.0
-        for <stable@vger.kernel.org>; Tue, 28 Oct 2025 10:27:55 -0700 (PDT)
-X-Forwarded-Encrypted: i=1;
- AJvYcCXY9mMyEu2S6oBJd7k6aZpKTvaoxTUPHHWl1IFm4UDPeQQvMhghRqVjmIVXZLGSlOkPiJf1vfM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz9vWBU0wQvBxNa8Fw7ARNGoQdIFX2VWWynoTzoxuiOr3BmJzpf
-	aV864D9KqojwKIme7bGYiOrhRNo7+HabMEoyqSaobMghNFehaJI0LtS8U7aI1DHeamqN/KngJJX
-	cos3138v8IUafo70lFVPC/J6U+7S8zzM=
-X-Google-Smtp-Source: 
- AGHT+IHy0bQSvjL9vt4t1fRebvpa51jhls+H0tpgM+NyIsSmCqYDEqgqrovCxhPw24e+mMwJk/l4HHRkUnBcqxQWKzA=
-X-Received: by 2002:a2e:a805:0:b0:376:2802:84ce with SMTP id
- 38308e7fff4ca-37a052f8c58mr653481fa.47.1761672474783; Tue, 28 Oct 2025
- 10:27:54 -0700 (PDT)
+	s=arc-20240116; t=1761673076; c=relaxed/simple;
+	bh=WCMg7UUnl6IMP5RsK5bXZua1oQz6K1bVCjhQkkqx5ms=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=C2Jh6e7KdOrqJToRJMk1U8owUXMjRu1eoWzxUwjMLg0YDTztI9yj4QLYV2F8q106+6aGGft6jUHlvn7aD0xjKWZmcIgTj2uZkYH33s//3uIAjlTupFd+zm03L0TaaXotW8GyPHK4IbZYzHMZvM93EgyvzPgWVwaZwvI7tn2cky0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=tRf0bAvU; arc=none smtp.client-ip=209.85.214.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-290d860acbcso133169755ad.1
+        for <stable@vger.kernel.org>; Tue, 28 Oct 2025 10:37:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1761673074; x=1762277874; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=8T4o8duS8kLdi84UueGHzy38mnS8VEpOnZiB5sHhaeI=;
+        b=tRf0bAvUAUTSp33Yt3tFnqg5tTnMoOcrM+iA1gfhIIAUknLfs/3w/AEMKzaqifFkRy
+         GxzIM8x7gBENFZliOQvIBf5epa5qQ5xxJ2x8qYVxWux4P9aSKxHSWUdOUaMlvGhpmfeu
+         gPZe5US1VyE7AQZiWrgaNiyYAw7FsbfuqmZK7I13+uL0HXpJrOUcoPP0MpFuFu+HPR4P
+         Iy3Mgv60UelSQhZzE+z/HKCzEIN5L0keOAXpB+zxUgQB5A3v5+7wHY2hGwaDqGLoUA5A
+         PyviehO+MT6kslaopuRZPENzj1E16IgkPQPjw3bVtfISjJ7sEMgQNudwnVpIAteQcl3S
+         gGsg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761673074; x=1762277874;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=8T4o8duS8kLdi84UueGHzy38mnS8VEpOnZiB5sHhaeI=;
+        b=uBCbpXm24Nc5g2q+n+LWMAEi0YrKno0zaV2LfbuDiEBBaMHuKegqXPw30tVg4MevW+
+         H1zYi/QZbDZ4utaHdb6jigX5lRLU665UBybSMapm7Y6QidGXimph19Bn/9FPXwK/rMX/
+         15I1LZ/JWZaOZCHCU5KHrGA9VcYeR9zKf+hcDNYaUc9Tw+R17/QiMWMDXxM5NPBrREvT
+         VdPpr9es/HGXroHc4iNHxiQQpgOMjhukXTMMNSXeVTVZ5AFMLBIcAbym1V2BlvDcHtbt
+         jtHkNCef3yXcTlHxzHdJKSj9U/SN1r8RXj0ZtJjxusKXTFd8YfupnITT1/WKtpz2gBxr
+         SpfA==
+X-Forwarded-Encrypted: i=1; AJvYcCXK0aMnMG7f8p8Za88MD3+uicWogG3ez/qmajgiAdRazyYyKX9bOl5HN3UqCF8xxHyvrBNgZow=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyNK3RoQUDjdyEMhVs0ZJpzD/bCX5VminV4HsvHUEd4DFBxQGBl
+	G7bCaIuIxF3QHQVanb6I88+i9Kgvr9iluzj4YF933MHE42ab7ts8UzYbzz8kFMTxbVqicUw4x5R
+	NHrfMkA==
+X-Google-Smtp-Source: AGHT+IFos7dmlHc5zgyuKwSvkzMGrICMFJHNR7QI6Hf+TJ3vKWf9u68Fb2sJjv7IaagPEHKeX48Q/hD6mEQ=
+X-Received: from plpp9.prod.google.com ([2002:a17:902:c709:b0:292:4a9c:44cf])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:246:b0:27e:e1f3:f853
+ with SMTP id d9443c01a7336-294dedd4181mr189615ad.8.1761673074418; Tue, 28 Oct
+ 2025 10:37:54 -0700 (PDT)
+Date: Tue, 28 Oct 2025 10:37:53 -0700
+In-Reply-To: <aEeAl9Hp7sSizrl8@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20251026191635.2447593-1-lkml@antheas.dev>
- <20251026191635.2447593-2-lkml@antheas.dev>
- <CAGwozwEwPj9VRRo2U50ccg=_qSM7p-1c_hw2y=OYA-pFc=p13w@mail.gmail.com>
- <35A5783A-CA60-4B10-8C7B-5820B65307FE@linux.dev>
- <CAGwozwFtah66p=5oy9rf5phVGdDTiWg0WuJBT3qGpWdP3A62Pg@mail.gmail.com>
- <eb749233-0342-49a9-a41b-6d18239eb1d9@linux.dev>
-In-Reply-To: <eb749233-0342-49a9-a41b-6d18239eb1d9@linux.dev>
-From: Antheas Kapenekakis <lkml@antheas.dev>
-Date: Tue, 28 Oct 2025 18:27:42 +0100
-X-Gmail-Original-Message-ID: 
- <CAGwozwEKzurj7qeAnzvWjJbf03da70ij5DtOJ7svZaoJ7vK=aA@mail.gmail.com>
-X-Gm-Features: AWmQ_bkSaMOjigM12P8qgnp_UJNXlYwcZ6Aw14wC6rOeZBYojHWBPQG5b2veNn0
-Message-ID: 
- <CAGwozwEKzurj7qeAnzvWjJbf03da70ij5DtOJ7svZaoJ7vK=aA@mail.gmail.com>
-Subject: Re: [PATCH v1 2/2] ALSA: hda/realtek: Add match for ASUS Xbox Ally
- projects
-To: Matthew Schwartz <matthew.schwartz@linux.dev>
-Cc: Shenghao Ding <shenghao-ding@ti.com>, Baojun Xu <baojun.xu@ti.com>,
-	Takashi Iwai <tiwai@suse.com>, linux-sound@vger.kernel.org,
- linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-PPP-Message-ID: 
- <176167247545.3088139.17026513391022362802@linux3247.grserver.gr>
-X-PPP-Vhost: antheas.dev
-X-Virus-Scanned: clamav-milter 1.4.3 at linux3247.grserver.gr
-X-Virus-Status: Clean
+Mime-Version: 1.0
+References: <20250610001700.4097-1-chang.seok.bae@intel.com> <aEeAl9Hp7sSizrl8@intel.com>
+Message-ID: <aQD_cZzqml1vindY@google.com>
+Subject: Re: [PATCH] x86/fpu: Ensure XFD state on signal delivery
+From: Sean Christopherson <seanjc@google.com>
+To: Chao Gao <chao.gao@intel.com>
+Cc: "Chang S. Bae" <chang.seok.bae@intel.com>, mingo@redhat.com, 
+	linux-kernel@vger.kernel.org, x86@kernel.org, tglx@linutronix.de, 
+	bp@alien8.de, dave.hansen@linux.intel.com, stable@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-On Mon, 27 Oct 2025 at 20:58, Matthew Schwartz
-<matthew.schwartz@linux.dev> wrote:
->
-> On 10/27/25 1:23 AM, Antheas Kapenekakis wrote:
-> > On Mon, 27 Oct 2025 at 07:02, Matthew Schwartz
-> > <matthew.schwartz@linux.dev> wrote:
-> >>
-> >>
-> >>
-> >>> On Oct 26, 2025, at 12:19=E2=80=AFPM, Antheas Kapenekakis <lkml@anthe=
-as.dev> wrote:
-> >>>
-> >>> On Sun, 26 Oct 2025 at 20:16, Antheas Kapenekakis <lkml@antheas.dev> =
-wrote:
-> >>>>
-> >>>> Bind the realtek codec to TAS2781 I2C audio amps on ASUS Xbox Ally
-> >>>> projects. While these projects work without a quirk, adding it incre=
-ases
-> >>>> the output volume significantly.
-> >>>
-> >>> Also, if you can upstream the firmware files:
-> >>> TAS2XXX13840.bin
-> >>> TAS2XXX13841.bin
-> >>> TAS2XXX13940.bin
-> >>> TAS2XXX13941.bin
-> >>
-> >> This is the firmware at [1], correct? I=E2=80=99m testing the series w=
-ith that firmware on my ROG Xbox Ally X, and I found something interesting.
-> >>
-> >> By default, with just your kernel patches and the firmware files hoste=
-d at [1], my unit is loading:
-> >>
-> >> tas2781-hda i2c-TXNW2781:00-tas2781-hda.0: Loaded FW: TAS2XXX13840.bin=
-, sha256: 58cffa36ae23a2d9b2349ecb6c1d4e89627934cd79218f6ada06eaffe6688246
-> >>
-> >> However, with this firmware file,  TAS2XXX13840.bin, there is signific=
-ant audio clipping above 75% speaker level on my individual unit.
-> >>
-> >> Then, I tried renaming the other firmware file, TAS2XXX13841.bin, into=
- TAS2XXX13840.bin. Now my unit is loading:
-> >>
-> >> tas2781-hda i2c-TXNW2781:00-tas2781-hda.0: Loaded FW: TAS2XXX13840.bin=
-, sha256: 0fda76e7142cb455df1860cfdb19bb3cb6871128b385595fe06b296a070f4b8c
-> >>
-> >> With this firmware file, audio is perfect all the way to 100% speaker =
-level.
-> >>
-> >> If I recall, there have been other ASUS products that required matchin=
-g amplifier hardware with firmware correctly, right? It looks like this mig=
-ht be another case of since it seems my unit is loading the wrong firmware =
-for its amplifiers.
+On Tue, Jun 10, 2025, Chao Gao wrote:
+> On Mon, Jun 09, 2025 at 05:16:59PM -0700, Chang S. Bae wrote:
+> >Sean reported [1] the following splat when running KVM tests:
 > >
-> > The original Ally X had a similar setup, yes.
+> >   WARNING: CPU: 232 PID: 15391 at xfd_validate_state+0x65/0x70
+> >   Call Trace:
+> >    <TASK>
+> >    fpu__clear_user_states+0x9c/0x100
+> >    arch_do_signal_or_restart+0x142/0x210
+> >    exit_to_user_mode_loop+0x55/0x100
+> >    do_syscall_64+0x205/0x2c0
+> >    entry_SYSCALL_64_after_hwframe+0x4b/0x53
 > >
-> > First patch might not be perfect and your speaker pin might be 1. My
-> > Xbox Ally's pin is 1. It loads:
-> > Loaded FW: TAS2XXX13941.bin, sha256:
-> > 0fda76e7142cb455df1860cfdb19bb3cb6871128b385595fe06b296a070f4b8c
+> >Chao further identified [2] a reproducible scenarios involving signal
+> >delivery: a non-AMX task is preempted by an AMX-enabled task which
+> >modifies the XFD MSR.
 > >
-> > And it sounds loud and crisp. So the pin is read.
+> >When the non-AMX task resumes and reloads XSTATE with init values,
+> >a warning is triggered due to a mismatch between fpstate::xfd and the
+> >CPU's current XFD state. fpu__clear_user_states() does not currently
+> >re-synchronize the XFD state after such preemption.
 > >
-> > I had multiple users verify the X works, but perhaps it is not perfect
-> > yet. Make sure you are not using a dsp that might be interfering
->
-> Seems like there have been other reports similar to mine on Xbox Ally X, =
-where flipping the firmware files by renaming them fixes sound issues for t=
-hem.
->
-> @TI, Maybe something is different with the conditional logic for the ROG =
-Xbox Ally X? The current GPIO-detected speaker_id doesn't always correspond=
- to the correct firmware choice on this model it seems.
-
-Yeah, it seems that specifically on the Xbox Ally X, the firmwares are
-swapped around? What could be the case for that?
-
-I had three users with popping and dropped audio swap the firmware on
-their X and they said the other one fixed it. And another two without
-issues swapping the firmware and saying it does not make a
-quantifiable change.
-
-Antheas
-
-
-Antheas
-
+> >Invoke xfd_update_state() which detects and corrects the mismatch if the
+> >dynamic feature is enabled.
 > >
-> > Antheas
+> >This also benefits the sigreturn path, as fpu__restore_sig() may call
+> >fpu__clear_user_states() when the sigframe is inaccessible.
 > >
-> >> Matt
-> >>
-> >> [1]: https://github.com/hhd-dev/hwfirm
-> >>
-> >>>
-> >>> That would be great :)
-> >>>
-> >>> Antheas
-> >>>
-> >>>> Cc: stable@vger.kernel.org # 6.17
-> >>>> Signed-off-by: Antheas Kapenekakis <lkml@antheas.dev>
-> >>>> ---
-> >>>> sound/hda/codecs/realtek/alc269.c | 2 ++
-> >>>> 1 file changed, 2 insertions(+)
-> >>>>
-> >>>> diff --git a/sound/hda/codecs/realtek/alc269.c b/sound/hda/codecs/re=
-altek/alc269.c
-> >>>> index 8ad5febd822a..d1ad84eee6d1 100644
-> >>>> --- a/sound/hda/codecs/realtek/alc269.c
-> >>>> +++ b/sound/hda/codecs/realtek/alc269.c
-> >>>> @@ -6713,6 +6713,8 @@ static const struct hda_quirk alc269_fixup_tbl=
-[] =3D {
-> >>>>        SND_PCI_QUIRK(0x1043, 0x12f0, "ASUS X541UV", ALC256_FIXUP_ASU=
-S_MIC_NO_PRESENCE),
-> >>>>        SND_PCI_QUIRK(0x1043, 0x1313, "Asus K42JZ", ALC269VB_FIXUP_AS=
-US_MIC_NO_PRESENCE),
-> >>>>        SND_PCI_QUIRK(0x1043, 0x1314, "ASUS GA605K", ALC285_FIXUP_ASU=
-S_GA605K_HEADSET_MIC),
-> >>>> +       SND_PCI_QUIRK(0x1043, 0x1384, "ASUS RC73XA", ALC287_FIXUP_TX=
-NW2781_I2C),
-> >>>> +       SND_PCI_QUIRK(0x1043, 0x1394, "ASUS RC73YA", ALC287_FIXUP_TX=
-NW2781_I2C),
-> >>>>        SND_PCI_QUIRK(0x1043, 0x13b0, "ASUS Z550SA", ALC256_FIXUP_ASU=
-S_MIC_NO_PRESENCE),
-> >>>>        SND_PCI_QUIRK(0x1043, 0x1427, "Asus Zenbook UX31E", ALC269VB_=
-FIXUP_ASUS_ZENBOOK),
-> >>>>        SND_PCI_QUIRK(0x1043, 0x1433, "ASUS GX650PY/PZ/PV/PU/PYV/PZV/=
-PIV/PVV", ALC285_FIXUP_ASUS_I2C_HEADSET_MIC),
-> >>>> --
-> >>>> 2.51.1
-> >>>>
-> >>>>
-> >>>
-> >>>
-> >>
-> >>
-> >
->
->
+> >Fixes: 672365477ae8a ("x86/fpu: Update XFD state where required")
+> >Reported-by: Sean Christopherson <seanjc@google.com>
+> >Closes: https://lore.kernel.org/lkml/aDCo_SczQOUaB2rS@google.com [1]
+> >Tested-by: Chao Gao <chao.gao@intel.com>
+> >Signed-off-by: Chang S. Bae <chang.seok.bae@intel.com>
+> >Cc: stable@vger.kernel.org
+> >Link: https://lore.kernel.org/all/aDWbctO%2FRfTGiCg3@intel.com [2]
+> 
+> Reviewed-by: Chao Gao <chao.gao@intel.com>
+> 
+> Thanks for looking into this issue.
 
+Ping.  I _think_ this is still needed?  AFAICT, it just fell through the cracks.
 
