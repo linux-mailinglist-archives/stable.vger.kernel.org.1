@@ -1,115 +1,211 @@
-Return-Path: <stable+bounces-191374-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191376-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B908C1288C
-	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 02:25:36 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDB7BC12979
+	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 02:53:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id DDA6C4EAA59
-	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 01:25:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7C24A567B30
+	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 01:53:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 959ED2236FA;
-	Tue, 28 Oct 2025 01:25:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67AED1662E7;
+	Tue, 28 Oct 2025 01:53:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="Q3SQMxe+"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="BOIUlEUK"
 X-Original-To: stable@vger.kernel.org
-Received: from canpmsgout08.his.huawei.com (canpmsgout08.his.huawei.com [113.46.200.223])
+Received: from out-182.mta1.migadu.com (out-182.mta1.migadu.com [95.215.58.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69FA7222599;
-	Tue, 28 Oct 2025 01:25:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.223
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8302525A2C7
+	for <stable@vger.kernel.org>; Tue, 28 Oct 2025 01:53:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761614729; cv=none; b=EuCG/NRpch8vCtj6KgqRr1C1F+2HqDDrNhcKoojpKHQQC5O5fhiRj+PHpw4ZBHEETG66ZwhgKAzedkBHhVJZsCtMi6yimTvBu72vUMHy7g3pbStwk3c7NG5QmzHgLKvHmXDRgxhmn363NGJJqH1IjmKkAKT5Oi0j84pKavguOFg=
+	t=1761616436; cv=none; b=MKS7r+2oBkI7Syo8AUecPBL0V9XxPa9lp+wA7jhjjARNvzsHTxj0+iG9A5ZnUz/Slzic0l/0QE7JSx3yVj18u3kjDDFqKRqPOvzX66s+HTvIuF4va072OScdMc6JwQEmo6siOyD1pLd8KJUYSuJeitxp+pOGg7+efDbP6+Z2Dcg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761614729; c=relaxed/simple;
-	bh=XNraAoXVxJntG+i7sio8dph+Y4eKVdGqB+1lKwdY904=;
-	h=Subject:To:CC:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=Dpylm8ZiN4jGCC4cb5kaAPmZdeCSZIhpWpqrtvI5DlP/7o4JCj466QTJ++9TM74+rdRwbCqbiwiG7SXV05w412i6IfhB9vEfyNah4jzomIDggi8OcissgCj15bIk94pXASOUsrdpi9q9AG7XzS0Dcf6zVffjNhuOqXye7XBFlwk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=Q3SQMxe+; arc=none smtp.client-ip=113.46.200.223
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=Ij22skuYDh27GVFz5vurhnY/A38QKFjHqmKXW3cnNng=;
-	b=Q3SQMxe+jJwvyyUrsf8Z1NpeXw/4OpqSY6G4NthBt1239SQU3JCmtCWlRxDgS+Ju6f96Cdjl0
-	QhmHiDXYArqnu1sO7v0ygAllTUdFrYK+lNUM1/OM/tT1MK8qbyoTxqyWjMVPWHXBTpVAMOBtWB1
-	4YHedYwWdIi65I+J1dha9V0=
-Received: from mail.maildlp.com (unknown [172.19.88.163])
-	by canpmsgout08.his.huawei.com (SkyGuard) with ESMTPS id 4cwXjf2NGtzmV6g;
-	Tue, 28 Oct 2025 09:24:54 +0800 (CST)
-Received: from dggpemf500015.china.huawei.com (unknown [7.185.36.143])
-	by mail.maildlp.com (Postfix) with ESMTPS id 5685D1800B2;
-	Tue, 28 Oct 2025 09:25:22 +0800 (CST)
-Received: from [10.67.121.110] (10.67.121.110) by
- dggpemf500015.china.huawei.com (7.185.36.143) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 28 Oct 2025 09:25:21 +0800
-Subject: Re: [PATCH] crypto: hisilicon/qm - Fix device reference leak in
- qm_get_qos_value
-To: Miaoqian Lin <linmq006@gmail.com>, Weili Qian <qianweili@huawei.com>, Zhou
- Wang <wangzhou1@hisilicon.com>, Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>, Kai Ye <yekai13@huawei.com>,
-	<linux-crypto@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC: <stable@vger.kernel.org>
-References: <20251027150934.60013-1-linmq006@gmail.com>
-From: liulongfang <liulongfang@huawei.com>
-Message-ID: <fdcaf975-590e-be7e-40ce-1c8eea75f8ce@huawei.com>
-Date: Tue, 28 Oct 2025 09:25:21 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+	s=arc-20240116; t=1761616436; c=relaxed/simple;
+	bh=rf4AIEHEW2a3laeNL4F6QNbR7b20jJ5mQqfGwNYjOKM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=dO2uxNcIJqdGpdBe/M948lt93IAjLwFWhAAJ+dH5v030ymScfJa/HUXnTTlVAT3ClXTffcI1BRd4Ose3BLkgFzj76tJHU4ToP0JKnGIzwwpShbuewdZTGvSY3XE3CwGydEpwDy6H3CuStG+LofCe/JVJzTmjVFyPOC2nkhajITw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=BOIUlEUK; arc=none smtp.client-ip=95.215.58.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1761616431;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=fOQmhmBDEYiwvDVP6Wx0SsY1m99stZnZK9xXTiCWbmI=;
+	b=BOIUlEUKcIdfCgkvleCu3LfxbQJVFoWs/8bkZ2nROg4rw6Pxv5titWLpF8n9wfN4kc4HrW
+	HI/t7M/rQ/QoslCs9g00H98LOU9sO9xXG+galVf6UCh3Wh5chlrvGbnW4WOWU1V48LP2rN
+	8spygWXl6+E50xP3e0q0VvxtY6lwZ8c=
+From: Yi Cong <cong.yi@linux.dev>
+To: yicong@kylinos.cn
+Cc: stable@vger.kernel.org
+Subject: [PATCH] net: phy: motorcomm: Fix the issue in the code regarding the incorrect use of time units
+Date: Tue, 28 Oct 2025 09:53:07 +0800
+Message-Id: <20251028015307.251713-1-cong.yi@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20251027150934.60013-1-linmq006@gmail.com>
-Content-Type: text/plain; charset="gbk"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
- dggpemf500015.china.huawei.com (7.185.36.143)
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-On 2025/10/27 23:09, Miaoqian Lin wrote:
-> The qm_get_qos_value() function calls bus_find_device_by_name() which
-> increases the device reference count, but fails to call put_device()
-> to balance the reference count and lead to a device reference leak.
-> 
-> Add put_device() calls in both the error path and success path to
-> properly balance the reference count.
-> 
-> Found via static analysis.
-> 
-> Fixes: 22d7a6c39cab ("crypto: hisilicon/qm - add pci bdf number check")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
-> ---
->  drivers/crypto/hisilicon/qm.c | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/drivers/crypto/hisilicon/qm.c b/drivers/crypto/hisilicon/qm.c
-> index a5b96adf2d1e..3b391a146635 100644
-> --- a/drivers/crypto/hisilicon/qm.c
-> +++ b/drivers/crypto/hisilicon/qm.c
-> @@ -3871,10 +3871,12 @@ static ssize_t qm_get_qos_value(struct hisi_qm *qm, const char *buf,
->  	pdev = container_of(dev, struct pci_dev, dev);
->  	if (pci_physfn(pdev) != qm->pdev) {
->  		pci_err(qm->pdev, "the pdev input does not match the pf!\n");
-> +		put_device(dev);
->  		return -EINVAL;
->  	}
->  
->  	*fun_index = pdev->devfn;
-> +	put_device(dev);
->  
->  	return 0;
->  }
-> 
+From: Yi Cong <yicong@kylinos.cn>
 
-Reviewed-by: Longfang Liu <liulongfang@huawei.com>
+Currently, NS (nanoseconds) is being used, but according to the datasheet,
+the correct unit should be PS (picoseconds).
 
-Thanks.
+Fixes: 4869a146cd60 ("net: phy: Add BIT macro for Motorcomm yt8521/yt8531 gigabit ethernet phy")
+Cc: stable@vger.kernel.org
+Signed-off-by: Yi Cong <yicong@kylinos.cn>
+---
+ drivers/net/phy/motorcomm.c | 102 ++++++++++++++++++------------------
+ 1 file changed, 51 insertions(+), 51 deletions(-)
+
+diff --git a/drivers/net/phy/motorcomm.c b/drivers/net/phy/motorcomm.c
+index a3593e663059..81491c71e75b 100644
+--- a/drivers/net/phy/motorcomm.c
++++ b/drivers/net/phy/motorcomm.c
+@@ -171,7 +171,7 @@
+  * 1b1 enable 1.9ns rxc clock delay
+  */
+ #define YT8521_CCR_RXC_DLY_EN			BIT(8)
+-#define YT8521_CCR_RXC_DLY_1_900_NS		1900
++#define YT8521_CCR_RXC_DLY_1_900_PS		1900
+ 
+ #define YT8521_CCR_MODE_SEL_MASK		(BIT(2) | BIT(1) | BIT(0))
+ #define YT8521_CCR_MODE_UTP_TO_RGMII		0
+@@ -196,22 +196,22 @@
+ #define YT8521_RC1R_RX_DELAY_MASK		GENMASK(13, 10)
+ #define YT8521_RC1R_FE_TX_DELAY_MASK		GENMASK(7, 4)
+ #define YT8521_RC1R_GE_TX_DELAY_MASK		GENMASK(3, 0)
+-#define YT8521_RC1R_RGMII_0_000_NS		0
+-#define YT8521_RC1R_RGMII_0_150_NS		1
+-#define YT8521_RC1R_RGMII_0_300_NS		2
+-#define YT8521_RC1R_RGMII_0_450_NS		3
+-#define YT8521_RC1R_RGMII_0_600_NS		4
+-#define YT8521_RC1R_RGMII_0_750_NS		5
+-#define YT8521_RC1R_RGMII_0_900_NS		6
+-#define YT8521_RC1R_RGMII_1_050_NS		7
+-#define YT8521_RC1R_RGMII_1_200_NS		8
+-#define YT8521_RC1R_RGMII_1_350_NS		9
+-#define YT8521_RC1R_RGMII_1_500_NS		10
+-#define YT8521_RC1R_RGMII_1_650_NS		11
+-#define YT8521_RC1R_RGMII_1_800_NS		12
+-#define YT8521_RC1R_RGMII_1_950_NS		13
+-#define YT8521_RC1R_RGMII_2_100_NS		14
+-#define YT8521_RC1R_RGMII_2_250_NS		15
++#define YT8521_RC1R_RGMII_0_000_PS		0
++#define YT8521_RC1R_RGMII_0_150_PS		1
++#define YT8521_RC1R_RGMII_0_300_PS		2
++#define YT8521_RC1R_RGMII_0_450_PS		3
++#define YT8521_RC1R_RGMII_0_600_PS		4
++#define YT8521_RC1R_RGMII_0_750_PS		5
++#define YT8521_RC1R_RGMII_0_900_PS		6
++#define YT8521_RC1R_RGMII_1_050_PS		7
++#define YT8521_RC1R_RGMII_1_200_PS		8
++#define YT8521_RC1R_RGMII_1_350_PS		9
++#define YT8521_RC1R_RGMII_1_500_PS		10
++#define YT8521_RC1R_RGMII_1_650_PS		11
++#define YT8521_RC1R_RGMII_1_800_PS		12
++#define YT8521_RC1R_RGMII_1_950_PS		13
++#define YT8521_RC1R_RGMII_2_100_PS		14
++#define YT8521_RC1R_RGMII_2_250_PS		15
+ 
+ /* LED CONFIG */
+ #define YT8521_MAX_LEDS				3
+@@ -800,40 +800,40 @@ struct ytphy_cfg_reg_map {
+ 
+ static const struct ytphy_cfg_reg_map ytphy_rgmii_delays[] = {
+ 	/* for tx delay / rx delay with YT8521_CCR_RXC_DLY_EN is not set. */
+-	{ 0,	YT8521_RC1R_RGMII_0_000_NS },
+-	{ 150,	YT8521_RC1R_RGMII_0_150_NS },
+-	{ 300,	YT8521_RC1R_RGMII_0_300_NS },
+-	{ 450,	YT8521_RC1R_RGMII_0_450_NS },
+-	{ 600,	YT8521_RC1R_RGMII_0_600_NS },
+-	{ 750,	YT8521_RC1R_RGMII_0_750_NS },
+-	{ 900,	YT8521_RC1R_RGMII_0_900_NS },
+-	{ 1050,	YT8521_RC1R_RGMII_1_050_NS },
+-	{ 1200,	YT8521_RC1R_RGMII_1_200_NS },
+-	{ 1350,	YT8521_RC1R_RGMII_1_350_NS },
+-	{ 1500,	YT8521_RC1R_RGMII_1_500_NS },
+-	{ 1650,	YT8521_RC1R_RGMII_1_650_NS },
+-	{ 1800,	YT8521_RC1R_RGMII_1_800_NS },
+-	{ 1950,	YT8521_RC1R_RGMII_1_950_NS },	/* default tx/rx delay */
+-	{ 2100,	YT8521_RC1R_RGMII_2_100_NS },
+-	{ 2250,	YT8521_RC1R_RGMII_2_250_NS },
++	{ 0,	YT8521_RC1R_RGMII_0_000_PS },
++	{ 150,	YT8521_RC1R_RGMII_0_150_PS },
++	{ 300,	YT8521_RC1R_RGMII_0_300_PS },
++	{ 450,	YT8521_RC1R_RGMII_0_450_PS },
++	{ 600,	YT8521_RC1R_RGMII_0_600_PS },
++	{ 750,	YT8521_RC1R_RGMII_0_750_PS },
++	{ 900,	YT8521_RC1R_RGMII_0_900_PS },
++	{ 1050,	YT8521_RC1R_RGMII_1_050_PS },
++	{ 1200,	YT8521_RC1R_RGMII_1_200_PS },
++	{ 1350,	YT8521_RC1R_RGMII_1_350_PS },
++	{ 1500,	YT8521_RC1R_RGMII_1_500_PS },
++	{ 1650,	YT8521_RC1R_RGMII_1_650_PS },
++	{ 1800,	YT8521_RC1R_RGMII_1_800_PS },
++	{ 1950,	YT8521_RC1R_RGMII_1_950_PS },	/* default tx/rx delay */
++	{ 2100,	YT8521_RC1R_RGMII_2_100_PS },
++	{ 2250,	YT8521_RC1R_RGMII_2_250_PS },
+ 
+ 	/* only for rx delay with YT8521_CCR_RXC_DLY_EN is set. */
+-	{ 0    + YT8521_CCR_RXC_DLY_1_900_NS,	YT8521_RC1R_RGMII_0_000_NS },
+-	{ 150  + YT8521_CCR_RXC_DLY_1_900_NS,	YT8521_RC1R_RGMII_0_150_NS },
+-	{ 300  + YT8521_CCR_RXC_DLY_1_900_NS,	YT8521_RC1R_RGMII_0_300_NS },
+-	{ 450  + YT8521_CCR_RXC_DLY_1_900_NS,	YT8521_RC1R_RGMII_0_450_NS },
+-	{ 600  + YT8521_CCR_RXC_DLY_1_900_NS,	YT8521_RC1R_RGMII_0_600_NS },
+-	{ 750  + YT8521_CCR_RXC_DLY_1_900_NS,	YT8521_RC1R_RGMII_0_750_NS },
+-	{ 900  + YT8521_CCR_RXC_DLY_1_900_NS,	YT8521_RC1R_RGMII_0_900_NS },
+-	{ 1050 + YT8521_CCR_RXC_DLY_1_900_NS,	YT8521_RC1R_RGMII_1_050_NS },
+-	{ 1200 + YT8521_CCR_RXC_DLY_1_900_NS,	YT8521_RC1R_RGMII_1_200_NS },
+-	{ 1350 + YT8521_CCR_RXC_DLY_1_900_NS,	YT8521_RC1R_RGMII_1_350_NS },
+-	{ 1500 + YT8521_CCR_RXC_DLY_1_900_NS,	YT8521_RC1R_RGMII_1_500_NS },
+-	{ 1650 + YT8521_CCR_RXC_DLY_1_900_NS,	YT8521_RC1R_RGMII_1_650_NS },
+-	{ 1800 + YT8521_CCR_RXC_DLY_1_900_NS,	YT8521_RC1R_RGMII_1_800_NS },
+-	{ 1950 + YT8521_CCR_RXC_DLY_1_900_NS,	YT8521_RC1R_RGMII_1_950_NS },
+-	{ 2100 + YT8521_CCR_RXC_DLY_1_900_NS,	YT8521_RC1R_RGMII_2_100_NS },
+-	{ 2250 + YT8521_CCR_RXC_DLY_1_900_NS,	YT8521_RC1R_RGMII_2_250_NS }
++	{ 0    + YT8521_CCR_RXC_DLY_1_900_PS,	YT8521_RC1R_RGMII_0_000_PS },
++	{ 150  + YT8521_CCR_RXC_DLY_1_900_PS,	YT8521_RC1R_RGMII_0_150_PS },
++	{ 300  + YT8521_CCR_RXC_DLY_1_900_PS,	YT8521_RC1R_RGMII_0_300_PS },
++	{ 450  + YT8521_CCR_RXC_DLY_1_900_PS,	YT8521_RC1R_RGMII_0_450_PS },
++	{ 600  + YT8521_CCR_RXC_DLY_1_900_PS,	YT8521_RC1R_RGMII_0_600_PS },
++	{ 750  + YT8521_CCR_RXC_DLY_1_900_PS,	YT8521_RC1R_RGMII_0_750_PS },
++	{ 900  + YT8521_CCR_RXC_DLY_1_900_PS,	YT8521_RC1R_RGMII_0_900_PS },
++	{ 1050 + YT8521_CCR_RXC_DLY_1_900_PS,	YT8521_RC1R_RGMII_1_050_PS },
++	{ 1200 + YT8521_CCR_RXC_DLY_1_900_PS,	YT8521_RC1R_RGMII_1_200_PS },
++	{ 1350 + YT8521_CCR_RXC_DLY_1_900_PS,	YT8521_RC1R_RGMII_1_350_PS },
++	{ 1500 + YT8521_CCR_RXC_DLY_1_900_PS,	YT8521_RC1R_RGMII_1_500_PS },
++	{ 1650 + YT8521_CCR_RXC_DLY_1_900_PS,	YT8521_RC1R_RGMII_1_650_PS },
++	{ 1800 + YT8521_CCR_RXC_DLY_1_900_PS,	YT8521_RC1R_RGMII_1_800_PS },
++	{ 1950 + YT8521_CCR_RXC_DLY_1_900_PS,	YT8521_RC1R_RGMII_1_950_PS },
++	{ 2100 + YT8521_CCR_RXC_DLY_1_900_PS,	YT8521_RC1R_RGMII_2_100_PS },
++	{ 2250 + YT8521_CCR_RXC_DLY_1_900_PS,	YT8521_RC1R_RGMII_2_250_PS }
+ };
+ 
+ static u32 ytphy_get_delay_reg_value(struct phy_device *phydev,
+@@ -890,10 +890,10 @@ static int ytphy_rgmii_clk_delay_config(struct phy_device *phydev)
+ 	rx_reg = ytphy_get_delay_reg_value(phydev, "rx-internal-delay-ps",
+ 					   ytphy_rgmii_delays, tb_size,
+ 					   &rxc_dly_en,
+-					   YT8521_RC1R_RGMII_1_950_NS);
++					   YT8521_RC1R_RGMII_1_950_PS);
+ 	tx_reg = ytphy_get_delay_reg_value(phydev, "tx-internal-delay-ps",
+ 					   ytphy_rgmii_delays, tb_size, NULL,
+-					   YT8521_RC1R_RGMII_1_950_NS);
++					   YT8521_RC1R_RGMII_1_950_PS);
+ 
+ 	switch (phydev->interface) {
+ 	case PHY_INTERFACE_MODE_RGMII:
+-- 
+2.25.1
+
 
