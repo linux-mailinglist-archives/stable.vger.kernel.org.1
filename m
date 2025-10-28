@@ -1,216 +1,193 @@
-Return-Path: <stable+bounces-191462-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191461-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BD78C14A2C
-	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 13:31:48 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7F74C14A23
+	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 13:31:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3755D582626
-	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 12:31:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7900046769E
+	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 12:30:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC6351E51EE;
-	Tue, 28 Oct 2025 12:30:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DAE832D7D9;
+	Tue, 28 Oct 2025 12:30:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="PM2aBzdo"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dccYhXjw"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDC0A23D291
-	for <stable@vger.kernel.org>; Tue, 28 Oct 2025 12:30:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DBA223A562
+	for <stable@vger.kernel.org>; Tue, 28 Oct 2025 12:30:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761654650; cv=none; b=keKX6l3FpCtvRFX/9FPYOY5F/6AYAPEpx+rvbx8YJ2+Is7/jXA/mMngIaN0oVPU/V9TzAqLmnT2R+8CVNR3Z+pfvpALvwHBwSOsc0s92KyVIna1wpplq+Ach0UAE3oJkO4JumdA1kPehGGYkkea1cczriKeV0O0ub/GZ7edSWJY=
+	t=1761654635; cv=none; b=AU+oE7C1ZB7ZWtXjqUV5hdkj+VFXD7BJQ2dezqEk3WPLlB/8tbBycm5n3lc6h/pc89gGZsq6uZ4AfJy7bcgOi1NL4p5FyiK2cPax0Df+E7VuAIRlonZ/h/LeUCBFRKNSEaaXg+ZCKkxVFKaMyaOIPRx4M56qrbDJ2OZgoZzJb+Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761654650; c=relaxed/simple;
-	bh=YCOJspC8AR5t5kkIm7/R7G5qffr1ytnTF/NVlSkEs6U=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=YiJUVsrvQhubzj3se2hIVXhq3/PdmCsP6yH3JhFmd48JTj1JYv+u6UsA7dVgk+sf+4sNmyTX7Q9Gmm9Oz7hW7u1/eFROP/sIkgTdKrslhcxZCEZXT89UiFmJvegh5drS6AS794mijql6RIwgE/YZvjXiWL1okd4tqVBdGaXcF/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=PM2aBzdo; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1761654647;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=caqFFVQ8CNc5/R1/dbClJ7vCcMhRSm3xqXDsXqZLJ3g=;
-	b=PM2aBzdowR8IuoMzT7Xc81FITfQ6FKsSdePFD7Q9nBEzWU56ixQTZtVRVb/cWeJndP+90n
-	/eGGpmr9W4M9C8Bt/8RbdCWKLOdZ5GV7K45SDoVp3nf+NEvftqbrh9JJJZBtm9ChRct048
-	pj+WWm9xWYKftTKQ8O3o8DIxDFiHEY8=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-349-meixGVxQMaCbNjb-W6OtSg-1; Tue, 28 Oct 2025 08:30:46 -0400
-X-MC-Unique: meixGVxQMaCbNjb-W6OtSg-1
-X-Mimecast-MFC-AGG-ID: meixGVxQMaCbNjb-W6OtSg_1761654645
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-42992cb2ee8so2033483f8f.3
-        for <stable@vger.kernel.org>; Tue, 28 Oct 2025 05:30:46 -0700 (PDT)
+	s=arc-20240116; t=1761654635; c=relaxed/simple;
+	bh=0f04VfYAQOkqrLpARC7cLeA4nIsQOh8qYdmJHGhMm5Y=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Xu6Pg+mRUl/NS4+aG55nL/3U8gBLfJZ5ihH3LR/Smyn8sfxNskHovyhCvXeWAdPzvVb/ityfGNDEf1xTGWbX760PruwAiJ4G85edJVQdEQRasgqLpBA/3iyXlrhKhsdIIYPA1yGRN6bO8z3B17sMax2JcAatqbpAoFEhT3hNmjk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dccYhXjw; arc=none smtp.client-ip=209.85.128.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-475de184058so14151855e9.2
+        for <stable@vger.kernel.org>; Tue, 28 Oct 2025 05:30:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1761654631; x=1762259431; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=uM1qiGzCV5xixBDHYGWO+dT5xDst6ueuPSytOOrmsBg=;
+        b=dccYhXjwNhAzvtkHDbYazUFGIeUejlLXhzUVgt77w7X90kVsTphbXChEwDvwDkRzKc
+         qJSkqDZ2rLOzMn10H9/HpmmagKGj/CVQECztS1fzfD/OnF4omYBBmnNNMHb4HB0tYo76
+         tAJmgOKeeNUYrytYU1DqSwCda+sgyaLhGYu3wVliD3BBHUWm7g4nNJC0nv2n/6Rr4JEy
+         f+1A3a531WLoELfRaKKiR7ruBjAS+mv7LRzqkJo3K/5MKjeWlwLrltZxzRS8plHB7zoB
+         up8Vggw+4dzlJC7QYyOJrCMwKRQRdvo9dbCKALxdrGySSW+8vCeimljMVbVZTDxIIQXe
+         pPpQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761654645; x=1762259445;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=caqFFVQ8CNc5/R1/dbClJ7vCcMhRSm3xqXDsXqZLJ3g=;
-        b=KqOdKkNV2zyRhUTuHW8p7QnI7wqD1eUjMdiQIFHFf734KMyfdWVpG0JqYv6et/TaEi
-         mBe85zTqwLB1ZE++LmDk3rPQabngWiAxtLZjD7wTrUJnEm0Rck6mB+NAA1q8RAfCYDJF
-         /3QwOxs2Lx8BvlD0tqbjr5j8PvCbZLxdbIvSn52qo3Bet3QtDlNC9GptZDsI1QerHoRv
-         CEhsqHsalBlsdLWOhj++ipoPaakm32gad9WDmvZiF44gYGjwLaqbXDbHvtS4LF4/z17P
-         h1mE/PtwfbUl4w8BcRDaRqpfBWm9T8cTjIbZ43uIxRRrlPbQvbpRYEPmkF6ZThVLSDwY
-         TFtA==
-X-Forwarded-Encrypted: i=1; AJvYcCUICdB2usuBb6CbFQQPnjp8mCQafVrN3RmwEAF1fQSwJsYwk9GPg1t9J29cj7LSxaz2OVppj8A=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy9k2pSqUXMkRnTht+tJgefg/lAOT3Srp+t8rCsqtJBpz0n/u1b
-	hpv1poiNxV69AfLHvveTHLK0aiZfuaKBNuFFhn6Vb76AFnbgCa+hXQo8NUIVryXSOx04TN8aWgs
-	392AcrgAIbUOeHn7Vz2sKOcb/qiCYxvHjNsPGCWR9FSsN1loAgE5QlNr8rw==
-X-Gm-Gg: ASbGncv4MjRsuJj5HoeDnv+3CAf4ZTONLzfCHn16WMo3CKb7NGm2Q072GHzs6wzuP4p
-	66eu7if5HsJ3XtAJSuYyLhw/dFgmHJsJcrZfsHjEOuz70P8C8kbr6OfAbw+37B5WFhS1y6lxnHH
-	ZuKbCxd14LuQoy77AB3JhjLqZhZGCq4zOZ9J2II1sC67Ggvceyo2UQjpfIAdnkqM9pVd7tvAqCB
-	tMlyaSIU0dT9L5wF86EJCJipLjLgKF+zUcRLqLpG7PjZQrqqFE35SMJz30C6/goJES32Bmdq2Ey
-	FDtVU8XjALYXJZaTHyqJ5/NtRsUfTBMO0UJSSGkCQHyXM5RMuYs/K8YTJtQ6DoZgvyLCS+OQHPJ
-	5cQ+xLFIR7Sswe40NzS7NvCWPNmrejYKk
-X-Received: by 2002:a05:6000:40ca:b0:429:927e:f2d with SMTP id ffacd0b85a97d-429a7e7c749mr2889989f8f.38.1761654645142;
-        Tue, 28 Oct 2025 05:30:45 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG7VWu1SeQzGMTvsGngxg3n6PbbCnycHv6IKEDtKtHjHqjgMWOZby3dOBVswiYkPRmc1I0l4Q==
-X-Received: by 2002:a05:6000:40ca:b0:429:927e:f2d with SMTP id ffacd0b85a97d-429a7e7c749mr2889962f8f.38.1761654644712;
-        Tue, 28 Oct 2025 05:30:44 -0700 (PDT)
-Received: from ?IPV6:2a09:80c0:192:0:5dac:bf3d:c41:c3e7? ([2a09:80c0:192:0:5dac:bf3d:c41:c3e7])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-429952b7badsm19778750f8f.7.2025.10.28.05.30.43
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 28 Oct 2025 05:30:44 -0700 (PDT)
-Message-ID: <bcfd4b80-df1b-4b6c-8ae2-1b3dbd8de23a@redhat.com>
-Date: Tue, 28 Oct 2025 13:30:43 +0100
+        d=1e100.net; s=20230601; t=1761654631; x=1762259431;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=uM1qiGzCV5xixBDHYGWO+dT5xDst6ueuPSytOOrmsBg=;
+        b=Z40Ylk4ajJiqmm41U0B5cgcVFkN9A80uboCJCcqRNy1tUSGYm8iW9vz48tflrlQF9C
+         l6TM3ioH7UVr+qdMqg4DBqW12ErWeyRTwulShYzNs3vifgdphU0RIVXRNOHO40VbY8iq
+         /780iAo67bjVrz8peuC1u7plaXZhWsO9pesg8K/iT7dAz/d3zDTb8J2z/wbCwmTwSYCl
+         AqWGrBsJh7COIREDHwWK0yb7RB36MlnFXNK764L/YBSZ3yjXMdxPzXbrN7bMT1o6CWvu
+         7LdlQ0DIN9JyqppX61E0Fua92ApiS6jw1xCAum+rwvHt6kXI0VhfAkwX0o7QvrjVThtC
+         2PqQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWKToGJrxysGvvAFJMCl92TkmSPZBPgyL40BBUGqN3SMxpNT07WCISJ4FDvQr/xcgbSfEMT6fg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwSC0+8Cr2ZU5qvMf3i1NFMSZpNgWacxKherlPIQBCL35KgWyn7
+	kR8QpzxyVfVlBLhaG7GhxJOMkHwstvR/19dKbFktHyuWJTxzL4BGJxt7
+X-Gm-Gg: ASbGncucq2KUWftkStFYqRp9YQXfzI7jA+hK9yAfjVZi+RpB8hsfZHwfkeDhiznzCai
+	9AsEU6CoXnPAGSghIVNkr5xz8xkuVika4+QwCdJYs57X+swhr1v322xpyYKa56kn7tNpE4PAASD
+	qH8PVzpr1NHO0Rk7nJlh8lwqVCUK0tl81qUxytWPUbn7dwtWwib8JUiPMYZAkHjJPpSZ0BmBTT4
+	Myh+c4q2BUMcEF0ZRdelt0I3rcYtkzJEtMl6fIDFUdXEouM/MvxhnnibiQxfPmMx507XaSZ3OQo
+	J4HvKIUoPuIxdud15lknqHOAueeI7z4Sw9gGR12M/uYpHFiTeCKgvWO4CSiaidRvfR2sN/PF9lq
+	4YDTDpixQT/zs3B6HNf/2qHLhHGYghtE3oYZsIYLvzBCl5CJbT2BG9NbsqZluCLjPv+EqGlIP2D
+	seoJDHNR7/
+X-Google-Smtp-Source: AGHT+IGEqnfB8W17Zq9R3EW1M/jbofJiBPGzUMdTs8hOW1t438UzjJB1DB8v/cUw7rTmUqtKI8cQFw==
+X-Received: by 2002:a05:600c:3e16:b0:476:a25f:6a4d with SMTP id 5b1f17b1804b1-47717df7f6dmr30430845e9.1.1761654630419;
+        Tue, 28 Oct 2025 05:30:30 -0700 (PDT)
+Received: from [192.168.1.187] ([161.230.67.253])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-475de57b156sm184073395e9.13.2025.10.28.05.30.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 28 Oct 2025 05:30:29 -0700 (PDT)
+Message-ID: <071e3da4d69e10d64c54a18b7dd34ae11ab68f58.camel@gmail.com>
+Subject: Re: [PATCH] iio: dac: ad3552r-hs: fix out-of-bound write in
+ ad3552r_hs_write_data_source
+From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To: Andy Shevchenko <andriy.shevchenko@intel.com>, Miaoqian Lin
+	 <linmq006@gmail.com>, Markus Burri <markus.burri@mt.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich	
+ <Michael.Hennerich@analog.com>, Jonathan Cameron <jic23@kernel.org>, David
+ Lechner <dlechner@baylibre.com>, Nuno =?ISO-8859-1?Q?S=E1?=
+ <nuno.sa@analog.com>, Andy Shevchenko	 <andy@kernel.org>, Angelo Dureghello
+ <adureghello@baylibre.com>, 	linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Date: Tue, 28 Oct 2025 12:31:04 +0000
+In-Reply-To: <aQCHt9JL0Bc4Pduv@smile.fi.intel.com>
+References: <20251027150713.59067-1-linmq006@gmail.com>
+	 <aQB8PRlaBY_9-L8d@smile.fi.intel.com> <aQB8j7Hc3b9vAT5_@smile.fi.intel.com>
+	 <aQCHt9JL0Bc4Pduv@smile.fi.intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.1 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/mremap: Honour writable bit in mremap pte batching
-To: Pedro Falcato <pfalcato@suse.de>, Dev Jain <dev.jain@arm.com>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- Andrew Morton <akpm@linux-foundation.org>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Vlastimil Babka <vbabka@suse.cz>, Jann Horn <jannh@google.com>,
- Barry Song <baohua@kernel.org>, "open list:MEMORY MAPPING"
- <linux-mm@kvack.org>
-References: <20251028063952.90313-1-dev.jain@arm.com>
- <jmxnalmkkc5ztfhokqtzqihsdji2gprnv5z4tzruxi6iqgfkni@aerronulpyem>
-From: David Hildenbrand <david@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- qIws/H2t
-In-Reply-To: <jmxnalmkkc5ztfhokqtzqihsdji2gprnv5z4tzruxi6iqgfkni@aerronulpyem>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
 
-On 28.10.25 12:48, Pedro Falcato wrote:
-> On Tue, Oct 28, 2025 at 12:09:52PM +0530, Dev Jain wrote:
->> Currently mremap folio pte batch ignores the writable bit during figuring
->> out a set of similar ptes mapping the same folio. Suppose that the first
->> pte of the batch is writable while the others are not - set_ptes will
->> end up setting the writable bit on the other ptes, which is a violation
->> of mremap semantics. Therefore, use FPB_RESPECT_WRITE to check the writable
->> bit while determining the pte batch.
->>
-> 
-> Hmm, it seems to be like we're doing the wrong thing by default here?
-> I must admit I haven't followed the contpte work as much as I would've
-> liked, but it doesn't make much sense to me why FPB_RESPECT_WRITE would
-> be an option you have to explicitly pass, and where folio_pte_batch (the
-> "simple" interface) doesn't Just Do The Right Thing for naive callers.
+On Tue, 2025-10-28 at 11:07 +0200, Andy Shevchenko wrote:
+> On Tue, Oct 28, 2025 at 10:19:27AM +0200, Andy Shevchenko wrote:
+> > On Tue, Oct 28, 2025 at 10:18:05AM +0200, Andy Shevchenko wrote:
+> > > On Mon, Oct 27, 2025 at 11:07:13PM +0800, Miaoqian Lin wrote:
+>=20
+> +Cc: Markus Burri for the da9374819eb3
+>=20
+> ...
+>=20
+> > > > +	if (count >=3D sizeof(buf))
+> > > > +		return -ENOSPC;
+> > >=20
+> > > But this makes the validation too strict now.
+> > >=20
+> > > > =C2=A0	ret =3D simple_write_to_buffer(buf, sizeof(buf) - 1, ppos,
+> > > > userbuf,
+> > > > =C2=A0				=C2=A0=C2=A0=C2=A0=C2=A0 count);
+> > >=20
+> > > You definitely failed to read the code that implements the above.
+> > >=20
+> > > > =C2=A0	if (ret < 0)
+> > > > =C2=A0		return ret;
+> >=20
+> > > > -	buf[count] =3D '\0';
+> > > > +	buf[ret] =3D '\0';
+> >=20
+> > Maybe this line is what we might need, but I haven't checked deeper if =
+it's
+> > a
+> > problem.
+>=20
+> So, copy_to_user() and copy_from_user() are always inlined macros.
+> The simple_write_to_buffer() is not. The question here is how
+> the __builit_object_size() will behave on the address given as a paramete=
+r to
+> copy_from_user() in simple_write_to_buffer().
+>=20
+> If it may detect reliably that the buffer is the size it has. I believe i=
+t's
+> easy for the byte arrays on stack.
+>=20
 
-We use the "simple" version to apply to as many callers as possible: the 
-common case, not some "let's be super careful" scenarios.
+I think the above does not make sense (unless I'm missing your point which =
+might
+very well be). So, __builit_object_size() is for things known at compile ti=
+me.
+Moreover, simple_write_to_buffer() already has all of the gymnastics to mak=
+e
+sure copy_from_user() has the proper parameters. The thing is that it does =
+it in
+a "silent" way which means that if your buffer is not big enough you'll get=
+ a
+concatenated string. Sure, you'll likely get an error down the road (due to=
+ an
+invalid value) but I do see some value in returning back the root cause of =
+the
+issue.
 
-> 
-> Auditing all callers:
->   - khugepaged clears a variable number of ptes
->   - memory.c clears a variable number of ptes
->   - mempolicy.c grabs folios for migrations
->   - mlock.c steps over nr_ptes - 1 ptes, speeding up traversal
->   - mremap is borked since we're remapping nr_ptes ptes
->   - rmap.c TTU unmaps nr_ptes ptes for a given folio
-> 
->   so while the vast majority of callers don't seem to care, it would make
->   sense that folio_pte_batch() works conservatively by default, and
->   folio_pte_batch_flags() would allow for further batching (or maybe
->   we would add a separate folio_pte_batch_clear() or
->   folio_pte_batch_greedy() or whatnot).
+So, the preliminary check while not being a big deal, it's also not complet=
+ely
+useless IMO. I do not have any strong feeling though. However, I think the =
+below
+is very much needed...
 
-I think really the tricky part is when we'e not only scanning or 
-clearing, but actually want to "set" ptes again based on the result, 
-like we do here.
+> That said, without proof that compiler is unable to determine the destina=
+tion
+> buffer size, this patch and the one by Markus are simple noise which actu=
+ally
+> changes an error code on the overflow condition.
+>=20
+> The only line that assigns NUL character might be useful in some cases
+> (definitely when buffer comes through indirect calls from a heap, etc).
 
-For that we could consider having a second variant. But if it ends up 
-having only a single caller, it's also not that great.
+I think you can easily pass a string >=3D than 64 bytes (from userspace). A=
+FAIR,
+you don't really set a size into debugfs files. For sure you can mess thing=
+s
+with zero sized binary attributes so I have some confidence you have the sa=
+me
+with debugfs.
 
-> 
->> Cc: stable@vger.kernel.org #6.17
->> Fixes: f822a9a81a31 ("mm: optimize mremap() by PTE batching")
->> Reported-by: David Hildenbrand <david@redhat.com>
->> Debugged-by: David Hildenbrand <david@redhat.com>
->> Signed-off-by: Dev Jain <dev.jain@arm.com>
-> 
-> But the solution itself looks okay to me. so, fwiw:
-> 
-> Acked-by: Pedro Falcato <pfalcato@suse.de>
-> 
+And even if all the above is not reproducible I'm still of the opinion that
 
-Backport might end up being a bit tricky I suspect.
+buf[ret] =3D '\0';
 
-Acked-by: David Hildenbrand <david@redhat.com>
+is semantically the correct code.
 
--- 
-Cheers
-
-David / dhildenb
+- Nuno S=C3=A1
 
 
