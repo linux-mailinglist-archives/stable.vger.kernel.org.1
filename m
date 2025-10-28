@@ -1,131 +1,146 @@
-Return-Path: <stable+bounces-191452-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191453-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2608C14866
-	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 13:08:14 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D42BBC14831
+	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 13:04:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 895F2426173
-	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 12:03:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 031001A23A85
+	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 12:04:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAD8132862B;
-	Tue, 28 Oct 2025 12:03:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06D1F32A3C9;
+	Tue, 28 Oct 2025 12:04:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ka2yzJ6Y"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="WZUujFpr"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8DE3302178
-	for <stable@vger.kernel.org>; Tue, 28 Oct 2025 12:03:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F1BF328617
+	for <stable@vger.kernel.org>; Tue, 28 Oct 2025 12:04:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761653027; cv=none; b=GfFmHyHsAJII/ECpPxWCf1BjVV8oEsjzXdtrHg/N8GPo225/uMYb5C69LDE/PjlGAKd8PDXK3B1A6WHbDliuYx/0YWcj1B9VpkAdwhh37Wn7ujY9WrMj07wlEgo9ib8Ka3LlEFkBKBT/E9ZbNvx32GU+0XFSJXTuV5agZy0w7r4=
+	t=1761653047; cv=none; b=CSRdHEnY6cqsjzleRnabW2nHlKa7t/1wyYP4Ygi75FZQ5q2Tlgk4s6tcn5l7VS+IYI8KobXzNcPjvso1pijBB0ITS4pSwh3tXMUR5OmgdLFYjqeWDoTb+4QEqUh73L3ScJ5EE47BVQ6UuuxQqos3fpapGwZAn6/6DnciyWkFIW0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761653027; c=relaxed/simple;
-	bh=NGL+IZJGTIxbqCDdaa88n3D2XlIAHmLG1x6h5o24+AM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=CSus0mgQEWCDCHXefWQWyFJzRlpkPIIH+vZBPRGQLmcyhUXEsO3Q3ahk77xegl3GFfNRI2msaPb8DrEjbpFk8k7Cq9j9Oqa3Bx9xKJ8JqahphdaxUvjFitGL8dSXhaxB9ynNdWfpemloxbnTlBJ2i5RCJZejxlu+xtWBcgtsywA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ka2yzJ6Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4866AC116B1
-	for <stable@vger.kernel.org>; Tue, 28 Oct 2025 12:03:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761653027;
-	bh=NGL+IZJGTIxbqCDdaa88n3D2XlIAHmLG1x6h5o24+AM=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=Ka2yzJ6YVCcqht6zYotA60ouOMgNIYzL6TW+yPsfl1fLH5835e0SAf6BR/1BJrTL/
-	 jBU+ZDqjQDp3/CW5reGTDVfsTc4SWMGDkceSAnB3pqJpYXo0fp1Ie7md80ZKjnRHqJ
-	 KGtDa+f5MckIXEn81ma31OC83W3hjRmdkE2JnhLihPsNcamMuKKL6X7j3X3am8XGN/
-	 o7lxlMPem3YGGx1YiZ4MAOe99mKElS2Tfu59zzSaQOQpioQk27yrzLYlhwZttr+qyG
-	 bGUlgTo0X8UbVzmhphkA4L38GcLFlQ/i3HdtVJXlb7zoohjNCChvMu0igPhICa9kGl
-	 i7pIww7iLoOEw==
-Received: by mail-ot1-f44.google.com with SMTP id 46e09a7af769-7c67d9577b3so281914a34.2
-        for <stable@vger.kernel.org>; Tue, 28 Oct 2025 05:03:47 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVKs6kgj4XE4lmXpcQD4LfeEFIIczwOnSyWHbbbpPrwDgr8fMN5LuVtdawJvfCNWsbKJLxQr+I=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwfXYQmfyRsjD67+FBQwklAEcqwdz9w4D38FXIqNWQYkruia1aH
-	x/zbmR4Uze3CAIG711fer2TtJDevNY//qxwFOHiQ4iD05verOz+dlR6bgqHucOpr89xMjjNCamp
-	Qq6eTnTBomXAfHXu/WZGZNWGF3Ns9p8U=
-X-Google-Smtp-Source: AGHT+IEbl+yOB806CIHgJBzvgTOTmW/YIaJ+LahZDXUFEDenvFO7sdJjf1V/C6J1whcFN9oW6EKkellD/nj1/P2u1tc=
-X-Received: by 2002:a05:6808:c2a4:b0:441:8f74:fce with SMTP id
- 5614622812f47-44f6bb54097mr1093233b6e.59.1761653026571; Tue, 28 Oct 2025
- 05:03:46 -0700 (PDT)
+	s=arc-20240116; t=1761653047; c=relaxed/simple;
+	bh=WskojuOBnwIjjigUBWEDMhf7Assmbp3QvliKc3R2txY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=WAVQMw9jVMvdcZ//RtooLm8OsybeoMve9SXfGXHrJsb6+5/6a0ifyBAMWqb59RSp/ZRsLkSmMH2w7lw0z6paafEUv8z+fvSf9DGeMF5UC+9tj4BrvkMWCv+8xBNoPuga+0q8VEYsfnAFuxA/6X69twHWYXaJNG6F8NBgo7MblI0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=WZUujFpr; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1761653045;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=5xM3wpdALZDN/yyL3dIoanvrY9zgAvQNamISjAjH9Xc=;
+	b=WZUujFprFltBAHWa/3RUOrFpHOGs5hftJAQhOX+RXUTrm9SWj2PoB6OtQTaDtVaKZcRLfo
+	4euzIHSFpJ6PH5dm0wxnu9RJ+yyKUW2+UpHGDtaYRLj/IX9p9JRWwh9V5IsSJafzwdZFPi
+	m0HvcFAmK8v4tn+NbShXss/u1xumthk=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-692-NGNZBCyMNHWJa3yRSZBkbw-1; Tue, 28 Oct 2025 08:04:03 -0400
+X-MC-Unique: NGNZBCyMNHWJa3yRSZBkbw-1
+X-Mimecast-MFC-AGG-ID: NGNZBCyMNHWJa3yRSZBkbw_1761653043
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-3ef9218daf5so3142111f8f.1
+        for <stable@vger.kernel.org>; Tue, 28 Oct 2025 05:04:03 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761653042; x=1762257842;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=5xM3wpdALZDN/yyL3dIoanvrY9zgAvQNamISjAjH9Xc=;
+        b=ItLsGob0CY9VvukpfsPwuQmfgbEr5Kp2pMUW/xnlASvCOcEiBsH58SDFZx8G6/junJ
+         uwbdaRtx76NL8z5dJZzDdkf8mUF4YAykrTQuOfe0S5PcOcMY8SWQO9vXLsDPW8m09VWf
+         I82GRWbHZSn4k+5qnJ9PRhKrgtQ2PA9q5r91Wf1ZavEjKN6Umi2c4OmEolY/NzgrYMtL
+         kpAg8HhcoyBl1pcMmv9YCp4bEA6H60KF8DvAxrgq9xvBNOYtbaGwh01UDrTWt3RVGU01
+         fqscQX1g0knLt7Cel5UlLkm+RCRDxfX2lo2dSJIcCnnw6JOcXY0/PkQdciMvnZTDRsYY
+         SuxQ==
+X-Gm-Message-State: AOJu0YxGKWMjgJlcGSqiNJ17XLnCRdRVm1Fs52M60EuVykwMFL5vPRza
+	bCUx+NwoXDqx/AnarFvT3XLd7uFqJ3zxPhvsGof7m8qwDKlF3u70jt5h0yyCFOmgSEYqUbApBBU
+	8MBx4jLE6dbf9F7XJ1LbNOvcaTsUnXoQllLiCHeV3qCNPbKdROBh56rXpRg==
+X-Gm-Gg: ASbGnctd0kiOAYjvkCwwP9TKPsdy7///3wfV641SdknlazzK9KzYWQaKYWu1MEPA/Xc
+	BMVcg4JOPlB09p/7m100xrFS32MCV9Xhdnh5bJoSNVySeGYIkatHYK9KJsRgL8NTMmJjqYfJR/1
+	m3A2CXxajpAbpEcev7xVa1+6UYkzQyxxUQghl+Xr6S4TwU3Et+kEVE0u/mKm3cPPNAEjKjmlwdL
+	1F0P1A0XSrrc8TRmEAk4wc6FWljqeBIIxjS9GBWCn/ujNUz75VP6G6yZKrT9NNakB4cKqSkfsOI
+	e4MJcDVEbH6dnp5Xyj/QkRyCE9ITNZPXYriZhkpqVS2B0gK4KOiCXKrMKSCMSQlaCfWf7DK2NyL
+	M3DcLnMPgVW/ZF1bERTVhc1UMPylK25pPHFSGY763BnslPFo=
+X-Received: by 2002:a05:600c:45d1:b0:46f:c55a:5a8d with SMTP id 5b1f17b1804b1-47717df9d11mr30659365e9.4.1761653042569;
+        Tue, 28 Oct 2025 05:04:02 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF6BMjF+yCSS1WwGmhw2kl9y9f0ddjV6c/A0RrHdROCvFXSSyoxTUbY0rSmrFqSolRY/cH10g==
+X-Received: by 2002:a05:600c:45d1:b0:46f:c55a:5a8d with SMTP id 5b1f17b1804b1-47717df9d11mr30658905e9.4.1761653042071;
+        Tue, 28 Oct 2025 05:04:02 -0700 (PDT)
+Received: from ?IPV6:2a0d:3344:2712:7e10:4d59:d956:544f:d65c? ([2a0d:3344:2712:7e10:4d59:d956:544f:d65c])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-475dd035dc2sm196120995e9.5.2025.10.28.05.03.59
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 28 Oct 2025 05:04:01 -0700 (PDT)
+Message-ID: <c5021188-593c-431c-bf01-6775f5b2b2ed@redhat.com>
+Date: Tue, 28 Oct 2025 13:03:58 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251028060829.65434-1-linmq006@gmail.com>
-In-Reply-To: <20251028060829.65434-1-linmq006@gmail.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Tue, 28 Oct 2025 13:03:34 +0100
-X-Gmail-Original-Message-ID: <CAJZ5v0h3YMqT9uH+aLxu7SKsqY12AN7R04fRrL8Q+Z4wo0JaOA@mail.gmail.com>
-X-Gm-Features: AWmQ_bkQc9jm8EG6beNx1vkq6okGIrtKCtxYZsndpTWZCgkZ3fOY0fn_g05yUDg
-Message-ID: <CAJZ5v0h3YMqT9uH+aLxu7SKsqY12AN7R04fRrL8Q+Z4wo0JaOA@mail.gmail.com>
-Subject: Re: [PATCH] thermal: thermal_of: Fix device node reference leak in thermal_of_cm_lookup
-To: Miaoqian Lin <linmq006@gmail.com>, Daniel Lezcano <daniel.lezcano@linaro.org>, 
-	Lukasz Luba <lukasz.luba@arm.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Zhang Rui <rui.zhang@intel.com>, linux-pm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v3 2/3] bpf,sockmap: disallow MPTCP sockets from
+ sockmap
+To: Jiayuan Chen <jiayuan.chen@linux.dev>, mptcp@lists.linux.dev
+Cc: stable@vger.kernel.org, Jakub Sitnicki <jakub@cloudflare.com>,
+ John Fastabend <john.fastabend@gmail.com>, Eric Dumazet
+ <edumazet@google.com>, Kuniyuki Iwashima <kuniyu@google.com>,
+ Willem de Bruijn <willemb@google.com>, "David S. Miller"
+ <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+ Simon Horman <horms@kernel.org>, Matthieu Baerts <matttbe@kernel.org>,
+ Mat Martineau <martineau@kernel.org>, Geliang Tang <geliang@kernel.org>,
+ Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>,
+ Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
+ Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>,
+ Yonghong Song <yonghong.song@linux.dev>, KP Singh <kpsingh@kernel.org>,
+ Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>,
+ Jiri Olsa <jolsa@kernel.org>, Shuah Khan <shuah@kernel.org>,
+ Florian Westphal <fw@strlen.de>, linux-kernel@vger.kernel.org,
+ netdev@vger.kernel.org, bpf@vger.kernel.org, linux-kselftest@vger.kernel.org
+References: <20251023125450.105859-1-jiayuan.chen@linux.dev>
+ <20251023125450.105859-3-jiayuan.chen@linux.dev>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20251023125450.105859-3-jiayuan.chen@linux.dev>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Oct 28, 2025 at 7:08=E2=80=AFAM Miaoqian Lin <linmq006@gmail.com> w=
-rote:
->
-> In thermal_of_cm_lookup(), of_parse_phandle() returns a device node with
-> its reference count incremented. The caller is responsible for releasing
-> this reference when the node is no longer needed.
->
-> Add of_node_put(tr_np) to fix the reference leaks.
->
-> Found via static analysis.
->
-> Fixes: 3fd6d6e2b4e8 ("thermal/of: Rework the thermal device tree initiali=
-zation")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
-> ---
->  drivers/thermal/thermal_of.c | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/thermal/thermal_of.c b/drivers/thermal/thermal_of.c
-> index 1a51a4d240ff..2bb1b8e471cf 100644
-> --- a/drivers/thermal/thermal_of.c
-> +++ b/drivers/thermal/thermal_of.c
-> @@ -284,8 +284,11 @@ static bool thermal_of_cm_lookup(struct device_node =
-*cm_np,
->                 int count, i;
->
->                 tr_np =3D of_parse_phandle(child, "trip", 0);
-> -               if (tr_np !=3D trip->priv)
-> +               if (tr_np !=3D trip->priv) {
-> +                       of_node_put(tr_np);
->                         continue;
-> +               }
-> +               of_node_put(tr_np);
+On 10/23/25 2:54 PM, Jiayuan Chen wrote:
+> MPTCP creates subflows for data transmission, and these sockets should not
+> be added to sockmap because MPTCP sets specialized data_ready handlers
+> that would be overridden by sockmap.
+> 
+> Additionally, for the parent socket of MPTCP subflows (plain TCP socket),
+> MPTCP sk requires specific protocol handling that conflicts with sockmap's
+> operation(mptcp_prot).
+> 
+> This patch adds proper checks to reject MPTCP subflows and their parent
+> sockets from being added to sockmap, while preserving compatibility with
+> reuseport functionality for listening MPTCP sockets.
 
-This will also work because tr_np is not dereferenced below:
+It's unclear to me why that is safe. sockmap is going to change the
+listener msk proto ops.
 
-                tr_np =3D of_parse_phandle(child, "trip", 0);
-                of_node_put(tr_np);
-                if (tr_np !=3D trip->priv)
-                                continue;
+The listener could disconnect and create an egress connection, still
+using the wrong ops.
 
-but a more general question is whether or not device nodes used for
-populating thermal zone trip points can be let go.
+I think sockmap should always be prevented for mptcp socket, or at least
+a solid explanation of why such exception is safe should be included in
+the commit message.
 
-If not, then this change needs to be combined with another one that
-will prevent them from going away.
+Note that the first option allows for solving the issue entirely in the
+mptcp code, setting dummy/noop psock_update_sk_prot for mptcp sockets
+and mptcp subflows.
 
-Presumably they need to be reference counted in
-thermal_of_populate_trip().  Daniel?
+/P
 
->
->                 /* The trip has been found, look up the cdev. */
->                 count =3D of_count_phandle_with_args(child, "cooling-devi=
-ce",
-> --
 
