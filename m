@@ -1,200 +1,303 @@
-Return-Path: <stable+bounces-191428-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191429-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C741C14443
-	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 12:07:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 12EB5C1447D
+	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 12:09:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 63A50565852
-	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 10:58:43 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 12C385816E0
+	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 11:00:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 157822FD696;
-	Tue, 28 Oct 2025 10:56:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81F413043C9;
+	Tue, 28 Oct 2025 10:58:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Xoh03vzA"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cJiK2gxQ"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42EB9304975;
-	Tue, 28 Oct 2025 10:56:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 993DC2F12CD;
+	Tue, 28 Oct 2025 10:58:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761648971; cv=none; b=dQIKEtNfT/Ow8ixCMVlnp20nufSdtfEfFGrEHWRFwiIoBuIRCpvRBF1wKCHToXw/t6L327pVO3ZTJvRH/vS1A8Yr7KX0NdEHpLEjDOBtZp5fT0yJmfVbOstEQBA6rxEz11pdoiV6pjHK2ovK/d/NTJz0mkZxFZfjvDHtio0Sn4E=
+	t=1761649130; cv=none; b=MeNIw8cnkLgsC6E/Xs+LOSpYYmbf1F4njxOozdOXEwLPaChugWqfB0k5gQmqc37IXONRBx3MACdiYUhSX+bo77RGXDjUOdh0F8c6RLO/A3O8EPlTYNFzv2KZ9QOEXg49Pu4HRmvPcY/zVS2s1uuLdgZ6+fwPUkcvCrke9GkZ9Vo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761648971; c=relaxed/simple;
-	bh=yvKNly4kNDHA/alqUn5lYahkVt1wQ08+EXTSQGii2ic=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y9hzOp9ZMMfGqYzVY0neekF7lCKyjSsZbSQjnbFNwCodFW0NOvIfBFELTKqieEOP1ZkbxLb7COwNLF3N/nKtqStRxXLvtqrLgz9+G3ioQXVqGK8fc6Xir4ugyqiujSVQgWF73CvU531+rLfZ+Z7lA0Le+WhugqujkMeVvLjgL5o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Xoh03vzA; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59RNBix4000657;
-	Tue, 28 Oct 2025 10:55:56 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=hiHeN2x4B81hmvIwx
-	hk14paD4xhooOSCeWVobZBBx9Y=; b=Xoh03vzAY7tZZZa30s9q9zDkAHeU2/GJE
-	QytVs88MCBWGbQQGxuFFL/Ww9dck+Tp0T3uDpYIsszRvHv3bTa8BZrM9oIG97XEY
-	IcN6PtzXFxq/woSCTzeut7hnjrCCh+SlplpG2w+r79KeigLmqfcqLQZmTR5zep5d
-	zeVD/5yZ7YGQgv3Ti85ew0ilAG2zNlQg0iF7hMmUYdfq2SbfEd1KIex4halZeH1b
-	hnEVZ/LzOm5pUzX0M/P/aPMOyhftwadeT9oGGmTyCu7dp0NxpT34e6ZftMmw92dQ
-	m+AyOkHpH+Ys6H65yBwhZfxyW657s5JgoNWuBn+5cG0C5RpimM6RA==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a0p293fas-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 28 Oct 2025 10:55:56 +0000 (GMT)
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 59SAt1qa026510;
-	Tue, 28 Oct 2025 10:55:56 GMT
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a0p293fap-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 28 Oct 2025 10:55:56 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59S9Dhan009428;
-	Tue, 28 Oct 2025 10:55:55 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4a1b3j23h2-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 28 Oct 2025 10:55:54 +0000
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 59SAtpYn61079834
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 28 Oct 2025 10:55:51 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2ED8A2004D;
-	Tue, 28 Oct 2025 10:55:51 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1C5882004B;
-	Tue, 28 Oct 2025 10:55:48 +0000 (GMT)
-Received: from li-80eaad4c-2afd-11b2-a85c-af8123d033e3.ibm.com (unknown [9.124.209.152])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 28 Oct 2025 10:55:47 +0000 (GMT)
-From: "Nysal Jan K.A." <nysal@linux.ibm.com>
-To: Sourabh Jain <sourabhjain@linux.ibm.com>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Srikar Dronamraju <srikar@linux.ibm.com>,
-        "Nysal Jan K.A." <nysal@linux.ibm.com>,
-        Sachin P Bappalige <sachinpb@linux.ibm.com>, stable@vger.kernel.org,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Laurent Dufour <ldufour@linux.ibm.com>,
-        Thomas Gleixner <tglx@linutronix.de>, linuxppc-dev@lists.ozlabs.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH v2] powerpc/kexec: Enable SMT before waking offline CPUs
-Date: Tue, 28 Oct 2025 16:25:12 +0530
-Message-ID: <20251028105516.26258-1-nysal@linux.ibm.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251025080512.85690-1-nysal@linux.ibm.com>
-References: <20251025080512.85690-1-nysal@linux.ibm.com>
+	s=arc-20240116; t=1761649130; c=relaxed/simple;
+	bh=1+LfSb/n50WnemCxgK/pY0gUzEOucYnjoX6hEkKWXeQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=qxpJkNCLc9WX23KurhYSX4As8Vfwy6UOAGGGH6gOIz2uE8Uv3jWUu44CRepZNq65VXf0lyVwFAgWgp9miumlT6PJc89XBaJ1Lr4MGd63LjXctwPVG3rlhxFgWH/Ob9xPyjNEq+bvRHgVHBe4jVyuUm76XfCMjWWbNyjICRPoFfs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cJiK2gxQ; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1761649128; x=1793185128;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=1+LfSb/n50WnemCxgK/pY0gUzEOucYnjoX6hEkKWXeQ=;
+  b=cJiK2gxQLwLerPWbc8kaMNKEPs1tWiuW+9ZgMH6WHcHLQOfU+Fn5i42z
+   FMaEDWCL5MQryre5w24xDawz3txjcCRYFPGrlvLjyI13Xu4F5E+o6Bfmy
+   5KD6M64smX+Kn2IbMZQ/PS40iRosOpqopNYzzFyB2eUzu2AqLG8HRwTCG
+   It6bwjoyYEVq2m7xyaM3Qahmwcf3ircCBZxbniS1ZINQt6I9Nb4uQZIUJ
+   yIz2VZpSga00XNmaznv/yCISwG4MoVj5XJ+oN2FnrL2P4FFoVDoBKthTF
+   1N/JVuTOiT5CZ1o86QOKLUatWqeB1zOnRtqzTywIqfA8LHBhcVVt7tncT
+   g==;
+X-CSE-ConnectionGUID: EA0uRo34RcuY6tov1xZzKw==
+X-CSE-MsgGUID: aaVYjDvNQGekGfR4a4cGuw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="89215633"
+X-IronPort-AV: E=Sophos;i="6.19,261,1754982000"; 
+   d="scan'208";a="89215633"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2025 03:58:48 -0700
+X-CSE-ConnectionGUID: yfGWJUx8T6OA11p5c/dOkQ==
+X-CSE-MsgGUID: L39BPGc6TIOiSe7ZAPMAPw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,261,1754982000"; 
+   d="scan'208";a="184549943"
+Received: from weis0040.iil.intel.com ([10.12.217.108])
+  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2025 03:58:47 -0700
+From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+To: linux-wireless@vger.kernel.org
+Cc: Benjamin Berg <benjamin.berg@intel.com>,
+	stable@vger.kernel.org,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH wireless v4 1/4] wifi: cfg80211: add an hrtimer based delayed work item
+Date: Tue, 28 Oct 2025 12:58:37 +0200
+Message-Id: <20251028125710.7f13a2adc5eb.I01b5af0363869864b0580d9c2a1770bafab69566@changeid>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20251028105840.3140483-1-miriam.rachel.korenblit@intel.com>
+References: <20251028105840.3140483-1-miriam.rachel.korenblit@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDI1MDAxOSBTYWx0ZWRfX3HlIKYqMJBCw
- GiGoZU+Qn6PVA60ZhQ/djUXs1yGbK1b8u0Jlj/DBebpNdojxsuoTGeIc0iP3SOlJv48ugyUmkIE
- XV2WbYe0kUzwGpECADfsKDUNPEFhoReXqqA9XV+jQOuycYqMuZF50rgxHZDltIGeR4brKcYHGb3
- E1XA7Psq9rqlJPe9zZa/Tf4rIUwLW69mAKR+zn7EWx1U1xF6czg2Ebh6c5kvOnUmgNWfvGOcuSa
- fBA+J6CD3SR5Zzyi9pBioj4zUpPbYkODyHRQ6uNHGO5rJzjYruyfzZ7/1ilbDTKPYmrx4Di82PG
- S91+LPBwY//omJhNrEg8G6tb35zuB0MoM2Z0Jhx7ZxA6UxCHOp39K1ckFp5k8ALulypLUZbSqrX
- yABUgjTpxX1GpwWlBkbsIs3Fm+c5WA==
-X-Proofpoint-GUID: E9-2bkI_G8UU2zgmOr-_y4VMStsIEBkv
-X-Authority-Analysis: v=2.4 cv=V8ZwEOni c=1 sm=1 tr=0 ts=6900a13c cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=VnNF1IyMAAAA:8 a=VwQbUJbxAAAA:8
- a=nGyChcL-Hsos-sZBGsMA:9 a=cPQSjfK2_nFv0Q5t_7PE:22
-X-Proofpoint-ORIG-GUID: vaZVXXfJ7prvJcR8iUk7Xt9Hqwqy8q_z
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-10-28_04,2025-10-22_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 phishscore=0 lowpriorityscore=0 malwarescore=0
- adultscore=0 bulkscore=0 spamscore=0 clxscore=1015 suspectscore=0
- impostorscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2510020000
- definitions=main-2510250019
 
-If SMT is disabled or a partial SMT state is enabled, when a new kernel
-image is loaded for kexec, on reboot the following warning is observed:
+From: Benjamin Berg <benjamin.berg@intel.com>
 
-kexec: Waking offline cpu 228.
-WARNING: CPU: 0 PID: 9062 at arch/powerpc/kexec/core_64.c:223 kexec_prepare_cpus+0x1b0/0x1bc
-[snip]
- NIP kexec_prepare_cpus+0x1b0/0x1bc
- LR  kexec_prepare_cpus+0x1a0/0x1bc
- Call Trace:
-  kexec_prepare_cpus+0x1a0/0x1bc (unreliable)
-  default_machine_kexec+0x160/0x19c
-  machine_kexec+0x80/0x88
-  kernel_kexec+0xd0/0x118
-  __do_sys_reboot+0x210/0x2c4
-  system_call_exception+0x124/0x320
-  system_call_vectored_common+0x15c/0x2ec
+The normal timer mechanism assume that timeout further in the future
+need a lower accuracy. As an example, the granularity for a timer
+scheduled 4096 ms in the future on a 1000 Hz system is already 512 ms.
+This granularity is perfectly sufficient for e.g. timeouts, but there
+are other types of events that will happen at a future point in time and
+require a higher accuracy.
 
-This occurs as add_cpu() fails due to cpu_bootable() returning false for
-CPUs that fail the cpu_smt_thread_allowed() check or non primary
-threads if SMT is disabled.
+Add a new wiphy_hrtimer_work type that uses an hrtimer internally. The
+API is almost identical to the existing wiphy_delayed_work and it can be
+used as a drop-in replacement after minor adjustments. The work will be
+scheduled relative to the current time with a slack of 1 millisecond.
 
-Fix the issue by enabling SMT and resetting the number of SMT threads to
-the number of threads per core, before attempting to wake up all present
-CPUs.
-
-Fixes: 38253464bc82 ("cpu/SMT: Create topology_smt_thread_allowed()")
-Reported-by: Sachin P Bappalige <sachinpb@linux.ibm.com>
-Cc: stable@vger.kernel.org # v6.6+
-Reviewed-by: Srikar Dronamraju <srikar@linux.ibm.com>
-Signed-off-by: Nysal Jan K.A. <nysal@linux.ibm.com>
+CC: stable@vger.kernel.org # 6.4+
+Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
+Reviewed-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- arch/powerpc/kexec/core_64.c | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ include/net/cfg80211.h | 78 ++++++++++++++++++++++++++++++++++++++++++
+ net/wireless/core.c    | 56 ++++++++++++++++++++++++++++++
+ net/wireless/trace.h   | 21 ++++++++++++
+ 3 files changed, 155 insertions(+)
 
-diff --git a/arch/powerpc/kexec/core_64.c b/arch/powerpc/kexec/core_64.c
-index 222aa326dace..825ab8a88f18 100644
---- a/arch/powerpc/kexec/core_64.c
-+++ b/arch/powerpc/kexec/core_64.c
-@@ -202,6 +202,23 @@ static void kexec_prepare_cpus_wait(int wait_state)
- 	mb();
- }
+diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
+index 781624f5913a..820e299f06b5 100644
+--- a/include/net/cfg80211.h
++++ b/include/net/cfg80211.h
+@@ -6435,6 +6435,11 @@ static inline void wiphy_delayed_work_init(struct wiphy_delayed_work *dwork,
+  * after wiphy_lock() was called. Therefore, wiphy_cancel_work() can
+  * use just cancel_work() instead of cancel_work_sync(), it requires
+  * being in a section protected by wiphy_lock().
++ *
++ * Note that these are scheduled with a timer where the accuracy
++ * becomes less the longer in the future the scheduled timer is. Use
++ * wiphy_hrtimer_work_queue() if the timer must be not be late by more
++ * than approximately 10 percent.
+  */
+ void wiphy_delayed_work_queue(struct wiphy *wiphy,
+ 			      struct wiphy_delayed_work *dwork,
+@@ -6506,6 +6511,79 @@ void wiphy_delayed_work_flush(struct wiphy *wiphy,
+ bool wiphy_delayed_work_pending(struct wiphy *wiphy,
+ 				struct wiphy_delayed_work *dwork);
  
++struct wiphy_hrtimer_work {
++	struct wiphy_work work;
++	struct wiphy *wiphy;
++	struct hrtimer timer;
++};
 +
-+/*
-+ * The add_cpu() call in wake_offline_cpus() can fail as cpu_bootable()
-+ * returns false for CPUs that fail the cpu_smt_thread_allowed() check
-+ * or non primary threads if SMT is disabled. Re-enable SMT and set the
-+ * number of SMT threads to threads per core.
-+ */
-+static void kexec_smt_reenable(void)
++enum hrtimer_restart wiphy_hrtimer_work_timer(struct hrtimer *t);
++
++static inline void wiphy_hrtimer_work_init(struct wiphy_hrtimer_work *hrwork,
++					   wiphy_work_func_t func)
 +{
-+#if defined(CONFIG_SMP) && defined(CONFIG_HOTPLUG_SMT)
-+	lock_device_hotplug();
-+	cpu_smt_num_threads = threads_per_core;
-+	cpu_smt_control = CPU_SMT_ENABLED;
-+	unlock_device_hotplug();
-+#endif
++	hrtimer_setup(&hrwork->timer, wiphy_hrtimer_work_timer,
++		      CLOCK_BOOTTIME, HRTIMER_MODE_REL);
++	wiphy_work_init(&hrwork->work, func);
 +}
 +
- /*
-  * We need to make sure each present CPU is online.  The next kernel will scan
-  * the device tree and assume primary threads are online and query secondary
-@@ -216,6 +233,8 @@ static void wake_offline_cpus(void)
- {
- 	int cpu = 0;
- 
-+	kexec_smt_reenable();
++/**
++ * wiphy_hrtimer_work_queue - queue hrtimer work for the wiphy
++ * @wiphy: the wiphy to queue for
++ * @hrwork: the high resolution timer worker
++ * @delay: the delay given as a ktime_t
++ *
++ * Please refer to wiphy_delayed_work_queue(). The difference is that
++ * the hrtimer work uses a high resolution timer for scheduling. This
++ * may be needed if timeouts might be scheduled further in the future
++ * and the accuracy of the normal timer is not sufficient.
++ *
++ * Expect a delay of a few milliseconds as the timer is scheduled
++ * with some slack and some more time may pass between queueing the
++ * work and its start.
++ */
++void wiphy_hrtimer_work_queue(struct wiphy *wiphy,
++			      struct wiphy_hrtimer_work *hrwork,
++			      ktime_t delay);
 +
- 	for_each_present_cpu(cpu) {
- 		if (!cpu_online(cpu)) {
- 			printk(KERN_INFO "kexec: Waking offline cpu %d.\n",
++/**
++ * wiphy_hrtimer_work_cancel - cancel previously queued hrtimer work
++ * @wiphy: the wiphy, for debug purposes
++ * @hrtimer: the hrtimer work to cancel
++ *
++ * Cancel the work *without* waiting for it, this assumes being
++ * called under the wiphy mutex acquired by wiphy_lock().
++ */
++void wiphy_hrtimer_work_cancel(struct wiphy *wiphy,
++			       struct wiphy_hrtimer_work *hrtimer);
++
++/**
++ * wiphy_hrtimer_work_flush - flush previously queued hrtimer work
++ * @wiphy: the wiphy, for debug purposes
++ * @hrwork: the hrtimer work to flush
++ *
++ * Flush the work (i.e. run it if pending). This must be called
++ * under the wiphy mutex acquired by wiphy_lock().
++ */
++void wiphy_hrtimer_work_flush(struct wiphy *wiphy,
++			      struct wiphy_hrtimer_work *hrwork);
++
++/**
++ * wiphy_hrtimer_work_pending - Find out whether a wiphy hrtimer
++ * work item is currently pending.
++ *
++ * @wiphy: the wiphy, for debug purposes
++ * @hrwork: the hrtimer work in question
++ *
++ * Return: true if timer is pending, false otherwise
++ *
++ * Please refer to the wiphy_delayed_work_pending() documentation as
++ * this is the equivalent function for hrtimer based delayed work
++ * items.
++ */
++bool wiphy_hrtimer_work_pending(struct wiphy *wiphy,
++				struct wiphy_hrtimer_work *hrwork);
++
+ /**
+  * enum ieee80211_ap_reg_power - regulatory power for an Access Point
+  *
+diff --git a/net/wireless/core.c b/net/wireless/core.c
+index 797f9f2004a6..54a34d8d356e 100644
+--- a/net/wireless/core.c
++++ b/net/wireless/core.c
+@@ -1787,6 +1787,62 @@ bool wiphy_delayed_work_pending(struct wiphy *wiphy,
+ }
+ EXPORT_SYMBOL_GPL(wiphy_delayed_work_pending);
+ 
++enum hrtimer_restart wiphy_hrtimer_work_timer(struct hrtimer *t)
++{
++	struct wiphy_hrtimer_work *hrwork =
++		container_of(t, struct wiphy_hrtimer_work, timer);
++
++	wiphy_work_queue(hrwork->wiphy, &hrwork->work);
++
++	return HRTIMER_NORESTART;
++}
++EXPORT_SYMBOL_GPL(wiphy_hrtimer_work_timer);
++
++void wiphy_hrtimer_work_queue(struct wiphy *wiphy,
++			      struct wiphy_hrtimer_work *hrwork,
++			      ktime_t delay)
++{
++	trace_wiphy_hrtimer_work_queue(wiphy, &hrwork->work, delay);
++
++	if (!delay) {
++		hrtimer_cancel(&hrwork->timer);
++		wiphy_work_queue(wiphy, &hrwork->work);
++		return;
++	}
++
++	hrwork->wiphy = wiphy;
++	hrtimer_start_range_ns(&hrwork->timer, delay,
++			       1000 * NSEC_PER_USEC, HRTIMER_MODE_REL);
++}
++EXPORT_SYMBOL_GPL(wiphy_hrtimer_work_queue);
++
++void wiphy_hrtimer_work_cancel(struct wiphy *wiphy,
++			       struct wiphy_hrtimer_work *hrwork)
++{
++	lockdep_assert_held(&wiphy->mtx);
++
++	hrtimer_cancel(&hrwork->timer);
++	wiphy_work_cancel(wiphy, &hrwork->work);
++}
++EXPORT_SYMBOL_GPL(wiphy_hrtimer_work_cancel);
++
++void wiphy_hrtimer_work_flush(struct wiphy *wiphy,
++			      struct wiphy_hrtimer_work *hrwork)
++{
++	lockdep_assert_held(&wiphy->mtx);
++
++	hrtimer_cancel(&hrwork->timer);
++	wiphy_work_flush(wiphy, &hrwork->work);
++}
++EXPORT_SYMBOL_GPL(wiphy_hrtimer_work_flush);
++
++bool wiphy_hrtimer_work_pending(struct wiphy *wiphy,
++				struct wiphy_hrtimer_work *hrwork)
++{
++	return hrtimer_is_queued(&hrwork->timer);
++}
++EXPORT_SYMBOL_GPL(wiphy_hrtimer_work_pending);
++
+ static int __init cfg80211_init(void)
+ {
+ 	int err;
+diff --git a/net/wireless/trace.h b/net/wireless/trace.h
+index 8a4c34112eb5..2b71f1d867a0 100644
+--- a/net/wireless/trace.h
++++ b/net/wireless/trace.h
+@@ -304,6 +304,27 @@ TRACE_EVENT(wiphy_delayed_work_queue,
+ 		  __entry->delay)
+ );
+ 
++TRACE_EVENT(wiphy_hrtimer_work_queue,
++	TP_PROTO(struct wiphy *wiphy, struct wiphy_work *work,
++		 ktime_t delay),
++	TP_ARGS(wiphy, work, delay),
++	TP_STRUCT__entry(
++		WIPHY_ENTRY
++		__field(void *, instance)
++		__field(void *, func)
++		__field(ktime_t, delay)
++	),
++	TP_fast_assign(
++		WIPHY_ASSIGN;
++		__entry->instance = work;
++		__entry->func = work->func;
++		__entry->delay = delay;
++	),
++	TP_printk(WIPHY_PR_FMT " instance=%p func=%pS delay=%llu",
++		  WIPHY_PR_ARG, __entry->instance, __entry->func,
++		  __entry->delay)
++);
++
+ TRACE_EVENT(wiphy_work_worker_start,
+ 	TP_PROTO(struct wiphy *wiphy),
+ 	TP_ARGS(wiphy),
 -- 
-2.47.3
+2.34.1
 
 
