@@ -1,82 +1,67 @@
-Return-Path: <stable+bounces-191388-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191389-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B46BC12DF6
-	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 05:44:34 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13D91C12E14
+	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 05:50:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 21E0B4E2C06
-	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 04:44:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3E8941A26146
+	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 04:50:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2984A27E1C5;
-	Tue, 28 Oct 2025 04:44:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67B37238C23;
+	Tue, 28 Oct 2025 04:50:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="c2iR0ytx"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="X1HAw4Xa"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from omta40.uswest2.a.cloudfilter.net (omta40.uswest2.a.cloudfilter.net [35.89.44.39])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5780226AA94;
-	Tue, 28 Oct 2025 04:44:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6E43236A70
+	for <stable@vger.kernel.org>; Tue, 28 Oct 2025 04:50:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.89.44.39
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761626668; cv=none; b=qpeh3prc+vs7M2OaBGCqc8TC+Pr2aW02TFAku8ljw9xz7eH58TFwihjgrGSmeR0bV+O/N+qPLssXxBB1Dya/yEx6LA4ObSe+VZtbVC9ztqOVJa/wARxoGwtbpPFHth4j2PI8KqnQuyDKE5szVFp0JiLyWdCRfFOgDmIRYpp9L8s=
+	t=1761627013; cv=none; b=PzhzU28gEptsEkKqUOgSYvvKO7qOCIo/Wbph4An0zGs/x5FTPBlZ+zsjlh0o3LqSz2pyYI89RzA0u3fkk7hl3vp+PuECmyV0svRXBuCJY+xwijqqqxXENPuuvISRTmNsqun5HJiEhWkesncCPGTYLlxhwrwfs4MFgXaTQbUaZF0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761626668; c=relaxed/simple;
-	bh=wUt+RBpcmAmXefvbcuipi7AJd6NJf/nLovPZjczZppQ=;
+	s=arc-20240116; t=1761627013; c=relaxed/simple;
+	bh=HczQKsoTq9bG91ZgMaU1ONGlCVa9s98TDf0X1YkuKFI=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jE/TlyBOPBQKOW2aq3kML9N9s7T2xKsjI6IJ1Eqac0FTPCvcMphI+6KEKlrSU88aH9OwtEussamqC3wUNtYFjYLwAKadjNjcKaOsCWXGsLMrvExuN+BEsd1tZVtqLot+x1IZZlFNkyoeuN+1SzrtYpWNrHUOWn3N39bnS8LHmts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=c2iR0ytx; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59RJ3aTD008697;
-	Tue, 28 Oct 2025 04:44:12 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=anze7E
-	q7+zdgnMdZzYJmUHn38ayPEjEKQqPB9NIDJls=; b=c2iR0ytxqFaF9TgaFLhQpe
-	f5HbwyKLHbqAagictMvVejSpCfA9ajleNWJrGbIOD+ETOp2rJg0HSgCW16hw+kSh
-	r2jehLsfkW7464qCdIf368HvoFcYUhHCpsyQUa/Ea+mlYjKeSzbqAG5mfevDWYMi
-	0g9jTFF/RmJ8HxVPkSwJRMCxJUa2RjTld8NA01qpOR9yhwLpqlqs/xE3U6ijE7im
-	lIY/VabjlsR87aEBT4rPYHEnZGtJk8SCIaC3aH1mSItfvsE8iLuid8978ghBUM/i
-	iTj1JZyFNT+Cmb0GBwkD2pLSClMHB5RkUEROuDo9BXUiApXbZOwqCAA0XItv7Y9A
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a0p99217h-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 28 Oct 2025 04:44:11 +0000 (GMT)
-Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 59S4fCfL009548;
-	Tue, 28 Oct 2025 04:44:11 GMT
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a0p99217f-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 28 Oct 2025 04:44:11 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59S3QLW4022923;
-	Tue, 28 Oct 2025 04:44:10 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4a198xh39t-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 28 Oct 2025 04:44:10 +0000
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 59S4i5Sa37159228
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 28 Oct 2025 04:44:06 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D8FF920043;
-	Tue, 28 Oct 2025 04:44:05 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D632520040;
-	Tue, 28 Oct 2025 04:44:02 +0000 (GMT)
-Received: from [9.109.204.116] (unknown [9.109.204.116])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 28 Oct 2025 04:44:02 +0000 (GMT)
-Message-ID: <f1544738-bc22-4b6c-b643-7e7076217395@linux.ibm.com>
-Date: Tue, 28 Oct 2025 10:14:01 +0530
+	 In-Reply-To:Content-Type; b=gum0dys+Yp9iZebrqNJCfOf63/8cSky0bYMFOIvUoW3+sZ/qG6aL5iunPsUcAikxPFQUm29jTWXNOIDYdSim9o8y9kxLNPsCDPPwf0/V2SV2F3kwqCCmZ5hDZE+79BprznXf5tOrzTdznqpC6hF8J8pV+lFg9l36+Oc/E6EKL3g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=X1HAw4Xa; arc=none smtp.client-ip=35.89.44.39
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
+Received: from eig-obgw-5004b.ext.cloudfilter.net ([10.0.29.208])
+	by cmsmtp with ESMTPS
+	id DS1Mvwa3oaPqLDbemvsnXT; Tue, 28 Oct 2025 04:50:04 +0000
+Received: from box5620.bluehost.com ([162.241.219.59])
+	by cmsmtp with ESMTPS
+	id Dbeivp929HwAIDbejvyNVq; Tue, 28 Oct 2025 04:50:01 +0000
+X-Authority-Analysis: v=2.4 cv=LbQ86ifi c=1 sm=1 tr=0 ts=69004b7c
+ a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
+ a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=7vwVE5O1G3EA:10 a=VwQbUJbxAAAA:8
+ a=LJ9ngj4a5Ur-kbwn2PoA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+ a=Wh1V8bzkS9CpCxOpQUxp:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
+	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=xGFJqws/sjdhw2gBoS/JsBvsWK0Eluys8JTz/11lTe4=; b=X1HAw4XaeTnhac8AWa4eQoKBcU
+	oYjr29lBFN5f2kOAskUOq7q8MWAqUftHyfF8mHJ7v3pDp9Vp8sf98tZ2AHhM6QHUobeET2EZ+ztPb
+	8rZPSt54K7bAz+d7S5svpFpLE8d19VD/A+EDp0uhyeH65Kp91FMI5+Bdcfx9r6ngginnGWcEwnvFh
+	3MDNoRIMF6xh7C3RePK7pKKz0+H396Uro6u9fUb7+htK4k5tKa/EAlYmIrxH/nAPsXFiZhmQ0fLAY
+	SjQtPuwZihY0xhjWBSNG/+xhvfc+MybFx2hj00Dl7ok638U2Elsuyn02ccQVUfwyn23RK7akhISoQ
+	XEWLrk8g==;
+Received: from c-73-92-56-26.hsd1.ca.comcast.net ([73.92.56.26]:53180 helo=[10.0.1.116])
+	by box5620.bluehost.com with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
+	(Exim 4.98.2)
+	(envelope-from <re@w6rz.net>)
+	id 1vDbei-00000003rHk-2MEQ;
+	Mon, 27 Oct 2025 22:50:00 -0600
+Message-ID: <d61b75c9-a6a1-452c-a2be-34959d354739@w6rz.net>
+Date: Mon, 27 Oct 2025 21:49:59 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -84,109 +69,93 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] powerpc/kexec: Enable SMT before waking offline CPUs
-To: "Nysal Jan K.A." <nysal@linux.ibm.com>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Sachin P Bappalige <sachinpb@linux.ibm.com>, stable@vger.kernel.org,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Laurent Dufour <ldufour@linux.ibm.com>,
-        Thomas Gleixner
- <tglx@linutronix.de>, linuxppc-dev@lists.ozlabs.org,
-        linux-kernel@vger.kernel.org
-References: <20251025080512.85690-1-nysal@linux.ibm.com>
+Subject: Re: [PATCH 5.15 000/123] 5.15.196-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+ achill@achill.org, sr@sladewatkins.com
+References: <20251027183446.381986645@linuxfoundation.org>
 Content-Language: en-US
-From: Sourabh Jain <sourabhjain@linux.ibm.com>
-In-Reply-To: <20251025080512.85690-1-nysal@linux.ibm.com>
+From: Ron Economos <re@w6rz.net>
+In-Reply-To: <20251027183446.381986645@linuxfoundation.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=JqL8bc4C c=1 sm=1 tr=0 ts=69004a1b cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VwQbUJbxAAAA:8 a=QyXUC8HyAAAA:8 a=VnNF1IyMAAAA:8 a=FNYM6xYWznnmATNcaFQA:9
- a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=cPQSjfK2_nFv0Q5t_7PE:22
-X-Proofpoint-GUID: FxmdnNuzaqm78WhLlnDMk9_nePRBgCOm
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDI1MDAxOSBTYWx0ZWRfX7QkWKQhFuOOO
- V9MA81mTt9sfU1UD8Rq3/20G1aeAxSbe8CFEPB7VnCN4pwya45IxorLcSrfBcX/F6suOnwW34CB
- Cn8L+SYmX9LxK5UTibbSis7CZckp43117R0xE1ZoGvcKAR26z2hgFrCxVqzDNkUDPwdVjnydw6F
- qJtIDFi5uh0mstIzJE2S80w7QpJ/nSfhGhz56vsYUOXVqyCGhYsfa+fhCe0+PUUj5Laj+HfKzak
- r7JBMdSnqeEcAuWlskJqzOpcPoS4z5X46mGRWD1vQVnPbWUJdjYwUiPaZU0UAV6tMyWZ/ScVEJF
- MYK+a9KsRBkULhLeZdBs7iit8B0uR6Ct4rQ7+JvafBgR5EkDr3KH9OPlUMa+qld4QCne36e25ZQ
- YvNeualAVKZNQLfjbKa7yFGgbnSQoA==
-X-Proofpoint-ORIG-GUID: lthnj5OCypztazoUVbkfPZXSBi221ky3
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-10-28_02,2025-10-22_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 clxscore=1011 lowpriorityscore=0 malwarescore=0 bulkscore=0
- priorityscore=1501 spamscore=0 adultscore=0 phishscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510250019
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - box5620.bluehost.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - w6rz.net
+X-BWhitelist: no
+X-Source-IP: 73.92.56.26
+X-Source-L: No
+X-Exim-ID: 1vDbei-00000003rHk-2MEQ
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: c-73-92-56-26.hsd1.ca.comcast.net ([10.0.1.116]) [73.92.56.26]:53180
+X-Source-Auth: re@w6rz.net
+X-Email-Count: 19
+X-Org: HG=bhshared;ORG=bluehost;
+X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfJjjsMJAI9LRjA9g+15AgLQ5BUyXRkzeL/+STs+iYSYq08gwpkeKiRVG1YYS5eOYBZVlsqPDaL8s5dqURcSlMX9nMgrymC4eQs8TP6WdLUrZF7lu1aXP
+ DK3bIU9njZfgya4FoS6sWII9/VKpDWf2aUB7i0y/invqXXmxolUA4q1hRG3aJvIllBbLGyb0Q80Bnw==
 
-Hello Nysal,
-
-On 25/10/25 13:35, Nysal Jan K.A. wrote:
-> If SMT is disabled or a partial SMT state is enabled, when a new kernel
-> image is loaded for kexec, on reboot the following warning is observed:
+On 10/27/25 11:34, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 5.15.196 release.
+> There are 123 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 >
-> kexec: Waking offline cpu 228.
-> WARNING: CPU: 0 PID: 9062 at arch/powerpc/kexec/core_64.c:223 kexec_prepare_cpus+0x1b0/0x1bc
-> [snip]
->   NIP kexec_prepare_cpus+0x1b0/0x1bc
->   LR  kexec_prepare_cpus+0x1a0/0x1bc
->   Call Trace:
->    kexec_prepare_cpus+0x1a0/0x1bc (unreliable)
->    default_machine_kexec+0x160/0x19c
->    machine_kexec+0x80/0x88
->    kernel_kexec+0xd0/0x118
->    __do_sys_reboot+0x210/0x2c4
->    system_call_exception+0x124/0x320
->    system_call_vectored_common+0x15c/0x2ec
+> Responses should be made by Wed, 29 Oct 2025 18:34:15 +0000.
+> Anything received after that time might be too late.
 >
-> This occurs as add_cpu() fails due to cpu_bootable() returning false for
-> CPUs that fail the cpu_smt_thread_allowed() check or non primary
-> threads if SMT is disabled.
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.196-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
+> and the diffstat can be found below.
 >
-> Fix the issue by enabling SMT and resetting the number of SMT threads to
-> the number of threads per core, before attempting to wake up all present
-> CPUs.
+> thanks,
 >
-> Fixes: 38253464bc82 ("cpu/SMT: Create topology_smt_thread_allowed()")
-> Reported-by: Sachin P Bappalige <sachinpb@linux.ibm.com>
-> Cc: stable@vger.kernel.org # v6.6+
-> Signed-off-by: Nysal Jan K.A. <nysal@linux.ibm.com>
-> ---
->   arch/powerpc/kexec/core_64.c | 5 +++++
->   1 file changed, 5 insertions(+)
->
-> diff --git a/arch/powerpc/kexec/core_64.c b/arch/powerpc/kexec/core_64.c
-> index 222aa326dace..ff6df43720c4 100644
-> --- a/arch/powerpc/kexec/core_64.c
-> +++ b/arch/powerpc/kexec/core_64.c
-> @@ -216,6 +216,11 @@ static void wake_offline_cpus(void)
->   {
->   	int cpu = 0;
->   
-> +	lock_device_hotplug();
-> +	cpu_smt_num_threads = threads_per_core;
-> +	cpu_smt_control = CPU_SMT_ENABLED;
+> greg k-h
 
+The RISC-V build fails with:
 
-Above variables are  #define if CONFIG_SMP and CONFIG_HOTPLUG_SMT is not 
-there.
+arch/riscv/kernel/cpu.c: In function 'riscv_of_processor_hartid':
+arch/riscv/kernel/cpu.c:24:33: error: implicit declaration of function 
+'of_get_cpu_hwid'; did you mean 'of_get_cpu_node'? 
+[-Werror=implicit-function-declaration]
+    24 |         *hart = (unsigned long) of_get_cpu_hwid(node, 0);
+       |                                 ^~~~~~~~~~~~~~~
+       |                                 of_get_cpu_node
+cc1: some warnings being treated as errors
 
-I think the above code should go under #if defined(CONFIG_SMP) && 
-defined(CONFIG_HOTPLUG_SMT).
+The function of_get_cpu_hwid() doesn't exist in Linux 5.15.x. It was 
+introduced in 5.16-rc1. The following patches should be reverted:
 
-Seems like the build failure reported below is also pointing the same issue:
-https://lore.kernel.org/all/202510280824.Fe2D1Sbw-lkp@intel.com/
+87b94f8227b3b654ea6e7670cefb32dab0e570ed RISC-V: Don't fail in 
+riscv_of_parent_hartid() for disabled HARTs
 
-> +	unlock_device_hotplug();
-> +
->   	for_each_present_cpu(cpu) {
->   		if (!cpu_online(cpu)) {
->   			printk(KERN_INFO "kexec: Waking offline cpu %d.\n",
+568d34c6aafa066bbdb5e7b6aed9c492d81964e8 RISC-V: Don't print details of 
+CPUs disabled in DT
+
+And the stable-dep-of patches for the above should also be reverted 
+since they cause warnings:
+
+989694ece94da2bbae6c6f3f044994302f923cc8 riscv: cpu: Add 64bit hartid 
+support on RV64
+
+8c2544fd913bb7b29ee3af79e0b302036689fe7a RISC-V: Minimal parser for 
+"riscv, isa" strings
+
+e0cc917db8fb7b4881ad3e8feb76cefa06f04fe6 RISC-V: Correctly print 
+supported extensions
+
+c616540d6b67830bb4345130e8fa3d8e217249a0 iscv: Use of_get_cpu_hwid()
 
 
