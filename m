@@ -1,157 +1,121 @@
-Return-Path: <stable+bounces-191535-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191536-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id A342EC168E9
-	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 20:02:44 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9B79C16925
+	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 20:10:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id EF3DD4ED6E9
-	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 19:02:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 87D131C2516B
+	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 19:10:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 125CA1DF261;
-	Tue, 28 Oct 2025 19:02:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 845C134E761;
+	Tue, 28 Oct 2025 19:10:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="spaiYdVM"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="cw8Fh5RN"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C153825A34F;
-	Tue, 28 Oct 2025 19:02:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D38FF18C31
+	for <stable@vger.kernel.org>; Tue, 28 Oct 2025 19:10:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761678140; cv=none; b=Z8cgPtpaGBNlbt27EXxRjpH3aONUpCqF/MTxIoHouv0Sl47QDejasaZYhr/F8+PPI5vT21b9uQxLSxhI/63GYUyD2Gy/B+iVqOP/E2dUVdotJtJIkU/Bfh9V7dEIfhoFJKTYxKULAlibusqx7A6m5SCyV6zsBdfvH1rP38e+9JY=
+	t=1761678626; cv=none; b=sGaXy2dJr3gJpYxgT5YlhcWsMksfzaaAsBFczPcYF+UINJIDfipSmeqY7t7vl0hWHMQ1Xk5YkFfsSgBIiCfjQEpkV8GG8CR2PU7eR2SnHR30RqdnmvtkZxUdl5ilqbUUGYSYYqVgNgQHQXf8ILFJvQnALo9+JaRmr7pSsBtvv2Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761678140; c=relaxed/simple;
-	bh=FphJo2SDn8RkNNoEowQmoek17vzitC3fE1fUYqVA91k=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=r59Eb4Uvu8TCZmL0XwDYZn1/Z9klEJSPqh2PugazwSNkPNttu75XmL8rSm+JqobV1mXk4BpN8lumEyHCWAP/p85ErAo+7rAiiPxPzcbHiagyY9LMS/sIHx/c/EJwhf4DBi1cm2RIEgxaVPeGVZdohTezWmecL/lXgdfZn1LSNIU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=spaiYdVM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EB35C4CEE7;
-	Tue, 28 Oct 2025 19:02:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761678140;
-	bh=FphJo2SDn8RkNNoEowQmoek17vzitC3fE1fUYqVA91k=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=spaiYdVM2oh+Rg2HGD4pv16liq4KvSXnsknDcLkGpJIzFAaTlNs5jDfxLZ/IepDvY
-	 62UimWM5lX8csDBaI77mWy6Ili7I1d6a85CvHCYgH2jbQVz307BqBPGfcvrLMw7SnG
-	 Zewk9g4GF1VWuwl0bjqY9H9jUfNSmgolqL+Gbxuzm08sMa6X6j2GTtnCZyMbn84fiM
-	 TCdgT72Uwz6FKvpot1gfnFfQPObge1LD0k1OkeAUt/H3fS4zYKMl+1XQzP6zYNXidO
-	 7LXPE3BF/xZsNZMK1K1EzUjZjEd5L7eo3RjgIMGZUecvDUQgvBe9TmINHFC5KGHn6t
-	 UMeALpMErElyQ==
-Date: Tue, 28 Oct 2025 14:02:18 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Niklas Cassel <cassel@kernel.org>
-Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Shawn Lin <shawn.lin@rock-chips.com>,
-	Kever Yang <kever.yang@rock-chips.com>,
-	Simon Xue <xxm@rock-chips.com>, Damien Le Moal <dlemoal@kernel.org>,
-	Dragan Simic <dsimic@manjaro.org>, FUKAUMI Naoki <naoki@radxa.com>,
-	Diederik de Haas <diederik@cknow-tech.com>, stable@vger.kernel.org,
-	Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
-	Daire McNamara <daire.mcnamara@microchip.com>,
-	Karthikeyan Mitran <m.karthikeyan@mobiveil.co.in>,
-	Hou Zhiqiang <Zhiqiang.Hou@nxp.com>, linux-pci@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-rockchip@lists.infradead.org
-Subject: Re: [PATCH v3] PCI: dw-rockchip: Prevent advertising L1 Substates
- support
-Message-ID: <20251028190218.GA1525614@bhelgaas>
+	s=arc-20240116; t=1761678626; c=relaxed/simple;
+	bh=nWfTqZP3/CNwFgkymho3UV1+afHy6tGym+OBmNeg1KM=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=hAhOZXMn+tzIYtkDA2waggkIO/7o+9Y7Zt8cE+nTRSfXWc8dbyn0EhwJv8hOk+bCXA1AgverTu6MZtqWk3dy7xNbAZvMPL2XC1d40pKoD/ikyNfsHQ7VhB+XrsC6UjSZFfNjLCn8mtxcDyhPNmWcyDj6gZRFJEDU2dWG0go94lc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--isaacmanjarres.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=cw8Fh5RN; arc=none smtp.client-ip=209.85.214.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--isaacmanjarres.bounces.google.com
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-290cd61855eso54362145ad.1
+        for <stable@vger.kernel.org>; Tue, 28 Oct 2025 12:10:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1761678624; x=1762283424; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=dKmYj9Yio/TKjjo3MdLkJeEKLETaJdriEr5g0xrMLzs=;
+        b=cw8Fh5RNyJ2V9dHJuSHA/dMuUw7RSq8/IBlshQvixyuhA9QDX1J1ga30yg9E3jvFW3
+         z+Gx2wL9ljxz60/eM1Csk1Kh8HuCenrvLjVm6wM03S0RtCkMJCzNMZShiWmTw6LSBFSd
+         3/iybyfR0C5gIQS8/D6dUPyEsNCW8Ntkj9/qbDaNGXH3T2lX30x/MfcJj/r38A4gKJCb
+         0Rd4Ym43c/vHfJqZEb+cx5pDZ730vm9w09YPQHDz2aIlqfRv/sOLx++3ngA5Id2gCVJj
+         55fCeS29vZG9JKZ3AVxJ867RTYLfZcg2wxWeQKdk3Bdml3tAfeAHhH+ABdIgmxkBRFhQ
+         wEiQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761678624; x=1762283424;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=dKmYj9Yio/TKjjo3MdLkJeEKLETaJdriEr5g0xrMLzs=;
+        b=KclLrf+7TwP1pzDlZ+si6YSTZEmd41teum9h0Y/gKdu5V03VFUzPG2pPab5SPlGA0u
+         BiKT2i0i0kISdXPFhKPzm3Id7H0BKFFMba/XfXxw1/9wPj4AAX/mbNashA3pRC3s8iey
+         ZbU6z5WfI/9kg3aBj3RL50Guuzm2FkNFiQGYck1W+L++kw9P/q8KmHkU2X8mt5p5+vmv
+         AgePjrh4zstx4qpYa4VnEyE7kBzwViWmgo3BmWjeKcafYIJpxRL+O8GJLJOkHa8H2zl8
+         J7vrecQiAOPkFZ6/rA9WqM7l52CiqTB9VyLjr4soxadaJAbhDXtcmxwy3bxvaXOp9U2H
+         NadQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW1QFodEW2d9/WqCfqU7uTQld3oBztqiEzwQsXcnNq2UyeI7TVqPhC2Qa7sJC8wBcXzkUoFrG0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyxfuCxnJkzyRxKQTw+M5GhwuAaKqV67GkgiBqUMVC6dZwgRs4H
+	Vz+7WtJj04dqflc3VA9QGTfsvChAJRPYU+m1/eV3TAu9PN+SuHIb2w7vK9bM7hqkhj0SdkNTKd+
+	e5tZ1roiWketNq5FDSJVIV4W3AbbYHZCUpIEHOA==
+X-Google-Smtp-Source: AGHT+IHoA+/xXI9fzl3kptYGRMT9ubFjslD2sGL9QPl4+LylxBFMy1zqCRVgSQOB8Ay6n1ipp3kyRxf8KTocGr4A1yANqw==
+X-Received: from plrt21.prod.google.com ([2002:a17:902:b215:b0:290:28e2:ce57])
+ (user=isaacmanjarres job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:903:2406:b0:28e:8c3a:fb02 with SMTP id d9443c01a7336-294dee12958mr3501255ad.14.1761678624199;
+ Tue, 28 Oct 2025 12:10:24 -0700 (PDT)
+Date: Tue, 28 Oct 2025 12:10:12 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251017163252.598812-2-cassel@kernel.org>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.51.1.851.g4ebd6896fd-goog
+Message-ID: <20251028191020.413002-1-isaacmanjarres@google.com>
+Subject: [PATCH v1] mm/mm_init: Fix hash table order logging in alloc_large_system_hash()
+From: "Isaac J. Manjarres" <isaacmanjarres@google.com>
+To: Mike Rapoport <rppt@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
+Cc: "Isaac J. Manjarres" <isaacmanjarres@google.com>, stable@vger.kernel.org, 
+	kernel-team@android.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-[+cc Daire, Karthikeyan, Hou]
+When emitting the order of the allocation for a hash table,
+alloc_large_system_hash() unconditionally subtracts PAGE_SHIFT from
+log base 2 of the allocation size. This is not correct if the
+allocation size is smaller than a page, and yields a negative value
+for the order as seen below:
 
-On Fri, Oct 17, 2025 at 06:32:53PM +0200, Niklas Cassel wrote:
-> The L1 substates support requires additional steps to work, namely:
-> -Proper handling of the CLKREQ# sideband signal. (It is mostly handled by
->  hardware, but software still needs to set the clkreq fields in the
->  PCIE_CLIENT_POWER_CON register to match the hardware implementation.)
-> -Program the frequency of the aux clock into the
->  DSP_PCIE_PL_AUX_CLK_FREQ_OFF register. (During L1 substates the core_clk
->  is turned off and the aux_clk is used instead.)
-> 
-> These steps are currently missing from the driver.
-> 
-> For more details, see section '18.6.6.4 L1 Substate' in the RK3658 TRM 1.1
-> Part 2, or section '11.6.6.4 L1 Substate' in the RK3588 TRM 1.0 Part2.
-> 
-> While this has always been a problem when using e.g.
-> CONFIG_PCIEASPM_POWER_SUPERSAVE=y, or when modifying
-> /sys/bus/pci/devices/.../link/l1_2_aspm, the lacking driver support for L1
-> substates became more apparent after commit f3ac2ff14834 ("PCI/ASPM:
-> Enable all ClockPM and ASPM states for devicetree platforms"), which
-> enabled ASPM also for CONFIG_PCIEASPM_DEFAULT=y.
-> 
-> When using e.g. an NVMe drive connected to the PCIe controller, the
-> problem will be seen as:
-> nvme nvme0: controller is down; will reset: CSTS=0xffffffff, PCI_STATUS=0x10
-> nvme nvme0: Does your device have a faulty power saving mode enabled?
-> nvme nvme0: Try "nvme_core.default_ps_max_latency_us=0 pcie_aspm=off pcie_port_pm=off" and report a bug
-> 
-> Thus, prevent advertising L1 Substates support until proper driver support
-> is added.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 0e898eb8df4e ("PCI: rockchip-dwc: Add Rockchip RK356X host controller driver")
-> Fixes: f3ac2ff14834 ("PCI/ASPM: Enable all ClockPM and ASPM states for devicetree platforms")
-> Acked-by: Shawn Lin <shawn.lin@rock-chips.com>
-> Signed-off-by: Niklas Cassel <cassel@kernel.org>
-> ---
-> Changes since v2:
-> -Improve commit message (Bjorn)
-> 
->  drivers/pci/controller/dwc/pcie-dw-rockchip.c | 21 +++++++++++++++++++
->  1 file changed, 21 insertions(+)
-> 
-> diff --git a/drivers/pci/controller/dwc/pcie-dw-rockchip.c b/drivers/pci/controller/dwc/pcie-dw-rockchip.c
-> index 3e2752c7dd09..84f882abbca5 100644
-> --- a/drivers/pci/controller/dwc/pcie-dw-rockchip.c
-> +++ b/drivers/pci/controller/dwc/pcie-dw-rockchip.c
-> @@ -200,6 +200,25 @@ static bool rockchip_pcie_link_up(struct dw_pcie *pci)
->  	return FIELD_GET(PCIE_LINKUP_MASK, val) == PCIE_LINKUP;
->  }
->  
-> +/*
-> + * See e.g. section '11.6.6.4 L1 Substate' in the RK3588 TRM V1.0 for the steps
-> + * needed to support L1 substates. Currently, not a single rockchip platform
-> + * performs these steps, so disable L1 substates until there is proper support.
-> + */
-> +static void rockchip_pcie_disable_l1sub(struct dw_pcie *pci)
-> +{
-> +	u32 cap, l1subcap;
-> +
-> +	cap = dw_pcie_find_ext_capability(pci, PCI_EXT_CAP_ID_L1SS);
-> +	if (cap) {
-> +		l1subcap = dw_pcie_readl_dbi(pci, cap + PCI_L1SS_CAP);
-> +		l1subcap &= ~(PCI_L1SS_CAP_L1_PM_SS | PCI_L1SS_CAP_ASPM_L1_1 |
-> +			      PCI_L1SS_CAP_ASPM_L1_2 | PCI_L1SS_CAP_PCIPM_L1_1 |
-> +			      PCI_L1SS_CAP_PCIPM_L1_2);
-> +		dw_pcie_writel_dbi(pci, cap + PCI_L1SS_CAP, l1subcap);
-> +	}
-> +}
+TCP established hash table entries: 32 (order: -4, 256 bytes, linear)
+TCP bind hash table entries: 32 (order: -2, 1024 bytes, linear)
 
-I like this.  But why should we do it just for dw-rockchip?  Is there
-something special about dw-rockchip that makes this a problem?  Maybe
-we should consider doing this in the dwc, cadence, mobiveil, and plda
-cores instead of trying to do it for every driver individually?
+Use get_order() to compute the order when emitting the hash table
+information to correctly handle cases where the allocation size is
+smaller than a page:
 
-Advertising L1SS support via PCI_EXT_CAP_ID_L1SS means users can
-enable L1SS via CONFIG_PCIEASPM_POWER_SUPERSAVE=y or sysfs, and that
-seems likely to cause problems unless CLKREQ# is supported.
+TCP established hash table entries: 32 (order: 0, 256 bytes, linear)
+TCP bind hash table entries: 32 (order: 0, 1024 bytes, linear)
 
-Bjorn
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@vger.kernel.org # v5.4+
+Signed-off-by: Isaac J. Manjarres <isaacmanjarres@google.com>
+---
+ mm/mm_init.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/mm/mm_init.c b/mm/mm_init.c
+index 3db2dea7db4c..7712d887b696 100644
+--- a/mm/mm_init.c
++++ b/mm/mm_init.c
+@@ -2469,7 +2469,7 @@ void *__init alloc_large_system_hash(const char *tablename,
+ 		panic("Failed to allocate %s hash table\n", tablename);
+ 
+ 	pr_info("%s hash table entries: %ld (order: %d, %lu bytes, %s)\n",
+-		tablename, 1UL << log2qty, ilog2(size) - PAGE_SHIFT, size,
++		tablename, 1UL << log2qty, get_order(size), size,
+ 		virt ? (huge ? "vmalloc hugepage" : "vmalloc") : "linear");
+ 
+ 	if (_hash_shift)
+-- 
+2.51.1.851.g4ebd6896fd-goog
+
 
