@@ -1,128 +1,113 @@
-Return-Path: <stable+bounces-191504-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191505-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6EBDC157ED
-	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 16:36:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3641EC15934
+	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 16:47:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 32B593B873A
-	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 15:31:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8715D567E05
+	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 15:39:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5209634027C;
-	Tue, 28 Oct 2025 15:31:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7553832E125;
+	Tue, 28 Oct 2025 15:39:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b="TCA4OOXG"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HJ+K8PfR"
 X-Original-To: stable@vger.kernel.org
-Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21190C133;
-	Tue, 28 Oct 2025 15:31:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.69.126.157
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CD7333DEFF;
+	Tue, 28 Oct 2025 15:39:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761665481; cv=none; b=UUJ9Bt4b6uZ/xqsloTdvfjfeapwsm+NgRLTXLv/kVBB7c8g2auIM9EPNUYlYN41MOA9VjKc8ZzcFspkMkM+lh0X6nq8MEqr3bukUDgg3UvbVl8oDNxfydyG/arCXRM8RrZXpGM/3pIkUUTItOCQ/lzFKf/OuYkQlQPlh9yXb3BE=
+	t=1761665943; cv=none; b=XwMS1MGhygs5LpHFjA155l0XeSvkFlRR3fSOvVKXCywtlei0p93iArPNWnomzuERF27ss8U1+iMmyULWR3IrI5DK89r3doyrGkCTe63ATVH9PqzxZrH4oWQ275Htct+0Gw0k9WxJhyQTl6D6eRKKffyFeiqJdCRZ5olxu+g9x0o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761665481; c=relaxed/simple;
-	bh=zX259koY1ErDXF7Q9x9tWaw7jkiH1R91w6zU9d+geSU=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=kDGfmScCfQS3HjNkSNHN90kX7hpAY6vrRvzQ/Y/PEN2tYJZr/umTURleg2GCpOTW1DocAp7+sORGJWuWbdU1/gf51s95OiPXgH9MHROvWAkGybbXD9hnQaUYzOFIAH2jxrD3Dt121wyl22wxi//TbgQgB1EB0t0L0yY6SBtqJ38=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net; spf=pass smtp.mailfrom=weissschuh.net; dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b=TCA4OOXG; arc=none smtp.client-ip=159.69.126.157
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=weissschuh.net
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
-	s=mail; t=1761665469;
-	bh=zX259koY1ErDXF7Q9x9tWaw7jkiH1R91w6zU9d+geSU=;
-	h=From:Date:Subject:To:Cc:From;
-	b=TCA4OOXG9+UCc7CZiOkQFM/GW2kS+WqshLkFSOfdh1CxfyXxDbJSftqs9jKgzNZoe
-	 TmtQq1VJ4Uku4w05BjiZMp+VddrZfcwCe1cb5+Di0utgFnCs1cwuTokvrAjwnZZFiG
-	 EAcUg1uryw/YeAHk0LcW/qUUQFj4DSa4t6wX3CFk=
-From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
-Date: Tue, 28 Oct 2025 16:31:03 +0100
-Subject: [PATCH] leds: leds-cros_ec: Skip LEDs without color components
+	s=arc-20240116; t=1761665943; c=relaxed/simple;
+	bh=uNq4/grTUoOn7xuEYoyJcMwb3W0Znfn1AyShE67IVy4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BN5m6IMDyixsXFiXRB/BvK2rGS7NrG64RBUW5Mui/ElX8QsAqrJPEYp53K6R8H0B6mMaiPC47KuE5JPtRhkmWfBAVhguQAXciFB5rpmIlP/Tvq8WzWv4PrrT/sWgdknUyGJTd9u0fyL3/CrYDLVK/hZ1cOROlyA7HgbtOZVK1vo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HJ+K8PfR; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1761665941; x=1793201941;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=uNq4/grTUoOn7xuEYoyJcMwb3W0Znfn1AyShE67IVy4=;
+  b=HJ+K8PfR3QTMlZxBiUqG+2uUhlaSNJ122RnGI+88cR2NPmGaHVIV9RZd
+   2A6Md3wPseUBdYOSsVrpqs2eXsMCF+Zi8EJulGCF8bYwsAxR5UgEqYUB0
+   y3uQnJ5/JR6kEbOdYjzg9aOX25nNzGIZW9z83WpxY5P5QHgAXQKTpAEMM
+   y9Zf22YSUkeVhjP7AnszryCNhbAahZjAIqj43kXY+R/EHDMv5DHc8HcBu
+   fXgv0x2UUvPRHY5jRSM9xcp7OAZKoFxLAtUI0Gqy3SogAeV2HHVzfdwYK
+   8wzLwHh+QXJfLaSwPJ5YoBBmpEgqTjZX+lffUeDIEts0BdNCPQ6mE9B3o
+   Q==;
+X-CSE-ConnectionGUID: qlomovmLTnGVdTLDpqHa9Q==
+X-CSE-MsgGUID: TByw1hyzQlqCx3NzwljftA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="66385655"
+X-IronPort-AV: E=Sophos;i="6.19,261,1754982000"; 
+   d="scan'208";a="66385655"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2025 08:39:00 -0700
+X-CSE-ConnectionGUID: tb7h1PexQ6mCT9VPFQnUIg==
+X-CSE-MsgGUID: bbGztI/0S5GHYGh3e0mPEg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,261,1754982000"; 
+   d="scan'208";a="186128533"
+Received: from jkrzyszt-mobl2.ger.corp.intel.com (HELO mdjait-mobl) ([10.245.244.190])
+  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2025 08:38:59 -0700
+Date: Tue, 28 Oct 2025 16:38:52 +0100
+From: Mehdi Djait <mehdi.djait@linux.intel.com>
+To: Hans de Goede <hansg@kernel.org>
+Cc: Bingbu Cao <bingbu.cao@intel.com>, 
+	Sakari Ailus <sakari.ailus@linux.intel.com>, linux-media@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH 06/25] media: i2c: ov01a10: Fix test-pattern disabling
+Message-ID: <jgzovuqvd5csxwzmzf5asri7xvftoyb4lqyywtfdsrsgdvwz7i@neqszepmzw3m>
+References: <20251014174033.20534-1-hansg@kernel.org>
+ <20251014174033.20534-7-hansg@kernel.org>
+ <rywqbh2ku7aexskohujwsiv7yzgn7lipgdqol3rqtkcvqrmn3q@c6oe7wc45hti>
+ <8718bd8e-12b0-4c4e-9155-7e394f0d5a16@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20251028-cros_ec-leds-no-colors-v1-1-ebe13a02022a@weissschuh.net>
-X-B4-Tracking: v=1; b=H4sIALbhAGkC/x3MQQqDMBBG4avIrB0wASH1KlKKJr/tgGTKDBRBv
- Luhy2/x3kkOEzhN3UmGn7hobQh9R/mz1DdYSjPFIY5hiImzqb+QeUdxrspZdzXnkLCmErAtj0g
- t/ho2Of7j+XldN8MzoG1oAAAA
-X-Change-ID: 20251028-cros_ec-leds-no-colors-18eb8d1efa92
-To: Lee Jones <lee@kernel.org>, Pavel Machek <pavel@kernel.org>, 
- Benson Leung <bleung@chromium.org>, Guenter Roeck <groeck@chromium.org>
-Cc: linux-leds@vger.kernel.org, chrome-platform@lists.linux.dev, 
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
- =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1761665467; l=1805;
- i=linux@weissschuh.net; s=20221212; h=from:subject:message-id;
- bh=zX259koY1ErDXF7Q9x9tWaw7jkiH1R91w6zU9d+geSU=;
- b=UjRulbLbK2+GN0xY/1dSSmLc4Xadqk2KEj5cukNLVODnGzdH5+07GuEURF3jX3ChBOKQdGMrI
- xcwvkUNJ4aiB37QDMehwdzZQo2I2NYRAAFwdkgcbDS0vnJkWPwrgOf6
-X-Developer-Key: i=linux@weissschuh.net; a=ed25519;
- pk=KcycQgFPX2wGR5azS7RhpBqedglOZVgRPfdFSPB1LNw=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <8718bd8e-12b0-4c4e-9155-7e394f0d5a16@kernel.org>
 
-A user reports that on their Lenovo Corsola Magneton with EC firmware
-steelix-15194.270.0 the driver probe fails with EINVAL. It turns out
-that the power LED does not contain any color components as indicated
-by the following "ectool led power query" output:
+Hi Hans,
 
-Brightness range for LED 1:
-        red     : 0x0
-        green   : 0x0
-        blue    : 0x0
-        yellow  : 0x0
-        white   : 0x0
-        amber   : 0x0
+On Tue, Oct 28, 2025 at 03:38:28PM +0100, Hans de Goede wrote:
+> Hi Mehdi,
+> 
+> Thank you for all the reviews and testing.
+> 
+> On 28-Oct-25 1:08 PM, Mehdi Djait wrote:
+> > Hi Hans,
+> > 
+> > Thank you for the patches!
+> > 
+> > On Tue, Oct 14, 2025 at 07:40:14PM +0200, Hans de Goede wrote:
+> >> When the test-pattern control gets set to 0 (Disabled) 0 should be written
+> >> to the test-pattern register, rather then doing nothing.
+> >>
+> > 
+> > A small question: Do you see any difference between test_pattern 1 and
+> > test_pattern 2 or I did not look hard enough at the screen ?
+> 
+> IIRC the one has the colors fading (a bit) from left to right and
+> the other from top to bottom ?
 
-The LED also does not react to commands sent manually through ectool and
-is generally non-functional.
+I see:
+1 and 2 are the same ?!
+3 fading from left -> right
+4 fading from top  ->  bottom
 
-Instead of failing the probe for all LEDs managed by the EC when one
-without color components is encountered, silently skip those.
-
-Fixes: 8d6ce6f3ec9d ("leds: Add ChromeOS EC driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
----
- drivers/leds/leds-cros_ec.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/leds/leds-cros_ec.c b/drivers/leds/leds-cros_ec.c
-index 377cf04e202a..bea3cc3fbfd2 100644
---- a/drivers/leds/leds-cros_ec.c
-+++ b/drivers/leds/leds-cros_ec.c
-@@ -142,9 +142,6 @@ static int cros_ec_led_count_subleds(struct device *dev,
- 		}
- 	}
- 
--	if (!num_subleds)
--		return -EINVAL;
--
- 	*max_brightness = common_range;
- 	return num_subleds;
- }
-@@ -189,6 +186,8 @@ static int cros_ec_led_probe_one(struct device *dev, struct cros_ec_device *cros
- 						&priv->led_mc_cdev.led_cdev.max_brightness);
- 	if (num_subleds < 0)
- 		return num_subleds;
-+	if (num_subleds == 0)
-+		return 0; /* LED without any colors, skip */
- 
- 	priv->cros_ec = cros_ec;
- 	priv->led_id = id;
-
----
-base-commit: 3a8660878839faadb4f1a6dd72c3179c1df56787
-change-id: 20251028-cros_ec-leds-no-colors-18eb8d1efa92
-
-Best regards,
--- 
-Thomas Weißschuh <linux@weissschuh.net>
-
+--
+Kind Regards
+Mehdi Djait
 
