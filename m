@@ -1,40 +1,67 @@
-Return-Path: <stable+bounces-191449-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191450-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8081C147B6
-	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 12:57:52 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1BE2C147F2
+	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 13:01:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B514042828E
-	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 11:57:09 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7D49B4EE18E
+	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 12:00:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B85F314D19;
-	Tue, 28 Oct 2025 11:57:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4100315D44;
+	Tue, 28 Oct 2025 11:59:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="oiqsT0q/"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E78730F92B;
-	Tue, 28 Oct 2025 11:57:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from omta036.useast.a.cloudfilter.net (omta036.useast.a.cloudfilter.net [44.202.169.35])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19E9F30F543
+	for <stable@vger.kernel.org>; Tue, 28 Oct 2025 11:59:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.202.169.35
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761652627; cv=none; b=F0BX2M7bU4mbGInP7Zh4vdd/mLqAuHGoVYHmJ/1EaAmv5Xn0hxKZuQUWkNdfaYzVDGdnP21zo5OrZnoQqhrMP3mHvQwQRyYHBcgr5nf9bGqFYrBIHtuBP+EiPdV0LjDOZFYpuNUcZ/Swsnclhxd9B5wsNFEKGnWbhnHrffS/Nl8=
+	t=1761652794; cv=none; b=PyrRoAyjDa69rK3t0GKcWIyPsq2kV/fmRbK5o4PakAFaQoF0IMx3awDveNDR5d295+NDtKtDu99cVN5M4XK5SyIj4Un8ZXtvQMB1iTDnTNI/+k3Sr/AFXAy4naPDfO3uQOoWUF6eB7T/nIhIoKDmy06XZssoSqTvKeNFqdxh7w8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761652627; c=relaxed/simple;
-	bh=z5CXhGy/LBc2zpdHHMxomM5MbPIp7P2Uxn6ZD1HAR94=;
+	s=arc-20240116; t=1761652794; c=relaxed/simple;
+	bh=V3Wwwzc9OvQSBcoohec1QVAUKsVR7MlPxbYb8/I3uEI=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KLCA8tZm5B3OzNigbGa+y24d+cNUT5IihJLAN9oQRnJlef5jd6ti6uEop35qFTPpblA4LkIeHNmF0jf0BmX7goUMj7n/JcpTqwHD7+C1gMls1VD65cktClcr6LQ7MSWGHsd4EH7s7+aZd7P6+vJBe1mXoXEk2j/Pf2fq1Rum3M8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7486F168F;
-	Tue, 28 Oct 2025 04:56:56 -0700 (PDT)
-Received: from [10.57.39.79] (unknown [10.57.39.79])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0BC743F63F;
-	Tue, 28 Oct 2025 04:57:02 -0700 (PDT)
-Message-ID: <6c35e1e4-8267-4eba-a53e-04ff74e224a2@arm.com>
-Date: Tue, 28 Oct 2025 11:57:00 +0000
+	 In-Reply-To:Content-Type; b=N6PnZYbCDQ5ZjBrnFIctGA9Az/Nt3pUqsv7DBp9WAh+3JcMtCHBcaNZtyrwbGqlLhw5cJY4GrPjVquDfbimJ0iXsWga0E50A9hiDa1nXxi+YbrqreuhX4eKkg8/AfZl5VmCtU8Rwz2MRy+pLy2/pMhCV0KghzIk2C+CVZrPn/ys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=oiqsT0q/; arc=none smtp.client-ip=44.202.169.35
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
+Received: from eig-obgw-5003b.ext.cloudfilter.net ([10.0.29.155])
+	by cmsmtp with ESMTPS
+	id Dex5vjRWJKXDJDiMgvZDZD; Tue, 28 Oct 2025 11:59:50 +0000
+Received: from box5620.bluehost.com ([162.241.219.59])
+	by cmsmtp with ESMTPS
+	id DiMRv6wiUuWNODiMRvbZU1; Tue, 28 Oct 2025 11:59:35 +0000
+X-Authority-Analysis: v=2.4 cv=N+gpF39B c=1 sm=1 tr=0 ts=6900b036
+ a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
+ a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=7vwVE5O1G3EA:10 a=VwQbUJbxAAAA:8
+ a=HaFmDPmJAAAA:8 a=IZuGi3YAW1ZzDR9SpYUA:9 a=QEXdDO2ut3YA:10
+ a=nmWuMzfKamIsx3l42hEX:22 a=Wh1V8bzkS9CpCxOpQUxp:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
+	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=IgyVbcgswd8Gzq5Qaxiho7nDwrU3LRcLk4xl7W0Mt8c=; b=oiqsT0q/sVoItqv1CKZIdkTN/7
+	+ZvUxM2BbTov3gtpsh8FtktZoSjoLgpC4VEGpE8jXIwwix5Xw5oQg7XNRcbHxEeUzLF9lPLIXTWlL
+	yaHac+wjEgfGP7IveWPbvnlP7ljyaNVe4GT8NylW2dKR66/0TxRNlic8kGbbmM5YsNOXcSMHSJ7dx
+	BtWgFI78f0QnyPdeJem9OfjC717uZPA92E//kPBMzYVDR+b695T1lCafgd4ZcCLsOn6cvT+uqapKe
+	/IBJ6VOYtG3qti9K0dgYHumzJO7eE8cqghi5lbfpXsiXA+HQUIxWuLM7Ws63wzGAxq57LxNC+wuLb
+	2JxGf/yQ==;
+Received: from c-73-92-56-26.hsd1.ca.comcast.net ([73.92.56.26]:40436 helo=[10.0.1.116])
+	by box5620.bluehost.com with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
+	(Exim 4.98.2)
+	(envelope-from <re@w6rz.net>)
+	id 1vDiMQ-00000002Flm-3cl1;
+	Tue, 28 Oct 2025 05:59:34 -0600
+Message-ID: <98586f40-96c2-47d5-b073-446f42af28b3@w6rz.net>
+Date: Tue, 28 Oct 2025 04:59:33 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -42,64 +69,63 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] iommu/of: Fix device node reference leak in
- of_iommu_get_resv_regions
-To: Miaoqian Lin <linmq006@gmail.com>, Joerg Roedel <joro@8bytes.org>,
- Will Deacon <will@kernel.org>, Thierry Reding <treding@nvidia.com>,
- Rob Herring <robh@kernel.org>, iommu@lists.linux.dev,
- linux-kernel@vger.kernel.org
-Cc: stable@vger.kernel.org
-References: <20251028063601.71934-1-linmq006@gmail.com>
-From: Robin Murphy <robin.murphy@arm.com>
-Content-Language: en-GB
-In-Reply-To: <20251028063601.71934-1-linmq006@gmail.com>
+Subject: Re: [PATCH 6.1 000/157] 6.1.158-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+ achill@achill.org, sr@sladewatkins.com
+References: <20251027183501.227243846@linuxfoundation.org>
+Content-Language: en-US
+From: Ron Economos <re@w6rz.net>
+In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - box5620.bluehost.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - w6rz.net
+X-BWhitelist: no
+X-Source-IP: 73.92.56.26
+X-Source-L: No
+X-Exim-ID: 1vDiMQ-00000002Flm-3cl1
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: c-73-92-56-26.hsd1.ca.comcast.net ([10.0.1.116]) [73.92.56.26]:40436
+X-Source-Auth: re@w6rz.net
+X-Email-Count: 79
+X-Org: HG=bhshared;ORG=bluehost;
+X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfI5lTDJzomTiiL+f52Z6E5NPqwKBYsvjxD1TiHGtJbRn4LSTjHW+i1pVBosNIK6DQmdQpl6SNRN53tj6OiFw6za5Q/mzeC7I7T3gSoI1Mj0iBl0jqxZa
+ 8PMTW85FSYT48Cyn7yryIcZoNDKPWtHZvU+4yfMH34OoSuBrSVhvbVjASqgoXP32qro/LCzHV/NzmA==
 
-On 2025-10-28 6:36 am, Miaoqian Lin wrote:
-> In of_iommu_get_resv_regions(), of_find_node_by_phandle() returns a device
-> node with its reference count incremented. The caller is responsible for
-> releasing this reference when the node is no longer needed.
-> 
-> Add a call to of_node_put() to release the reference after the usage.
+On 10/27/25 11:34, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.1.158 release.
+> There are 157 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Wed, 29 Oct 2025 18:34:15 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.158-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-Just put the reference immediately after getting it - this inner usage 
-only happens if it's the same dev->of_node we're already using for the 
-outer iteration, so we don't need to bother holding an extra reference 
-as it can't suddenly disappear anyway (or even if it could, that's still 
-not *this* code's problem...)
+Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
 
-Thanks,
-Robin.
-
-> Found via static analysis.
-> 
-> Fixes: a5bf3cfce8cb ("iommu: Implement of_iommu_get_resv_regions()")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
-> ---
->   drivers/iommu/of_iommu.c | 2 ++
->   1 file changed, 2 insertions(+)
-> 
-> diff --git a/drivers/iommu/of_iommu.c b/drivers/iommu/of_iommu.c
-> index 6b989a62def2..02448da8ff90 100644
-> --- a/drivers/iommu/of_iommu.c
-> +++ b/drivers/iommu/of_iommu.c
-> @@ -256,6 +256,7 @@ void of_iommu_get_resv_regions(struct device *dev, struct list_head *list)
->   				maps = of_translate_dma_region(np, maps, &iova, &length);
->   				if (length == 0) {
->   					dev_warn(dev, "Cannot reserve IOVA region of 0 size\n");
-> +					of_node_put(np);
->   					continue;
->   				}
->   				type = iommu_resv_region_get_type(dev, &phys, iova, length);
-> @@ -265,6 +266,7 @@ void of_iommu_get_resv_regions(struct device *dev, struct list_head *list)
->   				if (region)
->   					list_add_tail(&region->list, list);
->   			}
-> +			of_node_put(np);
->   		}
->   	}
->   #endif
+Tested-by: Ron Economos <re@w6rz.net>
 
 
