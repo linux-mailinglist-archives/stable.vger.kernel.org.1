@@ -1,98 +1,96 @@
-Return-Path: <stable+bounces-191430-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191431-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20E3DC1451B
-	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 12:18:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DBF31C14575
+	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 12:25:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id CBEF3502847
-	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 11:14:45 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A37F74F5196
+	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 11:24:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78194302CB1;
-	Tue, 28 Oct 2025 11:14:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69143308F18;
+	Tue, 28 Oct 2025 11:24:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UaS2jR2J"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BwdkSgrS"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3082D2D3237;
-	Tue, 28 Oct 2025 11:14:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 489C83074AB;
+	Tue, 28 Oct 2025 11:24:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761650082; cv=none; b=Carstbvpb7dVh+lEzir8lpiUJzivr9fl8KPLqU8TJ0Oq3IFPjT6guYJPLPL5BegB5IxsCI5ahayA5eYKT4k4ICYGfumqtHAHY+r3hv+jRY8JLYsCD0IVwxMjYALlbKy2f/4vFFwk6pZrdaUB8TMayI5Y4gAHiI3pLHtg2wK3e7g=
+	t=1761650685; cv=none; b=Mv0ouH1OXFdGeajCdH1U3rbMKqNzFiQ9ouVpKMrvsD3qYHTaJyTBW+BbxznUnb0DAJiV2OjeO7GDDn/u+iAY6QiB5OcCWYo/hEYYWYOAPt/QJ03AMQlYJdvCZnTZo9Ll027P1jnpuyAN9JBtBzcMnqAoimi7h8kzHhgmUF5tHZw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761650082; c=relaxed/simple;
-	bh=qbNY12RM9R/yOPb++qJyjxEKBG7Wmz7YblSwu9oI/w8=;
+	s=arc-20240116; t=1761650685; c=relaxed/simple;
+	bh=a3dYZw3hSHsuKeW9iMVUClSJO5iZtjCsxNOwoawsinw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pgHReZNxUIPPCs+1Pt7L4HehyL4LBW6s9E4H11lfobNGcITb0aN4aHyL1eZ3FcRg8XwCY94e3qEHvIajxl3OKhfLbxLqe8jb8G7kBVN/UFwaOJloLyBqllcmtBLdBIALL7u+FeLHl1OnsiEm6NoU5BDWXURBxyfWriaLrdyg0j8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UaS2jR2J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C324C4CEE7;
-	Tue, 28 Oct 2025 11:14:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761650081;
-	bh=qbNY12RM9R/yOPb++qJyjxEKBG7Wmz7YblSwu9oI/w8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=UaS2jR2Jk/vuIARermmmh/ASSSZN+dCh5NfnvtvnLKf3Fz16Uy32xyMpwOGkMd/B7
-	 E/046Ep4KRl3DfaUvX29dyZbHAdhs9+xzat1+p7a5VF5BU1lVgWyrifVP6yJ63QNKL
-	 PeR0Tsa6eWOs9XImIcZMTlBwYsubZY18zqnk5247v5osdFh5+GFfyU5pfOuX3f9TZ9
-	 oPxNrRRcv9WVMfpaRdXHCjP0+FLCipSDBIlKhJ44se/VttQ6358xzWhzCMt56h7Bsn
-	 5ov496TUc/3TaQcFLMpdY0MBhRtFgi08YNpjHFSujh9y/h320l81VMPC0bED/Zc1bK
-	 5P8izwq3qkSsg==
-Date: Tue, 28 Oct 2025 11:14:35 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
-	hargar@microsoft.com, achill@achill.org, sr@sladewatkins.com
-Subject: Re: [PATCH 6.17 000/184] 6.17.6-rc1 review
-Message-ID: <34a468d4-fc65-4aef-8aba-3cc3441b501b@sirena.org.uk>
-References: <20251027183514.934710872@linuxfoundation.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=DwV7AC30hgQTs0whihPC8xTUW1jD+WgCP1uIF4+4F/WLumWqM1fBgb/zbJ2+xvFddM3ewvcMs1fsAlSjjdPpDgeJ30OON3cKckrkjFlIulLREQJ8tDB7wkJgcsYSUod20B5Y2zPGepxHRKsCIzgaJ70Lj5vbCbIF1r+VAOFKRwc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BwdkSgrS; arc=none smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1761650683; x=1793186683;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=a3dYZw3hSHsuKeW9iMVUClSJO5iZtjCsxNOwoawsinw=;
+  b=BwdkSgrSmSUFkXxoIuTmnAuFgmxu67gGgiplOcQsVISlyCFRKt3ws+iG
+   sfRktXKY/dLI6yyb1+jptwCPNlTx6MsnQeYgzGvPSQfVEgYzNRrR2ZBrT
+   uQalSTb9LM30EE64ORyXFMtHZ4qghU5PNDZmUu6m+lU/l/fB8kx0b3TSA
+   Ktu8XRi5JVozDg4uqCMyA+UNM9XFojJdqeySa6E/F1yS/aAt+eZLwb6sh
+   bmzk9gP/D5z7yn1aC02IJ1p/s9SfUwnFIO7gVrmWBosNLzvmr0LRrW1sF
+   q9gDRiUi/CPOXzMB0JtayVuUJlyZL+IQbTangiq0qwtYEBmUd06XF3YW6
+   g==;
+X-CSE-ConnectionGUID: gc3SzPJqRX2t3K9XuQ7whw==
+X-CSE-MsgGUID: kvSdyuHbTLSV4aftG7X+/g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="63654602"
+X-IronPort-AV: E=Sophos;i="6.19,261,1754982000"; 
+   d="scan'208";a="63654602"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2025 04:24:43 -0700
+X-CSE-ConnectionGUID: IfxjK9TbSm2m6+UT483w6g==
+X-CSE-MsgGUID: m9gzeIr9SWGY5GheAijFOQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,261,1754982000"; 
+   d="scan'208";a="185019793"
+Received: from pgcooper-mobl3.ger.corp.intel.com (HELO mdjait-mobl) ([10.245.244.131])
+  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2025 04:24:41 -0700
+Date: Tue, 28 Oct 2025 12:24:32 +0100
+From: Mehdi Djait <mehdi.djait@linux.intel.com>
+To: Hans de Goede <hansg@kernel.org>
+Cc: Bingbu Cao <bingbu.cao@intel.com>, 
+	Sakari Ailus <sakari.ailus@linux.intel.com>, linux-media@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH 04/25] media: i2c: ov01a10: Add missing
+ v4l2_subdev_cleanup() calls
+Message-ID: <n6i6bzhype4ncepdlrcdvlrfhe5ssemaokkfievo5voibhnaqd@i5kfv54gsqwu>
+References: <20251014174033.20534-1-hansg@kernel.org>
+ <20251014174033.20534-5-hansg@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="uVpYyaHvfHMU+Dch"
-Content-Disposition: inline
-In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
-X-Cookie: I smell a wumpus.
-
-
---uVpYyaHvfHMU+Dch
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <20251014174033.20534-5-hansg@kernel.org>
 
-On Mon, Oct 27, 2025 at 07:34:42PM +0100, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.17.6 release.
-> There are 184 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+Hello Hans,
 
-Tested-by: Mark Brown <broonie@kernel.org>
+Thank you for the patches.
 
---uVpYyaHvfHMU+Dch
-Content-Type: application/pgp-signature; name="signature.asc"
+On Tue, Oct 14, 2025 at 07:40:12PM +0200, Hans de Goede wrote:
+> Add missing v4l2_subdev_cleanup() calls to cleanup after
+> v4l2_subdev_init_finalize().
+>
 
------BEGIN PGP SIGNATURE-----
+Tested-by: Mehdi Djait <mehdi.djait@linux.intel.com> # Dell XPS 9315
+Reviewed-by: Mehdi Djait <mehdi.djait@linux.intel.com>
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmkApZoACgkQJNaLcl1U
-h9B8OQf+LFMkxcBDlYqnazNf5ms9Bs78O4qh7m/y4UV5JzLXJbHMo0qQYwOvHwM9
-4gpOh4PM6htEDpUY01SmJKy5Z8akwXcp76VTsPh+bZu50rhV2n36jxzVn1XceJ8I
-IqMObbI0xnXeYstDweANvkVXzyMdL53NrX+qgdAB2SmoAjE1DR6hE0nyhE1mZ8Mz
-P18f7kr9RcdEblY4+RDGAh9fikEt0U7FdLWzOEB68ZO2T3lxdvu0dFqrHdjQP634
-EBsd491K4+AY1qiog2RzfvA7vs8GEJ+tvidu7jFA5Kdh0IVX9FIEvRSNXjYvaGNB
-tNdTvQW/UZGy2F+J0V4UcUga0rS1uA==
-=cRPv
------END PGP SIGNATURE-----
-
---uVpYyaHvfHMU+Dch--
+> Fixes: 0827b58dabff ("media: i2c: add ov01a10 image sensor driver")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Hans de Goede <hansg@kernel.org>
 
