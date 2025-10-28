@@ -1,224 +1,142 @@
-Return-Path: <stable+bounces-191507-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191508-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 691DFC15A72
-	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 17:02:45 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1529C15A39
+	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 17:00:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 67B53544DAA
-	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 15:53:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 06179405B0D
+	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 15:53:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6BE93451DB;
-	Tue, 28 Oct 2025 15:52:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AC96255248;
+	Tue, 28 Oct 2025 15:52:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=klarinett.li header.i=@klarinett.li header.b="sU3vrLm8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M1Yk3uKu"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.hostpark.net (mail.hostpark.net [212.243.197.30])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95480343D8E;
-	Tue, 28 Oct 2025 15:51:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.243.197.30
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E993A13AD1C;
+	Tue, 28 Oct 2025 15:52:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761666721; cv=none; b=AyeZRTZa6JzQREsSnlo2RVd8Nf8NL9nLAmWAUPX9PT4g2meArdiQylUPsH/smDXwL5DttgBM9yX0VAvi5AYSKIBacoSxkQva/e734+kGJFNW7zBV0HMjbRLo+FOFYKflxmRbdq+DjQVQjeQR3uYJAOEkQuwLu/RvOHykQprkqcE=
+	t=1761666778; cv=none; b=pmVpITjDM3jsXyVmAT7xtIdKSfHKvxJLryv9zrao7flQsk614uhkYKbJLpS7fHaaXEinANN/lTPwl7d/zrZ7Vv5Hr85Br4U7FFSbra23EqraCP5yc9eDT0MNU+MJapa45QvqlCXN41szVxrJ3jJVI/NDvz8TqDzXSHEP5Y2NcQI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761666721; c=relaxed/simple;
-	bh=UF7eSuEBBdlXuSqT26s0+lsJpdaez8Svv47ZTzarpIs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=LMDnC24/VQSzhLsgMfgs2X4dBkLPyZTC8K5rON2FdT1KL9nrKaGdrb9UARHMoBrHsgaTs+WpH4aA+RuoLC9dhCUwOXUwlNOWqz0ruqz47gbhQ3fVpXq+7yptxEZT1H+Kigv6v50cj/akFEVDaewzv4/+qC+QOB47dUT+WRcMiV8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=klarinett.li; spf=pass smtp.mailfrom=klarinett.li; dkim=pass (1024-bit key) header.d=klarinett.li header.i=@klarinett.li header.b=sU3vrLm8; arc=none smtp.client-ip=212.243.197.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=klarinett.li
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=klarinett.li
-Received: from localhost (localhost [127.0.0.1])
-	by mail.hostpark.net (Postfix) with ESMTP id C604216671;
-	Tue, 28 Oct 2025 16:51:50 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=klarinett.li; h=
-	content-transfer-encoding:content-type:content-type:mime-version
-	:x-mailer:message-id:date:date:subject:subject:from:from; s=
-	sel2011a; t=1761666710; bh=UF7eSuEBBdlXuSqT26s0+lsJpdaez8Svv47ZT
-	zarpIs=; b=sU3vrLm8D70pJncbAaulxbwjFz7FSfJo+BF/6B9QHXWUoFcuKc/KA
-	L23GlfowfHJKrE58uW7CVirHmDp32MC9mBu5b556XLy00wbq0YRXzjjSNhqdeNFt
-	aNKlS1cLIQ5LGeyiiXXumhltjppkXASLisc/swV+KNemMhqjf2VaaM=
-X-Virus-Scanned: by Hostpark/NetZone Mailprotection at hostpark.net
-Received: from mail.hostpark.net ([127.0.0.1])
- by localhost (mail1.hostpark.net [127.0.0.1]) (amavis, port 10224) with ESMTP
- id KygcuKzd1zPM; Tue, 28 Oct 2025 16:51:50 +0100 (CET)
-Received: from customer (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.hostpark.net (Postfix) with ESMTPSA id 5F3AF16148;
-	Tue, 28 Oct 2025 16:51:48 +0100 (CET)
-From: Christian Hitz <christian@klarinett.li>
-To: Lee Jones <lee@kernel.org>,
-	Pavel Machek <pavel@kernel.org>,
-	Jacek Anaszewski <jacek.anaszewski@gmail.com>,
-	Dan Murphy <dmurphy@ti.com>
-Cc: Christian Hitz <christian.hitz@bbv.ch>,
-	stable@vger.kernel.org,
-	Pavel Machek <pavel@ucw.cz>,
-	linux-leds@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2] leds: leds-lp50xx: enable chip before any communication
-Date: Tue, 28 Oct 2025 16:51:40 +0100
-Message-ID: <20251028155141.1603193-1-christian@klarinett.li>
-X-Mailer: git-send-email 2.51.1
+	s=arc-20240116; t=1761666778; c=relaxed/simple;
+	bh=FmyANCV9+SVsaX4PV2PPlRqqhAr91iZA7dBivsBkX7c=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ecsSeOAmQGc+23A2Ge3K8DFr9CG3ggfbLNAVvqNYvi2xWy/jLDfSbSK7Uhwrm1YO/gNgcbSwiRuh4ZrOWYBS3vF7T71hBG6F30sfLDNIFrHihRTts873MFGtIPJdjOeobRvdQLrVpc3FhgtrpBbUdi5HfUfZWbAx6Pb5E1GPD2Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M1Yk3uKu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E9DDC4CEE7;
+	Tue, 28 Oct 2025 15:52:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761666777;
+	bh=FmyANCV9+SVsaX4PV2PPlRqqhAr91iZA7dBivsBkX7c=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=M1Yk3uKuhyljBO+af1oe49BpY5yGnzvTNki4mYrUAvEoVoE7WayMfE4SOoTFphAQu
+	 8TQ+V2upJ+gU4R1+WYeaG2wjB+/sxGc/oejskFBYjfgLwvjuC7xvw7NjsNnyr0YYxu
+	 R8At99DmOD06Fxw1sbopqKAu0zb42ZVt8Vb5TddVhexIpM6acy+jOUuQMezhsDy8/6
+	 ISKHKJG0lEePoLW1kUCLEFETQvTY6IzQVjX08kcfj8XyHs11IGyoLeBgaIHQhN+eQK
+	 WuZv/Ek70ooMsbhIogmQfVkGPJIDInRy57HccomCBFJ55DGmHEqFWqqOEBM861lvuI
+	 o1ioxv9dUTRbw==
+Message-ID: <2bdea464-a75e-4be3-828c-5f2a7948715f@kernel.org>
+Date: Tue, 28 Oct 2025 16:52:54 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 06/25] media: i2c: ov01a10: Fix test-pattern disabling
+To: Mehdi Djait <mehdi.djait@linux.intel.com>
+Cc: Bingbu Cao <bingbu.cao@intel.com>,
+ Sakari Ailus <sakari.ailus@linux.intel.com>, linux-media@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20251014174033.20534-1-hansg@kernel.org>
+ <20251014174033.20534-7-hansg@kernel.org>
+ <rywqbh2ku7aexskohujwsiv7yzgn7lipgdqol3rqtkcvqrmn3q@c6oe7wc45hti>
+ <8718bd8e-12b0-4c4e-9155-7e394f0d5a16@kernel.org>
+ <jgzovuqvd5csxwzmzf5asri7xvftoyb4lqyywtfdsrsgdvwz7i@neqszepmzw3m>
+From: Hans de Goede <hansg@kernel.org>
+Content-Language: en-US, nl
+In-Reply-To: <jgzovuqvd5csxwzmzf5asri7xvftoyb4lqyywtfdsrsgdvwz7i@neqszepmzw3m>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-From: Christian Hitz <christian.hitz@bbv.ch>
+Hi Medhi,
 
-If a GPIO is used to control the chip's enable pin, it needs to be pulled
-high before any i2c communication is attempted.
+On 28-Oct-25 4:38 PM, Mehdi Djait wrote:
+> Hi Hans,
+> 
+> On Tue, Oct 28, 2025 at 03:38:28PM +0100, Hans de Goede wrote:
+>> Hi Mehdi,
+>>
+>> Thank you for all the reviews and testing.
+>>
+>> On 28-Oct-25 1:08 PM, Mehdi Djait wrote:
+>>> Hi Hans,
+>>>
+>>> Thank you for the patches!
+>>>
+>>> On Tue, Oct 14, 2025 at 07:40:14PM +0200, Hans de Goede wrote:
+>>>> When the test-pattern control gets set to 0 (Disabled) 0 should be written
+>>>> to the test-pattern register, rather then doing nothing.
+>>>>
+>>>
+>>> A small question: Do you see any difference between test_pattern 1 and
+>>> test_pattern 2 or I did not look hard enough at the screen ?
+>>
+>> IIRC the one has the colors fading (a bit) from left to right and
+>> the other from top to bottom ?
+> 
+> I see:
+> 1 and 2 are the same ?!
+> 3 fading from left -> right
+> 4 fading from top  ->  bottom
 
-Currently, the enable GPIO handling is not correct.
+That might very well be correct. Unfortunately I no longer
+have access to the Dell XPS 13 9320 I tested this on, so I cannot
+confirm.
 
-Assume the enable GPIO is low when the probe function is entered. In this
-case the device is in SHUTDOWN mode and does not react to i2c commands.
+I think I should squash the following fix into this one:
 
-During probe the following sequence happens:
- 1. The call to lp50xx_reset() on line 548 has no effect as i2c is not
-    possible yet.
- 2. Then - on line 552 - lp50xx_enable_disable() is called. As
-    "priv->enable_gpio“ has not yet been initialized, setting the GPIO has
-    no effect. Also the i2c enable command is not executed as the device
-    is still in SHUTDOWN.
- 3. On line 556 the call to lp50xx_probe_dt() finally parses the rest of
-    the DT and the configured priv->enable_gpio is set up.
-
-As a result the device is still in SHUTDOWN mode and not ready for
-operation.
-
-Split lp50xx_enable_disable() into distinct enable and disable functions
-to enforce correct ordering between enable_gpio manipulations and i2c
-commands.
-Read enable_gpio configuration from DT before attempting to manipulate
-enable_gpio.
-Add delays to observe correct wait timing after manipulating enable_gpio
-and before any i2c communication.
-
-Fixes: 242b81170fb8 ("leds: lp50xx: Add the LP50XX family of the RGB LED driver")
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Christian Hitz <christian.hitz@bbv.ch>
----
-Changes in v2:
- - Unconditionally reset in lp50xx_enable
- - Define magic numbers
- - Improve log message
----
- drivers/leds/leds-lp50xx.c | 55 +++++++++++++++++++++++++++-----------
- 1 file changed, 40 insertions(+), 15 deletions(-)
-
-diff --git a/drivers/leds/leds-lp50xx.c b/drivers/leds/leds-lp50xx.c
-index 94f8ef6b482c..d3485d814cf4 100644
---- a/drivers/leds/leds-lp50xx.c
-+++ b/drivers/leds/leds-lp50xx.c
-@@ -50,6 +50,12 @@
+diff --git a/drivers/media/i2c/ov01a10.c b/drivers/media/i2c/ov01a10.c
+index 6a1ab5fa70a2..1fe643cb1e6b 100644
+--- a/drivers/media/i2c/ov01a10.c
++++ b/drivers/media/i2c/ov01a10.c
+@@ -215,9 +215,8 @@ static const struct reg_sequence ov01a1s_regs[] = {
+ static const char * const ov01a10_test_pattern_menu[] = {
+ 	"Disabled",
+ 	"Color Bar",
++	"Left-Right Darker Color Bar",
+ 	"Top-Bottom Darker Color Bar",
+-	"Right-Left Darker Color Bar",
+-	"Color Bar type 4",
+ };
  
- #define LP50XX_SW_RESET		0xff
- #define LP50XX_CHIP_EN		BIT(6)
-+#define LP50XX_CHIP_DISABLE	0x00
-+#define LP50XX_START_TIME_US	500
-+#define LP50XX_RESET_TIME_US	3
-+
-+#define LP50XX_EN_GPIO_LOW	0
-+#define LP50XX_EN_GPIO_HIGH	1
- 
- /* There are 3 LED outputs per bank */
- #define LP50XX_LEDS_PER_MODULE	3
-@@ -371,19 +377,42 @@ static int lp50xx_reset(struct lp50xx *priv)
- 	return regmap_write(priv->regmap, priv->chip_info->reset_reg, LP50XX_SW_RESET);
- }
- 
--static int lp50xx_enable_disable(struct lp50xx *priv, int enable_disable)
-+static int lp50xx_enable(struct lp50xx *priv)
+ static const s64 link_freq_menu_items[] = {
+@@ -318,7 +317,7 @@ static int ov01a10_update_digital_gain(struct ov01a10 *ov01a10, u32 d_gain)
+ static int ov01a10_test_pattern(struct ov01a10 *ov01a10, u32 pattern)
  {
- 	int ret;
+ 	if (pattern)
+-		pattern = (pattern - 1) | OV01A10_TEST_PATTERN_ENABLE;
++		pattern |= OV01A10_TEST_PATTERN_ENABLE;
  
--	ret = gpiod_direction_output(priv->enable_gpio, enable_disable);
-+	if (priv->enable_gpio) {
-+		ret = gpiod_direction_output(priv->enable_gpio, LP50XX_EN_GPIO_HIGH);
-+		if (ret)
-+			return ret;
-+
-+		udelay(LP50XX_START_TIME_US);
-+	}
-+
-+	ret = lp50xx_reset(priv);
- 	if (ret)
- 		return ret;
- 
--	if (enable_disable)
--		return regmap_write(priv->regmap, LP50XX_DEV_CFG0, LP50XX_CHIP_EN);
--	else
--		return regmap_write(priv->regmap, LP50XX_DEV_CFG0, 0);
-+	return regmap_write(priv->regmap, LP50XX_DEV_CFG0, LP50XX_CHIP_EN);
-+}
- 
-+static int lp50xx_disable(struct lp50xx *priv)
-+{
-+	int ret;
-+
-+	ret = regmap_write(priv->regmap, LP50XX_DEV_CFG0, LP50XX_CHIP_DISABLE);
-+	if (ret)
-+		return ret;
-+
-+	if (priv->enable_gpio) {
-+		ret = gpiod_direction_output(priv->enable_gpio, LP50XX_EN_GPIO_LOW);
-+		if (ret)
-+			return ret;
-+
-+		udelay(LP50XX_RESET_TIME_US);
-+	}
-+
-+	return 0;
- }
- 
- static int lp50xx_probe_leds(struct fwnode_handle *child, struct lp50xx *priv,
-@@ -447,6 +476,10 @@ static int lp50xx_probe_dt(struct lp50xx *priv)
- 		return dev_err_probe(priv->dev, PTR_ERR(priv->enable_gpio),
- 				     "Failed to get enable GPIO\n");
- 
-+	ret = lp50xx_enable(priv);
-+	if (ret)
-+		return ret;
-+
- 	priv->regulator = devm_regulator_get(priv->dev, "vled");
- 	if (IS_ERR(priv->regulator))
- 		priv->regulator = NULL;
-@@ -547,14 +580,6 @@ static int lp50xx_probe(struct i2c_client *client)
- 		return ret;
- 	}
- 
--	ret = lp50xx_reset(led);
--	if (ret)
--		return ret;
--
--	ret = lp50xx_enable_disable(led, 1);
--	if (ret)
--		return ret;
--
- 	return lp50xx_probe_dt(led);
- }
- 
-@@ -563,7 +588,7 @@ static void lp50xx_remove(struct i2c_client *client)
- 	struct lp50xx *led = i2c_get_clientdata(client);
- 	int ret;
- 
--	ret = lp50xx_enable_disable(led, 0);
-+	ret = lp50xx_disable(led);
- 	if (ret)
- 		dev_err(led->dev, "Failed to disable chip\n");
- 
--- 
-2.51.1
+ 	return cci_write(ov01a10->regmap, OV01A10_REG_TEST_PATTERN, pattern,
+ 			 NULL);
+
+This skips setting 0 as the pattern, since 0 is the same as 1,
+removes the weird "Color Bar type 4" from the menu and fixes
+the order of the 2 fading controls.
+
+Can you give this a test ?
+
+Regards,
+
+Hans
+
 
 
