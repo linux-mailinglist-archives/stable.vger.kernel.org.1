@@ -1,277 +1,224 @@
-Return-Path: <stable+bounces-191506-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191507-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F492C15955
-	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 16:48:15 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 691DFC15A72
+	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 17:02:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B1B4F1B20C39
-	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 15:44:18 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 67B53544DAA
+	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 15:53:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35AC8342CAE;
-	Tue, 28 Oct 2025 15:42:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6BE93451DB;
+	Tue, 28 Oct 2025 15:52:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="HHqmUaKK";
-	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="SB1GCj3S"
+	dkim=pass (1024-bit key) header.d=klarinett.li header.i=@klarinett.li header.b="sU3vrLm8"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+Received: from mail.hostpark.net (mail.hostpark.net [212.243.197.30])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5858B345727;
-	Tue, 28 Oct 2025 15:42:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.165.32
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761666177; cv=fail; b=d8mvQOF9A5YzsEs2PG3o601rOoEz/1AokSmYNpCsMtWIgxMmiYgITNCSQyDgh1P72ef9hOxZqmyT+urAb77Nd6tB180ykb8NfD9i+A+YhkRNQxO7SkLVyvV0xGFPBt1aZciFXg51fJuFDBLtsTgemRilfzKSbFZRPWimPwTx7DA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761666177; c=relaxed/simple;
-	bh=Oi9bEqCA5qTPDcIzaR0Fn3QOnTcIr5DklQzU/xBRJmg=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=Z6vrhLtfKBWI3Dg/Axl6TQY4C+1ZbpwVhZNfGLjm7XIAVzgWwd8ssrdM4lZ1TdK5piq2ZkhDLpeEeycAcuj0DZW/DM9VnhpPFkd964RV984IIUQUE1B5NfT2nl+wRWs2uHAstNjHFXwJdw/HsvNHRv4vClJPaMcu+OKY090ZU7w=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=HHqmUaKK; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=SB1GCj3S; arc=fail smtp.client-ip=205.220.165.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59SBDd3a022414;
-	Tue, 28 Oct 2025 15:42:19 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	corp-2025-04-25; bh=d9yiDET+VXNlM1N4OaNYxlEilj2v1dZCWaOZ4cKZ88I=; b=
-	HHqmUaKKMY9O7Cxzw2jVncddz4jja3PYn5Vaakz0cGSLE2VO36KMnzFYydNMrDc9
-	mp9wCEJKee6xD9yxPxd+UIutSZkTKCLjZzY7siwsK/hymU3e5tiSn2CIyHRH5MV8
-	Dyi6Y9H7FD1bHHEk43mLlJMt7H4rHd0zApQaWSKuuJOVX9j2gt+7KIp5At6W0C7h
-	q4fTzhmTMEe7QBl+GjGebJTOooa9FSsw1I6ZCoqbSXudTRdj19XrBgtEoWzwVYrS
-	20iL1ONAMxy/VOtCQfeXKGDR2G0IzAN1K0IXbcXX9i2acA3ChiA561tJ5RFzIecp
-	A0xz8/TMY7DRgRJS4suZyA==
-Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4a232uuygx-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 28 Oct 2025 15:42:19 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 59SEgBlB009139;
-	Tue, 28 Oct 2025 15:42:17 GMT
-Received: from sn4pr0501cu005.outbound.protection.outlook.com (mail-southcentralusazon11011029.outbound.protection.outlook.com [40.93.194.29])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4a0n0fm7ha-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 28 Oct 2025 15:42:17 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=y+mBLwCfadr44aIuNSFT9rraH8kZbvqV9WFxxHB2Noldd2hqZGMoPE3R9Ko6OQIVVnnIt7VIEwzPC7YDwgqlZJzZq0q6cnQVTUYvg7d+YonxGZXJ0hhXLTV2+lHQMyfkn/OxdkqYXq2++TtAA+UNklyVWLOegsS/0QMxIJE+LrxdoaV6z99A71SySvzAHCKRYqDM8W6+YTtgalfyfMINjgn0fjLCI3OeEB2ExFb1+mFhNTXGcDzEZs7o5fmze6EC7nZDSbf8+vH/ksQDtKM/i5EtWq9YT/h69JXYzAPRlhMZZXje5+ebmwWp/MBhgGrzTjDk1HwatbA7W/bmxBgHyg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=d9yiDET+VXNlM1N4OaNYxlEilj2v1dZCWaOZ4cKZ88I=;
- b=J1vS8uR+YuLYkymbQggK9YpuAFStidjXDpUdIqbrSK1s53tg7y3S7skRVE0evIxPxuW1kHYQRK2Klukq/l6kcThM46kfqxFtIxTxbJZ1Pr+8bIdiohH9ulxf6N3uqUPNXOQRevlMNoBAPwXefRlO3Mbw515e66yje16mWTHum6oK4jU6Ayz+BUorRtxyLjbCASPNbQBDHtKCHhIjF5TQPfvZocGnm/K8eQC8tbbdeHBw/d8OgbjAJh9z/cVgAJCDJlBrW66f20gbSr6XxnrqTXJUprt7Wfn9NoDs9umjHrc0K9ccFgEeIV2qwjWkhnAz3saoebJ4hcDvbKQ8o4DQsA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=d9yiDET+VXNlM1N4OaNYxlEilj2v1dZCWaOZ4cKZ88I=;
- b=SB1GCj3STlopBkUgIEW0ULQPtYL7xdjj5A2jmzXzDtp9kFnq7TvOjAgFl+JlVoDzCLYdNLns1Qco2/O0xEYHzNT+7OIyE8pkHJ+yrXXlZY3krDqTFXwXTZn0zQLJN+8C2fqdg5QUV/Ye73cAbTeUOxPPHxCrej/iqxDWzQOoRMA=
-Received: from SJ0PR10MB5437.namprd10.prod.outlook.com (2603:10b6:a03:3aa::8)
- by PH0PR10MB4631.namprd10.prod.outlook.com (2603:10b6:510:41::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9253.19; Tue, 28 Oct
- 2025 15:42:14 +0000
-Received: from SJ0PR10MB5437.namprd10.prod.outlook.com
- ([fe80::e4e9:670b:5d8f:f2af]) by SJ0PR10MB5437.namprd10.prod.outlook.com
- ([fe80::e4e9:670b:5d8f:f2af%5]) with mapi id 15.20.9275.011; Tue, 28 Oct 2025
- 15:42:14 +0000
-Message-ID: <86abc1a6-6bed-460c-80fd-a74570c98ac8@oracle.com>
-Date: Tue, 28 Oct 2025 21:11:58 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5.15 000/123] 5.15.196-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
-        conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
-        achill@achill.org, sr@sladewatkins.com
-References: <20251027183446.381986645@linuxfoundation.org>
-Content-Language: en-US
-From: Vijayendra Suman <vijayendra.suman@oracle.com>
-In-Reply-To: <20251027183446.381986645@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: LO4P123CA0257.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:194::10) To SJ0PR10MB5437.namprd10.prod.outlook.com
- (2603:10b6:a03:3aa::8)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95480343D8E;
+	Tue, 28 Oct 2025 15:51:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.243.197.30
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1761666721; cv=none; b=AyeZRTZa6JzQREsSnlo2RVd8Nf8NL9nLAmWAUPX9PT4g2meArdiQylUPsH/smDXwL5DttgBM9yX0VAvi5AYSKIBacoSxkQva/e734+kGJFNW7zBV0HMjbRLo+FOFYKflxmRbdq+DjQVQjeQR3uYJAOEkQuwLu/RvOHykQprkqcE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1761666721; c=relaxed/simple;
+	bh=UF7eSuEBBdlXuSqT26s0+lsJpdaez8Svv47ZTzarpIs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=LMDnC24/VQSzhLsgMfgs2X4dBkLPyZTC8K5rON2FdT1KL9nrKaGdrb9UARHMoBrHsgaTs+WpH4aA+RuoLC9dhCUwOXUwlNOWqz0ruqz47gbhQ3fVpXq+7yptxEZT1H+Kigv6v50cj/akFEVDaewzv4/+qC+QOB47dUT+WRcMiV8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=klarinett.li; spf=pass smtp.mailfrom=klarinett.li; dkim=pass (1024-bit key) header.d=klarinett.li header.i=@klarinett.li header.b=sU3vrLm8; arc=none smtp.client-ip=212.243.197.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=klarinett.li
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=klarinett.li
+Received: from localhost (localhost [127.0.0.1])
+	by mail.hostpark.net (Postfix) with ESMTP id C604216671;
+	Tue, 28 Oct 2025 16:51:50 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=klarinett.li; h=
+	content-transfer-encoding:content-type:content-type:mime-version
+	:x-mailer:message-id:date:date:subject:subject:from:from; s=
+	sel2011a; t=1761666710; bh=UF7eSuEBBdlXuSqT26s0+lsJpdaez8Svv47ZT
+	zarpIs=; b=sU3vrLm8D70pJncbAaulxbwjFz7FSfJo+BF/6B9QHXWUoFcuKc/KA
+	L23GlfowfHJKrE58uW7CVirHmDp32MC9mBu5b556XLy00wbq0YRXzjjSNhqdeNFt
+	aNKlS1cLIQ5LGeyiiXXumhltjppkXASLisc/swV+KNemMhqjf2VaaM=
+X-Virus-Scanned: by Hostpark/NetZone Mailprotection at hostpark.net
+Received: from mail.hostpark.net ([127.0.0.1])
+ by localhost (mail1.hostpark.net [127.0.0.1]) (amavis, port 10224) with ESMTP
+ id KygcuKzd1zPM; Tue, 28 Oct 2025 16:51:50 +0100 (CET)
+Received: from customer (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.hostpark.net (Postfix) with ESMTPSA id 5F3AF16148;
+	Tue, 28 Oct 2025 16:51:48 +0100 (CET)
+From: Christian Hitz <christian@klarinett.li>
+To: Lee Jones <lee@kernel.org>,
+	Pavel Machek <pavel@kernel.org>,
+	Jacek Anaszewski <jacek.anaszewski@gmail.com>,
+	Dan Murphy <dmurphy@ti.com>
+Cc: Christian Hitz <christian.hitz@bbv.ch>,
+	stable@vger.kernel.org,
+	Pavel Machek <pavel@ucw.cz>,
+	linux-leds@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2] leds: leds-lp50xx: enable chip before any communication
+Date: Tue, 28 Oct 2025 16:51:40 +0100
+Message-ID: <20251028155141.1603193-1-christian@klarinett.li>
+X-Mailer: git-send-email 2.51.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ0PR10MB5437:EE_|PH0PR10MB4631:EE_
-X-MS-Office365-Filtering-Correlation-Id: 97586cc1-7fba-4158-470e-08de16389139
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|366016|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?R21kdTVVcDloWm5lRWJOelk4bmVHUkRVakJ4MHcvR0Y0MWtLQU1jdSthdldx?=
- =?utf-8?B?ZmFxY085NmhCYkxDRHdYN2t5Ni96MU9Yd1U2MDJ2ODRnWGp5YUhNSWtDUi8y?=
- =?utf-8?B?dGJkci9BZ1FHTFBBTW1qaVVCRG5sLzM1NW83clJEdm51ZUtLdUtZMjdWVXJk?=
- =?utf-8?B?bTlRVXN0aFFHNS9IaUxjZDNmVnRLTnEzSlBCRE5hUDRtaWk4VzJkL281NVox?=
- =?utf-8?B?WkRXbUZGcnlvMVFta1dHT3VyWFdpdkllN2s2SzI1QjJxR3NoS1BCd0c5RElX?=
- =?utf-8?B?VVBoeTNqTUVKY2pJenFYMis5SllSbVpqaEUvci9lMHQwbDhPUkxSOGFqTGU3?=
- =?utf-8?B?WFZPNkZaN3JwZi9Ya1V3SzdzbElHbXVEZUZsNXhRUCtXUjN5RGdEMG1KUTUz?=
- =?utf-8?B?eFkxclN0c1B0dDBqZElqcHcyaWhLcHJ3QXJ1b3FySjc0amp3SlZpSXZqT2NS?=
- =?utf-8?B?TjJuUVQ1Nm54UlRNaWZiaGJkVXZ2V0pCYmc1VDF1VkR5OXhzdWRjQ1k3S20w?=
- =?utf-8?B?UzZtOWFrN1dhSTJ3Z0xWT0Jjb1Axa01BUlhmSTdwMDAyZUdQMmhlU0M5YkNu?=
- =?utf-8?B?WWJtNUh0RDJNMXlJaVdHSnhxcU4vNmFMZ3NpelNocmNNcTBEa0RVR1V3cTJW?=
- =?utf-8?B?ZnVKUlZxTTJZcGRBN0pBaTlaazdiZmMzemVZczdtbU02bWhTcXAwa3U0eXE4?=
- =?utf-8?B?Tmp4UGFCQlVDSy9leGFxZzZNRDhodHpZMkEvYUVJZmt6b21kdENHMVo2ejhk?=
- =?utf-8?B?bXhBd0FUNFQ0djhzNVd2VEJpTm03Y1FITzRIQjRLNWFHNmpCZ1JKZUlpV0Nj?=
- =?utf-8?B?b3BjM3hpZ2J5dTdkQmQydGczNlR6UHpnN1ZMM0czUDhxcWdYNlVSUFlOTDRT?=
- =?utf-8?B?b0FhaVpwNWN2aFhibmJpcnlJaWtWbVpqYXQyOTFFTkxiZzBLNVJYYkFMSWVh?=
- =?utf-8?B?KzdEREtmM2JqUlJrYWQ0ckJFK0ppRS92eUhaUHJEVE5KWUplWmg1NWltdkRa?=
- =?utf-8?B?NnFmNmlFZ3B1OVIrTkhqNjY0TzBJekw3bE1zcGNLM1NtWVUrZkhDckZ5cVB2?=
- =?utf-8?B?WUdwMzVScFFaQmUwdEJZR3hjdHRJUlFKcmdqYWdkM252cUZLci9DcGVNQ1p1?=
- =?utf-8?B?UWxON0lPNGNMbFlaU242MUxONnJSaXl0UGkvZDlxY3dTNmxBZmc5MTUrLzdR?=
- =?utf-8?B?ZHE3MGp3SVV3VUl3U05BaWJNRXBRNGV1QVo0Q21lcklxL1dXNm1TaFkzSmQ2?=
- =?utf-8?B?SXFMaUJ6QVlBb0kwVW5XRVdldy9hTFdQMklhRnM3TEdWM01Ed2tsN1pxU3B3?=
- =?utf-8?B?REFsSDByeEdIdVIxMVpsQ2xURGt4THZMendwdEpEVFZOa3lkc0IzWXJFV1o2?=
- =?utf-8?B?akxuRjlXV3llOW1ueGJ3VmRvYTRSUCt0dVM0clNteWF5N2p4ZkZ1ZlhZT0h4?=
- =?utf-8?B?blU1cFphaHBhOHZ1ai95ZWNMRjd2b3pvSDIrSGh0d2FBcEp3eXhNdzJucnpU?=
- =?utf-8?B?SXVINzJWcUFYemFCS0lOYXBibGUyMjhxOFR4SEZKaTV3VDV6MTN4ZytDUGhO?=
- =?utf-8?B?NmdmTzBhd1c1U0hMUE9oSFVXak84R3BiYW56cHhiNWxmNmJkRlNGb29YdVVK?=
- =?utf-8?B?Um11VUdCem5TcjVxSS81L3NvbUZvTENFb25IYmFnOFJkKy96WkZGcHFKU2ZU?=
- =?utf-8?B?U2t2cFVxc01qYXlValFucG4ySTEvRjJiQW02a0JnRmdMRG5YNXZrL21ya2NM?=
- =?utf-8?B?UndGRlJDa0M4Z3EyUGhLa1dVRzkxaDVHQlJaa0lQQzNxamo1WVdxeTNvK1lJ?=
- =?utf-8?B?UTl1ZEdrM0hidGZ5ZVByOG1zUzFKR0t6MjgyeWI3eWVaWFJZaEVlVmdXc3Zu?=
- =?utf-8?B?Mm1rQWRnYlQ2aXI5eUU4UlNhSFMyVWRQdkd3S0tndStIQmMzWE1XUjU4d3ZB?=
- =?utf-8?B?bGdjeHZ4UFJwbmRKVWM1UXdsZUxuK0gvd2pTTmM3QlJTZnBFcHBzOEJ3M1Z0?=
- =?utf-8?B?WlZVWjg2ZTVnPT0=?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR10MB5437.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?OXdjMVpFQTkrS3R1UkhFRWl1M3FScW43c0t3K0JrUVUzU1FkT0JtL3dWa0Zi?=
- =?utf-8?B?M2JnRWo0SG5HSWZKSWJRaDhvcGovbmJ4aFZSeFVkaFI2SGdSQi8rM09HOFNN?=
- =?utf-8?B?dEE2Z0NBRnpIK2xoeG1veWlOemxpcFUvZ3dlTW9XZ2FDNVUrbTF6a1BnSXBC?=
- =?utf-8?B?Tk1QancwWGVBc0VrZTB3UVhmR3lVR0dWcWdvcG1rVXBrUXlVcjNqYUdmbnZI?=
- =?utf-8?B?M3l2c3B0eHJTSHJJeGFyMXRsK1JiOEFIK0l1VWN3dVYvaGIyQ29XSThjM09s?=
- =?utf-8?B?cGRqK2xZVHUwaEZiV1A2VE1sa2RoeFdJYnpWRUo3QmI3QWF5WUpGdWVsYkZi?=
- =?utf-8?B?NkRrVDJuYWFZZXBYOWVmbDlrS0hQOXBiTkVyTFJlMkJLbk1yZ3RhY3UzNUdv?=
- =?utf-8?B?ZE5yNVU0OWVKQlNGRUUwMm5WYXZzS3pydmxuMlpnaERmK3RMaDFHWFdwNjZ3?=
- =?utf-8?B?TkwrdlRNdktzOG55QllqZnUzYTZaM05FcDV3eVJjQkdxaTBsaHBZclhSQndu?=
- =?utf-8?B?U0gyMGcrc01kblJLU0hiREhKNHlqTDAySjVNY2NwZ0FXaGNEck5HWUF1Nmdk?=
- =?utf-8?B?NWE1ZmFrZWdZZzRWeW9rVmtuU1N5NnhiT0JBZ0NwVzBOeWFDSHB1eS9WUkMw?=
- =?utf-8?B?UlNDYXhOWUZFVkp3WDNvNThCWGg5Snp3NVhGVVhWRENBMFZ5eGQ0SnoxQmV4?=
- =?utf-8?B?VzNxbWN0RFh1OGo1Q0JaYXlFRTBGdU02c3VqaUlSaTVqMWg4WXA2L3VQVGxs?=
- =?utf-8?B?UDBjcnhhNi9naSt2QkZ6QldJMzVxT1lWT3NqY3YvRXRScm0yZ3lNWGQ2S0dO?=
- =?utf-8?B?ejN6bjlTR3FWTGZCWlJMdjZ4YkcrOSs1V3lseWhXWUN0NWNrRXFRZXdQRmM2?=
- =?utf-8?B?aWZhVWd5SjdKYlFXOVJDUlhNQVZGdS9ScnNZZGI5RzhQc3pvaWtYSXZsYkEz?=
- =?utf-8?B?Z0U2UkhEOXJrdEphQUNwZXlKMmV2d1gwWjNBcXBYS00wT0J1U0txR1lSanV0?=
- =?utf-8?B?SEdiTm1hOE80L3dwamN2SDFXaDcza3krc2JwbW9HcWxpaWdoWUx0Z1N2Mk9r?=
- =?utf-8?B?Q1FlNml4TmJBN04rNGVFaXFVcE00Mnl2QXJRc3hZcVlHZEtrd25zUlhSNC9L?=
- =?utf-8?B?UVRLeVhlUkd2OVNIWUJRdlNLbDVmYTkremd4SFNqRTBMVUM3TVhSSWhMY1N1?=
- =?utf-8?B?NE91UGtZYnF1QitWVkU1UkR0OWdOVVhGVUJxRG10TS9INis5ME9udy93cFpB?=
- =?utf-8?B?TWlKa0hjWThvd1RVRkx5bmxZK2VDSXoyS0RmY0lsZzliblZiS0ZTWjAxT0Zz?=
- =?utf-8?B?RTByZkV1dmh4NXY5czF6c0lGb1BIN2V6RFZrenQ5VitmcEErd1Q1cDRGM3dx?=
- =?utf-8?B?NTdqaHBURjBsSkt0MEtTSUk3ZjZWU0FReGJHQ0hOMDh0UDJYVnAyN0h0dTFE?=
- =?utf-8?B?T21BSWpyQzRyQ1hkTGtKQ0JUNXlNRytXSWFnUmRCK3AwNytpSTV2ODhtWSs0?=
- =?utf-8?B?eWdKWlVjTUZFbDFvcTZoV1JHQkdmZXZ6dkw0T00yUjdHT0tYV0J3M1NFditT?=
- =?utf-8?B?REs4MjZZZWNIbTFLbTZqMzdTZFVDNzBqNndEOHB0WWh4aFAvVC9FV0pYUnpo?=
- =?utf-8?B?UDRtMjhrZVpHTFhqS21NczI2c0pLUzNIeitudzZ2Sk9QNk9XbkViSGEzMmsz?=
- =?utf-8?B?TXNTK1BEWWl3RWYwUS9mZU50TnNaMjZMdDlJNFJWcDBGWkx5ZnFodVpQbisw?=
- =?utf-8?B?SW1lcG5xRmdUdmRXYUtXQ3U2c1cwODl2ZWswc0tCaEtwRWxmQjgyUHJVNjVS?=
- =?utf-8?B?T0M1K1RBMlNzYzFtSnh5MUgvUEFTZ0p6N2NHaC8wZEJWeTdTU25PUlgybzVB?=
- =?utf-8?B?czdYRWNUQXc4aEt6SXI2KytrbHJZTmM4bk0zaGtvZ2hOWUNWaFJFT1gycjYx?=
- =?utf-8?B?ZG9VL1ZJa3hxb2RCMDhKRTFzVWYzR0tyM3JzUm5CaHhCMnRndzlnbEY5R05K?=
- =?utf-8?B?K3IrWG51dHZ1bzVuWTVWeDN4NHFxMjlxckpwL0FrcVQ3ZDNkUlF3WFZHRjA5?=
- =?utf-8?B?MlBvelNUSnQ3cUpaUW13d045WlpaV0tES0MvUzJaeGRsZkhHTVNsZmhTakNj?=
- =?utf-8?B?VzBPZjVZbVZBM1VhRjVDaEJNRk9JVVRZSk53ckRBWVZmSERKckdQOWV1ajNB?=
- =?utf-8?B?Nnc9PQ==?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	WNEwzwMEyCoFU/5UW4iHpFBUnsvLnfKnL8kiZ0YsH7AjMe+xq1an2rjKGGUcwdhMugpSq4PqmN1AEelAaFCQiq5Byor7ADPsLFCVJm/xkN2tusFDvjgef8LFSQVZs0ou4k+mKpZb0kw3dxUJ1LcuTqitKF64ZO5MVECROCsTwtTfMfAJrfsDN6URu510ndQK9EpEJ9xRNaMAIbkacdFB/8AowgCxu99SBnbE1yhCPKfjiolq8gFL2T20ZQKfbEn85sw5C6c9292mGU6zegJxfmWiPkRJVXPdurOdWCMGQ7bH5KgSBxdYVDluoDaa2/tLzcCc/ycee8M8kBJNASxOUrEEw33clZlUD7OEThU1WUPhYrSppwRJLVr2LTW2DVriLtxKEKWoHDN+HRnf9FcNZpyUo8/3Lq3XVGoKwVXisliLzIhXS3KQQB6tzt7h9mkGjwFkbNSeVWIz8wYruGQOBYKaKbu1suRb+HuzGy9ua5bA6Ydy5dbPecI9SDv6f4brgXMJ5UG/rCR8gz3ZFtAJfdnHfVWz8F+dS1NAA8LoWYQSbrOss6vxjPMMizxCclcoXtvEBaT2KY8DgU5t6t4JYxkwa6HCK8zJU/8guSVCE00=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 97586cc1-7fba-4158-470e-08de16389139
-X-MS-Exchange-CrossTenant-AuthSource: SJ0PR10MB5437.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Oct 2025 15:42:14.6863
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: mGkdmPMSs+NRwdXpru/EMLMpv/xlZiMfCfY36ntt9IsLtR4TSX+PPNvQCMG94vDw21C6TjnsDGBFn3+bEp+1zkqerLFFopDQhs+iONkrLtU=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR10MB4631
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-10-28_05,2025-10-22_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 mlxlogscore=959
- adultscore=0 phishscore=0 suspectscore=0 bulkscore=0 malwarescore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2510020000 definitions=main-2510280131
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDI3MDA1MiBTYWx0ZWRfX21YpuRBo6Mpo
- K3M8k3hh6DzlEZ1eOfq58AqAj9mWTdK7BrfSpOATQuh9fO8jjNH/gb+qGU2G019G8m96piJWvES
- UQel1UUUS0805Ee75dziymxKKnWotDUqI//4hzcu/mEMZrmOO+o8b3Lh827LXkdtV6t/7ntN10z
- xQCH3Nsg/hboXgQmrwMSERS+EZs29Xs82pCV6Nj+7QZjDgQ5G0+sXgEDNTUW7GDD1cFLf2EDyR1
- x5cfyNQWXTJ9C12xBLs2tjwYn3EMEXkAtwHHuUK0MFbFaZNs5qjnh7V9kAIVkEF45dYMZkLdpZn
- fOa9+/pIJ9R4fEFeeT27KC6hEYp4/6O84bl2ktKY4QNnhyBHEEsytZDbJIsC2lZ2AjulFLlqOM9
- t6DgEd2jdNVkd1BAhGt0UrRUNPy7MGmgCOOvTaUu+iiPBtG/D1A=
-X-Proofpoint-GUID: bKoVM5AKsI0_BM8b6u5pfODQXEsUsysi
-X-Proofpoint-ORIG-GUID: bKoVM5AKsI0_BM8b6u5pfODQXEsUsysi
-X-Authority-Analysis: v=2.4 cv=abVsXBot c=1 sm=1 tr=0 ts=6900e45b b=1 cx=c_pps
- a=zPCbziy225d3KhSqZt3L1A==:117 a=zPCbziy225d3KhSqZt3L1A==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
- a=x6icFKpwvdMA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VwQbUJbxAAAA:8 a=_-oXDqdGEXAFBEsyR_cA:9 a=QEXdDO2ut3YA:10 cc=ntf
- awl=host:12123
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
+From: Christian Hitz <christian.hitz@bbv.ch>
 
+If a GPIO is used to control the chip's enable pin, it needs to be pulled
+high before any i2c communication is attempted.
 
-On 28/10/25 12:04 am, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.15.196 release.
-> There are 123 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Wed, 29 Oct 2025 18:34:15 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/ 
-> patch-5.15.196-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+Currently, the enable GPIO handling is not correct.
 
-perf failed to compile with following errors at compilation.
+Assume the enable GPIO is low when the probe function is entered. In this
+case the device is in SHUTDOWN mode and does not react to i2c commands.
 
-BUILDSTDERR: tests/perf-record.c: In function 'test__PERF_RECORD':
-BUILDSTDERR: tests/perf-record.c:118:17: error: implicit declaration of 
-function 'evlist__cancel_workload'; did you mean 
-'evlist__start_workload'? [-Werror=implicit-function-declaration]
-BUILDSTDERR:   118 |                 evlist__cancel_workload(evlist);
-BUILDSTDERR:       |                 ^~~~~~~~~~~~~~~~~~~~~~~
-BUILDSTDERR:       |                 evlist__start_workload
+During probe the following sequence happens:
+ 1. The call to lp50xx_reset() on line 548 has no effect as i2c is not
+    possible yet.
+ 2. Then - on line 552 - lp50xx_enable_disable() is called. As
+    "priv->enable_gpio“ has not yet been initialized, setting the GPIO has
+    no effect. Also the i2c enable command is not executed as the device
+    is still in SHUTDOWN.
+ 3. On line 556 the call to lp50xx_probe_dt() finally parses the rest of
+    the DT and the configured priv->enable_gpio is set up.
 
+As a result the device is still in SHUTDOWN mode and not ready for
+operation.
 
-There is no definition for evlist__cancel_workload
+Split lp50xx_enable_disable() into distinct enable and disable functions
+to enforce correct ordering between enable_gpio manipulations and i2c
+commands.
+Read enable_gpio configuration from DT before attempting to manipulate
+enable_gpio.
+Add delays to observe correct wait timing after manipulating enable_gpio
+and before any i2c communication.
 
-Following are references of 'evlist__cancel_workload'
-tools/perf/tests/perf-record.c:118:	evlist__cancel_workload(evlist);
-tools/perf/tests/perf-record.c:130:	evlist__cancel_workload(evlist);
-tools/perf/tests/perf-record.c:142:	evlist__cancel_workload(evlist);
-tools/perf/tests/perf-record.c:155:	evlist__cancel_workload(evlist);
+Fixes: 242b81170fb8 ("leds: lp50xx: Add the LP50XX family of the RGB LED driver")
 
+Cc: stable@vger.kernel.org
+Signed-off-by: Christian Hitz <christian.hitz@bbv.ch>
+---
+Changes in v2:
+ - Unconditionally reset in lp50xx_enable
+ - Define magic numbers
+ - Improve log message
+---
+ drivers/leds/leds-lp50xx.c | 55 +++++++++++++++++++++++++++-----------
+ 1 file changed, 40 insertions(+), 15 deletions(-)
 
-Commit which need to be reverted.
-b7e5c59f3b09 perf test: Don't leak workload gopipe in PERF_RECORD_*
+diff --git a/drivers/leds/leds-lp50xx.c b/drivers/leds/leds-lp50xx.c
+index 94f8ef6b482c..d3485d814cf4 100644
+--- a/drivers/leds/leds-lp50xx.c
++++ b/drivers/leds/leds-lp50xx.c
+@@ -50,6 +50,12 @@
+ 
+ #define LP50XX_SW_RESET		0xff
+ #define LP50XX_CHIP_EN		BIT(6)
++#define LP50XX_CHIP_DISABLE	0x00
++#define LP50XX_START_TIME_US	500
++#define LP50XX_RESET_TIME_US	3
++
++#define LP50XX_EN_GPIO_LOW	0
++#define LP50XX_EN_GPIO_HIGH	1
+ 
+ /* There are 3 LED outputs per bank */
+ #define LP50XX_LEDS_PER_MODULE	3
+@@ -371,19 +377,42 @@ static int lp50xx_reset(struct lp50xx *priv)
+ 	return regmap_write(priv->regmap, priv->chip_info->reset_reg, LP50XX_SW_RESET);
+ }
+ 
+-static int lp50xx_enable_disable(struct lp50xx *priv, int enable_disable)
++static int lp50xx_enable(struct lp50xx *priv)
+ {
+ 	int ret;
+ 
+-	ret = gpiod_direction_output(priv->enable_gpio, enable_disable);
++	if (priv->enable_gpio) {
++		ret = gpiod_direction_output(priv->enable_gpio, LP50XX_EN_GPIO_HIGH);
++		if (ret)
++			return ret;
++
++		udelay(LP50XX_START_TIME_US);
++	}
++
++	ret = lp50xx_reset(priv);
+ 	if (ret)
+ 		return ret;
+ 
+-	if (enable_disable)
+-		return regmap_write(priv->regmap, LP50XX_DEV_CFG0, LP50XX_CHIP_EN);
+-	else
+-		return regmap_write(priv->regmap, LP50XX_DEV_CFG0, 0);
++	return regmap_write(priv->regmap, LP50XX_DEV_CFG0, LP50XX_CHIP_EN);
++}
+ 
++static int lp50xx_disable(struct lp50xx *priv)
++{
++	int ret;
++
++	ret = regmap_write(priv->regmap, LP50XX_DEV_CFG0, LP50XX_CHIP_DISABLE);
++	if (ret)
++		return ret;
++
++	if (priv->enable_gpio) {
++		ret = gpiod_direction_output(priv->enable_gpio, LP50XX_EN_GPIO_LOW);
++		if (ret)
++			return ret;
++
++		udelay(LP50XX_RESET_TIME_US);
++	}
++
++	return 0;
+ }
+ 
+ static int lp50xx_probe_leds(struct fwnode_handle *child, struct lp50xx *priv,
+@@ -447,6 +476,10 @@ static int lp50xx_probe_dt(struct lp50xx *priv)
+ 		return dev_err_probe(priv->dev, PTR_ERR(priv->enable_gpio),
+ 				     "Failed to get enable GPIO\n");
+ 
++	ret = lp50xx_enable(priv);
++	if (ret)
++		return ret;
++
+ 	priv->regulator = devm_regulator_get(priv->dev, "vled");
+ 	if (IS_ERR(priv->regulator))
+ 		priv->regulator = NULL;
+@@ -547,14 +580,6 @@ static int lp50xx_probe(struct i2c_client *client)
+ 		return ret;
+ 	}
+ 
+-	ret = lp50xx_reset(led);
+-	if (ret)
+-		return ret;
+-
+-	ret = lp50xx_enable_disable(led, 1);
+-	if (ret)
+-		return ret;
+-
+ 	return lp50xx_probe_dt(led);
+ }
+ 
+@@ -563,7 +588,7 @@ static void lp50xx_remove(struct i2c_client *client)
+ 	struct lp50xx *led = i2c_get_clientdata(client);
+ 	int ret;
+ 
+-	ret = lp50xx_enable_disable(led, 0);
++	ret = lp50xx_disable(led);
+ 	if (ret)
+ 		dev_err(led->dev, "Failed to disable chip\n");
+ 
+-- 
+2.51.1
 
-thanks
-Vijay
 
