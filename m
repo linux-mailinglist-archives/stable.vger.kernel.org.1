@@ -1,58 +1,65 @@
-Return-Path: <stable+bounces-191476-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191477-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71ECCC14DB6
-	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 14:32:30 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E30CDC14EC4
+	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 14:40:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6B9CE4EC674
-	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 13:32:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 204A01A20F95
+	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 13:41:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8962121D00A;
-	Tue, 28 Oct 2025 13:32:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A9D130BBB9;
+	Tue, 28 Oct 2025 13:40:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="CuP7S02l"
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="kRutTT7P"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49FC8217736;
-	Tue, 28 Oct 2025 13:32:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.149.199.84
+Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 015CF14A91;
+	Tue, 28 Oct 2025 13:40:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761658345; cv=none; b=PYws+G9XeO5sC5eEsdprXvYKzhrBX9j337B6Zee0OYk8DFE+JNZlJ9RGR6Cy3RFy4XWRGu5lahp7uwkHVUpwB8nGo7D0vOTcPC/6eSDpvANTfMRmNRrRqhGfRFIOznFEMz9Yv4xPDIbCVs6mjXkZ3h5S6dCjW1C7V1zXxZgb3lE=
+	t=1761658832; cv=none; b=fPPD+nhGAWs4P7FL/mjydnQtY7FL+9+GSDPZl19PgF64M77RjcTHXNX3MMwx68LoL1wk1MlIZ5+pW0x9P3rLT0OPvwfn04smyrcHN5icTHq2s5s2WNIeGCAfhbJ1OEuFOiPPGWDfCj4rognnfI2/EDPDo6BVon/Tx4uwCnGGOic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761658345; c=relaxed/simple;
-	bh=SnwPB+S21saEVcU1tJiDY79Pr0vMZTC2F4f36XPcMV4=;
+	s=arc-20240116; t=1761658832; c=relaxed/simple;
+	bh=4isOoBfvoLcvKDHRkcK9OPTo8LnKjo2troj/tVLwnOk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Vn0gCyKdfLB/W7JoTt5TxsmK0JWn44xJgRJWoiXcVaeyHm0DQMD6xCd8Zm2ievdjTNwujr7CjrJmQgB9CqokvWgdiKh+B4GbKaQGBPwSiSgy5+30gEDOcrDXt6Ih2GMNLH1fNj7Ri1Pv03OcnTya9JgedBZiqcXYpHGWWBgHUCA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=CuP7S02l; arc=none smtp.client-ip=83.149.199.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
-Received: from localhost (unknown [10.10.165.13])
-	by mail.ispras.ru (Postfix) with UTF8SMTPSA id EFE0440D3C55;
-	Tue, 28 Oct 2025 13:32:19 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru EFE0440D3C55
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
-	s=default; t=1761658340;
-	bh=gHVq0+X/D7guqM+78XubJUagF1+VqweiN71ZpFr6YLQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=CuP7S02lgKQM4Ht70AGackWojq+ECvMgsjZthV7vp77614evIjZdqGGRlo1pF3DF6
-	 n+3I1HcpAO9YOt3TwRt0MPJ5yJsnlawEE6P6N6xFAfou1m3fPZ7s6WePvl/BtTXllR
-	 z+xgwck5ROXu/SUgtsck3WY0/GI+4Db+SzVTixhs=
-Date: Tue, 28 Oct 2025 16:32:19 +0300
-From: Fedor Pchelkin <pchelkin@ispras.ru>
-To: Theodore Ts'o <tytso@mit.edu>
-Cc: Andreas Dilger <adilger.kernel@dilger.ca>, Jan Kara <jack@suse.cz>, 
-	"Darrick J. Wong" <djwong@kernel.org>, linux-ext4@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Kees Cook <kees@kernel.org>, lvc-project@linuxtesting.org, stable@vger.kernel.org
-Subject: Re: [PATCH 2/2] ext4: fix string copying in
- parse_apply_sb_mount_options()
-Message-ID: <20251028162613-b7674fe12860ef66accbc78b-pchelkin@ispras>
-References: <20251028130949.599847-1-pchelkin@ispras.ru>
- <20251028130949.599847-2-pchelkin@ispras.ru>
+	 Content-Type:Content-Disposition:In-Reply-To; b=ALBygx5O+YnlXvmYJtFvu+8f0RZ+P5jzmyd3Quao8z6Wlxes1DLc6AT+egp64StYsyPv54iVq99M7qmbM66bHo1HdodTmASG0cmUYVS5lIaMGpxMSrbzUkEIvTBjyVEESwKfAYmJ0uNC+Mt/LKGYPnfzTsX5sTXERnTSenvlIMA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=kRutTT7P; arc=none smtp.client-ip=62.210.214.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
+Received: from gaia.codewreck.org (localhost [127.0.0.1])
+	by submarine.notk.org (Postfix) with ESMTPS id A6F9914C2D3;
+	Tue, 28 Oct 2025 14:40:20 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
+	s=2; t=1761658826;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=xo7TQuJYcG9+UK28crcCJLL6or7L7xI6NKDHv69QYDA=;
+	b=kRutTT7PclY7sENP5lOYQbx7cmRzg11A4Jep1etWbaNXFiwQTssevEEiuLD2QlpTT8VQr8
+	J3po/6JrtFKOdMZyWoGMfL4FNuKWcDfQxRg1ekFnzSf6IqWU47EH3ZUN8FafYLNzitkUOo
+	4Bo0OmwbR+YXuwhMin4T5ZhLD9B26epyYZ3NNQiz4c/wq8kPDpD8lI2trPlws7xXXvOHS7
+	oz38iVCXlHOXrc5zu1NxFw1oW2qoUMTiXAE8vZejxmtdnuTIyEPT3f0S1ojIJGmaCvZmUT
+	VpoxgKOHcqRMK59DbcThZK8iy1gBd65UuyMWaqi6tD9sqSYnAWtGZZvKvrrYOA==
+Received: from localhost (gaia.codewreck.org [local])
+	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 1c797040;
+	Tue, 28 Oct 2025 13:40:18 +0000 (UTC)
+Date: Tue, 28 Oct 2025 22:40:03 +0900
+From: Dominique Martinet <asmadeus@codewreck.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
+	hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
+	sr@sladewatkins.com
+Subject: Re: [PATCH 5.10 000/325] 5.10.246-rc2 review
+Message-ID: <aQDHs-d24Vj1STKb@codewreck.org>
+References: <20251028092846.265406861@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,95 +68,29 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20251028130949.599847-2-pchelkin@ispras.ru>
+In-Reply-To: <20251028092846.265406861@linuxfoundation.org>
 
-On Tue, 28. Oct 16:09, Fedor Pchelkin wrote:
-> strscpy_pad() can't be used to copy a possibly non-NUL-term string into a
-> NUL-term string.  Commit 0efc5990bca5 ("string.h: Introduce memtostr() and
-> memtostr_pad()") provides additional information in that regard.  So if
-> this happens, the following warning is observed:
+Greg Kroah-Hartman wrote on Tue, Oct 28, 2025 at 10:29:21AM +0100:
+> This is the start of the stable review cycle for the 5.10.246 release.
+> There are 325 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 > 
-> strnlen: detected buffer overflow: 65 byte read of buffer size 64
-> WARNING: CPU: 0 PID: 28655 at lib/string_helpers.c:1032 __fortify_report+0x96/0xc0 lib/string_helpers.c:1032
-> Modules linked in:
-> CPU: 0 UID: 0 PID: 28655 Comm: syz-executor.3 Not tainted 6.12.54-syzkaller-00144-g5f0270f1ba00 #0
-> Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-> RIP: 0010:__fortify_report+0x96/0xc0 lib/string_helpers.c:1032
-> Call Trace:
->  <TASK>
->  __fortify_panic+0x1f/0x30 lib/string_helpers.c:1039
->  strnlen include/linux/fortify-string.h:235 [inline]
->  sized_strscpy include/linux/fortify-string.h:309 [inline]
->  parse_apply_sb_mount_options fs/ext4/super.c:2504 [inline]
->  __ext4_fill_super fs/ext4/super.c:5261 [inline]
->  ext4_fill_super+0x3c35/0xad00 fs/ext4/super.c:5706
->  get_tree_bdev_flags+0x387/0x620 fs/super.c:1636
->  vfs_get_tree+0x93/0x380 fs/super.c:1814
->  do_new_mount fs/namespace.c:3553 [inline]
->  path_mount+0x6ae/0x1f70 fs/namespace.c:3880
->  do_mount fs/namespace.c:3893 [inline]
->  __do_sys_mount fs/namespace.c:4103 [inline]
->  __se_sys_mount fs/namespace.c:4080 [inline]
->  __x64_sys_mount+0x280/0x300 fs/namespace.c:4080
->  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
->  do_syscall_64+0x64/0x140 arch/x86/entry/common.c:83
->  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+> Responses should be made by Thu, 30 Oct 2025 09:28:09 +0000.
+> Anything received after that time might be too late.
 > 
-> Since s_es->s_mount_opts might be non-NUL-term, annotate it with
-> __nonstring and use the proper memtostr_pad() routine to get its NULL-term
-> copy.
-> 
-> Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
-> 
-> Fixes: 8ecb790ea8c3 ("ext4: avoid potential buffer over-read in parse_apply_sb_mount_options()")
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.10.246-rc2.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.10.y
+> and the diffstat can be found below.
 
+Tested 98417fb6195f ("Linux 5.10.246-rc2") on:
+- arm i.MX6ULL (Armadillo 640)
+- arm64 i.MX8MP (Armadillo G4)
 
-Though giving it a second glance I wonder what overflow problem does the
-commit in Fixes address?
-
-Behavior actually stays the same: before the blamed patch in case of a
-non-NUL-term string kstrndup() just allocates a buffer of `size + 1`
-(which equals to 65 here) and no overflow is possible, as far as I can
-see.
-
-If it's actually true, maybe we'd better just revert 8ecb790ea8c3 ("ext4:
-avoid potential buffer over-read in parse_apply_sb_mount_options()") ?
-
-
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-> ---
->  fs/ext4/ext4.h  | 2 +-
->  fs/ext4/super.c | 2 +-
->  2 files changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/fs/ext4/ext4.h b/fs/ext4/ext4.h
-> index 57087da6c7be..4c8698316457 100644
-> --- a/fs/ext4/ext4.h
-> +++ b/fs/ext4/ext4.h
-> @@ -1429,7 +1429,7 @@ struct ext4_super_block {
->  	__le64	s_last_error_block;	/* block involved of last error */
->  	__u8	s_last_error_func[32] __nonstring;	/* function where the error happened */
->  #define EXT4_S_ERR_END offsetof(struct ext4_super_block, s_mount_opts)
-> -	__u8	s_mount_opts[64];
-> +	__u8	s_mount_opts[64] __nonstring;
->  	__le32	s_usr_quota_inum;	/* inode for tracking user quota */
->  	__le32	s_grp_quota_inum;	/* inode for tracking group quota */
->  	__le32	s_overhead_clusters;	/* overhead blocks/clusters in fs */
-> diff --git a/fs/ext4/super.c b/fs/ext4/super.c
-> index 33e7c08c9529..57df129873e3 100644
-> --- a/fs/ext4/super.c
-> +++ b/fs/ext4/super.c
-> @@ -2483,7 +2483,7 @@ static int parse_apply_sb_mount_options(struct super_block *sb,
->  	if (!sbi->s_es->s_mount_opts[0])
->  		return 0;
->  
-> -	strscpy_pad(s_mount_opts, sbi->s_es->s_mount_opts);
-> +	memtostr_pad(s_mount_opts, sbi->s_es->s_mount_opts);
->  
->  	fc = kzalloc(sizeof(struct fs_context), GFP_KERNEL);
->  	if (!fc)
-> -- 
-> 2.51.0
-> 
+No obvious regression in dmesg or basic tests:
+Tested-by: Dominique Martinet <dominique.martinet@atmark-techno.com>
+-- 
+Dominique Martinet
 
