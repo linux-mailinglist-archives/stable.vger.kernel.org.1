@@ -1,135 +1,191 @@
-Return-Path: <stable+bounces-191493-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191494-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id C79CCC152BB
-	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 15:30:55 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A7E0C152EE
+	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 15:33:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 4168335429F
-	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 14:30:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB3091B23C32
+	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 14:33:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1AEA204C36;
-	Tue, 28 Oct 2025 14:30:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7336825A633;
+	Tue, 28 Oct 2025 14:33:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="s2MjgxQ6"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZT4z4Xby"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f171.google.com (mail-lj1-f171.google.com [209.85.208.171])
+Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA0EC1E1DE7
-	for <stable@vger.kernel.org>; Tue, 28 Oct 2025 14:30:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8AF0288D0
+	for <stable@vger.kernel.org>; Tue, 28 Oct 2025 14:33:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761661850; cv=none; b=SQl0f/+T9LDd2Tyyw5qO9OnigeCapA+mHCiE2PpG/VLOi3nSkaSkojFsy/U3il64cKZ7ABpqwq4vK4+3mQ3EOIbno/agpl8wfLii6Ies/WEpuxdNuzTdfg0SlYID5QyVqyVR5MJH1jLl63T77UTVdcJQWCkLwuI47xvoFHOIOXs=
+	t=1761661991; cv=none; b=trVVpR23Co347PuEnfDFj1Pw/Mhr+hfx8Qe7Ubg0Q6dD5G3O97tcfFEqp6gq0+V39E7KScpbX80Q6bXTC7Hnx4SLT39Dv+PoidOqmw7clR2B97sgTHUKaSxQ4T69ZxOKw8ZWM/xlMSiyAB5l3wIW1T2ZnpHMsltCswKbOAs3OzQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761661850; c=relaxed/simple;
-	bh=/EnaIRg4we5FEW80Ou7ogsSNVQciSKk7T2iuyHX0uOI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Mb1kpw/chdXL5KgU+iDooYfpIb1gybJ1IQFJC1NTxlwGZN78ZpWnMnJngJGpCqaebkppPFJ7goKsTexNhKnuZfNPP6Lm6v5WGveDWP/WE2cHyRYcjBW9VxRLrWefyINF6wyJdcw9MdIG74QOPNJliJ/UwWf8WM4rl3unHXqvoMw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=s2MjgxQ6; arc=none smtp.client-ip=209.85.208.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-37902f130e1so21158321fa.1
-        for <stable@vger.kernel.org>; Tue, 28 Oct 2025 07:30:48 -0700 (PDT)
+	s=arc-20240116; t=1761661991; c=relaxed/simple;
+	bh=NEMq1QwVWGTO1PLTTQMmdZ3LbdDaen7sDe5zlw5wwnQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gRmk9uV2RVWMeeo4Ue4YsL8ZfOhSSUYZoGdZhJ2PAuvcU4B51T7as98IOyOas+WBn1AVz7Ef/zdmVMgg0zeexCbZZHS8AC2Ueejn65q8NG7kZIMQJUG8zlFo4wvk1lNQ2hu6N+zcTQ5ykAYJ7ghwqSBI6gMsNx/xAwRRuHH8MDU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZT4z4Xby; arc=none smtp.client-ip=209.85.216.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-33f9aec69b6so8331559a91.1
+        for <stable@vger.kernel.org>; Tue, 28 Oct 2025 07:33:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1761661847; x=1762266647; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RVxwfZTDpc7M4pQsaPFzCx/W1h+13bfqb6IBb/Bsbhw=;
-        b=s2MjgxQ6lTaK6dun6iIHp7vmhEed6zrkl9FD7AP7/pt8N3Nos53voI7c4s0JhMrIQK
-         KftvX3G1+qbLqG0Ve4fo08Pg/FpSuaq7rtZynrv7eD6NWKBrjWLsiArPkheUp/91vKz3
-         bNB3tWgt7Q4iSnpnZKSjB+uLcKONRZCkBIS+QnRt3KNxGoXrp8hb05ma96QaVUwKnYpd
-         hkltdaGRBbgCCqVbVfQA+KOsR9la7PmqQ0zJYMoRucTqfO0NobO+etuO8i7053KCjLZ2
-         kWMQLVqGMmrKKXBogFQqEOBJGkPuKtT78HBOh2wmXzdevwcnhWI7KnxN2j3ty4TVTlhk
-         UVOw==
+        d=gmail.com; s=20230601; t=1761661989; x=1762266789; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=D93iiJ3dCsDGMRKsIegYWo/bl71Ckop0JjDdJuUp4+A=;
+        b=ZT4z4Xby5ruNyGbxO9WS/4pyn+EkcmsCU7RxPCU0ZAosfmpRJJaudgo0Jf62zgKJlH
+         /qKTfQ3CoD2dUd8mUZUY+DQVERgxgfW3UWDf47RyoEJITskwdFyCl0RpPRCICUmh+v92
+         RJs1ErW0ebP2GQvEu0ZBn40AdrWWWq8l/vH8q4GRWe8voOiL/y7frnMF2rfewLRagfUC
+         Vawu/sjnytgrn9Ki7Xb6tTdyTDMvhI3Kcr5x/LjcyQdsfyxnWQS8rgCtSlef90ye2eUI
+         eCMGhXSLqh+Rcg+R5c+8mji3KDAqrjtX9vZvo4NNrqvStUtNhsIR7RXlnShw5+q5DmhB
+         D9lQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761661847; x=1762266647;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=RVxwfZTDpc7M4pQsaPFzCx/W1h+13bfqb6IBb/Bsbhw=;
-        b=J+71vPuBSt2yFa1iFw1BAbuhxa1HIt6nBeSLIbFT+gD64UwiOcZvFAbEEcmuHncA1c
-         oBOHRlNkoKNoj4u5haK7Sz8d8IGp834wOn8g5bVM7vaorUq1eSjh1mKx916Ss1rDVm1l
-         cXC1okAkzds1xZZazQOygniPR2NITwIeOZqD7xX1gW3kmOJNdC/t2zkjCfoZCR5lCd5G
-         Ahn3OQmeP/blrSR7YhuKa9JGpisSNesdRQfSWNnYjSv8DyudPaggnTTWzw/7fyZJjl+t
-         hACV2/c0zpUZxARdMQBHuIBApfIootHAwJQ/ufSo3kxr0xYwo982rE4aeDBJ0Ed5d69N
-         G6xQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUuXdPziqnQjazlPsOHrwH2XI3j1U1UHkgA/qTsJCOy7RwI3B32zP47VaWq9X9wSAFO0YzITWg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyRFg/TbbubN5OpujKIsNMgvz0aG19oE4b7g7Ijug0IF9R+DUnL
-	WAOPvHErE6E7+4s+8GF9gGWt+xhjA1XePb8cvaJp3k/SHcmr2PUxj7SaG3THmDGel5Nbq+GZ9ju
-	dFqUn4f+CXPH4JvpKYZYtRMV+jDOGph4VggYC5sgdvg==
-X-Gm-Gg: ASbGnctd0FGUfEAz6+rtXrRWV81bOYsda33GjMAhoamwYXQOL2MoGzPgfQxfo7I2IIp
-	Km/CQG/WE+pF9o173aXOAGXlda3PJnRYDeKJSKAR9fRl3vik7hz2sFG4izICCIAeGFOt0+o+ykc
-	DUYnh085uZpylSp4Io8LyguXJ6k+q4Np7OcsDV/XajYXI01zNg9zpbLBhMMEnpX/oGJUB1p7wDW
-	g765SwxSeFCei4nxnacE2lOqSfwhybPGSkRjDyf6xL0CHNCKLL9F8limVnU+w/iPCvfZck=
-X-Google-Smtp-Source: AGHT+IGfUDzyVfhtzulYZCc6iSfT211wGg2uBIly7fuTRZ7yuQGh9plAyDcmAhZ0TpLkRKajO5Ig9eKhL0B7O+boJMQ=
-X-Received: by 2002:a05:651c:23d2:20b0:378:e0e0:3b3a with SMTP id
- 38308e7fff4ca-379076be317mr9148741fa.14.1761661846757; Tue, 28 Oct 2025
- 07:30:46 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1761661989; x=1762266789;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=D93iiJ3dCsDGMRKsIegYWo/bl71Ckop0JjDdJuUp4+A=;
+        b=VWJPBmf+H1iTEnFRlO1vuTHimUd9YqaEHR0Y1fAcgJYKleKF8rQz6rln6xJVgmmWzL
+         AFUBSHIepWnwKeYsfbmEl5rNl8B1aCIsO5PLpVl6UCOFB0pcD1FQzITVRlpjTGsbpP5r
+         FIMc5/gslDmQ8YN4xNXD9P6xZbcDBXDTxDq5nVXJCt2V81Ja/CTcbgGB0p16mDNcIvhB
+         zbL+A429+tGyQACNdXMIXXRvqY2rgX3aB3HzMNC/it7pTmLL4kRifu5qrTCejaYtDRWe
+         GPCBK4ANQws/4VvTfu8kZOiqfEcaUIswTUFUlQg+8gJtxRDx7JzMEB4fdQQ5ajvSfRxD
+         0H1w==
+X-Forwarded-Encrypted: i=1; AJvYcCUX05y1alFLMHoc5Wydgg6QHLehOIMp4CR26uEmJFUp8m8Xi/xs5HvlvhyTXT7PmS+R5ULmR4Q=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwXyXglXLoU6l2R5zRBeboczP4/nCKc5SgHUZpp3EO9kUhA6UfY
+	xqK9W04nnXqWTir2GnKn3zJ5FWsOl6hhOFphx3jzVsjcUlBE207/UuOO
+X-Gm-Gg: ASbGncvm0MeFudm67EgzvUpgCFQI3+y1S8AKUK4TayqfIrVRkGopibI2s0yN9S1oEC2
+	CXkP/qTScHIkZcSt70rFC+oYZtzY6FZ624rIKi8qAyU46Z0HY/vzxclOtK5wiJDDNqfQceMhBAU
+	TA0Npgs+fStigopGdj4eDcBJLcp5YcVsertsrfRrFHNawUU9BvAKDvRM1Zvg9vUErrLnZhsGAZU
+	QzGP4PukV+kzTIzLwm3aNL7Kpr/Zxp9Ao26VL5bu3fnIu7z9jCMjj6BGXdbNB2Bu6HOsQaFGWay
+	F9rxhVAyT1hAwYxl0M115H8IJx8OT7GGKI4b6+XO7FvaMkaYuqNzmgIH6nJR1otFpkxZgP9Pwfy
+	8ZkJHIonl2Q80LJViM0zjXVepxSIpf0vJV5VuDH1KpfMMmD0rcUuxkiKWieI6msaYpJfaRmW0eo
+	kAKjd2jAMC8TrB2g==
+X-Google-Smtp-Source: AGHT+IFxazy1uo7lguaYfMUdntQxPnZeb5i61czGYGQ3K0U8mqn48jz+w9wNFW2dtNumYz8Q2nBdZA==
+X-Received: by 2002:a17:90b:3905:b0:338:3221:9dc0 with SMTP id 98e67ed59e1d1-34027c0782dmr4653120a91.37.1761661988872;
+        Tue, 28 Oct 2025 07:33:08 -0700 (PDT)
+Received: from minh.192.168.1.1 ([2001:ee0:4f4c:210:c0a1:2245:cbbf:7e28])
+        by smtp.googlemail.com with ESMTPSA id 98e67ed59e1d1-33fed7d1fdesm12397037a91.5.2025.10.28.07.33.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 28 Oct 2025 07:33:07 -0700 (PDT)
+From: Bui Quang Minh <minhquangbui99@gmail.com>
+To: netdev@vger.kernel.org
+Cc: "Michael S. Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowang@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Gavin Li <gavinl@nvidia.com>,
+	Gavi Teitz <gavi@nvidia.com>,
+	Parav Pandit <parav@nvidia.com>,
+	virtualization@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	Bui Quang Minh <minhquangbui99@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH net v6] virtio-net: fix received length check in big packets
+Date: Tue, 28 Oct 2025 21:31:16 +0700
+Message-ID: <20251028143116.4532-1-minhquangbui99@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251027-fix-bmc150-v1-1-ccdc968e8c37@linaro.org>
- <aP9dqnGb_tdWdr7y@smile.fi.intel.com> <CACRpkdb9GYL3dQzn28Q5E_-keJdLLA+TiXxTuNf1aaevKqHJYA@mail.gmail.com>
- <aQCqOJWQpvgI1o1q@smile.fi.intel.com>
-In-Reply-To: <aQCqOJWQpvgI1o1q@smile.fi.intel.com>
-From: Linus Walleij <linus.walleij@linaro.org>
-Date: Tue, 28 Oct 2025 15:30:35 +0100
-X-Gm-Features: AWmQ_blj3ecUmJnRC1MKqgYg_3nbYbn6QScF7hxV1R6JPg_7pa3_fIhb0qICMdE
-Message-ID: <CACRpkda6HFnFPHELYAPbco7x4Kr1Ri9PxM4rePOGfihV0mef0Q@mail.gmail.com>
-Subject: Re: [PATCH] iio: accel: bmc150: Fix irq assumption regression
-To: Andy Shevchenko <andriy.shevchenko@intel.com>
-Cc: Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, 
-	=?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
-	Andy Shevchenko <andy@kernel.org>, Matti Vaittinen <mazziesaccount@gmail.com>, 
-	Stephan Gerhold <stephan@gerhold.net>, linux-iio@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Tue, Oct 28, 2025 at 12:34=E2=80=AFPM Andy Shevchenko
-<andriy.shevchenko@intel.com> wrote:
-> On Mon, Oct 27, 2025 at 06:24:25PM +0100, Linus Walleij wrote:
-> > On Mon, Oct 27, 2025 at 12:55=E2=80=AFPM Andy Shevchenko
-> > <andriy.shevchenko@intel.com> wrote:
-> > > On Mon, Oct 27, 2025 at 11:18:17AM +0100, Linus Walleij wrote:
-> >
-> > > Hmm... Isn't this already being discussed somewhere? I have some d=C3=
-=A9j=C3=A0-vu.
-> >
-> > I brought it up on the PostmarkeOS IRC, otherwise I don't
-> > know.
->
-> It might be that it was a cross-mail that describes the same issue in ano=
-ther
-> IIO driver.
+Since commit 4959aebba8c0 ("virtio-net: use mtu size as buffer length
+for big packets"), when guest gso is off, the allocated size for big
+packets is not MAX_SKB_FRAGS * PAGE_SIZE anymore but depends on
+negotiated MTU. The number of allocated frags for big packets is stored
+in vi->big_packets_num_skbfrags.
 
-Hm, I'm a bit worried that this may be a generic problem
-in several drivers that now think they can be used without
-IRQ but actually crash if you try to do that :/
+Because the host announced buffer length can be malicious (e.g. the host
+vhost_net driver's get_rx_bufs is modified to announce incorrect
+length), we need a check in virtio_net receive path. Currently, the
+check is not adapted to the new change which can lead to NULL page
+pointer dereference in the below while loop when receiving length that
+is larger than the allocated one.
 
-> > > Wouldn't check for 0 be enough?
-> > >
-> > >         if (!data->irq)
-> >
-> > But this driver does not store the IRQ number in the
-> > instance struct because it isn't used outside of the probe()
-> > function.
-> >
-> > The information that needs to be stored is bool so that's
-> > why I stored a bool.
->
-> I understand this, but I think storing the IRQ number is tiny better
-> as we might have a chance to need it in the future.
+This commit fixes the received length check corresponding to the new
+change.
 
-Fair enough, it's a common pattern so I'll rewrite the patch
-like this!
+Fixes: 4959aebba8c0 ("virtio-net: use mtu size as buffer length for big packets")
+Cc: stable@vger.kernel.org
+Signed-off-by: Bui Quang Minh <minhquangbui99@gmail.com>
+---
+Changes in v6:
+- Fix the length check
+- Link to v5: https://lore.kernel.org/netdev/20251024150649.22906-1-minhquangbui99@gmail.com/
+Changes in v5:
+- Move the length check to receive_big
+- Link to v4: https://lore.kernel.org/netdev/20251022160623.51191-1-minhquangbui99@gmail.com/
+Changes in v4:
+- Remove unrelated changes, add more comments
+- Link to v3: https://lore.kernel.org/netdev/20251021154534.53045-1-minhquangbui99@gmail.com/
+Changes in v3:
+- Convert BUG_ON to WARN_ON_ONCE
+- Link to v2: https://lore.kernel.org/netdev/20250708144206.95091-1-minhquangbui99@gmail.com/
+Changes in v2:
+- Remove incorrect give_pages call
+- Link to v1: https://lore.kernel.org/netdev/20250706141150.25344-1-minhquangbui99@gmail.com/
+---
+ drivers/net/virtio_net.c | 25 ++++++++++++-------------
+ 1 file changed, 12 insertions(+), 13 deletions(-)
 
-Yours,
-Linus Walleij
+diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
+index a757cbcab87f..461ad1019c37 100644
+--- a/drivers/net/virtio_net.c
++++ b/drivers/net/virtio_net.c
+@@ -910,17 +910,6 @@ static struct sk_buff *page_to_skb(struct virtnet_info *vi,
+ 		goto ok;
+ 	}
+ 
+-	/*
+-	 * Verify that we can indeed put this data into a skb.
+-	 * This is here to handle cases when the device erroneously
+-	 * tries to receive more than is possible. This is usually
+-	 * the case of a broken device.
+-	 */
+-	if (unlikely(len > MAX_SKB_FRAGS * PAGE_SIZE)) {
+-		net_dbg_ratelimited("%s: too much data\n", skb->dev->name);
+-		dev_kfree_skb(skb);
+-		return NULL;
+-	}
+ 	BUG_ON(offset >= PAGE_SIZE);
+ 	while (len) {
+ 		unsigned int frag_size = min((unsigned)PAGE_SIZE - offset, len);
+@@ -2107,9 +2096,19 @@ static struct sk_buff *receive_big(struct net_device *dev,
+ 				   struct virtnet_rq_stats *stats)
+ {
+ 	struct page *page = buf;
+-	struct sk_buff *skb =
+-		page_to_skb(vi, rq, page, 0, len, PAGE_SIZE, 0);
++	struct sk_buff *skb;
++
++	/* Make sure that len does not exceed the allocated size in
++	 * add_recvbuf_big.
++	 */
++	if (unlikely(len > (vi->big_packets_num_skbfrags + 1) * PAGE_SIZE)) {
++		pr_debug("%s: rx error: len %u exceeds allocate size %lu\n",
++			 dev->name, len,
++			 (vi->big_packets_num_skbfrags + 1) * PAGE_SIZE);
++		goto err;
++	}
+ 
++	skb = page_to_skb(vi, rq, page, 0, len, PAGE_SIZE, 0);
+ 	u64_stats_add(&stats->bytes, len - vi->hdr_len);
+ 	if (unlikely(!skb))
+ 		goto err;
+-- 
+2.43.0
+
 
