@@ -1,67 +1,86 @@
-Return-Path: <stable+bounces-191444-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191445-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 471B0C14711
-	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 12:47:31 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 296AAC14750
+	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 12:50:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 97E484F0A19
-	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 11:44:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D0CBD1983FD6
+	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 11:49:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13A3A3081BE;
-	Tue, 28 Oct 2025 11:44:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B34E530DEBF;
+	Tue, 28 Oct 2025 11:47:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="mjLS4cLf"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="AA9haMyl"
 X-Original-To: stable@vger.kernel.org
-Received: from omta038.useast.a.cloudfilter.net (omta038.useast.a.cloudfilter.net [44.202.169.37])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68C752E6127
-	for <stable@vger.kernel.org>; Tue, 28 Oct 2025 11:44:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.202.169.37
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C22530DEC0
+	for <stable@vger.kernel.org>; Tue, 28 Oct 2025 11:47:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761651879; cv=none; b=lTspU06fZfI5V9imO+1vHfJu581SwHZ7nQ7au6OHnv3kSsCcYfZJgrMqPBjFGlmdV8WiNGcxQOhDxMm1uJXTAT0213ZfkXbfz20OkCdQAKO617vr0u5STNptKaIBUj2NwUDSdrqtVw55Fino1xmRiQg3VDL2hd2lvDBOpJgJfFI=
+	t=1761652055; cv=none; b=j2SoI7rmdNNCy4z6B6nIftEbYOUbVi3xGPYe7DUnVj45T2eObXLRZjJU1VFTvzce3B2UJml1ZnJeVLY6kkQDqa+1atzVYpm6Pk4GIDlCCgrytd3tinXAMJAC4VVnR0oFpgF8qJdQlFF7R/0ecpFedU2zN6XgZTO1CfVLDlXfjH0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761651879; c=relaxed/simple;
-	bh=507v8C2GmUlPkZpOaiaiLd9c3gm25H9+o3MeYv/qsVw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=P45iD9QtB1x7FdZSUzA9zU2bBu7A2Pdh+HPcT7nyhyNXAp3ia52h92Nkwp/GUzbjup5a21TqPhxLDf2iN6TubdgluU74N86YPq/xFgmn09Dsdfei7jfpoQLYujMuycykDVbx1K12eqnD2wG/8GkMtnwqmTnhbtGNdyyFpPAcbyo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=mjLS4cLf; arc=none smtp.client-ip=44.202.169.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
-Received: from eig-obgw-5004b.ext.cloudfilter.net ([10.0.29.208])
-	by cmsmtp with ESMTPS
-	id Dfz6vEk6iSkcfDi7wvAEut; Tue, 28 Oct 2025 11:44:36 +0000
-Received: from box5620.bluehost.com ([162.241.219.59])
-	by cmsmtp with ESMTPS
-	id Di7ov0ECiHwAIDi7pv8uqS; Tue, 28 Oct 2025 11:44:29 +0000
-X-Authority-Analysis: v=2.4 cv=LbQ86ifi c=1 sm=1 tr=0 ts=6900aca4
- a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
- a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=7vwVE5O1G3EA:10 a=VwQbUJbxAAAA:8
- a=HaFmDPmJAAAA:8 a=NZv-JJVNZ7gp_QotK4QA:9 a=QEXdDO2ut3YA:10
- a=nmWuMzfKamIsx3l42hEX:22 a=Wh1V8bzkS9CpCxOpQUxp:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
-	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=cOEVvaq+M0i5m1ZhWipqRZIIhWrGmgLqabOSofwdeqc=; b=mjLS4cLfo/sE8u0c35BikBjZXH
-	CwL0TpOr037Zjnebv/KBD3tm8RNkZbhNn338X1PAKlSHtZs7oK8fKKHketQBrdwMpxj382ejA25dw
-	81PAjsnVf88EEODcdCbfJM4R3vw/6vep6U9OKpsr0sn87Q9YWvXSRbp9iYWZan7c21fRXhkNYHo1F
-	OjMX8jN9ttLrZEjGacAnzIuPxpprP0Qgo+W/tIFOYlILd5oL6urZi4mEOVFRpL+EEKV1q7fIuhx9w
-	wLFalQ65fGVGE+6kE28NWQysYYp2X/9qBbILnzfClCEG2idsYsEQAqZE3SY8q79krebSCgedv15Nh
-	uTirUNTw==;
-Received: from c-73-92-56-26.hsd1.ca.comcast.net ([73.92.56.26]:42574 helo=[10.0.1.116])
-	by box5620.bluehost.com with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
-	(Exim 4.98.2)
-	(envelope-from <re@w6rz.net>)
-	id 1vDi7o-000000029f5-1YAm;
-	Tue, 28 Oct 2025 05:44:28 -0600
-Message-ID: <998417df-0bb0-4a04-89f5-ba664c14c305@w6rz.net>
-Date: Tue, 28 Oct 2025 04:44:26 -0700
+	s=arc-20240116; t=1761652055; c=relaxed/simple;
+	bh=hTHSTmvO2gcuI9bvffQRykt0y1SGaZooIAbSqmRKxWY=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=Fy8ZQSmR3b9SqHjblJKfWmLgeYx9xMkzewV4rd9ymKasrpEEXinJJLIeL/MUUvNVJUeKp8L8P7oEeLyqePpoGenwv4xmIUMfGeWiT7asSAkhJf04vvrAs1iJLpxs9kHMSDm/LwNIhNvvI/6+9ClIsV7OYAav2nEqv1uTVREt+aM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=AA9haMyl; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1761652052;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Ej5v2AhyT2+gsUph5VSZWo0mYhFvGVyUF+E1rpDGkYk=;
+	b=AA9haMylBAidafCPCHDsWLUkv37h7NL1XI4lk7FudkS2N2t/nbQI/gG6K84hzbZDevzl7f
+	m+p1S6uKR3lfPYFsP14GQY1bUbI0xhJdOy0dE5Zp8RAVyTRyTHSzoWteD2QZxW1CZEWVlW
+	o6QudmcANfiRdMezzYtk4o7oAIWx3w0=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-511-To_oIuwSOzGPvWlh2ITPzw-1; Tue, 28 Oct 2025 07:47:31 -0400
+X-MC-Unique: To_oIuwSOzGPvWlh2ITPzw-1
+X-Mimecast-MFC-AGG-ID: To_oIuwSOzGPvWlh2ITPzw_1761652050
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-426ce339084so5617928f8f.0
+        for <stable@vger.kernel.org>; Tue, 28 Oct 2025 04:47:30 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761652050; x=1762256850;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:from:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Ej5v2AhyT2+gsUph5VSZWo0mYhFvGVyUF+E1rpDGkYk=;
+        b=p1ybp36tDMyTUknEUMi7uOSpkJ9W+t+VnBYFnrxi6WjbJmUO4pSst3MMFI+r5JlKvN
+         0Du5tmt8XpUAqbhZrVSq2NPSYI1qPlCfCxPpcyvcYwqzAW7DZADOe2DGKQGoOhnYHomX
+         PNb8pF9FUIEi3hgTl8jUCX1dokXsaqO3GbTKg6kAa+HmLKXcB1IiKovLwjFOI+freSBG
+         PkudkC4yfIYfPxja37YpZen7xm3QebFtsxP6QoxNhLI0a2ZmtdU69B/u92EXvBVZzekz
+         jZVB6GLqDdMiYSHPu5m2OyUEfrjC3dOMW7GFYMZRsHoewXxl1d9hjFocrJOa7MmIj8iR
+         LvMQ==
+X-Gm-Message-State: AOJu0Yw96v2wF3Uv2Mk2RQajIGqOWxt2/UdX0U2eOHyz8VfYJqaGLUm7
+	6fT1vTUvSO9bfBJOxMElDXvm+OJ7VXRdXR6QGp+Lqe7DY/9kfjAuhUitnME6rZguY+P7s2Vu8c5
+	DGKxTeSBi4L2K8KbEixNTIXlx1laZNQ2p3AZGmkwBmrgxv7j0TA+rqASAbQ==
+X-Gm-Gg: ASbGncs/gu7VaMIHcSPWBwKcpJ01+FjNWIRyUYbiuASF5EBQzrwlNX+uQEUMNRmRopp
+	azRmJd7pukT7hEteyE6w+h4O5LEsSARp4oZ+XT2wwjidmFiTYRylGbV6dS5wz8hYKB0/6yMsaCZ
+	rBixRQoWbgfuUSajYrMQRnhexNiHhxR5ic3US0+3aJ0xZ6H1DDksT7KgkI+lxF2KMmE+xYb2a+A
+	LtAKalhbW9QkjjLBIxi8bvRGJB6jA2m2oCSJTCUPYBJVI7j6+A8KyfUzTcRlS7kpmuuypJbgIPu
+	yssiP3Kc8Qw4thLtcnvSkViDrT4Ujs/mRF/j4pwsbBcHvWv+zbSYob0elYv8MGghcyZKfF4cBNp
+	BgrhKjKErTy29KGZNSgp+XYEt+Q2MIHYsK7pHm23o6ozXNT0=
+X-Received: by 2002:a05:600c:b90:b0:477:58:7cfe with SMTP id 5b1f17b1804b1-47717e04c2bmr26366745e9.18.1761652049801;
+        Tue, 28 Oct 2025 04:47:29 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHYsmPrnr2n5dOG2TMddpHesTATKrRY3s7taqm1slxtVNIFUzWMD6kXpI/krQ6+LdMW9yh+6A==
+X-Received: by 2002:a05:600c:b90:b0:477:58:7cfe with SMTP id 5b1f17b1804b1-47717e04c2bmr26366375e9.18.1761652049184;
+        Tue, 28 Oct 2025 04:47:29 -0700 (PDT)
+Received: from ?IPV6:2a0d:3344:2712:7e10:4d59:d956:544f:d65c? ([2a0d:3344:2712:7e10:4d59:d956:544f:d65c])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-475dd47793fsm194874245e9.3.2025.10.28.04.47.26
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 28 Oct 2025 04:47:28 -0700 (PDT)
+Message-ID: <7dfda5bb-665c-4068-acd4-795972da63e8@redhat.com>
+Date: Tue, 28 Oct 2025 12:47:26 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -69,63 +88,55 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.12 000/117] 6.12.56-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
- conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
- achill@achill.org, sr@sladewatkins.com
-References: <20251027183453.919157109@linuxfoundation.org>
+Subject: Re: [PATCH net v3 1/3] net,mptcp: fix proto fallback detection with
+ BPF sockmap
+From: Paolo Abeni <pabeni@redhat.com>
+To: Jiayuan Chen <jiayuan.chen@linux.dev>, mptcp@lists.linux.dev
+Cc: stable@vger.kernel.org, Jakub Sitnicki <jakub@cloudflare.com>,
+ John Fastabend <john.fastabend@gmail.com>, Eric Dumazet
+ <edumazet@google.com>, Kuniyuki Iwashima <kuniyu@google.com>,
+ Willem de Bruijn <willemb@google.com>, "David S. Miller"
+ <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+ Simon Horman <horms@kernel.org>, Matthieu Baerts <matttbe@kernel.org>,
+ Mat Martineau <martineau@kernel.org>, Geliang Tang <geliang@kernel.org>,
+ Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>,
+ Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
+ Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>,
+ Yonghong Song <yonghong.song@linux.dev>, KP Singh <kpsingh@kernel.org>,
+ Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>,
+ Jiri Olsa <jolsa@kernel.org>, Shuah Khan <shuah@kernel.org>,
+ Florian Westphal <fw@strlen.de>, linux-kernel@vger.kernel.org,
+ netdev@vger.kernel.org, bpf@vger.kernel.org, linux-kselftest@vger.kernel.org
+References: <20251023125450.105859-1-jiayuan.chen@linux.dev>
+ <20251023125450.105859-2-jiayuan.chen@linux.dev>
+ <c10939d2-437e-47fb-81e9-05723442c935@redhat.com>
 Content-Language: en-US
-From: Ron Economos <re@w6rz.net>
-In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+In-Reply-To: <c10939d2-437e-47fb-81e9-05723442c935@redhat.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - box5620.bluehost.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - w6rz.net
-X-BWhitelist: no
-X-Source-IP: 73.92.56.26
-X-Source-L: No
-X-Exim-ID: 1vDi7o-000000029f5-1YAm
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: c-73-92-56-26.hsd1.ca.comcast.net ([10.0.1.116]) [73.92.56.26]:42574
-X-Source-Auth: re@w6rz.net
-X-Email-Count: 39
-X-Org: HG=bhshared;ORG=bluehost;
-X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfObXy0RuQU5jsmQkfZv6pYnx1bhmqL5tjRlJ07MRes9WhO8z0o2eOclB6m/FnUIam54f4xTSW+dvQW6x30jS6FKr9fvhY1UpHArKnNgFg6dXrjfagYgr
- REsSKVq3tFa3JLNwLioluM4FY2FHlLNndSAr2e9HTCgob2csTQYe1OmmjoXpUFd+R7ZMNQYRhGaHhw==
 
-On 10/27/25 11:35, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.12.56 release.
-> There are 117 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Wed, 29 Oct 2025 18:34:15 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.12.56-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.12.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+On 10/28/25 12:30 PM, Paolo Abeni wrote:
+> On 10/23/25 2:54 PM, Jiayuan Chen wrote:
+>> When the server has MPTCP enabled but receives a non-MP-capable request
+>> from a client, it calls mptcp_fallback_tcp_ops().
+>>
+>> Since non-MPTCP connections are allowed to use sockmap, which replaces
+>> sk->sk_prot, using sk->sk_prot to determine the IP version in
+>> mptcp_fallback_tcp_ops() becomes unreliable. This can lead to assigning
+>> incorrect ops to sk->sk_socket->ops.
+> 
+> I don't see how sockmap could modify the to-be-accepted socket sk_prot
+> before mptcp_fallback_tcp_ops(), as such call happens before the fd is
+> installed, and AFAICS sockmap can only fetch sockets via fds.
+> 
+> Is this patch needed?
 
-Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
+Matttbe explained off-list the details of how that could happen. I think
+the commit message here must be more verbose to explain clearly the
+whys, even to those non proficient in sockmap like me.
 
-Tested-by: Ron Economos <re@w6rz.net>
+Thanks,
+
+Paolo
 
 
