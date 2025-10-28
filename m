@@ -1,139 +1,268 @@
-Return-Path: <stable+bounces-191343-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191344-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CDA2C122D2
-	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 01:36:53 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 459AAC12368
+	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 01:42:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id DE25F350FB9
-	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 00:36:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E38755817F4
+	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 00:39:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B14401E3DE8;
-	Tue, 28 Oct 2025 00:36:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D40B74A23;
+	Tue, 28 Oct 2025 00:39:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="MHZ8Agea"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IZDypBLy"
 X-Original-To: stable@vger.kernel.org
-Received: from pdx-out-014.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-014.esa.us-west-2.outbound.mail-perimeter.amazon.com [35.83.148.184])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CA3D2F5E;
-	Tue, 28 Oct 2025 00:36:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.83.148.184
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 859871AA7BF;
+	Tue, 28 Oct 2025 00:39:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761611807; cv=none; b=HKTwCuOkQgH/h8I4YERzh33v6wbWo1AZsXEWv9bEHv7VOOLzOKoIMfJMs6fym8z0nc1te1mOVBJzC4N7rkEVU+1V838X8G/im9cy5cMtkvWCDjy27nMszdYW5GqQQn9Ygh3OnLJ1I/9l0KqZOZ0VJQ+mNTkTms1BSv8yhrSxFvE=
+	t=1761611983; cv=none; b=eaLUgeW7C5HjY9b3izq/m+Gh5stbb/otcESx5TYFncgmyuFlnXqLUJHkypcD5a8L4UKkRPIYB+8j8WNwEd9M3JzNAihQl4xkx5997zU5WZJozaohMWV+IeAhF3ZC9jdygNiryco792vK4hUqrauXQMoNeY1eOfRjrmgN1lJiuQI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761611807; c=relaxed/simple;
-	bh=IOVvQiJpGvp6+xA294rJerEG3dTHQnXxn46jZXjb5wY=;
-	h=Subject:From:To:CC:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=hF027/aeHCZEzFmw1zhdl/5jIKmpzlaXvB3QfX9wGPi9w9b9Trp0lJtWo/OkFNzP+5RIMiYe2QYMqmRTZIyoHe7YX0aTaWlUpQ2B9A6wgU7LR/A8srVYSBOXcOPftspN4Fi6kADSwxqyd/2SOMAnmvR2lmRc0NfIBKXZirt/pH0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=MHZ8Agea; arc=none smtp.client-ip=35.83.148.184
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1761611806; x=1793147806;
-  h=from:to:cc:date:message-id:references:in-reply-to:
-   content-id:content-transfer-encoding:mime-version:subject;
-  bh=IOVvQiJpGvp6+xA294rJerEG3dTHQnXxn46jZXjb5wY=;
-  b=MHZ8AgeaCjyEt2/ATdpHwmTnzSYo8MP7fOnjyRwzmDQBBJWr2AwL2OLp
-   s9+fwuixAILG0J8SRyEJKjNZGLQswAOUc3nOQ4eNUNdEeEDKJsCTlJf5/
-   jgTud9+aUzM9NC+fw2h+I0jWcxkMG8muetGGae0Z/4Hb9nhCEOm595rvC
-   HOTO6oorRX/oO6f6FAfElIPw3i7/vUs+4uybcEEzj24+kgyM7x8MMXyRx
-   /u4KaEG9+tqwftjuHPxdNyHFqaBVV0kunad3ityFFQ+Nfc8Oqc18kBIGO
-   y4towwEQlTPgZvEBvCuqmIQNfWdM5yLUK5NO4duHRC5R4n4OkXDc1r0N3
-   Q==;
-X-CSE-ConnectionGUID: 26SJ8qqZRE+FNdoNM3ro3g==
-X-CSE-MsgGUID: YiTQtjjxR1CtkjkcG+NhGw==
-X-IronPort-AV: E=Sophos;i="6.19,260,1754956800"; 
-   d="scan'208";a="5635122"
-Subject: Re: [PATCH v2] PCI: xilinx-xdma: Enable INTx interrupts
-Thread-Topic: [PATCH v2] PCI: xilinx-xdma: Enable INTx interrupts
-Received: from ip-10-5-9-48.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.9.48])
-  by internal-pdx-out-014.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2025 00:36:45 +0000
-Received: from EX19MTAUWB002.ant.amazon.com [205.251.233.111:26105]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.58.51:2525] with esmtp (Farcaster)
- id 9f41d556-68c3-4916-acdf-260b786a1eb9; Tue, 28 Oct 2025 00:36:45 +0000 (UTC)
-X-Farcaster-Flow-ID: 9f41d556-68c3-4916-acdf-260b786a1eb9
-Received: from EX19D032UWA004.ant.amazon.com (10.13.139.56) by
- EX19MTAUWB002.ant.amazon.com (10.250.64.231) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
- Tue, 28 Oct 2025 00:36:37 +0000
-Received: from EX19D032UWA003.ant.amazon.com (10.13.139.37) by
- EX19D032UWA004.ant.amazon.com (10.13.139.56) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.29;
- Tue, 28 Oct 2025 00:36:37 +0000
-Received: from EX19D032UWA003.ant.amazon.com ([fe80::8e94:8f60:9531:c497]) by
- EX19D032UWA003.ant.amazon.com ([fe80::8e94:8f60:9531:c497%5]) with mapi id
- 15.02.2562.029; Tue, 28 Oct 2025 00:36:37 +0000
-From: "Bandi, Ravi Kumar" <ravib@amazon.com>
-To: Bjorn Helgaas <helgaas@kernel.org>, Manivannan Sadhasivam
-	<mani@kernel.org>
-CC: "thippeswamy.havalige@amd.com" <thippeswamy.havalige@amd.com>,
-	"lpieralisi@kernel.org" <lpieralisi@kernel.org>, "bhelgaas@google.com"
-	<bhelgaas@google.com>, "linux-pci@vger.kernel.org"
-	<linux-pci@vger.kernel.org>, "kwilczynski@kernel.org"
-	<kwilczynski@kernel.org>, "robh@kernel.org" <robh@kernel.org>,
-	"michal.simek@amd.com" <michal.simek@amd.com>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "stable@vger.kernel.org"
-	<stable@vger.kernel.org>, Stefan Roese <stefan.roese@mailbox.org>, "Musham,
- Sai Krishna" <sai.krishna.musham@amd.com>, Sean Anderson
-	<sean.anderson@linux.dev>, "Yeleswarapu, Nagaradhesh"
-	<nagaradhesh.yeleswarapu@amd.com>
-Thread-Index: AQHcKoFWBnk90o/gZUOv7QYU+iHxwrTJOZeAgA2kSICAABLnAA==
-Date: Tue, 28 Oct 2025 00:36:36 +0000
-Message-ID: <C863FB65-E6B8-48B8-A2FF-779330D9BE5A@amazon.com>
-References: <20251027232847.GA1488235@bhelgaas>
-In-Reply-To: <20251027232847.GA1488235@bhelgaas>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <34DBB2AF1B6DC649B354F3E881A47C26@amazon.com>
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1761611983; c=relaxed/simple;
+	bh=TB0R3bR1qdlWHTe7bspeBSlcpR/p94kxOplQF65Lb7I=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=nZwDM1BM5TmgryymWJXd4+T/yLoPELQacMdTXDLqXLTjOryW980irOJV5OfKyHJJj+HK1QJSuJrlNa2fN4EATy66WzZ0GLkSFG9ThIAZfGVdPNuTQGCSjmQKMSSxLWT5yU97kh0l+8NpNJO7Z1bPJsqhbzeU69+x3bb2BBBWDS8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IZDypBLy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 177A4C4CEF1;
+	Tue, 28 Oct 2025 00:39:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761611983;
+	bh=TB0R3bR1qdlWHTe7bspeBSlcpR/p94kxOplQF65Lb7I=;
+	h=From:To:Cc:Subject:Date:From;
+	b=IZDypBLyiXx1F9cPtxNoW8JrkYHRpjOKxmkPkie4UWeQtiqi6sFdKJMqUcLj28Ckw
+	 l7T49dJ89G7lwhzFipt36Xy2yza96+SuxJbRuWl2xsy4dVvN6c1nhzWN1WpcKIBZ11
+	 Gyk9Nx1JX3nvXVKSKOM2LN/IDwQ5EaS1Q21BU1JCt8HC/mC3MY4MZIctuePTqw2woe
+	 jg3MWiK+3bfGWstRq4w7KIUW3T3WqMc72Nu4Plh4bGIEpmisRMtiHjO3s798wT7uvF
+	 JS5WKdh35p8RYbSr1jCvhpzHlq8HlUKk2W6E4RdPViptbDePLL/9IcyUR2wE3hLO/f
+	 GNQcsk15vxeaA==
+From: Sasha Levin <sashal@kernel.org>
+To: patches@lists.linux.dev,
+	stable@vger.kernel.org
+Cc: ZhangGuoDong <zhangguodong@kylinos.cn>,
+	ChenXiaoSong <chenxiaosong@kylinos.cn>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>,
+	smfrench@gmail.com,
+	linux-cifs@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.17-6.1] smb/server: fix possible memory leak in smb2_read()
+Date: Mon, 27 Oct 2025 20:38:45 -0400
+Message-ID: <20251028003940.884625-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.17.5
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-DQoNCj4gT24gT2N0IDI3LCAyMDI1LCBhdCA0OjI44oCvUE0sIEJqb3JuIEhlbGdhYXMgPGhlbGdh
-YXNAa2VybmVsLm9yZz4gd3JvdGU6DQo+IA0KPiBDQVVUSU9OOiBUaGlzIGVtYWlsIG9yaWdpbmF0
-ZWQgZnJvbSBvdXRzaWRlIG9mIHRoZSBvcmdhbml6YXRpb24uIERvIG5vdCBjbGljayBsaW5rcyBv
-ciBvcGVuIGF0dGFjaG1lbnRzIHVubGVzcyB5b3UgY2FuIGNvbmZpcm0gdGhlIHNlbmRlciBhbmQg
-a25vdyB0aGUgY29udGVudCBpcyBzYWZlLg0KPiANCj4gDQo+IA0KPiBbK2NjIFN0ZWZhbiBldCBh
-bF0NCj4gDQo+IE9uIFN1biwgT2N0IDE5LCAyMDI1IGF0IDEyOjM5OjI1UE0gKzA1MzAsIE1hbml2
-YW5uYW4gU2FkaGFzaXZhbSB3cm90ZToNCj4+IE9uIFNhdCwgMjAgU2VwIDIwMjUgMjI6NTI6MzIg
-KzAwMDAsIFJhdmkgS3VtYXIgQmFuZGkgd3JvdGU6DQo+Pj4gVGhlIHBjaWUteGlsaW54LWRtYS1w
-bCBkcml2ZXIgZG9lcyBub3QgZW5hYmxlIElOVHggaW50ZXJydXB0cw0KPj4+IGFmdGVyIGluaXRp
-YWxpemluZyB0aGUgcG9ydCwgcHJldmVudGluZyBJTlR4IGludGVycnVwdHMgZnJvbQ0KPj4+IFBD
-SWUgZW5kcG9pbnRzIGZyb20gZmxvd2luZyB0aHJvdWdoIHRoZSBYaWxpbnggWERNQSByb290IHBv
-cnQNCj4+PiBicmlkZ2UuIFRoaXMgaXNzdWUgYWZmZWN0cyBrZXJuZWwgNi42LjAgYW5kIGxhdGVy
-IHZlcnNpb25zLg0KPj4+IA0KPj4+IFRoaXMgcGF0Y2ggYWxsb3dzIElOVHggaW50ZXJydXB0cyBn
-ZW5lcmF0ZWQgYnkgUENJZSBlbmRwb2ludHMNCj4+PiB0byBmbG93IHRocm91Z2ggdGhlIHJvb3Qg
-cG9ydC4gVGVzdGVkIHRoZSBmaXggb24gYSBib2FyZCB3aXRoDQo+Pj4gdHdvIGVuZHBvaW50cyBn
-ZW5lcmF0aW5nIElOVHggaW50ZXJydXB0cy4gSW50ZXJydXB0cyBhcmUNCj4+PiBwcm9wZXJseSBk
-ZXRlY3RlZCBhbmQgc2VydmljZWQuIFRoZSAvcHJvYy9pbnRlcnJ1cHRzIG91dHB1dA0KPj4+IHNo
-b3dzOg0KPj4+IA0KPj4+IFsuLi5dDQo+PiANCj4+IEFwcGxpZWQsIHRoYW5rcyENCj4+IA0KPj4g
-WzEvMV0gUENJOiB4aWxpbngteGRtYTogRW5hYmxlIElOVHggaW50ZXJydXB0cw0KPj4gICAgICBj
-b21taXQ6IGMwOThjMTNmNDM2NWU2NzUwMDA5YmU0ZDkwZGJhMzZmYTRhMTliNGUNCj4gDQo+IFBy
-ZXR0eSBzdXJlIHdlIGhhdmUgY29uZmlybWF0aW9uIHRoYXQgd2UgZG9uJ3QgbmVlZCBlaXRoZXIg
-dGhpcyBwYXRjaA0KPiBvciBTdGVmYW4ncyBwYXRjaCwgc28gSSByZW1vdmVkIHRoZSBwY2kvY29u
-dHJvbGxlci94aWxpbngtZG1hIGJyYW5jaC4NCj4gDQo+IEl0IHdhcyBhdCAyMDAyNDc4ZTUwMzQg
-KCJQQ0k6IHhpbGlueC14ZG1hOiBFbmFibGUgSU5UeCBpbnRlcnJ1cHRzIikgaW4NCj4gY2FzZSB3
-ZSBuZWVkIHRvIHJlc3VycmVjdCBpdC4NCj4gDQo+IElJVUMsIFN0ZWZhbiBjb25maXJtZWQgdGhh
-dCBoZSBkaWRuJ3QgbmVlZCB0aGlzIHBhdGNoIChSYXZpJ3MpIFsxXSwNCj4gYW5kIHRoYXQgYWZ0
-ZXIgVml2YWRvIGlzIGZpeGVkIHRvIGdlbmVyYXRlIHRoZSBjb3JyZWN0IGludGVycnVwdC1tYXAs
-DQo+IGhpcyBwYXRjaCAoU3RlZmFuJ3MpIHdvbid0IGJlIG5lZWRlZCBlaXRoZXIgWzJdLg0KPiAN
-Cj4gWzFdIGh0dHBzOi8vbG9yZS5rZXJuZWwub3JnL3IvMjliYzVlOTItMDRjOS00NzVhLWJhM2Qt
-YTVlYTI2ZjFjOTVhQG1haWxib3gub3JnDQo+IFsyXSBodHRwczovL2xvcmUua2VybmVsLm9yZy9y
-LzljN2U0M2MzLTI0ZTktNGIwOC1hNmNlLTIwMzViNTAyMjZmNEBtYWlsYm94Lm9yZw0KDQpIZWxs
-byBCam9ybiwgYW5kIE1hbmkgZXQgYWwuLA0KDQpUaGFuayB5b3UgZm9yIHRha2luZyB0aGUgdGlt
-ZSB0byByZXZpZXcgdGhlIHBhdGNoIGFuZCBleHBsYWluIHRoZSByZWFzb25pbmcuDQoNClNpbmNl
-cmx5LA0KUmF2aQ0KDQo=
+From: ZhangGuoDong <zhangguodong@kylinos.cn>
+
+[ Upstream commit 6fced056d2cc8d01b326e6fcfabaacb9850b71a4 ]
+
+Memory leak occurs when ksmbd_vfs_read() fails.
+Fix this by adding the missing kvfree().
+
+Co-developed-by: ChenXiaoSong <chenxiaosong@kylinos.cn>
+Signed-off-by: ChenXiaoSong <chenxiaosong@kylinos.cn>
+Signed-off-by: ZhangGuoDong <zhangguodong@kylinos.cn>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+
+LLM Generated explanations, may be completely bogus:
+
+## **Backport Status: YES**
+
+### **Extensive Analysis**
+
+Based on comprehensive semantic code analysis and repository
+examination, this commit **should be backported** to stable kernel
+trees.
+
+---
+
+## **1. Code Change Analysis**
+
+The commit adds a single line to fix a memory leak in
+`fs/smb/server/smb2pdu.c`:
+
+```c
+nbytes = ksmbd_vfs_read(work, fp, length, &offset, aux_payload_buf);
+if (nbytes < 0) {
++   kvfree(aux_payload_buf);  // <-- Added line
+    err = nbytes;
+    goto out;
+}
+```
+
+**What was wrong:** Memory allocated at line 6821 (`aux_payload_buf =
+kvzalloc(ALIGN(length, 8), KSMBD_DEFAULT_GFP)`) was not freed when
+`ksmbd_vfs_read()` fails, while all other error paths properly call
+`kvfree()`.
+
+---
+
+## **2. Semantic Analysis Tools Used**
+
+### **Tool 1: mcp__semcode__find_function**
+- Located `smb2_read()` in `fs/smb/server/smb2pdu.c:6727-6895`
+- Confirmed it's an SMB2 protocol handler (169 lines, 24 function calls)
+- Return type: `int` (returns error codes)
+
+### **Tool 2: mcp__semcode__find_callers**
+- Result: No direct function callers
+- However, cross-referenced with `smb2ops.c:183` showing `smb2_read` is
+  registered as a handler: `[SMB2_READ_HE] = { .proc = smb2_read }`
+- **Conclusion:** This is a protocol handler invoked by the SMB2 message
+  dispatcher, meaning it's **directly user-triggerable** via network
+  requests
+
+### **Tool 3: mcp__semcode__find_calls**
+- Analyzed `ksmbd_vfs_read()` dependencies
+- Found it can fail with multiple error codes: `-EISDIR`, `-EACCES`,
+  `-EAGAIN`, plus any errors from `kernel_read()`
+- **All of these failure paths trigger the memory leak**
+
+### **Tool 4: git blame & git log**
+- Bug introduced: commit `e2f34481b24db2` (2021-03-16) - **4 years
+  old!**
+- Recent modification: commit `06a025448b572c` (2024-11-30) changed
+  allocation to `ALIGN(length, 8)` but didn't fix the leak
+- Found 15+ similar "memory leak" fixes in ksmbd history, indicating
+  active maintenance
+
+---
+
+## **3. Impact Scope Analysis**
+
+### **User Exposure: CRITICAL**
+- **Protocol Handler:** Any SMB client can trigger this by sending SMB2
+  READ requests
+- **Network-facing:** ksmbd is a kernel SMB server exposed to network
+  clients
+- **No authentication required to trigger:** The error path can be
+  reached even with permission errors
+
+### **Trigger Conditions (from VFS analysis):**
+1. **-EISDIR**: Client tries to read a directory
+2. **-EACCES**: Permission denied (no FILE_READ_DATA or FILE_EXECUTE
+   access)
+3. **-EAGAIN**: File is locked by another process
+4. **kernel_read() failures**: Various VFS/filesystem errors
+
+All of these are **easily triggerable** by malicious or misbehaving
+clients.
+
+### **Memory Leak Severity: HIGH**
+- **Allocation size:** `ALIGN(length, 8)` where `length` is client-
+  controlled
+- **Maximum per leak:** Up to `SMB3_MAX_IOSIZE` = **8 MB** (from
+  smb2pdu.h:28)
+- **Default size:** `SMB21_DEFAULT_IOSIZE` = **1 MB** (from
+  smb2pdu.h:25)
+- **Attack scenario:** An attacker could repeatedly:
+  1. Send READ requests for locked files (triggers -EAGAIN)
+  2. Each failed request leaks up to 8MB
+  3. 100 requests = 800MB leaked
+  4. Can exhaust server memory leading to **DoS**
+
+---
+
+## **4. Regression Risk Analysis**
+
+### **Risk Level: VERY LOW**
+- **Change size:** Single line addition
+- **Operation:** Adding missing cleanup (defensive programming)
+- **No behavior change:** Only affects error path that already returns
+  failure
+- **Idempotent:** `kvfree()` is safe to call and simply frees allocated
+  memory
+- **No dependencies:** No API changes or external impact
+
+---
+
+## **5. Stable Tree Compliance**
+
+| Criterion | Status | Evidence |
+|-----------|--------|----------|
+| Fixes important bug | ✅ YES | Memory leak leading to potential DoS |
+| Small and contained | ✅ YES | 1 line change, single function |
+| No new features | ✅ YES | Pure bug fix |
+| No architectural changes | ✅ YES | No structural modifications |
+| Low regression risk | ✅ YES | Minimal, defensive change |
+| Confined to subsystem | ✅ YES | Only affects ksmbd |
+| User-facing impact | ✅ YES | Affects all ksmbd users |
+
+---
+
+## **6. Comparison with Similar Commits**
+
+Recent ksmbd fixes in the repository show similar patterns:
+- `379510a815cb2`: "fix possible refcount leak in smb2_sess_setup()"
+- `5929e98f3bb76`: "fix potential double free on smb2_read_pipe() error
+  path"
+- `e523a26c05672`: "fix passing freed memory 'aux_payload_buf'"
+- `809d50d36e71b`: "fix memory leak in smb2_lock()"
+
+**All these are typical stable tree backport candidates** with similar
+characteristics (small resource leak fixes).
+
+---
+
+## **7. Missing Stable Tags**
+
+**Notable:** The commit lacks explicit stable tree tags:
+- ❌ No `Cc: stable@vger.kernel.org`
+- ❌ No `Fixes:` tag pointing to the original buggy commit
+
+However, this doesn't diminish backport worthiness - the technical
+merits clearly justify backporting.
+
+---
+
+## **Conclusion**
+
+This commit is an **excellent candidate for backporting** because:
+
+1. **Security concern:** Remote memory exhaustion DoS vector
+2. **Long-standing bug:** Present since ksmbd's introduction (4+ years)
+3. **Wide impact:** Affects all ksmbd deployments
+4. **Minimal risk:** Single-line defensive fix
+5. **Clear bug fix:** Unambiguous resource leak on error path
+6. **Pattern consistency:** Matches other successfully backported ksmbd
+   fixes
+
+**Recommendation:** Backport to all active stable trees where ksmbd
+exists (5.15+).
+
+ fs/smb/server/smb2pdu.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
+index 287200d7c0764..409b85af82e1c 100644
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -6826,6 +6826,7 @@ int smb2_read(struct ksmbd_work *work)
+ 
+ 	nbytes = ksmbd_vfs_read(work, fp, length, &offset, aux_payload_buf);
+ 	if (nbytes < 0) {
++		kvfree(aux_payload_buf);
+ 		err = nbytes;
+ 		goto out;
+ 	}
+-- 
+2.51.0
+
 
