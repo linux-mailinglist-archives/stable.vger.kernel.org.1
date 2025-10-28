@@ -1,77 +1,91 @@
-Return-Path: <stable+bounces-191381-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191382-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46AD3C12B76
-	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 04:05:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 56FD9C12BA6
+	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 04:15:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4B0235E0483
-	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 03:04:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 145003BC0CA
+	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 03:15:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0919527E07E;
-	Tue, 28 Oct 2025 03:04:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49AB01F5820;
+	Tue, 28 Oct 2025 03:15:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KI2aDGhJ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LWzsOQRt"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1AD32727FD
-	for <stable@vger.kernel.org>; Tue, 28 Oct 2025 03:04:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0EDB11713
+	for <stable@vger.kernel.org>; Tue, 28 Oct 2025 03:15:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761620643; cv=none; b=TKM+ee+wQZu7QlpOou9/ChSsGpU+4ROs3oy59QjDVuajwGPW317QWq/uJ/006olLDYyveuU3kVlzQ0r4C6GoHpdz1ZNOJQR4mWl5dv/ceeShg4irnNoLZzPQGz1CiB70BHK+8e9YEJruUIKgT4zR7X5SwvaeJXhEF+JPJNKYG4E=
+	t=1761621348; cv=none; b=Mc5dDsQQgwmowSfrs9UKeW+X7LfbN6MVvh1RHuL+DA3tsM5yrfkj5qyrrOAfFMXxz0oWP0njmPM3O6DjjYSqNhVGQthhRMjwlIpRjJXhI5lbV9zn69QV67etMFrHVHuvK1rF8uAzcBG96ejuLWHqrp1QBWSjP44uh/m/ov6mNf0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761620643; c=relaxed/simple;
-	bh=MAMBTDB5J81podhs/Vxvh8Om3RfCRucDoiCNDGV+6Gc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=c+HS7pZ+DC7MIEh4zb1rKQ43oaJDbPt8WJzf4B/l88DR/FtghwKXnAMTzhToF7IPJ2U7M5mg9TNlo6pzTNtwTr5cmGpHZhtDri6TP/jAwO73fxcNzByAS5P8M/X1c6r62MitMmG0TzH/VefJg5nMngQWbkYrNgAr5kCn0NT78KU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=KI2aDGhJ; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1761620641;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=vfNTkoX5o8M7lD+gAK07FYlqQWjsG6C+tpRjNjLD85s=;
-	b=KI2aDGhJ4pz44uMUBTz3Aor+5AXjVbUHKdQTDQC/3fp88FBMQrE0Hj3mNv/bsup4V+A0ch
-	YUDcFSeGI93lIB7U/mU/Oik14i1rzavN+M2LnoQrtJ6PYAva7oBb7xbuk/7jzHOuD57pOD
-	njmrSuYmT4IVxwpFVkKu/Q3uWlXfwWc=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-548-MOErp7MUNkyaHL7YM-fbQQ-1; Mon,
- 27 Oct 2025 23:03:54 -0400
-X-MC-Unique: MOErp7MUNkyaHL7YM-fbQQ-1
-X-Mimecast-MFC-AGG-ID: MOErp7MUNkyaHL7YM-fbQQ_1761620632
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 3FF84180A220;
-	Tue, 28 Oct 2025 03:03:52 +0000 (UTC)
-Received: from localhost.localdomain (unknown [10.72.112.238])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 129E219560AD;
-	Tue, 28 Oct 2025 03:03:44 +0000 (UTC)
-From: Jason Wang <jasowang@redhat.com>
-To: mst@redhat.com,
-	jasowang@redhat.com,
-	xuanzhuo@linux.alibaba.com,
-	eperezma@redhat.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: virtualization@lists.linux.dev,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
+	s=arc-20240116; t=1761621348; c=relaxed/simple;
+	bh=WSsr4NQM/X+04B22IETHzX/8ocEsGUdwUHkdEc1qYYU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=nTt8S3fDaXpUjMVJRukFQBSTD4ZiHQBYap63arJ/y4P2w2iaD160gUbhTm803LT/HK9CciPyP40/QB/4xF/5858fp0M6wrCVxjwUZt0Oqx3OT/0vULKa3fdb+VyppW6XiVWCxTVmT/t6uCrgqgOASABHfwu9ZtJIp7Ed87tRpOA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LWzsOQRt; arc=none smtp.client-ip=209.85.215.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-b6cdba2663dso3907374a12.2
+        for <stable@vger.kernel.org>; Mon, 27 Oct 2025 20:15:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1761621346; x=1762226146; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Iwk85JlTUEBI3yJjsshayntPryiTY23zzfTEHf0Um/k=;
+        b=LWzsOQRttv7yvjSu9wrVk5l3D6T+jR9/1I9CYLKqUydBp9ZobDKxk15MuVKV/dXg8l
+         w8k8zOgahvYxTN+ElQdrvz6v4VbdGeB94/fKRhhgn5a1XnXyL7FdEcgXzOZ00HDo20NZ
+         C5f5SFA11xnYq1WeoN55FbpAb+kOmu5XhY6BJzH8t1/HQx/tZu/7ArXftTCA9rVQpojq
+         HGVnQD2yQM3ZIQClv+BkLVsOIVV9P19GHR4BetK5QMullRFhLcs1gkxQiI7AFRJKUJlk
+         ho1+BVrm3WN1mHqMkQlPTJhastU5Dud/jMZ4MuiWLp7Jlp+2mERSbDRaSp0syC9amybS
+         HgWA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761621346; x=1762226146;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Iwk85JlTUEBI3yJjsshayntPryiTY23zzfTEHf0Um/k=;
+        b=A5cWq4M7NGa73x1eW/aJQY5LruczVSaHveyobaI4HfgkqN8QxSZcy1DU/PqetgaRLo
+         MjUEd44mPMK/ikwGLCfQrd7XmdtLSigoO8U4dHX/j3wKSfJy/R1LsVvc/edKAKk2Iny+
+         +k7YnPdDatrLXxCofdJtOon16dBtjltts01qhx0CBblf7bMOJCgso8GZ8kI8UPeTMB8S
+         rt53HJmmgbwKqUmyE77L2g/A6+ZDXjbqDrkwYgFvUjsP89Fz8X+GZPiyYuWj8WlYziIy
+         kkQE18X5tkV5/umZ3kL4Y3p0FPJaVroBI5IbT8fMfSHHtHN2MhkiEmv62n2BWxWhN8f+
+         Hx5Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVadESaHf9WT4v6XNbfwUe9nGs561MxmKjqFRp4TfxEbivxYE6QRLQUwtjqd39o7yJ06Eu5Wlc=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy0giHmlzb2azdfTyxJdKTnW8JLwiV07Q/n6LqH54eQ0caBJujB
+	qSlPYX3aahzg2/KsIJ12TGWZk6WPVQBZKI5ZHSo+8KEbptzotfgzx3a5
+X-Gm-Gg: ASbGnctk2GTCRcjJXh/1xLU0AQiOITgf+dI1xSfOiHHM2UbKbaUn9jtLeYDYuVXtNYf
+	+JfaQgJ5hQDihQ8Saz0RP+9yF8R6SzKxAhPYPH7tiQx1ke93NPMSgIfqa3bWaYnOzvCzsuc1IDg
+	iSsCS/GQdAgCxLmMS0W+X3hZ2R032Z5YumvaBD6UQF2k7KNr+L3MlEKzAox86E0TcUH3BU2MR4L
+	vGzx9CidgSfxCSYqjvUOq23TZGUHBR4I+ybGQOFXIDU8+gTpKY4v/46TnqolV149nqVA6rmu5Ru
+	cdg8DLWK3uqWaIxl94SFwZnA1adTwLSbtGQGO0A4zYqZad/fmhJKlH05v0MThLgFEqWRFKBRgII
+	zbO9qBMgP6tCfl0K7xfenOHsAPZNsoGUIKPlI8Pe9VgLkN/J3j5GdJHhk2ut2cAyvI+Qm8FoeCP
+	et36rv6xkKLwey/6beZ8wang==
+X-Google-Smtp-Source: AGHT+IGuxaZzDv7SIXihLd34aYSMzDHA1ChbWY+uD7KdVdbaExQIFl+ZQhnMyiYov0T8YhmH+laVjQ==
+X-Received: by 2002:a05:6a20:734c:b0:342:c891:a9c6 with SMTP id adf61e73a8af0-344d1baa8a7mr2317412637.1.1761621345900;
+        Mon, 27 Oct 2025 20:15:45 -0700 (PDT)
+Received: from localhost.localdomain ([124.77.218.104])
+        by smtp.googlemail.com with ESMTPSA id 41be03b00d2f7-b71268bdd50sm9123455a12.0.2025.10.27.20.15.43
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Mon, 27 Oct 2025 20:15:45 -0700 (PDT)
+From: Miaoqian Lin <linmq006@gmail.com>
+To: Krzysztof Kozlowski <krzk@kernel.org>,
+	Alim Akhtar <alim.akhtar@samsung.com>,
+	Peter Griffin <peter.griffin@linaro.org>,
+	Sam Protsenko <semen.protsenko@linaro.org>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-samsung-soc@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: linmq006@gmail.com,
 	stable@vger.kernel.org
-Subject: [PATCH net] virtio-net: calculate header alignment mask based on features
-Date: Tue, 28 Oct 2025 11:03:41 +0800
-Message-ID: <20251028030341.46023-1-jasowang@redhat.com>
+Subject: [PATCH] soc: samsung: exynos-pmu: fix reference count leak in exynos_get_pmu_regmap_by_phandle
+Date: Tue, 28 Oct 2025 11:15:27 +0800
+Message-Id: <20251028031527.43003-1-linmq006@gmail.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -79,85 +93,34 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-Commit 56a06bd40fab ("virtio_net: enable gso over UDP tunnel support.")
-switches to check the alignment of the virtio_net_hdr_v1_hash_tunnel
-even when doing the transmission even if the feature is not
-negotiated. This will cause a series performance degradation of pktgen
-as the skb->data can't satisfy the alignment requirement due to the
-increase of the header size then virtio-net must prepare at least 2
-sgs with indirect descriptors which will introduce overheads in the
-device.
+The driver_find_device_by_of_node() function calls driver_find_device
+and returns a device with its reference count incremented.
+Add the missing put_device() call to
+release this reference after the device is used.
 
-Fixing this by calculate the header alignment during probe so when
-tunnel gso is not negotiated, we can less strict.
+Found via static analysis.
 
-Pktgen in guest + XDP_DROP on TAP + vhost_net shows the TX PPS is
-recovered from 2.4Mpps to 4.45Mpps.
-
-Note that we still need a way to recover the performance when tunnel
-gso is enabled, probably a new vnet header format.
-
-Fixes: 56a06bd40fab ("virtio_net: enable gso over UDP tunnel support.")
+Fixes: 0b7c6075022c ("soc: samsung: exynos-pmu: Add regmap support for SoCs that protect PMU regs")
 Cc: stable@vger.kernel.org
-Signed-off-by: Jason Wang <jasowang@redhat.com>
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
 ---
- drivers/net/virtio_net.c | 21 +++++++++++++++------
- 1 file changed, 15 insertions(+), 6 deletions(-)
+ drivers/soc/samsung/exynos-pmu.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-index 31bd32bdecaf..5b851df749c0 100644
---- a/drivers/net/virtio_net.c
-+++ b/drivers/net/virtio_net.c
-@@ -441,6 +441,9 @@ struct virtnet_info {
- 	/* Packet virtio header size */
- 	u8 hdr_len;
+diff --git a/drivers/soc/samsung/exynos-pmu.c b/drivers/soc/samsung/exynos-pmu.c
+index 22c50ca2aa79..a53c1f882e1a 100644
+--- a/drivers/soc/samsung/exynos-pmu.c
++++ b/drivers/soc/samsung/exynos-pmu.c
+@@ -346,6 +346,7 @@ struct regmap *exynos_get_pmu_regmap_by_phandle(struct device_node *np,
+ 	if (!dev)
+ 		return ERR_PTR(-EPROBE_DEFER);
  
-+	/* header alignment */
-+	size_t hdr_align;
-+
- 	/* Work struct for delayed refilling if we run low on memory. */
- 	struct delayed_work refill;
- 
-@@ -3308,8 +3311,9 @@ static int xmit_skb(struct send_queue *sq, struct sk_buff *skb, bool orphan)
- 	pr_debug("%s: xmit %p %pM\n", vi->dev->name, skb, dest);
- 
- 	can_push = vi->any_header_sg &&
--		!((unsigned long)skb->data & (__alignof__(*hdr) - 1)) &&
-+		!((unsigned long)skb->data & (vi->hdr_align - 1)) &&
- 		!skb_header_cloned(skb) && skb_headroom(skb) >= hdr_len;
-+
- 	/* Even if we can, don't push here yet as this would skew
- 	 * csum_start offset below. */
- 	if (can_push)
-@@ -6926,15 +6930,20 @@ static int virtnet_probe(struct virtio_device *vdev)
- 	}
- 
- 	if (virtio_has_feature(vdev, VIRTIO_NET_F_GUEST_UDP_TUNNEL_GSO) ||
--	    virtio_has_feature(vdev, VIRTIO_NET_F_HOST_UDP_TUNNEL_GSO))
-+	    virtio_has_feature(vdev, VIRTIO_NET_F_HOST_UDP_TUNNEL_GSO)) {
- 		vi->hdr_len = sizeof(struct virtio_net_hdr_v1_hash_tunnel);
--	else if (vi->has_rss_hash_report)
-+		vi->hdr_align = __alignof__(struct virtio_net_hdr_v1_hash_tunnel);
-+	} else if (vi->has_rss_hash_report) {
- 		vi->hdr_len = sizeof(struct virtio_net_hdr_v1_hash);
--	else if (virtio_has_feature(vdev, VIRTIO_NET_F_MRG_RXBUF) ||
--		 virtio_has_feature(vdev, VIRTIO_F_VERSION_1))
-+		vi->hdr_align = __alignof__(struct virtio_net_hdr_v1_hash);
-+	} else if (virtio_has_feature(vdev, VIRTIO_NET_F_MRG_RXBUF) ||
-+		virtio_has_feature(vdev, VIRTIO_F_VERSION_1)) {
- 		vi->hdr_len = sizeof(struct virtio_net_hdr_mrg_rxbuf);
--	else
-+		vi->hdr_align = __alignof__(struct virtio_net_hdr_mrg_rxbuf);
-+	} else {
- 		vi->hdr_len = sizeof(struct virtio_net_hdr);
-+		vi->hdr_align = __alignof__(struct virtio_net_hdr);
-+	}
- 
- 	if (virtio_has_feature(vdev, VIRTIO_NET_F_GUEST_UDP_TUNNEL_GSO_CSUM))
- 		vi->rx_tnl_csum = true;
++	put_device(dev);
+ 	return syscon_node_to_regmap(pmu_np);
+ }
+ EXPORT_SYMBOL_GPL(exynos_get_pmu_regmap_by_phandle);
 -- 
-2.31.1
+2.39.5 (Apple Git-154)
 
 
