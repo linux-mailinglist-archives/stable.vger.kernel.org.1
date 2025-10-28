@@ -1,172 +1,131 @@
-Return-Path: <stable+bounces-191446-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191448-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78010C14759
-	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 12:50:46 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id A939AC147A1
+	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 12:55:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0128D623EAC
-	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 11:50:02 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 67C964FA986
+	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 11:53:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A12330C37D;
-	Tue, 28 Oct 2025 11:49:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D37830F55E;
+	Tue, 28 Oct 2025 11:53:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="oHisylFD";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="sd5JUpjC";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="oHisylFD";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="sd5JUpjC"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="G2nyqixh"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from omta040.useast.a.cloudfilter.net (omta040.useast.a.cloudfilter.net [44.202.169.39])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 153C430BB91
-	for <stable@vger.kernel.org>; Tue, 28 Oct 2025 11:48:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D145930F552
+	for <stable@vger.kernel.org>; Tue, 28 Oct 2025 11:53:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.202.169.39
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761652143; cv=none; b=dSSs4Mdaxnu0hkNqJVfV8vG70GVYAXg5llkfSEnrjM96hQraNiTKZCZcYcZ4keeAe/cuMDicyRmo4ufO5RJOIA9Sl+BGQ0o42qwbVS4rGIJXV2Y5scBX1D4k2hZgMrZffwkp4+G1O3lldTR/BYWLoPoz6V/oncivcLaer+XuO1w=
+	t=1761652408; cv=none; b=qn0FBkzHv2g8iDnIATqW+5MX3BwZdvFQZJDhp/c1/Gu8TrDxwkLK+/c2IZ8Ino4qZ74F1pYKk5a7gYqoBkrYrszDhQ3mdCu2YCG38vlZ4vxRmYl8SLyLMja+IhVHvFsufJYeRpuzlikW+xsFCd0kdga1IjE8A5NZidTgB3PPBME=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761652143; c=relaxed/simple;
-	bh=tFmkWJ5YQmGjz9zg7tYmzrM2CMk1xirapYw+td7U+08=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Rv5+vM3d19P3dFDMaLH5QeonuwxvAFznYurlZlhT2pjtBP571qz/3fFEnobCQA9TWUk3wMzENB2fqq8MQMnbcsLHrBPfaZ5rST4iLfkRojw+rXObjr9BlW13Fg/bp872AgMD8mA9t51Ob7lZjYOw8mXBMOaqqq58jSW7ytA6Bxs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=oHisylFD; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=sd5JUpjC; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=oHisylFD; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=sd5JUpjC; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 291FC21A49;
-	Tue, 28 Oct 2025 11:48:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1761652138; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=EEDsYxFkkJHUjGWGL4EddzX8EcwO4m2OW9aFt7wKD4w=;
-	b=oHisylFDAuZV7QpEp9sT3pOu7poBnog3qCyORDuUTdG+ynWHjNS7PQ0KlqQlu4iHxsRiX4
-	D4lqUwf0IeeFjI54ZAQV9KAsXpD3fiDajoSApMpqDKQe9F8+6/reXn4Or9d4qkMyjBv3kC
-	sFOFa+WANwi38fkkkCP3r1igwdg+qUI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1761652138;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=EEDsYxFkkJHUjGWGL4EddzX8EcwO4m2OW9aFt7wKD4w=;
-	b=sd5JUpjCNPXFTvsLJDmZNd9p5AGpi7UtozPA5+iU1ir/e/GNibMP4ynI7wbKF7Wl39SJP2
-	VA+fmGcg/MJ8dvBw==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1761652138; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=EEDsYxFkkJHUjGWGL4EddzX8EcwO4m2OW9aFt7wKD4w=;
-	b=oHisylFDAuZV7QpEp9sT3pOu7poBnog3qCyORDuUTdG+ynWHjNS7PQ0KlqQlu4iHxsRiX4
-	D4lqUwf0IeeFjI54ZAQV9KAsXpD3fiDajoSApMpqDKQe9F8+6/reXn4Or9d4qkMyjBv3kC
-	sFOFa+WANwi38fkkkCP3r1igwdg+qUI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1761652138;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=EEDsYxFkkJHUjGWGL4EddzX8EcwO4m2OW9aFt7wKD4w=;
-	b=sd5JUpjCNPXFTvsLJDmZNd9p5AGpi7UtozPA5+iU1ir/e/GNibMP4ynI7wbKF7Wl39SJP2
-	VA+fmGcg/MJ8dvBw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 6B57313A7D;
-	Tue, 28 Oct 2025 11:48:57 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id wJN7FqmtAGlAegAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Tue, 28 Oct 2025 11:48:57 +0000
-Date: Tue, 28 Oct 2025 11:48:51 +0000
-From: Pedro Falcato <pfalcato@suse.de>
-To: Dev Jain <dev.jain@arm.com>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	David Hildenbrand <david@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	Vlastimil Babka <vbabka@suse.cz>, Jann Horn <jannh@google.com>, Barry Song <baohua@kernel.org>, 
-	"open list:MEMORY MAPPING" <linux-mm@kvack.org>
-Subject: Re: [PATCH] mm/mremap: Honour writable bit in mremap pte batching
-Message-ID: <jmxnalmkkc5ztfhokqtzqihsdji2gprnv5z4tzruxi6iqgfkni@aerronulpyem>
-References: <20251028063952.90313-1-dev.jain@arm.com>
+	s=arc-20240116; t=1761652408; c=relaxed/simple;
+	bh=FA24KbyXlHkSNjDnlij5cYhv6loEmd/5dDRVHJr3dQ4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ePq44tqG4JAOJ5kCi1X+sB9ZuMuwpD/nEdjeh5mxIvb/fv6h1PnSFjHDITs7rxLITomf0bsaUO4FIxx4jM+Vcgs8pGS8kGtVnvOb1wfMpofPisawNYiS3sNO2nydLFwQb5wzf/3k33bdPVmCwCeTtYnKWnYQnskgOKG5nxCFYCs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=G2nyqixh; arc=none smtp.client-ip=44.202.169.39
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
+Received: from eig-obgw-6007b.ext.cloudfilter.net ([10.0.30.166])
+	by cmsmtp with ESMTPS
+	id DSRqv81rfv724DiEvvUoR1; Tue, 28 Oct 2025 11:51:49 +0000
+Received: from box5620.bluehost.com ([162.241.219.59])
+	by cmsmtp with ESMTPS
+	id DiENv1MZcji5HDiENv3q2U; Tue, 28 Oct 2025 11:51:15 +0000
+X-Authority-Analysis: v=2.4 cv=P6s6hjAu c=1 sm=1 tr=0 ts=6900ae55
+ a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
+ a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=7vwVE5O1G3EA:10 a=VwQbUJbxAAAA:8
+ a=HaFmDPmJAAAA:8 a=NZv-JJVNZ7gp_QotK4QA:9 a=QEXdDO2ut3YA:10
+ a=nmWuMzfKamIsx3l42hEX:22 a=Wh1V8bzkS9CpCxOpQUxp:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
+	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=TqfalvD4g9sDc+z5rGZ0llaKTRI0iEvZ6aTIlcxMI5w=; b=G2nyqixhdhPKwMyYZCJCmM8rfS
+	stM6e6BbjioVpcXHDdpBAZngKokN/fe2f6orD/pe3R9nOrNXOpzktcjgeYhp5j1JsYmrU8EhlojXS
+	zdSJUbG4puHaBYSyCfTrCO7y6UZaGqfYE3NSHk2KjBCkPNVcmCr5exH1SB9wez4F1MVoShYOSPf0w
+	/gPcaFmPmDeZfFxK3q9w9VftsiId5Rk7CkWjPSxWPgfk5eW0Xuc0TWy+lwVs+QTBB2iSd7b4HNVN2
+	uWhFamFNPFyARSI0XgeEwZtRTW2VspkUWpEp2xUamXtu6Ars5VfYxSvD9iRwO1gSKJSqIybTiiDIM
+	cmycKbbw==;
+Received: from c-73-92-56-26.hsd1.ca.comcast.net ([73.92.56.26]:50822 helo=[10.0.1.116])
+	by box5620.bluehost.com with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
+	(Exim 4.98.2)
+	(envelope-from <re@w6rz.net>)
+	id 1vDiEM-00000002Bcj-3nEJ;
+	Tue, 28 Oct 2025 05:51:14 -0600
+Message-ID: <a53b3d74-4566-4505-9a3e-7584a8e78f2e@w6rz.net>
+Date: Tue, 28 Oct 2025 04:51:13 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251028063952.90313-1-dev.jain@arm.com>
-X-Spamd-Result: default: False [-3.80 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_RHS_NOT_FQDN(0.50)[];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	RCVD_TLS_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,imap1.dmz-prg2.suse.org:helo,arm.com:email]
-X-Spam-Flag: NO
-X-Spam-Score: -3.80
-X-Spam-Level: 
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.6 00/84] 6.6.115-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+ achill@achill.org, sr@sladewatkins.com
+References: <20251027183438.817309828@linuxfoundation.org>
+Content-Language: en-US
+From: Ron Economos <re@w6rz.net>
+In-Reply-To: <20251027183438.817309828@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - box5620.bluehost.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - w6rz.net
+X-BWhitelist: no
+X-Source-IP: 73.92.56.26
+X-Source-L: No
+X-Exim-ID: 1vDiEM-00000002Bcj-3nEJ
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: c-73-92-56-26.hsd1.ca.comcast.net ([10.0.1.116]) [73.92.56.26]:50822
+X-Source-Auth: re@w6rz.net
+X-Email-Count: 59
+X-Org: HG=bhshared;ORG=bluehost;
+X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfAsRPE1DSR2zbnoMdPP4dhPluAFTZGuXJpZGOvVDQCVx5NIMFoqCVgjsFxf9FN/i4TQlvdRG/LtAd5Jd6lsvsmoJmdQccU8+9aF0ELaZUAAh1jgK/NLx
+ NSoxoJOlrdKNDiAns1t0K8i3DBybejwoUnkZV33cPv4RtXo0O7/X0sUpOTnIvOo4JG6mV69adASJBw==
 
-On Tue, Oct 28, 2025 at 12:09:52PM +0530, Dev Jain wrote:
-> Currently mremap folio pte batch ignores the writable bit during figuring
-> out a set of similar ptes mapping the same folio. Suppose that the first
-> pte of the batch is writable while the others are not - set_ptes will
-> end up setting the writable bit on the other ptes, which is a violation
-> of mremap semantics. Therefore, use FPB_RESPECT_WRITE to check the writable
-> bit while determining the pte batch.
+On 10/27/25 11:35, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.6.115 release.
+> There are 84 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 >
+> Responses should be made by Wed, 29 Oct 2025 18:34:15 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.115-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-Hmm, it seems to be like we're doing the wrong thing by default here?
-I must admit I haven't followed the contpte work as much as I would've
-liked, but it doesn't make much sense to me why FPB_RESPECT_WRITE would
-be an option you have to explicitly pass, and where folio_pte_batch (the
-"simple" interface) doesn't Just Do The Right Thing for naive callers.
+Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
 
-Auditing all callers:
- - khugepaged clears a variable number of ptes
- - memory.c clears a variable number of ptes
- - mempolicy.c grabs folios for migrations
- - mlock.c steps over nr_ptes - 1 ptes, speeding up traversal
- - mremap is borked since we're remapping nr_ptes ptes
- - rmap.c TTU unmaps nr_ptes ptes for a given folio
+Tested-by: Ron Economos <re@w6rz.net>
 
- so while the vast majority of callers don't seem to care, it would make
- sense that folio_pte_batch() works conservatively by default, and
- folio_pte_batch_flags() would allow for further batching (or maybe
- we would add a separate folio_pte_batch_clear() or
- folio_pte_batch_greedy() or whatnot).
-
-> Cc: stable@vger.kernel.org #6.17
-> Fixes: f822a9a81a31 ("mm: optimize mremap() by PTE batching")
-> Reported-by: David Hildenbrand <david@redhat.com>
-> Debugged-by: David Hildenbrand <david@redhat.com>
-> Signed-off-by: Dev Jain <dev.jain@arm.com>
-
-But the solution itself looks okay to me. so, fwiw:
-
-Acked-by: Pedro Falcato <pfalcato@suse.de>
-
--- 
-Pedro
 
