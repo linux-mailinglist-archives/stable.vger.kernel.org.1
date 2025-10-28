@@ -1,122 +1,216 @@
-Return-Path: <stable+bounces-191460-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191462-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 761B9C1493F
-	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 13:19:59 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BD78C14A2C
+	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 13:31:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B09294ED9DA
-	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 12:19:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3755D582626
+	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 12:31:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F8FA32B9A5;
-	Tue, 28 Oct 2025 12:19:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC6351E51EE;
+	Tue, 28 Oct 2025 12:30:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="PVJ+5bHE"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="PM2aBzdo"
 X-Original-To: stable@vger.kernel.org
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E12526ED57;
-	Tue, 28 Oct 2025 12:19:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDC0A23D291
+	for <stable@vger.kernel.org>; Tue, 28 Oct 2025 12:30:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761653993; cv=none; b=l6mIUCPb7v9RZBaroTC0c9vwJDCiEAKk5MGILNAgkUkZwAeWRMDpH482OMZmM/WiN772ZV4A2/h22PfjtqTN0OWk8LqKi7YMw4mgw4waxJvlW4wAex728ZxBAZnNd5f4QJBce4Kkq2KO0qyg8QG8VswvRNXO+F/Y1/VV+N/5gzE=
+	t=1761654650; cv=none; b=keKX6l3FpCtvRFX/9FPYOY5F/6AYAPEpx+rvbx8YJ2+Is7/jXA/mMngIaN0oVPU/V9TzAqLmnT2R+8CVNR3Z+pfvpALvwHBwSOsc0s92KyVIna1wpplq+Ach0UAE3oJkO4JumdA1kPehGGYkkea1cczriKeV0O0ub/GZ7edSWJY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761653993; c=relaxed/simple;
-	bh=QKHpKLl44uwhzX0yR8l8NyNpX/dvwMMWUn48o9hqBmU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fLHErzDLny7SuV2I8leX8GBfGBgn60m5aEabS4iI6NbydNBdexLzMsl5+GElvJX7UgDxQAO2JhfVy2UH8TsTHZrSd0pJJeK76sEOsbzxxl7qYJNNkyzMKnX/Eosl2im1eBKWVRrfV98rx1KphDMpDEbZVOxQDwXhN91OZ2j4GD8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=PVJ+5bHE; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=iAcTB0pexrytfdjO3k8iLmGtnWGjntECalzhziLvSqc=; b=PVJ+5bHEgyfW3CMkystoei5+mQ
-	aG7fyM/0Bef3t4MGKcVPHcyMU9R0hmQ58ruj8uppd3By7GyACdoA0y/NzOXEismdi7gEKUTIsQFGs
-	T3eDkDsgJ18b/TcNKo3FpY8ZEeqDlhDh+I7Dqvpbr6AIIIyeNZzdRHB9xNBhsr3KyJWlpaBdYbCVC
-	k5Ou/P16w2Th+q0W3RYBiwW2ayffU3vMl/YMjHbLHdYy1CoGGbEESd1LYMVNTkfA8K0OqYsKX+PbD
-	XewYf726Q0v0vrb9gNTuaWPWQq+glvrHn38MX2N+YbSt9TEMQThrAk+RriY2kJIzY4fD3YnigZYzV
-	jUBY4qmw==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:40962)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1vDifr-0000000039t-1vkF;
-	Tue, 28 Oct 2025 12:19:39 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1vDifl-000000006YC-09gl;
-	Tue, 28 Oct 2025 12:19:33 +0000
-Date: Tue, 28 Oct 2025 12:19:32 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Yi Cong <cong.yi@linux.dev>, Frank.Sae@motor-comm.com,
-	andrew+netdev@lunn.ch, davem@davemloft.net, hkallweit1@gmail.com,
-	kuba@kernel.org, netdev@vger.kernel.org, stable@vger.kernel.org,
-	yicong@kylinos.cn
-Subject: Re: [PATCH] net: phy: motorcomm: Fix the issue in the code regarding
- the incorrect use of time units
-Message-ID: <aQC01GDPr-WclcZS@shell.armlinux.org.uk>
-References: <e1311746-9882-4063-84af-3939466096e9@lunn.ch>
- <20251028062110.296530-1-cong.yi@linux.dev>
- <2610bc26-44e6-48a3-87c6-acfa30f60dad@lunn.ch>
+	s=arc-20240116; t=1761654650; c=relaxed/simple;
+	bh=YCOJspC8AR5t5kkIm7/R7G5qffr1ytnTF/NVlSkEs6U=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=YiJUVsrvQhubzj3se2hIVXhq3/PdmCsP6yH3JhFmd48JTj1JYv+u6UsA7dVgk+sf+4sNmyTX7Q9Gmm9Oz7hW7u1/eFROP/sIkgTdKrslhcxZCEZXT89UiFmJvegh5drS6AS794mijql6RIwgE/YZvjXiWL1okd4tqVBdGaXcF/Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=PM2aBzdo; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1761654647;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=caqFFVQ8CNc5/R1/dbClJ7vCcMhRSm3xqXDsXqZLJ3g=;
+	b=PM2aBzdowR8IuoMzT7Xc81FITfQ6FKsSdePFD7Q9nBEzWU56ixQTZtVRVb/cWeJndP+90n
+	/eGGpmr9W4M9C8Bt/8RbdCWKLOdZ5GV7K45SDoVp3nf+NEvftqbrh9JJJZBtm9ChRct048
+	pj+WWm9xWYKftTKQ8O3o8DIxDFiHEY8=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-349-meixGVxQMaCbNjb-W6OtSg-1; Tue, 28 Oct 2025 08:30:46 -0400
+X-MC-Unique: meixGVxQMaCbNjb-W6OtSg-1
+X-Mimecast-MFC-AGG-ID: meixGVxQMaCbNjb-W6OtSg_1761654645
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-42992cb2ee8so2033483f8f.3
+        for <stable@vger.kernel.org>; Tue, 28 Oct 2025 05:30:46 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761654645; x=1762259445;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=caqFFVQ8CNc5/R1/dbClJ7vCcMhRSm3xqXDsXqZLJ3g=;
+        b=KqOdKkNV2zyRhUTuHW8p7QnI7wqD1eUjMdiQIFHFf734KMyfdWVpG0JqYv6et/TaEi
+         mBe85zTqwLB1ZE++LmDk3rPQabngWiAxtLZjD7wTrUJnEm0Rck6mB+NAA1q8RAfCYDJF
+         /3QwOxs2Lx8BvlD0tqbjr5j8PvCbZLxdbIvSn52qo3Bet3QtDlNC9GptZDsI1QerHoRv
+         CEhsqHsalBlsdLWOhj++ipoPaakm32gad9WDmvZiF44gYGjwLaqbXDbHvtS4LF4/z17P
+         h1mE/PtwfbUl4w8BcRDaRqpfBWm9T8cTjIbZ43uIxRRrlPbQvbpRYEPmkF6ZThVLSDwY
+         TFtA==
+X-Forwarded-Encrypted: i=1; AJvYcCUICdB2usuBb6CbFQQPnjp8mCQafVrN3RmwEAF1fQSwJsYwk9GPg1t9J29cj7LSxaz2OVppj8A=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy9k2pSqUXMkRnTht+tJgefg/lAOT3Srp+t8rCsqtJBpz0n/u1b
+	hpv1poiNxV69AfLHvveTHLK0aiZfuaKBNuFFhn6Vb76AFnbgCa+hXQo8NUIVryXSOx04TN8aWgs
+	392AcrgAIbUOeHn7Vz2sKOcb/qiCYxvHjNsPGCWR9FSsN1loAgE5QlNr8rw==
+X-Gm-Gg: ASbGncv4MjRsuJj5HoeDnv+3CAf4ZTONLzfCHn16WMo3CKb7NGm2Q072GHzs6wzuP4p
+	66eu7if5HsJ3XtAJSuYyLhw/dFgmHJsJcrZfsHjEOuz70P8C8kbr6OfAbw+37B5WFhS1y6lxnHH
+	ZuKbCxd14LuQoy77AB3JhjLqZhZGCq4zOZ9J2II1sC67Ggvceyo2UQjpfIAdnkqM9pVd7tvAqCB
+	tMlyaSIU0dT9L5wF86EJCJipLjLgKF+zUcRLqLpG7PjZQrqqFE35SMJz30C6/goJES32Bmdq2Ey
+	FDtVU8XjALYXJZaTHyqJ5/NtRsUfTBMO0UJSSGkCQHyXM5RMuYs/K8YTJtQ6DoZgvyLCS+OQHPJ
+	5cQ+xLFIR7Sswe40NzS7NvCWPNmrejYKk
+X-Received: by 2002:a05:6000:40ca:b0:429:927e:f2d with SMTP id ffacd0b85a97d-429a7e7c749mr2889989f8f.38.1761654645142;
+        Tue, 28 Oct 2025 05:30:45 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG7VWu1SeQzGMTvsGngxg3n6PbbCnycHv6IKEDtKtHjHqjgMWOZby3dOBVswiYkPRmc1I0l4Q==
+X-Received: by 2002:a05:6000:40ca:b0:429:927e:f2d with SMTP id ffacd0b85a97d-429a7e7c749mr2889962f8f.38.1761654644712;
+        Tue, 28 Oct 2025 05:30:44 -0700 (PDT)
+Received: from ?IPV6:2a09:80c0:192:0:5dac:bf3d:c41:c3e7? ([2a09:80c0:192:0:5dac:bf3d:c41:c3e7])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-429952b7badsm19778750f8f.7.2025.10.28.05.30.43
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 28 Oct 2025 05:30:44 -0700 (PDT)
+Message-ID: <bcfd4b80-df1b-4b6c-8ae2-1b3dbd8de23a@redhat.com>
+Date: Tue, 28 Oct 2025 13:30:43 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2610bc26-44e6-48a3-87c6-acfa30f60dad@lunn.ch>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/mremap: Honour writable bit in mremap pte batching
+To: Pedro Falcato <pfalcato@suse.de>, Dev Jain <dev.jain@arm.com>
+Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Jann Horn <jannh@google.com>,
+ Barry Song <baohua@kernel.org>, "open list:MEMORY MAPPING"
+ <linux-mm@kvack.org>
+References: <20251028063952.90313-1-dev.jain@arm.com>
+ <jmxnalmkkc5ztfhokqtzqihsdji2gprnv5z4tzruxi6iqgfkni@aerronulpyem>
+From: David Hildenbrand <david@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <jmxnalmkkc5ztfhokqtzqihsdji2gprnv5z4tzruxi6iqgfkni@aerronulpyem>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Tue, Oct 28, 2025 at 01:07:34PM +0100, Andrew Lunn wrote:
-> > > >  #define YT8521_CCR_RXC_DLY_EN			BIT(8)
-> > > > -#define YT8521_CCR_RXC_DLY_1_900_NS		1900
-> > > > +#define YT8521_CCR_RXC_DLY_1_900_PS		1900
-> > >
-> > > This could be down to interpretation.
-> > >
-> > > #define YT8521_CCR_RXC_DLY_1.900_NS		1900
-> > >
-> > > would be technically correct, but not valid for cpp(1). So the . is
-> > > replaced with a _ .
-> > >
-> > > #define YT8521_CCR_RXC_DLY_1900_PS		1900
-> > >
-> > > would also be correct, but that is not what you have in your patch,
-> > > you leave the _ in place.
-> > 
-> > Alright, I didn't realize that 1_950 represents 1.950;
-> > I thought the underscores were used for code neatness,
-> > making numbers like 900 and 1050 the same length, for example:
-> > #define YT8521_RC1R_RGMII_0_900_PS
-> > #define YT8521_RC1R_RGMII_1_050_PS
-> > 
-> > In that case, is my patch still necessary?
+On 28.10.25 12:48, Pedro Falcato wrote:
+> On Tue, Oct 28, 2025 at 12:09:52PM +0530, Dev Jain wrote:
+>> Currently mremap folio pte batch ignores the writable bit during figuring
+>> out a set of similar ptes mapping the same folio. Suppose that the first
+>> pte of the batch is writable while the others are not - set_ptes will
+>> end up setting the writable bit on the other ptes, which is a violation
+>> of mremap semantics. Therefore, use FPB_RESPECT_WRITE to check the writable
+>> bit while determining the pte batch.
+>>
 > 
-> I think it is unnecessary.
+> Hmm, it seems to be like we're doing the wrong thing by default here?
+> I must admit I haven't followed the contpte work as much as I would've
+> liked, but it doesn't make much sense to me why FPB_RESPECT_WRITE would
+> be an option you have to explicitly pass, and where folio_pte_batch (the
+> "simple" interface) doesn't Just Do The Right Thing for naive callers.
+
+We use the "simple" version to apply to as many callers as possible: the 
+common case, not some "let's be super careful" scenarios.
+
 > 
-> If you want, you could add a comment which explains that the _ should
-> be read as a .  However, this does appear elsewhere in Linux, it is
-> one of those things you learn with time.
+> Auditing all callers:
+>   - khugepaged clears a variable number of ptes
+>   - memory.c clears a variable number of ptes
+>   - mempolicy.c grabs folios for migrations
+>   - mlock.c steps over nr_ptes - 1 ptes, speeding up traversal
+>   - mremap is borked since we're remapping nr_ptes ptes
+>   - rmap.c TTU unmaps nr_ptes ptes for a given folio
+> 
+>   so while the vast majority of callers don't seem to care, it would make
+>   sense that folio_pte_batch() works conservatively by default, and
+>   folio_pte_batch_flags() would allow for further batching (or maybe
+>   we would add a separate folio_pte_batch_clear() or
+>   folio_pte_batch_greedy() or whatnot).
 
-Hang on.
+I think really the tricky part is when we'e not only scanning or 
+clearing, but actually want to "set" ptes again based on the result, 
+like we do here.
 
-Is the "1900" 1.9ns or 1.9ps ?
+For that we could consider having a second variant. But if it ends up 
+having only a single caller, it's also not that great.
 
-If YT8521_CCR_RXC_DLY_1_900_NS means 1.9ns, and the value is in ps,
-then surely if it's being renamed to _PS, then it _must_ become
-YT8521_CCR_RXC_DLY_1900_NS, because 1.900ps is wrong?
+> 
+>> Cc: stable@vger.kernel.org #6.17
+>> Fixes: f822a9a81a31 ("mm: optimize mremap() by PTE batching")
+>> Reported-by: David Hildenbrand <david@redhat.com>
+>> Debugged-by: David Hildenbrand <david@redhat.com>
+>> Signed-off-by: Dev Jain <dev.jain@arm.com>
+> 
+> But the solution itself looks okay to me. so, fwiw:
+> 
+> Acked-by: Pedro Falcato <pfalcato@suse.de>
+> 
+
+Backport might end up being a bit tricky I suspect.
+
+Acked-by: David Hildenbrand <david@redhat.com>
 
 -- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+Cheers
+
+David / dhildenb
+
 
