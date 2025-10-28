@@ -1,192 +1,197 @@
-Return-Path: <stable+bounces-191373-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191375-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43435C12810
-	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 02:14:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C3C80C12898
+	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 02:26:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1F0314621D5
-	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 01:14:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4BD25408012
+	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 01:26:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 608A621257E;
-	Tue, 28 Oct 2025 01:14:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E84A223DFB;
+	Tue, 28 Oct 2025 01:26:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=163.com header.i=@163.com header.b="QkwHzaRH"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02E4F212552;
-	Tue, 28 Oct 2025 01:14:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D45911F3BAC;
+	Tue, 28 Oct 2025 01:26:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761614067; cv=none; b=gjHWm+SYKYHB1uatetaqkWf+if31cnEhN+VsEMmhCh3uCmyt0kw3bF7HW7ydwTYCcwHpmgsWKIFx5+EG8guAkRfXfFtyhZ78sa3JkhzgZ6mXNdlBmxCjATnGiXHYy6TbzY1uE8dDKPmuAIFeYzAWkVyDAYaZRduWQf8vX3qsmFo=
+	t=1761614784; cv=none; b=hm3/VDWv1GQ+e/HAFlCn1kMJb2ZHWiff8uzlBO8+6tQrhQBo1OMv1JlMOc7InQkxVNoj4rtVXZgocKZsNPxOh1zAiI4e4zxpwk3S45sA6iyHq7VGmHYhEbMBxFrJJCAk72ory/H7unAG2rNLEHCRJbAyZ6Ckv18hD0IDBO3j7v8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761614067; c=relaxed/simple;
-	bh=HPmqcX9I7aYWkfvKn4CtPntBBzaTOma5E6hk6L1IY0g=;
-	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=oJFu8dYl6XH5INbyqsCexQbhmjyTwadrN0982XRRRW/IE79ipNJBG0ZwdBuGKyljlQq0DgtPdpcoTFzNDqtjXZVqcKIHtcQVmkAM29S+LSO1kg2gZlCoAjAgtU/VqSgYTaIeNtaxLABMyaJrskm3noBy3krb/ZoCAgTxhMJGWvU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [10.20.42.62])
-	by gateway (Coremail) with SMTP id _____8BxmdHrGABpI1cbAA--.59711S3;
-	Tue, 28 Oct 2025 09:14:19 +0800 (CST)
-Received: from [10.20.42.62] (unknown [10.20.42.62])
-	by front1 (Coremail) with SMTP id qMiowJCxM+TnGABpxC4UAQ--.13588S3;
-	Tue, 28 Oct 2025 09:14:17 +0800 (CST)
-Subject: Re: [PATCH v2 1/2] PCI: Allow per function PCI slots
-To: Niklas Schnelle <schnelle@linux.ibm.com>, Farhan Ali
- <alifm@linux.ibm.com>, linux-s390@vger.kernel.org,
- linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc: helgaas@kernel.org, mjrosato@linux.ibm.com, bblock@linux.ibm.com,
- agordeev@linux.ibm.com, gor@linux.ibm.com, hca@linux.ibm.com,
- stable@vger.kernel.org, Tianrui Zhao <zhaotianrui@loongson.cn>,
- Huacai Chen <chenhuacai@kernel.org>
-References: <20251022212411.1989-1-alifm@linux.ibm.com>
- <20251022212411.1989-2-alifm@linux.ibm.com>
- <e5a5d582a75c030a63c364d553c13baf373663ac.camel@linux.ibm.com>
-From: Bibo Mao <maobibo@loongson.cn>
-Message-ID: <aa0214e8-31be-2b21-c8af-b7831efd60a7@loongson.cn>
-Date: Tue, 28 Oct 2025 09:11:56 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+	s=arc-20240116; t=1761614784; c=relaxed/simple;
+	bh=ZzvW9LWbQammLFav1HFc++SfJ5Q2nFtizqPannCujFU=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:Content-Type:
+	 MIME-Version:Message-ID; b=swFVoZgtp6qUUHhh6wDpDGrlwS1kD9h4Q1mpbhNQwJe5JQTJV/m3Lxb1ECxKsRKL0vsvM/Ky1iPqZzgNfA1RqoFUrF8yYWOs7RPNtMv0b7U4SJ0NlE1fX9dYpYv+nm2+w6815+DmLidbn5YOkrx4kj6qpxFnLwtRs804d+itwws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=fail (1024-bit key) header.d=163.com header.i=@163.com header.b=QkwHzaRH reason="signature verification failed"; arc=none smtp.client-ip=117.135.210.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=Date:From:To:Subject:Content-Type:MIME-Version:
+	Message-ID; bh=RcD6UJpWiZLWdPRHjMQy8kVb58HjNeOquHG+oaEt2hE=; b=Q
+	kwHzaRHPlZ14taMfJhYOh6MoL8qpDpuMP/W10Ixupzs253mfxSUDNp1IitQNO7H2
+	wYC+whv4K7rrGlE6d4tVuWwLkw7h4J7otuCCCM3/YUMZZGhxqPbFMG75lkGI0Jks
+	kvZLFxZonBuHNZ0Xt24o1UQ0QT6GB3FgeAjE6Yrm9k=
+Received: from andyshrk$163.com ( [58.22.7.114] ) by
+ ajax-webmail-wmsvr-40-140 (Coremail) ; Tue, 28 Oct 2025 09:25:14 +0800
+ (CST)
+Date: Tue, 28 Oct 2025 09:25:14 +0800 (CST)
+From: "Andy Yan" <andyshrk@163.com>
+To: "Sebastian Reichel" <sebastian.reichel@collabora.com>
+Cc: "Heiko Stuebner" <heiko@sntech.de>,
+	"Quentin Schulz" <quentin.schulz@cherry.de>, mturquette@baylibre.com,
+	sboyd@kernel.org, zhangqing@rock-chips.com,
+	linux-clk@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, "Andy Yan" <andy.yan@rock-chips.com>
+Subject: Re:Re: [PATCH] clk: rockchip: rk3588: Don't change PLL rates when
+ setting dclk_vop2_src
+X-Priority: 3
+X-Mailer: Coremail Webmail Server Version 2023.4-cmXT build
+ 20250723(a044bf12) Copyright (c) 2002-2025 www.mailtech.cn 163com
+In-Reply-To: <w3ttg7rmkut44gbys7m7rcwvsa67d4bqyez5fie3cxgbtjs6ib@pyelryb6gth2>
+References: <20251008133135.3745785-1-heiko@sntech.de>
+ <2749454.BddDVKsqQX@diego>
+ <eumxn7lvp34si2gik33hcavcrsstqqoxixiznjbertxars7zcx@xsycorjhj3id>
+ <4856104.usQuhbGJ8B@phil>
+ <j6ondk5xnwbm36isdoni5vtdq5mf5ak4kp63ratqlnpwsgrqj2@paw5lzwqa2ze>
+ <7fb0eadb.1d09.19a23686d5a.Coremail.andyshrk@163.com>
+ <w3ttg7rmkut44gbys7m7rcwvsa67d4bqyez5fie3cxgbtjs6ib@pyelryb6gth2>
+X-NTES-SC: AL_Qu2dA/qau08q4imeZ+kfmUgWjuw/WsG1v/Ul1YBSP556jB/owRk8U0V5JWnTwv+lGjmyiQi1bSp28c1ccLleeZstWBwy1KDYF0pRidmCDMjG+Q==
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=UTF-8
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <e5a5d582a75c030a63c364d553c13baf373663ac.camel@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJCxM+TnGABpxC4UAQ--.13588S3
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoWxXw1Dtr4DJw1kCr4UKFykWFX_yoWrZry8pF
-	W8CF1jkFyrJrW7AwsIv3WF9a4Yvan3JFWUGrWDG343uayYyr18tF15tF1Yg3s7JrW5uF1I
-	va15Zw45uF95AFgCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUvjb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
-	GcCE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE44I27wAqx4
-	xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_JrI_JrylYx0Ex4A2jsIE14v2
-	6r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCYjI0SjxkI62AI1cAE67
-	vIY487MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAF
-	wI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc4
-	0Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AK
-	xVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr
-	1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjxU70PfDUUU
-	U
+Message-ID: <368a3ca3.110d.19a286b585d.Coremail.andyshrk@163.com>
+X-Coremail-Locale: zh_CN
+X-CM-TRANSID:jCgvCgCXCmt7GwBpk54UAA--.5077W
+X-CM-SenderInfo: 5dqg52xkunqiywtou0bp/xtbBEAP0XmkAGRw8rQABsF
+X-Coremail-Antispam: 1U5529EdanIXcx71UUUUU7vcSsGvfC2KfnxnUU==
 
-
-
-On 2025/10/27 下午8:29, Niklas Schnelle wrote:
-> On Wed, 2025-10-22 at 14:24 -0700, Farhan Ali wrote:
->> On s390 systems, which use a machine level hypervisor, PCI devices are
->> always accessed through a form of PCI pass-through which fundamentally
->> operates on a per PCI function granularity. This is also reflected in the
->> s390 PCI hotplug driver which creates hotplug slots for individual PCI
->> functions. Its reset_slot() function, which is a wrapper for
->> zpci_hot_reset_device(), thus also resets individual functions.
->>
->> Currently, the kernel's PCI_SLOT() macro assigns the same pci_slot object
->> to multifunction devices. This approach worked fine on s390 systems that
->> only exposed virtual functions as individual PCI domains to the operating
->> system.  Since commit 44510d6fa0c0 ("s390/pci: Handling multifunctions")
->> s390 supports exposing the topology of multifunction PCI devices by
->> grouping them in a shared PCI domain. When attempting to reset a function
->> through the hotplug driver, the shared slot assignment causes the wrong
->> function to be reset instead of the intended one. It also leaks memory as
->> we do create a pci_slot object for the function, but don't correctly free
->> it in pci_slot_release().
->>
->> Add a flag for struct pci_slot to allow per function PCI slots for
->> functions managed through a hypervisor, which exposes individual PCI
->> functions while retaining the topology.
-> 
-> I wonder if LoongArch which now also does per PCI function pass-through
-> might need this too. Adding their KVM maintainers.
-
-Hi Niklas,
-
-Thanks for your reminder. Yes, LoongArch do per PCI function 
-pass-throught. In theory, function pci_slot_enabled_per_func() should 
-return true on LoongArch also. Only that now IOMMU driver is not merged, 
-there is no way to test it, however we will write down this as a note 
-inside about this issue and verify it once IOMMU driver is merged.
-
-
-Regards
-Bibo Mao
-> 
->>
->> Fixes: 44510d6fa0c0 ("s390/pci: Handling multifunctions")
->> Cc: stable@vger.kernel.org
->> Suggested-by: Niklas Schnelle <schnelle@linux.ibm.com>
->> Signed-off-by: Farhan Ali <alifm@linux.ibm.com>
->> ---
->>   drivers/pci/pci.c   |  5 +++--
->>   drivers/pci/slot.c  | 25 ++++++++++++++++++++++---
->>   include/linux/pci.h |  1 +
->>   3 files changed, 26 insertions(+), 5 deletions(-)
->>
->> diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
->> index b14dd064006c..36ee38e0d817 100644
->> --- a/drivers/pci/pci.c
->> +++ b/drivers/pci/pci.c
->> @@ -4980,8 +4980,9 @@ static int pci_reset_hotplug_slot(struct hotplug_slot *hotplug, bool probe)
->>   
->>   static int pci_dev_reset_slot_function(struct pci_dev *dev, bool probe)
->>   {
->> -	if (dev->multifunction || dev->subordinate || !dev->slot ||
->> -	    dev->dev_flags & PCI_DEV_FLAGS_NO_BUS_RESET)
->> +	if (dev->subordinate || !dev->slot ||
->> +	    dev->dev_flags & PCI_DEV_FLAGS_NO_BUS_RESET ||
->> +	    (dev->multifunction && !dev->slot->per_func_slot))
->>   		return -ENOTTY;
->>   
->>   	return pci_reset_hotplug_slot(dev->slot->hotplug, probe);
->> diff --git a/drivers/pci/slot.c b/drivers/pci/slot.c
->> index 50fb3eb595fe..ed10fa3ae727 100644
->> --- a/drivers/pci/slot.c
->> +++ b/drivers/pci/slot.c
->> @@ -63,6 +63,22 @@ static ssize_t cur_speed_read_file(struct pci_slot *slot, char *buf)
->>   	return bus_speed_read(slot->bus->cur_bus_speed, buf);
->>   }
->>   
->> +static bool pci_dev_matches_slot(struct pci_dev *dev, struct pci_slot *slot)
->> +{
->> +	if (slot->per_func_slot)
->> +		return dev->devfn == slot->number;
->> +
->> +	return PCI_SLOT(dev->devfn) == slot->number;
->> +}
->> +
->> +static bool pci_slot_enabled_per_func(void)
->> +{
->> +	if (IS_ENABLED(CONFIG_S390))
->> +		return true;
->> +
->> +	return false;
->> +}
->> +
-> --- snip ---
->>   
->> diff --git a/include/linux/pci.h b/include/linux/pci.h
->> index d1fdf81fbe1e..6ad194597ab5 100644
->> --- a/include/linux/pci.h
->> +++ b/include/linux/pci.h
->> @@ -78,6 +78,7 @@ struct pci_slot {
->>   	struct list_head	list;		/* Node in list of slots */
->>   	struct hotplug_slot	*hotplug;	/* Hotplug info (move here) */
->>   	unsigned char		number;		/* PCI_SLOT(pci_dev->devfn) */
->> +	unsigned int		per_func_slot:1; /* Allow per function slot */
->>   	struct kobject		kobj;
->>   };
->>   
-> 
-> Reviewed-by: Niklas Schnelle <schnelle@linux.ibm.com>
-> 
-
+CkhlbGxv77yMCuWcqCAyMDI1LTEwLTI3IDIxOjIwOjE177yMIlNlYmFzdGlhbiBSZWljaGVsIiA8
+c2ViYXN0aWFuLnJlaWNoZWxAY29sbGFib3JhLmNvbT4g5YaZ6YGT77yaCj5IaSwKPgo+T24gTW9u
+LCBPY3QgMjcsIDIwMjUgYXQgMTA6MDM6NTdBTSArMDgwMCwgQW5keSBZYW4gd3JvdGU6Cj4+IEF0
+IDIwMjUtMTAtMjEgMDA6MDA6NTksICJTZWJhc3RpYW4gUmVpY2hlbCIgPHNlYmFzdGlhbi5yZWlj
+aGVsQGNvbGxhYm9yYS5jb20+IHdyb3RlOgo+PiA+T24gTW9uLCBPY3QgMjAsIDIwMjUgYXQgMDI6
+NDk6MTBQTSArMDIwMCwgSGVpa28gU3R1ZWJuZXIgd3JvdGU6Cj4+ID4+IEFtIERvbm5lcnN0YWcs
+IDE2LiBPa3RvYmVyIDIwMjUsIDAwOjU3OjE1IE1pdHRlbGV1cm9ww6Rpc2NoZSBTb21tZXJ6ZWl0
+IHNjaHJpZWIgU2ViYXN0aWFuIFJlaWNoZWw6Cj4+ID4+ID4gT24gV2VkLCBPY3QgMTUsIDIwMjUg
+YXQgMDM6Mjc6MTJQTSArMDIwMCwgSGVpa28gU3TDvGJuZXIgd3JvdGU6Cj4+ID4+ID4gPiBBbSBN
+aXR0d29jaCwgMTUuIE9rdG9iZXIgMjAyNSwgMTQ6NTg6NDYgTWl0dGVsZXVyb3DDpGlzY2hlIFNv
+bW1lcnplaXQgc2NocmllYiBRdWVudGluIFNjaHVsejoKPj4gPj4gPiA+ID4gT24gMTAvOC8yNSAz
+OjMxIFBNLCBIZWlrbyBTdHVlYm5lciB3cm90ZToKPj4gPj4gPiA+ID4gPiBkY2xrX3ZvcDJfc3Jj
+IGN1cnJlbnRseSBoYXMgQ0xLX1NFVF9SQVRFX1BBUkVOVCB8IENMS19TRVRfUkFURV9OT19SRVBB
+UkVOVAo+PiA+PiA+ID4gPiA+IGZsYWdzIHNldCwgd2hpY2ggaXMgdmFzdGx5IGRpZmZlcmVudCB0
+aGFuIGRjbGtfdm9wMF9zcmMgb3IgZGNsa192b3AxX3NyYywKPj4gPj4gPiA+ID4gPiB3aGljaCBo
+YXZlIG5vbmUgb2YgdGhvc2UuCj4+ID4+ID4gPiA+ID4gCj4+ID4+ID4gPiA+ID4gV2l0aCB0aGVz
+ZSBmbGFncyBpbiBkY2xrX3ZvcDJfc3JjLCBhY3R1YWxseSBzZXR0aW5nIHRoZSBjbG9jayB0aGVu
+IHJlc3VsdHMKPj4gPj4gPiA+ID4gPiBpbiBhIGxvdCBvZiBvdGhlciBwZXJpcGhlcmFscyBicmVh
+a2luZywgYmVjYXVzZSBzZXR0aW5nIHRoZSByYXRlIHJlc3VsdHMKPj4gPj4gPiA+ID4gPiBpbiB0
+aGUgUExMIHNvdXJjZSBnZXR0aW5nIGNoYW5nZWQ6Cj4+ID4+ID4gPiA+ID4gCj4+ID4+ID4gPiA+
+ID4gWyAgIDE0Ljg5ODcxOF0gY2xrX2NvcmVfc2V0X3JhdGVfbm9sb2NrOiBzZXR0aW5nIHJhdGUg
+Zm9yIGRjbGtfdm9wMiB0byAxNTI4NDAwMDAKPj4gPj4gPiA+ID4gPiBbICAgMTUuMTU1MDE3XSBj
+bGtfY2hhbmdlX3JhdGU6IHNldHRpbmcgcmF0ZSBmb3IgcGxsX2dwbGwgdG8gMTY4MDAwMDAwMAo+
+PiA+PiA+ID4gPiA+IFsgY2xrIGFkanVzdGluZyBldmVyeSBncGxsIHVzZXIgXQo+PiA+PiA+ID4g
+PiA+IAo+PiA+PiA+ID4gPiA+IFRoaXMgaW5jbHVkZXMgcG9zc2libHkgdGhlIG90aGVyIHZvcHMs
+IGkycywgc3BkaWYgYW5kIGV2ZW4gdGhlIHVhcnRzLgo+PiA+PiA+ID4gPiA+IEFtb25nIG90aGVy
+IHBvc3NpYmxlIHRoaW5ncywgdGhpcyBicmVha3MgdGhlIHVhcnQgY29uc29sZSBvbiBhIGJvYXJk
+Cj4+ID4+ID4gPiA+ID4gSSB1c2UuIFNvbWV0aW1lcyBpdCByZWNvdmVycyBsYXRlciBvbiwgYnV0
+IHRoZXJlIHdpbGwgYmUgYSBiaWcgYmxvY2sKPj4gPj4gPiA+ID4gCj4+ID4+ID4gPiA+IEkgY2Fu
+IHJlcHJvZHVjZSBvbiB0aGUgc2FtZSBib2FyZCBhcyB5b3VycyBhbmQgdGhpcyBmaXhlcyB0aGUg
+aXNzdWUgCj4+ID4+ID4gPiA+IGluZGVlZCAobm90ZSBJIGNhbiBvbmx5IHJlcHJvZHVjZSBmb3Ig
+bm93IHdoZW4gZGlzcGxheSB0aGUgbW9kZXRlc3QgCj4+ID4+ID4gPiA+IHBhdHRlcm4sIG90aGVy
+d2lzZSBhZnRlciBib290IHRoZSBjb25zb2xlIHNlZW1zIGZpbmUgdG8gbWUpLgo+PiA+PiA+ID4g
+Cj4+ID4+ID4gPiBJIGJvb3QgaW50byBhIERlYmlhbiByb290ZnMgd2l0aCBmYmNvbiBvbiBteSBz
+eXN0ZW0sIGFuZCB0aGUgc2VyaWFsCj4+ID4+ID4gPiBjb25zb2xlIHByb2R1Y2VzIGdhcmJsZWQg
+b3V0cHV0IHdoZW4gdGhlIHZvcCBhZGp1c3RzIHRoZSBjbG9jawo+PiA+PiA+ID4gCj4+ID4+ID4g
+PiBTb21ldGltZXMgaXQgcmVjb3ZlcnMgYWZ0ZXIgYSBiaXQsIGJ1dCBvdGhlciB0aW1lcyBpdCBk
+b2Vzbid0Cj4+ID4+ID4gPiAKPj4gPj4gPiA+ID4gUmV2aWV3ZWQtYnk6IFF1ZW50aW4gU2NodWx6
+IDxxdWVudGluLnNjaHVsekBjaGVycnkuZGU+Cj4+ID4+ID4gPiA+IFRlc3RlZC1ieTogUXVlbnRp
+biBTY2h1bHogPHF1ZW50aW4uc2NodWx6QGNoZXJyeS5kZT4gIyBSSzM1ODggVGlnZXIgdy9EUCBj
+YXJyaWVyYm9hcmQKPj4gPj4gPiAKPj4gPj4gPiBJJ20gcHJldHR5IHN1cmUgSSd2ZSBzZWVuIHRo
+aXMgd2hpbGUgcGxheWluZyB3aXRoIFVTQi1DIERQIEFsdE1vZGUKPj4gPj4gPiBvbiBSb2NrIDVC
+LiBTbyBmYXIgSSBoYWQgbm8gdGltZSB0byBpbnZlc3RpZ2F0ZSBmdXJ0aGVyLgo+PiA+PiA+IAo+
+PiA+PiA+IFdoYXQgSSdtIG1pc3NpbmcgaW4gdGhlIGNvbW1pdCBtZXNzYWdlIGlzIHRoZSBpbXBh
+Y3Qgb24gVk9QLiBBbHNvCj4+ID4+ID4gaXQgbWlnaHQgYmUgYSBnb29kIGlkZWEgdG8gaGF2ZSBB
+bmR5IGluIENjLCBzbyBJJ3ZlIGFkZGVkIGhpbS4KPj4gPj4gCj4+ID4+IEhtbSwgaXQgYnJpbmdz
+IFZQMiBpbiBsaW5lIHdpdGggdGhlIG90aGVyIHR3byBWUHMsIG9ubHkgVlAyIGhhZCB0aGlzCj4+
+ID4+IHNwZWNpYWwgc2V0dGluZyAtIGV2ZW4gcmlnaHQgZnJvbSB0aGUgc3RhcnQsIHNvIGl0IGNv
+dWxkIHZlcnkgd2VsbAo+PiA+PiBoYXZlIGJlZW4gbGVmdCB0aGVyZSBhY2NpZGVudGlhbGx5IGR1
+cmluZyBzdWJtaXNzaW9uLgo+PiA+Cj4+ID5JIGRpZCB0aGUgaW5pdGlhbCB1cHN0cmVhbSBzdWJt
+aXNzaW9uIGJhc2VkIG9uIGRvd25zdHJlYW0gKHRoZSBUUk0KPj4gPmlzIHF1aXRlIGJhZCByZWdh
+ZGluZyBkZXNjcmliaW5nIHRoZSBjbG9jayB0cmVlcywgc28gbm90IG11Y2gKPj4gPnZhbGlkYXRp
+b24gaGFzIGJlZW4gZG9uZSBieSBtZSkuIFRoZSBvbGQgdmVuZG9yIGtlcm5lbCB0cmVlIGhhZCBp
+dAo+PiA+bGlrZSB0aGlzLCBidXQgdGhhdCBhbHNvIGNoYW5nZWQgYSBiaXQgb3ZlciB0aW1lIGFm
+dGVyd2FyZHMgYW5kIG5vCj4+ID5sb25nZXIgaGFzIGFueSBzcGVjaWFsIGhhbmRsaW5nIGZvciBW
+UDIuIE9UT0ggaXQgZG9lcyBzZXQKPj4gPkNMS19TRVRfUkFURV9OT19SRVBBUkVOVCBmb3IgYWxs
+IGRjbGtfdm9wPG51bWJlcj5fc3JjLCB3aGljaCB5b3UKPj4gPmFyZSBub3cgcmVtb3ZpbmcgZm9y
+IFZQMi4KPj4gPgo+PiA+RldJVyB0aGVzZSBhcmUgdGhlIHR3byBmbGFnczoKPj4gPgo+PiA+I2Rl
+ZmluZSBDTEtfU0VUX1JBVEVfUEFSRU5UICAgICBCSVQoMikgLyogcHJvcGFnYXRlIHJhdGUgY2hh
+bmdlIHVwIG9uZSBsZXZlbCAqLwo+PiA+I2RlZmluZSBDTEtfU0VUX1JBVEVfTk9fUkVQQVJFTlQg
+QklUKDcpIC8qIGRvbid0IHJlLXBhcmVudCBvbiByYXRlIGNoYW5nZSAqLwo+PiA+Cj4+ID5TbyBi
+eSByZW1vdmluZyBDTEtfU0VUX1JBVEVfTk9fUkVQQVJFTlQgeW91IGFyZSBhbGxvd2luZyBkY2xr
+X3ZvcDJfc3JjCj4+ID50byBiZSBzd2l0Y2hlZCB0byBhIGRpZmZlcmVudCBQTEwgd2hlbiBhIGRp
+ZmZlcmVudCByYXRlIGlzIGJlaW5nCj4+ID5yZXF1ZXN0ZWQuIFRoYXQgY2hhbmdlIGlzIGNvbXBs
+ZXRsZXkgdW5yZWxhdGVkIHRvIHRoZSBidWcgeW91IGFyZQo+PiA+c2VlaW5nIHJpZ2h0IG5vdz8K
+Pj4gPgo+PiA+PiBTbyBpbiB0aGUgZW5kIFZQMiB3aWxsIGhhdmUgdG8gZGVhbCB3aXRoIHRoaXMs
+IGJlY2F1c2Ugd2hlbiB0aGUgVlAKPj4gPj4gY2F1c2VzIGEgcmF0ZSBjaGFuZ2UgaW4gdGhlIEdQ
+TEwsIHRoaXMgY2hhbmdlcyBzbyBtYW55IGNsb2NrcyBvZgo+PiA+PiBvdGhlciBwb3NzaWJseSBy
+dW5uaW5nIGRldmljZXMuIE5vdCBvbmx5IHRoZSB1YXJ0LCBidXQgYWxzbyBlbW1jCj4+ID4+IGFu
+ZCBtYW55IG1vcmUuIEFuZCBhbGwgdGhvc2UgZGV2aWNlcyBkbyBub3QgbGlrZSBpZiB0aGVpciBj
+bG9jayBnZXRzCj4+ID4+IGNoYW5nZWQgdW5kZXIgdGhlbSBJIHRoaW5rLgo+PiA+Cj4+ID5JdCdz
+IGNlcnRhaW5seSB3ZWlyZCwgdGhhdCBWUDIgd2FzIChhbmQgc3RpbGwgaXMgaW4gdXBzdHJlYW0p
+IGhhbmRsZWQKPj4gPnNwZWNpYWwuIE5vdGUgdGhhdCBHUExMIGJlaW5nIGNoYW5nZWQgaXMgbm90
+IHJlYWxseSBuZWNlc3NhcnkuCj4+ID5kY2xrX3ZvcDJfc3JjIHBhcmVudCBjYW4gYmUgR1BMTCwg
+Q1BMTCwgVjBQTEwgb3IgQVVQTEwuIEVmZmVjdHMgb24KPj4gPm90aGVyIGhhcmR3YXJlIElQIHZl
+cnkgbXVjaCBkZXBlbmRzIG9uIHRoZSBwYXJlbnQgc2V0dXAuIFdoYXQgSSB0cnkKPj4gPnRvIHVu
+ZGVyc3RhbmQgaXMgaWYgdGhlcmUgaXMgYWxzbyBhIGJ1ZyBpbiB0aGUgcm9ja2NoaXBkcm0gZHJp
+dmVyCj4+ID5hbmQvb3IgaWYgcmVtb3ZpbmcgQ0xLX1NFVF9SQVRFX05PX1JFUEFSRU5UIGlzIGEg
+Z29vZCBpZGVhLiBUaGF0J3MKPj4gPndoeSBJIGhvcGVkIEFuZHkgY291bGQgY2hpbWUgaW4gYW5k
+IHByb3ZpZGUgc29tZSBiYWNrZ3JvdW5kIDopCj4+IAo+PiBUaGUgbWFpbiBsaW1pdGF0aW9uIGlz
+IHRoYXQgdGhlcmUgYXJlIG5vdCBlbm91Z2ggUExMcyBvbiB0aGUgU29DCj4+IHRvIGJlIHVzZWQg
+Zm9yIHRoZSBkaXNwbGF5IHNpZGUuIEluIG91ciBkb3duc3RyZWFtIGNvZGUKPj4gaW1wbGVtZW50
+YXRpb24sIHdlIHVzdWFsbHkgZXhjbHVzaXZlbHkgYXNzaWduIFYwUExMIHRvIGEgY2VydGFpbgo+
+PiBWUC4gT3RoZXIgVlBzIGdlbmVyYWxseSBuZWVkIHRvIHNoYXJlIHRoZSBQTEwgd2l0aCBvdGhl
+cgo+PiBwZXJpcGhlcmFscyAsIG9yIHVzZSB0aGUgSERNSSBQSFkgUExMLgo+PiAKPj4gRm9yIEdQ
+TEwgYW5kIENQTEwsICB0aGV5IHdpbGwgYmUgc2V0IHRvIGEgZml4ZWQgZnJlcXVlbmN5IGR1cmlu
+Zwo+PiB0aGUgc3lzdGVtIHN0YXJ0dXAgc3RhZ2UsIGFuZCB0aGV5IHNob3VsZCBub3QgYmUgbW9k
+aWZpZWQgYWdhaW4gYXMKPj4gdGhlc2UgdHdvIFBMTCBhbHdheXMgc2hhcmVkIGJ5IG90aGVyIHBl
+cmlwaGVyYWxzLgo+PiAKPj4gV2hlbiBzaGFyZWQgd2l0aCBvdGhlciBwZXJpcGhlcmFscywgIHdl
+IGNhbiBub3QgZG8KPj4gQ0xLX1NFVF9SQVRFX1BBUkVOVCwuIEhvd2V2ZXIsIHdoZW4gd2UgbmVl
+ZCBhIHJlbGF0aXZlbHkgcHJlY2lzZQo+PiBmcmVxdWVuY3kgaW4gY2VydGFpbiBzY2VuYXJpb3Ms
+IHN1Y2ggYXMgZHJpdmluZyBhbiBlRFAgb3IgRFNJCj4+IHBhbmVs77yIc2VlIHdoYXQgd2UgZG8g
+Zm9yIGVEUCBvbiByazM1ODhzLWV2YjEtdjEwLmR0cyBhbmQKPj4gcmszNTg4LWNvb2xwaS1jbTUt
+Z2VuYm9vay5kdHMg77yJLCB3ZSB0ZW5kIHRvIHVzZSBWMFBMTC4gQnV0IHNpbmNlCj4+IFYwUExM
+IGRvZXMgbm90IHByb3BlciBpbml0aWFsaXphdGVkIGF0IHN5c3RlbSBzdGFydHVwLCB3ZSB0aGVu
+Cj4+IG5lZWQgQ0xLX1NFVF9SQVRFX1BBUkVOVC4gVGhpcyBkb2VzIGluZGVlZCBzZWVtIHRvIGJl
+IGEKPj4gY29udHJhZGljdGlvbi4KPgo+SSBzdXBwb3NlIGZvciBlRFAgYW5kIERTSSwgd2hpY2gg
+YXJlIG1vcmUgb3IgbGVzcyBmaXhlZCwgaXQgd291bGQKPmJlIHBvc3NpYmxlIHRvIGFzc2lnbiBh
+IGJvYXJkIHNwZWNpZmljIGZpeGVkIGZyZXF1ZW5jeSBsaWtlIHRoaXMKPmFuZCBnZXQgdGhlIGZy
+ZXF1ZW5jeSBpbml0aWFsaXplZCB3aXRob3V0IHJlbHlpbmcgb24gVk9QIHNldHRpbmcKPnRoZSBQ
+TEwgcmF0ZSB2aWEgQ0xLX1NFVF9SQVRFX1BBUkVOVCBmcm9tIHRoZSBkcml2ZXI6Cj4KPiZ2b3Ag
+ewo+ICAgIGFzc2lnbmVkLWNsb2NrcyA9IDwmY3J1IERDTEtfVk9QMl9TUkM+LCA8JmNydSBQTExf
+VjBQTEw+Owo+ICAgIGFzc2lnbmVkLWNsb2NrLXBhcmVudHMgPSA8JmNydSBQTExfVjBQTEw+Owo+
+ICAgIGFzc2lnbmVkLWNsb2NrLXJhdGVzID0gPDA+LCA8MTMzNz47Cj59OwoKCkZvciBhIGZpeGVk
+IHNjcmVlbiwgdGhpcyBzb2x1dGlvbiBpcyBmZWFzaWJsZS4gQnV0IHdoYXQgYWJvdXQgcGx1Z2dh
+YmxlIGludGVyZmFjZXMgbGlrZSBIRE1JIG9yIERQPyAKRm9yIGV4YW1wbGUsIGlmIGEgYm9hcmQg
+aGFzIHR3byBIRE1JIHBvcnRzIGFuZCBvbmUgRFAgcG9ydCwgdGhlIHR3byBIRE1JIHBvcnRzIG1p
+Z2h0IHN1cHBvcnQKYW55IHJlc29sdXRpb24gdXNpbmcgdGhlIEhETUkgUEhZIFBMTCwgYnV0IGlu
+IHRoYXQgY2FzZSwgdGhlIERQIHBvcnQgbWlnaHQgb25seSBiZSBhYmxlIHRvIHVzZSB0aGUgVjBQ
+TEwuIApVbmRlciBzdWNoIGNpcmN1bXN0YW5jZXMsIGl0J3MgbmVjZXNzYXJ5IHRvIGJlIGFibGUg
+dG8gZHluYW1pY2FsbHkgYWRqdXN0IHRoZSBQTEwgZnJlcXVlbmN5LgoKSSdtIG5vdCBzdXJlIHdo
+ZXRoZXIgdGhlIGNsb2NrIGZyYW1ld29yayBjYW4gZW5mb3JjZSByZXN0cmljdGlvbnMgc3VjaCB0
+aGF0IHRoZSBmcmVxdWVuY2llcyBvZiBzaGFyZWQgUExMcyBsaWtlIENQTEwgYW5kIEdQTEwsIAp3
+aGljaCBhcmUgdXNlZCBieSBvdGhlciBwZXJpcGhlcmFscywgY2Fubm90IGJlIG1vZGlmaWVkLCB3
+aGlsZSBhbGxvd2luZyB0aGUgZnJlcXVlbmN5IG9mIGFuIGV4Y2x1c2l2ZSBQTEwgbGlrZSBWMFBM
+TCwgCndoaWNoIGlzIGRlZGljYXRlZCB0byBkaXNwbGF5LCB0byBiZSBhZGp1c3RhYmxlLgoKCj4K
+PkdyZWV0aW5ncywKPgo+LS0gU2ViYXN0aWFuCg==
 
