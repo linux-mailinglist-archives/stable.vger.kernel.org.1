@@ -1,57 +1,85 @@
-Return-Path: <stable+bounces-191414-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191415-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id B97EEC13AF5
-	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 10:05:34 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C3A7C13B6E
+	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 10:09:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 61F47351DC6
-	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 09:05:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E50371B21119
+	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 09:08:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FA002E7F08;
-	Tue, 28 Oct 2025 09:05:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E6262EA743;
+	Tue, 28 Oct 2025 09:07:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d9DNLOeO"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="X9UkrCtS"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59B842E7BC0;
-	Tue, 28 Oct 2025 09:05:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB8712E8B96;
+	Tue, 28 Oct 2025 09:07:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761642320; cv=none; b=sbNrYxX6XHKDRDJKAPUnnm6Jn3R4ibHedpVsQPICyzPHBupWNGlK4u2eM5oPZjaocqwtuzVv1T08lTYBDwo0QQjEhBuSeONBx5cvzVzDgV+4EwhuyU6eRgVz6JXu0soHrYRM4bksj0kQyUDebatbCST+y1o/yRrkdxgTaqUuwmk=
+	t=1761642431; cv=none; b=Wq7PVSrMctnwHhdtcDIF6MYI1TALBKh/+0L7DrOavVhVflM9CDA+WHZ1NvFs4BU0/nsKwef16IE4NAdhbcol1ke4jlqkZ+mYLOf7I8+T6xjaMvjHct85ckIL3BjkCVhxvpomYqVVP9oK5a+6TKp9bduuAkIrlFY6zpMM8s7q2OY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761642320; c=relaxed/simple;
-	bh=2bDfEv9vTN9I+ahzcVMdIRFkrUamd0EmwFSbHJjVcdg=;
+	s=arc-20240116; t=1761642431; c=relaxed/simple;
+	bh=6sOJNyYpfxdUF4bKHa5kwY8CVFYlhF1MaSnjNBPXnAI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aSy37DoTb9kxankjC1Dtpaj7t8mpU/MMLN49jOtmRbwYoxANu6ABIQXXgIgUVMUEwFf3iABLAGmslcF22w+D3VakajAhNr888+kP59tUBuotXRXKJnRI2DmV2SKp2wdsoL8x7sZCkV9eXgmQ9uajUuJas+kZigW33FG34ojTrzk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d9DNLOeO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47F36C4CEE7;
-	Tue, 28 Oct 2025 09:05:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761642319;
-	bh=2bDfEv9vTN9I+ahzcVMdIRFkrUamd0EmwFSbHJjVcdg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=d9DNLOeO2Ohz76Tw/OAyU7LOYZfTAuxCT1Wydo2gA7z+8zYFieyk0sXuwx34s8kSV
-	 4DyUS5eHBqL2qCAXgs4LxaLWd4l9S53bf09uXXbUJsuWW2Gp7ZPAc1JlvpNBfLn6Mu
-	 kUGF8lZU038Y90W6QUG2XN4AASAfPImrlvW+zjqg=
-Date: Tue, 28 Oct 2025 09:38:28 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
-	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.10 067/332] wifi: ath10k: avoid unnecessary wait for
- service ready message
-Message-ID: <2025102817-appraiser-unshackle-bf06@gregkh>
-References: <20251027183524.611456697@linuxfoundation.org>
- <20251027183526.385879492@linuxfoundation.org>
- <7f021277-2925-4fd1-a191-c7034d526e37@oss.qualcomm.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZAMzb10zJNBE+5lz/izejK+cvoF9IIlqzXt3jXsBai8ZFMYxWLC7F5vI8cHnCmY2tUok6df5MWWSr2bnNoTa//IEEFJK6SdY+wHmS/0dj3eN9tVC6CcB+cm2hmA7xyieagNHHpOCcGCoVZNWjlQbRfBJqxhnG2Yt5aAu6hD9KxM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=X9UkrCtS; arc=none smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1761642430; x=1793178430;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=6sOJNyYpfxdUF4bKHa5kwY8CVFYlhF1MaSnjNBPXnAI=;
+  b=X9UkrCtS67KoVdBRzkIFW0ICuzg/bMJtRpyh3P4i/Yr4Ber5kBO6Z8GS
+   BTnNiFr8fezuMKVr9fpTo6mMkXa7ohampncKodBBNOmesTSM6Tm6vKpdC
+   zP7wMkTaABCdfLUmmC3OVCiLns216hcT+TTyRA1zXZ+Zbod+G7LOyTzzE
+   dqQGwI4osNtvXlYZUpjt06WzTqL0m+Iq2VX0BfDGPXPDBArfWvU2vMV1+
+   mMjZwE7Uk/KnKT7kbid6bVMxs7l01fAmoiXbH4RUiepboVDS6AOvuwI1O
+   tgfwp/RY7n24BXEoNWCx30YgZFHjWaMLRsc9NPKMWESdHL0icOZOIHhhm
+   A==;
+X-CSE-ConnectionGUID: wlyhL3p6SSi2FIbq/A2lpA==
+X-CSE-MsgGUID: zT208oAkS/ywx/JSw2bLjQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="63663586"
+X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
+   d="scan'208";a="63663586"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2025 02:07:10 -0700
+X-CSE-ConnectionGUID: mjScgg4IS32FsBzpR4Yw5Q==
+X-CSE-MsgGUID: D1+U8ZLKTleyPWb7SyVLBw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,261,1754982000"; 
+   d="scan'208";a="215948786"
+Received: from dalessan-mobl3.ger.corp.intel.com (HELO ashevche-desk.local) ([10.245.244.136])
+  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2025 02:07:07 -0700
+Received: from andy by ashevche-desk.local with local (Exim 4.98.2)
+	(envelope-from <andriy.shevchenko@intel.com>)
+	id 1vDffT-00000003GLD-3WHG;
+	Tue, 28 Oct 2025 11:07:03 +0200
+Date: Tue, 28 Oct 2025 11:07:03 +0200
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Miaoqian Lin <linmq006@gmail.com>, Markus Burri <markus.burri@mt.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	Angelo Dureghello <adureghello@baylibre.com>,
+	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] iio: dac: ad3552r-hs: fix out-of-bound write in
+ ad3552r_hs_write_data_source
+Message-ID: <aQCHt9JL0Bc4Pduv@smile.fi.intel.com>
+References: <20251027150713.59067-1-linmq006@gmail.com>
+ <aQB8PRlaBY_9-L8d@smile.fi.intel.com>
+ <aQB8j7Hc3b9vAT5_@smile.fi.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,21 +88,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <7f021277-2925-4fd1-a191-c7034d526e37@oss.qualcomm.com>
+In-Reply-To: <aQB8j7Hc3b9vAT5_@smile.fi.intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Mon, Oct 27, 2025 at 12:01:00PM -0700, Jeff Johnson wrote:
-> On 10/27/2025 11:32 AM, Greg Kroah-Hartman wrote:
-> > 5.10-stable review patch.  If anyone has any objections, please let me know.
-> 
-> Same comments as 5.4
-> Please do not propagate this. This had adverse effects on some platforms and a
-> revert is already in the pipeline:
-> 
-> https://git.kernel.org/pub/scm/linux/kernel/git/ath/ath.git/commit/?h=ath-current&id=2469bb6a6af944755a7d7daf66be90f3b8decbf9
-> 
-> The revert should hopefully land in v6.18-rc4.
+On Tue, Oct 28, 2025 at 10:19:27AM +0200, Andy Shevchenko wrote:
+> On Tue, Oct 28, 2025 at 10:18:05AM +0200, Andy Shevchenko wrote:
+> > On Mon, Oct 27, 2025 at 11:07:13PM +0800, Miaoqian Lin wrote:
 
-Thanks, will go drop this from 5.4.y and 5.10.y
++Cc: Markus Burri for the da9374819eb3
 
-greg k-h
+...
+
+> > > +	if (count >= sizeof(buf))
+> > > +		return -ENOSPC;
+> > 
+> > But this makes the validation too strict now.
+> > 
+> > >  	ret = simple_write_to_buffer(buf, sizeof(buf) - 1, ppos, userbuf,
+> > >  				     count);
+> > 
+> > You definitely failed to read the code that implements the above.
+> > 
+> > >  	if (ret < 0)
+> > >  		return ret;
+> 
+> > > -	buf[count] = '\0';
+> > > +	buf[ret] = '\0';
+> 
+> Maybe this line is what we might need, but I haven't checked deeper if it's a
+> problem.
+
+So, copy_to_user() and copy_from_user() are always inlined macros.
+The simple_write_to_buffer() is not. The question here is how
+the __builit_object_size() will behave on the address given as a parameter to
+copy_from_user() in simple_write_to_buffer().
+
+If it may detect reliably that the buffer is the size it has. I believe it's
+easy for the byte arrays on stack.
+
+That said, without proof that compiler is unable to determine the destination
+buffer size, this patch and the one by Markus are simple noise which actually
+changes an error code on the overflow condition.
+
+The only line that assigns NUL character might be useful in some cases
+(definitely when buffer comes through indirect calls from a heap, etc).
+
+> > NAK.
+> > 
+> > This patch is an unneeded churn.
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
 
