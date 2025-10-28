@@ -1,125 +1,109 @@
-Return-Path: <stable+bounces-191502-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191503-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7695C15629
-	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 16:19:29 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 281A7C157B7
+	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 16:34:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AA5E41A60683
-	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 15:19:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1A0CB4655A3
+	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 15:31:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F320333DEC6;
-	Tue, 28 Oct 2025 15:19:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34D57340A67;
+	Tue, 28 Oct 2025 15:31:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UuEpn00l"
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="EOca+8P6"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from mx.denx.de (mx.denx.de [89.58.32.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 123A02E7BAA;
-	Tue, 28 Oct 2025 15:19:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1783333C523;
+	Tue, 28 Oct 2025 15:31:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761664760; cv=none; b=fIEZp/DnEVp5uVSg+ZOYiaMg3+m19M1j2WH3gPI48aYD29xnFiLwVhRBRp0TzyyFPicEnxPouNW+BAPGnJVTTZYYWgx3Be3XKmadUKfJbrfkkitfHLEUWd6l4k96n42JtacnisWDzr9TiQbUf1QdyiVg/PSPgr0VDZUO1NHsdvU=
+	t=1761665472; cv=none; b=UOpf9j8bgkzf9iDNbM8jrIHNmxQ0gIGc0/XgGBY1pxJ+g3tFodyS22o+50/hJLkjYQk6k1Ghuxpi+OHn6HlZj01oRsoD9pyd85ZTb7ct3RnSF+IBILQkF0oikWwpJqB0+XznJZnxWjbJCB5KB6O9wQi98IHAolk+3TBY2zubbDo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761664760; c=relaxed/simple;
-	bh=YfeA9WDImd+OY7C5WhOa1hQ4s8wAxkujvBRU2K6EBg0=;
+	s=arc-20240116; t=1761665472; c=relaxed/simple;
+	bh=BscJQaQKXssg/JBKUDrSJc2ynCsUPDAqmXhamiPRdWY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bcKz/wHAEZ9VbTWKe6ofvRH0hfBuvm0dTyFFxANes7D3TnY+rzxk2zXSM+pjQUtfKs2DOi7vawvyG4tjOp9WmyghfyM5cp+jO67UiDmn0DY3wNpHMmavbjRR54OahH+0BfOyJcSCwUSx9TDfr9y/svSqDBB8ZECbMnxnycjpuq0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UuEpn00l; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1761664759; x=1793200759;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=YfeA9WDImd+OY7C5WhOa1hQ4s8wAxkujvBRU2K6EBg0=;
-  b=UuEpn00lwbrtw+EG4/wCEowCowkcStLEOySLOcVszOScbWtaqhgKBvUr
-   /7yZXE8eoVFB1hlc/3ScR1N9Nu33LPj3XmBrBc3MqHryyjSo0IHhy5QHi
-   YYZMByXRc3DTwGYp6zZUW7EswrS8pu7uRCxgjNgKVDbGICv07wR50FIa6
-   np1SLNNnTsScsslX9BMyhU3yDTFR9Fz0kaVjVueAPNRA8oEBYU2DPrw+G
-   Y8eIGMQ59cmT6sOBGvIzLcTbWe6gwRF5kusVEoo13tUqihWJfGZ9Sc/eu
-   7eu81xDhbujZdEGtLq95zhQBdQJiJkvQ54gVY8CW3trkSi0mMZWvAULrC
-   g==;
-X-CSE-ConnectionGUID: 6TkJkKBkT9WOHcVhpDeJPw==
-X-CSE-MsgGUID: CIuUfOADQTiiFpyHzFVpXA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="67632035"
-X-IronPort-AV: E=Sophos;i="6.19,261,1754982000"; 
-   d="scan'208";a="67632035"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2025 08:19:18 -0700
-X-CSE-ConnectionGUID: 23FxZjE0RhSi50fQRTKghQ==
-X-CSE-MsgGUID: zAQ6VqKPSP+GPyCHdgQyRw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,261,1754982000"; 
-   d="scan'208";a="186122207"
-Received: from dalessan-mobl3.ger.corp.intel.com (HELO ashevche-desk.local) ([10.245.244.136])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2025 08:19:15 -0700
-Received: from andy by ashevche-desk.local with local (Exim 4.98.2)
-	(envelope-from <andriy.shevchenko@intel.com>)
-	id 1vDlTc-00000003LlR-0BQf;
-	Tue, 28 Oct 2025 17:19:12 +0200
-Date: Tue, 28 Oct 2025 17:19:11 +0200
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Nuno =?iso-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-Cc: Miaoqian Lin <linmq006@gmail.com>, Markus Burri <markus.burri@mt.com>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Angelo Dureghello <adureghello@baylibre.com>,
-	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] iio: dac: ad3552r-hs: fix out-of-bound write in
- ad3552r_hs_write_data_source
-Message-ID: <aQDe7-ienRpcfNV_@smile.fi.intel.com>
-References: <20251027150713.59067-1-linmq006@gmail.com>
- <aQB8PRlaBY_9-L8d@smile.fi.intel.com>
- <aQB8j7Hc3b9vAT5_@smile.fi.intel.com>
- <aQCHt9JL0Bc4Pduv@smile.fi.intel.com>
- <071e3da4d69e10d64c54a18b7dd34ae11ab68f58.camel@gmail.com>
- <aQDXF-AIF6wNIo76@smile.fi.intel.com>
- <aecd2e25900f2ef38f937a295e995269c433453b.camel@gmail.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=Kl/06w9wae7Jdy/Dv/8jiPWzsFfQz54O9g5JvigHatPZzGJXgwOf7LiNpBo0rGDFdqjhR+NKSkHKnYqF6QrzKzSubuzP84xe4cz6XfUddAR5pG1E1YYAXchkiQx3RykfPYpAG91u0GrAuLucVKz74wzV89oxGIXRfMtYC4joWAE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=EOca+8P6; arc=none smtp.client-ip=89.58.32.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 3808B1038C10C;
+	Tue, 28 Oct 2025 16:30:56 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
+	t=1761665459; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 in-reply-to:references; bh=J+F9vjuMT9/ypXwAVsZImyHaZRjRZh4kFpYxW7n7apg=;
+	b=EOca+8P6SOWsKiDdKnt1JeXPg4bMinLnLYfgLDN0YNUTuk9tSyJCQGOr1ThpgCiKwJjql7
+	FV+KyyuANTEfPwpCSOJBOAZxeykByX8o7QStJH5LdJ0vVLaTQdaKLstKxY/fhBogrKebqv
+	GfERKEpziTrs2W5RF2CwSlQqQ1CnHSAMBNgw10NVtq4+CQbGysaV55gn3hsh1bVu6sIc/U
+	8g1oXun4qWuitutCL3Ernem2n84GOoC7QCrrVWVcPYxdhNGFHWa05sEgmWrzU9SfFlMWgx
+	/IW6wuVXqJQJ/q0ba/JAn6nC7ZwgWxMTodWVQDdV+CJH7/OoIwzql8rQa3bLaQ==
+Date: Tue, 28 Oct 2025 16:30:54 +0100
+From: Pavel Machek <pavel@denx.de>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
+	hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
+	sr@sladewatkins.com
+Subject: Re: [PATCH 5.15 000/117] 5.15.196-rc2 review
+Message-ID: <aQDhrtRto7AQVVSg@duo.ucw.cz>
+References: <20251028092823.507383588@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="dCp2ev7JzsPOZL0B"
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <aecd2e25900f2ef38f937a295e995269c433453b.camel@gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
-
-On Tue, Oct 28, 2025 at 03:12:29PM +0000, Nuno Sá wrote:
-> On Tue, 2025-10-28 at 16:45 +0200, Andy Shevchenko wrote:
-> > On Tue, Oct 28, 2025 at 12:31:04PM +0000, Nuno Sá wrote:
-
-...
-
-> > For the latter I want to see the real traceback and a reproducer. I also
-> > wonder why
-> > we never had reports from syzkaller on this. It has non-zero chance to stumble
-> > over
-> > the issue here (if there is an issue to begin with).
-> 
-> If I have the time, I might do it. If my suspicious are correct, it should be
-> fairly easy to reproduce.
-
-My suspicious is also like this, if you have a working setup for one of such
-a user (like this chip) already, it's ~15 minutes to get it done without
-writing an additional code.
-
--- 
-With Best Regards,
-Andy Shevchenko
+In-Reply-To: <20251028092823.507383588@linuxfoundation.org>
+X-Last-TLS-Session-Version: TLSv1.3
 
 
+--dCp2ev7JzsPOZL0B
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+Hi!
+
+> This is the start of the stable review cycle for the 5.15.196 release.
+> There are 117 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+
+Risc-v build problem seems to be fixed.
+
+CIP testing did not find any problems here:
+
+https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/tree/linux-=
+5.15.y
+
+Tested-by: Pavel Machek (CIP) <pavel@denx.de>
+
+Best regards,
+                                                                Pavel
+--=20
+In cooperation with DENX Software Engineering GmbH, HRB 165235 Munich,
+Office: Kirchenstr.5, D-82194 Groebenzell, Germany
+
+--dCp2ev7JzsPOZL0B
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCaQDhrgAKCRAw5/Bqldv6
+8q8TAKC85rpyMHeTYbjzCxRgR2z8Kt9SCwCdFjyqzsZ9Xa9sazIQxK8CxE3GMXA=
+=KDFW
+-----END PGP SIGNATURE-----
+
+--dCp2ev7JzsPOZL0B--
 
