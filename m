@@ -1,161 +1,124 @@
-Return-Path: <stable+bounces-191389-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191390-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13D91C12E14
-	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 05:50:18 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AD0CC12E51
+	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 06:01:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3E8941A26146
-	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 04:50:42 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id DF3524F27FB
+	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 05:01:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67B37238C23;
-	Tue, 28 Oct 2025 04:50:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 013EE26E6E1;
+	Tue, 28 Oct 2025 05:01:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="X1HAw4Xa"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="u+WJOpOy"
 X-Original-To: stable@vger.kernel.org
-Received: from omta40.uswest2.a.cloudfilter.net (omta40.uswest2.a.cloudfilter.net [35.89.44.39])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6E43236A70
-	for <stable@vger.kernel.org>; Tue, 28 Oct 2025 04:50:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.89.44.39
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FE2FEAE7
+	for <stable@vger.kernel.org>; Tue, 28 Oct 2025 05:01:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761627013; cv=none; b=PzhzU28gEptsEkKqUOgSYvvKO7qOCIo/Wbph4An0zGs/x5FTPBlZ+zsjlh0o3LqSz2pyYI89RzA0u3fkk7hl3vp+PuECmyV0svRXBuCJY+xwijqqqxXENPuuvISRTmNsqun5HJiEhWkesncCPGTYLlxhwrwfs4MFgXaTQbUaZF0=
+	t=1761627681; cv=none; b=cwLrs/demrJnnodVTJ9Q/YHydPT+a02ZFVrfVg/LYr0/M1yq1tUF2w6nWgkfcgXD02mpxwwprwKtX+ooiKD4l9/2YJmjYX4bIKqSknzdFc1vEbQFP98P4TKIhCny2CRrRC/axYytWiTeukymCMQHFDUKWFfWULilt4yGlCc413w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761627013; c=relaxed/simple;
-	bh=HczQKsoTq9bG91ZgMaU1ONGlCVa9s98TDf0X1YkuKFI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gum0dys+Yp9iZebrqNJCfOf63/8cSky0bYMFOIvUoW3+sZ/qG6aL5iunPsUcAikxPFQUm29jTWXNOIDYdSim9o8y9kxLNPsCDPPwf0/V2SV2F3kwqCCmZ5hDZE+79BprznXf5tOrzTdznqpC6hF8J8pV+lFg9l36+Oc/E6EKL3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=X1HAw4Xa; arc=none smtp.client-ip=35.89.44.39
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
-Received: from eig-obgw-5004b.ext.cloudfilter.net ([10.0.29.208])
-	by cmsmtp with ESMTPS
-	id DS1Mvwa3oaPqLDbemvsnXT; Tue, 28 Oct 2025 04:50:04 +0000
-Received: from box5620.bluehost.com ([162.241.219.59])
-	by cmsmtp with ESMTPS
-	id Dbeivp929HwAIDbejvyNVq; Tue, 28 Oct 2025 04:50:01 +0000
-X-Authority-Analysis: v=2.4 cv=LbQ86ifi c=1 sm=1 tr=0 ts=69004b7c
- a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
- a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=7vwVE5O1G3EA:10 a=VwQbUJbxAAAA:8
- a=LJ9ngj4a5Ur-kbwn2PoA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
- a=Wh1V8bzkS9CpCxOpQUxp:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
-	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=xGFJqws/sjdhw2gBoS/JsBvsWK0Eluys8JTz/11lTe4=; b=X1HAw4XaeTnhac8AWa4eQoKBcU
-	oYjr29lBFN5f2kOAskUOq7q8MWAqUftHyfF8mHJ7v3pDp9Vp8sf98tZ2AHhM6QHUobeET2EZ+ztPb
-	8rZPSt54K7bAz+d7S5svpFpLE8d19VD/A+EDp0uhyeH65Kp91FMI5+Bdcfx9r6ngginnGWcEwnvFh
-	3MDNoRIMF6xh7C3RePK7pKKz0+H396Uro6u9fUb7+htK4k5tKa/EAlYmIrxH/nAPsXFiZhmQ0fLAY
-	SjQtPuwZihY0xhjWBSNG/+xhvfc+MybFx2hj00Dl7ok638U2Elsuyn02ccQVUfwyn23RK7akhISoQ
-	XEWLrk8g==;
-Received: from c-73-92-56-26.hsd1.ca.comcast.net ([73.92.56.26]:53180 helo=[10.0.1.116])
-	by box5620.bluehost.com with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
-	(Exim 4.98.2)
-	(envelope-from <re@w6rz.net>)
-	id 1vDbei-00000003rHk-2MEQ;
-	Mon, 27 Oct 2025 22:50:00 -0600
-Message-ID: <d61b75c9-a6a1-452c-a2be-34959d354739@w6rz.net>
-Date: Mon, 27 Oct 2025 21:49:59 -0700
+	s=arc-20240116; t=1761627681; c=relaxed/simple;
+	bh=eXt+qTwvJszO8Hou+806wGDbl19YgC8YGTf1MQAwWR4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Dq3cV+uJgxoY+Xgocfb2n3nijrY5/iYTKZqwGujQQTR601DCz9JA/vZwSCYbl2APAny6r5sIbnAgra78kYFXV9tkwWCD3MViUKe39600bib7aUJESKRZj2WQWuakx0J32EFS6dF5wnEzB8gZoYg4ghNI20ac8GMAnzj3WToxGcg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=u+WJOpOy; arc=none smtp.client-ip=209.85.215.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-b6329b6e3b0so5384255a12.1
+        for <stable@vger.kernel.org>; Mon, 27 Oct 2025 22:01:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1761627678; x=1762232478; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=gggGLr9hK/z0x3A0Z7RsJkNUk2lbt+1rtimRnOE0YoI=;
+        b=u+WJOpOy4SoPnd6RXj3kAOT+B6BIXZ2j3QrRX8qogv9tck7i88pMIMtQPGtUAm7fJd
+         qRtNr+6X2JAiPOzWRhu1hbUNEqg4mBfpAzL+//8FMSKouyXhmpPbKLFqe5J6UW4FmNhV
+         GaO6H/ZwtQxrQVExPVpEKBQnnj15nWpgRol9Rbcsfh2INdASamgTqolNagNAlip4my2h
+         39B168kF7MOYR5CO2PoIqBhnKgBwBGgBnmvkCA5IZfwu1EE6F4cqRg8pOn02OTbDQiug
+         khjqSI9RGYdHieihoCfCvG8bkOKo8GK00QVY/V3y9KcL+q9LVDAMVXr5Abccgr/w/V2F
+         BOeA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761627678; x=1762232478;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=gggGLr9hK/z0x3A0Z7RsJkNUk2lbt+1rtimRnOE0YoI=;
+        b=YkJ95b3yvE65hvmxKhyNemcGcxoFFa7pdpU5izO4aB+s0gq0gINVSV5iDbUgO6VhQ1
+         qJa46J6nELeElQm/7EHsoVFO057KCZdj9y3S0MMK+t2jAIrg7v4za5XwDzdceq1R9G3S
+         wP7LZTsx/hcCjIjWlnzv+GSw1w9lAQnVCef5D5yFPHeRiFyyyirJv3y5/gka7SJes9UA
+         ra+5ICAS8zD0AmoOOYqySqj1bdwTL+0G8DU3mEkqMOfVyWBsV92Az0UQBBBvY8EdkhDQ
+         T56tuyDe2kOf7dXrG9RlLVQQJSFuS8eH6ASvQV2YJ6hPix2D8/PXE/34ihZ9gFr2eoSu
+         l3Lg==
+X-Forwarded-Encrypted: i=1; AJvYcCX+BOH776VswDdXxhYUkuQTCvkjm6eJyIutSDwkcnYnqxhiMiTgrrr2kfus2feibTMan1JP39c=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxXMgAmyW1VuMUB9sMlRolGq5F+VIpRkigwXJjX0oy8b2iT2DgO
+	ZI1GPGxzF9cd8ukWHzN9QXsb96lKcBylZ8It5UpIEeqhcSNeohzRLo0Ki81w9yyOWYQ=
+X-Gm-Gg: ASbGncvKg6zGTRrgc+ol6oj5bC+cNIF77Y1aWH4O4XlgmFrLwQjiOzkdA4SZKmcKrcE
+	/L31tn8DR+IV9uZ6F4uz4e9fy2mxssqXGh7NGIG11U/QKgmiUL74dQKE9nLzO5ywWtKAx/kfnGY
+	YoA4tYevH9D0jYvfro9fVcL1pq58R0htrKS/3FJj0zNA7mQYQw9tm1zW8n9WtGbFe1tnEzJVbSa
+	J3M+oqJDuZNDIYocjv6ITRp92jNRN1R2ASCwAB9oBTn/Lxh6UvBcpMKwJzDsj/58ZWZrC/TFX2Y
+	SYRFCi2Zfs+Mlh0oHM8D+0I6U5UFFDraTzAibXVhtjS7BENKIzjnIuW+IbNLb4G00Jx3ELG4nvE
+	MIQR+rlnXW2cKiV1yEyXDTxQSj9ZJ23O2+zsYs2EKUgT8+VNyOEDusJC5Epdl1FUsbfz0ywE1zg
+	CObw==
+X-Google-Smtp-Source: AGHT+IEbFKSVcApo2b31IgKzoejiPT54f2Ug4CUN+na1QFDYVgo35NsLKOeM5ffDDNEZ2+JecClhPA==
+X-Received: by 2002:a17:903:2443:b0:266:57f7:25f5 with SMTP id d9443c01a7336-294cc69eeefmr20200985ad.7.1761627678039;
+        Mon, 27 Oct 2025 22:01:18 -0700 (PDT)
+Received: from localhost ([122.172.87.183])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29498cf359asm99649655ad.12.2025.10.27.22.01.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 27 Oct 2025 22:01:17 -0700 (PDT)
+Date: Tue, 28 Oct 2025 10:31:15 +0530
+From: Viresh Kumar <viresh.kumar@linaro.org>
+To: Miaoqian Lin <linmq006@gmail.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, linux-pm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] cpufreq: nforce2: fix reference count leak in nforce2
+Message-ID: <v4lyy4fexh7erlokxhkm7ha3x5lqdb3fo4csuw5ltqgortapwr@dhtgpppyrwfv>
+References: <20251027150447.58433-1-linmq006@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5.15 000/123] 5.15.196-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
- conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
- achill@achill.org, sr@sladewatkins.com
-References: <20251027183446.381986645@linuxfoundation.org>
-Content-Language: en-US
-From: Ron Economos <re@w6rz.net>
-In-Reply-To: <20251027183446.381986645@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - box5620.bluehost.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - w6rz.net
-X-BWhitelist: no
-X-Source-IP: 73.92.56.26
-X-Source-L: No
-X-Exim-ID: 1vDbei-00000003rHk-2MEQ
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: c-73-92-56-26.hsd1.ca.comcast.net ([10.0.1.116]) [73.92.56.26]:53180
-X-Source-Auth: re@w6rz.net
-X-Email-Count: 19
-X-Org: HG=bhshared;ORG=bluehost;
-X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfJjjsMJAI9LRjA9g+15AgLQ5BUyXRkzeL/+STs+iYSYq08gwpkeKiRVG1YYS5eOYBZVlsqPDaL8s5dqURcSlMX9nMgrymC4eQs8TP6WdLUrZF7lu1aXP
- DK3bIU9njZfgya4FoS6sWII9/VKpDWf2aUB7i0y/invqXXmxolUA4q1hRG3aJvIllBbLGyb0Q80Bnw==
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251027150447.58433-1-linmq006@gmail.com>
 
-On 10/27/25 11:34, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.15.196 release.
-> There are 123 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Wed, 29 Oct 2025 18:34:15 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.196-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+On 27-10-25, 23:04, Miaoqian Lin wrote:
+> There are two reference count leaks in this driver:
+> 
+> 1. In nforce2_fsb_read(): pci_get_subsys() increases the reference count
+>    of the PCI device, but pci_dev_put() is never called to release it,
+>    thus leaking the reference.
+> 
+> 2. In nforce2_detect_chipset(): pci_get_subsys() gets a reference to the
+>    nforce2_dev which is stored in a global variable, but the reference
+>    is never released when the module is unloaded.
+> 
+> Fix both by:
+> - Adding pci_dev_put(nforce2_sub5) in nforce2_fsb_read() after reading
+>   the configuration.
+> - Adding pci_dev_put(nforce2_dev) in nforce2_exit() to release the
+>   global device reference.
+> 
+> Found via static analysis.
+> 
+> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+> ---
+>  drivers/cpufreq/cpufreq-nforce2.c | 3 +++
+>  1 file changed, 3 insertions(+)
 
-The RISC-V build fails with:
+Applied. Thanks.
 
-arch/riscv/kernel/cpu.c: In function 'riscv_of_processor_hartid':
-arch/riscv/kernel/cpu.c:24:33: error: implicit declaration of function 
-'of_get_cpu_hwid'; did you mean 'of_get_cpu_node'? 
-[-Werror=implicit-function-declaration]
-    24 |         *hart = (unsigned long) of_get_cpu_hwid(node, 0);
-       |                                 ^~~~~~~~~~~~~~~
-       |                                 of_get_cpu_node
-cc1: some warnings being treated as errors
-
-The function of_get_cpu_hwid() doesn't exist in Linux 5.15.x. It was 
-introduced in 5.16-rc1. The following patches should be reverted:
-
-87b94f8227b3b654ea6e7670cefb32dab0e570ed RISC-V: Don't fail in 
-riscv_of_parent_hartid() for disabled HARTs
-
-568d34c6aafa066bbdb5e7b6aed9c492d81964e8 RISC-V: Don't print details of 
-CPUs disabled in DT
-
-And the stable-dep-of patches for the above should also be reverted 
-since they cause warnings:
-
-989694ece94da2bbae6c6f3f044994302f923cc8 riscv: cpu: Add 64bit hartid 
-support on RV64
-
-8c2544fd913bb7b29ee3af79e0b302036689fe7a RISC-V: Minimal parser for 
-"riscv, isa" strings
-
-e0cc917db8fb7b4881ad3e8feb76cefa06f04fe6 RISC-V: Correctly print 
-supported extensions
-
-c616540d6b67830bb4345130e8fa3d8e217249a0 iscv: Use of_get_cpu_hwid()
-
+-- 
+viresh
 
