@@ -1,134 +1,129 @@
-Return-Path: <stable+bounces-191439-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191440-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59491C1462C
-	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 12:33:29 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 009C6C1464A
+	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 12:35:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 974BF4680F3
-	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 11:31:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 80A7B5E6F44
+	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 11:34:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC5C530499B;
-	Tue, 28 Oct 2025 11:30:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E92226C391;
+	Tue, 28 Oct 2025 11:34:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="A5gZQ4j0"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="A6ZwtEkT"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 240F0304BCD
-	for <stable@vger.kernel.org>; Tue, 28 Oct 2025 11:30:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB0CC1DFD9A;
+	Tue, 28 Oct 2025 11:34:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761651036; cv=none; b=R0X461oLMlEz05YDTD9BP3tljIIILi5CWgMERZnYZwXkjvNXjVylUyooDbwnceozEIohP1mP7u+agZfjkDuHUwZPx6ELDpsYhnKkdNVpabw1FO9iNR56D1f5xeVgE8uD85ICfFXBXxPs7HVPtPx6VMGmF/8GELdicBOprlW1Rvo=
+	t=1761651266; cv=none; b=S5TThDCdtK6QRDcu1BlPwW7MDvmG8A9vMePR6k/VPrIMgVwOIRv6Fg6tHUEj8vgX30akzkPXQE/D4mNNL/jrJAid4oKgvDOHWFh89M7wuGkNry7yJlN4hT4KYzFuMT+Ua6R2FJVYxOw0RJex+TYDyih9AHKimZViv+5AxkPBZjs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761651036; c=relaxed/simple;
-	bh=uLz1nCOc13P72Z9cLqgJATuBA1im88R9TxqI9YQCXBY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=NqNTLEZ4sEDeIkCdoTKS1MlpGqgsqPy0DeUr4dGHqsfOjTNdJEoB1BaKMYihbSfb35spIDHoLDxV69sVKzG9KM71ntyggz4hJDf+rlkhE8A/VnyHUgmcY7Okdqcr3eA6tvdAABC0lwrAIgLiOxf2KA9YcZLs9DM2y5fLdOKPZ3A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=A5gZQ4j0; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1761651034;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=6wj7YAztZrM6wj1+S+3q5JHWOPj4KIXwKeK9N2bqLfU=;
-	b=A5gZQ4j0xLIsGcgO2HUNkY0U3Ui72riAn6/pLfsfJd7vhw4IgnyBoh2JVae9HT6iOgOwoJ
-	uVgnFuqWFL97Ame9GmTrOYjQ87bSePLcY3PN9MgPT014WDkm7JiVKr7Uh4Lx3s00auQPUV
-	rOJPnxtTyj+5Q5dRTbHvP5VcPmJ8v5M=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-561-Lb_WPxo2N9qJEZNY5_Zkhg-1; Tue, 28 Oct 2025 07:30:32 -0400
-X-MC-Unique: Lb_WPxo2N9qJEZNY5_Zkhg-1
-X-Mimecast-MFC-AGG-ID: Lb_WPxo2N9qJEZNY5_Zkhg_1761651032
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-475dc22db7eso30882565e9.2
-        for <stable@vger.kernel.org>; Tue, 28 Oct 2025 04:30:32 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761651032; x=1762255832;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=6wj7YAztZrM6wj1+S+3q5JHWOPj4KIXwKeK9N2bqLfU=;
-        b=mlr/E0qA72lIfC7MOnn4toEQgMef9C3AsRKRtUM+E/0Xbp3K4FZFnMBFeUt8X16MSA
-         I4f5wXP7985bIY2IHU+3jNfLtkJ1pzMRZyIkDuG3rYXw+rC26dnEruqVvMXdz5tVacSp
-         8UW72HAPZiSe0JeUyHTg29MCTicHgVKQySwHs5NZxFUTBpCNozA2O1hqF/FCEEXoUQCo
-         tiqGZ+jv+j8TKt2HWxeDrUiU8P4ccHz2nMCG+PAy8V4gBH2zgbWi8/nYkqd6DwAXQD+M
-         OFHghG1IhkZkv7jqVnkxvjmKuOQhDJPB8X1IZc9oGGPJFzrqXR3WpiMenq5WKjpDvI6T
-         A8rA==
-X-Gm-Message-State: AOJu0YzsAO7ODG4XLdsa58dyMVvTJSDaCpgQiFW4LSBmSyeSP16WVn3O
-	KgzxK6kkh3Be9+kGx2aCNrJQuzsjZM/XUD3I8+rdWiCEalwVGzkBxgMqclZuSqH2dLmuHAawHA7
-	TMP0IOrXakorwAmMSWq54MzIkc726f9x6zUJLCM5NbaImsu7CsymVJQu5/Q==
-X-Gm-Gg: ASbGncs99vUZKHiHlm88BkG3DsDss+TiP/PW05gMsqVDcQCoWSsHiVS+gFqqfw+WkJL
-	lL1mCFMDaUXipRiSI3AJkHB7k8xz5v6vE+yDdCX9fDLDmdajWoX0lRPiFOMxh4b/CDY8LF1ZRm3
-	qAL5mRZQnMl71/a8VHbOajzYgGkxFhnLl63Psu9Z5+HUFYp+0TyobPee33pNaQaWp7UwdURSX5U
-	0lk+bbL56NGR53A2fvPlRRN7DmeiLCRDQXrZ2BmlcrPaGWP1lqaQaxWHB/QS9DsCs42D2oO+HJO
-	N0fnbB14rOP3BW3zxX2AckLBFQfX1GP/h3+CyyEkg/CEfagE4k/xFkg3CMhocRIDYqYL1oMhsrf
-	a47VENTLP/0yt5mcp3DtyEVkcruOs8rXdHM9OkwHGwBc4Tls=
-X-Received: by 2002:a05:600c:4446:b0:475:da13:2566 with SMTP id 5b1f17b1804b1-47717e6095fmr25034825e9.35.1761651031652;
-        Tue, 28 Oct 2025 04:30:31 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG1UoWkDkAxEnPYbIqlYF36LNiS1od7f4r/oylsQ8lGjLYMkIaaEI5SdiPojR2VWZlNQPGbIA==
-X-Received: by 2002:a05:600c:4446:b0:475:da13:2566 with SMTP id 5b1f17b1804b1-47717e6095fmr25034235e9.35.1761651031148;
-        Tue, 28 Oct 2025 04:30:31 -0700 (PDT)
-Received: from ?IPV6:2a0d:3344:2712:7e10:4d59:d956:544f:d65c? ([2a0d:3344:2712:7e10:4d59:d956:544f:d65c])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-475dd489fa4sm187152685e9.16.2025.10.28.04.30.28
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 28 Oct 2025 04:30:30 -0700 (PDT)
-Message-ID: <c10939d2-437e-47fb-81e9-05723442c935@redhat.com>
-Date: Tue, 28 Oct 2025 12:30:27 +0100
+	s=arc-20240116; t=1761651266; c=relaxed/simple;
+	bh=pu5MKC98iytXYXwdRFwcTAWCXS3UHEEjW1hJRxmpumE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lUHSgWdHMpORsSB8GuV23FFtDDZ+9vKV8azNCiruxM8G61IEw7KtH3m1HqAoJQVzycTtQRCyDb/b73vz0+4vT/RHCbt/dj9NZLToJ4ukO+Xa/ovfeRTPqMeGlekYLGI74dhHOoUP7/iuFmm3HycMs0heaKY6RnggJ/LF8/zS+bI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=A6ZwtEkT; arc=none smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1761651263; x=1793187263;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=pu5MKC98iytXYXwdRFwcTAWCXS3UHEEjW1hJRxmpumE=;
+  b=A6ZwtEkT3sRODin29DZ5eSEeM9TaiV8DBtCxmO6GGjK2/wxO44nbIjmK
+   82HBKTzRAFhUHvyqbV/MKHWa3dKjzKU/q+kBvy5uIsnmexwVx1vCZsFoT
+   yOXoLxM04fK0xNor5mFM/7C59Sx8SIv7mpd2nTVdirTC6ylcJaBt+lJW3
+   6/V/YyCQhoDN21T5r2vgGWILDGx1jzivhN8Q4cKInwPZvQkSIfp0dR4PS
+   0VVvhzmzHwC8wyFKTClG/yqor9CzQtddl7lTKF6dCLTE/lS8dPxc58hZB
+   FguG9UTpAXrAHJY5V88O7H30havEZTJivXS8jXlg7EkR3fmzJeRtq3zOf
+   w==;
+X-CSE-ConnectionGUID: 411/NEBIQ/araNv49UeJIw==
+X-CSE-MsgGUID: bir/HZhrTniOO6Q3Epwy4g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="81378351"
+X-IronPort-AV: E=Sophos;i="6.19,261,1754982000"; 
+   d="scan'208";a="81378351"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2025 04:34:23 -0700
+X-CSE-ConnectionGUID: OijtI/erQ+e2KE2bWejLsA==
+X-CSE-MsgGUID: v/9TRkG1QcmHJEjfj0oGxg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,261,1754982000"; 
+   d="scan'208";a="215980085"
+Received: from dalessan-mobl3.ger.corp.intel.com (HELO ashevche-desk.local) ([10.245.244.136])
+  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2025 04:34:20 -0700
+Received: from andy by ashevche-desk.local with local (Exim 4.98.2)
+	(envelope-from <andriy.shevchenko@intel.com>)
+	id 1vDhxx-00000003IWC-0GNW;
+	Tue, 28 Oct 2025 13:34:17 +0200
+Date: Tue, 28 Oct 2025 13:34:16 +0200
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Linus Walleij <linus.walleij@linaro.org>
+Cc: Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	Matti Vaittinen <mazziesaccount@gmail.com>,
+	Stephan Gerhold <stephan@gerhold.net>, linux-iio@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] iio: accel: bmc150: Fix irq assumption regression
+Message-ID: <aQCqOJWQpvgI1o1q@smile.fi.intel.com>
+References: <20251027-fix-bmc150-v1-1-ccdc968e8c37@linaro.org>
+ <aP9dqnGb_tdWdr7y@smile.fi.intel.com>
+ <CACRpkdb9GYL3dQzn28Q5E_-keJdLLA+TiXxTuNf1aaevKqHJYA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v3 1/3] net,mptcp: fix proto fallback detection with
- BPF sockmap
-To: Jiayuan Chen <jiayuan.chen@linux.dev>, mptcp@lists.linux.dev
-Cc: stable@vger.kernel.org, Jakub Sitnicki <jakub@cloudflare.com>,
- John Fastabend <john.fastabend@gmail.com>, Eric Dumazet
- <edumazet@google.com>, Kuniyuki Iwashima <kuniyu@google.com>,
- Willem de Bruijn <willemb@google.com>, "David S. Miller"
- <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
- Simon Horman <horms@kernel.org>, Matthieu Baerts <matttbe@kernel.org>,
- Mat Martineau <martineau@kernel.org>, Geliang Tang <geliang@kernel.org>,
- Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>,
- Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
- Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>,
- Yonghong Song <yonghong.song@linux.dev>, KP Singh <kpsingh@kernel.org>,
- Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>,
- Jiri Olsa <jolsa@kernel.org>, Shuah Khan <shuah@kernel.org>,
- Florian Westphal <fw@strlen.de>, linux-kernel@vger.kernel.org,
- netdev@vger.kernel.org, bpf@vger.kernel.org, linux-kselftest@vger.kernel.org
-References: <20251023125450.105859-1-jiayuan.chen@linux.dev>
- <20251023125450.105859-2-jiayuan.chen@linux.dev>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20251023125450.105859-2-jiayuan.chen@linux.dev>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CACRpkdb9GYL3dQzn28Q5E_-keJdLLA+TiXxTuNf1aaevKqHJYA@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On 10/23/25 2:54 PM, Jiayuan Chen wrote:
-> When the server has MPTCP enabled but receives a non-MP-capable request
-> from a client, it calls mptcp_fallback_tcp_ops().
+On Mon, Oct 27, 2025 at 06:24:25PM +0100, Linus Walleij wrote:
+> On Mon, Oct 27, 2025 at 12:55 PM Andy Shevchenko
+> <andriy.shevchenko@intel.com> wrote:
+> > On Mon, Oct 27, 2025 at 11:18:17AM +0100, Linus Walleij wrote:
 > 
-> Since non-MPTCP connections are allowed to use sockmap, which replaces
-> sk->sk_prot, using sk->sk_prot to determine the IP version in
-> mptcp_fallback_tcp_ops() becomes unreliable. This can lead to assigning
-> incorrect ops to sk->sk_socket->ops.
+> > Hmm... Isn't this already being discussed somewhere? I have some déjà-vu.
+> 
+> I brought it up on the PostmarkeOS IRC, otherwise I don't
+> know.
 
-I don't see how sockmap could modify the to-be-accepted socket sk_prot
-before mptcp_fallback_tcp_ops(), as such call happens before the fd is
-installed, and AFAICS sockmap can only fetch sockets via fds.
+It might be that it was a cross-mail that describes the same issue in another
+IIO driver.
 
-Is this patch needed?
+> > > +     /* We do not always have an IRQ */
+> > > +     if (!data->has_irq)
+> >
+> > Wouldn't check for 0 be enough?
+> >
+> >         if (!data->irq)
+> 
+> But this driver does not store the IRQ number in the
+> instance struct because it isn't used outside of the probe()
+> function.
+> 
+> The information that needs to be stored is bool so that's
+> why I stored a bool.
 
-/P
+I understand this, but I think storing the IRQ number is tiny better
+as we might have a chance to need it in the future.
+
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
 
 
