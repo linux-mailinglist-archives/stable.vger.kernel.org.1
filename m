@@ -1,177 +1,126 @@
-Return-Path: <stable+bounces-191488-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191489-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EB98C1508C
-	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 15:04:27 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 051D7C151D4
+	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 15:18:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 006114F20BB
-	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 14:01:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E43386445BD
+	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 14:11:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 404652E62C7;
-	Tue, 28 Oct 2025 14:01:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A15C33376B9;
+	Tue, 28 Oct 2025 14:09:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nZzFMTol"
+	dkim=pass (2048-bit key) header.d=ciq.com header.i=@ciq.com header.b="Z8snaPvt"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A77624676A;
-	Tue, 28 Oct 2025 14:01:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E466330B1F
+	for <stable@vger.kernel.org>; Tue, 28 Oct 2025 14:09:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761660082; cv=none; b=JZUxbBwiSGuaZRkIVuYZ9nA87W8hO5tLhxbuWc0AG6Fbl2p7SGURIFRWXvE1r9JmumG/UfuoPGU7h3Jh6WTA8FuDiBoyMilqnePS3qdj9ryBBGHmR5+Cu3vhHoi4BRwPR45v5it9JdE9lZ14cNVigUQHMHTOVeGoAiaNO6pvxJY=
+	t=1761660565; cv=none; b=ZjexUVDBAjGYluC6T/OupvFDScYnUDJJtEm0CIP23J9UmSRVijOD5y9mjk20QDbdFiQxzeGshXt/rCrJUAphE1G7MuJY68ad2X31skGDDYr05kqs2sYPNRm2VzJmEqjlLQ3zw5BIr8sz/+hEj4B65Pctv9BhWT3UTEEjwtYW77o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761660082; c=relaxed/simple;
-	bh=Q+JKkHpI7G2bnBrn++zkM52PKJ8LvFbwXnn+LgOzPvI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=S1CT7cFxQ9+wN3OB80yh/FMZdhwjdzEW+yHAtX2xLdnn7K4cYsLJk5bG4I8KI2FIljJ5traeAe6Gj+KwW1QbkbJCklRDDI/+6eR80yUhXm5xJvNRIYYMtMi1CvrJfxqksQnYiDoM7cIk2+lcWqlWhvwhTeex914HSj0mma+UZ7A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nZzFMTol; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1761660079; x=1793196079;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Q+JKkHpI7G2bnBrn++zkM52PKJ8LvFbwXnn+LgOzPvI=;
-  b=nZzFMTolApOFVvhgKjn/dOdxyXlANIJL+OILDq05KFMqxnZkzBw9Aojh
-   /Zo8JhtcOTxEd3YzgNH5D9eylUYvc2lggIuxTB7A+oFZyPE/C+hb/+yYW
-   zyRVSVv8HyLDkQ9zmLzf8Ed4yKfdJUBBNrsuZ5iKIuksMN1Pqky0S4roV
-   5LhvtEkMNsakaf6DcHOROjoQa1a+CYjK+JpVHfCxmNRwDaRloYtV5GyCc
-   T9KKEosGKkmzybltOvX/ss3NrO9YFSJIVFiRDMKNLss3hfQ3BeBeNvKLL
-   EZghlEh9IjNqrAYx/6Y5/MiawPitUoE4OUX7xGpusBHRc58Wx+seIvi1i
-   g==;
-X-CSE-ConnectionGUID: +SrZZ8YkQ769aVaX0VCyBA==
-X-CSE-MsgGUID: TjHfzLu4Tj+B3oRcQhVJ2g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="63667220"
-X-IronPort-AV: E=Sophos;i="6.19,261,1754982000"; 
-   d="scan'208";a="63667220"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2025 07:01:19 -0700
-X-CSE-ConnectionGUID: u16gAOxzRcO5A15rT/ulKQ==
-X-CSE-MsgGUID: dCJ8mXX6S42gCVfap5q90Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,261,1754982000"; 
-   d="scan'208";a="208948271"
-Received: from lkp-server02.sh.intel.com (HELO 66d7546c76b2) ([10.239.97.151])
-  by fmviesa002.fm.intel.com with ESMTP; 28 Oct 2025 07:01:12 -0700
-Received: from kbuild by 66d7546c76b2 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1vDkG6-000JBZ-0W;
-	Tue, 28 Oct 2025 14:01:10 +0000
-Date: Tue, 28 Oct 2025 22:00:31 +0800
-From: kernel test robot <lkp@intel.com>
-To: Miaoqian Lin <linmq006@gmail.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	"benjamin.gaignard@linaro.org" <benjamin.gaignard@linaro.org>,
-	Philippe Cornu <philippe.cornu@st.com>,
-	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org
-Cc: oe-kbuild-all@lists.linux.dev, linmq006@gmail.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] drm/of: Fix device node reference leak in
- drm_of_panel_bridge_remove
-Message-ID: <202510282123.AjUbRs11-lkp@intel.com>
-References: <20251028060918.65688-1-linmq006@gmail.com>
+	s=arc-20240116; t=1761660565; c=relaxed/simple;
+	bh=AdnRw7U11fEVAUyQ3c4ltusVoJvhyax3gV4Hxys3+Bs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=YJw5s+DmSbcBJrCjB7S3Lwg16qSkRnO8JZcKoAZTQhNppOUFDJ3uqttQeGHccbf1G4Rd91BIcgbm7FibSbhAmfhh00LnN2tQdq0qFnatINBbMRJci/gF3LIw3tMSVEGNo+G46ErLVf4faZ5RDVBqEj93khVUI6VM1X4+H8MwUls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ciq.com; spf=pass smtp.mailfrom=ciq.com; dkim=pass (2048-bit key) header.d=ciq.com header.i=@ciq.com header.b=Z8snaPvt; arc=none smtp.client-ip=209.85.222.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ciq.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ciq.com
+Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-891208f6185so548426885a.1
+        for <stable@vger.kernel.org>; Tue, 28 Oct 2025 07:09:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ciq.com; s=s1; t=1761660560; x=1762265360; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/zcU8dbk3YPaQpFZh0LEGbD8GL5cYg7PwFTIPigTrJM=;
+        b=Z8snaPvtntUhFF81tpuJKrbRAija26SAyLnj8u9SKvi2gLZJIZKvbbcYtax9wCq8JT
+         mle5zzxEoqiwfoPYDqMrSVerTR7OrkR4L/1IMJdjHjQ2MMGusC0iHIX2IySM/c8fyucg
+         oCDYniXxQnUYt4uIaLsHnADB1OOKo9x6bGi/qXyOrF/83NCvmYVa0yvnad3vH8unsTby
+         y8gC3VxEOFAxKISHWt2XO8fm5vTBPqYbgmT9b8w/j/VjnPLqJkiXgQ6LHI3epttxwasX
+         xTCqE5vTXZ7HsuK27+4ojGmqIU/NFtupn3fbGvlltasgTeuGSvdo3CUyKej88psQI7nK
+         IUzA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761660560; x=1762265360;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=/zcU8dbk3YPaQpFZh0LEGbD8GL5cYg7PwFTIPigTrJM=;
+        b=UjTrPTlOPcBV1eIgtkkxav3uAp2hrrDkp49WuY45YepB4cQmoKQIPRyIBaTc8D0jBO
+         FYSjF5Qf47NFCKsn1lUUgr5bKooxIgJte9RMGXcnRw9p6dNAp1cjzh/9jDG/CdabbbcE
+         u8PYL5isquYfNoNLYHq1G1+gnOnzjNr6aaJlpB2RFkjeF+SMJ7OXQXAKiB41oX5RbjIa
+         djYCGE+g/DiTwoZR0AatvctKLhc6mCn7R7c1N6RO2XrksZg/DdFhvewVCGtnHQ/7LaDJ
+         5EGe5pH5xOgsJWce+gRjRBv2wjKtuWwzrlsQISoTmjgIMTf/yC2zom25iZp3A7Aj/Qds
+         RmAg==
+X-Gm-Message-State: AOJu0Yy7savQ/qmCwOER1YM5z2FetB+aLNA8q+JdQNmA+wQ9QYgpIu2G
+	pNjXlywARjN7K10ghzp1Xr2SOlpD4dnaWem2XldA2iXjS0zqFfYzrLOblKWoSsfImYwwBSonNPb
+	Nq7W/tfnKEoNoaJiWU2pa+d+ttqQPbzSKMrI49C4pYg==
+X-Gm-Gg: ASbGnctGAusVCF/r1bfdzgFaq2+72aoGjf5AyBHSJfS7csD61BEON6neuz6rD0QPPcs
+	YAz+ZYpuAyE9dTB0Xv2e2+K13WWgdHQMoRHR/5ayIC4NEHblLS0mVNQ+1/b3uPLXxMsWQOkvgDX
+	ZZgmzuQulnTw4/fJLsDIHYfebnygn6+RPLCO9Oq1Q59ViaByLbsccjCgu+KqotlS+6seJgOQXo2
+	SfGPzB4c9Dj77ISQGAK74q/06i14LpXe5dSzO0F6y2DRdQW6m5aBrOT1ocu7g==
+X-Google-Smtp-Source: AGHT+IGeD0rlHtRDBvGxpdgqlidUafHqhsh8Ky9XoEDN3FLfwPUswXwdlMrdSNVbbnKnTlU7nlSS8qkTv9BYaTfYk5o=
+X-Received: by 2002:a05:620a:4711:b0:856:60d8:3688 with SMTP id
+ af79cd13be357-8a6f78fc5eemr447314685a.47.1761660560137; Tue, 28 Oct 2025
+ 07:09:20 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251028060918.65688-1-linmq006@gmail.com>
+References: <20251027183453.919157109@linuxfoundation.org>
+In-Reply-To: <20251027183453.919157109@linuxfoundation.org>
+From: Brett Mastbergen <bmastbergen@ciq.com>
+Date: Tue, 28 Oct 2025 10:09:08 -0400
+X-Gm-Features: AWmQ_bmdkmfhBJpXFY9QIg-9Nu9KvuWXlnvP1dY6QfRsnqg3ap99m04OvaHDYGk
+Message-ID: <CAOBMUvjZR4OL0Ffq_yZq_-4nGNAQnicFP8mXqgc1tCtP0VvVsQ@mail.gmail.com>
+Subject: Re: [PATCH 6.12 000/117] 6.12.56-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, 
+	achill@achill.org, sr@sladewatkins.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Miaoqian,
+On Mon, Oct 27, 2025 at 3:31=E2=80=AFPM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.12.56 release.
+> There are 117 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Wed, 29 Oct 2025 18:34:15 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.12.56-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.12.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
+>
 
-kernel test robot noticed the following build errors:
+Builds successfully.  Boots and works on qemu and Dell XPS 15 9520 w/
+Intel Core i7-12600H
 
-[auto build test ERROR on drm-misc/drm-misc-next]
-[also build test ERROR on linus/master v6.18-rc3 next-20251028]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Tested-by: Brett Mastbergen <bmastbergen@ciq.com>
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Miaoqian-Lin/drm-of-Fix-device-node-reference-leak-in-drm_of_panel_bridge_remove/20251028-141134
-base:   git://anongit.freedesktop.org/drm/drm-misc drm-misc-next
-patch link:    https://lore.kernel.org/r/20251028060918.65688-1-linmq006%40gmail.com
-patch subject: [PATCH] drm/of: Fix device node reference leak in drm_of_panel_bridge_remove
-config: mips-randconfig-r072-20251028 (https://download.01.org/0day-ci/archive/20251028/202510282123.AjUbRs11-lkp@intel.com/config)
-compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project e1ae12640102fd2b05bc567243580f90acb1135f)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251028/202510282123.AjUbRs11-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202510282123.AjUbRs11-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
-   In file included from drivers/gpu/drm/drm_bridge.c:37:
->> include/drm/drm_of.h:174:2: error: call to undeclared function 'of_node_put'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-     174 |         of_node_put(remote);
-         |         ^
-   1 error generated.
---
-   In file included from drivers/gpu/drm/panel/panel-magnachip-d53e6ea8966.c:10:
->> include/drm/drm_of.h:174:2: error: call to undeclared function 'of_node_put'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-     174 |         of_node_put(remote);
-         |         ^
-   In file included from drivers/gpu/drm/panel/panel-magnachip-d53e6ea8966.c:13:
-   In file included from include/linux/backlight.h:13:
-   In file included from include/linux/fb.h:5:
-   In file included from include/uapi/linux/fb.h:6:
-   In file included from include/linux/i2c.h:21:
-   In file included from include/linux/irqdomain.h:14:
->> include/linux/of.h:129:13: error: conflicting types for 'of_node_put'
-     129 | extern void of_node_put(struct device_node *node);
-         |             ^
-   include/drm/drm_of.h:174:2: note: previous implicit declaration is here
-     174 |         of_node_put(remote);
-         |         ^
-   2 errors generated.
-
-
-vim +/of_node_put +174 include/drm/drm_of.h
-
-   153	
-   154	/*
-   155	 * drm_of_panel_bridge_remove - remove panel bridge
-   156	 * @np: device tree node containing panel bridge output ports
-   157	 *
-   158	 * Remove the panel bridge of a given DT node's port and endpoint number
-   159	 *
-   160	 * Returns zero if successful, or one of the standard error codes if it fails.
-   161	 */
-   162	static inline int drm_of_panel_bridge_remove(const struct device_node *np,
-   163						     int port, int endpoint)
-   164	{
-   165	#if IS_ENABLED(CONFIG_OF) && IS_ENABLED(CONFIG_DRM_PANEL_BRIDGE)
-   166		struct drm_bridge *bridge;
-   167		struct device_node *remote;
-   168	
-   169		remote = of_graph_get_remote_node(np, port, endpoint);
-   170		if (!remote)
-   171			return -ENODEV;
-   172	
-   173		bridge = of_drm_find_bridge(remote);
- > 174		of_node_put(remote);
-   175		drm_panel_bridge_remove(bridge);
-   176	
-   177		return 0;
-   178	#else
-   179		return -EINVAL;
-   180	#endif
-   181	}
-   182	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Thanks,
+Brett
 
