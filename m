@@ -1,202 +1,182 @@
-Return-Path: <stable+bounces-191498-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191499-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF0ADC153AE
-	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 15:47:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B7DD6C153FC
+	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 15:51:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D6F683AC278
-	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 14:41:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CDDFE3B1713
+	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 14:45:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A89C339704;
-	Tue, 28 Oct 2025 14:41:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 650F2238C3A;
+	Tue, 28 Oct 2025 14:45:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="e4Tb7HGo"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="igwOak7r"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71B9230499B
-	for <stable@vger.kernel.org>; Tue, 28 Oct 2025 14:41:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 927A4231832;
+	Tue, 28 Oct 2025 14:45:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761662512; cv=none; b=ONDl8tQLqXLRe1B7RhcxoCQusdfs80k2kP/HsXHTkyhdkP8KTxZmtgg92I0xq9SPhZkgsl/gvbVe+JH6ShMNmDKxFWvv3XRftSeaKrPl3OzNl9Nyb4RB/VglyQbBOb5YO55jISPIKvud5JYtOFMTQhyaGOLqTT6C2CP+Zzo6nRo=
+	t=1761662752; cv=none; b=lOYE4kHPwiMXD2/+69XjChVvlh6ieQmIMYgXly/BKm+SrARebOtf3eXF8m1b0dAh+SvFjbGUhVtmZXap7XVccX889reXUNFG9NAJaF9fe6k6JntVUaxcd0djYg736Pw9ftBiTBV5qh3740vX0su4UR4X/qeOUyWZYNPkN9OoU5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761662512; c=relaxed/simple;
-	bh=zZFrWoA22wiG0tWmfXQmHOPpME9nO7zblFQfy5vvLz0=;
+	s=arc-20240116; t=1761662752; c=relaxed/simple;
+	bh=CKz4/uGHSCJbggykL29OUDHmz0rpQ9olHSJpLyDmkh0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MAem/VXVAerCEA9/F6zDtsHcVxBNh1Rxob1VWUEtkWf21blffNYjNSJtqMWmv1hYWgTi6xcNF4mR1+HQX5PyHlVoO5Ld7wzqdq4xssg/rd50OAQL0LrjmB23sNs+LbQPTboOGoOdcCdVTVkuCmJeypFn2mVdwdYJsI94gNq9Yag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=e4Tb7HGo; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1761662509;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7eWGU4/sCZhBc+k/OXAlSXf1w6wQiO+JEvcP2rSPOPA=;
-	b=e4Tb7HGoby3b9QS36rqPu/tSsCpnD0gpfmYpcj9yLllNqavEgJWAER175OS5/S4flybpuN
-	xnK+eXNZIuuyNR25EA+2WTrCoi6206VZ0X1x3xNObkHipyZhTqjSTfN0eo9+abxRxyVjqF
-	EmIbXP/HbP8eKj/eGeiqrX2/XJE0ppI=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-435-cgrD6mJ4PVmPhljieLFltQ-1; Tue, 28 Oct 2025 10:41:47 -0400
-X-MC-Unique: cgrD6mJ4PVmPhljieLFltQ-1
-X-Mimecast-MFC-AGG-ID: cgrD6mJ4PVmPhljieLFltQ_1761662507
-Received: by mail-ed1-f72.google.com with SMTP id 4fb4d7f45d1cf-63c585eb47bso9013075a12.1
-        for <stable@vger.kernel.org>; Tue, 28 Oct 2025 07:41:47 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761662507; x=1762267307;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=7eWGU4/sCZhBc+k/OXAlSXf1w6wQiO+JEvcP2rSPOPA=;
-        b=hGvCU7lwke88daYpkFhbvwGCDXPXswR8TGqs4cf6yeMfVzdyy444Ihs564YKBXUnwK
-         U/maPEPQ73w9CyiSgX+5fl4g+U1616KJZ/DJ/PM1QnBIU+kpzg0JpxFmzbQAI/lXIBVB
-         7tUaMr07KdI2o10HL0FPSsX0OFxPMOajH9zc5sTYZuO69Y09b6hWGRxDORFvkbySwXqn
-         M5CndXn24UXzvtMw96OYmQYLxJ0qJOeEYqTOLKFTkbWpWx9vDmt+UIvdWsizQ53n/lyU
-         Qa6Qo5xNLWsG99ca39fKiEnoMYcX2iWjLILmAY02s7dsWxWfzfA+L8zR8KZaV7oEls08
-         XI9g==
-X-Forwarded-Encrypted: i=1; AJvYcCVaIRdSBiX8jNGE4c0h0LyBGKncv92bj6FpaNRZHeicIvqnL/gm1zC5Q1TznHj5HTbTdo92ASI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwdncT8T1FrmOqgXdxyJ5e925Wb6YS8Xqsnp3glEj96Lrf9edSI
-	I2MV+VXGLQQ6lD1P3eI6Y2qKJY5AwQ+2j67WRIAG7dSRCmrENBgvo+NkT1zslc1EstisQT+kIYD
-	YrlhUva1RAE/MPFgrJLOPU9TXyvcY2BXp4rBeN80xN08MwP4xTXLLOlVqTA==
-X-Gm-Gg: ASbGnctQxz+uNM/8iNy1ztHL052WGLoOVnz2YYEksa9CiZdhE7C6sLIQH9yRmMxfHFd
-	4kNnSFSFdIVQdVvD/BQ6wX91Q9wrdCiOsa0qwvW+q1ZR5LkrTMFTmw3MBlq7XaIxF+1adIvzCwq
-	rvkFpMGTBF1IxumTZtwRntL4RdSX+X2IMN7Gc0eA9W7bOxshXgFBWsrXm2/Hz5r9Kqq9FTWrcKK
-	ge0AVCoZHfjivOmL0NZZH6n/drnk8ccaF/KFQqHET6Epui/nTt3b52QHzZXkphu0dwAYLYHkSrs
-	rGd5ZxccbQyuYSncH0gGlNT93u1o5lkoSMDPzJNjRlUPv0eJsNGq+waRBUhdrfD5
-X-Received: by 2002:a05:6402:144a:b0:62e:ebb4:e6e0 with SMTP id 4fb4d7f45d1cf-63f4bca70a6mr2966882a12.1.1761662506580;
-        Tue, 28 Oct 2025 07:41:46 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFOr/YGySpncsjMyKMI6CUK3yhy881BlqAgFf5Tw9hIOxtgltg9Pn+Albol7GlK//8Ah0jD8A==
-X-Received: by 2002:a05:6402:144a:b0:62e:ebb4:e6e0 with SMTP id 4fb4d7f45d1cf-63f4bca70a6mr2966848a12.1.1761662506036;
-        Tue, 28 Oct 2025 07:41:46 -0700 (PDT)
-Received: from redhat.com ([31.187.78.209])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-63e7efd0e23sm9044225a12.35.2025.10.28.07.41.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Oct 2025 07:41:45 -0700 (PDT)
-Date: Tue, 28 Oct 2025 10:41:42 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Bui Quang Minh <minhquangbui99@gmail.com>
-Cc: netdev@vger.kernel.org, Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Gavin Li <gavinl@nvidia.com>, Gavi Teitz <gavi@nvidia.com>,
-	Parav Pandit <parav@nvidia.com>, virtualization@lists.linux.dev,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH net v6] virtio-net: fix received length check in big
- packets
-Message-ID: <20251028104041-mutt-send-email-mst@kernel.org>
-References: <20251028143116.4532-1-minhquangbui99@gmail.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=IdIkENh9choUkK4j9XkmOAmZqsptVx6kemv9IKwDjehz1fXOkgRQIg9QxrDiWR8hxJ/U9EvKuWOb14Ca18XM+L8YffHSG+AD+RGC8qCLQZznFa+1OwyJaUo1YiIoAMVUCl1dqY9zL++XyqsQG+fk9or6DC86VKV4eAwQbkfKYSs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=igwOak7r; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1761662751; x=1793198751;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=CKz4/uGHSCJbggykL29OUDHmz0rpQ9olHSJpLyDmkh0=;
+  b=igwOak7rTmMc6krsJpVMFbmAwRZXLGR9hA6SPlSMlYwTNo8sRt4o67Hc
+   pdEWvKMsUORGyYMn1yXNufcT2YaQGBf2pejsUR/T78S/cJD+3H2lA/dBo
+   GtQsOoGo39zLpcyJj2FFIHFQG8DaoEhoLSdMM1Qtfr56STCblU+3Q8zRM
+   StaN3jg+Z8CV8whi6tnao4g5R2f0SibxNm2lh6Df4TFgKgt1KeXg16YZi
+   dXbGGKlHHajBD98/4lvnwBtsglkSKAcFqKGdL216AH7UUnopk6KxmuYy4
+   OGDolhBwNPiQM74HfDIhM8hM9Mtz4lbn63zVrHfgKwbkdG5am8DCTk95B
+   Q==;
+X-CSE-ConnectionGUID: 1JX92ApKSR6GGXIjiMAqXw==
+X-CSE-MsgGUID: kVh3zKVaT52limn0G7Ro1A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="62968848"
+X-IronPort-AV: E=Sophos;i="6.19,261,1754982000"; 
+   d="scan'208";a="62968848"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2025 07:45:50 -0700
+X-CSE-ConnectionGUID: iWCXSjImRhGTf0U7Z51A1Q==
+X-CSE-MsgGUID: JmD6khTuQtSN9qRoSpbcNg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,261,1754982000"; 
+   d="scan'208";a="184542880"
+Received: from dalessan-mobl3.ger.corp.intel.com (HELO ashevche-desk.local) ([10.245.244.136])
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2025 07:45:47 -0700
+Received: from andy by ashevche-desk.local with local (Exim 4.98.2)
+	(envelope-from <andriy.shevchenko@intel.com>)
+	id 1vDkxD-00000003LEB-3qpd;
+	Tue, 28 Oct 2025 16:45:43 +0200
+Date: Tue, 28 Oct 2025 16:45:43 +0200
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Nuno =?iso-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+Cc: Miaoqian Lin <linmq006@gmail.com>, Markus Burri <markus.burri@mt.com>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	Angelo Dureghello <adureghello@baylibre.com>,
+	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] iio: dac: ad3552r-hs: fix out-of-bound write in
+ ad3552r_hs_write_data_source
+Message-ID: <aQDXF-AIF6wNIo76@smile.fi.intel.com>
+References: <20251027150713.59067-1-linmq006@gmail.com>
+ <aQB8PRlaBY_9-L8d@smile.fi.intel.com>
+ <aQB8j7Hc3b9vAT5_@smile.fi.intel.com>
+ <aQCHt9JL0Bc4Pduv@smile.fi.intel.com>
+ <071e3da4d69e10d64c54a18b7dd34ae11ab68f58.camel@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20251028143116.4532-1-minhquangbui99@gmail.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <071e3da4d69e10d64c54a18b7dd34ae11ab68f58.camel@gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Tue, Oct 28, 2025 at 09:31:16PM +0700, Bui Quang Minh wrote:
-> Since commit 4959aebba8c0 ("virtio-net: use mtu size as buffer length
-> for big packets"), when guest gso is off, the allocated size for big
-> packets is not MAX_SKB_FRAGS * PAGE_SIZE anymore but depends on
-> negotiated MTU. The number of allocated frags for big packets is stored
-> in vi->big_packets_num_skbfrags.
+On Tue, Oct 28, 2025 at 12:31:04PM +0000, Nuno Sá wrote:
+> On Tue, 2025-10-28 at 11:07 +0200, Andy Shevchenko wrote:
+> > On Tue, Oct 28, 2025 at 10:19:27AM +0200, Andy Shevchenko wrote:
+> > > On Tue, Oct 28, 2025 at 10:18:05AM +0200, Andy Shevchenko wrote:
+> > > > On Mon, Oct 27, 2025 at 11:07:13PM +0800, Miaoqian Lin wrote:
+
+...
+
+> > > > > +	if (count >= sizeof(buf))
+> > > > > +		return -ENOSPC;
+> > > > 
+> > > > But this makes the validation too strict now.
+> > > > 
+> > > > >  	ret = simple_write_to_buffer(buf, sizeof(buf) - 1, ppos,
+> > > > > userbuf,
+> > > > >  				     count);
+> > > > 
+> > > > You definitely failed to read the code that implements the above.
+> > > > 
+> > > > >  	if (ret < 0)
+> > > > >  		return ret;
+> > > 
+> > > > > -	buf[count] = '\0';
+> > > > > +	buf[ret] = '\0';
+> > > 
+> > > Maybe this line is what we might need, but I haven't checked deeper if it's
+> > > a
+> > > problem.
+> > 
+> > So, copy_to_user() and copy_from_user() are always inlined macros.
+> > The simple_write_to_buffer() is not. The question here is how
+> > the __builit_object_size() will behave on the address given as a parameter to
+> > copy_from_user() in simple_write_to_buffer().
+> > 
+> > If it may detect reliably that the buffer is the size it has. I believe it's
+> > easy for the byte arrays on stack.
 > 
-> Because the host announced buffer length can be malicious (e.g. the host
-> vhost_net driver's get_rx_bufs is modified to announce incorrect
-> length), we need a check in virtio_net receive path. Currently, the
-> check is not adapted to the new change which can lead to NULL page
-> pointer dereference in the below while loop when receiving length that
-> is larger than the allocated one.
+> I think the above does not make sense (unless I'm missing your point which might
+> very well be).
+
+It seems I stand corrected. I was staring too much at copy_from_user() without
+retrieving the validation logic behind simple_write_to_buffer().
+
+> So, __builit_object_size() is for things known at compile time.
+> Moreover, simple_write_to_buffer() already has all of the gymnastics to make
+> sure copy_from_user() has the proper parameters. The thing is that it does it in
+> a "silent" way which means that if your buffer is not big enough you'll get a
+> concatenated string. Sure, you'll likely get an error down the road (due to an
+> invalid value) but I do see some value in returning back the root cause of the
+> issue.
 > 
-> This commit fixes the received length check corresponding to the new
-> change.
+> So, the preliminary check while not being a big deal, it's also not completely
+> useless IMO. I do not have any strong feeling though. However, I think the below
+> is very much needed...
 > 
-> Fixes: 4959aebba8c0 ("virtio-net: use mtu size as buffer length for big packets")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Bui Quang Minh <minhquangbui99@gmail.com>
-> ---
-> Changes in v6:
-> - Fix the length check
-> - Link to v5: https://lore.kernel.org/netdev/20251024150649.22906-1-minhquangbui99@gmail.com/
-> Changes in v5:
-> - Move the length check to receive_big
-> - Link to v4: https://lore.kernel.org/netdev/20251022160623.51191-1-minhquangbui99@gmail.com/
-> Changes in v4:
-> - Remove unrelated changes, add more comments
-> - Link to v3: https://lore.kernel.org/netdev/20251021154534.53045-1-minhquangbui99@gmail.com/
-> Changes in v3:
-> - Convert BUG_ON to WARN_ON_ONCE
-> - Link to v2: https://lore.kernel.org/netdev/20250708144206.95091-1-minhquangbui99@gmail.com/
-> Changes in v2:
-> - Remove incorrect give_pages call
-> - Link to v1: https://lore.kernel.org/netdev/20250706141150.25344-1-minhquangbui99@gmail.com/
-> ---
->  drivers/net/virtio_net.c | 25 ++++++++++++-------------
->  1 file changed, 12 insertions(+), 13 deletions(-)
+> > That said, without proof that compiler is unable to determine the destination
+> > buffer size, this patch and the one by Markus are simple noise which actually
+> > changes an error code on the overflow condition.
+> > 
+> > The only line that assigns NUL character might be useful in some cases
+> > (definitely when buffer comes through indirect calls from a heap, etc).
 > 
-> diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-> index a757cbcab87f..461ad1019c37 100644
-> --- a/drivers/net/virtio_net.c
-> +++ b/drivers/net/virtio_net.c
-> @@ -910,17 +910,6 @@ static struct sk_buff *page_to_skb(struct virtnet_info *vi,
->  		goto ok;
->  	}
->  
-> -	/*
-> -	 * Verify that we can indeed put this data into a skb.
-> -	 * This is here to handle cases when the device erroneously
-> -	 * tries to receive more than is possible. This is usually
-> -	 * the case of a broken device.
-> -	 */
-> -	if (unlikely(len > MAX_SKB_FRAGS * PAGE_SIZE)) {
-> -		net_dbg_ratelimited("%s: too much data\n", skb->dev->name);
-> -		dev_kfree_skb(skb);
-> -		return NULL;
-> -	}
->  	BUG_ON(offset >= PAGE_SIZE);
->  	while (len) {
->  		unsigned int frag_size = min((unsigned)PAGE_SIZE - offset, len);
-> @@ -2107,9 +2096,19 @@ static struct sk_buff *receive_big(struct net_device *dev,
->  				   struct virtnet_rq_stats *stats)
->  {
->  	struct page *page = buf;
-> -	struct sk_buff *skb =
-> -		page_to_skb(vi, rq, page, 0, len, PAGE_SIZE, 0);
-> +	struct sk_buff *skb;
-> +
-> +	/* Make sure that len does not exceed the allocated size in
-> +	 * add_recvbuf_big.
+> I think you can easily pass a string >= than 64 bytes (from userspace). AFAIR,
+> you don't really set a size into debugfs files. For sure you can mess things
+> with zero sized binary attributes so I have some confidence you have the same
+> with debugfs.
+> 
+> And even if all the above is not reproducible I'm still of the opinion that
+> 
+> buf[ret] = '\0';
+> 
+> is semantically the correct code.
 
-you mean "the size allocated in add_recvbuf_big"
+Yes, but it should either be explained as just making code robust vs. real bugfix.
+For the latter I want to see the real traceback and a reproducer. I also wonder why
+we never had reports from syzkaller on this. It has non-zero chance to stumble over
+the issue here (if there is an issue to begin with).
 
-> +	 */
-> +	if (unlikely(len > (vi->big_packets_num_skbfrags + 1) * PAGE_SIZE)) {
-> +		pr_debug("%s: rx error: len %u exceeds allocate size %lu\n",
+-- 
+With Best Regards,
+Andy Shevchenko
 
-
-allocated?
-
-> +			 dev->name, len,
-> +			 (vi->big_packets_num_skbfrags + 1) * PAGE_SIZE);
-> +		goto err;
-> +	}
->  
-> +	skb = page_to_skb(vi, rq, page, 0, len, PAGE_SIZE, 0);
->  	u64_stats_add(&stats->bytes, len - vi->hdr_len);
->  	if (unlikely(!skb))
->  		goto err;
-> -- 
-> 2.43.0
 
 
