@@ -1,83 +1,73 @@
-Return-Path: <stable+bounces-191442-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191443-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D121C14698
-	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 12:40:56 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14E34C1469E
+	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 12:41:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 55B971AA3A92
-	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 11:41:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ADB7F1AA4C99
+	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 11:41:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77CDF3081CE;
-	Tue, 28 Oct 2025 11:40:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10D943081BE;
+	Tue, 28 Oct 2025 11:41:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XDZWADUh"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iCdz1zIl"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56031303A38;
-	Tue, 28 Oct 2025 11:40:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14EB2307ADA;
+	Tue, 28 Oct 2025 11:41:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761651649; cv=none; b=PPxw8iVTHpk3Ti5P1cI0DJL6XYJW/sRyo4YjZHhJuulrYd7XfYcc0zDQFp8ytvbHkrYmfEO8HutERNIebbD/enLEj4sboMsU4iOWgExtWUn8wY7YiVfaChRfsXOnHaS7E2oz64gvvGx9GTc3ZEfwqHB99jHu1khvlHATrrWOelE=
+	t=1761651663; cv=none; b=A3bqdzh9MOnVYeAPRykpvo5MGqgSZiY4R9ABQtj5Q3o1J3PT/BwBgeL4cc5UefWrN9Z95n+8idDAb/SdocOfzvOFC7ZBdgeGdGpondx0LRrytGvHRuvsV5+/NvYoepCOghDAV/5uWe39QBoyz5L2koF38bFIZPOxeXQbc1NKLJg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761651649; c=relaxed/simple;
-	bh=Zm+ETHfHQTaVVdtsPF1GJ121hJhiaTf4ApL7QLbkG78=;
+	s=arc-20240116; t=1761651663; c=relaxed/simple;
+	bh=fp0g7/OIQ/ayel21xsyqOdJsLbze16XSiyzQ8Utgyss=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BfKuKPDF4YimChJI5UtbDwlb01nCOQCY6mGeydDJOU56nLxcfooQeFsMRfVcHEJHdVHx2l1KUSq5qLOmGgTYcBDJE6CqHttvtdLZEcVLRqJyN/MiJNoiUK0OVv/x84iowjVqa2z94YX1QITMzyJU5JlKAbGap+6Yr4sy+jCHK5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XDZWADUh; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=nEZFg6faPM4gr2wJ4DnzJJ3LKOWsi0qXdg75BLOsNCKlFQhvXouyZcElj63OFx2Fr0GeEjO8FqQ/Fs2rKBt8sljZ3ayw5kySrlj93nD+oOpokYdzdTsQ7Ea01K0cJwvk7J69d1PW/mLrJC1xNP4hiqk5LifWx5MJ638oXGo9rdQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iCdz1zIl; arc=none smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1761651647; x=1793187647;
+  t=1761651663; x=1793187663;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=Zm+ETHfHQTaVVdtsPF1GJ121hJhiaTf4ApL7QLbkG78=;
-  b=XDZWADUhEfXnkda/C/PomLUW6YV7oKDb4KDmQhS8aZRdSRrEoSVDcS8M
-   M8Tcjku/wXS7JjOzIX0cae1L5YONThvzavSJACVTCw601fRhuyHyNzdzx
-   3izIyWxB66Zpg927Yv5a/cCgMPCM104BBsclyaRYgiTSpkQk5IZaP3gMk
-   DIJCKBD5GNWocKb0P+3aKDOjEnWnKm1I4eHN9AGwQYDZKs7hvMkZY3eSu
-   PtjrNr7Y2mvnbyhjytpEk3FteS6ywlpLOT2EBeJwspCZEZMQIOqrF3Vlk
-   jfe+AQ0zpLzuiQEKghgTFIhVxOLBgCoCEO6/WTV+2LP34wCGujctuUVBS
+  bh=fp0g7/OIQ/ayel21xsyqOdJsLbze16XSiyzQ8Utgyss=;
+  b=iCdz1zIltNVKMX6Pi3ErtkkFery1Mm1JgSFY3SI7tkxeDrz+c/oGEVR6
+   hnp0BIDIAeaz1Z2sD/x5TjTKxa5a4kTyrSrUuXoZ0o2BRAs/6G5xJxaRe
+   j9TXHvuKkZ6xhzxDFapDFMZoLzbmVqS9k+E2gxRTd2L5MtPQWmsq0SVS9
+   7zdu7N+r0/kB3P6Y7xal0ke795f8qE4iNVpkaXKpJQDDtC/fXjqfWPyvZ
+   Ddd0uasSoa+3u8/e7R6KXhcl1jQjo2PKYJbQrXcsJWimlXx3asSOCjGtA
+   fzPO1J6/JMOrBL2qUe+POYj+Yj73CSCAtPLGKqqPF9Ufpcj1SNwIo1vft
    g==;
-X-CSE-ConnectionGUID: 8kDi/7gDSVusayX+TWQurQ==
-X-CSE-MsgGUID: NeNjj0acTLSHXtNjF4+yUg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="63784833"
+X-CSE-ConnectionGUID: EvtqHTzgRom7SN5EBdCS2A==
+X-CSE-MsgGUID: neZjdoXfSHS6qD8ksOi2Dw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="63450696"
 X-IronPort-AV: E=Sophos;i="6.19,261,1754982000"; 
-   d="scan'208";a="63784833"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2025 04:40:47 -0700
-X-CSE-ConnectionGUID: K3LoQzDVTaaqlrUpRPVskw==
-X-CSE-MsgGUID: 9hahvjJkTBSqd3lLPuLjog==
+   d="scan'208";a="63450696"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2025 04:41:02 -0700
+X-CSE-ConnectionGUID: o2HgJLwNQQOiZ0cbrRSVWw==
+X-CSE-MsgGUID: T8Sjij5mS0qzFsg2J86n7A==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.19,261,1754982000"; 
-   d="scan'208";a="222533468"
-Received: from dalessan-mobl3.ger.corp.intel.com (HELO ashevche-desk.local) ([10.245.244.136])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2025 04:40:44 -0700
-Received: from andy by ashevche-desk.local with local (Exim 4.98.2)
-	(envelope-from <andriy.shevchenko@intel.com>)
-	id 1vDi49-00000003IcZ-110I;
-	Tue, 28 Oct 2025 13:40:41 +0200
-Date: Tue, 28 Oct 2025 13:40:41 +0200
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Miaoqian Lin <linmq006@gmail.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Angelo Dureghello <adureghello@baylibre.com>,
-	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] iio: dac: ad3552r-hs: fix out-of-bound write in
- ad3552r_hs_write_data_source
-Message-ID: <aQCruaNsGD24PFEk@smile.fi.intel.com>
-References: <20251027150713.59067-1-linmq006@gmail.com>
+   d="scan'208";a="186075513"
+Received: from pgcooper-mobl3.ger.corp.intel.com (HELO mdjait-mobl) ([10.245.244.131])
+  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2025 04:41:00 -0700
+Date: Tue, 28 Oct 2025 12:40:53 +0100
+From: Mehdi Djait <mehdi.djait@linux.intel.com>
+To: Hans de Goede <hansg@kernel.org>
+Cc: Bingbu Cao <bingbu.cao@intel.com>, 
+	Sakari Ailus <sakari.ailus@linux.intel.com>, linux-media@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH 05/25] media: i2c: ov01a10: Fix passing stream instead of
+ pad to v4l2_subdev_state_get_format()
+Message-ID: <bziyhu7c2ilsave6csvumt26ckp57zqzwejfn6ngw445fsy2f7@7xmwxomom5kv>
+References: <20251014174033.20534-1-hansg@kernel.org>
+ <20251014174033.20534-6-hansg@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -86,42 +76,21 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251027150713.59067-1-linmq006@gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+In-Reply-To: <20251014174033.20534-6-hansg@kernel.org>
 
-On Mon, Oct 27, 2025 at 11:07:13PM +0800, Miaoqian Lin wrote:
-> When simple_write_to_buffer() succeeds, it returns the number of bytes
-> actually copied to the buffer, which may be less than the requested
-> 'count' if the buffer size is insufficient. However, the current code
-> incorrectly uses 'count' as the index for null termination instead of
-> the actual bytes copied, leading to out-of-bound write.
-> 
-> Add a check for the count and use the return value as the index.
+Hi Hans,
 
-...
+Thank you for the patches!
 
-> +	if (count >= sizeof(buf))
-> +		return -ENOSPC;
+On Tue, Oct 14, 2025 at 07:40:13PM +0200, Hans de Goede wrote:
+> The 2 argument version of v4l2_subdev_state_get_format() takes the pad
+> as second argument, not the stream.
+>
 
-This is already done below.
+Tested-by: Mehdi Djait <mehdi.djait@linux.intel.com> # Dell XPS 9315
+Reviewed-by: Mehdi Djait <mehdi.djait@linux.intel.com>
 
->  	ret = simple_write_to_buffer(buf, sizeof(buf) - 1, ppos, userbuf,
->  				     count);
->  	if (ret < 0)
->  		return ret;
-
-...
-
-> -	buf[count] = '\0';
-> +	buf[ret] = '\0';
-
-Do we have an actual issue right now? Can you model it and show a real
-traceback?
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+> Fixes: bc0e8d91feec ("media: v4l: subdev: Switch to stream-aware state functions")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Hans de Goede <hansg@kernel.org>
 
