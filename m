@@ -1,106 +1,125 @@
-Return-Path: <stable+bounces-191379-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191380-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA945C12B1C
-	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 03:51:48 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6348C12B67
+	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 04:03:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 57CC53545F0
-	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 02:51:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3B87B587789
+	for <lists+stable@lfdr.de>; Tue, 28 Oct 2025 03:02:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC1252777FC;
-	Tue, 28 Oct 2025 02:51:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15FBD25C6E2;
+	Tue, 28 Oct 2025 03:02:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="Fvovu8Il"
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="nbUz0bCs"
 X-Original-To: stable@vger.kernel.org
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD5B323ABA7;
-	Tue, 28 Oct 2025 02:51:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39E78238D54
+	for <stable@vger.kernel.org>; Tue, 28 Oct 2025 03:02:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761619902; cv=none; b=lcEjNuOuzxa1RK8+LkwNWJ326tq+tMV88Z+PsGj6KmAcqTijW4RFLN/cXm7V9BNw3yf/L1867m7mEJB113v41JyfWhfn4R/mFE5yPlfr3vxihHybqvzC51MG0HU4aatLi8Zh4W/1GHCPWe7Uu7lQNQuesp3XzKNeOl5krEIDOns=
+	t=1761620551; cv=none; b=TQByO2Y3FkcatdNjYUblLnvqaOORxo0bFzzFtESDBA0lr0QAPyS0dm0o4yqbGuXfGKVXiAMCrkN2uXtaBg7I+oL4mun0PKdkM35sD2gkfrWd0xd9PfgiszKo22rJusAbMw3NUcboHGTW5QKSSxGmgcDCbPf5g08CRJtVZkjaw44=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761619902; c=relaxed/simple;
-	bh=CmEsD28Zxe5c54QqDeWV+aL5F3nBQNXbasrT3dJ7bOE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oWzfSfNnbAFJ4tOddkRXelSzsecaVGzMV98Nso+a35FsNd0rYJmXueCzdcaMQkWuC0W/G19LDfzKwaetj8DU2PY30e+xWPvxV0qS7K5cMxcRySWT1Z69Ps49MJxg+ypJ7Ndb/K6veesmQWL2KdMfN/9+7b2G3qiYB2EbKreuHLQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=Fvovu8Il; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=zPR99w+9Fi2WOCvCk4cfqcHQkI1zN/4r/LSkpLkWWDQ=; b=Fvovu8IlJen68sp5p/Dwn8t5c5
-	Ami1eHp89SNtzONq7z0G998GlXShePDUwRbXfyKW3KN0Sot6hiII1g8lPEvv3sr85OnPqOAdSZI1q
-	bL59Ze1iVLF6+SEce6QnKSr09r1tFFxX49+dS8wSS/ofbTAMGnwePQQDCg9RC2tPg2/Y=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1vDZnc-00CFxP-He; Tue, 28 Oct 2025 03:51:04 +0100
-Date: Tue, 28 Oct 2025 03:51:04 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Yi Cong <cong.yi@linux.dev>
-Cc: Frank.Sae@motor-comm.com, andrew+netdev@lunn.ch, hkallweit1@gmail.com,
-	linux@armlinux.org.uk, davem@davemloft.net, kuba@kernel.org,
-	netdev@vger.kernel.org, Yi Cong <yicong@kylinos.cn>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] net: phy: motorcomm: Fix the issue in the code regarding
- the incorrect use of time units
-Message-ID: <e1311746-9882-4063-84af-3939466096e9@lunn.ch>
-References: <20251028015923.252909-1-cong.yi@linux.dev>
+	s=arc-20240116; t=1761620551; c=relaxed/simple;
+	bh=Cpfl+PBLgm9fkdwrdc+sEthpeoG4zd9OLtEpq+UJjVo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=FvV1UgyoeE6fRzjMv3sXXk6B0jHC5qSJlGvcHlSekhKmFBYVXlsrFNQX62R/TJqeNtzOY4D2YlKVSNiD02iOfjoo3hlxNdfkZEkZ4v6OJCGuVSO1WW6iLdXsEu+9OeJw0W1eWstTp7mnLw9+3D1QLI4V5wY7+kM/E5+f2DnEha8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=nbUz0bCs; arc=none smtp.client-ip=209.85.218.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-b6d5c59f2b6so856189366b.2
+        for <stable@vger.kernel.org>; Mon, 27 Oct 2025 20:02:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20230601; t=1761620548; x=1762225348; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=0qNkBOdLmm1kj4SMMo8wWk+UdIPzxQ3y5CFJL8sjPwM=;
+        b=nbUz0bCs43TeU9zpUE6EhJTucpEiZp+Nx0nNdK/WxMsuckf9KFX55M5nQ3lh83XNc4
+         aTnooLHLe1fdq7cJ0iCVZag73NnDP5wexvYM6eX0zYasRwP4o0kN5tl69UtxR92bensi
+         ih1wYswRR2c9Yf0JQFSXt6FZLwV0kilQFi1ToWbl7qUEMMOfqr8LdN7/r/MLF08zOM22
+         lAa4iF2HcSJLp02HqAo590nRlumZWXqmSlcpPO9AsdtSs/f5EXctuehUSErSobNIvOP1
+         ysSn+AI0E4JjzC0lNyEkwXhsjx2vG8rCFQvjigeeJZKQArNXztPvd5J1XaSsj8kSkdrE
+         +6Vg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761620548; x=1762225348;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=0qNkBOdLmm1kj4SMMo8wWk+UdIPzxQ3y5CFJL8sjPwM=;
+        b=uYTBVZRnEHmhGnMoJ4wQ7CuNm/UOuv+MlAr9wtBp4HPokVcv0RA4PykQe65UPVF4Kq
+         YH+JPtAts/S3OMftfudCyMpBkKuXbDfqlfxvnTKl9PdffKMRjlOq6Wkgsd818aErqRM8
+         fBzjKAfhiSNsj8dYOZMBjncpF3+Bi8H+ak4kdLmlgqpQX1xB3d6hXvkmTy0H1+c30TCK
+         JfUwjR7vDYofnJJgPwS30QEBwbk4jTOXFzmdc/bFbaXJ0bPS860XK/QBqCURSD+1Xwfr
+         tcj7ZR50zWBYJwvk2KIwx5BIJhkmrvfZHFvhbz2WTPsBiZILcmlwqHwM+kk+j3Cysb7Y
+         EnEg==
+X-Forwarded-Encrypted: i=1; AJvYcCWq9mgAm7GrdT42smoyX7lgr9Hdc5KA1mxS+/qcRO3a3EZn3sqbvKoHOL6M1HDJYXrxJYmAcpU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwVZ61cyrCt0ZGWtJ0MZIK9Dj8yBN38G6Q25HPNHijuB0yyvCSr
+	E/MJA6TIJqqQjxKktW5WTzbD/8m4ssPaUAs6J9lFQiF0BPCo9kPN6tc=
+X-Gm-Gg: ASbGncsL1yNWdBYR8FtZMmuaSwBfoJ2uSz1jS6CALc2HZI3g2G7gnJ42esTSRHgLqg+
+	S6CRdCkPid/5qpYuYGfvBi8aK4/5z9GUEvF9u//Js58BwIKzojcjtVwDVTalofM7Uor167wu68A
+	UPAbaYRsRhfvOx7tMuEZPKKYFOXcvMLTWFCj07wtjuZEpYllO1rWzcSBE8g5eGioXVAZkZ+onQ+
+	DRqBxW3/W6iB23y+Jn0FSf4T/V5oqrUsgjnavlnlizkDPK1pmic39jOvZIOnU3U8vKQfD1SrXw0
+	8luPbbnx+LX5o4X92RLOTDOYKZj70VoHW+K/f0ViXTa96Lp8sEBcCvfyJ2uoYK3g51/0oe3vqzk
+	DgLxBJaKQv1wwt5cfrmyuoidokV4Gxan3vyN/ntgQIrMoEusvfVgB9GOI72QVJa2ZfYsQ4kJcec
+	7eUuDwTeTvFZJT5OoDcqkNiCXn6PmiqKG/4iKSpEZMLzUDkliW6ZoZAvSiZgKEAQ==
+X-Google-Smtp-Source: AGHT+IHxBrrkSgnPojKFk8DgeU17os4fisUtn00kUYf+BNJ8a3sIYGRtzo5x/Ym39RIAZ6PoQzKXCQ==
+X-Received: by 2002:a17:907:9482:b0:b3d:73e1:d809 with SMTP id a640c23a62f3a-b6dba5a566cmr262777566b.48.1761620548327;
+        Mon, 27 Oct 2025 20:02:28 -0700 (PDT)
+Received: from [192.168.1.3] (p5b057a53.dip0.t-ipconnect.de. [91.5.122.83])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b6d853386d8sm936725566b.18.2025.10.27.20.02.27
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 27 Oct 2025 20:02:27 -0700 (PDT)
+Message-ID: <4589b95b-5eca-40f6-b014-6e90db486b17@googlemail.com>
+Date: Tue, 28 Oct 2025 04:02:26 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251028015923.252909-1-cong.yi@linux.dev>
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH 6.1 000/157] 6.1.158-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+ achill@achill.org, sr@sladewatkins.com
+References: <20251027183501.227243846@linuxfoundation.org>
+Content-Language: de-DE
+From: Peter Schneider <pschneider1968@googlemail.com>
+In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Tue, Oct 28, 2025 at 09:59:23AM +0800, Yi Cong wrote:
-> From: Yi Cong <yicong@kylinos.cn>
-> 
-> Currently, NS (nanoseconds) is being used, but according to the datasheet,
-> the correct unit should be PS (picoseconds).
-> 
-> Fixes: 4869a146cd60 ("net: phy: Add BIT macro for Motorcomm yt8521/yt8531 gigabit ethernet phy")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Yi Cong <yicong@kylinos.cn>
-> ---
->  drivers/net/phy/motorcomm.c | 102 ++++++++++++++++++------------------
->  1 file changed, 51 insertions(+), 51 deletions(-)
-> 
-> diff --git a/drivers/net/phy/motorcomm.c b/drivers/net/phy/motorcomm.c
-> index a3593e663059..81491c71e75b 100644
-> --- a/drivers/net/phy/motorcomm.c
-> +++ b/drivers/net/phy/motorcomm.c
-> @@ -171,7 +171,7 @@
->   * 1b1 enable 1.9ns rxc clock delay
->   */
->  #define YT8521_CCR_RXC_DLY_EN			BIT(8)
-> -#define YT8521_CCR_RXC_DLY_1_900_NS		1900
-> +#define YT8521_CCR_RXC_DLY_1_900_PS		1900
+Am 27.10.2025 um 19:34 schrieb Greg Kroah-Hartman:
+> This is the start of the stable review cycle for the 6.1.158 release.
+> There are 157 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-This could be down to interpretation.
+Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg oddities or regressions found.
 
-#define YT8521_CCR_RXC_DLY_1.900_NS		1900
+Tested-by: Peter Schneider <pschneider1968@googlemail.com>
 
-would be technically correct, but not valid for cpp(1). So the . is
-replaced with a _ .
 
-#define YT8521_CCR_RXC_DLY_1900_PS		1900
+Beste Grüße,
+Peter Schneider
 
-would also be correct, but that is not what you have in your patch,
-you leave the _ in place.
+-- 
+Climb the mountain not to plant your flag, but to embrace the challenge,
+enjoy the air and behold the view. Climb it so you can see the world,
+not so the world can see you.                    -- David McCullough Jr.
 
-    Andrew
-
----
-pw-bot: cr
+OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
+Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
 
