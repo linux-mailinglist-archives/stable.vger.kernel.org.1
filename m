@@ -1,124 +1,97 @@
-Return-Path: <stable+bounces-191593-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191594-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CB7FC19F0E
-	for <lists+stable@lfdr.de>; Wed, 29 Oct 2025 12:14:44 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 032C4C19F54
+	for <lists+stable@lfdr.de>; Wed, 29 Oct 2025 12:18:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 967FE3537EE
-	for <lists+stable@lfdr.de>; Wed, 29 Oct 2025 11:14:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 343411A24F2D
+	for <lists+stable@lfdr.de>; Wed, 29 Oct 2025 11:18:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 680F332F774;
-	Wed, 29 Oct 2025 11:14:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B65E310635;
+	Wed, 29 Oct 2025 11:17:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HMkOPDNj"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TbEvKmKP"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5473A329C71
-	for <stable@vger.kernel.org>; Wed, 29 Oct 2025 11:14:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01E732D949E;
+	Wed, 29 Oct 2025 11:17:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761736446; cv=none; b=AMpmB3EpFahtpd334sm3h9dmtl1qQVEGrjg3mAlbxuPsTZ2N2yND2lMsh6r6L/ZnJLT4U8SJbp9WLttK8vqhU99nfRMf0OeaF/6NpTgETTZ9Zcs5aQWw+8tMZ6+jwOq7HrfZurkApO5x6pvOYEBPcV69qeBe+4K6N+rqjnn3tJg=
+	t=1761736654; cv=none; b=WAnhbmfEn78wnZSG1OrO4m30hY2P4NXTw7PfbZaoQrH9/Y025aboVMvemv99dCrCNKz54XtTMRgoA8zTPs2J/O70qjeEw1+AENFyrUXP4hEVT0A24FNt0zQUwnhpkLBpNeD7S4PF20oG77J90bXSB43w7bASsoqdQCSyQw6fq5Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761736446; c=relaxed/simple;
-	bh=D/lapmvTOwB4w+eO4w4TOz+x/hybYzymaElHesTMXeg=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=lsNwaRLrHcs8lS9k3GBwmt1Un2TnBgIJ31WZQWFCjs/+0NyhG1oWtaGwcjXforIeXmSCFIzfiEjPq0SQLt4juwRxXggjX9SuQj79TozhnV9SKr2Rxi4qwBFpvQwXDV9ZMQxUj6VfPHHkssIvQRnyb1UKnu5XBizqh3tHzPFdCTc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HMkOPDNj; arc=none smtp.client-ip=209.85.128.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-47112a73785so45284065e9.3
-        for <stable@vger.kernel.org>; Wed, 29 Oct 2025 04:14:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761736442; x=1762341242; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=D/lapmvTOwB4w+eO4w4TOz+x/hybYzymaElHesTMXeg=;
-        b=HMkOPDNjTBtwNSGyUdsh90hVcMTgwt29vCrohawwxgBIRvGVcsrdQl4T7uJck6O+R3
-         8GCqfr4X3NJWetrtdmX6vbozpxVLnOhbeQ+yNTjDOImQe2+vW6vGUt8hKmPhCySmYhX3
-         X+eHLlbaPkZomu0wIyN3RN8EpkqrIqtWdaC3l0eOLj8rgeqW3VIosa5A603xlWzlLH4U
-         mfkyajlp/tzIApDVErxeRPyn6FNSeDAUffVockuf4LJMnYIKpMaPXZo0vHb6ogroup+Y
-         Oza6KTz2GE7d+a85ZfUV/jihKxsr0J5/5sogAo9vNBIEAtZh+tHcJWAK6D0rUm0Xuc2k
-         WfiQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761736442; x=1762341242;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=D/lapmvTOwB4w+eO4w4TOz+x/hybYzymaElHesTMXeg=;
-        b=DgI/emzuIjLts/j+3paywffvC2w9/qgcoWcx52W4XqKDKZ2q2qZeig/aC3VT8ZprmW
-         LTp4cfAArSKgLEsI/cM5g+CJnQZqnKbcc/Tx4TTUeqvXNa/a2hssVPAaydPlrtuZkKlr
-         nwupNbWOtBwNcq4Wn5FdFmTVF8ybLTXt6We3q4wCyqwiRLOLzI0AYLZubinuo/zeucir
-         XPugUVEfsN2pcCGlG1p+RPArRVPQbvut18Xa5stvPEyiEUN9DJN8tmS2dNIxL3lpq741
-         ZddMloGz5W2mMhtX2SfsMWAGzgsfe/ewh23DO2AM5absyl+4Zt27cBKXaN0iv1eAB6l2
-         gkAQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXa9yUWrGFF3zOFDIyD15yzx0c63vwSh3c319pIjNjTRRRzT3+F3SDM4d12rt4CArct65YVvf0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxo1HyEO+KT/uF5VvtVPI+E9PoPNSE31TNW/cwbW532EaFtpKGs
-	0J4Qk+ZWsnKQI1rcOluFYhd/hfI+aNPk1bsCWkW+7Kpbt6XQOOt76uHW
-X-Gm-Gg: ASbGnctfaBdZf1k2zo3u3CFvnNRvXM1YO/hw6KUpGkexPEgkwd4bzl9cAIismZE48wR
-	5NObHADM47ZzvlXbLqpWK/8ncMG4hb4BTy5H35i+1er/D64gvwyfVOI8W2USgIVpXsTy8/+lq/x
-	OPK5nobswqK4a+CVeYZoUUGrrmqgoF8LLc15tTR1CF0CY8pJg0F16iE5COf3AblbrYHB2lKLM8z
-	AhseCRGdegJadyj+Pz9rx90lEI6jzcRkFNRnmAMGuK/6E8zc4DGLhtoMVcz7y6fkyNDd6VVcYEL
-	vqZhXrvRG0MaHn4jlJeVFNSD00kW66WbgWHdHmbFtL4mYqN+g6IaItLOZtJYKItZ45KAMpAtZex
-	clhNLiGnlhE86loK0RdodBaO+HnxvqjlE7/th/FJzpsKauH0Bfhv1n2sCAFLQmyHOsiJlLm8lMC
-	1TFaJAz3psQSWzTyf/nA==
-X-Google-Smtp-Source: AGHT+IG7oVJwZfUJXNbRBLD+lo+88EHLuFLdA49goSZs2zZITHJszlARkVGhqDOeg4E/63DSjHyGIw==
-X-Received: by 2002:a05:600c:34c4:b0:471:d2d:ac42 with SMTP id 5b1f17b1804b1-4771e333a08mr22980435e9.14.1761736441418;
-        Wed, 29 Oct 2025 04:14:01 -0700 (PDT)
-Received: from giga-mm.home ([2a02:1210:8642:2b00:82ee:73ff:feb8:99e3])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4771e18caebsm44190725e9.4.2025.10.29.04.14.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Oct 2025 04:14:01 -0700 (PDT)
-Message-ID: <ab9c1f88026058fde8cc37057864f25889ce47d1.camel@gmail.com>
-Subject: Re: [PATCH v2 2/4] ASoC: cs4271: Disable regulators in
- component_probe() error path
-From: Alexander Sverdlin <alexander.sverdlin@gmail.com>
-To: Herve Codina <herve.codina@bootlin.com>
-Cc: linux-sound@vger.kernel.org, patches@opensource.cirrus.com, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, Thomas Petazzoni	
- <thomas.petazzoni@bootlin.com>, stable@vger.kernel.org, David Rhodes	
- <david.rhodes@cirrus.com>, Richard Fitzgerald <rf@opensource.cirrus.com>, 
- Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, Rob
- Herring <robh@kernel.org>,  Krzysztof Kozlowski	 <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Jaroslav Kysela	 <perex@perex.cz>,
- Takashi Iwai <tiwai@suse.com>, Nikita Shubin	 <nikita.shubin@maquefel.me>,
- Axel Lin <axel.lin@ingics.com>, Brian Austin	 <brian.austin@cirrus.com>
-Date: Wed, 29 Oct 2025 12:14:00 +0100
-In-Reply-To: <20251029093921.624088-3-herve.codina@bootlin.com>
-References: <20251029093921.624088-1-herve.codina@bootlin.com>
-	 <20251029093921.624088-3-herve.codina@bootlin.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.0 
+	s=arc-20240116; t=1761736654; c=relaxed/simple;
+	bh=iWFRpQCS3Vj+W/GLm+z3aHxmknQWqjk80hKz3Z3Gg4E=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=km3B4ITSfdgVkDzU7y9TAomAIbhi9qiLKSZ93KTC7gvPZbUnJw4uWdhsZco3yMP4Hpld16Z1mRJoBsDmMba5Iqwk05qXLBFu3z8dpjFhNYPdBnPAbROXoyA2vF0Mq9VRcXb85E3Qy3cZ0Pr1fYlXBGZkhfwBtRK4fBIaDlpHJuA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TbEvKmKP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 970B0C4CEF7;
+	Wed, 29 Oct 2025 11:17:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761736653;
+	bh=iWFRpQCS3Vj+W/GLm+z3aHxmknQWqjk80hKz3Z3Gg4E=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=TbEvKmKPjOvV6IvbFv7ELvMDfpogiDNlSQh7++LoUTM5SKTGqODvd/o/UCodyCIBx
+	 CQDQ58VRUuN++fbkaXNumb1hTSVloPgVY1npKv/TbbVG/WX/f2WHGu6wjguhARmndu
+	 SdBOGoHfzq549r/P0B38x78KMK7HkATZrX+ksD7fHkKR+LJaGsDQ8KlktK1R+IsWk3
+	 bxWzzlcdy/9pytox/Bsl800zyHWTHTeKSmYPsE74Hwsh4X8YXFtl5vDI4jYQV7mXS2
+	 DEKSQRoHvmnBAKtAhwTN+ZYIWkTeAEGs/yd3a+dF6VRDC6n+M27TQvQWJ6HnCbZlRC
+	 stMZybETKhi2w==
+From: Miguel Ojeda <ojeda@kernel.org>
+To: gregkh@linuxfoundation.org
+Cc: achill@achill.org,
+	akpm@linux-foundation.org,
+	broonie@kernel.org,
+	conor@kernel.org,
+	f.fainelli@gmail.com,
+	hargar@microsoft.com,
+	jonathanh@nvidia.com,
+	linux-kernel@vger.kernel.org,
+	linux@roeck-us.net,
+	lkft-triage@lists.linaro.org,
+	patches@kernelci.org,
+	patches@lists.linux.dev,
+	pavel@denx.de,
+	rwarsow@gmx.de,
+	shuah@kernel.org,
+	sr@sladewatkins.com,
+	stable@vger.kernel.org,
+	sudipm.mukherjee@gmail.com,
+	torvalds@linux-foundation.org,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: Re: [PATCH 6.1 000/157] 6.1.158-rc1 review
+Date: Wed, 29 Oct 2025 12:15:16 +0100
+Message-ID: <20251029111516.695949-1-ojeda@kernel.org>
+In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
+References: <20251027183501.227243846@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Hi!
+On Mon, 27 Oct 2025 19:34:21 +0100 Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.1.158 release.
+> There are 157 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Wed, 29 Oct 2025 18:34:15 +0000.
+> Anything received after that time might be too late.
 
-On Wed, 2025-10-29 at 10:39 +0100, Herve Codina wrote:
-> The commit 9a397f473657 ("ASoC: cs4271: add regulator consumer support")
-> has introduced regulators in the driver.
->=20
-> Regulators are enabled at the beginning of component_probe() but they
-> are not disabled on errors. This can lead to unbalanced enable/disable.
->=20
-> Fix the error path to disable regulators on errors.
->=20
-> Fixes: 9a397f473657 ("ASoC: cs4271: add regulator consumer support")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+Boot-tested under QEMU for Rust x86_64:
 
-Reviewed-by: Alexander Sverdlin <alexander.sverdlin@gmail.com>
+Tested-by: Miguel Ojeda <ojeda@kernel.org>
 
---=20
-Alexander Sverdlin.
+Thanks!
+
+Cheers,
+Miguel
 
