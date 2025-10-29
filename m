@@ -1,111 +1,98 @@
-Return-Path: <stable+bounces-191599-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191600-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28ED2C1A1A4
-	for <lists+stable@lfdr.de>; Wed, 29 Oct 2025 12:47:10 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1022CC1A19E
+	for <lists+stable@lfdr.de>; Wed, 29 Oct 2025 12:46:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 257D43B76EC
-	for <lists+stable@lfdr.de>; Wed, 29 Oct 2025 11:45:25 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 76C014EAA49
+	for <lists+stable@lfdr.de>; Wed, 29 Oct 2025 11:46:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 891B3336EF5;
-	Wed, 29 Oct 2025 11:45:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CF183346BE;
+	Wed, 29 Oct 2025 11:46:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BaYKugDC"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PvGgHDYT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45083335095;
-	Wed, 29 Oct 2025 11:45:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A326B2F290A;
+	Wed, 29 Oct 2025 11:46:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761738324; cv=none; b=ErBh7PqkuCkp9u4+UisXnokwuVta9PaFYm14sRvBnGzgDZqtmMeVJH7jv+ikc4x1PZC0fYJxKxiWO9XcFZyqyAFr1GGzOlJpmbAzxbPXde9IsEu95Sc0vRRAzcIuCTg4oPxgPJjKvjMftLu8UPla/gdZnh37ouJuYQ5cUgWjaEY=
+	t=1761738366; cv=none; b=Wrp/AAgCErlTlmbl5PVVka63gwujwRKAEh0mG4Xc/oRcFg4znHHzGU73fvGfNsN4UZZxNu63lB+w2GiEYeJ3T3bG82Z4Lolr2JnRiixwq70HEepkCzzLFpxdzZOPOqXuf4kf/bMtwMxOEoLlpSi7F11fitQNpb0U6Gm3Knr2QK4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761738324; c=relaxed/simple;
-	bh=Z9gTj98F/1RwIRcwrL5w97Uu8Nv+KuJ0c2Vnes1C2TY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hSV30ANn57819JwFMEpnBbmzDuvYlNUz68cxfkqV5kufRV9FOz4ZJVUkFDLXt2r2hd9zwUKNoIDNsErwlQgF+XPifMk+YGNn4nJZrB4Qae4n9tMYY3o643HlObHocSU5xdPvAWBH6cvPEvnIlxDLc7KwPCIua2KUW9/ZHltew1s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BaYKugDC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F1E9C4CEF7;
-	Wed, 29 Oct 2025 11:45:21 +0000 (UTC)
+	s=arc-20240116; t=1761738366; c=relaxed/simple;
+	bh=5/ezlh6dKnG/scRqmnxs9ftYMDoe/gf88eLhhsutSL8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=hUDVpAr2zmX8uwTbEqG8jLKj6vJAnvS6nysk/vjNTJ7T+AqGOl603YImaHyxKppJw8vgS2mEXAf+061xZ2cgTnBONgRuPMQtthhRIKb1srOlKfFWqBVIKlWcQ4GYfIUWc/P3yU+A5ui5p21deXcLt9xvE1jSj+D1MWzWGzG56S0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PvGgHDYT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33742C4CEF7;
+	Wed, 29 Oct 2025 11:45:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761738323;
-	bh=Z9gTj98F/1RwIRcwrL5w97Uu8Nv+KuJ0c2Vnes1C2TY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=BaYKugDCgf2smiHPvIb28DXNPSUKpeXKaBRMo9BGt2C4HOcIUY2f3en5IjyInF2Wd
-	 3re3T5G+7zMhmC+oUMgzwDtL+s1wxWJQlEZvGoUfmM0UrVfXSBEcVK2s3xOtXgIEVG
-	 xDsvKcYGpk7qW37yMjYmRrv/D4r0MVMP3FOmCMsROWHiztJ8+g+wFWEN43JIyvfwey
-	 QhSl616j9GnucJbsFczvsjaOofnaGGs6znn904EFWc4A8rdL4D2hdSIW134EuFYBgN
-	 WAwZTpWyy2KFCyByQVVzCyMCQN3s/AFGb3+C2tsNi00PQTckVuNXNEydbIzEGBa0TJ
-	 9I/GVQbsCm9BA==
-Date: Wed, 29 Oct 2025 13:45:17 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: "Isaac J. Manjarres" <isaacmanjarres@google.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, stable@vger.kernel.org,
-	kernel-team@android.com, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1] mm/mm_init: Fix hash table order logging in
- alloc_large_system_hash()
-Message-ID: <aQH-TewXFLUsK3nN@kernel.org>
-References: <20251028191020.413002-1-isaacmanjarres@google.com>
+	s=k20201202; t=1761738364;
+	bh=5/ezlh6dKnG/scRqmnxs9ftYMDoe/gf88eLhhsutSL8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=PvGgHDYT9rUQkyQTwkmENhozPwfP1pkP6lOudu2DIb+lsdC8CrhFxABVwNaWDchOB
+	 5HDSAA48uKlsedFtW5gnAkq5bvICaliuVdg2A+R+qJIfpkmnoJWdX38mVHwRSdl8ZU
+	 vs9bQjNzA+9jxhVf9uwsx/5Urb/3rhYITjkI+tctdZ5Ay+itwzh1q4xXPixKp0NifH
+	 jZqhJLNf+M3uT3MjsRKTFxfSfz/gWIS+1HY542xpfN2NiLZDMSnc+xeSqae1nfbD4H
+	 1Ya3/dT+PtULqf21vHCNmwbBnsJVknsMEoOo2IZqUtkq2Ko8NtjJXi1eW9gRelZppZ
+	 GP7818ILUp3/w==
+From: Miguel Ojeda <ojeda@kernel.org>
+To: gregkh@linuxfoundation.org
+Cc: achill@achill.org,
+	akpm@linux-foundation.org,
+	broonie@kernel.org,
+	conor@kernel.org,
+	f.fainelli@gmail.com,
+	hargar@microsoft.com,
+	jonathanh@nvidia.com,
+	linux-kernel@vger.kernel.org,
+	linux@roeck-us.net,
+	lkft-triage@lists.linaro.org,
+	patches@kernelci.org,
+	patches@lists.linux.dev,
+	pavel@denx.de,
+	rwarsow@gmx.de,
+	shuah@kernel.org,
+	sr@sladewatkins.com,
+	stable@vger.kernel.org,
+	sudipm.mukherjee@gmail.com,
+	torvalds@linux-foundation.org,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: Re: [PATCH 6.17 000/184] 6.17.6-rc1 review
+Date: Wed, 29 Oct 2025 12:45:53 +0100
+Message-ID: <20251029114553.699148-1-ojeda@kernel.org>
+In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
+References: <20251027183514.934710872@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251028191020.413002-1-isaacmanjarres@google.com>
+Content-Transfer-Encoding: 8bit
 
-On Tue, Oct 28, 2025 at 12:10:12PM -0700, Isaac J. Manjarres wrote:
-> When emitting the order of the allocation for a hash table,
-> alloc_large_system_hash() unconditionally subtracts PAGE_SHIFT from
-> log base 2 of the allocation size. This is not correct if the
-> allocation size is smaller than a page, and yields a negative value
-> for the order as seen below:
-> 
-> TCP established hash table entries: 32 (order: -4, 256 bytes, linear)
-> TCP bind hash table entries: 32 (order: -2, 1024 bytes, linear)
-> 
-> Use get_order() to compute the order when emitting the hash table
-> information to correctly handle cases where the allocation size is
-> smaller than a page:
-> 
-> TCP established hash table entries: 32 (order: 0, 256 bytes, linear)
-> TCP bind hash table entries: 32 (order: 0, 1024 bytes, linear)
-> 
-> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-> Cc: stable@vger.kernel.org # v5.4+
-> Signed-off-by: Isaac J. Manjarres <isaacmanjarres@google.com>
+On Mon, 27 Oct 2025 19:34:42 +0100 Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.17.6 release.
+> There are 184 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Wed, 29 Oct 2025 18:34:15 +0000.
+> Anything received after that time might be too late.
 
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Boot-tested under QEMU for Rust x86_64, arm64 and riscv64; built-tested
+for arm and loongarch64:
 
-> ---
->  mm/mm_init.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/mm/mm_init.c b/mm/mm_init.c
-> index 3db2dea7db4c..7712d887b696 100644
-> --- a/mm/mm_init.c
-> +++ b/mm/mm_init.c
-> @@ -2469,7 +2469,7 @@ void *__init alloc_large_system_hash(const char *tablename,
->  		panic("Failed to allocate %s hash table\n", tablename);
->  
->  	pr_info("%s hash table entries: %ld (order: %d, %lu bytes, %s)\n",
-> -		tablename, 1UL << log2qty, ilog2(size) - PAGE_SHIFT, size,
-> +		tablename, 1UL << log2qty, get_order(size), size,
->  		virt ? (huge ? "vmalloc hugepage" : "vmalloc") : "linear");
->  
->  	if (_hash_shift)
-> -- 
-> 2.51.1.851.g4ebd6896fd-goog
-> 
+Tested-by: Miguel Ojeda <ojeda@kernel.org>
 
--- 
-Sincerely yours,
-Mike.
+Thanks!
+
+Cheers,
+Miguel
 
