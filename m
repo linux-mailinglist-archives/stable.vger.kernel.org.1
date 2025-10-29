@@ -1,221 +1,155 @@
-Return-Path: <stable+bounces-191567-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191568-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76E34C181F5
-	for <lists+stable@lfdr.de>; Wed, 29 Oct 2025 04:09:03 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0C51C182A4
+	for <lists+stable@lfdr.de>; Wed, 29 Oct 2025 04:23:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 615DA4028F4
-	for <lists+stable@lfdr.de>; Wed, 29 Oct 2025 03:08:57 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E8FCD4E8751
+	for <lists+stable@lfdr.de>; Wed, 29 Oct 2025 03:23:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 164392EA157;
-	Wed, 29 Oct 2025 03:08:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 169A0221714;
+	Wed, 29 Oct 2025 03:23:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="l2bL4HjU"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="b74PWSCa"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A354421FF26;
-	Wed, 29 Oct 2025 03:08:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ECFF277C9B
+	for <stable@vger.kernel.org>; Wed, 29 Oct 2025 03:23:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761707333; cv=none; b=fk67F5VdTr/Hy0dMcvdAKnw/3ftMnpKFdhc9FHTdabZg1zMcT0S4YINJPrCGxhSkuTPzAEALmOF/cKo3vlY5/1ouNQBa7pmASWZ/5kUQtqq0Kiqmv2C4QERy+VlNQqgZjIIIH1SZyBp7uEo7JULEhu1nAgXXNbGTmn+vwqjYrjg=
+	t=1761708185; cv=none; b=MnB8dtwgBc7e3kPGe7StRDZPJMx4xYeWhOmDWkDzMxmPaP/muBpuDlZdm2DzbmxfLeqhkx53AdEmYQygoMhYZS2ZIZwigsQGZROQLmbaAVuTJQ00/dijFCpamerc3SGx4Nj+ZQ9Y5uKFCk/gGY0W7bKU853sTgvYszfo9eRZy9c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761707333; c=relaxed/simple;
-	bh=ZLAdb3TukBC+zn7OEJ5bqcC+FqrJ1oTzWZQx4ASetOc=;
-	h=Date:To:From:Subject:Message-Id; b=BwK04+qtTwtpyoyCfuljhG3zNTuBD2iVfb1gq4kfmfkfm/3i6LkgLFGk6jjlXc5XRjWXiQ4JiK6yVYrw3l2Iljp55GugAI/AsuOBtWyLdGf3qOA8rhQ0KUfzu2nN+Gsbt0wcX0l4nO07PHdMzwGq0RRHlYvH8X7mtorUPQvt6XQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=l2bL4HjU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E509C4CEFB;
-	Wed, 29 Oct 2025 03:08:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1761707333;
-	bh=ZLAdb3TukBC+zn7OEJ5bqcC+FqrJ1oTzWZQx4ASetOc=;
-	h=Date:To:From:Subject:From;
-	b=l2bL4HjUacIKuuMFSgNxbEUI5pJJx6CgTiGL0WaIR5CGGfOTwQDC8RetxEsXB3Fh8
-	 2B+fZUvJNITdbpgOeR/coMoN0Y6Sy8wcj5v2oTQyoakZxd6iofdmrDDz303yqbvd2D
-	 MBE6N6jUkfVPeUiA3KW6yVzGQCkBb2QUWFGmN3Fc=
-Date: Tue, 28 Oct 2025 20:08:52 -0700
-To: mm-commits@vger.kernel.org,vbabka@suse.cz,surenb@google.com,stable@vger.kernel.org,shakeel.butt@linux.dev,roman.gushchin@linux.dev,rientjes@google.com,cl@gentwo.org,gehao@kylinos.cn,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + codetag-debug-handle-existing-codetag_empty-in-mark_objexts_empty-for-slabobj_ext.patch added to mm-hotfixes-unstable branch
-Message-Id: <20251029030853.0E509C4CEFB@smtp.kernel.org>
+	s=arc-20240116; t=1761708185; c=relaxed/simple;
+	bh=dGq1aodl/1domVkCsoSU14DBsvKbYwzPwJTt+PqrCik=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Fo0TbndJj665jNEDdLYkv4uY37ygxHoNbLi+tqCJknQZt3RmcteRcqc4Wt/Dw8qLW+8zFlP92CQXONT1hCtYiB1qriMsfUh4KgkEeTER2HA0/5X88T1yUhmjlByq6wZ46l3fU91eXnvP2VRNESQtjJm/xo6CVe+H780IQveC+qc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=b74PWSCa; arc=none smtp.client-ip=209.85.160.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-4eccff716f4so192891cf.0
+        for <stable@vger.kernel.org>; Tue, 28 Oct 2025 20:23:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1761708183; x=1762312983; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=RZF5fZYNByvvmd5+XtP+S5jRgK5TgXHSEBZH9+I4nwY=;
+        b=b74PWSCaJLlBUief2fHCSmjBEWlhnP6b6cKQj6wyAKYYCYmbAhbB5c1XlNxj0zqLhS
+         FIuRzEBbtJ2L+DywfgJ/1IYZ+0bQOjdm/ssblk6yxeoeElo4v+FPCfqmozpoMbEFc1Vt
+         9Jv99fj2gdli+IUWOrqD4/3yor8f5gIbiEQded4Sox062S5RmymrFDeo/hcBuHQ12tVk
+         eHsQUYaFUMLhzvEwQTWwy9x/rce4O4pMUQmA+b3DUH7kN00uho8HGOe94s7WKvqC5Twx
+         dhrjq1EKIGcvC1PBwgcqupLt6BT6xkOFZRiMu9psSFXRzfFNjhc3/m3kdDTGIM95e0ni
+         i3yg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761708183; x=1762312983;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=RZF5fZYNByvvmd5+XtP+S5jRgK5TgXHSEBZH9+I4nwY=;
+        b=dVOPdINNoXe9ZknTEAHu5AuxtoRiAgBLmEWyNfNveZ3ijjhWf/VQFCvR1H1nnIeltA
+         WZOei79ayw7Djf15ORx9PVZnrUeyL4+QF8Fq0vDKaK7kRreuXIga36oi/mGStSINED2R
+         xfAMmZwU0WYafuSuZw4Mqs7jBOyMyYifG0TKz2hcL0sfjgTUx3TJS27IDfq1wlvLS+jw
+         zQbsfF2idxYol8a78WDmdmEotgQt+7p5MOy35VpyngnVcFTOivJbC3BwRLdrGjwozBOB
+         XXpIbgHqlcsneENpPts3qsUMYlEp3dqEyiJVZJd9MGfuGmuqb/+7AU78UzbVHpfV5DRm
+         7ejA==
+X-Forwarded-Encrypted: i=1; AJvYcCVppBVQE6CSaGXoHT7yCvHJhMgyI80Vl5tG93QODe3zPDXaWCA1SLhJf197nF+RvhDhGkoiha0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzAx3gGngnxqJVi70sOCqAzde5WPLkNDNFeLYnj8eKKqXW6kPga
+	NYtvEBHnsFRgr1Jp7WIJMoN0+0tBsWc3b0TCEildQnzSsCK3LpABteXobwr+qGxaKGTZNsrU1kp
+	dZzZbttnHENtPID0oPT3/TBzQDbGJa/XiBXrgtadU
+X-Gm-Gg: ASbGncv8vxmxXv5Z523WNpzaA2zfmWnrmJEjh/TkW9/AdJPM8JevnERCB4G8J+ppfS9
+	oXBS4rliwwxEHFnhEoPwtATtyWCdRXbdjg/EHktB2bLRW3fU/uMKj/2bJu7yIw8z25Na/YTuD2e
+	Kj6I6jR4IECoRuuYTALUOQkboxQb1zny8cPsHE+aPX5hO8gQayGSw4IkBX4H+5/BOPx/LdbMc0Q
+	ZjpBI6nA1tRoGrrqeew2p8cRfvq/6GVdqo5Zi0RLcMZL6gGCafq183xkC4qvd83g1G0B1t5ebWt
+	ZFVE
+X-Google-Smtp-Source: AGHT+IFt0fdOZNflVxQJh5GQqXSyDE6yhX4j0HA2jB4qnG67bFoJTwJaZpXpVeBGRX36ahJHPN1YN0/KOLD2ewkP1+w=
+X-Received: by 2002:a05:622a:53c4:b0:4b0:f1f3:db94 with SMTP id
+ d75a77b69052e-4ed16580052mr2297051cf.5.1761708182803; Tue, 28 Oct 2025
+ 20:23:02 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+References: <20251029014317.1533488-1-hao.ge@linux.dev>
+In-Reply-To: <20251029014317.1533488-1-hao.ge@linux.dev>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Tue, 28 Oct 2025 20:22:51 -0700
+X-Gm-Features: AWmQ_bnWQlp_hgmAQPXCvvIDSyvF6h29V3Rm7M2r8OKX5bFOVKkcR6boUbLHCuw
+Message-ID: <CAJuCfpG+bgLj6-GKNs7K0vRi7PsQvayTvwfyd+tFSnDY3muDGw@mail.gmail.com>
+Subject: Re: [PATCH v2] codetag: debug: handle existing CODETAG_EMPTY in
+ mark_objexts_empty for slabobj_ext
+To: Hao Ge <hao.ge@linux.dev>
+Cc: Vlastimil Babka <vbabka@suse.cz>, Andrew Morton <akpm@linux-foundation.org>, 
+	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	Hao Ge <gehao@kylinos.cn>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Tue, Oct 28, 2025 at 6:44=E2=80=AFPM Hao Ge <hao.ge@linux.dev> wrote:
+>
+> From: Hao Ge <gehao@kylinos.cn>
+>
+> When alloc_slab_obj_exts() fails and then later succeeds in allocating
+> a slab extension vector, it calls handle_failed_objexts_alloc() to
+> mark all objects in the vector as empty. As a result all objects in
+> this slab (slabA) will have their extensions set to CODETAG_EMPTY.
+> Later on if this slabA is used to allocate a slabobj_ext vector for
+> another slab (slabB), we end up with the slabB->obj_exts pointing to a
+> slabobj_ext vector that itself has a non-NULL slabobj_ext equal to
+> CODETAG_EMPTY. When slabB gets freed, free_slab_obj_exts() is called
+> to free slabB->obj_exts vector. free_slab_obj_exts() calls
+> mark_objexts_empty(slabB->obj_exts) which will generate a warning
+> because it expects slabobj_ext vectors to have a NULL obj_ext, not
+> CODETAG_EMPTY.
+>
+> Modify mark_objexts_empty() to skip the warning and setting the
+> obj_ext value if it's already set to CODETAG_EMPTY.
+>
+> Fixes: 09c46563ff6d ("codetag: debug: introduce OBJEXTS_ALLOC_FAIL to mar=
+k failed slab_ext allocations")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Hao Ge <gehao@kylinos.cn>
 
-The patch titled
-     Subject: codetag: debug: handle existing CODETAG_EMPTY in mark_objexts_empty for slabobj_ext
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     codetag-debug-handle-existing-codetag_empty-in-mark_objexts_empty-for-slabobj_ext.patch
+Reviewed-by: Suren Baghdasaryan <surenb@google.com>
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/codetag-debug-handle-existing-codetag_empty-in-mark_objexts_empty-for-slabobj_ext.patch
-
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Hao Ge <gehao@kylinos.cn>
-Subject: codetag: debug: handle existing CODETAG_EMPTY in mark_objexts_empty for slabobj_ext
-Date: Wed, 29 Oct 2025 09:43:17 +0800
-
-When alloc_slab_obj_exts() fails and then later succeeds in allocating a
-slab extension vector, it calls handle_failed_objexts_alloc() to mark all
-objects in the vector as empty.  As a result all objects in this slab
-(slabA) will have their extensions set to CODETAG_EMPTY.
-
-Later on if this slabA is used to allocate a slabobj_ext vector for
-another slab (slabB), we end up with the slabB->obj_exts pointing to a
-slabobj_ext vector that itself has a non-NULL slabobj_ext equal to
-CODETAG_EMPTY.  When slabB gets freed, free_slab_obj_exts() is called to
-free slabB->obj_exts vector.  
-
-free_slab_obj_exts() calls mark_objexts_empty(slabB->obj_exts) which will
-generate a warning because it expects slabobj_ext vectors to have a NULL
-obj_ext, not CODETAG_EMPTY.
-
-Modify mark_objexts_empty() to skip the warning and setting the obj_ext
-value if it's already set to CODETAG_EMPTY.
-
-
-To quickly detect this WARN, I modified the code 
-from:WARN_ON(slab_exts[offs].ref.ct) to WARN_ON(slab_exts[offs].ref.ct 
-== 1);
-
-We then obtained this message:
-
-[21630.898561] ------------[ cut here ]------------
-[21630.898596] kernel BUG at mm/slub.c:2050!
-[21630.898611] Internal error: Oops - BUG: 00000000f2000800 [#1] SMP
-[21630.900372] Modules linked in: squashfs isofs vfio_iommu_type1 
-vhost_vsock vfio vhost_net vmw_vsock_virtio_transport_common vhost tap 
-vhost_iotlb iommufd vsock binfmt_misc nfsv3 nfs_acl nfs lockd grace 
-netfs tls rds dns_resolver tun brd overlay ntfs3 exfat btrfs 
-blake2b_generic xor xor_neon raid6_pq loop sctp ip6_udp_tunnel 
-udp_tunnel nft_fib_inet nft_fib_ipv4 nft_fib_ipv6 nft_fib 
-nft_reject_inet nf_reject_ipv4 nf_reject_ipv6 nft_reject nft_ct 
-nft_chain_nat nf_nat nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 
-nf_tables rfkill ip_set sunrpc vfat fat joydev sg sch_fq_codel nfnetlink 
-virtio_gpu sr_mod cdrom drm_client_lib virtio_dma_buf drm_shmem_helper 
-drm_kms_helper drm ghash_ce backlight virtio_net virtio_blk virtio_scsi 
-net_failover virtio_console failover virtio_mmio dm_mirror 
-dm_region_hash dm_log dm_multipath dm_mod fuse i2c_dev virtio_pci 
-virtio_pci_legacy_dev virtio_pci_modern_dev virtio virtio_ring autofs4 
-aes_neon_bs aes_ce_blk [last unloaded: hwpoison_inject]
-[21630.909177] CPU: 3 UID: 0 PID: 3787 Comm: kylin-process-m Kdump: 
-loaded Tainted: G        W           6.18.0-rc1+ #74 PREEMPT(voluntary)
-[21630.910495] Tainted: [W]=WARN
-[21630.910867] Hardware name: QEMU KVM Virtual Machine, BIOS unknown 
-2/2/2022
-[21630.911625] pstate: 80400005 (Nzcv daif +PAN -UAO -TCO -DIT -SSBS 
-BTYPE=--)
-[21630.912392] pc : __free_slab+0x228/0x250
-[21630.912868] lr : __free_slab+0x18c/0x250[21630.913334] sp : 
-ffff8000a02f73e0
-[21630.913830] x29: ffff8000a02f73e0 x28: fffffdffc43fc800 x27: 
-ffff0000c0011c40
-[21630.914677] x26: ffff0000c000cac0 x25: ffff00010fe5e5f0 x24: 
-ffff000102199b40
-[21630.915469] x23: 0000000000000003 x22: 0000000000000003 x21: 
-ffff0000c0011c40
-[21630.916259] x20: fffffdffc4086600 x19: fffffdffc43fc800 x18: 
-0000000000000000
-[21630.917048] x17: 0000000000000000 x16: 0000000000000000 x15: 
-0000000000000000
-[21630.917837] x14: 0000000000000000 x13: 0000000000000000 x12: 
-ffff70001405ee66
-[21630.918640] x11: 1ffff0001405ee65 x10: ffff70001405ee65 x9 : 
-ffff800080a295dc
-[21630.919442] x8 : ffff8000a02f7330 x7 : 0000000000000000 x6 : 
-0000000000003000
-[21630.920232] x5 : 0000000024924925 x4 : 0000000000000001 x3 : 
-0000000000000007
-[21630.921021] x2 : 0000000000001b40 x1 : 000000000000001f x0 : 
-0000000000000001
-[21630.921810] Call trace:
-[21630.922130]  __free_slab+0x228/0x250 (P)
-[21630.922669]  free_slab+0x38/0x118
-[21630.923079]  free_to_partial_list+0x1d4/0x340
-[21630.923591]  __slab_free+0x24c/0x348
-[21630.924024]  ___cache_free+0xf0/0x110
-[21630.924468]  qlist_free_all+0x78/0x130
-[21630.924922]  kasan_quarantine_reduce+0x114/0x148
-[21630.925525]  __kasan_slab_alloc+0x7c/0xb0
-[21630.926006]  kmem_cache_alloc_noprof+0x164/0x5c8
-[21630.926699]  __alloc_object+0x44/0x1f8
-[21630.927153]  __create_object+0x34/0xc8
-[21630.927604]  kmemleak_alloc+0xb8/0xd8
-[21630.928052]  kmem_cache_alloc_noprof+0x368/0x5c8
-[21630.928606]  getname_flags.part.0+0xa4/0x610
-[21630.929112]  getname_flags+0x80/0xd8
-[21630.929557]  vfs_fstatat+0xc8/0xe0
-[21630.929975]  __do_sys_newfstatat+0xa0/0x100
-[21630.930469]  __arm64_sys_newfstatat+0x90/0xd8
-[21630.931046]  invoke_syscall+0xd4/0x258
-[21630.931685]  el0_svc_common.constprop.0+0xb4/0x240
-[21630.932467]  do_el0_svc+0x48/0x68
-[21630.932972]  el0_svc+0x40/0xe0
-[21630.933472]  el0t_64_sync_handler+0xa0/0xe8
-[21630.934151]  el0t_64_sync+0x1ac/0x1b0
-[21630.934923] Code: aa1803e0 97ffef2b a9446bf9 17ffff9c (d4210000)
-[21630.936461] SMP: stopping secondary CPUs
-[21630.939550] Starting crashdump kernel...
-[21630.940108] Bye!
-
-Link: https://lkml.kernel.org/r/20251029014317.1533488-1-hao.ge@linux.dev
-Fixes: 09c46563ff6d ("codetag: debug: introduce OBJEXTS_ALLOC_FAIL to mark failed slab_ext allocations")
-Signed-off-by: Hao Ge <gehao@kylinos.cn>
-Cc: Christoph Lameter (Ampere) <cl@gentwo.org>
-Cc: David Rientjes <rientjes@google.com>
-Cc: gehao <gehao@kylinos.cn>
-Cc: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/slub.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
-
---- a/mm/slub.c~codetag-debug-handle-existing-codetag_empty-in-mark_objexts_empty-for-slabobj_ext
-+++ a/mm/slub.c
-@@ -2046,7 +2046,11 @@ static inline void mark_objexts_empty(st
- 	if (slab_exts) {
- 		unsigned int offs = obj_to_index(obj_exts_slab->slab_cache,
- 						 obj_exts_slab, obj_exts);
--		/* codetag should be NULL */
-+
-+		if (unlikely(is_codetag_empty(&slab_exts[offs].ref)))
-+			return;
-+
-+		/* codetag should be NULL here */
- 		WARN_ON(slab_exts[offs].ref.ct);
- 		set_codetag_empty(&slab_exts[offs].ref);
- 	}
-_
-
-Patches currently in -mm which might be from gehao@kylinos.cn are
-
-codetag-debug-handle-existing-codetag_empty-in-mark_objexts_empty-for-slabobj_ext.patch
-
+> ---
+> v2: Update the commit message and code comments for greater accuracy,
+>     incorporating Suren's suggestions.
+>     Thanks for Suren's help.
+> ---
+>  mm/slub.c | 6 +++++-
+>  1 file changed, 5 insertions(+), 1 deletion(-)
+>
+> diff --git a/mm/slub.c b/mm/slub.c
+> index d4367f25b20d..589c596163c4 100644
+> --- a/mm/slub.c
+> +++ b/mm/slub.c
+> @@ -2046,7 +2046,11 @@ static inline void mark_objexts_empty(struct slabo=
+bj_ext *obj_exts)
+>         if (slab_exts) {
+>                 unsigned int offs =3D obj_to_index(obj_exts_slab->slab_ca=
+che,
+>                                                  obj_exts_slab, obj_exts)=
+;
+> -               /* codetag should be NULL */
+> +
+> +               if (unlikely(is_codetag_empty(&slab_exts[offs].ref)))
+> +                       return;
+> +
+> +               /* codetag should be NULL here */
+>                 WARN_ON(slab_exts[offs].ref.ct);
+>                 set_codetag_empty(&slab_exts[offs].ref);
+>         }
+> --
+> 2.25.1
+>
+>
 
