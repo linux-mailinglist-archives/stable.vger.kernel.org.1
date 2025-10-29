@@ -1,118 +1,123 @@
-Return-Path: <stable+bounces-191591-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191592-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70127C19A64
-	for <lists+stable@lfdr.de>; Wed, 29 Oct 2025 11:20:48 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 319D3C19CD6
+	for <lists+stable@lfdr.de>; Wed, 29 Oct 2025 11:41:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A5D241C68399
-	for <lists+stable@lfdr.de>; Wed, 29 Oct 2025 10:21:12 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id D23EC357B52
+	for <lists+stable@lfdr.de>; Wed, 29 Oct 2025 10:41:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C47732FBDE3;
-	Wed, 29 Oct 2025 10:20:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 111D82FF161;
+	Wed, 29 Oct 2025 10:36:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lVCNxP7j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tHSr1cXJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BCE32F9D8C;
-	Wed, 29 Oct 2025 10:20:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1FB3253F39
+	for <stable@vger.kernel.org>; Wed, 29 Oct 2025 10:36:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761733244; cv=none; b=MS0Z7e81umbHhSck4lb4kvzVUKh6OnesDwk/guoT8LV1aoDRob7UXhrDKN4/2de828UiasT9IXVCl9P6bq/ZoZi7b6aBI/3AAxlFgnD2v4MDSH4TwHtG3TLcEQVS3348EsHi2+vOTSTC/qtehuIRPagoaH7wArgMqDXnLtqeXKc=
+	t=1761734186; cv=none; b=ChvzRBFyVco0wQb/9/dEVSdqvn6ClzkA4snC70uGVPR3aX4E9LGpcDhVpr6bX8pkdfNUOYY7/sU83vd39ctVZCE6t4Ey15AAjNu7LFGCbTzyGxfSsjEogHGQ6H7uXEJOw7lneeOHrv9qho06D0Ds3pJCCZxZgcl4XBzLn5vSrWA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761733244; c=relaxed/simple;
-	bh=c1TdOkjnOZlP2GlxsfJ8OdXIv90bptzTXeSYdiA20y8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XaGMgtmrWyk1YqktBxxReSU6x1HSUVz/CimHw3h85rzvQ/EXm0IcRIv3upVHpeG3Y+n+sc/hwGTfYg9VE0P7ptJotyR1OzI2Kf0YkQHBfAJwXEDXXmohMcAyO/dF4vJ4tRA8g1UlCJpOb4ERCgsehjP0djSRrGcdpKxIfZsiCQU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lVCNxP7j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 177DEC4CEF7;
-	Wed, 29 Oct 2025 10:20:43 +0000 (UTC)
+	s=arc-20240116; t=1761734186; c=relaxed/simple;
+	bh=qGgmprHFx9TQr6ugYP6tLUTZ9Ofc/4kf3sG+I54H4Lc=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=cA+D3zwVSlCasJVIRp/z1oXoR9+68DINNVWku5UgDwjnv8X4gN9ZqwJuc+jJV5a4X5PulBJrwM8FNhGaNnqg1ED1NHI7IajYdPSHNwXF+JAj8wYIVmDi1U5v3DjckR/UCFfjFfi5nHxO6Egf01GdP9ngeadgpcUwm51L70Vbpeo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tHSr1cXJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 596E7C4CEF7;
+	Wed, 29 Oct 2025 10:36:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761733243;
-	bh=c1TdOkjnOZlP2GlxsfJ8OdXIv90bptzTXeSYdiA20y8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=lVCNxP7jh+pVgUXZpvb7QItK8Ppjl081PVO1vlc1XqmAS0BA22dbat+UDNgn3jIUi
-	 6iti6n6oK0P20Svf5naPb5WSKlHWtxTZVk1NHG3v4wQ5YS8TJHEGqbtdQklcuK/+he
-	 Eg6cg60X9lS4D26z7n/fByPyAdqXuTqcvw9AINDM=
-Date: Wed, 29 Oct 2025 11:20:38 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Vijayendra Suman <vijayendra.suman@oracle.com>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
-	hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
-	sr@sladewatkins.com
-Subject: Re: [PATCH 5.15 000/123] 5.15.196-rc1 review
-Message-ID: <2025102912-cosmetics-reflector-ab4f@gregkh>
-References: <20251027183446.381986645@linuxfoundation.org>
- <86abc1a6-6bed-460c-80fd-a74570c98ac8@oracle.com>
+	s=korg; t=1761734186;
+	bh=qGgmprHFx9TQr6ugYP6tLUTZ9Ofc/4kf3sG+I54H4Lc=;
+	h=Subject:To:Cc:From:Date:From;
+	b=tHSr1cXJStDemnODOdKd1IYUA4LrlB7B/PzqgAIIVwMbZ8nELUd3ykjrng/p87jwb
+	 gk3za6zgXsWTyp737jjEqFtgtbL7u42OUrRjQe7Bl6ThbyIFtYsl926mJyVQ1bYdWI
+	 rWRREpyrPuLNlbnqKlWOP/7DBH1xQ8J+K3EnFzyA=
+Subject: FAILED: patch "[PATCH] ksmbd: transport_ipc: validate payload size before reading" failed to apply to 5.15-stable tree
+To: pioooooooooip@gmail.com,linkinjeon@kernel.org,stfrench@microsoft.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Wed, 29 Oct 2025 11:36:20 +0100
+Message-ID: <2025102920-mace-herbal-edee@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <86abc1a6-6bed-460c-80fd-a74570c98ac8@oracle.com>
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
-On Tue, Oct 28, 2025 at 09:11:58PM +0530, Vijayendra Suman wrote:
-> 
-> 
-> On 28/10/25 12:04 am, Greg Kroah-Hartman wrote:
-> > This is the start of the stable review cycle for the 5.15.196 release.
-> > There are 123 patches in this series, all will be posted as a response
-> > to this one.  If anyone has any issues with these being applied, please
-> > let me know.
-> > 
-> > Responses should be made by Wed, 29 Oct 2025 18:34:15 +0000.
-> > Anything received after that time might be too late.
-> > 
-> > The whole patch series can be found in one patch at:
-> > 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/
-> > patch-5.15.196-rc1.gz
-> > or in the git tree and branch at:
-> > 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
-> > and the diffstat can be found below.
-> > 
-> > thanks,
-> > 
-> > greg k-h
-> 
-> perf failed to compile with following errors at compilation.
-> 
-> BUILDSTDERR: tests/perf-record.c: In function 'test__PERF_RECORD':
-> BUILDSTDERR: tests/perf-record.c:118:17: error: implicit declaration of
-> function 'evlist__cancel_workload'; did you mean 'evlist__start_workload'?
-> [-Werror=implicit-function-declaration]
-> BUILDSTDERR:   118 |                 evlist__cancel_workload(evlist);
-> BUILDSTDERR:       |                 ^~~~~~~~~~~~~~~~~~~~~~~
-> BUILDSTDERR:       |                 evlist__start_workload
-> 
-> 
-> There is no definition for evlist__cancel_workload
-> 
-> Following are references of 'evlist__cancel_workload'
-> tools/perf/tests/perf-record.c:118:	evlist__cancel_workload(evlist);
-> tools/perf/tests/perf-record.c:130:	evlist__cancel_workload(evlist);
-> tools/perf/tests/perf-record.c:142:	evlist__cancel_workload(evlist);
-> tools/perf/tests/perf-record.c:155:	evlist__cancel_workload(evlist);
-> 
-> 
-> Commit which need to be reverted.
-> b7e5c59f3b09 perf test: Don't leak workload gopipe in PERF_RECORD_*
 
-This is already being reverted in the latest -rc release, does that not
-work here for you?
+The patch below does not apply to the 5.15-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
+
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git checkout FETCH_HEAD
+git cherry-pick -x 6f40e50ceb99fc8ef37e5c56e2ec1d162733fef0
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025102920-mace-herbal-edee@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+
+Possible dependencies:
+
+
 
 thanks,
 
 greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 6f40e50ceb99fc8ef37e5c56e2ec1d162733fef0 Mon Sep 17 00:00:00 2001
+From: Qianchang Zhao <pioooooooooip@gmail.com>
+Date: Wed, 22 Oct 2025 15:27:47 +0900
+Subject: [PATCH] ksmbd: transport_ipc: validate payload size before reading
+ handle
+
+handle_response() dereferences the payload as a 4-byte handle without
+verifying that the declared payload size is at least 4 bytes. A malformed
+or truncated message from ksmbd.mountd can lead to a 4-byte read past the
+declared payload size. Validate the size before dereferencing.
+
+This is a minimal fix to guard the initial handle read.
+
+Fixes: 0626e6641f6b ("cifsd: add server handler for central processing and tranport layers")
+Cc: stable@vger.kernel.org
+Reported-by: Qianchang Zhao <pioooooooooip@gmail.com>
+Signed-off-by: Qianchang Zhao <pioooooooooip@gmail.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+
+diff --git a/fs/smb/server/transport_ipc.c b/fs/smb/server/transport_ipc.c
+index 46f87fd1ce1c..2c08cccfa680 100644
+--- a/fs/smb/server/transport_ipc.c
++++ b/fs/smb/server/transport_ipc.c
+@@ -263,10 +263,16 @@ static void ipc_msg_handle_free(int handle)
+ 
+ static int handle_response(int type, void *payload, size_t sz)
+ {
+-	unsigned int handle = *(unsigned int *)payload;
++	unsigned int handle;
+ 	struct ipc_msg_table_entry *entry;
+ 	int ret = 0;
+ 
++	/* Prevent 4-byte read beyond declared payload size */
++	if (sz < sizeof(unsigned int))
++		return -EINVAL;
++
++	handle = *(unsigned int *)payload;
++
+ 	ipc_update_last_active();
+ 	down_read(&ipc_msg_table_lock);
+ 	hash_for_each_possible(ipc_msg_table, entry, ipc_table_hlist, handle) {
+
 
