@@ -1,175 +1,160 @@
-Return-Path: <stable+bounces-191642-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191643-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09307C1BFFF
-	for <lists+stable@lfdr.de>; Wed, 29 Oct 2025 17:16:59 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5CE8C1BEE9
+	for <lists+stable@lfdr.de>; Wed, 29 Oct 2025 17:07:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D06FE581A76
-	for <lists+stable@lfdr.de>; Wed, 29 Oct 2025 15:38:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 533A164301F
+	for <lists+stable@lfdr.de>; Wed, 29 Oct 2025 15:41:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79FFA3376A3;
-	Wed, 29 Oct 2025 15:38:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC01633A014;
+	Wed, 29 Oct 2025 15:41:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ax2hQ8rx"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="psXYPhMk"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18D44337117;
-	Wed, 29 Oct 2025 15:38:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA88E21B192
+	for <stable@vger.kernel.org>; Wed, 29 Oct 2025 15:40:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761752309; cv=none; b=uMY9mI8Wp+7fUvHqN1ej72N1kYjgUX/5H4+AbnOtrOkZ56dpSE9cKi36iFRDCwy8ULyzwV0gXQyT6NF9SaUHuCIf95/Oo+zq3V6/VBXDvMMIa7a+QyfcApD3fT+BKySZCK9y6kA9+F9l1od9uldm3bp76g7Z7fEbojrxEldg+KA=
+	t=1761752460; cv=none; b=l/a2X/+ytbl7F9A5gjHyW0KNAx03TrhXLvKVe/mPyJisXdutpFlFo1kBgEZDcjm8waKa9YMq3gIS9qSQS4v77mBP+zD6f2rcfZRJCIq/9rJOCXVONJY7jnJTmrc3Hs24Idnhj88cJXKmABthuYdK9uJKs8uhcoIi/iu8XmYP/48=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761752309; c=relaxed/simple;
-	bh=h0yjNbZ9rEgJMPE1DAuciMAwui8RU187z1uWv/LoOek=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BsfaeDJsIC5orN28sNRrAQFHaI/zWuwE45Fc78QEbYzpgSiTk9h5t8OS8mXW62Kr/K+uvES79ayIx967LkI+8LVwwJoqkcHNxZZ+wN0YuCDgkWYBVpLOsXH6+7W0SqQKLz7tMWJE+/4QExNonQiaU7GQYKJOcBunvgNPaT5cpu0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ax2hQ8rx; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1761752307; x=1793288307;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=h0yjNbZ9rEgJMPE1DAuciMAwui8RU187z1uWv/LoOek=;
-  b=Ax2hQ8rxhU70mdFpiCCFfOTfwCaMX5IJy9Laq4vFLXZsLr835cszUCSX
-   LJD5si3JIlKthsu3F14cKiWdWQleYjYdXTpdiqsBAaVR0zgEJtIPuL7vr
-   pD88j0bzMHBT1GzoheC81oV4hQcg7t2xEZ+aIWqPhI8xlojG/Eixt8dE9
-   EQn5zmLuy5YwAK/Tsse21/UpMAWXF8Ae2YehyVMAY8fqvqjaqTXJDFVPR
-   ZaKTQviI/mBn51/raYo15lvUFdYYiFV+N9x1Pectmd8c0v7x3LtZEuzuA
-   hJyPITKNoU9mmyx06haQFI8B6IMSvHBLgROSDhMLvYc9H53E3gxfPl6VX
-   A==;
-X-CSE-ConnectionGUID: nEbJpcAhThOid+/LKIYh7Q==
-X-CSE-MsgGUID: ZMVKevxIQAOIzDTXHp2n5g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="67714471"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
-   d="scan'208";a="67714471"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Oct 2025 08:38:27 -0700
-X-CSE-ConnectionGUID: zv4HsIMeSQa/JSeFH5jq/w==
-X-CSE-MsgGUID: 9Re0tlPTTPuR8lcp49lyRA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,264,1754982000"; 
-   d="scan'208";a="184942610"
-Received: from lkp-server02.sh.intel.com (HELO 66d7546c76b2) ([10.239.97.151])
-  by orviesa010.jf.intel.com with ESMTP; 29 Oct 2025 08:38:23 -0700
-Received: from kbuild by 66d7546c76b2 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1vE8Fg-000Kjl-0b;
-	Wed, 29 Oct 2025 15:38:20 +0000
-Date: Wed, 29 Oct 2025 23:35:12 +0800
-From: kernel test robot <lkp@intel.com>
-To: Jason Wang <jasowang@redhat.com>, mst@redhat.com,
-	xuanzhuo@linux.alibaba.com, eperezma@redhat.com,
-	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	virtualization@lists.linux.dev, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH net] virtio_net: fix alignment for virtio_net_hdr_v1_hash
-Message-ID: <202510292352.dvaYVyZt-lkp@intel.com>
-References: <20251029012434.75576-1-jasowang@redhat.com>
+	s=arc-20240116; t=1761752460; c=relaxed/simple;
+	bh=XZh7Co6zslMBQjbIXCr9v5B3gCRv9boi3KNiCtrOq7M=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=TMt9G329wrOi2MM2IOijzl7LSm9+vtW9MPxRdN0g/2RSlMLvmQGhIfqUxJmx/znmUSSynpiV2RtZ3u6X8hc+DHtnXfO+7kiNjrh1VkPYox8OByLEGmHxyCEGMek5Fl01+IhV7kl0+N2kfla/0FthZi90H0S7lMCyT5kRmx6uVlQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=psXYPhMk; arc=none smtp.client-ip=209.85.221.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-42855f80f01so1059340f8f.2
+        for <stable@vger.kernel.org>; Wed, 29 Oct 2025 08:40:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1761752457; x=1762357257; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=YDt91SNIDyuEo7g1pxTkmePyL8nY5ebc1O1twS6LBZ4=;
+        b=psXYPhMkUm5AETXhX3qqViCknno+TxnmOPaOsQKdBsoy0gXVW1G9PYXh8GesS1NqdB
+         E8a4BzC9RwBdsng4jmXlewiadSTA+rmg9Bs0HrxXAHWOA2pGNO7z9JeQLRoXjsOZIcTO
+         GHcWPdtNO2cijUIcJMdLv60SGhyF0OiiNyycf4zVtzP7/JERigZJSTrllfCSFQbN7spm
+         AyghfSdJoGR+fV1pT+E4E669B8BdbQFhVtJGx4OB43RAdcCSy/Rygbgflw4JZQewuutU
+         hlF6iFH31p+HonIxeWYQhFTn/SrV0qUfKodCw3oaeSz0d/KOloeX6jvclA2aWkGpLAjH
+         CQ3g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761752457; x=1762357257;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=YDt91SNIDyuEo7g1pxTkmePyL8nY5ebc1O1twS6LBZ4=;
+        b=qLnjF4ZRU52JcuDH8biNVDQakiuVTfZRXQlaJfQVyBRD25mnXkQ6baeoTXXaaGmEIz
+         pWFAdvICgys6FBbdOMNcDseUdFnaua+pANJJAYfnvxY1P390udjtN1jjxU5l7gnhPfYv
+         9tsY51U18sVrpw5tdGY0OLiZPokAEfR5Y9aaTR+QvLbdFAQL+HR0MQ4CeSBX5EqJmSV+
+         MhdyEWPdr9RUIzTg6vs9CEVnvr2wyFdImZScEYStp6GfXk3mWsmA+XvFRBvE0Ta/kKhT
+         3148riW1Q7nZSoZEcBQF616ztkh7zhSIEZj3OkvSL7WeVrc//S+BR0oc+yoglZXQt/lV
+         k+9g==
+X-Forwarded-Encrypted: i=1; AJvYcCWLmx1o2xS79rxtwvw1WQ9JK48eKlNHMdaOgy1QyfA7ceVl12doIzb9xxQs284JClsinJzrRPY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyMsiRLak+5k5ex4/qzq9bAnBUHblK6hUosJQo6GN9WCozSiFx8
+	gMfsVDewiDT+4gTbQPWCe+PBC/8TuEu9mGNtoLpvYVXlPhHAAlGo5bfyhehokGKOXeM=
+X-Gm-Gg: ASbGncspgTp3Df7SsyvJOqLpzMI5YifFFYjLcVYiuzs48BhO2Tk3sghmWyg5+x03p/9
+	oYOFyeMV3mYCWRFKeIil18P7Dkw7XC5kLu+EHBY6YI8gEn/AXHs3HC16pCvlg2rzoFVFlHJ8EoG
+	dTorrgYXoW1IX8rG0Q7bR/r+6s9nUPKBlv2t9j8PDRFybd2+f84AaswvtPw6OJEynf9L1wotqf9
+	rftAqknhBSo1AZopXZyRf9TJa7H3y/QQtmY3OSXkFMyaNFINd2hNbBBDJ9ZAokwRqAAgE1vAT30
+	bFfvIHNKVlsLfu4FPKQ/KsPvjuKNQTeQ/OmsdaTRPZ3CDn18o4fgLS9Yo7rup10v1+DbEQHPCIC
+	fvgV4w8PClHo8+mKRXfhTM0ng+81I9swbnFiKQD2VdSMR3DK19yvTsCMxeaBi/5V0QvTwMZM48E
+	c0DyPGXVUkJBdYJ3Lr
+X-Google-Smtp-Source: AGHT+IHfW4idvTSP2Ah3w6TfkGF/17Rr24+yasDsIjDvlkJDa3pwbq9RzRK1P0QDGji5PJoM5iNpwA==
+X-Received: by 2002:a5d:64c7:0:b0:3f3:3c88:5071 with SMTP id ffacd0b85a97d-429aef802dbmr1640035f8f.4.1761752456995;
+        Wed, 29 Oct 2025 08:40:56 -0700 (PDT)
+Received: from [127.0.1.1] ([178.197.219.123])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-429952df5c9sm27006875f8f.41.2025.10.29.08.40.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 29 Oct 2025 08:40:56 -0700 (PDT)
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH 0/9] dt-bindings: PCI: qcom: Add missing required
+ power-domains
+Date: Wed, 29 Oct 2025 16:40:37 +0100
+Message-Id: <20251029-dt-bindings-pci-qcom-fixes-power-domains-v1-0-da7ac2c477f4@linaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251029012434.75576-1-jasowang@redhat.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAHU1AmkC/x3MQQqDQAxA0atI1g1oigP2KqWLcSZqFmbspLQF8
+ e4Glw8+fwfjKmzwaHao/BWToo7u1kBaos6Mkt1ALfVdSwPmD46iWXQ23JLgO5UVJ/mzs/y4Yi5
+ rFDW8hxjCMBJTT+C7rfKV+e35Oo4Td6w/QHoAAAA=
+X-Change-ID: 20251029-dt-bindings-pci-qcom-fixes-power-domains-36a669b2e252
+To: Lorenzo Pieralisi <lpieralisi@kernel.org>, 
+ =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
+ Manivannan Sadhasivam <mani@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Bjorn Helgaas <bhelgaas@google.com>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
+ Abel Vesa <abel.vesa@linaro.org>
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, 
+ linux-arm-msm@vger.kernel.org, linux-pci@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1811;
+ i=krzysztof.kozlowski@linaro.org; h=from:subject:message-id;
+ bh=XZh7Co6zslMBQjbIXCr9v5B3gCRv9boi3KNiCtrOq7M=;
+ b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBpAjV8+rRwsh6mtOgt9cwnJyDBWBR90T9DNg1e/
+ fAEZX9j8aCJAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCaQI1fAAKCRDBN2bmhouD
+ 1wxlD/0eFmxwUES2BznztM3ZTBcUo2UEJN5PYuTkJgH8y0sWSON51yeBBxwTK3SEA4IYe+HiQTQ
+ i7Ms7eOUIjsmTT4/8qYW6bt/BCR7ZLULzMzNpfrtLfWJzqZCGzoj1fN8sPINtmo1XiO8V3ks4Fd
+ jUB6qp1ldl0MXpWwLJzs3ck8JP6GueflzYZGH2Tq/IRLWLpTtIgkwL3Bi1qNcFZMeglCtBWBGkQ
+ eoU18LISRmP+hWNrjaqKs3aA5Dw+YJtfouNyEdcvTmqtDviwV7rv/0H5oLQfARllF+2Gf0/Trnw
+ PNjCqQSHtscaKZ9E5MJvCzjkcIZ+BoMq2A7GovFhWcLoMOdrfEBVA/+ROS+e3SJnAHYr/rwsqpu
+ xNQfCzkurb2KyIYNwgsQKOrzJtEnbmN2ozK7k692z4hBWDv2c73DRNxPSmplr8i3AucNs38EZuB
+ +WXhq7A/96rRaOFHAqCcegRt37R21Nn4YYmlVVbLgmyNhkYB8wHluSrZhqCLuV+jhuL9yapwWN6
+ EQImQRMwkuyj28c+42uISguJX/Fr6tl9LBZ3dn4NAo37lKzfm0Tw519lZizr+e/jkL13elDA0+2
+ I6VmNbLlSk88QQxlXXo1KF8r7FrRfrFKbh1WYryLK7xTHr3Zc+6iqI3BDcBl9KvI8S0yIUbUQ+k
+ uToJGQdKF9rcLSg==
+X-Developer-Key: i=krzysztof.kozlowski@linaro.org; a=openpgp;
+ fpr=9BD07E0E0C51F8D59677B7541B93437D3B41629B
 
-Hi Jason,
+Recent binding changes forgot to make power-domains required.
 
-kernel test robot noticed the following build errors:
+I am not updating SC8180xp because it will be fixed other way in my next
+patchset.
 
-[auto build test ERROR on net/main]
+Best regards,
+Krzysztof
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Jason-Wang/virtio_net-fix-alignment-for-virtio_net_hdr_v1_hash/20251029-092814
-base:   net/main
-patch link:    https://lore.kernel.org/r/20251029012434.75576-1-jasowang%40redhat.com
-patch subject: [PATCH net] virtio_net: fix alignment for virtio_net_hdr_v1_hash
-config: x86_64-kexec (https://download.01.org/0day-ci/archive/20251029/202510292352.dvaYVyZt-lkp@intel.com/config)
-compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251029/202510292352.dvaYVyZt-lkp@intel.com/reproduce)
+---
+Krzysztof Kozlowski (9):
+      dt-bindings: PCI: qcom,pcie-sa8775p: Add missing required power-domains
+      dt-bindings: PCI: qcom,pcie-sc7280: Add missing required power-domains
+      dt-bindings: PCI: qcom,pcie-sc8280xp: Add missing required power-domains
+      dt-bindings: PCI: qcom,pcie-sm8150: Add missing required power-domains
+      dt-bindings: PCI: qcom,pcie-sm8250: Add missing required power-domains
+      dt-bindings: PCI: qcom,pcie-sm8350: Add missing required power-domains
+      dt-bindings: PCI: qcom,pcie-sm8450: Add missing required power-domains
+      dt-bindings: PCI: qcom,pcie-sm8550: Add missing required power-domains
+      dt-bindings: PCI: qcom,pcie-x1e80100: Add missing required power-domains
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202510292352.dvaYVyZt-lkp@intel.com/
+ Documentation/devicetree/bindings/pci/qcom,pcie-sa8775p.yaml  | 1 +
+ Documentation/devicetree/bindings/pci/qcom,pcie-sc7280.yaml   | 3 +++
+ Documentation/devicetree/bindings/pci/qcom,pcie-sc8280xp.yaml | 1 +
+ Documentation/devicetree/bindings/pci/qcom,pcie-sm8150.yaml   | 3 +++
+ Documentation/devicetree/bindings/pci/qcom,pcie-sm8250.yaml   | 3 +++
+ Documentation/devicetree/bindings/pci/qcom,pcie-sm8350.yaml   | 3 +++
+ Documentation/devicetree/bindings/pci/qcom,pcie-sm8450.yaml   | 3 +++
+ Documentation/devicetree/bindings/pci/qcom,pcie-sm8550.yaml   | 3 +++
+ Documentation/devicetree/bindings/pci/qcom,pcie-x1e80100.yaml | 3 +++
+ 9 files changed, 23 insertions(+)
+---
+base-commit: 326bbf6e2b1ce8d1e6166cce2ca414aa241c382f
+change-id: 20251029-dt-bindings-pci-qcom-fixes-power-domains-36a669b2e252
 
-All errors (new ones prefixed by >>):
-
-   In file included from net/packet/af_packet.c:86:
->> include/linux/virtio_net.h:404:24: error: no member named 'hash_value' in 'struct virtio_net_hdr_v1_hash'
-     404 |         vhdr->hash_hdr.hash_value = 0;
-         |         ~~~~~~~~~~~~~~ ^
-   1 error generated.
-
-
-vim +404 include/linux/virtio_net.h
-
-a2fb4bc4e2a6a0 Paolo Abeni 2025-07-08  376  
-a2fb4bc4e2a6a0 Paolo Abeni 2025-07-08  377  /*
-a2fb4bc4e2a6a0 Paolo Abeni 2025-07-08  378   * vlan_hlen always refers to the outermost MAC header. That also
-a2fb4bc4e2a6a0 Paolo Abeni 2025-07-08  379   * means it refers to the only MAC header, if the packet does not carry
-a2fb4bc4e2a6a0 Paolo Abeni 2025-07-08  380   * any encapsulation.
-a2fb4bc4e2a6a0 Paolo Abeni 2025-07-08  381   */
-a2fb4bc4e2a6a0 Paolo Abeni 2025-07-08  382  static inline int
-a2fb4bc4e2a6a0 Paolo Abeni 2025-07-08  383  virtio_net_hdr_tnl_from_skb(const struct sk_buff *skb,
-a2fb4bc4e2a6a0 Paolo Abeni 2025-07-08  384  			    struct virtio_net_hdr_v1_hash_tunnel *vhdr,
-a2fb4bc4e2a6a0 Paolo Abeni 2025-07-08  385  			    bool tnl_hdr_negotiated,
-a2fb4bc4e2a6a0 Paolo Abeni 2025-07-08  386  			    bool little_endian,
-a2fb4bc4e2a6a0 Paolo Abeni 2025-07-08  387  			    int vlan_hlen)
-a2fb4bc4e2a6a0 Paolo Abeni 2025-07-08  388  {
-a2fb4bc4e2a6a0 Paolo Abeni 2025-07-08  389  	struct virtio_net_hdr *hdr = (struct virtio_net_hdr *)vhdr;
-a2fb4bc4e2a6a0 Paolo Abeni 2025-07-08  390  	unsigned int inner_nh, outer_th;
-a2fb4bc4e2a6a0 Paolo Abeni 2025-07-08  391  	int tnl_gso_type;
-a2fb4bc4e2a6a0 Paolo Abeni 2025-07-08  392  	int ret;
-a2fb4bc4e2a6a0 Paolo Abeni 2025-07-08  393  
-a2fb4bc4e2a6a0 Paolo Abeni 2025-07-08  394  	tnl_gso_type = skb_shinfo(skb)->gso_type & (SKB_GSO_UDP_TUNNEL |
-a2fb4bc4e2a6a0 Paolo Abeni 2025-07-08  395  						    SKB_GSO_UDP_TUNNEL_CSUM);
-a2fb4bc4e2a6a0 Paolo Abeni 2025-07-08  396  	if (!tnl_gso_type)
-a2fb4bc4e2a6a0 Paolo Abeni 2025-07-08  397  		return virtio_net_hdr_from_skb(skb, hdr, little_endian, false,
-a2fb4bc4e2a6a0 Paolo Abeni 2025-07-08  398  					       vlan_hlen);
-a2fb4bc4e2a6a0 Paolo Abeni 2025-07-08  399  
-a2fb4bc4e2a6a0 Paolo Abeni 2025-07-08  400  	/* Tunnel support not negotiated but skb ask for it. */
-a2fb4bc4e2a6a0 Paolo Abeni 2025-07-08  401  	if (!tnl_hdr_negotiated)
-a2fb4bc4e2a6a0 Paolo Abeni 2025-07-08  402  		return -EINVAL;
-a2fb4bc4e2a6a0 Paolo Abeni 2025-07-08  403  
-b2284768c6b32a Jason Wang  2025-10-22 @404          vhdr->hash_hdr.hash_value = 0;
-b2284768c6b32a Jason Wang  2025-10-22  405          vhdr->hash_hdr.hash_report = 0;
-b2284768c6b32a Jason Wang  2025-10-22  406          vhdr->hash_hdr.padding = 0;
-b2284768c6b32a Jason Wang  2025-10-22  407  
-a2fb4bc4e2a6a0 Paolo Abeni 2025-07-08  408  	/* Let the basic parsing deal with plain GSO features. */
-a2fb4bc4e2a6a0 Paolo Abeni 2025-07-08  409  	skb_shinfo(skb)->gso_type &= ~tnl_gso_type;
-a2fb4bc4e2a6a0 Paolo Abeni 2025-07-08  410  	ret = virtio_net_hdr_from_skb(skb, hdr, true, false, vlan_hlen);
-a2fb4bc4e2a6a0 Paolo Abeni 2025-07-08  411  	skb_shinfo(skb)->gso_type |= tnl_gso_type;
-a2fb4bc4e2a6a0 Paolo Abeni 2025-07-08  412  	if (ret)
-a2fb4bc4e2a6a0 Paolo Abeni 2025-07-08  413  		return ret;
-a2fb4bc4e2a6a0 Paolo Abeni 2025-07-08  414  
-a2fb4bc4e2a6a0 Paolo Abeni 2025-07-08  415  	if (skb->protocol == htons(ETH_P_IPV6))
-a2fb4bc4e2a6a0 Paolo Abeni 2025-07-08  416  		hdr->gso_type |= VIRTIO_NET_HDR_GSO_UDP_TUNNEL_IPV6;
-a2fb4bc4e2a6a0 Paolo Abeni 2025-07-08  417  	else
-a2fb4bc4e2a6a0 Paolo Abeni 2025-07-08  418  		hdr->gso_type |= VIRTIO_NET_HDR_GSO_UDP_TUNNEL_IPV4;
-a2fb4bc4e2a6a0 Paolo Abeni 2025-07-08  419  
-a2fb4bc4e2a6a0 Paolo Abeni 2025-07-08  420  	if (skb_shinfo(skb)->gso_type & SKB_GSO_UDP_TUNNEL_CSUM)
-a2fb4bc4e2a6a0 Paolo Abeni 2025-07-08  421  		hdr->flags |= VIRTIO_NET_HDR_F_UDP_TUNNEL_CSUM;
-a2fb4bc4e2a6a0 Paolo Abeni 2025-07-08  422  
-a2fb4bc4e2a6a0 Paolo Abeni 2025-07-08  423  	inner_nh = skb->inner_network_header - skb_headroom(skb);
-a2fb4bc4e2a6a0 Paolo Abeni 2025-07-08  424  	outer_th = skb->transport_header - skb_headroom(skb);
-a2fb4bc4e2a6a0 Paolo Abeni 2025-07-08  425  	vhdr->inner_nh_offset = cpu_to_le16(inner_nh);
-a2fb4bc4e2a6a0 Paolo Abeni 2025-07-08  426  	vhdr->outer_th_offset = cpu_to_le16(outer_th);
-a2fb4bc4e2a6a0 Paolo Abeni 2025-07-08  427  	return 0;
-a2fb4bc4e2a6a0 Paolo Abeni 2025-07-08  428  }
-a2fb4bc4e2a6a0 Paolo Abeni 2025-07-08  429  
-
+Best regards,
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+
 
