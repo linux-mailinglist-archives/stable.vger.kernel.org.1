@@ -1,97 +1,114 @@
-Return-Path: <stable+bounces-191600-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191601-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1022CC1A19E
-	for <lists+stable@lfdr.de>; Wed, 29 Oct 2025 12:46:13 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35FCCC1A1E2
+	for <lists+stable@lfdr.de>; Wed, 29 Oct 2025 12:52:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 76C014EAA49
-	for <lists+stable@lfdr.de>; Wed, 29 Oct 2025 11:46:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 67EA71AA5759
+	for <lists+stable@lfdr.de>; Wed, 29 Oct 2025 11:52:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CF183346BE;
-	Wed, 29 Oct 2025 11:46:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEB2933A025;
+	Wed, 29 Oct 2025 11:51:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PvGgHDYT"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YZNhZavJ"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A326B2F290A;
-	Wed, 29 Oct 2025 11:46:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1584D339B2D
+	for <stable@vger.kernel.org>; Wed, 29 Oct 2025 11:51:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761738366; cv=none; b=Wrp/AAgCErlTlmbl5PVVka63gwujwRKAEh0mG4Xc/oRcFg4znHHzGU73fvGfNsN4UZZxNu63lB+w2GiEYeJ3T3bG82Z4Lolr2JnRiixwq70HEepkCzzLFpxdzZOPOqXuf4kf/bMtwMxOEoLlpSi7F11fitQNpb0U6Gm3Knr2QK4=
+	t=1761738679; cv=none; b=aX2Ci0qP32VZh4UiSpIesFqVN2C1D/7D/NcU/p8Ar8g6nPQ3qj8q7Mj8TZzrMfCWNgXvffR8HNalABDjNOLXuEN9HNyTMtA/bgQEWlpOqdmL+CKGg8EkJqdl2reEH36/g5nhyJICRBZGvfLUzVkRJwJh4pKidogA+6mmuoIsmq4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761738366; c=relaxed/simple;
-	bh=5/ezlh6dKnG/scRqmnxs9ftYMDoe/gf88eLhhsutSL8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hUDVpAr2zmX8uwTbEqG8jLKj6vJAnvS6nysk/vjNTJ7T+AqGOl603YImaHyxKppJw8vgS2mEXAf+061xZ2cgTnBONgRuPMQtthhRIKb1srOlKfFWqBVIKlWcQ4GYfIUWc/P3yU+A5ui5p21deXcLt9xvE1jSj+D1MWzWGzG56S0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PvGgHDYT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33742C4CEF7;
-	Wed, 29 Oct 2025 11:45:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761738364;
-	bh=5/ezlh6dKnG/scRqmnxs9ftYMDoe/gf88eLhhsutSL8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PvGgHDYT9rUQkyQTwkmENhozPwfP1pkP6lOudu2DIb+lsdC8CrhFxABVwNaWDchOB
-	 5HDSAA48uKlsedFtW5gnAkq5bvICaliuVdg2A+R+qJIfpkmnoJWdX38mVHwRSdl8ZU
-	 vs9bQjNzA+9jxhVf9uwsx/5Urb/3rhYITjkI+tctdZ5Ay+itwzh1q4xXPixKp0NifH
-	 jZqhJLNf+M3uT3MjsRKTFxfSfz/gWIS+1HY542xpfN2NiLZDMSnc+xeSqae1nfbD4H
-	 1Ya3/dT+PtULqf21vHCNmwbBnsJVknsMEoOo2IZqUtkq2Ko8NtjJXi1eW9gRelZppZ
-	 GP7818ILUp3/w==
-From: Miguel Ojeda <ojeda@kernel.org>
-To: gregkh@linuxfoundation.org
-Cc: achill@achill.org,
-	akpm@linux-foundation.org,
-	broonie@kernel.org,
-	conor@kernel.org,
-	f.fainelli@gmail.com,
-	hargar@microsoft.com,
-	jonathanh@nvidia.com,
-	linux-kernel@vger.kernel.org,
-	linux@roeck-us.net,
-	lkft-triage@lists.linaro.org,
-	patches@kernelci.org,
-	patches@lists.linux.dev,
-	pavel@denx.de,
-	rwarsow@gmx.de,
-	shuah@kernel.org,
-	sr@sladewatkins.com,
-	stable@vger.kernel.org,
-	sudipm.mukherjee@gmail.com,
-	torvalds@linux-foundation.org,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: Re: [PATCH 6.17 000/184] 6.17.6-rc1 review
-Date: Wed, 29 Oct 2025 12:45:53 +0100
-Message-ID: <20251029114553.699148-1-ojeda@kernel.org>
-In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
-References: <20251027183514.934710872@linuxfoundation.org>
+	s=arc-20240116; t=1761738679; c=relaxed/simple;
+	bh=4eAuxRdra6xYn2AEu5URxIFLv0U3aPRV4JUn3Rr/2D0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=pOjlejY2hSLN2Znud8tAc3M6TMubV18tu9fL3mXOiy4zIKXcZ8UPMkOhOq3mxOBu50cRj/swPioPoMgr04gm3K9Scm5wKjxJVRPANzHw4r8f5TYNyA/VRMJIEiGQDEHRWana4mNrVEfP3rjM+/cF1R+i2/NYaj5nupnTSGbQyP4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YZNhZavJ; arc=none smtp.client-ip=209.85.214.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-26808b24a00so9844575ad.1
+        for <stable@vger.kernel.org>; Wed, 29 Oct 2025 04:51:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1761738676; x=1762343476; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4eAuxRdra6xYn2AEu5URxIFLv0U3aPRV4JUn3Rr/2D0=;
+        b=YZNhZavJSqfaJP3lGCg5xmuwsDrK3PMeTIXFKOFMbd/zeYvMmNHdthI7to4fL7CFDG
+         FkWYH7RX1+7ztmcKe/vd/Q8ZUI9xHAipPxMUZbYZxJ3V3KUfdrVb0/7MP2DX2EtHyL/R
+         NkhxXDpvBBgnhmeozECfV5WdCtp9JEnXWnSWA4RWusRdxorBmVcWFvWjjjuf2C7Jm6AS
+         Xf4VL0wnxlxu9KJtOeCdJ/prKJLXaS+uRTlu4qB2mwB6+aU/+NVGVpqxZ+tYJxLlumKZ
+         9jzJtJAtpByn0VCBuBxYLEvk6gUNndUYst10HUhJVo3lF1Jjcyx9iL+2ntcg6kxl87sT
+         +KIQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761738676; x=1762343476;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=4eAuxRdra6xYn2AEu5URxIFLv0U3aPRV4JUn3Rr/2D0=;
+        b=kdUz8F5Ha3LFwjoyODRDKhrALdZOflQGWXy4/1P+ohAPfA3eshYc/jmq2MgRUzElwK
+         GqUvr038O9vpzR+yjeftKwApLwJZmjfQTbbp+SvoFgFy3i7+g6ySXeamhxwcXzjQE+62
+         +q4G9/deQeUGbefA5UfCUjAM17IsqhOnZj2mfUupHkxCWzb8+MuEIqQLOv0im7ZNR+W9
+         quy6QvI/Mi3U46/7MD3FHLu60U1RPyDohtsmHKUREc36eUCu9jy/KLkurHtrcHzh++0H
+         0WgvQUE2uB2tQzlfs2zWkUE+Qs4sbEnDYO/uL4GjzTvR82rTo+tFz5TCpteKLv4fQHVt
+         /2VA==
+X-Forwarded-Encrypted: i=1; AJvYcCWH+wf2uMk5G6Lm08IztaEh7RGbPzLadLXiOEPCicrVsIvPD6xrsnJFW0IKHZhxujuSGpnSZ5U=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy7c1WQJu5fJs6GBVi4LqqT9hWC2G1cQ+OY3IzLawj8TNiXfLph
+	WgpAAuBYx4Y6cTLED9R8qNziWwD4q7W7CI4nYpEUDeSc6iinoKp8QpTGUsqMHT7zY17Sqp+VIvj
+	RBc0zCniS8TlhgIzKjffAYmiPZsnb3TY=
+X-Gm-Gg: ASbGnctYAAv67vtJG2gPCq0Hd9mFRC560xvOfW9rRPF7Ml/GpGqLYuFd02HA//nt12a
+	NY7zYBwv/BTczFghhMP7CB34sc46zghA6YxRUEqsfPYNB9uBXxncMuTxc4tls414+On/xc4Wkny
+	yCKCKpDoqiXDYWHqLVnUbmwa3OqJweUX+QsBcdzgTnb9q6QS/B9xIkKlKNBSo/MSTQIKZyBVy08
+	FCrFVEq20kSefNHv25wX6SXP1MU2Yg2pkj6ugOLHvLoQp65VeHR2EXKxTXTbezdjOx6APax6u8m
+	stnw5kCNykDn3GWQThTUPNONYczxNglQsvMy1Z5qUfZfELdFzETFQvNL5UUb1O96Bps/uRJae1c
+	ZnM0=
+X-Google-Smtp-Source: AGHT+IHydl5eW0/Dx2EkVGLSZgmAKiTuqfAbgJdkgdsRFye8YTtzwH3XYU7OFAr/IP3WtWR2QZHXmGbjwyn2fqhtndQ=
+X-Received: by 2002:a17:902:d4c4:b0:290:bde0:bffa with SMTP id
+ d9443c01a7336-294dedef47amr16261185ad.1.1761738676328; Wed, 29 Oct 2025
+ 04:51:16 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20251029071406.324511-1-ojeda@kernel.org> <DDURZLGB2VRJ.28Y4AP92FNFPS@kernel.org>
+In-Reply-To: <DDURZLGB2VRJ.28Y4AP92FNFPS@kernel.org>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Wed, 29 Oct 2025 12:51:03 +0100
+X-Gm-Features: AWmQ_bmrmooyzWnmY9GxFiFIfc56zKAyCS5p4B1qi25Pm2Uzdfv_Hs5RDQeg1vo
+Message-ID: <CANiq72=HhDQP1ucccLzZj0mtb5Qa8u-1oorRwCqNv+aEJfZh7g@mail.gmail.com>
+Subject: Re: [PATCH] rust: devres: fix private intra-doc link
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, patches@lists.linux.dev, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, 27 Oct 2025 19:34:42 +0100 Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
+On Wed, Oct 29, 2025 at 12:39=E2=80=AFPM Danilo Krummrich <dakr@kernel.org>=
+ wrote:
 >
-> This is the start of the stable review cycle for the 6.17.6 release.
-> There are 184 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+> Given that, do you want to take this one through your tree? If so, please=
+ do,
+> otherwise please let me know.
 >
-> Responses should be made by Wed, 29 Oct 2025 18:34:15 +0000.
-> Anything received after that time might be too late.
+> Acked-by: Danilo Krummrich <dakr@kernel.org>
 
-Boot-tested under QEMU for Rust x86_64, arm64 and riscv64; built-tested
-for arm and loongarch64:
+Yeah, I sent it independently in case I take it as a fix earlier;
+otherwise, I will put it before the `syn` series that will go via
+rust-next since it is not an urgent fix anyway.
 
-Tested-by: Miguel Ojeda <ojeda@kernel.org>
-
-Thanks!
+Thanks for the quick Acked-by!
 
 Cheers,
 Miguel
