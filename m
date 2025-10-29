@@ -1,151 +1,238 @@
-Return-Path: <stable+bounces-191674-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191675-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97D6EC1D824
-	for <lists+stable@lfdr.de>; Wed, 29 Oct 2025 22:49:32 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C5C4C1D914
+	for <lists+stable@lfdr.de>; Wed, 29 Oct 2025 23:08:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C9BA14E3B01
-	for <lists+stable@lfdr.de>; Wed, 29 Oct 2025 21:49:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB639189E348
+	for <lists+stable@lfdr.de>; Wed, 29 Oct 2025 22:09:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 923AF2DAFCB;
-	Wed, 29 Oct 2025 21:49:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 044C331691D;
+	Wed, 29 Oct 2025 22:08:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b="UpZPb28H"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="a2F5nTyO"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-f44.google.com (mail-qv1-f44.google.com [209.85.219.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADC7535965
-	for <stable@vger.kernel.org>; Wed, 29 Oct 2025 21:49:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A64A2314D2F;
+	Wed, 29 Oct 2025 22:08:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761774565; cv=none; b=sgbKyOEzMb9qaItyfYkcsUEoMYy1hs3d+3h5BmEZ1zs0kQMx7orl4M8ffM9RXClLq2grEtJKdwb31N+A4hlhaFbsWGKMAU6GcX+oqk7n6BgZ9H7QKm6G04WSwAOjhJ+sDHge2ELfqSX2qFETUILwqp61Fum63J2vE9zsZhaBLl4=
+	t=1761775712; cv=none; b=CrLa7NLW3HPpaWDiWcZh0TkiMBWstpzBT6oH0QDbfBzK5H2VGqdCHBX9x7HGTosT3KbCgDEk4sdM5KU7hCBc7CCVL7vrxFgWcszojwpx0J9nOnRKalOSpIwcklNAuwxsEXDHxsrGB6NtFNaXm10vM+fV/z6hf/B1mBkJwR0NvVk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761774565; c=relaxed/simple;
-	bh=4y9V70WFBvxyqJjplO9V+cIfxz5Th6UpWFken6ZSSjE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rscq2NbKAw6cOWEGqyG88NG/JTnAmXyprVyGkgCc6RwAbh4F8Nbu/9+cNN7pKac8CulCTfEosnUFmfXiF0d+WNiAW/Vk67jwIY71Pw4AoxVb7AUY3LR0XUc83pyrRNGxpkW/J0Q34HfPxIA69OoEza8JoD4KMx0IHaPYtyy44go=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu; spf=fail smtp.mailfrom=g.harvard.edu; dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b=UpZPb28H; arc=none smtp.client-ip=209.85.219.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=g.harvard.edu
-Received: by mail-qv1-f44.google.com with SMTP id 6a1803df08f44-87be45cba29so4774616d6.2
-        for <stable@vger.kernel.org>; Wed, 29 Oct 2025 14:49:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rowland.harvard.edu; s=google; t=1761774561; x=1762379361; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=rE1JyEMJ3v3jXraVaSIO/rQxseox2pYjQmRppVzrLvc=;
-        b=UpZPb28H4f4dICsWtZ1LtUhJ+DoPAHLiDJIcEEkYOGZ528pFDB92iDL5Radi75VKvE
-         m6At3BfLyakLSd4yM3n3tMZntsQIjT3X06GCqIrOxG+EDXHC0Aey1DrhjvfzTsER+YDV
-         veu3YI2H+o25YXQFAUZ9u7D+XCj5wA+VRT+0pFn+RqJK8LARvLT2WStG8fQ426z0UWre
-         vq42+qKqNCYntIZtm6Mfcs1yT4Up5wM7Awcbge5DdDihkdKC1xPHI6MF85qg1pIOeiAa
-         CnffT7aYM9tUhPcVA9A9wqiQQ6JdRUrFRODnKOm6BuwWtav2e3GLdeiFT+VPansqYo8g
-         wbBg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761774561; x=1762379361;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=rE1JyEMJ3v3jXraVaSIO/rQxseox2pYjQmRppVzrLvc=;
-        b=tLQpRMZFr41SxZU/siuHoxT4w3aBooMPvVmCEFa27Xfz2yXN3nAMjGBclTeLmft5yy
-         nXTz5TC6o81HLj+P/0h3ql2l8kSKnbLXo+feHanOGGbZBk016VY/cMOb7VyS4rUI33ZB
-         hsMXh8tdDMR8Jglt01QuvcEaSsBGQQkiOQ4dKo+ViKqKxOr4ZbTPEmacFZ/uMv9Btrl2
-         9eAnfcKSmzGpIOcF2hhIhXUMJ4D2yKMgEra/NkUYwIA5d+S9Ee4WlcP3wgh34k6C7Lf0
-         NpmgvgJMtK2LVzmhaG9qxrHcadLgi5JMsFwvridrgghCqCDkHFIOBouBzXHBY3SofabD
-         blMQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWH9Ae4kkiQw6ATCo6spQz7B4Tx9upnF05ZQjI9pIfCEDaAoCdHnFS1d2V5igrUhDloBgmMh/4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxaYbMNviTzeIw/sO7HNJqVJIUMQ1NiH3cr5ddYAm9R6diNE0TD
-	79nfgalGV08JcYWPBDho+NEhmsINYeRDktO7ALOOJ7s2r2cHUmIoF8Dou5Kw8DlQig==
-X-Gm-Gg: ASbGncu8cAq47EC7C34FUgPyJiT0c41rCPZ/l6iB34eiNkte+7Ym3LdrQKX0OFdhGiY
-	XTOfvF8dnbHL76pLrRqvUB06QX2tE177x1QqN6hGIstXwvm4dEw/4EO9yj3yjNb04QXuLDUFOrd
-	HLb6FdfMqa78YER913fLrBDWAhdc62oxOYUOx40B7sALTjpNaz0XTIkzNmudZE36dmiA6RvytS6
-	NSbfZITkvBnUHFTVBdxidykx/w69271a7lkQhPjrU3VbTCzzAlV0zfsvNxfF6NDLudFASSqrxfn
-	STRRAyPZNT1Ssc90Y+I45uU2555jBVfSYp3L7pjtXe53Fr5KHmHZuddXPqxQF6hPfk0WP6jJoqz
-	aDJCuAcpFiAx9jWuRJqNEY0oiaKbIlH7Bp0OL8eugXr2x00K/BA3lY88P23wVxJjWV4qLXAKz8O
-	B8Gw==
-X-Google-Smtp-Source: AGHT+IEia63DWtt3sJ/hE8wQB6V+RWNyg4QYX5RQRa/XSY65kZ2z6hDGlDeovmsAIVmEGP2Uj0ltIw==
-X-Received: by 2002:a05:6214:29e2:b0:87c:2ba1:16b4 with SMTP id 6a1803df08f44-8801b2113camr15045546d6.46.1761774561522;
-        Wed, 29 Oct 2025 14:49:21 -0700 (PDT)
-Received: from rowland.harvard.edu ([2601:19b:d03:1700::ba76])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-87fc4944a84sm108980116d6.36.2025.10.29.14.49.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Oct 2025 14:49:20 -0700 (PDT)
-Date: Wed, 29 Oct 2025 17:49:17 -0400
-From: Alan Stern <stern@rowland.harvard.edu>
-To: Desnes Nunes <desnesn@redhat.com>
-Cc: linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
-	gregkh@linuxfoundation.org, stable@vger.kernel.org
-Subject: Re: [PATCH 1/2] usb: storage: Fix memory leak in USB bulk transport
-Message-ID: <2ecf4eac-8a8b-4aef-a307-5217726ea3d4@rowland.harvard.edu>
-References: <20251029191414.410442-1-desnesn@redhat.com>
- <20251029191414.410442-2-desnesn@redhat.com>
+	s=arc-20240116; t=1761775712; c=relaxed/simple;
+	bh=4WsGXTeOfsLQzIuzG96l1AsNqNSGyn1kP+t88AHc/Y4=;
+	h=Date:To:From:Subject:Message-Id; b=sRFbVc9CqvERNVbNAY1w478opm7PArestBypo3AwMD++OBTUs2WY6GVJyVo86NEghBtE9EpTMMf5dQZV5KYbhIvji8vmE1oiRYAMEKcSJ433017Qb7/6+yDweYLN9c8jmYWV5qQK9Slv8bDvpBHrw9uDdo2h3GgbPlACpjtfwQ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=a2F5nTyO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22F8CC4CEF7;
+	Wed, 29 Oct 2025 22:08:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1761775712;
+	bh=4WsGXTeOfsLQzIuzG96l1AsNqNSGyn1kP+t88AHc/Y4=;
+	h=Date:To:From:Subject:From;
+	b=a2F5nTyOP5sROWdaPUXtUIo2StBCQcrDLdP7ka/dHWPtj7Cs3ax4plxgRRI3kn6Um
+	 o/297J+/OAvHoUi9RCNUOnNQTbvz3nDLVWfJzcdrBm24RH22eibjqiZ/bW78g+PD6J
+	 n0zaGBkr2+zJdpvqspdYr/gda59XVnFZe20Zm8es=
+Date: Wed, 29 Oct 2025 15:08:31 -0700
+To: mm-commits@vger.kernel.org,ziy@nvidia.com,yeoreum.yun@arm.com,xin@zytor.com,will@kernel.org,wangkefeng.wang@huawei.com,vincenzo.frascino@arm.com,vbabka@suse.cz,urezki@gmail.com,ubizjak@gmail.com,trintaeoitogc@gmail.com,thuth@redhat.com,tglx@linutronix.de,surenb@google.com,stable@vger.kernel.org,smostafa@google.com,samuel.holland@sifive.com,ryabinin.a.a@gmail.com,rppt@kernel.org,peterz@infradead.org,pasha.tatashin@soleen.com,pankaj.gupta@amd.com,ojeda@kernel.org,nathan@kernel.org,morbo@google.com,mingo@redhat.com,mhocko@suse.com,maz@kernel.org,mark.rutland@arm.com,luto@kernel.org,lorenzo.stoakes@oracle.com,liam.howlett@oracle.com,leitao@debian.org,kees@kernel.org,kbingham@kernel.org,kaleshsingh@google.com,justinstitt@google.com,jpoimboe@kernel.org,jhubbard@nvidia.com,jeremy.linton@arm.com,jan.kiszka@siemens.com,hpa@zytor.com,glider@google.com,fujita.tomonori@gmail.com,elver@google.com,dvyukov@google.com,david@redhat.com,corbet@lwn.net,catalin.marinas@arm.com,broonie@kernel.org,brg
+ erst@gmail.com,bp@alien8.de,bigeasy@linutronix.de,bhe@redhat.com,baohua@kernel.org,ardb@kernel.org,andreyknvl@gmail.com,maciej.wieczor-retman@intel.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + kasan-unpoison-pcpu-chunks-with-base-address-tag.patch added to mm-hotfixes-unstable branch
+Message-Id: <20251029220832.22F8CC4CEF7@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251029191414.410442-2-desnesn@redhat.com>
 
-On Wed, Oct 29, 2025 at 04:14:13PM -0300, Desnes Nunes wrote:
-> A kernel memory leak was identified by the 'ioctl_sg01' test from Linux
-> Test Project (LTP). The following bytes were maily observed: 0x53425355.
-> 
-> When USB storage devices incorrectly skip the data phase with status data,
-> the code extracts/validates the CSW from the sg buffer, but fails to clear
-> it afterwards. This leaves status protocol data in srb's transfer buffer,
-> such as the US_BULK_CS_SIGN 'USBS' signature observed here. Thus, this
-> leads to USB protocols leaks to user space through SCSI generic (/dev/sg*)
-> interfaces, such as the one seen here when the LTP test requested 512 KiB.
-> 
-> Fix the leak by zeroing the CSW data in srb's transfer buffer immediately
-> after the validation of devices that skip data phase.
-> 
-> Note: Differently from CVE-2018-1000204, which fixed a big leak by zero-
-> ing pages at allocation time, this leak occurs after allocation, when USB
-> protocol data is written to already-allocated sg pages.
-> 
-> Fixes: a45b599ad808 ("scsi: sg: allocate with __GFP_ZERO in sg_build_indirect()")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Desnes Nunes <desnesn@redhat.com>
-> ---
->  drivers/usb/storage/transport.c | 10 ++++++++++
->  1 file changed, 10 insertions(+)
-> 
-> diff --git a/drivers/usb/storage/transport.c b/drivers/usb/storage/transport.c
-> index 1aa1bd26c81f..8e9f6459e197 100644
-> --- a/drivers/usb/storage/transport.c
-> +++ b/drivers/usb/storage/transport.c
-> @@ -1200,7 +1200,17 @@ int usb_stor_Bulk_transport(struct scsi_cmnd *srb, struct us_data *us)
->  						US_BULK_CS_WRAP_LEN &&
->  					bcs->Signature ==
->  						cpu_to_le32(US_BULK_CS_SIGN)) {
-> +				unsigned char buf[US_BULK_CS_WRAP_LEN];
 
-You don't have to define another buffer here.  bcs is still available
-and it is exactly the right size.
+The patch titled
+     Subject: kasan: unpoison pcpu chunks with base address tag
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     kasan-unpoison-pcpu-chunks-with-base-address-tag.patch
 
-Alan Stern
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/kasan-unpoison-pcpu-chunks-with-base-address-tag.patch
 
-> +
-> +				sg = NULL;
-> +				offset = 0;
-> +				memset(buf, 0, US_BULK_CS_WRAP_LEN);
->  				usb_stor_dbg(us, "Device skipped data phase\n");
-> +
-> +				if (usb_stor_access_xfer_buf(buf, US_BULK_CS_WRAP_LEN, srb,
-> +						&sg, &offset, TO_XFER_BUF) != US_BULK_CS_WRAP_LEN)
-> +					usb_stor_dbg(us, "Failed to clear CSW data\n");
-> +
->  				scsi_set_resid(srb, transfer_length);
->  				goto skipped_data_phase;
->  			}
-> -- 
-> 2.51.0
-> 
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
+Subject: kasan: unpoison pcpu chunks with base address tag
+Date: Wed, 29 Oct 2025 19:05:49 +0000
+
+The problem presented here is related to NUMA systems and tag-based KASAN
+modes - software and hardware ones.  It can be explained in the following
+points:
+
+1. There can be more than one virtual memory chunk.
+
+2. Chunk's base address has a tag.
+
+3. The base address points at the first chunk and thus inherits the
+   tag of the first chunk.
+
+4. The subsequent chunks will be accessed with the tag from the first
+   chunk.
+
+5. Thus, the subsequent chunks need to have their tag set to match
+   that of the first chunk.
+
+Refactor code by moving it into a helper in preparation for the actual
+fix.
+
+Link: https://lkml.kernel.org/r/fbce40a59b0a22a5735cb6e9b95c5a45a34b23cb.1761763681.git.m.wieczorretman@pm.me
+Fixes: 1d96320f8d53 ("kasan, vmalloc: add vmalloc tagging for SW_TAGS")
+Signed-off-by: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
+Tested-by: Baoquan He <bhe@redhat.com>
+Cc: Alexander Potapenko <glider@google.com>
+Cc: Andrey Konovalov <andreyknvl@gmail.com>
+Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: Ard Biesheuvel <ardb@kernel.org>
+Cc: Barry Song <baohua@kernel.org>
+Cc: Bill Wendling <morbo@google.com>
+Cc: Borislav Betkov <bp@alien8.de>
+Cc: Breno Leitao <leitao@debian.org>
+Cc: Brian Gerst <brgerst@gmail.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Dmitriy Vyukov <dvyukov@google.com>
+Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jan Kiszka <jan.kiszka@siemens.com>
+Cc: Jeremy Linton <jeremy.linton@arm.com>
+Cc: John Hubbard <jhubbard@nvidia.com>
+Cc: Jonathan Corbet <corbet@lwn.net>
+Cc: Josh Poimboeuf <jpoimboe@kernel.org>
+Cc: Justin Stitt <justinstitt@google.com>
+Cc: Kalesh Singh <kaleshsingh@google.com>
+Cc: Kees Cook <kees@kernel.org>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: Kieran Bingham <kbingham@kernel.org>
+Cc: levi.yun <yeoreum.yun@arm.com>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Marco Elver <elver@google.com>
+Cc: Marc Rutland <mark.rutland@arm.com>
+Cc: Marc Zyngier <maz@kernel.org>
+Cc: Mark Brown <broonie@kernel.org>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Mostafa Saleh <smostafa@google.com>
+Cc: Nathan Chancellor <nathan@kernel.org>
+Cc: Pankaj Gupta <pankaj.gupta@amd.com>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Samuel Holland <samuel.holland@sifive.com>
+Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Thomas Gleinxer <tglx@linutronix.de>
+Cc: Thomas Huth <thuth@redhat.com>
+Cc: "Uladzislau Rezki (Sony)" <urezki@gmail.com>
+Cc: Uros Bizjak <ubizjak@gmail.com>
+Cc: Vincenzo Frascino <vincenzo.frascino@arm.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Will Deacon <will@kernel.org>
+Cc: Xin Li (Intel) <xin@zytor.com>
+Cc: Zi Yan <ziy@nvidia.com>
+Cc: <stable@vger.kernel.org>	[6.1+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ include/linux/kasan.h |   10 ++++++++++
+ mm/kasan/tags.c       |   11 +++++++++++
+ mm/vmalloc.c          |    4 +---
+ 3 files changed, 22 insertions(+), 3 deletions(-)
+
+--- a/include/linux/kasan.h~kasan-unpoison-pcpu-chunks-with-base-address-tag
++++ a/include/linux/kasan.h
+@@ -614,6 +614,13 @@ static __always_inline void kasan_poison
+ 		__kasan_poison_vmalloc(start, size);
+ }
+ 
++void __kasan_unpoison_vmap_areas(struct vm_struct **vms, int nr_vms);
++static __always_inline void kasan_unpoison_vmap_areas(struct vm_struct **vms, int nr_vms)
++{
++	if (kasan_enabled())
++		__kasan_unpoison_vmap_areas(vms, nr_vms);
++}
++
+ #else /* CONFIG_KASAN_VMALLOC */
+ 
+ static inline void kasan_populate_early_vm_area_shadow(void *start,
+@@ -638,6 +645,9 @@ static inline void *kasan_unpoison_vmall
+ static inline void kasan_poison_vmalloc(const void *start, unsigned long size)
+ { }
+ 
++static inline void kasan_unpoison_vmap_areas(struct vm_struct **vms, int nr_vms)
++{ }
++
+ #endif /* CONFIG_KASAN_VMALLOC */
+ 
+ #if (defined(CONFIG_KASAN_GENERIC) || defined(CONFIG_KASAN_SW_TAGS)) && \
+--- a/mm/kasan/tags.c~kasan-unpoison-pcpu-chunks-with-base-address-tag
++++ a/mm/kasan/tags.c
+@@ -18,6 +18,7 @@
+ #include <linux/static_key.h>
+ #include <linux/string.h>
+ #include <linux/types.h>
++#include <linux/vmalloc.h>
+ 
+ #include "kasan.h"
+ #include "../slab.h"
+@@ -146,3 +147,13 @@ void __kasan_save_free_info(struct kmem_
+ {
+ 	save_stack_info(cache, object, 0, true);
+ }
++
++void __kasan_unpoison_vmap_areas(struct vm_struct **vms, int nr_vms)
++{
++	int area;
++
++	for (area = 0 ; area < nr_vms ; area++) {
++		kasan_poison(vms[area]->addr, vms[area]->size,
++			     arch_kasan_get_tag(vms[area]->addr), false);
++	}
++}
+--- a/mm/vmalloc.c~kasan-unpoison-pcpu-chunks-with-base-address-tag
++++ a/mm/vmalloc.c
+@@ -4870,9 +4870,7 @@ retry:
+ 	 * With hardware tag-based KASAN, marking is skipped for
+ 	 * non-VM_ALLOC mappings, see __kasan_unpoison_vmalloc().
+ 	 */
+-	for (area = 0; area < nr_vms; area++)
+-		vms[area]->addr = kasan_unpoison_vmalloc(vms[area]->addr,
+-				vms[area]->size, KASAN_VMALLOC_PROT_NORMAL);
++	kasan_unpoison_vmap_areas(vms, nr_vms);
+ 
+ 	kfree(vas);
+ 	return vms;
+_
+
+Patches currently in -mm which might be from maciej.wieczor-retman@intel.com are
+
+kasan-unpoison-pcpu-chunks-with-base-address-tag.patch
+kasan-unpoison-vms-addresses-with-a-common-tag.patch
+
 
