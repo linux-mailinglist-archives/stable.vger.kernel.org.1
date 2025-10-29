@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-191588-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191589-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0FC8C1974E
-	for <lists+stable@lfdr.de>; Wed, 29 Oct 2025 10:47:10 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BEA1C197CC
+	for <lists+stable@lfdr.de>; Wed, 29 Oct 2025 10:51:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id ADA2C4FFFF2
-	for <lists+stable@lfdr.de>; Wed, 29 Oct 2025 09:41:11 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id BC25E508815
+	for <lists+stable@lfdr.de>; Wed, 29 Oct 2025 09:41:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B5EE3314C1;
-	Wed, 29 Oct 2025 09:39:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C30563321AB;
+	Wed, 29 Oct 2025 09:39:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="1ae/lHSH"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="HjhPfAve"
 X-Original-To: stable@vger.kernel.org
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2086E32861E;
-	Wed, 29 Oct 2025 09:39:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D177322DCB;
+	Wed, 29 Oct 2025 09:39:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761730776; cv=none; b=OFkGuNv+AjUGcNWF8+IYko36mk030VN3xC4G64wwf73zUZUWPUBC+2hIomMZf31cr2DBOqcRW/ylSWGOejg2RZrxd3B3wcOBMcNRZaCeoNZIIN9NbboVbubNwfVeQSLi0vo6jblKCD6UWJWm37JTaVxo7tJ2B6bUsWkQvzTMVio=
+	t=1761730779; cv=none; b=D5PBRBR5HcRV6GLMsY3Ng27EPlXUyIZYdeLtVttH8ETXBRNgFr0a7QxO2tFSYxDC0yHoYyQwhEyEcypsmEYjHdEryUmd6zjbp+X/3HksfAU92uMEHMQAvgaCMgnpEAHp806lwIDtocPAnm/+m2ARvGTVogvLrRFGnu92L2L1hxs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761730776; c=relaxed/simple;
-	bh=HC7FJu5v0H5FaRqZVdMzzPzRo31MQLnxN2xyoGqCc1Q=;
+	s=arc-20240116; t=1761730779; c=relaxed/simple;
+	bh=37IiwR/6S6dxfx7lj0RxvC3WsfBd/iSGcmPFwZTHdkY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Tj4AV7kZQ+Ap/P3CGR7Ci/0x3uQnJm2nHb9OQVzg6MfjC8fCqpLLHD9Xh9Q7gCQGA4DveMM0UTGBHAZPRWajZCE3WDk+6W41ZYj6XEaxeyKpbo8fobrqZaKp+bMLgZJBHLQY4/gspKODfNtn/pSeSdzNM1u4sB55IWBXFkEqTWc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=1ae/lHSH; arc=none smtp.client-ip=185.171.202.116
+	 MIME-Version; b=bhIzCeIsOBCn/SET37+Hy7a9IqGmBddCHW8kYCkK5FBxNa42n/2Mit06crZRxB5k3oYAbKjWRV2s1nZDpNk5xl/SPInq+T4jiATr9OOEQ5xuY/7SYmq2I3VTlls+1CwV177xnTOAx/YarXUonVLT5LGFVGuhU5oJvLsuzqGwzdA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=HjhPfAve; arc=none smtp.client-ip=185.246.84.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 1128EC0BEBD;
-	Wed, 29 Oct 2025 09:39:12 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id C2EB41A171D;
+	Wed, 29 Oct 2025 09:39:35 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 6132E606E8;
-	Wed, 29 Oct 2025 09:39:32 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 26FEE117F19DA;
-	Wed, 29 Oct 2025 10:39:29 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 99750606E8;
+	Wed, 29 Oct 2025 09:39:35 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id CE804117F19D2;
+	Wed, 29 Oct 2025 10:39:31 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1761730771; h=from:subject:date:message-id:to:cc:mime-version:
+	t=1761730774; h=from:subject:date:message-id:to:cc:mime-version:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=cZfT+IVpVyyQl4hsGYvK1o0ggPzXojdpk+sM7Eh4XqU=;
-	b=1ae/lHSHEXTTRI2/tUAd2klf50buGAdShgp9X2ukdZ4Qwi09jvTHALvm/yczHVYC7VFeTU
-	ZZEXNKCvGZanyMZFQlHA76V8rlAHPYDHEAORNVH3aQR5f0w8PmcWhWJ6xj3SDuf8C7klXZ
-	jvzTI47Ys/QZZA3hS/3AeUukktqfBZg2HrHOfzL5drV8YCDCeREl1EEPOpG2H8nx21FrUu
-	JGuwWyJM+HevhcK169Giw/zujcA5K+Js9IGVm121dsZ3gxW+k2m5PFJkh7Yw8MX3MNNkeu
-	9gF2ApWgazg+00sIuQlecnp2VibVeFC9QRaix10Cpd5PtZ186IVDtw6uzXR1Ew==
+	bh=drk5eLb0e0St/3Rsft+R84KPgwf6up5pUeWOlxU8ev4=;
+	b=HjhPfAve75wHUi/HamEnJwW4NYxmQErPBi1kEIEo6J3eTd45pTNoO79SbWWd6OhJlGSdiL
+	lqf9x4vSJTirEHxaYebtzwgB2+kmSUQKLrGngfSmlMgaXR//IXzGpzCLbvWv1IxcKG6j/v
+	U0DGa1wz/ph9iGWie2C1PNPDW5kMu7VjTTwuDz81T1kGyrIBRzo8MZitdWdkM8FiG1fQFZ
+	U+xop2CMdP4jg29VIO1K+0Y3JF3NK8Ucdm0B+F7vunaBnRPSj39z8bP9vz/qE1z2d9zh/E
+	PwCVeV4BRVb+l2HtEVmNycv1wc5501USF4uc1XlKDUI35V//eeSWJUqxs1DuRg==
 From: Herve Codina <herve.codina@bootlin.com>
 To: David Rhodes <david.rhodes@cirrus.com>,
 	Richard Fitzgerald <rf@opensource.cirrus.com>,
@@ -69,9 +69,9 @@ Cc: linux-sound@vger.kernel.org,
 	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
 	Herve Codina <herve.codina@bootlin.com>,
 	stable@vger.kernel.org
-Subject: [PATCH v2 1/4] ASoC: cs4271: Fix cs4271 I2C and SPI drivers automatic module loading
-Date: Wed, 29 Oct 2025 10:39:17 +0100
-Message-ID: <20251029093921.624088-2-herve.codina@bootlin.com>
+Subject: [PATCH v2 2/4] ASoC: cs4271: Disable regulators in component_probe() error path
+Date: Wed, 29 Oct 2025 10:39:18 +0100
+Message-ID: <20251029093921.624088-3-herve.codina@bootlin.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251029093921.624088-1-herve.codina@bootlin.com>
 References: <20251029093921.624088-1-herve.codina@bootlin.com>
@@ -84,108 +84,57 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-In commit c973b8a7dc50 ("ASoC: cs4271: Split SPI and I2C code into
-different modules") the driver was slit into a core, an SPI and an I2C
-part.
+The commit 9a397f473657 ("ASoC: cs4271: add regulator consumer support")
+has introduced regulators in the driver.
 
-However, the MODULE_DEVICE_TABLE(of, cs4271_dt_ids) was in the core part
-and so, module loading based on module.alias (based on DT compatible
-string matching) loads the core part but not the SPI or I2C parts.
+Regulators are enabled at the beginning of component_probe() but they
+are not disabled on errors. This can lead to unbalanced enable/disable.
 
-In order to have the I2C or the SPI module loaded automatically, move
-the MODULE_DEVICE_TABLE(of, ...) the core to I2C and SPI parts.
-Also move cs4271_dt_ids itself from the core part to I2C and SPI parts
-as both the call to MODULE_DEVICE_TABLE(of, ...) and the cs4271_dt_ids
-table itself need to be in the same file.
+Fix the error path to disable regulators on errors.
 
-Fixes: c973b8a7dc50 ("ASoC: cs4271: Split SPI and I2C code into different modules")
+Fixes: 9a397f473657 ("ASoC: cs4271: add regulator consumer support")
 Cc: stable@vger.kernel.org
 Signed-off-by: Herve Codina <herve.codina@bootlin.com>
 ---
- sound/soc/codecs/cs4271-i2c.c |  6 ++++++
- sound/soc/codecs/cs4271-spi.c | 13 +++++++++++++
- sound/soc/codecs/cs4271.c     |  9 ---------
- sound/soc/codecs/cs4271.h     |  1 -
- 4 files changed, 19 insertions(+), 10 deletions(-)
+ sound/soc/codecs/cs4271.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/sound/soc/codecs/cs4271-i2c.c b/sound/soc/codecs/cs4271-i2c.c
-index 1d210b969173..cefb8733fc61 100644
---- a/sound/soc/codecs/cs4271-i2c.c
-+++ b/sound/soc/codecs/cs4271-i2c.c
-@@ -28,6 +28,12 @@ static const struct i2c_device_id cs4271_i2c_id[] = {
- };
- MODULE_DEVICE_TABLE(i2c, cs4271_i2c_id);
- 
-+static const struct of_device_id cs4271_dt_ids[] = {
-+	{ .compatible = "cirrus,cs4271", },
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(of, cs4271_dt_ids);
-+
- static struct i2c_driver cs4271_i2c_driver = {
- 	.driver = {
- 		.name = "cs4271",
-diff --git a/sound/soc/codecs/cs4271-spi.c b/sound/soc/codecs/cs4271-spi.c
-index 4feb80436bd9..28dd7b8f3507 100644
---- a/sound/soc/codecs/cs4271-spi.c
-+++ b/sound/soc/codecs/cs4271-spi.c
-@@ -23,11 +23,24 @@ static int cs4271_spi_probe(struct spi_device *spi)
- 	return cs4271_probe(&spi->dev, devm_regmap_init_spi(spi, &config));
- }
- 
-+static const struct spi_device_id cs4271_id_spi[] = {
-+	{ "cs4271", 0 },
-+	{}
-+};
-+MODULE_DEVICE_TABLE(spi, cs4271_id_spi);
-+
-+static const struct of_device_id cs4271_dt_ids[] = {
-+	{ .compatible = "cirrus,cs4271", },
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(of, cs4271_dt_ids);
-+
- static struct spi_driver cs4271_spi_driver = {
- 	.driver = {
- 		.name	= "cs4271",
- 		.of_match_table = of_match_ptr(cs4271_dt_ids),
- 	},
-+	.id_table	= cs4271_id_spi,
- 	.probe		= cs4271_spi_probe,
- };
- module_spi_driver(cs4271_spi_driver);
 diff --git a/sound/soc/codecs/cs4271.c b/sound/soc/codecs/cs4271.c
-index 6a3cca3d26c7..ff9c6628224c 100644
+index ff9c6628224c..a9d333e6c723 100644
 --- a/sound/soc/codecs/cs4271.c
 +++ b/sound/soc/codecs/cs4271.c
-@@ -543,15 +543,6 @@ static int cs4271_soc_resume(struct snd_soc_component *component)
- #define cs4271_soc_resume	NULL
- #endif /* CONFIG_PM */
+@@ -572,17 +572,17 @@ static int cs4271_component_probe(struct snd_soc_component *component)
  
--#ifdef CONFIG_OF
--const struct of_device_id cs4271_dt_ids[] = {
--	{ .compatible = "cirrus,cs4271", },
--	{ }
--};
--MODULE_DEVICE_TABLE(of, cs4271_dt_ids);
--EXPORT_SYMBOL_GPL(cs4271_dt_ids);
--#endif
--
- static int cs4271_component_probe(struct snd_soc_component *component)
- {
- 	struct cs4271_private *cs4271 = snd_soc_component_get_drvdata(component);
-diff --git a/sound/soc/codecs/cs4271.h b/sound/soc/codecs/cs4271.h
-index 290283a9149e..4965ce085875 100644
---- a/sound/soc/codecs/cs4271.h
-+++ b/sound/soc/codecs/cs4271.h
-@@ -4,7 +4,6 @@
+ 	ret = regcache_sync(cs4271->regmap);
+ 	if (ret < 0)
+-		return ret;
++		goto err_disable_regulators;
  
- #include <linux/regmap.h>
+ 	ret = regmap_update_bits(cs4271->regmap, CS4271_MODE2,
+ 				 CS4271_MODE2_PDN | CS4271_MODE2_CPEN,
+ 				 CS4271_MODE2_PDN | CS4271_MODE2_CPEN);
+ 	if (ret < 0)
+-		return ret;
++		goto err_disable_regulators;
+ 	ret = regmap_update_bits(cs4271->regmap, CS4271_MODE2,
+ 				 CS4271_MODE2_PDN, 0);
+ 	if (ret < 0)
+-		return ret;
++		goto err_disable_regulators;
+ 	/* Power-up sequence requires 85 uS */
+ 	udelay(85);
  
--extern const struct of_device_id cs4271_dt_ids[];
- extern const struct regmap_config cs4271_regmap_config;
+@@ -592,6 +592,10 @@ static int cs4271_component_probe(struct snd_soc_component *component)
+ 				   CS4271_MODE2_MUTECAEQUB);
  
- int cs4271_probe(struct device *dev, struct regmap *regmap);
+ 	return 0;
++
++err_disable_regulators:
++	regulator_bulk_disable(ARRAY_SIZE(cs4271->supplies), cs4271->supplies);
++	return ret;
+ }
+ 
+ static void cs4271_component_remove(struct snd_soc_component *component)
 -- 
 2.51.0
 
