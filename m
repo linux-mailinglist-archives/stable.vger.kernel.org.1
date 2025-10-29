@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-191634-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191635-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1125EC1BACB
-	for <lists+stable@lfdr.de>; Wed, 29 Oct 2025 16:32:19 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A3B1C1BF40
+	for <lists+stable@lfdr.de>; Wed, 29 Oct 2025 17:10:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id AB4A95E040C
-	for <lists+stable@lfdr.de>; Wed, 29 Oct 2025 14:42:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 867A6646607
+	for <lists+stable@lfdr.de>; Wed, 29 Oct 2025 14:44:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6290A347BBA;
-	Wed, 29 Oct 2025 14:37:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F16C2DC345;
+	Wed, 29 Oct 2025 14:38:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EA5hadol"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BA4/bsjc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 124DE346E47;
-	Wed, 29 Oct 2025 14:37:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E73D229B793;
+	Wed, 29 Oct 2025 14:38:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761748664; cv=none; b=FT7MB1iKR7NkOZ4M/MIHBPjFPXG4BMsRygtI/fsEOagWtB3HYaZMvcNhmOuq6xUQAizGrkpOujgm8q1T6IHitUMv9sw2s31mX2XArE4mIPgoio4g5DErHuyrC0oUAsgozEia8eOKL0QAfsBmqMyAew1i6O3KSueiHn6g0D9092s=
+	t=1761748684; cv=none; b=HNmB/iYFwVf4DFMlm2Ly5xOIAyIQMr9iuV+iCEsu8fkobMeT+v5UktS0O9nijGx3cooV50+NJloGiiuT/nC/lq2S6wgBmxQaOboESSrmdmiRHM4Sx7di9ff/InEZzLSfPBREm99MlURwZGGuNpzwWAnPCR70XuHUumwM9hfeTPc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761748664; c=relaxed/simple;
-	bh=QD7flLnygd6OxWCHzh3wt/+75KhuG9aLqY8mFe3H+k4=;
+	s=arc-20240116; t=1761748684; c=relaxed/simple;
+	bh=QhPL8hejE0q/XjPwlAAC6C2v9MdVz3zIjfNyGj/b4b0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=K5naEpCikrB3JwSkuO6moTfsDVJ4E+yemJSt63OW8q/0TdLtLlO7jOqnkv52uVBRdTgH0Glj0caUUfAbVODvCxx5N/rTn/nF1jz4jvO4964lsLAfmQGvCnzXRsY6pq+v3LVFdqFOVqxZJVWVnS37hteT/Oseih2BRLu4czPm+U0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EA5hadol; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2359EC4CEF7;
-	Wed, 29 Oct 2025 14:37:40 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=TtRHeey71IHW2R9HuyKjyGhb0RGyD5gplZHC/S613gT1qPZGfA+J1SqAibsG3ecwzIEJB0Gq/THhunjreRGgVgmuUOcX2Znci0o3b18x2J9fua7ZuvsXZiO2VfOoL2f3IiEEmtSo4QUkWtaxrpO09Rv1Hl67JTqVetH4vLDp5aY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BA4/bsjc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F986C4CEF7;
+	Wed, 29 Oct 2025 14:38:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761748663;
-	bh=QD7flLnygd6OxWCHzh3wt/+75KhuG9aLqY8mFe3H+k4=;
+	s=k20201202; t=1761748683;
+	bh=QhPL8hejE0q/XjPwlAAC6C2v9MdVz3zIjfNyGj/b4b0=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=EA5hadolUlNS8XBLjAbWjWxZqC0mZRQZ4vx+iY8wgUFIFz0+1phLv4YFTCluOltTe
-	 17JjmaAJef9oFxATOvD5nbUrVKsFhrBrt7m+5lh2xzLx1eUpTdfE2zOBu5ofXoPPtr
-	 bok3jmrCZ+q8qftanlOXjUnBeJpFVyKTrg2Hlm/zf1L9BwC2UU7LD/xQQLBKUgeQUL
-	 UYeSNnZyaIFG/cHion4UreRoxeV53dV0EsT9Xez9pGpgnmN3S9X6GgDwp+NurG/zc/
-	 O+rSQtk/687yX0OtH3CeDtstB+IHV8E2c5HW6v9tLF2reC5f6AYwNR1AUBAiBaN8Hh
-	 JJP63bTgrs98A==
-Date: Wed, 29 Oct 2025 14:37:38 +0000
+	b=BA4/bsjc2y8B1vf5f8FNEPX7gsJoRA4LURxjYgVB8wUchy+gdIKlF6zqhT7TYLfHE
+	 LpSsX/MDkrFgaQf4hAAyzFjPdZtPT3mixxUctHMnep5rCu8BfcbbfBdZ9FXkv+DEQ/
+	 fX7wYkPKh5eLgPoXY8n6lx5G/JKUB+sWX/NYz25vVTzZHT0AS94811e9sryKvDuOTI
+	 MWCCx0f5PdDLp+yfSkYkLxINH+S6y+rDiZmHqyEfXmk8jYkCrsUKOPc8tbEhQBEtW8
+	 ZeFxP/X7Phfm1DtlhWzjM4JvjdvhWRmczEWrJtcYdguim8RK0vzHZ4r5CHVzZQ5Wvm
+	 wY4sf2cxnPQkA==
+Date: Wed, 29 Oct 2025 14:37:58 +0000
 From: Mark Brown <broonie@kernel.org>
 To: Claudiu <claudiu.beznea@tuxon.dev>
 Cc: support.opensource@diasemi.com, lgirdwood@gmail.com, perex@perex.cz,
@@ -52,7 +52,7 @@ Cc: support.opensource@diasemi.com, lgirdwood@gmail.com, perex@perex.cz,
 	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
 	stable@vger.kernel.org
 Subject: Re: [PATCH 1/2] ASoC: codecs: Use component driver suspend/resume
-Message-ID: <bdb14543-e611-42d0-a603-300c0ea17335@sirena.org.uk>
+Message-ID: <84aabf5e-c782-4e40-8e34-c8e7101188fb@sirena.org.uk>
 References: <20251029141134.2556926-1-claudiu.beznea.uj@bp.renesas.com>
  <20251029141134.2556926-2-claudiu.beznea.uj@bp.renesas.com>
 Precedence: bulk
@@ -62,19 +62,20 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="+KE6RXr3vwOlMnlL"
+	protocol="application/pgp-signature"; boundary="X8fGgO2kD9aDHiEd"
 Content-Disposition: inline
 In-Reply-To: <20251029141134.2556926-2-claudiu.beznea.uj@bp.renesas.com>
 X-Cookie: Goes (Went) over like a lead balloon.
 
 
---+KE6RXr3vwOlMnlL
+--X8fGgO2kD9aDHiEd
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
 On Wed, Oct 29, 2025 at 04:11:33PM +0200, Claudiu wrote:
-
+> From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+>=20
 > Since snd_soc_suspend() is invoked through snd_soc_pm_ops->suspend(),
 > and snd_soc_pm_ops is associated with the soc_driver (defined in
 > sound/soc/soc-core.c), and there is no parent-child relationship between
@@ -82,46 +83,28 @@ On Wed, Oct 29, 2025 at 04:11:33PM +0200, Claudiu wrote:
 > does not enforce a specific suspend/resume order between the DA7213 driver
 > and the soc_driver.
 
-The theory here is that the power management core uses the device
-instantiation order for both suspend and resume (reversed on suspend) so
-the fact that we use probe deferral to make sure that the card
-components are ready should ensure that the card suspends before
-anything in the card.  If that is no longer the case then we need to
-ensure that all drivers have system PM ops which trigger the card, this
-won't be a driver specific issue.
+Oh, also:
 
->  static int da7213_runtime_resume(struct device *dev)
->  {
->  	struct da7213_priv *da7213 =3D dev_get_drvdata(dev);
-> -	int ret;
-> =20
-> -	ret =3D regulator_bulk_enable(DA7213_NUM_SUPPLIES, da7213->supplies);
-> -	if (ret < 0)
-> -		return ret;
-> -	regcache_cache_only(da7213->regmap, false);
-> -	return regcache_sync(da7213->regmap);
-> +	return regulator_bulk_enable(DA7213_NUM_SUPPLIES, da7213->supplies);
->  }
+Please submit patches using subject lines reflecting the style for the
+subsystem, this makes it easier for people to identify relevant patches.
+Look at what existing commits in the area you're changing are doing and
+make sure your subject lines visually resemble what they're doing.
+There's no need to resubmit to fix this alone.
 
-This seems obviously buggy, we just power on the device and don't sync
-the register state.  If the device actually lost power during a runtime
-suspend then we'll end up having a bad time.  There was also no mention
-of runtime PM in the patch description...
-
---+KE6RXr3vwOlMnlL
+--X8fGgO2kD9aDHiEd
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmkCJrEACgkQJNaLcl1U
-h9AUWgf/T2O7Q4nQj7aLrpOb47HnTCyYTW3KTH0+OvqmSueoik4TrsKBrle3TOWK
-kOFFNVbarcfSwmRY2K2x8zbMga1a0oXTAqdcQgt+AuP81HsjP4RE+RYKYd4ZUyYO
-XuvALyqZb/u+8MoxJ0nej2YCidGy/7DIZBSnBP4cgXonaYU55Wo6VZUegMGHc3Xo
-Vm8zCltflRFLQbQehVBv43k73v3VCn5bHGSvfiPjSVFFpMYDJcKwGCW/AMbe5YMd
-XQTWuuVWHyaGor6+t/HoZWepCkAwlmuAqHPtC5jlCFgFZQv2mVsfvD1mkV7MPnLh
-/F3FFYrUZSiXdUTxk4LCspWAysAj3g==
-=hw/D
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmkCJsUACgkQJNaLcl1U
+h9Dd3Af/dgxW29/PEY/oyrtoOrxdW35zvt16ej4c41BEgK9cwFAr02VTCNnUe6wr
+8pko+KvtbnhrbZziuITYhn8u1Y7hW88fPjXkwehik5V71/B3YYHdwApbJcLMbdy9
+ynrOb1Ni5H8za8VGr87TwG/W/U6SCzVCnvP4bIw8gRPrD4OALOykMHDkJVTMIuwS
+7SX4Iub7bu9lZy+MSKUajPQ+1AlZp48xn0Em6HJJps34n80+gBBiXitDPS1KeUiW
+Mi5csIv6AlTiH+Hl0qd2UkJDqpXZP60GM6u4Nv5NW42BFgp9qIDn+lxWDuY2rzCH
+et+4+24it30bEgfM6AB8qw8mgdhPXA==
+=w2Du
 -----END PGP SIGNATURE-----
 
---+KE6RXr3vwOlMnlL--
+--X8fGgO2kD9aDHiEd--
 
