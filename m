@@ -1,236 +1,139 @@
-Return-Path: <stable+bounces-191576-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191577-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F862C18B98
-	for <lists+stable@lfdr.de>; Wed, 29 Oct 2025 08:39:56 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3602BC18BBF
+	for <lists+stable@lfdr.de>; Wed, 29 Oct 2025 08:41:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id A683F35225A
-	for <lists+stable@lfdr.de>; Wed, 29 Oct 2025 07:39:55 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id CCB7C4E63A1
+	for <lists+stable@lfdr.de>; Wed, 29 Oct 2025 07:41:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51453311957;
-	Wed, 29 Oct 2025 07:39:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A39F30F94D;
+	Wed, 29 Oct 2025 07:41:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="yzYlXslg"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Sgf3Bxev"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yx1-f42.google.com (mail-yx1-f42.google.com [74.125.224.42])
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33A9231158A
-	for <stable@vger.kernel.org>; Wed, 29 Oct 2025 07:39:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCFF730216D
+	for <stable@vger.kernel.org>; Wed, 29 Oct 2025 07:41:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761723563; cv=none; b=fW75U3eZjo7A9OUz/c36QNYVyC+pE4Wg7tbbqVBBKlSy6CfB3IrXE41PWcoMaizZS7VX1v/Y4BqsWIM8UrVWIR/iLSngyBh8cdS5wCl88RWDgqrpFVtqduZ96zathwEovtZelB8F8WESim4QIEW2tI+v2RdlH67a5F16VbzoQCY=
+	t=1761723702; cv=none; b=JG3GuCfDROWR7hlrcMxLkGyEza94Et19fC3AgKL8AZ9Nn6r1wQvmzuvJO1bhuYsUJxAXIHU9k3q9VnC/zgzRrOj1p5toNdxHC8GJPMek919pF3JuEa4w5fSiENlmqCGOFj89C+JbWyB4LOlfHjlULea6D0LghxdJ5mWP/SXKE+Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761723563; c=relaxed/simple;
-	bh=/JFh+3LPy60YlqQVGEPu58K5Q/bIPhCMyyVlguHwuqs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=nrGQKTNnQj96DlAPyZPTKBaGBAATEQE2k32sMRnW++e4z4mXaIB5suNbxW3T7twUvUODVtid5eqVhcxajzBIr2V7S5QH0cc43Wc4dF4jmYSwHF4dwyjfTUGtPkorzu1hgUZybJRbyzerPhv7icX3Z5FrdChkL6IkR+dPNvT5dks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=yzYlXslg; arc=none smtp.client-ip=74.125.224.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-yx1-f42.google.com with SMTP id 956f58d0204a3-63e19642764so7143290d50.1
-        for <stable@vger.kernel.org>; Wed, 29 Oct 2025 00:39:20 -0700 (PDT)
+	s=arc-20240116; t=1761723702; c=relaxed/simple;
+	bh=vQSgQhpSPXq7YicGVSd0ynrLW5738W31iJ/iUBFQPSQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=kd/nlZ9YwyR3DXBkSROvDZBEZhRZyIcyCYl2mBUosMihgZrGwoFX+Ha4daid0zbaGEyeNI/DPV5qQTxL/o6UGGUZ4c+EANT7lGXYS1LxD9a/7hKIzBwyxeFrUpQTYzo1+o0dnzkO2c6XPuyzl2C8CsW5Z0CBa4wBPPnjfi+WqZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Sgf3Bxev; arc=none smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-290ab379d48so64999125ad.2
+        for <stable@vger.kernel.org>; Wed, 29 Oct 2025 00:41:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1761723560; x=1762328360; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=WDSTvm6I7Z9dV0aw5wR/XsQb+iBxI8+PuZvOk4XUwuI=;
-        b=yzYlXslg/wCm+RHtuA1stQdduKfd2DgpUbqTeaRhMi4UpqDuNyx5nYKA2yMtvDRrAg
-         SasEVxZwC78I2yqD6RtzS03WKjFfKYksZcdfq/MHRAXPrHdn5bJTzmJjE0ogFTjMkfST
-         ltSviBTI7LCbGIj5QiGoLpzUfik21DZosDICQI4hCym5/Bpy9K8uZoephqtQPqSjUYqZ
-         WsHJVuWvh43XO7bBQVz/Xim4rpawn/JdZJ6lEHTOThaqFerLApmeqi0G94S5LZjafZR5
-         d+8VRZZbJHnfyBGUaBRgpBCAR7n5/jYFG/P5C8HI0V/YbNOmm2b3WjsqlmpgJ2lY2y3q
-         QTGA==
+        d=gmail.com; s=20230601; t=1761723700; x=1762328500; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=qgvDUTgmwUbybBiqh6wci1MBiFa+WkYYBAxgF2SWiwA=;
+        b=Sgf3BxevDX/53PJQwR6IpjVyabiMVmP/SxtSoawkI90iHgMd3jOybNIihdS47yLY/Y
+         +cC3poZDv+IUy6Cuh71ayjcf5QT/qSxNx6j01x3Ze8PHac7Zp8LjdB0VIy3t1kql4FxD
+         uLe3JD/M75kyyOOkDwg8datHGwCW29RDdje2lu9L/PF2mQelk6PG50knIpryktv8BixC
+         X9IFzdNgHivJ0vkjHk2CDBzqw7urYaBojmZX6OvgrJHg+jN5/DHjWj7o30joH2gEYa6P
+         RW6i+y0fJENk5+YErUTj/bjWa/cuVJcubkq3QqCXekeMSVQ6k0sllxf3gHMraphHt6ff
+         tQqw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761723560; x=1762328360;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=WDSTvm6I7Z9dV0aw5wR/XsQb+iBxI8+PuZvOk4XUwuI=;
-        b=ZAdtm+Ufb9gvWzWgXJv6WrUNfjk/lGaXkSjDxKNf6UJbQ3AANOPZ7pGtTbR6h/Oq/K
-         mt+ZVtR99nXDEdk07gQZt70+/L7tFcRnV6QyezDP2h8MG+aANIWq0rHpRBfITR0c2YwS
-         EkT0amMF8f+lDnETApyAl+bLuLPuytwWDiJA1wuXpwj6dTU+r3SB92gjcWzZe0BQQZLT
-         g+Ee0PXW9hvdWE2qSrkCbdhLX76A2VZQVdMsnxAr8iCgrnQnEZCHUIcymZ+aY02xn7OI
-         1WzL5/cd9z24n64dbXMeccJ2enbnkdl7IVhdn3EgkNkWkOWoVFkgzfqA1k9fFLAvmz6Q
-         3u7A==
-X-Gm-Message-State: AOJu0Yy6oc/66NblZ9R993DbSLxZ1SLQP51B6UdwD7UhRm7ddV1q6R57
-	50AkQQDyp7++0IpZDmRBlGKXJudOSBHcKwV+9AhGygrSszdcCUUjd278UD8R4QNTQbBYV9LN70A
-	lZwMveBCNwOuTmTe6hw2cWRQUGA+v1SN8fwo2CXThmw==
-X-Gm-Gg: ASbGncs+zl/IQ2c0T6+waFexgW80r0ELnkjZXr33TRzQHFMu2jk4pp62BShUzxnXDry
-	lRT9SbH9jKYSE6NUJ0WbuFsgLIr7iqXCMouAHpRHhPWRCitaiwEfa1PSNPpIpz8SnyC729FVsEb
-	LC49Q4wiZbqemvr4/HpnzpXBqCuG1eFrOR06R78vlVngCrQgXp6okWy0sqg4R8o8qffbiloQSXX
-	jK/8UBDzWoZZllMexJw+WWZIy8/d/I33VRCf0QgMnZFzSJwSpG4wwjPD9Pr0VwIxlxMK1Bgf+Hf
-	vMu98o1M6hxff9Gar0tRIj00mZWm20yBrFO2M/LioFv6t+G0mQ==
-X-Google-Smtp-Source: AGHT+IFq3zS3MIyOP+iAVuTj7vgZAAlt1EuA/KihYBvKksT4hVlGzpDdRH7eFvRWtTh03xV4G8vGdBBCEp4TqjS3jeY=
-X-Received: by 2002:a05:690c:e0a:b0:784:a6d4:dc21 with SMTP id
- 00721157ae682-78628f9f39cmr18988517b3.52.1761723560103; Wed, 29 Oct 2025
- 00:39:20 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1761723700; x=1762328500;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=qgvDUTgmwUbybBiqh6wci1MBiFa+WkYYBAxgF2SWiwA=;
+        b=gnIPnCAaw4cH0rlanzWczFCsmVkp+LHI3xiGLUDze4DSdocMneOZfWuWH0uqjGqV37
+         0UhP13fopAF7gyvBC9a1XjBWYvR4oqugRFZ8VaCaeHoHWMk8PFjdfMcKwymzv8bkF19W
+         chw2ONosRo+ryBdZviTTSaB8hVizml5qJPpLYjQY/Io9NDvUezmmlqCbJWngWE8CItHW
+         6IJ2y6hW9zfQU9QX9VTy+cFm7uG5l38vg3SPCxDGjYYIvIPjz4pZZUdygm/9zkjLlKyU
+         dJCRMJgua4En0OBPu3eXzi9wB54hHasOWF+1B7FhJhI6LY6cxkTvd/oeFEPUcCoWhpMq
+         kI0w==
+X-Forwarded-Encrypted: i=1; AJvYcCX9xQ2HCdIE8vfTgn7bY2HXwO5bjjdMGjQ1ODLQ5848c+aA/QQzK/X8pdSkW+x3R0tXk9YYG2g=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxMFb4KLzIpJYkGatF9hxpNUQtLub44aPr/h8d9rgLJ00njFSAV
+	Y9G6T99zzMx37Zqg0TPCQQTSYUg51OJURNFAhPzyqsZafSgX0LG6vsu9
+X-Gm-Gg: ASbGncuuJgdXthzSemlZYZwhK7+brIjeT5iyzhKaCkVwQrVT0knNY9y4r74IZQlf8aT
+	w5WUC3t7UiyZqw1MtOtFLwoCk/f0pR6cMiFwuWj5t603cHG1A4JFrbOkiKa33tYPcb752FtQfoB
+	a7aFMlbCFXvUFeRNCgpL5qkvo9B29LL5f+WWkL0xOZTM5PMguxD7Ljx3xLT0bHVviz4eIiRd3Y0
+	G+oX0hT0W4I06MPQzx4r06DgzCdB8PMR8px3X5O5rBOhAy7IRGOax7b0AjRgYTDgh6kkk8dtfrf
+	vBkYJrHemzNU2Ihj62h9aV4+d2uS4wpu6kzpCpTx6bl3Zuz/r5XKVbepmGzgA/JwaZxLWz6tKCv
+	MUQpdlb8Tu2nGtkgcQjg9UFIZ/Jijkcys/9zI5UBVWyakxIhCZbmAsquYvpI6QSLaRmT6RHRPiM
+	/52q2E5Sy/vuc3o9l1pPh1ng==
+X-Google-Smtp-Source: AGHT+IEAqSeL49I0O53+T8EYYG0n4Be/S9PQxC/LftWWFjftQd/hhQp8QU08hja4QrlQTuil7K/59Q==
+X-Received: by 2002:a17:903:234c:b0:246:4077:4563 with SMTP id d9443c01a7336-294def2da22mr23417225ad.34.1761723699803;
+        Wed, 29 Oct 2025 00:41:39 -0700 (PDT)
+Received: from localhost.localdomain ([124.77.218.104])
+        by smtp.googlemail.com with ESMTPSA id 98e67ed59e1d1-33fed706449sm14495814a91.2.2025.10.29.00.41.34
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Wed, 29 Oct 2025 00:41:39 -0700 (PDT)
+From: Miaoqian Lin <linmq006@gmail.com>
+To: Inki Dae <inki.dae@samsung.com>,
+	Jagan Teki <jagan@amarulasolutions.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Andrzej Hajda <andrzej.hajda@intel.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Robert Foss <rfoss@kernel.org>,
+	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+	Jonas Karlman <jonas@kwiboo.se>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Kaustabh Chakraborty <kauschluss@disroot.org>,
+	dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org
+Cc: linmq006@gmail.com,
+	stable@vger.kernel.org
+Subject: [PATCH] drm/bridge: samsung-dsim: Fix device node reference leak in samsung_dsim_parse_dt
+Date: Wed, 29 Oct 2025 15:41:20 +0800
+Message-Id: <20251029074121.15260-1-linmq006@gmail.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251027183508.963233542@linuxfoundation.org>
-In-Reply-To: <20251027183508.963233542@linuxfoundation.org>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Wed, 29 Oct 2025 13:09:08 +0530
-X-Gm-Features: AWmQ_bnvWTk6H8dKB1rQNe6WlieEdRYXn2d2BWlHBWPEkwzDm1pTtkWgdvJlqao
-Message-ID: <CA+G9fYtiz2b=BQOjCFKT=m6Cb08R05t3w881DMa8R6k6Mot6pw@mail.gmail.com>
-Subject: Re: [PATCH 5.4 000/224] 5.4.301-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, 
-	achill@achill.org, sr@sladewatkins.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Tue, 28 Oct 2025 at 00:10, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 5.4.301 release.
-> There are 224 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Wed, 29 Oct 2025 18:34:15 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-=
-5.4.301-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-5.4.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
->
+The function samsung_dsim_parse_dt() calls of_graph_get_endpoint_by_regs()
+to get the endpoint device node, but fails to call of_node_put() to release
+the reference when the function returns. This results in a device node
+reference leak.
 
+Fix this by adding the missing of_node_put() call before returning from
+the function.
 
-Results from Linaro=E2=80=99s test farm.
-No regressions on arm64, arm, x86_64, and i386.
+Found via static analysis and code review.
 
-Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+Fixes: 77169a11d4e9 ("drm/bridge: samsung-dsim: add driver support for exynos7870 DSIM bridge")
+Cc: stable@vger.kernel.org
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+---
+ drivers/gpu/drm/bridge/samsung-dsim.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-NOTE:
-As others reported the following build warnings noticed 5.4.301-rc1.
+diff --git a/drivers/gpu/drm/bridge/samsung-dsim.c b/drivers/gpu/drm/bridge/samsung-dsim.c
+index eabc4c32f6ab..1a5acd5077ad 100644
+--- a/drivers/gpu/drm/bridge/samsung-dsim.c
++++ b/drivers/gpu/drm/bridge/samsung-dsim.c
+@@ -2086,6 +2086,7 @@ static int samsung_dsim_parse_dt(struct samsung_dsim *dsi)
+ 		if (lane_polarities[1])
+ 			dsi->swap_dn_dp_data = true;
+ 	}
++	of_node_put(endpoint);
+ 
+ 	return 0;
+ }
+-- 
+2.39.5 (Apple Git-154)
 
-## Build log
-In file included from include/linux/list.h:9,
-                 from include/net/tcp.h:19,
-                 from net/ipv4/tcp_output.c:40:
-net/ipv4/tcp_output.c: In function 'tcp_tso_should_defer':
-include/linux/kernel.h:843:43: warning: comparison of distinct pointer
-types lacks a cast
-  843 |                 (!!(sizeof((typeof(x) *)1 =3D=3D (typeof(y) *)1)))
-      |                                           ^~
-
-## Build
-* kernel: 5.4.301-rc1
-* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-=
-rc.git
-* git commit: 4e89a6191515a2237a64d19f93bb359dc7f5f573
-* git describe: v5.4.300-225-g4e89a6191515
-* test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.4.y/build/v5.4.3=
-00-225-g4e89a6191515
-
-## Test Regressions (compared to v5.4.299-82-ge1a2ff52265e)
-
-## Metric Regressions (compared to v5.4.299-82-ge1a2ff52265e)
-
-## Test Fixes (compared to v5.4.299-82-ge1a2ff52265e)
-
-## Metric Fixes (compared to v5.4.299-82-ge1a2ff52265e)
-
-## Test result summary
-total: 39799, pass: 30266, fail: 2455, skip: 6960, xfail: 118
-
-## Build Summary
-* arc: 5 total, 5 passed, 0 failed
-* arm: 131 total, 131 passed, 0 failed
-* arm64: 31 total, 29 passed, 2 failed
-* i386: 18 total, 13 passed, 5 failed
-* mips: 25 total, 25 passed, 0 failed
-* parisc: 3 total, 0 passed, 3 failed
-* powerpc: 26 total, 26 passed, 0 failed
-* riscv: 9 total, 3 passed, 6 failed
-* s390: 6 total, 6 passed, 0 failed
-* sh: 10 total, 10 passed, 0 failed
-* sparc: 6 total, 6 passed, 0 failed
-* x86_64: 27 total, 27 passed, 0 failed
-
-## Test suites summary
-* boot
-* kselftest-arm64
-* kselftest-breakpoints
-* kselftest-capabilities
-* kselftest-clone3
-* kselftest-core
-* kselftest-cpu-hotplug
-* kselftest-exec
-* kselftest-fpu
-* kselftest-futex
-* kselftest-intel_pstate
-* kselftest-kcmp
-* kselftest-livepatch
-* kselftest-membarrier
-* kselftest-mincore
-* kselftest-mqueue
-* kselftest-openat2
-* kselftest-ptrace
-* kselftest-rseq
-* kselftest-rtc
-* kselftest-sigaltstack
-* kselftest-size
-* kselftest-timers
-* kselftest-tmpfs
-* kselftest-tpm2
-* kselftest-user_events
-* kselftest-vDSO
-* kselftest-x86
-* kunit
-* lava
-* libhugetlbfs
-* log-parser-boot
-* log-parser-build-clang
-* log-parser-build-gcc
-* log-parser-test
-* ltp-capability
-* ltp-commands
-* ltp-containers
-* ltp-controllers
-* ltp-crypto
-* ltp-cve
-* ltp-dio
-* ltp-fcntl-locktests
-* ltp-fs
-* ltp-fs_bind
-* ltp-fs_perms_simple
-* ltp-hugetlb
-* ltp-math
-* ltp-mm
-* ltp-nptl
-* ltp-pty
-* ltp-sched
-* ltp-smoke
-* ltp-syscalls
-* ltp-tracing
-* perf
-* rcutorture
-
---
-Linaro LKFT
-https://lkft.linaro.org
 
