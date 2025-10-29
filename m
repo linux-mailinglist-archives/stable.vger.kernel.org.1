@@ -1,63 +1,92 @@
-Return-Path: <stable+bounces-191602-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191603-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D12E0C1A649
-	for <lists+stable@lfdr.de>; Wed, 29 Oct 2025 13:52:49 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C7B3C1A6ED
+	for <lists+stable@lfdr.de>; Wed, 29 Oct 2025 13:56:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 18F24189EBB8
-	for <lists+stable@lfdr.de>; Wed, 29 Oct 2025 12:46:51 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id D9D5D359549
+	for <lists+stable@lfdr.de>; Wed, 29 Oct 2025 12:56:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E6B033F387;
-	Wed, 29 Oct 2025 12:25:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D11C33F8A7;
+	Wed, 29 Oct 2025 12:34:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yandex-team.ru header.i=@yandex-team.ru header.b="vYWRpJ+4"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YlTsM2Mb"
 X-Original-To: stable@vger.kernel.org
-Received: from forwardcorp1b.mail.yandex.net (forwardcorp1b.mail.yandex.net [178.154.239.136])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86A80354715;
-	Wed, 29 Oct 2025 12:25:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.136
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 806EB3385B8
+	for <stable@vger.kernel.org>; Wed, 29 Oct 2025 12:34:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761740736; cv=none; b=gO+ngXOoEqNdmInErChQXfRQHQS64j5jNtk6zy7cZrY7EVpOVsjT4QlS7x+UjOe3j9IeFdjkrIqIAem6yODMDRwhvdROOMZkKkivz55ZAO905BdA6FPsJA4LT1GsKPepwKg2pB7PpSZkVAxqYDXLBRZ9ydy9ovg66oq4TjG+vXk=
+	t=1761741282; cv=none; b=qgeN4pFoK0GXjXQKcyY+IJSsOcSJtuZyLAJJHPai7UDXubkjJQwAed4mLjb3hoXFIxglNOTeLODUoX8TQeE34Z2c/zVXZkE+THQ7+0hjD9t1PiwXNfWCQfvpZ3efMkgVgcp2mFXGowdNSbbc8K0xn3dqvPZXiArG+eSUyPrstM8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761740736; c=relaxed/simple;
-	bh=/+D8e3w7keuyHVljmO9v+nZYyyvmPGewctw3TwK4ofE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dBvq82L5Lf1bLQDzCCxpJesf5gdr6l05GKqIlro1xVgm4EWlINwZCM9lvUR5JuKZWJmyd/nUYfQ8L2UZ2ZMDleMyTp/EWVExNaY+hgkZbdMjnxKTLM5aTiCZMa9tOymEZWcqBwMuJAgrqmZl0cr/NrhSqxdARXMpphce6cnVLHI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex-team.ru; spf=pass smtp.mailfrom=yandex-team.ru; dkim=pass (1024-bit key) header.d=yandex-team.ru header.i=@yandex-team.ru header.b=vYWRpJ+4; arc=none smtp.client-ip=178.154.239.136
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex-team.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex-team.ru
-Received: from mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net (mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net [IPv6:2a02:6b8:c0c:7888:0:640:a8fd:0])
-	by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id 2C11280DF4;
-	Wed, 29 Oct 2025 15:25:29 +0300 (MSK)
-Received: from i111667286.ld.yandex.ru (unknown [2a02:6bf:8080:2::1:3d])
-	by mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net (smtpcorp/Yandex) with ESMTPSA id PPdUA30G0Cg0-ZuFDoAIf;
-	Wed, 29 Oct 2025 15:25:28 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
-	s=default; t=1761740728;
-	bh=1fQKQ83XfcLNxwtPZTJ+LlUequJp8085Dk/31B/lnGQ=;
-	h=Message-ID:Date:Cc:Subject:To:From;
-	b=vYWRpJ+4vy8S0VLwqkSFBm4h+wJ1vAGn/Di0QtEcBvEv70EOyOQzbHKgp1PcRBxxz
-	 9HtV7PZ+M41O5m+HJDo/5J9PFcPPYEMXnPAQmYgWRA+aCqnSdb6P3PvhWcOj6WB50S
-	 HePfX8FaWzIvxI6jH4aj+hRRJ0Yq/dtK+3UAqQGw=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net; dkim=pass header.i=@yandex-team.ru
-From: Andrey Troshin <drtrosh@yandex-team.ru>
-To: stable@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Andrey Troshin <drtrosh@yandex-team.ru>,
-	Ian Abbott <abbotti@mev.co.uk>,
-	H Hartley Sweeten <hsweeten@visionengravers.com>,
-	linux-staging@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org
-Subject: [PATCH 5.10] comedi: pcl726: Prevent invalid irq number
-Date: Wed, 29 Oct 2025 15:25:25 +0300
-Message-ID: <20251029122525.2078-1-drtrosh@yandex-team.ru>
-X-Mailer: git-send-email 2.51.0.windows.2
+	s=arc-20240116; t=1761741282; c=relaxed/simple;
+	bh=MXV1J4/+oon+M/oX4IvFjQMNXVSF1SduLg0p6csa7Sk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=NNIZHkwT4GWhlt6x8nlh7et2hjNyWAL5dlc3tOLtk3FHniCr3K9ZR6wboEy7LzQiiMSmraD8Fm3kx+PPcY/XupMP6rmGvMMwbDgfdmzYthNNR9StaQTYogTbKIA1bIHMRMhSqkEmaEG9APmkWmr3ioqs2x3oCTyPjkCnM0QqEvg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YlTsM2Mb; arc=none smtp.client-ip=209.85.210.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-7a4176547bfso4099329b3a.2
+        for <stable@vger.kernel.org>; Wed, 29 Oct 2025 05:34:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1761741280; x=1762346080; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=mLbzXZCnL4JaNq6mgAHYUsHmpe2Hmi5djVf9Q/V9xNE=;
+        b=YlTsM2MbR9EeECgQHr8kew7suP6O6K5qbkyH953T16wNEaAsdkyw1xC3Qah/vaKFRS
+         uyPRip5w2rqcd2yRBia98hutLBpQ0PoSOSbX2UQlPjIxdVqEmmiTypqaHR3QZfZcVuwe
+         vAuJXF2j2MdlZBTDnjwpkdSO1u8/bGYFnd6r33yMgFJ+IOAtSkQ0W9NwmMMb5bPwKUBq
+         Ap1FFQc7VYsoTNNoajcmeNrfIMhaCeJTUUD/C471jonCD8/nFIunNDJDGKS78SBH409u
+         FhD/HFFeo6UV4Mn5UUGVXE2OBYn4VhrcDp68yTn4zObfEj7XVy9V4FB3P5eS+Yi6rE9a
+         g9yQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761741280; x=1762346080;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=mLbzXZCnL4JaNq6mgAHYUsHmpe2Hmi5djVf9Q/V9xNE=;
+        b=T8PdA6nx58SmS3fUq6QtmmgEidOQGBCCRkqobcCO5HzL4PYqu1h7FtGS3DJM7OoBMc
+         mPLOyq+6++4IrnF0GNacP1j31Rbo3jlnNeh3Nx9PnFQo9FuiHMxHs8Omf0Rdk6rfUgs/
+         FoYVmb4cLdFxraDu8u2aoOaZY7T+V+lfW9F+ZKAfgsaGx7JQoCxHeJtN3+Qv5whaH0Dy
+         lVkWExUZ12fqR7qRzaFbZBZ+3nVERGwLrFYVXNaYBClGEtNJy2x1zSqpG0I0Y5BranNV
+         UFbat0/Smf1bqx+pYiG2QzoVPUHNcb1xqHcQnCJVOre3U/utlasyRh35P528me/DKoKL
+         +18g==
+X-Forwarded-Encrypted: i=1; AJvYcCUxhnOFnZbfqgUuThjFZoG2wz5paTdC6GrcEt87Jj//AdP10quCPhyRbdT8GMd63jtbOM+IOA8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz/Ctib+NS/v4iLY0m1oBxpcfYJsF5p/XJXmh1oDAmaXCSi+hg2
+	og2CqxcqN5GP3fSm7kwnRSdumVWf7ljlCjCXPl1SbjwIvy2yr5W7XgXC
+X-Gm-Gg: ASbGncsdTkvQFM/UhvASrfAEvndxB6vX2tOek4FBWcS6ZbtL92qWcPvVivEFj8cF9jO
+	x/CeSSgMUb7T/9cnuJnnAXL2FZlKH3WTTsLEBiF2H5I1stq5AV9RIN/iLK11flReACYp9+TJZwT
+	H+nFP7NIFVrDdToXXbgjwD1sUHU1U5Q1ReLZnPkYbpu/nsa6d5D1TYp0OOQXx1X/5IxfY4eDc57
+	RFkhSjmlTGN3Bqnk3wahhC8PoTH+O5iOV/HjzckUttZaXCJ4E7PyfgDWZ1ZqqIWLFTENI/vUiiV
+	iFRSNtCJujQSOjGvPeGrgWLmiHa6AJHBtjy4cFcIFg2V2jiVPttG24J5Jf8WQSJbkJRCiYwtkDi
+	OwvHB3GIyKpNok4vd4PLrHs4YcWmuu4Bwh/yV8+ZUwwsBQnECx4UeAyYZ+we8uAKSTkWKyeUg6Z
+	q5Vi8vADUXIY5prana1w0flQ==
+X-Google-Smtp-Source: AGHT+IF5zDqYY2uyyaccHKjplnekkK2/6d+ShgjS5kIKOgPfbgi53OKTaTURa3EPvj0xY3duZVdWCQ==
+X-Received: by 2002:a05:6a00:b51:b0:7a2:7458:7fc8 with SMTP id d2e1a72fcca58-7a4e2dfbfc0mr3441055b3a.13.1761741279605;
+        Wed, 29 Oct 2025 05:34:39 -0700 (PDT)
+Received: from localhost.localdomain ([124.77.218.104])
+        by smtp.googlemail.com with ESMTPSA id d2e1a72fcca58-7a414087cdbsm15206397b3a.64.2025.10.29.05.34.36
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Wed, 29 Oct 2025 05:34:39 -0700 (PDT)
+From: Miaoqian Lin <linmq006@gmail.com>
+To: Vinod Koul <vkoul@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Jyothi Kumar Seerapu <quic_jseerapu@quicinc.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Dmitry Baryshkov <lumag@kernel.org>,
+	linux-arm-msm@vger.kernel.org,
+	dmaengine@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: linmq006@gmail.com,
+	stable@vger.kernel.org
+Subject: [PATCH] dma: qcom: gpi: Fix memory leak in gpi_peripheral_config()
+Date: Wed, 29 Oct 2025 20:34:19 +0800
+Message-Id: <20251029123421.91973-1-linmq006@gmail.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -66,59 +95,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Edward Adam Davis <eadavis@qq.com>
+Fix a memory leak in gpi_peripheral_config() where the original memory
+pointed to by gchan->config could be lost if krealloc() fails.
 
-commit 96cb948408b3adb69df7e451ba7da9d21f814d00 upstream.
+The issue occurs when:
+1. gchan->config points to previously allocated memory
+2. krealloc() fails and returns NULL
+3. The function directly assigns NULL to gchan->config, losing the
+   reference to the original memory
+4. The original memory becomes unreachable and cannot be freed
 
-The reproducer passed in an irq number(0x80008000) that was too large,
-which triggered the oob.
+Fix this by using a temporary variable to hold the krealloc() result
+and only updating gchan->config when the allocation succeeds.
 
-Added an interrupt number check to prevent users from passing in an irq
-number that was too large.
+Found via static analysis and code review.
 
-If `it->options[1]` is 31, then `1 << it->options[1]` is still invalid
-because it shifts a 1-bit into the sign bit (which is UB in C).
-Possible solutions include reducing the upper bound on the
-`it->options[1]` value to 30 or lower, or using `1U << it->options[1]`.
-
-The old code would just not attempt to request the IRQ if the
-`options[1]` value were invalid.  And it would still configure the
-device without interrupts even if the call to `request_irq` returned an
-error.  So it would be better to combine this test with the test below.
-
-Fixes: fff46207245c ("staging: comedi: pcl726: enable the interrupt support code")
-Cc: stable <stable@kernel.org> # 5.13+
-Reported-by: syzbot+5cd373521edd68bebcb3@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=5cd373521edd68bebcb3
-Tested-by: syzbot+5cd373521edd68bebcb3@syzkaller.appspotmail.com
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-Reviewed-by: Ian Abbott <abbotti@mev.co.uk>
-Link: https://lore.kernel.org/r/tencent_3C66983CC1369E962436264A50759176BF09@qq.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-[Andrey Troshin: backport fix from drivers/comedi/drivers/pcl726.c to drivers/staging/comedi/drivers/pcl726.c]
-Signed-off-by: Andrey Troshin <drtrosh@yandex-team.ru>
+Fixes: 5d0c3533a19f ("dmaengine: qcom: Add GPI dma driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
 ---
-Backport fix for CVE-2025-39685
-Link: https://nvd.nist.gov/vuln/detail/CVE-2025-39685
----
- drivers/staging/comedi/drivers/pcl726.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/dma/qcom/gpi.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/staging/comedi/drivers/pcl726.c b/drivers/staging/comedi/drivers/pcl726.c
-index 64eb649c9813..f26d7f07d749 100644
---- a/drivers/staging/comedi/drivers/pcl726.c
-+++ b/drivers/staging/comedi/drivers/pcl726.c
-@@ -327,7 +327,8 @@ static int pcl726_attach(struct comedi_device *dev,
- 	 * Hook up the external trigger source interrupt only if the
- 	 * user config option is valid and the board supports interrupts.
- 	 */
--	if (it->options[1] && (board->irq_mask & (1 << it->options[1]))) {
-+	if (it->options[1] > 0 && it->options[1] < 16 &&
-+	    (board->irq_mask & (1U << it->options[1]))) {
- 		ret = request_irq(it->options[1], pcl726_interrupt, 0,
- 				  dev->board_name, dev);
- 		if (ret == 0) {
+diff --git a/drivers/dma/qcom/gpi.c b/drivers/dma/qcom/gpi.c
+index 8e87738086b2..8908b7c71900 100644
+--- a/drivers/dma/qcom/gpi.c
++++ b/drivers/dma/qcom/gpi.c
+@@ -1605,14 +1605,16 @@ static int
+ gpi_peripheral_config(struct dma_chan *chan, struct dma_slave_config *config)
+ {
+ 	struct gchan *gchan = to_gchan(chan);
++	void *new_config;
+ 
+ 	if (!config->peripheral_config)
+ 		return -EINVAL;
+ 
+-	gchan->config = krealloc(gchan->config, config->peripheral_size, GFP_NOWAIT);
+-	if (!gchan->config)
++	new_config = krealloc(gchan->config, config->peripheral_size, GFP_NOWAIT);
++	if (!new_config)
+ 		return -ENOMEM;
+ 
++	gchan->config = new_config;
+ 	memcpy(gchan->config, config->peripheral_config, config->peripheral_size);
+ 
+ 	return 0;
 -- 
-2.34.1
+2.39.5 (Apple Git-154)
 
 
