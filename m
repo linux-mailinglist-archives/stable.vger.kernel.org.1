@@ -1,157 +1,202 @@
-Return-Path: <stable+bounces-191654-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191655-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFF74C1BEF8
-	for <lists+stable@lfdr.de>; Wed, 29 Oct 2025 17:08:18 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67C7CC1BDE7
+	for <lists+stable@lfdr.de>; Wed, 29 Oct 2025 16:59:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 08F645889B9
-	for <lists+stable@lfdr.de>; Wed, 29 Oct 2025 15:52:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3D32618985C6
+	for <lists+stable@lfdr.de>; Wed, 29 Oct 2025 15:59:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6594634AB06;
-	Wed, 29 Oct 2025 15:50:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2D3D33F399;
+	Wed, 29 Oct 2025 15:58:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ZjqMVHQJ"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XKZffGQG"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79CE533F36A
-	for <stable@vger.kernel.org>; Wed, 29 Oct 2025 15:50:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ECD433B6FE
+	for <stable@vger.kernel.org>; Wed, 29 Oct 2025 15:58:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761753048; cv=none; b=YZeHYZ3aPxSXhty0NOV5Hdt53cXovLO2ankbzMG+ezhzzHOvZ11zuS2Snn3l3hDvWpQNlXYnHIXw0p9mHHHjf0ZlccUfbNj+kFsSycqaMMTQA2q0G8fAPUKzyVW8y0cHDoIjgP8z7RjATRGAUP8m6gwGyuZXyqVw6n/rP/xcOzI=
+	t=1761753528; cv=none; b=IIn729EjY1Y83G47Rx4G3KrABsDKxELZYar+3S4ntBgexbX3SRDivkX3/3Xd5Phxd+dUJRoI7kqwAeDwILi5urLy2qBCUW7QkNrK9sxsyVc7GXgYBsZLiFDasaumTlXfNsCIWHcEjZNbe95u4P/9Yy3bP0HQtE25JaPqtVjLv3o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761753048; c=relaxed/simple;
-	bh=ncyOs1TIMWDEMQ93v3fXnyW45bIYqohnPx9bW18lEgQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kQxa2WQX38rI8Xk7KJuP5eU25BNYwHhITlWO6jOViR1Z3gFNrvxqHRJ9R2bjfg08WHuQzMUhCgc8Wcl3uZjAUbvqA4QlEZmNKNYAhRhMLS/G1KFrzPuX8OHzefez+bddWtbvIjmloe1RmCA4a2BnZQZ+6SkIlvxnmG8LwjRWmns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ZjqMVHQJ; arc=none smtp.client-ip=209.85.214.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-290d48e9f1fso217105ad.1
-        for <stable@vger.kernel.org>; Wed, 29 Oct 2025 08:50:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1761753046; x=1762357846; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=XLSSejf9Ov/rf2h/EN+lGG7qdblHRyA6VuFB4BW8g0E=;
-        b=ZjqMVHQJSLoxOFWz5cWBA5ZuWAIJ1g5Bbn+r1UNk0F8NvU+FIv8a3XV1xElXwQkfOY
-         NIbkhIP3jE9t7qvw50Rr1BLwhBzETXgW1iIAM/P7TYDqPvai4in0E5RDnJNaFxp2ZXtB
-         cwQvIbMcuby03uKtuxhu+Eo1hLOJj5yN7Gb4vlSj7zbhKR+3XXmVUkUMr2Iu4niseIdG
-         dfPO+E7ItHE6ZxRRMoLwpsDBM5E3pQ0dYR4QTwUVCmQ/TsWJa+ovMkW8lxCDcCRUYbPk
-         xOZSHCbsTstpg7fE0yrT7zdTH4MTHhKWlcgySC10/KKWGwNbSnsL/Pj8Z94J7YC0eJdi
-         GMUw==
+	s=arc-20240116; t=1761753528; c=relaxed/simple;
+	bh=NaCyzM+HLSFiiHYiUXG9X/gGn5OsbOBRqHIFVU3rtKA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=OMsjoZX2kbaoxgNqvfKxrHyF7FgVqtw9GsjTrVHWh6Mtf6dh5ziK5nvYgjCo3ke/ZvsvPvwtgGDuRZ+Acg26sO825xhEQmgSTx9LHwdwPJjjMOcATcUECIafJ+fgpleAHD8fq9x2rtodHpjBNeAlrNgmYvvNWypByJH8zqEV5vI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XKZffGQG; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1761753526;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=7MTuw2M4w+7icp1v9w2NHA+FuLFUpMlcJ3+bxm+0QA8=;
+	b=XKZffGQGhJqClwmSTixPteImEeLeM7r6bCTr9AnQKEz9cjMEcH5ELBWMlaRapAS2q5JiYO
+	jHyPyXGhS8aePMVz9CavS9k1XnyniAurRvCo3ywJaB/GNESIG0QXSF6oY5wDgr238h8/lw
+	IBI+XTm9GO9w4gILZ9GHJoZrdXyAEAA=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-104-fhM2Llz4PNyntH9y5U7Rzw-1; Wed, 29 Oct 2025 11:58:41 -0400
+X-MC-Unique: fhM2Llz4PNyntH9y5U7Rzw-1
+X-Mimecast-MFC-AGG-ID: fhM2Llz4PNyntH9y5U7Rzw_1761753519
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-475c422fd70so57883465e9.2
+        for <stable@vger.kernel.org>; Wed, 29 Oct 2025 08:58:40 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761753046; x=1762357846;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=XLSSejf9Ov/rf2h/EN+lGG7qdblHRyA6VuFB4BW8g0E=;
-        b=CatJC/r74ZAWzy1dRd+x2f+W6RHZhPHLSJBuj/mefRS/hWxqXCRSXpB6vs//V1H52q
-         1KKDOnAARZtxQdq/X0KbvBNEBJrRx6z598qcFytw7sPcOQEpMxT0jepeL+aQmDrgRES1
-         7m9ceEnlC/j+2I8lKb717+2rpjPrUpIhkyPCkRKToOsJ3Ou+rIXPCZwuRdvqSBsYBRFC
-         qpqG7kTiExOX2CZEv90r/ESpMkv0pAUtLg5WA3oPNJim1YcUNvVr7TUrzNSktEXnYll+
-         O6l2tGlk1/qX63RhLLQMEFGNiQ3XLZ8VUMm5TwBNuwMfRxZZq+Hj+BD+fNZ4frRhRwXM
-         WbFQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWtVrM88FaJkCkuZP1e7Ui1gnTJ0cJa9kkbn+t+IiBkIISeL82XNmkXzsZKWwZflDJnX1+ko2g=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxJ469NytBK0Jxngnf+2M10xxJpt7wcVn7P3ULzn/rIZD6/Xolw
-	cV1f2NytLUdiPbMGxV4pozXT6iyLiM4CYKsg7xDvOzenLxPNMIBiA2Spwom8ttl6vA==
-X-Gm-Gg: ASbGncu1pq3x4lAqkasa7aGUiKmVsM4jqaKPk7om5GJn1nJuFLhRqT61H4UkgTL4i/J
-	qxvCgiNNHSTFMfq7SDBv6NPJjBshVTW1ILZWykDzrVZCxrUdMo3XOV9AMD/AEXZgfsUI2zyRE2O
-	uiYUWju8UQ4tgCP4kBc5Zb1cTPIeGWh/jZ7bGzw7A7WkNSbUljbHtyojPV06zGJXC24SAsjcA3G
-	5CvK8JzxPRRRyYaXj9ldfTdg4yIf98fjP3Z4hgLB16LCzSOQK4F08YsPaKcILcEenfRBX21213O
-	iJzrGS93RB7NFkuZHezhPwK18O9ftBjImjNM6rAhuFvbUrRRCZSSO7eXOHp+99ZAd0i9D3aNJES
-	MNYmu/wYAYgp38jdZxze4EOHuhjdCscuHeOYwhSHH5/4Vc/VSmRP+JrR0K33jJR3GjWMXR3hh90
-	O203L63hTCia/h83AdwbCKtb48WA+RB7GSuYFH1UixW+dTgR8F9T6f
-X-Google-Smtp-Source: AGHT+IGKPx3RLfl6Sze4h/1XGsrW5jd0bsQlcCb4PLueO0OQww5kd42KAzAHDNBGaMp7vPiY2Mr9QA==
-X-Received: by 2002:a17:902:e783:b0:294:e585:1f39 with SMTP id d9443c01a7336-294e5852cfdmr2782045ad.14.1761753045254;
-        Wed, 29 Oct 2025 08:50:45 -0700 (PDT)
-Received: from google.com ([2a00:79e0:2e51:8:9ab7:9682:d77a:f311])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7a41403fa75sm15654178b3a.28.2025.10.29.08.50.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Oct 2025 08:50:44 -0700 (PDT)
-Date: Wed, 29 Oct 2025 08:50:39 -0700
-From: Isaac Manjarres <isaacmanjarres@google.com>
-To: David Hildenbrand <david@redhat.com>
-Cc: Mike Rapoport <rppt@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>, stable@vger.kernel.org,
-	kernel-team@android.com, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1] mm/mm_init: Fix hash table order logging in
- alloc_large_system_hash()
-Message-ID: <aQI3z0x0gZ3T1fij@google.com>
-References: <20251028191020.413002-1-isaacmanjarres@google.com>
- <dcceca48-bbdc-4318-8c07-94bb7c2f75ff@redhat.com>
+        d=1e100.net; s=20230601; t=1761753519; x=1762358319;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=7MTuw2M4w+7icp1v9w2NHA+FuLFUpMlcJ3+bxm+0QA8=;
+        b=oOCakxxC04a6tJiTumvh8YbQRyBnz9FyXfXUqdAts7w05eS5AKXDxpH+H6vxlYWF3B
+         Hzq4wGNtCbJlkFNMchWVmpaaNxP0T/e1mntCp6ZsGtHxQtm5iCQbwNcGwCIbPHmsJVuu
+         ZnTVh2lAPwiZfkaNIbXHZJowvaqr+khutlLOgOHcnREnqv43mnHivJ4K0153mHTvocx4
+         0fbjkyXn3ofiOJMTqkyYG72Ml6Y83dLqnwkOLZ+eApdyqY/C3f/nGoBgVqh7dcFlrnjZ
+         5j5z2CLHpA6wrGdT837H/RrVSmhKbtwvttr9GV2PX/zLcMZ6mbolZrC5H9/JEyqZAFDv
+         Zd+w==
+X-Forwarded-Encrypted: i=1; AJvYcCVEARklWv1/ENOxMrSLGQYFcUDRHWXO3vaOLaeasT8XrJpszjbe/Zb/0O7PG6rAHZI9KHmMXYU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxyZPE7uV2o9i3e9yfgUw/fHw3x2iJxk3qYhtDjVi+MbVyENwyZ
+	whf5kdS7/yoNVVqeQu1wYsUyDpOpeK6eursc+EWsX60utA1JUPtfdai+wzmmzK/Kw2R90hy8/Pj
+	YB/QncSxVZ5l8hbgKPMH8q+iT+4Jr/XlAz22x0Kt2cd2ZL3NumEgD6b0JtQ==
+X-Gm-Gg: ASbGncsrTu12lx1FSRPnG5EepWZRkjY7zPBrdxHSd6oZym5hSBrUsipbJ0AYJrFBSo/
+	ortixoFYpW6C3EOPm2IoBTQoyV1hZqBm4x2d8tiAzS1SMU4n6JcRAQ4i/gJ7cxc4hhgj8sOKoao
+	BSsCdTrGyXCQwwchB5ZgJ2hhPhEMrGmaZJBSQa9BMAekectSI9K1T1E7zdVUk5h5VK31NRg3hLJ
+	un9GAkflhsTJjkqCYQBuS2ThFMAvtc26ODiH5k5nQQdlHCqBrIgS5BgItGCmSjyW5eHbH3i9UrE
+	EsOWAQisE2qompsAbUU7gUI8LC9LQqhF8QBJ2/WWCB/f+L+5sdF2cOftjBte5qnl1X70ExPGioY
+	cPvXA1/FNwgZkRjyZEPG1MQ==
+X-Received: by 2002:a05:600c:a087:b0:477:58:7cf4 with SMTP id 5b1f17b1804b1-4771e16e3a3mr32441745e9.4.1761753519398;
+        Wed, 29 Oct 2025 08:58:39 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFBUfbQXjSUBfZ5yGMdw13PwBGP5RPGg4Gjem7sfzzIH+QoMvfQEwhbQ98KDi2IbIS3+g/TEQ==
+X-Received: by 2002:a05:600c:a087:b0:477:58:7cf4 with SMTP id 5b1f17b1804b1-4771e16e3a3mr32441575e9.4.1761753518936;
+        Wed, 29 Oct 2025 08:58:38 -0700 (PDT)
+Received: from [10.32.64.156] (nat-pool-muc-t.redhat.com. [149.14.88.26])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-429952df682sm26817699f8f.43.2025.10.29.08.58.38
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 29 Oct 2025 08:58:38 -0700 (PDT)
+Message-ID: <b13bf4ce-a6fb-491e-a8c7-ecce0d4d87d2@redhat.com>
+Date: Wed, 29 Oct 2025 16:58:37 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <dcceca48-bbdc-4318-8c07-94bb7c2f75ff@redhat.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1] mm/mm_init: Fix hash table order logging in
+ alloc_large_system_hash()
+To: Isaac Manjarres <isaacmanjarres@google.com>
+Cc: Mike Rapoport <rppt@kernel.org>, Andrew Morton
+ <akpm@linux-foundation.org>, stable@vger.kernel.org,
+ kernel-team@android.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20251028191020.413002-1-isaacmanjarres@google.com>
+ <dcceca48-bbdc-4318-8c07-94bb7c2f75ff@redhat.com>
+ <aQI3z0x0gZ3T1fij@google.com>
+From: David Hildenbrand <david@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <aQI3z0x0gZ3T1fij@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Wed, Oct 29, 2025 at 11:03:18AM +0100, David Hildenbrand wrote:
-> On 28.10.25 20:10, Isaac J. Manjarres wrote:
-> > When emitting the order of the allocation for a hash table,
-> > alloc_large_system_hash() unconditionally subtracts PAGE_SHIFT from
-> > log base 2 of the allocation size. This is not correct if the
-> > allocation size is smaller than a page, and yields a negative value
-> > for the order as seen below:
-> > 
-> > TCP established hash table entries: 32 (order: -4, 256 bytes, linear)
-> > TCP bind hash table entries: 32 (order: -2, 1024 bytes, linear)
-> > 
-> > Use get_order() to compute the order when emitting the hash table
-> > information to correctly handle cases where the allocation size is
-> > smaller than a page:
-> > 
-> > TCP established hash table entries: 32 (order: 0, 256 bytes, linear)
-> > TCP bind hash table entries: 32 (order: 0, 1024 bytes, linear)
-> > 
-> > Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-> > Cc: stable@vger.kernel.org # v5.4+
+On 29.10.25 16:50, Isaac Manjarres wrote:
+> On Wed, Oct 29, 2025 at 11:03:18AM +0100, David Hildenbrand wrote:
+>> On 28.10.25 20:10, Isaac J. Manjarres wrote:
+>>> When emitting the order of the allocation for a hash table,
+>>> alloc_large_system_hash() unconditionally subtracts PAGE_SHIFT from
+>>> log base 2 of the allocation size. This is not correct if the
+>>> allocation size is smaller than a page, and yields a negative value
+>>> for the order as seen below:
+>>>
+>>> TCP established hash table entries: 32 (order: -4, 256 bytes, linear)
+>>> TCP bind hash table entries: 32 (order: -2, 1024 bytes, linear)
+>>>
+>>> Use get_order() to compute the order when emitting the hash table
+>>> information to correctly handle cases where the allocation size is
+>>> smaller than a page:
+>>>
+>>> TCP established hash table entries: 32 (order: 0, 256 bytes, linear)
+>>> TCP bind hash table entries: 32 (order: 0, 1024 bytes, linear)
+>>>
+>>> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+>>> Cc: stable@vger.kernel.org # v5.4+
+>>
+>> This is a pr_info(), why do you think this is stable material? Just curious,
+>> intuitively I'd have said that it's not that critical.
+>>
 > 
-> This is a pr_info(), why do you think this is stable material? Just curious,
-> intuitively I'd have said that it's not that critical.
+> Hi David,
 > 
+> Thank you for taking the time to review this patch! I was just under the
+> impression that any bug--even those for informational logging--should be
+> sent to stable as well.
 
-Hi David,
+See https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
 
-Thank you for taking the time to review this patch! I was just under the
-impression that any bug--even those for informational logging--should be
-sent to stable as well.
+In particular:
 
-> > Signed-off-by: Isaac J. Manjarres <isaacmanjarres@google.com>
-> > ---
-> >   mm/mm_init.c | 2 +-
-> >   1 file changed, 1 insertion(+), 1 deletion(-)
-> > 
-> > diff --git a/mm/mm_init.c b/mm/mm_init.c
-> > index 3db2dea7db4c..7712d887b696 100644
-> > --- a/mm/mm_init.c
-> > +++ b/mm/mm_init.c
-> > @@ -2469,7 +2469,7 @@ void *__init alloc_large_system_hash(const char *tablename,
-> >   		panic("Failed to allocate %s hash table\n", tablename);
-> >   	pr_info("%s hash table entries: %ld (order: %d, %lu bytes, %s)\n",
-> > -		tablename, 1UL << log2qty, ilog2(size) - PAGE_SHIFT, size,
-> > +		tablename, 1UL << log2qty, get_order(size), size,
-> 
-> So in case it's smaller than a page we now correctly return "0".
+"
+It fixes a problem like an oops, a hang, data corruption, a real 
+security issue, a hardware quirk, a build error (but not for things 
+marked CONFIG_BROKEN), or some “oh, that’s not good” issue.
 
-Correct.
+Serious issues as reported by a user of a distribution kernel may also 
+be considered if they fix a notable performance or interactivity issue. ...
+"
 
-> Reviewed-by: David Hildenbrand <david@redhat.com>
-> 
-> -- 
-> Cheers
-> 
-> David / dhildenb
+-- 
+Cheers
 
-Thanks!
-Isaac
+David / dhildenb
+
 
