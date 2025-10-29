@@ -1,202 +1,120 @@
-Return-Path: <stable+bounces-191655-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191656-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67C7CC1BDE7
-	for <lists+stable@lfdr.de>; Wed, 29 Oct 2025 16:59:00 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5841C1BE98
+	for <lists+stable@lfdr.de>; Wed, 29 Oct 2025 17:04:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3D32618985C6
-	for <lists+stable@lfdr.de>; Wed, 29 Oct 2025 15:59:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8963C19C19AC
+	for <lists+stable@lfdr.de>; Wed, 29 Oct 2025 16:03:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2D3D33F399;
-	Wed, 29 Oct 2025 15:58:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48CD2350D6B;
+	Wed, 29 Oct 2025 16:00:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XKZffGQG"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JkjEseJZ"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ECD433B6FE
-	for <stable@vger.kernel.org>; Wed, 29 Oct 2025 15:58:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A04934B1B6
+	for <stable@vger.kernel.org>; Wed, 29 Oct 2025 16:00:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761753528; cv=none; b=IIn729EjY1Y83G47Rx4G3KrABsDKxELZYar+3S4ntBgexbX3SRDivkX3/3Xd5Phxd+dUJRoI7kqwAeDwILi5urLy2qBCUW7QkNrK9sxsyVc7GXgYBsZLiFDasaumTlXfNsCIWHcEjZNbe95u4P/9Yy3bP0HQtE25JaPqtVjLv3o=
+	t=1761753632; cv=none; b=bXvg7se7te3E2EP1DiPLoCdVxv9joJC4YlQo0n2JwoyPb0tRyDuw7B6Oy2rWUZphcrf+TgpuIvbb8A7T3lJHzhFQ110BmhLLuBFE7flopMHUsQA9y+Dewpzg/CfovG1a792sIqQMDbeECqcMUKRs7mS3WiDlJ+e6qMQja23wBnw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761753528; c=relaxed/simple;
-	bh=NaCyzM+HLSFiiHYiUXG9X/gGn5OsbOBRqHIFVU3rtKA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=OMsjoZX2kbaoxgNqvfKxrHyF7FgVqtw9GsjTrVHWh6Mtf6dh5ziK5nvYgjCo3ke/ZvsvPvwtgGDuRZ+Acg26sO825xhEQmgSTx9LHwdwPJjjMOcATcUECIafJ+fgpleAHD8fq9x2rtodHpjBNeAlrNgmYvvNWypByJH8zqEV5vI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XKZffGQG; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1761753526;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=7MTuw2M4w+7icp1v9w2NHA+FuLFUpMlcJ3+bxm+0QA8=;
-	b=XKZffGQGhJqClwmSTixPteImEeLeM7r6bCTr9AnQKEz9cjMEcH5ELBWMlaRapAS2q5JiYO
-	jHyPyXGhS8aePMVz9CavS9k1XnyniAurRvCo3ywJaB/GNESIG0QXSF6oY5wDgr238h8/lw
-	IBI+XTm9GO9w4gILZ9GHJoZrdXyAEAA=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-104-fhM2Llz4PNyntH9y5U7Rzw-1; Wed, 29 Oct 2025 11:58:41 -0400
-X-MC-Unique: fhM2Llz4PNyntH9y5U7Rzw-1
-X-Mimecast-MFC-AGG-ID: fhM2Llz4PNyntH9y5U7Rzw_1761753519
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-475c422fd70so57883465e9.2
-        for <stable@vger.kernel.org>; Wed, 29 Oct 2025 08:58:40 -0700 (PDT)
+	s=arc-20240116; t=1761753632; c=relaxed/simple;
+	bh=QjbKfgzHn5tyeA0m3V5JJ3BLODA9JPFCp9Sk+QT8tK8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=hk1cMftz1DeRbguzONK6fZkjjUof/fEmEUxfBR6gsRMKjVUVKzhlSBEqJbYdeW03hnWpxqpAOdszBGxTyV7m5v8qKrTsOx3g8XlEyN487wiNSHuteQxp37dsd5rUGbnBZet0ppITTE3ZWwhZcqNYPka+GQ+198owmqsw2R1oz+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JkjEseJZ; arc=none smtp.client-ip=209.85.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-47721743fd0so5122185e9.2
+        for <stable@vger.kernel.org>; Wed, 29 Oct 2025 09:00:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1761753629; x=1762358429; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=QjbKfgzHn5tyeA0m3V5JJ3BLODA9JPFCp9Sk+QT8tK8=;
+        b=JkjEseJZKoHhnNYyso0khj5Qx3qxvZe9I2U0THqGOb5T3Nj6EEGXln5MhmFuO93w2H
+         VvLp1BC+Da7Oad+gyfH8kudsV3nizxestNRGjdvtuZHprDUlw2msgKiUg1MspMKwJ7SV
+         KAQ9HbJkDgUIKbysEEWFF0YkBDfip4zbOeXnsZsG6EbJXCp+YRcC2IMtBWHMlS9O9ss5
+         DmtGWznn8LkffHhvVvoaCRWfG28FBES3AL2XuUjqYDmJI3BtN9QfdSZ3EEETLq0d4pz1
+         Hn2qnCp4s88IzwlayCDMav5FTvsaUTN+BohEYzOfuyvCPLF8d/KjvIB7koupNJvGp+Pb
+         aCyQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761753519; x=1762358319;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=7MTuw2M4w+7icp1v9w2NHA+FuLFUpMlcJ3+bxm+0QA8=;
-        b=oOCakxxC04a6tJiTumvh8YbQRyBnz9FyXfXUqdAts7w05eS5AKXDxpH+H6vxlYWF3B
-         Hzq4wGNtCbJlkFNMchWVmpaaNxP0T/e1mntCp6ZsGtHxQtm5iCQbwNcGwCIbPHmsJVuu
-         ZnTVh2lAPwiZfkaNIbXHZJowvaqr+khutlLOgOHcnREnqv43mnHivJ4K0153mHTvocx4
-         0fbjkyXn3ofiOJMTqkyYG72Ml6Y83dLqnwkOLZ+eApdyqY/C3f/nGoBgVqh7dcFlrnjZ
-         5j5z2CLHpA6wrGdT837H/RrVSmhKbtwvttr9GV2PX/zLcMZ6mbolZrC5H9/JEyqZAFDv
-         Zd+w==
-X-Forwarded-Encrypted: i=1; AJvYcCVEARklWv1/ENOxMrSLGQYFcUDRHWXO3vaOLaeasT8XrJpszjbe/Zb/0O7PG6rAHZI9KHmMXYU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxyZPE7uV2o9i3e9yfgUw/fHw3x2iJxk3qYhtDjVi+MbVyENwyZ
-	whf5kdS7/yoNVVqeQu1wYsUyDpOpeK6eursc+EWsX60utA1JUPtfdai+wzmmzK/Kw2R90hy8/Pj
-	YB/QncSxVZ5l8hbgKPMH8q+iT+4Jr/XlAz22x0Kt2cd2ZL3NumEgD6b0JtQ==
-X-Gm-Gg: ASbGncsrTu12lx1FSRPnG5EepWZRkjY7zPBrdxHSd6oZym5hSBrUsipbJ0AYJrFBSo/
-	ortixoFYpW6C3EOPm2IoBTQoyV1hZqBm4x2d8tiAzS1SMU4n6JcRAQ4i/gJ7cxc4hhgj8sOKoao
-	BSsCdTrGyXCQwwchB5ZgJ2hhPhEMrGmaZJBSQa9BMAekectSI9K1T1E7zdVUk5h5VK31NRg3hLJ
-	un9GAkflhsTJjkqCYQBuS2ThFMAvtc26ODiH5k5nQQdlHCqBrIgS5BgItGCmSjyW5eHbH3i9UrE
-	EsOWAQisE2qompsAbUU7gUI8LC9LQqhF8QBJ2/WWCB/f+L+5sdF2cOftjBte5qnl1X70ExPGioY
-	cPvXA1/FNwgZkRjyZEPG1MQ==
-X-Received: by 2002:a05:600c:a087:b0:477:58:7cf4 with SMTP id 5b1f17b1804b1-4771e16e3a3mr32441745e9.4.1761753519398;
-        Wed, 29 Oct 2025 08:58:39 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFBUfbQXjSUBfZ5yGMdw13PwBGP5RPGg4Gjem7sfzzIH+QoMvfQEwhbQ98KDi2IbIS3+g/TEQ==
-X-Received: by 2002:a05:600c:a087:b0:477:58:7cf4 with SMTP id 5b1f17b1804b1-4771e16e3a3mr32441575e9.4.1761753518936;
-        Wed, 29 Oct 2025 08:58:38 -0700 (PDT)
-Received: from [10.32.64.156] (nat-pool-muc-t.redhat.com. [149.14.88.26])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-429952df682sm26817699f8f.43.2025.10.29.08.58.38
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 29 Oct 2025 08:58:38 -0700 (PDT)
-Message-ID: <b13bf4ce-a6fb-491e-a8c7-ecce0d4d87d2@redhat.com>
-Date: Wed, 29 Oct 2025 16:58:37 +0100
+        d=1e100.net; s=20230601; t=1761753629; x=1762358429;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=QjbKfgzHn5tyeA0m3V5JJ3BLODA9JPFCp9Sk+QT8tK8=;
+        b=ijRo56DYmgUNSQAhKqa+lVgNUkOxroL+wL03Kkqw0cJac8IkLfKG1GYKwOPkgXUnj6
+         JQFHXJKaoeqAi3njPyJy+ddn5ksIf/1RlqhQWtTfNCbpDv+B0Ew5pjVPyDnVMYOqlBdv
+         PzdCFyujSgTlJR+dvahAwZE/Sn8g3GcoG4l23GVzEDqbpA/CwqBG6PrBOL+Bzlli+nti
+         ENWAit7G4RvTVQJ1In3m4f8Oyy+dHdWsLV7lvl5RgXzc3+luqkYiIF456WCRIDAwb0aM
+         lLV5SThP0sfeYO5ZWXxEXHNaphDnn+v1Ajj7oIxQekc1F7wR01pV4qeDsfQ8zcrAMsvD
+         FCgw==
+X-Forwarded-Encrypted: i=1; AJvYcCUXaiEEfLgYetrDiDpkg6dF/JhaRYvhgC69aFclKHqvX2WcuLCB2VNwBIDxnb7mfvkqnD/MrxU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywwwb0hVqfDpblmkT0nsY3CbK9qptUvMv/OrSr8NFFCPj/RUtWO
+	6Hxb8q7amvRP007Useg0gH/kcf7oC11/t2GNxHPc3Nsea3xs9Sv4KAjceN9ttA==
+X-Gm-Gg: ASbGncsxzXIrS44vlD0dVP+nVushXbcK+E1InRXeHVO8Zyau8l4GEyb+CysZ7LWFiDw
+	z+Xsbj3UjsFd9DtLLoepx3uKYCZq2G1+Dp161Wq+H0iO14k/VRTjTWCVelDOuqErwTMv7zX6cec
+	nKS98Aow52vFdEk+vd8QdFG8wV9h8YjYBvgCD2oRNBMtPs1JnXwJz6J5D8khpLJiS0wW90pYmK7
+	g7ib+RwZNjdpM95jvS8BGaOXfmPfj/YJMThQm4GotU1JL+bL4pXbgKl6sU7hb/O5UJujd8A4ppZ
+	4m1vOJp/g9AvgPUsgtnUroYYkvOY802PD2QnfnYkqYK9zI5PM9vVK5C49nbXZbFIcA2ywmgiqn5
+	uNnTkeiHzZYSMUUjmttRRrhVTEueSNVPuadxLXtIjnJmQSxbNoPbl/qI3bCYJk3Q7ibWSxuSi3e
+	4YdKvFgymtoZuPNkiPMGEna283DqVxOEdO43ylXPJv2avjCs4MvDL62yzWtGgzdeJ1MxFi
+X-Google-Smtp-Source: AGHT+IELwKkyoHZcEXoDh+ODYAhJc1PkQChXNnF/56yRmyxyp0iQGf8PAy40wU0hq97LrnXaNPX15Q==
+X-Received: by 2002:a05:600c:848a:b0:45d:d97c:236c with SMTP id 5b1f17b1804b1-4771e21c484mr25812165e9.21.1761753628706;
+        Wed, 29 Oct 2025 09:00:28 -0700 (PDT)
+Received: from jernej-laptop.localnet (178-79-73-218.dynamic.telemach.net. [178.79.73.218])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4771e3a8209sm54097015e9.11.2025.10.29.09.00.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 29 Oct 2025 09:00:28 -0700 (PDT)
+From: Jernej =?UTF-8?B?xaBrcmFiZWM=?= <jernej.skrabec@gmail.com>
+To: Maxime Ripard <mripard@kernel.org>, Chen-Yu Tsai <wens@csie.org>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, Samuel Holland <samuel@sholland.org>,
+ dri-devel@lists.freedesktop.org, linux-arm-kernel@lists.infradead.org,
+ linux-sunxi@lists.linux.dev, linux-kernel@vger.kernel.org,
+ Miaoqian Lin <linmq006@gmail.com>
+Cc: linmq006@gmail.com, stable@vger.kernel.org
+Subject:
+ Re: [PATCH] drm/sun4i: Fix device node reference leak in
+ sun4i_tcon_of_get_id_from_port
+Date: Wed, 29 Oct 2025 17:00:26 +0100
+Message-ID: <3848160.MHq7AAxBmi@jernej-laptop>
+In-Reply-To: <20251029074911.19265-1-linmq006@gmail.com>
+References: <20251029074911.19265-1-linmq006@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1] mm/mm_init: Fix hash table order logging in
- alloc_large_system_hash()
-To: Isaac Manjarres <isaacmanjarres@google.com>
-Cc: Mike Rapoport <rppt@kernel.org>, Andrew Morton
- <akpm@linux-foundation.org>, stable@vger.kernel.org,
- kernel-team@android.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20251028191020.413002-1-isaacmanjarres@google.com>
- <dcceca48-bbdc-4318-8c07-94bb7c2f75ff@redhat.com>
- <aQI3z0x0gZ3T1fij@google.com>
-From: David Hildenbrand <david@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- qIws/H2t
-In-Reply-To: <aQI3z0x0gZ3T1fij@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
 
-On 29.10.25 16:50, Isaac Manjarres wrote:
-> On Wed, Oct 29, 2025 at 11:03:18AM +0100, David Hildenbrand wrote:
->> On 28.10.25 20:10, Isaac J. Manjarres wrote:
->>> When emitting the order of the allocation for a hash table,
->>> alloc_large_system_hash() unconditionally subtracts PAGE_SHIFT from
->>> log base 2 of the allocation size. This is not correct if the
->>> allocation size is smaller than a page, and yields a negative value
->>> for the order as seen below:
->>>
->>> TCP established hash table entries: 32 (order: -4, 256 bytes, linear)
->>> TCP bind hash table entries: 32 (order: -2, 1024 bytes, linear)
->>>
->>> Use get_order() to compute the order when emitting the hash table
->>> information to correctly handle cases where the allocation size is
->>> smaller than a page:
->>>
->>> TCP established hash table entries: 32 (order: 0, 256 bytes, linear)
->>> TCP bind hash table entries: 32 (order: 0, 1024 bytes, linear)
->>>
->>> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
->>> Cc: stable@vger.kernel.org # v5.4+
->>
->> This is a pr_info(), why do you think this is stable material? Just curious,
->> intuitively I'd have said that it's not that critical.
->>
-> 
-> Hi David,
-> 
-> Thank you for taking the time to review this patch! I was just under the
-> impression that any bug--even those for informational logging--should be
-> sent to stable as well.
+Dne sreda, 29. oktober 2025 ob 08:49:10 Srednjeevropski standardni =C4=8Das=
+ je Miaoqian Lin napisal(a):
+> Fix a device node reference leak where the remote endpoint node obtained
+> by of_graph_get_remote_endpoint() was not being properly released.
+>=20
+> Add of_node_put() calls after of_property_read_u32() to fix this.
+>=20
+> Fixes: e8d5bbf7f4c4 ("drm/sun4i: tcon: get TCON ID and matching engine wi=
+th remote endpoint ID")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
 
-See https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
+Reviewed-by: Jernej Skrabec <jernej.skrabec@gmail.com>
 
-In particular:
+Best regards,
+Jernej
 
-"
-It fixes a problem like an oops, a hang, data corruption, a real 
-security issue, a hardware quirk, a build error (but not for things 
-marked CONFIG_BROKEN), or some “oh, that’s not good” issue.
-
-Serious issues as reported by a user of a distribution kernel may also 
-be considered if they fix a notable performance or interactivity issue. ...
-"
-
--- 
-Cheers
-
-David / dhildenb
 
 
