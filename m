@@ -1,82 +1,79 @@
-Return-Path: <stable+bounces-191577-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191578-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3602BC18BBF
-	for <lists+stable@lfdr.de>; Wed, 29 Oct 2025 08:41:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73BE2C18CBE
+	for <lists+stable@lfdr.de>; Wed, 29 Oct 2025 08:54:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id CCB7C4E63A1
-	for <lists+stable@lfdr.de>; Wed, 29 Oct 2025 07:41:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5EA7C4636B4
+	for <lists+stable@lfdr.de>; Wed, 29 Oct 2025 07:48:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A39F30F94D;
-	Wed, 29 Oct 2025 07:41:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C440130B527;
+	Wed, 29 Oct 2025 07:47:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Sgf3Bxev"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EGIyhXmR"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCFF730216D
-	for <stable@vger.kernel.org>; Wed, 29 Oct 2025 07:41:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AC9C30499B
+	for <stable@vger.kernel.org>; Wed, 29 Oct 2025 07:47:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761723702; cv=none; b=JG3GuCfDROWR7hlrcMxLkGyEza94Et19fC3AgKL8AZ9Nn6r1wQvmzuvJO1bhuYsUJxAXIHU9k3q9VnC/zgzRrOj1p5toNdxHC8GJPMek919pF3JuEa4w5fSiENlmqCGOFj89C+JbWyB4LOlfHjlULea6D0LghxdJ5mWP/SXKE+Y=
+	t=1761724077; cv=none; b=mFZphrqIucrL9fh8ytLkl2Jdkx/nx5UF14ShoTJ3IV3bO5pPaeq9yuzwi0Js07j8Mt8QY2EIxNNJORgaonoLWfkEf8Jy6EmFkrX+P5HsQ4nbp2XqZITg9adULf4mFQGDeytmAdx9N8RAUPRIX1R+PgVe5VectWQLSTDrEjQgo/U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761723702; c=relaxed/simple;
-	bh=vQSgQhpSPXq7YicGVSd0ynrLW5738W31iJ/iUBFQPSQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=kd/nlZ9YwyR3DXBkSROvDZBEZhRZyIcyCYl2mBUosMihgZrGwoFX+Ha4daid0zbaGEyeNI/DPV5qQTxL/o6UGGUZ4c+EANT7lGXYS1LxD9a/7hKIzBwyxeFrUpQTYzo1+o0dnzkO2c6XPuyzl2C8CsW5Z0CBa4wBPPnjfi+WqZU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Sgf3Bxev; arc=none smtp.client-ip=209.85.214.171
+	s=arc-20240116; t=1761724077; c=relaxed/simple;
+	bh=vgS5Mv2an7aW8L2hop7Xh6r0KWmtXcOo0+xl9hewdoo=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ArrHjLWrOIMM5OjxPYTCfmOTXlh92Ve8ovCfbpAt6nqXlk4DqBQ9WtEQb+mD7ItgPksMU5VKdWeGOnDMXbKUyiEw2Vq3+Hl7jVnaFPPZi8az/ss4QtejpbBKAh7h2ZFb1ZeRb4/CaBZwYPRb2p6W0/iK5lEOLs+ql7h19wvEiPs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EGIyhXmR; arc=none smtp.client-ip=209.85.210.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-290ab379d48so64999125ad.2
-        for <stable@vger.kernel.org>; Wed, 29 Oct 2025 00:41:40 -0700 (PDT)
+Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-7a27053843bso9564591b3a.1
+        for <stable@vger.kernel.org>; Wed, 29 Oct 2025 00:47:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761723700; x=1762328500; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1761724075; x=1762328875; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=qgvDUTgmwUbybBiqh6wci1MBiFa+WkYYBAxgF2SWiwA=;
-        b=Sgf3BxevDX/53PJQwR6IpjVyabiMVmP/SxtSoawkI90iHgMd3jOybNIihdS47yLY/Y
-         +cC3poZDv+IUy6Cuh71ayjcf5QT/qSxNx6j01x3Ze8PHac7Zp8LjdB0VIy3t1kql4FxD
-         uLe3JD/M75kyyOOkDwg8datHGwCW29RDdje2lu9L/PF2mQelk6PG50knIpryktv8BixC
-         X9IFzdNgHivJ0vkjHk2CDBzqw7urYaBojmZX6OvgrJHg+jN5/DHjWj7o30joH2gEYa6P
-         RW6i+y0fJENk5+YErUTj/bjWa/cuVJcubkq3QqCXekeMSVQ6k0sllxf3gHMraphHt6ff
-         tQqw==
+        bh=q30GbqlTwe2nQMX4UB7blFcjur++GRluVV4AWK8Q6Ek=;
+        b=EGIyhXmR6beY7fmK664Aa5uFl8nBOaEstHj+1FEqaWRiVxX3hipJxLOa8bRfNmnmHq
+         scI3I34+CqMKezwK8LNBTefOm0+2Sg0z7r8HYRAFaSXpP7gQsMBg4+m9lb3AjSBawi1V
+         SqFddqL9Z9IWhuzCSRddXmAhM/hDwstBZDnKqrI7b5ZZC+ZcPuMGMqnIvyW0fIf1O14B
+         SUDcOzIyBEZGJX5kkEo/RE6ojiMuDHhCLCV7MjVKl4MN+biFc7E36COE3vurmaKg8O3k
+         mKJipqz0CjFXVtpx/yTJd07nPjbyFIfBPIE6gGYTPmqF2HOK7Mf2Kje0GC8VW0mPS/67
+         Gzhg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761723700; x=1762328500;
+        d=1e100.net; s=20230601; t=1761724075; x=1762328875;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=qgvDUTgmwUbybBiqh6wci1MBiFa+WkYYBAxgF2SWiwA=;
-        b=gnIPnCAaw4cH0rlanzWczFCsmVkp+LHI3xiGLUDze4DSdocMneOZfWuWH0uqjGqV37
-         0UhP13fopAF7gyvBC9a1XjBWYvR4oqugRFZ8VaCaeHoHWMk8PFjdfMcKwymzv8bkF19W
-         chw2ONosRo+ryBdZviTTSaB8hVizml5qJPpLYjQY/Io9NDvUezmmlqCbJWngWE8CItHW
-         6IJ2y6hW9zfQU9QX9VTy+cFm7uG5l38vg3SPCxDGjYYIvIPjz4pZZUdygm/9zkjLlKyU
-         dJCRMJgua4En0OBPu3eXzi9wB54hHasOWF+1B7FhJhI6LY6cxkTvd/oeFEPUcCoWhpMq
-         kI0w==
-X-Forwarded-Encrypted: i=1; AJvYcCX9xQ2HCdIE8vfTgn7bY2HXwO5bjjdMGjQ1ODLQ5848c+aA/QQzK/X8pdSkW+x3R0tXk9YYG2g=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxMFb4KLzIpJYkGatF9hxpNUQtLub44aPr/h8d9rgLJ00njFSAV
-	Y9G6T99zzMx37Zqg0TPCQQTSYUg51OJURNFAhPzyqsZafSgX0LG6vsu9
-X-Gm-Gg: ASbGncuuJgdXthzSemlZYZwhK7+brIjeT5iyzhKaCkVwQrVT0knNY9y4r74IZQlf8aT
-	w5WUC3t7UiyZqw1MtOtFLwoCk/f0pR6cMiFwuWj5t603cHG1A4JFrbOkiKa33tYPcb752FtQfoB
-	a7aFMlbCFXvUFeRNCgpL5qkvo9B29LL5f+WWkL0xOZTM5PMguxD7Ljx3xLT0bHVviz4eIiRd3Y0
-	G+oX0hT0W4I06MPQzx4r06DgzCdB8PMR8px3X5O5rBOhAy7IRGOax7b0AjRgYTDgh6kkk8dtfrf
-	vBkYJrHemzNU2Ihj62h9aV4+d2uS4wpu6kzpCpTx6bl3Zuz/r5XKVbepmGzgA/JwaZxLWz6tKCv
-	MUQpdlb8Tu2nGtkgcQjg9UFIZ/Jijkcys/9zI5UBVWyakxIhCZbmAsquYvpI6QSLaRmT6RHRPiM
-	/52q2E5Sy/vuc3o9l1pPh1ng==
-X-Google-Smtp-Source: AGHT+IEAqSeL49I0O53+T8EYYG0n4Be/S9PQxC/LftWWFjftQd/hhQp8QU08hja4QrlQTuil7K/59Q==
-X-Received: by 2002:a17:903:234c:b0:246:4077:4563 with SMTP id d9443c01a7336-294def2da22mr23417225ad.34.1761723699803;
-        Wed, 29 Oct 2025 00:41:39 -0700 (PDT)
+        bh=q30GbqlTwe2nQMX4UB7blFcjur++GRluVV4AWK8Q6Ek=;
+        b=Lu62imGV+qW0TESN5nxX6gyGqDX/e4S2O5O7TGJinIHDLrudkFIVavhMLfkWmPMwSV
+         9wDg07Opwo6KD8kwaOgJr0/N0WewdAc9Bj/Uu2Kg05/Il0LhN/zdlhjds6onuOUdKgxb
+         tlpMc3wGIjWvQsB+2GOj69KRTjnKIxpXSa4y3awd+ws2eg0kwbKbg3RFyXGJIs8B8QZm
+         lOReW+sGrl2MMyZpBOAgoYTuVFzR8m6mcrMU2QuAKbXXPYmiZG12bmrXJL0mnLFpUsjM
+         +vUQ3dJ/cqhOPzizMImjqh++KQwthGO4VCSAcAbydjsrjctuAELk4uAYI16y+/ZnqRq3
+         6CKg==
+X-Forwarded-Encrypted: i=1; AJvYcCV0pZXjZlL+DK6wzqOMN94NxQFCm1Y9OTJNVmBC+fVMvY12CgtIc0QA514H1nbYOPn+sDdj9KA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzsXTqBw1wkgT9lGwkxx+nQwKvS8dSfyVb/Y8+MLPzDh8/j4au/
+	nrAFAaZW+xWEpim5Al+/QKh3lza61dXfv3ltfSCSQdvV4BtTEuMyuO0d
+X-Gm-Gg: ASbGnct3Xq6s1RdF+8cAylOu7cyKc/Ljfv+jZLh/JTPhdzmm63Go/RC6u509TdGu/Vh
+	L6ZHkZb0Fx6F1EDVUweGEJwTVYT3mnd6Hy/9ayOA7MufaAwf3/7ar7wwxu1Mz6E3V0LjG5339/t
+	k3IxohKDmpaxAq0SWVzBwIYcDRWsj8QXEJgCQHDDxtC/sJ0K8tEZn9KXOhNzNwTZYJnZVDfvQzo
+	ls6vTXNg0+hd2zsMpNPHE+mJBr+NcVq092NblovA/g6zuqRL5+dlM2NRoKYPiCSQPAwfXGmrjuv
+	9tG3Vbh1AgcjmyAXhdLXGEPRmlRetj4/EJ90vS9L3iQpSrvA6yte2vV2N3v6rO/oim2p3vtUbBD
+	Z47vH7pfnUwuROSJGoZQPX39iQ0rg6gNdtxFkoCK0hb+JN6itTchNgNKeEqu9y4Fzwjn8SSBvLo
+	byvKhDFpb4h9AWwEi5WV/yUg==
+X-Google-Smtp-Source: AGHT+IFuC13ebf9tUyrUJPnxA/BVzsjUbwXpoTRR8n0eYfWFABlmJzwguFPrChLih2199JwTZmChYQ==
+X-Received: by 2002:a62:e90c:0:b0:77f:50df:df36 with SMTP id d2e1a72fcca58-7a4e4c1ce32mr2077224b3a.18.1761724075412;
+        Wed, 29 Oct 2025 00:47:55 -0700 (PDT)
 Received: from localhost.localdomain ([124.77.218.104])
-        by smtp.googlemail.com with ESMTPSA id 98e67ed59e1d1-33fed706449sm14495814a91.2.2025.10.29.00.41.34
+        by smtp.googlemail.com with ESMTPSA id d2e1a72fcca58-7a41408c4dfsm14201813b3a.65.2025.10.29.00.47.50
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Wed, 29 Oct 2025 00:41:39 -0700 (PDT)
+        Wed, 29 Oct 2025 00:47:55 -0700 (PDT)
 From: Miaoqian Lin <linmq006@gmail.com>
-To: Inki Dae <inki.dae@samsung.com>,
-	Jagan Teki <jagan@amarulasolutions.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Andrzej Hajda <andrzej.hajda@intel.com>,
+To: Andrzej Hajda <andrzej.hajda@intel.com>,
 	Neil Armstrong <neil.armstrong@linaro.org>,
 	Robert Foss <rfoss@kernel.org>,
 	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
@@ -87,14 +84,14 @@ To: Inki Dae <inki.dae@samsung.com>,
 	Thomas Zimmermann <tzimmermann@suse.de>,
 	David Airlie <airlied@gmail.com>,
 	Simona Vetter <simona@ffwll.ch>,
-	Kaustabh Chakraborty <kauschluss@disroot.org>,
+	Wadim Egorov <w.egorov@phytec.de>,
 	dri-devel@lists.freedesktop.org,
 	linux-kernel@vger.kernel.org
 Cc: linmq006@gmail.com,
 	stable@vger.kernel.org
-Subject: [PATCH] drm/bridge: samsung-dsim: Fix device node reference leak in samsung_dsim_parse_dt
-Date: Wed, 29 Oct 2025 15:41:20 +0800
-Message-Id: <20251029074121.15260-1-linmq006@gmail.com>
+Subject: [PATCH] drm/bridge: sii902x: Fix device node reference leak sii902x_probe
+Date: Wed, 29 Oct 2025 15:47:36 +0800
+Message-Id: <20251029074737.18282-1-linmq006@gmail.com>
 X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -104,35 +101,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The function samsung_dsim_parse_dt() calls of_graph_get_endpoint_by_regs()
-to get the endpoint device node, but fails to call of_node_put() to release
-the reference when the function returns. This results in a device node
-reference leak.
+of_graph_get_endpoint_by_regs() gets a reference to the endpoint node
+to read the "bus-width" property but fails to call of_node_put()
+to release the reference, causing a reference count leak.
 
-Fix this by adding the missing of_node_put() call before returning from
-the function.
+Add the missing of_node_put() call to fix this.
 
 Found via static analysis and code review.
 
-Fixes: 77169a11d4e9 ("drm/bridge: samsung-dsim: add driver support for exynos7870 DSIM bridge")
+Fixes: d284ccd8588c ("drm/bridge: sii902x: Set input bus format based on bus-width")
 Cc: stable@vger.kernel.org
 Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
 ---
- drivers/gpu/drm/bridge/samsung-dsim.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/bridge/sii902x.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/bridge/samsung-dsim.c b/drivers/gpu/drm/bridge/samsung-dsim.c
-index eabc4c32f6ab..1a5acd5077ad 100644
---- a/drivers/gpu/drm/bridge/samsung-dsim.c
-+++ b/drivers/gpu/drm/bridge/samsung-dsim.c
-@@ -2086,6 +2086,7 @@ static int samsung_dsim_parse_dt(struct samsung_dsim *dsi)
- 		if (lane_polarities[1])
- 			dsi->swap_dn_dp_data = true;
- 	}
-+	of_node_put(endpoint);
+diff --git a/drivers/gpu/drm/bridge/sii902x.c b/drivers/gpu/drm/bridge/sii902x.c
+index d537b1d036fb..3a247ac3c7dd 100644
+--- a/drivers/gpu/drm/bridge/sii902x.c
++++ b/drivers/gpu/drm/bridge/sii902x.c
+@@ -1189,8 +1189,10 @@ static int sii902x_probe(struct i2c_client *client)
  
- 	return 0;
- }
+ 	sii902x->bus_width = 24;
+ 	endpoint = of_graph_get_endpoint_by_regs(dev->of_node, 0, -1);
+-	if (endpoint)
++	if (endpoint) {
+ 		of_property_read_u32(endpoint, "bus-width", &sii902x->bus_width);
++		of_node_put(endpoint);
++	}
+ 
+ 	endpoint = of_graph_get_endpoint_by_regs(dev->of_node, 1, -1);
+ 	if (endpoint) {
 -- 
 2.39.5 (Apple Git-154)
 
