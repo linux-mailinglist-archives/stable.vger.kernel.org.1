@@ -1,127 +1,239 @@
-Return-Path: <stable+bounces-191582-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191583-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB516C1939E
-	for <lists+stable@lfdr.de>; Wed, 29 Oct 2025 09:55:00 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5ABC9C19456
+	for <lists+stable@lfdr.de>; Wed, 29 Oct 2025 10:03:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C82274FB0E9
-	for <lists+stable@lfdr.de>; Wed, 29 Oct 2025 08:28:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CF339564305
+	for <lists+stable@lfdr.de>; Wed, 29 Oct 2025 08:38:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D94741805E;
-	Wed, 29 Oct 2025 08:20:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA37E326D69;
+	Wed, 29 Oct 2025 08:37:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="bbpPYvcj"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Wy5Qn+5q"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C58C17B425
-	for <stable@vger.kernel.org>; Wed, 29 Oct 2025 08:20:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41145322C60;
+	Wed, 29 Oct 2025 08:37:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761726004; cv=none; b=r6e6VCDjgfzZjltlPOW+Eid3FUembYBbJxYBM8reDJdwgEFhknmVzvBQ0l8bn/XdYidkjAdl/NOM/qsQozwdT+td4NHvY3nBrGGXbzoyz8TvNS9DCSfqa536B4WmUAr21ryh1dsUH9BFJGS9CA236UgRCK/f7sYxSSOECZf1nmU=
+	t=1761727043; cv=none; b=U0E9yH8dpQi7scko5M8FdIsTnQC/6vkOHuXhME0jsVIU8px/plsKLM5mmAbjnyQaTuhfbqY4h6gLH+SPij4hAu+ZAM7avBnfoPfSPQ87R77MpDRBLTU0DtOMbxxUQXiexih6ZaxHfP8w3ZGctV8WoMFn/dEDAEcZrHrndonHiC8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761726004; c=relaxed/simple;
-	bh=dF3Bio0TgnJ38n1yJDNKl2Un84TNaqbPbXxpnnYQNmY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jnVI6ZUmzcLI6jiDGWNtL3FlK8wL58bezkHFZFa9cU1+TB9q9zKy2DYnfffVqveHu6Z4cgFghNf8JgWmiVJbkm9V/mMMquWLiZIN9Fh4e/BMiS7qdaFUZaL5Q4WM9j0bzMVVjXZcCqZ0wCA6u1Mb4PZPe4YkD12JABJvC39aSTE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=bbpPYvcj; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1761726002;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jlHEB3885pfS5dzEnYONWhgNpmOARZh1obJdxfgK8IE=;
-	b=bbpPYvcjCJmE3PLd+21MfD5M7J1pQZPlUttyOk9YAbe8sZlxshvOgBHc+6AhU4isEOFKT6
-	DurP8pi8qYK4YPBN5i3h6Eo+OymCslatmOSCL2B9wksdcwnKhwe8PfmEGRZ9OzCk8qyA4j
-	U/VCaHJ9iEVlJjAiAx5ooE4sqnDr8fM=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-643-2b7z4j5BNm6PsBCaJS8t_Q-1; Wed, 29 Oct 2025 04:20:00 -0400
-X-MC-Unique: 2b7z4j5BNm6PsBCaJS8t_Q-1
-X-Mimecast-MFC-AGG-ID: 2b7z4j5BNm6PsBCaJS8t_Q_1761726000
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-477113a50fcso27945945e9.1
-        for <stable@vger.kernel.org>; Wed, 29 Oct 2025 01:20:00 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761725999; x=1762330799;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=jlHEB3885pfS5dzEnYONWhgNpmOARZh1obJdxfgK8IE=;
-        b=M7B00FLVDF5exSq8tadzNO+2ZnSL4E+wYfnpnjCgnGkaPlTvDtO/L7lTAe2WUhqboW
-         9BkQCY6T0TWtZuc1wzM6A3R63NRVtQXt75JTeoRPjzW3MiBgZi1if8/W2YKxAWe27SJ2
-         1JJBdzwabKnejgio4iIT35Br3gYprDhw2Ym/4VLltSwYk0uVPUpqDqVcj5ys15K9MDJW
-         Pih3xH3x944TOCZds9+gOrE35Cuh6cszorbFXmaWhwh3XDOsqw/8GTKRCe23mUN/zeKi
-         X6LxVvKWXqWmhy6payShe6oes8DK4GzV/gAFFxY9evoS0otWtKE54pJnQEto0DT0pW1w
-         cuWQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVUie4WUAwRqbTdjILry+o3WFYfXXZhvIPRFh2RnBq3lDr0w7bgqP94F3Qd97x/ZBPaHeGkSr4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwRauyZ6/WdqbvNU3fKRh8DMTliXNtZpTV2GJqCOOQTt61IceDt
-	r7cNEebFpCrkrmbJN+eW+/PmvLhSDSON9LV9PlvsnK+4iOsggIWO+IdjWaP53vsJHVtdGEPnrxx
-	mUecSfKLom7PCKAbI/p1OSrAsQ1NJS0DbHp/EdBO9UpsCfdYY7btbM9nrPw==
-X-Gm-Gg: ASbGncsNRHoM/Zu+GLiTE1mWqmV+cNpAFU+wffLHRd3LO+hMnVBqdZaxTf4NYpNZcKP
-	bkw+Sa43knhZF0cO9LJk+CXGxLpfuSpLTqfjkS62V2JlygVFpjl8fhlc7nt9DxRSLcxQDXRTxo3
-	+Xt6LdNzD+LOgH9WHTlN4rOK/m9z/6OKwfi74fANOaPASlYZuuBAosTyybVXg50TLkS62bA267q
-	cKCfXt9VmmmcglLB/vgb0WxR/7yh9tsU2NFY/PDtOQ1NdkaqzbwhR7f8hwCWW7pBwGZyaWC+i+r
-	VL+MUNb83InTeOVK+LgdVrXCmZQqu1UHDv4yAy7KjmX3TozhEi0dfEVjMDlVfypKDdo+jtd5C9m
-	SG7HmaWZZZ5Ll6aT5zS6M+dR8ljWIxJxPGtekb1FBG4vfwxM=
-X-Received: by 2002:a05:600c:3f0d:b0:468:86e0:de40 with SMTP id 5b1f17b1804b1-4771e32f67amr17216435e9.4.1761725999691;
-        Wed, 29 Oct 2025 01:19:59 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFIKqhZC0CRaoe+oh+5iFeCWKZfBRUDuYDM2nN5t0zCHgNGsk8VxrCIMd1bsBbPfplLJXnHhw==
-X-Received: by 2002:a05:600c:3f0d:b0:468:86e0:de40 with SMTP id 5b1f17b1804b1-4771e32f67amr17216155e9.4.1761725999244;
-        Wed, 29 Oct 2025 01:19:59 -0700 (PDT)
-Received: from ?IPV6:2a0d:3344:2712:7e10:4d59:d956:544f:d65c? ([2a0d:3344:2712:7e10:4d59:d956:544f:d65c])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4771e3937b3sm33177645e9.5.2025.10.29.01.19.57
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 29 Oct 2025 01:19:58 -0700 (PDT)
-Message-ID: <d0f1f8f5-8edf-4409-a3ee-376828f85618@redhat.com>
-Date: Wed, 29 Oct 2025 09:19:57 +0100
+	s=arc-20240116; t=1761727043; c=relaxed/simple;
+	bh=oF6LKBB22AafYnCzTEBpOEfHh+noPK2wT2wVlzcUcA0=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=njtid7Ia5yO315h7ddZWMnovRZM4zrLRqpJOnqXCMWv6DU4kRF+smNimhi3oLNoxP8PPw02uMJtoHC4DPmgYgocfnoFGjBMePRe2lVql9Q5wAg1zueHG2I2HBzrOqvkN4gLP4mQBb7XK5YKKOEm1DlO3m25zV2QsUWM4HIqldRs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Wy5Qn+5q; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59SJmHUD008744;
+	Wed, 29 Oct 2025 08:37:15 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=ecvfUZ
+	Bn2euew0euzB3a2mA2MwBou4gYy6KEjz6gV8U=; b=Wy5Qn+5qyzQBxp3FnQ4ohr
+	OL0vYOh6V3hGGcVCHieTGFemcdm3Wy4/wBQTwDFBtkpMz/0oftD9l0uVdOMgjom6
+	7x3tHVDvaUjicNlSkct209g5e8UBVmEaJg4KO5x+yPM/QfhcD6IPr9jn0iOc4Gig
+	p6Y+UNgHcJk1BdUeba+NSUycpH5PjqMF9nwwsu2AWjNqjwfq1yUcQdX422YIRs1B
+	L9OuVbkBF4O0wywebL3oP+WD9KJa1xYqeWgD3QrgHozfVTtsuoVr74KehuYt+gAm
+	1HvItniwoMR2ozRS1JJII8jsTUDjCJl+8uhIo7JLe2HisRKiAKGCQAEh7vK3yJ9g
+	==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a34afaa2j-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 29 Oct 2025 08:37:14 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59T5Gbbk027519;
+	Wed, 29 Oct 2025 08:37:14 GMT
+Received: from smtprelay03.dal12v.mail.ibm.com ([172.16.1.5])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4a33w2jd5w-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 29 Oct 2025 08:37:14 +0000
+Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com [10.39.53.232])
+	by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 59T8bC0f29360760
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 29 Oct 2025 08:37:13 GMT
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id ACE2158063;
+	Wed, 29 Oct 2025 08:37:12 +0000 (GMT)
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 0B32558043;
+	Wed, 29 Oct 2025 08:37:10 +0000 (GMT)
+Received: from [9.111.56.216] (unknown [9.111.56.216])
+	by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 29 Oct 2025 08:37:09 +0000 (GMT)
+Message-ID: <2d1ea24848d4c389525df63a76fe873723bad900.camel@linux.ibm.com>
+Subject: Re: [PATCH v2 1/2] PCI: Allow per function PCI slots
+From: Niklas Schnelle <schnelle@linux.ibm.com>
+To: Bibo Mao <maobibo@loongson.cn>, Farhan Ali <alifm@linux.ibm.com>,
+        linux-s390@vger.kernel.org, linux-pci@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc: helgaas@kernel.org, mjrosato@linux.ibm.com, bblock@linux.ibm.com,
+        agordeev@linux.ibm.com, gor@linux.ibm.com, hca@linux.ibm.com,
+        stable@vger.kernel.org, Tianrui Zhao <zhaotianrui@loongson.cn>,
+        Huacai Chen
+	 <chenhuacai@kernel.org>
+Date: Wed, 29 Oct 2025 09:37:09 +0100
+In-Reply-To: <aa0214e8-31be-2b21-c8af-b7831efd60a7@loongson.cn>
+References: <20251022212411.1989-1-alifm@linux.ibm.com>
+	 <20251022212411.1989-2-alifm@linux.ibm.com>
+	 <e5a5d582a75c030a63c364d553c13baf373663ac.camel@linux.ibm.com>
+	 <aa0214e8-31be-2b21-c8af-b7831efd60a7@loongson.cn>
+Autocrypt: addr=schnelle@linux.ibm.com; prefer-encrypt=mutual;
+ keydata=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
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] virtio_net: fix alignment for virtio_net_hdr_v1_hash
-To: Jason Wang <jasowang@redhat.com>, mst@redhat.com,
- xuanzhuo@linux.alibaba.com, eperezma@redhat.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org
-Cc: virtualization@lists.linux.dev, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20251029012434.75576-1-jasowang@redhat.com>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20251029012434.75576-1-jasowang@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 7A0yER5TuzicOzdnIqMHgbCjTPW8nSiw
+X-Authority-Analysis: v=2.4 cv=WPhyn3sR c=1 sm=1 tr=0 ts=6901d23b cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=a3Gw60pZ56dmYUsj_9gA:9 a=QEXdDO2ut3YA:10 a=cPQSjfK2_nFv0Q5t_7PE:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDI4MDE2NiBTYWx0ZWRfX96rUOvt/9qIL
+ Ic5TsUZZIsg2+IHvZLDQHjOcwHlgVmYUBWVpjgeqyFgMamGCHT0wMHhsB+T9mlDzg/wW38XrvTl
+ NWrULgTMgKI5iIzSh7lRzyNYm0u+M5FvPenkfmF65XpTsG/5ce0DJ3dtznDT+aHHJKO58ZXWICk
+ nhBVxy11hUsCCkp9WmtmRp0HrmGdbSk/Lwdd2q934aObgJVXe+x5ORLtD/ByZ8IJCDyvFnWHaIk
+ +BUPL2ULhSia32c1bRG2VXfSj0KvJC00CGyIUOsfCvXnFhctYHNkkMXyrORmK8r7i/lseCYXWrX
+ KU3HEehASX/agRnYlmZ8iUPq9iDCZLt2Nte0WBjJQg4aI71EPjR9AGRZUS3qS8KR0pdFA6csw4d
+ odjGLO71YrUjekf5d0vdlOW5KLabug==
+X-Proofpoint-ORIG-GUID: 7A0yER5TuzicOzdnIqMHgbCjTPW8nSiw
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-10-29_03,2025-10-22_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 adultscore=0 malwarescore=0 suspectscore=0 spamscore=0
+ impostorscore=0 lowpriorityscore=0 clxscore=1015 bulkscore=0
+ priorityscore=1501 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2510240000
+ definitions=main-2510280166
 
-On 10/29/25 2:24 AM, Jason Wang wrote:
-> From: "Michael S. Tsirkin" <mst@redhat.com>
-> 
-> Changing alignment of header would mean it's no longer safe to cast a
-> 2 byte aligned pointer between formats. Use two 16 bit fields to make
-> it 2 byte aligned as previously.
-> 
-> This fixes the performance regression since
-> commit ("virtio_net: enable gso over UDP tunnel support.") as it uses
-> virtio_net_hdr_v1_hash_tunnel which embeds
-> virtio_net_hdr_v1_hash. Pktgen in guest + XDP_DROP on TAP + vhost_net
-> shows the TX PPS is recovered from 2.4Mpps to 4.45Mpps.
-> 
-> Fixes: 56a06bd40fab ("virtio_net: enable gso over UDP tunnel support.")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-> Signed-off-by: Jason Wang <jasowang@redhat.com>
+On Tue, 2025-10-28 at 09:11 +0800, Bibo Mao wrote:
+>=20
+> On 2025/10/27 =E4=B8=8B=E5=8D=888:29, Niklas Schnelle wrote:
+> > On Wed, 2025-10-22 at 14:24 -0700, Farhan Ali wrote:
+> > > On s390 systems, which use a machine level hypervisor, PCI devices ar=
+e
+> > > always accessed through a form of PCI pass-through which fundamentall=
+y
+> > > operates on a per PCI function granularity. This is also reflected in=
+ the
+> > > s390 PCI hotplug driver which creates hotplug slots for individual PC=
+I
+> > > functions. Its reset_slot() function, which is a wrapper for
+> > > zpci_hot_reset_device(), thus also resets individual functions.
+> > >=20
+> > > Currently, the kernel's PCI_SLOT() macro assigns the same pci_slot ob=
+ject
+> > > to multifunction devices. This approach worked fine on s390 systems t=
+hat
+> > > only exposed virtual functions as individual PCI domains to the opera=
+ting
+> > > system.  Since commit 44510d6fa0c0 ("s390/pci: Handling multifunction=
+s")
+> > > s390 supports exposing the topology of multifunction PCI devices by
+> > > grouping them in a shared PCI domain. When attempting to reset a func=
+tion
+> > > through the hotplug driver, the shared slot assignment causes the wro=
+ng
+> > > function to be reset instead of the intended one. It also leaks memor=
+y as
+> > > we do create a pci_slot object for the function, but don't correctly =
+free
+> > > it in pci_slot_release().
+> > >=20
+> > > Add a flag for struct pci_slot to allow per function PCI slots for
+> > > functions managed through a hypervisor, which exposes individual PCI
+> > > functions while retaining the topology.
+> >=20
+> > I wonder if LoongArch which now also does per PCI function pass-through
+> > might need this too. Adding their KVM maintainers.
+>=20
+> Hi Niklas,
+>=20
+> Thanks for your reminder. Yes, LoongArch do per PCI function=20
+> pass-throught. In theory, function pci_slot_enabled_per_func() should=20
+> return true on LoongArch also. Only that now IOMMU driver is not merged,=
+=20
+> there is no way to test it, however we will write down this as a note=20
+> inside about this issue and verify it once IOMMU driver is merged.
+>=20
+>=20
+> Regards
+> Bibo Mao
+>=20
 
-Whoops, I replied to the older thread before reading this one.
+Hi Bibo,
 
-Acked-by: Paolo Abeni <pabeni@redhat.com>
+Is your ability to test if it works for you also hindered for my other
+patch touching pci_scan_slot()? It sounded like Huacai was looking into
+testing that.
 
+Thanks,
+Niklas
 
