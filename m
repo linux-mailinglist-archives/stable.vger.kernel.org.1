@@ -1,130 +1,169 @@
-Return-Path: <stable+bounces-191671-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191672-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BACF6C1CFBB
-	for <lists+stable@lfdr.de>; Wed, 29 Oct 2025 20:19:19 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F461C1D2DF
+	for <lists+stable@lfdr.de>; Wed, 29 Oct 2025 21:16:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B9AC84051FD
-	for <lists+stable@lfdr.de>; Wed, 29 Oct 2025 19:15:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C2B8E188A772
+	for <lists+stable@lfdr.de>; Wed, 29 Oct 2025 20:16:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BE8E3596E6;
-	Wed, 29 Oct 2025 19:15:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="DaKp2SN4"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6779A3358CD;
+	Wed, 29 Oct 2025 20:15:54 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mx3.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65A362F12BB
-	for <stable@vger.kernel.org>; Wed, 29 Oct 2025 19:15:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F02532E22BD;
+	Wed, 29 Oct 2025 20:15:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=141.14.17.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761765341; cv=none; b=BZBFe1f2MXY0ZTTQoeEfuceoFzRUClAfqjBSfWJBewzle2kMfi4zNDVtYwZSjy2+tM2w6tcV2zHymi+Lk+APUd7xcOV08AKboIx8DFCZsRbGEtwHpqRbLcj5z4GnEovlMvq1VKkM1VzURIGMUnR8fJsZXAo8DHBEmzRgsgq3Fg0=
+	t=1761768954; cv=none; b=WHWPUtXLUZjCT6yagf5ZbnoK2ahrd6n0km5KZeO03kVXX+x+ysCYcGy8OunvUde3YP7jZfAvbqxbqyW3SKrZr/NeRzqFMw/3mKxI5FPse/DehHl8YZtMN1yP7ZuWezRIzhEAOtl1r92e5/rQ0e8GhVoNAEf1G81Kl4buK8VPuDg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761765341; c=relaxed/simple;
-	bh=W31WFCUm45PEMh9IQGksIpRZSuVLACUH24nusPmltPg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TL7ztvBGCI30WMt0Jsg5s6WE8jpaoNum8Zo+iz3WAjU6uq7Rw5vxOigkxlJ1a5Fw0BEM6klF95rU0dMibd92dQr2xZZYJCgxCEHGBMjnz0XgR29TZhVZ2zZnBjngnsR2iaO9aYUCA/NiVXKQ23WC6ovMdJKzfwwJJL6ogRPFbRw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=DaKp2SN4; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1761765337;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=CD9l1/tOtFnGfm02mvhYsGXz7YDlKTtUi2I3rLktGGc=;
-	b=DaKp2SN4eHYMZe35BlnT8ct+i/yomBoXTsjjvJb5ju4VXRivsE9ohCDPLb/Nhorsey/qa3
-	Jd2wKbsKk0VU7Nd07Cas32pD3x3uCVAsPy5tKdN1N8hALGGrWoyNdSuhSaH4LCJyO2gmws
-	DPQWub4AApGeBjiq7IgzbnequxAHs4s=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-258-j0hjFY2ZOaCz_shmAqNbOg-1; Wed,
- 29 Oct 2025 15:15:34 -0400
-X-MC-Unique: j0hjFY2ZOaCz_shmAqNbOg-1
-X-Mimecast-MFC-AGG-ID: j0hjFY2ZOaCz_shmAqNbOg_1761765333
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	s=arc-20240116; t=1761768954; c=relaxed/simple;
+	bh=HDfewOV5mACxbjXjrW/oald4KFBK1ql0agAzRq4tGg4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=of9v1cDNu12n+wm3BF6pomOfQG5GderqfR7+aokEn+BBAt3zV3r32uOx0xa/QY8dfsU9aBrwQgL6Da1BVa/U6QWRHSy8AMyrHhe3TEGnKKu4WZhPWSxxbxQZB3fE/yK8cArSxGF6loE+1Tl3Hdbv3ehzyPdKKgphnnNJtZSy8QI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de; spf=pass smtp.mailfrom=molgen.mpg.de; arc=none smtp.client-ip=141.14.17.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=molgen.mpg.de
+Received: from [192.168.2.214] (p57bd9c51.dip0.t-ipconnect.de [87.189.156.81])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B539A180899F;
-	Wed, 29 Oct 2025 19:15:32 +0000 (UTC)
-Received: from desnesn-thinkpadp16vgen1.rmtbr.csb (unknown [10.96.134.139])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 821451955F1B;
-	Wed, 29 Oct 2025 19:15:30 +0000 (UTC)
-From: Desnes Nunes <desnesn@redhat.com>
-To: linux-kernel@vger.kernel.org,
-	linux-usb@vger.kernel.org
-Cc: gregkh@linuxfoundation.org,
-	stern@rowland.harvard.edu,
-	Desnes Nunes <desnesn@redhat.com>,
-	stable@vger.kernel.org
-Subject: [PATCH 1/2] usb: storage: Fix memory leak in USB bulk transport
-Date: Wed, 29 Oct 2025 16:14:13 -0300
-Message-ID: <20251029191414.410442-2-desnesn@redhat.com>
-In-Reply-To: <20251029191414.410442-1-desnesn@redhat.com>
-References: <20251029191414.410442-1-desnesn@redhat.com>
+	(Authenticated sender: pmenzel)
+	by mx.molgen.mpg.de (Postfix) with ESMTPSA id 5914B617C4FA6;
+	Wed, 29 Oct 2025 21:15:31 +0100 (CET)
+Message-ID: <9778a6a1-ffb0-4972-a2e7-893128a51e52@molgen.mpg.de>
+Date: Wed, 29 Oct 2025 21:15:28 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] Bluetooth: rfcomm: fix modem control handling
+To: Johan Hovold <johan@kernel.org>
+Cc: Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+ Marcel Holtmann <marcel@holtmann.org>,
+ Johan Hedberg <johan.hedberg@gmail.com>, linux-bluetooth@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20251023120530.5685-1-johan@kernel.org>
+Content-Language: en-US
+From: Paul Menzel <pmenzel@molgen.mpg.de>
+In-Reply-To: <20251023120530.5685-1-johan@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-A kernel memory leak was identified by the 'ioctl_sg01' test from Linux
-Test Project (LTP). The following bytes were maily observed: 0x53425355.
+Dear Johan,
 
-When USB storage devices incorrectly skip the data phase with status data,
-the code extracts/validates the CSW from the sg buffer, but fails to clear
-it afterwards. This leaves status protocol data in srb's transfer buffer,
-such as the US_BULK_CS_SIGN 'USBS' signature observed here. Thus, this
-leads to USB protocols leaks to user space through SCSI generic (/dev/sg*)
-interfaces, such as the one seen here when the LTP test requested 512 KiB.
 
-Fix the leak by zeroing the CSW data in srb's transfer buffer immediately
-after the validation of devices that skip data phase.
+Thank you for your patch.
 
-Note: Differently from CVE-2018-1000204, which fixed a big leak by zero-
-ing pages at allocation time, this leak occurs after allocation, when USB
-protocol data is written to already-allocated sg pages.
 
-Fixes: a45b599ad808 ("scsi: sg: allocate with __GFP_ZERO in sg_build_indirect()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Desnes Nunes <desnesn@redhat.com>
----
- drivers/usb/storage/transport.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+Am 23.10.25 um 14:05 schrieb Johan Hovold:
+> The RFCOMM driver confuses the local and remote modem control signals,
+> which specifically means that the reported DTR and RTS state will
+> instead reflect the remote end (i.e. DSR and CTS).
+> 
+> This issue dates back to the original driver (and a follow-on update)
+> merged in 2002, which resulted in a non-standard implementation of
+> TIOCMSET that allowed controlling also the TS07.10 IC and DV signals by
+> mapping them to the RI and DCD input flags, while TIOCMGET failed to
+> return the actual state of DTR and RTS.
+> 
+> Note that the bogus control of input signals in tiocmset() is just
+> dead code as those flags will have been masked out by the tty layer
+> since 2003.
+> 
+> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
 
-diff --git a/drivers/usb/storage/transport.c b/drivers/usb/storage/transport.c
-index 1aa1bd26c81f..8e9f6459e197 100644
---- a/drivers/usb/storage/transport.c
-+++ b/drivers/usb/storage/transport.c
-@@ -1200,7 +1200,17 @@ int usb_stor_Bulk_transport(struct scsi_cmnd *srb, struct us_data *us)
- 						US_BULK_CS_WRAP_LEN &&
- 					bcs->Signature ==
- 						cpu_to_le32(US_BULK_CS_SIGN)) {
-+				unsigned char buf[US_BULK_CS_WRAP_LEN];
-+
-+				sg = NULL;
-+				offset = 0;
-+				memset(buf, 0, US_BULK_CS_WRAP_LEN);
- 				usb_stor_dbg(us, "Device skipped data phase\n");
-+
-+				if (usb_stor_access_xfer_buf(buf, US_BULK_CS_WRAP_LEN, srb,
-+						&sg, &offset, TO_XFER_BUF) != US_BULK_CS_WRAP_LEN)
-+					usb_stor_dbg(us, "Failed to clear CSW data\n");
-+
- 				scsi_set_resid(srb, transfer_length);
- 				goto skipped_data_phase;
- 			}
--- 
-2.51.0
+There is a linux-history git archive [1], if somebody wants dig further. 
+But not relevant for the tag used by the stable folks.
 
+Is there any way to test your change, to read DTR and RTS state?
+
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Johan Hovold <johan@kernel.org>
+> ---
+> 
+> Changes in v2
+>   - fix a compilation issue discovered before sending v1 but never folded
+>     into the actual patch...
+> 
+> 
+>   net/bluetooth/rfcomm/tty.c | 26 +++++++++++---------------
+>   1 file changed, 11 insertions(+), 15 deletions(-)
+> 
+> diff --git a/net/bluetooth/rfcomm/tty.c b/net/bluetooth/rfcomm/tty.c
+> index 376ce6de84be..b783526ab588 100644
+> --- a/net/bluetooth/rfcomm/tty.c
+> +++ b/net/bluetooth/rfcomm/tty.c
+> @@ -643,8 +643,8 @@ static void rfcomm_dev_modem_status(struct rfcomm_dlc *dlc, u8 v24_sig)
+>   		tty_port_tty_hangup(&dev->port, true);
+>   
+>   	dev->modem_status =
+> -		((v24_sig & RFCOMM_V24_RTC) ? (TIOCM_DSR | TIOCM_DTR) : 0) |
+> -		((v24_sig & RFCOMM_V24_RTR) ? (TIOCM_RTS | TIOCM_CTS) : 0) |
+> +		((v24_sig & RFCOMM_V24_RTC) ? TIOCM_DSR : 0) |
+> +		((v24_sig & RFCOMM_V24_RTR) ? TIOCM_CTS : 0) |
+>   		((v24_sig & RFCOMM_V24_IC)  ? TIOCM_RI : 0) |
+>   		((v24_sig & RFCOMM_V24_DV)  ? TIOCM_CD : 0);
+>   }
+> @@ -1055,10 +1055,14 @@ static void rfcomm_tty_hangup(struct tty_struct *tty)
+>   static int rfcomm_tty_tiocmget(struct tty_struct *tty)
+>   {
+>   	struct rfcomm_dev *dev = tty->driver_data;
+> +	struct rfcomm_dlc *dlc = dev->dlc;
+> +	u8 v24_sig;
+>   
+>   	BT_DBG("tty %p dev %p", tty, dev);
+>   
+> -	return dev->modem_status;
+> +	rfcomm_dlc_get_modem_status(dlc, &v24_sig);
+> +
+> +	return (v24_sig & (TIOCM_DTR | TIOCM_RTS)) | dev->modem_status;
+>   }
+>   
+>   static int rfcomm_tty_tiocmset(struct tty_struct *tty, unsigned int set, unsigned int clear)
+> @@ -1071,23 +1075,15 @@ static int rfcomm_tty_tiocmset(struct tty_struct *tty, unsigned int set, unsigne
+>   
+>   	rfcomm_dlc_get_modem_status(dlc, &v24_sig);
+>   
+> -	if (set & TIOCM_DSR || set & TIOCM_DTR)
+> +	if (set & TIOCM_DTR)
+>   		v24_sig |= RFCOMM_V24_RTC;
+> -	if (set & TIOCM_RTS || set & TIOCM_CTS)
+> +	if (set & TIOCM_RTS)
+>   		v24_sig |= RFCOMM_V24_RTR;
+> -	if (set & TIOCM_RI)
+> -		v24_sig |= RFCOMM_V24_IC;
+> -	if (set & TIOCM_CD)
+> -		v24_sig |= RFCOMM_V24_DV;
+>   
+> -	if (clear & TIOCM_DSR || clear & TIOCM_DTR)
+> +	if (clear & TIOCM_DTR)
+>   		v24_sig &= ~RFCOMM_V24_RTC;
+> -	if (clear & TIOCM_RTS || clear & TIOCM_CTS)
+> +	if (clear & TIOCM_RTS)
+>   		v24_sig &= ~RFCOMM_V24_RTR;
+> -	if (clear & TIOCM_RI)
+> -		v24_sig &= ~RFCOMM_V24_IC;
+> -	if (clear & TIOCM_CD)
+> -		v24_sig &= ~RFCOMM_V24_DV;
+>   
+>   	rfcomm_dlc_set_modem_status(dlc, v24_sig);
+>   
+
+
+Kind regards,
+
+Paul
+
+
+[1]: 
+https://web.git.kernel.org/pub/scm/linux/kernel/git/history/history.git/
 
