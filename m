@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-191662-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191663-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F06F6C1C3C3
-	for <lists+stable@lfdr.de>; Wed, 29 Oct 2025 17:51:06 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DADBDC1C351
+	for <lists+stable@lfdr.de>; Wed, 29 Oct 2025 17:47:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F00826412B7
-	for <lists+stable@lfdr.de>; Wed, 29 Oct 2025 16:37:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6B4A51A62299
+	for <lists+stable@lfdr.de>; Wed, 29 Oct 2025 16:40:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B80834405D;
-	Wed, 29 Oct 2025 16:35:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3483343D9C;
+	Wed, 29 Oct 2025 16:39:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NgRt2n9H"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oeRm2lPc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E16A5325487;
-	Wed, 29 Oct 2025 16:35:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74A04299A8F;
+	Wed, 29 Oct 2025 16:39:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761755751; cv=none; b=VggXyK015Sk8oYIeXc0O5jAqJ4bDL/f2L/T17EaGjUoHLfZNJGgY/AFsJjLjoFrpiYzKI6/87WYroL68NokmbTTOo/6RiknBIdhOrDEukUkRIHUIV0YH4NuCO2WNIEsGStubcCq2A1YUOu5eoJ1vd0SngjcdW6mafy00HBrHITs=
+	t=1761755963; cv=none; b=imPY/sT1Yu+V7v+g7+IyeBiR3eULjTTI6f+FwZWuGU1znasf5LEjaE7ST2K2qVh9ainLdZNGYIt6qhxIHmdtfPR2dtsDTdtspYQvvKkSYNURo9+w2ZVkULOIxBx4qqbRW9jwOgAgxxpnpyYcaR6Aug9kPX6v+tghfq+of+gJ8L8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761755751; c=relaxed/simple;
-	bh=0Q/PAlu4iZpIV82jD8k6dHiUKuoh4pHxPPcM4tcBUsY=;
+	s=arc-20240116; t=1761755963; c=relaxed/simple;
+	bh=k/THoufCsFgPBRIhXt6rhIAnwVeM2wUTW1HoSJUyun8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=toPBgSj/XnrFUqJq7iTgQplxtQ8IkX7JxKNm3NQf2XOeq/PFyQ9n2hJLGsTB7HHfA+mbPyqpFuD7pVunvIaUimTOBK49cNeIHD6KTTJZnKtqK0ObnDTGM/OYSFszygbNR605p+0KdTvyrgxUY66L9FlAevNo7bt3byRdve/05yw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NgRt2n9H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E62C7C4CEF7;
-	Wed, 29 Oct 2025 16:35:48 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=VvSKi0QBUdn+Hi4x9uYAZkImgxYIOTleNdS65b4D6nNGUOlZEMp8BhAjEtB6RFJqb5UxXLKyfocDsQNF0jSTPWUU8gMWZ9BQs4Phj1eO6kfpZsp6B4JdEtMqMDBtDkalWO7PDWl42SiHzg96M/1BlFatlVtAGOGvDz6AmuVFFUc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oeRm2lPc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81A65C4CEF8;
+	Wed, 29 Oct 2025 16:39:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761755750;
-	bh=0Q/PAlu4iZpIV82jD8k6dHiUKuoh4pHxPPcM4tcBUsY=;
+	s=k20201202; t=1761755962;
+	bh=k/THoufCsFgPBRIhXt6rhIAnwVeM2wUTW1HoSJUyun8=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=NgRt2n9HgH0vRqHxYhz3Lr6TAKP7un3xcoHpbjA68R4zjHC13K1RpKfPjRcI5jkgH
-	 OlAsl5JDVWs02TZVc+yFC3F6vE8zR/tk1TYtUewekNtDP7xy5R2hYHCEJ6DF5VjGiJ
-	 4fBaTv0nhLlEW3uVCvERmjhi0B0SpoKuIoRu/5uwRWLB8q2c22nrnB3LSaG3u9ci4R
-	 tski/s7RMLi4hlefwtjE6fvEsWnBP5qOi7WuL48ETkAC7S1gHu42GDlsZasAJIPilg
-	 k8b41RLT4IQSn/2r3OliTsdYWOXJAGNEHkcXPw49wn9b305spnHbwwhYK1gSB4tATc
-	 OM3mD/z5ozVhQ==
-Date: Wed, 29 Oct 2025 11:38:53 -0500
+	b=oeRm2lPcNLRrYndKKmwVVpubn9BNybVM8rAZJlFfLxVuwlBgFuVKAeWfzJIbw+/6v
+	 B//Fzw8Sj3kzbDJlCI0LPNUylzDYSat5ksVPpjcZ+9lkSlBxnSxi0KPWfm1y82OROd
+	 UugFPKSPeO3pCdkSXN7ZDGoZ3VSd7Jld1gFmI6tnWn6j01DJ1x7SUtN3W3bA1fUGsO
+	 YVfOu6YbWzIV2RZN2+d71K1S9M4pM7ajQkfF1yI3jHLg0IGCgTuPOXEPmVK/JGbFs4
+	 raG/iKgxHm/BHJZCUjvKOdqX7MzRFAkV/rMhD00hQB3frIls5NlDvOdd48AiRDXlNq
+	 2wEE2IkfcxG/A==
+Date: Wed, 29 Oct 2025 11:42:26 -0500
 From: Bjorn Andersson <andersson@kernel.org>
 To: Abel Vesa <abel.vesa@linaro.org>
 Cc: Vinod Koul <vkoul@kernel.org>, 
@@ -51,12 +51,12 @@ Cc: Vinod Koul <vkoul@kernel.org>,
 	Sibi Sankar <sibi.sankar@oss.qualcomm.com>, Rajendra Nayak <quic_rjendra@quicinc.com>, 
 	Neil Armstrong <neil.armstrong@linaro.org>, linux-arm-msm@vger.kernel.org, linux-phy@lists.infradead.org, 
 	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Krzysztof Kozlowski <krzk@kernel.org>, stable@vger.kernel.org
-Subject: Re: [PATCH v4 1/3] dt-bindings: phy: qcom-edp: Add missing clock for
- X Elite
-Message-ID: <bncdkcnbqnlz4rj5yhtgeey5d2ksuwpz7ms7kvkjci3p4gdtt4@e54svrukfobu>
+	Krzysztof Kozlowski <krzk@kernel.org>, stable@vger.kernel.org, 
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Subject: Re: [PATCH v4 2/3] phy: qcom: edp: Make the number of clocks flexible
+Message-ID: <wjvec7fiqjzlyo6y5kpzsd5u7rz47anaytu25w2j4yqgtdntx6@zuapdsayoio2>
 References: <20251029-phy-qcom-edp-add-missing-refclk-v4-0-adb7f5c54fe4@linaro.org>
- <20251029-phy-qcom-edp-add-missing-refclk-v4-1-adb7f5c54fe4@linaro.org>
+ <20251029-phy-qcom-edp-add-missing-refclk-v4-2-adb7f5c54fe4@linaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -65,10 +65,11 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251029-phy-qcom-edp-add-missing-refclk-v4-1-adb7f5c54fe4@linaro.org>
+In-Reply-To: <20251029-phy-qcom-edp-add-missing-refclk-v4-2-adb7f5c54fe4@linaro.org>
 
-On Wed, Oct 29, 2025 at 03:31:30PM +0200, Abel Vesa wrote:
-> On X Elite platform, the eDP PHY uses one more clock called ref.
+On Wed, Oct 29, 2025 at 03:31:31PM +0200, Abel Vesa wrote:
+> On X Elite, the DP PHY needs another clock called ref, while all other
+> platforms do not.
 > 
 > The current X Elite devices supported upstream work fine without this
 > clock, because the boot firmware leaves this clock enabled. But we should
@@ -76,78 +77,73 @@ On Wed, Oct 29, 2025 at 03:31:30PM +0200, Abel Vesa wrote:
 > needed in order to make the driver disables this clock along with the
 > other ones, for a proper bring-down of the entire PHY.
 > 
-> So attach the this ref clock to the PHY.
+> So in order to handle these clocks on different platforms, make the driver
+> get all the clocks regardless of how many there are provided.
 > 
 > Cc: stable@vger.kernel.org # v6.10
-> Fixes: 5d5607861350 ("dt-bindings: phy: qcom-edp: Add X1E80100 PHY compatibles")
-> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> Fixes: db83c107dc29 ("phy: qcom: edp: Add v6 specific ops and X1E80100 platform support")
+> Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 > Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
+> ---
+>  drivers/phy/qualcomm/phy-qcom-edp.c | 16 ++++++++--------
+>  1 file changed, 8 insertions(+), 8 deletions(-)
+> 
+> diff --git a/drivers/phy/qualcomm/phy-qcom-edp.c b/drivers/phy/qualcomm/phy-qcom-edp.c
+> index f1b51018683d51df064f60440864c6031638670c..ca9bb9d70e29e1a132bd499fb9f74b5837acf45b 100644
+> --- a/drivers/phy/qualcomm/phy-qcom-edp.c
+> +++ b/drivers/phy/qualcomm/phy-qcom-edp.c
+> @@ -103,7 +103,9 @@ struct qcom_edp {
+>  
+>  	struct phy_configure_opts_dp dp_opts;
+>  
+> -	struct clk_bulk_data clks[2];
+> +	struct clk_bulk_data *clks;
+> +	int num_clks;
+> +
+>  	struct regulator_bulk_data supplies[2];
+>  
+>  	bool is_edp;
+> @@ -218,7 +220,7 @@ static int qcom_edp_phy_init(struct phy *phy)
+>  	if (ret)
+>  		return ret;
+>  
+> -	ret = clk_bulk_prepare_enable(ARRAY_SIZE(edp->clks), edp->clks);
+> +	ret = clk_bulk_prepare_enable(edp->num_clks, edp->clks);
+>  	if (ret)
+>  		goto out_disable_supplies;
+>  
+> @@ -885,7 +887,7 @@ static int qcom_edp_phy_exit(struct phy *phy)
+>  {
+>  	struct qcom_edp *edp = phy_get_drvdata(phy);
+>  
+> -	clk_bulk_disable_unprepare(ARRAY_SIZE(edp->clks), edp->clks);
+> +	clk_bulk_disable_unprepare(edp->num_clks, edp->clks);
+>  	regulator_bulk_disable(ARRAY_SIZE(edp->supplies), edp->supplies);
+>  
+>  	return 0;
+> @@ -1092,11 +1094,9 @@ static int qcom_edp_phy_probe(struct platform_device *pdev)
+>  	if (IS_ERR(edp->pll))
+>  		return PTR_ERR(edp->pll);
+>  
+> -	edp->clks[0].id = "aux";
+> -	edp->clks[1].id = "cfg_ahb";
+> -	ret = devm_clk_bulk_get(dev, ARRAY_SIZE(edp->clks), edp->clks);
+> -	if (ret)
+> -		return ret;
+> +	edp->num_clks = devm_clk_bulk_get_all(dev, &edp->clks);
+> +	if (edp->num_clks < 0)
+> +		return dev_err_probe(dev, edp->num_clks, "failed to parse clocks\n");
+
+Nit...We're not really failing to "parse" clocks...
 
 Reviewed-by: Bjorn Andersson <andersson@kernel.org>
-
-> ---
->  .../devicetree/bindings/phy/qcom,edp-phy.yaml      | 28 +++++++++++++++++++++-
->  1 file changed, 27 insertions(+), 1 deletion(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/phy/qcom,edp-phy.yaml b/Documentation/devicetree/bindings/phy/qcom,edp-phy.yaml
-> index eb97181cbb9579893b4ee26a39c3559ad87b2fba..bfc4d75f50ff9e31981fe602478f28320545e52b 100644
-> --- a/Documentation/devicetree/bindings/phy/qcom,edp-phy.yaml
-> +++ b/Documentation/devicetree/bindings/phy/qcom,edp-phy.yaml
-> @@ -37,12 +37,15 @@ properties:
->        - description: PLL register block
->  
->    clocks:
-> -    maxItems: 2
-> +    minItems: 2
-> +    maxItems: 3
->  
->    clock-names:
-> +    minItems: 2
->      items:
->        - const: aux
->        - const: cfg_ahb
-> +      - const: ref
->  
->    "#clock-cells":
->      const: 1
-> @@ -64,6 +67,29 @@ required:
->    - "#clock-cells"
->    - "#phy-cells"
->  
-> +allOf:
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          enum:
-> +            - qcom,x1e80100-dp-phy
-
-Don't we have the refclk on all the other targets as well?
-I think we should proceed as you propose here, and if this is the case,
-revisit the other targets.
 
 Regards,
 Bjorn
 
-> +    then:
-> +      properties:
-> +        clocks:
-> +          minItems: 3
-> +          maxItems: 3
-> +        clock-names:
-> +          minItems: 3
-> +          maxItems: 3
-> +    else:
-> +      properties:
-> +        clocks:
-> +          minItems: 2
-> +          maxItems: 2
-> +        clock-names:
-> +          minItems: 2
-> +          maxItems: 2
-> +
->  additionalProperties: false
 >  
->  examples:
+>  	edp->supplies[0].supply = "vdda-phy";
+>  	edp->supplies[1].supply = "vdda-pll";
 > 
 > -- 
 > 2.48.1
