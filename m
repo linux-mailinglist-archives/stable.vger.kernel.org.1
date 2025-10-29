@@ -1,155 +1,197 @@
-Return-Path: <stable+bounces-191568-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191569-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0C51C182A4
-	for <lists+stable@lfdr.de>; Wed, 29 Oct 2025 04:23:20 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1410FC18315
+	for <lists+stable@lfdr.de>; Wed, 29 Oct 2025 04:37:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E8FCD4E8751
-	for <lists+stable@lfdr.de>; Wed, 29 Oct 2025 03:23:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8A38F189D481
+	for <lists+stable@lfdr.de>; Wed, 29 Oct 2025 03:37:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 169A0221714;
-	Wed, 29 Oct 2025 03:23:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3484288530;
+	Wed, 29 Oct 2025 03:37:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="b74PWSCa"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Zja2bjye"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ECFF277C9B
-	for <stable@vger.kernel.org>; Wed, 29 Oct 2025 03:23:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA0221D63EF;
+	Wed, 29 Oct 2025 03:37:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761708185; cv=none; b=MnB8dtwgBc7e3kPGe7StRDZPJMx4xYeWhOmDWkDzMxmPaP/muBpuDlZdm2DzbmxfLeqhkx53AdEmYQygoMhYZS2ZIZwigsQGZROQLmbaAVuTJQ00/dijFCpamerc3SGx4Nj+ZQ9Y5uKFCk/gGY0W7bKU853sTgvYszfo9eRZy9c=
+	t=1761709024; cv=none; b=WLu5Y2tKKocvNW4f9C13XzUCprEJ27PXZ9SdHpOLvgPRSvWB7l2Gf06TO3ONzl+dtZO2x97CO6tN/JFrzlkLXfCFd27P/JVuBqBnu0rsAOnTuCyKvA5F65kWJkWmt/gNaj7KPdPfPnRhd57BP3RDNXCRAFnTVwyqvyPlIzwzc2w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761708185; c=relaxed/simple;
-	bh=dGq1aodl/1domVkCsoSU14DBsvKbYwzPwJTt+PqrCik=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Fo0TbndJj665jNEDdLYkv4uY37ygxHoNbLi+tqCJknQZt3RmcteRcqc4Wt/Dw8qLW+8zFlP92CQXONT1hCtYiB1qriMsfUh4KgkEeTER2HA0/5X88T1yUhmjlByq6wZ46l3fU91eXnvP2VRNESQtjJm/xo6CVe+H780IQveC+qc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=b74PWSCa; arc=none smtp.client-ip=209.85.160.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-4eccff716f4so192891cf.0
-        for <stable@vger.kernel.org>; Tue, 28 Oct 2025 20:23:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1761708183; x=1762312983; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RZF5fZYNByvvmd5+XtP+S5jRgK5TgXHSEBZH9+I4nwY=;
-        b=b74PWSCaJLlBUief2fHCSmjBEWlhnP6b6cKQj6wyAKYYCYmbAhbB5c1XlNxj0zqLhS
-         FIuRzEBbtJ2L+DywfgJ/1IYZ+0bQOjdm/ssblk6yxeoeElo4v+FPCfqmozpoMbEFc1Vt
-         9Jv99fj2gdli+IUWOrqD4/3yor8f5gIbiEQded4Sox062S5RmymrFDeo/hcBuHQ12tVk
-         eHsQUYaFUMLhzvEwQTWwy9x/rce4O4pMUQmA+b3DUH7kN00uho8HGOe94s7WKvqC5Twx
-         dhrjq1EKIGcvC1PBwgcqupLt6BT6xkOFZRiMu9psSFXRzfFNjhc3/m3kdDTGIM95e0ni
-         i3yg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761708183; x=1762312983;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=RZF5fZYNByvvmd5+XtP+S5jRgK5TgXHSEBZH9+I4nwY=;
-        b=dVOPdINNoXe9ZknTEAHu5AuxtoRiAgBLmEWyNfNveZ3ijjhWf/VQFCvR1H1nnIeltA
-         WZOei79ayw7Djf15ORx9PVZnrUeyL4+QF8Fq0vDKaK7kRreuXIga36oi/mGStSINED2R
-         xfAMmZwU0WYafuSuZw4Mqs7jBOyMyYifG0TKz2hcL0sfjgTUx3TJS27IDfq1wlvLS+jw
-         zQbsfF2idxYol8a78WDmdmEotgQt+7p5MOy35VpyngnVcFTOivJbC3BwRLdrGjwozBOB
-         XXpIbgHqlcsneENpPts3qsUMYlEp3dqEyiJVZJd9MGfuGmuqb/+7AU78UzbVHpfV5DRm
-         7ejA==
-X-Forwarded-Encrypted: i=1; AJvYcCVppBVQE6CSaGXoHT7yCvHJhMgyI80Vl5tG93QODe3zPDXaWCA1SLhJf197nF+RvhDhGkoiha0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzAx3gGngnxqJVi70sOCqAzde5WPLkNDNFeLYnj8eKKqXW6kPga
-	NYtvEBHnsFRgr1Jp7WIJMoN0+0tBsWc3b0TCEildQnzSsCK3LpABteXobwr+qGxaKGTZNsrU1kp
-	dZzZbttnHENtPID0oPT3/TBzQDbGJa/XiBXrgtadU
-X-Gm-Gg: ASbGncv8vxmxXv5Z523WNpzaA2zfmWnrmJEjh/TkW9/AdJPM8JevnERCB4G8J+ppfS9
-	oXBS4rliwwxEHFnhEoPwtATtyWCdRXbdjg/EHktB2bLRW3fU/uMKj/2bJu7yIw8z25Na/YTuD2e
-	Kj6I6jR4IECoRuuYTALUOQkboxQb1zny8cPsHE+aPX5hO8gQayGSw4IkBX4H+5/BOPx/LdbMc0Q
-	ZjpBI6nA1tRoGrrqeew2p8cRfvq/6GVdqo5Zi0RLcMZL6gGCafq183xkC4qvd83g1G0B1t5ebWt
-	ZFVE
-X-Google-Smtp-Source: AGHT+IFt0fdOZNflVxQJh5GQqXSyDE6yhX4j0HA2jB4qnG67bFoJTwJaZpXpVeBGRX36ahJHPN1YN0/KOLD2ewkP1+w=
-X-Received: by 2002:a05:622a:53c4:b0:4b0:f1f3:db94 with SMTP id
- d75a77b69052e-4ed16580052mr2297051cf.5.1761708182803; Tue, 28 Oct 2025
- 20:23:02 -0700 (PDT)
+	s=arc-20240116; t=1761709024; c=relaxed/simple;
+	bh=JsCEz7SzYUh8SRB7/FN7skKARlT8LKYCZc3aWMrN5Xc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Yai2dWO355ueA3Xfj2clLYWVcuqY1Dwqzcz92X+Ffjvvoqs0Ah6y6+2M7GNra/nCTr+tJHdwhlgiSuFOT7CGMZbnSgG0hP9cA/v0PAgbkXj54vg3WLNf95lntPLB6eNXndIR9iTUAso1gD6xn0vVHYiFoJI7AxoYa781bwNeZWY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Zja2bjye; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59SNNCWH005139;
+	Wed, 29 Oct 2025 03:36:46 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=QzMvpTHaJmVKbIXvoFw0cw6ZziWr5D
+	OyEsikXtCGN78=; b=Zja2bjyejZsSyWZU0YbnY+z2mr+9BRh6vlNvXfIw56P4Mm
+	0sjNDYDdovzSqLzkL/L/GfyF4OnGDdiMnt6iIfLbPccCGN25PFKaRRgV5r3tjOkZ
+	Mi1C2Td78Jnvy8QafBojMaK8eWJcmyxVeAuQRxk5A5t80IKkvCFRxYTEX8b795W4
+	kmD4SRCo6wfW/bm4SrLO0H36El5KJK8ir5oURJ5ALSAkshleyZcqNMhmwtjYp2LZ
+	4Ur1KBUbax30eJtCrlPLbfkedtUefH8XpVXNXLVBb4NWCMM2gQcwjueZoiR3mIBI
+	+DWCHylNIARRxe8ASetpgHZicDrvZPPOUzQ3gbiw==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a34ajh6v6-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 29 Oct 2025 03:36:45 +0000 (GMT)
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 59T3ajCS008179;
+	Wed, 29 Oct 2025 03:36:45 GMT
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a34ajh6v2-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 29 Oct 2025 03:36:45 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59T02Xwo019157;
+	Wed, 29 Oct 2025 03:36:44 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4a33xy1f7t-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 29 Oct 2025 03:36:44 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 59T3ae1m60883382
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 29 Oct 2025 03:36:40 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 43D5520043;
+	Wed, 29 Oct 2025 03:36:40 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D331420040;
+	Wed, 29 Oct 2025 03:36:39 +0000 (GMT)
+Received: from localhost (unknown [9.43.31.117])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 29 Oct 2025 03:36:39 +0000 (GMT)
+Date: Wed, 29 Oct 2025 09:06:38 +0530
+From: "Nysal Jan K.A." <nysal@linux.ibm.com>
+To: Shrikanth Hegde <sshegde@linux.ibm.com>
+Cc: Srikar Dronamraju <srikar@linux.ibm.com>,
+        Sachin P Bappalige <sachinpb@linux.ibm.com>, stable@vger.kernel.org,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Laurent Dufour <ldufour@linux.ibm.com>,
+        Thomas Gleixner <tglx@linutronix.de>, linuxppc-dev@lists.ozlabs.org,
+        linux-kernel@vger.kernel.org, Sourabh Jain <sourabhjain@linux.ibm.com>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH v2] powerpc/kexec: Enable SMT before waking offline CPUs
+Message-ID: <knhs5gainynhozku6kb2ygxy63gyy73sbnqg3vcizk45oatzry@uig2z3mlux5u>
+References: <20251025080512.85690-1-nysal@linux.ibm.com>
+ <20251028105516.26258-1-nysal@linux.ibm.com>
+ <f19a9080-8d6d-492b-b5de-88f24ce5c015@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251029014317.1533488-1-hao.ge@linux.dev>
-In-Reply-To: <20251029014317.1533488-1-hao.ge@linux.dev>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Tue, 28 Oct 2025 20:22:51 -0700
-X-Gm-Features: AWmQ_bnWQlp_hgmAQPXCvvIDSyvF6h29V3Rm7M2r8OKX5bFOVKkcR6boUbLHCuw
-Message-ID: <CAJuCfpG+bgLj6-GKNs7K0vRi7PsQvayTvwfyd+tFSnDY3muDGw@mail.gmail.com>
-Subject: Re: [PATCH v2] codetag: debug: handle existing CODETAG_EMPTY in
- mark_objexts_empty for slabobj_ext
-To: Hao Ge <hao.ge@linux.dev>
-Cc: Vlastimil Babka <vbabka@suse.cz>, Andrew Morton <akpm@linux-foundation.org>, 
-	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Hao Ge <gehao@kylinos.cn>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <f19a9080-8d6d-492b-b5de-88f24ce5c015@linux.ibm.com>
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=C/XkCAP+ c=1 sm=1 tr=0 ts=69018bcd cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=kj9zAlcOel0A:10 a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=pdyEjUt-03yZH7Vt8f0A:9 a=CjuIK1q_8ugA:10 a=cPQSjfK2_nFv0Q5t_7PE:22
+X-Proofpoint-GUID: qGox9TmZr_I6z2dz0QchiiIJ8wqnTGgu
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDI4MDE2NiBTYWx0ZWRfX22qf3S+UnQPN
+ So4IyXKzEu1wspyocduwEdhAEGFLdlo51zS10xNVniKwDVmrfQVQTBRxIDe45Fp2JZoUc9V4KyK
+ WDov73i8L/xRVe8349Vpn2AKUM0WWaEVHp6Ss0YcsNcR8i2bzQhfROm3Mr6hx3tCxLSNytuAOdu
+ GKtfd3TRWEKD71KAcfj/48sObrZy51dlRM4/iOQu+iU+cnP+R+KnuoyMIsnYE3CqlcXqGVcbgKl
+ Y3I8FpKN82HHkxHw/TH/wrhZe1XmXxrgXJNNJyhs6yTp4GeG52SmRQOy06vpagvDudThhvY6Wuh
+ OFkVjdu3q759X7ZXw2Jgt8zuS3l40+9Lqi9HgS4SFJAHixDTTrWk3sE6vkyuewRJnHEWW/JXp6E
+ f0NHcYnexMButBwO7mm+zfnTnPsvpQ==
+X-Proofpoint-ORIG-GUID: jQY3FGIrBfmGOWdrz3YpfNC3vzFNxcKs
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-10-29_01,2025-10-22_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 lowpriorityscore=0 impostorscore=0 adultscore=0 suspectscore=0
+ spamscore=0 phishscore=0 malwarescore=0 priorityscore=1501 clxscore=1015
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2510240000 definitions=main-2510280166
 
-On Tue, Oct 28, 2025 at 6:44=E2=80=AFPM Hao Ge <hao.ge@linux.dev> wrote:
->
-> From: Hao Ge <gehao@kylinos.cn>
->
-> When alloc_slab_obj_exts() fails and then later succeeds in allocating
-> a slab extension vector, it calls handle_failed_objexts_alloc() to
-> mark all objects in the vector as empty. As a result all objects in
-> this slab (slabA) will have their extensions set to CODETAG_EMPTY.
-> Later on if this slabA is used to allocate a slabobj_ext vector for
-> another slab (slabB), we end up with the slabB->obj_exts pointing to a
-> slabobj_ext vector that itself has a non-NULL slabobj_ext equal to
-> CODETAG_EMPTY. When slabB gets freed, free_slab_obj_exts() is called
-> to free slabB->obj_exts vector. free_slab_obj_exts() calls
-> mark_objexts_empty(slabB->obj_exts) which will generate a warning
-> because it expects slabobj_ext vectors to have a NULL obj_ext, not
-> CODETAG_EMPTY.
->
-> Modify mark_objexts_empty() to skip the warning and setting the
-> obj_ext value if it's already set to CODETAG_EMPTY.
->
-> Fixes: 09c46563ff6d ("codetag: debug: introduce OBJEXTS_ALLOC_FAIL to mar=
-k failed slab_ext allocations")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Hao Ge <gehao@kylinos.cn>
+hi Shrikanth,
 
-Reviewed-by: Suren Baghdasaryan <surenb@google.com>
+On Tue, Oct 28, 2025 at 10:56:05PM +0530, Shrikanth Hegde wrote:
+> Hi Nysal.
+> 
+> On 10/28/25 4:25 PM, Nysal Jan K.A. wrote:
 
-> ---
-> v2: Update the commit message and code comments for greater accuracy,
->     incorporating Suren's suggestions.
->     Thanks for Suren's help.
-> ---
->  mm/slub.c | 6 +++++-
->  1 file changed, 5 insertions(+), 1 deletion(-)
->
-> diff --git a/mm/slub.c b/mm/slub.c
-> index d4367f25b20d..589c596163c4 100644
-> --- a/mm/slub.c
-> +++ b/mm/slub.c
-> @@ -2046,7 +2046,11 @@ static inline void mark_objexts_empty(struct slabo=
-bj_ext *obj_exts)
->         if (slab_exts) {
->                 unsigned int offs =3D obj_to_index(obj_exts_slab->slab_ca=
-che,
->                                                  obj_exts_slab, obj_exts)=
-;
-> -               /* codetag should be NULL */
-> +
-> +               if (unlikely(is_codetag_empty(&slab_exts[offs].ref)))
-> +                       return;
-> +
-> +               /* codetag should be NULL here */
->                 WARN_ON(slab_exts[offs].ref.ct);
->                 set_codetag_empty(&slab_exts[offs].ref);
->         }
-> --
-> 2.25.1
->
->
+[snip]
+
+> > --- a/arch/powerpc/kexec/core_64.c
+> > +++ b/arch/powerpc/kexec/core_64.c
+> > @@ -202,6 +202,23 @@ static void kexec_prepare_cpus_wait(int wait_state)
+> >   	mb();
+> >   }
+> > +
+> > +/*
+> > + * The add_cpu() call in wake_offline_cpus() can fail as cpu_bootable()
+> > + * returns false for CPUs that fail the cpu_smt_thread_allowed() check
+> > + * or non primary threads if SMT is disabled. Re-enable SMT and set the
+> > + * number of SMT threads to threads per core.
+> > + */
+> > +static void kexec_smt_reenable(void)
+> > +{
+> > +#if defined(CONFIG_SMP) && defined(CONFIG_HOTPLUG_SMT)
+> > +	lock_device_hotplug();
+> 
+> I was looking at usage of lock_device_hotplug, looks like a good candidate for
+> guard() use case. Could be done on its own patch/series.
+> 
+
+Agree, we can look at it as a separate patch.
+
+> > +	cpu_smt_num_threads = threads_per_core;
+> > +	cpu_smt_control = CPU_SMT_ENABLED;
+> > +	unlock_device_hotplug();
+> > +#endif
+> > +}
+> 
+> 
+> Will this work too? It might be better since we anyway going to bring that CPU up
+> by doing add_cpu afterwords.
+> 
+> 	cpu_smt_num_threads = threads_per_core;
+> 	cpuhp_smt_enable()
+> 
+
+There is some reasoning in 4d37cc2dc3df, which made the switch to use the core
+device API, against calling cpu_up() directly. The other issue is 
+cpuhp_smt_enable() can skip bringing up a CPU in certain cases, for example
+when a core is offline.
+
+> > +
+> >   /*
+> >    * We need to make sure each present CPU is online.  The next kernel will scan
+> >    * the device tree and assume primary threads are online and query secondary
+> > @@ -216,6 +233,8 @@ static void wake_offline_cpus(void)
+> >   {
+> >   	int cpu = 0;
+> > +	kexec_smt_reenable();
+> > +
+> 
+> If we do above, just change the below logic to complain if any present CPU is offline.
+> 
+> >   	for_each_present_cpu(cpu) {
+> >   		if (!cpu_online(cpu)) {
+> >   			printk(KERN_INFO "kexec: Waking offline cpu %d.\n",
+> 
+
+Thanks for the review.
+
+--Nysal
 
