@@ -1,88 +1,139 @@
-Return-Path: <stable+bounces-191732-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191733-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60484C203D6
-	for <lists+stable@lfdr.de>; Thu, 30 Oct 2025 14:32:34 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40EFCC204EA
+	for <lists+stable@lfdr.de>; Thu, 30 Oct 2025 14:46:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 699234E067A
-	for <lists+stable@lfdr.de>; Thu, 30 Oct 2025 13:32:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6DAF31A21051
+	for <lists+stable@lfdr.de>; Thu, 30 Oct 2025 13:44:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99C00231A30;
-	Thu, 30 Oct 2025 13:32:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00F152EBDCD;
+	Thu, 30 Oct 2025 13:43:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mXHYbnU/"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="VsKbr63m"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45DFB207A20;
-	Thu, 30 Oct 2025 13:32:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1791424887E;
+	Thu, 30 Oct 2025 13:43:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761831145; cv=none; b=aONMKjWCdfH0CNpXBcPQPxk6YTiSAij7UiN5M4j27o6M4YheZpHQCOYbaKKLHo/+iIeUGDktAQSY6KxBcsaa8PmneTc4OfP/FKM9TPimOLEtmaX+F2kRqOyZ4FWysaHglMRZuWkcg+Vd7ihUBE1bK2a7kLmkZDZoJN2jHJzbETY=
+	t=1761831811; cv=none; b=qeqTC10ZsBLAzldJ2IuOFIDA99EHEQHAdjTCwdJy4WPfA/LjveUrdRrKFtlpEDRxsmsXDyaikJ8d/+apNnxxIOf+udXlraqRQBDTcwoUGHtGNw4ei/dPyeOyifiCdP/q7XQ3fNeDFfIiqBa46C5gKgf4/uaU1gLeT5DIbXEhV0k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761831145; c=relaxed/simple;
-	bh=snfS0RvToNjjO7M2g0HN8naHYIDMd18g7w7hv6lNcwY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mYm7mObem6QaIGHsntU0Fn7rtTVoKKojPyYGKiMrjw4RzS4q0Wf3C5p3f+oFJZVns+S1IFph25JYRjowqZGNm4PyTiiYpTzWiAm0/+e/5XBvdw2VGMVEtvlitJ+YEN5o8b2kI3uYiAdHDdmKXN65yuYrNtiguXpnMnm+CWkUA3U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mXHYbnU/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8D97C4CEF1;
-	Thu, 30 Oct 2025 13:32:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761831144;
-	bh=snfS0RvToNjjO7M2g0HN8naHYIDMd18g7w7hv6lNcwY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=mXHYbnU/NyuRTK33WjVmE0vtQzK0g4obffu7lr+7cCftrjlVEKw3UQ04NfdL+OfmR
-	 +B1z4hKnLE2fJtJh3VSGSM3VswOezG4HsdulaKn+H4DoGXqOWFRGHN9FBxBzxa+h62
-	 jav+lqui/aCIdcz/JAGXpT7czrFZUqXVMG7meuxAjSG6iiHcdDy2ufQ/oo3IjM9rcH
-	 5OL5VVH6/xT/d9dKmU/WTSJUt5ckoiXsEnXd8A5CH/4GboXX5ySKPKOWOTu60I13ON
-	 oElfd6GMn5apcD1VjdwfxmjarodQIm4RdhGc27zafx7OfDKQkzJMu/9+zLp0NZoEXN
-	 fxROtimwAymng==
-Received: from johan by xi.lan with local (Exim 4.98.2)
-	(envelope-from <johan@kernel.org>)
-	id 1vESlU-000000002O7-0ZwE;
-	Thu, 30 Oct 2025 14:32:32 +0100
-Date: Thu, 30 Oct 2025 14:32:32 +0100
-From: Johan Hovold <johan@kernel.org>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Abel Vesa <abel.vesa@linaro.org>, linux-arm-msm@vger.kernel.org,
-	linux-pci@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2 0/9] dt-bindings: PCI: qcom: Add missing required
- power-domains and resets
-Message-ID: <aQNo8J1zcaeYaJiv@hovoldconsulting.com>
-References: <20251030-dt-bindings-pci-qcom-fixes-power-domains-v2-0-28c1f11599fe@linaro.org>
+	s=arc-20240116; t=1761831811; c=relaxed/simple;
+	bh=+MGk1Y3VPikDiOf9J0ZfQJWgfYODUyIASv3ygzp6UYw=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=dublNbvBz0f9tdg/Rvb/zTmpcy9agrpd3g4uMXvQcgE2rSKl51DGtoQxNexk8HJr9DPfwwGMbgg8lD5el6Gh7r319UnHO2RNHEhfktok4pLGjAHtl/Ru6IBeHzDs7DhwDqapvIXnBfQTI5sMwshBZ3YsMTSGBZJtycZ1oYtm9iY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=VsKbr63m; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 1F49B1A178F;
+	Thu, 30 Oct 2025 13:43:27 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id E705D6068C;
+	Thu, 30 Oct 2025 13:43:26 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id EDF8A11808A57;
+	Thu, 30 Oct 2025 14:43:20 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1761831805; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=Vd/kfU9OxYb1b6llU5Rmw3RyZb77Ylq8cw6lND80BU4=;
+	b=VsKbr63mPIs9yUvMKlkj3cNdzhRSAdzBvvf+pP5P1v3o9sHqExExNM501MGKnXkvdo5ITC
+	iWeeE0K2WtXQC6fvAJUcEZm5KOxs431qM7Oo+rzyVuITNX+0N515WVLe/Z9mCM/QGdd5L/
+	u5KRMiaWIlXu6FHp3//Ebcmr0rzaAFayHVBJ38WwrfD+nC+bDAd9OpBhjcrp6ocWfItjyw
+	U3F9QQagbDox04QrE/9OUNBDP7Z7zYx6OmhZvOaJSJgMXJTDQ8b7F+gjzdEO6yxu8t6Ypf
+	SSJn8xc7K0Noaet2ES4GCuVOG4UXOLyE6cTvw46ChwKydLojNFvfVXZQXsAFgQ==
+Date: Thu, 30 Oct 2025 14:43:19 +0100
+From: Herve Codina <herve.codina@bootlin.com>
+To: Alexander Sverdlin <alexander.sverdlin@gmail.com>, Mark Brown
+ <broonie@kernel.org>
+Cc: David Rhodes	 <david.rhodes@cirrus.com>, Richard Fitzgerald
+ <rf@opensource.cirrus.com>, Liam Girdwood <lgirdwood@gmail.com>, Rob
+ Herring <robh@kernel.org>, Krzysztof Kozlowski	 <krzk+dt@kernel.org>, Conor
+ Dooley <conor+dt@kernel.org>, Jaroslav Kysela	 <perex@perex.cz>, Takashi
+ Iwai <tiwai@suse.com>, Nikita Shubin	 <nikita.shubin@maquefel.me>, Axel Lin
+ <axel.lin@ingics.com>, Brian Austin	 <brian.austin@cirrus.com>,
+ linux-sound@vger.kernel.org, patches@opensource.cirrus.com,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, Thomas Petazzoni
+  <thomas.petazzoni@bootlin.com>, stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/4] ASoC: cs4271: Fix cs4271 I2C and SPI drivers
+ automatic module loading
+Message-ID: <20251030144319.671368a2@bootlin.com>
+In-Reply-To: <06766cfb10fd6b7f4f606429f13432fe8b933d83.camel@gmail.com>
+References: <20251029093921.624088-1-herve.codina@bootlin.com>
+	<20251029093921.624088-2-herve.codina@bootlin.com>
+	<06766cfb10fd6b7f4f606429f13432fe8b933d83.camel@gmail.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251030-dt-bindings-pci-qcom-fixes-power-domains-v2-0-28c1f11599fe@linaro.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Thu, Oct 30, 2025 at 09:50:43AM +0100, Krzysztof Kozlowski wrote:
-> Changes in v2:
-> - Add also resets
-> - Drop cc-stable tag in the last patch
+Hi Alexander,
 
-The patches are identical and my point was that none of them need to be
-backported (since they don't fix any bugs, just documentation).
+On Wed, 29 Oct 2025 12:20:27 +0100
+Alexander Sverdlin <alexander.sverdlin@gmail.com> wrote:
 
-> - Link to v1: https://patch.msgid.link/20251029-dt-bindings-pci-qcom-fixes-power-domains-v1-0-da7ac2c477f4@linaro.org
+...
+
+> > diff --git a/sound/soc/codecs/cs4271-spi.c b/sound/soc/codecs/cs4271-spi.c
+> > index 4feb80436bd9..28dd7b8f3507 100644
+> > --- a/sound/soc/codecs/cs4271-spi.c
+> > +++ b/sound/soc/codecs/cs4271-spi.c
+> > @@ -23,11 +23,24 @@ static int cs4271_spi_probe(struct spi_device *spi)
+> >  	return cs4271_probe(&spi->dev, devm_regmap_init_spi(spi, &config));
+> >  }
+> >  
+> > +static const struct spi_device_id cs4271_id_spi[] = {
+> > +	{ "cs4271", 0 },
+> > +	{}
+> > +};
+> > +MODULE_DEVICE_TABLE(spi, cs4271_id_spi);
+> > +
+> > +static const struct of_device_id cs4271_dt_ids[] = {
+> > +	{ .compatible = "cirrus,cs4271", },
+> > +	{ }
+> > +};
+> > +MODULE_DEVICE_TABLE(of, cs4271_dt_ids);  
 > 
-> Recent binding changes forgot to make power-domains and resets required.
+> So currently SPI core doesn't generate "of:" prefixed uevents, therefore this
+> currently doesn't help? However, imagine, you'd have both backends enabled
+> as modules, -spi and -i2c. udev/modprobe currently load just one module it
+> finds first. What is the guarantee that the loaded module for the "of:"
+> prefixed I2C uevent would be the -i2c module?
+> 
 
-Johan
+I hesitate to fully remove cs4271_dt_ids in the SPI part.
+
+I understood having it could lead to issues if both SPI and I2C parts
+are compiled as modules but this is the pattern used in quite a lot of
+drivers.
+
+Maybe this could be handle globally out of this series instead of introducing
+a specific pattern in this series.
+
+But well, if you and Mark are ok to fully remove the cs4271_dt_ids from the
+SPI part and so unset the of_match_table from the cs4271_spi_driver, I can
+do the modification.
+
+Let me know if I should send a new iteration with cs4271_dt_ids fully removed
+from the SPI part.
+
+Also, last point, I don't have any cs4271 connected to a SPI bus.
+I use only the I2C version and will not be able to check for correct
+modifications on the SPI part.
+
+Best regards,
+Hervé
 
