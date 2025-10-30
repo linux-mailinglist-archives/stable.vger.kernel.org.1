@@ -1,176 +1,161 @@
-Return-Path: <stable+bounces-191709-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191710-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E87CBC1F2F0
-	for <lists+stable@lfdr.de>; Thu, 30 Oct 2025 10:07:29 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDFFAC1F541
+	for <lists+stable@lfdr.de>; Thu, 30 Oct 2025 10:36:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2240A189676C
-	for <lists+stable@lfdr.de>; Thu, 30 Oct 2025 09:07:28 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id BC1DD4E8715
+	for <lists+stable@lfdr.de>; Thu, 30 Oct 2025 09:36:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B118733FE1A;
-	Thu, 30 Oct 2025 09:06:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53FC5341674;
+	Thu, 30 Oct 2025 09:36:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="WnN+qUfS";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="IRgSGyKZ"
-X-Original-To: Stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UP5we5U6"
+X-Original-To: stable@vger.kernel.org
+Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 197CA334C2B
-	for <Stable@vger.kernel.org>; Thu, 30 Oct 2025 09:06:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE20333F8DA
+	for <stable@vger.kernel.org>; Thu, 30 Oct 2025 09:36:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761815216; cv=none; b=LjnP34++FfQkFjJMJccMJsEcDJZYMrYrCYFworKgaWZiyWgSHqrKWqu/aQipief1iswiouHtkBPfhF0f2GlKarlNoKonFqwbKJP/A00gM1yFLVb2+kwCH9FK+ZL2RTEflzmC62Q+AITd9zKqxq1Kzee4Y1v1TwSOLpvSQIpLh0M=
+	t=1761816992; cv=none; b=m/iRymXnME5fhsxLrh7HshBLPpiCN3e4YooHpufLOrOvfsi/HfMmzuK+TaQFKS3+nt4MRZXxAB4tncwsiv2fSxY1eJpdZJTkfbjrg8+T4mYxl8/z50nFPghalrRyh+WAqgkt0vLjU22+F/JLiM80nZVGqdxBijGPOv7FH4WWfsY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761815216; c=relaxed/simple;
-	bh=X7ILzCECf3H8UUnRWySC0tpXkeSAn5oZR3ZqEfON2eo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=tiWtaFncXIgZkmRiqMb1ztRuG9v3a9Kjz1ZB+AFC4f6hPSVcUdSKldqA8cLeSYddbDzgzMgFt9BrVD0FT2IoKJuZjl4IhWYWG+Dyl+l8sMatcTtM1W9p1k2ANf34skWW9SHnpOl2ddzUP1tkNIogj22+AG9voBNO4WG8tcuXF58=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=WnN+qUfS; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=IRgSGyKZ; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 59U7sOED1655941
-	for <Stable@vger.kernel.org>; Thu, 30 Oct 2025 09:06:54 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	HIb99wMfqBRmzqLt4TerM4AEHn1832mxc0+HjrXIUdQ=; b=WnN+qUfSPIP6UeXT
-	XHylrDpOJWAK8vNluPmyt7e0oEK3LktbOMK9udQuwKuPwyrHW2SYRiv+jl90Lt98
-	Da2bAH/mr+yeVdJMQeUvXDoHBTCmHxrHGX8fdtpVQlKrjnTWewsOqu5u30tivxxs
-	vVKdv9/tQx9eU8sd5OYkxL71Qcci2nvSTKoxSDa7OfulVxNxuLvWXukvlhiS1W4I
-	arueGt5BgazcxUgxj30gcycYuFgMdMicW33TTLn89ziW4edtKYJry3qKQLQEsB4S
-	rmPQySyMF4GVWBvNlYw5/3wfhIiNoVy9YGcqEjKwM71M7/FJgz8ZiI5CXg2ib2LJ
-	DULE9w==
-Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com [209.85.219.70])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4a3tptsqc0-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <Stable@vger.kernel.org>; Thu, 30 Oct 2025 09:06:54 +0000 (GMT)
-Received: by mail-qv1-f70.google.com with SMTP id 6a1803df08f44-8801e695903so1157436d6.1
-        for <Stable@vger.kernel.org>; Thu, 30 Oct 2025 02:06:54 -0700 (PDT)
+	s=arc-20240116; t=1761816992; c=relaxed/simple;
+	bh=sfqSbMdJvCJp1YjMxi5hsyF0u2V6uwNe3n1xaSR62Yc=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=XGzyNUX2mCYii8I7cPZTMQLJgf37G30I5ZCOqcMTtuUM9NDZD5VUrdFXkEfUvR19HFvvk++8rHVRCDUhRF9bKT0KEeXOBN5xtkaoR6obEZ5pkuNivIKz94REg+5FN7UrxFkllsQM3SzXGXWOm+YMWvDL1pyeswsbQljHTjodhX0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UP5we5U6; arc=none smtp.client-ip=209.85.210.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-7a28c7e3577so839035b3a.1
+        for <stable@vger.kernel.org>; Thu, 30 Oct 2025 02:36:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1761815213; x=1762420013; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=HIb99wMfqBRmzqLt4TerM4AEHn1832mxc0+HjrXIUdQ=;
-        b=IRgSGyKZDvHIkMoKrp2ODheCoVq82VI+zC3afcmsfRdv7g8xuEnehnhH8q6A+BXseF
-         cbgt/AKXUGrXjHoI58vcLP7KGnJt3fD1z5cii2eQer7iHgUKis3gpa3XCwwYTtZW5nys
-         FJWen0z5Khkp6AxSqAjNSP9f1IGaQy4jsRmmN3EuLLukPRUdkbbX5xNiCsBBxITDhswt
-         75V+JoUiwtxFY39xvmY/3QqtQbm+8G0FwgKcvHLWzkloD+2t8q31AclKeWwd11zmQ0xu
-         QBadhKLdu2JWv1q4bvfgeBmqGfoKwkQDdzUpDy0QYcndWFeI1+vBx6B4DBFgXn0EcWq9
-         5JQw==
+        d=gmail.com; s=20230601; t=1761816990; x=1762421790; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=sAGiv6sfeXhaN9XGho18iG32VKPlMqvx7GJaQfDv2XM=;
+        b=UP5we5U65nErVbz2Uyp5wIQzvu50EDf/ELjv6em+9jP7EK6b5oFWJnty0rz6R37ose
+         pD8RrnjtbB32I/lOIDtznAt3cAw/SJDUUN+4B6uzmuo7reqegolNb2TuuGcHfFBuIlsv
+         vprhz/DcomVkLcJAeHb7+fB+xbs8grfOYeQTyUHMJLSX/PCcr3YkEq+h7Ot9QPqvZvxZ
+         8xtD6Tal4ogeClGXJQp/n1cFCmyLDpbLisTvt2BnV6SLGePoktQuYzNQ7pLLNhahRzFN
+         B5Gg3HASIJxN2pfMVj65znfcadySnFaRRcR9XqzNd4YDFljtEcwl+0Ujf+eNtH/MUY1D
+         WFzA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761815213; x=1762420013;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=HIb99wMfqBRmzqLt4TerM4AEHn1832mxc0+HjrXIUdQ=;
-        b=MzeuCl3/9w5MSVF4IE8vVuyL4AUq7bNnN8FKY7dE7mk8q0MgJQvyfYTxVIiYqKAnYy
-         nOoaGIsyCyaPInj1tF12DdadaYJUX9jr6/jI6R+OrxM5ExKq5lZb64KRtmJ5NQxtP93j
-         Kzy8S+7M2oADvE3r7E6JfRr3AwklGemOrOpqz33n8X7scplO7Arg1V6BCzw69b3F7Tcy
-         u+IVYQLy+PUs43rM6yR460NPblvjsfbYT5YRQ51i7v+XBCB7Iy2Joi8aZTIfJBLVgGKb
-         PZ35CinspErRZFhiwgf1u6HXpBlr7CsG45ymkEv1EQ4DZcn6aZ5tR4b26OoE/ZqKOBpH
-         cAAg==
-X-Forwarded-Encrypted: i=1; AJvYcCWUQHjSMLAMIhigC8wU99/emNWt3OwF5jpG+ZEjx4CVkVEGoYWb8wwwzkFtLZz4zitC1zSfhkw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxcjZ3obRy4o1SCZ57nHqLKlCqqOhewHWf70CLJ5ALQxmRIxYrk
-	Q7J+M3RXmGjShrJ7g0z4gZsprQxgBZtyUqIuT83X4hokhEBm4SchZCj9ADM/F7BrG8z1+vwkUAh
-	MESzpHFLFSu+O8Apn6wdrbAzE8eER8le9UH5N+enXO1iX5l1j1LtXAcZK8Lw=
-X-Gm-Gg: ASbGncsccqeqBPzgmMbNY0Vdq2DUvemCookQxtP3pcS/bulkO4TFB4dwt1a3cXy1ZLy
-	ybqgwxLpYEfeN80tdfX29727yG2TROd6kMU0m2ICkNunjWUm2bH1O3earIuCGcla3sEmpf+3Rqt
-	Op5x//c0jBfe7mpI+H+Sf+jP52V4nll7FGPXerw8GHChBcpQW6q2zriI1r9WE8dbPF4nLjVmE19
-	hj+WR451+bRmZ9PTSPB3CmghlUWnxATiBlU3qa7XW/sUsHOlQ+rDHEbxETo7ZWIF+xU9RLVJwMW
-	oDHBVGJg1UXadAVS6YeMsGYjlHcp11AJBiufIiqCVVUJrrAiAYWLy2NMbN5AAtJbVxIxgW50c4t
-	4cRVmmW502VtKe7v8ryE8hfWDvmfw77Uyfpnnt6nkn2G7gXtbmYet++gM
-X-Received: by 2002:a05:6214:23c5:b0:87c:cec:70c8 with SMTP id 6a1803df08f44-88009c19ccbmr49168666d6.7.1761815213111;
-        Thu, 30 Oct 2025 02:06:53 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFgvsyWzB5+BObIPZCH/c4u0+NukSV+lTB2L5w6KrqKL76+JE7wKJWY/APuk/ewwXv5qVpOQQ==
-X-Received: by 2002:a05:6214:23c5:b0:87c:cec:70c8 with SMTP id 6a1803df08f44-88009c19ccbmr49168366d6.7.1761815212685;
-        Thu, 30 Oct 2025 02:06:52 -0700 (PDT)
-Received: from [192.168.119.202] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b6d85413b88sm1669495266b.55.2025.10.30.02.06.50
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 30 Oct 2025 02:06:52 -0700 (PDT)
-Message-ID: <312b62d9-c95e-4364-b7e8-55ebb82fd104@oss.qualcomm.com>
-Date: Thu, 30 Oct 2025 10:06:50 +0100
+        d=1e100.net; s=20230601; t=1761816990; x=1762421790;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=sAGiv6sfeXhaN9XGho18iG32VKPlMqvx7GJaQfDv2XM=;
+        b=DXDc3Fmn/14U5qzf0y8b8CMjACf9HQnfx1eGp/cbE2krS+8FkF4h1MVfFYaG5HnOB7
+         Hr/kAJOzWcAX7sytn5KGLUKsePTwYGAi2+VcliYJ6HMp4JOceThilM1omqbKtgkHos0K
+         21U5xCcRLNTBIqUBEtWub6VkA8uQndvDRTutY2JifzjelFKnTGLEoip8FspUK8qCJMvy
+         WQkziyAWK+9CsvzyxPOMemy/F23avVcwUjZJLbB7gJN+a74vkr/UXwc6eOo3NNjPgUVS
+         Qp8lTyRYTFGemCgUeEy+aUOAP/on+bdhlQZrFRQJ59hyYU4UzSt3VHslHIPdbyzH3dvR
+         NJyw==
+X-Forwarded-Encrypted: i=1; AJvYcCVb2kviEF+6i5tl9QwlJziP0fmePdv0MuzVBmm7Y8UWZclXbX2Mf1k3UxZBgkXr3Jls2iUpRBM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxSPJFUYZ9WJMYvUxMn/AsLpMYKF5GcD1vkwlhi6vJRRWjWxy1y
+	QO9n0rwAYnv2gZ9XjBh/53pUz9iPwvQedguRWqz5gKu6hIUnvVmaXEy6
+X-Gm-Gg: ASbGncv+99pAU3arr8RN/Ih1LP2qjGMHL9vHf9twEXLU+Pxv+asip8VQdNBvrMep2W6
+	x9rIbamhkqBnJispOXEvCrHnWJqJxsPXrrUhLgClH42eO1EYKjV6tMrFMBkPD7E3vjZK06njUw1
+	lI+zrvDzv4fgyfMBLRqtoqc4eWLIlQ34tgRfzcsW9WixAjSPkRiTeU3VIRgjTtX4tnzZncI6ecF
+	Nj61/K4OKvJUZ5SQr71PGbbDeK7nJeTDPvYStgvKGsVMJRipIxg0fKA5coLFsiTr5X8aL9j16+4
+	j1AsCpRkGPP2sYR4owbNI0LEviPG1uZm/mzMOGbZtHEYWd4Eyjr9F8+uekujVMIvzXaGSLUppYh
+	8iQhjupE23+7BUaGAmX7Q08G/YTfeMCTmry5oxsaw4tHgSkckYH4/loAtaqg9HUtxXRrgwrDA8y
+	YR6jeOaD46YS9j
+X-Google-Smtp-Source: AGHT+IGdKogiwWyOyyIFYlPsQ9DYU+/bEn7Q1lh9S2aXq6iqPoD0yGhRazUW5aaRnUgYkm8dLjuIKA==
+X-Received: by 2002:a05:6300:210f:b0:334:8f40:d6bf with SMTP id adf61e73a8af0-3478768ff1dmr3641729637.42.1761816989410;
+        Thu, 30 Oct 2025 02:36:29 -0700 (PDT)
+Received: from ustb520lab-MS-7E07.. ([123.124.147.27])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b7128885251sm16003643a12.17.2025.10.30.02.36.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 30 Oct 2025 02:36:28 -0700 (PDT)
+From: Jiaming Zhang <r772577952@gmail.com>
+To: kory.maincent@bootlin.com
+Cc: davem@davemloft.net,
+	edumazet@google.com,
+	horms@kernel.org,
+	kuba@kernel.org,
+	kuniyu@google.com,
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	pabeni@redhat.com,
+	r772577952@gmail.com,
+	sdf@fomichev.me,
+	syzkaller@googlegroups.com,
+	vladimir.oltean@nxp.com,
+	stable@vger.kernel.org
+Subject: [PATCH] net: core: prevent NULL deref in generic_hwtstamp_ioctl_lower()
+Date: Thu, 30 Oct 2025 09:36:21 +0000
+Message-Id: <20251030093621.3563440-1-r772577952@gmail.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20251029110651.25c4936d@kmaincent-XPS-13-7390>
+References: <20251029110651.25c4936d@kmaincent-XPS-13-7390>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/4] ASoC: codecs: lpass-tx-macro: fix SM6115 support
-To: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
-        robh@kernel.org, broonie@kernel.org
-Cc: krzk+dt@kernel.org, conor+dt@kernel.org, devicetree@vger.kernel.org,
-        perex@perex.cz, tiwai@suse.com, srini@kernel.org,
-        linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, alexey.klimov@linaro.org,
-        Stable@vger.kernel.org
-References: <20251029160101.423209-1-srinivas.kandagatla@oss.qualcomm.com>
- <20251029160101.423209-2-srinivas.kandagatla@oss.qualcomm.com>
-Content-Language: en-US
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-In-Reply-To: <20251029160101.423209-2-srinivas.kandagatla@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDMwMDA3NCBTYWx0ZWRfX1OfCrK2IGaWz
- rW6kIOwip6ujzfzUvIGPuf9McInL/jygBLfVL4QaDtY/yTSYjQ1YkktH+3+GSUyrXKjIqL+lKon
- QCOhNCQ/zPjR1BxsxUxTCp95Ofsg6Q+4lHEPFph72lpF1eybxIZjgJe11Z2KORoFElzyl/3wtj5
- /1gFD3onqw/mdgxKnc7CZLXaMvusB+4vUBo3yUfiMnhYBhHdH9AvcqS3tnMTg+fH599SpvnmPAP
- k1bT5WRPggKsgjlMCS2+dTNocA1edykmFg9YuRS4UL9ojOPQM4Ur32VK/rhujL2l9DdYbfYN3S9
- zWEI9Ve+aUBKRSgeq3eweiax+qKxnmCZjJmcQWobUjUz5D3sXZC7F7b4ib2HPqNr9xrJP7XVhMe
- wEWB7aDJEc01rZBNRy6im4rnE1ZSIw==
-X-Proofpoint-GUID: BxUtFqEP5_1tz7wE8EIWfv31rnz2gqC9
-X-Authority-Analysis: v=2.4 cv=MuRfKmae c=1 sm=1 tr=0 ts=69032aae cx=c_pps
- a=oc9J++0uMp73DTRD5QyR2A==:117 a=FpWmc02/iXfjRdCD7H54yg==:17
- a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8
- a=jFCpiT4AGmqPEWX61NoA:9 a=QEXdDO2ut3YA:10 a=iYH6xdkBrDN1Jqds4HTS:22
-X-Proofpoint-ORIG-GUID: BxUtFqEP5_1tz7wE8EIWfv31rnz2gqC9
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-10-30_02,2025-10-29_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 impostorscore=0 suspectscore=0 spamscore=0
- lowpriorityscore=0 clxscore=1015 bulkscore=0 phishscore=0 malwarescore=0
- adultscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2510240001
- definitions=main-2510300074
+Content-Transfer-Encoding: 8bit
 
-On 10/29/25 5:00 PM, Srinivas Kandagatla wrote:
-> SM6115 is compatible with SM8450 and SM6115 does have soundwire
-> controller in tx. For some reason we ended up with this incorrect patch.
-> 
-> Fix this by removing it from the codec compatible list and let dt use
-> sm8450 as compatible codec for sm6115 SoC.
-> 
-> Fixes: 510c46884299 ("ASoC: codecs: lpass-tx-macro: Add SM6115 support")
-> Cc: <Stable@vger.kernel.org>
-> Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
-> ---
->  sound/soc/codecs/lpass-tx-macro.c | 12 ------------
->  1 file changed, 12 deletions(-)
-> 
-> diff --git a/sound/soc/codecs/lpass-tx-macro.c b/sound/soc/codecs/lpass-tx-macro.c
-> index 1aefd3bde818..1f8fe87b310a 100644
-> --- a/sound/soc/codecs/lpass-tx-macro.c
-> +++ b/sound/soc/codecs/lpass-tx-macro.c
-> @@ -2472,15 +2472,6 @@ static const struct tx_macro_data lpass_ver_9_2 = {
->  	.extra_routes_num	= ARRAY_SIZE(tx_audio_map_v9_2),
->  };
->  
-> -static const struct tx_macro_data lpass_ver_10_sm6115 = {
-> -	.flags			= LPASS_MACRO_FLAG_HAS_NPL_CLOCK,
+The ethtool tsconfig Netlink path can trigger a null pointer
+dereference. A call chain such as:
 
-8450 has | LPASS_MACRO_FLAG_RESET_SWR here
-> -	.ver			= LPASS_VER_10_0_0,
+  tsconfig_prepare_data() ->
+  dev_get_hwtstamp_phylib() ->
+  vlan_hwtstamp_get() ->
+  generic_hwtstamp_get_lower() ->
+  generic_hwtstamp_ioctl_lower()
 
-and the version differs (the driver behavior doesn't)
+results in generic_hwtstamp_ioctl_lower() being called with
+kernel_cfg->ifr as NULL.
 
-Konrad
+The generic_hwtstamp_ioctl_lower() function does not expect a
+NULL ifr and dereferences it, leading to a system crash.
+
+Fix this by adding a NULL check for kernel_cfg->ifr in
+generic_hwtstamp_get/set_lower(). If ifr is NULL, return
+-EOPNOTSUPP to prevent the call to the legacy IOCTL helper.
+
+Fixes: 6e9e2eed4f39 ("net: ethtool: Add support for tsconfig command to get/set hwtstamp config")
+Closes: https://lore.kernel.org/lkml/cd6a7056-fa6d-43f8-b78a-f5e811247ba8@linux.dev/T/#mf5df538e21753e3045de98f25aa18d948be07df3
+Signed-off-by: Jiaming Zhang <r772577952@gmail.com>
+---
+ net/core/dev_ioctl.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/net/core/dev_ioctl.c b/net/core/dev_ioctl.c
+index ad54b12d4b4c..39eaf6ba981a 100644
+--- a/net/core/dev_ioctl.c
++++ b/net/core/dev_ioctl.c
+@@ -474,6 +474,10 @@ int generic_hwtstamp_get_lower(struct net_device *dev,
+ 		return err;
+ 	}
+ 
++	/* Netlink path with unconverted driver */
++	if (!kernel_cfg->ifr)
++		return -EOPNOTSUPP;
++
+ 	/* Legacy path: unconverted lower driver */
+ 	return generic_hwtstamp_ioctl_lower(dev, SIOCGHWTSTAMP, kernel_cfg);
+ }
+@@ -498,6 +502,10 @@ int generic_hwtstamp_set_lower(struct net_device *dev,
+ 		return err;
+ 	}
+ 
++	/* Netlink path with unconverted driver */
++	if (!kernel_cfg->ifr)
++		return -EOPNOTSUPP;
++
+ 	/* Legacy path: unconverted lower driver */
+ 	return generic_hwtstamp_ioctl_lower(dev, SIOCSHWTSTAMP, kernel_cfg);
+ }
+-- 
+2.34.1
+
 
