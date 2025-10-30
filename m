@@ -1,177 +1,194 @@
-Return-Path: <stable+bounces-191743-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191744-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F154C20986
-	for <lists+stable@lfdr.de>; Thu, 30 Oct 2025 15:30:49 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCC73C20B45
+	for <lists+stable@lfdr.de>; Thu, 30 Oct 2025 15:49:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 65FAD1A2109A
-	for <lists+stable@lfdr.de>; Thu, 30 Oct 2025 14:30:06 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7797C4ED43D
+	for <lists+stable@lfdr.de>; Thu, 30 Oct 2025 14:45:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CD93273D8F;
-	Thu, 30 Oct 2025 14:28:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B018278E47;
+	Thu, 30 Oct 2025 14:44:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="VXGqRoTa"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Qf7svA81"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D4A12749D5
-	for <stable@vger.kernel.org>; Thu, 30 Oct 2025 14:28:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F80A278753
+	for <stable@vger.kernel.org>; Thu, 30 Oct 2025 14:44:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761834534; cv=none; b=BHfXfpzxoJwrC1/a2OF3mNwrnDyuaT+2YUPwdULdoCOG0cCMKrjue1FGOQXbNHiXYXSdIOIoSR+itqzf/yw9mF8HjEZa3XSlQ8MWXsWNf0LrEG0KgF8ga5OA0bZr6JDSIVPmknygWkypcbsHpUyPf0m8Hq1YIZzNaizRYHATlXw=
+	t=1761835491; cv=none; b=VPXCQU6ivgxg1h//glhJNUldqLEXGtUuOrnIHMQWNZE4sYA4DqtAic02ii56RS8LIRpCJ+LsRjIQMi53wkTU07VXW4JWt2rDnQMjC/f1S5Nwa7qyowB2CP4JYfcPHvX2oo+6WOhOEX4d4Pr4GZHQWW+iAve52veZGU+jBtB6QEo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761834534; c=relaxed/simple;
-	bh=LwKDeDbaB/qNO5GHXE665iLTfSrN9deeeAEkKC4gPHM=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=AFnBWXQZSspUvc4uNELFuX/zjQoGBderoJmgV6iekQPrLX8UFef8c7o/yCsitr6rGUNXZLDo0s5dzN3WfZixwD6SxKtVtACpCpt5hCbhI2fHwTvmuzmCp7I+mNBl6soJsRU3ZeJ02PJIfA3K14M0nAHwErEyk1C90I9cSblMxSA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=VXGqRoTa; arc=none smtp.client-ip=209.85.128.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-471b80b994bso14331965e9.3
-        for <stable@vger.kernel.org>; Thu, 30 Oct 2025 07:28:52 -0700 (PDT)
+	s=arc-20240116; t=1761835491; c=relaxed/simple;
+	bh=gG6Rxpv+5xwuYbGpv4ZcUhGKoTxFro2YHfn3sG0/O64=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gIHptaWnt5cjIamwm/VfXc1lKco2vCmevYi4Xnau5a62VhHb4/HIUf6/lIPNy1W62ePTOWa8qFNkNMJDd/H33EjurEoK6BkajveeVhCZk9kwkqHdhe4iyYSlimfZ4ICj7hMm4nM1g6fvmdEloA8yU7DENAHI2WxQc0Bff6BA95E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Qf7svA81; arc=none smtp.client-ip=209.85.214.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-292322d10feso10541875ad.0
+        for <stable@vger.kernel.org>; Thu, 30 Oct 2025 07:44:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1761834531; x=1762439331; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=0hky9aZYZhqPebPVWCtl7ijJ819/bzTMDH0Hz4vsdJA=;
-        b=VXGqRoTatioBvfiSylTZoqpcCh0xpgKQZ05X0Dj2CiTKifrQCs/LwOv6Hwjghebcaq
-         G4VGEYfhXU2SqV1MdVrSZUEs6edtyFytCVYJc6c7eUHXGbMBzf0GHykHw235azN8O5AG
-         /czhuEaLcXC/kfSkNVPGQylXqee1gB2GD8YCR5FMw7D563xhBk/NnfRTbWdL3JPZvgcv
-         tyMUr6nxBgLgTWNq7zYEY2K35w5dUWGVOJa5+6XMWEqrEcWjjhzyo9g7z1E0nyJIb472
-         1gTUxZJr1z4+6wu9N36va42UFCixxzlV0ma9/ie48bu5ezsHaZ06fp5iw42nuwO8bFsy
-         CIgQ==
+        d=gmail.com; s=20230601; t=1761835489; x=1762440289; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=8i0KSYhBekRhZe3f+zVYiMKfUdeY1w53Ec33PFErQRM=;
+        b=Qf7svA81zLPS7Jgqp38A8OMu2G0BSDFtQzbsnBoOeD2ObEGs1xD7+KI15v2TA/8cCm
+         LXH5UurH5x0l44hLTK972xKIVAiWoFyBo5JMAl3xCESXpcezRSvbHgHR3iFJHxJmLzEy
+         6XMgzqU3JDOWJiAVyr+DNvUvfpdCpRwvUx+gWhGaG1EqAVgR0jglWx4qJnUQ5P4nctRO
+         D1/Mwc84QjL+psDRRLKQThFp8UqQ5n/f+zR4op5Jl/nW00eeTw4zNwXnWx0Q+TuwXv8a
+         tKVnK1yLWOeU3K72tFwzqWHkdmyrrwYMs9oREKsZWtpy/xQzBdK/9aUnfLdlOnMdyyV3
+         E5nw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761834531; x=1762439331;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=0hky9aZYZhqPebPVWCtl7ijJ819/bzTMDH0Hz4vsdJA=;
-        b=N3twN0106bAy2UnbbnB77RjDFP9jawPZTajLUisjYU+QlHCyrq6/iQHhBgExZA+64c
-         l9aiJqQmvyiw+cnHX7Xt0giXM/1gGDi1PzPRX9Ew/dMcA4c/A14XquvQaxELxARbxEIy
-         SUi7nUqXa9a6kVRoLAIrD+f8bZY1rCmkb7KiFWMihfUXd7jKiKO9FeAu7AwkaSNJK4kw
-         f1dJffYtInFz3Rlnzj3jICrOr1WcrI6n00R7AWNVuSec5LvvP0U4Y0vy/yvW8e00V6v2
-         FKo8uE8fh9yJNr7Vp6KpvEfHBcbYoMvXkHskwAnFJdUs45J8wkwzElBnLgUCMKzJJcMh
-         mlJg==
-X-Forwarded-Encrypted: i=1; AJvYcCXolRpKbFNyFKOCdec25+ahfKTKaUIMcah1+2IkPv895tqO4u7qfCDswvmDhw+sgqqMKKfmcMQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyUTtGUt//7LiFLYtZIRqFOaadYuORkZS34yCRSTlRfVKiQvguX
-	jOfJXyq2bDYRUzLElm+7W++k7fXPZO5pxCINQtTI/7kJnC1e/Mrzw8MVpJyeHmY0L50=
-X-Gm-Gg: ASbGncuLaZlAOvWvClkvDLex1PFPANeszIf3atHbMY6sb3UIArY5UdihiOJyRVVNN9S
-	ksQjkGeTNwMTMF7t2bKfyQOKEdYg7pGom+gL2cfSwef3vP0jaS2a1VEXOxH9meGACd9LZdstCU2
-	blxh1TxBAIqLlPAp5zx+EKM6FxmgffCpDyxyOsTCur+RiJwDFEAiRuUDJaqbc/24fO82NbMcqwA
-	rS6eggTtzzJJCxZIhBBstctHI/N01NGa0DF137KHXTyE1THIXdtgo43cfP29/M4liWqonm1FI0V
-	O/IjPXcj57l0TeiIDCTaVHUbpt6JJDDaWgig5t1QT6tbdY0fgLMKm6DcKPmDt3PY5DI2lp6THRf
-	pGuOnhl0i3y4EyvnBVBV3HRZ0J8A9zGlc6mGodYCbt/xzcNSWxW/bfuZrrvVVK9EM8ttk25aOax
-	p88fR/nu0/
-X-Google-Smtp-Source: AGHT+IEQ2IyXRDcnIR3RPu3dYi/RV8FM42o3crX9ZDsG/wo/02yDOOqeF7iZ59gxjUjBQUJ3Gx2uBA==
-X-Received: by 2002:a05:600c:1c1a:b0:477:1af2:f40a with SMTP id 5b1f17b1804b1-4772673665cmr31213715e9.17.1761834530750;
-        Thu, 30 Oct 2025 07:28:50 -0700 (PDT)
-Received: from hackbox.lan ([86.121.7.169])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4772899fdfbsm42230475e9.4.2025.10.30.07.28.48
+        d=1e100.net; s=20230601; t=1761835489; x=1762440289;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=8i0KSYhBekRhZe3f+zVYiMKfUdeY1w53Ec33PFErQRM=;
+        b=LABNgiUhVtmubLvOwtLFz1py7O7fl8WjZPzhzH7gm+L3uWuD1K6Yczy6WZwoFqeHLh
+         3MovZtlXFTfsMoE9qySdULmQHvwfKM5Kce0VwbYIDO7Ljpol/fEBxzEV5EMevysNX2T3
+         VMiM/Wzd56yNUgI+uMxCl+wIvWfNC6UyKWE7glaTZIiHf2wjxlwLnDLd2AOX+uJZWMHm
+         +L7nk+gvfjA1lkunFIATy/vrm4whgPPbkuqh6DwIUBTbyIPxlW23SeOSw9TBnYSOeX9z
+         uHZzMuwuWNVYFqm4cwroPO1rnoC3vwOcthW+nL3NEtBtG/1LkrdaL2V0q9WfKj07ViBE
+         n1QQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWVZvyoewAxYovjTRaTfR7Lv6uaeNxUhUziMAEiE45yt9aCS4Dvs56hT2Q2bfMQ2EYnkmapSXc=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx1Lum/mWyVPcZ+q3Fhs5IGwXOmviJFSmbo4shI5+ZDOTqYhFDS
+	ZQabtpW7UAb1guiphE1lD8NQkZpWbH6pmyBgs40B1a8t6kXPjpsgucHk
+X-Gm-Gg: ASbGncuetHy7Vy8DJrAGOuI4+35ITTr5EnTyofUm3njzva8PVFLm4WHPPQfmVXZcriM
+	lnOmlzN7ErfjCxtuZRfrOBEFAD4wb9ykkr+8f1rfSY3ojVnm2gLE0QnJ3wcFVOZyzdcXl3jwqq3
+	ihXX67y+xBpzXi2FDTCjYCgdY5FSywagsDbrHaisQmfIOGrLBG2ru1rsDMAm5WdYJczvhOGP1cR
+	MPMo/iqhtZSWxzv6u2I4HH1bX7RemdaKDhTB/Eb7VLeUbfNLG2UGsyxrYxkVrF8nSeAfSOKhT5t
+	0BUDnVTKJTMeOk3XOwREk5JNm9XVWrewP0/lPNXKdU3btZkX4JsVLyeI56W9tS7+UF/eZNX/TWH
+	PU6hehrC6MvdMkElsxXlaypnUlT8em2iSZDdamauCJ2rG1CCCBL4JakjRNT0m+W4QPawLBDkb83
+	pUgc+gnbiUqvPzMw==
+X-Google-Smtp-Source: AGHT+IFKdzh5PqIDW+UtJroUaPTVHXn8ZahZ8UZQ7XX0MsdR/YUksfFQ5V7KobNywlg1F1FyaLwELg==
+X-Received: by 2002:a17:903:247:b0:266:57f7:25f5 with SMTP id d9443c01a7336-294ed098015mr40411365ad.7.1761835488722;
+        Thu, 30 Oct 2025 07:44:48 -0700 (PDT)
+Received: from minh.192.168.1.1 ([2001:ee0:4f4c:210:f227:4662:b8d4:840c])
+        by smtp.googlemail.com with ESMTPSA id d9443c01a7336-29498e41159sm188520295ad.91.2025.10.30.07.44.43
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Oct 2025 07:28:49 -0700 (PDT)
-From: Abel Vesa <abel.vesa@linaro.org>
-Date: Thu, 30 Oct 2025 16:28:31 +0200
-Subject: [PATCH v5 3/3] arm64: dts: qcom: x1e80100: Add missing TCSR ref
- clock to the DP PHYs
+        Thu, 30 Oct 2025 07:44:48 -0700 (PDT)
+From: Bui Quang Minh <minhquangbui99@gmail.com>
+To: netdev@vger.kernel.org
+Cc: "Michael S. Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowang@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Gavin Li <gavinl@nvidia.com>,
+	Gavi Teitz <gavi@nvidia.com>,
+	Parav Pandit <parav@nvidia.com>,
+	virtualization@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	Bui Quang Minh <minhquangbui99@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH net v7] virtio-net: fix received length check in big packets
+Date: Thu, 30 Oct 2025 21:44:38 +0700
+Message-ID: <20251030144438.7582-1-minhquangbui99@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251030-phy-qcom-edp-add-missing-refclk-v5-3-fce8c76f855a@linaro.org>
-References: <20251030-phy-qcom-edp-add-missing-refclk-v5-0-fce8c76f855a@linaro.org>
-In-Reply-To: <20251030-phy-qcom-edp-add-missing-refclk-v5-0-fce8c76f855a@linaro.org>
-To: Vinod Koul <vkoul@kernel.org>, 
- Kishon Vijay Abraham I <kishon@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
- Dmitry Baryshkov <lumag@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
- Sibi Sankar <sibi.sankar@oss.qualcomm.com>, 
- Rajendra Nayak <quic_rjendra@quicinc.com>
-Cc: Neil Armstrong <neil.armstrong@linaro.org>, 
- linux-arm-msm@vger.kernel.org, linux-phy@lists.infradead.org, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Krzysztof Kozlowski <krzk@kernel.org>, Abel Vesa <abel.vesa@linaro.org>, 
- Krzysztof Kozlowski <krzk@kernel.org>, stable@vger.kernel.org
-X-Mailer: b4 0.15-dev-dedf8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1887; i=abel.vesa@linaro.org;
- h=from:subject:message-id; bh=LwKDeDbaB/qNO5GHXE665iLTfSrN9deeeAEkKC4gPHM=;
- b=owEBbQKS/ZANAwAKARtfRMkAlRVWAcsmYgBpA3YYkG+n2s2QP25YZJkhRj+64fBjigIHVQhOr
- ljmQoEGuImJAjMEAAEKAB0WIQRO8+4RTnqPKsqn0bgbX0TJAJUVVgUCaQN2GAAKCRAbX0TJAJUV
- Vn/4EACEkEbtxyf3mOVY1BDh7gwSldWCpPcz5fLbcP4lZ0hYKcvvQv7C0o1MXscxfkbbye6riSx
- WMvFfaAbGEdlLocol1aGWy28k6ce81iMXlqhQBJZX1YnpC22dBvElFdFk6KHpM9Y+KY3m5GEkv7
- n9vC6MGwZTXoZDtd6ArJxHl0PY2+YT1+qXnypTvy8DMdqrQmDykkCN5SJQA5gmVqn3VgS6VEWCM
- fum4bTQOeRJ5ZO9/AP11QROQ+MzQeUJ0hTR7S/wphKlfG/85M3eWjvhFfNOi7ZncmLUJ50j5cKj
- UGk4Cc5Q9neWb/YxmvCCZSzgKDAK17HKw4TOmdwGV0iyaRQiHjeP1JAr1/APS/ppprI6GbkDQdr
- KsJcvWMH1C/Sl7uzRoWL2Eb1Q70Hs5c9rUWxvjEBwQUjFglk1gQNeK3AaV1/Hv6s/D0Za6aqGP4
- FKC2yza37pZT2NL1sZKqF3GHIPuCDztT0q8byzy+ntPrZbntWPuYhtkc7EfubOTBYA+2uI89CGP
- ffx9zHhp/cChkCDL+nYjDRtJ7Wq5LfvCPaXxoX86n4g+kd0/P27xmQsPDNCWypCQXTA4xSYenT2
- +wGylqHHFIenX9+uhCB8EmJ+AXPjFAd2lZVFq3HzSN5cU5AUUe50q6XjgIRtNWK3OGhJh8PSkv/
- /PnBWeCfujozQzg==
-X-Developer-Key: i=abel.vesa@linaro.org; a=openpgp;
- fpr=6AFF162D57F4223A8770EF5AF7BF214136F41FAE
+Content-Transfer-Encoding: 8bit
 
-The DP PHYs on X1E80100 need the ref clock which is provided by the
-TCSR CC.
+Since commit 4959aebba8c0 ("virtio-net: use mtu size as buffer length
+for big packets"), when guest gso is off, the allocated size for big
+packets is not MAX_SKB_FRAGS * PAGE_SIZE anymore but depends on
+negotiated MTU. The number of allocated frags for big packets is stored
+in vi->big_packets_num_skbfrags.
 
-The current X Elite devices supported upstream work fine without this
-clock, because the boot firmware leaves this clock enabled. But we should
-not rely on that. Also, even though this change breaks the ABI, it is
-needed in order to make the driver disables this clock along with the
-other ones, for a proper bring-down of the entire PHY.
+Because the host announced buffer length can be malicious (e.g. the host
+vhost_net driver's get_rx_bufs is modified to announce incorrect
+length), we need a check in virtio_net receive path. Currently, the
+check is not adapted to the new change which can lead to NULL page
+pointer dereference in the below while loop when receiving length that
+is larger than the allocated one.
 
-So lets attach it to each of the DP PHYs in order to do that.
+This commit fixes the received length check corresponding to the new
+change.
 
-Cc: stable@vger.kernel.org # v6.9
-Fixes: 1940c25eaa63 ("arm64: dts: qcom: x1e80100: Add display nodes")
-Reviewed-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
+Fixes: 4959aebba8c0 ("virtio-net: use mtu size as buffer length for big packets")
+Cc: stable@vger.kernel.org
+Signed-off-by: Bui Quang Minh <minhquangbui99@gmail.com>
 ---
- arch/arm64/boot/dts/qcom/hamoa.dtsi | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+Changes in v7:
+- Fix typos
+- Link to v6: https://lore.kernel.org/netdev/20251028143116.4532-1-minhquangbui99@gmail.com/
+Changes in v6:
+- Fix the length check
+- Link to v5: https://lore.kernel.org/netdev/20251024150649.22906-1-minhquangbui99@gmail.com/
+Changes in v5:
+- Move the length check to receive_big
+- Link to v4: https://lore.kernel.org/netdev/20251022160623.51191-1-minhquangbui99@gmail.com/
+Changes in v4:
+- Remove unrelated changes, add more comments
+- Link to v3: https://lore.kernel.org/netdev/20251021154534.53045-1-minhquangbui99@gmail.com/
+Changes in v3:
+- Convert BUG_ON to WARN_ON_ONCE
+- Link to v2: https://lore.kernel.org/netdev/20250708144206.95091-1-minhquangbui99@gmail.com/
+Changes in v2:
+- Remove incorrect give_pages call
+- Link to v1: https://lore.kernel.org/netdev/20250706141150.25344-1-minhquangbui99@gmail.com/
+---
+ drivers/net/virtio_net.c | 25 ++++++++++++-------------
+ 1 file changed, 12 insertions(+), 13 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/hamoa.dtsi b/arch/arm64/boot/dts/qcom/hamoa.dtsi
-index a17900eacb20396a9792efcfcd6ce6dd877435d1..59603616a3c229c69467c41e6043c63daa62b46b 100644
---- a/arch/arm64/boot/dts/qcom/hamoa.dtsi
-+++ b/arch/arm64/boot/dts/qcom/hamoa.dtsi
-@@ -5896,9 +5896,11 @@ mdss_dp2_phy: phy@aec2a00 {
- 			      <0 0x0aec2000 0 0x1c8>;
+diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
+index a757cbcab87f..421b9aa190a0 100644
+--- a/drivers/net/virtio_net.c
++++ b/drivers/net/virtio_net.c
+@@ -910,17 +910,6 @@ static struct sk_buff *page_to_skb(struct virtnet_info *vi,
+ 		goto ok;
+ 	}
  
- 			clocks = <&dispcc DISP_CC_MDSS_DPTX2_AUX_CLK>,
--				 <&dispcc DISP_CC_MDSS_AHB_CLK>;
-+				 <&dispcc DISP_CC_MDSS_AHB_CLK>,
-+				 <&tcsr TCSR_EDP_CLKREF_EN>;
- 			clock-names = "aux",
--				      "cfg_ahb";
-+				      "cfg_ahb",
-+				      "ref";
+-	/*
+-	 * Verify that we can indeed put this data into a skb.
+-	 * This is here to handle cases when the device erroneously
+-	 * tries to receive more than is possible. This is usually
+-	 * the case of a broken device.
+-	 */
+-	if (unlikely(len > MAX_SKB_FRAGS * PAGE_SIZE)) {
+-		net_dbg_ratelimited("%s: too much data\n", skb->dev->name);
+-		dev_kfree_skb(skb);
+-		return NULL;
+-	}
+ 	BUG_ON(offset >= PAGE_SIZE);
+ 	while (len) {
+ 		unsigned int frag_size = min((unsigned)PAGE_SIZE - offset, len);
+@@ -2107,9 +2096,19 @@ static struct sk_buff *receive_big(struct net_device *dev,
+ 				   struct virtnet_rq_stats *stats)
+ {
+ 	struct page *page = buf;
+-	struct sk_buff *skb =
+-		page_to_skb(vi, rq, page, 0, len, PAGE_SIZE, 0);
++	struct sk_buff *skb;
++
++	/* Make sure that len does not exceed the size allocated in
++	 * add_recvbuf_big.
++	 */
++	if (unlikely(len > (vi->big_packets_num_skbfrags + 1) * PAGE_SIZE)) {
++		pr_debug("%s: rx error: len %u exceeds allocated size %lu\n",
++			 dev->name, len,
++			 (vi->big_packets_num_skbfrags + 1) * PAGE_SIZE);
++		goto err;
++	}
  
- 			power-domains = <&rpmhpd RPMHPD_MX>;
- 
-@@ -5916,9 +5918,11 @@ mdss_dp3_phy: phy@aec5a00 {
- 			      <0 0x0aec5000 0 0x1c8>;
- 
- 			clocks = <&dispcc DISP_CC_MDSS_DPTX3_AUX_CLK>,
--				 <&dispcc DISP_CC_MDSS_AHB_CLK>;
-+				 <&dispcc DISP_CC_MDSS_AHB_CLK>,
-+				 <&tcsr TCSR_EDP_CLKREF_EN>;
- 			clock-names = "aux",
--				      "cfg_ahb";
-+				      "cfg_ahb",
-+				      "ref";
- 
- 			power-domains = <&rpmhpd RPMHPD_MX>;
- 
-
++	skb = page_to_skb(vi, rq, page, 0, len, PAGE_SIZE, 0);
+ 	u64_stats_add(&stats->bytes, len - vi->hdr_len);
+ 	if (unlikely(!skb))
+ 		goto err;
 -- 
-2.48.1
+2.43.0
 
 
