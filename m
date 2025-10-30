@@ -1,91 +1,63 @@
-Return-Path: <stable+bounces-191696-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191697-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66770C1EB9D
-	for <lists+stable@lfdr.de>; Thu, 30 Oct 2025 08:22:18 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BF02C1ED50
+	for <lists+stable@lfdr.de>; Thu, 30 Oct 2025 08:44:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A22CA1890E09
-	for <lists+stable@lfdr.de>; Thu, 30 Oct 2025 07:22:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 303FC3B9573
+	for <lists+stable@lfdr.de>; Thu, 30 Oct 2025 07:44:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E80B3358D5;
-	Thu, 30 Oct 2025 07:22:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC306337B9F;
+	Thu, 30 Oct 2025 07:44:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VeIBdFMO"
+	dkim=pass (1024-bit key) header.d=yandex-team.ru header.i=@yandex-team.ru header.b="fH4ppwqn"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from forwardcorp1b.mail.yandex.net (forwardcorp1b.mail.yandex.net [178.154.239.136])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95C572F0C66
-	for <stable@vger.kernel.org>; Thu, 30 Oct 2025 07:22:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC65B2C029A;
+	Thu, 30 Oct 2025 07:43:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761808934; cv=none; b=JgEdWXk2rXcmYq3bpYdfwuniYecXHAaoiqpitC0Y83Cd2wSDsAo2L+3rk6e8p+ct4VUziwG4BbvQVg+gfi7d+3RETdrJKY1MXr8tUttAoUX/V38Dx348d3UWTG9M2WoeM1Lw730z6f0VOcGS1ZqU5Mljlhr3F6evd9jVMy4o5vQ=
+	t=1761810245; cv=none; b=je8MsLI3k9LSgVLGcev4QaXvzoucBbA7ZA0GFurF4ATI5HTtCo7CHLcfTqSgSzm/dntZBxOFcy+eCGIKBqIloFmCECz+wvrTn/DHIu0sV2dj6Wp9CFiWdZS0hibVJJ9/zoSBExcdVTXQ2mbQxOWXol/2jxsVXUjV4P+i6LeZpJM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761808934; c=relaxed/simple;
-	bh=BK9QyNasA/qNf+VmxCdQRMf4FU+qlzDQIVRA+LFxeLs=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=eCN3Jm8N8Oo2sQgdtkjamUCmx5Vmbfxvf8JWL664QxEgU4FIXsgEJyC7M8/GImHVicaK5BqFxR7BRimpFa290m5LUAKBRT7qt79Am8Le5rvg8eWgAM7eZXxbE8e5ObFDhfeCrdNYPTgBqrqOXeX/3lZPHydrZ4Se2mUgzMGw4+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VeIBdFMO; arc=none smtp.client-ip=209.85.215.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-b67684e2904so448453a12.2
-        for <stable@vger.kernel.org>; Thu, 30 Oct 2025 00:22:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761808932; x=1762413732; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=N97xtuGiZGCwUUKE2UkiFj9jfFMfd7Q45BsFB44dQRc=;
-        b=VeIBdFMOyNnzytW6z7wmEMpo4U4u9D3bbb02YciQYyYJBuMx8RZ0Xhedz1pVJEKtx5
-         S+1t+qYNEwqQDDU1c65q7nZO1LAXELE8Qwl1eC5AYHqGy2C0qed4+T4FI+bIFxe7N/6X
-         1mNGM/dMf5GWt108wPWBf9R+oXxpCDhK24/LPT3YEBeR/88Zc59pK0cjbaLpa1yIEqit
-         q7OqYvv6fQbf+7a3RHVEA7OazvTxP4sPUnOSfAWP+BpzhN1xXJR3Rd7HpyQEU62XzYrt
-         qlSR36qicwNVp84yhm4sLbGlJrreqNy+TGz8r5eXBWWX6byMXPfJv5/PgFfGbe5riOkf
-         JPSg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761808932; x=1762413732;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=N97xtuGiZGCwUUKE2UkiFj9jfFMfd7Q45BsFB44dQRc=;
-        b=pspFLXOpmVKH1TZ3cw37uQHiveVdkHmU7OlCybPJS4ojKR+S+NeDpwP7XOAu7yRuHe
-         1Fk5X5llYx6j2sKPidCD0w+z4M9XM+wFfvpzKSNTXHg5upNkXACge9xNX3r+KeNMiqwt
-         arRNxmbT0uNEces1cU5YCtEnvVuUoLWkcjWhoBIOxZnYsThqWD8QRkSilbQnL36Mv0Cn
-         2Bpu/DeaFaKrvrMlZycfu525Pp9NX6XEr+FgNYS1khuDDtICrXSVoYeSJUc+GHbKBkq2
-         OeKx1ADpB0BPJgemwGE68GeAI2u05Yfagkl93AZxVpB1skBuwIo7UtDazLjwjXJF3Svc
-         51Jw==
-X-Forwarded-Encrypted: i=1; AJvYcCX4Eb1+Gf10j/30KA2pVqvBYbxN/H9qXGYYeF9HneD407SbQROlhgp3s/X+EH4bHCy7EOA7kds=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyDl8mxXBFtb+tHJZ9RJwtm6XWbXGfOZLS+5ByUiEb8L4eLD2JJ
-	tAl34UPVNZF5ouwnZjM7CaULmVSIApkqIsl7lQe4t/N7YMGBitEDzr+Y
-X-Gm-Gg: ASbGncsB8CwJNcd8cmmB16x2N6NmrnVu/Y/RPgqhIv+Dmeca/NtKF9pCwH6/rlA6oTS
-	wLfuxrSPttvtrQ7mG2LBD/pqrWdAdYDrIcmoMP7fCfj/1UxBtWYZ37lBJidbhNuEkzdU9/GlSR7
-	ThXQ5k6N+ydHBipvZN1ZODYeur6EqhiX9LQ9CfW1jrNoHKbLvGdYUNL3u1l6szJksL9RJmmayql
-	HIFBRPRDbVPkIPNVoNdxz+wmRF9Y5ozV+RAnWjqJ47ycB7rWZvHiHEkhsoUALXvp541u/bUIw22
-	YCaRqulAaTrcZxcd3DVYxHZKkJo/r0CWLK0sjxhUpNq2NXQfEVaHOCHd4FKbR6doGDCS6KxN6LJ
-	OiTK2p513oSIUIwYSVg/sz3BvOWFmv90/isOtFSCsC5dVIzqfy58H8+7Bsn4UU46OfXqRO4SQYm
-	tQXWpE+kZvhmYSEUvXaIg2eg==
-X-Google-Smtp-Source: AGHT+IEJzjadnlIxV5ulJGWrPrx9myLqREBJf1yyP0HpGFqWQhdbyL5hCkrJAnTltkMImoRPFo5a0Q==
-X-Received: by 2002:a17:902:db07:b0:28d:195a:7d79 with SMTP id d9443c01a7336-294dedf4305mr67171885ad.5.1761808931687;
-        Thu, 30 Oct 2025 00:22:11 -0700 (PDT)
-Received: from localhost.localdomain ([124.77.218.104])
-        by smtp.googlemail.com with ESMTPSA id d9443c01a7336-29498d23218sm173814695ad.51.2025.10.30.00.22.09
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Thu, 30 Oct 2025 00:22:11 -0700 (PDT)
-From: Miaoqian Lin <linmq006@gmail.com>
-To: "David S. Miller" <davem@davemloft.net>,
-	Andreas Larsson <andreas@gaisler.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Lars Kotthoff <metalhead@metalhead.ws>,
-	sparclinux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: linmq006@gmail.com,
-	stable@vger.kernel.org
-Subject: [PATCH] sparc/led: prevent buffer underflow on zero-length write
-Date: Thu, 30 Oct 2025 15:21:53 +0800
-Message-Id: <20251030072156.30656-1-linmq006@gmail.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+	s=arc-20240116; t=1761810245; c=relaxed/simple;
+	bh=kxq9qjSwI/euAspvdW8LIPsGMx60Il7SC5u0QaAHm58=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SQ8LtZsaqgBEvU5tHUF+99ntF34P3XPUWxZmWT7sO+aO1xBML9UyvOWvvtXpzws3H5PdF1PKObh+g2dHppE9OlghPJz6WLHBAjkbTsmlUQwdaqCEmIg2oY/eGGwMdU/I8x9ftcVFsq36fk7CD/Gl0n7urg9WGJIzuX0HId0hhrQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex-team.ru; spf=pass smtp.mailfrom=yandex-team.ru; dkim=pass (1024-bit key) header.d=yandex-team.ru header.i=@yandex-team.ru header.b=fH4ppwqn; arc=none smtp.client-ip=178.154.239.136
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex-team.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex-team.ru
+Received: from mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net (mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net [IPv6:2a02:6b8:c10:49f:0:640:b99a:0])
+	by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id 3CC2180830;
+	Thu, 30 Oct 2025 10:43:49 +0300 (MSK)
+Received: from i111667286.ld.yandex.ru (unknown [2a02:6bf:8080:56d::1:12])
+	by mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net (smtpcorp/Yandex) with ESMTPSA id hhZcSK0Ft4Y0-qTvyUiRu;
+	Thu, 30 Oct 2025 10:43:48 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+	s=default; t=1761810228;
+	bh=EP6EuytiS7tC0fn/EYZWxe2O/pwA7Pr5SZWQ3bpebgc=;
+	h=Message-ID:Date:Cc:Subject:To:From;
+	b=fH4ppwqn+sm8nIGFWXHE0wAMxA4jlaWZCPAj5E9S0QctZ9YeXzQvErt5Q/UDqiFwc
+	 3rXBRGHXS1TpNv7UeXUSHvxATE+ZcvuHwxtJxslJ/GV0v2dShnsRw5+WNsQQTu8jJp
+	 +yPmK+YynL2bXcgcheFkAv8sndn2Jc/R7APNXYgQ=
+Authentication-Results: mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net; dkim=pass header.i=@yandex-team.ru
+From: Andrey Troshin <drtrosh@yandex-team.ru>
+To: stable@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Andrey Troshin <drtrosh@yandex-team.ru>,
+	Steve French <sfrench@samba.org>,
+	linux-cifs@vger.kernel.org,
+	samba-technical@lists.samba.org,
+	linux-kernel@vger.kernel.org,
+	lvc-project@linuxtesting.org
+Subject: [PATCH 5.10] smb: client: fix smbdirect_recv_io leak in smbd_negotiate() error path
+Date: Thu, 30 Oct 2025 10:43:42 +0300
+Message-ID: <20251030074342.1360-1-drtrosh@yandex-team.ru>
+X-Mailer: git-send-email 2.51.0.windows.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -94,35 +66,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Fix out-of-bounds access in led_proc_write() when count is 0.
-Accessing buf[count - 1] with count=0 reads/writes buf[-1].
+From: Stefan Metzmacher <metze@samba.org>
 
-Check for count==0 and return -EINVAL early to fix this.
+[ Upstream commit daac51c7032036a0ca5f1aa419ad1b0471d1c6e0 ]
 
-Found via static analysis and code review.
+During tests of another unrelated patch I was able to trigger this
+error: Objects remaining on __kmem_cache_shutdown()
 
-Fixes: ee1858d3122d ("[SPARC]: Add sun4m LED driver.")
-Cc: stable@vger.kernel.org
-Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+Cc: Steve French <smfrench@gmail.com>
+Cc: Tom Talpey <tom@talpey.com>
+Cc: Long Li <longli@microsoft.com>
+Cc: Namjae Jeon <linkinjeon@kernel.org>
+Cc: linux-cifs@vger.kernel.org
+Cc: samba-technical@lists.samba.org
+Fixes: f198186aa9bb ("CIFS: SMBD: Establish SMB Direct connection")
+Signed-off-by: Stefan Metzmacher <metze@samba.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+[Andrey Troshin: backport fix from fs/cifs/smbdirect.c to fs/smb/client/smbdirect.c]
+Signed-off-by: Andrey Troshin <drtrosh@yandex-team.ru>
 ---
- arch/sparc/kernel/led.c | 3 +++
- 1 file changed, 3 insertions(+)
+Backport fix for CVE-2025-39929
+Link: https://nvd.nist.gov/vuln/detail/CVE-2025-39929
+---
+ fs/cifs/smbdirect.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/arch/sparc/kernel/led.c b/arch/sparc/kernel/led.c
-index f4fb82b019bb..aa0ca0d8d0e2 100644
---- a/arch/sparc/kernel/led.c
-+++ b/arch/sparc/kernel/led.c
-@@ -70,6 +70,9 @@ static ssize_t led_proc_write(struct file *file, const char __user *buffer,
- {
- 	char *buf = NULL;
+diff --git a/fs/cifs/smbdirect.c b/fs/cifs/smbdirect.c
+index ae332f3771f6..e273f3b9efcb 100644
+--- a/fs/cifs/smbdirect.c
++++ b/fs/cifs/smbdirect.c
+@@ -1083,8 +1083,10 @@ static int smbd_negotiate(struct smbd_connection *info)
+ 	log_rdma_event(INFO, "smbd_post_recv rc=%d iov.addr=%llx iov.length=%x iov.lkey=%x\n",
+ 		       rc, response->sge.addr,
+ 		       response->sge.length, response->sge.lkey);
+-	if (rc)
++	if (rc) {
++		put_receive_buffer(info, response);
+ 		return rc;
++	}
  
-+	if (count == 0)
-+		return -EINVAL;
-+
- 	if (count > LED_MAX_LENGTH)
- 		count = LED_MAX_LENGTH;
- 
+ 	init_completion(&info->negotiate_completion);
+ 	info->negotiate_done = false;
 -- 
-2.39.5 (Apple Git-154)
+2.34.1
 
 
