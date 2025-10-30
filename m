@@ -1,139 +1,105 @@
-Return-Path: <stable+bounces-191720-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191721-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 594DFC1FCA6
-	for <lists+stable@lfdr.de>; Thu, 30 Oct 2025 12:21:27 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01F6EC1FCBE
+	for <lists+stable@lfdr.de>; Thu, 30 Oct 2025 12:25:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8FD703B4D9B
-	for <lists+stable@lfdr.de>; Thu, 30 Oct 2025 11:20:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9D1CE3B484A
+	for <lists+stable@lfdr.de>; Thu, 30 Oct 2025 11:25:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B10D733DEC2;
-	Thu, 30 Oct 2025 11:20:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24C54346796;
+	Thu, 30 Oct 2025 11:25:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="h8a3X963"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OK/iWfsG"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EC9A2E8894
-	for <stable@vger.kernel.org>; Thu, 30 Oct 2025 11:20:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC1A533F365;
+	Thu, 30 Oct 2025 11:25:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761823231; cv=none; b=uTsf1tZ6w8UDaCu9S5W/Cb8Xex6mRah7bRPJDeVEj0n0fJ8OSDFsUY+H6VI7jnSFCmwxFcXdNDmDoAm1FN2GKYklx8KsxGBEerfLOwTbSTmTPqCMOT1ju9wfV0zDhrq8GjQmgg+H1fv0rgX5P/18Tm+UFaNO2rasMLL1NzL0yzI=
+	t=1761823520; cv=none; b=KA34WsAmpkb0qpJ0u6WPtE+WbAl5fOc8K3IV8abNws3tvBwt9+f0r9iGbuhUC6XTWINeGuv2rOXnG23jdGHxsJ3TBpPM9msLSemMKqLIB4aSIDs1Yb/IpjtY63wBsyVWLatRZiKQGVVV8hyqpN6MIJC8P5YkCeiXJwxd0Evahkc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761823231; c=relaxed/simple;
-	bh=UMgHCQUu8cOFMbnecxRXWBDMtD529aws4Ow+KFvMMrU=;
-	h=From:To:Cc:Subject:Date:Message-Id; b=F83QaMysSi9nYfiVtouU6QNj8EJIR/tOaQLEYWT89CS5YcEoy/Qw7MnIoGxxh7qZWJC+qYBpheP/KgvhbROW6zLFfhG7RDk3kEgBgiBPHEbIvgpMnHMNmwkAR0leQ7o47N34vlF2DxtCwcjDEcj78KChX4SCwif7J0bEmpYWEE4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=h8a3X963; arc=none smtp.client-ip=209.85.210.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-7a4c202a30aso1030508b3a.2
-        for <stable@vger.kernel.org>; Thu, 30 Oct 2025 04:20:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1761823228; x=1762428028; darn=vger.kernel.org;
-        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6jBUXjI+VAuZkH4C/pJW07Y7+zKzm2v+t+cHIswPHfk=;
-        b=h8a3X963C6Mcl5XIwQoF5UHlxjtI4k/5wtxzqieQslBNE6aTqVzRcW8dwflRztDK35
-         R9qZ6JlmODiyqTTgynox8Qdw+RTxtQzGlHcbjHfXMySJe7EOUtuED7gs8OQgyVpUa1W5
-         X51YDl1bMCJdk8O2kht45Hn7tOExOxT6uiSAiAzr3Dc2Uw3u8wdvy3WgHth4iqJhvGTb
-         c6BPMMCP3hg327BHZ6LahTZq+gEjniSswaxEZZgqE+0HYzX/h6yeulodxhcwW5dfmWFe
-         8Sule4v9lGbyjS9h46C8OUnzTHclwj+xnXNTjorNHS+xttl92HRKFYJC/tpoL2mcchuR
-         I5gg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761823228; x=1762428028;
-        h=message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=6jBUXjI+VAuZkH4C/pJW07Y7+zKzm2v+t+cHIswPHfk=;
-        b=hgAy3nFhNTFCepurMplncBWCuk5fIJy6VKmLN8N8Rtn7p+tazOpRpXDZDO4UIfS8+D
-         33YXElMcESqnMNC+XVHSA8T3emSY6JJK9izeW8qfz78ZSjNJRP1UkvDqk1KO3MJZjLEe
-         Zlrf0SO46Qf7rOQt6+ncccoRYTXGLVMIDBYy4su/HVO5Niy7goAD+CUv1f9QKvRu3edM
-         tRPEObPiGgT4bhcOGynyHCw7b1ae4Q3F9HGdH3cVuQGt6g3FVwxp80nBM5/+spYVvf53
-         0b9fUpV244jA6duTgFkmeC+DVPiqsEN1vnO6ntoHEKPbV/BXJErgkQ52cBZYTVNzBCeH
-         lx6A==
-X-Gm-Message-State: AOJu0Yzz2Kfis7ZCtJFzTjw3NAUAXrRySG5WHMz2YJobHSap2dN4bHTY
-	pT7Swu1z25k+H1AAsBDqPeLtCZG4OQDaQKPOY1Qrme8rY0tVbRJXHtYYM/FejDNEVOVGWAmOphN
-	rrqNC
-X-Gm-Gg: ASbGnct62GRphAHZ6GSp5PV13SLsh74iiY1x3wUHv32kRN8DvbXbhxo9YP49j7OdV1B
-	sszHfaJD+Q9FEs7Hfdf7iANEqKTCQ1fDoMtqjhhssXHc7otnMmmVRLopyPr+KNO57JLMXDJw6tv
-	xppeDuyJrqgUDw6FiOiMDD0/RvIZ61D/mbn7N4zpalvgu7tPQOIOQSk+eysGE6Vqk5zGEI36IPC
-	vkGVfs7+sE4wxy2J/VA5oMpOVTtYuD17nrBeTAEKMpQbGUtM9cOO0Kwr9BHbN60vcdxl3H9YAYc
-	clKDgECciyxqNyU7977BdfGOrgJE0Vs/KjFuWjSC4PEQYly8fjuITCSYvkrAxXxjKXHga9li73A
-	rbhBXfVawknkv5lQRkfHWTSLscNhEDzoMHoeucs6InIIOyOGlBD7dknKL+5AQJMZKahxNS2U0ef
-	OK/rnqtDm2sa3zzu7HR59uQxCRGFeJRCSW
-X-Google-Smtp-Source: AGHT+IH9/DKVPYn+/MtW7hYEn3RJ/PWJk9L0OYkwwgKcNwxO7lRzqwX9cQVK9GtmiMJWH3FziLvB0Q==
-X-Received: by 2002:a05:6a00:181b:b0:7a3:455e:3fa5 with SMTP id d2e1a72fcca58-7a621813833mr4031294b3a.0.1761823228287;
-        Thu, 30 Oct 2025 04:20:28 -0700 (PDT)
-Received: from 5CG3510V44-KVS.bytedance.net ([203.208.189.5])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7a42aa5d9a6sm14777024b3a.62.2025.10.30.04.20.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Oct 2025 04:20:27 -0700 (PDT)
-From: Jinhui Guo <guojinhui.liam@bytedance.com>
-To: stable@vger.kernel.org,
-	joro@8bytes.org
-Cc: linux-kernel@vger.kernel.org,
-	iommu@lists.linux-foundation.org,
-	guojinhui.liam@bytedance.com
-Subject: [PATCH 5.4.y] iommu/amd: Fix 2G+ memory-size overflow in unmap_sg()
-Date: Thu, 30 Oct 2025 19:19:56 +0800
-Message-Id: <20251030111956.308-1-guojinhui.liam@bytedance.com>
-X-Mailer: git-send-email 2.17.1
+	s=arc-20240116; t=1761823520; c=relaxed/simple;
+	bh=6pRLhXQTg48LccghaYa5grB/ldAS7xutWQXqYeaONAI=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=OPSBqlKPZZ8xF01HgIIFprk/jLJ2NnD/hWenzUwRNuFl/r82dq21hgdE3xL8HmCDEefwtSQDg5eMi63MRSfkUFe4gH9c233SECWF/EyAJBLkHWe5YzelLwPwiGuZDM/0soCMW3YBDyNHCfYz8WxSa+fPKdpxaWk32i56t+i4Mno=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OK/iWfsG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F4D9C4CEF8;
+	Thu, 30 Oct 2025 11:25:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761823520;
+	bh=6pRLhXQTg48LccghaYa5grB/ldAS7xutWQXqYeaONAI=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=OK/iWfsGKPH76eTFnRmfEgmrgWV+XlSP07CDbXrbXrT5kabli0le+L3nLFvZyLmg3
+	 uDtdKVLtBAJQDlhIdZDjbKkD+O9erGphWHpSUwXCKM9IwBRGDUms4h4NQfFswyZmhP
+	 SqGFIHJ4BGbAUAQk2Z81nCkGtGd4wFoTkbcJFbzPuKQsO/WxoOgtIpcMQXqDTdZaiY
+	 4UZtYM1KAgwl5L56fuUCkhFk5NWPCLZG3YAWpaT1zfVqau8wKZc6t66BbWzNC6k/Gz
+	 mf2OQrEKHAjd0eTObb7YTHD981blAirH/sop1L0IU1eDwAfY0FwExedoSdbDeCk1oE
+	 m62/WGvW+HHUg==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1vEQmM-00000000xUk-0abm;
+	Thu, 30 Oct 2025 11:25:18 +0000
+Date: Thu, 30 Oct 2025 11:25:17 +0000
+Message-ID: <86tszgvdgi.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Oliver Upton <oliver.upton@linux.dev>
+Cc: kvmarm@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	kvm@vger.kernel.org,
+	Joey Gouly <joey.gouly@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Peter Maydell <peter.maydell@linaro.org>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH 1/3] KVM: arm64: Make ID_PFR1_EL1.GIC writable
+In-Reply-To: <aPiBH1_WZicoE7Od@linux.dev>
+References: <20251013083207.518998-1-maz@kernel.org>
+	<20251013083207.518998-2-maz@kernel.org>
+	<aPiBH1_WZicoE7Od@linux.dev>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: oliver.upton@linux.dev, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, kvm@vger.kernel.org, joey.gouly@arm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, peter.maydell@linaro.org, stable@vger.kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-Since npages is declared as int, shifting npages << PAGE_SHIFT
-for a 2 GB+ scatter-gather list overflows before reaching
-__unmap_single(), leading to incorrect unmapping.
+On Wed, 22 Oct 2025 08:00:47 +0100,
+Oliver Upton <oliver.upton@linux.dev> wrote:
+> 
+> Hey,
+> 
+> On Mon, Oct 13, 2025 at 09:32:05AM +0100, Marc Zyngier wrote:
+> > Similarly to ID_AA64PFR0_EL1.GIC, relax ID_PFR1_EL1.GIC to be writable.
+> 
+> This looks fine to me, although I do wonder if we should just allow
+> userspace to write whatever value it wants to the 32-bit ID registers
+> and be done with it.
 
-A 2 GB region equals 524,288 pages. The expression
-npages << PAGE_SHIFT yields 0x80000000, which exceeds
-INT32_MAX (0x7FFFFFFF). Casting to size_t therefore produces
-0xFFFFFFFF80000000, an overflow value that breaks the unmap
-size calculation.
+That's a good point. Nobody really cares about 32bit anyway, and I'd
+be happy to just let the VMM write whatever it wants. Might be a bit
+harder to backport, but whoever is interested in AArch32 will be able
+to do it.
 
-Fix the overflow by casting npages to size_t before the
-PAGE_SHIFT left-shift.
+Thanks,
 
-Fixes: 89736a0ee81d ("Revert "iommu/amd: Remove the leftover of bypass support"")
-Cc: stable@vger.kernel.org # 5.4
-Signed-off-by: Jinhui Guo <guojinhui.liam@bytedance.com>
----
+	M.
 
-Hi,
-
-We hit an IO_PAGE_FAULT on AMD with 5.4-stable when mapping a
-2 GB scatter-gather list.
-
-The fault is caused by an overflow in unmap_sg(): on stable-5.4
-the SG-mmap path was never moved to the IOMMU framework, so the
-bug exists only in this branch.
-
-Regards,
-Jinhui
-
- drivers/iommu/amd_iommu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/iommu/amd_iommu.c b/drivers/iommu/amd_iommu.c
-index a30aac41af42..60872d7be52b 100644
---- a/drivers/iommu/amd_iommu.c
-+++ b/drivers/iommu/amd_iommu.c
-@@ -2682,7 +2682,7 @@ static void unmap_sg(struct device *dev, struct scatterlist *sglist,
- 	dma_dom   = to_dma_ops_domain(domain);
- 	npages    = sg_num_pages(dev, sglist, nelems);
- 
--	__unmap_single(dma_dom, startaddr, npages << PAGE_SHIFT, dir);
-+	__unmap_single(dma_dom, startaddr, (size_t)npages << PAGE_SHIFT, dir);
- }
- 
- /*
 -- 
-2.20.1
-
+Without deviation from the norm, progress is not possible.
 
