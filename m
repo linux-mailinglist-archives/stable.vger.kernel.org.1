@@ -1,278 +1,123 @@
-Return-Path: <stable+bounces-191756-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191758-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2262C217B6
-	for <lists+stable@lfdr.de>; Thu, 30 Oct 2025 18:26:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D903C2184F
+	for <lists+stable@lfdr.de>; Thu, 30 Oct 2025 18:38:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 3CF554EBBB3
-	for <lists+stable@lfdr.de>; Thu, 30 Oct 2025 17:24:50 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 37F964E2B69
+	for <lists+stable@lfdr.de>; Thu, 30 Oct 2025 17:38:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 940523683A3;
-	Thu, 30 Oct 2025 17:24:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09E3736B982;
+	Thu, 30 Oct 2025 17:38:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="C7993PRJ"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="tdJNHn9r"
 X-Original-To: stable@vger.kernel.org
-Received: from 003.mia.mailroute.net (003.mia.mailroute.net [199.89.3.6])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5632136839A;
-	Thu, 30 Oct 2025 17:24:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.3.6
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AB6D24BBEE;
+	Thu, 30 Oct 2025 17:38:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761845086; cv=none; b=T6a0aXQKTSkrooPCrMKfOsuvZILisY+iesf6kUnbONrIMorHnI3woLTUh39sOVMIB8OeRm4wWS3VbSuGzPgmFV5xGc4ynC4V0BY5tmaat4iHgQEnVcBmZO3YNrho7VdlXZM7o8xjG9v9F7LQPzZ3Lo2os53cESxBRs9x9Wd5u+E=
+	t=1761845890; cv=none; b=s62bJhORWpWzr9xXPV3z0sC9ZJSd6vcw/S4gYkYXOK9YdQ0Q5102nkJsPEWCLreCP7ml6iM+OWifBDC0BO+wZagu0d9lGJxYgM1CTlgyPC6tTpxmnu/XOkYjo2mINK3oCJ7SxCzzeE7TPdloe4ThwncQLLrULkHgXT9R81sCYa4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761845086; c=relaxed/simple;
-	bh=YcyaHTat+A7WYhWE8PHJqk3OlpUXF51K60Zkd2qF8ps=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QkoFU086PNsxqpEygXNTzhq3+uAsB1zGVzSkCjuIa+mAlvA0Pm07c0HYDhbBcLhtfyPv1iV484l5fVywepdCwXUeG3wv5nDwBPkfqcPlY5nwIH6zazab2nMUrfA+JYRZPMAqT6e16pJK7+bJU4eCfQS6S+ndmJSqgtRShKpPpao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=C7993PRJ; arc=none smtp.client-ip=199.89.3.6
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
-Received: from localhost (localhost [127.0.0.1])
-	by 003.mia.mailroute.net (Postfix) with ESMTP id 4cy9wC1wkwzlssnJ;
-	Thu, 30 Oct 2025 17:24:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
-	content-transfer-encoding:mime-version:x-mailer:message-id:date
-	:date:subject:subject:from:from:received:received; s=mr01; t=
-	1761845081; x=1764437082; bh=BQ+hl6WsgiLnYNjhychdJ7thq4MdN2LmeYj
-	L7J52+rI=; b=C7993PRJiiIwtaFQTOqP87rFFxKeoCgGPGpkATeyiF5f2wYlGQ2
-	8FBRI6NyZ8LrgL4UGdTMgSTb+bnbO4sSryoqOuARnwHHOcJo5VNUMWilU3n240ht
-	lPTGQNtSRBUaGAiWFO4XyZLewVqberU/8reW+qM2jjRZTdxtEXAr/V7lqjsCAnq0
-	c6TuzDIt7xzNZKQX2T/34MmMrIQ5/2qL7a1jgPaF5J98+LWq3chzFfV0f3HcVT6Z
-	jRGALNjmIXcoJAdCoBxLwlDjvqF0q6Qs8TJ4rdknmIQqh+MqjIHpPmkUV85wYB+x
-	1WMfsnHmAZAgGP6pk6aNNdGtcsDLjeQY65Q==
-X-Virus-Scanned: by MailRoute
-Received: from 003.mia.mailroute.net ([127.0.0.1])
- by localhost (003.mia [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
- id 9BNvk3SA-B10; Thu, 30 Oct 2025 17:24:41 +0000 (UTC)
-Received: from bvanassche.mtv.corp.google.com (unknown [104.135.180.219])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bvanassche@acm.org)
-	by 003.mia.mailroute.net (Postfix) with ESMTPSA id 4cy9w20NKPzlsv6Y;
-	Thu, 30 Oct 2025 17:24:33 +0000 (UTC)
-From: Bart Van Assche <bvanassche@acm.org>
-To: Jens Axboe <axboe@kernel.dk>
-Cc: linux-block@vger.kernel.org,
-	Christoph Hellwig <hch@lst.de>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Nilay Shroff <nilay@linux.ibm.com>,
-	Martin Wilck <mwilck@suse.com>,
-	Benjamin Marzinski <bmarzins@redhat.com>,
-	stable@vger.kernel.org,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Hannes Reinecke <hare@suse.de>
-Subject: [PATCH v3] block: Remove queue freezing from several sysfs store callbacks
-Date: Thu, 30 Oct 2025 10:24:17 -0700
-Message-ID: <20251030172417.660949-1-bvanassche@acm.org>
-X-Mailer: git-send-email 2.51.1.930.gacf6e81ea2-goog
+	s=arc-20240116; t=1761845890; c=relaxed/simple;
+	bh=n+E2FDQMzyue9+MdBENohOQ4Hy7t5K7MNazW9zFdZ30=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GF0mB5IlxYhEUst0rrBPWc6roI3FXY60/Z0d1kfY3Kv4Oeloi17+/nIMQ8jJwEaVbB9enso8pUs7zmLzWhHncgQ0EMTvjNrQI8tNZ2kNSFVwBQb3LjGTXAsOiE/wr9rVZRje9EiydcmR3SGmxeCKbhgpFjikKn0p7ZUnYnP5ibs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=tdJNHn9r; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=1skhUG0vBEhCXLwn0Npbuxg9kdPLx5DwATtJQ8dFMTg=; b=tdJNHn9rOe0S+1GB8M+UuknrHx
+	9QhQySt5tWqCBZ5TX58LkvfVpWru/dcPEc/KXPi55HzTOF/AgMivnWM0zgqbEBFkOjeYwfkC1gpu0
+	Rqun9PZRs5Uyu9YvDZUTiMwFb6AYyr5eMh34GiMLVM1yLk2XPEMtILGP4mQxKlr+SQM8=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1vEWax-00CX37-SN; Thu, 30 Oct 2025 18:37:55 +0100
+Date: Thu, 30 Oct 2025 18:37:55 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Miaoqian Lin <linmq006@gmail.com>
+Cc: Rasesh Mody <rmody@marvell.com>,
+	Sudarsana Kalluru <skalluru@marvell.com>,
+	GR-Linux-NIC-Dev@marvell.com, Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Ivan Vecera <ivecera@redhat.com>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] bna: prevent bad user input in bnad_debugfs_write_regrd()
+Message-ID: <75e4c931-3e17-430a-a902-60f9d8161bc3@lunn.ch>
+References: <20251030053411.710-1-linmq006@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251030053411.710-1-linmq006@gmail.com>
 
-Freezing the request queue from inside sysfs store callbacks may cause a
-deadlock in combination with the dm-multipath driver and the
-queue_if_no_path option. Additionally, freezing the request queue slows
-down system boot on systems where sysfs attributes are set synchronously.
+On Thu, Oct 30, 2025 at 01:34:10PM +0800, Miaoqian Lin wrote:
+> A malicious user could pass an arbitrarily bad value
+> to memdup_user_nul(), potentially causing kernel crash.
 
-Fix this by removing the blk_mq_freeze_queue() / blk_mq_unfreeze_queue()
-calls from the store callbacks that do not strictly need these callbacks.
-This patch may cause a small delay in applying the new settings.
+How would it crash the kernel? I would expect memdup_user_nul() to
+either succeed or fail and return a NULL.
 
-This patch affects the following sysfs attributes:
-* io_poll_delay
-* io_timeout
-* nomerges
-* read_ahead_kb
-* rq_affinity
+However, adding a range check does make sense.
 
-Here is an example of a deadlock triggered by running test srp/002:
+> This follows the same pattern as commit ee76746387f6
+> ("netdevsim: prevent bad user input in nsim_dev_health_break_write()")
+> and commit 7ef4c19d245f
+> ("smackfs: restrict bytes count in smackfs write functions")
+> 
+> Found via static analysis and code review.
+> 
+> Fixes: d0e6a8064c42 ("bna: use memdup_user to copy userspace buffers")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+> ---
+>  drivers/net/ethernet/brocade/bna/bnad_debugfs.c | 3 +++
+>  1 file changed, 3 insertions(+)
+> 
+> diff --git a/drivers/net/ethernet/brocade/bna/bnad_debugfs.c b/drivers/net/ethernet/brocade/bna/bnad_debugfs.c
+> index 8f0972e6737c..ad33ab1d266d 100644
+> --- a/drivers/net/ethernet/brocade/bna/bnad_debugfs.c
+> +++ b/drivers/net/ethernet/brocade/bna/bnad_debugfs.c
+> @@ -311,6 +311,9 @@ bnad_debugfs_write_regrd(struct file *file, const char __user *buf,
+>  	unsigned long flags;
+>  	void *kern_buf;
+>  
+> +	if (nbytes == 0 || nbytes > PAGE_SIZE)
+> +		return -EINVAL;
+> +
+>  	/* Copy the user space buf */
+>  	kern_buf = memdup_user_nul(buf, nbytes);
+>  	if (IS_ERR(kern_buf))
 
-task:multipathd
-Call Trace:
- <TASK>
- __schedule+0x8c1/0x1bf0
- schedule+0xdd/0x270
- schedule_preempt_disabled+0x1c/0x30
- __mutex_lock+0xb89/0x1650
- mutex_lock_nested+0x1f/0x30
- dm_table_set_restrictions+0x823/0xdf0
- __bind+0x166/0x590
- dm_swap_table+0x2a7/0x490
- do_resume+0x1b1/0x610
- dev_suspend+0x55/0x1a0
- ctl_ioctl+0x3a5/0x7e0
- dm_ctl_ioctl+0x12/0x20
- __x64_sys_ioctl+0x127/0x1a0
- x64_sys_call+0xe2b/0x17d0
- do_syscall_64+0x96/0x3a0
- entry_SYSCALL_64_after_hwframe+0x4b/0x53
- </TASK>
-task:(udev-worker)
-Call Trace:
- <TASK>
- __schedule+0x8c1/0x1bf0
- schedule+0xdd/0x270
- blk_mq_freeze_queue_wait+0xf2/0x140
- blk_mq_freeze_queue_nomemsave+0x23/0x30
- queue_ra_store+0x14e/0x290
- queue_attr_store+0x23e/0x2c0
- sysfs_kf_write+0xde/0x140
- kernfs_fop_write_iter+0x3b2/0x630
- vfs_write+0x4fd/0x1390
- ksys_write+0xfd/0x230
- __x64_sys_write+0x76/0xc0
- x64_sys_call+0x276/0x17d0
- do_syscall_64+0x96/0x3a0
- entry_SYSCALL_64_after_hwframe+0x4b/0x53
- </TASK>
+Look at what it does next:
 
-Cc: Christoph Hellwig <hch@lst.de>
-Cc: Nilay Shroff <nilay@linux.ibm.com>
-Cc: Martin Wilck <mwilck@suse.com>
-Cc: Benjamin Marzinski <bmarzins@redhat.com>
-Cc: stable@vger.kernel.org
-Fixes: af2814149883 ("block: freeze the queue in queue_attr_store")
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+rc = sscanf(kern_buf, "%x:%x", &addr, &len);
+
+What is the maximum length of "%x:%x" ? A lot less than PAGE_SIZE. So
+you can make the range check much smaller.
+
+Also, what about bnad_debugfs_write_regwr()? If you find a bug, look
+around, the same bug might be repeated close by. You might also want
+to look at your static analysis tool and find out why it did not
+report that function.
+
+    Andrew
+
 ---
-
-Changes compared to v2:
- - Dropped the controversial patch "block: Restrict the duration of sysfs
-   attribute changes".
-
-Changes compared to v1:
- - Added patch "block: Restrict the duration of sysfs attribute changes".
- - Remove queue freezing from more sysfs callbacks.
-
- block/blk-sysfs.c | 16 +---------------
- 1 file changed, 1 insertion(+), 15 deletions(-)
-
-diff --git a/block/blk-sysfs.c b/block/blk-sysfs.c
-index 76c47fe9b8d6..c698d83cbd29 100644
---- a/block/blk-sysfs.c
-+++ b/block/blk-sysfs.c
-@@ -143,7 +143,6 @@ queue_ra_store(struct gendisk *disk, const char *page=
-, size_t count)
- {
- 	unsigned long ra_kb;
- 	ssize_t ret;
--	unsigned int memflags;
- 	struct request_queue *q =3D disk->queue;
-=20
- 	ret =3D queue_var_store(&ra_kb, page, count);
-@@ -154,10 +153,8 @@ queue_ra_store(struct gendisk *disk, const char *pag=
-e, size_t count)
- 	 * calculated from the queue limits by queue_limits_commit_update.
- 	 */
- 	mutex_lock(&q->limits_lock);
--	memflags =3D blk_mq_freeze_queue(q);
- 	disk->bdi->ra_pages =3D ra_kb >> (PAGE_SHIFT - 10);
- 	mutex_unlock(&q->limits_lock);
--	blk_mq_unfreeze_queue(q, memflags);
-=20
- 	return ret;
- }
-@@ -375,21 +372,18 @@ static ssize_t queue_nomerges_store(struct gendisk =
-*disk, const char *page,
- 				    size_t count)
- {
- 	unsigned long nm;
--	unsigned int memflags;
- 	struct request_queue *q =3D disk->queue;
- 	ssize_t ret =3D queue_var_store(&nm, page, count);
-=20
- 	if (ret < 0)
- 		return ret;
-=20
--	memflags =3D blk_mq_freeze_queue(q);
- 	blk_queue_flag_clear(QUEUE_FLAG_NOMERGES, q);
- 	blk_queue_flag_clear(QUEUE_FLAG_NOXMERGES, q);
- 	if (nm =3D=3D 2)
- 		blk_queue_flag_set(QUEUE_FLAG_NOMERGES, q);
- 	else if (nm)
- 		blk_queue_flag_set(QUEUE_FLAG_NOXMERGES, q);
--	blk_mq_unfreeze_queue(q, memflags);
-=20
- 	return ret;
- }
-@@ -409,7 +403,6 @@ queue_rq_affinity_store(struct gendisk *disk, const c=
-har *page, size_t count)
- #ifdef CONFIG_SMP
- 	struct request_queue *q =3D disk->queue;
- 	unsigned long val;
--	unsigned int memflags;
-=20
- 	ret =3D queue_var_store(&val, page, count);
- 	if (ret < 0)
-@@ -421,7 +414,6 @@ queue_rq_affinity_store(struct gendisk *disk, const c=
-har *page, size_t count)
- 	 * are accessed individually using atomic test_bit operation. So we
- 	 * don't grab any lock while updating these flags.
- 	 */
--	memflags =3D blk_mq_freeze_queue(q);
- 	if (val =3D=3D 2) {
- 		blk_queue_flag_set(QUEUE_FLAG_SAME_COMP, q);
- 		blk_queue_flag_set(QUEUE_FLAG_SAME_FORCE, q);
-@@ -432,7 +424,6 @@ queue_rq_affinity_store(struct gendisk *disk, const c=
-har *page, size_t count)
- 		blk_queue_flag_clear(QUEUE_FLAG_SAME_COMP, q);
- 		blk_queue_flag_clear(QUEUE_FLAG_SAME_FORCE, q);
- 	}
--	blk_mq_unfreeze_queue(q, memflags);
- #endif
- 	return ret;
- }
-@@ -446,11 +437,9 @@ static ssize_t queue_poll_delay_store(struct gendisk=
- *disk, const char *page,
- static ssize_t queue_poll_store(struct gendisk *disk, const char *page,
- 				size_t count)
- {
--	unsigned int memflags;
- 	ssize_t ret =3D count;
- 	struct request_queue *q =3D disk->queue;
-=20
--	memflags =3D blk_mq_freeze_queue(q);
- 	if (!(q->limits.features & BLK_FEAT_POLL)) {
- 		ret =3D -EINVAL;
- 		goto out;
-@@ -459,7 +448,6 @@ static ssize_t queue_poll_store(struct gendisk *disk,=
- const char *page,
- 	pr_info_ratelimited("writes to the poll attribute are ignored.\n");
- 	pr_info_ratelimited("please use driver specific parameters instead.\n")=
-;
- out:
--	blk_mq_unfreeze_queue(q, memflags);
- 	return ret;
- }
-=20
-@@ -472,7 +460,7 @@ static ssize_t queue_io_timeout_show(struct gendisk *=
-disk, char *page)
- static ssize_t queue_io_timeout_store(struct gendisk *disk, const char *=
-page,
- 				  size_t count)
- {
--	unsigned int val, memflags;
-+	unsigned int val;
- 	int err;
- 	struct request_queue *q =3D disk->queue;
-=20
-@@ -480,9 +468,7 @@ static ssize_t queue_io_timeout_store(struct gendisk =
-*disk, const char *page,
- 	if (err || val =3D=3D 0)
- 		return -EINVAL;
-=20
--	memflags =3D blk_mq_freeze_queue(q);
- 	blk_queue_rq_timeout(q, msecs_to_jiffies(val));
--	blk_mq_unfreeze_queue(q, memflags);
-=20
- 	return count;
- }
+pw-bot: cr
 
