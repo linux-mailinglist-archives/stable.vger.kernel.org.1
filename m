@@ -1,174 +1,172 @@
-Return-Path: <stable+bounces-191698-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191699-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DF7EC1EF31
-	for <lists+stable@lfdr.de>; Thu, 30 Oct 2025 09:19:42 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 983A5C1EF0D
+	for <lists+stable@lfdr.de>; Thu, 30 Oct 2025 09:18:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ED0E34239D1
-	for <lists+stable@lfdr.de>; Thu, 30 Oct 2025 08:16:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B9B5A18837C9
+	for <lists+stable@lfdr.de>; Thu, 30 Oct 2025 08:18:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8488B30FF2B;
-	Thu, 30 Oct 2025 08:16:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40E03337699;
+	Thu, 30 Oct 2025 08:17:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="G3HIYDqY"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="bCyHLPDf"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 755D924DCEB
-	for <stable@vger.kernel.org>; Thu, 30 Oct 2025 08:16:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F44333436F
+	for <stable@vger.kernel.org>; Thu, 30 Oct 2025 08:17:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761812191; cv=none; b=c+TCtkdNE7kHsPQdpN4ppYgR/bG7MKn2xGHVm+SXQolsWTO0RFDU2VF0vZcycz591Q7DDE9bX5S3gKqyeLH3TTD7nIPjYqSmbaH7ouCLa5fcFLIvyh7pZ96IxPcGB7ytIZpvrEojLhJaE1N/Kb/Hm+lNyGCvLJKsGwnEiXpyjCE=
+	t=1761812272; cv=none; b=E4z9sgOWo0plh/Fj8s+b7jP1UuSB4EdQwvbBOhrEqe+JK6qa/iYQcXVk4jKNuHU21gG20y7lj5xEJNJCOp2/g19iqB20V7J9LpksKpNXq9uEciadwzTDh7Ku9dndRXSZ8lsKf+psRbQO0jY9xluvdhuofCc/xJgGyZZjJWWnEgE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761812191; c=relaxed/simple;
-	bh=3pr3bE37JQekr4KteuJZhkqEhETeS9zVBmYKEXCpNBg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=nwHEvVG68ZkGNaJlonm66iJtxcrluns6Hh3Qpg+qbM5BM9SpdRbW1H/hSuVgzvamDdwjgOVuEX3ZxVGnEnBqJwt7+WabUvowDvUmG4pvP8pj6XPn0EuCEH1Xrpd+0lw0/UUL95yKG8RoULNNlEbyKzFAT/LniLuqo3ym9BQgifE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=G3HIYDqY; arc=none smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-472cbd003feso520525e9.3
-        for <stable@vger.kernel.org>; Thu, 30 Oct 2025 01:16:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1761812188; x=1762416988; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=f4G1KZQl6cfiM/1J2+KFKVe0bth/8npRuFzDKYpdfXY=;
-        b=G3HIYDqY2EKikOV/FyYL7VAxpw3M8Ha803qNMCbKHNpi4/br4ETfGkpRgVoLG7dWam
-         90SVCko25GrK4arydrJVm6zWvzELmXU8fmkN4DQ6/mQrhHKxIbsyoFThu66+84QAS2fv
-         pKl03heLbaZFeLqwFF6kJ61Jhh2ykJN6EqIa5xRts7nHybQkqMKgtB1dyqBVdZ6G2Rf1
-         WtceGL+l+LzWwLHgLtvbc8Z+W5r+oxLTz66/9VIZ1OzaM9rihHNYW9UCPJvYS+8/ddTE
-         YX1E6IyMM3uiRvL+Q/dLKtMf+oCqSrAAkq0l90EoW5tukTQMB/awbfQ3nuq5MAjD+re6
-         0h/w==
+	s=arc-20240116; t=1761812272; c=relaxed/simple;
+	bh=ck1HslZ0kp7J+WUPymd8AWip7MysypRZtLhSaaOAht4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=U+7i6F7kIME3hzsQqz4ieesKYBzMyVCiAvBWEdpvAdi4ezzqozA8J0CHznHMwL7WcEbHtR7hLMO34g1IR0zZRZ/hkXySPgWuhkz04IjgJSF37qQAqt4AWyXohR78Etdqibaqx/qJllIzqJ4/DTqTqYRATMRxlXMkUu9ZI16Sgls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=bCyHLPDf; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1761812269;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=62lhztl4PsEx1t/ejtRJFKI6a/pEqBnCixqR/6fg7Gg=;
+	b=bCyHLPDfKv7g/b8xvvj/ZiR4JFO6/pqfQ+icQubrr9NjC5+drNLokZnulFrN6fJyBU/Byw
+	5kaAb/68+TWv2M2GYEjLuCyjxQydU+gGcDOLtiSp3IpE7PPzCKR69N5MoqCUZzYUYyIPjC
+	Z9Zchj1R3ps+DzOiGVA0jGZSPluP/X8=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-313-N-rebLRKPwesZsumngG2rg-1; Thu, 30 Oct 2025 04:17:47 -0400
+X-MC-Unique: N-rebLRKPwesZsumngG2rg-1
+X-Mimecast-MFC-AGG-ID: N-rebLRKPwesZsumngG2rg_1761812266
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-42855d6875fso428817f8f.3
+        for <stable@vger.kernel.org>; Thu, 30 Oct 2025 01:17:47 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761812188; x=1762416988;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20230601; t=1761812266; x=1762417066;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=f4G1KZQl6cfiM/1J2+KFKVe0bth/8npRuFzDKYpdfXY=;
-        b=lZG3r5/3NzV7/nx/ECXWm8hVcKxYqaGTkRm43MLxDhaItCBuhitFNs6+pmWXBt0Vmc
-         aLn5AfbjX9oDTYgVW0BZIVw2Lj4W/Rw2AErrtvhfIAsxGO45Krxu049MP3ibnq7PKkh2
-         ZEcTZFjrILRQN2Wbi4kUvWbC+IsZJXNUqpuA6XQ4OGSTN7W85AZh3o1HCWzj4H5sSsME
-         bT69R3HR/w3RJ1OkRKy9/SUrqnKzlGvG8KJnp2GCzzq1MRaw3TnOKAQfTE70qDVSS1/P
-         BUaQ15rtszv5rNQ7ouLhj2HFYfh0kflwWINauC2B6gdIvlnuZc/svMzH6sHm5K162qcP
-         jsYw==
-X-Forwarded-Encrypted: i=1; AJvYcCVV3k28StjhjLFjOKHUIEggPE1JPjn7g1WJE214XSy18r7BbCej02+c37yhx3Nke4h0CpjYmDQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxVOrEzH86S6nzYU77wLbexWuyYT9vu7f4I6iXlDHNRmO+rawOw
-	L2kYanNyIUMM/3lqTK5YRHxs/LVEIyB38PfeuuSlQ2lGSPkQrOwwZKSxnqtNMTHCczU=
-X-Gm-Gg: ASbGnctnhgd2HEXx6Sz4W3p7uV8x8FuadzXCe7E4QU1akP2m5tWH5GmAlM9xC2hlMP+
-	d2h5sI6BkS/6MzLJy4Ov28hGmMfmNH7Y8Dxh546dsawHX6RyyPqrsaiufhFxbFs8N1usfWJnA/I
-	/QnuSQGJ3NS8qLkv1td+zCoXZ8+pFXy4IF4wpZZqlf+tSl7WCI6RyJvuASctXP2e0Bei8Q9MrQo
-	K8o6F0sebfyFnJlJ/1VIeyvgSzBzAq6h0iPdYppdR06tRpIuRi/ZQgj7Orafn/egjzm90K1S/ad
-	k8wASu0fYJZ8/rmAEDaqDnyagUBvdDBTxUqTgn+r13rylQuLHGRhA5x1d0idm0FZ1MyPP9frNvY
-	ZwlVV3/Ah1qntTr414gqoIvqSxczJ/yykS3tDlZVcbUVWlzGUFxyBIrMpb9mCv9gDjZahxdBTuY
-	MWCJrX99JMsoNXscFF+Jvr
-X-Google-Smtp-Source: AGHT+IGwDYhY1y/SPYtXSVRvAki1Qhjtezt3Dx8lpKGDfc9ZEto5uWUnib3MEpqw2Tpt3iFbZQ1uAw==
-X-Received: by 2002:a05:600c:5251:b0:471:161b:4244 with SMTP id 5b1f17b1804b1-4771e1e3c66mr29643195e9.5.1761812187736;
-        Thu, 30 Oct 2025 01:16:27 -0700 (PDT)
-Received: from [192.168.1.29] ([178.197.219.123])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-477289a5625sm26670275e9.5.2025.10.30.01.16.25
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 30 Oct 2025 01:16:26 -0700 (PDT)
-Message-ID: <a0d9d5b8-8c6c-4da9-a660-4cbe0bfc444a@linaro.org>
-Date: Thu, 30 Oct 2025 09:16:25 +0100
+        bh=62lhztl4PsEx1t/ejtRJFKI6a/pEqBnCixqR/6fg7Gg=;
+        b=wvTvy3bsD+tM/nWi++Y39ssaiM1wsE9RjYOQVlvaZrQlTOan66l7gl7drnv8uVDt8c
+         OjYCQG85lk6F/wVoAEEk1+dQO4WE3Iu3clJxjMVZ1P/xFKPeaelX9jFZEsrBkYGaf28W
+         jZKJXaD31KLNYDrtAbh2HlkG1Vqg4Oi5faF5lJ6rGr5ofFO8PDnLiAM2T8tNH5rTqZtf
+         Wx08ZAthIqmlxpzZIwS22jnHZvuQ2xY886DATay+yRpa1dAZqhRvvH+ZOgY9YwCbwfPs
+         mu9DxA5iAB08CswPB0G63iNErIifus5gVL6kX8GaGb2urcYUQX2BkYKVVDi1zJaLSPv8
+         3ONA==
+X-Forwarded-Encrypted: i=1; AJvYcCW7ajvGHEqWyDT/c2r/l7ZLZj6Rhrt5QAddATIVPNVwEard8ICbUFAe6z5BGMsGYmBlgsfTilc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YynlEOsLPCuYGWT1AV7qnECS5oyOy18TnBSncd2ZKUo1HGdwfuW
+	Rg1pdNqQ8GQADD87lQ9v90qma/3iPI7acZxTJm1omP51uhA32TVaZwGXjuk+VUzVCVGFff+WSbZ
+	2DyiWwtCUrAsLceSg+pHZOfkzSL+3PVTTm284tVFAUN4huIwS/2Ugkk/QeA==
+X-Gm-Gg: ASbGncuj9B6d0oGyuPBRcpH+VNbfTjxMiZhEDGYIVZNAymYGrJ8SQM7mc/3cWqFh8WB
+	HVotKHXkdhpZDE503n2S8xS4d29csrGc5JR92fPF1NzxCR6BsfogQUKaRDmulctU6HIhKlxwFvU
+	6M2yuICIJre0AUdB6PRDwWB6nV5yRtxya4PlhmnsWDPKkGH4VRPZjI+p5RfjGxaOw1d9JvYXEwe
+	hWh6VmEWPfT5Jja7Fps6owocIdSI+VnXGsTqSSZpgMACPBuYC6ITclbagcKg1U4mRrIrIFrjkWJ
+	XupUCev//LqHQQjLWWRFDzYgemzNXW9m2n/ncauioZQyiiQUOKKjRR+pdafP/kLJ+fZh
+X-Received: by 2002:a05:6000:240c:b0:429:8a40:e995 with SMTP id ffacd0b85a97d-429b4ca2efemr2051331f8f.61.1761812266304;
+        Thu, 30 Oct 2025 01:17:46 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFCC3j3pkeyjV7zwh2zWVtG7xi2X9bxfuD0Q0xhE4+gU6d0C0xhwka/NPYq7UvjEnPJvnZ1gw==
+X-Received: by 2002:a05:6000:240c:b0:429:8a40:e995 with SMTP id ffacd0b85a97d-429b4ca2efemr2051295f8f.61.1761812265790;
+        Thu, 30 Oct 2025 01:17:45 -0700 (PDT)
+Received: from redhat.com ([2a0d:6fc0:152e:9d00:de90:c0da:d265:6f70])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-429952df473sm30541624f8f.42.2025.10.30.01.17.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 30 Oct 2025 01:17:45 -0700 (PDT)
+Date: Thu, 30 Oct 2025 04:17:42 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Jason Wang <jasowang@redhat.com>
+Cc: Paolo Abeni <pabeni@redhat.com>, xuanzhuo@linux.alibaba.com,
+	eperezma@redhat.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org,
+	virtualization@lists.linux.dev, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH net] virtio_net: fix alignment for virtio_net_hdr_v1_hash
+Message-ID: <20251030041636-mutt-send-email-mst@kernel.org>
+References: <20251029012434.75576-1-jasowang@redhat.com>
+ <d0f1f8f5-8edf-4409-a3ee-376828f85618@redhat.com>
+ <CACGkMEsTd6uCOCre8HK=5G14zu+xVOPOORZ2xcV_n9Kg6w8F5Q@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 9/9] dt-bindings: PCI: qcom,pcie-x1e80100: Add missing
- required power-domains
-Content-Language: en-US
-To: Johan Hovold <johan@kernel.org>
-Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>,
- =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
- Manivannan Sadhasivam <mani@kernel.org>, Rob Herring <robh@kernel.org>,
- Bjorn Helgaas <bhelgaas@google.com>, Krzysztof Kozlowski
- <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
- Bjorn Andersson <andersson@kernel.org>, Abel Vesa <abel.vesa@linaro.org>,
- linux-arm-msm@vger.kernel.org, linux-pci@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20251029-dt-bindings-pci-qcom-fixes-power-domains-v1-0-da7ac2c477f4@linaro.org>
- <20251029-dt-bindings-pci-qcom-fixes-power-domains-v1-9-da7ac2c477f4@linaro.org>
- <aQJE5kkOGh76dLvf@hovoldconsulting.com>
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
- 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
- 2+47PN9NZAOyb771QoVr8A==
-In-Reply-To: <aQJE5kkOGh76dLvf@hovoldconsulting.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CACGkMEsTd6uCOCre8HK=5G14zu+xVOPOORZ2xcV_n9Kg6w8F5Q@mail.gmail.com>
 
-On 29/10/2025 17:46, Johan Hovold wrote:
-> On Wed, Oct 29, 2025 at 04:40:46PM +0100, Krzysztof Kozlowski wrote:
->> Power domains should be required for PCI, so the proper SoC supplies are
->> turned on.
->>
->> Cc: <stable@vger.kernel.org>
+On Thu, Oct 30, 2025 at 10:40:13AM +0800, Jason Wang wrote:
+> On Wed, Oct 29, 2025 at 4:20 PM Paolo Abeni <pabeni@redhat.com> wrote:
+> >
+> > On 10/29/25 2:24 AM, Jason Wang wrote:
+> > > From: "Michael S. Tsirkin" <mst@redhat.com>
+> > >
+> > > Changing alignment of header would mean it's no longer safe to cast a
+> > > 2 byte aligned pointer between formats. Use two 16 bit fields to make
+> > > it 2 byte aligned as previously.
+> > >
+> > > This fixes the performance regression since
+> > > commit ("virtio_net: enable gso over UDP tunnel support.") as it uses
+> > > virtio_net_hdr_v1_hash_tunnel which embeds
+> > > virtio_net_hdr_v1_hash. Pktgen in guest + XDP_DROP on TAP + vhost_net
+> > > shows the TX PPS is recovered from 2.4Mpps to 4.45Mpps.
+> > >
+> > > Fixes: 56a06bd40fab ("virtio_net: enable gso over UDP tunnel support.")
+> > > Cc: stable@vger.kernel.org
+> > > Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+> > > Signed-off-by: Jason Wang <jasowang@redhat.com>
+> >
+> > Whoops, I replied to the older thread before reading this one.
+> >
+> > Acked-by: Paolo Abeni <pabeni@redhat.com>
 > 
-> I have a feeling I've pointed this out before, but these kind of binding
-> patches really does not seem to qualify for stable backporting (e.g.
-> does not "fix a real bug that bothers people").
+> I apologize, build will be broken since
+> 
+> commit b2284768c6b32aa224ca7d0ef0741beb434f03aa
+> Author: Jason Wang <jasowang@redhat.com>
+> Date:   Wed Oct 22 11:44:21 2025 +0800
+> 
+>     virtio-net: zero unused hash fields
+> 
+> I will prepare a new version.
+> 
+> Btw, it looks like there's an uAPI change that may break builds of the
+> userspace:
 
-I wish stable users of DT bindings (so some 3rd party projects or
-product trees) keep testing their stable kernels, their stable DTS with
-the bindings, whenever they upgrade their LTS kernel. And if they keep
-testing then they should be told about lack of the power domain. That's
-why this is for.
+No, I think this has not been out long enough to matter.
+QEMU imports linux headers extremely quickly but it can adapt.
 
-Of course fix impact is pretty small, so I don't mind if the stable tag
-is being dropped here, but I will not resend just for that unless PCI or
-stable maintainers ask me.
 
-Best regards,
-Krzysztof
+> diff --git a/include/uapi/linux/virtio_net.h b/include/uapi/linux/virtio_net.h
+> index 8bf27ab8bcb4..1db45b01532b 100644
+> --- a/include/uapi/linux/virtio_net.h
+> +++ b/include/uapi/linux/virtio_net.h
+> @@ -193,7 +193,8 @@ struct virtio_net_hdr_v1 {
+> 
+>  struct virtio_net_hdr_v1_hash {
+>         struct virtio_net_hdr_v1 hdr;
+> -       __le32 hash_value;
+> +       __le16 hash_value_lo;
+> +       __le16 hash_value_hi;
+> 
+> We can have a kernel only version for this but it probably means we
+> need a kernel only version for all the future extension of vnet
+> header?
+> 
+> Thanks
+> 
+
+Let's not complicate things too much please.
+
+-- 
+MST
+
 
