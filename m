@@ -1,74 +1,50 @@
-Return-Path: <stable+bounces-191684-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191685-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 948DAC1DF07
-	for <lists+stable@lfdr.de>; Thu, 30 Oct 2025 01:42:39 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F8C3C1DF2E
+	for <lists+stable@lfdr.de>; Thu, 30 Oct 2025 01:50:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 72E694E4C59
-	for <lists+stable@lfdr.de>; Thu, 30 Oct 2025 00:42:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 59351189C15A
+	for <lists+stable@lfdr.de>; Thu, 30 Oct 2025 00:51:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D9CC1EB5FD;
-	Thu, 30 Oct 2025 00:42:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1339217736;
+	Thu, 30 Oct 2025 00:50:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KsCcZ2yy"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QrmHzZXQ"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 266A51F4606
-	for <stable@vger.kernel.org>; Thu, 30 Oct 2025 00:42:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84C831DFE22;
+	Thu, 30 Oct 2025 00:50:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761784947; cv=none; b=rmvhP/fJsGNEU9MtZuYEIcaHQXiC11Ge23iAq5XoMIKjvRa97J7doptE3chfcPAPvhdoZXQbXYbXMYQmcXwCJHbn2TM6OiU9Juccnv6/Z6fMiGET86OAhHNmeqpHJ9RqzBrcaxyB5YrbTMot57XfjWtqzrtFhv8XeB3O9/EturM=
+	t=1761785437; cv=none; b=bqgmXA9hcXnH8cRoHX4TN9hweWxArqxz2G6CkPLV5v0izghbIMqVi993ysqpXIm5G7oyTxSmmad6pxAI5JtYUN65C3BOi4rpmxT98y4RMhh8kMiXzQobWKlW+A4a16P/vD7cXs9w+m1/oc/2wbX0ZBeMWfCcVT5OpPwszsw7sPc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761784947; c=relaxed/simple;
-	bh=WqLbkS2L2A72MkRIWAP9Cf0KEfzLcYVlvhMlsvEh82A=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dKUNI5zch5qAN0fI/H+W9m+dN6Uf9XMFNoPLJuE5H3w/rezjJI8f4qP1OD48XyC9n7MIhiLn6DlBMNR4XQB/SCBEaF450xwwcJTqdKiVqFDfia5MdcUpptrAX0rjETp3W4IpFLXtYnKVhz4sxwq24bGL3MDaUT+J4HLFZ75/v24=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=KsCcZ2yy; arc=none smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1761784946; x=1793320946;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=WqLbkS2L2A72MkRIWAP9Cf0KEfzLcYVlvhMlsvEh82A=;
-  b=KsCcZ2yyHjUuZ52Mlo125ApbIarIkE3XrgppwsOBlF+L3lR7GOg91Mb2
-   YSOtaD3/ree7TSOHntITHd2dA69Or3P6uosPeCXRH4Nx0dn6isvK7Qw4Q
-   h5YDyYMpyNHe6xB7Rv0JZ2DXpUvLaPZ5KS0fkrb07ZvJy4OGHsG8ZtF7A
-   M9OCtFSxEU+YkqhfEMhp7Epnu0U2gijDFTgSMoM3xEAt2/4RHVeZ/vm9Z
-   DSLsvNgupEhABCDTUi0hi7nbO13MTRz9jZE7ffGGnvmeiQQKVkq8p7x6Q
-   OWafgUgJk6yTd7vBUNaZxWZJb5ng4JGdQxGgAnWuvtjvCdA3uI+rK5VU8
-   g==;
-X-CSE-ConnectionGUID: siK7mirWSfe7w9CmF6WobQ==
-X-CSE-MsgGUID: hribS9wcQZm3IpOpcZUKNA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11597"; a="81339717"
-X-IronPort-AV: E=Sophos;i="6.19,265,1754982000"; 
-   d="scan'208";a="81339717"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Oct 2025 17:42:26 -0700
-X-CSE-ConnectionGUID: fAfK9XMqQ/yUvTK3gSB+Dg==
-X-CSE-MsgGUID: wf049fDOT7mMo1taJu+yew==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,265,1754982000"; 
-   d="scan'208";a="185007590"
-Received: from aschofie-mobl2.amr.corp.intel.com (HELO localhost) ([10.124.223.174])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Oct 2025 17:42:25 -0700
-From: Alison Schofield <alison.schofield@intel.com>
-To: Ira Weiny <ira.weiny@intel.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Vishal Verma <vishal.l.verma@intel.com>,
-	Dave Jiang <dave.jiang@intel.com>
-Cc: Alison Schofield <alison.schofield@intel.com>,
-	nvdimm@lists.linux.dev,
-	stable@vger.kernel.org
-Subject: [PATCH] tools/testing/nvdimm: Stop read past end of global handle array
-Date: Wed, 29 Oct 2025 17:42:20 -0700
-Message-ID: <20251030004222.1245986-1-alison.schofield@intel.com>
-X-Mailer: git-send-email 2.47.0
+	s=arc-20240116; t=1761785437; c=relaxed/simple;
+	bh=rwklOEhfhseBN3E2F6NaYZ5LgLD/6L82+Kn3SnZTv2c=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=BagZ0d2jE5J9qQ+mNpeYmKtzLpHejdEx8sSVt91ZsXnzMUQJDkPSdPKN4mgl0I9pF1JFGGoWlebMlELwOfTL2utg+AmvfnVrslg/OKTZkc98rJeu3ajUoNpEczL1YQtheUjDp8/GSZiKW/CqIhOYootklkdIsq1sUgRa7Axl2Zw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QrmHzZXQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE8C7C4CEF7;
+	Thu, 30 Oct 2025 00:50:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761785437;
+	bh=rwklOEhfhseBN3E2F6NaYZ5LgLD/6L82+Kn3SnZTv2c=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=QrmHzZXQbsr4dhTdPGq0Bl16TuR6x8A4SB11p4iKGHUmSLQF7uKIBuf7mDl5l/ykP
+	 G69J7veZIYcjxy9a3GPNyuDYeEVEl3AD5bJ5jqpl/WdxCp9uwJ5JitFtEoiKu7wVQc
+	 kXSrvsNIrGWRcEeCm1RoNGZ0/xzvoQ0Tf6ZR+U3f9lBe7ba+7FPznRmS2r0ULPIT4p
+	 +F1BrUG8tDsuega56VcnbId9r8OAtO+GpmjJOlzs5hIyTmVoDftasTdcF85xpP15yT
+	 +bRYxXScPm8NGeWITRLQI0NML083O4muBewntkq9xdyVO8lHtvzZJ2/Y0J0FooOls6
+	 2QUZjRISTJ/DQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 33BD63A55EC7;
+	Thu, 30 Oct 2025 00:50:15 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -76,79 +52,50 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net 0/4] mptcp: various rare sending issues
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <176178541400.3267234.15224717503854756848.git-patchwork-notify@kernel.org>
+Date: Thu, 30 Oct 2025 00:50:14 +0000
+References: <20251028-net-mptcp-send-timeout-v1-0-38ffff5a9ec8@kernel.org>
+In-Reply-To: <20251028-net-mptcp-send-timeout-v1-0-38ffff5a9ec8@kernel.org>
+To: Matthieu Baerts <matttbe@kernel.org>
+Cc: martineau@kernel.org, geliang@kernel.org, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ fw@strlen.de, liyonglong@chinatelecom.cn, netdev@vger.kernel.org,
+ mptcp@lists.linux.dev, linux-kernel@vger.kernel.org, stable@vger.kernel.org
 
-KASAN reports a global-out-of-bounds access when running these nfit
-tests: clear.sh, pmem-errors, pfn-meta-errors.sh, btt-errors.sh,
-daxdev-errors.sh, and inject-error.sh.
+Hello:
 
-[] BUG: KASAN: global-out-of-bounds in nfit_test_ctl+0x769f/0x7840 [nfit_test]
-[] Read of size 4 at addr ffffffffc03ea01c by task ndctl/1215
-[] The buggy address belongs to the variable:
-[] handle+0x1c/0x1df4 [nfit_test]
+This series was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-The nfit_test mock platform defines a static table of 7 NFIT DIMM
-handles, but nfit_test.0 builds 8 mock DIMMs total (5 DCR + 3 PM).
-When the final DIMM (id == 7) is selected, this code:
-    spa->devices[0].nfit_device_handle = handle[nvdimm->id];
-indexes past the end of the 7-entry table, triggering KASAN.
+On Tue, 28 Oct 2025 09:16:51 +0100 you wrote:
+> Here are various fixes from Paolo, addressing very occasional issues on
+> the sending side:
+> 
+> - Patch 1: drop an optimisation that could lead to timeout in case of
+>   race conditions. A fix for up to v5.11.
+> 
+> - Patch 2: fix stream corruption under very specific conditions. A fix
+>   for up to v5.13.
+> 
+> [...]
 
-Fix this by adding an eighth entry to the handle[] table and a
-defensive bounds check so the test fails cleanly instead of
-dereferencing out-of-bounds memory.
+Here is the summary with links:
+  - [net,1/4] mptcp: drop bogus optimization in __mptcp_check_push()
+    https://git.kernel.org/netdev/net/c/27b0e701d387
+  - [net,2/4] mptcp: fix MSG_PEEK stream corruption
+    https://git.kernel.org/netdev/net/c/8e04ce45a8db
+  - [net,3/4] mptcp: restore window probe
+    https://git.kernel.org/netdev/net/c/a824084b98d8
+  - [net,4/4] mptcp: zero window probe mib
+    https://git.kernel.org/netdev/net/c/fe11dfa10919
 
-To generate a unique handle, the new entry sets the 'imc' field rather
-than the 'chan' field. This matches the pattern of earlier entries
-and avoids introducing a non-zero 'chan' which is never used in the
-table. Computing the new handle shows no collision.
-
-Notes from spelunkering for a Fixes Tag:
-
-Commit 209851649dc4 ("acpi: nfit: Add support for hot-add") increased
-the mock DIMMs to eight yet kept the handle[] array at seven.
-
-Commit 10246dc84dfc ("acpi nfit: nfit_test supports translate SPA")
-began using the last mock DIMM, triggering the KASAN.
-
-Commit af31b04b67f4 ("tools/testing/nvdimm: Fix the array size for
-dimm devices.") addressed a related KASAN warning but not the actual
-handle array length.
-
-Fixes: 209851649dc4 ("acpi: nfit: Add support for hot-add")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Alison Schofield <alison.schofield@intel.com>
----
- tools/testing/nvdimm/test/nfit.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
-
-diff --git a/tools/testing/nvdimm/test/nfit.c b/tools/testing/nvdimm/test/nfit.c
-index cfd4378e2129..cdbf9e8ee80a 100644
---- a/tools/testing/nvdimm/test/nfit.c
-+++ b/tools/testing/nvdimm/test/nfit.c
-@@ -129,6 +129,7 @@ static u32 handle[] = {
- 	[4] = NFIT_DIMM_HANDLE(0, 1, 0, 0, 0),
- 	[5] = NFIT_DIMM_HANDLE(1, 0, 0, 0, 0),
- 	[6] = NFIT_DIMM_HANDLE(1, 0, 0, 0, 1),
-+	[7] = NFIT_DIMM_HANDLE(1, 0, 1, 0, 1),
- };
- 
- static unsigned long dimm_fail_cmd_flags[ARRAY_SIZE(handle)];
-@@ -688,6 +689,13 @@ static int nfit_test_search_spa(struct nvdimm_bus *bus,
- 	nd_mapping = &nd_region->mapping[nd_region->ndr_mappings - 1];
- 	nvdimm = nd_mapping->nvdimm;
- 
-+	if (WARN_ON_ONCE(nvdimm->id >= ARRAY_SIZE(handle))) {
-+		dev_err(&bus->dev,
-+			"invalid nvdimm->id %u >= handle array size %zu\n",
-+			nvdimm->id, ARRAY_SIZE(handle));
-+		return -EINVAL;
-+	}
-+
- 	spa->devices[0].nfit_device_handle = handle[nvdimm->id];
- 	spa->num_nvdimms = 1;
- 	spa->devices[0].dpa = dpa;
-
-base-commit: 211ddde0823f1442e4ad052a2f30f050145ccada
+You are awesome, thank you!
 -- 
-2.37.3
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
 
