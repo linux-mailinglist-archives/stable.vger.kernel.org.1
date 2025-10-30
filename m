@@ -1,123 +1,159 @@
-Return-Path: <stable+bounces-191758-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191757-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D903C2184F
-	for <lists+stable@lfdr.de>; Thu, 30 Oct 2025 18:38:22 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0372C21849
+	for <lists+stable@lfdr.de>; Thu, 30 Oct 2025 18:38:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 37F964E2B69
-	for <lists+stable@lfdr.de>; Thu, 30 Oct 2025 17:38:21 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 19B4A34D3C8
+	for <lists+stable@lfdr.de>; Thu, 30 Oct 2025 17:38:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09E3736B982;
-	Thu, 30 Oct 2025 17:38:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12FF1368F57;
+	Thu, 30 Oct 2025 17:38:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="tdJNHn9r"
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="W0j9FuHi";
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="YOGQbZ7H"
 X-Original-To: stable@vger.kernel.org
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AB6D24BBEE;
-	Thu, 30 Oct 2025 17:38:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C69CB2E7F08
+	for <stable@vger.kernel.org>; Thu, 30 Oct 2025 17:38:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761845890; cv=none; b=s62bJhORWpWzr9xXPV3z0sC9ZJSd6vcw/S4gYkYXOK9YdQ0Q5102nkJsPEWCLreCP7ml6iM+OWifBDC0BO+wZagu0d9lGJxYgM1CTlgyPC6tTpxmnu/XOkYjo2mINK3oCJ7SxCzzeE7TPdloe4ThwncQLLrULkHgXT9R81sCYa4=
+	t=1761845889; cv=none; b=b7LSuFbLCp4PACbYYneqGOqsLMjPqXOaeBgY6m+XwBOjcRQupjuXlUnCtS3o0umlziLtuuvwiQFleEmG7LZ/rk1/iFuhpj2NHDwRBXr4vJECFI712UCRKaiPt0T7FbDzZ+QVklTIlKkvYMsGOFRYMfE/Fhc+NQUuZcQe0ragVp8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761845890; c=relaxed/simple;
-	bh=n+E2FDQMzyue9+MdBENohOQ4Hy7t5K7MNazW9zFdZ30=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GF0mB5IlxYhEUst0rrBPWc6roI3FXY60/Z0d1kfY3Kv4Oeloi17+/nIMQ8jJwEaVbB9enso8pUs7zmLzWhHncgQ0EMTvjNrQI8tNZ2kNSFVwBQb3LjGTXAsOiE/wr9rVZRje9EiydcmR3SGmxeCKbhgpFjikKn0p7ZUnYnP5ibs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=tdJNHn9r; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=1skhUG0vBEhCXLwn0Npbuxg9kdPLx5DwATtJQ8dFMTg=; b=tdJNHn9rOe0S+1GB8M+UuknrHx
-	9QhQySt5tWqCBZ5TX58LkvfVpWru/dcPEc/KXPi55HzTOF/AgMivnWM0zgqbEBFkOjeYwfkC1gpu0
-	Rqun9PZRs5Uyu9YvDZUTiMwFb6AYyr5eMh34GiMLVM1yLk2XPEMtILGP4mQxKlr+SQM8=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1vEWax-00CX37-SN; Thu, 30 Oct 2025 18:37:55 +0100
-Date: Thu, 30 Oct 2025 18:37:55 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Miaoqian Lin <linmq006@gmail.com>
-Cc: Rasesh Mody <rmody@marvell.com>,
-	Sudarsana Kalluru <skalluru@marvell.com>,
-	GR-Linux-NIC-Dev@marvell.com, Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Ivan Vecera <ivecera@redhat.com>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] bna: prevent bad user input in bnad_debugfs_write_regrd()
-Message-ID: <75e4c931-3e17-430a-a902-60f9d8161bc3@lunn.ch>
-References: <20251030053411.710-1-linmq006@gmail.com>
+	s=arc-20240116; t=1761845889; c=relaxed/simple;
+	bh=Q9dUav+ktzqD3z+iw5mtf6ik4qYvWyeiX1JcgrpnLOE=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Z2QEejdWRP3lHHKEEXxGEpHHGcRf8e0ZuJQMCljxhHfdmC/jEfd2o3rKlO6f1BFHafD/PG4wrvvKgj8Eghk7fX19xBDCK9cobXPXbOVMcRFagy1rURr2DZW1xtTqA+0Hja1iFqy+cmi9v730/5r4fTPMp+zG4CaXn6v24hJas9M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=W0j9FuHi; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=YOGQbZ7H; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id DB90C1FB5E;
+	Thu, 30 Oct 2025 17:38:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1761845886; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Q9dUav+ktzqD3z+iw5mtf6ik4qYvWyeiX1JcgrpnLOE=;
+	b=W0j9FuHi5ia4BtiSgtwVlKazxjkplEnVTO+322TaITPrGd6KL8Ke5ZYyz6I5ek6IaPCrGi
+	PodQD5XdDjpVP0NYFTqdCGjzCe2i9rydb+OMqA20ZS3gN01fzIdY5LvwAVueIy60kjwaTv
+	8tkIF7OMn8XuJTz2TM7DwDCR3elNjWg=
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1761845884; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Q9dUav+ktzqD3z+iw5mtf6ik4qYvWyeiX1JcgrpnLOE=;
+	b=YOGQbZ7HuAZIjKHoD/vaheIP05zeYqQTh0dlsr4cGxRZzLX+xxzKVj+kgfzl4V5QF1lu2k
+	R0/tICs6kvuWSIcfQK5WjPtBHLX4hQjxK/R9O1it5roNylNWLzfLumns+7msi+uUmScdnx
+	Ey77P9CzFZxUybXB18vc72Zm/nLT1rY=
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 9FE971396A;
+	Thu, 30 Oct 2025 17:38:04 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id COjxJXyiA2liXAAAD6G6ig
+	(envelope-from <mwilck@suse.com>); Thu, 30 Oct 2025 17:38:04 +0000
+Message-ID: <f4ef82a5ca88901653ce07fb0313c144a0fdb6ac.camel@suse.com>
+Subject: Re: [PATCH v3] block: Remove queue freezing from several sysfs
+ store callbacks
+From: Martin Wilck <mwilck@suse.com>
+To: Bart Van Assche <bvanassche@acm.org>, Jens Axboe <axboe@kernel.dk>
+Cc: linux-block@vger.kernel.org, Christoph Hellwig <hch@lst.de>, Nilay
+ Shroff	 <nilay@linux.ibm.com>, Benjamin Marzinski <bmarzins@redhat.com>, 
+	stable@vger.kernel.org, Damien Le Moal <dlemoal@kernel.org>, Chaitanya
+ Kulkarni	 <kch@nvidia.com>, Hannes Reinecke <hare@suse.de>
+Date: Thu, 30 Oct 2025 18:38:04 +0100
+In-Reply-To: <20251030172417.660949-1-bvanassche@acm.org>
+References: <20251030172417.660949-1-bvanassche@acm.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.1 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251030053411.710-1-linmq006@gmail.com>
+X-Spam-Level: 
+X-Spamd-Result: default: False [-4.30 / 50.00];
+	BAYES_HAM(-3.00)[99.99%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-0.999];
+	MIME_GOOD(-0.10)[text/plain];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	ARC_NA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	DKIM_SIGNED(0.00)[suse.com:s=susede1];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,suse.com:mid,lst.de:email,imap1.dmz-prg2.suse.org:helo,acm.org:email]
+X-Spam-Flag: NO
+X-Spam-Score: -4.30
 
-On Thu, Oct 30, 2025 at 01:34:10PM +0800, Miaoqian Lin wrote:
-> A malicious user could pass an arbitrarily bad value
-> to memdup_user_nul(), potentially causing kernel crash.
-
-How would it crash the kernel? I would expect memdup_user_nul() to
-either succeed or fail and return a NULL.
-
-However, adding a range check does make sense.
-
-> This follows the same pattern as commit ee76746387f6
-> ("netdevsim: prevent bad user input in nsim_dev_health_break_write()")
-> and commit 7ef4c19d245f
-> ("smackfs: restrict bytes count in smackfs write functions")
-> 
-> Found via static analysis and code review.
-> 
-> Fixes: d0e6a8064c42 ("bna: use memdup_user to copy userspace buffers")
+On Thu, 2025-10-30 at 10:24 -0700, Bart Van Assche wrote:
+> Freezing the request queue from inside sysfs store callbacks may
+> cause a
+> deadlock in combination with the dm-multipath driver and the
+> queue_if_no_path option. Additionally, freezing the request queue
+> slows
+> down system boot on systems where sysfs attributes are set
+> synchronously.
+>=20
+> Fix this by removing the blk_mq_freeze_queue() /
+> blk_mq_unfreeze_queue()
+> calls from the store callbacks that do not strictly need these
+> callbacks.
+> This patch may cause a small delay in applying the new settings.
+>=20
+> This patch affects the following sysfs attributes:
+> * io_poll_delay
+> * io_timeout
+> * nomerges
+> * read_ahead_kb
+> * rq_affinity
+>=20
+> ...
+>=20
+> Cc: Christoph Hellwig <hch@lst.de>
+> Cc: Nilay Shroff <nilay@linux.ibm.com>
+> Cc: Martin Wilck <mwilck@suse.com>
+> Cc: Benjamin Marzinski <bmarzins@redhat.com>
 > Cc: stable@vger.kernel.org
-> Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+> Fixes: af2814149883 ("block: freeze the queue in queue_attr_store")
+> Signed-off-by: Bart Van Assche <bvanassche@acm.org>
 > ---
->  drivers/net/ethernet/brocade/bna/bnad_debugfs.c | 3 +++
->  1 file changed, 3 insertions(+)
-> 
-> diff --git a/drivers/net/ethernet/brocade/bna/bnad_debugfs.c b/drivers/net/ethernet/brocade/bna/bnad_debugfs.c
-> index 8f0972e6737c..ad33ab1d266d 100644
-> --- a/drivers/net/ethernet/brocade/bna/bnad_debugfs.c
-> +++ b/drivers/net/ethernet/brocade/bna/bnad_debugfs.c
-> @@ -311,6 +311,9 @@ bnad_debugfs_write_regrd(struct file *file, const char __user *buf,
->  	unsigned long flags;
->  	void *kern_buf;
->  
-> +	if (nbytes == 0 || nbytes > PAGE_SIZE)
-> +		return -EINVAL;
-> +
->  	/* Copy the user space buf */
->  	kern_buf = memdup_user_nul(buf, nbytes);
->  	if (IS_ERR(kern_buf))
+>=20
+> Changes compared to v2:
+> =C2=A0- Dropped the controversial patch "block: Restrict the duration of
+> sysfs
+> =C2=A0=C2=A0 attribute changes".
 
-Look at what it does next:
+So the "deadlock" situation for the other sysfs attributes that you
+handled with the timeout in v2 will remain now? Are you planning to
+send a follow-up patch for these attributes?
 
-rc = sscanf(kern_buf, "%x:%x", &addr, &len);
+Martin
 
-What is the maximum length of "%x:%x" ? A lot less than PAGE_SIZE. So
-you can make the range check much smaller.
-
-Also, what about bnad_debugfs_write_regwr()? If you find a bug, look
-around, the same bug might be repeated close by. You might also want
-to look at your static analysis tool and find out why it did not
-report that function.
-
-    Andrew
-
----
-pw-bot: cr
 
