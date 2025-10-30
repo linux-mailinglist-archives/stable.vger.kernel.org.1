@@ -1,49 +1,49 @@
-Return-Path: <stable+bounces-191685-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191686-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F8C3C1DF2E
-	for <lists+stable@lfdr.de>; Thu, 30 Oct 2025 01:50:45 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 342DAC1DF77
+	for <lists+stable@lfdr.de>; Thu, 30 Oct 2025 02:00:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 59351189C15A
-	for <lists+stable@lfdr.de>; Thu, 30 Oct 2025 00:51:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E5AA9406B9D
+	for <lists+stable@lfdr.de>; Thu, 30 Oct 2025 01:00:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1339217736;
-	Thu, 30 Oct 2025 00:50:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4FF41EB9E1;
+	Thu, 30 Oct 2025 01:00:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QrmHzZXQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="s03gnIFy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84C831DFE22;
-	Thu, 30 Oct 2025 00:50:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 757C818859B;
+	Thu, 30 Oct 2025 01:00:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761785437; cv=none; b=bqgmXA9hcXnH8cRoHX4TN9hweWxArqxz2G6CkPLV5v0izghbIMqVi993ysqpXIm5G7oyTxSmmad6pxAI5JtYUN65C3BOi4rpmxT98y4RMhh8kMiXzQobWKlW+A4a16P/vD7cXs9w+m1/oc/2wbX0ZBeMWfCcVT5OpPwszsw7sPc=
+	t=1761786036; cv=none; b=YiId91nui1ExsU3o2oZluLW4RCCrX5+1Vxy/W6hDMWy5lioP5DR/Q7mxkDpRzaVbMdGz/n1p+LDOkkq6G6ZAWoJ7tTJJc5Mk46qhjJG7ohMPLFN8g8z4bWKd3brJd3DZnXbo41rnhSAG8mBaf79gvCjxaySwicsd1k2/DlGljGY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761785437; c=relaxed/simple;
-	bh=rwklOEhfhseBN3E2F6NaYZ5LgLD/6L82+Kn3SnZTv2c=;
+	s=arc-20240116; t=1761786036; c=relaxed/simple;
+	bh=9CpQD46gVkqEhgWniJBg3R6m/D/ettVhiiDDMTrdbhs=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=BagZ0d2jE5J9qQ+mNpeYmKtzLpHejdEx8sSVt91ZsXnzMUQJDkPSdPKN4mgl0I9pF1JFGGoWlebMlELwOfTL2utg+AmvfnVrslg/OKTZkc98rJeu3ajUoNpEczL1YQtheUjDp8/GSZiKW/CqIhOYootklkdIsq1sUgRa7Axl2Zw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QrmHzZXQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE8C7C4CEF7;
-	Thu, 30 Oct 2025 00:50:36 +0000 (UTC)
+	 In-Reply-To:To:Cc; b=D2tYcGWVHWf54XC4YTt1s0Uvd8ObqTIqSiXKYohZvjIpiIDvfBjIVOcBvKN9LrztdUcnNV0BtaS+SecPqZfUmRlTNaW4F5Uvzx5V0dmm+OdyWqadLov3oRHBYtKhB0g3DixIGfqoOPDbTb30hEnCh7Mu55EjCCWQM/Rv3Td8Dbc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=s03gnIFy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0468CC4CEF7;
+	Thu, 30 Oct 2025 01:00:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761785437;
-	bh=rwklOEhfhseBN3E2F6NaYZ5LgLD/6L82+Kn3SnZTv2c=;
+	s=k20201202; t=1761786036;
+	bh=9CpQD46gVkqEhgWniJBg3R6m/D/ettVhiiDDMTrdbhs=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=QrmHzZXQbsr4dhTdPGq0Bl16TuR6x8A4SB11p4iKGHUmSLQF7uKIBuf7mDl5l/ykP
-	 G69J7veZIYcjxy9a3GPNyuDYeEVEl3AD5bJ5jqpl/WdxCp9uwJ5JitFtEoiKu7wVQc
-	 kXSrvsNIrGWRcEeCm1RoNGZ0/xzvoQ0Tf6ZR+U3f9lBe7ba+7FPznRmS2r0ULPIT4p
-	 +F1BrUG8tDsuega56VcnbId9r8OAtO+GpmjJOlzs5hIyTmVoDftasTdcF85xpP15yT
-	 +bRYxXScPm8NGeWITRLQI0NML083O4muBewntkq9xdyVO8lHtvzZJ2/Y0J0FooOls6
-	 2QUZjRISTJ/DQ==
+	b=s03gnIFye+GODHHou3jNIhpFV9EkCbyo1DIXnawbmmGYFYLCVcdG5Tmxf0SnvGOi/
+	 g2O/JAG+VPXywz+Uw9Iy9AEpWhEtkFcWv5dg5bXiZcvw7aRx2U+bC9eybcMAkEi8gM
+	 ycMnG+3LyO94A3BxYcPa/4JlLetDWAl9kJf/ftJGD972cr26TZ3Oh1odGTAOCagEz3
+	 JLXy42IsUgIumpaQ2yjESYShq2cJxDwlpvlXbZ22IpkEgLaYwtLFmhpsfi4ibLrcse
+	 5qhSES3fITGwE+FcvuEDsWodywbpVYb+fgkieqYDtdfu1zsygJdt2g6+gawX0riZ3F
+	 JGXwpTapW3Ujg==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 33BD63A55EC7;
-	Thu, 30 Oct 2025 00:50:15 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 33DFC3A55EC7;
+	Thu, 30 Oct 2025 01:00:14 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -52,45 +52,44 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net 0/4] mptcp: various rare sending issues
+Subject: Re: [PATCH v2] net: usb: asix_devices: Check return value of
+ usbnet_get_endpoints
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <176178541400.3267234.15224717503854756848.git-patchwork-notify@kernel.org>
-Date: Thu, 30 Oct 2025 00:50:14 +0000
-References: <20251028-net-mptcp-send-timeout-v1-0-38ffff5a9ec8@kernel.org>
-In-Reply-To: <20251028-net-mptcp-send-timeout-v1-0-38ffff5a9ec8@kernel.org>
-To: Matthieu Baerts <matttbe@kernel.org>
-Cc: martineau@kernel.org, geliang@kernel.org, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- fw@strlen.de, liyonglong@chinatelecom.cn, netdev@vger.kernel.org,
- mptcp@lists.linux.dev, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+ <176178601301.3269431.1195749424522419303.git-patchwork-notify@kernel.org>
+Date: Thu, 30 Oct 2025 01:00:13 +0000
+References: <20251026164318.57624-1-linmq006@gmail.com>
+In-Reply-To: <20251026164318.57624-1-linmq006@gmail.com>
+To: Miaoqian Lin <linmq006@gmail.com>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, o.rempel@pengutronix.de,
+ xu.yang_2@nxp.com, yuichtsu@amazon.com, max.schulze@online.de,
+ khalasa@piap.pl, dhollis@davehollis.com, gregkh@suse.de, david-b@pacbell.net,
+ linux-usb@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
 
 Hello:
 
-This series was applied to netdev/net.git (main)
+This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Tue, 28 Oct 2025 09:16:51 +0100 you wrote:
-> Here are various fixes from Paolo, addressing very occasional issues on
-> the sending side:
+On Mon, 27 Oct 2025 00:43:16 +0800 you wrote:
+> The code did not check the return value of usbnet_get_endpoints.
+> Add checks and return the error if it fails to transfer the error.
 > 
-> - Patch 1: drop an optimisation that could lead to timeout in case of
->   race conditions. A fix for up to v5.11.
+> Found via static anlaysis and this is similar to
+> commit 07161b2416f7 ("sr9800: Add check for usbnet_get_endpoints").
 > 
-> - Patch 2: fix stream corruption under very specific conditions. A fix
->   for up to v5.13.
+> Fixes: 933a27d39e0e ("USB: asix - Add AX88178 support and many other changes")
+> Fixes: 2e55cc7210fe ("[PATCH] USB: usbnet (3/9) module for ASIX Ethernet adapters")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,1/4] mptcp: drop bogus optimization in __mptcp_check_push()
-    https://git.kernel.org/netdev/net/c/27b0e701d387
-  - [net,2/4] mptcp: fix MSG_PEEK stream corruption
-    https://git.kernel.org/netdev/net/c/8e04ce45a8db
-  - [net,3/4] mptcp: restore window probe
-    https://git.kernel.org/netdev/net/c/a824084b98d8
-  - [net,4/4] mptcp: zero window probe mib
-    https://git.kernel.org/netdev/net/c/fe11dfa10919
+  - [v2] net: usb: asix_devices: Check return value of usbnet_get_endpoints
+    https://git.kernel.org/netdev/net/c/dc89548c6926
 
 You are awesome, thank you!
 -- 
