@@ -1,138 +1,167 @@
-Return-Path: <stable+bounces-191700-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191701-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83F3CC1F18E
-	for <lists+stable@lfdr.de>; Thu, 30 Oct 2025 09:52:03 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3193C1F1C4
+	for <lists+stable@lfdr.de>; Thu, 30 Oct 2025 09:53:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F17EC1897958
-	for <lists+stable@lfdr.de>; Thu, 30 Oct 2025 08:48:15 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 21FBD4E94F4
+	for <lists+stable@lfdr.de>; Thu, 30 Oct 2025 08:51:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05FAC311956;
-	Thu, 30 Oct 2025 08:47:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24F2726C3AE;
+	Thu, 30 Oct 2025 08:51:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="nmzpqbDj";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="ITFmpGqq"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="llJpzuVU"
 X-Original-To: stable@vger.kernel.org
-Received: from fout-a7-smtp.messagingengine.com (fout-a7-smtp.messagingengine.com [103.168.172.150])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB1A72DC76F;
-	Thu, 30 Oct 2025 08:47:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.150
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0621338936
+	for <stable@vger.kernel.org>; Thu, 30 Oct 2025 08:51:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761814066; cv=none; b=QeoOTzMX5dP0uffAcf7RrbNtwdbRC1oqlXX2yl9W31hcI9t/dBgAiVcvC8QIRCtfOB+y+THwckFnGmWTnr6UbaTSlHPDfbV1kIAM25oF5LvTwFcaToao9f4eSUMeXJIuHDrd/SCW/dk+nk8JFSkvRRXFoormczsMNf3tsRN7Fl4=
+	t=1761814267; cv=none; b=Yo8/pCY3082jZQouulGyHwFRj/PWhz29z5GFc66LS+Qcs3wRIF7eoguU1k5/kCPgAqO9JstI9LnP0saZkToD1EuCv9KxGXk4F31tTquxSlbX3KKAYEPmVy2ZSDrixUn0EVsIFL4OMRkJZkoBab1URtS3mHvRvt27o5klITmKC2c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761814066; c=relaxed/simple;
-	bh=YnGa9DkQdvPRdDeqi8ahGPx9h1DVPHnC6LaywWx0p5w=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=UYYv0YLF6duPmsdEeWWg/2FXENoaIVj0Le8ne3Ci9ka2wHJ486DQySPoULBj3I2UYorIOwWolmfslrPY/reXGmoETf4NEYJFxGaz3f5pm+Eq1bmqf/mfIL6dg9ZFLGdk55YNopQHqAZEjv3ZE2HsGpRsZALPmpuN/l7UZ7ZGUdk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=nmzpqbDj; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=ITFmpGqq; arc=none smtp.client-ip=103.168.172.150
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfout.phl.internal (Postfix) with ESMTP id C5E52EC011B;
-	Thu, 30 Oct 2025 04:47:43 -0400 (EDT)
-Received: from phl-imap-02 ([10.202.2.81])
-  by phl-compute-04.internal (MEProxy); Thu, 30 Oct 2025 04:47:43 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1761814063;
-	 x=1761900463; bh=+LlsZk9yFd6QOpKTkvqKXGcbGnaMjw3ZltDuDEqH3fk=; b=
-	nmzpqbDjw6y1CJqAbTLfcl+bxSs+xEkjNtDm5rU77iQqfJLfO+y1qbb3bfDastaX
-	CM16o79l9/V4AoiDN5ls7SUfDozOXPFHnMRKRKlkJG+9WoRlUvXbb1z8SPZ+NOTt
-	iHaIGJxmmybz3MDM/l3+Zx7rTpIlqftg4WNwOXY7Fu1P3SNscpRKMP0NDu1VzZC0
-	f8zNDFTUWPHtJHv30RGxfGA1yoBdk1+7E68Kr4K9V5falvg7AbexERdlhNstHhZc
-	5g8JIqXpb1Oy/qpAv6w26MgukVHf/6fzPPxRMEn+Wt8w1cjwUmhDvAxwsWfqxaw0
-	P1Vs6Gy2to83ml357+oajA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1761814063; x=
-	1761900463; bh=+LlsZk9yFd6QOpKTkvqKXGcbGnaMjw3ZltDuDEqH3fk=; b=I
-	TFmpGqqqCDBrWBwD3VwC6HHTzkdDyviLySPXNhMJvS3ZL7oplYuwPzEKOXqOwIXw
-	+bBM2TWbMzPeOucTcA2fyKtxmUyVeKvIQF4wy6eh9ycj14QzK6NhR8Sjp8uutVWX
-	s1Nc3MpTlFGcwy2eiOkmEKsC+NjdiYnkzJeF7gxAE0HFUW1s0WWijMtsO4zuMorC
-	hIwIa7BC2xpeC8ENhAddY1vHbGkL2hqbCw87bOED6Q/ukIvw3Q0EZJzfGifawoSR
-	Jzv6JS+ObBQEgxw8HW6jNUzdrN4ApF5o9Ot5wvZlPbZJQIIws2AAxMQwPMbT6V6/
-	Bw7Ihdo+CSc1bPJnj8gCA==
-X-ME-Sender: <xms:LiYDacEeXc7JF8wx4TqL_9BPZBkL55-Dn0NwhJr8TnjQnhzTtv5G5Q>
-    <xme:LiYDaQJSwho8UWHqENe-n48LwapOKkHD1m2kK3xMPcEs_f-jR-Jha_6eCO3ptNaVc
-    YyK5pM_2Js7Cev4haA4Dbdmffqfi_04_NK6VPtqkd2yFRHOqC31c2w>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdduieeiudejucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepofggfffhvfevkfgjfhfutgfgsehtjeertdertddtnecuhfhrohhmpedftehrnhgu
-    uceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrthhtvg
-    hrnhephfdthfdvtdefhedukeetgefggffhjeeggeetfefggfevudegudevledvkefhvdei
-    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprghrnh
-    gusegrrhhnuggsrdguvgdpnhgspghrtghpthhtohepkedpmhhouggvpehsmhhtphhouhht
-    pdhrtghpthhtoheplhhutggrrdgtvghrvghsohhlihessghoohhtlhhinhdrtghomhdprh
-    gtphhtthhopehlihhnmhhqtddtieesghhmrghilhdrtghomhdprhgtphhtthhopehruhgr
-    nhhjihhnjhhivgeshhhurgifvghirdgtohhmpdhrtghpthhtohepghhrvghgkhhhsehlih
-    hnuhigfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtohepfihsrgdorhgvnhgvshgr
-    shesshgrnhhgqdgvnhhgihhnvggvrhhinhhgrdgtohhmpdhrtghpthhtoheplhhinhhugi
-    dqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshhtrggs
-    lhgvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugiesfigvih
-    hsshhstghhuhhhrdhnvght
-X-ME-Proxy: <xmx:LiYDaUkRvCSMRRNT4vjLTd07Fb7CqufoXLvxIKjfZ8lKTTB-a3Zhfg>
-    <xmx:LiYDaf3vnrmPs16wiUlzsUR2gD7OzVBbth80GnRrDjgs09zjkP0WDg>
-    <xmx:LiYDaU3NSPpiLtb2RhnEqqO573m5yXalPjKMfHIyT31jxiLS3ZxRKg>
-    <xmx:LiYDaRp4IjX6-rCSRwKJkVPqYx1gV50TQR4dTQvQu-3epsqHtm5Trw>
-    <xmx:LyYDaRcJIvBGtSwUcuxluN6jYgSq8hixEOjoY0QPoKV6iRq3f5a0aiy9>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id B4B48700054; Thu, 30 Oct 2025 04:47:42 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	s=arc-20240116; t=1761814267; c=relaxed/simple;
+	bh=Ab4bFMlRn2+t7TcLaOM9kd7d6OlSqWi3gNKBX8PBHkw=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=BPJVVvY9pYLz7NlRBHPpX0dTSes+S+TWSrzNJWHZacAl8L9+PFV3uGeV/h/vL1zuRNzaecXYIFtOa1eqverRDz9nE5xxZPPtnhPkgWoiu/FYYz+GNoPXxaqQF/LZS8SXxfywtM1wxAJRkRDqBMyzo+r/40E2iKyEDiREHyXCTXE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=llJpzuVU; arc=none smtp.client-ip=209.85.218.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-b3f5a6e114dso14876966b.0
+        for <stable@vger.kernel.org>; Thu, 30 Oct 2025 01:51:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1761814264; x=1762419064; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=fphLVYMAvPJpHfDK6UrhmubmM09SFyL/nslykzGwIZk=;
+        b=llJpzuVUgcmuV7n6BUCxqyPBBxA7g3xTc7l6oj9M1mEABhtPD4Ll8/lFg1JRq9J9m8
+         SPPj06G4xe4XNcgxPJoe52qK15iWWhWagWfezSyKiepDl6JrZTxcMWCUMWRbKYTUI2AP
+         tHzAyhgvJ9Xmxb6DegqUHT5cdL7kYhSth8JlWJL4eDxMUy8h3BYEPPH2r/tQVHAxO6OW
+         mUXA6zaygG+0o3h58Uyz/O0Ot6zEc+su61Jb8IaN0M7riGtDYCHuKsYkzyJBKZrOiG0+
+         a2/rcLQ52844FWeVEULBPcEL9OWKVYrleousDHfmcGKtHMWahHiG3tB9CFh7Pv/n7XAV
+         sjlA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761814264; x=1762419064;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=fphLVYMAvPJpHfDK6UrhmubmM09SFyL/nslykzGwIZk=;
+        b=LWNXnhuzZZETY3pd2YrMMXpUf30E2jne8mla92ul/q1/L0bgC44nCF3x5wnwUPDWXB
+         WDyQVWpAAldq2L+hrHfH8yUKW449uFLbijD1sjiqaiCxd2ST1rnvK9LQ2f3bcExcbdKj
+         U6pH442gwihB+UxSvu50RTF2PfVzEglCFKXMX0UvsoDIlBhMjIlIsZ/JgAMT4p/te3rC
+         9ctqccd64m5YI48+lQYEo81WQ6NSlxUgOcn41mjlZI37TTI1auhjDWTlbXLNVmulP1Pp
+         ZVogNhadTlIjtGDl+NbDPrxnYXvgY9FB7NhZaZghAFsTy8MVkW0N2MaI7VvRIm9/txPK
+         niGw==
+X-Forwarded-Encrypted: i=1; AJvYcCV6nPgdvuVkMIywkDvxyGzZtzJrR1WjHRNy9BNKDkOuM0fN7401oM51wIZaykYaaHKPvW9iUpw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyAmnbXIANLwXYFJNdHQgqXHl7imqUMZmSzDdsRv3oxY6IapMad
+	oyHMRsf5BirQn4qSjQntw2SSJJCGUc8nmYtjIN+KlINwu+w8XoMyEekWKEQr2W6fcarggAvq9Re
+	mx5Ng
+X-Gm-Gg: ASbGncvqI6VoecANuJ9Srbi1CT+lG3j0hkezsq+00PXloSFI5EQpQ8NV+ASWkMqNO0a
+	nITSI/l0b+OvCua6lzPS+Q0s4JeXOPn5PgUstIv7B+NZb8iz5Nu6Le2xaBk8wNPXJTT1JdsHmcB
+	XM3mkf9vj24Q5F/xRUg43pwscq7cSjq2/ZzPT2pkZMBtNT0E6mmwlJkwxG0vWQfzqykNWkuC0cw
+	nqu8nxyu/+5qY2e4wcVbtXMdcEf/KnxaaoGUZEsGPIlB0ySy7Bi+2YT6c13AwrKqLMetM1RORam
+	Kwn1cnx1kVTicPy9Dh4I3g0CR1R741JzUBVCIufWpaJe1X1VGI3/RtaAuoRKmhThfbcrxYzFkhn
+	Qy66kyEk7OtaQK4/aehSgaeMxkQqXUeZWCgpimCPgbEZBKE914JcF1C8Le5CDHI83getrpqPh9e
+	W6w3pAKIBjLWXciMjLarG2hlTUz6c=
+X-Google-Smtp-Source: AGHT+IHFbhCJxIHhxK1PfIfJ3CGHx1FwG3numMCvfaT1IhJ+pDSEZ5JnH3CdW8UpTPiDkI4IfhzqnQ==
+X-Received: by 2002:a17:906:dc91:b0:b6d:606f:2a96 with SMTP id a640c23a62f3a-b703d30b8a2mr277791766b.4.1761814263561;
+        Thu, 30 Oct 2025 01:51:03 -0700 (PDT)
+Received: from [127.0.1.1] ([178.197.219.123])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b6d85ba3798sm1691789366b.39.2025.10.30.01.51.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 30 Oct 2025 01:51:03 -0700 (PDT)
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH v2 0/9] dt-bindings: PCI: qcom: Add missing required
+ power-domains and resets
+Date: Thu, 30 Oct 2025 09:50:43 +0100
+Message-Id: <20251030-dt-bindings-pci-qcom-fixes-power-domains-v2-0-28c1f11599fe@linaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ThreadId: AIIjj2dROt1-
-Date: Thu, 30 Oct 2025 09:47:22 +0100
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Miaoqian Lin" <linmq006@gmail.com>,
- "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
- =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>,
- "Wolfram Sang" <wsa+renesas@sang-engineering.com>,
- "Ruan Jinjie" <ruanjinjie@huawei.com>,
- "Luca Ceresoli" <luca.ceresoli@bootlin.com>, linux-kernel@vger.kernel.org
-Cc: stable@vger.kernel.org
-Message-Id: <0f712780-8af0-4894-b75c-44fd7390dc3e@app.fastmail.com>
-In-Reply-To: <20251030052834.97991-1-linmq006@gmail.com>
-References: <20251030052834.97991-1-linmq006@gmail.com>
-Subject: Re: [PATCH] misc: eeprom/idt_89hpesx: prevent bad user input in
- idt_dbgfs_csr_write()
-Content-Type: text/plain
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAOMmA2kC/52NTQ6CMBBGr0Jm7RgY+QmuvIdhUdoBJpEWW4Ia0
+ rtbOYLL9+XLezsE9sIBrtkOnjcJ4mwCOmWgJ2VHRjGJgXKqipxaNCv2Yo3YMeCiBZ/azTjImxO
+ 6F3s0blZiA15qVddtT0wVQdItno9bst27xJOE1fnPUd6K3/pHZCswR6MapUmXTTOUt4dY5d3Z+
+ RG6GOMX1QszouEAAAA=
+X-Change-ID: 20251029-dt-bindings-pci-qcom-fixes-power-domains-36a669b2e252
+To: Lorenzo Pieralisi <lpieralisi@kernel.org>, 
+ =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
+ Manivannan Sadhasivam <mani@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Bjorn Helgaas <bhelgaas@google.com>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
+ Abel Vesa <abel.vesa@linaro.org>
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, 
+ linux-arm-msm@vger.kernel.org, linux-pci@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2135;
+ i=krzysztof.kozlowski@linaro.org; h=from:subject:message-id;
+ bh=Ab4bFMlRn2+t7TcLaOM9kd7d6OlSqWi3gNKBX8PBHkw=;
+ b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBpAybq5uKkpMdxtoEseaUzYb3uSZL+fy7PNhr1U
+ nPiy80XCSCJAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCaQMm6gAKCRDBN2bmhouD
+ 12vbEACY82plr/2mBhTr/qkdJBo+0J2zKAWHMAMn2UGMm7j5dR/tmOp60DOC1zZP5kZJ6QBIAi6
+ crJEdgmncJ1ahlWEP3eLVBUvkttmcUonO6eozGNnczKYjTUT7K5JjiJpLHDDgCOzf4y3gPzG3I4
+ w8aAxVYirXSjaRz5Tr5kZ1YqmgPezND/8Ce5Dm2sKm8y0OgIf+qAdnQcdmFBBWHpzbbYZRd4J9y
+ yp49RXp//pp+CCYDpPXrXCw1IZgSiIrAHzRFxMgAp6HCcryghrjPtm3NJuDeCxJWzZwoCWBEJCE
+ eahc4hKM5a+kOqLQi6w0vXij8fx+uVcjMavX9ZWR9s4Co2e3VMVOWFF8RJQsioR8Hl3hdmk+03m
+ C3C+AcbssyW/A5PEaftf7Xu9FVIM759ZoQT+CHlB3R1wSbwaIHD2YiUkJWopI5KSZ1OGcyz1tZO
+ zx9Z077/bEh7WYakdRWsHZMh4TcGOpipdt0LLE1+PJ30IRnP7NST/5M5PTAkNBIoykDtjIMdyeB
+ P5R2HoMXlgvCpmpZGN21ge7uO7kMZid3IJPmTcBxbIwDBJ8igU+9SDoX7GTZF3MlwO8c/2YXODC
+ /qUbCsv+5zTtluq/6hreLaPjj+TLXQ9DloOQQDLpfe0ZCdla/yBM/p8N5KEIWg9uKDMYzoAKmrC
+ GzZXj9QFLrCEDrg==
+X-Developer-Key: i=krzysztof.kozlowski@linaro.org; a=openpgp;
+ fpr=9BD07E0E0C51F8D59677B7541B93437D3B41629B
 
-On Thu, Oct 30, 2025, at 06:28, Miaoqian Lin wrote:
-> A malicious user could pass an arbitrarily bad value
-> to memdup_user_nul(), potentially causing kernel crash.
+Changes in v2:
+- Add also resets
+- Drop cc-stable tag in the last patch
+- Link to v1: https://patch.msgid.link/20251029-dt-bindings-pci-qcom-fixes-power-domains-v1-0-da7ac2c477f4@linaro.org
 
-I think you should be more specific than 'kernel crash' here.
-As far as I can tell, the worst case would be temporarily
-consuming a MAX_ORDER_NR_PAGES allocation, leading to out-of-memory.
+Recent binding changes forgot to make power-domains and resets required.
 
-> Fixes: 183238ffb886 ("misc: eeprom/idt_89hpesx: Switch to 
-> memdup_user_nul() helper")
+I am not updating SC8180xp because it will be fixed other way in my next
+patchset.
 
-I don't think that patch changed anything, the same thing
-would have happened with kmalloc()+copy_from_user().
-Am I missing something?
+Best regards,
+Krzysztof
 
-> +	if (count == 0 || count > PAGE_SIZE)
-> +		return -EINVAL;
-> +
+---
+Krzysztof Kozlowski (9):
+      dt-bindings: PCI: qcom,pcie-sa8775p: Add missing required power-domains and resets
+      dt-bindings: PCI: qcom,pcie-sc7280: Add missing required power-domains and resets
+      dt-bindings: PCI: qcom,pcie-sc8280xp: Add missing required power-domains and resets
+      dt-bindings: PCI: qcom,pcie-sm8150: Add missing required power-domains and resets
+      dt-bindings: PCI: qcom,pcie-sm8250: Add missing required power-domains and resets
+      dt-bindings: PCI: qcom,pcie-sm8350: Add missing required power-domains and resets
+      dt-bindings: PCI: qcom,pcie-sm8450: Add missing required power-domains and resets
+      dt-bindings: PCI: qcom,pcie-sm8550: Add missing required power-domains and resets
+      dt-bindings: PCI: qcom,pcie-x1e80100: Add missing required power-domains and resets
 
-How did you pick PAGE_SIZE as the maximum here?
+ Documentation/devicetree/bindings/pci/qcom,pcie-sa8775p.yaml  | 3 +++
+ Documentation/devicetree/bindings/pci/qcom,pcie-sc7280.yaml   | 5 +++++
+ Documentation/devicetree/bindings/pci/qcom,pcie-sc8280xp.yaml | 3 +++
+ Documentation/devicetree/bindings/pci/qcom,pcie-sm8150.yaml   | 5 +++++
+ Documentation/devicetree/bindings/pci/qcom,pcie-sm8250.yaml   | 5 +++++
+ Documentation/devicetree/bindings/pci/qcom,pcie-sm8350.yaml   | 5 +++++
+ Documentation/devicetree/bindings/pci/qcom,pcie-sm8450.yaml   | 5 +++++
+ Documentation/devicetree/bindings/pci/qcom,pcie-sm8550.yaml   | 5 +++++
+ Documentation/devicetree/bindings/pci/qcom,pcie-x1e80100.yaml | 5 +++++
+ 9 files changed, 41 insertions(+)
+---
+base-commit: 326bbf6e2b1ce8d1e6166cce2ca414aa241c382f
+change-id: 20251029-dt-bindings-pci-qcom-fixes-power-domains-36a669b2e252
 
-       Arnd
+Best regards,
+-- 
+Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+
 
