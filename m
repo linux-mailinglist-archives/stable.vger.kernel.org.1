@@ -1,95 +1,93 @@
-Return-Path: <stable+bounces-191760-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191761-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAD23C21AFD
-	for <lists+stable@lfdr.de>; Thu, 30 Oct 2025 19:09:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 118F3C21B04
+	for <lists+stable@lfdr.de>; Thu, 30 Oct 2025 19:09:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 076AF463743
-	for <lists+stable@lfdr.de>; Thu, 30 Oct 2025 18:09:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1B01C3BFDA2
+	for <lists+stable@lfdr.de>; Thu, 30 Oct 2025 18:09:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5256374AA3;
-	Thu, 30 Oct 2025 18:08:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDE2636CDF7;
+	Thu, 30 Oct 2025 18:08:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="WQKLZHod"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AOBfqnku"
 X-Original-To: stable@vger.kernel.org
-Received: from 003.mia.mailroute.net (003.mia.mailroute.net [199.89.3.6])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA4D536E375;
-	Thu, 30 Oct 2025 18:08:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.3.6
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BE022868B0;
+	Thu, 30 Oct 2025 18:08:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761847698; cv=none; b=r8VbOxtVI+eoldOAQdY3/n9YdmHQ3iM51c/L98YsEVpo5S0ZsBseIPfhIXk+4c9RSYMhgUhpdukP/jKNbfQ2yVmdYstvDTZ23N0lCD332LzCAUamA8iQLuu3ItcLAE2wwK3dsstmXEAxSjMtj0GRqeNHRU5GyK5K+bIJmPbdfvo=
+	t=1761847710; cv=none; b=QyH9sQMa19d76qYOqsZ08+/5cilYRkGfhK4ylsQu2J4EOnF4nk3ymcU2fNG+n4pQt12NjTbAy8p2W5RzTOR74BzcLnNS3r4F7dGLaxnAGTBd7xxW6Hnqu5UPq6jGa8ul6uAltq9h1Ls3c+UIAt2cNn95HqHjrjzuM0+X+CBKk+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761847698; c=relaxed/simple;
-	bh=T9zIm0gSu4kD3QxXQl0Q2BQyodM1bhAdjnLFxbtSi50=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Uhd3YSeeMSkIvUvzFhHPNLRbDHE7vi2EnmtBp/S0zxHG0vyHb0ucqm4cQZrXA8JkZlPV1wHNAxOFOwWtmvg7kz/9KgeNKG9k9BR0mSMYAKsYcm4gki7FpJIitY5z6bIP4yrEi+XqJuWjgTGYm/ivZ35CSny3Rx56xcFkhy/IlLo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=WQKLZHod; arc=none smtp.client-ip=199.89.3.6
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
-Received: from localhost (localhost [127.0.0.1])
-	by 003.mia.mailroute.net (Postfix) with ESMTP id 4cyBtQ5pjMzlgqTq;
-	Thu, 30 Oct 2025 18:08:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
-	content-transfer-encoding:content-type:content-type:in-reply-to
-	:from:from:content-language:references:subject:subject
-	:user-agent:mime-version:date:date:message-id:received:received;
-	 s=mr01; t=1761847692; x=1764439693; bh=T9zIm0gSu4kD3QxXQl0Q2BQy
-	odM1bhAdjnLFxbtSi50=; b=WQKLZHodyoO/cFA4rZnuxmcTMPl1J6lZjczTQmQX
-	0lcomaVrcWTUgYDDmtuob7TiXHXGNo95h3OkBUL85WxvT+C/mnpsrJaAPDCKsEC5
-	Zj40yTrdh//p2wWeBFQ9layhw8PZQqPzLoY9bg2XNAc5NNTf+Uqx7PwlTom6OoJI
-	hmqRzKx5nzt6+X1Yw9ejYkXrpnIY2E5SMV9fXwRK1sDeMuBsWxxXQj9TU3S5nk8D
-	k9r4SuPgd/+Dztv0Wn7+nikUZ3KS8njwiE61M9o+JygfvYFjIVlSh/7YtfeYUh/M
-	kTd4i7n0fDTVhVCA/gsCMfRY+XWISS9iMrR+TMpX0Ohuaw==
-X-Virus-Scanned: by MailRoute
-Received: from 003.mia.mailroute.net ([127.0.0.1])
- by localhost (003.mia [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
- id 6tTr8fDkTX7R; Thu, 30 Oct 2025 18:08:12 +0000 (UTC)
-Received: from [100.119.48.131] (unknown [104.135.180.219])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bvanassche@acm.org)
-	by 003.mia.mailroute.net (Postfix) with ESMTPSA id 4cyBtC3RfszltBDW;
-	Thu, 30 Oct 2025 18:08:01 +0000 (UTC)
-Message-ID: <1b4dd7b7-2af2-4026-b6e2-be517b249ba3@acm.org>
-Date: Thu, 30 Oct 2025 11:08:00 -0700
+	s=arc-20240116; t=1761847710; c=relaxed/simple;
+	bh=6NBqGEyIKXsDEC70trCS2FNCzv3oKxwoniTgmbfYXQg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZUinZLd/6szoO0ZQdIjUIc7XXjV29ji+eTW99o/pV3IqY7srtbQSorUskRt8ZsVjk6iTJj2+lW0C1YW45jeBlDwZ/u9XpWjEJhm/4PZRgi26i0nDwQ08wgBR0Xja5TGBljzsa75vJfcrH/2uRcegVwSJFjvsGuZFtBw402X6wFM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AOBfqnku; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77563C19421;
+	Thu, 30 Oct 2025 18:08:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761847710;
+	bh=6NBqGEyIKXsDEC70trCS2FNCzv3oKxwoniTgmbfYXQg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=AOBfqnku1sZvD5ZsXyFGso2P0DTH9hWTtw7jGdwJPOLRpC7xppWpu54ekM16qI9jU
+	 bhyQAjP2ASJAcGboFHlXNe7e9LDrQ8u78VTsMOS6oDDMDo1S2zIZHa086gmZR+9MsP
+	 er8W4m1bwJQ0UEHQX92Kot1F/G9OOyBAf9G/fqipjUUyQOTUEM3BxeWx4NkqL62uw+
+	 03efc511z5uV7ykmAFuuO5ssR/RqKEEo734rzYgo+bLjoILDa0MePKGXMvit8OiXaG
+	 OM9ixcwJisiSt4UhRc8zr6T34y4wqBirNtrLFGnYPrdUlXL0ZmaJJijcoPw2pZpzr4
+	 he8qZcDibL/gw==
+Date: Thu, 30 Oct 2025 13:08:27 -0500
+From: Rob Herring <robh@kernel.org>
+To: Johan Hovold <johan@kernel.org>
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Abel Vesa <abel.vesa@linaro.org>, linux-arm-msm@vger.kernel.org,
+	linux-pci@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH 9/9] dt-bindings: PCI: qcom,pcie-x1e80100: Add missing
+ required power-domains
+Message-ID: <20251030180827.GA110725-robh@kernel.org>
+References: <20251029-dt-bindings-pci-qcom-fixes-power-domains-v1-0-da7ac2c477f4@linaro.org>
+ <20251029-dt-bindings-pci-qcom-fixes-power-domains-v1-9-da7ac2c477f4@linaro.org>
+ <aQJE5kkOGh76dLvf@hovoldconsulting.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] block: Remove queue freezing from several sysfs store
- callbacks
-To: Martin Wilck <mwilck@suse.com>, Jens Axboe <axboe@kernel.dk>
-Cc: linux-block@vger.kernel.org, Christoph Hellwig <hch@lst.de>,
- Nilay Shroff <nilay@linux.ibm.com>, Benjamin Marzinski
- <bmarzins@redhat.com>, stable@vger.kernel.org,
- Damien Le Moal <dlemoal@kernel.org>, Chaitanya Kulkarni <kch@nvidia.com>,
- Hannes Reinecke <hare@suse.de>
-References: <20251030172417.660949-1-bvanassche@acm.org>
- <f4ef82a5ca88901653ce07fb0313c144a0fdb6ac.camel@suse.com>
-Content-Language: en-US
-From: Bart Van Assche <bvanassche@acm.org>
-In-Reply-To: <f4ef82a5ca88901653ce07fb0313c144a0fdb6ac.camel@suse.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aQJE5kkOGh76dLvf@hovoldconsulting.com>
 
-On 10/30/25 10:38 AM, Martin Wilck wrote:
-> So the "deadlock" situation for the other sysfs attributes that you
-> handled with the timeout in v2 will remain now? Are you planning to
-> send a follow-up patch for these attributes?
+On Wed, Oct 29, 2025 at 05:46:30PM +0100, Johan Hovold wrote:
+> On Wed, Oct 29, 2025 at 04:40:46PM +0100, Krzysztof Kozlowski wrote:
+> > Power domains should be required for PCI, so the proper SoC supplies are
+> > turned on.
+> > 
+> > Cc: <stable@vger.kernel.org>
+> 
+> I have a feeling I've pointed this out before, but these kind of binding
+> patches really does not seem to qualify for stable backporting (e.g.
+> does not "fix a real bug that bothers people").
 
-Only if agreement can be reached about the approach that should be used
-to fix the deadlock for the remaining request queue sysfs attributes.
+Presumably if someone omits power-domain and the driver doesn't work, 
+then it's a bug affecting them.
 
-Thanks,
+I'm fine with dropping the stable tag because it will still most likely 
+get picked up with the Fixes tag. :)
 
-Bart.
+Rob
+ 
 
