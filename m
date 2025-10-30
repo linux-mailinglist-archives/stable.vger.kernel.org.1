@@ -1,153 +1,102 @@
-Return-Path: <stable+bounces-191725-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191731-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41015C202F1
-	for <lists+stable@lfdr.de>; Thu, 30 Oct 2025 14:13:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C523C203B5
+	for <lists+stable@lfdr.de>; Thu, 30 Oct 2025 14:27:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id E19AB34D1C5
-	for <lists+stable@lfdr.de>; Thu, 30 Oct 2025 13:13:18 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id ACC0934EF1E
+	for <lists+stable@lfdr.de>; Thu, 30 Oct 2025 13:27:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 502023546E3;
-	Thu, 30 Oct 2025 13:13:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3164B30F94D;
+	Thu, 30 Oct 2025 13:27:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b="XfyKaP4F"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XZlJ9h0L"
 X-Original-To: stable@vger.kernel.org
-Received: from mx.swemel.ru (mx.swemel.ru [95.143.211.150])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58E6C307AFB
-	for <stable@vger.kernel.org>; Thu, 30 Oct 2025 13:13:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.143.211.150
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB141238C1A;
+	Thu, 30 Oct 2025 13:27:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761829994; cv=none; b=OXJTioZFNYdD4c0A46pWsGQgDyuEI7ZR0qt7vyvMjNvY8jG1+FX2bJsZ0YPZKmvXDjATEUVpT+eTQEIYBLWhxNHIPAOYy4I6GcWPY4S7cUCK/skfnXF9gB/b71/uZP1mJVitpeahfXZPzVCrl04f6HkYlxPj1gW5gI2V83oLDHQ=
+	t=1761830821; cv=none; b=Q1625/SRbNHK+gk/raDbqY5IuCwvQB1+wKoqraezUnPfj/0gzWugxej9cK1US8OT+K42EsnHegnCrT5CQjgqTLsjIChoz9bKqs+YZazPpV16GoBzlEfz4xEn55OXc9PgpdZkvLkcxBTiEFzZw0Y9y2bdczPTO8PqfXjyEiO2o+c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761829994; c=relaxed/simple;
-	bh=XI182MBAwXDtoRtk4c5cMmlhdm8nVAh5GchQV+8LqxQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=f2ZoS425+X8M8R1AChSaWdA7yxFfb6vWEiDoUc0CrZAoKTEn0lVUfKCikpnGZ/vCtuzuWOzpxxeVQBKulXOqx+juXq7jbh/2RD+vJFxAbjdwOPRyRO706vXpS8bAygXzTv4WBxRWAdABupw9kHzQS2BchrWEvc83cfe71BUQCM0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru; spf=pass smtp.mailfrom=swemel.ru; dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b=XfyKaP4F; arc=none smtp.client-ip=95.143.211.150
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=swemel.ru
-From: Andrey Kalachev <kalachev@swemel.ru>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=swemel.ru; s=mail;
-	t=1761829978;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Lzejpoknlgatl+R7F8+MgsgFEyHRzC6SrF260WP2TXM=;
-	b=XfyKaP4F6hfffqBtfN4J/6z9cxmwpte4rvaYhxADI+16wzx5ARb5SPq+zL8cv+G8RnbjNb
-	PJCMpDAlxRGoROMUKzoKxFx4ZFKsAX3731P+ZpS/Fit3T0pSguO8HfNE+mAJR66ag7q0LN
-	4DTjcTZ+TPoM5KSSlfExlbgQIhGtARU=
-To: stable@vger.kernel.org
-Cc: fdmanana@suse.com,
-	josef@toxicpanda.com,
-	dsterba@suse.com,
-	kalachev@swemel.ru,
-	lvc-project@linuxtesting.org
-Subject: [PATCH 6.1.y 5/5] btrfs: set start on clone before calling copy_extent_buffer_full
-Date: Thu, 30 Oct 2025 16:12:54 +0300
-Message-Id: <20251030131254.9225-6-kalachev@swemel.ru>
-In-Reply-To: <20251030131254.9225-1-kalachev@swemel.ru>
-References: <20251030131254.9225-1-kalachev@swemel.ru>
+	s=arc-20240116; t=1761830821; c=relaxed/simple;
+	bh=wuqYJBVJRiUnYGIPXIejUYot6rERgXlNuvZlxEyVQjM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QWVK69MqRFiYN1LmFCmps74zEc9UWBZgqN7ZuS+4BBAlp2y9a1rREpdMwtM0Q013jEiDtZ+U2YlmyuAgwjsRPZ8OZCmKtxFqMNrrNQ+lfgael+nXYkGOnP2r5wXZxzfPiLCiFEKxubuQOPxfOiNVi92dsz3gnVhYkwnaAMWAFIs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XZlJ9h0L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75789C4CEF1;
+	Thu, 30 Oct 2025 13:27:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761830820;
+	bh=wuqYJBVJRiUnYGIPXIejUYot6rERgXlNuvZlxEyVQjM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=XZlJ9h0LyHK6xEv6R/ox87rJyzdYA4NjW2nnbQj5Kk4dhb3DTz/MousDYa/J1Lk8P
+	 rNIe9vtBIfJM878Uy3FeVWxbIMgJ76ZxhW/0tdJwZudlPLhCGFYG3pquZqabospcJ8
+	 bzwT/9e4lbYf9hsYJzpEoYAcKY3VcHP6zR/Sm2cCIWIbP1BgtcMyvEMR2nFL4mGwLo
+	 6g33cwszTdJyCp+ZcepJVCYe7LoGUO60O5wsH9lQ1/WKpTZ2UdIlzr2QEsldv6FRqa
+	 EiDtcMGcHnJKXKwPu4m5dvsUkrmq1mlswWYD6/WkitiuBg7ayPyNuKAzMgnc03DGcZ
+	 G88Xd51uooEBQ==
+Received: from johan by xi.lan with local (Exim 4.98.2)
+	(envelope-from <johan@kernel.org>)
+	id 1vESgF-000000002HF-3A3C;
+	Thu, 30 Oct 2025 14:27:07 +0100
+Date: Thu, 30 Oct 2025 14:27:07 +0100
+From: Johan Hovold <johan@kernel.org>
+To: Paul Menzel <pmenzel@molgen.mpg.de>
+Cc: Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+	Marcel Holtmann <marcel@holtmann.org>,
+	Johan Hedberg <johan.hedberg@gmail.com>,
+	linux-bluetooth@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2] Bluetooth: rfcomm: fix modem control handling
+Message-ID: <aQNnq02qzD3rPh2b@hovoldconsulting.com>
+References: <20251023120530.5685-1-johan@kernel.org>
+ <9778a6a1-ffb0-4972-a2e7-893128a51e52@molgen.mpg.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <9778a6a1-ffb0-4972-a2e7-893128a51e52@molgen.mpg.de>
 
-From: Josef Bacik <josef@toxicpanda.com>
+On Wed, Oct 29, 2025 at 09:15:28PM +0100, Paul Menzel wrote:
 
-[ Upstream commit 53e24158684b527d013b5b2204ccb34d1f94c248 ]
+> Am 23.10.25 um 14:05 schrieb Johan Hovold:
+> > The RFCOMM driver confuses the local and remote modem control signals,
+> > which specifically means that the reported DTR and RTS state will
+> > instead reflect the remote end (i.e. DSR and CTS).
+> > 
+> > This issue dates back to the original driver (and a follow-on update)
+> > merged in 2002, which resulted in a non-standard implementation of
+> > TIOCMSET that allowed controlling also the TS07.10 IC and DV signals by
+> > mapping them to the RI and DCD input flags, while TIOCMGET failed to
+> > return the actual state of DTR and RTS.
+> > 
+> > Note that the bogus control of input signals in tiocmset() is just
+> > dead code as those flags will have been masked out by the tty layer
+> > since 2003.
+> > 
+> > Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> 
+> There is a linux-history git archive [1], if somebody wants dig further. 
+> But not relevant for the tag used by the stable folks.
 
-Our subpage testing started hanging on generic/560 and I bisected it
-down to 1cab1375ba6d ("btrfs: reuse cloned extent buffer during
-fiemap to avoid re-allocations").  This is subtle because we use
-eb->start to figure out where in the folio we're copying to when we're
-subpage, as our ->start may refer to an area inside of the folio.
+Yeah, that's tree I use.
 
-For example, assume a 16K page size machine with a 4K node size, and
-assume that we already have a cloned extent buffer when we cloned the
-previous search.
+> Is there any way to test your change, to read DTR and RTS state?
 
-copy_extent_buffer_full() will do the following when copying the extent
-buffer path->nodes[0] (src) into cloned (dest):
+This can be tested using the TIOCMGET and TIOCMSET (or
+TIOCMBIS/TIOCMBIC) ioctls. I use a custom c application, and I'm not
+aware of any particular application you can you use for testing if
+that's what you were after.
 
-  src->start = 8k; // this is the new leaf we're cloning
-  cloned->start = 4k; // this is left over from the previous clone
-
-  src_addr = folio_address(src->folios[0]);
-  dest_addr = folio_address(dest->folios[0]);
-
-  memcpy(dest_addr + get_eb_offset_in_folio(dst, 0),
-	 src_addr + get_eb_offset_in_folio(src, 0), src->len);
-
-Now get_eb_offset_in_folio() is where the problems occur, because for
-sub-pagesize blocksize we can have multiple eb's per folio, the code for
-this is as follows
-
-  size_t get_eb_offset_in_folio(eb, offset) {
-	  return (eb->start + offset & (folio_size(eb->folio[0]) - 1));
-  }
-
-So in the above example we are copying into offset 4K inside the folio.
-However once we update cloned->start to 8K to match the src the math for
-get_eb_offset_in_folio() changes, and any subsequent reads (i.e.
-btrfs_item_key_to_cpu()) will start reading from the offset 8K instead
-of 4K where we copied to, giving us garbage.
-
-Fix this by setting start before we co copy_extent_buffer_full() to make
-sure that we're copying into the same offset inside of the folio that we
-will read from later.
-
-All other sites of copy_extent_buffer_full() are correct because we
-either set ->start beforehand or we simply don't change it in the case
-of the tree-log usage.
-
-With this fix we now pass generic/560 on our subpage tests.
-
-CC: stable@vger.kernel.org # 6.1
-Fixes: 1cab1375ba6d ("btrfs: reuse cloned extent buffer during fiemap to avoid re-allocations")
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
----
- fs/btrfs/extent_io.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
-
-diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
-index c07d12184ae2..8172cc527760 100644
---- a/fs/btrfs/extent_io.c
-+++ b/fs/btrfs/extent_io.c
-@@ -3831,13 +3831,19 @@ static int fiemap_next_leaf_item(struct btrfs_inode *inode, struct btrfs_path *p
- 		goto out;
- 	}
- 
--	/* See the comment at fiemap_search_slot() about why we clone. */
--	copy_extent_buffer_full(clone, path->nodes[0]);
- 	/*
- 	 * Important to preserve the start field, for the optimizations when
- 	 * checking if extents are shared (see extent_fiemap()).
-+	 *
-+	 * We must set ->start before calling copy_extent_buffer_full().  If we
-+	 * are on sub-pagesize blocksize, we use ->start to determine the offset
-+	 * into the folio where our eb exists, and if we update ->start after
-+	 * the fact then any subsequent reads of the eb may read from a
-+	 * different offset in the folio than where we originally copied into.
- 	 */
- 	clone->start = path->nodes[0]->start;
-+	/* See the comment at fiemap_search_slot() about why we clone. */
-+	copy_extent_buffer_full(clone, path->nodes[0]);
- 
- 	slot = path->slots[0];
- 	btrfs_release_path(path);
--- 
-2.30.2
-
+Johan
 
