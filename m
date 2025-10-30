@@ -1,168 +1,184 @@
-Return-Path: <stable+bounces-191739-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191740-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7572C2091D
-	for <lists+stable@lfdr.de>; Thu, 30 Oct 2025 15:25:04 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2B63C2095C
+	for <lists+stable@lfdr.de>; Thu, 30 Oct 2025 15:29:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B1CB91898648
-	for <lists+stable@lfdr.de>; Thu, 30 Oct 2025 14:25:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 81BC1189D3FD
+	for <lists+stable@lfdr.de>; Thu, 30 Oct 2025 14:29:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23392264619;
-	Thu, 30 Oct 2025 14:24:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E08D26B96A;
+	Thu, 30 Oct 2025 14:28:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="k3fHEQr0"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="mTrQfNdp"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F6C125B2F4
-	for <stable@vger.kernel.org>; Thu, 30 Oct 2025 14:24:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A6B2223DDD
+	for <stable@vger.kernel.org>; Thu, 30 Oct 2025 14:28:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761834289; cv=none; b=cRwj5yfXmcIF8eaj0x8KPTBtIYeg/+UwRJ98l58Oa/+VRFZmZB9CH5JmjQ8htSNSOuW9ZlbnSinxltSG20mI3l5d7NtfWx5jLSUJJ9I3rhmWprSEAfd1pMuxs4Fdm8yV/XF+3/rX5IMSk/dhdcxoSdZlXRyoeBfSsgREvczjWYs=
+	t=1761834527; cv=none; b=Ug+8gEGP6IZv2I/Hf8EbOKAXJljKHHymLdKO6fvZ3JW7+vsgQzcwycEVjMKqvDbt5R7CmPQW/UU93E8f0IOQQh0mmKEVRUGomI4cPjisBsyYPpMmkUuZXOY131pgvWR+thkB65s93Lc1ouLWEIOIoqEnP6s7H40fyFq/GWZ8gIQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761834289; c=relaxed/simple;
-	bh=hkzBJcLkt8NnJ0Qlv6pX3DEghu4dTrO4pfdOBi9n0Gw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jWmA5CrQ7vm5Sw4kbBfky4vCY5koPd7dL3iBrFRpuMovzWIQa6+ACC5rkUI6oYp5OuGXxwyUFdBtVirIIFvV3SZaqlIBRGUzI0qWdjkpelkeDwKtg7UpawKQgOws7WD6r8TbWHJtM/uFk0zPTFeydeTGJN8eW1cgxd5nJjzkHtY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=k3fHEQr0; arc=none smtp.client-ip=209.85.128.51
+	s=arc-20240116; t=1761834527; c=relaxed/simple;
+	bh=wY6LNAbG2M5UsmhAu2jc0oYSG8BcgwgRl3gvCHoawYY=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=sF6KrJOnx4calQIk3S7opy3HFkM88FsxKFdpESogc6EiVIJIlCCHljbzyjy/j1MdI4Ov5j2v7ZbSgmAteCqw/L28tvjsliyJhTp1MBOO5oJaWe0B4eumZ4HxVZuKyJdVKyPRIW7KyL1/R8c3wRtgGRd7H2+Krxz8Gp/2Ff0YlH0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=mTrQfNdp; arc=none smtp.client-ip=209.85.128.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-47728f914a4so4896505e9.1
-        for <stable@vger.kernel.org>; Thu, 30 Oct 2025 07:24:47 -0700 (PDT)
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-47118259fd8so8541855e9.3
+        for <stable@vger.kernel.org>; Thu, 30 Oct 2025 07:28:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1761834286; x=1762439086; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=c3pjjXRLzxOERlgauXUFdVB9N4SMWOueTsxW5ITuFlc=;
-        b=k3fHEQr0VtHQIX0FLmjXIF0Gh6qRQDNgDCqn4CkOoF1kVwGKCcexmLchP+5KcHuFu+
-         9a2YexDgn65EPDoE74qvI1Tv7pnOtBW/I9cSW2oiuBYdkTd+5APKOn7jRJs3X2xbhoIg
-         5IORsVfA60h0DZj+t8Dr1GqhI79riN5tnBWtGs7keLOwThIjmmwOnjvlOvGwl1pw3MW3
-         NbHGZ5FtNC1xz12F4x5Z/cdVKzewlmbZN1iDQkVjkuj53cMmhI7lQRM7lBKbuJdbxP+G
-         SYGCk8Th/tTGRNyHuSKNmJfSBFWq6KCA2hoC9vubRIJppjjciv0zbJl0WB2ddjZ7HeLa
-         /QZA==
+        d=linaro.org; s=google; t=1761834523; x=1762439323; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=WNmb87m3Rijz4kqOvvHn5rqCiIVcDcTIZ49w/e1XZvU=;
+        b=mTrQfNdphZ8+XAdWmK4Lp2IVZwcqBvJp/J83vFW6PAPly0bG+CtAdsjUe3c09KlHGj
+         XyQ57s7cWzMEH/xq0smvA3J/C7X/1hKwZJkkS0qnPynMFZuh7IRJDQT8PQ6Xho5G7yuA
+         OGhl+oLokKlsA7mp9UU6ht2aPL4SP4jenEeBvu1/Pu87qmz4YdNjpBcLckCQOHWSEjfW
+         mWFeo4RV1e/8juOzmsyjfzQc/fH1WYxF+LKR2SvAnoefLH5nHv1PFnUfhPT7/3GFdswv
+         i45IgOSo/rWAvjoMsCm+SldrR/QnY4oBBPiVmXpY3cR7sDhExKKgrivmkzU0PhYqeoBu
+         hcgw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761834286; x=1762439086;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=c3pjjXRLzxOERlgauXUFdVB9N4SMWOueTsxW5ITuFlc=;
-        b=DFN8ZMv+dToW8SUdUlisRjXZ0eNttG5bSCpFWxUiRKLfvq808w+pB8ubw7vi7xkKV/
-         VW/DtdCddR+J48e0I3kTQ83dalXuorX4w2X17UQtfOZFDDWbD+q/PTR7FKDPqFsh3qm7
-         tgnX5SvYJxaWu3ilqVKWqRV2nNnfJiEmhNe5aAhg8R4MDkuCrpO1PvpAdOdA8ghNWNs9
-         wW3la5MzvJKEe0MJ+sDmuFHQp1uqcloC3gyWtPuyz4iiXFaM2EeCI2bJSjGyMEuRJD8f
-         QL3DnBSxTeII7Mnoq2/PITbCtUIJ+9MWJRWxLfWq3WwOp2AP1k0gDEfUkoV0EFkgsJ68
-         cPeA==
-X-Forwarded-Encrypted: i=1; AJvYcCU1WE5rMSD7e+5IfFeTnsNv8ydCqUWSrA5MYdFKaw4GuyRY9ylkFgdP0sLcrLloisvQeJxQ1/8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyr6KqrHJz+OyXIn6LQpm2FeU6RTZYqpzWOrukBP7jq2A6hpXqn
-	u8tdpEJ2CYKrud1TXk20DIJ1RnToPTP/YCa3aNW12zMBqxkWOUDP4pLI393NVTpACSw=
-X-Gm-Gg: ASbGnctc54TZ8kMVmOw2FxIp0Y0zXu6H4yyiNon3nlyQSqs4cmMLd0I9V8dlo/Tcl7k
-	bcyjnUBKKb1P6lqZf9wq/wn9vB/0Wk3I7tXliXATuqps/MQhFp1wgbdde8qiOY6dotGyZFs7z1Q
-	V2GNUjpSENMxtYvfVQav5Zfrv2e3XSCDvfU4XBcTr4QhZOCvrQuAmLXmdcFlBRL8AcBvqQfGpTN
-	rwvGfY+6nezFmxewUc7u+K5OPdHlkDWhFqSOD/USSLqhslJ59w7tYRUo9lqPCeewdN0+mNS5qBN
-	r2fDBt+rei5zmzbKeFXT2v8hXT6VR2i0RuX1V0ruvGisEBTqp+OemNQVLXcFQx2JuLntVoXoqKd
-	/9Svl5CHrrtYPyRQSCxNvuGOCF1vVYcl9plfRtGXbbMDw3Nqm0i0KlsZWFFFdrZp/KgZAQXNa
-X-Google-Smtp-Source: AGHT+IEvOGorIdXH2ej+0qCIr5+s9oVPz6skbtMVgapGmijQdH6C6LacDuKEfmcYhGhBiKWz2mBTqQ==
-X-Received: by 2002:a05:600c:8b8b:b0:477:cb6:805e with SMTP id 5b1f17b1804b1-4772cdf71c0mr14297875e9.18.1761834286434;
-        Thu, 30 Oct 2025 07:24:46 -0700 (PDT)
-Received: from linaro.org ([86.121.7.169])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-429952b7b43sm32493987f8f.6.2025.10.30.07.24.44
+        d=1e100.net; s=20230601; t=1761834523; x=1762439323;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=WNmb87m3Rijz4kqOvvHn5rqCiIVcDcTIZ49w/e1XZvU=;
+        b=ePQ6Q/pVNkEd7h3BGG0mFjNF8WBK8YyfDw2BX0+/olYMK7LquVf3n7UN15g8WIUxRB
+         sbvCWJONeP6el0f1g4mQL6na7fw+W3myiuuBSfEJ8ojo/Z/UarRkEf67wJncXB6k7IrU
+         JCG9kjMm1oBS172rVhbEdDweNvTVKAv/FBPmZbDyfQGBT0nNaHFH2URmB2bt95QQLJFn
+         2VcRTlh7jyRAp0sGBqYbMStEtqRCUIMJ3xxbL820wxTZlQOftMe0Pz/TievWdxgr3KW6
+         qjOnyeeXOXGY/df99VJKhAcP3mlpObTIpSIl0egGq93UB8NpcHZzBLI9w1lvtu65dSZ2
+         xNQg==
+X-Forwarded-Encrypted: i=1; AJvYcCUAEeUjdAU1iufLC9F822ftxSA3ty+VpSn8ekdAeuKdSEqJbCtT1FtFjTQgIpFRbNijhgrcWU4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw4EtuHfvQV0xVql7l6XvKSfvSXckk8ihTxMCcFE6a3fuIXJ+Dq
+	czgIJcCerz/TXmdYjNe/xSbVwmDZAcyFbt3sO2dMB+6akKDdSZXK6EV0gLsMC7YtIcg=
+X-Gm-Gg: ASbGnct5MbhivYL9GCmG991rLrzXuA2THXiDQBxStN3DjkNifDdlBy3FRwjbWtjEe/y
+	JC7yaEjSOKduwc2jxAJINO0hdx7l6RmkRdEChTv+mqgUVQe9XdWDbFSupSsRxNc4/cR86BlTWBk
+	13E+rPP4nRw/HD04BxTgqm4RyuTNHaBaOYICNSyO7lPtD/oSH4xtHGa5DZirSxZv8DUy0GFvBfj
+	oHjVQ8aGScdPIlaXNH/b/PAwA9mHpILiVn5JrwOGDgxIgGmPXmlhO3Xp1LmBi8+Gcz2dogGQecZ
+	CBjMwEmv41mlhK+GHWAgL4QE2lL/moXnE9Kak3DPhk/FU3k14Pui3VGp4AUsnkpVFcRs+pHnC+W
+	PrUuazXnwJaDhi2G7Kt2+nziXppcUrROglLQ5lbHuXg0KWI8/alkW/QBiwdVxy0vpZ8ES+YzB1Q
+	==
+X-Google-Smtp-Source: AGHT+IF8onpXLUwHzyQwiL2ymhPUUzbiovk1DBU/h/ClaO/WmGzfHMke0FOZV4rN9zHf7Ltn2HttKQ==
+X-Received: by 2002:a05:600c:4e05:b0:475:de81:563a with SMTP id 5b1f17b1804b1-477268a167fmr28644665e9.33.1761834523355;
+        Thu, 30 Oct 2025 07:28:43 -0700 (PDT)
+Received: from hackbox.lan ([86.121.7.169])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4772899fdfbsm42230475e9.4.2025.10.30.07.28.41
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Oct 2025 07:24:45 -0700 (PDT)
-Date: Thu, 30 Oct 2025 16:24:43 +0200
+        Thu, 30 Oct 2025 07:28:42 -0700 (PDT)
 From: Abel Vesa <abel.vesa@linaro.org>
-To: Bjorn Andersson <andersson@kernel.org>
-Cc: Vinod Koul <vkoul@kernel.org>, 
-	Kishon Vijay Abraham I <kishon@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Dmitry Baryshkov <lumag@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
-	Sibi Sankar <sibi.sankar@oss.qualcomm.com>, Rajendra Nayak <quic_rjendra@quicinc.com>, 
-	Neil Armstrong <neil.armstrong@linaro.org>, linux-arm-msm@vger.kernel.org, linux-phy@lists.infradead.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Krzysztof Kozlowski <krzk@kernel.org>, stable@vger.kernel.org
-Subject: Re: [PATCH v4 1/3] dt-bindings: phy: qcom-edp: Add missing clock for
- X Elite
-Message-ID: <v2leqaegp5xtzadcrksxfp5sv5oeeegsakwv6a5w3tj4zxsa5o@uuvn34rjygqg>
-References: <20251029-phy-qcom-edp-add-missing-refclk-v4-0-adb7f5c54fe4@linaro.org>
- <20251029-phy-qcom-edp-add-missing-refclk-v4-1-adb7f5c54fe4@linaro.org>
- <bncdkcnbqnlz4rj5yhtgeey5d2ksuwpz7ms7kvkjci3p4gdtt4@e54svrukfobu>
+Subject: [PATCH v5 0/3] phy: qcom: edp: Add missing ref clock to x1e80100
+Date: Thu, 30 Oct 2025 16:28:28 +0200
+Message-Id: <20251030-phy-qcom-edp-add-missing-refclk-v5-0-fce8c76f855a@linaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <bncdkcnbqnlz4rj5yhtgeey5d2ksuwpz7ms7kvkjci3p4gdtt4@e54svrukfobu>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAx2A2kC/43PzW7DIAwH8FepOM+TIVDoTnuPaQcCJkFrQwZTt
+ KrKu8/tYR/qIZMlS38ffrYvolHN1MTT7iIqLbnlMnEwDzsRRj8NBDlyFgqVQdshzOMZ3kM5AcU
+ ZfIxwyq3laYBKKRzfwPjeKa7kyApWZp7nz9uGl1fOY24fpZ5vCxd5nf7fXiQg7JN1PpGPfUjPx
+ zz5Wh5LHcQVX9QPeMBuG1QMRueC7DFE7ndg9w1KlHob7BhE63pCLSPu7y/Uv0B12AY1g/yrTSY
+ YnUj/Add1/QJuGDu8wgEAAA==
+X-Change-ID: 20250730-phy-qcom-edp-add-missing-refclk-5ab82828f8e7
+To: Vinod Koul <vkoul@kernel.org>, 
+ Kishon Vijay Abraham I <kishon@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
+ Dmitry Baryshkov <lumag@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
+ Sibi Sankar <sibi.sankar@oss.qualcomm.com>, 
+ Rajendra Nayak <quic_rjendra@quicinc.com>
+Cc: Neil Armstrong <neil.armstrong@linaro.org>, 
+ linux-arm-msm@vger.kernel.org, linux-phy@lists.infradead.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Krzysztof Kozlowski <krzk@kernel.org>, Abel Vesa <abel.vesa@linaro.org>, 
+ Krzysztof Kozlowski <krzk@kernel.org>, stable@vger.kernel.org, 
+ Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+X-Mailer: b4 0.15-dev-dedf8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2640; i=abel.vesa@linaro.org;
+ h=from:subject:message-id; bh=wY6LNAbG2M5UsmhAu2jc0oYSG8BcgwgRl3gvCHoawYY=;
+ b=owEBbQKS/ZANAwAKARtfRMkAlRVWAcsmYgBpA3YPWqFLDLRdPEjLN7eOU3AUYjAT9dLBCL3VM
+ INsZMGxOt+JAjMEAAEKAB0WIQRO8+4RTnqPKsqn0bgbX0TJAJUVVgUCaQN2DwAKCRAbX0TJAJUV
+ Vj/+D/43cHxzYyYgYxsyzHDvRgZW3UY6vruvxLhhSZr/XB2X10fKSfaTPiRyNWAqSzx6eh5ca4L
+ UJgBAn4W+/C72c4fAq5shr7ioPglnlS9JDYc4+4yWxSceW9PpXbLa6XnygDZ5aBZ/HpESi7M0lQ
+ J7Qr50838/Kmbjq1LaTzAkTADrcf5QT9NlnlMzTyp+QhXnEmvHM23/hL8xtt5DPU4+ieSco2nde
+ s/JpG6xwMP5rCozKjtbJTzD2zvtqsQZekxaASAaC5uSdJSs3clelGDznFaOO9OUtKVqLwxuyZYH
+ QOD8nZ5RvgrCPSFBGDvfCYdpozeHK4pb5zpciQ2fKYX398DObj1oxRiPD7koGf209xvhmuFrUbw
+ keEaDy3dFNPTlYd6deF1KQocqoAFFo61DidrvhdCZQ3G7YK062hhuEcjoTf573BVqbc2sp9UrZU
+ 0NJA14wUpIlYEhxvuaUc2NssA89bwhAMcd7NSKf6AEa26f2rTG3pvdZC48is+8lKx5d7RLeLCur
+ b//siaBZgT1PgKy3/37q04vn1/BFC7MFsWDaB3R2jG/LOv6e19YSSYT7oo9mx0djNRI9GoB4vVI
+ KakngTb73xZXt15d4Gi/1yIMv0EHabmg2oY1vujXFodJYXLE0XmyuoOBzXN5yRBHXO6Hhh4/bF0
+ ooZ5xY0f+8aCLLg==
+X-Developer-Key: i=abel.vesa@linaro.org; a=openpgp;
+ fpr=6AFF162D57F4223A8770EF5AF7BF214136F41FAE
 
-On 25-10-29 11:38:53, Bjorn Andersson wrote:
-> On Wed, Oct 29, 2025 at 03:31:30PM +0200, Abel Vesa wrote:
-> > On X Elite platform, the eDP PHY uses one more clock called ref.
-> > 
-> > The current X Elite devices supported upstream work fine without this
-> > clock, because the boot firmware leaves this clock enabled. But we should
-> > not rely on that. Also, even though this change breaks the ABI, it is
-> > needed in order to make the driver disables this clock along with the
-> > other ones, for a proper bring-down of the entire PHY.
-> > 
-> > So attach the this ref clock to the PHY.
-> > 
-> > Cc: stable@vger.kernel.org # v6.10
-> > Fixes: 5d5607861350 ("dt-bindings: phy: qcom-edp: Add X1E80100 PHY compatibles")
-> > Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> > Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
-> 
-> Reviewed-by: Bjorn Andersson <andersson@kernel.org>
+According to documentation, the DP PHY on x1e80100 has another clock
+called ref.
 
-Thanks.
+The current X Elite devices supported upstream work fine without this
+clock, because the boot firmware leaves this clock enabled. But we should
+not rely on that. Also, when it comes to power management, this clock
+needs to be also disabled on suspend. So even though this change breaks
+the ABI, it is needed in order to make we disable this clock on runtime
+PM, when that is going to be enabled in the driver.
 
-> 
-> > ---
-> >  .../devicetree/bindings/phy/qcom,edp-phy.yaml      | 28 +++++++++++++++++++++-
-> >  1 file changed, 27 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/Documentation/devicetree/bindings/phy/qcom,edp-phy.yaml b/Documentation/devicetree/bindings/phy/qcom,edp-phy.yaml
-> > index eb97181cbb9579893b4ee26a39c3559ad87b2fba..bfc4d75f50ff9e31981fe602478f28320545e52b 100644
-> > --- a/Documentation/devicetree/bindings/phy/qcom,edp-phy.yaml
-> > +++ b/Documentation/devicetree/bindings/phy/qcom,edp-phy.yaml
-> > @@ -37,12 +37,15 @@ properties:
-> >        - description: PLL register block
-> >  
-> >    clocks:
-> > -    maxItems: 2
-> > +    minItems: 2
-> > +    maxItems: 3
-> >  
-> >    clock-names:
-> > +    minItems: 2
-> >      items:
-> >        - const: aux
-> >        - const: cfg_ahb
-> > +      - const: ref
-> >  
-> >    "#clock-cells":
-> >      const: 1
-> > @@ -64,6 +67,29 @@ required:
-> >    - "#clock-cells"
-> >    - "#phy-cells"
-> >  
-> > +allOf:
-> > +  - if:
-> > +      properties:
-> > +        compatible:
-> > +          enum:
-> > +            - qcom,x1e80100-dp-phy
-> 
-> Don't we have the refclk on all the other targets as well?
-> I think we should proceed as you propose here, and if this is the case,
-> revisit the other targets.
+So rework the driver to allow different number of clocks, fix the
+dt-bindings schema and add the clock to the DT node as well.
 
-So a quick grep suggests that the msm8996 and sc7280 do have and are provided
-by the GCC, but they aren't attached to any consumers.
+Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
+---
+Changes in v5:
+- Picked-up Bjorn's R-b tags.
+- Replaced "parse" with "get" on clocks acquiring failure.
+- Link to v4: https://lore.kernel.org/r/20251029-phy-qcom-edp-add-missing-refclk-v4-0-adb7f5c54fe4@linaro.org
 
-Will check and try to come back with a different patch for those.
+Changes in v4:
+- Picked Dmitry's R-b tag for the driver patch
+- Added x1e80100 substring to subject of dts patch
+- Link to v3 (resend): https://lore.kernel.org/r/20251014-phy-qcom-edp-add-missing-refclk-v3-0-078be041d06f@linaro.org
+
+Changes in v3 (resend)
+- picked-up Krzysztof's R-b tag for bindings patch
+- Link to v3: https://lore.kernel.org/r/20250909-phy-qcom-edp-add-missing-refclk-v3-0-4ec55a0512ab@linaro.org
+
+Changes in v3:
+- Use dev_err_probe() on clocks parsing failure.
+- Explain why the ABI break is necessary.
+- Drop the extra 'clk' suffix from the clock name. So ref instead of
+  refclk.
+- Link to v2: https://lore.kernel.org/r/20250903-phy-qcom-edp-add-missing-refclk-v2-0-d88c1b0cdc1b@linaro.org
+
+Changes in v2:
+- Fix schema by adding the minItems, as suggested by Krzysztof.
+- Use devm_clk_bulk_get_all, as suggested by Konrad.
+- Rephrase the commit messages to reflect the flexible number of clocks.
+- Link to v1: https://lore.kernel.org/r/20250730-phy-qcom-edp-add-missing-refclk-v1-0-6f78afeadbcf@linaro.org
+
+---
+Abel Vesa (3):
+      dt-bindings: phy: qcom-edp: Add missing clock for X Elite
+      phy: qcom: edp: Make the number of clocks flexible
+      arm64: dts: qcom: x1e80100: Add missing TCSR ref clock to the DP PHYs
+
+ .../devicetree/bindings/phy/qcom,edp-phy.yaml      | 28 +++++++++++++++++++++-
+ arch/arm64/boot/dts/qcom/hamoa.dtsi                | 12 ++++++----
+ drivers/phy/qualcomm/phy-qcom-edp.c                | 16 ++++++-------
+ 3 files changed, 43 insertions(+), 13 deletions(-)
+---
+base-commit: 131f3d9446a6075192cdd91f197989d98302faa6
+change-id: 20250730-phy-qcom-edp-add-missing-refclk-5ab82828f8e7
+
+Best regards,
+-- 
+Abel Vesa <abel.vesa@linaro.org>
+
 
