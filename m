@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-191727-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191725-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC1FFC20355
-	for <lists+stable@lfdr.de>; Thu, 30 Oct 2025 14:23:04 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41015C202F1
+	for <lists+stable@lfdr.de>; Thu, 30 Oct 2025 14:13:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2628C1898755
-	for <lists+stable@lfdr.de>; Thu, 30 Oct 2025 13:23:29 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id E19AB34D1C5
+	for <lists+stable@lfdr.de>; Thu, 30 Oct 2025 13:13:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 806463016F6;
-	Thu, 30 Oct 2025 13:23:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 502023546E3;
+	Thu, 30 Oct 2025 13:13:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b="RgdZyRMi"
+	dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b="XfyKaP4F"
 X-Original-To: stable@vger.kernel.org
 Received: from mx.swemel.ru (mx.swemel.ru [95.143.211.150])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4BD02E8E0B
-	for <stable@vger.kernel.org>; Thu, 30 Oct 2025 13:22:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58E6C307AFB
+	for <stable@vger.kernel.org>; Thu, 30 Oct 2025 13:13:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.143.211.150
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761830580; cv=none; b=jg5PBV/CN3k+fiHoMCJ64yemMII+4ygm3vMf9fPQ+VTA4RLgoaYRRF5nh++bPmld4hRFXEAjGxawhmlNNhPJtjsgkfPiEApgwP/2LfsIzAMGNp/SyvAYHFstYL5Uq9k4bm25/l2jHvxY1Mv95XyO4o1XvjwL4hcYAZHG30jKJoQ=
+	t=1761829994; cv=none; b=OXJTioZFNYdD4c0A46pWsGQgDyuEI7ZR0qt7vyvMjNvY8jG1+FX2bJsZ0YPZKmvXDjATEUVpT+eTQEIYBLWhxNHIPAOYy4I6GcWPY4S7cUCK/skfnXF9gB/b71/uZP1mJVitpeahfXZPzVCrl04f6HkYlxPj1gW5gI2V83oLDHQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761830580; c=relaxed/simple;
-	bh=NfepKbu0TRurkRNR8YIs8likOg1pBFOHb1AOZRbL/a0=;
+	s=arc-20240116; t=1761829994; c=relaxed/simple;
+	bh=XI182MBAwXDtoRtk4c5cMmlhdm8nVAh5GchQV+8LqxQ=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ikKXTXpLfBB/8O7s7ahMCY24jsLrevKkWWJgXb6tZQcFxkg8H+MBEqWPhLlQxV0Bz3aLjFQZNJ9ZVibX+LHM54jfQGDYo9HpwKJtXVfNYI5SYjIUhaBzS2UdV6ewIgXas/NWQDdmXnkO167id8yi7m0igoVQdNvGGbsRmS58uOo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru; spf=pass smtp.mailfrom=swemel.ru; dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b=RgdZyRMi; arc=none smtp.client-ip=95.143.211.150
+	 MIME-Version; b=f2ZoS425+X8M8R1AChSaWdA7yxFfb6vWEiDoUc0CrZAoKTEn0lVUfKCikpnGZ/vCtuzuWOzpxxeVQBKulXOqx+juXq7jbh/2RD+vJFxAbjdwOPRyRO706vXpS8bAygXzTv4WBxRWAdABupw9kHzQS2BchrWEvc83cfe71BUQCM0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru; spf=pass smtp.mailfrom=swemel.ru; dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b=XfyKaP4F; arc=none smtp.client-ip=95.143.211.150
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=swemel.ru
 From: Andrey Kalachev <kalachev@swemel.ru>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=swemel.ru; s=mail;
-	t=1761829977;
+	t=1761829978;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=akyCJC3OnMtLon3drtBqXTEbgPI5RX/DE9GHCZwBfwU=;
-	b=RgdZyRMiURlYPrBAeRWA2GQEj+77QeU9ennAyZyZDnHoHXeuEwQAwTwubrr3XeRn28Qp2i
-	XjIJPw5uUl/ZVapTOGcD4LS3IClc98fmdDI/vudn80sJ07OXkSgDHRJV3QWGtfdUZWYwVM
-	bgVrjhR6KQq3qGryNwZ9ZJ3viXv++Ik=
+	bh=Lzejpoknlgatl+R7F8+MgsgFEyHRzC6SrF260WP2TXM=;
+	b=XfyKaP4F6hfffqBtfN4J/6z9cxmwpte4rvaYhxADI+16wzx5ARb5SPq+zL8cv+G8RnbjNb
+	PJCMpDAlxRGoROMUKzoKxFx4ZFKsAX3731P+ZpS/Fit3T0pSguO8HfNE+mAJR66ag7q0LN
+	4DTjcTZ+TPoM5KSSlfExlbgQIhGtARU=
 To: stable@vger.kernel.org
 Cc: fdmanana@suse.com,
 	josef@toxicpanda.com,
 	dsterba@suse.com,
 	kalachev@swemel.ru,
 	lvc-project@linuxtesting.org
-Subject: [PATCH 6.1.y 4/5] btrfs: reuse cloned extent buffer during fiemap to avoid re-allocations
-Date: Thu, 30 Oct 2025 16:12:53 +0300
-Message-Id: <20251030131254.9225-5-kalachev@swemel.ru>
+Subject: [PATCH 6.1.y 5/5] btrfs: set start on clone before calling copy_extent_buffer_full
+Date: Thu, 30 Oct 2025 16:12:54 +0300
+Message-Id: <20251030131254.9225-6-kalachev@swemel.ru>
 In-Reply-To: <20251030131254.9225-1-kalachev@swemel.ru>
 References: <20251030131254.9225-1-kalachev@swemel.ru>
 Precedence: bulk
@@ -61,91 +61,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Josef Bacik <josef@toxicpanda.com>
 
-[ Upstream commit 1cab1375ba6d5337a25acb346996106c12bb2dd0 ]
+[ Upstream commit 53e24158684b527d013b5b2204ccb34d1f94c248 ]
 
-During fiemap we may have to visit multiple leaves of the subvolume's
-inode tree, and each time we are freeing and allocating an extent buffer
-to use as a clone of each visited leaf. Optimize this by reusing cloned
-extent buffers, to avoid the freeing and re-allocation both of the extent
-buffer structure itself and more importantly of the pages attached to the
-extent buffer.
+Our subpage testing started hanging on generic/560 and I bisected it
+down to 1cab1375ba6d ("btrfs: reuse cloned extent buffer during
+fiemap to avoid re-allocations").  This is subtle because we use
+eb->start to figure out where in the folio we're copying to when we're
+subpage, as our ->start may refer to an area inside of the folio.
+
+For example, assume a 16K page size machine with a 4K node size, and
+assume that we already have a cloned extent buffer when we cloned the
+previous search.
+
+copy_extent_buffer_full() will do the following when copying the extent
+buffer path->nodes[0] (src) into cloned (dest):
+
+  src->start = 8k; // this is the new leaf we're cloning
+  cloned->start = 4k; // this is left over from the previous clone
+
+  src_addr = folio_address(src->folios[0]);
+  dest_addr = folio_address(dest->folios[0]);
+
+  memcpy(dest_addr + get_eb_offset_in_folio(dst, 0),
+	 src_addr + get_eb_offset_in_folio(src, 0), src->len);
+
+Now get_eb_offset_in_folio() is where the problems occur, because for
+sub-pagesize blocksize we can have multiple eb's per folio, the code for
+this is as follows
+
+  size_t get_eb_offset_in_folio(eb, offset) {
+	  return (eb->start + offset & (folio_size(eb->folio[0]) - 1));
+  }
+
+So in the above example we are copying into offset 4K inside the folio.
+However once we update cloned->start to 8K to match the src the math for
+get_eb_offset_in_folio() changes, and any subsequent reads (i.e.
+btrfs_item_key_to_cpu()) will start reading from the offset 8K instead
+of 4K where we copied to, giving us garbage.
+
+Fix this by setting start before we co copy_extent_buffer_full() to make
+sure that we're copying into the same offset inside of the folio that we
+will read from later.
+
+All other sites of copy_extent_buffer_full() are correct because we
+either set ->start beforehand or we simply don't change it in the case
+of the tree-log usage.
+
+With this fix we now pass generic/560 on our subpage tests.
 
 CC: stable@vger.kernel.org # 6.1
-Reviewed-by: Josef Bacik <josef@toxicpanda.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Fixes: 1cab1375ba6d ("btrfs: reuse cloned extent buffer during fiemap to avoid re-allocations")
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
 Signed-off-by: David Sterba <dsterba@suse.com>
 ---
- fs/btrfs/extent_io.c | 32 ++++++++++++++++++++++++--------
- 1 file changed, 24 insertions(+), 8 deletions(-)
+ fs/btrfs/extent_io.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
 diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
-index 853f39b5e170..c07d12184ae2 100644
+index c07d12184ae2..8172cc527760 100644
 --- a/fs/btrfs/extent_io.c
 +++ b/fs/btrfs/extent_io.c
-@@ -3800,7 +3800,7 @@ static int emit_last_fiemap_cache(struct fiemap_extent_info *fieinfo,
+@@ -3831,13 +3831,19 @@ static int fiemap_next_leaf_item(struct btrfs_inode *inode, struct btrfs_path *p
+ 		goto out;
+ 	}
  
- static int fiemap_next_leaf_item(struct btrfs_inode *inode, struct btrfs_path *path)
- {
--	struct extent_buffer *clone;
-+	struct extent_buffer *clone = path->nodes[0];
- 	struct btrfs_key key;
- 	int slot;
- 	int ret;
-@@ -3809,29 +3809,45 @@ static int fiemap_next_leaf_item(struct btrfs_inode *inode, struct btrfs_path *p
- 	if (path->slots[0] < btrfs_header_nritems(path->nodes[0]))
- 		return 0;
- 
-+	/*
-+	 * Add a temporary extra ref to an already cloned extent buffer to
-+	 * prevent btrfs_next_leaf() freeing it, we want to reuse it to avoid
-+	 * the cost of allocating a new one.
-+	 */
-+	ASSERT(test_bit(EXTENT_BUFFER_UNMAPPED, &clone->bflags));
-+	atomic_inc(&clone->refs);
-+
- 	ret = btrfs_next_leaf(inode->root, path);
- 	if (ret != 0)
--		return ret;
-+		goto out;
- 
+-	/* See the comment at fiemap_search_slot() about why we clone. */
+-	copy_extent_buffer_full(clone, path->nodes[0]);
  	/*
- 	 * Don't bother with cloning if there are no more file extent items for
- 	 * our inode.
+ 	 * Important to preserve the start field, for the optimizations when
+ 	 * checking if extents are shared (see extent_fiemap()).
++	 *
++	 * We must set ->start before calling copy_extent_buffer_full().  If we
++	 * are on sub-pagesize blocksize, we use ->start to determine the offset
++	 * into the folio where our eb exists, and if we update ->start after
++	 * the fact then any subsequent reads of the eb may read from a
++	 * different offset in the folio than where we originally copied into.
  	 */
- 	btrfs_item_key_to_cpu(path->nodes[0], &key, path->slots[0]);
--	if (key.objectid != btrfs_ino(inode) || key.type != BTRFS_EXTENT_DATA_KEY)
--		return 1;
-+	if (key.objectid != btrfs_ino(inode) || key.type != BTRFS_EXTENT_DATA_KEY) {
-+		ret = 1;
-+		goto out;
-+	}
- 
- 	/* See the comment at fiemap_search_slot() about why we clone. */
--	clone = btrfs_clone_extent_buffer(path->nodes[0]);
--	if (!clone)
--		return -ENOMEM;
+ 	clone->start = path->nodes[0]->start;
++	/* See the comment at fiemap_search_slot() about why we clone. */
 +	copy_extent_buffer_full(clone, path->nodes[0]);
-+	/*
-+	 * Important to preserve the start field, for the optimizations when
-+	 * checking if extents are shared (see extent_fiemap()).
-+	 */
-+	clone->start = path->nodes[0]->start;
  
  	slot = path->slots[0];
  	btrfs_release_path(path);
- 	path->nodes[0] = clone;
- 	path->slots[0] = slot;
-+out:
-+	if (ret)
-+		free_extent_buffer(clone);
- 
--	return 0;
-+	return ret;
- }
- 
- /*
 -- 
 2.30.2
 
