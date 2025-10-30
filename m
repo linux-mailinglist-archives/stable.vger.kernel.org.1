@@ -1,159 +1,90 @@
-Return-Path: <stable+bounces-191757-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191759-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0372C21849
-	for <lists+stable@lfdr.de>; Thu, 30 Oct 2025 18:38:16 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C444C21A86
+	for <lists+stable@lfdr.de>; Thu, 30 Oct 2025 19:05:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 19B4A34D3C8
-	for <lists+stable@lfdr.de>; Thu, 30 Oct 2025 17:38:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF5DD4261E1
+	for <lists+stable@lfdr.de>; Thu, 30 Oct 2025 18:05:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12FF1368F57;
-	Thu, 30 Oct 2025 17:38:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14EC2225761;
+	Thu, 30 Oct 2025 18:05:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="W0j9FuHi";
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="YOGQbZ7H"
+	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="b0t/wa0a"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C69CB2E7F08
-	for <stable@vger.kernel.org>; Thu, 30 Oct 2025 17:38:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDD9C1548C;
+	Thu, 30 Oct 2025 18:05:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761845889; cv=none; b=b7LSuFbLCp4PACbYYneqGOqsLMjPqXOaeBgY6m+XwBOjcRQupjuXlUnCtS3o0umlziLtuuvwiQFleEmG7LZ/rk1/iFuhpj2NHDwRBXr4vJECFI712UCRKaiPt0T7FbDzZ+QVklTIlKkvYMsGOFRYMfE/Fhc+NQUuZcQe0ragVp8=
+	t=1761847525; cv=none; b=Q5Fqe6w2Y5p1SZ8QlJPqAaoFqAPfBYnc8U8WzmN0MqzX0cyVBo0EThRCuHUYc/OpllyoYpvWX0hEkJ3hdiyx99F59gNueOCD8bQoLJOYP5Qex1j+cbQbVKMJIe/KoLH3rT2kxuSgvHFYNKdD+chQF5WjKeJgabMYSw6DHmQUom8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761845889; c=relaxed/simple;
-	bh=Q9dUav+ktzqD3z+iw5mtf6ik4qYvWyeiX1JcgrpnLOE=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Z2QEejdWRP3lHHKEEXxGEpHHGcRf8e0ZuJQMCljxhHfdmC/jEfd2o3rKlO6f1BFHafD/PG4wrvvKgj8Eghk7fX19xBDCK9cobXPXbOVMcRFagy1rURr2DZW1xtTqA+0Hja1iFqy+cmi9v730/5r4fTPMp+zG4CaXn6v24hJas9M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=W0j9FuHi; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=YOGQbZ7H; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id DB90C1FB5E;
-	Thu, 30 Oct 2025 17:38:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1761845886; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	s=arc-20240116; t=1761847525; c=relaxed/simple;
+	bh=5dJCpSYJda5JOWuZQ03rOxB+6fmYMRpkRNbSd+lQi08=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bsDwMYMA+C3SBPBIEq5QdKq6BnZdN/Yc4QAtOnM8Z2sqkhTY6MWEMWyL3wP6gvj07VOLPbfhI86OsBC9q38BxYXD12uocP52x3pXKloDpGUNAACEB8YUusOxR5Zd8r600vwmCY47pBXYHo+fuTDOC1B5bgeNVi0xshWOJifsW3Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b=b0t/wa0a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 873CEC4CEF1;
+	Thu, 30 Oct 2025 18:05:24 +0000 (UTC)
+Authentication-Results: smtp.kernel.org;
+	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="b0t/wa0a"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
+	t=1761847522;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Q9dUav+ktzqD3z+iw5mtf6ik4qYvWyeiX1JcgrpnLOE=;
-	b=W0j9FuHi5ia4BtiSgtwVlKazxjkplEnVTO+322TaITPrGd6KL8Ke5ZYyz6I5ek6IaPCrGi
-	PodQD5XdDjpVP0NYFTqdCGjzCe2i9rydb+OMqA20ZS3gN01fzIdY5LvwAVueIy60kjwaTv
-	8tkIF7OMn8XuJTz2TM7DwDCR3elNjWg=
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1761845884; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Q9dUav+ktzqD3z+iw5mtf6ik4qYvWyeiX1JcgrpnLOE=;
-	b=YOGQbZ7HuAZIjKHoD/vaheIP05zeYqQTh0dlsr4cGxRZzLX+xxzKVj+kgfzl4V5QF1lu2k
-	R0/tICs6kvuWSIcfQK5WjPtBHLX4hQjxK/R9O1it5roNylNWLzfLumns+7msi+uUmScdnx
-	Ey77P9CzFZxUybXB18vc72Zm/nLT1rY=
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 9FE971396A;
-	Thu, 30 Oct 2025 17:38:04 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id COjxJXyiA2liXAAAD6G6ig
-	(envelope-from <mwilck@suse.com>); Thu, 30 Oct 2025 17:38:04 +0000
-Message-ID: <f4ef82a5ca88901653ce07fb0313c144a0fdb6ac.camel@suse.com>
-Subject: Re: [PATCH v3] block: Remove queue freezing from several sysfs
- store callbacks
-From: Martin Wilck <mwilck@suse.com>
-To: Bart Van Assche <bvanassche@acm.org>, Jens Axboe <axboe@kernel.dk>
-Cc: linux-block@vger.kernel.org, Christoph Hellwig <hch@lst.de>, Nilay
- Shroff	 <nilay@linux.ibm.com>, Benjamin Marzinski <bmarzins@redhat.com>, 
-	stable@vger.kernel.org, Damien Le Moal <dlemoal@kernel.org>, Chaitanya
- Kulkarni	 <kch@nvidia.com>, Hannes Reinecke <hare@suse.de>
-Date: Thu, 30 Oct 2025 18:38:04 +0100
-In-Reply-To: <20251030172417.660949-1-bvanassche@acm.org>
-References: <20251030172417.660949-1-bvanassche@acm.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.1 
+	bh=JMs9QZUJ7HcpIibPSK9sPD6W2zzm5fAqrjn4MgdL9bg=;
+	b=b0t/wa0aVWOq4N9g2M1jjQgtOzhZAL0/kFFKSDR+7+36kKpOcLWJuBDaJAZ6Iidub/7T6t
+	+mCW4PBOzPsL2vcq2cl1TLdPPhrlRRv9aJ9sSQYhpt/xtXrv2uAH5w4D9PvUFh8f3fkN6I
+	63IjPOdlbC0meKJHOkLCZ94aZNrLiHY=
+Received: 
+	by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 4508ba34 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
+	Thu, 30 Oct 2025 18:05:22 +0000 (UTC)
+Date: Thu, 30 Oct 2025 19:05:16 +0100
+From: "Jason A. Donenfeld" <Jason@zx2c4.com>
+To: linux-kernel@vger.kernel.org
+Cc: linux-tip-commits@vger.kernel.org, stable@vger.kernel.org,
+	Gregory Price <gourry@gourry.net>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org
+Subject: Re: [tip: x86/urgent] x86/CPU/AMD: Add RDSEED fix for Zen5
+Message-ID: <aQOo3LcsdU23q1i2@zx2c4.com>
+References: <176165291198.2601451.3074910014537130674.tip-bot2@tip-bot2>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Spam-Level: 
-X-Spamd-Result: default: False [-4.30 / 50.00];
-	BAYES_HAM(-3.00)[99.99%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-0.999];
-	MIME_GOOD(-0.10)[text/plain];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	ARC_NA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.com:s=susede1];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,suse.com:mid,lst.de:email,imap1.dmz-prg2.suse.org:helo,acm.org:email]
-X-Spam-Flag: NO
-X-Spam-Score: -4.30
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <176165291198.2601451.3074910014537130674.tip-bot2@tip-bot2>
 
-On Thu, 2025-10-30 at 10:24 -0700, Bart Van Assche wrote:
-> Freezing the request queue from inside sysfs store callbacks may
-> cause a
-> deadlock in combination with the dm-multipath driver and the
-> queue_if_no_path option. Additionally, freezing the request queue
-> slows
-> down system boot on systems where sysfs attributes are set
-> synchronously.
->=20
-> Fix this by removing the blk_mq_freeze_queue() /
-> blk_mq_unfreeze_queue()
-> calls from the store callbacks that do not strictly need these
-> callbacks.
-> This patch may cause a small delay in applying the new settings.
->=20
-> This patch affects the following sysfs attributes:
-> * io_poll_delay
-> * io_timeout
-> * nomerges
-> * read_ahead_kb
-> * rq_affinity
->=20
-> ...
->=20
-> Cc: Christoph Hellwig <hch@lst.de>
-> Cc: Nilay Shroff <nilay@linux.ibm.com>
-> Cc: Martin Wilck <mwilck@suse.com>
-> Cc: Benjamin Marzinski <bmarzins@redhat.com>
+Hi,
+
+On Tue, Oct 28, 2025 at 12:01:51PM -0000, tip-bot2 for Gregory Price wrote:
+> x86/CPU/AMD: Add RDSEED fix for Zen5
+> 
+> There's an issue with RDSEED's 16-bit and 32-bit register output
+> variants on Zen5 which return a random value of 0 "at a rate inconsistent
+> with randomness while incorrectly signaling success (CF=1)". Search the
+> web for AMD-SB-7055 for more detail.
+> 
+> Add a fix glue which checks microcode revisions.
+> 
+>   [ bp: Add microcode revisions checking, rewrite. ]
+> 
 > Cc: stable@vger.kernel.org
-> Fixes: af2814149883 ("block: freeze the queue in queue_attr_store")
-> Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-> ---
->=20
-> Changes compared to v2:
-> =C2=A0- Dropped the controversial patch "block: Restrict the duration of
-> sysfs
-> =C2=A0=C2=A0 attribute changes".
+> Signed-off-by: Gregory Price <gourry@gourry.net>
+> Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+> Link: https://lore.kernel.org/r/20251018024010.4112396-1-gourry@gourry.net
 
-So the "deadlock" situation for the other sysfs attributes that you
-handled with the timeout in v2 will remain now? Are you planning to
-send a follow-up patch for these attributes?
+I didn't see this on LKML or any mailing list before this appeared in
+tip. Did I miss something?
 
-Martin
-
+Jason
 
