@@ -1,164 +1,154 @@
-Return-Path: <stable+bounces-191683-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191684-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02135C1DED7
-	for <lists+stable@lfdr.de>; Thu, 30 Oct 2025 01:37:25 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 948DAC1DF07
+	for <lists+stable@lfdr.de>; Thu, 30 Oct 2025 01:42:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E40213A599F
-	for <lists+stable@lfdr.de>; Thu, 30 Oct 2025 00:37:04 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 72E694E4C59
+	for <lists+stable@lfdr.de>; Thu, 30 Oct 2025 00:42:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A7521E51EA;
-	Thu, 30 Oct 2025 00:37:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D9CC1EB5FD;
+	Thu, 30 Oct 2025 00:42:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="HoJR5X5m"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KsCcZ2yy"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C97771E7C34
-	for <stable@vger.kernel.org>; Thu, 30 Oct 2025 00:36:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 266A51F4606
+	for <stable@vger.kernel.org>; Thu, 30 Oct 2025 00:42:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761784621; cv=none; b=DMRt5SV1Vwnr/ydLbQIq/JvHNUL47L9WWr3CUab1Qz2hba8Bfq6bEvBKwvDjEg16OT9x2S5lK8ii302fxwSSeHI7+EtJpK4vz7P0MDzvOg3JirxQROnX6rl+MlbXP5jZCVc+aHUkwc+IRNajC9rWHNWtBpIWNOewFvp4J4j/hlQ=
+	t=1761784947; cv=none; b=rmvhP/fJsGNEU9MtZuYEIcaHQXiC11Ge23iAq5XoMIKjvRa97J7doptE3chfcPAPvhdoZXQbXYbXMYQmcXwCJHbn2TM6OiU9Juccnv6/Z6fMiGET86OAhHNmeqpHJ9RqzBrcaxyB5YrbTMot57XfjWtqzrtFhv8XeB3O9/EturM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761784621; c=relaxed/simple;
-	bh=vc+Z4vwJmfybJI6vUwSlj+i4Y37gu+pDm/b5oN1SdWE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qBCp80iCtI+LdN3zjAPtTZP1Sluqo5X5k7zDxtFZYjSSpwjTRSqe343F0AT7eGDq0YTpCoE+uI6iKAfZAqObxKal1la6o6EPQCZ893Vf23EBQeucIKzxsK0EwUwmO53rFUYSMVcBkFZAZKaUDrU9toAdL0lHg/oXTW8+vwCqKpY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=HoJR5X5m; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1761784619;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=RpdMkLEBxAzGgTMAiZJaINSdgkvujrmbEy562gQUFuo=;
-	b=HoJR5X5mrJxPh9yCxSrpfT5MLOXHoJq0CZtiTTslOVj8Eap3upmQb8yARzRIIjl+z2dRi6
-	ti3tlLLohv+InFexAe9qcRBl77KjSwzWniUIuAl+2Gxxl4IwLb158eo8OU3kcIn51xrI0A
-	gx2YOTYwLYhtSHxH1/kiTzFS7xa6V5w=
-Received: from mail-il1-f198.google.com (mail-il1-f198.google.com
- [209.85.166.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-593-yfGPUn0jMWePk0OkpTCOSA-1; Wed, 29 Oct 2025 20:36:57 -0400
-X-MC-Unique: yfGPUn0jMWePk0OkpTCOSA-1
-X-Mimecast-MFC-AGG-ID: yfGPUn0jMWePk0OkpTCOSA_1761784617
-Received: by mail-il1-f198.google.com with SMTP id e9e14a558f8ab-430cf6c6e20so7744935ab.2
-        for <stable@vger.kernel.org>; Wed, 29 Oct 2025 17:36:57 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761784616; x=1762389416;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=RpdMkLEBxAzGgTMAiZJaINSdgkvujrmbEy562gQUFuo=;
-        b=T+riwnKPO2p/SwpR5AxHfTRSoYb9QirtU3V6DfuuTEQvB8Ky+MgmUoFlrdcHyNKr4Y
-         8yp7YuILGlxWY5vEL4s1WV25fI/l9vXGuivlq2EmUT3/aecDpVlndPTBy9xt0gvB12/O
-         LKngdui0jIucDlGeyARZGOK55KFBWpTkOmdKs4M3Mu28uAw3Hs0jgwGWyfqyZulh3/Ad
-         Vf7ffoetJfQaphS612+FW+gVDdOwxDgd6+s5veaMsf5cV2DXaRhw2W9DmS0nz55qGQeR
-         sQJ9UlbF5HqpXIUzdiImEBYn4YxnnDwgDP7Qc80GheU7DwogPleR3sTwkP2Tqg6bkw/f
-         R73g==
-X-Forwarded-Encrypted: i=1; AJvYcCVVJkCKPRYaa7y/b8vdHclLMr6QzZvuVEKQ+b4UNDzCeQQ3O6wyc4HbMyCyWYYPKRooGj8cpqU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyPLob8ODqJHANMe6e5Kgwe5VWr4dUiX6qbNcaCJHjWr5BP3zii
-	KPru5o+0le0UNIkgcwv9uHHfPgnJDex7EhcdbfsEZPOYiciHsVgmpiCZGpxXkAwZ1jxulyosgFM
-	CVnztZSN2pRNb7FKl3EO7+sddrZ3E8UPm9CcsC9niroFEvJM90d8fHYHCjoh6k5LWaFOq+UkrUG
-	pm/sUAfb1bBw3F3ShC/wQ3hqLjVkkXSPzijZTds8EN5CE=
-X-Gm-Gg: ASbGncuIZmQ/kwr0OLj6I8eB/nmpt2rWA/ziYJEEqFmwd8XwSH6+fTg4dYJfjuJAa0z
-	VUk173DoA4J9k96zCV89ihCbSU9ZXSRvh230JHNNszubuIvWgJTSRrZnSoKB9DZrwLeV5/FRq5T
-	WIpgp8TPS2OM8F/QPvcBEVnRFmSgSh2DMiwnQEOlBsIUZJkzvlSqKEqSA5KWBZDjlvkFQ8VMvvh
-	KbuQ5427Os3ySsh
-X-Received: by 2002:a92:cdab:0:b0:42f:9eb7:759b with SMTP id e9e14a558f8ab-432f9044dffmr57158545ab.28.1761784616634;
-        Wed, 29 Oct 2025 17:36:56 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGZuijjJOo7FLk3K/tPaprJFeBWImzkLs7KAevx4fRe2hGV4YYIEo0lHTFjE0zedcBVsWSD7uSDSINEiDu/904=
-X-Received: by 2002:a92:cdab:0:b0:42f:9eb7:759b with SMTP id
- e9e14a558f8ab-432f9044dffmr57158385ab.28.1761784616273; Wed, 29 Oct 2025
- 17:36:56 -0700 (PDT)
+	s=arc-20240116; t=1761784947; c=relaxed/simple;
+	bh=WqLbkS2L2A72MkRIWAP9Cf0KEfzLcYVlvhMlsvEh82A=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dKUNI5zch5qAN0fI/H+W9m+dN6Uf9XMFNoPLJuE5H3w/rezjJI8f4qP1OD48XyC9n7MIhiLn6DlBMNR4XQB/SCBEaF450xwwcJTqdKiVqFDfia5MdcUpptrAX0rjETp3W4IpFLXtYnKVhz4sxwq24bGL3MDaUT+J4HLFZ75/v24=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=KsCcZ2yy; arc=none smtp.client-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1761784946; x=1793320946;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=WqLbkS2L2A72MkRIWAP9Cf0KEfzLcYVlvhMlsvEh82A=;
+  b=KsCcZ2yyHjUuZ52Mlo125ApbIarIkE3XrgppwsOBlF+L3lR7GOg91Mb2
+   YSOtaD3/ree7TSOHntITHd2dA69Or3P6uosPeCXRH4Nx0dn6isvK7Qw4Q
+   h5YDyYMpyNHe6xB7Rv0JZ2DXpUvLaPZ5KS0fkrb07ZvJy4OGHsG8ZtF7A
+   M9OCtFSxEU+YkqhfEMhp7Epnu0U2gijDFTgSMoM3xEAt2/4RHVeZ/vm9Z
+   DSLsvNgupEhABCDTUi0hi7nbO13MTRz9jZE7ffGGnvmeiQQKVkq8p7x6Q
+   OWafgUgJk6yTd7vBUNaZxWZJb5ng4JGdQxGgAnWuvtjvCdA3uI+rK5VU8
+   g==;
+X-CSE-ConnectionGUID: siK7mirWSfe7w9CmF6WobQ==
+X-CSE-MsgGUID: hribS9wcQZm3IpOpcZUKNA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11597"; a="81339717"
+X-IronPort-AV: E=Sophos;i="6.19,265,1754982000"; 
+   d="scan'208";a="81339717"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Oct 2025 17:42:26 -0700
+X-CSE-ConnectionGUID: fAfK9XMqQ/yUvTK3gSB+Dg==
+X-CSE-MsgGUID: wf049fDOT7mMo1taJu+yew==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,265,1754982000"; 
+   d="scan'208";a="185007590"
+Received: from aschofie-mobl2.amr.corp.intel.com (HELO localhost) ([10.124.223.174])
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Oct 2025 17:42:25 -0700
+From: Alison Schofield <alison.schofield@intel.com>
+To: Ira Weiny <ira.weiny@intel.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Vishal Verma <vishal.l.verma@intel.com>,
+	Dave Jiang <dave.jiang@intel.com>
+Cc: Alison Schofield <alison.schofield@intel.com>,
+	nvdimm@lists.linux.dev,
+	stable@vger.kernel.org
+Subject: [PATCH] tools/testing/nvdimm: Stop read past end of global handle array
+Date: Wed, 29 Oct 2025 17:42:20 -0700
+Message-ID: <20251030004222.1245986-1-alison.schofield@intel.com>
+X-Mailer: git-send-email 2.47.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251029191414.410442-1-desnesn@redhat.com> <20251029191414.410442-2-desnesn@redhat.com>
- <2ecf4eac-8a8b-4aef-a307-5217726ea3d4@rowland.harvard.edu>
-In-Reply-To: <2ecf4eac-8a8b-4aef-a307-5217726ea3d4@rowland.harvard.edu>
-From: Desnes Nunes <desnesn@redhat.com>
-Date: Wed, 29 Oct 2025 21:36:45 -0300
-X-Gm-Features: AWmQ_bkf3Zl0zsrq7ig32Ls3dqm_dQGASmfXfNZq2huLPMng2uafO8z-59mTHrg
-Message-ID: <CACaw+ez+bUOx_J4uywLKd8cxU2yzE4napZ6_fpVbk1VqNhdrxg@mail.gmail.com>
-Subject: Re: [PATCH 1/2] usb: storage: Fix memory leak in USB bulk transport
-To: Alan Stern <stern@rowland.harvard.edu>
-Cc: linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org, 
-	gregkh@linuxfoundation.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Hello Alan,
+KASAN reports a global-out-of-bounds access when running these nfit
+tests: clear.sh, pmem-errors, pfn-meta-errors.sh, btt-errors.sh,
+daxdev-errors.sh, and inject-error.sh.
 
-On Wed, Oct 29, 2025 at 6:49=E2=80=AFPM Alan Stern <stern@rowland.harvard.e=
-du> wrote:
->
-> On Wed, Oct 29, 2025 at 04:14:13PM -0300, Desnes Nunes wrote:
-> > A kernel memory leak was identified by the 'ioctl_sg01' test from Linux
-> > Test Project (LTP). The following bytes were maily observed: 0x53425355=
-.
-> >
-> > When USB storage devices incorrectly skip the data phase with status da=
-ta,
-> > the code extracts/validates the CSW from the sg buffer, but fails to cl=
-ear
-> > it afterwards. This leaves status protocol data in srb's transfer buffe=
-r,
-> > such as the US_BULK_CS_SIGN 'USBS' signature observed here. Thus, this
-> > leads to USB protocols leaks to user space through SCSI generic (/dev/s=
-g*)
-> > interfaces, such as the one seen here when the LTP test requested 512 K=
-iB.
-> >
-> > Fix the leak by zeroing the CSW data in srb's transfer buffer immediate=
-ly
-> > after the validation of devices that skip data phase.
-> >
-> > Note: Differently from CVE-2018-1000204, which fixed a big leak by zero=
--
-> > ing pages at allocation time, this leak occurs after allocation, when U=
-SB
-> > protocol data is written to already-allocated sg pages.
-> >
-> > Fixes: a45b599ad808 ("scsi: sg: allocate with __GFP_ZERO in sg_build_in=
-direct()")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Desnes Nunes <desnesn@redhat.com>
-> > ---
-> >  drivers/usb/storage/transport.c | 10 ++++++++++
-> >  1 file changed, 10 insertions(+)
-> >
-> > diff --git a/drivers/usb/storage/transport.c b/drivers/usb/storage/tran=
-sport.c
-> > index 1aa1bd26c81f..8e9f6459e197 100644
-> > --- a/drivers/usb/storage/transport.c
-> > +++ b/drivers/usb/storage/transport.c
-> > @@ -1200,7 +1200,17 @@ int usb_stor_Bulk_transport(struct scsi_cmnd *sr=
-b, struct us_data *us)
-> >                                               US_BULK_CS_WRAP_LEN &&
-> >                                       bcs->Signature =3D=3D
-> >                                               cpu_to_le32(US_BULK_CS_SI=
-GN)) {
-> > +                             unsigned char buf[US_BULK_CS_WRAP_LEN];
->
-> You don't have to define another buffer here.  bcs is still available
-> and it is exactly the right size.
->
-> Alan Stern
+[] BUG: KASAN: global-out-of-bounds in nfit_test_ctl+0x769f/0x7840 [nfit_test]
+[] Read of size 4 at addr ffffffffc03ea01c by task ndctl/1215
+[] The buggy address belongs to the variable:
+[] handle+0x1c/0x1df4 [nfit_test]
 
-Sure - will send a v2 using bcs instead of the new buffer.
+The nfit_test mock platform defines a static table of 7 NFIT DIMM
+handles, but nfit_test.0 builds 8 mock DIMMs total (5 DCR + 3 PM).
+When the final DIMM (id == 7) is selected, this code:
+    spa->devices[0].nfit_device_handle = handle[nvdimm->id];
+indexes past the end of the 7-entry table, triggering KASAN.
 
-Thanks for the review.
+Fix this by adding an eighth entry to the handle[] table and a
+defensive bounds check so the test fails cleanly instead of
+dereferencing out-of-bounds memory.
 
---=20
-Desnes Nunes
+To generate a unique handle, the new entry sets the 'imc' field rather
+than the 'chan' field. This matches the pattern of earlier entries
+and avoids introducing a non-zero 'chan' which is never used in the
+table. Computing the new handle shows no collision.
+
+Notes from spelunkering for a Fixes Tag:
+
+Commit 209851649dc4 ("acpi: nfit: Add support for hot-add") increased
+the mock DIMMs to eight yet kept the handle[] array at seven.
+
+Commit 10246dc84dfc ("acpi nfit: nfit_test supports translate SPA")
+began using the last mock DIMM, triggering the KASAN.
+
+Commit af31b04b67f4 ("tools/testing/nvdimm: Fix the array size for
+dimm devices.") addressed a related KASAN warning but not the actual
+handle array length.
+
+Fixes: 209851649dc4 ("acpi: nfit: Add support for hot-add")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Alison Schofield <alison.schofield@intel.com>
+---
+ tools/testing/nvdimm/test/nfit.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/tools/testing/nvdimm/test/nfit.c b/tools/testing/nvdimm/test/nfit.c
+index cfd4378e2129..cdbf9e8ee80a 100644
+--- a/tools/testing/nvdimm/test/nfit.c
++++ b/tools/testing/nvdimm/test/nfit.c
+@@ -129,6 +129,7 @@ static u32 handle[] = {
+ 	[4] = NFIT_DIMM_HANDLE(0, 1, 0, 0, 0),
+ 	[5] = NFIT_DIMM_HANDLE(1, 0, 0, 0, 0),
+ 	[6] = NFIT_DIMM_HANDLE(1, 0, 0, 0, 1),
++	[7] = NFIT_DIMM_HANDLE(1, 0, 1, 0, 1),
+ };
+ 
+ static unsigned long dimm_fail_cmd_flags[ARRAY_SIZE(handle)];
+@@ -688,6 +689,13 @@ static int nfit_test_search_spa(struct nvdimm_bus *bus,
+ 	nd_mapping = &nd_region->mapping[nd_region->ndr_mappings - 1];
+ 	nvdimm = nd_mapping->nvdimm;
+ 
++	if (WARN_ON_ONCE(nvdimm->id >= ARRAY_SIZE(handle))) {
++		dev_err(&bus->dev,
++			"invalid nvdimm->id %u >= handle array size %zu\n",
++			nvdimm->id, ARRAY_SIZE(handle));
++		return -EINVAL;
++	}
++
+ 	spa->devices[0].nfit_device_handle = handle[nvdimm->id];
+ 	spa->num_nvdimms = 1;
+ 	spa->devices[0].dpa = dpa;
+
+base-commit: 211ddde0823f1442e4ad052a2f30f050145ccada
+-- 
+2.37.3
 
 
