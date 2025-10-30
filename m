@@ -1,90 +1,95 @@
-Return-Path: <stable+bounces-191759-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191760-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C444C21A86
-	for <lists+stable@lfdr.de>; Thu, 30 Oct 2025 19:05:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CAD23C21AFD
+	for <lists+stable@lfdr.de>; Thu, 30 Oct 2025 19:09:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF5DD4261E1
-	for <lists+stable@lfdr.de>; Thu, 30 Oct 2025 18:05:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 076AF463743
+	for <lists+stable@lfdr.de>; Thu, 30 Oct 2025 18:09:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14EC2225761;
-	Thu, 30 Oct 2025 18:05:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5256374AA3;
+	Thu, 30 Oct 2025 18:08:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="b0t/wa0a"
+	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="WQKLZHod"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from 003.mia.mailroute.net (003.mia.mailroute.net [199.89.3.6])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDD9C1548C;
-	Thu, 30 Oct 2025 18:05:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA4D536E375;
+	Thu, 30 Oct 2025 18:08:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.3.6
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761847525; cv=none; b=Q5Fqe6w2Y5p1SZ8QlJPqAaoFqAPfBYnc8U8WzmN0MqzX0cyVBo0EThRCuHUYc/OpllyoYpvWX0hEkJ3hdiyx99F59gNueOCD8bQoLJOYP5Qex1j+cbQbVKMJIe/KoLH3rT2kxuSgvHFYNKdD+chQF5WjKeJgabMYSw6DHmQUom8=
+	t=1761847698; cv=none; b=r8VbOxtVI+eoldOAQdY3/n9YdmHQ3iM51c/L98YsEVpo5S0ZsBseIPfhIXk+4c9RSYMhgUhpdukP/jKNbfQ2yVmdYstvDTZ23N0lCD332LzCAUamA8iQLuu3ItcLAE2wwK3dsstmXEAxSjMtj0GRqeNHRU5GyK5K+bIJmPbdfvo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761847525; c=relaxed/simple;
-	bh=5dJCpSYJda5JOWuZQ03rOxB+6fmYMRpkRNbSd+lQi08=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bsDwMYMA+C3SBPBIEq5QdKq6BnZdN/Yc4QAtOnM8Z2sqkhTY6MWEMWyL3wP6gvj07VOLPbfhI86OsBC9q38BxYXD12uocP52x3pXKloDpGUNAACEB8YUusOxR5Zd8r600vwmCY47pBXYHo+fuTDOC1B5bgeNVi0xshWOJifsW3Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b=b0t/wa0a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 873CEC4CEF1;
-	Thu, 30 Oct 2025 18:05:24 +0000 (UTC)
-Authentication-Results: smtp.kernel.org;
-	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="b0t/wa0a"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
-	t=1761847522;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=JMs9QZUJ7HcpIibPSK9sPD6W2zzm5fAqrjn4MgdL9bg=;
-	b=b0t/wa0aVWOq4N9g2M1jjQgtOzhZAL0/kFFKSDR+7+36kKpOcLWJuBDaJAZ6Iidub/7T6t
-	+mCW4PBOzPsL2vcq2cl1TLdPPhrlRRv9aJ9sSQYhpt/xtXrv2uAH5w4D9PvUFh8f3fkN6I
-	63IjPOdlbC0meKJHOkLCZ94aZNrLiHY=
-Received: 
-	by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 4508ba34 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
-	Thu, 30 Oct 2025 18:05:22 +0000 (UTC)
-Date: Thu, 30 Oct 2025 19:05:16 +0100
-From: "Jason A. Donenfeld" <Jason@zx2c4.com>
-To: linux-kernel@vger.kernel.org
-Cc: linux-tip-commits@vger.kernel.org, stable@vger.kernel.org,
-	Gregory Price <gourry@gourry.net>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org
-Subject: Re: [tip: x86/urgent] x86/CPU/AMD: Add RDSEED fix for Zen5
-Message-ID: <aQOo3LcsdU23q1i2@zx2c4.com>
-References: <176165291198.2601451.3074910014537130674.tip-bot2@tip-bot2>
+	s=arc-20240116; t=1761847698; c=relaxed/simple;
+	bh=T9zIm0gSu4kD3QxXQl0Q2BQyodM1bhAdjnLFxbtSi50=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Uhd3YSeeMSkIvUvzFhHPNLRbDHE7vi2EnmtBp/S0zxHG0vyHb0ucqm4cQZrXA8JkZlPV1wHNAxOFOwWtmvg7kz/9KgeNKG9k9BR0mSMYAKsYcm4gki7FpJIitY5z6bIP4yrEi+XqJuWjgTGYm/ivZ35CSny3Rx56xcFkhy/IlLo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=WQKLZHod; arc=none smtp.client-ip=199.89.3.6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
+Received: from localhost (localhost [127.0.0.1])
+	by 003.mia.mailroute.net (Postfix) with ESMTP id 4cyBtQ5pjMzlgqTq;
+	Thu, 30 Oct 2025 18:08:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
+	content-transfer-encoding:content-type:content-type:in-reply-to
+	:from:from:content-language:references:subject:subject
+	:user-agent:mime-version:date:date:message-id:received:received;
+	 s=mr01; t=1761847692; x=1764439693; bh=T9zIm0gSu4kD3QxXQl0Q2BQy
+	odM1bhAdjnLFxbtSi50=; b=WQKLZHodyoO/cFA4rZnuxmcTMPl1J6lZjczTQmQX
+	0lcomaVrcWTUgYDDmtuob7TiXHXGNo95h3OkBUL85WxvT+C/mnpsrJaAPDCKsEC5
+	Zj40yTrdh//p2wWeBFQ9layhw8PZQqPzLoY9bg2XNAc5NNTf+Uqx7PwlTom6OoJI
+	hmqRzKx5nzt6+X1Yw9ejYkXrpnIY2E5SMV9fXwRK1sDeMuBsWxxXQj9TU3S5nk8D
+	k9r4SuPgd/+Dztv0Wn7+nikUZ3KS8njwiE61M9o+JygfvYFjIVlSh/7YtfeYUh/M
+	kTd4i7n0fDTVhVCA/gsCMfRY+XWISS9iMrR+TMpX0Ohuaw==
+X-Virus-Scanned: by MailRoute
+Received: from 003.mia.mailroute.net ([127.0.0.1])
+ by localhost (003.mia [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
+ id 6tTr8fDkTX7R; Thu, 30 Oct 2025 18:08:12 +0000 (UTC)
+Received: from [100.119.48.131] (unknown [104.135.180.219])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bvanassche@acm.org)
+	by 003.mia.mailroute.net (Postfix) with ESMTPSA id 4cyBtC3RfszltBDW;
+	Thu, 30 Oct 2025 18:08:01 +0000 (UTC)
+Message-ID: <1b4dd7b7-2af2-4026-b6e2-be517b249ba3@acm.org>
+Date: Thu, 30 Oct 2025 11:08:00 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <176165291198.2601451.3074910014537130674.tip-bot2@tip-bot2>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] block: Remove queue freezing from several sysfs store
+ callbacks
+To: Martin Wilck <mwilck@suse.com>, Jens Axboe <axboe@kernel.dk>
+Cc: linux-block@vger.kernel.org, Christoph Hellwig <hch@lst.de>,
+ Nilay Shroff <nilay@linux.ibm.com>, Benjamin Marzinski
+ <bmarzins@redhat.com>, stable@vger.kernel.org,
+ Damien Le Moal <dlemoal@kernel.org>, Chaitanya Kulkarni <kch@nvidia.com>,
+ Hannes Reinecke <hare@suse.de>
+References: <20251030172417.660949-1-bvanassche@acm.org>
+ <f4ef82a5ca88901653ce07fb0313c144a0fdb6ac.camel@suse.com>
+Content-Language: en-US
+From: Bart Van Assche <bvanassche@acm.org>
+In-Reply-To: <f4ef82a5ca88901653ce07fb0313c144a0fdb6ac.camel@suse.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hi,
+On 10/30/25 10:38 AM, Martin Wilck wrote:
+> So the "deadlock" situation for the other sysfs attributes that you
+> handled with the timeout in v2 will remain now? Are you planning to
+> send a follow-up patch for these attributes?
 
-On Tue, Oct 28, 2025 at 12:01:51PM -0000, tip-bot2 for Gregory Price wrote:
-> x86/CPU/AMD: Add RDSEED fix for Zen5
-> 
-> There's an issue with RDSEED's 16-bit and 32-bit register output
-> variants on Zen5 which return a random value of 0 "at a rate inconsistent
-> with randomness while incorrectly signaling success (CF=1)". Search the
-> web for AMD-SB-7055 for more detail.
-> 
-> Add a fix glue which checks microcode revisions.
-> 
->   [ bp: Add microcode revisions checking, rewrite. ]
-> 
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Gregory Price <gourry@gourry.net>
-> Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-> Link: https://lore.kernel.org/r/20251018024010.4112396-1-gourry@gourry.net
+Only if agreement can be reached about the approach that should be used
+to fix the deadlock for the remaining request queue sysfs attributes.
 
-I didn't see this on LKML or any mailing list before this appeared in
-tip. Did I miss something?
+Thanks,
 
-Jason
+Bart.
 
