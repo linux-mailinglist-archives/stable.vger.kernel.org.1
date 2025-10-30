@@ -1,172 +1,138 @@
-Return-Path: <stable+bounces-191699-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191700-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 983A5C1EF0D
-	for <lists+stable@lfdr.de>; Thu, 30 Oct 2025 09:18:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 83F3CC1F18E
+	for <lists+stable@lfdr.de>; Thu, 30 Oct 2025 09:52:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B9B5A18837C9
-	for <lists+stable@lfdr.de>; Thu, 30 Oct 2025 08:18:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F17EC1897958
+	for <lists+stable@lfdr.de>; Thu, 30 Oct 2025 08:48:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40E03337699;
-	Thu, 30 Oct 2025 08:17:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05FAC311956;
+	Thu, 30 Oct 2025 08:47:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="bCyHLPDf"
+	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="nmzpqbDj";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="ITFmpGqq"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from fout-a7-smtp.messagingengine.com (fout-a7-smtp.messagingengine.com [103.168.172.150])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F44333436F
-	for <stable@vger.kernel.org>; Thu, 30 Oct 2025 08:17:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB1A72DC76F;
+	Thu, 30 Oct 2025 08:47:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.150
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761812272; cv=none; b=E4z9sgOWo0plh/Fj8s+b7jP1UuSB4EdQwvbBOhrEqe+JK6qa/iYQcXVk4jKNuHU21gG20y7lj5xEJNJCOp2/g19iqB20V7J9LpksKpNXq9uEciadwzTDh7Ku9dndRXSZ8lsKf+psRbQO0jY9xluvdhuofCc/xJgGyZZjJWWnEgE=
+	t=1761814066; cv=none; b=QeoOTzMX5dP0uffAcf7RrbNtwdbRC1oqlXX2yl9W31hcI9t/dBgAiVcvC8QIRCtfOB+y+THwckFnGmWTnr6UbaTSlHPDfbV1kIAM25oF5LvTwFcaToao9f4eSUMeXJIuHDrd/SCW/dk+nk8JFSkvRRXFoormczsMNf3tsRN7Fl4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761812272; c=relaxed/simple;
-	bh=ck1HslZ0kp7J+WUPymd8AWip7MysypRZtLhSaaOAht4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=U+7i6F7kIME3hzsQqz4ieesKYBzMyVCiAvBWEdpvAdi4ezzqozA8J0CHznHMwL7WcEbHtR7hLMO34g1IR0zZRZ/hkXySPgWuhkz04IjgJSF37qQAqt4AWyXohR78Etdqibaqx/qJllIzqJ4/DTqTqYRATMRxlXMkUu9ZI16Sgls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=bCyHLPDf; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1761812269;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=62lhztl4PsEx1t/ejtRJFKI6a/pEqBnCixqR/6fg7Gg=;
-	b=bCyHLPDfKv7g/b8xvvj/ZiR4JFO6/pqfQ+icQubrr9NjC5+drNLokZnulFrN6fJyBU/Byw
-	5kaAb/68+TWv2M2GYEjLuCyjxQydU+gGcDOLtiSp3IpE7PPzCKR69N5MoqCUZzYUYyIPjC
-	Z9Zchj1R3ps+DzOiGVA0jGZSPluP/X8=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-313-N-rebLRKPwesZsumngG2rg-1; Thu, 30 Oct 2025 04:17:47 -0400
-X-MC-Unique: N-rebLRKPwesZsumngG2rg-1
-X-Mimecast-MFC-AGG-ID: N-rebLRKPwesZsumngG2rg_1761812266
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-42855d6875fso428817f8f.3
-        for <stable@vger.kernel.org>; Thu, 30 Oct 2025 01:17:47 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761812266; x=1762417066;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=62lhztl4PsEx1t/ejtRJFKI6a/pEqBnCixqR/6fg7Gg=;
-        b=wvTvy3bsD+tM/nWi++Y39ssaiM1wsE9RjYOQVlvaZrQlTOan66l7gl7drnv8uVDt8c
-         OjYCQG85lk6F/wVoAEEk1+dQO4WE3Iu3clJxjMVZ1P/xFKPeaelX9jFZEsrBkYGaf28W
-         jZKJXaD31KLNYDrtAbh2HlkG1Vqg4Oi5faF5lJ6rGr5ofFO8PDnLiAM2T8tNH5rTqZtf
-         Wx08ZAthIqmlxpzZIwS22jnHZvuQ2xY886DATay+yRpa1dAZqhRvvH+ZOgY9YwCbwfPs
-         mu9DxA5iAB08CswPB0G63iNErIifus5gVL6kX8GaGb2urcYUQX2BkYKVVDi1zJaLSPv8
-         3ONA==
-X-Forwarded-Encrypted: i=1; AJvYcCW7ajvGHEqWyDT/c2r/l7ZLZj6Rhrt5QAddATIVPNVwEard8ICbUFAe6z5BGMsGYmBlgsfTilc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YynlEOsLPCuYGWT1AV7qnECS5oyOy18TnBSncd2ZKUo1HGdwfuW
-	Rg1pdNqQ8GQADD87lQ9v90qma/3iPI7acZxTJm1omP51uhA32TVaZwGXjuk+VUzVCVGFff+WSbZ
-	2DyiWwtCUrAsLceSg+pHZOfkzSL+3PVTTm284tVFAUN4huIwS/2Ugkk/QeA==
-X-Gm-Gg: ASbGncuj9B6d0oGyuPBRcpH+VNbfTjxMiZhEDGYIVZNAymYGrJ8SQM7mc/3cWqFh8WB
-	HVotKHXkdhpZDE503n2S8xS4d29csrGc5JR92fPF1NzxCR6BsfogQUKaRDmulctU6HIhKlxwFvU
-	6M2yuICIJre0AUdB6PRDwWB6nV5yRtxya4PlhmnsWDPKkGH4VRPZjI+p5RfjGxaOw1d9JvYXEwe
-	hWh6VmEWPfT5Jja7Fps6owocIdSI+VnXGsTqSSZpgMACPBuYC6ITclbagcKg1U4mRrIrIFrjkWJ
-	XupUCev//LqHQQjLWWRFDzYgemzNXW9m2n/ncauioZQyiiQUOKKjRR+pdafP/kLJ+fZh
-X-Received: by 2002:a05:6000:240c:b0:429:8a40:e995 with SMTP id ffacd0b85a97d-429b4ca2efemr2051331f8f.61.1761812266304;
-        Thu, 30 Oct 2025 01:17:46 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFCC3j3pkeyjV7zwh2zWVtG7xi2X9bxfuD0Q0xhE4+gU6d0C0xhwka/NPYq7UvjEnPJvnZ1gw==
-X-Received: by 2002:a05:6000:240c:b0:429:8a40:e995 with SMTP id ffacd0b85a97d-429b4ca2efemr2051295f8f.61.1761812265790;
-        Thu, 30 Oct 2025 01:17:45 -0700 (PDT)
-Received: from redhat.com ([2a0d:6fc0:152e:9d00:de90:c0da:d265:6f70])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-429952df473sm30541624f8f.42.2025.10.30.01.17.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Oct 2025 01:17:45 -0700 (PDT)
-Date: Thu, 30 Oct 2025 04:17:42 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Jason Wang <jasowang@redhat.com>
-Cc: Paolo Abeni <pabeni@redhat.com>, xuanzhuo@linux.alibaba.com,
-	eperezma@redhat.com, andrew+netdev@lunn.ch, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org,
-	virtualization@lists.linux.dev, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH net] virtio_net: fix alignment for virtio_net_hdr_v1_hash
-Message-ID: <20251030041636-mutt-send-email-mst@kernel.org>
-References: <20251029012434.75576-1-jasowang@redhat.com>
- <d0f1f8f5-8edf-4409-a3ee-376828f85618@redhat.com>
- <CACGkMEsTd6uCOCre8HK=5G14zu+xVOPOORZ2xcV_n9Kg6w8F5Q@mail.gmail.com>
+	s=arc-20240116; t=1761814066; c=relaxed/simple;
+	bh=YnGa9DkQdvPRdDeqi8ahGPx9h1DVPHnC6LaywWx0p5w=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=UYYv0YLF6duPmsdEeWWg/2FXENoaIVj0Le8ne3Ci9ka2wHJ486DQySPoULBj3I2UYorIOwWolmfslrPY/reXGmoETf4NEYJFxGaz3f5pm+Eq1bmqf/mfIL6dg9ZFLGdk55YNopQHqAZEjv3ZE2HsGpRsZALPmpuN/l7UZ7ZGUdk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=nmzpqbDj; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=ITFmpGqq; arc=none smtp.client-ip=103.168.172.150
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfout.phl.internal (Postfix) with ESMTP id C5E52EC011B;
+	Thu, 30 Oct 2025 04:47:43 -0400 (EDT)
+Received: from phl-imap-02 ([10.202.2.81])
+  by phl-compute-04.internal (MEProxy); Thu, 30 Oct 2025 04:47:43 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1761814063;
+	 x=1761900463; bh=+LlsZk9yFd6QOpKTkvqKXGcbGnaMjw3ZltDuDEqH3fk=; b=
+	nmzpqbDjw6y1CJqAbTLfcl+bxSs+xEkjNtDm5rU77iQqfJLfO+y1qbb3bfDastaX
+	CM16o79l9/V4AoiDN5ls7SUfDozOXPFHnMRKRKlkJG+9WoRlUvXbb1z8SPZ+NOTt
+	iHaIGJxmmybz3MDM/l3+Zx7rTpIlqftg4WNwOXY7Fu1P3SNscpRKMP0NDu1VzZC0
+	f8zNDFTUWPHtJHv30RGxfGA1yoBdk1+7E68Kr4K9V5falvg7AbexERdlhNstHhZc
+	5g8JIqXpb1Oy/qpAv6w26MgukVHf/6fzPPxRMEn+Wt8w1cjwUmhDvAxwsWfqxaw0
+	P1Vs6Gy2to83ml357+oajA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1761814063; x=
+	1761900463; bh=+LlsZk9yFd6QOpKTkvqKXGcbGnaMjw3ZltDuDEqH3fk=; b=I
+	TFmpGqqqCDBrWBwD3VwC6HHTzkdDyviLySPXNhMJvS3ZL7oplYuwPzEKOXqOwIXw
+	+bBM2TWbMzPeOucTcA2fyKtxmUyVeKvIQF4wy6eh9ycj14QzK6NhR8Sjp8uutVWX
+	s1Nc3MpTlFGcwy2eiOkmEKsC+NjdiYnkzJeF7gxAE0HFUW1s0WWijMtsO4zuMorC
+	hIwIa7BC2xpeC8ENhAddY1vHbGkL2hqbCw87bOED6Q/ukIvw3Q0EZJzfGifawoSR
+	Jzv6JS+ObBQEgxw8HW6jNUzdrN4ApF5o9Ot5wvZlPbZJQIIws2AAxMQwPMbT6V6/
+	Bw7Ihdo+CSc1bPJnj8gCA==
+X-ME-Sender: <xms:LiYDacEeXc7JF8wx4TqL_9BPZBkL55-Dn0NwhJr8TnjQnhzTtv5G5Q>
+    <xme:LiYDaQJSwho8UWHqENe-n48LwapOKkHD1m2kK3xMPcEs_f-jR-Jha_6eCO3ptNaVc
+    YyK5pM_2Js7Cev4haA4Dbdmffqfi_04_NK6VPtqkd2yFRHOqC31c2w>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdduieeiudejucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepofggfffhvfevkfgjfhfutgfgsehtjeertdertddtnecuhfhrohhmpedftehrnhgu
+    uceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrthhtvg
+    hrnhephfdthfdvtdefhedukeetgefggffhjeeggeetfefggfevudegudevledvkefhvdei
+    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprghrnh
+    gusegrrhhnuggsrdguvgdpnhgspghrtghpthhtohepkedpmhhouggvpehsmhhtphhouhht
+    pdhrtghpthhtoheplhhutggrrdgtvghrvghsohhlihessghoohhtlhhinhdrtghomhdprh
+    gtphhtthhopehlihhnmhhqtddtieesghhmrghilhdrtghomhdprhgtphhtthhopehruhgr
+    nhhjihhnjhhivgeshhhurgifvghirdgtohhmpdhrtghpthhtohepghhrvghgkhhhsehlih
+    hnuhigfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtohepfihsrgdorhgvnhgvshgr
+    shesshgrnhhgqdgvnhhgihhnvggvrhhinhhgrdgtohhmpdhrtghpthhtoheplhhinhhugi
+    dqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshhtrggs
+    lhgvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugiesfigvih
+    hsshhstghhuhhhrdhnvght
+X-ME-Proxy: <xmx:LiYDaUkRvCSMRRNT4vjLTd07Fb7CqufoXLvxIKjfZ8lKTTB-a3Zhfg>
+    <xmx:LiYDaf3vnrmPs16wiUlzsUR2gD7OzVBbth80GnRrDjgs09zjkP0WDg>
+    <xmx:LiYDaU3NSPpiLtb2RhnEqqO573m5yXalPjKMfHIyT31jxiLS3ZxRKg>
+    <xmx:LiYDaRp4IjX6-rCSRwKJkVPqYx1gV50TQR4dTQvQu-3epsqHtm5Trw>
+    <xmx:LyYDaRcJIvBGtSwUcuxluN6jYgSq8hixEOjoY0QPoKV6iRq3f5a0aiy9>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id B4B48700054; Thu, 30 Oct 2025 04:47:42 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CACGkMEsTd6uCOCre8HK=5G14zu+xVOPOORZ2xcV_n9Kg6w8F5Q@mail.gmail.com>
+X-ThreadId: AIIjj2dROt1-
+Date: Thu, 30 Oct 2025 09:47:22 +0100
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Miaoqian Lin" <linmq006@gmail.com>,
+ "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+ =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+ "Wolfram Sang" <wsa+renesas@sang-engineering.com>,
+ "Ruan Jinjie" <ruanjinjie@huawei.com>,
+ "Luca Ceresoli" <luca.ceresoli@bootlin.com>, linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org
+Message-Id: <0f712780-8af0-4894-b75c-44fd7390dc3e@app.fastmail.com>
+In-Reply-To: <20251030052834.97991-1-linmq006@gmail.com>
+References: <20251030052834.97991-1-linmq006@gmail.com>
+Subject: Re: [PATCH] misc: eeprom/idt_89hpesx: prevent bad user input in
+ idt_dbgfs_csr_write()
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
-On Thu, Oct 30, 2025 at 10:40:13AM +0800, Jason Wang wrote:
-> On Wed, Oct 29, 2025 at 4:20 PM Paolo Abeni <pabeni@redhat.com> wrote:
-> >
-> > On 10/29/25 2:24 AM, Jason Wang wrote:
-> > > From: "Michael S. Tsirkin" <mst@redhat.com>
-> > >
-> > > Changing alignment of header would mean it's no longer safe to cast a
-> > > 2 byte aligned pointer between formats. Use two 16 bit fields to make
-> > > it 2 byte aligned as previously.
-> > >
-> > > This fixes the performance regression since
-> > > commit ("virtio_net: enable gso over UDP tunnel support.") as it uses
-> > > virtio_net_hdr_v1_hash_tunnel which embeds
-> > > virtio_net_hdr_v1_hash. Pktgen in guest + XDP_DROP on TAP + vhost_net
-> > > shows the TX PPS is recovered from 2.4Mpps to 4.45Mpps.
-> > >
-> > > Fixes: 56a06bd40fab ("virtio_net: enable gso over UDP tunnel support.")
-> > > Cc: stable@vger.kernel.org
-> > > Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-> > > Signed-off-by: Jason Wang <jasowang@redhat.com>
-> >
-> > Whoops, I replied to the older thread before reading this one.
-> >
-> > Acked-by: Paolo Abeni <pabeni@redhat.com>
-> 
-> I apologize, build will be broken since
-> 
-> commit b2284768c6b32aa224ca7d0ef0741beb434f03aa
-> Author: Jason Wang <jasowang@redhat.com>
-> Date:   Wed Oct 22 11:44:21 2025 +0800
-> 
->     virtio-net: zero unused hash fields
-> 
-> I will prepare a new version.
-> 
-> Btw, it looks like there's an uAPI change that may break builds of the
-> userspace:
+On Thu, Oct 30, 2025, at 06:28, Miaoqian Lin wrote:
+> A malicious user could pass an arbitrarily bad value
+> to memdup_user_nul(), potentially causing kernel crash.
 
-No, I think this has not been out long enough to matter.
-QEMU imports linux headers extremely quickly but it can adapt.
+I think you should be more specific than 'kernel crash' here.
+As far as I can tell, the worst case would be temporarily
+consuming a MAX_ORDER_NR_PAGES allocation, leading to out-of-memory.
 
+> Fixes: 183238ffb886 ("misc: eeprom/idt_89hpesx: Switch to 
+> memdup_user_nul() helper")
 
-> diff --git a/include/uapi/linux/virtio_net.h b/include/uapi/linux/virtio_net.h
-> index 8bf27ab8bcb4..1db45b01532b 100644
-> --- a/include/uapi/linux/virtio_net.h
-> +++ b/include/uapi/linux/virtio_net.h
-> @@ -193,7 +193,8 @@ struct virtio_net_hdr_v1 {
-> 
->  struct virtio_net_hdr_v1_hash {
->         struct virtio_net_hdr_v1 hdr;
-> -       __le32 hash_value;
-> +       __le16 hash_value_lo;
-> +       __le16 hash_value_hi;
-> 
-> We can have a kernel only version for this but it probably means we
-> need a kernel only version for all the future extension of vnet
-> header?
-> 
-> Thanks
-> 
+I don't think that patch changed anything, the same thing
+would have happened with kmalloc()+copy_from_user().
+Am I missing something?
 
-Let's not complicate things too much please.
+> +	if (count == 0 || count > PAGE_SIZE)
+> +		return -EINVAL;
+> +
 
--- 
-MST
+How did you pick PAGE_SIZE as the maximum here?
 
+       Arnd
 
