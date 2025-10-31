@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-191827-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191907-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 347A9C2565E
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 15:02:52 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6596C25808
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 15:15:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B146B46358C
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 14:02:14 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 18BC74FB177
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 14:06:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94A983F9D2;
-	Fri, 31 Oct 2025 14:02:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 629D232572C;
+	Fri, 31 Oct 2025 14:06:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IZEOyRVu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IXZAjWgu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50C4AAD4B;
-	Fri, 31 Oct 2025 14:02:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 205B91F37D4;
+	Fri, 31 Oct 2025 14:06:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761919331; cv=none; b=Xx8L8D+be7pguKdQW3ce4ZvJ7IyFjxFIdjDp+mkOotk0oT/Mz1HmoB/c89nZdM3/ZZ3EE0TlL7vyAjoCk1jynXl3jB3ePI/TWy7xckKgL5ZhmtLsA++9fRypBHE68jDFhwgvQjHlDoiU2ZGA9FcUAn4dR1gSOTpxOnawKYtEEBI=
+	t=1761919562; cv=none; b=LMVIIgrYW1b7JaKWlZDHjF5hdn/3q+1d5pnuSNssq2BROF79RICN/pC5SgC1ljc0gZXN47JyaWPv6K/yRw7Ff2vGZIcVNmYksiqfKYWgtzP946nq3EDNXfGmKGeFky6bcQGa3t1hxbjx7K4BnbTJg2PGOtcjAVfVgkPf2JqtLac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761919331; c=relaxed/simple;
-	bh=3/BvSrZXvxMH+YlIhU5nnvypjS3ffXkdnD5FlzNBcxk=;
+	s=arc-20240116; t=1761919562; c=relaxed/simple;
+	bh=pkTkTVrRitfuWQwRgADNhM+pRBEm8qUV4Vz0urAy5kw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JIUZgZVMnFE9osanLrDW2dyjGEhIP9NZf9GPdFh/kV+LfEhRtuO9SFP+74NQceWJPFMI/leLv66Tjdg7wk672ZVLg0Pv+oZKSSFle1oFneTkkpBF3WNoJzihTnKp6mGcGwi1iWYMuLTJsDibRucbFCof1HjzjyZja+UqT3qUCoQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IZEOyRVu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C34A1C4CEFB;
-	Fri, 31 Oct 2025 14:02:10 +0000 (UTC)
+	 MIME-Version; b=uZLexjVKAMivC8JWH26oWcrXPSfarujk19RESOG3NBCwhoWUF2kSbzCK5RuTn9N8dHBrRWpnAK9piU9Nb7k4gNuURjJ2FcWf8Zk4yd++mNJ/VCmC7b6qI5mR3IKQvpHQv65rPBGfUgX5w3EwyhWniIIIVBFymUbnbXYzMwi37sM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IXZAjWgu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AD69C4CEE7;
+	Fri, 31 Oct 2025 14:06:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761919331;
-	bh=3/BvSrZXvxMH+YlIhU5nnvypjS3ffXkdnD5FlzNBcxk=;
+	s=korg; t=1761919562;
+	bh=pkTkTVrRitfuWQwRgADNhM+pRBEm8qUV4Vz0urAy5kw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IZEOyRVusjDhrC8HghbqSa4MmN22tMVPtEWa4m7ehB1a8j2PV96kZ+40QHoGCNprr
-	 9x1wn1i+PlTuOkfhLuQIbZG/xw6HvzRE7hwYHhiSY4LA4Z+YrhKrhnsKGT9xLtMzLS
-	 2Mczkm/AMkrvtT86papviQQRBWuzGiUdQlHnukOA=
+	b=IXZAjWgutHswh56GFEC1mtOxjAbUrEOUe7EuE1eeS6bwl8MawMO9vsI2h1/AHVCQ1
+	 5ZKmW+28H4ozsoJQbwnaBOzscIULZe2ToeGLg5nN4rXNhw8dAL5KSIUEJZVl/xSuTZ
+	 dwhiGfNU+lhwPT5/vRO82cVkkI1xOUxeVtiyje98=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Menglong Dong <dongml2@chinatelecom.cn>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Tejun Heo <tj@kernel.org>,
+	Andrea Righi <arighi@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 15/32] arch: Add the macro COMPILE_OFFSETS to all the asm-offsets.c
-Date: Fri, 31 Oct 2025 15:01:09 +0100
-Message-ID: <20251031140042.791375755@linuxfoundation.org>
+Subject: [PATCH 6.17 02/35] sched_ext: Put event_stats_cpu in struct scx_sched_pcpu
+Date: Fri, 31 Oct 2025 15:01:10 +0100
+Message-ID: <20251031140043.622407214@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251031140042.387255981@linuxfoundation.org>
-References: <20251031140042.387255981@linuxfoundation.org>
+In-Reply-To: <20251031140043.564670400@linuxfoundation.org>
+References: <20251031140043.564670400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,297 +62,130 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Menglong Dong <menglong8.dong@gmail.com>
+From: Tejun Heo <tj@kernel.org>
 
-[ Upstream commit 35561bab768977c9e05f1f1a9bc00134c85f3e28 ]
+[ Upstream commit bcb7c2305682c77a8bfdbfe37106b314ac10110f ]
 
-The include/generated/asm-offsets.h is generated in Kbuild during
-compiling from arch/SRCARCH/kernel/asm-offsets.c. When we want to
-generate another similar offset header file, circular dependency can
-happen.
+scx_sched.event_stats_cpu is the percpu counters that are used to track
+stats. Introduce struct scx_sched_pcpu and move the counters inside. This
+will ease adding more per-cpu fields. No functional changes.
 
-For example, we want to generate a offset file include/generated/test.h,
-which is included in include/sched/sched.h. If we generate asm-offsets.h
-first, it will fail, as include/sched/sched.h is included in asm-offsets.c
-and include/generated/test.h doesn't exist; If we generate test.h first,
-it can't success neither, as include/generated/asm-offsets.h is included
-by it.
-
-In x86_64, the macro COMPILE_OFFSETS is used to avoid such circular
-dependency. We can generate asm-offsets.h first, and if the
-COMPILE_OFFSETS is defined, we don't include the "generated/test.h".
-
-And we define the macro COMPILE_OFFSETS for all the asm-offsets.c for this
-purpose.
-
-Signed-off-by: Menglong Dong <dongml2@chinatelecom.cn>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Acked-by: Andrea Righi <arighi@nvidia.com>
+Stable-dep-of: efeeaac9ae97 ("sched_ext: Sync error_irq_work before freeing scx_sched")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/alpha/kernel/asm-offsets.c      | 1 +
- arch/arc/kernel/asm-offsets.c        | 1 +
- arch/arm/kernel/asm-offsets.c        | 2 ++
- arch/arm64/kernel/asm-offsets.c      | 1 +
- arch/csky/kernel/asm-offsets.c       | 1 +
- arch/hexagon/kernel/asm-offsets.c    | 1 +
- arch/loongarch/kernel/asm-offsets.c  | 2 ++
- arch/m68k/kernel/asm-offsets.c       | 1 +
- arch/microblaze/kernel/asm-offsets.c | 1 +
- arch/mips/kernel/asm-offsets.c       | 2 ++
- arch/nios2/kernel/asm-offsets.c      | 1 +
- arch/openrisc/kernel/asm-offsets.c   | 1 +
- arch/parisc/kernel/asm-offsets.c     | 1 +
- arch/powerpc/kernel/asm-offsets.c    | 1 +
- arch/riscv/kernel/asm-offsets.c      | 1 +
- arch/s390/kernel/asm-offsets.c       | 1 +
- arch/sh/kernel/asm-offsets.c         | 1 +
- arch/sparc/kernel/asm-offsets.c      | 1 +
- arch/um/kernel/asm-offsets.c         | 2 ++
- arch/xtensa/kernel/asm-offsets.c     | 1 +
- 20 files changed, 24 insertions(+)
+ kernel/sched/ext.c          | 18 +++++++++---------
+ kernel/sched/ext_internal.h | 17 ++++++++++-------
+ 2 files changed, 19 insertions(+), 16 deletions(-)
 
-diff --git a/arch/alpha/kernel/asm-offsets.c b/arch/alpha/kernel/asm-offsets.c
-index 11c35cf45b461..cb205f22096d7 100644
---- a/arch/alpha/kernel/asm-offsets.c
-+++ b/arch/alpha/kernel/asm-offsets.c
-@@ -4,6 +4,7 @@
-  * This code generates raw asm output which is post-processed to extract
-  * and format the required data.
+diff --git a/kernel/sched/ext.c b/kernel/sched/ext.c
+index 8ecde1abb4e28..46029050b170f 100644
+--- a/kernel/sched/ext.c
++++ b/kernel/sched/ext.c
+@@ -630,7 +630,7 @@ static struct task_struct *scx_task_iter_next_locked(struct scx_task_iter *iter)
+  * This can be used when preemption is not disabled.
   */
-+#define COMPILE_OFFSETS
+ #define scx_add_event(sch, name, cnt) do {					\
+-	this_cpu_add((sch)->event_stats_cpu->name, (cnt));			\
++	this_cpu_add((sch)->pcpu->event_stats.name, (cnt));			\
+ 	trace_sched_ext_event(#name, (cnt));					\
+ } while(0)
  
- #include <linux/types.h>
- #include <linux/stddef.h>
-diff --git a/arch/arc/kernel/asm-offsets.c b/arch/arc/kernel/asm-offsets.c
-index f77deb7991757..2978da85fcb65 100644
---- a/arch/arc/kernel/asm-offsets.c
-+++ b/arch/arc/kernel/asm-offsets.c
-@@ -2,6 +2,7 @@
- /*
-  * Copyright (C) 2004, 2007-2010, 2011-2012 Synopsys, Inc. (www.synopsys.com)
+@@ -643,7 +643,7 @@ static struct task_struct *scx_task_iter_next_locked(struct scx_task_iter *iter)
+  * This should be used only when preemption is disabled.
   */
-+#define COMPILE_OFFSETS
+ #define __scx_add_event(sch, name, cnt) do {					\
+-	__this_cpu_add((sch)->event_stats_cpu->name, (cnt));			\
++	__this_cpu_add((sch)->pcpu->event_stats.name, (cnt));			\
+ 	trace_sched_ext_event(#name, cnt);					\
+ } while(0)
  
- #include <linux/sched.h>
- #include <linux/mm.h>
-diff --git a/arch/arm/kernel/asm-offsets.c b/arch/arm/kernel/asm-offsets.c
-index 219cbc7e5d134..3840e1e22b751 100644
---- a/arch/arm/kernel/asm-offsets.c
-+++ b/arch/arm/kernel/asm-offsets.c
-@@ -7,6 +7,8 @@
-  * This code generates raw asm output which is post-processed to extract
-  * and format the required data.
-  */
-+#define COMPILE_OFFSETS
+@@ -3538,7 +3538,7 @@ static void scx_sched_free_rcu_work(struct work_struct *work)
+ 	int node;
+ 
+ 	kthread_stop(sch->helper->task);
+-	free_percpu(sch->event_stats_cpu);
++	free_percpu(sch->pcpu);
+ 
+ 	for_each_node_state(node, N_POSSIBLE)
+ 		kfree(sch->global_dsqs[node]);
+@@ -4439,13 +4439,13 @@ static struct scx_sched *scx_alloc_and_add_sched(struct sched_ext_ops *ops)
+ 		sch->global_dsqs[node] = dsq;
+ 	}
+ 
+-	sch->event_stats_cpu = alloc_percpu(struct scx_event_stats);
+-	if (!sch->event_stats_cpu)
++	sch->pcpu = alloc_percpu(struct scx_sched_pcpu);
++	if (!sch->pcpu)
+ 		goto err_free_gdsqs;
+ 
+ 	sch->helper = kthread_run_worker(0, "sched_ext_helper");
+ 	if (!sch->helper)
+-		goto err_free_event_stats;
++		goto err_free_pcpu;
+ 	sched_set_fifo(sch->helper->task);
+ 
+ 	atomic_set(&sch->exit_kind, SCX_EXIT_NONE);
+@@ -4463,8 +4463,8 @@ static struct scx_sched *scx_alloc_and_add_sched(struct sched_ext_ops *ops)
+ 
+ err_stop_helper:
+ 	kthread_stop(sch->helper->task);
+-err_free_event_stats:
+-	free_percpu(sch->event_stats_cpu);
++err_free_pcpu:
++	free_percpu(sch->pcpu);
+ err_free_gdsqs:
+ 	for_each_node_state(node, N_POSSIBLE)
+ 		kfree(sch->global_dsqs[node]);
+@@ -6490,7 +6490,7 @@ static void scx_read_events(struct scx_sched *sch, struct scx_event_stats *event
+ 	/* Aggregate per-CPU event counters into @events. */
+ 	memset(events, 0, sizeof(*events));
+ 	for_each_possible_cpu(cpu) {
+-		e_cpu = per_cpu_ptr(sch->event_stats_cpu, cpu);
++		e_cpu = &per_cpu_ptr(sch->pcpu, cpu)->event_stats;
+ 		scx_agg_event(events, e_cpu, SCX_EV_SELECT_CPU_FALLBACK);
+ 		scx_agg_event(events, e_cpu, SCX_EV_DISPATCH_LOCAL_DSQ_OFFLINE);
+ 		scx_agg_event(events, e_cpu, SCX_EV_DISPATCH_KEEP_LAST);
+diff --git a/kernel/sched/ext_internal.h b/kernel/sched/ext_internal.h
+index 76690ede8700f..af4c054fb6f85 100644
+--- a/kernel/sched/ext_internal.h
++++ b/kernel/sched/ext_internal.h
+@@ -846,6 +846,15 @@ struct scx_event_stats {
+ 	s64		SCX_EV_BYPASS_ACTIVATE;
+ };
+ 
++struct scx_sched_pcpu {
++	/*
++	 * The event counters are in a per-CPU variable to minimize the
++	 * accounting overhead. A system-wide view on the event counter is
++	 * constructed when requested by scx_bpf_events().
++	 */
++	struct scx_event_stats	event_stats;
++};
 +
- #include <linux/compiler.h>
- #include <linux/sched.h>
- #include <linux/mm.h>
-diff --git a/arch/arm64/kernel/asm-offsets.c b/arch/arm64/kernel/asm-offsets.c
-index 5ff1942b04fcf..ea2d740db81c5 100644
---- a/arch/arm64/kernel/asm-offsets.c
-+++ b/arch/arm64/kernel/asm-offsets.c
-@@ -6,6 +6,7 @@
-  *               2001-2002 Keith Owens
-  * Copyright (C) 2012 ARM Ltd.
-  */
-+#define COMPILE_OFFSETS
+ struct scx_sched {
+ 	struct sched_ext_ops	ops;
+ 	DECLARE_BITMAP(has_op, SCX_OPI_END);
+@@ -860,13 +869,7 @@ struct scx_sched {
+ 	 */
+ 	struct rhashtable	dsq_hash;
+ 	struct scx_dispatch_q	**global_dsqs;
+-
+-	/*
+-	 * The event counters are in a per-CPU variable to minimize the
+-	 * accounting overhead. A system-wide view on the event counter is
+-	 * constructed when requested by scx_bpf_events().
+-	 */
+-	struct scx_event_stats __percpu *event_stats_cpu;
++	struct scx_sched_pcpu __percpu *pcpu;
  
- #include <linux/arm_sdei.h>
- #include <linux/sched.h>
-diff --git a/arch/csky/kernel/asm-offsets.c b/arch/csky/kernel/asm-offsets.c
-index d1e9035794733..5525c8e7e1d9e 100644
---- a/arch/csky/kernel/asm-offsets.c
-+++ b/arch/csky/kernel/asm-offsets.c
-@@ -1,5 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0
- // Copyright (C) 2018 Hangzhou C-SKY Microsystems co.,ltd.
-+#define COMPILE_OFFSETS
+ 	bool			warned_zero_slice;
  
- #include <linux/sched.h>
- #include <linux/kernel_stat.h>
-diff --git a/arch/hexagon/kernel/asm-offsets.c b/arch/hexagon/kernel/asm-offsets.c
-index 03a7063f94561..50eea9fa6f137 100644
---- a/arch/hexagon/kernel/asm-offsets.c
-+++ b/arch/hexagon/kernel/asm-offsets.c
-@@ -8,6 +8,7 @@
-  *
-  * Copyright (c) 2010-2012, The Linux Foundation. All rights reserved.
-  */
-+#define COMPILE_OFFSETS
- 
- #include <linux/compat.h>
- #include <linux/types.h>
-diff --git a/arch/loongarch/kernel/asm-offsets.c b/arch/loongarch/kernel/asm-offsets.c
-index 8da0726777edb..110afd3cc8f34 100644
---- a/arch/loongarch/kernel/asm-offsets.c
-+++ b/arch/loongarch/kernel/asm-offsets.c
-@@ -4,6 +4,8 @@
-  *
-  * Copyright (C) 2020-2022 Loongson Technology Corporation Limited
-  */
-+#define COMPILE_OFFSETS
-+
- #include <linux/types.h>
- #include <linux/sched.h>
- #include <linux/mm.h>
-diff --git a/arch/m68k/kernel/asm-offsets.c b/arch/m68k/kernel/asm-offsets.c
-index 906d732305374..67a1990f9d748 100644
---- a/arch/m68k/kernel/asm-offsets.c
-+++ b/arch/m68k/kernel/asm-offsets.c
-@@ -9,6 +9,7 @@
-  * #defines from the assembly-language output.
-  */
- 
-+#define COMPILE_OFFSETS
- #define ASM_OFFSETS_C
- 
- #include <linux/stddef.h>
-diff --git a/arch/microblaze/kernel/asm-offsets.c b/arch/microblaze/kernel/asm-offsets.c
-index 104c3ac5f30c8..b4b67d58e7f6a 100644
---- a/arch/microblaze/kernel/asm-offsets.c
-+++ b/arch/microblaze/kernel/asm-offsets.c
-@@ -7,6 +7,7 @@
-  * License. See the file "COPYING" in the main directory of this archive
-  * for more details.
-  */
-+#define COMPILE_OFFSETS
- 
- #include <linux/init.h>
- #include <linux/stddef.h>
-diff --git a/arch/mips/kernel/asm-offsets.c b/arch/mips/kernel/asm-offsets.c
-index cb1045ebab062..22c99a2cd5707 100644
---- a/arch/mips/kernel/asm-offsets.c
-+++ b/arch/mips/kernel/asm-offsets.c
-@@ -9,6 +9,8 @@
-  * Kevin Kissell, kevink@mips.com and Carsten Langgaard, carstenl@mips.com
-  * Copyright (C) 2000 MIPS Technologies, Inc.
-  */
-+#define COMPILE_OFFSETS
-+
- #include <linux/compat.h>
- #include <linux/types.h>
- #include <linux/sched.h>
-diff --git a/arch/nios2/kernel/asm-offsets.c b/arch/nios2/kernel/asm-offsets.c
-index e3d9b7b6fb48a..88190b503ce5d 100644
---- a/arch/nios2/kernel/asm-offsets.c
-+++ b/arch/nios2/kernel/asm-offsets.c
-@@ -2,6 +2,7 @@
- /*
-  * Copyright (C) 2011 Tobias Klauser <tklauser@distanz.ch>
-  */
-+#define COMPILE_OFFSETS
- 
- #include <linux/stddef.h>
- #include <linux/sched.h>
-diff --git a/arch/openrisc/kernel/asm-offsets.c b/arch/openrisc/kernel/asm-offsets.c
-index 710651d5aaae1..3cc826f2216b1 100644
---- a/arch/openrisc/kernel/asm-offsets.c
-+++ b/arch/openrisc/kernel/asm-offsets.c
-@@ -18,6 +18,7 @@
-  * compile this file to assembler, and then extract the
-  * #defines from the assembly-language output.
-  */
-+#define COMPILE_OFFSETS
- 
- #include <linux/signal.h>
- #include <linux/sched.h>
-diff --git a/arch/parisc/kernel/asm-offsets.c b/arch/parisc/kernel/asm-offsets.c
-index 757816a7bd4b2..9abfe65492c65 100644
---- a/arch/parisc/kernel/asm-offsets.c
-+++ b/arch/parisc/kernel/asm-offsets.c
-@@ -13,6 +13,7 @@
-  *    Copyright (C) 2002 Randolph Chung <tausq with parisc-linux.org>
-  *    Copyright (C) 2003 James Bottomley <jejb at parisc-linux.org>
-  */
-+#define COMPILE_OFFSETS
- 
- #include <linux/types.h>
- #include <linux/sched.h>
-diff --git a/arch/powerpc/kernel/asm-offsets.c b/arch/powerpc/kernel/asm-offsets.c
-index 2affd30468bc4..e2cee2f2ededd 100644
---- a/arch/powerpc/kernel/asm-offsets.c
-+++ b/arch/powerpc/kernel/asm-offsets.c
-@@ -8,6 +8,7 @@
-  * compile this file to assembler, and then extract the
-  * #defines from the assembly-language output.
-  */
-+#define COMPILE_OFFSETS
- 
- #include <linux/compat.h>
- #include <linux/signal.h>
-diff --git a/arch/riscv/kernel/asm-offsets.c b/arch/riscv/kernel/asm-offsets.c
-index 6a992cba2f287..e4589457e6085 100644
---- a/arch/riscv/kernel/asm-offsets.c
-+++ b/arch/riscv/kernel/asm-offsets.c
-@@ -3,6 +3,7 @@
-  * Copyright (C) 2012 Regents of the University of California
-  * Copyright (C) 2017 SiFive
-  */
-+#define COMPILE_OFFSETS
- 
- #include <linux/kbuild.h>
- #include <linux/mm.h>
-diff --git a/arch/s390/kernel/asm-offsets.c b/arch/s390/kernel/asm-offsets.c
-index fa5f6885c74aa..73a989dcfe208 100644
---- a/arch/s390/kernel/asm-offsets.c
-+++ b/arch/s390/kernel/asm-offsets.c
-@@ -4,6 +4,7 @@
-  * This code generates raw asm output which is post-processed to extract
-  * and format the required data.
-  */
-+#define COMPILE_OFFSETS
- 
- #define ASM_OFFSETS_C
- 
-diff --git a/arch/sh/kernel/asm-offsets.c b/arch/sh/kernel/asm-offsets.c
-index a0322e8328456..429b6a7631468 100644
---- a/arch/sh/kernel/asm-offsets.c
-+++ b/arch/sh/kernel/asm-offsets.c
-@@ -8,6 +8,7 @@
-  * compile this file to assembler, and then extract the
-  * #defines from the assembly-language output.
-  */
-+#define COMPILE_OFFSETS
- 
- #include <linux/stddef.h>
- #include <linux/types.h>
-diff --git a/arch/sparc/kernel/asm-offsets.c b/arch/sparc/kernel/asm-offsets.c
-index 5784f2df489a4..f1e27a7f800f4 100644
---- a/arch/sparc/kernel/asm-offsets.c
-+++ b/arch/sparc/kernel/asm-offsets.c
-@@ -10,6 +10,7 @@
-  *
-  * On sparc, thread_info data is static and TI_XXX offsets are computed by hand.
-  */
-+#define COMPILE_OFFSETS
- 
- #include <linux/sched.h>
- #include <linux/mm_types.h>
-diff --git a/arch/um/kernel/asm-offsets.c b/arch/um/kernel/asm-offsets.c
-index 1fb12235ab9c8..a69873aa697f4 100644
---- a/arch/um/kernel/asm-offsets.c
-+++ b/arch/um/kernel/asm-offsets.c
-@@ -1 +1,3 @@
-+#define COMPILE_OFFSETS
-+
- #include <sysdep/kernel-offsets.h>
-diff --git a/arch/xtensa/kernel/asm-offsets.c b/arch/xtensa/kernel/asm-offsets.c
-index da38de20ae598..cfbced95e944a 100644
---- a/arch/xtensa/kernel/asm-offsets.c
-+++ b/arch/xtensa/kernel/asm-offsets.c
-@@ -11,6 +11,7 @@
-  *
-  * Chris Zankel <chris@zankel.net>
-  */
-+#define COMPILE_OFFSETS
- 
- #include <asm/processor.h>
- #include <asm/coprocessor.h>
 -- 
 2.51.0
 
