@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-191857-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191833-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30630C25703
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 15:07:13 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8729DC25670
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 15:03:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 984194670ED
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 14:03:42 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A75FD4F476A
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 14:02:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C97E3C17;
-	Fri, 31 Oct 2025 14:03:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A6A1221FB6;
+	Fri, 31 Oct 2025 14:02:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eFehfMB2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PL4xwCmd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08618210F59;
-	Fri, 31 Oct 2025 14:03:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB7CC34D387;
+	Fri, 31 Oct 2025 14:02:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761919420; cv=none; b=bnPxtmIiNEouexaae95Rj63BbqLMICXMal5QPXHZpFiDZki1AVgkuCBYK1OzWy+jO1omvwhC/ZIv6qME2N4LvWM8NOdqUsFVUf+EyiB2elog/DmSWDaVmmRXM7n2oyRde6f2NktYK55V+JeQq31MoQ0RK7UVHItmkTJK4ksMHLQ=
+	t=1761919348; cv=none; b=AJmYFHScWiko9tTXILY8zHBgSDHlXrofd8Gzo6O2VmfLhezHf4iwyS/beCxcW7R04LSAOj9vM+v7QlJIeTxws2SmaKvTKvC346dad8XsNTz+VWamPMCLHyHtcsbc6KoOt6Lla47IN/UWr16YkKQwxaK7bOlXbBoTK9EtI7GlW/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761919420; c=relaxed/simple;
-	bh=vOVC5KEK2PLlaSupxjzzWbwual4jveKrLbIVlmgz710=;
+	s=arc-20240116; t=1761919348; c=relaxed/simple;
+	bh=xzEBATsw5oAtI/jmTRdY04ojLvJMZzltWEQaG0jG8pI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WAfFLIK8cRJy00VNOODcQV9/ekRZbXAbv0bZ9iN9IJ8QMFcK/HttROvNnV+8eihyxj911qYR6dHGaQnYK+7X4sBZZjk2+OLQa3TKiGlMU+9geBNHhbxepVKLUdvIDalp0ACXSa7WqOLP4Algyipj52Uq8vBR41zdl6LsiL2MRLg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eFehfMB2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 380B2C4CEE7;
-	Fri, 31 Oct 2025 14:03:39 +0000 (UTC)
+	 MIME-Version; b=e/qHxD3RG/bl0ms9zQoysLdrZ+k/dgzyRSXVh32wL6kmv5Hgett3n3IwvDhGuUM24RFnozNhYW1sJ+3HCGwslNm8dz0OnS/XK26exDoCNmfmex0/lr2PsS6egjiguAAi8B79nBCrU9kZJ7dFbp+9nBmE07EJGDS9YVyLnvsuOXE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PL4xwCmd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37157C4CEE7;
+	Fri, 31 Oct 2025 14:02:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761919419;
-	bh=vOVC5KEK2PLlaSupxjzzWbwual4jveKrLbIVlmgz710=;
+	s=korg; t=1761919348;
+	bh=xzEBATsw5oAtI/jmTRdY04ojLvJMZzltWEQaG0jG8pI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eFehfMB2d43kRCKHg2B9YocAyLE2gzOvMzumuuf1xu8ag64ll9xIdXV+/Ldyzd17w
-	 rLQAcaQBA8Y6Ki024neCaSnMWhanyuAafkVmLIgusdGszAVIX1jmeEHgtLf5Tqc/k5
-	 pKcr5Okm7Uf0w7vEvVfOZHOLy1emLSX7acbgsekM=
+	b=PL4xwCmdQKMpwGgR9ZAOTtM7C44j3KfHiZfxpX+AcVAvXYiJBsIwKJDoa89CYAtQb
+	 dMyuUBpR7WVLrn1EBIHD3cuYQFu5VKYMFKjefcGczfhoMblqU4EQ1pjsiOPmIexOVB
+	 g4ImL3YnH6CcgV3zK51qSMAQflI8uXDYawen1wl4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,12 +45,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
 	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 04/40] perf: Use current->flags & PF_KTHREAD|PF_USER_WORKER instead of current->mm == NULL
+Subject: [PATCH 6.6 03/32] perf: Use current->flags & PF_KTHREAD|PF_USER_WORKER instead of current->mm == NULL
 Date: Fri, 31 Oct 2025 15:00:57 +0100
-Message-ID: <20251031140044.050062176@linuxfoundation.org>
+Message-ID: <20251031140042.475708285@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251031140043.939381518@linuxfoundation.org>
-References: <20251031140043.939381518@linuxfoundation.org>
+In-Reply-To: <20251031140042.387255981@linuxfoundation.org>
+References: <20251031140042.387255981@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,7 +62,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -85,10 +85,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  2 files changed, 5 insertions(+), 5 deletions(-)
 
 diff --git a/kernel/events/callchain.c b/kernel/events/callchain.c
-index 8a47e52a454f4..d1a09e6f514c9 100644
+index 1273be84392cf..65fea424874c5 100644
 --- a/kernel/events/callchain.c
 +++ b/kernel/events/callchain.c
-@@ -241,10 +241,10 @@ get_perf_callchain(struct pt_regs *regs, u32 init_nr, bool kernel, bool user,
+@@ -202,10 +202,10 @@ get_perf_callchain(struct pt_regs *regs, u32 init_nr, bool kernel, bool user,
  
  	if (user) {
  		if (!user_mode(regs)) {
@@ -103,10 +103,10 @@ index 8a47e52a454f4..d1a09e6f514c9 100644
  
  		if (regs) {
 diff --git a/kernel/events/core.c b/kernel/events/core.c
-index d60d48d482b01..0339f60e34981 100644
+index b73f5c44113d6..3eb9125431b43 100644
 --- a/kernel/events/core.c
 +++ b/kernel/events/core.c
-@@ -7095,7 +7095,7 @@ static void perf_sample_regs_user(struct perf_regs *regs_user,
+@@ -6985,7 +6985,7 @@ static void perf_sample_regs_user(struct perf_regs *regs_user,
  	if (user_mode(regs)) {
  		regs_user->abi = perf_reg_abi(current);
  		regs_user->regs = regs;
@@ -115,7 +115,7 @@ index d60d48d482b01..0339f60e34981 100644
  		perf_get_regs_user(regs_user, regs);
  	} else {
  		regs_user->abi = PERF_SAMPLE_REGS_ABI_NONE;
-@@ -7735,7 +7735,7 @@ static u64 perf_virt_to_phys(u64 virt)
+@@ -7612,7 +7612,7 @@ static u64 perf_virt_to_phys(u64 virt)
  		 * Try IRQ-safe get_user_page_fast_only first.
  		 * If failed, leave phys_addr as 0.
  		 */
