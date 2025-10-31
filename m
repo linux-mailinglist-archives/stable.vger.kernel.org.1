@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-191779-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191780-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43A36C230C0
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 03:43:49 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 275BDC232E1
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 04:29:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 806451A604CA
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 02:44:09 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id C82A93485C6
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 03:29:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C32363081D3;
-	Fri, 31 Oct 2025 02:43:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F4106276028;
+	Fri, 31 Oct 2025 03:29:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="p2D5hXEC"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Laaw1Pzf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C39D307ACE;
-	Fri, 31 Oct 2025 02:43:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A850A274B30;
+	Fri, 31 Oct 2025 03:29:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761878616; cv=none; b=dyBpaAn1E5p9Q43TKzQJIffSyfN3maCFYn8sJtoYjNIlMN6G/pUMOsmJW5mZk0OSgl0t7r7t2LDZircV8q7ePrR/fef+0INHbPOUOjejzncpPrkm08WAZy6rIAhijWdb9k797SjJEtD2hu2vTeep1mOFH7VyL8eiC96e9Q+6zIw=
+	t=1761881391; cv=none; b=OZzPMrE/Tj72mH47e+WX29Nd0SNKlCuv9JgmoN1ndc/8ctszTXJvkszVRKHRYjkcjUhoCnj8YVwUZjCNr1p25oAP0PtArT3YBJQ8UYm+tjNyuegSn91hHem031jo3McEq5Bju/XIy24tiax5e/cbSqTXId2k6eZQzmsUhTUZCPY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761878616; c=relaxed/simple;
-	bh=wrdNNbsgn4lFV2aBDcbqfgUo4DYJPhLZePLgVLTpTfU=;
-	h=Date:To:From:Subject:Message-Id; b=sxY4lyNJJZp/1NTZuezkGT/u0gOdX2G1H0YRi+xmyppMdE1nCZarPaZ7yrtLbfvV/XAuISxtEYPreufDyIttir5kYcjzFjiMzW51wqt+RfH3MNPgIca8Y+vtocVsLmKGAeqNHd7GwwWNGG++ICFBm2Qu2Grnf1P6gLVenElxiAY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=p2D5hXEC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8FA2C4CEF1;
-	Fri, 31 Oct 2025 02:43:35 +0000 (UTC)
+	s=arc-20240116; t=1761881391; c=relaxed/simple;
+	bh=WYhyJg3qpUSKmjFB1UvxzcohYrOki3OK0ui64z+Qf4s=;
+	h=Date:To:From:Subject:Message-Id; b=oMH+A4xImpVyjE5kMgDchtL1wq5eO5F4ZmPMWDxwwzVefN1c/b3pWmOUE3hG8BwO1dxGe/QuioCiHTFlCDWacs2Ouz8xAQF9RF1t+yyNZBAzr8BoT86uAMVcD7+PaStzyMLWLNkFuGeJf52IIrQw9FyH9wCpTDnhfiDe09QJuhA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Laaw1Pzf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA3EBC4CEF1;
+	Fri, 31 Oct 2025 03:29:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1761878615;
-	bh=wrdNNbsgn4lFV2aBDcbqfgUo4DYJPhLZePLgVLTpTfU=;
+	s=korg; t=1761881391;
+	bh=WYhyJg3qpUSKmjFB1UvxzcohYrOki3OK0ui64z+Qf4s=;
 	h=Date:To:From:Subject:From;
-	b=p2D5hXECRsQQyW9dI1AJOj6XHZMpTxox6fKKhni4E0iYYNeP6+dGNrRJdGpS1jaxe
-	 iCIXT3eoLKUW+5sD+uAJ5EG5RBbeT+d54BDJ66NquRfc6N7gL+1j49gO+QvFvTykqf
-	 0ElcUOuavK8L131EI9WPp9BWjhJFkCnavF+r8U1o=
-Date: Thu, 30 Oct 2025 19:43:35 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,osalvador@suse.de,joao.m.martins@oracle.com,hca@linux.ibm.com,gor@linux.ibm.com,gerald.schaefer@linux.ibm.com,david@redhat.com,borntraeger@linux.ibm.com,aneesh.kumar@kernel.org,agordeev@linux.ibm.com,luizcap@redhat.com,akpm@linux-foundation.org
+	b=Laaw1PzfETMHfH2gSK5qJIeqTmFWsHuAjJihtFEi+yjnWLG2aZPVhGb7pQUApmWR/
+	 hPZasYqZF4KR5W7X1F7WswznEqwtEknyuJbaSSgAeiqgTGzH9VXrQQocBpIcH6MI7O
+	 9sstxLlxfbPK045s2eyN8MF4UrG4jUTwepG6pDXg=
+Date: Thu, 30 Oct 2025 20:29:50 -0700
+To: mm-commits@vger.kernel.org,zuoze1@huawei.com,wangkefeng.wang@huawei.com,stable@vger.kernel.org,sj@kernel.org,yanquanmin1@huawei.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [to-be-updated] s390-fix-hugetlb-vmemmap-optimization-crash.patch removed from -mm tree
-Message-Id: <20251031024335.B8FA2C4CEF1@smtp.kernel.org>
+Subject: + mm-damon-stat-change-last_refresh_jiffies-to-a-global-variable.patch added to mm-hotfixes-unstable branch
+Message-Id: <20251031032950.EA3EBC4CEF1@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -49,122 +49,127 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
-The quilt patch titled
-     Subject: s390: fix HugeTLB vmemmap optimization crash
-has been removed from the -mm tree.  Its filename was
-     s390-fix-hugetlb-vmemmap-optimization-crash.patch
+The patch titled
+     Subject: mm/damon/stat: change last_refresh_jiffies to a global variable
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-damon-stat-change-last_refresh_jiffies-to-a-global-variable.patch
 
-This patch was dropped because an updated version will be issued
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-damon-stat-change-last_refresh_jiffies-to-a-global-variable.patch
+
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
 
 ------------------------------------------------------
-From: Luiz Capitulino <luizcap@redhat.com>
-Subject: s390: fix HugeTLB vmemmap optimization crash
-Date: Tue, 28 Oct 2025 17:15:33 -0400
+From: Quanmin Yan <yanquanmin1@huawei.com>
+Subject: mm/damon/stat: change last_refresh_jiffies to a global variable
+Date: Thu, 30 Oct 2025 10:07:45 +0800
 
-A reproducible crash occurs when enabling HugeTLB vmemmap optimization
-(HVO) on s390.  The crash and the proposed fix were worked on an s390 KVM
-guest running on an older hypervisor, as I don't have access to an LPAR. 
-However, the same issue should occur on bare-metal.
+Patch series "mm/damon: fixes for the jiffies-related issues", v2.
 
-Reproducer (it may take a few runs to trigger):
+On 32-bit systems, the kernel initializes jiffies to "-5 minutes" to make
+jiffies wrap bugs appear earlier.  However, this may cause the
+time_before() series of functions to return unexpected values, resulting
+in DAMON not functioning as intended.  Meanwhile, similar issues exist in
+some specific user operation scenarios.
 
- # sysctl vm.hugetlb_optimize_vmemmap=1
- # echo 1 > /proc/sys/vm/nr_hugepages
- # echo 0 > /proc/sys/vm/nr_hugepages
+This patchset addresses these issues.  The first patch is about the
+DAMON_STAT module, and the second patch is about the core layer's sysfs.
 
-Crash log:
 
-[   52.340369] list_del corruption. prev->next should be 000000d382110008, but was 000000d7116d3880. (prev=000000d7116d3910)
-[   52.340420] ------------[ cut here ]------------
-[   52.340424] kernel BUG at lib/list_debug.c:62!
-[   52.340566] monitor event: 0040 ilc:2 [#1]SMP
-[   52.340573] Modules linked in: ctcm fsm qeth ccwgroup zfcp scsi_transport_fc qdio dasd_fba_mod dasd_eckd_mod dasd_mod xfs ghash_s390 prng des_s390 libdes sha3_512_s390 sha3_256_s390 virtio_net virtio_blk net_failover sha_common failover dm_mirror dm_region_hash dm_log dm_mod paes_s390 crypto_engine pkey_cca pkey_ep11 zcrypt pkey_pckmo pkey aes_s390
-[   52.340606] CPU: 1 UID: 0 PID: 1672 Comm: root-rep2 Kdump: loaded Not tainted 6.18.0-rc3 #1 NONE
-[   52.340610] Hardware name: IBM 3931 LA1 400 (KVM/Linux)
-[   52.340611] Krnl PSW : 0704c00180000000 0000015710cda7fe (__list_del_entry_valid_or_report+0xfe/0x128)
-[   52.340619]            R:0 T:1 IO:1 EX:1 Key:0 M:1 W:0 P:0 AS:3 CC:0 PM:0 RI:0 EA:3
-[   52.340622] Krnl GPRS: c0000000ffffefff 0000000100000027 000000000000006d 0000000000000000
-[   52.340623]            000000d7116d35d8 000000d7116d35d0 0000000000000002 000000d7116d39b0
-[   52.340625]            000000d7116d3880 000000d7116d3910 000000d7116d3910 000000d382110008
-[   52.340626]            000003ffac1ccd08 000000d7116d39b0 0000015710cda7fa 000000d7116d37d0
-[   52.340632] Krnl Code: 0000015710cda7ee: c020003e496f	larl	%r2,00000157114a3acc
-           0000015710cda7f4: c0e5ffd5280e	brasl	%r14,000001571077f810
-          #0000015710cda7fa: af000000		mc	0,0
-          >0000015710cda7fe: b9040029		lgr	%r2,%r9
-           0000015710cda802: c0e5ffe5e193	brasl	%r14,0000015710996b28
-           0000015710cda808: e34090080004	lg	%r4,8(%r9)
-           0000015710cda80e: b9040059		lgr	%r5,%r9
-           0000015710cda812: b9040038		lgr	%r3,%r8
-[   52.340643] Call Trace:
-[   52.340645]  [<0000015710cda7fe>] __list_del_entry_valid_or_report+0xfe/0x128
-[   52.340649] ([<0000015710cda7fa>] __list_del_entry_valid_or_report+0xfa/0x128)
-[   52.340652]  [<0000015710a30b2e>] hugetlb_vmemmap_restore_folios+0x96/0x138
-[   52.340655]  [<0000015710a268ac>] update_and_free_pages_bulk+0x64/0x150
-[   52.340659]  [<0000015710a26f8a>] set_max_huge_pages+0x4ca/0x6f0
-[   52.340662]  [<0000015710a273ba>] hugetlb_sysctl_handler_common+0xea/0x120
-[   52.340665]  [<0000015710a27484>] hugetlb_sysctl_handler+0x44/0x50
-[   52.340667]  [<0000015710b53ffa>] proc_sys_call_handler+0x17a/0x280
-[   52.340672]  [<0000015710a90968>] vfs_write+0x2c8/0x3a0
-[   52.340676]  [<0000015710a90bd2>] ksys_write+0x72/0x100
-[   52.340679]  [<00000157111483a8>] __do_syscall+0x150/0x318
-[   52.340682]  [<0000015711153a5e>] system_call+0x6e/0x90
-[   52.340684] Last Breaking-Event-Address:
-[   52.340684]  [<000001571077f85c>] _printk+0x4c/0x58
-[   52.340690] Kernel panic - not syncing: Fatal exception: panic_on_oops
+This patch (of 2):
 
-This issue was introduced by commit f13b83fdd996 ("hugetlb: batch TLB
-flushes when freeing vmemmap").  Before that change, the HVO
-implementation called flush_tlb_kernel_range() each time a vmemmap PMD
-split and remapping was performed.  The mentioned commit changed this to
-issue a few flush_tlb_all() calls after performing all remappings.
+In DAMON_STAT's damon_stat_damon_call_fn(), time_before_eq() is used to
+avoid unnecessarily frequent stat update.
 
-However, on s390, flush_tlb_kernel_range() expands to __tlb_flush_kernel()
-while flush_tlb_all() is not implemented.  As a result, we went from
-flushing the TLB for every remapping to no flushing at all.
+On 32-bit systems, the kernel initializes jiffies to "-5 minutes" to make
+jiffies wrap bugs appear earlier.  However, this causes time_before_eq()
+in DAMON_STAT to unexpectedly return true during the first 5 minutes after
+boot on 32-bit systems (see [1] for more explanation, which fixes another
+jiffies-related issue before).  As a result, DAMON_STAT does not update
+any monitoring results during that period, which becomes more confusing
+when DAMON_STAT_ENABLED_DEFAULT is enabled.
 
-This commit fixes this by implementing flush_tlb_all() on s390 as an alias
-to __tlb_flush_global().  This should cause a flush on all TLB entries on
-all CPUs as expected by the flush_tlb_all() semantics.
+There is also an issue unrelated to the system's word size[2]: if the user
+stops DAMON_STAT just after last_refresh_jiffies is updated and restarts
+it after 5 seconds or a longer delay, last_refresh_jiffies will retain an
+older value, causing time_before_eq() to return false and the update to
+happen earlier than expected.
 
-Link: https://lkml.kernel.org/r/20251028211533.47694-1-luizcap@redhat.com
-Fixes: f13b83fdd996 ("hugetlb: batch TLB flushes when freeing vmemmap")
-Signed-off-by: Luiz Capitulino <luizcap@redhat.com>
-Acked-by: Alexander Gordeev <agordeev@linux.ibm.com>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
-Cc: Christian Borntraeger <borntraeger@linux.ibm.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
-Cc: Heiko Carstens <hca@linux.ibm.com>
-Cc: Joao Martins <joao.m.martins@oracle.com>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: Vasily Gorbik <gor@linux.ibm.com>
+Fix these issues by making last_refresh_jiffies a global variable and
+initializing it each time DAMON_STAT is started.
+
+Link: https://lkml.kernel.org/r/20251030020746.967174-2-yanquanmin1@huawei.com
+Link: https://lkml.kernel.org/r/20250822025057.1740854-1-ekffu200098@gmail.com [1]
+Link: https://lore.kernel.org/all/20251028143250.50144-1-sj@kernel.org/ [2]
+Fixes: fabdd1e911da ("mm/damon/stat: calculate and expose estimated memory bandwidth")
+Signed-off-by: Quanmin Yan <yanquanmin1@huawei.com>
+Suggested-by: SeongJae Park <sj@kernel.org>
+Reviewed-by: SeongJae Park <sj@kernel.org>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: ze zuo <zuoze1@huawei.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- arch/s390/include/asm/tlbflush.h |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ mm/damon/stat.c |    9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
---- a/arch/s390/include/asm/tlbflush.h~s390-fix-hugetlb-vmemmap-optimization-crash
-+++ a/arch/s390/include/asm/tlbflush.h
-@@ -103,9 +103,13 @@ static inline void __tlb_flush_mm_lazy(s
-  * flush_tlb_range functions need to do the flush.
-  */
- #define flush_tlb()				do { } while (0)
--#define flush_tlb_all()				do { } while (0)
- #define flush_tlb_page(vma, addr)		do { } while (0)
+--- a/mm/damon/stat.c~mm-damon-stat-change-last_refresh_jiffies-to-a-global-variable
++++ a/mm/damon/stat.c
+@@ -46,6 +46,8 @@ MODULE_PARM_DESC(aggr_interval_us,
  
-+static inline void flush_tlb_all(void)
-+{
-+	__tlb_flush_global();
-+}
+ static struct damon_ctx *damon_stat_context;
+ 
++static unsigned long damon_stat_last_refresh_jiffies;
 +
- static inline void flush_tlb_mm(struct mm_struct *mm)
+ static void damon_stat_set_estimated_memory_bandwidth(struct damon_ctx *c)
  {
- 	__tlb_flush_mm_lazy(mm);
+ 	struct damon_target *t;
+@@ -130,13 +132,12 @@ static void damon_stat_set_idletime_perc
+ static int damon_stat_damon_call_fn(void *data)
+ {
+ 	struct damon_ctx *c = data;
+-	static unsigned long last_refresh_jiffies;
+ 
+ 	/* avoid unnecessarily frequent stat update */
+-	if (time_before_eq(jiffies, last_refresh_jiffies +
++	if (time_before_eq(jiffies, damon_stat_last_refresh_jiffies +
+ 				msecs_to_jiffies(5 * MSEC_PER_SEC)))
+ 		return 0;
+-	last_refresh_jiffies = jiffies;
++	damon_stat_last_refresh_jiffies = jiffies;
+ 
+ 	aggr_interval_us = c->attrs.aggr_interval;
+ 	damon_stat_set_estimated_memory_bandwidth(c);
+@@ -210,6 +211,8 @@ static int damon_stat_start(void)
+ 	err = damon_start(&damon_stat_context, 1, true);
+ 	if (err)
+ 		return err;
++
++	damon_stat_last_refresh_jiffies = jiffies;
+ 	call_control.data = damon_stat_context;
+ 	return damon_call(damon_stat_context, &call_control);
+ }
 _
 
-Patches currently in -mm which might be from luizcap@redhat.com are
+Patches currently in -mm which might be from yanquanmin1@huawei.com are
 
+mm-damon-stat-change-last_refresh_jiffies-to-a-global-variable.patch
+mm-damon-sysfs-change-next_update_jiffies-to-a-global-variable.patch
+mm-damon-add-a-min_sz_region-parameter-to-damon_set_region_biggest_system_ram_default.patch
+mm-damon-reclaim-use-min_sz_region-for-core-address-alignment-when-setting-regions.patch
 
 
