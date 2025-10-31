@@ -1,95 +1,110 @@
-Return-Path: <stable+bounces-191939-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191940-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 063AFC25D70
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 16:30:51 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6593FC25E49
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 16:48:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 5810334F04B
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 15:30:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6B2A41A65B0B
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 15:48:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46CD02D5C76;
-	Fri, 31 Oct 2025 15:30:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BAB02E22BA;
+	Fri, 31 Oct 2025 15:48:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hCC44dFo"
+	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="GYpp5DA7"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from 003.mia.mailroute.net (003.mia.mailroute.net [199.89.3.6])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE1652741CD;
-	Fri, 31 Oct 2025 15:30:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B4642DC779;
+	Fri, 31 Oct 2025 15:48:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.3.6
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761924630; cv=none; b=VRRuhi/u1iSxMpxRzFrZPJEjIIlp152g0qLA9TX2cr7koaeJW6DHUK549N/2CAeiqKWZc4uw3tBjZqwPLLjkFuHcs9Ir44j2NJ//xTsgRyNC11eYbDBs+CK96tXYEQr6C14pFEwoXDJ7KBWVLXRRritMeCRxGv0ggCUDwrxGm5k=
+	t=1761925692; cv=none; b=XRJq75BZspnMv2T+TUiUhDAgbqC9XXC8yZn7ozSEMhJrpfcGH5x9nga3EtjWLXY1hrUM0Nr48RzLadpIgnFBe9rwkvFQUmMv6whKH2lDdoDfC+kd3ONJ7yXk+tbz6os+i5YNGEb9/idNrR8WBEjxcrI6z1S71QXLts/NNlFXyss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761924630; c=relaxed/simple;
-	bh=LNdVHBNJTXvFdPyWlAGjqanLUHh7aNlbYkry29CGing=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=DC6tBlcVH2KUeBAzrl/uIje5YwOMXyYbrHoFyUQfoi6gN/JrjPNdxABtKe5atsWt2/+DBfvg3XjbnpgLPK/uoLodfEm5rYGQIt5OHHDRirE91G3FxqzoBd6WQCr2jzMMRJdh5lK7icsDR+uYpNiSYEboXm/OeXgfyCf2PvWKRxM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hCC44dFo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9249AC4CEE7;
-	Fri, 31 Oct 2025 15:30:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761924629;
-	bh=LNdVHBNJTXvFdPyWlAGjqanLUHh7aNlbYkry29CGing=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=hCC44dFo8YZHzV5qdl8JJxaxm3AiqfHDe6D6Q7kO09v2ZfT1AB2LOBWwd8dEkLuFh
-	 Ye3u4oPOBH45K9f5jq+Q+msp5+vYtdeWDlQAlNc/ccqZIDSUO+cGM8BQU2JoPZwfxX
-	 wwXs158YriRe3MSoOm8gHODJg0NuUCgt0W15niwkBhVgM8WAwtWnzDbpXgIMFqh6i8
-	 ZmPaadIRYzM3V5M+SMERSmXPxF6FjI3kfj+row9mT8UCodyL+gjyT8BWpdVQ3LcIjQ
-	 PBvXzmp3FykiZN37PCMLNOY6/YUJQkXYAb4pARACZ5YQosE+C8YIy3zaH/U+D8HKYx
-	 Ys8KDsHcpECLw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EB74D3A82567;
-	Fri, 31 Oct 2025 15:30:06 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1761925692; c=relaxed/simple;
+	bh=oJaKAE5jic3cd5cWJijaVQo8BjqDkj3yyxeDbdeMFmg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=cSzUT1xZ1rLE92eXIeqsnuKjjNMpsgCNG39U+b2nGzck/V9R4UOb5JabBVigUrN7gwUz8fwfXRFqI6YXR8ZSKQdQYqokucgK1jDoOpR3NfQx9A436MozTBmovGVH/I1irqgHCHlkbQid9p+F4IVvZ8eCAEbGRzX5gBkkM16KyPs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=GYpp5DA7; arc=none smtp.client-ip=199.89.3.6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
+Received: from localhost (localhost [127.0.0.1])
+	by 003.mia.mailroute.net (Postfix) with ESMTP id 4cylkK276tzltP1C;
+	Fri, 31 Oct 2025 15:48:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
+	content-transfer-encoding:content-type:content-type:in-reply-to
+	:from:from:content-language:references:subject:subject
+	:user-agent:mime-version:date:date:message-id:received:received;
+	 s=mr01; t=1761925687; x=1764517688; bh=l36Iwd+m+YGHOEKAFhLVj7QZ
+	Uydl/74HASoRe/Qelsw=; b=GYpp5DA7S1G3hwubTn4w0dDqtvcP+LIRFaokl8FR
+	dPeygjnmrzlfDPzNRYfO3d8h4paoShXQbvn9shy/S8WAmoCeBbEh2U7+Lab24jvi
+	zxnPTDUvKib1HkNGmjbnrKAI0zoOx+G2YSvT5bRusK3BiNVnY/BGr/lw5pP0mXkX
+	i0yadtn3COoplh+39Uq4XREUXh9MfgtDEpW8Y3YlFrbDOhSQm37Fs9gBTfnuOoV4
+	nZs+n8wcNLui7H7rCN9asV0lRss32X+Ir/RgLas9VnybaTdUApfvfhgIKNU0Wpp8
+	4/QO+OYd0QFfB5imJQX3naokn5fVr/rclL+lISavRnrBZw==
+X-Virus-Scanned: by MailRoute
+Received: from 003.mia.mailroute.net ([127.0.0.1])
+ by localhost (003.mia [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
+ id m00CDwvzkrbA; Fri, 31 Oct 2025 15:48:07 +0000 (UTC)
+Received: from [100.119.48.131] (unknown [104.135.180.219])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bvanassche@acm.org)
+	by 003.mia.mailroute.net (Postfix) with ESMTPSA id 4cylk83dnnzlvm7Q;
+	Fri, 31 Oct 2025 15:47:59 +0000 (UTC)
+Message-ID: <fb04975c-55bd-44a3-b4a6-fae8ef7b89a6@acm.org>
+Date: Fri, 31 Oct 2025 08:47:58 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] Bluetooth: MGMT: Fix OOB access in
- parse_adv_monitor_pattern()
-From: patchwork-bot+bluetooth@kernel.org
-Message-Id: 
- <176192460576.517485.15986970285103455414.git-patchwork-notify@kernel.org>
-Date: Fri, 31 Oct 2025 15:30:05 +0000
-References: <20251020151255.1807712-1-Ilia.Gavrilov@infotecs.ru>
-In-Reply-To: <20251020151255.1807712-1-Ilia.Gavrilov@infotecs.ru>
-To: Ilia Gavrilov <Ilia.Gavrilov@infotecs.ru>
-Cc: marcel@holtmann.org, johan.hedberg@gmail.com, luiz.dentz@gmail.com,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- horms@kernel.org, linux-bluetooth@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, lvc-project@linuxtesting.org,
- stable@vger.kernel.org
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] block: Remove queue freezing from several sysfs store
+ callbacks
+To: Nilay Shroff <nilay@linux.ibm.com>, Jens Axboe <axboe@kernel.dk>
+Cc: linux-block@vger.kernel.org, Christoph Hellwig <hch@lst.de>,
+ Martin Wilck <mwilck@suse.com>, Benjamin Marzinski <bmarzins@redhat.com>,
+ stable@vger.kernel.org, Damien Le Moal <dlemoal@kernel.org>,
+ Chaitanya Kulkarni <kch@nvidia.com>, Hannes Reinecke <hare@suse.de>
+References: <20251030172417.660949-1-bvanassche@acm.org>
+ <befb4493-44fe-41e7-b5ec-fb2744fd752c@linux.ibm.com>
+Content-Language: en-US
+From: Bart Van Assche <bvanassche@acm.org>
+In-Reply-To: <befb4493-44fe-41e7-b5ec-fb2744fd752c@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hello:
-
-This patch was applied to bluetooth/bluetooth-next.git (master)
-by Luiz Augusto von Dentz <luiz.von.dentz@intel.com>:
-
-On Mon, 20 Oct 2025 15:12:55 +0000 you wrote:
-> In the parse_adv_monitor_pattern() function, the value of
-> the 'length' variable is currently limited to HCI_MAX_EXT_AD_LENGTH(251).
-> The size of the 'value' array in the mgmt_adv_pattern structure is 31.
-> If the value of 'pattern[i].length' is set in the user space
-> and exceeds 31, the 'patterns[i].value' array can be accessed
-> out of bound when copied.
+On 10/31/25 5:39 AM, Nilay Shroff wrote:
+> On 10/30/25 10:54 PM, Bart Van Assche wrote:
+>> Fix this by removing the blk_mq_freeze_queue() / blk_mq_unfreeze_queue()
+>> calls from the store callbacks that do not strictly need these callbacks.
+>> This patch may cause a small delay in applying the new settings.
+>>
+>> This patch affects the following sysfs attributes:
+>> * io_poll_delay
+>> * io_timeout
+>> * nomerges
+>> * read_ahead_kb
+>> * rq_affinity
 > 
-> [...]
+> I see that io_timeout, nomerges and rq_affinity are all accessed
+> during I/O hotpath. So IMO for these attributes we still need to
+> freeze the queue before updating those parameters. The io_timeout
+> and nomerges are accessed during I/O submission and rq_affinity
+> is accessed during I/O completion.
 
-Here is the summary with links:
-  - [net] Bluetooth: MGMT: Fix OOB access in parse_adv_monitor_pattern()
-    https://git.kernel.org/bluetooth/bluetooth-next/c/e1e9d861e2f9
+Yes, several of the parameters affected by my patch are used in the
+hot path. But changing these parameters while I/O is in progress can't
+cause an I/O error. That's why I don't think that the queue needs to be
+frozen while these parameters are modified.
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+Bart.
 
 
 
