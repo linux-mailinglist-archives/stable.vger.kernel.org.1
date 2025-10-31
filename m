@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-191843-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191904-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id B215AC25694
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 15:04:37 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F16F2C2578A
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 15:10:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 663194F5DE6
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 14:03:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AF20756378E
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 14:06:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91ECD210F59;
-	Fri, 31 Oct 2025 14:02:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4261634B43A;
+	Fri, 31 Oct 2025 14:05:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bCbrK5Q/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qbeYUbst"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F5003F9D2;
-	Fri, 31 Oct 2025 14:02:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF46534404F;
+	Fri, 31 Oct 2025 14:05:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761919378; cv=none; b=VXXpJ2dCGK/n1kAD80I1ePn8QaXLuho4U4GSsMnvUkQHFweWuHcyZMGkGpqs26Gkohq7b+/IOQQ1/1BH9OOGp5CgQb4nvjcZyZNFjEcyFR64/+2mU02jmwLaYaATDJEtETl8QqeSvjqq4t4+5nsnsz88K+pTsSPGQrBx2DYSNzE=
+	t=1761919553; cv=none; b=h9+c5Ki+srJuRvq13asnkAaO3cc3FmOP7FMBtSBLlMy/1Vn5IjDzWzZF/Tzz79f/08EQmS8p9s56fWgRfNJ6Pi57yc4ml5vjRvEY7vB+aj+l9beGpqAGtTo2AY3sjcts40BgNDuBRroeX7NeRiYSmMyaqxLHrjUXhLR983gQRMs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761919378; c=relaxed/simple;
-	bh=xxiTVPLCLXgORfeoe612MkR4sJWL8OIrkxNQb4QruUw=;
+	s=arc-20240116; t=1761919553; c=relaxed/simple;
+	bh=pYS4XJyVKLWHpftU8NW/ZZzxUvyAUv1f3MmjmHkqnSM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vmjn0+sFAbJS8+TMAYkj+/HYatlUAlDrWDXTtdby/ENtek3IysyC7ZraLbbIPOWJbmhO1cjjvAYo1gzJYTzUmouvly+RS9xAhuE5B0q6AlMbl/UPwalejLRhsW8evj10KWsok+/KG1km5lois6FN8l3nhOOy7fVZVHAKbKYXiUE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bCbrK5Q/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 694B8C4CEE7;
-	Fri, 31 Oct 2025 14:02:57 +0000 (UTC)
+	 MIME-Version; b=WXjP0BY0R/mLefaK6xun+GJz8/B5rQs6/h2w3+rib1zKbNtTZi2nGRZQnsDMHuW5SI2sYcqPfmPqdk2cKcSjU60EO/yK2t8aJazQSHJMSrzF2MDqKi3+o1HaTgapZ6vWb4+JAakq7q1pPrDqLX2hb+tldIp3kYvMq6XZwJ4vv4U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qbeYUbst; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73A0BC4CEE7;
+	Fri, 31 Oct 2025 14:05:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761919377;
-	bh=xxiTVPLCLXgORfeoe612MkR4sJWL8OIrkxNQb4QruUw=;
+	s=korg; t=1761919552;
+	bh=pYS4XJyVKLWHpftU8NW/ZZzxUvyAUv1f3MmjmHkqnSM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bCbrK5Q/Y85IxcnRHnxIgJgmYooB4OmHAFkLHIl9aqOM860Gd30wUr86jBdZAiwPo
-	 REApqpbGGxN1JmiaJ9U2FyCJc8MEVeUR0d1aHnwt0g0huhswauKHQpYa2G3bUnJcdw
-	 SP5x1da26z9tLD8Ob9Akn/Z7XYwL7dJmW46G2KNU=
+	b=qbeYUbstU4TEEcpJwQ5CxaLfnWE3e9lpQLDWkJJA8uTc6JHJjcpAPTF/l+hLzY2Dq
+	 IQ+R4lBaWAcP1skXcD0r461rg+NxZ6VUK40IubmRRjku4WMDIyaonY4r/vunkIM3PL
+	 /nPy8G2kSz1GOY1t0rY5H1HB3x1BP7UC6nj8SiCs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ioana Ciornei <ioana.ciornei@nxp.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Michael Walle <mwalle@kernel.org>,
-	William Breathitt Gray <wbg@kernel.org>
-Subject: [PATCH 6.6 31/32] gpio: regmap: add the .fixed_direction_output configuration parameter
+	Jiri Olsa <jolsa@kernel.org>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Kees Cook <kees@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.17 17/35] seccomp: passthrough uprobe systemcall without filtering
 Date: Fri, 31 Oct 2025 15:01:25 +0100
-Message-ID: <20251031140043.205716161@linuxfoundation.org>
+Message-ID: <20251031140043.974667333@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251031140042.387255981@linuxfoundation.org>
-References: <20251031140042.387255981@linuxfoundation.org>
+In-Reply-To: <20251031140043.564670400@linuxfoundation.org>
+References: <20251031140043.564670400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,130 +63,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ioana Ciornei <ioana.ciornei@nxp.com>
+From: Jiri Olsa <jolsa@kernel.org>
 
-[ Upstream commit 00aaae60faf554c27c95e93d47f200a93ff266ef ]
+[ Upstream commit 89d1d8434d246c96309a6068dfcf9e36dc61227b ]
 
-There are GPIO controllers such as the one present in the LX2160ARDB
-QIXIS FPGA which have fixed-direction input and output GPIO lines mixed
-together in a single register. This cannot be modeled using the
-gpio-regmap as-is since there is no way to present the true direction of
-a GPIO line.
+Adding uprobe as another exception to the seccomp filter alongside
+with the uretprobe syscall.
 
-In order to make this use case possible, add a new configuration
-parameter - fixed_direction_output - into the gpio_regmap_config
-structure. This will enable user drivers to provide a bitmap that
-represents the fixed direction of the GPIO lines.
+Same as the uretprobe the uprobe syscall is installed by kernel as
+replacement for the breakpoint exception and is limited to x86_64
+arch and isn't expected to ever be supported in i386.
 
-Signed-off-by: Ioana Ciornei <ioana.ciornei@nxp.com>
-Acked-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Reviewed-by: Michael Walle <mwalle@kernel.org>
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Stable-dep-of: 2ba5772e530f ("gpio: idio-16: Define fixed direction of the GPIO lines")
-Signed-off-by: William Breathitt Gray <wbg@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Jiri Olsa <jolsa@kernel.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Kees Cook <kees@kernel.org>
+Link: https://lore.kernel.org/r/20250720112133.244369-21-jolsa@kernel.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpio-regmap.c  |   26 ++++++++++++++++++++++++--
- include/linux/gpio/regmap.h |    5 +++++
- 2 files changed, 29 insertions(+), 2 deletions(-)
+ kernel/seccomp.c | 32 +++++++++++++++++++++++++-------
+ 1 file changed, 25 insertions(+), 7 deletions(-)
 
---- a/drivers/gpio/gpio-regmap.c
-+++ b/drivers/gpio/gpio-regmap.c
-@@ -29,6 +29,7 @@ struct gpio_regmap {
- 	unsigned int reg_clr_base;
- 	unsigned int reg_dir_in_base;
- 	unsigned int reg_dir_out_base;
-+	unsigned long *fixed_direction_output;
- 
- #ifdef CONFIG_REGMAP_IRQ
- 	int regmap_irq_line;
-@@ -122,6 +123,13 @@ static int gpio_regmap_get_direction(str
- 	unsigned int base, val, reg, mask;
- 	int invert, ret;
- 
-+	if (gpio->fixed_direction_output) {
-+		if (test_bit(offset, gpio->fixed_direction_output))
-+			return GPIO_LINE_DIRECTION_OUT;
-+		else
-+			return GPIO_LINE_DIRECTION_IN;
-+	}
-+
- 	if (gpio->reg_dat_base && !gpio->reg_set_base)
- 		return GPIO_LINE_DIRECTION_IN;
- 	if (gpio->reg_set_base && !gpio->reg_dat_base)
-@@ -280,9 +288,20 @@ struct gpio_regmap *gpio_regmap_register
- 		chip->direction_output = gpio_regmap_direction_output;
- 	}
- 
-+	if (config->fixed_direction_output) {
-+		gpio->fixed_direction_output = bitmap_alloc(chip->ngpio,
-+							    GFP_KERNEL);
-+		if (!gpio->fixed_direction_output) {
-+			ret = -ENOMEM;
-+			goto err_free_gpio;
-+		}
-+		bitmap_copy(gpio->fixed_direction_output,
-+			    config->fixed_direction_output, chip->ngpio);
-+	}
-+
- 	ret = gpiochip_add_data(chip, gpio);
- 	if (ret < 0)
--		goto err_free_gpio;
-+		goto err_free_bitmap;
- 
- #ifdef CONFIG_REGMAP_IRQ
- 	if (config->regmap_irq_chip) {
-@@ -291,7 +310,7 @@ struct gpio_regmap *gpio_regmap_register
- 						 config->regmap_irq_line, config->regmap_irq_flags,
- 						 0, config->regmap_irq_chip, &gpio->irq_chip_data);
- 		if (ret)
--			goto err_free_gpio;
-+			goto err_free_bitmap;
- 
- 		irq_domain = regmap_irq_get_domain(gpio->irq_chip_data);
- 	} else
-@@ -308,6 +327,8 @@ struct gpio_regmap *gpio_regmap_register
- 
- err_remove_gpiochip:
- 	gpiochip_remove(chip);
-+err_free_bitmap:
-+	bitmap_free(gpio->fixed_direction_output);
- err_free_gpio:
- 	kfree(gpio);
- 	return ERR_PTR(ret);
-@@ -326,6 +347,7 @@ void gpio_regmap_unregister(struct gpio_
- #endif
- 
- 	gpiochip_remove(&gpio->gpio_chip);
-+	bitmap_free(gpio->fixed_direction_output);
- 	kfree(gpio);
+diff --git a/kernel/seccomp.c b/kernel/seccomp.c
+index 3bbfba30a777a..25f62867a16d9 100644
+--- a/kernel/seccomp.c
++++ b/kernel/seccomp.c
+@@ -741,6 +741,26 @@ seccomp_prepare_user_filter(const char __user *user_filter)
  }
- EXPORT_SYMBOL_GPL(gpio_regmap_unregister);
---- a/include/linux/gpio/regmap.h
-+++ b/include/linux/gpio/regmap.h
-@@ -37,6 +37,10 @@ struct regmap;
-  *			offset to a register/bitmask pair. If not
-  *			given the default gpio_regmap_simple_xlate()
-  *			is used.
-+ * @fixed_direction_output:
-+ *			(Optional) Bitmap representing the fixed direction of
-+ *			the GPIO lines. Useful when there are GPIO lines with a
-+ *			fixed direction mixed together in the same register.
-  * @drvdata:		(Optional) Pointer to driver specific data which is
-  *			not used by gpio-remap but is provided "as is" to the
-  *			driver callback(s).
-@@ -82,6 +86,7 @@ struct gpio_regmap_config {
- 	int reg_stride;
- 	int ngpio_per_reg;
- 	struct irq_domain *irq_domain;
-+	unsigned long *fixed_direction_output;
  
- #ifdef CONFIG_REGMAP_IRQ
- 	struct regmap_irq_chip *regmap_irq_chip;
+ #ifdef SECCOMP_ARCH_NATIVE
++static bool seccomp_uprobe_exception(struct seccomp_data *sd)
++{
++#if defined __NR_uretprobe || defined __NR_uprobe
++#ifdef SECCOMP_ARCH_COMPAT
++	if (sd->arch == SECCOMP_ARCH_NATIVE)
++#endif
++	{
++#ifdef __NR_uretprobe
++		if (sd->nr == __NR_uretprobe)
++			return true;
++#endif
++#ifdef __NR_uprobe
++		if (sd->nr == __NR_uprobe)
++			return true;
++#endif
++	}
++#endif
++	return false;
++}
++
+ /**
+  * seccomp_is_const_allow - check if filter is constant allow with given data
+  * @fprog: The BPF programs
+@@ -758,13 +778,8 @@ static bool seccomp_is_const_allow(struct sock_fprog_kern *fprog,
+ 		return false;
+ 
+ 	/* Our single exception to filtering. */
+-#ifdef __NR_uretprobe
+-#ifdef SECCOMP_ARCH_COMPAT
+-	if (sd->arch == SECCOMP_ARCH_NATIVE)
+-#endif
+-		if (sd->nr == __NR_uretprobe)
+-			return true;
+-#endif
++	if (seccomp_uprobe_exception(sd))
++		return true;
+ 
+ 	for (pc = 0; pc < fprog->len; pc++) {
+ 		struct sock_filter *insn = &fprog->filter[pc];
+@@ -1042,6 +1057,9 @@ static const int mode1_syscalls[] = {
+ 	__NR_seccomp_read, __NR_seccomp_write, __NR_seccomp_exit, __NR_seccomp_sigreturn,
+ #ifdef __NR_uretprobe
+ 	__NR_uretprobe,
++#endif
++#ifdef __NR_uprobe
++	__NR_uprobe,
+ #endif
+ 	-1, /* negative terminated */
+ };
+-- 
+2.51.0
+
 
 
 
