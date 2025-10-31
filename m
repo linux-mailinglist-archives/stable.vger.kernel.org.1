@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-191887-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191913-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1ED58C256AF
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 15:05:06 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38128C258A7
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 15:22:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 96BA2351241
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 14:05:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B9F5D5623F4
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 14:06:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B66821FF25;
-	Fri, 31 Oct 2025 14:05:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FD4632C936;
+	Fri, 31 Oct 2025 14:06:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R9GlHwJJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XPRi52vy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57CB13C17;
-	Fri, 31 Oct 2025 14:05:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF8E222A4FE;
+	Fri, 31 Oct 2025 14:06:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761919503; cv=none; b=ecW4LX2eLwrzeXAhpWs2YksHzwwK2veTbgiBrCEnew8gHsvVyE1ZOToT2Qt5aQ6Nyz/PZPncJXhRI04CwqsNd44AyLjwpmhcDQECAjMg3bJIq4fTAOKHdKbMWWsBVmpGpsfdZoSFhE2nJIZ+hp+fudFyaQglIefpBpkuDRVPZMg=
+	t=1761919580; cv=none; b=LtBIfSGpKTUJKuV8/DFRikE9/U8WcoXMMZI1pOzYbjYZheK/h6gmMQZnc3k11ZbLh8e67UM2RUbKlkwUh9H1UZYs3PQC8XFFRYG5LwTabgWCIz1MDtTFsy4l5EahOw2aK/Tv4JCrRma2ZNIVqq1LYKxJiVBso7bHkFjWvONKY40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761919503; c=relaxed/simple;
-	bh=ppi3t5hKrBhOCwcpZhTGp3Ra+Dix2hFqaoi2yd9KN84=;
+	s=arc-20240116; t=1761919580; c=relaxed/simple;
+	bh=4FSv81Zvx18IsAkIUctc7Y/jVGlChm97k7ws7PYtSe4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=C0DwMtA43P0FJV08TSPBNp/oTRqfLHMswPo3HeSXUb53/a43zYBbiNrEETyIIuQPDzvUs66sOk+NwOuNIg6Hth6UXQFPFv+4qX4lK0l9V8hNhLwa6O1OdcAlx/D5u5Tw6EjKAv6sDZ7uEJQf0XT6MiLn153wQJ7ae8EIiTe0iuA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R9GlHwJJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 819DFC4CEE7;
-	Fri, 31 Oct 2025 14:05:02 +0000 (UTC)
+	 MIME-Version; b=TDwYC63tCsYd2UyyCOOnJHqqgumyTwmNvCiPdXyvAn6Xz+2MkXSFx+zolQ+rtk0pEpBjXfYOStW0sf/ean18uG76m0O9gmO4eKr665KpIbJWjoF7QfcOtYfJeM9bjHV3DqzGFdphrArHupmamMtKzvEFqDuXDpkiZiCDQHQ8IqY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XPRi52vy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78A09C4CEE7;
+	Fri, 31 Oct 2025 14:06:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761919502;
-	bh=ppi3t5hKrBhOCwcpZhTGp3Ra+Dix2hFqaoi2yd9KN84=;
+	s=korg; t=1761919579;
+	bh=4FSv81Zvx18IsAkIUctc7Y/jVGlChm97k7ws7PYtSe4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R9GlHwJJvmKGZZndiT2eEFhyHHIQcjsZD9zoGWMe1TLsAonYvLQW3zr+ncOUHfhPe
-	 IbY3Wr+Orq42R2sUVUCtVLMXsMbaGJAw7UimaZ4CW2J+uiAqxqwwMt3qbPjhdKZz5U
-	 Rtma9ic30FQ/10tXOOgFHmXlfZYrHgC/+wzCOV0w=
+	b=XPRi52vyp3/KP0cbDgCTZx8GuCSxaF2u6lC1JQvSRPk5/Mcvtd4WKfNBBOJWoFGiU
+	 OoBrJ2InEB6eMObZtGs4t/cU9EGGXcE31oz6K5EH2zefFnijXP0Gt1d0Vn32YYnJ8C
+	 8fngMEqQ2BKvsiW0ew6+JC2VxNjTbXoPyt0TJ/Ok=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiaogang Chen <Xiaogang.Chen@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Amelia Crate <acrate@waldn.net>
-Subject: [PATCH 6.12 39/40] udmabuf: fix a buf size overflow issue during udmabuf creation
-Date: Fri, 31 Oct 2025 15:01:32 +0100
-Message-ID: <20251031140044.967565261@linuxfoundation.org>
+	Boris Burkov <boris@bur.io>,
+	Qu Wenruo <wqu@suse.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.17 25/35] btrfs: abort transaction in the process_one_buffer() log tree walk callback
+Date: Fri, 31 Oct 2025 15:01:33 +0100
+Message-ID: <20251031140044.172337085@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251031140043.939381518@linuxfoundation.org>
-References: <20251031140043.939381518@linuxfoundation.org>
+In-Reply-To: <20251031140043.564670400@linuxfoundation.org>
+References: <20251031140043.564670400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,39 +62,83 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiaogang Chen <xiaogang.chen@amd.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit 021ba7f1babd029e714d13a6bf2571b08af96d0f ]
+[ Upstream commit e6dd405b6671b9753b98d8bdf76f8f0ed36c11cd ]
 
-by casting size_limit_mb to u64  when calculate pglimit.
+In the process_one_buffer() log tree walk callback we return errors to the
+log tree walk caller and then the caller aborts the transaction, if we
+have one, or turns the fs into error state if we don't have one. While
+this reduces code it makes it harder to figure out where exactly an error
+came from. So add the transaction aborts after every failure inside the
+process_one_buffer() callback, so that it helps figuring out why failures
+happen.
 
-Signed-off-by: Xiaogang Chen<Xiaogang.Chen@amd.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250321164126.329638-1-xiaogang.chen@amd.com
-Signed-off-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Amelia Crate <acrate@waldn.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Boris Burkov <boris@bur.io>
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma-buf/udmabuf.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/btrfs/tree-log.c | 20 ++++++++++++++++----
+ 1 file changed, 16 insertions(+), 4 deletions(-)
 
---- a/drivers/dma-buf/udmabuf.c
-+++ b/drivers/dma-buf/udmabuf.c
-@@ -350,7 +350,7 @@ static long udmabuf_create(struct miscde
- 		return -ENOMEM;
+diff --git a/fs/btrfs/tree-log.c b/fs/btrfs/tree-log.c
+index 6d92326a1a0c7..50ed84cb68a69 100644
+--- a/fs/btrfs/tree-log.c
++++ b/fs/btrfs/tree-log.c
+@@ -347,6 +347,7 @@ static int process_one_buffer(struct btrfs_root *log,
+ 			      struct extent_buffer *eb,
+ 			      struct walk_control *wc, u64 gen, int level)
+ {
++	struct btrfs_trans_handle *trans = wc->trans;
+ 	struct btrfs_fs_info *fs_info = log->fs_info;
+ 	int ret = 0;
  
- 	INIT_LIST_HEAD(&ubuf->unpin_list);
--	pglimit = (size_limit_mb * 1024 * 1024) >> PAGE_SHIFT;
-+	pglimit = ((u64)size_limit_mb * 1024 * 1024) >> PAGE_SHIFT;
- 	for (i = 0; i < head->count; i++) {
- 		if (!PAGE_ALIGNED(list[i].offset))
- 			goto err;
+@@ -361,18 +362,29 @@ static int process_one_buffer(struct btrfs_root *log,
+ 		};
+ 
+ 		ret = btrfs_read_extent_buffer(eb, &check);
+-		if (ret)
++		if (ret) {
++			if (trans)
++				btrfs_abort_transaction(trans, ret);
++			else
++				btrfs_handle_fs_error(fs_info, ret, NULL);
+ 			return ret;
++		}
+ 	}
+ 
+ 	if (wc->pin) {
+-		ret = btrfs_pin_extent_for_log_replay(wc->trans, eb);
+-		if (ret)
++		ASSERT(trans != NULL);
++		ret = btrfs_pin_extent_for_log_replay(trans, eb);
++		if (ret) {
++			btrfs_abort_transaction(trans, ret);
+ 			return ret;
++		}
+ 
+ 		if (btrfs_buffer_uptodate(eb, gen, 0) &&
+-		    btrfs_header_level(eb) == 0)
++		    btrfs_header_level(eb) == 0) {
+ 			ret = btrfs_exclude_logged_extents(eb);
++			if (ret)
++				btrfs_abort_transaction(trans, ret);
++		}
+ 	}
+ 	return ret;
+ }
+-- 
+2.51.0
+
 
 
 
