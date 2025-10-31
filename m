@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-191879-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191844-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3ADE9C256A6
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 15:04:57 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7FA1C256B2
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 15:05:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id A8CF5351095
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 14:04:56 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B3A0F4F649D
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 14:03:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CE6D34A3CC;
-	Fri, 31 Oct 2025 14:04:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F83C34D387;
+	Fri, 31 Oct 2025 14:03:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IPmyAJzZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bNyQVAOI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE881210F59;
-	Fri, 31 Oct 2025 14:04:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B23625784B;
+	Fri, 31 Oct 2025 14:03:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761919480; cv=none; b=QTM8Z8BLV8z/mxpt6m5CbdC88pyrfXn+UfzhncpPxqEiTUzij6eTq+YJJ0gV8XzpagTia1mlH6okf9efEDBxBWfscbj4MzmweB2gNlRR0MDSFXQnpGnzZfNMWDKi0maEzc9P9HrbWB3HW8vHjKLrSfTHGgDCzr+nUZ9wgqyYot0=
+	t=1761919381; cv=none; b=iUubKP6RLy3dccF7LupZ2mjsCt/h+1eqdD6by+hP2Ek2oU8F96zuQKA6+nOxsw1qPzwMLS/+Tk33gGZMxn8y6urCOzyXIn9t0qyR6J9T16pFfVlRc2ADM7wsNFOrfxmR7ur5VcbkIZnidR2ZOM9+49VNveE81JCwje8/ojuUbm0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761919480; c=relaxed/simple;
-	bh=RkbUiZGquRUA2Wzra7OZRDG3gT/dBQWVjJoVEBzFi9E=;
+	s=arc-20240116; t=1761919381; c=relaxed/simple;
+	bh=wtbxyg8++28R66zmRizI8udEZ+oQogiCVqry5RIIYA0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M8OkRTi8xL8z0aRAqtBJJ9cNcMiXUGhPwdKK2Q1mG9DJrmtcAlInNOPZHoIjkmfTlXoHnwtcv3WrLR9+O0522f6yf8UGgfrdBtzZHevbSmdH4Cs5g6+iXlR6tRw2rcXJu2mdn/a/hTdhJY3EC4XqjOq0sAPRNZckwCmI4OG8jKU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IPmyAJzZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 765E9C4CEE7;
-	Fri, 31 Oct 2025 14:04:39 +0000 (UTC)
+	 MIME-Version; b=rgNLgePPV8ZpSC3G9k/Q+RJS/FC2FzQH2GlDTYcTEWbGQjFUcHfR/aomHFB6rhZJ+Luk1SMjzGy1AK0YVe02D+19Kp5i78Jk6eJEg68JFT8WSG98PBivAkdPPGt6hOJTtvZBsZCDbEwACUhO4MF+efNM2zpLgwNYz+MBAbh1NI0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bNyQVAOI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92567C4CEE7;
+	Fri, 31 Oct 2025 14:03:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761919479;
-	bh=RkbUiZGquRUA2Wzra7OZRDG3gT/dBQWVjJoVEBzFi9E=;
+	s=korg; t=1761919381;
+	bh=wtbxyg8++28R66zmRizI8udEZ+oQogiCVqry5RIIYA0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IPmyAJzZ8J0b01WInQyxKPyKlVLvuFY1/hgeLHkV5cLClKGE6kdo9ezMRcjG6Czq9
-	 lPXsTefPKXkhzqzsTkVgNQs9/3LrW46beGxBf2TTGTnYimXMmtiW2jBdWs2hGTLsGz
-	 EXVlNJ77dHloVCfgMESHmYa0/W4RWTdL2TyT/Cqs=
+	b=bNyQVAOIeHfp++uDHjPNcGYBHhzQeXB7XAYICmGZOUMKrQg7MH+PcXp3HauafvMPD
+	 Oy6ckHmpEog73EUNKRCyOIfuy8NWJrVcgIvrmMGcxRZjPXPradU+jeLgCYbb6b2KR9
+	 v1/YeRs6tr0VOBkgzAYr/MCUXcIzE+DpNUkxZFJg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
+	Mark Cave-Ayland <mark.caveayland@nutanix.com>,
+	Michael Walle <mwalle@kernel.org>,
 	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Yury Norov <yury.norov@gmail.com>,
-	William Breathitt Gray <wbg@kernel.org>
-Subject: [PATCH 6.12 32/40] bits: add comments and newlines to #if, #else and #endif directives
-Date: Fri, 31 Oct 2025 15:01:25 +0100
-Message-ID: <20251031140044.798677471@linuxfoundation.org>
+	William Breathitt Gray <wbg@kernel.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Subject: [PATCH 6.6 32/32] gpio: idio-16: Define fixed direction of the GPIO lines
+Date: Fri, 31 Oct 2025 15:01:26 +0100
+Message-ID: <20251031140043.229196074@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251031140043.939381518@linuxfoundation.org>
-References: <20251031140043.939381518@linuxfoundation.org>
+In-Reply-To: <20251031140042.387255981@linuxfoundation.org>
+References: <20251031140042.387255981@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +65,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
+From: William Breathitt Gray <wbg@kernel.org>
 
-[ Upstream commit 31299a5e0211241171b2222c5633aad4763bf700 ]
+[ Upstream commit 2ba5772e530f73eb847fb96ce6c4017894869552 ]
 
-This is a preparation for the upcoming GENMASK_U*() and BIT_U*()
-changes. After introducing those new macros, there will be a lot of
-scrolling between the #if, #else and #endif.
+The direction of the IDIO-16 GPIO lines is fixed with the first 16 lines
+as output and the remaining 16 lines as input. Set the gpio_config
+fixed_direction_output member to represent the fixed direction of the
+GPIO lines.
 
-Add a comment to the #else and #endif preprocessor macros to help keep
-track of which context we are in. Also, add new lines to better
-visually separate the non-asm and asm sections.
-
-Signed-off-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
+Fixes: db02247827ef ("gpio: idio-16: Migrate to the regmap API")
+Reported-by: Mark Cave-Ayland <mark.caveayland@nutanix.com>
+Closes: https://lore.kernel.org/r/9b0375fd-235f-4ee1-a7fa-daca296ef6bf@nutanix.com
+Suggested-by: Michael Walle <mwalle@kernel.org>
+Cc: stable@vger.kernel.org # ae495810cffe: gpio: regmap: add the .fixed_direction_output configuration parameter
+Cc: stable@vger.kernel.org
 Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Yury Norov <yury.norov@gmail.com>
-Stable-dep-of: 2ba5772e530f ("gpio: idio-16: Define fixed direction of the GPIO lines")
+Signed-off-by: William Breathitt Gray <wbg@kernel.org>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Link: https://lore.kernel.org/r/20251020-fix-gpio-idio-16-regmap-v2-3-ebeb50e93c33@kernel.org
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: William Breathitt Gray <wbg@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/bits.h |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/gpio/gpio-idio-16.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/include/linux/bits.h
-+++ b/include/linux/bits.h
-@@ -19,17 +19,21 @@
-  * GENMASK_ULL(39, 21) gives us the 64bit vector 0x000000ffffe00000.
+--- a/drivers/gpio/gpio-idio-16.c
++++ b/drivers/gpio/gpio-idio-16.c
+@@ -3,6 +3,7 @@
+  * GPIO library for the ACCES IDIO-16 family
+  * Copyright (C) 2022 William Breathitt Gray
   */
- #if !defined(__ASSEMBLY__)
-+
- #include <linux/build_bug.h>
- #define GENMASK_INPUT_CHECK(h, l) \
- 	(BUILD_BUG_ON_ZERO(__builtin_choose_expr( \
- 		__is_constexpr((l) > (h)), (l) > (h), 0)))
--#else
-+
-+#else /* defined(__ASSEMBLY__) */
-+
- /*
-  * BUILD_BUG_ON_ZERO is not available in h files included from asm files,
-  * disable the input check if that is the case.
-  */
- #define GENMASK_INPUT_CHECK(h, l) 0
--#endif
-+
-+#endif /* !defined(__ASSEMBLY__) */
++#include <linux/bitmap.h>
+ #include <linux/bits.h>
+ #include <linux/device.h>
+ #include <linux/err.h>
+@@ -106,6 +107,7 @@ int devm_idio_16_regmap_register(struct
+ 	struct idio_16_data *data;
+ 	struct regmap_irq_chip *chip;
+ 	struct regmap_irq_chip_data *chip_data;
++	DECLARE_BITMAP(fixed_direction_output, IDIO_16_NGPIO);
  
- #define GENMASK(h, l) \
- 	(GENMASK_INPUT_CHECK(h, l) + __GENMASK(h, l))
+ 	if (!config->parent)
+ 		return -EINVAL;
+@@ -163,6 +165,9 @@ int devm_idio_16_regmap_register(struct
+ 	gpio_config.irq_domain = regmap_irq_get_domain(chip_data);
+ 	gpio_config.reg_mask_xlate = idio_16_reg_mask_xlate;
+ 
++	bitmap_from_u64(fixed_direction_output, GENMASK_U64(15, 0));
++	gpio_config.fixed_direction_output = fixed_direction_output;
++
+ 	return PTR_ERR_OR_ZERO(devm_gpio_regmap_register(dev, &gpio_config));
+ }
+ EXPORT_SYMBOL_GPL(devm_idio_16_regmap_register);
 
 
 
