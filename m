@@ -1,214 +1,152 @@
-Return-Path: <stable+bounces-191782-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191783-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id E865FC23371
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 04:53:40 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26D3CC2339B
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 04:58:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 3B4D84EF5E6
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 03:52:32 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B127B4E5D81
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 03:58:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50DBF2877DC;
-	Fri, 31 Oct 2025 03:52:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 359832874FF;
+	Fri, 31 Oct 2025 03:58:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="SoIDMDR5"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="CVw/3pel"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6076C286402
-	for <stable@vger.kernel.org>; Fri, 31 Oct 2025 03:52:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D86DA2874FE;
+	Fri, 31 Oct 2025 03:58:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761882741; cv=none; b=fxv9WdkE9j8lh4Y+t6WbLuLP3bZj/rGJLa5QG5ZP+47lD+sYkbTLnJhhvUP+UYunUxPPNzsmf+6iYIMUCuIDnWhbzGn71D2IOfqYbKrqXRQr/iJAPDv08NS9Ru9df2erylmcRdFiDhATz1tF7T36v8xomqNy+KjK29Oxar+j+Oo=
+	t=1761883095; cv=none; b=ssbxL1vPZqUVGC1ufmZbSrWkMBmNGmTjmiRf3It3me+zrOR+R0MV1cNhngcabKTL3UCL9CpznfiydbDMckChO2UKi+nrtayPd6QWju2d3kzk5Sw252IOKOo3GXLSr+BQ74ucTe4xCAkacCzgjCaKgkEuICrHRtp+JO+jCynlNe0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761882741; c=relaxed/simple;
-	bh=tpBH4WqLZ/UhvLppO8BpS9NvMHSs57XS4kkO0So3Joc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=U3W1uml0cH5kIFSaOIElzvpnMEE/bi9oW3uFrlHqKuTvFBo547zB9oGbCE94mS52hUW1abVZG1B+NYukjXJBoOA70BoxeXBlmZgXeiPg0l8QRbKZQJV5bkbKwzNJsk6qpKW9ArxukHBStJMhgWK2rufZudCyYfSLFHhKvq+Njnw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=SoIDMDR5; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1761882737;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=T33GakBQ5UDJA1Jm0FIA4c9NYfmlY9OCvzmbavseX0g=;
-	b=SoIDMDR5R8aPf/YdfnjYVhSC5kQ0GDQrzHe/BWW0Lqi3XcJ7uJo9uFVMhS5PYQC+8rRZxM
-	EdvuVQe1huRyF3raY6m3y3x0HXhu2tDOQOflc3m/QTQgixzL0qOTBw5JMFcxJCesJHTyBX
-	AyM/nJwJ/jjhtY3mrKJVRNQxLRyrjHg=
-Received: from mail-il1-f199.google.com (mail-il1-f199.google.com
- [209.85.166.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-140-rAsQQL6BNnSzN1oePOH5aA-1; Thu, 30 Oct 2025 23:52:15 -0400
-X-MC-Unique: rAsQQL6BNnSzN1oePOH5aA-1
-X-Mimecast-MFC-AGG-ID: rAsQQL6BNnSzN1oePOH5aA_1761882732
-Received: by mail-il1-f199.google.com with SMTP id e9e14a558f8ab-430ca53080bso20002055ab.1
-        for <stable@vger.kernel.org>; Thu, 30 Oct 2025 20:52:14 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761882732; x=1762487532;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=T33GakBQ5UDJA1Jm0FIA4c9NYfmlY9OCvzmbavseX0g=;
-        b=dzgmWelK92yKDPumfV6DRdfnGf3gf6+Hlt66umgFZ7a0+tfNcVhZIIw2njoAgYnbzW
-         rcAQT5L9vtWujKSU/wIZ0joYhqpPu21QRg+4aSn5eL3Kg0QIW9BdBUJmn+K0T01xOld1
-         BXlqKqDwgXfslarxl1foCdPvUk5qRBO5Vl1+oh3tzZ1kQpM8OwaWpLkE6l5Sz9SiwOLa
-         udclG82XgOvFGKrWVajYBFuWqDncaEI8FD/Qeh1yhHXaJb5m/PNPGa0yT2gfT2/f9IFh
-         P67idG98giwCsjiV3/CQJ+h3aaCISMT/0s+j9LDB9FPqPzRs10AjyAA7IYr3iBO501j2
-         CFrA==
-X-Forwarded-Encrypted: i=1; AJvYcCXASoWcIsMbaL9+vGwMRl/z7c44h0C8XsTl+jZ/hm/hQGwTIOHN/rQowZFgNBxnAxQ4dtyIyms=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyiMZSMuAjCA9NLdHYeGCRT9v/LbezUKyZZIKn8z+G4MPWjieYz
-	VsDnas8Gzsz8iPpMXYIIWRy/vYUcxyYnqNf5GZ4gJAsW+p3maS3ZWSpsBsOpYcjXMsANwus2TNJ
-	Sp4nY28BxWee+wRaios+zVDzEvdC4nA3YUqhEaHfBJP0/HRPCd6xQQ4/z+5P8MruKaCLDD7E99a
-	U6cnS+qjSifB7rDDKPXwIDwIczRvq/ppU8
-X-Gm-Gg: ASbGncvNoTODYJceEEfguFZD92gMRt5FLQFy0VYYVly2MG++VoCi7ReR0UpDy65ViKz
-	VSNfGNkhoMTVt2T/gc47o7yXktCAWq1vuTIqOe3fnXVCQVz+Lr4CHbH9MFhHlom+ICeswlX8vAO
-	I8oYs6U9uZpDHFvVHV2W+azWyJJZF9IwHNo2QrQYqFlDmL2gx2+iCq/lzcebhMLvukEQjpatAXX
-	R5wtapVVmr5icdb
-X-Received: by 2002:a05:6e02:168d:b0:430:a38c:b767 with SMTP id e9e14a558f8ab-4330d2074e9mr39276745ab.18.1761882732339;
-        Thu, 30 Oct 2025 20:52:12 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGM0mguF4E4vj4qqamw49fFeKIMF7ghlly4N+TPPxD9oj784mjEzmTSyeiNt+w4nDbflu/q+bm0ewx97PFavBU=
-X-Received: by 2002:a05:6e02:168d:b0:430:a38c:b767 with SMTP id
- e9e14a558f8ab-4330d2074e9mr39276565ab.18.1761882731977; Thu, 30 Oct 2025
- 20:52:11 -0700 (PDT)
+	s=arc-20240116; t=1761883095; c=relaxed/simple;
+	bh=5ptLrko7cS9PrR0eDUTQB6Xu5jFMePHdFl0fqx5QAQc=;
+	h=Date:To:From:Subject:Message-Id; b=kRr6y7owUvOsjpV40yW3OFnHWbIkv4Wbkd25lFPGaZNaEWD1FxI7qmYSuTighd7YS1EwFW9uGA9v2SsPopWqMWjhPJTWPRSYfESumsRakvh+51Sgeh/mwcDQXjTW2/CtVQc4iEeAGSKjubFJ8ryqB9s1wa5y12t7SjeOqnPx6qI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=CVw/3pel; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9034FC4CEE7;
+	Fri, 31 Oct 2025 03:58:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1761883093;
+	bh=5ptLrko7cS9PrR0eDUTQB6Xu5jFMePHdFl0fqx5QAQc=;
+	h=Date:To:From:Subject:From;
+	b=CVw/3pelECb4TXCXP5iyr571VIt3LZjmNLQZNslWl4xYLblM3IgiKQZa5DsbAqLad
+	 3374xpv57xDteJNdum++PRNW2X7dyLo/dXalXtYeUL3UnAf8djgxY3AqOcsmpkajPd
+	 xRiaSUmjVY74/arejy2hi1Mpy2u5YVVhyM8CkxkY=
+Date: Thu, 30 Oct 2025 20:58:13 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,puranjay@kernel.org,mbenes@suse.cz,matttbe@kernel.org,mark.rutland@arm.com,luca.ceresoli@bootlin.com,leitao@debian.org,catalin.marinas@arm.com,broonie@kernel.org,cmllamas@google.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + scripts-decode_stacktracesh-fix-build-id-and-pc-source-parsing.patch added to mm-hotfixes-unstable branch
+Message-Id: <20251031035813.9034FC4CEE7@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20251030214833.44904-1-desnesn@redhat.com> <b2ec533d-9f87-4d65-a20f-99488ffe56e9@rowland.harvard.edu>
-In-Reply-To: <b2ec533d-9f87-4d65-a20f-99488ffe56e9@rowland.harvard.edu>
-From: Desnes Nunes <desnesn@redhat.com>
-Date: Fri, 31 Oct 2025 00:52:00 -0300
-X-Gm-Features: AWmQ_bl1Y_eJoHIkPYXYYbP9d2aBucY5Y0A17DvuLdmMVlIYjUWj86ahJqMQHyU
-Message-ID: <CACaw+ex5xpE8H6GMTc6gSQZ2iASkkw1CAe1ATOx9BCzenP39fg@mail.gmail.com>
-Subject: Re: [PATCH v2] usb: storage: Fix memory leak in USB bulk transport
-To: Alan Stern <stern@rowland.harvard.edu>
-Cc: linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org, 
-	gregkh@linuxfoundation.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-Hello Alan,
 
-On Thu, Oct 30, 2025 at 10:48=E2=80=AFPM Alan Stern <stern@rowland.harvard.=
-edu> wrote:
->
-> On Thu, Oct 30, 2025 at 06:48:33PM -0300, Desnes Nunes wrote:
-> > A kernel memory leak was identified by the 'ioctl_sg01' test from Linux
-> > Test Project (LTP). The following bytes were mainly observed: 0x5342535=
-5.
-> >
-> > When USB storage devices incorrectly skip the data phase with status da=
-ta,
-> > the code extracts/validates the CSW from the sg buffer, but fails to cl=
-ear
-> > it afterwards. This leaves status protocol data in srb's transfer buffe=
-r,
-> > such as the US_BULK_CS_SIGN 'USBS' signature observed here. Thus, this =
-can
-> > lead to USB protocols leaks to user space through SCSI generic (/dev/sg=
-*)
-> > interfaces, such as the one seen here when the LTP test requested 512 K=
-iB.
-> >
-> > Fix the leak by zeroing the CSW data in srb's transfer buffer immediate=
-ly
-> > after the validation of devices that skip data phase.
-> >
-> > Note: Differently from CVE-2018-1000204, which fixed a big leak by zero=
+The patch titled
+     Subject: scripts/decode_stacktrace.sh: fix build ID and PC source parsing
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     scripts-decode_stacktracesh-fix-build-id-and-pc-source-parsing.patch
+
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/scripts-decode_stacktracesh-fix-build-id-and-pc-source-parsing.patch
+
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Carlos Llamas <cmllamas@google.com>
+Subject: scripts/decode_stacktrace.sh: fix build ID and PC source parsing
+Date: Thu, 30 Oct 2025 01:03:33 +0000
+
+Support for parsing PC source info in stacktraces (e.g.  '(P)') was added
+in commit 2bff77c665ed ("scripts/decode_stacktrace.sh: fix decoding of
+lines with an additional info").  However, this logic was placed after the
+build ID processing.  This incorrect order fails to parse lines containing
+both elements, e.g.:
+
+  drm_gem_mmap_obj+0x114/0x200 [drm 03d0564e0529947d67bb2008c3548be77279fd27] (P)
+
+This patch fixes the problem by extracting the PC source info first and
+then processing the module build ID.  With this change, the line above is
+now properly parsed as such:
+
+  drm_gem_mmap_obj (./include/linux/mmap_lock.h:212 ./include/linux/mm.h:811 drivers/gpu/drm/drm_gem.c:1177) drm (P)
+
+While here, also add a brief explanation the build ID section.
+
+Link: https://lkml.kernel.org/r/20251030010347.2731925-1-cmllamas@google.com
+Fixes: bdf8eafbf7f5 ("arm64: stacktrace: report source of unwind data")
+Fixes: 2bff77c665ed ("scripts/decode_stacktrace.sh: fix decoding of lines with an additional info")
+Signed-off-by: Carlos Llamas <cmllamas@google.com>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Cc: Breno Leitao <leitao@debian.org>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Marc Rutland <mark.rutland@arm.com>
+Cc: Mark Brown <broonie@kernel.org>
+Cc: Matthieu Baerts <matttbe@kernel.org>
+Cc: Miroslav Benes <mbenes@suse.cz>
+Cc: Puranjay Mohan <puranjay@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ scripts/decode_stacktrace.sh |   14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
+
+--- a/scripts/decode_stacktrace.sh~scripts-decode_stacktracesh-fix-build-id-and-pc-source-parsing
++++ a/scripts/decode_stacktrace.sh
+@@ -277,12 +277,6 @@ handle_line() {
+ 		fi
+ 	done
+ 
+-	if [[ ${words[$last]} =~ ^[0-9a-f]+\] ]]; then
+-		words[$last-1]="${words[$last-1]} ${words[$last]}"
+-		unset words[$last] spaces[$last]
+-		last=$(( $last - 1 ))
+-	fi
 -
-> > ing pages at allocation time, this leak occurs after allocation, when U=
-SB
-> > protocol data is written to already-allocated sg pages.
-> >
-> > v2: Use the same code style found on usb_stor_Bulk_transport()
->
-> Minor nit: The version information is supposed to go below the "---"
-> line.  It's not really part of the patch; when people in the future see
-> this patch in the git history, they won't care how many previous
-> versions it went through or what the changes were.
+ 	# Extract info after the symbol if present. E.g.:
+ 	# func_name+0x54/0x80 (P)
+ 	#                     ^^^
+@@ -294,6 +288,14 @@ handle_line() {
+ 		unset words[$last] spaces[$last]
+ 		last=$(( $last - 1 ))
+ 	fi
++
++	# Join module name with its build id if present, as these were
++	# split during tokenization (e.g. "[module" and "modbuildid]").
++	if [[ ${words[$last]} =~ ^[0-9a-f]+\] ]]; then
++		words[$last-1]="${words[$last-1]} ${words[$last]}"
++		unset words[$last] spaces[$last]
++		last=$(( $last - 1 ))
++	fi
+ 
+ 	if [[ ${words[$last]} =~ \[([^]]+)\] ]]; then
+ 		module=${words[$last]}
+_
 
-Noted and thanks for letting me know!
+Patches currently in -mm which might be from cmllamas@google.com are
 
-> > Fixes: a45b599ad808 ("scsi: sg: allocate with __GFP_ZERO in sg_build_in=
-direct()")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Desnes Nunes <desnesn@redhat.com>
-> > ---
-> >  drivers/usb/storage/transport.c | 12 ++++++++++++
-> >  1 file changed, 12 insertions(+)
-> >
-> > diff --git a/drivers/usb/storage/transport.c b/drivers/usb/storage/tran=
-sport.c
-> > index 1aa1bd26c81f..ee6b89f7f9ac 100644
-> > --- a/drivers/usb/storage/transport.c
-> > +++ b/drivers/usb/storage/transport.c
-> > @@ -1200,7 +1200,19 @@ int usb_stor_Bulk_transport(struct scsi_cmnd *sr=
-b, struct us_data *us)
-> >                                               US_BULK_CS_WRAP_LEN &&
-> >                                       bcs->Signature =3D=3D
-> >                                               cpu_to_le32(US_BULK_CS_SI=
-GN)) {
-> > +                             unsigned char buf[US_BULK_CS_WRAP_LEN];
-> > +
-> > +                             sg =3D NULL;
-> > +                             offset =3D 0;
-> > +                             memset(buf, 0, US_BULK_CS_WRAP_LEN);
-> >                               usb_stor_dbg(us, "Device skipped data pha=
-se\n");
->
-> Another nit: Logically the comment belongs before the three new lines,
-> because it notes that there was a problem whereas the new lines are part
-> of the scheme to then mitigate the problem.  It might also be worthwhile
-> to add a comment explaining the reason for overwriting the CSW data,
-> namely, to avoid leaking protocol information to userspace.  This point
-> is not immediately obvious.
-
-Agree that it makes more sense to move the dbg comment before the declarati=
-ons.
-Also concur that a comment about the fix of this leak is good to have
-in the code.
-
-> > +
-> > +                             if (usb_stor_access_xfer_buf(buf,
-> > +                                             US_BULK_CS_WRAP_LEN, srb,=
- &sg,
-> > +                                             &offset, TO_XFER_BUF) !=
-=3D
-> > +                                                     US_BULK_CS_WRAP_L=
-EN)
->
-> Yet another nit: Don't people recommend using sizeof(buf) instead of
-> US_BULK_CS_WRAP_LEN in places like these?  Particularly in memset()?
-
-I wanted to make clear the size I was zeroing it, but it is literally
-a few lines above. Will change it to sizeof(buf).
-
->
-> > +                                     usb_stor_dbg(us, "Failed to clear=
- CSW data\n");
-> > +
-> >                               scsi_set_resid(srb, transfer_length);
-> >                               goto skipped_data_phase;
-> >                       }
->
-> Regardless of the nits:
->
-> Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
->
-> Alan Stern
-
-v3 under the '---' is a charm!
-
-Thanks for the review Alan.
-
-Desnes Nunes
+scripts-decode_stacktracesh-fix-build-id-and-pc-source-parsing.patch
 
 
