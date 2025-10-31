@@ -1,158 +1,214 @@
-Return-Path: <stable+bounces-191781-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191782-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3E64C232E7
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 04:29:57 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id E865FC23371
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 04:53:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 062C21A64965
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 03:30:22 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 3B4D84EF5E6
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 03:52:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED7B127AC28;
-	Fri, 31 Oct 2025 03:29:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50DBF2877DC;
+	Fri, 31 Oct 2025 03:52:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="CkMI+lT5"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="SoIDMDR5"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EA9D274B30;
-	Fri, 31 Oct 2025 03:29:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6076C286402
+	for <stable@vger.kernel.org>; Fri, 31 Oct 2025 03:52:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761881393; cv=none; b=iozhhCNYaLbxV8Q4LP0rAZ22ZPPOC6aNXRwC1bD/1fwFapQtI7ouGqZS3xIO6pxQ08xINlM12E1N+atH5yeuO53djCT/xy3JngMZuSBC8dhooUz3pqJKyG9bFT/7jtvov6a0oUnFWDAPYMbAVxYVszH3WGa2gwSRzX6Ilwkjjys=
+	t=1761882741; cv=none; b=fxv9WdkE9j8lh4Y+t6WbLuLP3bZj/rGJLa5QG5ZP+47lD+sYkbTLnJhhvUP+UYunUxPPNzsmf+6iYIMUCuIDnWhbzGn71D2IOfqYbKrqXRQr/iJAPDv08NS9Ru9df2erylmcRdFiDhATz1tF7T36v8xomqNy+KjK29Oxar+j+Oo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761881393; c=relaxed/simple;
-	bh=tOp+KRVH2sLltKtt6CMWxaH3Av4wegBgKUKCf/CTyEo=;
-	h=Date:To:From:Subject:Message-Id; b=Qr/y/lZeJ4APpuUPHWKDhR3QwunSbfFi4cNXMoHTgtSMP8JMh8g5OXGX451waElaepA0r/+K4qfhpbKULPrMNhvE1kqOtX0JJl6uD9hXZg/B7zo+0SbwJF4yxvY1fPvdyJfIZn2swhkKhtgKeg568ZTI0WtKLSR1OkoZebJPQDo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=CkMI+lT5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 232E8C113D0;
-	Fri, 31 Oct 2025 03:29:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1761881393;
-	bh=tOp+KRVH2sLltKtt6CMWxaH3Av4wegBgKUKCf/CTyEo=;
-	h=Date:To:From:Subject:From;
-	b=CkMI+lT5dKKfziI8gEoCOIod4BnOdLS6EuZdg4v0hwQ0INQsjScz5+JUfkHl+YyyW
-	 28NuUGgzOsLmseXmgXOzCo2ISqSqwwgQN6y3LAdWuN/STEXyWAU+Z71QNHNKY2gbZZ
-	 IK9OVV42BW2J7PhjFgdmQ/4NcTRZ0g0ApZpVTtAM=
-Date: Thu, 30 Oct 2025 20:29:52 -0700
-To: mm-commits@vger.kernel.org,zuoze1@huawei.com,wangkefeng.wang@huawei.com,stable@vger.kernel.org,sj@kernel.org,yanquanmin1@huawei.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-damon-sysfs-change-next_update_jiffies-to-a-global-variable.patch added to mm-hotfixes-unstable branch
-Message-Id: <20251031032953.232E8C113D0@smtp.kernel.org>
+	s=arc-20240116; t=1761882741; c=relaxed/simple;
+	bh=tpBH4WqLZ/UhvLppO8BpS9NvMHSs57XS4kkO0So3Joc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=U3W1uml0cH5kIFSaOIElzvpnMEE/bi9oW3uFrlHqKuTvFBo547zB9oGbCE94mS52hUW1abVZG1B+NYukjXJBoOA70BoxeXBlmZgXeiPg0l8QRbKZQJV5bkbKwzNJsk6qpKW9ArxukHBStJMhgWK2rufZudCyYfSLFHhKvq+Njnw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=SoIDMDR5; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1761882737;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=T33GakBQ5UDJA1Jm0FIA4c9NYfmlY9OCvzmbavseX0g=;
+	b=SoIDMDR5R8aPf/YdfnjYVhSC5kQ0GDQrzHe/BWW0Lqi3XcJ7uJo9uFVMhS5PYQC+8rRZxM
+	EdvuVQe1huRyF3raY6m3y3x0HXhu2tDOQOflc3m/QTQgixzL0qOTBw5JMFcxJCesJHTyBX
+	AyM/nJwJ/jjhtY3mrKJVRNQxLRyrjHg=
+Received: from mail-il1-f199.google.com (mail-il1-f199.google.com
+ [209.85.166.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-140-rAsQQL6BNnSzN1oePOH5aA-1; Thu, 30 Oct 2025 23:52:15 -0400
+X-MC-Unique: rAsQQL6BNnSzN1oePOH5aA-1
+X-Mimecast-MFC-AGG-ID: rAsQQL6BNnSzN1oePOH5aA_1761882732
+Received: by mail-il1-f199.google.com with SMTP id e9e14a558f8ab-430ca53080bso20002055ab.1
+        for <stable@vger.kernel.org>; Thu, 30 Oct 2025 20:52:14 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761882732; x=1762487532;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=T33GakBQ5UDJA1Jm0FIA4c9NYfmlY9OCvzmbavseX0g=;
+        b=dzgmWelK92yKDPumfV6DRdfnGf3gf6+Hlt66umgFZ7a0+tfNcVhZIIw2njoAgYnbzW
+         rcAQT5L9vtWujKSU/wIZ0joYhqpPu21QRg+4aSn5eL3Kg0QIW9BdBUJmn+K0T01xOld1
+         BXlqKqDwgXfslarxl1foCdPvUk5qRBO5Vl1+oh3tzZ1kQpM8OwaWpLkE6l5Sz9SiwOLa
+         udclG82XgOvFGKrWVajYBFuWqDncaEI8FD/Qeh1yhHXaJb5m/PNPGa0yT2gfT2/f9IFh
+         P67idG98giwCsjiV3/CQJ+h3aaCISMT/0s+j9LDB9FPqPzRs10AjyAA7IYr3iBO501j2
+         CFrA==
+X-Forwarded-Encrypted: i=1; AJvYcCXASoWcIsMbaL9+vGwMRl/z7c44h0C8XsTl+jZ/hm/hQGwTIOHN/rQowZFgNBxnAxQ4dtyIyms=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyiMZSMuAjCA9NLdHYeGCRT9v/LbezUKyZZIKn8z+G4MPWjieYz
+	VsDnas8Gzsz8iPpMXYIIWRy/vYUcxyYnqNf5GZ4gJAsW+p3maS3ZWSpsBsOpYcjXMsANwus2TNJ
+	Sp4nY28BxWee+wRaios+zVDzEvdC4nA3YUqhEaHfBJP0/HRPCd6xQQ4/z+5P8MruKaCLDD7E99a
+	U6cnS+qjSifB7rDDKPXwIDwIczRvq/ppU8
+X-Gm-Gg: ASbGncvNoTODYJceEEfguFZD92gMRt5FLQFy0VYYVly2MG++VoCi7ReR0UpDy65ViKz
+	VSNfGNkhoMTVt2T/gc47o7yXktCAWq1vuTIqOe3fnXVCQVz+Lr4CHbH9MFhHlom+ICeswlX8vAO
+	I8oYs6U9uZpDHFvVHV2W+azWyJJZF9IwHNo2QrQYqFlDmL2gx2+iCq/lzcebhMLvukEQjpatAXX
+	R5wtapVVmr5icdb
+X-Received: by 2002:a05:6e02:168d:b0:430:a38c:b767 with SMTP id e9e14a558f8ab-4330d2074e9mr39276745ab.18.1761882732339;
+        Thu, 30 Oct 2025 20:52:12 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGM0mguF4E4vj4qqamw49fFeKIMF7ghlly4N+TPPxD9oj784mjEzmTSyeiNt+w4nDbflu/q+bm0ewx97PFavBU=
+X-Received: by 2002:a05:6e02:168d:b0:430:a38c:b767 with SMTP id
+ e9e14a558f8ab-4330d2074e9mr39276565ab.18.1761882731977; Thu, 30 Oct 2025
+ 20:52:11 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+References: <20251030214833.44904-1-desnesn@redhat.com> <b2ec533d-9f87-4d65-a20f-99488ffe56e9@rowland.harvard.edu>
+In-Reply-To: <b2ec533d-9f87-4d65-a20f-99488ffe56e9@rowland.harvard.edu>
+From: Desnes Nunes <desnesn@redhat.com>
+Date: Fri, 31 Oct 2025 00:52:00 -0300
+X-Gm-Features: AWmQ_bl1Y_eJoHIkPYXYYbP9d2aBucY5Y0A17DvuLdmMVlIYjUWj86ahJqMQHyU
+Message-ID: <CACaw+ex5xpE8H6GMTc6gSQZ2iASkkw1CAe1ATOx9BCzenP39fg@mail.gmail.com>
+Subject: Re: [PATCH v2] usb: storage: Fix memory leak in USB bulk transport
+To: Alan Stern <stern@rowland.harvard.edu>
+Cc: linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org, 
+	gregkh@linuxfoundation.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+Hello Alan,
 
-The patch titled
-     Subject: mm/damon/sysfs: change next_update_jiffies to a global variable
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-damon-sysfs-change-next_update_jiffies-to-a-global-variable.patch
+On Thu, Oct 30, 2025 at 10:48=E2=80=AFPM Alan Stern <stern@rowland.harvard.=
+edu> wrote:
+>
+> On Thu, Oct 30, 2025 at 06:48:33PM -0300, Desnes Nunes wrote:
+> > A kernel memory leak was identified by the 'ioctl_sg01' test from Linux
+> > Test Project (LTP). The following bytes were mainly observed: 0x5342535=
+5.
+> >
+> > When USB storage devices incorrectly skip the data phase with status da=
+ta,
+> > the code extracts/validates the CSW from the sg buffer, but fails to cl=
+ear
+> > it afterwards. This leaves status protocol data in srb's transfer buffe=
+r,
+> > such as the US_BULK_CS_SIGN 'USBS' signature observed here. Thus, this =
+can
+> > lead to USB protocols leaks to user space through SCSI generic (/dev/sg=
+*)
+> > interfaces, such as the one seen here when the LTP test requested 512 K=
+iB.
+> >
+> > Fix the leak by zeroing the CSW data in srb's transfer buffer immediate=
+ly
+> > after the validation of devices that skip data phase.
+> >
+> > Note: Differently from CVE-2018-1000204, which fixed a big leak by zero=
+-
+> > ing pages at allocation time, this leak occurs after allocation, when U=
+SB
+> > protocol data is written to already-allocated sg pages.
+> >
+> > v2: Use the same code style found on usb_stor_Bulk_transport()
+>
+> Minor nit: The version information is supposed to go below the "---"
+> line.  It's not really part of the patch; when people in the future see
+> this patch in the git history, they won't care how many previous
+> versions it went through or what the changes were.
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-damon-sysfs-change-next_update_jiffies-to-a-global-variable.patch
+Noted and thanks for letting me know!
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+> > Fixes: a45b599ad808 ("scsi: sg: allocate with __GFP_ZERO in sg_build_in=
+direct()")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Desnes Nunes <desnesn@redhat.com>
+> > ---
+> >  drivers/usb/storage/transport.c | 12 ++++++++++++
+> >  1 file changed, 12 insertions(+)
+> >
+> > diff --git a/drivers/usb/storage/transport.c b/drivers/usb/storage/tran=
+sport.c
+> > index 1aa1bd26c81f..ee6b89f7f9ac 100644
+> > --- a/drivers/usb/storage/transport.c
+> > +++ b/drivers/usb/storage/transport.c
+> > @@ -1200,7 +1200,19 @@ int usb_stor_Bulk_transport(struct scsi_cmnd *sr=
+b, struct us_data *us)
+> >                                               US_BULK_CS_WRAP_LEN &&
+> >                                       bcs->Signature =3D=3D
+> >                                               cpu_to_le32(US_BULK_CS_SI=
+GN)) {
+> > +                             unsigned char buf[US_BULK_CS_WRAP_LEN];
+> > +
+> > +                             sg =3D NULL;
+> > +                             offset =3D 0;
+> > +                             memset(buf, 0, US_BULK_CS_WRAP_LEN);
+> >                               usb_stor_dbg(us, "Device skipped data pha=
+se\n");
+>
+> Another nit: Logically the comment belongs before the three new lines,
+> because it notes that there was a problem whereas the new lines are part
+> of the scheme to then mitigate the problem.  It might also be worthwhile
+> to add a comment explaining the reason for overwriting the CSW data,
+> namely, to avoid leaking protocol information to userspace.  This point
+> is not immediately obvious.
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
+Agree that it makes more sense to move the dbg comment before the declarati=
+ons.
+Also concur that a comment about the fix of this leak is good to have
+in the code.
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+> > +
+> > +                             if (usb_stor_access_xfer_buf(buf,
+> > +                                             US_BULK_CS_WRAP_LEN, srb,=
+ &sg,
+> > +                                             &offset, TO_XFER_BUF) !=
+=3D
+> > +                                                     US_BULK_CS_WRAP_L=
+EN)
+>
+> Yet another nit: Don't people recommend using sizeof(buf) instead of
+> US_BULK_CS_WRAP_LEN in places like these?  Particularly in memset()?
 
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
+I wanted to make clear the size I was zeroing it, but it is literally
+a few lines above. Will change it to sizeof(buf).
 
-------------------------------------------------------
-From: Quanmin Yan <yanquanmin1@huawei.com>
-Subject: mm/damon/sysfs: change next_update_jiffies to a global variable
-Date: Thu, 30 Oct 2025 10:07:46 +0800
+>
+> > +                                     usb_stor_dbg(us, "Failed to clear=
+ CSW data\n");
+> > +
+> >                               scsi_set_resid(srb, transfer_length);
+> >                               goto skipped_data_phase;
+> >                       }
+>
+> Regardless of the nits:
+>
+> Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
+>
+> Alan Stern
 
-In DAMON's damon_sysfs_repeat_call_fn(), time_before() is used to compare
-the current jiffies with next_update_jiffies to determine whether to
-update the sysfs files at this moment.
+v3 under the '---' is a charm!
 
-On 32-bit systems, the kernel initializes jiffies to "-5 minutes" to make
-jiffies wrap bugs appear earlier. However, this causes time_before() in
-damon_sysfs_repeat_call_fn() to unexpectedly return true during the first
-5 minutes after boot on 32-bit systems (see [1] for more explanation,
-which fixes another jiffies-related issue before). As a result, DAMON
-does not update sysfs files during that period.
+Thanks for the review Alan.
 
-There is also an issue unrelated to the system's word size[2]: if the
-user stops DAMON just after next_update_jiffies is updated and restarts
-it after 'refresh_ms' or a longer delay, next_update_jiffies will retain
-an older value, causing time_before() to return false and the update to
-happen earlier than expected.
-
-Fix these issues by making next_update_jiffies a global variable and
-initializing it each time DAMON is started.
-
-Link: https://lkml.kernel.org/r/20251030020746.967174-3-yanquanmin1@huawei.com
-Link: https://lkml.kernel.org/r/20250822025057.1740854-1-ekffu200098@gmail.com [1]
-Link: https://lore.kernel.org/all/20251029013038.66625-1-sj@kernel.org/ [2]
-Fixes: d809a7c64ba8 ("mm/damon/sysfs: implement refresh_ms file internal work")
-Suggested-by: SeongJae Park <sj@kernel.org>
-Reviewed-by: SeongJae Park <sj@kernel.org>
-Signed-off-by: Quanmin Yan <yanquanmin1@huawei.com>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: ze zuo <zuoze1@huawei.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/damon/sysfs.c |   10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
-
---- a/mm/damon/sysfs.c~mm-damon-sysfs-change-next_update_jiffies-to-a-global-variable
-+++ a/mm/damon/sysfs.c
-@@ -1552,16 +1552,17 @@ static struct damon_ctx *damon_sysfs_bui
- 	return ctx;
- }
- 
-+static unsigned long damon_sysfs_next_update_jiffies;
-+
- static int damon_sysfs_repeat_call_fn(void *data)
- {
- 	struct damon_sysfs_kdamond *sysfs_kdamond = data;
--	static unsigned long next_update_jiffies;
- 
- 	if (!sysfs_kdamond->refresh_ms)
- 		return 0;
--	if (time_before(jiffies, next_update_jiffies))
-+	if (time_before(jiffies, damon_sysfs_next_update_jiffies))
- 		return 0;
--	next_update_jiffies = jiffies +
-+	damon_sysfs_next_update_jiffies = jiffies +
- 		msecs_to_jiffies(sysfs_kdamond->refresh_ms);
- 
- 	if (!mutex_trylock(&damon_sysfs_lock))
-@@ -1607,6 +1608,9 @@ static int damon_sysfs_turn_damon_on(str
- 	}
- 	kdamond->damon_ctx = ctx;
- 
-+	damon_sysfs_next_update_jiffies =
-+		jiffies + msecs_to_jiffies(kdamond->refresh_ms);
-+
- 	repeat_call_control->fn = damon_sysfs_repeat_call_fn;
- 	repeat_call_control->data = kdamond;
- 	repeat_call_control->repeat = true;
-_
-
-Patches currently in -mm which might be from yanquanmin1@huawei.com are
-
-mm-damon-stat-change-last_refresh_jiffies-to-a-global-variable.patch
-mm-damon-sysfs-change-next_update_jiffies-to-a-global-variable.patch
-mm-damon-add-a-min_sz_region-parameter-to-damon_set_region_biggest_system_ram_default.patch
-mm-damon-reclaim-use-min_sz_region-for-core-address-alignment-when-setting-regions.patch
+Desnes Nunes
 
 
