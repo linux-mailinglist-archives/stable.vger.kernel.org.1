@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-191861-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191837-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82B3FC256FD
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 15:07:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F131C2567F
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 15:03:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id F10A94F8164
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 14:03:59 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 09B134F4DEE
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 14:02:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8ACBD21FF25;
-	Fri, 31 Oct 2025 14:03:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A8B6210F59;
+	Fri, 31 Oct 2025 14:02:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gBvhh+wE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ciVg5NXM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46EC52376E4;
-	Fri, 31 Oct 2025 14:03:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8D783C17;
+	Fri, 31 Oct 2025 14:02:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761919432; cv=none; b=SDuInnUbE36tma5BmWQE9P2ET8fixGXTbheuqDzXgzwKEIqFZFfMcZXGEAk426NiGwHqoEZSKU9CSOfRabSxsqb47c3Qu9iMp5W3cf04exF8GqdAl4hpwzUpdA4ixliSd83clF5H7qyO5Qsp7DjzGa4wVExr3/08yQcOQlM0GLc=
+	t=1761919360; cv=none; b=hSpN+ICtGq0bbxHs72o0DaspZuRDHUdG7kbqB5e/ALuSRzsalDu1gNPB9R8cMBXgEkzTQELcmwbIHTE1zf/zz1y1u9E6IB3XuCKNd0nRgOTcOALrPNmJqOQ2nJWvg0t0nj/ynFcHyPhe0xONWeIBOZPVpPABiBivIBSBw9YQXPE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761919432; c=relaxed/simple;
-	bh=xxRljNyQBM+UZi/EtpFmNYOv2icWIl/4wOD5xawMezU=;
+	s=arc-20240116; t=1761919360; c=relaxed/simple;
+	bh=3x62oLXxN77cIZsFPRRMtDBrs4udYaOcTZFgbyO66q0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oCSOtAxHTxPSAjyf6GJcdM3YttDxYezu9mwTOGrHAbGkRMIbENj6tUPAdx1Ircf0AUNO3EQSQh9GyJNHXNw9CAhOcKwvSSWVdaXfGzUjNeP6a3LCmws73LP682V9zjcTbSvNU4EorVpOTW8OMysEac5Fn+Q+Ij1RP0pgkllvkfI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gBvhh+wE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A3E1C4CEE7;
-	Fri, 31 Oct 2025 14:03:50 +0000 (UTC)
+	 MIME-Version; b=YErGp7GB0IqjnXaHspE4BAVuKBUP9wXRzy2LY64fxq1gpVsZvk19XTmAw/sNmf4VYdUyGvZEWLq74mye1hZuB8vP57YSqZFC+Yrxe24GSzT0WV9o31sT93S+6wS1WNItI4TDTUle1nHyJUWJHEptCfs/w2dyVFYx7LGwvAvQ5tI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ciVg5NXM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3B87C4CEE7;
+	Fri, 31 Oct 2025 14:02:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761919430;
-	bh=xxRljNyQBM+UZi/EtpFmNYOv2icWIl/4wOD5xawMezU=;
+	s=korg; t=1761919360;
+	bh=3x62oLXxN77cIZsFPRRMtDBrs4udYaOcTZFgbyO66q0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gBvhh+wEjx5+2JazdvY0WGjRBHzzNjkkeF2s2kf10ttRsOynkwQYMz2WJTvyClnKk
-	 LkXUk2gl4l9z0gtZQOqz+ROFTWp9o7oqbhIc4s2ON5QltE+2VkkziEt4AgmRO+iauM
-	 OdvabGqoJ4N79yHRjcW+TQiTKFY/COOM/WfjEOro=
+	b=ciVg5NXMrtJWqS/YfdTaAbsTuq9vOsEs1pJEn0KK75cgA7t1O9XOoEHCWgp/z/lnK
+	 PghU+4b10qGZnKOszDaB3v43ozJoMuy5jo2RZk4qsL+fpCoDjBUQnwtRVyR40zBv/I
+	 9225NkViSuKojDHoORtm1EAjT9f/fXpQ3tIWuzxU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,12 +45,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	David Kaplan <david.kaplan@amd.com>,
 	"Borislav Petkov (AMD)" <bp@alien8.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 08/40] x86/bugs: Report correct retbleed mitigation status
+Subject: [PATCH 6.6 07/32] x86/bugs: Fix reporting of LFENCE retpoline
 Date: Fri, 31 Oct 2025 15:01:01 +0100
-Message-ID: <20251031140044.145737887@linuxfoundation.org>
+Message-ID: <20251031140042.586975686@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251031140043.939381518@linuxfoundation.org>
-References: <20251031140043.939381518@linuxfoundation.org>
+In-Reply-To: <20251031140042.387255981@linuxfoundation.org>
+References: <20251031140042.387255981@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: David Kaplan <david.kaplan@amd.com>
 
-[ Upstream commit 930f2361fe542a00de9ce6070b1b6edb976f1165 ]
+[ Upstream commit d1cc1baef67ac6c09b74629ca053bf3fb812f7dc ]
 
-On Intel CPUs, the default retbleed mitigation is IBRS/eIBRS but this
-requires that a similar spectre_v2 mitigation is applied.  If the user
-selects a different spectre_v2 mitigation (like spectre_v2=retpoline) a
-warning is printed but sysfs will still report 'Mitigation: IBRS' or
-'Mitigation: Enhanced IBRS'.  This is incorrect because retbleed is not
-mitigated, and IBRS is not actually set.
+The LFENCE retpoline mitigation is not secure but the kernel prints
+inconsistent messages about this fact.  The dmesg log says 'Mitigation:
+LFENCE', implying the system is mitigated.  But sysfs reports 'Vulnerable:
+LFENCE' implying the system (correctly) is not mitigated.
 
-Fix this by choosing RETBLEED_MITIGATION_NONE in this scenario so the
-kernel correctly reports the system as vulnerable to retbleed.
+Fix this by printing a consistent 'Vulnerable: LFENCE' string everywhere
+when this mitigation is selected.
 
 Signed-off-by: David Kaplan <david.kaplan@amd.com>
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
 Link: https://lore.kernel.org/20250915134706.3201818-1-david.kaplan@amd.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/cpu/bugs.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/x86/kernel/cpu/bugs.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
 diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
-index f3cb559a598df..0c16457e06543 100644
+index f66e0e5b49eb1..ef1d3a5024ed4 100644
 --- a/arch/x86/kernel/cpu/bugs.c
 +++ b/arch/x86/kernel/cpu/bugs.c
-@@ -1186,8 +1186,10 @@ static void __init retbleed_select_mitigation(void)
- 			retbleed_mitigation = RETBLEED_MITIGATION_EIBRS;
- 			break;
- 		default:
--			if (retbleed_mitigation != RETBLEED_MITIGATION_STUFF)
-+			if (retbleed_mitigation != RETBLEED_MITIGATION_STUFF) {
- 				pr_err(RETBLEED_INTEL_MSG);
-+				retbleed_mitigation = RETBLEED_MITIGATION_NONE;
-+			}
- 		}
- 	}
+@@ -1594,7 +1594,7 @@ spectre_v2_user_select_mitigation(void)
+ static const char * const spectre_v2_strings[] = {
+ 	[SPECTRE_V2_NONE]			= "Vulnerable",
+ 	[SPECTRE_V2_RETPOLINE]			= "Mitigation: Retpolines",
+-	[SPECTRE_V2_LFENCE]			= "Mitigation: LFENCE",
++	[SPECTRE_V2_LFENCE]			= "Vulnerable: LFENCE",
+ 	[SPECTRE_V2_EIBRS]			= "Mitigation: Enhanced / Automatic IBRS",
+ 	[SPECTRE_V2_EIBRS_LFENCE]		= "Mitigation: Enhanced / Automatic IBRS + LFENCE",
+ 	[SPECTRE_V2_EIBRS_RETPOLINE]		= "Mitigation: Enhanced / Automatic IBRS + Retpolines",
+@@ -3222,9 +3222,6 @@ static const char *spectre_bhi_state(void)
+ 
+ static ssize_t spectre_v2_show_state(char *buf)
+ {
+-	if (spectre_v2_enabled == SPECTRE_V2_LFENCE)
+-		return sysfs_emit(buf, "Vulnerable: LFENCE\n");
+-
+ 	if (spectre_v2_enabled == SPECTRE_V2_EIBRS && unprivileged_ebpf_enabled())
+ 		return sysfs_emit(buf, "Vulnerable: eIBRS with unprivileged eBPF\n");
  
 -- 
 2.51.0
