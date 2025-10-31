@@ -1,89 +1,118 @@
-Return-Path: <stable+bounces-191792-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191793-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70547C2425A
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 10:27:21 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C3BBC2433B
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 10:38:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 162934F362F
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 09:23:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A055B3A9AFA
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 09:33:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28327331A4E;
-	Fri, 31 Oct 2025 09:23:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52AB5329E42;
+	Fri, 31 Oct 2025 09:33:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Fr0rdd8D"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hd4V7jGa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C91523314BB;
-	Fri, 31 Oct 2025 09:23:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13C1634D3B2
+	for <stable@vger.kernel.org>; Fri, 31 Oct 2025 09:33:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761902605; cv=none; b=reUGuT78PBvPIp72MI3iw46/IcG3+T7AfMO1mAZPalv0L5hl6uQiyluG7/8pCyAsR5sqrdbipOfmcVg7GW5hl/twiiQDcOSztNfPi5pWmrxZKCRhfyd8wqd+XphBzpY+2tcHLbe5wqsU2ZprF3mywAhzBf2VdgOJdXq8qbdsUbw=
+	t=1761903226; cv=none; b=t2UEQhzr8pDa3i7wLLj8E+slgN9wy8YeF+6bbM8hl7qP0uVCelS/KRSOphd5IckrDdJ8F7VNyYptuUYKyK4uNVqj1UrHBBKQQtSX062w7oAy0tykvTnVc98zO6oX165cJaYCjAknkMqbulU6+0OAtBeqKieUqnb183YkL4c5r4g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761902605; c=relaxed/simple;
-	bh=dVRGU8ESodd6rjK5NxMPSnQ+ixQ7fU4JJtNrUUCcPEY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cqtADFDYgPOsjRaBKdEY3s1cv4ghja5Qs/U/IFN1l8CSOzOHmctMTnYXkNuvEAI0wkXstXBj8EQC3sqVnM1lf+3RY2AUl8/Ft8dP0ydWGuEOdtygnVVhJN/jLZ+E4U8+wrrzPL2cjiR6mubZQl/qpNvcddgwTxpSJywTrsMSS+4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Fr0rdd8D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 685D6C4CEF8;
-	Fri, 31 Oct 2025 09:23:24 +0000 (UTC)
+	s=arc-20240116; t=1761903226; c=relaxed/simple;
+	bh=wjlFe99rIG8XwA0xoFCrdXi+EIHA45P/zBdta80zE0c=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=g3L/EEfStIV2bVwkJ+YAJVIMiBJTZcm9lfHAdK7hK3B+PNfWvTX6sXzhR7wwE1bRzNZ29tNN0TEhHO4uCdJdHdAMJy3BfgVIsJIJTHQ0pADbFa0I2VlDZFTQs+dAmvff4MhqnQrJMVrvUpWu5gYEnfacMC3ZDgwAm+Inteo+Ak8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hd4V7jGa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C52B0C4CEE7;
+	Fri, 31 Oct 2025 09:33:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761902605;
-	bh=dVRGU8ESodd6rjK5NxMPSnQ+ixQ7fU4JJtNrUUCcPEY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Fr0rdd8DQIgVK5Xze9WxbP9u/KTZ6rwN96QZrqrV9IJ87kEvyhjWCzHoScG62wC5Z
-	 mQNM25tVI1c68oawdONi7gWx31CvYrYf3y69aufRDps6cGDoRBZsOWeCj0hweHGA2u
-	 /ySHjvI1yryTeB5oqMrQo03CBfaoC8pwGYzAn3BSI1q47i+rO7t6TfKYvEFJGzmJco
-	 9h+aZvO8+xaM/KyDR6X6yS0W7lwdvLYii1DEM0smXQ6LhniaI4LU3524hpVDISTjNz
-	 wbu2DKnAUQof4sMW5HinkhdenIZEx2QfR0gcVWn7VskVLvePEAL/gjBl5UBfAe+ypj
-	 9nhbzOqCN55ZA==
-Date: Fri, 31 Oct 2025 10:23:20 +0100
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: AlexeyMinnekhanov@kuoka.smtp.subspace.kernel.org
-Cc: Bjorn Andersson <andersson@kernel.org>, 
-	Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Konrad Dybcio <konradybcio@kernel.org>, linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	~postmarketos/upstreaming@lists.sr.ht, Alexey Minnekhanov <alexeymin@postmarketos.org>
-Subject: Re: [PATCH 2/3] clk: qcom: mmcc-sdm660: Add missing MDSS reset
-Message-ID: <20251031-upbeat-gainful-pudu-aad0de@kuoka>
-References: <20251031-sdm660-mdss-reset-v1-0-14cb4e6836f2@postmarketos.org>
- <20251031-sdm660-mdss-reset-v1-2-14cb4e6836f2@postmarketos.org>
+	s=k20201202; t=1761903225;
+	bh=wjlFe99rIG8XwA0xoFCrdXi+EIHA45P/zBdta80zE0c=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=hd4V7jGa1ZBw+w02ODC4w48CW/Hy6sXF12wzRRmQ/VEZtV1sJfd2iLXleaigE1lXK
+	 noUohmo0No34O83XKk53xFSa0Mo1QJcTQ/uUqeS10ddbYiOOQ5QZmXUxJ2loCNyXW+
+	 OAa0Td6zjF2vdVxqGDev2VpYgBlyqLi6IZkgwG0o5BORVDwJ9+nlKPZxhTFcVEmBDC
+	 eu/jAvjK/fVrLubdLZbxMNvrf7A/Yu1W48EHNDhFXmuD5Kaba1xQnXmQqaHW0jULC+
+	 jYwXvuLTmLTNXvxY+RH90Tp3oLzUuNazgPX8HfSMGZX6ZC3kd/aUdf9+soe5ukjumC
+	 cCa+bGXop6GxA==
+From: William Breathitt Gray <wbg@kernel.org>
+To: stable@vger.kernel.org
+Cc: Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Yury Norov <yury.norov@gmail.com>,
+	William Breathitt Gray <wbg@kernel.org>
+Subject: [PATCH 6.12.y 1/5] bits: add comments and newlines to #if, #else and #endif directives
+Date: Fri, 31 Oct 2025 18:33:15 +0900
+Message-ID: <20251031093326.517803-1-wbg@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2025102619-shortage-tabby-5157@gregkh>
+References: <2025102619-shortage-tabby-5157@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20251031-sdm660-mdss-reset-v1-2-14cb4e6836f2@postmarketos.org>
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1664; i=wbg@kernel.org; h=from:subject; bh=MJd/pjYKMcR/Y5swWGHduvZLzO7jCOJrJ9z6tpD0850=; b=owGbwMvMwCW21SPs1D4hZW3G02pJDJksTazs8x4kvOxVn3Ql2IztdblYS7vdys2JoiE7BOeou fztfX27o5SFQYyLQVZMkaXX/OzdB5dUNX68mL8NZg4rE8gQBi5OAZhIXiAjw09Dh/VWHU8ZLdw+ aWRLnSta+VSxNlTX+FzK6X0xBkwnXjAy/J5t96LPYu70ddv/z8uU3v/kyeuYucZXpmu3npfdv+3 XdkYA
+X-Developer-Key: i=wbg@kernel.org; a=openpgp; fpr=8D37CDDDE0D22528F8E89FB6B54856CABE12232B
+Content-Transfer-Encoding: 8bit
 
-On Fri, Oct 31, 2025 at 05:27:44AM +0300, AlexeyMinnekhanov wrote:
-> From: Alexey Minnekhanov <alexeymin@postmarketos.org>
-> 
-> Add offset for display subsystem reset in multimedia clock controller
-> block.
+From: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
 
-... which is necessary to reset display when foo bar happens...
+[ Upstream commit 31299a5e0211241171b2222c5633aad4763bf700 ]
 
-> 
-> Cc: <stable@vger.kernel.org> # 6.17
+This is a preparation for the upcoming GENMASK_U*() and BIT_U*()
+changes. After introducing those new macros, there will be a lot of
+scrolling between the #if, #else and #endif.
 
-Provide Fixes tag.
+Add a comment to the #else and #endif preprocessor macros to help keep
+track of which context we are in. Also, add new lines to better
+visually separate the non-asm and asm sections.
 
-> Signed-off-by: Alexey Minnekhanov <alexeymin@postmarketos.org>
+Signed-off-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Yury Norov <yury.norov@gmail.com>
+Stable-dep-of: 2ba5772e530f ("gpio: idio-16: Define fixed direction of the GPIO lines")
+Signed-off-by: William Breathitt Gray <wbg@kernel.org>
+---
+ include/linux/bits.h | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-You sent us broken mailing, broken from field. That's why this probably
-ends in spam.
-
-
-Best regards,
-Krzysztof
+diff --git a/include/linux/bits.h b/include/linux/bits.h
+index 60044b608817..18143b536d9d 100644
+--- a/include/linux/bits.h
++++ b/include/linux/bits.h
+@@ -19,17 +19,21 @@
+  * GENMASK_ULL(39, 21) gives us the 64bit vector 0x000000ffffe00000.
+  */
+ #if !defined(__ASSEMBLY__)
++
+ #include <linux/build_bug.h>
+ #define GENMASK_INPUT_CHECK(h, l) \
+ 	(BUILD_BUG_ON_ZERO(__builtin_choose_expr( \
+ 		__is_constexpr((l) > (h)), (l) > (h), 0)))
+-#else
++
++#else /* defined(__ASSEMBLY__) */
++
+ /*
+  * BUILD_BUG_ON_ZERO is not available in h files included from asm files,
+  * disable the input check if that is the case.
+  */
+ #define GENMASK_INPUT_CHECK(h, l) 0
+-#endif
++
++#endif /* !defined(__ASSEMBLY__) */
+ 
+ #define GENMASK(h, l) \
+ 	(GENMASK_INPUT_CHECK(h, l) + __GENMASK(h, l))
+-- 
+2.51.0
 
 
