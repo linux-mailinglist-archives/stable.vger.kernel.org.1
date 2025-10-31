@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-191894-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191918-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FC83C2577E
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 15:09:48 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id E01F8C257D8
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 15:13:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A93754F6B49
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 14:05:26 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 985854F82AE
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 14:07:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6677D25A2CF;
-	Fri, 31 Oct 2025 14:05:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70E2934C152;
+	Fri, 31 Oct 2025 14:06:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PnL/43KG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i54laz/h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23DAE23FC54;
-	Fri, 31 Oct 2025 14:05:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D26F34C159;
+	Fri, 31 Oct 2025 14:06:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761919523; cv=none; b=slgvDfKu6qUnC5Qhdea5kG+Ac5TbXJHTZWiN9p3FsB4KdhkPUT2+Lfb208QqfZzBM4AQL07IfxtdGJPJDDJSngQ4TS4PCvuiIdh0h+CQW1Ks64IyiAbsiruFeSRPEPCpNWx+GDTTa37BQHRkv7d0Z7wFk06TfZH/NxmDiiElbU4=
+	t=1761919594; cv=none; b=V65d+oiA5c/QkwGMLYuBqgiPqcAzuHzL2GBXvnw9cvYx0l4eZpkW1G4xNBSItbmYfGW9eLKlQvGr6+fPjcJ5UGlRMA38JA4KE7mC1gzb8AoZuLEXOo2tum6HZXede4ieGih6R2rE7zZvEofj7hU8jxq/PvVhAVn0a94qi3PJaKQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761919523; c=relaxed/simple;
-	bh=XKoaNGqqoLQYN5pPqlI6Kyw52tCfz8zf3VXtJjBhZ9A=;
+	s=arc-20240116; t=1761919594; c=relaxed/simple;
+	bh=Ef2owvk/oLkFQc6AbI3y2tf0cSCENskTUY3VAIPx0Gg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TKCNwp6A+XP5wNYQIkH13tRzgMafE7+XeVez4GGkEu56AtlLztSfVXkyTebG67u/8a/gzSJU3VKa1KNlZ8L4CW5Q6YI0gxz0i4+AWVCQVgyg031z1vaXxGu22tkxi2OLjFO8VmhO9OLEPw6T4HirzeWK3MgKX28i5t/JAEjgM08=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PnL/43KG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9908CC4CEE7;
-	Fri, 31 Oct 2025 14:05:22 +0000 (UTC)
+	 MIME-Version; b=fJCk7vWze+atTd2sAXaUb+HiPpSlFbCgUN9ee3YoPFD0iGV3jIUIO6KvqHgYtPbkjCYrXm1NQ11EXNqEuusaHecmnVxGaiCup1f7bU5jX0+x5y/1lf0x+8yoxPEngG3JtzPWRWhdOu6bkcvFtl0MZMaIOZwHYRJIYA6EiVBMrPo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i54laz/h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC129C4CEFB;
+	Fri, 31 Oct 2025 14:06:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761919523;
-	bh=XKoaNGqqoLQYN5pPqlI6Kyw52tCfz8zf3VXtJjBhZ9A=;
+	s=korg; t=1761919594;
+	bh=Ef2owvk/oLkFQc6AbI3y2tf0cSCENskTUY3VAIPx0Gg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PnL/43KGaC6sc65o8hoxev65T7QLvVmI4zjmH3Z+O+CYOMvukqQ6i+KGU5i4b6/EW
-	 ese42idb9BVdIM3G7qMTeNCPeOoTMVChw4wfIWSQX/NeYVVZLsqppomtCRhl6m91le
-	 u9QJHGJ9CyWa5i1Vcj5LaKa5u2Y3m9IpL//1/nsQ=
+	b=i54laz/hbhDVdF6zirA667xyyjc2tQs3sifaZXIUThx/ILcUM86QxyXy/vMiujbVH
+	 qDQmeN6E2rw19jlNkkD06mHTy86NqvV4/qDgxV6SMqn759zTjGZqi9+mCax9s6ZKN4
+	 3h0poUH973YUVhGjwq1wFGnaTGxOXWkK/NGNZUgQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
+	Andrea Righi <arighi@nvidia.com>,
+	Tejun Heo <tj@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 18/40] btrfs: use level argument in log tree walk callback replay_one_buffer()
+Subject: [PATCH 6.17 03/35] sched_ext: Sync error_irq_work before freeing scx_sched
 Date: Fri, 31 Oct 2025 15:01:11 +0100
-Message-ID: <20251031140044.451625442@linuxfoundation.org>
+Message-ID: <20251031140043.644725543@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251031140043.939381518@linuxfoundation.org>
-References: <20251031140043.939381518@linuxfoundation.org>
+In-Reply-To: <20251031140043.564670400@linuxfoundation.org>
+References: <20251031140043.564670400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Tejun Heo <tj@kernel.org>
 
-[ Upstream commit 6cb7f0b8c9b0d6a35682335fea88bd26f089306f ]
+[ Upstream commit efeeaac9ae9763f9c953e69633c86bc3031e39b5 ]
 
-We already have the extent buffer's level in an argument, there's no need
-to first ensure the extent buffer's data is loaded (by calling
-btrfs_read_extent_buffer()) and then call btrfs_header_level() to check
-the level. So use the level argument and do the check before calling
-btrfs_read_extent_buffer().
+By the time scx_sched_free_rcu_work() runs, the scx_sched is no longer
+reachable. However, a previously queued error_irq_work may still be pending or
+running. Ensure it completes before proceeding with teardown.
 
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fixes: bff3b5aec1b7 ("sched_ext: Move disable machinery into scx_sched")
+Acked-by: Andrea Righi <arighi@nvidia.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/tree-log.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ kernel/sched/ext.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/btrfs/tree-log.c b/fs/btrfs/tree-log.c
-index 63b14005f5066..b43a7c0c7cb7a 100644
---- a/fs/btrfs/tree-log.c
-+++ b/fs/btrfs/tree-log.c
-@@ -2443,15 +2443,13 @@ static int replay_one_buffer(struct btrfs_root *log, struct extent_buffer *eb,
- 	int i;
- 	int ret;
+diff --git a/kernel/sched/ext.c b/kernel/sched/ext.c
+index 46029050b170f..f89894476e51f 100644
+--- a/kernel/sched/ext.c
++++ b/kernel/sched/ext.c
+@@ -3537,7 +3537,9 @@ static void scx_sched_free_rcu_work(struct work_struct *work)
+ 	struct scx_dispatch_q *dsq;
+ 	int node;
  
-+	if (level != 0)
-+		return 0;
++	irq_work_sync(&sch->error_irq_work);
+ 	kthread_stop(sch->helper->task);
 +
- 	ret = btrfs_read_extent_buffer(eb, &check);
- 	if (ret)
- 		return ret;
+ 	free_percpu(sch->pcpu);
  
--	level = btrfs_header_level(eb);
--
--	if (level != 0)
--		return 0;
--
- 	path = btrfs_alloc_path();
- 	if (!path)
- 		return -ENOMEM;
+ 	for_each_node_state(node, N_POSSIBLE)
 -- 
 2.51.0
 
