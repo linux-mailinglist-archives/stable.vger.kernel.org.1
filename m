@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-191931-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191926-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0491EC257B2
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 15:11:54 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 876C9C25748
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 15:09:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 96CF55604C1
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 14:07:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 44211189E58A
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 14:08:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C86D134BA2B;
-	Fri, 31 Oct 2025 14:07:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99ADC34C984;
+	Fri, 31 Oct 2025 14:06:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xya5ysxA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ShdAUpdM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86AA72376E4;
-	Fri, 31 Oct 2025 14:07:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 477532641FB;
+	Fri, 31 Oct 2025 14:06:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761919632; cv=none; b=GFQaYptmT0lR+VGWzM56uintW6fxJUxiSu85o80nkRD6wOsLNQRi/OAfnF/uPUQXOnYEaXL+B0IF1XM2swLokmIsJP5t8bauBaZ/IPCVk8IvWd0CrwSoqgdkhnjjkXHVA9TRhzYRensMmcmQje8y7OVxCyPqAJNn0GZ7weFi1dw=
+	t=1761919617; cv=none; b=qdV2KETvybghJf0Me35o3AMPDUDFugFtjGAXDmq5isS7KIn2iIOQDv3lJBOHe/LV8dr1TCL+tKvzdKcI4fEBinLh3U4aeZYlxtPUeBwXKdBlQNF/BCRSXPFbu8+rnuj5gs1EyQBmIinnPNs8ROUyer0DpU2417Qgy81ZJHJDl84=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761919632; c=relaxed/simple;
-	bh=KKjYKJBx1XujnmxIh6XqMyP2oknWDDBKjUNF9AswvTA=;
+	s=arc-20240116; t=1761919617; c=relaxed/simple;
+	bh=8YMiEgssjlglsK6ObUo0xQbrr27Ryq0nZpu3+IenPLs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZxailjsfMWMf3ilS86D60REO1QdCChMpt/nuVwsEVoWTmxalmUDlYmN9v9QerMDIMvnCPmFe8BuHYsH4jt7FgIUqZRuiHNJDeuTV+Rt7POTR9UoJbw4U/t21cH97jtB5RtKaOUzGDV5Nr7X7B/gHSVQO1UAmI0RAeB3aMNSUEjU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xya5ysxA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DC53C4CEE7;
-	Fri, 31 Oct 2025 14:07:11 +0000 (UTC)
+	 MIME-Version; b=dS3SqRrsECTykyeinZElGX8KHDz+BE2Bt7MjNo0lcRoM5EClL8mnk+yn0rFznEI2rP5L04sn6W/Rt6g0rXNbtLQaHAJOglPyg/basnwE1sbzWXHtH5aVpgu3C1AkAQ9K7V01zNUX4Pq3AwzY54PE9vYcs5stVfLWLK9Mz/XtbMY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ShdAUpdM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5D24C4CEF8;
+	Fri, 31 Oct 2025 14:06:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761919632;
-	bh=KKjYKJBx1XujnmxIh6XqMyP2oknWDDBKjUNF9AswvTA=;
+	s=korg; t=1761919617;
+	bh=8YMiEgssjlglsK6ObUo0xQbrr27Ryq0nZpu3+IenPLs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xya5ysxAHH6aUOvpH6WDitbSvA8X0Xy8VLcDEcEcLSwENEDYVtNDnowvOlX500LZO
-	 Ek9VM7tmPUxr5se5+CjDTBmmHAhmzLHNvCOrggqVE5jHBJa9jx2BuZOx7xfoROaCku
-	 XwJClgPSJKgMpY4FyMlK5iXpjRX18gcXYsF1/8ok=
+	b=ShdAUpdMs/yJQ/kSi9JRCz+Q9fde+yhLSvcy9xDxpjs1XnwtavaOpGQSbd+kMqE3n
+	 ulvmjEtE6rVdKHricgSj4rHs3BwLbU2BhcgjMpbOYHHd4Gc+SF0U821CklcWY3POjn
+	 2+Um1d11fCbmH3hxJwwTU/DmN+JaCrEQrsmWrYso=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Filipe Manana <fdmanana@suse.com>,
 	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 30/35] btrfs: use level argument in log tree walk callback replay_one_buffer()
-Date: Fri, 31 Oct 2025 15:01:38 +0100
-Message-ID: <20251031140044.364189212@linuxfoundation.org>
+Subject: [PATCH 6.17 31/35] btrfs: abort transaction if we fail to update inode in log replay dir fixup
+Date: Fri, 31 Oct 2025 15:01:39 +0100
+Message-ID: <20251031140044.384566713@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251031140043.564670400@linuxfoundation.org>
 References: <20251031140043.564670400@linuxfoundation.org>
@@ -68,45 +68,34 @@ Content-Transfer-Encoding: 8bit
 
 From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit 6cb7f0b8c9b0d6a35682335fea88bd26f089306f ]
+[ Upstream commit 5a0565cad3ef7cbf4cf43d1dd1e849b156205292 ]
 
-We already have the extent buffer's level in an argument, there's no need
-to first ensure the extent buffer's data is loaded (by calling
-btrfs_read_extent_buffer()) and then call btrfs_header_level() to check
-the level. So use the level argument and do the check before calling
-btrfs_read_extent_buffer().
+If we fail to update the inode at link_to_fixup_dir(), we don't abort the
+transaction and propagate the error up the call chain, which makes it hard
+to pinpoint the error to the inode update. So abort the transaction if the
+inode update call fails, so that if it happens we known immediately.
 
 Signed-off-by: Filipe Manana <fdmanana@suse.com>
 Reviewed-by: David Sterba <dsterba@suse.com>
 Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/tree-log.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ fs/btrfs/tree-log.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
 diff --git a/fs/btrfs/tree-log.c b/fs/btrfs/tree-log.c
-index 518cd74191e77..4f92aa15d9b1d 100644
+index 4f92aa15d9b1d..165d2ee500ca3 100644
 --- a/fs/btrfs/tree-log.c
 +++ b/fs/btrfs/tree-log.c
-@@ -2461,15 +2461,13 @@ static int replay_one_buffer(struct btrfs_root *log, struct extent_buffer *eb,
- 	int i;
- 	int ret;
- 
-+	if (level != 0)
-+		return 0;
-+
- 	ret = btrfs_read_extent_buffer(eb, &check);
- 	if (ret)
- 		return ret;
- 
--	level = btrfs_header_level(eb);
--
--	if (level != 0)
--		return 0;
--
- 	path = btrfs_alloc_path();
- 	if (!path)
- 		return -ENOMEM;
+@@ -1796,6 +1796,8 @@ static noinline int link_to_fixup_dir(struct btrfs_trans_handle *trans,
+ 		else
+ 			inc_nlink(vfs_inode);
+ 		ret = btrfs_update_inode(trans, inode);
++		if (ret)
++			btrfs_abort_transaction(trans, ret);
+ 	} else if (ret == -EEXIST) {
+ 		ret = 0;
+ 	}
 -- 
 2.51.0
 
