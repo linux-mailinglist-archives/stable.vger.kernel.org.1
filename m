@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-191920-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191866-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A76AC25700
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 15:07:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5598AC257CF
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 15:13:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 01B1A3519CB
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 14:07:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 876D9467F06
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 14:04:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D03B34BA2B;
-	Fri, 31 Oct 2025 14:06:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99DDF330B03;
+	Fri, 31 Oct 2025 14:04:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ujmlNTg/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J+E7K81C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E53521F37D4;
-	Fri, 31 Oct 2025 14:06:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55BA8258ED1;
+	Fri, 31 Oct 2025 14:04:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761919600; cv=none; b=OScxrJlffP493bGywwb7S1hSPL6iazCdrStk2+3IM477TwpWcX6KrJTZvWByQssjypLLkKnZHb8YsAr/a1wUS43+YcaU2Mmuigz56UsudKw+MI5M3DBwNRCQ+gPBqCPQfmV8jg0HGbK4KPsaj17Id7QmQRlrlNCe5YQMAGWZc3o=
+	t=1761919445; cv=none; b=DRC8Y2UNwAftsSl0iPH8OXV5CvOgL0af0fgja4KXNPJ5Qo/wqZt7SuEBqFn+yB1j5WJHbHR7aqx8EQzmcT9w03f1pJZBro4q5+WrEe2VooIX7bBnTPJbftC0eTmpbjySrbohhHkHHmJNB3NCLiCwwxXOM9cr6+MsLuQVEM7Y51w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761919600; c=relaxed/simple;
-	bh=aza6z1G9CSiJc6TpMZ2/UUlJi3/yDyr3+PnvP2xukBc=;
+	s=arc-20240116; t=1761919445; c=relaxed/simple;
+	bh=r3T2/+xOsxyTEypA2Pw9Clw3x3Hda/tU0JuXkGGspBs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F3gohPZKoklwpXme53lvVzBt9wR+5ce7sJHO+h4l23YnG4K5+KDPoHAIAH0loqq1ZZvUS+Vf8DhrcB8ACfIk8zSJJan20WKndSWbRZRnm2x7YnIc7FVhELhpQmn1nTo1K1zNWTkRYvANWgM4XhsNDzYC5ogmmt3cU/LCuWO6zaA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ujmlNTg/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E6F0C4CEE7;
-	Fri, 31 Oct 2025 14:06:39 +0000 (UTC)
+	 MIME-Version; b=OEc1PDOJQ+ZGKMe8lmWAMnkx7WCg/Qj/i8tHPXTl5DYREUT7FGv74Kf12rurElIWjC+yrpXQWHkIWfN3aYvsA4v67/hyqIuXeM5q23JN3PI/6+grLv76jBYQ46bk5K1hKls1x04BdrXXImUTRvJtAxZqiuNnxHwH8Qkh6UMhhpk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J+E7K81C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9D0EC4CEE7;
+	Fri, 31 Oct 2025 14:04:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761919599;
-	bh=aza6z1G9CSiJc6TpMZ2/UUlJi3/yDyr3+PnvP2xukBc=;
+	s=korg; t=1761919445;
+	bh=r3T2/+xOsxyTEypA2Pw9Clw3x3Hda/tU0JuXkGGspBs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ujmlNTg/ggeE1closihALyG1t9+gZL2z8ChUD1WvNV0Ud8hCqD5zPQKpVitiVAda9
-	 RSKoMLf9vcKPchlgxjQiOaoylCxC7oN9byiVEUMQJzokUfaJRTEkZkwTLTXKk1wFS6
-	 IxnKjui6rTcFABnVtGxMPHko68FPxCKkMcQwf5Ms=
+	b=J+E7K81C0BiUhI1Ca8qkv7xGoUeWHXdZByOcWFZ0X1u9/o2hupJAHhAHuAHoPr2ic
+	 p0C5FoXfDe2YLB76G5r7vVggmx/Q44p7bMsBtpgdt1TjGoKj1aWKmPagZ9kNmRoDAj
+	 xEk4hURm4NJMzr1WGuRaa/VAwgjdBjYSFM7Onhjg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Kaplan <david.kaplan@amd.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 05/35] x86/bugs: Report correct retbleed mitigation status
-Date: Fri, 31 Oct 2025 15:01:13 +0100
-Message-ID: <20251031140043.691582535@linuxfoundation.org>
+Subject: [PATCH 6.12 21/40] btrfs: use smp_mb__after_atomic() when forcing COW in create_pending_snapshot()
+Date: Fri, 31 Oct 2025 15:01:14 +0100
+Message-ID: <20251031140044.519956056@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251031140043.564670400@linuxfoundation.org>
-References: <20251031140043.564670400@linuxfoundation.org>
+In-Reply-To: <20251031140043.939381518@linuxfoundation.org>
+References: <20251031140043.939381518@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Kaplan <david.kaplan@amd.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit 930f2361fe542a00de9ce6070b1b6edb976f1165 ]
+[ Upstream commit 45c222468d33202c07c41c113301a4b9c8451b8f ]
 
-On Intel CPUs, the default retbleed mitigation is IBRS/eIBRS but this
-requires that a similar spectre_v2 mitigation is applied.  If the user
-selects a different spectre_v2 mitigation (like spectre_v2=retpoline) a
-warning is printed but sysfs will still report 'Mitigation: IBRS' or
-'Mitigation: Enhanced IBRS'.  This is incorrect because retbleed is not
-mitigated, and IBRS is not actually set.
+After setting the BTRFS_ROOT_FORCE_COW flag on the root we are doing a
+full write barrier, smp_wmb(), but we don't need to, all we need is a
+smp_mb__after_atomic().  The use of the smp_wmb() is from the old days
+when we didn't use a bit and used instead an int field in the root to
+signal if cow is forced. After the int field was changed to a bit in
+the root's state (flags field), we forgot to update the memory barrier
+in create_pending_snapshot() to smp_mb__after_atomic(), but we did the
+change in commit_fs_roots() after clearing BTRFS_ROOT_FORCE_COW. That
+happened in commit 27cdeb7096b8 ("Btrfs: use bitfield instead of integer
+data type for the some variants in btrfs_root"). On the reader side, in
+should_cow_block(), we also use the counterpart smp_mb__before_atomic()
+which generates further confusion.
 
-Fix this by choosing RETBLEED_MITIGATION_NONE in this scenario so the
-kernel correctly reports the system as vulnerable to retbleed.
+So change the smp_wmb() to smp_mb__after_atomic(). In fact we don't
+even need any barrier at all since create_pending_snapshot() is called
+in the critical section of a transaction commit and therefore no one
+can concurrently join/attach the transaction, or start a new one, until
+the transaction is unblocked. By the time someone starts a new transaction
+and enters should_cow_block(), a lot of implicit memory barriers already
+took place by having acquired several locks such as fs_info->trans_lock
+and extent buffer locks on the root node at least. Nevertlheless, for
+consistency use smp_mb__after_atomic() after setting the force cow bit
+in create_pending_snapshot().
 
-Signed-off-by: David Kaplan <david.kaplan@amd.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/20250915134706.3201818-1-david.kaplan@amd.com
-Stable-dep-of: 204ced4108f5 ("x86/bugs: Qualify RETBLEED_INTEL_MSG")
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/cpu/bugs.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/btrfs/transaction.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
-index 36dcfc5105be9..bf79ff6a1f662 100644
---- a/arch/x86/kernel/cpu/bugs.c
-+++ b/arch/x86/kernel/cpu/bugs.c
-@@ -1460,8 +1460,10 @@ static void __init retbleed_update_mitigation(void)
- 			retbleed_mitigation = RETBLEED_MITIGATION_EIBRS;
- 			break;
- 		default:
--			if (retbleed_mitigation != RETBLEED_MITIGATION_STUFF)
-+			if (retbleed_mitigation != RETBLEED_MITIGATION_STUFF) {
- 				pr_err(RETBLEED_INTEL_MSG);
-+				retbleed_mitigation = RETBLEED_MITIGATION_NONE;
-+			}
- 		}
+diff --git a/fs/btrfs/transaction.c b/fs/btrfs/transaction.c
+index 1a029392eac52..f4dda72491feb 100644
+--- a/fs/btrfs/transaction.c
++++ b/fs/btrfs/transaction.c
+@@ -1810,7 +1810,7 @@ static noinline int create_pending_snapshot(struct btrfs_trans_handle *trans,
  	}
+ 	/* see comments in should_cow_block() */
+ 	set_bit(BTRFS_ROOT_FORCE_COW, &root->state);
+-	smp_wmb();
++	smp_mb__after_atomic();
  
+ 	btrfs_set_root_node(new_root_item, tmp);
+ 	/* record when the snapshot was created in key.offset */
 -- 
 2.51.0
 
