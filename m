@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-191873-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191899-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CA94C2579C
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 15:10:36 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64243C256E5
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 15:06:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 12B01560BBC
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 14:04:49 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 0EB7A35196B
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 14:06:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3800225EFAE;
-	Fri, 31 Oct 2025 14:04:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E29A34C159;
+	Fri, 31 Oct 2025 14:05:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j07DMVYU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vcMh2Hzb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7ECA21FF25;
-	Fri, 31 Oct 2025 14:04:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A4DC34C14E;
+	Fri, 31 Oct 2025 14:05:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761919463; cv=none; b=hXEMqFCty3NBs29mceKrwqnGmy3/84MDMe0mQ+x4gtWd8EoQwgtHGc2hZWhsshAGDgesFwkHZtPFCIb+rcDdIcDHRgfkoLjnjngNHWdVDnwQZX2Yh1hI+UPWQ3DWovdt9ZMJrRlQlvKtMKuVFA74HSLhJLPFaaxuLfinfSqCFB0=
+	t=1761919538; cv=none; b=pzUF9CL6gDHh3O14gZuSoh2BkWbwIVcoNS6KufDt8GB9cUxEnVQgfbO+6jpwfFxH3bMFdJuaAanN7L5/c/iRIW7wU1rl9KP+/QMUOdAAGie6BZMTazBHtD9mexQ5HxL+vdP90XJadLPFGaMgnwzSR/cHgZlXr8X9n5fYALG77B8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761919463; c=relaxed/simple;
-	bh=cs0w4ibKQ+bwdMTsRk3hh1Q9+FDDC/eHlgrMT6n+dho=;
+	s=arc-20240116; t=1761919538; c=relaxed/simple;
+	bh=FSkar9HvkoGAATjN3cqwv4WaPIT6SXC7mIpnz+3jG60=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NTf4rADE9+8lZjuqJuvnRmElNujkC+1smhOmK/sbWHFeIc4BVpuDfUe1MEd1uaj8l83m+oajyzcj8IJSd3bGXiF9qgziLLH9tc6rPBGQM0k0YsrH8NcMDvQM++keiuSVDrurWADSM9WCa7f/wYaqhNpYA7F9AFd9/GUYc0i3yBg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j07DMVYU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F003C4CEE7;
-	Fri, 31 Oct 2025 14:04:22 +0000 (UTC)
+	 MIME-Version; b=JYm6Ouy6uHlImn6pP41sCScxFFaeodMz9CNXbZTbmRRYErKnsP3739lO/Ym+5rf9FE3EpdUwGq7R7gB4NnWot7ejA8lbjYi+DuLfeMa+H8LbPO/WzWI01SxHETtAbpI5FX8HegtZqc3mpNPnzH6MUKiZO0O9TDvRa3Cqwt7qTVc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vcMh2Hzb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95E49C4CEE7;
+	Fri, 31 Oct 2025 14:05:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761919462;
-	bh=cs0w4ibKQ+bwdMTsRk3hh1Q9+FDDC/eHlgrMT6n+dho=;
+	s=korg; t=1761919538;
+	bh=FSkar9HvkoGAATjN3cqwv4WaPIT6SXC7mIpnz+3jG60=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j07DMVYUAaYKVJ/wyd0awCD/ZYjAr1rABaNTrCBt6wNKX646JyJRaceTjshFlWfNC
-	 1tD14ygfkEy7nynIIyDojLO8ZQm0ddSlyf3j0y4ivtSen6d3Du71o6NfpBnIkm/Q7S
-	 bzHiQY+Jb2UAVGZe3oNme1LB6paZXoMxVlw6TPXE=
+	b=vcMh2HzbUBL52pTndWK9ScZHjMKec8Rs8/5Lv/nsFKoP2hT4RpHLfvRrw0ZXEhZOJ
+	 sAWaT3o1jYMbTCzv71PyykCbJ+mNcBMgyeXFqOKhOUJx67CG3zoFitq5IhZgeMqyYJ
+	 7IihbqmJQ1X591k9jINtKXuG6cpp5U7WGiMX95ok=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geliang Tang <geliang@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Dapeng Mi <dapeng1.mi@linux.intel.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Yi Lai <yi1.lai@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 27/40] mptcp: pm: in-kernel: C-flag: handle late ADD_ADDR
+Subject: [PATCH 6.17 12/35] perf/x86/intel: Add ICL_FIXED_0_ADAPTIVE bit into INTEL_FIXED_BITS_MASK
 Date: Fri, 31 Oct 2025 15:01:20 +0100
-Message-ID: <20251031140044.678151758@linuxfoundation.org>
+Message-ID: <20251031140043.851182044@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251031140043.939381518@linuxfoundation.org>
-References: <20251031140043.939381518@linuxfoundation.org>
+In-Reply-To: <20251031140043.564670400@linuxfoundation.org>
+References: <20251031140043.564670400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,88 +64,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+From: Dapeng Mi <dapeng1.mi@linux.intel.com>
 
-[ Upstream commit e84cb860ac3ce67ec6ecc364433fd5b412c448bc ]
+[ Upstream commit 2676dbf9f4fb7f6739d1207c0f1deaf63124642a ]
 
-The special C-flag case expects the ADD_ADDR to be received when
-switching to 'fully-established'. But for various reasons, the ADD_ADDR
-could be sent after the "4th ACK", and the special case doesn't work.
+ICL_FIXED_0_ADAPTIVE is missed to be added into INTEL_FIXED_BITS_MASK,
+add it.
 
-On NIPA, the new test validating this special case for the C-flag failed
-a few times, e.g.
+With help of this new INTEL_FIXED_BITS_MASK, intel_pmu_enable_fixed() can
+be optimized. The old fixed counter control bits can be unconditionally
+cleared with INTEL_FIXED_BITS_MASK and then set new control bits base on
+new configuration.
 
-  102 default limits, server deny join id 0
-        syn rx                 [FAIL] got 0 JOIN[s] syn rx expected 2
-
-  Server ns stats
-  (...)
-  MPTcpExtAddAddrTx  1
-  MPTcpExtEchoAdd    1
-
-  Client ns stats
-  (...)
-  MPTcpExtAddAddr    1
-  MPTcpExtEchoAddTx  1
-
-        synack rx              [FAIL] got 0 JOIN[s] synack rx expected 2
-        ack rx                 [FAIL] got 0 JOIN[s] ack rx expected 2
-        join Rx                [FAIL] see above
-        syn tx                 [FAIL] got 0 JOIN[s] syn tx expected 2
-        join Tx                [FAIL] see above
-
-I had a suspicion about what the issue could be: the ADD_ADDR might have
-been received after the switch to the 'fully-established' state. The
-issue was not easy to reproduce. The packet capture shown that the
-ADD_ADDR can indeed be sent with a delay, and the client would not try
-to establish subflows to it as expected.
-
-A simple fix is not to mark the endpoints as 'used' in the C-flag case,
-when looking at creating subflows to the remote initial IP address and
-port. In this case, there is no need to try.
-
-Note: newly added fullmesh endpoints will still continue to be used as
-expected, thanks to the conditions behind mptcp_pm_add_addr_c_flag_case.
-
-Fixes: 4b1ff850e0c1 ("mptcp: pm: in-kernel: usable client side with C-flag")
-Cc: stable@vger.kernel.org
-Reviewed-by: Geliang Tang <geliang@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20251020-net-mptcp-c-flag-late-add-addr-v1-1-8207030cb0e8@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ applied to pm_netlink.c instead of pm_kernel.c ]
+Signed-off-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Kan Liang <kan.liang@linux.intel.com>
+Tested-by: Yi Lai <yi1.lai@intel.com>
+Link: https://lore.kernel.org/r/20250820023032.17128-7-dapeng1.mi@linux.intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/pm_netlink.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ arch/x86/events/intel/core.c      | 10 +++-------
+ arch/x86/include/asm/perf_event.h |  6 +++++-
+ arch/x86/kvm/pmu.h                |  2 +-
+ 3 files changed, 9 insertions(+), 9 deletions(-)
 
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -618,6 +618,10 @@ static void mptcp_pm_create_subflow_or_s
- 	}
+diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
+index 15da60cf69f20..046d12281fd94 100644
+--- a/arch/x86/events/intel/core.c
++++ b/arch/x86/events/intel/core.c
+@@ -2845,8 +2845,8 @@ static void intel_pmu_enable_fixed(struct perf_event *event)
+ {
+ 	struct cpu_hw_events *cpuc = this_cpu_ptr(&cpu_hw_events);
+ 	struct hw_perf_event *hwc = &event->hw;
+-	u64 mask, bits = 0;
+ 	int idx = hwc->idx;
++	u64 bits = 0;
  
- subflow:
-+	/* No need to try establishing subflows to remote id0 if not allowed */
-+	if (mptcp_pm_add_addr_c_flag_case(msk))
-+		goto exit;
-+
- 	/* check if should create a new subflow */
- 	while (msk->pm.local_addr_used < local_addr_max &&
- 	       msk->pm.subflows < subflows_max) {
-@@ -649,6 +653,8 @@ subflow:
- 			__mptcp_subflow_connect(sk, &local, &addrs[i]);
- 		spin_lock_bh(&msk->pm.lock);
- 	}
-+
-+exit:
- 	mptcp_pm_nl_check_work_pending(msk);
+ 	if (is_topdown_idx(idx)) {
+ 		struct cpu_hw_events *cpuc = this_cpu_ptr(&cpu_hw_events);
+@@ -2885,14 +2885,10 @@ static void intel_pmu_enable_fixed(struct perf_event *event)
+ 
+ 	idx -= INTEL_PMC_IDX_FIXED;
+ 	bits = intel_fixed_bits_by_idx(idx, bits);
+-	mask = intel_fixed_bits_by_idx(idx, INTEL_FIXED_BITS_MASK);
+-
+-	if (x86_pmu.intel_cap.pebs_baseline && event->attr.precise_ip) {
++	if (x86_pmu.intel_cap.pebs_baseline && event->attr.precise_ip)
+ 		bits |= intel_fixed_bits_by_idx(idx, ICL_FIXED_0_ADAPTIVE);
+-		mask |= intel_fixed_bits_by_idx(idx, ICL_FIXED_0_ADAPTIVE);
+-	}
+ 
+-	cpuc->fixed_ctrl_val &= ~mask;
++	cpuc->fixed_ctrl_val &= ~intel_fixed_bits_by_idx(idx, INTEL_FIXED_BITS_MASK);
+ 	cpuc->fixed_ctrl_val |= bits;
  }
  
+diff --git a/arch/x86/include/asm/perf_event.h b/arch/x86/include/asm/perf_event.h
+index 70d1d94aca7e6..ee943bd1595af 100644
+--- a/arch/x86/include/asm/perf_event.h
++++ b/arch/x86/include/asm/perf_event.h
+@@ -35,7 +35,6 @@
+ #define ARCH_PERFMON_EVENTSEL_EQ			(1ULL << 36)
+ #define ARCH_PERFMON_EVENTSEL_UMASK2			(0xFFULL << 40)
+ 
+-#define INTEL_FIXED_BITS_MASK				0xFULL
+ #define INTEL_FIXED_BITS_STRIDE			4
+ #define INTEL_FIXED_0_KERNEL				(1ULL << 0)
+ #define INTEL_FIXED_0_USER				(1ULL << 1)
+@@ -48,6 +47,11 @@
+ #define ICL_EVENTSEL_ADAPTIVE				(1ULL << 34)
+ #define ICL_FIXED_0_ADAPTIVE				(1ULL << 32)
+ 
++#define INTEL_FIXED_BITS_MASK					\
++	(INTEL_FIXED_0_KERNEL | INTEL_FIXED_0_USER |		\
++	 INTEL_FIXED_0_ANYTHREAD | INTEL_FIXED_0_ENABLE_PMI |	\
++	 ICL_FIXED_0_ADAPTIVE)
++
+ #define intel_fixed_bits_by_idx(_idx, _bits)			\
+ 	((_bits) << ((_idx) * INTEL_FIXED_BITS_STRIDE))
+ 
+diff --git a/arch/x86/kvm/pmu.h b/arch/x86/kvm/pmu.h
+index ad89d0bd60058..103604c4b33b5 100644
+--- a/arch/x86/kvm/pmu.h
++++ b/arch/x86/kvm/pmu.h
+@@ -13,7 +13,7 @@
+ #define MSR_IA32_MISC_ENABLE_PMU_RO_MASK (MSR_IA32_MISC_ENABLE_PEBS_UNAVAIL |	\
+ 					  MSR_IA32_MISC_ENABLE_BTS_UNAVAIL)
+ 
+-/* retrieve the 4 bits for EN and PMI out of IA32_FIXED_CTR_CTRL */
++/* retrieve a fixed counter bits out of IA32_FIXED_CTR_CTRL */
+ #define fixed_ctrl_field(ctrl_reg, idx) \
+ 	(((ctrl_reg) >> ((idx) * INTEL_FIXED_BITS_STRIDE)) & INTEL_FIXED_BITS_MASK)
+ 
+-- 
+2.51.0
+
 
 
 
