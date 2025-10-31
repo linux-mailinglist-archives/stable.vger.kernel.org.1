@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-191893-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191829-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BBC3C25860
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 15:18:07 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 182D8C25667
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 15:03:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 11C0F561B4E
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 14:05:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 33315463DEB
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 14:02:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8424C22A4FE;
-	Fri, 31 Oct 2025 14:05:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EF31221FB6;
+	Fri, 31 Oct 2025 14:02:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WTwpV7OD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KU8xqtYr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 414893C17;
-	Fri, 31 Oct 2025 14:05:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBD073F9D2;
+	Fri, 31 Oct 2025 14:02:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761919520; cv=none; b=XA3VvMkyoOvmGB9PidbtUdnrdTgNrd81XBC55XAM7wbcNwFI1raOkhjgge7p3zWuIAmddqa/eooZM+FQZ1WwsQ8KpkhMjWBPGtSATZipLybdNviQSwkSNzeAQTsLNNfJ0Si7pSM34NHEAWX8WjAgPITyVts3YCRscpOd2B27pB4=
+	t=1761919337; cv=none; b=ZBqKSqz6EkBuHPkvFEDuWoFhxfUSnWXLeT5OF/o7jRvciOqwOLZLsvgaRTFxVIAdpSIHq7rU7URbHLyDRZUMvLuMg4h19TrOMy9y09/pblzwrjzkSpEt7IiLCMkrSFyfoPnb0aZw8ALfVikBt+8PLNQ02bfPDyVzqb7i1isrtWM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761919520; c=relaxed/simple;
-	bh=GxbysZCv1K8nxa3/PquQU9C0aIUZUMKmYV7M2uVFeUg=;
+	s=arc-20240116; t=1761919337; c=relaxed/simple;
+	bh=1KcX+RO4mewV9PFwav/yt441+jYjJABw1KeXrbtIJOM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PsKVRyTkYPkZm+0rN05rDeOAOdFWsqQjE4mmZyA5knsKbKrCFhQUYPwvKdncFDd4p1cAfK7lk32XsyQnkEnT98IbQI3GWbqQVpeab/XjOlN2e/o4mHYSLAghMotx4xyS1Cu51ot89tGF/+mxZm9QBsd1OpkGRZ08dCO+wxChQPc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WTwpV7OD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCDC7C4CEE7;
-	Fri, 31 Oct 2025 14:05:19 +0000 (UTC)
+	 MIME-Version; b=kdNUX+D+Dk10qj66NUOuTOxOVHsrgdWXeZRp0C9s65ozdo0cQwbJXUAp+c+XXQY+ur99qguztAqibZRMKO5LkkkQzhpuLtLzLIZIb3+b9ciOVXC+ZvR9T4/AYP0R6J/x25ptHD8p7ROf4ZzUBBdPmh6Cgphdm5iemBNrkwNmwqo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KU8xqtYr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67770C4CEF8;
+	Fri, 31 Oct 2025 14:02:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761919520;
-	bh=GxbysZCv1K8nxa3/PquQU9C0aIUZUMKmYV7M2uVFeUg=;
+	s=korg; t=1761919336;
+	bh=1KcX+RO4mewV9PFwav/yt441+jYjJABw1KeXrbtIJOM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WTwpV7ODuKrkiGVbCei+6dOhy7fifiA5XrPXn4pYSU3YTlGNTahWTEpzIo2gGEGuM
-	 IQyNXujdHQfEffMb5YMPfFqlm/hwqVemgqYTBHZ80vwNhQ900GzNDWWD9hBAgVxZgN
-	 kOpAcCg5nmB+ozJCsujMJ3ch9bwz1cJI2kw+q8VM=
+	b=KU8xqtYrfO/3naZ7cWMlOuEl3OqjCyle6EDMSbpcEK5XoIoDyqip8YyDH0Wye+fSX
+	 hydG7KuORxjEbSh+S1OiOqoqh5SFCttqlJl1iK86FI+zOUX5PGkk/QV0/thvo6O6Ri
+	 2SPWYiFr7rl9291OvphfeYY0l/Xwka/2gzygh0nA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
+	Matthieu Baerts <matttbe@kernel.org>,
+	Geliang Tang <tanggeliang@kylinos.cn>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 17/40] btrfs: always drop log root tree reference in btrfs_replay_log()
-Date: Fri, 31 Oct 2025 15:01:10 +0100
-Message-ID: <20251031140044.430244436@linuxfoundation.org>
+Subject: [PATCH 6.6 17/32] selftests: mptcp: disable add_addr retrans in endpoint_tests
+Date: Fri, 31 Oct 2025 15:01:11 +0100
+Message-ID: <20251031140042.843586968@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251031140043.939381518@linuxfoundation.org>
-References: <20251031140043.939381518@linuxfoundation.org>
+In-Reply-To: <20251031140042.387255981@linuxfoundation.org>
+References: <20251031140042.387255981@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Geliang Tang <tanggeliang@kylinos.cn>
 
-[ Upstream commit 2f5b8095ea47b142c56c09755a8b1e14145a2d30 ]
+[ Upstream commit f92199f551e617fae028c5c5905ddd63e3616e18 ]
 
-Currently we have this odd behaviour:
+To prevent test instability in the "delete re-add signal" test caused by
+ADD_ADDR retransmissions, disable retransmissions for this test by setting
+net.mptcp.add_addr_timeout to 0.
 
-1) At btrfs_replay_log() we drop the reference of the log root tree if
-   the call to btrfs_recover_log_trees() failed;
-
-2) But if the call to btrfs_recover_log_trees() did not fail, we don't
-   drop the reference in btrfs_replay_log() - we expect that
-   btrfs_recover_log_trees() does it in case it returns success.
-
-Let's simplify this and make btrfs_replay_log() always drop the reference
-on the log root tree, not only this simplifies code as it's what makes
-sense since it's btrfs_replay_log() who grabbed the reference in the first
-place.
-
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Suggested-by: Matthieu Baerts <matttbe@kernel.org>
+Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20250815-net-mptcp-misc-fixes-6-17-rc2-v1-6-521fe9957892@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: c3496c052ac3 ("selftests: mptcp: join: mark 'delete re-add signal' as skipped if not supported")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/disk-io.c  | 2 +-
- fs/btrfs/tree-log.c | 1 -
- 2 files changed, 1 insertion(+), 2 deletions(-)
+ tools/testing/selftests/net/mptcp/mptcp_join.sh |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/btrfs/disk-io.c b/fs/btrfs/disk-io.c
-index e655fa3bfd9be..3a73d218af464 100644
---- a/fs/btrfs/disk-io.c
-+++ b/fs/btrfs/disk-io.c
-@@ -2100,10 +2100,10 @@ static int btrfs_replay_log(struct btrfs_fs_info *fs_info,
- 
- 	/* returns with log_tree_root freed on success */
- 	ret = btrfs_recover_log_trees(log_tree_root);
-+	btrfs_put_root(log_tree_root);
- 	if (ret) {
- 		btrfs_handle_fs_error(fs_info, ret,
- 				      "Failed to recover log tree");
--		btrfs_put_root(log_tree_root);
- 		return ret;
- 	}
- 
-diff --git a/fs/btrfs/tree-log.c b/fs/btrfs/tree-log.c
-index 1c207a6d71ecf..63b14005f5066 100644
---- a/fs/btrfs/tree-log.c
-+++ b/fs/btrfs/tree-log.c
-@@ -7457,7 +7457,6 @@ int btrfs_recover_log_trees(struct btrfs_root *log_root_tree)
- 
- 	log_root_tree->log_root = NULL;
- 	clear_bit(BTRFS_FS_LOG_RECOVERING, &fs_info->flags);
--	btrfs_put_root(log_root_tree);
- 
- 	return 0;
- error:
--- 
-2.51.0
-
+--- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+@@ -3838,6 +3838,7 @@ endpoint_tests()
+ 	# remove and re-add
+ 	if reset_with_events "delete re-add signal" &&
+ 	   mptcp_lib_kallsyms_has "subflow_rebuild_header$"; then
++		ip netns exec $ns1 sysctl -q net.mptcp.add_addr_timeout=0
+ 		pm_nl_set_limits $ns1 0 3
+ 		pm_nl_set_limits $ns2 3 3
+ 		pm_nl_add_endpoint $ns1 10.0.2.1 id 1 flags signal
 
 
 
