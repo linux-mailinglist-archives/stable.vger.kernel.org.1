@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-191900-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191850-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBE8EC256E8
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 15:06:09 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44040C25779
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 15:09:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 8DC363515BE
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 14:06:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2C8E2465065
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 14:03:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66F6425EFB6;
-	Fri, 31 Oct 2025 14:05:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8723222A4FE;
+	Fri, 31 Oct 2025 14:03:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0YQBptRm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gy1c/d9I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1973822A4D6;
-	Fri, 31 Oct 2025 14:05:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43CB73C17;
+	Fri, 31 Oct 2025 14:03:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761919541; cv=none; b=FsEbin4aqYofd7trmwK6XLTWLPyziuWsLXUfzYW97kO20iVFLUBeBlEXQ9MEvxbCetB2+ey+bbByhs0GnnPOEgVNo8OflIA02y8yxSAYoZbMN/+Qz6dTvMB5nwVj6Na7XOvwe3POvQB0V47EcWOxRmL4nvGdh60fEajAxRhXCik=
+	t=1761919398; cv=none; b=LdwnMifl3Ox5tvTPBHE5PSaCLOE8H2kXcIf90aowcxKZydi/ckFGFcrRIEqoJrNZ38Ocs6n9lbtToDe6nENMeKMDJVNi9Xtd+R3k+H4lWYxy+WIs9kgtqd70XTkYZVhTD7AZN32EOsVKYUmbunJC0oc/xvFayNeItlGCVD8uDyM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761919541; c=relaxed/simple;
-	bh=H0BTvXIHfv54WGbD/a0VKztSIOcJNQi+mQgVpsnfRRI=;
+	s=arc-20240116; t=1761919398; c=relaxed/simple;
+	bh=z6b43cpyVoKKvbBYBkun8LeuZ3dY/6MsxlWqcJf1dyY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rsu9cJKIDQRXIlhaRVgvtaCkHkvbtx83O7l0RAGu+q8kqe98R9OGDslJ2L0WhiOS9OktW/jbfgTjI3L+h7Dmwrph4eZmyD9V7UMSCV/71oxg5e3qEKf/zaJPH4dE9WirWSFefh7bGabV+YHmW16PUVYU3NVr4kBhqAN0o7fhsyQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0YQBptRm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CA18C4CEE7;
-	Fri, 31 Oct 2025 14:05:40 +0000 (UTC)
+	 MIME-Version:Content-Type; b=VWRyUjjkKn3TXNiRZ3+2+I+HBhSXZFOBAha5c4zUvo8vk9rFJed2NZTU69aAfclgF1GS9/iLZJ65gNizKamCiwRsCxPME5zfV+Jgs9b6wT8rbMZ1npwTTeBuRbBdaoxm6nGK9AJkxacjRqdTruP6MMhUIHS535qtTWJyU4EHx+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gy1c/d9I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0B36C4CEF8;
+	Fri, 31 Oct 2025 14:03:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761919541;
-	bh=H0BTvXIHfv54WGbD/a0VKztSIOcJNQi+mQgVpsnfRRI=;
+	s=korg; t=1761919398;
+	bh=z6b43cpyVoKKvbBYBkun8LeuZ3dY/6MsxlWqcJf1dyY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0YQBptRmOq5b0VpOD8jPGqEr6I/bbKlrcB8J+5Cv/8sRM6/6WqNH4wEjao8y4F9P1
-	 4o2qr1hPX4AxjbS5kWJu7Ii0dv+0DF09azjCJ0ufvkiUghH+bYvlswKStFOXDgxlEJ
-	 kelhhkrUArlPGi4f2XdFygTkZ5/o74fr5FWc5Kxw=
+	b=Gy1c/d9IcToBSY3IDv4lveOdlELekD1nrrjaEECxjVbhDt+1UElmak3dmcNT2xoJu
+	 HdQ8ks8vYyXMPkpMgUbhkZd3+BMcGhhfXnKXwbbXQ+EUX7KEADBKNvyvmIn/mFjHvx
+	 MDEZxBwXjaMY18mAr4FPRXEqEB6LJ1UPF7ljDnqk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	stable <stable@kernel.org>,
+	=?UTF-8?q?=C5=81ukasz=20Bartosik?= <ukaszb@chromium.org>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 13/35] perf: Use current->flags & PF_KTHREAD|PF_USER_WORKER instead of current->mm == NULL
+Subject: [PATCH 6.6 27/32] xhci: dbc: fix bogus 1024 byte prefix if ttyDBC read races with stall event
 Date: Fri, 31 Oct 2025 15:01:21 +0100
-Message-ID: <20251031140043.876231714@linuxfoundation.org>
+Message-ID: <20251031140043.104912167@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251031140043.564670400@linuxfoundation.org>
-References: <20251031140043.564670400@linuxfoundation.org>
+In-Reply-To: <20251031140042.387255981@linuxfoundation.org>
+References: <20251031140042.387255981@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,73 +61,79 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt <rostedt@goodmis.org>
+From: Mathias Nyman <mathias.nyman@linux.intel.com>
 
-[ Upstream commit 90942f9fac05702065ff82ed0bade0d08168d4ea ]
+[ Upstream commit f3d12ec847b945d5d65846c85f062d07d5e73164 ]
 
-To determine if a task is a kernel thread or not, it is more reliable to
-use (current->flags & (PF_KTHREAD|PF_USER_WORKERi)) than to rely on
-current->mm being NULL.  That is because some kernel tasks (io_uring
-helpers) may have a mm field.
+DbC may add 1024 bogus bytes to the beginneing of the receiving endpoint
+if DbC hw triggers a STALL event before any Transfer Blocks (TRBs) for
+incoming data are queued, but driver handles the event after it queued
+the TRBs.
 
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20250820180428.592367294@kernel.org
+This is possible as xHCI DbC hardware may trigger spurious STALL transfer
+events even if endpoint is empty. The STALL event contains a pointer
+to the stalled TRB, and "remaining" untransferred data length.
+
+As there are no TRBs queued yet the STALL event will just point to first
+TRB position of the empty ring, with '0' bytes remaining untransferred.
+
+DbC driver is polling for events, and may not handle the STALL event
+before /dev/ttyDBC0 is opened and incoming data TRBs are queued.
+
+The DbC event handler will now assume the first queued TRB (length 1024)
+has stalled with '0' bytes remaining untransferred, and copies the data
+
+This race situation can be practically mitigated by making sure the event
+handler handles all pending transfer events when DbC reaches configured
+state, and only then create dev/ttyDbC0, and start queueing transfers.
+The event handler can this way detect the STALL events on empty rings
+and discard them before any transfers are queued.
+
+This does in practice solve the issue, but still leaves a small possible
+gap for the race to trigger.
+We still need a way to distinguish spurious STALLs on empty rings with '0'
+bytes remaing, from actual STALL events with all bytes transmitted.
+
+Cc: stable <stable@kernel.org>
+Fixes: dfba2174dc42 ("usb: xhci: Add DbC support in xHCI driver")
+Tested-by: Łukasz Bartosik <ukaszb@chromium.org>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/events/callchain.c | 6 +++---
- kernel/events/core.c      | 4 ++--
- 2 files changed, 5 insertions(+), 5 deletions(-)
+ drivers/usb/host/xhci-dbgcap.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/events/callchain.c b/kernel/events/callchain.c
-index 6c83ad674d010..decff7266cfbd 100644
---- a/kernel/events/callchain.c
-+++ b/kernel/events/callchain.c
-@@ -242,10 +242,10 @@ get_perf_callchain(struct pt_regs *regs, u32 init_nr, bool kernel, bool user,
- 
- 	if (user) {
- 		if (!user_mode(regs)) {
--			if  (current->mm)
--				regs = task_pt_regs(current);
--			else
-+			if (current->flags & (PF_KTHREAD | PF_USER_WORKER))
- 				regs = NULL;
-+			else
-+				regs = task_pt_regs(current);
+--- a/drivers/usb/host/xhci-dbgcap.c
++++ b/drivers/usb/host/xhci-dbgcap.c
+@@ -880,7 +880,8 @@ static enum evtreturn xhci_dbc_do_handle
+ 			dev_info(dbc->dev, "DbC configured\n");
+ 			portsc = readl(&dbc->regs->portsc);
+ 			writel(portsc, &dbc->regs->portsc);
+-			return EVT_GSER;
++			ret = EVT_GSER;
++			break;
  		}
  
- 		if (regs) {
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index 6e9427c4aaff7..a3dc79ec6f879 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -7440,7 +7440,7 @@ static void perf_sample_regs_user(struct perf_regs *regs_user,
- 	if (user_mode(regs)) {
- 		regs_user->abi = perf_reg_abi(current);
- 		regs_user->regs = regs;
--	} else if (!(current->flags & PF_KTHREAD)) {
-+	} else if (!(current->flags & (PF_KTHREAD | PF_USER_WORKER))) {
- 		perf_get_regs_user(regs_user, regs);
- 	} else {
- 		regs_user->abi = PERF_SAMPLE_REGS_ABI_NONE;
-@@ -8080,7 +8080,7 @@ static u64 perf_virt_to_phys(u64 virt)
- 		 * Try IRQ-safe get_user_page_fast_only first.
- 		 * If failed, leave phys_addr as 0.
- 		 */
--		if (current->mm != NULL) {
-+		if (!(current->flags & (PF_KTHREAD | PF_USER_WORKER))) {
- 			struct page *p;
- 
- 			pagefault_disable();
--- 
-2.51.0
-
+ 		return EVT_DONE;
+@@ -940,7 +941,8 @@ static enum evtreturn xhci_dbc_do_handle
+ 			break;
+ 		case TRB_TYPE(TRB_TRANSFER):
+ 			dbc_handle_xfer_event(dbc, evt);
+-			ret = EVT_XFER_DONE;
++			if (ret != EVT_GSER)
++				ret = EVT_XFER_DONE;
+ 			break;
+ 		default:
+ 			break;
 
 
 
