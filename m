@@ -1,110 +1,125 @@
-Return-Path: <stable+bounces-191940-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191941-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6593FC25E49
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 16:48:22 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FA95C25EDF
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 16:58:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6B2A41A65B0B
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 15:48:42 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id C00A6350E72
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 15:58:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BAB02E22BA;
-	Fri, 31 Oct 2025 15:48:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83F402EAB6B;
+	Fri, 31 Oct 2025 15:57:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="GYpp5DA7"
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="fwN9tres"
 X-Original-To: stable@vger.kernel.org
-Received: from 003.mia.mailroute.net (003.mia.mailroute.net [199.89.3.6])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B4642DC779;
-	Fri, 31 Oct 2025 15:48:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.3.6
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B5BD2E9ED4
+	for <stable@vger.kernel.org>; Fri, 31 Oct 2025 15:57:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761925692; cv=none; b=XRJq75BZspnMv2T+TUiUhDAgbqC9XXC8yZn7ozSEMhJrpfcGH5x9nga3EtjWLXY1hrUM0Nr48RzLadpIgnFBe9rwkvFQUmMv6whKH2lDdoDfC+kd3ONJ7yXk+tbz6os+i5YNGEb9/idNrR8WBEjxcrI6z1S71QXLts/NNlFXyss=
+	t=1761926245; cv=none; b=a96yVZAgxlCtYyUcvRmWZTDPRCMDQ+MzfN90lt2Mh7vH2MyZ2+jCQWZcaVMDvaKZGuK46cfZwgZSFpuU8UUbwdQF6y4KIFtC0e4csg7XJSuwtO0xbfNrCdbX682FnQky3VnytxmYkZdjUtLG20qT2EdgNowi49/xN5IhDKLYWls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761925692; c=relaxed/simple;
-	bh=oJaKAE5jic3cd5cWJijaVQo8BjqDkj3yyxeDbdeMFmg=;
+	s=arc-20240116; t=1761926245; c=relaxed/simple;
+	bh=yjHBWC05s3h3HRSExiyGSQQjmN1twKVXh2uNlBYdM2c=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cSzUT1xZ1rLE92eXIeqsnuKjjNMpsgCNG39U+b2nGzck/V9R4UOb5JabBVigUrN7gwUz8fwfXRFqI6YXR8ZSKQdQYqokucgK1jDoOpR3NfQx9A436MozTBmovGVH/I1irqgHCHlkbQid9p+F4IVvZ8eCAEbGRzX5gBkkM16KyPs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=GYpp5DA7; arc=none smtp.client-ip=199.89.3.6
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
-Received: from localhost (localhost [127.0.0.1])
-	by 003.mia.mailroute.net (Postfix) with ESMTP id 4cylkK276tzltP1C;
-	Fri, 31 Oct 2025 15:48:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
-	content-transfer-encoding:content-type:content-type:in-reply-to
-	:from:from:content-language:references:subject:subject
-	:user-agent:mime-version:date:date:message-id:received:received;
-	 s=mr01; t=1761925687; x=1764517688; bh=l36Iwd+m+YGHOEKAFhLVj7QZ
-	Uydl/74HASoRe/Qelsw=; b=GYpp5DA7S1G3hwubTn4w0dDqtvcP+LIRFaokl8FR
-	dPeygjnmrzlfDPzNRYfO3d8h4paoShXQbvn9shy/S8WAmoCeBbEh2U7+Lab24jvi
-	zxnPTDUvKib1HkNGmjbnrKAI0zoOx+G2YSvT5bRusK3BiNVnY/BGr/lw5pP0mXkX
-	i0yadtn3COoplh+39Uq4XREUXh9MfgtDEpW8Y3YlFrbDOhSQm37Fs9gBTfnuOoV4
-	nZs+n8wcNLui7H7rCN9asV0lRss32X+Ir/RgLas9VnybaTdUApfvfhgIKNU0Wpp8
-	4/QO+OYd0QFfB5imJQX3naokn5fVr/rclL+lISavRnrBZw==
-X-Virus-Scanned: by MailRoute
-Received: from 003.mia.mailroute.net ([127.0.0.1])
- by localhost (003.mia [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
- id m00CDwvzkrbA; Fri, 31 Oct 2025 15:48:07 +0000 (UTC)
-Received: from [100.119.48.131] (unknown [104.135.180.219])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bvanassche@acm.org)
-	by 003.mia.mailroute.net (Postfix) with ESMTPSA id 4cylk83dnnzlvm7Q;
-	Fri, 31 Oct 2025 15:47:59 +0000 (UTC)
-Message-ID: <fb04975c-55bd-44a3-b4a6-fae8ef7b89a6@acm.org>
-Date: Fri, 31 Oct 2025 08:47:58 -0700
+	 In-Reply-To:Content-Type; b=iLxgJiyJrgPDcBEJTU6ohdGDIYcehuIWJVCVTVDgEk9pdYM9dymiioB5G6GH0XhW0OICL4DFsnGoXEpABabM5l69ekgh3r5oK4pmh9GEExawv8zMzp415f7o31kmx9oTnpTL1wjNAAZ4SnqA74kFrvSiZ4HSiZUp/dhtXfw3tCY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=fwN9tres; arc=none smtp.client-ip=209.85.218.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-b704db3686cso536557366b.3
+        for <stable@vger.kernel.org>; Fri, 31 Oct 2025 08:57:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20230601; t=1761926242; x=1762531042; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=nI+jUGUgrFwdA9J/BWhhFb2SDMktkHvnyj/zPRmzijE=;
+        b=fwN9tresWOg1cdG3fZ4c832HvC+AZylVC3VBLWrDNFN3FFKqS/zy00NjcRBsU330ja
+         VtiGrF3fS2pFsapADEgh9ShqU0GLfx/KNe9qd93uE6nVYUNjtHGq6pyPKgNOZptFXKH7
+         6PabjL45+5URVvEJOoPoW15fkrNjGvxzBr7aqIrM2DFkasr+Q7/1wFl7iPvkfHvxYTwd
+         TFe9igj9rQKn8xEXOrjrLp+jZVOxY6Rtx+4Z1ve2bmyVZKUf/phig2/fJMabRKHMRo3+
+         z0gpvFJx7KJRb2Wxvg5onj0dcAdpyoJL4Bg1c8dAs9aKe+izobD63sAqv6VZksX/cEAQ
+         STVg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761926242; x=1762531042;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=nI+jUGUgrFwdA9J/BWhhFb2SDMktkHvnyj/zPRmzijE=;
+        b=vYUuJAsK7q4cm8GM9uLXbbnNfxnqe3EyvYyjWDFzDxmspQaY5yiN5n4k6qfYOrmfnG
+         zGwSJ+2H5v80NDtmdS5dpr6Ca0OV0W+3JDBpI+0igyammhmq0n1lQ3kpdma3TZ1unqLq
+         E7XrpJbRO4sj7o4aL7QWud1/8IALOBFvy8RaliJ/mbkcfmv4k34FFX6GQ0dSbVc1ydfy
+         S29azAgO5Um8mIJi0AEhuPd2HCUOYsC7KX5M7QjzgrHyN1LNqU4otlhYbxMBPY5hZFUe
+         R+3oPCctqlykVj7yY72SU0snz1Qe3YUA9jXC+q86CEdyx1zshSmNfNTbJPRdgVQEwIm+
+         f6ag==
+X-Forwarded-Encrypted: i=1; AJvYcCURyPg2KWjJ73WQLa59aCpYJfGjg+l63At3dubl3hfDkBMJZW9TV3Osg0bH5WPWW5E7MnVeYks=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyeeIc4bHEKSIkANP9XWYr1D+ibGxW3kkUtMj8bFDNbKH2eWM4N
+	5d8Xdh8nTsldLGC0mHo3AC0jD/r8Vx/Qp2AacU5R1VDDO4fIO+GLgd4=
+X-Gm-Gg: ASbGncvkprv7aULmddfAwFcBhab+Tht4E7o6IxLMtFd0IJYrwZwTh+vTyVMIkvGFtTm
+	sNoAZh/ccsCK4Eg1RbJTS8CdO57V/vPCksr0chjMvQoN+HXg7GFg/y9EEzaGMyiJXVejNptyOPp
+	gFieLxEFO95aBPjE9e54Zsijr7rT5KdHRRjNQydXDUSRdhsu9lZxY0BPPtkKITCXlTkBHsgeaQD
+	bzd0YTLyoYuRN2H1GFcLnC0stdXacezNE1UQ2Mdq1orTCoUO72ALo1shPUAOxxkc/fUsz6lT0Ij
+	8BrWCn1iYA7E715rPxCj1jyXY9qh9ZiCFPvPUku3UdnIuzqjP/+TljKv8TAHEX+ezZG4M2BYgu2
+	ATOWFDdrsWV9emN85DceC12MMK0CrUKXpr3WqSf7CYNkjQLtFljLfBUnADP8pzlO1+fQoZQqRRt
+	Rb0o/CtS2zZVfCaloVRjJZNvSqAZGZT3ngvL+vgTdl+xF6TwSUH0qy4A==
+X-Google-Smtp-Source: AGHT+IHdC5nEkh3EIsfe801CuOexng04liN2h1LnrXQkauZMgdGcyum5TaU1FRbxBKL0FAJSkSNDMg==
+X-Received: by 2002:a17:906:478b:b0:b6d:603b:490f with SMTP id a640c23a62f3a-b70704c40b5mr378182466b.35.1761926241353;
+        Fri, 31 Oct 2025 08:57:21 -0700 (PDT)
+Received: from [192.168.1.3] (p5b2ac3bb.dip0.t-ipconnect.de. [91.42.195.187])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b7077d065fesm206856066b.72.2025.10.31.08.57.20
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 31 Oct 2025 08:57:20 -0700 (PDT)
+Message-ID: <19689e2c-5dd1-4c3f-a243-84b69a552f91@googlemail.com>
+Date: Fri, 31 Oct 2025 16:57:20 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] block: Remove queue freezing from several sysfs store
- callbacks
-To: Nilay Shroff <nilay@linux.ibm.com>, Jens Axboe <axboe@kernel.dk>
-Cc: linux-block@vger.kernel.org, Christoph Hellwig <hch@lst.de>,
- Martin Wilck <mwilck@suse.com>, Benjamin Marzinski <bmarzins@redhat.com>,
- stable@vger.kernel.org, Damien Le Moal <dlemoal@kernel.org>,
- Chaitanya Kulkarni <kch@nvidia.com>, Hannes Reinecke <hare@suse.de>
-References: <20251030172417.660949-1-bvanassche@acm.org>
- <befb4493-44fe-41e7-b5ec-fb2744fd752c@linux.ibm.com>
-Content-Language: en-US
-From: Bart Van Assche <bvanassche@acm.org>
-In-Reply-To: <befb4493-44fe-41e7-b5ec-fb2744fd752c@linux.ibm.com>
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH 6.12 00/40] 6.12.57-rc1 review
+Content-Language: de-DE
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+ achill@achill.org, sr@sladewatkins.com
+References: <20251031140043.939381518@linuxfoundation.org>
+From: Peter Schneider <pschneider1968@googlemail.com>
+In-Reply-To: <20251031140043.939381518@linuxfoundation.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 10/31/25 5:39 AM, Nilay Shroff wrote:
-> On 10/30/25 10:54 PM, Bart Van Assche wrote:
->> Fix this by removing the blk_mq_freeze_queue() / blk_mq_unfreeze_queue()
->> calls from the store callbacks that do not strictly need these callbacks.
->> This patch may cause a small delay in applying the new settings.
->>
->> This patch affects the following sysfs attributes:
->> * io_poll_delay
->> * io_timeout
->> * nomerges
->> * read_ahead_kb
->> * rq_affinity
-> 
-> I see that io_timeout, nomerges and rq_affinity are all accessed
-> during I/O hotpath. So IMO for these attributes we still need to
-> freeze the queue before updating those parameters. The io_timeout
-> and nomerges are accessed during I/O submission and rq_affinity
-> is accessed during I/O completion.
+Am 31.10.2025 um 15:00 schrieb Greg Kroah-Hartman:
+> This is the start of the stable review cycle for the 6.12.57 release.
+> There are 40 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-Yes, several of the parameters affected by my patch are used in the
-hot path. But changing these parameters while I/O is in progress can't
-cause an I/O error. That's why I don't think that the queue needs to be
-frozen while these parameters are modified.
+Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg oddities or regressions found.
 
-Bart.
+Tested-by: Peter Schneider <pschneider1968@googlemail.com>
 
 
+Beste Grüße,
+Peter Schneider
+
+-- 
+Climb the mountain not to plant your flag, but to embrace the challenge,
+enjoy the air and behold the view. Climb it so you can see the world,
+not so the world can see you.                    -- David McCullough Jr.
+
+OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
+Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
 
