@@ -1,140 +1,108 @@
-Return-Path: <stable+bounces-191813-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191814-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7DF9C250CE
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 13:39:59 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32051C250E9
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 13:43:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A6DBF4E9565
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 12:39:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7AB0D1A66A26
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 12:43:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55190340263;
-	Fri, 31 Oct 2025 12:39:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0AED34A785;
+	Fri, 31 Oct 2025 12:43:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="SyUol3iE"
+	dkim=pass (2048-bit key) header.d=postmarketos.org header.i=@postmarketos.org header.b="KIY/eR+q"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from out-178.mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2EA831984E;
-	Fri, 31 Oct 2025 12:39:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAA26311C21
+	for <stable@vger.kernel.org>; Fri, 31 Oct 2025 12:43:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761914390; cv=none; b=p8O95qpNTH5JNWNSqtb9/qHttHHlzjK6IbVlFgldj7yJelOf1wwBMXoBZvWYhB3yyv83uPHzaQuvapqd/xZ9dtmKkMdnRz2HAOPCSo3ctkBe1Y+lIdu0o4VG4vEWd8s4X86rVdG0/1JTU7FTX64HN6IU0ri1BXkHqn8LOlN5qyE=
+	t=1761914587; cv=none; b=tB87PWZ/a5+XLDGVkrHYvitxIedcuz53MgAt2gvIDHQvVfqhDI6tN9LTN6hQz4tq+MGZxQmT4ICAeb41/6otHBMAHm2+oMOezcfrc7Qn6PtZGsf++gbOHwtaC9W4Qa5pUfP0Ci63irgZEdIQOXGyRClugwmf0lqPkiRXke9tQAM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761914390; c=relaxed/simple;
-	bh=1buScPTeb/ox8Bga8aRVncUBu+gAauXXjelfBteBYJs=;
+	s=arc-20240116; t=1761914587; c=relaxed/simple;
+	bh=PLD/9RwCyc/wENbahoWPvbxicWmVeAGz1BL3RIu9cxE=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qMAjBo7Lu7UjYNhMOyIkXj90wwPTXc3jElL6BN6tE78/cOdCx8f5PrGdzHa5J79RaYqiVjAOzpBEPSuPI/OfwKIEq8ep4Tee6k9n0Rp+vfNbSKJHIqufeZUQ4Y+NmdgxLOxiFbnPJu3Ca0ue48QEF4mv6jYwRxHlnT81l+jRYuA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=SyUol3iE; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59VBfplw003476;
-	Fri, 31 Oct 2025 12:39:32 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=x6FGaQ
-	QxBeqtle+k2oD7/XqlNemqN7h62fEHwf4FQh0=; b=SyUol3iEjzBVuT6yitlrX8
-	tZqTxSBiHee3AeC4pQzof8giTFIJDwJugSoWH2LsuXDtAa+tIj0P0P9MK9SvYLja
-	XXfHsZBqr/ya1A9nPISzdIYZENJpzzQ7FOFYZNoJLbuH41Lb2JmW3NwwjdAkubeW
-	j9VlibYn5ePaFfYWdadJjRVbH4/VgSPSudxJL2eKIKtR5g4C0CqpvgUnZ/9Qi6rD
-	vbjQMgvdyhgYi1rDsHJd9Rule9TJ4fZQxTaAc6UVhkfeyKNoU86j4s9ODsf7lQu4
-	yfFtc6o9JeuTDOXdzPBPOF1c3pHOvimSFp5Q+poAwUTIcQrPmQr8NXGj9SDqD41Q
-	==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a34a8wvev-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 31 Oct 2025 12:39:32 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59VCHfPN023873;
-	Fri, 31 Oct 2025 12:39:30 GMT
-Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4a33vxe5fu-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 31 Oct 2025 12:39:30 +0000
-Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com [10.241.53.101])
-	by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 59VCdUgE6685580
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 31 Oct 2025 12:39:30 GMT
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 33C575805C;
-	Fri, 31 Oct 2025 12:39:30 +0000 (GMT)
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4782758051;
-	Fri, 31 Oct 2025 12:39:27 +0000 (GMT)
-Received: from [9.61.177.173] (unknown [9.61.177.173])
-	by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 31 Oct 2025 12:39:26 +0000 (GMT)
-Message-ID: <befb4493-44fe-41e7-b5ec-fb2744fd752c@linux.ibm.com>
-Date: Fri, 31 Oct 2025 18:09:25 +0530
+	 In-Reply-To:Content-Type; b=QPP0hNznRIIXiWrjnSRpR4/Fu+t6UTFFGYOp0qDhEWJAOYev5b5tf5LtPVH4TCkeLms08eFrfCMktrc+vXEeOvF6O8isfN2FtLWsmQ+2jeSSohKg0GZSPK+uYqQ/MdM6kMudOnVFQd/Qiu0UzbahUE5YXKzdS+0YNSiJdZvvQI4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=postmarketos.org; spf=pass smtp.mailfrom=postmarketos.org; dkim=pass (2048-bit key) header.d=postmarketos.org header.i=@postmarketos.org header.b=KIY/eR+q; arc=none smtp.client-ip=95.215.58.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=postmarketos.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=postmarketos.org
+Message-ID: <722a6cf2-7109-47e9-9957-cde5171d7053@postmarketos.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=postmarketos.org;
+	s=key1; t=1761914574;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=qBcoDhvBiRpbFrBHTGJxuS/5uthc7Xf+aqUT566+UzE=;
+	b=KIY/eR+qz/ils6v60wWH3T/RCgqwFResSB+xZ1PPuel1IdiFSAwnlBnEUY9hsUabolKn8r
+	4HD2rjsTLdTDtihF8ClUe0eGCsZvEr7xz5A4+iynARIoRSy/BuANrfHHp3zU0x6uQ7boy1
+	5KabZw0ZcOxGQV1ZmXK0H/yroDAbfmfn7EBFBxZvdqblnqkfSUQmNS9lTK9Bo5Se0rIvuH
+	99yRWEYAcxiCYNRLZT+Jyqtwg+wgpEwUTVmPrjhfS/bq2CzUHD9xrfLhozdvVQsW5yiVPW
+	YmcF+Zynh7HLDEKdZCXwv6bYGmBBJqqhdmolF/XUiiEWjQN4uNdmK4AO8Z2VSQ==
+Date: Fri, 31 Oct 2025 15:42:47 +0300
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] block: Remove queue freezing from several sysfs store
- callbacks
-To: Bart Van Assche <bvanassche@acm.org>, Jens Axboe <axboe@kernel.dk>
-Cc: linux-block@vger.kernel.org, Christoph Hellwig <hch@lst.de>,
-        Martin Wilck <mwilck@suse.com>,
-        Benjamin Marzinski <bmarzins@redhat.com>, stable@vger.kernel.org,
-        Damien Le Moal <dlemoal@kernel.org>,
-        Chaitanya Kulkarni <kch@nvidia.com>, Hannes Reinecke <hare@suse.de>
-References: <20251030172417.660949-1-bvanassche@acm.org>
+Subject: Re: [PATCH 0/3] SDM630/660: Add missing MDSS reset
+To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+ Bjorn Andersson <andersson@kernel.org>, Stephen Boyd <sboyd@kernel.org>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
+ devicetree@vger.kernel.org, stable@vger.kernel.org,
+ ~postmarketos/upstreaming@lists.sr.ht
+References: <20251031-sdm660-mdss-reset-v1-0-14cb4e6836f2@postmarketos.org>
+ <25579815-5727-41e8-a858-5cddcc2897b7@oss.qualcomm.com>
 Content-Language: en-US
-From: Nilay Shroff <nilay@linux.ibm.com>
-In-Reply-To: <20251030172417.660949-1-bvanassche@acm.org>
-Content-Type: text/plain; charset=UTF-8
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Alexey Minnekhanov <alexeymin@postmarketos.org>
+In-Reply-To: <25579815-5727-41e8-a858-5cddcc2897b7@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=DYkaa/tW c=1 sm=1 tr=0 ts=6904ae04 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=wizq8IQFKyYBxb2gEWYA:9 a=QEXdDO2ut3YA:10 a=cPQSjfK2_nFv0Q5t_7PE:22
-X-Proofpoint-GUID: 3WH8RB96vTR3Ehmtv8oV1nasuG6HEVdu
-X-Proofpoint-ORIG-GUID: 3WH8RB96vTR3Ehmtv8oV1nasuG6HEVdu
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDI4MDE2NiBTYWx0ZWRfX+BI3tCCGE8z+
- NkGLmSVaODbbBdDvXW6RrpKTh+60gGSQ0c3lqpUWINdd1nHongs+p7XaMbEzn7ajGnYR006IdwN
- Vual9ssMdpZ+KZWWIgmIHNJFewthv8ihS1lEFNhoma4p77gm6Zn6J/pPqwdNqdd6pCHtwY5yggD
- Fi2LxXDwqJ6a6r+BMDYxzky0HOi82/WAyHzflbE3644P2njK5NCk69Pa3iJeuFEEDwnAnUCW58S
- kiRW6ou7kpsdfbVsiIlWIMohulIOQ+Il7eViSLftEh3A/Ah8PBwNr6Yqt4N1vDMr0inRMOH7Rq0
- GJYfEf8CCnztMrgN5RqkGcfy+5jMypQ+6wG1WtS1tPqWI8PA7gYLu27DIwH2iIKYc6oHgA8ip1l
- vCUbxWLOtzTqrmtlOFs/U1GjBCCyxA==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-10-31_03,2025-10-29_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 clxscore=1011 malwarescore=0 bulkscore=0 impostorscore=0
- priorityscore=1501 adultscore=0 lowpriorityscore=0 phishscore=0
- suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2510240000
- definitions=main-2510280166
+X-Migadu-Flow: FLOW_OUT
 
-
-
-On 10/30/25 10:54 PM, Bart Van Assche wrote:
-> Fix this by removing the blk_mq_freeze_queue() / blk_mq_unfreeze_queue()
-> calls from the store callbacks that do not strictly need these callbacks.
-> This patch may cause a small delay in applying the new settings.
+On 31.10.2025 12:21, Konrad Dybcio wrote:
+> On 10/31/25 3:27 AM, Alexey@web.codeaurora.org wrote:
+>> Since kernel 6.17 display stack needs to reset the hardware properly to
+>> ensure that we don't run into issues with the hardware configured by the
+>> bootloader. MDSS reset is necessary to have working display when the
+>> bootloader has already initialized it for the boot splash screen.
+>>
+>> Signed-off-by: Alexey Minnekhanov <<alexeymin@postmarketos.org>>
 > 
-> This patch affects the following sysfs attributes:
-> * io_poll_delay
-> * io_timeout
-> * nomerges
-> * read_ahead_kb
-> * rq_affinity
+> You git identity has two less/greater than symbols
+> 
+> Also.. thunderbird argues there's two of you:
+> 
+> 
+> Alexey@web.codeaurora.org
+> Minnekhanov@web.codeaurora.org
+> 
+> plus.. I thought codeaurora was long dead!?
+> 
+> My DNS certainly doesn't know about web.codeaurora.org specifically
+> 
+> Konrad
 
-I see that io_timeout, nomerges and rq_affinity are all accessed
-during I/O hotpath. So IMO for these attributes we still need to
-freeze the queue before updating those parameters. The io_timeout
-and nomerges are accessed during I/O submission and rq_affinity
-is accessed during I/O completion.
+This is a result of me first time trying to use b4 and misconfiguration
+of git: user.email contained my email inside '<' and '>' which somehow
+caused the prep/send process to generate emails with broken half-empty
+"From:" field, containing only name and surname without email. And then
+perhaps email server closer to your side decided to "fill the gaps" and
+append some non-existent web.codeaurora.org part? At least I don't have
+any better guess.
 
-Thanks,
---Nilay
+I will send v2 later and hopefully get this all fixed.
+
+--
+Regards,
+Alexey Minnekhanov
 
