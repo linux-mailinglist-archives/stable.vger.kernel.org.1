@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-191922-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191867-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AE07C258B1
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 15:22:44 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5682BC2571E
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 15:07:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A0D37564980
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 14:07:13 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 744954F403B
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 14:04:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F056E3C17;
-	Fri, 31 Oct 2025 14:06:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 116D025EFB6;
+	Fri, 31 Oct 2025 14:04:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dVfDjz3R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KtfzJLLi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC2CA23FC54;
-	Fri, 31 Oct 2025 14:06:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFD3721FF25;
+	Fri, 31 Oct 2025 14:04:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761919605; cv=none; b=sxQBzoLM2mDk/sPXA3KR3zvICNeWPMpoc4MJ3MT68sIGvwiDCO2d4myEHJnvDpJySmpwoHLiGU/ebLwjNyDJrD07Px7LXBT4XYsUvi4qj0Q5QB95DNFHS/l/30wD1Cdtg0EZ9UH2dRhFTOXweEnNQngA8xYzm1Az0mRBsMKxE/Q=
+	t=1761919448; cv=none; b=MYJhFaSIuNcjgRA7VGOpeZwJoPe7GfFLKXxvfQbtCNMWFkqiPrrzY3vp85iCH2XMgl8ksLg+OZ6YeF19/+O9itL7slwaWeEpbSWoxTt2p9WuBaC98GAnMF0c3tS1uUQjYkNC9WJWX3cOI74+PZng4sWnGGMpF/3GAYKfu1xn57A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761919605; c=relaxed/simple;
-	bh=PLjV7hIRpKROt7QCoHdq7S9hvGQHdVo5nn1Yq4WftcU=;
+	s=arc-20240116; t=1761919448; c=relaxed/simple;
+	bh=e/UGmq2FYKEPDx1hYGZdFZxJmYDnNp4hY7DbXGET4zU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rCAxvzVn/AzvoGK0pyPcNFZk/NZY6+y9eBtWaE5v7TY/ifzHKI0m1UkagJ2d/W4twD9/waSUwsnz3xyk5wsjh3b56kHHH3zDplEJU7jaOkeBYQaAo+SL1Cs7OsBjgQkTdtDTjzFvAlHaNEBtXJT3KPgdxLyAJNjg4VLr+27wyks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dVfDjz3R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3367EC4CEE7;
-	Fri, 31 Oct 2025 14:06:45 +0000 (UTC)
+	 MIME-Version; b=MM6zXAR0Z+ajo7jVjV3n5mO/7+Bn83eLhQbWLJz+2YyCohdZgK0ft7ngDFtMtFWWdvdXW/APBLvcYxERRbKFEzpG1Rr/2V8+C7YRoh/msSj0EYaARivUrQ2krpYqT9ZZw1M+xnDlEb5VGn90h1ggzMLLzuDiTdVx1ww22SumqUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KtfzJLLi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CADF9C4CEF8;
+	Fri, 31 Oct 2025 14:04:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761919605;
-	bh=PLjV7hIRpKROt7QCoHdq7S9hvGQHdVo5nn1Yq4WftcU=;
+	s=korg; t=1761919448;
+	bh=e/UGmq2FYKEPDx1hYGZdFZxJmYDnNp4hY7DbXGET4zU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dVfDjz3R7gHEyKVMCrXR9FU0ce3WQdxC5BVY5HYJxNTKQW23DEBijlLRxs+a1js4t
-	 RMiH79he9uLauP+UrG8LO/QOjC3oWtYuF8qUmCdyLOz5fiqSItw8oOWh6E1s9FvBPk
-	 d5xXIl1QJktnjd4Y6M/yEyU6A/+APA/oDN+DUixM=
+	b=KtfzJLLiliuwAoUUaBCc78eBANibN0eCfdFc2viRcYf0bA8PJxbPMHGVkdCeWyzim
+	 xgmPQhr8h3gIIZt3QkBE9LCgIjmpfHmMtK1OAbB6maGNMweXxq64i8UJXDVRzil82Q
+	 5CjSRfbqKx7KbfSAlHno040OOpprgaYYLUqcy0EU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
+	Andrea Righi <arighi@nvidia.com>,
+	Tejun Heo <tj@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 07/35] genirq/chip: Add buslock back in to irq_set_handler()
+Subject: [PATCH 6.12 22/40] sched_ext: Make qmap dump operation non-destructive
 Date: Fri, 31 Oct 2025 15:01:15 +0100
-Message-ID: <20251031140043.737504060@linuxfoundation.org>
+Message-ID: <20251031140044.547031513@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251031140043.564670400@linuxfoundation.org>
-References: <20251031140043.564670400@linuxfoundation.org>
+In-Reply-To: <20251031140043.939381518@linuxfoundation.org>
+References: <20251031140043.939381518@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +62,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Charles Keepax <ckeepax@opensource.cirrus.com>
+From: Tejun Heo <tj@kernel.org>
 
-[ Upstream commit 5d7e45dd670e42df4836afeaa9baf9d41ca4b434 ]
+[ Upstream commit d452972858e5cfa4262320ab74fe8f016460b96f ]
 
-The locking was changed from a buslock to a plain lock, but the patch
-description states there was no functional change. Assuming this was
-accidental so reverting to using the buslock.
+The qmap dump operation was destructively consuming queue entries while
+displaying them. As dump can be triggered anytime, this can easily lead to
+stalls. Add a temporary dump_store queue and modify the dump logic to pop
+entries, display them, and then restore them back to the original queue.
+This allows dump operations to be performed without affecting the
+scheduler's queue state.
 
-Fixes: 5cd05f3e2315 ("genirq/chip: Rework irq_set_handler() variants")
-Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://patch.msgid.link/20251023154901.1333755-2-ckeepax@opensource.cirrus.com
+Note that if racing against new enqueues during dump, ordering can get
+mixed up, but this is acceptable for debugging purposes.
+
+Acked-by: Andrea Righi <arighi@nvidia.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/irq/chip.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/sched_ext/scx_qmap.bpf.c | 18 +++++++++++++++++-
+ 1 file changed, 17 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/irq/chip.c b/kernel/irq/chip.c
-index 3ffa0d80ddd19..d1917b28761a3 100644
---- a/kernel/irq/chip.c
-+++ b/kernel/irq/chip.c
-@@ -1030,7 +1030,7 @@ __irq_do_set_handler(struct irq_desc *desc, irq_flow_handler_t handle,
- void __irq_set_handler(unsigned int irq, irq_flow_handler_t handle, int is_chained,
- 		       const char *name)
- {
--	scoped_irqdesc_get_and_lock(irq, 0)
-+	scoped_irqdesc_get_and_buslock(irq, 0)
- 		__irq_do_set_handler(scoped_irqdesc, handle, is_chained, name);
+diff --git a/tools/sched_ext/scx_qmap.bpf.c b/tools/sched_ext/scx_qmap.bpf.c
+index 5d1f880d1149e..e952f525599bd 100644
+--- a/tools/sched_ext/scx_qmap.bpf.c
++++ b/tools/sched_ext/scx_qmap.bpf.c
+@@ -56,7 +56,8 @@ struct qmap {
+   queue1 SEC(".maps"),
+   queue2 SEC(".maps"),
+   queue3 SEC(".maps"),
+-  queue4 SEC(".maps");
++  queue4 SEC(".maps"),
++  dump_store SEC(".maps");
+ 
+ struct {
+ 	__uint(type, BPF_MAP_TYPE_ARRAY_OF_MAPS);
+@@ -578,11 +579,26 @@ void BPF_STRUCT_OPS(qmap_dump, struct scx_dump_ctx *dctx)
+ 			return;
+ 
+ 		scx_bpf_dump("QMAP FIFO[%d]:", i);
++
++		/*
++		 * Dump can be invoked anytime and there is no way to iterate in
++		 * a non-destructive way. Pop and store in dump_store and then
++		 * restore afterwards. If racing against new enqueues, ordering
++		 * can get mixed up.
++		 */
+ 		bpf_repeat(4096) {
+ 			if (bpf_map_pop_elem(fifo, &pid))
+ 				break;
++			bpf_map_push_elem(&dump_store, &pid, 0);
+ 			scx_bpf_dump(" %d", pid);
+ 		}
++
++		bpf_repeat(4096) {
++			if (bpf_map_pop_elem(&dump_store, &pid))
++				break;
++			bpf_map_push_elem(fifo, &pid, 0);
++		}
++
+ 		scx_bpf_dump("\n");
+ 	}
  }
- EXPORT_SYMBOL_GPL(__irq_set_handler);
 -- 
 2.51.0
 
