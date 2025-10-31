@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-191906-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191908-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADDFBC25866
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 15:18:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB89BC2581A
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 15:16:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 73678468397
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 14:06:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 421685638EE
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 14:06:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F369134B69B;
-	Fri, 31 Oct 2025 14:05:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E9DD34BA44;
+	Fri, 31 Oct 2025 14:06:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xQgYJ03r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EzfDA/eU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFA8D3C17;
-	Fri, 31 Oct 2025 14:05:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AE6B3C17;
+	Fri, 31 Oct 2025 14:06:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761919558; cv=none; b=I9g7Srgr6/svYFKI+ktX4U9kEjbI/uZsb7/j9Nm1sexUrTkdjKmlGvmEtudfnyqRW4ZWBg/lQcFw/M0I5a7ZxjhP3p9Ep6dGx8sARKKLo5EP+pHcGd6NSR3usWnYwZB4dGqyQfqcIIeGUcevqqBMBIl4K8W2j2+cr6sMQthbufA=
+	t=1761919565; cv=none; b=QUqch8pBdPxmXXhpo1gk6pSsWxsW+0X2cfyIL3gEgMHu5Dag8lG3xYmJ1fyI8fbzCi7pLbO13QeVbdRN++bmBARpFARYSlyhOUqbIle5x8BumRZg9aIp0dtpdQ5dKtUYng/H7jgsgN53cHMieyVaQpG4L0pT07kBHQLM7Czqmxc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761919558; c=relaxed/simple;
-	bh=I0Bt8/hOyrKTatjUlV+jQVod56rUEr/f5fwWxgV0InQ=;
+	s=arc-20240116; t=1761919565; c=relaxed/simple;
+	bh=OJYq1NK4/LPJgcG5xiLWnX/jiefpOOed8iT37dk6m7o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Sj8GCr1NhMG4aR4wa4vfjjoM/7YpyGMC2a9TXeQJ0sGDQ1Viy9/8Q44v6z3bHEUikOkiF1pi3L5IlH606dic0Q7XrIUES781lHcc0UBlzHC+ucLMuwQ9JgmkwleQYzVsOfMc5JGQEnvGDOlgb/dxsX+J/cXAgrJ4YCSSBUbYhew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xQgYJ03r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 371B1C4CEE7;
-	Fri, 31 Oct 2025 14:05:58 +0000 (UTC)
+	 MIME-Version; b=of37yBzNo4xTSzrhPBBRZQ9EeUD5HXUO5lVf7TlZsxaLohL9wb4y5LggBEvqMyNvsjGlBUYURfZ2jzSs3Q3QemK1ESStnjzkrANfDjQx2xHcyzw23Kojywi3sT/J4w2e8KO2jJ5L76TmmNRCyAhnpQfwvgIsNLI5Y2V0j2Gsp1Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EzfDA/eU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88D7BC4CEE7;
+	Fri, 31 Oct 2025 14:06:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761919558;
-	bh=I0Bt8/hOyrKTatjUlV+jQVod56rUEr/f5fwWxgV0InQ=;
+	s=korg; t=1761919564;
+	bh=OJYq1NK4/LPJgcG5xiLWnX/jiefpOOed8iT37dk6m7o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xQgYJ03r+wIK1aBjw4fOnVc6U8KoAN7dUT1ajYn5a49TNG0Sy85FsIhkxiXjd/g+T
-	 eiljYttH2HTC9BQ4nj0w3L+GNiN26N2+gPFjOSD/t35YfofgA/+YWktmcmBTwIRPsN
-	 DF41a62kiw6UyQPfPm3VAraYW8ZUeBlJLzVliTzA=
+	b=EzfDA/eU1UNVGTKs6O0hGu+v80rJRENFcBHRxClwIQ9bx0uIaWtuoOnkKIP4XNw0V
+	 ER3IGi6/+mD+sn21BI3OQI+qDMKtC1pC7fEpvDC/LlH5zhZdsyhj4+FxVDcLjgfERQ
+	 su4fAnX5fsN9MXgdcq4vDEuQElfdu4JuFQi/CwFY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Kaplan <david.kaplan@amd.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Aaron Lu <ziqianlu@bytedance.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 19/35] x86/bugs: Add attack vector controls for VMSCAPE
-Date: Fri, 31 Oct 2025 15:01:27 +0100
-Message-ID: <20251031140044.023887631@linuxfoundation.org>
+Subject: [PATCH 6.17 20/35] sched/fair: update_cfs_group() for throttled cfs_rqs
+Date: Fri, 31 Oct 2025 15:01:28 +0100
+Message-ID: <20251031140044.050079148@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251031140043.564670400@linuxfoundation.org>
 References: <20251031140043.564670400@linuxfoundation.org>
@@ -66,70 +66,53 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: David Kaplan <david.kaplan@amd.com>
+From: Aaron Lu <ziqianlu@bytedance.com>
 
-[ Upstream commit 5799d5d8a6c877f03ad5b5a640977053be45059a ]
+[ Upstream commit fcd394866e3db344cbe0bb485d7e3f741ac07245 ]
 
-Use attack vector controls to select whether VMSCAPE requires mitigation,
-similar to other bugs.
+With task based throttle model, tasks in a throttled hierarchy are
+allowed to continue to run if they are running in kernel mode. For this
+reason, PELT clock is not stopped for these cfs_rqs in throttled
+hierarchy when they still have tasks running or queued.
 
-Signed-off-by: David Kaplan <david.kaplan@amd.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Since PELT clock is not stopped, whether to allow update_cfs_group()
+doing its job for cfs_rqs which are in throttled hierarchy but still
+have tasks running/queued is a question.
+
+The good side is, continue to run update_cfs_group() can get these
+cfs_rq entities with an up2date weight and that up2date weight can be
+useful to derive an accurate load for the CPU as well as ensure fairness
+if multiple tasks of different cgroups are running on the same CPU.
+OTOH, as Benjamin Segall pointed: when unthrottle comes around the most
+likely correct distribution is the distribution we had at the time of
+throttle.
+
+In reality, either way may not matter that much if tasks in throttled
+hierarchy don't run in kernel mode for too long. But in case that
+happens, let these cfs_rq entities have an up2date weight seems a good
+thing to do.
+
+Signed-off-by: Aaron Lu <ziqianlu@bytedance.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../admin-guide/hw-vuln/attack_vector_controls.rst |  1 +
- arch/x86/kernel/cpu/bugs.c                         | 14 ++++++++++----
- 2 files changed, 11 insertions(+), 4 deletions(-)
+ kernel/sched/fair.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/Documentation/admin-guide/hw-vuln/attack_vector_controls.rst b/Documentation/admin-guide/hw-vuln/attack_vector_controls.rst
-index 5964901d66e31..d0bdbd81dcf9f 100644
---- a/Documentation/admin-guide/hw-vuln/attack_vector_controls.rst
-+++ b/Documentation/admin-guide/hw-vuln/attack_vector_controls.rst
-@@ -218,6 +218,7 @@ SRSO                  X              X            X              X
- SSB                                  X
- TAA                   X              X            X              X            *       (Note 2)
- TSA                   X              X            X              X
-+VMSCAPE                                           X
- =============== ============== ============ ============= ============== ============ ========
- 
- Notes:
-diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
-index 9750ce448e626..c6bb8e76eb984 100644
---- a/arch/x86/kernel/cpu/bugs.c
-+++ b/arch/x86/kernel/cpu/bugs.c
-@@ -434,6 +434,9 @@ static bool __init should_mitigate_vuln(unsigned int bug)
- 	case X86_BUG_SPEC_STORE_BYPASS:
- 		return cpu_attack_vector_mitigated(CPU_MITIGATE_USER_USER);
- 
-+	case X86_BUG_VMSCAPE:
-+		return cpu_attack_vector_mitigated(CPU_MITIGATE_GUEST_HOST);
-+
- 	default:
- 		WARN(1, "Unknown bug %x\n", bug);
- 		return false;
-@@ -3308,15 +3311,18 @@ early_param("vmscape", vmscape_parse_cmdline);
- 
- static void __init vmscape_select_mitigation(void)
- {
--	if (cpu_mitigations_off() ||
--	    !boot_cpu_has_bug(X86_BUG_VMSCAPE) ||
-+	if (!boot_cpu_has_bug(X86_BUG_VMSCAPE) ||
- 	    !boot_cpu_has(X86_FEATURE_IBPB)) {
- 		vmscape_mitigation = VMSCAPE_MITIGATION_NONE;
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index 4770d25ae2406..3e0d999e5ee2c 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -3957,9 +3957,6 @@ static void update_cfs_group(struct sched_entity *se)
+ 	if (!gcfs_rq || !gcfs_rq->load.weight)
  		return;
- 	}
  
--	if (vmscape_mitigation == VMSCAPE_MITIGATION_AUTO)
--		vmscape_mitigation = VMSCAPE_MITIGATION_IBPB_EXIT_TO_USER;
-+	if (vmscape_mitigation == VMSCAPE_MITIGATION_AUTO) {
-+		if (should_mitigate_vuln(X86_BUG_VMSCAPE))
-+			vmscape_mitigation = VMSCAPE_MITIGATION_IBPB_EXIT_TO_USER;
-+		else
-+			vmscape_mitigation = VMSCAPE_MITIGATION_NONE;
-+	}
- }
- 
- static void __init vmscape_update_mitigation(void)
+-	if (throttled_hierarchy(gcfs_rq))
+-		return;
+-
+ 	shares = calc_group_shares(gcfs_rq);
+ 	if (unlikely(se->load.weight != shares))
+ 		reweight_entity(cfs_rq_of(se), se, shares);
 -- 
 2.51.0
 
