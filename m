@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-191852-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191902-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 237ECC256EE
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 15:06:15 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B4ABC2574E
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 15:09:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 37219466AE6
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 14:03:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BC284466235
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 14:06:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93F9D22579E;
-	Fri, 31 Oct 2025 14:03:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59B5525A2CF;
+	Fri, 31 Oct 2025 14:05:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bJHW13IM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CEuRXeuz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 515AB3C17;
-	Fri, 31 Oct 2025 14:03:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1609623F417;
+	Fri, 31 Oct 2025 14:05:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761919404; cv=none; b=Z4playlJJSQyK5wPPAtjeK945XMZGuDtKL80lpcHI5WfTPrhgtJemJMMW+TipU4y9oRfsuHSdlYufrhjf7KLvyddj03/8+6WRKu9zR4o1RTVIowQkgNQhCVodhoR8jU2rBt1AG0+4F6OpSxb/4YTU1O6QXMAeLwhNvWVVLNe1VE=
+	t=1761919547; cv=none; b=YI2FR9pkufm+1VyCnwkj8lmyCWk0HZzS6+WOg3BkMCnIisfzGL88hAhRS9tQtUpsEwe3jyOrdJiZe9C1uUAsgDnmOXUKBlXVCPIUY46vhZ4gdgy8GF71DqERpimUsd8l598bZW025NnM72GuBz01EErxP4seb41n+/BVXARFM+0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761919404; c=relaxed/simple;
-	bh=cnC0ZgFqPwBJ+vQaKuFKHT9m0exukPeRvmx6yyIZ49Y=;
+	s=arc-20240116; t=1761919547; c=relaxed/simple;
+	bh=c/eSBskDaW9/xGd3jpPtsmUdxiagTiuye/FLSVptZFc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QJddnPDDdfLuJDVdZ2zUpH9im361psyseG3ZcLJR//yQTLVeZn8osjXH67TME6sJ+nVlHzanGHhFk5AuPAyD67kym49FLdjk12VAkiMNEXrsoz6kkwAdz66V6kScuo4HEFvv/B3VKYUqwZUw5GPhKD0+xZfJJgRmQZpECJFZkFE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bJHW13IM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA8FBC4CEFD;
-	Fri, 31 Oct 2025 14:03:23 +0000 (UTC)
+	 MIME-Version; b=m0cZMt/by3lbCfx5et0yMJzfUAQAhl1iG+4tlaJ+mmvsszEYYKGbMeFCYKXxvxQ1l07qgihFS5UCdPIYaG2EfGnuRGG+vWdIQH7jxHSqaSoEkd6VReaclZ4Re2y6JQngSEWOgrM5slj5LtFLia8gbkDzUhIAgyN6NsO8moMlhHQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CEuRXeuz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 860A1C4CEE7;
+	Fri, 31 Oct 2025 14:05:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761919404;
-	bh=cnC0ZgFqPwBJ+vQaKuFKHT9m0exukPeRvmx6yyIZ49Y=;
+	s=korg; t=1761919546;
+	bh=c/eSBskDaW9/xGd3jpPtsmUdxiagTiuye/FLSVptZFc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bJHW13IMQ6Jw7bcTiJhw9Vct+HfiwfFVPs4VyCe99kGsFMIahMa8rkksHUbTyoZU1
-	 d6IFQD4jfcxVXvkqSyhyFfQ1UgmBKtk5Cy27Svs6UkVdsTuS59/kz2mRe0yD49KGy5
-	 wxl1MyPRMU+7Ya77cWtvIGMpdw3fKSUd41c68pIA=
+	b=CEuRXeuz4KI8J0UF90XFvvc3fNLW8BxaLP4qLKrPBru/rTTOWdf/IqHWGiIY+WAxu
+	 VyxZIUAI7pED1kqoqoofEC0YNLJV9dPlJAzky3Xap44k1sg/D208FkOAjsFTY9sb+B
+	 EpZFtULdh1AYTAP1KMbK4OBtCKbZKuICNbYn5y0s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
-	Jani Nikula <jani.nikula@intel.com>,
-	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Yury Norov <yury.norov@gmail.com>,
-	William Breathitt Gray <wbg@kernel.org>
-Subject: [PATCH 6.6 29/32] bits: introduce fixed-type GENMASK_U*()
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.17 15/35] perf: Skip user unwind if the task is a kernel thread
 Date: Fri, 31 Oct 2025 15:01:23 +0100
-Message-ID: <20251031140043.154280085@linuxfoundation.org>
+Message-ID: <20251031140043.925804178@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251031140042.387255981@linuxfoundation.org>
-References: <20251031140042.387255981@linuxfoundation.org>
+In-Reply-To: <20251031140043.564670400@linuxfoundation.org>
+References: <20251031140043.564670400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,119 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
+From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-[ Upstream commit 19408200c094858d952a90bf4977733dc89a4df5 ]
+[ Upstream commit 16ed389227651330879e17bd83d43bd234006722 ]
 
-Add GENMASK_TYPE() which generalizes __GENMASK() to support different
-types, and implement fixed-types versions of GENMASK() based on it.
-The fixed-type version allows more strict checks to the min/max values
-accepted, which is useful for defining registers like implemented by
-i915 and xe drivers with their REG_GENMASK*() macros.
+If the task is not a user thread, there's no user stack to unwind.
 
-The strict checks rely on shift-count-overflow compiler check to fail
-the build if a number outside of the range allowed is passed.
-Example:
-
-  #define FOO_MASK GENMASK_U32(33, 4)
-
-will generate a warning like:
-
-  include/linux/bits.h:51:27: error: right shift count >= width of type [-Werror=shift-count-overflow]
-     51 |               type_max(t) >> (BITS_PER_TYPE(t) - 1 - (h)))))
-        |                           ^~
-
-The result is casted to the corresponding fixed width type. For
-example, GENMASK_U8() returns an u8. Note that because of the C
-promotion rules, GENMASK_U8() and GENMASK_U16() will immediately be
-promoted to int if used in an expression. Regardless, the main goal is
-not to get the correct type, but rather to enforce more checks at
-compile time.
-
-While GENMASK_TYPE() is crafted to cover all variants, including the
-already existing GENMASK(), GENMASK_ULL() and GENMASK_U128(), for the
-moment, only use it for the newly introduced GENMASK_U*(). The
-consolidation will be done in a separate change.
-
-Co-developed-by: Yury Norov <yury.norov@gmail.com>
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
-Acked-by: Jani Nikula <jani.nikula@intel.com>
-Signed-off-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Yury Norov <yury.norov@gmail.com>
-Stable-dep-of: 2ba5772e530f ("gpio: idio-16: Define fixed direction of the GPIO lines")
-Signed-off-by: William Breathitt Gray <wbg@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20250820180428.930791978@kernel.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/bitops.h |    1 -
- include/linux/bits.h   |   30 ++++++++++++++++++++++++++++++
- 2 files changed, 30 insertions(+), 1 deletion(-)
+ kernel/events/core.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/include/linux/bitops.h
-+++ b/include/linux/bitops.h
-@@ -15,7 +15,6 @@
- #  define aligned_byte_mask(n) (~0xffUL << (BITS_PER_LONG - 8 - 8*(n)))
- #endif
- 
--#define BITS_PER_TYPE(type)	(sizeof(type) * BITS_PER_BYTE)
- #define BITS_TO_LONGS(nr)	__KERNEL_DIV_ROUND_UP(nr, BITS_PER_TYPE(long))
- #define BITS_TO_U64(nr)		__KERNEL_DIV_ROUND_UP(nr, BITS_PER_TYPE(u64))
- #define BITS_TO_U32(nr)		__KERNEL_DIV_ROUND_UP(nr, BITS_PER_TYPE(u32))
---- a/include/linux/bits.h
-+++ b/include/linux/bits.h
-@@ -11,6 +11,7 @@
- #define BIT_ULL_MASK(nr)	(ULL(1) << ((nr) % BITS_PER_LONG_LONG))
- #define BIT_ULL_WORD(nr)	((nr) / BITS_PER_LONG_LONG)
- #define BITS_PER_BYTE		8
-+#define BITS_PER_TYPE(type)	(sizeof(type) * BITS_PER_BYTE)
- 
- /*
-  * Create a contiguous bitmask starting at bit position @l and ending at
-@@ -19,11 +20,40 @@
-  */
- #if !defined(__ASSEMBLY__)
- 
-+/*
-+ * Missing asm support
-+ *
-+ * GENMASK_U*() depend on BITS_PER_TYPE() which relies on sizeof(),
-+ * something not available in asm. Nevertheless, fixed width integers is a C
-+ * concept. Assembly code can rely on the long and long long versions instead.
-+ */
-+
- #include <linux/build_bug.h>
-+#include <linux/overflow.h>
- #define GENMASK_INPUT_CHECK(h, l) \
- 	(BUILD_BUG_ON_ZERO(__builtin_choose_expr( \
- 		__is_constexpr((l) > (h)), (l) > (h), 0)))
- 
-+/*
-+ * Generate a mask for the specified type @t. Additional checks are made to
-+ * guarantee the value returned fits in that type, relying on
-+ * -Wshift-count-overflow compiler check to detect incompatible arguments.
-+ * For example, all these create build errors or warnings:
-+ *
-+ * - GENMASK(15, 20): wrong argument order
-+ * - GENMASK(72, 15): doesn't fit unsigned long
-+ * - GENMASK_U32(33, 15): doesn't fit in a u32
-+ */
-+#define GENMASK_TYPE(t, h, l)					\
-+	((t)(GENMASK_INPUT_CHECK(h, l) +			\
-+	     (type_max(t) << (l) &				\
-+	      type_max(t) >> (BITS_PER_TYPE(t) - 1 - (h)))))
-+
-+#define GENMASK_U8(h, l)	GENMASK_TYPE(u8, h, l)
-+#define GENMASK_U16(h, l)	GENMASK_TYPE(u16, h, l)
-+#define GENMASK_U32(h, l)	GENMASK_TYPE(u32, h, l)
-+#define GENMASK_U64(h, l)	GENMASK_TYPE(u64, h, l)
-+
- #else /* defined(__ASSEMBLY__) */
- 
- /*
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index a3dc79ec6f879..c0e938d28758f 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -8192,7 +8192,8 @@ struct perf_callchain_entry *
+ perf_callchain(struct perf_event *event, struct pt_regs *regs)
+ {
+ 	bool kernel = !event->attr.exclude_callchain_kernel;
+-	bool user   = !event->attr.exclude_callchain_user;
++	bool user   = !event->attr.exclude_callchain_user &&
++		!(current->flags & (PF_KTHREAD | PF_USER_WORKER));
+ 	/* Disallow cross-task user callchains. */
+ 	bool crosstask = event->ctx->task && event->ctx->task != current;
+ 	const u32 max_stack = event->attr.sample_max_stack;
+-- 
+2.51.0
+
 
 
 
