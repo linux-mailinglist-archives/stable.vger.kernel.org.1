@@ -1,124 +1,301 @@
-Return-Path: <stable+bounces-191820-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191862-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8311C25345
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 14:12:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D6CDC257B4
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 15:12:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id B0D7134AB76
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 13:12:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4BDAB4678D6
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 14:04:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA4B434B187;
-	Fri, 31 Oct 2025 13:12:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A8CB23F417;
+	Fri, 31 Oct 2025 14:03:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jbLN3VJI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T/0LcRCa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A155347BCC
-	for <stable@vger.kernel.org>; Fri, 31 Oct 2025 13:12:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C70C2221FB6;
+	Fri, 31 Oct 2025 14:03:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761916339; cv=none; b=Bg/Zhu3QhiJOXORbph7AaiELD+VeRyKS8JsFLotJ2AEXjSuwXgJ1IZ70u0oHCVX5F4Fh14ifSDNEzte6VWM2IpALxtjwV/4tG+oLHG8F2NPTWDyMwNovxmjfNyhQoD+hVwhJOUWI4oYJj3nCeKDY+N4svvoGfeiqk1UITvKCYCk=
+	t=1761919433; cv=none; b=m2pHdYFmLXfQqEj2wBRxFFwT5GqpbKqayAayXzwnnw0yNumH0/76g8efsgi4rCbHQAA7fSe8vKS9V6yJArKltK7XSa36+HK/YtZSu+DUAQmbpLBU5itjlbb+irKrknYSbtZbjsRr8wKJnu0FDBqbnoaLYlob2kEOhChxSkOth0c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761916339; c=relaxed/simple;
-	bh=KunnmldYojxfHdEqE9Lx1qV9IjVG7Y5/nZPhkKcFJyI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CzPSAmXuFMF5nk90wCFQEDsBf/hLOZdG9ndkBQ9ruxKm21FEMhtRBsVubc4S7SUEqBRSimllNzt1ryubVfEbRAYCvZS5Dt3dbhjmb4FpXsaSLkh7mgimPYn7C/886HgyQSpLqVsi0o/Gox7HCr/v6NVXmkByJWzpVY58C37YeEI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jbLN3VJI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0577C4CEE7;
-	Fri, 31 Oct 2025 13:12:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761916339;
-	bh=KunnmldYojxfHdEqE9Lx1qV9IjVG7Y5/nZPhkKcFJyI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jbLN3VJIFbaDUHSfjWFc5HR47Xi7INtgMPm8aZfKK050KUqMfVACNe88UI90QoGzz
-	 gsQsdTIOT01qUiZMW8gXC63o5nziS1UPvPgA40KDFXMUlhO2a7xuLAttN1J4V0RXC9
-	 68tlAO7qNVOtAo9TRiGpxKbenj6NNmjdVvnXH8imm3BDfuaIMW4YcoQUsX9n2wHXaC
-	 I7aPy0xrQSzbqjiHLD+vKlUFuH7qLiyqomFJ0UNv4LYFYHL0uWUQW7fEsZ7/77uB3s
-	 JjkkVt3jeGmckHlKpjb4GJI6TF1jVKMdRIkJQCZS0RMhzLYOPC6Krstt0ypL6hWqUI
-	 VVDEhZDds7thw==
-From: William Breathitt Gray <wbg@kernel.org>
+	s=arc-20240116; t=1761919433; c=relaxed/simple;
+	bh=C4nYH827WpGOhpUq7flvpOIv51ppbiNv/kiXvS9sbJM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XfLI60O6UhSu5Iln+oWVKX5LPExnEE0dTfAlXaMAQh0nJ6ePxfa38geatSJVNLyFW1DsdmKdXJQd5ONLPSxx/Kd2cmRC8iknMvUOdj9f0dIIMI9ZzbhNKbTBkKQGrLTKFajm9TV+nPBkfcAcONfhCSnbgtDp6/qnlaJ1baE0Muo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T/0LcRCa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 286BAC4CEE7;
+	Fri, 31 Oct 2025 14:03:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1761919433;
+	bh=C4nYH827WpGOhpUq7flvpOIv51ppbiNv/kiXvS9sbJM=;
+	h=From:To:Cc:Subject:Date:From;
+	b=T/0LcRCamR5Nzh/5eZl59N3dsmasaljub5fkOF7fvPBuxYKuCTbe1oZ/sIH84cJas
+	 rKn1ZaAdzM+6/0Z7sh8qF4nnw9WxXZSdYrs3nonkzhDTlRtp6h9gvMNtQVsj8M68L1
+	 HLzN/rsiQVGnSjtGenhVOxx73Pvef0rP2MZsSKzE=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
-Cc: William Breathitt Gray <wbg@kernel.org>,
-	Mark Cave-Ayland <mark.caveayland@nutanix.com>,
-	Michael Walle <mwalle@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: [PATCH 6.6.y 5/5] gpio: idio-16: Define fixed direction of the GPIO lines
-Date: Fri, 31 Oct 2025 22:12:01 +0900
-Message-ID: <20251031131203.973066-5-wbg@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025102619-plaster-sitting-ed2e@gregkh>
-References: <2025102619-plaster-sitting-ed2e@gregkh>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org,
+	akpm@linux-foundation.org,
+	linux@roeck-us.net,
+	shuah@kernel.org,
+	patches@kernelci.org,
+	lkft-triage@lists.linaro.org,
+	pavel@denx.de,
+	jonathanh@nvidia.com,
+	f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com,
+	rwarsow@gmx.de,
+	conor@kernel.org,
+	hargar@microsoft.com,
+	broonie@kernel.org,
+	achill@achill.org,
+	sr@sladewatkins.com
+Subject: [PATCH 6.12 00/40] 6.12.57-rc1 review
+Date: Fri, 31 Oct 2025 15:00:53 +0100
+Message-ID: <20251031140043.939381518@linuxfoundation.org>
+X-Mailer: git-send-email 2.51.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2343; i=wbg@kernel.org; h=from:subject; bh=KunnmldYojxfHdEqE9Lx1qV9IjVG7Y5/nZPhkKcFJyI=; b=owGbwMvMwCW21SPs1D4hZW3G02pJDJksm2ctb2vsu+rxQ2RV/hbt+ewaQpHP3USmVUqeZVcyV 9xcWbmxo5SFQYyLQVZMkaXX/OzdB5dUNX68mL8NZg4rE8gQBi5OAZjIAj2G/1mKNRZlWxe9nVH+ 7LJ9FJvtCcYQYfEw4Ubdkm1vZYR7FjAynAxfJNZddampKE3fa6b8lsfO56d0SO///XLfo8Cov+L ZrAA=
-X-Developer-Key: i=wbg@kernel.org; a=openpgp; fpr=8D37CDDDE0D22528F8E89FB6B54856CABE12232B
+User-Agent: quilt/0.69
+X-stable: review
+X-Patchwork-Hint: ignore
+X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.12.57-rc1.gz
+X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+X-KernelTest-Branch: linux-6.12.y
+X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
+X-KernelTest-Version: 6.12.57-rc1
+X-KernelTest-Deadline: 2025-11-02T14:00+00:00
 Content-Transfer-Encoding: 8bit
 
-[ Upstream commit 2ba5772e530f73eb847fb96ce6c4017894869552 ]
+This is the start of the stable review cycle for the 6.12.57 release.
+There are 40 patches in this series, all will be posted as a response
+to this one.  If anyone has any issues with these being applied, please
+let me know.
 
-The direction of the IDIO-16 GPIO lines is fixed with the first 16 lines
-as output and the remaining 16 lines as input. Set the gpio_config
-fixed_direction_output member to represent the fixed direction of the
-GPIO lines.
+Responses should be made by Sun, 02 Nov 2025 14:00:34 +0000.
+Anything received after that time might be too late.
 
-Fixes: db02247827ef ("gpio: idio-16: Migrate to the regmap API")
-Reported-by: Mark Cave-Ayland <mark.caveayland@nutanix.com>
-Closes: https://lore.kernel.org/r/9b0375fd-235f-4ee1-a7fa-daca296ef6bf@nutanix.com
-Suggested-by: Michael Walle <mwalle@kernel.org>
-Cc: stable@vger.kernel.org # ae495810cffe: gpio: regmap: add the .fixed_direction_output configuration parameter
-Cc: stable@vger.kernel.org
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: William Breathitt Gray <wbg@kernel.org>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Link: https://lore.kernel.org/r/20251020-fix-gpio-idio-16-regmap-v2-3-ebeb50e93c33@kernel.org
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Signed-off-by: William Breathitt Gray <wbg@kernel.org>
----
- drivers/gpio/gpio-idio-16.c | 5 +++++
- 1 file changed, 5 insertions(+)
+The whole patch series can be found in one patch at:
+	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.12.57-rc1.gz
+or in the git tree and branch at:
+	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.12.y
+and the diffstat can be found below.
 
-diff --git a/drivers/gpio/gpio-idio-16.c b/drivers/gpio/gpio-idio-16.c
-index 53b1eb876a12..e978fd0898aa 100644
---- a/drivers/gpio/gpio-idio-16.c
-+++ b/drivers/gpio/gpio-idio-16.c
-@@ -3,6 +3,7 @@
-  * GPIO library for the ACCES IDIO-16 family
-  * Copyright (C) 2022 William Breathitt Gray
-  */
-+#include <linux/bitmap.h>
- #include <linux/bits.h>
- #include <linux/device.h>
- #include <linux/err.h>
-@@ -106,6 +107,7 @@ int devm_idio_16_regmap_register(struct device *const dev,
- 	struct idio_16_data *data;
- 	struct regmap_irq_chip *chip;
- 	struct regmap_irq_chip_data *chip_data;
-+	DECLARE_BITMAP(fixed_direction_output, IDIO_16_NGPIO);
- 
- 	if (!config->parent)
- 		return -EINVAL;
-@@ -163,6 +165,9 @@ int devm_idio_16_regmap_register(struct device *const dev,
- 	gpio_config.irq_domain = regmap_irq_get_domain(chip_data);
- 	gpio_config.reg_mask_xlate = idio_16_reg_mask_xlate;
- 
-+	bitmap_from_u64(fixed_direction_output, GENMASK_U64(15, 0));
-+	gpio_config.fixed_direction_output = fixed_direction_output;
-+
- 	return PTR_ERR_OR_ZERO(devm_gpio_regmap_register(dev, &gpio_config));
- }
- EXPORT_SYMBOL_GPL(devm_idio_16_regmap_register);
--- 
-2.51.0
+thanks,
+
+greg k-h
+
+-------------
+Pseudo-Shortlog of commits:
+
+Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    Linux 6.12.57-rc1
+
+Edward Cree <ecree.xilinx@gmail.com>
+    sfc: fix NULL dereferences in ef100_process_design_param()
+
+Xiaogang Chen <xiaogang.chen@amd.com>
+    udmabuf: fix a buf size overflow issue during udmabuf creation
+
+Aditya Kumar Singh <quic_adisi@quicinc.com>
+    wifi: ath12k: fix read pointer after free in ath12k_mac_assign_vif_to_vdev()
+
+Kees Bakker <kees@ijzerbout.nl>
+    iommu/vt-d: Avoid use of NULL after WARN_ON_ONCE
+
+William Breathitt Gray <wbg@kernel.org>
+    gpio: idio-16: Define fixed direction of the GPIO lines
+
+Ioana Ciornei <ioana.ciornei@nxp.com>
+    gpio: regmap: add the .fixed_direction_output configuration parameter
+
+Mathieu Dubois-Briand <mathieu.dubois-briand@bootlin.com>
+    gpio: regmap: Allow to allocate regmap-irq device
+
+Vincent Mailhol <mailhol.vincent@wanadoo.fr>
+    bits: introduce fixed-type GENMASK_U*()
+
+Vincent Mailhol <mailhol.vincent@wanadoo.fr>
+    bits: add comments and newlines to #if, #else and #endif directives
+
+Wang Liang <wangliang74@huawei.com>
+    bonding: check xdp prog when set bond mode
+
+Hangbin Liu <liuhangbin@gmail.com>
+    bonding: return detailed error when loading native XDP fails
+
+Alexander Wetzel <Alexander@wetzel-home.de>
+    wifi: cfg80211: Add missing lock in cfg80211_check_and_end_cac()
+
+Chao Yu <chao@kernel.org>
+    f2fs: fix to avoid panic once fallocation fails for pinfile
+
+Matthieu Baerts (NGI0) <matttbe@kernel.org>
+    mptcp: pm: in-kernel: C-flag: handle late ADD_ADDR
+
+Matthieu Baerts (NGI0) <matttbe@kernel.org>
+    selftests: mptcp: join: mark 'delete re-add signal' as skipped if not supported
+
+Geliang Tang <geliang@kernel.org>
+    selftests: mptcp: disable add_addr retrans in endpoint_tests
+
+Jonathan Corbet <corbet@lwn.net>
+    docs: kdoc: handle the obsolescensce of docutils.ErrorString()
+
+Menglong Dong <menglong8.dong@gmail.com>
+    arch: Add the macro COMPILE_OFFSETS to all the asm-offsets.c
+
+Tejun Heo <tj@kernel.org>
+    sched_ext: Make qmap dump operation non-destructive
+
+Filipe Manana <fdmanana@suse.com>
+    btrfs: use smp_mb__after_atomic() when forcing COW in create_pending_snapshot()
+
+Qu Wenruo <wqu@suse.com>
+    btrfs: tree-checker: add inode extref checks
+
+Filipe Manana <fdmanana@suse.com>
+    btrfs: abort transaction if we fail to update inode in log replay dir fixup
+
+Filipe Manana <fdmanana@suse.com>
+    btrfs: use level argument in log tree walk callback replay_one_buffer()
+
+Filipe Manana <fdmanana@suse.com>
+    btrfs: always drop log root tree reference in btrfs_replay_log()
+
+Thorsten Blum <thorsten.blum@linux.dev>
+    btrfs: scrub: replace max_t()/min_t() with clamp() in scrub_throttle_dev_io()
+
+Naohiro Aota <naohiro.aota@wdc.com>
+    btrfs: zoned: refine extent allocator hint selection
+
+Johannes Thumshirn <johannes.thumshirn@wdc.com>
+    btrfs: zoned: return error from btrfs_zone_finish_endio()
+
+Filipe Manana <fdmanana@suse.com>
+    btrfs: abort transaction in the process_one_buffer() log tree walk callback
+
+Filipe Manana <fdmanana@suse.com>
+    btrfs: abort transaction on specific error places when walking log tree
+
+Chen Ridong <chenridong@huawei.com>
+    cpuset: Use new excpus for nocpu error check when enabling root partition
+
+Avadhut Naik <avadhut.naik@amd.com>
+    EDAC/mc_sysfs: Increase legacy channel support to 16
+
+David Kaplan <david.kaplan@amd.com>
+    x86/bugs: Fix reporting of LFENCE retpoline
+
+David Kaplan <david.kaplan@amd.com>
+    x86/bugs: Report correct retbleed mitigation status
+
+Jiri Olsa <jolsa@kernel.org>
+    seccomp: passthrough uprobe systemcall without filtering
+
+Josh Poimboeuf <jpoimboe@kernel.org>
+    perf: Skip user unwind if the task is a kernel thread
+
+Josh Poimboeuf <jpoimboe@kernel.org>
+    perf: Have get_perf_callchain() return NULL if crosstask and user are set
+
+Steven Rostedt <rostedt@goodmis.org>
+    perf: Use current->flags & PF_KTHREAD|PF_USER_WORKER instead of current->mm == NULL
+
+Dapeng Mi <dapeng1.mi@linux.intel.com>
+    perf/x86/intel: Add ICL_FIXED_0_ADAPTIVE bit into INTEL_FIXED_BITS_MASK
+
+Richard Guy Briggs <rgb@redhat.com>
+    audit: record fanotify event regardless of presence of rules
+
+Xiang Mei <xmei5@asu.edu>
+    net/sched: sch_qfq: Fix null-deref in agg_dequeue
+
+
+-------------
+
+Diffstat:
+
+ Documentation/sphinx/kernel_abi.py              |  4 +-
+ Documentation/sphinx/kernel_feat.py             |  4 +-
+ Documentation/sphinx/kernel_include.py          |  6 ++-
+ Documentation/sphinx/maintainers_include.py     |  4 +-
+ Makefile                                        |  4 +-
+ arch/alpha/kernel/asm-offsets.c                 |  1 +
+ arch/arc/kernel/asm-offsets.c                   |  1 +
+ arch/arm/kernel/asm-offsets.c                   |  2 +
+ arch/arm64/kernel/asm-offsets.c                 |  1 +
+ arch/csky/kernel/asm-offsets.c                  |  1 +
+ arch/hexagon/kernel/asm-offsets.c               |  1 +
+ arch/loongarch/kernel/asm-offsets.c             |  2 +
+ arch/m68k/kernel/asm-offsets.c                  |  1 +
+ arch/microblaze/kernel/asm-offsets.c            |  1 +
+ arch/mips/kernel/asm-offsets.c                  |  2 +
+ arch/nios2/kernel/asm-offsets.c                 |  1 +
+ arch/openrisc/kernel/asm-offsets.c              |  1 +
+ arch/parisc/kernel/asm-offsets.c                |  1 +
+ arch/powerpc/kernel/asm-offsets.c               |  1 +
+ arch/riscv/kernel/asm-offsets.c                 |  1 +
+ arch/s390/kernel/asm-offsets.c                  |  1 +
+ arch/sh/kernel/asm-offsets.c                    |  1 +
+ arch/sparc/kernel/asm-offsets.c                 |  1 +
+ arch/um/kernel/asm-offsets.c                    |  2 +
+ arch/x86/events/intel/core.c                    | 10 ++--
+ arch/x86/include/asm/perf_event.h               |  6 ++-
+ arch/x86/kernel/cpu/bugs.c                      |  9 ++--
+ arch/x86/kvm/pmu.h                              |  2 +-
+ arch/xtensa/kernel/asm-offsets.c                |  1 +
+ drivers/dma-buf/udmabuf.c                       |  2 +-
+ drivers/edac/edac_mc_sysfs.c                    | 24 ++++++++++
+ drivers/gpio/gpio-idio-16.c                     |  5 ++
+ drivers/gpio/gpio-regmap.c                      | 53 ++++++++++++++++++--
+ drivers/iommu/intel/iommu.c                     |  7 +--
+ drivers/net/bonding/bond_main.c                 | 11 +++--
+ drivers/net/bonding/bond_options.c              |  3 ++
+ drivers/net/ethernet/sfc/ef100_netdev.c         |  6 +--
+ drivers/net/ethernet/sfc/ef100_nic.c            | 47 ++++++++----------
+ drivers/net/wireless/ath/ath12k/mac.c           |  6 +--
+ fs/btrfs/disk-io.c                              |  2 +-
+ fs/btrfs/extent-tree.c                          |  6 ++-
+ fs/btrfs/inode.c                                |  7 +--
+ fs/btrfs/scrub.c                                |  3 +-
+ fs/btrfs/transaction.c                          |  2 +-
+ fs/btrfs/tree-checker.c                         | 37 ++++++++++++++
+ fs/btrfs/tree-log.c                             | 64 +++++++++++++++++++------
+ fs/btrfs/zoned.c                                |  8 ++--
+ fs/btrfs/zoned.h                                |  9 ++--
+ fs/f2fs/file.c                                  |  8 ++--
+ fs/f2fs/segment.c                               | 20 ++++----
+ include/linux/audit.h                           |  2 +-
+ include/linux/bitops.h                          |  1 -
+ include/linux/bits.h                            | 38 ++++++++++++++-
+ include/linux/gpio/regmap.h                     | 16 +++++++
+ include/net/bonding.h                           |  1 +
+ include/net/pkt_sched.h                         | 25 +++++++++-
+ kernel/cgroup/cpuset.c                          |  6 +--
+ kernel/events/callchain.c                       | 16 +++----
+ kernel/events/core.c                            |  7 +--
+ kernel/seccomp.c                                | 32 ++++++++++---
+ net/mptcp/pm_netlink.c                          |  6 +++
+ net/sched/sch_api.c                             | 10 ----
+ net/sched/sch_hfsc.c                            | 16 -------
+ net/sched/sch_qfq.c                             |  2 +-
+ net/wireless/reg.c                              |  4 ++
+ tools/sched_ext/scx_qmap.bpf.c                  | 18 ++++++-
+ tools/testing/selftests/net/mptcp/mptcp_join.sh |  3 +-
+ 67 files changed, 442 insertions(+), 164 deletions(-)
+
 
 
