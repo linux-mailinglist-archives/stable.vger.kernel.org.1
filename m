@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-191910-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191885-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF8A3C2589C
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 15:21:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C276C257E8
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 15:14:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AC2F4563F3D
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 14:06:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 59CDF56146C
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 14:05:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51DE325EFB6;
-	Fri, 31 Oct 2025 14:06:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5621258ED1;
+	Fri, 31 Oct 2025 14:04:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E9jj3Ywu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XzvkJt83"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E4E824BBEC;
-	Fri, 31 Oct 2025 14:06:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 718361F37D4;
+	Fri, 31 Oct 2025 14:04:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761919571; cv=none; b=i0YoLUrElooN2cTiCWwzE7XslQRKQuDbxV6HEAtHfkvcm/bYRxD4yZNJsBQm3xjL/ZgCAF7jJBd4Yfj/Z9l5RJ3BExyI+cRdHgmUHAcA9Wwl+XfEipsPHVoKyrTMH+uU1EWpCkfwEkHXV6A7NA43s/8fpRC48sevL4SKCCznHWI=
+	t=1761919497; cv=none; b=KMXXX6s+psaA59T4jaq4msfrRckHFpWMoDgKvsvAUwrZOJuCqGCYnpT0sOsq6amYATCQ2uXy+rDrUIL/jnnPS9ScrJMTb53NWbdi7v6SgVxVEeLd0sRpC4McuNjEPD0mSjRKD34fkZa62WRG9fIDzdLoEjMcG6Dec9B2faKfkl4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761919571; c=relaxed/simple;
-	bh=EIaGQ4Ryg1VgXOGYzcvslw2EpdG0Q/75eNRExWTkl9A=;
+	s=arc-20240116; t=1761919497; c=relaxed/simple;
+	bh=qqmO42GeU6RjJbuGwmcprSxhTnASJC508P1rjINaFio=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pq6BlRje6EnENTji9nK6nsuFRqjV/LCZqVh1qB0YN+AZFw3rK84p0n5EqjlexsY6uir4MnHnDmy8mH9UkH0Q0NPAIBMiPzpVEsIJa1zwh3PZO6qFLuProaKIQ2ePwqVa6/7pZnUf3bk6l+8FEViG86EV7XsfymlAkwILg2caRUk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E9jj3Ywu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B65EC4CEF8;
-	Fri, 31 Oct 2025 14:06:10 +0000 (UTC)
+	 MIME-Version; b=LYtGJgHp7e1UKEWBb5OS2jV0FmY7RAm8TZJo2UUxv+l6PVjuG2vJT4KbBDXsjQTGbyPKOXuYR3SKZOzAkYIgMDBa0x5jkxSX1N6bVmwW6hjpy31mDPOTpBvYK4q+uOQTYyFU41W2Hponzjr5xKtjznASjgd2SpLJ3uh73elQWJw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XzvkJt83; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7755C4CEF8;
+	Fri, 31 Oct 2025 14:04:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761919570;
-	bh=EIaGQ4Ryg1VgXOGYzcvslw2EpdG0Q/75eNRExWTkl9A=;
+	s=korg; t=1761919497;
+	bh=qqmO42GeU6RjJbuGwmcprSxhTnASJC508P1rjINaFio=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E9jj3Ywu6OIvBiN8+uQ2Uy91dHucvZbB0DNtrbdPliLEP+oQkWZ3Zqf/uQ8/q+2d4
-	 6xBhImbXTb81gNjrJxPgXEudRaBFzrzJ1/vY/7mPvbufVjLa9LBnHHu2uMCJiQ+ir1
-	 nRX2cZni/kKtfqIiyIyp21OHs4MRkiDOD0KjdpTs=
+	b=XzvkJt83F447azBklL52eywL3KUxLmbER+n/yH1nGS5Y+VaoAisn7Vkvih4Cahf/f
+	 7OnDBROcY8cOYAaV9fTb/BveQxyn3MdmmtZDvqNj0wObenlkXqv7dcHMKZkgxkbNmK
+	 wowU0mGvpl9Mg33bTCG5q0pkUBYmkKkI0Hyjmg7A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Avadhut Naik <avadhut.naik@amd.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 22/35] EDAC/mc_sysfs: Increase legacy channel support to 16
-Date: Fri, 31 Oct 2025 15:01:30 +0100
-Message-ID: <20251031140044.099100370@linuxfoundation.org>
+	Aditya Kumar Singh <quic_adisi@quicinc.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Kalle Valo <kvalo@kernel.org>,
+	Amelia Crate <acrate@waldn.net>
+Subject: [PATCH 6.12 38/40] wifi: ath12k: fix read pointer after free in ath12k_mac_assign_vif_to_vdev()
+Date: Fri, 31 Oct 2025 15:01:31 +0100
+Message-ID: <20251031140044.945054780@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251031140043.564670400@linuxfoundation.org>
-References: <20251031140043.564670400@linuxfoundation.org>
+In-Reply-To: <20251031140043.939381518@linuxfoundation.org>
+References: <20251031140043.939381518@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,94 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Avadhut Naik <avadhut.naik@amd.com>
+From: Aditya Kumar Singh <quic_adisi@quicinc.com>
 
-[ Upstream commit 6e1c2c6c2c40ce99e0d2633b212f43c702c1a002 ]
+[ Upstream commit 5a10971c7645a95f5d5dc23c26fbac4bf61801d0 ]
 
-Newer AMD systems can support up to 16 channels per EDAC "mc" device.
-These are detected by the EDAC module running on the device, and the
-current EDAC interface is appropriately enumerated.
+In ath12k_mac_assign_vif_to_vdev(), if arvif is created on a different
+radio, it gets deleted from that radio through a call to
+ath12k_mac_unassign_link_vif(). This action frees the arvif pointer.
+Subsequently, there is a check involving arvif, which will result in a
+read-after-free scenario.
 
-The legacy EDAC sysfs interface however, provides device attributes for
-channels 0 through 11 only. Consequently, the last four channels, 12
-through 15, will not be enumerated and will not be visible through the
-legacy sysfs interface.
+Fix this by moving this check after arvif is again assigned via call to
+ath12k_mac_assign_link_vif().
 
-Add additional device attributes to ensure that all 16 channels, if
-present, are enumerated by and visible through the legacy EDAC sysfs
-interface.
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
 
-Signed-off-by: Avadhut Naik <avadhut.naik@amd.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/20250916203242.1281036-1-avadhut.naik@amd.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Closes: https://scan5.scan.coverity.com/#/project-view/63541/10063?selectedIssue=1636423
+Fixes: b5068bc9180d ("wifi: ath12k: Cache vdev configs before vdev create")
+Signed-off-by: Aditya Kumar Singh <quic_adisi@quicinc.com>
+Acked-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Acked-by: Kalle Valo <kvalo@kernel.org>
+Link: https://patch.msgid.link/20241210-read_after_free-v1-1-969f69c7d66c@quicinc.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Signed-off-by: Amelia Crate <acrate@waldn.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/edac/edac_mc_sysfs.c | 24 ++++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
+ drivers/net/wireless/ath/ath12k/mac.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/edac/edac_mc_sysfs.c b/drivers/edac/edac_mc_sysfs.c
-index 0f338adf7d937..8689631f19053 100644
---- a/drivers/edac/edac_mc_sysfs.c
-+++ b/drivers/edac/edac_mc_sysfs.c
-@@ -305,6 +305,14 @@ DEVICE_CHANNEL(ch10_dimm_label, S_IRUGO | S_IWUSR,
- 	channel_dimm_label_show, channel_dimm_label_store, 10);
- DEVICE_CHANNEL(ch11_dimm_label, S_IRUGO | S_IWUSR,
- 	channel_dimm_label_show, channel_dimm_label_store, 11);
-+DEVICE_CHANNEL(ch12_dimm_label, S_IRUGO | S_IWUSR,
-+	channel_dimm_label_show, channel_dimm_label_store, 12);
-+DEVICE_CHANNEL(ch13_dimm_label, S_IRUGO | S_IWUSR,
-+	channel_dimm_label_show, channel_dimm_label_store, 13);
-+DEVICE_CHANNEL(ch14_dimm_label, S_IRUGO | S_IWUSR,
-+	channel_dimm_label_show, channel_dimm_label_store, 14);
-+DEVICE_CHANNEL(ch15_dimm_label, S_IRUGO | S_IWUSR,
-+	channel_dimm_label_show, channel_dimm_label_store, 15);
+--- a/drivers/net/wireless/ath/ath12k/mac.c
++++ b/drivers/net/wireless/ath/ath12k/mac.c
+@@ -6733,15 +6733,15 @@ static struct ath12k *ath12k_mac_assign_
  
- /* Total possible dynamic DIMM Label attribute file table */
- static struct attribute *dynamic_csrow_dimm_attr[] = {
-@@ -320,6 +328,10 @@ static struct attribute *dynamic_csrow_dimm_attr[] = {
- 	&dev_attr_legacy_ch9_dimm_label.attr.attr,
- 	&dev_attr_legacy_ch10_dimm_label.attr.attr,
- 	&dev_attr_legacy_ch11_dimm_label.attr.attr,
-+	&dev_attr_legacy_ch12_dimm_label.attr.attr,
-+	&dev_attr_legacy_ch13_dimm_label.attr.attr,
-+	&dev_attr_legacy_ch14_dimm_label.attr.attr,
-+	&dev_attr_legacy_ch15_dimm_label.attr.attr,
- 	NULL
- };
+ 	mutex_lock(&ar->conf_mutex);
  
-@@ -348,6 +360,14 @@ DEVICE_CHANNEL(ch10_ce_count, S_IRUGO,
- 		   channel_ce_count_show, NULL, 10);
- DEVICE_CHANNEL(ch11_ce_count, S_IRUGO,
- 		   channel_ce_count_show, NULL, 11);
-+DEVICE_CHANNEL(ch12_ce_count, S_IRUGO,
-+		   channel_ce_count_show, NULL, 12);
-+DEVICE_CHANNEL(ch13_ce_count, S_IRUGO,
-+		   channel_ce_count_show, NULL, 13);
-+DEVICE_CHANNEL(ch14_ce_count, S_IRUGO,
-+		   channel_ce_count_show, NULL, 14);
-+DEVICE_CHANNEL(ch15_ce_count, S_IRUGO,
-+		   channel_ce_count_show, NULL, 15);
+-	if (arvif->is_created)
+-		goto flush;
+-
+ 	if (vif->type == NL80211_IFTYPE_AP &&
+ 	    ar->num_peers > (ar->max_num_peers - 1)) {
+ 		ath12k_warn(ab, "failed to create vdev due to insufficient peer entry resource in firmware\n");
+ 		goto unlock;
+ 	}
  
- /* Total possible dynamic ce_count attribute file table */
- static struct attribute *dynamic_csrow_ce_count_attr[] = {
-@@ -363,6 +383,10 @@ static struct attribute *dynamic_csrow_ce_count_attr[] = {
- 	&dev_attr_legacy_ch9_ce_count.attr.attr,
- 	&dev_attr_legacy_ch10_ce_count.attr.attr,
- 	&dev_attr_legacy_ch11_ce_count.attr.attr,
-+	&dev_attr_legacy_ch12_ce_count.attr.attr,
-+	&dev_attr_legacy_ch13_ce_count.attr.attr,
-+	&dev_attr_legacy_ch14_ce_count.attr.attr,
-+	&dev_attr_legacy_ch15_ce_count.attr.attr,
- 	NULL
- };
- 
--- 
-2.51.0
-
++	if (arvif->is_created)
++		goto flush;
++
+ 	if (ar->num_created_vdevs > (TARGET_NUM_VDEVS - 1)) {
+ 		ath12k_warn(ab, "failed to create vdev, reached max vdev limit %d\n",
+ 			    TARGET_NUM_VDEVS);
 
 
 
