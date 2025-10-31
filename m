@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-191899-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191849-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64243C256E5
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 15:06:08 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 723A3C256C7
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 15:05:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 0EB7A35196B
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 14:06:08 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6C77B4F6943
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 14:03:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E29A34C159;
-	Fri, 31 Oct 2025 14:05:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 941C423FC54;
+	Fri, 31 Oct 2025 14:03:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vcMh2Hzb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JAU3ClKp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A4DC34C14E;
-	Fri, 31 Oct 2025 14:05:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5035234D387;
+	Fri, 31 Oct 2025 14:03:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761919538; cv=none; b=pzUF9CL6gDHh3O14gZuSoh2BkWbwIVcoNS6KufDt8GB9cUxEnVQgfbO+6jpwfFxH3bMFdJuaAanN7L5/c/iRIW7wU1rl9KP+/QMUOdAAGie6BZMTazBHtD9mexQ5HxL+vdP90XJadLPFGaMgnwzSR/cHgZlXr8X9n5fYALG77B8=
+	t=1761919395; cv=none; b=rD3XrrqBthWqM/jO6zMeEsyRsOEdXFSr28FNVAFZs47Vh49gFSFINvXmI7WE6yJeLnDLOGyAKKIR2folUyrDENm0HvV2eMpIeykWsysXm22r0jjIpIApj1hr8a9VAAABcZOwf6FtHKyz27hIO3yFcY4S3qLo1Oe7/reU7S9CEz8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761919538; c=relaxed/simple;
-	bh=FSkar9HvkoGAATjN3cqwv4WaPIT6SXC7mIpnz+3jG60=;
+	s=arc-20240116; t=1761919395; c=relaxed/simple;
+	bh=AD9qwyRedR1SSIfpf/+5+c+5NrFmM8VCRtBq77nXShk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JYm6Ouy6uHlImn6pP41sCScxFFaeodMz9CNXbZTbmRRYErKnsP3739lO/Ym+5rf9FE3EpdUwGq7R7gB4NnWot7ejA8lbjYi+DuLfeMa+H8LbPO/WzWI01SxHETtAbpI5FX8HegtZqc3mpNPnzH6MUKiZO0O9TDvRa3Cqwt7qTVc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vcMh2Hzb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95E49C4CEE7;
-	Fri, 31 Oct 2025 14:05:37 +0000 (UTC)
+	 MIME-Version:Content-Type; b=dQYg0z/m7Fdit7Lfcb6AppXqZxn+f+gG2xFQ4vrMGoEv9WGbhoG5iaQlk48h6RAjtL5U6ttQQN0C8twiHeqspV1dn9y860fc5aq006Dvj7zFijWr/y+RJIWbJVjFdyQvtaoUzP5bS6Qp4dePD3AlXsM3cjXVoG8aCSCtF6tTmps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JAU3ClKp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1982C4CEE7;
+	Fri, 31 Oct 2025 14:03:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761919538;
-	bh=FSkar9HvkoGAATjN3cqwv4WaPIT6SXC7mIpnz+3jG60=;
+	s=korg; t=1761919395;
+	bh=AD9qwyRedR1SSIfpf/+5+c+5NrFmM8VCRtBq77nXShk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vcMh2HzbUBL52pTndWK9ScZHjMKec8Rs8/5Lv/nsFKoP2hT4RpHLfvRrw0ZXEhZOJ
-	 sAWaT3o1jYMbTCzv71PyykCbJ+mNcBMgyeXFqOKhOUJx67CG3zoFitq5IhZgeMqyYJ
-	 7IihbqmJQ1X591k9jINtKXuG6cpp5U7WGiMX95ok=
+	b=JAU3ClKp4aih+iDbRVROqZLdZ/Yy6eHIwO8c28nTT6Zb/o3c0ag9v14d+oLY83CzI
+	 FZWtL50r+xVkLvNf8Qb+n7izLrL5RlA7MrFyATxco5EQ0RhngTr5Inc5sJEUcqJetT
+	 lzcszi5J4qnLyEpJyzVdJy7dQpK9xHcqSwrbmu8k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dapeng Mi <dapeng1.mi@linux.intel.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Yi Lai <yi1.lai@intel.com>,
+	=?UTF-8?q?=C5=81ukasz=20Bartosik?= <ukaszb@chromium.org>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 12/35] perf/x86/intel: Add ICL_FIXED_0_ADAPTIVE bit into INTEL_FIXED_BITS_MASK
+Subject: [PATCH 6.6 26/32] xhci: dbc: Avoid event polling busyloop if pending rx transfers are inactive.
 Date: Fri, 31 Oct 2025 15:01:20 +0100
-Message-ID: <20251031140043.851182044@linuxfoundation.org>
+Message-ID: <20251031140043.080048037@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251031140043.564670400@linuxfoundation.org>
-References: <20251031140043.564670400@linuxfoundation.org>
+In-Reply-To: <20251031140042.387255981@linuxfoundation.org>
+References: <20251031140042.387255981@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,107 +60,128 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dapeng Mi <dapeng1.mi@linux.intel.com>
+From: Mathias Nyman <mathias.nyman@linux.intel.com>
 
-[ Upstream commit 2676dbf9f4fb7f6739d1207c0f1deaf63124642a ]
+[ Upstream commit cab63934c33b12c0d1e9f4da7450928057f2c142 ]
 
-ICL_FIXED_0_ADAPTIVE is missed to be added into INTEL_FIXED_BITS_MASK,
-add it.
+Event polling delay is set to 0 if there are any pending requests in
+either rx or tx requests lists. Checking for pending requests does
+not work well for "IN" transfers as the tty driver always queues
+requests to the list and TRBs to the ring, preparing to receive data
+from the host.
 
-With help of this new INTEL_FIXED_BITS_MASK, intel_pmu_enable_fixed() can
-be optimized. The old fixed counter control bits can be unconditionally
-cleared with INTEL_FIXED_BITS_MASK and then set new control bits base on
-new configuration.
+This causes unnecessary busylooping and cpu hogging.
 
-Signed-off-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Kan Liang <kan.liang@linux.intel.com>
-Tested-by: Yi Lai <yi1.lai@intel.com>
-Link: https://lore.kernel.org/r/20250820023032.17128-7-dapeng1.mi@linux.intel.com
+Only set the event polling delay to 0 if there are pending tx "write"
+transfers, or if it was less than 10ms since last active data transfer
+in any direction.
+
+Cc: Łukasz Bartosik <ukaszb@chromium.org>
+Fixes: fb18e5bb9660 ("xhci: dbc: poll at different rate depending on data transfer activity")
+Cc: stable@vger.kernel.org
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20250505125630.561699-3-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: f3d12ec847b9 ("xhci: dbc: fix bogus 1024 byte prefix if ttyDBC read races with stall event")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/events/intel/core.c      | 10 +++-------
- arch/x86/include/asm/perf_event.h |  6 +++++-
- arch/x86/kvm/pmu.h                |  2 +-
- 3 files changed, 9 insertions(+), 9 deletions(-)
+ drivers/usb/host/xhci-dbgcap.c |   19 ++++++++++++++++---
+ drivers/usb/host/xhci-dbgcap.h |    3 +++
+ 2 files changed, 19 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
-index 15da60cf69f20..046d12281fd94 100644
---- a/arch/x86/events/intel/core.c
-+++ b/arch/x86/events/intel/core.c
-@@ -2845,8 +2845,8 @@ static void intel_pmu_enable_fixed(struct perf_event *event)
+--- a/drivers/usb/host/xhci-dbgcap.c
++++ b/drivers/usb/host/xhci-dbgcap.c
+@@ -855,6 +855,7 @@ static enum evtreturn xhci_dbc_do_handle
  {
- 	struct cpu_hw_events *cpuc = this_cpu_ptr(&cpu_hw_events);
- 	struct hw_perf_event *hwc = &event->hw;
--	u64 mask, bits = 0;
- 	int idx = hwc->idx;
-+	u64 bits = 0;
+ 	dma_addr_t		deq;
+ 	union xhci_trb		*evt;
++	enum evtreturn		ret = EVT_DONE;
+ 	u32			ctrl, portsc;
+ 	bool			update_erdp = false;
  
- 	if (is_topdown_idx(idx)) {
- 		struct cpu_hw_events *cpuc = this_cpu_ptr(&cpu_hw_events);
-@@ -2885,14 +2885,10 @@ static void intel_pmu_enable_fixed(struct perf_event *event)
+@@ -939,6 +940,7 @@ static enum evtreturn xhci_dbc_do_handle
+ 			break;
+ 		case TRB_TYPE(TRB_TRANSFER):
+ 			dbc_handle_xfer_event(dbc, evt);
++			ret = EVT_XFER_DONE;
+ 			break;
+ 		default:
+ 			break;
+@@ -957,7 +959,7 @@ static enum evtreturn xhci_dbc_do_handle
+ 		lo_hi_writeq(deq, &dbc->regs->erdp);
+ 	}
  
- 	idx -= INTEL_PMC_IDX_FIXED;
- 	bits = intel_fixed_bits_by_idx(idx, bits);
--	mask = intel_fixed_bits_by_idx(idx, INTEL_FIXED_BITS_MASK);
--
--	if (x86_pmu.intel_cap.pebs_baseline && event->attr.precise_ip) {
-+	if (x86_pmu.intel_cap.pebs_baseline && event->attr.precise_ip)
- 		bits |= intel_fixed_bits_by_idx(idx, ICL_FIXED_0_ADAPTIVE);
--		mask |= intel_fixed_bits_by_idx(idx, ICL_FIXED_0_ADAPTIVE);
--	}
- 
--	cpuc->fixed_ctrl_val &= ~mask;
-+	cpuc->fixed_ctrl_val &= ~intel_fixed_bits_by_idx(idx, INTEL_FIXED_BITS_MASK);
- 	cpuc->fixed_ctrl_val |= bits;
+-	return EVT_DONE;
++	return ret;
  }
  
-diff --git a/arch/x86/include/asm/perf_event.h b/arch/x86/include/asm/perf_event.h
-index 70d1d94aca7e6..ee943bd1595af 100644
---- a/arch/x86/include/asm/perf_event.h
-+++ b/arch/x86/include/asm/perf_event.h
-@@ -35,7 +35,6 @@
- #define ARCH_PERFMON_EVENTSEL_EQ			(1ULL << 36)
- #define ARCH_PERFMON_EVENTSEL_UMASK2			(0xFFULL << 40)
+ static void xhci_dbc_handle_events(struct work_struct *work)
+@@ -966,6 +968,7 @@ static void xhci_dbc_handle_events(struc
+ 	struct xhci_dbc		*dbc;
+ 	unsigned long		flags;
+ 	unsigned int		poll_interval;
++	unsigned long		busypoll_timelimit;
  
--#define INTEL_FIXED_BITS_MASK				0xFULL
- #define INTEL_FIXED_BITS_STRIDE			4
- #define INTEL_FIXED_0_KERNEL				(1ULL << 0)
- #define INTEL_FIXED_0_USER				(1ULL << 1)
-@@ -48,6 +47,11 @@
- #define ICL_EVENTSEL_ADAPTIVE				(1ULL << 34)
- #define ICL_FIXED_0_ADAPTIVE				(1ULL << 32)
- 
-+#define INTEL_FIXED_BITS_MASK					\
-+	(INTEL_FIXED_0_KERNEL | INTEL_FIXED_0_USER |		\
-+	 INTEL_FIXED_0_ANYTHREAD | INTEL_FIXED_0_ENABLE_PMI |	\
-+	 ICL_FIXED_0_ADAPTIVE)
+ 	dbc = container_of(to_delayed_work(work), struct xhci_dbc, event_work);
+ 	poll_interval = dbc->poll_interval;
+@@ -984,11 +987,21 @@ static void xhci_dbc_handle_events(struc
+ 			dbc->driver->disconnect(dbc);
+ 		break;
+ 	case EVT_DONE:
+-		/* set fast poll rate if there are pending data transfers */
++		/*
++		 * Set fast poll rate if there are pending out transfers, or
++		 * a transfer was recently processed
++		 */
++		busypoll_timelimit = dbc->xfer_timestamp +
++			msecs_to_jiffies(DBC_XFER_INACTIVITY_TIMEOUT);
 +
- #define intel_fixed_bits_by_idx(_idx, _bits)			\
- 	((_bits) << ((_idx) * INTEL_FIXED_BITS_STRIDE))
+ 		if (!list_empty(&dbc->eps[BULK_OUT].list_pending) ||
+-		    !list_empty(&dbc->eps[BULK_IN].list_pending))
++		    time_is_after_jiffies(busypoll_timelimit))
+ 			poll_interval = 0;
+ 		break;
++	case EVT_XFER_DONE:
++		dbc->xfer_timestamp = jiffies;
++		poll_interval = 0;
++		break;
+ 	default:
+ 		dev_info(dbc->dev, "stop handling dbc events\n");
+ 		return;
+--- a/drivers/usb/host/xhci-dbgcap.h
++++ b/drivers/usb/host/xhci-dbgcap.h
+@@ -95,6 +95,7 @@ struct dbc_ep {
+ #define DBC_WRITE_BUF_SIZE		8192
+ #define DBC_POLL_INTERVAL_DEFAULT	64	/* milliseconds */
+ #define DBC_POLL_INTERVAL_MAX		5000	/* milliseconds */
++#define DBC_XFER_INACTIVITY_TIMEOUT	10	/* milliseconds */
+ /*
+  * Private structure for DbC hardware state:
+  */
+@@ -141,6 +142,7 @@ struct xhci_dbc {
+ 	enum dbc_state			state;
+ 	struct delayed_work		event_work;
+ 	unsigned int			poll_interval;	/* ms */
++	unsigned long			xfer_timestamp;
+ 	unsigned			resume_required:1;
+ 	struct dbc_ep			eps[2];
  
-diff --git a/arch/x86/kvm/pmu.h b/arch/x86/kvm/pmu.h
-index ad89d0bd60058..103604c4b33b5 100644
---- a/arch/x86/kvm/pmu.h
-+++ b/arch/x86/kvm/pmu.h
-@@ -13,7 +13,7 @@
- #define MSR_IA32_MISC_ENABLE_PMU_RO_MASK (MSR_IA32_MISC_ENABLE_PEBS_UNAVAIL |	\
- 					  MSR_IA32_MISC_ENABLE_BTS_UNAVAIL)
- 
--/* retrieve the 4 bits for EN and PMI out of IA32_FIXED_CTR_CTRL */
-+/* retrieve a fixed counter bits out of IA32_FIXED_CTR_CTRL */
- #define fixed_ctrl_field(ctrl_reg, idx) \
- 	(((ctrl_reg) >> ((idx) * INTEL_FIXED_BITS_STRIDE)) & INTEL_FIXED_BITS_MASK)
- 
--- 
-2.51.0
-
+@@ -186,6 +188,7 @@ struct dbc_request {
+ enum evtreturn {
+ 	EVT_ERR	= -1,
+ 	EVT_DONE,
++	EVT_XFER_DONE,
+ 	EVT_GSER,
+ 	EVT_DISC,
+ };
 
 
 
