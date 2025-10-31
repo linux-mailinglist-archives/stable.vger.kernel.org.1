@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-191890-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191825-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id E40E3C256BE
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 15:05:13 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42151C25655
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 15:02:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 677C235091A
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 14:05:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DDEB83A44D8
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 14:02:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A0A32376E4;
-	Fri, 31 Oct 2025 14:05:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C09A319DFA2;
+	Fri, 31 Oct 2025 14:02:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O8GTQKP7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nibmNvfL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAB563C17;
-	Fri, 31 Oct 2025 14:05:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C5A3AD4B;
+	Fri, 31 Oct 2025 14:02:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761919511; cv=none; b=f6qu2aE7CgksrHagZF4Gk44i493/yD45bgv4qWdWH+HgYfbps7O+CXorQ7iTGH6tyFKd15i8AnHegy/pLJ1HvRC/RuKC0zclIyMDKk50FWMbCuxYAsLZq/7GhxtjxASnNUH+/DlsQVao2ujZK1dkDmaTT5BcyvNKx8YNDTl2Gd8=
+	t=1761919325; cv=none; b=Fxnlk0vqDGVsPDA7hm4IhQrauuQ8lqbu5eF4dIpqWqEKZIOoTKCV/5oD5LKVP50aSXsqR0AP7KVIqAJmuNbkC0yj+k8D85E+/nJFPy4o2FzIEp/lkIoMYRLsh6GefJAsUWj2SICT64nFjle1dfQLgDim1q9Daz29SNCge4bSBtE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761919511; c=relaxed/simple;
-	bh=PEN52JK4GOVQiigV3qvtG+o+8qy0sch2wG4bL+EBmrM=;
+	s=arc-20240116; t=1761919325; c=relaxed/simple;
+	bh=eoKZOm/HbBDyol1DMGy32x3k2d9nNzErbPHyXxkoJmE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fUIW9DZy5VKRgvpCuXsw7b8XnWgSMiUOys6kCrPwnE7+kM5JR/xHlk+PoiHkLc83sZVdd5oX9dB9E3qUrYPWIxe6pAvkZVaLeogDLB4fXUeudxe5vu99Bk0NTFdbemIfOBRuRGr36ctpl78QyHayLZsj+m5vwLPxDSLh0xzemms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O8GTQKP7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 432ADC4CEE7;
-	Fri, 31 Oct 2025 14:05:11 +0000 (UTC)
+	 MIME-Version; b=ljQXcMpLp/s3xJK0QgCq+5CM+HPKoAjhx4t6hAU4pRpofA1uogqDOV42n2K2b42HACLhmUQPZCH6inYt3ny4bphPWrzOjm8GNxopsLlGMb28N0YsBBqmePFyPxpkXAQaw2gJCjHVupol3OCYyQ25r6ybvMrA5YLhP6UVxMlowCc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nibmNvfL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0662CC4CEE7;
+	Fri, 31 Oct 2025 14:02:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761919511;
-	bh=PEN52JK4GOVQiigV3qvtG+o+8qy0sch2wG4bL+EBmrM=;
+	s=korg; t=1761919325;
+	bh=eoKZOm/HbBDyol1DMGy32x3k2d9nNzErbPHyXxkoJmE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O8GTQKP7ifz5ikDKyBZNvbaR+V10X1DnIQ9ZJ5ZyPUK7E69NsJr81rSD26LvejwFT
-	 Lp6WLb+x4vb4wcPfwMyvR8d+XAcPrGVLRGsk9yxLRANM0FJ8vZh0jsX3l5XDUKFS07
-	 Ybmn7fHdc70zf7myUhDWJUItZtHTc5tpT62Q0Wyw=
+	b=nibmNvfLQfQYgunPA7Z4+bXStJIc9W/UgSr7+o6f5c9Sv8mzhYk4dlppfF6rXWpaO
+	 bZlrqV8CjzSm4rbhSsRJPI9uQIhHqQ6FxhrOHf4qFv9ErDMKsmtT+LcH4r3HqZX486
+	 WeAtpJKsnsQG7TLSRFOpsbk8/Pw7EE8qwiwi+vuM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Filipe Manana <fdmanana@suse.com>,
 	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 14/40] btrfs: zoned: return error from btrfs_zone_finish_endio()
+Subject: [PATCH 6.6 13/32] btrfs: use level argument in log tree walk callback replay_one_buffer()
 Date: Fri, 31 Oct 2025 15:01:07 +0100
-Message-ID: <20251031140044.363484190@linuxfoundation.org>
+Message-ID: <20251031140042.741733838@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251031140043.939381518@linuxfoundation.org>
-References: <20251031140043.939381518@linuxfoundation.org>
+In-Reply-To: <20251031140042.387255981@linuxfoundation.org>
+References: <20251031140042.387255981@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,113 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit 3c44cd3c79fcb38a86836dea6ff8fec322a9e68c ]
+[ Upstream commit 6cb7f0b8c9b0d6a35682335fea88bd26f089306f ]
 
-Now that btrfs_zone_finish_endio_workfn() is directly calling
-do_zone_finish() the only caller of btrfs_zone_finish_endio() is
-btrfs_finish_one_ordered().
+We already have the extent buffer's level in an argument, there's no need
+to first ensure the extent buffer's data is loaded (by calling
+btrfs_read_extent_buffer()) and then call btrfs_header_level() to check
+the level. So use the level argument and do the check before calling
+btrfs_read_extent_buffer().
 
-btrfs_finish_one_ordered() already has error handling in-place so
-btrfs_zone_finish_endio() can return an error if the block group lookup
-fails.
-
-Also as btrfs_zone_finish_endio() already checks for zoned filesystems and
-returns early, there's no need to do this in the caller.
-
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Signed-off-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
 Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/inode.c | 7 ++++---
- fs/btrfs/zoned.c | 8 +++++---
- fs/btrfs/zoned.h | 9 ++++++---
- 3 files changed, 15 insertions(+), 9 deletions(-)
+ fs/btrfs/tree-log.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
-diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
-index 19c0ec9c327c1..e32dd4193aea1 100644
---- a/fs/btrfs/inode.c
-+++ b/fs/btrfs/inode.c
-@@ -3174,9 +3174,10 @@ int btrfs_finish_one_ordered(struct btrfs_ordered_extent *ordered_extent)
- 		goto out;
- 	}
+diff --git a/fs/btrfs/tree-log.c b/fs/btrfs/tree-log.c
+index e00298c6c30a1..5512991b24faa 100644
+--- a/fs/btrfs/tree-log.c
++++ b/fs/btrfs/tree-log.c
+@@ -2493,15 +2493,13 @@ static int replay_one_buffer(struct btrfs_root *log, struct extent_buffer *eb,
+ 	int i;
+ 	int ret;
  
--	if (btrfs_is_zoned(fs_info))
--		btrfs_zone_finish_endio(fs_info, ordered_extent->disk_bytenr,
--					ordered_extent->disk_num_bytes);
-+	ret = btrfs_zone_finish_endio(fs_info, ordered_extent->disk_bytenr,
-+				      ordered_extent->disk_num_bytes);
-+	if (ret)
-+		goto out;
- 
- 	if (test_bit(BTRFS_ORDERED_TRUNCATED, &ordered_extent->flags)) {
- 		truncated = true;
-diff --git a/fs/btrfs/zoned.c b/fs/btrfs/zoned.c
-index 4966b4f5a7d24..64e0a5bf5f9a5 100644
---- a/fs/btrfs/zoned.c
-+++ b/fs/btrfs/zoned.c
-@@ -2384,16 +2384,17 @@ bool btrfs_can_activate_zone(struct btrfs_fs_devices *fs_devices, u64 flags)
- 	return ret;
- }
- 
--void btrfs_zone_finish_endio(struct btrfs_fs_info *fs_info, u64 logical, u64 length)
-+int btrfs_zone_finish_endio(struct btrfs_fs_info *fs_info, u64 logical, u64 length)
- {
- 	struct btrfs_block_group *block_group;
- 	u64 min_alloc_bytes;
- 
- 	if (!btrfs_is_zoned(fs_info))
--		return;
++	if (level != 0)
 +		return 0;
++
+ 	ret = btrfs_read_extent_buffer(eb, &check);
+ 	if (ret)
+ 		return ret;
  
- 	block_group = btrfs_lookup_block_group(fs_info, logical);
--	ASSERT(block_group);
-+	if (WARN_ON_ONCE(!block_group))
-+		return -ENOENT;
- 
- 	/* No MIXED_BG on zoned btrfs. */
- 	if (block_group->flags & BTRFS_BLOCK_GROUP_DATA)
-@@ -2410,6 +2411,7 @@ void btrfs_zone_finish_endio(struct btrfs_fs_info *fs_info, u64 logical, u64 len
- 
- out:
- 	btrfs_put_block_group(block_group);
-+	return 0;
- }
- 
- static void btrfs_zone_finish_endio_workfn(struct work_struct *work)
-diff --git a/fs/btrfs/zoned.h b/fs/btrfs/zoned.h
-index 7612e65726053..f7171ab6ed71e 100644
---- a/fs/btrfs/zoned.h
-+++ b/fs/btrfs/zoned.h
-@@ -83,7 +83,7 @@ int btrfs_sync_zone_write_pointer(struct btrfs_device *tgt_dev, u64 logical,
- bool btrfs_zone_activate(struct btrfs_block_group *block_group);
- int btrfs_zone_finish(struct btrfs_block_group *block_group);
- bool btrfs_can_activate_zone(struct btrfs_fs_devices *fs_devices, u64 flags);
--void btrfs_zone_finish_endio(struct btrfs_fs_info *fs_info, u64 logical,
-+int btrfs_zone_finish_endio(struct btrfs_fs_info *fs_info, u64 logical,
- 			     u64 length);
- void btrfs_schedule_zone_finish_bg(struct btrfs_block_group *bg,
- 				   struct extent_buffer *eb);
-@@ -232,8 +232,11 @@ static inline bool btrfs_can_activate_zone(struct btrfs_fs_devices *fs_devices,
- 	return true;
- }
- 
--static inline void btrfs_zone_finish_endio(struct btrfs_fs_info *fs_info,
--					   u64 logical, u64 length) { }
-+static inline int btrfs_zone_finish_endio(struct btrfs_fs_info *fs_info,
-+					   u64 logical, u64 length)
-+{
-+	return 0;
-+}
- 
- static inline void btrfs_schedule_zone_finish_bg(struct btrfs_block_group *bg,
- 						 struct extent_buffer *eb) { }
+-	level = btrfs_header_level(eb);
+-
+-	if (level != 0)
+-		return 0;
+-
+ 	path = btrfs_alloc_path();
+ 	if (!path)
+ 		return -ENOMEM;
 -- 
 2.51.0
 
