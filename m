@@ -1,109 +1,125 @@
-Return-Path: <stable+bounces-191943-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191944-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A92AC26312
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 17:46:09 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D91CC2641A
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 17:59:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3DF0A4633CD
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 16:31:16 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 1918034E9E1
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 16:59:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAD7E21ADCB;
-	Fri, 31 Oct 2025 16:31:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F19B6301465;
+	Fri, 31 Oct 2025 16:59:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IjMFujyp"
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="dZj8Clx0"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8734D22301;
-	Fri, 31 Oct 2025 16:31:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C3B03002C1
+	for <stable@vger.kernel.org>; Fri, 31 Oct 2025 16:59:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761928270; cv=none; b=aIN82VFxIHEcBCAVNsEQcTPxFLxyt4GtGwmAt81tOIQr/llqMrwhttrvE6t7TLNkFLTf2Yq2rNFtt72If5smlRyL7caki8pz95kNotN/rz8ZzfPFK9ahMuhkWtLLaWD2E7i5E60cQKG+cWotmMCTgg32clAFnDLOaAKySGSfW94=
+	t=1761929977; cv=none; b=rOISxWAVI+d4L0UYYIEMTlDOcdqSl5ysDBpoVgIIOoTPqakyIYnWFOeKaXAhWLDsSFJ3mS8n+X4HJGeLADJoRvTbaFkdlSe2RUmZzkyVO1HqqR06vKv7ezEBWxX0zaqrh0nhxbBSZxoWypRsZ3fJkbctKoZL2E3j4jGI5SDrB5A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761928270; c=relaxed/simple;
-	bh=GELBmyWpjSc3VgISCM5QOTpO/OCBxi0Vy2YmJFKBNYE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ko0RKD7NawCkqs8f8Yw3efnqjijR2JDbKfoB3m0Oivn4Hbf2ByRxRojbXLwxk/XWNzfjVIJhi7s04zLq8Yo9QVw+gqYonjHb8vBxrYrsv/fLwVmfGbOVTXGJ+yNhIwY/kveJpvyZpCToIlp2BY1G/0z8M+e3hvD3XnHK6meT57E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IjMFujyp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A74DC4CEE7;
-	Fri, 31 Oct 2025 16:31:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761928270;
-	bh=GELBmyWpjSc3VgISCM5QOTpO/OCBxi0Vy2YmJFKBNYE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=IjMFujyp/7yiA00ntfE1LOlY+aMvI5O4JwoC3+MZvNuOmvCCLchOSWEKjcZI7yVWO
-	 /DjJRouRWVs+A0f0w0fiLqRwBuS77AJCvea/yMKMANDGBwfjBNMCRAXDQGJXfnC8na
-	 Vt0+StQDLIPBWKxgvYvt6bbJWNntUZgCoXYzGq2kIXp++fxHmQCBycwZqPtjS8eAT4
-	 4YifDbZF2XqUAQx6GZUQ4DbWscOqTW1dyHEDpOZW3ZoX2Wy57m+I5laW1cwUA2M87A
-	 J9sWolpx2xgcUnIjPCFmdO7wo2c8CymAC8CtFLWGH2tq7jeDTyk2FRbi6hf/MiORgq
-	 uGgFm15ZABrvA==
-Date: Fri, 31 Oct 2025 11:31:08 -0500
-From: Rob Herring <robh@kernel.org>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Abel Vesa <abel.vesa@linaro.org>, linux-arm-msm@vger.kernel.org,
-	linux-pci@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2 0/9] dt-bindings: PCI: qcom: Add missing required
- power-domains and resets
-Message-ID: <20251031163108.GA989164-robh@kernel.org>
-References: <20251030-dt-bindings-pci-qcom-fixes-power-domains-v2-0-28c1f11599fe@linaro.org>
+	s=arc-20240116; t=1761929977; c=relaxed/simple;
+	bh=XI5am4bqxEKpCCxr6YrL1WsbvZOn6blYwPCQvxM3vME=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=BKYuJP4bo8np5N9sNAITlV7/DwrAwN3ltBra3Zhf9kF5DCoNCQIYul/g4MQuRGCNjkOeid3TAv4kWWhqF9Ay9NlgeKLx6qUZlW/wc3Bo6k7hkcwCGuB68dvA/pG/ZYXnv7/qWPp2zkat73LtGcBK52Wucn89iHEuuCeflogfS5c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=dZj8Clx0; arc=none smtp.client-ip=209.85.218.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-afcb7ae6ed0so537888466b.3
+        for <stable@vger.kernel.org>; Fri, 31 Oct 2025 09:59:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20230601; t=1761929974; x=1762534774; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=32M06fDmvpSLGWpWm1+m+xurNqSGXRw6Z8ERXRqrdTk=;
+        b=dZj8Clx0PTctBVytYUWfRfWKgqGFv7CwLhZ2CdIu8dPV5P+uOhXkxdJ4HiWUfzw7D5
+         qHlzAexzEhbypxUQj/+lB9XdxPe1W4kbG9OH30aFEJkwbWI1kJwa84rKxNiY9Z1kgbe9
+         eTjDJrZzfTaP+c6KmxXXgH3mxxlu70gXwJ5g5RIKuzWKN2Chmrzjmm4EL73Blw7wLEKv
+         myUPmRQtXqArC2RlvtXlhvq6ZtsU9Xakb6bBfUp8a6m+lbF0aS4e6j/3NlKuC+woJk9E
+         CkjkdJmPnjy6yVk/mJ/rQgSyao+tPZVWQjYxBjkkvtw9ZSwYqHuMzAroHE6hMUZyPKQa
+         iqow==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761929974; x=1762534774;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=32M06fDmvpSLGWpWm1+m+xurNqSGXRw6Z8ERXRqrdTk=;
+        b=hLYo/Ye9y7Demter9+78T1SShwc3l6I6VvTs6142nWq/IUEfvCCBJGr0RytOMsK7kK
+         Y7v23Crf5WKWwfADRPDZZ8s31IWtVo6IG0IoWfZWvyPgQ9N3NZRoQuwAHhsKUgoUynLW
+         AhKDIgq35A1DNADFQES3OovcRwkcVpPjLMJVWNuimeQoZu9PU0kL6+yHCnZo+VfPeMgB
+         MwMzDuQ7y28MRp7sX1WaFb3vejGbOkDzSf1a2Cm+cGJLW3PYkZGExP95M14l+Mz88sPe
+         HLN0UbNlFJZ8B5LQtpEFyFDp7HF0AJZwAccsKEei0aJJQeRbAjurJcjXe8emubbLitXS
+         bKug==
+X-Forwarded-Encrypted: i=1; AJvYcCVxjRSQD/DDQeDWJuEpRM6t4ryyqR8jGo/HIz8AKUpl/PUT8VGyg0UiKtjPORyQOndEQExp6T8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxG/fxN0LfaEhPZBtIFFyZbg0yQrwaAU35x6Dxe4fPs8S4MzbqJ
+	ILyaoTgfoDZDL0JhsNw+GlpTfNQJZku99LoqQ2hUY3Gc20yh0/sjqJo=
+X-Gm-Gg: ASbGncvMEdNFbST+xX0BANB/GSSXbo/Glf0JtU8RRUTkjume1kqFEGjPZNVR3aIpbbP
+	byxJJU7Sl/D10LOlAj1kfySjvkxM4LlgRWmaE7SNTnnu4uGoJfo7pkV4+bbjokZHkl/xp/fmFUt
+	o3rxYSnKOOKFyDZUoXHcbjb8wlcd4RDJyRQ2VbrwDQy6FY+U7N30oT4T+amQhlG9ZMOm/aduSmQ
+	ypaAL1+HrAWiVW0qBVZl+s5OnFYGk79JRGaaaL6pcAiW9a+RzwvASWO/m4suK/rOkUT1hrAxQec
+	PeE1pJHz5oayomou5wwR2UEStXOe4RoudsvURwnmSj1qYLnEtMu6V+Md2u4Sy4woA6wOMHEIptv
+	CygQPVLJdBPcpjulB5lNabB9PcravMuyhmRAFRNweO3sim7RXadm8N18LcOHLOB/9n7Mcx294n9
+	xm78z2Vi6Ccl/lEyRc2z7C1cHDwsFRalXdgj+/AV8OghWNsG3nHx21OQ==
+X-Google-Smtp-Source: AGHT+IH5ejgtCc6m1hWIm0s3g5GB4B2IveCV86RV0S8OrlIVBxKrpwlcb7RP0l7Qo7hx09ed6gvYOQ==
+X-Received: by 2002:a17:907:96a7:b0:b3c:a161:6843 with SMTP id a640c23a62f3a-b70701067eemr413992466b.4.1761929973967;
+        Fri, 31 Oct 2025 09:59:33 -0700 (PDT)
+Received: from [192.168.1.3] (p5b2ac3bb.dip0.t-ipconnect.de. [91.42.195.187])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b70779762bcsm226476666b.15.2025.10.31.09.59.33
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 31 Oct 2025 09:59:33 -0700 (PDT)
+Message-ID: <afb00dbe-7d8f-4fc6-a735-6ece2c12dcd1@googlemail.com>
+Date: Fri, 31 Oct 2025 17:59:33 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251030-dt-bindings-pci-qcom-fixes-power-domains-v2-0-28c1f11599fe@linaro.org>
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH 6.17 00/35] 6.17.7-rc1 review
+Content-Language: de-DE
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+ achill@achill.org, sr@sladewatkins.com
+References: <20251031140043.564670400@linuxfoundation.org>
+From: Peter Schneider <pschneider1968@googlemail.com>
+In-Reply-To: <20251031140043.564670400@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Thu, Oct 30, 2025 at 09:50:43AM +0100, Krzysztof Kozlowski wrote:
-> Changes in v2:
-> - Add also resets
-> - Drop cc-stable tag in the last patch
-> - Link to v1: https://patch.msgid.link/20251029-dt-bindings-pci-qcom-fixes-power-domains-v1-0-da7ac2c477f4@linaro.org
-> 
-> Recent binding changes forgot to make power-domains and resets required.
-> 
-> I am not updating SC8180xp because it will be fixed other way in my next
-> patchset.
-> 
-> Best regards,
-> Krzysztof
-> 
-> ---
-> Krzysztof Kozlowski (9):
->       dt-bindings: PCI: qcom,pcie-sa8775p: Add missing required power-domains and resets
->       dt-bindings: PCI: qcom,pcie-sc7280: Add missing required power-domains and resets
->       dt-bindings: PCI: qcom,pcie-sc8280xp: Add missing required power-domains and resets
->       dt-bindings: PCI: qcom,pcie-sm8150: Add missing required power-domains and resets
->       dt-bindings: PCI: qcom,pcie-sm8250: Add missing required power-domains and resets
->       dt-bindings: PCI: qcom,pcie-sm8350: Add missing required power-domains and resets
->       dt-bindings: PCI: qcom,pcie-sm8450: Add missing required power-domains and resets
->       dt-bindings: PCI: qcom,pcie-sm8550: Add missing required power-domains and resets
->       dt-bindings: PCI: qcom,pcie-x1e80100: Add missing required power-domains and resets
-> 
->  Documentation/devicetree/bindings/pci/qcom,pcie-sa8775p.yaml  | 3 +++
->  Documentation/devicetree/bindings/pci/qcom,pcie-sc7280.yaml   | 5 +++++
->  Documentation/devicetree/bindings/pci/qcom,pcie-sc8280xp.yaml | 3 +++
->  Documentation/devicetree/bindings/pci/qcom,pcie-sm8150.yaml   | 5 +++++
->  Documentation/devicetree/bindings/pci/qcom,pcie-sm8250.yaml   | 5 +++++
->  Documentation/devicetree/bindings/pci/qcom,pcie-sm8350.yaml   | 5 +++++
->  Documentation/devicetree/bindings/pci/qcom,pcie-sm8450.yaml   | 5 +++++
->  Documentation/devicetree/bindings/pci/qcom,pcie-sm8550.yaml   | 5 +++++
->  Documentation/devicetree/bindings/pci/qcom,pcie-x1e80100.yaml | 5 +++++
->  9 files changed, 41 insertions(+)
+Am 31.10.2025 um 15:01 schrieb Greg Kroah-Hartman:
+> This is the start of the stable review cycle for the 6.17.7 release.
+> There are 35 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg oddities or regressions found.
+
+Tested-by: Peter Schneider <pschneider1968@googlemail.com>
+
+
+Beste Grüße,
+Peter Schneider
+
+-- 
+Climb the mountain not to plant your flag, but to embrace the challenge,
+enjoy the air and behold the view. Climb it so you can see the world,
+not so the world can see you.                    -- David McCullough Jr.
+
+OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
+Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
 
