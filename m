@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-191847-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191872-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C46BC256C1
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 15:05:15 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 634BDC257B1
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 15:11:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 201414F6777
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 14:03:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EB86E560AF5
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 14:04:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04E3623BD1B;
-	Fri, 31 Oct 2025 14:03:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2083A22A4FE;
+	Fri, 31 Oct 2025 14:04:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qk4movVu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WVv4H2vN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4B2A1D5CC9;
-	Fri, 31 Oct 2025 14:03:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE8AC23F417;
+	Fri, 31 Oct 2025 14:04:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761919389; cv=none; b=dnmHBz6IiR0EQywlDoa/kfvEpgltP5biaC0AlI544DvPdzj+Z/Yi78NYYTTKKqF6X3qFnZYmUDJAiXqsVYKyvZgtHEkJx0BHEtBaaCB3yvmzwJsuwUURZ0WpneKAJnXeHSJ7iNKscF60TNI1GAcVp5RgygRa3XezcO2ub7AYbBY=
+	t=1761919459; cv=none; b=piGvbe089ZajYINM8fpFLhPHGxMdZuZuR1xMMoyEGnFImn8baxVUPZ4UleH1hL1MlT8sJ8ZY48KDQiqWuQZFMfn6Rg1qj66Mvuw4VUcLabn6pCfRLoKdrn7lbDXhngTYbGbAiEYwJ0OGEyxVVtQwRNSeK189ZJKXQ2cx9nHRroY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761919389; c=relaxed/simple;
-	bh=+7AmNMV6xwBnDeZMh5teqpxMRUsjnw06RJq5+xigaQQ=;
+	s=arc-20240116; t=1761919459; c=relaxed/simple;
+	bh=mrrmN6F0HRYCD9L/tuTogT32eUOo/5hAtSWGK6KfBMk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gKwHa17SLAN1zfwp7ORQwJdu52GiDtc394ErJVhzY2qYmYHwq37X622Z45EzJJDOTTFdEuXz3veKgf20gHXb+boahQiL/nnL2GiAsjBa1GN08ahOtl+2QUKmcDmCFrdqWq4TLDVpHU9He6I2WgaZ0DkIt8iCeqkmlY1vSYZrEhU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qk4movVu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F02BC4CEE7;
-	Fri, 31 Oct 2025 14:03:09 +0000 (UTC)
+	 MIME-Version; b=bxr1rdMyzsvdqaen6eH+EaCWVoeK+EHaogNxbZUZk8QxNO2S9SWT9he9R884BzUJYgRN0zwDiKUcQCgaDedFF74Fz6Ael7YbbarqSgOycBuYMiah2WSddLHf2BfMhtPFRxiYYy6JGhsfTh7H/1O4Qb4shFpUD57Air6TbcqF/Bc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WVv4H2vN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B849C4CEE7;
+	Fri, 31 Oct 2025 14:04:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761919389;
-	bh=+7AmNMV6xwBnDeZMh5teqpxMRUsjnw06RJq5+xigaQQ=;
+	s=korg; t=1761919459;
+	bh=mrrmN6F0HRYCD9L/tuTogT32eUOo/5hAtSWGK6KfBMk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qk4movVuzvPbXkXPor6tDllcelyN1nXMeJGeFhh3zOIUq0mM1ezB2y5pjxfmySQbk
-	 JBnBhUlhwkU8FA84cVvLuUhLvNzsSqeolsefuHJdV5oIunKAWD/vczplLVFTxwICju
-	 1Hx0bN8iFFsTN/0+vAxgkTLpPAWWfWXvy3V/W+qI=
+	b=WVv4H2vNkTy/HBp5+lTq6SSW3dHaXAJKlAPuj5ja7gcEv/N1VNmDDRM3kmxRKffXv
+	 Bb3r14s3SkSMX1O64Iq0VLkIuBFQS7pdp3V7RQBpTwLQM11IYVjTqWV3DqxMKe1TrR
+	 lJmRNx6+lVE5ysBKC8He1uxvyStroL/GmdN3y/Us=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Samuel Jacob <samjaco@google.com>,
-	Uday M Bhat <uday.m.bhat@intel.com>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>,
+	Geliang Tang <geliang@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 24/32] xhci: dbc: Allow users to modify DbC poll interval via sysfs
-Date: Fri, 31 Oct 2025 15:01:18 +0100
-Message-ID: <20251031140043.029433053@linuxfoundation.org>
+Subject: [PATCH 6.12 26/40] selftests: mptcp: join: mark delete re-add signal as skipped if not supported
+Date: Fri, 31 Oct 2025 15:01:19 +0100
+Message-ID: <20251031140044.650295575@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251031140042.387255981@linuxfoundation.org>
-References: <20251031140042.387255981@linuxfoundation.org>
+In-Reply-To: <20251031140043.939381518@linuxfoundation.org>
+References: <20251031140043.939381518@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,133 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uday M Bhat <uday.m.bhat@intel.com>
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
 
-[ Upstream commit de3edd47a18fe05a560847cc3165871474e08196 ]
+[ Upstream commit c3496c052ac36ea98ec4f8e95ae6285a425a2457 ]
 
-xhci DbC driver polls the host controller for DbC events at a reduced
-rate when DbC is enabled but there are no active data transfers.
+The call to 'continue_if' was missing: it properly marks a subtest as
+'skipped' if the attached condition is not valid.
 
-Allow users to modify this reduced poll interval via dbc_poll_interval_ms
-sysfs entry. Unit is milliseconds and accepted range is 0 to 5000.
-Max interval of 5000 ms is selected as it matches the common 5 second
-timeout used in usb stack.
-Default value is 64 milliseconds.
+Without that, the test is wrongly marked as passed on older kernels.
 
-A long interval is useful when users know there won't be any activity
-on systems connected via DbC for long periods, and want to avoid
-battery drainage due to unnecessary CPU usage.
-
-Example being Android Debugger (ADB) usage over DbC on ChromeOS systems
-running Android Runtime.
-
-[minor changes and rewording -Mathias]
-
-Co-developed-by: Samuel Jacob <samjaco@google.com>
-Signed-off-by: Samuel Jacob <samjaco@google.com>
-Signed-off-by: Uday M Bhat <uday.m.bhat@intel.com>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20240626124835.1023046-5-mathias.nyman@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: f3d12ec847b9 ("xhci: dbc: fix bogus 1024 byte prefix if ttyDBC read races with stall event")
+Fixes: b5e2fb832f48 ("selftests: mptcp: add explicit test case for remove/readd")
+Cc: stable@vger.kernel.org
+Reviewed-by: Geliang Tang <geliang@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20251020-net-mptcp-c-flag-late-add-addr-v1-4-8207030cb0e8@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/ABI/testing/sysfs-bus-pci-drivers-xhci_hcd |   10 +++
- drivers/usb/host/xhci-dbgcap.c                           |   38 +++++++++++++++
- drivers/usb/host/xhci-dbgcap.h                           |    2 
- 3 files changed, 49 insertions(+), 1 deletion(-)
+ tools/testing/selftests/net/mptcp/mptcp_join.sh |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/Documentation/ABI/testing/sysfs-bus-pci-drivers-xhci_hcd
-+++ b/Documentation/ABI/testing/sysfs-bus-pci-drivers-xhci_hcd
-@@ -75,3 +75,13 @@ Description:
- 		The default value is 1  (GNU Remote Debug command).
- 		Other permissible value is 0 which is for vendor defined debug
- 		target.
-+
-+What:		/sys/bus/pci/drivers/xhci_hcd/.../dbc_poll_interval_ms
-+Date:		February 2024
-+Contact:	Mathias Nyman <mathias.nyman@linux.intel.com>
-+Description:
-+		This attribute adjust the polling interval used to check for
-+		DbC events. Unit is milliseconds. Accepted values range from 0
-+		up to 5000. The default value is 64 ms.
-+		This polling interval is used while DbC is enabled but has no
-+		active data transfers.
---- a/drivers/usb/host/xhci-dbgcap.c
-+++ b/drivers/usb/host/xhci-dbgcap.c
-@@ -1214,11 +1214,48 @@ static ssize_t dbc_bInterfaceProtocol_st
- 	return size;
- }
+--- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+@@ -3823,7 +3823,7 @@ endpoint_tests()
  
-+static ssize_t dbc_poll_interval_ms_show(struct device *dev,
-+					 struct device_attribute *attr,
-+					 char *buf)
-+{
-+	struct xhci_dbc *dbc;
-+	struct xhci_hcd *xhci;
-+
-+	xhci = hcd_to_xhci(dev_get_drvdata(dev));
-+	dbc = xhci->dbc;
-+
-+	return sysfs_emit(buf, "%u\n", dbc->poll_interval);
-+}
-+
-+static ssize_t dbc_poll_interval_ms_store(struct device *dev,
-+					  struct device_attribute *attr,
-+					  const char *buf, size_t size)
-+{
-+	struct xhci_dbc *dbc;
-+	struct xhci_hcd *xhci;
-+	u32 value;
-+	int ret;
-+
-+	ret = kstrtou32(buf, 0, &value);
-+	if (ret || value > DBC_POLL_INTERVAL_MAX)
-+		return -EINVAL;
-+
-+	xhci = hcd_to_xhci(dev_get_drvdata(dev));
-+	dbc = xhci->dbc;
-+
-+	dbc->poll_interval = value;
-+
-+	mod_delayed_work(system_wq, &dbc->event_work, 0);
-+
-+	return size;
-+}
-+
- static DEVICE_ATTR_RW(dbc);
- static DEVICE_ATTR_RW(dbc_idVendor);
- static DEVICE_ATTR_RW(dbc_idProduct);
- static DEVICE_ATTR_RW(dbc_bcdDevice);
- static DEVICE_ATTR_RW(dbc_bInterfaceProtocol);
-+static DEVICE_ATTR_RW(dbc_poll_interval_ms);
- 
- static struct attribute *dbc_dev_attributes[] = {
- 	&dev_attr_dbc.attr,
-@@ -1226,6 +1263,7 @@ static struct attribute *dbc_dev_attribu
- 	&dev_attr_dbc_idProduct.attr,
- 	&dev_attr_dbc_bcdDevice.attr,
- 	&dev_attr_dbc_bInterfaceProtocol.attr,
-+	&dev_attr_dbc_poll_interval_ms.attr,
- 	NULL
- };
- 
---- a/drivers/usb/host/xhci-dbgcap.h
-+++ b/drivers/usb/host/xhci-dbgcap.h
-@@ -94,7 +94,7 @@ struct dbc_ep {
- #define DBC_QUEUE_SIZE			16
- #define DBC_WRITE_BUF_SIZE		8192
- #define DBC_POLL_INTERVAL_DEFAULT	64	/* milliseconds */
--
-+#define DBC_POLL_INTERVAL_MAX		5000	/* milliseconds */
- /*
-  * Private structure for DbC hardware state:
-  */
+ 	# remove and re-add
+ 	if reset_with_events "delete re-add signal" &&
+-	   mptcp_lib_kallsyms_has "subflow_rebuild_header$"; then
++	   continue_if mptcp_lib_kallsyms_has "subflow_rebuild_header$"; then
+ 		ip netns exec $ns1 sysctl -q net.mptcp.add_addr_timeout=0
+ 		pm_nl_set_limits $ns1 0 3
+ 		pm_nl_set_limits $ns2 3 3
 
 
 
