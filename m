@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-191897-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191871-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EEB8C25848
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 15:17:38 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id C72AEC25736
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 15:08:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 725D856221A
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 14:05:37 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0FEAF4F603F
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 14:04:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A5C525A2CF;
-	Fri, 31 Oct 2025 14:05:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44B5734C15E;
+	Fri, 31 Oct 2025 14:04:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BiDz0VJY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tv1K6I4s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E43F2459F8;
-	Fri, 31 Oct 2025 14:05:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3E8F32C936;
+	Fri, 31 Oct 2025 14:04:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761919532; cv=none; b=W5Vymr/OH4PUydVFeyx4dBp6sU2A1RcQk60lOXWstxEv9YhFP/8h8uuceCS9pEfY2UD6mCjY0qD1i9HBVwjJw1FYYmjHTgT5JwMNuC5aFYNv4BPwV5a1Jm6OWOO+TRn8ZucJ+UCVeAeRqyRLILIBRVH7LTZYOe1pGX+7t/mugj0=
+	t=1761919457; cv=none; b=QzupwiJnjLmxcg7iJXOTzhY6AeeumW7sANJxKwJCEIdkpORmwuE3GJLPjwb3Qcbppq9hNxx30Fr6C/CTyGby/PibPyNnnA051rRnv/r96oyhdZ7hcw0QowwM6mjwvMcx8Mg08AmLV9MxdYRCkOmTkJRNkFxFpK1WAOsPK32WH+c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761919532; c=relaxed/simple;
-	bh=xxRoeE8YJSVVBrwa0V9+t6L1gDqt2nNklx0OY1/uIxQ=;
+	s=arc-20240116; t=1761919457; c=relaxed/simple;
+	bh=d3t1QroaTh8CJ4LRpPgRqdcrcQ9vf4d5r8tjPp9WjV0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RarOJDfvbo22MvBhGCpOL5xpGkhBPbIulRZZcx3OCsa44y07OZ0g27hRYjx5DzCOWZeA7Tb7sIlANu5yqSQUkhvTo+uNsn7adLH7C3g1xRLUq6Jd8YXuG3KKWEr2DSiU3Keq9OezUZaoWJkapdTKCuin3+15i08ljSXkiJg6KvI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BiDz0VJY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4658C4CEFB;
-	Fri, 31 Oct 2025 14:05:31 +0000 (UTC)
+	 MIME-Version; b=LoAFl/ByppBO24UQmV1ETvRZdyBnycOH9xMl70jwpy3yyid1QaSHdTdlDt8UZ8mt+K0QBboUfl7lLARv34qOkcNuceYOk/PC8gfk9YsvY6AwDGae5m8MJfq9RcEbamulYwPihNZh4GT8Nb081Kd51WWSX2khwmUN5Utpn+XzOHc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tv1K6I4s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D7F5C4CEE7;
+	Fri, 31 Oct 2025 14:04:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761919532;
-	bh=xxRoeE8YJSVVBrwa0V9+t6L1gDqt2nNklx0OY1/uIxQ=;
+	s=korg; t=1761919456;
+	bh=d3t1QroaTh8CJ4LRpPgRqdcrcQ9vf4d5r8tjPp9WjV0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BiDz0VJY+x2ZXBGuJZn2QnGpI7BV+L90S0FqPfvutBdzp74n3evQ0jIO9mp2yUNGH
-	 BF7W6N12kLSwRH2PlFrjVn5f91vKXgo6hsEp82HaLol0oi/KzNIpmwNNmgp5kOtlKE
-	 sOMp/ebi5DrpqJ/bFQGnGpgVjdLXfYeWz7X/WB+I=
+	b=Tv1K6I4suyp/+8/8zryiYmiGCKLmDGODrZ9h1yVKvAx0r6Kr0hCgJ4eY4YCJdnpd6
+	 ACcNMUyCWBu11MC56n3GEwfFEz1Qi3GXu6FIWL8p7XtwHF9/99faejw5bu1YI8JSIX
+	 rV9IJ3w1rQSt9OjPSza5unYpMCSCDpGiuo5KEXnY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Guy Briggs <rgb@redhat.com>,
-	Paul Moore <paul@paul-moore.com>,
+	Matthieu Baerts <matttbe@kernel.org>,
+	Geliang Tang <tanggeliang@kylinos.cn>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 10/35] audit: record fanotify event regardless of presence of rules
+Subject: [PATCH 6.12 25/40] selftests: mptcp: disable add_addr retrans in endpoint_tests
 Date: Fri, 31 Oct 2025 15:01:18 +0100
-Message-ID: <20251031140043.804680603@linuxfoundation.org>
+Message-ID: <20251031140044.623816103@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251031140043.564670400@linuxfoundation.org>
-References: <20251031140043.564670400@linuxfoundation.org>
+In-Reply-To: <20251031140043.939381518@linuxfoundation.org>
+References: <20251031140043.939381518@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Guy Briggs <rgb@redhat.com>
+From: Geliang Tang <tanggeliang@kylinos.cn>
 
-[ Upstream commit ce8370e2e62a903e18be7dd0e0be2eee079501e1 ]
+[ Upstream commit f92199f551e617fae028c5c5905ddd63e3616e18 ]
 
-When no audit rules are in place, fanotify event results are
-unconditionally dropped due to an explicit check for the existence of
-any audit rules.  Given this is a report from another security
-sub-system, allow it to be recorded regardless of the existence of any
-audit rules.
+To prevent test instability in the "delete re-add signal" test caused by
+ADD_ADDR retransmissions, disable retransmissions for this test by setting
+net.mptcp.add_addr_timeout to 0.
 
-To test, install and run the fapolicyd daemon with default config.  Then
-as an unprivileged user, create and run a very simple binary that should
-be denied.  Then check for an event with
-	ausearch -m FANOTIFY -ts recent
-
-Link: https://issues.redhat.com/browse/RHEL-9065
-Signed-off-by: Richard Guy Briggs <rgb@redhat.com>
-Signed-off-by: Paul Moore <paul@paul-moore.com>
+Suggested-by: Matthieu Baerts <matttbe@kernel.org>
+Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20250815-net-mptcp-misc-fixes-6-17-rc2-v1-6-521fe9957892@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: c3496c052ac3 ("selftests: mptcp: join: mark 'delete re-add signal' as skipped if not supported")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/audit.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/selftests/net/mptcp/mptcp_join.sh |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/linux/audit.h b/include/linux/audit.h
-index a394614ccd0b8..e3f06eba9c6e6 100644
---- a/include/linux/audit.h
-+++ b/include/linux/audit.h
-@@ -527,7 +527,7 @@ static inline void audit_log_kern_module(const char *name)
- 
- static inline void audit_fanotify(u32 response, struct fanotify_response_info_audit_rule *friar)
- {
--	if (!audit_dummy_context())
-+	if (audit_enabled)
- 		__audit_fanotify(response, friar);
- }
- 
--- 
-2.51.0
-
+--- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+@@ -3824,6 +3824,7 @@ endpoint_tests()
+ 	# remove and re-add
+ 	if reset_with_events "delete re-add signal" &&
+ 	   mptcp_lib_kallsyms_has "subflow_rebuild_header$"; then
++		ip netns exec $ns1 sysctl -q net.mptcp.add_addr_timeout=0
+ 		pm_nl_set_limits $ns1 0 3
+ 		pm_nl_set_limits $ns2 3 3
+ 		pm_nl_add_endpoint $ns1 10.0.2.1 id 1 flags signal
 
 
 
