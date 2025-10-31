@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-191875-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191823-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F36A3C25872
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 15:18:33 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 013B9C25647
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 15:02:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3CB91560D71
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 14:04:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E507188F4B0
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 14:02:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD7E232C936;
-	Fri, 31 Oct 2025 14:04:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5925121B1BC;
+	Fri, 31 Oct 2025 14:02:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vuF2Bk1Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eFJtlKPm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AC6725DAEA;
-	Fri, 31 Oct 2025 14:04:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 127D019DFA2;
+	Fri, 31 Oct 2025 14:01:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761919468; cv=none; b=VZFzDd6Rb8oIVS2kgX+WjF22QFe0EoR51jM8q5F3SFzzej+BBpLpB6eYYa4faQ0OKJRUAUQU9jca1ovoUC24neY9BLqNDsqYlGf4RXrvp4R1jmeX13wz0RDXmkM+DA3EatcVuZw6NLLF0f5jEhN9a30F97G4AkM+Eg+s7lITXgk=
+	t=1761919320; cv=none; b=uPrAAbBpz9CJkjJibaEItzFOhVfecmS4v2t/Xi+iOKjV1YSGZLh0V5/bQ/+omPRUm4KlYnt4n4JosZiPjZiLBFiZ+MIBMsHP7I+0/i/ajGJGNflAC8qXYaDWR+bSmqH/1uWDfMjiSdGQglhqp3joHdNmmGI4pEDXxSs2QQltrsM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761919468; c=relaxed/simple;
-	bh=GODqVgLhNSKYcSLUpOUpl/v8rHUq7Cwx2aMtofoOC64=;
+	s=arc-20240116; t=1761919320; c=relaxed/simple;
+	bh=8TJ8xFqIE8B2nuAW2/qgrOOnMBbpeADTgFSkiyqKg0o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oXZQj5aJkNNH4Vji+7+tXF3TL5caQhiUM3CU86Uhx9DOrUE4pMkfegpsCCJqL7w7Ra/6HM2W0QwQKh61zfyASF967PaDzZWVTFt27XRUlc1y8MjjlkRnC89AbBYSv5XJwpL1xZFg7BJB9YCfiaHOFYqVBRU0k5+AiuEkDqag2jk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vuF2Bk1Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E21EEC4CEE7;
-	Fri, 31 Oct 2025 14:04:27 +0000 (UTC)
+	 MIME-Version; b=BXh/a8C6cDIsVqG3tumPz9YD+OBXL0yyKbGyjOpGTysrMqdycDhi2oZMHL5tDPzwZcMBxgOSX698B9r+FwoX2pfFUBHjCH117ftpIie0Qg85da2BY+MJ84OMWsgq3tWv8N/vybn7w9kXHRIHGtFCGiXG2yjg/ztgfBBxwGc0HgI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eFJtlKPm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B2D9C4CEE7;
+	Fri, 31 Oct 2025 14:01:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761919468;
-	bh=GODqVgLhNSKYcSLUpOUpl/v8rHUq7Cwx2aMtofoOC64=;
+	s=korg; t=1761919319;
+	bh=8TJ8xFqIE8B2nuAW2/qgrOOnMBbpeADTgFSkiyqKg0o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vuF2Bk1YTHE4wqb0ZS06IY8+iaybIS0hlvqNUYPxXrsdBxKClyUidruvpamjP9Fvi
-	 f8sxiMPSq8iwty4byHDFCN+JQir5t0YkG0+yw1V2mY5IUzPrxwMfbji5n127iYqO58
-	 0wMkWyxw3XAZhoTE9dgc9L4wU3CNv40b9Gg5HRpA=
+	b=eFJtlKPmhlPSsQ8V9ebZbXR0iTEZQIjxDVfWGAPLvvOdDwXn+1KGHBS+5Q9SXWj4N
+	 yj0g0BJtXkTS33vOdn43/GpZTiCJtllk5kVJ6nQ9hl80RrrpJAMvkia1UlHd+IRnfQ
+	 QYZRvTd6eMpEz64q94ixaQgt/uDaUUAwaEeJIrzo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Ridong <chenridong@huawei.com>,
-	Waiman Long <longman@redhat.com>,
-	Tejun Heo <tj@kernel.org>,
+	Thorsten Blum <thorsten.blum@linux.dev>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 11/40] cpuset: Use new excpus for nocpu error check when enabling root partition
-Date: Fri, 31 Oct 2025 15:01:04 +0100
-Message-ID: <20251031140044.218130016@linuxfoundation.org>
+Subject: [PATCH 6.6 11/32] btrfs: scrub: replace max_t()/min_t() with clamp() in scrub_throttle_dev_io()
+Date: Fri, 31 Oct 2025 15:01:05 +0100
+Message-ID: <20251031140042.687885773@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251031140043.939381518@linuxfoundation.org>
-References: <20251031140043.939381518@linuxfoundation.org>
+In-Reply-To: <20251031140042.387255981@linuxfoundation.org>
+References: <20251031140042.387255981@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Ridong <chenridong@huawei.com>
+From: Thorsten Blum <thorsten.blum@linux.dev>
 
-[ Upstream commit 59d5de3655698679ad8fd2cc82228de4679c4263 ]
+[ Upstream commit a7f3dfb8293c4cee99743132d69863a92e8f4875 ]
 
-A previous patch fixed a bug where new_prs should be assigned before
-checking housekeeping conflicts. This patch addresses another potential
-issue: the nocpu error check currently uses the xcpus which is not updated.
-Although no issue has been observed so far, the check should be performed
-using the new effective exclusive cpus.
+Replace max_t() followed by min_t() with a single clamp().
 
-The comment has been removed because the function returns an error if
-nocpu checking fails, which is unrelated to the parent.
+As was pointed by David Laight in
+https://lore.kernel.org/linux-btrfs/20250906122458.75dfc8f0@pumpkin/
+the calculation may overflow u32 when the input value is too large, so
+clamp_t() is not used.  In practice the expected values are in range of
+megabytes to gigabytes (throughput limit) so the bug would not happen.
 
-Signed-off-by: Chen Ridong <chenridong@huawei.com>
-Reviewed-by: Waiman Long <longman@redhat.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
+Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+Reviewed-by: David Sterba <dsterba@suse.com>
+[ Use clamp() and add explanation. ]
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/cgroup/cpuset.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ fs/btrfs/scrub.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
-index 25f9565f798d4..13eb986172499 100644
---- a/kernel/cgroup/cpuset.c
-+++ b/kernel/cgroup/cpuset.c
-@@ -1679,11 +1679,7 @@ static int update_parent_effective_cpumask(struct cpuset *cs, int cmd,
- 		if (prstate_housekeeping_conflict(new_prs, xcpus))
- 			return PERR_HKEEPING;
+diff --git a/fs/btrfs/scrub.c b/fs/btrfs/scrub.c
+index 7632d652a1257..4a5a5ee360e57 100644
+--- a/fs/btrfs/scrub.c
++++ b/fs/btrfs/scrub.c
+@@ -1271,8 +1271,7 @@ static void scrub_throttle_dev_io(struct scrub_ctx *sctx, struct btrfs_device *d
+ 	 * Slice is divided into intervals when the IO is submitted, adjust by
+ 	 * bwlimit and maximum of 64 intervals.
+ 	 */
+-	div = max_t(u32, 1, (u32)(bwlimit / (16 * 1024 * 1024)));
+-	div = min_t(u32, 64, div);
++	div = clamp(bwlimit / (16 * 1024 * 1024), 1, 64);
  
--		/*
--		 * A parent can be left with no CPU as long as there is no
--		 * task directly associated with the parent partition.
--		 */
--		if (nocpu)
-+		if (tasks_nocpu_error(parent, cs, xcpus))
- 			return PERR_NOCPUS;
- 
- 		deleting = cpumask_and(tmp->delmask, xcpus, parent->effective_xcpus);
+ 	/* Start new epoch, set deadline */
+ 	now = ktime_get();
 -- 
 2.51.0
 
