@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-191876-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191901-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AE75C2573F
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 15:08:49 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E363C2583C
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 15:17:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 83FA54F6153
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 14:04:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC029563135
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 14:06:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A817424BBEC;
-	Fri, 31 Oct 2025 14:04:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A05225EFAE;
+	Fri, 31 Oct 2025 14:05:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PglCGvKx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KZB2QWUV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6376621FF25;
-	Fri, 31 Oct 2025 14:04:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1819022A4D6;
+	Fri, 31 Oct 2025 14:05:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761919471; cv=none; b=qmFJQseCKvcnNRhpU9uaKiJ9qnJZsdIw90sCY/3ECu3AgRiEvtUKc4HkLosF6mUExX9qhZ3h/+PS9R/HSgeFVskWHGmBqDsxysYKqFBUE+3DkPV9SLzLpnaL44CJuwMQXxLSEicHYp/wl/J183U/p8xF1OQkCGIIVHfqNNgIZoU=
+	t=1761919544; cv=none; b=HAlbDsFLJZLSVF9wnLUr/K/vKnElk5azzij/uElwi19pkffpLdOGxiKa26Qp0mhMdrZ2GoSaCzW3DEifI4Ll32EAgI29NGWJy3PqbB3ugx4sRe3eGrUJqxn9oXtAL8SuJo0cDRuCn6hovjR4nzW3bGJBzh22RlPqB3EBdHg83wM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761919471; c=relaxed/simple;
-	bh=vIr4F+QjOzmgH5Om6mHmqYP+qFPGwJKNzSQ2c/il2xc=;
+	s=arc-20240116; t=1761919544; c=relaxed/simple;
+	bh=Ep8ttPbCAdYc8+RFZ7M94sPSuZGu1VwsK+EpeDQ7APM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VhRfw3QIC0+Aal7qN0lDBTLzXc+rcjr6ctbK1sNGYvPnX3zvVJdNXQw/rsTYmbycHYztV2wHW9smquNxGf46Dh5XTUUVUbdc70pTFpsdC+I4snwN97Aw2LZG2Mg8UB3/5S86AMlvHXs6+PsD6hFDqOHVbAdm5V00SeO/cL0kagI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PglCGvKx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB6FDC4CEE7;
-	Fri, 31 Oct 2025 14:04:30 +0000 (UTC)
+	 MIME-Version; b=NgG7A9QsUvkrlfQ8fNb8PFSLLmiNV9n4JaSw7cM8wOCNGxz6vOroD5UjMa9L9XHFSGN2y6B40DgE27Dq2Mez8eXZxhZMaZAIkB3VY9B3R13UVqIKCH+1hI+86B/+AEQsD1JaGeTQHxE1U9SKQKgFiuzjQenO7R9eLeupEiiKG/4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KZB2QWUV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B1D5C4CEE7;
+	Fri, 31 Oct 2025 14:05:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761919471;
-	bh=vIr4F+QjOzmgH5Om6mHmqYP+qFPGwJKNzSQ2c/il2xc=;
+	s=korg; t=1761919544;
+	bh=Ep8ttPbCAdYc8+RFZ7M94sPSuZGu1VwsK+EpeDQ7APM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PglCGvKxjicKFFtOGerqk+bCmVxP4JYeoj3sadn+STjnhs6UgQkxzEzMDuzYaGL05
-	 NxRn0L4VQTV4bdNyTXRjm+peca+lSlFk07xcaiuOnBcYSRcur6MkDMZXOLRRLKVm2N
-	 IL1Z6P0Ugo9BjiwJkAHT/3qcso1CI0aXARGSwmnY=
+	b=KZB2QWUVCzO4D3UpgCWynI2zpm7nd7/a6c8YswH9Gh7EYrObnoo8VE5eAkqTRjFV+
+	 8BoTaQZIZUI7Uh/CBlLlTxtgKlBnOmas/3msiMu5QIaLVQ2M9HJSGx6CdhLzHLF6Pz
+	 Y/ukjrB2SJawEfkNRLX6MaSPHzYgW8ZBc0M5ucp0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Wetzel <Alexander@wetzel-home.de>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Alva Lan <alvalan9@foxmail.com>
-Subject: [PATCH 6.12 29/40] wifi: cfg80211: Add missing lock in cfg80211_check_and_end_cac()
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.17 14/35] perf: Have get_perf_callchain() return NULL if crosstask and user are set
 Date: Fri, 31 Oct 2025 15:01:22 +0100
-Message-ID: <20251031140044.724987109@linuxfoundation.org>
+Message-ID: <20251031140043.901751352@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251031140043.939381518@linuxfoundation.org>
-References: <20251031140043.939381518@linuxfoundation.org>
+In-Reply-To: <20251031140043.564670400@linuxfoundation.org>
+References: <20251031140043.564670400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,98 +63,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Wetzel <Alexander@wetzel-home.de>
+From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-[ Upstream commit 2c5dee15239f3f3e31aa5c8808f18996c039e2c1 ]
+[ Upstream commit 153f9e74dec230f2e070e16fa061bc7adfd2c450 ]
 
-Callers of wdev_chandef() must hold the wiphy mutex.
+get_perf_callchain() doesn't support cross-task unwinding for user space
+stacks, have it return NULL if both the crosstask and user arguments are
+set.
 
-But the worker cfg80211_propagate_cac_done_wk() never takes the lock.
-Which triggers the warning below with the mesh_peer_connected_dfs
-test from hostapd and not (yet) released mac80211 code changes:
-
-WARNING: CPU: 0 PID: 495 at net/wireless/chan.c:1552 wdev_chandef+0x60/0x165
-Modules linked in:
-CPU: 0 UID: 0 PID: 495 Comm: kworker/u4:2 Not tainted 6.14.0-rc5-wt-g03960e6f9d47 #33 13c287eeabfe1efea01c0bcc863723ab082e17cf
-Workqueue: cfg80211 cfg80211_propagate_cac_done_wk
-Stack:
- 00000000 00000001 ffffff00 6093267c
- 00000000 6002ec30 6d577c50 60037608
- 00000000 67e8d108 6063717b 00000000
-Call Trace:
- [<6002ec30>] ? _printk+0x0/0x98
- [<6003c2b3>] show_stack+0x10e/0x11a
- [<6002ec30>] ? _printk+0x0/0x98
- [<60037608>] dump_stack_lvl+0x71/0xb8
- [<6063717b>] ? wdev_chandef+0x60/0x165
- [<6003766d>] dump_stack+0x1e/0x20
- [<6005d1b7>] __warn+0x101/0x20f
- [<6005d3a8>] warn_slowpath_fmt+0xe3/0x15d
- [<600b0c5c>] ? mark_lock.part.0+0x0/0x4ec
- [<60751191>] ? __this_cpu_preempt_check+0x0/0x16
- [<600b11a2>] ? mark_held_locks+0x5a/0x6e
- [<6005d2c5>] ? warn_slowpath_fmt+0x0/0x15d
- [<60052e53>] ? unblock_signals+0x3a/0xe7
- [<60052f2d>] ? um_set_signals+0x2d/0x43
- [<60751191>] ? __this_cpu_preempt_check+0x0/0x16
- [<607508b2>] ? lock_is_held_type+0x207/0x21f
- [<6063717b>] wdev_chandef+0x60/0x165
- [<605f89b4>] regulatory_propagate_dfs_state+0x247/0x43f
- [<60052f00>] ? um_set_signals+0x0/0x43
- [<605e6bfd>] cfg80211_propagate_cac_done_wk+0x3a/0x4a
- [<6007e460>] process_scheduled_works+0x3bc/0x60e
- [<6007d0ec>] ? move_linked_works+0x4d/0x81
- [<6007d120>] ? assign_work+0x0/0xaa
- [<6007f81f>] worker_thread+0x220/0x2dc
- [<600786ef>] ? set_pf_worker+0x0/0x57
- [<60087c96>] ? to_kthread+0x0/0x43
- [<6008ab3c>] kthread+0x2d3/0x2e2
- [<6007f5ff>] ? worker_thread+0x0/0x2dc
- [<6006c05b>] ? calculate_sigpending+0x0/0x56
- [<6003b37d>] new_thread_handler+0x4a/0x64
-irq event stamp: 614611
-hardirqs last  enabled at (614621): [<00000000600bc96b>] __up_console_sem+0x82/0xaf
-hardirqs last disabled at (614630): [<00000000600bc92c>] __up_console_sem+0x43/0xaf
-softirqs last  enabled at (614268): [<00000000606c55c6>] __ieee80211_wake_queue+0x933/0x985
-softirqs last disabled at (614266): [<00000000606c52d6>] __ieee80211_wake_queue+0x643/0x985
-
-Fixes: 26ec17a1dc5e ("cfg80211: Fix radar event during another phy CAC")
-Signed-off-by: Alexander Wetzel <Alexander@wetzel-home.de>
-Link: https://patch.msgid.link/20250717162547.94582-1-Alexander@wetzel-home.de
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-[ The author recommends that when porting to older kernels, we should use wiphy_lock()
-and wiphy_unlock() instead of guard(). This tip is mentioned in the link:
-https://patch.msgid.link/20250717162547.94582-1-Alexander@wetzel-home.de. ]
-Signed-off-by: Alva Lan <alvalan9@foxmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20250820180428.426423415@kernel.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/reg.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ kernel/events/callchain.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
---- a/net/wireless/reg.c
-+++ b/net/wireless/reg.c
-@@ -4234,6 +4234,8 @@ static void cfg80211_check_and_end_cac(s
- 	struct wireless_dev *wdev;
- 	unsigned int link_id;
+diff --git a/kernel/events/callchain.c b/kernel/events/callchain.c
+index decff7266cfbd..2609998ca07f1 100644
+--- a/kernel/events/callchain.c
++++ b/kernel/events/callchain.c
+@@ -224,6 +224,10 @@ get_perf_callchain(struct pt_regs *regs, u32 init_nr, bool kernel, bool user,
+ 	struct perf_callchain_entry_ctx ctx;
+ 	int rctx, start_entry_idx;
  
-+	wiphy_lock(&rdev->wiphy);
++	/* crosstask is not supported for user stacks */
++	if (crosstask && user && !kernel)
++		return NULL;
 +
- 	/* If we finished CAC or received radar, we should end any
- 	 * CAC running on the same channels.
- 	 * the check !cfg80211_chandef_dfs_usable contain 2 options:
-@@ -4258,6 +4260,8 @@ static void cfg80211_check_and_end_cac(s
- 				rdev_end_cac(rdev, wdev->netdev, link_id);
+ 	entry = get_callchain_entry(&rctx);
+ 	if (!entry)
+ 		return NULL;
+@@ -240,7 +244,7 @@ get_perf_callchain(struct pt_regs *regs, u32 init_nr, bool kernel, bool user,
+ 		perf_callchain_kernel(&ctx, regs);
+ 	}
+ 
+-	if (user) {
++	if (user && !crosstask) {
+ 		if (!user_mode(regs)) {
+ 			if (current->flags & (PF_KTHREAD | PF_USER_WORKER))
+ 				regs = NULL;
+@@ -249,9 +253,6 @@ get_perf_callchain(struct pt_regs *regs, u32 init_nr, bool kernel, bool user,
+ 		}
+ 
+ 		if (regs) {
+-			if (crosstask)
+-				goto exit_put;
+-
+ 			if (add_mark)
+ 				perf_callchain_store_context(&ctx, PERF_CONTEXT_USER);
+ 
+@@ -261,7 +262,6 @@ get_perf_callchain(struct pt_regs *regs, u32 init_nr, bool kernel, bool user,
  		}
  	}
-+
-+	wiphy_unlock(&rdev->wiphy);
- }
  
- void regulatory_propagate_dfs_state(struct wiphy *wiphy,
+-exit_put:
+ 	put_callchain_entry(rctx);
+ 
+ 	return entry;
+-- 
+2.51.0
+
 
 
 
