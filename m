@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-191846-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191870-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6CB4C256BB
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 15:05:12 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id E010DC25733
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 15:08:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id EC0B74F238E
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 14:03:14 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E8A4C4F927C
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 14:04:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DFF022A4FE;
-	Fri, 31 Oct 2025 14:03:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7098334B682;
+	Fri, 31 Oct 2025 14:04:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MyJAKxRc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZSbeq9vm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECE7822579E;
-	Fri, 31 Oct 2025 14:03:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C9013126AC;
+	Fri, 31 Oct 2025 14:04:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761919387; cv=none; b=TsTV5XIPbPYmeRCdgNaQOyW9QuhmV/jTv+Ah1oA0SW94okDxILnuBw0vuxM60Mn2SIMOO2rGkVJq06Vunb9A172gaRUthOKagns7J+ogknaE4ClESusXk+nC9aSHlUBqto2Ou5JIsXtVMb51z+JcCE/PC9E7TX2XkEUxgHo9K54=
+	t=1761919454; cv=none; b=iTnTI9Q/9KXayXokpr4Sr4VhHIusP9FXrTgmt50m2V6LZJXdHugY+SXimPlskfAfvnEgmaZ2LbBcnPWQFvBfwqlTZYOjrT1wsm9Yrwdj7lYKMnvv3QH/lP5vW/Fy1kCQsxAfzNaxUSTNC6SEx60tKWtKpRTxCQmz8Zux3BRKgIQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761919387; c=relaxed/simple;
-	bh=46FFnr9WLF9i9H0srZJRWF7kyywIMd+cnzId3IhG+1Y=;
+	s=arc-20240116; t=1761919454; c=relaxed/simple;
+	bh=uGngxyuA+e3YwxSd4Z6MPXf47/0UQGl2/qK/Vz9m+do=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cq31Ftb/dc6FvNW7q8lFbOUr4gFh44XFOlrStJdA6WO8vvHZcHfFyOMECNk6DdLZ56WPD/aRQanV7TjuRLewO6RtxD4qSC76+NgjL7yxN96wUIYewQkfnTmBvKkTps4ZS9Nh7/W3HZBl1uI7snGpj4ePCeL2EnA29u8oAmQAHMA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MyJAKxRc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FF1AC4CEE7;
-	Fri, 31 Oct 2025 14:03:06 +0000 (UTC)
+	 MIME-Version; b=Bp1p0ve9jISjutTqANE8jFGVipyvEqgPmZyxHLH7P4v3ke+AKuPgOsm+Ngnf3uCnPcB4OGuLTPjgPEGceMILYEG9atojfcqy1SrIgiSkAxGTLtfnluRb7lGJh/sAcLY7vfwuCK6Zi0EkXEG5QjicDhYSjHFAKEzgPvDrDCbAkbQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZSbeq9vm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A502C4CEE7;
+	Fri, 31 Oct 2025 14:04:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761919386;
-	bh=46FFnr9WLF9i9H0srZJRWF7kyywIMd+cnzId3IhG+1Y=;
+	s=korg; t=1761919454;
+	bh=uGngxyuA+e3YwxSd4Z6MPXf47/0UQGl2/qK/Vz9m+do=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MyJAKxRcMDF7KxI7KS5alVN5JxeZT30QHsoL0+MZQyZnLUvZ2Ul8BHDWbyFERWn5w
-	 /UExs/wr2aFNbDU2pNzyQu7AbCz/FvK2BXMHEgzvOYbpbM21XbaCXqvFeTuPvnCMd7
-	 DZy3VrIhxro7xcG4M8gwe5I8VxCv2850bmLxSdts=
+	b=ZSbeq9vmhA/X708YmdImZcwj/X7pNlgFGBVIyXZYFmYfEj9UANaR22yOKFLVShLvt
+	 hxEzGU3uUOkUpi8jHZOUg5zZDhzRWWZIvaHVlNYHa6Mk9epGJl6qdlSRD79d8fcc0r
+	 5vZSh2rZ4GhlGt2XOwd2cO5R//9VEN2KOX+PGUoM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Uday M Bhat <uday.m.bhat@intel.com>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 23/32] xhci: dbc: poll at different rate depending on data transfer activity
+	Zhixu Liu <zhixu.liu@gmail.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Andreas Radke <andreas.radke@mailbox.org>,
+	Salvatore Bonaccorso <carnil@debian.org>
+Subject: [PATCH 6.12 24/40] docs: kdoc: handle the obsolescensce of docutils.ErrorString()
 Date: Fri, 31 Oct 2025 15:01:17 +0100
-Message-ID: <20251031140043.003030045@linuxfoundation.org>
+Message-ID: <20251031140044.596816599@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251031140042.387255981@linuxfoundation.org>
-References: <20251031140042.387255981@linuxfoundation.org>
+In-Reply-To: <20251031140043.939381518@linuxfoundation.org>
+References: <20251031140043.939381518@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,103 +63,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mathias Nyman <mathias.nyman@linux.intel.com>
+From: Jonathan Corbet <corbet@lwn.net>
 
-[ Upstream commit fb18e5bb96603cc79d97f03e4c05f3992cf28624 ]
+commit 00d95fcc4dee66dfb6980de6f2973b32f973a1eb upstream.
 
-DbC driver starts polling for events immediately when DbC is enabled.
-The current polling interval is 1ms, which keeps the CPU busy, impacting
-power management even when there are no active data transfers.
+The ErrorString() and SafeString() docutils functions were helpers meant to
+ease the handling of encodings during the Python 3 transition.  There is no
+real need for them after Python 3.6, and docutils 0.22 removes them,
+breaking the docs build
 
-Solve this by polling at a slower rate, with a 64ms interval as default
-until a transfer request is queued, or if there are still are pending
-unhandled transfers at event completion.
+Handle this by just injecting our own one-liner version of ErrorString(),
+and removing the sole SafeString() call entirely.
 
-Tested-by: Uday M Bhat <uday.m.bhat@intel.com>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20240229141438.619372-9-mathias.nyman@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: f3d12ec847b9 ("xhci: dbc: fix bogus 1024 byte prefix if ttyDBC read races with stall event")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Zhixu Liu <zhixu.liu@gmail.com>
+Signed-off-by: Jonathan Corbet <corbet@lwn.net>
+Message-ID: <87ldmnv2pi.fsf@trenco.lwn.net>
+[ Salvatore Bonaccorso: Backport to v6.17.y for context changes in
+  Documentation/sphinx/kernel_include.py with major refactorings for the v6.18
+  development cycle. Backport ErrorString definition as well to
+  Documentation/sphinx/kernel_abi.py file for 6.12.y where it is imported
+  from docutils before the faccc0ec64e1 ("docs: sphinx/kernel_abi: adjust
+  coding style") change. ]
+Suggested-by: Andreas Radke <andreas.radke@mailbox.org>
+Signed-off-by: Salvatore Bonaccorso <carnil@debian.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/host/xhci-dbgcap.c |   13 +++++++++++--
- drivers/usb/host/xhci-dbgcap.h |    2 ++
- 2 files changed, 13 insertions(+), 2 deletions(-)
+ Documentation/sphinx/kernel_abi.py          |    4 +++-
+ Documentation/sphinx/kernel_feat.py         |    4 +++-
+ Documentation/sphinx/kernel_include.py      |    6 ++++--
+ Documentation/sphinx/maintainers_include.py |    4 +++-
+ 4 files changed, 13 insertions(+), 5 deletions(-)
 
---- a/drivers/usb/host/xhci-dbgcap.c
-+++ b/drivers/usb/host/xhci-dbgcap.c
-@@ -665,7 +665,8 @@ static int xhci_dbc_start(struct xhci_db
- 		return ret;
- 	}
+--- a/Documentation/sphinx/kernel_abi.py
++++ b/Documentation/sphinx/kernel_abi.py
+@@ -42,9 +42,11 @@ import kernellog
+ from docutils import nodes, statemachine
+ from docutils.statemachine import ViewList
+ from docutils.parsers.rst import directives, Directive
+-from docutils.utils.error_reporting import ErrorString
+ from sphinx.util.docutils import switch_source_input
  
--	return mod_delayed_work(system_wq, &dbc->event_work, 1);
-+	return mod_delayed_work(system_wq, &dbc->event_work,
-+				msecs_to_jiffies(dbc->poll_interval));
- }
++def ErrorString(exc):  # Shamelessly stolen from docutils
++    return f'{exc.__class__.__name}: {exc}'
++
+ __version__  = '1.0'
  
- static void xhci_dbc_stop(struct xhci_dbc *dbc)
-@@ -964,8 +965,10 @@ static void xhci_dbc_handle_events(struc
- 	enum evtreturn		evtr;
- 	struct xhci_dbc		*dbc;
- 	unsigned long		flags;
-+	unsigned int		poll_interval;
+ def setup(app):
+--- a/Documentation/sphinx/kernel_feat.py
++++ b/Documentation/sphinx/kernel_feat.py
+@@ -40,9 +40,11 @@ import sys
+ from docutils import nodes, statemachine
+ from docutils.statemachine import ViewList
+ from docutils.parsers.rst import directives, Directive
+-from docutils.utils.error_reporting import ErrorString
+ from sphinx.util.docutils import switch_source_input
  
- 	dbc = container_of(to_delayed_work(work), struct xhci_dbc, event_work);
-+	poll_interval = dbc->poll_interval;
++def ErrorString(exc):  # Shamelessly stolen from docutils
++    return f'{exc.__class__.__name}: {exc}'
++
+ __version__  = '1.0'
  
- 	spin_lock_irqsave(&dbc->lock, flags);
- 	evtr = xhci_dbc_do_handle_events(dbc);
-@@ -981,13 +984,18 @@ static void xhci_dbc_handle_events(struc
- 			dbc->driver->disconnect(dbc);
- 		break;
- 	case EVT_DONE:
-+		/* set fast poll rate if there are pending data transfers */
-+		if (!list_empty(&dbc->eps[BULK_OUT].list_pending) ||
-+		    !list_empty(&dbc->eps[BULK_IN].list_pending))
-+			poll_interval = 1;
- 		break;
- 	default:
- 		dev_info(dbc->dev, "stop handling dbc events\n");
- 		return;
- 	}
+ def setup(app):
+--- a/Documentation/sphinx/kernel_include.py
++++ b/Documentation/sphinx/kernel_include.py
+@@ -34,13 +34,15 @@ u"""
+ import os.path
  
--	mod_delayed_work(system_wq, &dbc->event_work, 1);
-+	mod_delayed_work(system_wq, &dbc->event_work,
-+			 msecs_to_jiffies(poll_interval));
- }
+ from docutils import io, nodes, statemachine
+-from docutils.utils.error_reporting import SafeString, ErrorString
+ from docutils.parsers.rst import directives
+ from docutils.parsers.rst.directives.body import CodeBlock, NumberLines
+ from docutils.parsers.rst.directives.misc import Include
  
- static ssize_t dbc_show(struct device *dev,
-@@ -1242,6 +1250,7 @@ xhci_alloc_dbc(struct device *dev, void
- 	dbc->idVendor = DBC_VENDOR_ID;
- 	dbc->bcdDevice = DBC_DEVICE_REV;
- 	dbc->bInterfaceProtocol = DBC_PROTOCOL;
-+	dbc->poll_interval = DBC_POLL_INTERVAL_DEFAULT;
+ __version__  = '1.0'
  
- 	if (readl(&dbc->regs->control) & DBC_CTRL_DBC_ENABLE)
- 		goto err;
---- a/drivers/usb/host/xhci-dbgcap.h
-+++ b/drivers/usb/host/xhci-dbgcap.h
-@@ -93,6 +93,7 @@ struct dbc_ep {
++def ErrorString(exc):  # Shamelessly stolen from docutils
++    return f'{exc.__class__.__name}: {exc}'
++
+ # ==============================================================================
+ def setup(app):
+ # ==============================================================================
+@@ -111,7 +113,7 @@ class KernelInclude(Include):
+             raise self.severe('Problems with "%s" directive path:\n'
+                               'Cannot encode input file path "%s" '
+                               '(wrong locale?).' %
+-                              (self.name, SafeString(path)))
++                              (self.name, path))
+         except IOError as error:
+             raise self.severe('Problems with "%s" directive path:\n%s.' %
+                       (self.name, ErrorString(error)))
+--- a/Documentation/sphinx/maintainers_include.py
++++ b/Documentation/sphinx/maintainers_include.py
+@@ -22,10 +22,12 @@ import re
+ import os.path
  
- #define DBC_QUEUE_SIZE			16
- #define DBC_WRITE_BUF_SIZE		8192
-+#define DBC_POLL_INTERVAL_DEFAULT	64	/* milliseconds */
+ from docutils import statemachine
+-from docutils.utils.error_reporting import ErrorString
+ from docutils.parsers.rst import Directive
+ from docutils.parsers.rst.directives.misc import Include
  
- /*
-  * Private structure for DbC hardware state:
-@@ -139,6 +140,7 @@ struct xhci_dbc {
++def ErrorString(exc):  # Shamelessly stolen from docutils
++    return f'{exc.__class__.__name}: {exc}'
++
+ __version__  = '1.0'
  
- 	enum dbc_state			state;
- 	struct delayed_work		event_work;
-+	unsigned int			poll_interval;	/* ms */
- 	unsigned			resume_required:1;
- 	struct dbc_ep			eps[2];
- 
+ def setup(app):
 
 
 
