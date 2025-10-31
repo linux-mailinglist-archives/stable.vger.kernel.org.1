@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-191778-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191779-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29FFCC2306C
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 03:33:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 43A36C230C0
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 03:43:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C62F1A638A5
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 02:33:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 806451A604CA
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 02:44:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5592D2D839D;
-	Fri, 31 Oct 2025 02:33:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C32363081D3;
+	Fri, 31 Oct 2025 02:43:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="j+ABI03J"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="p2D5hXEC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E52582ED848;
-	Fri, 31 Oct 2025 02:33:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C39D307ACE;
+	Fri, 31 Oct 2025 02:43:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761877995; cv=none; b=JU3gLgwVi2y6lGNqF1JQcX+RQrbaR2IyjGa7ofBxJXuKqUpgBQipWknb/hXbr6L0q4Xq1U03trmPOh4ElmEc08UiyvqcQSEOC45qDxTdI1iegFNLTHbCyJIGFdFB8b+rjYDjtZqiGZ/8fO7ie8gboBFLxhhCJzp6LKKb5Rs7LFU=
+	t=1761878616; cv=none; b=dyBpaAn1E5p9Q43TKzQJIffSyfN3maCFYn8sJtoYjNIlMN6G/pUMOsmJW5mZk0OSgl0t7r7t2LDZircV8q7ePrR/fef+0INHbPOUOjejzncpPrkm08WAZy6rIAhijWdb9k797SjJEtD2hu2vTeep1mOFH7VyL8eiC96e9Q+6zIw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761877995; c=relaxed/simple;
-	bh=Mq11uDNf3+isSSCsfm8wsU/RMUMtENJ4C8jb6Om1Oho=;
-	h=Date:To:From:Subject:Message-Id; b=a8EYVkjHWsDTmNcQrtRPvlZtG5wGija4bhGWVkD2T16LXxK1NciLE/iUCNR+kpNTDkkJaxq84sisBWDwyiBfycmBcKDX4owwE723iQOfVKldt4UOJdmLUtlgSMJqE9yCzItfpfQ//hqevcgVYPhVVe6gnjjdoGApfxqRKoy5fCc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=j+ABI03J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5945FC4CEF1;
-	Fri, 31 Oct 2025 02:33:14 +0000 (UTC)
+	s=arc-20240116; t=1761878616; c=relaxed/simple;
+	bh=wrdNNbsgn4lFV2aBDcbqfgUo4DYJPhLZePLgVLTpTfU=;
+	h=Date:To:From:Subject:Message-Id; b=sxY4lyNJJZp/1NTZuezkGT/u0gOdX2G1H0YRi+xmyppMdE1nCZarPaZ7yrtLbfvV/XAuISxtEYPreufDyIttir5kYcjzFjiMzW51wqt+RfH3MNPgIca8Y+vtocVsLmKGAeqNHd7GwwWNGG++ICFBm2Qu2Grnf1P6gLVenElxiAY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=p2D5hXEC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8FA2C4CEF1;
+	Fri, 31 Oct 2025 02:43:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1761877994;
-	bh=Mq11uDNf3+isSSCsfm8wsU/RMUMtENJ4C8jb6Om1Oho=;
+	s=korg; t=1761878615;
+	bh=wrdNNbsgn4lFV2aBDcbqfgUo4DYJPhLZePLgVLTpTfU=;
 	h=Date:To:From:Subject:From;
-	b=j+ABI03JQZewrzLh4fN9bF2FaR4bl+HRrCL53v+cy++a6tUjMi5VrM2h072yeDpDs
-	 QZVZ/7HHrAd2SHF4jADUoEoAGjvYITaDwUlPl8o8REtovz2ZioCcJAqZ/BzXGux8WE
-	 R80WZnCoH7UogCaDLtqBkb4opHEH72tDpGypV2V8=
-Date: Thu, 30 Oct 2025 19:33:13 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,liam.howlett@oracle.com,martin@kaiser.cx,akpm@linux-foundation.org
+	b=p2D5hXECRsQQyW9dI1AJOj6XHZMpTxox6fKKhni4E0iYYNeP6+dGNrRJdGpS1jaxe
+	 iCIXT3eoLKUW+5sD+uAJ5EG5RBbeT+d54BDJ66NquRfc6N7gL+1j49gO+QvFvTykqf
+	 0ElcUOuavK8L131EI9WPp9BWjhJFkCnavF+r8U1o=
+Date: Thu, 30 Oct 2025 19:43:35 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,osalvador@suse.de,joao.m.martins@oracle.com,hca@linux.ibm.com,gor@linux.ibm.com,gerald.schaefer@linux.ibm.com,david@redhat.com,borntraeger@linux.ibm.com,aneesh.kumar@kernel.org,agordeev@linux.ibm.com,luizcap@redhat.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + maple_tree-fix-tracepoint-string-pointers.patch added to mm-hotfixes-unstable branch
-Message-Id: <20251031023314.5945FC4CEF1@smtp.kernel.org>
+Subject: [to-be-updated] s390-fix-hugetlb-vmemmap-optimization-crash.patch removed from -mm tree
+Message-Id: <20251031024335.B8FA2C4CEF1@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -49,197 +49,122 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
-The patch titled
-     Subject: maple_tree: fix tracepoint string pointers
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     maple_tree-fix-tracepoint-string-pointers.patch
+The quilt patch titled
+     Subject: s390: fix HugeTLB vmemmap optimization crash
+has been removed from the -mm tree.  Its filename was
+     s390-fix-hugetlb-vmemmap-optimization-crash.patch
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/maple_tree-fix-tracepoint-string-pointers.patch
-
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
+This patch was dropped because an updated version will be issued
 
 ------------------------------------------------------
-From: Martin Kaiser <martin@kaiser.cx>
-Subject: maple_tree: fix tracepoint string pointers
-Date: Thu, 30 Oct 2025 16:55:05 +0100
+From: Luiz Capitulino <luizcap@redhat.com>
+Subject: s390: fix HugeTLB vmemmap optimization crash
+Date: Tue, 28 Oct 2025 17:15:33 -0400
 
-maple_tree tracepoints contain pointers to function names. Such a pointer
-is saved when a tracepoint logs an event. There's no guarantee that it's
-still valid when the event is parsed later and the pointer is dereferenced.
+A reproducible crash occurs when enabling HugeTLB vmemmap optimization
+(HVO) on s390.  The crash and the proposed fix were worked on an s390 KVM
+guest running on an older hypervisor, as I don't have access to an LPAR. 
+However, the same issue should occur on bare-metal.
 
-The kernel warns about these unsafe pointers.
+Reproducer (it may take a few runs to trigger):
 
-	event 'ma_read' has unsafe pointer field 'fn'
-	WARNING: kernel/trace/trace.c:3779 at ignore_event+0x1da/0x1e4
+ # sysctl vm.hugetlb_optimize_vmemmap=1
+ # echo 1 > /proc/sys/vm/nr_hugepages
+ # echo 0 > /proc/sys/vm/nr_hugepages
 
-Mark the function names as tracepoint_string() to fix the events.
+Crash log:
 
-Link: https://lkml.kernel.org/r/20251030155537.87972-1-martin@kaiser.cx
-Fixes: 54a611b60590 ("Maple Tree: add new data structure")
-Signed-off-by: Martin Kaiser <martin@kaiser.cx>
-Cc: Liam Howlett <liam.howlett@oracle.com>
+[   52.340369] list_del corruption. prev->next should be 000000d382110008, but was 000000d7116d3880. (prev=000000d7116d3910)
+[   52.340420] ------------[ cut here ]------------
+[   52.340424] kernel BUG at lib/list_debug.c:62!
+[   52.340566] monitor event: 0040 ilc:2 [#1]SMP
+[   52.340573] Modules linked in: ctcm fsm qeth ccwgroup zfcp scsi_transport_fc qdio dasd_fba_mod dasd_eckd_mod dasd_mod xfs ghash_s390 prng des_s390 libdes sha3_512_s390 sha3_256_s390 virtio_net virtio_blk net_failover sha_common failover dm_mirror dm_region_hash dm_log dm_mod paes_s390 crypto_engine pkey_cca pkey_ep11 zcrypt pkey_pckmo pkey aes_s390
+[   52.340606] CPU: 1 UID: 0 PID: 1672 Comm: root-rep2 Kdump: loaded Not tainted 6.18.0-rc3 #1 NONE
+[   52.340610] Hardware name: IBM 3931 LA1 400 (KVM/Linux)
+[   52.340611] Krnl PSW : 0704c00180000000 0000015710cda7fe (__list_del_entry_valid_or_report+0xfe/0x128)
+[   52.340619]            R:0 T:1 IO:1 EX:1 Key:0 M:1 W:0 P:0 AS:3 CC:0 PM:0 RI:0 EA:3
+[   52.340622] Krnl GPRS: c0000000ffffefff 0000000100000027 000000000000006d 0000000000000000
+[   52.340623]            000000d7116d35d8 000000d7116d35d0 0000000000000002 000000d7116d39b0
+[   52.340625]            000000d7116d3880 000000d7116d3910 000000d7116d3910 000000d382110008
+[   52.340626]            000003ffac1ccd08 000000d7116d39b0 0000015710cda7fa 000000d7116d37d0
+[   52.340632] Krnl Code: 0000015710cda7ee: c020003e496f	larl	%r2,00000157114a3acc
+           0000015710cda7f4: c0e5ffd5280e	brasl	%r14,000001571077f810
+          #0000015710cda7fa: af000000		mc	0,0
+          >0000015710cda7fe: b9040029		lgr	%r2,%r9
+           0000015710cda802: c0e5ffe5e193	brasl	%r14,0000015710996b28
+           0000015710cda808: e34090080004	lg	%r4,8(%r9)
+           0000015710cda80e: b9040059		lgr	%r5,%r9
+           0000015710cda812: b9040038		lgr	%r3,%r8
+[   52.340643] Call Trace:
+[   52.340645]  [<0000015710cda7fe>] __list_del_entry_valid_or_report+0xfe/0x128
+[   52.340649] ([<0000015710cda7fa>] __list_del_entry_valid_or_report+0xfa/0x128)
+[   52.340652]  [<0000015710a30b2e>] hugetlb_vmemmap_restore_folios+0x96/0x138
+[   52.340655]  [<0000015710a268ac>] update_and_free_pages_bulk+0x64/0x150
+[   52.340659]  [<0000015710a26f8a>] set_max_huge_pages+0x4ca/0x6f0
+[   52.340662]  [<0000015710a273ba>] hugetlb_sysctl_handler_common+0xea/0x120
+[   52.340665]  [<0000015710a27484>] hugetlb_sysctl_handler+0x44/0x50
+[   52.340667]  [<0000015710b53ffa>] proc_sys_call_handler+0x17a/0x280
+[   52.340672]  [<0000015710a90968>] vfs_write+0x2c8/0x3a0
+[   52.340676]  [<0000015710a90bd2>] ksys_write+0x72/0x100
+[   52.340679]  [<00000157111483a8>] __do_syscall+0x150/0x318
+[   52.340682]  [<0000015711153a5e>] system_call+0x6e/0x90
+[   52.340684] Last Breaking-Event-Address:
+[   52.340684]  [<000001571077f85c>] _printk+0x4c/0x58
+[   52.340690] Kernel panic - not syncing: Fatal exception: panic_on_oops
+
+This issue was introduced by commit f13b83fdd996 ("hugetlb: batch TLB
+flushes when freeing vmemmap").  Before that change, the HVO
+implementation called flush_tlb_kernel_range() each time a vmemmap PMD
+split and remapping was performed.  The mentioned commit changed this to
+issue a few flush_tlb_all() calls after performing all remappings.
+
+However, on s390, flush_tlb_kernel_range() expands to __tlb_flush_kernel()
+while flush_tlb_all() is not implemented.  As a result, we went from
+flushing the TLB for every remapping to no flushing at all.
+
+This commit fixes this by implementing flush_tlb_all() on s390 as an alias
+to __tlb_flush_global().  This should cause a flush on all TLB entries on
+all CPUs as expected by the flush_tlb_all() semantics.
+
+Link: https://lkml.kernel.org/r/20251028211533.47694-1-luizcap@redhat.com
+Fixes: f13b83fdd996 ("hugetlb: batch TLB flushes when freeing vmemmap")
+Signed-off-by: Luiz Capitulino <luizcap@redhat.com>
+Acked-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
+Cc: Christian Borntraeger <borntraeger@linux.ibm.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
+Cc: Heiko Carstens <hca@linux.ibm.com>
+Cc: Joao Martins <joao.m.martins@oracle.com>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: Vasily Gorbik <gor@linux.ibm.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- lib/maple_tree.c |   30 ++++++++++++++++--------------
- 1 file changed, 16 insertions(+), 14 deletions(-)
+ arch/s390/include/asm/tlbflush.h |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/lib/maple_tree.c~maple_tree-fix-tracepoint-string-pointers
-+++ a/lib/maple_tree.c
-@@ -64,6 +64,8 @@
- #define CREATE_TRACE_POINTS
- #include <trace/events/maple_tree.h>
+--- a/arch/s390/include/asm/tlbflush.h~s390-fix-hugetlb-vmemmap-optimization-crash
++++ a/arch/s390/include/asm/tlbflush.h
+@@ -103,9 +103,13 @@ static inline void __tlb_flush_mm_lazy(s
+  * flush_tlb_range functions need to do the flush.
+  */
+ #define flush_tlb()				do { } while (0)
+-#define flush_tlb_all()				do { } while (0)
+ #define flush_tlb_page(vma, addr)		do { } while (0)
  
-+#define TP_FCT tracepoint_string(__func__)
++static inline void flush_tlb_all(void)
++{
++	__tlb_flush_global();
++}
 +
- /*
-  * Kernel pointer hashing renders much of the maple tree dump useless as tagged
-  * pointers get hashed to arbitrary values.
-@@ -2756,7 +2758,7 @@ static inline void mas_rebalance(struct
- 	MA_STATE(l_mas, mas->tree, mas->index, mas->last);
- 	MA_STATE(r_mas, mas->tree, mas->index, mas->last);
- 
--	trace_ma_op(__func__, mas);
-+	trace_ma_op(TP_FCT, mas);
- 
- 	/*
- 	 * Rebalancing occurs if a node is insufficient.  Data is rebalanced
-@@ -2997,7 +2999,7 @@ static void mas_split(struct ma_state *m
- 	MA_STATE(prev_l_mas, mas->tree, mas->index, mas->last);
- 	MA_STATE(prev_r_mas, mas->tree, mas->index, mas->last);
- 
--	trace_ma_op(__func__, mas);
-+	trace_ma_op(TP_FCT, mas);
- 
- 	mast.l = &l_mas;
- 	mast.r = &r_mas;
-@@ -3172,7 +3174,7 @@ static bool mas_is_span_wr(struct ma_wr_
- 			return false;
- 	}
- 
--	trace_ma_write(__func__, wr_mas->mas, wr_mas->r_max, entry);
-+	trace_ma_write(TP_FCT, wr_mas->mas, wr_mas->r_max, entry);
- 	return true;
- }
- 
-@@ -3416,7 +3418,7 @@ static noinline void mas_wr_spanning_sto
- 	 * of data may happen.
- 	 */
- 	mas = wr_mas->mas;
--	trace_ma_op(__func__, mas);
-+	trace_ma_op(TP_FCT, mas);
- 
- 	if (unlikely(!mas->index && mas->last == ULONG_MAX))
- 		return mas_new_root(mas, wr_mas->entry);
-@@ -3552,7 +3554,7 @@ done:
- 	} else {
- 		memcpy(wr_mas->node, newnode, sizeof(struct maple_node));
- 	}
--	trace_ma_write(__func__, mas, 0, wr_mas->entry);
-+	trace_ma_write(TP_FCT, mas, 0, wr_mas->entry);
- 	mas_update_gap(mas);
- 	mas->end = new_end;
- 	return;
-@@ -3596,7 +3598,7 @@ static inline void mas_wr_slot_store(str
- 		mas->offset++; /* Keep mas accurate. */
- 	}
- 
--	trace_ma_write(__func__, mas, 0, wr_mas->entry);
-+	trace_ma_write(TP_FCT, mas, 0, wr_mas->entry);
- 	/*
- 	 * Only update gap when the new entry is empty or there is an empty
- 	 * entry in the original two ranges.
-@@ -3717,7 +3719,7 @@ static inline void mas_wr_append(struct
- 		mas_update_gap(mas);
- 
- 	mas->end = new_end;
--	trace_ma_write(__func__, mas, new_end, wr_mas->entry);
-+	trace_ma_write(TP_FCT, mas, new_end, wr_mas->entry);
- 	return;
- }
- 
-@@ -3731,7 +3733,7 @@ static void mas_wr_bnode(struct ma_wr_st
+ static inline void flush_tlb_mm(struct mm_struct *mm)
  {
- 	struct maple_big_node b_node;
- 
--	trace_ma_write(__func__, wr_mas->mas, 0, wr_mas->entry);
-+	trace_ma_write(TP_FCT, wr_mas->mas, 0, wr_mas->entry);
- 	memset(&b_node, 0, sizeof(struct maple_big_node));
- 	mas_store_b_node(wr_mas, &b_node, wr_mas->offset_end);
- 	mas_commit_b_node(wr_mas, &b_node);
-@@ -5062,7 +5064,7 @@ void *mas_store(struct ma_state *mas, vo
- {
- 	MA_WR_STATE(wr_mas, mas, entry);
- 
--	trace_ma_write(__func__, mas, 0, entry);
-+	trace_ma_write(TP_FCT, mas, 0, entry);
- #ifdef CONFIG_DEBUG_MAPLE_TREE
- 	if (MAS_WARN_ON(mas, mas->index > mas->last))
- 		pr_err("Error %lX > %lX " PTR_FMT "\n", mas->index, mas->last,
-@@ -5163,7 +5165,7 @@ void mas_store_prealloc(struct ma_state
- 	}
- 
- store:
--	trace_ma_write(__func__, mas, 0, entry);
-+	trace_ma_write(TP_FCT, mas, 0, entry);
- 	mas_wr_store_entry(&wr_mas);
- 	MAS_WR_BUG_ON(&wr_mas, mas_is_err(mas));
- 	mas_destroy(mas);
-@@ -5882,7 +5884,7 @@ void *mtree_load(struct maple_tree *mt,
- 	MA_STATE(mas, mt, index, index);
- 	void *entry;
- 
--	trace_ma_read(__func__, &mas);
-+	trace_ma_read(TP_FCT, &mas);
- 	rcu_read_lock();
- retry:
- 	entry = mas_start(&mas);
-@@ -5925,7 +5927,7 @@ int mtree_store_range(struct maple_tree
- 	MA_STATE(mas, mt, index, last);
- 	int ret = 0;
- 
--	trace_ma_write(__func__, &mas, 0, entry);
-+	trace_ma_write(TP_FCT, &mas, 0, entry);
- 	if (WARN_ON_ONCE(xa_is_advanced(entry)))
- 		return -EINVAL;
- 
-@@ -6148,7 +6150,7 @@ void *mtree_erase(struct maple_tree *mt,
- 	void *entry = NULL;
- 
- 	MA_STATE(mas, mt, index, index);
--	trace_ma_op(__func__, &mas);
-+	trace_ma_op(TP_FCT, &mas);
- 
- 	mtree_lock(mt);
- 	entry = mas_erase(&mas);
-@@ -6485,7 +6487,7 @@ void *mt_find(struct maple_tree *mt, uns
- 	unsigned long copy = *index;
- #endif
- 
--	trace_ma_read(__func__, &mas);
-+	trace_ma_read(TP_FCT, &mas);
- 
- 	if ((*index) > max)
- 		return NULL;
+ 	__tlb_flush_mm_lazy(mm);
 _
 
-Patches currently in -mm which might be from martin@kaiser.cx are
+Patches currently in -mm which might be from luizcap@redhat.com are
 
-maple_tree-fix-tracepoint-string-pointers.patch
 
 
