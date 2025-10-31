@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-191865-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191920-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F77BC25715
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 15:07:34 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A76AC25700
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 15:07:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 909C14F87DD
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 14:04:16 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 01B1A3519CB
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 14:07:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B815122A4FE;
-	Fri, 31 Oct 2025 14:04:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D03B34BA2B;
+	Fri, 31 Oct 2025 14:06:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dt+toTg6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ujmlNTg/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74A0821FF25;
-	Fri, 31 Oct 2025 14:04:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E53521F37D4;
+	Fri, 31 Oct 2025 14:06:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761919442; cv=none; b=rotIc3le0HdjQ+tF1hmBxveY9zhkHdUAVWkItD1vmPpnGnS8W0L1SgFFyfm8srlL877pmq67AIiZyvIpLxL5MZa97TG9B3yASB5+h2iNYtXlJFoWFxnN73okSF/i4KNSbhPGPvzPD/4fbQDAl+9KDiw2nfCiNc0NG158z4WKeBE=
+	t=1761919600; cv=none; b=OScxrJlffP493bGywwb7S1hSPL6iazCdrStk2+3IM477TwpWcX6KrJTZvWByQssjypLLkKnZHb8YsAr/a1wUS43+YcaU2Mmuigz56UsudKw+MI5M3DBwNRCQ+gPBqCPQfmV8jg0HGbK4KPsaj17Id7QmQRlrlNCe5YQMAGWZc3o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761919442; c=relaxed/simple;
-	bh=MEN8pV6a8uTUku9XL67685tza0r/sODoklai6f+XHSo=;
+	s=arc-20240116; t=1761919600; c=relaxed/simple;
+	bh=aza6z1G9CSiJc6TpMZ2/UUlJi3/yDyr3+PnvP2xukBc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tOPtVrBZ1YaP4WV35jRKmNzxdOFaNltEfl0wrxat+y+L0BVKGDe9+ZJbcYnG//qMbeUmNAxxNggsJMii/k+xalLPyqpWr70q77daInNQ8QCWbxdS+isZW1ZejxUn2KSSMCaKYRaJ2n9aE340Gcd6zbhYDrHpE7i9uJgEM4UMQOk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dt+toTg6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E42C6C4CEE7;
-	Fri, 31 Oct 2025 14:04:01 +0000 (UTC)
+	 MIME-Version; b=F3gohPZKoklwpXme53lvVzBt9wR+5ce7sJHO+h4l23YnG4K5+KDPoHAIAH0loqq1ZZvUS+Vf8DhrcB8ACfIk8zSJJan20WKndSWbRZRnm2x7YnIc7FVhELhpQmn1nTo1K1zNWTkRYvANWgM4XhsNDzYC5ogmmt3cU/LCuWO6zaA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ujmlNTg/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E6F0C4CEE7;
+	Fri, 31 Oct 2025 14:06:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761919442;
-	bh=MEN8pV6a8uTUku9XL67685tza0r/sODoklai6f+XHSo=;
+	s=korg; t=1761919599;
+	bh=aza6z1G9CSiJc6TpMZ2/UUlJi3/yDyr3+PnvP2xukBc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dt+toTg6pbtzHdB05DCoTTQknmC0vhq2XMX7apMqPFVFSUJXprvzHn1a6Xdc67UeG
-	 FOUbi6g6oByGfBU+cWlhjVCTj2HVB1ZoYgZAiHG6jcMBb6zZp41EPBe5ydqi1M2ltL
-	 qk7j3EoIAF/GFv1BZu6cR4jyMSUPdw6ug0NysFjQ=
+	b=ujmlNTg/ggeE1closihALyG1t9+gZL2z8ChUD1WvNV0Ud8hCqD5zPQKpVitiVAda9
+	 RSKoMLf9vcKPchlgxjQiOaoylCxC7oN9byiVEUMQJzokUfaJRTEkZkwTLTXKk1wFS6
+	 IxnKjui6rTcFABnVtGxMPHko68FPxCKkMcQwf5Ms=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Filipe Manana <fdmanana@suse.com>,
-	Qu Wenruo <wqu@suse.com>,
-	David Sterba <dsterba@suse.com>,
+	David Kaplan <david.kaplan@amd.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 20/40] btrfs: tree-checker: add inode extref checks
+Subject: [PATCH 6.17 05/35] x86/bugs: Report correct retbleed mitigation status
 Date: Fri, 31 Oct 2025 15:01:13 +0100
-Message-ID: <20251031140044.497195031@linuxfoundation.org>
+Message-ID: <20251031140043.691582535@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251031140043.939381518@linuxfoundation.org>
-References: <20251031140043.939381518@linuxfoundation.org>
+In-Reply-To: <20251031140043.564670400@linuxfoundation.org>
+References: <20251031140043.564670400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,92 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qu Wenruo <wqu@suse.com>
+From: David Kaplan <david.kaplan@amd.com>
 
-[ Upstream commit aab9458b9f0019e97fae394c2d6d9d1a03addfb3 ]
+[ Upstream commit 930f2361fe542a00de9ce6070b1b6edb976f1165 ]
 
-Like inode refs, inode extrefs have a variable length name, which means
-we have to do a proper check to make sure no header nor name can exceed
-the item limits.
+On Intel CPUs, the default retbleed mitigation is IBRS/eIBRS but this
+requires that a similar spectre_v2 mitigation is applied.  If the user
+selects a different spectre_v2 mitigation (like spectre_v2=retpoline) a
+warning is printed but sysfs will still report 'Mitigation: IBRS' or
+'Mitigation: Enhanced IBRS'.  This is incorrect because retbleed is not
+mitigated, and IBRS is not actually set.
 
-The check itself is very similar to check_inode_ref(), just a different
-structure (btrfs_inode_extref vs btrfs_inode_ref).
+Fix this by choosing RETBLEED_MITIGATION_NONE in this scenario so the
+kernel correctly reports the system as vulnerable to retbleed.
 
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Kaplan <david.kaplan@amd.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/20250915134706.3201818-1-david.kaplan@amd.com
+Stable-dep-of: 204ced4108f5 ("x86/bugs: Qualify RETBLEED_INTEL_MSG")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/tree-checker.c | 37 +++++++++++++++++++++++++++++++++++++
- 1 file changed, 37 insertions(+)
+ arch/x86/kernel/cpu/bugs.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/fs/btrfs/tree-checker.c b/fs/btrfs/tree-checker.c
-index 14f96d217e6e1..986b1612d5b04 100644
---- a/fs/btrfs/tree-checker.c
-+++ b/fs/btrfs/tree-checker.c
-@@ -183,6 +183,7 @@ static bool check_prev_ino(struct extent_buffer *leaf,
- 	/* Only these key->types needs to be checked */
- 	ASSERT(key->type == BTRFS_XATTR_ITEM_KEY ||
- 	       key->type == BTRFS_INODE_REF_KEY ||
-+	       key->type == BTRFS_INODE_EXTREF_KEY ||
- 	       key->type == BTRFS_DIR_INDEX_KEY ||
- 	       key->type == BTRFS_DIR_ITEM_KEY ||
- 	       key->type == BTRFS_EXTENT_DATA_KEY);
-@@ -1770,6 +1771,39 @@ static int check_inode_ref(struct extent_buffer *leaf,
- 	return 0;
- }
+diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
+index 36dcfc5105be9..bf79ff6a1f662 100644
+--- a/arch/x86/kernel/cpu/bugs.c
++++ b/arch/x86/kernel/cpu/bugs.c
+@@ -1460,8 +1460,10 @@ static void __init retbleed_update_mitigation(void)
+ 			retbleed_mitigation = RETBLEED_MITIGATION_EIBRS;
+ 			break;
+ 		default:
+-			if (retbleed_mitigation != RETBLEED_MITIGATION_STUFF)
++			if (retbleed_mitigation != RETBLEED_MITIGATION_STUFF) {
+ 				pr_err(RETBLEED_INTEL_MSG);
++				retbleed_mitigation = RETBLEED_MITIGATION_NONE;
++			}
+ 		}
+ 	}
  
-+static int check_inode_extref(struct extent_buffer *leaf,
-+			      struct btrfs_key *key, struct btrfs_key *prev_key,
-+			      int slot)
-+{
-+	unsigned long ptr = btrfs_item_ptr_offset(leaf, slot);
-+	unsigned long end = ptr + btrfs_item_size(leaf, slot);
-+
-+	if (unlikely(!check_prev_ino(leaf, key, slot, prev_key)))
-+		return -EUCLEAN;
-+
-+	while (ptr < end) {
-+		struct btrfs_inode_extref *extref = (struct btrfs_inode_extref *)ptr;
-+		u16 namelen;
-+
-+		if (unlikely(ptr + sizeof(*extref)) > end) {
-+			inode_ref_err(leaf, slot,
-+			"inode extref overflow, ptr %lu end %lu inode_extref size %zu",
-+				      ptr, end, sizeof(*extref));
-+			return -EUCLEAN;
-+		}
-+
-+		namelen = btrfs_inode_extref_name_len(leaf, extref);
-+		if (unlikely(ptr + sizeof(*extref) + namelen > end)) {
-+			inode_ref_err(leaf, slot,
-+				"inode extref overflow, ptr %lu end %lu namelen %u",
-+				ptr, end, namelen);
-+			return -EUCLEAN;
-+		}
-+		ptr += sizeof(*extref) + namelen;
-+	}
-+	return 0;
-+}
-+
- static int check_raid_stripe_extent(const struct extent_buffer *leaf,
- 				    const struct btrfs_key *key, int slot)
- {
-@@ -1881,6 +1915,9 @@ static enum btrfs_tree_block_status check_leaf_item(struct extent_buffer *leaf,
- 	case BTRFS_INODE_REF_KEY:
- 		ret = check_inode_ref(leaf, key, prev_key, slot);
- 		break;
-+	case BTRFS_INODE_EXTREF_KEY:
-+		ret = check_inode_extref(leaf, key, prev_key, slot);
-+		break;
- 	case BTRFS_BLOCK_GROUP_ITEM_KEY:
- 		ret = check_block_group_item(leaf, key, slot);
- 		break;
 -- 
 2.51.0
 
