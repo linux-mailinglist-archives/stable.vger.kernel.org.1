@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-191853-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191921-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78A14C256D9
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 15:05:54 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D78ADC25763
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 15:09:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 83BF04F736F
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 14:03:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4FDFC564876
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 14:07:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 637B823F417;
-	Fri, 31 Oct 2025 14:03:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 196B734C129;
+	Fri, 31 Oct 2025 14:06:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WueRW1mW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sCY2WA/l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F2D91D5CC9;
-	Fri, 31 Oct 2025 14:03:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2A8A3C17;
+	Fri, 31 Oct 2025 14:06:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761919407; cv=none; b=iS796MMV0AF2pfEphJakcuIZPfuslqHtRQZBkD+tjv9pWP+edZj2G/METQLtr6cQs9kY3Ce0/NWHxEr/01FZGm66nmJKnYWxajBNAE3wA5gpO5w6g2xHiSONI9a5wvbpwYFxrMwBhMfRiukZPdpL9JaKSd2egzklx5Lp613EZm0=
+	t=1761919602; cv=none; b=BNACRchGnuO/duVWrqTpQYn0Zr0OzwMYjgvwgNqf/zgjNuuWKiksuEL5LRgUWkVzVyJnR3VVJG0UmLq24yOsIDe8Y6Sruxgi1vY6iut1yJFM1zvgYMVLxCJ3j3z4gpjqJb+Tf8sosQMHJDN+pAE4393lv/nmX6CQgGs6VZf35a0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761919407; c=relaxed/simple;
-	bh=7394YLpO3vI2xUpVdljSG1lr6BGthST5/2N5aOnQM6A=;
+	s=arc-20240116; t=1761919602; c=relaxed/simple;
+	bh=9a4EEfIoTTgBtzsoV6KodaVI9yPeedcxKQFKgJiBzKY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lEPB43AZQgKlQNRS/WNj2UVjmCnSDlpqDeLmiXPNxVXHJb3S5GwDw3L9aWzn2agADnLzuTUZeuPwV/Co6sendmaEZYIKs8FCsvrGteQ2ia9uxjnqrTxfgdadRHe+vBWEqEEqr4gem209dr4wvHm/Iq0MXiR+E8bkWy8ZeIAu67E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WueRW1mW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3682C4CEE7;
-	Fri, 31 Oct 2025 14:03:26 +0000 (UTC)
+	 MIME-Version; b=tfFMazWw0IWaVvHZoPrRvYRwAWBqE4WdThDjoFx+qMbpcP4CfuCruubSgFqxXCYmILYoZMfxtlEz1VscEqwJi+gzoDu7moNWKovoWZeEcw1G3qJGkCBbQUUOOVRG5DWu7SmJgObSuBFRybqAQx6RVi3Usql6LA/mE/mhtfURMRU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sCY2WA/l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A020C4CEE7;
+	Fri, 31 Oct 2025 14:06:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761919407;
-	bh=7394YLpO3vI2xUpVdljSG1lr6BGthST5/2N5aOnQM6A=;
+	s=korg; t=1761919602;
+	bh=9a4EEfIoTTgBtzsoV6KodaVI9yPeedcxKQFKgJiBzKY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WueRW1mWEdOEXE0l5pW5hxdgdY8Mch7fTLeygIGHIwmUbXXZFbMY8JDfeUp6HJdU4
-	 zOstJxo6k334oyYmDkKB842mYF53yMun5ey3ChXN87iewi8iJqBp3YtyhIpdXhQu5Y
-	 yqxktlYL/9IlCc6hdFCS2oSpHTbjV6aHSO7slrCU=
+	b=sCY2WA/l9K8/mkywhjEyIjwcnFH49yuXyqZwR3SN5C2qDIVE4VvoQfcQ6V7mnW7He
+	 3SPTzWlwuEYU7Xv6Xa5Ba6Oh+mNyX31vW9d5dM2Kn2YGP0RS0fjaTjtiHqkHncoygs
+	 tCnXxfEnkXfFuaeXP70l4yTiYFE7yxPLBH5M/MqA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+	David Kaplan <david.kaplan@amd.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 20/32] serial: sc16is7xx: reorder code to remove prototype declarations
+Subject: [PATCH 6.17 06/35] x86/bugs: Qualify RETBLEED_INTEL_MSG
 Date: Fri, 31 Oct 2025 15:01:14 +0100
-Message-ID: <20251031140042.925969560@linuxfoundation.org>
+Message-ID: <20251031140043.714890303@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251031140042.387255981@linuxfoundation.org>
-References: <20251031140042.387255981@linuxfoundation.org>
+In-Reply-To: <20251031140043.564670400@linuxfoundation.org>
+References: <20251031140043.564670400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,131 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+From: David Kaplan <david.kaplan@amd.com>
 
-[ Upstream commit 2de8a1b46756b5a79d8447f99afdfe49e914225a ]
+[ Upstream commit 204ced4108f5d38f6804968fd9543cc69c3f8da6 ]
 
-Move/reorder some functions to remove sc16is7xx_ier_set() and
-sc16is7xx_stop_tx() prototypes declarations.
+When retbleed mitigation is disabled, the kernel already prints an info
+message that the system is vulnerable.  Recent code restructuring also
+inadvertently led to RETBLEED_INTEL_MSG being printed as an error, which is
+unnecessary as retbleed mitigation was already explicitly disabled (by config
+option, cmdline, etc.).
 
-No functional change.
+Qualify this print statement so the warning is not printed unless an actual
+retbleed mitigation was selected and is being disabled due to incompatibility
+with spectre_v2.
 
-sc16is7xx_ier_set() was introduced in
-commit cc4c1d05eb10 ("sc16is7xx: Properly resume TX after stop").
-
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Link: https://lore.kernel.org/r/20231221231823.2327894-16-hugo@hugovil.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: 1c05bf6c0262 ("serial: sc16is7xx: remove useless enable of enhanced features")
+Fixes: e3b78a7ad5ea ("x86/bugs: Restructure retbleed mitigation")
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220624
+Signed-off-by: David Kaplan <david.kaplan@amd.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://patch.msgid.link/20251003171936.155391-1-david.kaplan@amd.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/sc16is7xx.c |   75 +++++++++++++++++++----------------------
- 1 file changed, 36 insertions(+), 39 deletions(-)
+ arch/x86/kernel/cpu/bugs.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/tty/serial/sc16is7xx.c
-+++ b/drivers/tty/serial/sc16is7xx.c
-@@ -355,9 +355,6 @@ static struct uart_driver sc16is7xx_uart
- 	.nr		= SC16IS7XX_MAX_DEVS,
- };
- 
--static void sc16is7xx_ier_set(struct uart_port *port, u8 bit);
--static void sc16is7xx_stop_tx(struct uart_port *port);
--
- #define to_sc16is7xx_one(p,e)	((container_of((p), struct sc16is7xx_one, e)))
- 
- static u8 sc16is7xx_port_read(struct uart_port *port, u8 reg)
-@@ -415,6 +412,42 @@ static void sc16is7xx_power(struct uart_
- 			      on ? 0 : SC16IS7XX_IER_SLEEP_BIT);
- }
- 
-+static void sc16is7xx_ier_clear(struct uart_port *port, u8 bit)
-+{
-+	struct sc16is7xx_port *s = dev_get_drvdata(port->dev);
-+	struct sc16is7xx_one *one = to_sc16is7xx_one(port, port);
+diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
+index bf79ff6a1f662..9750ce448e626 100644
+--- a/arch/x86/kernel/cpu/bugs.c
++++ b/arch/x86/kernel/cpu/bugs.c
+@@ -1461,7 +1461,9 @@ static void __init retbleed_update_mitigation(void)
+ 			break;
+ 		default:
+ 			if (retbleed_mitigation != RETBLEED_MITIGATION_STUFF) {
+-				pr_err(RETBLEED_INTEL_MSG);
++				if (retbleed_mitigation != RETBLEED_MITIGATION_NONE)
++					pr_err(RETBLEED_INTEL_MSG);
 +
-+	lockdep_assert_held_once(&port->lock);
-+
-+	one->config.flags |= SC16IS7XX_RECONF_IER;
-+	one->config.ier_mask |= bit;
-+	one->config.ier_val &= ~bit;
-+	kthread_queue_work(&s->kworker, &one->reg_work);
-+}
-+
-+static void sc16is7xx_ier_set(struct uart_port *port, u8 bit)
-+{
-+	struct sc16is7xx_port *s = dev_get_drvdata(port->dev);
-+	struct sc16is7xx_one *one = to_sc16is7xx_one(port, port);
-+
-+	lockdep_assert_held_once(&port->lock);
-+
-+	one->config.flags |= SC16IS7XX_RECONF_IER;
-+	one->config.ier_mask |= bit;
-+	one->config.ier_val |= bit;
-+	kthread_queue_work(&s->kworker, &one->reg_work);
-+}
-+
-+static void sc16is7xx_stop_tx(struct uart_port *port)
-+{
-+	sc16is7xx_ier_clear(port, SC16IS7XX_IER_THRI_BIT);
-+}
-+
-+static void sc16is7xx_stop_rx(struct uart_port *port)
-+{
-+	sc16is7xx_ier_clear(port, SC16IS7XX_IER_RDI_BIT);
-+}
-+
- static const struct sc16is7xx_devtype sc16is74x_devtype = {
- 	.name		= "SC16IS74X",
- 	.nr_gpio	= 0,
-@@ -888,42 +921,6 @@ static void sc16is7xx_reg_proc(struct kt
- 		sc16is7xx_reconf_rs485(&one->port);
- }
- 
--static void sc16is7xx_ier_clear(struct uart_port *port, u8 bit)
--{
--	struct sc16is7xx_port *s = dev_get_drvdata(port->dev);
--	struct sc16is7xx_one *one = to_sc16is7xx_one(port, port);
--
--	lockdep_assert_held_once(&port->lock);
--
--	one->config.flags |= SC16IS7XX_RECONF_IER;
--	one->config.ier_mask |= bit;
--	one->config.ier_val &= ~bit;
--	kthread_queue_work(&s->kworker, &one->reg_work);
--}
--
--static void sc16is7xx_ier_set(struct uart_port *port, u8 bit)
--{
--	struct sc16is7xx_port *s = dev_get_drvdata(port->dev);
--	struct sc16is7xx_one *one = to_sc16is7xx_one(port, port);
--
--	lockdep_assert_held_once(&port->lock);
--
--	one->config.flags |= SC16IS7XX_RECONF_IER;
--	one->config.ier_mask |= bit;
--	one->config.ier_val |= bit;
--	kthread_queue_work(&s->kworker, &one->reg_work);
--}
--
--static void sc16is7xx_stop_tx(struct uart_port *port)
--{
--	sc16is7xx_ier_clear(port, SC16IS7XX_IER_THRI_BIT);
--}
--
--static void sc16is7xx_stop_rx(struct uart_port *port)
--{
--	sc16is7xx_ier_clear(port, SC16IS7XX_IER_RDI_BIT);
--}
--
- static void sc16is7xx_ms_proc(struct kthread_work *ws)
- {
- 	struct sc16is7xx_one *one = to_sc16is7xx_one(ws, ms_work.work);
+ 				retbleed_mitigation = RETBLEED_MITIGATION_NONE;
+ 			}
+ 		}
+-- 
+2.51.0
+
 
 
 
