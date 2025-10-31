@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-191844-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191905-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7FA1C256B2
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 15:05:06 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0186EC2587E
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 15:19:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B3A0F4F649D
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 14:03:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 10C5C466714
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 14:06:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F83C34D387;
-	Fri, 31 Oct 2025 14:03:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CFF03491E3;
+	Fri, 31 Oct 2025 14:05:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bNyQVAOI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d7vDQfC9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B23625784B;
-	Fri, 31 Oct 2025 14:03:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB6F134BA44;
+	Fri, 31 Oct 2025 14:05:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761919381; cv=none; b=iUubKP6RLy3dccF7LupZ2mjsCt/h+1eqdD6by+hP2Ek2oU8F96zuQKA6+nOxsw1qPzwMLS/+Tk33gGZMxn8y6urCOzyXIn9t0qyR6J9T16pFfVlRc2ADM7wsNFOrfxmR7ur5VcbkIZnidR2ZOM9+49VNveE81JCwje8/ojuUbm0=
+	t=1761919555; cv=none; b=bboAMbTGpAS4NL9VJJwwqSOf4ePsENH+omD0rMIP7R1ZrSRLxlJd5EqLqvKVpAPa0P81cQqf8SCHaim16NYinJtmLwSUlqSZwInsMndNbjlSmwBcHyu8yRXzVUg1IiWRPp5fQzaGMA+ehBbyVgYqDg+aNBcbAbiPrq0ov8nlXY8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761919381; c=relaxed/simple;
-	bh=wtbxyg8++28R66zmRizI8udEZ+oQogiCVqry5RIIYA0=;
+	s=arc-20240116; t=1761919555; c=relaxed/simple;
+	bh=rInUEDEDqkdJqWwlkJ+4QTgbFdoJuCZiccwWs66JPN8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rgNLgePPV8ZpSC3G9k/Q+RJS/FC2FzQH2GlDTYcTEWbGQjFUcHfR/aomHFB6rhZJ+Luk1SMjzGy1AK0YVe02D+19Kp5i78Jk6eJEg68JFT8WSG98PBivAkdPPGt6hOJTtvZBsZCDbEwACUhO4MF+efNM2zpLgwNYz+MBAbh1NI0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bNyQVAOI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92567C4CEE7;
-	Fri, 31 Oct 2025 14:03:00 +0000 (UTC)
+	 MIME-Version; b=k+mzuqdx4+lueLjIrj80zImn4sMqAl792m/3cJGDkoB3F9NgM9+QdLLrNjr76uHScwPTYaDpPqZOXbadnOUWSHq/WF0MoHZAJlG5WQbrYRqLkoX2Ccq8vXsWSi8VeobJzV0nkkwbLf1bi7feO1fHI7U5b1V9Fh52FU6xr0uuEsk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d7vDQfC9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55F5AC4CEE7;
+	Fri, 31 Oct 2025 14:05:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761919381;
-	bh=wtbxyg8++28R66zmRizI8udEZ+oQogiCVqry5RIIYA0=;
+	s=korg; t=1761919555;
+	bh=rInUEDEDqkdJqWwlkJ+4QTgbFdoJuCZiccwWs66JPN8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bNyQVAOIeHfp++uDHjPNcGYBHhzQeXB7XAYICmGZOUMKrQg7MH+PcXp3HauafvMPD
-	 Oy6ckHmpEog73EUNKRCyOIfuy8NWJrVcgIvrmMGcxRZjPXPradU+jeLgCYbb6b2KR9
-	 v1/YeRs6tr0VOBkgzAYr/MCUXcIzE+DpNUkxZFJg=
+	b=d7vDQfC9BM3LB2c76Zpe1GNd5ZQh3tSSS1yFoxdvf2ipPb3OxcA+v6ZWYeg3B7SBQ
+	 8nYSoaO0O8p/xJ2IYOmo2bkf9FU1ecfU5InCWVFEpz+f0yJa6n/4/fF0Nkl9wuw3BE
+	 G9z+q7Sz6Xe3oU2QverDR8CZv8aCsGFYRYcc6otE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Cave-Ayland <mark.caveayland@nutanix.com>,
-	Michael Walle <mwalle@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	William Breathitt Gray <wbg@kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: [PATCH 6.6 32/32] gpio: idio-16: Define fixed direction of the GPIO lines
+	Tejun Heo <tj@kernel.org>,
+	Andrea Righi <arighi@nvidia.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.17 18/35] sched_ext: Keep bypass on between enable failure and scx_disable_workfn()
 Date: Fri, 31 Oct 2025 15:01:26 +0100
-Message-ID: <20251031140043.229196074@linuxfoundation.org>
+Message-ID: <20251031140043.999720048@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251031140042.387255981@linuxfoundation.org>
-References: <20251031140042.387255981@linuxfoundation.org>
+In-Reply-To: <20251031140043.564670400@linuxfoundation.org>
+References: <20251031140043.564670400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,64 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: William Breathitt Gray <wbg@kernel.org>
+From: Tejun Heo <tj@kernel.org>
 
-[ Upstream commit 2ba5772e530f73eb847fb96ce6c4017894869552 ]
+[ Upstream commit 4a1d9d73aabc8f97f48c4f84f936de3b265ffd6f ]
 
-The direction of the IDIO-16 GPIO lines is fixed with the first 16 lines
-as output and the remaining 16 lines as input. Set the gpio_config
-fixed_direction_output member to represent the fixed direction of the
-GPIO lines.
+scx_enable() turns on the bypass mode while enable is in progress. If
+enabling fails, it turns off the bypass mode and then triggers scx_error().
+scx_error() will trigger scx_disable_workfn() which will turn on the bypass
+mode again and unload the failed scheduler.
 
-Fixes: db02247827ef ("gpio: idio-16: Migrate to the regmap API")
-Reported-by: Mark Cave-Ayland <mark.caveayland@nutanix.com>
-Closes: https://lore.kernel.org/r/9b0375fd-235f-4ee1-a7fa-daca296ef6bf@nutanix.com
-Suggested-by: Michael Walle <mwalle@kernel.org>
-Cc: stable@vger.kernel.org # ae495810cffe: gpio: regmap: add the .fixed_direction_output configuration parameter
-Cc: stable@vger.kernel.org
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: William Breathitt Gray <wbg@kernel.org>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Link: https://lore.kernel.org/r/20251020-fix-gpio-idio-16-regmap-v2-3-ebeb50e93c33@kernel.org
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Signed-off-by: William Breathitt Gray <wbg@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This moves the system out of bypass mode between the enable error path and
+the disable path, which is unnecessary and can be brittle - e.g. the thread
+running scx_enable() may already be on the failed scheduler and can be
+switched out before it triggers scx_error() leading to a stall. The watchdog
+would eventually kick in, so the situation isn't critical but is still
+suboptimal.
+
+There is nothing to be gained by turning off the bypass mode between
+scx_enable() failure and scx_disable_workfn(). Keep bypass on.
+
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Acked-by: Andrea Righi <arighi@nvidia.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpio-idio-16.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ kernel/sched/ext.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpio/gpio-idio-16.c
-+++ b/drivers/gpio/gpio-idio-16.c
-@@ -3,6 +3,7 @@
-  * GPIO library for the ACCES IDIO-16 family
-  * Copyright (C) 2022 William Breathitt Gray
-  */
-+#include <linux/bitmap.h>
- #include <linux/bits.h>
- #include <linux/device.h>
- #include <linux/err.h>
-@@ -106,6 +107,7 @@ int devm_idio_16_regmap_register(struct
- 	struct idio_16_data *data;
- 	struct regmap_irq_chip *chip;
- 	struct regmap_irq_chip_data *chip_data;
-+	DECLARE_BITMAP(fixed_direction_output, IDIO_16_NGPIO);
- 
- 	if (!config->parent)
- 		return -EINVAL;
-@@ -163,6 +165,9 @@ int devm_idio_16_regmap_register(struct
- 	gpio_config.irq_domain = regmap_irq_get_domain(chip_data);
- 	gpio_config.reg_mask_xlate = idio_16_reg_mask_xlate;
- 
-+	bitmap_from_u64(fixed_direction_output, GENMASK_U64(15, 0));
-+	gpio_config.fixed_direction_output = fixed_direction_output;
-+
- 	return PTR_ERR_OR_ZERO(devm_gpio_regmap_register(dev, &gpio_config));
- }
- EXPORT_SYMBOL_GPL(devm_idio_16_regmap_register);
+diff --git a/kernel/sched/ext.c b/kernel/sched/ext.c
+index f89894476e51f..14724dae0b795 100644
+--- a/kernel/sched/ext.c
++++ b/kernel/sched/ext.c
+@@ -4763,7 +4763,7 @@ static int scx_enable(struct sched_ext_ops *ops, struct bpf_link *link)
+ err_disable_unlock_all:
+ 	scx_cgroup_unlock();
+ 	percpu_up_write(&scx_fork_rwsem);
+-	scx_bypass(false);
++	/* we'll soon enter disable path, keep bypass on */
+ err_disable:
+ 	mutex_unlock(&scx_enable_mutex);
+ 	/*
+-- 
+2.51.0
+
 
 
 
