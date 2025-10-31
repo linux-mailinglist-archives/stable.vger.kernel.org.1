@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-191824-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191889-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26E04C25652
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 15:02:35 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 773F4C25775
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 15:09:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B8FBE462DCC
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 14:02:03 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id EDD634F6641
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 14:05:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57C80221FB6;
-	Fri, 31 Oct 2025 14:02:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9151622A4FE;
+	Fri, 31 Oct 2025 14:05:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XO8F79VQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TyMOY26X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 122A7205E3B;
-	Fri, 31 Oct 2025 14:02:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 459003C17;
+	Fri, 31 Oct 2025 14:05:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761919323; cv=none; b=gJP+4QSJMTYmWkmz9h5DZJlwIsY4QV0SAfxVPoik1veJcy2c1pK3DRdYJfaI+0SLlee6xYmWOvxZxDp2aPbS1Ik3qw3hbujUe+SMrEW3w7wwB8chRXUhVKhhbrP1VAyuU4V6165hAGPNGnsBw3pO0R/3ikZpirQi8vR94ddpZ3k=
+	t=1761919509; cv=none; b=vCFMDF3QzQz8e9DJL+jroEi9V7APhIbUQy5YFUXnm2gC9XmZYuy79OzCZbVwRXSKagTI4XWD75Mr1K/sw9HUwCfTvhQUNg7ivrdVie+hbBnLo/vpLNqvoke7ZWi6J6xo+CsCRvIVO02cv4LIigqx1MuYNLAcyb+PFxXbqUGJ5w4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761919323; c=relaxed/simple;
-	bh=A5E/QjiASGwXRgkMRYgzEvvhs5WyGzad+a4CEXvLsw4=;
+	s=arc-20240116; t=1761919509; c=relaxed/simple;
+	bh=8sit1LMYuqSTR3IJ9YaVMwQA1dMqb26a1/DfWaUEePY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hrkAD7R5zQ0dPFq6RUBBMm9hSAqSNwFGo0mnxtgubG26wQJiKJwRYWH2CLAs1wwHc2K1/hBjW8Yux9THOd7V3Mw2tp6YQenu3h7m+GfW3Op71dGe2/yhIXmwbj45qT85PcLvRpJlNpsHrAtBQAtPVri2hkMhL96ia4ch5LPkWG8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XO8F79VQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08459C4CEE7;
-	Fri, 31 Oct 2025 14:02:01 +0000 (UTC)
+	 MIME-Version; b=dLr8WeH1P8g9040akTgTU1KRkM7jmzj7KZ53fUaczNJmxz8hNu4j5zUMuyQPRFRiK01dvJX2c//BLyxaxrtu/66p9FAvMAYUnnJiV7zfVBZNZWGmEtPk621b254dfH0dno492XGFf60t1MuK/HGKcqPI1WQjwFPBja9ZRheC3vY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TyMOY26X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65666C4CEE7;
+	Fri, 31 Oct 2025 14:05:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761919322;
-	bh=A5E/QjiASGwXRgkMRYgzEvvhs5WyGzad+a4CEXvLsw4=;
+	s=korg; t=1761919508;
+	bh=8sit1LMYuqSTR3IJ9YaVMwQA1dMqb26a1/DfWaUEePY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XO8F79VQOXPo5hz+KY+vgGyC/+EQSei8xLseyvuTSySL+iM4+FtSZt5KXaL2zSf/7
-	 A+x7oOoTwX1MK6HdtSfjrSWYLQC/Ke3nnVT2QeLx40l59nWudAsFZvulSw4/W7AZVc
-	 gSqi6fB012BKKCUh0Fv+/sXBVaZqlqRjvjwsRtfk=
+	b=TyMOY26XRJH+Hgd3N9DG/lDk7EGhlTnwySTVC6jwv7LdDpkPFHqBrSplbsA+jYCyF
+	 2PWgQ3rSp68gBOkCQykZBb9GkR057ntoLyEPcQ10YezYr+OA0c1ZWq5hoD25pHPxDU
+	 Sm9VTENoNaDSMElFLkDdAt16KfiMKQz3sRMz/tR4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Boris Burkov <boris@bur.io>,
+	Qu Wenruo <wqu@suse.com>,
 	Filipe Manana <fdmanana@suse.com>,
 	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 12/32] btrfs: always drop log root tree reference in btrfs_replay_log()
+Subject: [PATCH 6.12 13/40] btrfs: abort transaction in the process_one_buffer() log tree walk callback
 Date: Fri, 31 Oct 2025 15:01:06 +0100
-Message-ID: <20251031140042.714780590@linuxfoundation.org>
+Message-ID: <20251031140044.342323580@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251031140042.387255981@linuxfoundation.org>
-References: <20251031140042.387255981@linuxfoundation.org>
+In-Reply-To: <20251031140043.939381518@linuxfoundation.org>
+References: <20251031140043.939381518@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +64,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit 2f5b8095ea47b142c56c09755a8b1e14145a2d30 ]
+[ Upstream commit e6dd405b6671b9753b98d8bdf76f8f0ed36c11cd ]
 
-Currently we have this odd behaviour:
+In the process_one_buffer() log tree walk callback we return errors to the
+log tree walk caller and then the caller aborts the transaction, if we
+have one, or turns the fs into error state if we don't have one. While
+this reduces code it makes it harder to figure out where exactly an error
+came from. So add the transaction aborts after every failure inside the
+process_one_buffer() callback, so that it helps figuring out why failures
+happen.
 
-1) At btrfs_replay_log() we drop the reference of the log root tree if
-   the call to btrfs_recover_log_trees() failed;
-
-2) But if the call to btrfs_recover_log_trees() did not fail, we don't
-   drop the reference in btrfs_replay_log() - we expect that
-   btrfs_recover_log_trees() does it in case it returns success.
-
-Let's simplify this and make btrfs_replay_log() always drop the reference
-on the log root tree, not only this simplifies code as it's what makes
-sense since it's btrfs_replay_log() who grabbed the reference in the first
-place.
-
+Reviewed-by: Boris Burkov <boris@bur.io>
+Reviewed-by: Qu Wenruo <wqu@suse.com>
 Signed-off-by: Filipe Manana <fdmanana@suse.com>
 Reviewed-by: David Sterba <dsterba@suse.com>
 Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/disk-io.c  | 2 +-
- fs/btrfs/tree-log.c | 1 -
- 2 files changed, 1 insertion(+), 2 deletions(-)
+ fs/btrfs/tree-log.c | 20 ++++++++++++++++----
+ 1 file changed, 16 insertions(+), 4 deletions(-)
 
-diff --git a/fs/btrfs/disk-io.c b/fs/btrfs/disk-io.c
-index bb5f7911d473c..7ad1734cbbfc9 100644
---- a/fs/btrfs/disk-io.c
-+++ b/fs/btrfs/disk-io.c
-@@ -2080,10 +2080,10 @@ static int btrfs_replay_log(struct btrfs_fs_info *fs_info,
- 
- 	/* returns with log_tree_root freed on success */
- 	ret = btrfs_recover_log_trees(log_tree_root);
-+	btrfs_put_root(log_tree_root);
- 	if (ret) {
- 		btrfs_handle_fs_error(fs_info, ret,
- 				      "Failed to recover log tree");
--		btrfs_put_root(log_tree_root);
- 		return ret;
- 	}
- 
 diff --git a/fs/btrfs/tree-log.c b/fs/btrfs/tree-log.c
-index 4b53e19f7520f..e00298c6c30a1 100644
+index f3ca530f032df..1c207a6d71ecf 100644
 --- a/fs/btrfs/tree-log.c
 +++ b/fs/btrfs/tree-log.c
-@@ -7422,7 +7422,6 @@ int btrfs_recover_log_trees(struct btrfs_root *log_root_tree)
+@@ -350,6 +350,7 @@ static int process_one_buffer(struct btrfs_root *log,
+ 			      struct extent_buffer *eb,
+ 			      struct walk_control *wc, u64 gen, int level)
+ {
++	struct btrfs_trans_handle *trans = wc->trans;
+ 	struct btrfs_fs_info *fs_info = log->fs_info;
+ 	int ret = 0;
  
- 	log_root_tree->log_root = NULL;
- 	clear_bit(BTRFS_FS_LOG_RECOVERING, &fs_info->flags);
--	btrfs_put_root(log_root_tree);
+@@ -364,18 +365,29 @@ static int process_one_buffer(struct btrfs_root *log,
+ 		};
  
- 	return 0;
- error:
+ 		ret = btrfs_read_extent_buffer(eb, &check);
+-		if (ret)
++		if (ret) {
++			if (trans)
++				btrfs_abort_transaction(trans, ret);
++			else
++				btrfs_handle_fs_error(fs_info, ret, NULL);
+ 			return ret;
++		}
+ 	}
+ 
+ 	if (wc->pin) {
+-		ret = btrfs_pin_extent_for_log_replay(wc->trans, eb);
+-		if (ret)
++		ASSERT(trans != NULL);
++		ret = btrfs_pin_extent_for_log_replay(trans, eb);
++		if (ret) {
++			btrfs_abort_transaction(trans, ret);
+ 			return ret;
++		}
+ 
+ 		if (btrfs_buffer_uptodate(eb, gen, 0) &&
+-		    btrfs_header_level(eb) == 0)
++		    btrfs_header_level(eb) == 0) {
+ 			ret = btrfs_exclude_logged_extents(eb);
++			if (ret)
++				btrfs_abort_transaction(trans, ret);
++		}
+ 	}
+ 	return ret;
+ }
 -- 
 2.51.0
 
