@@ -1,36 +1,36 @@
-Return-Path: <stable+bounces-191776-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191777-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4ED9C23026
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 03:29:17 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EFBBC23032
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 03:29:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4CFB14F02ED
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 02:29:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 74FB21A628FB
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 02:29:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED572287504;
-	Fri, 31 Oct 2025 02:28:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A80A2BD022;
+	Fri, 31 Oct 2025 02:28:58 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from out-174.mta1.migadu.com (out-174.mta1.migadu.com [95.215.58.174])
+Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06F2F2848A1
-	for <stable@vger.kernel.org>; Fri, 31 Oct 2025 02:28:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F196528C871
+	for <stable@vger.kernel.org>; Fri, 31 Oct 2025 02:28:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761877724; cv=none; b=Xd4/RuLJJnk1ClfuYE3mxO5jxqCyuuTRQPpi4B9R21oqWkREGt00whhfHN1609muBnMRT02FcTW+JfGzOyiukVjlUtkMrE+49dpISmndQMBR6WySz6+xCPpJCqbTz4mvDdXneeZKx6Ah9akCqOtKBfQGw9dgOqbGdVeqgdhr8R8=
+	t=1761877735; cv=none; b=ut/w72om34cW9LVTlSceEdYf0ssedckv8fI8VwBHwjjRO/ySkdLHCUO5fdZoz8qQLOPe5bsmqLjTMRCJvUvmfi3TiE2ZFyL/mors1YioJOZHabwlw3EgoNS7Gkt1xe6tSrTbRwabw5MB238MbuDzWP2iVvmMnpNWxdScO9aiaf4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761877724; c=relaxed/simple;
-	bh=7XisM2rwpdDlhZ2y1kfdlXbHH1vW3/EhUUIBGKIvWfM=;
+	s=arc-20240116; t=1761877735; c=relaxed/simple;
+	bh=TrZDGEYQD/7Jm3/Y3QZkkklUr78KX1OE+DBqzAN8Wos=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=jtmS8cWtRCXsurvUScVeby2hmsrHT5E/5DVkUxKS3c9Yn7jwZ0au1tMZwx8CTCUbUJKQHIaDGonA8Pv2U81ABRhIufa89IGfA4qidtpmm5zJuZaxZfbg6Jkwxrw3Y6edTc9Siobz3QKs2/5Yu+UUm9svqnUPV5sdBKsrIdzmSeQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=permerror (bad message/signature format); arc=none smtp.client-ip=95.215.58.174
+	 In-Reply-To:To:Cc; b=oKynPbUxNu/3oT0kBH1FE3ABSygv1AqOfistMgyr1lacuKwRA7bYdJZRO5soCWHtjLY41xaienzX/I8La8J30yoY/ggpLX+MwW5kRY/jZzgw2C5JX97j+BTBGzuM5ygMt3+xiBPUmk3sfG2k3AA9k4L+EGCoTKoc8LjNfX+RGRg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=permerror (bad message/signature format); arc=none smtp.client-ip=95.215.58.176
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Alexey@web.codeaurora.org, Minnekhanov@web.codeaurora.org
-Date: Fri, 31 Oct 2025 05:27:44 +0300
-Subject: [PATCH 2/3] clk: qcom: mmcc-sdm660: Add missing MDSS reset
+Date: Fri, 31 Oct 2025 05:27:45 +0300
+Subject: [PATCH 3/3] arm64: dts: qcom: sdm630: Add missing MDSS reset
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -39,7 +39,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251031-sdm660-mdss-reset-v1-2-14cb4e6836f2@postmarketos.org>
+Message-Id: <20251031-sdm660-mdss-reset-v1-3-14cb4e6836f2@postmarketos.org>
 References: <20251031-sdm660-mdss-reset-v1-0-14cb4e6836f2@postmarketos.org>
 In-Reply-To: <20251031-sdm660-mdss-reset-v1-0-14cb4e6836f2@postmarketos.org>
 To: Bjorn Andersson <andersson@kernel.org>, 
@@ -55,27 +55,39 @@ X-Migadu-Flow: FLOW_OUT
 
 From: Alexey Minnekhanov <alexeymin@postmarketos.org>
 
-Add offset for display subsystem reset in multimedia clock controller
-block.
+If the OS does not support recovering the state left by the
+bootloader it needs a way to reset display hardware, so that it can
+start from a clean state. Add a reference to the relevant reset.
+
+It fixes display init issue appeared in Linux v6.17: without reset
+device boots into black screen and you need to turn display off/on
+to "fix" it. Also sometimes it can boot into solid blue color
+with these messages in kernel log:
+
+  hw recovery is not complete for ctl:2
+  [drm:dpu_encoder_phys_vid_prepare_for_kickoff:569] [dpu error]enc33
+      intf1 ctl 2 reset failure: -22
+  [drm:dpu_encoder_frame_done_timeout:2727] [dpu error]enc33 frame
+      done timeout
 
 Cc: <stable@vger.kernel.org> # 6.17
 Signed-off-by: Alexey Minnekhanov <alexeymin@postmarketos.org>
 ---
- drivers/clk/qcom/mmcc-sdm660.c | 1 +
+ arch/arm64/boot/dts/qcom/sdm630.dtsi | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/clk/qcom/mmcc-sdm660.c b/drivers/clk/qcom/mmcc-sdm660.c
-index b723c536dfb6..dbd3f561dc6d 100644
---- a/drivers/clk/qcom/mmcc-sdm660.c
-+++ b/drivers/clk/qcom/mmcc-sdm660.c
-@@ -2781,6 +2781,7 @@ static struct gdsc *mmcc_sdm660_gdscs[] = {
- };
+diff --git a/arch/arm64/boot/dts/qcom/sdm630.dtsi b/arch/arm64/boot/dts/qcom/sdm630.dtsi
+index 8b1a45a4e56e..fedff18a5721 100644
+--- a/arch/arm64/boot/dts/qcom/sdm630.dtsi
++++ b/arch/arm64/boot/dts/qcom/sdm630.dtsi
+@@ -1563,6 +1563,7 @@ mdss: display-subsystem@c900000 {
+ 			reg-names = "mdss_phys", "vbif_phys";
  
- static const struct qcom_reset_map mmcc_660_resets[] = {
-+	[MDSS_BCR] = { 0x2300 },
- 	[CAMSS_MICRO_BCR] = { 0x3490 },
- };
+ 			power-domains = <&mmcc MDSS_GDSC>;
++			resets = <&mmcc MDSS_BCR>;
  
+ 			clocks = <&mmcc MDSS_AHB_CLK>,
+ 				 <&mmcc MDSS_AXI_CLK>,
 
 -- 
 2.51.0
