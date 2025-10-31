@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-191888-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191914-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 661ADC25772
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 15:09:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D65AC257C3
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 15:13:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id BCE644E82C4
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 14:05:11 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 55DF84F362B
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 14:06:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 534CA22A4D6;
-	Fri, 31 Oct 2025 14:05:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 162D82641FB;
+	Fri, 31 Oct 2025 14:06:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PqKDWLWu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gsDhRYCj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F4B03C17;
-	Fri, 31 Oct 2025 14:05:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C58772376E4;
+	Fri, 31 Oct 2025 14:06:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761919506; cv=none; b=t7mer33VIlgNarrlAPN+viiky2WAaANw38dJg31WuJIr95TGRPORAhQOLmsmpDdX+gt/Skxjtnr6eOVLaBeveLy0xwJwlWBptnrerLvhWtz118vy0V25nvbzDdwTWeWWqGXPi4IPnzMloCp48qfO8RYHnv9Vv4eQaAMDfZyltCQ=
+	t=1761919582; cv=none; b=D6vfo+uJKGCaFlxArsmwt6KMu1F2Y1n9gpzh4gYgIV4l2hYRDhiT11UhgksEiCnRIfFzoDh0SUOFn600VruHW5F0GkKyYCxR5bTiIsHmIwc6yQnuMosrrYdk96citKl5VGUU+q8ED1wOBlDEwpob8pqCXYsyIS1AujhGCmfFnU0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761919506; c=relaxed/simple;
-	bh=ikNyP0zouM+srXyalcUlYnPkahI47I1EThk5XJ2RWGE=;
+	s=arc-20240116; t=1761919582; c=relaxed/simple;
+	bh=kUCbdQHeaxyZNOqP8f/g+9K/N1IEeLcp4f+T4s2bB4A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ugCHxmT3HoFyTrQDdvauYvMhIJI+v/looCYiIcHXXZNw+RrFoyT9G9a1xUmddewR2fnkZUGL46DUvBXaDy9fPqLpgQNHPFQ3SXQysoSuzI0tzqTsymwzt7Ey55YeESU1Zy0aBPtCX0QAB1eLK5SjmFZuveoOMRU97PmOG1svmyo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PqKDWLWu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84FF9C4CEFB;
-	Fri, 31 Oct 2025 14:05:05 +0000 (UTC)
+	 MIME-Version; b=j/4CNPyaPRF1lj5QCssLrm3dMb7mjl6lP8MD+eVmFh2ynpDPflYg9EnaZnlAYKX5ELEQD4EnZj2H2NUHyMB9dmcu7ZNt4yqWCseCxgOfe/B5ggHwQyCtTA4MfmqxxB50YdWNOItgk2zialpwfqrT2aixx8Y3YTpHOtWgtiRlytI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gsDhRYCj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 526A2C4CEE7;
+	Fri, 31 Oct 2025 14:06:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761919505;
-	bh=ikNyP0zouM+srXyalcUlYnPkahI47I1EThk5XJ2RWGE=;
+	s=korg; t=1761919582;
+	bh=kUCbdQHeaxyZNOqP8f/g+9K/N1IEeLcp4f+T4s2bB4A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PqKDWLWuHaPWFbT5SX/KbyU7gW8keKaW+0EsY9y/HFA9kAbGlzf1PBGimnqrdJ78K
-	 goeM+gdHC2dwjSf8cO11Mpk8xPoWjB1UJTV9jGtvK4IZvoK8MVRjR1uHYuZlUk/pnh
-	 SEw8OLePRRkxIkTiPjChia7scQ1waTqF5ibl5rUk=
+	b=gsDhRYCja6PSyUVcoX2zwmmvQjS6v/gQ0WD5QSGYtqVUhKuieyTKK4Vwzm98T1AKI
+	 VQgk7KVTe3Z4sj23hE9GeNIFLjDTxevLpEdfJ/KRAvEdavQOkbHM3Cb3Z5UzWlSKLO
+	 UIeMRz2xdJW2ep39nFR0Ac2GcJbCFH7OOGvrCYCQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kyungwook Boo <bookyungwook@gmail.com>,
-	Edward Cree <ecree.xilinx@gmail.com>,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Amelia Crate <acrate@waldn.net>
-Subject: [PATCH 6.12 40/40] sfc: fix NULL dereferences in ef100_process_design_param()
-Date: Fri, 31 Oct 2025 15:01:33 +0100
-Message-ID: <20251031140044.991280569@linuxfoundation.org>
+	Damien Le Moal <dlemoal@kernel.org>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	David Sterba <dsterba@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.17 26/35] btrfs: zoned: return error from btrfs_zone_finish_endio()
+Date: Fri, 31 Oct 2025 15:01:34 +0100
+Message-ID: <20251031140044.197410579@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251031140043.939381518@linuxfoundation.org>
-References: <20251031140043.939381518@linuxfoundation.org>
+In-Reply-To: <20251031140043.564670400@linuxfoundation.org>
+References: <20251031140043.564670400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,156 +63,116 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edward Cree <ecree.xilinx@gmail.com>
+From: Johannes Thumshirn <johannes.thumshirn@wdc.com>
 
-[ Upstream commit 8241ecec1cdc6699ae197d52d58e76bddd995fa5 ]
+[ Upstream commit 3c44cd3c79fcb38a86836dea6ff8fec322a9e68c ]
 
-Since cited commit, ef100_probe_main() and hence also
- ef100_check_design_params() run before efx->net_dev is created;
- consequently, we cannot netif_set_tso_max_size() or _segs() at this
- point.
-Move those netif calls to ef100_probe_netdev(), and also replace
- netif_err within the design params code with pci_err.
+Now that btrfs_zone_finish_endio_workfn() is directly calling
+do_zone_finish() the only caller of btrfs_zone_finish_endio() is
+btrfs_finish_one_ordered().
 
-Reported-by: Kyungwook Boo <bookyungwook@gmail.com>
-Fixes: 98ff4c7c8ac7 ("sfc: Separate netdev probe/remove from PCI probe/remove")
-Signed-off-by: Edward Cree <ecree.xilinx@gmail.com>
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Link: https://patch.msgid.link/20250401225439.2401047-1-edward.cree@amd.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Amelia Crate <acrate@waldn.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+btrfs_finish_one_ordered() already has error handling in-place so
+btrfs_zone_finish_endio() can return an error if the block group lookup
+fails.
+
+Also as btrfs_zone_finish_endio() already checks for zoned filesystems and
+returns early, there's no need to do this in the caller.
+
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/sfc/ef100_netdev.c |    6 ++--
- drivers/net/ethernet/sfc/ef100_nic.c    |   47 ++++++++++++++------------------
- 2 files changed, 24 insertions(+), 29 deletions(-)
+ fs/btrfs/inode.c | 7 ++++---
+ fs/btrfs/zoned.c | 8 +++++---
+ fs/btrfs/zoned.h | 9 ++++++---
+ 3 files changed, 15 insertions(+), 9 deletions(-)
 
---- a/drivers/net/ethernet/sfc/ef100_netdev.c
-+++ b/drivers/net/ethernet/sfc/ef100_netdev.c
-@@ -450,8 +450,9 @@ int ef100_probe_netdev(struct efx_probe_
- 	net_dev->hw_enc_features |= efx->type->offload_features;
- 	net_dev->vlan_features |= NETIF_F_HW_CSUM | NETIF_F_SG |
- 				  NETIF_F_HIGHDMA | NETIF_F_ALL_TSO;
--	netif_set_tso_max_segs(net_dev,
--			       ESE_EF100_DP_GZ_TSO_MAX_HDR_NUM_SEGS_DEFAULT);
-+	nic_data = efx->nic_data;
-+	netif_set_tso_max_size(efx->net_dev, nic_data->tso_max_payload_len);
-+	netif_set_tso_max_segs(efx->net_dev, nic_data->tso_max_payload_num_segs);
- 	efx->mdio.dev = net_dev;
- 
- 	rc = efx_ef100_init_datapath_caps(efx);
-@@ -478,7 +479,6 @@ int ef100_probe_netdev(struct efx_probe_
- 	/* Don't fail init if RSS setup doesn't work. */
- 	efx_mcdi_push_default_indir_table(efx, efx->n_rx_channels);
- 
--	nic_data = efx->nic_data;
- 	rc = ef100_get_mac_address(efx, net_dev->perm_addr, CLIENT_HANDLE_SELF,
- 				   efx->type->is_vf);
- 	if (rc)
---- a/drivers/net/ethernet/sfc/ef100_nic.c
-+++ b/drivers/net/ethernet/sfc/ef100_nic.c
-@@ -887,8 +887,7 @@ static int ef100_process_design_param(st
- 	case ESE_EF100_DP_GZ_TSO_MAX_HDR_NUM_SEGS:
- 		/* We always put HDR_NUM_SEGS=1 in our TSO descriptors */
- 		if (!reader->value) {
--			netif_err(efx, probe, efx->net_dev,
--				  "TSO_MAX_HDR_NUM_SEGS < 1\n");
-+			pci_err(efx->pci_dev, "TSO_MAX_HDR_NUM_SEGS < 1\n");
- 			return -EOPNOTSUPP;
- 		}
- 		return 0;
-@@ -901,32 +900,28 @@ static int ef100_process_design_param(st
- 		 */
- 		if (!reader->value || reader->value > EFX_MIN_DMAQ_SIZE ||
- 		    EFX_MIN_DMAQ_SIZE % (u32)reader->value) {
--			netif_err(efx, probe, efx->net_dev,
--				  "%s size granularity is %llu, can't guarantee safety\n",
--				  reader->type == ESE_EF100_DP_GZ_RXQ_SIZE_GRANULARITY ? "RXQ" : "TXQ",
--				  reader->value);
-+			pci_err(efx->pci_dev,
-+				"%s size granularity is %llu, can't guarantee safety\n",
-+				reader->type == ESE_EF100_DP_GZ_RXQ_SIZE_GRANULARITY ? "RXQ" : "TXQ",
-+				reader->value);
- 			return -EOPNOTSUPP;
- 		}
- 		return 0;
- 	case ESE_EF100_DP_GZ_TSO_MAX_PAYLOAD_LEN:
- 		nic_data->tso_max_payload_len = min_t(u64, reader->value,
- 						      GSO_LEGACY_MAX_SIZE);
--		netif_set_tso_max_size(efx->net_dev,
--				       nic_data->tso_max_payload_len);
- 		return 0;
- 	case ESE_EF100_DP_GZ_TSO_MAX_PAYLOAD_NUM_SEGS:
- 		nic_data->tso_max_payload_num_segs = min_t(u64, reader->value, 0xffff);
--		netif_set_tso_max_segs(efx->net_dev,
--				       nic_data->tso_max_payload_num_segs);
- 		return 0;
- 	case ESE_EF100_DP_GZ_TSO_MAX_NUM_FRAMES:
- 		nic_data->tso_max_frames = min_t(u64, reader->value, 0xffff);
- 		return 0;
- 	case ESE_EF100_DP_GZ_COMPAT:
- 		if (reader->value) {
--			netif_err(efx, probe, efx->net_dev,
--				  "DP_COMPAT has unknown bits %#llx, driver not compatible with this hw\n",
--				  reader->value);
-+			pci_err(efx->pci_dev,
-+				"DP_COMPAT has unknown bits %#llx, driver not compatible with this hw\n",
-+				reader->value);
- 			return -EOPNOTSUPP;
- 		}
- 		return 0;
-@@ -946,10 +941,10 @@ static int ef100_process_design_param(st
- 		 * So the value of this shouldn't matter.
- 		 */
- 		if (reader->value != ESE_EF100_DP_GZ_VI_STRIDES_DEFAULT)
--			netif_dbg(efx, probe, efx->net_dev,
--				  "NIC has other than default VI_STRIDES (mask "
--				  "%#llx), early probing might use wrong one\n",
--				  reader->value);
-+			pci_dbg(efx->pci_dev,
-+				"NIC has other than default VI_STRIDES (mask "
-+				"%#llx), early probing might use wrong one\n",
-+				reader->value);
- 		return 0;
- 	case ESE_EF100_DP_GZ_RX_MAX_RUNT:
- 		/* Driver doesn't look at L2_STATUS:LEN_ERR bit, so we don't
-@@ -961,9 +956,9 @@ static int ef100_process_design_param(st
- 		/* Host interface says "Drivers should ignore design parameters
- 		 * that they do not recognise."
- 		 */
--		netif_dbg(efx, probe, efx->net_dev,
--			  "Ignoring unrecognised design parameter %u\n",
--			  reader->type);
-+		pci_dbg(efx->pci_dev,
-+			"Ignoring unrecognised design parameter %u\n",
-+			reader->type);
- 		return 0;
+diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
+index 4031cbdea0740..41da405181b4f 100644
+--- a/fs/btrfs/inode.c
++++ b/fs/btrfs/inode.c
+@@ -3107,9 +3107,10 @@ int btrfs_finish_one_ordered(struct btrfs_ordered_extent *ordered_extent)
+ 		goto out;
  	}
+ 
+-	if (btrfs_is_zoned(fs_info))
+-		btrfs_zone_finish_endio(fs_info, ordered_extent->disk_bytenr,
+-					ordered_extent->disk_num_bytes);
++	ret = btrfs_zone_finish_endio(fs_info, ordered_extent->disk_bytenr,
++				      ordered_extent->disk_num_bytes);
++	if (ret)
++		goto out;
+ 
+ 	if (test_bit(BTRFS_ORDERED_TRUNCATED, &ordered_extent->flags)) {
+ 		truncated = true;
+diff --git a/fs/btrfs/zoned.c b/fs/btrfs/zoned.c
+index 87c5dd3ad016e..fcdf7b058a584 100644
+--- a/fs/btrfs/zoned.c
++++ b/fs/btrfs/zoned.c
+@@ -2464,16 +2464,17 @@ bool btrfs_can_activate_zone(struct btrfs_fs_devices *fs_devices, u64 flags)
+ 	return ret;
  }
-@@ -999,13 +994,13 @@ static int ef100_check_design_params(str
- 	 */
- 	if (reader.state != EF100_TLV_TYPE) {
- 		if (reader.state == EF100_TLV_TYPE_CONT)
--			netif_err(efx, probe, efx->net_dev,
--				  "truncated design parameter (incomplete type %u)\n",
--				  reader.type);
-+			pci_err(efx->pci_dev,
-+				"truncated design parameter (incomplete type %u)\n",
-+				reader.type);
- 		else
--			netif_err(efx, probe, efx->net_dev,
--				  "truncated design parameter %u\n",
--				  reader.type);
-+			pci_err(efx->pci_dev,
-+				"truncated design parameter %u\n",
-+				reader.type);
- 		rc = -EIO;
- 	}
+ 
+-void btrfs_zone_finish_endio(struct btrfs_fs_info *fs_info, u64 logical, u64 length)
++int btrfs_zone_finish_endio(struct btrfs_fs_info *fs_info, u64 logical, u64 length)
+ {
+ 	struct btrfs_block_group *block_group;
+ 	u64 min_alloc_bytes;
+ 
+ 	if (!btrfs_is_zoned(fs_info))
+-		return;
++		return 0;
+ 
+ 	block_group = btrfs_lookup_block_group(fs_info, logical);
+-	ASSERT(block_group);
++	if (WARN_ON_ONCE(!block_group))
++		return -ENOENT;
+ 
+ 	/* No MIXED_BG on zoned btrfs. */
+ 	if (block_group->flags & BTRFS_BLOCK_GROUP_DATA)
+@@ -2490,6 +2491,7 @@ void btrfs_zone_finish_endio(struct btrfs_fs_info *fs_info, u64 logical, u64 len
+ 
  out:
+ 	btrfs_put_block_group(block_group);
++	return 0;
+ }
+ 
+ static void btrfs_zone_finish_endio_workfn(struct work_struct *work)
+diff --git a/fs/btrfs/zoned.h b/fs/btrfs/zoned.h
+index 6e11533b8e14c..17c5656580dd9 100644
+--- a/fs/btrfs/zoned.h
++++ b/fs/btrfs/zoned.h
+@@ -83,7 +83,7 @@ int btrfs_sync_zone_write_pointer(struct btrfs_device *tgt_dev, u64 logical,
+ bool btrfs_zone_activate(struct btrfs_block_group *block_group);
+ int btrfs_zone_finish(struct btrfs_block_group *block_group);
+ bool btrfs_can_activate_zone(struct btrfs_fs_devices *fs_devices, u64 flags);
+-void btrfs_zone_finish_endio(struct btrfs_fs_info *fs_info, u64 logical,
++int btrfs_zone_finish_endio(struct btrfs_fs_info *fs_info, u64 logical,
+ 			     u64 length);
+ void btrfs_schedule_zone_finish_bg(struct btrfs_block_group *bg,
+ 				   struct extent_buffer *eb);
+@@ -234,8 +234,11 @@ static inline bool btrfs_can_activate_zone(struct btrfs_fs_devices *fs_devices,
+ 	return true;
+ }
+ 
+-static inline void btrfs_zone_finish_endio(struct btrfs_fs_info *fs_info,
+-					   u64 logical, u64 length) { }
++static inline int btrfs_zone_finish_endio(struct btrfs_fs_info *fs_info,
++					   u64 logical, u64 length)
++{
++	return 0;
++}
+ 
+ static inline void btrfs_schedule_zone_finish_bg(struct btrfs_block_group *bg,
+ 						 struct extent_buffer *eb) { }
+-- 
+2.51.0
+
 
 
 
