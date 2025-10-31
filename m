@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-191884-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191910-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBE43C256AC
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 15:05:02 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF8A3C2589C
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 15:21:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 3E2B7351102
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 14:05:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AC2F4563F3D
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 14:06:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E2DD24BBEC;
-	Fri, 31 Oct 2025 14:04:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51DE325EFB6;
+	Fri, 31 Oct 2025 14:06:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YpA2vkQO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E9jj3Ywu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3876D1F37D4;
-	Fri, 31 Oct 2025 14:04:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E4E824BBEC;
+	Fri, 31 Oct 2025 14:06:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761919494; cv=none; b=DeNUx9M4/WefqSwNMlMUBjYH9TU1gw0H2Vqyk1jrFL88k99Eu2xQaFryfbx1iPJAyU6roYjh5IL4m2K+mBVyN+LRZdksnZ+AcIozZG9PwTluC2Ah7PuPcjBPmX1j3Wf/x5kd/DzxhhiVqBINGaG5R1vYlLSCOjhg/+LG+HyuUs4=
+	t=1761919571; cv=none; b=i0YoLUrElooN2cTiCWwzE7XslQRKQuDbxV6HEAtHfkvcm/bYRxD4yZNJsBQm3xjL/ZgCAF7jJBd4Yfj/Z9l5RJ3BExyI+cRdHgmUHAcA9Wwl+XfEipsPHVoKyrTMH+uU1EWpCkfwEkHXV6A7NA43s/8fpRC48sevL4SKCCznHWI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761919494; c=relaxed/simple;
-	bh=RwJxASIQoclL04t05kEwVJ9/v0iey5xqJVVsv9Tak/g=;
+	s=arc-20240116; t=1761919571; c=relaxed/simple;
+	bh=EIaGQ4Ryg1VgXOGYzcvslw2EpdG0Q/75eNRExWTkl9A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Wa1n6OozpNca37oVaWuB1Vbbc09ZwFfMf7HJRGLr/gp9q0L6CIHmY06I8qM0nDhY/eBNzIlhATKdE8xOr1SkOMLR/yH3DCWlo+7vYAsG1VI6zbzGxHrxrS5dAe/y5M3eblKKjguzuOuxPnfHamXkNUITjRSrid8I6dSG0e6SiLA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YpA2vkQO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1EF7C4CEE7;
-	Fri, 31 Oct 2025 14:04:53 +0000 (UTC)
+	 MIME-Version; b=pq6BlRje6EnENTji9nK6nsuFRqjV/LCZqVh1qB0YN+AZFw3rK84p0n5EqjlexsY6uir4MnHnDmy8mH9UkH0Q0NPAIBMiPzpVEsIJa1zwh3PZO6qFLuProaKIQ2ePwqVa6/7pZnUf3bk6l+8FEViG86EV7XsfymlAkwILg2caRUk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E9jj3Ywu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B65EC4CEF8;
+	Fri, 31 Oct 2025 14:06:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761919494;
-	bh=RwJxASIQoclL04t05kEwVJ9/v0iey5xqJVVsv9Tak/g=;
+	s=korg; t=1761919570;
+	bh=EIaGQ4Ryg1VgXOGYzcvslw2EpdG0Q/75eNRExWTkl9A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YpA2vkQOFjALblKQC/6ZEeQfN2Cbs3Ho166j5vpU0xKyWuSb+AymWFf4gg2ASuFEL
-	 rF3EOrcKRqXqnYGxcLPaNhnNHawhbcCh1+GvW1znxF56Pxr/JtGHPYzLdrqM7zKtEy
-	 aKq4c9oyaUJPX+ay1Mbbom0sQrFdnzz5s06Nd3Jg=
+	b=E9jj3Ywu6OIvBiN8+uQ2Uy91dHucvZbB0DNtrbdPliLEP+oQkWZ3Zqf/uQ8/q+2d4
+	 6xBhImbXTb81gNjrJxPgXEudRaBFzrzJ1/vY/7mPvbufVjLa9LBnHHu2uMCJiQ+ir1
+	 nRX2cZni/kKtfqIiyIyp21OHs4MRkiDOD0KjdpTs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kees Bakker <kees@ijzerbout.nl>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Joerg Roedel <jroedel@suse.de>,
-	Amelia Crate <acrate@waldn.net>
-Subject: [PATCH 6.12 37/40] iommu/vt-d: Avoid use of NULL after WARN_ON_ONCE
+	Avadhut Naik <avadhut.naik@amd.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.17 22/35] EDAC/mc_sysfs: Increase legacy channel support to 16
 Date: Fri, 31 Oct 2025 15:01:30 +0100
-Message-ID: <20251031140044.920190931@linuxfoundation.org>
+Message-ID: <20251031140044.099100370@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251031140043.939381518@linuxfoundation.org>
-References: <20251031140043.939381518@linuxfoundation.org>
+In-Reply-To: <20251031140043.564670400@linuxfoundation.org>
+References: <20251031140043.564670400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +62,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Bakker <kees@ijzerbout.nl>
+From: Avadhut Naik <avadhut.naik@amd.com>
 
-[ Upstream commit 60f030f7418d3f1d94f2fb207fe3080e1844630b ]
+[ Upstream commit 6e1c2c6c2c40ce99e0d2633b212f43c702c1a002 ]
 
-There is a WARN_ON_ONCE to catch an unlikely situation when
-domain_remove_dev_pasid can't find the `pasid`. In case it nevertheless
-happens we must avoid using a NULL pointer.
+Newer AMD systems can support up to 16 channels per EDAC "mc" device.
+These are detected by the EDAC module running on the device, and the
+current EDAC interface is appropriately enumerated.
 
-Signed-off-by: Kees Bakker <kees@ijzerbout.nl>
-Link: https://lore.kernel.org/r/20241218201048.E544818E57E@bout3.ijzerbout.nl
-Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
-Signed-off-by: Amelia Crate <acrate@waldn.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The legacy EDAC sysfs interface however, provides device attributes for
+channels 0 through 11 only. Consequently, the last four channels, 12
+through 15, will not be enumerated and will not be visible through the
+legacy sysfs interface.
+
+Add additional device attributes to ensure that all 16 channels, if
+present, are enumerated by and visible through the legacy EDAC sysfs
+interface.
+
+Signed-off-by: Avadhut Naik <avadhut.naik@amd.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/20250916203242.1281036-1-avadhut.naik@amd.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/intel/iommu.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/edac/edac_mc_sysfs.c | 24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
 
---- a/drivers/iommu/intel/iommu.c
-+++ b/drivers/iommu/intel/iommu.c
-@@ -4328,13 +4328,14 @@ static void intel_iommu_remove_dev_pasid
- 			break;
- 		}
- 	}
--	WARN_ON_ONCE(!dev_pasid);
- 	spin_unlock_irqrestore(&dmar_domain->lock, flags);
+diff --git a/drivers/edac/edac_mc_sysfs.c b/drivers/edac/edac_mc_sysfs.c
+index 0f338adf7d937..8689631f19053 100644
+--- a/drivers/edac/edac_mc_sysfs.c
++++ b/drivers/edac/edac_mc_sysfs.c
+@@ -305,6 +305,14 @@ DEVICE_CHANNEL(ch10_dimm_label, S_IRUGO | S_IWUSR,
+ 	channel_dimm_label_show, channel_dimm_label_store, 10);
+ DEVICE_CHANNEL(ch11_dimm_label, S_IRUGO | S_IWUSR,
+ 	channel_dimm_label_show, channel_dimm_label_store, 11);
++DEVICE_CHANNEL(ch12_dimm_label, S_IRUGO | S_IWUSR,
++	channel_dimm_label_show, channel_dimm_label_store, 12);
++DEVICE_CHANNEL(ch13_dimm_label, S_IRUGO | S_IWUSR,
++	channel_dimm_label_show, channel_dimm_label_store, 13);
++DEVICE_CHANNEL(ch14_dimm_label, S_IRUGO | S_IWUSR,
++	channel_dimm_label_show, channel_dimm_label_store, 14);
++DEVICE_CHANNEL(ch15_dimm_label, S_IRUGO | S_IWUSR,
++	channel_dimm_label_show, channel_dimm_label_store, 15);
  
- 	cache_tag_unassign_domain(dmar_domain, dev, pasid);
- 	domain_detach_iommu(dmar_domain, iommu);
--	intel_iommu_debugfs_remove_dev_pasid(dev_pasid);
--	kfree(dev_pasid);
-+	if (!WARN_ON_ONCE(!dev_pasid)) {
-+		intel_iommu_debugfs_remove_dev_pasid(dev_pasid);
-+		kfree(dev_pasid);
-+	}
- 	intel_pasid_tear_down_entry(iommu, dev, pasid, false);
- 	intel_drain_pasid_prq(dev, pasid);
- }
+ /* Total possible dynamic DIMM Label attribute file table */
+ static struct attribute *dynamic_csrow_dimm_attr[] = {
+@@ -320,6 +328,10 @@ static struct attribute *dynamic_csrow_dimm_attr[] = {
+ 	&dev_attr_legacy_ch9_dimm_label.attr.attr,
+ 	&dev_attr_legacy_ch10_dimm_label.attr.attr,
+ 	&dev_attr_legacy_ch11_dimm_label.attr.attr,
++	&dev_attr_legacy_ch12_dimm_label.attr.attr,
++	&dev_attr_legacy_ch13_dimm_label.attr.attr,
++	&dev_attr_legacy_ch14_dimm_label.attr.attr,
++	&dev_attr_legacy_ch15_dimm_label.attr.attr,
+ 	NULL
+ };
+ 
+@@ -348,6 +360,14 @@ DEVICE_CHANNEL(ch10_ce_count, S_IRUGO,
+ 		   channel_ce_count_show, NULL, 10);
+ DEVICE_CHANNEL(ch11_ce_count, S_IRUGO,
+ 		   channel_ce_count_show, NULL, 11);
++DEVICE_CHANNEL(ch12_ce_count, S_IRUGO,
++		   channel_ce_count_show, NULL, 12);
++DEVICE_CHANNEL(ch13_ce_count, S_IRUGO,
++		   channel_ce_count_show, NULL, 13);
++DEVICE_CHANNEL(ch14_ce_count, S_IRUGO,
++		   channel_ce_count_show, NULL, 14);
++DEVICE_CHANNEL(ch15_ce_count, S_IRUGO,
++		   channel_ce_count_show, NULL, 15);
+ 
+ /* Total possible dynamic ce_count attribute file table */
+ static struct attribute *dynamic_csrow_ce_count_attr[] = {
+@@ -363,6 +383,10 @@ static struct attribute *dynamic_csrow_ce_count_attr[] = {
+ 	&dev_attr_legacy_ch9_ce_count.attr.attr,
+ 	&dev_attr_legacy_ch10_ce_count.attr.attr,
+ 	&dev_attr_legacy_ch11_ce_count.attr.attr,
++	&dev_attr_legacy_ch12_ce_count.attr.attr,
++	&dev_attr_legacy_ch13_ce_count.attr.attr,
++	&dev_attr_legacy_ch14_ce_count.attr.attr,
++	&dev_attr_legacy_ch15_ce_count.attr.attr,
+ 	NULL
+ };
+ 
+-- 
+2.51.0
+
 
 
 
