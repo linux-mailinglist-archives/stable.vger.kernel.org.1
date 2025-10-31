@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-191917-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191931-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3FEBC25878
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 15:18:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0491EC257B2
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 15:11:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 077664667BE
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 14:06:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 96CF55604C1
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 14:07:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1B743491E3;
-	Fri, 31 Oct 2025 14:06:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C86D134BA2B;
+	Fri, 31 Oct 2025 14:07:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LyodBMoQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xya5ysxA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 600D623F417;
-	Fri, 31 Oct 2025 14:06:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86AA72376E4;
+	Fri, 31 Oct 2025 14:07:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761919591; cv=none; b=d0R1VBmtsJw6qIhb3GKC/QzFFxwEeJyfMTXjtb1cc1bWiycorr85sL5SyMonxZvnv3zoUw7t96+xEkqDq9ghdmoX3VlpgmjE/MJvJ2SFWQm/7pPxn2LPSNG2oItOQx5PVl1bntX4xykLvdT6HLrAtVxjmM/CZbz38q5kol29PIE=
+	t=1761919632; cv=none; b=GFQaYptmT0lR+VGWzM56uintW6fxJUxiSu85o80nkRD6wOsLNQRi/OAfnF/uPUQXOnYEaXL+B0IF1XM2swLokmIsJP5t8bauBaZ/IPCVk8IvWd0CrwSoqgdkhnjjkXHVA9TRhzYRensMmcmQje8y7OVxCyPqAJNn0GZ7weFi1dw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761919591; c=relaxed/simple;
-	bh=2P+EJs88WxLEbNAW/jonCkuIh+Hw4EqMOXHEk7zjFZw=;
+	s=arc-20240116; t=1761919632; c=relaxed/simple;
+	bh=KKjYKJBx1XujnmxIh6XqMyP2oknWDDBKjUNF9AswvTA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r/z8t/TP9pqOj4tCaeAjSYlf/yX9oNIt+pXkPYu45lgfU+gDIV0gJp+ILhrYtSNROfmgWebB3WQMtcA6WJt08Fveohx/1AuiX2S1axgSay22UmFhwjU9TUVhjZdx6EWVaN3twba79fkZgh8uPjmfRUq3AxCKSj16L0r0aXWTv6Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LyodBMoQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7F9CC4CEF8;
-	Fri, 31 Oct 2025 14:06:30 +0000 (UTC)
+	 MIME-Version; b=ZxailjsfMWMf3ilS86D60REO1QdCChMpt/nuVwsEVoWTmxalmUDlYmN9v9QerMDIMvnCPmFe8BuHYsH4jt7FgIUqZRuiHNJDeuTV+Rt7POTR9UoJbw4U/t21cH97jtB5RtKaOUzGDV5Nr7X7B/gHSVQO1UAmI0RAeB3aMNSUEjU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xya5ysxA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DC53C4CEE7;
+	Fri, 31 Oct 2025 14:07:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761919591;
-	bh=2P+EJs88WxLEbNAW/jonCkuIh+Hw4EqMOXHEk7zjFZw=;
+	s=korg; t=1761919632;
+	bh=KKjYKJBx1XujnmxIh6XqMyP2oknWDDBKjUNF9AswvTA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LyodBMoQksxBV9opm4jD8x8Rrf6gFnAEOKhWipVMd402w8Wi3H8mPEpBQMzLpzUmp
-	 v0Q8Pd6e2j670DBHjdEYbmWMiEvNCb7FY0WzIOsFCwVZsDRstAiU5ieoA5ewtN0wLZ
-	 b5y2heyvq+7CFPZyA/37u9uaaOptJzw5a0AB4+p8=
+	b=Xya5ysxAHH6aUOvpH6WDitbSvA8X0Xy8VLcDEcEcLSwENEDYVtNDnowvOlX500LZO
+	 Ek9VM7tmPUxr5se5+CjDTBmmHAhmzLHNvCOrggqVE5jHBJa9jx2BuZOx7xfoROaCku
+	 XwJClgPSJKgMpY4FyMlK5iXpjRX18gcXYsF1/8ok=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Filipe Manana <fdmanana@suse.com>,
 	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 29/35] btrfs: always drop log root tree reference in btrfs_replay_log()
-Date: Fri, 31 Oct 2025 15:01:37 +0100
-Message-ID: <20251031140044.341287683@linuxfoundation.org>
+Subject: [PATCH 6.17 30/35] btrfs: use level argument in log tree walk callback replay_one_buffer()
+Date: Fri, 31 Oct 2025 15:01:38 +0100
+Message-ID: <20251031140044.364189212@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251031140043.564670400@linuxfoundation.org>
 References: <20251031140043.564670400@linuxfoundation.org>
@@ -68,59 +68,45 @@ Content-Transfer-Encoding: 8bit
 
 From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit 2f5b8095ea47b142c56c09755a8b1e14145a2d30 ]
+[ Upstream commit 6cb7f0b8c9b0d6a35682335fea88bd26f089306f ]
 
-Currently we have this odd behaviour:
-
-1) At btrfs_replay_log() we drop the reference of the log root tree if
-   the call to btrfs_recover_log_trees() failed;
-
-2) But if the call to btrfs_recover_log_trees() did not fail, we don't
-   drop the reference in btrfs_replay_log() - we expect that
-   btrfs_recover_log_trees() does it in case it returns success.
-
-Let's simplify this and make btrfs_replay_log() always drop the reference
-on the log root tree, not only this simplifies code as it's what makes
-sense since it's btrfs_replay_log() who grabbed the reference in the first
-place.
+We already have the extent buffer's level in an argument, there's no need
+to first ensure the extent buffer's data is loaded (by calling
+btrfs_read_extent_buffer()) and then call btrfs_header_level() to check
+the level. So use the level argument and do the check before calling
+btrfs_read_extent_buffer().
 
 Signed-off-by: Filipe Manana <fdmanana@suse.com>
 Reviewed-by: David Sterba <dsterba@suse.com>
 Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/disk-io.c  | 2 +-
- fs/btrfs/tree-log.c | 1 -
- 2 files changed, 1 insertion(+), 2 deletions(-)
+ fs/btrfs/tree-log.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
-diff --git a/fs/btrfs/disk-io.c b/fs/btrfs/disk-io.c
-index 70fc4e7cc5a0e..0b02e36b30558 100644
---- a/fs/btrfs/disk-io.c
-+++ b/fs/btrfs/disk-io.c
-@@ -2087,10 +2087,10 @@ static int btrfs_replay_log(struct btrfs_fs_info *fs_info,
- 
- 	/* returns with log_tree_root freed on success */
- 	ret = btrfs_recover_log_trees(log_tree_root);
-+	btrfs_put_root(log_tree_root);
- 	if (ret) {
- 		btrfs_handle_fs_error(fs_info, ret,
- 				      "Failed to recover log tree");
--		btrfs_put_root(log_tree_root);
- 		return ret;
- 	}
- 
 diff --git a/fs/btrfs/tree-log.c b/fs/btrfs/tree-log.c
-index 50ed84cb68a69..518cd74191e77 100644
+index 518cd74191e77..4f92aa15d9b1d 100644
 --- a/fs/btrfs/tree-log.c
 +++ b/fs/btrfs/tree-log.c
-@@ -7469,7 +7469,6 @@ int btrfs_recover_log_trees(struct btrfs_root *log_root_tree)
+@@ -2461,15 +2461,13 @@ static int replay_one_buffer(struct btrfs_root *log, struct extent_buffer *eb,
+ 	int i;
+ 	int ret;
  
- 	log_root_tree->log_root = NULL;
- 	clear_bit(BTRFS_FS_LOG_RECOVERING, &fs_info->flags);
--	btrfs_put_root(log_root_tree);
++	if (level != 0)
++		return 0;
++
+ 	ret = btrfs_read_extent_buffer(eb, &check);
+ 	if (ret)
+ 		return ret;
  
- 	return 0;
- error:
+-	level = btrfs_header_level(eb);
+-
+-	if (level != 0)
+-		return 0;
+-
+ 	path = btrfs_alloc_path();
+ 	if (!path)
+ 		return -ENOMEM;
 -- 
 2.51.0
 
