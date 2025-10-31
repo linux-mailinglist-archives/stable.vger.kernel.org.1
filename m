@@ -1,159 +1,118 @@
-Return-Path: <stable+bounces-191949-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191950-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B0F2C264DE
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 18:14:28 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D880C26785
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 18:48:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC5BA1A6666C
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 17:11:36 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 827324FB467
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 17:43:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B1F6303A34;
-	Fri, 31 Oct 2025 17:10:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Pc4n61lq"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37446302770;
+	Fri, 31 Oct 2025 17:43:20 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25CB73019B8
-	for <stable@vger.kernel.org>; Fri, 31 Oct 2025 17:10:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 036C726ED55;
+	Fri, 31 Oct 2025 17:43:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761930658; cv=none; b=fvJB3N6C8y8TuzcM2FCX81997eZel8iYbId2zozrVYEWaGgezRdXbWY7dZh/1Vc3+sdTeOcJ29Mb3zUqYBd5j2Bx2tZX422ibXNT5Hc39LAflHMmwJFlILG5tmURM42+HE+QETKzXZN0yOAskVjoax/eY0TZ4jCKPrhDOPrQ7JY=
+	t=1761932600; cv=none; b=OoU8MJJnq72RmKO+nTtjaR6FDlwZ2bbc7pzJhJsLP/jO/3nambx42aewwm785XTrkLCIql8emXiMRfmyQrt5+cZ691GLDR8S2F25GVv7aRXV6a1h+FOCs8BsOD97beMCJR0vkxAG1psBZIMH2c/kWHy6GSruPa2v5IqherlkFWY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761930658; c=relaxed/simple;
-	bh=1V58FwaG0NnqB9u+ZkGTXiu0T/QMWq/olMjJkPFsV1s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Z2s7RwAIZnhYQ+R4HJNByBdNvenrWx63IUJIiY4q7YyUU4v7mYwOnQGejC3tn7Bhi5+w77PnbP+6LYQXpy+PcjfpITMP9H2mHMiMuWdbchUX9XMFTuqdJiBIomaOacBfGodi6GUVPxmyLWRis44BCf0pOQNslV7ZvPVvNvoHB5c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Pc4n61lq; arc=none smtp.client-ip=209.85.221.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-3ecdf2b1751so1654867f8f.0
-        for <stable@vger.kernel.org>; Fri, 31 Oct 2025 10:10:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761930655; x=1762535455; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=0UiwqRJqkZXUe5MyPuxH5cks4+QEZvrm/OruvGxuDf0=;
-        b=Pc4n61lqphr96LaSv1xAl4cE7zItAPxUsg4itZpNRbePQ3L057kIysBT0/aI6d6z7w
-         lbTzYq399yuLnrcgGQWQKQoBOO/w5obpuOe/i5vS3IlaAa8bsrX/xeh3e8roN5KkVA0u
-         oA9jXHbzdZDeaqBCqKiGnXCG4rVsTMOmUXRt/qjtvqIFxM7lAV+amVO5fHlDmXhyLNvn
-         VDFIwvi67odSu4TlPuuImHUdPBXRLmjOdvR9OL2VgNQ9hrr09c7iUeB11Tl4Ll14ciiO
-         TKtzP2Vdd5chAeZ6M351i1sn+h3ufNrB0wMUqlE6dF9ItredCJguUnCKw/NTwk5o8aDr
-         5rjg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761930655; x=1762535455;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=0UiwqRJqkZXUe5MyPuxH5cks4+QEZvrm/OruvGxuDf0=;
-        b=uZEl5ObeyWZTUwWPlq7p9NAm8b/gl9MDLwVSHEJUtjiMqwLBgvSa/IuYfnEfNyiZYZ
-         RBvW8dEk/Ypjrp/gk/jU8Lf8xnkLhArJA0HURH2dHDmwMzjqNj9BYDkDNi+4iH0+JOmu
-         O2EKrF1PpbY38UWSckIzByjGW4OjPUqpbYr8UD3ZrfMMTKFbpBrJ++OyI35Ln59RxJYi
-         NTCVWnfYdi0ouskyMEAXrvXqr6hPF+OtihHhBnu1aA/AUGad9sy/ug/fMGbl7Gm2m7Bu
-         FcUqsfos1AzAdMl8RoRPxrWWJrPE4VKdy11Ql7riQsr2pKHL8+7gIX0E/+UdE1Eaz5Qo
-         TfJg==
-X-Forwarded-Encrypted: i=1; AJvYcCXjb6aCXKsOSw64NFPl2gw6fdg25PVYyWKIy3oPhrHeqGWEkDnBS1Ww8foGTImOnDo5hhzlQ9M=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwxGbAyVPWnK3t077gRyGmsGoSXm5088ZI7kxGxIxdJ3+C/u8Vv
-	8e1paIpylkiCyP8fJKRYb2kZXPZY4RJzLXUzGi5360KsxCk21whSpV0t
-X-Gm-Gg: ASbGncv4GQyTNjUY2X8924OKCN4YqhemSeKWrgVA5nfJorvdc4Fai6drPgCTbefuZEH
-	nQ51wqXu8tO86CGyUmS7JJPWZfzDaAaSGtW43SDxC9eVgkv8ulyUVzLHj0wwgNjeBTpEaR9cPSx
-	CbnYdmuin1zMk+nlxzIssj5rzDL8CBlfKjz7nUOdZyqOQ9xdS+NxVPKyLCRFAB1DE1DavswZVwM
-	/DfkYM+BqSVrJ6ouR2Sw/aOEMc66DJxZ13+z5Cz7qeaf1v1nXplcIrbkFguphdj6mdvDKDzCYao
-	NOMPqvnchSbcEjYwdtlFVMJDaSP8GW7lIzWIbNs1tYa+btdoFgrGZJc25umqPhz3PPrOnT1hQl4
-	W9c3eGHdK9T8VLy2v8yn5hq7JXlHbQp1R4coENnSJ3mJsBZVBulrLboPErTQ5tcp8wdE+I1jMUF
-	HMVA==
-X-Google-Smtp-Source: AGHT+IHpGDWDV7wqUvqekAtpscxPtUAdqlp3pOzwvpMAnIt26zDqvsJCUbs9jGS8XQvH2aYF+esanQ==
-X-Received: by 2002:a05:6000:2410:b0:3ee:3dce:f672 with SMTP id ffacd0b85a97d-429bd676a03mr3523737f8f.4.1761930655051;
-        Fri, 31 Oct 2025 10:10:55 -0700 (PDT)
-Received: from localhost ([2001:861:3385:e20:f99c:d6cf:27e6:2b03])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-429c110e77esm4372653f8f.10.2025.10.31.10.10.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 31 Oct 2025 10:10:53 -0700 (PDT)
-Date: Fri, 31 Oct 2025 18:10:46 +0100
-From: =?iso-8859-1?Q?Rapha=EBl?= Gallais-Pou <rgallaispou@gmail.com>
-To: Johan Hovold <johan@kernel.org>
-Cc: Alain Volmat <alain.volmat@foss.st.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Benjamin Gaignard <benjamin.gaignard@collabora.com>
-Subject: Re: [PATCH] drm: sti: fix device leaks at component probe
-Message-ID: <aQTtlvoe96Odq96A@thinkstation>
-References: <20250922122012.27407-1-johan@kernel.org>
+	s=arc-20240116; t=1761932600; c=relaxed/simple;
+	bh=vroR35+0m/WOqTCc3pHB+dq6wrRsNeMwH4SL+cTs0Zs=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=ZiNQKPCFH7d3Kcwbrz7EAByJe9SuINBFSR3LHvi93tIPmoajLp2Ro6fQbKyBJyjESUt78eTlA9+H5lFggwT7QAWc4UvybjQCx29DuCzp0UlU6SQeY3UekUQHuTppra2LQhcKSbrZn/Zsk/pvFfa59OVbGaJE+yaNYNVN8fG75sU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 382B5C4CEE7;
+	Fri, 31 Oct 2025 17:43:11 +0000 (UTC)
+From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+Subject: [PATCH 0/3] PCI: meson: Fix the parsing of DBI region
+Date: Fri, 31 Oct 2025 23:12:58 +0530
+Message-Id: <20251031-pci-meson-fix-v1-0-ed29ee5b54f9@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250922122012.27407-1-johan@kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIACL1BGkC/x2MQQqAIBAAvyJ7bkENJfpKdEjbag+pKEQg/j3pO
+ AMzFQplpgKzqJDp4cIxdFCDAH9t4STkvTNoqY2So8LkGW8qMeDBL/rJWaOct9Zq6E3K1PX/W9b
+ WPrPmlXNfAAAA
+X-Change-ID: 20251031-pci-meson-fix-c8b651bc6662
+To: Bjorn Helgaas <bhelgaas@google.com>, 
+ Lorenzo Pieralisi <lpieralisi@kernel.org>, 
+ =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
+ Manivannan Sadhasivam <mani@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Neil Armstrong <neil.armstrong@linaro.org>, 
+ Hanjie Lin <hanjie.lin@amlogic.com>, Yue Wang <yue.wang@amlogic.com>, 
+ Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>, 
+ Martin Blumenstingl <martin.blumenstingl@googlemail.com>, 
+ Andrew Murray <amurray@thegoodpenguin.co.uk>, 
+ Jingoo Han <jingoohan1@gmail.com>, 
+ Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
+Cc: linux-pci@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ linux-amlogic@lists.infradead.org, 
+ Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>, 
+ stable+noautosel@kernel.org, stable@vger.kernel.org, 
+ Linnaea Lavia <linnaea-von-lavia@live.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1509;
+ i=manivannan.sadhasivam@oss.qualcomm.com; h=from:subject:message-id;
+ bh=vroR35+0m/WOqTCc3pHB+dq6wrRsNeMwH4SL+cTs0Zs=;
+ b=owEBbQGS/pANAwAKAVWfEeb+kc71AcsmYgBpBPUv/ByYAMlVSnih7i/7vpgUV16Ct4fpIK8Kc
+ YRDlbdh7viJATMEAAEKAB0WIQRnpUMqgUjL2KRYJ5dVnxHm/pHO9QUCaQT1LwAKCRBVnxHm/pHO
+ 9UKrB/4jcLEeWocGJwfF6C2jbmqDNLzp+AgmCielD3AzwWmZi1u/nuZk23uQrE/nUyALXisj1NV
+ YTlJXdSp5Ua/KpwmqVwlEiRlT/2o7zQ1aZMjkBHuw3+RIjDM23ngzTsB3SfDidXqGoDD1vDwu6x
+ VbvARVbvAhtStxViBSpXAgBNDBXkAVR95izzw989HAIQ1CFq2YhSSqgu8goOtWH5ZdF2rWdJnvm
+ trXrsKghDytyE4UjlP/CztKgJYtzY3KnoWG/stR4IwIWGjQ0BXgPP9hx29yqFe55Y6PLSCVP+e5
+ 6AumRv0O79SN7H9dIMbI8Zklyo9bM0gWpgPE/Dkrp+1a/nn/
+X-Developer-Key: i=manivannan.sadhasivam@oss.qualcomm.com; a=openpgp;
+ fpr=C668AEC3C3188E4C611465E7488550E901166008
 
-Hi Johan, 
+Hi,
 
-For some reason this thread went through my filters, sorry.
+This compile tested only series aims to fix the DBI parsing issue repored in
+[1]. The issue stems from the fact that the DT and binding describing 'dbi'
+region as 'elbi' from the start.
 
-Le Mon, Sep 22, 2025 at 02:20:12PM +0200, Johan Hovold a écrit :
-> Make sure to drop the references taken to the vtg devices by
-> of_find_device_by_node() when looking up their driver data during
-> component probe.
+Now, both binding and DTs are fixed and the driver is reworked to work with both
+old and new DTs.
 
-Markus suggested “Prevent device leak in of_vtg_find()” as commit
-summary.
+Note: The driver patch is OK to be backported till 6.2 where the common resource
+parsing code was introduced. But the DTS patch should not be backported. And I'm
+not sure about the backporting of the binding.
 
-> 
-> Note that holding a reference to a platform device does not prevent its
-> driver data from going away so there is no point in keeping the
-> reference after the lookup helper returns.
-> 
-> Fixes: cc6b741c6f63 ("drm: sti: remove useless fields from vtg structure")
-> Cc: stable@vger.kernel.org	# 4.16
-> Cc: Benjamin Gaignard <benjamin.gaignard@collabora.com>
-> Signed-off-by: Johan Hovold <johan@kernel.org>
-> ---
->  drivers/gpu/drm/sti/sti_vtg.c | 7 ++++++-
->  1 file changed, 6 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/gpu/drm/sti/sti_vtg.c b/drivers/gpu/drm/sti/sti_vtg.c
-> index ee81691b3203..ce6bc7e7b135 100644
-> --- a/drivers/gpu/drm/sti/sti_vtg.c
-> +++ b/drivers/gpu/drm/sti/sti_vtg.c
-> @@ -143,12 +143,17 @@ struct sti_vtg {
->  struct sti_vtg *of_vtg_find(struct device_node *np)
->  {
->  	struct platform_device *pdev;
-> +	struct sti_vtg *vtg;
->  
->  	pdev = of_find_device_by_node(np);
->  	if (!pdev)
->  		return NULL;
->  
-> -	return (struct sti_vtg *)platform_get_drvdata(pdev);
-> +	vtg = platform_get_drvdata(pdev);
-> +
-> +	put_device(&pdev->dev);
+Please test this series on the Meson board with old and new DTs.
 
-I would prefer of_node_put() instead, which does the same basically, but
-at least it is more obviously linked to of_find_device_by_node().
+- Mani
+
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+---
+Manivannan Sadhasivam (3):
+      dt-bindings: PCI: amlogic: Fix the register name of the DBI region
+      arm64: dts: amlogic: Fix the register name of the 'DBI' region
+      PCI: meson: Fix parsing the DBI register region
+
+ .../devicetree/bindings/pci/amlogic,axg-pcie.yaml      |  6 +++---
+ arch/arm64/boot/dts/amlogic/meson-axg.dtsi             |  4 ++--
+ arch/arm64/boot/dts/amlogic/meson-g12-common.dtsi      |  2 +-
+ drivers/pci/controller/dwc/pci-meson.c                 | 18 +++++++++++++++---
+ drivers/pci/controller/dwc/pcie-designware.c           | 12 +++++++-----
+ 5 files changed, 28 insertions(+), 14 deletions(-)
+---
+base-commit: 3a8660878839faadb4f1a6dd72c3179c1df56787
+change-id: 20251031-pci-meson-fix-c8b651bc6662
 
 Best regards,
-Raphaël
-> +
-> +	return vtg;
->  }
->  
->  static void vtg_reset(struct sti_vtg *vtg)
-> -- 
-> 2.49.1
-> 
+-- 
+Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+
 
