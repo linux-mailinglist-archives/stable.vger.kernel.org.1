@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-191828-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191893-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80957C25661
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 15:02:56 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BBC3C25860
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 15:18:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 88B4D463845
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 14:02:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 11C0F561B4E
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 14:05:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAB1F210F59;
-	Fri, 31 Oct 2025 14:02:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8424C22A4FE;
+	Fri, 31 Oct 2025 14:05:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZqcMBGv6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WTwpV7OD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 784983C17;
-	Fri, 31 Oct 2025 14:02:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 414893C17;
+	Fri, 31 Oct 2025 14:05:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761919336; cv=none; b=WdNbf7a/HboFRXAt0TppnwF4VMzUVnp5YTmjhhUJMgZkWB6uR6gcuW1DF4Qxz53wAMzavzPNlAxBUjHs68lWVzR1pCBp9jw5UGhMIT/dt2xVbJou6RGZQtLvg7ecPxlqxcpJVv5CTIvVxHG0LwG60twjW5VTGaW0k+gFMLywEvc=
+	t=1761919520; cv=none; b=XA3VvMkyoOvmGB9PidbtUdnrdTgNrd81XBC55XAM7wbcNwFI1raOkhjgge7p3zWuIAmddqa/eooZM+FQZ1WwsQ8KpkhMjWBPGtSATZipLybdNviQSwkSNzeAQTsLNNfJ0Si7pSM34NHEAWX8WjAgPITyVts3YCRscpOd2B27pB4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761919336; c=relaxed/simple;
-	bh=c35Dr+s4m9Ch6l9OcRR1Z/hjeEUfSyvC/u3X7UaSD6g=;
+	s=arc-20240116; t=1761919520; c=relaxed/simple;
+	bh=GxbysZCv1K8nxa3/PquQU9C0aIUZUMKmYV7M2uVFeUg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OP8c3bAaN42ETQyVVy67sh3uP2izp8M9iVlqbaNUkiZaaQE36LBpaLVVjIuJOU5GkMF14x51bIap7FmVzHcu7ll8VlFZwH+ACYQqvZNxh82FxrbdUtnMWBlRvMwo7q2/8TirgVhtV9SbxzQCD6RSKHxqC81TnILRZTHbJR3uuqE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZqcMBGv6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97939C4CEE7;
-	Fri, 31 Oct 2025 14:02:13 +0000 (UTC)
+	 MIME-Version; b=PsKVRyTkYPkZm+0rN05rDeOAOdFWsqQjE4mmZyA5knsKbKrCFhQUYPwvKdncFDd4p1cAfK7lk32XsyQnkEnT98IbQI3GWbqQVpeab/XjOlN2e/o4mHYSLAghMotx4xyS1Cu51ot89tGF/+mxZm9QBsd1OpkGRZ08dCO+wxChQPc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WTwpV7OD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCDC7C4CEE7;
+	Fri, 31 Oct 2025 14:05:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761919334;
-	bh=c35Dr+s4m9Ch6l9OcRR1Z/hjeEUfSyvC/u3X7UaSD6g=;
+	s=korg; t=1761919520;
+	bh=GxbysZCv1K8nxa3/PquQU9C0aIUZUMKmYV7M2uVFeUg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZqcMBGv6eCRfSsZ2j+h5RdrQuw0/ZWPPBdqavl9JgHv9ovr25pJwIQlJM4ftnESby
-	 cVIn67prImzGPr/1Kuwa2OhXLn2fYIV7fr2RLVUaGtA3mzS9wUgegy1PzDCMpkGkiM
-	 J1jbCypfWj4mAzAScSYS6UAfyCZOj3X0rxgvPFDc=
+	b=WTwpV7ODuKrkiGVbCei+6dOhy7fifiA5XrPXn4pYSU3YTlGNTahWTEpzIo2gGEGuM
+	 IQyNXujdHQfEffMb5YMPfFqlm/hwqVemgqYTBHZ80vwNhQ900GzNDWWD9hBAgVxZgN
+	 kOpAcCg5nmB+ozJCsujMJ3ch9bwz1cJI2kw+q8VM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geliang Tang <geliang@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 16/32] mptcp: pm: in-kernel: C-flag: handle late ADD_ADDR
+Subject: [PATCH 6.12 17/40] btrfs: always drop log root tree reference in btrfs_replay_log()
 Date: Fri, 31 Oct 2025 15:01:10 +0100
-Message-ID: <20251031140042.816030019@linuxfoundation.org>
+Message-ID: <20251031140044.430244436@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251031140042.387255981@linuxfoundation.org>
-References: <20251031140042.387255981@linuxfoundation.org>
+In-Reply-To: <20251031140043.939381518@linuxfoundation.org>
+References: <20251031140043.939381518@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,88 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit e84cb860ac3ce67ec6ecc364433fd5b412c448bc ]
+[ Upstream commit 2f5b8095ea47b142c56c09755a8b1e14145a2d30 ]
 
-The special C-flag case expects the ADD_ADDR to be received when
-switching to 'fully-established'. But for various reasons, the ADD_ADDR
-could be sent after the "4th ACK", and the special case doesn't work.
+Currently we have this odd behaviour:
 
-On NIPA, the new test validating this special case for the C-flag failed
-a few times, e.g.
+1) At btrfs_replay_log() we drop the reference of the log root tree if
+   the call to btrfs_recover_log_trees() failed;
 
-  102 default limits, server deny join id 0
-        syn rx                 [FAIL] got 0 JOIN[s] syn rx expected 2
+2) But if the call to btrfs_recover_log_trees() did not fail, we don't
+   drop the reference in btrfs_replay_log() - we expect that
+   btrfs_recover_log_trees() does it in case it returns success.
 
-  Server ns stats
-  (...)
-  MPTcpExtAddAddrTx  1
-  MPTcpExtEchoAdd    1
+Let's simplify this and make btrfs_replay_log() always drop the reference
+on the log root tree, not only this simplifies code as it's what makes
+sense since it's btrfs_replay_log() who grabbed the reference in the first
+place.
 
-  Client ns stats
-  (...)
-  MPTcpExtAddAddr    1
-  MPTcpExtEchoAddTx  1
-
-        synack rx              [FAIL] got 0 JOIN[s] synack rx expected 2
-        ack rx                 [FAIL] got 0 JOIN[s] ack rx expected 2
-        join Rx                [FAIL] see above
-        syn tx                 [FAIL] got 0 JOIN[s] syn tx expected 2
-        join Tx                [FAIL] see above
-
-I had a suspicion about what the issue could be: the ADD_ADDR might have
-been received after the switch to the 'fully-established' state. The
-issue was not easy to reproduce. The packet capture shown that the
-ADD_ADDR can indeed be sent with a delay, and the client would not try
-to establish subflows to it as expected.
-
-A simple fix is not to mark the endpoints as 'used' in the C-flag case,
-when looking at creating subflows to the remote initial IP address and
-port. In this case, there is no need to try.
-
-Note: newly added fullmesh endpoints will still continue to be used as
-expected, thanks to the conditions behind mptcp_pm_add_addr_c_flag_case.
-
-Fixes: 4b1ff850e0c1 ("mptcp: pm: in-kernel: usable client side with C-flag")
-Cc: stable@vger.kernel.org
-Reviewed-by: Geliang Tang <geliang@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20251020-net-mptcp-c-flag-late-add-addr-v1-1-8207030cb0e8@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ applied to pm_netlink.c instead of pm_kernel.c ]
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/pm_netlink.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ fs/btrfs/disk-io.c  | 2 +-
+ fs/btrfs/tree-log.c | 1 -
+ 2 files changed, 1 insertion(+), 2 deletions(-)
 
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -619,6 +619,10 @@ static void mptcp_pm_create_subflow_or_s
+diff --git a/fs/btrfs/disk-io.c b/fs/btrfs/disk-io.c
+index e655fa3bfd9be..3a73d218af464 100644
+--- a/fs/btrfs/disk-io.c
++++ b/fs/btrfs/disk-io.c
+@@ -2100,10 +2100,10 @@ static int btrfs_replay_log(struct btrfs_fs_info *fs_info,
+ 
+ 	/* returns with log_tree_root freed on success */
+ 	ret = btrfs_recover_log_trees(log_tree_root);
++	btrfs_put_root(log_tree_root);
+ 	if (ret) {
+ 		btrfs_handle_fs_error(fs_info, ret,
+ 				      "Failed to recover log tree");
+-		btrfs_put_root(log_tree_root);
+ 		return ret;
  	}
  
- subflow:
-+	/* No need to try establishing subflows to remote id0 if not allowed */
-+	if (mptcp_pm_add_addr_c_flag_case(msk))
-+		goto exit;
-+
- 	/* check if should create a new subflow */
- 	while (msk->pm.local_addr_used < local_addr_max &&
- 	       msk->pm.subflows < subflows_max) {
-@@ -650,6 +654,8 @@ subflow:
- 			__mptcp_subflow_connect(sk, &local.addr, &addrs[i]);
- 		spin_lock_bh(&msk->pm.lock);
- 	}
-+
-+exit:
- 	mptcp_pm_nl_check_work_pending(msk);
- }
+diff --git a/fs/btrfs/tree-log.c b/fs/btrfs/tree-log.c
+index 1c207a6d71ecf..63b14005f5066 100644
+--- a/fs/btrfs/tree-log.c
++++ b/fs/btrfs/tree-log.c
+@@ -7457,7 +7457,6 @@ int btrfs_recover_log_trees(struct btrfs_root *log_root_tree)
  
+ 	log_root_tree->log_root = NULL;
+ 	clear_bit(BTRFS_FS_LOG_RECOVERING, &fs_info->flags);
+-	btrfs_put_root(log_root_tree);
+ 
+ 	return 0;
+ error:
+-- 
+2.51.0
+
 
 
 
