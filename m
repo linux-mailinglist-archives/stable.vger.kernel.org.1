@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-191833-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191858-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8729DC25670
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 15:03:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EADF0C256F7
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 15:06:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A75FD4F476A
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 14:02:29 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0FEDF4F7A17
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 14:03:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A6A1221FB6;
-	Fri, 31 Oct 2025 14:02:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D85F922A4D6;
+	Fri, 31 Oct 2025 14:03:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PL4xwCmd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RAre7Gb3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB7CC34D387;
-	Fri, 31 Oct 2025 14:02:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9264A221FB6;
+	Fri, 31 Oct 2025 14:03:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761919348; cv=none; b=AJmYFHScWiko9tTXILY8zHBgSDHlXrofd8Gzo6O2VmfLhezHf4iwyS/beCxcW7R04LSAOj9vM+v7QlJIeTxws2SmaKvTKvC346dad8XsNTz+VWamPMCLHyHtcsbc6KoOt6Lla47IN/UWr16YkKQwxaK7bOlXbBoTK9EtI7GlW/Y=
+	t=1761919422; cv=none; b=q84X1ICO1RrEvFagyWtpHLJZEPptodzfCjclZLmt94wP1GtMCSX6Haq7SkFvlTiBgjDYfQ/CwXK3C1TJHnwAXysvU5SMBvVLnMu4hAVYPYRKkwlI6+OwZAFnLvKEiALGb101RCOKiA57XkN13FGy0Fp+3VCXJtCP8bnL/1IyYQo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761919348; c=relaxed/simple;
-	bh=xzEBATsw5oAtI/jmTRdY04ojLvJMZzltWEQaG0jG8pI=;
+	s=arc-20240116; t=1761919422; c=relaxed/simple;
+	bh=ibKcD0jOjNtwjwmdJz5P7QbIL7ZNKaYwJLLVk79XIzU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e/qHxD3RG/bl0ms9zQoysLdrZ+k/dgzyRSXVh32wL6kmv5Hgett3n3IwvDhGuUM24RFnozNhYW1sJ+3HCGwslNm8dz0OnS/XK26exDoCNmfmex0/lr2PsS6egjiguAAi8B79nBCrU9kZJ7dFbp+9nBmE07EJGDS9YVyLnvsuOXE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PL4xwCmd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37157C4CEE7;
-	Fri, 31 Oct 2025 14:02:28 +0000 (UTC)
+	 MIME-Version; b=FdsG1FjvXhE42rvFgEpL6scFMhv6gx5jZ63WHXmVH0/NuBRb9yANy0udmZr/x9hoKj/5bAMKRggM68eXgCz3WN0BvwAydqkC+mojnEwJkvwJdSYegGB5ybNLGQ0pG9vs23V1tintJzCJuBVQIF6JwmUAwqkqGudUnpCvG9F28dI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RAre7Gb3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16AF2C116B1;
+	Fri, 31 Oct 2025 14:03:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761919348;
-	bh=xzEBATsw5oAtI/jmTRdY04ojLvJMZzltWEQaG0jG8pI=;
+	s=korg; t=1761919422;
+	bh=ibKcD0jOjNtwjwmdJz5P7QbIL7ZNKaYwJLLVk79XIzU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PL4xwCmdQKMpwGgR9ZAOTtM7C44j3KfHiZfxpX+AcVAvXYiJBsIwKJDoa89CYAtQb
-	 dMyuUBpR7WVLrn1EBIHD3cuYQFu5VKYMFKjefcGczfhoMblqU4EQ1pjsiOPmIexOVB
-	 g4ImL3YnH6CcgV3zK51qSMAQflI8uXDYawen1wl4=
+	b=RAre7Gb3lY8a6muo51qd6m0Etdxj5ASFvcyG7FzLoyDKqx7qbeWNX8caq7bLAGHvE
+	 o2X1s8EYnUphwSOXaXMmOBSG8af+nMxJ/CqHxM7ebbm30sMdy0NUW5AeZC6OCsCOWv
+	 9BaTlQe97hftjqlA7yF7rmkAWfn1n93Akca2nH0w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
 	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
 	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 03/32] perf: Use current->flags & PF_KTHREAD|PF_USER_WORKER instead of current->mm == NULL
-Date: Fri, 31 Oct 2025 15:00:57 +0100
-Message-ID: <20251031140042.475708285@linuxfoundation.org>
+Subject: [PATCH 6.12 05/40] perf: Have get_perf_callchain() return NULL if crosstask and user are set
+Date: Fri, 31 Oct 2025 15:00:58 +0100
+Message-ID: <20251031140044.074428414@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251031140042.387255981@linuxfoundation.org>
-References: <20251031140042.387255981@linuxfoundation.org>
+In-Reply-To: <20251031140043.939381518@linuxfoundation.org>
+References: <20251031140043.939381518@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +63,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt <rostedt@goodmis.org>
+From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-[ Upstream commit 90942f9fac05702065ff82ed0bade0d08168d4ea ]
+[ Upstream commit 153f9e74dec230f2e070e16fa061bc7adfd2c450 ]
 
-To determine if a task is a kernel thread or not, it is more reliable to
-use (current->flags & (PF_KTHREAD|PF_USER_WORKERi)) than to rely on
-current->mm being NULL.  That is because some kernel tasks (io_uring
-helpers) may have a mm field.
+get_perf_callchain() doesn't support cross-task unwinding for user space
+stacks, have it return NULL if both the crosstask and user arguments are
+set.
 
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
 Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20250820180428.592367294@kernel.org
+Link: https://lore.kernel.org/r/20250820180428.426423415@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/events/callchain.c | 6 +++---
- kernel/events/core.c      | 4 ++--
- 2 files changed, 5 insertions(+), 5 deletions(-)
+ kernel/events/callchain.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
 diff --git a/kernel/events/callchain.c b/kernel/events/callchain.c
-index 1273be84392cf..65fea424874c5 100644
+index d1a09e6f514c9..49d87e6db553f 100644
 --- a/kernel/events/callchain.c
 +++ b/kernel/events/callchain.c
-@@ -202,10 +202,10 @@ get_perf_callchain(struct pt_regs *regs, u32 init_nr, bool kernel, bool user,
+@@ -223,6 +223,10 @@ get_perf_callchain(struct pt_regs *regs, u32 init_nr, bool kernel, bool user,
+ 	struct perf_callchain_entry_ctx ctx;
+ 	int rctx, start_entry_idx;
  
- 	if (user) {
++	/* crosstask is not supported for user stacks */
++	if (crosstask && user && !kernel)
++		return NULL;
++
+ 	entry = get_callchain_entry(&rctx);
+ 	if (!entry)
+ 		return NULL;
+@@ -239,7 +243,7 @@ get_perf_callchain(struct pt_regs *regs, u32 init_nr, bool kernel, bool user,
+ 		perf_callchain_kernel(&ctx, regs);
+ 	}
+ 
+-	if (user) {
++	if (user && !crosstask) {
  		if (!user_mode(regs)) {
--			if  (current->mm)
--				regs = task_pt_regs(current);
--			else
-+			if (current->flags & (PF_KTHREAD | PF_USER_WORKER))
+ 			if (current->flags & (PF_KTHREAD | PF_USER_WORKER))
  				regs = NULL;
-+			else
-+				regs = task_pt_regs(current);
+@@ -248,9 +252,6 @@ get_perf_callchain(struct pt_regs *regs, u32 init_nr, bool kernel, bool user,
  		}
  
  		if (regs) {
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index b73f5c44113d6..3eb9125431b43 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -6985,7 +6985,7 @@ static void perf_sample_regs_user(struct perf_regs *regs_user,
- 	if (user_mode(regs)) {
- 		regs_user->abi = perf_reg_abi(current);
- 		regs_user->regs = regs;
--	} else if (!(current->flags & PF_KTHREAD)) {
-+	} else if (!(current->flags & (PF_KTHREAD | PF_USER_WORKER))) {
- 		perf_get_regs_user(regs_user, regs);
- 	} else {
- 		regs_user->abi = PERF_SAMPLE_REGS_ABI_NONE;
-@@ -7612,7 +7612,7 @@ static u64 perf_virt_to_phys(u64 virt)
- 		 * Try IRQ-safe get_user_page_fast_only first.
- 		 * If failed, leave phys_addr as 0.
- 		 */
--		if (current->mm != NULL) {
-+		if (!(current->flags & (PF_KTHREAD | PF_USER_WORKER))) {
- 			struct page *p;
+-			if (crosstask)
+-				goto exit_put;
+-
+ 			if (add_mark)
+ 				perf_callchain_store_context(&ctx, PERF_CONTEXT_USER);
  
- 			pagefault_disable();
+@@ -260,7 +261,6 @@ get_perf_callchain(struct pt_regs *regs, u32 init_nr, bool kernel, bool user,
+ 		}
+ 	}
+ 
+-exit_put:
+ 	put_callchain_entry(rctx);
+ 
+ 	return entry;
 -- 
 2.51.0
 
