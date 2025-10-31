@@ -1,187 +1,200 @@
-Return-Path: <stable+bounces-191786-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191787-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE6BFC23519
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 07:06:26 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A7D7C235F9
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 07:21:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DB76E40863A
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 06:06:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4D25C3B4F9D
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 06:20:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 307EC2E7BB4;
-	Fri, 31 Oct 2025 06:06:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9494D25BEE8;
+	Fri, 31 Oct 2025 06:17:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="FoAGExTF"
+	dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b="G4kA+cU6"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from n169-114.mail.139.com (n169-114.mail.139.com [120.232.169.114])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B3FE2E62C3
-	for <stable@vger.kernel.org>; Fri, 31 Oct 2025 06:06:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 087533191BF
+	for <stable@vger.kernel.org>; Fri, 31 Oct 2025 06:17:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=120.232.169.114
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761890776; cv=none; b=it8tQODscyxq2Od39Zc/zFk3YFgVjhdt0Thqwl77SQ6+TmW9syJ2Durr0ZMlysVVUxJhiODgdydyd+Irj2IZQkarMvJvvT3Y6cEgjHe0CKEYl5JCMjhWsXrtn9ijFPibyoOaTS9UkmmzY9tS0f/FuzLPM+dyhd3nfzM777IiNQo=
+	t=1761891445; cv=none; b=jxdcgQrmt7RTjy1cL+chTGwI/iQbxvB8LlWvp0yLHbFEqd8xoaIEH6blnjZxl40qedwNtsnCqAz31qwUwhkVCBSxhCpGuHhe5Uo10kEZXgpYMmjcAR/UOovBBV2X7/kZ8v2/DJv6xLnHtmPrmMfWtf5auPsSz9xLIQ0mmF+SYS4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761890776; c=relaxed/simple;
-	bh=uzKsr8p0ZgM+SLgICEjgau4Cc9/3BVPso+PqdA0y7L8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=P+L7LospHfpa8UBIa854c9M1olJzIacEGaBMV7/hKLlsXjG4Idfqa+snX6tBfksnm3AOyml3BRn5itDEDxVL6v8q/04LNZekha9YiqLgVhOfLQLYgEEV3GBpuv8hpNOssbPBzSDZqGSV2mqu44iqMBls/rLifY+/IVdyBpqdgpo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=FoAGExTF; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1761890773;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=+bCrk/NYYmYlKBsMjf6Y0gKt7P2+73Hm3s9fxJ/Q+sk=;
-	b=FoAGExTF79kTZ/cca5BoXsCs3OUqZD6LQQnhZL1T2yKWxhb+mboPu6R/VlG00+R4RSfDii
-	unBC9PZDUMZ4Tlz0PAfyq+zSPeOc9nAi3X4pM58m4M9Ol/wz9p/jRkbXcCTgeCXVGYnXiC
-	XS49UR2hEy2dBDRI3tpadUsnVzJBd8o=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-618-7ClablYyO1OVe2uC7hp5hQ-1; Fri,
- 31 Oct 2025 02:06:09 -0400
-X-MC-Unique: 7ClablYyO1OVe2uC7hp5hQ-1
-X-Mimecast-MFC-AGG-ID: 7ClablYyO1OVe2uC7hp5hQ_1761890768
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 79D581953958;
-	Fri, 31 Oct 2025 06:06:07 +0000 (UTC)
-Received: from localhost.localdomain (unknown [10.72.120.6])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 96EE21955BE3;
-	Fri, 31 Oct 2025 06:05:55 +0000 (UTC)
-From: Jason Wang <jasowang@redhat.com>
-To: mst@redhat.com,
-	jasowang@redhat.com,
-	xuanzhuo@linux.alibaba.com,
-	eperezma@redhat.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: virtualization@lists.linux.dev,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
+	s=arc-20240116; t=1761891445; c=relaxed/simple;
+	bh=IagTXxqhIbY0V1/YP676HAorYZohjhIaoWtytqikdCk=;
+	h=From:To:Subject:Date:Message-Id; b=HGsST4Ed9lNMva8sCuzQOAfe1/9uxQW3Us5LJqB442TZ8/fPBtPsVhTyvNGGT4I+SPbvTUxPUOb59Wj8qJ+xT9BBv2c8B0K62yZWu5YUVC3JsKG4hZgYSNXsVBb1U2kCUjZ9pgG3CNowJTTGUCHSomcxNkiIr+FDFoXRC667dfY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com; spf=pass smtp.mailfrom=139.com; dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b=G4kA+cU6; arc=none smtp.client-ip=120.232.169.114
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=139.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=139.com; s=dkim; l=0;
+	h=from:subject:message-id:to;
+	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+	b=G4kA+cU6SaYIJhZniDMdH5xNV4RDOJMAZMHMevXmTtc3U40dp/iXpk/4BE7onifaUU6RJZg4gmSF+
+	 UC3SKTLQUZlM9aV57ClujY5s8VhIXiqVp79qNIrYn6rHyPPKPXgilicDJynBngKAdQtD2CckmyNnaV
+	 IvTRoRJRrkGxoHkU=
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM:                                                                                        
+X-RM-SPAM-FLAG:00000000
+Received:from NTT-kernel-dev (unknown[117.129.7.61])
+	by rmsmtp-lg-appmail-40-12054 (RichMail) with SMTP id 2f166904546bb3e-0ebe6;
+	Fri, 31 Oct 2025 14:17:16 +0800 (CST)
+X-RM-TRANSID:2f166904546bb3e-0ebe6
+From: Rajani Kantha <681739313@139.com>
+To: chao@kernel.org,
+	jaegeuk@kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH net V2] virtio_net: fix alignment for virtio_net_hdr_v1_hash
-Date: Fri, 31 Oct 2025 14:05:51 +0800
-Message-ID: <20251031060551.126-1-jasowang@redhat.com>
+Subject: [PATCH 6.12.y] f2fs: fix to avoid panic once fallocation fails for pinfile
+Date: Fri, 31 Oct 2025 14:17:10 +0800
+Message-Id: <20251031061710.2854-1-681739313@139.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-From: "Michael S. Tsirkin" <mst@redhat.com>
+From: Chao Yu <chao@kernel.org>
 
-Changing alignment of header would mean it's no longer safe to cast a
-2 byte aligned pointer between formats. Use two 16 bit fields to make
-it 2 byte aligned as previously.
+[ Upstream commit 48ea8b200414ac69ea96f4c231f5c7ef1fbeffef ]
 
-This fixes the performance regression since
-commit ("virtio_net: enable gso over UDP tunnel support.") as it uses
-virtio_net_hdr_v1_hash_tunnel which embeds
-virtio_net_hdr_v1_hash. Pktgen in guest + XDP_DROP on TAP + vhost_net
-shows the TX PPS is recovered from 2.4Mpps to 4.45Mpps.
+syzbot reports a f2fs bug as below:
 
-Fixes: 56a06bd40fab ("virtio_net: enable gso over UDP tunnel support.")
-Cc: stable@vger.kernel.org
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Jason Wang <jasowang@redhat.com>
+------------[ cut here ]------------
+kernel BUG at fs/f2fs/segment.c:2746!
+CPU: 0 UID: 0 PID: 5323 Comm: syz.0.0 Not tainted 6.13.0-rc2-syzkaller-00018-g7cb1b4663150 #0
+RIP: 0010:get_new_segment fs/f2fs/segment.c:2746 [inline]
+RIP: 0010:new_curseg+0x1f52/0x1f70 fs/f2fs/segment.c:2876
+Call Trace:
+ <TASK>
+ __allocate_new_segment+0x1ce/0x940 fs/f2fs/segment.c:3210
+ f2fs_allocate_new_section fs/f2fs/segment.c:3224 [inline]
+ f2fs_allocate_pinning_section+0xfa/0x4e0 fs/f2fs/segment.c:3238
+ f2fs_expand_inode_data+0x696/0xca0 fs/f2fs/file.c:1830
+ f2fs_fallocate+0x537/0xa10 fs/f2fs/file.c:1940
+ vfs_fallocate+0x569/0x6e0 fs/open.c:327
+ do_vfs_ioctl+0x258c/0x2e40 fs/ioctl.c:885
+ __do_sys_ioctl fs/ioctl.c:904 [inline]
+ __se_sys_ioctl+0x80/0x170 fs/ioctl.c:892
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Concurrent pinfile allocation may run out of free section, result in
+panic in get_new_segment(), let's expand pin_sem lock coverage to
+include f2fs_gc(), so that we can make sure to reclaim enough free
+space for following allocation.
+
+In addition, do below changes to enhance error path handling:
+- call f2fs_bug_on() only in non-pinfile allocation path in
+get_new_segment().
+- call reset_curseg_fields() to reset all fields of curseg in
+new_curseg()
+
+Fixes: f5a53edcf01e ("f2fs: support aligned pinned file")
+Reported-by: syzbot+15669ec8c35ddf6c3d43@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/linux-f2fs-devel/675cd64e.050a0220.37aaf.00bb.GAE@google.com
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Rajani Kantha <681739313@139.com>
 ---
-Changes since V1:
-- Fix build issues of virtio_net_hdr_tnl_from_skb()
----
- drivers/net/virtio_net.c        | 15 +++++++++++++--
- include/linux/virtio_net.h      |  3 ++-
- include/uapi/linux/virtio_net.h |  3 ++-
- 3 files changed, 17 insertions(+), 4 deletions(-)
+ fs/f2fs/file.c    |  8 +++++---
+ fs/f2fs/segment.c | 20 ++++++++++----------
+ 2 files changed, 15 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-index 8e8a179aaa49..e6e650bc3bc3 100644
---- a/drivers/net/virtio_net.c
-+++ b/drivers/net/virtio_net.c
-@@ -2539,6 +2539,13 @@ static struct sk_buff *receive_mergeable(struct net_device *dev,
- 	return NULL;
+diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
+index 2a108c561e8b..6317dd523ecd 100644
+--- a/fs/f2fs/file.c
++++ b/fs/f2fs/file.c
+@@ -1836,18 +1836,20 @@ static int f2fs_expand_inode_data(struct inode *inode, loff_t offset,
+ 
+ 		map.m_len = sec_blks;
+ next_alloc:
++		f2fs_down_write(&sbi->pin_sem);
++
+ 		if (has_not_enough_free_secs(sbi, 0, f2fs_sb_has_blkzoned(sbi) ?
+ 			ZONED_PIN_SEC_REQUIRED_COUNT :
+ 			GET_SEC_FROM_SEG(sbi, overprovision_segments(sbi)))) {
+ 			f2fs_down_write(&sbi->gc_lock);
+ 			stat_inc_gc_call_count(sbi, FOREGROUND);
+ 			err = f2fs_gc(sbi, &gc_control);
+-			if (err && err != -ENODATA)
++			if (err && err != -ENODATA) {
++				f2fs_up_write(&sbi->pin_sem);
+ 				goto out_err;
++			}
+ 		}
+ 
+-		f2fs_down_write(&sbi->pin_sem);
+-
+ 		err = f2fs_allocate_pinning_section(sbi);
+ 		if (err) {
+ 			f2fs_up_write(&sbi->pin_sem);
+diff --git a/fs/f2fs/segment.c b/fs/f2fs/segment.c
+index e48b5e2efea2..8ac6206110a1 100644
+--- a/fs/f2fs/segment.c
++++ b/fs/f2fs/segment.c
+@@ -2749,7 +2749,7 @@ static int get_new_segment(struct f2fs_sb_info *sbi,
+ 							MAIN_SECS(sbi));
+ 		if (secno >= MAIN_SECS(sbi)) {
+ 			ret = -ENOSPC;
+-			f2fs_bug_on(sbi, 1);
++			f2fs_bug_on(sbi, !pinning);
+ 			goto out_unlock;
+ 		}
+ 	}
+@@ -2795,7 +2795,7 @@ static int get_new_segment(struct f2fs_sb_info *sbi,
+ out_unlock:
+ 	spin_unlock(&free_i->segmap_lock);
+ 
+-	if (ret == -ENOSPC)
++	if (ret == -ENOSPC && !pinning)
+ 		f2fs_stop_checkpoint(sbi, false, STOP_CP_REASON_NO_SEGMENT);
+ 	return ret;
+ }
+@@ -2868,6 +2868,13 @@ static unsigned int __get_next_segno(struct f2fs_sb_info *sbi, int type)
+ 	return curseg->segno;
  }
  
-+static inline u32
-+virtio_net_hash_value(const struct virtio_net_hdr_v1_hash *hdr_hash)
++static void reset_curseg_fields(struct curseg_info *curseg)
 +{
-+	return __le16_to_cpu(hdr_hash->hash_value_lo) |
-+		(__le16_to_cpu(hdr_hash->hash_value_hi) << 16);
++	curseg->inited = false;
++	curseg->segno = NULL_SEGNO;
++	curseg->next_segno = 0;
 +}
 +
- static void virtio_skb_set_hash(const struct virtio_net_hdr_v1_hash *hdr_hash,
- 				struct sk_buff *skb)
- {
-@@ -2565,7 +2572,7 @@ static void virtio_skb_set_hash(const struct virtio_net_hdr_v1_hash *hdr_hash,
- 	default:
- 		rss_hash_type = PKT_HASH_TYPE_NONE;
+ /*
+  * Allocate a current working segment.
+  * This function always allocates a free segment in LFS manner.
+@@ -2886,7 +2893,7 @@ static int new_curseg(struct f2fs_sb_info *sbi, int type, bool new_sec)
+ 	ret = get_new_segment(sbi, &segno, new_sec, pinning);
+ 	if (ret) {
+ 		if (ret == -ENOSPC)
+-			curseg->segno = NULL_SEGNO;
++			reset_curseg_fields(curseg);
+ 		return ret;
  	}
--	skb_set_hash(skb, __le32_to_cpu(hdr_hash->hash_value), rss_hash_type);
-+	skb_set_hash(skb, virtio_net_hash_value(hdr_hash), rss_hash_type);
+ 
+@@ -3640,13 +3647,6 @@ static void f2fs_randomize_chunk(struct f2fs_sb_info *sbi,
+ 		get_random_u32_inclusive(1, sbi->max_fragment_hole);
  }
  
- static void virtnet_receive_done(struct virtnet_info *vi, struct receive_queue *rq,
-@@ -3311,6 +3318,10 @@ static int xmit_skb(struct send_queue *sq, struct sk_buff *skb, bool orphan)
- 
- 	pr_debug("%s: xmit %p %pM\n", vi->dev->name, skb, dest);
- 
-+	/* Make sure it's safe to cast between formats */
-+	BUILD_BUG_ON(__alignof__(*hdr) != __alignof__(hdr->hash_hdr));
-+	BUILD_BUG_ON(__alignof__(*hdr) != __alignof__(hdr->hash_hdr.hdr));
-+
- 	can_push = vi->any_header_sg &&
- 		!((unsigned long)skb->data & (__alignof__(*hdr) - 1)) &&
- 		!skb_header_cloned(skb) && skb_headroom(skb) >= hdr_len;
-@@ -6750,7 +6761,7 @@ static int virtnet_xdp_rx_hash(const struct xdp_md *_ctx, u32 *hash,
- 		hash_report = VIRTIO_NET_HASH_REPORT_NONE;
- 
- 	*rss_type = virtnet_xdp_rss_type[hash_report];
--	*hash = __le32_to_cpu(hdr_hash->hash_value);
-+	*hash = virtio_net_hash_value(hdr_hash);
- 	return 0;
- }
- 
-diff --git a/include/linux/virtio_net.h b/include/linux/virtio_net.h
-index 4d1780848d0e..b673c31569f3 100644
---- a/include/linux/virtio_net.h
-+++ b/include/linux/virtio_net.h
-@@ -401,7 +401,8 @@ virtio_net_hdr_tnl_from_skb(const struct sk_buff *skb,
- 	if (!tnl_hdr_negotiated)
- 		return -EINVAL;
- 
--        vhdr->hash_hdr.hash_value = 0;
-+	vhdr->hash_hdr.hash_value_lo = 0;
-+	vhdr->hash_hdr.hash_value_hi = 0;
-         vhdr->hash_hdr.hash_report = 0;
-         vhdr->hash_hdr.padding = 0;
- 
-diff --git a/include/uapi/linux/virtio_net.h b/include/uapi/linux/virtio_net.h
-index 8bf27ab8bcb4..1db45b01532b 100644
---- a/include/uapi/linux/virtio_net.h
-+++ b/include/uapi/linux/virtio_net.h
-@@ -193,7 +193,8 @@ struct virtio_net_hdr_v1 {
- 
- struct virtio_net_hdr_v1_hash {
- 	struct virtio_net_hdr_v1 hdr;
--	__le32 hash_value;
-+	__le16 hash_value_lo;
-+	__le16 hash_value_hi;
- #define VIRTIO_NET_HASH_REPORT_NONE            0
- #define VIRTIO_NET_HASH_REPORT_IPv4            1
- #define VIRTIO_NET_HASH_REPORT_TCPv4           2
+-static void reset_curseg_fields(struct curseg_info *curseg)
+-{
+-	curseg->inited = false;
+-	curseg->segno = NULL_SEGNO;
+-	curseg->next_segno = 0;
+-}
+-
+ int f2fs_allocate_data_block(struct f2fs_sb_info *sbi, struct page *page,
+ 		block_t old_blkaddr, block_t *new_blkaddr,
+ 		struct f2fs_summary *sum, int type,
 -- 
-2.31.1
+2.17.1
+
 
 
