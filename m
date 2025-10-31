@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-191924-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191897-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56295C25739
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 15:08:36 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EEB8C25848
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 15:17:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9930F189B67D
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 14:07:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 725D856221A
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 14:05:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CCDC34C817;
-	Fri, 31 Oct 2025 14:06:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A5C525A2CF;
+	Fri, 31 Oct 2025 14:05:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DNa9D55m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BiDz0VJY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B26DD34C80D;
-	Fri, 31 Oct 2025 14:06:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E43F2459F8;
+	Fri, 31 Oct 2025 14:05:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761919611; cv=none; b=pBIhVux+Gny3RftrQfUySAW/Qrcc58SCqMafzjGTKU4uXHsAFCOD8N8Et0E01Fv4crwqnckLH++19BPlLBKZlEjpcqEUjlxdmvyLpLtYf0Jeh9GrhC2l6lK44I375/p8+bPoYOe4sc+ytcnWQvGxOvVdm9JsoCRxOdWw7fWFDMw=
+	t=1761919532; cv=none; b=W5Vymr/OH4PUydVFeyx4dBp6sU2A1RcQk60lOXWstxEv9YhFP/8h8uuceCS9pEfY2UD6mCjY0qD1i9HBVwjJw1FYYmjHTgT5JwMNuC5aFYNv4BPwV5a1Jm6OWOO+TRn8ZucJ+UCVeAeRqyRLILIBRVH7LTZYOe1pGX+7t/mugj0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761919611; c=relaxed/simple;
-	bh=MJlMjPYH9Dwb5Cf9HAZum2Z4P7XmsaHOEyxU/03d0JM=;
+	s=arc-20240116; t=1761919532; c=relaxed/simple;
+	bh=xxRoeE8YJSVVBrwa0V9+t6L1gDqt2nNklx0OY1/uIxQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qlq6lVZC7wver4tOBak8c/coOhkNxzYEXCM36gt/0/UR7SSmOy2QrV3iQaIxcOs27gjEiXFV4snHrrflASogJMVz7UnG1Ps4qpXvxiVN9GtXPsM+xGf19PzM9tyBaetnTinCf8/+PDO8k2yamx7wd9yDH0ca9S66yUhT6UrU5U0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DNa9D55m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35FADC4CEE7;
-	Fri, 31 Oct 2025 14:06:51 +0000 (UTC)
+	 MIME-Version; b=RarOJDfvbo22MvBhGCpOL5xpGkhBPbIulRZZcx3OCsa44y07OZ0g27hRYjx5DzCOWZeA7Tb7sIlANu5yqSQUkhvTo+uNsn7adLH7C3g1xRLUq6Jd8YXuG3KKWEr2DSiU3Keq9OezUZaoWJkapdTKCuin3+15i08ljSXkiJg6KvI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BiDz0VJY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4658C4CEFB;
+	Fri, 31 Oct 2025 14:05:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761919611;
-	bh=MJlMjPYH9Dwb5Cf9HAZum2Z4P7XmsaHOEyxU/03d0JM=;
+	s=korg; t=1761919532;
+	bh=xxRoeE8YJSVVBrwa0V9+t6L1gDqt2nNklx0OY1/uIxQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DNa9D55m8ThMcsXEDdmUcBIzKypi8Vh3GjtzVMNedE2X8DHqWPtTx0sfPmUhF8f7X
-	 M57wfuvoCyB6hY9zP0lsaYVPX+h9v8t/22a6TQKx+hS/CuXYuDpQ8+cVv6AoYMdJvq
-	 GBdi9G/Xkdd2J+A3J/YRCCaM5qwuXAtPDgdhlDYU=
+	b=BiDz0VJY+x2ZXBGuJZn2QnGpI7BV+L90S0FqPfvutBdzp74n3evQ0jIO9mp2yUNGH
+	 BF7W6N12kLSwRH2PlFrjVn5f91vKXgo6hsEp82HaLol0oi/KzNIpmwNNmgp5kOtlKE
+	 sOMp/ebi5DrpqJ/bFQGnGpgVjdLXfYeWz7X/WB+I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
+	Richard Guy Briggs <rgb@redhat.com>,
+	Paul Moore <paul@paul-moore.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 09/35] genirq/manage: Add buslock back in to enable_irq()
-Date: Fri, 31 Oct 2025 15:01:17 +0100
-Message-ID: <20251031140043.782206852@linuxfoundation.org>
+Subject: [PATCH 6.17 10/35] audit: record fanotify event regardless of presence of rules
+Date: Fri, 31 Oct 2025 15:01:18 +0100
+Message-ID: <20251031140043.804680603@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251031140043.564670400@linuxfoundation.org>
 References: <20251031140043.564670400@linuxfoundation.org>
@@ -66,36 +66,42 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Charles Keepax <ckeepax@opensource.cirrus.com>
+From: Richard Guy Briggs <rgb@redhat.com>
 
-[ Upstream commit ef3330b99c01bda53f2a189b58bed8f6b7397f28 ]
+[ Upstream commit ce8370e2e62a903e18be7dd0e0be2eee079501e1 ]
 
-The locking was changed from a buslock to a plain lock, but the patch
-description states there was no functional change. Assuming this was
-accidental so reverting to using the buslock.
+When no audit rules are in place, fanotify event results are
+unconditionally dropped due to an explicit check for the existence of
+any audit rules.  Given this is a report from another security
+sub-system, allow it to be recorded regardless of the existence of any
+audit rules.
 
-Fixes: bddd10c55407 ("genirq/manage: Rework enable_irq()")
-Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://patch.msgid.link/20251023154901.1333755-4-ckeepax@opensource.cirrus.com
+To test, install and run the fapolicyd daemon with default config.  Then
+as an unprivileged user, create and run a very simple binary that should
+be denied.  Then check for an event with
+	ausearch -m FANOTIFY -ts recent
+
+Link: https://issues.redhat.com/browse/RHEL-9065
+Signed-off-by: Richard Guy Briggs <rgb@redhat.com>
+Signed-off-by: Paul Moore <paul@paul-moore.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/irq/manage.c | 2 +-
+ include/linux/audit.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/irq/manage.c b/kernel/irq/manage.c
-index 7d68fb5dc2428..400856abf6721 100644
---- a/kernel/irq/manage.c
-+++ b/kernel/irq/manage.c
-@@ -789,7 +789,7 @@ void __enable_irq(struct irq_desc *desc)
-  */
- void enable_irq(unsigned int irq)
- {
--	scoped_irqdesc_get_and_lock(irq, IRQ_GET_DESC_CHECK_GLOBAL) {
-+	scoped_irqdesc_get_and_buslock(irq, IRQ_GET_DESC_CHECK_GLOBAL) {
- 		struct irq_desc *desc = scoped_irqdesc;
+diff --git a/include/linux/audit.h b/include/linux/audit.h
+index a394614ccd0b8..e3f06eba9c6e6 100644
+--- a/include/linux/audit.h
++++ b/include/linux/audit.h
+@@ -527,7 +527,7 @@ static inline void audit_log_kern_module(const char *name)
  
- 		if (WARN(!desc->irq_data.chip, "enable_irq before setup/request_irq: irq %u\n", irq))
+ static inline void audit_fanotify(u32 response, struct fanotify_response_info_audit_rule *friar)
+ {
+-	if (!audit_dummy_context())
++	if (audit_enabled)
+ 		__audit_fanotify(response, friar);
+ }
+ 
 -- 
 2.51.0
 
