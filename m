@@ -1,112 +1,108 @@
-Return-Path: <stable+bounces-191804-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191805-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FD94C247C3
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 11:36:07 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A399C24B09
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 12:06:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B8A153BF827
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 10:35:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 89FD61886268
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 11:06:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A99F82690D9;
-	Fri, 31 Oct 2025 10:35:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCDF4343203;
+	Fri, 31 Oct 2025 11:06:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="c0ufGMqi"
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="CUYJmHH3"
 X-Original-To: stable@vger.kernel.org
-Received: from out-173.mta1.migadu.com (out-173.mta1.migadu.com [95.215.58.173])
+Received: from mx.denx.de (mx.denx.de [89.58.32.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3CB02EAB8D
-	for <stable@vger.kernel.org>; Fri, 31 Oct 2025 10:35:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90CBE342169;
+	Fri, 31 Oct 2025 11:06:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761906946; cv=none; b=do39CI5nvyOT6e2PyM5uqEt3+dm1z/nq/yhcNLgU6TPDVkEn2a0denCQP516DlaPPpLZFemHxr0SJoq+p2tZXhraffk3xe2B0ARUf9WDg2nsa7tjWbTM5k85BYsiV7BMDZF1JtbKnjqPyvfqczjzTHK2yPF8wyV5QKiXp4hhQNE=
+	t=1761908770; cv=none; b=GaoMekfBdGKkvAnt5z7emos7Htkj+I3+ibHrQTJNl/5yCys0wpxP2zF50jthevpTz8rh/A9ItBH8AZIEwHQBW92ZEpEslz0v1yD4xZJLT1pngQTRLksjQBqWyOnHrcXd6uiVKwOsq0grM98O7SXUm9raaEEVakOHqSwPoFjvz1Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761906946; c=relaxed/simple;
-	bh=hYrVj6ok2nxBIVt4E+DNQAUBQ3OOa5k9T6vp5QjX7Hk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=r6GV4R59bN39RRBn1X/O3VAa4mI8ll622Ot0AmkvRgxGP5foMtXQqUP5XgNzfjYjL7yQ0hbYxM68TeqND5c+xrUp/YoU70av5HIOpoE+/AYyycaMkzOVbvA5zAxiJIAoPao+YOCr35BXBmW+4vZVuNR6otHtrdBvR6fzVZKcmds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=c0ufGMqi; arc=none smtp.client-ip=95.215.58.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Message-ID: <4d2006d5-01c1-4bea-9071-7827b1fb2c85@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1761906942;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hA88PfMvT7s/ypjD/Vu1krMCrweTiktQkOm7yWYdPeo=;
-	b=c0ufGMqiRA30r8ZbzAxJk1JAjkGhKvS/qeIRy1TZUJGI65clbzcFx2MprvLinIt5BYTd9f
-	QjWF+cBAlAOor3mB5p1sRWmdG3/CORLLMbRRPWHVmyUC4UqxkcIuyLS9hOoNtxRdBg2dJG
-	felui++sKubhXXBzfiguWtQNc5NtW2U=
-Date: Fri, 31 Oct 2025 18:35:32 +0800
+	s=arc-20240116; t=1761908770; c=relaxed/simple;
+	bh=51OoLO/nAUAQVgxY+OcaFrn5prW6jF8TI0m8fe+wZ6o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=q9Q9Tn9zyqPGjy66h7f84/FeL97LVRL+kU9Z2L31LsKxfcwcg6K5esMiWMGvOZinBCj268k92YFexpdrl0tbTwI1o/RnV8KuONe/duVYJRWHiTypUspndICKIten8xrQDJyhxbS07k36WEy1L9arK1SajH3RaPxmK0KbrQKAJ7A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=CUYJmHH3; arc=none smtp.client-ip=89.58.32.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id BC6D6101C54D8;
+	Fri, 31 Oct 2025 12:05:54 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
+	t=1761908758; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 in-reply-to:references; bh=U/Qb2akVnR5wG2bYWLpz3odKtl+4JnVv3SLjI7ywnZk=;
+	b=CUYJmHH3g6+zgU+oCJnQcScOJxgri/Tc46kMjT9heUlefpjEQA/prtQolvi0MLKr1z59dc
+	trqT6yTlrrlWV9Z3GPR8xrd8FVQIgKOuSeBAW5pJHUYiDEDKnMRCXBQMbIXBkUWZbJF0GX
+	0xbNtC8QENePsn3jmvmxFh9jnIxf2LUxBO6uYYebu76ZwAD3koJ86HynUWV0LR3E8S5v4t
+	c3Pmr8b/vAECD3fjomoprcr36BlHClk+pg7P4W9k1zrubNRcfFqQbztUAQK8T+qZAev+8h
+	KWU7wcmLdOdpk2FYduHMH0xHY7a92kPCKAcrEvKBs/0F/CE9ph5myRThe48Qcg==
+Date: Fri, 31 Oct 2025 12:05:52 +0100
+From: Pavel Machek <pavel@denx.de>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
+	hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
+	sr@sladewatkins.com
+Subject: Re: [PATCH 6.1 000/157] 6.1.158-rc1 review
+Message-ID: <aQSYEGikUQGuXCGJ@duo.ucw.cz>
+References: <20251027183501.227243846@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH 1/1] mm/secretmem: fix use-after-free race in fault
- handler
-Content-Language: en-US
-To: David Hildenbrand <david@redhat.com>
-Cc: akpm@linux-foundation.org, big-sleep-vuln-reports@google.com,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- lorenzo.stoakes@oracle.com, willy@infradead.org, stable@vger.kernel.org,
- Mike Rapoport <rppt@kernel.org>
-References: <CAEXGt5QeDpiHTu3K9tvjUTPqo+d-=wuCNYPa+6sWKrdQJ-ATdg@mail.gmail.com>
- <20251031091818.66843-1-lance.yang@linux.dev> <aQSIdCpf-2pJLwAF@kernel.org>
- <38f0ff98-3dcd-4dc2-87f1-3ea34bb9935a@redhat.com>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <38f0ff98-3dcd-4dc2-87f1-3ea34bb9935a@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="PNOs1RKkaLtORZgd"
+Content-Disposition: inline
+In-Reply-To: <20251027183501.227243846@linuxfoundation.org>
+X-Last-TLS-Session-Version: TLSv1.3
 
 
+--PNOs1RKkaLtORZgd
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On 2025/10/31 18:19, David Hildenbrand wrote:
-> On 31.10.25 10:59, Mike Rapoport wrote:
->> On Fri, Oct 31, 2025 at 05:18:18PM +0800, Lance Yang wrote:
->>> From: Lance Yang <lance.yang@linux.dev>
->>>
->>> The error path in secretmem_fault() frees a folio before restoring its
->>> direct map status, which is a race leading to a panic.
->>
->> Let's use the issue description from the report:
->>
->> When a page fault occurs in a secret memory file created with
->> `memfd_secret(2)`, the kernel will allocate a new folio for it, mark
->> the underlying page as not-present in the direct map, and add it to
->> the file mapping.
->>
->> If two tasks cause a fault in the same page concurrently, both could
->> end up allocating a folio and removing the page from the direct map,
->> but only one would succeed in adding the folio to the file
->> mapping. The task that failed undoes the effects of its attempt by (a)
->> freeing the folio again and (b) putting the page back into the direct
->> map. However, by doing these two operations in this order, the page
->> becomes available to the allocator again before it is placed back in
->> the direct mapping.
->>
->> If another task attempts to allocate the page between (a) and (b), and
->> the kernel tries to access it via the direct map, it would result in a
->> supervisor not-present page fault.
->>> Fix the ordering to restore the map before the folio is freed.
->>
->> ... restore the direct map
->>
->> With these changes
->>
->> Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> 
-> Fully agreed
-> 
-> Acked-by: David Hildenbrand <david@redhat.com>
+Hi!
 
-Cheers!
+> This is the start of the stable review cycle for the 6.1.158 release.
+> There are 157 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+
+CIP testing did not find any problems here:
+
+https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/tree/linux-=
+6.1.y
+
+Tested-by: Pavel Machek (CIP) <pavel@denx.de>
+
+Best regards,
+                                                                Pavel
+
+--=20
+In cooperation with DENX Software Engineering GmbH, HRB 165235 Munich,
+Office: Kirchenstr.5, D-82194 Groebenzell, Germany
+
+--PNOs1RKkaLtORZgd
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCaQSYEAAKCRAw5/Bqldv6
+8h6DAKCxzucKYl7q/pSryl+NfAhQIj8/CgCeKxq/aBvMV3YI1tbuIWD0FVgiCVg=
+=M+Th
+-----END PGP SIGNATURE-----
+
+--PNOs1RKkaLtORZgd--
 
