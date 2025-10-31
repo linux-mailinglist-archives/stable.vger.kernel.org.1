@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-191901-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191851-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E363C2583C
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 15:17:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 37ECDC257E1
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 15:14:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC029563135
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 14:06:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 250B1466AE1
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 14:03:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A05225EFAE;
-	Fri, 31 Oct 2025 14:05:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F0592512E6;
+	Fri, 31 Oct 2025 14:03:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KZB2QWUV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1vYYI/um"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1819022A4D6;
-	Fri, 31 Oct 2025 14:05:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BCA834D387;
+	Fri, 31 Oct 2025 14:03:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761919544; cv=none; b=HAlbDsFLJZLSVF9wnLUr/K/vKnElk5azzij/uElwi19pkffpLdOGxiKa26Qp0mhMdrZ2GoSaCzW3DEifI4Ll32EAgI29NGWJy3PqbB3ugx4sRe3eGrUJqxn9oXtAL8SuJo0cDRuCn6hovjR4nzW3bGJBzh22RlPqB3EBdHg83wM=
+	t=1761919401; cv=none; b=Yx4LzYQN3tT7U2f9ZIgqW93vz2eTM+S2yFGL5lKweU7ILfTPYBIEttr+DGK+rLJOnXZHSVr3wfi9iWAm3pm6qvQ7TNmfGkFFxH+2HVfM1EsVG/mo9Z/JqrgaMlFpOU8S3koQ+RP8mqcCc85g+1q6+mZQuj+XL3YtRP2q2XG1XV4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761919544; c=relaxed/simple;
-	bh=Ep8ttPbCAdYc8+RFZ7M94sPSuZGu1VwsK+EpeDQ7APM=;
+	s=arc-20240116; t=1761919401; c=relaxed/simple;
+	bh=tKgupqb/LKXryb10Gv18BHbwUrMJq8a1R2B0fTyps+E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NgG7A9QsUvkrlfQ8fNb8PFSLLmiNV9n4JaSw7cM8wOCNGxz6vOroD5UjMa9L9XHFSGN2y6B40DgE27Dq2Mez8eXZxhZMaZAIkB3VY9B3R13UVqIKCH+1hI+86B/+AEQsD1JaGeTQHxE1U9SKQKgFiuzjQenO7R9eLeupEiiKG/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KZB2QWUV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B1D5C4CEE7;
-	Fri, 31 Oct 2025 14:05:43 +0000 (UTC)
+	 MIME-Version; b=cfScA+y40VyZ5Z8KUwtZW5G/K+SY1eOVXpV3wdcDGVWmlqPFcwgdPRnhrbY8zf0h0Kc8ED2MrT1fzbxXxtGIb/O4M3+1PzbVBrAAUF51NEgcEr3CDr78CmIyCYy4t2E9m1x8ihWte1waX0GmEvsV63ARUItyc1nIEpZR0rVhl/U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1vYYI/um; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C257DC4CEE7;
+	Fri, 31 Oct 2025 14:03:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761919544;
-	bh=Ep8ttPbCAdYc8+RFZ7M94sPSuZGu1VwsK+EpeDQ7APM=;
+	s=korg; t=1761919401;
+	bh=tKgupqb/LKXryb10Gv18BHbwUrMJq8a1R2B0fTyps+E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KZB2QWUVCzO4D3UpgCWynI2zpm7nd7/a6c8YswH9Gh7EYrObnoo8VE5eAkqTRjFV+
-	 8BoTaQZIZUI7Uh/CBlLlTxtgKlBnOmas/3msiMu5QIaLVQ2M9HJSGx6CdhLzHLF6Pz
-	 Y/ukjrB2SJawEfkNRLX6MaSPHzYgW8ZBc0M5ucp0=
+	b=1vYYI/umTj/KSf8A8UjwKhiDfpnjH6eIt0ENSItAppBU3MltcpJZDqSA75qFWCj6/
+	 evwMuqwcJ2uQIEXuJs2xFxaeN9EAJrqlUF2UQ/D1LuHw1ustzztTC9ZhC2Xps7h+vI
+	 ZbCFFIeGooY+sSmrxyI8E4e1XBFFxIwIvrtQYf6Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 14/35] perf: Have get_perf_callchain() return NULL if crosstask and user are set
+	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Yury Norov <yury.norov@gmail.com>,
+	William Breathitt Gray <wbg@kernel.org>
+Subject: [PATCH 6.6 28/32] bits: add comments and newlines to #if, #else and #endif directives
 Date: Fri, 31 Oct 2025 15:01:22 +0100
-Message-ID: <20251031140043.901751352@linuxfoundation.org>
+Message-ID: <20251031140043.130039894@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251031140043.564670400@linuxfoundation.org>
-References: <20251031140043.564670400@linuxfoundation.org>
+In-Reply-To: <20251031140042.387255981@linuxfoundation.org>
+References: <20251031140042.387255981@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josh Poimboeuf <jpoimboe@kernel.org>
+From: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
 
-[ Upstream commit 153f9e74dec230f2e070e16fa061bc7adfd2c450 ]
+[ Upstream commit 31299a5e0211241171b2222c5633aad4763bf700 ]
 
-get_perf_callchain() doesn't support cross-task unwinding for user space
-stacks, have it return NULL if both the crosstask and user arguments are
-set.
+This is a preparation for the upcoming GENMASK_U*() and BIT_U*()
+changes. After introducing those new macros, there will be a lot of
+scrolling between the #if, #else and #endif.
 
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20250820180428.426423415@kernel.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Add a comment to the #else and #endif preprocessor macros to help keep
+track of which context we are in. Also, add new lines to better
+visually separate the non-asm and asm sections.
+
+Signed-off-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Yury Norov <yury.norov@gmail.com>
+Stable-dep-of: 2ba5772e530f ("gpio: idio-16: Define fixed direction of the GPIO lines")
+Signed-off-by: William Breathitt Gray <wbg@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/events/callchain.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ include/linux/bits.h |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/events/callchain.c b/kernel/events/callchain.c
-index decff7266cfbd..2609998ca07f1 100644
---- a/kernel/events/callchain.c
-+++ b/kernel/events/callchain.c
-@@ -224,6 +224,10 @@ get_perf_callchain(struct pt_regs *regs, u32 init_nr, bool kernel, bool user,
- 	struct perf_callchain_entry_ctx ctx;
- 	int rctx, start_entry_idx;
- 
-+	/* crosstask is not supported for user stacks */
-+	if (crosstask && user && !kernel)
-+		return NULL;
+--- a/include/linux/bits.h
++++ b/include/linux/bits.h
+@@ -18,17 +18,21 @@
+  * GENMASK_ULL(39, 21) gives us the 64bit vector 0x000000ffffe00000.
+  */
+ #if !defined(__ASSEMBLY__)
 +
- 	entry = get_callchain_entry(&rctx);
- 	if (!entry)
- 		return NULL;
-@@ -240,7 +244,7 @@ get_perf_callchain(struct pt_regs *regs, u32 init_nr, bool kernel, bool user,
- 		perf_callchain_kernel(&ctx, regs);
- 	}
+ #include <linux/build_bug.h>
+ #define GENMASK_INPUT_CHECK(h, l) \
+ 	(BUILD_BUG_ON_ZERO(__builtin_choose_expr( \
+ 		__is_constexpr((l) > (h)), (l) > (h), 0)))
+-#else
++
++#else /* defined(__ASSEMBLY__) */
++
+ /*
+  * BUILD_BUG_ON_ZERO is not available in h files included from asm files,
+  * disable the input check if that is the case.
+  */
+ #define GENMASK_INPUT_CHECK(h, l) 0
+-#endif
++
++#endif /* !defined(__ASSEMBLY__) */
  
--	if (user) {
-+	if (user && !crosstask) {
- 		if (!user_mode(regs)) {
- 			if (current->flags & (PF_KTHREAD | PF_USER_WORKER))
- 				regs = NULL;
-@@ -249,9 +253,6 @@ get_perf_callchain(struct pt_regs *regs, u32 init_nr, bool kernel, bool user,
- 		}
- 
- 		if (regs) {
--			if (crosstask)
--				goto exit_put;
--
- 			if (add_mark)
- 				perf_callchain_store_context(&ctx, PERF_CONTEXT_USER);
- 
-@@ -261,7 +262,6 @@ get_perf_callchain(struct pt_regs *regs, u32 init_nr, bool kernel, bool user,
- 		}
- 	}
- 
--exit_put:
- 	put_callchain_entry(rctx);
- 
- 	return entry;
--- 
-2.51.0
-
+ #define __GENMASK(h, l) \
+ 	(((~UL(0)) - (UL(1) << (l)) + 1) & \
 
 
 
