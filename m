@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-191822-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191875-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B20CC2564C
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 15:02:29 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F36A3C25872
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 15:18:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E992C421037
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 14:01:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3CB91560D71
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 14:04:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B18419DFA2;
-	Fri, 31 Oct 2025 14:01:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD7E232C936;
+	Fri, 31 Oct 2025 14:04:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tFOK4KE1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vuF2Bk1Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4621934D387;
-	Fri, 31 Oct 2025 14:01:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AC6725DAEA;
+	Fri, 31 Oct 2025 14:04:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761919317; cv=none; b=SJLyC26fhoa5dVkegsB00udNa4u0b8ggagaoMyp7WLEuyXoCXViWNiVViUP3YbsAtbaF3Tt3NpiwcH6vKkgpux0MM/jipUHoVpj3GW0vcx6jyUQVWYFy2MZjxi49iUubiQh+XPrnKkeSw8Vo4CL7OTNkPM+nL4Yk98P2HOQN2Ls=
+	t=1761919468; cv=none; b=VZFzDd6Rb8oIVS2kgX+WjF22QFe0EoR51jM8q5F3SFzzej+BBpLpB6eYYa4faQ0OKJRUAUQU9jca1ovoUC24neY9BLqNDsqYlGf4RXrvp4R1jmeX13wz0RDXmkM+DA3EatcVuZw6NLLF0f5jEhN9a30F97G4AkM+Eg+s7lITXgk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761919317; c=relaxed/simple;
-	bh=PEyEdkNCsUsLxy1zZRCKlciP9Z2fjWECMJm+dI8SyJg=;
+	s=arc-20240116; t=1761919468; c=relaxed/simple;
+	bh=GODqVgLhNSKYcSLUpOUpl/v8rHUq7Cwx2aMtofoOC64=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JiIblCodrxDN2IxabnemYr/2Ec6JpF9DQvKZ1tEe81smhV2KNbkl/GuQUfaBXnF9zqBR4NL7BgfVdBywFx51x/ah9lZcX0kC9Uah0yh+yY0MnGvgFCB/IA0JkM9EdCTGqCEVZUHwYAxu6wYGr77AEdNLqAsCiICmtM83HtFrW6A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tFOK4KE1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72FF0C4CEE7;
-	Fri, 31 Oct 2025 14:01:56 +0000 (UTC)
+	 MIME-Version; b=oXZQj5aJkNNH4Vji+7+tXF3TL5caQhiUM3CU86Uhx9DOrUE4pMkfegpsCCJqL7w7Ra/6HM2W0QwQKh61zfyASF967PaDzZWVTFt27XRUlc1y8MjjlkRnC89AbBYSv5XJwpL1xZFg7BJB9YCfiaHOFYqVBRU0k5+AiuEkDqag2jk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vuF2Bk1Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E21EEC4CEE7;
+	Fri, 31 Oct 2025 14:04:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761919316;
-	bh=PEyEdkNCsUsLxy1zZRCKlciP9Z2fjWECMJm+dI8SyJg=;
+	s=korg; t=1761919468;
+	bh=GODqVgLhNSKYcSLUpOUpl/v8rHUq7Cwx2aMtofoOC64=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tFOK4KE1+fG9fJBgFvlXSXOU1QHQ+iFqVuSt/ePj0XjYGWPC65n+BN66fbIMg9W3N
-	 +YJvci2Bzr5GAJVg/I1zxd3Gha+EKIrvFbYx2aU9Vlb13ZrY+VBeOq6ihGBXc0+Ww/
-	 XVqTwCeWKa4Wh4jcumr8l766p+BENK8RY6biKfTs=
+	b=vuF2Bk1YTHE4wqb0ZS06IY8+iaybIS0hlvqNUYPxXrsdBxKClyUidruvpamjP9Fvi
+	 f8sxiMPSq8iwty4byHDFCN+JQir5t0YkG0+yw1V2mY5IUzPrxwMfbji5n127iYqO58
+	 0wMkWyxw3XAZhoTE9dgc9L4wU3CNv40b9Gg5HRpA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Naohiro Aota <naohiro.aota@wdc.com>,
-	David Sterba <dsterba@suse.com>,
+	Chen Ridong <chenridong@huawei.com>,
+	Waiman Long <longman@redhat.com>,
+	Tejun Heo <tj@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 10/32] btrfs: zoned: refine extent allocator hint selection
+Subject: [PATCH 6.12 11/40] cpuset: Use new excpus for nocpu error check when enabling root partition
 Date: Fri, 31 Oct 2025 15:01:04 +0100
-Message-ID: <20251031140042.663727707@linuxfoundation.org>
+Message-ID: <20251031140044.218130016@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251031140042.387255981@linuxfoundation.org>
-References: <20251031140042.387255981@linuxfoundation.org>
+In-Reply-To: <20251031140043.939381518@linuxfoundation.org>
+References: <20251031140043.939381518@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,61 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Naohiro Aota <naohiro.aota@wdc.com>
+From: Chen Ridong <chenridong@huawei.com>
 
-[ Upstream commit 0d703963d297964451783e1a0688ebdf74cd6151 ]
+[ Upstream commit 59d5de3655698679ad8fd2cc82228de4679c4263 ]
 
-The hint block group selection in the extent allocator is wrong in the
-first place, as it can select the dedicated data relocation block group for
-the normal data allocation.
+A previous patch fixed a bug where new_prs should be assigned before
+checking housekeeping conflicts. This patch addresses another potential
+issue: the nocpu error check currently uses the xcpus which is not updated.
+Although no issue has been observed so far, the check should be performed
+using the new effective exclusive cpus.
 
-Since we separated the normal data space_info and the data relocation
-space_info, we can easily identify a block group is for data relocation or
-not. Do not choose it for the normal data allocation.
+The comment has been removed because the function returns an error if
+nocpu checking fails, which is unrelated to the parent.
 
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Signed-off-by: Naohiro Aota <naohiro.aota@wdc.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Chen Ridong <chenridong@huawei.com>
+Reviewed-by: Waiman Long <longman@redhat.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/extent-tree.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ kernel/cgroup/cpuset.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/fs/btrfs/extent-tree.c b/fs/btrfs/extent-tree.c
-index 8248113eb067f..5e3d1a87b7e9d 100644
---- a/fs/btrfs/extent-tree.c
-+++ b/fs/btrfs/extent-tree.c
-@@ -4175,7 +4175,8 @@ static int prepare_allocation_clustered(struct btrfs_fs_info *fs_info,
- }
+diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
+index 25f9565f798d4..13eb986172499 100644
+--- a/kernel/cgroup/cpuset.c
++++ b/kernel/cgroup/cpuset.c
+@@ -1679,11 +1679,7 @@ static int update_parent_effective_cpumask(struct cpuset *cs, int cmd,
+ 		if (prstate_housekeeping_conflict(new_prs, xcpus))
+ 			return PERR_HKEEPING;
  
- static int prepare_allocation_zoned(struct btrfs_fs_info *fs_info,
--				    struct find_free_extent_ctl *ffe_ctl)
-+				    struct find_free_extent_ctl *ffe_ctl,
-+				    struct btrfs_space_info *space_info)
- {
- 	if (ffe_ctl->for_treelog) {
- 		spin_lock(&fs_info->treelog_bg_lock);
-@@ -4199,6 +4200,7 @@ static int prepare_allocation_zoned(struct btrfs_fs_info *fs_info,
- 			u64 avail = block_group->zone_capacity - block_group->alloc_offset;
+-		/*
+-		 * A parent can be left with no CPU as long as there is no
+-		 * task directly associated with the parent partition.
+-		 */
+-		if (nocpu)
++		if (tasks_nocpu_error(parent, cs, xcpus))
+ 			return PERR_NOCPUS;
  
- 			if (block_group_bits(block_group, ffe_ctl->flags) &&
-+			    block_group->space_info == space_info &&
- 			    avail >= ffe_ctl->num_bytes) {
- 				ffe_ctl->hint_byte = block_group->start;
- 				break;
-@@ -4220,7 +4222,7 @@ static int prepare_allocation(struct btrfs_fs_info *fs_info,
- 		return prepare_allocation_clustered(fs_info, ffe_ctl,
- 						    space_info, ins);
- 	case BTRFS_EXTENT_ALLOC_ZONED:
--		return prepare_allocation_zoned(fs_info, ffe_ctl);
-+		return prepare_allocation_zoned(fs_info, ffe_ctl, space_info);
- 	default:
- 		BUG();
- 	}
+ 		deleting = cpumask_and(tmp->delmask, xcpus, parent->effective_xcpus);
 -- 
 2.51.0
 
