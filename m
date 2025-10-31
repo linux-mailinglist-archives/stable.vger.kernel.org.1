@@ -1,108 +1,117 @@
-Return-Path: <stable+bounces-191814-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191815-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32051C250E9
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 13:43:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9215EC251B8
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 13:54:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7AB0D1A66A26
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 12:43:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 02D953B7E96
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 12:54:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0AED34A785;
-	Fri, 31 Oct 2025 12:43:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DDEE33C50B;
+	Fri, 31 Oct 2025 12:54:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=postmarketos.org header.i=@postmarketos.org header.b="KIY/eR+q"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QC191b6n"
 X-Original-To: stable@vger.kernel.org
-Received: from out-178.mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAA26311C21
-	for <stable@vger.kernel.org>; Fri, 31 Oct 2025 12:43:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4421D12DDA1;
+	Fri, 31 Oct 2025 12:54:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761914587; cv=none; b=tB87PWZ/a5+XLDGVkrHYvitxIedcuz53MgAt2gvIDHQvVfqhDI6tN9LTN6hQz4tq+MGZxQmT4ICAeb41/6otHBMAHm2+oMOezcfrc7Qn6PtZGsf++gbOHwtaC9W4Qa5pUfP0Ci63irgZEdIQOXGyRClugwmf0lqPkiRXke9tQAM=
+	t=1761915272; cv=none; b=uodX637aXgOcwVAPAztaadgYAHWqHuZFbo4MLfTTLPtuR30fWdgCQq7fgFBaLwxHYwtptOB1pb44B+l8iOmYSxlQfxM3Jt/iF9b1Mp+hnliiMLBHNUjt9tuyFjUEzckQt+FDx8IrDLAcSILbwIJGkF+J6DfRbRSiYXc0ljZGa0c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761914587; c=relaxed/simple;
-	bh=PLD/9RwCyc/wENbahoWPvbxicWmVeAGz1BL3RIu9cxE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=QPP0hNznRIIXiWrjnSRpR4/Fu+t6UTFFGYOp0qDhEWJAOYev5b5tf5LtPVH4TCkeLms08eFrfCMktrc+vXEeOvF6O8isfN2FtLWsmQ+2jeSSohKg0GZSPK+uYqQ/MdM6kMudOnVFQd/Qiu0UzbahUE5YXKzdS+0YNSiJdZvvQI4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=postmarketos.org; spf=pass smtp.mailfrom=postmarketos.org; dkim=pass (2048-bit key) header.d=postmarketos.org header.i=@postmarketos.org header.b=KIY/eR+q; arc=none smtp.client-ip=95.215.58.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=postmarketos.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=postmarketos.org
-Message-ID: <722a6cf2-7109-47e9-9957-cde5171d7053@postmarketos.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=postmarketos.org;
-	s=key1; t=1761914574;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qBcoDhvBiRpbFrBHTGJxuS/5uthc7Xf+aqUT566+UzE=;
-	b=KIY/eR+qz/ils6v60wWH3T/RCgqwFResSB+xZ1PPuel1IdiFSAwnlBnEUY9hsUabolKn8r
-	4HD2rjsTLdTDtihF8ClUe0eGCsZvEr7xz5A4+iynARIoRSy/BuANrfHHp3zU0x6uQ7boy1
-	5KabZw0ZcOxGQV1ZmXK0H/yroDAbfmfn7EBFBxZvdqblnqkfSUQmNS9lTK9Bo5Se0rIvuH
-	99yRWEYAcxiCYNRLZT+Jyqtwg+wgpEwUTVmPrjhfS/bq2CzUHD9xrfLhozdvVQsW5yiVPW
-	YmcF+Zynh7HLDEKdZCXwv6bYGmBBJqqhdmolF/XUiiEWjQN4uNdmK4AO8Z2VSQ==
-Date: Fri, 31 Oct 2025 15:42:47 +0300
+	s=arc-20240116; t=1761915272; c=relaxed/simple;
+	bh=s7+79ffWDBP2O1Ekl9g4IEvYubPlK22MnD2z/5IWwuQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=G+rV6w73reVrq8gYR0I9n2PF7Yc0qDycknQYqpf0NG5HfmbXNQigGII2c4osZo0lZN/LTht+l/7P+zugXU8v7ApemWaO+sUheEf/zUsCTSeADNtB5exo/KQ2moWu+5nPSpWOLzy01rogNiIr860DRh+RiAf62M+mvjONnjWztv8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QC191b6n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43BF9C4CEE7;
+	Fri, 31 Oct 2025 12:54:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761915271;
+	bh=s7+79ffWDBP2O1Ekl9g4IEvYubPlK22MnD2z/5IWwuQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=QC191b6nXeKNfrKaDWuh6Obxm3u6z+iDiTufflV+Zh0uh6axmtDbWxI7uJquyShSn
+	 0o8ImSxq5LDVqFDp4s89/oQqcI12apfQ2+rDs2M83fAn8AAMXIdsBp8rxGuXaU16cP
+	 kvrWh8cQa1nf1UBWYdEM/1BDXm/PjownVbyYGWhAW/n8uc24JUfsffTw8QsiqMJp58
+	 jFUYGbysqbEFzms3+yGdlpx4+PeK/W5KNifYI22F/Ah2dWS8kDVCkkyDkfjsbgO3dF
+	 0De0hwb4cxy4ffNZ3q+mERMLt8FvWxD1A412Ec5s/qQxyjUjh+HfLvXBeZ6loHKo9S
+	 nyToa8upovziw==
+Date: Fri, 31 Oct 2025 13:54:27 +0100
+From: Christian Brauner <brauner@kernel.org>
+To: GuangFei Luo <luogf2025@163.com>
+Cc: Al Viro <viro@zeniv.linux.org.uk>, jack@suse.cz, 
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] mount: fix duplicate mounts using the new mount API
+Message-ID: <20251031-gerufen-rotkohl-7d86b0c3dfe2@brauner>
+References: <20251025024934.1350492-1-luogf2025@163.com>
+ <20251025033601.GJ2441659@ZenIV>
+ <788d8763-0c2c-458a-9b0b-a5634e50c029@163.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH 0/3] SDM630/660: Add missing MDSS reset
-To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
- Bjorn Andersson <andersson@kernel.org>, Stephen Boyd <sboyd@kernel.org>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>
-Cc: linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
- devicetree@vger.kernel.org, stable@vger.kernel.org,
- ~postmarketos/upstreaming@lists.sr.ht
-References: <20251031-sdm660-mdss-reset-v1-0-14cb4e6836f2@postmarketos.org>
- <25579815-5727-41e8-a858-5cddcc2897b7@oss.qualcomm.com>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Alexey Minnekhanov <alexeymin@postmarketos.org>
-In-Reply-To: <25579815-5727-41e8-a858-5cddcc2897b7@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <788d8763-0c2c-458a-9b0b-a5634e50c029@163.com>
 
-On 31.10.2025 12:21, Konrad Dybcio wrote:
-> On 10/31/25 3:27 AM, Alexey@web.codeaurora.org wrote:
->> Since kernel 6.17 display stack needs to reset the hardware properly to
->> ensure that we don't run into issues with the hardware configured by the
->> bootloader. MDSS reset is necessary to have working display when the
->> bootloader has already initialized it for the boot splash screen.
->>
->> Signed-off-by: Alexey Minnekhanov <<alexeymin@postmarketos.org>>
-> 
-> You git identity has two less/greater than symbols
-> 
-> Also.. thunderbird argues there's two of you:
+On Sat, Oct 25, 2025 at 02:02:51PM +0800, GuangFei Luo wrote:
 > 
 > 
-> Alexey@web.codeaurora.org
-> Minnekhanov@web.codeaurora.org
-> 
-> plus.. I thought codeaurora was long dead!?
-> 
-> My DNS certainly doesn't know about web.codeaurora.org specifically
-> 
-> Konrad
+> On 10/25/2025 11:36 AM, Al Viro wrote:
+> > On Sat, Oct 25, 2025 at 10:49:34AM +0800, GuangFei Luo wrote:
+> > 
+> > > @@ -4427,6 +4427,7 @@ SYSCALL_DEFINE5(move_mount,
+> > >   {
+> > >   	struct path to_path __free(path_put) = {};
+> > >   	struct path from_path __free(path_put) = {};
+> > > +	struct path path __free(path_put) = {};
+> > >   	struct filename *to_name __free(putname) = NULL;
+> > >   	struct filename *from_name __free(putname) = NULL;
+> > >   	unsigned int lflags, uflags;
+> > > @@ -4472,6 +4473,14 @@ SYSCALL_DEFINE5(move_mount,
+> > >   			return ret;
+> > >   	}
+> > > +	ret = user_path_at(AT_FDCWD, to_pathname, LOOKUP_FOLLOW, &path);
+> > > +	if (ret)
+> > > +		return ret;
+> > > +
+> > > +	/* Refuse the same filesystem on the same mount point */
+> > > +	if (path.mnt->mnt_sb == to_path.mnt->mnt_sb && path_mounted(&path))
+> > > +		return -EBUSY;
+> > Races galore:
+> > 	* who said that string pointed to by to_pathname will remain
+> > the same bothe for user_path_at() and getname_maybe_null()?
+> > 	* assuming it is not changed, who said that it will resolve
+> > to the same location the second time around?
+> > 	* not a race but... the fact that to_dfd does not affect anything
+> > in that check looks odd, doesn't it?  And if you try to pass it instead
+> > of AT_FDCWD... who said that descriptor will correspond to the same
+> > opened file for both?
+> > 
+> > Besides... assuming that nothing's changing under you, your test is basically
+> > "we are not moving anything on top of existing mountpoint" - both path and
+> > to_path come from resolving to_pathname, after all.  It doesn't depend upon
+> > the thing you are asked to move over there - the check is done before you
+> > even look at from_pathname.
+> > 
+> > What's more, you are breaking the case of mount --move, which had never had
+> > that constraint of plain mount.  Same for mount --bind, for that matter.
+> > 
+> > I agree that it's a regression in mount(8) conversion to new API, but this
+> > is not a fix.
+> Thanks for the review. Perhaps fixing this in |move_mount| isn't the best
+> approach, and I don’t have a good solution yet.
 
-This is a result of me first time trying to use b4 and misconfiguration
-of git: user.email contained my email inside '<' and '>' which somehow
-caused the prep/send process to generate emails with broken half-empty
-"From:" field, containing only name and surname without email. And then
-perhaps email server closer to your side decided to "fill the gaps" and
-append some non-existent web.codeaurora.org part? At least I don't have
-any better guess.
-
-I will send v2 later and hopefully get this all fixed.
-
---
-Regards,
-Alexey Minnekhanov
+Sorry, no. This restriction never made any sense in the old mount api
+and it certainly has no place in the new mount api. And it has been
+_years_ since the new mount api was released. Any fix is likely to break
+someone else that's already relying on that working.
 
