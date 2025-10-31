@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-191803-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191804-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F448C247CF
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 11:36:39 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FD94C247C3
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 11:36:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5197D189B4EF
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 10:35:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B8A153BF827
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 10:35:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 285212F0C66;
-	Fri, 31 Oct 2025 10:35:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A99F82690D9;
+	Fri, 31 Oct 2025 10:35:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="puzyI4VS"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="c0ufGMqi"
 X-Original-To: stable@vger.kernel.org
-Received: from out-189.mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
+Received: from out-173.mta1.migadu.com (out-173.mta1.migadu.com [95.215.58.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CD664C6D
-	for <stable@vger.kernel.org>; Fri, 31 Oct 2025 10:35:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.189
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3CB02EAB8D
+	for <stable@vger.kernel.org>; Fri, 31 Oct 2025 10:35:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761906909; cv=none; b=P1t8NNkhQur2EJ5QdQweARP2CtsuEtX9PdunFGkqxmUbkuNPWRSkS45poKmRAQ9T8AwMKTamgL7z/SGu3l1VJ7WwzQSapwkAC/M2PK7cFKFRysDBcMMCkAmEcgDcjTMPEHF2mmuAcO4KS82tSM0jnMyRTUM6TQtZl4osNzjyPUg=
+	t=1761906946; cv=none; b=do39CI5nvyOT6e2PyM5uqEt3+dm1z/nq/yhcNLgU6TPDVkEn2a0denCQP516DlaPPpLZFemHxr0SJoq+p2tZXhraffk3xe2B0ARUf9WDg2nsa7tjWbTM5k85BYsiV7BMDZF1JtbKnjqPyvfqczjzTHK2yPF8wyV5QKiXp4hhQNE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761906909; c=relaxed/simple;
-	bh=UQLJEn0L5U5fEjbo73zPZFZsVwvrPvxRKeocPtqgLW8=;
+	s=arc-20240116; t=1761906946; c=relaxed/simple;
+	bh=hYrVj6ok2nxBIVt4E+DNQAUBQ3OOa5k9T6vp5QjX7Hk=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bGPgg2Sfuxfg86JjXJQAa+zt7T0TC0hI3sAr00mmJJo00IOrVrDNg64zQ2yc849pIPgsI5u025EU7WgZ01Nb0C1p5SmQ2cQDhYqRzzOeksO/T18Vfi4YYLuwQkGjUcbOKUwWddvBMAUnIFx0HQCP3w6o3olXClzwWSSslxRT+TE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=puzyI4VS; arc=none smtp.client-ip=91.218.175.189
+	 In-Reply-To:Content-Type; b=r6GV4R59bN39RRBn1X/O3VAa4mI8ll622Ot0AmkvRgxGP5foMtXQqUP5XgNzfjYjL7yQ0hbYxM68TeqND5c+xrUp/YoU70av5HIOpoE+/AYyycaMkzOVbvA5zAxiJIAoPao+YOCr35BXBmW+4vZVuNR6otHtrdBvR6fzVZKcmds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=c0ufGMqi; arc=none smtp.client-ip=95.215.58.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Message-ID: <5adc0331-d699-402f-a798-acbf76e124db@linux.dev>
+Message-ID: <4d2006d5-01c1-4bea-9071-7827b1fb2c85@linux.dev>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1761906903;
+	t=1761906942;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=15d5jagqZuWVPOYKHa4FJ77KmZ/Kk6K2xbbjYubxhkU=;
-	b=puzyI4VSEcGnkKbWUyQwU8Fr2Cmzx93J3JXvaM/b5q6xIf6hFk4D9XEQIXtewTZydWzo3h
-	N7MZfd9y7CNsoHOwLv1jNmWQyvU1MkeMbx+/edLqwHblPKh1suHNw5L5WZsFOSgk+13cso
-	XTQeEKURcNDUydqbFINmNPex8s5BQEM=
-Date: Fri, 31 Oct 2025 18:34:58 +0800
+	bh=hA88PfMvT7s/ypjD/Vu1krMCrweTiktQkOm7yWYdPeo=;
+	b=c0ufGMqiRA30r8ZbzAxJk1JAjkGhKvS/qeIRy1TZUJGI65clbzcFx2MprvLinIt5BYTd9f
+	QjWF+cBAlAOor3mB5p1sRWmdG3/CORLLMbRRPWHVmyUC4UqxkcIuyLS9hOoNtxRdBg2dJG
+	felui++sKubhXXBzfiguWtQNc5NtW2U=
+Date: Fri, 31 Oct 2025 18:35:32 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -52,27 +52,25 @@ MIME-Version: 1.0
 Subject: Re: [PATCH 1/1] mm/secretmem: fix use-after-free race in fault
  handler
 Content-Language: en-US
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+To: David Hildenbrand <david@redhat.com>
 Cc: akpm@linux-foundation.org, big-sleep-vuln-reports@google.com,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, willy@infradead.org,
- david@redhat.com, stable@vger.kernel.org, Mike Rapoport <rppt@kernel.org>
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ lorenzo.stoakes@oracle.com, willy@infradead.org, stable@vger.kernel.org,
+ Mike Rapoport <rppt@kernel.org>
 References: <CAEXGt5QeDpiHTu3K9tvjUTPqo+d-=wuCNYPa+6sWKrdQJ-ATdg@mail.gmail.com>
  <20251031091818.66843-1-lance.yang@linux.dev> <aQSIdCpf-2pJLwAF@kernel.org>
- <02caf80d-ccde-49d4-99dd-0ea3763a0593@lucifer.local>
+ <38f0ff98-3dcd-4dc2-87f1-3ea34bb9935a@redhat.com>
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <02caf80d-ccde-49d4-99dd-0ea3763a0593@lucifer.local>
+In-Reply-To: <38f0ff98-3dcd-4dc2-87f1-3ea34bb9935a@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Migadu-Flow: FLOW_OUT
 
 
 
-On 2025/10/31 18:24, Lorenzo Stoakes wrote:
-> Small thing, sorry to be a pain buuuut could we please not send patches
-> in-reply to another mail, it makes it harder for people to see :)
-> 
-> On Fri, Oct 31, 2025 at 11:59:16AM +0200, Mike Rapoport wrote:
+On 2025/10/31 18:19, David Hildenbrand wrote:
+> On 31.10.25 10:59, Mike Rapoport wrote:
 >> On Fri, Oct 31, 2025 at 05:18:18PM +0800, Lance Yang wrote:
 >>> From: Lance Yang <lance.yang@linux.dev>
 >>>
@@ -98,7 +96,6 @@ On 2025/10/31 18:24, Lorenzo Stoakes wrote:
 >> If another task attempts to allocate the page between (a) and (b), and
 >> the kernel tries to access it via the direct map, it would result in a
 >> supervisor not-present page fault.
->>
 >>> Fix the ordering to restore the map before the folio is freed.
 >>
 >> ... restore the direct map
@@ -107,58 +104,9 @@ On 2025/10/31 18:24, Lorenzo Stoakes wrote:
 >>
 >> Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 > 
-> Agree with David, Mike this looks 'obviously correct' thanks for addressing
-> it.
+> Fully agreed
 > 
-> But also as per Mike, please update message accordingly and send v2
-> not-in-reply-to-anything :P
+> Acked-by: David Hildenbrand <david@redhat.com>
 
-Sure. V2 is on the way ;)
-
-> 
-> With that said:
-> 
-> Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-
-Thanks!
-Lance
-
-> 
->>
->>>
->>> Cc: <stable@vger.kernel.org>
->>> Reported-by: Google Big Sleep <big-sleep-vuln-reports@google.com>
->>> Closes: https://lore.kernel.org/linux-mm/CAEXGt5QeDpiHTu3K9tvjUTPqo+d-=wuCNYPa+6sWKrdQJ-ATdg@mail.gmail.com/
->>> Signed-off-by: Lance Yang <lance.yang@linux.dev>
->>> ---
->>>   mm/secretmem.c | 2 +-
->>>   1 file changed, 1 insertion(+), 1 deletion(-)
->>>
->>> diff --git a/mm/secretmem.c b/mm/secretmem.c
->>> index c1bd9a4b663d..37f6d1097853 100644
->>> --- a/mm/secretmem.c
->>> +++ b/mm/secretmem.c
->>> @@ -82,13 +82,13 @@ static vm_fault_t secretmem_fault(struct vm_fault *vmf)
->>>   		__folio_mark_uptodate(folio);
->>>   		err = filemap_add_folio(mapping, folio, offset, gfp);
->>>   		if (unlikely(err)) {
->>> -			folio_put(folio);
->>>   			/*
->>>   			 * If a split of large page was required, it
->>>   			 * already happened when we marked the page invalid
->>>   			 * which guarantees that this call won't fail
->>>   			 */
->>>   			set_direct_map_default_noflush(folio_page(folio, 0));
->>> +			folio_put(folio);
->>>   			if (err == -EEXIST)
->>>   				goto retry;
->>>
->>> --
->>> 2.49.0
->>>
->>
->> --
->> Sincerely yours,
->> Mike.
-
+Cheers!
 
