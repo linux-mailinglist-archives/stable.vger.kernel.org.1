@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-191881-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191906-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55EFCC256A9
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 15:04:59 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADDFBC25866
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 15:18:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A04C11891304
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 14:05:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 73678468397
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 14:06:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3870925A2CF;
-	Fri, 31 Oct 2025 14:04:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F369134B69B;
+	Fri, 31 Oct 2025 14:05:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ROGxX3PY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xQgYJ03r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9E22210F59;
-	Fri, 31 Oct 2025 14:04:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFA8D3C17;
+	Fri, 31 Oct 2025 14:05:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761919486; cv=none; b=CvDSWX70KeLfN3gFZyafJzbhXicHfUjL9mh/XALsqrBuKvGmlTYC1QDw0t/AtjYsMsRnrmyvQhgqlo3aPtvta+Nn2q8ybx8Gs91V2kdJ77NN1zFjNFr4BY5UbewrE5J0MlxCuZ/hf6pJi8A0AwHBu3kIjj2sloANzJt5x/6ZsZg=
+	t=1761919558; cv=none; b=I9g7Srgr6/svYFKI+ktX4U9kEjbI/uZsb7/j9Nm1sexUrTkdjKmlGvmEtudfnyqRW4ZWBg/lQcFw/M0I5a7ZxjhP3p9Ep6dGx8sARKKLo5EP+pHcGd6NSR3usWnYwZB4dGqyQfqcIIeGUcevqqBMBIl4K8W2j2+cr6sMQthbufA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761919486; c=relaxed/simple;
-	bh=XHT6ZCVBJwMq36f5vlYtM/sPmvXcpd797W+lyHyJfaU=;
+	s=arc-20240116; t=1761919558; c=relaxed/simple;
+	bh=I0Bt8/hOyrKTatjUlV+jQVod56rUEr/f5fwWxgV0InQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g43UCN1zPBDhyVWyFTl58SRlk33iD6CVqphGqCee74xgJWvTKD6WWYBvcZTZE0yBbxrhvxzzpy1mihGEBdhkYWOUXWI3IDKkFZclCDp2VOe6aAQ6C2AqXrhzbBy2lD/cGdLq3gP9LM4vK/66nPXjs1wF3RQfxrOOh5hNKf0ZMT4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ROGxX3PY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 304C8C4CEE7;
-	Fri, 31 Oct 2025 14:04:45 +0000 (UTC)
+	 MIME-Version; b=Sj8GCr1NhMG4aR4wa4vfjjoM/7YpyGMC2a9TXeQJ0sGDQ1Viy9/8Q44v6z3bHEUikOkiF1pi3L5IlH606dic0Q7XrIUES781lHcc0UBlzHC+ucLMuwQ9JgmkwleQYzVsOfMc5JGQEnvGDOlgb/dxsX+J/cXAgrJ4YCSSBUbYhew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xQgYJ03r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 371B1C4CEE7;
+	Fri, 31 Oct 2025 14:05:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761919485;
-	bh=XHT6ZCVBJwMq36f5vlYtM/sPmvXcpd797W+lyHyJfaU=;
+	s=korg; t=1761919558;
+	bh=I0Bt8/hOyrKTatjUlV+jQVod56rUEr/f5fwWxgV0InQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ROGxX3PYkE4g4YIJR2d5vTq4bw21HrckvJvYk8r524Xtkia/OdD1A06XBUAnWmwWH
-	 T77X3VSbTchz0RsMBog/rfUMYWTcIx/ra/nE95peVzSyTm2c92P0qH0Gm3JU4efck1
-	 JxHrNIOY5FxUy8BH4dZcECb3Y+gNBIPep4zzVtyk=
+	b=xQgYJ03r+wIK1aBjw4fOnVc6U8KoAN7dUT1ajYn5a49TNG0Sy85FsIhkxiXjd/g+T
+	 eiljYttH2HTC9BQ4nj0w3L+GNiN26N2+gPFjOSD/t35YfofgA/+YWktmcmBTwIRPsN
+	 DF41a62kiw6UyQPfPm3VAraYW8ZUeBlJLzVliTzA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Mathieu Dubois-Briand <mathieu.dubois-briand@bootlin.com>,
-	Lee Jones <lee@kernel.org>,
-	William Breathitt Gray <wbg@kernel.org>
-Subject: [PATCH 6.12 34/40] gpio: regmap: Allow to allocate regmap-irq device
+	David Kaplan <david.kaplan@amd.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.17 19/35] x86/bugs: Add attack vector controls for VMSCAPE
 Date: Fri, 31 Oct 2025 15:01:27 +0100
-Message-ID: <20251031140044.848686310@linuxfoundation.org>
+Message-ID: <20251031140044.023887631@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251031140043.939381518@linuxfoundation.org>
-References: <20251031140043.939381518@linuxfoundation.org>
+In-Reply-To: <20251031140043.564670400@linuxfoundation.org>
+References: <20251031140043.564670400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,116 +62,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mathieu Dubois-Briand <mathieu.dubois-briand@bootlin.com>
+From: David Kaplan <david.kaplan@amd.com>
 
-[ Upstream commit 553b75d4bfe9264f631d459fe9996744e0672b0e ]
+[ Upstream commit 5799d5d8a6c877f03ad5b5a640977053be45059a ]
 
-GPIO controller often have support for IRQ: allow to easily allocate
-both gpio-regmap and regmap-irq in one operation.
+Use attack vector controls to select whether VMSCAPE requires mitigation,
+similar to other bugs.
 
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Acked-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Signed-off-by: Mathieu Dubois-Briand <mathieu.dubois-briand@bootlin.com>
-Link: https://lore.kernel.org/r/20250824-mdb-max7360-support-v14-5-435cfda2b1ea@bootlin.com
-Signed-off-by: Lee Jones <lee@kernel.org>
-Stable-dep-of: 2ba5772e530f ("gpio: idio-16: Define fixed direction of the GPIO lines")
-Signed-off-by: William Breathitt Gray <wbg@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: David Kaplan <david.kaplan@amd.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpio-regmap.c  |   29 +++++++++++++++++++++++++++--
- include/linux/gpio/regmap.h |   11 +++++++++++
- 2 files changed, 38 insertions(+), 2 deletions(-)
+ .../admin-guide/hw-vuln/attack_vector_controls.rst |  1 +
+ arch/x86/kernel/cpu/bugs.c                         | 14 ++++++++++----
+ 2 files changed, 11 insertions(+), 4 deletions(-)
 
---- a/drivers/gpio/gpio-regmap.c
-+++ b/drivers/gpio/gpio-regmap.c
-@@ -30,6 +30,11 @@ struct gpio_regmap {
- 	unsigned int reg_dir_in_base;
- 	unsigned int reg_dir_out_base;
+diff --git a/Documentation/admin-guide/hw-vuln/attack_vector_controls.rst b/Documentation/admin-guide/hw-vuln/attack_vector_controls.rst
+index 5964901d66e31..d0bdbd81dcf9f 100644
+--- a/Documentation/admin-guide/hw-vuln/attack_vector_controls.rst
++++ b/Documentation/admin-guide/hw-vuln/attack_vector_controls.rst
+@@ -218,6 +218,7 @@ SRSO                  X              X            X              X
+ SSB                                  X
+ TAA                   X              X            X              X            *       (Note 2)
+ TSA                   X              X            X              X
++VMSCAPE                                           X
+ =============== ============== ============ ============= ============== ============ ========
  
-+#ifdef CONFIG_REGMAP_IRQ
-+	int regmap_irq_line;
-+	struct regmap_irq_chip_data *irq_chip_data;
-+#endif
+ Notes:
+diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
+index 9750ce448e626..c6bb8e76eb984 100644
+--- a/arch/x86/kernel/cpu/bugs.c
++++ b/arch/x86/kernel/cpu/bugs.c
+@@ -434,6 +434,9 @@ static bool __init should_mitigate_vuln(unsigned int bug)
+ 	case X86_BUG_SPEC_STORE_BYPASS:
+ 		return cpu_attack_vector_mitigated(CPU_MITIGATE_USER_USER);
+ 
++	case X86_BUG_VMSCAPE:
++		return cpu_attack_vector_mitigated(CPU_MITIGATE_GUEST_HOST);
 +
- 	int (*reg_mask_xlate)(struct gpio_regmap *gpio, unsigned int base,
- 			      unsigned int offset, unsigned int *reg,
- 			      unsigned int *mask);
-@@ -203,6 +208,7 @@ EXPORT_SYMBOL_GPL(gpio_regmap_get_drvdat
-  */
- struct gpio_regmap *gpio_regmap_register(const struct gpio_regmap_config *config)
+ 	default:
+ 		WARN(1, "Unknown bug %x\n", bug);
+ 		return false;
+@@ -3308,15 +3311,18 @@ early_param("vmscape", vmscape_parse_cmdline);
+ 
+ static void __init vmscape_select_mitigation(void)
  {
-+	struct irq_domain *irq_domain;
- 	struct gpio_regmap *gpio;
- 	struct gpio_chip *chip;
- 	int ret;
-@@ -278,8 +284,22 @@ struct gpio_regmap *gpio_regmap_register
- 	if (ret < 0)
- 		goto err_free_gpio;
- 
--	if (config->irq_domain) {
--		ret = gpiochip_irqchip_add_domain(chip, config->irq_domain);
-+#ifdef CONFIG_REGMAP_IRQ
-+	if (config->regmap_irq_chip) {
-+		gpio->regmap_irq_line = config->regmap_irq_line;
-+		ret = regmap_add_irq_chip_fwnode(dev_fwnode(config->parent), config->regmap,
-+						 config->regmap_irq_line, config->regmap_irq_flags,
-+						 0, config->regmap_irq_chip, &gpio->irq_chip_data);
-+		if (ret)
-+			goto err_free_gpio;
-+
-+		irq_domain = regmap_irq_get_domain(gpio->irq_chip_data);
-+	} else
-+#endif
-+	irq_domain = config->irq_domain;
-+
-+	if (irq_domain) {
-+		ret = gpiochip_irqchip_add_domain(chip, irq_domain);
- 		if (ret)
- 			goto err_remove_gpiochip;
+-	if (cpu_mitigations_off() ||
+-	    !boot_cpu_has_bug(X86_BUG_VMSCAPE) ||
++	if (!boot_cpu_has_bug(X86_BUG_VMSCAPE) ||
+ 	    !boot_cpu_has(X86_FEATURE_IBPB)) {
+ 		vmscape_mitigation = VMSCAPE_MITIGATION_NONE;
+ 		return;
  	}
-@@ -300,6 +320,11 @@ EXPORT_SYMBOL_GPL(gpio_regmap_register);
-  */
- void gpio_regmap_unregister(struct gpio_regmap *gpio)
- {
-+#ifdef CONFIG_REGMAP_IRQ
-+	if (gpio->irq_chip_data)
-+		regmap_del_irq_chip(gpio->regmap_irq_line, gpio->irq_chip_data);
-+#endif
-+
- 	gpiochip_remove(&gpio->gpio_chip);
- 	kfree(gpio);
- }
---- a/include/linux/gpio/regmap.h
-+++ b/include/linux/gpio/regmap.h
-@@ -40,6 +40,11 @@ struct regmap;
-  * @drvdata:		(Optional) Pointer to driver specific data which is
-  *			not used by gpio-remap but is provided "as is" to the
-  *			driver callback(s).
-+ * @regmap_irq_chip:	(Optional) Pointer on an regmap_irq_chip structure. If
-+ *			set, a regmap-irq device will be created and the IRQ
-+ *			domain will be set accordingly.
-+ * @regmap_irq_line	(Optional) The IRQ the device uses to signal interrupts.
-+ * @regmap_irq_flags	(Optional) The IRQF_ flags to use for the interrupt.
-  *
-  * The ->reg_mask_xlate translates a given base address and GPIO offset to
-  * register and mask pair. The base address is one of the given register
-@@ -78,6 +83,12 @@ struct gpio_regmap_config {
- 	int ngpio_per_reg;
- 	struct irq_domain *irq_domain;
  
-+#ifdef CONFIG_REGMAP_IRQ
-+	struct regmap_irq_chip *regmap_irq_chip;
-+	int regmap_irq_line;
-+	unsigned long regmap_irq_flags;
-+#endif
-+
- 	int (*reg_mask_xlate)(struct gpio_regmap *gpio, unsigned int base,
- 			      unsigned int offset, unsigned int *reg,
- 			      unsigned int *mask);
+-	if (vmscape_mitigation == VMSCAPE_MITIGATION_AUTO)
+-		vmscape_mitigation = VMSCAPE_MITIGATION_IBPB_EXIT_TO_USER;
++	if (vmscape_mitigation == VMSCAPE_MITIGATION_AUTO) {
++		if (should_mitigate_vuln(X86_BUG_VMSCAPE))
++			vmscape_mitigation = VMSCAPE_MITIGATION_IBPB_EXIT_TO_USER;
++		else
++			vmscape_mitigation = VMSCAPE_MITIGATION_NONE;
++	}
+ }
+ 
+ static void __init vmscape_update_mitigation(void)
+-- 
+2.51.0
+
 
 
 
