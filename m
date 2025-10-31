@@ -1,171 +1,156 @@
-Return-Path: <stable+bounces-191934-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191935-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54828C25903
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 15:27:13 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6634BC258F0
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 15:25:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E8B6A4F3823
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 14:25:08 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id BBA5D351AE6
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 14:25:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CDB0346791;
-	Fri, 31 Oct 2025 14:25:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9B95346E62;
+	Fri, 31 Oct 2025 14:25:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=infotecs.ru header.i=@infotecs.ru header.b="X3hIl6qF"
+	dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b="EPfpt8ex"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0.infotecs.ru (mx0.infotecs.ru [91.244.183.115])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43AC0224B1B;
-	Fri, 31 Oct 2025 14:24:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.244.183.115
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C964224B1B
+	for <stable@vger.kernel.org>; Fri, 31 Oct 2025 14:25:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761920705; cv=none; b=LC//VZkvPbe+RtpcBlpGz5abHpAnA5GskIW4xZiIp56UqKRAwnMrPggtUXy6ZjeyJhJZ7oR/3278ZcjdZP5BwhaR65N1+xWUhH4ZtYdBPvFxHgFEUunovGIUjG9ftp6jnJVzWLw2z0ES5/8zSfz2DiliaLj7pSsQG1IHaPApJhY=
+	t=1761920722; cv=none; b=vAT+8FIQco7P69Ma6rdF4FqpuqpKqkzpHSmAh858Daf3bjujQ+h2o59KjnCEIl0RRe0gKg6u0o1oGIOd7htLEJ8GuGsKB33ykKmB4MRADOFuyDAloZ/wECq5w+ElyqJC/enzVEZ3SsJr1qlQMLcGGUeyB+Zj5j1mwTesg+LYETE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761920705; c=relaxed/simple;
-	bh=+dR8LqYFVT19rB3T1VlHprmvJN/ZY1eeJ5SNnvu+yHE=;
-	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=WHwl//oO/VJqvmlDhjbNeHb/d/rBizoz5CzdVax08u3rQWHhIYjxb6BqdIODSUiyB0wkuSO06rtB203x+OCxoCZsYFuVqdneXJeCrCn8kiTvn5qn2g5X8DwTdnEsZlgVr3vWENJtECaa+vFrLPFG2iduPuNtbUmjiQXLskiknGI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=infotecs.ru; spf=pass smtp.mailfrom=infotecs.ru; dkim=pass (1024-bit key) header.d=infotecs.ru header.i=@infotecs.ru header.b=X3hIl6qF; arc=none smtp.client-ip=91.244.183.115
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=infotecs.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infotecs.ru
-Received: from mx0.infotecs-nt (localhost [127.0.0.1])
-	by mx0.infotecs.ru (Postfix) with ESMTP id 6AA3610F3583;
-	Fri, 31 Oct 2025 17:24:50 +0300 (MSK)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx0.infotecs.ru 6AA3610F3583
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=infotecs.ru; s=mx;
-	t=1761920690; bh=pGzQ6kimm+/DeoMRD1FTfHpDg0coh7GojPD7fvrvnAk=;
-	h=From:To:CC:Subject:Date:From;
-	b=X3hIl6qFE3RVLlHyk4WYo5B4cXO7EWXBalK5mKt3GkVKqi/jOvaDY7WO6MotWZ08K
-	 uJEAY1P2tf7Q2MPqtNIUDkVQ1uuyq+GhV+uiAorR+lq092P/d2WGddnX4c6pii5mjV
-	 Vw/zRBUvfZzOUqpkeNn2pjuMJ40wrnmIpg60LNIA=
-Received: from msk-exch-02.infotecs-nt (msk-exch-02.infotecs-nt [10.0.7.192])
-	by mx0.infotecs-nt (Postfix) with ESMTP id 680D931057D4;
-	Fri, 31 Oct 2025 17:24:50 +0300 (MSK)
-From: Ilia Gavrilov <Ilia.Gavrilov@infotecs.ru>
-To: Linus Walleij <linus.walleij@linaro.org>
-CC: Bartosz Golaszewski <brgl@bgdev.pl>, Andy Shevchenko
-	<andriy.shevchenko@linux.intel.com>, "linux-gpio@vger.kernel.org"
-	<linux-gpio@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "lvc-project@linuxtesting.org"
-	<lvc-project@linuxtesting.org>,
-	"syzbot+b95d0c98f01e7a95da72@syzkaller.appspotmail.com"
-	<syzbot+b95d0c98f01e7a95da72@syzkaller.appspotmail.com>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: [PATCH] gpiolib: Fix a null-ptr-deref in gpiolib_seq_stop()
-Thread-Topic: [PATCH] gpiolib: Fix a null-ptr-deref in gpiolib_seq_stop()
-Thread-Index: AQHcSnIdMP+aip/9Pkix0VizLaSbyg==
-Date: Fri, 31 Oct 2025 14:24:50 +0000
-Message-ID: <20251031142449.1969807-1-Ilia.Gavrilov@infotecs.ru>
-Accept-Language: ru-RU, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-exclaimer-md-config: 208ac3cd-1ed4-4982-a353-bdefac89ac0a
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1761920722; c=relaxed/simple;
+	bh=5L76j+zuXHG1MHBpIZXuVQSIaQJX7GuLY5HJ6kmV/ko=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dkq15k9Mx79czP5cVHTd62UWh7vDi3a7Jdw8hlyY6k8fR9xgvqKNiXpEvMN6Bzml32nbc+T9s7H+JOcvKAgIQCFySynHyYZXbSvNwDqxhcJhjBz4fHOYnu9WcJEweBeDoGPoWv0csboELeruVIjc9IIgEc4YX5c82wPu3uBH6WM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu; spf=fail smtp.mailfrom=g.harvard.edu; dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b=EPfpt8ex; arc=none smtp.client-ip=209.85.219.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=g.harvard.edu
+Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-880438a762cso858526d6.1
+        for <stable@vger.kernel.org>; Fri, 31 Oct 2025 07:25:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=rowland.harvard.edu; s=google; t=1761920720; x=1762525520; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Ts+XWgu1bIuF9gioKC8vzQc4NBdSlbXvz8mnrqcOtY8=;
+        b=EPfpt8exaA/Bhwi+BUdvTAlmpUbJNWpxf13J70ussVRTkwzUSuj+1n/zGwt8YGhjmj
+         eNdL3kPy3nlqfaiBoNTm24NYPOBFnvFaSvd79NbEaBx2e0Ax/U5Wi5qX9mjPgOyVGEme
+         jSZR6TGqoE7FbFn9bJZSKg8y/KHK3usCLA9OPk4RXLRlDTdQXAvGH5QZwYOh1rm8s5Wo
+         QAj//C1royiSJqNdmQ5iok5QLakMTPBpw2Vqart/aM+f0rpPFdIxe4EGBdrCzDv+evs5
+         ylAHDydDoJ3bLy9mo3Wg+SR5M+gfv43tBzpRjG2KP5bVWiLshZBOVUtgbF+3fKvLkO9e
+         pHuQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761920720; x=1762525520;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Ts+XWgu1bIuF9gioKC8vzQc4NBdSlbXvz8mnrqcOtY8=;
+        b=ABSnHZg6BlYQUB33y/hOhBB8Uyu2XwLRxrbaWE11zvnBsSn9kG9dddVRcWx01DdKp4
+         /rq9rajwdLT5kow8ZVRe819vxWQPc0WpATRkOVxPBj+e4SVKedQrLXrJR0sueWrdYlTd
+         JsdyfM41DvuBByv5wzioPUqHJ5fhk+D7K18bc7S7rdB2bxZi0IQxxeY/kDbtHGyqwBH/
+         PiL7aq/onT6vCb1MhPeXIyPcgz7af4+qTlKQbIA5JaOFo2NZLyPszQYTz9EvkIXsm6+E
+         WCoR8Tlq0OkaVMlpchfVbBoKO3BOp5x7fSNn53bws2b8pOYrK9hLwk6xySwGJ3Ct8LjT
+         2BAg==
+X-Forwarded-Encrypted: i=1; AJvYcCVccil0urlor4d8BGf4Fm/n1Zs+5KvPhltEHyfySHdYA3GVA7qB7CjND59RP2hqDbr5Uqbnfi8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz7dP/bN3qEz08K1aK96fo0ChQxTLxHxGOGeEkkecr+2fccUlI0
+	7XyyhYiQgUeTUuueBu9EAjgGcF03gqmZhsWwxs5B+N2Y8UZKFxNrxJeATx5IXIDI9Q==
+X-Gm-Gg: ASbGncsi5GUlgOJa+kBHTye06d/dPdMRXygTz6i8Lkjx4zYVgRJCnf7CNDAIzGkmQBo
+	e61m6AyvoYT93iijKfHaEAyRCL0qgUvvg/MutV/cCRvNshll3uh0nucJT2lWQr/MSo/VNCBEmzD
+	OlG9ICzMGjQqB1AkDGBe6gd/5uBQ2jo+T00+NWhXI5zYHcaXj+oWUcnfCUDbUSrwFG5lPbsuK2F
+	gE6BMoLFQBb3Ee0lR15q7GtD2cCaATyiIMlktBIcdjUDzPoOyQBx7BVXu4AkXIv7paCsP34NjAH
+	a/qR4SzoWmDv/N2xEB4arNfRZ1KiKWDB3/UPvitNSfwgxT590izHGsXMTVH6+0tmPAUUFQrEiKE
+	4y7TB7uXYiqGgRXyVhf95pOykQLGyKGwiZxgdw9DQGwT01PQ4qCe9ItBmnBRoqKmYBpuqY1A482
+	4nY5na0SJ3qTUn
+X-Google-Smtp-Source: AGHT+IF6emX81maeXlXvNR7Q+/JX5uqsOM8FgN5qPjqjUpWdjdqPZE4LA+SysAtKbX+FH1pFta/gMw==
+X-Received: by 2002:a05:6214:29c5:b0:87f:9f18:49ba with SMTP id 6a1803df08f44-8802f2746d3mr38802496d6.13.1761920719781;
+        Fri, 31 Oct 2025 07:25:19 -0700 (PDT)
+Received: from rowland.harvard.edu ([2601:19b:d03:1700::db9a])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-88036070868sm12264306d6.24.2025.10.31.07.25.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 31 Oct 2025 07:25:19 -0700 (PDT)
+Date: Fri, 31 Oct 2025 10:25:16 -0400
+From: Alan Stern <stern@rowland.harvard.edu>
+To: Desnes Nunes <desnesn@redhat.com>
+Cc: linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
+	gregkh@linuxfoundation.org, stable@vger.kernel.org
+Subject: Re: [PATCH v3] usb: storage: Fix memory leak in USB bulk transport
+Message-ID: <697fe35e-a3c2-47e2-891b-c25861c95dfb@rowland.harvard.edu>
+References: <20251031043436.55929-1-desnesn@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-KLMS-Rule-ID: 5
-X-KLMS-Message-Action: clean
-X-KLMS-AntiSpam-Status: not scanned, disabled by settings
-X-KLMS-AntiSpam-Interceptor-Info: not scanned
-X-KLMS-AntiPhishing: Clean, bases: 2025/10/31 13:36:00
-X-KLMS-AntiVirus: Kaspersky Security for Linux Mail Server, version 8.0.3.30, bases: 2025/10/31 11:38:00 #27817028
-X-KLMS-AntiVirus-Status: Clean, skipped
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251031043436.55929-1-desnesn@redhat.com>
 
-Syzkaller reports a null-ptr-deref in gpiolib_seq_stop() [1]
+On Fri, Oct 31, 2025 at 01:34:36AM -0300, Desnes Nunes wrote:
+> A kernel memory leak was identified by the 'ioctl_sg01' test from Linux
+> Test Project (LTP). The following bytes were mainly observed: 0x53425355.
+> 
+> When USB storage devices incorrectly skip the data phase with status data,
+> the code extracts/validates the CSW from the sg buffer, but fails to clear
+> it afterwards. This leaves status protocol data in srb's transfer buffer,
+> such as the US_BULK_CS_SIGN 'USBS' signature observed here. Thus, this can
+> lead to USB protocols leaks to user space through SCSI generic (/dev/sg*)
+> interfaces, such as the one seen here when the LTP test requested 512 KiB.
+> 
+> Fix the leak by zeroing the CSW data in srb's transfer buffer immediately
+> after the validation of devices that skip data phase.
+> 
+> Note: Differently from CVE-2018-1000204, which fixed a big leak by zero-
+> ing pages at allocation time, this leak occurs after allocation, when USB
+> protocol data is written to already-allocated sg pages.
+> 
+> Fixes: a45b599ad808 ("scsi: sg: allocate with __GFP_ZERO in sg_build_indirect()")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Desnes Nunes <desnesn@redhat.com>
+> ---
 
-If the memory allocation for priv variable in gpiolib_seq_start() fails,
-then s->private remains uninitialized, which leads to a null pointer
-dereference to s->private in gpiolib_seq_stop().
+Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
 
-[1]
-Oops: general protection fault, probably for non-canonical address 0xdffffc=
-0000000000: 0000 [#1] PREEMPT SMP KASAN PTI
-KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
-CPU: 1 UID: 0 PID: 10120 Comm: gpio_seq_stop Not tainted 6.12.53 #4
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.2-debian-1=
-.16.2-1 04/01/2014
-RIP: 0010:gpiolib_seq_stop+0x4c/0xd0
-Code: 48 c1 ea 03 80 3c 02 00 0f 85 95 00 00 00 48 8b 9b e0 00 00 00 48 b8 =
-00 00 00 00 00 fc ff df 48 8d 7b 04 48 89 fa 48 c1 ea 03 <0f> b6 14 02 48 8=
-9 f8 83 e0 07 83 c0 03 38 d0 7c 04 84 d2 75 5d 8b
-RSP: 0018:ffffc90019f2fad8 EFLAGS: 00010247
-RAX: dffffc0000000000 RBX: 0000000000000000 RCX: 0000000000000400
-RDX: 0000000000000000 RSI: ffffffff84c57bfe RDI: 0000000000000004
-RBP: 0000000000000000 R08: 0000000000000dc0 R09: 00000000ffffffff
-R10: ffffffff8e3865b3 R11: 0000000000000001 R12: 0000000000000000
-R13: ffffffff8bd9da80 R14: 0000000000010000 R15: 0000000000000000
-FS:  00007fb9a07cf6c0(0000) GS:ffff888131600000(0000) knlGS:000000000000000=
-0
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00000000004c2018 CR3: 00000000264c6000 CR4: 00000000000006f0
-Call Trace:
- <TASK>
- seq_read_iter+0x610/0x1290
- seq_read+0x3a4/0x570
- ? __pfx_seq_read+0x10/0x10
- full_proxy_read+0x12a/0x1a0
- ? __pfx_full_proxy_read+0x10/0x10
- vfs_read+0x1e2/0xcf0
- ? __fget_files+0x23a/0x3f0
- ? __pfx_lock_release+0x10/0x10
- ? fdget_pos+0x24c/0x360
- ? __pfx_vfs_read+0x10/0x10
- ? __pfx___mutex_lock+0x10/0x10
- ? __fget_files+0x244/0x3f0
- ksys_read+0x12f/0x260
- ? __pfx_ksys_read+0x10/0x10
- do_syscall_64+0xcd/0x230
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Found by InfoTeCS on behalf of Linux Verification Center
-(linuxtesting.org) with Syzkaller
-
-Fixes: e348544f7994 ("gpio: protect the list of GPIO devices with SRCU")
-Reported-by: syzbot+b95d0c98f01e7a95da72@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=3Db95d0c98f01e7a95da72
-Cc: stable@vger.kernel.org # 6.9+
-Signed-off-by: Ilia Gavrilov <Ilia.Gavrilov@infotecs.ru>
----
- drivers/gpio/gpiolib.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
-index 9952e412da50..13cf9f4bdc6d 100644
---- a/drivers/gpio/gpiolib.c
-+++ b/drivers/gpio/gpiolib.c
-@@ -5298,7 +5298,7 @@ static void *gpiolib_seq_start(struct seq_file *s, lo=
-ff_t *pos)
-=20
- 	priv =3D kzalloc(sizeof(*priv), GFP_KERNEL);
- 	if (!priv)
--		return NULL;
-+		return ERR_PTR(-ENOMEM);
-=20
- 	s->private =3D priv;
- 	if (*pos > 0)
-@@ -5331,8 +5331,11 @@ static void gpiolib_seq_stop(struct seq_file *s, voi=
-d *v)
- {
- 	struct gpiolib_seq_priv *priv =3D s->private;
-=20
--	srcu_read_unlock(&gpio_devices_srcu, priv->idx);
--	kfree(priv);
-+	if (!IS_ERR(v)) {
-+		srcu_read_unlock(&gpio_devices_srcu, priv->idx);
-+		kfree(priv);
-+	}
-+	s->private =3D NULL;
- }
-=20
- static int gpiolib_seq_show(struct seq_file *s, void *v)
---=20
-2.39.5
+> V2->V3: Changed memset to use sizeof(buf) and added a comment about the leak
+> V1->V2: Used the same code style found on usb_stor_Bulk_transport()
+> 
+>  drivers/usb/storage/transport.c | 16 ++++++++++++++++
+>  1 file changed, 16 insertions(+)
+> 
+> diff --git a/drivers/usb/storage/transport.c b/drivers/usb/storage/transport.c
+> index 1aa1bd26c81f..9a4bf86e7b6a 100644
+> --- a/drivers/usb/storage/transport.c
+> +++ b/drivers/usb/storage/transport.c
+> @@ -1200,7 +1200,23 @@ int usb_stor_Bulk_transport(struct scsi_cmnd *srb, struct us_data *us)
+>  						US_BULK_CS_WRAP_LEN &&
+>  					bcs->Signature ==
+>  						cpu_to_le32(US_BULK_CS_SIGN)) {
+> +				unsigned char buf[US_BULK_CS_WRAP_LEN];
+> +
+>  				usb_stor_dbg(us, "Device skipped data phase\n");
+> +
+> +				/*
+> +				 * Devices skipping data phase might leave CSW data in srb's
+> +				 * transfer buffer. Zero it to prevent USB protocol leakage.
+> +				 */
+> +				sg = NULL;
+> +				offset = 0;
+> +				memset(buf, 0, sizeof(buf));
+> +				if (usb_stor_access_xfer_buf(buf,
+> +						US_BULK_CS_WRAP_LEN, srb, &sg,
+> +						&offset, TO_XFER_BUF) !=
+> +							US_BULK_CS_WRAP_LEN)
+> +					usb_stor_dbg(us, "Failed to clear CSW data\n");
+> +
+>  				scsi_set_resid(srb, transfer_length);
+>  				goto skipped_data_phase;
+>  			}
+> -- 
+> 2.51.0
+> 
 
