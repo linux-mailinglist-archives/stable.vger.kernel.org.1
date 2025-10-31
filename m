@@ -1,183 +1,139 @@
-Return-Path: <stable+bounces-191965-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191966-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72F19C270BE
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 22:30:53 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F0B4C2716E
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 22:59:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id EB780351F95
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 21:30:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 680033AC915
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 21:58:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EA37199939;
-	Fri, 31 Oct 2025 21:30:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41DEF329C7C;
+	Fri, 31 Oct 2025 21:58:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RNAvmuOb"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="NlYYwgd9"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A9DA20FA9C
-	for <stable@vger.kernel.org>; Fri, 31 Oct 2025 21:30:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3C2E303A06;
+	Fri, 31 Oct 2025 21:58:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761946246; cv=none; b=Q1GgnDGUAvESxtethloIfXJ/5Ta9M6UqkTkJU5QckhXg2uWyRZMyJSraf6UBhfJx9gkAS4M8fBkV637c2okKXiWw2Bfk1+Xbk9Kx9wMcFsnmJCs96QQnFlOdO+zeuZ7qcfDOLPgQakBO9wN01Oj2TAK9dY5Jwt9C8yTimzKwd2M=
+	t=1761947931; cv=none; b=MSAcF8BEb/zaDkFfuH/LP5nFnZI+VMRj98axAezz0/URKNfhAG5DayNjOM6VUU6Vae8oilox9f+BvFJa5P85Wg0fEXY54EF+7VT/RfcVX648s52OCKSbTexoWIdRMBUym/FBJiZuIVT3tMOVSW4dr5GFiUuPLY8xAarlHaLJe60=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761946246; c=relaxed/simple;
-	bh=Im012qh0MJpGdvOmFqSrqX4tKOtVONB+M0Go3dalb4g=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=J8at/s9HfM67mgKSzsXkXYjxxP44YfP6rb9Svr2Qf4eGhvgWLo4DOg2UWSCMQVdGR5lnp5YyHoxcXUVhO0et+hjwTYF7Z4KQoud7ExchwWtVgpyyOT2EXm5CIbrbbaUAkdturkXam+k1G8ePak0KfGN8GkspAv9IWl0Lr0YFgW8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RNAvmuOb; arc=none smtp.client-ip=209.85.160.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-4ecae310df8so41480671cf.2
-        for <stable@vger.kernel.org>; Fri, 31 Oct 2025 14:30:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761946243; x=1762551043; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=b+VLevZopoUL7OM8jNtLvOs6kVfhg97XSSemrzsfRdw=;
-        b=RNAvmuObanwUoZ9eSQWdxwxdIOBCUaqrOkmLnjnYelOVQe3xL78dev8WyH60JIsZC3
-         n9/AS9/l+IeR2yW7309XwLJvmiWsUtjGfoJE4tJSs6qSUWy9u/hUEFHGhuUsLEYHALwA
-         rubu3mcxOmsYlcT7AUYQAk0BKqGPXbMwuqzFddgLrqdyCyE5AidKT1iD5Q3WNBSOODTC
-         yc9cQNQ92CTeOVoIFaKLSe8OJI3yQg6GXg3ykReaCwfrDSVZyGsbyCVCDlv/ZDmywI/t
-         j9YruDEGdsk41YCeyWs84K8PKReigtsLzQAZsDxFNz7njcrKkvb4yodJ7nbUPP61HBHF
-         ifPA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761946243; x=1762551043;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=b+VLevZopoUL7OM8jNtLvOs6kVfhg97XSSemrzsfRdw=;
-        b=dBjMiHe/brevfX504+ASjdSZ5TY4p3Xen2m2ZM/G9oskIvilCe2/sU7Q1tQ6npMmng
-         TKik6yRwYFg0GRA3Tk78h2cpo78jLcq7gX3EP0fkKwGNBljRv6U8lcidb3+R84Rx6ZfK
-         tZ23wJrKH7E6qiubl0EcEFvdKVGCq4cm1+9JfVmeKI6ijyKOCoTvZYEDrqqfT9nMx2ef
-         wA7G+F021p2XEVnPGntZTtbsZQ9PSekAg/C8v1LPwMX1Qu7ZJbI1toiz9jRe5o2JUtqI
-         AetZZO1P3rNVjHbSGaujCz0C8tO6JeHvUe1P0NFM0+KnoSrsnPGonWA76fFG7rKJ9CNP
-         MbOw==
-X-Forwarded-Encrypted: i=1; AJvYcCXhp8wXH8XqIEXa175zfofTJ5gDs2kgKuwEe8w0MBXMnV4ctewZ3CXOm2biAyhoY1qx7/4q1qI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxC1cOJQa4Ggn7vaoXrGJQznxBIrbPQz/9fSNImze+c/TbqBmUk
-	vGIWFCkTFk5GWeJ2lEk4pSsfkNzSMxEdrw3m1/LmMaBQLf96Yo26dSEjUqMBLA9mjlIDnjNRtbF
-	H8vVk0yh4BEWjsAZCy4hCCnCtx64RYrkQI/b817k=
-X-Gm-Gg: ASbGncsrEaf+t32Nc8SaDlqG7CDZwQyOpk9T9/lIoeLXb7DUuPZ91lSEYb532vsuJ5W
-	I5ttbBXGzfBFn4CLBFrNTD1xBYFBYoOFeLLD/4h1nVGr/gTcmxn6orhtCydUaBOx+59VR6xOF79
-	ymbkWkTfh8FY5GVjAj7qOTezH/rc2Xd+q10fen95Z6MnFexPh07h8HpnXDYeXLv92dyXQMpmX+Y
-	37OoB+O3PdNNH1p+J2Bp+8ZY2q/o2suuUslPdM2khAxmM7S7YDLVUQST9xWXL7iejNJNoIj1tgG
-	EFpbuIiXcDqBuiOZDx+b7U7tA8VEX5NQ
-X-Google-Smtp-Source: AGHT+IGvpEcWAnufdVYjZrrJ/UQ22AI+c6oLcylk17vxXoDSf4VBfQSh8K/B1zqUDh7Etogh2HSPZZeo34lvnenc1BE=
-X-Received: by 2002:a05:622a:1c12:b0:4d0:ac40:fab8 with SMTP id
- d75a77b69052e-4ed30d9286emr57909831cf.7.1761946243394; Fri, 31 Oct 2025
- 14:30:43 -0700 (PDT)
+	s=arc-20240116; t=1761947931; c=relaxed/simple;
+	bh=/cvZzBpFeVRkAE4Xx16DRajzLv/fquS5fXtcC3cFVUQ=;
+	h=Date:To:From:Subject:Message-Id; b=MBRIb9brM8zYCVcrxunn5DG1bTpr5B22w86gFx7rJ/0YS1ajqZKGDArHbXvTbEa7Etf7LTUxg2fQlA6TfTUHUO/5ZQSViE6UE/3pt60WSoCJ+jKZ/rKcfxlRTUSSFEJJFlh2f+ttjicxprqylhScem40HMpp4eDVOD+npdZ2raM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=NlYYwgd9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 840A6C4CEE7;
+	Fri, 31 Oct 2025 21:58:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1761947930;
+	bh=/cvZzBpFeVRkAE4Xx16DRajzLv/fquS5fXtcC3cFVUQ=;
+	h=Date:To:From:Subject:From;
+	b=NlYYwgd9gCmXZ/IJ5pXlbTiLq0FFnWKi+bW6N1mJUvnKYV//4soFB6lsJe2zdXDh9
+	 tpbLfa7ERpRDFA4KgEV6Gtjl2LW1jm64/aLGX5VXfLFAPJyw21883oPCwY28IiwauZ
+	 qjCyvh1ZaS3JmxIkAMcbHqeYghDLHaP4DY4B0H3Y=
+Date: Fri, 31 Oct 2025 14:58:49 -0700
+To: mm-commits@vger.kernel.org,willy@infradead.org,stable@vger.kernel.org,rppt@kernel.org,lorenzo.stoakes@oracle.com,david@redhat.com,big-sleep-vuln-reports@google.com,lance.yang@linux.dev,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-secretmem-fix-use-after-free-race-in-fault-handler.patch added to mm-hotfixes-unstable branch
+Message-Id: <20251031215850.840A6C4CEE7@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20251021-io-uring-fixes-copy-finish-v1-0-913ecf8aa945@ddn.com> <20251021-io-uring-fixes-copy-finish-v1-1-913ecf8aa945@ddn.com>
-In-Reply-To: <20251021-io-uring-fixes-copy-finish-v1-1-913ecf8aa945@ddn.com>
-From: Joanne Koong <joannelkoong@gmail.com>
-Date: Fri, 31 Oct 2025 14:30:32 -0700
-X-Gm-Features: AWmQ_bm2YRQTdTVsTJrVAWrmh292bBnOj8X2Yok5D4Ru31Xl7iFLnCGSslMae5w
-Message-ID: <CAJnrk1aOsh-mFuueX0y=wvzvzF=MghNaLr85y+odToPB2pustg@mail.gmail.com>
-Subject: Re: [PATCH 1/2] fuse: missing copy_finish in fuse-over-io-uring
- argument copies
-To: Bernd Schubert <bschubert@ddn.com>
-Cc: Miklos Szeredi <miklos@szeredi.hu>, Luis Henriques <luis@igalia.com>, 
-	Miklos Szeredi <mszeredi@redhat.com>, linux-fsdevel@vger.kernel.org, 
-	Cheng Ding <cding@ddn.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Tue, Oct 21, 2025 at 1:46=E2=80=AFPM Bernd Schubert <bschubert@ddn.com> =
-wrote:
->
-> From: Cheng Ding <cding@ddn.com>
->
-> Fix a possible reference count leak of payload pages during
-> fuse argument copies.
->
-> Fixes: c090c8abae4b ("fuse: Add io-uring sqe commit and fetch support")
-> Cc: <stable@vger.kernel.org> # v6.14
-> Signed-off-by: Cheng Ding <cding@ddn.com>
-> Signed-off-by: Bernd Schubert <bschubert@ddn.com>
-> ---
->  fs/fuse/dev.c        |  2 +-
->  fs/fuse/dev_uring.c  | 12 +++++++++---
->  fs/fuse/fuse_dev_i.h |  1 +
->  3 files changed, 11 insertions(+), 4 deletions(-)
->
-> diff --git a/fs/fuse/dev.c b/fs/fuse/dev.c
-> index 132f38619d70720ce74eedc002a7b8f31e760a61..49b18d7accb39927e49bc3814=
-ad2c3e51db84bb4 100644
-> --- a/fs/fuse/dev.c
-> +++ b/fs/fuse/dev.c
-> @@ -846,7 +846,7 @@ void fuse_copy_init(struct fuse_copy_state *cs, bool =
-write,
->  }
->
->  /* Unmap and put previous page of userspace buffer */
-> -static void fuse_copy_finish(struct fuse_copy_state *cs)
-> +void fuse_copy_finish(struct fuse_copy_state *cs)
->  {
->         if (cs->currbuf) {
->                 struct pipe_buffer *buf =3D cs->currbuf;
-> diff --git a/fs/fuse/dev_uring.c b/fs/fuse/dev_uring.c
-> index f6b12aebb8bbe7d255980593b75b5fb5af9c669e..3721c2d91627f5438b6997df3=
-de63734704e56ff 100644
-> --- a/fs/fuse/dev_uring.c
-> +++ b/fs/fuse/dev_uring.c
-> @@ -598,7 +598,9 @@ static int fuse_uring_copy_from_ring(struct fuse_ring=
- *ring,
->         cs.is_uring =3D true;
->         cs.req =3D req;
->
-> -       return fuse_copy_out_args(&cs, args, ring_in_out.payload_sz);
-> +       err =3D fuse_copy_out_args(&cs, args, ring_in_out.payload_sz);
-> +       fuse_copy_finish(&cs);
-> +       return err;
->  }
->
->   /*
-> @@ -651,13 +653,17 @@ static int fuse_uring_args_to_ring(struct fuse_ring=
- *ring, struct fuse_req *req,
->                              (struct fuse_arg *)in_args, 0);
->         if (err) {
->                 pr_info_ratelimited("%s fuse_copy_args failed\n", __func_=
-_);
-> -               return err;
-> +               goto copy_finish;
->         }
->
->         ent_in_out.payload_sz =3D cs.ring.copied_sz;
->         err =3D copy_to_user(&ent->headers->ring_ent_in_out, &ent_in_out,
->                            sizeof(ent_in_out));
-> -       return err ? -EFAULT : 0;
-> +       if (err)
-> +               err =3D -EFAULT;
-> +copy_finish:
-> +       fuse_copy_finish(&cs);
-> +       return err;
->  }
 
-nit: this could just be
+The patch titled
+     Subject: mm/secretmem: fix use-after-free race in fault handler
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-secretmem-fix-use-after-free-race-in-fault-handler.patch
 
---- a/fs/fuse/dev_uring.c
-+++ b/fs/fuse/dev_uring.c
-@@ -649,6 +649,7 @@ static int fuse_uring_args_to_ring(struct
-fuse_ring *ring, struct fuse_req *req,
-        /* copy the payload */
-        err =3D fuse_copy_args(&cs, num_args, args->in_pages,
-                             (struct fuse_arg *)in_args, 0);
-+       fuse_copy_finish(&cs);
-        if (err) {
-                pr_info_ratelimited("%s fuse_copy_args failed\n", __func__)=
-;
-                return err;
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-secretmem-fix-use-after-free-race-in-fault-handler.patch
 
->
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-Reviewed-by: Joanne Koong <joannelkoong@gmail.com>
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Lance Yang <lance.yang@linux.dev>
+Subject: mm/secretmem: fix use-after-free race in fault handler
+Date: Fri, 31 Oct 2025 20:09:55 +0800
+
+When a page fault occurs in a secret memory file created with
+`memfd_secret(2)`, the kernel will allocate a new folio for it, mark the
+underlying page as not-present in the direct map, and add it to the file
+mapping.
+
+If two tasks cause a fault in the same page concurrently, both could end
+up allocating a folio and removing the page from the direct map, but only
+one would succeed in adding the folio to the file mapping.  The task that
+failed undoes the effects of its attempt by (a) freeing the folio again
+and (b) putting the page back into the direct map.  However, by doing
+these two operations in this order, the page becomes available to the
+allocator again before it is placed back in the direct mapping.
+
+If another task attempts to allocate the page between (a) and (b), and the
+kernel tries to access it via the direct map, it would result in a
+supervisor not-present page fault.
+
+Fix the ordering to restore the direct map before the folio is freed.
+
+Link: https://lkml.kernel.org/r/20251031120955.92116-1-lance.yang@linux.dev
+Fixes: 1507f51255c9 ("mm: introduce memfd_secret system call to create "secret" memory areas")
+Signed-off-by: Lance Yang <lance.yang@linux.dev>
+Reported-by: Google Big Sleep <big-sleep-vuln-reports@google.com>
+Closes: https://lore.kernel.org/linux-mm/CAEXGt5QeDpiHTu3K9tvjUTPqo+d-=wuCNYPa+6sWKrdQJ-ATdg@mail.gmail.com/
+Acked-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/secretmem.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+--- a/mm/secretmem.c~mm-secretmem-fix-use-after-free-race-in-fault-handler
++++ a/mm/secretmem.c
+@@ -82,13 +82,13 @@ retry:
+ 		__folio_mark_uptodate(folio);
+ 		err = filemap_add_folio(mapping, folio, offset, gfp);
+ 		if (unlikely(err)) {
+-			folio_put(folio);
+ 			/*
+ 			 * If a split of large page was required, it
+ 			 * already happened when we marked the page invalid
+ 			 * which guarantees that this call won't fail
+ 			 */
+ 			set_direct_map_default_noflush(folio_page(folio, 0));
++			folio_put(folio);
+ 			if (err == -EEXIST)
+ 				goto retry;
+ 
+_
+
+Patches currently in -mm which might be from lance.yang@linux.dev are
+
+mm-secretmem-fix-use-after-free-race-in-fault-handler.patch
+mm-khugepaged-guard-is_zero_pfn-calls-with-pte_present.patch
+
 
