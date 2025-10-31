@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-191885-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191911-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C276C257E8
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 15:14:15 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 472C9C25781
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 15:09:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 59CDF56146C
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 14:05:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 11FDD563FEF
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 14:06:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5621258ED1;
-	Fri, 31 Oct 2025 14:04:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4844A25DAEA;
+	Fri, 31 Oct 2025 14:06:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XzvkJt83"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ul3H+7ZQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 718361F37D4;
-	Fri, 31 Oct 2025 14:04:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04B6225A2CF;
+	Fri, 31 Oct 2025 14:06:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761919497; cv=none; b=KMXXX6s+psaA59T4jaq4msfrRckHFpWMoDgKvsvAUwrZOJuCqGCYnpT0sOsq6amYATCQ2uXy+rDrUIL/jnnPS9ScrJMTb53NWbdi7v6SgVxVEeLd0sRpC4McuNjEPD0mSjRKD34fkZa62WRG9fIDzdLoEjMcG6Dec9B2faKfkl4=
+	t=1761919574; cv=none; b=Nf7Pg1aGg/pn0nWzwq4ZJFsSp9chtQpBoV6ts+hEzNP3XcLjMMLRe8OS67E5NsDd+fSHXr1/N40bU4u8qY7V0POKeIlE1L4sQYdKTGfUf9FCJPXYa4R6kVaFSBoESHhPeInwkE6j5KRd0z/9VNqxRGUFZG/RGdy0BZe8ia0thQM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761919497; c=relaxed/simple;
-	bh=qqmO42GeU6RjJbuGwmcprSxhTnASJC508P1rjINaFio=;
+	s=arc-20240116; t=1761919574; c=relaxed/simple;
+	bh=mHAM/94tQxAzMvI5x54IhoChMMq1x6bMdLL9et1kk70=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LYtGJgHp7e1UKEWBb5OS2jV0FmY7RAm8TZJo2UUxv+l6PVjuG2vJT4KbBDXsjQTGbyPKOXuYR3SKZOzAkYIgMDBa0x5jkxSX1N6bVmwW6hjpy31mDPOTpBvYK4q+uOQTYyFU41W2Hponzjr5xKtjznASjgd2SpLJ3uh73elQWJw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XzvkJt83; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7755C4CEF8;
-	Fri, 31 Oct 2025 14:04:56 +0000 (UTC)
+	 MIME-Version; b=GAiCB/wAEcr96no4A3V9wKkSGaJIGaCkXk9Wd38/Ip33StmE+k5RKmU7P63jykS1VpXFrN67lGZha76a0tjrIb0Y85Tg8vF3WhiJsSjrlMabGQjsA+HmKncMSd3QPoSN7XLVcrS5NqNsWXi196wALoASb5uWErLG33GFj3kU1/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ul3H+7ZQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DCAEC4CEE7;
+	Fri, 31 Oct 2025 14:06:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761919497;
-	bh=qqmO42GeU6RjJbuGwmcprSxhTnASJC508P1rjINaFio=;
+	s=korg; t=1761919573;
+	bh=mHAM/94tQxAzMvI5x54IhoChMMq1x6bMdLL9et1kk70=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XzvkJt83F447azBklL52eywL3KUxLmbER+n/yH1nGS5Y+VaoAisn7Vkvih4Cahf/f
-	 7OnDBROcY8cOYAaV9fTb/BveQxyn3MdmmtZDvqNj0wObenlkXqv7dcHMKZkgxkbNmK
-	 wowU0mGvpl9Mg33bTCG5q0pkUBYmkKkI0Hyjmg7A=
+	b=ul3H+7ZQ5ERYZYuihfeM0hsK9KGXOZnm5KmeTW6CanG53R5PDAlP19H34P7sFfJ0F
+	 vhySeSTi4yfG0pVBBHpbS40k95WUX6xQT5rIRsu34WJ0R3/JmSJGc5qr3PeMZ6qeIL
+	 aC67K/AcmUPSN6bPKaECnNOc0jDRB38kswChBz8s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aditya Kumar Singh <quic_adisi@quicinc.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
-	Kalle Valo <kvalo@kernel.org>,
-	Amelia Crate <acrate@waldn.net>
-Subject: [PATCH 6.12 38/40] wifi: ath12k: fix read pointer after free in ath12k_mac_assign_vif_to_vdev()
+	Chen Ridong <chenridong@huawei.com>,
+	Waiman Long <longman@redhat.com>,
+	Tejun Heo <tj@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.17 23/35] cpuset: Use new excpus for nocpu error check when enabling root partition
 Date: Fri, 31 Oct 2025 15:01:31 +0100
-Message-ID: <20251031140044.945054780@linuxfoundation.org>
+Message-ID: <20251031140044.124653801@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251031140043.939381518@linuxfoundation.org>
-References: <20251031140043.939381518@linuxfoundation.org>
+In-Reply-To: <20251031140043.564670400@linuxfoundation.org>
+References: <20251031140043.564670400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aditya Kumar Singh <quic_adisi@quicinc.com>
+From: Chen Ridong <chenridong@huawei.com>
 
-[ Upstream commit 5a10971c7645a95f5d5dc23c26fbac4bf61801d0 ]
+[ Upstream commit 59d5de3655698679ad8fd2cc82228de4679c4263 ]
 
-In ath12k_mac_assign_vif_to_vdev(), if arvif is created on a different
-radio, it gets deleted from that radio through a call to
-ath12k_mac_unassign_link_vif(). This action frees the arvif pointer.
-Subsequently, there is a check involving arvif, which will result in a
-read-after-free scenario.
+A previous patch fixed a bug where new_prs should be assigned before
+checking housekeeping conflicts. This patch addresses another potential
+issue: the nocpu error check currently uses the xcpus which is not updated.
+Although no issue has been observed so far, the check should be performed
+using the new effective exclusive cpus.
 
-Fix this by moving this check after arvif is again assigned via call to
-ath12k_mac_assign_link_vif().
+The comment has been removed because the function returns an error if
+nocpu checking fails, which is unrelated to the parent.
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
-
-Closes: https://scan5.scan.coverity.com/#/project-view/63541/10063?selectedIssue=1636423
-Fixes: b5068bc9180d ("wifi: ath12k: Cache vdev configs before vdev create")
-Signed-off-by: Aditya Kumar Singh <quic_adisi@quicinc.com>
-Acked-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Acked-by: Kalle Valo <kvalo@kernel.org>
-Link: https://patch.msgid.link/20241210-read_after_free-v1-1-969f69c7d66c@quicinc.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Signed-off-by: Amelia Crate <acrate@waldn.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Chen Ridong <chenridong@huawei.com>
+Reviewed-by: Waiman Long <longman@redhat.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/mac.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ kernel/cgroup/cpuset.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
---- a/drivers/net/wireless/ath/ath12k/mac.c
-+++ b/drivers/net/wireless/ath/ath12k/mac.c
-@@ -6733,15 +6733,15 @@ static struct ath12k *ath12k_mac_assign_
+diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
+index fef93032fe7e4..fd890b34a8403 100644
+--- a/kernel/cgroup/cpuset.c
++++ b/kernel/cgroup/cpuset.c
+@@ -1728,11 +1728,7 @@ static int update_parent_effective_cpumask(struct cpuset *cs, int cmd,
+ 		if (prstate_housekeeping_conflict(new_prs, xcpus))
+ 			return PERR_HKEEPING;
  
- 	mutex_lock(&ar->conf_mutex);
+-		/*
+-		 * A parent can be left with no CPU as long as there is no
+-		 * task directly associated with the parent partition.
+-		 */
+-		if (nocpu)
++		if (tasks_nocpu_error(parent, cs, xcpus))
+ 			return PERR_NOCPUS;
  
--	if (arvif->is_created)
--		goto flush;
--
- 	if (vif->type == NL80211_IFTYPE_AP &&
- 	    ar->num_peers > (ar->max_num_peers - 1)) {
- 		ath12k_warn(ab, "failed to create vdev due to insufficient peer entry resource in firmware\n");
- 		goto unlock;
- 	}
- 
-+	if (arvif->is_created)
-+		goto flush;
-+
- 	if (ar->num_created_vdevs > (TARGET_NUM_VDEVS - 1)) {
- 		ath12k_warn(ab, "failed to create vdev, reached max vdev limit %d\n",
- 			    TARGET_NUM_VDEVS);
+ 		/*
+-- 
+2.51.0
+
 
 
 
