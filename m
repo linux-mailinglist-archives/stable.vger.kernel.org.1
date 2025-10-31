@@ -1,218 +1,166 @@
-Return-Path: <stable+bounces-191952-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191953-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82528C2675E
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 18:46:56 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0556AC2686F
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 19:10:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 622671883B35
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 17:46:24 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 5DA7934E047
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 18:10:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1C13306B0D;
-	Fri, 31 Oct 2025 17:45:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78D133502AA;
+	Fri, 31 Oct 2025 18:10:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Mm/enWZA"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="VGs+GKO8"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f228.google.com (mail-il1-f228.google.com [209.85.166.228])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 456E632ED52
-	for <stable@vger.kernel.org>; Fri, 31 Oct 2025 17:45:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D12BE2FE579
+	for <stable@vger.kernel.org>; Fri, 31 Oct 2025 18:10:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.228
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761932754; cv=none; b=hN2y2iphekME6WaGwJgQK8YJ2EBfxGO7GgctAlHKO0qpe0Pc0cUFHy5eEfmIgJTGfDr/kWwByyrliNTslD1+qNwcAMo9JaMmtSdCttbSRCdrRuLUqR8Jr3pZ4WtjFhNTMcK/eiRkrKf8lDDtaMpElzrUvFO+ix9dFymuhuT1vmk=
+	t=1761934231; cv=none; b=PA3VAzdd5spNmLBe1MMEiJ6enKVwVMKykEOINNpslLBMx3OtD5AjEJ+YbtqTHrux7rv0QQDCigqWE6FDmzp1xa9E3mP2zWl5ce28QpsHa+jHLP6tUVFltGC77WxaTMI52O04vxBCUNEf2h7wDLbNxIDSn5KBZcUyDvdH8fCd230=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761932754; c=relaxed/simple;
-	bh=8Z5thQC+rZDV7YQzns00IgbOSJUd9ppvWPw+j4n6pWM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=hR66jY2PJnBqxmix+RikdyCW5Zqz5nljms8kmPh2jP07L2HVGsTa+HmtOFjk56OhPn1DH2vRARC1Twi7rU0dXTfIjJi5FiUNQDmdJXK4YsuuwFHgcmvwqq2augKh6/3rKxl2ThfgzG1GBA6/E4lGwI1Cel0qvTF0565TNoJH2/8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Mm/enWZA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 373D3C4CEF1
-	for <stable@vger.kernel.org>; Fri, 31 Oct 2025 17:45:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761932753;
-	bh=8Z5thQC+rZDV7YQzns00IgbOSJUd9ppvWPw+j4n6pWM=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=Mm/enWZAWMDexVX/fM2kYROrmhHpBdzm8nbycEeWDHnO8PA6XXIyNOcJjSWX8bZqn
-	 2OdmViUgwKEHTRFYwD5BgZE10XvwxitQi0+ZD61Nzq8aRrVN2lMfT03tG+dKxr1NYQ
-	 K92snLHJa+AlDf0mSJvP6DfsWKAU1JkCDOWJF4f6IdAMKIjiKHTH1OLq/3cbELc3DJ
-	 wvZCVb1xLk7serWJIZ67u1/RPAd2BS9tZe3GOIFRxb/9dGq4FBY/c/d2Sdm4UkrBLG
-	 jF4OR3sbBwvEi1O9WI/OFg/DyDSuQWE5/dryDqJh6Zs3mEygo8hMwQ1rtwsGhBg/iR
-	 /i9CZ8dqZ4bkg==
-Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-786572c14e3so5321687b3.2
-        for <stable@vger.kernel.org>; Fri, 31 Oct 2025 10:45:53 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWXrWnWJc4iNJT3ZKdZv04XQLDEA0T/hr2T6LVUsh7Y1glUzoEcYUA4UPZSdVMojO2c/mHV5VI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx1cjB9VR1ab+XBe5PkhFFK1S02tnCnU/VUQiBPHeVUZm1q6xP8
-	bUuVEpJB/gVYYQlJjOcAJJpmyUmEvZmMT0CbQLvUcNJ4wKvb+BGq9KXcYA7oGs1O+MuWm5Peujb
-	HyEpC8SoODXeX3VGDX4cKhHPy9/WlrR32PlDtWaS+qw==
-X-Google-Smtp-Source: AGHT+IFqrgTBfMBmVRiXWO3Rn5PwN2T0UvwtVFKxReo6CBC7EejYTOkW7+aB0EyRLa858pu/9lZjhalDMoVSb2xP8ow=
-X-Received: by 2002:a05:690c:dd5:b0:785:bfd8:c4c6 with SMTP id
- 00721157ae682-78648526568mr44021407b3.49.1761932752205; Fri, 31 Oct 2025
- 10:45:52 -0700 (PDT)
+	s=arc-20240116; t=1761934231; c=relaxed/simple;
+	bh=a9xIUxH3kQc8g4WoNuUJFjo3JZiZ14L74BIdEuGYacI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=oE4j+bn9Etf6EldpakmofbNGjzdoVSSKI9NVaBzxhs1UJS7ZbgtzyhejwwAKZj0+fFBAvjpxhMtb+XEyo76B36siti6s3iqRDfIYv5Pe8PGbii5WFNZ8+YtvjlTBORkhosEP1KN/2yOp5YpeBjbVtcX3bxMS4olZEXuUBbZzTsA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=VGs+GKO8; arc=none smtp.client-ip=209.85.166.228
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+Received: by mail-il1-f228.google.com with SMTP id e9e14a558f8ab-430d06546d3so21567945ab.3
+        for <stable@vger.kernel.org>; Fri, 31 Oct 2025 11:10:29 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761934229; x=1762539029;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:dkim-signature:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=0aTRxWRn5jXTZmg3iJpHPOm7f9rtaLnt98Sh1XgXqZo=;
+        b=kFJWVxdZjhwWCMvqmMJNJixSaq9dM1rUD8u/qpIndpMDJU/KfCN56kifEgMaUAh5rb
+         ci1aQB6P4bKWKo35sw9jJXa4q1fYgbhfR3obwu99LvPir5Dma9imECFA9alNjtkhFHo3
+         AhqfKSzZYx0nMa4sGnXbU6oUTSS84V+is9rtOCyBvcRas0rCeI/kFNguViwy0syRiLm4
+         lm4Wm1BcdMIrWK7pe682g/Vh+RkfouZi6xP037X5aTxcQs3saQI8aWSoNaWmHHuHnzih
+         c+rbq848Y3nuZDafctCRKYmeqg3/QXFxdjkQ/ZHohVLn9bJshIbUbBJwiGYr/4aaMnx/
+         tO7Q==
+X-Gm-Message-State: AOJu0Yy8ot7F7BXbHOUX2VkSOVvTkeOogcxwrqJByd8HlmXybCxQHvG6
+	7DYCztbt8NREkaJx/Y3fmt3XGt5TEQ0wcsajgXhTCvt5ooSVGTqN64BGAk9CcqEIbo+uAVW8lyd
+	q/5r83cV/637w9Kk9C9DkS5sRV2CrBcnCMn9MMe6Db7ruJFIXEbvi9pOZkvU0j4+eBtIHC1lpcP
+	tqnOMx53nK8eeDEH6WerujOqFckqxBJQUba49aw/1SI3YdQApT0lCWFKMSX3u0W8O5vWrjeN0JW
+	PcwYylNf71h5o1s
+X-Gm-Gg: ASbGncvpz6OF0Ai3uqkriSSmsEGZhsz1VkDGgGA++49KVjxGzWVLFgxQFtKxQmmLcXZ
+	CrRjcVMld6/zVgAZB9VnhUpte86dXp8aXLkm5o/N4O3LBC0ZnCV7juWT3C7FfXvZ2oRLOawbZ2t
+	mP28XZFLjE0W30PpPOvKHk1UqEnk0DGEKpZiaKbCFmPuHGz3+V3m/NCJxmfnv34LXEYo/O/bDm8
+	dKJqP8mjOtIojrGevhWch/NCWpHz1ci82VafwttW+cHCMPM/Kg1pyuX4ryzS3MuxR9HctKk0tjx
+	aP9eUEhj/648qLSucDUda07p0RE6C81U5j4T8voxZXUZ9c9ikqX098crE7xpAbEPSzp9MVtGnHi
+	+Nn6O8RmEoOwkh4GD06jUMQC2d/i3QfcFQJethPv/PH0zKFTHEz76HareQopW5R60kdDqFVNUdH
+	7l2R6KDI6zoMe5NDKbu2muyYQNHQefDTSdATBbNWs=
+X-Google-Smtp-Source: AGHT+IG+qlFtgoytgbQDJ2I62OZqOb5TbIFvRBvD0YsHZiAUPx7/tMId9VgdgA25AEa8JrW97ilt/P+fVUaM
+X-Received: by 2002:a05:6e02:144e:b0:430:a3b0:8458 with SMTP id e9e14a558f8ab-4330d125c22mr73967065ab.3.1761934228756;
+        Fri, 31 Oct 2025 11:10:28 -0700 (PDT)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-19.dlp.protect.broadcom.com. [144.49.247.19])
+        by smtp-relay.gmail.com with ESMTPS id 8926c6da1cb9f-5b6a55c16d2sm221209173.20.2025.10.31.11.10.28
+        for <stable@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Fri, 31 Oct 2025 11:10:28 -0700 (PDT)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-qv1-f72.google.com with SMTP id 6a1803df08f44-8802e9d2a85so32635716d6.2
+        for <stable@vger.kernel.org>; Fri, 31 Oct 2025 11:10:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1761934228; x=1762539028; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=0aTRxWRn5jXTZmg3iJpHPOm7f9rtaLnt98Sh1XgXqZo=;
+        b=VGs+GKO8EwbHAtktIvjYIfn119hiRbI8XnH/nT/H18J1QzahgJdlDWWLasA4OvbcbL
+         OBT84haxhGhb65dSszbLCI+5bgmTN5Zl6Fho32nJxrBxZgdhEnWSzhTraxwC/GtWVUmb
+         IwFpMsnbnDtQsNKGdsWi63ji5XPpCSqv+ELHQ=
+X-Received: by 2002:a05:6214:2688:b0:80e:327d:be66 with SMTP id 6a1803df08f44-8802f46f505mr64085756d6.39.1761934227730;
+        Fri, 31 Oct 2025 11:10:27 -0700 (PDT)
+X-Received: by 2002:a05:6214:2688:b0:80e:327d:be66 with SMTP id 6a1803df08f44-8802f46f505mr64085346d6.39.1761934227324;
+        Fri, 31 Oct 2025 11:10:27 -0700 (PDT)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-88035fdd424sm15354046d6.1.2025.10.31.11.10.24
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 31 Oct 2025 11:10:26 -0700 (PDT)
+Message-ID: <31316499-4007-4211-add8-eb6bab565e0d@broadcom.com>
+Date: Fri, 31 Oct 2025 11:10:23 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251024-swap-clean-after-swap-table-p1-v2-0-c5b0e1092927@tencent.com>
- <20251024-swap-clean-after-swap-table-p1-v2-1-c5b0e1092927@tencent.com>
-In-Reply-To: <20251024-swap-clean-after-swap-table-p1-v2-1-c5b0e1092927@tencent.com>
-From: Chris Li <chrisl@kernel.org>
-Date: Fri, 31 Oct 2025 10:45:40 -0700
-X-Gmail-Original-Message-ID: <CACePvbVEaRzFet1_PcRP32MUcDs9M+5-Ssw04dYbLUCgMygBZw@mail.gmail.com>
-X-Gm-Features: AWmQ_bkBLbpzK-7LQwl8d_11rWtB-YUCktamd5vXceO5ofoa6GX9KxB-9BfXeC4
-Message-ID: <CACePvbVEaRzFet1_PcRP32MUcDs9M+5-Ssw04dYbLUCgMygBZw@mail.gmail.com>
-Subject: Re: [PATCH v2 1/5] mm, swap: do not perform synchronous discard
- during allocation
-To: Kairui Song <ryncsn@gmail.com>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Kairui Song <kasong@tencent.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, David Hildenbrand <david@redhat.com>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Ying Huang <ying.huang@linux.alibaba.com>, 
-	YoungJun Park <youngjun.park@lge.com>, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH stable 6.12] sched/deadline: only set free_cpus for online
+ runqueues
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, Doug Berger <opendmb@gmail.com>,
+ Peter Zijlstra <peterz@infradead.org>, Doug Berger
+ <doug.berger@broadcom.com>, Ingo Molnar <mingo@redhat.com>,
+ Juri Lelli <juri.lelli@redhat.com>,
+ Vincent Guittot <vincent.guittot@linaro.org>,
+ Dietmar Eggemann <dietmar.eggemann@arm.com>,
+ Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>,
+ Mel Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>,
+ "open list:SCHEDULER" <linux-kernel@vger.kernel.org>,
+ Sasha Levin <sashal@kernel.org>, bcm-kernel-feedback-list@broadcom.com
+References: <20251027224351.2893946-1-florian.fainelli@broadcom.com>
+ <20251027224351.2893946-5-florian.fainelli@broadcom.com>
+ <2025103157-effective-bulk-f9f6@gregkh>
+Content-Language: en-US, fr-FR
+From: Florian Fainelli <florian.fainelli@broadcom.com>
+Autocrypt: addr=florian.fainelli@broadcom.com; keydata=
+ xsBNBFPAG8ABCAC3EO02urEwipgbUNJ1r6oI2Vr/+uE389lSEShN2PmL3MVnzhViSAtrYxeT
+ M0Txqn1tOWoIc4QUl6Ggqf5KP6FoRkCrgMMTnUAINsINYXK+3OLe7HjP10h2jDRX4Ajs4Ghs
+ JrZOBru6rH0YrgAhr6O5gG7NE1jhly+EsOa2MpwOiXO4DE/YKZGuVe6Bh87WqmILs9KvnNrQ
+ PcycQnYKTVpqE95d4M824M5cuRB6D1GrYovCsjA9uxo22kPdOoQRAu5gBBn3AdtALFyQj9DQ
+ KQuc39/i/Kt6XLZ/RsBc6qLs+p+JnEuPJngTSfWvzGjpx0nkwCMi4yBb+xk7Hki4kEslABEB
+ AAHNMEZsb3JpYW4gRmFpbmVsbGkgPGZsb3JpYW4uZmFpbmVsbGlAYnJvYWRjb20uY29tPsLB
+ IQQQAQgAywUCZWl41AUJI+Jo+hcKAAG/SMv+fS3xUQWa0NryPuoRGjsA3SAUAAAAAAAWAAFr
+ ZXktdXNhZ2UtbWFza0BwZ3AuY29tjDAUgAAAAAAgAAdwcmVmZXJyZWQtZW1haWwtZW5jb2Rp
+ bmdAcGdwLmNvbXBncG1pbWUICwkIBwMCAQoFF4AAAAAZGGxkYXA6Ly9rZXlzLmJyb2FkY29t
+ Lm5ldAUbAwAAAAMWAgEFHgEAAAAEFQgJChYhBNXZKpfnkVze1+R8aIExtcQpvGagAAoJEIEx
+ tcQpvGagWPEH/2l0DNr9QkTwJUxOoP9wgHfmVhqc0ZlDsBFv91I3BbhGKI5UATbipKNqG13Z
+ TsBrJHcrnCqnTRS+8n9/myOF0ng2A4YT0EJnayzHugXm+hrkO5O9UEPJ8a+0553VqyoFhHqA
+ zjxj8fUu1px5cbb4R9G4UAySqyeLLeqnYLCKb4+GklGSBGsLMYvLmIDNYlkhMdnnzsSUAS61
+ WJYW6jjnzMwuKJ0ZHv7xZvSHyhIsFRiYiEs44kiYjbUUMcXor/uLEuTIazGrE3MahuGdjpT2
+ IOjoMiTsbMc0yfhHp6G/2E769oDXMVxCCbMVpA+LUtVIQEA+8Zr6mX0Yk4nDS7OiBlvOwE0E
+ U8AbwQEIAKxr71oqe+0+MYCc7WafWEcpQHFUwvYLcdBoOnmJPxDwDRpvU5LhqSPvk/yJdh9k
+ 4xUDQu3rm1qIW2I9Puk5n/Jz/lZsqGw8T13DKyu8eMcvaA/irm9lX9El27DPHy/0qsxmxVmU
+ pu9y9S+BmaMb2CM9IuyxMWEl9ruWFS2jAWh/R8CrdnL6+zLk60R7XGzmSJqF09vYNlJ6Bdbs
+ MWDXkYWWP5Ub1ZJGNJQ4qT7g8IN0qXxzLQsmz6tbgLMEHYBGx80bBF8AkdThd6SLhreCN7Uh
+ IR/5NXGqotAZao2xlDpJLuOMQtoH9WVNuuxQQZHVd8if+yp6yRJ5DAmIUt5CCPcAEQEAAcLB
+ gQQYAQIBKwUCU8AbwgUbDAAAAMBdIAQZAQgABgUCU8AbwQAKCRCTYAaomC8PVQ0VCACWk3n+
+ obFABEp5Rg6Qvspi9kWXcwCcfZV41OIYWhXMoc57ssjCand5noZi8bKg0bxw4qsg+9cNgZ3P
+ N/DFWcNKcAT3Z2/4fTnJqdJS//YcEhlr8uGs+ZWFcqAPbteFCM4dGDRruo69IrHfyyQGx16s
+ CcFlrN8vD066RKevFepb/ml7eYEdN5SRALyEdQMKeCSf3mectdoECEqdF/MWpfWIYQ1hEfdm
+ C2Kztm+h3Nkt9ZQLqc3wsPJZmbD9T0c9Rphfypgw/SfTf2/CHoYVkKqwUIzI59itl5Lze+R5
+ wDByhWHx2Ud2R7SudmT9XK1e0x7W7a5z11Q6vrzuED5nQvkhAAoJEIExtcQpvGagugcIAJd5
+ EYe6KM6Y6RvI6TvHp+QgbU5dxvjqSiSvam0Ms3QrLidCtantcGT2Wz/2PlbZqkoJxMQc40rb
+ fXa4xQSvJYj0GWpadrDJUvUu3LEsunDCxdWrmbmwGRKqZraV2oG7YEddmDqOe0Xm/NxeSobc
+ MIlnaE6V0U8f5zNHB7Y46yJjjYT/Ds1TJo3pvwevDWPvv6rdBeV07D9s43frUS6xYd1uFxHC
+ 7dZYWJjZmyUf5evr1W1gCgwLXG0PEi9n3qmz1lelQ8lSocmvxBKtMbX/OKhAfuP/iIwnTsww
+ 95A2SaPiQZA51NywV8OFgsN0ITl2PlZ4Tp9hHERDe6nQCsNI/Us=
+In-Reply-To: <2025103157-effective-bulk-f9f6@gregkh>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
-On Thu, Oct 23, 2025 at 11:34=E2=80=AFAM Kairui Song <ryncsn@gmail.com> wro=
-te:
->
-> From: Kairui Song <kasong@tencent.com>
->
-> Since commit 1b7e90020eb77 ("mm, swap: use percpu cluster as allocation
-> fast path"), swap allocation is protected by a local lock, which means
-> we can't do any sleeping calls during allocation.
->
-> However, the discard routine is not taken well care of. When the swap
-> allocator failed to find any usable cluster, it would look at the
-> pending discard cluster and try to issue some blocking discards. It may
-> not necessarily sleep, but the cond_resched at the bio layer indicates
-> this is wrong when combined with a local lock. And the bio GFP flag used
-> for discard bio is also wrong (not atomic).
->
-> It's arguable whether this synchronous discard is helpful at all. In
-> most cases, the async discard is good enough. And the swap allocator is
-> doing very differently at organizing the clusters since the recent
-> change, so it is very rare to see discard clusters piling up.
->
-> So far, no issues have been observed or reported with typical SSD setups
-> under months of high pressure. This issue was found during my code
-> review. But by hacking the kernel a bit: adding a mdelay(500) in the
-> async discard path, this issue will be observable with WARNING triggered
-> by the wrong GFP and cond_resched in the bio layer for debug builds.
->
-> So now let's apply a hotfix for this issue: remove the synchronous
-> discard in the swap allocation path. And when order 0 is failing with
-> all cluster list drained on all swap devices, try to do a discard
-> following the swap device priority list. If any discards released some
-> cluster, try the allocation again. This way, we can still avoid OOM due
-> to swap failure if the hardware is very slow and memory pressure is
-> extremely high.
->
-> This may cause more fragmentation issues if the discarding hardware is
-> really slow. Ideally, we want to discard pending clusters before
-> continuing to iterate the fragment cluster lists. This can be
-> implemented in a cleaner way if we clean up the device list iteration
-> part first.
->
-> Cc: stable@vger.kernel.org
-> Fixes: 1b7e90020eb77 ("mm, swap: use percpu cluster as allocation fast pa=
-th")
-> Acked-by: Nhat Pham <nphamcs@gmail.com>
-> Signed-off-by: Kairui Song <kasong@tencent.com>
+On 10/31/25 05:27, Greg Kroah-Hartman wrote:
+> On Mon, Oct 27, 2025 at 03:43:49PM -0700, Florian Fainelli wrote:
+>> From: Doug Berger <opendmb@gmail.com>
+>>
+>> [ Upstream commit 382748c05e58a9f1935f5a653c352422375566ea ]
+> 
+> Not a valid git id :(
 
-Acked-by: Chris Li <chrisl@kernel.org>
-
-Chris
-
-
-> ---
->  mm/swapfile.c | 40 +++++++++++++++++++++++++++++++++-------
->  1 file changed, 33 insertions(+), 7 deletions(-)
->
-> diff --git a/mm/swapfile.c b/mm/swapfile.c
-> index cb2392ed8e0e..33e0bd905c55 100644
-> --- a/mm/swapfile.c
-> +++ b/mm/swapfile.c
-> @@ -1101,13 +1101,6 @@ static unsigned long cluster_alloc_swap_entry(stru=
-ct swap_info_struct *si, int o
->                         goto done;
->         }
->
-> -       /*
-> -        * We don't have free cluster but have some clusters in discardin=
-g,
-> -        * do discard now and reclaim them.
-> -        */
-> -       if ((si->flags & SWP_PAGE_DISCARD) && swap_do_scheduled_discard(s=
-i))
-> -               goto new_cluster;
-> -
->         if (order)
->                 goto done;
->
-> @@ -1394,6 +1387,33 @@ static bool swap_alloc_slow(swp_entry_t *entry,
->         return false;
->  }
->
-> +/*
-> + * Discard pending clusters in a synchronized way when under high pressu=
-re.
-> + * Return: true if any cluster is discarded.
-> + */
-> +static bool swap_sync_discard(void)
-> +{
-> +       bool ret =3D false;
-> +       int nid =3D numa_node_id();
-> +       struct swap_info_struct *si, *next;
-> +
-> +       spin_lock(&swap_avail_lock);
-> +       plist_for_each_entry_safe(si, next, &swap_avail_heads[nid], avail=
-_lists[nid]) {
-> +               spin_unlock(&swap_avail_lock);
-> +               if (get_swap_device_info(si)) {
-> +                       if (si->flags & SWP_PAGE_DISCARD)
-> +                               ret =3D swap_do_scheduled_discard(si);
-> +                       put_swap_device(si);
-> +               }
-> +               if (ret)
-> +                       return true;
-> +               spin_lock(&swap_avail_lock);
-> +       }
-> +       spin_unlock(&swap_avail_lock);
-> +
-> +       return false;
-> +}
-> +
->  /**
->   * folio_alloc_swap - allocate swap space for a folio
->   * @folio: folio we want to move to swap
-> @@ -1432,11 +1452,17 @@ int folio_alloc_swap(struct folio *folio, gfp_t g=
-fp)
->                 }
->         }
->
-> +again:
->         local_lock(&percpu_swap_cluster.lock);
->         if (!swap_alloc_fast(&entry, order))
->                 swap_alloc_slow(&entry, order);
->         local_unlock(&percpu_swap_cluster.lock);
->
-> +       if (unlikely(!order && !entry.val)) {
-> +               if (swap_sync_discard())
-> +                       goto again;
-> +       }
-> +
->         /* Need to call this even if allocation failed, for MEMCG_SWAP_FA=
-IL. */
->         if (mem_cgroup_try_charge_swap(folio, entry))
->                 goto out_free;
->
-> --
-> 2.51.0
->
+This is valid in linux-next, looks like this still has not reached 
+Linus' tree for some reason, I will resubmit when it does, sorry about that.
+-- 
+Florian
 
