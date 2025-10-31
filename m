@@ -1,115 +1,140 @@
-Return-Path: <stable+bounces-191812-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191813-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82372C25086
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 13:35:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D7DF9C250CE
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 13:39:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D9A124F75BE
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 12:33:25 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A6DBF4E9565
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 12:39:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5C9E33CEB9;
-	Fri, 31 Oct 2025 12:33:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55190340263;
+	Fri, 31 Oct 2025 12:39:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rn1EOJ+7"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="SyUol3iE"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E77D2900A8;
-	Fri, 31 Oct 2025 12:33:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2EA831984E;
+	Fri, 31 Oct 2025 12:39:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761914001; cv=none; b=sMN9uowCEBLtlJ1+VDgz5K40IDBLCW21NI8vhgWdW2NY0085saTWa81Qr2dE/c3lCuC/0vcLMkkUUdCy0QUCHOnHMVcVns2UTvpvG1F9wysTXjM8ip6Y0GvsKsN6mwCIhhO+Rtu1WDbqGjrxUusb09Nkow7TIvWNBGW1I7FSrc0=
+	t=1761914390; cv=none; b=p8O95qpNTH5JNWNSqtb9/qHttHHlzjK6IbVlFgldj7yJelOf1wwBMXoBZvWYhB3yyv83uPHzaQuvapqd/xZ9dtmKkMdnRz2HAOPCSo3ctkBe1Y+lIdu0o4VG4vEWd8s4X86rVdG0/1JTU7FTX64HN6IU0ri1BXkHqn8LOlN5qyE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761914001; c=relaxed/simple;
-	bh=8mG/tT6m7m1SPkxM0FGXaJnTJCfC760z6pu4g9dhsxI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NHbPcvN8mXA/YnRl5ueIV+gzTBlfm6COsgZGaC+iAuTaxL7KjQWP7hzaPkcFezgCOg0On6MP1Wb9T9wlrC/hIfxdEOIpaoNlGxq8fPl3kQVOb9WAl+rrrbxdfyjDHmuuXtrtHFV0HwZU8cDW8RlCSZK4HLiaAsU3ap7brP6zi8k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rn1EOJ+7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81F4CC4CEE7;
-	Fri, 31 Oct 2025 12:33:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761914000;
-	bh=8mG/tT6m7m1SPkxM0FGXaJnTJCfC760z6pu4g9dhsxI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Rn1EOJ+7eXautIx1gHTna0ncLMzRFhvK2ZhxkpXJMcU2RDpMn0frBfPgAB1vWCLlZ
-	 1l8TDTtp1D1Z43aqJBMDjPL1PDLLenlAHyVZtdpWATQE/6EL6Pp31uZczGCIMfGmxK
-	 Rll7OuwGcq1dPkhilDeOX/ejvmev1NE5P1VdKf64=
-Date: Fri, 31 Oct 2025 13:33:17 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Salvatore Bonaccorso <carnil@debian.org>
-Cc: Jonathan Corbet <corbet@lwn.net>,
-	Andreas Radke <andreas.radke@mailbox.org>,
-	stable <stable@vger.kernel.org>, Sasha Levin <sashal@kernel.org>,
-	Zhixu Liu <zhixu.liu@gmail.com>, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: Please backport commit 00d95fcc4dee ("docs: kdoc: handle the
- obsolescensce of docutils.ErrorString()") to v6.17.y
-Message-ID: <2025103110-tidings-stench-6552@gregkh>
-References: <aPUCTJx5uepKVuM9@eldamar.lan>
- <DDS2XJZB0ECJ.N4LNABSIJHAJ@mailbox.org>
- <aP4amn4YQDnzBBCU@eldamar.lan>
- <87wm4gpbw6.fsf@trenco.lwn.net>
- <aQEjRT5JBLYiBTaL@eldamar.lan>
+	s=arc-20240116; t=1761914390; c=relaxed/simple;
+	bh=1buScPTeb/ox8Bga8aRVncUBu+gAauXXjelfBteBYJs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=qMAjBo7Lu7UjYNhMOyIkXj90wwPTXc3jElL6BN6tE78/cOdCx8f5PrGdzHa5J79RaYqiVjAOzpBEPSuPI/OfwKIEq8ep4Tee6k9n0Rp+vfNbSKJHIqufeZUQ4Y+NmdgxLOxiFbnPJu3Ca0ue48QEF4mv6jYwRxHlnT81l+jRYuA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=SyUol3iE; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59VBfplw003476;
+	Fri, 31 Oct 2025 12:39:32 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=x6FGaQ
+	QxBeqtle+k2oD7/XqlNemqN7h62fEHwf4FQh0=; b=SyUol3iEjzBVuT6yitlrX8
+	tZqTxSBiHee3AeC4pQzof8giTFIJDwJugSoWH2LsuXDtAa+tIj0P0P9MK9SvYLja
+	XXfHsZBqr/ya1A9nPISzdIYZENJpzzQ7FOFYZNoJLbuH41Lb2JmW3NwwjdAkubeW
+	j9VlibYn5ePaFfYWdadJjRVbH4/VgSPSudxJL2eKIKtR5g4C0CqpvgUnZ/9Qi6rD
+	vbjQMgvdyhgYi1rDsHJd9Rule9TJ4fZQxTaAc6UVhkfeyKNoU86j4s9ODsf7lQu4
+	yfFtc6o9JeuTDOXdzPBPOF1c3pHOvimSFp5Q+poAwUTIcQrPmQr8NXGj9SDqD41Q
+	==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a34a8wvev-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 31 Oct 2025 12:39:32 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59VCHfPN023873;
+	Fri, 31 Oct 2025 12:39:30 GMT
+Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4a33vxe5fu-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 31 Oct 2025 12:39:30 +0000
+Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com [10.241.53.101])
+	by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 59VCdUgE6685580
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 31 Oct 2025 12:39:30 GMT
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 33C575805C;
+	Fri, 31 Oct 2025 12:39:30 +0000 (GMT)
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4782758051;
+	Fri, 31 Oct 2025 12:39:27 +0000 (GMT)
+Received: from [9.61.177.173] (unknown [9.61.177.173])
+	by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 31 Oct 2025 12:39:26 +0000 (GMT)
+Message-ID: <befb4493-44fe-41e7-b5ec-fb2744fd752c@linux.ibm.com>
+Date: Fri, 31 Oct 2025 18:09:25 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aQEjRT5JBLYiBTaL@eldamar.lan>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] block: Remove queue freezing from several sysfs store
+ callbacks
+To: Bart Van Assche <bvanassche@acm.org>, Jens Axboe <axboe@kernel.dk>
+Cc: linux-block@vger.kernel.org, Christoph Hellwig <hch@lst.de>,
+        Martin Wilck <mwilck@suse.com>,
+        Benjamin Marzinski <bmarzins@redhat.com>, stable@vger.kernel.org,
+        Damien Le Moal <dlemoal@kernel.org>,
+        Chaitanya Kulkarni <kch@nvidia.com>, Hannes Reinecke <hare@suse.de>
+References: <20251030172417.660949-1-bvanassche@acm.org>
+Content-Language: en-US
+From: Nilay Shroff <nilay@linux.ibm.com>
+In-Reply-To: <20251030172417.660949-1-bvanassche@acm.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=DYkaa/tW c=1 sm=1 tr=0 ts=6904ae04 cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=wizq8IQFKyYBxb2gEWYA:9 a=QEXdDO2ut3YA:10 a=cPQSjfK2_nFv0Q5t_7PE:22
+X-Proofpoint-GUID: 3WH8RB96vTR3Ehmtv8oV1nasuG6HEVdu
+X-Proofpoint-ORIG-GUID: 3WH8RB96vTR3Ehmtv8oV1nasuG6HEVdu
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDI4MDE2NiBTYWx0ZWRfX+BI3tCCGE8z+
+ NkGLmSVaODbbBdDvXW6RrpKTh+60gGSQ0c3lqpUWINdd1nHongs+p7XaMbEzn7ajGnYR006IdwN
+ Vual9ssMdpZ+KZWWIgmIHNJFewthv8ihS1lEFNhoma4p77gm6Zn6J/pPqwdNqdd6pCHtwY5yggD
+ Fi2LxXDwqJ6a6r+BMDYxzky0HOi82/WAyHzflbE3644P2njK5NCk69Pa3iJeuFEEDwnAnUCW58S
+ kiRW6ou7kpsdfbVsiIlWIMohulIOQ+Il7eViSLftEh3A/Ah8PBwNr6Yqt4N1vDMr0inRMOH7Rq0
+ GJYfEf8CCnztMrgN5RqkGcfy+5jMypQ+6wG1WtS1tPqWI8PA7gYLu27DIwH2iIKYc6oHgA8ip1l
+ vCUbxWLOtzTqrmtlOFs/U1GjBCCyxA==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-10-31_03,2025-10-29_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 clxscore=1011 malwarescore=0 bulkscore=0 impostorscore=0
+ priorityscore=1501 adultscore=0 lowpriorityscore=0 phishscore=0
+ suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2510240000
+ definitions=main-2510280166
 
-On Tue, Oct 28, 2025 at 09:10:45PM +0100, Salvatore Bonaccorso wrote:
-> Hi,
-> 
-> On Mon, Oct 27, 2025 at 10:06:33AM -0600, Jonathan Corbet wrote:
-> > Salvatore Bonaccorso <carnil@debian.org> writes:
-> > 
-> > > Hi,
-> > >
-> > > On Sun, Oct 26, 2025 at 08:36:00AM +0100, Andreas Radke wrote:
-> > >> For kernel 6.12 there's just one more place required to add the fix:
-> > >> 
-> > >> --- a/Documentation/sphinx/kernel_abi.py        2025-10-23 16:20:48.000000000 +0200
-> > >> +++ b/Documentation/sphinx/kernel_abi.py.new    2025-10-26 08:08:33.168985951 +0100
-> > >> @@ -42,9 +42,11 @@
-> > >>  from docutils import nodes, statemachine
-> > >>  from docutils.statemachine import ViewList
-> > >>  from docutils.parsers.rst import directives, Directive
-> > >> -from docutils.utils.error_reporting import ErrorString
-> > >>  from sphinx.util.docutils import switch_source_input
-> > >> 
-> > >> +def ErrorString(exc):  # Shamelessly stolen from docutils
-> > >> +    return f'{exc.__class__.__name}: {exc}'
-> > >> +
-> > >>  __version__  = '1.0'
-> > >> 
-> > >>  def setup(app):
-> > >
-> > > Yes this is why I asked Jonathan, how to handle backports to older
-> > > series, if it is wanted to pick specifically as well faccc0ec64e1
-> > > ("docs: sphinx/kernel_abi: adjust coding style") or a partial backport
-> > > of it, or do a 6.12.y backport of 00d95fcc4dee with additional
-> > > changes (like you pointed out).
-> > >
-> > > I'm just not sure what is preferred here. 
-> > 
-> > I'm not sure it matters that much...the additional change suggested by
-> > Andreas seems fine.  It's just a backport, and it shouldn't break
-> > anything, so doesn't seem worth a lot of worry.
-> 
-> Okay here is a respective backported change for the 6.12.y series as
-> well.
-> 
-> Does that look good for you?
-> 
 
-Now queued up, thanks!
 
-greg k-h
+On 10/30/25 10:54 PM, Bart Van Assche wrote:
+> Fix this by removing the blk_mq_freeze_queue() / blk_mq_unfreeze_queue()
+> calls from the store callbacks that do not strictly need these callbacks.
+> This patch may cause a small delay in applying the new settings.
+> 
+> This patch affects the following sysfs attributes:
+> * io_poll_delay
+> * io_timeout
+> * nomerges
+> * read_ahead_kb
+> * rq_affinity
+
+I see that io_timeout, nomerges and rq_affinity are all accessed
+during I/O hotpath. So IMO for these attributes we still need to
+freeze the queue before updating those parameters. The io_timeout
+and nomerges are accessed during I/O submission and rq_affinity
+is accessed during I/O completion.
+
+Thanks,
+--Nilay
 
