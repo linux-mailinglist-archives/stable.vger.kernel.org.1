@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-191908-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191882-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB89BC2581A
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 15:16:12 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96F9CC25760
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 15:09:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 421685638EE
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 14:06:32 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 49D004F987A
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 14:04:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E9DD34BA44;
-	Fri, 31 Oct 2025 14:06:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDFF2210F59;
+	Fri, 31 Oct 2025 14:04:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EzfDA/eU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sQNU2qBf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AE6B3C17;
-	Fri, 31 Oct 2025 14:06:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 795C32376E4;
+	Fri, 31 Oct 2025 14:04:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761919565; cv=none; b=QUqch8pBdPxmXXhpo1gk6pSsWxsW+0X2cfyIL3gEgMHu5Dag8lG3xYmJ1fyI8fbzCi7pLbO13QeVbdRN++bmBARpFARYSlyhOUqbIle5x8BumRZg9aIp0dtpdQ5dKtUYng/H7jgsgN53cHMieyVaQpG4L0pT07kBHQLM7Czqmxc=
+	t=1761919488; cv=none; b=Jd3AdcN+aQbHNtLtsQHVL6LCoYxT5Q/8/i4/LlOsMCgO0WO+BXXyF1ScHT1KtUx+zLXfpWMU+K5/IFfodg+OsLniv7hoSfyNrXdZJbtYR4+cbWEx6Y7wFduhFRtKowk3lzPPNQm6ZMyPEPf+370xCiGJg+yLPEqpaqwMV83VQ3g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761919565; c=relaxed/simple;
-	bh=OJYq1NK4/LPJgcG5xiLWnX/jiefpOOed8iT37dk6m7o=;
+	s=arc-20240116; t=1761919488; c=relaxed/simple;
+	bh=3xaj+C4/llvyvBQJO0JnrIsO3QRxgi7e9Xeh/WN926o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=of37yBzNo4xTSzrhPBBRZQ9EeUD5HXUO5lVf7TlZsxaLohL9wb4y5LggBEvqMyNvsjGlBUYURfZ2jzSs3Q3QemK1ESStnjzkrANfDjQx2xHcyzw23Kojywi3sT/J4w2e8KO2jJ5L76TmmNRCyAhnpQfwvgIsNLI5Y2V0j2Gsp1Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EzfDA/eU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88D7BC4CEE7;
-	Fri, 31 Oct 2025 14:06:04 +0000 (UTC)
+	 MIME-Version; b=FQ3T0V5JIMtlCHbhSv9/Ppnlw2GbD8LARlXeygmgCeoxfbIuExMaGfyJj59L2c0MQ7pzPBqH40Y1HNqWnZ/r0P/wmusLM4MHoN/77jkHMyZbKtjsNd5jhnBOT0SdbcyeswmkiNjCBl1NDNSp3koFg3Al9Mh0PIIZqXMlBtoomyg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sQNU2qBf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04CF9C4CEE7;
+	Fri, 31 Oct 2025 14:04:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761919564;
-	bh=OJYq1NK4/LPJgcG5xiLWnX/jiefpOOed8iT37dk6m7o=;
+	s=korg; t=1761919488;
+	bh=3xaj+C4/llvyvBQJO0JnrIsO3QRxgi7e9Xeh/WN926o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EzfDA/eU1UNVGTKs6O0hGu+v80rJRENFcBHRxClwIQ9bx0uIaWtuoOnkKIP4XNw0V
-	 ER3IGi6/+mD+sn21BI3OQI+qDMKtC1pC7fEpvDC/LlH5zhZdsyhj4+FxVDcLjgfERQ
-	 su4fAnX5fsN9MXgdcq4vDEuQElfdu4JuFQi/CwFY=
+	b=sQNU2qBf/bfkAX3wHw8xAJD9l2Y+l6zq4kxJxXq+NWv2aGhonrMedT3IUtj2ql+XY
+	 ZObZIQOEZzL82v9GcXcnyyADVckeDv0HjoWvUPf4a2BiiAxyQW0o+kSvjtz1sbFjUK
+	 EF+NHRqr+X+lqBMOe6/NFRF+Gh2A1/4WEAIo1f1s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aaron Lu <ziqianlu@bytedance.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 20/35] sched/fair: update_cfs_group() for throttled cfs_rqs
+	Ioana Ciornei <ioana.ciornei@nxp.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Michael Walle <mwalle@kernel.org>,
+	William Breathitt Gray <wbg@kernel.org>
+Subject: [PATCH 6.12 35/40] gpio: regmap: add the .fixed_direction_output configuration parameter
 Date: Fri, 31 Oct 2025 15:01:28 +0100
-Message-ID: <20251031140044.050079148@linuxfoundation.org>
+Message-ID: <20251031140044.872556611@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251031140043.564670400@linuxfoundation.org>
-References: <20251031140043.564670400@linuxfoundation.org>
+In-Reply-To: <20251031140043.939381518@linuxfoundation.org>
+References: <20251031140043.939381518@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +63,130 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aaron Lu <ziqianlu@bytedance.com>
+From: Ioana Ciornei <ioana.ciornei@nxp.com>
 
-[ Upstream commit fcd394866e3db344cbe0bb485d7e3f741ac07245 ]
+[ Upstream commit 00aaae60faf554c27c95e93d47f200a93ff266ef ]
 
-With task based throttle model, tasks in a throttled hierarchy are
-allowed to continue to run if they are running in kernel mode. For this
-reason, PELT clock is not stopped for these cfs_rqs in throttled
-hierarchy when they still have tasks running or queued.
+There are GPIO controllers such as the one present in the LX2160ARDB
+QIXIS FPGA which have fixed-direction input and output GPIO lines mixed
+together in a single register. This cannot be modeled using the
+gpio-regmap as-is since there is no way to present the true direction of
+a GPIO line.
 
-Since PELT clock is not stopped, whether to allow update_cfs_group()
-doing its job for cfs_rqs which are in throttled hierarchy but still
-have tasks running/queued is a question.
+In order to make this use case possible, add a new configuration
+parameter - fixed_direction_output - into the gpio_regmap_config
+structure. This will enable user drivers to provide a bitmap that
+represents the fixed direction of the GPIO lines.
 
-The good side is, continue to run update_cfs_group() can get these
-cfs_rq entities with an up2date weight and that up2date weight can be
-useful to derive an accurate load for the CPU as well as ensure fairness
-if multiple tasks of different cgroups are running on the same CPU.
-OTOH, as Benjamin Segall pointed: when unthrottle comes around the most
-likely correct distribution is the distribution we had at the time of
-throttle.
-
-In reality, either way may not matter that much if tasks in throttled
-hierarchy don't run in kernel mode for too long. But in case that
-happens, let these cfs_rq entities have an up2date weight seems a good
-thing to do.
-
-Signed-off-by: Aaron Lu <ziqianlu@bytedance.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Ioana Ciornei <ioana.ciornei@nxp.com>
+Acked-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Reviewed-by: Michael Walle <mwalle@kernel.org>
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Stable-dep-of: 2ba5772e530f ("gpio: idio-16: Define fixed direction of the GPIO lines")
+Signed-off-by: William Breathitt Gray <wbg@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/sched/fair.c | 3 ---
- 1 file changed, 3 deletions(-)
+ drivers/gpio/gpio-regmap.c  |   26 ++++++++++++++++++++++++--
+ include/linux/gpio/regmap.h |    5 +++++
+ 2 files changed, 29 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 4770d25ae2406..3e0d999e5ee2c 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -3957,9 +3957,6 @@ static void update_cfs_group(struct sched_entity *se)
- 	if (!gcfs_rq || !gcfs_rq->load.weight)
- 		return;
+--- a/drivers/gpio/gpio-regmap.c
++++ b/drivers/gpio/gpio-regmap.c
+@@ -29,6 +29,7 @@ struct gpio_regmap {
+ 	unsigned int reg_clr_base;
+ 	unsigned int reg_dir_in_base;
+ 	unsigned int reg_dir_out_base;
++	unsigned long *fixed_direction_output;
  
--	if (throttled_hierarchy(gcfs_rq))
--		return;
--
- 	shares = calc_group_shares(gcfs_rq);
- 	if (unlikely(se->load.weight != shares))
- 		reweight_entity(cfs_rq_of(se), se, shares);
--- 
-2.51.0
-
+ #ifdef CONFIG_REGMAP_IRQ
+ 	int regmap_irq_line;
+@@ -122,6 +123,13 @@ static int gpio_regmap_get_direction(str
+ 	unsigned int base, val, reg, mask;
+ 	int invert, ret;
+ 
++	if (gpio->fixed_direction_output) {
++		if (test_bit(offset, gpio->fixed_direction_output))
++			return GPIO_LINE_DIRECTION_OUT;
++		else
++			return GPIO_LINE_DIRECTION_IN;
++	}
++
+ 	if (gpio->reg_dat_base && !gpio->reg_set_base)
+ 		return GPIO_LINE_DIRECTION_IN;
+ 	if (gpio->reg_set_base && !gpio->reg_dat_base)
+@@ -280,9 +288,20 @@ struct gpio_regmap *gpio_regmap_register
+ 		chip->direction_output = gpio_regmap_direction_output;
+ 	}
+ 
++	if (config->fixed_direction_output) {
++		gpio->fixed_direction_output = bitmap_alloc(chip->ngpio,
++							    GFP_KERNEL);
++		if (!gpio->fixed_direction_output) {
++			ret = -ENOMEM;
++			goto err_free_gpio;
++		}
++		bitmap_copy(gpio->fixed_direction_output,
++			    config->fixed_direction_output, chip->ngpio);
++	}
++
+ 	ret = gpiochip_add_data(chip, gpio);
+ 	if (ret < 0)
+-		goto err_free_gpio;
++		goto err_free_bitmap;
+ 
+ #ifdef CONFIG_REGMAP_IRQ
+ 	if (config->regmap_irq_chip) {
+@@ -291,7 +310,7 @@ struct gpio_regmap *gpio_regmap_register
+ 						 config->regmap_irq_line, config->regmap_irq_flags,
+ 						 0, config->regmap_irq_chip, &gpio->irq_chip_data);
+ 		if (ret)
+-			goto err_free_gpio;
++			goto err_free_bitmap;
+ 
+ 		irq_domain = regmap_irq_get_domain(gpio->irq_chip_data);
+ 	} else
+@@ -308,6 +327,8 @@ struct gpio_regmap *gpio_regmap_register
+ 
+ err_remove_gpiochip:
+ 	gpiochip_remove(chip);
++err_free_bitmap:
++	bitmap_free(gpio->fixed_direction_output);
+ err_free_gpio:
+ 	kfree(gpio);
+ 	return ERR_PTR(ret);
+@@ -326,6 +347,7 @@ void gpio_regmap_unregister(struct gpio_
+ #endif
+ 
+ 	gpiochip_remove(&gpio->gpio_chip);
++	bitmap_free(gpio->fixed_direction_output);
+ 	kfree(gpio);
+ }
+ EXPORT_SYMBOL_GPL(gpio_regmap_unregister);
+--- a/include/linux/gpio/regmap.h
++++ b/include/linux/gpio/regmap.h
+@@ -37,6 +37,10 @@ struct regmap;
+  *			offset to a register/bitmask pair. If not
+  *			given the default gpio_regmap_simple_xlate()
+  *			is used.
++ * @fixed_direction_output:
++ *			(Optional) Bitmap representing the fixed direction of
++ *			the GPIO lines. Useful when there are GPIO lines with a
++ *			fixed direction mixed together in the same register.
+  * @drvdata:		(Optional) Pointer to driver specific data which is
+  *			not used by gpio-remap but is provided "as is" to the
+  *			driver callback(s).
+@@ -82,6 +86,7 @@ struct gpio_regmap_config {
+ 	int reg_stride;
+ 	int ngpio_per_reg;
+ 	struct irq_domain *irq_domain;
++	unsigned long *fixed_direction_output;
+ 
+ #ifdef CONFIG_REGMAP_IRQ
+ 	struct regmap_irq_chip *regmap_irq_chip;
 
 
 
