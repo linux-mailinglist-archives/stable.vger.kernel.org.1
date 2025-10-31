@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-191904-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191879-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F16F2C2578A
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 15:10:06 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3ADE9C256A6
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 15:04:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AF20756378E
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 14:06:26 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id A8CF5351095
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 14:04:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4261634B43A;
-	Fri, 31 Oct 2025 14:05:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CE6D34A3CC;
+	Fri, 31 Oct 2025 14:04:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qbeYUbst"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IPmyAJzZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF46534404F;
-	Fri, 31 Oct 2025 14:05:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE881210F59;
+	Fri, 31 Oct 2025 14:04:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761919553; cv=none; b=h9+c5Ki+srJuRvq13asnkAaO3cc3FmOP7FMBtSBLlMy/1Vn5IjDzWzZF/Tzz79f/08EQmS8p9s56fWgRfNJ6Pi57yc4ml5vjRvEY7vB+aj+l9beGpqAGtTo2AY3sjcts40BgNDuBRroeX7NeRiYSmMyaqxLHrjUXhLR983gQRMs=
+	t=1761919480; cv=none; b=QTM8Z8BLV8z/mxpt6m5CbdC88pyrfXn+UfzhncpPxqEiTUzij6eTq+YJJ0gV8XzpagTia1mlH6okf9efEDBxBWfscbj4MzmweB2gNlRR0MDSFXQnpGnzZfNMWDKi0maEzc9P9HrbWB3HW8vHjKLrSfTHGgDCzr+nUZ9wgqyYot0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761919553; c=relaxed/simple;
-	bh=pYS4XJyVKLWHpftU8NW/ZZzxUvyAUv1f3MmjmHkqnSM=;
+	s=arc-20240116; t=1761919480; c=relaxed/simple;
+	bh=RkbUiZGquRUA2Wzra7OZRDG3gT/dBQWVjJoVEBzFi9E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WXjP0BY0R/mLefaK6xun+GJz8/B5rQs6/h2w3+rib1zKbNtTZi2nGRZQnsDMHuW5SI2sYcqPfmPqdk2cKcSjU60EO/yK2t8aJazQSHJMSrzF2MDqKi3+o1HaTgapZ6vWb4+JAakq7q1pPrDqLX2hb+tldIp3kYvMq6XZwJ4vv4U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qbeYUbst; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73A0BC4CEE7;
-	Fri, 31 Oct 2025 14:05:52 +0000 (UTC)
+	 MIME-Version; b=M8OkRTi8xL8z0aRAqtBJJ9cNcMiXUGhPwdKK2Q1mG9DJrmtcAlInNOPZHoIjkmfTlXoHnwtcv3WrLR9+O0522f6yf8UGgfrdBtzZHevbSmdH4Cs5g6+iXlR6tRw2rcXJu2mdn/a/hTdhJY3EC4XqjOq0sAPRNZckwCmI4OG8jKU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IPmyAJzZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 765E9C4CEE7;
+	Fri, 31 Oct 2025 14:04:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761919552;
-	bh=pYS4XJyVKLWHpftU8NW/ZZzxUvyAUv1f3MmjmHkqnSM=;
+	s=korg; t=1761919479;
+	bh=RkbUiZGquRUA2Wzra7OZRDG3gT/dBQWVjJoVEBzFi9E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qbeYUbstU4TEEcpJwQ5CxaLfnWE3e9lpQLDWkJJA8uTc6JHJjcpAPTF/l+hLzY2Dq
-	 IQ+R4lBaWAcP1skXcD0r461rg+NxZ6VUK40IubmRRjku4WMDIyaonY4r/vunkIM3PL
-	 /nPy8G2kSz1GOY1t0rY5H1HB3x1BP7UC6nj8SiCs=
+	b=IPmyAJzZ8J0b01WInQyxKPyKlVLvuFY1/hgeLHkV5cLClKGE6kdo9ezMRcjG6Czq9
+	 lPXsTefPKXkhzqzsTkVgNQs9/3LrW46beGxBf2TTGTnYimXMmtiW2jBdWs2hGTLsGz
+	 EXVlNJ77dHloVCfgMESHmYa0/W4RWTdL2TyT/Cqs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiri Olsa <jolsa@kernel.org>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Kees Cook <kees@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 17/35] seccomp: passthrough uprobe systemcall without filtering
+	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Yury Norov <yury.norov@gmail.com>,
+	William Breathitt Gray <wbg@kernel.org>
+Subject: [PATCH 6.12 32/40] bits: add comments and newlines to #if, #else and #endif directives
 Date: Fri, 31 Oct 2025 15:01:25 +0100
-Message-ID: <20251031140043.974667333@linuxfoundation.org>
+Message-ID: <20251031140044.798677471@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251031140043.564670400@linuxfoundation.org>
-References: <20251031140043.564670400@linuxfoundation.org>
+In-Reply-To: <20251031140043.939381518@linuxfoundation.org>
+References: <20251031140043.939381518@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,90 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiri Olsa <jolsa@kernel.org>
+From: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
 
-[ Upstream commit 89d1d8434d246c96309a6068dfcf9e36dc61227b ]
+[ Upstream commit 31299a5e0211241171b2222c5633aad4763bf700 ]
 
-Adding uprobe as another exception to the seccomp filter alongside
-with the uretprobe syscall.
+This is a preparation for the upcoming GENMASK_U*() and BIT_U*()
+changes. After introducing those new macros, there will be a lot of
+scrolling between the #if, #else and #endif.
 
-Same as the uretprobe the uprobe syscall is installed by kernel as
-replacement for the breakpoint exception and is limited to x86_64
-arch and isn't expected to ever be supported in i386.
+Add a comment to the #else and #endif preprocessor macros to help keep
+track of which context we are in. Also, add new lines to better
+visually separate the non-asm and asm sections.
 
-Signed-off-by: Jiri Olsa <jolsa@kernel.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Kees Cook <kees@kernel.org>
-Link: https://lore.kernel.org/r/20250720112133.244369-21-jolsa@kernel.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Yury Norov <yury.norov@gmail.com>
+Stable-dep-of: 2ba5772e530f ("gpio: idio-16: Define fixed direction of the GPIO lines")
+Signed-off-by: William Breathitt Gray <wbg@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/seccomp.c | 32 +++++++++++++++++++++++++-------
- 1 file changed, 25 insertions(+), 7 deletions(-)
+ include/linux/bits.h |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/seccomp.c b/kernel/seccomp.c
-index 3bbfba30a777a..25f62867a16d9 100644
---- a/kernel/seccomp.c
-+++ b/kernel/seccomp.c
-@@ -741,6 +741,26 @@ seccomp_prepare_user_filter(const char __user *user_filter)
- }
- 
- #ifdef SECCOMP_ARCH_NATIVE
-+static bool seccomp_uprobe_exception(struct seccomp_data *sd)
-+{
-+#if defined __NR_uretprobe || defined __NR_uprobe
-+#ifdef SECCOMP_ARCH_COMPAT
-+	if (sd->arch == SECCOMP_ARCH_NATIVE)
-+#endif
-+	{
-+#ifdef __NR_uretprobe
-+		if (sd->nr == __NR_uretprobe)
-+			return true;
-+#endif
-+#ifdef __NR_uprobe
-+		if (sd->nr == __NR_uprobe)
-+			return true;
-+#endif
-+	}
-+#endif
-+	return false;
-+}
+--- a/include/linux/bits.h
++++ b/include/linux/bits.h
+@@ -19,17 +19,21 @@
+  * GENMASK_ULL(39, 21) gives us the 64bit vector 0x000000ffffe00000.
+  */
+ #if !defined(__ASSEMBLY__)
 +
- /**
-  * seccomp_is_const_allow - check if filter is constant allow with given data
-  * @fprog: The BPF programs
-@@ -758,13 +778,8 @@ static bool seccomp_is_const_allow(struct sock_fprog_kern *fprog,
- 		return false;
- 
- 	/* Our single exception to filtering. */
--#ifdef __NR_uretprobe
--#ifdef SECCOMP_ARCH_COMPAT
--	if (sd->arch == SECCOMP_ARCH_NATIVE)
+ #include <linux/build_bug.h>
+ #define GENMASK_INPUT_CHECK(h, l) \
+ 	(BUILD_BUG_ON_ZERO(__builtin_choose_expr( \
+ 		__is_constexpr((l) > (h)), (l) > (h), 0)))
+-#else
++
++#else /* defined(__ASSEMBLY__) */
++
+ /*
+  * BUILD_BUG_ON_ZERO is not available in h files included from asm files,
+  * disable the input check if that is the case.
+  */
+ #define GENMASK_INPUT_CHECK(h, l) 0
 -#endif
--		if (sd->nr == __NR_uretprobe)
--			return true;
--#endif
-+	if (seccomp_uprobe_exception(sd))
-+		return true;
++
++#endif /* !defined(__ASSEMBLY__) */
  
- 	for (pc = 0; pc < fprog->len; pc++) {
- 		struct sock_filter *insn = &fprog->filter[pc];
-@@ -1042,6 +1057,9 @@ static const int mode1_syscalls[] = {
- 	__NR_seccomp_read, __NR_seccomp_write, __NR_seccomp_exit, __NR_seccomp_sigreturn,
- #ifdef __NR_uretprobe
- 	__NR_uretprobe,
-+#endif
-+#ifdef __NR_uprobe
-+	__NR_uprobe,
- #endif
- 	-1, /* negative terminated */
- };
--- 
-2.51.0
-
+ #define GENMASK(h, l) \
+ 	(GENMASK_INPUT_CHECK(h, l) + __GENMASK(h, l))
 
 
 
