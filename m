@@ -1,127 +1,98 @@
-Return-Path: <stable+bounces-191954-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191955-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6C73C268BE
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 19:22:12 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B1DAC26A53
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 19:48:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 141943BCC8A
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 18:22:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 779F81889DCD
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 18:49:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB145351FAA;
-	Fri, 31 Oct 2025 18:22:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24C3F23AB98;
+	Fri, 31 Oct 2025 18:48:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XdIBg2fT"
+	dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b="uMDj1qws"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E7A12F1FF3
-	for <stable@vger.kernel.org>; Fri, 31 Oct 2025 18:22:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0B681A8F97;
+	Fri, 31 Oct 2025 18:48:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.89.141.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761934927; cv=none; b=IQySwvpcaiw+eUimxeqNKlWflStEtP6azuw9xBFO71H28Pn8rSeAD1c/tw+gcTsKm/rFNtR06h8+JuZqCxvrUVdZJV7qE4gk7CKsrNBEt8mX8ARz7WXI4+jlrXBcWkeou1xmIdFFsvZeo4glv2EG560aU5HwCbXkdjOujq+7edo=
+	t=1761936509; cv=none; b=XTTbfsL96nHrxFKtOl2ODV+a0rrdeVnCxrgw/Q3QN6yHSKno/fLxjGFsPVDjLXSvU9mIS8OQIbre7eahFiselzqMbt44DiV94jhEXTdPCgsVGU/tvSo/N30iY1yEYqaAX1qgWr0cUqxEsAxEh7xwxGXR+WCunIP1uEz+F5/mz2I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761934927; c=relaxed/simple;
-	bh=v1UakN9jsJPX7yNaZTbgyP8GASSXUsSW6o8Zsu1ouC0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TGe8D7E5n705nTNKv7O4CDIOdNdJQZu/XNPsbyUzkc8QelHaYVyv8JS+ruVBBNaypPol4j0oZfsLR1ch4/y0Y8LOUx/+H2H7IlL1kbBPhul3X2KZ5JGr0IlOh/nyvk4Csya4GQ7LeoUMnN0t3z1o9mpyIICk/m2FVB/PzkM3GIM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XdIBg2fT; arc=none smtp.client-ip=209.85.160.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-4ecef02647eso20709221cf.1
-        for <stable@vger.kernel.org>; Fri, 31 Oct 2025 11:22:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761934924; x=1762539724; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=WNg7rFgur4Ks9J4kEGe6V9kXX8sEbPHDJWbUh7qSANQ=;
-        b=XdIBg2fTsyB6MmtTo+yrX1t28QOJAQ1pKH6y8hRe+N6k8M/SkISeoDivWrmoKeU90Z
-         QqC4Dpj0vFdhYzvJj4oOaqnre2UCj/ps30NNrBkWrbtEHxNlzkmqs77wKwTSVmQG/Bx9
-         2PchN7iOPBURnsWdZRnP2J6Y6nRZgS7dz2V00MSMfcu69gzgazzKzUi64sp5hLgl5XaP
-         o8CcRbVAplkb5edY1bR7OYzzV94F5aNkf6CFBFcEReUtZNSUxp8WvDrW0kqrjvpBohob
-         4a805RH5aybh00MdtGh7yz+jsCsbeUDpXtWE7XGds0wglqZqKUNzxZJAVJBfXYjLUjb0
-         pNog==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761934924; x=1762539724;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=WNg7rFgur4Ks9J4kEGe6V9kXX8sEbPHDJWbUh7qSANQ=;
-        b=nadEmZEc0sGqs0OI3wnLO7+eG5Ad/83GV6Cr4cmfFCAfMbVmBp+In+H/6SFTmffCBr
-         8XQ36a+eUc5BRFApOSrxhrBp8rZpETDPq1IuUzSDQ9KeYIEDurYS3U3K3ITl3e/UHzgz
-         5rZd+ogfPJ7sfH5i3AsbEvQzBLA5qwEu8OEezliTMxcFeqybUlSrYjA4WqLB29J8rx8M
-         GU6UXOTM/pEliYHIi9XreJ7yrZyqqXLnZVUFui5ZmnZHnQVZlyPiZS+VwILwK+pEmZIv
-         FxQhE/1q+oobLUWDx1w0/7xVICUuMEfRAUzhekKd5yClJfXIGmkGlfVbsMRSSL1dwJoH
-         lkIA==
-X-Forwarded-Encrypted: i=1; AJvYcCVx4poihvTTpYfq9Q4XU1m07Ht2PFpcE8kiKaI+k2GS5Y704iJQXWe7Wb7IUfp1GTctgQM7EBQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyzwyA6vNsb/DLyreFGFlR/19h2Ypb2dAe6a0iKmG7hUB5bqexz
-	ImWWzQSiNQwqA3QxEGwKixlIkoofKifL67Nb9wQGTfk4oXw6LT5c3ZFC
-X-Gm-Gg: ASbGncuF4o/1gwacTECqCfhe3TTz/AZmkUt3fFVpFgFqQkqyz2FM821ZtNpg7G1hlPx
-	SBfd8WR6XMpq+EfDoBx564yFAOKJBBNbCMaK+vwFDuVX/1ZhjWq5lh0EsWuaTaaqeP8ipS8m+gj
-	PR8xX3OrCChUHAAvJRtuJN9fR9mRet2cAYDAF23QbjUV5hp8iHVacx0RsHYWnP0RflumMP+3bfJ
-	DfiBSTkAYQX+G1IgsUE4MGFpwgzbpis6Fc5ikCSGI9c7NJmbuLcdPBM0u7HjTUvFC/R4UxN93Bp
-	lC8j/LN5zJuZ/jlOKZgk/onU4x09QDELmMFcg6NYiDMOFyUMvKQbQVViYNpwVhFROMhpuv1lBYn
-	jTREptCFOd8m+AgWCOvCabpfyll34GqQEOkJLVIIMVJfJO0z9F+KGdHet9gFu4SzPZFCZxmJp0S
-	2G13JCpTJsOkJIlQtH+RtnS+AZjVvBlRhpWSnR5w==
-X-Google-Smtp-Source: AGHT+IE2Y4cl4HdAmAnO0Nju4hog4gnzrMfHzCSqMbr0G0SdGHuWH2lYj4xE8ZKGSbOxQrsimKrLbA==
-X-Received: by 2002:a05:622a:424c:b0:4ec:f285:4256 with SMTP id d75a77b69052e-4ed30dcaa9cmr58851571cf.25.1761934923830;
-        Fri, 31 Oct 2025 11:22:03 -0700 (PDT)
-Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8ac00a9a851sm153268685a.20.2025.10.31.11.22.00
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 31 Oct 2025 11:22:02 -0700 (PDT)
-Message-ID: <3305be28-849a-4892-9f62-706d6faf0f55@gmail.com>
-Date: Fri, 31 Oct 2025 11:21:58 -0700
+	s=arc-20240116; t=1761936509; c=relaxed/simple;
+	bh=NSw/zDktj2wbaxR6bwDrkLPC58C25a1g21UrPPWTd+4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=M8ZKMBo2nKgP9URNrmSTpAwzJy2cTqKU/9sQb4urW8PiV3lpA8rBqV55AslG1MNUXl9ExCo9aRedaD8VjQb/+de3R9im3WFv7O7NoTaOGVsfjQt9gDTYceMkkBC5a9zb9RDFKBnGusfwRaaCeRp88H0JNeAjHTV7294+Q1Si4fM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk; spf=none smtp.mailfrom=ftp.linux.org.uk; dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b=uMDj1qws; arc=none smtp.client-ip=62.89.141.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ftp.linux.org.uk
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
+	Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description;
+	bh=/CaTZRmDMSXRd7oTRFhVkdej8yA5OkfPlk4FGH0eihI=; b=uMDj1qws6oHfsGOgRXigSXeBfk
+	vu/4luu4ZfSi/l9hN8o5K6JCJdxpI90VjmOmW0eCk8pKX+eFeKi7UcEZZINrfis+maPAWp1wGsTFe
+	K8fZAjjha2+SPSN4EkePt/uGYv2atDz7gt1bfqfoYAWWyqLxNQTZCryySJr9zn7oiMlN86zokEaQu
+	DUXo/9bOxCbjhqHuGZ4EZa+JakHHwm1yzJguTFCeY/6hcwAO2KGrbDaJ95mI1N3FFOz3YfhsNqu/J
+	N02DxHj082C8PRRrhJqhjikaVsBPMmMUU755JLhNWeT65y0msoyV4haKigzCM+xtq9rnadKDQDpCk
+	n+ryjPgA==;
+Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vEuAg-00000009sUN-3w6r;
+	Fri, 31 Oct 2025 18:48:23 +0000
+Date: Fri, 31 Oct 2025 18:48:22 +0000
+From: Al Viro <viro@zeniv.linux.org.uk>
+To: Christian Brauner <brauner@kernel.org>
+Cc: GuangFei Luo <luogf2025@163.com>, jack@suse.cz,
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] mount: fix duplicate mounts using the new mount API
+Message-ID: <20251031184822.GC2441659@ZenIV>
+References: <20251025024934.1350492-1-luogf2025@163.com>
+ <20251025033601.GJ2441659@ZenIV>
+ <788d8763-0c2c-458a-9b0b-a5634e50c029@163.com>
+ <20251031-gerufen-rotkohl-7d86b0c3dfe2@brauner>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.6 00/32] 6.6.116-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
- hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
- sr@sladewatkins.com
-References: <20251031140042.387255981@linuxfoundation.org>
-Content-Language: en-US, fr-FR
-From: Florian Fainelli <f.fainelli@gmail.com>
-In-Reply-To: <20251031140042.387255981@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20251031-gerufen-rotkohl-7d86b0c3dfe2@brauner>
+Sender: Al Viro <viro@ftp.linux.org.uk>
 
-On 10/31/25 07:00, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.6.116 release.
-> There are 32 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Sun, 02 Nov 2025 14:00:34 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.116-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+On Fri, Oct 31, 2025 at 01:54:27PM +0100, Christian Brauner wrote:
 
-On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
-BMIPS_GENERIC:
+> > > I agree that it's a regression in mount(8) conversion to new API, but this
+> > > is not a fix.
+> > Thanks for the review. Perhaps fixing this in |move_mount| isn't the best
+> > approach, and I don’t have a good solution yet.
+> 
+> Sorry, no. This restriction never made any sense in the old mount api
+> and it certainly has no place in the new mount api. And it has been
+> _years_ since the new mount api was released. Any fix is likely to break
+> someone else that's already relying on that working.
 
-Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
--- 
-Florian
+Not quite...  I agree that it makes little sense to do that on syscall level,
+but conversion of mount(8) to new API is a different story - that's more recent
+than the introduction of new API itself and it does create a regression on
+the userland side.
+
+IIRC, the original rationale had been "what if somebody keeps clicking on
+something in some kind of filemangler inturdface and gets a pile of overmounts
+there?", but however weak that might be, it is an established behaviour of
+mount(2), with userland callers of mount(2) expecting that semantics.
+
+Blind conversion to new API has changed userland behaviour.  I would argue
+that it's a problem on the userland side, and the only question kernel-side
+is whether there is something we could provide to simplify the life of those
+who do such userland conversions.  A move_mount(2) flag, perhaps, defaulting
+to what we have move_mount(2) do now?
 
