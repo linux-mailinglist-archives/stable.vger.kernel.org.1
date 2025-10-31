@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-191821-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191856-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CFA6C25646
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 15:01:57 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF3C4C256F1
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 15:06:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 491DF34FDE1
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 14:01:57 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B98F14F7885
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 14:03:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B66DAD4B;
-	Fri, 31 Oct 2025 14:01:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92574221FB6;
+	Fri, 31 Oct 2025 14:03:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WhbGcXUK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qsDFN1Hq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B49534D387;
-	Fri, 31 Oct 2025 14:01:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F0EB210F59;
+	Fri, 31 Oct 2025 14:03:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761919314; cv=none; b=chpXPROzncY52rGx8EcOfbCcxG7YSITguYP7otUlyBHylfgF2ZU6m6P0YcY4fqTGYmO3YRujajHnaMJM1diBuctJ2E9NyRKWHznQnWffiPsMjU8yvE94Smfa01sewFK6Y7lfiuiQXjAi31kiev52q3OkGpyGvufevQg5Zg+t1xY=
+	t=1761919416; cv=none; b=jtNSqQoCG7n58rerPqZ6mxW37RtTJPCLYOnUujriY0LH7m1ozyzwxFNHwmSOI68lQb5PAK/KHnYjD6tWLUy82tP7gmAgZW9zgMlyNze3J6YKaLjmek6trDdxXCcFpOrNpFVObwnpH1JjyIqEPAePB/BlPUay2+DiShQntAX1PEQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761919314; c=relaxed/simple;
-	bh=AmQCYmpB+20MPMFImT37agnPb+Fmzai7aFXuUMrhPDI=;
+	s=arc-20240116; t=1761919416; c=relaxed/simple;
+	bh=B/9syWr6Unb8BNrVxQebEOs+mfzToPpJiI2JQNcyD9g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BkIOGrrhOh0m+FtF3JnCWTrAslnQfdsUMQshVvbhN3OiF0KA3jlEsg6RqlopYDoe68Ok6/52FbjAQm9SsrFJWB3eqrQg5aUHHpodljyavELfxoeo1aBQuFvU7cVsgHl6SKB6wc+x94GugDsGQjsAxe2Rv29T/RvwEZj2v4jafJg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WhbGcXUK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 720FCC4CEE7;
-	Fri, 31 Oct 2025 14:01:53 +0000 (UTC)
+	 MIME-Version; b=uNVINaPfIrCw2e6hp1dQKcMUn1W2MRZVOJ90asfWAPtLH4Eboi0YCipczTqhSi+iKiCKtPZWzMxUBepS/bwFE1nU1iJejWHwGyUtAlMXJybmpwmYZadVv3jFELjhUZL7Et5ElFaygzU56VsSjifknwxR8RqTj+4NA2blzdKtcMY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qsDFN1Hq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B00D9C4CEE7;
+	Fri, 31 Oct 2025 14:03:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761919313;
-	bh=AmQCYmpB+20MPMFImT37agnPb+Fmzai7aFXuUMrhPDI=;
+	s=korg; t=1761919416;
+	bh=B/9syWr6Unb8BNrVxQebEOs+mfzToPpJiI2JQNcyD9g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WhbGcXUKXrDfzHuPGO5Uc9yBTqtzKftKGfcr9ZRiyz7prUV8DZkBRmVVPtIpI4Zwt
-	 YCtkiMIZPmfZ73y3c0QtkN1D3wlAlcAEN/L132D+6NfwmUzKg/nWOW+VhQeh5sOi4S
-	 6Lue9YUenX3yLAuOYLGZtgZ9isHi1jzAfXwao578=
+	b=qsDFN1Hq9vkwxRTjwnuJVhr9R0mkFVPAdC6lwTPvVKsXAE2fpe+o4GOt5EzzdPv17
+	 pU1l84xmkW83StJrwrHIo7jT7nr2n7uWMBlQGg/7hc+hCCNa9JkqAK6zSaUA2AC7TT
+	 2wZzdvaiJAKAyUdFbo8gw5iFs+4iX+bQFh0zK6cU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiang Mei <xmei5@asu.edu>,
-	Cong Wang <xiyou.wangcong@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.6 01/32] net/sched: sch_qfq: Fix null-deref in agg_dequeue
-Date: Fri, 31 Oct 2025 15:00:55 +0100
-Message-ID: <20251031140042.425168412@linuxfoundation.org>
+	Dapeng Mi <dapeng1.mi@linux.intel.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Yi Lai <yi1.lai@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 03/40] perf/x86/intel: Add ICL_FIXED_0_ADAPTIVE bit into INTEL_FIXED_BITS_MASK
+Date: Fri, 31 Oct 2025 15:00:56 +0100
+Message-ID: <20251031140044.025133806@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251031140042.387255981@linuxfoundation.org>
-References: <20251031140042.387255981@linuxfoundation.org>
+In-Reply-To: <20251031140043.939381518@linuxfoundation.org>
+References: <20251031140043.939381518@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,134 +64,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiang Mei <xmei5@asu.edu>
+From: Dapeng Mi <dapeng1.mi@linux.intel.com>
 
-commit dd831ac8221e691e9e918585b1003c7071df0379 upstream.
+[ Upstream commit 2676dbf9f4fb7f6739d1207c0f1deaf63124642a ]
 
-To prevent a potential crash in agg_dequeue (net/sched/sch_qfq.c)
-when cl->qdisc->ops->peek(cl->qdisc) returns NULL, we check the return
-value before using it, similar to the existing approach in sch_hfsc.c.
+ICL_FIXED_0_ADAPTIVE is missed to be added into INTEL_FIXED_BITS_MASK,
+add it.
 
-To avoid code duplication, the following changes are made:
+With help of this new INTEL_FIXED_BITS_MASK, intel_pmu_enable_fixed() can
+be optimized. The old fixed counter control bits can be unconditionally
+cleared with INTEL_FIXED_BITS_MASK and then set new control bits base on
+new configuration.
 
-1. Changed qdisc_warn_nonwc(include/net/pkt_sched.h) into a static
-inline function.
-
-2. Moved qdisc_peek_len from net/sched/sch_hfsc.c to
-include/net/pkt_sched.h so that sch_qfq can reuse it.
-
-3. Applied qdisc_peek_len in agg_dequeue to avoid crashing.
-
-Signed-off-by: Xiang Mei <xmei5@asu.edu>
-Reviewed-by: Cong Wang <xiyou.wangcong@gmail.com>
-Link: https://patch.msgid.link/20250705212143.3982664-1-xmei5@asu.edu
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Kan Liang <kan.liang@linux.intel.com>
+Tested-by: Yi Lai <yi1.lai@intel.com>
+Link: https://lore.kernel.org/r/20250820023032.17128-7-dapeng1.mi@linux.intel.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/pkt_sched.h |   25 ++++++++++++++++++++++++-
- net/sched/sch_api.c     |   10 ----------
- net/sched/sch_hfsc.c    |   16 ----------------
- net/sched/sch_qfq.c     |    2 +-
- 4 files changed, 25 insertions(+), 28 deletions(-)
+ arch/x86/events/intel/core.c      | 10 +++-------
+ arch/x86/include/asm/perf_event.h |  6 +++++-
+ arch/x86/kvm/pmu.h                |  2 +-
+ 3 files changed, 9 insertions(+), 9 deletions(-)
 
---- a/include/net/pkt_sched.h
-+++ b/include/net/pkt_sched.h
-@@ -112,7 +112,6 @@ struct qdisc_rate_table *qdisc_get_rtab(
- 					struct netlink_ext_ack *extack);
- void qdisc_put_rtab(struct qdisc_rate_table *tab);
- void qdisc_put_stab(struct qdisc_size_table *tab);
--void qdisc_warn_nonwc(const char *txt, struct Qdisc *qdisc);
- bool sch_direct_xmit(struct sk_buff *skb, struct Qdisc *q,
- 		     struct net_device *dev, struct netdev_queue *txq,
- 		     spinlock_t *root_lock, bool validate);
-@@ -306,4 +305,28 @@ static inline bool tc_qdisc_stats_dump(s
- 	return true;
- }
- 
-+static inline void qdisc_warn_nonwc(const char *txt, struct Qdisc *qdisc)
-+{
-+	if (!(qdisc->flags & TCQ_F_WARN_NONWC)) {
-+		pr_warn("%s: %s qdisc %X: is non-work-conserving?\n",
-+			txt, qdisc->ops->id, qdisc->handle >> 16);
-+		qdisc->flags |= TCQ_F_WARN_NONWC;
-+	}
-+}
-+
-+static inline unsigned int qdisc_peek_len(struct Qdisc *sch)
-+{
-+	struct sk_buff *skb;
-+	unsigned int len;
-+
-+	skb = sch->ops->peek(sch);
-+	if (unlikely(skb == NULL)) {
-+		qdisc_warn_nonwc("qdisc_peek_len", sch);
-+		return 0;
-+	}
-+	len = qdisc_pkt_len(skb);
-+
-+	return len;
-+}
-+
- #endif
---- a/net/sched/sch_api.c
-+++ b/net/sched/sch_api.c
-@@ -599,16 +599,6 @@ out:
- 	qdisc_skb_cb(skb)->pkt_len = pkt_len;
- }
- 
--void qdisc_warn_nonwc(const char *txt, struct Qdisc *qdisc)
--{
--	if (!(qdisc->flags & TCQ_F_WARN_NONWC)) {
--		pr_warn("%s: %s qdisc %X: is non-work-conserving?\n",
--			txt, qdisc->ops->id, qdisc->handle >> 16);
--		qdisc->flags |= TCQ_F_WARN_NONWC;
--	}
--}
--EXPORT_SYMBOL(qdisc_warn_nonwc);
--
- static enum hrtimer_restart qdisc_watchdog(struct hrtimer *timer)
+diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
+index 36d8404f406de..acc0774519ce2 100644
+--- a/arch/x86/events/intel/core.c
++++ b/arch/x86/events/intel/core.c
+@@ -2812,8 +2812,8 @@ static void intel_pmu_enable_fixed(struct perf_event *event)
  {
- 	struct qdisc_watchdog *wd = container_of(timer, struct qdisc_watchdog,
---- a/net/sched/sch_hfsc.c
-+++ b/net/sched/sch_hfsc.c
-@@ -835,22 +835,6 @@ update_vf(struct hfsc_class *cl, unsigne
- 	}
+ 	struct cpu_hw_events *cpuc = this_cpu_ptr(&cpu_hw_events);
+ 	struct hw_perf_event *hwc = &event->hw;
+-	u64 mask, bits = 0;
+ 	int idx = hwc->idx;
++	u64 bits = 0;
+ 
+ 	if (is_topdown_idx(idx)) {
+ 		struct cpu_hw_events *cpuc = this_cpu_ptr(&cpu_hw_events);
+@@ -2849,14 +2849,10 @@ static void intel_pmu_enable_fixed(struct perf_event *event)
+ 
+ 	idx -= INTEL_PMC_IDX_FIXED;
+ 	bits = intel_fixed_bits_by_idx(idx, bits);
+-	mask = intel_fixed_bits_by_idx(idx, INTEL_FIXED_BITS_MASK);
+-
+-	if (x86_pmu.intel_cap.pebs_baseline && event->attr.precise_ip) {
++	if (x86_pmu.intel_cap.pebs_baseline && event->attr.precise_ip)
+ 		bits |= intel_fixed_bits_by_idx(idx, ICL_FIXED_0_ADAPTIVE);
+-		mask |= intel_fixed_bits_by_idx(idx, ICL_FIXED_0_ADAPTIVE);
+-	}
+ 
+-	cpuc->fixed_ctrl_val &= ~mask;
++	cpuc->fixed_ctrl_val &= ~intel_fixed_bits_by_idx(idx, INTEL_FIXED_BITS_MASK);
+ 	cpuc->fixed_ctrl_val |= bits;
  }
  
--static unsigned int
--qdisc_peek_len(struct Qdisc *sch)
--{
--	struct sk_buff *skb;
--	unsigned int len;
--
--	skb = sch->ops->peek(sch);
--	if (unlikely(skb == NULL)) {
--		qdisc_warn_nonwc("qdisc_peek_len", sch);
--		return 0;
--	}
--	len = qdisc_pkt_len(skb);
--
--	return len;
--}
--
- static void
- hfsc_adjust_levels(struct hfsc_class *cl)
- {
---- a/net/sched/sch_qfq.c
-+++ b/net/sched/sch_qfq.c
-@@ -1002,7 +1002,7 @@ static struct sk_buff *agg_dequeue(struc
+diff --git a/arch/x86/include/asm/perf_event.h b/arch/x86/include/asm/perf_event.h
+index aa351c4a20eee..c69b6498f6eaa 100644
+--- a/arch/x86/include/asm/perf_event.h
++++ b/arch/x86/include/asm/perf_event.h
+@@ -35,7 +35,6 @@
+ #define ARCH_PERFMON_EVENTSEL_EQ			(1ULL << 36)
+ #define ARCH_PERFMON_EVENTSEL_UMASK2			(0xFFULL << 40)
  
- 	if (cl->qdisc->q.qlen == 0) /* no more packets, remove from list */
- 		list_del_init(&cl->alist);
--	else if (cl->deficit < qdisc_pkt_len(cl->qdisc->ops->peek(cl->qdisc))) {
-+	else if (cl->deficit < qdisc_peek_len(cl->qdisc)) {
- 		cl->deficit += agg->lmax;
- 		list_move_tail(&cl->alist, &agg->active);
- 	}
+-#define INTEL_FIXED_BITS_MASK				0xFULL
+ #define INTEL_FIXED_BITS_STRIDE			4
+ #define INTEL_FIXED_0_KERNEL				(1ULL << 0)
+ #define INTEL_FIXED_0_USER				(1ULL << 1)
+@@ -47,6 +46,11 @@
+ #define ICL_EVENTSEL_ADAPTIVE				(1ULL << 34)
+ #define ICL_FIXED_0_ADAPTIVE				(1ULL << 32)
+ 
++#define INTEL_FIXED_BITS_MASK					\
++	(INTEL_FIXED_0_KERNEL | INTEL_FIXED_0_USER |		\
++	 INTEL_FIXED_0_ANYTHREAD | INTEL_FIXED_0_ENABLE_PMI |	\
++	 ICL_FIXED_0_ADAPTIVE)
++
+ #define intel_fixed_bits_by_idx(_idx, _bits)			\
+ 	((_bits) << ((_idx) * INTEL_FIXED_BITS_STRIDE))
+ 
+diff --git a/arch/x86/kvm/pmu.h b/arch/x86/kvm/pmu.h
+index ad89d0bd60058..103604c4b33b5 100644
+--- a/arch/x86/kvm/pmu.h
++++ b/arch/x86/kvm/pmu.h
+@@ -13,7 +13,7 @@
+ #define MSR_IA32_MISC_ENABLE_PMU_RO_MASK (MSR_IA32_MISC_ENABLE_PEBS_UNAVAIL |	\
+ 					  MSR_IA32_MISC_ENABLE_BTS_UNAVAIL)
+ 
+-/* retrieve the 4 bits for EN and PMI out of IA32_FIXED_CTR_CTRL */
++/* retrieve a fixed counter bits out of IA32_FIXED_CTR_CTRL */
+ #define fixed_ctrl_field(ctrl_reg, idx) \
+ 	(((ctrl_reg) >> ((idx) * INTEL_FIXED_BITS_STRIDE)) & INTEL_FIXED_BITS_MASK)
+ 
+-- 
+2.51.0
+
 
 
 
