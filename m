@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-191823-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191886-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 013B9C25647
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 15:02:06 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50ED5C25769
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 15:09:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E507188F4B0
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 14:02:27 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id AFAE14F9A40
+	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 14:05:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5925121B1BC;
-	Fri, 31 Oct 2025 14:02:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5178522A4D6;
+	Fri, 31 Oct 2025 14:05:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eFJtlKPm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T4fwnhkV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 127D019DFA2;
-	Fri, 31 Oct 2025 14:01:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EF7521FF25;
+	Fri, 31 Oct 2025 14:05:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761919320; cv=none; b=uPrAAbBpz9CJkjJibaEItzFOhVfecmS4v2t/Xi+iOKjV1YSGZLh0V5/bQ/+omPRUm4KlYnt4n4JosZiPjZiLBFiZ+MIBMsHP7I+0/i/ajGJGNflAC8qXYaDWR+bSmqH/1uWDfMjiSdGQglhqp3joHdNmmGI4pEDXxSs2QQltrsM=
+	t=1761919500; cv=none; b=ozrgsOjtN+2qanQ9h1FN6wSsSYAfRpq2TJfgYAZR/kifY9kSvfjkQm820Ci2Q3s6tGky7KizrrHAaKxL+utq0Db6Cmg4f2OCLZAXvmc1s9AeMPODb6lFsqodETFFS2PejWJqKsNaTdF21TIz1Uh2zP5c2jKOEUl8Zhyl/1GRRcU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761919320; c=relaxed/simple;
-	bh=8TJ8xFqIE8B2nuAW2/qgrOOnMBbpeADTgFSkiyqKg0o=;
+	s=arc-20240116; t=1761919500; c=relaxed/simple;
+	bh=MmbUKYhZOYj8sbWfhivSqxQtfjYMKJHm2mgbXUEU6EQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BXh/a8C6cDIsVqG3tumPz9YD+OBXL0yyKbGyjOpGTysrMqdycDhi2oZMHL5tDPzwZcMBxgOSX698B9r+FwoX2pfFUBHjCH117ftpIie0Qg85da2BY+MJ84OMWsgq3tWv8N/vybn7w9kXHRIHGtFCGiXG2yjg/ztgfBBxwGc0HgI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eFJtlKPm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B2D9C4CEE7;
-	Fri, 31 Oct 2025 14:01:59 +0000 (UTC)
+	 MIME-Version; b=dM/McfRV0uXwFyj/Uvd+BbGw+x2T97XTmQf4sM4Z7xegOZi3UWH2T5UJuE1r5R8okbByrRNYfHkzJpW/+U9FZkgkYNMCzUdRbtrT/Y/Kg2sGXPIgLLy4rKqYrvaSZdJZ99uMkRYgDCq3Jkk2uf8J24Opbh+wG9YpxgfnxZb4nZ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T4fwnhkV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88E9AC4CEE7;
+	Fri, 31 Oct 2025 14:04:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761919319;
-	bh=8TJ8xFqIE8B2nuAW2/qgrOOnMBbpeADTgFSkiyqKg0o=;
+	s=korg; t=1761919499;
+	bh=MmbUKYhZOYj8sbWfhivSqxQtfjYMKJHm2mgbXUEU6EQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eFJtlKPmhlPSsQ8V9ebZbXR0iTEZQIjxDVfWGAPLvvOdDwXn+1KGHBS+5Q9SXWj4N
-	 yj0g0BJtXkTS33vOdn43/GpZTiCJtllk5kVJ6nQ9hl80RrrpJAMvkia1UlHd+IRnfQ
-	 QYZRvTd6eMpEz64q94ixaQgt/uDaUUAwaEeJIrzo=
+	b=T4fwnhkVfal5dDdV9qa/KHz4pKqejIhJPP/qugsMg5uCnc5NDuUUcakpDDSVx6wGX
+	 VHa5UU240Z8jxwGrYoskNGY0JYBn1hNmeMzBDd3qT7fhT1YnhsQQP6Q/pim4ZYieCF
+	 hU3Dus1jqI5s1Ir4v9GFL/mxhm5bpe2PfU6nGUIc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thorsten Blum <thorsten.blum@linux.dev>,
+	Boris Burkov <boris@bur.io>,
+	Qu Wenruo <wqu@suse.com>,
+	Filipe Manana <fdmanana@suse.com>,
 	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 11/32] btrfs: scrub: replace max_t()/min_t() with clamp() in scrub_throttle_dev_io()
+Subject: [PATCH 6.12 12/40] btrfs: abort transaction on specific error places when walking log tree
 Date: Fri, 31 Oct 2025 15:01:05 +0100
-Message-ID: <20251031140042.687885773@linuxfoundation.org>
+Message-ID: <20251031140044.319177388@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251031140042.387255981@linuxfoundation.org>
-References: <20251031140042.387255981@linuxfoundation.org>
+In-Reply-To: <20251031140043.939381518@linuxfoundation.org>
+References: <20251031140043.939381518@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +64,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thorsten Blum <thorsten.blum@linux.dev>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit a7f3dfb8293c4cee99743132d69863a92e8f4875 ]
+[ Upstream commit 6ebd726b104fa99d47c0d45979e6a6109844ac18 ]
 
-Replace max_t() followed by min_t() with a single clamp().
+We do several things while walking a log tree (for replaying and for
+freeing a log tree) like reading extent buffers and cleaning them up,
+but we don't immediately abort the transaction, or turn the fs into an
+error state, when one of these things fails. Instead we the transaction
+abort or turn the fs into error state in the caller of the entry point
+function that walks a log tree - walk_log_tree() - which means we don't
+get to know exactly where an error came from.
 
-As was pointed by David Laight in
-https://lore.kernel.org/linux-btrfs/20250906122458.75dfc8f0@pumpkin/
-the calculation may overflow u32 when the input value is too large, so
-clamp_t() is not used.  In practice the expected values are in range of
-megabytes to gigabytes (throughput limit) so the bug would not happen.
+Improve on this by doing a transaction abort / turn fs into error state
+after each such failure so that when it happens we have a better
+understanding where the failure comes from. This deliberately leaves
+the transaction abort / turn fs into error state in the callers of
+walk_log_tree() as to ensure we don't get into an inconsistent state in
+case we forget to do it deeper in call chain. It also deliberately does
+not do it after errors from the calls to the callback defined in
+struct walk_control::process_func(), as we will do it later on another
+patch.
 
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
-Reviewed-by: David Sterba <dsterba@suse.com>
-[ Use clamp() and add explanation. ]
+Reviewed-by: Boris Burkov <boris@bur.io>
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
 Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/scrub.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ fs/btrfs/tree-log.c | 33 ++++++++++++++++++++++++++++-----
+ 1 file changed, 28 insertions(+), 5 deletions(-)
 
-diff --git a/fs/btrfs/scrub.c b/fs/btrfs/scrub.c
-index 7632d652a1257..4a5a5ee360e57 100644
---- a/fs/btrfs/scrub.c
-+++ b/fs/btrfs/scrub.c
-@@ -1271,8 +1271,7 @@ static void scrub_throttle_dev_io(struct scrub_ctx *sctx, struct btrfs_device *d
- 	 * Slice is divided into intervals when the IO is submitted, adjust by
- 	 * bwlimit and maximum of 64 intervals.
- 	 */
--	div = max_t(u32, 1, (u32)(bwlimit / (16 * 1024 * 1024)));
--	div = min_t(u32, 64, div);
-+	div = clamp(bwlimit / (16 * 1024 * 1024), 1, 64);
+diff --git a/fs/btrfs/tree-log.c b/fs/btrfs/tree-log.c
+index 0022ad003791f..f3ca530f032df 100644
+--- a/fs/btrfs/tree-log.c
++++ b/fs/btrfs/tree-log.c
+@@ -2612,15 +2612,24 @@ static int unaccount_log_buffer(struct btrfs_fs_info *fs_info, u64 start)
+ static int clean_log_buffer(struct btrfs_trans_handle *trans,
+ 			    struct extent_buffer *eb)
+ {
++	int ret;
++
+ 	btrfs_tree_lock(eb);
+ 	btrfs_clear_buffer_dirty(trans, eb);
+ 	wait_on_extent_buffer_writeback(eb);
+ 	btrfs_tree_unlock(eb);
  
- 	/* Start new epoch, set deadline */
- 	now = ktime_get();
+-	if (trans)
+-		return btrfs_pin_reserved_extent(trans, eb);
++	if (trans) {
++		ret = btrfs_pin_reserved_extent(trans, eb);
++		if (ret)
++			btrfs_abort_transaction(trans, ret);
++		return ret;
++	}
+ 
+-	return unaccount_log_buffer(eb->fs_info, eb->start);
++	ret = unaccount_log_buffer(eb->fs_info, eb->start);
++	if (ret)
++		btrfs_handle_fs_error(eb->fs_info, ret, NULL);
++	return ret;
+ }
+ 
+ static noinline int walk_down_log_tree(struct btrfs_trans_handle *trans,
+@@ -2656,8 +2665,14 @@ static noinline int walk_down_log_tree(struct btrfs_trans_handle *trans,
+ 		next = btrfs_find_create_tree_block(fs_info, bytenr,
+ 						    btrfs_header_owner(cur),
+ 						    *level - 1);
+-		if (IS_ERR(next))
+-			return PTR_ERR(next);
++		if (IS_ERR(next)) {
++			ret = PTR_ERR(next);
++			if (trans)
++				btrfs_abort_transaction(trans, ret);
++			else
++				btrfs_handle_fs_error(fs_info, ret, NULL);
++			return ret;
++		}
+ 
+ 		if (*level == 1) {
+ 			ret = wc->process_func(root, next, wc, ptr_gen,
+@@ -2672,6 +2687,10 @@ static noinline int walk_down_log_tree(struct btrfs_trans_handle *trans,
+ 				ret = btrfs_read_extent_buffer(next, &check);
+ 				if (ret) {
+ 					free_extent_buffer(next);
++					if (trans)
++						btrfs_abort_transaction(trans, ret);
++					else
++						btrfs_handle_fs_error(fs_info, ret, NULL);
+ 					return ret;
+ 				}
+ 
+@@ -2687,6 +2706,10 @@ static noinline int walk_down_log_tree(struct btrfs_trans_handle *trans,
+ 		ret = btrfs_read_extent_buffer(next, &check);
+ 		if (ret) {
+ 			free_extent_buffer(next);
++			if (trans)
++				btrfs_abort_transaction(trans, ret);
++			else
++				btrfs_handle_fs_error(fs_info, ret, NULL);
+ 			return ret;
+ 		}
+ 
 -- 
 2.51.0
 
