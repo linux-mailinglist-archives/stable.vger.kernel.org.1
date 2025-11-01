@@ -1,142 +1,102 @@
-Return-Path: <stable+bounces-191975-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-191976-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3BBEC27356
-	for <lists+stable@lfdr.de>; Sat, 01 Nov 2025 00:42:37 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 734A8C2745F
+	for <lists+stable@lfdr.de>; Sat, 01 Nov 2025 01:38:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 617C44E595A
-	for <lists+stable@lfdr.de>; Fri, 31 Oct 2025 23:42:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C0F531897A78
+	for <lists+stable@lfdr.de>; Sat,  1 Nov 2025 00:38:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 391F32EB840;
-	Fri, 31 Oct 2025 23:42:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC9741E9905;
+	Sat,  1 Nov 2025 00:38:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gALIJ4nS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sfkMZ9sW"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43BB932C921
-	for <stable@vger.kernel.org>; Fri, 31 Oct 2025 23:42:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 809EC1DFE26;
+	Sat,  1 Nov 2025 00:38:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761954155; cv=none; b=qxaCaoHPhOcgYPMamMlodQ+ZRPnABmvHGMzKI0zWvREcas2znbIOGjrvfuQ6MBfGUllVJkid3KqbbzsVsM2RmQfvSs1RrptB3te0POSOk3iRW3huVPfLsx+X76gJevfVGR0orwt3i/dLB4Evdl807vQysjkNC/eOb9QgPsrhUlc=
+	t=1761957493; cv=none; b=Ta/CQRItgdMpk+Z3UD8ttSaEbgCStiOEr/VxAL6U3ZBNNz6EDXmCOoSmPwlGtYj1oBFTK3ZQdnkNrgv6FlpkcVxqTeD7fbCGpvbIJVTDo6xVHyH0FTsh/rtoQuquqY5d+WDrGEVNOxdQLBdCCsID1gnr0wKgAx02eJbreDr6RlQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761954155; c=relaxed/simple;
-	bh=i/bb4Ywf2Nr6uloK3QTfhPAkrvD5TNMerqRE20boViM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=neQ63kUXNRdEuljuAMcg5afMMuiukvQqCfopHH/gmbjJ2+cTbrPgUt7aM6aQUAQzBpQVT3GqXqtGLqP0ZgSZawJ676c+HTWonBGNoUdgirUOfjiOhYTcoSb+HPsieLoejPnWTfxjMzWwIRNBdMs+O6TZD51zMEhymji+rKkDHgQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gALIJ4nS; arc=none smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1761954152; x=1793490152;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=i/bb4Ywf2Nr6uloK3QTfhPAkrvD5TNMerqRE20boViM=;
-  b=gALIJ4nSMtb4dHHXIhKWUqN9+8BzC9FSYv5SKUxwnTIN7StahebN1f8Q
-   WCxwTpXbpXrPx9zTncTgmQFHo2RoDGrLhmJfarFTM+gjTt6CIqIaPjuEY
-   GnWvNhfNrJQvmvuG7Z6XcbldoaWLG2uVleY1w2WzF5tuEBFE+0vFGQVXC
-   DZUkl7uU3e9360nlVMZ+pXJTfsnyG7pTtUS0mYAh8/usvGgMeCzGYgDk4
-   K7bmWPJ2YJXPxxzfxamVnUapypg4J8UCWVeD39rur2TiewEy2/uEhiVWi
-   1fCaEDtwOnSInrpD9ZFyYACNTs5Wn441JwIWT4VJlFPhnyZsboqjbl/24
-   Q==;
-X-CSE-ConnectionGUID: n2JFUtg3T2mcJjSMhayDcw==
-X-CSE-MsgGUID: Jwu/bZVbRVa+VhAW7jQhSA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11599"; a="75470367"
-X-IronPort-AV: E=Sophos;i="6.19,270,1754982000"; 
-   d="scan'208";a="75470367"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Oct 2025 16:42:32 -0700
-X-CSE-ConnectionGUID: SUqpsbngTp23PzfQMvyc3A==
-X-CSE-MsgGUID: jBzmWsLNSDOAutNknt0cpw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,270,1754982000"; 
-   d="scan'208";a="186021323"
-Received: from aschofie-mobl2.amr.corp.intel.com (HELO localhost) ([10.124.220.108])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Oct 2025 16:42:31 -0700
-From: Alison Schofield <alison.schofield@intel.com>
-To: Ira Weiny <ira.weiny@intel.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Vishal Verma <vishal.l.verma@intel.com>,
-	Dave Jiang <dave.jiang@intel.com>
-Cc: Alison Schofield <alison.schofield@intel.com>,
-	nvdimm@lists.linux.dev,
-	stable@vger.kernel.org
-Subject: [PATCH v2] tools/testing/nvdimm: Use per-DIMM device handle
-Date: Fri, 31 Oct 2025 16:42:20 -0700
-Message-ID: <20251031234227.1303113-1-alison.schofield@intel.com>
-X-Mailer: git-send-email 2.47.0
+	s=arc-20240116; t=1761957493; c=relaxed/simple;
+	bh=F2oSnxRHa/4b3IZKclz9XCbBCnTuPZVJ75m1NK+7tPo=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=rPBjagDZi4cKVVMYgqZ5Tt1B9Z2lg/UeqVNUTS0Izit2yRvMoxDOxSlfJOE5934bIbfRYa5gRBqiSjvQWH523PQ23GGkKdfg5fI4l+1F9CzWtl0QV3+6GHR35o/W4brgetQ7HVHirIUXg5sfJK77I3uObS5fvbLUpixrSTNfhTY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sfkMZ9sW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70324C4CEE7;
+	Sat,  1 Nov 2025 00:38:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761957492;
+	bh=F2oSnxRHa/4b3IZKclz9XCbBCnTuPZVJ75m1NK+7tPo=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=sfkMZ9sW5nBaVwwvOM1pkZciGDXyoM/YalIFfGT61jaQNn5QoxvyjD+tAlKC98UqS
+	 Pp0PTJrDhPny8IGXrLf5m5DhvOluaK9+FrZA9/WO3J80Ux7fI37INaQTE96Y96T27S
+	 MovJnuNpXC7Up03pBcNxphLqO6EKrJP06H/IS4VZg608uB/ufhw52YN5hOdhTgmwmP
+	 CRRpUuet29tNXPfAdDWfujIgNJoxdf//RqZzuaF9uHPcsSlkvw7VPTI+OKtU6Fva1g
+	 SzfLrA2uaZqxVwFkO6u5nFRAFSZsTjveP9OJWqkgIkRWlqNRtsbAL1Ps2lLJDnlKmY
+	 WVo8JCNjOvcNA==
+Date: Fri, 31 Oct 2025 17:38:11 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Tim Hostetler <thostet@google.com>
+Cc: netdev@vger.kernel.org, richardcochran@gmail.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, Kuniyuki Iwashima
+ <kuniyu@google.com>, Harshitha Ramamurthy <hramamurthy@google.com>
+Subject: Re: [PATCH net] ptp: Return -EINVAL on ptp_clock_register if
+ required ops are NULL
+Message-ID: <20251031173811.63bfb9e0@kernel.org>
+In-Reply-To: <20251030180832.388729-1-thostet@google.com>
+References: <20251030180832.388729-1-thostet@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-KASAN reports a global-out-of-bounds access when running these nfit
-tests: clear.sh, pmem-errors.sh, pfn-meta-errors.sh, btt-errors.sh,
-daxdev-errors.sh, and inject-error.sh.
+On Thu, 30 Oct 2025 11:08:32 -0700 Tim Hostetler wrote:
+> ptp_clock should never be registered unless it stubs one of gettimex64()
+> or gettime64() and settime64(). WARN_ON_ONCE and error out if either set
+> of function pointers is null.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: d7d38f5bd7be ("ptp: use the 64 bit get/set time methods for the posix clock.")
 
-[] BUG: KASAN: global-out-of-bounds in nfit_test_ctl+0x769f/0x7840 [nfit_test]
-[] Read of size 4 at addr ffffffffc03ea01c by task ndctl/1215
-[] The buggy address belongs to the variable:
-[] handle+0x1c/0x1df4 [nfit_test]
+This needs to go to net-next without the tags above.
+The check can only help with new drivers, old ones _must_ be fixed 
+like gve was. Not registering a driver is a regression.
 
-nfit_test_search_spa() uses handle[nvdimm->id] to retrieve a device
-handle and triggers a KASAN error when it reads past the end of the
-handle array. It should not be indexing the handle array at all.
+> Suggested-by: Kuniyuki Iwashima <kuniyu@google.com>
+> Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+> Reviewed-by: Harshitha Ramamurthy <hramamurthy@google.com>
+> Signed-off-by: Tim Hostetler <thostet@google.com>
+> ---
+>  drivers/ptp/ptp_clock.c | 4 ++++
+>  1 file changed, 4 insertions(+)
+> 
+> diff --git a/drivers/ptp/ptp_clock.c b/drivers/ptp/ptp_clock.c
+> index ef020599b771..0bc79076771b 100644
+> --- a/drivers/ptp/ptp_clock.c
+> +++ b/drivers/ptp/ptp_clock.c
+> @@ -325,6 +325,10 @@ struct ptp_clock *ptp_clock_register(struct ptp_clock_info *info,
+>  	if (info->n_alarm > PTP_MAX_ALARMS)
 
-The correct device handle is stored in per-DIMM test data. Each DIMM
-has a struct nfit_mem that embeds a struct acpi_nfit_memdev that
-describes the NFIT device handle. Use that device handle here. 
+->n_alarm check is also input validation, you should probably fold it
+into your new WARN_ON_ONCE(). Either that or remove the WARN_ON_ONCE()
+annotation below. As is the checks are inconsistent.
 
-Fixes: 10246dc84dfc ("acpi nfit: nfit_test supports translate SPA")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Alison Schofield <alison.schofield@intel.com>
----
-
-Changes in v2:
-- Use the correct handle in per-DIMM test data (Dan)
-- Update commit message and log
-- Update Fixes Tag
-
-
- tools/testing/nvdimm/test/nfit.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
-
-diff --git a/tools/testing/nvdimm/test/nfit.c b/tools/testing/nvdimm/test/nfit.c
-index cfd4378e2129..f87e9f251d13 100644
---- a/tools/testing/nvdimm/test/nfit.c
-+++ b/tools/testing/nvdimm/test/nfit.c
-@@ -670,6 +670,7 @@ static int nfit_test_search_spa(struct nvdimm_bus *bus,
- 		.addr = spa->spa,
- 		.region = NULL,
- 	};
-+	struct nfit_mem *nfit_mem;
- 	u64 dpa;
- 
- 	ret = device_for_each_child(&bus->dev, &ctx,
-@@ -687,8 +688,12 @@ static int nfit_test_search_spa(struct nvdimm_bus *bus,
- 	 */
- 	nd_mapping = &nd_region->mapping[nd_region->ndr_mappings - 1];
- 	nvdimm = nd_mapping->nvdimm;
-+	nfit_mem = nvdimm_provider_data(nvdimm);
-+	if (!nfit_mem)
-+		return -EINVAL;
- 
--	spa->devices[0].nfit_device_handle = handle[nvdimm->id];
-+	spa->devices[0].nfit_device_handle =
-+		__to_nfit_memdev(nfit_mem)->device_handle;
- 	spa->num_nvdimms = 1;
- 	spa->devices[0].dpa = dpa;
- 
-
-base-commit: 211ddde0823f1442e4ad052a2f30f050145ccada
--- 
-2.37.3
-
+>  		return ERR_PTR(-EINVAL);
+>  
+> +	if (WARN_ON_ONCE((!info->gettimex64 && !info->gettime64) ||
+> +			 !info->settime64))
+> +		return ERR_PTR(-EINVAL);
+> +
 
