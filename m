@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-192052-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192053-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9B29C28FFE
-	for <lists+stable@lfdr.de>; Sun, 02 Nov 2025 14:56:42 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC04AC29001
+	for <lists+stable@lfdr.de>; Sun, 02 Nov 2025 14:56:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 88ADF3A94C9
-	for <lists+stable@lfdr.de>; Sun,  2 Nov 2025 13:56:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3F5853A97C3
+	for <lists+stable@lfdr.de>; Sun,  2 Nov 2025 13:56:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B9811F2BAD;
-	Sun,  2 Nov 2025 13:56:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 383B72D05D;
+	Sun,  2 Nov 2025 13:56:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o1VE7vzq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AY0jr33Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B68E1EEA5F
-	for <stable@vger.kernel.org>; Sun,  2 Nov 2025 13:56:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC12A1F12F4
+	for <stable@vger.kernel.org>; Sun,  2 Nov 2025 13:56:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762091798; cv=none; b=AkyVz7/KJqK3oXlPPJIj9+iap1tteGgChLVNf+aeSfOLYHyRZtH/kksD0gu7034gUR16Y4f637mo+l2FsHPhxZXo0ysH4tWdouFJCsQX1X6J45vO6KLcBft5LyBTBuPHFbnRxcWi91PTCOK92whf6ugdu/V1xt60lEK+/UdO2vg=
+	t=1762091801; cv=none; b=qhlA0i4XLwcdBkcQ7dZBQlu1pwFHU+Jm4LKz3GU8sMZYd0bVGhbLx65lNAp9F0CzN6eJQn0zJoE6NXg3DQTD0+Yb3MGYnrEql4Yhdpox3fqSsU9SwtyTC46aZOkWP6VICkmSAt0+JJpm6MSYtVl9SW+p7r6D2O7+OfQmNKWCgWc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762091798; c=relaxed/simple;
-	bh=c6gMGVPdVNHXnmzThO2lb/j/9OsKM8R1uzdvzAH/0eU=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=DJ3go7Fbg37Bzm2Fe7HtWQdUS9F3Y2Xqkzh3XqVD7l5fVEMLw/IRYYQh3kB2d+mJa0Ahj7Qa65LGn7u+PxmBwkIRAyelCom1tK6RU0PZlNLdIy1AsD7pJjivN/x16Qyqt/vpnXxjzQx42Zh2YpskyW9nQbxCfoqCKPmNog48eLw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o1VE7vzq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D10FC4CEF7;
-	Sun,  2 Nov 2025 13:56:37 +0000 (UTC)
+	s=arc-20240116; t=1762091801; c=relaxed/simple;
+	bh=NELSQTfJAbGM3NDiMxW/QHsIA3G1KztvY1rL+8L6Sv0=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=El32yLo3eEvk7FOvM7jQfHip/ckgmBqIcpSLTJTFfwnzjO0ZwMJx+JU+92MWF/lczsPLWdg0H8e8f+Q7Bkg9w1hyGFXIjUsmINMRUBYTODEkKh0kikwo3ouR27isPzGRPVJyMkMi3rpXvwrUoSyh6uDvO2ibMyaMqwu/JNZ6Vhs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AY0jr33Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 876E9C4CEF7;
+	Sun,  2 Nov 2025 13:56:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762091797;
-	bh=c6gMGVPdVNHXnmzThO2lb/j/9OsKM8R1uzdvzAH/0eU=;
+	s=korg; t=1762091800;
+	bh=NELSQTfJAbGM3NDiMxW/QHsIA3G1KztvY1rL+8L6Sv0=;
 	h=Subject:To:Cc:From:Date:From;
-	b=o1VE7vzqPexcEYdJGW5ATTKR2l1veYRBSKGZoIjSavMh2T59QgR9ItP5oDIpBG9fJ
-	 Hlo7Hr9kGIY0+A9yAODx8KUdmIXIf0W39oD/y3IifsIr5QyxA9nkZbho7y5xKg2sSW
-	 TPxzqiUUNZtvcFeGZHcqyUVOo+aJICDMZnGqM3CE=
-Subject: FAILED: patch "[PATCH] s390/pci: Restore IRQ unconditionally for the zPCI device" failed to apply to 6.6-stable tree
+	b=AY0jr33ZaN0fLIKEOAwvbdXJXyy2X3rsEyIvVc7MvHugjkMhxPjdO0di2DJKXxnZf
+	 1aoggoiKP5Qa1eDPoqy4B3Nyn4Pkv4xDHeQkoHhfa8lkpJRPbp7ONolsV240Ci+mMe
+	 8u5JE9T77iGTmYkcJW0wd5UnTudvbFG5qiuImto4=
+Subject: FAILED: patch "[PATCH] s390/pci: Restore IRQ unconditionally for the zPCI device" failed to apply to 6.1-stable tree
 To: alifm@linux.ibm.com,hca@linux.ibm.com,mjrosato@linux.ibm.com,schnelle@linux.ibm.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sun, 02 Nov 2025 22:56:34 +0900
-Message-ID: <2025110234-parameter-underdog-10cd@gregkh>
+Date: Sun, 02 Nov 2025 22:56:38 +0900
+Message-ID: <2025110237-sizable-stimulate-e9bf@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x b45873c3f09153d1ad9b3a7bf9e5c0b0387fd2ea
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025110234-parameter-underdog-10cd@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025110237-sizable-stimulate-e9bf@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
