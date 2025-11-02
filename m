@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-192078-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192079-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0257BC29597
-	for <lists+stable@lfdr.de>; Sun, 02 Nov 2025 20:00:10 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A49CCC2959A
+	for <lists+stable@lfdr.de>; Sun, 02 Nov 2025 20:00:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 670FA188CCCA
-	for <lists+stable@lfdr.de>; Sun,  2 Nov 2025 19:00:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 623F63ADB78
+	for <lists+stable@lfdr.de>; Sun,  2 Nov 2025 19:00:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFEC4282EB;
-	Sun,  2 Nov 2025 19:00:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DA8523BCE3;
+	Sun,  2 Nov 2025 19:00:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BUU3Z7Tz"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bc0csNOe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CEDF2BCFB
-	for <stable@vger.kernel.org>; Sun,  2 Nov 2025 19:00:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E44F23C8A1
+	for <stable@vger.kernel.org>; Sun,  2 Nov 2025 19:00:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762110006; cv=none; b=dkhaJ1DKz3K14gdLxUHxIOkIGbT8sh4JR4kNHKNfEa92a/JCrv2aFt/2aIIPQtSUGiiZesZpyaZ/zGOHDE67Ojt4p7S8Zn8dBdu1TmfBoZXJ4U6uGqWh2NwtE4Q3aehV6A9CkxYWn19kg+UAuxaZg/sOC0Vlj2G6vvHiq/nWs6Q=
+	t=1762110011; cv=none; b=h1ejRotTEe2tPc1dRX2cVYkmr1CxiUqFu7RjTzwkIGMd4Hgz8Lf8FZv1cJDxvHwsuD+8JAQFEHpeH/XwfHQeHqIK+FmHmpzJhybwQX++ONaIYaKhqd1L2MT/9uskv8HrPXgr+r9or04sCvCafzNcV0N1tUJ9S06+7A+n4MWeuS8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762110006; c=relaxed/simple;
-	bh=NNHwOVruxhh6UsyxJ/cUU+uAhkft7WfDhQmUBoWK9B0=;
+	s=arc-20240116; t=1762110011; c=relaxed/simple;
+	bh=NZw8xr+3Pldh04mf7I2f1xKH8695FoVZXLOvSA5Y0ew=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PB1lKgDykYWU7jqjaFEC/IwO7Y1e7yI6BZTFoTsLr9SvAuIi8Uynao4UfpBbJRZ+mSVD57YzsviJhntNPBEshDi3W7DVnQI8HIStl45M9wa7UbtVWLADAtP2SeVH1PVjTSh+ktwluwp+4oZs8rZe/qG5D3aDJmI6+pzWlxgjuUE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BUU3Z7Tz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AF76C4CEF7;
-	Sun,  2 Nov 2025 19:00:05 +0000 (UTC)
+	 MIME-Version; b=Kg/uyBeJ3so/kWPh4mHrEkoeh8rBcNbuYIRMPFITMxdX5qbplt1WKhevxO/nDHbB+M4mM12MLsl/EGu9RdrrB+9IrBbCkrdkjdWTuQkcoBjJddYD1yKup0hiznP/gscXHGiyb63nzWUApZmZqA/79ekzRphp9hyvCpRdw+q2vOw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bc0csNOe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E757EC116B1;
+	Sun,  2 Nov 2025 19:00:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762110006;
-	bh=NNHwOVruxhh6UsyxJ/cUU+uAhkft7WfDhQmUBoWK9B0=;
+	s=k20201202; t=1762110010;
+	bh=NZw8xr+3Pldh04mf7I2f1xKH8695FoVZXLOvSA5Y0ew=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BUU3Z7TzGlffrmEG0s5r1KFZpP5tNBltSdXifluf+FXYYuVMsm0x3GJRlBpWUr49E
-	 5Xdj1OPpIuIanHdxK/it7uqh+7ga+KDnT8ot4ivABsPzYHNKVVwMnIRkb6jxtUa8bW
-	 fFKEnTbuS+xF81PGrBWUEBr2x96VR0tBzm/VVlo2iZmFWCYCrsx2J4dxk+hsvLkjfA
-	 v3X/8MGF9Cd32AToU57RLejqNPHjw1lICPAHGU8ONBIONSwSS8ZzxfdqUCTetRIkPm
-	 RuOtDIS5Ur9q7TN8AcPPKt6R1Zg/r050LXJCt1WSJ9thqNMx4FsovErbb+8aTVEC0D
-	 gb4MoPnkDUkGQ==
+	b=bc0csNOeiNl84+s02azZy27rnvuQRYeF9cJ90qEd6iXqYyhLzv23pnTmCi2AskMik
+	 cf/Lbmgt2kUL1KFGBkLsLK0yjUhQqGGUmADI9Wl8uZvCbp2fmxYD+mHD+87hbtrVDB
+	 CJ1Q7Vh0xRG/qC06Hp3/DCKcu03TERasqjFMIG3tw1h8GqdX8uGbo2W9F7415eQ6qF
+	 OMUlDPv0LY7i/QZ6F2YTjVOHUSel0qaxvPFj75MmcyTUwvFsp2urw14tXCUxPfA2dj
+	 blyecTiWn74qA+DQt+ZQNqmP98gIHf/2V3PYqboe4kXBIANgyvMZP8DNuujUAykYaH
+	 kz3WdZefWjILg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Geliang Tang <geliang.tang@suse.com>,
-	Mat Martineau <mathew.j.martineau@linux.intel.com>,
+Cc: Paolo Abeni <pabeni@redhat.com>,
+	Geliang Tang <geliang@kernel.org>,
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y 1/2] mptcp: change 'first' as a parameter
-Date: Sun,  2 Nov 2025 14:00:02 -0500
-Message-ID: <20251102190003.3553215-1-sashal@kernel.org>
+Subject: [PATCH 6.1.y 2/2] mptcp: drop bogus optimization in __mptcp_check_push()
+Date: Sun,  2 Nov 2025 14:00:03 -0500
+Message-ID: <20251102190003.3553215-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025110239-gender-concise-c9df@gregkh>
+In-Reply-To: <20251102190003.3553215-1-sashal@kernel.org>
 References: <2025110239-gender-concise-c9df@gregkh>
+ <20251102190003.3553215-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,90 +64,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Geliang Tang <geliang.tang@suse.com>
+From: Paolo Abeni <pabeni@redhat.com>
 
-[ Upstream commit 73a0052a61f98354f39f461e03f1a7e513b84578 ]
+[ Upstream commit 27b0e701d3872ba59c5b579a9e8a02ea49ad3d3b ]
 
-The function mptcp_subflow_process_delegated() uses the input ssk first,
-while __mptcp_check_push() invokes the packet scheduler first.
+Accessing the transmit queue without owning the msk socket lock is
+inherently racy, hence __mptcp_check_push() could actually quit early
+even when there is pending data.
 
-So this patch adds a new parameter named 'first' for the function
-__mptcp_subflow_push_pending() to deal with these two cases separately.
+That in turn could cause unexpected tx lock and timeout.
 
-With this change, the code that invokes the packet scheduler in the
-function __mptcp_check_push() can be removed, and replaced by invoking
-__mptcp_subflow_push_pending() directly.
+Dropping the early check avoids the race, implicitly relaying on later
+tests under the relevant lock. With such change, all the other
+mptcp_send_head() call sites are now under the msk socket lock and we
+can additionally drop the now unneeded annotation on the transmit head
+pointer accesses.
 
-Reviewed-by: Mat Martineau <mathew.j.martineau@linux.intel.com>
-Signed-off-by: Geliang Tang <geliang.tang@suse.com>
-Signed-off-by: Mat Martineau <mathew.j.martineau@linux.intel.com>
+Fixes: 6e628cd3a8f7 ("mptcp: use mptcp release_cb for delayed tasks")
+Cc: stable@vger.kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Geliang Tang <geliang@kernel.org>
+Tested-by: Geliang Tang <geliang@kernel.org>
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20251028-net-mptcp-send-timeout-v1-1-38ffff5a9ec8@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 27b0e701d387 ("mptcp: drop bogus optimization in __mptcp_check_push()")
+[ split upstream __subflow_push_pending change across __mptcp_push_pending and __mptcp_subflow_push_pending ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/protocol.c | 20 ++++++--------------
- 1 file changed, 6 insertions(+), 14 deletions(-)
+ net/mptcp/protocol.c | 13 +++++--------
+ net/mptcp/protocol.h |  2 +-
+ 2 files changed, 6 insertions(+), 9 deletions(-)
 
 diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
-index ea715a1282425..cfbc7ef3b211d 100644
+index cfbc7ef3b211d..87a17216737ce 100644
 --- a/net/mptcp/protocol.c
 +++ b/net/mptcp/protocol.c
-@@ -1701,7 +1701,7 @@ void __mptcp_push_pending(struct sock *sk, unsigned int flags)
- 		mptcp_check_send_data_fin(sk);
- }
+@@ -1101,7 +1101,7 @@ static void __mptcp_clean_una(struct sock *sk)
+ 			if (WARN_ON_ONCE(!msk->recovery))
+ 				break;
  
--static void __mptcp_subflow_push_pending(struct sock *sk, struct sock *ssk)
-+static void __mptcp_subflow_push_pending(struct sock *sk, struct sock *ssk, bool first)
- {
+-			WRITE_ONCE(msk->first_pending, mptcp_send_next(sk));
++			msk->first_pending = mptcp_send_next(sk);
+ 		}
+ 
+ 		dfrag_clear(sk, dfrag);
+@@ -1686,7 +1686,7 @@ void __mptcp_push_pending(struct sock *sk, unsigned int flags)
+ 
+ 			mptcp_update_post_push(msk, dfrag, ret);
+ 		}
+-		WRITE_ONCE(msk->first_pending, mptcp_send_next(sk));
++		msk->first_pending = mptcp_send_next(sk);
+ 	}
+ 
+ 	/* at this point we held the socket lock for the last subflow we used */
+@@ -1742,7 +1742,7 @@ static void __mptcp_subflow_push_pending(struct sock *sk, struct sock *ssk, bool
+ 
+ 			mptcp_update_post_push(msk, dfrag, ret);
+ 		}
+-		WRITE_ONCE(msk->first_pending, mptcp_send_next(sk));
++		msk->first_pending = mptcp_send_next(sk);
+ 	}
+ 
+ out:
+@@ -1912,7 +1912,7 @@ static int mptcp_sendmsg(struct sock *sk, struct msghdr *msg, size_t len)
+ 			get_page(dfrag->page);
+ 			list_add_tail(&dfrag->list, &msk->rtx_queue);
+ 			if (!msk->first_pending)
+-				WRITE_ONCE(msk->first_pending, dfrag);
++				msk->first_pending = dfrag;
+ 		}
+ 		pr_debug("msk=%p dfrag at seq=%llu len=%u sent=%u new=%d\n", msk,
+ 			 dfrag->data_seq, dfrag->data_len, dfrag->already_sent,
+@@ -2910,7 +2910,7 @@ static void __mptcp_clear_xmit(struct sock *sk)
  	struct mptcp_sock *msk = mptcp_sk(sk);
- 	struct mptcp_sendmsg_info info = {
-@@ -1710,7 +1710,6 @@ static void __mptcp_subflow_push_pending(struct sock *sk, struct sock *ssk)
- 	struct mptcp_data_frag *dfrag;
- 	struct sock *xmit_ssk;
- 	int len, copied = 0;
--	bool first = true;
+ 	struct mptcp_data_frag *dtmp, *dfrag;
  
- 	info.flags = 0;
- 	while ((dfrag = mptcp_send_head(sk))) {
-@@ -1720,8 +1719,7 @@ static void __mptcp_subflow_push_pending(struct sock *sk, struct sock *ssk)
- 		while (len > 0) {
- 			int ret = 0;
+-	WRITE_ONCE(msk->first_pending, NULL);
++	msk->first_pending = NULL;
+ 	list_for_each_entry_safe(dfrag, dtmp, &msk->rtx_queue, list)
+ 		dfrag_clear(sk, dfrag);
+ }
+@@ -3491,9 +3491,6 @@ void __mptcp_data_acked(struct sock *sk)
  
--			/* the caller already invoked the packet scheduler,
--			 * check for a different subflow usage only after
-+			/* check for a different subflow usage only after
- 			 * spooling the first chunk of data
- 			 */
- 			xmit_ssk = first ? ssk : mptcp_subflow_get_send(mptcp_sk(sk));
-@@ -3496,16 +3494,10 @@ void __mptcp_check_push(struct sock *sk, struct sock *ssk)
- 	if (!mptcp_send_head(sk))
- 		return;
- 
--	if (!sock_owned_by_user(sk)) {
--		struct sock *xmit_ssk = mptcp_subflow_get_send(mptcp_sk(sk));
+ void __mptcp_check_push(struct sock *sk, struct sock *ssk)
+ {
+-	if (!mptcp_send_head(sk))
+-		return;
 -
--		if (xmit_ssk == ssk)
--			__mptcp_subflow_push_pending(sk, ssk);
--		else if (xmit_ssk)
--			mptcp_subflow_delegate(mptcp_subflow_ctx(xmit_ssk), MPTCP_DELEGATE_SEND);
--	} else {
-+	if (!sock_owned_by_user(sk))
-+		__mptcp_subflow_push_pending(sk, ssk, false);
-+	else
- 		__set_bit(MPTCP_PUSH_PENDING, &mptcp_sk(sk)->cb_flags);
--	}
+ 	if (!sock_owned_by_user(sk))
+ 		__mptcp_subflow_push_pending(sk, ssk, false);
+ 	else
+diff --git a/net/mptcp/protocol.h b/net/mptcp/protocol.h
+index 81507419c465e..6b1d86fd3a8e7 100644
+--- a/net/mptcp/protocol.h
++++ b/net/mptcp/protocol.h
+@@ -360,7 +360,7 @@ static inline struct mptcp_data_frag *mptcp_send_head(const struct sock *sk)
+ {
+ 	const struct mptcp_sock *msk = mptcp_sk(sk);
+ 
+-	return READ_ONCE(msk->first_pending);
++	return msk->first_pending;
  }
  
- #define MPTCP_FLAGS_PROCESS_CTX_NEED (BIT(MPTCP_PUSH_PENDING) | \
-@@ -3600,7 +3592,7 @@ void mptcp_subflow_process_delegated(struct sock *ssk, long status)
- 	if (status & BIT(MPTCP_DELEGATE_SEND)) {
- 		mptcp_data_lock(sk);
- 		if (!sock_owned_by_user(sk))
--			__mptcp_subflow_push_pending(sk, ssk);
-+			__mptcp_subflow_push_pending(sk, ssk, true);
- 		else
- 			__set_bit(MPTCP_PUSH_PENDING, &mptcp_sk(sk)->cb_flags);
- 		mptcp_data_unlock(sk);
+ static inline struct mptcp_data_frag *mptcp_send_next(struct sock *sk)
 -- 
 2.51.0
 
