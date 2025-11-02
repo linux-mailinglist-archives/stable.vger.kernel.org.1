@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-192088-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192089-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C07EC29686
-	for <lists+stable@lfdr.de>; Sun, 02 Nov 2025 21:30:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AFF4C29695
+	for <lists+stable@lfdr.de>; Sun, 02 Nov 2025 21:39:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BFECA188DAFD
-	for <lists+stable@lfdr.de>; Sun,  2 Nov 2025 20:31:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 151763AA635
+	for <lists+stable@lfdr.de>; Sun,  2 Nov 2025 20:39:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4ED8413D539;
-	Sun,  2 Nov 2025 20:30:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FB771E3DDB;
+	Sun,  2 Nov 2025 20:39:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tI1MMaAS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UP5ch22c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0373B2AD20
-	for <stable@vger.kernel.org>; Sun,  2 Nov 2025 20:30:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CA679460
+	for <stable@vger.kernel.org>; Sun,  2 Nov 2025 20:39:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762115443; cv=none; b=AqlNH5jv0LfAIomSHlXowtIAFb5iW0omZ1bs/KIsVQvQeJvLWbTVWqaUGTd+70J9AbUTYNMm3+myhBtjM5jr15hpxRgzaA8bRNEWo5T3QMDTYj/q2LlDu2SbTdypy73EvipIKvdJFjaJA+7FzU1+nJf20UrQ1sGfZQiZnt/kCTs=
+	t=1762115953; cv=none; b=Lsmd1R3T7P1ko9Z8LqRZ5pkyre28P/LP7g8xSGFZpjeh62PMjaHEDYHC5fJak4V+iffMGOTmolOncahFTe/CPHpLKHPMwH9Efm9sozKtHZeZuN/ULjref8RCXAWeSohXp3INxhlVm0o9nLCenGkGmeVQK5vp5zE6c8TFA/ryqDc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762115443; c=relaxed/simple;
-	bh=mU7AGyNyaa46xe4NoKnS3v6/17UJ1bKEVf0HpQbFNjc=;
+	s=arc-20240116; t=1762115953; c=relaxed/simple;
+	bh=sClRXuC/MASXUY8l/Vox2eXIDffsHY7PJzyFl028snc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JJkKoBX1niZjX5T55aPIXerLqA32W564YjWAmjEqwDmJ/8AZ0w6TkV55mqkZtpTHZkzoE6R4xC8CDIQSwRHN1k7wTzFFsdtoLa7GqRTDw99AV20qwYxviJHEB+h+gNUhoC+2LgChU0a09FZUT9apUDHNOra+0ZKhOX3KBSULSFc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tI1MMaAS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABE21C4CEF7;
-	Sun,  2 Nov 2025 20:30:41 +0000 (UTC)
+	 MIME-Version; b=HYqCDb3sFgscDDnEq53JIciVX6JDRnhNmrVC6V8dX/sAl/YpnbNqhCeR3nBZhjS28oeiIbE/1BAEA9iP27OU9dDqjfNFMpTnSNGbUONF/Kq4jpQ+C7Y5PyZMoI7OpHR88a4O4RyZZhuNLMQ+zpeaNj/1bEh/V81+WBaQIjhmGew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UP5ch22c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE2ACC4CEF7;
+	Sun,  2 Nov 2025 20:39:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762115442;
-	bh=mU7AGyNyaa46xe4NoKnS3v6/17UJ1bKEVf0HpQbFNjc=;
+	s=k20201202; t=1762115951;
+	bh=sClRXuC/MASXUY8l/Vox2eXIDffsHY7PJzyFl028snc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tI1MMaASN2Uu6iTP+RLxOj72DwUlf7+vm32tjSt3WSTcdmQqodUvi+np92a/ftdN9
-	 QZ5kZMlQTasQQlG8PHNWb2/WhOUXu4Nte3IOc+yq1MOGyqtbt2f/ikG7qEDiL4LcC1
-	 F9Okb4XJJMXDo4ZGMh/REfJLGZBhuVbpbNSMz3W8GnnlILaTVajicatwomNA4Ehdsk
-	 Ays+rW5OyYK5ranGfXNL5EY9SIFvMp8ZykSBq0EHp7P0aQYKr5GWskfSeouE7pg2Pp
-	 QheCegWrD+dY3rvNpkSfTZ8OlWlGpplgilLTM7Mpbr8pNutJnUm95PH6gE/wH55wrw
-	 9uycuxOrk0X9Q==
+	b=UP5ch22cU3N8mR9bE6Uv5I4PlNldT7L+HC+a4CS+56OJ+Qxy3KBnuF7Ux/NhnkREA
+	 hqmqMYipXPZMSHHmpOkSSFZYr8hUGW+t1UwlUrm67l7UcvdKDVLDH0Cj7qMCNJdhl1
+	 lcMyrFwjDkIM3M5RryTegXyUv5/cXfIKN0sHl192G4cThg7PxlBiPtaMV1mJIoskdn
+	 H50u1pGMuH9Bu9nirGx6K+QshejqpbdhtvXTOBUHeXCFXi9qNO0jgcT4/H3YWMssbs
+	 q3/EkY8uPODfzDqXQYgs4z/mEL6RdvCYjgJmq1gM5Tasz+ONsOzsVhRenVkh3PKUsb
+	 rlRSaFPULB+XQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>,
 	Andrew Lunn <andrew@lunn.ch>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y] net: phy: dp83867: Disable EEE support as not implemented
-Date: Sun,  2 Nov 2025 15:30:39 -0500
-Message-ID: <20251102203040.3593522-1-sashal@kernel.org>
+Subject: [PATCH 5.10.y] net: phy: dp83867: Disable EEE support as not implemented
+Date: Sun,  2 Nov 2025 15:39:09 -0500
+Message-ID: <20251102203909.3597447-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025110203-spinal-groovy-c2f2@gregkh>
-References: <2025110203-spinal-groovy-c2f2@gregkh>
+In-Reply-To: <2025110204-backroom-donated-75ff@gregkh>
+References: <2025110204-backroom-donated-75ff@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -93,10 +93,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 6 insertions(+)
 
 diff --git a/drivers/net/phy/dp83867.c b/drivers/net/phy/dp83867.c
-index 76ca43108d992..3865019ebb5bd 100644
+index 0cb24bfbfa237..d128453e1cd59 100644
 --- a/drivers/net/phy/dp83867.c
 +++ b/drivers/net/phy/dp83867.c
-@@ -674,6 +674,12 @@ static int dp83867_config_init(struct phy_device *phydev)
+@@ -664,6 +664,12 @@ static int dp83867_config_init(struct phy_device *phydev)
  			return ret;
  	}
  
