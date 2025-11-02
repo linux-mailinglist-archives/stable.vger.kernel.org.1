@@ -1,125 +1,201 @@
-Return-Path: <stable+bounces-192045-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192046-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16E23C28FBF
-	for <lists+stable@lfdr.de>; Sun, 02 Nov 2025 14:46:20 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 118A3C28FC5
+	for <lists+stable@lfdr.de>; Sun, 02 Nov 2025 14:46:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 91E80347BEC
-	for <lists+stable@lfdr.de>; Sun,  2 Nov 2025 13:46:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 141743AE3A8
+	for <lists+stable@lfdr.de>; Sun,  2 Nov 2025 13:46:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DADE1547C9;
-	Sun,  2 Nov 2025 13:46:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A742E18991E;
+	Sun,  2 Nov 2025 13:46:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sFxpIfgM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LxCI7RvB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F077E22615
-	for <stable@vger.kernel.org>; Sun,  2 Nov 2025 13:46:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6405913A265;
+	Sun,  2 Nov 2025 13:46:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762091178; cv=none; b=PYEjoTYXVW6VrQcQTyZawcfkTeQzNThfbzpyubgC4XfIGSasal1gKPk0PQKIt6+dChfPDNYoYQdsy2wW2y7mVi6HBH8Jp5a7nnxNKCkd5qXiUfohKRfVFli4eafh71kzQlv0KDzdfHvUSA/uh8+BLBa7099NhtKPXJMS+hkHXv8=
+	t=1762091180; cv=none; b=uhW4/0Pv9IY+MM+4zXbrdRt3BSMe+iItoaIkJfomaPynUplMRfrcQdSaY4XtONcH2pWMhenOscwhJfknwxj8N/vKs/3+4CijPnV4+SEBFPvIrCOqyBbn3K+zYVnSBC7rufUhnjqZ3q+BqvNzCEN2r7yqnNa+M3Eyy2ViICryrzw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762091178; c=relaxed/simple;
-	bh=Z6Vk9G4lCXYl1hPeDPyIqzqGLvvMwygowu4GYnY0gk0=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=bnFrEPklqcorssJjNzF0qIRhwI8StcRk1p1yEpvcYCm0HAQ8SiOmPt5oxl+AgLTArJGiGKTAsM2S+ZvIlToOi6Wq+3mtKq+YxM6Vvr/oWTJ5C6iHt/ne3E8qqt6KylcZFBs+JKL2zVY/ztaFH9/3I5kLuy7l+w2Uk6cAvt19O1Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sFxpIfgM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AF07C4CEFD;
-	Sun,  2 Nov 2025 13:46:17 +0000 (UTC)
+	s=arc-20240116; t=1762091180; c=relaxed/simple;
+	bh=dVQnvW5I9/t0piGFu8Jk/J/+995dBTc6eUpEC5bsTc4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=U3M/v1ezyZYwE4lU4OSk5LdkBP40emzviy+5uLLe7wQ65iIsQPYkec6pPr5u/FfLrL8RGhCSBSRCWWPgllDYjL02eWoCsYFZGVHJPNHSDEYqaEG+1QhmmAFlgoln/lNGFcrxbr31IWQwdKPud+GHGswyAe1XPX64polqhqj5WQk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LxCI7RvB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E424FC4CEF7;
+	Sun,  2 Nov 2025 13:46:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762091177;
-	bh=Z6Vk9G4lCXYl1hPeDPyIqzqGLvvMwygowu4GYnY0gk0=;
-	h=Subject:To:Cc:From:Date:From;
-	b=sFxpIfgMjU34tpuprkVl38Pi88m8h99QHW05MhlsEVAdE0bgps1QsBx7+62tjH1m9
-	 LFj62coHXSbKEQofCV5cvajaijpVzU599STJfHkOo+79/B3oB5N2Q7JWLI06U545EK
-	 ZLM8lPTlh55yMq62zoXNgOQa6XjG8E/pF6CLepDQ=
-Subject: FAILED: patch "[PATCH] net: phy: dp83867: Disable EEE support as not implemented" failed to apply to 5.4-stable tree
-To: emanuele.ghidoli@toradex.com,andrew@lunn.ch,kuba@kernel.org
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Sun, 02 Nov 2025 22:46:05 +0900
-Message-ID: <2025110205-customer-qualifier-2030@gregkh>
+	s=korg; t=1762091180;
+	bh=dVQnvW5I9/t0piGFu8Jk/J/+995dBTc6eUpEC5bsTc4=;
+	h=From:To:Cc:Subject:Date:From;
+	b=LxCI7RvBI8Uo970ktzAkLC2MutrFJ8OLmNfoPDjq8hzcPE0jauj9nVYC2tr1g18gq
+	 UTZ7oXBvSpsICcIfS7c+PWzj6stPPuihwXlviXv439xQ0/JEWUCSiKZ8l2XbP8sFk9
+	 7VrCO4auSpB0SKQjGPjUkT0+E/KkWNl/GjLYWNyM=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: linux-kernel@vger.kernel.org,
+	akpm@linux-foundation.org,
+	torvalds@linux-foundation.org,
+	stable@vger.kernel.org
+Cc: lwn@lwn.net,
+	jslaby@suse.cz,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: Linux 6.6.116
+Date: Sun,  2 Nov 2025 22:46:09 +0900
+Message-ID: <2025110210-tarnish-nearly-cbfe@gregkh>
+X-Mailer: git-send-email 2.51.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
+I'm announcing the release of the 6.6.116 kernel.
 
-The patch below does not apply to the 5.4-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+All users of the 6.6 kernel series must upgrade.
 
-To reproduce the conflict and resubmit, you may use the following commands:
-
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
-git checkout FETCH_HEAD
-git cherry-pick -x 84a905290cb4c3d9a71a9e3b2f2e02e031e7512f
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025110205-customer-qualifier-2030@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
-
-Possible dependencies:
-
-
+The updated 6.6.y git tree can be found at:
+	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git linux-6.6.y
+and can be browsed at the normal kernel.org git web browser:
+	https://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=summary
 
 thanks,
 
 greg k-h
 
------------------- original commit in Linus's tree ------------------
+------------
 
-From 84a905290cb4c3d9a71a9e3b2f2e02e031e7512f Mon Sep 17 00:00:00 2001
-From: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
-Date: Thu, 23 Oct 2025 16:48:53 +0200
-Subject: [PATCH] net: phy: dp83867: Disable EEE support as not implemented
+ Documentation/ABI/testing/sysfs-bus-pci-drivers-xhci_hcd |   10 
+ Makefile                                                 |    2 
+ arch/alpha/kernel/asm-offsets.c                          |    1 
+ arch/arc/kernel/asm-offsets.c                            |    1 
+ arch/arm/kernel/asm-offsets.c                            |    2 
+ arch/arm64/kernel/asm-offsets.c                          |    1 
+ arch/csky/kernel/asm-offsets.c                           |    1 
+ arch/hexagon/kernel/asm-offsets.c                        |    1 
+ arch/loongarch/kernel/asm-offsets.c                      |    2 
+ arch/m68k/kernel/asm-offsets.c                           |    1 
+ arch/microblaze/kernel/asm-offsets.c                     |    1 
+ arch/mips/kernel/asm-offsets.c                           |    2 
+ arch/nios2/kernel/asm-offsets.c                          |    1 
+ arch/openrisc/kernel/asm-offsets.c                       |    1 
+ arch/parisc/kernel/asm-offsets.c                         |    1 
+ arch/powerpc/kernel/asm-offsets.c                        |    1 
+ arch/riscv/kernel/asm-offsets.c                          |    1 
+ arch/s390/kernel/asm-offsets.c                           |    1 
+ arch/sh/kernel/asm-offsets.c                             |    1 
+ arch/sparc/kernel/asm-offsets.c                          |    1 
+ arch/um/kernel/asm-offsets.c                             |    2 
+ arch/x86/kernel/cpu/bugs.c                               |    9 
+ arch/xtensa/kernel/asm-offsets.c                         |    1 
+ drivers/edac/edac_mc_sysfs.c                             |   24 +
+ drivers/gpio/gpio-idio-16.c                              |    5 
+ drivers/gpio/gpio-regmap.c                               |   53 ++++
+ drivers/tty/serial/sc16is7xx.c                           |  185 +++++++--------
+ drivers/usb/host/xhci-dbgcap.c                           |   70 +++++
+ drivers/usb/host/xhci-dbgcap.h                           |    7 
+ fs/btrfs/disk-io.c                                       |    2 
+ fs/btrfs/extent-tree.c                                   |    6 
+ fs/btrfs/inode.c                                         |    7 
+ fs/btrfs/scrub.c                                         |    3 
+ fs/btrfs/transaction.c                                   |    2 
+ fs/btrfs/tree-log.c                                      |    9 
+ fs/btrfs/zoned.c                                         |    8 
+ fs/btrfs/zoned.h                                         |    9 
+ include/linux/audit.h                                    |    2 
+ include/linux/bitops.h                                   |    1 
+ include/linux/bits.h                                     |   38 ++-
+ include/linux/gpio/regmap.h                              |   16 +
+ include/net/pkt_sched.h                                  |   25 +-
+ kernel/events/callchain.c                                |   16 -
+ kernel/events/core.c                                     |    7 
+ net/mptcp/pm_netlink.c                                   |    6 
+ net/sched/sch_api.c                                      |   10 
+ net/sched/sch_hfsc.c                                     |   16 -
+ net/sched/sch_qfq.c                                      |    2 
+ tools/testing/selftests/net/mptcp/mptcp_join.sh          |    3 
+ 49 files changed, 404 insertions(+), 173 deletions(-)
 
-While the DP83867 PHYs report EEE capability through their feature
-registers, the actual hardware does not support EEE (see Links).
-When the connected MAC enables EEE, it causes link instability and
-communication failures.
+Avadhut Naik (1):
+      EDAC/mc_sysfs: Increase legacy channel support to 16
 
-The issue is reproducible with a iMX8MP and relevant stmmac ethernet port.
-Since the introduction of phylink-managed EEE support in the stmmac driver,
-EEE is now enabled by default, leading to issues on systems using the
-DP83867 PHY.
+David Kaplan (2):
+      x86/bugs: Report correct retbleed mitigation status
+      x86/bugs: Fix reporting of LFENCE retpoline
 
-Call phy_disable_eee during phy initialization to prevent EEE from being
-enabled on DP83867 PHYs.
+Filipe Manana (3):
+      btrfs: always drop log root tree reference in btrfs_replay_log()
+      btrfs: use level argument in log tree walk callback replay_one_buffer()
+      btrfs: use smp_mb__after_atomic() when forcing COW in create_pending_snapshot()
 
-Link: https://e2e.ti.com/support/interface-group/interface/f/interface-forum/1445244/dp83867ir-dp83867-disable-eee-lpi
-Link: https://e2e.ti.com/support/interface-group/interface/f/interface-forum/658638/dp83867ir-eee-energy-efficient-ethernet
-Fixes: 2a10154abcb7 ("net: phy: dp83867: Add TI dp83867 phy")
-Cc: stable@vger.kernel.org
-Signed-off-by: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20251023144857.529566-1-ghidoliemanuele@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Geliang Tang (1):
+      selftests: mptcp: disable add_addr retrans in endpoint_tests
 
-diff --git a/drivers/net/phy/dp83867.c b/drivers/net/phy/dp83867.c
-index deeefb962566..36a0c1b7f59c 100644
---- a/drivers/net/phy/dp83867.c
-+++ b/drivers/net/phy/dp83867.c
-@@ -738,6 +738,12 @@ static int dp83867_config_init(struct phy_device *phydev)
- 			return ret;
- 	}
- 
-+	/* Although the DP83867 reports EEE capability through the
-+	 * MDIO_PCS_EEE_ABLE and MDIO_AN_EEE_ADV registers, the feature
-+	 * is not actually implemented in hardware.
-+	 */
-+	phy_disable_eee(phydev);
-+
- 	if (phy_interface_is_rgmii(phydev) ||
- 	    phydev->interface == PHY_INTERFACE_MODE_SGMII) {
- 		val = phy_read(phydev, MII_DP83867_PHYCTRL);
+Greg Kroah-Hartman (1):
+      Linux 6.6.116
+
+Hugo Villeneuve (4):
+      serial: sc16is7xx: remove unused to_sc16is7xx_port macro
+      serial: sc16is7xx: reorder code to remove prototype declarations
+      serial: sc16is7xx: refactor EFR lock
+      serial: sc16is7xx: remove useless enable of enhanced features
+
+Ioana Ciornei (1):
+      gpio: regmap: add the .fixed_direction_output configuration parameter
+
+Johannes Thumshirn (1):
+      btrfs: zoned: return error from btrfs_zone_finish_endio()
+
+Josh Poimboeuf (2):
+      perf: Have get_perf_callchain() return NULL if crosstask and user are set
+      perf: Skip user unwind if the task is a kernel thread
+
+Mathias Nyman (4):
+      xhci: dbc: poll at different rate depending on data transfer activity
+      xhci: dbc: Improve performance by removing delay in transfer event polling.
+      xhci: dbc: Avoid event polling busyloop if pending rx transfers are inactive.
+      xhci: dbc: fix bogus 1024 byte prefix if ttyDBC read races with stall event
+
+Mathieu Dubois-Briand (1):
+      gpio: regmap: Allow to allocate regmap-irq device
+
+Matthieu Baerts (NGI0) (2):
+      mptcp: pm: in-kernel: C-flag: handle late ADD_ADDR
+      selftests: mptcp: join: mark 'delete re-add signal' as skipped if not supported
+
+Menglong Dong (1):
+      arch: Add the macro COMPILE_OFFSETS to all the asm-offsets.c
+
+Naohiro Aota (1):
+      btrfs: zoned: refine extent allocator hint selection
+
+Richard Guy Briggs (1):
+      audit: record fanotify event regardless of presence of rules
+
+Steven Rostedt (1):
+      perf: Use current->flags & PF_KTHREAD|PF_USER_WORKER instead of current->mm == NULL
+
+Thorsten Blum (1):
+      btrfs: scrub: replace max_t()/min_t() with clamp() in scrub_throttle_dev_io()
+
+Uday M Bhat (1):
+      xhci: dbc: Allow users to modify DbC poll interval via sysfs
+
+Vincent Mailhol (2):
+      bits: add comments and newlines to #if, #else and #endif directives
+      bits: introduce fixed-type GENMASK_U*()
+
+William Breathitt Gray (1):
+      gpio: idio-16: Define fixed direction of the GPIO lines
+
+Xiang Mei (1):
+      net/sched: sch_qfq: Fix null-deref in agg_dequeue
 
 
