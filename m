@@ -1,43 +1,42 @@
-Return-Path: <stable+bounces-192049-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192051-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69F18C28FD1
-	for <lists+stable@lfdr.de>; Sun, 02 Nov 2025 14:46:49 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69AFDC28FE9
+	for <lists+stable@lfdr.de>; Sun, 02 Nov 2025 14:49:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id BE668347C2A
-	for <lists+stable@lfdr.de>; Sun,  2 Nov 2025 13:46:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4CE793A52EA
+	for <lists+stable@lfdr.de>; Sun,  2 Nov 2025 13:47:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95CCD1FFC7B;
-	Sun,  2 Nov 2025 13:46:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9330F212B3D;
+	Sun,  2 Nov 2025 13:46:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k9+TE3I7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W9H4i/rK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39F861F8724;
-	Sun,  2 Nov 2025 13:46:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C7351E98E3;
+	Sun,  2 Nov 2025 13:46:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762091188; cv=none; b=YgGfK5lazT1ZLqw60NDLOiOb1wveX0VduhDHnrz9rgINkgtxqSEEwWaq40K+PK16avqAtIa36znY+lhzvCqjyHmxEFHGI4xRN+SuZgBzmHG4wpKqE9EsigzEtHeJBWaQR/LtfDQQgH7OBtWZmgJ/7R3ngnp+v1BI8RJpSxwUmJE=
+	t=1762091194; cv=none; b=if2MkPHtDmn5AuIGJ2MFrwxTnkixIlQASAEjS/uZZya7/CxfaHgLgtjnBhnpWQDfYdcmAbCTPGxI8lJm0WcHSB1/lY5SZRSO1foaWMNYjQTgVLBiS4hJTzkgkh14S31TkQp8aXDvZHOClcLkCwklfO6zkCvPhdTdS/j08s/thOw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762091188; c=relaxed/simple;
-	bh=nvuDSfWLODWLMICFBajfw1y8B6tyCJ4JYJUcQKNX1V8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XB1GXA/Re4E/wDlDGD2PPwvi9ITIT/+F1MXu/rLYDL0xitqB+NqjiPu2aQcKXqYF6CUfZ0jVo3LoYqXij4ME37W44LhdUA76OX1/VMpPt7NMRmZERKR9lCpDbLaodtslkwyVL5e/0QJNEYpRwnWK2C37aRyYE20AQ5PS8cJ4+UA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k9+TE3I7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EF11C16AAE;
-	Sun,  2 Nov 2025 13:46:27 +0000 (UTC)
+	s=arc-20240116; t=1762091194; c=relaxed/simple;
+	bh=/ZlpRyVu6W1qt+rhyAVSSBJWpuMFSLVXTEzN50xpyZU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=eide1o2+uqKqucaH3Xd0wHkwaibrk7yDgFPBdqPnJXLG318rUgpZBrdNJzGHdq23q4nHz5KHLH7MVzwJvcBry7Z+VpPLNW6lJmcZwvGNLJVz+aArfxiyK+yX9+oebhMXNtO9I0balLLHQtD5xjCbC1Tah+gzemKKbh7sYsR5iDE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W9H4i/rK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D851DC4CEF7;
+	Sun,  2 Nov 2025 13:46:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762091188;
-	bh=nvuDSfWLODWLMICFBajfw1y8B6tyCJ4JYJUcQKNX1V8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k9+TE3I7DvxT5qBkmjsW4aqP+/tSgg1tmYLvQdb11Q30Z404C0hDfyHvMry0EcGn7
-	 joHFuEZvEkbS9I8ZbRW+EfCLKXfsycufsQcfWV7Gl3Vl0JPYJEDrmvPdR5ioLUIbVQ
-	 g/4EJtcOWUbLQQlDAEQujtcTER1kauSF0FHkU3nI=
+	s=korg; t=1762091194;
+	bh=/ZlpRyVu6W1qt+rhyAVSSBJWpuMFSLVXTEzN50xpyZU=;
+	h=From:To:Cc:Subject:Date:From;
+	b=W9H4i/rKtVN8EDjpx2N4UnLVnJkbLh719OjY37Z/XZHWg1rr19fIZD3FlQJehQIXG
+	 fZm9Bma5ltpWVMa6FD1EFs7ebQgOpMYFR8yOvdqVDT51UqhUW4DY2zHrc8Bw+5LP8l
+	 SldHN9muc0nfUyrave0o88ddtNviMoUQWiC9ZbxA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: linux-kernel@vger.kernel.org,
 	akpm@linux-foundation.org,
@@ -46,12 +45,10 @@ To: linux-kernel@vger.kernel.org,
 Cc: lwn@lwn.net,
 	jslaby@suse.cz,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: Re: Linux 6.12.57
-Date: Sun,  2 Nov 2025 22:46:16 +0900
-Message-ID: <2025110216-rigid-colonial-b790@gregkh>
+Subject: Linux 6.17.7
+Date: Sun,  2 Nov 2025 22:46:21 +0900
+Message-ID: <2025110222-sizzling-underarm-ae35@gregkh>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <2025110216-impulsive-briskly-9820@gregkh>
-References: <2025110216-impulsive-briskly-9820@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,1809 +57,149 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-diff --git a/Documentation/sphinx/kernel_abi.py b/Documentation/sphinx/kernel_abi.py
-index 5911bd0d7965..51a92b371872 100644
---- a/Documentation/sphinx/kernel_abi.py
-+++ b/Documentation/sphinx/kernel_abi.py
-@@ -42,9 +42,11 @@ import kernellog
- from docutils import nodes, statemachine
- from docutils.statemachine import ViewList
- from docutils.parsers.rst import directives, Directive
--from docutils.utils.error_reporting import ErrorString
- from sphinx.util.docutils import switch_source_input
- 
-+def ErrorString(exc):  # Shamelessly stolen from docutils
-+    return f'{exc.__class__.__name}: {exc}'
-+
- __version__  = '1.0'
- 
- def setup(app):
-diff --git a/Documentation/sphinx/kernel_feat.py b/Documentation/sphinx/kernel_feat.py
-index 03ace5f01b5c..2db63dd20399 100644
---- a/Documentation/sphinx/kernel_feat.py
-+++ b/Documentation/sphinx/kernel_feat.py
-@@ -40,9 +40,11 @@ import sys
- from docutils import nodes, statemachine
- from docutils.statemachine import ViewList
- from docutils.parsers.rst import directives, Directive
--from docutils.utils.error_reporting import ErrorString
- from sphinx.util.docutils import switch_source_input
- 
-+def ErrorString(exc):  # Shamelessly stolen from docutils
-+    return f'{exc.__class__.__name}: {exc}'
-+
- __version__  = '1.0'
- 
- def setup(app):
-diff --git a/Documentation/sphinx/kernel_include.py b/Documentation/sphinx/kernel_include.py
-index 638762442336..ccbddcc4af79 100755
---- a/Documentation/sphinx/kernel_include.py
-+++ b/Documentation/sphinx/kernel_include.py
-@@ -34,13 +34,15 @@ u"""
- import os.path
- 
- from docutils import io, nodes, statemachine
--from docutils.utils.error_reporting import SafeString, ErrorString
- from docutils.parsers.rst import directives
- from docutils.parsers.rst.directives.body import CodeBlock, NumberLines
- from docutils.parsers.rst.directives.misc import Include
- 
- __version__  = '1.0'
- 
-+def ErrorString(exc):  # Shamelessly stolen from docutils
-+    return f'{exc.__class__.__name}: {exc}'
-+
- # ==============================================================================
- def setup(app):
- # ==============================================================================
-@@ -111,7 +113,7 @@ class KernelInclude(Include):
-             raise self.severe('Problems with "%s" directive path:\n'
-                               'Cannot encode input file path "%s" '
-                               '(wrong locale?).' %
--                              (self.name, SafeString(path)))
-+                              (self.name, path))
-         except IOError as error:
-             raise self.severe('Problems with "%s" directive path:\n%s.' %
-                       (self.name, ErrorString(error)))
-diff --git a/Documentation/sphinx/maintainers_include.py b/Documentation/sphinx/maintainers_include.py
-index dcad0fff4723..496489d634c4 100755
---- a/Documentation/sphinx/maintainers_include.py
-+++ b/Documentation/sphinx/maintainers_include.py
-@@ -22,10 +22,12 @@ import re
- import os.path
- 
- from docutils import statemachine
--from docutils.utils.error_reporting import ErrorString
- from docutils.parsers.rst import Directive
- from docutils.parsers.rst.directives.misc import Include
- 
-+def ErrorString(exc):  # Shamelessly stolen from docutils
-+    return f'{exc.__class__.__name}: {exc}'
-+
- __version__  = '1.0'
- 
- def setup(app):
-diff --git a/Makefile b/Makefile
-index a1e3d73c5b74..9ded15dbcf3d 100644
---- a/Makefile
-+++ b/Makefile
-@@ -1,7 +1,7 @@
- # SPDX-License-Identifier: GPL-2.0
- VERSION = 6
- PATCHLEVEL = 12
--SUBLEVEL = 56
-+SUBLEVEL = 57
- EXTRAVERSION =
- NAME = Baby Opossum Posse
- 
-diff --git a/arch/alpha/kernel/asm-offsets.c b/arch/alpha/kernel/asm-offsets.c
-index e9dad60b147f..1ebb05890499 100644
---- a/arch/alpha/kernel/asm-offsets.c
-+++ b/arch/alpha/kernel/asm-offsets.c
-@@ -4,6 +4,7 @@
-  * This code generates raw asm output which is post-processed to extract
-  * and format the required data.
-  */
-+#define COMPILE_OFFSETS
- 
- #include <linux/types.h>
- #include <linux/stddef.h>
-diff --git a/arch/arc/kernel/asm-offsets.c b/arch/arc/kernel/asm-offsets.c
-index f77deb799175..2978da85fcb6 100644
---- a/arch/arc/kernel/asm-offsets.c
-+++ b/arch/arc/kernel/asm-offsets.c
-@@ -2,6 +2,7 @@
- /*
-  * Copyright (C) 2004, 2007-2010, 2011-2012 Synopsys, Inc. (www.synopsys.com)
-  */
-+#define COMPILE_OFFSETS
- 
- #include <linux/sched.h>
- #include <linux/mm.h>
-diff --git a/arch/arm/kernel/asm-offsets.c b/arch/arm/kernel/asm-offsets.c
-index 4853875740d0..d9f129c584b1 100644
---- a/arch/arm/kernel/asm-offsets.c
-+++ b/arch/arm/kernel/asm-offsets.c
-@@ -7,6 +7,8 @@
-  * This code generates raw asm output which is post-processed to extract
-  * and format the required data.
-  */
-+#define COMPILE_OFFSETS
-+
- #include <linux/compiler.h>
- #include <linux/sched.h>
- #include <linux/mm.h>
-diff --git a/arch/arm64/kernel/asm-offsets.c b/arch/arm64/kernel/asm-offsets.c
-index b21dd24b8efc..020e01181a0f 100644
---- a/arch/arm64/kernel/asm-offsets.c
-+++ b/arch/arm64/kernel/asm-offsets.c
-@@ -6,6 +6,7 @@
-  *               2001-2002 Keith Owens
-  * Copyright (C) 2012 ARM Ltd.
-  */
-+#define COMPILE_OFFSETS
- 
- #include <linux/arm_sdei.h>
- #include <linux/sched.h>
-diff --git a/arch/csky/kernel/asm-offsets.c b/arch/csky/kernel/asm-offsets.c
-index d1e903579473..5525c8e7e1d9 100644
---- a/arch/csky/kernel/asm-offsets.c
-+++ b/arch/csky/kernel/asm-offsets.c
-@@ -1,5 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0
- // Copyright (C) 2018 Hangzhou C-SKY Microsystems co.,ltd.
-+#define COMPILE_OFFSETS
- 
- #include <linux/sched.h>
- #include <linux/kernel_stat.h>
-diff --git a/arch/hexagon/kernel/asm-offsets.c b/arch/hexagon/kernel/asm-offsets.c
-index 03a7063f9456..50eea9fa6f13 100644
---- a/arch/hexagon/kernel/asm-offsets.c
-+++ b/arch/hexagon/kernel/asm-offsets.c
-@@ -8,6 +8,7 @@
-  *
-  * Copyright (c) 2010-2012, The Linux Foundation. All rights reserved.
-  */
-+#define COMPILE_OFFSETS
- 
- #include <linux/compat.h>
- #include <linux/types.h>
-diff --git a/arch/loongarch/kernel/asm-offsets.c b/arch/loongarch/kernel/asm-offsets.c
-index bee9f7a3108f..d20d71d4bcae 100644
---- a/arch/loongarch/kernel/asm-offsets.c
-+++ b/arch/loongarch/kernel/asm-offsets.c
-@@ -4,6 +4,8 @@
-  *
-  * Copyright (C) 2020-2022 Loongson Technology Corporation Limited
-  */
-+#define COMPILE_OFFSETS
-+
- #include <linux/types.h>
- #include <linux/sched.h>
- #include <linux/mm.h>
-diff --git a/arch/m68k/kernel/asm-offsets.c b/arch/m68k/kernel/asm-offsets.c
-index 906d73230537..67a1990f9d74 100644
---- a/arch/m68k/kernel/asm-offsets.c
-+++ b/arch/m68k/kernel/asm-offsets.c
-@@ -9,6 +9,7 @@
-  * #defines from the assembly-language output.
-  */
- 
-+#define COMPILE_OFFSETS
- #define ASM_OFFSETS_C
- 
- #include <linux/stddef.h>
-diff --git a/arch/microblaze/kernel/asm-offsets.c b/arch/microblaze/kernel/asm-offsets.c
-index 104c3ac5f30c..b4b67d58e7f6 100644
---- a/arch/microblaze/kernel/asm-offsets.c
-+++ b/arch/microblaze/kernel/asm-offsets.c
-@@ -7,6 +7,7 @@
-  * License. See the file "COPYING" in the main directory of this archive
-  * for more details.
-  */
-+#define COMPILE_OFFSETS
- 
- #include <linux/init.h>
- #include <linux/stddef.h>
-diff --git a/arch/mips/kernel/asm-offsets.c b/arch/mips/kernel/asm-offsets.c
-index cb1045ebab06..22c99a2cd570 100644
---- a/arch/mips/kernel/asm-offsets.c
-+++ b/arch/mips/kernel/asm-offsets.c
-@@ -9,6 +9,8 @@
-  * Kevin Kissell, kevink@mips.com and Carsten Langgaard, carstenl@mips.com
-  * Copyright (C) 2000 MIPS Technologies, Inc.
-  */
-+#define COMPILE_OFFSETS
-+
- #include <linux/compat.h>
- #include <linux/types.h>
- #include <linux/sched.h>
-diff --git a/arch/nios2/kernel/asm-offsets.c b/arch/nios2/kernel/asm-offsets.c
-index e3d9b7b6fb48..88190b503ce5 100644
---- a/arch/nios2/kernel/asm-offsets.c
-+++ b/arch/nios2/kernel/asm-offsets.c
-@@ -2,6 +2,7 @@
- /*
-  * Copyright (C) 2011 Tobias Klauser <tklauser@distanz.ch>
-  */
-+#define COMPILE_OFFSETS
- 
- #include <linux/stddef.h>
- #include <linux/sched.h>
-diff --git a/arch/openrisc/kernel/asm-offsets.c b/arch/openrisc/kernel/asm-offsets.c
-index 710651d5aaae..3cc826f2216b 100644
---- a/arch/openrisc/kernel/asm-offsets.c
-+++ b/arch/openrisc/kernel/asm-offsets.c
-@@ -18,6 +18,7 @@
-  * compile this file to assembler, and then extract the
-  * #defines from the assembly-language output.
-  */
-+#define COMPILE_OFFSETS
- 
- #include <linux/signal.h>
- #include <linux/sched.h>
-diff --git a/arch/parisc/kernel/asm-offsets.c b/arch/parisc/kernel/asm-offsets.c
-index 757816a7bd4b..9abfe65492c6 100644
---- a/arch/parisc/kernel/asm-offsets.c
-+++ b/arch/parisc/kernel/asm-offsets.c
-@@ -13,6 +13,7 @@
-  *    Copyright (C) 2002 Randolph Chung <tausq with parisc-linux.org>
-  *    Copyright (C) 2003 James Bottomley <jejb at parisc-linux.org>
-  */
-+#define COMPILE_OFFSETS
- 
- #include <linux/types.h>
- #include <linux/sched.h>
-diff --git a/arch/powerpc/kernel/asm-offsets.c b/arch/powerpc/kernel/asm-offsets.c
-index 131a8cc10dbe..cbeeda45c00a 100644
---- a/arch/powerpc/kernel/asm-offsets.c
-+++ b/arch/powerpc/kernel/asm-offsets.c
-@@ -8,6 +8,7 @@
-  * compile this file to assembler, and then extract the
-  * #defines from the assembly-language output.
-  */
-+#define COMPILE_OFFSETS
- 
- #include <linux/compat.h>
- #include <linux/signal.h>
-diff --git a/arch/riscv/kernel/asm-offsets.c b/arch/riscv/kernel/asm-offsets.c
-index c2f3129a8e5c..05c6152a6531 100644
---- a/arch/riscv/kernel/asm-offsets.c
-+++ b/arch/riscv/kernel/asm-offsets.c
-@@ -3,6 +3,7 @@
-  * Copyright (C) 2012 Regents of the University of California
-  * Copyright (C) 2017 SiFive
-  */
-+#define COMPILE_OFFSETS
- 
- #include <linux/kbuild.h>
- #include <linux/mm.h>
-diff --git a/arch/s390/kernel/asm-offsets.c b/arch/s390/kernel/asm-offsets.c
-index 5529248d84fb..3cfc4939033c 100644
---- a/arch/s390/kernel/asm-offsets.c
-+++ b/arch/s390/kernel/asm-offsets.c
-@@ -4,6 +4,7 @@
-  * This code generates raw asm output which is post-processed to extract
-  * and format the required data.
-  */
-+#define COMPILE_OFFSETS
- 
- #define ASM_OFFSETS_C
- 
-diff --git a/arch/sh/kernel/asm-offsets.c b/arch/sh/kernel/asm-offsets.c
-index a0322e832845..429b6a763146 100644
---- a/arch/sh/kernel/asm-offsets.c
-+++ b/arch/sh/kernel/asm-offsets.c
-@@ -8,6 +8,7 @@
-  * compile this file to assembler, and then extract the
-  * #defines from the assembly-language output.
-  */
-+#define COMPILE_OFFSETS
- 
- #include <linux/stddef.h>
- #include <linux/types.h>
-diff --git a/arch/sparc/kernel/asm-offsets.c b/arch/sparc/kernel/asm-offsets.c
-index 3d9b9855dce9..6e660bde48dd 100644
---- a/arch/sparc/kernel/asm-offsets.c
-+++ b/arch/sparc/kernel/asm-offsets.c
-@@ -10,6 +10,7 @@
-  *
-  * On sparc, thread_info data is static and TI_XXX offsets are computed by hand.
-  */
-+#define COMPILE_OFFSETS
- 
- #include <linux/sched.h>
- #include <linux/mm_types.h>
-diff --git a/arch/um/kernel/asm-offsets.c b/arch/um/kernel/asm-offsets.c
-index 1fb12235ab9c..a69873aa697f 100644
---- a/arch/um/kernel/asm-offsets.c
-+++ b/arch/um/kernel/asm-offsets.c
-@@ -1 +1,3 @@
-+#define COMPILE_OFFSETS
-+
- #include <sysdep/kernel-offsets.h>
-diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
-index 36d8404f406d..acc0774519ce 100644
---- a/arch/x86/events/intel/core.c
-+++ b/arch/x86/events/intel/core.c
-@@ -2812,8 +2812,8 @@ static void intel_pmu_enable_fixed(struct perf_event *event)
- {
- 	struct cpu_hw_events *cpuc = this_cpu_ptr(&cpu_hw_events);
- 	struct hw_perf_event *hwc = &event->hw;
--	u64 mask, bits = 0;
- 	int idx = hwc->idx;
-+	u64 bits = 0;
- 
- 	if (is_topdown_idx(idx)) {
- 		struct cpu_hw_events *cpuc = this_cpu_ptr(&cpu_hw_events);
-@@ -2849,14 +2849,10 @@ static void intel_pmu_enable_fixed(struct perf_event *event)
- 
- 	idx -= INTEL_PMC_IDX_FIXED;
- 	bits = intel_fixed_bits_by_idx(idx, bits);
--	mask = intel_fixed_bits_by_idx(idx, INTEL_FIXED_BITS_MASK);
--
--	if (x86_pmu.intel_cap.pebs_baseline && event->attr.precise_ip) {
-+	if (x86_pmu.intel_cap.pebs_baseline && event->attr.precise_ip)
- 		bits |= intel_fixed_bits_by_idx(idx, ICL_FIXED_0_ADAPTIVE);
--		mask |= intel_fixed_bits_by_idx(idx, ICL_FIXED_0_ADAPTIVE);
--	}
- 
--	cpuc->fixed_ctrl_val &= ~mask;
-+	cpuc->fixed_ctrl_val &= ~intel_fixed_bits_by_idx(idx, INTEL_FIXED_BITS_MASK);
- 	cpuc->fixed_ctrl_val |= bits;
- }
- 
-diff --git a/arch/x86/include/asm/perf_event.h b/arch/x86/include/asm/perf_event.h
-index aa351c4a20ee..c69b6498f6ea 100644
---- a/arch/x86/include/asm/perf_event.h
-+++ b/arch/x86/include/asm/perf_event.h
-@@ -35,7 +35,6 @@
- #define ARCH_PERFMON_EVENTSEL_EQ			(1ULL << 36)
- #define ARCH_PERFMON_EVENTSEL_UMASK2			(0xFFULL << 40)
- 
--#define INTEL_FIXED_BITS_MASK				0xFULL
- #define INTEL_FIXED_BITS_STRIDE			4
- #define INTEL_FIXED_0_KERNEL				(1ULL << 0)
- #define INTEL_FIXED_0_USER				(1ULL << 1)
-@@ -47,6 +46,11 @@
- #define ICL_EVENTSEL_ADAPTIVE				(1ULL << 34)
- #define ICL_FIXED_0_ADAPTIVE				(1ULL << 32)
- 
-+#define INTEL_FIXED_BITS_MASK					\
-+	(INTEL_FIXED_0_KERNEL | INTEL_FIXED_0_USER |		\
-+	 INTEL_FIXED_0_ANYTHREAD | INTEL_FIXED_0_ENABLE_PMI |	\
-+	 ICL_FIXED_0_ADAPTIVE)
-+
- #define intel_fixed_bits_by_idx(_idx, _bits)			\
- 	((_bits) << ((_idx) * INTEL_FIXED_BITS_STRIDE))
- 
-diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
-index f3cb559a598d..939401b5d2ef 100644
---- a/arch/x86/kernel/cpu/bugs.c
-+++ b/arch/x86/kernel/cpu/bugs.c
-@@ -1186,8 +1186,10 @@ static void __init retbleed_select_mitigation(void)
- 			retbleed_mitigation = RETBLEED_MITIGATION_EIBRS;
- 			break;
- 		default:
--			if (retbleed_mitigation != RETBLEED_MITIGATION_STUFF)
-+			if (retbleed_mitigation != RETBLEED_MITIGATION_STUFF) {
- 				pr_err(RETBLEED_INTEL_MSG);
-+				retbleed_mitigation = RETBLEED_MITIGATION_NONE;
-+			}
- 		}
- 	}
- 
-@@ -1596,7 +1598,7 @@ spectre_v2_user_select_mitigation(void)
- static const char * const spectre_v2_strings[] = {
- 	[SPECTRE_V2_NONE]			= "Vulnerable",
- 	[SPECTRE_V2_RETPOLINE]			= "Mitigation: Retpolines",
--	[SPECTRE_V2_LFENCE]			= "Mitigation: LFENCE",
-+	[SPECTRE_V2_LFENCE]			= "Vulnerable: LFENCE",
- 	[SPECTRE_V2_EIBRS]			= "Mitigation: Enhanced / Automatic IBRS",
- 	[SPECTRE_V2_EIBRS_LFENCE]		= "Mitigation: Enhanced / Automatic IBRS + LFENCE",
- 	[SPECTRE_V2_EIBRS_RETPOLINE]		= "Mitigation: Enhanced / Automatic IBRS + Retpolines",
-@@ -3249,9 +3251,6 @@ static const char *spectre_bhi_state(void)
- 
- static ssize_t spectre_v2_show_state(char *buf)
- {
--	if (spectre_v2_enabled == SPECTRE_V2_LFENCE)
--		return sysfs_emit(buf, "Vulnerable: LFENCE\n");
--
- 	if (spectre_v2_enabled == SPECTRE_V2_EIBRS && unprivileged_ebpf_enabled())
- 		return sysfs_emit(buf, "Vulnerable: eIBRS with unprivileged eBPF\n");
- 
-diff --git a/arch/x86/kvm/pmu.h b/arch/x86/kvm/pmu.h
-index ad89d0bd6005..103604c4b33b 100644
---- a/arch/x86/kvm/pmu.h
-+++ b/arch/x86/kvm/pmu.h
-@@ -13,7 +13,7 @@
- #define MSR_IA32_MISC_ENABLE_PMU_RO_MASK (MSR_IA32_MISC_ENABLE_PEBS_UNAVAIL |	\
- 					  MSR_IA32_MISC_ENABLE_BTS_UNAVAIL)
- 
--/* retrieve the 4 bits for EN and PMI out of IA32_FIXED_CTR_CTRL */
-+/* retrieve a fixed counter bits out of IA32_FIXED_CTR_CTRL */
- #define fixed_ctrl_field(ctrl_reg, idx) \
- 	(((ctrl_reg) >> ((idx) * INTEL_FIXED_BITS_STRIDE)) & INTEL_FIXED_BITS_MASK)
- 
-diff --git a/arch/xtensa/kernel/asm-offsets.c b/arch/xtensa/kernel/asm-offsets.c
-index da38de20ae59..cfbced95e944 100644
---- a/arch/xtensa/kernel/asm-offsets.c
-+++ b/arch/xtensa/kernel/asm-offsets.c
-@@ -11,6 +11,7 @@
-  *
-  * Chris Zankel <chris@zankel.net>
-  */
-+#define COMPILE_OFFSETS
- 
- #include <asm/processor.h>
- #include <asm/coprocessor.h>
-diff --git a/drivers/dma-buf/udmabuf.c b/drivers/dma-buf/udmabuf.c
-index 0e127a9109e7..2e5c30f7ba0f 100644
---- a/drivers/dma-buf/udmabuf.c
-+++ b/drivers/dma-buf/udmabuf.c
-@@ -350,7 +350,7 @@ static long udmabuf_create(struct miscdevice *device,
- 		return -ENOMEM;
- 
- 	INIT_LIST_HEAD(&ubuf->unpin_list);
--	pglimit = (size_limit_mb * 1024 * 1024) >> PAGE_SHIFT;
-+	pglimit = ((u64)size_limit_mb * 1024 * 1024) >> PAGE_SHIFT;
- 	for (i = 0; i < head->count; i++) {
- 		if (!PAGE_ALIGNED(list[i].offset))
- 			goto err;
-diff --git a/drivers/edac/edac_mc_sysfs.c b/drivers/edac/edac_mc_sysfs.c
-index 4200aec04831..70dc0ee1cc08 100644
---- a/drivers/edac/edac_mc_sysfs.c
-+++ b/drivers/edac/edac_mc_sysfs.c
-@@ -305,6 +305,14 @@ DEVICE_CHANNEL(ch10_dimm_label, S_IRUGO | S_IWUSR,
- 	channel_dimm_label_show, channel_dimm_label_store, 10);
- DEVICE_CHANNEL(ch11_dimm_label, S_IRUGO | S_IWUSR,
- 	channel_dimm_label_show, channel_dimm_label_store, 11);
-+DEVICE_CHANNEL(ch12_dimm_label, S_IRUGO | S_IWUSR,
-+	channel_dimm_label_show, channel_dimm_label_store, 12);
-+DEVICE_CHANNEL(ch13_dimm_label, S_IRUGO | S_IWUSR,
-+	channel_dimm_label_show, channel_dimm_label_store, 13);
-+DEVICE_CHANNEL(ch14_dimm_label, S_IRUGO | S_IWUSR,
-+	channel_dimm_label_show, channel_dimm_label_store, 14);
-+DEVICE_CHANNEL(ch15_dimm_label, S_IRUGO | S_IWUSR,
-+	channel_dimm_label_show, channel_dimm_label_store, 15);
- 
- /* Total possible dynamic DIMM Label attribute file table */
- static struct attribute *dynamic_csrow_dimm_attr[] = {
-@@ -320,6 +328,10 @@ static struct attribute *dynamic_csrow_dimm_attr[] = {
- 	&dev_attr_legacy_ch9_dimm_label.attr.attr,
- 	&dev_attr_legacy_ch10_dimm_label.attr.attr,
- 	&dev_attr_legacy_ch11_dimm_label.attr.attr,
-+	&dev_attr_legacy_ch12_dimm_label.attr.attr,
-+	&dev_attr_legacy_ch13_dimm_label.attr.attr,
-+	&dev_attr_legacy_ch14_dimm_label.attr.attr,
-+	&dev_attr_legacy_ch15_dimm_label.attr.attr,
- 	NULL
- };
- 
-@@ -348,6 +360,14 @@ DEVICE_CHANNEL(ch10_ce_count, S_IRUGO,
- 		   channel_ce_count_show, NULL, 10);
- DEVICE_CHANNEL(ch11_ce_count, S_IRUGO,
- 		   channel_ce_count_show, NULL, 11);
-+DEVICE_CHANNEL(ch12_ce_count, S_IRUGO,
-+		   channel_ce_count_show, NULL, 12);
-+DEVICE_CHANNEL(ch13_ce_count, S_IRUGO,
-+		   channel_ce_count_show, NULL, 13);
-+DEVICE_CHANNEL(ch14_ce_count, S_IRUGO,
-+		   channel_ce_count_show, NULL, 14);
-+DEVICE_CHANNEL(ch15_ce_count, S_IRUGO,
-+		   channel_ce_count_show, NULL, 15);
- 
- /* Total possible dynamic ce_count attribute file table */
- static struct attribute *dynamic_csrow_ce_count_attr[] = {
-@@ -363,6 +383,10 @@ static struct attribute *dynamic_csrow_ce_count_attr[] = {
- 	&dev_attr_legacy_ch9_ce_count.attr.attr,
- 	&dev_attr_legacy_ch10_ce_count.attr.attr,
- 	&dev_attr_legacy_ch11_ce_count.attr.attr,
-+	&dev_attr_legacy_ch12_ce_count.attr.attr,
-+	&dev_attr_legacy_ch13_ce_count.attr.attr,
-+	&dev_attr_legacy_ch14_ce_count.attr.attr,
-+	&dev_attr_legacy_ch15_ce_count.attr.attr,
- 	NULL
- };
- 
-diff --git a/drivers/gpio/gpio-idio-16.c b/drivers/gpio/gpio-idio-16.c
-index 2c9512589297..f7e557c2c9cd 100644
---- a/drivers/gpio/gpio-idio-16.c
-+++ b/drivers/gpio/gpio-idio-16.c
-@@ -3,6 +3,7 @@
-  * GPIO library for the ACCES IDIO-16 family
-  * Copyright (C) 2022 William Breathitt Gray
-  */
-+#include <linux/bitmap.h>
- #include <linux/bits.h>
- #include <linux/device.h>
- #include <linux/err.h>
-@@ -106,6 +107,7 @@ int devm_idio_16_regmap_register(struct device *const dev,
- 	struct idio_16_data *data;
- 	struct regmap_irq_chip *chip;
- 	struct regmap_irq_chip_data *chip_data;
-+	DECLARE_BITMAP(fixed_direction_output, IDIO_16_NGPIO);
- 
- 	if (!config->parent)
- 		return -EINVAL;
-@@ -163,6 +165,9 @@ int devm_idio_16_regmap_register(struct device *const dev,
- 	gpio_config.irq_domain = regmap_irq_get_domain(chip_data);
- 	gpio_config.reg_mask_xlate = idio_16_reg_mask_xlate;
- 
-+	bitmap_from_u64(fixed_direction_output, GENMASK_U64(15, 0));
-+	gpio_config.fixed_direction_output = fixed_direction_output;
-+
- 	return PTR_ERR_OR_ZERO(devm_gpio_regmap_register(dev, &gpio_config));
- }
- EXPORT_SYMBOL_GPL(devm_idio_16_regmap_register);
-diff --git a/drivers/gpio/gpio-regmap.c b/drivers/gpio/gpio-regmap.c
-index 71684dee2ca5..fed9af5ff9ec 100644
---- a/drivers/gpio/gpio-regmap.c
-+++ b/drivers/gpio/gpio-regmap.c
-@@ -29,6 +29,12 @@ struct gpio_regmap {
- 	unsigned int reg_clr_base;
- 	unsigned int reg_dir_in_base;
- 	unsigned int reg_dir_out_base;
-+	unsigned long *fixed_direction_output;
-+
-+#ifdef CONFIG_REGMAP_IRQ
-+	int regmap_irq_line;
-+	struct regmap_irq_chip_data *irq_chip_data;
-+#endif
- 
- 	int (*reg_mask_xlate)(struct gpio_regmap *gpio, unsigned int base,
- 			      unsigned int offset, unsigned int *reg,
-@@ -117,6 +123,13 @@ static int gpio_regmap_get_direction(struct gpio_chip *chip,
- 	unsigned int base, val, reg, mask;
- 	int invert, ret;
- 
-+	if (gpio->fixed_direction_output) {
-+		if (test_bit(offset, gpio->fixed_direction_output))
-+			return GPIO_LINE_DIRECTION_OUT;
-+		else
-+			return GPIO_LINE_DIRECTION_IN;
-+	}
-+
- 	if (gpio->reg_dat_base && !gpio->reg_set_base)
- 		return GPIO_LINE_DIRECTION_IN;
- 	if (gpio->reg_set_base && !gpio->reg_dat_base)
-@@ -203,6 +216,7 @@ EXPORT_SYMBOL_GPL(gpio_regmap_get_drvdata);
-  */
- struct gpio_regmap *gpio_regmap_register(const struct gpio_regmap_config *config)
- {
-+	struct irq_domain *irq_domain;
- 	struct gpio_regmap *gpio;
- 	struct gpio_chip *chip;
- 	int ret;
-@@ -274,12 +288,37 @@ struct gpio_regmap *gpio_regmap_register(const struct gpio_regmap_config *config
- 		chip->direction_output = gpio_regmap_direction_output;
- 	}
- 
-+	if (config->fixed_direction_output) {
-+		gpio->fixed_direction_output = bitmap_alloc(chip->ngpio,
-+							    GFP_KERNEL);
-+		if (!gpio->fixed_direction_output) {
-+			ret = -ENOMEM;
-+			goto err_free_gpio;
-+		}
-+		bitmap_copy(gpio->fixed_direction_output,
-+			    config->fixed_direction_output, chip->ngpio);
-+	}
-+
- 	ret = gpiochip_add_data(chip, gpio);
- 	if (ret < 0)
--		goto err_free_gpio;
-+		goto err_free_bitmap;
-+
-+#ifdef CONFIG_REGMAP_IRQ
-+	if (config->regmap_irq_chip) {
-+		gpio->regmap_irq_line = config->regmap_irq_line;
-+		ret = regmap_add_irq_chip_fwnode(dev_fwnode(config->parent), config->regmap,
-+						 config->regmap_irq_line, config->regmap_irq_flags,
-+						 0, config->regmap_irq_chip, &gpio->irq_chip_data);
-+		if (ret)
-+			goto err_free_bitmap;
- 
--	if (config->irq_domain) {
--		ret = gpiochip_irqchip_add_domain(chip, config->irq_domain);
-+		irq_domain = regmap_irq_get_domain(gpio->irq_chip_data);
-+	} else
-+#endif
-+	irq_domain = config->irq_domain;
-+
-+	if (irq_domain) {
-+		ret = gpiochip_irqchip_add_domain(chip, irq_domain);
- 		if (ret)
- 			goto err_remove_gpiochip;
- 	}
-@@ -288,6 +327,8 @@ struct gpio_regmap *gpio_regmap_register(const struct gpio_regmap_config *config
- 
- err_remove_gpiochip:
- 	gpiochip_remove(chip);
-+err_free_bitmap:
-+	bitmap_free(gpio->fixed_direction_output);
- err_free_gpio:
- 	kfree(gpio);
- 	return ERR_PTR(ret);
-@@ -300,7 +341,13 @@ EXPORT_SYMBOL_GPL(gpio_regmap_register);
-  */
- void gpio_regmap_unregister(struct gpio_regmap *gpio)
- {
-+#ifdef CONFIG_REGMAP_IRQ
-+	if (gpio->irq_chip_data)
-+		regmap_del_irq_chip(gpio->regmap_irq_line, gpio->irq_chip_data);
-+#endif
-+
- 	gpiochip_remove(&gpio->gpio_chip);
-+	bitmap_free(gpio->fixed_direction_output);
- 	kfree(gpio);
- }
- EXPORT_SYMBOL_GPL(gpio_regmap_unregister);
-diff --git a/drivers/iommu/intel/iommu.c b/drivers/iommu/intel/iommu.c
-index 667407974e23..c799cc67db34 100644
---- a/drivers/iommu/intel/iommu.c
-+++ b/drivers/iommu/intel/iommu.c
-@@ -4328,13 +4328,14 @@ static void intel_iommu_remove_dev_pasid(struct device *dev, ioasid_t pasid,
- 			break;
- 		}
- 	}
--	WARN_ON_ONCE(!dev_pasid);
- 	spin_unlock_irqrestore(&dmar_domain->lock, flags);
- 
- 	cache_tag_unassign_domain(dmar_domain, dev, pasid);
- 	domain_detach_iommu(dmar_domain, iommu);
--	intel_iommu_debugfs_remove_dev_pasid(dev_pasid);
--	kfree(dev_pasid);
-+	if (!WARN_ON_ONCE(!dev_pasid)) {
-+		intel_iommu_debugfs_remove_dev_pasid(dev_pasid);
-+		kfree(dev_pasid);
-+	}
- 	intel_pasid_tear_down_entry(iommu, dev, pasid, false);
- 	intel_drain_pasid_prq(dev, pasid);
- }
-diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-index 46628a7ed497..f17a170d1be4 100644
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -322,9 +322,9 @@ static bool bond_sk_check(struct bonding *bond)
- 	}
- }
- 
--static bool bond_xdp_check(struct bonding *bond)
-+bool bond_xdp_check(struct bonding *bond, int mode)
- {
--	switch (BOND_MODE(bond)) {
-+	switch (mode) {
- 	case BOND_MODE_ROUNDROBIN:
- 	case BOND_MODE_ACTIVEBACKUP:
- 		return true;
-@@ -1930,7 +1930,7 @@ void bond_xdp_set_features(struct net_device *bond_dev)
- 
- 	ASSERT_RTNL();
- 
--	if (!bond_xdp_check(bond) || !bond_has_slaves(bond)) {
-+	if (!bond_xdp_check(bond, BOND_MODE(bond)) || !bond_has_slaves(bond)) {
- 		xdp_clear_features_flag(bond_dev);
- 		return;
- 	}
-@@ -5699,8 +5699,11 @@ static int bond_xdp_set(struct net_device *dev, struct bpf_prog *prog,
- 
- 	ASSERT_RTNL();
- 
--	if (!bond_xdp_check(bond))
-+	if (!bond_xdp_check(bond, BOND_MODE(bond))) {
-+		BOND_NL_ERR(dev, extack,
-+			    "No native XDP support for the current bonding mode");
- 		return -EOPNOTSUPP;
-+	}
- 
- 	old_prog = bond->xdp_prog;
- 	bond->xdp_prog = prog;
-diff --git a/drivers/net/bonding/bond_options.c b/drivers/net/bonding/bond_options.c
-index e27d913b487b..28c53f1b1382 100644
---- a/drivers/net/bonding/bond_options.c
-+++ b/drivers/net/bonding/bond_options.c
-@@ -868,6 +868,9 @@ static bool bond_set_xfrm_features(struct bonding *bond)
- static int bond_option_mode_set(struct bonding *bond,
- 				const struct bond_opt_value *newval)
- {
-+	if (bond->xdp_prog && !bond_xdp_check(bond, newval->value))
-+		return -EOPNOTSUPP;
-+
- 	if (!bond_mode_uses_arp(newval->value)) {
- 		if (bond->params.arp_interval) {
- 			netdev_dbg(bond->dev, "%s mode is incompatible with arp monitoring, start mii monitoring\n",
-diff --git a/drivers/net/ethernet/sfc/ef100_netdev.c b/drivers/net/ethernet/sfc/ef100_netdev.c
-index 7f7d560cb2b4..14dcca4ffb33 100644
---- a/drivers/net/ethernet/sfc/ef100_netdev.c
-+++ b/drivers/net/ethernet/sfc/ef100_netdev.c
-@@ -450,8 +450,9 @@ int ef100_probe_netdev(struct efx_probe_data *probe_data)
- 	net_dev->hw_enc_features |= efx->type->offload_features;
- 	net_dev->vlan_features |= NETIF_F_HW_CSUM | NETIF_F_SG |
- 				  NETIF_F_HIGHDMA | NETIF_F_ALL_TSO;
--	netif_set_tso_max_segs(net_dev,
--			       ESE_EF100_DP_GZ_TSO_MAX_HDR_NUM_SEGS_DEFAULT);
-+	nic_data = efx->nic_data;
-+	netif_set_tso_max_size(efx->net_dev, nic_data->tso_max_payload_len);
-+	netif_set_tso_max_segs(efx->net_dev, nic_data->tso_max_payload_num_segs);
- 	efx->mdio.dev = net_dev;
- 
- 	rc = efx_ef100_init_datapath_caps(efx);
-@@ -478,7 +479,6 @@ int ef100_probe_netdev(struct efx_probe_data *probe_data)
- 	/* Don't fail init if RSS setup doesn't work. */
- 	efx_mcdi_push_default_indir_table(efx, efx->n_rx_channels);
- 
--	nic_data = efx->nic_data;
- 	rc = ef100_get_mac_address(efx, net_dev->perm_addr, CLIENT_HANDLE_SELF,
- 				   efx->type->is_vf);
- 	if (rc)
-diff --git a/drivers/net/ethernet/sfc/ef100_nic.c b/drivers/net/ethernet/sfc/ef100_nic.c
-index 6da06931187d..5b1bdcac81d9 100644
---- a/drivers/net/ethernet/sfc/ef100_nic.c
-+++ b/drivers/net/ethernet/sfc/ef100_nic.c
-@@ -887,8 +887,7 @@ static int ef100_process_design_param(struct efx_nic *efx,
- 	case ESE_EF100_DP_GZ_TSO_MAX_HDR_NUM_SEGS:
- 		/* We always put HDR_NUM_SEGS=1 in our TSO descriptors */
- 		if (!reader->value) {
--			netif_err(efx, probe, efx->net_dev,
--				  "TSO_MAX_HDR_NUM_SEGS < 1\n");
-+			pci_err(efx->pci_dev, "TSO_MAX_HDR_NUM_SEGS < 1\n");
- 			return -EOPNOTSUPP;
- 		}
- 		return 0;
-@@ -901,32 +900,28 @@ static int ef100_process_design_param(struct efx_nic *efx,
- 		 */
- 		if (!reader->value || reader->value > EFX_MIN_DMAQ_SIZE ||
- 		    EFX_MIN_DMAQ_SIZE % (u32)reader->value) {
--			netif_err(efx, probe, efx->net_dev,
--				  "%s size granularity is %llu, can't guarantee safety\n",
--				  reader->type == ESE_EF100_DP_GZ_RXQ_SIZE_GRANULARITY ? "RXQ" : "TXQ",
--				  reader->value);
-+			pci_err(efx->pci_dev,
-+				"%s size granularity is %llu, can't guarantee safety\n",
-+				reader->type == ESE_EF100_DP_GZ_RXQ_SIZE_GRANULARITY ? "RXQ" : "TXQ",
-+				reader->value);
- 			return -EOPNOTSUPP;
- 		}
- 		return 0;
- 	case ESE_EF100_DP_GZ_TSO_MAX_PAYLOAD_LEN:
- 		nic_data->tso_max_payload_len = min_t(u64, reader->value,
- 						      GSO_LEGACY_MAX_SIZE);
--		netif_set_tso_max_size(efx->net_dev,
--				       nic_data->tso_max_payload_len);
- 		return 0;
- 	case ESE_EF100_DP_GZ_TSO_MAX_PAYLOAD_NUM_SEGS:
- 		nic_data->tso_max_payload_num_segs = min_t(u64, reader->value, 0xffff);
--		netif_set_tso_max_segs(efx->net_dev,
--				       nic_data->tso_max_payload_num_segs);
- 		return 0;
- 	case ESE_EF100_DP_GZ_TSO_MAX_NUM_FRAMES:
- 		nic_data->tso_max_frames = min_t(u64, reader->value, 0xffff);
- 		return 0;
- 	case ESE_EF100_DP_GZ_COMPAT:
- 		if (reader->value) {
--			netif_err(efx, probe, efx->net_dev,
--				  "DP_COMPAT has unknown bits %#llx, driver not compatible with this hw\n",
--				  reader->value);
-+			pci_err(efx->pci_dev,
-+				"DP_COMPAT has unknown bits %#llx, driver not compatible with this hw\n",
-+				reader->value);
- 			return -EOPNOTSUPP;
- 		}
- 		return 0;
-@@ -946,10 +941,10 @@ static int ef100_process_design_param(struct efx_nic *efx,
- 		 * So the value of this shouldn't matter.
- 		 */
- 		if (reader->value != ESE_EF100_DP_GZ_VI_STRIDES_DEFAULT)
--			netif_dbg(efx, probe, efx->net_dev,
--				  "NIC has other than default VI_STRIDES (mask "
--				  "%#llx), early probing might use wrong one\n",
--				  reader->value);
-+			pci_dbg(efx->pci_dev,
-+				"NIC has other than default VI_STRIDES (mask "
-+				"%#llx), early probing might use wrong one\n",
-+				reader->value);
- 		return 0;
- 	case ESE_EF100_DP_GZ_RX_MAX_RUNT:
- 		/* Driver doesn't look at L2_STATUS:LEN_ERR bit, so we don't
-@@ -961,9 +956,9 @@ static int ef100_process_design_param(struct efx_nic *efx,
- 		/* Host interface says "Drivers should ignore design parameters
- 		 * that they do not recognise."
- 		 */
--		netif_dbg(efx, probe, efx->net_dev,
--			  "Ignoring unrecognised design parameter %u\n",
--			  reader->type);
-+		pci_dbg(efx->pci_dev,
-+			"Ignoring unrecognised design parameter %u\n",
-+			reader->type);
- 		return 0;
- 	}
- }
-@@ -999,13 +994,13 @@ static int ef100_check_design_params(struct efx_nic *efx)
- 	 */
- 	if (reader.state != EF100_TLV_TYPE) {
- 		if (reader.state == EF100_TLV_TYPE_CONT)
--			netif_err(efx, probe, efx->net_dev,
--				  "truncated design parameter (incomplete type %u)\n",
--				  reader.type);
-+			pci_err(efx->pci_dev,
-+				"truncated design parameter (incomplete type %u)\n",
-+				reader.type);
- 		else
--			netif_err(efx, probe, efx->net_dev,
--				  "truncated design parameter %u\n",
--				  reader.type);
-+			pci_err(efx->pci_dev,
-+				"truncated design parameter %u\n",
-+				reader.type);
- 		rc = -EIO;
- 	}
- out:
-diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-index 4b3fbec397ac..c15eecf2a188 100644
---- a/drivers/net/wireless/ath/ath12k/mac.c
-+++ b/drivers/net/wireless/ath/ath12k/mac.c
-@@ -6733,15 +6733,15 @@ static struct ath12k *ath12k_mac_assign_vif_to_vdev(struct ieee80211_hw *hw,
- 
- 	mutex_lock(&ar->conf_mutex);
- 
--	if (arvif->is_created)
--		goto flush;
--
- 	if (vif->type == NL80211_IFTYPE_AP &&
- 	    ar->num_peers > (ar->max_num_peers - 1)) {
- 		ath12k_warn(ab, "failed to create vdev due to insufficient peer entry resource in firmware\n");
- 		goto unlock;
- 	}
- 
-+	if (arvif->is_created)
-+		goto flush;
-+
- 	if (ar->num_created_vdevs > (TARGET_NUM_VDEVS - 1)) {
- 		ath12k_warn(ab, "failed to create vdev, reached max vdev limit %d\n",
- 			    TARGET_NUM_VDEVS);
-diff --git a/fs/btrfs/disk-io.c b/fs/btrfs/disk-io.c
-index e655fa3bfd9b..3a73d218af46 100644
---- a/fs/btrfs/disk-io.c
-+++ b/fs/btrfs/disk-io.c
-@@ -2100,10 +2100,10 @@ static int btrfs_replay_log(struct btrfs_fs_info *fs_info,
- 
- 	/* returns with log_tree_root freed on success */
- 	ret = btrfs_recover_log_trees(log_tree_root);
-+	btrfs_put_root(log_tree_root);
- 	if (ret) {
- 		btrfs_handle_fs_error(fs_info, ret,
- 				      "Failed to recover log tree");
--		btrfs_put_root(log_tree_root);
- 		return ret;
- 	}
- 
-diff --git a/fs/btrfs/extent-tree.c b/fs/btrfs/extent-tree.c
-index bb3602059906..7bab2512468d 100644
---- a/fs/btrfs/extent-tree.c
-+++ b/fs/btrfs/extent-tree.c
-@@ -4299,7 +4299,8 @@ static int prepare_allocation_clustered(struct btrfs_fs_info *fs_info,
- }
- 
- static int prepare_allocation_zoned(struct btrfs_fs_info *fs_info,
--				    struct find_free_extent_ctl *ffe_ctl)
-+				    struct find_free_extent_ctl *ffe_ctl,
-+				    struct btrfs_space_info *space_info)
- {
- 	if (ffe_ctl->for_treelog) {
- 		spin_lock(&fs_info->treelog_bg_lock);
-@@ -4323,6 +4324,7 @@ static int prepare_allocation_zoned(struct btrfs_fs_info *fs_info,
- 			u64 avail = block_group->zone_capacity - block_group->alloc_offset;
- 
- 			if (block_group_bits(block_group, ffe_ctl->flags) &&
-+			    block_group->space_info == space_info &&
- 			    avail >= ffe_ctl->num_bytes) {
- 				ffe_ctl->hint_byte = block_group->start;
- 				break;
-@@ -4344,7 +4346,7 @@ static int prepare_allocation(struct btrfs_fs_info *fs_info,
- 		return prepare_allocation_clustered(fs_info, ffe_ctl,
- 						    space_info, ins);
- 	case BTRFS_EXTENT_ALLOC_ZONED:
--		return prepare_allocation_zoned(fs_info, ffe_ctl);
-+		return prepare_allocation_zoned(fs_info, ffe_ctl, space_info);
- 	default:
- 		BUG();
- 	}
-diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
-index 19c0ec9c327c..e32dd4193aea 100644
---- a/fs/btrfs/inode.c
-+++ b/fs/btrfs/inode.c
-@@ -3174,9 +3174,10 @@ int btrfs_finish_one_ordered(struct btrfs_ordered_extent *ordered_extent)
- 		goto out;
- 	}
- 
--	if (btrfs_is_zoned(fs_info))
--		btrfs_zone_finish_endio(fs_info, ordered_extent->disk_bytenr,
--					ordered_extent->disk_num_bytes);
-+	ret = btrfs_zone_finish_endio(fs_info, ordered_extent->disk_bytenr,
-+				      ordered_extent->disk_num_bytes);
-+	if (ret)
-+		goto out;
- 
- 	if (test_bit(BTRFS_ORDERED_TRUNCATED, &ordered_extent->flags)) {
- 		truncated = true;
-diff --git a/fs/btrfs/scrub.c b/fs/btrfs/scrub.c
-index 3fcc7c092c5e..9a6e0b047d3b 100644
---- a/fs/btrfs/scrub.c
-+++ b/fs/btrfs/scrub.c
-@@ -1270,8 +1270,7 @@ static void scrub_throttle_dev_io(struct scrub_ctx *sctx, struct btrfs_device *d
- 	 * Slice is divided into intervals when the IO is submitted, adjust by
- 	 * bwlimit and maximum of 64 intervals.
- 	 */
--	div = max_t(u32, 1, (u32)(bwlimit / (16 * 1024 * 1024)));
--	div = min_t(u32, 64, div);
-+	div = clamp(bwlimit / (16 * 1024 * 1024), 1, 64);
- 
- 	/* Start new epoch, set deadline */
- 	now = ktime_get();
-diff --git a/fs/btrfs/transaction.c b/fs/btrfs/transaction.c
-index 1a029392eac5..f4dda72491fe 100644
---- a/fs/btrfs/transaction.c
-+++ b/fs/btrfs/transaction.c
-@@ -1810,7 +1810,7 @@ static noinline int create_pending_snapshot(struct btrfs_trans_handle *trans,
- 	}
- 	/* see comments in should_cow_block() */
- 	set_bit(BTRFS_ROOT_FORCE_COW, &root->state);
--	smp_wmb();
-+	smp_mb__after_atomic();
- 
- 	btrfs_set_root_node(new_root_item, tmp);
- 	/* record when the snapshot was created in key.offset */
-diff --git a/fs/btrfs/tree-checker.c b/fs/btrfs/tree-checker.c
-index 14f96d217e6e..3bb7a376bd3f 100644
---- a/fs/btrfs/tree-checker.c
-+++ b/fs/btrfs/tree-checker.c
-@@ -183,6 +183,7 @@ static bool check_prev_ino(struct extent_buffer *leaf,
- 	/* Only these key->types needs to be checked */
- 	ASSERT(key->type == BTRFS_XATTR_ITEM_KEY ||
- 	       key->type == BTRFS_INODE_REF_KEY ||
-+	       key->type == BTRFS_INODE_EXTREF_KEY ||
- 	       key->type == BTRFS_DIR_INDEX_KEY ||
- 	       key->type == BTRFS_DIR_ITEM_KEY ||
- 	       key->type == BTRFS_EXTENT_DATA_KEY);
-@@ -1770,6 +1771,39 @@ static int check_inode_ref(struct extent_buffer *leaf,
- 	return 0;
- }
- 
-+static int check_inode_extref(struct extent_buffer *leaf,
-+			      struct btrfs_key *key, struct btrfs_key *prev_key,
-+			      int slot)
-+{
-+	unsigned long ptr = btrfs_item_ptr_offset(leaf, slot);
-+	unsigned long end = ptr + btrfs_item_size(leaf, slot);
-+
-+	if (unlikely(!check_prev_ino(leaf, key, slot, prev_key)))
-+		return -EUCLEAN;
-+
-+	while (ptr < end) {
-+		struct btrfs_inode_extref *extref = (struct btrfs_inode_extref *)ptr;
-+		u16 namelen;
-+
-+		if (unlikely(ptr + sizeof(*extref) > end)) {
-+			inode_ref_err(leaf, slot,
-+			"inode extref overflow, ptr %lu end %lu inode_extref size %zu",
-+				      ptr, end, sizeof(*extref));
-+			return -EUCLEAN;
-+		}
-+
-+		namelen = btrfs_inode_extref_name_len(leaf, extref);
-+		if (unlikely(ptr + sizeof(*extref) + namelen > end)) {
-+			inode_ref_err(leaf, slot,
-+				"inode extref overflow, ptr %lu end %lu namelen %u",
-+				ptr, end, namelen);
-+			return -EUCLEAN;
-+		}
-+		ptr += sizeof(*extref) + namelen;
-+	}
-+	return 0;
-+}
-+
- static int check_raid_stripe_extent(const struct extent_buffer *leaf,
- 				    const struct btrfs_key *key, int slot)
- {
-@@ -1881,6 +1915,9 @@ static enum btrfs_tree_block_status check_leaf_item(struct extent_buffer *leaf,
- 	case BTRFS_INODE_REF_KEY:
- 		ret = check_inode_ref(leaf, key, prev_key, slot);
- 		break;
-+	case BTRFS_INODE_EXTREF_KEY:
-+		ret = check_inode_extref(leaf, key, prev_key, slot);
-+		break;
- 	case BTRFS_BLOCK_GROUP_ITEM_KEY:
- 		ret = check_block_group_item(leaf, key, slot);
- 		break;
-diff --git a/fs/btrfs/tree-log.c b/fs/btrfs/tree-log.c
-index 0022ad003791..173e13e1d5b8 100644
---- a/fs/btrfs/tree-log.c
-+++ b/fs/btrfs/tree-log.c
-@@ -350,6 +350,7 @@ static int process_one_buffer(struct btrfs_root *log,
- 			      struct extent_buffer *eb,
- 			      struct walk_control *wc, u64 gen, int level)
- {
-+	struct btrfs_trans_handle *trans = wc->trans;
- 	struct btrfs_fs_info *fs_info = log->fs_info;
- 	int ret = 0;
- 
-@@ -364,18 +365,29 @@ static int process_one_buffer(struct btrfs_root *log,
- 		};
- 
- 		ret = btrfs_read_extent_buffer(eb, &check);
--		if (ret)
-+		if (ret) {
-+			if (trans)
-+				btrfs_abort_transaction(trans, ret);
-+			else
-+				btrfs_handle_fs_error(fs_info, ret, NULL);
- 			return ret;
-+		}
- 	}
- 
- 	if (wc->pin) {
--		ret = btrfs_pin_extent_for_log_replay(wc->trans, eb);
--		if (ret)
-+		ASSERT(trans != NULL);
-+		ret = btrfs_pin_extent_for_log_replay(trans, eb);
-+		if (ret) {
-+			btrfs_abort_transaction(trans, ret);
- 			return ret;
-+		}
- 
- 		if (btrfs_buffer_uptodate(eb, gen, 0) &&
--		    btrfs_header_level(eb) == 0)
-+		    btrfs_header_level(eb) == 0) {
- 			ret = btrfs_exclude_logged_extents(eb);
-+			if (ret)
-+				btrfs_abort_transaction(trans, ret);
-+		}
- 	}
- 	return ret;
- }
-@@ -1766,6 +1778,8 @@ static noinline int link_to_fixup_dir(struct btrfs_trans_handle *trans,
- 		else
- 			inc_nlink(vfs_inode);
- 		ret = btrfs_update_inode(trans, inode);
-+		if (ret)
-+			btrfs_abort_transaction(trans, ret);
- 	} else if (ret == -EEXIST) {
- 		ret = 0;
- 	}
-@@ -2431,15 +2445,13 @@ static int replay_one_buffer(struct btrfs_root *log, struct extent_buffer *eb,
- 	int i;
- 	int ret;
- 
-+	if (level != 0)
-+		return 0;
-+
- 	ret = btrfs_read_extent_buffer(eb, &check);
- 	if (ret)
- 		return ret;
- 
--	level = btrfs_header_level(eb);
--
--	if (level != 0)
--		return 0;
--
- 	path = btrfs_alloc_path();
- 	if (!path)
- 		return -ENOMEM;
-@@ -2612,15 +2624,24 @@ static int unaccount_log_buffer(struct btrfs_fs_info *fs_info, u64 start)
- static int clean_log_buffer(struct btrfs_trans_handle *trans,
- 			    struct extent_buffer *eb)
- {
-+	int ret;
-+
- 	btrfs_tree_lock(eb);
- 	btrfs_clear_buffer_dirty(trans, eb);
- 	wait_on_extent_buffer_writeback(eb);
- 	btrfs_tree_unlock(eb);
- 
--	if (trans)
--		return btrfs_pin_reserved_extent(trans, eb);
-+	if (trans) {
-+		ret = btrfs_pin_reserved_extent(trans, eb);
-+		if (ret)
-+			btrfs_abort_transaction(trans, ret);
-+		return ret;
-+	}
- 
--	return unaccount_log_buffer(eb->fs_info, eb->start);
-+	ret = unaccount_log_buffer(eb->fs_info, eb->start);
-+	if (ret)
-+		btrfs_handle_fs_error(eb->fs_info, ret, NULL);
-+	return ret;
- }
- 
- static noinline int walk_down_log_tree(struct btrfs_trans_handle *trans,
-@@ -2656,8 +2677,14 @@ static noinline int walk_down_log_tree(struct btrfs_trans_handle *trans,
- 		next = btrfs_find_create_tree_block(fs_info, bytenr,
- 						    btrfs_header_owner(cur),
- 						    *level - 1);
--		if (IS_ERR(next))
--			return PTR_ERR(next);
-+		if (IS_ERR(next)) {
-+			ret = PTR_ERR(next);
-+			if (trans)
-+				btrfs_abort_transaction(trans, ret);
-+			else
-+				btrfs_handle_fs_error(fs_info, ret, NULL);
-+			return ret;
-+		}
- 
- 		if (*level == 1) {
- 			ret = wc->process_func(root, next, wc, ptr_gen,
-@@ -2672,6 +2699,10 @@ static noinline int walk_down_log_tree(struct btrfs_trans_handle *trans,
- 				ret = btrfs_read_extent_buffer(next, &check);
- 				if (ret) {
- 					free_extent_buffer(next);
-+					if (trans)
-+						btrfs_abort_transaction(trans, ret);
-+					else
-+						btrfs_handle_fs_error(fs_info, ret, NULL);
- 					return ret;
- 				}
- 
-@@ -2687,6 +2718,10 @@ static noinline int walk_down_log_tree(struct btrfs_trans_handle *trans,
- 		ret = btrfs_read_extent_buffer(next, &check);
- 		if (ret) {
- 			free_extent_buffer(next);
-+			if (trans)
-+				btrfs_abort_transaction(trans, ret);
-+			else
-+				btrfs_handle_fs_error(fs_info, ret, NULL);
- 			return ret;
- 		}
- 
-@@ -7422,7 +7457,6 @@ int btrfs_recover_log_trees(struct btrfs_root *log_root_tree)
- 
- 	log_root_tree->log_root = NULL;
- 	clear_bit(BTRFS_FS_LOG_RECOVERING, &fs_info->flags);
--	btrfs_put_root(log_root_tree);
- 
- 	return 0;
- error:
-diff --git a/fs/btrfs/zoned.c b/fs/btrfs/zoned.c
-index 4966b4f5a7d2..64e0a5bf5f9a 100644
---- a/fs/btrfs/zoned.c
-+++ b/fs/btrfs/zoned.c
-@@ -2384,16 +2384,17 @@ bool btrfs_can_activate_zone(struct btrfs_fs_devices *fs_devices, u64 flags)
- 	return ret;
- }
- 
--void btrfs_zone_finish_endio(struct btrfs_fs_info *fs_info, u64 logical, u64 length)
-+int btrfs_zone_finish_endio(struct btrfs_fs_info *fs_info, u64 logical, u64 length)
- {
- 	struct btrfs_block_group *block_group;
- 	u64 min_alloc_bytes;
- 
- 	if (!btrfs_is_zoned(fs_info))
--		return;
-+		return 0;
- 
- 	block_group = btrfs_lookup_block_group(fs_info, logical);
--	ASSERT(block_group);
-+	if (WARN_ON_ONCE(!block_group))
-+		return -ENOENT;
- 
- 	/* No MIXED_BG on zoned btrfs. */
- 	if (block_group->flags & BTRFS_BLOCK_GROUP_DATA)
-@@ -2410,6 +2411,7 @@ void btrfs_zone_finish_endio(struct btrfs_fs_info *fs_info, u64 logical, u64 len
- 
- out:
- 	btrfs_put_block_group(block_group);
-+	return 0;
- }
- 
- static void btrfs_zone_finish_endio_workfn(struct work_struct *work)
-diff --git a/fs/btrfs/zoned.h b/fs/btrfs/zoned.h
-index 7612e6572605..f7171ab6ed71 100644
---- a/fs/btrfs/zoned.h
-+++ b/fs/btrfs/zoned.h
-@@ -83,7 +83,7 @@ int btrfs_sync_zone_write_pointer(struct btrfs_device *tgt_dev, u64 logical,
- bool btrfs_zone_activate(struct btrfs_block_group *block_group);
- int btrfs_zone_finish(struct btrfs_block_group *block_group);
- bool btrfs_can_activate_zone(struct btrfs_fs_devices *fs_devices, u64 flags);
--void btrfs_zone_finish_endio(struct btrfs_fs_info *fs_info, u64 logical,
-+int btrfs_zone_finish_endio(struct btrfs_fs_info *fs_info, u64 logical,
- 			     u64 length);
- void btrfs_schedule_zone_finish_bg(struct btrfs_block_group *bg,
- 				   struct extent_buffer *eb);
-@@ -232,8 +232,11 @@ static inline bool btrfs_can_activate_zone(struct btrfs_fs_devices *fs_devices,
- 	return true;
- }
- 
--static inline void btrfs_zone_finish_endio(struct btrfs_fs_info *fs_info,
--					   u64 logical, u64 length) { }
-+static inline int btrfs_zone_finish_endio(struct btrfs_fs_info *fs_info,
-+					   u64 logical, u64 length)
-+{
-+	return 0;
-+}
- 
- static inline void btrfs_schedule_zone_finish_bg(struct btrfs_block_group *bg,
- 						 struct extent_buffer *eb) { }
-diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
-index 2a108c561e8b..6317dd523ecd 100644
---- a/fs/f2fs/file.c
-+++ b/fs/f2fs/file.c
-@@ -1836,18 +1836,20 @@ static int f2fs_expand_inode_data(struct inode *inode, loff_t offset,
- 
- 		map.m_len = sec_blks;
- next_alloc:
-+		f2fs_down_write(&sbi->pin_sem);
-+
- 		if (has_not_enough_free_secs(sbi, 0, f2fs_sb_has_blkzoned(sbi) ?
- 			ZONED_PIN_SEC_REQUIRED_COUNT :
- 			GET_SEC_FROM_SEG(sbi, overprovision_segments(sbi)))) {
- 			f2fs_down_write(&sbi->gc_lock);
- 			stat_inc_gc_call_count(sbi, FOREGROUND);
- 			err = f2fs_gc(sbi, &gc_control);
--			if (err && err != -ENODATA)
-+			if (err && err != -ENODATA) {
-+				f2fs_up_write(&sbi->pin_sem);
- 				goto out_err;
-+			}
- 		}
- 
--		f2fs_down_write(&sbi->pin_sem);
--
- 		err = f2fs_allocate_pinning_section(sbi);
- 		if (err) {
- 			f2fs_up_write(&sbi->pin_sem);
-diff --git a/fs/f2fs/segment.c b/fs/f2fs/segment.c
-index e48b5e2efea2..8ac6206110a1 100644
---- a/fs/f2fs/segment.c
-+++ b/fs/f2fs/segment.c
-@@ -2749,7 +2749,7 @@ static int get_new_segment(struct f2fs_sb_info *sbi,
- 							MAIN_SECS(sbi));
- 		if (secno >= MAIN_SECS(sbi)) {
- 			ret = -ENOSPC;
--			f2fs_bug_on(sbi, 1);
-+			f2fs_bug_on(sbi, !pinning);
- 			goto out_unlock;
- 		}
- 	}
-@@ -2795,7 +2795,7 @@ static int get_new_segment(struct f2fs_sb_info *sbi,
- out_unlock:
- 	spin_unlock(&free_i->segmap_lock);
- 
--	if (ret == -ENOSPC)
-+	if (ret == -ENOSPC && !pinning)
- 		f2fs_stop_checkpoint(sbi, false, STOP_CP_REASON_NO_SEGMENT);
- 	return ret;
- }
-@@ -2868,6 +2868,13 @@ static unsigned int __get_next_segno(struct f2fs_sb_info *sbi, int type)
- 	return curseg->segno;
- }
- 
-+static void reset_curseg_fields(struct curseg_info *curseg)
-+{
-+	curseg->inited = false;
-+	curseg->segno = NULL_SEGNO;
-+	curseg->next_segno = 0;
-+}
-+
- /*
-  * Allocate a current working segment.
-  * This function always allocates a free segment in LFS manner.
-@@ -2886,7 +2893,7 @@ static int new_curseg(struct f2fs_sb_info *sbi, int type, bool new_sec)
- 	ret = get_new_segment(sbi, &segno, new_sec, pinning);
- 	if (ret) {
- 		if (ret == -ENOSPC)
--			curseg->segno = NULL_SEGNO;
-+			reset_curseg_fields(curseg);
- 		return ret;
- 	}
- 
-@@ -3640,13 +3647,6 @@ static void f2fs_randomize_chunk(struct f2fs_sb_info *sbi,
- 		get_random_u32_inclusive(1, sbi->max_fragment_hole);
- }
- 
--static void reset_curseg_fields(struct curseg_info *curseg)
--{
--	curseg->inited = false;
--	curseg->segno = NULL_SEGNO;
--	curseg->next_segno = 0;
--}
--
- int f2fs_allocate_data_block(struct f2fs_sb_info *sbi, struct page *page,
- 		block_t old_blkaddr, block_t *new_blkaddr,
- 		struct f2fs_summary *sum, int type,
-diff --git a/include/linux/audit.h b/include/linux/audit.h
-index a394614ccd0b..e3f06eba9c6e 100644
---- a/include/linux/audit.h
-+++ b/include/linux/audit.h
-@@ -527,7 +527,7 @@ static inline void audit_log_kern_module(const char *name)
- 
- static inline void audit_fanotify(u32 response, struct fanotify_response_info_audit_rule *friar)
- {
--	if (!audit_dummy_context())
-+	if (audit_enabled)
- 		__audit_fanotify(response, friar);
- }
- 
-diff --git a/include/linux/bitops.h b/include/linux/bitops.h
-index ba35bbf07798..65d084abbc2c 100644
---- a/include/linux/bitops.h
-+++ b/include/linux/bitops.h
-@@ -8,7 +8,6 @@
- 
- #include <uapi/linux/kernel.h>
- 
--#define BITS_PER_TYPE(type)	(sizeof(type) * BITS_PER_BYTE)
- #define BITS_TO_LONGS(nr)	__KERNEL_DIV_ROUND_UP(nr, BITS_PER_TYPE(long))
- #define BITS_TO_U64(nr)		__KERNEL_DIV_ROUND_UP(nr, BITS_PER_TYPE(u64))
- #define BITS_TO_U32(nr)		__KERNEL_DIV_ROUND_UP(nr, BITS_PER_TYPE(u32))
-diff --git a/include/linux/bits.h b/include/linux/bits.h
-index 60044b608817..b48aa3209c2e 100644
---- a/include/linux/bits.h
-+++ b/include/linux/bits.h
-@@ -12,6 +12,7 @@
- #define BIT_ULL_MASK(nr)	(ULL(1) << ((nr) % BITS_PER_LONG_LONG))
- #define BIT_ULL_WORD(nr)	((nr) / BITS_PER_LONG_LONG)
- #define BITS_PER_BYTE		8
-+#define BITS_PER_TYPE(type)	(sizeof(type) * BITS_PER_BYTE)
- 
- /*
-  * Create a contiguous bitmask starting at bit position @l and ending at
-@@ -19,17 +20,50 @@
-  * GENMASK_ULL(39, 21) gives us the 64bit vector 0x000000ffffe00000.
-  */
- #if !defined(__ASSEMBLY__)
-+
-+/*
-+ * Missing asm support
-+ *
-+ * GENMASK_U*() depend on BITS_PER_TYPE() which relies on sizeof(),
-+ * something not available in asm. Nevertheless, fixed width integers is a C
-+ * concept. Assembly code can rely on the long and long long versions instead.
-+ */
-+
- #include <linux/build_bug.h>
-+#include <linux/overflow.h>
- #define GENMASK_INPUT_CHECK(h, l) \
- 	(BUILD_BUG_ON_ZERO(__builtin_choose_expr( \
- 		__is_constexpr((l) > (h)), (l) > (h), 0)))
--#else
-+
-+/*
-+ * Generate a mask for the specified type @t. Additional checks are made to
-+ * guarantee the value returned fits in that type, relying on
-+ * -Wshift-count-overflow compiler check to detect incompatible arguments.
-+ * For example, all these create build errors or warnings:
-+ *
-+ * - GENMASK(15, 20): wrong argument order
-+ * - GENMASK(72, 15): doesn't fit unsigned long
-+ * - GENMASK_U32(33, 15): doesn't fit in a u32
-+ */
-+#define GENMASK_TYPE(t, h, l)					\
-+	((t)(GENMASK_INPUT_CHECK(h, l) +			\
-+	     (type_max(t) << (l) &				\
-+	      type_max(t) >> (BITS_PER_TYPE(t) - 1 - (h)))))
-+
-+#define GENMASK_U8(h, l)	GENMASK_TYPE(u8, h, l)
-+#define GENMASK_U16(h, l)	GENMASK_TYPE(u16, h, l)
-+#define GENMASK_U32(h, l)	GENMASK_TYPE(u32, h, l)
-+#define GENMASK_U64(h, l)	GENMASK_TYPE(u64, h, l)
-+
-+#else /* defined(__ASSEMBLY__) */
-+
- /*
-  * BUILD_BUG_ON_ZERO is not available in h files included from asm files,
-  * disable the input check if that is the case.
-  */
- #define GENMASK_INPUT_CHECK(h, l) 0
--#endif
-+
-+#endif /* !defined(__ASSEMBLY__) */
- 
- #define GENMASK(h, l) \
- 	(GENMASK_INPUT_CHECK(h, l) + __GENMASK(h, l))
-diff --git a/include/linux/gpio/regmap.h b/include/linux/gpio/regmap.h
-index a9f7b7faf57b..cf55202aaec2 100644
---- a/include/linux/gpio/regmap.h
-+++ b/include/linux/gpio/regmap.h
-@@ -37,9 +37,18 @@ struct regmap;
-  *			offset to a register/bitmask pair. If not
-  *			given the default gpio_regmap_simple_xlate()
-  *			is used.
-+ * @fixed_direction_output:
-+ *			(Optional) Bitmap representing the fixed direction of
-+ *			the GPIO lines. Useful when there are GPIO lines with a
-+ *			fixed direction mixed together in the same register.
-  * @drvdata:		(Optional) Pointer to driver specific data which is
-  *			not used by gpio-remap but is provided "as is" to the
-  *			driver callback(s).
-+ * @regmap_irq_chip:	(Optional) Pointer on an regmap_irq_chip structure. If
-+ *			set, a regmap-irq device will be created and the IRQ
-+ *			domain will be set accordingly.
-+ * @regmap_irq_line	(Optional) The IRQ the device uses to signal interrupts.
-+ * @regmap_irq_flags	(Optional) The IRQF_ flags to use for the interrupt.
-  *
-  * The ->reg_mask_xlate translates a given base address and GPIO offset to
-  * register and mask pair. The base address is one of the given register
-@@ -77,6 +86,13 @@ struct gpio_regmap_config {
- 	int reg_stride;
- 	int ngpio_per_reg;
- 	struct irq_domain *irq_domain;
-+	unsigned long *fixed_direction_output;
-+
-+#ifdef CONFIG_REGMAP_IRQ
-+	struct regmap_irq_chip *regmap_irq_chip;
-+	int regmap_irq_line;
-+	unsigned long regmap_irq_flags;
-+#endif
- 
- 	int (*reg_mask_xlate)(struct gpio_regmap *gpio, unsigned int base,
- 			      unsigned int offset, unsigned int *reg,
-diff --git a/include/net/bonding.h b/include/net/bonding.h
-index 8bb5f016969f..95f67b308c19 100644
---- a/include/net/bonding.h
-+++ b/include/net/bonding.h
-@@ -695,6 +695,7 @@ void bond_debug_register(struct bonding *bond);
- void bond_debug_unregister(struct bonding *bond);
- void bond_debug_reregister(struct bonding *bond);
- const char *bond_mode_name(int mode);
-+bool bond_xdp_check(struct bonding *bond, int mode);
- void bond_setup(struct net_device *bond_dev);
- unsigned int bond_get_num_tx_queues(void);
- int bond_netlink_init(void);
-diff --git a/include/net/pkt_sched.h b/include/net/pkt_sched.h
-index d7b7b6cd4aa1..8a75c73fc555 100644
---- a/include/net/pkt_sched.h
-+++ b/include/net/pkt_sched.h
-@@ -114,7 +114,6 @@ struct qdisc_rate_table *qdisc_get_rtab(struct tc_ratespec *r,
- 					struct netlink_ext_ack *extack);
- void qdisc_put_rtab(struct qdisc_rate_table *tab);
- void qdisc_put_stab(struct qdisc_size_table *tab);
--void qdisc_warn_nonwc(const char *txt, struct Qdisc *qdisc);
- bool sch_direct_xmit(struct sk_buff *skb, struct Qdisc *q,
- 		     struct net_device *dev, struct netdev_queue *txq,
- 		     spinlock_t *root_lock, bool validate);
-@@ -290,4 +289,28 @@ static inline bool tc_qdisc_stats_dump(struct Qdisc *sch,
- 	return true;
- }
- 
-+static inline void qdisc_warn_nonwc(const char *txt, struct Qdisc *qdisc)
-+{
-+	if (!(qdisc->flags & TCQ_F_WARN_NONWC)) {
-+		pr_warn("%s: %s qdisc %X: is non-work-conserving?\n",
-+			txt, qdisc->ops->id, qdisc->handle >> 16);
-+		qdisc->flags |= TCQ_F_WARN_NONWC;
-+	}
-+}
-+
-+static inline unsigned int qdisc_peek_len(struct Qdisc *sch)
-+{
-+	struct sk_buff *skb;
-+	unsigned int len;
-+
-+	skb = sch->ops->peek(sch);
-+	if (unlikely(skb == NULL)) {
-+		qdisc_warn_nonwc("qdisc_peek_len", sch);
-+		return 0;
-+	}
-+	len = qdisc_pkt_len(skb);
-+
-+	return len;
-+}
-+
- #endif
-diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
-index 25f9565f798d..13eb98617249 100644
---- a/kernel/cgroup/cpuset.c
-+++ b/kernel/cgroup/cpuset.c
-@@ -1679,11 +1679,7 @@ static int update_parent_effective_cpumask(struct cpuset *cs, int cmd,
- 		if (prstate_housekeeping_conflict(new_prs, xcpus))
- 			return PERR_HKEEPING;
- 
--		/*
--		 * A parent can be left with no CPU as long as there is no
--		 * task directly associated with the parent partition.
--		 */
--		if (nocpu)
-+		if (tasks_nocpu_error(parent, cs, xcpus))
- 			return PERR_NOCPUS;
- 
- 		deleting = cpumask_and(tmp->delmask, xcpus, parent->effective_xcpus);
-diff --git a/kernel/events/callchain.c b/kernel/events/callchain.c
-index 8a47e52a454f..49d87e6db553 100644
---- a/kernel/events/callchain.c
-+++ b/kernel/events/callchain.c
-@@ -223,6 +223,10 @@ get_perf_callchain(struct pt_regs *regs, u32 init_nr, bool kernel, bool user,
- 	struct perf_callchain_entry_ctx ctx;
- 	int rctx, start_entry_idx;
- 
-+	/* crosstask is not supported for user stacks */
-+	if (crosstask && user && !kernel)
-+		return NULL;
-+
- 	entry = get_callchain_entry(&rctx);
- 	if (!entry)
- 		return NULL;
-@@ -239,18 +243,15 @@ get_perf_callchain(struct pt_regs *regs, u32 init_nr, bool kernel, bool user,
- 		perf_callchain_kernel(&ctx, regs);
- 	}
- 
--	if (user) {
-+	if (user && !crosstask) {
- 		if (!user_mode(regs)) {
--			if  (current->mm)
--				regs = task_pt_regs(current);
--			else
-+			if (current->flags & (PF_KTHREAD | PF_USER_WORKER))
- 				regs = NULL;
-+			else
-+				regs = task_pt_regs(current);
- 		}
- 
- 		if (regs) {
--			if (crosstask)
--				goto exit_put;
--
- 			if (add_mark)
- 				perf_callchain_store_context(&ctx, PERF_CONTEXT_USER);
- 
-@@ -260,7 +261,6 @@ get_perf_callchain(struct pt_regs *regs, u32 init_nr, bool kernel, bool user,
- 		}
- 	}
- 
--exit_put:
- 	put_callchain_entry(rctx);
- 
- 	return entry;
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index d60d48d482b0..d6a86d8e9e59 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -7095,7 +7095,7 @@ static void perf_sample_regs_user(struct perf_regs *regs_user,
- 	if (user_mode(regs)) {
- 		regs_user->abi = perf_reg_abi(current);
- 		regs_user->regs = regs;
--	} else if (!(current->flags & PF_KTHREAD)) {
-+	} else if (!(current->flags & (PF_KTHREAD | PF_USER_WORKER))) {
- 		perf_get_regs_user(regs_user, regs);
- 	} else {
- 		regs_user->abi = PERF_SAMPLE_REGS_ABI_NONE;
-@@ -7735,7 +7735,7 @@ static u64 perf_virt_to_phys(u64 virt)
- 		 * Try IRQ-safe get_user_page_fast_only first.
- 		 * If failed, leave phys_addr as 0.
- 		 */
--		if (current->mm != NULL) {
-+		if (!(current->flags & (PF_KTHREAD | PF_USER_WORKER))) {
- 			struct page *p;
- 
- 			pagefault_disable();
-@@ -7847,7 +7847,8 @@ struct perf_callchain_entry *
- perf_callchain(struct perf_event *event, struct pt_regs *regs)
- {
- 	bool kernel = !event->attr.exclude_callchain_kernel;
--	bool user   = !event->attr.exclude_callchain_user;
-+	bool user   = !event->attr.exclude_callchain_user &&
-+		!(current->flags & (PF_KTHREAD | PF_USER_WORKER));
- 	/* Disallow cross-task user callchains. */
- 	bool crosstask = event->ctx->task && event->ctx->task != current;
- 	const u32 max_stack = event->attr.sample_max_stack;
-diff --git a/kernel/seccomp.c b/kernel/seccomp.c
-index 267b00005eaf..1eac0d2b8ecb 100644
---- a/kernel/seccomp.c
-+++ b/kernel/seccomp.c
-@@ -733,6 +733,26 @@ seccomp_prepare_user_filter(const char __user *user_filter)
- }
- 
- #ifdef SECCOMP_ARCH_NATIVE
-+static bool seccomp_uprobe_exception(struct seccomp_data *sd)
-+{
-+#if defined __NR_uretprobe || defined __NR_uprobe
-+#ifdef SECCOMP_ARCH_COMPAT
-+	if (sd->arch == SECCOMP_ARCH_NATIVE)
-+#endif
-+	{
-+#ifdef __NR_uretprobe
-+		if (sd->nr == __NR_uretprobe)
-+			return true;
-+#endif
-+#ifdef __NR_uprobe
-+		if (sd->nr == __NR_uprobe)
-+			return true;
-+#endif
-+	}
-+#endif
-+	return false;
-+}
-+
- /**
-  * seccomp_is_const_allow - check if filter is constant allow with given data
-  * @fprog: The BPF programs
-@@ -750,13 +770,8 @@ static bool seccomp_is_const_allow(struct sock_fprog_kern *fprog,
- 		return false;
- 
- 	/* Our single exception to filtering. */
--#ifdef __NR_uretprobe
--#ifdef SECCOMP_ARCH_COMPAT
--	if (sd->arch == SECCOMP_ARCH_NATIVE)
--#endif
--		if (sd->nr == __NR_uretprobe)
--			return true;
--#endif
-+	if (seccomp_uprobe_exception(sd))
-+		return true;
- 
- 	for (pc = 0; pc < fprog->len; pc++) {
- 		struct sock_filter *insn = &fprog->filter[pc];
-@@ -1034,6 +1049,9 @@ static const int mode1_syscalls[] = {
- 	__NR_seccomp_read, __NR_seccomp_write, __NR_seccomp_exit, __NR_seccomp_sigreturn,
- #ifdef __NR_uretprobe
- 	__NR_uretprobe,
-+#endif
-+#ifdef __NR_uprobe
-+	__NR_uprobe,
- #endif
- 	-1, /* negative terminated */
- };
-diff --git a/net/mptcp/pm_netlink.c b/net/mptcp/pm_netlink.c
-index 8d5406515c30..4d9a5c8f3b2f 100644
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -618,6 +618,10 @@ static void mptcp_pm_create_subflow_or_signal_addr(struct mptcp_sock *msk)
- 	}
- 
- subflow:
-+	/* No need to try establishing subflows to remote id0 if not allowed */
-+	if (mptcp_pm_add_addr_c_flag_case(msk))
-+		goto exit;
-+
- 	/* check if should create a new subflow */
- 	while (msk->pm.local_addr_used < local_addr_max &&
- 	       msk->pm.subflows < subflows_max) {
-@@ -649,6 +653,8 @@ static void mptcp_pm_create_subflow_or_signal_addr(struct mptcp_sock *msk)
- 			__mptcp_subflow_connect(sk, &local, &addrs[i]);
- 		spin_lock_bh(&msk->pm.lock);
- 	}
-+
-+exit:
- 	mptcp_pm_nl_check_work_pending(msk);
- }
- 
-diff --git a/net/sched/sch_api.c b/net/sched/sch_api.c
-index c56a01992cb2..709d851d0b1e 100644
---- a/net/sched/sch_api.c
-+++ b/net/sched/sch_api.c
-@@ -599,16 +599,6 @@ void __qdisc_calculate_pkt_len(struct sk_buff *skb,
- 	qdisc_skb_cb(skb)->pkt_len = pkt_len;
- }
- 
--void qdisc_warn_nonwc(const char *txt, struct Qdisc *qdisc)
--{
--	if (!(qdisc->flags & TCQ_F_WARN_NONWC)) {
--		pr_warn("%s: %s qdisc %X: is non-work-conserving?\n",
--			txt, qdisc->ops->id, qdisc->handle >> 16);
--		qdisc->flags |= TCQ_F_WARN_NONWC;
--	}
--}
--EXPORT_SYMBOL(qdisc_warn_nonwc);
--
- static enum hrtimer_restart qdisc_watchdog(struct hrtimer *timer)
- {
- 	struct qdisc_watchdog *wd = container_of(timer, struct qdisc_watchdog,
-diff --git a/net/sched/sch_hfsc.c b/net/sched/sch_hfsc.c
-index 5a7745170e84..d8fd35da32a7 100644
---- a/net/sched/sch_hfsc.c
-+++ b/net/sched/sch_hfsc.c
-@@ -835,22 +835,6 @@ update_vf(struct hfsc_class *cl, unsigned int len, u64 cur_time)
- 	}
- }
- 
--static unsigned int
--qdisc_peek_len(struct Qdisc *sch)
--{
--	struct sk_buff *skb;
--	unsigned int len;
--
--	skb = sch->ops->peek(sch);
--	if (unlikely(skb == NULL)) {
--		qdisc_warn_nonwc("qdisc_peek_len", sch);
--		return 0;
--	}
--	len = qdisc_pkt_len(skb);
--
--	return len;
--}
--
- static void
- hfsc_adjust_levels(struct hfsc_class *cl)
- {
-diff --git a/net/sched/sch_qfq.c b/net/sched/sch_qfq.c
-index 5a345ef35c9f..5b43578493ef 100644
---- a/net/sched/sch_qfq.c
-+++ b/net/sched/sch_qfq.c
-@@ -1002,7 +1002,7 @@ static struct sk_buff *agg_dequeue(struct qfq_aggregate *agg,
- 
- 	if (cl->qdisc->q.qlen == 0) /* no more packets, remove from list */
- 		list_del_init(&cl->alist);
--	else if (cl->deficit < qdisc_pkt_len(cl->qdisc->ops->peek(cl->qdisc))) {
-+	else if (cl->deficit < qdisc_peek_len(cl->qdisc)) {
- 		cl->deficit += agg->lmax;
- 		list_move_tail(&cl->alist, &agg->active);
- 	}
-diff --git a/net/wireless/reg.c b/net/wireless/reg.c
-index f6846eb0f4b8..9f8428dc418a 100644
---- a/net/wireless/reg.c
-+++ b/net/wireless/reg.c
-@@ -4234,6 +4234,8 @@ static void cfg80211_check_and_end_cac(struct cfg80211_registered_device *rdev)
- 	struct wireless_dev *wdev;
- 	unsigned int link_id;
- 
-+	wiphy_lock(&rdev->wiphy);
-+
- 	/* If we finished CAC or received radar, we should end any
- 	 * CAC running on the same channels.
- 	 * the check !cfg80211_chandef_dfs_usable contain 2 options:
-@@ -4258,6 +4260,8 @@ static void cfg80211_check_and_end_cac(struct cfg80211_registered_device *rdev)
- 				rdev_end_cac(rdev, wdev->netdev, link_id);
- 		}
- 	}
-+
-+	wiphy_unlock(&rdev->wiphy);
- }
- 
- void regulatory_propagate_dfs_state(struct wiphy *wiphy,
-diff --git a/tools/sched_ext/scx_qmap.bpf.c b/tools/sched_ext/scx_qmap.bpf.c
-index 5d1f880d1149..e952f525599b 100644
---- a/tools/sched_ext/scx_qmap.bpf.c
-+++ b/tools/sched_ext/scx_qmap.bpf.c
-@@ -56,7 +56,8 @@ struct qmap {
-   queue1 SEC(".maps"),
-   queue2 SEC(".maps"),
-   queue3 SEC(".maps"),
--  queue4 SEC(".maps");
-+  queue4 SEC(".maps"),
-+  dump_store SEC(".maps");
- 
- struct {
- 	__uint(type, BPF_MAP_TYPE_ARRAY_OF_MAPS);
-@@ -578,11 +579,26 @@ void BPF_STRUCT_OPS(qmap_dump, struct scx_dump_ctx *dctx)
- 			return;
- 
- 		scx_bpf_dump("QMAP FIFO[%d]:", i);
-+
-+		/*
-+		 * Dump can be invoked anytime and there is no way to iterate in
-+		 * a non-destructive way. Pop and store in dump_store and then
-+		 * restore afterwards. If racing against new enqueues, ordering
-+		 * can get mixed up.
-+		 */
- 		bpf_repeat(4096) {
- 			if (bpf_map_pop_elem(fifo, &pid))
- 				break;
-+			bpf_map_push_elem(&dump_store, &pid, 0);
- 			scx_bpf_dump(" %d", pid);
- 		}
-+
-+		bpf_repeat(4096) {
-+			if (bpf_map_pop_elem(&dump_store, &pid))
-+				break;
-+			bpf_map_push_elem(fifo, &pid, 0);
-+		}
-+
- 		scx_bpf_dump("\n");
- 	}
- }
-diff --git a/tools/testing/selftests/net/mptcp/mptcp_join.sh b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-index 4ad0787451f4..ec7547bdda89 100755
---- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-@@ -3823,7 +3823,8 @@ endpoint_tests()
- 
- 	# remove and re-add
- 	if reset_with_events "delete re-add signal" &&
--	   mptcp_lib_kallsyms_has "subflow_rebuild_header$"; then
-+	   continue_if mptcp_lib_kallsyms_has "subflow_rebuild_header$"; then
-+		ip netns exec $ns1 sysctl -q net.mptcp.add_addr_timeout=0
- 		pm_nl_set_limits $ns1 0 3
- 		pm_nl_set_limits $ns2 3 3
- 		pm_nl_add_endpoint $ns1 10.0.2.1 id 1 flags signal
+I'm announcing the release of the 6.17.7 kernel.
+
+All users of the 6.17 kernel series must upgrade.
+
+The updated 6.17.y git tree can be found at:
+	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git linux-6.17.y
+and can be browsed at the normal kernel.org git web browser:
+	https://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=summary
+
+thanks,
+
+greg k-h
+
+------------
+
+ Documentation/admin-guide/hw-vuln/attack_vector_controls.rst |    1 
+ Makefile                                                     |    2 
+ arch/alpha/kernel/asm-offsets.c                              |    1 
+ arch/arc/kernel/asm-offsets.c                                |    1 
+ arch/arm/kernel/asm-offsets.c                                |    2 
+ arch/arm64/kernel/asm-offsets.c                              |    1 
+ arch/csky/kernel/asm-offsets.c                               |    1 
+ arch/hexagon/kernel/asm-offsets.c                            |    1 
+ arch/loongarch/kernel/asm-offsets.c                          |    2 
+ arch/m68k/kernel/asm-offsets.c                               |    1 
+ arch/microblaze/kernel/asm-offsets.c                         |    1 
+ arch/mips/kernel/asm-offsets.c                               |    2 
+ arch/nios2/kernel/asm-offsets.c                              |    1 
+ arch/openrisc/kernel/asm-offsets.c                           |    1 
+ arch/parisc/kernel/asm-offsets.c                             |    1 
+ arch/powerpc/kernel/asm-offsets.c                            |    1 
+ arch/riscv/kernel/asm-offsets.c                              |    1 
+ arch/s390/kernel/asm-offsets.c                               |    1 
+ arch/sh/kernel/asm-offsets.c                                 |    1 
+ arch/sparc/kernel/asm-offsets.c                              |    1 
+ arch/um/kernel/asm-offsets.c                                 |    2 
+ arch/x86/events/intel/core.c                                 |   10 
+ arch/x86/include/asm/perf_event.h                            |    6 
+ arch/x86/kernel/cpu/bugs.c                                   |   27 
+ arch/x86/kvm/pmu.h                                           |    2 
+ arch/xtensa/kernel/asm-offsets.c                             |    1 
+ drivers/edac/edac_mc_sysfs.c                                 |   24 
+ drivers/edac/ie31200_edac.c                                  |    4 
+ fs/btrfs/disk-io.c                                           |    2 
+ fs/btrfs/extent-tree.c                                       |    6 
+ fs/btrfs/inode.c                                             |    7 
+ fs/btrfs/scrub.c                                             |    3 
+ fs/btrfs/transaction.c                                       |    2 
+ fs/btrfs/tree-checker.c                                      |   37 
+ fs/btrfs/tree-log.c                                          |   64 
+ fs/btrfs/zoned.c                                             |    8 
+ fs/btrfs/zoned.h                                             |    9 
+ include/linux/audit.h                                        |    2 
+ kernel/cgroup/cpuset.c                                       |    6 
+ kernel/events/callchain.c                                    |   16 
+ kernel/events/core.c                                         |    7 
+ kernel/irq/chip.c                                            |    2 
+ kernel/irq/manage.c                                          |    4 
+ kernel/sched/build_policy.c                                  |    1 
+ kernel/sched/ext.c                                           | 1056 ----------
+ kernel/sched/ext.h                                           |   23 
+ kernel/sched/ext_internal.h                                  | 1064 +++++++++++
+ kernel/seccomp.c                                             |   32 
+ kernel/time/timekeeping.c                                    |    2 
+ tools/sched_ext/scx_qmap.bpf.c                               |   18 
+ 50 files changed, 1325 insertions(+), 1146 deletions(-)
+
+Avadhut Naik (1):
+      EDAC/mc_sysfs: Increase legacy channel support to 16
+
+Charles Keepax (3):
+      genirq/chip: Add buslock back in to irq_set_handler()
+      genirq/manage: Add buslock back in to __disable_irq_nosync()
+      genirq/manage: Add buslock back in to enable_irq()
+
+Chen Ridong (1):
+      cpuset: Use new excpus for nocpu error check when enabling root partition
+
+Dan Carpenter (1):
+      btrfs: tree-checker: fix bounds check in check_inode_extref()
+
+Dapeng Mi (1):
+      perf/x86/intel: Add ICL_FIXED_0_ADAPTIVE bit into INTEL_FIXED_BITS_MASK
+
+David Kaplan (4):
+      x86/bugs: Report correct retbleed mitigation status
+      x86/bugs: Qualify RETBLEED_INTEL_MSG
+      x86/bugs: Add attack vector controls for VMSCAPE
+      x86/bugs: Fix reporting of LFENCE retpoline
+
+Filipe Manana (6):
+      btrfs: abort transaction on specific error places when walking log tree
+      btrfs: abort transaction in the process_one_buffer() log tree walk callback
+      btrfs: always drop log root tree reference in btrfs_replay_log()
+      btrfs: use level argument in log tree walk callback replay_one_buffer()
+      btrfs: abort transaction if we fail to update inode in log replay dir fixup
+      btrfs: use smp_mb__after_atomic() when forcing COW in create_pending_snapshot()
+
+Greg Kroah-Hartman (1):
+      Linux 6.17.7
+
+Haofeng Li (1):
+      timekeeping: Fix aux clocks sysfs initialization loop bound
+
+Jiri Olsa (1):
+      seccomp: passthrough uprobe systemcall without filtering
+
+Johannes Thumshirn (1):
+      btrfs: zoned: return error from btrfs_zone_finish_endio()
+
+Josh Poimboeuf (2):
+      perf: Have get_perf_callchain() return NULL if crosstask and user are set
+      perf: Skip user unwind if the task is a kernel thread
+
+Kuan-Wei Chiu (1):
+      EDAC: Fix wrong executable file modes for C source files
+
+Kyle Manna (1):
+      EDAC/ie31200: Add two more Intel Alder Lake-S SoCs for EDAC support
+
+Menglong Dong (1):
+      arch: Add the macro COMPILE_OFFSETS to all the asm-offsets.c
+
+Naohiro Aota (1):
+      btrfs: zoned: refine extent allocator hint selection
+
+Qu Wenruo (1):
+      btrfs: tree-checker: add inode extref checks
+
+Richard Guy Briggs (1):
+      audit: record fanotify event regardless of presence of rules
+
+Steven Rostedt (1):
+      perf: Use current->flags & PF_KTHREAD|PF_USER_WORKER instead of current->mm == NULL
+
+Tejun Heo (5):
+      sched_ext: Move internal type and accessor definitions to ext_internal.h
+      sched_ext: Put event_stats_cpu in struct scx_sched_pcpu
+      sched_ext: Sync error_irq_work before freeing scx_sched
+      sched_ext: Keep bypass on between enable failure and scx_disable_workfn()
+      sched_ext: Make qmap dump operation non-destructive
+
+Thorsten Blum (1):
+      btrfs: scrub: replace max_t()/min_t() with clamp() in scrub_throttle_dev_io()
+
 
