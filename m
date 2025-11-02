@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-192061-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192062-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68A14C2906A
-	for <lists+stable@lfdr.de>; Sun, 02 Nov 2025 15:35:22 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFC59C29079
+	for <lists+stable@lfdr.de>; Sun, 02 Nov 2025 15:44:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 26C283B0A6A
-	for <lists+stable@lfdr.de>; Sun,  2 Nov 2025 14:35:21 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id AC4714E041E
+	for <lists+stable@lfdr.de>; Sun,  2 Nov 2025 14:44:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 744111D798E;
-	Sun,  2 Nov 2025 14:35:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E1B31684B0;
+	Sun,  2 Nov 2025 14:44:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WncRa5V7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pkyxJ27o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3121A14A62B
-	for <stable@vger.kernel.org>; Sun,  2 Nov 2025 14:35:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0288B3FBA7
+	for <stable@vger.kernel.org>; Sun,  2 Nov 2025 14:44:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762094118; cv=none; b=Be0NR3J5ra7dpTWtKL9DIpTgcJUI3+V6RFhVfHISFUgxqrEwNmw1y622tvirOf6/gvOpJC7qV8+w9f6A9/ZRVELCyMc+nvs2aOmyMKrEzCIILZsfKinkbwXgT+xzz5nfEm5u6W4KHUJrp5I6GehrrBYWUj68QWvRLYw+B971284=
+	t=1762094661; cv=none; b=VllAkT+NSewAGnZ1Y+wuhFfb1JzrunngHYY07yS8gxKXDaUfZ6MoUCa7W+Himt+44A6rv4wvhAw4lgUQ2XDc1gXlSAMcVeyB5M8r6gg6MWQ0CU4G5w6ObvQIcihOw9n0JjpFyyL+F2t26Hye7AA32IocW1QypWla7Avly1kDhCs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762094118; c=relaxed/simple;
-	bh=mJkAa6suZt7pDwjuU1k8pBOQa5KjILTW/JHj58OKXYY=;
+	s=arc-20240116; t=1762094661; c=relaxed/simple;
+	bh=0RlwnpqB+Fz9axEfnkqY4HO6FS/C1FMqPRBvuplNs9M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jhgBAsQg4JP6T2XZfKaEPvslbii2jkAGxUlqecxffCJ5eIZNdAp6yCwNa4xaBsO6gPjVgmCLlGLqWp1MmWz3KulDo++M+YXPUNLwUphc+oJzAIfZYsLAs2hArcWobyy9LQZJPcCbBXqkHRdedDignXhytIw9bl8odZd+A7Uva9Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WncRa5V7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42848C4CEFD;
-	Sun,  2 Nov 2025 14:35:17 +0000 (UTC)
+	 MIME-Version; b=R/iQz66+3pmivERbyjG3S+YGAY3Oqsk7K7YjPQnVzG2KRLyOgQCo9iiWxfez0GKZcA3IqkQgz5KS1+dBvd+iwtIAU7LtJNc+zuchnXnozFhTyMgMeqf29yvkKZb/ou/XTFbDbMa8E/5q25aGcB89hqKDsWRenZYCwPXwc0LQKdw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pkyxJ27o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2F36C4CEF7;
+	Sun,  2 Nov 2025 14:44:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762094117;
-	bh=mJkAa6suZt7pDwjuU1k8pBOQa5KjILTW/JHj58OKXYY=;
+	s=k20201202; t=1762094660;
+	bh=0RlwnpqB+Fz9axEfnkqY4HO6FS/C1FMqPRBvuplNs9M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WncRa5V7/J6I0I/4fm6F4ustGn51ToDXqY1agUtBoRurutzq48sDqVUCF8cKAr/f4
-	 2VsHKNPoU9r5gaHTf2IMRqS/5jgVtE5icUXstLzGl5+hO9LF6TnJ7pR0PBFzRh6KKA
-	 LmuwygQ6h+gFdDL6GjRdct2J/4xt6Sitv5qm5YXqdEKWgNN2WL/edIhTG2k9/mZJS/
-	 zagjx9OP3R0uoHITt1yPm1FOjFjeW11Z3tLqYRhPMCUQ7jZ7IUJ91scaUeCLV9VUhW
-	 7IVcCrbf73dXCJH/0jR/OFowpCin2G405OLZxophClVpHv4IjoJdLhKI5+IXOw1AC8
-	 y4TPIoAUNkwDg==
+	b=pkyxJ27oZ0pUq/cJtLiUbAa/6jIlRm21nScri5vxZRHLkljIKSFDnLKDp5qkbT1Nq
+	 GVL2vC4EL24Y+ms+kH+A68XvuVswZDJojil5msieozMjxzQGTUJaJGqrkGZWuu2DtV
+	 uAOEg2b6PHgsgXaGAfN0kXGwNoooiJnE5WYCeJfTEHGSCU5LccalmeF9ab3o0rNtA0
+	 7kwd3NbIDhJM6xfPaW9RDyv+hQ6W2eOjWN19gjiSeVFVhTKkI+aomr5DMJU/YcQJyn
+	 su8jWlVTMgXsHn+UBTj/mNg69DbANPq5iC8AhxEm6DnZn5DZE7rrGDiNG8+BCpswmx
+	 UFg2QWHAyDYrw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Armin Wolf <W_Armin@gmx.de>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+Cc: Tejun Heo <tj@kernel.org>,
+	Andrea Righi <arighi@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y 2/2] ACPI: fan: Use platform device for devres-related actions
-Date: Sun,  2 Nov 2025 09:35:14 -0500
-Message-ID: <20251102143514.3449278-2-sashal@kernel.org>
+Subject: [PATCH 6.12.y] sched_ext: Mark scx_bpf_dsq_move_set_[slice|vtime]() with KF_RCU
+Date: Sun,  2 Nov 2025 09:44:17 -0500
+Message-ID: <20251102144417.3456382-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251102143514.3449278-1-sashal@kernel.org>
-References: <2025110248-reflex-facebook-1ab2@gregkh>
- <20251102143514.3449278-1-sashal@kernel.org>
+In-Reply-To: <2025110231-exposable-prelude-6f67@gregkh>
+References: <2025110231-exposable-prelude-6f67@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,81 +60,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Armin Wolf <W_Armin@gmx.de>
+From: Tejun Heo <tj@kernel.org>
 
-[ Upstream commit d91a1d129b63614fa4c2e45e60918409ce36db7e ]
+[ Upstream commit 54e96258a6930909b690fd7e8889749231ba8085 ]
 
-Device-managed resources are cleaned up when the driver unbinds from
-the underlying device. In our case this is the platform device as this
-driver is a platform driver. Registering device-managed resources on
-the associated ACPI device will thus result in a resource leak when
-this driver unbinds.
+scx_bpf_dsq_move_set_slice() and scx_bpf_dsq_move_set_vtime() take a DSQ
+iterator argument which has to be valid. Mark them with KF_RCU.
 
-Ensure that any device-managed resources are only registered on the
-platform device to ensure that they are cleaned up during removal.
-
-Fixes: 35c50d853adc ("ACPI: fan: Add hwmon support")
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-Cc: 6.11+ <stable@vger.kernel.org> # 6.11+
-Link: https://patch.msgid.link/20251007234149.2769-4-W_Armin@gmx.de
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: 4c30f5ce4f7a ("sched_ext: Implement scx_bpf_dispatch[_vtime]_from_dsq()")
+Cc: stable@vger.kernel.org # v6.12+
+Acked-by: Andrea Righi <arighi@nvidia.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
+[ scx_bpf_dsq_move_set_* => scx_bpf_dispatch_from_dsq_set_* ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/fan.h       | 4 ++--
- drivers/acpi/fan_core.c  | 2 +-
- drivers/acpi/fan_hwmon.c | 8 ++++----
- 3 files changed, 7 insertions(+), 7 deletions(-)
+ kernel/sched/ext.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/acpi/fan.h b/drivers/acpi/fan.h
-index a7e39a29d4c89..c022b16d90647 100644
---- a/drivers/acpi/fan.h
-+++ b/drivers/acpi/fan.h
-@@ -62,9 +62,9 @@ int acpi_fan_create_attributes(struct acpi_device *device);
- void acpi_fan_delete_attributes(struct acpi_device *device);
+diff --git a/kernel/sched/ext.c b/kernel/sched/ext.c
+index 563a7dc2ece6f..be2e836e10e93 100644
+--- a/kernel/sched/ext.c
++++ b/kernel/sched/ext.c
+@@ -6493,8 +6493,8 @@ BTF_KFUNCS_START(scx_kfunc_ids_dispatch)
+ BTF_ID_FLAGS(func, scx_bpf_dispatch_nr_slots)
+ BTF_ID_FLAGS(func, scx_bpf_dispatch_cancel)
+ BTF_ID_FLAGS(func, scx_bpf_consume)
+-BTF_ID_FLAGS(func, scx_bpf_dispatch_from_dsq_set_slice)
+-BTF_ID_FLAGS(func, scx_bpf_dispatch_from_dsq_set_vtime)
++BTF_ID_FLAGS(func, scx_bpf_dispatch_from_dsq_set_slice, KF_RCU)
++BTF_ID_FLAGS(func, scx_bpf_dispatch_from_dsq_set_vtime, KF_RCU)
+ BTF_ID_FLAGS(func, scx_bpf_dispatch_from_dsq, KF_RCU)
+ BTF_ID_FLAGS(func, scx_bpf_dispatch_vtime_from_dsq, KF_RCU)
+ BTF_KFUNCS_END(scx_kfunc_ids_dispatch)
+@@ -6593,8 +6593,8 @@ __bpf_kfunc_end_defs();
  
- #if IS_REACHABLE(CONFIG_HWMON)
--int devm_acpi_fan_create_hwmon(struct acpi_device *device);
-+int devm_acpi_fan_create_hwmon(struct device *dev);
- #else
--static inline int devm_acpi_fan_create_hwmon(struct acpi_device *device) { return 0; };
-+static inline int devm_acpi_fan_create_hwmon(struct device *dev) { return 0; };
- #endif
- 
- #endif
-diff --git a/drivers/acpi/fan_core.c b/drivers/acpi/fan_core.c
-index f5f3091d5ca84..fd2563362142c 100644
---- a/drivers/acpi/fan_core.c
-+++ b/drivers/acpi/fan_core.c
-@@ -347,7 +347,7 @@ static int acpi_fan_probe(struct platform_device *pdev)
- 	}
- 
- 	if (fan->has_fst) {
--		result = devm_acpi_fan_create_hwmon(device);
-+		result = devm_acpi_fan_create_hwmon(&pdev->dev);
- 		if (result)
- 			return result;
- 
-diff --git a/drivers/acpi/fan_hwmon.c b/drivers/acpi/fan_hwmon.c
-index e8d90605106ef..cba1f096d9717 100644
---- a/drivers/acpi/fan_hwmon.c
-+++ b/drivers/acpi/fan_hwmon.c
-@@ -167,12 +167,12 @@ static const struct hwmon_chip_info acpi_fan_hwmon_chip_info = {
- 	.info = acpi_fan_hwmon_info,
- };
- 
--int devm_acpi_fan_create_hwmon(struct acpi_device *device)
-+int devm_acpi_fan_create_hwmon(struct device *dev)
- {
--	struct acpi_fan *fan = acpi_driver_data(device);
-+	struct acpi_fan *fan = dev_get_drvdata(dev);
- 	struct device *hdev;
- 
--	hdev = devm_hwmon_device_register_with_info(&device->dev, "acpi_fan", fan,
--						    &acpi_fan_hwmon_chip_info, NULL);
-+	hdev = devm_hwmon_device_register_with_info(dev, "acpi_fan", fan, &acpi_fan_hwmon_chip_info,
-+						    NULL);
- 	return PTR_ERR_OR_ZERO(hdev);
- }
+ BTF_KFUNCS_START(scx_kfunc_ids_unlocked)
+ BTF_ID_FLAGS(func, scx_bpf_create_dsq, KF_SLEEPABLE)
+-BTF_ID_FLAGS(func, scx_bpf_dispatch_from_dsq_set_slice)
+-BTF_ID_FLAGS(func, scx_bpf_dispatch_from_dsq_set_vtime)
++BTF_ID_FLAGS(func, scx_bpf_dispatch_from_dsq_set_slice, KF_RCU)
++BTF_ID_FLAGS(func, scx_bpf_dispatch_from_dsq_set_vtime, KF_RCU)
+ BTF_ID_FLAGS(func, scx_bpf_dispatch_from_dsq, KF_RCU)
+ BTF_ID_FLAGS(func, scx_bpf_dispatch_vtime_from_dsq, KF_RCU)
+ BTF_KFUNCS_END(scx_kfunc_ids_unlocked)
 -- 
 2.51.0
 
