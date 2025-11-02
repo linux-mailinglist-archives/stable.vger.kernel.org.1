@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-192087-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192088-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3CC2C29628
-	for <lists+stable@lfdr.de>; Sun, 02 Nov 2025 21:15:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C07EC29686
+	for <lists+stable@lfdr.de>; Sun, 02 Nov 2025 21:30:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 893633AD363
-	for <lists+stable@lfdr.de>; Sun,  2 Nov 2025 20:15:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BFECA188DAFD
+	for <lists+stable@lfdr.de>; Sun,  2 Nov 2025 20:31:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA7FD22301;
-	Sun,  2 Nov 2025 20:15:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4ED8413D539;
+	Sun,  2 Nov 2025 20:30:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hGqagqf2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tI1MMaAS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77D0128E5
-	for <stable@vger.kernel.org>; Sun,  2 Nov 2025 20:15:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0373B2AD20
+	for <stable@vger.kernel.org>; Sun,  2 Nov 2025 20:30:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762114553; cv=none; b=JGJTmTbcho/aIFRbCpliZAwvChgVV85QFP1yl4Ws7rgGNJxZW5m34mlhCkrSaAW4roJ6wP4cME6mYdyKmJEX+kPwB6Bm9aBef4PtH4tHxs9p5t3FyJCv2pTR8CCdz1dan+wZZjGshafLzJ85aUwaL+KXDMcyuQ7LjKxL6fcgrFQ=
+	t=1762115443; cv=none; b=AqlNH5jv0LfAIomSHlXowtIAFb5iW0omZ1bs/KIsVQvQeJvLWbTVWqaUGTd+70J9AbUTYNMm3+myhBtjM5jr15hpxRgzaA8bRNEWo5T3QMDTYj/q2LlDu2SbTdypy73EvipIKvdJFjaJA+7FzU1+nJf20UrQ1sGfZQiZnt/kCTs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762114553; c=relaxed/simple;
-	bh=bFBobO/Iaf7jnfY/ou2I7Nbq7LW4wWQZpvZcNdb1neg=;
+	s=arc-20240116; t=1762115443; c=relaxed/simple;
+	bh=mU7AGyNyaa46xe4NoKnS3v6/17UJ1bKEVf0HpQbFNjc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OvRcQ7pUewya1y+1+vm90+kmZCGXk3p2aQsKM5CF7jNW0O6jyQU4RrrDCmbyJFJrZY9c3/c8Vjm0hHT30EcDnawOeGjbMHtIpP4n52QEfQ0fdan3zik+2JzTG14kHA5Z7xyXAb+TJP3myux8/HOJqVq5Zg2JMLaD2wUn0NaYPs0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hGqagqf2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F457C4CEF7;
-	Sun,  2 Nov 2025 20:15:52 +0000 (UTC)
+	 MIME-Version; b=JJkKoBX1niZjX5T55aPIXerLqA32W564YjWAmjEqwDmJ/8AZ0w6TkV55mqkZtpTHZkzoE6R4xC8CDIQSwRHN1k7wTzFFsdtoLa7GqRTDw99AV20qwYxviJHEB+h+gNUhoC+2LgChU0a09FZUT9apUDHNOra+0ZKhOX3KBSULSFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tI1MMaAS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABE21C4CEF7;
+	Sun,  2 Nov 2025 20:30:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762114553;
-	bh=bFBobO/Iaf7jnfY/ou2I7Nbq7LW4wWQZpvZcNdb1neg=;
+	s=k20201202; t=1762115442;
+	bh=mU7AGyNyaa46xe4NoKnS3v6/17UJ1bKEVf0HpQbFNjc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hGqagqf2Ten/Ds/iHIrTLc70afpbNuc/ecEgwMDu4Pt1DArcPVeAsXZk+hD5SlBrA
-	 io0TExZZ2Ru8pAVwDqQmcaK4NqjKQGW07SFCkwFGJgvUq1KpS/TZ4bCQ+b/IroZ3e+
-	 6pnGcswam6cmQV5bEmhOgkfhF3oOJGgbIC+0+WA0WJBOhagO0Ml7lpKJpEhAbBvIyM
-	 BHLcj310bosAOb1lidCBHVbAwYIt4wHgPMf/mtFwsMAlNbR/y09xUzr9wl+ukTUWbA
-	 CERCgxsamJs/FE8ulYxZNOi1FRp0jO7zPQKGPafAfop7u/rS5BXKlfcaFyDh2aAVFm
-	 7oa9lUzJ/O9aw==
+	b=tI1MMaASN2Uu6iTP+RLxOj72DwUlf7+vm32tjSt3WSTcdmQqodUvi+np92a/ftdN9
+	 QZ5kZMlQTasQQlG8PHNWb2/WhOUXu4Nte3IOc+yq1MOGyqtbt2f/ikG7qEDiL4LcC1
+	 F9Okb4XJJMXDo4ZGMh/REfJLGZBhuVbpbNSMz3W8GnnlILaTVajicatwomNA4Ehdsk
+	 Ays+rW5OyYK5ranGfXNL5EY9SIFvMp8ZykSBq0EHp7P0aQYKr5GWskfSeouE7pg2Pp
+	 QheCegWrD+dY3rvNpkSfTZ8OlWlGpplgilLTM7Mpbr8pNutJnUm95PH6gE/wH55wrw
+	 9uycuxOrk0X9Q==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Paolo Abeni <pabeni@redhat.com>,
-	Geliang Tang <geliang@kernel.org>,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+Cc: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>,
+	Andrew Lunn <andrew@lunn.ch>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y] mptcp: drop bogus optimization in __mptcp_check_push()
-Date: Sun,  2 Nov 2025 15:15:50 -0500
-Message-ID: <20251102201550.3588174-1-sashal@kernel.org>
+Subject: [PATCH 5.15.y] net: phy: dp83867: Disable EEE support as not implemented
+Date: Sun,  2 Nov 2025 15:30:39 -0500
+Message-ID: <20251102203040.3593522-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025110240-confined-stride-2055@gregkh>
-References: <2025110240-confined-stride-2055@gregkh>
+In-Reply-To: <2025110203-spinal-groovy-c2f2@gregkh>
+References: <2025110203-spinal-groovy-c2f2@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,110 +61,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
 
-[ Upstream commit 27b0e701d3872ba59c5b579a9e8a02ea49ad3d3b ]
+[ Upstream commit 84a905290cb4c3d9a71a9e3b2f2e02e031e7512f ]
 
-Accessing the transmit queue without owning the msk socket lock is
-inherently racy, hence __mptcp_check_push() could actually quit early
-even when there is pending data.
+While the DP83867 PHYs report EEE capability through their feature
+registers, the actual hardware does not support EEE (see Links).
+When the connected MAC enables EEE, it causes link instability and
+communication failures.
 
-That in turn could cause unexpected tx lock and timeout.
+The issue is reproducible with a iMX8MP and relevant stmmac ethernet port.
+Since the introduction of phylink-managed EEE support in the stmmac driver,
+EEE is now enabled by default, leading to issues on systems using the
+DP83867 PHY.
 
-Dropping the early check avoids the race, implicitly relaying on later
-tests under the relevant lock. With such change, all the other
-mptcp_send_head() call sites are now under the msk socket lock and we
-can additionally drop the now unneeded annotation on the transmit head
-pointer accesses.
+Call phy_disable_eee during phy initialization to prevent EEE from being
+enabled on DP83867 PHYs.
 
-Fixes: 6e628cd3a8f7 ("mptcp: use mptcp release_cb for delayed tasks")
+Link: https://e2e.ti.com/support/interface-group/interface/f/interface-forum/1445244/dp83867ir-dp83867-disable-eee-lpi
+Link: https://e2e.ti.com/support/interface-group/interface/f/interface-forum/658638/dp83867ir-eee-energy-efficient-ethernet
+Fixes: 2a10154abcb7 ("net: phy: dp83867: Add TI dp83867 phy")
 Cc: stable@vger.kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Geliang Tang <geliang@kernel.org>
-Tested-by: Geliang Tang <geliang@kernel.org>
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20251028-net-mptcp-send-timeout-v1-1-38ffff5a9ec8@kernel.org
+Signed-off-by: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20251023144857.529566-1-ghidoliemanuele@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ split upstream __subflow_push_pending modification across __mptcp_push_pending and __mptcp_subflow_push_pending ]
+[ replaced phy_disable_eee() call with direct eee_broken_modes assignment ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/protocol.c | 13 +++++--------
- net/mptcp/protocol.h |  2 +-
- 2 files changed, 6 insertions(+), 9 deletions(-)
+ drivers/net/phy/dp83867.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
-index 490fd8b188894..b7bcbc9d3443e 100644
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -1137,7 +1137,7 @@ static void __mptcp_clean_una(struct sock *sk)
- 			if (WARN_ON_ONCE(!msk->recovery))
- 				break;
- 
--			WRITE_ONCE(msk->first_pending, mptcp_send_next(sk));
-+			msk->first_pending = mptcp_send_next(sk);
- 		}
- 
- 		dfrag_clear(sk, dfrag);
-@@ -1669,7 +1669,7 @@ void __mptcp_push_pending(struct sock *sk, unsigned int flags)
- 
- 			mptcp_update_post_push(msk, dfrag, ret);
- 		}
--		WRITE_ONCE(msk->first_pending, mptcp_send_next(sk));
-+		msk->first_pending = mptcp_send_next(sk);
+diff --git a/drivers/net/phy/dp83867.c b/drivers/net/phy/dp83867.c
+index 76ca43108d992..3865019ebb5bd 100644
+--- a/drivers/net/phy/dp83867.c
++++ b/drivers/net/phy/dp83867.c
+@@ -674,6 +674,12 @@ static int dp83867_config_init(struct phy_device *phydev)
+ 			return ret;
  	}
  
- 	/* at this point we held the socket lock for the last subflow we used */
-@@ -1727,7 +1727,7 @@ static void __mptcp_subflow_push_pending(struct sock *sk, struct sock *ssk)
- 
- 			mptcp_update_post_push(msk, dfrag, ret);
- 		}
--		WRITE_ONCE(msk->first_pending, mptcp_send_next(sk));
-+		msk->first_pending = mptcp_send_next(sk);
- 	}
- 
- out:
-@@ -1845,7 +1845,7 @@ static int mptcp_sendmsg(struct sock *sk, struct msghdr *msg, size_t len)
- 			get_page(dfrag->page);
- 			list_add_tail(&dfrag->list, &msk->rtx_queue);
- 			if (!msk->first_pending)
--				WRITE_ONCE(msk->first_pending, dfrag);
-+				msk->first_pending = dfrag;
- 		}
- 		pr_debug("msk=%p dfrag at seq=%llu len=%u sent=%u new=%d\n", msk,
- 			 dfrag->data_seq, dfrag->data_len, dfrag->already_sent,
-@@ -2640,7 +2640,7 @@ static void __mptcp_clear_xmit(struct sock *sk)
- 	struct mptcp_sock *msk = mptcp_sk(sk);
- 	struct mptcp_data_frag *dtmp, *dfrag;
- 
--	WRITE_ONCE(msk->first_pending, NULL);
-+	msk->first_pending = NULL;
- 	list_for_each_entry_safe(dfrag, dtmp, &msk->rtx_queue, list)
- 		dfrag_clear(sk, dfrag);
- }
-@@ -3109,9 +3109,6 @@ void __mptcp_data_acked(struct sock *sk)
- 
- void __mptcp_check_push(struct sock *sk, struct sock *ssk)
- {
--	if (!mptcp_send_head(sk))
--		return;
--
- 	if (!sock_owned_by_user(sk)) {
- 		struct sock *xmit_ssk = mptcp_subflow_get_send(mptcp_sk(sk));
- 
-diff --git a/net/mptcp/protocol.h b/net/mptcp/protocol.h
-index c93399d116508..56169623029ce 100644
---- a/net/mptcp/protocol.h
-+++ b/net/mptcp/protocol.h
-@@ -325,7 +325,7 @@ static inline struct mptcp_data_frag *mptcp_send_head(const struct sock *sk)
- {
- 	const struct mptcp_sock *msk = mptcp_sk(sk);
- 
--	return READ_ONCE(msk->first_pending);
-+	return msk->first_pending;
- }
- 
- static inline struct mptcp_data_frag *mptcp_send_next(struct sock *sk)
++	/* Although the DP83867 reports EEE capability through the
++	 * MDIO_PCS_EEE_ABLE and MDIO_AN_EEE_ADV registers, the feature
++	 * is not actually implemented in hardware.
++	 */
++	phydev->eee_broken_modes = MDIO_EEE_100TX | MDIO_EEE_1000T;
++
+ 	if (phy_interface_is_rgmii(phydev) ||
+ 	    phydev->interface == PHY_INTERFACE_MODE_SGMII) {
+ 		val = phy_read(phydev, MII_DP83867_PHYCTRL);
 -- 
 2.51.0
 
