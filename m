@@ -1,58 +1,66 @@
-Return-Path: <stable+bounces-192089-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192090-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AFF4C29695
-	for <lists+stable@lfdr.de>; Sun, 02 Nov 2025 21:39:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FA14C29727
+	for <lists+stable@lfdr.de>; Sun, 02 Nov 2025 22:30:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 151763AA635
-	for <lists+stable@lfdr.de>; Sun,  2 Nov 2025 20:39:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B86183AD641
+	for <lists+stable@lfdr.de>; Sun,  2 Nov 2025 21:30:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FB771E3DDB;
-	Sun,  2 Nov 2025 20:39:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5971523814D;
+	Sun,  2 Nov 2025 21:30:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UP5ch22c"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Mnhr2b3e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CA679460
-	for <stable@vger.kernel.org>; Sun,  2 Nov 2025 20:39:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03DDE225791;
+	Sun,  2 Nov 2025 21:30:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762115953; cv=none; b=Lsmd1R3T7P1ko9Z8LqRZ5pkyre28P/LP7g8xSGFZpjeh62PMjaHEDYHC5fJak4V+iffMGOTmolOncahFTe/CPHpLKHPMwH9Efm9sozKtHZeZuN/ULjref8RCXAWeSohXp3INxhlVm0o9nLCenGkGmeVQK5vp5zE6c8TFA/ryqDc=
+	t=1762119002; cv=none; b=BfThHVq+jHzjHvh7NCR7IYnCUREJZ2ldKA8m5pMiNAiadRufMEHrsy4JSKYExFYgCeGsAjuJvPs+RZ1Znxv12PJ1gOFiOg6uwka1dDfnyH5i8iwzPCZcK9/I2+8ojIyGmFmFvZnrRrR+HpZZwWZSdcZ7gL6FJ2afuaKLcX06/yA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762115953; c=relaxed/simple;
-	bh=sClRXuC/MASXUY8l/Vox2eXIDffsHY7PJzyFl028snc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HYqCDb3sFgscDDnEq53JIciVX6JDRnhNmrVC6V8dX/sAl/YpnbNqhCeR3nBZhjS28oeiIbE/1BAEA9iP27OU9dDqjfNFMpTnSNGbUONF/Kq4jpQ+C7Y5PyZMoI7OpHR88a4O4RyZZhuNLMQ+zpeaNj/1bEh/V81+WBaQIjhmGew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UP5ch22c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE2ACC4CEF7;
-	Sun,  2 Nov 2025 20:39:10 +0000 (UTC)
+	s=arc-20240116; t=1762119002; c=relaxed/simple;
+	bh=Iw13zHgZThn7lQVt8FQ6YD6tJgqTn5cgsMoeYx1qZVg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mG4w4VWQQpPzmcfYcVd1g083pQfy7GArhd9O42NkEJohIQCC7K3oZnNT+B9eQkrxEeaFeprfHG90hRwZvvGqMhGlHgzc6Xwnms37Y2HMvpulP0snCiqknAysfePAaIIbvU27Mfh0HPbYjK02/nlRlWc7gjKzjX7DWCTHJDlAg/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Mnhr2b3e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77954C116D0;
+	Sun,  2 Nov 2025 21:29:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762115951;
-	bh=sClRXuC/MASXUY8l/Vox2eXIDffsHY7PJzyFl028snc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UP5ch22cU3N8mR9bE6Uv5I4PlNldT7L+HC+a4CS+56OJ+Qxy3KBnuF7Ux/NhnkREA
-	 hqmqMYipXPZMSHHmpOkSSFZYr8hUGW+t1UwlUrm67l7UcvdKDVLDH0Cj7qMCNJdhl1
-	 lcMyrFwjDkIM3M5RryTegXyUv5/cXfIKN0sHl192G4cThg7PxlBiPtaMV1mJIoskdn
-	 H50u1pGMuH9Bu9nirGx6K+QshejqpbdhtvXTOBUHeXCFXi9qNO0jgcT4/H3YWMssbs
-	 q3/EkY8uPODfzDqXQYgs4z/mEL6RdvCYjgJmq1gM5Tasz+ONsOzsVhRenVkh3PKUsb
-	 rlRSaFPULB+XQ==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10.y] net: phy: dp83867: Disable EEE support as not implemented
-Date: Sun,  2 Nov 2025 15:39:09 -0500
-Message-ID: <20251102203909.3597447-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025110204-backroom-donated-75ff@gregkh>
-References: <2025110204-backroom-donated-75ff@gregkh>
+	s=k20201202; t=1762119000;
+	bh=Iw13zHgZThn7lQVt8FQ6YD6tJgqTn5cgsMoeYx1qZVg=;
+	h=From:To:Cc:Subject:Date:From;
+	b=Mnhr2b3eRrWFT9heoUctNj5wRsVdIi50eAjQlk3qeByU5MXcM0GOmDaUDlaq4CZCC
+	 JbLHBHwp5wOkKae5Bx5OxD4MsFTsMw+m4hsU7D93VrkIhRXuYMSDsiTxClzvwxA662
+	 JTjkYDMlbOQ7aDyugcYAXcrZI72CaSHN5fPwK8iN0u5LbzxMQSLX5KrZpVuLC5+d+B
+	 f6VD2P8hA7EGMuFZIyajOaPldHrKauOt7MkFvgMXd9X2P28UkbrrhflBZSMXPmeo6i
+	 3mzTNVNJKbMs3UPHDxzYU8tBIHfAqPx6fqavieo/xLjxu/A4XQb7dKwXcuGCs7Tvf3
+	 XG0Mb5JZAfdGQ==
+From: Miguel Ojeda <ojeda@kernel.org>
+To: Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nicolas Schier <nicolas@fjasle.eu>
+Cc: Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	rust-for-linux@vger.kernel.org,
+	linux-kbuild@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	patches@lists.linux.dev,
+	stable@vger.kernel.org
+Subject: [PATCH 1/2] rust: kbuild: treat `build_error` and `rustdoc` as kernel objects
+Date: Sun,  2 Nov 2025 22:28:52 +0100
+Message-ID: <20251102212853.1505384-1-ojeda@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,55 +69,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
+Even if normally `build_error` isn't a kernel object, it should still
+be treated as such so that we pass the same flags. Similarly, `rustdoc`
+targets are never kernel objects, but we need to treat them as such.
 
-[ Upstream commit 84a905290cb4c3d9a71a9e3b2f2e02e031e7512f ]
+Otherwise, starting with Rust 1.91.0 (released 2025-10-30), `rustc`
+will complain about missing sanitizer flags since `-Zsanitizer` is a
+target modifier too [1]:
 
-While the DP83867 PHYs report EEE capability through their feature
-registers, the actual hardware does not support EEE (see Links).
-When the connected MAC enables EEE, it causes link instability and
-communication failures.
+    error: mixing `-Zsanitizer` will cause an ABI mismatch in crate `build_error`
+     --> rust/build_error.rs:3:1
+      |
+    3 | //! Build-time error.
+      | ^
+      |
+      = help: the `-Zsanitizer` flag modifies the ABI so Rust crates compiled with different values of this flag cannot be used together safely
+      = note: unset `-Zsanitizer` in this crate is incompatible with `-Zsanitizer=kernel-address` in dependency `core`
+      = help: set `-Zsanitizer=kernel-address` in this crate or unset `-Zsanitizer` in `core`
+      = help: if you are sure this will not cause problems, you may use `-Cunsafe-allow-abi-mismatch=sanitizer` to silence this error
 
-The issue is reproducible with a iMX8MP and relevant stmmac ethernet port.
-Since the introduction of phylink-managed EEE support in the stmmac driver,
-EEE is now enabled by default, leading to issues on systems using the
-DP83867 PHY.
+Thus explicitly mark them as kernel objects.
 
-Call phy_disable_eee during phy initialization to prevent EEE from being
-enabled on DP83867 PHYs.
-
-Link: https://e2e.ti.com/support/interface-group/interface/f/interface-forum/1445244/dp83867ir-dp83867-disable-eee-lpi
-Link: https://e2e.ti.com/support/interface-group/interface/f/interface-forum/658638/dp83867ir-eee-energy-efficient-ethernet
-Fixes: 2a10154abcb7 ("net: phy: dp83867: Add TI dp83867 phy")
-Cc: stable@vger.kernel.org
-Signed-off-by: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20251023144857.529566-1-ghidoliemanuele@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ replaced phy_disable_eee() call with direct eee_broken_modes assignment ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org # Needed in 6.12.y and later (Rust is pinned in older LTSs).
+Link: https://github.com/rust-lang/rust/pull/138736 [1]
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 ---
- drivers/net/phy/dp83867.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ rust/Makefile | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/net/phy/dp83867.c b/drivers/net/phy/dp83867.c
-index 0cb24bfbfa237..d128453e1cd59 100644
---- a/drivers/net/phy/dp83867.c
-+++ b/drivers/net/phy/dp83867.c
-@@ -664,6 +664,12 @@ static int dp83867_config_init(struct phy_device *phydev)
- 			return ret;
- 	}
+diff --git a/rust/Makefile b/rust/Makefile
+index 23c7ae905bd2..5de103e20841 100644
+--- a/rust/Makefile
++++ b/rust/Makefile
+@@ -127,9 +127,14 @@ rustdoc-core: private rustc_target_flags = --edition=$(core-edition) $(core-cfgs
+ rustdoc-core: $(RUST_LIB_SRC)/core/src/lib.rs rustdoc-clean FORCE
+ 	+$(call if_changed,rustdoc)
  
-+	/* Although the DP83867 reports EEE capability through the
-+	 * MDIO_PCS_EEE_ABLE and MDIO_AN_EEE_ADV registers, the feature
-+	 * is not actually implemented in hardware.
-+	 */
-+	phydev->eee_broken_modes = MDIO_EEE_100TX | MDIO_EEE_1000T;
-+
- 	if (phy_interface_is_rgmii(phydev) ||
- 	    phydev->interface == PHY_INTERFACE_MODE_SGMII) {
- 		val = phy_read(phydev, MII_DP83867_PHYCTRL);
++# Even if `rustdoc` targets are not kernel objects, they should still be
++# treated as such so that we pass the same flags. Otherwise, for instance,
++# `rustc` will complain about missing sanitizer flags causing an ABI mismatch.
++rustdoc-compiler_builtins: private is-kernel-object := y
+ rustdoc-compiler_builtins: $(src)/compiler_builtins.rs rustdoc-core FORCE
+ 	+$(call if_changed,rustdoc)
+ 
++rustdoc-ffi: private is-kernel-object := y
+ rustdoc-ffi: $(src)/ffi.rs rustdoc-core FORCE
+ 	+$(call if_changed,rustdoc)
+ 
+@@ -147,6 +152,7 @@ rustdoc-pin_init: $(src)/pin-init/src/lib.rs rustdoc-pin_init_internal \
+     rustdoc-macros FORCE
+ 	+$(call if_changed,rustdoc)
+ 
++rustdoc-kernel: private is-kernel-object := y
+ rustdoc-kernel: private rustc_target_flags = --extern ffi --extern pin_init \
+     --extern build_error --extern macros \
+     --extern bindings --extern uapi
+@@ -522,6 +528,10 @@ $(obj)/pin_init.o: $(src)/pin-init/src/lib.rs $(obj)/compiler_builtins.o \
+     $(obj)/$(libpin_init_internal_name) $(obj)/$(libmacros_name) FORCE
+ 	+$(call if_changed_rule,rustc_library)
+ 
++# Even if normally `build_error` is not a kernel object, it should still be
++# treated as such so that we pass the same flags. Otherwise, for instance,
++# `rustc` will complain about missing sanitizer flags causing an ABI mismatch.
++$(obj)/build_error.o: private is-kernel-object := y
+ $(obj)/build_error.o: private skip_gendwarfksyms = 1
+ $(obj)/build_error.o: $(src)/build_error.rs $(obj)/compiler_builtins.o FORCE
+ 	+$(call if_changed_rule,rustc_library)
 -- 
-2.51.0
+2.51.2
 
 
