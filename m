@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-192063-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192064-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2DB7C2907F
-	for <lists+stable@lfdr.de>; Sun, 02 Nov 2025 15:46:59 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84ADFC2907C
+	for <lists+stable@lfdr.de>; Sun, 02 Nov 2025 15:46:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 79DCE188B2B0
-	for <lists+stable@lfdr.de>; Sun,  2 Nov 2025 14:47:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1C8863A30DD
+	for <lists+stable@lfdr.de>; Sun,  2 Nov 2025 14:46:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F27AA1A3A80;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2ABE1B81CA;
 	Sun,  2 Nov 2025 14:46:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aDCKP1Kr"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YU8aQjyE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0DF281732
-	for <stable@vger.kernel.org>; Sun,  2 Nov 2025 14:46:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0DA07261B
+	for <stable@vger.kernel.org>; Sun,  2 Nov 2025 14:46:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762094810; cv=none; b=sIGhFbIYWl/YXaFBvsZkQ7+7bmiGSnHCF+noxRgSwfvvDen7x8uxxni0GURIuplJfJ7HwIimNKjn9y7iEDhvOBSTot1NP6DJ9v2tkAg/dWgVz3WZiZYoIS33evgpn0c4m2Rk8pddfmXgZKtW6UIoHfGEc9gsuW8Xd6rbRd7zHCU=
+	t=1762094810; cv=none; b=CntMDxG0uW6EHlqG7F4dHKt/4JYoG71ji/xv8QmgWfcnhoQgyi9I7CZc7zbuYBoun4j8Fs4qQEpHLmv9rCWQ56vNtrMWeB9VpxzZEWcuBMdHA+7dY7SSHqwf+yCLtjhBWGH/+jIIaC0deOvzEhDHiPffjMHspnTt5dHakcn7bUQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1762094810; c=relaxed/simple;
-	bh=5TuyXZabTge4FBF8Qa7AQAh9PUdUMHoj7D/yzIysxe8=;
+	bh=tZyI5Tt+i9AV7kEqZo+T3sQvc/10fQyehpsoCSzIrtE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=isSmTECJalxaxHo97ulIcA0W2l0oADYN7UdhMY183tAkd/nF2yxNp96l45Hfpm79NO05GlXEJ2nnriA1JdImuvyDzkkmgAFQkYKNRehkN30fIeOfe+9MqF2ZzPP2yeBZgJLPrKfznydsexU66FRB9DaJGoUP91TDIyzfm2aGtJE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aDCKP1Kr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E814C4CEF7;
-	Sun,  2 Nov 2025 14:46:48 +0000 (UTC)
+	 MIME-Version; b=bi4J2kQIS8sBzUc6l38Mdc3Dq5pLmuxOiiVNXOu+ixCqcqcvwueeU1YtLZoY4l0MVRPGeyqe5wwf6CVc2BXLHMcJepEkPVuI6CJAM5VDB9lE+7A3q56EQriejWlooeOJbek3EubZaYiVZM+mI00xP7ef5v7nUF5HQtIEPj2kt+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YU8aQjyE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91F40C4CEFD;
+	Sun,  2 Nov 2025 14:46:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762094809;
-	bh=5TuyXZabTge4FBF8Qa7AQAh9PUdUMHoj7D/yzIysxe8=;
+	s=k20201202; t=1762094810;
+	bh=tZyI5Tt+i9AV7kEqZo+T3sQvc/10fQyehpsoCSzIrtE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aDCKP1Krv9ByTueRLmX55ZgqdCTw64DAaYxbhTwbtydU0PweQwD05feUQtB+ZN5bU
-	 E5yZmTXoyOE+1sqpz/dLMgBJmrul9oCl82sHsTzHdkgBX8DTvfF53HPq9x+tUu4Ycw
-	 F85QIZQRpfAn2WwamIOueNNTP8BFlfSf20/7MhrOc8NpeR9oz3UlJYXnVnVtwhCLs3
-	 p9/AyS+b0/STTt6F1EbfdUaZ5K8Y05SF7zHbKS2dUbTNOzVojq7uiNZ6cGerthvmBV
-	 /LoUXGh/Yuh8nHb0k0L8McSls+YtwhOcXq9LSHw4CQKkYU76xDcxb0DR7/3rdYmhlm
-	 tvw+6XuIGsziA==
+	b=YU8aQjyE2i4coWLsCy6eGtWVUTl8COtGsV7Bl/WBNXeLj15PHp1S6p6FRD+a8lZhi
+	 eDt1RCxVfv9W2Z7BZDqe6rRapdezO7/xtuypS/Ak0bEam4Hus0Nz+Cgesf2+VA8WZ/
+	 C9tQy/gfiwFJAjeOWXlin2lXOY4haitdGs8IQe+UJNgNMeH5Bg/p0bee76AH7m11G1
+	 IsGR+uMYUELoBd5dfhf6gsmZGXTw3jWEE+v9Cl+nmpEtkc2CnC1/3MuvWB7KthTECE
+	 YyAyfrFigvdL0DYicEH5SdPwqz3u0WlwjsVKW9pNvVApuQMvLMc5lQ07vOohxeHO4K
+	 vyhyu+G+6WYvA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Heiner Kallweit <hkallweit1@gmail.com>,
+Cc: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>,
 	Andrew Lunn <andrew@lunn.ch>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y 1/2] net: phy: add phy_disable_eee
-Date: Sun,  2 Nov 2025 09:46:45 -0500
-Message-ID: <20251102144646.3457653-1-sashal@kernel.org>
+Subject: [PATCH 6.12.y 2/2] net: phy: dp83867: Disable EEE support as not implemented
+Date: Sun,  2 Nov 2025 09:46:46 -0500
+Message-ID: <20251102144646.3457653-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025110212-wavy-support-eaec@gregkh>
+In-Reply-To: <20251102144646.3457653-1-sashal@kernel.org>
 References: <2025110212-wavy-support-eaec@gregkh>
+ <20251102144646.3457653-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,63 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Heiner Kallweit <hkallweit1@gmail.com>
+From: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
 
-[ Upstream commit b55498ff14bd14860d48dc8d2a0b6889b218c408 ]
+[ Upstream commit 84a905290cb4c3d9a71a9e3b2f2e02e031e7512f ]
 
-If a MAC driver doesn't support EEE, then the PHY shouldn't advertise it.
-Add phy_disable_eee() for this purpose.
+While the DP83867 PHYs report EEE capability through their feature
+registers, the actual hardware does not support EEE (see Links).
+When the connected MAC enables EEE, it causes link instability and
+communication failures.
 
-Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+The issue is reproducible with a iMX8MP and relevant stmmac ethernet port.
+Since the introduction of phylink-managed EEE support in the stmmac driver,
+EEE is now enabled by default, leading to issues on systems using the
+DP83867 PHY.
+
+Call phy_disable_eee during phy initialization to prevent EEE from being
+enabled on DP83867 PHYs.
+
+Link: https://e2e.ti.com/support/interface-group/interface/f/interface-forum/1445244/dp83867ir-dp83867-disable-eee-lpi
+Link: https://e2e.ti.com/support/interface-group/interface/f/interface-forum/658638/dp83867ir-eee-energy-efficient-ethernet
+Fixes: 2a10154abcb7 ("net: phy: dp83867: Add TI dp83867 phy")
+Cc: stable@vger.kernel.org
+Signed-off-by: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
 Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/fd51738c-dcd6-4d61-b8c5-faa6ac0f1026@gmail.com
+Link: https://patch.msgid.link/20251023144857.529566-1-ghidoliemanuele@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 84a905290cb4 ("net: phy: dp83867: Disable EEE support as not implemented")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/phy_device.c | 16 ++++++++++++++++
- include/linux/phy.h          |  1 +
- 2 files changed, 17 insertions(+)
+ drivers/net/phy/dp83867.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
-index 834624a61060e..1a0c51a7702e5 100644
---- a/drivers/net/phy/phy_device.c
-+++ b/drivers/net/phy/phy_device.c
-@@ -3045,6 +3045,22 @@ void phy_support_eee(struct phy_device *phydev)
- }
- EXPORT_SYMBOL(phy_support_eee);
+diff --git a/drivers/net/phy/dp83867.c b/drivers/net/phy/dp83867.c
+index 4120385c5a79d..e02e3479e1c7a 100644
+--- a/drivers/net/phy/dp83867.c
++++ b/drivers/net/phy/dp83867.c
+@@ -792,6 +792,12 @@ static int dp83867_config_init(struct phy_device *phydev)
+ 			return ret;
+ 	}
  
-+/**
-+ * phy_disable_eee - Disable EEE for the PHY
-+ * @phydev: Target phy_device struct
-+ *
-+ * This function is used by MAC drivers for MAC's which don't support EEE.
-+ * It disables EEE on the PHY layer.
-+ */
-+void phy_disable_eee(struct phy_device *phydev)
-+{
-+	linkmode_zero(phydev->supported_eee);
-+	linkmode_zero(phydev->advertising_eee);
-+	phydev->eee_cfg.tx_lpi_enabled = false;
-+	phydev->eee_cfg.eee_enabled = false;
-+}
-+EXPORT_SYMBOL_GPL(phy_disable_eee);
++	/* Although the DP83867 reports EEE capability through the
++	 * MDIO_PCS_EEE_ABLE and MDIO_AN_EEE_ADV registers, the feature
++	 * is not actually implemented in hardware.
++	 */
++	phy_disable_eee(phydev);
 +
- /**
-  * phy_support_sym_pause - Enable support of symmetrical pause
-  * @phydev: target phy_device struct
-diff --git a/include/linux/phy.h b/include/linux/phy.h
-index dfc7b97f9648d..1888924bca77d 100644
---- a/include/linux/phy.h
-+++ b/include/linux/phy.h
-@@ -2030,6 +2030,7 @@ void phy_advertise_eee_all(struct phy_device *phydev);
- void phy_support_sym_pause(struct phy_device *phydev);
- void phy_support_asym_pause(struct phy_device *phydev);
- void phy_support_eee(struct phy_device *phydev);
-+void phy_disable_eee(struct phy_device *phydev);
- void phy_set_sym_pause(struct phy_device *phydev, bool rx, bool tx,
- 		       bool autoneg);
- void phy_set_asym_pause(struct phy_device *phydev, bool rx, bool tx);
+ 	if (phy_interface_is_rgmii(phydev) ||
+ 	    phydev->interface == PHY_INTERFACE_MODE_SGMII) {
+ 		val = phy_read(phydev, MII_DP83867_PHYCTRL);
 -- 
 2.51.0
 
