@@ -1,242 +1,341 @@
-Return-Path: <stable+bounces-192069-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192070-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E536C29238
-	for <lists+stable@lfdr.de>; Sun, 02 Nov 2025 17:32:14 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9F05C2927D
+	for <lists+stable@lfdr.de>; Sun, 02 Nov 2025 17:40:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4B0B23A7DD3
-	for <lists+stable@lfdr.de>; Sun,  2 Nov 2025 16:32:12 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 9515B4E712A
+	for <lists+stable@lfdr.de>; Sun,  2 Nov 2025 16:40:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 669411B78F3;
-	Sun,  2 Nov 2025 16:32:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D063267B90;
+	Sun,  2 Nov 2025 16:39:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="KbydT9GU"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aJ49xanI"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18882146A66
-	for <stable@vger.kernel.org>; Sun,  2 Nov 2025 16:32:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0747B25485F
+	for <stable@vger.kernel.org>; Sun,  2 Nov 2025 16:39:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762101129; cv=none; b=mPJI8O+Fx5+QOfBjQSsTrLoETDHT9BNyvaRv3Pa9WE+4v7QnD3fv3kxRFTL6WbvbDlNHiQXtjL4Rxenrtd97c8qFLXDgs2QC10XeUjbXio1eGzL44ez/Ik429YpBPEsAWUCNWgqcLAi+amUxeDRuIkZgGgrqtVoTcB1aJp/z9N0=
+	t=1762101593; cv=none; b=ZNP1+4s8i//jCeRL83h3vH1aDYPyLxTGca6QgKJsfI64G8ELKq62l9yceqDOPbDDFQYi208YJ+SXMx+t9iNeaKBWrFmbpO5tIEMHPpxgpkBa40tKnb8F78vyh5Gt9rS4AysGWZPivpO3JA43loyeL4fCEfYdu4FpQa72G+BvfWI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762101129; c=relaxed/simple;
-	bh=p2uI0vmRGweokY2nzO+bjYQi7HrLyqPTbiuEWJMUHZE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=NXN8AHBXmJGQhN8bFXjdtp3UJDPCAcj14BTYyOV7EGDYkPwxkvLBrJOFryG8cefl2zB9xTsZ6eXQcaIDi/MR/Pcx5jvKqCLZ24c0F4CjTz4jxwjiXf5vku8Cu6x18siEDkmYGkQ3E6dR6uR/KMTQP+Fvjewr1U+rJMaI+cztOyY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=KbydT9GU; arc=none smtp.client-ip=212.227.17.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1762101121; x=1762705921; i=w_armin@gmx.de;
-	bh=N/RZipWpEY3bV57NOxudkchHnL2hKmhs6vzChjIzR5s=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=KbydT9GUy7m9gS4uu24Dz/7QMwJocOET26Xzob1PazoTS2eR5R7hahRENwDNSF6x
-	 tq26ztxl93cGFQKCsWRtUy7LVwHXbXxZDRMnjyCDzeZHKeiYkNb4v1in5LbGJKdx6
-	 0UN/ZgatEkk6+Kj8a8L+g/q72M9EwdiTSK4Dpi5t8IqUoBGCNleJ/QgSgH0s3fk8s
-	 5eFOdOSGNlx8MPYxlUMzoxJSWKBaYdOa3qE/vlwXJxlzNIVLMGhvGOzQYRPsb/HIW
-	 68VgcdRdTEHpEdUvlqv1qHTd2QXlBGq+ZMgxw9QyDpMX1FDf4edHSwyltXAjJfRtm
-	 ns9ugY28N8XS7hHwnQ==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.0.69] ([93.202.247.91]) by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1Mv2xU-1w6K6i3foO-00zBXg; Sun, 02
- Nov 2025 17:32:01 +0100
-Message-ID: <894e49ea-33ba-42c5-8b7b-d4ccd6ffd1bb@gmx.de>
-Date: Sun, 2 Nov 2025 17:31:59 +0100
+	s=arc-20240116; t=1762101593; c=relaxed/simple;
+	bh=4ECg3GBSsBodjpxIteh07vA4wLFahbjcTTaG5orryb4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bA1mmUrRsA89o0+pX3r6q9tqJTeXKgvX95eDs9r0Cq/Vnffl3aUoAvNgIsinzqSpVXkFVChtK0RZX9EWvvlnk1KVkGmz8XdMGk3KrIpimGHMxDSLW/muM1eJ/j8uYdFMgFabkI07yhyOdj6Ap0vaqP56pR2hfKMvvMJvM0T9J64=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aJ49xanI; arc=none smtp.client-ip=209.85.216.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-33b5a3e8ae2so3917300a91.1
+        for <stable@vger.kernel.org>; Sun, 02 Nov 2025 08:39:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1762101590; x=1762706390; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=9l9M1VEwNs644GZJUQE5YY5/Lto9MOs0f9A3rC/IPCM=;
+        b=aJ49xanIlfpbIZNuZiBco+4m9S22rw6MstpkBrAIyp9GLuIIyQ/4cwFi1Mie8a2fbO
+         nbW+tpfgeq6MZJmQixdlyKLCrTcBtcWZBLpvaSt4nwE9H3cILqPONN/i8APlDi6ds+Dh
+         OXPa+NORDf/16Xz1zsDr3jW1s9uPKS6ws3ShRE59bSM+pH6ESCM0ZF+Etp2wvWIAU5y4
+         FZDUlP1q/sTo5N9KCdRnuteOVDSzdsfFnsqOTdKJ2fcCGiT33e8gK1pukwbbgN8Fho4r
+         Hj/zxvqMPoM6IB/oWgIZQHjrR9A3ZX4MiP/NXpV/jgBWjGAlYPRSmkq5shHgZRZ362R9
+         aRtA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762101590; x=1762706390;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=9l9M1VEwNs644GZJUQE5YY5/Lto9MOs0f9A3rC/IPCM=;
+        b=AWHMYZLYCZW255VBf/KAs9Sm3/BteEEZ+l7q+scJYlPkW3s63ztloyPyaLfccTtNi3
+         Ho5SEqGnQvvk6YCxn0pl6BWcWjH6w8FVdl3mnmcuwXZswm48Ky3VWAE+c25oMJbT72Qg
+         1mADUgdPCUiCUvfYveH4SZPA+Q0szFMg2g7HmRoCk0q3JhVW9HDax4VOwp0Z6OZW6MSI
+         QP69ZHr+5hsjKYkSrY0PqoJBX8N1FAjnHDSyx6OlXjOPpaHjr+zu5Y8FrsYyDwWhzPDj
+         40gRPKRNLJGswcoFFdFy0mswmx2VCshPrL3uAQ1kKPQM1dDIt2nuiGrG7HTwmDqj2B4C
+         CAww==
+X-Forwarded-Encrypted: i=1; AJvYcCX2NJyYUNVvO/PIqqiQuQC1XYNJI4B7krAzk24MDm0JhwlW7jOaGXCukDwhZXVj6pyG6efg5I0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy9M1YWtle8nblFkwG8nbq9SfBAzTGvTx6mRBGgP9RwOPyyZeWF
+	d7Qi+YIe1b5+CsaF9mhjHdf+pUeZeweAXrR9W2CnXo3EdRMsUJTYzSb5
+X-Gm-Gg: ASbGncvo8u9ZizRgOP4H0QK8ZyU4AXWA8SNcd8AOJU94laHzfPh0zh5oNnbLV6/Ubo3
+	bNeDL9YnwEvM/aKrTUvTEIaCyDmZDM6bFYxgiik2Xo0yk2GSHZla+kVZPc4Nu6xptJIWqz234Xr
+	UiLtxDCRNwfkTlcjoc+ZoZ+BCa/q9ta9Lroa01ygBB8uDquwk1fjpse5PPvD4o0GE0Ggn6X9t2X
+	gc/9akOoZPPPxpeyunmEzl36wLAjBw1f/uwTpkJI4Oh0qPnz+P/BFkEtmpMdVXf+fxBRKUcyBqr
+	EM8M9KPeJ3ftL4PLoMImkQrjkSeQIlBmezhR5EOMoKET+UFJRBAUatkBk/eFxnF+uiDxCkuA0w9
+	JeWKJx5Sl31CIU4IxOd3ZG5xxE7UN6lw/HURqTkQfunEV0eT29buK8MA9PpmRb9koq6jZu5t27j
+	T82lQfLKdIE5VKQFJfO+Y=
+X-Google-Smtp-Source: AGHT+IEA5RXtwMSBBjRia1PNT/ZFCET2haCc20qI1DSWXK0OhiWZvv4vdWev5EswSdYDED2bAlDICA==
+X-Received: by 2002:a17:90b:1c05:b0:340:e8f7:1856 with SMTP id 98e67ed59e1d1-340e8f71976mr4626496a91.7.1762101590053;
+        Sun, 02 Nov 2025 08:39:50 -0800 (PST)
+Received: from monty-pavel.. ([2409:8a00:79b4:1a90:b37:c9a7:7ba1:c6e9])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b93bd9616c9sm8135322a12.23.2025.11.02.08.39.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 02 Nov 2025 08:39:49 -0800 (PST)
+From: Yongpeng Yang <yangyongpeng.storage@gmail.com>
+To: Namjae Jeon <linkinjeon@kernel.org>,
+	Sungjong Seo <sj1557.seo@samsung.com>,
+	OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>,
+	Jan Kara <jack@suse.cz>,
+	Carlos Maiolino <cem@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>
+Cc: linux-xfs@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-block@vger.kernel.org,
+	stable@vger.kernel.org,
+	Matthew Wilcox <willy@infradead.org>,
+	"Darrick J . Wong" <djwong@kernel.org>,
+	Yongpeng Yang <yangyongpeng@xiaomi.com>
+Subject: [PATCH v2] fix missing sb_min_blocksize() return value checks in some filesystems
+Date: Mon,  3 Nov 2025 00:38:36 +0800
+Message-ID: <20251102163835.6533-2-yangyongpeng.storage@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.12.y 2/2] ACPI: fan: Use platform device for
- devres-related actions
-To: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org
-Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-References: <2025110248-reflex-facebook-1ab2@gregkh>
- <20251102143514.3449278-1-sashal@kernel.org>
- <20251102143514.3449278-2-sashal@kernel.org>
-Content-Language: en-US
-From: Armin Wolf <W_Armin@gmx.de>
-In-Reply-To: <20251102143514.3449278-2-sashal@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:bCPBuIc6blj+MUazVSlGEE8o7jIoa/kaY4SkUzIIxNHsswjdwen
- AML7AgK5etEG4afM56ljhMPjlamW8+B91soDaFDMNdi8lJmrms+T6fHB/zltV9GrPaOclHR
- FEvjHgIdQH55mJ07J97m/YuwzeAIlsqCozJYj44l0+GQtxSz41q9YlsOIPaA9fzL40WW9uk
- 52RY+AwgtH1wAdrKRdmfg==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:rxyXbPy9/kk=;0QD8QQWOZ8mv0wO4CDJUPQJrXIS
- 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
+Content-Transfer-Encoding: 8bit
 
-Am 02.11.25 um 15:35 schrieb Sasha Levin:
+From: Yongpeng Yang <yangyongpeng@xiaomi.com>
 
-> From: Armin Wolf <W_Armin@gmx.de>
->
-> [ Upstream commit d91a1d129b63614fa4c2e45e60918409ce36db7e ]
->
-> Device-managed resources are cleaned up when the driver unbinds from
-> the underlying device. In our case this is the platform device as this
-> driver is a platform driver. Registering device-managed resources on
-> the associated ACPI device will thus result in a resource leak when
-> this driver unbinds.
->
-> Ensure that any device-managed resources are only registered on the
-> platform device to ensure that they are cleaned up during removal.
+When emulating an nvme device on qemu with both logical_block_size and
+physical_block_size set to 8 KiB, but without format, a kernel panic
+was triggered during the early boot stage while attempting to mount a
+vfat filesystem.
 
-Please note that this patch depends on "ACPI: fan: Use ACPI handle when re=
-trieving _FST",
-otherwise the ACPI fan driver will panic when probing.
+[95553.682035] EXT4-fs (nvme0n1): unable to set blocksize
+[95553.684326] EXT4-fs (nvme0n1): unable to set blocksize
+[95553.686501] EXT4-fs (nvme0n1): unable to set blocksize
+[95553.696448] ISOFS: unsupported/invalid hardware sector size 8192
+[95553.697117] ------------[ cut here ]------------
+[95553.697567] kernel BUG at fs/buffer.c:1582!
+[95553.697984] Oops: invalid opcode: 0000 [#1] SMP NOPTI
+[95553.698602] CPU: 0 UID: 0 PID: 7212 Comm: mount Kdump: loaded Not tainted 6.18.0-rc2+ #38 PREEMPT(voluntary)
+[95553.699511] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
+[95553.700534] RIP: 0010:folio_alloc_buffers+0x1bb/0x1c0
+[95553.701018] Code: 48 8b 15 e8 93 18 02 65 48 89 35 e0 93 18 02 48 83 c4 10 5b 41 5c 41 5d 41 5e 41 5f 5d 31 d2 31 c9 31 f6 31 ff c3 cc cc cc cc <0f> 0b 90 66 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 0f
+[95553.702648] RSP: 0018:ffffd1b0c676f990 EFLAGS: 00010246
+[95553.703132] RAX: ffff8cfc4176d820 RBX: 0000000000508c48 RCX: 0000000000000001
+[95553.703805] RDX: 0000000000002000 RSI: 0000000000000000 RDI: 0000000000000000
+[95553.704481] RBP: ffffd1b0c676f9c8 R08: 0000000000000000 R09: 0000000000000000
+[95553.705148] R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000000001
+[95553.705816] R13: 0000000000002000 R14: fffff8bc8257e800 R15: 0000000000000000
+[95553.706483] FS:  000072ee77315840(0000) GS:ffff8cfdd2c8d000(0000) knlGS:0000000000000000
+[95553.707248] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[95553.707782] CR2: 00007d8f2a9e5a20 CR3: 0000000039d0c006 CR4: 0000000000772ef0
+[95553.708439] PKRU: 55555554
+[95553.708734] Call Trace:
+[95553.709015]  <TASK>
+[95553.709266]  __getblk_slow+0xd2/0x230
+[95553.709641]  ? find_get_block_common+0x8b/0x530
+[95553.710084]  bdev_getblk+0x77/0xa0
+[95553.710449]  __bread_gfp+0x22/0x140
+[95553.710810]  fat_fill_super+0x23a/0xfc0
+[95553.711216]  ? __pfx_setup+0x10/0x10
+[95553.711580]  ? __pfx_vfat_fill_super+0x10/0x10
+[95553.712014]  vfat_fill_super+0x15/0x30
+[95553.712401]  get_tree_bdev_flags+0x141/0x1e0
+[95553.712817]  get_tree_bdev+0x10/0x20
+[95553.713177]  vfat_get_tree+0x15/0x20
+[95553.713550]  vfs_get_tree+0x2a/0x100
+[95553.713910]  vfs_cmd_create+0x62/0xf0
+[95553.714273]  __do_sys_fsconfig+0x4e7/0x660
+[95553.714669]  __x64_sys_fsconfig+0x20/0x40
+[95553.715062]  x64_sys_call+0x21ee/0x26a0
+[95553.715453]  do_syscall_64+0x80/0x670
+[95553.715816]  ? __fs_parse+0x65/0x1e0
+[95553.716172]  ? fat_parse_param+0x103/0x4b0
+[95553.716587]  ? vfs_parse_fs_param_source+0x21/0xa0
+[95553.717034]  ? __do_sys_fsconfig+0x3d9/0x660
+[95553.717548]  ? __x64_sys_fsconfig+0x20/0x40
+[95553.717957]  ? x64_sys_call+0x21ee/0x26a0
+[95553.718360]  ? do_syscall_64+0xb8/0x670
+[95553.718734]  ? __x64_sys_fsconfig+0x20/0x40
+[95553.719141]  ? x64_sys_call+0x21ee/0x26a0
+[95553.719545]  ? do_syscall_64+0xb8/0x670
+[95553.719922]  ? x64_sys_call+0x1405/0x26a0
+[95553.720317]  ? do_syscall_64+0xb8/0x670
+[95553.720702]  ? __x64_sys_close+0x3e/0x90
+[95553.721080]  ? x64_sys_call+0x1b5e/0x26a0
+[95553.721478]  ? do_syscall_64+0xb8/0x670
+[95553.721841]  ? irqentry_exit+0x43/0x50
+[95553.722211]  ? exc_page_fault+0x90/0x1b0
+[95553.722681]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+[95553.723166] RIP: 0033:0x72ee774f3afe
+[95553.723562] Code: 73 01 c3 48 8b 0d 0a 33 0f 00 f7 d8 64 89 01 48 83 c8 ff c3 0f 1f 84 00 00 00 00 00 f3 0f 1e fa 49 89 ca b8 af 01 00 00 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d da 32 0f 00 f7 d8 64 89 01 48
+[95553.725188] RSP: 002b:00007ffe97148978 EFLAGS: 00000246 ORIG_RAX: 00000000000001af
+[95553.725892] RAX: ffffffffffffffda RBX: 00005dcfe53d0080 RCX: 000072ee774f3afe
+[95553.726526] RDX: 0000000000000000 RSI: 0000000000000006 RDI: 0000000000000003
+[95553.727176] RBP: 00007ffe97148ac0 R08: 0000000000000000 R09: 000072ee775e7ac0
+[95553.727818] R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+[95553.728459] R13: 00005dcfe53d04b0 R14: 000072ee77670b00 R15: 00005dcfe53d1a28
+[95553.729086]  </TASK>
 
-Thanks,
-Armin Wolf
+The panic occurs as follows:
+1. logical_block_size is 8KiB, causing {struct super_block *sb}->s_blocksize
+is initialized to 0.
+vfat_fill_super
+ - fat_fill_super
+  - sb_min_blocksize
+   - sb_set_blocksize //return 0 when size is 8KiB.
+2. __bread_gfp is called with size == 0, causing folio_alloc_buffers() to
+compute an offset equal to folio_size(folio), which triggers a BUG_ON.
+fat_fill_super
+ - sb_bread
+  - __bread_gfp  // size == {struct super_block *sb}->s_blocksize == 0
+   - bdev_getblk
+    - __getblk_slow
+     - grow_buffers
+      - grow_dev_folio
+       - folio_alloc_buffers  // size == 0
+        - folio_set_bh //offset == folio_size(folio) and panic
 
-> Fixes: 35c50d853adc ("ACPI: fan: Add hwmon support")
-> Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-> Cc: 6.11+ <stable@vger.kernel.org> # 6.11+
-> Link: https://patch.msgid.link/20251007234149.2769-4-W_Armin@gmx.de
-> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> ---
->   drivers/acpi/fan.h       | 4 ++--
->   drivers/acpi/fan_core.c  | 2 +-
->   drivers/acpi/fan_hwmon.c | 8 ++++----
->   3 files changed, 7 insertions(+), 7 deletions(-)
->
-> diff --git a/drivers/acpi/fan.h b/drivers/acpi/fan.h
-> index a7e39a29d4c89..c022b16d90647 100644
-> --- a/drivers/acpi/fan.h
-> +++ b/drivers/acpi/fan.h
-> @@ -62,9 +62,9 @@ int acpi_fan_create_attributes(struct acpi_device *dev=
-ice);
->   void acpi_fan_delete_attributes(struct acpi_device *device);
->  =20
->   #if IS_REACHABLE(CONFIG_HWMON)
-> -int devm_acpi_fan_create_hwmon(struct acpi_device *device);
-> +int devm_acpi_fan_create_hwmon(struct device *dev);
->   #else
-> -static inline int devm_acpi_fan_create_hwmon(struct acpi_device *device=
-) { return 0; };
-> +static inline int devm_acpi_fan_create_hwmon(struct device *dev) { retu=
-rn 0; };
->   #endif
->  =20
->   #endif
-> diff --git a/drivers/acpi/fan_core.c b/drivers/acpi/fan_core.c
-> index f5f3091d5ca84..fd2563362142c 100644
-> --- a/drivers/acpi/fan_core.c
-> +++ b/drivers/acpi/fan_core.c
-> @@ -347,7 +347,7 @@ static int acpi_fan_probe(struct platform_device *pd=
-ev)
->   	}
->  =20
->   	if (fan->has_fst) {
-> -		result =3D devm_acpi_fan_create_hwmon(device);
-> +		result =3D devm_acpi_fan_create_hwmon(&pdev->dev);
->   		if (result)
->   			return result;
->  =20
-> diff --git a/drivers/acpi/fan_hwmon.c b/drivers/acpi/fan_hwmon.c
-> index e8d90605106ef..cba1f096d9717 100644
-> --- a/drivers/acpi/fan_hwmon.c
-> +++ b/drivers/acpi/fan_hwmon.c
-> @@ -167,12 +167,12 @@ static const struct hwmon_chip_info acpi_fan_hwmon=
-_chip_info =3D {
->   	.info =3D acpi_fan_hwmon_info,
->   };
->  =20
-> -int devm_acpi_fan_create_hwmon(struct acpi_device *device)
-> +int devm_acpi_fan_create_hwmon(struct device *dev)
->   {
-> -	struct acpi_fan *fan =3D acpi_driver_data(device);
-> +	struct acpi_fan *fan =3D dev_get_drvdata(dev);
->   	struct device *hdev;
->  =20
-> -	hdev =3D devm_hwmon_device_register_with_info(&device->dev, "acpi_fan"=
-, fan,
-> -						    &acpi_fan_hwmon_chip_info, NULL);
-> +	hdev =3D devm_hwmon_device_register_with_info(dev, "acpi_fan", fan, &a=
-cpi_fan_hwmon_chip_info,
-> +						    NULL);
->   	return PTR_ERR_OR_ZERO(hdev);
->   }
+To fix this issue, add proper return value checks for sb_min_blocksize()
+in vfat, exfat, isofs, and xfs. Add the __must_check mark to
+sb_min_blocksize().
+
+Cc: <stable@vger.kernel.org> # v6.15
+Fixes: a64e5a596067bd ("bdev: add back PAGE_SIZE block size validation
+for sb_set_blocksize()")
+Signed-off-by: Yongpeng Yang <yangyongpeng@xiaomi.com>
+Reviewed-by: Matthew Wilcox <willy@infradead.org>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+---
+v2:
+- add the __must_check mark to sb_min_blocksize() and include the Fixes
+tag
+---
+ block/bdev.c       | 2 +-
+ fs/exfat/super.c   | 7 ++++++-
+ fs/fat/inode.c     | 9 +++++++--
+ fs/isofs/inode.c   | 5 +++++
+ fs/xfs/xfs_super.c | 8 ++++++--
+ include/linux/fs.h | 2 +-
+ 6 files changed, 26 insertions(+), 7 deletions(-)
+
+diff --git a/block/bdev.c b/block/bdev.c
+index 810707cca970..638f0cd458ae 100644
+--- a/block/bdev.c
++++ b/block/bdev.c
+@@ -231,7 +231,7 @@ int sb_set_blocksize(struct super_block *sb, int size)
+ 
+ EXPORT_SYMBOL(sb_set_blocksize);
+ 
+-int sb_min_blocksize(struct super_block *sb, int size)
++int __must_check sb_min_blocksize(struct super_block *sb, int size)
+ {
+ 	int minsize = bdev_logical_block_size(sb->s_bdev);
+ 	if (size < minsize)
+diff --git a/fs/exfat/super.c b/fs/exfat/super.c
+index 7f9592856bf7..fea41732354e 100644
+--- a/fs/exfat/super.c
++++ b/fs/exfat/super.c
+@@ -431,9 +431,14 @@ static int exfat_read_boot_sector(struct super_block *sb)
+ {
+ 	struct boot_sector *p_boot;
+ 	struct exfat_sb_info *sbi = EXFAT_SB(sb);
++	int blocksize;
+ 
+ 	/* set block size to read super block */
+-	sb_min_blocksize(sb, 512);
++	blocksize = sb_min_blocksize(sb, 512);
++	if (!blocksize) {
++		exfat_err(sb, "unable to set blocksize");
++		return -EINVAL;
++	}
+ 
+ 	/* read boot sector */
+ 	sbi->boot_bh = sb_bread(sb, 0);
+diff --git a/fs/fat/inode.c b/fs/fat/inode.c
+index 9648ed097816..d22eec4f17b2 100644
+--- a/fs/fat/inode.c
++++ b/fs/fat/inode.c
+@@ -1535,7 +1535,7 @@ int fat_fill_super(struct super_block *sb, struct fs_context *fc,
+ 		   void (*setup)(struct super_block *))
+ {
+ 	struct fat_mount_options *opts = fc->fs_private;
+-	int silent = fc->sb_flags & SB_SILENT;
++	int silent = fc->sb_flags & SB_SILENT, blocksize;
+ 	struct inode *root_inode = NULL, *fat_inode = NULL;
+ 	struct inode *fsinfo_inode = NULL;
+ 	struct buffer_head *bh;
+@@ -1595,8 +1595,13 @@ int fat_fill_super(struct super_block *sb, struct fs_context *fc,
+ 
+ 	setup(sb); /* flavour-specific stuff that needs options */
+ 
++	error = -EINVAL;
++	blocksize = sb_min_blocksize(sb, 512);
++	if (!blocksize) {
++		fat_msg(sb, KERN_ERR, "unable to set blocksize");
++		goto out_fail;
++	}
+ 	error = -EIO;
+-	sb_min_blocksize(sb, 512);
+ 	bh = sb_bread(sb, 0);
+ 	if (bh == NULL) {
+ 		fat_msg(sb, KERN_ERR, "unable to read boot sector");
+diff --git a/fs/isofs/inode.c b/fs/isofs/inode.c
+index 6f0e6b19383c..ad3143d4066b 100644
+--- a/fs/isofs/inode.c
++++ b/fs/isofs/inode.c
+@@ -610,6 +610,11 @@ static int isofs_fill_super(struct super_block *s, struct fs_context *fc)
+ 		goto out_freesbi;
+ 	}
+ 	opt->blocksize = sb_min_blocksize(s, opt->blocksize);
++	if (!opt->blocksize) {
++		printk(KERN_ERR
++		       "ISOFS: unable to set blocksize\n");
++		goto out_freesbi;
++	}
+ 
+ 	sbi->s_high_sierra = 0; /* default is iso9660 */
+ 	sbi->s_session = opt->session;
+diff --git a/fs/xfs/xfs_super.c b/fs/xfs/xfs_super.c
+index 1067ebb3b001..14dcace5f0c4 100644
+--- a/fs/xfs/xfs_super.c
++++ b/fs/xfs/xfs_super.c
+@@ -1673,7 +1673,7 @@ xfs_fs_fill_super(
+ {
+ 	struct xfs_mount	*mp = sb->s_fs_info;
+ 	struct inode		*root;
+-	int			flags = 0, error;
++	int			flags = 0, error, blocksize;
+ 
+ 	mp->m_super = sb;
+ 
+@@ -1693,7 +1693,11 @@ xfs_fs_fill_super(
+ 	if (error)
+ 		return error;
+ 
+-	sb_min_blocksize(sb, BBSIZE);
++	blocksize = sb_min_blocksize(sb, BBSIZE);
++	if (!blocksize) {
++		xfs_err(mp, "unable to set blocksize");
++		return -EINVAL;
++	}
+ 	sb->s_xattr = xfs_xattr_handlers;
+ 	sb->s_export_op = &xfs_export_operations;
+ #ifdef CONFIG_XFS_QUOTA
+diff --git a/include/linux/fs.h b/include/linux/fs.h
+index c895146c1444..26d4ca0f859a 100644
+--- a/include/linux/fs.h
++++ b/include/linux/fs.h
+@@ -3424,7 +3424,7 @@ extern void inode_sb_list_add(struct inode *inode);
+ extern void inode_add_lru(struct inode *inode);
+ 
+ extern int sb_set_blocksize(struct super_block *, int);
+-extern int sb_min_blocksize(struct super_block *, int);
++extern int __must_check sb_min_blocksize(struct super_block *, int);
+ 
+ int generic_file_mmap(struct file *, struct vm_area_struct *);
+ int generic_file_mmap_prepare(struct vm_area_desc *desc);
+-- 
+2.43.0
+
 
