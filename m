@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-192025-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192026-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id C06BEC28F86
-	for <lists+stable@lfdr.de>; Sun, 02 Nov 2025 14:39:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 14748C28F89
+	for <lists+stable@lfdr.de>; Sun, 02 Nov 2025 14:41:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 4F49E3472AD
-	for <lists+stable@lfdr.de>; Sun,  2 Nov 2025 13:39:56 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id B16DB3472C8
+	for <lists+stable@lfdr.de>; Sun,  2 Nov 2025 13:41:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39E05136672;
-	Sun,  2 Nov 2025 13:39:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8970A19ABDE;
+	Sun,  2 Nov 2025 13:41:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YASyBs7c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s7lPgE6M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBC2925557
-	for <stable@vger.kernel.org>; Sun,  2 Nov 2025 13:39:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38EA1163
+	for <stable@vger.kernel.org>; Sun,  2 Nov 2025 13:41:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762090791; cv=none; b=KbHMOME4gXuoeHKCfbWlH+bnVp2hpat1pd545vn5HK9krEFddd2dL8pSBw0tzcxaJ2eUOq7uVjfKO28Ucjciv+jxtzAHmg+algAJ5uFVk40XBWbZAm5MsvJYGIUEXLGAbN4wxBHAPp8uH58BZ2YkaZ76nfukQQ9ejpmSu6YTtZ4=
+	t=1762090906; cv=none; b=LF7mmPherdkJN8DHzoHFq0hBNGpEJVkS2w1dsgcexuHK9LIyRgzEN7NB6jLo3O16PfQg+/eX1bjw6pNK5jGx/ZyWfzjsadl7xoVv73WioB4sAZlbzoE4d82EjJhMCW6i+TgRuRv7EscHBcZirjfcrNtMuDW+brTp8AL5NL26mjI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762090791; c=relaxed/simple;
-	bh=bRsILxkOao+kZSxv7pKsLsJ1k0x12HNCxll8V83yzrI=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=T09dBaLyQJ/BM3OrDzTImV8wivWm1PoQB6LXpAYc7eUz7fBDCs/RcPofnDwdEi+G76wCKoac+MlKFQn12nltz+63JfreOysN9epdZGiJ+bUepJWcG7DfEV+mKVMHshlGznpPqN43s5YYEqsVohZufNskakDUbm+k05FIYz45af0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YASyBs7c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61704C4CEF7;
-	Sun,  2 Nov 2025 13:39:51 +0000 (UTC)
+	s=arc-20240116; t=1762090906; c=relaxed/simple;
+	bh=1vyfs941ig7Qq6ZTdN2DADJceHcqyRrIuCxb6AIvtYU=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=fZ6QkAVCV5T4RBapyM0gg/cJxtDBphHYrFk5OWiniZzl5Jp1zwPIEAfUgGSAjwDbP9R4nu4FY5U9rk8ryXLrJZg0pVx0bWi2M2axCaWkhcpDKGOZncvGmPJf/rhixbRfCUnxmvicI4HF78Zr/c9zhT/mBymX/6Q8yzEyYXAtkM8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s7lPgE6M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A496C4CEF7;
+	Sun,  2 Nov 2025 13:41:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762090791;
-	bh=bRsILxkOao+kZSxv7pKsLsJ1k0x12HNCxll8V83yzrI=;
+	s=korg; t=1762090905;
+	bh=1vyfs941ig7Qq6ZTdN2DADJceHcqyRrIuCxb6AIvtYU=;
 	h=Subject:To:Cc:From:Date:From;
-	b=YASyBs7c3bU283x1Z8v+zZcAmLmHNyOt5NjcZjgjt9HbnGnr8KV3kIFKa/DoIIYsj
-	 Oi3wO9FrExshgYSYNbTPHoC6ecen2pXHJShdCxDyz04nz1X1HExPPUj0dgNNXeZ7Un
-	 RC/THTeqnCcmxYGJhsKSHv1zW2zZnqn3L8qxfH/A=
-Subject: FAILED: patch "[PATCH] ACPI: fan: Use platform device for devres-related actions" failed to apply to 6.12-stable tree
-To: W_Armin@gmx.de,rafael.j.wysocki@intel.com,stable@vger.kernel.org
+	b=s7lPgE6MOrxo47hU0UDBuZR/B/paCVrCHRpXE65FHB+jmez/CynT9hGrPiokrLVGv
+	 r5MKuk/uljt578cz/d7mycwwtlaZcPRj7myL8a5c0SDzYZBKzMxgYADeihauYnN2sq
+	 J+h9TRHp+PCUV2ljH//OXDCoapOfI7+WI+NOMljU=
+Subject: FAILED: patch "[PATCH] Bluetooth: rfcomm: fix modem control handling" failed to apply to 6.1-stable tree
+To: johan@kernel.org,luiz.von.dentz@intel.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sun, 02 Nov 2025 22:39:48 +0900
-Message-ID: <2025110248-reflex-facebook-1ab2@gregkh>
+Date: Sun, 02 Nov 2025 22:41:43 +0900
+Message-ID: <2025110242-armory-enlisted-e259@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.12-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x d91a1d129b63614fa4c2e45e60918409ce36db7e
+git cherry-pick -x 91d35ec9b3956d6b3cf789c1593467e58855b03a
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025110248-reflex-facebook-1ab2@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025110242-armory-enlisted-e259@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,75 +77,88 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From d91a1d129b63614fa4c2e45e60918409ce36db7e Mon Sep 17 00:00:00 2001
-From: Armin Wolf <W_Armin@gmx.de>
-Date: Wed, 8 Oct 2025 01:41:46 +0200
-Subject: [PATCH] ACPI: fan: Use platform device for devres-related actions
+From 91d35ec9b3956d6b3cf789c1593467e58855b03a Mon Sep 17 00:00:00 2001
+From: Johan Hovold <johan@kernel.org>
+Date: Thu, 23 Oct 2025 14:05:30 +0200
+Subject: [PATCH] Bluetooth: rfcomm: fix modem control handling
 
-Device-managed resources are cleaned up when the driver unbinds from
-the underlying device. In our case this is the platform device as this
-driver is a platform driver. Registering device-managed resources on
-the associated ACPI device will thus result in a resource leak when
-this driver unbinds.
+The RFCOMM driver confuses the local and remote modem control signals,
+which specifically means that the reported DTR and RTS state will
+instead reflect the remote end (i.e. DSR and CTS).
 
-Ensure that any device-managed resources are only registered on the
-platform device to ensure that they are cleaned up during removal.
+This issue dates back to the original driver (and a follow-on update)
+merged in 2002, which resulted in a non-standard implementation of
+TIOCMSET that allowed controlling also the TS07.10 IC and DV signals by
+mapping them to the RI and DCD input flags, while TIOCMGET failed to
+return the actual state of DTR and RTS.
 
-Fixes: 35c50d853adc ("ACPI: fan: Add hwmon support")
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-Cc: 6.11+ <stable@vger.kernel.org> # 6.11+
-Link: https://patch.msgid.link/20251007234149.2769-4-W_Armin@gmx.de
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Note that the bogus control of input signals in tiocmset() is just
+dead code as those flags will have been masked out by the tty layer
+since 2003.
 
-diff --git a/drivers/acpi/fan.h b/drivers/acpi/fan.h
-index d39bb6fd1326..bedbab0e8e4e 100644
---- a/drivers/acpi/fan.h
-+++ b/drivers/acpi/fan.h
-@@ -65,9 +65,9 @@ int acpi_fan_create_attributes(struct acpi_device *device);
- void acpi_fan_delete_attributes(struct acpi_device *device);
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+
+diff --git a/net/bluetooth/rfcomm/tty.c b/net/bluetooth/rfcomm/tty.c
+index 376ce6de84be..b783526ab588 100644
+--- a/net/bluetooth/rfcomm/tty.c
++++ b/net/bluetooth/rfcomm/tty.c
+@@ -643,8 +643,8 @@ static void rfcomm_dev_modem_status(struct rfcomm_dlc *dlc, u8 v24_sig)
+ 		tty_port_tty_hangup(&dev->port, true);
  
- #if IS_REACHABLE(CONFIG_HWMON)
--int devm_acpi_fan_create_hwmon(struct acpi_device *device);
-+int devm_acpi_fan_create_hwmon(struct device *dev);
- #else
--static inline int devm_acpi_fan_create_hwmon(struct acpi_device *device) { return 0; };
-+static inline int devm_acpi_fan_create_hwmon(struct device *dev) { return 0; };
- #endif
- 
- #endif
-diff --git a/drivers/acpi/fan_core.c b/drivers/acpi/fan_core.c
-index ea2c646c470c..46e7fe7a506d 100644
---- a/drivers/acpi/fan_core.c
-+++ b/drivers/acpi/fan_core.c
-@@ -347,7 +347,7 @@ static int acpi_fan_probe(struct platform_device *pdev)
- 	}
- 
- 	if (fan->has_fst) {
--		result = devm_acpi_fan_create_hwmon(device);
-+		result = devm_acpi_fan_create_hwmon(&pdev->dev);
- 		if (result)
- 			return result;
- 
-diff --git a/drivers/acpi/fan_hwmon.c b/drivers/acpi/fan_hwmon.c
-index 4209a9923efc..4b2c2007f2d7 100644
---- a/drivers/acpi/fan_hwmon.c
-+++ b/drivers/acpi/fan_hwmon.c
-@@ -166,12 +166,12 @@ static const struct hwmon_chip_info acpi_fan_hwmon_chip_info = {
- 	.info = acpi_fan_hwmon_info,
- };
- 
--int devm_acpi_fan_create_hwmon(struct acpi_device *device)
-+int devm_acpi_fan_create_hwmon(struct device *dev)
- {
--	struct acpi_fan *fan = acpi_driver_data(device);
-+	struct acpi_fan *fan = dev_get_drvdata(dev);
- 	struct device *hdev;
- 
--	hdev = devm_hwmon_device_register_with_info(&device->dev, "acpi_fan", fan,
--						    &acpi_fan_hwmon_chip_info, NULL);
-+	hdev = devm_hwmon_device_register_with_info(dev, "acpi_fan", fan, &acpi_fan_hwmon_chip_info,
-+						    NULL);
- 	return PTR_ERR_OR_ZERO(hdev);
+ 	dev->modem_status =
+-		((v24_sig & RFCOMM_V24_RTC) ? (TIOCM_DSR | TIOCM_DTR) : 0) |
+-		((v24_sig & RFCOMM_V24_RTR) ? (TIOCM_RTS | TIOCM_CTS) : 0) |
++		((v24_sig & RFCOMM_V24_RTC) ? TIOCM_DSR : 0) |
++		((v24_sig & RFCOMM_V24_RTR) ? TIOCM_CTS : 0) |
+ 		((v24_sig & RFCOMM_V24_IC)  ? TIOCM_RI : 0) |
+ 		((v24_sig & RFCOMM_V24_DV)  ? TIOCM_CD : 0);
  }
+@@ -1055,10 +1055,14 @@ static void rfcomm_tty_hangup(struct tty_struct *tty)
+ static int rfcomm_tty_tiocmget(struct tty_struct *tty)
+ {
+ 	struct rfcomm_dev *dev = tty->driver_data;
++	struct rfcomm_dlc *dlc = dev->dlc;
++	u8 v24_sig;
+ 
+ 	BT_DBG("tty %p dev %p", tty, dev);
+ 
+-	return dev->modem_status;
++	rfcomm_dlc_get_modem_status(dlc, &v24_sig);
++
++	return (v24_sig & (TIOCM_DTR | TIOCM_RTS)) | dev->modem_status;
+ }
+ 
+ static int rfcomm_tty_tiocmset(struct tty_struct *tty, unsigned int set, unsigned int clear)
+@@ -1071,23 +1075,15 @@ static int rfcomm_tty_tiocmset(struct tty_struct *tty, unsigned int set, unsigne
+ 
+ 	rfcomm_dlc_get_modem_status(dlc, &v24_sig);
+ 
+-	if (set & TIOCM_DSR || set & TIOCM_DTR)
++	if (set & TIOCM_DTR)
+ 		v24_sig |= RFCOMM_V24_RTC;
+-	if (set & TIOCM_RTS || set & TIOCM_CTS)
++	if (set & TIOCM_RTS)
+ 		v24_sig |= RFCOMM_V24_RTR;
+-	if (set & TIOCM_RI)
+-		v24_sig |= RFCOMM_V24_IC;
+-	if (set & TIOCM_CD)
+-		v24_sig |= RFCOMM_V24_DV;
+ 
+-	if (clear & TIOCM_DSR || clear & TIOCM_DTR)
++	if (clear & TIOCM_DTR)
+ 		v24_sig &= ~RFCOMM_V24_RTC;
+-	if (clear & TIOCM_RTS || clear & TIOCM_CTS)
++	if (clear & TIOCM_RTS)
+ 		v24_sig &= ~RFCOMM_V24_RTR;
+-	if (clear & TIOCM_RI)
+-		v24_sig &= ~RFCOMM_V24_IC;
+-	if (clear & TIOCM_CD)
+-		v24_sig &= ~RFCOMM_V24_DV;
+ 
+ 	rfcomm_dlc_set_modem_status(dlc, v24_sig);
+ 
 
 
