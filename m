@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-192076-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192077-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84D06C2957E
-	for <lists+stable@lfdr.de>; Sun, 02 Nov 2025 19:57:39 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14936C2958D
+	for <lists+stable@lfdr.de>; Sun, 02 Nov 2025 19:59:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id DC9DE346516
-	for <lists+stable@lfdr.de>; Sun,  2 Nov 2025 18:57:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A632A3ACF25
+	for <lists+stable@lfdr.de>; Sun,  2 Nov 2025 18:59:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E380220F2D;
-	Sun,  2 Nov 2025 18:57:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FEC9220F5C;
+	Sun,  2 Nov 2025 18:59:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d7Nyccdi"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sOdQrBzD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC3CF1A23A6
-	for <stable@vger.kernel.org>; Sun,  2 Nov 2025 18:57:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F007BC2FB
+	for <stable@vger.kernel.org>; Sun,  2 Nov 2025 18:59:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762109853; cv=none; b=rNDetOTwNoPghLPg/fZC1LNHo3BdW8MyJkHosOFdz+K02IJ0SRrD2IKGA5O9ExEjQxlEzVf0jZpht79o3QNqMyutCL8Nbh8dTq0ekxYk21yAWjfL7XGsvqBo2o8qUYzKluGZc69rhI/nH1QIci3EWI9HGOFTGjtNKApmSKmr3Cg=
+	t=1762109954; cv=none; b=qGRzVVj1aOdO6Ql8lJxfmQoQPWGAsQ9OosEsaX0kWXZ4TEdWwmoLIKfYhK2VNthVspQQDbUQ5h7aInnN4hLEKWKY4gW2qt+ITvDwqp8HICfrZ99VQylFa/9zizmZGpSPNhnuYuyNxnZ4drNd1yk1U2asvNp0cPJrq3buWi9P+iU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762109853; c=relaxed/simple;
-	bh=y25DqqrRHC69HJl8A71gPNEOM/OQGJanvYCSEqV/XmI=;
+	s=arc-20240116; t=1762109954; c=relaxed/simple;
+	bh=wnrZC3nK9++SNaq4J/RkrrAIfftMlk9exCFtVl6/js8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ci2/Ggcv+sSQu6fXo6zP+pzGqyk8L3ylDUiH+wOLV+09krulrNV0a4droIY7nr8AfIHW79eiadaZIzkUAZWav6dy/kwpfrWpgVwjIhtOfgynT+KTr9YGcApXcw/4LiTU5nikAJRmJIjC2eLdfZjqgkChvTziTPIM9zljBZwXAMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d7Nyccdi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE906C113D0;
-	Sun,  2 Nov 2025 18:57:32 +0000 (UTC)
+	 MIME-Version; b=Hjfx1FgVZjWdLTi+ktCWJ1weFl13T1jf+rlD98jMU4xlLdygyQifouKNGJMOn7n0nV3Vil37ec1iQbsgXR+bEMiL5d/8OjaHGvjvZrIwA83VZRHlJKr+R6VSfqfNC7bXQm/TezHx7Nc61/vtGd05evo8SKNGJbm588lZWEEaWHo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sOdQrBzD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD9C3C4CEF7;
+	Sun,  2 Nov 2025 18:59:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762109853;
-	bh=y25DqqrRHC69HJl8A71gPNEOM/OQGJanvYCSEqV/XmI=;
+	s=k20201202; t=1762109952;
+	bh=wnrZC3nK9++SNaq4J/RkrrAIfftMlk9exCFtVl6/js8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d7NyccdinIfhrDsjY/AWyqkm8RaJ7I1SLY0as6O8/X04X8xFhjcm9bb2tpT092H/I
-	 3VEoaAHGw83qvqEzq1zuHLbZFsvnuSatZzyx6Y/c68KvC20p7Tp1wqsuwrOoId95Rc
-	 6KSP7BaTye1dva2p5g1LjetAuHfzKvPa2ousVz3LtyjpFGSXS/EtdgEQ9+amzvE5ya
-	 hRLGtgJFFosDfKY4WkJPAgXQ47Q7Hfv+J9Y18NrYhcgEw3JNIf57eoqFIU/SKgaKQW
-	 WtH9pSahKzfRJRiDRUoDN67jw719sD7J3IvEJaVkD31ebn2jcX5kQS9oIguYYwsl0o
-	 u2dohq0RrWfAQ==
+	b=sOdQrBzDGpZJw4kZO0BiFJvavs07P3RrGAM5hZdsOOp6fvc0tUtSM9Wg6kGSoMzUq
+	 RfbJ2FxGFUp3fPFEg24VcfK578EVoG1CWSgG2JHvS3Y+lL1BuFVFGP5caXAunGF9qc
+	 nGa8XxWcXTrha871iGBMsnfMJ1K7gvc5nwhswDNE+rIW4IfEEXpWciXD75QB81FQLm
+	 VC53FtdRLGfsyR8dfmEBEAw4lVoMV7AG6/rRNvjIGzZ7a8foCTt401pycT6kogEkh4
+	 ebIb6F5mciKxsyEpUrrZXhUhWsoqnvQK4iaPzy3GuxMQCpjMviRYCUM12o1H6TsvpB
+	 R8DPfk25M1xSQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Doug Smythies <dsmythies@telus.net>,
-	Christian Loehle <christian.loehle@arm.com>,
+Cc: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y 2/2] cpuidle: governors: menu: Select polling state in some more cases
-Date: Sun,  2 Nov 2025 13:57:30 -0500
-Message-ID: <20251102185730.3551603-2-sashal@kernel.org>
+Subject: [PATCH 6.6.y] net: phy: dp83867: Disable EEE support as not implemented
+Date: Sun,  2 Nov 2025 13:59:09 -0500
+Message-ID: <20251102185909.3552411-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251102185730.3551603-1-sashal@kernel.org>
-References: <2025110244-overstuff-scallop-d38a@gregkh>
- <20251102185730.3551603-1-sashal@kernel.org>
+In-Reply-To: <2025110211-modular-affection-39a7@gregkh>
+References: <2025110211-modular-affection-39a7@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,53 +61,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+From: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
 
-[ Upstream commit db86f55bf81a3a297be05ee8775ae9a8c6e3a599 ]
+[ Upstream commit 84a905290cb4c3d9a71a9e3b2f2e02e031e7512f ]
 
-A throughput regression of 11% introduced by commit 779b1a1cb13a ("cpuidle:
-governors: menu: Avoid selecting states with too much latency") has been
-reported and it is related to the case when the menu governor checks if
-selecting a proper idle state instead of a polling one makes sense.
+While the DP83867 PHYs report EEE capability through their feature
+registers, the actual hardware does not support EEE (see Links).
+When the connected MAC enables EEE, it causes link instability and
+communication failures.
 
-In particular, it is questionable to do so if the exit latency of the
-idle state in question exceeds the predicted idle duration, so add a
-check for that, which is sufficient to make the reported regression go
-away, and update the related code comment accordingly.
+The issue is reproducible with a iMX8MP and relevant stmmac ethernet port.
+Since the introduction of phylink-managed EEE support in the stmmac driver,
+EEE is now enabled by default, leading to issues on systems using the
+DP83867 PHY.
 
-Fixes: 779b1a1cb13a ("cpuidle: governors: menu: Avoid selecting states with too much latency")
-Closes: https://lore.kernel.org/linux-pm/004501dc43c9$ec8aa930$c59ffb90$@telus.net/
-Reported-by: Doug Smythies <dsmythies@telus.net>
-Tested-by: Doug Smythies <dsmythies@telus.net>
-Cc: All applicable <stable@vger.kernel.org>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Christian Loehle <christian.loehle@arm.com>
-Link: https://patch.msgid.link/12786727.O9o76ZdvQC@rafael.j.wysocki
+Call phy_disable_eee during phy initialization to prevent EEE from being
+enabled on DP83867 PHYs.
+
+Link: https://e2e.ti.com/support/interface-group/interface/f/interface-forum/1445244/dp83867ir-dp83867-disable-eee-lpi
+Link: https://e2e.ti.com/support/interface-group/interface/f/interface-forum/658638/dp83867ir-eee-energy-efficient-ethernet
+Fixes: 2a10154abcb7 ("net: phy: dp83867: Add TI dp83867 phy")
+Cc: stable@vger.kernel.org
+Signed-off-by: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20251023144857.529566-1-ghidoliemanuele@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ inlined phy_disable_eee() functionality ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpuidle/governors/menu.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/net/phy/dp83867.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/cpuidle/governors/menu.c b/drivers/cpuidle/governors/menu.c
-index e4f439467574c..9069c36a491d5 100644
---- a/drivers/cpuidle/governors/menu.c
-+++ b/drivers/cpuidle/governors/menu.c
-@@ -324,10 +324,13 @@ static int menu_select(struct cpuidle_driver *drv, struct cpuidle_device *dev,
+diff --git a/drivers/net/phy/dp83867.c b/drivers/net/phy/dp83867.c
+index e397e7d642d92..a778379108ef1 100644
+--- a/drivers/net/phy/dp83867.c
++++ b/drivers/net/phy/dp83867.c
+@@ -774,6 +774,14 @@ static int dp83867_config_init(struct phy_device *phydev)
+ 			return ret;
+ 	}
  
- 		/*
- 		 * Use a physical idle state, not busy polling, unless a timer
--		 * is going to trigger soon enough.
-+		 * is going to trigger soon enough or the exit latency of the
-+		 * idle state in question is greater than the predicted idle
-+		 * duration.
- 		 */
- 		if ((drv->states[idx].flags & CPUIDLE_FLAG_POLLING) &&
--		    s->target_residency_ns <= data->next_timer_ns) {
-+		    s->target_residency_ns <= data->next_timer_ns &&
-+		    s->exit_latency_ns <= predicted_ns) {
- 			predicted_ns = s->target_residency_ns;
- 			idx = i;
- 			break;
++	/* Although the DP83867 reports EEE capability through the
++	 * MDIO_PCS_EEE_ABLE and MDIO_AN_EEE_ADV registers, the feature
++	 * is not actually implemented in hardware.
++	 */
++	linkmode_zero(phydev->supported_eee);
++	linkmode_zero(phydev->advertising_eee);
++	phydev->eee_enabled = false;
++
+ 	if (phy_interface_is_rgmii(phydev) ||
+ 	    phydev->interface == PHY_INTERFACE_MODE_SGMII) {
+ 		val = phy_read(phydev, MII_DP83867_PHYCTRL);
 -- 
 2.51.0
 
