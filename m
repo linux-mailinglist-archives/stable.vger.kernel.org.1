@@ -1,125 +1,128 @@
-Return-Path: <stable+bounces-192092-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192093-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4D44C29866
-	for <lists+stable@lfdr.de>; Sun, 02 Nov 2025 23:20:54 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37C62C2986C
+	for <lists+stable@lfdr.de>; Sun, 02 Nov 2025 23:21:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5414B4E3770
-	for <lists+stable@lfdr.de>; Sun,  2 Nov 2025 22:20:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF9583AE1BD
+	for <lists+stable@lfdr.de>; Sun,  2 Nov 2025 22:20:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DB78242D86;
-	Sun,  2 Nov 2025 22:20:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 256B821FF35;
+	Sun,  2 Nov 2025 22:20:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XRIlvc47"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="X9oUVqV7"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
+Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A955155757
-	for <stable@vger.kernel.org>; Sun,  2 Nov 2025 22:20:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E6872236FD
+	for <stable@vger.kernel.org>; Sun,  2 Nov 2025 22:20:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762122045; cv=none; b=bNGjwTb2p+3Ws1LnSrzkDablPCBmYS0XpVprrxhee+4IB+Y5rzj2E9wx7T8RUTowZanxNLnkusB4f5//VPVXCUy2M9xCF8z9hCdYZBiwN5D79WM5PgS/hXF1pC1dAqvGxRkLiFNYWZCqluoMhUZULxmt11tFwBWKHWhgHAFri0g=
+	t=1762122052; cv=none; b=PfGv8N+6lehkNK6rPpl9pTZ6UX+v/SaX8o3UkK8HeQ5EDElucx6dWJYvtixsERvQTo8YPEhwi3J86YbqOfK7ND893PZdVaXBAO6r6w+tbF4nTqiHXtMW35HK+QVwAOUV+NHK4stL7i6UkvqD7d6jenDMungnBuuVKcjQnQ8uBoU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762122045; c=relaxed/simple;
-	bh=vZO3PHgqOIKSLpT1XNcnJgC5AHDehu62cqI6I9Q+irs=;
+	s=arc-20240116; t=1762122052; c=relaxed/simple;
+	bh=WT7V+mIh7biSb9hoQQKTPcN5LrBBwROnmw3huldzWHY=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NRnFBayHM0jCF5RAWXGkjvydHEfVhur6BrwQHwANAUa/4saQyYBOPps2sS2ULIDiwEVSj0OTegCrC2N7OIozU4uGxbKzjCZzoR1m+h8PcyvNBb3JS1uDpgQmyCp4uo27heyphNlJEMH97qqqnYM++7stPiM9edPQo/xfIUE+VNs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XRIlvc47; arc=none smtp.client-ip=209.85.216.50
+	 To:Cc:Content-Type; b=Vvn6a3QlyWJTtN+Omov2LogrRJckQCGWAN74N1sRqCaMOZtNN8LlSZQj8yxfDXPyXytxUeTQ8x4a2jsMHC5Upn63PKkN5n68chGT4fsataUdCWzVUms3rLnjU+LUkEY0ok4RgVzDZq2Jrlpjx2iivEFYy1FrBlzL0qCXDfVah6A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=X9oUVqV7; arc=none smtp.client-ip=209.85.216.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-3404904539dso779848a91.2
-        for <stable@vger.kernel.org>; Sun, 02 Nov 2025 14:20:43 -0800 (PST)
+Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-3307e8979f2so679531a91.2
+        for <stable@vger.kernel.org>; Sun, 02 Nov 2025 14:20:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762122043; x=1762726843; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1762122051; x=1762726851; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=EyIK1ilUw35FUA5u8sORs0QLERPXEburx1e7TliwGA0=;
-        b=XRIlvc47qQ7umPfWUO2c42T32g0sr94QhalBA7UUGlLP3KN9x1V+CpHybwuBBsiAxV
-         33GCGeEV50MuhPnypIQ+q3znQ68EAYqt48F2xL2zjngOGceTs5pL9A65s8/d3ZQIfXhL
-         wb7Uw2jbMQu45k5vNybiu5roqCPVz1Yl57emtXDRBLaPrUms1dPyRK7KjPPkoZQP0ZU9
-         8NBBkQ1evIKdBK+EmxWuitfOswAb/HnuZoGEkNVsvksFLwebrdixX58ood9AKrQeecZD
-         QXxEE6kUpWoowhSVH92DHDDY29Ub+SOCHalCTQNkCKHA/8ufy6rcY90xGLeftjo1pRz+
-         q48g==
+        bh=ldh/rrZAKoIw8nkk3grHKnCTpuj+wVkO9BtM8FlPSJs=;
+        b=X9oUVqV7P1rOUBrqf086oFJ51nz318w3F3ADuNBXg/gWop7pmvDi34Sq9j/PWbDrmx
+         cgRUQD0YzJNi13LkMEYb++llpAt0BteLJpoyTbHfeABNE3AyFMPjkJG1rbI06lxkniZP
+         NgSnoKp6tLGjLAL2Q0MVtOZKacBQwyXZriOu6K5fqSdtW1GlAVJQiwgHYJ0gM19XOnW0
+         qDZutohzS7lzLziaPN0GCwRN8Mh2/Obky1ZNSOL5c+U10tAQTs3D28oeShHE4N9qY1E9
+         /KOfiDqtCyZk+Ko8JMN0QEuCCUnYnFMfCDTueaZxkvUrdMKltok28ktEbeLYXnNwOIlR
+         e7ZA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762122043; x=1762726843;
+        d=1e100.net; s=20230601; t=1762122051; x=1762726851;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=EyIK1ilUw35FUA5u8sORs0QLERPXEburx1e7TliwGA0=;
-        b=qdAupin8jkX0VOgrBFeDaKhc2ioxu2nPq3tEq/vIca2b08lFYESPSsvI/JJnv8be3J
-         81AH0cNuzOGvE/qJOe9qwb3wtLe6ArZ1aP0uQy2+skXlEiGNAvpWvpEqpPo1ac/SApsl
-         A/qDktsZqSKvCVNFPO5im3tyCq4vu/ZgAFt42CtuMzhw7DiqThnatWuRVnu21qTFVEHn
-         OC5aRayigWGqryx5jNqPkj5ZSBDq2o3t/dgwfpys7pNdx+9Ah95K3IgnriQaKkytWx67
-         YhGvSdZ3jHzgZY6GyjnJzlsjcUvHkMxEuVUOWHElgN+0+n6G1p1EIZCwqy6TNLOPE/YA
-         V/pA==
-X-Forwarded-Encrypted: i=1; AJvYcCWfzvWk64/ShfPz3/ncSgSUCMCLchz4ySLgoPdlF3h0rwoHfiGFxSFtuqRyUnuzuR5R9X4pbS8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxpjCwyFmhLbll97+S0KEQZiYakL/s3MBLmtMNVKkuIn/UKZ6kU
-	hjSkX1oOBQfWX0pwwpWBpCjAqhS4VwU+F/j1y2G6Z00sVzWH4nQzg1FqoFCgdNEmF9lzcod6O14
-	6eBV/63vjD7V2/k94Hrzax4ZEpbFOc70=
-X-Gm-Gg: ASbGncu7EcCHsm9taqyBIbPBsX3wnO3iQ+eoCBC5AJ5wD+2Ygv3NptmISpTgNSb96BF
-	aAT9vu9afl6FReV3JBo43ZYLxVBLqaK2V2PywmtSAK4ALNbtVp+UsH4QopH1/TLVn8m7HeGvZuJ
-	6z5YB/4enzyjU1yf2401XRb9sItmfTtZIVNr2t05tN1c5hR9Azx9RnSPYM5flut0un1X8mpU7AZ
-	DPm3hnIpfFulBTdEjCHRVKnLLsxneKclVa4Zx/GRGIFk4u35wo/BkJy9IGHK98XMgQ5LLqyhJwW
-	tS41T/ZrcyCMrsGJCnnoNVVR49LejECRcoflrO7ZapRwUu0zoUj4AI/jzLvsBhOKnt8rZLoqDvA
-	ejZA=
-X-Google-Smtp-Source: AGHT+IG0gQL4wpqk/N4eVevZ6EiRRAV29O6T0xOWLIHtqG3MysFxyrTz0rHu6gvrEfX+GEpHUZmKMf3I7Bn4K3wt4cg=
-X-Received: by 2002:a17:903:2346:b0:295:586a:7644 with SMTP id
- d9443c01a7336-295586a77ecmr35979015ad.9.1762122042760; Sun, 02 Nov 2025
- 14:20:42 -0800 (PST)
+        bh=ldh/rrZAKoIw8nkk3grHKnCTpuj+wVkO9BtM8FlPSJs=;
+        b=pPYxkVL+mRuLOaibgTlitfSwlNtyN/awhmboqUGfws71LN1kGbZKdnZ8q3Cy14+DBY
+         +AN7Xh4Q/Jl4Dy03gCIp+Btvb2CCaa8bwwJd7ka/lBu4f//oCqoKRqi7VG6X5VZzMPmp
+         RjSnO+N2+MXcU2Ge75Vggs1vn9uz0Cn0VSVCT28aaYjnPCr/e3+e8CaMoIyt3hcXaufr
+         9kX6ex5cornSTgsVnGVrUMvWGCKQ4GUsdk8qtClZ2vgBKo/VWw+brWH46FxbJPs/A4rd
+         mMO5dIGZrwTIe9xQ19jfmeEXELMZrtS69HgCT6Fsf0bpOdILfMUqjwAhvMJvn6Twd/p7
+         +ksQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXcm9I2ztg+Ax37s56MiwTvfTS5edZ/879xO0frt+DC5wZa8m5eNnEbr6oA7PutWI6LWbP1cpQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxx+RNEma6oieizrZjMalytErRtm1DMcdPA5AvNMtn5yRVp3kjw
+	ZycrSIm8jSp6GPJ9aTlU9zmmoB5f+qgEJCdVMbWSXBXdEOsjHN1Pl3bSeJMIJAnvAi9ggun97z+
+	gd98gdilu+8VFq7HIrFXB7qzHD/+ezkc=
+X-Gm-Gg: ASbGncv4Md4Pxlq744QocYk2T3IxUB5TTDMIqWP8atgQDxLvDcOVdqI981WysEN3kBB
+	Fg3rE5+8MHDLvE3nBlFmyyrk9++D7ZURS4U3vXicGSXvvNUWEdaMmK+Hj7l8PI297Ee5l49NSfL
+	/+KY7Vj+QblPoGtU7x2O2Ip5fgfWoxhUc/IiaVLnp7FPs0rwocTm417+5Ima35vVMVrgruU7WRT
+	U32fxL/mjZtXyhZmSIU/3gDMpRkCf43ifncgOBBWet7coVK1WtJySPEwdSivgJTiQGSpBTGiLX3
+	UXTVEcJ9Pr1Vw9xAJ7UJEmVEnKCKisrLx7c4kZYNrK7fpm5IIsPP+e2bKLgzGglwzg51tp/jsC0
+	PWJI=
+X-Google-Smtp-Source: AGHT+IHryhoTOrFuU+nX2/XXVf7kh67HIj6pJAwGZM07cNYk4Ch5KXgJowgB3YhvDy4LBmrqXMtVIjcCmU0HL6FeUno=
+X-Received: by 2002:a17:903:188f:b0:27a:186f:53ec with SMTP id
+ d9443c01a7336-2951a4da98fmr50067215ad.9.1762122050659; Sun, 02 Nov 2025
+ 14:20:50 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251029073344.349341-1-ojeda@kernel.org>
-In-Reply-To: <20251029073344.349341-1-ojeda@kernel.org>
+References: <20251029071406.324511-1-ojeda@kernel.org>
+In-Reply-To: <20251029071406.324511-1-ojeda@kernel.org>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sun, 2 Nov 2025 23:20:29 +0100
-X-Gm-Features: AWmQ_bl3OkSjDsxEokBQbHWG2tBRxHmsdbaPCFuCFuWjjrdm7lQYLIM3Vzk9M-g
-Message-ID: <CANiq72mKjZfR5jfzra-EEDx1BVJ23iwJgRHuFf+3wJh+iE=T1A@mail.gmail.com>
-Subject: Re: [PATCH] rust: condvar: fix broken intra-doc link
+Date: Sun, 2 Nov 2025 23:20:38 +0100
+X-Gm-Features: AWmQ_bmo-1G4gStAz5BNMs8sUlqk3doCuOqq-d5OyHMqc8oaNkX_-Dz-ZcwIf5I
+Message-ID: <CANiq72k-7f91kNrAAnwFoRYyFYjRB+mo3PCRFzTkn7E-7xrCNw@mail.gmail.com>
+Subject: Re: [PATCH] rust: devres: fix private intra-doc link
 To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Danilo Krummrich <dakr@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
 	linux-kernel@vger.kernel.org, patches@lists.linux.dev, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Oct 29, 2025 at 8:34=E2=80=AFAM Miguel Ojeda <ojeda@kernel.org> wro=
+On Wed, Oct 29, 2025 at 8:15=E2=80=AFAM Miguel Ojeda <ojeda@kernel.org> wro=
 te:
 >
-> The future move of pin-init to `syn` uncovers the following broken
+> The future move of pin-init to `syn` uncovers the following private
 > intra-doc link:
 >
->     error: unresolved link to `crate::pin_init`
->       --> rust/kernel/sync/condvar.rs:39:40
->        |
->     39 | /// instances is with the [`pin_init`](crate::pin_init!) and [`n=
-ew_condvar`] macros.
->        |                                        ^^^^^^^^^^^^^^^^ no item =
-named `pin_init` in module `kernel`
->        |
->        =3D note: `-D rustdoc::broken-intra-doc-links` implied by `-D warn=
-ings`
->        =3D help: to override `-D warnings` add `#[allow(rustdoc::broken_i=
-ntra_doc_links)]`
+>     error: public documentation for `Devres` links to private item `Self:=
+:inner`
+>        --> rust/kernel/devres.rs:106:7
+>         |
+>     106 | /// [`Self::inner`] is guaranteed to be initialized and is alwa=
+ys accessed read-only.
+>         |       ^^^^^^^^^^^ this item is private
+>         |
+>         =3D note: this link will resolve properly if you pass `--document=
+-private-items`
+>         =3D note: `-D rustdoc::private-intra-doc-links` implied by `-D wa=
+rnings`
+>         =3D help: to override `-D warnings` add `#[allow(rustdoc::private=
+_intra_doc_links)]`
 >
-> Currently, when rendered, the link points to a literal `crate::pin_init!`
-> URL.
+> Currently, when rendered, the link points to "nowhere" (an inexistent
+> anchor for a "method").
 >
 > Thus fix it.
 >
 > Cc: stable@vger.kernel.org
-> Fixes: 129e97be8e28 ("rust: pin-init: fix documentation links")
+> Fixes: f5d3ef25d238 ("rust: devres: get rid of Devres' inner Arc")
 > Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 
 Applied to `rust-fixes` -- thanks!
