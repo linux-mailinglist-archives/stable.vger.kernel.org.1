@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-192066-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192067-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id B57B9C290B9
-	for <lists+stable@lfdr.de>; Sun, 02 Nov 2025 16:03:40 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63B86C290FF
+	for <lists+stable@lfdr.de>; Sun, 02 Nov 2025 16:19:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 61978345F54
-	for <lists+stable@lfdr.de>; Sun,  2 Nov 2025 15:03:40 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0F5AA4E34A8
+	for <lists+stable@lfdr.de>; Sun,  2 Nov 2025 15:19:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32B3C1C5D59;
-	Sun,  2 Nov 2025 15:03:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BD391339B1;
+	Sun,  2 Nov 2025 15:19:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VCEPELVQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pEY+H0Fw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6F2814A62B
-	for <stable@vger.kernel.org>; Sun,  2 Nov 2025 15:03:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 185434C6E
+	for <stable@vger.kernel.org>; Sun,  2 Nov 2025 15:19:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762095817; cv=none; b=DY39JVsKnCe/1h/GuktP3b/S0uiqAHI1c1lZulKPN4+yCgKZEdZfxfXBLKbETpRFAmNr2+Od2b9BDLKVdrGyR15i01VGRkcP5VMpjvCJjq0uijMxWwbCf24+UHzYms72oCZ5NFqi0en4UOiz6ws/bhul3QIW7BNxmMbl62d0nFI=
+	t=1762096770; cv=none; b=piApKTMTyOl81GrjKQRLv8HdlifArnmgw6DxgSZg3ecDrgHPvqm0LzxVD4cY0hItJzubVSdFE/FPpijAHq8Ezenk+1OixVx6RzVbaWbuuY/dek/BB8CI49TrVqeeOYewP+ZPy19ciKEqFrmVKKQFIHD/YJvsL5tQBUngcVujgtU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762095817; c=relaxed/simple;
-	bh=n7bx+bIrTfslhQt+09dr+P7mcQ2LS7E7lAUjuuDU9Pw=;
+	s=arc-20240116; t=1762096770; c=relaxed/simple;
+	bh=wSiu8/DFDy4t2EsY4Sn/i0cxJJOSVCXwOph3Z+U16z8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VWfA4I3EEpGfnchvobXkkKG/qG5I2bgRlQ7eCh9rnVTMErj/Z8+8IttqMI8fXpHp9h0DkrCR4bjZmOsunZvgMBjSagBOORXy7+lOCCBD6IJYZgSvI6B+ZUMV1Z9T9AgcK/bykdrtK9LaaHEBvMCThhv3c1KYqtvxn1cLQqppzrw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VCEPELVQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C423CC116B1;
-	Sun,  2 Nov 2025 15:03:35 +0000 (UTC)
+	 MIME-Version; b=gdCS59BhUfe8TXPdpbydUu3rlTVw7SV3UXQawgfOaactgnkzjyknYwfNRkHJTkVaAtHGMPhudoKtdG4awtI5f2LlH7QcO/1QFRHSLY9OistNW+Is84corkWD/zELkaXTiysyA/CJS53Jv8O7AhGZ5K2yfAXojQBGG6gOM0KvbXo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pEY+H0Fw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8419C4CEF7;
+	Sun,  2 Nov 2025 15:19:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762095816;
-	bh=n7bx+bIrTfslhQt+09dr+P7mcQ2LS7E7lAUjuuDU9Pw=;
+	s=k20201202; t=1762096769;
+	bh=wSiu8/DFDy4t2EsY4Sn/i0cxJJOSVCXwOph3Z+U16z8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VCEPELVQayqqXWHueYyNDtg+ZtjMjbbwFgBmq0I3BA8HYevpi4jC4MTk3q1R/JsXI
-	 VJeKsc7r2/2cd9U8DqVxARv87lJ3cEkNgTdIkRxCHY4adH/Ey/wmUlbD6Hl5qplSb5
-	 7J6dNEOFCl5glx3XFVzzowcOJdVisy9ngdDyYmhcaKKoc5hLniY0iRZFzWK6ovcXyA
-	 GdgMTmsJnFO/o70bahfzTUuFs6vtw3d4YEoQNfXAAth8GLtww1SnYt0M97ywm+W9m8
-	 9P0lsMXR6tAD+iuXO0dJ07vFFH8oEesWCRLUNLMPXcwTir3SSBaBdssGlgOn6lg0mT
-	 ZJhZg7PRVw6JQ==
+	b=pEY+H0FwDeww73q86E/xEpYCt9tG5qdTDXva2iO4fwf086ng36pGiCsQ1lrlWcPBF
+	 ZbgAYwIU3QqMXE/x14DYkFFYv1o9mZde8n4HCsXeyIoW1Qj718omx8BmkMG9HLDFYO
+	 vdWEG5n9rbsgFwsnwQUNOO+eDrlJ7Hv06RdCmi3Sc59f83UB/fcUsORq1MyayXEK+N
+	 clRZBYY6FDPoRwcP1s1SjnaQbkTPHbG+N97r8VTTVlpHf8cYgUaabZM8pcdOe796RY
+	 I0k3wO7TUw6U8Pl18Sqkz8/AO34EtHhB8OJzmTGny6arnVr1XfqmP27aFeRaAyfVIM
+	 ew2pKt6q+6zqw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Doug Smythies <dsmythies@telus.net>,
-	Christian Loehle <christian.loehle@arm.com>,
+Cc: Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>,
+	Arend van Spriel <arend.vanspriel@broadcom.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17.y 2/2] cpuidle: governors: menu: Select polling state in some more cases
-Date: Sun,  2 Nov 2025 10:03:33 -0500
-Message-ID: <20251102150333.3466275-2-sashal@kernel.org>
+Subject: [PATCH 5.4.y] wifi: brcmfmac: fix crash while sending Action Frames in standalone AP Mode
+Date: Sun,  2 Nov 2025 10:19:27 -0500
+Message-ID: <20251102151927.3476662-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251102150333.3466275-1-sashal@kernel.org>
-References: <2025110243-dupe-pentagram-9b47@gregkh>
- <20251102150333.3466275-1-sashal@kernel.org>
+In-Reply-To: <2025110229-sandblast-glacial-765a@gregkh>
+References: <2025110229-sandblast-glacial-765a@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,53 +61,192 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+From: Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>
 
-[ Upstream commit db86f55bf81a3a297be05ee8775ae9a8c6e3a599 ]
+[ Upstream commit 3776c685ebe5f43e9060af06872661de55e80b9a ]
 
-A throughput regression of 11% introduced by commit 779b1a1cb13a ("cpuidle:
-governors: menu: Avoid selecting states with too much latency") has been
-reported and it is related to the case when the menu governor checks if
-selecting a proper idle state instead of a polling one makes sense.
+Currently, whenever there is a need to transmit an Action frame,
+the brcmfmac driver always uses the P2P vif to send the "actframe" IOVAR to
+firmware. The P2P interfaces were available when wpa_supplicant is managing
+the wlan interface.
 
-In particular, it is questionable to do so if the exit latency of the
-idle state in question exceeds the predicted idle duration, so add a
-check for that, which is sufficient to make the reported regression go
-away, and update the related code comment accordingly.
+However, the P2P interfaces are not created/initialized when only hostapd
+is managing the wlan interface. And if hostapd receives an ANQP Query REQ
+Action frame even from an un-associated STA, the brcmfmac driver tries
+to use an uninitialized P2P vif pointer for sending the IOVAR to firmware.
+This NULL pointer dereferencing triggers a driver crash.
 
-Fixes: 779b1a1cb13a ("cpuidle: governors: menu: Avoid selecting states with too much latency")
-Closes: https://lore.kernel.org/linux-pm/004501dc43c9$ec8aa930$c59ffb90$@telus.net/
-Reported-by: Doug Smythies <dsmythies@telus.net>
-Tested-by: Doug Smythies <dsmythies@telus.net>
-Cc: All applicable <stable@vger.kernel.org>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Christian Loehle <christian.loehle@arm.com>
-Link: https://patch.msgid.link/12786727.O9o76ZdvQC@rafael.j.wysocki
+ [ 1417.074538] Unable to handle kernel NULL pointer dereference at virtual
+ address 0000000000000000
+ [...]
+ [ 1417.075188] Hardware name: Raspberry Pi 4 Model B Rev 1.5 (DT)
+ [...]
+ [ 1417.075653] Call trace:
+ [ 1417.075662]  brcmf_p2p_send_action_frame+0x23c/0xc58 [brcmfmac]
+ [ 1417.075738]  brcmf_cfg80211_mgmt_tx+0x304/0x5c0 [brcmfmac]
+ [ 1417.075810]  cfg80211_mlme_mgmt_tx+0x1b0/0x428 [cfg80211]
+ [ 1417.076067]  nl80211_tx_mgmt+0x238/0x388 [cfg80211]
+ [ 1417.076281]  genl_family_rcv_msg_doit+0xe0/0x158
+ [ 1417.076302]  genl_rcv_msg+0x220/0x2a0
+ [ 1417.076317]  netlink_rcv_skb+0x68/0x140
+ [ 1417.076330]  genl_rcv+0x40/0x60
+ [ 1417.076343]  netlink_unicast+0x330/0x3b8
+ [ 1417.076357]  netlink_sendmsg+0x19c/0x3f8
+ [ 1417.076370]  __sock_sendmsg+0x64/0xc0
+ [ 1417.076391]  ____sys_sendmsg+0x268/0x2a0
+ [ 1417.076408]  ___sys_sendmsg+0xb8/0x118
+ [ 1417.076427]  __sys_sendmsg+0x90/0xf8
+ [ 1417.076445]  __arm64_sys_sendmsg+0x2c/0x40
+ [ 1417.076465]  invoke_syscall+0x50/0x120
+ [ 1417.076486]  el0_svc_common.constprop.0+0x48/0xf0
+ [ 1417.076506]  do_el0_svc+0x24/0x38
+ [ 1417.076525]  el0_svc+0x30/0x100
+ [ 1417.076548]  el0t_64_sync_handler+0x100/0x130
+ [ 1417.076569]  el0t_64_sync+0x190/0x198
+ [ 1417.076589] Code: f9401e80 aa1603e2 f9403be1 5280e483 (f9400000)
+
+Fix this, by always using the vif corresponding to the wdev on which the
+Action frame Transmission request was initiated by the userspace. This way,
+even if P2P vif is not available, the IOVAR is sent to firmware on AP vif
+and the ANQP Query RESP Action frame is transmitted without crashing the
+driver.
+
+Move init_completion() for "send_af_done" from brcmf_p2p_create_p2pdev()
+to brcmf_p2p_attach(). Because the former function would not get executed
+when only hostapd is managing wlan interface, and it is not safe to do
+reinit_completion() later in brcmf_p2p_tx_action_frame(), without any prior
+init_completion().
+
+And in the brcmf_p2p_tx_action_frame() function, the condition check for
+P2P Presence response frame is not needed, since the wpa_supplicant is
+properly sending the P2P Presense Response frame on the P2P-GO vif instead
+of the P2P-Device vif.
+
+Cc: stable@vger.kernel.org
+Fixes: 18e2f61db3b7 ("brcmfmac: P2P action frame tx")
+Signed-off-by: Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>
+Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+Link: https://patch.msgid.link/20251013102819.9727-1-gokulkumar.sivakumar@infineon.com
+[Cc stable]
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+[ removed hunks for P2P presence response check and dwell_overflow logic ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpuidle/governors/menu.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ .../broadcom/brcm80211/brcmfmac/cfg80211.c    |  3 +--
+ .../broadcom/brcm80211/brcmfmac/p2p.c         | 21 +++++++++----------
+ .../broadcom/brcm80211/brcmfmac/p2p.h         |  3 +--
+ 3 files changed, 12 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/cpuidle/governors/menu.c b/drivers/cpuidle/governors/menu.c
-index 7d21fb5a72f40..23239b0c04f95 100644
---- a/drivers/cpuidle/governors/menu.c
-+++ b/drivers/cpuidle/governors/menu.c
-@@ -318,10 +318,13 @@ static int menu_select(struct cpuidle_driver *drv, struct cpuidle_device *dev,
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+index f9508d71fc6ce..74a329f5c858c 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+@@ -4963,8 +4963,7 @@ brcmf_cfg80211_mgmt_tx(struct wiphy *wiphy, struct wireless_dev *wdev,
+ 		brcmf_dbg(TRACE, "Action frame, cookie=%lld, len=%d, freq=%d\n",
+ 			  *cookie, le16_to_cpu(action_frame->len), freq);
  
- 		/*
- 		 * Use a physical idle state, not busy polling, unless a timer
--		 * is going to trigger soon enough.
-+		 * is going to trigger soon enough or the exit latency of the
-+		 * idle state in question is greater than the predicted idle
-+		 * duration.
- 		 */
- 		if ((drv->states[idx].flags & CPUIDLE_FLAG_POLLING) &&
--		    s->target_residency_ns <= data->next_timer_ns) {
-+		    s->target_residency_ns <= data->next_timer_ns &&
-+		    s->exit_latency_ns <= predicted_ns) {
- 			predicted_ns = s->target_residency_ns;
- 			idx = i;
- 			break;
+-		ack = brcmf_p2p_send_action_frame(cfg, cfg_to_ndev(cfg),
+-						  af_params);
++		ack = brcmf_p2p_send_action_frame(vif->ifp, af_params);
+ 
+ 		cfg80211_mgmt_tx_status(wdev, *cookie, buf, len, ack,
+ 					GFP_KERNEL);
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c
+index 1f5deea5a288e..1b9011a90f1b0 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c
+@@ -1477,6 +1477,7 @@ int brcmf_p2p_notify_action_tx_complete(struct brcmf_if *ifp,
+ /**
+  * brcmf_p2p_tx_action_frame() - send action frame over fil.
+  *
++ * @ifp: interface to transmit on.
+  * @p2p: p2p info struct for vif.
+  * @af_params: action frame data/info.
+  *
+@@ -1486,11 +1487,11 @@ int brcmf_p2p_notify_action_tx_complete(struct brcmf_if *ifp,
+  * The WLC_E_ACTION_FRAME_COMPLETE event will be received when the action
+  * frame is transmitted.
+  */
+-static s32 brcmf_p2p_tx_action_frame(struct brcmf_p2p_info *p2p,
++static s32 brcmf_p2p_tx_action_frame(struct brcmf_if *ifp,
++				     struct brcmf_p2p_info *p2p,
+ 				     struct brcmf_fil_af_params_le *af_params)
+ {
+ 	struct brcmf_pub *drvr = p2p->cfg->pub;
+-	struct brcmf_cfg80211_vif *vif;
+ 	s32 err = 0;
+ 	s32 timeout = 0;
+ 
+@@ -1500,8 +1501,7 @@ static s32 brcmf_p2p_tx_action_frame(struct brcmf_p2p_info *p2p,
+ 	clear_bit(BRCMF_P2P_STATUS_ACTION_TX_COMPLETED, &p2p->status);
+ 	clear_bit(BRCMF_P2P_STATUS_ACTION_TX_NOACK, &p2p->status);
+ 
+-	vif = p2p->bss_idx[P2PAPI_BSSCFG_DEVICE].vif;
+-	err = brcmf_fil_bsscfg_data_set(vif->ifp, "actframe", af_params,
++	err = brcmf_fil_bsscfg_data_set(ifp, "actframe", af_params,
+ 					sizeof(*af_params));
+ 	if (err) {
+ 		bphy_err(drvr, " sending action frame has failed\n");
+@@ -1643,16 +1643,14 @@ static s32 brcmf_p2p_pub_af_tx(struct brcmf_cfg80211_info *cfg,
+ /**
+  * brcmf_p2p_send_action_frame() - send action frame .
+  *
+- * @cfg: driver private data for cfg80211 interface.
+- * @ndev: net device to transmit on.
++ * @ifp: interface to transmit on.
+  * @af_params: configuration data for action frame.
+  */
+-bool brcmf_p2p_send_action_frame(struct brcmf_cfg80211_info *cfg,
+-				 struct net_device *ndev,
++bool brcmf_p2p_send_action_frame(struct brcmf_if *ifp,
+ 				 struct brcmf_fil_af_params_le *af_params)
+ {
++	struct brcmf_cfg80211_info *cfg = ifp->drvr->config;
+ 	struct brcmf_p2p_info *p2p = &cfg->p2p;
+-	struct brcmf_if *ifp = netdev_priv(ndev);
+ 	struct brcmf_fil_action_frame_le *action_frame;
+ 	struct brcmf_config_af_params config_af_params;
+ 	struct afx_hdl *afx_hdl = &p2p->afx_hdl;
+@@ -1779,7 +1777,7 @@ bool brcmf_p2p_send_action_frame(struct brcmf_cfg80211_info *cfg,
+ 	tx_retry = 0;
+ 	while (!p2p->block_gon_req_tx &&
+ 	       (ack == false) && (tx_retry < P2P_AF_TX_MAX_RETRY)) {
+-		ack = !brcmf_p2p_tx_action_frame(p2p, af_params);
++		ack = !brcmf_p2p_tx_action_frame(ifp, p2p, af_params);
+ 		tx_retry++;
+ 	}
+ 	if (ack == false) {
+@@ -2137,7 +2135,6 @@ static struct wireless_dev *brcmf_p2p_create_p2pdev(struct brcmf_p2p_info *p2p,
+ 
+ 	WARN_ON(p2p_ifp->bsscfgidx != bsscfgidx);
+ 
+-	init_completion(&p2p->send_af_done);
+ 	INIT_WORK(&p2p->afx_hdl.afx_work, brcmf_p2p_afx_handler);
+ 	init_completion(&p2p->afx_hdl.act_frm_scan);
+ 	init_completion(&p2p->wait_next_af);
+@@ -2390,6 +2387,8 @@ s32 brcmf_p2p_attach(struct brcmf_cfg80211_info *cfg, bool p2pdev_forced)
+ 	pri_ifp = brcmf_get_ifp(cfg->pub, 0);
+ 	p2p->bss_idx[P2PAPI_BSSCFG_PRIMARY].vif = pri_ifp->vif;
+ 
++	init_completion(&p2p->send_af_done);
++
+ 	if (p2pdev_forced) {
+ 		err_ptr = brcmf_p2p_create_p2pdev(p2p, NULL, NULL);
+ 		if (IS_ERR(err_ptr)) {
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.h b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.h
+index 64ab9b6a677df..2472b0ccb8a41 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.h
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.h
+@@ -165,8 +165,7 @@ int brcmf_p2p_notify_action_frame_rx(struct brcmf_if *ifp,
+ int brcmf_p2p_notify_action_tx_complete(struct brcmf_if *ifp,
+ 					const struct brcmf_event_msg *e,
+ 					void *data);
+-bool brcmf_p2p_send_action_frame(struct brcmf_cfg80211_info *cfg,
+-				 struct net_device *ndev,
++bool brcmf_p2p_send_action_frame(struct brcmf_if *ifp,
+ 				 struct brcmf_fil_af_params_le *af_params);
+ bool brcmf_p2p_scan_finding_common_channel(struct brcmf_cfg80211_info *cfg,
+ 					   struct brcmf_bss_info_le *bi);
 -- 
 2.51.0
 
