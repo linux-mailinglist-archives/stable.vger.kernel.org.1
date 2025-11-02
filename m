@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-192041-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192042-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B3B6C28FAA
-	for <lists+stable@lfdr.de>; Sun, 02 Nov 2025 14:44:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4F85C28FC2
+	for <lists+stable@lfdr.de>; Sun, 02 Nov 2025 14:46:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6D1CB188BD87
-	for <lists+stable@lfdr.de>; Sun,  2 Nov 2025 13:44:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9EFED3AE4CD
+	for <lists+stable@lfdr.de>; Sun,  2 Nov 2025 13:46:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A3CD1DB127;
-	Sun,  2 Nov 2025 13:44:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D40B1E5B60;
+	Sun,  2 Nov 2025 13:46:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fin945Z1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ntk5w7fG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED0C363CF
-	for <stable@vger.kernel.org>; Sun,  2 Nov 2025 13:44:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AF912566
+	for <stable@vger.kernel.org>; Sun,  2 Nov 2025 13:46:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762091060; cv=none; b=sH5hyH232Tu4zwLLfvVsjZwWbOpQdwgLYWnF2wVJvkkENa/1C11BiMCj32TRtD9wCHHQiQ//gSZawl/rQFQrFZ1M1Lv6l0x1WFe+Iju6PHR6HFzguE3eP3PPwQlHUp8W9w3LgT0917ZBnKiyF/1soPbSkuSv702mR224Pt4HbTA=
+	t=1762091168; cv=none; b=Si1uz72M7nKhWDvEdauQjA3KOrZ2YV2yc5CbYVLEfdLlwB8MGkVAIKCP8ITQVf3lFsadxAUChhQVQZrvZOxOTlQncL/mZxE4j8Hf3j1ix/zCYXT5SoRzu09zPNsnoIAbM156Z/MUfbC3B99rET3jss4RRjMiTx53FaEcHAq0Z1o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762091060; c=relaxed/simple;
-	bh=nd4+TsBSTOiGiHUcwdeGAgRsKkKFTaA4H24Gny1OPuQ=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=hVVU+h5bZcs3VL0ZFDEegXp5D1MQGKu7rz1f+kY/9YmzEGEoLzrxEE9H5B/83s0P4PGcL/Jj0qr2W/vMRTZTb/RJrzA9tzxAd5xwaNaJ+WvGTh/ggv5FvWmS3w5oWV16OYOFrxUOjboJUZbBLLj8lnhf1EW+sHQVbj5ZuMRswy4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fin945Z1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B5A7C4CEF7;
-	Sun,  2 Nov 2025 13:44:19 +0000 (UTC)
+	s=arc-20240116; t=1762091168; c=relaxed/simple;
+	bh=93S1fjeyAXPC9Lj2oDBA308F7PxK0bOlWl96YPH4+6k=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=saK7Vk+jk/0wu9YnuTq2jPeJ+M4T8dWSPi6ObkC7VsL3R7ZMFXzUATjgh8EaHwyiuizhxVhRQZmSnQig5SkFXm1TAlsmMWNtIpunYIJtuS9yVP4Gf+IA5Rm8XmWUkrsVz13nLoUFaFqEtrOQlU8n9hHf91YuqvAPdOooKJvbphM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ntk5w7fG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 417A5C4CEF7;
+	Sun,  2 Nov 2025 13:46:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762091059;
-	bh=nd4+TsBSTOiGiHUcwdeGAgRsKkKFTaA4H24Gny1OPuQ=;
+	s=korg; t=1762091165;
+	bh=93S1fjeyAXPC9Lj2oDBA308F7PxK0bOlWl96YPH4+6k=;
 	h=Subject:To:Cc:From:Date:From;
-	b=Fin945Z1DluiKSvpTNS7mW0IbXGTP5r5SZXdcTxiXYz00Cj/xwN8uEu/MOYXajafg
-	 S0TEHu1I6s1k7li7mqBXdke2XwYiFi6yGs/MH4eYcI4ofM3PkA/3yoRINZsH0wAokn
-	 7qRfaJAxeKjyMHX20279Gn/OWCgw1omExhezB0wU=
-Subject: FAILED: patch "[PATCH] mptcp: fix MSG_PEEK stream corruption" failed to apply to 5.15-stable tree
-To: pabeni@redhat.com,geliang@kernel.org,kuba@kernel.org,martineau@kernel.org,matttbe@kernel.org
+	b=ntk5w7fGkV01U9NQap6rtOkSNnETSktW17c50EZ00V1vMUEHgIe2cMGyof3D/jQHk
+	 x4mHebdjNcqqUoFe4vLuTpaai0XOwkjFJTzIXycLhPHmezqo2rzwTyWTXiHLSr9is8
+	 N23zDdUFuC1g1HeNtic+EKIyTIFdbhF9jFVVPzW8=
+Subject: FAILED: patch "[PATCH] net: phy: dp83867: Disable EEE support as not implemented" failed to apply to 6.1-stable tree
+To: emanuele.ghidoli@toradex.com,andrew@lunn.ch,kuba@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sun, 02 Nov 2025 22:44:10 +0900
-Message-ID: <2025110210-importer-prevail-d508@gregkh>
+Date: Sun, 02 Nov 2025 22:46:02 +0900
+Message-ID: <2025110202-hamstring-ended-9680@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x 8e04ce45a8db7a080220e86e249198fa676b83dc
+git cherry-pick -x 84a905290cb4c3d9a71a9e3b2f2e02e031e7512f
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025110210-importer-prevail-d508@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025110202-hamstring-ended-9680@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,114 +77,49 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 8e04ce45a8db7a080220e86e249198fa676b83dc Mon Sep 17 00:00:00 2001
-From: Paolo Abeni <pabeni@redhat.com>
-Date: Tue, 28 Oct 2025 09:16:53 +0100
-Subject: [PATCH] mptcp: fix MSG_PEEK stream corruption
+From 84a905290cb4c3d9a71a9e3b2f2e02e031e7512f Mon Sep 17 00:00:00 2001
+From: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
+Date: Thu, 23 Oct 2025 16:48:53 +0200
+Subject: [PATCH] net: phy: dp83867: Disable EEE support as not implemented
 
-If a MSG_PEEK | MSG_WAITALL read operation consumes all the bytes in the
-receive queue and recvmsg() need to waits for more data - i.e. it's a
-blocking one - upon arrival of the next packet the MPTCP protocol will
-start again copying the oldest data present in the receive queue,
-corrupting the data stream.
+While the DP83867 PHYs report EEE capability through their feature
+registers, the actual hardware does not support EEE (see Links).
+When the connected MAC enables EEE, it causes link instability and
+communication failures.
 
-Address the issue explicitly tracking the peeked sequence number,
-restarting from the last peeked byte.
+The issue is reproducible with a iMX8MP and relevant stmmac ethernet port.
+Since the introduction of phylink-managed EEE support in the stmmac driver,
+EEE is now enabled by default, leading to issues on systems using the
+DP83867 PHY.
 
-Fixes: ca4fb892579f ("mptcp: add MSG_PEEK support")
+Call phy_disable_eee during phy initialization to prevent EEE from being
+enabled on DP83867 PHYs.
+
+Link: https://e2e.ti.com/support/interface-group/interface/f/interface-forum/1445244/dp83867ir-dp83867-disable-eee-lpi
+Link: https://e2e.ti.com/support/interface-group/interface/f/interface-forum/658638/dp83867ir-eee-energy-efficient-ethernet
+Fixes: 2a10154abcb7 ("net: phy: dp83867: Add TI dp83867 phy")
 Cc: stable@vger.kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Geliang Tang <geliang@kernel.org>
-Tested-by: Geliang Tang <geliang@kernel.org>
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20251028-net-mptcp-send-timeout-v1-2-38ffff5a9ec8@kernel.org
+Signed-off-by: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20251023144857.529566-1-ghidoliemanuele@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 
-diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
-index 655a2a45224f..2535788569ab 100644
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -1945,22 +1945,36 @@ static int mptcp_sendmsg(struct sock *sk, struct msghdr *msg, size_t len)
+diff --git a/drivers/net/phy/dp83867.c b/drivers/net/phy/dp83867.c
+index deeefb962566..36a0c1b7f59c 100644
+--- a/drivers/net/phy/dp83867.c
++++ b/drivers/net/phy/dp83867.c
+@@ -738,6 +738,12 @@ static int dp83867_config_init(struct phy_device *phydev)
+ 			return ret;
+ 	}
  
- static void mptcp_rcv_space_adjust(struct mptcp_sock *msk, int copied);
- 
--static int __mptcp_recvmsg_mskq(struct sock *sk,
--				struct msghdr *msg,
--				size_t len, int flags,
-+static int __mptcp_recvmsg_mskq(struct sock *sk, struct msghdr *msg,
-+				size_t len, int flags, int copied_total,
- 				struct scm_timestamping_internal *tss,
- 				int *cmsg_flags)
- {
- 	struct mptcp_sock *msk = mptcp_sk(sk);
- 	struct sk_buff *skb, *tmp;
-+	int total_data_len = 0;
- 	int copied = 0;
- 
- 	skb_queue_walk_safe(&sk->sk_receive_queue, skb, tmp) {
--		u32 offset = MPTCP_SKB_CB(skb)->offset;
-+		u32 delta, offset = MPTCP_SKB_CB(skb)->offset;
- 		u32 data_len = skb->len - offset;
--		u32 count = min_t(size_t, len - copied, data_len);
-+		u32 count;
- 		int err;
- 
-+		if (flags & MSG_PEEK) {
-+			/* skip already peeked skbs */
-+			if (total_data_len + data_len <= copied_total) {
-+				total_data_len += data_len;
-+				continue;
-+			}
++	/* Although the DP83867 reports EEE capability through the
++	 * MDIO_PCS_EEE_ABLE and MDIO_AN_EEE_ADV registers, the feature
++	 * is not actually implemented in hardware.
++	 */
++	phy_disable_eee(phydev);
 +
-+			/* skip the already peeked data in the current skb */
-+			delta = copied_total - total_data_len;
-+			offset += delta;
-+			data_len -= delta;
-+		}
-+
-+		count = min_t(size_t, len - copied, data_len);
- 		if (!(flags & MSG_TRUNC)) {
- 			err = skb_copy_datagram_msg(skb, offset, msg, count);
- 			if (unlikely(err < 0)) {
-@@ -1977,16 +1991,14 @@ static int __mptcp_recvmsg_mskq(struct sock *sk,
- 
- 		copied += count;
- 
--		if (count < data_len) {
--			if (!(flags & MSG_PEEK)) {
-+		if (!(flags & MSG_PEEK)) {
-+			msk->bytes_consumed += count;
-+			if (count < data_len) {
- 				MPTCP_SKB_CB(skb)->offset += count;
- 				MPTCP_SKB_CB(skb)->map_seq += count;
--				msk->bytes_consumed += count;
-+				break;
- 			}
--			break;
--		}
- 
--		if (!(flags & MSG_PEEK)) {
- 			/* avoid the indirect call, we know the destructor is sock_rfree */
- 			skb->destructor = NULL;
- 			skb->sk = NULL;
-@@ -1994,7 +2006,6 @@ static int __mptcp_recvmsg_mskq(struct sock *sk,
- 			sk_mem_uncharge(sk, skb->truesize);
- 			__skb_unlink(skb, &sk->sk_receive_queue);
- 			skb_attempt_defer_free(skb);
--			msk->bytes_consumed += count;
- 		}
- 
- 		if (copied >= len)
-@@ -2191,7 +2202,8 @@ static int mptcp_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
- 	while (copied < len) {
- 		int err, bytes_read;
- 
--		bytes_read = __mptcp_recvmsg_mskq(sk, msg, len - copied, flags, &tss, &cmsg_flags);
-+		bytes_read = __mptcp_recvmsg_mskq(sk, msg, len - copied, flags,
-+						  copied, &tss, &cmsg_flags);
- 		if (unlikely(bytes_read < 0)) {
- 			if (!copied)
- 				copied = bytes_read;
+ 	if (phy_interface_is_rgmii(phydev) ||
+ 	    phydev->interface == PHY_INTERFACE_MODE_SGMII) {
+ 		val = phy_read(phydev, MII_DP83867_PHYCTRL);
 
 
