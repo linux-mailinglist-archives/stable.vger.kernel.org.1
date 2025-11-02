@@ -1,43 +1,42 @@
-Return-Path: <stable+bounces-192047-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192048-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59E97C28FD7
-	for <lists+stable@lfdr.de>; Sun, 02 Nov 2025 14:46:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC156C28FDD
+	for <lists+stable@lfdr.de>; Sun, 02 Nov 2025 14:47:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4D66F3AE750
-	for <lists+stable@lfdr.de>; Sun,  2 Nov 2025 13:46:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 009D53AE8AE
+	for <lists+stable@lfdr.de>; Sun,  2 Nov 2025 13:46:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1B8C1E9B1C;
-	Sun,  2 Nov 2025 13:46:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E10021A23A5;
+	Sun,  2 Nov 2025 13:46:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pj650c0F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vmbbJTJP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 494CB1E7660;
-	Sun,  2 Nov 2025 13:46:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9371E72629;
+	Sun,  2 Nov 2025 13:46:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762091183; cv=none; b=aWMHHyPBTmmH3eaoVoSNgvqDE9X5uucgdnnYGB8LM4FUXpeKB1J5yLM0GT5N3N68dWeFRLrdSCc6tDofDr823Hs1l8Z6SkPaDPgGwcMtiS0HE8FN6HyF7tkm54aHE+v+FVdjQyl6q2HsZ4G2n5qK9uvrIKrSYSjQEdW6297M/4o=
+	t=1762091185; cv=none; b=US/O+yfv/0aNoihXcOjxc2SpJP5peP8C/qbgcSDbe6BgaJksz66A5rGQzyZJheS8RdPT2gOoferxmfo5rfcnCCnOqy6xiBhH3mT6+10ZAYehDl35Ev7gsKUP+KINfR9GD/LajYTwEmFVyRioidyJ+5jomprBVDPyP8zRNOwKnE4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762091183; c=relaxed/simple;
-	bh=+FtVPi12miVbabEQU8dCVVAAY4zGd5cQh6S+0eL/SxM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mGDwSTFRjI/RT+gWjV1yCQ75kRI3kpgMeRBMSFxST7e46Jux7GaWxQjuSl4Oz8obvE8+EmoqcfKhUbhuTlt5IgTW2u54hzan8IAWEIbndpAOsOtSbTM0JTw8afmGsXotq3bs9l5N0ABdSRoih2vwOXrhNK+xjh3alCzSbSwaej4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pj650c0F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE52EC4CEFD;
-	Sun,  2 Nov 2025 13:46:22 +0000 (UTC)
+	s=arc-20240116; t=1762091185; c=relaxed/simple;
+	bh=jAPPsYWvZZiGP189F1xwcChVMhlCGHFigc1QhsDVbVk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MoFQaqAjbx3vIbnxGlLXUH2HShL5z0xg1xF7LHvcMY12iQeGhQ1khPhhPcP/dZwGXqdfVfAIazNPxGsKBMNupGHuTk0aeHPy3ZSOo9hRf9URhp4b+zdoqU5cBGU5bnd6qFSHubV+/vIfbZ3NlahcpBr3K9vuyu9o/8RI0TGVVT4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vmbbJTJP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30273C4CEF7;
+	Sun,  2 Nov 2025 13:46:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762091183;
-	bh=+FtVPi12miVbabEQU8dCVVAAY4zGd5cQh6S+0eL/SxM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pj650c0F0ugM0KdpyvTNEa0nkX1I8cZOma5uGyq9MiagPa0u6QQOnqRKS1bX49+J5
-	 N9yzEl4q+lUUdv47hwcH5vNPw2lrI0JUCnxQw/+fOcohoXdcYKHycREC8bEduxATKK
-	 xeV9/mpqx6ciwhUnV0N9hfcypj3wzYDmnhLltKck=
+	s=korg; t=1762091185;
+	bh=jAPPsYWvZZiGP189F1xwcChVMhlCGHFigc1QhsDVbVk=;
+	h=From:To:Cc:Subject:Date:From;
+	b=vmbbJTJP1HTratgcgIjAzo5qPHWvXfVs0X/F/e4HBejHdqenIjtw0GEJBNKq0MBRT
+	 c3DhSZV47rCmZGOAwtvuFB2+wBM3rkUoQIoLNhr3qaPzXSXzTOfB8TXPpbpV+e/9/q
+	 /HfNijXnCz9xCQLyty2fAo6TuaD+AkX9D/ap0n60=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: linux-kernel@vger.kernel.org,
 	akpm@linux-foundation.org,
@@ -46,1486 +45,208 @@ To: linux-kernel@vger.kernel.org,
 Cc: lwn@lwn.net,
 	jslaby@suse.cz,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: Re: Linux 6.6.116
-Date: Sun,  2 Nov 2025 22:46:10 +0900
-Message-ID: <2025110210-other-chug-98d3@gregkh>
+Subject: Linux 6.12.57
+Date: Sun,  2 Nov 2025 22:46:15 +0900
+Message-ID: <2025110216-impulsive-briskly-9820@gregkh>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <2025110210-tarnish-nearly-cbfe@gregkh>
-References: <2025110210-tarnish-nearly-cbfe@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-diff --git a/Documentation/ABI/testing/sysfs-bus-pci-drivers-xhci_hcd b/Documentation/ABI/testing/sysfs-bus-pci-drivers-xhci_hcd
-index 5a775b8f6543..fc82aa4e54b0 100644
---- a/Documentation/ABI/testing/sysfs-bus-pci-drivers-xhci_hcd
-+++ b/Documentation/ABI/testing/sysfs-bus-pci-drivers-xhci_hcd
-@@ -75,3 +75,13 @@ Description:
- 		The default value is 1  (GNU Remote Debug command).
- 		Other permissible value is 0 which is for vendor defined debug
- 		target.
-+
-+What:		/sys/bus/pci/drivers/xhci_hcd/.../dbc_poll_interval_ms
-+Date:		February 2024
-+Contact:	Mathias Nyman <mathias.nyman@linux.intel.com>
-+Description:
-+		This attribute adjust the polling interval used to check for
-+		DbC events. Unit is milliseconds. Accepted values range from 0
-+		up to 5000. The default value is 64 ms.
-+		This polling interval is used while DbC is enabled but has no
-+		active data transfers.
-diff --git a/Makefile b/Makefile
-index 85d8fa825695..f28f1f9f5f4e 100644
---- a/Makefile
-+++ b/Makefile
-@@ -1,7 +1,7 @@
- # SPDX-License-Identifier: GPL-2.0
- VERSION = 6
- PATCHLEVEL = 6
--SUBLEVEL = 115
-+SUBLEVEL = 116
- EXTRAVERSION =
- NAME = Pinguïn Aangedreven
- 
-diff --git a/arch/alpha/kernel/asm-offsets.c b/arch/alpha/kernel/asm-offsets.c
-index 11c35cf45b46..cb205f22096d 100644
---- a/arch/alpha/kernel/asm-offsets.c
-+++ b/arch/alpha/kernel/asm-offsets.c
-@@ -4,6 +4,7 @@
-  * This code generates raw asm output which is post-processed to extract
-  * and format the required data.
-  */
-+#define COMPILE_OFFSETS
- 
- #include <linux/types.h>
- #include <linux/stddef.h>
-diff --git a/arch/arc/kernel/asm-offsets.c b/arch/arc/kernel/asm-offsets.c
-index f77deb799175..2978da85fcb6 100644
---- a/arch/arc/kernel/asm-offsets.c
-+++ b/arch/arc/kernel/asm-offsets.c
-@@ -2,6 +2,7 @@
- /*
-  * Copyright (C) 2004, 2007-2010, 2011-2012 Synopsys, Inc. (www.synopsys.com)
-  */
-+#define COMPILE_OFFSETS
- 
- #include <linux/sched.h>
- #include <linux/mm.h>
-diff --git a/arch/arm/kernel/asm-offsets.c b/arch/arm/kernel/asm-offsets.c
-index 219cbc7e5d13..3840e1e22b75 100644
---- a/arch/arm/kernel/asm-offsets.c
-+++ b/arch/arm/kernel/asm-offsets.c
-@@ -7,6 +7,8 @@
-  * This code generates raw asm output which is post-processed to extract
-  * and format the required data.
-  */
-+#define COMPILE_OFFSETS
-+
- #include <linux/compiler.h>
- #include <linux/sched.h>
- #include <linux/mm.h>
-diff --git a/arch/arm64/kernel/asm-offsets.c b/arch/arm64/kernel/asm-offsets.c
-index 5ff1942b04fc..ea2d740db81c 100644
---- a/arch/arm64/kernel/asm-offsets.c
-+++ b/arch/arm64/kernel/asm-offsets.c
-@@ -6,6 +6,7 @@
-  *               2001-2002 Keith Owens
-  * Copyright (C) 2012 ARM Ltd.
-  */
-+#define COMPILE_OFFSETS
- 
- #include <linux/arm_sdei.h>
- #include <linux/sched.h>
-diff --git a/arch/csky/kernel/asm-offsets.c b/arch/csky/kernel/asm-offsets.c
-index d1e903579473..5525c8e7e1d9 100644
---- a/arch/csky/kernel/asm-offsets.c
-+++ b/arch/csky/kernel/asm-offsets.c
-@@ -1,5 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0
- // Copyright (C) 2018 Hangzhou C-SKY Microsystems co.,ltd.
-+#define COMPILE_OFFSETS
- 
- #include <linux/sched.h>
- #include <linux/kernel_stat.h>
-diff --git a/arch/hexagon/kernel/asm-offsets.c b/arch/hexagon/kernel/asm-offsets.c
-index 03a7063f9456..50eea9fa6f13 100644
---- a/arch/hexagon/kernel/asm-offsets.c
-+++ b/arch/hexagon/kernel/asm-offsets.c
-@@ -8,6 +8,7 @@
-  *
-  * Copyright (c) 2010-2012, The Linux Foundation. All rights reserved.
-  */
-+#define COMPILE_OFFSETS
- 
- #include <linux/compat.h>
- #include <linux/types.h>
-diff --git a/arch/loongarch/kernel/asm-offsets.c b/arch/loongarch/kernel/asm-offsets.c
-index 8da0726777ed..110afd3cc8f3 100644
---- a/arch/loongarch/kernel/asm-offsets.c
-+++ b/arch/loongarch/kernel/asm-offsets.c
-@@ -4,6 +4,8 @@
-  *
-  * Copyright (C) 2020-2022 Loongson Technology Corporation Limited
-  */
-+#define COMPILE_OFFSETS
-+
- #include <linux/types.h>
- #include <linux/sched.h>
- #include <linux/mm.h>
-diff --git a/arch/m68k/kernel/asm-offsets.c b/arch/m68k/kernel/asm-offsets.c
-index 906d73230537..67a1990f9d74 100644
---- a/arch/m68k/kernel/asm-offsets.c
-+++ b/arch/m68k/kernel/asm-offsets.c
-@@ -9,6 +9,7 @@
-  * #defines from the assembly-language output.
-  */
- 
-+#define COMPILE_OFFSETS
- #define ASM_OFFSETS_C
- 
- #include <linux/stddef.h>
-diff --git a/arch/microblaze/kernel/asm-offsets.c b/arch/microblaze/kernel/asm-offsets.c
-index 104c3ac5f30c..b4b67d58e7f6 100644
---- a/arch/microblaze/kernel/asm-offsets.c
-+++ b/arch/microblaze/kernel/asm-offsets.c
-@@ -7,6 +7,7 @@
-  * License. See the file "COPYING" in the main directory of this archive
-  * for more details.
-  */
-+#define COMPILE_OFFSETS
- 
- #include <linux/init.h>
- #include <linux/stddef.h>
-diff --git a/arch/mips/kernel/asm-offsets.c b/arch/mips/kernel/asm-offsets.c
-index cb1045ebab06..22c99a2cd570 100644
---- a/arch/mips/kernel/asm-offsets.c
-+++ b/arch/mips/kernel/asm-offsets.c
-@@ -9,6 +9,8 @@
-  * Kevin Kissell, kevink@mips.com and Carsten Langgaard, carstenl@mips.com
-  * Copyright (C) 2000 MIPS Technologies, Inc.
-  */
-+#define COMPILE_OFFSETS
-+
- #include <linux/compat.h>
- #include <linux/types.h>
- #include <linux/sched.h>
-diff --git a/arch/nios2/kernel/asm-offsets.c b/arch/nios2/kernel/asm-offsets.c
-index e3d9b7b6fb48..88190b503ce5 100644
---- a/arch/nios2/kernel/asm-offsets.c
-+++ b/arch/nios2/kernel/asm-offsets.c
-@@ -2,6 +2,7 @@
- /*
-  * Copyright (C) 2011 Tobias Klauser <tklauser@distanz.ch>
-  */
-+#define COMPILE_OFFSETS
- 
- #include <linux/stddef.h>
- #include <linux/sched.h>
-diff --git a/arch/openrisc/kernel/asm-offsets.c b/arch/openrisc/kernel/asm-offsets.c
-index 710651d5aaae..3cc826f2216b 100644
---- a/arch/openrisc/kernel/asm-offsets.c
-+++ b/arch/openrisc/kernel/asm-offsets.c
-@@ -18,6 +18,7 @@
-  * compile this file to assembler, and then extract the
-  * #defines from the assembly-language output.
-  */
-+#define COMPILE_OFFSETS
- 
- #include <linux/signal.h>
- #include <linux/sched.h>
-diff --git a/arch/parisc/kernel/asm-offsets.c b/arch/parisc/kernel/asm-offsets.c
-index 757816a7bd4b..9abfe65492c6 100644
---- a/arch/parisc/kernel/asm-offsets.c
-+++ b/arch/parisc/kernel/asm-offsets.c
-@@ -13,6 +13,7 @@
-  *    Copyright (C) 2002 Randolph Chung <tausq with parisc-linux.org>
-  *    Copyright (C) 2003 James Bottomley <jejb at parisc-linux.org>
-  */
-+#define COMPILE_OFFSETS
- 
- #include <linux/types.h>
- #include <linux/sched.h>
-diff --git a/arch/powerpc/kernel/asm-offsets.c b/arch/powerpc/kernel/asm-offsets.c
-index 2affd30468bc..e2cee2f2eded 100644
---- a/arch/powerpc/kernel/asm-offsets.c
-+++ b/arch/powerpc/kernel/asm-offsets.c
-@@ -8,6 +8,7 @@
-  * compile this file to assembler, and then extract the
-  * #defines from the assembly-language output.
-  */
-+#define COMPILE_OFFSETS
- 
- #include <linux/compat.h>
- #include <linux/signal.h>
-diff --git a/arch/riscv/kernel/asm-offsets.c b/arch/riscv/kernel/asm-offsets.c
-index 6a992cba2f28..e4589457e608 100644
---- a/arch/riscv/kernel/asm-offsets.c
-+++ b/arch/riscv/kernel/asm-offsets.c
-@@ -3,6 +3,7 @@
-  * Copyright (C) 2012 Regents of the University of California
-  * Copyright (C) 2017 SiFive
-  */
-+#define COMPILE_OFFSETS
- 
- #include <linux/kbuild.h>
- #include <linux/mm.h>
-diff --git a/arch/s390/kernel/asm-offsets.c b/arch/s390/kernel/asm-offsets.c
-index fa5f6885c74a..73a989dcfe20 100644
---- a/arch/s390/kernel/asm-offsets.c
-+++ b/arch/s390/kernel/asm-offsets.c
-@@ -4,6 +4,7 @@
-  * This code generates raw asm output which is post-processed to extract
-  * and format the required data.
-  */
-+#define COMPILE_OFFSETS
- 
- #define ASM_OFFSETS_C
- 
-diff --git a/arch/sh/kernel/asm-offsets.c b/arch/sh/kernel/asm-offsets.c
-index a0322e832845..429b6a763146 100644
---- a/arch/sh/kernel/asm-offsets.c
-+++ b/arch/sh/kernel/asm-offsets.c
-@@ -8,6 +8,7 @@
-  * compile this file to assembler, and then extract the
-  * #defines from the assembly-language output.
-  */
-+#define COMPILE_OFFSETS
- 
- #include <linux/stddef.h>
- #include <linux/types.h>
-diff --git a/arch/sparc/kernel/asm-offsets.c b/arch/sparc/kernel/asm-offsets.c
-index 5784f2df489a..f1e27a7f800f 100644
---- a/arch/sparc/kernel/asm-offsets.c
-+++ b/arch/sparc/kernel/asm-offsets.c
-@@ -10,6 +10,7 @@
-  *
-  * On sparc, thread_info data is static and TI_XXX offsets are computed by hand.
-  */
-+#define COMPILE_OFFSETS
- 
- #include <linux/sched.h>
- #include <linux/mm_types.h>
-diff --git a/arch/um/kernel/asm-offsets.c b/arch/um/kernel/asm-offsets.c
-index 1fb12235ab9c..a69873aa697f 100644
---- a/arch/um/kernel/asm-offsets.c
-+++ b/arch/um/kernel/asm-offsets.c
-@@ -1 +1,3 @@
-+#define COMPILE_OFFSETS
-+
- #include <sysdep/kernel-offsets.h>
-diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
-index 315926ccea0f..ef1d3a5024ed 100644
---- a/arch/x86/kernel/cpu/bugs.c
-+++ b/arch/x86/kernel/cpu/bugs.c
-@@ -1185,8 +1185,10 @@ static void __init retbleed_select_mitigation(void)
- 			retbleed_mitigation = RETBLEED_MITIGATION_EIBRS;
- 			break;
- 		default:
--			if (retbleed_mitigation != RETBLEED_MITIGATION_STUFF)
-+			if (retbleed_mitigation != RETBLEED_MITIGATION_STUFF) {
- 				pr_err(RETBLEED_INTEL_MSG);
-+				retbleed_mitigation = RETBLEED_MITIGATION_NONE;
-+			}
- 		}
- 	}
- 
-@@ -1592,7 +1594,7 @@ spectre_v2_user_select_mitigation(void)
- static const char * const spectre_v2_strings[] = {
- 	[SPECTRE_V2_NONE]			= "Vulnerable",
- 	[SPECTRE_V2_RETPOLINE]			= "Mitigation: Retpolines",
--	[SPECTRE_V2_LFENCE]			= "Mitigation: LFENCE",
-+	[SPECTRE_V2_LFENCE]			= "Vulnerable: LFENCE",
- 	[SPECTRE_V2_EIBRS]			= "Mitigation: Enhanced / Automatic IBRS",
- 	[SPECTRE_V2_EIBRS_LFENCE]		= "Mitigation: Enhanced / Automatic IBRS + LFENCE",
- 	[SPECTRE_V2_EIBRS_RETPOLINE]		= "Mitigation: Enhanced / Automatic IBRS + Retpolines",
-@@ -3220,9 +3222,6 @@ static const char *spectre_bhi_state(void)
- 
- static ssize_t spectre_v2_show_state(char *buf)
- {
--	if (spectre_v2_enabled == SPECTRE_V2_LFENCE)
--		return sysfs_emit(buf, "Vulnerable: LFENCE\n");
--
- 	if (spectre_v2_enabled == SPECTRE_V2_EIBRS && unprivileged_ebpf_enabled())
- 		return sysfs_emit(buf, "Vulnerable: eIBRS with unprivileged eBPF\n");
- 
-diff --git a/arch/xtensa/kernel/asm-offsets.c b/arch/xtensa/kernel/asm-offsets.c
-index da38de20ae59..cfbced95e944 100644
---- a/arch/xtensa/kernel/asm-offsets.c
-+++ b/arch/xtensa/kernel/asm-offsets.c
-@@ -11,6 +11,7 @@
-  *
-  * Chris Zankel <chris@zankel.net>
-  */
-+#define COMPILE_OFFSETS
- 
- #include <asm/processor.h>
- #include <asm/coprocessor.h>
-diff --git a/drivers/edac/edac_mc_sysfs.c b/drivers/edac/edac_mc_sysfs.c
-index 15f63452a9be..b01436d9ddae 100644
---- a/drivers/edac/edac_mc_sysfs.c
-+++ b/drivers/edac/edac_mc_sysfs.c
-@@ -306,6 +306,14 @@ DEVICE_CHANNEL(ch10_dimm_label, S_IRUGO | S_IWUSR,
- 	channel_dimm_label_show, channel_dimm_label_store, 10);
- DEVICE_CHANNEL(ch11_dimm_label, S_IRUGO | S_IWUSR,
- 	channel_dimm_label_show, channel_dimm_label_store, 11);
-+DEVICE_CHANNEL(ch12_dimm_label, S_IRUGO | S_IWUSR,
-+	channel_dimm_label_show, channel_dimm_label_store, 12);
-+DEVICE_CHANNEL(ch13_dimm_label, S_IRUGO | S_IWUSR,
-+	channel_dimm_label_show, channel_dimm_label_store, 13);
-+DEVICE_CHANNEL(ch14_dimm_label, S_IRUGO | S_IWUSR,
-+	channel_dimm_label_show, channel_dimm_label_store, 14);
-+DEVICE_CHANNEL(ch15_dimm_label, S_IRUGO | S_IWUSR,
-+	channel_dimm_label_show, channel_dimm_label_store, 15);
- 
- /* Total possible dynamic DIMM Label attribute file table */
- static struct attribute *dynamic_csrow_dimm_attr[] = {
-@@ -321,6 +329,10 @@ static struct attribute *dynamic_csrow_dimm_attr[] = {
- 	&dev_attr_legacy_ch9_dimm_label.attr.attr,
- 	&dev_attr_legacy_ch10_dimm_label.attr.attr,
- 	&dev_attr_legacy_ch11_dimm_label.attr.attr,
-+	&dev_attr_legacy_ch12_dimm_label.attr.attr,
-+	&dev_attr_legacy_ch13_dimm_label.attr.attr,
-+	&dev_attr_legacy_ch14_dimm_label.attr.attr,
-+	&dev_attr_legacy_ch15_dimm_label.attr.attr,
- 	NULL
- };
- 
-@@ -349,6 +361,14 @@ DEVICE_CHANNEL(ch10_ce_count, S_IRUGO,
- 		   channel_ce_count_show, NULL, 10);
- DEVICE_CHANNEL(ch11_ce_count, S_IRUGO,
- 		   channel_ce_count_show, NULL, 11);
-+DEVICE_CHANNEL(ch12_ce_count, S_IRUGO,
-+		   channel_ce_count_show, NULL, 12);
-+DEVICE_CHANNEL(ch13_ce_count, S_IRUGO,
-+		   channel_ce_count_show, NULL, 13);
-+DEVICE_CHANNEL(ch14_ce_count, S_IRUGO,
-+		   channel_ce_count_show, NULL, 14);
-+DEVICE_CHANNEL(ch15_ce_count, S_IRUGO,
-+		   channel_ce_count_show, NULL, 15);
- 
- /* Total possible dynamic ce_count attribute file table */
- static struct attribute *dynamic_csrow_ce_count_attr[] = {
-@@ -364,6 +384,10 @@ static struct attribute *dynamic_csrow_ce_count_attr[] = {
- 	&dev_attr_legacy_ch9_ce_count.attr.attr,
- 	&dev_attr_legacy_ch10_ce_count.attr.attr,
- 	&dev_attr_legacy_ch11_ce_count.attr.attr,
-+	&dev_attr_legacy_ch12_ce_count.attr.attr,
-+	&dev_attr_legacy_ch13_ce_count.attr.attr,
-+	&dev_attr_legacy_ch14_ce_count.attr.attr,
-+	&dev_attr_legacy_ch15_ce_count.attr.attr,
- 	NULL
- };
- 
-diff --git a/drivers/gpio/gpio-idio-16.c b/drivers/gpio/gpio-idio-16.c
-index 53b1eb876a12..e978fd0898aa 100644
---- a/drivers/gpio/gpio-idio-16.c
-+++ b/drivers/gpio/gpio-idio-16.c
-@@ -3,6 +3,7 @@
-  * GPIO library for the ACCES IDIO-16 family
-  * Copyright (C) 2022 William Breathitt Gray
-  */
-+#include <linux/bitmap.h>
- #include <linux/bits.h>
- #include <linux/device.h>
- #include <linux/err.h>
-@@ -106,6 +107,7 @@ int devm_idio_16_regmap_register(struct device *const dev,
- 	struct idio_16_data *data;
- 	struct regmap_irq_chip *chip;
- 	struct regmap_irq_chip_data *chip_data;
-+	DECLARE_BITMAP(fixed_direction_output, IDIO_16_NGPIO);
- 
- 	if (!config->parent)
- 		return -EINVAL;
-@@ -163,6 +165,9 @@ int devm_idio_16_regmap_register(struct device *const dev,
- 	gpio_config.irq_domain = regmap_irq_get_domain(chip_data);
- 	gpio_config.reg_mask_xlate = idio_16_reg_mask_xlate;
- 
-+	bitmap_from_u64(fixed_direction_output, GENMASK_U64(15, 0));
-+	gpio_config.fixed_direction_output = fixed_direction_output;
-+
- 	return PTR_ERR_OR_ZERO(devm_gpio_regmap_register(dev, &gpio_config));
- }
- EXPORT_SYMBOL_GPL(devm_idio_16_regmap_register);
-diff --git a/drivers/gpio/gpio-regmap.c b/drivers/gpio/gpio-regmap.c
-index c08c8e528867..fd986afa7db5 100644
---- a/drivers/gpio/gpio-regmap.c
-+++ b/drivers/gpio/gpio-regmap.c
-@@ -29,6 +29,12 @@ struct gpio_regmap {
- 	unsigned int reg_clr_base;
- 	unsigned int reg_dir_in_base;
- 	unsigned int reg_dir_out_base;
-+	unsigned long *fixed_direction_output;
-+
-+#ifdef CONFIG_REGMAP_IRQ
-+	int regmap_irq_line;
-+	struct regmap_irq_chip_data *irq_chip_data;
-+#endif
- 
- 	int (*reg_mask_xlate)(struct gpio_regmap *gpio, unsigned int base,
- 			      unsigned int offset, unsigned int *reg,
-@@ -117,6 +123,13 @@ static int gpio_regmap_get_direction(struct gpio_chip *chip,
- 	unsigned int base, val, reg, mask;
- 	int invert, ret;
- 
-+	if (gpio->fixed_direction_output) {
-+		if (test_bit(offset, gpio->fixed_direction_output))
-+			return GPIO_LINE_DIRECTION_OUT;
-+		else
-+			return GPIO_LINE_DIRECTION_IN;
-+	}
-+
- 	if (gpio->reg_dat_base && !gpio->reg_set_base)
- 		return GPIO_LINE_DIRECTION_IN;
- 	if (gpio->reg_set_base && !gpio->reg_dat_base)
-@@ -203,6 +216,7 @@ EXPORT_SYMBOL_GPL(gpio_regmap_get_drvdata);
-  */
- struct gpio_regmap *gpio_regmap_register(const struct gpio_regmap_config *config)
- {
-+	struct irq_domain *irq_domain;
- 	struct gpio_regmap *gpio;
- 	struct gpio_chip *chip;
- 	int ret;
-@@ -274,12 +288,37 @@ struct gpio_regmap *gpio_regmap_register(const struct gpio_regmap_config *config
- 		chip->direction_output = gpio_regmap_direction_output;
- 	}
- 
-+	if (config->fixed_direction_output) {
-+		gpio->fixed_direction_output = bitmap_alloc(chip->ngpio,
-+							    GFP_KERNEL);
-+		if (!gpio->fixed_direction_output) {
-+			ret = -ENOMEM;
-+			goto err_free_gpio;
-+		}
-+		bitmap_copy(gpio->fixed_direction_output,
-+			    config->fixed_direction_output, chip->ngpio);
-+	}
-+
- 	ret = gpiochip_add_data(chip, gpio);
- 	if (ret < 0)
--		goto err_free_gpio;
-+		goto err_free_bitmap;
-+
-+#ifdef CONFIG_REGMAP_IRQ
-+	if (config->regmap_irq_chip) {
-+		gpio->regmap_irq_line = config->regmap_irq_line;
-+		ret = regmap_add_irq_chip_fwnode(dev_fwnode(config->parent), config->regmap,
-+						 config->regmap_irq_line, config->regmap_irq_flags,
-+						 0, config->regmap_irq_chip, &gpio->irq_chip_data);
-+		if (ret)
-+			goto err_free_bitmap;
- 
--	if (config->irq_domain) {
--		ret = gpiochip_irqchip_add_domain(chip, config->irq_domain);
-+		irq_domain = regmap_irq_get_domain(gpio->irq_chip_data);
-+	} else
-+#endif
-+	irq_domain = config->irq_domain;
-+
-+	if (irq_domain) {
-+		ret = gpiochip_irqchip_add_domain(chip, irq_domain);
- 		if (ret)
- 			goto err_remove_gpiochip;
- 	}
-@@ -288,6 +327,8 @@ struct gpio_regmap *gpio_regmap_register(const struct gpio_regmap_config *config
- 
- err_remove_gpiochip:
- 	gpiochip_remove(chip);
-+err_free_bitmap:
-+	bitmap_free(gpio->fixed_direction_output);
- err_free_gpio:
- 	kfree(gpio);
- 	return ERR_PTR(ret);
-@@ -300,7 +341,13 @@ EXPORT_SYMBOL_GPL(gpio_regmap_register);
-  */
- void gpio_regmap_unregister(struct gpio_regmap *gpio)
- {
-+#ifdef CONFIG_REGMAP_IRQ
-+	if (gpio->irq_chip_data)
-+		regmap_del_irq_chip(gpio->regmap_irq_line, gpio->irq_chip_data);
-+#endif
-+
- 	gpiochip_remove(&gpio->gpio_chip);
-+	bitmap_free(gpio->fixed_direction_output);
- 	kfree(gpio);
- }
- EXPORT_SYMBOL_GPL(gpio_regmap_unregister);
-diff --git a/drivers/tty/serial/sc16is7xx.c b/drivers/tty/serial/sc16is7xx.c
-index 66a88bba8f15..b5f9a40f4a81 100644
---- a/drivers/tty/serial/sc16is7xx.c
-+++ b/drivers/tty/serial/sc16is7xx.c
-@@ -329,8 +329,9 @@ struct sc16is7xx_one {
- 	struct kthread_work		reg_work;
- 	struct kthread_delayed_work	ms_work;
- 	struct sc16is7xx_one_config	config;
--	bool				irda_mode;
- 	unsigned int			old_mctrl;
-+	u8				old_lcr; /* Value before EFR access. */
-+	bool				irda_mode;
- };
- 
- struct sc16is7xx_port {
-@@ -355,10 +356,6 @@ static struct uart_driver sc16is7xx_uart = {
- 	.nr		= SC16IS7XX_MAX_DEVS,
- };
- 
--static void sc16is7xx_ier_set(struct uart_port *port, u8 bit);
--static void sc16is7xx_stop_tx(struct uart_port *port);
--
--#define to_sc16is7xx_port(p,e)	((container_of((p), struct sc16is7xx_port, e)))
- #define to_sc16is7xx_one(p,e)	((container_of((p), struct sc16is7xx_one, e)))
- 
- static u8 sc16is7xx_port_read(struct uart_port *port, u8 reg)
-@@ -416,6 +413,85 @@ static void sc16is7xx_power(struct uart_port *port, int on)
- 			      on ? 0 : SC16IS7XX_IER_SLEEP_BIT);
- }
- 
-+/*
-+ * In an amazing feat of design, the Enhanced Features Register (EFR)
-+ * shares the address of the Interrupt Identification Register (IIR).
-+ * Access to EFR is switched on by writing a magic value (0xbf) to the
-+ * Line Control Register (LCR). Any interrupt firing during this time will
-+ * see the EFR where it expects the IIR to be, leading to
-+ * "Unexpected interrupt" messages.
-+ *
-+ * Prevent this possibility by claiming a mutex while accessing the EFR,
-+ * and claiming the same mutex from within the interrupt handler. This is
-+ * similar to disabling the interrupt, but that doesn't work because the
-+ * bulk of the interrupt processing is run as a workqueue job in thread
-+ * context.
-+ */
-+static void sc16is7xx_efr_lock(struct uart_port *port)
-+{
-+	struct sc16is7xx_one *one = to_sc16is7xx_one(port, port);
-+
-+	mutex_lock(&one->efr_lock);
-+
-+	/* Backup content of LCR. */
-+	one->old_lcr = sc16is7xx_port_read(port, SC16IS7XX_LCR_REG);
-+
-+	/* Enable access to Enhanced register set */
-+	sc16is7xx_port_write(port, SC16IS7XX_LCR_REG, SC16IS7XX_LCR_CONF_MODE_B);
-+
-+	/* Disable cache updates when writing to EFR registers */
-+	regcache_cache_bypass(one->regmap, true);
-+}
-+
-+static void sc16is7xx_efr_unlock(struct uart_port *port)
-+{
-+	struct sc16is7xx_one *one = to_sc16is7xx_one(port, port);
-+
-+	/* Re-enable cache updates when writing to normal registers */
-+	regcache_cache_bypass(one->regmap, false);
-+
-+	/* Restore original content of LCR */
-+	sc16is7xx_port_write(port, SC16IS7XX_LCR_REG, one->old_lcr);
-+
-+	mutex_unlock(&one->efr_lock);
-+}
-+
-+static void sc16is7xx_ier_clear(struct uart_port *port, u8 bit)
-+{
-+	struct sc16is7xx_port *s = dev_get_drvdata(port->dev);
-+	struct sc16is7xx_one *one = to_sc16is7xx_one(port, port);
-+
-+	lockdep_assert_held_once(&port->lock);
-+
-+	one->config.flags |= SC16IS7XX_RECONF_IER;
-+	one->config.ier_mask |= bit;
-+	one->config.ier_val &= ~bit;
-+	kthread_queue_work(&s->kworker, &one->reg_work);
-+}
-+
-+static void sc16is7xx_ier_set(struct uart_port *port, u8 bit)
-+{
-+	struct sc16is7xx_port *s = dev_get_drvdata(port->dev);
-+	struct sc16is7xx_one *one = to_sc16is7xx_one(port, port);
-+
-+	lockdep_assert_held_once(&port->lock);
-+
-+	one->config.flags |= SC16IS7XX_RECONF_IER;
-+	one->config.ier_mask |= bit;
-+	one->config.ier_val |= bit;
-+	kthread_queue_work(&s->kworker, &one->reg_work);
-+}
-+
-+static void sc16is7xx_stop_tx(struct uart_port *port)
-+{
-+	sc16is7xx_ier_clear(port, SC16IS7XX_IER_THRI_BIT);
-+}
-+
-+static void sc16is7xx_stop_rx(struct uart_port *port)
-+{
-+	sc16is7xx_ier_clear(port, SC16IS7XX_IER_RDI_BIT);
-+}
-+
- static const struct sc16is7xx_devtype sc16is74x_devtype = {
- 	.name		= "SC16IS74X",
- 	.nr_gpio	= 0,
-@@ -506,40 +582,6 @@ static int sc16is7xx_set_baud(struct uart_port *port, int baud)
- 		div /= prescaler;
- 	}
- 
--	/* In an amazing feat of design, the Enhanced Features Register shares
--	 * the address of the Interrupt Identification Register, and is
--	 * switched in by writing a magic value (0xbf) to the Line Control
--	 * Register. Any interrupt firing during this time will see the EFR
--	 * where it expects the IIR to be, leading to "Unexpected interrupt"
--	 * messages.
--	 *
--	 * Prevent this possibility by claiming a mutex while accessing the
--	 * EFR, and claiming the same mutex from within the interrupt handler.
--	 * This is similar to disabling the interrupt, but that doesn't work
--	 * because the bulk of the interrupt processing is run as a workqueue
--	 * job in thread context.
--	 */
--	mutex_lock(&one->efr_lock);
--
--	lcr = sc16is7xx_port_read(port, SC16IS7XX_LCR_REG);
--
--	/* Open the LCR divisors for configuration */
--	sc16is7xx_port_write(port, SC16IS7XX_LCR_REG,
--			     SC16IS7XX_LCR_CONF_MODE_B);
--
--	/* Enable enhanced features */
--	regcache_cache_bypass(one->regmap, true);
--	sc16is7xx_port_update(port, SC16IS7XX_EFR_REG,
--			      SC16IS7XX_EFR_ENABLE_BIT,
--			      SC16IS7XX_EFR_ENABLE_BIT);
--
--	regcache_cache_bypass(one->regmap, false);
--
--	/* Put LCR back to the normal mode */
--	sc16is7xx_port_write(port, SC16IS7XX_LCR_REG, lcr);
--
--	mutex_unlock(&one->efr_lock);
--
- 	/* If bit MCR_CLKSEL is set, the divide by 4 prescaler is activated. */
- 	sc16is7xx_port_update(port, SC16IS7XX_MCR_REG,
- 			      SC16IS7XX_MCR_CLKSEL_BIT,
-@@ -547,7 +589,8 @@ static int sc16is7xx_set_baud(struct uart_port *port, int baud)
- 
- 	mutex_lock(&one->efr_lock);
- 
--	/* Open the LCR divisors for configuration */
-+	/* Backup LCR and access special register set (DLL/DLH) */
-+	lcr = sc16is7xx_port_read(port, SC16IS7XX_LCR_REG);
- 	sc16is7xx_port_write(port, SC16IS7XX_LCR_REG,
- 			     SC16IS7XX_LCR_CONF_MODE_A);
- 
-@@ -557,7 +600,7 @@ static int sc16is7xx_set_baud(struct uart_port *port, int baud)
- 	sc16is7xx_port_write(port, SC16IS7XX_DLL_REG, div % 256);
- 	regcache_cache_bypass(one->regmap, false);
- 
--	/* Put LCR back to the normal mode */
-+	/* Restore LCR and access to general register set */
- 	sc16is7xx_port_write(port, SC16IS7XX_LCR_REG, lcr);
- 
- 	mutex_unlock(&one->efr_lock);
-@@ -889,42 +932,6 @@ static void sc16is7xx_reg_proc(struct kthread_work *ws)
- 		sc16is7xx_reconf_rs485(&one->port);
- }
- 
--static void sc16is7xx_ier_clear(struct uart_port *port, u8 bit)
--{
--	struct sc16is7xx_port *s = dev_get_drvdata(port->dev);
--	struct sc16is7xx_one *one = to_sc16is7xx_one(port, port);
--
--	lockdep_assert_held_once(&port->lock);
--
--	one->config.flags |= SC16IS7XX_RECONF_IER;
--	one->config.ier_mask |= bit;
--	one->config.ier_val &= ~bit;
--	kthread_queue_work(&s->kworker, &one->reg_work);
--}
--
--static void sc16is7xx_ier_set(struct uart_port *port, u8 bit)
--{
--	struct sc16is7xx_port *s = dev_get_drvdata(port->dev);
--	struct sc16is7xx_one *one = to_sc16is7xx_one(port, port);
--
--	lockdep_assert_held_once(&port->lock);
--
--	one->config.flags |= SC16IS7XX_RECONF_IER;
--	one->config.ier_mask |= bit;
--	one->config.ier_val |= bit;
--	kthread_queue_work(&s->kworker, &one->reg_work);
--}
--
--static void sc16is7xx_stop_tx(struct uart_port *port)
--{
--	sc16is7xx_ier_clear(port, SC16IS7XX_IER_THRI_BIT);
--}
--
--static void sc16is7xx_stop_rx(struct uart_port *port)
--{
--	sc16is7xx_ier_clear(port, SC16IS7XX_IER_RDI_BIT);
--}
--
- static void sc16is7xx_ms_proc(struct kthread_work *ws)
- {
- 	struct sc16is7xx_one *one = to_sc16is7xx_one(ws, ms_work.work);
-@@ -1074,17 +1081,7 @@ static void sc16is7xx_set_termios(struct uart_port *port,
- 	if (!(termios->c_cflag & CREAD))
- 		port->ignore_status_mask |= SC16IS7XX_LSR_BRK_ERROR_MASK;
- 
--	/* As above, claim the mutex while accessing the EFR. */
--	mutex_lock(&one->efr_lock);
--
--	sc16is7xx_port_write(port, SC16IS7XX_LCR_REG,
--			     SC16IS7XX_LCR_CONF_MODE_B);
--
- 	/* Configure flow control */
--	regcache_cache_bypass(one->regmap, true);
--	sc16is7xx_port_write(port, SC16IS7XX_XON1_REG, termios->c_cc[VSTART]);
--	sc16is7xx_port_write(port, SC16IS7XX_XOFF1_REG, termios->c_cc[VSTOP]);
--
- 	port->status &= ~(UPSTAT_AUTOCTS | UPSTAT_AUTORTS);
- 	if (termios->c_cflag & CRTSCTS) {
- 		flow |= SC16IS7XX_EFR_AUTOCTS_BIT |
-@@ -1096,16 +1093,16 @@ static void sc16is7xx_set_termios(struct uart_port *port,
- 	if (termios->c_iflag & IXOFF)
- 		flow |= SC16IS7XX_EFR_SWFLOW1_BIT;
- 
--	sc16is7xx_port_update(port,
--			      SC16IS7XX_EFR_REG,
--			      SC16IS7XX_EFR_FLOWCTRL_BITS,
--			      flow);
--	regcache_cache_bypass(one->regmap, false);
--
- 	/* Update LCR register */
- 	sc16is7xx_port_write(port, SC16IS7XX_LCR_REG, lcr);
- 
--	mutex_unlock(&one->efr_lock);
-+	/* Update EFR registers */
-+	sc16is7xx_efr_lock(port);
-+	sc16is7xx_port_write(port, SC16IS7XX_XON1_REG, termios->c_cc[VSTART]);
-+	sc16is7xx_port_write(port, SC16IS7XX_XOFF1_REG, termios->c_cc[VSTOP]);
-+	sc16is7xx_port_update(port, SC16IS7XX_EFR_REG,
-+			      SC16IS7XX_EFR_FLOWCTRL_BITS, flow);
-+	sc16is7xx_efr_unlock(port);
- 
- 	/* Get baud rate generator configuration */
- 	baud = uart_get_baud_rate(port, termios, old,
-diff --git a/drivers/usb/host/xhci-dbgcap.c b/drivers/usb/host/xhci-dbgcap.c
-index bfd437269800..4d975b26a185 100644
---- a/drivers/usb/host/xhci-dbgcap.c
-+++ b/drivers/usb/host/xhci-dbgcap.c
-@@ -665,7 +665,8 @@ static int xhci_dbc_start(struct xhci_dbc *dbc)
- 		return ret;
- 	}
- 
--	return mod_delayed_work(system_wq, &dbc->event_work, 1);
-+	return mod_delayed_work(system_wq, &dbc->event_work,
-+				msecs_to_jiffies(dbc->poll_interval));
- }
- 
- static void xhci_dbc_stop(struct xhci_dbc *dbc)
-@@ -854,6 +855,7 @@ static enum evtreturn xhci_dbc_do_handle_events(struct xhci_dbc *dbc)
- {
- 	dma_addr_t		deq;
- 	union xhci_trb		*evt;
-+	enum evtreturn		ret = EVT_DONE;
- 	u32			ctrl, portsc;
- 	bool			update_erdp = false;
- 
-@@ -878,7 +880,8 @@ static enum evtreturn xhci_dbc_do_handle_events(struct xhci_dbc *dbc)
- 			dev_info(dbc->dev, "DbC configured\n");
- 			portsc = readl(&dbc->regs->portsc);
- 			writel(portsc, &dbc->regs->portsc);
--			return EVT_GSER;
-+			ret = EVT_GSER;
-+			break;
- 		}
- 
- 		return EVT_DONE;
-@@ -938,6 +941,8 @@ static enum evtreturn xhci_dbc_do_handle_events(struct xhci_dbc *dbc)
- 			break;
- 		case TRB_TYPE(TRB_TRANSFER):
- 			dbc_handle_xfer_event(dbc, evt);
-+			if (ret != EVT_GSER)
-+				ret = EVT_XFER_DONE;
- 			break;
- 		default:
- 			break;
-@@ -956,7 +961,7 @@ static enum evtreturn xhci_dbc_do_handle_events(struct xhci_dbc *dbc)
- 		lo_hi_writeq(deq, &dbc->regs->erdp);
- 	}
- 
--	return EVT_DONE;
-+	return ret;
- }
- 
- static void xhci_dbc_handle_events(struct work_struct *work)
-@@ -964,8 +969,11 @@ static void xhci_dbc_handle_events(struct work_struct *work)
- 	enum evtreturn		evtr;
- 	struct xhci_dbc		*dbc;
- 	unsigned long		flags;
-+	unsigned int		poll_interval;
-+	unsigned long		busypoll_timelimit;
- 
- 	dbc = container_of(to_delayed_work(work), struct xhci_dbc, event_work);
-+	poll_interval = dbc->poll_interval;
- 
- 	spin_lock_irqsave(&dbc->lock, flags);
- 	evtr = xhci_dbc_do_handle_events(dbc);
-@@ -981,13 +989,28 @@ static void xhci_dbc_handle_events(struct work_struct *work)
- 			dbc->driver->disconnect(dbc);
- 		break;
- 	case EVT_DONE:
-+		/*
-+		 * Set fast poll rate if there are pending out transfers, or
-+		 * a transfer was recently processed
-+		 */
-+		busypoll_timelimit = dbc->xfer_timestamp +
-+			msecs_to_jiffies(DBC_XFER_INACTIVITY_TIMEOUT);
-+
-+		if (!list_empty(&dbc->eps[BULK_OUT].list_pending) ||
-+		    time_is_after_jiffies(busypoll_timelimit))
-+			poll_interval = 0;
-+		break;
-+	case EVT_XFER_DONE:
-+		dbc->xfer_timestamp = jiffies;
-+		poll_interval = 0;
- 		break;
- 	default:
- 		dev_info(dbc->dev, "stop handling dbc events\n");
- 		return;
- 	}
- 
--	mod_delayed_work(system_wq, &dbc->event_work, 1);
-+	mod_delayed_work(system_wq, &dbc->event_work,
-+			 msecs_to_jiffies(poll_interval));
- }
- 
- static ssize_t dbc_show(struct device *dev,
-@@ -1206,11 +1229,48 @@ static ssize_t dbc_bInterfaceProtocol_store(struct device *dev,
- 	return size;
- }
- 
-+static ssize_t dbc_poll_interval_ms_show(struct device *dev,
-+					 struct device_attribute *attr,
-+					 char *buf)
-+{
-+	struct xhci_dbc *dbc;
-+	struct xhci_hcd *xhci;
-+
-+	xhci = hcd_to_xhci(dev_get_drvdata(dev));
-+	dbc = xhci->dbc;
-+
-+	return sysfs_emit(buf, "%u\n", dbc->poll_interval);
-+}
-+
-+static ssize_t dbc_poll_interval_ms_store(struct device *dev,
-+					  struct device_attribute *attr,
-+					  const char *buf, size_t size)
-+{
-+	struct xhci_dbc *dbc;
-+	struct xhci_hcd *xhci;
-+	u32 value;
-+	int ret;
-+
-+	ret = kstrtou32(buf, 0, &value);
-+	if (ret || value > DBC_POLL_INTERVAL_MAX)
-+		return -EINVAL;
-+
-+	xhci = hcd_to_xhci(dev_get_drvdata(dev));
-+	dbc = xhci->dbc;
-+
-+	dbc->poll_interval = value;
-+
-+	mod_delayed_work(system_wq, &dbc->event_work, 0);
-+
-+	return size;
-+}
-+
- static DEVICE_ATTR_RW(dbc);
- static DEVICE_ATTR_RW(dbc_idVendor);
- static DEVICE_ATTR_RW(dbc_idProduct);
- static DEVICE_ATTR_RW(dbc_bcdDevice);
- static DEVICE_ATTR_RW(dbc_bInterfaceProtocol);
-+static DEVICE_ATTR_RW(dbc_poll_interval_ms);
- 
- static struct attribute *dbc_dev_attributes[] = {
- 	&dev_attr_dbc.attr,
-@@ -1218,6 +1278,7 @@ static struct attribute *dbc_dev_attributes[] = {
- 	&dev_attr_dbc_idProduct.attr,
- 	&dev_attr_dbc_bcdDevice.attr,
- 	&dev_attr_dbc_bInterfaceProtocol.attr,
-+	&dev_attr_dbc_poll_interval_ms.attr,
- 	NULL
- };
- 
-@@ -1242,6 +1303,7 @@ xhci_alloc_dbc(struct device *dev, void __iomem *base, const struct dbc_driver *
- 	dbc->idVendor = DBC_VENDOR_ID;
- 	dbc->bcdDevice = DBC_DEVICE_REV;
- 	dbc->bInterfaceProtocol = DBC_PROTOCOL;
-+	dbc->poll_interval = DBC_POLL_INTERVAL_DEFAULT;
- 
- 	if (readl(&dbc->regs->control) & DBC_CTRL_DBC_ENABLE)
- 		goto err;
-diff --git a/drivers/usb/host/xhci-dbgcap.h b/drivers/usb/host/xhci-dbgcap.h
-index 2de0dc49a3e9..1fab3eb9c831 100644
---- a/drivers/usb/host/xhci-dbgcap.h
-+++ b/drivers/usb/host/xhci-dbgcap.h
-@@ -93,7 +93,9 @@ struct dbc_ep {
- 
- #define DBC_QUEUE_SIZE			16
- #define DBC_WRITE_BUF_SIZE		8192
--
-+#define DBC_POLL_INTERVAL_DEFAULT	64	/* milliseconds */
-+#define DBC_POLL_INTERVAL_MAX		5000	/* milliseconds */
-+#define DBC_XFER_INACTIVITY_TIMEOUT	10	/* milliseconds */
- /*
-  * Private structure for DbC hardware state:
-  */
-@@ -139,6 +141,8 @@ struct xhci_dbc {
- 
- 	enum dbc_state			state;
- 	struct delayed_work		event_work;
-+	unsigned int			poll_interval;	/* ms */
-+	unsigned long			xfer_timestamp;
- 	unsigned			resume_required:1;
- 	struct dbc_ep			eps[2];
- 
-@@ -184,6 +188,7 @@ struct dbc_request {
- enum evtreturn {
- 	EVT_ERR	= -1,
- 	EVT_DONE,
-+	EVT_XFER_DONE,
- 	EVT_GSER,
- 	EVT_DISC,
- };
-diff --git a/fs/btrfs/disk-io.c b/fs/btrfs/disk-io.c
-index bb5f7911d473..7ad1734cbbfc 100644
---- a/fs/btrfs/disk-io.c
-+++ b/fs/btrfs/disk-io.c
-@@ -2080,10 +2080,10 @@ static int btrfs_replay_log(struct btrfs_fs_info *fs_info,
- 
- 	/* returns with log_tree_root freed on success */
- 	ret = btrfs_recover_log_trees(log_tree_root);
-+	btrfs_put_root(log_tree_root);
- 	if (ret) {
- 		btrfs_handle_fs_error(fs_info, ret,
- 				      "Failed to recover log tree");
--		btrfs_put_root(log_tree_root);
- 		return ret;
- 	}
- 
-diff --git a/fs/btrfs/extent-tree.c b/fs/btrfs/extent-tree.c
-index 8248113eb067..5e3d1a87b7e9 100644
---- a/fs/btrfs/extent-tree.c
-+++ b/fs/btrfs/extent-tree.c
-@@ -4175,7 +4175,8 @@ static int prepare_allocation_clustered(struct btrfs_fs_info *fs_info,
- }
- 
- static int prepare_allocation_zoned(struct btrfs_fs_info *fs_info,
--				    struct find_free_extent_ctl *ffe_ctl)
-+				    struct find_free_extent_ctl *ffe_ctl,
-+				    struct btrfs_space_info *space_info)
- {
- 	if (ffe_ctl->for_treelog) {
- 		spin_lock(&fs_info->treelog_bg_lock);
-@@ -4199,6 +4200,7 @@ static int prepare_allocation_zoned(struct btrfs_fs_info *fs_info,
- 			u64 avail = block_group->zone_capacity - block_group->alloc_offset;
- 
- 			if (block_group_bits(block_group, ffe_ctl->flags) &&
-+			    block_group->space_info == space_info &&
- 			    avail >= ffe_ctl->num_bytes) {
- 				ffe_ctl->hint_byte = block_group->start;
- 				break;
-@@ -4220,7 +4222,7 @@ static int prepare_allocation(struct btrfs_fs_info *fs_info,
- 		return prepare_allocation_clustered(fs_info, ffe_ctl,
- 						    space_info, ins);
- 	case BTRFS_EXTENT_ALLOC_ZONED:
--		return prepare_allocation_zoned(fs_info, ffe_ctl);
-+		return prepare_allocation_zoned(fs_info, ffe_ctl, space_info);
- 	default:
- 		BUG();
- 	}
-diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
-index ee5ffeab85bb..b1be3e0fe728 100644
---- a/fs/btrfs/inode.c
-+++ b/fs/btrfs/inode.c
-@@ -3051,9 +3051,10 @@ int btrfs_finish_one_ordered(struct btrfs_ordered_extent *ordered_extent)
- 		goto out;
- 	}
- 
--	if (btrfs_is_zoned(fs_info))
--		btrfs_zone_finish_endio(fs_info, ordered_extent->disk_bytenr,
--					ordered_extent->disk_num_bytes);
-+	ret = btrfs_zone_finish_endio(fs_info, ordered_extent->disk_bytenr,
-+				      ordered_extent->disk_num_bytes);
-+	if (ret)
-+		goto out;
- 
- 	if (test_bit(BTRFS_ORDERED_TRUNCATED, &ordered_extent->flags)) {
- 		truncated = true;
-diff --git a/fs/btrfs/scrub.c b/fs/btrfs/scrub.c
-index 7632d652a125..4a5a5ee360e5 100644
---- a/fs/btrfs/scrub.c
-+++ b/fs/btrfs/scrub.c
-@@ -1271,8 +1271,7 @@ static void scrub_throttle_dev_io(struct scrub_ctx *sctx, struct btrfs_device *d
- 	 * Slice is divided into intervals when the IO is submitted, adjust by
- 	 * bwlimit and maximum of 64 intervals.
- 	 */
--	div = max_t(u32, 1, (u32)(bwlimit / (16 * 1024 * 1024)));
--	div = min_t(u32, 64, div);
-+	div = clamp(bwlimit / (16 * 1024 * 1024), 1, 64);
- 
- 	/* Start new epoch, set deadline */
- 	now = ktime_get();
-diff --git a/fs/btrfs/transaction.c b/fs/btrfs/transaction.c
-index 3989cb19cdae..20add63421b3 100644
---- a/fs/btrfs/transaction.c
-+++ b/fs/btrfs/transaction.c
-@@ -1796,7 +1796,7 @@ static noinline int create_pending_snapshot(struct btrfs_trans_handle *trans,
- 	}
- 	/* see comments in should_cow_block() */
- 	set_bit(BTRFS_ROOT_FORCE_COW, &root->state);
--	smp_wmb();
-+	smp_mb__after_atomic();
- 
- 	btrfs_set_root_node(new_root_item, tmp);
- 	/* record when the snapshot was created in key.offset */
-diff --git a/fs/btrfs/tree-log.c b/fs/btrfs/tree-log.c
-index 4b53e19f7520..5512991b24fa 100644
---- a/fs/btrfs/tree-log.c
-+++ b/fs/btrfs/tree-log.c
-@@ -2493,15 +2493,13 @@ static int replay_one_buffer(struct btrfs_root *log, struct extent_buffer *eb,
- 	int i;
- 	int ret;
- 
-+	if (level != 0)
-+		return 0;
-+
- 	ret = btrfs_read_extent_buffer(eb, &check);
- 	if (ret)
- 		return ret;
- 
--	level = btrfs_header_level(eb);
--
--	if (level != 0)
--		return 0;
--
- 	path = btrfs_alloc_path();
- 	if (!path)
- 		return -ENOMEM;
-@@ -7422,7 +7420,6 @@ int btrfs_recover_log_trees(struct btrfs_root *log_root_tree)
- 
- 	log_root_tree->log_root = NULL;
- 	clear_bit(BTRFS_FS_LOG_RECOVERING, &fs_info->flags);
--	btrfs_put_root(log_root_tree);
- 
- 	return 0;
- error:
-diff --git a/fs/btrfs/zoned.c b/fs/btrfs/zoned.c
-index 3622ba1d8e09..6e8b8c46ba18 100644
---- a/fs/btrfs/zoned.c
-+++ b/fs/btrfs/zoned.c
-@@ -2263,16 +2263,17 @@ bool btrfs_can_activate_zone(struct btrfs_fs_devices *fs_devices, u64 flags)
- 	return ret;
- }
- 
--void btrfs_zone_finish_endio(struct btrfs_fs_info *fs_info, u64 logical, u64 length)
-+int btrfs_zone_finish_endio(struct btrfs_fs_info *fs_info, u64 logical, u64 length)
- {
- 	struct btrfs_block_group *block_group;
- 	u64 min_alloc_bytes;
- 
- 	if (!btrfs_is_zoned(fs_info))
--		return;
-+		return 0;
- 
- 	block_group = btrfs_lookup_block_group(fs_info, logical);
--	ASSERT(block_group);
-+	if (WARN_ON_ONCE(!block_group))
-+		return -ENOENT;
- 
- 	/* No MIXED_BG on zoned btrfs. */
- 	if (block_group->flags & BTRFS_BLOCK_GROUP_DATA)
-@@ -2289,6 +2290,7 @@ void btrfs_zone_finish_endio(struct btrfs_fs_info *fs_info, u64 logical, u64 len
- 
- out:
- 	btrfs_put_block_group(block_group);
-+	return 0;
- }
- 
- static void btrfs_zone_finish_endio_workfn(struct work_struct *work)
-diff --git a/fs/btrfs/zoned.h b/fs/btrfs/zoned.h
-index 448955641d11..c18f31d3dc25 100644
---- a/fs/btrfs/zoned.h
-+++ b/fs/btrfs/zoned.h
-@@ -71,7 +71,7 @@ int btrfs_sync_zone_write_pointer(struct btrfs_device *tgt_dev, u64 logical,
- bool btrfs_zone_activate(struct btrfs_block_group *block_group);
- int btrfs_zone_finish(struct btrfs_block_group *block_group);
- bool btrfs_can_activate_zone(struct btrfs_fs_devices *fs_devices, u64 flags);
--void btrfs_zone_finish_endio(struct btrfs_fs_info *fs_info, u64 logical,
-+int btrfs_zone_finish_endio(struct btrfs_fs_info *fs_info, u64 logical,
- 			     u64 length);
- void btrfs_schedule_zone_finish_bg(struct btrfs_block_group *bg,
- 				   struct extent_buffer *eb);
-@@ -227,8 +227,11 @@ static inline bool btrfs_can_activate_zone(struct btrfs_fs_devices *fs_devices,
- 	return true;
- }
- 
--static inline void btrfs_zone_finish_endio(struct btrfs_fs_info *fs_info,
--					   u64 logical, u64 length) { }
-+static inline int btrfs_zone_finish_endio(struct btrfs_fs_info *fs_info,
-+					   u64 logical, u64 length)
-+{
-+	return 0;
-+}
- 
- static inline void btrfs_schedule_zone_finish_bg(struct btrfs_block_group *bg,
- 						 struct extent_buffer *eb) { }
-diff --git a/include/linux/audit.h b/include/linux/audit.h
-index 335e1ba5a232..7ca75f887379 100644
---- a/include/linux/audit.h
-+++ b/include/linux/audit.h
-@@ -526,7 +526,7 @@ static inline void audit_log_kern_module(const char *name)
- 
- static inline void audit_fanotify(u32 response, struct fanotify_response_info_audit_rule *friar)
- {
--	if (!audit_dummy_context())
-+	if (audit_enabled)
- 		__audit_fanotify(response, friar);
- }
- 
-diff --git a/include/linux/bitops.h b/include/linux/bitops.h
-index f7f5a783da2a..b2342eebc8d2 100644
---- a/include/linux/bitops.h
-+++ b/include/linux/bitops.h
-@@ -15,7 +15,6 @@
- #  define aligned_byte_mask(n) (~0xffUL << (BITS_PER_LONG - 8 - 8*(n)))
- #endif
- 
--#define BITS_PER_TYPE(type)	(sizeof(type) * BITS_PER_BYTE)
- #define BITS_TO_LONGS(nr)	__KERNEL_DIV_ROUND_UP(nr, BITS_PER_TYPE(long))
- #define BITS_TO_U64(nr)		__KERNEL_DIV_ROUND_UP(nr, BITS_PER_TYPE(u64))
- #define BITS_TO_U32(nr)		__KERNEL_DIV_ROUND_UP(nr, BITS_PER_TYPE(u32))
-diff --git a/include/linux/bits.h b/include/linux/bits.h
-index 7c0cf5031abe..09e167bc4530 100644
---- a/include/linux/bits.h
-+++ b/include/linux/bits.h
-@@ -11,6 +11,7 @@
- #define BIT_ULL_MASK(nr)	(ULL(1) << ((nr) % BITS_PER_LONG_LONG))
- #define BIT_ULL_WORD(nr)	((nr) / BITS_PER_LONG_LONG)
- #define BITS_PER_BYTE		8
-+#define BITS_PER_TYPE(type)	(sizeof(type) * BITS_PER_BYTE)
- 
- /*
-  * Create a contiguous bitmask starting at bit position @l and ending at
-@@ -18,17 +19,50 @@
-  * GENMASK_ULL(39, 21) gives us the 64bit vector 0x000000ffffe00000.
-  */
- #if !defined(__ASSEMBLY__)
-+
-+/*
-+ * Missing asm support
-+ *
-+ * GENMASK_U*() depend on BITS_PER_TYPE() which relies on sizeof(),
-+ * something not available in asm. Nevertheless, fixed width integers is a C
-+ * concept. Assembly code can rely on the long and long long versions instead.
-+ */
-+
- #include <linux/build_bug.h>
-+#include <linux/overflow.h>
- #define GENMASK_INPUT_CHECK(h, l) \
- 	(BUILD_BUG_ON_ZERO(__builtin_choose_expr( \
- 		__is_constexpr((l) > (h)), (l) > (h), 0)))
--#else
-+
-+/*
-+ * Generate a mask for the specified type @t. Additional checks are made to
-+ * guarantee the value returned fits in that type, relying on
-+ * -Wshift-count-overflow compiler check to detect incompatible arguments.
-+ * For example, all these create build errors or warnings:
-+ *
-+ * - GENMASK(15, 20): wrong argument order
-+ * - GENMASK(72, 15): doesn't fit unsigned long
-+ * - GENMASK_U32(33, 15): doesn't fit in a u32
-+ */
-+#define GENMASK_TYPE(t, h, l)					\
-+	((t)(GENMASK_INPUT_CHECK(h, l) +			\
-+	     (type_max(t) << (l) &				\
-+	      type_max(t) >> (BITS_PER_TYPE(t) - 1 - (h)))))
-+
-+#define GENMASK_U8(h, l)	GENMASK_TYPE(u8, h, l)
-+#define GENMASK_U16(h, l)	GENMASK_TYPE(u16, h, l)
-+#define GENMASK_U32(h, l)	GENMASK_TYPE(u32, h, l)
-+#define GENMASK_U64(h, l)	GENMASK_TYPE(u64, h, l)
-+
-+#else /* defined(__ASSEMBLY__) */
-+
- /*
-  * BUILD_BUG_ON_ZERO is not available in h files included from asm files,
-  * disable the input check if that is the case.
-  */
- #define GENMASK_INPUT_CHECK(h, l) 0
--#endif
-+
-+#endif /* !defined(__ASSEMBLY__) */
- 
- #define __GENMASK(h, l) \
- 	(((~UL(0)) - (UL(1) << (l)) + 1) & \
-diff --git a/include/linux/gpio/regmap.h b/include/linux/gpio/regmap.h
-index a9f7b7faf57b..cf55202aaec2 100644
---- a/include/linux/gpio/regmap.h
-+++ b/include/linux/gpio/regmap.h
-@@ -37,9 +37,18 @@ struct regmap;
-  *			offset to a register/bitmask pair. If not
-  *			given the default gpio_regmap_simple_xlate()
-  *			is used.
-+ * @fixed_direction_output:
-+ *			(Optional) Bitmap representing the fixed direction of
-+ *			the GPIO lines. Useful when there are GPIO lines with a
-+ *			fixed direction mixed together in the same register.
-  * @drvdata:		(Optional) Pointer to driver specific data which is
-  *			not used by gpio-remap but is provided "as is" to the
-  *			driver callback(s).
-+ * @regmap_irq_chip:	(Optional) Pointer on an regmap_irq_chip structure. If
-+ *			set, a regmap-irq device will be created and the IRQ
-+ *			domain will be set accordingly.
-+ * @regmap_irq_line	(Optional) The IRQ the device uses to signal interrupts.
-+ * @regmap_irq_flags	(Optional) The IRQF_ flags to use for the interrupt.
-  *
-  * The ->reg_mask_xlate translates a given base address and GPIO offset to
-  * register and mask pair. The base address is one of the given register
-@@ -77,6 +86,13 @@ struct gpio_regmap_config {
- 	int reg_stride;
- 	int ngpio_per_reg;
- 	struct irq_domain *irq_domain;
-+	unsigned long *fixed_direction_output;
-+
-+#ifdef CONFIG_REGMAP_IRQ
-+	struct regmap_irq_chip *regmap_irq_chip;
-+	int regmap_irq_line;
-+	unsigned long regmap_irq_flags;
-+#endif
- 
- 	int (*reg_mask_xlate)(struct gpio_regmap *gpio, unsigned int base,
- 			      unsigned int offset, unsigned int *reg,
-diff --git a/include/net/pkt_sched.h b/include/net/pkt_sched.h
-index 15960564e0c3..4d72d24b1f33 100644
---- a/include/net/pkt_sched.h
-+++ b/include/net/pkt_sched.h
-@@ -112,7 +112,6 @@ struct qdisc_rate_table *qdisc_get_rtab(struct tc_ratespec *r,
- 					struct netlink_ext_ack *extack);
- void qdisc_put_rtab(struct qdisc_rate_table *tab);
- void qdisc_put_stab(struct qdisc_size_table *tab);
--void qdisc_warn_nonwc(const char *txt, struct Qdisc *qdisc);
- bool sch_direct_xmit(struct sk_buff *skb, struct Qdisc *q,
- 		     struct net_device *dev, struct netdev_queue *txq,
- 		     spinlock_t *root_lock, bool validate);
-@@ -306,4 +305,28 @@ static inline bool tc_qdisc_stats_dump(struct Qdisc *sch,
- 	return true;
- }
- 
-+static inline void qdisc_warn_nonwc(const char *txt, struct Qdisc *qdisc)
-+{
-+	if (!(qdisc->flags & TCQ_F_WARN_NONWC)) {
-+		pr_warn("%s: %s qdisc %X: is non-work-conserving?\n",
-+			txt, qdisc->ops->id, qdisc->handle >> 16);
-+		qdisc->flags |= TCQ_F_WARN_NONWC;
-+	}
-+}
-+
-+static inline unsigned int qdisc_peek_len(struct Qdisc *sch)
-+{
-+	struct sk_buff *skb;
-+	unsigned int len;
-+
-+	skb = sch->ops->peek(sch);
-+	if (unlikely(skb == NULL)) {
-+		qdisc_warn_nonwc("qdisc_peek_len", sch);
-+		return 0;
-+	}
-+	len = qdisc_pkt_len(skb);
-+
-+	return len;
-+}
-+
- #endif
-diff --git a/kernel/events/callchain.c b/kernel/events/callchain.c
-index 1273be84392c..ee01cfcc3506 100644
---- a/kernel/events/callchain.c
-+++ b/kernel/events/callchain.c
-@@ -184,6 +184,10 @@ get_perf_callchain(struct pt_regs *regs, u32 init_nr, bool kernel, bool user,
- 	struct perf_callchain_entry_ctx ctx;
- 	int rctx;
- 
-+	/* crosstask is not supported for user stacks */
-+	if (crosstask && user && !kernel)
-+		return NULL;
-+
- 	entry = get_callchain_entry(&rctx);
- 	if (!entry)
- 		return NULL;
-@@ -200,18 +204,15 @@ get_perf_callchain(struct pt_regs *regs, u32 init_nr, bool kernel, bool user,
- 		perf_callchain_kernel(&ctx, regs);
- 	}
- 
--	if (user) {
-+	if (user && !crosstask) {
- 		if (!user_mode(regs)) {
--			if  (current->mm)
--				regs = task_pt_regs(current);
--			else
-+			if (current->flags & (PF_KTHREAD | PF_USER_WORKER))
- 				regs = NULL;
-+			else
-+				regs = task_pt_regs(current);
- 		}
- 
- 		if (regs) {
--			if (crosstask)
--				goto exit_put;
--
- 			if (add_mark)
- 				perf_callchain_store_context(&ctx, PERF_CONTEXT_USER);
- 
-@@ -219,7 +220,6 @@ get_perf_callchain(struct pt_regs *regs, u32 init_nr, bool kernel, bool user,
- 		}
- 	}
- 
--exit_put:
- 	put_callchain_entry(rctx);
- 
- 	return entry;
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index b73f5c44113d..c9a3fb6fdb2f 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -6985,7 +6985,7 @@ static void perf_sample_regs_user(struct perf_regs *regs_user,
- 	if (user_mode(regs)) {
- 		regs_user->abi = perf_reg_abi(current);
- 		regs_user->regs = regs;
--	} else if (!(current->flags & PF_KTHREAD)) {
-+	} else if (!(current->flags & (PF_KTHREAD | PF_USER_WORKER))) {
- 		perf_get_regs_user(regs_user, regs);
- 	} else {
- 		regs_user->abi = PERF_SAMPLE_REGS_ABI_NONE;
-@@ -7612,7 +7612,7 @@ static u64 perf_virt_to_phys(u64 virt)
- 		 * Try IRQ-safe get_user_page_fast_only first.
- 		 * If failed, leave phys_addr as 0.
- 		 */
--		if (current->mm != NULL) {
-+		if (!(current->flags & (PF_KTHREAD | PF_USER_WORKER))) {
- 			struct page *p;
- 
- 			pagefault_disable();
-@@ -7724,7 +7724,8 @@ struct perf_callchain_entry *
- perf_callchain(struct perf_event *event, struct pt_regs *regs)
- {
- 	bool kernel = !event->attr.exclude_callchain_kernel;
--	bool user   = !event->attr.exclude_callchain_user;
-+	bool user   = !event->attr.exclude_callchain_user &&
-+		!(current->flags & (PF_KTHREAD | PF_USER_WORKER));
- 	/* Disallow cross-task user callchains. */
- 	bool crosstask = event->ctx->task && event->ctx->task != current;
- 	const u32 max_stack = event->attr.sample_max_stack;
-diff --git a/net/mptcp/pm_netlink.c b/net/mptcp/pm_netlink.c
-index 9d2c38421f7a..7fd6714f41fe 100644
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -619,6 +619,10 @@ static void mptcp_pm_create_subflow_or_signal_addr(struct mptcp_sock *msk)
- 	}
- 
- subflow:
-+	/* No need to try establishing subflows to remote id0 if not allowed */
-+	if (mptcp_pm_add_addr_c_flag_case(msk))
-+		goto exit;
-+
- 	/* check if should create a new subflow */
- 	while (msk->pm.local_addr_used < local_addr_max &&
- 	       msk->pm.subflows < subflows_max) {
-@@ -650,6 +654,8 @@ static void mptcp_pm_create_subflow_or_signal_addr(struct mptcp_sock *msk)
- 			__mptcp_subflow_connect(sk, &local.addr, &addrs[i]);
- 		spin_lock_bh(&msk->pm.lock);
- 	}
-+
-+exit:
- 	mptcp_pm_nl_check_work_pending(msk);
- }
- 
-diff --git a/net/sched/sch_api.c b/net/sched/sch_api.c
-index a300e8c1b53a..b20dc987b907 100644
---- a/net/sched/sch_api.c
-+++ b/net/sched/sch_api.c
-@@ -599,16 +599,6 @@ void __qdisc_calculate_pkt_len(struct sk_buff *skb,
- 	qdisc_skb_cb(skb)->pkt_len = pkt_len;
- }
- 
--void qdisc_warn_nonwc(const char *txt, struct Qdisc *qdisc)
--{
--	if (!(qdisc->flags & TCQ_F_WARN_NONWC)) {
--		pr_warn("%s: %s qdisc %X: is non-work-conserving?\n",
--			txt, qdisc->ops->id, qdisc->handle >> 16);
--		qdisc->flags |= TCQ_F_WARN_NONWC;
--	}
--}
--EXPORT_SYMBOL(qdisc_warn_nonwc);
--
- static enum hrtimer_restart qdisc_watchdog(struct hrtimer *timer)
- {
- 	struct qdisc_watchdog *wd = container_of(timer, struct qdisc_watchdog,
-diff --git a/net/sched/sch_hfsc.c b/net/sched/sch_hfsc.c
-index afcb83d469ff..751b1e2c35b3 100644
---- a/net/sched/sch_hfsc.c
-+++ b/net/sched/sch_hfsc.c
-@@ -835,22 +835,6 @@ update_vf(struct hfsc_class *cl, unsigned int len, u64 cur_time)
- 	}
- }
- 
--static unsigned int
--qdisc_peek_len(struct Qdisc *sch)
--{
--	struct sk_buff *skb;
--	unsigned int len;
--
--	skb = sch->ops->peek(sch);
--	if (unlikely(skb == NULL)) {
--		qdisc_warn_nonwc("qdisc_peek_len", sch);
--		return 0;
--	}
--	len = qdisc_pkt_len(skb);
--
--	return len;
--}
--
- static void
- hfsc_adjust_levels(struct hfsc_class *cl)
- {
-diff --git a/net/sched/sch_qfq.c b/net/sched/sch_qfq.c
-index c3f9a6375b4e..69fdbbbb3b63 100644
---- a/net/sched/sch_qfq.c
-+++ b/net/sched/sch_qfq.c
-@@ -1002,7 +1002,7 @@ static struct sk_buff *agg_dequeue(struct qfq_aggregate *agg,
- 
- 	if (cl->qdisc->q.qlen == 0) /* no more packets, remove from list */
- 		list_del_init(&cl->alist);
--	else if (cl->deficit < qdisc_pkt_len(cl->qdisc->ops->peek(cl->qdisc))) {
-+	else if (cl->deficit < qdisc_peek_len(cl->qdisc)) {
- 		cl->deficit += agg->lmax;
- 		list_move_tail(&cl->alist, &agg->active);
- 	}
-diff --git a/tools/testing/selftests/net/mptcp/mptcp_join.sh b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-index d30314532bb7..b9cc3d51dc28 100755
---- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-@@ -3837,7 +3837,8 @@ endpoint_tests()
- 
- 	# remove and re-add
- 	if reset_with_events "delete re-add signal" &&
--	   mptcp_lib_kallsyms_has "subflow_rebuild_header$"; then
-+	   continue_if mptcp_lib_kallsyms_has "subflow_rebuild_header$"; then
-+		ip netns exec $ns1 sysctl -q net.mptcp.add_addr_timeout=0
- 		pm_nl_set_limits $ns1 0 3
- 		pm_nl_set_limits $ns2 3 3
- 		pm_nl_add_endpoint $ns1 10.0.2.1 id 1 flags signal
+I'm announcing the release of the 6.12.57 kernel.
+
+All users of the 6.12 kernel series must upgrade.
+
+The updated 6.12.y git tree can be found at:
+	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git linux-6.12.y
+and can be browsed at the normal kernel.org git web browser:
+	https://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=summary
+
+thanks,
+
+greg k-h
+
+------------
+
+ Documentation/sphinx/kernel_abi.py              |    4 +
+ Documentation/sphinx/kernel_feat.py             |    4 +
+ Documentation/sphinx/kernel_include.py          |    6 +-
+ Documentation/sphinx/maintainers_include.py     |    4 +
+ Makefile                                        |    2 
+ arch/alpha/kernel/asm-offsets.c                 |    1 
+ arch/arc/kernel/asm-offsets.c                   |    1 
+ arch/arm/kernel/asm-offsets.c                   |    2 
+ arch/arm64/kernel/asm-offsets.c                 |    1 
+ arch/csky/kernel/asm-offsets.c                  |    1 
+ arch/hexagon/kernel/asm-offsets.c               |    1 
+ arch/loongarch/kernel/asm-offsets.c             |    2 
+ arch/m68k/kernel/asm-offsets.c                  |    1 
+ arch/microblaze/kernel/asm-offsets.c            |    1 
+ arch/mips/kernel/asm-offsets.c                  |    2 
+ arch/nios2/kernel/asm-offsets.c                 |    1 
+ arch/openrisc/kernel/asm-offsets.c              |    1 
+ arch/parisc/kernel/asm-offsets.c                |    1 
+ arch/powerpc/kernel/asm-offsets.c               |    1 
+ arch/riscv/kernel/asm-offsets.c                 |    1 
+ arch/s390/kernel/asm-offsets.c                  |    1 
+ arch/sh/kernel/asm-offsets.c                    |    1 
+ arch/sparc/kernel/asm-offsets.c                 |    1 
+ arch/um/kernel/asm-offsets.c                    |    2 
+ arch/x86/events/intel/core.c                    |   10 +--
+ arch/x86/include/asm/perf_event.h               |    6 +-
+ arch/x86/kernel/cpu/bugs.c                      |    9 +--
+ arch/x86/kvm/pmu.h                              |    2 
+ arch/xtensa/kernel/asm-offsets.c                |    1 
+ drivers/dma-buf/udmabuf.c                       |    2 
+ drivers/edac/edac_mc_sysfs.c                    |   24 +++++++++
+ drivers/gpio/gpio-idio-16.c                     |    5 +
+ drivers/gpio/gpio-regmap.c                      |   53 ++++++++++++++++++-
+ drivers/iommu/intel/iommu.c                     |    7 +-
+ drivers/net/bonding/bond_main.c                 |   11 ++--
+ drivers/net/bonding/bond_options.c              |    3 +
+ drivers/net/ethernet/sfc/ef100_netdev.c         |    6 +-
+ drivers/net/ethernet/sfc/ef100_nic.c            |   47 +++++++----------
+ drivers/net/wireless/ath/ath12k/mac.c           |    6 +-
+ fs/btrfs/disk-io.c                              |    2 
+ fs/btrfs/extent-tree.c                          |    6 +-
+ fs/btrfs/inode.c                                |    7 +-
+ fs/btrfs/scrub.c                                |    3 -
+ fs/btrfs/transaction.c                          |    2 
+ fs/btrfs/tree-checker.c                         |   37 +++++++++++++
+ fs/btrfs/tree-log.c                             |   64 ++++++++++++++++++------
+ fs/btrfs/zoned.c                                |    8 +--
+ fs/btrfs/zoned.h                                |    9 ++-
+ fs/f2fs/file.c                                  |    8 +--
+ fs/f2fs/segment.c                               |   20 +++----
+ include/linux/audit.h                           |    2 
+ include/linux/bitops.h                          |    1 
+ include/linux/bits.h                            |   38 +++++++++++++-
+ include/linux/gpio/regmap.h                     |   16 ++++++
+ include/net/bonding.h                           |    1 
+ include/net/pkt_sched.h                         |   25 +++++++++
+ kernel/cgroup/cpuset.c                          |    6 --
+ kernel/events/callchain.c                       |   16 +++---
+ kernel/events/core.c                            |    7 +-
+ kernel/seccomp.c                                |   32 +++++++++---
+ net/mptcp/pm_netlink.c                          |    6 ++
+ net/sched/sch_api.c                             |   10 ---
+ net/sched/sch_hfsc.c                            |   16 ------
+ net/sched/sch_qfq.c                             |    2 
+ net/wireless/reg.c                              |    4 +
+ tools/sched_ext/scx_qmap.bpf.c                  |   18 ++++++
+ tools/testing/selftests/net/mptcp/mptcp_join.sh |    3 -
+ 67 files changed, 441 insertions(+), 163 deletions(-)
+
+Aditya Kumar Singh (1):
+      wifi: ath12k: fix read pointer after free in ath12k_mac_assign_vif_to_vdev()
+
+Alexander Wetzel (1):
+      wifi: cfg80211: Add missing lock in cfg80211_check_and_end_cac()
+
+Avadhut Naik (1):
+      EDAC/mc_sysfs: Increase legacy channel support to 16
+
+Chao Yu (1):
+      f2fs: fix to avoid panic once fallocation fails for pinfile
+
+Chen Ridong (1):
+      cpuset: Use new excpus for nocpu error check when enabling root partition
+
+Dan Carpenter (1):
+      btrfs: tree-checker: fix bounds check in check_inode_extref()
+
+Dapeng Mi (1):
+      perf/x86/intel: Add ICL_FIXED_0_ADAPTIVE bit into INTEL_FIXED_BITS_MASK
+
+David Kaplan (2):
+      x86/bugs: Report correct retbleed mitigation status
+      x86/bugs: Fix reporting of LFENCE retpoline
+
+Edward Cree (1):
+      sfc: fix NULL dereferences in ef100_process_design_param()
+
+Filipe Manana (6):
+      btrfs: abort transaction on specific error places when walking log tree
+      btrfs: abort transaction in the process_one_buffer() log tree walk callback
+      btrfs: always drop log root tree reference in btrfs_replay_log()
+      btrfs: use level argument in log tree walk callback replay_one_buffer()
+      btrfs: abort transaction if we fail to update inode in log replay dir fixup
+      btrfs: use smp_mb__after_atomic() when forcing COW in create_pending_snapshot()
+
+Geliang Tang (1):
+      selftests: mptcp: disable add_addr retrans in endpoint_tests
+
+Greg Kroah-Hartman (1):
+      Linux 6.12.57
+
+Hangbin Liu (1):
+      bonding: return detailed error when loading native XDP fails
+
+Ioana Ciornei (1):
+      gpio: regmap: add the .fixed_direction_output configuration parameter
+
+Jiri Olsa (1):
+      seccomp: passthrough uprobe systemcall without filtering
+
+Johannes Thumshirn (1):
+      btrfs: zoned: return error from btrfs_zone_finish_endio()
+
+Jonathan Corbet (1):
+      docs: kdoc: handle the obsolescensce of docutils.ErrorString()
+
+Josh Poimboeuf (2):
+      perf: Have get_perf_callchain() return NULL if crosstask and user are set
+      perf: Skip user unwind if the task is a kernel thread
+
+Kees Bakker (1):
+      iommu/vt-d: Avoid use of NULL after WARN_ON_ONCE
+
+Mathieu Dubois-Briand (1):
+      gpio: regmap: Allow to allocate regmap-irq device
+
+Matthieu Baerts (NGI0) (2):
+      selftests: mptcp: join: mark 'delete re-add signal' as skipped if not supported
+      mptcp: pm: in-kernel: C-flag: handle late ADD_ADDR
+
+Menglong Dong (1):
+      arch: Add the macro COMPILE_OFFSETS to all the asm-offsets.c
+
+Naohiro Aota (1):
+      btrfs: zoned: refine extent allocator hint selection
+
+Qu Wenruo (1):
+      btrfs: tree-checker: add inode extref checks
+
+Richard Guy Briggs (1):
+      audit: record fanotify event regardless of presence of rules
+
+Steven Rostedt (1):
+      perf: Use current->flags & PF_KTHREAD|PF_USER_WORKER instead of current->mm == NULL
+
+Tejun Heo (1):
+      sched_ext: Make qmap dump operation non-destructive
+
+Thorsten Blum (1):
+      btrfs: scrub: replace max_t()/min_t() with clamp() in scrub_throttle_dev_io()
+
+Vincent Mailhol (2):
+      bits: add comments and newlines to #if, #else and #endif directives
+      bits: introduce fixed-type GENMASK_U*()
+
+Wang Liang (1):
+      bonding: check xdp prog when set bond mode
+
+William Breathitt Gray (1):
+      gpio: idio-16: Define fixed direction of the GPIO lines
+
+Xiang Mei (1):
+      net/sched: sch_qfq: Fix null-deref in agg_dequeue
+
+Xiaogang Chen (1):
+      udmabuf: fix a buf size overflow issue during udmabuf creation
+
 
