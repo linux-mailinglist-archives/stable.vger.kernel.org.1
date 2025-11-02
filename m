@@ -1,253 +1,243 @@
-Return-Path: <stable+bounces-192067-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192068-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63B86C290FF
-	for <lists+stable@lfdr.de>; Sun, 02 Nov 2025 16:19:35 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E020FC2911A
+	for <lists+stable@lfdr.de>; Sun, 02 Nov 2025 16:33:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0F5AA4E34A8
-	for <lists+stable@lfdr.de>; Sun,  2 Nov 2025 15:19:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 861B53A79FC
+	for <lists+stable@lfdr.de>; Sun,  2 Nov 2025 15:33:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BD391339B1;
-	Sun,  2 Nov 2025 15:19:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70C631C8606;
+	Sun,  2 Nov 2025 15:33:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pEY+H0Fw"
+	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="fXgSxAw7"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from MEUPR01CU001.outbound.protection.outlook.com (mail-australiasoutheastazolkn19010008.outbound.protection.outlook.com [52.103.73.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 185434C6E
-	for <stable@vger.kernel.org>; Sun,  2 Nov 2025 15:19:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762096770; cv=none; b=piApKTMTyOl81GrjKQRLv8HdlifArnmgw6DxgSZg3ecDrgHPvqm0LzxVD4cY0hItJzubVSdFE/FPpijAHq8Ezenk+1OixVx6RzVbaWbuuY/dek/BB8CI49TrVqeeOYewP+ZPy19ciKEqFrmVKKQFIHD/YJvsL5tQBUngcVujgtU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762096770; c=relaxed/simple;
-	bh=wSiu8/DFDy4t2EsY4Sn/i0cxJJOSVCXwOph3Z+U16z8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gdCS59BhUfe8TXPdpbydUu3rlTVw7SV3UXQawgfOaactgnkzjyknYwfNRkHJTkVaAtHGMPhudoKtdG4awtI5f2LlH7QcO/1QFRHSLY9OistNW+Is84corkWD/zELkaXTiysyA/CJS53Jv8O7AhGZ5K2yfAXojQBGG6gOM0KvbXo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pEY+H0Fw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8419C4CEF7;
-	Sun,  2 Nov 2025 15:19:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762096769;
-	bh=wSiu8/DFDy4t2EsY4Sn/i0cxJJOSVCXwOph3Z+U16z8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pEY+H0FwDeww73q86E/xEpYCt9tG5qdTDXva2iO4fwf086ng36pGiCsQ1lrlWcPBF
-	 ZbgAYwIU3QqMXE/x14DYkFFYv1o9mZde8n4HCsXeyIoW1Qj718omx8BmkMG9HLDFYO
-	 vdWEG5n9rbsgFwsnwQUNOO+eDrlJ7Hv06RdCmi3Sc59f83UB/fcUsORq1MyayXEK+N
-	 clRZBYY6FDPoRwcP1s1SjnaQbkTPHbG+N97r8VTTVlpHf8cYgUaabZM8pcdOe796RY
-	 I0k3wO7TUw6U8Pl18Sqkz8/AO34EtHhB8OJzmTGny6arnVr1XfqmP27aFeRaAyfVIM
-	 ew2pKt6q+6zqw==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>,
-	Arend van Spriel <arend.vanspriel@broadcom.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4.y] wifi: brcmfmac: fix crash while sending Action Frames in standalone AP Mode
-Date: Sun,  2 Nov 2025 10:19:27 -0500
-Message-ID: <20251102151927.3476662-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025110229-sandblast-glacial-765a@gregkh>
-References: <2025110229-sandblast-glacial-765a@gregkh>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 500BE33EC;
+	Sun,  2 Nov 2025 15:33:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.73.8
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1762097602; cv=fail; b=o5wDUuOYgg3Hkil/pyGqC5LXxkYFTQCoPfZs4YTFWzZPzSovNkT8Uatc7YZykyGzahgsjypEulwoZfTm4ITj+XclDYJdNKIUTsiRTfQ961yr0eFc5/qoWgMEh3YB0WR3MLRhycd049SpQt6sHP+EqUAdP1rp9QMgphfqrFYvOn8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1762097602; c=relaxed/simple;
+	bh=qSyxyO1QwC3ALPYcSHrwe8xmDF7shVzCg3klIfp05as=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=K6PCW/PUveJnLJyIOyVUirdY6Cv/uj7elg+2L3tymoWEOUh8aOG1EWR2ZtiCdkne2ybmMQg0IGDBYs5Ht8xNI2oW8oMVaXY1mEMgd1/GdnPYWaxARJautDcmN7LWp683PqGKx4K+2KJ5W23G/D4cmxBxQSYw76dky2MZvwg9Ek0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=fXgSxAw7; arc=fail smtp.client-ip=52.103.73.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Ii3jFeyJAAPPEYvE7AsWocQjPtiYeyo6enJgydLN0GnFtuomCLBpKTtSUYUTbVMM6KZ8nNqvgtvHuK3ZgQtyrYOqjArcfxTbRQ5OVIAqN2DjLOYIlab3ry6hn5d8yNN6MRlr8VZWmwNY4F6qxA7EzT8CvrlmNYWkdiTLzaglay2NDoZ0CuyG6OKBuPpYDYwDScTzjzMAAPCtT4A19gDejrw9Dg2+qO/9OJptVfCJrLM4F+OZJ74J0QUMjF0zp4vjJDgFr8HtuDmhcNTPwCbPkAFAPjpWqlIxg86udcoZeot3B+1Mvl5Xvox2ZVuQwYh346sEN9NmvHcVWUk5zxpIUQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Xtl31g5xmC8E8REFN7hEc+AlTk0V5PThLhIiMbSAWT0=;
+ b=jsVeCeaASFWXqiwrFjxn0opQopw/cR2ugy6uVYE+T0JaEOBIBhYzXEi+Cczb4Sx8fM7nUBMo+ZN4yqRLwrL7xnJ90TG7gzfEKHh1CNB/t/MyJmYEf5uzhTx7XMASAPAx03YZRTZYLPPiWid/FM6IsMH9uAmk4TTyaEaqpXMfDCbvew6jH103D+mTtex6VEjKeLzklmQ1JqU77UeHFCVB/ULeuzgDMWX+1Urk2UTQmojNivNITp9J4Re4aGMvSU+qoFE5gcDM+CE3Yue9sE4sXRLA6uRclKZvORX5PjOo0nYaVHHDdCMtdeC8a2MYViJmIH8jnLRKKeuPtnlLkp3unw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Xtl31g5xmC8E8REFN7hEc+AlTk0V5PThLhIiMbSAWT0=;
+ b=fXgSxAw7VKx1U/A9c8j5jsMbSEppRnMMvBv9esf+folBHmbC/KqIqYlvSBChuno8xXCJ7LJ0fwyD88gOwzV20IpGd1VwmiVByxTNk4JNSLxK7ObBwBTpa85GcmG8z0b6GuknL08Eid6PnUu6Vp/C8jwI/uf9qIxyaMtjUfZOaGrlT/XpVW4B77zlpLWmzjrEs0Vczy/I2tXX8wteD9lPzdHnuJT9V4PN3QbqsECYJoA27tGLIj4X8jkmyCHBf7Gv9ZnZN8lAeNSuN425Nh87x+0zB8UucYh83BC7NXhL+AHv1qbpjwDUFD+2lY4XqK8iD3b/LPPj2QbEPbWu4rPb7A==
+Received: from SYBPR01MB7881.ausprd01.prod.outlook.com (2603:10c6:10:1b0::5)
+ by SYBPR01MB8585.ausprd01.prod.outlook.com (2603:10c6:10:1a8::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9275.16; Sun, 2 Nov
+ 2025 15:33:15 +0000
+Received: from SYBPR01MB7881.ausprd01.prod.outlook.com
+ ([fe80::7cd2:d6e8:3fa0:5f0c]) by SYBPR01MB7881.ausprd01.prod.outlook.com
+ ([fe80::7cd2:d6e8:3fa0:5f0c%3]) with mapi id 15.20.9275.015; Sun, 2 Nov 2025
+ 15:33:15 +0000
+From: moonafterrain@outlook.com
+To: Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>
+Cc: linux-sound@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Yuhao Jiang <danisjiang@gmail.com>,
+	Junrui Luo <moonafterrain@outlook.com>
+Subject: [PATCH v2] ALSA: wavefront: use scnprintf for longname construction
+Date: Sun,  2 Nov 2025 23:32:39 +0800
+Message-ID:
+ <SYBPR01MB7881987D79C62D8122B655FEAFC6A@SYBPR01MB7881.ausprd01.prod.outlook.com>
+X-Mailer: git-send-email 2.51.1.dirty
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: PH7PR10CA0002.namprd10.prod.outlook.com
+ (2603:10b6:510:23d::28) To SYBPR01MB7881.ausprd01.prod.outlook.com
+ (2603:10c6:10:1b0::5)
+X-Microsoft-Original-Message-ID:
+ <20251102153239.8034-1-moonafterrain@outlook.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SYBPR01MB7881:EE_|SYBPR01MB8585:EE_
+X-MS-Office365-Filtering-Correlation-Id: 12a0e94d-88a9-443b-d4a9-08de1a251f6e
+X-Microsoft-Antispam:
+	BCL:0;ARA:14566002|461199028|5072599009|5062599005|8022599003|8060799015|15080799012|23021999003|19110799012|41001999006|4302099013|3412199025|440099028|10035399007|1602099012|1710799026;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?yCVPe75vcfdk1YmVLQxbWw7dusOHbgU2t6ZFMGAcvdf90rmWd4YEFoT/nOg2?=
+ =?us-ascii?Q?6DKXltkSGbtnRc3yk/s5mzcntHeL6rqI/n1RSsT3uPJpQ3U7a4IgHSnTww7B?=
+ =?us-ascii?Q?00wkWvuiJfm2uPOzlhny1X100cuThiHvDkBENTp1BQZ0zT0CZA/1WY9LbWRx?=
+ =?us-ascii?Q?JldEHgkw5+V9k83Gw3YGTaISOFzkjycphvveEe9SeRg+Kb3lVn3r0R6tQlA+?=
+ =?us-ascii?Q?3mJa0Fel9csBDnJvUjFj9iHc6qboS7rSRW+vGHpMVSYlyE/k8lhMgcd3E4q0?=
+ =?us-ascii?Q?nJLcxjgGSQ79AWaIk/sUa5AkKf6hW0ZT4BusgKE3emGqrKafSCQACi+Kmj4h?=
+ =?us-ascii?Q?eDKu/ioA95P1GQf1CDEo9Q+ViZqkhn9mdcY7ls47E+WQ53KAsmdveANu470n?=
+ =?us-ascii?Q?yBle/DdLylg/CLul5bnU7xh+StSrIYtIwBi7F+olUehgSHOVebx7o2TDUHDS?=
+ =?us-ascii?Q?ACeHILhTVN3xkAFFvOcroP3sPbft4CItcvimHIB7zJXoH3jjfmQiysDT/1I8?=
+ =?us-ascii?Q?o8u1OvcvyuGMO0ezaeTAuHJ/SbfJusTeeMyHQJyg8H9v24YHpROG0xyOz2jl?=
+ =?us-ascii?Q?vVvT3gdcHBcKtCu5bYJPy2L4ew/453j3hjrHmuFSQ5i68jvyfcqbTh3R+g1R?=
+ =?us-ascii?Q?CvJkD75z82d0/UupAn5jmBx74Kad/FeaZQqzqAQ0bA8YoiCYMdbgfdH+EPoa?=
+ =?us-ascii?Q?n3StsYfpK0uTyuT8ShWSyJh4L7EM9AXZEr838rwEAi3V2b7Lnok/ZR0MB9LW?=
+ =?us-ascii?Q?X0Oj4mU/xoztkY9MxiddEFTPBsmN0UrZfc0uKRpJSdnyoO+jaYpKuueYdR3F?=
+ =?us-ascii?Q?T+k5Tvy/60aPqbIx8TFE5sM+AL2Y7B/YdNS+PkQJqjgFyhktxydyCof8ZRdk?=
+ =?us-ascii?Q?n4EfvZWctbAOOefzh+6u5DvWlKtvfzImw8Y1LZxZnzg2jSN/Ec5G35wEr2e+?=
+ =?us-ascii?Q?zuz4vwajCm9y8PGmHA312YHGzaZhC5G8X0zH2/RLbbaC3sJ41XsWZsJsLnt4?=
+ =?us-ascii?Q?IoN36l45vUXip86aFtyPWTUTBa+pDCuBBntV/uOSHlSdmr8bS9CdKEtwn2th?=
+ =?us-ascii?Q?5mpu9GLjwi018s3l6WFUk96GQ3FUFigduwFVwt6hvI/VgibX6n6R6ssFus7D?=
+ =?us-ascii?Q?wvcIJUEBTu6prnePpFb40Hd3qsDk6OFUmZTtbgWza5qI35GEUjgEBNBw1lwI?=
+ =?us-ascii?Q?0DwknDL2Hdgu/iVsrid+JWGfEkc3h2mpsTZF91v41givmfRIJ1ImdUH5ISzx?=
+ =?us-ascii?Q?L36x5r9iG4Ll2bSqAaqLRa4Vqva81Hoo9g0xCEHKQtRHFf1+abTfbz2XqnMG?=
+ =?us-ascii?Q?BQUewa7chNkwTjFjPFx3cGgS4c7vdp/tu0gKHTVaGS6x2GLA3PQtAGXzc3bJ?=
+ =?us-ascii?Q?tAmbWAw=3D?=
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?p5/PEUEooTGH0RYmkSNBbB4lC/XP4f209nx2rU9poVH6PMDRJgTypSlz++hz?=
+ =?us-ascii?Q?lD86b1lsiEh8EevCSL9aytSu3MGWsovHW+Pmjb1lpW9VP8uA0LGobLson2Y7?=
+ =?us-ascii?Q?9w9BVkSYeonNCE4Xx6sxXseXw49dOtvXwphhgjTp+m5E/eEMGcxzh1csfqCb?=
+ =?us-ascii?Q?bUvr9F1VEddFKilE8fpG6S5p5KdX2krgBnOsntLaBqUL6zYHjEL6ccxgAsPX?=
+ =?us-ascii?Q?MFs4JyAd9uQvQC0qsZDJBaYJg9+40A7Gh+6S/rFdRApYI6y52ES5Bky5MI4Q?=
+ =?us-ascii?Q?vp+fuUdDzfS7fNZOPBHi0qsXJSiAo1AFKQ3bFAkDqgeqObl7iHYKvdg7VsEW?=
+ =?us-ascii?Q?N4XtytqlicAuwiov7yJtlVKYEMJuQfq0PHO+GLDVFdtaUFii13hgbF+W9Ba1?=
+ =?us-ascii?Q?L/WSKwUjJEcaierK6cwrPbOfNpJ0F7OEsGAUyZPICeiS/p/kiiSXvkOO+qus?=
+ =?us-ascii?Q?5nhrKA8KUL5ntE/PKDJ29wQqQ+mgPV+eq766/kdzISnuXHcLOq0xMFJMS0vW?=
+ =?us-ascii?Q?JLnmLi4VRMTRsq737RvWX58xF4gJMqIeVwEHO5MmdKgqX/Tdc1bwvqWtdBLn?=
+ =?us-ascii?Q?iFTdo8iDR0wPYYnSixI7w0A+x+QfuQVEm/lITmX6LfIwCi9ffb/ImpryJfaS?=
+ =?us-ascii?Q?0seAkmT1jo87o2SGlsBXnVVVqPQLXulnTFeEVHh3kre4prHD4Jf5H7ZFRgi3?=
+ =?us-ascii?Q?74HcmeYr8qm78/5jeMuwt8/OtG8dBBWikJNSIo4omXYG6TqmWSljKYOTruK4?=
+ =?us-ascii?Q?HeutIxofeo9xZ6sqZNRrjMeeXxzCpm9z5uBzGWhtn4iFJQD6ODEDXHZFY6Ub?=
+ =?us-ascii?Q?YM0TQGZ7j4UezpnckZ4AJ7BxMzQ1PYVZdX0RVGoV145brDmJMNDmoZ+mAfzW?=
+ =?us-ascii?Q?Cg6HbtouWRXHcubYlBySxvmWgHpocAumWDrR64JBveWluVddDxv5zLzJbold?=
+ =?us-ascii?Q?gMd2ZlTsYZJKtqid1++bjcC1BQsOtRNFkKU+4h2ESQO9cg+2HB9yl+1YjSKR?=
+ =?us-ascii?Q?/BBvxwNG+TliBx+jqY3OkUGavpNTTdSvvnTxyI8cy5epQnw9iXatrYJiZ7JR?=
+ =?us-ascii?Q?LI3panJfIZIqP3iV+zZpJxtfYDtPF4YkiIL9spGBVBrhe6LrFTa/GTFnkFvg?=
+ =?us-ascii?Q?BgJTZo0Mao1qrXbcrcJRauHxw79lKwy2OSQVJchAwwmjN0MEElTXWaR/Y2ri?=
+ =?us-ascii?Q?aF2SbO/9TLregge3KdILyUb1uwuwoXWZcgZ2LQ34Am3mzZ0gyKY5eHhaKbZC?=
+ =?us-ascii?Q?p8AP6rq8dYqNpPaC9e5A?=
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 12a0e94d-88a9-443b-d4a9-08de1a251f6e
+X-MS-Exchange-CrossTenant-AuthSource: SYBPR01MB7881.ausprd01.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Nov 2025 15:33:10.4433
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
+	00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SYBPR01MB8585
 
-From: Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>
+From: Junrui Luo <moonafterrain@outlook.com>
 
-[ Upstream commit 3776c685ebe5f43e9060af06872661de55e80b9a ]
+Replace sprintf() calls with scnprintf() and a new scnprintf_append()
+helper function when constructing card->longname. This improves code
+readability and provides bounds checking for the 80-byte buffer.
 
-Currently, whenever there is a need to transmit an Action frame,
-the brcmfmac driver always uses the P2P vif to send the "actframe" IOVAR to
-firmware. The P2P interfaces were available when wpa_supplicant is managing
-the wlan interface.
+While the current parameter ranges don't cause overflow in practice,
+using safer string functions follows kernel best practices and makes
+the code more maintainable.
 
-However, the P2P interfaces are not created/initialized when only hostapd
-is managing the wlan interface. And if hostapd receives an ANQP Query REQ
-Action frame even from an un-associated STA, the brcmfmac driver tries
-to use an uninitialized P2P vif pointer for sending the IOVAR to firmware.
-This NULL pointer dereferencing triggers a driver crash.
-
- [ 1417.074538] Unable to handle kernel NULL pointer dereference at virtual
- address 0000000000000000
- [...]
- [ 1417.075188] Hardware name: Raspberry Pi 4 Model B Rev 1.5 (DT)
- [...]
- [ 1417.075653] Call trace:
- [ 1417.075662]  brcmf_p2p_send_action_frame+0x23c/0xc58 [brcmfmac]
- [ 1417.075738]  brcmf_cfg80211_mgmt_tx+0x304/0x5c0 [brcmfmac]
- [ 1417.075810]  cfg80211_mlme_mgmt_tx+0x1b0/0x428 [cfg80211]
- [ 1417.076067]  nl80211_tx_mgmt+0x238/0x388 [cfg80211]
- [ 1417.076281]  genl_family_rcv_msg_doit+0xe0/0x158
- [ 1417.076302]  genl_rcv_msg+0x220/0x2a0
- [ 1417.076317]  netlink_rcv_skb+0x68/0x140
- [ 1417.076330]  genl_rcv+0x40/0x60
- [ 1417.076343]  netlink_unicast+0x330/0x3b8
- [ 1417.076357]  netlink_sendmsg+0x19c/0x3f8
- [ 1417.076370]  __sock_sendmsg+0x64/0xc0
- [ 1417.076391]  ____sys_sendmsg+0x268/0x2a0
- [ 1417.076408]  ___sys_sendmsg+0xb8/0x118
- [ 1417.076427]  __sys_sendmsg+0x90/0xf8
- [ 1417.076445]  __arm64_sys_sendmsg+0x2c/0x40
- [ 1417.076465]  invoke_syscall+0x50/0x120
- [ 1417.076486]  el0_svc_common.constprop.0+0x48/0xf0
- [ 1417.076506]  do_el0_svc+0x24/0x38
- [ 1417.076525]  el0_svc+0x30/0x100
- [ 1417.076548]  el0t_64_sync_handler+0x100/0x130
- [ 1417.076569]  el0t_64_sync+0x190/0x198
- [ 1417.076589] Code: f9401e80 aa1603e2 f9403be1 5280e483 (f9400000)
-
-Fix this, by always using the vif corresponding to the wdev on which the
-Action frame Transmission request was initiated by the userspace. This way,
-even if P2P vif is not available, the IOVAR is sent to firmware on AP vif
-and the ANQP Query RESP Action frame is transmitted without crashing the
-driver.
-
-Move init_completion() for "send_af_done" from brcmf_p2p_create_p2pdev()
-to brcmf_p2p_attach(). Because the former function would not get executed
-when only hostapd is managing wlan interface, and it is not safe to do
-reinit_completion() later in brcmf_p2p_tx_action_frame(), without any prior
-init_completion().
-
-And in the brcmf_p2p_tx_action_frame() function, the condition check for
-P2P Presence response frame is not needed, since the wpa_supplicant is
-properly sending the P2P Presense Response frame on the P2P-GO vif instead
-of the P2P-Device vif.
-
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
 Cc: stable@vger.kernel.org
-Fixes: 18e2f61db3b7 ("brcmfmac: P2P action frame tx")
-Signed-off-by: Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>
-Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
-Link: https://patch.msgid.link/20251013102819.9727-1-gokulkumar.sivakumar@infineon.com
-[Cc stable]
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-[ removed hunks for P2P presence response check and dwell_overflow logic ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
 ---
- .../broadcom/brcm80211/brcmfmac/cfg80211.c    |  3 +--
- .../broadcom/brcm80211/brcmfmac/p2p.c         | 21 +++++++++----------
- .../broadcom/brcm80211/brcmfmac/p2p.h         |  3 +--
- 3 files changed, 12 insertions(+), 15 deletions(-)
+Changes in v2:
+- Replace sprintf() calls with scnprintf() and a new scnprintf_append()
+- Link to v1: https://lore.kernel.org/all/ME2PR01MB3156CEC4F31F253C9B540FB7AFFDA@ME2PR01MB3156.ausprd01.prod.outlook.com/
+---
+ sound/isa/wavefront/wavefront.c | 50 +++++++++++++++++++++------------
+ 1 file changed, 32 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-index f9508d71fc6ce..74a329f5c858c 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-@@ -4963,8 +4963,7 @@ brcmf_cfg80211_mgmt_tx(struct wiphy *wiphy, struct wireless_dev *wdev,
- 		brcmf_dbg(TRACE, "Action frame, cookie=%lld, len=%d, freq=%d\n",
- 			  *cookie, le16_to_cpu(action_frame->len), freq);
+diff --git a/sound/isa/wavefront/wavefront.c b/sound/isa/wavefront/wavefront.c
+index 07c68568091d..047dd54f77d4 100644
+--- a/sound/isa/wavefront/wavefront.c
++++ b/sound/isa/wavefront/wavefront.c
+@@ -333,6 +333,19 @@ static int snd_wavefront_card_new(struct device *pdev, int dev,
+ 	return 0;
+ }
  
--		ack = brcmf_p2p_send_action_frame(cfg, cfg_to_ndev(cfg),
--						  af_params);
-+		ack = brcmf_p2p_send_action_frame(vif->ifp, af_params);
- 
- 		cfg80211_mgmt_tx_status(wdev, *cookie, buf, len, ack,
- 					GFP_KERNEL);
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c
-index 1f5deea5a288e..1b9011a90f1b0 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c
-@@ -1477,6 +1477,7 @@ int brcmf_p2p_notify_action_tx_complete(struct brcmf_if *ifp,
- /**
-  * brcmf_p2p_tx_action_frame() - send action frame over fil.
-  *
-+ * @ifp: interface to transmit on.
-  * @p2p: p2p info struct for vif.
-  * @af_params: action frame data/info.
-  *
-@@ -1486,11 +1487,11 @@ int brcmf_p2p_notify_action_tx_complete(struct brcmf_if *ifp,
-  * The WLC_E_ACTION_FRAME_COMPLETE event will be received when the action
-  * frame is transmitted.
-  */
--static s32 brcmf_p2p_tx_action_frame(struct brcmf_p2p_info *p2p,
-+static s32 brcmf_p2p_tx_action_frame(struct brcmf_if *ifp,
-+				     struct brcmf_p2p_info *p2p,
- 				     struct brcmf_fil_af_params_le *af_params)
- {
- 	struct brcmf_pub *drvr = p2p->cfg->pub;
--	struct brcmf_cfg80211_vif *vif;
- 	s32 err = 0;
- 	s32 timeout = 0;
- 
-@@ -1500,8 +1501,7 @@ static s32 brcmf_p2p_tx_action_frame(struct brcmf_p2p_info *p2p,
- 	clear_bit(BRCMF_P2P_STATUS_ACTION_TX_COMPLETED, &p2p->status);
- 	clear_bit(BRCMF_P2P_STATUS_ACTION_TX_NOACK, &p2p->status);
- 
--	vif = p2p->bss_idx[P2PAPI_BSSCFG_DEVICE].vif;
--	err = brcmf_fil_bsscfg_data_set(vif->ifp, "actframe", af_params,
-+	err = brcmf_fil_bsscfg_data_set(ifp, "actframe", af_params,
- 					sizeof(*af_params));
- 	if (err) {
- 		bphy_err(drvr, " sending action frame has failed\n");
-@@ -1643,16 +1643,14 @@ static s32 brcmf_p2p_pub_af_tx(struct brcmf_cfg80211_info *cfg,
- /**
-  * brcmf_p2p_send_action_frame() - send action frame .
-  *
-- * @cfg: driver private data for cfg80211 interface.
-- * @ndev: net device to transmit on.
-+ * @ifp: interface to transmit on.
-  * @af_params: configuration data for action frame.
-  */
--bool brcmf_p2p_send_action_frame(struct brcmf_cfg80211_info *cfg,
--				 struct net_device *ndev,
-+bool brcmf_p2p_send_action_frame(struct brcmf_if *ifp,
- 				 struct brcmf_fil_af_params_le *af_params)
- {
-+	struct brcmf_cfg80211_info *cfg = ifp->drvr->config;
- 	struct brcmf_p2p_info *p2p = &cfg->p2p;
--	struct brcmf_if *ifp = netdev_priv(ndev);
- 	struct brcmf_fil_action_frame_le *action_frame;
- 	struct brcmf_config_af_params config_af_params;
- 	struct afx_hdl *afx_hdl = &p2p->afx_hdl;
-@@ -1779,7 +1777,7 @@ bool brcmf_p2p_send_action_frame(struct brcmf_cfg80211_info *cfg,
- 	tx_retry = 0;
- 	while (!p2p->block_gon_req_tx &&
- 	       (ack == false) && (tx_retry < P2P_AF_TX_MAX_RETRY)) {
--		ack = !brcmf_p2p_tx_action_frame(p2p, af_params);
-+		ack = !brcmf_p2p_tx_action_frame(ifp, p2p, af_params);
- 		tx_retry++;
- 	}
- 	if (ack == false) {
-@@ -2137,7 +2135,6 @@ static struct wireless_dev *brcmf_p2p_create_p2pdev(struct brcmf_p2p_info *p2p,
- 
- 	WARN_ON(p2p_ifp->bsscfgidx != bsscfgidx);
- 
--	init_completion(&p2p->send_af_done);
- 	INIT_WORK(&p2p->afx_hdl.afx_work, brcmf_p2p_afx_handler);
- 	init_completion(&p2p->afx_hdl.act_frm_scan);
- 	init_completion(&p2p->wait_next_af);
-@@ -2390,6 +2387,8 @@ s32 brcmf_p2p_attach(struct brcmf_cfg80211_info *cfg, bool p2pdev_forced)
- 	pri_ifp = brcmf_get_ifp(cfg->pub, 0);
- 	p2p->bss_idx[P2PAPI_BSSCFG_PRIMARY].vif = pri_ifp->vif;
- 
-+	init_completion(&p2p->send_af_done);
++__printf(3, 4) static int scnprintf_append(char *buf, size_t size, const char *fmt, ...)
++{
++	va_list args;
++	size_t len = strlen(buf);
 +
- 	if (p2pdev_forced) {
- 		err_ptr = brcmf_p2p_create_p2pdev(p2p, NULL, NULL);
- 		if (IS_ERR(err_ptr)) {
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.h b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.h
-index 64ab9b6a677df..2472b0ccb8a41 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.h
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.h
-@@ -165,8 +165,7 @@ int brcmf_p2p_notify_action_frame_rx(struct brcmf_if *ifp,
- int brcmf_p2p_notify_action_tx_complete(struct brcmf_if *ifp,
- 					const struct brcmf_event_msg *e,
- 					void *data);
--bool brcmf_p2p_send_action_frame(struct brcmf_cfg80211_info *cfg,
--				 struct net_device *ndev,
-+bool brcmf_p2p_send_action_frame(struct brcmf_if *ifp,
- 				 struct brcmf_fil_af_params_le *af_params);
- bool brcmf_p2p_scan_finding_common_channel(struct brcmf_cfg80211_info *cfg,
- 					   struct brcmf_bss_info_le *bi);
++	if (len >= size)
++		return len;
++	va_start(args, fmt);
++	len = vscnprintf(buf + len, size - len, fmt, args);
++	va_end(args);
++	return len;
++}
++
+ static int
+ snd_wavefront_probe (struct snd_card *card, int dev)
+ {
+@@ -492,26 +505,27 @@ snd_wavefront_probe (struct snd_card *card, int dev)
+ 	   length restrictions
+ 	*/
+ 
+-	sprintf(card->longname, "%s PCM 0x%lx irq %d dma %d",
+-		card->driver,
+-		chip->port,
+-		cs4232_pcm_irq[dev],
+-		dma1[dev]);
++	scnprintf(card->longname, sizeof(card->longname),
++		  "%s PCM 0x%lx irq %d dma %d",
++		  card->driver,
++		  chip->port,
++		  cs4232_pcm_irq[dev],
++		  dma1[dev]);
+ 
+ 	if (dma2[dev] >= 0 && dma2[dev] < 8)
+-		sprintf(card->longname + strlen(card->longname), "&%d", dma2[dev]);
+-
+-	if (cs4232_mpu_port[dev] > 0 && cs4232_mpu_port[dev] != SNDRV_AUTO_PORT) {
+-		sprintf (card->longname + strlen (card->longname), 
+-			 " MPU-401 0x%lx irq %d",
+-			 cs4232_mpu_port[dev],
+-			 cs4232_mpu_irq[dev]);
+-	}
+-
+-	sprintf (card->longname + strlen (card->longname), 
+-		 " SYNTH 0x%lx irq %d",
+-		 ics2115_port[dev],
+-		 ics2115_irq[dev]);
++		scnprintf_append(card->longname, sizeof(card->longname),
++				 "&%d", dma2[dev]);
++
++	if (cs4232_mpu_port[dev] > 0 && cs4232_mpu_port[dev] != SNDRV_AUTO_PORT)
++		scnprintf_append(card->longname, sizeof(card->longname),
++				 " MPU-401 0x%lx irq %d",
++				 cs4232_mpu_port[dev],
++				 cs4232_mpu_irq[dev]);
++
++	scnprintf_append(card->longname, sizeof(card->longname),
++			 " SYNTH 0x%lx irq %d",
++			 ics2115_port[dev],
++			 ics2115_irq[dev]);
+ 
+ 	return snd_card_register(card);
+ }	
 -- 
-2.51.0
+2.51.1.dirty
 
 
