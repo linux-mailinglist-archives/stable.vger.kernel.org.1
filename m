@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-192079-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192080-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A49CCC2959A
-	for <lists+stable@lfdr.de>; Sun, 02 Nov 2025 20:00:15 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0781DC295A9
+	for <lists+stable@lfdr.de>; Sun, 02 Nov 2025 20:03:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 623F63ADB78
-	for <lists+stable@lfdr.de>; Sun,  2 Nov 2025 19:00:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5373A188CC87
+	for <lists+stable@lfdr.de>; Sun,  2 Nov 2025 19:03:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DA8523BCE3;
-	Sun,  2 Nov 2025 19:00:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAF4235975;
+	Sun,  2 Nov 2025 19:02:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bc0csNOe"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ofwQgdrK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E44F23C8A1
-	for <stable@vger.kernel.org>; Sun,  2 Nov 2025 19:00:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78F0579F2
+	for <stable@vger.kernel.org>; Sun,  2 Nov 2025 19:02:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762110011; cv=none; b=h1ejRotTEe2tPc1dRX2cVYkmr1CxiUqFu7RjTzwkIGMd4Hgz8Lf8FZv1cJDxvHwsuD+8JAQFEHpeH/XwfHQeHqIK+FmHmpzJhybwQX++ONaIYaKhqd1L2MT/9uskv8HrPXgr+r9or04sCvCafzNcV0N1tUJ9S06+7A+n4MWeuS8=
+	t=1762110175; cv=none; b=oWWNW74iT6HvTYicTfQj7BR5M4jZFVL8TqktHVXSeCdqORT4shq74dDfIRCsSI2gg01PBs9C+yR6AN2dI8ACD2SBpcAEgVhoDpB61o5D5Fi2BSuCtJTLlzHeZH/CD3ad4GUQXsR4fsqJ+hnAmqjx2A8qxCuFBN/W7AMLP0/W6Aw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762110011; c=relaxed/simple;
-	bh=NZw8xr+3Pldh04mf7I2f1xKH8695FoVZXLOvSA5Y0ew=;
+	s=arc-20240116; t=1762110175; c=relaxed/simple;
+	bh=/TUlN+TH6WJ0q+0Ie30VsMDHHu1dmPtj1jh0DZuFiJ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kg/uyBeJ3so/kWPh4mHrEkoeh8rBcNbuYIRMPFITMxdX5qbplt1WKhevxO/nDHbB+M4mM12MLsl/EGu9RdrrB+9IrBbCkrdkjdWTuQkcoBjJddYD1yKup0hiznP/gscXHGiyb63nzWUApZmZqA/79ekzRphp9hyvCpRdw+q2vOw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bc0csNOe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E757EC116B1;
-	Sun,  2 Nov 2025 19:00:09 +0000 (UTC)
+	 MIME-Version; b=dK3BUm4gO84OHK82gp68VuuynufNIGhD52F8y31Gc2WIom7N3D5QT7t7FCwBVv/6xy0jS1WsWBAmW+yQGtMSupv90que9LoMpxTRoavJzm+Bv9U6KojNLmey1Q2A7zF7u4m3PZLfB+ORrgdcSb/9klwHtvwnq74zdsVgvN9uCb8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ofwQgdrK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 863CAC4CEF7;
+	Sun,  2 Nov 2025 19:02:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762110010;
-	bh=NZw8xr+3Pldh04mf7I2f1xKH8695FoVZXLOvSA5Y0ew=;
+	s=k20201202; t=1762110175;
+	bh=/TUlN+TH6WJ0q+0Ie30VsMDHHu1dmPtj1jh0DZuFiJ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bc0csNOeiNl84+s02azZy27rnvuQRYeF9cJ90qEd6iXqYyhLzv23pnTmCi2AskMik
-	 cf/Lbmgt2kUL1KFGBkLsLK0yjUhQqGGUmADI9Wl8uZvCbp2fmxYD+mHD+87hbtrVDB
-	 CJ1Q7Vh0xRG/qC06Hp3/DCKcu03TERasqjFMIG3tw1h8GqdX8uGbo2W9F7415eQ6qF
-	 OMUlDPv0LY7i/QZ6F2YTjVOHUSel0qaxvPFj75MmcyTUwvFsp2urw14tXCUxPfA2dj
-	 blyecTiWn74qA+DQt+ZQNqmP98gIHf/2V3PYqboe4kXBIANgyvMZP8DNuujUAykYaH
-	 kz3WdZefWjILg==
+	b=ofwQgdrKItz9pb4A5ph+a9Mtujq+QFJKaYYdNHtWv2LftWmOxWstpr2JaUuIXL9Oy
+	 M9UA95kHYOp0jnrZQEHsIAcjc7jpJkLKsGQvfLbycgC7el6keKzPsIT0XI/ixtgBLw
+	 JHUHXFFrxghsqk6CHrCALq5n5Zxq7KcWPcF/8zz89SIKud6N+XDbNIELS73EnopqED
+	 RFG5Z9Zf/+azR+ldcorCAokkYHYvC2IJ0PmdT45O84En/16R6+7CEqOadO2wTZlmHx
+	 fDUlIexj9HjEqASqlYptiN0u1Cu9bkNktBZO0qhbgEnSxfszYwjtDlKtGGF7Bjv6CQ
+	 0P+PD1TxB/Aaw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Paolo Abeni <pabeni@redhat.com>,
-	Geliang Tang <geliang@kernel.org>,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Christian Loehle <christian.loehle@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y 2/2] mptcp: drop bogus optimization in __mptcp_check_push()
-Date: Sun,  2 Nov 2025 14:00:03 -0500
-Message-ID: <20251102190003.3553215-2-sashal@kernel.org>
+Subject: [PATCH 6.6.y 1/2] cpuidle: governors: menu: Rearrange main loop in menu_select()
+Date: Sun,  2 Nov 2025 14:02:51 -0500
+Message-ID: <20251102190252.3557318-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251102190003.3553215-1-sashal@kernel.org>
-References: <2025110239-gender-concise-c9df@gregkh>
- <20251102190003.3553215-1-sashal@kernel.org>
+In-Reply-To: <2025110245-mongoose-ravioli-e19d@gregkh>
+References: <2025110245-mongoose-ravioli-e19d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -64,110 +60,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
 
-[ Upstream commit 27b0e701d3872ba59c5b579a9e8a02ea49ad3d3b ]
+[ Upstream commit 17224c1d2574d29668c4879e1fbf36d6f68cd22b ]
 
-Accessing the transmit queue without owning the msk socket lock is
-inherently racy, hence __mptcp_check_push() could actually quit early
-even when there is pending data.
+Reduce the indentation level in the main loop of menu_select() by
+rearranging some checks and assignments in it.
 
-That in turn could cause unexpected tx lock and timeout.
+No intentional functional impact.
 
-Dropping the early check avoids the race, implicitly relaying on later
-tests under the relevant lock. With such change, all the other
-mptcp_send_head() call sites are now under the msk socket lock and we
-can additionally drop the now unneeded annotation on the transmit head
-pointer accesses.
-
-Fixes: 6e628cd3a8f7 ("mptcp: use mptcp release_cb for delayed tasks")
-Cc: stable@vger.kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Geliang Tang <geliang@kernel.org>
-Tested-by: Geliang Tang <geliang@kernel.org>
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20251028-net-mptcp-send-timeout-v1-1-38ffff5a9ec8@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ split upstream __subflow_push_pending change across __mptcp_push_pending and __mptcp_subflow_push_pending ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Christian Loehle <christian.loehle@arm.com>
+Link: https://patch.msgid.link/2389215.ElGaqSPkdT@rafael.j.wysocki
+Stable-dep-of: db86f55bf81a ("cpuidle: governors: menu: Select polling state in some more cases")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/protocol.c | 13 +++++--------
- net/mptcp/protocol.h |  2 +-
- 2 files changed, 6 insertions(+), 9 deletions(-)
+ drivers/cpuidle/governors/menu.c | 70 ++++++++++++++++----------------
+ 1 file changed, 36 insertions(+), 34 deletions(-)
 
-diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
-index cfbc7ef3b211d..87a17216737ce 100644
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -1101,7 +1101,7 @@ static void __mptcp_clean_una(struct sock *sk)
- 			if (WARN_ON_ONCE(!msk->recovery))
- 				break;
+diff --git a/drivers/cpuidle/governors/menu.c b/drivers/cpuidle/governors/menu.c
+index cafe6eed3349f..8e9d9c448f0f8 100644
+--- a/drivers/cpuidle/governors/menu.c
++++ b/drivers/cpuidle/governors/menu.c
+@@ -348,45 +348,47 @@ static int menu_select(struct cpuidle_driver *drv, struct cpuidle_device *dev,
+ 		if (s->exit_latency_ns > latency_req)
+ 			break;
  
--			WRITE_ONCE(msk->first_pending, mptcp_send_next(sk));
-+			msk->first_pending = mptcp_send_next(sk);
- 		}
- 
- 		dfrag_clear(sk, dfrag);
-@@ -1686,7 +1686,7 @@ void __mptcp_push_pending(struct sock *sk, unsigned int flags)
- 
- 			mptcp_update_post_push(msk, dfrag, ret);
- 		}
--		WRITE_ONCE(msk->first_pending, mptcp_send_next(sk));
-+		msk->first_pending = mptcp_send_next(sk);
- 	}
- 
- 	/* at this point we held the socket lock for the last subflow we used */
-@@ -1742,7 +1742,7 @@ static void __mptcp_subflow_push_pending(struct sock *sk, struct sock *ssk, bool
- 
- 			mptcp_update_post_push(msk, dfrag, ret);
- 		}
--		WRITE_ONCE(msk->first_pending, mptcp_send_next(sk));
-+		msk->first_pending = mptcp_send_next(sk);
- 	}
- 
- out:
-@@ -1912,7 +1912,7 @@ static int mptcp_sendmsg(struct sock *sk, struct msghdr *msg, size_t len)
- 			get_page(dfrag->page);
- 			list_add_tail(&dfrag->list, &msk->rtx_queue);
- 			if (!msk->first_pending)
--				WRITE_ONCE(msk->first_pending, dfrag);
-+				msk->first_pending = dfrag;
- 		}
- 		pr_debug("msk=%p dfrag at seq=%llu len=%u sent=%u new=%d\n", msk,
- 			 dfrag->data_seq, dfrag->data_len, dfrag->already_sent,
-@@ -2910,7 +2910,7 @@ static void __mptcp_clear_xmit(struct sock *sk)
- 	struct mptcp_sock *msk = mptcp_sk(sk);
- 	struct mptcp_data_frag *dtmp, *dfrag;
- 
--	WRITE_ONCE(msk->first_pending, NULL);
-+	msk->first_pending = NULL;
- 	list_for_each_entry_safe(dfrag, dtmp, &msk->rtx_queue, list)
- 		dfrag_clear(sk, dfrag);
- }
-@@ -3491,9 +3491,6 @@ void __mptcp_data_acked(struct sock *sk)
- 
- void __mptcp_check_push(struct sock *sk, struct sock *ssk)
- {
--	if (!mptcp_send_head(sk))
--		return;
+-		if (s->target_residency_ns > predicted_ns) {
+-			/*
+-			 * Use a physical idle state, not busy polling, unless
+-			 * a timer is going to trigger soon enough.
+-			 */
+-			if ((drv->states[idx].flags & CPUIDLE_FLAG_POLLING) &&
+-			    s->target_residency_ns <= data->next_timer_ns) {
+-				predicted_ns = s->target_residency_ns;
+-				idx = i;
+-				break;
+-			}
+-			if (predicted_ns < TICK_NSEC)
+-				break;
 -
- 	if (!sock_owned_by_user(sk))
- 		__mptcp_subflow_push_pending(sk, ssk, false);
- 	else
-diff --git a/net/mptcp/protocol.h b/net/mptcp/protocol.h
-index 81507419c465e..6b1d86fd3a8e7 100644
---- a/net/mptcp/protocol.h
-+++ b/net/mptcp/protocol.h
-@@ -360,7 +360,7 @@ static inline struct mptcp_data_frag *mptcp_send_head(const struct sock *sk)
- {
- 	const struct mptcp_sock *msk = mptcp_sk(sk);
+-			if (!tick_nohz_tick_stopped()) {
+-				/*
+-				 * If the state selected so far is shallow,
+-				 * waking up early won't hurt, so retain the
+-				 * tick in that case and let the governor run
+-				 * again in the next iteration of the loop.
+-				 */
+-				predicted_ns = drv->states[idx].target_residency_ns;
+-				break;
+-			}
++		if (s->target_residency_ns <= predicted_ns) {
++			idx = i;
++			continue;
++		}
++
++		/*
++		 * Use a physical idle state, not busy polling, unless a timer
++		 * is going to trigger soon enough.
++		 */
++		if ((drv->states[idx].flags & CPUIDLE_FLAG_POLLING) &&
++		    s->target_residency_ns <= data->next_timer_ns) {
++			predicted_ns = s->target_residency_ns;
++			idx = i;
++			break;
++		}
  
--	return READ_ONCE(msk->first_pending);
-+	return msk->first_pending;
- }
++		if (predicted_ns < TICK_NSEC)
++			break;
++
++		if (!tick_nohz_tick_stopped()) {
+ 			/*
+-			 * If the state selected so far is shallow and this
+-			 * state's target residency matches the time till the
+-			 * closest timer event, select this one to avoid getting
+-			 * stuck in the shallow one for too long.
++			 * If the state selected so far is shallow, waking up
++			 * early won't hurt, so retain the tick in that case and
++			 * let the governor run again in the next iteration of
++			 * the idle loop.
+ 			 */
+-			if (drv->states[idx].target_residency_ns < TICK_NSEC &&
+-			    s->target_residency_ns <= delta_tick)
+-				idx = i;
+-
+-			return idx;
++			predicted_ns = drv->states[idx].target_residency_ns;
++			break;
+ 		}
  
- static inline struct mptcp_data_frag *mptcp_send_next(struct sock *sk)
+-		idx = i;
++		/*
++		 * If the state selected so far is shallow and this state's
++		 * target residency matches the time till the closest timer
++		 * event, select this one to avoid getting stuck in the shallow
++		 * one for too long.
++		 */
++		if (drv->states[idx].target_residency_ns < TICK_NSEC &&
++		    s->target_residency_ns <= delta_tick)
++			idx = i;
++
++		return idx;
+ 	}
+ 
+ 	if (idx == -1)
 -- 
 2.51.0
 
