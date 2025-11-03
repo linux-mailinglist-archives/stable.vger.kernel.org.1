@@ -1,72 +1,99 @@
-Return-Path: <stable+bounces-192286-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192287-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1536C2E770
-	for <lists+stable@lfdr.de>; Tue, 04 Nov 2025 00:45:52 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id F043BC2E7C4
+	for <lists+stable@lfdr.de>; Tue, 04 Nov 2025 00:53:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 301974F22D5
-	for <lists+stable@lfdr.de>; Mon,  3 Nov 2025 23:44:59 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 992674E3121
+	for <lists+stable@lfdr.de>; Mon,  3 Nov 2025 23:53:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0339130DD18;
-	Mon,  3 Nov 2025 23:44:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CB1730100B;
+	Mon,  3 Nov 2025 23:53:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="arUhlo4T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G/Vcf6HC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3D5830BB90;
-	Mon,  3 Nov 2025 23:44:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D837126F0A;
+	Mon,  3 Nov 2025 23:53:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762213480; cv=none; b=tcxi8+avm/qCBbI+cf/vo+HJoP35ycRpf0luo9ZlY9NDkuOQQBWzD02lLgaJrzkMiutRc2f5nv0eIEnzxawd3af0ly1zfg4e04C+0BkUfoukJYE6hYbzdqIlN42voP91wcZeGniVhDg8WCRISrW2Y3+zdHwaPfWPrzhvVbFZW+o=
+	t=1762213981; cv=none; b=VV3xBNWuWlJ8zo8kieK5A67W4XjhZAenwmgBjpXKZNbhBQJtWz6saSdQ37btDESPZuvToyyg0G9oslu5Tf0n5jOhaDipuZUUr2bQwiIpLAHyVyDS+wAF24+DQkVA2a4WQvO+A/CQgM+iF6exWu1V44AROj1URon7VqOWI+lccTc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762213480; c=relaxed/simple;
-	bh=51ZuLqa9vgyNyF8Hwj/WsY0DqAHS9YKk1MRGYf4BaQE=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=d/5ltBZRVfL+h5fz36ATLSv8xM15OofV2+yNO6BFYSfBxk0uSu+hEqQmxPJvbOvtAiPWAD44Fq4Ilgc9r5ZxoN4sUtVyQEFLAOM2yGaN5wtm3j9Gw96CJatD7InDFkiOK7h/tUkKzT6UlJWyqdOPNCgOu4rMP54Y0Lz0chfjnRk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=arUhlo4T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8D4DC116B1;
-	Mon,  3 Nov 2025 23:44:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762213480;
-	bh=51ZuLqa9vgyNyF8Hwj/WsY0DqAHS9YKk1MRGYf4BaQE=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=arUhlo4TMHF4gzRUEw//blsavMXXIDWpdr0u9EFsI7EnUAvVMrjixCKALg/UCc4Yp
-	 ojW6teEglrQ0PAzUKgUS0p2qIokbKAl5lEPlhM7AZ8PpB4tlNkQRwTPkUDylhsqabC
-	 +xEuY2XHCGdQ0/Z+dU5hqttiQsjK6FYcxsDTL7DuAn9zQidfmNRYQtQ1MJ4yisZ7R6
-	 ATm9rQo1fbvfcTvvUpuFg218s0Akfr0w5cF5wjhmN0G+ZHUoR0htY40M+5GeT/AxcT
-	 1n/3K95ZWLbBffYBPYjavL6P1/zw524xCOzT45eYASd4nCJBUf+RUkHw++KFiIqjnm
-	 V2OuKjiRw1FAQ==
-Date: Mon, 3 Nov 2025 15:44:39 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
-Cc: netdev@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v3 RESEND] net/dccp: validate Reset/Close/CloseReq in
- DCCP_REQUESTING
-Message-ID: <20251103154439.58c3664c@kernel.org>
-In-Reply-To: <20251103021557.4020515-1-zhaoyz24@mails.tsinghua.edu.cn>
-References: <20251102155428.4186946a@kernel.org>
-	<20251103021557.4020515-1-zhaoyz24@mails.tsinghua.edu.cn>
+	s=arc-20240116; t=1762213981; c=relaxed/simple;
+	bh=tGzK9R2ZDq3iZefSxigTk0vifeKf2tE7fUT5zVytAJQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HsOsdF6egBLDxcJwL2iwgYpwZeTLCU8fxZ0fF/c0phxa3PXZfuYf1dSYlc5Sb7LVFGz2gBCt2RXOy8Ujt3Hlntajxprpip5tWiQ9V60shMsgwWkmw2Tu/IJm7ORtb/u67AuBdI59TH3ChsLSxZTnfqjtPDFbG7AeIuu4ylyQJ4U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G/Vcf6HC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 063BCC4CEE7;
+	Mon,  3 Nov 2025 23:52:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1762213980;
+	bh=tGzK9R2ZDq3iZefSxigTk0vifeKf2tE7fUT5zVytAJQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=G/Vcf6HC42/jFWtXxuhcG/54fWnN4AgMX+XM2VuPc2LxTZkS6fIrlX4E2kUI6ufYD
+	 EGIKYntR7Le9M20XLK09yZCayV0pneBY7cxYK/buDPaFZthyavMkaMOBnCihhWcM6g
+	 L+p6ciKfo2Wp73Sz19YcuqFunWR8EKt1pkedZDs8=
+Date: Tue, 4 Nov 2025 08:52:57 +0900
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Matthieu Baerts <matttbe@kernel.org>
+Cc: kuba@kernel.org, martineau@kernel.org, pabeni@redhat.com,
+	sashal@kernel.org, stable-commits@vger.kernel.org,
+	MPTCP Linux <mptcp@lists.linux.dev>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: Patch "mptcp: move the whole rx path under msk socket lock
+ protection" has been added to the 6.12-stable tree
+Message-ID: <2025110444-rendering-exhale-0bd8@gregkh>
+References: <2025110351-praising-bounce-a06b@gregkh>
+ <bbe84711-95b2-4257-9f01-560b4473a3da@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <bbe84711-95b2-4257-9f01-560b4473a3da@kernel.org>
 
-On Mon,  3 Nov 2025 10:15:57 +0800 Yizhou Zhao wrote:
-> Following your instruction, we read the documentation at https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html.
-> We found that the stable documentation normally requires an upstream
-> commit before inclusion in stable, but here an upstream commit cannot
-> exist because the subsystem was removed. Could you please confirm
-> that this can proceed as a stable-only fix for the affected LTS
-> branches?
+On Mon, Nov 03, 2025 at 08:13:30PM +0100, Matthieu Baerts wrote:
+> Hi Greg, Sasha,
+> 
+> On 03/11/2025 02:29, gregkh@linuxfoundation.org wrote:
+> > 
+> > This is a note to let you know that I've just added the patch titled
+> > 
+> >     mptcp: move the whole rx path under msk socket lock protection
+> > 
+> > to the 6.12-stable tree which can be found at:
+> >     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+> > 
+> > The filename of the patch is:
+> >      mptcp-move-the-whole-rx-path-under-msk-socket-lock-protection.patch
+> > and it can be found in the queue-6.12 subdirectory.
+> 
+> Thank you for the backport!
+> > If you, or anyone else, feels it should not be added to the stable tree,
+> > please let <stable@vger.kernel.org> know about it.
+> 
+> Please drop this patch from the 6.12-stable tree: it causes troubles in
+> the MPTCP selftests: MPTCP to TCP connections timeout when MSG_PEEK is
+> used. Likely a dependence is missing, and it might be better to keep
+> only the last patch, and resolve conflicts. I will check that ASAP.
+> 
+> In the meantime, can you then drop this patch and the ones that are
+> linked to it please?
+> 
+> queue-6.12/mptcp-cleanup-mem-accounting.patch
+> queue-6.12/mptcp-fix-msg_peek-stream-corruption.patch
+> queue-6.12/mptcp-move-the-whole-rx-path-under-msk-socket-lock-protection.patch
+> queue-6.12/mptcp-leverage-skb-deferral-free.patch
 
-Yes.
+all now dropped, thanks.
+
+greg k-h
 
