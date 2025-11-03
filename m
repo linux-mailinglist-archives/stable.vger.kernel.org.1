@@ -1,232 +1,195 @@
-Return-Path: <stable+bounces-192204-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192205-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75A9FC2BF92
-	for <lists+stable@lfdr.de>; Mon, 03 Nov 2025 14:09:36 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05F81C2C0C5
+	for <lists+stable@lfdr.de>; Mon, 03 Nov 2025 14:22:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F9071898D2F
-	for <lists+stable@lfdr.de>; Mon,  3 Nov 2025 13:08:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 93E403B07DC
+	for <lists+stable@lfdr.de>; Mon,  3 Nov 2025 13:15:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E596B3126C8;
-	Mon,  3 Nov 2025 13:06:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B95541D5174;
+	Mon,  3 Nov 2025 13:15:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="dI+bSCnv";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="qweOMICM";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="dI+bSCnv";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="qweOMICM"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="R9BpxbsN"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61D18310650
-	for <stable@vger.kernel.org>; Mon,  3 Nov 2025 13:06:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A8B230F52C;
+	Mon,  3 Nov 2025 13:15:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762175185; cv=none; b=HLGOVQnfvBUNidwdvn4PCgT4FbWVdgqatqH+CvfL0EH2qqolA3Ezqu4CIE+rNdm6MwQz9Ta7Z4LI5PAlPt7pY/Bp3zxZ2hoBn0/S1v//9rDv+1cdshGFfle/ypgsjBwb+S4Le2ygOZqfDLA8cqLJKDCQzB7aFbNCM6MTWVTajAA=
+	t=1762175725; cv=none; b=WcNdUk6GAY7J9nW/LMY5g9tPUNqalv1B6qchGxguEL88BA2pTnpghFG4yxfBtxA4wkqRDTKyJYl/NeAlkiHcDsH9fB6MmMgJN42hHVrotj9kHqPigLN40GXf3Qwhq4q5y9ZzCKDRMCMYppY15A2N+Q1UUDSyg5hwjh0omVuRwLY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762175185; c=relaxed/simple;
-	bh=/C30wMuKon+hDs9pYjiwXyTo4RxaD+fj1qAKoNrtQ70=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bun1OtufpJ896Rbx84TSD53tW8EL0J40bHrVr9gefj+LtBnGvj8fLVuNCsx2eyQtsTo59ILUYSES6g/5F/0Sa7iftfDVBWzQXERpocusk9dtt9P7fKkxZEcmlDSV/bQW+lmCp03KU4SJ3eq+kA9uaJGuP/YJyxsAAnAdFKjSC0s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=dI+bSCnv; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=qweOMICM; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=dI+bSCnv; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=qweOMICM; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 2D8FB21C46;
-	Mon,  3 Nov 2025 13:06:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1762175178; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=rXiVoqCh9BsCT+Sc7XLj6BNZ7WlDwCLjiY8k6ty0/5M=;
-	b=dI+bSCnvJNVD26QGqq88ap7RgebQPbt0+r6ZFt9XVgkAIIqZbaXkoCM7fFh+PF8AMEf9Ck
-	Xjd6G03LzSYrx0jJuZGy4umP+JyUwOs/4gmQVeq8pOqdfgJdZtLI75XtIimmdujpGlhGxI
-	snT7meX1XrwXB7jEYF9XLYuBpg5pK6Y=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1762175178;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=rXiVoqCh9BsCT+Sc7XLj6BNZ7WlDwCLjiY8k6ty0/5M=;
-	b=qweOMICMHj8R9cItyiM0QkEVxbw3hcbxW2OFXGDHxdPckVuZapv+62NnhzC23+UicdEfUU
-	nzrdu4XYn9TLJNDA==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1762175178; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=rXiVoqCh9BsCT+Sc7XLj6BNZ7WlDwCLjiY8k6ty0/5M=;
-	b=dI+bSCnvJNVD26QGqq88ap7RgebQPbt0+r6ZFt9XVgkAIIqZbaXkoCM7fFh+PF8AMEf9Ck
-	Xjd6G03LzSYrx0jJuZGy4umP+JyUwOs/4gmQVeq8pOqdfgJdZtLI75XtIimmdujpGlhGxI
-	snT7meX1XrwXB7jEYF9XLYuBpg5pK6Y=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1762175178;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=rXiVoqCh9BsCT+Sc7XLj6BNZ7WlDwCLjiY8k6ty0/5M=;
-	b=qweOMICMHj8R9cItyiM0QkEVxbw3hcbxW2OFXGDHxdPckVuZapv+62NnhzC23+UicdEfUU
-	nzrdu4XYn9TLJNDA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D995C139A9;
-	Mon,  3 Nov 2025 13:06:17 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id SvRLM8moCGkaBAAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Mon, 03 Nov 2025 13:06:17 +0000
-Message-ID: <40516ad3-c235-4977-b1d3-73ba48c55dcf@suse.de>
-Date: Mon, 3 Nov 2025 14:06:17 +0100
+	s=arc-20240116; t=1762175725; c=relaxed/simple;
+	bh=BrUO1cTuo9HyN2IfjVfYTebP2gccBlnbEGfKcY5hl1Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=vDta4olUU2j1GGYPHIgfJuEjfiPvXSR27UldceHckbwJPnDT8PoUN3hLZ8PrUwfy/3k89Ij9un96CkKtj34/s6ixacYgg+nuQxKP3zqE7JNtik4npLUPM940mJC4TsRNNuxXnEmBRRKxN+nOM9m85OKnBwPbc8DFA9RzfkTA5eQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=R9BpxbsN; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1762175723; x=1793711723;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=BrUO1cTuo9HyN2IfjVfYTebP2gccBlnbEGfKcY5hl1Y=;
+  b=R9BpxbsNLi+OLBtP9lVsjaM1BcnHKPKGddCqwF1F76bBkmNTk4sHZb0p
+   IhiVTm37/FWvGLzvyiZPX7ZCc0ytacuX1XS8WTKmOErufBUxrD8CkwEs4
+   Hrtmvh3Xsqyfjr0jOefXwaTRLl8XX0g6YxQfMdX8ciAmBGB/UOQa2F0nb
+   SWtmC9yyOhibn/657mOxosMpSKc8E3PGb1ze2DfGWMBzO/6Io/GJ1yyhb
+   lP1P4v9u+W2NbYzds3eO9wJRWymfjbBIZ9NBk2uSC73hIqvxUiBklOyI6
+   TJiP6tPv5+lR8acg5TWswPD7qVj8mDNNC3lLtt6U7bDrbLBUxfrUd4nVz
+   Q==;
+X-CSE-ConnectionGUID: NUanCj8IQXKZdx7Z26NZjA==
+X-CSE-MsgGUID: y5VM+1igRgy3HMstEh2kbw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11601"; a="89711441"
+X-IronPort-AV: E=Sophos;i="6.19,276,1754982000"; 
+   d="scan'208";a="89711441"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2025 05:15:21 -0800
+X-CSE-ConnectionGUID: 2nVMVhYKS1+Szz2U6eBIYg==
+X-CSE-MsgGUID: x7QyeuscRq+VoOU3ce8bdg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,276,1754982000"; 
+   d="scan'208";a="186105007"
+Received: from smoehrl-linux.amr.corp.intel.com (HELO ashevche-desk.local) ([10.124.220.216])
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2025 05:15:20 -0800
+Received: from andy by ashevche-desk.local with local (Exim 4.98.2)
+	(envelope-from <andriy.shevchenko@intel.com>)
+	id 1vFuOy-000000059bH-2oEI;
+	Mon, 03 Nov 2025 15:15:16 +0200
+Date: Mon, 3 Nov 2025 15:15:15 +0200
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Hans de Goede <hansg@kernel.org>
+Cc: Mark Brown <broonie@kernel.org>, Andy Shevchenko <andy@kernel.org>,
+	linux-spi@vger.kernel.org, linux-acpi@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] spi: Try to get ACPI GPIO IRQ earlier
+Message-ID: <aQiq4_W6AL1n-Geh@smile.fi.intel.com>
+References: <20251102190921.30068-1-hansg@kernel.org>
+ <aQh3RJQ95jTx7VYO@smile.fi.intel.com>
+ <f8dc0e8b-bbdc-4ac6-9ebc-c633bda24403@kernel.org>
+ <aQiATDzxEIKBytXw@smile.fi.intel.com>
+ <af07a18b-cfc8-47d1-ac5a-b343cbfe0f36@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.6.y] drm/sysfb: Do not dereference NULL pointer in plane
- reset
-To: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org
-Cc: Dan Carpenter <dan.carpenter@linaro.org>,
- Melissa Wen <melissa.srw@gmail.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, dri-devel@lists.freedesktop.org,
- Javier Martinez Canillas <javierm@redhat.com>
-References: <2025110310-heavily-unsavory-7385@gregkh>
- <20251103124727.4003872-1-sashal@kernel.org>
-Content-Language: en-US
-From: Thomas Zimmermann <tzimmermann@suse.de>
-Autocrypt: addr=tzimmermann@suse.de; keydata=
- xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
- XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
- BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
- hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
- 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
- AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
- AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
- AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
- lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
- U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
- vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
- 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
- j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
- T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
- 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
- GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
- hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
- EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
- C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
- yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
- SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
- Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
- 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
-In-Reply-To: <20251103124727.4003872-1-sashal@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.80 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	RCVD_TLS_ALL(0.00)[];
-	TAGGED_RCPT(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ARC_NA(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	MIME_TRACE(0.00)[0:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[linaro.org,gmail.com,linux.intel.com,kernel.org,ffwll.ch,lists.freedesktop.org,redhat.com];
-	TO_DN_SOME(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	URIBL_BLOCKED(0.00)[suse.com:url,imap1.dmz-prg2.suse.org:helo,suse.de:mid,suse.de:email,intel.com:email,msgid.link:url,lists.freedesktop.org:email,ffwll.ch:email,linaro.org:email];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,suse.de:email,suse.com:url,imap1.dmz-prg2.suse.org:helo]
-X-Spam-Flag: NO
-X-Spam-Score: -2.80
-X-Spam-Level: 
+In-Reply-To: <af07a18b-cfc8-47d1-ac5a-b343cbfe0f36@kernel.org>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
+On Mon, Nov 03, 2025 at 11:20:30AM +0100, Hans de Goede wrote:
+> On 3-Nov-25 11:13 AM, Andy Shevchenko wrote:
+> > On Mon, Nov 03, 2025 at 10:57:44AM +0100, Hans de Goede wrote:
+> >> On 3-Nov-25 10:35 AM, Andy Shevchenko wrote:
+> >>> On Sun, Nov 02, 2025 at 08:09:21PM +0100, Hans de Goede wrote:
+> >>>> Since commit d24cfee7f63d ("spi: Fix acpi deferred irq probe"), the
+> >>>> acpi_dev_gpio_irq_get() call gets delayed till spi_probe() is called
+> >>>> on the SPI device.
+> >>>>
+> >>>> If there is no driver for the SPI device then the move to spi_probe()
+> >>>> results in acpi_dev_gpio_irq_get() never getting called. This may
+> >>>> cause problems by leaving the GPIO pin floating because this call is
+> >>>> responsible for setting up the GPIO pin direction and/or bias according
+> >>>> to the values from the ACPI tables.
+> >>>>
+> >>>> Re-add the removed acpi_dev_gpio_irq_get() in acpi_register_spi_device()
+> >>>> to ensure the GPIO pin is always correctly setup, while keeping the
+> >>>> acpi_dev_gpio_irq_get() call added to spi_probe() to deal with
+> >>>> -EPROBE_DEFER returns caused by the GPIO controller not having a driver
+> >>>> yet.
+> >>>
+> >>> Even before following the link to some papering over module via the link below
+> >>> I wondered, if the I²C case should be covered as well. The
+> >>> https://github.com/alexpevzner/hotfix-kvadra-touchpad refers to I²C enabled
+> >>> touchpads.
+> >>>
+> >>>> Link: https://bbs.archlinux.org/viewtopic.php?id=302348
 
+...
 
-Am 03.11.25 um 13:47 schrieb Sasha Levin:
-> From: Thomas Zimmermann <tzimmermann@suse.de>
->
-> [ Upstream commit 14e02ed3876f4ab0ed6d3f41972175f8b8df3d70 ]
->
-> The plane state in __drm_gem_reset_shadow_plane() can be NULL. Do not
-> deref that pointer, but forward NULL to the other plane-reset helpers.
-> Clears plane->state to NULL.
->
-> v2:
-> - fix typo in commit description (Javier)
->
-> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-> Fixes: b71565022031 ("drm/gem: Export implementation of shadow-plane helpers")
-> Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-> Closes: https://lore.kernel.org/dri-devel/aPIDAsHIUHp_qSW4@stanley.mountain/
-> Cc: Thomas Zimmermann <tzimmermann@suse.de>
-> Cc: Melissa Wen <melissa.srw@gmail.com>
-> Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-> Cc: Maxime Ripard <mripard@kernel.org>
-> Cc: David Airlie <airlied@gmail.com>
-> Cc: Simona Vetter <simona@ffwll.ch>
-> Cc: dri-devel@lists.freedesktop.org
-> Cc: <stable@vger.kernel.org> # v5.15+
-> Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
-> Link: https://patch.msgid.link/20251017091407.58488-1-tzimmermann@suse.de
-> [ removed drm_format_conv_state_init() call ]
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> >>> I'm not against the SPI fix, but is it confirmed that it really fixes the issue?
+> >>
+> >> Yes Mark and I got an offlist email bisecting this to the:
+> >>
+> >> Fixes: d24cfee7f63d ("spi: Fix acpi deferred irq probe")
+> >>
+> >> commit (on a stable kernel series) and a later email confirming that this
+> >> patch fixes it.
+> > 
+> > Shouldn't we use Closes in this case instead of Link?
+> 
+> I guess so.
+> 
+> >> It seems that leaving the fingerprint reader enable pin (the first GPIO
+> >> listed in _CRS which is an output only pin, is likely the enable pin)
+> >> floating is causing these issues. So in a way the acpi_dev_gpio_irq_get()
+> >> fixing this by forcing the enable pin to no longer float is a bit of
+> >> luck. But things did work before d24cfee7f63d ("spi: Fix acpi deferred irq probe")
+> >> so we need this to fix a regression
+> > 
+> > Yeah, fixing a regression is good thing, but not papering over the issue.
+> 
+> I agree in principle, but this is a quick and safe way to fix
+> the regression, where as the generic fix you describe below is
+> likely months away and also has significant risks of causing
+> regressions in various places, see below.
 
-Acked-by: Thomas Zimmermann <tzimmermann@suse.de>
+Perhaps we should add a TODO / FIXME there as well?
+So at least we will know that this is not a proper solution.
 
-> ---
->   drivers/gpu/drm/drm_gem_atomic_helper.c | 6 +++++-
->   1 file changed, 5 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/gpu/drm/drm_gem_atomic_helper.c b/drivers/gpu/drm/drm_gem_atomic_helper.c
-> index 5d4b9cd077f7a..e0ea3c661cb77 100644
-> --- a/drivers/gpu/drm/drm_gem_atomic_helper.c
-> +++ b/drivers/gpu/drm/drm_gem_atomic_helper.c
-> @@ -301,7 +301,11 @@ EXPORT_SYMBOL(drm_gem_destroy_shadow_plane_state);
->   void __drm_gem_reset_shadow_plane(struct drm_plane *plane,
->   				  struct drm_shadow_plane_state *shadow_plane_state)
->   {
-> -	__drm_atomic_helper_plane_reset(plane, &shadow_plane_state->base);
-> +	if (shadow_plane_state) {
-> +		__drm_atomic_helper_plane_reset(plane, &shadow_plane_state->base);
-> +	} else {
-> +		__drm_atomic_helper_plane_reset(plane, NULL);
-> +	}
->   }
->   EXPORT_SYMBOL(__drm_gem_reset_shadow_plane);
->   
+> >> and as you indicate it seems
+> >> like a good idea in general and maybe we should also do this for i2c.
+> > 
+> >> As for doing something similar for I2C devices, that is an interesting
+> >> question. Even though it is possible I'm not aware of any i2c-devices
+> >> which have a userspace driver like SPI/USB fingerprint readers do,
+> >> so on i2c I would expect probe() to always get called. So I'm not sure
+> >> it is necessary there.
+> > 
+> > Reading the problem statement (the second paragraph) I lean towards
+> > a generic solution residing somewhere in drivers/acpi/scan.c (like
+> > acpi_init_device_object() / acpi_bus_attach() calls), although I don't
+> > see a quick way how to achieve this. It seems would require a bit of
+> > refactoring to allow ACPI glue code to call specific subsystem calls
+> > or making a GPIOLIB to provide some "early" initialisation flow(s).
+> 
+> I guess that you want to do the direction and bias init on all
+> GPIOs listed in _CRS, at least for devices with status == present ?
+
+For the devices that are serial busses only (I²C, SPI, UART).
+
+> I was wondering about the same thing, but ACPI tables are full
+> of, well, erm, garbage in various places so I'm afraid that doing
+> this for all GPIO _CRS resources is likely to cause a whole lot
+> of pain.
+> 
+> Typically the firmware already sets up the direction + bias
+> of all used pins. I'm pretty sure the BIOS-es have some GPIO
+> init table especially for this somewhere.
+> 
+> Now those init-tables may have bugs, but I'm seriously worried
+> about the implication of doing the direction + bios setup for
+> all _CRS GPIO entries. I have simply seen too much non sense
+> devices (with _STA returning 0x0f) listing GPIOs also actually
+> used elsewhere to think this is a good idea.
+
+Btw, other GPIO initialisation issues we have been solving by adding quirks.
+Why this one can't be targeted with the same approach?
 
 -- 
---
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Software Solutions Germany GmbH
-Frankenstr. 146, 90461 NÃ¼rnberg, Germany, www.suse.com
-GF: Jochen Jaser, Andrew McDonald, Werner Knoblich, (HRB 36809, AG NÃ¼rnberg)
+With Best Regards,
+Andy Shevchenko
 
 
 
