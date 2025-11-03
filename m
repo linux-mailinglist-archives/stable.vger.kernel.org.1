@@ -1,131 +1,163 @@
-Return-Path: <stable+bounces-192172-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192174-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EBD8C2AF40
-	for <lists+stable@lfdr.de>; Mon, 03 Nov 2025 11:15:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9371CC2B01F
+	for <lists+stable@lfdr.de>; Mon, 03 Nov 2025 11:20:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D93A24ECE13
-	for <lists+stable@lfdr.de>; Mon,  3 Nov 2025 10:15:13 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 122564E7BBE
+	for <lists+stable@lfdr.de>; Mon,  3 Nov 2025 10:20:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CCB72FD1C2;
-	Mon,  3 Nov 2025 10:15:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C1D62FD69B;
+	Mon,  3 Nov 2025 10:20:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kJ+MBqKf"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KubTNhK5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFAAD7261E;
-	Mon,  3 Nov 2025 10:15:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C687A2FD665;
+	Mon,  3 Nov 2025 10:20:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762164910; cv=none; b=M/VimTWNTIHgUHxgj0tgLtaMJZbc9iho4slQnIhXjrrOfGBZBUZirq3M6Ywlew1WhGk18gj1R24yyu4Z28qlaNu/Fc1S5PMk+zSWiaBV+ip53M3B08CRTZFlgFfbGlD9LZCGpcQx41uZBxiU7E2hmdUmC3MCpzeSxfIPUISAIy4=
+	t=1762165233; cv=none; b=EKdkPS5gGTL7IHWoBgXLYwy+u3he+U1gBdB0o2raVieZCwXr0RMSPfjqkPt8lYkvATSc/zy3mE4m4YxZq8nRmvVycCK6cP0w4WLIVBMBhyqgVadbZbXFVG2xW5wffEtysYeLbnbyc6/6DPJZVfUrzjh/r9Xoxwqv+vktSoxBZyA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762164910; c=relaxed/simple;
-	bh=O4x0jqqxagDU/VftuFhDlptuntE9Kac7vSj33pi2VvQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QQgmO0ESnB/TwDEgTqeiBpb4r4+9eq5AgL8Ynz84btlod3vW87lYR6fDLksdeCL2NYJR7Gd4sjdpjzGKc0n7HNM7TTV6X/jMPhzYrghwokiyjWx/jq8nKYhNMGsHCvJxGgEZwPW98TaCjivdr9hxYTzECd1oPEQ87qo5G6w5dos=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kJ+MBqKf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ECE3C4CEE7;
-	Mon,  3 Nov 2025 10:15:03 +0000 (UTC)
+	s=arc-20240116; t=1762165233; c=relaxed/simple;
+	bh=/OQsET2xvFD951RyDdz77w1a6W8AD8LiQnRlUdUtVJo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=bHaVCpgo75TWwWVFRJEGvpTmTJX8zGgbM9JHAH5e0+GttXSBslH/dWuq+xKgyPws0auUMRNopx7gCKxByZSWr05ywCZbIZfizxGR8EMobmu5eByUFUgK6eGO+rN5Bn5Tj12YzBCAJKf0bQH94nvflQRsV5NigWq7aeaDE2+XZ/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KubTNhK5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76F1FC4CEE7;
+	Mon,  3 Nov 2025 10:20:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762164910;
-	bh=O4x0jqqxagDU/VftuFhDlptuntE9Kac7vSj33pi2VvQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=kJ+MBqKfKXeU/teJKJ87gBmtT1H1BpXVfHwO16qP63B5LdGVaJSV+ZjQQmJu9RFK1
-	 7ImrzDBiLUdYKyv/kEzjpwZWhzcEL+29oAWdzzer2uxPpLr5FWTEK2cHSVutB00P0j
-	 aSCJu+fpbOQHw1up1SDyYXhspEpM/WX63O9IfCYozFIpoE1IcIICeg1nYpA24W2/C3
-	 UP+l2hYftcqz7VhZfnGW1e+Pl+yoq752ZwpWFpQPfj8HSGTcwUuhCs9mpFd+DIxZbu
-	 1JRpmWucJkIC7kZRS2gXoGxuCjhqFqvhT7jw6pFD119wN0z1NnpfqtAv7ec98zqTMW
-	 LdKbA99Io3xLw==
-Date: Mon, 3 Nov 2025 15:44:59 +0530
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: Neil Armstrong <neil.armstrong@linaro.org>
-Cc: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>, 
-	Bjorn Helgaas <bhelgaas@google.com>, Lorenzo Pieralisi <lpieralisi@kernel.org>, 
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Hanjie Lin <hanjie.lin@amlogic.com>, Yue Wang <yue.wang@amlogic.com>, 
-	Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>, 
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>, Andrew Murray <amurray@thegoodpenguin.co.uk>, 
-	Jingoo Han <jingoohan1@gmail.com>, Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>, 
-	linux-pci@vger.kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-amlogic@lists.infradead.org, stable+noautosel@kernel.org, 
-	stable@vger.kernel.org, Linnaea Lavia <linnaea-von-lavia@live.com>
-Subject: Re: [PATCH RESEND 0/3] PCI: meson: Fix the parsing of DBI region
-Message-ID: <mwdy2qe2kp6ygwyw7ohjykzwcsi7udzitizmbzk2rfuf4jesnj@gbjmjfuvzkvw>
-References: <20251101-pci-meson-fix-v1-0-c50dcc56ed6a@oss.qualcomm.com>
- <83d07b54-d584-4297-9aae-2a170c0059d4@linaro.org>
+	s=k20201202; t=1762165233;
+	bh=/OQsET2xvFD951RyDdz77w1a6W8AD8LiQnRlUdUtVJo=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=KubTNhK5mppAn1Y9Mq5wbGCeiG3nW3Ryzs/hu194Y4WXAFedihRAlgr+BZ5o6WM+n
+	 3bhAd+uMi1C71lfwD30VRfv987Y4+fHti7QZ3efzChAs5WBVjYVWauoPI3nFj/+0N6
+	 6qOULxo4kY2Oxlnc8DI3Wj5Wajj2COCUukBLUH3m6VEqa4K/RGAB75hGs/cwCF/bWg
+	 DNXWklqqavH7wb2IMkVdDaohwhCZV9Fg7/iH2umvnOJf38rO5Q9LUsVObMO16xuV5h
+	 AJ+1iSDsjvhBsLDfvmHL+6sn0HTqFbt/xMgg0helMz80A4x3I35uqjPv+9L2t75Xt/
+	 8yaLY4MvakcqA==
+Message-ID: <af07a18b-cfc8-47d1-ac5a-b343cbfe0f36@kernel.org>
+Date: Mon, 3 Nov 2025 11:20:30 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] spi: Try to get ACPI GPIO IRQ earlier
+To: Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc: Mark Brown <broonie@kernel.org>, Andy Shevchenko <andy@kernel.org>,
+ linux-spi@vger.kernel.org, linux-acpi@vger.kernel.org, stable@vger.kernel.org
+References: <20251102190921.30068-1-hansg@kernel.org>
+ <aQh3RJQ95jTx7VYO@smile.fi.intel.com>
+ <f8dc0e8b-bbdc-4ac6-9ebc-c633bda24403@kernel.org>
+ <aQiATDzxEIKBytXw@smile.fi.intel.com>
+From: Hans de Goede <hansg@kernel.org>
+Content-Language: en-US, nl
+In-Reply-To: <aQiATDzxEIKBytXw@smile.fi.intel.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <83d07b54-d584-4297-9aae-2a170c0059d4@linaro.org>
 
-On Mon, Nov 03, 2025 at 10:50:20AM +0100, Neil Armstrong wrote:
-> On 11/1/25 05:29, Manivannan Sadhasivam wrote:
-> > Hi,
-> > 
-> > This compile tested only series aims to fix the DBI parsing issue repored in
-> > [1]. The issue stems from the fact that the DT and binding described 'dbi'
-> > region as 'elbi' from the start.
-> > 
-> > Now, both binding and DTs are fixed and the driver is reworked to work with both
-> > old and new DTs.
-> > 
-> > Note: The driver patch is OK to be backported till 6.2 where the common resource
-> > parsing code was introduced. But the DTS patch should not be backported. And I'm
-> > not sure about the backporting of the binding.
-> > 
-> > Please test this series on the Meson board with old and new DTs.
+Hi,
+
+On 3-Nov-25 11:13 AM, Andy Shevchenko wrote:
+> On Mon, Nov 03, 2025 at 10:57:44AM +0100, Hans de Goede wrote:
+>> On 3-Nov-25 10:35 AM, Andy Shevchenko wrote:
+>>> On Sun, Nov 02, 2025 at 08:09:21PM +0100, Hans de Goede wrote:
+>>>> Since commit d24cfee7f63d ("spi: Fix acpi deferred irq probe"), the
+>>>> acpi_dev_gpio_irq_get() call gets delayed till spi_probe() is called
+>>>> on the SPI device.
+>>>>
+>>>> If there is no driver for the SPI device then the move to spi_probe()
+>>>> results in acpi_dev_gpio_irq_get() never getting called. This may
+>>>> cause problems by leaving the GPIO pin floating because this call is
+>>>> responsible for setting up the GPIO pin direction and/or bias according
+>>>> to the values from the ACPI tables.
+>>>>
+>>>> Re-add the removed acpi_dev_gpio_irq_get() in acpi_register_spi_device()
+>>>> to ensure the GPIO pin is always correctly setup, while keeping the
+>>>> acpi_dev_gpio_irq_get() call added to spi_probe() to deal with
+>>>> -EPROBE_DEFER returns caused by the GPIO controller not having a driver
+>>>> yet.
+>>>
+>>> Even before following the link to some papering over module via the link below
+>>> I wondered, if the I²C case should be covered as well. The
+>>> https://github.com/alexpevzner/hotfix-kvadra-touchpad refers to I²C enabled
+>>> touchpads.
+>>>
+>>>> Link: https://bbs.archlinux.org/viewtopic.php?id=302348
 > 
-> Let me try this serie, I'm on a business trip this week so don't expect a full test
-> report until next monday.
+> ...
 > 
-
-Sure. I may post the next iteration, but will not merge the binding/driver
-patches until you confirm.
-
-- Mani
-
-> Neil
+>>> I'm not against the SPI fix, but is it confirmed that it really fixes the issue?
+>>
+>> Yes Mark and I got an offlist email bisecting this to the:
+>>
+>> Fixes: d24cfee7f63d ("spi: Fix acpi deferred irq probe")
+>>
+>> commit (on a stable kernel series) and a later email confirming that this
+>> patch fixes it.
 > 
-> > 
-> > - Mani
-> > 
-> > [1] https://lore.kernel.org/linux-pci/DM4PR05MB102707B8CDF84D776C39F22F2C7F0A@DM4PR05MB10270.namprd05.prod.outlook.com/
-> > 
-> > Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
-> > ---
-> > Resending as the git sendemail config got messed up
-> > 
-> > ---
-> > Manivannan Sadhasivam (3):
-> >        dt-bindings: PCI: amlogic: Fix the register name of the DBI region
-> >        arm64: dts: amlogic: Fix the register name of the 'DBI' region
-> >        PCI: meson: Fix parsing the DBI register region
-> > 
-> >   .../devicetree/bindings/pci/amlogic,axg-pcie.yaml      |  6 +++---
-> >   arch/arm64/boot/dts/amlogic/meson-axg.dtsi             |  4 ++--
-> >   arch/arm64/boot/dts/amlogic/meson-g12-common.dtsi      |  2 +-
-> >   drivers/pci/controller/dwc/pci-meson.c                 | 18 +++++++++++++++---
-> >   drivers/pci/controller/dwc/pcie-designware.c           | 12 +++++++-----
-> >   5 files changed, 28 insertions(+), 14 deletions(-)
-> > ---
-> > base-commit: 3a8660878839faadb4f1a6dd72c3179c1df56787
-> > change-id: 20251031-pci-meson-fix-c8b651bc6662
-> > 
-> > Best regards,
-> 
+> Shouldn't we use Closes in this case instead of Link?
 
--- 
-மணிவண்ணன் சதாசிவம்
+I guess so.
+
+>> It seems that leaving the fingerprint reader enable pin (the first GPIO
+>> listed in _CRS which is an output only pin, is likely the enable pin)
+>> floating is causing these issues. So in a way the acpi_dev_gpio_irq_get()
+>> fixing this by forcing the enable pin to no longer float is a bit of
+>> luck. But things did work before d24cfee7f63d ("spi: Fix acpi deferred irq probe")
+>> so we need this to fix a regression
+> 
+> Yeah, fixing a regression is good thing, but not papering over the issue.
+
+I agree in principle, but this is a quick and safe way to fix
+the regression, where as the generic fix you describe below is
+likely months away and also has significant risks of causing
+regressions in various places, see below.
+
+>> and as you indicate it seems
+>> like a good idea in general and maybe we should also do this for i2c.
+> 
+>> As for doing something similar for I2C devices, that is an interesting
+>> question. Even though it is possible I'm not aware of any i2c-devices
+>> which have a userspace driver like SPI/USB fingerprint readers do,
+>> so on i2c I would expect probe() to always get called. So I'm not sure
+>> it is necessary there.
+> 
+> Reading the problem statement (the second paragraph) I lean towards
+> a generic solution residing somewhere in drivers/acpi/scan.c (like
+> acpi_init_device_object() / acpi_bus_attach() calls), although I don't
+> see a quick way how to achieve this. It seems would require a bit of
+> refactoring to allow ACPI glue code to call specific subsystem calls
+> or making a GPIOLIB to provide some "early" initialisation flow(s).
+
+I guess that you want to do the direction and bias init on all
+GPIOs listed in _CRS, at least for devices with status == present ?
+
+I was wondering about the same thing, but ACPI tables are full
+of, well, erm, garbage in various places so I'm afraid that doing
+this for all GPIO _CRS resources is likely to cause a whole lot
+of pain.
+
+Typically the firmware already sets up the direction + bias
+of all used pins. I'm pretty sure the BIOS-es have some GPIO
+init table especially for this somewhere.
+
+Now those init-tables may have bugs, but I'm seriously worried
+about the implication of doing the direction + bios setup for
+all _CRS GPIO entries. I have simply seen too much non sense
+devices (with _STA returning 0x0f) listing GPIOs also actually
+used elsewhere to think this is a good idea.
+
+Regards,
+
+Hans
+
 
