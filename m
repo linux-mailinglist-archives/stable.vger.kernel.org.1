@@ -1,79 +1,141 @@
-Return-Path: <stable+bounces-192284-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192285-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72365C2E50C
-	for <lists+stable@lfdr.de>; Mon, 03 Nov 2025 23:49:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 43640C2E5F7
+	for <lists+stable@lfdr.de>; Tue, 04 Nov 2025 00:06:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E78C91894DA4
-	for <lists+stable@lfdr.de>; Mon,  3 Nov 2025 22:50:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B2679189068F
+	for <lists+stable@lfdr.de>; Mon,  3 Nov 2025 23:06:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1998E2E6CD7;
-	Mon,  3 Nov 2025 22:49:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D316C2FD1D9;
+	Mon,  3 Nov 2025 23:05:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jCHygD16"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CMiHZA1D"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C31C91A9F82
-	for <stable@vger.kernel.org>; Mon,  3 Nov 2025 22:49:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A49027B4EE
+	for <stable@vger.kernel.org>; Mon,  3 Nov 2025 23:05:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762210181; cv=none; b=HYCl9YrkcgjGvhC2VaNogsBTFnoHZZf67Oc4A1fC3a0Sg52kJqBzA+1eSoPj7/XtJh2jjXqakp7mE9JL+IINgHkkUWXxg+m8OhRLAN5nauBuqpLwQoK8rH/+Y1yEm8J/+y3ukYxhs/s+brSyO03bsGNKNiXUGMltVTdaRR0D/iM=
+	t=1762211159; cv=none; b=MpEh5octeTMvItZtQpyr0snxjws0cewIqhBLhRbAEw/y3+8xY/yviCTER4Dg8VueaAXTgl6oFK5Gr09lqAAb46xzDmLCqW/vPIYDgIJWIbW0c0sIw6mRuCfrWa/xO63IdKFefuAk9QmYORp0dBkPnRcKQ6opDg+AvKf0bDF8YhM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762210181; c=relaxed/simple;
-	bh=tWBQxkVt80lqwo78yBrNvEeXe7Efzx6wXxFvpz7X/+0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jTxcT750a93j+fN2127F3lWZ2eh33DIbovxMLSMDQklSFX9RBbZDHhdoGZ0WFFh9vCLQK4CSVCLIOV/Pv6ehJtLYFweHeMAzALfvkjMMo3ibKVVkmLaWJqitfE4JaBos4JYPXmJ1wSLLTSCQFYzyNFqGs+Skiej4PTmT8FimcQY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jCHygD16; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 133EDC4CEE7;
-	Mon,  3 Nov 2025 22:49:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762210181;
-	bh=tWBQxkVt80lqwo78yBrNvEeXe7Efzx6wXxFvpz7X/+0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=jCHygD16+TMbIg+EdShKMzUfJXkT3xIQq38kbJXwF1tHjf+GoyAiL+ltv8YmqPg7Q
-	 FohwNzrxZD8mfeLr8LEKqjrGxxkvEzuWJ+qQYzph12AmnvjVs4AgaM5ASzMBw/PivP
-	 9ZveMzSSLqgK13LBzO9AF9W7RcA/upGihhbqLaaQ=
-Date: Tue, 4 Nov 2025 07:49:39 +0900
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Michael Brunner <Michael.Brunner@jumptec.com>
-Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: For stable: [PATCH v2] mfd: kempld: Switch back to earlier
- ->init() behavior
-Message-ID: <2025110429-unmixable-karma-75ef@gregkh>
-References: <d63de3930e7df2726de5ef482b6f46b5c69f0154.camel@jumptec.com>
+	s=arc-20240116; t=1762211159; c=relaxed/simple;
+	bh=wpVJWBuenZcD3eSVXXuQBdHxyRZUm/ZGGvsoPgMAlCE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=LIvBl3KzkHB2QJ9U4SmhcT5ztzRHgKYcJ9OaR10F3IiGzl8+VGCGxQFK8at5b4dHr9PogiYS267Ho6X60YtMA7SadxIRJV3BMoV3Ms3aY35dT0QOcud6FRwm9bwvu28lHPvP4vC5yxv+RJO81XORHszP7c502N2CLiU0qIAdt48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CMiHZA1D; arc=none smtp.client-ip=209.85.214.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-28d18e933a9so4791025ad.3
+        for <stable@vger.kernel.org>; Mon, 03 Nov 2025 15:05:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1762211157; x=1762815957; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ogon7TK6sOugcfKJJppW+WnECgyNYUKvMApdomYEbKo=;
+        b=CMiHZA1Dx3TONUc1uZHfqLTY7pYjVGhppzjfh99oqjSc5G6TRcS4jMtNzlwmIts3E3
+         y8bFQ8QVMOTvVX/EpzNoQLJ3j64+hwAE4YusSzS3JcnVpcdu1UyJP3H4mRz60h7HjMCQ
+         FR2fpLyws20tNwjfyEDwODyz0t9rhbE8W7Ws/cjVfAfYj3jIlwRwUw+S/yqhijCI6ZQ1
+         7T233cgYC4xnP/sPKtzAmODvFl/bA+tWZnqOjLXrHHkYps3uQl9enlYMv78BNMvig5co
+         iWg2ytYb/XHpX6IIc35vuYCyJOcq22owxU1WEBYOLGUL0nRDqvvHDgtoZ1+WevzBKGUC
+         Q3CQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762211157; x=1762815957;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ogon7TK6sOugcfKJJppW+WnECgyNYUKvMApdomYEbKo=;
+        b=KZWZHVSGjAq/L7dHlDAvax5Rj2KSmPRUWws4PEDOjnRRPZJD2rHZwa7L4jGgQiAstA
+         xm/qYPsMGglZ1gp4tOk7waud5mALsBFiKRQnJYctPn3BA9o7QViBTBbZNH0H1upui/iT
+         aedJKgxcQGzeiqJ7sGoo9s29tmtyo0hyY0U9OJ3go16SkUYr/v/zrsMfVk2y229pssDi
+         HMLm88x8wE0Y85M4c7UQ2BmWvZgY4LqgvYMslM2zUe1DMBXobDpaIKe5P4AnDje0H8yH
+         q/gavJEBk1s1DhBdYi5ZYngpcKGg6GTWW95xaQMUzCBepWKnvc+OWPA8K2F3WV+oVGCO
+         WPog==
+X-Forwarded-Encrypted: i=1; AJvYcCVFoacYlM/u5KmcXLgmP80SAte+fdE/Qp2FZrSg6zgDMKP080z9yd13NCYtIORKUlXnHAUaHF0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyM4u6lYUUlpEUCYenLa1J1slGYu/xaVCsvtTG7SU7Wo5PxTiW9
+	sABGKahyLSVE7bHhpGlGXjryfQwvE9wqAueZ5eEkIk82MuXlWJeju6zlNv9X0eX2v5LO50nIio8
+	BfdKrsGbSNUYzybvO5LSpq1TbpmxmQa06S17d
+X-Gm-Gg: ASbGncsLQanez5+LAP5loeGmioyJIFetUB/SEEYB7/RqVtTwFSdZ2LnnV93Qe/ADnaX
+	WqH5ByBAriE2GkuWOPKpZ8DANMM8xUGCzFiEZRfe4He8811dVarQvYC7NdbWuj4rWNBu284wK92
+	9COjIAEny5/nhw0x3KyziMaCrHciyBth+UaPiM/0wJaDdNwcDbGGympG0tOY2x1QfHAOJyonMMb
+	wxvB7AATLJn5DMep9EKeelGAuLFrc3fpEhGYC0EpAWk6ccpcqwUl1bNVZuxW3+E0XhPgsfFJzd3
+	bN3l9gik70wEaWfM7/fL4MhSdBfIW6Q7U8MbnqPBfkaS9j/Zn9WcQigE6BX0KXSikSGy0Nqt8HW
+	HjOlp7PecTKzr1w==
+X-Google-Smtp-Source: AGHT+IHugv4iFaTOCN4EOCjTVF2FfjlZWUSHrrn/GBxoYhXzdeo7YpUX0U5SRp9TWEaFsHczNUaXZUgkuqVdFch+J/I=
+X-Received: by 2002:a17:903:187:b0:290:ad79:c617 with SMTP id
+ d9443c01a7336-2951a380699mr111057345ad.1.1762211157387; Mon, 03 Nov 2025
+ 15:05:57 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d63de3930e7df2726de5ef482b6f46b5c69f0154.camel@jumptec.com>
+References: <20251102212853.1505384-1-ojeda@kernel.org>
+In-Reply-To: <20251102212853.1505384-1-ojeda@kernel.org>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 4 Nov 2025 00:05:45 +0100
+X-Gm-Features: AWmQ_bkuLE73e6Hn0H_oMw4VNuro5lNa0qxJ-qywqWQaWYuKfzn120mRL3CMPr4
+Message-ID: <CANiq72=0JJz5XDHGpiyQBd9AmPCr4veJ=2oJywyyqQB8iMxqvA@mail.gmail.com>
+Subject: Re: [PATCH 1/2] rust: kbuild: treat `build_error` and `rustdoc` as
+ kernel objects
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Alex Gaynor <alex.gaynor@gmail.com>, Nathan Chancellor <nathan@kernel.org>, 
+	Nicolas Schier <nicolas@fjasle.eu>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	patches@lists.linux.dev, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Nov 03, 2025 at 01:54:17PM +0000, Michael Brunner wrote:
-> Mainline patch information (included in 6.18-rc):  
-> mfd: kempld: Switch back to earlier ->init() behavior  
-> Commit 309e65d151ab9be1e7b01d822880cd8c4e611dff
-> 
-> Please consider this patch for all supported stable and longterm
-> versions that include the faulty commit 9e36775c22c7 mentioned in the
-> patch description. This includes all Kernel versions starting with
-> v6.10.
-> 
-> Newer Kontron/JUMPtec products are not listed in the kempld drivers DMI
-> table, as they are supposed to be identified using ACPI. Without this
-> patch there is no way to get the driver working with those boards on
-> the affected kernel versions.
+On Sun, Nov 2, 2025 at 10:30=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wro=
+te:
+>
+> Even if normally `build_error` isn't a kernel object, it should still
+> be treated as such so that we pass the same flags. Similarly, `rustdoc`
+> targets are never kernel objects, but we need to treat them as such.
+>
+> Otherwise, starting with Rust 1.91.0 (released 2025-10-30), `rustc`
+> will complain about missing sanitizer flags since `-Zsanitizer` is a
+> target modifier too [1]:
+>
+>     error: mixing `-Zsanitizer` will cause an ABI mismatch in crate `buil=
+d_error`
+>      --> rust/build_error.rs:3:1
+>       |
+>     3 | //! Build-time error.
+>       | ^
+>       |
+>       =3D help: the `-Zsanitizer` flag modifies the ABI so Rust crates co=
+mpiled with different values of this flag cannot be used together safely
+>       =3D note: unset `-Zsanitizer` in this crate is incompatible with `-=
+Zsanitizer=3Dkernel-address` in dependency `core`
+>       =3D help: set `-Zsanitizer=3Dkernel-address` in this crate or unset=
+ `-Zsanitizer` in `core`
+>       =3D help: if you are sure this will not cause problems, you may use=
+ `-Cunsafe-allow-abi-mismatch=3Dsanitizer` to silence this error
+>
+> Thus explicitly mark them as kernel objects.
+>
+> Cc: stable@vger.kernel.org # Needed in 6.12.y and later (Rust is pinned i=
+n older LTSs).
+> Link: https://github.com/rust-lang/rust/pull/138736 [1]
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 
-Now queued up.
+Applied series to `rust-fixes` -- thanks everyone!
 
-thanks,
+I will send another less urgent one for 1.92.0 (in beta now) that goes
+on top of these here.
 
-greg k-h
+Cheers,
+Miguel
 
