@@ -1,80 +1,75 @@
-Return-Path: <stable+bounces-192191-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192192-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAE33C2B90B
-	for <lists+stable@lfdr.de>; Mon, 03 Nov 2025 13:03:56 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7757C2B91D
+	for <lists+stable@lfdr.de>; Mon, 03 Nov 2025 13:06:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6024B188CA88
-	for <lists+stable@lfdr.de>; Mon,  3 Nov 2025 12:04:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8634E3A8845
+	for <lists+stable@lfdr.de>; Mon,  3 Nov 2025 12:06:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64D91307AEB;
-	Mon,  3 Nov 2025 12:03:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EE753090E5;
+	Mon,  3 Nov 2025 12:06:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="dABSMopx"
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="UZnu7/Pm"
 X-Original-To: stable@vger.kernel.org
 Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDBF2E56A;
-	Mon,  3 Nov 2025 12:03:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 505BA308F39
+	for <stable@vger.kernel.org>; Mon,  3 Nov 2025 12:06:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762171432; cv=none; b=ab+WlI76dg4LKo//+48PKjYq7AtULDw6pJazlLKHHSPSVkfUxylmdcy3ihtTvgQBP/I58ut6UqP+KzMN2Rld4X1rFHcxavwa8q3mkDhm70ivV66rAOuzlA3pJA+pIPzndQxAL4DM2MJiZlNbY9+eEwEyYP+7oIpPWGANpcO4hOQ=
+	t=1762171562; cv=none; b=ub0aOkJGMSJ9V3Wfxn+Xo03Li63MeJR/7q7TvE/T+MsPYvrUYdtqB/8qxBRV68GbW5KJbTvi6ov6qs/NTo7uoMalbJbkLaBeoliEN4I08CbSNkYmwjRA7xO0C/CK53To/gKWJSXtEn9m0J46MTP1fRqbfLUKp21YWgzldd8isZg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762171432; c=relaxed/simple;
-	bh=acw7Ir0FmQ1xJRMVEmdHS7HJOrRUkpHDEiC5cQuSsBE=;
+	s=arc-20240116; t=1762171562; c=relaxed/simple;
+	bh=fy5cdW/wqnsRkpTeNFB4h0upl2/jMUvfA1vlAyK19/Y=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QwZ2q0AFRIFwaBW1g41QlW2fZiA/cekKZHHxox69MG4L1Q8vHsW6nDX+lrIaYR9UL0Z+UW/uLJlhlITiLIRy/txhIFt+8H545Qe+JQw2iA1Cn812wCz9PErJJRRmVSag8eohdGLizaRO39qvMy229E4XeToCJ9oOYX7zNL/guF4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=dABSMopx; arc=none smtp.client-ip=65.109.113.108
+	 Content-Type:Content-Disposition:In-Reply-To; b=G5dSTlOMmHb0a42etUW5prr7qaEH8GJuXrDkIkMmYFWe7WGsT+MTsdOMbsHJh+Z6RVEOc9e6hhmqo6eCbxHM+EhXsYJWvua/h144E5t5Nretu+YCft31oNXO7BOBrEHJqhLCKydEdN3XOflbDQBILtF2q96elFRY3wElPOR3IBU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=UZnu7/Pm; arc=none smtp.client-ip=65.109.113.108
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 17F7040E01A5;
-	Mon,  3 Nov 2025 12:03:47 +0000 (UTC)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 263C540E00DA;
+	Mon,  3 Nov 2025 12:05:58 +0000 (UTC)
 X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
 Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
 	header.d=alien8.de
 Received: from mail.alien8.de ([127.0.0.1])
 	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id exd2t9Cotc1L; Mon,  3 Nov 2025 12:03:44 +0000 (UTC)
+	with ESMTP id rlrIuZekgFNR; Mon,  3 Nov 2025 12:05:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1762171423; bh=9GiFv1yTzalzrkPadTjytgcZ6rFofTRbemaOz0R9fYc=;
+	t=1762171555; bh=x487KIXG3cTMndWg0QgQbgBnKtcJL2NrZKrBY/wZ1TQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=dABSMopx3PzPo11JZu0fbwmTYbYRcJOrzRxdeLgal8ovpvUJaV4KXNmOjqPqlXlp0
-	 +5NOOkJz+gjzQAhzOOvUBxA3nwxl0sHlyf2uIEgZhhHu3EWU9IVWmvf33tMfU2PSPd
-	 agIEXdNoUmdWcrAQK8RS01w1dVljpZ2GswbUQZ22jVzB4w1JIr7+wMXYFjMCteH0w6
-	 Vq9lIF3w4wrpriJm5sO51p5N5Tz7zXPWFmGh0RHGXF8LSoiVNQxTXjsRA8RURxVe2R
-	 CU/pK8jrRFGq5GwcrRLroEOd8uPapSjgZ52IVGxNtlX3oWH9EWM4qrFpvETTYesOld
-	 a8l/Ct3NOKJFhaJ6GfMZTAtV3qlQp0WQ8FpbSQp3EPtJ81NQK1hGFAV7/CUzAiYtrt
-	 wx9BDWHJps7DCLrvTRUOmkMedZjLltKNp2xiVceVG6/JbB9mSq+GPSeY4c/ORyARHG
-	 kdTl7lv+5pmH8XzhNvlCKy89NhuyqMt+L1gSkniO+qAt/Fj5L5dbDwXtCDaP9u8CKx
-	 fEFP7+nO4MUszXYm1rH9stxQxr9mhl6DDJpstO+2mWNNCQ0/P809flVyQ5xi7VJM/N
-	 5h8yRfoGAeMfHc4gifBbk24NHUx+5eg6nP7T0zkHaLR+/kT59YTDCrECfXw2A/PLv+
-	 nm9ZSrVjfRLtojNd/Ruv16Ng=
+	b=UZnu7/PmCDUy74+mgV6z8bSXQfp4ScQVuwp1X0jtfiGcD/BKJYUZURzMSySnrUMGl
+	 GzFCm1N3pH0ASnZsherIQKRDsaU3oc1cw00LasfaZE60Z7XEQTWnaNZWw0R6gaHat9
+	 bMbl21fxe4ISqazexfuWLKPY1kvCfVyDz7Ol3u40YvnOkKK3Kwid+DUHKxx2UVnLYC
+	 vzm/UIuO+EhStldteJBbPxrDyNL8GVpdnIp33NYFaH8uNSSuaAgP8GQWIK5OJfOAMF
+	 1yoxediomonqxFYhgwgRVBGJ/fDJUO+N+Nfg1BodPJMhd54s0VmmGS2kFXbyz2VJhU
+	 XWe/Z8zehs42Vp+GVxvWHRGPLXi8Me6BwFoSYZuakmmtIOK5BdpKSHqhoJmSExeJUd
+	 5GBkezXXBtGcUq+I0I5G/5nuCQg8h2BAYckuNlpt8fL/RtpUIa7zCXu7E8l2rN0OZL
+	 qnAlqLaiwO4q7cE1CY2oqVtcA+JrVls8loug6zfk5UDF+wN48BT3Ri6+XGN5+c47bO
+	 6x5HxGZjCmK0t/9/OkQyNum7mPyLNJkh+0ASiQSUptkkAx0LSrYQNfXRS9ZA9CWchZ
+	 a6L2aW6tTB5/0jbEgrAo0byHJILc9ElRd6u0GIxPs1Jjw4d/fP23GcvTsxFDgxalDC
+	 +2spraidEYKGALzBAidbZiDo=
 Received: from zn.tnic (pd9530da1.dip0.t-ipconnect.de [217.83.13.161])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
 	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id 612C640E01CD;
-	Mon,  3 Nov 2025 12:03:25 +0000 (UTC)
-Date: Mon, 3 Nov 2025 13:03:19 +0100
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id DE23E40E01A5;
+	Mon,  3 Nov 2025 12:05:51 +0000 (UTC)
+Date: Mon, 3 Nov 2025 13:05:50 +0100
 From: Borislav Petkov <bp@alien8.de>
-To: Christopher Snowhill <chris@kode54.net>
-Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>,
-	Gregory Price <gourry@gourry.net>, x86@kernel.org,
-	linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
-	dave.hansen@linux.intel.com, hpa@zytor.com, peterz@infradead.org,
-	mario.limonciello@amd.com, riel@surriel.com, yazen.ghannam@amd.com,
-	me@mixaill.net, kai.huang@intel.com, sandipan.das@amd.com,
-	darwi@linutronix.de, stable@vger.kernel.org
-Subject: Re: [PATCH v2] x86/amd: Disable RDSEED on AMD Zen5 because of an
- error.
-Message-ID: <20251103120319.GAaQiaB3PnMKXfCj3Z@fat_crate.local>
-References: <aPT9vUT7Hcrkh6_l@zx2c4.com>
- <176216536464.37138.975167391934381427@copycat>
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: gourry@gourry.net, stable@vger.kernel.org
+Subject: Re: FAILED: patch "[PATCH] x86/CPU/AMD: Add RDSEED fix for Zen5"
+ failed to apply to 6.12-stable tree
+Message-ID: <20251103120550.GBaQianhX2N2SEKwzz@fat_crate.local>
+References: <2025110202-attendant-curtain-cd04@gregkh>
+ <20251102173101.GBaQeVVeAvolV0UMAv@fat_crate.local>
+ <2025110330-algorithm-sixfold-607b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -83,13 +78,18 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <176216536464.37138.975167391934381427@copycat>
+In-Reply-To: <2025110330-algorithm-sixfold-607b@gregkh>
 
-On Mon, Nov 03, 2025 at 02:22:44AM -0800, Christopher Snowhill wrote:
-> Although apparently, the patch does break userspace for any distribution
-> building packages with -march=znver4
+On Mon, Nov 03, 2025 at 09:21:54AM +0900, Greg KH wrote:
+> No worries.  Don't know if you want this for any other stable kernels
+> older than that, but it didn't apply there either :)
 
-Care to elaborate?
+Yeah, something even older running Zen5...? Meh, I'll say "no need" and
+I betcha someone would promptly crawl out of the woodwork, hand'a'raisin'...
+
+:-P
+
+Let's see what actually happens.
 
 -- 
 Regards/Gruss,
