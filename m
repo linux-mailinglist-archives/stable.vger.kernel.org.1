@@ -1,163 +1,98 @@
-Return-Path: <stable+bounces-192210-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192211-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FAB3C2C4B9
-	for <lists+stable@lfdr.de>; Mon, 03 Nov 2025 15:00:05 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AAEF5C2C626
+	for <lists+stable@lfdr.de>; Mon, 03 Nov 2025 15:21:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D0929188AE9C
-	for <lists+stable@lfdr.de>; Mon,  3 Nov 2025 14:00:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 25CE53ACAB8
+	for <lists+stable@lfdr.de>; Mon,  3 Nov 2025 14:12:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD173313E33;
-	Mon,  3 Nov 2025 13:59:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29F402DCF78;
+	Mon,  3 Nov 2025 14:12:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cachyos.org header.i=@cachyos.org header.b="GEfKXPQr"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="0w3eG3YO"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.ptr1337.dev (mail.ptr1337.dev [202.61.224.105])
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D6DC313E09;
-	Mon,  3 Nov 2025 13:59:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.61.224.105
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C7FC22FAFD;
+	Mon,  3 Nov 2025 14:12:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762178363; cv=none; b=bOR/htdYPQm0Vr+2Y7tLn8W1BMTx6zal/GTvhgR1oVEHo5yEx0OgnMOiKWJKvt2G/Kd/8mH5K2WK1sA2/t5ZDWMC35PTigc7Ow9t2ukM86l+LIpPM2OvnQoC3pl5jB7Dioh2331Q8VH8KPpPjRIzpd2hi4RPNdlC9RmtnHh4SdQ=
+	t=1762179145; cv=none; b=dVAz/O7MXMUZe37ww4FKAGzqT8cFTUH7mknOv6sM7ngtS/Z2quT5h3HD077jxpr6ylUM4r5cTf3Lh4IBBBWfixKgVmVMfv/m2FtmZgOj0LqrCA/KBFFr+m/J3yeOt8NUmeNpAAwDeBTO0oubAQWPL1Uc/sfBJVyeTQsLP7FrYMc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762178363; c=relaxed/simple;
-	bh=M01mIC/VTNf5sx9PsqT/xkduCCmmcdT+VQitzYUK5xg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JX9+tlC8YUfBBfik1AH1XruNhBLHKO9qJF1TwrPxFqsDuV2FUt6BIe/xe6QS+tnSzCd3g6YEDEO451QQzMfgrJJKeZ/dpfjbYdYnIJYaCKE1MzP1myi16iyc6a80tBFFMzhnZfqc/GXvc3eqkFMwwSovDWG2YuxappxKwfRSOWY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cachyos.org; spf=pass smtp.mailfrom=cachyos.org; dkim=pass (2048-bit key) header.d=cachyos.org header.i=@cachyos.org header.b=GEfKXPQr; arc=none smtp.client-ip=202.61.224.105
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cachyos.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cachyos.org
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D2123284517;
-	Mon,  3 Nov 2025 14:59:12 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cachyos.org; s=dkim;
-	t=1762178353; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=gle31eN9My17sC8D8ST/fOHC6I96gUMv9nuTZ5ksc/Y=;
-	b=GEfKXPQrOj68YuHKsvQcSn2lxGj3ONIs3yYNF5MlmbOGWzoJ3D4QYjP6f/C+0MhW5z6X82
-	Rqal6B/YZZJuSRnTppTvOCie2Ei6IjsLy3RXQi1vqR/gaPyrci/NdvL0CfwAdgB/OG3FfB
-	h6qN+eTpfBUsXI6UtxjGJhr2ysTXquLOqM0BEemlmUjoP+WsJrHMgHxQpTV8Qx0jg9yE1C
-	tCUoQcaHezjHRTWWl7JyTivYesSCfhQrs7j0ogEYArt8mD1lEe6UD2tV6DN8w0s4l5RPfS
-	CsIXqtLiXWtEUziWPs+LF/2dwQJMCC4KGjc2v3AvSkveqvR+IXlwZSr6hvOjQg==
-Message-ID: <9a27f2e6-4f62-45a6-a527-c09983b8dce4@cachyos.org>
-Date: Mon, 3 Nov 2025 14:59:11 +0100
+	s=arc-20240116; t=1762179145; c=relaxed/simple;
+	bh=ilIZIpOzxo0vMLzlT+FUShn/ORFaaMZFYXqI2jDx8Hs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=h27sWfliFFkelIcnF6yqfmvOKbSnw11GAGmvPxAfIK9WVwZKla3IGP6gxQlWWCDhZ12r8FxxhwzYVBaaLRiBFZYy39+yarAc8WtWpysBCklhgM+qW/G2qbY+GmfXriKnskdHf+J+t/cCAjA3Nze/rgM3tWb+C2FJfW4O4MVc+9w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=0w3eG3YO; arc=none smtp.client-ip=198.137.202.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=I/+ppzjeuB1VxkT2dp3Hv/N7bgrac9alC6j10M2k1n4=; b=0w3eG3YOLP0UKnGdRXaZU+j61+
+	coz2qVF5rG0+5z+Hng8RDVYOQzek1NYN2palD0JEeWcyp6tF4/InpLllVN5l2T0PB2qX5nsYA32aD
+	1wMWKSuPZiJZznoPshHqjpZkim+VCwiSBYWmXd6/QWyBzgjHO6aqtgeKBBs3EUz8lSSr0FY+Asctw
+	mzmZYeLsMg6WnXu+V0hklg5iaDbTFOsszxdxjGhN2ntev1asSKnSeXD02qryL+5LVtLSF7ysvCpao
+	+MfzbA2CBrzjaV3r6cv0f8c+nYvfJOYXbqEgr4nqkmzjIifw4dj5W+qE1Xk+vkt1krspfKbf1vUZO
+	PYTX0J/g==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vFvIB-0000000A0QY-0kkM;
+	Mon, 03 Nov 2025 14:12:19 +0000
+Date: Mon, 3 Nov 2025 06:12:19 -0800
+From: Christoph Hellwig <hch@infradead.org>
+To: Yongpeng Yang <yangyongpeng.storage@gmail.com>
+Cc: Namjae Jeon <linkinjeon@kernel.org>,
+	Sungjong Seo <sj1557.seo@samsung.com>,
+	OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>,
+	Jan Kara <jack@suse.cz>, Carlos Maiolino <cem@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>, linux-xfs@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-block@vger.kernel.org,
+	stable@vger.kernel.org, Matthew Wilcox <willy@infradead.org>,
+	"Darrick J . Wong" <djwong@kernel.org>,
+	Yongpeng Yang <yangyongpeng@xiaomi.com>
+Subject: Re: [PATCH v3] fix missing sb_min_blocksize() return value checks in
+ some filesystems
+Message-ID: <aQi4Q536D6VviQ-6@infradead.org>
+References: <20251103135024.35289-1-yangyongpeng.storage@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [tip: x86/urgent] x86/CPU/AMD: Add RDSEED fix for Zen5
-To: linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org
-Cc: stable@vger.kernel.org, Gregory Price <gourry@gourry.net>,
- "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org
-References: <176165291198.2601451.3074910014537130674.tip-bot2@tip-bot2>
-Content-Language: en-US
-From: Peter Jung <ptr1337@cachyos.org>
-Organization: CachyOS
-In-Reply-To: <176165291198.2601451.3074910014537130674.tip-bot2@tip-bot2>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251103135024.35289-1-yangyongpeng.storage@gmail.com>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 
-On 10/28/25 13:01, tip-bot2 for Gregory Price wrote:
-> The following commit has been merged into the x86/urgent branch of tip:
+On Mon, Nov 03, 2025 at 09:50:24PM +0800, Yongpeng Yang wrote:
+> From: Yongpeng Yang <yangyongpeng@xiaomi.com>
 > 
-> Commit-ID:     607b9fb2ce248cc5b633c5949e0153838992c152
-> Gitweb:https://git.kernel.org/tip/607b9fb2ce248cc5b633c5949e0153838992c152
-> Author:        Gregory Price<gourry@gourry.net>
-> AuthorDate:    Mon, 20 Oct 2025 11:13:55 +02:00
-> Committer:     Borislav Petkov (AMD)<bp@alien8.de>
-> CommitterDate: Tue, 28 Oct 2025 12:37:49 +01:00
-> 
-> x86/CPU/AMD: Add RDSEED fix for Zen5
-> 
-> There's an issue with RDSEED's 16-bit and 32-bit register output
-> variants on Zen5 which return a random value of 0 "at a rate inconsistent
-> with randomness while incorrectly signaling success (CF=1)". Search the
-> web for AMD-SB-7055 for more detail.
-> 
-> Add a fix glue which checks microcode revisions.
-> 
->    [ bp: Add microcode revisions checking, rewrite. ]
-> 
-> Cc:stable@vger.kernel.org
-> Signed-off-by: Gregory Price<gourry@gourry.net>
-> Signed-off-by: Borislav Petkov (AMD)<bp@alien8.de>
-> Link:https://lore.kernel.org/r/20251018024010.4112396-1-gourry@gourry.net
-> ---
->   arch/x86/kernel/cpu/amd.c | 10 ++++++++++
->   1 file changed, 10 insertions(+)
-> 
-> diff --git a/arch/x86/kernel/cpu/amd.c b/arch/x86/kernel/cpu/amd.c
-> index ccaa51c..bc29be6 100644
-> --- a/arch/x86/kernel/cpu/amd.c
-> +++ b/arch/x86/kernel/cpu/amd.c
-> @@ -1035,8 +1035,18 @@ static void init_amd_zen4(struct cpuinfo_x86 *c)
->   	}
->   }
->   
-> +static const struct x86_cpu_id zen5_rdseed_microcode[] = {
-> +	ZEN_MODEL_STEP_UCODE(0x1a, 0x02, 0x1, 0x0b00215a),
-> +	ZEN_MODEL_STEP_UCODE(0x1a, 0x11, 0x0, 0x0b101054),
-> +};
-> +
->   static void init_amd_zen5(struct cpuinfo_x86 *c)
->   {
-> +	if (!x86_match_min_microcode_rev(zen5_rdseed_microcode)) {
-> +		clear_cpu_cap(c, X86_FEATURE_RDSEED);
-> +		msr_clear_bit(MSR_AMD64_CPUID_FN_7, 18);
-> +		pr_emerg_once("RDSEED32 is broken. Disabling the corresponding CPUID bit.\n");
-> +	}
->   }
->   
->   static void init_amd(struct cpuinfo_x86 *c)
-> 
+> When emulating an nvme device on qemu with both logical_block_size and
+> physical_block_size set to 8 KiB, but without format, a kernel panic
+> was triggered during the early boot stage while attempting to mount a
+> vfat filesystem.
 
-Hi all,
+Please split this into a patch per file system, with a proper commit
+log for each.
 
-This fix seems to break quite a bunch of users in CachyOS. There has 
-been now several users reporting that there system can not get properly 
-into the graphical interface.
+> Cc: <stable@vger.kernel.org> # v6.15
+> Fixes: a64e5a596067bd ("bdev: add back PAGE_SIZE block size validation
+> for sb_set_blocksize()")
 
-CachyOS is compiling the packages with -march=znver5 and the GCC 
-compiler currently does pass RDSEED.
+That just adds back one error case in sb_set_blocksize.
 
-This patch results into that also Client CPUs (Strix Point, Granite 
-Ridge), can not execute this. There has been a microcode fix deployed in 
-linux-firmware for Turin, but no other microcode changes seen yet.
-
-I think it would be possible to exclude clients or providing a fix for this.
-
-
-Example log:
-
-Nov 03 13:37:33 hells drkonqi-coredump-processor[1073]: Incompatible 
-processor. This Qt build requires the following features:
-Nov 03 13:37:33 hells drkonqi-coredump-processor[1073]:     rdseed
-Nov 03 13:37:33 hells systemd-coredump[1077]: Process 1073 
-(drkonqi-coredum) of user 0 terminated abnormally with signal 6/ABRT, 
-processing...
-Nov 03 13:37:33 hells systemd[1]: Started Process Core Dump (PID 
-1077/UID 0).
-Nov 03 13:37:33 hells systemd[1]: Started Pass systemd-coredump journal 
-entries to relevant user for potential DrKonqi handling.
-Nov 03 13:37:33 hells drkonqi-coredump-processor[1079]: Incompatible 
-processor. This Qt build requires the following features:
-Nov 03 13:37:33 hells drkonqi-coredump-processor[1079]:     rdseed
-Nov 03 13:37:33 hells systemd-coredump[1082]: Process 1079 
-(drkonqi-coredum) of user 0 terminated abnormally with signal 6/ABRT, 
-processing...
-Nov 03 13:37:33 hells systemd-coredump[1071]: Process 1049 (sddm) of 
-user 0 dumped core.
-
-
-Best regards,
-
-Peter
+The Fixes tag should be for the commit adding the call to
+sb_set_blocksize / sb_min_blocksize in each of the file systems.
 
 
