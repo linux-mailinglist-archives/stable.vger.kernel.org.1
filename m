@@ -1,111 +1,125 @@
-Return-Path: <stable+bounces-192178-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192180-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BA79C2B0E3
-	for <lists+stable@lfdr.de>; Mon, 03 Nov 2025 11:30:34 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 034F5C2B107
+	for <lists+stable@lfdr.de>; Mon, 03 Nov 2025 11:31:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 424B94F14BA
-	for <lists+stable@lfdr.de>; Mon,  3 Nov 2025 10:29:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 713991891C1E
+	for <lists+stable@lfdr.de>; Mon,  3 Nov 2025 10:31:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D94F2FD7D0;
-	Mon,  3 Nov 2025 10:29:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="udK4TPwN"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81EC52FDC5E;
+	Mon,  3 Nov 2025 10:31:15 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CE1E2FD665;
-	Mon,  3 Nov 2025 10:29:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C69862472BB;
+	Mon,  3 Nov 2025 10:31:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762165755; cv=none; b=RwCxBqQeZ4mPEvrtxB46tWgK29aKFaxW+Nk0dJP00PMw6aNN8teOqHoBbdndRmfCTFIk8MtwFw6vrmO/FO+PK7KQePolN9fmKjoXN3lObvNpbBTXYgYkIO2Rzq8g3cgN2cQ3XmWobJ+oJ7bo577O4jgB3cxFsYm0t1X0z4IQQ5Q=
+	t=1762165875; cv=none; b=Cs9McvcvCYuqQsWIWikd+TznoToP0pPrn509MUEvule1TiJQkEmaNeqnq6Z5N0RGUEHm7Cvx8ki1T+fpxJiLxws6c46i0mTnB4fAwLFmjwIdN2l07wTP2gay0hJ47146i6qmbSdjrYCd4oRVe6GJY6DcyRziGn7OOGoPeFyWW4A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762165755; c=relaxed/simple;
-	bh=Nbx4jNGtndYSzelN2f3hPMbPkOF9Gg5x+1ly90843YQ=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=DzzYtmNoUb6/8h+vqYQTQ7pWv4vgsPSjpdDOGiiNA7DlrBMDfxKqvMPgyZkqdmPhuNN1GUQZl7Zlt1C5GrqjlUnVW+YzH8WCrlXm7EjKpN6dFo63PIBwS6Wc0fnn8rPTfWhkWlQG7d7XWS79R/fE6hhV2Cj/Afrt3VELG7u84Sc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=udK4TPwN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EBADC4CEFD;
-	Mon,  3 Nov 2025 10:29:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762165754;
-	bh=Nbx4jNGtndYSzelN2f3hPMbPkOF9Gg5x+1ly90843YQ=;
-	h=Date:From:Subject:To:Cc:References:In-Reply-To:From;
-	b=udK4TPwN/ksIoBwdrHsqjQELjlcpcINFzrOi5uYABT4QycI3hkBmkBKKDFldffJl/
-	 p9dqOW/eLy2VJL19H9izAY1gnXPxW4UAq1tBuSTqt8oAT74ZByXDFi4BzoGiGrtVc4
-	 Vk7MUuIIMhxDSbNRnBXi/n4U2jdZY1S4f+1HzyajJVK3ZD5ZEAwCOqtSflYfrw5yI0
-	 4vt3AlOud83bPipijIU+DTPawq6NphAAhngvkMHO+9Owz3xiYf2wrXDi+i5Ln90uoI
-	 4L0jj7U/dFePBBWSq22YdgAHZTHTfIIGcA/kjZIpFWYiLNmnL9BbnJipYVETO+3bwz
-	 HTgcwGM9jwaCA==
-Message-ID: <a9abc4c6-5b23-4165-9932-5e587a49e439@kernel.org>
-Date: Mon, 3 Nov 2025 11:29:10 +0100
+	s=arc-20240116; t=1762165875; c=relaxed/simple;
+	bh=A4ul1pOCUy+LD5Ggv7iouIcDKNOUs/YcNgWoa4KtQY0=;
+	h=From:To:Cc:Subject:Date:Message-Id; b=NHRsRCQfTW4H6rjNqGFsX6Ge6s4aUYBuCWmB9ycI/QP3CBXpONIaoCHtdIHdTtGm9xxu8BuvOLGoPw6zWbQKy5yxRJQ9r1tWfZcFaGKeDHIP+wp0NUvijwXUcO3PEOaeKI1IEqixw46oX5J/X9hsC9EMyxvhZKR51tDRe2bViHA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from localhost.localdomain (unknown [202.112.113.212])
+	by APP-03 (Coremail) with SMTP id rQCowAC3M+tQhAhpF5U3AQ--.23416S2;
+	Mon, 03 Nov 2025 18:30:55 +0800 (CST)
+From: Ma Ke <make24@iscas.ac.cn>
+To: jckuo@nvidia.com,
+	vkoul@kernel.org,
+	kishon@kernel.org,
+	thierry.reding@gmail.com,
+	jonathanh@nvidia.com,
+	mchehab@kernel.org,
+	wentong.wu@intel.com,
+	sakari.ailus@linux.intel.com
+Cc: linux-phy@lists.infradead.org,
+	linux-tegra@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	akpm@linux-foundation.org,
+	Ma Ke <make24@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH] phy: Fix error handling in tegra_xusb_pad_init
+Date: Mon,  3 Nov 2025 18:30:38 +0800
+Message-Id: <20251103103038.8193-1-make24@iscas.ac.cn>
+X-Mailer: git-send-email 2.17.1
+X-CM-TRANSID:rQCowAC3M+tQhAhpF5U3AQ--.23416S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7Aw4DKFWkAF15tFW3Aw4fKrg_yoW8Xr18p3
+	WDGa4Ykr9Ygrs5Kr4rXF40vFyUGF42k3yrur1rJ34a9rs3u34rKa90qrWxXa4UArZ2kF4U
+	JrsxJaykWFyUu3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUBY14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
+	0DM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI
+	64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8Jw
+	Am72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAG
+	YxC7M4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS14v26r1q6r43MxAIw28IcxkI7V
+	AKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCj
+	r7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6x
+	IIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAI
+	w20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x
+	0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUbQVy7UUUUU==
+X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: Re: [PATCH] media: renesas: rcar_drif: fix device node reference leak
- in rcar_drif_bond_enabled
-To: Geert Uytterhoeven <geert@linux-m68k.org>,
- Miaoqian Lin <linmq006@gmail.com>
-Cc: Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>,
- Magnus Damm <magnus.damm@gmail.com>,
- Ramesh Shanmugasundaram <ramesh.shanmugasundaram@bp.renesas.com>,
- Hans Verkuil <hverkuil@kernel.org>, linux-media@vger.kernel.org,
- linux-renesas-soc@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20250903133729.2523130-1-linmq006@gmail.com>
- <CAMuHMdWBXv+vKqBXOWeFqsy0R8-3__oBFWnm4rUx1kqSq5ZUgQ@mail.gmail.com>
-Content-Language: en-US, nl
-In-Reply-To: <CAMuHMdWBXv+vKqBXOWeFqsy0R8-3__oBFWnm4rUx1kqSq5ZUgQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
 
-On 03/09/2025 17:09, Geert Uytterhoeven wrote:
-> On Wed, 3 Sept 2025 at 15:37, Miaoqian Lin <linmq006@gmail.com> wrote:
->> The function calls of_parse_phandle() which returns
->> a device node with an incremented reference count. When the bonded device
->> is not available, the function
->> returns NULL without releasing the reference, causing a reference leak.
->>
->> Add of_node_put(np) to release the device node reference.
->> The of_node_put function handles NULL pointers.
->>
->> Found through static analysis by reviewing the doc of of_parse_phandle()
->> and cross-checking its usage patterns across the codebase.
->>
->> Fixes: 7625ee981af1 ("[media] media: platform: rcar_drif: Add DRIF support")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
-> 
-> Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-> 
-> Note that this is a duplicate of "[PATCH] media: rcar_drif: Fix an OF
-> node leak in rcar_drif_bond_enabled()", which was never applied.
-> 
-> [1] https://lore.kernel.org/20250105111050.3859712-1-joe@pf.is.s.u-tokyo.ac.jp
+If device_add() fails, do not use device_unregister() for error
+handling. device_unregister() consists two functions: device_del() and
+put_device(). device_unregister() should only be called after
+device_add() succeeded because device_del() undoes what device_add()
+does if successful. Change device_unregister() to put_device() call
+before returning from the function.
 
-Ah, that patch was never CC-ed to linux-media, so never ended up in our patchwork
-instance. That's why that wasn't picked up.
+As comment of device_add() says, 'if device_add() succeeds, you should
+call device_del() when you want to get rid of it. If device_add() has
+not succeeded, use only put_device() to drop the reference count'.
 
-I'll take this patch instead.
+Found by code review.
 
-Regards,
+Cc: stable@vger.kernel.org
+Fixes: 78876f71b3e9 ("media: pci: intel: ivsc: Add ACE submodule")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+---
+ drivers/phy/tegra/xusb.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-	Hans
-
-> 
-> Gr{oetje,eeting}s,
-> 
->                         Geert
-> 
+diff --git a/drivers/phy/tegra/xusb.c b/drivers/phy/tegra/xusb.c
+index c89df95aa6ca..d89493d68699 100644
+--- a/drivers/phy/tegra/xusb.c
++++ b/drivers/phy/tegra/xusb.c
+@@ -171,16 +171,16 @@ int tegra_xusb_pad_init(struct tegra_xusb_pad *pad,
+ 
+ 	err = dev_set_name(&pad->dev, "%s", pad->soc->name);
+ 	if (err < 0)
+-		goto unregister;
++		goto put_device;
+ 
+ 	err = device_add(&pad->dev);
+ 	if (err < 0)
+-		goto unregister;
++		goto put_device;
+ 
+ 	return 0;
+ 
+-unregister:
+-	device_unregister(&pad->dev);
++put_device:
++	put_device(&pad->dev);
+ 	return err;
+ }
+ 
+-- 
+2.17.1
 
 
