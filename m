@@ -1,55 +1,52 @@
-Return-Path: <stable+bounces-192287-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192288-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id F043BC2E7C4
-	for <lists+stable@lfdr.de>; Tue, 04 Nov 2025 00:53:06 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B606C2E7D0
+	for <lists+stable@lfdr.de>; Tue, 04 Nov 2025 00:54:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 992674E3121
-	for <lists+stable@lfdr.de>; Mon,  3 Nov 2025 23:53:05 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 899E94E536D
+	for <lists+stable@lfdr.de>; Mon,  3 Nov 2025 23:54:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CB1730100B;
-	Mon,  3 Nov 2025 23:53:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB2C430216F;
+	Mon,  3 Nov 2025 23:54:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G/Vcf6HC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XTpIGphC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D837126F0A;
-	Mon,  3 Nov 2025 23:53:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63D0D30147A;
+	Mon,  3 Nov 2025 23:54:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762213981; cv=none; b=VV3xBNWuWlJ8zo8kieK5A67W4XjhZAenwmgBjpXKZNbhBQJtWz6saSdQ37btDESPZuvToyyg0G9oslu5Tf0n5jOhaDipuZUUr2bQwiIpLAHyVyDS+wAF24+DQkVA2a4WQvO+A/CQgM+iF6exWu1V44AROj1URon7VqOWI+lccTc=
+	t=1762214045; cv=none; b=mR/DTh+FCclHAXsVjGnEfv12DBPIZSuBRKPd8ykIgTvYiDBUYMFVpPsYiWhS6vfo8QC1YpotI6MM88w1zGCMRvL2B/531ws80O5UwL5RQHA1ZSeo/qlUaQ25k+5WT9zj4yRvfqBaclkNSeVAPNbJc54f4EEK1L2v114TlzEfpMs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762213981; c=relaxed/simple;
-	bh=tGzK9R2ZDq3iZefSxigTk0vifeKf2tE7fUT5zVytAJQ=;
+	s=arc-20240116; t=1762214045; c=relaxed/simple;
+	bh=UVNzrMusqOU6GYBHUTbZTOdkeG10tADERbGG7oMrZrc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HsOsdF6egBLDxcJwL2iwgYpwZeTLCU8fxZ0fF/c0phxa3PXZfuYf1dSYlc5Sb7LVFGz2gBCt2RXOy8Ujt3Hlntajxprpip5tWiQ9V60shMsgwWkmw2Tu/IJm7ORtb/u67AuBdI59TH3ChsLSxZTnfqjtPDFbG7AeIuu4ylyQJ4U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G/Vcf6HC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 063BCC4CEE7;
-	Mon,  3 Nov 2025 23:52:59 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=CI0gmNubirSpFpgOO4Dgjc4RCxTZJGyIst11iuYVrBwdRmWn7ES7JNbPBvG7mNqFlwSQTLCZt6igSNjh251JbZGadbIVjoPfaMJoElXJrS5O99ZgZi44Bvb5g+I84gck/r8o/PPLkc8i2+UkCapu9aT6xy0ku0odos0z7oo47HI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XTpIGphC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70CD6C4CEFD;
+	Mon,  3 Nov 2025 23:54:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762213980;
-	bh=tGzK9R2ZDq3iZefSxigTk0vifeKf2tE7fUT5zVytAJQ=;
+	s=korg; t=1762214044;
+	bh=UVNzrMusqOU6GYBHUTbZTOdkeG10tADERbGG7oMrZrc=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=G/Vcf6HC42/jFWtXxuhcG/54fWnN4AgMX+XM2VuPc2LxTZkS6fIrlX4E2kUI6ufYD
-	 EGIKYntR7Le9M20XLK09yZCayV0pneBY7cxYK/buDPaFZthyavMkaMOBnCihhWcM6g
-	 L+p6ciKfo2Wp73Sz19YcuqFunWR8EKt1pkedZDs8=
-Date: Tue, 4 Nov 2025 08:52:57 +0900
+	b=XTpIGphCDs9/cZht1SaBb9Xn//vQQ+GZF/kGDjKVpLPU6Kat4IeMT8KrRKKY+Zt/D
+	 nXghC5UVY90nRK+0+F56i7MnaNK6AVbDaqiZKg7Aj2JrU+8Kfr5NDmg5+baTfkXvKb
+	 XP7pfQIiuLPMOl9TpdaHLdHJqDPXbYE6Z45J2NQU=
+Date: Tue, 4 Nov 2025 08:54:01 +0900
 From: Greg KH <gregkh@linuxfoundation.org>
-To: Matthieu Baerts <matttbe@kernel.org>
-Cc: kuba@kernel.org, martineau@kernel.org, pabeni@redhat.com,
-	sashal@kernel.org, stable-commits@vger.kernel.org,
-	MPTCP Linux <mptcp@lists.linux.dev>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: Patch "mptcp: move the whole rx path under msk socket lock
- protection" has been added to the 6.12-stable tree
-Message-ID: <2025110444-rendering-exhale-0bd8@gregkh>
-References: <2025110351-praising-bounce-a06b@gregkh>
- <bbe84711-95b2-4257-9f01-560b4473a3da@kernel.org>
+To: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Cc: stable@vger.kernel.org, sashal@kernel.org,
+	MPTCP Upstream <mptcp@lists.linux.dev>
+Subject: Re: [PATCH 6.12.y-5.10.y] selftests: mptcp: connect modes: re-add
+ exec mode
+Message-ID: <2025110410-cake-tasty-1a16@gregkh>
+References: <20251103165433.6396-2-matttbe@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -58,42 +55,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <bbe84711-95b2-4257-9f01-560b4473a3da@kernel.org>
+In-Reply-To: <20251103165433.6396-2-matttbe@kernel.org>
 
-On Mon, Nov 03, 2025 at 08:13:30PM +0100, Matthieu Baerts wrote:
-> Hi Greg, Sasha,
+On Mon, Nov 03, 2025 at 05:54:34PM +0100, Matthieu Baerts (NGI0) wrote:
+> It looks like the execution permissions (+x) got lost during the
+> backports of these new files.
 > 
-> On 03/11/2025 02:29, gregkh@linuxfoundation.org wrote:
-> > 
-> > This is a note to let you know that I've just added the patch titled
-> > 
-> >     mptcp: move the whole rx path under msk socket lock protection
-> > 
-> > to the 6.12-stable tree which can be found at:
-> >     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
-> > 
-> > The filename of the patch is:
-> >      mptcp-move-the-whole-rx-path-under-msk-socket-lock-protection.patch
-> > and it can be found in the queue-6.12 subdirectory.
+> The issue is that some CIs don't execute these tests without that.
 > 
-> Thank you for the backport!
-> > If you, or anyone else, feels it should not be added to the stable tree,
-> > please let <stable@vger.kernel.org> know about it.
+> Fixes: 37848a456fc3 ("selftests: mptcp: connect: also cover alt modes")
+> Fixes: fdf0f60a2bb0 ("selftests: mptcp: connect: also cover checksum")
+> Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+> ---
+> I'm not sure why they got lost, maybe Quilt doesn't support that? But
+> then, can this patch still be applied?
+> The same patch can be applied up to v5.10. In v5.10, only
+> mptcp_connect_mmap.sh file is present, but I can send a dedicated patch
+> for v5.10.
+> ---
+>  tools/testing/selftests/net/mptcp/mptcp_connect_checksum.sh | 0
+>  tools/testing/selftests/net/mptcp/mptcp_connect_mmap.sh     | 0
+>  tools/testing/selftests/net/mptcp/mptcp_connect_sendfile.sh | 0
+>  3 files changed, 0 insertions(+), 0 deletions(-)
+>  mode change 100644 => 100755 tools/testing/selftests/net/mptcp/mptcp_connect_checksum.sh
+>  mode change 100644 => 100755 tools/testing/selftests/net/mptcp/mptcp_connect_mmap.sh
+>  mode change 100644 => 100755 tools/testing/selftests/net/mptcp/mptcp_connect_sendfile.sh
 > 
-> Please drop this patch from the 6.12-stable tree: it causes troubles in
-> the MPTCP selftests: MPTCP to TCP connections timeout when MSG_PEEK is
-> used. Likely a dependence is missing, and it might be better to keep
-> only the last patch, and resolve conflicts. I will check that ASAP.
+> diff --git a/tools/testing/selftests/net/mptcp/mptcp_connect_checksum.sh b/tools/testing/selftests/net/mptcp/mptcp_connect_checksum.sh
+> old mode 100644
+> new mode 100755
+> diff --git a/tools/testing/selftests/net/mptcp/mptcp_connect_mmap.sh b/tools/testing/selftests/net/mptcp/mptcp_connect_mmap.sh
+> old mode 100644
+> new mode 100755
+> diff --git a/tools/testing/selftests/net/mptcp/mptcp_connect_sendfile.sh b/tools/testing/selftests/net/mptcp/mptcp_connect_sendfile.sh
+> old mode 100644
+> new mode 100755
+> -- 
+> 2.51.0
 > 
-> In the meantime, can you then drop this patch and the ones that are
-> linked to it please?
 > 
-> queue-6.12/mptcp-cleanup-mem-accounting.patch
-> queue-6.12/mptcp-fix-msg_peek-stream-corruption.patch
-> queue-6.12/mptcp-move-the-whole-rx-path-under-msk-socket-lock-protection.patch
-> queue-6.12/mptcp-leverage-skb-deferral-free.patch
 
-all now dropped, thanks.
+This is going to be a pain to apply, given that we use quilt, and that
+does not handle modes well, if at all.
+
+So yes, that is why these files are not marked executable, but I thought
+we were moving away from that anyway, most scripts should not be marked
+that way.
+
+thanks,
 
 greg k-h
 
