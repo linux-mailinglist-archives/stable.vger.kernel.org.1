@@ -1,195 +1,128 @@
-Return-Path: <stable+bounces-192205-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192206-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05F81C2C0C5
-	for <lists+stable@lfdr.de>; Mon, 03 Nov 2025 14:22:57 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF69EC2C185
+	for <lists+stable@lfdr.de>; Mon, 03 Nov 2025 14:31:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 93E403B07DC
-	for <lists+stable@lfdr.de>; Mon,  3 Nov 2025 13:15:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4637F1893D08
+	for <lists+stable@lfdr.de>; Mon,  3 Nov 2025 13:31:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B95541D5174;
-	Mon,  3 Nov 2025 13:15:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D38BC15E5C2;
+	Mon,  3 Nov 2025 13:31:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="R9BpxbsN"
+	dkim=pass (2048-bit key) header.d=imgtec.com header.i=@imgtec.com header.b="LrpAneyB"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+Received: from mx08-00376f01.pphosted.com (mx08-00376f01.pphosted.com [91.207.212.86])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A8B230F52C;
-	Mon,  3 Nov 2025 13:15:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F298613B5AE;
+	Mon,  3 Nov 2025 13:31:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.207.212.86
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762175725; cv=none; b=WcNdUk6GAY7J9nW/LMY5g9tPUNqalv1B6qchGxguEL88BA2pTnpghFG4yxfBtxA4wkqRDTKyJYl/NeAlkiHcDsH9fB6MmMgJN42hHVrotj9kHqPigLN40GXf3Qwhq4q5y9ZzCKDRMCMYppY15A2N+Q1UUDSyg5hwjh0omVuRwLY=
+	t=1762176666; cv=none; b=hKFoGKX2EJnAAu/pc14qOejNjw+djeoUNDqNvucEEFrvPRUPPN16yvctzuh50U/AGUSotK4JeMUAnuIa3k3tXOQM8lmh9qY23sWCn24+0KPf7x+5Mob7xBe72CN5uydk/V9HEYQKcyTehIgF24lYFtc+IkAA/pfY23EhKn8c21w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762175725; c=relaxed/simple;
-	bh=BrUO1cTuo9HyN2IfjVfYTebP2gccBlnbEGfKcY5hl1Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=vDta4olUU2j1GGYPHIgfJuEjfiPvXSR27UldceHckbwJPnDT8PoUN3hLZ8PrUwfy/3k89Ij9un96CkKtj34/s6ixacYgg+nuQxKP3zqE7JNtik4npLUPM940mJC4TsRNNuxXnEmBRRKxN+nOM9m85OKnBwPbc8DFA9RzfkTA5eQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=R9BpxbsN; arc=none smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1762175723; x=1793711723;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=BrUO1cTuo9HyN2IfjVfYTebP2gccBlnbEGfKcY5hl1Y=;
-  b=R9BpxbsNLi+OLBtP9lVsjaM1BcnHKPKGddCqwF1F76bBkmNTk4sHZb0p
-   IhiVTm37/FWvGLzvyiZPX7ZCc0ytacuX1XS8WTKmOErufBUxrD8CkwEs4
-   Hrtmvh3Xsqyfjr0jOefXwaTRLl8XX0g6YxQfMdX8ciAmBGB/UOQa2F0nb
-   SWtmC9yyOhibn/657mOxosMpSKc8E3PGb1ze2DfGWMBzO/6Io/GJ1yyhb
-   lP1P4v9u+W2NbYzds3eO9wJRWymfjbBIZ9NBk2uSC73hIqvxUiBklOyI6
-   TJiP6tPv5+lR8acg5TWswPD7qVj8mDNNC3lLtt6U7bDrbLBUxfrUd4nVz
-   Q==;
-X-CSE-ConnectionGUID: NUanCj8IQXKZdx7Z26NZjA==
-X-CSE-MsgGUID: y5VM+1igRgy3HMstEh2kbw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11601"; a="89711441"
-X-IronPort-AV: E=Sophos;i="6.19,276,1754982000"; 
-   d="scan'208";a="89711441"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2025 05:15:21 -0800
-X-CSE-ConnectionGUID: 2nVMVhYKS1+Szz2U6eBIYg==
-X-CSE-MsgGUID: x7QyeuscRq+VoOU3ce8bdg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,276,1754982000"; 
-   d="scan'208";a="186105007"
-Received: from smoehrl-linux.amr.corp.intel.com (HELO ashevche-desk.local) ([10.124.220.216])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2025 05:15:20 -0800
-Received: from andy by ashevche-desk.local with local (Exim 4.98.2)
-	(envelope-from <andriy.shevchenko@intel.com>)
-	id 1vFuOy-000000059bH-2oEI;
-	Mon, 03 Nov 2025 15:15:16 +0200
-Date: Mon, 3 Nov 2025 15:15:15 +0200
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Hans de Goede <hansg@kernel.org>
-Cc: Mark Brown <broonie@kernel.org>, Andy Shevchenko <andy@kernel.org>,
-	linux-spi@vger.kernel.org, linux-acpi@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] spi: Try to get ACPI GPIO IRQ earlier
-Message-ID: <aQiq4_W6AL1n-Geh@smile.fi.intel.com>
-References: <20251102190921.30068-1-hansg@kernel.org>
- <aQh3RJQ95jTx7VYO@smile.fi.intel.com>
- <f8dc0e8b-bbdc-4ac6-9ebc-c633bda24403@kernel.org>
- <aQiATDzxEIKBytXw@smile.fi.intel.com>
- <af07a18b-cfc8-47d1-ac5a-b343cbfe0f36@kernel.org>
+	s=arc-20240116; t=1762176666; c=relaxed/simple;
+	bh=cuf+/7Thz4o4dkUx69f6+UrYRgnQJ4miRs1xW5MUwkg=;
+	h=From:To:CC:In-Reply-To:References:Subject:Message-ID:Date:
+	 MIME-Version:Content-Type; b=o2G93/cNKJX18R1g9Pm9BYKE9iKHm7MOtSg3NxxESAlUEwPcoUrTLB2gVEiaU8H4N+Upcwa1PKWy8zEkMeHzKyJsM0BpttxBthWAg/DygDmHSnmiYn5btb93LS5JT0zcJqSOYVzMf7d5AGUocDWSsHJ5CNz1SKEVizALqKH9GUc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=imgtec.com; spf=pass smtp.mailfrom=imgtec.com; dkim=pass (2048-bit key) header.d=imgtec.com header.i=@imgtec.com header.b=LrpAneyB; arc=none smtp.client-ip=91.207.212.86
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=imgtec.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=imgtec.com
+Received: from pps.filterd (m0168888.ppops.net [127.0.0.1])
+	by mx08-00376f01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5A36s30f1265134;
+	Mon, 3 Nov 2025 13:30:28 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=imgtec.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=dk201812; bh=p
+	ha4iqzjLRhIK14Ep3HX/+oxy73O9OJMBOJe+Wnyn98=; b=LrpAneyBQgmlSXaAC
+	6PgP4rS0pAlg52uKttIUkxS6DYWtgB87AMyGhZTBeEvc2ShPOleCvDTYl965wjAh
+	Fr6mKJhBp5vYDd9w9XQtPCSet0Nfx4GtrNQMHRyq9hxTbbUxBKGtoDFksb+gkHNb
+	p0mJ/po+vSGwGUVaA4sbnv3aZR9iJaYmNcMcnuTRXypr99aZc83TT0f4OWtzzfmn
+	5pAgB/zTX7PD+WfY5EVUf7uqD+fy0mCdonRwD1Uniwd1x9w98olAjGwVCyYwyHoj
+	l2u1kcwEH/IbHBl+YhAEf0Q6z7AuBD9I3l9GCoMR3Uk9P6iZSDzdjiy9U0/MSZTC
+	Uov1g==
+Received: from hhmail01.hh.imgtec.org (83-244-153-141.cust-83.exponential-e.net [83.244.153.141])
+	by mx08-00376f01.pphosted.com (PPS) with ESMTPS id 4a59bss9px-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 03 Nov 2025 13:30:28 +0000 (GMT)
+Received: from HHMAIL03.hh.imgtec.org (10.44.0.121) by HHMAIL01.hh.imgtec.org
+ (10.100.10.19) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.36; Mon, 3 Nov
+ 2025 13:30:27 +0000
+Received: from
+ 1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.ip6.arpa
+ (172.25.4.134) by HHMAIL03.hh.imgtec.org (10.44.0.121) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.17; Mon, 3 Nov 2025 13:30:26 +0000
+From: Matt Coster <matt.coster@imgtec.com>
+To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Maxime Ripard
+	<mripard@kernel.org>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        David Airlie
+	<airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+        Michal Wilczynski
+	<m.wilczynski@samsung.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Matt Coster
+	<matt.coster@imgtec.com>
+CC: Frank Binns <frank.binns@imgtec.com>,
+        Alessio Belle
+	<alessio.belle@imgtec.com>,
+        Alexandru Dadu <alexandru.dadu@imgtec.com>,
+        <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
+        <stable@vger.kernel.org>, kernel test robot <lkp@intel.com>
+In-Reply-To: <20251014-pwrseq-dep-v1-1-49aabd9d8fa1@imgtec.com>
+References: <20251014-pwrseq-dep-v1-1-49aabd9d8fa1@imgtec.com>
+Subject: Re: [PATCH] drm/imagination: Optionally depend on POWER_SEQUENCING
+Message-ID: <176217662645.4491.9524914948435472872.b4-ty@imgtec.com>
+Date: Mon, 3 Nov 2025 13:30:26 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <af07a18b-cfc8-47d1-ac5a-b343cbfe0f36@kernel.org>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.3
+X-Proofpoint-GUID: 2Mi1LMmksvkuRAg5rwahs4ajV7TIH27v
+X-Proofpoint-ORIG-GUID: 2Mi1LMmksvkuRAg5rwahs4ajV7TIH27v
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTAzMDEyMiBTYWx0ZWRfX5+T0LQ50f6gI
+ Xov8i3k16qnn4LrK2wyPsYui34gX2dRw7luzWgTfl+bBkSQAMNm6ulew6bNP7oGAsaP8ybcrsfN
+ 96dg24+PgMR/UqBR8BwW8DzUH7UhX5ao19hPnLlArcgbMi6yDTSWWjaMnoyb2FNwyeyHbk80i1H
+ gsIv18mOcKZ6Nq1CUGtm9FWPUljY8pvQDICLHzJUQPCCFtJiMf4P6RyJKAFZi25bvAroFPW4GvI
+ ZttMUJ4NiI/MbAZPEHfvCPxg/F3DsrPWFiZxiFVgJjbFPxB8UondVCHiyvEJBe7/B/AYhyMDkMg
+ LjSkZ8ERXidMdJi49pdODn+biogHkr4yG0Uj3kfB2Kg25g9W57QQv2qwYHmAZYwY3IV4uHNJWdP
+ NnYygmRjiZGK85DOP8UGMuZqdq/o4A==
+X-Authority-Analysis: v=2.4 cv=Yb2wJgRf c=1 sm=1 tr=0 ts=6908ae74 cx=c_pps
+ a=AKOq//PuzOIrVTIF9yBwbA==:117 a=AKOq//PuzOIrVTIF9yBwbA==:17
+ a=0einROue838A:10 a=IkcTkHD0fZMA:10 a=6UeiqGixMTsA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=r_1tXGB3AAAA:8
+ a=IMCeZBfq-HFVmF8d6oMA:9 a=QEXdDO2ut3YA:10 a=t8nPyN_e6usw4ciXM-Pk:22
+ a=cPQSjfK2_nFv0Q5t_7PE:22
 
-On Mon, Nov 03, 2025 at 11:20:30AM +0100, Hans de Goede wrote:
-> On 3-Nov-25 11:13 AM, Andy Shevchenko wrote:
-> > On Mon, Nov 03, 2025 at 10:57:44AM +0100, Hans de Goede wrote:
-> >> On 3-Nov-25 10:35 AM, Andy Shevchenko wrote:
-> >>> On Sun, Nov 02, 2025 at 08:09:21PM +0100, Hans de Goede wrote:
-> >>>> Since commit d24cfee7f63d ("spi: Fix acpi deferred irq probe"), the
-> >>>> acpi_dev_gpio_irq_get() call gets delayed till spi_probe() is called
-> >>>> on the SPI device.
-> >>>>
-> >>>> If there is no driver for the SPI device then the move to spi_probe()
-> >>>> results in acpi_dev_gpio_irq_get() never getting called. This may
-> >>>> cause problems by leaving the GPIO pin floating because this call is
-> >>>> responsible for setting up the GPIO pin direction and/or bias according
-> >>>> to the values from the ACPI tables.
-> >>>>
-> >>>> Re-add the removed acpi_dev_gpio_irq_get() in acpi_register_spi_device()
-> >>>> to ensure the GPIO pin is always correctly setup, while keeping the
-> >>>> acpi_dev_gpio_irq_get() call added to spi_probe() to deal with
-> >>>> -EPROBE_DEFER returns caused by the GPIO controller not having a driver
-> >>>> yet.
-> >>>
-> >>> Even before following the link to some papering over module via the link below
-> >>> I wondered, if the I²C case should be covered as well. The
-> >>> https://github.com/alexpevzner/hotfix-kvadra-touchpad refers to I²C enabled
-> >>> touchpads.
-> >>>
-> >>>> Link: https://bbs.archlinux.org/viewtopic.php?id=302348
 
-...
-
-> >>> I'm not against the SPI fix, but is it confirmed that it really fixes the issue?
-> >>
-> >> Yes Mark and I got an offlist email bisecting this to the:
-> >>
-> >> Fixes: d24cfee7f63d ("spi: Fix acpi deferred irq probe")
-> >>
-> >> commit (on a stable kernel series) and a later email confirming that this
-> >> patch fixes it.
-> > 
-> > Shouldn't we use Closes in this case instead of Link?
+On Tue, 14 Oct 2025 12:57:31 +0100, Matt Coster wrote:
+> When the change using pwrseq was added, I nixed the dependency on
+> POWER_SEQUENCING since we didn't want it pulled in on platforms where
+> it's not needed [1]. I hadn't, however, considered the link-time
+> implications of this for configs with POWER_SEQUENCING=m.
 > 
-> I guess so.
+> [1]: https://lore.kernel.org/r/a265a20e-8908-40d8-b4e0-2c8b8f773742@imgtec.com/
 > 
-> >> It seems that leaving the fingerprint reader enable pin (the first GPIO
-> >> listed in _CRS which is an output only pin, is likely the enable pin)
-> >> floating is causing these issues. So in a way the acpi_dev_gpio_irq_get()
-> >> fixing this by forcing the enable pin to no longer float is a bit of
-> >> luck. But things did work before d24cfee7f63d ("spi: Fix acpi deferred irq probe")
-> >> so we need this to fix a regression
-> > 
-> > Yeah, fixing a regression is good thing, but not papering over the issue.
-> 
-> I agree in principle, but this is a quick and safe way to fix
-> the regression, where as the generic fix you describe below is
-> likely months away and also has significant risks of causing
-> regressions in various places, see below.
+> [...]
 
-Perhaps we should add a TODO / FIXME there as well?
-So at least we will know that this is not a proper solution.
+Applied, thanks!
 
-> >> and as you indicate it seems
-> >> like a good idea in general and maybe we should also do this for i2c.
-> > 
-> >> As for doing something similar for I2C devices, that is an interesting
-> >> question. Even though it is possible I'm not aware of any i2c-devices
-> >> which have a userspace driver like SPI/USB fingerprint readers do,
-> >> so on i2c I would expect probe() to always get called. So I'm not sure
-> >> it is necessary there.
-> > 
-> > Reading the problem statement (the second paragraph) I lean towards
-> > a generic solution residing somewhere in drivers/acpi/scan.c (like
-> > acpi_init_device_object() / acpi_bus_attach() calls), although I don't
-> > see a quick way how to achieve this. It seems would require a bit of
-> > refactoring to allow ACPI glue code to call specific subsystem calls
-> > or making a GPIOLIB to provide some "early" initialisation flow(s).
-> 
-> I guess that you want to do the direction and bias init on all
-> GPIOs listed in _CRS, at least for devices with status == present ?
+[1/1] drm/imagination: Optionally depend on POWER_SEQUENCING
+      (no commit info)
 
-For the devices that are serial busses only (I²C, SPI, UART).
-
-> I was wondering about the same thing, but ACPI tables are full
-> of, well, erm, garbage in various places so I'm afraid that doing
-> this for all GPIO _CRS resources is likely to cause a whole lot
-> of pain.
-> 
-> Typically the firmware already sets up the direction + bias
-> of all used pins. I'm pretty sure the BIOS-es have some GPIO
-> init table especially for this somewhere.
-> 
-> Now those init-tables may have bugs, but I'm seriously worried
-> about the implication of doing the direction + bios setup for
-> all _CRS GPIO entries. I have simply seen too much non sense
-> devices (with _STA returning 0x0f) listing GPIOs also actually
-> used elsewhere to think this is a good idea.
-
-Btw, other GPIO initialisation issues we have been solving by adding quirks.
-Why this one can't be targeted with the same approach?
-
+Best regards,
 -- 
-With Best Regards,
-Andy Shevchenko
-
+Matt Coster <matt.coster@imgtec.com>
 
 
