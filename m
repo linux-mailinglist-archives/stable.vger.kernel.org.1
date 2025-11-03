@@ -1,135 +1,232 @@
-Return-Path: <stable+bounces-192203-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192204-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B678EC2BD82
-	for <lists+stable@lfdr.de>; Mon, 03 Nov 2025 13:54:36 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75A9FC2BF92
+	for <lists+stable@lfdr.de>; Mon, 03 Nov 2025 14:09:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 70FF21890B9C
-	for <lists+stable@lfdr.de>; Mon,  3 Nov 2025 12:52:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F9071898D2F
+	for <lists+stable@lfdr.de>; Mon,  3 Nov 2025 13:08:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9579330C366;
-	Mon,  3 Nov 2025 12:52:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E596B3126C8;
+	Mon,  3 Nov 2025 13:06:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="nyGhwC/k"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="dI+bSCnv";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="qweOMICM";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="dI+bSCnv";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="qweOMICM"
 X-Original-To: stable@vger.kernel.org
-Received: from out-174.mta1.migadu.com (out-174.mta1.migadu.com [95.215.58.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BA172FD7B9
-	for <stable@vger.kernel.org>; Mon,  3 Nov 2025 12:52:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61D18310650
+	for <stable@vger.kernel.org>; Mon,  3 Nov 2025 13:06:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762174337; cv=none; b=OZgztQBdpXcH2w5Hr2Y1FSK/ecb4mF5Squl7yzFgDLbHWkrBJsrprE48+QUqkS3hH2xkRnO3QfbZiUVlMdTr3kjOgtb0lIbatCNeB/YnIwq9YaXc3Kq98u1QPZWYx5quF9bk2ePkzSXjUwIt8Yrh+iEg1BFi/CWmwURn+gPtg1o=
+	t=1762175185; cv=none; b=HLGOVQnfvBUNidwdvn4PCgT4FbWVdgqatqH+CvfL0EH2qqolA3Ezqu4CIE+rNdm6MwQz9Ta7Z4LI5PAlPt7pY/Bp3zxZ2hoBn0/S1v//9rDv+1cdshGFfle/ypgsjBwb+S4Le2ygOZqfDLA8cqLJKDCQzB7aFbNCM6MTWVTajAA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762174337; c=relaxed/simple;
-	bh=zknbNUMqtehApA9rsCKAcUn2eRCCK8ipSC6uMSED0SI=;
-	h=MIME-Version:Date:Content-Type:From:Message-ID:Subject:To:Cc:
-	 In-Reply-To:References; b=Hm4vHyoPJrGKD0sNGi3MS2OS0rUHCb1Cda4/jm6cwf5G85i5Q/fP3z8UF6IwO6sgQTv/lYEjK1jyOj0HWzLakDd1eNc3mDvc0onOK42wttUhp2NYiAQqhjwE4wTgYesQDfFAqbd8ZnjRN8BZgQHtT67vUKWPGJxayY7bWM571EA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=nyGhwC/k; arc=none smtp.client-ip=95.215.58.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1762175185; c=relaxed/simple;
+	bh=/C30wMuKon+hDs9pYjiwXyTo4RxaD+fj1qAKoNrtQ70=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=bun1OtufpJ896Rbx84TSD53tW8EL0J40bHrVr9gefj+LtBnGvj8fLVuNCsx2eyQtsTo59ILUYSES6g/5F/0Sa7iftfDVBWzQXERpocusk9dtt9P7fKkxZEcmlDSV/bQW+lmCp03KU4SJ3eq+kA9uaJGuP/YJyxsAAnAdFKjSC0s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=dI+bSCnv; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=qweOMICM; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=dI+bSCnv; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=qweOMICM; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 2D8FB21C46;
+	Mon,  3 Nov 2025 13:06:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1762175178; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=rXiVoqCh9BsCT+Sc7XLj6BNZ7WlDwCLjiY8k6ty0/5M=;
+	b=dI+bSCnvJNVD26QGqq88ap7RgebQPbt0+r6ZFt9XVgkAIIqZbaXkoCM7fFh+PF8AMEf9Ck
+	Xjd6G03LzSYrx0jJuZGy4umP+JyUwOs/4gmQVeq8pOqdfgJdZtLI75XtIimmdujpGlhGxI
+	snT7meX1XrwXB7jEYF9XLYuBpg5pK6Y=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1762175178;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=rXiVoqCh9BsCT+Sc7XLj6BNZ7WlDwCLjiY8k6ty0/5M=;
+	b=qweOMICMHj8R9cItyiM0QkEVxbw3hcbxW2OFXGDHxdPckVuZapv+62NnhzC23+UicdEfUU
+	nzrdu4XYn9TLJNDA==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1762175178; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=rXiVoqCh9BsCT+Sc7XLj6BNZ7WlDwCLjiY8k6ty0/5M=;
+	b=dI+bSCnvJNVD26QGqq88ap7RgebQPbt0+r6ZFt9XVgkAIIqZbaXkoCM7fFh+PF8AMEf9Ck
+	Xjd6G03LzSYrx0jJuZGy4umP+JyUwOs/4gmQVeq8pOqdfgJdZtLI75XtIimmdujpGlhGxI
+	snT7meX1XrwXB7jEYF9XLYuBpg5pK6Y=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1762175178;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=rXiVoqCh9BsCT+Sc7XLj6BNZ7WlDwCLjiY8k6ty0/5M=;
+	b=qweOMICMHj8R9cItyiM0QkEVxbw3hcbxW2OFXGDHxdPckVuZapv+62NnhzC23+UicdEfUU
+	nzrdu4XYn9TLJNDA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D995C139A9;
+	Mon,  3 Nov 2025 13:06:17 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id SvRLM8moCGkaBAAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Mon, 03 Nov 2025 13:06:17 +0000
+Message-ID: <40516ad3-c235-4977-b1d3-73ba48c55dcf@suse.de>
+Date: Mon, 3 Nov 2025 14:06:17 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1762174333;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=m8V6AyaUjluKuvk/onmZHfKTs0gZnfKFW4ogFQGfP/c=;
-	b=nyGhwC/k4oeCg1b62hJqV8LpEsaBbAdryrVmYKVaC+KORBU1Wu+WEdWrt58TjK63ahz8qF
-	hpzvBCqvdDaafx68ZxAgCRjg8z4FRfPi1bQvGjawhJVa5Drx7JgbFDfLfLn0IANpF+tJFq
-	epg6X+7y+zHfzxPLfrWAWYLapNHJ9yo=
-Date: Mon, 03 Nov 2025 12:52:07 +0000
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: "Jiayuan Chen" <jiayuan.chen@linux.dev>
-Message-ID: <154ce327ae50ea1e3ebde8a1b73c83ac0b547f61@linux.dev>
-TLS-Required: No
-Subject: Re: [PATCH net v3 2/3] bpf,sockmap: disallow MPTCP sockets from
- sockmap
-To: "Paolo Abeni" <pabeni@redhat.com>, mptcp@lists.linux.dev
-Cc: stable@vger.kernel.org, "Jakub Sitnicki" <jakub@cloudflare.com>, "John
- Fastabend" <john.fastabend@gmail.com>, "Eric Dumazet"
- <edumazet@google.com>, "Kuniyuki Iwashima" <kuniyu@google.com>, "Willem
- de Bruijn" <willemb@google.com>, "David S. Miller" <davem@davemloft.net>,
- "Jakub Kicinski" <kuba@kernel.org>, "Simon Horman" <horms@kernel.org>,
- "Matthieu Baerts" <matttbe@kernel.org>, "Mat Martineau"
- <martineau@kernel.org>, "Geliang Tang" <geliang@kernel.org>, "Andrii
- Nakryiko" <andrii@kernel.org>, "Eduard Zingerman" <eddyz87@gmail.com>,
- "Alexei Starovoitov" <ast@kernel.org>, "Daniel Borkmann"
- <daniel@iogearbox.net>, "Martin KaFai Lau" <martin.lau@linux.dev>, "Song
- Liu" <song@kernel.org>, "Yonghong Song" <yonghong.song@linux.dev>, "KP
- Singh" <kpsingh@kernel.org>, "Stanislav Fomichev" <sdf@fomichev.me>, "Hao
- Luo" <haoluo@google.com>, "Jiri Olsa" <jolsa@kernel.org>, "Shuah Khan"
- <shuah@kernel.org>, "Florian Westphal" <fw@strlen.de>,
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
- bpf@vger.kernel.org, linux-kselftest@vger.kernel.org
-In-Reply-To: <c5021188-593c-431c-bf01-6775f5b2b2ed@redhat.com>
-References: <20251023125450.105859-1-jiayuan.chen@linux.dev>
- <20251023125450.105859-3-jiayuan.chen@linux.dev>
- <c5021188-593c-431c-bf01-6775f5b2b2ed@redhat.com>
-X-Migadu-Flow: FLOW_OUT
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.6.y] drm/sysfb: Do not dereference NULL pointer in plane
+ reset
+To: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org
+Cc: Dan Carpenter <dan.carpenter@linaro.org>,
+ Melissa Wen <melissa.srw@gmail.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, dri-devel@lists.freedesktop.org,
+ Javier Martinez Canillas <javierm@redhat.com>
+References: <2025110310-heavily-unsavory-7385@gregkh>
+ <20251103124727.4003872-1-sashal@kernel.org>
+Content-Language: en-US
+From: Thomas Zimmermann <tzimmermann@suse.de>
+Autocrypt: addr=tzimmermann@suse.de; keydata=
+ xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
+ XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
+ BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
+ hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
+ 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
+ AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
+ AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
+ AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
+ lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
+ U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
+ vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
+ 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
+ j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
+ T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
+ 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
+ GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
+ hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
+ EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
+ C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
+ yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
+ SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
+ Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
+ 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
+In-Reply-To: <20251103124727.4003872-1-sashal@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-2.80 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	RCVD_TLS_ALL(0.00)[];
+	TAGGED_RCPT(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ARC_NA(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	MIME_TRACE(0.00)[0:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[linaro.org,gmail.com,linux.intel.com,kernel.org,ffwll.ch,lists.freedesktop.org,redhat.com];
+	TO_DN_SOME(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	URIBL_BLOCKED(0.00)[suse.com:url,imap1.dmz-prg2.suse.org:helo,suse.de:mid,suse.de:email,intel.com:email,msgid.link:url,lists.freedesktop.org:email,ffwll.ch:email,linaro.org:email];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,suse.de:email,suse.com:url,imap1.dmz-prg2.suse.org:helo]
+X-Spam-Flag: NO
+X-Spam-Score: -2.80
+X-Spam-Level: 
 
-October 28, 2025 at 20:03, "Paolo Abeni" <pabeni@redhat.com mailto:pabeni=
-@redhat.com?to=3D%22Paolo%20Abeni%22%20%3Cpabeni%40redhat.com%3E > wrote:
 
 
->=20
->=20On 10/23/25 2:54 PM, Jiayuan Chen wrote:
->=20
->=20>=20
->=20> MPTCP creates subflows for data transmission, and these sockets sho=
-uld not
-> >  be added to sockmap because MPTCP sets specialized data_ready handle=
-rs
-> >  that would be overridden by sockmap.
-> >=20=20
->=20>  Additionally, for the parent socket of MPTCP subflows (plain TCP s=
-ocket),
-> >  MPTCP sk requires specific protocol handling that conflicts with soc=
-kmap's
-> >  operation(mptcp_prot).
-> >=20=20
->=20>  This patch adds proper checks to reject MPTCP subflows and their p=
-arent
-> >  sockets from being added to sockmap, while preserving compatibility =
-with
-> >  reuseport functionality for listening MPTCP sockets.
-> >=20
->=20It's unclear to me why that is safe. sockmap is going to change the
-> listener msk proto ops.
->=20
->=20The listener could disconnect and create an egress connection, still
-> using the wrong ops.
+Am 03.11.25 um 13:47 schrieb Sasha Levin:
+> From: Thomas Zimmermann <tzimmermann@suse.de>
+>
+> [ Upstream commit 14e02ed3876f4ab0ed6d3f41972175f8b8df3d70 ]
+>
+> The plane state in __drm_gem_reset_shadow_plane() can be NULL. Do not
+> deref that pointer, but forward NULL to the other plane-reset helpers.
+> Clears plane->state to NULL.
+>
+> v2:
+> - fix typo in commit description (Javier)
+>
+> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+> Fixes: b71565022031 ("drm/gem: Export implementation of shadow-plane helpers")
+> Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+> Closes: https://lore.kernel.org/dri-devel/aPIDAsHIUHp_qSW4@stanley.mountain/
+> Cc: Thomas Zimmermann <tzimmermann@suse.de>
+> Cc: Melissa Wen <melissa.srw@gmail.com>
+> Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+> Cc: Maxime Ripard <mripard@kernel.org>
+> Cc: David Airlie <airlied@gmail.com>
+> Cc: Simona Vetter <simona@ffwll.ch>
+> Cc: dri-devel@lists.freedesktop.org
+> Cc: <stable@vger.kernel.org> # v5.15+
+> Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+> Link: https://patch.msgid.link/20251017091407.58488-1-tzimmermann@suse.de
+> [ removed drm_format_conv_state_init() call ]
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
 
-sockmap only replaces read/write handler of a sk and keeps another handle=
-r.
+Acked-by: Thomas Zimmermann <tzimmermann@suse.de>
 
-But I agree with you; I also don't think sockmap should replace the handl=
-ers of
-the listen socket. Because for a listen socket, sockmap is merely used as=
- a container,=20
-just=20like hash map or array map. But in reality, that's exactly what it=
- does...
+> ---
+>   drivers/gpu/drm/drm_gem_atomic_helper.c | 6 +++++-
+>   1 file changed, 5 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/gpu/drm/drm_gem_atomic_helper.c b/drivers/gpu/drm/drm_gem_atomic_helper.c
+> index 5d4b9cd077f7a..e0ea3c661cb77 100644
+> --- a/drivers/gpu/drm/drm_gem_atomic_helper.c
+> +++ b/drivers/gpu/drm/drm_gem_atomic_helper.c
+> @@ -301,7 +301,11 @@ EXPORT_SYMBOL(drm_gem_destroy_shadow_plane_state);
+>   void __drm_gem_reset_shadow_plane(struct drm_plane *plane,
+>   				  struct drm_shadow_plane_state *shadow_plane_state)
+>   {
+> -	__drm_atomic_helper_plane_reset(plane, &shadow_plane_state->base);
+> +	if (shadow_plane_state) {
+> +		__drm_atomic_helper_plane_reset(plane, &shadow_plane_state->base);
+> +	} else {
+> +		__drm_atomic_helper_plane_reset(plane, NULL);
+> +	}
+>   }
+>   EXPORT_SYMBOL(__drm_gem_reset_shadow_plane);
+>   
 
-> I think sockmap should always be prevented for mptcp socket, or at leas=
-t
-> a solid explanation of why such exception is safe should be included in
-> the commit message.
->=20
->=20Note that the first option allows for solving the issue entirely in t=
-he
-> mptcp code, setting dummy/noop psock_update_sk_prot for mptcp sockets
-> and mptcp subflows.
+-- 
+--
+Thomas Zimmermann
+Graphics Driver Developer
+SUSE Software Solutions Germany GmbH
+Frankenstr. 146, 90461 Nürnberg, Germany, www.suse.com
+GF: Jochen Jaser, Andrew McDonald, Werner Knoblich, (HRB 36809, AG Nürnberg)
 
-I will do it.
+
 
