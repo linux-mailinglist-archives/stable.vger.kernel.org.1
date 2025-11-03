@@ -1,188 +1,221 @@
-Return-Path: <stable+bounces-192164-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192165-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EB70C2ACAE
-	for <lists+stable@lfdr.de>; Mon, 03 Nov 2025 10:38:06 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9CCBC2AD81
+	for <lists+stable@lfdr.de>; Mon, 03 Nov 2025 10:49:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 22884348EE7
-	for <lists+stable@lfdr.de>; Mon,  3 Nov 2025 09:38:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2A6251893AB3
+	for <lists+stable@lfdr.de>; Mon,  3 Nov 2025 09:49:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C0602EC080;
-	Mon,  3 Nov 2025 09:36:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFC012F9DA0;
+	Mon,  3 Nov 2025 09:49:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="xB2g1qtr"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="nYPajexp"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 176D72EACEE
-	for <stable@vger.kernel.org>; Mon,  3 Nov 2025 09:36:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D62DC2F9995
+	for <stable@vger.kernel.org>; Mon,  3 Nov 2025 09:49:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762162584; cv=none; b=f/alIJ7R1wOt6wn1ClS9oZRnznwzXfSqpdT/mOX49KJhcT4QBcxTeIpCOKIp4cHyO+WYvfMW/RD9cM1cS2f+rqOhTfKU2/hDnpzy0Vl4ZAlki1gemjoO7JIMlU2kpAElVEtpXOWjtCibTjMbkQJOh1LlDqMSejacMD3hJYAFAMU=
+	t=1762163348; cv=none; b=V3LyTHt6Sj9YZ0uSzy454cbJsHWCXCSz8MuwcncwrMRFV/64rR6mwnlQQRgTIXLI5d9v+5cNv5PgVYJ+C+wFKNQNCQMs5AZmI29zma+tYV2G+NTRRSDw6/W+tpMUrEH5iSIKWlcnsyMEw3JgeoyH1UTBsfZHXziH8kWPjjV5a4o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762162584; c=relaxed/simple;
-	bh=/fMMww+VnRA+hcUIhl7JMhlaSfVDZu5RLtut+X9bMaI=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=lOGh9WOlGTz6mdAM7iylRcQLt3z/zPRY3e8xkcH0jMzsuady7AtH0q+GUKmyIYhrYu3tX+as8jRSrNxtDAe6adzvjI3RN8Cr7qGbYiwmNjNI2E6kdzLTubqvHzoA+3DQk3lxF3TWEiLdBSg+1YLEVMWNYuFwmJTIel4fUGGH8bM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=xB2g1qtr; arc=none smtp.client-ip=209.85.167.48
+	s=arc-20240116; t=1762163348; c=relaxed/simple;
+	bh=euNZNniqY5spJKkr8zuiCVFsRb7Eip5e9xluBi2RfY0=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=JeNh8UVIgasNA1VPWWa0OaBqCJulV5TFgrDdkCoJIgYKW+pogYg1s/A3NVOpE7M3MxN15ZtMGZoo0zgLNpDwErcfYjOpGEJlggkfsK6CYqZ1wERi9FyE8eP/65DqrVdirLRFVIawp1nzDGjMUJ0r9/w++hz2dtyhj4UxbKFc8Hs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=nYPajexp; arc=none smtp.client-ip=209.85.128.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-591c98ebe90so3862611e87.3
-        for <stable@vger.kernel.org>; Mon, 03 Nov 2025 01:36:21 -0800 (PST)
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-47710acf715so20180915e9.1
+        for <stable@vger.kernel.org>; Mon, 03 Nov 2025 01:49:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1762162580; x=1762767380; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=9yW62hLGR641KE85jpQSWPUCRsBAzSiXnExBD5jnO/s=;
-        b=xB2g1qtrpd44V4OkSLjf1aDJE+B1F/K45/lOKgy0lxFr194hrglfNEXsFhC+X7pyeL
-         hSSu/WBingd/arXSglbELlXLqvSWC2bALZoHfglrHHKqqENqJF31SRJ/3TZjRKlptOTN
-         qVm7M/z1YT6zlKDd2/HXXGf9CtH3uFXi98e43VfbLlw7UZmFQBKnDlttVtWrz0qVDVKr
-         EsErNj63EDd/V0aDvaVgQf9L3NCtYSte2objlr7HTtFrifF5TVXq2PqeEeGKMtqNpltR
-         dGo4htu1GsiO2+0ccHO7k1AMdXrTGAFASOPdQ8OrSTkFdqgM9tIvZeeA7IEI7f51hEpj
-         Oaog==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762162580; x=1762767380;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=linaro.org; s=google; t=1762163345; x=1762768145; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:references:cc:to:subject:reply-to:from:user-agent
+         :mime-version:date:message-id:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=9yW62hLGR641KE85jpQSWPUCRsBAzSiXnExBD5jnO/s=;
-        b=rHuxUBZW4itt6VQpCxFjzroamb0ALllfFHbBRAMuz8onTamwqpmz1oqJLMAmnHQweM
-         oM5cQjBadp0hgUYhEgMFEQtwfblBvIhR5t2G0/D6gDp7WdQQewO1F+pIOyb/xvwkK9Yn
-         Z1rOjHtAMcKsZbEqMSlrGgCXKeA9Qv5JkPJMt7UpoBYdLp7iuxxy8PpR+yvrN5J+itPs
-         UC8UbFtZWMRAQnsV22+RvWkKJ3GSeGOWZJtF1rnyoXsc/Crpcq3gWkCEBAhLA5BHXA8D
-         0MjX4/Nnl4LdpRz4HqZrVuWwTKn9O3/R2r4AGTBkEQ2hzmb5S6fxmPPCgpPMcWNN5FDf
-         dl0g==
-X-Forwarded-Encrypted: i=1; AJvYcCVtBGPfODkPkFOdADi9FhwXcS6p/6MmcCISElMsiL2bBToUyDoh3OROqBnosL2cADt30vkiU8I=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzNKt75Zpl68fErCt5OKzi4orPdF7FrxFWubdp3CKZ1vkco+wvw
-	9AlxV/NO0+3/vpFAVbFtFHVFvd0aWfehg4idPFHmTQl7XasQv9MBpF3R7Ni7zaj2aMotsJqiyFo
-	Xllb9F01xIw==
-X-Gm-Gg: ASbGncsDybJh9Ua0TK5UyIhpCAdcDekVa1hYzaLBg0WsqW1oF1NTclTPpt2IVkpAYsc
-	yCx1mL9JaaJQ4FKZ1rPWNfILSAlA9GH0FHc9ZQNp4p0zV8jVgj2mHhrbNsMNS6gHFRq5kqIDM14
-	4K1xPwqqaVb3dAzZSOyxKA9rt53AMlBfxiF49ZEs3be0304jYDciz+UrT5flc/YbnnVrSRM3Fqe
-	pxofZ/81ob+ZQtmVcFmqcGOf3LMuLjdNIH57Xq7CBLOEpobNLHWheBkfOWU9TvcRG6wxTwz/pOD
-	0NnOlCW6plfIbzB57tHSf6ntS/gF6DXq5L0Rz9xvAn6FOq4lgV56p1G1T79BE4hgGIPsM3OGtjO
-	+31oEObT9lzrT2pAHiDWVc0gVfNdacGTGGx0aLGETbJQ4HH/p+yfCRjdFhSTKLDWO93D1I1HwTH
-	JxFRJUZy69PvKcjTv+ANI8cmDiVbBvR7F+af+MZkIIPtNi
-X-Google-Smtp-Source: AGHT+IEbLGArSP9pXAbGMd97ofMZmPRcH8dCTCvclwnpkuf4fwAmP+p9NpZYFomPMnXnC7iNc9dIaQ==
-X-Received: by 2002:ac2:4c49:0:b0:594:2df2:84ab with SMTP id 2adb3069b0e04-5942df28800mr633101e87.8.1762162580137;
-        Mon, 03 Nov 2025 01:36:20 -0800 (PST)
-Received: from [192.168.1.2] (c-92-34-217-190.bbcust.telenor.se. [92.34.217.190])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5941f39c0fdsm2722074e87.39.2025.11.03.01.36.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 03 Nov 2025 01:36:19 -0800 (PST)
-From: Linus Walleij <linus.walleij@linaro.org>
-Date: Mon, 03 Nov 2025 10:36:18 +0100
-Subject: [PATCH v2] iio: accel: bmc150: Fix irq assumption regression
+        bh=cyfgOfO5wbQrka4RaJRIQ58bY784PFhznl4lHer181M=;
+        b=nYPajexpfrbBlNWoNzPIXYMX67JecI5MZ6WVbh9YQKg3SdUV0dTmK4lDFnMT0jS64d
+         Ab/7Bs8UgYTHqVisKXcAiz1OIpUmlWMVXTsLVMaTtsJPSD8p2l1Hfl2d3qXXhzduMs8k
+         Te9Oxt6EgMmNEHbIpblYx38COuwF6S0aEGcvHsGGEbzdfRMuEcrVee0+io/arl1FZlEe
+         m+2QYa4P7CA0hhQzgFxzTaLlNtsGyYUMIMDgK8BkfFbDfltUZhETDCovjCNhYkJ+e1h6
+         zZ/n3cRJojpAlFwLGQWJJsKUWUICea4MOo67kgG8DNAmn0bZZqBUSi7R8WwMx8QyyP50
+         5vEg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762163345; x=1762768145;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:references:cc:to:subject:reply-to:from:user-agent
+         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=cyfgOfO5wbQrka4RaJRIQ58bY784PFhznl4lHer181M=;
+        b=UghbneTFw4slrMvLDseObuRQFfDx+yb7Jw9OFbZygnTXSj0Ps1Dpf00SqDr7hH25+7
+         pKvL7XL3Hm/ZmYdUUbJIV4gayXgvsU+jPAwtA3IA2BFOcoHtcrNoevR2Y60XcyMax0cK
+         G0sV9ml7Pdsndh7NZSip2DLmaNB5g3tz0/VcnjjgdkuzaYuDhhcYFuk25UoIf/CLYCAn
+         vo0MoJUUbP6ub9rR6L8aHzqRhyVsLOOEk+A04KEatxwqo3JLO58HV3Mgmb4xI1xeUGc/
+         2QgqGzXUg0U77XvOYtuW5D8t0RuQfVp/aIVWTlolbLhcEJ9E/ZzUVPpjF1Z3M+WHW8yw
+         5ZSA==
+X-Forwarded-Encrypted: i=1; AJvYcCVY2FtJEWKqFKdDimeAon3XvKDi+vg/b+eJ/MpbaqhzgL7UvD/flztPGs06Kc+EE6STkpPQsgQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyLRmMHtPzC1IhSv55djd/xpxjbf54f5s5zbMUMDDmwcQh8Ngmr
+	83/D2lnLgw0H7AWcajR6yLT7WXiW7z5WHKOmb/1weEbzm5YdTb6atE7KXvdSt88dQ7Q=
+X-Gm-Gg: ASbGncsmJv9kNvqTOMyaUC/T/ZkniXOLtirdyABtEk0rR/unLf4wT2ehptMR0LpgnwZ
+	BAXN2L7StA1fd8EBuciutGn+wO42TwQgGSnJ86MHrEsxQERhE6+FUm+KAc4eQe550vzWwcyi8iu
+	hpAM7vdSaoPh/Yhk6FJotiWLCwO287fQLBvFfDZXWoEFF5QbHXXAAUy2SxMJ55IigEH5ePo19Rb
+	KFiH1fAiEVSoE1VOB/7QXj1Uz5PjLxd9hgANiZP3uS70RVsSPdlSKVvMnUSjTscobxk4bNJBOeb
+	arq+YM8kkD1LUiKUfON+5yIyz0utuODrj4nSzKoW1lHZJKskrBOl/HXMnhKP9FAwEsG9WyMveAw
+	tbNBsi2FDpKF1emAhIWtJuA6Wg47hkiV/WtgW7NpNrVMNA9PQ8m7IS2QOQpljG4slnVe1AZxj6h
+	RN4lateY7st9BUDns5C1VURdEKnnGBaG9ddCTyTy2E5jL9
+X-Google-Smtp-Source: AGHT+IH9c7oxZUwI4MZc+UcQYfSkmXSjNxCEXJEJzZAI5xj3Z/FVbn/Z55mp6ddo/Yu2LHLMUnh/Mg==
+X-Received: by 2002:a05:600c:b8d:b0:471:803:6a26 with SMTP id 5b1f17b1804b1-477308c8bc7mr112449905e9.37.1762163344829;
+        Mon, 03 Nov 2025 01:49:04 -0800 (PST)
+Received: from [192.168.27.65] (home.rastines.starnux.net. [82.64.67.166])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4773c4ac18bsm144251275e9.5.2025.11.03.01.49.02
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 03 Nov 2025 01:49:03 -0800 (PST)
+Message-ID: <807e9f74-79ed-44bc-8a80-3d99787edc65@linaro.org>
+Date: Mon, 3 Nov 2025 10:49:04 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+From: Neil Armstrong <neil.armstrong@linaro.org>
+Reply-To: Neil Armstrong <neil.armstrong@linaro.org>
+Subject: Re: [PATCH RESEND 3/3] PCI: meson: Fix parsing the DBI register
+ region
+To: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
+ Bjorn Helgaas <bhelgaas@google.com>,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+ Manivannan Sadhasivam <mani@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Hanjie Lin <hanjie.lin@amlogic.com>,
+ Yue Wang <yue.wang@amlogic.com>, Kevin Hilman <khilman@baylibre.com>,
+ Jerome Brunet <jbrunet@baylibre.com>,
+ Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+ Andrew Murray <amurray@thegoodpenguin.co.uk>,
+ Jingoo Han <jingoohan1@gmail.com>,
+ Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
+Cc: linux-pci@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-amlogic@lists.infradead.org, stable@vger.kernel.org,
+ Linnaea Lavia <linnaea-von-lavia@live.com>
+References: <20251101-pci-meson-fix-v1-0-c50dcc56ed6a@oss.qualcomm.com>
+ <20251101-pci-meson-fix-v1-3-c50dcc56ed6a@oss.qualcomm.com>
+Content-Language: en-US, fr
+Autocrypt: addr=neil.armstrong@linaro.org; keydata=
+ xsBNBE1ZBs8BCAD78xVLsXPwV/2qQx2FaO/7mhWL0Qodw8UcQJnkrWmgTFRobtTWxuRx8WWP
+ GTjuhvbleoQ5Cxjr+v+1ARGCH46MxFP5DwauzPekwJUD5QKZlaw/bURTLmS2id5wWi3lqVH4
+ BVF2WzvGyyeV1o4RTCYDnZ9VLLylJ9bneEaIs/7cjCEbipGGFlfIML3sfqnIvMAxIMZrvcl9
+ qPV2k+KQ7q+aXavU5W+yLNn7QtXUB530Zlk/d2ETgzQ5FLYYnUDAaRl+8JUTjc0CNOTpCeik
+ 80TZcE6f8M76Xa6yU8VcNko94Ck7iB4vj70q76P/J7kt98hklrr85/3NU3oti3nrIHmHABEB
+ AAHNKk5laWwgQXJtc3Ryb25nIDxuZWlsLmFybXN0cm9uZ0BsaW5hcm8ub3JnPsLAkQQTAQoA
+ OwIbIwULCQgHAwUVCgkICwUWAgMBAAIeAQIXgBYhBInsPQWERiF0UPIoSBaat7Gkz/iuBQJk
+ Q5wSAhkBAAoJEBaat7Gkz/iuyhMIANiD94qDtUTJRfEW6GwXmtKWwl/mvqQtaTtZID2dos04
+ YqBbshiJbejgVJjy+HODcNUIKBB3PSLaln4ltdsV73SBcwUNdzebfKspAQunCM22Mn6FBIxQ
+ GizsMLcP/0FX4en9NaKGfK6ZdKK6kN1GR9YffMJd2P08EO8mHowmSRe/ExAODhAs9W7XXExw
+ UNCY4pVJyRPpEhv373vvff60bHxc1k/FF9WaPscMt7hlkbFLUs85kHtQAmr8pV5Hy9ezsSRa
+ GzJmiVclkPc2BY592IGBXRDQ38urXeM4nfhhvqA50b/nAEXc6FzqgXqDkEIwR66/Gbp0t3+r
+ yQzpKRyQif3OwE0ETVkGzwEIALyKDN/OGURaHBVzwjgYq+ZtifvekdrSNl8TIDH8g1xicBYp
+ QTbPn6bbSZbdvfeQPNCcD4/EhXZuhQXMcoJsQQQnO4vwVULmPGgtGf8PVc7dxKOeta+qUh6+
+ SRh3vIcAUFHDT3f/Zdspz+e2E0hPV2hiSvICLk11qO6cyJE13zeNFoeY3ggrKY+IzbFomIZY
+ 4yG6xI99NIPEVE9lNBXBKIlewIyVlkOaYvJWSV+p5gdJXOvScNN1epm5YHmf9aE2ZjnqZGoM
+ Mtsyw18YoX9BqMFInxqYQQ3j/HpVgTSvmo5ea5qQDDUaCsaTf8UeDcwYOtgI8iL4oHcsGtUX
+ oUk33HEAEQEAAcLAXwQYAQIACQUCTVkGzwIbDAAKCRAWmrexpM/4rrXiB/sGbkQ6itMrAIfn
+ M7IbRuiSZS1unlySUVYu3SD6YBYnNi3G5EpbwfBNuT3H8//rVvtOFK4OD8cRYkxXRQmTvqa3
+ 3eDIHu/zr1HMKErm+2SD6PO9umRef8V82o2oaCLvf4WeIssFjwB0b6a12opuRP7yo3E3gTCS
+ KmbUuLv1CtxKQF+fUV1cVaTPMyT25Od+RC1K+iOR0F54oUJvJeq7fUzbn/KdlhA8XPGzwGRy
+ 4zcsPWvwnXgfe5tk680fEKZVwOZKIEuJC3v+/yZpQzDvGYJvbyix0lHnrCzq43WefRHI5XTT
+ QbM0WUIBIcGmq38+OgUsMYu4NzLu7uZFAcmp6h8g
+Organization: Linaro
+In-Reply-To: <20251101-pci-meson-fix-v1-3-c50dcc56ed6a@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251103-fix-bmc150-v2-1-0811592259df@linaro.org>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/22MywrCMBBFf6XM2kgykoeu/A/pok3HdkCTkkhQS
- v7d2LXLcy/nbJApMWW4dBskKpw5hgZ46MAvQ5hJ8NQYUKJWEq2481uMT6+0FJa0cQpxRKOhCWu
- i9u6xW9944fyK6bO3i/qtfzNFCSW8n/zZOHL+ZK8PDkOKx5hm6GutX6YOqd+lAAAA
-X-Change-ID: 20251027-fix-bmc150-7e568122b265
-To: Jonathan Cameron <jic23@kernel.org>, 
- David Lechner <dlechner@baylibre.com>, 
- =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
- Andy Shevchenko <andy@kernel.org>, 
- Matti Vaittinen <mazziesaccount@gmail.com>, 
- Stephan Gerhold <stephan@gerhold.net>
-Cc: linux-iio@vger.kernel.org, stable@vger.kernel.org, 
- Linus Walleij <linus.walleij@linaro.org>
-X-Mailer: b4 0.14.3
 
-The code in bmc150-accel-core.c unconditionally calls
-bmc150_accel_set_interrupt() in the iio_buffer_setup_ops,
-such as on the runtime PM resume path giving a kernel
-splat like this if the device has no interrupts:
+On 11/1/25 05:29, Manivannan Sadhasivam wrote:
+> First of all, the driver was parsing the 'dbi' register region as 'elbi'.
+> This was due to DT mistakenly passing 'dbi' as 'elbi'. Since the DT is
+> now fixed to supply 'dbi' region, this driver can rely on the DWC core
+> driver to parse and map it.
+> 
+> However, to support the old DTs, if the 'elbi' region is found in DT, parse
+> and map the region as both 'dw_pcie::elbi_base' as 'dw_pcie::dbi_base'.
+> This will allow the driver to work with both broken and fixed DTs.
+> 
+> Also, skip parsing the 'elbi' region in DWC core if 'pci->elbi_base' was
+> already populated.
+> 
+> Cc: <stable@vger.kernel.org> # 6.2
+> Reported-by: Linnaea Lavia <linnaea-von-lavia@live.com>
+> Closes: https://lore.kernel.org/linux-pci/DM4PR05MB102707B8CDF84D776C39F22F2C7F0A@DM4PR05MB10270.namprd05.prod.outlook.com/
+> Fixes: 9c0ef6d34fdb ("PCI: amlogic: Add the Amlogic Meson PCIe controller driver")
+> Fixes: c96992a24bec ("PCI: dwc: Add support for ELBI resource mapping")
+> Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+> ---
+>   drivers/pci/controller/dwc/pci-meson.c       | 18 +++++++++++++++---
+>   drivers/pci/controller/dwc/pcie-designware.c | 12 +++++++-----
+>   2 files changed, 22 insertions(+), 8 deletions(-)
+> 
+> diff --git a/drivers/pci/controller/dwc/pci-meson.c b/drivers/pci/controller/dwc/pci-meson.c
+> index 787469d1b396d4c7b3e28edfe276b7b997fb8aee..54b6a4196f1767a3c14c6c901bfee3505588134c 100644
+> --- a/drivers/pci/controller/dwc/pci-meson.c
+> +++ b/drivers/pci/controller/dwc/pci-meson.c
+> @@ -108,10 +108,22 @@ static int meson_pcie_get_mems(struct platform_device *pdev,
+>   			       struct meson_pcie *mp)
+>   {
+>   	struct dw_pcie *pci = &mp->pci;
+> +	struct resource *res;
+>   
+> -	pci->dbi_base = devm_platform_ioremap_resource_byname(pdev, "elbi");
+> -	if (IS_ERR(pci->dbi_base))
+> -		return PTR_ERR(pci->dbi_base);
+> +	/*
+> +	 * For the broken DTs that supply 'dbi' as 'elbi', parse the 'elbi'
+> +	 * region and assign it to both 'pci->elbi_base' and 'pci->dbi_space' so
+> +	 * that the DWC core can skip parsing both regions.
+> +	 */
+> +	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "elbi");
+> +	if (res) {
+> +		pci->elbi_base = devm_pci_remap_cfg_resource(pci->dev, res);
+> +		if (IS_ERR(pci->elbi_base))
+> +			return PTR_ERR(pci->elbi_base);
+> +
+> +		pci->dbi_base = pci->elbi_base;
+> +		pci->dbi_phys_addr = res->start;
+> +	}
+>   
+>   	mp->cfg_base = devm_platform_ioremap_resource_byname(pdev, "cfg");
+>   	if (IS_ERR(mp->cfg_base))
+> diff --git a/drivers/pci/controller/dwc/pcie-designware.c b/drivers/pci/controller/dwc/pcie-designware.c
+> index c644216995f69cbf065e61a0392bf1e5e32cf56e..06eca858eb1b3c7a8a833df6616febcdbe854850 100644
+> --- a/drivers/pci/controller/dwc/pcie-designware.c
+> +++ b/drivers/pci/controller/dwc/pcie-designware.c
+> @@ -168,11 +168,13 @@ int dw_pcie_get_resources(struct dw_pcie *pci)
+>   	}
+>   
+>   	/* ELBI is an optional resource */
+> -	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "elbi");
+> -	if (res) {
+> -		pci->elbi_base = devm_ioremap_resource(pci->dev, res);
+> -		if (IS_ERR(pci->elbi_base))
+> -			return PTR_ERR(pci->elbi_base);
+> +	if (!pci->elbi_base) {
+> +		res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "elbi");
+> +		if (res) {
+> +			pci->elbi_base = devm_ioremap_resource(pci->dev, res);
+> +			if (IS_ERR(pci->elbi_base))
+> +				return PTR_ERR(pci->elbi_base);
+> +		}
+>   	}
+>   
+>   	/* LLDD is supposed to manually switch the clocks and resets state */
+> 
 
-Unable to handle kernel NULL pointer dereference at virtual
-  address 00000001 when read
-CPU: 0 UID: 0 PID: 393 Comm: iio-sensor-prox Not tainted
-  6.18.0-rc1-postmarketos-stericsson-00001-g6b43386e3737 #73 PREEMPT
-Hardware name: ST-Ericsson Ux5x0 platform (Device Tree Support)
-PC is at bmc150_accel_set_interrupt+0x98/0x194
-LR is at __pm_runtime_resume+0x5c/0x64
-(...)
-Call trace:
-bmc150_accel_set_interrupt from bmc150_accel_buffer_postenable+0x40/0x108
-bmc150_accel_buffer_postenable from __iio_update_buffers+0xbe0/0xcbc
-__iio_update_buffers from enable_store+0x84/0xc8
-enable_store from kernfs_fop_write_iter+0x154/0x1b4
-kernfs_fop_write_iter from do_iter_readv_writev+0x178/0x1e4
-do_iter_readv_writev from vfs_writev+0x158/0x3f4
-vfs_writev from do_writev+0x74/0xe4
-do_writev from __sys_trace_return+0x0/0x10
-
-This bug seems to have been in the driver since the beginning,
-but it only manifests recently, I do not know why.
-
-Store the IRQ number in the state struct, as this is a common
-pattern in other drivers, then use this to determine if we have
-IRQ support or not.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
----
-Changes in v2:
-- Instead of a bool has_irq in the state struct, store the Linux IRQ
-  number itself and switch behaviour on that.
-- Link to v1: https://lore.kernel.org/r/20251027-fix-bmc150-v1-1-ccdc968e8c37@linaro.org
----
- drivers/iio/accel/bmc150-accel-core.c | 5 +++++
- drivers/iio/accel/bmc150-accel.h      | 1 +
- 2 files changed, 6 insertions(+)
-
-diff --git a/drivers/iio/accel/bmc150-accel-core.c b/drivers/iio/accel/bmc150-accel-core.c
-index 3c5d1560b163..42ccf0316ce5 100644
---- a/drivers/iio/accel/bmc150-accel-core.c
-+++ b/drivers/iio/accel/bmc150-accel-core.c
-@@ -523,6 +523,10 @@ static int bmc150_accel_set_interrupt(struct bmc150_accel_data *data, int i,
- 	const struct bmc150_accel_interrupt_info *info = intr->info;
- 	int ret;
- 
-+	/* We do not always have an IRQ */
-+	if (data->irq <= 0)
-+		return 0;
-+
- 	if (state) {
- 		if (atomic_inc_return(&intr->users) > 1)
- 			return 0;
-@@ -1696,6 +1700,7 @@ int bmc150_accel_core_probe(struct device *dev, struct regmap *regmap, int irq,
- 	}
- 
- 	if (irq > 0) {
-+		data->irq = irq;
- 		ret = devm_request_threaded_irq(dev, irq,
- 						bmc150_accel_irq_handler,
- 						bmc150_accel_irq_thread_handler,
-diff --git a/drivers/iio/accel/bmc150-accel.h b/drivers/iio/accel/bmc150-accel.h
-index 7a7baf52e595..e8f26198359f 100644
---- a/drivers/iio/accel/bmc150-accel.h
-+++ b/drivers/iio/accel/bmc150-accel.h
-@@ -58,6 +58,7 @@ enum bmc150_accel_trigger_id {
- 
- struct bmc150_accel_data {
- 	struct regmap *regmap;
-+	int irq;
- 	struct regulator_bulk_data regulators[2];
- 	struct bmc150_accel_interrupt interrupts[BMC150_ACCEL_INTERRUPTS];
- 	struct bmc150_accel_trigger triggers[BMC150_ACCEL_TRIGGERS];
-
----
-base-commit: 3a8660878839faadb4f1a6dd72c3179c1df56787
-change-id: 20251027-fix-bmc150-7e568122b265
-
-Best regards,
--- 
-Linus Walleij <linus.walleij@linaro.org>
-
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
 
