@@ -1,112 +1,123 @@
-Return-Path: <stable+bounces-192193-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192194-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B274C2BCE5
-	for <lists+stable@lfdr.de>; Mon, 03 Nov 2025 13:47:18 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06C8AC2BD63
+	for <lists+stable@lfdr.de>; Mon, 03 Nov 2025 13:53:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F32FE3B3816
-	for <lists+stable@lfdr.de>; Mon,  3 Nov 2025 12:42:36 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5C7C54F5068
+	for <lists+stable@lfdr.de>; Mon,  3 Nov 2025 12:46:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A925F30E85E;
-	Mon,  3 Nov 2025 12:40:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D98530CDAB;
+	Mon,  3 Nov 2025 12:44:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="RmGgkokm"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from out-174.mta1.migadu.com (out-174.mta1.migadu.com [95.215.58.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36D0830C37C;
-	Mon,  3 Nov 2025 12:40:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F70130C355;
+	Mon,  3 Nov 2025 12:44:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762173611; cv=none; b=sxP82MUxouIow/P150sSrKNgwWXXWtXkxapNA5IERKn+Ss386IbKbe6m0sAv09120Yo5tJFHwLN45UiZXoHNAGB5bixXB805jGK2gVTN1tpkUONz09503x5KmMZ6iDaf5Vu0IAIgrCHCM7IH3+TUaTBrFWFgKTJbMePYIueK+NU=
+	t=1762173877; cv=none; b=vC+NkPXEFKSVpxYOANV6ZpfZJWWuOesRqqeC199+Si6bUJk+4Dv74CLXZcbBbcpffAgblm8XBailjmLSuMxlzSoEEbrdhph/78FTy+LgONt7DkrV/LW1Ygwq84eE/OK1LtUuSdzsd5lVy+vxRcAkaO3C27dllV/VViRQoL022C4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762173611; c=relaxed/simple;
-	bh=2spFbkhXHi0wUJRvAU140pKtUaTuA9ZmBdvAlYVlNuk=;
-	h=From:To:Cc:Subject:Date:Message-Id; b=dhACN+Qhs5+eC44KiXrLadSNZgbvInBHCSzVn+kbbN10s1GU9E/BX8anMO9Jeqa91jBeGG/rkkdjq52StMIHbopu/x58sLu2DTn4matSYeR/SZLAzbVTuetcwfbotrlgxR9N5vMmu2OjidYg2upJ9zktre1o1ao75NH82UIFCkQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from localhost.localdomain (unknown [202.112.113.212])
-	by APP-05 (Coremail) with SMTP id zQCowABn1PKaoghprNc8AQ--.20431S2;
-	Mon, 03 Nov 2025 20:39:57 +0800 (CST)
-From: Ma Ke <make24@iscas.ac.cn>
-To: tony.luck@intel.com,
-	qiuxu.zhuo@intel.com,
-	bp@alien8.de
-Cc: linux-edac@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	akpm@linux-foundation.org,
-	Ma Ke <make24@iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH] EDAC/igen6: Fix error handling in igen6_edac driver
-Date: Mon,  3 Nov 2025 20:39:48 +0800
-Message-Id: <20251103123948.23701-1-make24@iscas.ac.cn>
-X-Mailer: git-send-email 2.17.1
-X-CM-TRANSID:zQCowABn1PKaoghprNc8AQ--.20431S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7Cr13Kr4rXry7ur1xJr1UKFg_yoW8JF43pr
-	Z0gas3Cr13tFZrXa1UZw1kZFyFganxGa4q9rWvk39xWFsxWFyrtFZ8ZrW3tFyDAry0vr4a
-	ya15X3y5u3WDCF7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9m14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r1I6r4UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
-	0DM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI
-	64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r106r15McIj6I8E87Iv67AKxVWUJVW8Jw
-	Am72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAG
-	YxC7MxkF7I0En4kS14v26r126r1DMxkIecxEwVAFwVW5JwCF04k20xvY0x0EwIxGrwCFx2
-	IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v2
-	6r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67
-	AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IY
-	s7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr
-	0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUya0PUUUUU=
-X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
+	s=arc-20240116; t=1762173877; c=relaxed/simple;
+	bh=vT6PArFNlD9ATQBYI/ysNDAumFVMhzxz9dljQq1FEo4=;
+	h=MIME-Version:Date:Content-Type:From:Message-ID:Subject:To:Cc:
+	 In-Reply-To:References; b=iEhJ+82k/b/stCXxING6/9DgNbowrG/ZR/P9mlVBQIKo+v0/dhYn0fR03Im7vev3nDT4IIfF1fA1b2JjpSVMYUDBSZESMS9JXr6hCiO4iHOmLWsy3vmTcAkV25r0bNRbD1OhHZ5yu72m44HSBrXbloPc/OMScxQr66vqQLug5b8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=RmGgkokm; arc=none smtp.client-ip=95.215.58.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1762173862;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=HCESdiFfePQnHxAf5Hjx+NZwOKZOc1DIfGTWc/CkQFI=;
+	b=RmGgkokmZWSo8UB9yGc4Wq07j7MdQpgB0b3cW0rSbLfwQyuO9LTYotTkkJPN3r4augRIlF
+	l7yY27AMCqp6lE9/YHUWl6UdnxZg/JOhepCTkF7MTPAISgKfqjWtkrarP+kHNzCwFXBDP/
+	MJigcA7V0TLszG04FEJ92ouXtktg/jA=
+Date: Mon, 03 Nov 2025 12:44:15 +0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: "Jiayuan Chen" <jiayuan.chen@linux.dev>
+Message-ID: <3ddd7d72644ebd5826caa244cad6a6491410c00a@linux.dev>
+TLS-Required: No
+Subject: Re: [PATCH net v3 1/3] net,mptcp: fix proto fallback detection with
+ BPF sockmap
+To: "Paolo Abeni" <pabeni@redhat.com>, mptcp@lists.linux.dev
+Cc: stable@vger.kernel.org, "Jakub Sitnicki" <jakub@cloudflare.com>, "John
+ Fastabend" <john.fastabend@gmail.com>, "Eric Dumazet"
+ <edumazet@google.com>, "Kuniyuki Iwashima" <kuniyu@google.com>, "Willem
+ de Bruijn" <willemb@google.com>, "David S. Miller" <davem@davemloft.net>,
+ "Jakub Kicinski" <kuba@kernel.org>, "Simon Horman" <horms@kernel.org>,
+ "Matthieu Baerts" <matttbe@kernel.org>, "Mat Martineau"
+ <martineau@kernel.org>, "Geliang Tang" <geliang@kernel.org>, "Andrii
+ Nakryiko" <andrii@kernel.org>, "Eduard Zingerman" <eddyz87@gmail.com>,
+ "Alexei Starovoitov" <ast@kernel.org>, "Daniel Borkmann"
+ <daniel@iogearbox.net>, "Martin KaFai Lau" <martin.lau@linux.dev>, "Song
+ Liu" <song@kernel.org>, "Yonghong Song" <yonghong.song@linux.dev>, "KP
+ Singh" <kpsingh@kernel.org>, "Stanislav Fomichev" <sdf@fomichev.me>, "Hao
+ Luo" <haoluo@google.com>, "Jiri Olsa" <jolsa@kernel.org>, "Shuah Khan"
+ <shuah@kernel.org>, "Florian Westphal" <fw@strlen.de>,
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+ bpf@vger.kernel.org, linux-kselftest@vger.kernel.org
+In-Reply-To: <c10939d2-437e-47fb-81e9-05723442c935@redhat.com>
+References: <20251023125450.105859-1-jiayuan.chen@linux.dev>
+ <20251023125450.105859-2-jiayuan.chen@linux.dev>
+ <c10939d2-437e-47fb-81e9-05723442c935@redhat.com>
+X-Migadu-Flow: FLOW_OUT
 
-The igen6_edac driver fails to release reference for non-primary
-memory controllers during both error handling and normal shutdown.
-After device_initialize() is called in igen6_register_mci(), missing
-put_device() calls in error paths and igen6_unregister_mcis() cause
-reference count leaks, resulting in memory leaks and improper device
-cleanup.
+October 28, 2025 at 19:30, "Paolo Abeni" <pabeni@redhat.com mailto:pabeni=
+@redhat.com?to=3D%22Paolo%20Abeni%22%20%3Cpabeni%40redhat.com%3E > wrote:
 
-Found by code review.
 
-Cc: stable@vger.kernel.org
-Fixes: 10590a9d4f23 ("EDAC/igen6: Add EDAC driver for Intel client SoCs using IBECC")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
----
- drivers/edac/igen6_edac.c | 4 ++++
- 1 file changed, 4 insertions(+)
+>=20
+>=20On 10/23/25 2:54 PM, Jiayuan Chen wrote:
+>=20
+>=20>=20
+>=20> When the server has MPTCP enabled but receives a non-MP-capable req=
+uest
+> >  from a client, it calls mptcp_fallback_tcp_ops().
+> >=20=20
+>=20>  Since non-MPTCP connections are allowed to use sockmap, which repl=
+aces
+> >  sk->sk_prot, using sk->sk_prot to determine the IP version in
+> >  mptcp_fallback_tcp_ops() becomes unreliable. This can lead to assign=
+ing
+> >  incorrect ops to sk->sk_socket->ops.
+> >=20
+>=20I don't see how sockmap could modify the to-be-accepted socket sk_pro=
+t
+> before mptcp_fallback_tcp_ops(), as such call happens before the fd is
+> installed, and AFAICS sockmap can only fetch sockets via fds.
+>=20
+>=20Is this patch needed?
 
-diff --git a/drivers/edac/igen6_edac.c b/drivers/edac/igen6_edac.c
-index 2fc59f9eed69..ee2f00b204bb 100644
---- a/drivers/edac/igen6_edac.c
-+++ b/drivers/edac/igen6_edac.c
-@@ -1300,6 +1300,8 @@ static int igen6_register_mci(int mc, void __iomem *window, struct pci_dev *pdev
- 	imc->mci = mci;
- 	return 0;
- fail3:
-+	if (mc != 0)
-+		put_device(&imc->dev);
- 	mci->pvt_info = NULL;
- 	kfree(mci->ctl_name);
- fail2:
-@@ -1326,6 +1328,8 @@ static void igen6_unregister_mcis(void)
- 		kfree(mci->ctl_name);
- 		mci->pvt_info = NULL;
- 		edac_mc_free(mci);
-+		if (imc->mc != 0)
-+			put_device(&imc->dev);
- 		iounmap(imc->window);
- 	}
- }
--- 
-2.17.1
+"mptcp_fallback_tcp_ops" is only called during the accept process. Howeve=
+r,
+before that, for an already established TCP socket, its sk_prot is replac=
+ed via the following path:
+tcp_rcv_state_process()
+  tcp_init_transfer(BPF_SOCK_OPS_PASSIVE_ESTABLISHED_CB)
+    call bpf prog
+        bpf_sock_map_update(sk)
+           tcp_bpf_update_proto()
 
+However, after discussing with Matthieu, we've concluded that this patch =
+is indeed no
+longer necessary, as we have a simpler way to intercept the operation."
+
+Thanks~
 
