@@ -1,134 +1,95 @@
-Return-Path: <stable+bounces-192127-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192128-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id B816FC29BF5
-	for <lists+stable@lfdr.de>; Mon, 03 Nov 2025 01:54:20 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69D9CC29C1E
+	for <lists+stable@lfdr.de>; Mon, 03 Nov 2025 02:05:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id AB3AF4EE1CF
-	for <lists+stable@lfdr.de>; Mon,  3 Nov 2025 00:52:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 27FCD3AC313
+	for <lists+stable@lfdr.de>; Mon,  3 Nov 2025 01:05:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D5F5221290;
-	Mon,  3 Nov 2025 00:51:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22D9C25F98E;
+	Mon,  3 Nov 2025 01:05:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g0M2PvJt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ePe9WMQM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0A0022068B
-	for <stable@vger.kernel.org>; Mon,  3 Nov 2025 00:51:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3559469D;
+	Mon,  3 Nov 2025 01:05:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762131098; cv=none; b=Q7VklfeBL9L9MPKOdbhJI98NqviF987ceF/Rj23Rjuhs8b4qjw3CDH/PLwK1Ffo7TXa7CHam3WQ3RN//uiSqTh6g6chgDP27jqcRBT/TIoPPYTgjyTvGBm0nUQD0Vhd+h1NoiU6CDxGkmS4pH5Ir0mc2S6AqMrZge2am9is/jlI=
+	t=1762131934; cv=none; b=a446Wd4EK1rfl+vAwL6qULtPf88FIyKEGkIrUJlh3MKwMnCpYdNCLAgk4at6SkicaoL51kpdsPJRWgk1J/n7dR0yFOZ/tDA1sEWNYOwzLd1ZnN2BaqaZMqnDIrtdYKwM/Fi/vrqnd/tRB7u5RJnxOvXIhT41iHFY03efsDahyf4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762131098; c=relaxed/simple;
-	bh=RIGOykhBfM3byybzURMYEXzntY1tC9Y9PegO1ORBx3I=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=N9FW8bUeftAjR18nUExU5ue5mdY3QlT0EOBUBgG0VS7r1e51iddenRVsECyF0np6bumSSuJ9sdvnTOUHOLMA7eBNzJ9qrgWlh4gSyvd7V3PylBXuTFA0FGIYMgAywCAv+8150hpKlipUksYr9VTJUscNFX0FWc31EzHiZCULjQU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g0M2PvJt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 376C5C4CEF7;
-	Mon,  3 Nov 2025 00:51:38 +0000 (UTC)
+	s=arc-20240116; t=1762131934; c=relaxed/simple;
+	bh=t4CMx/PQ3CV9US9oD0nskeFMR2z4iplh7kwDMnHyRTU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=s8sr4UUlE7zcKPDoVsxaKGtGngJy8R8/yA8A4QBb8S5fubKEC08NdrWj9OUnQQD2qlXIrHgeHlCCzyz8LJHHZWbGW8KN9l5ZP0qoQQm9RLR2unbyIZ5wdST0ZQL3hNfUFcmPHgJpEv3Ktgy+Y2ryndM5rnegTm7sFaZkWcT7sGU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ePe9WMQM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B488C4CEF7;
+	Mon,  3 Nov 2025 01:05:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762131098;
-	bh=RIGOykhBfM3byybzURMYEXzntY1tC9Y9PegO1ORBx3I=;
-	h=Subject:To:Cc:From:Date:From;
-	b=g0M2PvJtl+KJEHBzIRDWb9VIgJ7nlLmh2xZKFBQRmfeIrKEdq0YNuZhd5pdX4Nj7D
-	 rQlFouQh/paWHsbKthETnsm3YpESCglZVXwt9rwtwNyaURra+cPFCWjDBHpj30UW/6
-	 SnyI3Py1fGFX7Rqd6D6oSRqsKYngjzsNvmUJihw4=
-Subject: FAILED: patch "[PATCH] drm/ast: Clear preserved bits from register output value" failed to apply to 5.4-stable tree
-To: tzimmermann@suse.de,airlied@redhat.com,dianders@chromium.org,jfalempe@redhat.com,nbowler@draconx.ca,pschneider1968@googlemail.com,stable@vger.kernel.org
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 03 Nov 2025 09:51:29 +0900
-Message-ID: <2025110329-yam-anemia-edf6@gregkh>
+	s=korg; t=1762131933;
+	bh=t4CMx/PQ3CV9US9oD0nskeFMR2z4iplh7kwDMnHyRTU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ePe9WMQMuR1WpDTXlyHED+8bBel8CeeDofq/YwfE7BbHkk/3qszMJcIvDqacyii/+
+	 N5oQIY6VUzNIJUqluJZR2KlutR1IVDlGejcoTYdASdXQJhQYpEZaostTMPGs69gBz9
+	 NJ9sOO+TQK9N7tV8EalVRc4I65PZDeSL0aYVsA3A=
+Date: Mon, 3 Nov 2025 10:05:31 +0900
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Arnd Bergmann <arnd@arndb.de>
+Cc: Miaoqian Lin <linmq006@gmail.com>,
+	Thomas =?iso-8859-1?Q?Wei=DFschuh?= <linux@weissschuh.net>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Ruan Jinjie <ruanjinjie@huawei.com>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] misc: eeprom/idt_89hpesx: prevent bad user input in
+ idt_dbgfs_csr_write()
+Message-ID: <2025110351-mountain-absently-f9f1@gregkh>
+References: <20251030052834.97991-1-linmq006@gmail.com>
+ <0f712780-8af0-4894-b75c-44fd7390dc3e@app.fastmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0f712780-8af0-4894-b75c-44fd7390dc3e@app.fastmail.com>
 
+On Thu, Oct 30, 2025 at 09:47:22AM +0100, Arnd Bergmann wrote:
+> On Thu, Oct 30, 2025, at 06:28, Miaoqian Lin wrote:
+> > A malicious user could pass an arbitrarily bad value
+> > to memdup_user_nul(), potentially causing kernel crash.
+> 
+> I think you should be more specific than 'kernel crash' here.
+> As far as I can tell, the worst case would be temporarily
+> consuming a MAX_ORDER_NR_PAGES allocation, leading to out-of-memory.
 
-The patch below does not apply to the 5.4-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+I think we already limit the size of writes so this shouldn't happen,
+but a real trace would be good to see.
 
-To reproduce the conflict and resubmit, you may use the following commands:
+> > Fixes: 183238ffb886 ("misc: eeprom/idt_89hpesx: Switch to 
+> > memdup_user_nul() helper")
+> 
+> I don't think that patch changed anything, the same thing
+> would have happened with kmalloc()+copy_from_user().
+> Am I missing something?
+> 
+> > +	if (count == 0 || count > PAGE_SIZE)
+> > +		return -EINVAL;
+> > +
+> 
+> How did you pick PAGE_SIZE as the maximum here?
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
-git checkout FETCH_HEAD
-git cherry-pick -x a9fb41b5def8e1e0103d5fd1453787993587281e
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025110329-yam-anemia-edf6@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
-
-Possible dependencies:
-
-
+I agree, that seems very very small.
 
 thanks,
 
 greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From a9fb41b5def8e1e0103d5fd1453787993587281e Mon Sep 17 00:00:00 2001
-From: Thomas Zimmermann <tzimmermann@suse.de>
-Date: Fri, 24 Oct 2025 09:35:53 +0200
-Subject: [PATCH] drm/ast: Clear preserved bits from register output value
-
-Preserve the I/O register bits in __ast_write8_i_masked() as specified
-by preserve_mask. Accidentally OR-ing the output value into these will
-overwrite the register's previous settings.
-
-Fixes display output on the AST2300, where the screen can go blank at
-boot. The driver's original commit 312fec1405dd ("drm: Initial KMS
-driver for AST (ASpeed Technologies) 2000 series (v2)") already added
-the broken code. Commit 6f719373b943 ("drm/ast: Blank with VGACR17 sync
-enable, always clear VGACRB6 sync off") triggered the bug.
-
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Reported-by: Peter Schneider <pschneider1968@googlemail.com>
-Closes: https://lore.kernel.org/dri-devel/a40caf8e-58ad-4f9c-af7f-54f6f69c29bb@googlemail.com/
-Tested-by: Peter Schneider <pschneider1968@googlemail.com>
-Reviewed-by: Jocelyn Falempe <jfalempe@redhat.com>
-Fixes: 6f719373b943 ("drm/ast: Blank with VGACR17 sync enable, always clear VGACRB6 sync off")
-Fixes: 312fec1405dd ("drm: Initial KMS driver for AST (ASpeed Technologies) 2000 series (v2)")
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Nick Bowler <nbowler@draconx.ca>
-Cc: Douglas Anderson <dianders@chromium.org>
-Cc: Dave Airlie <airlied@redhat.com>
-Cc: Jocelyn Falempe <jfalempe@redhat.com>
-Cc: dri-devel@lists.freedesktop.org
-Cc: <stable@vger.kernel.org> # v3.5+
-Link: https://patch.msgid.link/20251024073626.129032-1-tzimmermann@suse.de
-
-diff --git a/drivers/gpu/drm/ast/ast_drv.h b/drivers/gpu/drm/ast/ast_drv.h
-index c15aef014f69..d41bd876167c 100644
---- a/drivers/gpu/drm/ast/ast_drv.h
-+++ b/drivers/gpu/drm/ast/ast_drv.h
-@@ -282,13 +282,13 @@ static inline void __ast_write8_i(void __iomem *addr, u32 reg, u8 index, u8 val)
- 	__ast_write8(addr, reg + 1, val);
- }
- 
--static inline void __ast_write8_i_masked(void __iomem *addr, u32 reg, u8 index, u8 read_mask,
-+static inline void __ast_write8_i_masked(void __iomem *addr, u32 reg, u8 index, u8 preserve_mask,
- 					 u8 val)
- {
--	u8 tmp = __ast_read8_i_masked(addr, reg, index, read_mask);
-+	u8 tmp = __ast_read8_i_masked(addr, reg, index, preserve_mask);
- 
--	tmp |= val;
--	__ast_write8_i(addr, reg, index, tmp);
-+	val &= ~preserve_mask;
-+	__ast_write8_i(addr, reg, index, tmp | val);
- }
- 
- static inline u32 ast_read32(struct ast_device *ast, u32 reg)
-
 
