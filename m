@@ -1,83 +1,48 @@
-Return-Path: <stable+bounces-192166-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192167-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A47A4C2AD96
-	for <lists+stable@lfdr.de>; Mon, 03 Nov 2025 10:50:32 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D679BC2AE4C
+	for <lists+stable@lfdr.de>; Mon, 03 Nov 2025 11:00:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A93D3A46C8
-	for <lists+stable@lfdr.de>; Mon,  3 Nov 2025 09:50:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 961C53B5ED1
+	for <lists+stable@lfdr.de>; Mon,  3 Nov 2025 09:57:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA6832FA0D3;
-	Mon,  3 Nov 2025 09:50:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FA252FB608;
+	Mon,  3 Nov 2025 09:57:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="QTc9cz+8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OCWE8zDV"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05C6F2F9995
-	for <stable@vger.kernel.org>; Mon,  3 Nov 2025 09:50:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 311692FABF9;
+	Mon,  3 Nov 2025 09:57:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762163424; cv=none; b=cW/YGkjUuOybi5dfZ7tUayAqo+r/Z0OYx/nUptwvsP+vT+DIDh8WN+uAwLmDCeDARJpMAbcDExF3789pRSBl/x6FcPQ3fzrTFvafBQy/sCN7AuuRKOrrrbuxGCrLZR9xze6xELhCGtTqlTCThIiwLW14tp1FkBpB/VAR4rQy/g0=
+	t=1762163868; cv=none; b=Lca6WOWO69owtI5HyffIvyg0K5QDbpeltGr0RKqaYTAT/LUz5d3t96s1iqyebUaVodkUD6nd/FgSp0ru8ikkxZfQUp4Zk/xr4EGiH0N69xXbboqZEHpR45BmzrD9DC0WHRftz16nQyb8C5lTnajPxwq5TPhVGqo8EH9mSSwyikw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762163424; c=relaxed/simple;
-	bh=lLdro4UCejX2T0cIjEIAFpHkeF9T6b7n0Tt52fX1K9M=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=FMuqcH1S6Y3ge4ll0ZIgNnT+CYvdT8963pbitjcPATPNI8kNFFkbAAmx/x7lvq6h/lQdzZYBiGqGWoYPyI8K36quSe5XScQUVex4vuLAiiJww/WAyO9FK8qo8JZU8Xf/gJBRcsiryD3c8HhzyFC7WWsvbjGr0+n+fpftQuyAjdM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=QTc9cz+8; arc=none smtp.client-ip=209.85.128.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-47728f914a4so20775025e9.1
-        for <stable@vger.kernel.org>; Mon, 03 Nov 2025 01:50:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1762163420; x=1762768220; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:references:cc:to:subject:reply-to:from:user-agent
-         :mime-version:date:message-id:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=xkxRjtj8Zko1T2xij3oDoi3JjwhxKLKuoC0vibst6Dw=;
-        b=QTc9cz+88GfFLIx1Z5AlfQmnkOnNLCc3W67DvqHHiXx/W3Z/ZRecLLkrIBoa1jhlu2
-         COc1xKp8U+tXjSpxYFtD7nEs/uNlyfR3LEZdVTH22J2+JBYrSl5aIYs7z2Z2Xo2IpB+s
-         M5AEKii5wjnoUkzIE9BGf2ugjsi+f3eVRysvAcgFqW01MkMEkajens6/VfjUCOWePocO
-         buQ8DnfPGt14dFj3dF0uVDAm+s7aQwsI3T+c3Xa0jYnwJ9M5EEemqFNhPjPtlp5C8SGm
-         bowvtE6phABrwULn2mYM3vOw1JHFjIkNhr9MyWe5xrJKIKXxQ8fzbqDSVpYA/HvjyqKG
-         wkSw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762163420; x=1762768220;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:references:cc:to:subject:reply-to:from:user-agent
-         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=xkxRjtj8Zko1T2xij3oDoi3JjwhxKLKuoC0vibst6Dw=;
-        b=JsIlPA6yPAu/AayxgIXgO3HJyzL20CiQHFEtvN6znb7xFRjRx9zpKYakIXJovsyiSq
-         LWk+2uIqca6drdW7lnQUcxu3EAGSR2rjTIJRuzG4KImNKPlePjZFZOL7gqLxMeGKjm6U
-         SybwQ/yPKVjWxastjArMJ8k+u2szlXTTgnGlGytRMbZNWADo6lCZXyM9Vijk560TesCJ
-         6a+KiN0jeC+j5nQaBwnc3LJ/w+DcSxOqNkXBIeU6XqdZoL1y3t/JLp77KVntnwY5UFmy
-         VMnp5GE6e1sWnPt+c67XS3N4gy4xxh5hDGs9IGFI9S6mEHS3y79gd+6JdaDx7gp2XMqx
-         tfqQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUVeTWmf3+6X4yZ/Zm8ySHRC8YjYnv+Iv5qCeciiEJMm52Qh0RCGs2jBhyHSquSiObWTYXxJcE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxeQKDT7FHdeVzZ08EqrUxyC1WMtaYfZjWB7iIgddBEaKCCqDgQ
-	8qS9KZS81NzZtRWFOMNAo0Bn5jc/PdAudeJtqoLCjcVNXoZoBYbW7N7iS8PQ29CWH1I=
-X-Gm-Gg: ASbGncuX3WgBWpvFjzrj49TfkGxqnuV4MI6XP5b0wfqS7BC4Cmi6Uo3FRYd/stZwsEG
-	uXduBV3el476aaDfdJ0RcNxQei2pyiQs9nWgn8gAGudziGeZK9nZIhIjJ/SSriL9LPEfpTQ8T66
-	2Kr0IcflZMIhM0rpu8RJKxEIRtAlx1DGnW/HJwRD+7TkFbeOuUa+CqyzQfWqOLHOwBukluVy0oZ
-	do9wbfREVcD6kwShrl7LYFIy6vNTAKCX41q99CbixApYu3122B4VlTuEAKZHygm7k9/ENycl/5b
-	he1TAif+/Z5z688CGUgEzEl+S7vM5uOQ/CiIP34x6Pn/yDcS7kGMQ5KQ7f+OYtj+yUgkqp8GSqv
-	FZf9dC7CZXGCYqjCvaXWkGS98D/FOmbRKPoMxgQ49xGFnux4+yOsP+NDBpru7ZnbFJhsWBlXVVH
-	OSCpt3Z+BIzt1O2aKzud+QP90+JqXTrB7RHUVsThBkfwMF
-X-Google-Smtp-Source: AGHT+IHrNu7b4MLVFNafM5XudQwLx9/rw/9sFxikTt/B5JVYOos8PxRbnxL+oXtoVWVlGPVam6SEPg==
-X-Received: by 2002:a05:600c:5249:b0:471:145b:dd0d with SMTP id 5b1f17b1804b1-4773087230cmr102374215e9.24.1762163420204;
-        Mon, 03 Nov 2025 01:50:20 -0800 (PST)
-Received: from [192.168.27.65] (home.rastines.starnux.net. [82.64.67.166])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4772fcd45a9sm84684815e9.3.2025.11.03.01.50.18
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 03 Nov 2025 01:50:19 -0800 (PST)
-Message-ID: <83d07b54-d584-4297-9aae-2a170c0059d4@linaro.org>
-Date: Mon, 3 Nov 2025 10:50:20 +0100
+	s=arc-20240116; t=1762163868; c=relaxed/simple;
+	bh=tQJW9d/dyn2Pn4aWTpR7XBvFl5Scj4xudR01U54UyB8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=fEdFx62r5HI9vzWnx69wPVC4U48mz3wqqktwl709MleDHTfAvOmMW8Ppw0Y/u4/B/nn9pXZyFf+6FFwwxB9ZPMa6AbShnw4Sr7+EjPY6llU//565jnchTJz9O0wurhAXZvcvckcHhdMJS0RF0FbyewRft7O3rXe/NPTmU1q6AYY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OCWE8zDV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8742FC4CEE7;
+	Mon,  3 Nov 2025 09:57:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762163867;
+	bh=tQJW9d/dyn2Pn4aWTpR7XBvFl5Scj4xudR01U54UyB8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=OCWE8zDVDqBxsuAvXh/gZPeQSRhVF1idQy5B2U9OGGq99RrWd1xYprYmfAffkJDNC
+	 A4WK8e5UW8nzmB7WyZwiyd+93EkJQ7VwrMnzDg3su7Gd2wpk5j0344NWOE9lV9w2S4
+	 sIhiNKgG8Axoj+CDWOcEkWLIg+s2Hcj8n1fDhoerJXusm+6LdpCdhyVfRK8A5U+vOI
+	 9Xik1N5kcHcLvNO2oJH9/I6MAmeJ3q/RS3gHV89TG2f3P0oNRIojMSwiA+LchQ3J90
+	 kcXjtsCG+caa5c/Jl0Y3DL7DnJt8ao/+j9bFBPOq0p9rjyeDyyPqbre0/oI4SIOfqT
+	 Ft1Tn7DmOqDYQ==
+Message-ID: <f8dc0e8b-bbdc-4ac6-9ebc-c633bda24403@kernel.org>
+Date: Mon, 3 Nov 2025 10:57:44 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -85,103 +50,73 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-From: Neil Armstrong <neil.armstrong@linaro.org>
-Reply-To: Neil Armstrong <neil.armstrong@linaro.org>
-Subject: Re: [PATCH RESEND 0/3] PCI: meson: Fix the parsing of DBI region
-To: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
- Bjorn Helgaas <bhelgaas@google.com>,
- Lorenzo Pieralisi <lpieralisi@kernel.org>,
- =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
- Manivannan Sadhasivam <mani@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Hanjie Lin <hanjie.lin@amlogic.com>,
- Yue Wang <yue.wang@amlogic.com>, Kevin Hilman <khilman@baylibre.com>,
- Jerome Brunet <jbrunet@baylibre.com>,
- Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
- Andrew Murray <amurray@thegoodpenguin.co.uk>,
- Jingoo Han <jingoohan1@gmail.com>,
- Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
-Cc: linux-pci@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-amlogic@lists.infradead.org, stable+noautosel@kernel.org,
- stable@vger.kernel.org, Linnaea Lavia <linnaea-von-lavia@live.com>
-References: <20251101-pci-meson-fix-v1-0-c50dcc56ed6a@oss.qualcomm.com>
-Content-Language: en-US, fr
-Autocrypt: addr=neil.armstrong@linaro.org; keydata=
- xsBNBE1ZBs8BCAD78xVLsXPwV/2qQx2FaO/7mhWL0Qodw8UcQJnkrWmgTFRobtTWxuRx8WWP
- GTjuhvbleoQ5Cxjr+v+1ARGCH46MxFP5DwauzPekwJUD5QKZlaw/bURTLmS2id5wWi3lqVH4
- BVF2WzvGyyeV1o4RTCYDnZ9VLLylJ9bneEaIs/7cjCEbipGGFlfIML3sfqnIvMAxIMZrvcl9
- qPV2k+KQ7q+aXavU5W+yLNn7QtXUB530Zlk/d2ETgzQ5FLYYnUDAaRl+8JUTjc0CNOTpCeik
- 80TZcE6f8M76Xa6yU8VcNko94Ck7iB4vj70q76P/J7kt98hklrr85/3NU3oti3nrIHmHABEB
- AAHNKk5laWwgQXJtc3Ryb25nIDxuZWlsLmFybXN0cm9uZ0BsaW5hcm8ub3JnPsLAkQQTAQoA
- OwIbIwULCQgHAwUVCgkICwUWAgMBAAIeAQIXgBYhBInsPQWERiF0UPIoSBaat7Gkz/iuBQJk
- Q5wSAhkBAAoJEBaat7Gkz/iuyhMIANiD94qDtUTJRfEW6GwXmtKWwl/mvqQtaTtZID2dos04
- YqBbshiJbejgVJjy+HODcNUIKBB3PSLaln4ltdsV73SBcwUNdzebfKspAQunCM22Mn6FBIxQ
- GizsMLcP/0FX4en9NaKGfK6ZdKK6kN1GR9YffMJd2P08EO8mHowmSRe/ExAODhAs9W7XXExw
- UNCY4pVJyRPpEhv373vvff60bHxc1k/FF9WaPscMt7hlkbFLUs85kHtQAmr8pV5Hy9ezsSRa
- GzJmiVclkPc2BY592IGBXRDQ38urXeM4nfhhvqA50b/nAEXc6FzqgXqDkEIwR66/Gbp0t3+r
- yQzpKRyQif3OwE0ETVkGzwEIALyKDN/OGURaHBVzwjgYq+ZtifvekdrSNl8TIDH8g1xicBYp
- QTbPn6bbSZbdvfeQPNCcD4/EhXZuhQXMcoJsQQQnO4vwVULmPGgtGf8PVc7dxKOeta+qUh6+
- SRh3vIcAUFHDT3f/Zdspz+e2E0hPV2hiSvICLk11qO6cyJE13zeNFoeY3ggrKY+IzbFomIZY
- 4yG6xI99NIPEVE9lNBXBKIlewIyVlkOaYvJWSV+p5gdJXOvScNN1epm5YHmf9aE2ZjnqZGoM
- Mtsyw18YoX9BqMFInxqYQQ3j/HpVgTSvmo5ea5qQDDUaCsaTf8UeDcwYOtgI8iL4oHcsGtUX
- oUk33HEAEQEAAcLAXwQYAQIACQUCTVkGzwIbDAAKCRAWmrexpM/4rrXiB/sGbkQ6itMrAIfn
- M7IbRuiSZS1unlySUVYu3SD6YBYnNi3G5EpbwfBNuT3H8//rVvtOFK4OD8cRYkxXRQmTvqa3
- 3eDIHu/zr1HMKErm+2SD6PO9umRef8V82o2oaCLvf4WeIssFjwB0b6a12opuRP7yo3E3gTCS
- KmbUuLv1CtxKQF+fUV1cVaTPMyT25Od+RC1K+iOR0F54oUJvJeq7fUzbn/KdlhA8XPGzwGRy
- 4zcsPWvwnXgfe5tk680fEKZVwOZKIEuJC3v+/yZpQzDvGYJvbyix0lHnrCzq43WefRHI5XTT
- QbM0WUIBIcGmq38+OgUsMYu4NzLu7uZFAcmp6h8g
-Organization: Linaro
-In-Reply-To: <20251101-pci-meson-fix-v1-0-c50dcc56ed6a@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH] spi: Try to get ACPI GPIO IRQ earlier
+To: Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc: Mark Brown <broonie@kernel.org>, Andy Shevchenko <andy@kernel.org>,
+ linux-spi@vger.kernel.org, linux-acpi@vger.kernel.org, stable@vger.kernel.org
+References: <20251102190921.30068-1-hansg@kernel.org>
+ <aQh3RJQ95jTx7VYO@smile.fi.intel.com>
+From: Hans de Goede <hansg@kernel.org>
+Content-Language: en-US, nl
+In-Reply-To: <aQh3RJQ95jTx7VYO@smile.fi.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On 11/1/25 05:29, Manivannan Sadhasivam wrote:
-> Hi,
-> 
-> This compile tested only series aims to fix the DBI parsing issue repored in
-> [1]. The issue stems from the fact that the DT and binding described 'dbi'
-> region as 'elbi' from the start.
-> 
-> Now, both binding and DTs are fixed and the driver is reworked to work with both
-> old and new DTs.
-> 
-> Note: The driver patch is OK to be backported till 6.2 where the common resource
-> parsing code was introduced. But the DTS patch should not be backported. And I'm
-> not sure about the backporting of the binding.
-> 
-> Please test this series on the Meson board with old and new DTs.
+Hi,
 
-Let me try this serie, I'm on a business trip this week so don't expect a full test
-report until next monday.
+On 3-Nov-25 10:35 AM, Andy Shevchenko wrote:
+> On Sun, Nov 02, 2025 at 08:09:21PM +0100, Hans de Goede wrote:
+>> Since commit d24cfee7f63d ("spi: Fix acpi deferred irq probe"), the
+>> acpi_dev_gpio_irq_get() call gets delayed till spi_probe() is called
+>> on the SPI device.
+>>
+>> If there is no driver for the SPI device then the move to spi_probe()
+>> results in acpi_dev_gpio_irq_get() never getting called. This may
+>> cause problems by leaving the GPIO pin floating because this call is
+>> responsible for setting up the GPIO pin direction and/or bias according
+>> to the values from the ACPI tables.
+>>
+>> Re-add the removed acpi_dev_gpio_irq_get() in acpi_register_spi_device()
+>> to ensure the GPIO pin is always correctly setup, while keeping the
+>> acpi_dev_gpio_irq_get() call added to spi_probe() to deal with
+>> -EPROBE_DEFER returns caused by the GPIO controller not having a driver
+>> yet.
+> 
+> Even before following the link to some papering over module via the link below
+> I wondered, if the I²C case should be covered as well. The
+> https://github.com/alexpevzner/hotfix-kvadra-touchpad refers to I²C enabled
+> touchpads.
+> 
+>> Link: https://bbs.archlinux.org/viewtopic.php?id=302348
+> 
+> ...
+> 
+> I'm not against the SPI fix, but is it confirmed that it really fixes the issue?
 
-Neil
+Yes Mark and I got an offlist email bisecting this to the:
 
-> 
-> - Mani
-> 
-> [1] https://lore.kernel.org/linux-pci/DM4PR05MB102707B8CDF84D776C39F22F2C7F0A@DM4PR05MB10270.namprd05.prod.outlook.com/
-> 
-> Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
-> ---
-> Resending as the git sendemail config got messed up
-> 
-> ---
-> Manivannan Sadhasivam (3):
->        dt-bindings: PCI: amlogic: Fix the register name of the DBI region
->        arm64: dts: amlogic: Fix the register name of the 'DBI' region
->        PCI: meson: Fix parsing the DBI register region
-> 
->   .../devicetree/bindings/pci/amlogic,axg-pcie.yaml      |  6 +++---
->   arch/arm64/boot/dts/amlogic/meson-axg.dtsi             |  4 ++--
->   arch/arm64/boot/dts/amlogic/meson-g12-common.dtsi      |  2 +-
->   drivers/pci/controller/dwc/pci-meson.c                 | 18 +++++++++++++++---
->   drivers/pci/controller/dwc/pcie-designware.c           | 12 +++++++-----
->   5 files changed, 28 insertions(+), 14 deletions(-)
-> ---
-> base-commit: 3a8660878839faadb4f1a6dd72c3179c1df56787
-> change-id: 20251031-pci-meson-fix-c8b651bc6662
-> 
-> Best regards,
+Fixes: d24cfee7f63d ("spi: Fix acpi deferred irq probe")
+
+commit (on a stable kernel series) and a later email confirming that this
+patch fixes it.
+
+It seems that leaving the fingerprint reader enable pin (the first GPIO
+listed in _CRS which is an output only pin, is likely the enable pin)
+floating is causing these issues. So in a way the acpi_dev_gpio_irq_get()
+fixing this by forcing the enable pin to no longer float is a bit of
+luck. But things did work before d24cfee7f63d ("spi: Fix acpi deferred irq probe")
+so we need this to fix a regression and as you indicate it seems
+like a good idea in general and maybe we should also do this for i2c.
+
+As for doing something similar for I2C devices, that is an interesting
+question. Even though it is possible I'm not aware of any i2c-devices
+which have a userspace driver like SPI/USB fingerprint readers do,
+so on i2c I would expect probe() to always get called. So I'm not sure
+it is necessary there.
+
+Regards,
+
+Hans
+
 
 
