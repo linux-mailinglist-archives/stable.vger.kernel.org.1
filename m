@@ -1,158 +1,163 @@
-Return-Path: <stable+bounces-192146-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192147-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42BF6C2A0B4
-	for <lists+stable@lfdr.de>; Mon, 03 Nov 2025 06:15:09 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF3A3C2A1DE
+	for <lists+stable@lfdr.de>; Mon, 03 Nov 2025 06:59:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7C117188FE57
-	for <lists+stable@lfdr.de>; Mon,  3 Nov 2025 05:15:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2AC14188F056
+	for <lists+stable@lfdr.de>; Mon,  3 Nov 2025 05:57:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4270423D7EC;
-	Mon,  3 Nov 2025 05:15:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DA4D28D83E;
+	Mon,  3 Nov 2025 05:56:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Tgjtfxpd"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="s/88iQW+"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from out30-113.freemail.mail.aliyun.com (out30-113.freemail.mail.aliyun.com [115.124.30.113])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B5D5223311;
-	Mon,  3 Nov 2025 05:15:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED2D828C871;
+	Mon,  3 Nov 2025 05:56:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.113
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762146904; cv=none; b=ZigI8Ss0iwtX7jXvgfALTEimMbR/3uDXk9g+QW9LKhemNRJDIQ1L5UhbpqjHMeiemzZs/lQIZ42I6fZSXhcH50tNwSxu4r+NXTwLvl92ofV1zXJy0oBE5K9SSOkNOXGZJvzCGmgTzm8nNLjY4jg5TeJcd8yt85wv1UmJw6vNFOc=
+	t=1762149415; cv=none; b=q86Q2oldahZxPkwT2M6bRqFrLDnOG1TUtC6qFzXNgWxl8mg5AvID+u79nI4y2IuMMIC5r6mGvr9pZIhMMkXt1cJVk/6ot916qmxvKA3TLqJIejSiJhtahh+X8topf82ml8D4zC7c7Vg4VqZLR+NWf3/y+FIkszsZn06w9StU+8s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762146904; c=relaxed/simple;
-	bh=xMGFQ6DHqK+mnp7bsDgSqH+kmfCae6dKI9sv12mqSvI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=IMOlKwp299hA0TvbVgQ7Nys5D50206VfzDIPeG3inCAq07zHjbOO+YcGOQYO5uM0+nQhaQExIBKqb9TnwwR1wm501nBJjIjbjKKbS8Zudetm8UOQV4F+TF+9+nrSuYFT9KwYGIRdwaLuv+vyq81dBeoHQOpuaEfWryiTuV/qZFA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Tgjtfxpd; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5A2MhsZd023145;
-	Mon, 3 Nov 2025 05:14:44 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=jxWsZu
-	tV3Ej1urmpmd9wiK4jd9o5KC4Fpu4xByUPaEg=; b=Tgjtfxpd7PY0imQ2R8QcDP
-	pnmGOYx0h8GbuPRcau3SdQ6Dg7t4ozcd7+FuEtbh2Zc6xKWe4SH9+AT3CL+83d9l
-	mGuNr5ufITGu1rOaPQAZ+hwsRaBGy7cr6e993rzVys7JsKaRZLshCTCXzd/aHCgb
-	Ct2yImXQk/M6sfUIE8YjPQczQW/1JIQ9jIfd0WUDbZTj7StyJkA4CAgNEVo//RHN
-	5+VyCHYhLJqckAmohNuf7V+zdUfGCHOprbQMgeZ4I3mYzHm7ASHlM4UomsJ/qWyV
-	44TzmGTzjWorSHVmO7krlRdLhWiV/BoIP5eL9U9RSfwZU8r8aO9uOpJYUwody4Qw
-	==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a59xbn0dt-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 03 Nov 2025 05:14:44 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5A32jJQL018804;
-	Mon, 3 Nov 2025 05:14:43 GMT
-Received: from smtprelay06.wdc07v.mail.ibm.com ([172.16.1.73])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4a5whn3x27-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 03 Nov 2025 05:14:43 +0000
-Received: from smtpav04.dal12v.mail.ibm.com (smtpav04.dal12v.mail.ibm.com [10.241.53.103])
-	by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5A35EgvB32113202
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 3 Nov 2025 05:14:42 GMT
-Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 60C0B58056;
-	Mon,  3 Nov 2025 05:14:42 +0000 (GMT)
-Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1BD9358052;
-	Mon,  3 Nov 2025 05:14:39 +0000 (GMT)
-Received: from [9.61.101.239] (unknown [9.61.101.239])
-	by smtpav04.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Mon,  3 Nov 2025 05:14:38 +0000 (GMT)
-Message-ID: <2cb14486-c4f7-4c85-8d84-890e668e338c@linux.ibm.com>
-Date: Mon, 3 Nov 2025 10:44:37 +0530
+	s=arc-20240116; t=1762149415; c=relaxed/simple;
+	bh=UMPaZUWzV3Sm6RTTcZV+IfJzOzax8Ccpxq+TavsawBQ=;
+	h=Message-ID:Subject:Date:From:To:Cc:References:In-Reply-To; b=VB6Ux3zdPivD9dZoMd6KuPl/JEBgyPnPC3j3Sh1aDvvNCKJ+g/eueUFyD292e68NNtK5LcuYPEl+SJ9jyY0se3IKVavnyrK7YSHeLSrASybHk/RyXNdtES0rxDk/+Wpe7wwxy9GcOCWPDOiuwkeTghcsELBG3w9HMEWxfjQfnlg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=s/88iQW+; arc=none smtp.client-ip=115.124.30.113
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1762149409; h=Message-ID:Subject:Date:From:To;
+	bh=Wf5UamBtc1C2iB7hfBSedWXwlFsIRhKJbTDCZQ1GFNQ=;
+	b=s/88iQW+/Ol68Cbcq5mxlTeIt+MudLEXEbUbZp1PfzBL1nk92NpRGz5c1prUOpM2fY62NiPnr1+OWk+nffUKimxL6JaqSb8j5xsP2BZGdsqtrGax+5Mkg9rUq/hDWw2v+5bKqOLPjFZY4Q1iX9rY8+JoDP8a7Fqoq+Wyh4IX0Ic=
+Received: from localhost(mailfrom:xuanzhuo@linux.alibaba.com fp:SMTPD_---0WrXoEDB_1762149408 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Mon, 03 Nov 2025 13:56:48 +0800
+Message-ID: <1762149401.6256416-7-xuanzhuo@linux.alibaba.com>
+Subject: Re: [PATCH net v7] virtio-net: fix received length check in big packets
+Date: Mon, 3 Nov 2025 13:56:41 +0800
+From: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+To: Bui Quang Minh <minhquangbui99@gmail.com>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>,
+ Jason Wang <jasowang@redhat.com>,
+ =?utf-8?q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>,
+ Gavin Li <gavinl@nvidia.com>,
+ Gavi Teitz <gavi@nvidia.com>,
+ Parav Pandit <parav@nvidia.com>,
+ virtualization@lists.linux.dev,
+ linux-kernel@vger.kernel.org,
+ Bui Quang Minh <minhquangbui99@gmail.com>,
+ stable@vger.kernel.org,
+ netdev@vger.kernel.org
+References: <20251030144438.7582-1-minhquangbui99@gmail.com>
+In-Reply-To: <20251030144438.7582-1-minhquangbui99@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] block: Remove queue freezing from several sysfs store
- callbacks
-To: Ming Lei <ming.lei@redhat.com>
-Cc: Bart Van Assche <bvanassche@acm.org>, Jens Axboe <axboe@kernel.dk>,
-        linux-block@vger.kernel.org, Christoph Hellwig <hch@lst.de>,
-        Martin Wilck <mwilck@suse.com>,
-        Benjamin Marzinski <bmarzins@redhat.com>, stable@vger.kernel.org,
-        Damien Le Moal <dlemoal@kernel.org>,
-        Chaitanya Kulkarni <kch@nvidia.com>, Hannes Reinecke <hare@suse.de>
-References: <20251030172417.660949-1-bvanassche@acm.org>
- <befb4493-44fe-41e7-b5ec-fb2744fd752c@linux.ibm.com>
- <CAFj5m9+-13UHPTKToWyskQ5XGiEFEEBFjgQzkkuDa=VBKvF7zQ@mail.gmail.com>
-Content-Language: en-US
-From: Nilay Shroff <nilay@linux.ibm.com>
-In-Reply-To: <CAFj5m9+-13UHPTKToWyskQ5XGiEFEEBFjgQzkkuDa=VBKvF7zQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTAxMDAyMSBTYWx0ZWRfX3OVb6PkdshzK
- XkIgHeRDfe4dSpLv1boL199HW2MKKJb5nUYDSpVn9kEsPeMMaRaadrt4NHzIBguGa9HqJ9Lk6TD
- qPrNr7Cn0TBnxyBXVaWCol8TeQV/fQWUJDWORZOWV05+MpRlaHyFqNMoUqPYsbh19pY8UNz3Zd2
- 9UER1FTqhAn5ghc5Gf8GywJ1N6sKT4g+YRKnY2pRmBXogMd5KM5TZLxr0EFOU6kx9+aDoT4tU3+
- U+h+1XH4Pi6NUp3ObEQT7zOf0O8ClJu0YDcm8qCEuA8qNfyYPw5066aElJ7XzfGdnG8JV5dVLr+
- vTCi3UqG7aFG2RD60p7X0TcXwd+IfncnF+QjzzJTkqYPoZiSK4SmrMDYkZmBk+DYWOkWC7Tymer
- i0Bh4rd+my1cOyDKrq5KVRu42L2qNQ==
-X-Proofpoint-GUID: 0TazcVzMIPX5xcP4fpHxKFo7G7clMU6T
-X-Authority-Analysis: v=2.4 cv=OdCVzxTY c=1 sm=1 tr=0 ts=69083a44 cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=IkcTkHD0fZMA:10 a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VnNF1IyMAAAA:8 a=3pzJh3yUM3qKYZY7WwYA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
- a=cPQSjfK2_nFv0Q5t_7PE:22
-X-Proofpoint-ORIG-GUID: 0TazcVzMIPX5xcP4fpHxKFo7G7clMU6T
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-11-02_02,2025-10-29_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 adultscore=0 spamscore=0 suspectscore=0 impostorscore=0
- lowpriorityscore=0 priorityscore=1501 clxscore=1015 phishscore=0 bulkscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2510240000 definitions=main-2511010021
 
+On Thu, 30 Oct 2025 21:44:38 +0700, Bui Quang Minh <minhquangbui99@gmail.com> wrote:
+> Since commit 4959aebba8c0 ("virtio-net: use mtu size as buffer length
+> for big packets"), when guest gso is off, the allocated size for big
+> packets is not MAX_SKB_FRAGS * PAGE_SIZE anymore but depends on
+> negotiated MTU. The number of allocated frags for big packets is stored
+> in vi->big_packets_num_skbfrags.
+>
+> Because the host announced buffer length can be malicious (e.g. the host
+> vhost_net driver's get_rx_bufs is modified to announce incorrect
+> length), we need a check in virtio_net receive path. Currently, the
+> check is not adapted to the new change which can lead to NULL page
+> pointer dereference in the below while loop when receiving length that
+> is larger than the allocated one.
+>
+> This commit fixes the received length check corresponding to the new
+> change.
+>
+> Fixes: 4959aebba8c0 ("virtio-net: use mtu size as buffer length for big packets")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Bui Quang Minh <minhquangbui99@gmail.com>
 
+Reviewed-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
 
-On 11/3/25 9:42 AM, Ming Lei wrote:
-> On Fri, Oct 31, 2025 at 8:40 PM Nilay Shroff <nilay@linux.ibm.com> wrote:
->>
->>
->>
->> On 10/30/25 10:54 PM, Bart Van Assche wrote:
->>> Fix this by removing the blk_mq_freeze_queue() / blk_mq_unfreeze_queue()
->>> calls from the store callbacks that do not strictly need these callbacks.
->>> This patch may cause a small delay in applying the new settings.
->>>
->>> This patch affects the following sysfs attributes:
->>> * io_poll_delay
->>> * io_timeout
->>> * nomerges
->>> * read_ahead_kb
->>> * rq_affinity
->>
->> I see that io_timeout, nomerges and rq_affinity are all accessed
->> during I/O hotpath. So IMO for these attributes we still need to
->> freeze the queue before updating those parameters. The io_timeout
->> and nomerges are accessed during I/O submission and rq_affinity
->> is accessed during I/O completion.
-> 
-> Does freeze make any difference? Intermediate value isn't possible, and
-> either the old or new value should be just fine to take.
-> 
-Yes it doesn't affect the I/O and so if we remove freeze/unfreeze 
-calls for these attributes then we may still need to annotate 
-it with data_race and/or READ_ONCE as Christoph mentioned in another 
-thread. I saw that nomerges and rq_affinity already uses atomic
-bitmap and so we may still need to annotate io_timeout.
-
-Thanks,
---Nilay
-
+> ---
+> Changes in v7:
+> - Fix typos
+> - Link to v6: https://lore.kernel.org/netdev/20251028143116.4532-1-minhquangbui99@gmail.com/
+> Changes in v6:
+> - Fix the length check
+> - Link to v5: https://lore.kernel.org/netdev/20251024150649.22906-1-minhquangbui99@gmail.com/
+> Changes in v5:
+> - Move the length check to receive_big
+> - Link to v4: https://lore.kernel.org/netdev/20251022160623.51191-1-minhquangbui99@gmail.com/
+> Changes in v4:
+> - Remove unrelated changes, add more comments
+> - Link to v3: https://lore.kernel.org/netdev/20251021154534.53045-1-minhquangbui99@gmail.com/
+> Changes in v3:
+> - Convert BUG_ON to WARN_ON_ONCE
+> - Link to v2: https://lore.kernel.org/netdev/20250708144206.95091-1-minhquangbui99@gmail.com/
+> Changes in v2:
+> - Remove incorrect give_pages call
+> - Link to v1: https://lore.kernel.org/netdev/20250706141150.25344-1-minhquangbui99@gmail.com/
+> ---
+>  drivers/net/virtio_net.c | 25 ++++++++++++-------------
+>  1 file changed, 12 insertions(+), 13 deletions(-)
+>
+> diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
+> index a757cbcab87f..421b9aa190a0 100644
+> --- a/drivers/net/virtio_net.c
+> +++ b/drivers/net/virtio_net.c
+> @@ -910,17 +910,6 @@ static struct sk_buff *page_to_skb(struct virtnet_info *vi,
+>  		goto ok;
+>  	}
+>
+> -	/*
+> -	 * Verify that we can indeed put this data into a skb.
+> -	 * This is here to handle cases when the device erroneously
+> -	 * tries to receive more than is possible. This is usually
+> -	 * the case of a broken device.
+> -	 */
+> -	if (unlikely(len > MAX_SKB_FRAGS * PAGE_SIZE)) {
+> -		net_dbg_ratelimited("%s: too much data\n", skb->dev->name);
+> -		dev_kfree_skb(skb);
+> -		return NULL;
+> -	}
+>  	BUG_ON(offset >= PAGE_SIZE);
+>  	while (len) {
+>  		unsigned int frag_size = min((unsigned)PAGE_SIZE - offset, len);
+> @@ -2107,9 +2096,19 @@ static struct sk_buff *receive_big(struct net_device *dev,
+>  				   struct virtnet_rq_stats *stats)
+>  {
+>  	struct page *page = buf;
+> -	struct sk_buff *skb =
+> -		page_to_skb(vi, rq, page, 0, len, PAGE_SIZE, 0);
+> +	struct sk_buff *skb;
+> +
+> +	/* Make sure that len does not exceed the size allocated in
+> +	 * add_recvbuf_big.
+> +	 */
+> +	if (unlikely(len > (vi->big_packets_num_skbfrags + 1) * PAGE_SIZE)) {
+> +		pr_debug("%s: rx error: len %u exceeds allocated size %lu\n",
+> +			 dev->name, len,
+> +			 (vi->big_packets_num_skbfrags + 1) * PAGE_SIZE);
+> +		goto err;
+> +	}
+>
+> +	skb = page_to_skb(vi, rq, page, 0, len, PAGE_SIZE, 0);
+>  	u64_stats_add(&stats->bytes, len - vi->hdr_len);
+>  	if (unlikely(!skb))
+>  		goto err;
+> --
+> 2.43.0
+>
 
