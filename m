@@ -1,148 +1,137 @@
-Return-Path: <stable+bounces-192272-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192273-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19905C2DC48
-	for <lists+stable@lfdr.de>; Mon, 03 Nov 2025 19:57:20 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AF5BC2DC79
+	for <lists+stable@lfdr.de>; Mon, 03 Nov 2025 20:02:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 49B591898664
-	for <lists+stable@lfdr.de>; Mon,  3 Nov 2025 18:57:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1D58B3BC7D1
+	for <lists+stable@lfdr.de>; Mon,  3 Nov 2025 19:02:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4832E31D736;
-	Mon,  3 Nov 2025 18:57:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E76331FDE31;
+	Mon,  3 Nov 2025 19:02:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="blTULnaF"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="N7RcTaat"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+Received: from mail-ua1-f51.google.com (mail-ua1-f51.google.com [209.85.222.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5537928DB52
-	for <stable@vger.kernel.org>; Mon,  3 Nov 2025 18:57:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30425184540
+	for <stable@vger.kernel.org>; Mon,  3 Nov 2025 19:02:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762196234; cv=none; b=S8uVUAaEGfEf0KyOt/Sg8JxpX4TNvYRKg5w3/YbZ2LYishfcPgDJIQhboVNbBgpOUjx/gsy0Doc/O65R07of4ZrODIdBtURkH02Y5HCyCcALloEr/Rs4ZDt33jI7vUXCZ4YwCFZPEYumBKX9IB85EL8bJTkxSB2ivQWXV5Ztihc=
+	t=1762196526; cv=none; b=MGVg7vi84SsDhSAsq6NkRPUsP8sCA1TYk00Zb+EFG6blkNrXZNm20wrW/RMWWGfeqabunB09ZQbefmLl6+7g9oqWzXin25vM5kMiV4LCWBaEeLO7RpLMncBeXfk6VJ6ZRX5HZns5+meEaloG/F4EGV1XaqVGm8bj8mcq7/4HMU8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762196234; c=relaxed/simple;
-	bh=Z/xD2z+2YSUXqgcAz/IHOKt8zMT+ItoaZxlJAM3lWW4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=T5v596uod7UKAvofgZ3Om5tJhbbeQuZYbS5n+SyO9F35Z7ClhRrQncwjoKuVlRnKD02cgFbY84Z65uivFzy1q/GnT4s7rcbnRC+4HQBnFU5C24FwmA6tuLH7NzvDLSiY3ISdKMqw37bEtJRDe9UjgHUfisTWueiPrnjmnEnx+GM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=blTULnaF; arc=none smtp.client-ip=209.85.128.52
+	s=arc-20240116; t=1762196526; c=relaxed/simple;
+	bh=DbFAwez0cjMr7osbfexuB3kDFZnSvUx7kQxtUW3PIsc=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=JurunK2R6s1mJqluwDGzWyOOF4Wa26g72AVORBz/hmJQV4JBd5JG3jgzTdLiC23Bv1dENcglaLfdNyKxCZFMot3ZeSIE+ssG5mqieNmhOjWvfUSnVtPUpwurgtx5Ey7pJC2/U3zaj/Lql0Svfxo34WtEI/WSwLoIzNcxYbIiYaU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=N7RcTaat; arc=none smtp.client-ip=209.85.222.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-475dd559b0bso64151525e9.1
-        for <stable@vger.kernel.org>; Mon, 03 Nov 2025 10:57:11 -0800 (PST)
+Received: by mail-ua1-f51.google.com with SMTP id a1e0cc1a2514c-93516b64d04so2445398241.2
+        for <stable@vger.kernel.org>; Mon, 03 Nov 2025 11:02:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762196230; x=1762801030; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=8+eN+6lfnONIl6DhyaJPvMKjY4jky2Hy+ffm+J1z/H4=;
-        b=blTULnaFqvUBBSBcMhJJ8lScuXmmnF6U7ItPR07z8gg3E+MPRp6c20ky1qqTu/Q7oR
-         iKx6CtTNaJ+b6CQOgNFntTqG7TlxdTWRG7/UDwIDrSYwfkdWAJjfkYjPA9ZnQ78rB7O+
-         TxJ8OwtRXqNcSLrpekVGAYxbWitbvBOkdIuZEp5BJWn4P6q3UQ4ksO6tK0L9vZPH0wm9
-         l+swc8XTZwsEr2OMGT/FKQWTXB1lTdxPrGacXjL057zcZaaBy1LLo9pk7jBrSII39fG/
-         VrXUZso8bB+b6inAkiXEuFPjNRKbAmsZKDqDbomBLrLKeYod8zOVV4ZquqTt0HPGOc2R
-         cCsA==
+        d=gmail.com; s=20230601; t=1762196523; x=1762801323; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=JCgyYYl17212afWq0WmdVNHdmhfE4WpVfwvlvWkdR/I=;
+        b=N7RcTaat+sbzxC9Umtmn4+rvXHFsVIoj/FJ/zTHEKLmoLmxdoFeYS9RDheteD6khOX
+         2KQChajtn9cnBzWKlrtajuIxjgJzeSa9NI52+nVuzgV5xbnRbX/g7/65F+39HreoF8IZ
+         WKb2qF88Dl1Km3jspNDf5erwdt6ydN90mQdwndCkmgYohsJ5JUqunieSd6gxbxFUWnb6
+         ZFhRCvISnHkXllWrcB0G1sc1/JR4JTJZbv2BmBlJ1R22wbKdrVVMeCEwIPHn7ULfARB1
+         PS3o2bvu9RrpSA3qh+durUZvt9+2yif+pMrIW0peRatXwvPc//qo+nlvarnnGevj5KEo
+         JkpQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762196230; x=1762801030;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=8+eN+6lfnONIl6DhyaJPvMKjY4jky2Hy+ffm+J1z/H4=;
-        b=ecrQeEogMgT7VH5+Wp/wOoqELpdI3DyPMzWtka/f08NXan+eGZ/azIsV3kY0lSGGAB
-         KDbYPqd99GD6BNfjStGZpZlv6emxCuSCkpFc3S3E+HXbboGytijbtQEHZRskh8thXv4w
-         IFTJMQdVlJpXmeAlf0k9VCd7Ldnhe0PNX30WeBvH7sOlbcBfIXl2TGPv0wkXRvy0nmh6
-         Rp+AiSA9YfydG8eBShhrfTFs31v7xNR5ExRKO63USDEtTBGYDms+vif9ayls0fzy7URN
-         5Ql0FhGWI5PqRPHBKK+9GNyIZTtY5rUQBF4DJjUhBWZdPGQykYznmCBEqmvpFAVlLHK6
-         oYCw==
-X-Forwarded-Encrypted: i=1; AJvYcCVHqUhbF6VwxvacOb6y33nG96dtOHGiadbXQgUHlmKSeZbdp8AWmXzxFS9XIf2NmWsv+rh02Ac=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwPlsQIc8IsyIGiUPe5tdchlGdj8jaQxMwAODopDvDecv0rHKcq
-	bKZVWNDbDN6RItR9sJ9Q0Ro4uftoYvRSW8KFRa6k6KsZS9Z79NiR3I0b
-X-Gm-Gg: ASbGncvsh/Rq11tPPsA/WnYa6mnv0HTi6cMcrb4hilwu4kZCSkmzH+/+hCpXCDP5oqQ
-	fZ3t+BCNjQ34LRkh906Tin0JpoSDKUBgKkQ0ro1BrSF2/nJOEodzAKHRE3+i3h1rZujgqkHdDSO
-	G+w/zYIdTgidu1MSTN9sIxFUgPnheRG6/hZEsslUMKlFIwrJsbWewCoI1vLtErKfZeyd+1rgPdP
-	k5YKUSdelm6aELVrsGbNlIMp4ZnXUvzHI/Nn3b6TbdT4rXm5BhoMHDc//ZkT4HWfzH6lNcUZS2l
-	ljmmAorKfORvnZ46ghqw2k/X3Zu12XVE1X+70zN8A6KOApkVWxMMGYZtMEZD/T3R4iEz+2MP0Cr
-	pOqc/DJuhxLAzkNEyHGbBdpxyNiWkXxy1f46OeKzTv1zGijPDb3wAvhi32/bpLkj/71EHCbYPHz
-	p5sg==
-X-Google-Smtp-Source: AGHT+IEK2+4nBd40SRJ0qYnaqIkscu36w0iUBumg+gWmVgTn8vW7aAbSUdB2E3eeUqZt28T5ziAh9A==
-X-Received: by 2002:a05:600c:a08:b0:46e:35a0:3587 with SMTP id 5b1f17b1804b1-477308c9355mr115909985e9.27.1762196230208;
-        Mon, 03 Nov 2025 10:57:10 -0800 (PST)
-Received: from localhost ([2001:861:3385:e20:f99c:d6cf:27e6:2b03])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4773d81cb03sm162334735e9.13.2025.11.03.10.57.05
+        d=1e100.net; s=20230601; t=1762196523; x=1762801323;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=JCgyYYl17212afWq0WmdVNHdmhfE4WpVfwvlvWkdR/I=;
+        b=Bmi2PR/I7LoOf1XDgT7qSCU/4AIUz1iR2zFRsuz699GZ7PJG9EwIaaV285HY45uvNG
+         lnAHLyFN08RVGJE/QoL8SpsEIdjGSzEk07Mv4xym2qV9UJR9KoZ8Va/8dBTjoTQQU1EX
+         ZayLZgvJ1CX4B0wle1R4kVvAlL44pDYZ0qfX0NFq9LbRa4bPDGse15nvTtSWLhLKnt+R
+         qP7ASUSYf+hMibz+q/WMUrmFLpp2rhlQ8jr+oC/AxfHjeUC56UPuq9p3PHGAkA76m7Nw
+         hzkHgeKxk3irLvViCLAumvxZaKdBB+OHqw5ldB7t0H2Ul8EjmQFVvjj0NqGfUO2k2seL
+         zLCg==
+X-Forwarded-Encrypted: i=1; AJvYcCU28+OEEZbdqzUdUYvCEejHU5005vDeRBQnDHS6DmW/eiRO3P2Dv11703TxojxEzr/yUTIcHNk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YytEhZu2q49rqKitGeWIE21x1g+Sjlc+ifXrTvT+unr/kxMSfyu
+	tXI2W68NeQy5b675lbl6n94TfgMgo17FDmXHYGfuOqSJ2lrAS3EtcPp1
+X-Gm-Gg: ASbGnctOvenOKu7wdpO5Dm7HhRA40C6wbQqnw00Jc8uc4FR+ixpj1SnKH1UPy1HhxHF
+	kjNRdMr1LjO2WZ5GOkhP8I7zPPxSnrKDhYf3TfS2qwX2enVnVzjfEd3HW/CT7b+XaOUVZUXO3kE
+	RIORvoFXy4N0A7OLf2hwytlUIeoMlO7JeX9xr12bipzlGhkLxDThgYCk66hW6JIUwv0WYWTiD1+
+	4s9gKhQw/VPi5p/OKE4WpNj0BcEUkKqg/eROnjc15kjE2CJ5nlfpMwFflnqA8yehJyEqX4KG6gx
+	yboa/ibnV7I/yJdWQKXmborefApS5mpmcwqlC+jP0Mk5tesxqdZF06b85mxmPnERrtoB+QweUgn
+	NcNOUZ4M8euobEfHd8WK6dTDUmsHlGoHi4q9oubZfMgrZ+EUuWlJ14DabtgF3TRtBxm0h1OsE8V
+	e5DA==
+X-Google-Smtp-Source: AGHT+IF6ZrnGeB7r0RyVBzECaRGawNu02DZMNOtb1XSlboch2JDalhSDF7ll1MdUkogMoDYfu5R1OA==
+X-Received: by 2002:a05:6122:250d:b0:54a:992c:8164 with SMTP id 71dfb90a1353d-5593e404ef5mr4706586e0c.7.1762196521682;
+        Mon, 03 Nov 2025 11:02:01 -0800 (PST)
+Received: from [192.168.100.70] ([2800:bf0:82:3d2:875c:6c76:e06b:3095])
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-55973c834e3sm358469e0c.11.2025.11.03.11.01.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 03 Nov 2025 10:57:07 -0800 (PST)
-Date: Mon, 3 Nov 2025 19:56:55 +0100
-From: =?iso-8859-1?Q?Rapha=EBl?= Gallais-Pou <rgallaispou@gmail.com>
-To: Markus Elfring <Markus.Elfring@web.de>
-Cc: Johan Hovold <johan@kernel.org>, dri-devel@lists.freedesktop.org,
-	stable@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
-	Alain Volmat <alain.volmat@foss.st.com>,
-	Benjamin Gaignard <benjamin.gaignard@collabora.com>,
-	David Airlie <airlied@gmail.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>, Simona Vetter <simona@ffwll.ch>,
-	Thomas Zimmermann <tzimmermann@suse.de>
-Subject: Re: [PATCH] drm: sti: fix device leaks at component probe
-Message-ID: <aQj69wzTceDklx2Y@thinkstation>
-References: <20250922122012.27407-1-johan@kernel.org>
- <d1c2e56b-2ef9-4ab1-a4f8-3834d1857386@web.de>
+        Mon, 03 Nov 2025 11:01:57 -0800 (PST)
+From: Kurt Borja <kuurtb@gmail.com>
+Subject: [PATCH 0/5] platform/x86: alienware-wmi-wmax: Add AWCC support for
+ most models
+Date: Mon, 03 Nov 2025 14:01:43 -0500
+Message-Id: <20251103-family-supp-v1-0-a241075d1787@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <d1c2e56b-2ef9-4ab1-a4f8-3834d1857386@web.de>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIABf8CGkC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1NDA0Nj3bTE3MycSt3i0oIC3UTjxESLFOOkJCPzRCWgjoKi1LTMCrBp0bG
+ 1tQCitVuzXQAAAA==
+X-Change-ID: 20251013-family-supp-a3aa8d3bb27a
+To: Hans de Goede <hansg@kernel.org>, 
+ =?utf-8?q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
+ Armin Wolf <W_Armin@gmx.de>
+Cc: platform-driver-x86@vger.kernel.org, Dell.Client.Kernel@dell.com, 
+ linux-kernel@vger.kernel.org, Kurt Borja <kuurtb@gmail.com>, 
+ Cihan Ozakca <cozakca@outlook.com>, stable@vger.kernel.org
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1014; i=kuurtb@gmail.com;
+ h=from:subject:message-id; bh=DbFAwez0cjMr7osbfexuB3kDFZnSvUx7kQxtUW3PIsc=;
+ b=owGbwMvMwCUmluBs8WX+lTTG02pJDJkcf2QaPmz/etjZoiJ2e5P879lyZ5g6bLuqbQNPnTxsd
+ GvixoTAjlIWBjEuBlkxRZb2hEXfHkXlvfU7EHofZg4rE8gQBi5OAZjI5DKGX0y5/8XlvLrZfqpn
+ Wn4KD9fbGWHfIsP287keg9qReZe2+jMyHFXv8m3y3L3lRosPV12jKMuEOW8/HL5ac21rndztYzb
+ CvAA=
+X-Developer-Key: i=kuurtb@gmail.com; a=openpgp;
+ fpr=54D3BE170AEF777983C3C63B57E3B6585920A69A
 
-Le Mon, Sep 22, 2025 at 06:16:47PM +0200, Markus Elfring a écrit :
-> > Make sure to drop the references taken to the vtg devices by
-> 
->                                                 VTG device?
+Hi all,
 
-Video Timing Generator.  This IP creates a vsync pulse and synchonize
-the components together.
+This patchset adds support for almost all models listed as supported by
+the AWCC windows tool.
 
-> 
-> 
-> > of_find_device_by_node() when looking up their driver data during
-> > component probe.
-> …
-> 
-> How do you think about to increase the application of scope-based resource management?
-> https://elixir.bootlin.com/linux/v6.17-rc7/source/include/linux/device.h#L1180
+This is important because the "old" interface, which this driver
+defaults, is supported by very few and old models, while most Dell
+gaming laptops support the newer AWCC interface.
 
-Oh... I wasn't aware of this.  FWIU it is a way to directly free an
-allocated memory whenever a variable goes out of scope using the cleanup
-attribute.
+Thanks!
 
-IMO this is also a clever solution to prevent the memory leak, and it
-would be a shorter patch.  So basically, instead of calling put_device()
-as Johan did, you would suggest something like this ?
+Signed-off-by: Kurt Borja <kuurtb@gmail.com>
+---
+Kurt Borja (5):
+      platform/x86: alienware-wmi-wmax: Fix "Alienware m16 R1 AMD" quirk order
+      platform/x86: alienware-wmi-wmax: Drop redundant DMI entries
+      platform/x86: alienware-wmi-wmax: Add support for the whole "M" family
+      platform/x86: alienware-wmi-wmax: Add support for the whole "X" family
+      platform/x86: alienware-wmi-wmax: Add support for the whole "G" family
 
-diff --git i/drivers/gpu/drm/sti/sti_vtg.c w/drivers/gpu/drm/sti/sti_vtg.c
-index ee81691b3203..5193196d9291 100644
---- i/drivers/gpu/drm/sti/sti_vtg.c
-+++ w/drivers/gpu/drm/sti/sti_vtg.c
-@@ -142,7 +142,7 @@ struct sti_vtg {
+ drivers/platform/x86/dell/alienware-wmi-wmax.c | 104 +++++--------------------
+ 1 file changed, 20 insertions(+), 84 deletions(-)
+---
+base-commit: bd34bf518a5ffeb8eb7c8b9907ba97b606166f7b
+change-id: 20251013-family-supp-a3aa8d3bb27a
 
- struct sti_vtg *of_vtg_find(struct device_node *np)
- {
--       struct platform_device *pdev;
-+       struct platform_device *pdev __free(put_device) = NULL;
+-- 
+ ~ Kurt
 
-Best regards,
-Raphaël
-
-
-> 
-> Can a summary phrase like “Prevent device leak in of_vtg_find()” be nicer?
-> 
-> Regards,
-> Markus
 
