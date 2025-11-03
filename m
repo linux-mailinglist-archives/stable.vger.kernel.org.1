@@ -1,89 +1,133 @@
-Return-Path: <stable+bounces-192132-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192133-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0081AC29C7F
-	for <lists+stable@lfdr.de>; Mon, 03 Nov 2025 02:25:02 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDB65C29C85
+	for <lists+stable@lfdr.de>; Mon, 03 Nov 2025 02:29:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 9F92A347B76
-	for <lists+stable@lfdr.de>; Mon,  3 Nov 2025 01:25:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 421163ACC78
+	for <lists+stable@lfdr.de>; Mon,  3 Nov 2025 01:29:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 907A127146A;
-	Mon,  3 Nov 2025 01:24:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB6A2273D8A;
+	Mon,  3 Nov 2025 01:28:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b="jMK+xN74"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gy0Kefmx"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-24417.protonmail.ch (mail-24417.protonmail.ch [109.224.244.17])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53A76185E4A
-	for <stable@vger.kernel.org>; Mon,  3 Nov 2025 01:24:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9949A1C75E2
+	for <stable@vger.kernel.org>; Mon,  3 Nov 2025 01:28:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762133098; cv=none; b=AcrMufaUkIXJa3KqQqPqNsZh0fwoJWh8xNsTZNvYXq0x1E5erJmqLSgWFEiXzcaGRbJzhAaom+8CcJy/GUV94FWmDr5Ux3KZ2P29mkWtDhPqkJPZ4XBdFm7qITrunuifg5znGHxo2m5U9tq+cAQWGGmBrgqUB1IWS3OE9JlmUZY=
+	t=1762133338; cv=none; b=U4TNMKxkLc5FrjG4BxExbqYCgOQdtQ23DS7Y6qvWSKcmnpWfvHje1XQQWwwjmhQfjBIs2G0QICqcs8CKo6RUq6nrAusnKaQnznWR07TGbIliAXmah6kyTKfss9Hw2ZVkc0YBqdwMiox02G4xNQKhvE1WaONV3ciUD6MQ++ZVQag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762133098; c=relaxed/simple;
-	bh=w1BBSIqKCcTM94TEne3TpOoZOLy52cPnMPLEGRLvFhM=;
-	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=b7K4aSUqrRAbmah0oMAz2ATtRyUkf+sr/rZyXi2OopDDyYz3K9lYNX+bWKF4M7CqJibVuTYGe935o8eg+8EFsnlbO3VHOemlQQOYi/dB+FXLaB+J66obOQuwtKnp6LDfOw21xp+eMA1SrFWUuXItaM+YXK648J2RTRe6PmknQ1o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me; spf=pass smtp.mailfrom=pm.me; dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b=jMK+xN74; arc=none smtp.client-ip=109.224.244.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pm.me
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
-	s=protonmail3; t=1762133088; x=1762392288;
-	bh=w1BBSIqKCcTM94TEne3TpOoZOLy52cPnMPLEGRLvFhM=;
-	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
-	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=jMK+xN74hx1IMa9RRK9nyO/CU+pAHQVtNV/INce79WsHJTPuIk7d9Nxx8K+ixJgZc
-	 uS0bjLRMxYQk5dU+mDhZnAYX+aLZLlvl/buWjicvdBbUMsHaaq+ZqspIAObJOV5yLS
-	 ytpDGv6aqrqG8vim8BqFN64aU5p+b9BZaYTG8YzKl4OgPp8Wh0hOCYKDLLGIF7Ll2Q
-	 LuS6h9t8MHY1FV58wK8V7+roL36YT0eraRwBrBRUa+GSAE/rby//IxVQJ7DLeSmZgg
-	 L7q0md+pJxIyMThg25xRA8iITsk2fd4l/xX85fh0NtkuLerivn5+JF8PLSbFGxvcTe
-	 giqMFyCtphCug==
-Date: Mon, 03 Nov 2025 01:24:44 +0000
-To: dapeng1.mi@linux.intel.com
-From: Harvey Tite <HarvT@pm.me>
-Cc: linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, octavia.togami@gmail.com, peterz@infradead.org, regressions@lists.linux.dev, stable@vger.kernel.org
-Subject: Re: [REGRESSION] bisected: perf: hang when using async-profiler caused by perf: Fix the POLL_HUP delivery breakage
-Message-ID: <9f94b9b5-0a8a-4f37-8355-0b5461d6ad30@pm.me>
-Feedback-ID: 38997315:user:proton
-X-Pm-Message-ID: f634007f31f1bd03ce2d4cf8a6fec95a2baaf7a4
+	s=arc-20240116; t=1762133338; c=relaxed/simple;
+	bh=aJ4ZIzTKjn1a2VJJtiDVDcakyXytjX1grNNFgkjdc9s=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WJwGceQG1utGccgOy/uUY/m6FkzlsFakBnB9Am0rMRqXb8OJ1bIqXFoogZFgXkBq/dYl3B9aqpzF7CIFhq4AqUYFz7TIALMmnrJqMt+iV4xs0QvylbxLX4vcFXtolLI+j5NNwhLP7sy8psb030tnlz7F0R1nEv4IGDqDOgdifL0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gy0Kefmx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9232C4CEF7;
+	Mon,  3 Nov 2025 01:28:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1762133338;
+	bh=aJ4ZIzTKjn1a2VJJtiDVDcakyXytjX1grNNFgkjdc9s=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Gy0KefmxYlBq9f7sbsVhQGECWK18p1un980DwKAxxHO20l/s0b2pTLoPjkIOJ5V4y
+	 WchwXDaSyiA5ymQtLoWCdYj6gsO40iqGWhIV2Br2TsHEtJJOFPOeNfVB6RbrJ8faYZ
+	 0+4etAylOoQKa6ywpD6a8xevdpzva71DshMXTLpE=
+Date: Mon, 3 Nov 2025 10:28:56 +0900
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Salvatore Bonaccorso <carnil@debian.org>
+Cc: "Deucher, Alexander" <Alexander.Deucher@amd.com>,
+	stable <stable@vger.kernel.org>, Sasha Levin <sashal@kernel.org>,
+	Hamza Mahfooz <hamza.mahfooz@amd.com>
+Subject: Re: Missing backport of 3c591faadd8a ("Reapply "Revert
+ drm/amd/display: Enable Freesync Video Mode by default"") in 6.1.y stable
+ series?
+Message-ID: <2025110347-unknotted-salad-52f4@gregkh>
+References: <aQEW4d5rPTGgSFFR@eldamar.lan>
+ <BL1PR12MB5144C73B441AAC82055D9A6EF7FAA@BL1PR12MB5144.namprd12.prod.outlook.com>
+ <aQexyJCsE1Mx5Z05@eldamar.lan>
+ <2025110326-recollect-tassel-59ed@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2025110326-recollect-tassel-59ed@gregkh>
 
+On Mon, Nov 03, 2025 at 09:22:38AM +0900, Greg Kroah-Hartman wrote:
+> On Sun, Nov 02, 2025 at 08:32:24PM +0100, Salvatore Bonaccorso wrote:
+> > Hi Alex
+> > 
+> > On Wed, Oct 29, 2025 at 09:47:35PM +0000, Deucher, Alexander wrote:
+> > > [Public]
+> > > 
+> > > > -----Original Message-----
+> > > > From: Salvatore Bonaccorso <salvatore.bonaccorso@gmail.com> On Behalf Of
+> > > > Salvatore Bonaccorso
+> > > > Sent: Tuesday, October 28, 2025 3:18 PM
+> > > > To: stable <stable@vger.kernel.org>
+> > > > Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>; Sasha Levin
+> > > > <sashal@kernel.org>; Deucher, Alexander <Alexander.Deucher@amd.com>;
+> > > > Hamza Mahfooz <hamza.mahfooz@amd.com>
+> > > > Subject: Missing backport of 3c591faadd8a ("Reapply "Revert drm/amd/display:
+> > > > Enable Freesync Video Mode by default"") in 6.1.y stable series?
+> > > >
+> > > > Hi
+> > > >
+> > > > We got in Debian a request to backport 3c591faadd8a ("Reapply "Revert
+> > > > drm/amd/display: Enable Freesync Video Mode by default"") for the kernel in Debian
+> > > > bookworm, based on 6.1.y stable series.
+> > > >
+> > > > https://bugs.debian.org/1119232
+> > > >
+> > > > While looking at he request, I noticed that the series of commits had a bit of a
+> > > > convuluted history.  AFAICT the story began with:
+> > > >
+> > > > de05abe6b9d0 ("drm/amd/display: Enable Freesync Video Mode by default"), this
+> > > > landed in 5.18-rc1 (and backported to v6.1.5, v6.0.19).
+> > > >
+> > > > This was then reverted with 4243c84aa082 ("Revert "drm/amd/display:
+> > > > Enable Freesync Video Mode by default""), which landed in v6.3-rc1 (and in turn
+> > > > was backported to v6.1.53).
+> > > >
+> > > > So far we are in sync.
+> > > >
+> > > > The above was then reverted again, via 11b92df8a2f7 ("Revert "Revert
+> > > > drm/amd/display: Enable Freesync Video Mode by default"") applied in
+> > > > v6.5-rc1 and as well backported to v6.1.53 (so still in sync).
+> > > >
+> > > > Now comes were we are diverging: 3c591faadd8a ("Reapply "Revert
+> > > > drm/amd/display: Enable Freesync Video Mode by default"") got applied later on,
+> > > > landing in v6.9-rc1 but *not* in 6.1.y anymore.
+> > > >
+> > > > I suspect this one was not applied to 6.1.y because in meanwhile there was a
+> > > > conflict to cherry-pick it cleanly due to context changes due to
+> > > > 3e094a287526 ("drm/amd/display: Use drm_connector in create_stream_for_sink").
+> > > >
+> > > > If this is correct, then the 6.1.y series can be brough in sync with cherry-picking the
+> > > > commit and adjust the context around the change.
+> > > > I'm attaching the proposed change.
+> > > >
+> > > > Alex in particular, does that make sense?
+> > > 
+> > > Yes, that makes sense to me.
+> > 
+> > Thanks for the confirmation. Greg, Sasha so can this be picked up as
+> > well for 6.1.y? The patch was attached in previous message, but I can
+> > resubmit it if needed.
+> 
+> can you resubmit please?
+> 
 
-Hello hope everyone is well, just following up on this bug report, this=20
-appears to have been patched here=20
-https://lore.kernel.org/lkml/20251015051828.12809-1-dapeng1.mi@linux.intel.=
-com/=20
-thanks to Dapeng Mi; however, the patch email does not appear to have=20
-CCed the regressions or stable list.
+Nevermind, I found it, I'll go queue it up now, thanks.
 
-On 2025/10/15 Peter Zijlstra wrote:
-
- > So yeah, I suppose this works. Let me go queue this up.
-
-In regard to the patch, hence I assume the patch is approved for=20
-implementation in future versions.
-
-This is a critical bug causing widespread irrecoverable system freezes=20
-reported by many users with many differing setups, including myself.=20
-Notably it is being triggered by a minecraft mod called spark with at=20
-least 150 million aggregate downloads=20
-(https://www.curseforge.com/minecraft/mc-mods/spark=20
-https://github.com/lucko/spark/issues/530).
-
-If at all possible I would love to request that this please be=20
-implemented/backported to kernels 6.17 and 6.18.
-
-Thank you.
-
-
+greg k-h
 
