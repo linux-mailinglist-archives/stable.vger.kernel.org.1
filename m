@@ -1,119 +1,148 @@
-Return-Path: <stable+bounces-192271-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192272-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E75C9C2DC1E
-	for <lists+stable@lfdr.de>; Mon, 03 Nov 2025 19:55:09 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19905C2DC48
+	for <lists+stable@lfdr.de>; Mon, 03 Nov 2025 19:57:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8B6753A76BD
-	for <lists+stable@lfdr.de>; Mon,  3 Nov 2025 18:55:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 49B591898664
+	for <lists+stable@lfdr.de>; Mon,  3 Nov 2025 18:57:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A16331D740;
-	Mon,  3 Nov 2025 18:55:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4832E31D736;
+	Mon,  3 Nov 2025 18:57:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SSNeJWv1"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="blTULnaF"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D237831D38E;
-	Mon,  3 Nov 2025 18:55:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5537928DB52
+	for <stable@vger.kernel.org>; Mon,  3 Nov 2025 18:57:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762196102; cv=none; b=NvPdYGWvcSJ4ZSsPkl05mHK/oSkCQpcXG0/8vPaRna/M3qXPWWDuIi7N6xGTTvYd0lR1xxmLcLxXqXJRyq2WNl/vp6z/P76YUO5gkV96eqNghy2q5goH9EQGgTQ4mbl5/hO+OCr5N1UzfA+LfX721hOcgW5QZtLrjGcnHemOEjs=
+	t=1762196234; cv=none; b=S8uVUAaEGfEf0KyOt/Sg8JxpX4TNvYRKg5w3/YbZ2LYishfcPgDJIQhboVNbBgpOUjx/gsy0Doc/O65R07of4ZrODIdBtURkH02Y5HCyCcALloEr/Rs4ZDt33jI7vUXCZ4YwCFZPEYumBKX9IB85EL8bJTkxSB2ivQWXV5Ztihc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762196102; c=relaxed/simple;
-	bh=aw8ObmXZNduPQmQUrUChN4M1KdT751Q0ihiiVsS19JU=;
+	s=arc-20240116; t=1762196234; c=relaxed/simple;
+	bh=Z/xD2z+2YSUXqgcAz/IHOKt8zMT+ItoaZxlJAM3lWW4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YWlflpSWyRHr8ZKkaqnLZnKAE9Xz9fov9bFCed2OX0s9zCxOkWqxRYYzouVEEx2CJaSg1Tghtqg1vZbX2y7XrloiPi32Xhkug96cYDOcpT3kHW8zl+j6ZaSnvNS2FaMUB/tKo9mOF8kLKHtcdGe7JqmDD3s4ij5HG2XlWDtOzVA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SSNeJWv1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 203E4C4CEE7;
-	Mon,  3 Nov 2025 18:55:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762196102;
-	bh=aw8ObmXZNduPQmQUrUChN4M1KdT751Q0ihiiVsS19JU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=SSNeJWv1o3cfi20PnDObB6XC/Azw0OFWtgIF61Opd4jSN42K0a0/sgRPiwnHb/7ml
-	 WLFe1TVuIdXzbcLWjYaQ6y9UXhTsDeW9yldoLMn2qFHftZWAqAoOxOydW3Fb/dljrK
-	 9SCcZecd2QwZuvGm5aZ9soQinKRfRe4/oPQKmk/bpULis+BEi4VmOWMys1nyCvcgGb
-	 GqrSRoMrzdMXnAUqRrM6XPkTCSU+Jl2kSGFoQJVTyZMbMeUn/EAMGyVbRb0e88LcM9
-	 j5opEPaM5rR6tkP65IEGsYb6kq79qKySVeIqXv7Qrc/PlA9mY+MKifd3y9q92sD9sB
-	 moDQiuScEfllg==
-Date: Mon, 3 Nov 2025 18:55:00 +0000
-From: Eric Biggers <ebiggers@kernel.org>
-To: Nathan Chancellor <nathan@kernel.org>
-Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>,
-	Ard Biesheuvel <ardb@kernel.org>, linux-crypto@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] lib/crypto: curve25519-hacl64: Fix older clang KASAN
- workaround for GCC
-Message-ID: <20251103185500.GA3953783@google.com>
-References: <20251102-curve25519-hacl64-fix-kasan-workaround-v1-1-6ec6738f9741@kernel.org>
- <20251103170036.GD1735@sol>
- <20251103184846.GA672460@ax162>
+	 Content-Type:Content-Disposition:In-Reply-To; b=T5v596uod7UKAvofgZ3Om5tJhbbeQuZYbS5n+SyO9F35Z7ClhRrQncwjoKuVlRnKD02cgFbY84Z65uivFzy1q/GnT4s7rcbnRC+4HQBnFU5C24FwmA6tuLH7NzvDLSiY3ISdKMqw37bEtJRDe9UjgHUfisTWueiPrnjmnEnx+GM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=blTULnaF; arc=none smtp.client-ip=209.85.128.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-475dd559b0bso64151525e9.1
+        for <stable@vger.kernel.org>; Mon, 03 Nov 2025 10:57:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1762196230; x=1762801030; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=8+eN+6lfnONIl6DhyaJPvMKjY4jky2Hy+ffm+J1z/H4=;
+        b=blTULnaFqvUBBSBcMhJJ8lScuXmmnF6U7ItPR07z8gg3E+MPRp6c20ky1qqTu/Q7oR
+         iKx6CtTNaJ+b6CQOgNFntTqG7TlxdTWRG7/UDwIDrSYwfkdWAJjfkYjPA9ZnQ78rB7O+
+         TxJ8OwtRXqNcSLrpekVGAYxbWitbvBOkdIuZEp5BJWn4P6q3UQ4ksO6tK0L9vZPH0wm9
+         l+swc8XTZwsEr2OMGT/FKQWTXB1lTdxPrGacXjL057zcZaaBy1LLo9pk7jBrSII39fG/
+         VrXUZso8bB+b6inAkiXEuFPjNRKbAmsZKDqDbomBLrLKeYod8zOVV4ZquqTt0HPGOc2R
+         cCsA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762196230; x=1762801030;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=8+eN+6lfnONIl6DhyaJPvMKjY4jky2Hy+ffm+J1z/H4=;
+        b=ecrQeEogMgT7VH5+Wp/wOoqELpdI3DyPMzWtka/f08NXan+eGZ/azIsV3kY0lSGGAB
+         KDbYPqd99GD6BNfjStGZpZlv6emxCuSCkpFc3S3E+HXbboGytijbtQEHZRskh8thXv4w
+         IFTJMQdVlJpXmeAlf0k9VCd7Ldnhe0PNX30WeBvH7sOlbcBfIXl2TGPv0wkXRvy0nmh6
+         Rp+AiSA9YfydG8eBShhrfTFs31v7xNR5ExRKO63USDEtTBGYDms+vif9ayls0fzy7URN
+         5Ql0FhGWI5PqRPHBKK+9GNyIZTtY5rUQBF4DJjUhBWZdPGQykYznmCBEqmvpFAVlLHK6
+         oYCw==
+X-Forwarded-Encrypted: i=1; AJvYcCVHqUhbF6VwxvacOb6y33nG96dtOHGiadbXQgUHlmKSeZbdp8AWmXzxFS9XIf2NmWsv+rh02Ac=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwPlsQIc8IsyIGiUPe5tdchlGdj8jaQxMwAODopDvDecv0rHKcq
+	bKZVWNDbDN6RItR9sJ9Q0Ro4uftoYvRSW8KFRa6k6KsZS9Z79NiR3I0b
+X-Gm-Gg: ASbGncvsh/Rq11tPPsA/WnYa6mnv0HTi6cMcrb4hilwu4kZCSkmzH+/+hCpXCDP5oqQ
+	fZ3t+BCNjQ34LRkh906Tin0JpoSDKUBgKkQ0ro1BrSF2/nJOEodzAKHRE3+i3h1rZujgqkHdDSO
+	G+w/zYIdTgidu1MSTN9sIxFUgPnheRG6/hZEsslUMKlFIwrJsbWewCoI1vLtErKfZeyd+1rgPdP
+	k5YKUSdelm6aELVrsGbNlIMp4ZnXUvzHI/Nn3b6TbdT4rXm5BhoMHDc//ZkT4HWfzH6lNcUZS2l
+	ljmmAorKfORvnZ46ghqw2k/X3Zu12XVE1X+70zN8A6KOApkVWxMMGYZtMEZD/T3R4iEz+2MP0Cr
+	pOqc/DJuhxLAzkNEyHGbBdpxyNiWkXxy1f46OeKzTv1zGijPDb3wAvhi32/bpLkj/71EHCbYPHz
+	p5sg==
+X-Google-Smtp-Source: AGHT+IEK2+4nBd40SRJ0qYnaqIkscu36w0iUBumg+gWmVgTn8vW7aAbSUdB2E3eeUqZt28T5ziAh9A==
+X-Received: by 2002:a05:600c:a08:b0:46e:35a0:3587 with SMTP id 5b1f17b1804b1-477308c9355mr115909985e9.27.1762196230208;
+        Mon, 03 Nov 2025 10:57:10 -0800 (PST)
+Received: from localhost ([2001:861:3385:e20:f99c:d6cf:27e6:2b03])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4773d81cb03sm162334735e9.13.2025.11.03.10.57.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 03 Nov 2025 10:57:07 -0800 (PST)
+Date: Mon, 3 Nov 2025 19:56:55 +0100
+From: =?iso-8859-1?Q?Rapha=EBl?= Gallais-Pou <rgallaispou@gmail.com>
+To: Markus Elfring <Markus.Elfring@web.de>
+Cc: Johan Hovold <johan@kernel.org>, dri-devel@lists.freedesktop.org,
+	stable@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
+	Alain Volmat <alain.volmat@foss.st.com>,
+	Benjamin Gaignard <benjamin.gaignard@collabora.com>,
+	David Airlie <airlied@gmail.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>, Simona Vetter <simona@ffwll.ch>,
+	Thomas Zimmermann <tzimmermann@suse.de>
+Subject: Re: [PATCH] drm: sti: fix device leaks at component probe
+Message-ID: <aQj69wzTceDklx2Y@thinkstation>
+References: <20250922122012.27407-1-johan@kernel.org>
+ <d1c2e56b-2ef9-4ab1-a4f8-3834d1857386@web.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20251103184846.GA672460@ax162>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <d1c2e56b-2ef9-4ab1-a4f8-3834d1857386@web.de>
 
-On Mon, Nov 03, 2025 at 11:48:46AM -0700, Nathan Chancellor wrote:
-> On Mon, Nov 03, 2025 at 09:00:36AM -0800, Eric Biggers wrote:
-> > On Sun, Nov 02, 2025 at 09:35:03PM -0500, Nathan Chancellor wrote:
-> > > Commit 2f13daee2a72 ("lib/crypto/curve25519-hacl64: Disable KASAN with
-> > > clang-17 and older") inadvertently disabled KASAN in curve25519-hacl64.o
-> > > for GCC unconditionally because clang-min-version will always evaluate
-> > > to nothing for GCC. Add a check for CONFIG_CC_IS_GCC to avoid the
-> > > workaround, which is only needed for clang-17 and older.
-> > > 
-> > > Additionally, invert the 'ifeq (...,)' into 'ifneq (...,y)', as it is a
-> > > little easier to read and understand the intention ("if not GCC or at
-> > > least clang-18, disable KASAN").
-> > > 
-> > > Cc: stable@vger.kernel.org
-> > > Fixes: 2f13daee2a72 ("lib/crypto/curve25519-hacl64: Disable KASAN with clang-17 and older")
-> > > Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-> > > ---
-> > >  lib/crypto/Makefile | 2 +-
-> > >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > > 
-> > > diff --git a/lib/crypto/Makefile b/lib/crypto/Makefile
-> > > index bded351aeace..372b7a12b371 100644
-> > > --- a/lib/crypto/Makefile
-> > > +++ b/lib/crypto/Makefile
-> > > @@ -90,7 +90,7 @@ else
-> > >  libcurve25519-$(CONFIG_CRYPTO_LIB_CURVE25519_GENERIC) += curve25519-fiat32.o
-> > >  endif
-> > >  # clang versions prior to 18 may blow out the stack with KASAN
-> > > -ifeq ($(call clang-min-version, 180000),)
-> > > +ifneq ($(CONFIG_CC_IS_GCC)$(call clang-min-version, 180000),y)
-> > >  KASAN_SANITIZE_curve25519-hacl64.o := n
-> > >  endif
-> > 
-> > Thanks for catching this!
-> > 
-> > Using CONFIG_CC_IS_GCC == "" to check for clang seems a bit odd when
-> > there's already a CONFIG_CC_IS_CLANG available.
-> > 
-> > How about we do it like this?
-> > 
-> >     ifeq ($(CONFIG_CC_IS_CLANG)_$(call clang-min-version, 180000),y_)
+Le Mon, Sep 22, 2025 at 06:16:47PM +0200, Markus Elfring a écrit :
+> > Make sure to drop the references taken to the vtg devices by
 > 
-> Yeah, I am not really sure why I was being so cryptic with the original
-> way it was written :) I think it made a little more sense when it was
-> 'ifeq'. Technically we could do without the _ but would you prefer that
-> I keep it? I can send a v2 with whatever you prefer and an updated
-> commit message.
+>                                                 VTG device?
 
-While it shouldn't be possible to have a y just from the second part, I
-think I'd prefer still having the separator so that it's clear which
-part the y is coming from.
+Video Timing Generator.  This IP creates a vsync pulse and synchonize
+the components together.
 
-- Eric
+> 
+> 
+> > of_find_device_by_node() when looking up their driver data during
+> > component probe.
+> …
+> 
+> How do you think about to increase the application of scope-based resource management?
+> https://elixir.bootlin.com/linux/v6.17-rc7/source/include/linux/device.h#L1180
+
+Oh... I wasn't aware of this.  FWIU it is a way to directly free an
+allocated memory whenever a variable goes out of scope using the cleanup
+attribute.
+
+IMO this is also a clever solution to prevent the memory leak, and it
+would be a shorter patch.  So basically, instead of calling put_device()
+as Johan did, you would suggest something like this ?
+
+diff --git i/drivers/gpu/drm/sti/sti_vtg.c w/drivers/gpu/drm/sti/sti_vtg.c
+index ee81691b3203..5193196d9291 100644
+--- i/drivers/gpu/drm/sti/sti_vtg.c
++++ w/drivers/gpu/drm/sti/sti_vtg.c
+@@ -142,7 +142,7 @@ struct sti_vtg {
+
+ struct sti_vtg *of_vtg_find(struct device_node *np)
+ {
+-       struct platform_device *pdev;
++       struct platform_device *pdev __free(put_device) = NULL;
+
+Best regards,
+Raphaël
+
+
+> 
+> Can a summary phrase like “Prevent device leak in of_vtg_find()” be nicer?
+> 
+> Regards,
+> Markus
 
