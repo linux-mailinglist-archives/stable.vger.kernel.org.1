@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-192113-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192114-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A269AC29BD5
-	for <lists+stable@lfdr.de>; Mon, 03 Nov 2025 01:52:42 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0505CC29BE7
+	for <lists+stable@lfdr.de>; Mon, 03 Nov 2025 01:53:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 55D71188C329
-	for <lists+stable@lfdr.de>; Mon,  3 Nov 2025 00:52:13 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id ECF294ED4B9
+	for <lists+stable@lfdr.de>; Mon,  3 Nov 2025 00:51:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BA581CAA65;
-	Mon,  3 Nov 2025 00:49:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCC521D5AD4;
+	Mon,  3 Nov 2025 00:49:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ivmOEs8e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fxV47b9t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 482CA17A316
-	for <stable@vger.kernel.org>; Mon,  3 Nov 2025 00:49:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 609821D5CFB
+	for <stable@vger.kernel.org>; Mon,  3 Nov 2025 00:49:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762130981; cv=none; b=NVipoKxG5pS66aNOZ/XCP7unpuUdYzmWmmO0y2Rd8E6gIlcOMJ4cxg9UmQtm7YQyQd3rEaPlzVy/vLclpYCJl4xeWbYjnKIHHgKFNC+HFd4rpRZo7CopoBe2SItLyK3Y2MLG2ImUJRGejaKUhdxrELcH0d58MgwFFWvDpxbj0b8=
+	t=1762130983; cv=none; b=PpFzWBXNkhReBINIZf931q3Yj/WVNJhA8cz3qP663BsDqMfWy7fqvIgNXBeziS6d6bsaoy2Xdu5vHOJW+/cs0VRtP1YVQxVucyeLcQ4+umfG6AcaDym7IZX3r5lLvsohkaafkgykURqAuRRplhYtd/vn3XEsRc50JjWDRQNCSMk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762130981; c=relaxed/simple;
-	bh=bVtcIdTj3ehlm1sTJVYek+CBN6AlcuvPBeOcyRPtsCw=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ZLEBJlC7Cqr/Z50HL7+LHpnaSdIkiZbM8lmDLQJl2epJtq8WCyJbtrgYNMkViSNaVRP3Kd1n8kZg76o/m1gnu4RpDghTN6p54xFv3/CYFHpZnr0NCOHvUa/8UGBpYjUjnSCP5cRU03/pK4JpMSg8JJ9M1HiqGhQb4n8QTxY8miQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ivmOEs8e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BB51C4CEF7;
-	Mon,  3 Nov 2025 00:49:40 +0000 (UTC)
+	s=arc-20240116; t=1762130983; c=relaxed/simple;
+	bh=UnzcDa5GbJ/Keu/kqmoM0wzJNpUcH8PuqbDkGof7IJg=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=FLjyw9fLEIa7oAq/7HOZ2zQ0sFjz0XiGIqmwr93RvTH3k5tImm7Emj02nMbYd8MuKj/M430m4myeOTp231CbmehTaEjopD8UXS14mjE75dnnogB4X7wSAQAz+K9ul8dSaf0lWZ1tDsmSX9QmqaV2ykzU8NF/GTELNnESnDvxluI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fxV47b9t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D32C3C4CEF7;
+	Mon,  3 Nov 2025 00:49:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762130980;
-	bh=bVtcIdTj3ehlm1sTJVYek+CBN6AlcuvPBeOcyRPtsCw=;
+	s=korg; t=1762130983;
+	bh=UnzcDa5GbJ/Keu/kqmoM0wzJNpUcH8PuqbDkGof7IJg=;
 	h=Subject:To:Cc:From:Date:From;
-	b=ivmOEs8eRt0CQQIpM0jkyGc2sxYpizV+r5u0fxs+DHph5kDsrGaOowPF21NNpKHFR
-	 lb9WZ0SRmnNN1JiMl94m9ao3U8Tia4NX86+Qj0kQqIvORr2X6jiUJ0YfazOYPYGGpk
-	 45Y4hD/Dc6Sbl5o9bbz37exI6FYYGuXXYfjEg6xs=
-Subject: FAILED: patch "[PATCH] s390/pci: Avoid deadlock between PCI error recovery and mlx5" failed to apply to 6.1-stable tree
-To: gbayer@linux.ibm.com,hca@linux.ibm.com,schnelle@linux.ibm.com
+	b=fxV47b9t1eBvbieC0CP9rpssJfhQWyrIK+/DhHwCXFkdTSmF0I9OmXF1d3Rkm4iep
+	 vSd7w8LdPXAjsoXsRRpxsHWXOLe1AYQWws4appuSovCMi5H10svvY1o3UgAyF25UIY
+	 +3idjp/4+lVtRxC4f2n61eaI1j6x6LSH4Zs0giQA=
+Subject: FAILED: patch "[PATCH] s390: Disable ARCH_WANT_OPTIMIZE_HUGETLB_VMEMMAP" failed to apply to 6.12-stable tree
+To: hca@linux.ibm.com,david@redhat.com,gerald.schaefer@linux.ibm.com,luizcap@redhat.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 03 Nov 2025 09:49:28 +0900
-Message-ID: <2025110328-lyrically-confusing-b129@gregkh>
+Date: Mon, 03 Nov 2025 09:49:39 +0900
+Message-ID: <2025110339-catching-blah-8209@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 6.12-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
 git checkout FETCH_HEAD
-git cherry-pick -x 0fd20f65df6aa430454a0deed8f43efa91c54835
+git cherry-pick -x 64e2f60f355e556337fcffe80b9bcff1b22c9c42
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025110328-lyrically-confusing-b129@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025110339-catching-blah-8209@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,115 +77,51 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 0fd20f65df6aa430454a0deed8f43efa91c54835 Mon Sep 17 00:00:00 2001
-From: Gerd Bayer <gbayer@linux.ibm.com>
-Date: Thu, 16 Oct 2025 11:27:03 +0200
-Subject: [PATCH] s390/pci: Avoid deadlock between PCI error recovery and mlx5
- crdump
+From 64e2f60f355e556337fcffe80b9bcff1b22c9c42 Mon Sep 17 00:00:00 2001
+From: Heiko Carstens <hca@linux.ibm.com>
+Date: Thu, 30 Oct 2025 15:55:05 +0100
+Subject: [PATCH] s390: Disable ARCH_WANT_OPTIMIZE_HUGETLB_VMEMMAP
 
-Do not block PCI config accesses through pci_cfg_access_lock() when
-executing the s390 variant of PCI error recovery: Acquire just
-device_lock() instead of pci_dev_lock() as powerpc's EEH and
-generig PCI AER processing do.
+As reported by Luiz Capitulino enabling HVO on s390 leads to reproducible
+crashes. The problem is that kernel page tables are modified without
+flushing corresponding TLB entries.
 
-During error recovery testing a pair of tasks was reported to be hung:
+Even if it looks like the empty flush_tlb_all() implementation on s390 is
+the problem, it is actually a different problem: on s390 it is not allowed
+to replace an active/valid page table entry with another valid page table
+entry without the detour over an invalid entry. A direct replacement may
+lead to random crashes and/or data corruption.
 
-mlx5_core 0000:00:00.1: mlx5_health_try_recover:338:(pid 5553): health recovery flow aborted, PCI reads still not working
-INFO: task kmcheck:72 blocked for more than 122 seconds.
-      Not tainted 5.14.0-570.12.1.bringup7.el9.s390x #1
-"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-task:kmcheck         state:D stack:0     pid:72    tgid:72    ppid:2      flags:0x00000000
-Call Trace:
- [<000000065256f030>] __schedule+0x2a0/0x590
- [<000000065256f356>] schedule+0x36/0xe0
- [<000000065256f572>] schedule_preempt_disabled+0x22/0x30
- [<0000000652570a94>] __mutex_lock.constprop.0+0x484/0x8a8
- [<000003ff800673a4>] mlx5_unload_one+0x34/0x58 [mlx5_core]
- [<000003ff8006745c>] mlx5_pci_err_detected+0x94/0x140 [mlx5_core]
- [<0000000652556c5a>] zpci_event_attempt_error_recovery+0xf2/0x398
- [<0000000651b9184a>] __zpci_event_error+0x23a/0x2c0
-INFO: task kworker/u1664:6:1514 blocked for more than 122 seconds.
-      Not tainted 5.14.0-570.12.1.bringup7.el9.s390x #1
-"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-task:kworker/u1664:6 state:D stack:0     pid:1514  tgid:1514  ppid:2      flags:0x00000000
-Workqueue: mlx5_health0000:00:00.0 mlx5_fw_fatal_reporter_err_work [mlx5_core]
-Call Trace:
- [<000000065256f030>] __schedule+0x2a0/0x590
- [<000000065256f356>] schedule+0x36/0xe0
- [<0000000652172e28>] pci_wait_cfg+0x80/0xe8
- [<0000000652172f94>] pci_cfg_access_lock+0x74/0x88
- [<000003ff800916b6>] mlx5_vsc_gw_lock+0x36/0x178 [mlx5_core]
- [<000003ff80098824>] mlx5_crdump_collect+0x34/0x1c8 [mlx5_core]
- [<000003ff80074b62>] mlx5_fw_fatal_reporter_dump+0x6a/0xe8 [mlx5_core]
- [<0000000652512242>] devlink_health_do_dump.part.0+0x82/0x168
- [<0000000652513212>] devlink_health_report+0x19a/0x230
- [<000003ff80075a12>] mlx5_fw_fatal_reporter_err_work+0xba/0x1b0 [mlx5_core]
+In order to invalidate an entry special instructions have to be used
+(e.g. ipte or idte). Alternatively there are also special instructions
+available which allow to replace a valid entry with a different valid
+entry (e.g. crdte or cspg).
 
-No kernel log of the exact same error with an upstream kernel is
-available - but the very same deadlock situation can be constructed there,
-too:
+Given that the HVO code currently does not provide the hooks to allow for
+an implementation which is compliant with the s390 architecture
+requirements, disable ARCH_WANT_OPTIMIZE_HUGETLB_VMEMMAP again, which is
+basically a revert of the original patch which enabled it.
 
-- task: kmcheck
-  mlx5_unload_one() tries to acquire devlink lock while the PCI error
-  recovery code has set pdev->block_cfg_access by way of
-  pci_cfg_access_lock()
-- task: kworker
-  mlx5_crdump_collect() tries to set block_cfg_access through
-  pci_cfg_access_lock() while devlink_health_report() had acquired
-  the devlink lock.
-
-A similar deadlock situation can be reproduced by requesting a
-crdump with
-  > devlink health dump show pci/<BDF> reporter fw_fatal
-
-while PCI error recovery is executed on the same <BDF> physical function
-by mlx5_core's pci_error_handlers. On s390 this can be injected with
-  > zpcictl --reset-fw <BDF>
-
-Tests with this patch failed to reproduce that second deadlock situation,
-the devlink command is rejected with "kernel answers: Permission denied" -
-and we get a kernel log message of:
-
-mlx5_core 1ed0:00:00.1: mlx5_crdump_collect:50:(pid 254382): crdump: failed to lock vsc gw err -5
-
-because the config read of VSC_SEMAPHORE is rejected by the underlying
-hardware.
-
-Two prior attempts to address this issue have been discussed and
-ultimately rejected [see link], with the primary argument that s390's
-implementation of PCI error recovery is imposing restrictions that
-neither powerpc's EEH nor PCI AER handling need. Tests show that PCI
-error recovery on s390 is running to completion even without blocking
-access to PCI config space.
-
-Link: https://lore.kernel.org/all/20251007144826.2825134-1-gbayer@linux.ibm.com/
+Reported-by: Luiz Capitulino <luizcap@redhat.com>
+Closes: https://lore.kernel.org/all/20251028153930.37107-1-luizcap@redhat.com/
+Fixes: 00a34d5a99c0 ("s390: select ARCH_WANT_HUGETLB_PAGE_OPTIMIZE_VMEMMAP")
 Cc: stable@vger.kernel.org
-Fixes: 4cdf2f4e24ff ("s390/pci: implement minimal PCI error recovery")
-Reviewed-by: Niklas Schnelle <schnelle@linux.ibm.com>
-Signed-off-by: Gerd Bayer <gbayer@linux.ibm.com>
+Tested-by: Luiz Capitulino <luizcap@redhat.com>
+Reviewed-by: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
+Reviewed-by: David Hildenbrand <david@redhat.com>
 Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
 
-diff --git a/arch/s390/pci/pci_event.c b/arch/s390/pci/pci_event.c
-index b95376041501..27db1e72c623 100644
---- a/arch/s390/pci/pci_event.c
-+++ b/arch/s390/pci/pci_event.c
-@@ -188,7 +188,7 @@ static pci_ers_result_t zpci_event_attempt_error_recovery(struct pci_dev *pdev)
- 	 * is unbound or probed and that userspace can't access its
- 	 * configuration space while we perform recovery.
- 	 */
--	pci_dev_lock(pdev);
-+	device_lock(&pdev->dev);
- 	if (pdev->error_state == pci_channel_io_perm_failure) {
- 		ers_res = PCI_ERS_RESULT_DISCONNECT;
- 		goto out_unlock;
-@@ -257,7 +257,7 @@ static pci_ers_result_t zpci_event_attempt_error_recovery(struct pci_dev *pdev)
- 		driver->err_handler->resume(pdev);
- 	pci_uevent_ers(pdev, PCI_ERS_RESULT_RECOVERED);
- out_unlock:
--	pci_dev_unlock(pdev);
-+	device_unlock(&pdev->dev);
- 	zpci_report_status(zdev, "recovery", status_str);
- 
- 	return ers_res;
+diff --git a/arch/s390/Kconfig b/arch/s390/Kconfig
+index c4145672ca34..df22b10d9141 100644
+--- a/arch/s390/Kconfig
++++ b/arch/s390/Kconfig
+@@ -158,7 +158,6 @@ config S390
+ 	select ARCH_WANT_IRQS_OFF_ACTIVATE_MM
+ 	select ARCH_WANT_KERNEL_PMD_MKWRITE
+ 	select ARCH_WANT_LD_ORPHAN_WARN
+-	select ARCH_WANT_OPTIMIZE_HUGETLB_VMEMMAP
+ 	select ARCH_WANTS_THP_SWAP
+ 	select BUILDTIME_TABLE_SORT
+ 	select CLONE_BACKWARDS2
 
 
