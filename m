@@ -1,142 +1,290 @@
-Return-Path: <stable+bounces-192280-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192281-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BC4AC2DECC
-	for <lists+stable@lfdr.de>; Mon, 03 Nov 2025 20:45:11 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 366C3C2E198
+	for <lists+stable@lfdr.de>; Mon, 03 Nov 2025 22:09:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1FD693BABF2
-	for <lists+stable@lfdr.de>; Mon,  3 Nov 2025 19:43:58 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 1929E4E1F00
+	for <lists+stable@lfdr.de>; Mon,  3 Nov 2025 21:09:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4911532038B;
-	Mon,  3 Nov 2025 19:43:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00D322C2340;
+	Mon,  3 Nov 2025 21:09:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XhjrjM6b"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="xnkeqBgK"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012021.outbound.protection.outlook.com [40.93.195.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6052D1D63F3;
-	Mon,  3 Nov 2025 19:43:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762199034; cv=none; b=iiH02qIAV6qvu/iKahd0rFLrjlcfIxw+EwacUuGjDIom2ULvxLo73Mh1KD91msyYkahrSw1Yj3+m1cYognIbH1fh2huffI0SinnmMOsOPmf1apxm72ewAgR0WM0dJhrU4pDeJw5Xrjvyu870bBxZBGr6iNlhh8kli9+OrznPsFw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762199034; c=relaxed/simple;
-	bh=q/4OWKXfixl0s8ySl+tIgtHerJ1V2sbsB5qpc67S7Yg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qE/EIZ89CiE0QubxlzyW/p34UjfUDyBTQm2OuuFgQorCB0V09yU8ljqw5sQTe5x/1Wx5U2gS2wMgnBU1HsDFHrmYD91xSrfbUH2Jnhn6gon4OTNyyQOc9VLTwvhTTSbWojFoD374JJJH+otIfawxWRv1hy5VaaCmC84erfXNZdc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XhjrjM6b; arc=none smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1762199032; x=1793735032;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=q/4OWKXfixl0s8ySl+tIgtHerJ1V2sbsB5qpc67S7Yg=;
-  b=XhjrjM6bHGB3v1Jh6CgijyKwovL89vo15Doc3bWbUQbrFolpMjsfQcVk
-   uNxnsYCr4abzUlMRgeC4mHZK7gkfnQzefv0K9I1j+c5v5wxdzrlMAfhDG
-   E6gL66i7CO8V734c20INCQWoaaGTvnyAtCPdMALHoFXWZ615OmvhnuNcx
-   9XB5V1Pizu6PQ598nrlGV7p6VLG2V0rxJcm4eO8/SxOTvdldx7XmJ8BoF
-   5bqpUNL/h2VU/oNmhZTHRf7g/RAXJOvkgpXEcYKRohA0Fymp8lAgjiKKw
-   05Bv+Y8BK+b1BwXUZ5mAFtGWFZZ/buy4h2zUfdZS5K88FOQjjmBRSpXuH
-   A==;
-X-CSE-ConnectionGUID: o5rXlLe3T86+/vmnDkjlsA==
-X-CSE-MsgGUID: 20mY27KzRNCjioGlckYlEw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11602"; a="75635350"
-X-IronPort-AV: E=Sophos;i="6.19,277,1754982000"; 
-   d="scan'208";a="75635350"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2025 11:43:52 -0800
-X-CSE-ConnectionGUID: uGCxjjoZTu2f8crq7O9LqA==
-X-CSE-MsgGUID: ++B0sV0/SESfA+dB/4p6Vg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,277,1754982000"; 
-   d="scan'208";a="192117771"
-Received: from smoehrl-linux.amr.corp.intel.com (HELO ashevche-desk.local) ([10.124.220.216])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2025 11:43:49 -0800
-Received: from andy by ashevche-desk.local with local (Exim 4.98.2)
-	(envelope-from <andriy.shevchenko@intel.com>)
-	id 1vG0Su-00000005Fjd-1HzY;
-	Mon, 03 Nov 2025 21:43:44 +0200
-Date: Mon, 3 Nov 2025 21:43:43 +0200
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Linus Walleij <linus.walleij@linaro.org>
-Cc: Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Matti Vaittinen <mazziesaccount@gmail.com>,
-	Stephan Gerhold <stephan@gerhold.net>, linux-iio@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2] iio: accel: bmc150: Fix irq assumption regression
-Message-ID: <aQkF7_beMRiAOR_1@smile.fi.intel.com>
-References: <20251103-fix-bmc150-v2-1-0811592259df@linaro.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2C262C21D4;
+	Mon,  3 Nov 2025 21:09:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.195.21
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1762204193; cv=fail; b=XF1paPf2JEnG0y83cxjylVLowkQw5A453Hp72csZnofdWh8ms7Nz0Yf7OC79pEpvBX7xQSfqhGIaWQt9c1OIDjbEoJ5+0jHkHl07PX9tgvhSxTfciV087wmdedgR9suRnkHC/7OslhGDx35DM33q7OhyY4oHQTSge3RiWQHI7rs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1762204193; c=relaxed/simple;
+	bh=48Bkzzt/h1fsi+0GtdLTkqU9l5T62xa3VQy0GXxqMH4=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=l2yVvIPwEIwoxBIShBnDeSO5pwx+jR3FL9xVhIAao5bUieRJDUpVGa87IP2KhJTaH8fKO2EgXgiFgXigRKdH7823M7xx41BkQCrPSrHcnmRxAGXBxA6g9Grry1FWMqPnv+vWoREcxNIdUpBvgZV37auKw8z4XaYhc01AjbU2PMM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=xnkeqBgK; arc=fail smtp.client-ip=40.93.195.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=DJBR9/CNb+t+t6wObY3DXJS0iMldWMW2fcRfupvMwhrvM7SggNGmEnGKqAPvzjFvpn23/OL3tOIMfFymWN1yfIdSs4Wp/Yp7Z9LF/eImY74yxELe8KZU6S2TrS3RE/61zSVE80p+sDkTsV90FbeSPSjXqBMADjO+rfzH4xCuOMelJiKAfl10NAXV41zVVFwusDBZuVI10ua+NcBZ2wN4FLX5BFthU/nOKH1Ub+E3I7nKeSpPRzuqbipmT4R2GT5469UcHWLZJEaGMpx4MXDTkB7wfM3ekr1n3admT7nFMCd2Baa61u+n71rlr/NdMzfXWiQ5NML4ecrpc2i8wBRM+A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Cuz5r96Tbd0sAmxjXVs7p4V+E5qnYi2sY6k1KVQrEjk=;
+ b=KrfSqgVagKp8m6kUnbcAl32gs4FmWhhKE8PHFd/gMJF+VKdEdapmwqzLBaNj9ijx451rD9x+8Hu5QnH2nDugwiUGsK86lIya4dHouhan/bi9tMVUsk3GE+llDBQn+frHUD/u3zm2K60e6U22pIbSDjzwmiDCIjBnT8QcbKpsb1hVZYfewv4/MCXdzlEoUesxKw7PM7E6GSRyQeUXM6ROgy+w5OGBVOLkLldnv/ajwh9QspaIWPzbYncRuUIvaOtB3j5jEj7RP27byhOjUqkEEwsYMJW4uHPZnshJRj4uq3D51M1fCNgEx8fC5qt6dPnR0uPUwGsFx5nQVmriL9Lovg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Cuz5r96Tbd0sAmxjXVs7p4V+E5qnYi2sY6k1KVQrEjk=;
+ b=xnkeqBgKO4xvdDgVZdY0jlQVLFPwmO9PUctsmdHDyUZkQcCIMEWSsovg2TDNTy5zj1hb6rDqiBz2+pdJrOm1p/FLrbNrKF4nrxpO28xuwGxa520sJ4pWO7CeIG3ZhIgwxOJw3R0Ss2Dn/1QIAL73DYqAfuguSPIaYuIHzIaPWj4=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from MN0PR12MB6101.namprd12.prod.outlook.com (2603:10b6:208:3cb::10)
+ by CY5PR12MB6348.namprd12.prod.outlook.com (2603:10b6:930:f::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9275.16; Mon, 3 Nov
+ 2025 21:09:48 +0000
+Received: from MN0PR12MB6101.namprd12.prod.outlook.com
+ ([fe80::37ee:a763:6d04:81ca]) by MN0PR12MB6101.namprd12.prod.outlook.com
+ ([fe80::37ee:a763:6d04:81ca%7]) with mapi id 15.20.9275.013; Mon, 3 Nov 2025
+ 21:09:48 +0000
+Message-ID: <bea70e02-2d1b-4fc5-bcb0-b1bf33c09139@amd.com>
+Date: Mon, 3 Nov 2025 15:09:44 -0600
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] drm/amd/display: Fix NULL deref in debugfs
+ odm_combine_segments
+To: Rong Zhang <i@rong.moe>, Harry Wentland <harry.wentland@amd.com>,
+ Leo Li <sunpeng.li@amd.com>, Rodrigo Siqueira <siqueira@igalia.com>,
+ Alex Deucher <alexander.deucher@amd.com>,
+ =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>
+Cc: Roman Li <roman.li@amd.com>,
+ "ChiaHsuan (Tom) Chung" <chiahsuan.chung@amd.com>, Ray Wu <ray.wu@amd.com>,
+ Wenjing Liu <wenjing.liu@amd.com>,
+ Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>,
+ Aurabindo Pillai <aurabindo.pillai@amd.com>, amd-gfx@lists.freedesktop.org,
+ dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20251013164742.24660-1-i@rong.moe>
+ <7ef252405946f6ab3feff38cc4bd9ddcc49bad56.camel@rong.moe>
+Content-Language: en-US
+From: Mario Limonciello <mario.limonciello@amd.com>
+In-Reply-To: <7ef252405946f6ab3feff38cc4bd9ddcc49bad56.camel@rong.moe>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SA1P222CA0167.NAMP222.PROD.OUTLOOK.COM
+ (2603:10b6:806:3c3::15) To MN0PR12MB6101.namprd12.prod.outlook.com
+ (2603:10b6:208:3cb::10)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251103-fix-bmc150-v2-1-0811592259df@linaro.org>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MN0PR12MB6101:EE_|CY5PR12MB6348:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6cc3173d-3fa3-42f4-d9d6-08de1b1d524e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?dzBMM2RVU2VLK2lXeXpnOHl5S05aMWxHMzJIMVRkK0ZpTHBmbTVxQXJ0SDJu?=
+ =?utf-8?B?eDlWR0JydlV3ZTBzaCsrVWMzNXJ5MldIY25PdXdQaC9BTk5MZFFNbDRma2xB?=
+ =?utf-8?B?bTlSSUdKYWxJK3FYcEhtVjdtU2IxZUlEdHJqVWRNWWRtcHJRUlo3TzZMU2Zs?=
+ =?utf-8?B?MkxERVNzZm5SdlVlM08yK3ZvVm96eW51akcwaWU4ZTN6a0RCV08rMmIvbkxj?=
+ =?utf-8?B?R2NGblJIdVZqYkVZRXJZa2VkT3pOQWFKUXdNMFBxMGlia1BZenZTc0ozNSs3?=
+ =?utf-8?B?M3UzK2lMM3NaaVlEQkY0NGtXeHBScDdINnZiRnBldXhhNEdtNFJOSkZMRkh2?=
+ =?utf-8?B?cTh2MEExdDFobXlqVldKZTRhMHg4OHRVVnNzMHdOV0dMaml4U0dPcngvOGZ5?=
+ =?utf-8?B?MFZtSi9DbmR6ZURFSVY5Q3BacHMvK2R3T3ZPUEVEdXBvMElDZU52NEI3ZGwx?=
+ =?utf-8?B?TEpJZzNuZDBYVDAzdE5ET21nQVovb1NRWENnTHAyd2pZM2JFS28rY29pTzRv?=
+ =?utf-8?B?TWNMZnFLYk16ZjRHdFg3M0g0U0poMHMzZWcwWVRzOURySzNlbGdjTjZzZTRX?=
+ =?utf-8?B?Y0VBemZOdEkwd2JuSzVqelNEbGJmNHZBRDIrMEtJbURub2VYbzhCQ2d2b01O?=
+ =?utf-8?B?T2hSZExtdG1GTThwR290WitlNG9DRGZQWUFlT2NBbllVbEgzTmJPTWc5dlJL?=
+ =?utf-8?B?NW9UN2JtalZ2cDNNdHNob3dJa1prRVdJMmhFeVc4aE83bDA0UmNlcWN3N3hG?=
+ =?utf-8?B?Z05qQ0YvRWhHV09vSjlEa3VwcTNNV2hoNzRuMXhTY0dqY085TnZKR3U1Vktu?=
+ =?utf-8?B?SmJUWFc5TTB1cVhNcGZIc2dwR3J3OG1uVXdIeCtYZWJIQWV1K2dubE5GUFpV?=
+ =?utf-8?B?UlA2TVh6Zmh4Sm1JM0pLUXAyTE9WN1lZZGtJNG9MRUdEc3pCeEJMM2lId3Fk?=
+ =?utf-8?B?NU0rWWE3d1F4alhMVDMxWkpMWXQyTDNKUTRMMjlEY0ptMUpyb3hoYVZ3UFp5?=
+ =?utf-8?B?Z3BrNG50bmpwN0FISEhOVzBvSlpoT1doUnR0WWtMeC9BeTc3UkFuU1BjQ0ln?=
+ =?utf-8?B?YWVSTElnL3phbWFzRVkzS29RY1ZoRnU2NWgvdjRvMVkyYTRxSE9PYmx5NnQy?=
+ =?utf-8?B?dnRzbTVRcWxIcjBpK29qU3NUdXo2cUZYamY2bnFHanFBTWR4bmdMOGpCRDdJ?=
+ =?utf-8?B?QWQyTUdmcjN6QUpkQU1yMkxXaXZ0TmJFam9SSUIvLzJWMksvQ0xVNCs5Ykl1?=
+ =?utf-8?B?dDJnN1N5dEprSzV6N1NBOGxnMzN5OEljY094QVpTQlVHMW1ya0VaWXNwdjNa?=
+ =?utf-8?B?aTRRUngvcEt2dzdUbFM4VmdUTGJlYWM1NVE5OTZvbnl4a1hubklXRFIzeHdO?=
+ =?utf-8?B?YTJGcnc1UVMwTG5mMkxaV3F0YWJ6amZLUWVzbUNiV2ZWcmdJZHcvSFZGc3JG?=
+ =?utf-8?B?VUpRUjBNc1I0RGZLN2tYTUZ6MkJLZVJjNnRtN3V5RjdLVm92NGlqU3BGY25j?=
+ =?utf-8?B?Yk1uQUZJVVdjNDFYcGlZRWtCUXVpTFRicllvTmFXd3hDVlZFVGhhY05TQTR4?=
+ =?utf-8?B?cWhXc2F3cVhEN2RqMXdadks0TkJ0SXJTZEZRM1VPcEtnYWd4Zko4QWM2VzlT?=
+ =?utf-8?B?QjZLdEErVHZ4alFQMSt6YW5OcDdVTHptQWtxRTN5TmI3NFB5RnRUdlZSeE1t?=
+ =?utf-8?B?WG9acjlGQi9tTmxVREJMUjgxV0Z1eWtuY1pCNklPUVhrV1ZWbFB0UjJsZHhy?=
+ =?utf-8?B?V0hYeGRIWnpwcHAwM2NGS3JZSDg1Ty80eFlaSmFQNDcvL3h2clFaSW9pMG9L?=
+ =?utf-8?B?NmpkcUZqQm5zek44c09jSC9meUFPcmJidjZvYm5OR0VFaE5BU08vS2VXaTBS?=
+ =?utf-8?B?cXBLZ3ZiYjFJdTdId20vZmgzNkxudWpEemNjK2FWQll1K2tETUQ3ajdqcFNU?=
+ =?utf-8?Q?jN6dZ9pI18i38ph+GZ6fxK4Pp0WzF5hW?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB6101.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?d3ZPc0hVbGREbm5uUkFnd1R1QklOdTJmaGtUTGFjTnNXM3FNWHFHeW4xVVZM?=
+ =?utf-8?B?V1psTytjeGpuQTRQWldUaG5qQlg3R3VaOFQ2RnNWVkM1NXNiWHUyU0RHUFdi?=
+ =?utf-8?B?NlJrUklXeklKL1RLcENDM2NxdzIyWFFnZkJ5NnFmcFRaa2t0ZDNDdTkvQ0pl?=
+ =?utf-8?B?T0hrNndXUWdCdk9nRzdMdGV1bVFodXFiMHhPa2xOZXpVa1d5Y1VXM3VqTXc5?=
+ =?utf-8?B?eVRoRndWR3BqZ2c0MWZkK05XbmVLVmp4YVZ3c3hqYk5YK1RxUHlPeGdXeVc5?=
+ =?utf-8?B?NnlTNThvb1ZrcHRvVzJ0ZXZhSlJMUGFXYm1VWEN3dlZ5M2VqKzlKZXUyUmVn?=
+ =?utf-8?B?SmxBVWpCbEIrbzc5SEViL0dGb0hlREFLSUk5WGFZRzV4Y1RKSWs0MXNCYi8y?=
+ =?utf-8?B?RVd5VFVCZ3NlS2ZqRDQ1UVF2ejJkMldjR3pyWXpwYStVTmY0eHhqRnd3MGR4?=
+ =?utf-8?B?TVlZb3Q1NkNEWERnb3ljYk8vSGZKd2VDQUxtVnd0b3ByRnNqMytzT2lNRFgx?=
+ =?utf-8?B?UFpFOExzWDlzSzROU2ovQ29rZ1JJQStBNG9VR1BUZUtnVDd0RmhibldPdnZu?=
+ =?utf-8?B?eXdOQVYzTm5zZGhTVEFobWptZ1JKOW5DM01wYkRSZXZCdGpWL3QyNDgyeEtK?=
+ =?utf-8?B?WjRiOFp6c2V2WS80VnkxSVVGQWVUd2N5NFI3cTJ4dWlwRDVZYnhKK0FxYUxp?=
+ =?utf-8?B?VEFoOURVdVVERS9BRjA4Q2JQSWUrVC9odnMwM1hXMEg0YnlxRFBrTmNLTnF5?=
+ =?utf-8?B?eFJkQ1l1SFhHdEUwWGkvSExkdkZjZmlKRCtaNElrWGsvRERSNXp6L1JmckhU?=
+ =?utf-8?B?eGJZMHc0SytpOGZBcXpQMzFxQjdIL0FUd1E0bnZteFBObEJqais5U1d6QkFt?=
+ =?utf-8?B?VUNsWjF4bkJrR1pzUzR0aTZoTkR1VEhWaElJb2gvNGdORHFUaHdqcFNkWnhS?=
+ =?utf-8?B?di9PY0E5alFvME1UTXBqMkd1NllDMVE3bnFaK0ZFbmFaaGxiT3dNUFNrbUJh?=
+ =?utf-8?B?QzZlL0NjVnRxZC9XelVWaFBDZVRvKzdITVFjcHZCZUJSbWpNSEhpTklzcGQ3?=
+ =?utf-8?B?d2diTmU1SnJDcFRjblo2bWZtQnU5akVPVStleGhqb2pBMEZ6MjBDaXdiNFhP?=
+ =?utf-8?B?SjVOQm16U2pTYnlUOG9pZlVzUTBBUmMyS0RwcjBMZTU0VVJHQm52eUhyVk5W?=
+ =?utf-8?B?M2tYeXJjTFU1alBtQnduMUtVdU5kK0gyeTBoT3ZkU05aSVdNUEFrTXNMWllQ?=
+ =?utf-8?B?OStZR0FiRXRqWTU1dlNaRVpnVmJkZGgxNnNSNFl0RkZ2L0h5NjlXQm5Jd25y?=
+ =?utf-8?B?dXRPWEdMTEFBOE5zemVzTFJEV0hKMkV5aldsczFMb0o3R04xUFdoaEE3cE54?=
+ =?utf-8?B?V2VYTHNTZ0xFbDdYbkJHRVZhblE2RE1aREVlVTZ6bXVIb0hXZTJ2dEFoclRP?=
+ =?utf-8?B?UGsyaWVteUJCTnA3UnRrKy83ZUE1Y1cxS1FIQSthdzdVc2w1YkxDWmswcVE5?=
+ =?utf-8?B?elV2V1BoU2tvODh3Nzk4eHBmR3gxTkN5RkNaQjFQOG80MFdqOVBlanRVTmJ2?=
+ =?utf-8?B?MkZZdUZNKy9DYm00bCtIRmVYRUY1b0FRM05PVW1ua002ZFVqdTR6MFN5bVl4?=
+ =?utf-8?B?SVJLV2VoUVNuem0vM05zbzFxeWpKVWtOaitSVGhtdzRmdVpETVovSUNPYkhG?=
+ =?utf-8?B?RkNOMW56bWRTUTRRNVcwZ0lTU0RGbDJQNXA0SkRCYkZ2M0JHSHdYN3VXeU1J?=
+ =?utf-8?B?enE1U1o3THg1bUlLQUYrN2FBdzJsdGd3SDNTRitwOXpUaEpWWjNMb0pFR01R?=
+ =?utf-8?B?UCt6b1dkNm5lS1J0RUFaTlg2WUx6SGFLNU1Pd1l3bXhZNm5UZGVxS1E1NDJa?=
+ =?utf-8?B?MjJYR2JJUW1Sa3RFTy9QWlVQNWs2eEtycDdrYWhHUElaQk9IV2hPd3ZyNTB6?=
+ =?utf-8?B?TjBlSnV1ZlFKdGxiRzRqNFdweDZETmRaT2NYMGFHbWMzdUozV3lPdVpmWlFq?=
+ =?utf-8?B?V2x5OGFIV0VPVFVvNldjS003SmJ4VFB1Y3BoeFBOYitRSjNTQlQxclZ4TVBp?=
+ =?utf-8?B?ekFPYmg2aWdGeFZzSjJBTCtEL3UrM01zVzBoYTFaNCt2ZEFUeklkY0RrQmxs?=
+ =?utf-8?Q?a6j4E8YrM7j2Z7XNY/l0z0umf?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6cc3173d-3fa3-42f4-d9d6-08de1b1d524e
+X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB6101.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Nov 2025 21:09:48.4440
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: hiDx0SLXxJWcJ1u4UPdMxo8U7GZ1pOzIsoG/6/AhSLfom9bVGEIghGw40BitorByK8v5I5YNnjPaPL8HIbAznQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR12MB6348
 
-On Mon, Nov 03, 2025 at 10:36:18AM +0100, Linus Walleij wrote:
-> The code in bmc150-accel-core.c unconditionally calls
-> bmc150_accel_set_interrupt() in the iio_buffer_setup_ops,
-> such as on the runtime PM resume path giving a kernel
-> splat like this if the device has no interrupts:
+
+
+On 11/3/2025 12:15 PM, Rong Zhang wrote:
+> Hi all,
 > 
-> Unable to handle kernel NULL pointer dereference at virtual
->   address 00000001 when read
-
-> CPU: 0 UID: 0 PID: 393 Comm: iio-sensor-prox Not tainted
->   6.18.0-rc1-postmarketos-stericsson-00001-g6b43386e3737 #73 PREEMPT
-> Hardware name: ST-Ericsson Ux5x0 platform (Device Tree Support)
-
-These 3 lines are not important.
-
-
-> PC is at bmc150_accel_set_interrupt+0x98/0x194
-> LR is at __pm_runtime_resume+0x5c/0x64
-> (...)
-> Call trace:
-> bmc150_accel_set_interrupt from bmc150_accel_buffer_postenable+0x40/0x108
-> bmc150_accel_buffer_postenable from __iio_update_buffers+0xbe0/0xcbc
-> __iio_update_buffers from enable_store+0x84/0xc8
-> enable_store from kernfs_fop_write_iter+0x154/0x1b4
-
-> kernfs_fop_write_iter from do_iter_readv_writev+0x178/0x1e4
-> do_iter_readv_writev from vfs_writev+0x158/0x3f4
-> vfs_writev from do_writev+0x74/0xe4
-> do_writev from __sys_trace_return+0x0/0x10
-
-As Submitting Patches recommends the commit message is better when it has less
-(unrelated) lines in traceback(s). I already mentioned that those 4 lines and
-more are not needed (important), and maybe removed. I leave it to Jonathan to
-tweak whilst applying.
-
-> This bug seems to have been in the driver since the beginning,
-> but it only manifests recently, I do not know why.
+> On Tue, 2025-10-14 at 00:47 +0800, Rong Zhang wrote:
+>> When a connector is connected but inactive (e.g., disabled by desktop
+>> environments), pipe_ctx->stream_res.tg will be destroyed. Then, reading
+>> odm_combine_segments causes kernel NULL pointer dereference.
+>>
+>>   BUG: kernel NULL pointer dereference, address: 0000000000000000
+>>   #PF: supervisor read access in kernel mode
+>>   #PF: error_code(0x0000) - not-present page
+>>   PGD 0 P4D 0
+>>   Oops: Oops: 0000 [#1] SMP NOPTI
+>>   CPU: 16 UID: 0 PID: 26474 Comm: cat Not tainted 6.17.0+ #2 PREEMPT(lazy)  e6a17af9ee6db7c63e9d90dbe5b28ccab67520c6
+>>   Hardware name: LENOVO 21Q4/LNVNB161216, BIOS PXCN25WW 03/27/2025
+>>   RIP: 0010:odm_combine_segments_show+0x93/0xf0 [amdgpu]
+>>   Code: 41 83 b8 b0 00 00 00 01 75 6e 48 98 ba a1 ff ff ff 48 c1 e0 0c 48 8d 8c 07 d8 02 00 00 48 85 c9 74 2d 48 8b bc 07 f0 08 00 00 <48> 8b 07 48 8b 80 08 02 00>
+>>   RSP: 0018:ffffd1bf4b953c58 EFLAGS: 00010286
+>>   RAX: 0000000000005000 RBX: ffff8e35976b02d0 RCX: ffff8e3aeed052d8
+>>   RDX: 00000000ffffffa1 RSI: ffff8e35a3120800 RDI: 0000000000000000
+>>   RBP: 0000000000000000 R08: ffff8e3580eb0000 R09: ffff8e35976b02d0
+>>   R10: ffffd1bf4b953c78 R11: 0000000000000000 R12: ffffd1bf4b953d08
+>>   R13: 0000000000040000 R14: 0000000000000001 R15: 0000000000000001
+>>   FS:  00007f44d3f9f740(0000) GS:ffff8e3caa47f000(0000) knlGS:0000000000000000
+>>   CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+>>   CR2: 0000000000000000 CR3: 00000006485c2000 CR4: 0000000000f50ef0
+>>   PKRU: 55555554
+>>   Call Trace:
+>>    <TASK>
+>>    seq_read_iter+0x125/0x490
+>>    ? __alloc_frozen_pages_noprof+0x18f/0x350
+>>    seq_read+0x12c/0x170
+>>    full_proxy_read+0x51/0x80
+>>    vfs_read+0xbc/0x390
+>>    ? __handle_mm_fault+0xa46/0xef0
+>>    ? do_syscall_64+0x71/0x900
+>>    ksys_read+0x73/0xf0
+>>    do_syscall_64+0x71/0x900
+>>    ? count_memcg_events+0xc2/0x190
+>>    ? handle_mm_fault+0x1d7/0x2d0
+>>    ? do_user_addr_fault+0x21a/0x690
+>>    ? exc_page_fault+0x7e/0x1a0
+>>    entry_SYSCALL_64_after_hwframe+0x6c/0x74
+>>   RIP: 0033:0x7f44d4031687
+>>   Code: 48 89 fa 4c 89 df e8 58 b3 00 00 8b 93 08 03 00 00 59 5e 48 83 f8 fc 74 1a 5b c3 0f 1f 84 00 00 00 00 00 48 8b 44 24 10 0f 05 <5b> c3 0f 1f 80 00 00 00 00>
+>>   RSP: 002b:00007ffdb4b5f0b0 EFLAGS: 00000202 ORIG_RAX: 0000000000000000
+>>   RAX: ffffffffffffffda RBX: 00007f44d3f9f740 RCX: 00007f44d4031687
+>>   RDX: 0000000000040000 RSI: 00007f44d3f5e000 RDI: 0000000000000003
+>>   RBP: 0000000000040000 R08: 0000000000000000 R09: 0000000000000000
+>>   R10: 0000000000000000 R11: 0000000000000202 R12: 00007f44d3f5e000
+>>   R13: 0000000000000003 R14: 0000000000000000 R15: 0000000000040000
+>>    </TASK>
+>>   Modules linked in: tls tcp_diag inet_diag xt_mark ccm snd_hrtimer snd_seq_dummy snd_seq_midi snd_seq_oss snd_seq_midi_event snd_rawmidi snd_seq snd_seq_device x>
+>>    snd_hda_codec_atihdmi snd_hda_codec_realtek_lib lenovo_wmi_helpers think_lmi snd_hda_codec_generic snd_hda_codec_hdmi snd_soc_core kvm snd_compress uvcvideo sn>
+>>    platform_profile joydev amd_pmc mousedev mac_hid sch_fq_codel uinput i2c_dev parport_pc ppdev lp parport nvme_fabrics loop nfnetlink ip_tables x_tables dm_cryp>
+>>   CR2: 0000000000000000
+>>   ---[ end trace 0000000000000000 ]---
+>>   RIP: 0010:odm_combine_segments_show+0x93/0xf0 [amdgpu]
+>>   Code: 41 83 b8 b0 00 00 00 01 75 6e 48 98 ba a1 ff ff ff 48 c1 e0 0c 48 8d 8c 07 d8 02 00 00 48 85 c9 74 2d 48 8b bc 07 f0 08 00 00 <48> 8b 07 48 8b 80 08 02 00>
+>>   RSP: 0018:ffffd1bf4b953c58 EFLAGS: 00010286
+>>   RAX: 0000000000005000 RBX: ffff8e35976b02d0 RCX: ffff8e3aeed052d8
+>>   RDX: 00000000ffffffa1 RSI: ffff8e35a3120800 RDI: 0000000000000000
+>>   RBP: 0000000000000000 R08: ffff8e3580eb0000 R09: ffff8e35976b02d0
+>>   R10: ffffd1bf4b953c78 R11: 0000000000000000 R12: ffffd1bf4b953d08
+>>   R13: 0000000000040000 R14: 0000000000000001 R15: 0000000000000001
+>>   FS:  00007f44d3f9f740(0000) GS:ffff8e3caa47f000(0000) knlGS:0000000000000000
+>>   CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+>>   CR2: 0000000000000000 CR3: 00000006485c2000 CR4: 0000000000f50ef0
+>>   PKRU: 55555554
+>>
+>> Fix this by checking pipe_ctx->stream_res.tg before dereferencing.
+>>
+>> Fixes: 07926ba8a44f ("drm/amd/display: Add debugfs interface for ODM combine info")
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Rong Zhang <i@rong.moe>
+>> ---
+>>   drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_debugfs.c | 3 ++-
+>>   1 file changed, 2 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_debugfs.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_debugfs.c
+>> index f263e1a4537e1..00dac862b665a 100644
+>> --- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_debugfs.c
+>> +++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_debugfs.c
+>> @@ -1302,7 +1302,8 @@ static int odm_combine_segments_show(struct seq_file *m, void *unused)
+>>   	if (connector->status != connector_status_connected)
+>>   		return -ENODEV;
+>>   
+>> -	if (pipe_ctx != NULL && pipe_ctx->stream_res.tg->funcs->get_odm_combine_segments)
+>> +	if (pipe_ctx && pipe_ctx->stream_res.tg &&
+>> +	    pipe_ctx->stream_res.tg->funcs->get_odm_combine_segments)
+>>   		pipe_ctx->stream_res.tg->funcs->get_odm_combine_segments(pipe_ctx->stream_res.tg, &segments);
+>>   
+>>   	seq_printf(m, "%d\n", segments);
+>>
+>> base-commit: 3a8660878839faadb4f1a6dd72c3179c1df56787
 > 
-> Store the IRQ number in the state struct, as this is a common
-> pattern in other drivers, then use this to determine if we have
-> IRQ support or not.
+> Gentle ping.
+> 
+> Thanks,
+> Rong
 
-I would just assign the returned value of irq to the data field and hence drop
-the '=' in ' <= 0', but I am not going to pursue this. Up to you.
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
 
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+And applied, thanks.
 
