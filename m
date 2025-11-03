@@ -1,141 +1,72 @@
-Return-Path: <stable+bounces-192285-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192286-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43640C2E5F7
-	for <lists+stable@lfdr.de>; Tue, 04 Nov 2025 00:06:04 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1536C2E770
+	for <lists+stable@lfdr.de>; Tue, 04 Nov 2025 00:45:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B2679189068F
-	for <lists+stable@lfdr.de>; Mon,  3 Nov 2025 23:06:28 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 301974F22D5
+	for <lists+stable@lfdr.de>; Mon,  3 Nov 2025 23:44:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D316C2FD1D9;
-	Mon,  3 Nov 2025 23:05:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0339130DD18;
+	Mon,  3 Nov 2025 23:44:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CMiHZA1D"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="arUhlo4T"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A49027B4EE
-	for <stable@vger.kernel.org>; Mon,  3 Nov 2025 23:05:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3D5830BB90;
+	Mon,  3 Nov 2025 23:44:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762211159; cv=none; b=MpEh5octeTMvItZtQpyr0snxjws0cewIqhBLhRbAEw/y3+8xY/yviCTER4Dg8VueaAXTgl6oFK5Gr09lqAAb46xzDmLCqW/vPIYDgIJWIbW0c0sIw6mRuCfrWa/xO63IdKFefuAk9QmYORp0dBkPnRcKQ6opDg+AvKf0bDF8YhM=
+	t=1762213480; cv=none; b=tcxi8+avm/qCBbI+cf/vo+HJoP35ycRpf0luo9ZlY9NDkuOQQBWzD02lLgaJrzkMiutRc2f5nv0eIEnzxawd3af0ly1zfg4e04C+0BkUfoukJYE6hYbzdqIlN42voP91wcZeGniVhDg8WCRISrW2Y3+zdHwaPfWPrzhvVbFZW+o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762211159; c=relaxed/simple;
-	bh=wpVJWBuenZcD3eSVXXuQBdHxyRZUm/ZGGvsoPgMAlCE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=LIvBl3KzkHB2QJ9U4SmhcT5ztzRHgKYcJ9OaR10F3IiGzl8+VGCGxQFK8at5b4dHr9PogiYS267Ho6X60YtMA7SadxIRJV3BMoV3Ms3aY35dT0QOcud6FRwm9bwvu28lHPvP4vC5yxv+RJO81XORHszP7c502N2CLiU0qIAdt48=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CMiHZA1D; arc=none smtp.client-ip=209.85.214.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-28d18e933a9so4791025ad.3
-        for <stable@vger.kernel.org>; Mon, 03 Nov 2025 15:05:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762211157; x=1762815957; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ogon7TK6sOugcfKJJppW+WnECgyNYUKvMApdomYEbKo=;
-        b=CMiHZA1Dx3TONUc1uZHfqLTY7pYjVGhppzjfh99oqjSc5G6TRcS4jMtNzlwmIts3E3
-         y8bFQ8QVMOTvVX/EpzNoQLJ3j64+hwAE4YusSzS3JcnVpcdu1UyJP3H4mRz60h7HjMCQ
-         FR2fpLyws20tNwjfyEDwODyz0t9rhbE8W7Ws/cjVfAfYj3jIlwRwUw+S/yqhijCI6ZQ1
-         7T233cgYC4xnP/sPKtzAmODvFl/bA+tWZnqOjLXrHHkYps3uQl9enlYMv78BNMvig5co
-         iWg2ytYb/XHpX6IIc35vuYCyJOcq22owxU1WEBYOLGUL0nRDqvvHDgtoZ1+WevzBKGUC
-         Q3CQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762211157; x=1762815957;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ogon7TK6sOugcfKJJppW+WnECgyNYUKvMApdomYEbKo=;
-        b=KZWZHVSGjAq/L7dHlDAvax5Rj2KSmPRUWws4PEDOjnRRPZJD2rHZwa7L4jGgQiAstA
-         xm/qYPsMGglZ1gp4tOk7waud5mALsBFiKRQnJYctPn3BA9o7QViBTBbZNH0H1upui/iT
-         aedJKgxcQGzeiqJ7sGoo9s29tmtyo0hyY0U9OJ3go16SkUYr/v/zrsMfVk2y229pssDi
-         HMLm88x8wE0Y85M4c7UQ2BmWvZgY4LqgvYMslM2zUe1DMBXobDpaIKe5P4AnDje0H8yH
-         q/gavJEBk1s1DhBdYi5ZYngpcKGg6GTWW95xaQMUzCBepWKnvc+OWPA8K2F3WV+oVGCO
-         WPog==
-X-Forwarded-Encrypted: i=1; AJvYcCVFoacYlM/u5KmcXLgmP80SAte+fdE/Qp2FZrSg6zgDMKP080z9yd13NCYtIORKUlXnHAUaHF0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyM4u6lYUUlpEUCYenLa1J1slGYu/xaVCsvtTG7SU7Wo5PxTiW9
-	sABGKahyLSVE7bHhpGlGXjryfQwvE9wqAueZ5eEkIk82MuXlWJeju6zlNv9X0eX2v5LO50nIio8
-	BfdKrsGbSNUYzybvO5LSpq1TbpmxmQa06S17d
-X-Gm-Gg: ASbGncsLQanez5+LAP5loeGmioyJIFetUB/SEEYB7/RqVtTwFSdZ2LnnV93Qe/ADnaX
-	WqH5ByBAriE2GkuWOPKpZ8DANMM8xUGCzFiEZRfe4He8811dVarQvYC7NdbWuj4rWNBu284wK92
-	9COjIAEny5/nhw0x3KyziMaCrHciyBth+UaPiM/0wJaDdNwcDbGGympG0tOY2x1QfHAOJyonMMb
-	wxvB7AATLJn5DMep9EKeelGAuLFrc3fpEhGYC0EpAWk6ccpcqwUl1bNVZuxW3+E0XhPgsfFJzd3
-	bN3l9gik70wEaWfM7/fL4MhSdBfIW6Q7U8MbnqPBfkaS9j/Zn9WcQigE6BX0KXSikSGy0Nqt8HW
-	HjOlp7PecTKzr1w==
-X-Google-Smtp-Source: AGHT+IHugv4iFaTOCN4EOCjTVF2FfjlZWUSHrrn/GBxoYhXzdeo7YpUX0U5SRp9TWEaFsHczNUaXZUgkuqVdFch+J/I=
-X-Received: by 2002:a17:903:187:b0:290:ad79:c617 with SMTP id
- d9443c01a7336-2951a380699mr111057345ad.1.1762211157387; Mon, 03 Nov 2025
- 15:05:57 -0800 (PST)
+	s=arc-20240116; t=1762213480; c=relaxed/simple;
+	bh=51ZuLqa9vgyNyF8Hwj/WsY0DqAHS9YKk1MRGYf4BaQE=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=d/5ltBZRVfL+h5fz36ATLSv8xM15OofV2+yNO6BFYSfBxk0uSu+hEqQmxPJvbOvtAiPWAD44Fq4Ilgc9r5ZxoN4sUtVyQEFLAOM2yGaN5wtm3j9Gw96CJatD7InDFkiOK7h/tUkKzT6UlJWyqdOPNCgOu4rMP54Y0Lz0chfjnRk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=arUhlo4T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8D4DC116B1;
+	Mon,  3 Nov 2025 23:44:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762213480;
+	bh=51ZuLqa9vgyNyF8Hwj/WsY0DqAHS9YKk1MRGYf4BaQE=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=arUhlo4TMHF4gzRUEw//blsavMXXIDWpdr0u9EFsI7EnUAvVMrjixCKALg/UCc4Yp
+	 ojW6teEglrQ0PAzUKgUS0p2qIokbKAl5lEPlhM7AZ8PpB4tlNkQRwTPkUDylhsqabC
+	 +xEuY2XHCGdQ0/Z+dU5hqttiQsjK6FYcxsDTL7DuAn9zQidfmNRYQtQ1MJ4yisZ7R6
+	 ATm9rQo1fbvfcTvvUpuFg218s0Akfr0w5cF5wjhmN0G+ZHUoR0htY40M+5GeT/AxcT
+	 1n/3K95ZWLbBffYBPYjavL6P1/zw524xCOzT45eYASd4nCJBUf+RUkHw++KFiIqjnm
+	 V2OuKjiRw1FAQ==
+Date: Mon, 3 Nov 2025 15:44:39 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
+Cc: netdev@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v3 RESEND] net/dccp: validate Reset/Close/CloseReq in
+ DCCP_REQUESTING
+Message-ID: <20251103154439.58c3664c@kernel.org>
+In-Reply-To: <20251103021557.4020515-1-zhaoyz24@mails.tsinghua.edu.cn>
+References: <20251102155428.4186946a@kernel.org>
+	<20251103021557.4020515-1-zhaoyz24@mails.tsinghua.edu.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251102212853.1505384-1-ojeda@kernel.org>
-In-Reply-To: <20251102212853.1505384-1-ojeda@kernel.org>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 4 Nov 2025 00:05:45 +0100
-X-Gm-Features: AWmQ_bkuLE73e6Hn0H_oMw4VNuro5lNa0qxJ-qywqWQaWYuKfzn120mRL3CMPr4
-Message-ID: <CANiq72=0JJz5XDHGpiyQBd9AmPCr4veJ=2oJywyyqQB8iMxqvA@mail.gmail.com>
-Subject: Re: [PATCH 1/2] rust: kbuild: treat `build_error` and `rustdoc` as
- kernel objects
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Alex Gaynor <alex.gaynor@gmail.com>, Nathan Chancellor <nathan@kernel.org>, 
-	Nicolas Schier <nicolas@fjasle.eu>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	patches@lists.linux.dev, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Sun, Nov 2, 2025 at 10:30=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wro=
-te:
->
-> Even if normally `build_error` isn't a kernel object, it should still
-> be treated as such so that we pass the same flags. Similarly, `rustdoc`
-> targets are never kernel objects, but we need to treat them as such.
->
-> Otherwise, starting with Rust 1.91.0 (released 2025-10-30), `rustc`
-> will complain about missing sanitizer flags since `-Zsanitizer` is a
-> target modifier too [1]:
->
->     error: mixing `-Zsanitizer` will cause an ABI mismatch in crate `buil=
-d_error`
->      --> rust/build_error.rs:3:1
->       |
->     3 | //! Build-time error.
->       | ^
->       |
->       =3D help: the `-Zsanitizer` flag modifies the ABI so Rust crates co=
-mpiled with different values of this flag cannot be used together safely
->       =3D note: unset `-Zsanitizer` in this crate is incompatible with `-=
-Zsanitizer=3Dkernel-address` in dependency `core`
->       =3D help: set `-Zsanitizer=3Dkernel-address` in this crate or unset=
- `-Zsanitizer` in `core`
->       =3D help: if you are sure this will not cause problems, you may use=
- `-Cunsafe-allow-abi-mismatch=3Dsanitizer` to silence this error
->
-> Thus explicitly mark them as kernel objects.
->
-> Cc: stable@vger.kernel.org # Needed in 6.12.y and later (Rust is pinned i=
-n older LTSs).
-> Link: https://github.com/rust-lang/rust/pull/138736 [1]
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+On Mon,  3 Nov 2025 10:15:57 +0800 Yizhou Zhao wrote:
+> Following your instruction, we read the documentation at https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html.
+> We found that the stable documentation normally requires an upstream
+> commit before inclusion in stable, but here an upstream commit cannot
+> exist because the subsystem was removed. Could you please confirm
+> that this can proceed as a stable-only fix for the affected LTS
+> branches?
 
-Applied series to `rust-fixes` -- thanks everyone!
-
-I will send another less urgent one for 1.92.0 (in beta now) that goes
-on top of these here.
-
-Cheers,
-Miguel
+Yes.
 
