@@ -1,88 +1,105 @@
-Return-Path: <stable+bounces-192138-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192139-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45BBBC29D91
-	for <lists+stable@lfdr.de>; Mon, 03 Nov 2025 03:16:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D3C0CC29D98
+	for <lists+stable@lfdr.de>; Mon, 03 Nov 2025 03:20:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F2E473AF925
-	for <lists+stable@lfdr.de>; Mon,  3 Nov 2025 02:16:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8D90F3AFA10
+	for <lists+stable@lfdr.de>; Mon,  3 Nov 2025 02:20:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5EF4184524;
-	Mon,  3 Nov 2025 02:16:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A70127587E;
+	Mon,  3 Nov 2025 02:20:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.b="ZOwvOI38"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GkprWU6z"
 X-Original-To: stable@vger.kernel.org
-Received: from zg8tmty1ljiyny4xntuumtyw.icoremail.net (zg8tmty1ljiyny4xntuumtyw.icoremail.net [165.227.155.160])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A88834D3B9;
-	Mon,  3 Nov 2025 02:16:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=165.227.155.160
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4416184524;
+	Mon,  3 Nov 2025 02:20:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762136185; cv=none; b=LM4hpH+GuRU3Jx3o7qk5aszxAKkroh+ye3yu8PpQUrcmZ3+t+nLwDLDARkNO1O1F57Eq70oAmb1Q5mj+YJU9bQd7MJ1G5PMc0XWFGghIDhfBAQ7JHx6+aPMkPmvfKQqnY4rj8VwG7m/3QHEa2DyyXYtPSN04fyyS9sZOHTRRWNE=
+	t=1762136449; cv=none; b=nd07IyVs6AFi97lMrF1qV5ZoTwhauL83k1I6I2gUi5/KwCmQVwKpYMsoAzAQ5LcSI1jZ/a5uaDYkrWsNnddOV1iKJCBVqcHsU4C3NlCN4mHc2NQem5Imn8st6cJbSd721RxaNluKb+M8r5f3e8llt2n+SaItlQGdYDN2z/fy300=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762136185; c=relaxed/simple;
-	bh=jhAc50RPWxxad6/xGj3VVJBYsKiD2laQODvlx5EXyfI=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=cCNsuzti4tKpOPEs6+lCH2OcpO9nPaTwJUcjpb0AwVavzDWtRarrEmP0ULzvglGz2KqYej3fcZvcrUIGYujeElbxajTaqO71ex6Zpr0WHvrKAuDL+03iEVqv+9jwv/6+KbLPvHWkz6RNzu1KiWUbW+265r/KuMIeNw21XUzrIOc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mails.tsinghua.edu.cn; spf=pass smtp.mailfrom=mails.tsinghua.edu.cn; dkim=pass (1024-bit key) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.b=ZOwvOI38; arc=none smtp.client-ip=165.227.155.160
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mails.tsinghua.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mails.tsinghua.edu.cn
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=mails.tsinghua.edu.cn; s=dkim; h=Received:From:To:Cc:Subject:
-	Date:Message-Id:In-Reply-To:References:MIME-Version:
-	Content-Transfer-Encoding; bh=kN1As4jsX+zsXSOddNqaULOIpOsS+8lXlV
-	TZIXB8bjA=; b=ZOwvOI38FsFiF+PovGogtnzyizPq31voKWv0kufCUZItrutEwd
-	hWDw8Gs5RttFH2ILTIPSjM+JRnFtUzKQXgAeMWDiy16sGpepGYJvbtTFYWZkVlEh
-	tzq9ZyJw5CpMGlsDihQTYseHVHPT2K3TUD5VLSnKMhroVLNp6cq6/vXg4=
-Received: from estar-Super-Server.. (unknown [103.233.162.254])
-	by web4 (Coremail) with SMTP id ywQGZQDH9aNdEAhp5M6tBQ--.26864S2;
-	Mon, 03 Nov 2025 10:16:10 +0800 (CST)
-From: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
-To: kuba@kernel.org
-Cc: netdev@vger.kernel.org,
-	stable@vger.kernel.org,
-	zhaoyz24@mails.tsinghua.edu.cn
-Subject: Re: Re: [PATCH v3 RESEND] net/dccp: validate Reset/Close/CloseReq in DCCP_REQUESTING
-Date: Mon,  3 Nov 2025 10:15:57 +0800
-Message-Id: <20251103021557.4020515-1-zhaoyz24@mails.tsinghua.edu.cn>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20251102155428.4186946a@kernel.org>
-References: <20251102155428.4186946a@kernel.org>
+	s=arc-20240116; t=1762136449; c=relaxed/simple;
+	bh=H9ejpGuiydKsVCBiNNFXQ10EpvTe+9KqNORn+4PKpMU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cTZauljf/K9O6mocqEhtFmIBEhIpmRdqZQ+JBLNc9zjjm3j1wzh/mfUPxQxYWoIlbVNsDeTbl9cZePJ+XlPByEiTS47QxOexIFDGGZgTtgxkbSiGZqO1YQDotoZTrJfoXV+QrL38hCqgd8ybBVT2Ryh8iSNfOcmTwbAyBjvO95M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GkprWU6z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCC22C4CEF7;
+	Mon,  3 Nov 2025 02:20:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762136449;
+	bh=H9ejpGuiydKsVCBiNNFXQ10EpvTe+9KqNORn+4PKpMU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=GkprWU6zM8wfBITJqRsFeWJnjZEASCUZUERIrA5KYQ0CqG6eAwUcYpyeU8mYPVuJ/
+	 IgvkTzBnG8kIkIdLAOO2urhfpk9JWVa5g9zba5LipVIC8dt4YypOkR0GJuzjx8RQVr
+	 syGGvl3jC3SNw4XEIsi33gbfpS5NQe+p47AzweS7Ta0XNqmFm5XnNOJ583EPmVSnwG
+	 TpBSnd7oaA9Lya/uxvU7ABHaCHEoSo78xRjR7pPYO9eTFmkNamQw3+iRIIPlK25acd
+	 yLtNSF5VUbVOoOpzUnMNayf3FrggEFjQnuqXmyMfy/q0UCRmk6+AjBGxNaZAkaRhXQ
+	 BE+aMMeQiSiLw==
+Date: Sun, 2 Nov 2025 21:20:44 -0500
+From: Nathan Chancellor <nathan@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Ben Hutchings <ben@decadent.org.uk>, stable@vger.kernel.org,
+	patches@lists.linux.dev, "Jason A. Donenfeld" <Jason@zx2c4.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Eric Biggers <ebiggers@google.com>
+Subject: Re: [PATCH 5.10 171/332] lib/crypto/curve25519-hacl64: Disable KASAN
+ with clang-17 and older
+Message-ID: <20251103022044.GA2193668@ax162>
+References: <20251027183524.611456697@linuxfoundation.org>
+ <20251027183529.142271445@linuxfoundation.org>
+ <67ef17680d4e107847c688f9bb7fa45f4e6b51a3.camel@decadent.org.uk>
+ <2025110304-footbath-unearned-6bfb@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:ywQGZQDH9aNdEAhp5M6tBQ--.26864S2
-X-Coremail-Antispam: 1UD129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UjIYCTnIWjp_UUUY-7AC8VAFwI0_Jr0_Gr1l1xkIjI8I6I8E
-	6xAIw20EY4v20xvaj40_Wr0E3s1l1IIY67AEw4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28Cjx
-	kF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVWDJVCq3wA2z4x0Y4vE2Ix0cI8I
-	cVCY1x0267AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z2
-	80aVCY1x0267AKxVW0oVCq3wAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY
-	62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7V
-	C2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0
-	x7Aq67IIx4CEVc8vx2IErcIFxwCY02Avz4vE14v_Gr1l42xK82IYc2Ij64vIr41l4I8I3I
-	0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWU
-	GVWUWwC2zVAF1VAY17CE14v26r126r1DMIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI
-	0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0
-	rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r1j6r
-	4UYxBIdaVFxhVjvjDU0xZFpf9x0JUDgA7UUUUU=
-X-CM-SenderInfo: 52kd05r2suqzpdlo2hxwvl0wxkxdhvlgxou0/1tbiAgEPAWkHO2TRPgAAsT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2025110304-footbath-unearned-6bfb@gregkh>
 
-Dear Jakub,
+On Mon, Nov 03, 2025 at 10:42:14AM +0900, Greg Kroah-Hartman wrote:
+> On Fri, Oct 31, 2025 at 08:47:23PM +0100, Ben Hutchings wrote:
+> > On Mon, 2025-10-27 at 19:33 +0100, Greg Kroah-Hartman wrote:
+> > > 5.10-stable review patch.  If anyone has any objections, please let me know.
+> > > 
+> > > ------------------
+> > > 
+> > > From: Nathan Chancellor <nathan@kernel.org>
+> > > 
+> > > commit 2f13daee2a72bb962f5fd356c3a263a6f16da965 upstream.
+> > [...]
+> > > --- a/lib/crypto/Makefile
+> > > +++ b/lib/crypto/Makefile
+> > > @@ -22,6 +22,10 @@ obj-$(CONFIG_CRYPTO_LIB_CURVE25519_GENER
+> > >  libcurve25519-generic-y				:= curve25519-fiat32.o
+> > >  libcurve25519-generic-$(CONFIG_ARCH_SUPPORTS_INT128)	:= curve25519-hacl64.o
+> > >  libcurve25519-generic-y				+= curve25519-generic.o
+> > > +# clang versions prior to 18 may blow out the stack with KASAN
+> > > +ifeq ($(call clang-min-version, 180000),)
+> > [...]
+> > 
+> > The clang-min-version macro isn't defined in 5.10 or 5.15, so this test
+> > doesn't work as intended.
+> 
+> So should I revert it?
 
-Following your instruction, we read the documentation at https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html.
-We found that the stable documentation normally requires an upstream commit before inclusion in stable, but here an upstream commit 
-cannot exist because the subsystem was removed. Could you please confirm that this can proceed as a stable-only fix for the affected LTS branches?
+No, we should backport clang-min-version and friends because these
+macros may be used in future backports. It should not be too hard. I can
+work on that tomorrow.
 
-Thanks for your guidance on the correct path here.
+Additionally, now that I am looking at this change again, this disables
+KASAN for this file with GCC because clang-min-version will always
+evaluate to nothing for GCC. I'll send a fix for this upstream then it
+can be backported later.
 
-Yours Sincerely,
-Yizhou Zhao
-
+Cheers,
+Nathan
 
