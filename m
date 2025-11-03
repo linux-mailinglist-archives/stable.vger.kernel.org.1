@@ -1,117 +1,142 @@
-Return-Path: <stable+bounces-192177-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192179-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72BC4C2B0BA
-	for <lists+stable@lfdr.de>; Mon, 03 Nov 2025 11:29:10 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5435C2B110
+	for <lists+stable@lfdr.de>; Mon, 03 Nov 2025 11:31:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C6A504F2295
-	for <lists+stable@lfdr.de>; Mon,  3 Nov 2025 10:27:34 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B52704EFA56
+	for <lists+stable@lfdr.de>; Mon,  3 Nov 2025 10:30:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45D692FD7DA;
-	Mon,  3 Nov 2025 10:27:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA3482FDC4B;
+	Mon,  3 Nov 2025 10:30:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="t3psV4M8"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dIRx212w"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A20AF2FDC24
-	for <stable@vger.kernel.org>; Mon,  3 Nov 2025 10:27:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11EA82FBDFD
+	for <stable@vger.kernel.org>; Mon,  3 Nov 2025 10:30:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762165651; cv=none; b=DSOF3WELLYb6vG5qlk28TJXvZ+AAAdx/2onyI5y91rlOQXSgK845+erN3u/N5DbnD8ICBFSmPpCamPnJqJWTfbXRr3kt7LqLJr5m80Vr0ImkH9xK/25CBis4+zvYkil086/AjOun7hh7Xp/Bk/g9WF82nlgyY5/7VuY2dsqGOj8=
+	t=1762165804; cv=none; b=scIj7fCkckk3ct7MWjMZoPma22TEedPyrNKQyNZ88Z7DkaauSFgpMr3TM9VoVY9P2LLdlXnZpU0TMEERP4QW255iQhAXbguSKvnGpDOS6rN6QOTpVK/l9lj0oUzJ9Kb758+rAMrALGkwmAdxXPPn3zDGdGqM6nkR5kRXQvvCQAw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762165651; c=relaxed/simple;
-	bh=7d+yejdsrlH3QQoIfQu3T9oGfryOAb9jPCpBbY/QV74=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=kpzvR6E5P3Ay7gofa/0Iu51wJjRq9aJivBkOmSLD4YY8mg6fcysrcg0G7IsOZHyaM9ZZuq5gJudVo1vbmY8qWZC3xeIy1hsfMD2jCTm6Vwm6xlJ0+reu4foOFsaFP5Nk57MekX+TvRnTCRYvu0k1pW0BATAhO0ZBAj4rs18PwHQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=t3psV4M8; arc=none smtp.client-ip=209.85.128.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-471001b980eso28559065e9.1
-        for <stable@vger.kernel.org>; Mon, 03 Nov 2025 02:27:29 -0800 (PST)
+	s=arc-20240116; t=1762165804; c=relaxed/simple;
+	bh=k9/nI+h5bOtp7UwnkH+5NqaeML64f2gcGu3Wmd92Oi4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=E7+yl8Ey2MQ9W8RjQCzroGMi39emehDsvRzr63//BgeX47A7Mcx1UGmBgCErYZlOzquFILLv/eHpgpwciUScqkXuS0Z0cxxiwXaQbv8F+BAD8bPbPo/3PrGj4AXVuFYP3Cr9v2BkmJDyopxBdfJqO81QUm0mgr1NPTtBljYQ4cM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dIRx212w; arc=none smtp.client-ip=209.85.218.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-b6d3effe106so645971166b.2
+        for <stable@vger.kernel.org>; Mon, 03 Nov 2025 02:30:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1762165647; x=1762770447; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=4JHB89kHBneKoONN1Bve8Z56wcJWNGQNkd4dI7+uRh8=;
-        b=t3psV4M8sBiC5wL0AKipN6A3IrlFy0APywoz2aiucWz2VlZzGGW62hvg1om5xxf1Fd
-         jkpcPT+k36GmhFs5gVUIHAS+fIGtZK5uYYAt3Hm3ZiIN7a1wBNICHYAu7+0zsAWcFpbQ
-         H+rkZLZMdKms592MzVJbfytz/8YOK65QQK6XBDrKDxBgdR8nEYA2ZMV2cPEQ90hL7OBt
-         QRcPM2LKD9SIiD3hiaoD1uyOwe5f2+kLhk0bczMPORe8pWHX6/nQ1qC517fFB1jr2ipz
-         vfCJzyilaeUPK4zXEc5S7pld8HT/FBKVhFd7tmU25nC2f/MdR1JPDBzTUBlHTJfQIf9J
-         7o9g==
+        d=gmail.com; s=20230601; t=1762165801; x=1762770601; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7uol8SK9zB104eiF162tGqib2QMloTOnkfiMZtp2mug=;
+        b=dIRx212wX8G9uDTFtJ8QqC/z5IaT3YlQsMmHA1l8TxuLrtBaU8lsMr0GRV7esYTxrd
+         1W73IJ9FiYOzPVPDVSm7dzI2LXHCCCfoYKV7pbKltUet/P/ScG34YkBgPyIhsXvxKmZN
+         r4FTAWmcGFiSX4jmqbDGxdSkffEgK+ALCZ5pxK9kPzDjC+A25SZ1ywUk5Xoz02SAENdi
+         fcakJaouU9j2h8+3oWE35HumyxMejkg6x/yNqe5UNpc/K4lMUUQ2UxvZKVI+Yb4MlXOt
+         NPGOxuKtneOWEO5b8RN8VkY/6Tv30Ht1d4RJggnXFiNSLb5/XKEDmOuwYrQAi/aW8CZu
+         Ygnw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762165647; x=1762770447;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=4JHB89kHBneKoONN1Bve8Z56wcJWNGQNkd4dI7+uRh8=;
-        b=WtURgl0/P0nAfoNoTrp03GtjBCetJdhtL3Qcu5tI5sc5BR76/m3Z5FonzJU9aESeUg
-         bCNppvbyW34gZGIbNYsQzFoLVhLD0hyupOA+24H6u/lHv+ZYE3bY6tUBv28wEw06+C0A
-         Tx1Ij8GO1KN99iUA8xJCPH4o+QZhDJbCw2c2Yh2Z1sbCiEFAl8bsc/O2eKqvOfZJQaKT
-         FX72OOVBWrQJ/7BXf7ApsyHTB/bodvSgxRMDZZMB9mMTX5qPyq6spV51jWWGHzLffdl3
-         ALXN++cZA9PTXCbuV58qAxTpWYd9wcptlzwIHQj1gLrRspbJWae0EcBFvbkFhnrfWG0w
-         /FyA==
-X-Forwarded-Encrypted: i=1; AJvYcCUZBOAXeGmBbZS7D4T3KG432nbmaMokgcD59hoJdV8eJSzVh6Vsl0z6rN1xBwC+Ib+yZAeq26Q=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxhiE+l3kVG3C35rnmv+coORZIwpL76XjN2/7vTcZFI8kNz7P0g
-	pZj16GJZw5FLKqD4Tuhf/Ay0M8B4ISToJ0A8X7+WoYeEsUljs1Iu1IoilLD6YUYuwZ4pu+M2aWB
-	87LJyOdOXf128myr/Qw==
-X-Google-Smtp-Source: AGHT+IEOG3seXsKMf1FLja+ssKrdPSGK1FgK6Bcd/d5/Kurpa+pvamoJuJNwVwnI8+e1f24CsMe+Xpt2EsZzMZQ=
-X-Received: from wmlf12.prod.google.com ([2002:a7b:c8cc:0:b0:477:d21:4a92])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:538e:b0:46e:33b2:c8da with SMTP id 5b1f17b1804b1-47730890e99mr120076125e9.32.1762165647584;
- Mon, 03 Nov 2025 02:27:27 -0800 (PST)
-Date: Mon, 3 Nov 2025 10:27:26 +0000
-In-Reply-To: <20251102212853.1505384-1-ojeda@kernel.org>
+        d=1e100.net; s=20230601; t=1762165801; x=1762770601;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=7uol8SK9zB104eiF162tGqib2QMloTOnkfiMZtp2mug=;
+        b=POPgx+/ifbq49iOMetW6jxWdkj4TFjj+nunhkRJ5EkAa3M8vanYSVWjj6yM0wmWzed
+         V3tuU6F13a/kyUzdgcH139S+Ha7VLFv7D50TJqY2oLtEu2Y+YUuqhC6uoTjnkz5Umx3E
+         CNoWvck9XLlLDKZi4nJJefFR0oiDzGnhXwT1GfwDU0KSj3PoXpElPoIrSgW4YmLUnZWX
+         YxKriNmHnzU7ZyjVs6QhwaUplyM5DY3ETiNEfV+HARp+SGDjWyB/laLF7gPdlVeVS9C/
+         jg8PjWcaIUfqNK86ZlxAxJlkWGtW8SMTP5QfKas5tRYUixFJ1opxYLq15uw4kbfeh6nQ
+         HG9g==
+X-Gm-Message-State: AOJu0Yx0IoHKr3voZN/BXHvBKDWIqWunsrWZ7eFBFmRkQ7Sb2G+nzo7P
+	jOiMu/FFshsYhvmm1kYcC4jlu38bBypsN4LjkBIoCcVGNxszD2VBe14K
+X-Gm-Gg: ASbGncuxEiYrkr8wWQhpLKmo32P/6KlQTRjQyJ6V5bRrbXsEhfog+Mj2WxUqTnV2IlI
+	ItUVTxsGiIqFrSjWdkHss6XQ4NDir1sHoijTD8VDcVZeURs7r3731Ex1ZgVLjwbqPYzIA+nLRW1
+	EXL2yZHUK6JfihVHJ0FHno/0xa/VnPVULiHpkC5XnDf5OeV3hif87SoXOlfQGJyQmKXchIiiGt5
+	KM2yG88yHzo+Y0+nDB8V+ikrmveAXBwVTRdAVlCmCUnAjsz3IpvCPW+F29FGkSNJ+Zxrdztaj98
+	ZvEEd+wkZa3HBx7p8MAs0pD42z5OmoZd9DgjNmT9ps7xySCi/Q90cKCamTqZ/zYTPFFkQ9iV9Y4
+	dOZlIYVBgyrS6U/Qb+yoFplY8eHS9JhD9dBX8zDWkHXKKi7fOdczwRyElBhCzgYxiGbt3ewjhLW
+	ixwVdYkzt/MJEt8wE/Riqu2Chc5h989xNP
+X-Google-Smtp-Source: AGHT+IFzeqw0ZeFTmoI7Ikvy2aB+JcBqMNqP5GohkKyfHRJfwjd2EG3S5q7dA3xFkhtZeKZ3AHM9dA==
+X-Received: by 2002:a17:907:7252:b0:b6d:2682:8306 with SMTP id a640c23a62f3a-b7070198c2dmr1296081666b.23.1762165800923;
+        Mon, 03 Nov 2025 02:30:00 -0800 (PST)
+Received: from EPUAKYIW02F7.. (pool185-5-253-81.as6723.net. [185.5.253.81])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b7077975d77sm1005193966b.9.2025.11.03.02.30.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 03 Nov 2025 02:30:00 -0800 (PST)
+From: Mykola Kvach <xakep.amatop@gmail.com>
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Johan Jonker <jbx6244@gmail.com>,
+	Michael Riesch <michael.riesch@collabora.com>,
+	=?UTF-8?q?Ond=C5=99ej=20Jirman?= <megi@xff.cz>,
+	Muhammed Efe Cetin <efectn@6tel.net>,
+	devicetree@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-rockchip@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org
+Subject: [PATCH v3] arm64: dts: rockchip: orangepi-5: fix PCIe 3.3V regulator voltage
+Date: Mon,  3 Nov 2025 12:27:40 +0200
+Message-ID: <cf6e08dfdfbf1c540685d12388baab1326f95d2c.1762165324.git.xakep.amatop@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <9232ae8cc8e7eb4f986734c8820f44b7989b9dae.1762161839.git.xakep.amatop@gmail.com>
+References: <9232ae8cc8e7eb4f986734c8820f44b7989b9dae.1762161839.git.xakep.amatop@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20251102212853.1505384-1-ojeda@kernel.org>
-Message-ID: <aQiDjuHK0qpgmj1J@google.com>
-Subject: Re: [PATCH 1/2] rust: kbuild: treat `build_error` and `rustdoc` as
- kernel objects
-From: Alice Ryhl <aliceryhl@google.com>
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Alex Gaynor <alex.gaynor@gmail.com>, Nathan Chancellor <nathan@kernel.org>, 
-	Nicolas Schier <nicolas@fjasle.eu>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	patches@lists.linux.dev, stable@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Sun, Nov 02, 2025 at 10:28:52PM +0100, Miguel Ojeda wrote:
-> Even if normally `build_error` isn't a kernel object, it should still
-> be treated as such so that we pass the same flags. Similarly, `rustdoc`
-> targets are never kernel objects, but we need to treat them as such.
-> 
-> Otherwise, starting with Rust 1.91.0 (released 2025-10-30), `rustc`
-> will complain about missing sanitizer flags since `-Zsanitizer` is a
-> target modifier too [1]:
-> 
->     error: mixing `-Zsanitizer` will cause an ABI mismatch in crate `build_error`
->      --> rust/build_error.rs:3:1
->       |
->     3 | //! Build-time error.
->       | ^
->       |
->       = help: the `-Zsanitizer` flag modifies the ABI so Rust crates compiled with different values of this flag cannot be used together safely
->       = note: unset `-Zsanitizer` in this crate is incompatible with `-Zsanitizer=kernel-address` in dependency `core`
->       = help: set `-Zsanitizer=kernel-address` in this crate or unset `-Zsanitizer` in `core`
->       = help: if you are sure this will not cause problems, you may use `-Cunsafe-allow-abi-mismatch=sanitizer` to silence this error
-> 
-> Thus explicitly mark them as kernel objects.
-> 
-> Cc: stable@vger.kernel.org # Needed in 6.12.y and later (Rust is pinned in older LTSs).
-> Link: https://github.com/rust-lang/rust/pull/138736 [1]
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+The vcc3v3_pcie20 fixed regulator powers the PCIe device-side 3.3V rail
+for pcie2x1l2 via vpcie3v3-supply. The DTS mistakenly set its
+regulator-min/max-microvolt to 1800000 (1.8 V). Correct both to 3300000
+(3.3 V) to match the rail name, the PCIe/M.2 power requirement, and the
+actual hardware wiring on Orange Pi 5.
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Fixes: b6bc755d806e ("arm64: dts: rockchip: Add Orange Pi 5")
+Cc: stable@vger.kernel.org
+Signed-off-by: Mykola Kvach <xakep.amatop@gmail.com>
+Reviewed-by: Michael Riesch <michael.riesch@collabora.com>
+---
+Changes in v3:
+- add "Cc: stable@vger.kernel.org" to commit message.
+
+Changes in v2:
+- add Fixes tag and Cc stable list as requested during review.
+---
+ arch/arm64/boot/dts/rockchip/rk3588s-orangepi-5.dts | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/arch/arm64/boot/dts/rockchip/rk3588s-orangepi-5.dts b/arch/arm64/boot/dts/rockchip/rk3588s-orangepi-5.dts
+index ad6d04793b0a..83b9b6645a1e 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3588s-orangepi-5.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3588s-orangepi-5.dts
+@@ -14,8 +14,8 @@ vcc3v3_pcie20: regulator-vcc3v3-pcie20 {
+ 		gpios = <&gpio0 RK_PC5 GPIO_ACTIVE_HIGH>;
+ 		regulator-name = "vcc3v3_pcie20";
+ 		regulator-boot-on;
+-		regulator-min-microvolt = <1800000>;
+-		regulator-max-microvolt = <1800000>;
++		regulator-min-microvolt = <3300000>;
++		regulator-max-microvolt = <3300000>;
+ 		startup-delay-us = <50000>;
+ 		vin-supply = <&vcc5v0_sys>;
+ 	};
+--
+2.43.0
+
 
