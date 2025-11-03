@@ -1,105 +1,118 @@
-Return-Path: <stable+bounces-192139-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192140-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3C0CC29D98
-	for <lists+stable@lfdr.de>; Mon, 03 Nov 2025 03:20:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DBC7FC29DB0
+	for <lists+stable@lfdr.de>; Mon, 03 Nov 2025 03:24:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8D90F3AFA10
-	for <lists+stable@lfdr.de>; Mon,  3 Nov 2025 02:20:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8CE2B3A868E
+	for <lists+stable@lfdr.de>; Mon,  3 Nov 2025 02:24:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A70127587E;
-	Mon,  3 Nov 2025 02:20:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 159F1275AF0;
+	Mon,  3 Nov 2025 02:24:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GkprWU6z"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Sb+71v03"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4416184524;
-	Mon,  3 Nov 2025 02:20:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6CDA158DA3
+	for <stable@vger.kernel.org>; Mon,  3 Nov 2025 02:24:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762136449; cv=none; b=nd07IyVs6AFi97lMrF1qV5ZoTwhauL83k1I6I2gUi5/KwCmQVwKpYMsoAzAQ5LcSI1jZ/a5uaDYkrWsNnddOV1iKJCBVqcHsU4C3NlCN4mHc2NQem5Imn8st6cJbSd721RxaNluKb+M8r5f3e8llt2n+SaItlQGdYDN2z/fy300=
+	t=1762136659; cv=none; b=P4zUSv7sjUyzw4VDr2r9iFcIc+xjRG6EOhoO/u6KuNN4cqY3oAAWK3RVH1b6d1LVv6j1nG2QMQ5hEr9h7sH1qIP9keT474EPK0Lk6FnElg6JF4i5jejsuTF0X1l5chhJlOUqs9htDJCoxyaWfu+U/PGrEY51HT/36y3R8sT8eCg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762136449; c=relaxed/simple;
-	bh=H9ejpGuiydKsVCBiNNFXQ10EpvTe+9KqNORn+4PKpMU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cTZauljf/K9O6mocqEhtFmIBEhIpmRdqZQ+JBLNc9zjjm3j1wzh/mfUPxQxYWoIlbVNsDeTbl9cZePJ+XlPByEiTS47QxOexIFDGGZgTtgxkbSiGZqO1YQDotoZTrJfoXV+QrL38hCqgd8ybBVT2Ryh8iSNfOcmTwbAyBjvO95M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GkprWU6z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCC22C4CEF7;
-	Mon,  3 Nov 2025 02:20:47 +0000 (UTC)
+	s=arc-20240116; t=1762136659; c=relaxed/simple;
+	bh=sltqD2LFdtOkhPCcT1gNgvAf0lpL61tksWbVG+DTotc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=hz0gtZFGGAaI59vH2rZdUJ98PSoMUM743U5sb5kp3drCYHFnLWbqNTeaJF0qWHm9npgj0HLAKxVDHeL96m2nhd4kYjJX/BGRN6lCFYoESB3wqhsHXRKgN1c4F96Ev3ztWpEriepLHMLBbjPt0tidMx+pigqFkAFHIsgj7U0GtRY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Sb+71v03; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 761AFC4CEF7;
+	Mon,  3 Nov 2025 02:24:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762136449;
-	bh=H9ejpGuiydKsVCBiNNFXQ10EpvTe+9KqNORn+4PKpMU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=GkprWU6zM8wfBITJqRsFeWJnjZEASCUZUERIrA5KYQ0CqG6eAwUcYpyeU8mYPVuJ/
-	 IgvkTzBnG8kIkIdLAOO2urhfpk9JWVa5g9zba5LipVIC8dt4YypOkR0GJuzjx8RQVr
-	 syGGvl3jC3SNw4XEIsi33gbfpS5NQe+p47AzweS7Ta0XNqmFm5XnNOJ583EPmVSnwG
-	 TpBSnd7oaA9Lya/uxvU7ABHaCHEoSo78xRjR7pPYO9eTFmkNamQw3+iRIIPlK25acd
-	 yLtNSF5VUbVOoOpzUnMNayf3FrggEFjQnuqXmyMfy/q0UCRmk6+AjBGxNaZAkaRhXQ
-	 BE+aMMeQiSiLw==
-Date: Sun, 2 Nov 2025 21:20:44 -0500
-From: Nathan Chancellor <nathan@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Ben Hutchings <ben@decadent.org.uk>, stable@vger.kernel.org,
-	patches@lists.linux.dev, "Jason A. Donenfeld" <Jason@zx2c4.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Eric Biggers <ebiggers@google.com>
-Subject: Re: [PATCH 5.10 171/332] lib/crypto/curve25519-hacl64: Disable KASAN
- with clang-17 and older
-Message-ID: <20251103022044.GA2193668@ax162>
-References: <20251027183524.611456697@linuxfoundation.org>
- <20251027183529.142271445@linuxfoundation.org>
- <67ef17680d4e107847c688f9bb7fa45f4e6b51a3.camel@decadent.org.uk>
- <2025110304-footbath-unearned-6bfb@gregkh>
+	s=k20201202; t=1762136659;
+	bh=sltqD2LFdtOkhPCcT1gNgvAf0lpL61tksWbVG+DTotc=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Sb+71v03tE/NWr+QRTvIho0Q6esYsqL5zGzE2loAuFQBNCGf8+me1GX2cAVOS2un8
+	 iCdf/dehSsRnLdNbdI7yeZw8zS/oS7nxSgIL2V0KdQC2H9Q+gNjGtO1yxIiHkGTUOz
+	 gc+/3uXhXus5U/WGm/xxDLBMNAT9BWOZBb1HeJznLVD0g+wjumx4j4rJFCOK5gCi3P
+	 fUgnYujLWc3Qv1OboEQR7N0Rbro96OoZCTaKZ3odpRMIjmyo0A+0trBVBmgZBqZmys
+	 MBWJFNiFx0Glk+RFvHrKLeGwTuCWVbqx1wFYS6aYskiQ6sE1PjkjcNwvmUlKNRpXNX
+	 lPdcRx68FqGAg==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Heiko Carstens <hca@linux.ibm.com>,
+	Luiz Capitulino <luizcap@redhat.com>,
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	David Hildenbrand <david@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12.y] s390: Disable ARCH_WANT_OPTIMIZE_HUGETLB_VMEMMAP
+Date: Sun,  2 Nov 2025 21:24:16 -0500
+Message-ID: <20251103022416.3808769-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2025110339-catching-blah-8209@gregkh>
+References: <2025110339-catching-blah-8209@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2025110304-footbath-unearned-6bfb@gregkh>
+Content-Transfer-Encoding: 8bit
 
-On Mon, Nov 03, 2025 at 10:42:14AM +0900, Greg Kroah-Hartman wrote:
-> On Fri, Oct 31, 2025 at 08:47:23PM +0100, Ben Hutchings wrote:
-> > On Mon, 2025-10-27 at 19:33 +0100, Greg Kroah-Hartman wrote:
-> > > 5.10-stable review patch.  If anyone has any objections, please let me know.
-> > > 
-> > > ------------------
-> > > 
-> > > From: Nathan Chancellor <nathan@kernel.org>
-> > > 
-> > > commit 2f13daee2a72bb962f5fd356c3a263a6f16da965 upstream.
-> > [...]
-> > > --- a/lib/crypto/Makefile
-> > > +++ b/lib/crypto/Makefile
-> > > @@ -22,6 +22,10 @@ obj-$(CONFIG_CRYPTO_LIB_CURVE25519_GENER
-> > >  libcurve25519-generic-y				:= curve25519-fiat32.o
-> > >  libcurve25519-generic-$(CONFIG_ARCH_SUPPORTS_INT128)	:= curve25519-hacl64.o
-> > >  libcurve25519-generic-y				+= curve25519-generic.o
-> > > +# clang versions prior to 18 may blow out the stack with KASAN
-> > > +ifeq ($(call clang-min-version, 180000),)
-> > [...]
-> > 
-> > The clang-min-version macro isn't defined in 5.10 or 5.15, so this test
-> > doesn't work as intended.
-> 
-> So should I revert it?
+From: Heiko Carstens <hca@linux.ibm.com>
 
-No, we should backport clang-min-version and friends because these
-macros may be used in future backports. It should not be too hard. I can
-work on that tomorrow.
+[ Upstream commit 64e2f60f355e556337fcffe80b9bcff1b22c9c42 ]
 
-Additionally, now that I am looking at this change again, this disables
-KASAN for this file with GCC because clang-min-version will always
-evaluate to nothing for GCC. I'll send a fix for this upstream then it
-can be backported later.
+As reported by Luiz Capitulino enabling HVO on s390 leads to reproducible
+crashes. The problem is that kernel page tables are modified without
+flushing corresponding TLB entries.
 
-Cheers,
-Nathan
+Even if it looks like the empty flush_tlb_all() implementation on s390 is
+the problem, it is actually a different problem: on s390 it is not allowed
+to replace an active/valid page table entry with another valid page table
+entry without the detour over an invalid entry. A direct replacement may
+lead to random crashes and/or data corruption.
+
+In order to invalidate an entry special instructions have to be used
+(e.g. ipte or idte). Alternatively there are also special instructions
+available which allow to replace a valid entry with a different valid
+entry (e.g. crdte or cspg).
+
+Given that the HVO code currently does not provide the hooks to allow for
+an implementation which is compliant with the s390 architecture
+requirements, disable ARCH_WANT_OPTIMIZE_HUGETLB_VMEMMAP again, which is
+basically a revert of the original patch which enabled it.
+
+Reported-by: Luiz Capitulino <luizcap@redhat.com>
+Closes: https://lore.kernel.org/all/20251028153930.37107-1-luizcap@redhat.com/
+Fixes: 00a34d5a99c0 ("s390: select ARCH_WANT_HUGETLB_PAGE_OPTIMIZE_VMEMMAP")
+Cc: stable@vger.kernel.org
+Tested-by: Luiz Capitulino <luizcap@redhat.com>
+Reviewed-by: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
+Reviewed-by: David Hildenbrand <david@redhat.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+[ Adjust context ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ arch/s390/Kconfig | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/arch/s390/Kconfig b/arch/s390/Kconfig
+index 62f2c9e8e05f7..5c9349df71ccf 100644
+--- a/arch/s390/Kconfig
++++ b/arch/s390/Kconfig
+@@ -135,7 +135,6 @@ config S390
+ 	select ARCH_WANT_IPC_PARSE_VERSION
+ 	select ARCH_WANT_KERNEL_PMD_MKWRITE
+ 	select ARCH_WANT_LD_ORPHAN_WARN
+-	select ARCH_WANT_OPTIMIZE_HUGETLB_VMEMMAP
+ 	select BUILDTIME_TABLE_SORT
+ 	select CLONE_BACKWARDS2
+ 	select DCACHE_WORD_ACCESS if !KMSAN
+-- 
+2.51.0
+
 
