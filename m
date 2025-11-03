@@ -1,120 +1,188 @@
-Return-Path: <stable+bounces-192163-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192164-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FECBC2AC42
-	for <lists+stable@lfdr.de>; Mon, 03 Nov 2025 10:35:45 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EB70C2ACAE
+	for <lists+stable@lfdr.de>; Mon, 03 Nov 2025 10:38:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 41AAA4EDE3C
-	for <lists+stable@lfdr.de>; Mon,  3 Nov 2025 09:35:13 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 22884348EE7
+	for <lists+stable@lfdr.de>; Mon,  3 Nov 2025 09:38:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E35A2EB87E;
-	Mon,  3 Nov 2025 09:35:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C0602EC080;
+	Mon,  3 Nov 2025 09:36:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ldEVTPYP"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="xB2g1qtr"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C7EE20DD52;
-	Mon,  3 Nov 2025 09:35:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 176D72EACEE
+	for <stable@vger.kernel.org>; Mon,  3 Nov 2025 09:36:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762162508; cv=none; b=REv4Sjn9pzj4vhqLWMxhY8C9t740oDYTi4zo0qKx1EElCKPVF6+cbER6nDUq7u9cg6/Oy5iKrPwGUo3tsq4ucw50cXMRazmsTwRrfvp2/0sYMLbK6O7ZD++QbBhE7Jmr04AwBJ/fP8+XhiU8CijaRUDKx4wg6J9D4TabmXFsUjY=
+	t=1762162584; cv=none; b=f/alIJ7R1wOt6wn1ClS9oZRnznwzXfSqpdT/mOX49KJhcT4QBcxTeIpCOKIp4cHyO+WYvfMW/RD9cM1cS2f+rqOhTfKU2/hDnpzy0Vl4ZAlki1gemjoO7JIMlU2kpAElVEtpXOWjtCibTjMbkQJOh1LlDqMSejacMD3hJYAFAMU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762162508; c=relaxed/simple;
-	bh=3Lv1tnlhgCB9vdu0ZkwoOO7RrUhXDwV8Tgt8OB4u5O8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DrUan4FzzHw4/54hX1pcE1YXAhTMsBonpvCopVHPcZiVGr1+dshLbZJ1zjuRJvNLEBR0yUfK04sZQtD11xNnoPAnkus3RWvd4b26up2Bo8E6bNdYmwCqV2r9rlVVFO+Uk69bAy9dbej0y/0A3lTUumGISfWEIp65Fs/7wOVA2Gk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ldEVTPYP; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1762162506; x=1793698506;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=3Lv1tnlhgCB9vdu0ZkwoOO7RrUhXDwV8Tgt8OB4u5O8=;
-  b=ldEVTPYPm1WqJxO35YPr+RVG36HNPT/R/zvgl0sZGBsgjW1sT1y26V7V
-   Dc3g4gDPFRJ1n2ndAgsST113igkGqsIwRT6kfoCrkP7sVsB17ngjH59y5
-   00XhVg2Ky2A949kIZfq+DY2ICFOFTBxooygqG73mexs5P9eQHeIXUJV3O
-   302Oe0HD7t26LM1FhniIzLSBULaXVW/OHwonBK8RDqXCMpZVeH90Xwxrf
-   ceLmGF4RX/7QPV5HMnXwgauWbCyC8jPV8UVQP7EZ4QiK27Sxa64pBk4w1
-   JYDCk+tRrcy2OZOUw4JWqMlRwQwPzwDdJGi5ElA/f7vPPAO30nhKJZhWE
-   w==;
-X-CSE-ConnectionGUID: wCF1o2nyT9CKwPv4p86wMA==
-X-CSE-MsgGUID: CTtz4o4wQdaXsuBmP1Gcjw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11601"; a="68094207"
-X-IronPort-AV: E=Sophos;i="6.19,275,1754982000"; 
-   d="scan'208";a="68094207"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2025 01:35:06 -0800
-X-CSE-ConnectionGUID: 2H7ffXlOSieACmCDsTPuCg==
-X-CSE-MsgGUID: n2UsL+lwTTS0ewMmE2T2XQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,275,1754982000"; 
-   d="scan'208";a="210352434"
-Received: from smoehrl-linux.amr.corp.intel.com (HELO ashevche-desk.local) ([10.124.220.216])
-  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2025 01:35:04 -0800
-Received: from andy by ashevche-desk.local with local (Exim 4.98.2)
-	(envelope-from <andriy.shevchenko@intel.com>)
-	id 1vFqxp-000000056kW-0lNh;
-	Mon, 03 Nov 2025 11:35:01 +0200
-Date: Mon, 3 Nov 2025 11:35:00 +0200
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Hans de Goede <hansg@kernel.org>
-Cc: Mark Brown <broonie@kernel.org>, Andy Shevchenko <andy@kernel.org>,
-	linux-spi@vger.kernel.org, linux-acpi@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] spi: Try to get ACPI GPIO IRQ earlier
-Message-ID: <aQh3RJQ95jTx7VYO@smile.fi.intel.com>
-References: <20251102190921.30068-1-hansg@kernel.org>
+	s=arc-20240116; t=1762162584; c=relaxed/simple;
+	bh=/fMMww+VnRA+hcUIhl7JMhlaSfVDZu5RLtut+X9bMaI=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=lOGh9WOlGTz6mdAM7iylRcQLt3z/zPRY3e8xkcH0jMzsuady7AtH0q+GUKmyIYhrYu3tX+as8jRSrNxtDAe6adzvjI3RN8Cr7qGbYiwmNjNI2E6kdzLTubqvHzoA+3DQk3lxF3TWEiLdBSg+1YLEVMWNYuFwmJTIel4fUGGH8bM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=xB2g1qtr; arc=none smtp.client-ip=209.85.167.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-591c98ebe90so3862611e87.3
+        for <stable@vger.kernel.org>; Mon, 03 Nov 2025 01:36:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1762162580; x=1762767380; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=9yW62hLGR641KE85jpQSWPUCRsBAzSiXnExBD5jnO/s=;
+        b=xB2g1qtrpd44V4OkSLjf1aDJE+B1F/K45/lOKgy0lxFr194hrglfNEXsFhC+X7pyeL
+         hSSu/WBingd/arXSglbELlXLqvSWC2bALZoHfglrHHKqqENqJF31SRJ/3TZjRKlptOTN
+         qVm7M/z1YT6zlKDd2/HXXGf9CtH3uFXi98e43VfbLlw7UZmFQBKnDlttVtWrz0qVDVKr
+         EsErNj63EDd/V0aDvaVgQf9L3NCtYSte2objlr7HTtFrifF5TVXq2PqeEeGKMtqNpltR
+         dGo4htu1GsiO2+0ccHO7k1AMdXrTGAFASOPdQ8OrSTkFdqgM9tIvZeeA7IEI7f51hEpj
+         Oaog==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762162580; x=1762767380;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=9yW62hLGR641KE85jpQSWPUCRsBAzSiXnExBD5jnO/s=;
+        b=rHuxUBZW4itt6VQpCxFjzroamb0ALllfFHbBRAMuz8onTamwqpmz1oqJLMAmnHQweM
+         oM5cQjBadp0hgUYhEgMFEQtwfblBvIhR5t2G0/D6gDp7WdQQewO1F+pIOyb/xvwkK9Yn
+         Z1rOjHtAMcKsZbEqMSlrGgCXKeA9Qv5JkPJMt7UpoBYdLp7iuxxy8PpR+yvrN5J+itPs
+         UC8UbFtZWMRAQnsV22+RvWkKJ3GSeGOWZJtF1rnyoXsc/Crpcq3gWkCEBAhLA5BHXA8D
+         0MjX4/Nnl4LdpRz4HqZrVuWwTKn9O3/R2r4AGTBkEQ2hzmb5S6fxmPPCgpPMcWNN5FDf
+         dl0g==
+X-Forwarded-Encrypted: i=1; AJvYcCVtBGPfODkPkFOdADi9FhwXcS6p/6MmcCISElMsiL2bBToUyDoh3OROqBnosL2cADt30vkiU8I=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzNKt75Zpl68fErCt5OKzi4orPdF7FrxFWubdp3CKZ1vkco+wvw
+	9AlxV/NO0+3/vpFAVbFtFHVFvd0aWfehg4idPFHmTQl7XasQv9MBpF3R7Ni7zaj2aMotsJqiyFo
+	Xllb9F01xIw==
+X-Gm-Gg: ASbGncsDybJh9Ua0TK5UyIhpCAdcDekVa1hYzaLBg0WsqW1oF1NTclTPpt2IVkpAYsc
+	yCx1mL9JaaJQ4FKZ1rPWNfILSAlA9GH0FHc9ZQNp4p0zV8jVgj2mHhrbNsMNS6gHFRq5kqIDM14
+	4K1xPwqqaVb3dAzZSOyxKA9rt53AMlBfxiF49ZEs3be0304jYDciz+UrT5flc/YbnnVrSRM3Fqe
+	pxofZ/81ob+ZQtmVcFmqcGOf3LMuLjdNIH57Xq7CBLOEpobNLHWheBkfOWU9TvcRG6wxTwz/pOD
+	0NnOlCW6plfIbzB57tHSf6ntS/gF6DXq5L0Rz9xvAn6FOq4lgV56p1G1T79BE4hgGIPsM3OGtjO
+	+31oEObT9lzrT2pAHiDWVc0gVfNdacGTGGx0aLGETbJQ4HH/p+yfCRjdFhSTKLDWO93D1I1HwTH
+	JxFRJUZy69PvKcjTv+ANI8cmDiVbBvR7F+af+MZkIIPtNi
+X-Google-Smtp-Source: AGHT+IEbLGArSP9pXAbGMd97ofMZmPRcH8dCTCvclwnpkuf4fwAmP+p9NpZYFomPMnXnC7iNc9dIaQ==
+X-Received: by 2002:ac2:4c49:0:b0:594:2df2:84ab with SMTP id 2adb3069b0e04-5942df28800mr633101e87.8.1762162580137;
+        Mon, 03 Nov 2025 01:36:20 -0800 (PST)
+Received: from [192.168.1.2] (c-92-34-217-190.bbcust.telenor.se. [92.34.217.190])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5941f39c0fdsm2722074e87.39.2025.11.03.01.36.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 03 Nov 2025 01:36:19 -0800 (PST)
+From: Linus Walleij <linus.walleij@linaro.org>
+Date: Mon, 03 Nov 2025 10:36:18 +0100
+Subject: [PATCH v2] iio: accel: bmc150: Fix irq assumption regression
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20251102190921.30068-1-hansg@kernel.org>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20251103-fix-bmc150-v2-1-0811592259df@linaro.org>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/22MywrCMBBFf6XM2kgykoeu/A/pok3HdkCTkkhQS
+ v7d2LXLcy/nbJApMWW4dBskKpw5hgZ46MAvQ5hJ8NQYUKJWEq2481uMT6+0FJa0cQpxRKOhCWu
+ i9u6xW9944fyK6bO3i/qtfzNFCSW8n/zZOHL+ZK8PDkOKx5hm6GutX6YOqd+lAAAA
+X-Change-ID: 20251027-fix-bmc150-7e568122b265
+To: Jonathan Cameron <jic23@kernel.org>, 
+ David Lechner <dlechner@baylibre.com>, 
+ =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
+ Andy Shevchenko <andy@kernel.org>, 
+ Matti Vaittinen <mazziesaccount@gmail.com>, 
+ Stephan Gerhold <stephan@gerhold.net>
+Cc: linux-iio@vger.kernel.org, stable@vger.kernel.org, 
+ Linus Walleij <linus.walleij@linaro.org>
+X-Mailer: b4 0.14.3
 
-On Sun, Nov 02, 2025 at 08:09:21PM +0100, Hans de Goede wrote:
-> Since commit d24cfee7f63d ("spi: Fix acpi deferred irq probe"), the
-> acpi_dev_gpio_irq_get() call gets delayed till spi_probe() is called
-> on the SPI device.
-> 
-> If there is no driver for the SPI device then the move to spi_probe()
-> results in acpi_dev_gpio_irq_get() never getting called. This may
-> cause problems by leaving the GPIO pin floating because this call is
-> responsible for setting up the GPIO pin direction and/or bias according
-> to the values from the ACPI tables.
-> 
-> Re-add the removed acpi_dev_gpio_irq_get() in acpi_register_spi_device()
-> to ensure the GPIO pin is always correctly setup, while keeping the
-> acpi_dev_gpio_irq_get() call added to spi_probe() to deal with
-> -EPROBE_DEFER returns caused by the GPIO controller not having a driver
-> yet.
+The code in bmc150-accel-core.c unconditionally calls
+bmc150_accel_set_interrupt() in the iio_buffer_setup_ops,
+such as on the runtime PM resume path giving a kernel
+splat like this if the device has no interrupts:
 
-Even before following the link to some papering over module via the link below
-I wondered, if the I²C case should be covered as well. The
-https://github.com/alexpevzner/hotfix-kvadra-touchpad refers to I²C enabled
-touchpads.
+Unable to handle kernel NULL pointer dereference at virtual
+  address 00000001 when read
+CPU: 0 UID: 0 PID: 393 Comm: iio-sensor-prox Not tainted
+  6.18.0-rc1-postmarketos-stericsson-00001-g6b43386e3737 #73 PREEMPT
+Hardware name: ST-Ericsson Ux5x0 platform (Device Tree Support)
+PC is at bmc150_accel_set_interrupt+0x98/0x194
+LR is at __pm_runtime_resume+0x5c/0x64
+(...)
+Call trace:
+bmc150_accel_set_interrupt from bmc150_accel_buffer_postenable+0x40/0x108
+bmc150_accel_buffer_postenable from __iio_update_buffers+0xbe0/0xcbc
+__iio_update_buffers from enable_store+0x84/0xc8
+enable_store from kernfs_fop_write_iter+0x154/0x1b4
+kernfs_fop_write_iter from do_iter_readv_writev+0x178/0x1e4
+do_iter_readv_writev from vfs_writev+0x158/0x3f4
+vfs_writev from do_writev+0x74/0xe4
+do_writev from __sys_trace_return+0x0/0x10
 
-> Link: https://bbs.archlinux.org/viewtopic.php?id=302348
+This bug seems to have been in the driver since the beginning,
+but it only manifests recently, I do not know why.
 
-...
+Store the IRQ number in the state struct, as this is a common
+pattern in other drivers, then use this to determine if we have
+IRQ support or not.
 
-I'm not against the SPI fix, but is it confirmed that it really fixes the issue?
+Cc: stable@vger.kernel.org
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+---
+Changes in v2:
+- Instead of a bool has_irq in the state struct, store the Linux IRQ
+  number itself and switch behaviour on that.
+- Link to v1: https://lore.kernel.org/r/20251027-fix-bmc150-v1-1-ccdc968e8c37@linaro.org
+---
+ drivers/iio/accel/bmc150-accel-core.c | 5 +++++
+ drivers/iio/accel/bmc150-accel.h      | 1 +
+ 2 files changed, 6 insertions(+)
 
+diff --git a/drivers/iio/accel/bmc150-accel-core.c b/drivers/iio/accel/bmc150-accel-core.c
+index 3c5d1560b163..42ccf0316ce5 100644
+--- a/drivers/iio/accel/bmc150-accel-core.c
++++ b/drivers/iio/accel/bmc150-accel-core.c
+@@ -523,6 +523,10 @@ static int bmc150_accel_set_interrupt(struct bmc150_accel_data *data, int i,
+ 	const struct bmc150_accel_interrupt_info *info = intr->info;
+ 	int ret;
+ 
++	/* We do not always have an IRQ */
++	if (data->irq <= 0)
++		return 0;
++
+ 	if (state) {
+ 		if (atomic_inc_return(&intr->users) > 1)
+ 			return 0;
+@@ -1696,6 +1700,7 @@ int bmc150_accel_core_probe(struct device *dev, struct regmap *regmap, int irq,
+ 	}
+ 
+ 	if (irq > 0) {
++		data->irq = irq;
+ 		ret = devm_request_threaded_irq(dev, irq,
+ 						bmc150_accel_irq_handler,
+ 						bmc150_accel_irq_thread_handler,
+diff --git a/drivers/iio/accel/bmc150-accel.h b/drivers/iio/accel/bmc150-accel.h
+index 7a7baf52e595..e8f26198359f 100644
+--- a/drivers/iio/accel/bmc150-accel.h
++++ b/drivers/iio/accel/bmc150-accel.h
+@@ -58,6 +58,7 @@ enum bmc150_accel_trigger_id {
+ 
+ struct bmc150_accel_data {
+ 	struct regmap *regmap;
++	int irq;
+ 	struct regulator_bulk_data regulators[2];
+ 	struct bmc150_accel_interrupt interrupts[BMC150_ACCEL_INTERRUPTS];
+ 	struct bmc150_accel_trigger triggers[BMC150_ACCEL_TRIGGERS];
+
+---
+base-commit: 3a8660878839faadb4f1a6dd72c3179c1df56787
+change-id: 20251027-fix-bmc150-7e568122b265
+
+Best regards,
 -- 
-With Best Regards,
-Andy Shevchenko
-
+Linus Walleij <linus.walleij@linaro.org>
 
 
