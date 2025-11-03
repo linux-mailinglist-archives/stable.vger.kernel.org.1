@@ -1,57 +1,51 @@
-Return-Path: <stable+bounces-192133-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192134-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDB65C29C85
-	for <lists+stable@lfdr.de>; Mon, 03 Nov 2025 02:29:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F3AC5C29C88
+	for <lists+stable@lfdr.de>; Mon, 03 Nov 2025 02:31:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 421163ACC78
-	for <lists+stable@lfdr.de>; Mon,  3 Nov 2025 01:29:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B4DA43AE31B
+	for <lists+stable@lfdr.de>; Mon,  3 Nov 2025 01:31:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB6A2273D8A;
-	Mon,  3 Nov 2025 01:28:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43E2D2749F1;
+	Mon,  3 Nov 2025 01:31:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gy0Kefmx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l8s9Jh+9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9949A1C75E2
-	for <stable@vger.kernel.org>; Mon,  3 Nov 2025 01:28:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01DB078F4B
+	for <stable@vger.kernel.org>; Mon,  3 Nov 2025 01:31:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762133338; cv=none; b=U4TNMKxkLc5FrjG4BxExbqYCgOQdtQ23DS7Y6qvWSKcmnpWfvHje1XQQWwwjmhQfjBIs2G0QICqcs8CKo6RUq6nrAusnKaQnznWR07TGbIliAXmah6kyTKfss9Hw2ZVkc0YBqdwMiox02G4xNQKhvE1WaONV3ciUD6MQ++ZVQag=
+	t=1762133469; cv=none; b=pE+zYVWGXhXZ64926OZWYn193H4xvqYzZkYBLiJrARakThKgGfLXS9qbTQMoF1tVLFX5CKHbfmOEESHjmIOGZ6eZtFDuj/gtaQEu4P73JFVwN/uODjAzevK5Ms6wMUd3OOtBxNs5w953VU2/+DJyEHq6zUzRXG4QOaMOsc3fnUY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762133338; c=relaxed/simple;
-	bh=aJ4ZIzTKjn1a2VJJtiDVDcakyXytjX1grNNFgkjdc9s=;
+	s=arc-20240116; t=1762133469; c=relaxed/simple;
+	bh=5jHQudhLtgqH0fgL+PkLHDgrFT7stXiWkYCtXSoimXg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WJwGceQG1utGccgOy/uUY/m6FkzlsFakBnB9Am0rMRqXb8OJ1bIqXFoogZFgXkBq/dYl3B9aqpzF7CIFhq4AqUYFz7TIALMmnrJqMt+iV4xs0QvylbxLX4vcFXtolLI+j5NNwhLP7sy8psb030tnlz7F0R1nEv4IGDqDOgdifL0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gy0Kefmx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9232C4CEF7;
-	Mon,  3 Nov 2025 01:28:57 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=i/Sn61rAJcI5ugQhIZ6mHCjkyTLuT8SLoRNqpmdtQClbMHP63me77TPrVviNAzcjPE3l/tWGRutZi7QUQayDM3/VYJ6+xt2NhjBRwOcbU3ineiRWeA+qVqXCgdJhJcHP0igNivdFLoxfEAvU1l5M5o/KxjpZfMGnWqsgKhAcYr0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l8s9Jh+9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22B96C4CEF7;
+	Mon,  3 Nov 2025 01:31:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762133338;
-	bh=aJ4ZIzTKjn1a2VJJtiDVDcakyXytjX1grNNFgkjdc9s=;
+	s=korg; t=1762133465;
+	bh=5jHQudhLtgqH0fgL+PkLHDgrFT7stXiWkYCtXSoimXg=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Gy0KefmxYlBq9f7sbsVhQGECWK18p1un980DwKAxxHO20l/s0b2pTLoPjkIOJ5V4y
-	 WchwXDaSyiA5ymQtLoWCdYj6gsO40iqGWhIV2Br2TsHEtJJOFPOeNfVB6RbrJ8faYZ
-	 0+4etAylOoQKa6ywpD6a8xevdpzva71DshMXTLpE=
-Date: Mon, 3 Nov 2025 10:28:56 +0900
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Salvatore Bonaccorso <carnil@debian.org>
-Cc: "Deucher, Alexander" <Alexander.Deucher@amd.com>,
-	stable <stable@vger.kernel.org>, Sasha Levin <sashal@kernel.org>,
-	Hamza Mahfooz <hamza.mahfooz@amd.com>
-Subject: Re: Missing backport of 3c591faadd8a ("Reapply "Revert
- drm/amd/display: Enable Freesync Video Mode by default"") in 6.1.y stable
- series?
-Message-ID: <2025110347-unknotted-salad-52f4@gregkh>
-References: <aQEW4d5rPTGgSFFR@eldamar.lan>
- <BL1PR12MB5144C73B441AAC82055D9A6EF7FAA@BL1PR12MB5144.namprd12.prod.outlook.com>
- <aQexyJCsE1Mx5Z05@eldamar.lan>
- <2025110326-recollect-tassel-59ed@gregkh>
+	b=l8s9Jh+9roVUzi/431nxACysYGdwGPRZzVhWdN7UKoA+lliB+eZqMM5Qi0kSs0mFR
+	 8nZCmfnJj/R2AjkoiuUtE28kKTU6/C3iW0nqWsQja6Eigf5mO79Fr/jUA5tL4ofpLU
+	 +Uf8JazoYdO0GCR74ExZShIB81BvednjoWYY1Qq4=
+Date: Mon, 3 Nov 2025 10:31:03 +0900
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
+Cc: stable@vger.kernel.org
+Subject: Re: [PATCH] dccp: validate incoming Reset/Close/CloseReq in
+ DCCP_REQUESTING
+Message-ID: <2025110351-comfy-untwist-fabb@gregkh>
+References: <20251103012307.4017900-1-zhaoyz24@mails.tsinghua.edu.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,74 +54,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <2025110326-recollect-tassel-59ed@gregkh>
+In-Reply-To: <20251103012307.4017900-1-zhaoyz24@mails.tsinghua.edu.cn>
 
-On Mon, Nov 03, 2025 at 09:22:38AM +0900, Greg Kroah-Hartman wrote:
-> On Sun, Nov 02, 2025 at 08:32:24PM +0100, Salvatore Bonaccorso wrote:
-> > Hi Alex
-> > 
-> > On Wed, Oct 29, 2025 at 09:47:35PM +0000, Deucher, Alexander wrote:
-> > > [Public]
-> > > 
-> > > > -----Original Message-----
-> > > > From: Salvatore Bonaccorso <salvatore.bonaccorso@gmail.com> On Behalf Of
-> > > > Salvatore Bonaccorso
-> > > > Sent: Tuesday, October 28, 2025 3:18 PM
-> > > > To: stable <stable@vger.kernel.org>
-> > > > Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>; Sasha Levin
-> > > > <sashal@kernel.org>; Deucher, Alexander <Alexander.Deucher@amd.com>;
-> > > > Hamza Mahfooz <hamza.mahfooz@amd.com>
-> > > > Subject: Missing backport of 3c591faadd8a ("Reapply "Revert drm/amd/display:
-> > > > Enable Freesync Video Mode by default"") in 6.1.y stable series?
-> > > >
-> > > > Hi
-> > > >
-> > > > We got in Debian a request to backport 3c591faadd8a ("Reapply "Revert
-> > > > drm/amd/display: Enable Freesync Video Mode by default"") for the kernel in Debian
-> > > > bookworm, based on 6.1.y stable series.
-> > > >
-> > > > https://bugs.debian.org/1119232
-> > > >
-> > > > While looking at he request, I noticed that the series of commits had a bit of a
-> > > > convuluted history.  AFAICT the story began with:
-> > > >
-> > > > de05abe6b9d0 ("drm/amd/display: Enable Freesync Video Mode by default"), this
-> > > > landed in 5.18-rc1 (and backported to v6.1.5, v6.0.19).
-> > > >
-> > > > This was then reverted with 4243c84aa082 ("Revert "drm/amd/display:
-> > > > Enable Freesync Video Mode by default""), which landed in v6.3-rc1 (and in turn
-> > > > was backported to v6.1.53).
-> > > >
-> > > > So far we are in sync.
-> > > >
-> > > > The above was then reverted again, via 11b92df8a2f7 ("Revert "Revert
-> > > > drm/amd/display: Enable Freesync Video Mode by default"") applied in
-> > > > v6.5-rc1 and as well backported to v6.1.53 (so still in sync).
-> > > >
-> > > > Now comes were we are diverging: 3c591faadd8a ("Reapply "Revert
-> > > > drm/amd/display: Enable Freesync Video Mode by default"") got applied later on,
-> > > > landing in v6.9-rc1 but *not* in 6.1.y anymore.
-> > > >
-> > > > I suspect this one was not applied to 6.1.y because in meanwhile there was a
-> > > > conflict to cherry-pick it cleanly due to context changes due to
-> > > > 3e094a287526 ("drm/amd/display: Use drm_connector in create_stream_for_sink").
-> > > >
-> > > > If this is correct, then the 6.1.y series can be brough in sync with cherry-picking the
-> > > > commit and adjust the context around the change.
-> > > > I'm attaching the proposed change.
-> > > >
-> > > > Alex in particular, does that make sense?
-> > > 
-> > > Yes, that makes sense to me.
-> > 
-> > Thanks for the confirmation. Greg, Sasha so can this be picked up as
-> > well for 6.1.y? The patch was attached in previous message, but I can
-> > resubmit it if needed.
+On Mon, Nov 03, 2025 at 09:23:07AM +0800, Yizhou Zhao wrote:
+> DCCP sockets in DCCP_REQUESTING state do not check the sequence number
+> or acknowledgment number for incoming Reset, CloseReq, and Close packets.
 > 
-> can you resubmit please?
+> As a result, an attacker can send a spoofed Reset packet while the client
+> is in the requesting state. The client will accept the packet without any
+> verification before receiving the reply from server and immediately close
+> the connection, causing a denial of service (DoS) attack. The vulnerability
+> makes the attacker able to drop the pending connection for a specific 5-tuple.
+> Moreover, an off-path attacker with modestly higher outbound bandwidth can
+> continually inject forged control packets to the victim client and prevent
+> connection establishment to a given destination port on a server, causing
+> a port-level DoS.
 > 
+> This patch moves the processing of Reset, Close, and CloseReq packets into
+> dccp_rcv_request_sent_state_process() and validates the ack number before
+> accepting them.
+> 
+> This patch should be applied to stable versions *only* before Linux 6.16,
+> since DCCP implementation is removed in Linux 6.16.
+> 
+> Affected versions include:
+> - 3.1-3.19
+> - 4.0-4.20
+> - 5.0-5.19
+> - 6.0-6.15
+> 
+> We tested it on Ubuntu 24.04 LTS (Linux 6.8) and it worked as expected.
+> 
+> Fixes: c0c2015056d7b ("dccp: Clean up slow-path input processing")
+> Signed-off-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
+> ---
+>  net/dccp/input.c | 54 ++++++++++++++++++++++++++++--------------------
+>  1 file changed, 32 insertions(+), 22 deletions(-)
 
-Nevermind, I found it, I'll go queue it up now, thanks.
+<formletter>
 
-greg k-h
+This is not the correct way to submit patches for inclusion in the
+stable kernel tree.  Please read:
+    https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
+for how to do this properly.
+
+</formletter>
 
