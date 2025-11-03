@@ -1,37 +1,37 @@
-Return-Path: <stable+bounces-192227-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192228-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB58BC2D0B1
-	for <lists+stable@lfdr.de>; Mon, 03 Nov 2025 17:16:44 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46938C2D256
+	for <lists+stable@lfdr.de>; Mon, 03 Nov 2025 17:32:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 22B6134A77C
-	for <lists+stable@lfdr.de>; Mon,  3 Nov 2025 16:16:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7E1163B6162
+	for <lists+stable@lfdr.de>; Mon,  3 Nov 2025 16:17:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 991452836A4;
-	Mon,  3 Nov 2025 16:16:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DDA3316196;
+	Mon,  3 Nov 2025 16:17:46 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from air.basealt.ru (air.basealt.ru [193.43.8.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16FF1315D3D
-	for <stable@vger.kernel.org>; Mon,  3 Nov 2025 16:16:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3A66286D40
+	for <stable@vger.kernel.org>; Mon,  3 Nov 2025 16:17:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.43.8.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762186598; cv=none; b=o1C/wAssXzEPrNqcX12uCOy6dm21IaAPKvTEyY5xi0w59qHmPwAZzVUmeqDIOby+hYPkHf5pBlF+h0vhiROx19+jbXEakNUNLffO669GqwDGnGey3yCFeIWhsrXU7rl/BpoS4CFkB1j2Tvk1Eot7DMkq7c7nWaU1yMv5Jj9SFLw=
+	t=1762186666; cv=none; b=RL1122vYB5C9t3sm0QWyW5k2RXkj0vzEdADh/IUF+EyGIby23m/piDqSnaNmdv6ReHDP9C3zXJRmELVz+7nx9hdsN/KRFp0gMeu1w5F3VkKWXrcqRpqQxuu6cUubxQF0UNhqSiyaHdvgFTY90yLkWvKtR7rXc01HnC2dtffD88U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762186598; c=relaxed/simple;
-	bh=7nXNJOcsC636OdTLVyjdPYhdPdfC9ty/ylFoa/TP0xk=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=t2YbX9CovJ//lKtZub8KpHBGDPeB7Wu81RdfPK0skqeqtX1332S4Hb9vuFEs8dj87GArp2PeeWEBMSbHiPbpSHyRDlWCY8DawvPOEHCfimOV9mzeKyAtXsyx5Ik52UEZgpUmEUgUz1bQ73q/i+Vur/e/sARh7M/4WlBbBCURVwQ=
+	s=arc-20240116; t=1762186666; c=relaxed/simple;
+	bh=r2rySTaYxjQXHz7M6uOXLZqDQeXeQ4NfFm8VycxDyQ4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=tPvtX4SLKcj2a/t1IZg9691yj1V1sQjC8DJeLy0tPKOBCZlBsLNFfjkDFf5uT9o47yNVbPzdzf3QLgUBCTqcrSyj3cfUlzUFYcYtbf9BcM1F3TIzYpTh/HbmKt297svvvtMLEly7DHs7Y2hbH08hLiAENDVaVFVEe+8A864AFEw=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org; spf=pass smtp.mailfrom=altlinux.org; arc=none smtp.client-ip=193.43.8.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altlinux.org
 Received: from altlinux.ipa.basealt.ru (unknown [193.43.11.2])
 	(Authenticated sender: kovalevvv)
-	by air.basealt.ru (Postfix) with ESMTPSA id 73C382333B;
-	Mon,  3 Nov 2025 19:16:25 +0300 (MSK)
+	by air.basealt.ru (Postfix) with ESMTPSA id D8D322333B;
+	Mon,  3 Nov 2025 19:17:40 +0300 (MSK)
 From: Vasiliy Kovalev <kovalev@altlinux.org>
 To: stable@vger.kernel.org
 Cc: Jakub Kicinski <kuba@kernel.org>,
@@ -39,9 +39,9 @@ Cc: Jakub Kicinski <kuba@kernel.org>,
 	Eric Dumazet <edumazet@google.com>,
 	lvc-project@linuxtesting.org,
 	kovalev@altlinux.org
-Subject: [PATCH 6.1/6.6] vxlan: Fix NPD when refreshing an FDB entry with a nexthop object
-Date: Mon,  3 Nov 2025 19:16:24 +0300
-Message-Id: <20251103161624.488242-1-kovalev@altlinux.org>
+Subject: [PATCH 5.10/5.15] vxlan: Fix NPD when refreshing an FDB entry with a nexthop object
+Date: Mon,  3 Nov 2025 19:17:40 +0300
+Message-Id: <20251103161740.488314-1-kovalev@altlinux.org>
 X-Mailer: git-send-email 2.33.8
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -117,41 +117,14 @@ Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 [ kovalev: bp to fix CVE-2025-39851 ]
 Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
 ---
- drivers/net/vxlan/vxlan_core.c    | 8 ++++----
- drivers/net/vxlan/vxlan_private.h | 4 +---
- 2 files changed, 5 insertions(+), 7 deletions(-)
+ drivers/net/vxlan/vxlan_core.c | 12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
 
 diff --git a/drivers/net/vxlan/vxlan_core.c b/drivers/net/vxlan/vxlan_core.c
-index 57606891e413..9555887646e5 100644
+index 5a7008136100..8872cb7a2dbb 100644
 --- a/drivers/net/vxlan/vxlan_core.c
 +++ b/drivers/net/vxlan/vxlan_core.c
-@@ -1460,6 +1460,10 @@ static bool vxlan_snoop(struct net_device *dev,
- 	if (likely(f)) {
- 		struct vxlan_rdst *rdst = first_remote_rcu(f);
- 
-+		/* Don't override an fdb with nexthop with a learnt entry */
-+		if (rcu_access_pointer(f->nh))
-+			return true;
-+
- 		if (likely(vxlan_addr_equal(&rdst->remote_ip, src_ip) &&
- 			   rdst->remote_ifindex == ifindex))
- 			return false;
-@@ -1468,10 +1472,6 @@ static bool vxlan_snoop(struct net_device *dev,
- 		if (f->state & (NUD_PERMANENT | NUD_NOARP))
- 			return true;
- 
--		/* Don't override an fdb with nexthop with a learnt entry */
--		if (rcu_access_pointer(f->nh))
--			return true;
--
- 		if (net_ratelimit())
- 			netdev_info(dev,
- 				    "%pM migrated from %pIS to %pIS\n",
-diff --git a/drivers/net/vxlan/vxlan_private.h b/drivers/net/vxlan/vxlan_private.h
-index 85b6d0c347e3..8444b5d1ca60 100644
---- a/drivers/net/vxlan/vxlan_private.h
-+++ b/drivers/net/vxlan/vxlan_private.h
-@@ -56,9 +56,7 @@ static inline struct hlist_head *vs_head(struct net *net, __be16 port)
+@@ -174,9 +174,7 @@ static inline struct hlist_head *vs_head(struct net *net, __be16 port)
  	return &vn->sock_list[hash_32(ntohs(port), PORT_HASH_BITS)];
  }
  
@@ -162,6 +135,28 @@ index 85b6d0c347e3..8444b5d1ca60 100644
  static inline struct vxlan_rdst *first_remote_rcu(struct vxlan_fdb *fdb)
  {
  	if (rcu_access_pointer(fdb->nh))
+@@ -1507,6 +1505,10 @@ static bool vxlan_snoop(struct net_device *dev,
+ 	if (likely(f)) {
+ 		struct vxlan_rdst *rdst = first_remote_rcu(f);
+ 
++		/* Don't override an fdb with nexthop with a learnt entry */
++		if (rcu_access_pointer(f->nh))
++			return true;
++
+ 		if (likely(vxlan_addr_equal(&rdst->remote_ip, src_ip) &&
+ 			   rdst->remote_ifindex == ifindex))
+ 			return false;
+@@ -1515,10 +1517,6 @@ static bool vxlan_snoop(struct net_device *dev,
+ 		if (f->state & (NUD_PERMANENT | NUD_NOARP))
+ 			return true;
+ 
+-		/* Don't override an fdb with nexthop with a learnt entry */
+-		if (rcu_access_pointer(f->nh))
+-			return true;
+-
+ 		if (net_ratelimit())
+ 			netdev_info(dev,
+ 				    "%pM migrated from %pIS to %pIS\n",
 -- 
 2.50.1
 
