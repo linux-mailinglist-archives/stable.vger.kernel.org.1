@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-192143-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192144-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 120E3C29E2B
-	for <lists+stable@lfdr.de>; Mon, 03 Nov 2025 03:50:17 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AA34C29E7D
+	for <lists+stable@lfdr.de>; Mon, 03 Nov 2025 04:05:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BE6933AEF22
-	for <lists+stable@lfdr.de>; Mon,  3 Nov 2025 02:50:15 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4742B4E3E80
+	for <lists+stable@lfdr.de>; Mon,  3 Nov 2025 03:05:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41C0A2853F2;
-	Mon,  3 Nov 2025 02:50:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B8E5154BF5;
+	Mon,  3 Nov 2025 03:05:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FHK6oFqF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RdzjRsvs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9403280CD2
-	for <stable@vger.kernel.org>; Mon,  3 Nov 2025 02:50:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2753134D3BE
+	for <stable@vger.kernel.org>; Mon,  3 Nov 2025 03:05:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762138213; cv=none; b=lcRW8JePwp5uy61IG/V0RYcw02F+PoX56VjSV9gvwUsr+CCKPnnL1OrsbQhjwZtQLLeBZ/rVVxVhOroEvy/Pt1rqkU/anXTsCXiMDbXlk2rPYn7hkiTuTtnTV2zyH7q/cSufyn5ya2XYLvSf2BuPDEkPUuPSnSi2Bq/TJpA6DZs=
+	t=1762139107; cv=none; b=mCnk3Nk9eUhmbZwHTarVjsIBO0TxK+0pCFXausPqNNG7GOW5+paKvocpNudniII6oYKGnhFHSr4GSrfRzX6v41xq0rCuz19ALIQdpsVaM8QDnkDX5B2/RFdP73Nu4CanmZTBQXBAeTDL95uBvrH/vJtgpoTHgPO//mZsRODlEKI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762138213; c=relaxed/simple;
+	s=arc-20240116; t=1762139107; c=relaxed/simple;
 	bh=0On8jaixdpeTabPCjTceSlmr69OU/fMrLKyXj/2cpIU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gUvHAaAaOPhr9GFlLBPLB6JHy+Nrz40seRm3BleAZNwxVGP0ZrsWATZiohh7F0BGxW9kTLNpyB1as9xVDo1XL2S1kXJj/oR+yrY7tlhAXCV9y3WKH/f23vOjzUf6ylKy4+4JqrSxwdiW+oDwUqp8CT3/yc0dUKWlo/7XFWeH1HA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FHK6oFqF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2981C4CEF7;
-	Mon,  3 Nov 2025 02:50:10 +0000 (UTC)
+	 MIME-Version; b=SHuv0UdarbKEqExRXUoDaS1ZubJOBX66q5bKMTrda/dL07q8WxlOU9pXMyURi55XvHHiFzKoL9uIv5eQ5eoOEJARKHqod5FyY+WZT3u2VBtDGxXLaxCaKPRoCozBiaSAcAdrZAtSGeWYe4FSo2JBHjGSRgw58ihoI1rvgJcx8IM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RdzjRsvs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED2B5C4CEF7;
+	Mon,  3 Nov 2025 03:05:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762138211;
+	s=k20201202; t=1762139106;
 	bh=0On8jaixdpeTabPCjTceSlmr69OU/fMrLKyXj/2cpIU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FHK6oFqFYHb4J+43sV1hc3HczZFpJTKBdCcIwapFLbb21a8UcW1rEPrMOkvlmrAX1
-	 7JobL9LMirVeTWrQ8020QP08+AIY9r3aE4k4irpdarALtPv7ZK9391bLbvknl7oOfW
-	 3nm5UR9k1sOCB0gTTz11El+pxEK5RDcl3Vs4nhLZCZL++pimUavQeZZMZABlIhM776
-	 sMp7sR2ufnVnd3WleoA+AlcLLbY1CCyFJB9aY6yihX7Z27/KdFU2yhkcFR7ycgsWCY
-	 YoVlE/ov8ERBkFw2rbqe0q78+0SSB1mNj7PnXASeEsVa6ZxJ1hwbpE++j7K6u6q9hE
-	 b7uaA8tBIeOCA==
+	b=RdzjRsvsGzJJYCFg+x2/qOHlZyuqH6Pt9U66Qu/EQ8BYQXQWrYvyk1peslgCAAFAq
+	 +yimVw+8B0SFWCA98dTNsVic12YXITbOUGxwEnmgGMgZsZUEAB/SSigPvA/pE4oe1r
+	 SCWogK+HXRHcEU+zv8FB5unNPmz6XCqxhi+cMViQsDwtnZvoUh3hZvx6zKZU0SYJPB
+	 R4zmI70iJTelKGzIBgh7i730VhKAbBKTEIgDUmx2S8hwpn/Q9oFEE4GD0bJxiXC5MQ
+	 /w94hTeCMgfuhatG+11FErUUjlMrzoVyHoasa0WTml6DRUjHEEORZ7jL8/L/Z0+bJY
+	 uPpHFW3tmkMBg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Gerd Bayer <gbayer@linux.ibm.com>,
 	Niklas Schnelle <schnelle@linux.ibm.com>,
 	Heiko Carstens <hca@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y] s390/pci: Avoid deadlock between PCI error recovery and mlx5 crdump
-Date: Sun,  2 Nov 2025 21:50:09 -0500
-Message-ID: <20251103025009.3819241-1-sashal@kernel.org>
+Subject: [PATCH 6.1.y] s390/pci: Avoid deadlock between PCI error recovery and mlx5 crdump
+Date: Sun,  2 Nov 2025 22:05:03 -0500
+Message-ID: <20251103030503.3825433-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025110327-capably-pond-f178@gregkh>
-References: <2025110327-capably-pond-f178@gregkh>
+In-Reply-To: <2025110328-lyrically-confusing-b129@gregkh>
+References: <2025110328-lyrically-confusing-b129@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
