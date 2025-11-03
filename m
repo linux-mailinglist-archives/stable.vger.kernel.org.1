@@ -1,86 +1,108 @@
-Return-Path: <stable+bounces-192129-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192130-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87667C29C33
-	for <lists+stable@lfdr.de>; Mon, 03 Nov 2025 02:12:37 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66D2BC29C3C
+	for <lists+stable@lfdr.de>; Mon, 03 Nov 2025 02:14:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id DC71F34754E
-	for <lists+stable@lfdr.de>; Mon,  3 Nov 2025 01:12:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CE3D9188F49D
+	for <lists+stable@lfdr.de>; Mon,  3 Nov 2025 01:15:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AD3126E714;
-	Mon,  3 Nov 2025 01:12:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1BD226ED3F;
+	Mon,  3 Nov 2025 01:14:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.b="MNX7RBhe"
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="Cqreozyx"
 X-Original-To: stable@vger.kernel.org
-Received: from zg8tmja2lje4os43os4xodqa.icoremail.net (zg8tmja2lje4os43os4xodqa.icoremail.net [206.189.79.184])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E90C626E71B;
-	Mon,  3 Nov 2025 01:12:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=206.189.79.184
+Received: from canpmsgout07.his.huawei.com (canpmsgout07.his.huawei.com [113.46.200.222])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFFBB26B08F;
+	Mon,  3 Nov 2025 01:14:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.222
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762132351; cv=none; b=i6V0SwBgrdMHmEDeIPSI+oHfH6uVBwtL080tY0ws5CFoxV77Gp1XIgtRCYu8X9QPDgmpUnRJ7gFE6oZBuc6PlBwNlw5h9VUdlEtA7JqZjI5BN7vkArDBUb58V1XrHLJAun4NkDkaJ1zpNZRm16g8SOLxhJ/5FvP5LlkFW3ReJZI=
+	t=1762132486; cv=none; b=B46PDULcFccTIT+Ngh2CDMkGnYirZhUKA62W0GzoAi3W1fTjqKTKo16mroAvHbdJZuk4SXSyiGb+VoP0oO9H7TiGlLylQ3PvITJoY09TjNsYgxSXhoJRPFlbEeAy0V9K/acx7ny0sVJ9Cobid8JanLVlJNFsuECVkRlagiShAnM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762132351; c=relaxed/simple;
-	bh=PCidbrzWqqhfhon3Vw7x7EQqRlUNn1VSF2QjfmxrmHA=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=O7t6yxm0HVOLnere++ZzNEKTMJpXh53Us8kYt1KqbEJAaZPGxVkCP4eSaJv02/1N6bxuA7yI1Pralh5KOC0lRbDs7nRNji3+Mc1/vet8uSPWcvwZw4MdIXBjg0ypYt89f6ihPapP72w4TwVSCzTHyMG4Zt9a+GLKgPLkuGciST0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mails.tsinghua.edu.cn; spf=pass smtp.mailfrom=mails.tsinghua.edu.cn; dkim=pass (1024-bit key) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.b=MNX7RBhe; arc=none smtp.client-ip=206.189.79.184
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mails.tsinghua.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mails.tsinghua.edu.cn
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=mails.tsinghua.edu.cn; s=dkim; h=Received:From:To:Cc:Subject:
-	Date:Message-Id:In-Reply-To:References:MIME-Version:
-	Content-Transfer-Encoding; bh=PCidbrzWqqhfhon3Vw7x7EQqRlUNn1VSF2
-	QjfmxrmHA=; b=MNX7RBhenyFPkD6CSp6ylnvF+29r1rZTip2/ueOlB/wvyow+bj
-	6jm6swoUj2kJnZ3MkT0j7ob4+gKxF4pBe3Xn4aqwzRr9wuusm1ryJz/ygIQjFYQ1
-	8o1+f0fhmWPYL/ArMkyFdyjXNbXgqILzsTHN3gF0Vu25M6kFH/3V3+vcw=
-Received: from estar-Super-Server.. (unknown [103.233.162.254])
-	by web2 (Coremail) with SMTP id yQQGZQCXfwpdAQhpsL+6BA--.5887S2;
-	Mon, 03 Nov 2025 09:12:19 +0800 (CST)
-From: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
-To: kuba@kernel.org
-Cc: netdev@vger.kernel.org,
-	stable@vger.kernel.org,
-	zhaoyz24@mails.tsinghua.edu.cn
-Subject: Re: Re: [PATCH v3 RESEND] net/dccp: validate Reset/Close/CloseReq in DCCP_REQUESTING
-Date: Mon,  3 Nov 2025 09:11:58 +0800
-Message-Id: <20251103011158.4016792-1-zhaoyz24@mails.tsinghua.edu.cn>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20251102155428.4186946a@kernel.org>
-References: <20251102155428.4186946a@kernel.org>
+	s=arc-20240116; t=1762132486; c=relaxed/simple;
+	bh=ndMu32m3Z/qhkCKw12MP1FHuN3cdJlkhYoX6/U5RA68=;
+	h=Subject:To:CC:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=ioBjwKiQqZlzltRM0Gg/yLlvb44gNO8d+sLDoJF5opvjobjpcNVAxDIkObc8Y2BTAdiDUfvGr2+RKLOuX3GDxaUo7e8oWjOYY1rzk4GZ1pW4Y2/KK2UDcHnIGRaqEHJwxWrZs+F+9kDCLHCCBxh2wt38KuaT+xxEe3PN1VAIM3o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=Cqreozyx; arc=none smtp.client-ip=113.46.200.222
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=gUWnt8SGrYXYkKR4QzmHhxMLw3wr5brhnEm/g+EnR24=;
+	b=CqreozyxUltt+PuSdBf7tYfKEe3p2rlHnntUP1IWynNbf8KgkmHBwwXM7IgqWTj4Gc/+Jyzxb
+	ZoAJ8N7BBx3/joSOmm8ndFTswPqH73nzhfjaTO3jc8BZwVWNqkavknXB7ME7uf7+Tj3FAlQ8SOr
+	hseaaYPcpkV4xUqyu5lJPls=
+Received: from mail.maildlp.com (unknown [172.19.163.17])
+	by canpmsgout07.his.huawei.com (SkyGuard) with ESMTPS id 4d0D9916W3zLlVC;
+	Mon,  3 Nov 2025 09:13:01 +0800 (CST)
+Received: from dggpemf500015.china.huawei.com (unknown [7.185.36.143])
+	by mail.maildlp.com (Postfix) with ESMTPS id 9773A1A0188;
+	Mon,  3 Nov 2025 09:14:34 +0800 (CST)
+Received: from [10.67.121.110] (10.67.121.110) by
+ dggpemf500015.china.huawei.com (7.185.36.143) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Mon, 3 Nov 2025 09:14:34 +0800
+Subject: Re: [PATCH v2 2/2] hisi_acc_vfio_pci: Add .match_token_uuid callback
+ in hisi_acc_vfio_pci_migrn_ops
+To: Raghavendra Rao Ananta <rananta@google.com>, Jason Gunthorpe
+	<jgg@ziepe.ca>, Alex Williamson <alex@shazbot.org>, Alex Williamson
+	<alex.williamson@redhat.com>, David Matlack <dmatlack@google.com>
+CC: Josh Hilke <jrhilke@google.com>, <kvm@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
+References: <20251031170603.2260022-1-rananta@google.com>
+ <20251031170603.2260022-3-rananta@google.com>
+From: liulongfang <liulongfang@huawei.com>
+Message-ID: <3acabba9-3ac0-6740-8f0b-457ce81748d6@huawei.com>
+Date: Mon, 3 Nov 2025 09:14:33 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:yQQGZQCXfwpdAQhpsL+6BA--.5887S2
-X-Coremail-Antispam: 1UD129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UjIYCTnIWjp_UUUYT7AC8VAFwI0_Jr0_Gr1l1xkIjI8I6I8E
-	6xAIw20EY4v20xvaj40_Wr0E3s1l1IIY67AEw4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28Cjx
-	kF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVW7JVWDJwA2z4x0Y4vE2Ix0cI8I
-	cVCY1x0267AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4
-	A2jsIEc7CjxVAFwI0_Cr1j6rxdM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x2
-	0xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18Mc
-	Ij6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41l
-	F7I21c0EjII2zVCS5cI20VAGYxC7MxkIecxEwVAFwVWkMxAIw28IcxkI7VAKI48JMxC20s
-	026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_
-	JrI_JrWlx4CE17CEb7AF67AKxVWUAVWUtwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14
-	v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20xva
-	j40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVWUJV
-	W8JbIYCTnIWIevJa73UjIFyTuYvjfU5eHqDUUUU
-X-CM-SenderInfo: 52kd05r2suqzpdlo2hxwvl0wxkxdhvlgxou0/1tbiAQEPAWkHO3eM9QABsU
+In-Reply-To: <20251031170603.2260022-3-rananta@google.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
+ dggpemf500015.china.huawei.com (7.185.36.143)
 
-Dear Jakub,
+On 2025/11/1 1:06, Raghavendra Rao Ananta wrote:
+> The commit, <86624ba3b522> ("vfio/pci: Do vf_token checks for
+> VFIO_DEVICE_BIND_IOMMUFD") accidentally ignored including the
+> .match_token_uuid callback in the hisi_acc_vfio_pci_migrn_ops struct.
+> Introduce the missed callback here.
+> 
+> Fixes: 86624ba3b522 ("vfio/pci: Do vf_token checks for VFIO_DEVICE_BIND_IOMMUFD")
+> Cc: stable@vger.kernel.org
+> Suggested-by: Longfang Liu <liulongfang@huawei.com>
+> Signed-off-by: Raghavendra Rao Ananta <rananta@google.com>
+> ---
+>  drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c b/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
+> index fde33f54e99ec..d07093d7cc3f5 100644
+> --- a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
+> +++ b/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
+> @@ -1564,6 +1564,7 @@ static const struct vfio_device_ops hisi_acc_vfio_pci_migrn_ops = {
+>  	.mmap = hisi_acc_vfio_pci_mmap,
+>  	.request = vfio_pci_core_request,
+>  	.match = vfio_pci_core_match,
+> +	.match_token_uuid = vfio_pci_core_match_token_uuid,
+>  	.bind_iommufd = vfio_iommufd_physical_bind,
+>  	.unbind_iommufd = vfio_iommufd_physical_unbind,
+>  	.attach_ioas = vfio_iommufd_physical_attach_ioas,
+> 
+Reviewed-by: Longfang Liu <liulongfang@huawei.com>
 
-Thank you for your suggestion. We will
-reorganize our patch and send it to stable
-only later.
-
-Yours Sincerely,
-Yizhou Zhao
-
+Thanks.
+Longfang.
 
