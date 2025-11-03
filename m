@@ -1,203 +1,234 @@
-Return-Path: <stable+bounces-192268-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192269-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED872C2DA6E
-	for <lists+stable@lfdr.de>; Mon, 03 Nov 2025 19:21:33 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A845C2DB8B
+	for <lists+stable@lfdr.de>; Mon, 03 Nov 2025 19:45:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9A1003BE277
-	for <lists+stable@lfdr.de>; Mon,  3 Nov 2025 18:21:32 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5BEB74E2246
+	for <lists+stable@lfdr.de>; Mon,  3 Nov 2025 18:45:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FABB23B605;
-	Mon,  3 Nov 2025 18:21:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BAA2313E0F;
+	Mon,  3 Nov 2025 18:45:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=rong.moe header.i=i@rong.moe header.b="RuIUaip0"
+	dkim=pass (1024-bit key) header.d=os.amperecomputing.com header.i=@os.amperecomputing.com header.b="cAi6XVi+"
 X-Original-To: stable@vger.kernel.org
-Received: from sender4-op-o15.zoho.com (sender4-op-o15.zoho.com [136.143.188.15])
+Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11020141.outbound.protection.outlook.com [52.101.56.141])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59DE11A9F94;
-	Mon,  3 Nov 2025 18:21:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70BF9272801;
+	Mon,  3 Nov 2025 18:45:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.56.141
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762194089; cv=pass; b=nQfXDkr+WaW6No9f00kAzm6C00vPFAONFNA2AVjaAEQmNarJ4aPZ3uGVEc0k8bCwUXEnY/q6FYbTZGMFNGdb3Rte3MXuSnY7UA48+4PsrYBIl2YtDrwx3BsOMVDT6ZYLa3/38z+PZWBjXNOKM6tYNkDFjZ0ltErzuEXEr56+XG8=
+	t=1762195555; cv=fail; b=Vco1XVEO21Xc/B/1R8SyQmPKRrbmxmxqW5Oo2K0tEugLd2tukrrjYc8dl+koLpGA+rynm9/xpWSkqmm1U9MSgdbYB1UuE7c0SfQyd8BssxHT4ZFgMlZEY1arImw6Ed2SncxXuwnr/r0kGBdDOWL3e73AtCTz6I0RxIHcR4F0Nfg=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762194089; c=relaxed/simple;
-	bh=PmWZVCBb+tahmE7RsCBi8HotepYlI2NXl+9qAvVys6Q=;
-	h=Message-ID:Subject:From:To:Cc:In-Reply-To:References:Content-Type:
-	 Date:MIME-Version; b=BFwIgtIHUq+JVhzvvouVQrwy62+/2VH3fo7VYNo5mY31nAlT+moOAuQKcEWor/LH7i+/Hl+CQUVGryCRJz+XcJEsCVOEw1PpDcd3ekELROkp8KEWGcvHi/dz7G4cbjccLYorjhtwfh77hEVcmMduNS/2wXcIVbX4eXD/9sAzdUo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rong.moe; spf=pass smtp.mailfrom=rong.moe; dkim=pass (1024-bit key) header.d=rong.moe header.i=i@rong.moe header.b=RuIUaip0; arc=pass smtp.client-ip=136.143.188.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rong.moe
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rong.moe
-ARC-Seal: i=1; a=rsa-sha256; t=1762194071; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=VddSQLqbswyJo4B/inOXjFVXf41QdgWVdnm3KTuTq4/Fc1VOTr5XZ9DXOjMzVF7Jkw4xyovwzcya9hylBSOar4hvriLDy3tJvu5/9Oeuzl3DBvO1wB2XEmoN7Heow9rEDmYk5TwskCD2z+oFGqtW565HrimOHrnhDgBXGeJgzBY=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1762194071; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=Gyw06T/5m9Cp2WllVa8zW2c87rrQdcGV+9Fj1/2v7UM=; 
-	b=Qo3AV0asi7gaN9ihTI42cHHjVbyLbADc5xpx14n/FcNEiRZGVbaDf5+9DO+P4E3MvevbLo7tb61++DtE+y1D6y5YfEuAEbUQNh636X/R/07FmGPQ9fvmO/Hv+3Nq7rdPlQrUG466z2ZzJSJD6idfGrqnQgFibWvXp2U03gFpf7U=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=rong.moe;
-	spf=pass  smtp.mailfrom=i@rong.moe;
-	dmarc=pass header.from=<i@rong.moe>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1762194071;
-	s=zmail; d=rong.moe; i=i@rong.moe;
-	h=Message-ID:Subject:Subject:From:From:To:To:Cc:Cc:In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date:Date:MIME-Version:Message-Id:Reply-To;
-	bh=Gyw06T/5m9Cp2WllVa8zW2c87rrQdcGV+9Fj1/2v7UM=;
-	b=RuIUaip0XeMyHjvjsjdiJOvSBMpY8sbMlOXFFT1ty5tx/FODwZ2xL6jJ0IHUCWWS
-	f/dgLdWTP7ycUS1UnAEtGfR2bXToxiWUFCE7/sShEZp0yEN6/p29u5+3hiVDz2W/4wB
-	cAtJQSLradY1YBj/dMkS2zz76KLGXePLewoqiflM=
-Received: by mx.zohomail.com with SMTPS id 1762194068066262.1453735507406;
-	Mon, 3 Nov 2025 10:21:08 -0800 (PST)
-Message-ID: <7ef252405946f6ab3feff38cc4bd9ddcc49bad56.camel@rong.moe>
-Subject: Re: [PATCH] drm/amd/display: Fix NULL deref in debugfs
- odm_combine_segments
-From: Rong Zhang <i@rong.moe>
-To: Harry Wentland <harry.wentland@amd.com>, Leo Li <sunpeng.li@amd.com>, 
- Rodrigo Siqueira <siqueira@igalia.com>, Alex Deucher
- <alexander.deucher@amd.com>, Christian =?ISO-8859-1?Q?K=F6nig?=	
- <christian.koenig@amd.com>, David Airlie <airlied@gmail.com>, Simona Vetter
-	 <simona@ffwll.ch>
-Cc: Roman Li <roman.li@amd.com>, "ChiaHsuan (Tom) Chung"	
- <chiahsuan.chung@amd.com>, Ray Wu <ray.wu@amd.com>, Mario Limonciello	
- <mario.limonciello@amd.com>, Wenjing Liu <wenjing.liu@amd.com>, Hamza
- Mahfooz	 <hamzamahfooz@linux.microsoft.com>, Aurabindo Pillai
- <aurabindo.pillai@amd.com>, 	amd-gfx@lists.freedesktop.org,
- dri-devel@lists.freedesktop.org, 	linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-In-Reply-To: <20251013164742.24660-1-i@rong.moe>
-References: <20251013164742.24660-1-i@rong.moe>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 04 Nov 2025 02:15:59 +0800
+	s=arc-20240116; t=1762195555; c=relaxed/simple;
+	bh=Qsyb88pq8d9+OQbsN9pbDW+ICrjs4+twFyyhKKbNSrI=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=lBeLaMD0ss9Bgz1TZ4abFM/qY+0izCTV/PLltyI18/G+UPcrPkZqYw3LC1Q2G/zO23f8WOhTpAybV8mCROGh+WpwhBRGqmwpKYIL/7jjB8C/vrBqS1/JjuRX/MwJSBaeMdFWV/U3m+dLDew8JWzlGqT3ZmbX+pK7L8SYqQGDokM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=os.amperecomputing.com; spf=pass smtp.mailfrom=os.amperecomputing.com; dkim=pass (1024-bit key) header.d=os.amperecomputing.com header.i=@os.amperecomputing.com header.b=cAi6XVi+; arc=fail smtp.client-ip=52.101.56.141
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=os.amperecomputing.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=os.amperecomputing.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=YDecvJ1uC88yVneA5LBh4UzHwNloRnXobPZj7jrIzb75hlfAeq9Tl+q+wE2hvn/J2iQa9kZ7AzT3EXDrtJDsSNcPE8ksSAq3KesVuAhtKT+9JmNepN5W8d76mI5j1TM8ypdF6YqQ+im2EbnZfdFhhaSCDO/uv8hc5yE5siFnWYEtRD59AwFQD1pg30xt2MEg4HgKrAOswWVljeOqgENfgX8ca+9ag7NDtuxpdKJ2TjInkohtwWXKJqFjttNjZyS8Sbx3G+qqqmwah9BjiB00REIMFo5e5VWRTHO/9s27tyT1NArHpA6M3AwUkLoJWIrGlh4UAfDqP5b8dlVQ58u8cw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=D+DEkJb3sRLMgPdJXOne+d+2kVv1sHxmraeeZlxopH0=;
+ b=d1ZRyd0fn7+UxX2kz/wHUWY4aUbfxo1+74msj9Qt/7jwbVULBiekUD87CS7/y9ipyGMSEOxe3pmOAAZPEhYVTCZfnXb7fiRSnl1uU/y2VdfBSMzZXIIxvUO2viTxoGBxrjVBQiFVCVgOO1zpUwOqOZt/qgFe7EwaEbh3mM8Ic2ZaGZcbuSu5421fuRzq3vQ7YfWIt4pwqhyx04eUZ9WwB6GDnjOkNOSrq6CTDBe6TUp3hncvY8YScXU1NleuGvCydBpi0NkvI52cMJckD4LSdJbYPsIhCykO8v+5TfdPW/PHIICGjbYShQ0BvPk5WTliPFSB6VtdQeVf5T+XYNpAwg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=os.amperecomputing.com; dmarc=pass action=none
+ header.from=os.amperecomputing.com; dkim=pass
+ header.d=os.amperecomputing.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=os.amperecomputing.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=D+DEkJb3sRLMgPdJXOne+d+2kVv1sHxmraeeZlxopH0=;
+ b=cAi6XVi+NBe5TD9bTrf+c7JohBwctFqEQ1M04hupnVgO1VMu+buT9cbDyx7TVw+SvVC8RfJMssm/0F3GCPLrydhIX4D0MY86TxUc7KqSDe2isuXZRvkoIaZPC+7ibyN9lzasZF3y/1lXNvWWWxck6d5um9awwgPp39254LobSdU=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=os.amperecomputing.com;
+Received: from CH0PR01MB6873.prod.exchangelabs.com (2603:10b6:610:112::22) by
+ PH0PR01MB7288.prod.exchangelabs.com (2603:10b6:510:10b::18) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9275.16; Mon, 3 Nov 2025 18:45:48 +0000
+Received: from CH0PR01MB6873.prod.exchangelabs.com
+ ([fe80::3850:9112:f3bf:6460]) by CH0PR01MB6873.prod.exchangelabs.com
+ ([fe80::3850:9112:f3bf:6460%3]) with mapi id 15.20.9275.015; Mon, 3 Nov 2025
+ 18:45:48 +0000
+Message-ID: <f594696b-ba33-4c04-9cf5-e88767221ae0@os.amperecomputing.com>
+Date: Mon, 3 Nov 2025 10:45:42 -0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] arm64/pageattr: Propagate return value from
+ __change_memory_common
+To: Will Deacon <will@kernel.org>, Dev Jain <dev.jain@arm.com>
+Cc: catalin.marinas@arm.com, ryan.roberts@arm.com, rppt@kernel.org,
+ shijie@os.amperecomputing.com, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20251103061306.82034-1-dev.jain@arm.com>
+ <aQjHQt2rYL6av4qw@willie-the-truck>
+Content-Language: en-US
+From: Yang Shi <yang@os.amperecomputing.com>
+In-Reply-To: <aQjHQt2rYL6av4qw@willie-the-truck>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: CY5PR19CA0002.namprd19.prod.outlook.com
+ (2603:10b6:930:15::8) To CH0PR01MB6873.prod.exchangelabs.com
+ (2603:10b6:610:112::22)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Evolution 3.56.2-5 
-X-ZohoMailClient: External
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH0PR01MB6873:EE_|PH0PR01MB7288:EE_
+X-MS-Office365-Filtering-Correlation-Id: 82511f34-e376-4945-12bb-08de1b09347b
+X-MS-Exchange-AtpMessageProperties: SA
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?YXRiY283SkVXZUdBSC9BempFandJY2VLR05TYll4eFNyeXVDMGpVcHlLenBk?=
+ =?utf-8?B?aGpLR3Z3TTJMNFB0S2VaVjliQ1lPdG9qejhJNGhXTVJ6MytrNDFLMWNFYnpF?=
+ =?utf-8?B?TjZRMVJOdVlyaTU1ZXp6Um93a09id3hSb1Z6MkZFa2N2TlYzdjhqaEVyYTVP?=
+ =?utf-8?B?L1dsQ1ZpNVVWNCs2UWU1Y1BaaFFmT0hGbk1xa1ZWdlN0RllyQXFMOWVpUnJE?=
+ =?utf-8?B?K2RudExDNmNsTWppVGswZGVWVEZJMDN6NE9naGs3L3RzUGh6R1d3dDEzTDlX?=
+ =?utf-8?B?MmVmdVJRdlp5L083VktWZURIN0tXRWhtTzYzbXpqT1dRbTZ6S1VobVYvbWcy?=
+ =?utf-8?B?N3pvN3VMVDJ6OVBmT1Rjck5IT0hVSzdOTlQvYjU0OUVmTXFLWlRtc3c3YmI2?=
+ =?utf-8?B?RVp4QkZaRWVTQkliRityeVVoRUJkS2JYeWwrZEF6QXJ6TFRQUGFTKzF5SGR3?=
+ =?utf-8?B?Ry9mQU9vei9ES2dhZnI1U0M0YWcwUFFGKzJYSENxeHFvRU4yc0czWitKb0VF?=
+ =?utf-8?B?SDJkL05wVUtOMkZDdnp3ZzhLY2hhTlNWd25JMVI3Mmhic2dETytDcnVXYTZo?=
+ =?utf-8?B?ZzZRc0w0VXpNSWo5dnpjZVcyRHFMMS9YeDZBcm9oQmZ3akNKZFozSjgzUENh?=
+ =?utf-8?B?SjhaMm1aN3B1eW5kS3JnOUZjSDY1T3RWVU9scXM5Z2ExVk10VnpNbFc0SXBr?=
+ =?utf-8?B?QnhxRk5TWWQvaXZITzdBdU5QVTA3TDZtTU03MVlqZUxyNGI4OE5ZbzVXSVNC?=
+ =?utf-8?B?MHVuWW1FblEycUp2WEFWQnpqV0Jib3R4YUF0aUtQdGJFdEhpN1FudlYzbkFF?=
+ =?utf-8?B?TXRRb2Z3cTczVXJKaVIxNmV5cmc1aStjNFBVUjg4VUc1VzZIVzZwRUVZUllo?=
+ =?utf-8?B?U3poOFFYa1djVDNnL3JyZTBuejFQVmRkMjRPYjlUazl3SUR2UVdpTVNESTBE?=
+ =?utf-8?B?aERSdFBhZTNXRUg5OTFZQndTdmpMZU1EOUxlV3gva0NTU3J5RHkwU0Jpa0py?=
+ =?utf-8?B?T0NDWHQ5SHhzTklDVU12SWo2QU5ETVpJYU1hTmpPSVpjTVU4UFplUTZ2eEpJ?=
+ =?utf-8?B?WUVPYWxLU3duOWk2SWV0K0NYMlcxQVVxbjNoMjdKa2ExK2ZMbVpMVjQ4SG9v?=
+ =?utf-8?B?SzNjdTZNcDhOakExV2Z2RWpwRlM0RW0ydzVXd1pSUUtDSDJNdi9ERmRBNHd5?=
+ =?utf-8?B?SDhScjUza1VDZHZJUDhiTWdGQm9VUGdqNUw1RVVmdURlNSs0QjFPUm1mYW45?=
+ =?utf-8?B?Kzg2cTh6ejYxdFJzYVpoakh4bjF0MWJaSnpFSWFtdkJ4UTRHK1czcVJ4QWYy?=
+ =?utf-8?B?YWsrblJ6RVhCQmNEN0N3b1ZLOVM3aGp6N1ozSVVXdG1lcXE2Z3doYnF0NVhC?=
+ =?utf-8?B?UU1peThhWnEzaUxEajZleElOeDBMVGg3RmhVbzl0VmRZUlhUYTdYU2I2ZkR1?=
+ =?utf-8?B?cnZWcllDWDVmeSt6enJKcmhsWHZhcitMc0F5Q2grVThtK1F6aXhXTm42aWRU?=
+ =?utf-8?B?dzVZYzJrTUxoM1FZRXVOTDVYK0wwUmtibktLWHhWTGUzUkNGTXF3TjVKNVFN?=
+ =?utf-8?B?QUJqbW1uNWc1MDZNYmVaTFYvcWN5cE0remk4NHZvNVpYRldMOFJicEJISm9X?=
+ =?utf-8?B?VTZPUWlueCtKUFYraEdCVCtRdzVjM2pJMmtBYzk5c053SmJBbmU3NnRtZUhN?=
+ =?utf-8?B?MmxBTEx6VUlpL1dWeXZoN3dsMEd5R01nRGgrT2FiNzFNV0ZsOGgyQTByT3NB?=
+ =?utf-8?B?VDFCcjMrMitkbWw4cGlQSVQ5UUJWRXAydGh3VE0zeDA2SFJTbXhiT3hRNldi?=
+ =?utf-8?B?RmVkUmVySkp6QnBDQ2IzKzdnd2svT0djZ3dtQXRvNVBibXRnSVJNbFJRWFhI?=
+ =?utf-8?B?RDFzWDNBWjN1Si8xTk5qWmdRQW0wanVuMmNXYXNPeEhWLzdxK1pNaHNhdW1W?=
+ =?utf-8?Q?7bDu+hDnbAMBojbV84SaLbyNE1ttYyrJ?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH0PR01MB6873.prod.exchangelabs.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?eGIxZkhpSnRoeUV0SDhwS2tFR0t0UHUwd1hqU2lkUlhRN0t6TDVXa0RVN3pr?=
+ =?utf-8?B?MXc2bHlqZndQdWE2OEFMZzR6UnFDSjltaS9Vai9mL3N2amlHeXJidW5ubTFi?=
+ =?utf-8?B?eTNZTS9MK0gyOUcyNm5OMmZoVDJzVnhSSTh6NFJjbDRqK2VpazJBRDg5Nnda?=
+ =?utf-8?B?dTZ3UkZvZmNoSjlDY2kxbHplR3FvWXFUNFA5RHdPVGs3OFRRTnE4ZG4xUGNC?=
+ =?utf-8?B?T29uRWlaajRnekVvaVB6cDNicHdPZHZnMXlFcTNURCsxMmxpSldkK0Zqa2dH?=
+ =?utf-8?B?NVRibUpjeWVUdWZUanIxcXFiK2FqTzVGMC9lbFdXcE42WEQvcy91RG9LS1Q3?=
+ =?utf-8?B?eG14N1ZFUGk2M3VGdEk4TGRZQjMyOWx5d0FDN2tXeUU0cGYwbTViSlI1NGN4?=
+ =?utf-8?B?bk9wRVoyaXZmVi9hcUtjcnA2VlV1ajBqOGw1N1Z5T0JXaVY4TnluRGtrNmM0?=
+ =?utf-8?B?aWQ1NW1ralVlR1BIVzEzQVRwdGdLZFNCOXdUMmx4bTUveEN1N0VPUmUvdXRt?=
+ =?utf-8?B?UkNrc0lhNHNZQmdXYkV2MHpoNEI5cmprUlA4TTMzZExHd2wvUnlPalIyZThR?=
+ =?utf-8?B?VTZ1UWRGb0krc1FCeDdneGlzZ0hnaXhReGpXQUhNS2dyVGFMUTVaSTlWcUlp?=
+ =?utf-8?B?Y3dyRWxCSk9xMmRvWnBVc3J3bTFNL0sxNlRsYUVMZEVzODB6Vjd4UWxWaUVS?=
+ =?utf-8?B?MW1JaDltMmE4QWo4UVg4WmcyTFdJTjdIZDhHSWFwMldRWkw2TGtCZVdITlVw?=
+ =?utf-8?B?OEFpcWtFOGhIbkc0Q3hpb0g2cVZyK2pVY1h0TkhHVVBWSmtHdmVIVk9uekU4?=
+ =?utf-8?B?VDJMaVZlOFJMZU1CZ1VoVXhHSmJCNHl3MzhUTWFCOExoQmFlYVNvc2FGa094?=
+ =?utf-8?B?d01qM2dRS1hyRkZhdmRwKzkwWXBJNHJ4d0tkVm9Yb05uVVpWbitEbUFpbklS?=
+ =?utf-8?B?RFl0MEd1bVgxekhHYkFpZm5TS3BIRXN5VlFUSWFxSVhKQzJHYk1odExoOFZU?=
+ =?utf-8?B?U2orSUI5a0lIR0ZIanFIY1NLMVZhcExiZHVpVjlmNWhYcElmMzl3V295UEtw?=
+ =?utf-8?B?c3M2d1hQRytPeGhWdDZVc0txY0Evd3N4THlYajdWOHRkanFSalVEOUd0VUoy?=
+ =?utf-8?B?UHppMkJLa2JRTk9Ecy9Hb1ZhY3lDT2Z1UGdoMUdiNUpZSllLTmxkRHJ5bkQ2?=
+ =?utf-8?B?dndLWnJhOUlJaVdJOHpDdUdLL3dIcFIrNEdhUlltVXhpY3N1SGhsTlF6K0ZF?=
+ =?utf-8?B?aW1MMG40T29kQ3BiUjRsQm5sZjduRjJBdkNGbS9aaENlcXg1VXlKd1NrOU1v?=
+ =?utf-8?B?cGg1eUFLRFBnUnBtNURoYVBlcUFNUXVzYXQ5Q3U0dWhaL09FOEtqLzBxRVow?=
+ =?utf-8?B?SU5GR1F1WnFqVjJoS3c0T0l0NVFDMkNBWmxqS0tJQVVmZVpiVXVFUVVZSUFl?=
+ =?utf-8?B?VkxwMzlzQmwxbEszcGJ2ZU9DOVI0eXJFRjUyVEE3WHk1TkF3QWRFZ0ZJMUha?=
+ =?utf-8?B?S1pSV0lteXViSTJDM0tEOFYveVZaZTdaVFJrYjBZbHY2STNSamh2bS9FVElE?=
+ =?utf-8?B?TW1FMVM0bzZadmVRMDFHTzZmc21oZHM0Z1BjZXpPZis3UGMrbzJwT2x4dmk5?=
+ =?utf-8?B?WSsxeTV1K0ovWHJMMkdEVjB3SzEwZXBodXBNMFpPbTA1eHdqOUF2dmQvdmJC?=
+ =?utf-8?B?aGNWQVBNMzRHdnNqUVJvZVdlL293VE5NQ2JCbG4xMFowRDFFQTBlVmM2QTkz?=
+ =?utf-8?B?bWg3eXUyN1phTU5IaVNtMThkOTRMRHZuUWMvb3FUTm5RZjlNRWR0SVp3RVM1?=
+ =?utf-8?B?SFg0Q3JXQWhFeEFNOWJKamF3ZHVJZWcvYTZDMkRMWVFJUFRRWndWQUNiSzN6?=
+ =?utf-8?B?akR3K0tEZWlBNzFNSUc4ekdmRHhZUXRsR0VsN2JjZ1kyN3ZPSjYrbEw3V2ha?=
+ =?utf-8?B?WFU2V2JYN1hkVUE5cHgxZlFYS280ZXMzZ0tiVlI4TGVCcGxDa3VzMVFDbmJ4?=
+ =?utf-8?B?Mm9LREFuMmp3S3JsMnNtN3l3Y2d1Q2o0dlpYL0p3bnBid2RaN0g5eTdaNzNI?=
+ =?utf-8?B?a21QaitVeGtLSVhFNnQxczIzNjdvUk96OCtoN1VoS04rT0VVZUx2THdtaFgx?=
+ =?utf-8?B?WE1IQnVPcXRZemlBeTZPN0xuUTQ5Vlg3S1ZDeUpRSFQzcGtBZnh0eCtVTG8z?=
+ =?utf-8?Q?NEAlrQ1surm/lZQzHGuMwMc=3D?=
+X-OriginatorOrg: os.amperecomputing.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 82511f34-e376-4945-12bb-08de1b09347b
+X-MS-Exchange-CrossTenant-AuthSource: CH0PR01MB6873.prod.exchangelabs.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Nov 2025 18:45:48.3651
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3bc2b170-fd94-476d-b0ce-4229bdc904a7
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 3hY2Wbl3jevOZSgffe4PS43/MQoKBVwLPHaUarAzFqrO4xG/HEqKuTtRg6Rd/tBJCmA/5QsbIkS9GKroThpt/ZTIAVtzbFq9aGdv443xVfU=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR01MB7288
 
-Hi all,
 
-On Tue, 2025-10-14 at 00:47 +0800, Rong Zhang wrote:
-> When a connector is connected but inactive (e.g., disabled by desktop
-> environments), pipe_ctx->stream_res.tg will be destroyed. Then, reading
-> odm_combine_segments causes kernel NULL pointer dereference.
->=20
->  BUG: kernel NULL pointer dereference, address: 0000000000000000
->  #PF: supervisor read access in kernel mode
->  #PF: error_code(0x0000) - not-present page
->  PGD 0 P4D 0
->  Oops: Oops: 0000 [#1] SMP NOPTI
->  CPU: 16 UID: 0 PID: 26474 Comm: cat Not tainted 6.17.0+ #2 PREEMPT(lazy)=
-  e6a17af9ee6db7c63e9d90dbe5b28ccab67520c6
->  Hardware name: LENOVO 21Q4/LNVNB161216, BIOS PXCN25WW 03/27/2025
->  RIP: 0010:odm_combine_segments_show+0x93/0xf0 [amdgpu]
->  Code: 41 83 b8 b0 00 00 00 01 75 6e 48 98 ba a1 ff ff ff 48 c1 e0 0c 48 =
-8d 8c 07 d8 02 00 00 48 85 c9 74 2d 48 8b bc 07 f0 08 00 00 <48> 8b 07 48 8=
-b 80 08 02 00>
->  RSP: 0018:ffffd1bf4b953c58 EFLAGS: 00010286
->  RAX: 0000000000005000 RBX: ffff8e35976b02d0 RCX: ffff8e3aeed052d8
->  RDX: 00000000ffffffa1 RSI: ffff8e35a3120800 RDI: 0000000000000000
->  RBP: 0000000000000000 R08: ffff8e3580eb0000 R09: ffff8e35976b02d0
->  R10: ffffd1bf4b953c78 R11: 0000000000000000 R12: ffffd1bf4b953d08
->  R13: 0000000000040000 R14: 0000000000000001 R15: 0000000000000001
->  FS:  00007f44d3f9f740(0000) GS:ffff8e3caa47f000(0000) knlGS:000000000000=
-0000
->  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
->  CR2: 0000000000000000 CR3: 00000006485c2000 CR4: 0000000000f50ef0
->  PKRU: 55555554
->  Call Trace:
->   <TASK>
->   seq_read_iter+0x125/0x490
->   ? __alloc_frozen_pages_noprof+0x18f/0x350
->   seq_read+0x12c/0x170
->   full_proxy_read+0x51/0x80
->   vfs_read+0xbc/0x390
->   ? __handle_mm_fault+0xa46/0xef0
->   ? do_syscall_64+0x71/0x900
->   ksys_read+0x73/0xf0
->   do_syscall_64+0x71/0x900
->   ? count_memcg_events+0xc2/0x190
->   ? handle_mm_fault+0x1d7/0x2d0
->   ? do_user_addr_fault+0x21a/0x690
->   ? exc_page_fault+0x7e/0x1a0
->   entry_SYSCALL_64_after_hwframe+0x6c/0x74
->  RIP: 0033:0x7f44d4031687
->  Code: 48 89 fa 4c 89 df e8 58 b3 00 00 8b 93 08 03 00 00 59 5e 48 83 f8 =
-fc 74 1a 5b c3 0f 1f 84 00 00 00 00 00 48 8b 44 24 10 0f 05 <5b> c3 0f 1f 8=
-0 00 00 00 00>
->  RSP: 002b:00007ffdb4b5f0b0 EFLAGS: 00000202 ORIG_RAX: 0000000000000000
->  RAX: ffffffffffffffda RBX: 00007f44d3f9f740 RCX: 00007f44d4031687
->  RDX: 0000000000040000 RSI: 00007f44d3f5e000 RDI: 0000000000000003
->  RBP: 0000000000040000 R08: 0000000000000000 R09: 0000000000000000
->  R10: 0000000000000000 R11: 0000000000000202 R12: 00007f44d3f5e000
->  R13: 0000000000000003 R14: 0000000000000000 R15: 0000000000040000
->   </TASK>
->  Modules linked in: tls tcp_diag inet_diag xt_mark ccm snd_hrtimer snd_se=
-q_dummy snd_seq_midi snd_seq_oss snd_seq_midi_event snd_rawmidi snd_seq snd=
-_seq_device x>
->   snd_hda_codec_atihdmi snd_hda_codec_realtek_lib lenovo_wmi_helpers thin=
-k_lmi snd_hda_codec_generic snd_hda_codec_hdmi snd_soc_core kvm snd_compres=
-s uvcvideo sn>
->   platform_profile joydev amd_pmc mousedev mac_hid sch_fq_codel uinput i2=
-c_dev parport_pc ppdev lp parport nvme_fabrics loop nfnetlink ip_tables x_t=
-ables dm_cryp>
->  CR2: 0000000000000000
->  ---[ end trace 0000000000000000 ]---
->  RIP: 0010:odm_combine_segments_show+0x93/0xf0 [amdgpu]
->  Code: 41 83 b8 b0 00 00 00 01 75 6e 48 98 ba a1 ff ff ff 48 c1 e0 0c 48 =
-8d 8c 07 d8 02 00 00 48 85 c9 74 2d 48 8b bc 07 f0 08 00 00 <48> 8b 07 48 8=
-b 80 08 02 00>
->  RSP: 0018:ffffd1bf4b953c58 EFLAGS: 00010286
->  RAX: 0000000000005000 RBX: ffff8e35976b02d0 RCX: ffff8e3aeed052d8
->  RDX: 00000000ffffffa1 RSI: ffff8e35a3120800 RDI: 0000000000000000
->  RBP: 0000000000000000 R08: ffff8e3580eb0000 R09: ffff8e35976b02d0
->  R10: ffffd1bf4b953c78 R11: 0000000000000000 R12: ffffd1bf4b953d08
->  R13: 0000000000040000 R14: 0000000000000001 R15: 0000000000000001
->  FS:  00007f44d3f9f740(0000) GS:ffff8e3caa47f000(0000) knlGS:000000000000=
-0000
->  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
->  CR2: 0000000000000000 CR3: 00000006485c2000 CR4: 0000000000f50ef0
->  PKRU: 55555554
->=20
-> Fix this by checking pipe_ctx->stream_res.tg before dereferencing.
->=20
-> Fixes: 07926ba8a44f ("drm/amd/display: Add debugfs interface for ODM comb=
-ine info")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Rong Zhang <i@rong.moe>
-> ---
->  drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_debugfs.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
->=20
-> diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_debugfs.c b/=
-drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_debugfs.c
-> index f263e1a4537e1..00dac862b665a 100644
-> --- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_debugfs.c
-> +++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_debugfs.c
-> @@ -1302,7 +1302,8 @@ static int odm_combine_segments_show(struct seq_fil=
-e *m, void *unused)
->  	if (connector->status !=3D connector_status_connected)
->  		return -ENODEV;
-> =20
-> -	if (pipe_ctx !=3D NULL && pipe_ctx->stream_res.tg->funcs->get_odm_combi=
-ne_segments)
-> +	if (pipe_ctx && pipe_ctx->stream_res.tg &&
-> +	    pipe_ctx->stream_res.tg->funcs->get_odm_combine_segments)
->  		pipe_ctx->stream_res.tg->funcs->get_odm_combine_segments(pipe_ctx->str=
-eam_res.tg, &segments);
-> =20
->  	seq_printf(m, "%d\n", segments);
->=20
-> base-commit: 3a8660878839faadb4f1a6dd72c3179c1df56787
 
-Gentle ping.
+On 11/3/25 7:16 AM, Will Deacon wrote:
+> On Mon, Nov 03, 2025 at 11:43:06AM +0530, Dev Jain wrote:
+>> Post a166563e7ec3 ("arm64: mm: support large block mapping when rodata=full"),
+>> __change_memory_common has a real chance of failing due to split failure.
+>> Before that commit, this line was introduced in c55191e96caa, still having
+>> a chance of failing if it needs to allocate pagetable memory in
+>> apply_to_page_range, although that has never been observed to be true.
+>> In general, we should always propagate the return value to the caller.
+>>
+>> Cc: stable@vger.kernel.org
+>> Fixes: c55191e96caa ("arm64: mm: apply r/o permissions of VM areas to its linear alias as well")
+>> Signed-off-by: Dev Jain <dev.jain@arm.com>
+>> ---
+>> Based on Linux 6.18-rc4.
+>>
+>>   arch/arm64/mm/pageattr.c | 5 ++++-
+>>   1 file changed, 4 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/arch/arm64/mm/pageattr.c b/arch/arm64/mm/pageattr.c
+>> index 5135f2d66958..b4ea86cd3a71 100644
+>> --- a/arch/arm64/mm/pageattr.c
+>> +++ b/arch/arm64/mm/pageattr.c
+>> @@ -148,6 +148,7 @@ static int change_memory_common(unsigned long addr, int numpages,
+>>   	unsigned long size = PAGE_SIZE * numpages;
+>>   	unsigned long end = start + size;
+>>   	struct vm_struct *area;
+>> +	int ret;
+>>   	int i;
+>>   
+>>   	if (!PAGE_ALIGNED(addr)) {
+>> @@ -185,8 +186,10 @@ static int change_memory_common(unsigned long addr, int numpages,
+>>   	if (rodata_full && (pgprot_val(set_mask) == PTE_RDONLY ||
+>>   			    pgprot_val(clear_mask) == PTE_RDONLY)) {
+>>   		for (i = 0; i < area->nr_pages; i++) {
+>> -			__change_memory_common((u64)page_address(area->pages[i]),
+>> +			ret = __change_memory_common((u64)page_address(area->pages[i]),
+>>   					       PAGE_SIZE, set_mask, clear_mask);
+>> +			if (ret)
+>> +				return ret;
+> Hmm, this means we can return failure half-way through the operation. Is
+> that something callers are expecting to handle? If so, how can they tell
+> how far we got?
+
+IIUC the callers don't have to know whether it is half-way or not 
+because the callers will change the permission back (e.g. to RW) for the 
+whole range when freeing memory.
 
 Thanks,
-Rong
+Yang
+
+>
+> Will
+
 
