@@ -1,118 +1,125 @@
-Return-Path: <stable+bounces-192198-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192199-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93922C2BD75
-	for <lists+stable@lfdr.de>; Mon, 03 Nov 2025 13:53:45 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23928C2BD6F
+	for <lists+stable@lfdr.de>; Mon, 03 Nov 2025 13:53:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 719CE4F9D14
-	for <lists+stable@lfdr.de>; Mon,  3 Nov 2025 12:46:20 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 2A6F24E9721
+	for <lists+stable@lfdr.de>; Mon,  3 Nov 2025 12:46:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6393130DEB0;
-	Mon,  3 Nov 2025 12:45:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0C7530DD2A;
+	Mon,  3 Nov 2025 12:45:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QM0hY7OM"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="vPmF0CSo"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23AC9301700
-	for <stable@vger.kernel.org>; Mon,  3 Nov 2025 12:45:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5C1A3081BA
+	for <stable@vger.kernel.org>; Mon,  3 Nov 2025 12:45:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762173920; cv=none; b=muC33mWcKLoJ2vJspKPevl9uppNCDTtwYLtoYUz5MMdZri9aUFBpDTVRygW4HmmuEPZ7yvHyvAO3IAQWOOZ3mXtDZISbjQQEeiX3hDJBVngPq8Fs7QN1SGJmh4krt6dRV5Z5OiM7fNmQs0/SoDGtW0ubO182kmKCFkU0/D0qtvw=
+	t=1762173937; cv=none; b=d4L03LOkXtf+4JH5lV3KKpgTz771KmPmRe7j9mdiOwpeYgv2NyrBrcLsraLw4fu+ivmI/prpeXpkwbVtAI3j50/ELq833PctRenmXbFz5sAzbJwcBNEnbM1Pq8UcGIgfR1TNwPnXb7Gm+vUyQUzJOZjTblV3uFRB6FtPXDx2wG8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762173920; c=relaxed/simple;
-	bh=q/5Dp3SOjbKR5Z41pYK7ngwgH+0D/VSNB0MGWtU+NcI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fFXK/RHchJGpZd4QVnNIjlMQ4gqkjQ1QGtpmaTTaOv8apG75lTryvV3OTVrQLMhvbBUZ631jar3obJ4ueHZZrbPo8nkzbx1zcewtG1YQPSXu1me1hdBiyXuu614tDh89qx3po2grk/Xka223OeBMcKkbvx6fcBoTzEGBqCXmO74=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QM0hY7OM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9910C4CEE7;
-	Mon,  3 Nov 2025 12:45:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762173919;
-	bh=q/5Dp3SOjbKR5Z41pYK7ngwgH+0D/VSNB0MGWtU+NcI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QM0hY7OMgmJMhnVkLFbECd84l9TL3aCQSQGHiEE7FiZkhQ0O9AWiIam+ZiRW5SEkd
-	 dHp3Tk8QiZxbIJjQmSULb+RbsxKLHY5302sKX5jKEYVAr+v9ZXxjZXgzhJFUmIe9Hq
-	 TDaKt4zgAOBAWnVpYeIWUiJD8kDAI1WCdjrF1AeLWrRNV00phJNFv4kn3mClGTWFjY
-	 bYhxNJMteedv1TdLT1isceglszohr68+6oMkcPcAOrhLoTsllPonWinB+E5SBIYrFX
-	 wjVVlPy84Dkq78DgUUYrRADR5+JOasC4W7ytioss4HC2EMGfJRTE9qM8RGnfGyfIhX
-	 o1SAIq7B1z0EQ==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Heiko Carstens <hca@linux.ibm.com>,
-	Luiz Capitulino <luizcap@redhat.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	David Hildenbrand <david@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y] s390: Disable ARCH_WANT_OPTIMIZE_HUGETLB_VMEMMAP
-Date: Mon,  3 Nov 2025 07:45:16 -0500
-Message-ID: <20251103124516.4002916-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025110340-immature-headband-9af4@gregkh>
-References: <2025110340-immature-headband-9af4@gregkh>
+	s=arc-20240116; t=1762173937; c=relaxed/simple;
+	bh=PXv1z36/be6/4aY9ewYt8RoZMabXtTyrqmzZIbYsjrg=;
+	h=MIME-Version:Date:Content-Type:From:Message-ID:Subject:To:Cc:
+	 In-Reply-To:References; b=KYcdyI4DedbzHKImA4YrTPVU41LnqPhCGbhiXFvPqUra5xXeBjOBDeQLF2XRAnWoKJ5irV/t/O3uV82j+iGh8/4B5JmPPv4pqhzQPO8F+5/d5GdAwFDNATjRS4+AesMniQst+ZlhoG7oVShUhw96MZYDrQ3o8Mri23M/tnc6N4s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=vPmF0CSo; arc=none smtp.client-ip=91.218.175.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1762173932;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1BZfPsf1uykEsk+GOZr7evhjaMa7D7ZzUYhWF9AmfpY=;
+	b=vPmF0CSob2yFKuI+FJqd06xxfooXyeA+NbfplTK9R97Dz+z4wtnUJcjGrjjIFv/PFY3/x4
+	1g4cGTwE/H/xndi4RmDpIdrXZtl6N5zdHsQYML0E6jkTvTMEFixJC+0jrgQZWOlweA4gwF
+	4RTX2ZHzgNFnGJjCn/PqUSq9rhXF1qw=
+Date: Mon, 03 Nov 2025 12:45:29 +0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: "Jiayuan Chen" <jiayuan.chen@linux.dev>
+Message-ID: <43899f2857ba10fbcc90f9d273bb09dadd7229ec@linux.dev>
+TLS-Required: No
+Subject: Re: [PATCH net v3 1/3] net,mptcp: fix proto fallback detection with
+ BPF sockmap
+To: "Paolo Abeni" <pabeni@redhat.com>, mptcp@lists.linux.dev
+Cc: stable@vger.kernel.org, "Jakub Sitnicki" <jakub@cloudflare.com>, "John
+ Fastabend" <john.fastabend@gmail.com>, "Eric Dumazet"
+ <edumazet@google.com>, "Kuniyuki Iwashima" <kuniyu@google.com>, "Willem
+ de Bruijn" <willemb@google.com>, "David S. Miller" <davem@davemloft.net>,
+ "Jakub Kicinski" <kuba@kernel.org>, "Simon Horman" <horms@kernel.org>,
+ "Matthieu Baerts" <matttbe@kernel.org>, "Mat Martineau"
+ <martineau@kernel.org>, "Geliang Tang" <geliang@kernel.org>, "Andrii
+ Nakryiko" <andrii@kernel.org>, "Eduard Zingerman" <eddyz87@gmail.com>,
+ "Alexei Starovoitov" <ast@kernel.org>, "Daniel Borkmann"
+ <daniel@iogearbox.net>, "Martin KaFai Lau" <martin.lau@linux.dev>, "Song
+ Liu" <song@kernel.org>, "Yonghong Song" <yonghong.song@linux.dev>, "KP
+ Singh" <kpsingh@kernel.org>, "Stanislav Fomichev" <sdf@fomichev.me>, "Hao
+ Luo" <haoluo@google.com>, "Jiri Olsa" <jolsa@kernel.org>, "Shuah Khan"
+ <shuah@kernel.org>, "Florian Westphal" <fw@strlen.de>,
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+ bpf@vger.kernel.org, linux-kselftest@vger.kernel.org
+In-Reply-To: <7dfda5bb-665c-4068-acd4-795972da63e8@redhat.com>
+References: <20251023125450.105859-1-jiayuan.chen@linux.dev>
+ <20251023125450.105859-2-jiayuan.chen@linux.dev>
+ <c10939d2-437e-47fb-81e9-05723442c935@redhat.com>
+ <7dfda5bb-665c-4068-acd4-795972da63e8@redhat.com>
+X-Migadu-Flow: FLOW_OUT
 
-From: Heiko Carstens <hca@linux.ibm.com>
+October 28, 2025 at 19:47, "Paolo Abeni" <pabeni@redhat.com mailto:pabeni=
+@redhat.com?to=3D%22Paolo%20Abeni%22%20%3Cpabeni%40redhat.com%3E > wrote:
 
-[ Upstream commit 64e2f60f355e556337fcffe80b9bcff1b22c9c42 ]
 
-As reported by Luiz Capitulino enabling HVO on s390 leads to reproducible
-crashes. The problem is that kernel page tables are modified without
-flushing corresponding TLB entries.
+>=20
+>=20On 10/28/25 12:30 PM, Paolo Abeni wrote:
+>=20
+>=20>=20
+>=20> On 10/23/25 2:54 PM, Jiayuan Chen wrote:
+> >=20
+>=20> >=20
+>=20> > When the server has MPTCP enabled but receives a non-MP-capable r=
+equest
+> > >  from a client, it calls mptcp_fallback_tcp_ops().
+> > >=20
+>=20> >  Since non-MPTCP connections are allowed to use sockmap, which re=
+places
+> > >  sk->sk_prot, using sk->sk_prot to determine the IP version in
+> > >  mptcp_fallback_tcp_ops() becomes unreliable. This can lead to assi=
+gning
+> > >  incorrect ops to sk->sk_socket->ops.
+> > >=20
+>=20>=20=20
+>=20>  I don't see how sockmap could modify the to-be-accepted socket sk_=
+prot
+> >  before mptcp_fallback_tcp_ops(), as such call happens before the fd =
+is
+> >  installed, and AFAICS sockmap can only fetch sockets via fds.
+> >=20=20
+>=20>  Is this patch needed?
+> >=20
+>=20Matttbe explained off-list the details of how that could happen. I th=
+ink
+> the commit message here must be more verbose to explain clearly the
+> whys, even to those non proficient in sockmap like me.
+>=20
+>=20Thanks,
+>=20
+>=20Paolo
+>
 
-Even if it looks like the empty flush_tlb_all() implementation on s390 is
-the problem, it is actually a different problem: on s390 it is not allowed
-to replace an active/valid page table entry with another valid page table
-entry without the detour over an invalid entry. A direct replacement may
-lead to random crashes and/or data corruption.
-
-In order to invalidate an entry special instructions have to be used
-(e.g. ipte or idte). Alternatively there are also special instructions
-available which allow to replace a valid entry with a different valid
-entry (e.g. crdte or cspg).
-
-Given that the HVO code currently does not provide the hooks to allow for
-an implementation which is compliant with the s390 architecture
-requirements, disable ARCH_WANT_OPTIMIZE_HUGETLB_VMEMMAP again, which is
-basically a revert of the original patch which enabled it.
-
-Reported-by: Luiz Capitulino <luizcap@redhat.com>
-Closes: https://lore.kernel.org/all/20251028153930.37107-1-luizcap@redhat.com/
-Fixes: 00a34d5a99c0 ("s390: select ARCH_WANT_HUGETLB_PAGE_OPTIMIZE_VMEMMAP")
-Cc: stable@vger.kernel.org
-Tested-by: Luiz Capitulino <luizcap@redhat.com>
-Reviewed-by: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
-Reviewed-by: David Hildenbrand <david@redhat.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-[ Adjust context ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- arch/s390/Kconfig | 1 -
- 1 file changed, 1 deletion(-)
-
-diff --git a/arch/s390/Kconfig b/arch/s390/Kconfig
-index bd4782f23f66d..e99dae26500d2 100644
---- a/arch/s390/Kconfig
-+++ b/arch/s390/Kconfig
-@@ -128,7 +128,6 @@ config S390
- 	select ARCH_WANT_DEFAULT_BPF_JIT
- 	select ARCH_WANT_IPC_PARSE_VERSION
- 	select ARCH_WANT_KERNEL_PMD_MKWRITE
--	select ARCH_WANT_OPTIMIZE_HUGETLB_VMEMMAP
- 	select BUILDTIME_TABLE_SORT
- 	select CLONE_BACKWARDS2
- 	select DMA_OPS if PCI
--- 
-2.51.0
-
+Thanks, I will add more details into commit message :).
 
