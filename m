@@ -1,110 +1,105 @@
-Return-Path: <stable+bounces-192244-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192245-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC18FC2D52A
-	for <lists+stable@lfdr.de>; Mon, 03 Nov 2025 18:01:43 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0F37C2D566
+	for <lists+stable@lfdr.de>; Mon, 03 Nov 2025 18:04:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F3003188B537
-	for <lists+stable@lfdr.de>; Mon,  3 Nov 2025 17:00:13 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 4CB5734B307
+	for <lists+stable@lfdr.de>; Mon,  3 Nov 2025 17:04:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20DAC31A815;
-	Mon,  3 Nov 2025 16:56:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBF7A31B81B;
+	Mon,  3 Nov 2025 17:02:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=parknet.co.jp header.i=@parknet.co.jp header.b="AKx8k3U9";
-	dkim=permerror (0-bit key) header.d=parknet.co.jp header.i=@parknet.co.jp header.b="UzNzfMyW"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nRYq8Q+F"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.parknet.co.jp (mail.parknet.co.jp [210.171.160.6])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3741528750A;
-	Mon,  3 Nov 2025 16:56:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.171.160.6
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73C9331AF2D;
+	Mon,  3 Nov 2025 17:02:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762188980; cv=none; b=pJx/w19RYkJ3VBEXMIvvUf31yTFeuh1KSRUTO32/cvExRRkrhCwUcD1c7Q0s3YHOdidRDETJkWHZw0OxC7PO8OXrw721FRlxRn6M4ADk6+4rHyVrx4kEOnjFguplDTkxh0BX9SNxGw+FztsShGmX3OPbYRumQB4wKQZsxzB5wBY=
+	t=1762189338; cv=none; b=Wr3+WS+lH6D7upKYHMdhAjfK9FUjEW/9/ilCYQLk+cq4o73I7rY58u8hkXXDG54n5PZMazGLazJBnBodUjysiC9+Oakp24mhlE0zJ37uHvkBqzVQfFFom85ERinEdkSzx8i+Ex26kAkwpgw7Rci8a+/XoMj2JejZwj86Dxhi4k4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762188980; c=relaxed/simple;
-	bh=rUdhc9/dZGIPnjRxxoKqxJEAxeMc/H4w+8L2UFjmxzo=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=sxcFw7f0Lylbe4cpLzLDFry/Up77DpqvForG2L1YdGyOFSRYDrflbJLq2QsUs2HAIregAErondp3BGJNlXLZ9m3+tMX+y4hd0Ap2JN/FgXR+YiK+pidzFum3Rg4R+VID/byrwjGgJoxMA3RHN2dWJ/wxRBwqZVvH590soeQmy8E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mail.parknet.co.jp; spf=pass smtp.mailfrom=parknet.co.jp; dkim=pass (2048-bit key) header.d=parknet.co.jp header.i=@parknet.co.jp header.b=AKx8k3U9; dkim=permerror (0-bit key) header.d=parknet.co.jp header.i=@parknet.co.jp header.b=UzNzfMyW; arc=none smtp.client-ip=210.171.160.6
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mail.parknet.co.jp
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=parknet.co.jp
-Received: from ibmpc.myhome.or.jp (server.parknet.ne.jp [210.171.168.39])
-	by mail.parknet.co.jp (Postfix) with ESMTPSA id B1F892051576;
-	Tue,  4 Nov 2025 01:56:09 +0900 (JST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=parknet.co.jp;
-	s=20250114; t=1762188970;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=V3y+4DVGUspp58JJWY2SOnaLsTUPZnxETW8fSaQHj9Y=;
-	b=AKx8k3U9AjJf5i9G34VdNUXwSa4+qoC8VJAITSzTioOXQuZHi4tcaYqIBnB69AsiFHlXHn
-	aKg3PZTxJNRyjK5u+w+pymmkoU4LG41JRrHuYHQiCkmfTCz8YPuBBcENdPeRt/DWVhoNpA
-	7SQi4ZJe4zzZwuL2HoHRKCSvUKXRTY9xXrG3eQp/e+8b26xtC8q3TZgojk5Ytz6IatD/Uz
-	HYL5SNrqkwcmK1mtbybpsHLkjElgpyXPqg2kBFRbjt+oz7T7kkpPw1MJNA4eOG38BZzZOo
-	IfbKIS1jQQp8aGTMRzd3PPFbtLRtVrq64rSlo9tjJTyrcMPzdIO1wSb5kb++vQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=parknet.co.jp;
-	s=20250114-ed25519; t=1762188970;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=V3y+4DVGUspp58JJWY2SOnaLsTUPZnxETW8fSaQHj9Y=;
-	b=UzNzfMyW6oVv2Xlx7iJyGeZa1lzjOal6Bnu7ppOxhsUxiUbNl1GY6q6xFP+veTL7EhrULo
-	joOV7X6jU/nhkDBA==
-Received: from devron.myhome.or.jp (foobar@devron.myhome.or.jp [192.168.0.3])
-	by ibmpc.myhome.or.jp (8.18.1/8.18.1/Debian-7) with ESMTPS id 5A3Gu8J7034550
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Tue, 4 Nov 2025 01:56:09 +0900
-Received: from devron.myhome.or.jp (foobar@localhost [127.0.0.1])
-	by devron.myhome.or.jp (8.18.1/8.18.1/Debian-7) with ESMTPS id 5A3Gu72F110914
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Tue, 4 Nov 2025 01:56:08 +0900
-Received: (from hirofumi@localhost)
-	by devron.myhome.or.jp (8.18.1/8.18.1/Submit) id 5A3Gu52E110913;
-	Tue, 4 Nov 2025 01:56:05 +0900
-From: OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>
-To: Yongpeng Yang <yangyongpeng.storage@gmail.com>
-Cc: Namjae Jeon <linkinjeon@kernel.org>,
-        Sungjong Seo
- <sj1557.seo@samsung.com>, Jan Kara <jack@suse.cz>,
-        Carlos Maiolino
- <cem@kernel.org>, Jens Axboe <axboe@kernel.dk>,
-        Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>,
-        Sasha Levin <sashal@kernel.org>,
-        Alexander
- Viro <viro@zeniv.linux.org.uk>,
-        Christian Brauner <brauner@kernel.org>,
-        Christoph Hellwig <hch@infradead.org>, linux-xfs@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, linux-block@vger.kernel.org,
-        stable@vger.kernel.org, Matthew Wilcox <willy@infradead.org>,
-        "Darrick
- J . Wong" <djwong@kernel.org>,
-        Yongpeng Yang <yangyongpeng@xiaomi.com>
-Subject: Re: [PATCH v5 1/5] vfat: fix missing sb_min_blocksize() return
- value checks
-In-Reply-To: <20251103164722.151563-2-yangyongpeng.storage@gmail.com>
-References: <20251103164722.151563-2-yangyongpeng.storage@gmail.com>
-Date: Tue, 04 Nov 2025 01:56:05 +0900
-Message-ID: <871pmfoy1m.fsf@mail.parknet.co.jp>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	s=arc-20240116; t=1762189338; c=relaxed/simple;
+	bh=yjR21Qom22HfQB8jvNamOtxWgim20V+YEqdhmK6D0uc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tsP2jhafMaiZ7zimC1UNf2azQ3M/Atc2qab3z8HaKIoU8USFNyDYtLpiFiIh0V6C5fHF2epSHbpa4MFWHIMI9RETIEAJeJ67hXWLIcaiVKvYRjSmX51IziEH69JY5wF5eJ/wIHbv34nSjxfa3HQhO15EiplSqFLm2jou58wL40Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nRYq8Q+F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDE8DC4CEE7;
+	Mon,  3 Nov 2025 17:02:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762189338;
+	bh=yjR21Qom22HfQB8jvNamOtxWgim20V+YEqdhmK6D0uc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=nRYq8Q+F2KoYCg/lt/cnpSNNLOIu12w45BBFUcxWYT6opicphsMRkWjAeAl5RIMxc
+	 hG0a2W9CDIYff+S7FWjxdiPWGjQuCyCUyNgtBgvdCd1mPeZfhRNFm1VrHfgSxNfO/U
+	 FiUOZL7tBP6EjRMNmQlbQR+bCT6I4Cby9y8coDJjHUxfcSpT7C9fBZ2nsANq+gRmqi
+	 KTbTm5ChK7wHHnvtgUMinzOMDD/gUXbZf8BM/Q3qmqXAL05+CZPsGpgistnuiSwxXh
+	 +uyDI6BO3gSKoiEYvP0ipxfc1vzwqb/hd90EA8MYAukMb/rfpbF979uHIOXgauR4YP
+	 6BZNmAf9VWpBg==
+Date: Mon, 3 Nov 2025 09:00:36 -0800
+From: Eric Biggers <ebiggers@kernel.org>
+To: Nathan Chancellor <nathan@kernel.org>
+Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>,
+	Ard Biesheuvel <ardb@kernel.org>, linux-crypto@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] lib/crypto: curve25519-hacl64: Fix older clang KASAN
+ workaround for GCC
+Message-ID: <20251103170036.GD1735@sol>
+References: <20251102-curve25519-hacl64-fix-kasan-workaround-v1-1-6ec6738f9741@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251102-curve25519-hacl64-fix-kasan-workaround-v1-1-6ec6738f9741@kernel.org>
 
-Yongpeng Yang <yangyongpeng.storage@gmail.com> writes:
+On Sun, Nov 02, 2025 at 09:35:03PM -0500, Nathan Chancellor wrote:
+> Commit 2f13daee2a72 ("lib/crypto/curve25519-hacl64: Disable KASAN with
+> clang-17 and older") inadvertently disabled KASAN in curve25519-hacl64.o
+> for GCC unconditionally because clang-min-version will always evaluate
+> to nothing for GCC. Add a check for CONFIG_CC_IS_GCC to avoid the
+> workaround, which is only needed for clang-17 and older.
+> 
+> Additionally, invert the 'ifeq (...,)' into 'ifneq (...,y)', as it is a
+> little easier to read and understand the intention ("if not GCC or at
+> least clang-18, disable KASAN").
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 2f13daee2a72 ("lib/crypto/curve25519-hacl64: Disable KASAN with clang-17 and older")
+> Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+> ---
+>  lib/crypto/Makefile | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/lib/crypto/Makefile b/lib/crypto/Makefile
+> index bded351aeace..372b7a12b371 100644
+> --- a/lib/crypto/Makefile
+> +++ b/lib/crypto/Makefile
+> @@ -90,7 +90,7 @@ else
+>  libcurve25519-$(CONFIG_CRYPTO_LIB_CURVE25519_GENERIC) += curve25519-fiat32.o
+>  endif
+>  # clang versions prior to 18 may blow out the stack with KASAN
+> -ifeq ($(call clang-min-version, 180000),)
+> +ifneq ($(CONFIG_CC_IS_GCC)$(call clang-min-version, 180000),y)
+>  KASAN_SANITIZE_curve25519-hacl64.o := n
+>  endif
 
-> Fixes: a64e5a596067bd ("bdev: add back PAGE_SIZE block size validation
-> for sb_set_blocksize()")
+Thanks for catching this!
 
-Looks like inserted a strange '\n'? Otherwise looks good.
--- 
-OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>
+Using CONFIG_CC_IS_GCC == "" to check for clang seems a bit odd when
+there's already a CONFIG_CC_IS_CLANG available.
+
+How about we do it like this?
+
+    ifeq ($(CONFIG_CC_IS_CLANG)_$(call clang-min-version, 180000),y_)
+
+- Eric
 
