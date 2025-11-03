@@ -1,103 +1,55 @@
-Return-Path: <stable+bounces-192187-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192188-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5950C2B70A
-	for <lists+stable@lfdr.de>; Mon, 03 Nov 2025 12:39:13 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F17ACC2B805
+	for <lists+stable@lfdr.de>; Mon, 03 Nov 2025 12:49:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 6913F348967
-	for <lists+stable@lfdr.de>; Mon,  3 Nov 2025 11:39:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 448691883961
+	for <lists+stable@lfdr.de>; Mon,  3 Nov 2025 11:50:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A41AE30215B;
-	Mon,  3 Nov 2025 11:39:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00445305E01;
+	Mon,  3 Nov 2025 11:49:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="MG9xlSvt";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="Ta1VofWc";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="ltsbtwnz";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="Y4jhUG0C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xo33jnNE"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E61A2F2603
-	for <stable@vger.kernel.org>; Mon,  3 Nov 2025 11:39:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C7803054F8;
+	Mon,  3 Nov 2025 11:49:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762169943; cv=none; b=L9gq+J16y30Dm0zri/YVT6iGon3PKQ9H1V+lJvwBchCM9/eA0T8/ErnqSxaF94x5CRWjNIzRK0256qIxKKOySQvJ3+Z3WRpLNxNf9gNue46ofWnDuB0aNnsA/pB/quyxPqC1bP6nXsUmc5LUuja6FVecBfghIzT+PEWnnk8/6s8=
+	t=1762170573; cv=none; b=BHp+xAUdjDVCpsN1+0WKM4KMkPNoJtUbyXOaxIbQWxCrjADpm6qJX6OMNd8cg6l0i8grhTUtL7oHiu6Mea7Xf3xsMOb5cTZVpqH/BZLy6ya1S//Imqk50oSrf9YhXtELEZboOGzx0X7/xVo6h139mLKMrVI9dZnIcGWcmYRx/hY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762169943; c=relaxed/simple;
-	bh=diYjVia0HK+w69Tt9+W1DdB8KkUDVsm8RZW56+01Kig=;
+	s=arc-20240116; t=1762170573; c=relaxed/simple;
+	bh=ZwAgCATanaBWIqO1E6H8E5QJTHevA2isw2ecO03UmJE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mh+7hlnCBncO2P2G7uaIKHhDWSSPzs8soowEsDpWG8Q28gvkQbexz8z8lK1Vp0wq7ROsuDiPHyu/2iuUSZx/Y6PM3DpF+5o7BRBXJ2jyOCibo0WiU0depVPLdoCTqaUYi+Y64o+awUpDnncLsFu7ZaFJKeOTpZAptLisWyLAve0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=MG9xlSvt; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=Ta1VofWc; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=ltsbtwnz; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=Y4jhUG0C; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 9F8621F7A8;
-	Mon,  3 Nov 2025 11:38:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1762169938; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=baZLbPFJhUHKJx1yA2N8Zvf7R+Dm/bu5TppOa9b3gzk=;
-	b=MG9xlSvtqaTCwvA3mxX0NQn1NcSV6rwDVBuNW3DpLlrATqxHxBy7lRGavjB1LYipSYBxSK
-	3dkKpFNtiWEIbUsj2pMZ6w8tZ4ZDoq9ubDsCnq2fMdCM4GeO4/+KiVK20/EN3aNPXVQrgl
-	dnaw0F3GGwSKGC9Bh8t0zI6KEjTdYiY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1762169938;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=baZLbPFJhUHKJx1yA2N8Zvf7R+Dm/bu5TppOa9b3gzk=;
-	b=Ta1VofWc5ecaLGtqj8rTERtSwOuASpjNAn6hOfNK5oZog0wvZ47dmQYes6vpN/+wfoApks
-	U6tGShWv74RS1uBA==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=ltsbtwnz;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Y4jhUG0C
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1762169937; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=baZLbPFJhUHKJx1yA2N8Zvf7R+Dm/bu5TppOa9b3gzk=;
-	b=ltsbtwnzrxAEqVzEAVa8g/3u33CH5B2u6KWq5YhOqRtH/Nb1r1hmCr7ofoYUWSdY8XDcRY
-	ZXmHy0QSmwc1rjnANYVf7BMpwTCSec4sL417l5xljzzkFFc6hVRw3h75yMuXRpE14hh4Td
-	hyuxqNaLho8Ls8gBfhwznseYPc2qN5Y=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1762169937;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=baZLbPFJhUHKJx1yA2N8Zvf7R+Dm/bu5TppOa9b3gzk=;
-	b=Y4jhUG0CtHCqQw2khQuD3JEd7qM5Ts/l91OEbS9cC4cY+VfC4EYtNC209imHixAPAURg98
-	EWv61+YEZ0sXZdAQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8F3E01364F;
-	Mon,  3 Nov 2025 11:38:57 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id +VLnIlGUCGm5LAAAD6G6ig
-	(envelope-from <jack@suse.cz>); Mon, 03 Nov 2025 11:38:57 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 02062A2812; Mon,  3 Nov 2025 12:38:56 +0100 (CET)
-Date: Mon, 3 Nov 2025 12:38:56 +0100
-From: Jan Kara <jack@suse.cz>
-To: Fedor Pchelkin <pchelkin@ispras.ru>
-Cc: Theodore Ts'o <tytso@mit.edu>, Jan Kara <jack@suse.cz>, 
-	linux-ext4@vger.kernel.org, Andreas Dilger <adilger.kernel@dilger.ca>, 
-	"Darrick J. Wong" <djwong@kernel.org>, linux-kernel@vger.kernel.org, lvc-project@linuxtesting.org, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] ext4: fix string copying in
- parse_apply_sb_mount_options()
-Message-ID: <rczp7azxizqhn5677vk6mpbrglu4khlrj5yfiq6fuoewdj6wqz@ryux7tf7g4mj>
-References: <20251101160430.222297-1-pchelkin@ispras.ru>
+	 Content-Type:Content-Disposition:In-Reply-To; b=K/SberuxZYLcq5VKqQfbbv7zpzIq1XePcnoONjj8eFK8KMqDvtyd4cj00MRqr+2CI2QcoSuUK+SLc8xtf9QCpAC28hlbhtAt2NcqVuogTSDi9bFSph8MxdrYUq3xww6Tyr1PW1ShTd1obuZwh9aGdh0vwPhe2GgljEK6h/fZKD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xo33jnNE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE03AC4CEFD;
+	Mon,  3 Nov 2025 11:49:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1762170573;
+	bh=ZwAgCATanaBWIqO1E6H8E5QJTHevA2isw2ecO03UmJE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Xo33jnNEgTi3HzVNIVS3g6ls4E7ZMUvwWA4OkLZRrXcV0ZlpIpG6bOeBgKG8OFuvX
+	 WM4Al9mdJL1AaZkbRmmDFVze7zkR98jNPJ2EtNJRloji+/iS2qt21VsWG6UYuwRp00
+	 TnkpgoRsdhCFVECs4BUqLtmTSbzVJy7NINeEIzug=
+Date: Mon, 3 Nov 2025 20:49:30 +0900
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Michal Pecio <michal.pecio@gmail.com>
+Cc: Mathias Nyman <mathias.nyman@intel.com>,
+	Guangshuo Li <lgs201920130244@gmail.com>,
+	Wesley Cheng <quic_wcheng@quicinc.com>, linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] usb: xhci: Check kcalloc_node() when allocating
+ interrupter array in xhci_mem_init()
+Message-ID: <2025110342-rimless-change-0a95@gregkh>
+References: <20250918130838.3551270-1-lgs201920130244@gmail.com>
+ <20251103094036.2d1593bc.michal.pecio@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -106,128 +58,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251101160430.222297-1-pchelkin@ispras.ru>
-X-Spam-Level: 
-X-Spam-Flag: NO
-X-Rspamd-Queue-Id: 9F8621F7A8
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Spamd-Result: default: False [-4.01 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_RHS_NOT_FQDN(0.50)[];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	URIBL_BLOCKED(0.00)[ispras.ru:email,suse.com:email,imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,linuxtesting.org:url,suse.cz:dkim,suse.cz:email];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	DNSWL_BLOCKED(0.00)[2a07:de40:b281:106:10:150:64:167:received,2a07:de40:b281:104:10:150:64:97:from];
-	FROM_EQ_ENVFROM(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	MISSING_XM_UA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DKIM_TRACE(0.00)[suse.cz:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:dkim,suse.cz:email,linuxtesting.org:url,imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,suse.com:email]
-X-Spam-Score: -4.01
+In-Reply-To: <20251103094036.2d1593bc.michal.pecio@gmail.com>
 
-On Sat 01-11-25 19:04:28, Fedor Pchelkin wrote:
-> strscpy_pad() can't be used to copy a non-NUL-term string into a NUL-term
-> string of possibly bigger size.  Commit 0efc5990bca5 ("string.h: Introduce
-> memtostr() and memtostr_pad()") provides additional information in that
-> regard.  So if this happens, the following warning is observed:
+On Mon, Nov 03, 2025 at 09:40:36AM +0100, Michal Pecio wrote:
+> On Thu, 18 Sep 2025 21:08:38 +0800, Guangshuo Li wrote:
+> > kcalloc_node() may fail. When the interrupter array allocation returns
+> > NULL, subsequent code uses xhci->interrupters (e.g. in xhci_add_interrupter()
+> > and in cleanup paths), leading to a potential NULL pointer dereference.
+> > 
+> > Check the allocation and bail out to the existing fail path to avoid
+> > the NULL dereference.
+> > 
+> > Fixes: c99b38c412343 ("xhci: add support to allocate several interrupters")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+> > ---
+> >  drivers/usb/host/xhci-mem.c | 3 ++-
+> >  1 file changed, 2 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/drivers/usb/host/xhci-mem.c b/drivers/usb/host/xhci-mem.c
+> > index d698095fc88d..da257856e864 100644
+> > --- a/drivers/usb/host/xhci-mem.c
+> > +++ b/drivers/usb/host/xhci-mem.c
+> > @@ -2505,7 +2505,8 @@ int xhci_mem_init(struct xhci_hcd *xhci, gfp_t flags)
+> >  		       "Allocating primary event ring");
+> >  	xhci->interrupters = kcalloc_node(xhci->max_interrupters, sizeof(*xhci->interrupters),
+> >  					  flags, dev_to_node(dev));
+> > -
+> > +	if (!xhci->interrupters)
+> > +		goto fail;
+> >  	ir = xhci_alloc_interrupter(xhci, 0, flags);
+> >  	if (!ir)
+> >  		goto fail;
+> > -- 
+> > 2.43.0
 > 
-> strnlen: detected buffer overflow: 65 byte read of buffer size 64
-> WARNING: CPU: 0 PID: 28655 at lib/string_helpers.c:1032 __fortify_report+0x96/0xc0 lib/string_helpers.c:1032
-> Modules linked in:
-> CPU: 0 UID: 0 PID: 28655 Comm: syz-executor.3 Not tainted 6.12.54-syzkaller-00144-g5f0270f1ba00 #0
-> Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-> RIP: 0010:__fortify_report+0x96/0xc0 lib/string_helpers.c:1032
-> Call Trace:
->  <TASK>
->  __fortify_panic+0x1f/0x30 lib/string_helpers.c:1039
->  strnlen include/linux/fortify-string.h:235 [inline]
->  sized_strscpy include/linux/fortify-string.h:309 [inline]
->  parse_apply_sb_mount_options fs/ext4/super.c:2504 [inline]
->  __ext4_fill_super fs/ext4/super.c:5261 [inline]
->  ext4_fill_super+0x3c35/0xad00 fs/ext4/super.c:5706
->  get_tree_bdev_flags+0x387/0x620 fs/super.c:1636
->  vfs_get_tree+0x93/0x380 fs/super.c:1814
->  do_new_mount fs/namespace.c:3553 [inline]
->  path_mount+0x6ae/0x1f70 fs/namespace.c:3880
->  do_mount fs/namespace.c:3893 [inline]
->  __do_sys_mount fs/namespace.c:4103 [inline]
->  __se_sys_mount fs/namespace.c:4080 [inline]
->  __x64_sys_mount+0x280/0x300 fs/namespace.c:4080
->  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
->  do_syscall_64+0x64/0x140 arch/x86/entry/common.c:83
->  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+> Hi Greg and Mathias,
 > 
-> Since userspace is expected to provide s_mount_opts field to be at most 63
-> characters long with the ending byte being NUL-term, use a 64-byte buffer
-> which matches the size of s_mount_opts, so that strscpy_pad() does its job
-> properly.  Return with error if the user still managed to provide a
-> non-NUL-term string here.
+> I noticed that this bug still exists in current 6.6 and 6.12 releases,
+> what would be the sensible course of action to fix it?
 > 
-> Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+> The patch from Guangshuo Li is a specific fix and it applies cleanly on
+> those branches. By simulating allocation failure, I confirmed the bug
+> and the fix on 6.6.113, which is identical to the current 6.6.116.
 > 
-> Fixes: 8ecb790ea8c3 ("ext4: avoid potential buffer over-read in parse_apply_sb_mount_options()")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+> Mainline added an identical check in 83d98dea48eb ("usb: xhci: add
+> individual allocation checks in xhci_mem_init()") which is a cleanup
+> that has a merge conflict at least with 6.6.
+> 
+> The conflict seems superficial and probably the cleanup would have no
+> side effects on 6.6/6.12, but I haven't really reviewed this and maybe
+> it would be simpler to just take the targeted fix?
 
-Looks good. Feel free to add:
+A backport is always appreciated if you want a patch in stable kernels.
+And as this really can never be triggerd by a user, it's a low priority :)
 
-Reviewed-by: Jan Kara <jack@suse.cz>
+thanks,
 
-								Honza
-
-> ---
-> 
-> v2: - treat non-NUL-term s_mount_opts as invalid case (Jan Kara)
->     - swap order of patches in series so the fixing-one goes first
-> 
-> v1: https://lore.kernel.org/lkml/20251028130949.599847-1-pchelkin@ispras.ru/T/#u
-> 
->  fs/ext4/super.c | 5 +++--
->  1 file changed, 3 insertions(+), 2 deletions(-)
-> 
-> diff --git a/fs/ext4/super.c b/fs/ext4/super.c
-> index 33e7c08c9529..15bef41f08bd 100644
-> --- a/fs/ext4/super.c
-> +++ b/fs/ext4/super.c
-> @@ -2475,7 +2475,7 @@ static int parse_apply_sb_mount_options(struct super_block *sb,
->  					struct ext4_fs_context *m_ctx)
->  {
->  	struct ext4_sb_info *sbi = EXT4_SB(sb);
-> -	char s_mount_opts[65];
-> +	char s_mount_opts[64];
->  	struct ext4_fs_context *s_ctx = NULL;
->  	struct fs_context *fc = NULL;
->  	int ret = -ENOMEM;
-> @@ -2483,7 +2483,8 @@ static int parse_apply_sb_mount_options(struct super_block *sb,
->  	if (!sbi->s_es->s_mount_opts[0])
->  		return 0;
->  
-> -	strscpy_pad(s_mount_opts, sbi->s_es->s_mount_opts);
-> +	if (strscpy_pad(s_mount_opts, sbi->s_es->s_mount_opts) < 0)
-> +		return -E2BIG;
->  
->  	fc = kzalloc(sizeof(struct fs_context), GFP_KERNEL);
->  	if (!fc)
-> -- 
-> 2.51.0
-> 
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+greg k-h
 
