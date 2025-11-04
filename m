@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-192440-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192441-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF750C3298C
-	for <lists+stable@lfdr.de>; Tue, 04 Nov 2025 19:19:26 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DFC7C32968
+	for <lists+stable@lfdr.de>; Tue, 04 Nov 2025 19:18:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A9E334F59CA
-	for <lists+stable@lfdr.de>; Tue,  4 Nov 2025 18:17:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A8D5D18880D6
+	for <lists+stable@lfdr.de>; Tue,  4 Nov 2025 18:17:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B718D343D86;
-	Tue,  4 Nov 2025 18:14:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB96A343D92;
+	Tue,  4 Nov 2025 18:14:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O7oSGJKU"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Fm8fyfgG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7515133EB1D
-	for <stable@vger.kernel.org>; Tue,  4 Nov 2025 18:14:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 897D2343D93
+	for <stable@vger.kernel.org>; Tue,  4 Nov 2025 18:14:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762280079; cv=none; b=pV0R5Am6u8PzMc5rDaZxPkUyGeVI6VZcqkzRWFMt4wl4Gk5D0Ti9SeaTvnBbQQQzWxNGSyoYXXZiFlWePlZwGcpzP7PqIsHU1Iwud67NDtQHW/pL3SCfgIki2VPAoKEJzinpUC9Z1aJZd2OcWw5vrS6MGs1I+jVuV+AQTUdp6z4=
+	t=1762280094; cv=none; b=UqLF6HJw/Uiz0JAWSl8eeJne7XNGOJrlLDwc3LTpwwAH/CgxkTxZ7stAcGzrh9nWfggTzrcS+a2qxoRcHC/67WQM3V84K/JUzO/7zdK7Q721G0vU2NoS1MCeC5WXqKZQXtzJBz6kpfuhIK9tLmf6LcePqrhC9u1fgAfV+u2qafY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762280079; c=relaxed/simple;
-	bh=MJXU2Udo8va0PjQlGfOYyp5B9o7fcaBVXVFHG7lIfPM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cl9MtXycYYnLfatkVyYo9pIV/JhBWhbmnjO2f5LMvasHIoDZyow+JkCnfhPM9bYucRFnTlTqaDqcqx2gQjsw8aVD7U6ZX/77BogYINaQod6IDrsg+WBPwBwjqbhuo1CEIn+vlLmD2n8z8fcFTe4iubwpgjtR2Cz35ZYenplOa5Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O7oSGJKU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8F65C4CEF8;
-	Tue,  4 Nov 2025 18:14:37 +0000 (UTC)
+	s=arc-20240116; t=1762280094; c=relaxed/simple;
+	bh=3LiZFhYyEnAzvX/nKdccmlI8PJ9C5v78vZFnz6fU+qw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tLzBzGmkgfj0Eeo0ICFmVGg+vdS7R+leQGBDv2ANx7JfvSuHIdTJ/Aj8rEBOOieo83btF5StH2kWll85SUMawwptlpvYXIYvuU4/YfN4UOPEEVs7/fdGssbiNgH6+kMorOehi0j8ufztVzg8Te6XC47YrsJYylqhD9Wm3JGsD24=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Fm8fyfgG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6112C4CEF8;
+	Tue,  4 Nov 2025 18:14:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762280079;
-	bh=MJXU2Udo8va0PjQlGfOYyp5B9o7fcaBVXVFHG7lIfPM=;
+	s=k20201202; t=1762280094;
+	bh=3LiZFhYyEnAzvX/nKdccmlI8PJ9C5v78vZFnz6fU+qw=;
 	h=From:To:Cc:Subject:Date:From;
-	b=O7oSGJKUK/3KSIOoelWaV/I+xk3z/vPeHc+UR8giZtDRfyC5s6h44uiQpA2y8T4Sn
-	 XhqLZ3zONTgQrIsFLmqZuC5OHLAZYMEFVuKqdkk4GKgGWypv7TZjO6nb1LCLlfOqw4
-	 UlO4NEqM7xbtqMd7VklbAkQHbvycqSmydS5VyyFClCsSztoXk56CMvfYtid98D2Kyj
-	 C/2IA6U2/A1kMTHmGsEoKMWSG/9Jbb7ZwnGHZQrg5Z0px5rfZHCiYpA8GcCebloH6E
-	 mx7rUUGalWssvxE0ZIgJS9pqlsP/dADz3goPdhavs50DAUxcGs47GtlL4vascP4A+Q
-	 +r/BA0IfUtE0A==
+	b=Fm8fyfgGC37VBkf6Som7C/sxnjZpBrYz668S6IfMoSh8XYR3vdoxUT2uQTjQW3q96
+	 WzZ/x7HZxUX/uUi6JXmTs8+3vfkz9wr9Gw59IUAEpjegExsgqT2cMqbq0erEHFTrcv
+	 awzFjzbwG1Pvo4kjGhhDkvDnDIgKiXVz9XRP0AsFb/5Eg7N7yhC495hwMDxhdowqHE
+	 b6PQtZXtFvq7zTaTDUiQ+yUi32S+mPsVZr2lFYfzEdWNYbZ0oFPMB5ew3JzPhiBtfz
+	 p+etU/qSJxneNMY4bgzDjUaqCt0Vekgy3X2zQa8biXNH8IOsMyc9HpEvhqpfS8FvbT
+	 vOgHlSTCzHerw==
 From: Nathan Chancellor <nathan@kernel.org>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
 Cc: stable@vger.kernel.org,
 	Ben Hutchings <ben@decadent.org.uk>,
 	Nathan Chancellor <nathan@kernel.org>
-Subject: [PATCH 5.10] Makefile.compiler: replace cc-ifversion with compiler-specific macros
-Date: Tue,  4 Nov 2025 11:14:27 -0700
-Message-ID: <20251104181427.3261962-1-nathan@kernel.org>
+Subject: [PATCH 5.15] Makefile.compiler: replace cc-ifversion with compiler-specific macros
+Date: Tue,  4 Nov 2025 11:14:46 -0700
+Message-ID: <20251104181446.3262126-1-nathan@kernel.org>
 X-Mailer: git-send-email 2.51.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -71,29 +71,30 @@ Suggested-by: Bill Wendling <morbo@google.com>
 Reviewed-by: Nathan Chancellor <nathan@kernel.org>
 Signed-off-by: Nick Desaulniers <ndesaulniers@google.com>
 Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-[nathan: Backport to 5.10 and eliminate instances of cc-ifversion that
+[nathan: Backport to 5.15 and eliminate instances of cc-ifversion that
          did not exist upstream when this change was original created]
 Signed-off-by: Nathan Chancellor <nathan@kernel.org>
 ---
  Documentation/kbuild/makefiles.rst            | 29 +++++++++++--------
- Makefile                                      |  4 ++-
+ Makefile                                      |  6 ++--
  arch/mips/loongson64/Platform                 |  2 +-
- arch/powerpc/Makefile                         |  4 ++-
  arch/s390/Makefile                            |  4 +--
- drivers/gpu/drm/amd/display/dc/calcs/Makefile |  2 +-
  drivers/gpu/drm/amd/display/dc/dcn20/Makefile |  2 +-
  drivers/gpu/drm/amd/display/dc/dcn21/Makefile |  2 +-
  drivers/gpu/drm/amd/display/dc/dcn30/Makefile |  2 +-
+ .../gpu/drm/amd/display/dc/dcn301/Makefile    |  2 +-
+ .../gpu/drm/amd/display/dc/dcn302/Makefile    |  2 +-
+ .../gpu/drm/amd/display/dc/dcn303/Makefile    |  2 +-
+ drivers/gpu/drm/amd/display/dc/dcn31/Makefile |  2 +-
  drivers/gpu/drm/amd/display/dc/dml/Makefile   |  2 +-
- drivers/gpu/drm/amd/display/dc/dsc/Makefile   |  2 +-
- scripts/Kbuild.include                        | 10 +++++--
- 12 files changed, 39 insertions(+), 26 deletions(-)
+ scripts/Makefile.compiler                     | 10 +++++--
+ 13 files changed, 37 insertions(+), 30 deletions(-)
 
 diff --git a/Documentation/kbuild/makefiles.rst b/Documentation/kbuild/makefiles.rst
-index 0d5dd5413af0..6f7d0e33c1a7 100644
+index db3af0b45baf..19a1fcc7894a 100644
 --- a/Documentation/kbuild/makefiles.rst
 +++ b/Documentation/kbuild/makefiles.rst
-@@ -552,22 +552,27 @@ more details, with real examples.
+@@ -682,22 +682,27 @@ more details, with real examples.
  	In the above example, -Wno-unused-but-set-variable will be added to
  	KBUILD_CFLAGS only if gcc really accepts it.
  
@@ -134,22 +135,38 @@ index 0d5dd5413af0..6f7d0e33c1a7 100644
      cc-cross-prefix
  	cc-cross-prefix is used to check if there exists a $(CC) in path with
 diff --git a/Makefile b/Makefile
-index aa84aec9cbe8..5e5c4ca0db4e 100644
+index 09bb1b22cd26..3589269e63a2 100644
 --- a/Makefile
 +++ b/Makefile
-@@ -855,7 +855,9 @@ DEBUG_CFLAGS	:=
- # Workaround for GCC versions < 5.0
- # https://gcc.gnu.org/bugzilla/show_bug.cgi?id=61801
- ifdef CONFIG_CC_IS_GCC
--DEBUG_CFLAGS	+= $(call cc-ifversion, -lt, 0500, $(call cc-option, -fno-var-tracking-assignments))
-+ifneq ($(call gcc-min-version, 50000),y)
-+DEBUG_CFLAGS	+= $(call cc-option, -fno-var-tracking-assignments)
-+endif
+@@ -804,7 +804,6 @@ stackp-flags-$(CONFIG_STACKPROTECTOR_STRONG)      := -fstack-protector-strong
+ KBUILD_CFLAGS += $(stackp-flags-y)
+ 
+ KBUILD_CFLAGS-$(CONFIG_WERROR) += -Werror
+-KBUILD_CFLAGS += $(KBUILD_CFLAGS-y)
+ 
+ ifdef CONFIG_CC_IS_CLANG
+ KBUILD_CPPFLAGS += -Qunused-arguments
+@@ -1043,7 +1042,6 @@ ifdef CONFIG_CC_IS_GCC
+ KBUILD_CFLAGS += -Wno-maybe-uninitialized
  endif
  
- ifdef CONFIG_DEBUG_INFO
+-ifdef CONFIG_CC_IS_GCC
+ # The allocators already balk at large sizes, so silence the compiler
+ # warnings for bounds checks involving those possible values. While
+ # -Wno-alloc-size-larger-than would normally be used here, earlier versions
+@@ -1055,8 +1053,8 @@ ifdef CONFIG_CC_IS_GCC
+ # ignored, continuing to default to PTRDIFF_MAX. So, left with no other
+ # choice, we must perform a versioned check to disable this warning.
+ # https://lore.kernel.org/lkml/20210824115859.187f272f@canb.auug.org.au
+-KBUILD_CFLAGS += $(call cc-ifversion, -ge, 0901, -Wno-alloc-size-larger-than)
+-endif
++KBUILD_CFLAGS-$(call gcc-min-version, 90100) += -Wno-alloc-size-larger-than
++KBUILD_CFLAGS += $(KBUILD_CFLAGS-y)
+ 
+ # disable invalid "can't wrap" optimizations for signed / pointers
+ KBUILD_CFLAGS	+= -fno-strict-overflow
 diff --git a/arch/mips/loongson64/Platform b/arch/mips/loongson64/Platform
-index e2354e128d9a..76f44ca09b9d 100644
+index 3e660d6d3c2b..2335b697beeb 100644
 --- a/arch/mips/loongson64/Platform
 +++ b/arch/mips/loongson64/Platform
 @@ -12,7 +12,7 @@ cflags-$(CONFIG_CPU_LOONGSON64)	+= -Wa,--trap
@@ -158,26 +175,11 @@ index e2354e128d9a..76f44ca09b9d 100644
  #
 -ifeq ($(call cc-ifversion, -ge, 0409, y), y)
 +ifeq ($(call gcc-min-version, 40900), y)
-   ifeq ($(call ld-ifversion, -ge, 225000000, y), y)
+   ifeq ($(call ld-ifversion, -ge, 22500, y), y)
      cflags-$(CONFIG_CPU_LOONGSON64)  += \
        $(call cc-option,-march=loongson3a -U_MIPS_ISA -D_MIPS_ISA=_MIPS_ISA_MIPS64)
-diff --git a/arch/powerpc/Makefile b/arch/powerpc/Makefile
-index 912e64ab5f24..d92141eb3215 100644
---- a/arch/powerpc/Makefile
-+++ b/arch/powerpc/Makefile
-@@ -168,7 +168,9 @@ endif
- # https://gcc.gnu.org/bugzilla/show_bug.cgi?id=44199
- # https://gcc.gnu.org/bugzilla/show_bug.cgi?id=52828
- ifndef CONFIG_CC_IS_CLANG
--CC_FLAGS_FTRACE	+= $(call cc-ifversion, -lt, 0409, -mno-sched-epilog)
-+ifneq ($(call gcc-min-version, 40900),y)
-+CC_FLAGS_FTRACE	+= -mno-sched-epilog
-+endif
- endif
- endif
- 
 diff --git a/arch/s390/Makefile b/arch/s390/Makefile
-index 92f2426d8797..98c019abd0ad 100644
+index c8071eb82e2e..19c618979ce7 100644
 --- a/arch/s390/Makefile
 +++ b/arch/s390/Makefile
 @@ -35,8 +35,8 @@ KBUILD_CFLAGS_DECOMPRESSOR += $(if $(CONFIG_DEBUG_INFO),-g)
@@ -191,21 +193,8 @@ index 92f2426d8797..98c019abd0ad 100644
  			KBUILD_CFLAGS += $(call cc-disable-warning, array-bounds)
  			KBUILD_CFLAGS_DECOMPRESSOR += $(call cc-disable-warning, array-bounds)
  		endif
-diff --git a/drivers/gpu/drm/amd/display/dc/calcs/Makefile b/drivers/gpu/drm/amd/display/dc/calcs/Makefile
-index 4674aca8f206..cb7c37ef8735 100644
---- a/drivers/gpu/drm/amd/display/dc/calcs/Makefile
-+++ b/drivers/gpu/drm/amd/display/dc/calcs/Makefile
-@@ -34,7 +34,7 @@ calcs_ccflags := -mhard-float -maltivec
- endif
- 
- ifdef CONFIG_CC_IS_GCC
--ifeq ($(call cc-ifversion, -lt, 0701, y), y)
-+ifneq ($(call gcc-min-version, 70100),y)
- IS_OLD_GCC = 1
- endif
- endif
 diff --git a/drivers/gpu/drm/amd/display/dc/dcn20/Makefile b/drivers/gpu/drm/amd/display/dc/dcn20/Makefile
-index 54db9af8437d..ce9ab2214a43 100644
+index 54db9af8437d..57c9a0c6e8ca 100644
 --- a/drivers/gpu/drm/amd/display/dc/dcn20/Makefile
 +++ b/drivers/gpu/drm/amd/display/dc/dcn20/Makefile
 @@ -18,7 +18,7 @@ CFLAGS_$(AMDDALPATH)/dc/dcn20/dcn20_resource.o := -mhard-float -maltivec
@@ -213,12 +202,12 @@ index 54db9af8437d..ce9ab2214a43 100644
  
  ifdef CONFIG_CC_IS_GCC
 -ifeq ($(call cc-ifversion, -lt, 0701, y), y)
-+ifneq ($(call gcc-min-version, 70100),y)
++ifneq ($(call gcc-min-version, 70100), y)
  IS_OLD_GCC = 1
  endif
  endif
 diff --git a/drivers/gpu/drm/amd/display/dc/dcn21/Makefile b/drivers/gpu/drm/amd/display/dc/dcn21/Makefile
-index 90eefd2c3ecf..a85877767d3c 100644
+index 347d86848bac..178c4d6f61b9 100644
 --- a/drivers/gpu/drm/amd/display/dc/dcn21/Makefile
 +++ b/drivers/gpu/drm/amd/display/dc/dcn21/Makefile
 @@ -14,7 +14,7 @@ CFLAGS_$(AMDDALPATH)/dc/dcn21/dcn21_resource.o := -mhard-float -maltivec
@@ -226,25 +215,77 @@ index 90eefd2c3ecf..a85877767d3c 100644
  
  ifdef CONFIG_CC_IS_GCC
 -ifeq ($(call cc-ifversion, -lt, 0701, y), y)
-+ifneq ($(call gcc-min-version, 70100),y)
++ifneq ($(call gcc-min-version, 70100), y)
  IS_OLD_GCC = 1
  endif
  endif
 diff --git a/drivers/gpu/drm/amd/display/dc/dcn30/Makefile b/drivers/gpu/drm/amd/display/dc/dcn30/Makefile
-index bd2a068f9863..a71c0f298380 100644
+index dfd77b3cc84d..e0fe5bbda7de 100644
 --- a/drivers/gpu/drm/amd/display/dc/dcn30/Makefile
 +++ b/drivers/gpu/drm/amd/display/dc/dcn30/Makefile
-@@ -47,7 +47,7 @@ CFLAGS_REMOVE_$(AMDDALPATH)/dc/dcn30/dcn30_optc.o := -mgeneral-regs-only
+@@ -42,7 +42,7 @@ CFLAGS_$(AMDDALPATH)/dc/dcn30/dcn30_optc.o := -mhard-float -maltivec
  endif
  
  ifdef CONFIG_CC_IS_GCC
 -ifeq ($(call cc-ifversion, -lt, 0701, y), y)
-+ifneq ($(call gcc-min-version, 70100),y)
++ifneq ($(call gcc-min-version, 70100), y)
  IS_OLD_GCC = 1
  endif
+ CFLAGS_$(AMDDALPATH)/dc/dcn30/dcn30_resource.o += -mhard-float
+diff --git a/drivers/gpu/drm/amd/display/dc/dcn301/Makefile b/drivers/gpu/drm/amd/display/dc/dcn301/Makefile
+index 09264716d1dc..fb6bcf77bd8f 100644
+--- a/drivers/gpu/drm/amd/display/dc/dcn301/Makefile
++++ b/drivers/gpu/drm/amd/display/dc/dcn301/Makefile
+@@ -22,7 +22,7 @@ CFLAGS_$(AMDDALPATH)/dc/dcn301/dcn301_resource.o := -mhard-float -maltivec
  endif
+ 
+ ifdef CONFIG_CC_IS_GCC
+-ifeq ($(call cc-ifversion, -lt, 0701, y), y)
++ifneq ($(call gcc-min-version, 70100), y)
+ IS_OLD_GCC = 1
+ endif
+ CFLAGS_$(AMDDALPATH)/dc/dcn301/dcn301_resource.o += -mhard-float
+diff --git a/drivers/gpu/drm/amd/display/dc/dcn302/Makefile b/drivers/gpu/drm/amd/display/dc/dcn302/Makefile
+index 101620a8867a..d157aad86cf9 100644
+--- a/drivers/gpu/drm/amd/display/dc/dcn302/Makefile
++++ b/drivers/gpu/drm/amd/display/dc/dcn302/Makefile
+@@ -21,7 +21,7 @@ CFLAGS_$(AMDDALPATH)/dc/dcn302/dcn302_resource.o := -mhard-float -maltivec
+ endif
+ 
+ ifdef CONFIG_CC_IS_GCC
+-ifeq ($(call cc-ifversion, -lt, 0701, y), y)
++ifneq ($(call gcc-min-version, 70100), y)
+ IS_OLD_GCC = 1
+ endif
+ CFLAGS_$(AMDDALPATH)/dc/dcn302/dcn302_resource.o += -mhard-float
+diff --git a/drivers/gpu/drm/amd/display/dc/dcn303/Makefile b/drivers/gpu/drm/amd/display/dc/dcn303/Makefile
+index 6f7a1f2b49f0..129e6308c712 100644
+--- a/drivers/gpu/drm/amd/display/dc/dcn303/Makefile
++++ b/drivers/gpu/drm/amd/display/dc/dcn303/Makefile
+@@ -17,7 +17,7 @@ CFLAGS_$(AMDDALPATH)/dc/dcn303/dcn303_resource.o := -mhard-float -maltivec
+ endif
+ 
+ ifdef CONFIG_CC_IS_GCC
+-ifeq ($(call cc-ifversion, -lt, 0701, y), y)
++ifneq ($(call gcc-min-version, 70100), y)
+ IS_OLD_GCC = 1
+ endif
+ CFLAGS_$(AMDDALPATH)/dc/dcn303/dcn303_resource.o += -mhard-float
+diff --git a/drivers/gpu/drm/amd/display/dc/dcn31/Makefile b/drivers/gpu/drm/amd/display/dc/dcn31/Makefile
+index 4bab97acb155..e3a63f82a69d 100644
+--- a/drivers/gpu/drm/amd/display/dc/dcn31/Makefile
++++ b/drivers/gpu/drm/amd/display/dc/dcn31/Makefile
+@@ -22,7 +22,7 @@ CFLAGS_$(AMDDALPATH)/dc/dcn31/dcn31_resource.o := -mhard-float -maltivec
+ endif
+ 
+ ifdef CONFIG_CC_IS_GCC
+-ifeq ($(call cc-ifversion, -lt, 0701, y), y)
++ifneq ($(call gcc-min-version, 70100), y)
+ IS_OLD_GCC = 1
+ endif
+ CFLAGS_$(AMDDALPATH)/dc/dcn31/dcn31_resource.o += -mhard-float
 diff --git a/drivers/gpu/drm/amd/display/dc/dml/Makefile b/drivers/gpu/drm/amd/display/dc/dml/Makefile
-index ce8251151b45..1ee735af6ddd 100644
+index 36cac3839b50..d5c55926cc5b 100644
 --- a/drivers/gpu/drm/amd/display/dc/dml/Makefile
 +++ b/drivers/gpu/drm/amd/display/dc/dml/Makefile
 @@ -35,7 +35,7 @@ dml_ccflags := -mhard-float -maltivec
@@ -256,24 +297,11 @@ index ce8251151b45..1ee735af6ddd 100644
  IS_OLD_GCC = 1
  endif
  endif
-diff --git a/drivers/gpu/drm/amd/display/dc/dsc/Makefile b/drivers/gpu/drm/amd/display/dc/dsc/Makefile
-index ea29cf95d470..6207809f293b 100644
---- a/drivers/gpu/drm/amd/display/dc/dsc/Makefile
-+++ b/drivers/gpu/drm/amd/display/dc/dsc/Makefile
-@@ -11,7 +11,7 @@ dsc_ccflags := -mhard-float -maltivec
- endif
- 
- ifdef CONFIG_CC_IS_GCC
--ifeq ($(call cc-ifversion, -lt, 0701, y), y)
-+ifneq ($(call gcc-min-version, 70100),y)
- IS_OLD_GCC = 1
- endif
- endif
-diff --git a/scripts/Kbuild.include b/scripts/Kbuild.include
-index 3e5c8d09d82c..ccd7b09a379d 100644
---- a/scripts/Kbuild.include
-+++ b/scripts/Kbuild.include
-@@ -133,9 +133,13 @@ cc-option-yn = $(call try-run,\
+diff --git a/scripts/Makefile.compiler b/scripts/Makefile.compiler
+index 3eddd0ab2532..c36b201fddb1 100644
+--- a/scripts/Makefile.compiler
++++ b/scripts/Makefile.compiler
+@@ -61,9 +61,13 @@ cc-option-yn = $(call try-run,\
  cc-disable-warning = $(call try-run,\
  	$(CC) -Werror $(KBUILD_CPPFLAGS) $(KBUILD_CFLAGS) -W$(strip $(1)) -c -x c /dev/null -o "$$TMP",-Wno-$(strip $(1)))
  
