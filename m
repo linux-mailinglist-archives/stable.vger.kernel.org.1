@@ -1,103 +1,108 @@
-Return-Path: <stable+bounces-192334-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192335-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB3C3C2F5B7
-	for <lists+stable@lfdr.de>; Tue, 04 Nov 2025 06:15:52 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2C50C2F688
+	for <lists+stable@lfdr.de>; Tue, 04 Nov 2025 06:51:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4A7EA188768D
-	for <lists+stable@lfdr.de>; Tue,  4 Nov 2025 05:16:17 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7B53C4EE1AF
+	for <lists+stable@lfdr.de>; Tue,  4 Nov 2025 05:51:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 991CF26B08F;
-	Tue,  4 Nov 2025 05:15:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8F95299922;
+	Tue,  4 Nov 2025 05:51:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zsKl4KLe"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eizjvtRx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46E98757EA;
-	Tue,  4 Nov 2025 05:15:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B53219F40A;
+	Tue,  4 Nov 2025 05:51:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762233347; cv=none; b=f4MX7ldDdiN0NcuzqiX2X128SRK9g7PWZsiRT+UGjAW+hMXSn6IHiu5OQgkEETEk5nDXSpOh6438Irel27maGI8JmToHr8cEk04tY7LLIjAxAIsa9qXqHhZYoupMuf01TpJKsyAGIz8ah5JY209/dfLR1UHWpYPAoN20Ol7rbTg=
+	t=1762235486; cv=none; b=CIgbRnrucMywrdzjkuxLPCKvqpHGdtbsM+dJjRngok3E3L1cIB1xFhFCsfqqxBWFcSwIEUpFrmuhEniUTc0+WU9/Av7EzVsDyHqWvCRVgeYx3nIt/oI8LXZhoxeOJk8Q3o7rY6jVfgLXzDpOxXMdNxzzP50u0ZvJe6LiEcYbFI8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762233347; c=relaxed/simple;
-	bh=CG/77hDlBA5GAi+YsvTXUU6wq+DW2FoxpA4mz+wRsT4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mhU6li0ifd6IKAJBIcsUd41EaY911YIzFQCjnxH58K1Mv+7S+CKj28vYjvQjKJ/kejCXpwr6Zv7lGG5vIE7rWnqRYPf58HybCCxVNk+7AaLXAFdlnArvcgyC1T+GLSIHIJl3gFq3/Gd2XF4lUwnlitXCvmj4tLr+8dluywQfg6k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zsKl4KLe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56DDFC4CEF8;
-	Tue,  4 Nov 2025 05:15:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762233346;
-	bh=CG/77hDlBA5GAi+YsvTXUU6wq+DW2FoxpA4mz+wRsT4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=zsKl4KLeRKR6BOr+L/GctUjALH92R4J9iOWiTTpAanB//7lFP/tEVZOBTBWCqBmhN
-	 eajqB9JtkWpp+rli6dLKkByyuJDzBpGdsaIs3nxNoU5Y7pAtqei6jwFnP9+FAtxclX
-	 qSAEIVlLS0t/3ti07tWm7/CUDeFS4LQIjX+NEuho=
-Date: Tue, 4 Nov 2025 14:15:44 +0900
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: guhuinan <guhuinan@xiaomi.com>
-Cc: stable@vger.kernel.org, linux-usb@vger.kernel.org,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Ingo Rohloff <ingo.rohloff@lauterbach.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Chen Ni <nichen@iscas.ac.cn>, Peter Zijlstra <peterz@infradead.org>,
-	Sabyrzhan Tasbolatov <snovitoll@gmail.com>,
-	Akash M <akash.m5@samsung.com>, Chenyu <chenyu45@xiaomi.com>,
-	Yudongbin <yudongbin@xiaomi.com>, Mahongwei <mahongwei3@xiaomi.com>,
-	Jiangdayu <jiangdayu@xiaomi.com>
-Subject: Re: [PATCH 6.12.y] usb: gadget: f_fs: Fix epfile null pointer access
- after ep enable.
-Message-ID: <2025110452-graffiti-blizzard-9cbc@gregkh>
-References: <20251104034946.605-1-guhuinan@xiaomi.com>
+	s=arc-20240116; t=1762235486; c=relaxed/simple;
+	bh=+zIjCyngQqsvAfo8AR7dkJkLn9qM+SwI4b9HqY5K+Pk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=eQs+mFkENarU2ob0kt7NjvhlOe+uvtsCqx9XYFKFmOD78mBDUyMrwWhfp8/YtlAKDI5PRdVcTFc7+Eqy8NAMTM7Qou5kXobwwxvb/tc9Drf2/wMZuCx/5nT2ZGK+R5hFvE5A3SSzyo78kwS2Vjwlb6Tr3VKKw6zKm6G7wdNwnoM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eizjvtRx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFEADC4CEF7;
+	Tue,  4 Nov 2025 05:51:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762235486;
+	bh=+zIjCyngQqsvAfo8AR7dkJkLn9qM+SwI4b9HqY5K+Pk=;
+	h=From:To:Cc:Subject:Date:From;
+	b=eizjvtRx6NsjrEsOsNhJcNTVKKLIsXJ7oUbIaV8aRsTgWT/p+J64taxBobqTFrZvY
+	 6OIlp8zMqfHLB/gav3KITTRTtYI63qBODgUTue2maHNe6EmewqqPQN2zLfkiTuUb9Z
+	 i0WzZNGKeOe3f4tblvcszGpEFUohXTeSz+X0cc5BMU8RfgtE5rEyxrOjabw+qvFhrR
+	 hRFSmR9PvUgWUZ/bTcrOireJaKbCOzEqSMubsBnnNOibHcQYZnu5TKtJnRA+AELcoK
+	 5mOFu2k/uVzb7MXQaTZ6XI6fD9OEpTLtHIE0RYkbAj7xmkJwcGQgYdb2qkcpso6T6W
+	 fdqe9BM+8CmMQ==
+From: Eric Biggers <ebiggers@kernel.org>
+To: linux-crypto@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	Ard Biesheuvel <ardb@kernel.org>,
+	"Jason A . Donenfeld" <Jason@zx2c4.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	linux-arm-kernel@lists.infradead.org,
+	Eric Biggers <ebiggers@kernel.org>,
+	stable@vger.kernel.org
+Subject: [PATCH] lib/crypto: arm/curve25519: Disable on CPU_BIG_ENDIAN
+Date: Mon,  3 Nov 2025 21:49:06 -0800
+Message-ID: <20251104054906.716914-1-ebiggers@kernel.org>
+X-Mailer: git-send-email 2.51.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251104034946.605-1-guhuinan@xiaomi.com>
+Content-Transfer-Encoding: 8bit
 
-On Tue, Nov 04, 2025 at 11:49:46AM +0800, guhuinan wrote:
-> From: Owen Gu <guhuinan@xiaomi.com>
-> 
-> [ Upstream commit cfd6f1a7b42f ("usb: gadget: f_fs: Fix epfile null
-> pointer access after ep enable.") ]
-> 
-> A race condition occurs when ffs_func_eps_enable() runs concurrently
-> with ffs_data_reset(). The ffs_data_clear() called in ffs_data_reset()
-> sets ffs->epfiles to NULL before resetting ffs->eps_count to 0, leading
-> to a NULL pointer dereference when accessing epfile->ep in
-> ffs_func_eps_enable() after successful usb_ep_enable().
-> 
-> The ffs->epfiles pointer is set to NULL in both ffs_data_clear() and
-> ffs_data_close() functions, and its modification is protected by the
-> spinlock ffs->eps_lock. And the whole ffs_func_eps_enable() function
-> is also protected by ffs->eps_lock.
-> 
-> Thus, add NULL pointer handling for ffs->epfiles in the
-> ffs_func_eps_enable() function to fix issues
-> 
-> Signed-off-by: Owen Gu <guhuinan@xiaomi.com>
-> Link: https://lore.kernel.org/r/20250915092907.17802-1-guhuinan@xiaomi.com
-> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> ---
->  drivers/usb/gadget/function/f_fs.c | 8 +++++++-
->  1 file changed, 7 insertions(+), 1 deletion(-)
+On big endian arm kernels, the arm optimized Curve25519 code produces
+incorrect outputs and fails the Curve25519 test.  This has been true
+ever since this code was added.
 
-What about 6.17.y?  You do not want to upgrade from 6.12 to a newer
-kernel and have a regression.
+It seems that hardly anyone (or even no one?) actually uses big endian
+arm kernels.  But as long as they're ostensibly supported, we should
+disable this code on them so that it's not accidentally used.
 
-And if this fixes a bug, why was it not marked with a Fixes: tag or a
- cc: stable tag?  Did I just miss that before?
+Note: for future-proofing, use !CPU_BIG_ENDIAN instead of
+CPU_LITTLE_ENDIAN.  Both of these are arch-specific options that could
+get removed in the future if big endian support gets dropped.
 
-thanks,
+Fixes: d8f1308a025f ("crypto: arm/curve25519 - wire up NEON implementation")
+Cc: stable@vger.kernel.org
+Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+---
 
-greg k-h
+This patch is targeting libcrypto-fixes
+
+ lib/crypto/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/lib/crypto/Kconfig b/lib/crypto/Kconfig
+index 8886055e938f..16859c6226dd 100644
+--- a/lib/crypto/Kconfig
++++ b/lib/crypto/Kconfig
+@@ -62,11 +62,11 @@ config CRYPTO_LIB_CURVE25519
+ 	  of the functions from <crypto/curve25519.h>.
+ 
+ config CRYPTO_LIB_CURVE25519_ARCH
+ 	bool
+ 	depends on CRYPTO_LIB_CURVE25519 && !UML && !KMSAN
+-	default y if ARM && KERNEL_MODE_NEON
++	default y if ARM && KERNEL_MODE_NEON && !CPU_BIG_ENDIAN
+ 	default y if PPC64 && CPU_LITTLE_ENDIAN
+ 	default y if X86_64
+ 
+ config CRYPTO_LIB_CURVE25519_GENERIC
+ 	bool
+
+base-commit: 1af424b15401d2be789c4dc2279889514e7c5c94
+-- 
+2.51.2
+
 
