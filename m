@@ -1,105 +1,192 @@
-Return-Path: <stable+bounces-192347-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192348-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A10CC30639
-	for <lists+stable@lfdr.de>; Tue, 04 Nov 2025 10:59:43 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF5BFC3067B
+	for <lists+stable@lfdr.de>; Tue, 04 Nov 2025 11:03:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 9BACD4E8B30
-	for <lists+stable@lfdr.de>; Tue,  4 Nov 2025 09:58:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1844418994AE
+	for <lists+stable@lfdr.de>; Tue,  4 Nov 2025 10:02:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4784F2D0631;
-	Tue,  4 Nov 2025 09:58:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAA792D46BB;
+	Tue,  4 Nov 2025 10:01:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.b="DZmTawtV"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="g8RrpGjx";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="KK/oC2S3";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="g8RrpGjx";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="KK/oC2S3"
 X-Original-To: stable@vger.kernel.org
-Received: from zg8tmja2lje4os43os4xodqa.icoremail.net (zg8tmja2lje4os43os4xodqa.icoremail.net [206.189.79.184])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 711202EC0A5
-	for <stable@vger.kernel.org>; Tue,  4 Nov 2025 09:58:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=206.189.79.184
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8077027E04C
+	for <stable@vger.kernel.org>; Tue,  4 Nov 2025 10:01:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762250315; cv=none; b=JINLWqUIfKBAWGbtXDQEqr7KpVaC04ftXGFECvW7ooW1hYyKPHNEHSK95SeYE+SWLs6iEmE5Rh16amdYLWBsQINAV8VHtk+sOe8acWhtamsEYshZU0iuuLedatuXo9nkVxWy9CTtvOjpVDiiu5InuBQlstt39Zlz5hLOH4spwGE=
+	t=1762250508; cv=none; b=fb08VHZ64uzBfUBILgzzufzb5Ssv3BCVZ2JN5g3tKgh/46ViK5ifxgv7CyyGRTcBcoAvXklFlNoyOwWQseWWXHkEq5nIw+896bMOf0aJBWpEkmHY3plVqKqGheFzyRDgIzzBPbKqrAeGABbsW7VdXi4RqmVmFqWQEqKpgXQaDIU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762250315; c=relaxed/simple;
-	bh=zjCswPbTYDHxBsB3/3V5FAaibh8eduTjd4CPKzCtmi0=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=o2dwBXKp/oGtu16B+SApGTMZ6EP0YehVr5N5yipjF3i/Nj2mslriEHOIk/V1n9AUaMyWUwWQm6f3w0z5eUNTweeV+tlKBg+prLcV3ZE8uKKQEPx9iiZ9UXay9eNztNATBY1qGL/RhXhsZjFS3XUAyx3yVm1AgCDYNuf5Xuy67p4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mails.tsinghua.edu.cn; spf=pass smtp.mailfrom=mails.tsinghua.edu.cn; dkim=pass (1024-bit key) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.b=DZmTawtV; arc=none smtp.client-ip=206.189.79.184
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mails.tsinghua.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mails.tsinghua.edu.cn
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=mails.tsinghua.edu.cn; s=dkim; h=Received:From:To:Cc:Subject:
-	Date:Message-Id:In-Reply-To:References:MIME-Version:
-	Content-Transfer-Encoding; bh=R1zdvYYx4XyEcsCp77SCPRNfbxLuD06SQS
-	bYDlkXINA=; b=DZmTawtVhQceHW3rAZysXvcVJtAKxky4xbaCN9kXZtmIw+oQqR
-	VmVUq9Y6sQdMVSadNNOk7cV8mq4DITI5QhTvv5kadt7kR7a4mtafdI36ebc9KpjD
-	OwNPredEozXbtwUfMhRoWg5tB9klmChzimNvOzOYhjtHcUywUy7a40li8=
-Received: from estar-Super-Server.. (unknown [103.233.162.254])
-	by web2 (Coremail) with SMTP id yQQGZQAXvi4uzglpxXYGAA--.16713S2;
-	Tue, 04 Nov 2025 17:58:20 +0800 (CST)
-From: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
-To: gregkh@linuxfoundation.org
-Cc: stable@vger.kernel.org,
-	zhaoyz24@mails.tsinghua.edu.cn,
-	kuba@kernel.org
-Subject: Re: Re: [PATCH] dccp: validate incoming Reset/Close/CloseReq in DCCP_REQUESTING
-Date: Tue,  4 Nov 2025 17:58:08 +0800
-Message-Id: <20251104095808.4086561-1-zhaoyz24@mails.tsinghua.edu.cn>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <2025110351-comfy-untwist-fabb@gregkh>
-References: <2025110351-comfy-untwist-fabb@gregkh>
+	s=arc-20240116; t=1762250508; c=relaxed/simple;
+	bh=Vp8s1sFUhZEtTmOe3NnIXBtWE7EhfmGKuCuGH0ddg5U=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=CVUtUOxPifxSEYcaV+hJ5mZu/I7EG3iTFXyBUJN4lPbDglyBmbQU3ZWzXT4Id3gr/tXzQoQUb2xJ12NSGqfgRo3OOUg+Q+V3CVI8NMsYm+vkuDUL6b/PkqP7/qLttDEJLr9nqVMya6O/QIz2KW2eLlYu1hNYhRmDpHZdHZ+1XLE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=g8RrpGjx; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=KK/oC2S3; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=g8RrpGjx; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=KK/oC2S3; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id BED391F385;
+	Tue,  4 Nov 2025 10:01:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1762250503; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=WvML9ahiMNR24WsBOuMm7W2eYvpxZcIULBQYbrFHl1I=;
+	b=g8RrpGjxsyYPqGI5s8P0WTepWACzYbr7YdwbUHI1rwwNXJQAAFvzLpfUpzju5lHIDBYRbg
+	CvzLnJ12Mn1LzQCEoKQlzrHvicwZ/+6iEV6wLYWRScOPu751zLiAscFFgMXG4QmYG2PLn/
+	dW7p+mdjKAb5DjnKhdFsEEwsaksZBx0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1762250503;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=WvML9ahiMNR24WsBOuMm7W2eYvpxZcIULBQYbrFHl1I=;
+	b=KK/oC2S3am5LZLEqgIsNa02QrA7XYCsH3DEo2CMl9ueIAKo6+FeHPc2nrPBDUPSPmnp/uN
+	PH24WTdTW6yybXDQ==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1762250503; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=WvML9ahiMNR24WsBOuMm7W2eYvpxZcIULBQYbrFHl1I=;
+	b=g8RrpGjxsyYPqGI5s8P0WTepWACzYbr7YdwbUHI1rwwNXJQAAFvzLpfUpzju5lHIDBYRbg
+	CvzLnJ12Mn1LzQCEoKQlzrHvicwZ/+6iEV6wLYWRScOPu751zLiAscFFgMXG4QmYG2PLn/
+	dW7p+mdjKAb5DjnKhdFsEEwsaksZBx0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1762250503;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=WvML9ahiMNR24WsBOuMm7W2eYvpxZcIULBQYbrFHl1I=;
+	b=KK/oC2S3am5LZLEqgIsNa02QrA7XYCsH3DEo2CMl9ueIAKo6+FeHPc2nrPBDUPSPmnp/uN
+	PH24WTdTW6yybXDQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 7E55B136D1;
+	Tue,  4 Nov 2025 10:01:43 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id xD2mHQfPCWmtOwAAD6G6ig
+	(envelope-from <tiwai@suse.de>); Tue, 04 Nov 2025 10:01:43 +0000
+Date: Tue, 04 Nov 2025 11:01:43 +0100
+Message-ID: <874irai0ag.wl-tiwai@suse.de>
+From: Takashi Iwai <tiwai@suse.de>
+To: moonafterrain@outlook.com
+Cc: Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>,
+	linux-sound@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Yuhao Jiang <danisjiang@gmail.com>
+Subject: Re: [PATCH v2] ALSA: wavefront: use scnprintf for longname construction
+In-Reply-To: <SYBPR01MB7881987D79C62D8122B655FEAFC6A@SYBPR01MB7881.ausprd01.prod.outlook.com>
+References: <SYBPR01MB7881987D79C62D8122B655FEAFC6A@SYBPR01MB7881.ausprd01.prod.outlook.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:yQQGZQAXvi4uzglpxXYGAA--.16713S2
-X-Coremail-Antispam: 1UD129KBjvdXoW7JFWkAF1fury7tFW5AF15twb_yoW3twb_K3
-	4jgr97A3409FsF9a1xKFZIqrWDtrs2ya4rC3y5Kr47twn5AF1xZan3GrW3Zr1rKFyvyFyU
-	XF1kuanruw4jgjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUbsxFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2IYs7xG
-	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
-	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr1j
-	6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
-	Cq3wAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC
-	0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr
-	1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IE
-	rcIFxwCY02Avz4vE14v_GFWl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr
-	1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE
-	14v26r126r1DMIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7
-	IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E
-	87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU0x
-	ZFpf9x0JU4mhwUUUUU=
-X-CM-SenderInfo: 52kd05r2suqzpdlo2hxwvl0wxkxdhvlgxou0/1tbiAQEPAWkHO3eM9QAIsd
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-Spam-Level: 
+X-Spamd-Result: default: False [-3.30 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	ARC_NA(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_TO(0.00)[outlook.com];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com,outlook.com];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[perex.cz,suse.com,vger.kernel.org,gmail.com];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	FROM_EQ_ENVFROM(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.de:mid]
+X-Spam-Flag: NO
+X-Spam-Score: -3.30
 
-Dear Greg,
+On Sun, 02 Nov 2025 16:32:39 +0100,
+moonafterrain@outlook.com wrote:
+> 
+> From: Junrui Luo <moonafterrain@outlook.com>
+> 
+> Replace sprintf() calls with scnprintf() and a new scnprintf_append()
+> helper function when constructing card->longname. This improves code
+> readability and provides bounds checking for the 80-byte buffer.
+> 
+> While the current parameter ranges don't cause overflow in practice,
+> using safer string functions follows kernel best practices and makes
+> the code more maintainable.
+> 
+> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
+> ---
+> Changes in v2:
+> - Replace sprintf() calls with scnprintf() and a new scnprintf_append()
+> - Link to v1: https://lore.kernel.org/all/ME2PR01MB3156CEC4F31F253C9B540FB7AFFDA@ME2PR01MB3156.ausprd01.prod.outlook.com/
 
-Thank you for the guidance.
+Well, my suggestion was that we can apply such conversions once if a
+*generic* helper becomes available; that is, propose
+scnprintf_append() to be put in include/linux/string.h or whatever (I
+guess better in *.c instead of inline), and once if it's accepted, we
+can convert the relevant places (there are many, not only
+wavefront.c).
 
-I'm sorry that I haven't explicitly stated that this should be a
-stable-only fix. DCCP was removed upstream in v6.16, so the issue
-cannot be fixed in mainline. I missed including that context in the
-original submission.
+BTW:
 
-Jakub confirmed that this fix may proceed as a stable-only patch for
-branches which still contain DCCP. [1]
+> +__printf(3, 4) static int scnprintf_append(char *buf, size_t size, const char *fmt, ...)
+> +{
+> +	va_list args;
+> +	size_t len = strlen(buf);
+> +
+> +	if (len >= size)
+> +		return len;
+> +	va_start(args, fmt);
+> +	len = vscnprintf(buf + len, size - len, fmt, args);
+> +	va_end(args);
+> +	return len;
 
-Do you prefer that I submit a v2 explicitly marked as a stable-only 
-fix? Just want to ensure I follow the expected process.
+The above should be
+	len += vscnprintf(buf + len, size - len, fmt, args);
+so that it returns the full size of the string.
+If it were in user-space, I'd check a negative error code, but the
+Linux kernel implementation doesn't return a negative error code, so
+far.
+I see it's a copy from a code snipped I suggested which already
+contained the error :)
 
-BTW: I could not find specific guidance in the stable-kernel rules 
-on how a stable-only patch (for upstream-removed code) should be 
-formatted. Could you advise a sample expected structure?
+Also, it might be safer to use strnlen() instead of strlen() for
+avoiding a potential out-of-bound access.
 
-Thank you for your time and review.
 
-Your Sincerely,
-Yizhou Zhao
+thanks,
 
-[1] https://lore.kernel.org/netdev/20251103154439.58c3664c@kernel.org/
-
+Takashi
 
