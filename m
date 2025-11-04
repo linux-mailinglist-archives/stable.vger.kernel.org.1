@@ -1,91 +1,123 @@
-Return-Path: <stable+bounces-192410-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192411-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99B97C31990
-	for <lists+stable@lfdr.de>; Tue, 04 Nov 2025 15:47:13 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77D7CC31996
+	for <lists+stable@lfdr.de>; Tue, 04 Nov 2025 15:47:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id BFFEC343056
-	for <lists+stable@lfdr.de>; Tue,  4 Nov 2025 14:47:03 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 8A50A349469
+	for <lists+stable@lfdr.de>; Tue,  4 Nov 2025 14:47:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D14D132E6AE;
-	Tue,  4 Nov 2025 14:46:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECE0233033F;
+	Tue,  4 Nov 2025 14:46:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BR6iMq/o"
 X-Original-To: stable@vger.kernel.org
-Received: from lgeamrelo07.lge.com (lgeamrelo07.lge.com [156.147.51.103])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3715A322C9D
-	for <stable@vger.kernel.org>; Tue,  4 Nov 2025 14:46:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.147.51.103
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A12E33030C;
+	Tue,  4 Nov 2025 14:46:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762267612; cv=none; b=a5E0Re2XGMbKkXB4PPp93s+youer+cdOZKjXyMajDwP5GWJOu2r+c6Zf6YoD60q87HPluPpbTWa/MWx/QJpPC8E9FePcKAq+3D/21c1MZyMawnXwjcHhmRo7Z8MfUTVTwEEC0co9sotia+SFG+C7cl48heeRLxxn/9JfxqhlGc8=
+	t=1762267614; cv=none; b=dLuhmDqYwYEt0ni9OBrfFmwUCqXuHr0B7xIbaISvmYAckvxfvs2wg2//AHjT+hdlNjO/cGI8x/Sha7aTk7ZbYEarmkfqc59sWScyCjEgwG823ivCDOM/bQeqWcFFp4yj9LMWTJ6MYwaFY7zCoCeIzUWlfn+b2C3dUSR2kDP1Ktc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762267612; c=relaxed/simple;
-	bh=GphgxYdCpmAtE7BuavJRosM3ZktLUukwXQSCYOFCvOs=;
+	s=arc-20240116; t=1762267614; c=relaxed/simple;
+	bh=p5hPIDaRZCzt92kFfvg6R3vu6oORTHx9zKqVYsgt6JI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=E+BDx3MwSEGBWzHXpGVS6pOcw2xE64nZcAclN8kQnjrEuAa0rcvE5vfxftNTjOWJz4e1rx5fWg6ybdVqH+98ByBXRfKClbgeqe9/IDUUbta+8/SRl1+hu7bFHAxqimMGKUx1cTXUY7WV1fVGgOMVwkJF13bSCRMbpOaTLoDB/mg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lge.com; spf=pass smtp.mailfrom=lge.com; arc=none smtp.client-ip=156.147.51.103
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lge.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lge.com
-Received: from unknown (HELO yjaykim-PowerEdge-T330) (10.177.112.156)
-	by 156.147.51.103 with ESMTP; 4 Nov 2025 23:46:40 +0900
-X-Original-SENDERIP: 10.177.112.156
-X-Original-MAILFROM: youngjun.park@lge.com
-Date: Tue, 4 Nov 2025 23:46:40 +0900
-From: YoungJun Park <youngjun.park@lge.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org, Kemeng Shi <shikemeng@huaweicloud.com>,
-	Kairui Song <kasong@tencent.com>, Nhat Pham <nphamcs@gmail.com>,
-	Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>,
-	Chris Li <chrisl@kernel.org>, stable@vger.kernel.org
-Subject: Re: [PATCH v2 1/1] mm: swap: remove duplicate nr_swap_pages
- decrement in get_swap_page_of_type()
-Message-ID: <aQoR0MxfITbuj9sF@yjaykim-PowerEdge-T330>
-References: <20251102082456.79807-1-youngjun.park@lge.com>
- <20251103185608.84b2d685fe0ae4596307b878@linux-foundation.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=JCfXGKVBPE5WvG6+pBCmxM3/PllHuUDJkPd3EpeXa1Z7GL59SpoeQb56CQJD+BPghjEsFHMLbzaN7Raaf2hQTtu77ukg0gggWpxLW6ssC4wvLNYf1jdakH18gTHRijhiQDj1C+PaNnP5kJsOEzl3WYWjPJtonA+ULppBLrHTLQQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BR6iMq/o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB10EC4CEF7;
+	Tue,  4 Nov 2025 14:46:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762267614;
+	bh=p5hPIDaRZCzt92kFfvg6R3vu6oORTHx9zKqVYsgt6JI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=BR6iMq/oPyikLtPw6az2lrms+Ge4xlCbIe4fTtTyY4tHC2n45aUuCaBWJvcHF/A2p
+	 KG+L13PEc2RsLTe2Mk23kete59d+Q1weoVYh9oZ41Lcj9tYM2y+3AgeUK0+VINu39M
+	 +JpI0LM2k4BtTsZKgmnBxnJEAXybPeg27TbBNKLF9yugOPhB0NVxSo6HVchUeXfVAF
+	 qRNmKshZFjj0DiPJkSKfZkszZJmfsbrYupU4l4zs45YfAOANDcda1F7Ts/8j3ypxQY
+	 +7Cw7rjtPK5Q40NkqYq8PGtP20CMcQreJOx9l0FiifHdkN4FehAdO4R06gT/JgzvpB
+	 p/l0PIqbrDxMw==
+Date: Tue, 4 Nov 2025 09:46:51 -0500
+From: Sasha Levin <sashal@kernel.org>
+To: "Huang, Kai" <kai.huang@intel.com>
+Cc: "patches@lists.linux.dev" <patches@lists.linux.dev>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>,
+	"alexandre.f.demers@gmail.com" <alexandre.f.demers@gmail.com>,
+	"Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
+	"mingo@kernel.org" <mingo@kernel.org>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+	"binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>,
+	"kas@kernel.org" <kas@kernel.org>, "bp@alien8.de" <bp@alien8.de>,
+	"coxu@redhat.com" <coxu@redhat.com>,
+	"Chen, Farrah" <farrah.chen@intel.com>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	"pbonzini@redhat.com" <pbonzini@redhat.com>,
+	"dwmw@amazon.co.uk" <dwmw@amazon.co.uk>,
+	"x86@kernel.org" <x86@kernel.org>,
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+	"peterz@infradead.org" <peterz@infradead.org>
+Subject: Re: [PATCH AUTOSEL 6.17] x86/kexec: Disable kexec/kdump on platforms
+ with TDX partial write erratum
+Message-ID: <aQoR27GYadapWwhy@laps>
+References: <20251025160905.3857885-1-sashal@kernel.org>
+ <20251025160905.3857885-288-sashal@kernel.org>
+ <834a33d34c5c3bf659c94cefc374b0b7a52ee1a6.camel@intel.com>
+ <e15710b10ff4a5ddb62b4c2124700b1ab1c6763d.camel@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Disposition: inline
-In-Reply-To: <20251103185608.84b2d685fe0ae4596307b878@linux-foundation.org>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <e15710b10ff4a5ddb62b4c2124700b1ab1c6763d.camel@intel.com>
 
-On Mon, Nov 03, 2025 at 06:56:08PM -0800, Andrew Morton wrote:
-> On Sun,  2 Nov 2025 17:24:56 +0900 Youngjun Park <youngjun.park@lge.com> wrote:
-> 
-> > After commit 4f78252da887, nr_swap_pages is decremented in
-> > swap_range_alloc(). Since cluster_alloc_swap_entry() calls
-> > swap_range_alloc() internally, the decrement in get_swap_page_of_type()
-> > causes double-decrementing.
-> > 
-> > Remove the duplicate decrement.
-> 
-> Can we please have a description of the userspace-visible runtime
-> effects of the bug?
-> > Fixes: 4f78252da887 ("mm: swap: move nr_swap_pages counter decrement from folio_alloc_swap() to swap_range_alloc()")
-> > Cc: stable@vger.kernel.org # v6.17-rc1
-> 
-> Especially when proposing a backport.
-> 
-> Thanks.
+On Mon, Nov 03, 2025 at 09:26:38AM +0000, Huang, Kai wrote:
+>On Sun, 2025-10-26 at 22:24 +0000, Huang, Kai wrote:
+>> On Sat, 2025-10-25 at 11:58 -0400, Sasha Levin wrote:
+>> > From: Kai Huang <kai.huang@intel.com>
+>> >
+>> > [ Upstream commit b18651f70ce0e45d52b9e66d9065b831b3f30784 ]
+>> >
+>> >
+>>
+>> [...]
+>>
+>> > ---
+>> >
+>> > LLM Generated explanations, may be completely bogus:
+>> >
+>> > YES
+>> >
+>> > **Why This Fix Matters**
+>> > - Prevents machine checks during kexec/kdump on early TDX-capable
+>> >   platforms with the “partial write to TDX private memory” erratum.
+>> >   Without this, the new kernel may hit an MCE after the old kernel
+>> >   jumps, which is a hard failure affecting users.
+>>
+>> Hi,
+>>
+>> I don't think we should backport this for 6.17 stable.  Kexec/kdump and
+>> TDX are mutually exclusive in Kconfig in 6.17, therefore it's not possible
+>> for TDX to impact kexec/kdump.
+>>
+>> This patch is part of the series which enables kexec/kdump together with
+>> TDX in Kconfig (which landed in 6.18) and should not be backported alone.
+>
+>Hi Sasha,
+>
+>Just a reminder that this patch should be dropped from stable kernel too
+>(just in case you missed, since I didn't get any further notice).
 
-Hi Andrew,
+Now dropped, thanks!
 
-Thank you for picking up the patch. Since it's already in mm-hotfixes-unstable,
-I'm providing the elaboration here rather than sending v3.
-
-As a representative userspace-visible runtime example of the impact,
-/proc/meminfo reports increasingly inaccurate SwapFree values. The
-discrepancy grows with each swap allocation, and during hibernation when
-large amounts of memory are written to swap, the reported value can deviate
-significantly from actual available swap space, misleading users and
-monitoring tools. 
-
-Best Regards,
-Youngjun
+-- 
+Thanks,
+Sasha
 
