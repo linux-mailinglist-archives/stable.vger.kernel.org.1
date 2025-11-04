@@ -1,131 +1,124 @@
-Return-Path: <stable+bounces-192386-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192388-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95A6DC31365
-	for <lists+stable@lfdr.de>; Tue, 04 Nov 2025 14:24:55 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1172C313FB
+	for <lists+stable@lfdr.de>; Tue, 04 Nov 2025 14:35:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 24529189A25F
-	for <lists+stable@lfdr.de>; Tue,  4 Nov 2025 13:23:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6E7B9461B4C
+	for <lists+stable@lfdr.de>; Tue,  4 Nov 2025 13:34:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 819D6320CD5;
-	Tue,  4 Nov 2025 13:22:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DFE4327215;
+	Tue,  4 Nov 2025 13:34:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZMXR0jAr"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D88F2F691B;
-	Tue,  4 Nov 2025 13:22:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B44B13271E3
+	for <stable@vger.kernel.org>; Tue,  4 Nov 2025 13:34:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762262577; cv=none; b=p5wvNTWY18mB5yPzNzfddO6vZKAofyZ+VgOX7JSraTq8VKpQ49zO8HGfJSlTqqUiHLmSO8s9vNmzW8bhgF14s2tyEFlhBORDA5joV/qhYQnPGnY2PHrnQFnIS8LUKdJ7Kn/POTzx9EZuQ6hKVfmf3XfB0wchTiuGDIRYumXalCA=
+	t=1762263265; cv=none; b=jCJvbbuzWigQhKIsjVe/ICIt61koH7AFE3TMl7XjSH1YtKsLyQNlKZfJj2X2cN04332PVZ4M750UDk+hjoSv/I68iyRW8ZhOQFhcFapml9ha5lngAwKYkqjoL6QEG7J2KbPUUyzlS//SdFQ2HOvHJlhMZrjCgG8OOceAvNGm170=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762262577; c=relaxed/simple;
-	bh=w1EXmzaomt43Vs7KKsVgrSwxeKJ4lAKIlz7ba/TQnoc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TfGi8IPEhrlPk9tfJTqoPRaEyHG6LzQyUYXLvT+9qr3/719QciST2wIoL318YPGDfOcVH0aEFy/ube4IF3iTL1r0uzLLTHu5gCtfgfYuw4v5bBdMBYshk4IceRDcHFb5r2vL5ThG/GIo2p5wAl7tH8Osgylcxa/hADF0cPp55NQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3B4EB1CE0;
-	Tue,  4 Nov 2025 05:22:47 -0800 (PST)
-Received: from [10.164.18.64] (unknown [10.164.18.64])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 225613F66E;
-	Tue,  4 Nov 2025 05:22:51 -0800 (PST)
-Message-ID: <9f55664b-c510-4565-943b-0bed2d43898d@arm.com>
-Date: Tue, 4 Nov 2025 18:52:49 +0530
+	s=arc-20240116; t=1762263265; c=relaxed/simple;
+	bh=fgXjreU/d6B4wT9czYd6r1mnrrDdEzd+sPet3bhyD1s=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=HJ1j6SrpxbYJz6HHEou1F9ES36cHfmAgUZE9AtYojH4+L2T2RP65LtoSBRDgZGxQgH07r5Gg9ChaY/V215yavW5e6KRGpLg/26bDX3rweXhpH5vkiO8E50NR2ZdHOlmDWuxHW55KvbPw2WEKgwt74WqkNMnnK9eW6uc/pOQIIXI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZMXR0jAr; arc=none smtp.client-ip=209.85.216.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-340ad724ea4so541970a91.0
+        for <stable@vger.kernel.org>; Tue, 04 Nov 2025 05:34:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1762263263; x=1762868063; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=1b1+G19W5c9SO+X3X+h5Vdbtb4Mq0xgTVAQSLdiNp04=;
+        b=ZMXR0jArt4T4iGOyuk4x9KHCzLkMcDJXaBKQt7nS8NQc7+3NHxdmfmcXb0qco7fIHz
+         LdF5SOmCK5SqXgsh+CnU3KvjeO18cYEqZ13yR4BopdOwEIgp0Lre5niNXA/9r8DBbo3X
+         NbyU/wumWA8s1Shn/SeIFtYMyvRp3Sy3rZ7bl0mNJHzc3P0Nklbi9im25LqSk04z7rtj
+         QZJhbeP/g6RsG3OCR5uAk/Yok13UUlDP7NtqeY5qZlhpWrwh28FeFugmTkBnUVdwX1Fk
+         XmNj27a0PWlZnJd6ITMDfkF7nNsIPph29rBlf8qk8fHqMvDyQJsDMX1Ebqaq1m+2k0l1
+         d5hg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762263263; x=1762868063;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=1b1+G19W5c9SO+X3X+h5Vdbtb4Mq0xgTVAQSLdiNp04=;
+        b=UfzISaDtOo9+eMa9ZIty8WdTQPS5DH6cEq+VNEBWI+n8rBG79Qq8dERzDrjAomcayQ
+         8tqW82fM46qPgdqPE1qYX0q1e9ZxEEtl/ts9deb034G2DE71r1suUu/vRdYQ2X4I0Ekq
+         EeGaLLS/yIMb6fhoY4s0/f/udbhIcMHCnv9xeTsF77Hfp8ZZbUdm5BQlQ7A1llVBprry
+         pE/Rc10AdYJ2Lt+HRwaU1O/p5MRp5RWuq3awiu8muUnOx4QpoEyotlTcuqrgrT2pSfEy
+         8FFXbxjTTtqshBoIITTtmi4BuniJGzi2W0LRNTsc+T2tX+7Fs50Zsk78fkQGO0I3o+gz
+         Xl2A==
+X-Gm-Message-State: AOJu0YzjOW3ST/rHWnsUXNB2a/jkw8SX0bFp2P/tRZ/oMyUYpgK4O+z8
+	wcuuUJLCGwnuCezOsSAKN1RmypdtwbdkJWILXhjrXmx+cWUF73gi8xUUQqBZRa3r4/07NxYG9BL
+	m8q0XrWC4qhW+yKOg3T5AIe9BNZVUS/rIp7Q6
+X-Gm-Gg: ASbGncvpLyn8gBtveATnuZqtULIspZv/P5yy900OEBzJou86oJbUaSRlqX9a0B/1LKr
+	ATfr8+qE5icpinWn5Y3Rx7LAyo059nr46hmABWfrEuOhyixf0/MLDKfx/p1+9lxHtW0Q5kgjMit
+	VAxKC0nfUiIVgk5NVj85wJHL4wSOfXjQrIRp85WAqQrUq1x2/Be+Bv1w7BfxnmSeD3WBtoY3VEA
+	p/KD860tkFuechkkTmTbZdDuZDPCgavU3/RVOnhBeD3Hhv/8J1TgtdJNVgWtlS76MH7zqCv5CnS
+	F7g9+LqBLEXG/KrPt3JK/B5E+yASHlG4VGC15y3g3TitZIjzoicMRiB9EmDmtm7Vo9DKc1Bhiqd
+	Oj4+4CeA+lZSyRg==
+X-Google-Smtp-Source: AGHT+IGq8mPszldRNGy3uhJ4m6ZAHmBdaOTWdagO3oJB/0r81NAg5yEEsYzY0+PsE/hQHwARmPvIreshnF8WQ67X1K0=
+X-Received: by 2002:a17:903:2346:b0:295:586a:764f with SMTP id
+ d9443c01a7336-295586a790emr80351095ad.11.1762263262840; Tue, 04 Nov 2025
+ 05:34:22 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] arm64/pageattr: Propagate return value from
- __change_memory_common
-To: Will Deacon <will@kernel.org>
-Cc: Yang Shi <yang@os.amperecomputing.com>, catalin.marinas@arm.com,
- ryan.roberts@arm.com, rppt@kernel.org, shijie@os.amperecomputing.com,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20251103061306.82034-1-dev.jain@arm.com>
- <aQjHQt2rYL6av4qw@willie-the-truck>
- <f594696b-ba33-4c04-9cf5-e88767221ae0@os.amperecomputing.com>
- <f8b899cf-d377-4dc7-a57c-82826ea5e1ea@arm.com>
- <aQn4EwKar66UZ7rz@willie-the-truck>
-Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <aQn4EwKar66UZ7rz@willie-the-truck>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+References: <20251104131650.98549-1-sashal@kernel.org>
+In-Reply-To: <20251104131650.98549-1-sashal@kernel.org>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 4 Nov 2025 14:34:09 +0100
+X-Gm-Features: AWmQ_bklogXmpPR0_4YGOr6oLtd25Dk1DVGEoaJA1siysMTqPWHljghxNts1i80
+Message-ID: <CANiq72m+bKD7gF7JY_xzTAPHoy06NSwKf16XTOK2nrNzJ3e1mw@mail.gmail.com>
+Subject: Re: Patch "rust: kunit: allow `cfg` on `test`s" has been added to the
+ 6.17-stable tree
+To: stable@vger.kernel.org
+Cc: stable-commits@vger.kernel.org, ent3rm4n@gmail.com, 
+	Brendan Higgins <brendan.higgins@linux.dev>, David Gow <davidgow@google.com>, 
+	Rae Moar <raemoar63@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-
-On 04/11/25 6:26 pm, Will Deacon wrote:
-> On Tue, Nov 04, 2025 at 09:06:12AM +0530, Dev Jain wrote:
->> On 04/11/25 12:15 am, Yang Shi wrote:
->>> On 11/3/25 7:16 AM, Will Deacon wrote:
->>>> On Mon, Nov 03, 2025 at 11:43:06AM +0530, Dev Jain wrote:
->>>>> Post a166563e7ec3 ("arm64: mm: support large block mapping when
->>>>> rodata=full"),
->>>>> __change_memory_common has a real chance of failing due to split
->>>>> failure.
->>>>> Before that commit, this line was introduced in c55191e96caa,
->>>>> still having
->>>>> a chance of failing if it needs to allocate pagetable memory in
->>>>> apply_to_page_range, although that has never been observed to be true.
->>>>> In general, we should always propagate the return value to the caller.
->>>>>
->>>>> Cc: stable@vger.kernel.org
->>>>> Fixes: c55191e96caa ("arm64: mm: apply r/o permissions of VM
->>>>> areas to its linear alias as well")
->>>>> Signed-off-by: Dev Jain <dev.jain@arm.com>
->>>>> ---
->>>>> Based on Linux 6.18-rc4.
->>>>>
->>>>>    arch/arm64/mm/pageattr.c | 5 ++++-
->>>>>    1 file changed, 4 insertions(+), 1 deletion(-)
->>>>>
->>>>> diff --git a/arch/arm64/mm/pageattr.c b/arch/arm64/mm/pageattr.c
->>>>> index 5135f2d66958..b4ea86cd3a71 100644
->>>>> --- a/arch/arm64/mm/pageattr.c
->>>>> +++ b/arch/arm64/mm/pageattr.c
->>>>> @@ -148,6 +148,7 @@ static int change_memory_common(unsigned
->>>>> long addr, int numpages,
->>>>>        unsigned long size = PAGE_SIZE * numpages;
->>>>>        unsigned long end = start + size;
->>>>>        struct vm_struct *area;
->>>>> +    int ret;
->>>>>        int i;
->>>>>          if (!PAGE_ALIGNED(addr)) {
->>>>> @@ -185,8 +186,10 @@ static int change_memory_common(unsigned
->>>>> long addr, int numpages,
->>>>>        if (rodata_full && (pgprot_val(set_mask) == PTE_RDONLY ||
->>>>>                    pgprot_val(clear_mask) == PTE_RDONLY)) {
->>>>>            for (i = 0; i < area->nr_pages; i++) {
->>>>> - __change_memory_common((u64)page_address(area->pages[i]),
->>>>> +            ret =
->>>>> __change_memory_common((u64)page_address(area->pages[i]),
->>>>>                               PAGE_SIZE, set_mask, clear_mask);
->>>>> +            if (ret)
->>>>> +                return ret;
->>>> Hmm, this means we can return failure half-way through the operation. Is
->>>> that something callers are expecting to handle? If so, how can they tell
->>>> how far we got?
->>> IIUC the callers don't have to know whether it is half-way or not
->>> because the callers will change the permission back (e.g. to RW) for the
->>> whole range when freeing memory.
->> Yes, it is the caller's responsibility to set VM_FLUSH_RESET_PERMS flag.
->> Upon vfree(), it will change the direct map permissions back to RW.
-> Ok, but vfree() ends up using update_range_prot() to do that and if we
-> need to worry about that failing (as per your commit message), then
-> we're in trouble because the calls to set_area_direct_map() are unchecked.
+On Tue, Nov 4, 2025 at 2:16=E2=80=AFPM Sasha Levin <sashal@kernel.org> wrot=
+e:
 >
-> In other words, this patch is either not necessary or it is incomplete.
-
-I think we had concluded in the discussion of the linear map series that those
-calls will always succeed - I'll refresh my memory on that and get back to you later!
-
+> This is a note to let you know that I've just added the patch titled
 >
-> Will
+>     rust: kunit: allow `cfg` on `test`s
+>
+> to the 6.17-stable tree which can be found at:
+>     http://www.kernel.org/git/?p=3Dlinux/kernel/git/stable/stable-queue.g=
+it;a=3Dsummary
+>
+> The filename of the patch is:
+>      rust-kunit-allow-cfg-on-test-s.patch
+> and it can be found in the queue-6.17 subdirectory.
+>
+> If you, or anyone else, feels it should not be added to the stable tree,
+> please let <stable@vger.kernel.org> know about it.
+
+It probably doesn't hurt, but if we don't have any test that needs it,
+then we could skip it, i.e. it is essentially a feature.
+
+Thanks!
+
+Cheers,
+Miguel
 
