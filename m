@@ -1,143 +1,184 @@
-Return-Path: <stable+bounces-192350-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192352-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id A93E2C3067E
-	for <lists+stable@lfdr.de>; Tue, 04 Nov 2025 11:03:59 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AA45C308D5
+	for <lists+stable@lfdr.de>; Tue, 04 Nov 2025 11:40:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 63BA04E79B0
-	for <lists+stable@lfdr.de>; Tue,  4 Nov 2025 10:03:46 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 928604E7258
+	for <lists+stable@lfdr.de>; Tue,  4 Nov 2025 10:40:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 646282D481C;
-	Tue,  4 Nov 2025 10:03:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D78952D5954;
+	Tue,  4 Nov 2025 10:40:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mQ53Ntyq"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="ilF0MDDj";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="DC0JfO9V";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="oeiZPlC5";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="rhDBbVND"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A64C2D3728
-	for <stable@vger.kernel.org>; Tue,  4 Nov 2025 10:03:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE6FB2BE642
+	for <stable@vger.kernel.org>; Tue,  4 Nov 2025 10:40:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762250623; cv=none; b=BtpEALvl6MegT33AUzn42ccY5MTqCHO1+PiyaC2/1uksRd5lqNNnkuAYFTOqb5LquK6gXMx0iwSQxW3kepTH7GrMr3U7J/NT7DPlbztRwIxbxPJi1jDdUbr6sXMBw56Wad7IIvl3ZVM0feTYQqldkzkU2PIcF4yxx/W9u25acA8=
+	t=1762252835; cv=none; b=Qse5vDWydWI12msI5m6kc/2u2g/ihsmbyj+OEdjO2389hKTcR/n2DgCA9vTBWkhIbVMKRVlSuTBOyXmiBW9Kgw8JSzR6k/ErRNlwArH+V+On51w72gI1GNosWjrs01uc2p+89h/xdUIkM7nhBFkEH32t7ws83OATZz3YDdNRDHI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762250623; c=relaxed/simple;
-	bh=yCNhQ4a0Nk0Atx6Dr4wxtJ0ZtyqyLGT9ZWpCeh0ba7s=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=DSeZSrRp/hpVcnEmepShxrGJi5rsmVhpFouKU0IPTTjW/T5kkiSNbh3gnofiKbakY01pdNABETqPZ4iLc1O4ym/VCPirwtAfz3X1EN9/FhYWE9X+W7udMdoyO76Q95ifP1w46fzQ+4wpmrs6gL8W9x6lioSrJNc4LdJnpoHFM2c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mQ53Ntyq; arc=none smtp.client-ip=209.85.214.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-294e5852bf6so8258635ad.2
-        for <stable@vger.kernel.org>; Tue, 04 Nov 2025 02:03:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762250621; x=1762855421; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=VKUczaa/kE48HAcaJ5lE+YSGWpwTs3a+tEo/Ya98+Oc=;
-        b=mQ53Ntyq00EMTSh035RR+uDtW7hqjDsU/ZP5ohgCtXU8iDxkKWRO+rWmFTmRd3dtve
-         /9oHlAvsGwGsM7p2C1MXvAi61D0Uk3dIy6G2YyjJfgSsmY8gX3MXp3jMK7pwNmuNcqBd
-         uHBqxjox4bQW/TlBTz4WEPe6EVfSCehly9TXbbO2OuQquuXC92Ulw1VY/Ubm7A+gTN0S
-         LvH6K+3Z9chVBQ7YtbJ4ir7Yf1if9X0rhTIXdW/PEyCyRlKuRLOCEQpRXQEW0BWzRMAQ
-         uvCO6YkLHlqWaMmAlYMUrhOdL11AIOQ6AHx7XxZhTMVc/xlY5vav4vcw3g9oeQk2eZ0/
-         853A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762250621; x=1762855421;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=VKUczaa/kE48HAcaJ5lE+YSGWpwTs3a+tEo/Ya98+Oc=;
-        b=mmeOYXSKKFwthTBVvyv92Qt9cZ9Ho+yvBuIujKDnoqkNvSzDJVMX85AMNhbqyAsepW
-         +TplYXZGCBbTUNXF+aBxcl5PHZ3YIlSgEQetK6noDP7F2rBLLRH0T9TJfZG+ydOvHwvW
-         Y5kd0tz5VsO57Op5dg6yzBHXeJ/EZbF8HIM0CdSqwhhF02ZedkVIzu8/vnBuLjbZPheK
-         jyjdy5mDeQHwEiI38Yz6feZgWj8w9LvLsE/9D6B0yY7dpDZh28nZzhHWfr02rRBjALow
-         B1bv75ulSS8uDDXrFrl1E+ldI2U+EMh1HP3aEZV/I8zbJ0lKA8rbVmZxmaF3bTzHHALd
-         w9Ww==
-X-Forwarded-Encrypted: i=1; AJvYcCX8zI+eoYJTgIAJYjaKb0zwLCQxG+a/jfG0gaSZOhFojBvOSYU5CRWyQKVNfMh3LAh1tjDD27c=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzfLqxPkzHLwauDl0pqmAJNkO7ucORZEoIa3+ouLpvd5wQl3fMB
-	J3Kpe5nYChxi8jrv+QKRaIiqfn2UgoX1yQsVV3RebHFC8X5P38ZkX/l+
-X-Gm-Gg: ASbGnct5VdBOtmC2vJ109qtUBEZfNOEMl8mQd+TdKZj3wF5rSfdnOrUQEMsEVw+sPdW
-	UzjiWGyW6AaDDnIGrqcBdD01ReOfGdlfcfCazUC0vnHyGV5nVBgmUu3rRv1T1oALsrtLbkhhkoO
-	/Q4JpdiV3BSqe7/kx3xLmVLo5lA1P/niufDEv+pHs9L2UGpOd9qDv/1oSrh80dJEpqE3HIf9hfT
-	OP8mLEIMxynserkckXE3RAw8gJuDA9n41m7EL+O3wlMaDPwvXR5NF9OVNRI8I9lmjLftoKGgHIB
-	Yzr9Z15W8wpEgUdIm5NBJLN7tDjzJrwwFUq/kW4qzICoDLWwJsS46B8hVqX+YcTNv4pPxK2Tsi3
-	lX/PAiGb6LxOvMCBw8jU/LA7ANHx+kx5RZqbggjCG/CJz8Bzo22zU6p8N0YmMEZDkGis3OKuLkN
-	uYcnuduoxxgMPZEXNKl3NA61cs3SeFASnY6KPRM/JED4nKYHjP/sBpgDNpRNtVNQ==
-X-Google-Smtp-Source: AGHT+IERjCdObduOqXZ7oaX8UqF7sHs4pQ6NQtq4FOaNwiNZd5TJwbQT+UFYEFtX/Kv19Ewgasg8YA==
-X-Received: by 2002:a17:902:f393:b0:295:54cd:d2e2 with SMTP id d9443c01a7336-29554cdd55fmr54991885ad.0.1762250620759;
-        Tue, 04 Nov 2025 02:03:40 -0800 (PST)
-Received: from poi.localdomain (KD118158218050.ppp-bb.dion.ne.jp. [118.158.218.50])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29601998ef7sm20672565ad.33.2025.11.04.02.03.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 04 Nov 2025 02:03:40 -0800 (PST)
-From: Qianchang Zhao <pioooooooooip@gmail.com>
-To: Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <smfrench@gmail.com>
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Tom Talpey <tom@talpey.com>,
-	linux-cifs@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	gregkh@linuxfoundation.org,
-	Qianchang Zhao <pioooooooooip@gmail.com>,
-	Zhitong Liu <liuzhitong1993@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] ksmbd: fix leak of transform buffer on encrypt_resp() failure
-Date: Tue,  4 Nov 2025 19:03:25 +0900
-Message-Id: <20251104100325.343863-1-pioooooooooip@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <2025110432-maimed-polio-c7b4@gregkh>
-References: <2025110432-maimed-polio-c7b4@gregkh>
+	s=arc-20240116; t=1762252835; c=relaxed/simple;
+	bh=ScsvhX3dtt3SwLD1cu4spJwSs1sx3CRExS1mxaYaN3g=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=uw2dsx9evwpxqlSJ8RH6Vr6tZH2x99yBombtcMCjbUnAf2gyHG+fYWI98/4S5mPx85Kp9Rl6k6lKG8w7uVcS3W0oJXG6PFQ9w4CNj2kUfjTw1Zth2Ml5mwBoL4ou1zmi0v6yu7Kda8fBiwDho1scn/TOazSlK+FU5KDXs4MgGCg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=ilF0MDDj; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=DC0JfO9V; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=oeiZPlC5; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=rhDBbVND; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id BBA732116D;
+	Tue,  4 Nov 2025 10:40:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1762252832; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3wUrCtseumKk5fl2r2TTo6EYvzBfcEx8Q5G/gUQ/4PQ=;
+	b=ilF0MDDj5rioIRFigF7RMtnAyL372JkQAJPNxFmPjD35rxLp9gAHk7w1VRjfzBMBrQZN+p
+	oAzTOSq4IUhlEeoeXY0p+5ZSh0Sc6lrnBR4dQHGOkVpYMZzoS07d1WOUJpNSUZ/OuC109Y
+	1KR+hAQe5EQexy6WSozkSANiDuvH/HE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1762252832;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3wUrCtseumKk5fl2r2TTo6EYvzBfcEx8Q5G/gUQ/4PQ=;
+	b=DC0JfO9VBo+1USgHrOXy48pSvizxc+FGm/fblelFYV1H+GGOnStW7Mb0ygmRwYfbqLyAfj
+	0ErhndUWXWsD/gBw==
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=oeiZPlC5;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=rhDBbVND
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1762252831; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3wUrCtseumKk5fl2r2TTo6EYvzBfcEx8Q5G/gUQ/4PQ=;
+	b=oeiZPlC5hzZtUN9P8jYZb01R1knoxM4o/z02b4DRwvQlVq1WJ2qi6kKUWU2umqToP5iNtY
+	XCbUcKbYG6KOHDiO/6dr7txDyQDvZvzh8g5txWcVuVP4ljQVSmtLvqvAYgWkzm0bqux8S9
+	KesufEvB/+nTbFWmYLEtgZ3dhEYLfaA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1762252831;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3wUrCtseumKk5fl2r2TTo6EYvzBfcEx8Q5G/gUQ/4PQ=;
+	b=rhDBbVNDCVJyh48JW1zxTyCk29uyD4svS6OHwqVPk/zxFVy99S13vjsrEuqMEDVX9zW6+u
+	uEpzwXxUfcQVpmDA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 9C9CA139A9;
+	Tue,  4 Nov 2025 10:40:31 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id KaaqJR/YCWmiYgAAD6G6ig
+	(envelope-from <hare@suse.de>); Tue, 04 Nov 2025 10:40:31 +0000
+Message-ID: <e5620018-e95b-4b4e-a829-f5b3115c59e0@suse.de>
+Date: Tue, 4 Nov 2025 11:40:31 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RESEND] [PATCH] nvme-tcp: fix usage of page_frag_cache
+To: Dmitry Bogdanov <d.bogdanov@yadro.com>, Keith Busch <kbusch@kernel.org>,
+ Jens Axboe <axboe@kernel.dk>, Christoph Hellwig <hch@lst.de>,
+ Sagi Grimberg <sagi@grimberg.me>, Stuart Hayes <stuart.w.hayes@gmail.com>,
+ linux-nvme@lists.infradead.org, linux-kernel@vger.kernel.org
+Cc: linux@yadro.com, stable@vger.kernel.org
+References: <20251027163627.12289-1-d.bogdanov@yadro.com>
+Content-Language: en-US
+From: Hannes Reinecke <hare@suse.de>
+In-Reply-To: <20251027163627.12289-1-d.bogdanov@yadro.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-Spam-Level: 
+X-Spam-Flag: NO
+X-Rspamd-Queue-Id: BBA732116D
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Spamd-Result: default: False [-3.01 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	TO_DN_SOME(0.00)[];
+	FREEMAIL_TO(0.00)[yadro.com,kernel.org,kernel.dk,lst.de,grimberg.me,gmail.com,lists.infradead.org,vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	ARC_NA(0.00)[];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	RCVD_TLS_ALL(0.00)[];
+	DKIM_TRACE(0.00)[suse.de:+];
+	RCVD_COUNT_TWO(0.00)[2];
+	DNSWL_BLOCKED(0.00)[2a07:de40:b281:104:10:150:64:97:from,2a07:de40:b281:106:10:150:64:167:received];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:mid,suse.de:email,imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo]
+X-Spam-Score: -3.01
 
-When encrypt_resp() fails at the send path, we only set
-STATUS_DATA_ERROR but leave the transform buffer allocated (work->tr_buf
-in this tree). Repeating this path leaks kernel memory and can lead to
-OOM (DoS) when encryption is required.
+On 10/27/25 17:36, Dmitry Bogdanov wrote:
+> nvme uses page_frag_cache to preallocate PDU for each preallocated request
+> of block device. Block devices are created in parallel threads,
+> consequently page_frag_cache is used in not thread-safe manner.
+> That leads to incorrect refcounting of backstore pages and premature free.
+> 
+> That can be catched by !sendpage_ok inside network stack:
+> 
+> WARNING: CPU: 7 PID: 467 at ../net/core/skbuff.c:6931 skb_splice_from_iter+0xfa/0x310.
+> 	tcp_sendmsg_locked+0x782/0xce0
+> 	tcp_sendmsg+0x27/0x40
+> 	sock_sendmsg+0x8b/0xa0
+> 	nvme_tcp_try_send_cmd_pdu+0x149/0x2a0
+> Then random panic may occur.
+> 
+> Fix that by serializing the usage of page_frag_cache.
+> 
+> Cc: stable@vger.kernel.org # 6.12
+> Fixes: 4e893ca81170 ("nvme_core: scan namespaces asynchronously")
+> Signed-off-by: Dmitry Bogdanov <d.bogdanov@yadro.com>
+> ---
+>   drivers/nvme/host/tcp.c | 8 ++++++++
+>   1 file changed, 8 insertions(+)
+> 
+Reviewed-by: Hannes Reinecke <hare@suse.de>
 
-Reproduced on: Linux v6.18-rc2 (self-built test kernel)
+Cheers,
 
-Fix by freeing the transform buffer and forcing plaintext error reply.
-
-Reported-by: Qianchang Zhao <pioooooooooip@gmail.com>
-Reported-by: Zhitong Liu <liuzhitong1993@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Qianchang Zhao <pioooooooooip@gmail.com>
----
- fs/smb/server/server.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
-
-diff --git a/fs/smb/server/server.c b/fs/smb/server/server.c
-index 7b01c7589..15dd13e76 100644
---- a/fs/smb/server/server.c
-+++ b/fs/smb/server/server.c
-@@ -246,11 +246,11 @@ static void __handle_ksmbd_work(struct ksmbd_work *work,
- 		rc = conn->ops->encrypt_resp(work);
- 		if (rc < 0) {
- 			conn->ops->set_rsp_status(work, STATUS_DATA_ERROR);
--			 work->encrypted = false;
--    			 	if (work->tr_buf) {
--            				kvfree(work->tr_buf);
--            				work->tr_buf = NULL;
--       			   	}
-+			work->encrypted = false;
-+			if (work->tr_buf) {
-+				kvfree(work->tr_buf);
-+				work->tr_buf = NULL;
-+			}
- 		}
- 	}
- 	if (work->sess)
+Hannes
 -- 
-2.34.1
-
+Dr. Hannes Reinecke                  Kernel Storage Architect
+hare@suse.de                                +49 911 74053 688
+SUSE Software Solutions GmbH, Frankenstr. 146, 90461 Nürnberg
+HRB 36809 (AG Nürnberg), GF: I. Totev, A. McDonald, W. Knoblich
 
