@@ -1,260 +1,192 @@
-Return-Path: <stable+bounces-192444-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192445-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9360C32DF4
-	for <lists+stable@lfdr.de>; Tue, 04 Nov 2025 21:05:09 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id ABD29C32EC6
+	for <lists+stable@lfdr.de>; Tue, 04 Nov 2025 21:35:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1519318C5C5C
-	for <lists+stable@lfdr.de>; Tue,  4 Nov 2025 20:04:41 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id BD6CC4EC9B9
+	for <lists+stable@lfdr.de>; Tue,  4 Nov 2025 20:34:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6F952DEA93;
-	Tue,  4 Nov 2025 20:03:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E7792F6572;
+	Tue,  4 Nov 2025 20:34:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Yi4LFUec"
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="aasyrEeM"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C269E223710
-	for <stable@vger.kernel.org>; Tue,  4 Nov 2025 20:03:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.8
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762286602; cv=fail; b=VIGWHOLxHxR53ucbfKhC1FbJsY6OaXFZcYTd1SABKrrjCCVIu6NGEJANFLmAgy1pdWv6m/YIJ9nLLgGaKmeAGDWiyqD27S5qXjcvvUVCg7ABcO2zI7hW+T6zOQ03rTloISb0jVfbA7nArDJv2PsMUVyJNKNv2frQsxg0VVb+15k=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762286602; c=relaxed/simple;
-	bh=bYtNBqztVQU8JBv7du2kv4hFmtVgd1pZmO9Y45rEsic=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=TP5tIlwACBty7x7ekht/3QyDz2tbBHsC8RHwiXZyTywaW1cSB06OG9rV8pigOZMt9sUtwszu8f91LnIQwNTpOSe7oczL7mVmaeis9isHVNr+RTX/Gk1INDjLXw76gLbeG+VX8y1kLUX1vgqPE7FrMhY0QcNvPeSIvkLpMfOMj4E=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Yi4LFUec; arc=fail smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1762286601; x=1793822601;
-  h=date:from:to:cc:subject:message-id:references:
-   in-reply-to:mime-version;
-  bh=bYtNBqztVQU8JBv7du2kv4hFmtVgd1pZmO9Y45rEsic=;
-  b=Yi4LFUec5pWJWXI8Vp/CB9Kf9Yxc8rxkFsH+6aae8PHpz/2LOPMJ9Ctk
-   kLYvywlMD0Nmp8+HUuBV2sked09N5Ary5f6M4uqKFMRZ+ElS+0Pq/I7au
-   ikIR1JIfsk6CnqO/vzbjooMeGROoV0A2/bRRZG8itB3im7R4C6f057Uaa
-   t+8GHbiYeTtaQFuERzlwpyz1YDoo4KFFpKgVi0xaAQtH4rgvaSlj5UfRu
-   a719BRSvms0ggNFbyWh9l7ozsQUxoiUG2aleSQ5tb3dBosSMJJywdLMmH
-   M2YgCKX9fUbKTjxLyLVD/oueVQ0jVnB2FwBzpPUMYJMsz3f2dqh9l61M8
-   Q==;
-X-CSE-ConnectionGUID: gtnPmer7QQmwS7EOs/gPpw==
-X-CSE-MsgGUID: HWeQE1KoRuqfyf9YLmYU/w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11603"; a="82021251"
-X-IronPort-AV: E=Sophos;i="6.19,279,1754982000"; 
-   d="scan'208";a="82021251"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Nov 2025 12:03:20 -0800
-X-CSE-ConnectionGUID: ENdXLH3kQxCVdFTJk7je2A==
-X-CSE-MsgGUID: C2VijjspQYGlaKYW5r1zxg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,279,1754982000"; 
-   d="scan'208";a="191605300"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
-  by orviesa004.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Nov 2025 12:03:21 -0800
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27; Tue, 4 Nov 2025 12:03:19 -0800
-Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27 via Frontend Transport; Tue, 4 Nov 2025 12:03:19 -0800
-Received: from SJ2PR03CU001.outbound.protection.outlook.com (52.101.43.26) by
- edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27; Tue, 4 Nov 2025 12:03:19 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=UcZbl1jocjE9ZEndI0bvjCAjn+COKid0LoMJjwutaviJkRN0Sltvjwhgc5qYHRHtthP0YsKrygNuFydMPg3sSUDJf0hjmxfBROAzz92riXvypE1d92FxdVCcbwCQeyEf4ICMSXiYuiZpl/hOrWv3x8/dJhxfk9Dunv+taUzbxcJZqFKZRVeY3f1QsBk1Oq23gpV17Ic4ZEGy15L5zc5YiWXlbYfkuA35mjpxOUCSnfINVPXzx0NtH4CihaBniJi6IEFdnyItE1XurhVIW9rS2qW8M/upZKxJxtwmyFBQ/ntVzOYaF3ULalOqdrFSg9FtyxdgFdJNrCI2rw+LGIuQJw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=0e1hRBIGuGsXyUAu0U+mh1drgk2UFKfoE+dx1D5TXNI=;
- b=AxlalUe4rUHsv+DpaYeSeYIUjz6DTfd27yZka1JZApgaBC8dVE3yNyruSzp1fs04v6AphzX3XQnI/GRQbFISpLnIaYVTTkGcA70D2b9FtcFHf8odzLrCbonuHnCIucOH/tPCPzkCEfOY0/6NNAo6HbZSwln3beHp7lVLGxSYFbDj+A3uOg0fpT1wMlpOg9IYeNeqWMklPpqctGww5Y1fbsd8754N9pMVAkZ2zZpmV8iIS268IP8fakl1UObdV1ZBalRAckX1rPqT8QTITwhdh91w8GlJpezdi3aAfTCxk2Q8NnLJUAC5eAbd/uNEvPoTsSHMNfP+SWkASc92oE6Ggg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from PH3PPF9E162731D.namprd11.prod.outlook.com
- (2603:10b6:518:1::d3c) by DM4PR11MB5328.namprd11.prod.outlook.com
- (2603:10b6:5:393::17) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9275.15; Tue, 4 Nov
- 2025 20:03:17 +0000
-Received: from PH3PPF9E162731D.namprd11.prod.outlook.com
- ([fe80::8289:cecc:ea5b:f0c]) by PH3PPF9E162731D.namprd11.prod.outlook.com
- ([fe80::8289:cecc:ea5b:f0c%8]) with mapi id 15.20.9275.015; Tue, 4 Nov 2025
- 20:03:17 +0000
-Date: Tue, 4 Nov 2025 14:05:45 -0600
-From: Ira Weiny <ira.weiny@intel.com>
-To: Alison Schofield <alison.schofield@intel.com>, Ira Weiny
-	<ira.weiny@intel.com>, Dan Williams <dan.j.williams@intel.com>, Vishal Verma
-	<vishal.l.verma@intel.com>, Dave Jiang <dave.jiang@intel.com>
-CC: Alison Schofield <alison.schofield@intel.com>, <nvdimm@lists.linux.dev>,
-	<stable@vger.kernel.org>
-Subject: Re: [PATCH v2] tools/testing/nvdimm: Use per-DIMM device handle
-Message-ID: <690a5c98f1aff_26a77f10095@iweiny-mobl.notmuch>
-References: <20251031234227.1303113-1-alison.schofield@intel.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20251031234227.1303113-1-alison.schofield@intel.com>
-X-ClientProxiedBy: SA1P222CA0049.NAMP222.PROD.OUTLOOK.COM
- (2603:10b6:806:2d0::26) To PH3PPF9E162731D.namprd11.prod.outlook.com
- (2603:10b6:518:1::d3c)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 984472ED165
+	for <stable@vger.kernel.org>; Tue,  4 Nov 2025 20:34:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1762288482; cv=none; b=D0uR+gZPhNODCaottYU9SK8/tzybxpa0VIjdZ1f7aCIxYiSRBHECTP7a/HQREgdic/bHpu3jbPgrxdGnHf9TyV/MUA8lYVanoLkrvGwDKWzHluMIMUXAR2AZMH+OPbxjlZxwBIRtf+qHvSucOc+AjbPdkUd9f0OI7TwfDFSQBis=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1762288482; c=relaxed/simple;
+	bh=pcqbzs87TVZHGwd0PFnmjPS0uPadDYSXPyKwjnuXgBg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Iiw7N9e+BGjP3eTFFu6jzk+iepSTsvNqRjbrmgRGItLqdYhtkYfkR4S1CgsYMoQY4GAdvjfhFYWBrLk/eo1LoQmabNioY8Gf33I+oW/S1XO5jz7nwg/vgOAo1a5e9PYbR7HOX4boNLebOLY/VVQST2Z+43xwJ870SeR6ikr4xjI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=aasyrEeM; arc=none smtp.client-ip=209.85.221.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-429b7ba208eso3733973f8f.1
+        for <stable@vger.kernel.org>; Tue, 04 Nov 2025 12:34:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1762288477; x=1762893277; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=ElfU6/I0L9mmjF7bkTwgY90FbMhY7drclQ1JLKFiKW4=;
+        b=aasyrEeMPaUORie+gF/MXEFkE5m2ZAXfyqKNV5WBRLupbMn99dJ9Y3mwOSBR+dsFpE
+         RSdt81JlofYM2dx7kvP2svb9n6Oyppq4olWYfAlQeVkajQazr14fP9KRpZmeSJddIk/F
+         s/ojyxOFrqN2wg0MUacWa+9netAwIoaVPUlwDLpkRa5o91usB0dWMH15P6sUezNs3Tl4
+         brgT8bZYvPgEZ9OspZVwWNX9seVd5+33VeCijT/+LH+xlJio3WJY5aJowzYrhSmVf6U1
+         tT8MNuuVtPOtYV3vs2dpFOYlFW18aBcrBEfVkXgv4imLZV+X+LZosGM0B5IpV3x/kQRz
+         ZTKA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762288477; x=1762893277;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ElfU6/I0L9mmjF7bkTwgY90FbMhY7drclQ1JLKFiKW4=;
+        b=QiLfWmL6mpqAiVJESwc4Xn3/J0w81rAv6GQVyQd1v0Ot0G9JEpG8t71Xli+07Bbi/x
+         +gRqMdr0YphBTzcxZLBrBSBok7mnAUiwxj7/CLJri6mlfu+h6N/UdX9BDyyCuIY/wi06
+         6fz6LSg+Kf3pIV82CUrmY7qQHsgX3qlilEc/kUVGMo+nuSJflWoMSRgIFm+/YV94rqw7
+         IwMDPo4H5iRA1u2HFg46EJPns4y86zA+dN7v5U02kK+KJXT9Cix5LumHxjbp/9a3unX9
+         U+4T4+nNUvp5MYj1TpXKa/sIfGQaa5aYrYob5oqQLtqG7MMpUAWzapTpK7cOeYCbFzso
+         GKNA==
+X-Forwarded-Encrypted: i=1; AJvYcCWAZVin8mLR/uY08HBhEezjJCt0dNEpP5d4/53Qr1uoCNRWlAQzjpNkEy3e2QL0aG7v6mlLwh0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwnTIM+KFZNcZW9j+kggFWQNup8v1bVWIEPJoechIqYoLAUSvYX
+	7OpHRtc7srcAbb7xOe/GuFIeRLfndGDxNmNtFw7/KF+aXgC4X4eevxT6g/XkRMOn6is=
+X-Gm-Gg: ASbGnctzPskhBAHYxQtSJjUd755PADzA/7S2ElZ5xLxLCFcqV2Lmewf8McIF/6722NE
+	pzeIWKEQFagPFoE/Q8B40LUF9SBRifnh6GHDeUsTV0TJKH7O/EA+RfS0CSJCtjc5k71us+ZQAds
+	YnLuVNG+puVCcVJVT+igtkJ6Xxf/S7VtPvTpahYwuG58YcjjprHN8BWt4YHhUojv8TY9rn/GT6X
+	YzpwjUvAnDEprO9pHXNQdLGp+kEiAUKHrjgjraAaQxN3jQyX5BH/AZD3ld3lBbklVcAxsyYuaY5
+	lx1TDBhOeVjNvp6E2vIeeTks7lX5CNZFHe/4Si1r09MZzalV0e/Ye1825q8oLEdJLz0pr0pFbWE
+	4FJ4VkHO0F7l0grtYHRQ95w5+OqAp3W8p8HR9TZmeUTEM6LDtOj5UkRLOlessYhnrxKczXsuR2c
+	YZUQSbBF5skI4tl+Lxt6J5IDHLAbiM
+X-Google-Smtp-Source: AGHT+IExUHtfVKDjgXTSPNckPXQhySLpTav0VeGsiTnCNS2KyTCAao18XUn6RYqTto5ou7sSH4icmg==
+X-Received: by 2002:a05:6000:2887:b0:429:d528:649f with SMTP id ffacd0b85a97d-429e32c8378mr576294f8f.2.1762288476768;
+        Tue, 04 Nov 2025 12:34:36 -0800 (PST)
+Received: from ?IPV6:2403:580d:fda1::e9d? (2403-580d-fda1--e9d.ip6.aussiebb.net. [2403:580d:fda1::e9d])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29601976196sm36462045ad.22.2025.11.04.12.34.33
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 04 Nov 2025 12:34:36 -0800 (PST)
+Message-ID: <9ef50974-62a5-4b22-959f-c3be7abfc4ae@suse.com>
+Date: Wed, 5 Nov 2025 07:04:31 +1030
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH3PPF9E162731D:EE_|DM4PR11MB5328:EE_
-X-MS-Office365-Filtering-Correlation-Id: c10f7014-71ef-42c9-b11b-08de1bdd31f1
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024;
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?3Sty8V9fuVE6Tct5O2wAVpHNNDdpyO6UDuMgyBC7lgmmtnnvfsHDO2NGvPPi?=
- =?us-ascii?Q?t5lhKpVvCl/b7BJ6j6aErOnfjGMEwOjwbo6z95r/ry+uOkmXvK3KMfGS9BQj?=
- =?us-ascii?Q?4ENbcVGwD5v1tIuc9AGRL/6glJbVPxnhSX75IMwlexwRaPrRTnkhLkkJiE9W?=
- =?us-ascii?Q?QKwl9EEd6j1gUpGNfxv/aVPzWApcjEIjvo99cj/5E0SuK7F/nC6kS4NsC2x3?=
- =?us-ascii?Q?rupMyyMCJvTxxAwEJ15JsV5J/vBA+Tv+hQbBUUkxgDXl50mpXBY9V3Zvzk5E?=
- =?us-ascii?Q?oWA4lqDVM4UIWBZT1gtWFXHgsV9NSvQ59+E+fBjuSxgUxvyzG+H2Iw28r5P7?=
- =?us-ascii?Q?2G9qnq6vnTEEsSAvHZStGa8XWRX/cEOMzmyEzIGmjeC4+Q45nAeXr3+FTXSU?=
- =?us-ascii?Q?w9GNes53djgmqBxxvdgT9peCLGF+hay50h86MVikYLht5RpPKNMExxOBiMNg?=
- =?us-ascii?Q?A7JV6p0O4+xWOPg5akJkQ6WDzxHc+5dvgoeStUfX7UOAupDdA8bMwrzIAxwY?=
- =?us-ascii?Q?Hznh6aXDiquw/Ihe2a6W/aVeon/o1x5xIe6Nk+9z1zjZ6D7oMThasXothqJj?=
- =?us-ascii?Q?orEV6TrGa0/mFie3rPhb15LznFsLvIhJt3TDQXeJk3PDwSnxPxm8Ja4IzJQL?=
- =?us-ascii?Q?iFtA3M6AO8pmq7sbTWA/cbx+78kU61O4HFZmFOXU28q/GtTDgewAdK5iqQ66?=
- =?us-ascii?Q?hjfp1omk/zKf5CeQCnqk2r5uzmZMJDQum/jzeO4VCxa9hYTWGoPLXUNuFxi/?=
- =?us-ascii?Q?MZ+bKilMOFbbYDA4HVmEMn7NZqZY+u267oOirYywPI7rEB0nG7tu8BZZOYJH?=
- =?us-ascii?Q?sRHCI1IIoBu+nuPAyRSQV+LNQe+Ybvog6qyOXBIwQuHR9drhGaE1Ms2egPLj?=
- =?us-ascii?Q?YYVINJhPDjDCnNHu6ZT+B5BpKNxdZ6KWGb4WRneoDz03A0kYAmcYOZk+IViL?=
- =?us-ascii?Q?mFTJNJDdKSM96wWz90/Nnh2Hm2Chx8ryzjfZfvBo9N9vxUn2fn7zErr6kAwJ?=
- =?us-ascii?Q?sJoPPWodlajXc8qlkjliyXSUEzt4QjzHoMCkDqBNo2uEOcW1aiOXuYJtneXQ?=
- =?us-ascii?Q?L6L2aYl0QvACauh8zLVMTCtGw+EZ8rXAx3FpmI9qvDGx9RC55EKMLVK6UsdZ?=
- =?us-ascii?Q?CsSFP/2wCW9Seh6v4oZLu4koD+PyA1+eFYiBNTcfLgFWZ8vncVO2wdNZz874?=
- =?us-ascii?Q?91f2vuNEd8ZLxWpXI/G9SnqynuZsB7QHy3nbm9qSHr6s7jVdDvgONY3Ket9h?=
- =?us-ascii?Q?Nm4KsGIO/on3CMSa3KsvfYaFCGsh65jPz8JZY5noj4Z4rGZSh1v2NShD83oX?=
- =?us-ascii?Q?3HB2w3TdZxlHFgKczLnl1zIaFdvGtm8mpkjkouShfVB80elfBCAAw8yRKUMC?=
- =?us-ascii?Q?YCgL52S0T5hZ1pGR9kJrbxDcBNR560OWQT6VjsqvxjpG/uvfDV6Rfk6JHLOH?=
- =?us-ascii?Q?ZsCrpmta0mzUGa+EN+59sFygH4pU6Hxg?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH3PPF9E162731D.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?Q7Uj83/HkB+/B/01oa2qf/jjcNTm5jPMfoS4BeNiL7ymEAGz/1U+a/8uyxuG?=
- =?us-ascii?Q?SUrqxzrWXyLC146lv5L2UUtVlcsDNOsq2XSsBZWSl5V2c20hbY61U81QUj5x?=
- =?us-ascii?Q?G2pb1qyoUDnyY8LhMcOYQnR8GD8q8JnBzyD+P0FyW/2/2YK/gK8FCS4iGLei?=
- =?us-ascii?Q?FDARfKdcs8hTj8UnKq0bYY2HCKTCuOKTgpHW6FsBYS/Fq0aWkHvWN1HFLFz0?=
- =?us-ascii?Q?8FZyMp62p+ffqIWF+IZgJkGbBAorMw7lQPKCUK//0z9IVLsFlHYM/rTTcnWC?=
- =?us-ascii?Q?4P/w/E51OO4DDUSToJXCfqZBaptwA7D7vgpx68J+qUVRU+5d4cmKUW46D3kE?=
- =?us-ascii?Q?xTJXek0geWigGgk3FNpsxspF3zCKBQXY3N2l0xDE3kBHadFBbSQLSqSYztmk?=
- =?us-ascii?Q?MDv8LoBi6C9L4+laWfnaBvwirg4FH7MWiOxv0UHYW2VU7kmqJj8QS6A85IKE?=
- =?us-ascii?Q?vLsUNCRsg7hTwwewXmTH+Bqh/UirSrtNYoZlKhY5l0yg/kxAt8lXgPae0X9v?=
- =?us-ascii?Q?bIowm29uu00qCJ2r+lkygIawTqC7IC/e/yZfqzkuuY2fcNRnjxJSB1by17zN?=
- =?us-ascii?Q?nHMexDKkNgxmhYnfVcf9tiUEP5z8P5hvuSjG3AsVHOWRW9QId4JwT+6egKEF?=
- =?us-ascii?Q?GJVbd7C7+n/9BAnBiAA4rGXwssG29QnuQVxcz8OEWIbtZOCRkKuyDPCssH/D?=
- =?us-ascii?Q?7jZq86Nr7cwA+2yKpClrx9m4SCowPfPxdhZM84qF7QchB4k5vKLnbMHfNunh?=
- =?us-ascii?Q?g/e5ofNeNZrRcr18RqR0a4H6OvWBW3lOH7alWbsDf4KpU8hSJfYdOpcJ4QUT?=
- =?us-ascii?Q?weWU3kB/mMqrorzRs6pZDHBntf61F/9AOHheiOGnlWgIyqzwAcRDEY/g5Qyx?=
- =?us-ascii?Q?VRawWU9KDI0Vg2CdTKTGQHvTMQftJLcrzSiG7Rq58/17aYbF4MJ2G6Yol1ZY?=
- =?us-ascii?Q?NNxd4cACjPaMMoSz6oH30lhXorqjqgDUIKf0xpVVVYrCaA+YclUGbuNPYxRv?=
- =?us-ascii?Q?bMfS7gOKQCVyr7yMBXOWxpY/Fp5sXqGEyglRf9vJ/eCx1dijtm3ZeTsK1gED?=
- =?us-ascii?Q?7Y26UVfoKbBXQfNmjSme3RIdJDHvxECOegrJRDFSsX347fpEFCsMUXpXcvUE?=
- =?us-ascii?Q?FXJ608Xpl6mSwB04qCjNISohw8AuDtK5/bNgXooqVwq/v7R7kXlxJGkcHl9E?=
- =?us-ascii?Q?2PbguMhJOtnBcQ4SbEq/zIsioJzaXdPngJEVV14mtg7KP3bV4yfZ4zuLYdhh?=
- =?us-ascii?Q?aETIJvsrBLpHl/D6eyTuItIhkjavQFZDO1o1tqfbTV+lwnzpr394UITBZi11?=
- =?us-ascii?Q?EKiNqGoAfs3pfyRYPfCiSlvCvWCYdmFmHjopLqGte7lVmcCPctg2CwvWxuXW?=
- =?us-ascii?Q?YLVHStPMUxAtE5TfilioGUR8RFVE+/9KHdufQTAra6ZavIl2tI1oIffLyJyH?=
- =?us-ascii?Q?oskpkVd+B9TG5zW7LKWIALjLSsvoS2b+o2YEHPv3UJnmieTskC2Q41zyh7ZO?=
- =?us-ascii?Q?VW69kL7MU8QiVu3KUyUzgpNjZWz//D43CG+fSEwDwdqLyafa+KKDLbdtfpkX?=
- =?us-ascii?Q?NYK4uCPhCWNIXAV9o33sdE9MrScfVvGfJNdEEWnQ?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: c10f7014-71ef-42c9-b11b-08de1bdd31f1
-X-MS-Exchange-CrossTenant-AuthSource: PH3PPF9E162731D.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Nov 2025 20:03:17.5799
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: CK2Fyc0Tkt3H6inhjDkoxGEe3eYVq94sOyP769p8lx/fIvoN9KMwokFcMKHFqKmSYS3TEtN7vkJVhudY4dqYhw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR11MB5328
-X-OriginatorOrg: intel.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] btrfs: fix NULL pointer dereference in
+ backup_super_roots()
+To: Zhen Ni <zhen.ni@easystack.cn>, clm@fb.com, dsterba@suse.com
+Cc: linux-btrfs@vger.kernel.org, stable@vger.kernel.org
+References: <20251104081416.759194-1-zhen.ni@easystack.cn>
+Content-Language: en-US
+From: Qu Wenruo <wqu@suse.com>
+Autocrypt: addr=wqu@suse.com; keydata=
+ xsBNBFnVga8BCACyhFP3ExcTIuB73jDIBA/vSoYcTyysFQzPvez64TUSCv1SgXEByR7fju3o
+ 8RfaWuHCnkkea5luuTZMqfgTXrun2dqNVYDNOV6RIVrc4YuG20yhC1epnV55fJCThqij0MRL
+ 1NxPKXIlEdHvN0Kov3CtWA+R1iNN0RCeVun7rmOrrjBK573aWC5sgP7YsBOLK79H3tmUtz6b
+ 9Imuj0ZyEsa76Xg9PX9Hn2myKj1hfWGS+5og9Va4hrwQC8ipjXik6NKR5GDV+hOZkktU81G5
+ gkQtGB9jOAYRs86QG/b7PtIlbd3+pppT0gaS+wvwMs8cuNG+Pu6KO1oC4jgdseFLu7NpABEB
+ AAHNGFF1IFdlbnJ1byA8d3F1QHN1c2UuY29tPsLAlAQTAQgAPgIbAwULCQgHAgYVCAkKCwIE
+ FgIDAQIeAQIXgBYhBC3fcuWlpVuonapC4cI9kfOhJf6oBQJnEXVgBQkQ/lqxAAoJEMI9kfOh
+ Jf6o+jIH/2KhFmyOw4XWAYbnnijuYqb/obGae8HhcJO2KIGcxbsinK+KQFTSZnkFxnbsQ+VY
+ fvtWBHGt8WfHcNmfjdejmy9si2jyy8smQV2jiB60a8iqQXGmsrkuR+AM2V360oEbMF3gVvim
+ 2VSX2IiW9KERuhifjseNV1HLk0SHw5NnXiWh1THTqtvFFY+CwnLN2GqiMaSLF6gATW05/sEd
+ V17MdI1z4+WSk7D57FlLjp50F3ow2WJtXwG8yG8d6S40dytZpH9iFuk12Sbg7lrtQxPPOIEU
+ rpmZLfCNJJoZj603613w/M8EiZw6MohzikTWcFc55RLYJPBWQ+9puZtx1DopW2jOwE0EWdWB
+ rwEIAKpT62HgSzL9zwGe+WIUCMB+nOEjXAfvoUPUwk+YCEDcOdfkkM5FyBoJs8TCEuPXGXBO
+ Cl5P5B8OYYnkHkGWutAVlUTV8KESOIm/KJIA7jJA+Ss9VhMjtePfgWexw+P8itFRSRrrwyUf
+ E+0WcAevblUi45LjWWZgpg3A80tHP0iToOZ5MbdYk7YFBE29cDSleskfV80ZKxFv6koQocq0
+ vXzTfHvXNDELAuH7Ms/WJcdUzmPyBf3Oq6mKBBH8J6XZc9LjjNZwNbyvsHSrV5bgmu/THX2n
+ g/3be+iqf6OggCiy3I1NSMJ5KtR0q2H2Nx2Vqb1fYPOID8McMV9Ll6rh8S8AEQEAAcLAfAQY
+ AQgAJgIbDBYhBC3fcuWlpVuonapC4cI9kfOhJf6oBQJnEXWBBQkQ/lrSAAoJEMI9kfOhJf6o
+ cakH+QHwDszsoYvmrNq36MFGgvAHRjdlrHRBa4A1V1kzd4kOUokongcrOOgHY9yfglcvZqlJ
+ qfa4l+1oxs1BvCi29psteQTtw+memmcGruKi+YHD7793zNCMtAtYidDmQ2pWaLfqSaryjlzR
+ /3tBWMyvIeWZKURnZbBzWRREB7iWxEbZ014B3gICqZPDRwwitHpH8Om3eZr7ygZck6bBa4MU
+ o1XgbZcspyCGqu1xF/bMAY2iCDcq6ULKQceuKkbeQ8qxvt9hVxJC2W3lHq8dlK1pkHPDg9wO
+ JoAXek8MF37R8gpLoGWl41FIUb3hFiu3zhDDvslYM4BmzI18QgQTQnotJH8=
+In-Reply-To: <20251104081416.759194-1-zhen.ni@easystack.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Alison Schofield wrote:
-> KASAN reports a global-out-of-bounds access when running these nfit
-> tests: clear.sh, pmem-errors.sh, pfn-meta-errors.sh, btt-errors.sh,
-> daxdev-errors.sh, and inject-error.sh.
-> 
-> [] BUG: KASAN: global-out-of-bounds in nfit_test_ctl+0x769f/0x7840 [nfit_test]
-> [] Read of size 4 at addr ffffffffc03ea01c by task ndctl/1215
-> [] The buggy address belongs to the variable:
-> [] handle+0x1c/0x1df4 [nfit_test]
-> 
-> nfit_test_search_spa() uses handle[nvdimm->id] to retrieve a device
-> handle and triggers a KASAN error when it reads past the end of the
-> handle array. It should not be indexing the handle array at all.
-> 
-> The correct device handle is stored in per-DIMM test data. Each DIMM
-> has a struct nfit_mem that embeds a struct acpi_nfit_memdev that
-> describes the NFIT device handle. Use that device handle here. 
-> 
-> Fixes: 10246dc84dfc ("acpi nfit: nfit_test supports translate SPA")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Alison Schofield <alison.schofield@intel.com>
 
-Picked up
-https://git.kernel.org/pub/scm/linux/kernel/git/nvdimm/nvdimm.git/commit/?h=libnvdimm-for-next
 
-Thanks,
-Ira
+在 2025/11/4 18:44, Zhen Ni 写道:
+> backup_super_roots() unconditionally dereferences extent_root and
+> csum_root pointers obtained from btrfs_extent_root() and
+> btrfs_csum_root() respectively. These functions can return NULL when the
+> corresponding filesystem trees are unavailable due to corruption or
+> other error conditions. This causes a kernel panic.
 
+Explain why backup_super_roots() is called on those situations.
+
+Remember csum/extent trees can only be NULL if corresponding rescue 
+mount options are used, which requires the full fs to be RO (and no log 
+replay is allowed either).
+
+If you hit it in the real world, please give the call trace.
+
+Otherwise give a deeper dig first.
+> 
+> Add proper NULL checking and skip the backup operations for the
+> unavailable roots.
+> 
+> Fixes: 29cbcf401793 ("btrfs: stop accessing ->extent_root directly")
+> Fixes: f7238e509404 ("btrfs: add support for multiple global roots")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Zhen Ni <zhen.ni@easystack.cn>
 > ---
+>   fs/btrfs/disk-io.c | 28 ++++++++++++++++------------
+>   1 file changed, 16 insertions(+), 12 deletions(-)
 > 
-> Changes in v2:
-> - Use the correct handle in per-DIMM test data (Dan)
-> - Update commit message and log
-> - Update Fixes Tag
-> 
-> 
->  tools/testing/nvdimm/test/nfit.c | 7 ++++++-
->  1 file changed, 6 insertions(+), 1 deletion(-)
-> 
-> diff --git a/tools/testing/nvdimm/test/nfit.c b/tools/testing/nvdimm/test/nfit.c
-> index cfd4378e2129..f87e9f251d13 100644
-> --- a/tools/testing/nvdimm/test/nfit.c
-> +++ b/tools/testing/nvdimm/test/nfit.c
-> @@ -670,6 +670,7 @@ static int nfit_test_search_spa(struct nvdimm_bus *bus,
->  		.addr = spa->spa,
->  		.region = NULL,
->  	};
-> +	struct nfit_mem *nfit_mem;
->  	u64 dpa;
->  
->  	ret = device_for_each_child(&bus->dev, &ctx,
-> @@ -687,8 +688,12 @@ static int nfit_test_search_spa(struct nvdimm_bus *bus,
->  	 */
->  	nd_mapping = &nd_region->mapping[nd_region->ndr_mappings - 1];
->  	nvdimm = nd_mapping->nvdimm;
-> +	nfit_mem = nvdimm_provider_data(nvdimm);
-> +	if (!nfit_mem)
-> +		return -EINVAL;
->  
-> -	spa->devices[0].nfit_device_handle = handle[nvdimm->id];
-> +	spa->devices[0].nfit_device_handle =
-> +		__to_nfit_memdev(nfit_mem)->device_handle;
->  	spa->num_nvdimms = 1;
->  	spa->devices[0].dpa = dpa;
->  
-> 
-> base-commit: 211ddde0823f1442e4ad052a2f30f050145ccada
-> -- 
-> 2.37.3
-> 
-
+> diff --git a/fs/btrfs/disk-io.c b/fs/btrfs/disk-io.c
+> index 0aa7e5d1b05f..b54c79a1db14 100644
+> --- a/fs/btrfs/disk-io.c
+> +++ b/fs/btrfs/disk-io.c
+> @@ -1670,18 +1670,22 @@ static void backup_super_roots(struct btrfs_fs_info *info)
+>   		struct btrfs_root *extent_root = btrfs_extent_root(info, 0);
+>   		struct btrfs_root *csum_root = btrfs_csum_root(info, 0);
+>   
+> -		btrfs_set_backup_extent_root(root_backup,
+> -					     extent_root->node->start);
+> -		btrfs_set_backup_extent_root_gen(root_backup,
+> -				btrfs_header_generation(extent_root->node));
+> -		btrfs_set_backup_extent_root_level(root_backup,
+> -					btrfs_header_level(extent_root->node));
+> -
+> -		btrfs_set_backup_csum_root(root_backup, csum_root->node->start);
+> -		btrfs_set_backup_csum_root_gen(root_backup,
+> -					       btrfs_header_generation(csum_root->node));
+> -		btrfs_set_backup_csum_root_level(root_backup,
+> -						 btrfs_header_level(csum_root->node));
+> +		if (unlikely(!extent_root || !csum_root)) {
+> +			btrfs_warn(info, "failed to get extent or csum root for backup");
+> +		} else {
+> +			btrfs_set_backup_extent_root(root_backup,
+> +						     extent_root->node->start);
+> +			btrfs_set_backup_extent_root_gen(root_backup,
+> +					btrfs_header_generation(extent_root->node));
+> +			btrfs_set_backup_extent_root_level(root_backup,
+> +						btrfs_header_level(extent_root->node));
+> +
+> +			btrfs_set_backup_csum_root(root_backup, csum_root->node->start);
+> +			btrfs_set_backup_csum_root_gen(root_backup,
+> +						       btrfs_header_generation(csum_root->node));
+> +			btrfs_set_backup_csum_root_level(root_backup,
+> +							 btrfs_header_level(csum_root->node));
+> +		}
+>   	}
+>   
+>   	/*
 
 
