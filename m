@@ -1,118 +1,132 @@
-Return-Path: <stable+bounces-192398-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192399-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8AFFC316BE
-	for <lists+stable@lfdr.de>; Tue, 04 Nov 2025 15:09:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 891D2C3172D
+	for <lists+stable@lfdr.de>; Tue, 04 Nov 2025 15:15:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0035E421A1C
-	for <lists+stable@lfdr.de>; Tue,  4 Nov 2025 14:06:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C85693A5616
+	for <lists+stable@lfdr.de>; Tue,  4 Nov 2025 14:10:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BB1D32BF48;
-	Tue,  4 Nov 2025 14:05:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDA9132B9AD;
+	Tue,  4 Nov 2025 14:10:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VqBFoHXh"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DBTZRDMd"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFC3432B9B4
-	for <stable@vger.kernel.org>; Tue,  4 Nov 2025 14:05:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B489328B5C
+	for <stable@vger.kernel.org>; Tue,  4 Nov 2025 14:09:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762265158; cv=none; b=GuB8wXUZ9ada72Dw/vH/OzpcjWuotIU0Nj1e/kSG1th8dBlCuGVrge1vU1hi8ZMdVhMzsJ3SozO5iO2ckyX+pWn7ynwuL78o07lOWB7KrJEfQDjlgxAnk5+YDr9HC5VmR54QiQWI3xF2yURuVD2vqPPwvlvf6S/H0KxKFR9P5EM=
+	t=1762265402; cv=none; b=OgGy/48RefKGvMgE3Nbm4QhHf2zxC0487SWBugk3iUikrGmrxiZDYEBV2fWmf/v5AICVdyoL9tSw+quC0ZpjkSkU/cN6oqv5DXrfb6nDrzzkhjwUrGRegXwuTEKQfYy9/24eBGTgSwe+mqVIL2+S8rbIIUmlRhcyv+Mk0ZZ1klQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762265158; c=relaxed/simple;
-	bh=xwNceA9wbeOqYxoJU3Jt1SIQ1eC8AGuVP4fS8PiKhhE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=SsmJcDQKQpUsGlu3r3VRJ6VTq9a2HzJKJ+M//OPt9Tm4wQT9EVfXCwUocXjkH2C9G95ElGDlPMt0XHLA0n/NeTwFtOf9xIALOxyhMzYkAyqCpMJr+9nFkj/FdMRQVALZ0ZBWxhmMiu1+C6JJj5FU5aDW1vN2omC3AKAjO2E7oPM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VqBFoHXh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87AB3C4CEF7
-	for <stable@vger.kernel.org>; Tue,  4 Nov 2025 14:05:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762265157;
-	bh=xwNceA9wbeOqYxoJU3Jt1SIQ1eC8AGuVP4fS8PiKhhE=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=VqBFoHXhz6diMg/8q0xA7OPm5EkEB54OVdv1aV2fvm8vP1O8B34q8B1baEukkrXTY
-	 8+Ynm23qDkV3NOChiO78oPJKCcNfUbv74a60dsEHeA6UeXEx28NRqnL7/4NsnvGTij
-	 kWoDbmhAAgHDYk9cs2pIVQsF4k9xfdf0jyAcZbtdMXKyQ2N6FflV+qxyocpAG8nI+z
-	 fVx2mCBvclXnBSt76MXOZgl5/G8w0qTfYx20aPuv3oiINUiOulxRvi4Q4v5T6Qdj56
-	 2/DT4HlBjBq4gvwt59p93PyeZwvpQYWrwMNMF3oO21famAzI1QJy9CtuIK0APrv3b2
-	 y0X12tOqOr+Uw==
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-b472842981fso716261566b.1
-        for <stable@vger.kernel.org>; Tue, 04 Nov 2025 06:05:57 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUtht0mGfKYkPIN7+6jUka/R/zZN+fcsGUtGsLMJS8wA1bjjchQsYp4+/KZ5F279zqwe/9jmJ0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxx8YBPdqKWf/gouJAXEYwR6tJPWPqStxswCeNAo7ucjm05m0wD
-	g6PIW/ihhzXfOuC12+CvSUP5Bj3vKzZu19ahmhwkBgJjqdkoRGTQV1bytp0uW0kjHDdbfssbu0F
-	vq7MDfSqRg/Rd065jAGCNquHCJBkKyW8=
-X-Google-Smtp-Source: AGHT+IFRHXrgFcRL1kF6f7O7o4U2loCiIItvRf1yYOccI40aSz2GtslTGdxn8g9J/CSSWk8lxoqLVHVURoUzpviRt1I=
-X-Received: by 2002:a17:907:7252:b0:b46:8bad:6981 with SMTP id
- a640c23a62f3a-b70701917e6mr1848664066b.20.1762265155999; Tue, 04 Nov 2025
- 06:05:55 -0800 (PST)
+	s=arc-20240116; t=1762265402; c=relaxed/simple;
+	bh=0nrrlREagafRXQeDgB+zbKiCfD15/eLfwA/KcOk41RA=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=NSVa0i2TfcvwcUAf5xAcz9OceZmusYNfG3TtgcusVm37ZW49qMV70JHe3gzl9zatvmQ9LVaFgCVUJASSlyedOkzciATmB6kwUQzF2Pmk7qR2+0WMjzyT6ALNJbvxFhCl3nV3Pxl4QbDCPBNmigA+3wHOb7GWwTEzDSsaeMwhsto=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DBTZRDMd; arc=none smtp.client-ip=209.85.216.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-32ebcef552eso805806a91.0
+        for <stable@vger.kernel.org>; Tue, 04 Nov 2025 06:09:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1762265399; x=1762870199; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=B0HPvUdMK3sKhI8XnoOYJRY8A3cM+jePDjpaUPHvJoM=;
+        b=DBTZRDMd/Y1cLDhMVubeKWzu5QL9sv1Gv34/0gEsvYIc+YgUTP/qQEirdXxQBcZcOl
+         jZlvulT0dE+HRwAuREY26tPhW/17qiAx7LRWLQ5cqDi3LIr/OuwJvqSpBsBFyKpII0OG
+         eqgbzBhY1/101ZP8LBGZHf5I8bzGynVf5aAjVehjHLGfFiaKlMNBL5q5FLq1Nznp24DD
+         1xLlUd4jo4/voqP3MabLML+LmOs79/XKHylhaz7TM1bZg8LCnRWsZElUgRblZ5cZgJ0Q
+         Gx9cc1bYYyWs2Wm/WdHBNqDta8q6jJRMetXFQbwQnwr/XcL+OEe5u6729e7FpS6wQ5uv
+         ztjg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762265399; x=1762870199;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=B0HPvUdMK3sKhI8XnoOYJRY8A3cM+jePDjpaUPHvJoM=;
+        b=t7H50NOq3W+sPsSvQdgInBoSUosvTkSoGqO3UOoXuJCM+nvpbDJQbd6N+FZu5ZFgV0
+         s+YZca6CK/k1z18CW0RqRLD85kH2QfOJbgT58EGzFm95mRJhSZnC2Ti1x7oHF4uaVe7B
+         zvoid2udFrvGRP1OZUPqb6YwXe7F+BFVtF6ca9V6ta7IrzJc8bQgkhuN9A1GE7PAfRo9
+         xa+b2n8gl0pu7WRa6U2fiinnuUvpqb6Jc+J7bIou7zLIEmOC9qGVNgETHu9emsveZbhW
+         4GbYkEy4HOxAsIdQ1iKvAoFVvP4vUo4FmjgrxkqpjufL+xEYQgvCKG5mMbF9NP+yWzPe
+         D9yg==
+X-Forwarded-Encrypted: i=1; AJvYcCWI9zKSzdFwk6Rilj6ZjP+QztA3Ql1nu376olRX5Yif9XeWoHlY4GSiL7IbBpYEzP/LYI3HRc4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxLqgQUZABavfKeqvBomDtJHH0jGFttLlchoQkTjOUAOmVklxWq
+	Ycxjwkd7Ne2r/kMu9aBFImauwfWEFsYaalKC+9n9yUWV00g15htWZX5m
+X-Gm-Gg: ASbGncv1jOpREhVO3keJWoHEnwLIzWL9xCAtb4e4Jx4raNoYMwMeQP9h4RP1YnAd2ov
+	uBylx66QMNvPBlkRimr7JNBQ0YnsA7omn6ehLNUTMIuG46M8C5I54B4ncO8zAZjO5Cn4SwEFy0E
+	rJsdmAP4Wzpt99SMOTFl+yg8h7a30tgiEBmfXQ/RIEKVH4mGSaCLg8MQd19nPaQ9mgq5mK0CH12
+	3gab2DgYmQIjo2FA2Htt3x8EhtDX8Vw08wR4DL8i6hbmx80BnBEb2NqQ9dsu4mKeMhn29dkq5wR
+	Njha65X883bKABdn7DgSeCeD38TxILjq2EpLzKIuorybFqe+iyY6kpMdrs7pYqrU5mINI84RXhA
+	VdOcR97IIgkvjFaRImwoh5t0xYEo0sTLyWbuJf3hcLKTMGayUefSafNg7pcalvZc1MVEpec6rGe
+	PUEdYMy91z/yYin6XjAdCFM+Bo+BdDN6OdPV3SyZuFYcGzPC/yywnILDxuQTkYTg==
+X-Google-Smtp-Source: AGHT+IGFhxmLkXlhhlWheM/7TdpX80dwQJuiUq5HlMxy2XqFboHcIAQldpj0JK42rgrkK9m5OdoCDw==
+X-Received: by 2002:a17:90b:3b8f:b0:340:b8f2:24fa with SMTP id 98e67ed59e1d1-340b8f22da7mr9416806a91.2.1762265399208;
+        Tue, 04 Nov 2025 06:09:59 -0800 (PST)
+Received: from poi.localdomain (KD118158218050.ppp-bb.dion.ne.jp. [118.158.218.50])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7acd586cec1sm3084146b3a.38.2025.11.04.06.09.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 04 Nov 2025 06:09:58 -0800 (PST)
+From: Qianchang Zhao <pioooooooooip@gmail.com>
+To: harm0niakwer@gmail.com
+Cc: Qianchang Zhao <pioooooooooip@gmail.com>,
+	Zhitong Liu <liuzhitong1993@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] ksmbd: fix leak of transform buffer on encrypt_resp() failure
+Date: Tue,  4 Nov 2025 23:09:46 +0900
+Message-Id: <20251104140946.345094-1-pioooooooooip@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251104084509.763078-1-zhen.ni@easystack.cn>
-In-Reply-To: <20251104084509.763078-1-zhen.ni@easystack.cn>
-From: Filipe Manana <fdmanana@kernel.org>
-Date: Tue, 4 Nov 2025 14:05:19 +0000
-X-Gmail-Original-Message-ID: <CAL3q7H6QKShugKSvTrbYw5aE8mWmYth55jJ2c8cNJVP_XQTSVQ@mail.gmail.com>
-X-Gm-Features: AWmQ_bmbyp8qWqgrsAg7ufQXCfXSafXLHCiRemr0CtzT2PZBHt9N6niDcvhg-gE
-Message-ID: <CAL3q7H6QKShugKSvTrbYw5aE8mWmYth55jJ2c8cNJVP_XQTSVQ@mail.gmail.com>
-Subject: Re: [PATCH] btrfs: fix resource leak in do_walk_down()
-To: Zhen Ni <zhen.ni@easystack.cn>
-Cc: clm@fb.com, dsterba@suse.com, linux-btrfs@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Tue, Nov 4, 2025 at 1:21=E2=80=AFPM Zhen Ni <zhen.ni@easystack.cn> wrote=
-:
->
-> When check_next_block_uptodate() fails, do_walk_down() returns directly
-> without cleaning up the locked extent buffer allocated earlier,
-> causing memory and lock leaks.
->
-> Fix by using the existing out_unlock cleanup path instead of direct
-> return.
->
-> Fixes: 562d425454e8 ("btrfs: factor out eb uptodate check from do_walk_do=
-wn()")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Zhen Ni <zhen.ni@easystack.cn>
-> ---
->  fs/btrfs/extent-tree.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/fs/btrfs/extent-tree.c b/fs/btrfs/extent-tree.c
-> index dc4ca98c3780..742e476bf815 100644
-> --- a/fs/btrfs/extent-tree.c
-> +++ b/fs/btrfs/extent-tree.c
-> @@ -5770,7 +5770,7 @@ static noinline int do_walk_down(struct btrfs_trans=
-_handle *trans,
->
->         ret =3D check_next_block_uptodate(trans, root, path, wc, next);
->         if (ret)
-> -               return ret;
-> +               goto out_unlock;
+When encrypt_resp() fails at the send path, we only set
+STATUS_DATA_ERROR but leave the transform buffer allocated (work->tr_buf
+in this tree). Repeating this path leaks kernel memory and can lead to
+OOM (DoS) when encryption is required.
 
-This is wrong and will cause a double unlock and double free.
+Reproduced on: Linux v6.18-rc2 (self-built test kernel)
 
-When check_next_block_uptodate() returns an error, it has already
-unlocked and freed the extent buffer.
+Fix by freeing the transform buffer and forcing plaintext error reply.
 
-Thanks.
+Reported-by: Qianchang Zhao <pioooooooooip@gmail.com>
+Reported-by: Zhitong Liu <liuzhitong1993@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Qianchang Zhao <pioooooooooip@gmail.com>
+---
+ fs/smb/server/server.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
->
->         level--;
->         ASSERT(level =3D=3D btrfs_header_level(next));
-> --
-> 2.20.1
->
->
+diff --git a/fs/smb/server/server.c b/fs/smb/server/server.c
+index 40420544c..15dd13e76 100644
+--- a/fs/smb/server/server.c
++++ b/fs/smb/server/server.c
+@@ -244,8 +244,14 @@ static void __handle_ksmbd_work(struct ksmbd_work *work,
+ 	if (work->sess && work->sess->enc && work->encrypted &&
+ 	    conn->ops->encrypt_resp) {
+ 		rc = conn->ops->encrypt_resp(work);
+-		if (rc < 0)
++		if (rc < 0) {
+ 			conn->ops->set_rsp_status(work, STATUS_DATA_ERROR);
++			work->encrypted = false;
++			if (work->tr_buf) {
++				kvfree(work->tr_buf);
++				work->tr_buf = NULL;
++			}
++		}
+ 	}
+ 	if (work->sess)
+ 		ksmbd_user_session_put(work->sess);
+-- 
+2.34.1
+
 
