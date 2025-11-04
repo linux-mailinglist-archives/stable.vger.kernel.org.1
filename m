@@ -1,130 +1,125 @@
-Return-Path: <stable+bounces-192337-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192338-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8BC8C2F734
-	for <lists+stable@lfdr.de>; Tue, 04 Nov 2025 07:35:09 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF59AC2FB50
+	for <lists+stable@lfdr.de>; Tue, 04 Nov 2025 08:46:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 789EB3AB024
-	for <lists+stable@lfdr.de>; Tue,  4 Nov 2025 06:35:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A881D3A7A3E
+	for <lists+stable@lfdr.de>; Tue,  4 Nov 2025 07:42:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B03E35962;
-	Tue,  4 Nov 2025 06:35:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b="UJ/02os6"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4F5130AAC0;
+	Tue,  4 Nov 2025 07:42:50 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 713C12AE70
-	for <stable@vger.kernel.org>; Tue,  4 Nov 2025 06:35:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 062FD2D4811;
+	Tue,  4 Nov 2025 07:42:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762238103; cv=none; b=F+EsrI5o5e7XEKMwY27Pb1AF55IirsUzyy5vwjzsYOLzy/YxbPWXxlELTFIPBrft/5wodI5X0hWTGPBt+A5kI6YJjM7srBcgrXOKvP5pHo09+yqa7Tz56+qDPfBTg4YA5R+AWOuKfQREGs8HptrQ7s8UwyUXboVz0o12DLYH+ZA=
+	t=1762242170; cv=none; b=KUQhoWzQ5J0U2WfqpZvIda+BpSCUtdF1TcHzLBajBPTZyVz6Uv9qIqlaYs71jrrRM2LbcYWtn70KlCOysA7YzkAPmFbLz4rw8Dmjcp2s7j1/fcaO2RZLAj6/xEWwHp4tTN0m6xR1zEREw3x44ypTXEiTIaVOcwx2XA+kCXgQSRM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762238103; c=relaxed/simple;
-	bh=s7tSXwvHJ4PEs4y4Dec7uGqloATEs+Wo8gpI0FbMsVw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=MPLhMCgy529Dt9WX9tBrH5R5N8mDCd95t5CWHv3wPbM0sqDb8o0BQD7wJ/RQBy4oNsXjZ0F2Pun4Yhscd4xoVmfrjusrsyS18Jeg9T+KyZX+yTyy4VlFgnJp8y5nZ30wJKUuFh6WrnCJ+bB+gLhSnSDzzaPOHTyHUk77x4zD/CA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ionos.com; spf=pass smtp.mailfrom=ionos.com; dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b=UJ/02os6; arc=none smtp.client-ip=209.85.208.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ionos.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ionos.com
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-64075080480so903993a12.0
-        for <stable@vger.kernel.org>; Mon, 03 Nov 2025 22:35:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ionos.com; s=google; t=1762238100; x=1762842900; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=VQmAzRgv0Utq69TMSo5XIPtDul3xsXRYMQU9Qcm5TFs=;
-        b=UJ/02os6zo6tb9bDRTkqMwIS61zY1zWPRNHYWyZ4XtROs4qz91MoYxWQbv1F5e/2Ok
-         gcpesx6W+xbR109qRf2mcHQMBpsCfDiL7EQygq7QMT5LtgrvDBrlvYApNOs7jOEI45WI
-         TncHRFiMX42iv4wAWs2YCLslQXwyDMJXDK+88PPiVmpmiyjGu0tSd8YNVvwVZ9/GbEqp
-         SZ2c1TcRVA64P+5gj6M0dKRk/iEXVkQQsqpaNgCSeGtyqWbKbnYj/z/3VsBptc3UK7jN
-         rrHxyqUJzDNhK16dWbby2NtTZQ3H1QoB3glxxyobzlAxDsm2xFi53X3dIitP3gN3v96u
-         2LtA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762238100; x=1762842900;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=VQmAzRgv0Utq69TMSo5XIPtDul3xsXRYMQU9Qcm5TFs=;
-        b=Bx/pRrWc6Seohpfdzx77xroGR+7RNpV40XDK7LmPrwbBnrE/FbPeR+etPaK6yNecXH
-         MFUNsWoygnHcJxosSoVCxj4i8qtD6EHqEed8pGaAI0Cmh1+2wHAXCht1kLQyS+rjnQQ0
-         KvKMHFQHiiO4ZtJ25CPslssC/oQZhj1zOmrTRF0X/YUuHqw0aoSBGBwQ/bNkORZIJo6u
-         rZGV5QlTvFvuzCYD6zJPh5sDL8+xBKiKeKp2ATH+6qiCPHWpINcnCgY65y7MzVSBDRLb
-         m+DUHlsRCeIgIdlhHCuRVRP78tcmAWYorY5RGrK99YYRnlaMgBfLC79vVVyd5Xpe0ipz
-         cXdA==
-X-Forwarded-Encrypted: i=1; AJvYcCWx48LhJvf1+EBn2v8vGe5n4/+M7z1DkLdtIHttGUnBVeEm/+vOJsUb0BQ2/TLuFItmovY+lzQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyOxi+SbXgnoetUmf5Ze2S58tlYJ7zkNRlZHAxOWJwkEPhHDQ14
-	desz74ygt0iG7E8ZdiTeJoDAybiTvkoDuQn+vehIaJRBu2Dezjuf0nj5dURZE2nJJ214LyNFrQJ
-	1fVLjD0y9urQQHnkyGe2o6143z0KcAtMqapSMsgkkrw==
-X-Gm-Gg: ASbGncvPqXdPOH63Jf054XGaaWm44O2laGPflEfFiWPojczycKBwXqEQ1lf+pDyUJfq
-	SVX75NWe7K0jfTNLlyL4yKjy6wXfqLRlAe1pdCtkMRsay0A8uX58jKZc1GexncHh2NtkWOloTAZ
-	bLJiGYfvmwHN8be9OAmSHmiIBpWWgnKeMcm6/iVNKLEMmadl+QgrOWFUxBNG/qc3mbV5uY8030D
-	rn/SH6sAtfma77GG3IU4oeEWRRUSRF8CcjKW/ekHgPrsxRwc5POouipi7+xepix4TT2QTZtvTWP
-	Tpuwe0/EOe9O9neXrg==
-X-Google-Smtp-Source: AGHT+IFhN63cUrkNgr3auzZxHZID+sIcCpWhSj3aZ/0+3dxL73E0sC1Ila0n0+af/sQcBRu6sYvHwe1uf0SeulBLdKk=
-X-Received: by 2002:a05:6402:26c2:b0:640:acc8:eff6 with SMTP id
- 4fb4d7f45d1cf-640acc8f300mr4453850a12.0.1762238099728; Mon, 03 Nov 2025
- 22:34:59 -0800 (PST)
+	s=arc-20240116; t=1762242170; c=relaxed/simple;
+	bh=Q7jngGv1NawQYZtSpvS73CXJteQqxzmFEIciwhtX3dg=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ICWP2o4TgVLHu13w/qsRagUoS3wpdCRgei/3JOa6eS7/rxN8ASYV4m2jklgonTaz2hRhQonMj3/yFhsSBvIgKlXFMQZeL9VJg4d5LZ6lye2lW2m9BkslVrS2QUWGsr5fI6P7PQGW7fMcPs/fJ/VQ/G73TLTFrtpkE2YssSh9dpE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from dfae2b116770.home.arpa (unknown [124.16.138.129])
+	by APP-01 (Coremail) with SMTP id qwCowADHMWxprglpK3RaAQ--.1025S2;
+	Tue, 04 Nov 2025 15:42:33 +0800 (CST)
+From: Wentao Liang <vulab@iscas.ac.cn>
+To: pdeschrijver@nvidia.com,
+	pgaikwad@nvidia.com,
+	mturquette@baylibre.com,
+	sboyd@kernel.org,
+	thierry.reding@gmail.com,
+	jonathanh@nvidia.com
+Cc: linux-clk@vger.kernel.org,
+	linux-tegra@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Wentao Liang <vulab@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH] clk: tegra: tegra124-emc: Fix memory leak in load_timings_from_dt() on krealloc() failure
+Date: Tue,  4 Nov 2025 07:42:29 +0000
+Message-Id: <20251104074229.543546-1-vulab@iscas.ac.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251104021900.11896-1-make24@iscas.ac.cn>
-In-Reply-To: <20251104021900.11896-1-make24@iscas.ac.cn>
-From: Jinpu Wang <jinpu.wang@ionos.com>
-Date: Tue, 4 Nov 2025 07:34:49 +0100
-X-Gm-Features: AWmQ_bn1fsvxkVFYJEeS6HPOZ4jil9W2MtbfRXCQLvctJqd1ASYUjnERunBcB1Q
-Message-ID: <CAMGffE=0LXyzcg7tew15tV1zgVAaHA2XMHcf5=14k3k0KuzNXQ@mail.gmail.com>
-Subject: Re: [PATCH] RDMA/rtrs: server: Fix error handling in get_or_create_srv
-To: Ma Ke <make24@iscas.ac.cn>
-Cc: haris.iqbal@ionos.com, jgg@ziepe.ca, leon@kernel.org, 
-	danil.kipnis@cloud.ionos.com, linux-rdma@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, akpm@linux-foundation.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qwCowADHMWxprglpK3RaAQ--.1025S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7urW7uF18CF4fCFWxAFy7KFg_yoW8Cr48pF
+	48G34qyry0vrWUJFnrJrnruFyYga43trWUKw1FyayFvrs8JFy0yryxArWF9a17Ar9avF4U
+	JrWUWa1jqa1jvFUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUU9K14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
+	Cq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
+	I7IYx2IY67AKxVWUXVWUAwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r
+	4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628v
+	n2kIc2xKxwCY1x0262kKe7AKxVWUtVW8ZwCY02Avz4vE14v_GF4l42xK82IYc2Ij64vIr4
+	1l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK
+	67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI
+	8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAv
+	wI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14
+	v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfUOku4UUUUU
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiDAYQA2kJiUkkJwABs7
 
-On Tue, Nov 4, 2025 at 3:19=E2=80=AFAM Ma Ke <make24@iscas.ac.cn> wrote:
->
-> get_or_create_srv() fails to call put_device() after
-> device_initialize() when memory allocation fails. This could cause
-> reference count leaks during error handling, preventing proper device
-> cleanup and resulting in memory leaks.
->
-> Found by code review.
->
-> Cc: stable@vger.kernel.org
-> Fixes: 9cb837480424 ("RDMA/rtrs: server: main functionality")
-> Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-lgtm, thx!
-Acked-by: Jack Wang <jinpu.wang@ionos.com>
-> ---
->  drivers/infiniband/ulp/rtrs/rtrs-srv.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/infiniband/ulp/rtrs/rtrs-srv.c b/drivers/infiniband/=
-ulp/rtrs/rtrs-srv.c
-> index ef4abdea3c2d..9ecc6343455d 100644
-> --- a/drivers/infiniband/ulp/rtrs/rtrs-srv.c
-> +++ b/drivers/infiniband/ulp/rtrs/rtrs-srv.c
-> @@ -1450,7 +1450,7 @@ static struct rtrs_srv_sess *get_or_create_srv(stru=
-ct rtrs_srv_ctx *ctx,
->         kfree(srv->chunks);
->
->  err_free_srv:
-> -       kfree(srv);
-> +       put_device(&srv->dev);
->         return ERR_PTR(-ENOMEM);
->  }
->
-> --
-> 2.17.1
->
+The function load_timings_from_dt() directly assigns the result of
+krealloc() to tegra->timings, which causes a memory leak when
+krealloc() fails. When krealloc() returns NULL, the original pointer
+is lost, making it impossible to free the previously allocated memory.
+
+This fix uses a temporary variable to store the krealloc() result and
+only updates tegra->timings after successful allocation, preserving
+the original pointer in case of failure.
+
+Fixes: 888ca40e2843 ("clk: tegra: emc: Support multiple RAM codes")
+Cc: stable@vger.kernel.org
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+---
+ drivers/clk/tegra/clk-tegra124-emc.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/clk/tegra/clk-tegra124-emc.c b/drivers/clk/tegra/clk-tegra124-emc.c
+index 2a6db0434281..ed4972fa6dab 100644
+--- a/drivers/clk/tegra/clk-tegra124-emc.c
++++ b/drivers/clk/tegra/clk-tegra124-emc.c
+@@ -444,6 +444,7 @@ static int load_timings_from_dt(struct tegra_clk_emc *tegra,
+ 				u32 ram_code)
+ {
+ 	struct emc_timing *timings_ptr;
++	struct emc_timing *new_timings;
+ 	struct device_node *child;
+ 	int child_count = of_get_child_count(node);
+ 	int i = 0, err;
+@@ -451,10 +452,15 @@ static int load_timings_from_dt(struct tegra_clk_emc *tegra,
+ 
+ 	size = (tegra->num_timings + child_count) * sizeof(struct emc_timing);
+ 
+-	tegra->timings = krealloc(tegra->timings, size, GFP_KERNEL);
+-	if (!tegra->timings)
++	new_timings  = krealloc(tegra->timings, size, GFP_KERNEL);
++	if (!new_timings) {
++		kfree(tegra->timings);
++		tegra->timings = NULL;
++		tegra->num_timings = 0;
+ 		return -ENOMEM;
++	}
+ 
++	tegra->timings = new_timings;
+ 	timings_ptr = tegra->timings + tegra->num_timings;
+ 	tegra->num_timings += child_count;
+ 
+-- 
+2.34.1
+
 
