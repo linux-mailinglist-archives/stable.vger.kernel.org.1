@@ -1,104 +1,94 @@
-Return-Path: <stable+bounces-192301-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192302-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5EA2C2EF29
-	for <lists+stable@lfdr.de>; Tue, 04 Nov 2025 03:20:20 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82250C2EFC2
+	for <lists+stable@lfdr.de>; Tue, 04 Nov 2025 03:35:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B5AB93BFCD1
-	for <lists+stable@lfdr.de>; Tue,  4 Nov 2025 02:19:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1D4D63B7C89
+	for <lists+stable@lfdr.de>; Tue,  4 Nov 2025 02:35:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B784E23E229;
-	Tue,  4 Nov 2025 02:19:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 405B7239E88;
+	Tue,  4 Nov 2025 02:35:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="isO4OK7B"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05BC91DE4DC;
-	Tue,  4 Nov 2025 02:19:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65AF91DE8AF
+	for <stable@vger.kernel.org>; Tue,  4 Nov 2025 02:35:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762222768; cv=none; b=RD6UoREV6xUjo2u0IfWVUwtsNwLSTeORyBMFM+Cnf+Cns8DK93OyS4UewKazG5BKGPpWEvqyT3byX/wLZwof1Ao9owFziz7Vs5Ix57Yu73wdnZBE1Tkw0y7YluFWtLvfeKoILY/Yh1UpL5g+5b/Ggn1fTT4s043gxbleY+P8rVg=
+	t=1762223751; cv=none; b=UmVdGyC36GVbeamaazMKteNP5Zawrf4jCFvaznmt2M5VEA+StPMI5rgMD+WGkTyHAtm9wdsEquVYlE67lJn1IrKw3fvf5TxGuUW8xiDDYqzC2DVhvbhm6rIuQzcXVg1gCml8yWvrNV4grkpyaa2ny6Ulkl5LXD2XnAOaPekioPA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762222768; c=relaxed/simple;
-	bh=JNjqqmVgb8J3TccifQdiTrH0i2wB+/4zg5Jy48kseOc=;
-	h=From:To:Cc:Subject:Date:Message-Id; b=VqW2qF0Sxt+iAuhqCg/NiqWJ8Bxq+x4NkhLxXlwuhsz64WbR8bnc8QelE++uwFB0iIQ8DbLPKsD6uqCfMOfGdooIAnhEpyrqyL05T/RnDHYqxk9B3J0qYF5jEB1Ui99fMM+/4W+kVVxpcba+BiFo8DJGjTxVg7Ddl856+q0ZEQM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from localhost.localdomain (unknown [202.112.113.212])
-	by APP-03 (Coremail) with SMTP id rQCowACHA+ucYglpnw9aAQ--.26347S2;
-	Tue, 04 Nov 2025 10:19:11 +0800 (CST)
-From: Ma Ke <make24@iscas.ac.cn>
-To: haris.iqbal@ionos.com,
-	jinpu.wang@ionos.com,
-	jgg@ziepe.ca,
-	leon@kernel.org,
-	danil.kipnis@cloud.ionos.com
-Cc: linux-rdma@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	akpm@linux-foundation.org,
-	Ma Ke <make24@iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH] RDMA/rtrs: server: Fix error handling in get_or_create_srv
-Date: Tue,  4 Nov 2025 10:19:00 +0800
-Message-Id: <20251104021900.11896-1-make24@iscas.ac.cn>
-X-Mailer: git-send-email 2.17.1
-X-CM-TRANSID:rQCowACHA+ucYglpnw9aAQ--.26347S2
-X-Coremail-Antispam: 1UD129KBjvdXoWrKF4Dtw4xAFykCr45ZryfXrb_yoWDGFXEkF
-	4xJr97Jry8Ar1vga45ur4fuFyFkw1qgrn3Z3Z0qws2y3y7ZFs8Wr1kZr4rXw15Xw4jkFn8
-	Aw13Kry0kr4IkjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUbDkFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
-	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
-	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_
-	Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AKxVWxJr
-	0_GcWlnxkEFVAIw20F6cxK64vIFxWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xv
-	F2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r
-	4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I
-	648v4I1lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAaw2AFwI0_Jw0_GFylc2xSY4AK67
-	AK6r4UMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAF
-	wI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc4
-	0Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AK
-	xVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr
-	1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUb9NVDUU
-	UUU==
-X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
+	s=arc-20240116; t=1762223751; c=relaxed/simple;
+	bh=5qohOmfVOlHXdjS8V5LvK7HdS301pXdyYiloI/NpKcI=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=FifRF4HQmTmfoCeZAGsiC9XInYXrfKInOJz3zm2fMwKkCzVFINC/2z/aKPgGKvWnr+If6/EWGePwzPcdHME6AkT2M7Zjn8ZDFpFkTWKqOSmub2HMyZQ8fjYvm/UgWT8ETz3BLkoKfa6a5hIpLcicN2C4k7tz9niqmAQRou+cRKI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=isO4OK7B; arc=none smtp.client-ip=209.85.218.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-b6d2f5c0e8eso1004741666b.3
+        for <stable@vger.kernel.org>; Mon, 03 Nov 2025 18:35:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1762223747; x=1762828547; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=5qohOmfVOlHXdjS8V5LvK7HdS301pXdyYiloI/NpKcI=;
+        b=isO4OK7BNEg8mFnArTEnsHX+JdmYFePoO6SB8HmHUf5tcDMlUuPGpP0I3ZvLDaw858
+         yPwQwMNzO1LYYPbjQlRiw6+zMSNr16iTDCvkdo/IBgC85DFlcYwMiAb+nNeTXVYnIHF5
+         awNh6uMeY5moegDtlq5URU4RRCfnXHLfAHP069IkkqJdeJSU6GGnt4rpYExZI/Q8CJJC
+         bkxQT08gx2MnmbRaEnZOxclYjs9LfV1mI8yEfajXw8SfdCnL7kBAm34aGHUvmeQLOZ2d
+         prId2BCsVwwcNvrYhEi/v2oWj7BSBLbiXlwl6QaxUb7Dak/6XFlu/QGenPxMvNG79XsC
+         KoYw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762223747; x=1762828547;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=5qohOmfVOlHXdjS8V5LvK7HdS301pXdyYiloI/NpKcI=;
+        b=Wr69rxDxHWTZyJvuFMxHD1NOUbu5kI35s7wNiXa5iTuEJK7TF/Og3ovE2npH6qmL8O
+         IH08FniCd9fUKCzyXB7a08tQwLrVtR7goCyBLMW0Xsohq05XvhqJBeOXl0t7E9yVq/ni
+         TxZz71k6VzmZV9oB2xtJtdeZ9n6cvD0rib8V/W0j/ZiKd9KhRu+YwvV/anSv0wQrbl01
+         qKjMsOJ9wcsd/Gegepotm7Ou1mII69OBmO4MpRkwcrI7lZCAAs/CxKClAj8ucK3tkgtY
+         Ck3F78gjskH90dVVSUTtxuuMtGnrCc380zIqZ0LzZsIYwkGb6W3u2Qab3lhhg2q1jq7k
+         YEVg==
+X-Gm-Message-State: AOJu0Yz4z7gQyJ5DeVuyMniXuJFw4ihT9YeNNRwJ1Jf/VCGTJTlNmv99
+	3mVbr9iRHjWY6TzqiJ0OiSHjnW3JXF4cZx3fmjWyDsqjBAGmSJYQWPGuwjGvNLXaloWNxi7bkw5
+	neHb3GDlQKjm0WveQxMMKqMLV65X19oxGw3ym9Y7z94V8zQnbv846gAc=
+X-Gm-Gg: ASbGnctXBqRYfDbYI3MQfxY90OiEGGbGS4a/0oSdKGpjJY6vef9zTeqhyxUasHd4dv8
+	kfcY6wSphWH6FZswTmr7dGZlyY7kzSQhWDHUBzAMmrPTUqfskrOTvVAi6kL6RYVII59xxkQ12sX
+	TPW8wnwpvS+6u6RAHJWqOv6GBVMB1F3hE0bh5lkBWON1Sofq4rXKEeLCpcCTtjHY3XHqn8DjVnM
+	BjfGYAUpJsQv3Mw8AsVQYkczuhquK6GnYz0qI+CyuGPJaBPGg+vfGUglZBwCBKExoISx2G8kCnJ
+	BcNhxjRXoPhZfA==
+X-Google-Smtp-Source: AGHT+IFYhisSLrySWFN1eoYGuW+O0Bg2FW+1+hTcDT45S48dFB3krV8NqlIhTFw9xbik2a0mxTxgmadM+JZgtnbnY80=
+X-Received: by 2002:a17:907:3cc4:b0:b45:eea7:e97c with SMTP id
+ a640c23a62f3a-b7070626808mr1565915866b.47.1762223746007; Mon, 03 Nov 2025
+ 18:35:46 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+From: John Stultz <jstultz@google.com>
+Date: Mon, 3 Nov 2025 18:35:33 -0800
+X-Gm-Features: AWmQ_bnw4_pxx-vZBU1I0iCqBHW6z_mQiTtEwZRQp7mLOX3DwW5tu_RowtrBXaA
+Message-ID: <CANDhNCraMOo6ND7zHjyM+BmGAvqb1ZAzL7Wp4XX82GRDhdYovQ@mail.gmail.com>
+Subject: v6.6-stable: Fair-scheduler changes from the android15-6.6 branch
+To: stable@vger.kernel.org
+Cc: Vincent Guittot <vincent.guittot@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
 
-get_or_create_srv() fails to call put_device() after
-device_initialize() when memory allocation fails. This could cause
-reference count leaks during error handling, preventing proper device
-cleanup and resulting in memory leaks.
+Recently I found there were a few cases where changes from upstream
+were merged into the android15-6.6 branch to address issues, however
+those changes didn't actually make it into the -stable tree.
 
-Found by code review.
+Specifically:
+50181c0cff31 sched/pelt: Avoid underestimation of task utilization
+3af7524b1419 sched/fair: Use all little CPUs for CPU-bound workloads
 
-Cc: stable@vger.kernel.org
-Fixes: 9cb837480424 ("RDMA/rtrs: server: main functionality")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
----
- drivers/infiniband/ulp/rtrs/rtrs-srv.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/infiniband/ulp/rtrs/rtrs-srv.c b/drivers/infiniband/ulp/rtrs/rtrs-srv.c
-index ef4abdea3c2d..9ecc6343455d 100644
---- a/drivers/infiniband/ulp/rtrs/rtrs-srv.c
-+++ b/drivers/infiniband/ulp/rtrs/rtrs-srv.c
-@@ -1450,7 +1450,7 @@ static struct rtrs_srv_sess *get_or_create_srv(struct rtrs_srv_ctx *ctx,
- 	kfree(srv->chunks);
- 
- err_free_srv:
--	kfree(srv);
-+	put_device(&srv->dev);
- 	return ERR_PTR(-ENOMEM);
- }
- 
--- 
-2.17.1
-
+thanks
+-john
 
