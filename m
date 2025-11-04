@@ -1,191 +1,224 @@
-Return-Path: <stable+bounces-192450-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192451-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17003C33308
-	for <lists+stable@lfdr.de>; Tue, 04 Nov 2025 23:21:37 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 989A3C3338C
+	for <lists+stable@lfdr.de>; Tue, 04 Nov 2025 23:27:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8B51F464698
-	for <lists+stable@lfdr.de>; Tue,  4 Nov 2025 22:19:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3FAC346232B
+	for <lists+stable@lfdr.de>; Tue,  4 Nov 2025 22:22:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D6883126AC;
-	Tue,  4 Nov 2025 22:17:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5039B2C15BC;
+	Tue,  4 Nov 2025 22:22:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gwgMheG/"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="KCN75bUS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28CF330CDB3;
-	Tue,  4 Nov 2025 22:17:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE4D5757EA;
+	Tue,  4 Nov 2025 22:22:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762294646; cv=none; b=Xds2aB9uaaGAT+gq74QaKWrYqDUz97LiBGYtjZN3bAEzxrQSqLJxCzDCXOREYisenr4cWOihJ/kOliCDPrVhjwv5kOIja5gGJ46oroafypuuYPK8YWLrEXy2fksDxVbbocpqAIzg5S5fFcEuJPakrj2w4w2CLimpg6IH2NHGevA=
+	t=1762294968; cv=none; b=GQx+eYUCoNts2gUrCxiOogRl0zVUqspwvr9J6CH/+cYQw5l5RA6EqwrlHxpMhBngdMMga2O+xwEK+Jdkx1xRbghsSe8wb8vajmCrndV8tUJaqzjjGtYO2IBqMWdGl/loDAIqwPwJQ1xbIuD1D/WPyYTxIh3YRDTT1lxD1nR2Eug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762294646; c=relaxed/simple;
-	bh=GPnXKcnSWDO6n2Vnl3gr4/8tfcpo5ILwTjAVUvTUtEg=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=FZQuzTukE7rvZ2ykC0qzaxuZ4CA9O2gtC50TxA/FGFFmGDZi7Dkl9xlmA7Fag68TMDq2mWOXJHu/oJuluPlAZfyCSdhALlWIfY2++B34JKyGxO3OylQDQk2leV0nvkSSNTWUDsYmBmkbjbubBqKHgCgS6WTlz1VC1qbEZ5bcvPc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gwgMheG/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95707C4CEF7;
-	Tue,  4 Nov 2025 22:17:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762294645;
-	bh=GPnXKcnSWDO6n2Vnl3gr4/8tfcpo5ILwTjAVUvTUtEg=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=gwgMheG/Lqh9MW9jqrIe6oalohogZJoSuM/jTZ+BNjDgyBNu6WnB4Ar+UjoLS9L47
-	 XxesL+NxPDSS+3+XW6a4hNunMJYu6PjYv37oovpvdY0by3dheB+8hy7w8VBO85bteS
-	 yqHXt9j95V70w409wLIUDlTD/cyS+k0BVYfJ6N1FYpp405k9soSebrH5Gvb+39iP93
-	 kSJbbMC657OBONgwKaq4MwdhZW31dczdiY7tHvf2R4MkCUAhqpUCJZ0DmryQRl924r
-	 uT8/YRvEtBgo37maJtTCeTh7h4nSZwtp62glfFjYXQxKYiZlaHiQSA3RMJJCejTPwk
-	 hl5rS2II+oyWg==
-Date: Tue, 4 Nov 2025 16:17:24 -0600
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Shawn Lin <shawn.lin@rock-chips.com>
-Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Kever Yang <kever.yang@rock-chips.com>,
-	Simon Xue <xxm@rock-chips.com>, Damien Le Moal <dlemoal@kernel.org>,
-	Dragan Simic <dsimic@manjaro.org>, FUKAUMI Naoki <naoki@radxa.com>,
-	Diederik de Haas <diederik@cknow-tech.com>, stable@vger.kernel.org,
-	Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
-	Daire McNamara <daire.mcnamara@microchip.com>,
-	Karthikeyan Mitran <m.karthikeyan@mobiveil.co.in>,
-	Hou Zhiqiang <Zhiqiang.Hou@nxp.com>, linux-pci@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-rockchip@lists.infradead.org,
-	Niklas Cassel <cassel@kernel.org>
-Subject: Re: [PATCH v3] PCI: dw-rockchip: Prevent advertising L1 Substates
- support
-Message-ID: <20251104221724.GA1875081@bhelgaas>
+	s=arc-20240116; t=1762294968; c=relaxed/simple;
+	bh=mrIRRSyaoVZUhB2h+ZUo6J/2YFCCxLm0OFA6MBAI7d4=;
+	h=Date:To:From:Subject:Message-Id; b=OzcvRuG1OE3c8e0IYIaz2BBwpvrwyfyWAgK3vmwAXkkTCdiwq2NA6/tl5AP94z+iNpBcU+ktT2StxRAhLEV/P2Vh8A4DmIPgRygb2zFzirFiIkZGBjEcGyRLcU3PerZYgoJrTX67FPWWjV2hnPHYe619GGWmTYjueLQg0pXOFzM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=KCN75bUS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68F8FC4CEF7;
+	Tue,  4 Nov 2025 22:22:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1762294967;
+	bh=mrIRRSyaoVZUhB2h+ZUo6J/2YFCCxLm0OFA6MBAI7d4=;
+	h=Date:To:From:Subject:From;
+	b=KCN75bUSYEKbGjhky/w08gkr3giMaURPMGoJZWhehw2HC9KyOl3blJKKuX1e6Yws4
+	 UkO34YtNr2OCp5PNDuxlIeUPhfq8ppJQXTTHvOE6VSgpTNoT+Hi1V0kaHN6gQz/GV+
+	 9b8Wjzj7cMKTbUA7iGJQaSBI19LN4AQLAAvfg5jI=
+Date: Tue, 04 Nov 2025 14:22:46 -0800
+To: mm-commits@vger.kernel.org,vincenzo.frascino@arm.com,urezki@gmail.com,stable@vger.kernel.org,ryabinin.a.a@gmail.com,glider@google.com,elver@google.com,dvyukov@google.com,bhe@redhat.com,andreyknvl@gmail.com,maciej.wieczor-retman@intel.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + kasan-unpoison-pcpu-chunks-with-base-address-tag.patch added to mm-hotfixes-unstable branch
+Message-Id: <20251104222247.68F8FC4CEF7@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <0e32766b-b951-4ab4-ae3d-c802cf649edf@rock-chips.com>
 
-On Tue, Nov 04, 2025 at 08:58:02AM +0800, Shawn Lin wrote:
-> 在 2025/11/04 星期二 5:32, Bjorn Helgaas 写道:
-> > On Tue, Oct 28, 2025 at 02:02:18PM -0500, Bjorn Helgaas wrote:
-> > > On Fri, Oct 17, 2025 at 06:32:53PM +0200, Niklas Cassel wrote:
-> > > > The L1 substates support requires additional steps to work, namely:
-> > > > -Proper handling of the CLKREQ# sideband signal. (It is mostly handled by
-> > > >   hardware, but software still needs to set the clkreq fields in the
-> > > >   PCIE_CLIENT_POWER_CON register to match the hardware implementation.)
-> > > > -Program the frequency of the aux clock into the
-> > > >   DSP_PCIE_PL_AUX_CLK_FREQ_OFF register. (During L1 substates the core_clk
-> > > >   is turned off and the aux_clk is used instead.)
-> > > ...
-> > 
-> > > > +static void rockchip_pcie_disable_l1sub(struct dw_pcie *pci)
-> > > > +{
-> > > > +	u32 cap, l1subcap;
-> > > > +
-> > > > +	cap = dw_pcie_find_ext_capability(pci, PCI_EXT_CAP_ID_L1SS);
-> > > > +	if (cap) {
-> > > > +		l1subcap = dw_pcie_readl_dbi(pci, cap + PCI_L1SS_CAP);
-> > > > +		l1subcap &= ~(PCI_L1SS_CAP_L1_PM_SS | PCI_L1SS_CAP_ASPM_L1_1 |
-> > > > +			      PCI_L1SS_CAP_ASPM_L1_2 | PCI_L1SS_CAP_PCIPM_L1_1 |
-> > > > +			      PCI_L1SS_CAP_PCIPM_L1_2);
-> > > > +		dw_pcie_writel_dbi(pci, cap + PCI_L1SS_CAP, l1subcap);
-> > > > +	}
-> > > > +}
-> > > 
-> > > I like this.  But why should we do it just for dw-rockchip?  Is there
-> > > something special about dw-rockchip that makes this a problem?  Maybe
-> > > we should consider doing this in the dwc, cadence, mobiveil, and plda
-> > > cores instead of trying to do it for every driver individually?
-> > > 
-> > > Advertising L1SS support via PCI_EXT_CAP_ID_L1SS means users can
-> > > enable L1SS via CONFIG_PCIEASPM_POWER_SUPERSAVE=y or sysfs, and that
-> > > seems likely to cause problems unless CLKREQ# is supported.
-> > 
-> > Any thoughts on this?  There's nothing rockchip-specific in this
-> > patch.  What I'm proposing is something like this:
-> 
-> I like your idea, though. But could it be another form of regression
-> that we may breaks the platform which have already support L1SS
-> properly? It's even harder to detect because a functional break is easier to
-> notice than increased power consumption. 
 
-True, but I think it's unlikely because the PCI core never enabled
-L1SS (except for CONFIG_PCIEASPM_POWER_SUPERSAVE=y or sysfs, which I
-doubt anybody really uses).
+The patch titled
+     Subject: kasan: unpoison pcpu chunks with base address tag
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     kasan-unpoison-pcpu-chunks-with-base-address-tag.patch
 
-Devicetree platforms that use L1SS should have explicit code to enable
-it, like qcom does, so we should be able to find them and make sure
-they do what's needed to prevent the regression.
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/kasan-unpoison-pcpu-chunks-with-base-address-tag.patch
 
-> Or maybe we could
-> just export dw_pcie_clear_l1ss_advert() in dwc for host drivers to
-> call it?
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-I don't like the idea of host drivers having to opt in for this
-because that requires changes to all of them, not just changes to
-drivers that have done the work to actually support L1SS.
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
 
-> >      PCI: dwc: Prevent advertising L1 PM Substates
-> >      L1 PM Substates require the CLKREF# signal and driver-specific support.  If
-> >      CLKREF# is not supported or the driver support is lacking, enabling L1.1 or
-> >      L1.2 may cause errors when accessing devices, e.g.,
-> >        nvme nvme0: controller is down; will reset: CSTS=0xffffffff, PCI_STATUS=0x10
-> >      If both ends of a link advertise support for L1 PM Substates, and the
-> >      kernel is built with CONFIG_PCIEASPM_POWER_SUPERSAVE=y or users enable L1.x
-> >      via sysfs, Linux tries to enable them.
-> >      To prevent errors when L1.x may not work, disable advertising the L1 PM
-> >      Substates.  Drivers can enable advertising them if they know CLKREF# is
-> >      present and the Root Port is configured correctly.
-> >      Based on Niklas's patch from
-> >      https://patch.msgid.link/20251017163252.598812-2-cassel@kernel.org
-> > 
-> > diff --git a/drivers/pci/controller/dwc/pcie-designware-host.c b/drivers/pci/controller/dwc/pcie-designware-host.c
-> > index 20c9333bcb1c..83b5330c9e45 100644
-> > --- a/drivers/pci/controller/dwc/pcie-designware-host.c
-> > +++ b/drivers/pci/controller/dwc/pcie-designware-host.c
-> > @@ -950,6 +950,27 @@ static int dw_pcie_iatu_setup(struct dw_pcie_rp *pp)
-> >   	return 0;
-> >   }
-> > +static void dw_pcie_clear_l1ss_advert(struct dw_pcie_rp *pp)
-> > +{
-> > +	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
-> > +	u16 l1ss;
-> > +	u32 l1ss_cap;
-> > +
-> > +	l1ss = dw_pcie_find_ext_capability(pci, PCI_EXT_CAP_ID_L1SS);
-> > +	if (!l1ss)
-> > +		return;
-> > +
-> > +	/*
-> > +	 * By default, don't advertise L1 PM Substates because they require
-> > +	 * CLKREF# and other driver-specific support.
-> > +	 */
-> > +	l1ss_cap = dw_pcie_readl_dbi(pci, l1ss + PCI_L1SS_CAP);
-> > +	l1ss_cap &= ~(PCI_L1SS_CAP_PCIPM_L1_1 | PCI_L1SS_CAP_ASPM_L1_1 |
-> > +		      PCI_L1SS_CAP_PCIPM_L1_2 | PCI_L1SS_CAP_ASPM_L1_2 |
-> > +		      PCI_L1SS_CAP_L1_PM_SS);
-> > +	dw_pcie_writel_dbi(pci, l1ss + PCI_L1SS_CAP, l1ss_cap);
-> > +}
-> > +
-> >   static void dw_pcie_program_presets(struct dw_pcie_rp *pp, enum pci_bus_speed speed)
-> >   {
-> >   	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
-> > @@ -1060,6 +1081,7 @@ int dw_pcie_setup_rc(struct dw_pcie_rp *pp)
-> >   		PCI_COMMAND_MASTER | PCI_COMMAND_SERR;
-> >   	dw_pcie_writel_dbi(pci, PCI_COMMAND, val);
-> > +	dw_pcie_clear_l1ss_advert(pp);
-> >   	dw_pcie_config_presets(pp);
-> >   	/*
-> >   	 * If the platform provides its own child bus config accesses, it means
-> > 
-> 
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
+Subject: kasan: unpoison pcpu chunks with base address tag
+Date: Tue, 04 Nov 2025 14:49:08 +0000
+
+Patch series "kasan: vmalloc: Fix incorrect tag assignment with multiple
+vm_structs".
+
+A KASAN tag mismatch, possibly resulting in a kernel panic, can be
+observed on systems with a tag-based KASAN enabled and with multiple NUMA
+nodes.  Initially it was only noticed on x86 [1] but later a similar issue
+was also reported on arm64 [2].
+
+Specifically the problem is related to how vm_structs interact with
+pcpu_chunks - both when they are allocated, assigned and when pcpu_chunk
+addresses are derived.
+
+When vm_structs are allocated they are tagged if vmalloc support is
+enabled along the KASAN mode.  Later when first pcpu chunk is allocated it
+gets its 'base_addr' field set to the first allocated vm_struct.  With
+that it inherits that vm_struct's tag.
+
+When pcpu_chunk addresses are later derived (by pcpu_chunk_addr(), for
+example in pcpu_alloc_noprof()) the base_addr field is used and offsets
+are added to it.  If the initial conditions are satisfied then some of the
+offsets will point into memory allocated with a different vm_struct.  So
+while the lower bits will get accurately derived the tag bits in the top
+of the pointer won't match the shadow memory contents.
+
+The solution (proposed at v2 of the x86 KASAN series [3]) is to tag the
+vm_structs the same when allocating them for the per cpu allocator (in
+pcpu_get_vm_areas()).
+
+Originally these patches were part of the x86 KASAN series [4].
+
+
+This patch (of 2):
+
+A KASAN tag mismatch, possibly causing a kernel panic, can be observed on
+systems with a tag-based KASAN enabled and with multiple NUMA nodes.  It
+was reported on arm64 and reproduced on x86.  It can be explained in the
+following points:
+
+1. There can be more than one virtual memory chunk.
+2. Chunk's base address has a tag.
+3. The base address points at the first chunk and thus inherits
+   the tag of the first chunk.
+4. The subsequent chunks will be accessed with the tag from the
+   first chunk.
+5. Thus, the subsequent chunks need to have their tag set to
+   match that of the first chunk.
+
+Refactor code by moving it into a helper in preparation for the actual
+fix.
+
+Link: https://lkml.kernel.org/r/821677dd824d003cc5b7a77891db4723e23518ea.1762267022.git.m.wieczorretman@pm.me
+Link: https://lore.kernel.org/all/e7e04692866d02e6d3b32bb43b998e5d17092ba4.1738686764.git.maciej.wieczor-retman@intel.com/ [1]
+Link: https://lore.kernel.org/all/aMUrW1Znp1GEj7St@MiWiFi-R3L-srv/ [2]
+Link: https://lore.kernel.org/all/CAPAsAGxDRv_uFeMYu9TwhBVWHCCtkSxoWY4xmFB_vowMbi8raw@mail.gmail.com/ [3]
+Link: https://lore.kernel.org/all/cover.1761763681.git.m.wieczorretman@pm.me/ [4]
+Fixes: 1d96320f8d53 ("kasan, vmalloc: add vmalloc tagging for SW_TAGS")
+Signed-off-by: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
+Tested-by: Baoquan He <bhe@redhat.com>
+Cc: Alexander Potapenko <glider@google.com>
+Cc: Andrey Konovalov <andreyknvl@gmail.com>
+Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+Cc: Dmitriy Vyukov <dvyukov@google.com>
+Cc: Marco Elver <elver@google.com>
+Cc: "Uladzislau Rezki (Sony)" <urezki@gmail.com>
+Cc: Vincenzo Frascino <vincenzo.frascino@arm.com>
+Cc: <stable@vger.kernel.org>	[6.1+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ include/linux/kasan.h |   10 ++++++++++
+ mm/kasan/common.c     |   11 +++++++++++
+ mm/vmalloc.c          |    4 +---
+ 3 files changed, 22 insertions(+), 3 deletions(-)
+
+--- a/include/linux/kasan.h~kasan-unpoison-pcpu-chunks-with-base-address-tag
++++ a/include/linux/kasan.h
+@@ -614,6 +614,13 @@ static __always_inline void kasan_poison
+ 		__kasan_poison_vmalloc(start, size);
+ }
+ 
++void __kasan_unpoison_vmap_areas(struct vm_struct **vms, int nr_vms);
++static __always_inline void kasan_unpoison_vmap_areas(struct vm_struct **vms, int nr_vms)
++{
++	if (kasan_enabled())
++		__kasan_unpoison_vmap_areas(vms, nr_vms);
++}
++
+ #else /* CONFIG_KASAN_VMALLOC */
+ 
+ static inline void kasan_populate_early_vm_area_shadow(void *start,
+@@ -638,6 +645,9 @@ static inline void *kasan_unpoison_vmall
+ static inline void kasan_poison_vmalloc(const void *start, unsigned long size)
+ { }
+ 
++static inline void kasan_unpoison_vmap_areas(struct vm_struct **vms, int nr_vms)
++{ }
++
+ #endif /* CONFIG_KASAN_VMALLOC */
+ 
+ #if (defined(CONFIG_KASAN_GENERIC) || defined(CONFIG_KASAN_SW_TAGS)) && \
+--- a/mm/kasan/common.c~kasan-unpoison-pcpu-chunks-with-base-address-tag
++++ a/mm/kasan/common.c
+@@ -28,6 +28,7 @@
+ #include <linux/string.h>
+ #include <linux/types.h>
+ #include <linux/bug.h>
++#include <linux/vmalloc.h>
+ 
+ #include "kasan.h"
+ #include "../slab.h"
+@@ -582,3 +583,13 @@ bool __kasan_check_byte(const void *addr
+ 	}
+ 	return true;
+ }
++
++void __kasan_unpoison_vmap_areas(struct vm_struct **vms, int nr_vms)
++{
++	int area;
++
++	for (area = 0 ; area < nr_vms ; area++) {
++		kasan_poison(vms[area]->addr, vms[area]->size,
++			     arch_kasan_get_tag(vms[area]->addr), false);
++	}
++}
+--- a/mm/vmalloc.c~kasan-unpoison-pcpu-chunks-with-base-address-tag
++++ a/mm/vmalloc.c
+@@ -4870,9 +4870,7 @@ retry:
+ 	 * With hardware tag-based KASAN, marking is skipped for
+ 	 * non-VM_ALLOC mappings, see __kasan_unpoison_vmalloc().
+ 	 */
+-	for (area = 0; area < nr_vms; area++)
+-		vms[area]->addr = kasan_unpoison_vmalloc(vms[area]->addr,
+-				vms[area]->size, KASAN_VMALLOC_PROT_NORMAL);
++	kasan_unpoison_vmap_areas(vms, nr_vms);
+ 
+ 	kfree(vas);
+ 	return vms;
+_
+
+Patches currently in -mm which might be from maciej.wieczor-retman@intel.com are
+
+kasan-unpoison-pcpu-chunks-with-base-address-tag.patch
+kasan-unpoison-vms-addresses-with-a-common-tag.patch
+
 
