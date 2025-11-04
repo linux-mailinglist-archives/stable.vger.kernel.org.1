@@ -1,154 +1,106 @@
-Return-Path: <stable+bounces-192364-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192365-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 420FBC30BAD
-	for <lists+stable@lfdr.de>; Tue, 04 Nov 2025 12:27:40 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1C40C30BDD
+	for <lists+stable@lfdr.de>; Tue, 04 Nov 2025 12:32:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E01D84229FA
-	for <lists+stable@lfdr.de>; Tue,  4 Nov 2025 11:26:49 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C1FE94E196E
+	for <lists+stable@lfdr.de>; Tue,  4 Nov 2025 11:32:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 439CF2E8DE9;
-	Tue,  4 Nov 2025 11:26:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F32512D46CC;
+	Tue,  4 Nov 2025 11:32:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Qu15sv9v"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="G2XThxHh"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from out-188.mta1.migadu.com (out-188.mta1.migadu.com [95.215.58.188])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 549F52E7162;
-	Tue,  4 Nov 2025 11:26:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB62F2D8DA3
+	for <stable@vger.kernel.org>; Tue,  4 Nov 2025 11:32:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.188
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762255587; cv=none; b=oXionCeyKerVWE2jsbya/O4YNaeNOuA5Lly60KDeUu3jNB2ytLVWD1FVkeIT4dNQZdomk+Xfhpm6d+EpenwEt0iV4YQ+kFs+1EVRafJS0c1f0Qjb9zUs69G2QYgLQF0d9OMYlqclNZ9nhA3O/KQb8HhE9DpJ8BNmkm0RAM9cbLU=
+	t=1762255932; cv=none; b=sTBt638LfxS4lTP0rHVl1SGBLXTfKk/qNbNDK+/zWutEw90i0nVJlgcCkcRWKIkI31GfgloiIdi5B1O4tyxvGX7W6nnCvtcBIvoEi3DprGrO5CCDFICgo1hWUjQvIurrxHoRMUdBcH6ucCAn1R+yCcdMCL3ILVMrOxvpqqaBz4Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762255587; c=relaxed/simple;
-	bh=Bh/fZvNVUtpZqy1iphbeFcZdiiDFYAV8+2UoBhrjjSE=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Zk52ShMgJRyE//DaoZ/lbbkUlzw02T90RCHDF3+YOifBkvyO78EzCcRTPPuUIjRaXv/8M04Cyn3ipuJjsDkl8mkGMomCWasVQfzwqPiIO0Lzxc4AI16BoT9DwX71YBBHgX6JdQEwN2wpNPUpkgJ+RcdgECTWDYSxw49y5+qZ/0Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=qualcomm.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Qu15sv9v; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qualcomm.com
-Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5A49H7s31546418;
-	Tue, 4 Nov 2025 11:26:20 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=qcppdkim1; bh=q/klRFV2JYcdv2I+EPFZJCIcBLeZhyHI4B/
-	2zgli4t8=; b=Qu15sv9vUozWLnYwybE+yfmo/MH19YP6Vj8wIFlbQ/+j6iWZx4q
-	SxXA9C9wHpypqqubX2ZvVV5rc5SLYiWfFtNkiv+EqHPaIHI07HMzMBhgekxJn/ay
-	CpOOLnzLbXsUy5lUfgKbPNmQ3D+S2F2RSNKc2kdpLkZXErMy5d9pwrVrSEsOuxJe
-	RBtanESk0RoRqBgpqZcnxamHOT5k06no0/sPTJ19Tx0f3kxmAOwzN7lUTWj3ccFe
-	Co6pKRB/uHzsNnsDvARBbIo3v2WtWqDjfF/uUl8VK5wMp/dXr9vnpMl+eNku6vq1
-	MALuL0TDqnFTT3Wxo7fYFNBo/zq1uSnN4yw==
-Received: from aptaippmta02.qualcomm.com (tpe-colo-wan-fw-bordernet.qualcomm.com [103.229.16.4])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4a70ffjrb0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 04 Nov 2025 11:26:20 +0000 (GMT)
-Received: from pps.filterd (APTAIPPMTA02.qualcomm.com [127.0.0.1])
-	by APTAIPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTP id 5A4BQIan025409;
-	Tue, 4 Nov 2025 11:26:18 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by APTAIPPMTA02.qualcomm.com (PPS) with ESMTPS id 4a5b9mgnwp-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 04 Nov 2025 11:26:18 +0000
-Received: from APTAIPPMTA02.qualcomm.com (APTAIPPMTA02.qualcomm.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 5A4BQH0a025342;
-	Tue, 4 Nov 2025 11:26:17 GMT
-Received: from bt-iot-sh02-lnx.ap.qualcomm.com (bt-iot-sh02-lnx.qualcomm.com [10.253.144.65])
-	by APTAIPPMTA02.qualcomm.com (PPS) with ESMTPS id 5A4BQH6a025244
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 04 Nov 2025 11:26:17 +0000
-Received: by bt-iot-sh02-lnx.ap.qualcomm.com (Postfix, from userid 4467449)
-	id 8016B231FA; Tue,  4 Nov 2025 19:26:16 +0800 (CST)
-From: Shuai Zhang <quic_shuaz@quicinc.com>
-To: Bartosz Golaszewski <brgl@bgdev.pl>, Marcel Holtmann <marcel@holtmann.org>,
-        Luiz Augusto von Dentz <luiz.dentz@gmail.com>
-Cc: linux-arm-msm@vger.kernel.org, linux-bluetooth@vger.kernel.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        quic_chejiang@quicinc.com, quic_jiaymao@quicinc.com,
-        quic_chezhou@quicinc.com, Shuai Zhang <quic_shuaz@quicinc.com>
-Subject: [PATCH v1] Bluetooth: hci_qca: Fix SSR unable to wake up bug
-Date: Tue,  4 Nov 2025 19:26:01 +0800
-Message-Id: <20251104112601.2670019-1-quic_shuaz@quicinc.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1762255932; c=relaxed/simple;
+	bh=cQ8ji/FNzj9BqB190stuaa7uhYfAWNouaPoCG9WFaso=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=lzQTDotuJrTuFP5Fxb7DmnPOUj1IHUpDEJ+km7FO+prKSstkCj/Bm5jL0laB9WtCovZlGd7SxyNvLd1OwNrTkmNSkOz5YO6EcnpkuNKjkVN0hu8V3hNI9cQy5f/m3fDxR8hzIu8ij+uhxX7ob/DriXB7WOaY6Pd/21ijHyGBP90=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=G2XThxHh; arc=none smtp.client-ip=95.215.58.188
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Message-ID: <c8b2b414-149b-4f35-8333-43011804ea2a@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1762255916;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=dhSjqnMto0B1aHiw1zZoaXhk7sqXONGcL69jg069DmA=;
+	b=G2XThxHhXidEsRt/QZRNzrjjoW1sfirR6AJWYMy8t5haHFaBNQRWMfw1THbEf6OdZzuASW
+	Zu1CDlp8FFBPiVdpewnQRbiNElUJbTUCDUTDkVw5YxVMlWZvSQ9G1VYdj85z8BCi2J5c3U
+	jjDBv4HAaWHUap1KR0oj0enVJDXWg1w=
+Date: Tue, 4 Nov 2025 11:31:51 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QCInternal: smtphost
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Authority-Analysis: v=2.4 cv=esbSD4pX c=1 sm=1 tr=0 ts=6909e2dc cx=c_pps
- a=nuhDOHQX5FNHPW3J6Bj6AA==:117 a=nuhDOHQX5FNHPW3J6Bj6AA==:17
- a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=COk6AnOGAAAA:8
- a=m-5Lm1s-rEeNAmgHswEA:9 a=TjNXssC_j7lpFel5tvFf:22 a=cPQSjfK2_nFv0Q5t_7PE:22
-X-Proofpoint-GUID: T_Y0BoeFCouHW9qlutsqwqBjlMeDcuxU
-X-Proofpoint-ORIG-GUID: T_Y0BoeFCouHW9qlutsqwqBjlMeDcuxU
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTA0MDA5NCBTYWx0ZWRfX9TFlU7s4e38N
- SUX/Y3ZehtRKBsv8w8HbRhJlnHnPdo8f6ruDVR8Khb6fpHY2X8Aq95dl+ulyHEK/7LlKlchtfoZ
- JskGO0qgw7bs6uDQX46dLSwcxvL/AtE12Oz5NCzrMnjk+fBVlp3prwq7DoBMiBSPfCkOTOctzzE
- G0R5EMmZU1r4XDad2/6TDx5OowWpnxO99DHpZq7HugeX5kUclkjbAcBKYolySXPdTzRP3Fohtay
- npZe682d2wY3UuC6s3odFK4FZsjpI7kzauXPC43jcSuEJZ0UvTXqIH9uiaDBPAvLlXWzgi2wnG3
- 21RqMJwnH28dCKyNU+QJpVRuIzHqkRn5xFXclv/en4ecp+2ryc0SMXUBdlG09WYqahOnn4E83dn
- c8iMnC/jEo8+x28EhFoWqyyZoXFDJA==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-11-03_06,2025-11-03_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 clxscore=1015 priorityscore=1501 adultscore=0 phishscore=0
- bulkscore=0 lowpriorityscore=0 suspectscore=0 spamscore=0 impostorscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2511040094
+Subject: Re: [PATCH net] ptp: Return -EINVAL on ptp_clock_register if required
+ ops are NULL
+To: Tim Hostetler <thostet@google.com>, netdev@vger.kernel.org
+Cc: richardcochran@gmail.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ Kuniyuki Iwashima <kuniyu@google.com>,
+ Harshitha Ramamurthy <hramamurthy@google.com>
+References: <20251030180832.388729-1-thostet@google.com>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+In-Reply-To: <20251030180832.388729-1-thostet@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 
-During SSR data collection period, the processing of hw_error events
-must wait until SSR data Collected or the timeout before it can proceed.
-The wake_up_bit function has been added to address the issue
-where hw_error events could only be processed after the timeout.
+On 30/10/2025 18:08, Tim Hostetler wrote:
+> ptp_clock should never be registered unless it stubs one of gettimex64()
+> or gettime64() and settime64(). WARN_ON_ONCE and error out if either set
+> of function pointers is null.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: d7d38f5bd7be ("ptp: use the 64 bit get/set time methods for the posix clock.")
+> Suggested-by: Kuniyuki Iwashima <kuniyu@google.com>
+> Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+> Reviewed-by: Harshitha Ramamurthy <hramamurthy@google.com>
+> Signed-off-by: Tim Hostetler <thostet@google.com>
+> ---
+>   drivers/ptp/ptp_clock.c | 4 ++++
+>   1 file changed, 4 insertions(+)
+> 
+> diff --git a/drivers/ptp/ptp_clock.c b/drivers/ptp/ptp_clock.c
+> index ef020599b771..0bc79076771b 100644
+> --- a/drivers/ptp/ptp_clock.c
+> +++ b/drivers/ptp/ptp_clock.c
+> @@ -325,6 +325,10 @@ struct ptp_clock *ptp_clock_register(struct ptp_clock_info *info,
+>   	if (info->n_alarm > PTP_MAX_ALARMS)
+>   		return ERR_PTR(-EINVAL);
+>   
+> +	if (WARN_ON_ONCE((!info->gettimex64 && !info->gettime64) ||
+> +			 !info->settime64))
+> +		return ERR_PTR(-EINVAL);
+> +
+>   	/* Initialize a clock structure. */
+>   	ptp = kzalloc(sizeof(struct ptp_clock), GFP_KERNEL);
+>   	if (!ptp) {
 
-The timeout unit has been changed from jiffies to milliseconds (ms).
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Shuai Zhang <quic_shuaz@quicinc.com>
----
- drivers/bluetooth/hci_qca.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+The patch itself LGTM, but I believe it should be targeted to net-next,
+as it doesn't actually fix any problem with GVE patches landed net tree
+already.
 
-diff --git a/drivers/bluetooth/hci_qca.c b/drivers/bluetooth/hci_qca.c
-index 888176b0f..a2e3c97a8 100644
---- a/drivers/bluetooth/hci_qca.c
-+++ b/drivers/bluetooth/hci_qca.c
-@@ -1105,6 +1105,7 @@ static void qca_controller_memdump(struct work_struct *work)
- 				cancel_delayed_work(&qca->ctrl_memdump_timeout);
- 				clear_bit(QCA_MEMDUMP_COLLECTION, &qca->flags);
- 				clear_bit(QCA_IBS_DISABLED, &qca->flags);
-+				wake_up_bit(&qca->flags, QCA_MEMDUMP_COLLECTION);
- 				mutex_unlock(&qca->hci_memdump_lock);
- 				return;
- 			}
-@@ -1182,6 +1183,7 @@ static void qca_controller_memdump(struct work_struct *work)
- 			qca->qca_memdump = NULL;
- 			qca->memdump_state = QCA_MEMDUMP_COLLECTED;
- 			clear_bit(QCA_MEMDUMP_COLLECTION, &qca->flags);
-+			wake_up_bit(&qca->flags, QCA_MEMDUMP_COLLECTION);
- 		}
- 
- 		mutex_unlock(&qca->hci_memdump_lock);
-@@ -1602,7 +1604,7 @@ static void qca_wait_for_dump_collection(struct hci_dev *hdev)
- 	struct qca_data *qca = hu->priv;
- 
- 	wait_on_bit_timeout(&qca->flags, QCA_MEMDUMP_COLLECTION,
--			    TASK_UNINTERRUPTIBLE, MEMDUMP_TIMEOUT_MS);
-+			    TASK_UNINTERRUPTIBLE, msecs_to_jiffies(MEMDUMP_TIMEOUT_MS));
- 
- 	clear_bit(QCA_MEMDUMP_COLLECTION, &qca->flags);
- }
--- 
-2.34.1
-
+Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
 
