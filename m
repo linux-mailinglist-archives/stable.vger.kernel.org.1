@@ -1,81 +1,43 @@
-Return-Path: <stable+bounces-192367-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192368-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D116C30C28
-	for <lists+stable@lfdr.de>; Tue, 04 Nov 2025 12:36:30 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id D10C0C30CC1
+	for <lists+stable@lfdr.de>; Tue, 04 Nov 2025 12:43:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE150189795A
-	for <lists+stable@lfdr.de>; Tue,  4 Nov 2025 11:36:54 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 5FD3034B07C
+	for <lists+stable@lfdr.de>; Tue,  4 Nov 2025 11:43:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E85B2E9722;
-	Tue,  4 Nov 2025 11:36:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XhbQY4KH"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E4F52EA14E;
+	Tue,  4 Nov 2025 11:43:37 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx3.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12D6F2E8DEA
-	for <stable@vger.kernel.org>; Tue,  4 Nov 2025 11:36:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4019A26FA60;
+	Tue,  4 Nov 2025 11:43:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=141.14.17.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762256184; cv=none; b=UMhfPFUQtWSDqEW+DCc3fLc7xtMih5V9jFSGkIEBbFirqLUkKotQEx11XIm12RE7ORFsmSBzpNKdlnjtrnhLDTVGztqV5Iga1/7fRZb1zUrpCVuqKKj1ec5N32kquNZSDeBVy1+VNNqPZvN59EjZaUJbAGLuMDF4Kmq7yGXaCBs=
+	t=1762256617; cv=none; b=D5NE4TyHtTfoDzyzT0hb7dAu1kl74XXrmBISljgMIMfhXApOGM9YM/XIt+HlRWw7rXpx2YBFJfsfxIXZlvGH/N6YuI9FRpu1a1AFSasQMx51qplSsfDt3r4aiPWCR9brufrk/98LdRm9DGZhyqhoxUNhJCyNDjxa8DfN8BTffNU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762256184; c=relaxed/simple;
-	bh=4Wn7QoWN8xCjPbayQz8lhEGh7Deb0qobPKG4uApIIcw=;
+	s=arc-20240116; t=1762256617; c=relaxed/simple;
+	bh=53WUuaBOWGNY7HMl/GQZC54v+7vKuWYy543nNv24VpI=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mo3FDPCuKvMaGrzUSzcE/91HbTKI5qh5/h5XuDVDElTIYXDOlBpe7b7Kw7rT/UBmAY/KV4wSlBo7Ch1K92hnbdpfMT3jJUnjoLwEn/rkc3rj2XFhzG8Qbsji5GXNCUMN7jhgmjn99v7q3CpXx4NDfdnA5XvvFDCN+Bv/InFjWcY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XhbQY4KH; arc=none smtp.client-ip=209.85.216.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-34188ba5801so306186a91.3
-        for <stable@vger.kernel.org>; Tue, 04 Nov 2025 03:36:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762256182; x=1762860982; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=J90ejmNRDc/sJDDkigtmzgp7USpf0W7zUJJf8FzaScs=;
-        b=XhbQY4KHrdoXsiTDoo1psvWT9ZSFeWVbB5xRe+5H+LV2bxXwLsW8utoG6FhN3O7pLS
-         MyTifCLpcAzB2gdLFUOHbsmJdmA1iNd7y13djpmgOkb56IEJKWyJ8p9oukP3iKEc916s
-         pI5Wy49vXr1h40zQQ8yPTcnjJSwLLHYpPENUy0WW4kyk1yZByFshEtau2Sqn7YjckQ+B
-         409xSBuciVKOw1gE+zmOkxaBtr5NdTa4ozcH7bwdMbBbryv5CYF6vQiec4bdFlu5p5wm
-         LDlKiTcJAv09hb3OqZ8UwRzV7F8psluJz/bxkp1m8GdGmAlsOtYQwqX/Dk/tAfaEp0Na
-         XqDQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762256182; x=1762860982;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=J90ejmNRDc/sJDDkigtmzgp7USpf0W7zUJJf8FzaScs=;
-        b=dByrNtTZF6I35AGGQRZhM7xRCF/fPCqXG+mcfU3MNChX3aoGxi1w2oadV9QTPZHTf4
-         PHprlZOb/pxacAcIAJrbL7zqQ9oseQ8k2pfjj+HzgFDs0Y5+KI3CTPRfoMdPkUwMmiv0
-         62vGIa7GkeKCInrMbnUK7xq+m1TNJbig4bSID1j9oZGj3jd/fs39tUib4LebpKBK8CsQ
-         vSI0Kg9UUUXjkFZ2p1Ql615AqKu27jrp++rwT9fl6t5p/pbYz1Gcq5RaoXjNP8ox5XKw
-         oeLqBG1/LD2UNNdWZvoqk8VxZvsnIim7sMFcthXA/VbcKjahDXpXSYn+mgogpn/hgDah
-         10wg==
-X-Forwarded-Encrypted: i=1; AJvYcCWw/FBEAm/MxEVuQ71E7CFI4ELhmifpi92XHJE68XuQtspUqmfgoTtApemGbWJlK985P+LQ9P8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyQ1vADtj3BO6+RWltbUuHMNOy+CjBu9oBRo0h0fKhIaFeVmoNk
-	YEAVClVq6nKloCSKaRGdiL61EyQvtAC8206L+V4A4uBaJSPf0+nY/dHW
-X-Gm-Gg: ASbGnctYQ5s638RT/7RaW0JbEjn3ysn17OrMG4fdk+ZOTm5Ak9ntZfaFTknlNhmE9Su
-	SIficAId6r/Bz4mcdCucT1JdiL67dQ0CoNNUPReDgowzcq1hXprDmu9lOFJIsKjmUZTq6bcaHp/
-	p9owN8FC0LMnCxRf9tkXglOJ7TWp6/7yRT2881SIKNXrsRGHynJb0BlGxfJ5sX1FZjNdZguylG7
-	oqeUEnfQWp4e62e8xgYuFpQyupqG24xWBR4SIHjZ77lZt2Iw5iupxRHefzNrLla+4rOwl+U1FD4
-	njXvLkOGZk2GKZvioHW5TdHpeX3cFT8oAwkL/kZ8yeLWOZBte8CeQBHd3YRE11PysZkD8YlNd0Q
-	yFmlTRMyG5KDvcFGTSlUimjTlstzWb/GQGEC95u9upeexPiMYwk8Kgib+j4e5MRpeogvmpjb2ar
-	O1PTSMUF+dcDRyvWJdJQ4=
-X-Google-Smtp-Source: AGHT+IF5OrzuKARwkp1GVv+qC6PxEHYGj29XXgnA/RkKZqGw4wpxfHkO7e6iSIhsRiQeNJQp1sxCHw==
-X-Received: by 2002:a17:90b:17ca:b0:340:d569:d295 with SMTP id 98e67ed59e1d1-340d569d470mr13962469a91.24.1762256182197;
-        Tue, 04 Nov 2025 03:36:22 -0800 (PST)
-Received: from [10.189.138.37] ([43.224.245.241])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3415c4aa89asm4228751a91.11.2025.11.04.03.36.18
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 04 Nov 2025 03:36:21 -0800 (PST)
-Message-ID: <1abbf495-58b0-4f04-8494-6339640253f1@gmail.com>
-Date: Tue, 4 Nov 2025 19:36:16 +0800
+	 In-Reply-To:Content-Type; b=DsQqYSvBufFoVRJlVIKfddQI8XHu+TzXoBKG+jVMXJB3/HzNj7vgOsL1C5xPRUrYPZJCopTNyUeZHv64W89Ge3w6U36E/huBBgxbVtDBlZjbjmzrQfsdfO8inhdRefJAU9cd0MSkMJSuv6544j4g/vXX+HBHZL7THWcdUMakrcs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de; spf=pass smtp.mailfrom=molgen.mpg.de; arc=none smtp.client-ip=141.14.17.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=molgen.mpg.de
+Received: from [141.14.220.42] (g42.guest.molgen.mpg.de [141.14.220.42])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: pmenzel)
+	by mx.molgen.mpg.de (Postfix) with ESMTPSA id 6878D61E647AB;
+	Tue, 04 Nov 2025 12:43:22 +0100 (CET)
+Message-ID: <0c54ccc4-0526-4d7a-9ce3-42dde5539c7b@molgen.mpg.de>
+Date: Tue, 4 Nov 2025 12:43:20 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -83,39 +45,90 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 1/5] vfat: fix missing sb_min_blocksize() return value
- checks
-To: OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>,
- Yongpeng Yang <yangyongpeng.storage@gmail.com>
-Cc: Namjae Jeon <linkinjeon@kernel.org>, Sungjong Seo
- <sj1557.seo@samsung.com>, Jan Kara <jack@suse.cz>,
- Carlos Maiolino <cem@kernel.org>, Jens Axboe <axboe@kernel.dk>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Sasha Levin <sashal@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>, Christoph Hellwig
- <hch@infradead.org>, linux-xfs@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-block@vger.kernel.org,
- stable@vger.kernel.org, Matthew Wilcox <willy@infradead.org>,
- "Darrick J . Wong" <djwong@kernel.org>,
- Yongpeng Yang <yangyongpeng@xiaomi.com>
-References: <20251103164722.151563-2-yangyongpeng.storage@gmail.com>
- <871pmfoy1m.fsf@mail.parknet.co.jp>
+Subject: Re: [PATCH v1] Bluetooth: hci_qca: Fix SSR unable to wake up bug
+To: Shuai Zhang <quic_shuaz@quicinc.com>
+Cc: Bartosz Golaszewski <brgl@bgdev.pl>, Marcel Holtmann
+ <marcel@holtmann.org>, Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+ linux-arm-msm@vger.kernel.org, linux-bluetooth@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ quic_chejiang@quicinc.com, quic_jiaymao@quicinc.com, quic_chezhou@quicinc.com
+References: <20251104112601.2670019-1-quic_shuaz@quicinc.com>
 Content-Language: en-US
-From: Yongpeng Yang <yangyongpeng.storage@gmail.com>
-In-Reply-To: <871pmfoy1m.fsf@mail.parknet.co.jp>
+From: Paul Menzel <pmenzel@molgen.mpg.de>
+In-Reply-To: <20251104112601.2670019-1-quic_shuaz@quicinc.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 11/4/25 00:56, OGAWA Hirofumi wrote:
-> Yongpeng Yang <yangyongpeng.storage@gmail.com> writes:
+Dear Shuai,
+
+
+Thank you for your patch.
+
+Am 04.11.25 um 12:26 schrieb Shuai Zhang:
+> During SSR data collection period, the processing of hw_error events
+> must wait until SSR data Collected or the timeout before it can proceed.
+
+Collected → collected
+
+> The wake_up_bit function has been added to address the issue
+
+has been added → is added
+
+> where hw_error events could only be processed after the timeout.
+
+The problem is not totally clear to me. What is the current situation? 
+Maybe start the commit message with that?
+
+> The timeout unit has been changed from jiffies to milliseconds (ms).
+
+Please give the numbers, and also document effect of this change. Is the 
+timeout the same, or different?
+
+Also, why not make that a separate commit?
+
+Please document a test case.
+
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Shuai Zhang <quic_shuaz@quicinc.com>
+> ---
+>   drivers/bluetooth/hci_qca.c | 4 +++-
+>   1 file changed, 3 insertions(+), 1 deletion(-)
 > 
->> Fixes: a64e5a596067bd ("bdev: add back PAGE_SIZE block size validation
->> for sb_set_blocksize()")
-> 
-> Looks like inserted a strange '\n'? Otherwise looks good.
+> diff --git a/drivers/bluetooth/hci_qca.c b/drivers/bluetooth/hci_qca.c
+> index 888176b0f..a2e3c97a8 100644
+> --- a/drivers/bluetooth/hci_qca.c
+> +++ b/drivers/bluetooth/hci_qca.c
+> @@ -1105,6 +1105,7 @@ static void qca_controller_memdump(struct work_struct *work)
+>   				cancel_delayed_work(&qca->ctrl_memdump_timeout);
+>   				clear_bit(QCA_MEMDUMP_COLLECTION, &qca->flags);
+>   				clear_bit(QCA_IBS_DISABLED, &qca->flags);
+> +				wake_up_bit(&qca->flags, QCA_MEMDUMP_COLLECTION);
+>   				mutex_unlock(&qca->hci_memdump_lock);
+>   				return;
+>   			}
+> @@ -1182,6 +1183,7 @@ static void qca_controller_memdump(struct work_struct *work)
+>   			qca->qca_memdump = NULL;
+>   			qca->memdump_state = QCA_MEMDUMP_COLLECTED;
+>   			clear_bit(QCA_MEMDUMP_COLLECTION, &qca->flags);
+> +			wake_up_bit(&qca->flags, QCA_MEMDUMP_COLLECTION);
 
-Thanks for the review. Sorry for the mistake. I copied the commit 
-message from my text editor, and it got automatically line-wrapped.
+`include/linux/wait_bit.h` also contains `clear_and_wake_up_bit()`.
 
-Yongpeng,
+>   		}
+>   
+>   		mutex_unlock(&qca->hci_memdump_lock);
+> @@ -1602,7 +1604,7 @@ static void qca_wait_for_dump_collection(struct hci_dev *hdev)
+>   	struct qca_data *qca = hu->priv;
+>   
+>   	wait_on_bit_timeout(&qca->flags, QCA_MEMDUMP_COLLECTION,
+> -			    TASK_UNINTERRUPTIBLE, MEMDUMP_TIMEOUT_MS);
+> +			    TASK_UNINTERRUPTIBLE, msecs_to_jiffies(MEMDUMP_TIMEOUT_MS));
+>   
+>   	clear_bit(QCA_MEMDUMP_COLLECTION, &qca->flags);
+>   }
+
+
+Kind regards,
+
+Paul
 
