@@ -1,232 +1,255 @@
-Return-Path: <stable+bounces-192428-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192429-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03426C322A2
-	for <lists+stable@lfdr.de>; Tue, 04 Nov 2025 17:56:05 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A6DCC32318
+	for <lists+stable@lfdr.de>; Tue, 04 Nov 2025 18:00:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5280B18C0B75
-	for <lists+stable@lfdr.de>; Tue,  4 Nov 2025 16:56:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2C88918C4246
+	for <lists+stable@lfdr.de>; Tue,  4 Nov 2025 17:01:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FE4A3375DC;
-	Tue,  4 Nov 2025 16:55:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 443A7339716;
+	Tue,  4 Nov 2025 17:00:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JSdZ5RaS";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="joiY9tT4"
+	dkim=pass (2048-bit key) header.d=parknet.co.jp header.i=@parknet.co.jp header.b="Y5sNATtI";
+	dkim=permerror (0-bit key) header.d=parknet.co.jp header.i=@parknet.co.jp header.b="A9PSMThJ"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mail.parknet.co.jp (mail.parknet.co.jp [210.171.160.6])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F5FB295D90
-	for <stable@vger.kernel.org>; Tue,  4 Nov 2025 16:55:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4EFF246BD5;
+	Tue,  4 Nov 2025 17:00:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.171.160.6
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762275352; cv=none; b=HqLAlogJZ60jffXnbkjbkY8rrmHCAVAbCzy56sfr4krVezbLxhxWy3JKib9/5kYxH0aay9rATjwjIeOXzW7gVp81aOBLR+G34nZ5awexe2qpX7VgCbr4+2ZzXLC4imPfurmIPF+hA8nwfuaYH9PHwzXN12nRxfbT9Ww1B6ey/FM=
+	t=1762275632; cv=none; b=MOR4TU44OxYd4R27snDM/up9S4Bo74AdJYXFlQXq+gvSmNzKKznQy874BLa81ut5ouofilj6ozgWZ8Hy0LdhkxfnzsJoMx5aphKjx+D4Hlx+pbzkZEKh4QFI/+iTvBchqX23XMPpCdV3khkJsD+7qdaftuwaajU16RIZQ9O4gp0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762275352; c=relaxed/simple;
-	bh=TiJGFEfQCBCdhtH1YWNIQUQjYRlLTugBZObWYWIa+5w=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=oOZan70IP0m2E9jqo4JpGp404ve2wKsBgc7QLTTu3jZGZSYJcMP3BABbzp1iGkd1PfD8z6TvqOVAEOsIMDOkbC0xRPZC4QlwRrfdANM7ASmlpx1xZMtNme7dAHUR2UTy6d+Z7wsckFHXXOvohHWh1IpqVQM1AsgyO4G4ThBlqaU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=JSdZ5RaS; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=joiY9tT4; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1762275349;
+	s=arc-20240116; t=1762275632; c=relaxed/simple;
+	bh=e3hlUat6astN/+dXsjC0TM6xq+rjSKStFyFzVAySDpg=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=lX8Q7PFawPdKE5r3ucS6rUlGH0ew8AHY4Eb+qP9lFKO2OnwLJYsqErlNvGXdShlqHchjbDpULFC/FjMxt3qHDvbfxM0rI4g9kC1MfBM9h/JM/wMST/F8+ot6D0u8Y5IBniLAm/eMNQ9WZWPDNbBjYlpLu3Cx8qnIJu8dvaLdWK0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mail.parknet.co.jp; spf=pass smtp.mailfrom=parknet.co.jp; dkim=pass (2048-bit key) header.d=parknet.co.jp header.i=@parknet.co.jp header.b=Y5sNATtI; dkim=permerror (0-bit key) header.d=parknet.co.jp header.i=@parknet.co.jp header.b=A9PSMThJ; arc=none smtp.client-ip=210.171.160.6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mail.parknet.co.jp
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=parknet.co.jp
+Received: from ibmpc.myhome.or.jp (server.parknet.ne.jp [210.171.168.39])
+	by mail.parknet.co.jp (Postfix) with ESMTPSA id 882A920A0176;
+	Wed,  5 Nov 2025 02:00:20 +0900 (JST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=parknet.co.jp;
+	s=20250114; t=1762275620;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Hm6vQC33e7nqNsZy21fXXBlp96qh8mZG59C0mIsP1cY=;
-	b=JSdZ5RaSvjgRJcjXYZYHogy8a13TgUAbO8ZPrgrATlfX/TZ7MrANUqUDS3uXdkoouTz6w+
-	weyVfMuAviCLjR4MHbARyZka1/Rs16x41Jn+uX0XEstmMqRBUWiCz/9BnuiKfECiNm7Dez
-	jhK7VOhz1HnexnFqr3wPH7smNL9M7NM=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-38-IVI7bMHXNM2BZ-xRy-Txjw-1; Tue, 04 Nov 2025 11:55:46 -0500
-X-MC-Unique: IVI7bMHXNM2BZ-xRy-Txjw-1
-X-Mimecast-MFC-AGG-ID: IVI7bMHXNM2BZ-xRy-Txjw_1762275345
-Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-b70b2a89c22so3263566b.0
-        for <stable@vger.kernel.org>; Tue, 04 Nov 2025 08:55:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1762275345; x=1762880145; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Hm6vQC33e7nqNsZy21fXXBlp96qh8mZG59C0mIsP1cY=;
-        b=joiY9tT42xR8e5kN1bhgamlo8HEcW80cigm6MBNvauenA4ePpy0LQ83lvNyN79YIFQ
-         ivBrtYsFToY7vg3s/44W68yLuvOJ2QOnNRe5npZjCRV4l3/et2SmRTq1tO/8ktBqHaP2
-         1+HBRpX+IGYoDxdSOyPFKxGftw/6kVaTT7DfXuL1D+v/Se+nDPLh9WD8+WDv9burxmRl
-         75lC0UtvGpqXgd078+Xgf82hi9DSaS+qb2Kf2fuM3uI/RWjQiDctmmasLXuzEAU3UP+C
-         7Ubf3dUD8tWCeYkIg6aCfJIndRlDddWdEgB12q+aneVLntxBgg/O0zziU2xqwjtg7qE7
-         1qfA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762275345; x=1762880145;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Hm6vQC33e7nqNsZy21fXXBlp96qh8mZG59C0mIsP1cY=;
-        b=QCxW+8A8TqbBSde9oxSyfm/nyMENZMJOm8XqmMLKUVhGoKt7Yl0tn4CAiUWbf+MUPx
-         dMJ+tRZl4ltoAtQn53RZ3qnz9ltBpZzYWnonpxsPBqZQCQaey9bs5CclcPsIfbOuVocs
-         oloTF+WXw+jopBY5/qUTAfY1l4OoY4IGX4og5QEuSvF6HOAYkAbJb8mbsEV+0q3BGBQP
-         Q4UGDYIoIfFFigfr3vs3t/cd/xIkPqYwTuiiDH71Yq5XeuSzPMMV2N2XShDWdBOp8HIN
-         dfPZlvoO3+n5ZQaQCovZX0Ys1gNVLcWkKZQY2cJ9D/uZW77Jt2A6tbhvWOHuIP0UOtwU
-         H6XA==
-X-Forwarded-Encrypted: i=1; AJvYcCUpIeISnFj5jmUXlpsjN7GgMHDDUL906yW7sF6pwvPstB3ctFPs/k83PI6RK2ZGHo1yOhTHKzY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxGsh8+aN9g/GEJcajTFAJ1f9+ro7qWzwPZ+kT4P05xdoRPYw+s
-	5OrPl8UV08ecVXUrskRkJsexJhIDIADJa/BzsZmJrh+Uy99uC+qvzbfhSWJH5DyPURBm4Wv/qFQ
-	u5bulusaJdTT4GWY0zgV+QcbzHhOAW0ezgPB8yXs9wuCQqH4x2fAclam+HpEjaWKzUmHj8mnGCH
-	nPV/MF5DQWeRalWJBK+ZUA+klLCFFlFEXx
-X-Gm-Gg: ASbGnctshPSJNpzdwgQlxGyyVz81wUAsCvHJ6vZ0t/QJXfLn39yO7MYKx99tuidtr+T
-	HvT+wxUMhH5VsjOQV5AZnKjjR5x/L7xzwkjd2r/h2FtaqT8khYYr5Syo3GAQrEK1LBABMj97dnV
-	e1/Sdl4mykW+FJre2jkh9S1qK4JD4QQHfFjX9jFlf806t1edn4KScLZvBh
-X-Received: by 2002:a17:907:94d3:b0:b6d:5fbf:8c63 with SMTP id a640c23a62f3a-b72631fdf5cmr29677866b.15.1762275345081;
-        Tue, 04 Nov 2025 08:55:45 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IH0F6IPtMO6sLF8EVo/ZKpg4T9PTY1cBgQJI1AWgls82FiG7QTQdkTU5cch5q8n9/7j6YmE/dmzTamG16w02RI=
-X-Received: by 2002:a17:907:94d3:b0:b6d:5fbf:8c63 with SMTP id
- a640c23a62f3a-b72631fdf5cmr29673566b.15.1762275344567; Tue, 04 Nov 2025
- 08:55:44 -0800 (PST)
+	bh=NzL8rKtNWB15iWVthvX+sRHZ3DPJl0fzA2+ZZgPmRbM=;
+	b=Y5sNATtIIiPxF0pVP8e98JqfiIATRTbYzdKIYecfARkHMg2DPCjYctc/JG7xSR1qa3wNw6
+	B7B3d/zt3lKStmFfTPRbzSh/W55qzPCLL1eZuBiOrjExKL8XmG+b0qSAdYVWqTf3REGIrG
+	A94QIdNunQqI+WFHiE6qSQKK2lDupE5YTnzGiBoFUB1leETdNZ02GXGXRxoGyONcL/Ah/D
+	b6u0JkdJYPb+lTJe/ScOdbjkL1bJe9efXVWPYGWev/bIMYF4aJlLEB3xpbzs4dSobqYoqR
+	crbBepEi4X/C9NBQlEJvc07ZmmtICiNVdQ/lSvyEbuBF+QEekiddBGUnKWRBIA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=parknet.co.jp;
+	s=20250114-ed25519; t=1762275620;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=NzL8rKtNWB15iWVthvX+sRHZ3DPJl0fzA2+ZZgPmRbM=;
+	b=A9PSMThJfzvvc8QHwOS2CVFZX4veGaA5rGukWqx27Ln4Wk4AfVlADoVa71pY4gPy5x1Bu2
+	suCUy/EbXI3hu6Aw==
+Received: from devron.myhome.or.jp (foobar@devron.myhome.or.jp [192.168.0.3])
+	by ibmpc.myhome.or.jp (8.18.1/8.18.1/Debian-7) with ESMTPS id 5A4H0J2d078731
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Wed, 5 Nov 2025 02:00:20 +0900
+Received: from devron.myhome.or.jp (foobar@localhost [127.0.0.1])
+	by devron.myhome.or.jp (8.18.1/8.18.1/Debian-7) with ESMTPS id 5A4H0JFt224915
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Wed, 5 Nov 2025 02:00:19 +0900
+Received: (from hirofumi@localhost)
+	by devron.myhome.or.jp (8.18.1/8.18.1/Submit) id 5A4H0Fq5224914;
+	Wed, 5 Nov 2025 02:00:15 +0900
+From: OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Yongpeng Yang <yangyongpeng.storage@gmail.com>,
+        Namjae Jeon
+ <linkinjeon@kernel.org>,
+        Sungjong Seo <sj1557.seo@samsung.com>, Jan Kara
+ <jack@suse.cz>,
+        Carlos Maiolino <cem@kernel.org>, Jens Axboe
+ <axboe@kernel.dk>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Sasha Levin <sashal@kernel.org>,
+        Alexander Viro
+ <viro@zeniv.linux.org.uk>,
+        Christian Brauner <brauner@kernel.org>,
+        Christoph Hellwig <hch@infradead.org>, linux-xfs@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, linux-block@vger.kernel.org,
+        stable@vger.kernel.org, Matthew Wilcox <willy@infradead.org>,
+        "Darrick
+ J . Wong" <djwong@kernel.org>,
+        Yongpeng Yang <yangyongpeng@xiaomi.com>,
+        Christoph Hellwig <hch@lst.de>
+Subject: Re: [PATCH v6 1/5] vfat: fix missing sb_min_blocksize() return
+ value checks
+In-Reply-To: <20251104125009.2111925-2-yangyongpeng.storage@gmail.com>
+References: <20251104125009.2111925-2-yangyongpeng.storage@gmail.com>
+Date: Wed, 05 Nov 2025 02:00:15 +0900
+Message-ID: <87ms51ens0.fsf@mail.parknet.co.jp>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251030144438.7582-1-minhquangbui99@gmail.com> <1762149401.6256416-7-xuanzhuo@linux.alibaba.com>
-In-Reply-To: <1762149401.6256416-7-xuanzhuo@linux.alibaba.com>
-From: Lei Yang <leiyang@redhat.com>
-Date: Wed, 5 Nov 2025 00:55:07 +0800
-X-Gm-Features: AWmQ_blI7oSZAo-0MCFKdglnXUXPuueQuOSCwEEpEbibTzqvZtiLszZM2HTCGLE
-Message-ID: <CAPpAL=x-fVOkm=D_OeVLjWwUKThM=1FQFQBZyyBOrH30TEyZdA@mail.gmail.com>
-Subject: Re: [PATCH net v7] virtio-net: fix received length check in big packets
-To: Bui Quang Minh <minhquangbui99@gmail.com>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, 
-	=?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Gavin Li <gavinl@nvidia.com>, Gavi Teitz <gavi@nvidia.com>, Parav Pandit <parav@nvidia.com>, 
-	virtualization@lists.linux.dev, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org, netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 
-Tested this patch with virtio-net regression tests, everything works fine.
+Yongpeng Yang <yangyongpeng.storage@gmail.com> writes:
 
-Tested-by: Lei Yang <leiyang@redhat.com>
+> From: Yongpeng Yang <yangyongpeng@xiaomi.com>
+>
+> When emulating an nvme device on qemu with both logical_block_size and
+> physical_block_size set to 8 KiB, but without format, a kernel panic
+> was triggered during the early boot stage while attempting to mount a
+> vfat filesystem.
+>
+> [95553.682035] EXT4-fs (nvme0n1): unable to set blocksize
+> [95553.684326] EXT4-fs (nvme0n1): unable to set blocksize
+> [95553.686501] EXT4-fs (nvme0n1): unable to set blocksize
+> [95553.696448] ISOFS: unsupported/invalid hardware sector size 8192
+> [95553.697117] ------------[ cut here ]------------
+> [95553.697567] kernel BUG at fs/buffer.c:1582!
+> [95553.697984] Oops: invalid opcode: 0000 [#1] SMP NOPTI
+> [95553.698602] CPU: 0 UID: 0 PID: 7212 Comm: mount Kdump: loaded Not tainted 6.18.0-rc2+ #38 PREEMPT(voluntary)
+> [95553.699511] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
+> [95553.700534] RIP: 0010:folio_alloc_buffers+0x1bb/0x1c0
+> [95553.701018] Code: 48 8b 15 e8 93 18 02 65 48 89 35 e0 93 18 02 48 83 c4 10 5b 41 5c 41 5d 41 5e 41 5f 5d 31 d2 31 c9 31 f6 31 ff c3 cc cc cc cc <0f> 0b 90 66 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 0f
+> [95553.702648] RSP: 0018:ffffd1b0c676f990 EFLAGS: 00010246
+> [95553.703132] RAX: ffff8cfc4176d820 RBX: 0000000000508c48 RCX: 0000000000000001
+> [95553.703805] RDX: 0000000000002000 RSI: 0000000000000000 RDI: 0000000000000000
+> [95553.704481] RBP: ffffd1b0c676f9c8 R08: 0000000000000000 R09: 0000000000000000
+> [95553.705148] R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000000001
+> [95553.705816] R13: 0000000000002000 R14: fffff8bc8257e800 R15: 0000000000000000
+> [95553.706483] FS:  000072ee77315840(0000) GS:ffff8cfdd2c8d000(0000) knlGS:0000000000000000
+> [95553.707248] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> [95553.707782] CR2: 00007d8f2a9e5a20 CR3: 0000000039d0c006 CR4: 0000000000772ef0
+> [95553.708439] PKRU: 55555554
+> [95553.708734] Call Trace:
+> [95553.709015]  <TASK>
+> [95553.709266]  __getblk_slow+0xd2/0x230
+> [95553.709641]  ? find_get_block_common+0x8b/0x530
+> [95553.710084]  bdev_getblk+0x77/0xa0
+> [95553.710449]  __bread_gfp+0x22/0x140
+> [95553.710810]  fat_fill_super+0x23a/0xfc0
+> [95553.711216]  ? __pfx_setup+0x10/0x10
+> [95553.711580]  ? __pfx_vfat_fill_super+0x10/0x10
+> [95553.712014]  vfat_fill_super+0x15/0x30
+> [95553.712401]  get_tree_bdev_flags+0x141/0x1e0
+> [95553.712817]  get_tree_bdev+0x10/0x20
+> [95553.713177]  vfat_get_tree+0x15/0x20
+> [95553.713550]  vfs_get_tree+0x2a/0x100
+> [95553.713910]  vfs_cmd_create+0x62/0xf0
+> [95553.714273]  __do_sys_fsconfig+0x4e7/0x660
+> [95553.714669]  __x64_sys_fsconfig+0x20/0x40
+> [95553.715062]  x64_sys_call+0x21ee/0x26a0
+> [95553.715453]  do_syscall_64+0x80/0x670
+> [95553.715816]  ? __fs_parse+0x65/0x1e0
+> [95553.716172]  ? fat_parse_param+0x103/0x4b0
+> [95553.716587]  ? vfs_parse_fs_param_source+0x21/0xa0
+> [95553.717034]  ? __do_sys_fsconfig+0x3d9/0x660
+> [95553.717548]  ? __x64_sys_fsconfig+0x20/0x40
+> [95553.717957]  ? x64_sys_call+0x21ee/0x26a0
+> [95553.718360]  ? do_syscall_64+0xb8/0x670
+> [95553.718734]  ? __x64_sys_fsconfig+0x20/0x40
+> [95553.719141]  ? x64_sys_call+0x21ee/0x26a0
+> [95553.719545]  ? do_syscall_64+0xb8/0x670
+> [95553.719922]  ? x64_sys_call+0x1405/0x26a0
+> [95553.720317]  ? do_syscall_64+0xb8/0x670
+> [95553.720702]  ? __x64_sys_close+0x3e/0x90
+> [95553.721080]  ? x64_sys_call+0x1b5e/0x26a0
+> [95553.721478]  ? do_syscall_64+0xb8/0x670
+> [95553.721841]  ? irqentry_exit+0x43/0x50
+> [95553.722211]  ? exc_page_fault+0x90/0x1b0
+> [95553.722681]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+> [95553.723166] RIP: 0033:0x72ee774f3afe
+> [95553.723562] Code: 73 01 c3 48 8b 0d 0a 33 0f 00 f7 d8 64 89 01 48 83 c8 ff c3 0f 1f 84 00 00 00 00 00 f3 0f 1e fa 49 89 ca b8 af 01 00 00 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d da 32 0f 00 f7 d8 64 89 01 48
+> [95553.725188] RSP: 002b:00007ffe97148978 EFLAGS: 00000246 ORIG_RAX: 00000000000001af
+> [95553.725892] RAX: ffffffffffffffda RBX: 00005dcfe53d0080 RCX: 000072ee774f3afe
+> [95553.726526] RDX: 0000000000000000 RSI: 0000000000000006 RDI: 0000000000000003
+> [95553.727176] RBP: 00007ffe97148ac0 R08: 0000000000000000 R09: 000072ee775e7ac0
+> [95553.727818] R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+> [95553.728459] R13: 00005dcfe53d04b0 R14: 000072ee77670b00 R15: 00005dcfe53d1a28
+> [95553.729086]  </TASK>
+>
+> The panic occurs as follows:
+> 1. logical_block_size is 8KiB, causing {struct super_block *sb}->s_blocksize
+> is initialized to 0.
+> vfat_fill_super
+>  - fat_fill_super
+>   - sb_min_blocksize
+>    - sb_set_blocksize //return 0 when size is 8KiB.
+> 2. __bread_gfp is called with size == 0, causing folio_alloc_buffers() to
+> compute an offset equal to folio_size(folio), which triggers a BUG_ON.
+> fat_fill_super
+>  - sb_bread
+>   - __bread_gfp  // size == {struct super_block *sb}->s_blocksize == 0
+>    - bdev_getblk
+>     - __getblk_slow
+>      - grow_buffers
+>       - grow_dev_folio
+>        - folio_alloc_buffers  // size == 0
+>         - folio_set_bh //offset == folio_size(folio) and panic
+>
+> To fix this issue, add proper return value checks for
+> sb_min_blocksize().
+>
+> Cc: <stable@vger.kernel.org> # v6.15
+> Fixes: a64e5a596067bd ("bdev: add back PAGE_SIZE block size validation for sb_set_blocksize()")
+> Reviewed-by: Matthew Wilcox <willy@infradead.org>
+> Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+> Reviewed-by: Jan Kara <jack@suse.cz>
+> Reviewed-by: OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>
+> Reviewed-by: Christoph Hellwig <hch@lst.de>
+> Signed-off-by: Yongpeng Yang <yangyongpeng@xiaomi.com>
 
-On Mon, Nov 3, 2025 at 1:59=E2=80=AFPM Xuan Zhuo <xuanzhuo@linux.alibaba.co=
-m> wrote:
->
-> On Thu, 30 Oct 2025 21:44:38 +0700, Bui Quang Minh <minhquangbui99@gmail.=
-com> wrote:
-> > Since commit 4959aebba8c0 ("virtio-net: use mtu size as buffer length
-> > for big packets"), when guest gso is off, the allocated size for big
-> > packets is not MAX_SKB_FRAGS * PAGE_SIZE anymore but depends on
-> > negotiated MTU. The number of allocated frags for big packets is stored
-> > in vi->big_packets_num_skbfrags.
-> >
-> > Because the host announced buffer length can be malicious (e.g. the hos=
-t
-> > vhost_net driver's get_rx_bufs is modified to announce incorrect
-> > length), we need a check in virtio_net receive path. Currently, the
-> > check is not adapted to the new change which can lead to NULL page
-> > pointer dereference in the below while loop when receiving length that
-> > is larger than the allocated one.
-> >
-> > This commit fixes the received length check corresponding to the new
-> > change.
-> >
-> > Fixes: 4959aebba8c0 ("virtio-net: use mtu size as buffer length for big=
- packets")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Bui Quang Minh <minhquangbui99@gmail.com>
->
-> Reviewed-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
->
-> > ---
-> > Changes in v7:
-> > - Fix typos
-> > - Link to v6: https://lore.kernel.org/netdev/20251028143116.4532-1-minh=
-quangbui99@gmail.com/
-> > Changes in v6:
-> > - Fix the length check
-> > - Link to v5: https://lore.kernel.org/netdev/20251024150649.22906-1-min=
-hquangbui99@gmail.com/
-> > Changes in v5:
-> > - Move the length check to receive_big
-> > - Link to v4: https://lore.kernel.org/netdev/20251022160623.51191-1-min=
-hquangbui99@gmail.com/
-> > Changes in v4:
-> > - Remove unrelated changes, add more comments
-> > - Link to v3: https://lore.kernel.org/netdev/20251021154534.53045-1-min=
-hquangbui99@gmail.com/
-> > Changes in v3:
-> > - Convert BUG_ON to WARN_ON_ONCE
-> > - Link to v2: https://lore.kernel.org/netdev/20250708144206.95091-1-min=
-hquangbui99@gmail.com/
-> > Changes in v2:
-> > - Remove incorrect give_pages call
-> > - Link to v1: https://lore.kernel.org/netdev/20250706141150.25344-1-min=
-hquangbui99@gmail.com/
-> > ---
-> >  drivers/net/virtio_net.c | 25 ++++++++++++-------------
-> >  1 file changed, 12 insertions(+), 13 deletions(-)
-> >
-> > diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-> > index a757cbcab87f..421b9aa190a0 100644
-> > --- a/drivers/net/virtio_net.c
-> > +++ b/drivers/net/virtio_net.c
-> > @@ -910,17 +910,6 @@ static struct sk_buff *page_to_skb(struct virtnet_=
-info *vi,
-> >               goto ok;
-> >       }
-> >
-> > -     /*
-> > -      * Verify that we can indeed put this data into a skb.
-> > -      * This is here to handle cases when the device erroneously
-> > -      * tries to receive more than is possible. This is usually
-> > -      * the case of a broken device.
-> > -      */
-> > -     if (unlikely(len > MAX_SKB_FRAGS * PAGE_SIZE)) {
-> > -             net_dbg_ratelimited("%s: too much data\n", skb->dev->name=
-);
-> > -             dev_kfree_skb(skb);
-> > -             return NULL;
-> > -     }
-> >       BUG_ON(offset >=3D PAGE_SIZE);
-> >       while (len) {
-> >               unsigned int frag_size =3D min((unsigned)PAGE_SIZE - offs=
-et, len);
-> > @@ -2107,9 +2096,19 @@ static struct sk_buff *receive_big(struct net_de=
-vice *dev,
-> >                                  struct virtnet_rq_stats *stats)
-> >  {
-> >       struct page *page =3D buf;
-> > -     struct sk_buff *skb =3D
-> > -             page_to_skb(vi, rq, page, 0, len, PAGE_SIZE, 0);
-> > +     struct sk_buff *skb;
-> > +
-> > +     /* Make sure that len does not exceed the size allocated in
-> > +      * add_recvbuf_big.
-> > +      */
-> > +     if (unlikely(len > (vi->big_packets_num_skbfrags + 1) * PAGE_SIZE=
-)) {
-> > +             pr_debug("%s: rx error: len %u exceeds allocated size %lu=
-\n",
-> > +                      dev->name, len,
-> > +                      (vi->big_packets_num_skbfrags + 1) * PAGE_SIZE);
-> > +             goto err;
-> > +     }
-> >
-> > +     skb =3D page_to_skb(vi, rq, page, 0, len, PAGE_SIZE, 0);
-> >       u64_stats_add(&stats->bytes, len - vi->hdr_len);
-> >       if (unlikely(!skb))
-> >               goto err;
-> > --
-> > 2.43.0
-> >
->
+Acked-by: OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>
 
+I'm not sure this goes which route though, to be sure, added cc to akpm.
+
+> ---
+> v6:
+> - fix 'Fixes tag' format error
+> - drop the pointless extern and spell out the parameter of
+> sb_set_blocksize and sb_set_blocksize
+> v5:
+> - add cc tag for 5th patch
+> v4:
+> - split the changes into 5 patches
+> v3:
+> - remove the unnecessary blocksize variable definition
+> v2:
+> - add the __must_check mark to sb_min_blocksize() and include the Fixes
+> tag
+> ---
+>  fs/fat/inode.c | 6 +++++-
+>  1 file changed, 5 insertions(+), 1 deletion(-)
+>
+> diff --git a/fs/fat/inode.c b/fs/fat/inode.c
+> index 9648ed097816..9cfe20a3daaf 100644
+> --- a/fs/fat/inode.c
+> +++ b/fs/fat/inode.c
+> @@ -1595,8 +1595,12 @@ int fat_fill_super(struct super_block *sb, struct fs_context *fc,
+>  
+>  	setup(sb); /* flavour-specific stuff that needs options */
+>  
+> +	error = -EINVAL;
+> +	if (!sb_min_blocksize(sb, 512)) {
+> +		fat_msg(sb, KERN_ERR, "unable to set blocksize");
+> +		goto out_fail;
+> +	}
+>  	error = -EIO;
+> -	sb_min_blocksize(sb, 512);
+>  	bh = sb_bread(sb, 0);
+>  	if (bh == NULL) {
+>  		fat_msg(sb, KERN_ERR, "unable to read boot sector");
+
+-- 
+OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>
 
