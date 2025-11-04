@@ -1,186 +1,96 @@
-Return-Path: <stable+bounces-192363-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192361-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3417CC30B8F
-	for <lists+stable@lfdr.de>; Tue, 04 Nov 2025 12:26:08 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A5DEC30B77
+	for <lists+stable@lfdr.de>; Tue, 04 Nov 2025 12:25:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 958CA421B41
-	for <lists+stable@lfdr.de>; Tue,  4 Nov 2025 11:25:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D39891885018
+	for <lists+stable@lfdr.de>; Tue,  4 Nov 2025 11:25:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD7082E92A2;
-	Tue,  4 Nov 2025 11:25:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E5422E6CAE;
+	Tue,  4 Nov 2025 11:25:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="CH5EnktU"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d2ZDLvH2"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9793C2E718E;
-	Tue,  4 Nov 2025 11:25:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C9322C0F7E;
+	Tue,  4 Nov 2025 11:25:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762255548; cv=none; b=qFNmi3QnRcSw61vvMeSKplFUkk3pQwZMEdSFzYrwR84HcW/VSc5BrwQwy0FLcSW8ku/vSrApPFV69Kq72+3naBeY+2LiCFLGqgPMVCTUt53MXidwQtE300rQiGerXBkTAtGQPobWMM3GVhxhrvxmjJrawNjUwGAqpyQW6LYdM0I=
+	t=1762255530; cv=none; b=uGd3PDhIoUfDqTOWIRX9AU086ITXLEBlaqpvZv+GgWbEC8jWua8IiTuV4wdTxRQvryObPRJUPzp6qJDWiAV1KavFtxhhcqqbNSd3x4s6GfQv2mz7s5R/qiAXniokRY2Sv1io0dgPI6y8zZ60fobEpFQGXQ+t33/f5+0HK/pdwbQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762255548; c=relaxed/simple;
-	bh=7q9qUIZAvqIo3x6wghkF9nlPfLCE4twzXLbKzhvsfKU=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=XRDE2n2gtiZQ1pIS5S8TQAqlYgZaiwQZbsK4k1tWZ9IN/yUSR6yU801WNPhnrg8QknonJthqhzvSA08JnWmntRBnXKwtcmHwnmDwm2mYWPMf0RsfReedGycX2M/xaS1mNVVUMfGFrU3zscDsLSDYZax8zhdXSbQAACMf14XEL6Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=qualcomm.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=CH5EnktU; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qualcomm.com
-Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5A49dYRu1659030;
-	Tue, 4 Nov 2025 11:25:43 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=qcppdkim1; bh=7Rr/kjr2hnM
-	Xqh2UKjZBzPVHTWOd0udUzQdbniBVJls=; b=CH5EnktU7WURm6ikoH+UpPFpN9N
-	8L5+iUiVMoeZkaZCCjaKP5s7yZbsabKMhseU6uxA/uy7k4+F34VMHbK4cCsXA/Ci
-	hrEsnBIbL7WSL1qDapgdJD6CuSdvzaDnjhEprG361ykIKJtm0OlMsGg1b/jizuJC
-	zYjNY6IP0099SkbpbjBWSidIqqmuNnseUV9nyCwPn2cI40/Sy5THcFw3Jc1Rndah
-	7hHkE2X375MuzycvhQBDqNPbAEHUCzSAzcH/thns/tUvTk4SAiUpGe1kwXPH2NpS
-	mDnXv+40DsNca0qdU4IRzmwBnzSZc4Gu9ll3p+liaWMqhsg2QLUn7mUGCSw==
-Received: from aptaippmta02.qualcomm.com (tpe-colo-wan-fw-bordernet.qualcomm.com [103.229.16.4])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4a7f25091x-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 04 Nov 2025 11:25:43 +0000 (GMT)
-Received: from pps.filterd (APTAIPPMTA02.qualcomm.com [127.0.0.1])
-	by APTAIPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTP id 5A4BPd88024756;
-	Tue, 4 Nov 2025 11:25:39 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by APTAIPPMTA02.qualcomm.com (PPS) with ESMTPS id 4a5b9mgnt7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 04 Nov 2025 11:25:39 +0000
-Received: from APTAIPPMTA02.qualcomm.com (APTAIPPMTA02.qualcomm.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 5A4BPdaf024751;
-	Tue, 4 Nov 2025 11:25:39 GMT
-Received: from bt-iot-sh02-lnx.ap.qualcomm.com (bt-iot-sh02-lnx.qualcomm.com [10.253.144.65])
-	by APTAIPPMTA02.qualcomm.com (PPS) with ESMTPS id 5A4BPdEO024749
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 04 Nov 2025 11:25:39 +0000
-Received: by bt-iot-sh02-lnx.ap.qualcomm.com (Postfix, from userid 4467449)
-	id 1243522C5E; Tue,  4 Nov 2025 19:25:38 +0800 (CST)
-From: Shuai Zhang <quic_shuaz@quicinc.com>
-To: Marcel Holtmann <marcel@holtmann.org>,
-        Luiz Augusto von Dentz <luiz.dentz@gmail.com>
-Cc: linux-bluetooth@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        quic_chejiang@quicinc.com, quic_jiaymao@quicinc.com,
-        quic_chezhou@quicinc.com, Shuai Zhang <quic_shuaz@quicinc.com>
-Subject: [PATCH v3 1/1] Bluetooth: btusb: add default nvm file
-Date: Tue,  4 Nov 2025 19:24:41 +0800
-Message-Id: <20251104112441.2667316-2-quic_shuaz@quicinc.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20251104112441.2667316-1-quic_shuaz@quicinc.com>
-References: <20251104112441.2667316-1-quic_shuaz@quicinc.com>
+	s=arc-20240116; t=1762255530; c=relaxed/simple;
+	bh=R5SXDE2SgNS7wmaD1Gcfg6YItf0qkGUKKDfGIAl5yu4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fss6K+4QJFo2MPuswzrEi5ZLNWoWoeQy7pwNO5/1TeVYRTEYpGpvQXno+3U5s35UgW1FEgQ5vDg1a7EI6G4AkoX/lJy8484NOsxIgGUmyWyGnIg3+Q8YJlCJmLIoTDB6iKdJ/FSFhF4BqmXa8h5DihG/JaH4OtACeeOxJUsYD/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d2ZDLvH2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 021D7C4CEF7;
+	Tue,  4 Nov 2025 11:25:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762255530;
+	bh=R5SXDE2SgNS7wmaD1Gcfg6YItf0qkGUKKDfGIAl5yu4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=d2ZDLvH2nhfeYRcrIHG1iKJN0Dgsp76MX3JwZ74S/qhTdg9897Rm+V45EOl1iKsRO
+	 midAmw7aVCsb0J3sJGikadCeaHVFTbTyVPCPtbbZty0srQbXRaSk0f3amDAqfgNf/w
+	 PiSSIc0EgE4UqoO6mbzcSZiaO63dsjaYe5E3M6rOFA5VQYBqGRrNwXkgSmPq1qxOvk
+	 nJdUjx/+4C+js17IaM1TEnoaHtPetVDo71du2hJ/hdC4Ya76C2HHSwg/98NJ0FkyHC
+	 J8dWButunS9s8pyeEL0Xj1odIhAIvFFJthtq035dTE57vcx5RyYxfTKDgvumwzKZ4s
+	 GsZyqbqHZSmVg==
+Received: from johan by xi.lan with local (Exim 4.98.2)
+	(envelope-from <johan@kernel.org>)
+	id 1vGFAL-000000007TH-0lve;
+	Tue, 04 Nov 2025 12:25:33 +0100
+Date: Tue, 4 Nov 2025 12:25:33 +0100
+From: Johan Hovold <johan@kernel.org>
+To: =?utf-8?Q?Rapha=C3=ABl?= Gallais-Pou <rgallaispou@gmail.com>
+Cc: Markus Elfring <Markus.Elfring@web.de>, dri-devel@lists.freedesktop.org,
+	stable@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
+	Alain Volmat <alain.volmat@foss.st.com>,
+	Benjamin Gaignard <benjamin.gaignard@collabora.com>,
+	David Airlie <airlied@gmail.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>, Simona Vetter <simona@ffwll.ch>,
+	Thomas Zimmermann <tzimmermann@suse.de>
+Subject: Re: [PATCH] drm: sti: fix device leaks at component probe
+Message-ID: <aQnirQ2d9qLqJ68i@hovoldconsulting.com>
+References: <20250922122012.27407-1-johan@kernel.org>
+ <d1c2e56b-2ef9-4ab1-a4f8-3834d1857386@web.de>
+ <aQj69wzTceDklx2Y@thinkstation>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-QCInternal: smtphost
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Authority-Analysis: v=2.4 cv=dNyrWeZb c=1 sm=1 tr=0 ts=6909e2b7 cx=c_pps
- a=nuhDOHQX5FNHPW3J6Bj6AA==:117 a=nuhDOHQX5FNHPW3J6Bj6AA==:17
- a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=COk6AnOGAAAA:8
- a=J2RAPmYWl02GzY4tkNoA:9 a=TjNXssC_j7lpFel5tvFf:22 a=cPQSjfK2_nFv0Q5t_7PE:22
-X-Proofpoint-GUID: Vch1Cg7wuEh2NXy85yJgDWZe9AnpCtx9
-X-Proofpoint-ORIG-GUID: Vch1Cg7wuEh2NXy85yJgDWZe9AnpCtx9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTA0MDA5NCBTYWx0ZWRfX3p7Yn8bUhHA9
- XbjlnmTJ4sg8m7VuTbutpP0l/xyaAbl2mh7mohSUOhu14n6GvkvKs8tz4rn+uun3S4FmAMXZK3s
- Hdi+703gySxwaYsoWkbxYM2hG+YGQmPhXVDESeO8wy7JxCzIAozAGV1VY66cLrp/jGKsEzTDfnk
- kLgEqYc3WoJCC+pr91u44u/oLpeHqIMK+fjjtCVMZLvVX9gDzwKt8ZUqL7PzIau3BZp2CCbIAU0
- nxdGTHLSoNF2WIug4xz1UtZhbqvsk/KHZMKkC7ysWdJNR829aMejyQNIzJ8Kbnrzxwccb8ydS1Z
- UUbHpznM5osSiSaAaUiaFdCBT0TUhe2Va8+ZcwhyfIqV8vtxNcQILhoaxql1tl++jFkpO5F0Uw4
- 7VKceDr6LeJoI7ipd8WRMPKv0F8hXA==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-11-03_06,2025-11-03_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 malwarescore=0 spamscore=0 lowpriorityscore=0 suspectscore=0
- impostorscore=0 adultscore=0 priorityscore=1501 phishscore=0 bulkscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2511040094
+In-Reply-To: <aQj69wzTceDklx2Y@thinkstation>
 
-If no NVM file matches the board_id, load the default NVM file.
+On Mon, Nov 03, 2025 at 07:56:55PM +0100, Raphaël Gallais-Pou wrote:
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Shuai Zhang <quic_shuaz@quicinc.com>
----
- drivers/bluetooth/btusb.c | 26 +++++++++++++++++---------
- 1 file changed, 17 insertions(+), 9 deletions(-)
+> diff --git i/drivers/gpu/drm/sti/sti_vtg.c w/drivers/gpu/drm/sti/sti_vtg.c
+> index ee81691b3203..5193196d9291 100644
+> --- i/drivers/gpu/drm/sti/sti_vtg.c
+> +++ w/drivers/gpu/drm/sti/sti_vtg.c
+> @@ -142,7 +142,7 @@ struct sti_vtg {
+> 
+>  struct sti_vtg *of_vtg_find(struct device_node *np)
+>  {
+> -       struct platform_device *pdev;
+> +       struct platform_device *pdev __free(put_device) = NULL;
 
-diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
-index dcbff7641..020dbb0ab 100644
---- a/drivers/bluetooth/btusb.c
-+++ b/drivers/bluetooth/btusb.c
-@@ -3482,15 +3482,14 @@ static int btusb_setup_qca_load_rampatch(struct hci_dev *hdev,
- }
- 
- static void btusb_generate_qca_nvm_name(char *fwname, size_t max_size,
--					const struct qca_version *ver)
-+					const struct qca_version *ver,
-+					u16 board_id)
- {
- 	u32 rom_version = le32_to_cpu(ver->rom_version);
- 	const char *variant, *fw_subdir;
- 	int len;
--	u16 board_id;
- 
- 	fw_subdir = qca_get_fw_subdirectory(ver);
--	board_id = qca_extract_board_id(ver);
- 
- 	switch (le32_to_cpu(ver->ram_version)) {
- 	case WCN6855_2_0_RAM_VERSION_GF:
-@@ -3517,14 +3516,14 @@ static void btusb_generate_qca_nvm_name(char *fwname, size_t max_size,
- 
- static int btusb_setup_qca_load_nvm(struct hci_dev *hdev,
- 				    struct qca_version *ver,
--				    const struct qca_device_info *info)
-+				    const struct qca_device_info *info,
-+				    u16 board_id)
- {
- 	const struct firmware *fw;
- 	char fwname[80];
- 	int err;
- 
--	btusb_generate_qca_nvm_name(fwname, sizeof(fwname), ver);
--
-+	btusb_generate_qca_nvm_name(fwname, sizeof(fwname), ver, board_id);
- 	err = request_firmware(&fw, fwname, &hdev->dev);
- 	if (err) {
- 		bt_dev_err(hdev, "failed to request NVM file: %s (%d)",
-@@ -3606,10 +3605,19 @@ static int btusb_setup_qca(struct hci_dev *hdev)
- 	btdata->qca_dump.controller_id = le32_to_cpu(ver.rom_version);
- 
- 	if (!(status & QCA_SYSCFG_UPDATED)) {
--		err = btusb_setup_qca_load_nvm(hdev, &ver, info);
--		if (err < 0)
--			return err;
-+		u16 board_id = qca_extract_board_id(&ver);
- 
-+		err = btusb_setup_qca_load_nvm(hdev, &ver, info, board_id);
-+		if (err < 0) {
-+			//if the board id is not 0, try to load the defalut nvm file
-+			if (err == -ENOENT && board_id != 0) {
-+				err = btusb_setup_qca_load_nvm(hdev, &ver, info, 0);
-+				if (err < 0)
-+					return err;
-+			} else {
-+				return err;
-+			}
-+		}
- 		/* WCN6855 2.1 and later will reset to apply firmware downloaded here, so
- 		 * wait ~100ms for reset Done then go ahead, otherwise, it maybe
- 		 * cause potential enable failure.
--- 
-2.34.1
+You'd need to declare the variable when looking up pdev, which is one of
+the reasons I don't like the cleanup helpers. It also often makes the
+code harder to reason about for no good reason (especially with some of
+the more esoteric cleanup helpers).
 
+Keep it simple.
+
+Johan
 
