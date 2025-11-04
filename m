@@ -1,192 +1,296 @@
-Return-Path: <stable+bounces-192439-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192440-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C975AC329B9
-	for <lists+stable@lfdr.de>; Tue, 04 Nov 2025 19:21:56 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF750C3298C
+	for <lists+stable@lfdr.de>; Tue, 04 Nov 2025 19:19:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 56AA256043C
-	for <lists+stable@lfdr.de>; Tue,  4 Nov 2025 18:16:42 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A9E334F59CA
+	for <lists+stable@lfdr.de>; Tue,  4 Nov 2025 18:17:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D27633EAEF;
-	Tue,  4 Nov 2025 18:12:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B718D343D86;
+	Tue,  4 Nov 2025 18:14:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=osandov-com.20230601.gappssmtp.com header.i=@osandov-com.20230601.gappssmtp.com header.b="0Cs2pGYv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O7oSGJKU"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E04D833EAEB
-	for <stable@vger.kernel.org>; Tue,  4 Nov 2025 18:12:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7515133EB1D
+	for <stable@vger.kernel.org>; Tue,  4 Nov 2025 18:14:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762279960; cv=none; b=Tj3GKJ/SPu7UGa37vwtfaRaS+ztfp4itXIQ8+dPtHieo5e4F8OBQXPK6LFIzFHU8f+AzsbElvZQj7M0fkHlEb05N4j1fBK3EFzhx7DRzBRI+8hGUEwi8dda2nBN/SWkq0YFUDA54OdF7g2YO8svlxNOYNusyDgb4u5JAdrkAefI=
+	t=1762280079; cv=none; b=pV0R5Am6u8PzMc5rDaZxPkUyGeVI6VZcqkzRWFMt4wl4Gk5D0Ti9SeaTvnBbQQQzWxNGSyoYXXZiFlWePlZwGcpzP7PqIsHU1Iwud67NDtQHW/pL3SCfgIki2VPAoKEJzinpUC9Z1aJZd2OcWw5vrS6MGs1I+jVuV+AQTUdp6z4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762279960; c=relaxed/simple;
-	bh=m1uwxnIQgDEvoGlGJEV2cdGCHNy/Jt3/XLouPoDvnzE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GttEBsGrymNsyAzhlkz2Krl9oz7XNed77eBBFV/pM+7vl9IQ8hhBXOkVYSHUiErjQRd1Op985EaTbVEqUnZebzjHj9gUjrInZZ2XHHQYfVVfp5lO9BFbF3Yd07vvzkKR8fd++PO/TgOn4ONmWhbqGnuM/jOloQKZAbv2IS/mWC8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=osandov.com; spf=none smtp.mailfrom=osandov.com; dkim=pass (2048-bit key) header.d=osandov-com.20230601.gappssmtp.com header.i=@osandov-com.20230601.gappssmtp.com header.b=0Cs2pGYv; arc=none smtp.client-ip=209.85.210.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=osandov.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=osandov.com
-Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-7aa6db9f87dso99258b3a.1
-        for <stable@vger.kernel.org>; Tue, 04 Nov 2025 10:12:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=osandov-com.20230601.gappssmtp.com; s=20230601; t=1762279958; x=1762884758; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=fXMTm+VYzAvY0dzLHfbkpTMRVQ9wHEDxxkapIdIQmk4=;
-        b=0Cs2pGYvCe+TXrnys5A7s1RaIOoTeFfpuJFTfj8UdHKz5yzUx+BNmxzdTeVNyNrebx
-         Iyy+ygdOjgnVvLIFuMUx2UFBg3DiUve5ObJC3nl8K4wdssDL2+b/wjy+b+yPlo8hKAab
-         49AVFhjbZTxOowingm7vuIC/HXxByzOjHOZ5Rqx3bjegKxGQ2SfuXy9x7+crmla2Yx2Y
-         a0PITAgVL2WAm/1sYhfALC+TLgO/zubvZzdsGKIIgW9/ZHDH5YrMn61Xt9QY5IQgPCQE
-         cCDs55lGWqvJU1H0E0oTVS0SNFu4LCrnPY4eUAYV23tgw9lRHJOecLWSC7x4WuGsSyF9
-         ZVPA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762279958; x=1762884758;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=fXMTm+VYzAvY0dzLHfbkpTMRVQ9wHEDxxkapIdIQmk4=;
-        b=LuHNg2YfA7xqbP6fZIHf4ZOuQVh2kpo70OgcfEOUhra2G4m2RN7IxmNka6xqRgWev4
-         /ddwvgv4/RN9h3lJod7tKiGqQZgRDVMV6K/7MKYB3zS5K8XS5RbbKXucWrS9juXt3qLE
-         TC/waFL41NNAopxAKv6DOluslP+Haingi/rlX5jg/v5cuQ8NluYjycKEqBIo1lI/GpYM
-         6eSSdF0pepaUJ4I910XTBwnN3OI02NGhyno4GsaHubRdzFAwf+a5QH57c5pvEZagW8Ri
-         JMOQYhSGrIZBrjazdCLe9xiQtl17g449ir4QHXe72TnxYpJp6pdBNyK1kb2Z4xAZHMet
-         c8bw==
-X-Forwarded-Encrypted: i=1; AJvYcCWlz2zZU0dKYnP/oH6c66ptgk4Yh656qEO3SPtvQQI13RFK5xKVZF3ms9+cjRuM/yPNFVDZIfM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YweuLmvTBM47UnCk5/q0B/YLOfKri1JwhiAPz3UyKQYWDlQsJn9
-	yJ9duPRaq1E14nc+SCOCIn4KJC4fsTy36vQSsEfXqxqeOMQzqafBW0ZMreKHzon2gCQ=
-X-Gm-Gg: ASbGncv0PPg57g4u1eNOEIMjw4gnOo2aEuwoVtBLZN6dPj8MizXgFJxpNAgfWDoGoTf
-	1tieU6jh6C/Tqzyj5p5e5OrGqUCH4fbM0YLPV6wgIXIfRApjBQD0nJjEX1WnfMeZdrAxcyotZOA
-	MbZ61Yb2lAlX2KSMjqA0+EyTkCJGAKjQjzG+gWCSZc6m2I2T454sQV49RcFpTZAcXqtT40ejSoV
-	SFsBwZlVGfbxjGE08VXbCJmkltLgONf0vK9YiqOk6l5N0BnNbgj3J+/vfyy75ObJlNvuwYElxOZ
-	6x5Z/ehFFVozNgCeRuohrVdYDIQaD5Y6JN5qUVRkWv0kwZCl3emOUDwyxeKLHfQ2pHalA2qSJ90
-	Mgji81DNRlmU50QTYo60dldIBlnCMDSTmVKxvvMR45JoWthaIpcoY0X7qKw==
-X-Google-Smtp-Source: AGHT+IEfMevdEiMdqDvcfkgPhov93sowDZtb/5DAGljcPm4WdOYVS1DF54t90hQB/DDdvYdf8wD0vg==
-X-Received: by 2002:a05:6a20:12c3:b0:342:8c38:ed0 with SMTP id adf61e73a8af0-34f87106a7cmr92855637.8.1762279958021;
-        Tue, 04 Nov 2025 10:12:38 -0800 (PST)
-Received: from telecaster ([2620:10d:c090:400::5:5bc5])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-ba1f87a6155sm3008088a12.29.2025.11.04.10.12.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 04 Nov 2025 10:12:37 -0800 (PST)
-Date: Tue, 4 Nov 2025 10:12:35 -0800
-From: Omar Sandoval <osandov@osandov.com>
-To: linux-kbuild@vger.kernel.org, nathan@kernel.org,
-	dimitri.ledkov@surgut.co.uk
-Cc: Samir M <samir@linux.ibm.com>, linux-kernel@vger.kernel.org,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	linuxppc-dev@lists.ozlabs.org, stable@vger.kernel.org,
-	Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
-	linux-debuggers@vger.kernel.org
-Subject: Re: [mainline]Error while running make modules_install command
-Message-ID: <aQpCE_XTU-bZHFbk@telecaster>
-References: <7fef7507-ad64-4e51-9bb8-c9fb6532e51e@linux.ibm.com>
- <56905387-ec43-4f89-9146-0db6889e46ab@linux.ibm.com>
+	s=arc-20240116; t=1762280079; c=relaxed/simple;
+	bh=MJXU2Udo8va0PjQlGfOYyp5B9o7fcaBVXVFHG7lIfPM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cl9MtXycYYnLfatkVyYo9pIV/JhBWhbmnjO2f5LMvasHIoDZyow+JkCnfhPM9bYucRFnTlTqaDqcqx2gQjsw8aVD7U6ZX/77BogYINaQod6IDrsg+WBPwBwjqbhuo1CEIn+vlLmD2n8z8fcFTe4iubwpgjtR2Cz35ZYenplOa5Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O7oSGJKU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8F65C4CEF8;
+	Tue,  4 Nov 2025 18:14:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762280079;
+	bh=MJXU2Udo8va0PjQlGfOYyp5B9o7fcaBVXVFHG7lIfPM=;
+	h=From:To:Cc:Subject:Date:From;
+	b=O7oSGJKUK/3KSIOoelWaV/I+xk3z/vPeHc+UR8giZtDRfyC5s6h44uiQpA2y8T4Sn
+	 XhqLZ3zONTgQrIsFLmqZuC5OHLAZYMEFVuKqdkk4GKgGWypv7TZjO6nb1LCLlfOqw4
+	 UlO4NEqM7xbtqMd7VklbAkQHbvycqSmydS5VyyFClCsSztoXk56CMvfYtid98D2Kyj
+	 C/2IA6U2/A1kMTHmGsEoKMWSG/9Jbb7ZwnGHZQrg5Z0px5rfZHCiYpA8GcCebloH6E
+	 mx7rUUGalWssvxE0ZIgJS9pqlsP/dADz3goPdhavs50DAUxcGs47GtlL4vascP4A+Q
+	 +r/BA0IfUtE0A==
+From: Nathan Chancellor <nathan@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org,
+	Ben Hutchings <ben@decadent.org.uk>,
+	Nathan Chancellor <nathan@kernel.org>
+Subject: [PATCH 5.10] Makefile.compiler: replace cc-ifversion with compiler-specific macros
+Date: Tue,  4 Nov 2025 11:14:27 -0700
+Message-ID: <20251104181427.3261962-1-nathan@kernel.org>
+X-Mailer: git-send-email 2.51.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <56905387-ec43-4f89-9146-0db6889e46ab@linux.ibm.com>
 
-On Tue, Nov 04, 2025 at 04:54:38PM +0530, Venkat Rao Bagalkote wrote:
-> 
-> On 04/11/25 4:47 pm, Samir M wrote:
-> > Hello,
-> > 
-> > 
-> > I am observing below error while running the make modules_install
-> > command on latest mainline kernel on IBM Power11 server.
-> > 
-> > 
-> > Error:
-> > DEPMOD  /lib/modules/6.18.0-rc4 depmod: ERROR: kmod_builtin_iter_next:
-> > unexpected string without modname prefix
-> > 
-> 
-> IBM CI has also reported this error.
-> 
-> 
-> Error:
-> 
-> 
-> depmod: ERROR: kmod_builtin_iter_next: unexpected string without modname
-> prefix
->   INSTALL /boot
-> depmod: ERROR: kmod_builtin_iter_next: unexpected string without modname
-> prefix
-> depmod: ERROR: kmod_builtin_iter_next: unexpected string without modname
-> prefix
-> 
-> 
-> Git bisect is pointing to below commit as first bad commit.
-> 
-> 
-> d50f21091358b2b29dc06c2061106cdb0f030d03 is the first bad commit
-> commit d50f21091358b2b29dc06c2061106cdb0f030d03
-> Author: Dimitri John Ledkov <dimitri.ledkov@surgut.co.uk>
-> Date:   Sun Oct 26 20:21:00 2025 +0000
-> 
->     kbuild: align modinfo section for Secureboot Authenticode EDK2 compat
-> 
->     Previously linker scripts would always generate vmlinuz that has
-> sections
->     aligned. And thus padded (correct Authenticode calculation) and unpadded
->     calculation would be same. As in https://github.com/rhboot/pesign
-> userspace
->     tool would produce the same authenticode digest for both of the
-> following
->     commands:
-> 
->         pesign --padding --hash --in ./arch/x86_64/boot/bzImage
->         pesign --nopadding --hash --in ./arch/x86_64/boot/bzImage
-> 
->     The commit 3e86e4d74c04 ("kbuild: keep .modinfo section in
->     vmlinux.unstripped") added .modinfo section of variable length.
-> Depending
->     on kernel configuration it may or may not be aligned.
-> 
->     All userspace signing tooling correctly pads such section to calculation
->     spec compliant authenticode digest.
-> 
->     However, if bzImage is not further processed and is attempted to be
-> loaded
->     directly by EDK2 firmware, it calculates unpadded Authenticode digest
-> and
->     fails to correct accept/reject such kernel builds even when propoer
->     Authenticode values are enrolled in db/dbx. One can say EDK2 requires
->     aligned/padded kernels in Secureboot.
-> 
->     Thus add ALIGN(8) to the .modinfo section, to esure kernels irrespective
-> of
->     modinfo contents can be loaded by all existing EDK2 firmware builds.
-> 
->     Fixes: 3e86e4d74c04 ("kbuild: keep .modinfo section in
-> vmlinux.unstripped")
->     Cc: stable@vger.kernel.org
->     Signed-off-by: Dimitri John Ledkov <dimitri.ledkov@surgut.co.uk>
->     Link:
-> https://patch.msgid.link/20251026202100.679989-1-dimitri.ledkov@surgut.co.uk
->     Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-> 
->  include/asm-generic/vmlinux.lds.h | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+From: Nick Desaulniers <ndesaulniers@google.com>
 
-drgn's CI hit this same failure. FWIW, the commit fixed by this bisected
-commit, 3e86e4d74c04 ("kbuild: keep .modinfo section in
-vmlinux.unstripped"), also results in ELF segments of size 0 in vmlinux
-for some configurations, which confused drgn until I added a workaround
-(https://github.com/osandov/drgn/commit/2a9053de8796af866fd720a3c8c23013595d391a).
-So there's some funkiness in this area.
+commit 88b61e3bff93f99712718db785b4aa0c1165f35c upstream.
 
-Thanks,
-Omar
+cc-ifversion is GCC specific. Replace it with compiler specific
+variants. Update the users of cc-ifversion to use these new macros.
+
+Link: https://github.com/ClangBuiltLinux/linux/issues/350
+Link: https://lore.kernel.org/llvm/CAGG=3QWSAUakO42kubrCap8fp-gm1ERJJAYXTnP1iHk_wrH=BQ@mail.gmail.com/
+Suggested-by: Bill Wendling <morbo@google.com>
+Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Nick Desaulniers <ndesaulniers@google.com>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+[nathan: Backport to 5.10 and eliminate instances of cc-ifversion that
+         did not exist upstream when this change was original created]
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+---
+ Documentation/kbuild/makefiles.rst            | 29 +++++++++++--------
+ Makefile                                      |  4 ++-
+ arch/mips/loongson64/Platform                 |  2 +-
+ arch/powerpc/Makefile                         |  4 ++-
+ arch/s390/Makefile                            |  4 +--
+ drivers/gpu/drm/amd/display/dc/calcs/Makefile |  2 +-
+ drivers/gpu/drm/amd/display/dc/dcn20/Makefile |  2 +-
+ drivers/gpu/drm/amd/display/dc/dcn21/Makefile |  2 +-
+ drivers/gpu/drm/amd/display/dc/dcn30/Makefile |  2 +-
+ drivers/gpu/drm/amd/display/dc/dml/Makefile   |  2 +-
+ drivers/gpu/drm/amd/display/dc/dsc/Makefile   |  2 +-
+ scripts/Kbuild.include                        | 10 +++++--
+ 12 files changed, 39 insertions(+), 26 deletions(-)
+
+diff --git a/Documentation/kbuild/makefiles.rst b/Documentation/kbuild/makefiles.rst
+index 0d5dd5413af0..6f7d0e33c1a7 100644
+--- a/Documentation/kbuild/makefiles.rst
++++ b/Documentation/kbuild/makefiles.rst
+@@ -552,22 +552,27 @@ more details, with real examples.
+ 	In the above example, -Wno-unused-but-set-variable will be added to
+ 	KBUILD_CFLAGS only if gcc really accepts it.
+ 
+-    cc-ifversion
+-	cc-ifversion tests the version of $(CC) and equals the fourth parameter
+-	if version expression is true, or the fifth (if given) if the version
+-	expression is false.
++    gcc-min-version
++	gcc-min-version tests if the value of $(CONFIG_GCC_VERSION) is greater than
++	or equal to the provided value and evaluates to y if so.
+ 
+ 	Example::
+ 
+-		#fs/reiserfs/Makefile
+-		ccflags-y := $(call cc-ifversion, -lt, 0402, -O1)
++		cflags-$(call gcc-min-version, 70100) := -foo
+ 
+-	In this example, ccflags-y will be assigned the value -O1 if the
+-	$(CC) version is less than 4.2.
+-	cc-ifversion takes all the shell operators:
+-	-eq, -ne, -lt, -le, -gt, and -ge
+-	The third parameter may be a text as in this example, but it may also
+-	be an expanded variable or a macro.
++	In this example, cflags-y will be assigned the value -foo if $(CC) is gcc and
++	$(CONFIG_GCC_VERSION) is >= 7.1.
++
++    clang-min-version
++	clang-min-version tests if the value of $(CONFIG_CLANG_VERSION) is greater
++	than or equal to the provided value and evaluates to y if so.
++
++	Example::
++
++		cflags-$(call clang-min-version, 110000) := -foo
++
++	In this example, cflags-y will be assigned the value -foo if $(CC) is clang
++	and $(CONFIG_CLANG_VERSION) is >= 11.0.0.
+ 
+     cc-cross-prefix
+ 	cc-cross-prefix is used to check if there exists a $(CC) in path with
+diff --git a/Makefile b/Makefile
+index aa84aec9cbe8..5e5c4ca0db4e 100644
+--- a/Makefile
++++ b/Makefile
+@@ -855,7 +855,9 @@ DEBUG_CFLAGS	:=
+ # Workaround for GCC versions < 5.0
+ # https://gcc.gnu.org/bugzilla/show_bug.cgi?id=61801
+ ifdef CONFIG_CC_IS_GCC
+-DEBUG_CFLAGS	+= $(call cc-ifversion, -lt, 0500, $(call cc-option, -fno-var-tracking-assignments))
++ifneq ($(call gcc-min-version, 50000),y)
++DEBUG_CFLAGS	+= $(call cc-option, -fno-var-tracking-assignments)
++endif
+ endif
+ 
+ ifdef CONFIG_DEBUG_INFO
+diff --git a/arch/mips/loongson64/Platform b/arch/mips/loongson64/Platform
+index e2354e128d9a..76f44ca09b9d 100644
+--- a/arch/mips/loongson64/Platform
++++ b/arch/mips/loongson64/Platform
+@@ -12,7 +12,7 @@ cflags-$(CONFIG_CPU_LOONGSON64)	+= -Wa,--trap
+ # by GAS.  The cc-option can't probe for this behaviour so -march=loongson3a
+ # can't easily be used safely within the kbuild framework.
+ #
+-ifeq ($(call cc-ifversion, -ge, 0409, y), y)
++ifeq ($(call gcc-min-version, 40900), y)
+   ifeq ($(call ld-ifversion, -ge, 225000000, y), y)
+     cflags-$(CONFIG_CPU_LOONGSON64)  += \
+       $(call cc-option,-march=loongson3a -U_MIPS_ISA -D_MIPS_ISA=_MIPS_ISA_MIPS64)
+diff --git a/arch/powerpc/Makefile b/arch/powerpc/Makefile
+index 912e64ab5f24..d92141eb3215 100644
+--- a/arch/powerpc/Makefile
++++ b/arch/powerpc/Makefile
+@@ -168,7 +168,9 @@ endif
+ # https://gcc.gnu.org/bugzilla/show_bug.cgi?id=44199
+ # https://gcc.gnu.org/bugzilla/show_bug.cgi?id=52828
+ ifndef CONFIG_CC_IS_CLANG
+-CC_FLAGS_FTRACE	+= $(call cc-ifversion, -lt, 0409, -mno-sched-epilog)
++ifneq ($(call gcc-min-version, 40900),y)
++CC_FLAGS_FTRACE	+= -mno-sched-epilog
++endif
+ endif
+ endif
+ 
+diff --git a/arch/s390/Makefile b/arch/s390/Makefile
+index 92f2426d8797..98c019abd0ad 100644
+--- a/arch/s390/Makefile
++++ b/arch/s390/Makefile
+@@ -35,8 +35,8 @@ KBUILD_CFLAGS_DECOMPRESSOR += $(if $(CONFIG_DEBUG_INFO),-g)
+ KBUILD_CFLAGS_DECOMPRESSOR += $(if $(CONFIG_DEBUG_INFO_DWARF4), $(call cc-option, -gdwarf-4,))
+ 
+ ifdef CONFIG_CC_IS_GCC
+-	ifeq ($(call cc-ifversion, -ge, 1200, y), y)
+-		ifeq ($(call cc-ifversion, -lt, 1300, y), y)
++	ifeq ($(call gcc-min-version, 120000), y)
++		ifneq ($(call gcc-min-version, 130000), y)
+ 			KBUILD_CFLAGS += $(call cc-disable-warning, array-bounds)
+ 			KBUILD_CFLAGS_DECOMPRESSOR += $(call cc-disable-warning, array-bounds)
+ 		endif
+diff --git a/drivers/gpu/drm/amd/display/dc/calcs/Makefile b/drivers/gpu/drm/amd/display/dc/calcs/Makefile
+index 4674aca8f206..cb7c37ef8735 100644
+--- a/drivers/gpu/drm/amd/display/dc/calcs/Makefile
++++ b/drivers/gpu/drm/amd/display/dc/calcs/Makefile
+@@ -34,7 +34,7 @@ calcs_ccflags := -mhard-float -maltivec
+ endif
+ 
+ ifdef CONFIG_CC_IS_GCC
+-ifeq ($(call cc-ifversion, -lt, 0701, y), y)
++ifneq ($(call gcc-min-version, 70100),y)
+ IS_OLD_GCC = 1
+ endif
+ endif
+diff --git a/drivers/gpu/drm/amd/display/dc/dcn20/Makefile b/drivers/gpu/drm/amd/display/dc/dcn20/Makefile
+index 54db9af8437d..ce9ab2214a43 100644
+--- a/drivers/gpu/drm/amd/display/dc/dcn20/Makefile
++++ b/drivers/gpu/drm/amd/display/dc/dcn20/Makefile
+@@ -18,7 +18,7 @@ CFLAGS_$(AMDDALPATH)/dc/dcn20/dcn20_resource.o := -mhard-float -maltivec
+ endif
+ 
+ ifdef CONFIG_CC_IS_GCC
+-ifeq ($(call cc-ifversion, -lt, 0701, y), y)
++ifneq ($(call gcc-min-version, 70100),y)
+ IS_OLD_GCC = 1
+ endif
+ endif
+diff --git a/drivers/gpu/drm/amd/display/dc/dcn21/Makefile b/drivers/gpu/drm/amd/display/dc/dcn21/Makefile
+index 90eefd2c3ecf..a85877767d3c 100644
+--- a/drivers/gpu/drm/amd/display/dc/dcn21/Makefile
++++ b/drivers/gpu/drm/amd/display/dc/dcn21/Makefile
+@@ -14,7 +14,7 @@ CFLAGS_$(AMDDALPATH)/dc/dcn21/dcn21_resource.o := -mhard-float -maltivec
+ endif
+ 
+ ifdef CONFIG_CC_IS_GCC
+-ifeq ($(call cc-ifversion, -lt, 0701, y), y)
++ifneq ($(call gcc-min-version, 70100),y)
+ IS_OLD_GCC = 1
+ endif
+ endif
+diff --git a/drivers/gpu/drm/amd/display/dc/dcn30/Makefile b/drivers/gpu/drm/amd/display/dc/dcn30/Makefile
+index bd2a068f9863..a71c0f298380 100644
+--- a/drivers/gpu/drm/amd/display/dc/dcn30/Makefile
++++ b/drivers/gpu/drm/amd/display/dc/dcn30/Makefile
+@@ -47,7 +47,7 @@ CFLAGS_REMOVE_$(AMDDALPATH)/dc/dcn30/dcn30_optc.o := -mgeneral-regs-only
+ endif
+ 
+ ifdef CONFIG_CC_IS_GCC
+-ifeq ($(call cc-ifversion, -lt, 0701, y), y)
++ifneq ($(call gcc-min-version, 70100),y)
+ IS_OLD_GCC = 1
+ endif
+ endif
+diff --git a/drivers/gpu/drm/amd/display/dc/dml/Makefile b/drivers/gpu/drm/amd/display/dc/dml/Makefile
+index ce8251151b45..1ee735af6ddd 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml/Makefile
++++ b/drivers/gpu/drm/amd/display/dc/dml/Makefile
+@@ -35,7 +35,7 @@ dml_ccflags := -mhard-float -maltivec
+ endif
+ 
+ ifdef CONFIG_CC_IS_GCC
+-ifeq ($(call cc-ifversion, -lt, 0701, y), y)
++ifneq ($(call gcc-min-version, 70100),y)
+ IS_OLD_GCC = 1
+ endif
+ endif
+diff --git a/drivers/gpu/drm/amd/display/dc/dsc/Makefile b/drivers/gpu/drm/amd/display/dc/dsc/Makefile
+index ea29cf95d470..6207809f293b 100644
+--- a/drivers/gpu/drm/amd/display/dc/dsc/Makefile
++++ b/drivers/gpu/drm/amd/display/dc/dsc/Makefile
+@@ -11,7 +11,7 @@ dsc_ccflags := -mhard-float -maltivec
+ endif
+ 
+ ifdef CONFIG_CC_IS_GCC
+-ifeq ($(call cc-ifversion, -lt, 0701, y), y)
++ifneq ($(call gcc-min-version, 70100),y)
+ IS_OLD_GCC = 1
+ endif
+ endif
+diff --git a/scripts/Kbuild.include b/scripts/Kbuild.include
+index 3e5c8d09d82c..ccd7b09a379d 100644
+--- a/scripts/Kbuild.include
++++ b/scripts/Kbuild.include
+@@ -133,9 +133,13 @@ cc-option-yn = $(call try-run,\
+ cc-disable-warning = $(call try-run,\
+ 	$(CC) -Werror $(KBUILD_CPPFLAGS) $(KBUILD_CFLAGS) -W$(strip $(1)) -c -x c /dev/null -o "$$TMP",-Wno-$(strip $(1)))
+ 
+-# cc-ifversion
+-# Usage:  EXTRA_CFLAGS += $(call cc-ifversion, -lt, 0402, -O1)
+-cc-ifversion = $(shell [ $(CONFIG_GCC_VERSION)0 $(1) $(2)000 ] && echo $(3) || echo $(4))
++# gcc-min-version
++# Usage: cflags-$(call gcc-min-version, 70100) += -foo
++gcc-min-version = $(shell [ $(CONFIG_GCC_VERSION)0 -ge $(1)0 ] && echo y)
++
++# clang-min-version
++# Usage: cflags-$(call clang-min-version, 110000) += -foo
++clang-min-version = $(shell [ $(CONFIG_CLANG_VERSION)0 -ge $(1)0 ] && echo y)
+ 
+ # ld-option
+ # Usage: KBUILD_LDFLAGS += $(call ld-option, -X, -Y)
+-- 
+2.51.2
+
 
