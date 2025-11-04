@@ -1,123 +1,179 @@
-Return-Path: <stable+bounces-192411-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192412-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77D7CC31996
-	for <lists+stable@lfdr.de>; Tue, 04 Nov 2025 15:47:29 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DA55C31A1F
+	for <lists+stable@lfdr.de>; Tue, 04 Nov 2025 15:53:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 8A50A349469
-	for <lists+stable@lfdr.de>; Tue,  4 Nov 2025 14:47:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AA391189947C
+	for <lists+stable@lfdr.de>; Tue,  4 Nov 2025 14:49:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECE0233033F;
-	Tue,  4 Nov 2025 14:46:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 463CF2F6189;
+	Tue,  4 Nov 2025 14:49:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BR6iMq/o"
+	dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b="sLxtTSkC"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A12E33030C;
-	Tue,  4 Nov 2025 14:46:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40A9D24679F
+	for <stable@vger.kernel.org>; Tue,  4 Nov 2025 14:49:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762267614; cv=none; b=dLuhmDqYwYEt0ni9OBrfFmwUCqXuHr0B7xIbaISvmYAckvxfvs2wg2//AHjT+hdlNjO/cGI8x/Sha7aTk7ZbYEarmkfqc59sWScyCjEgwG823ivCDOM/bQeqWcFFp4yj9LMWTJ6MYwaFY7zCoCeIzUWlfn+b2C3dUSR2kDP1Ktc=
+	t=1762267763; cv=none; b=PnbBwhvwm+bnwvBfV/ydDZBhx3WYE735ChLXC+AHmrVEd7Q2k8JRJkzCKgIvMgeiHNwGiELllfRAZipooOavUYAJA1usrBeRCrPU63ahC2mJ+vYvhDVNFPJlaC8nPnrysusmRjK0TNn90+wdJSS+vzWxcFlvkby7NoVrtJF2cz8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762267614; c=relaxed/simple;
-	bh=p5hPIDaRZCzt92kFfvg6R3vu6oORTHx9zKqVYsgt6JI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JCfXGKVBPE5WvG6+pBCmxM3/PllHuUDJkPd3EpeXa1Z7GL59SpoeQb56CQJD+BPghjEsFHMLbzaN7Raaf2hQTtu77ukg0gggWpxLW6ssC4wvLNYf1jdakH18gTHRijhiQDj1C+PaNnP5kJsOEzl3WYWjPJtonA+ULppBLrHTLQQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BR6iMq/o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB10EC4CEF7;
-	Tue,  4 Nov 2025 14:46:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762267614;
-	bh=p5hPIDaRZCzt92kFfvg6R3vu6oORTHx9zKqVYsgt6JI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=BR6iMq/oPyikLtPw6az2lrms+Ge4xlCbIe4fTtTyY4tHC2n45aUuCaBWJvcHF/A2p
-	 KG+L13PEc2RsLTe2Mk23kete59d+Q1weoVYh9oZ41Lcj9tYM2y+3AgeUK0+VINu39M
-	 +JpI0LM2k4BtTsZKgmnBxnJEAXybPeg27TbBNKLF9yugOPhB0NVxSo6HVchUeXfVAF
-	 qRNmKshZFjj0DiPJkSKfZkszZJmfsbrYupU4l4zs45YfAOANDcda1F7Ts/8j3ypxQY
-	 +7Cw7rjtPK5Q40NkqYq8PGtP20CMcQreJOx9l0FiifHdkN4FehAdO4R06gT/JgzvpB
-	 p/l0PIqbrDxMw==
-Date: Tue, 4 Nov 2025 09:46:51 -0500
-From: Sasha Levin <sashal@kernel.org>
-To: "Huang, Kai" <kai.huang@intel.com>
-Cc: "patches@lists.linux.dev" <patches@lists.linux.dev>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>,
-	"alexandre.f.demers@gmail.com" <alexandre.f.demers@gmail.com>,
-	"Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
-	"mingo@kernel.org" <mingo@kernel.org>,
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
-	"binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>,
-	"kas@kernel.org" <kas@kernel.org>, "bp@alien8.de" <bp@alien8.de>,
-	"coxu@redhat.com" <coxu@redhat.com>,
-	"Chen, Farrah" <farrah.chen@intel.com>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	"pbonzini@redhat.com" <pbonzini@redhat.com>,
-	"dwmw@amazon.co.uk" <dwmw@amazon.co.uk>,
-	"x86@kernel.org" <x86@kernel.org>,
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-	"peterz@infradead.org" <peterz@infradead.org>
-Subject: Re: [PATCH AUTOSEL 6.17] x86/kexec: Disable kexec/kdump on platforms
- with TDX partial write erratum
-Message-ID: <aQoR27GYadapWwhy@laps>
-References: <20251025160905.3857885-1-sashal@kernel.org>
- <20251025160905.3857885-288-sashal@kernel.org>
- <834a33d34c5c3bf659c94cefc374b0b7a52ee1a6.camel@intel.com>
- <e15710b10ff4a5ddb62b4c2124700b1ab1c6763d.camel@intel.com>
+	s=arc-20240116; t=1762267763; c=relaxed/simple;
+	bh=7bvapD1uqsnNYi1Q3JJRh8kAisoWEx0DwRXG2a9BbQQ=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=pm7F09FD9YY2fGBqL7eRIEFasZyv/z5C2hTCFKCSMgnAVQxhYklINENPr5C6SK2+/Qy0yGRF71s7E22cNR7lrLyBmdJUyGrkGgyt24KSYLlpevUFYFlw0AcRnUXrDrEHlLNdYJVTf4ipvGRvCDW0qjy4hahx8X1JcPGR2Jj+5iA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me; spf=pass smtp.mailfrom=pm.me; dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b=sLxtTSkC; arc=none smtp.client-ip=185.70.43.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pm.me
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
+	s=protonmail3; t=1762267753; x=1762526953;
+	bh=xfqs8NGDzi/GLs93yh/ZnyHEZsNbd7BFWZBeJoDbuBw=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=sLxtTSkCbLJUhXOFbUAzkkZTsRM3HZRQToyIFBaRu0PGKyO5fKHZRIxLblCnA8aYq
+	 1xoYfY5qfeaDniIW4yU04b5OalIS28PDRxj+azfnN/T1tuuyxwhtvNxmTqubXlVhCP
+	 5Wmk14Q2eC7LgmtAM6XkOP6t9k8j5zagrcZeoLWy3Eae2EIy/LmGPcSjjXKunZHQeT
+	 6DVds+bC8KILEg+9m7m6wV+oKy6hyY+wCp12XaOtqDKrgK/+buG6nEwcCt2Jf1PjPB
+	 p+2mjdRnk6A4YqsQfKo4GSIhwGBNCXB6TR/nuFpapEoYpzSN1o6Ve3JeLMfBT0hAo7
+	 YpBYBfB6AI79A==
+Date: Tue, 04 Nov 2025 14:49:08 +0000
+To: Andrey Ryabinin <ryabinin.a.a@gmail.com>, Alexander Potapenko <glider@google.com>, Andrey Konovalov <andreyknvl@gmail.com>, Dmitry Vyukov <dvyukov@google.com>, Vincenzo Frascino <vincenzo.frascino@arm.com>, Andrew Morton <akpm@linux-foundation.org>, Uladzislau Rezki <urezki@gmail.com>, Marco Elver <elver@google.com>
+From: Maciej Wieczor-Retman <m.wieczorretman@pm.me>
+Cc: m.wieczorretman@pm.me, stable@vger.kernel.org, Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>, Baoquan He <bhe@redhat.com>, kasan-dev@googlegroups.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: [PATCH v1 1/2] kasan: Unpoison pcpu chunks with base address tag
+Message-ID: <821677dd824d003cc5b7a77891db4723e23518ea.1762267022.git.m.wieczorretman@pm.me>
+In-Reply-To: <cover.1762267022.git.m.wieczorretman@pm.me>
+References: <cover.1762267022.git.m.wieczorretman@pm.me>
+Feedback-ID: 164464600:user:proton
+X-Pm-Message-ID: fd6efc8602e9b03ae9b37c660c7f86c9a4b17086
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <e15710b10ff4a5ddb62b4c2124700b1ab1c6763d.camel@intel.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Nov 03, 2025 at 09:26:38AM +0000, Huang, Kai wrote:
->On Sun, 2025-10-26 at 22:24 +0000, Huang, Kai wrote:
->> On Sat, 2025-10-25 at 11:58 -0400, Sasha Levin wrote:
->> > From: Kai Huang <kai.huang@intel.com>
->> >
->> > [ Upstream commit b18651f70ce0e45d52b9e66d9065b831b3f30784 ]
->> >
->> >
->>
->> [...]
->>
->> > ---
->> >
->> > LLM Generated explanations, may be completely bogus:
->> >
->> > YES
->> >
->> > **Why This Fix Matters**
->> > - Prevents machine checks during kexec/kdump on early TDX-capable
->> >   platforms with the “partial write to TDX private memory” erratum.
->> >   Without this, the new kernel may hit an MCE after the old kernel
->> >   jumps, which is a hard failure affecting users.
->>
->> Hi,
->>
->> I don't think we should backport this for 6.17 stable.  Kexec/kdump and
->> TDX are mutually exclusive in Kconfig in 6.17, therefore it's not possible
->> for TDX to impact kexec/kdump.
->>
->> This patch is part of the series which enables kexec/kdump together with
->> TDX in Kconfig (which landed in 6.18) and should not be backported alone.
->
->Hi Sasha,
->
->Just a reminder that this patch should be dropped from stable kernel too
->(just in case you missed, since I didn't get any further notice).
+From: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
 
-Now dropped, thanks!
+A KASAN tag mismatch, possibly causing a kernel panic, can be observed
+on systems with a tag-based KASAN enabled and with multiple NUMA nodes.
+It was reported on arm64 and reproduced on x86. It can be explained in
+the following points:
 
--- 
-Thanks,
-Sasha
+=091. There can be more than one virtual memory chunk.
+=092. Chunk's base address has a tag.
+=093. The base address points at the first chunk and thus inherits
+=09   the tag of the first chunk.
+=094. The subsequent chunks will be accessed with the tag from the
+=09   first chunk.
+=095. Thus, the subsequent chunks need to have their tag set to
+=09   match that of the first chunk.
+
+Refactor code by moving it into a helper in preparation for the actual
+fix.
+
+Fixes: 1d96320f8d53 ("kasan, vmalloc: add vmalloc tagging for SW_TAGS")
+Cc: <stable@vger.kernel.org> # 6.1+
+Signed-off-by: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
+Tested-by: Baoquan He <bhe@redhat.com>
+---
+Changelog v1 (after splitting of from the KASAN series):
+- Rewrite first paragraph of the patch message to point at the user
+  impact of the issue.
+- Move helper to common.c so it can be compiled in all KASAN modes.
+
+ include/linux/kasan.h | 10 ++++++++++
+ mm/kasan/common.c     | 11 +++++++++++
+ mm/vmalloc.c          |  4 +---
+ 3 files changed, 22 insertions(+), 3 deletions(-)
+
+diff --git a/include/linux/kasan.h b/include/linux/kasan.h
+index d12e1a5f5a9a..b00849ea8ffd 100644
+--- a/include/linux/kasan.h
++++ b/include/linux/kasan.h
+@@ -614,6 +614,13 @@ static __always_inline void kasan_poison_vmalloc(const=
+ void *start,
+ =09=09__kasan_poison_vmalloc(start, size);
+ }
+=20
++void __kasan_unpoison_vmap_areas(struct vm_struct **vms, int nr_vms);
++static __always_inline void kasan_unpoison_vmap_areas(struct vm_struct **v=
+ms, int nr_vms)
++{
++=09if (kasan_enabled())
++=09=09__kasan_unpoison_vmap_areas(vms, nr_vms);
++}
++
+ #else /* CONFIG_KASAN_VMALLOC */
+=20
+ static inline void kasan_populate_early_vm_area_shadow(void *start,
+@@ -638,6 +645,9 @@ static inline void *kasan_unpoison_vmalloc(const void *=
+start,
+ static inline void kasan_poison_vmalloc(const void *start, unsigned long s=
+ize)
+ { }
+=20
++static inline void kasan_unpoison_vmap_areas(struct vm_struct **vms, int n=
+r_vms)
++{ }
++
+ #endif /* CONFIG_KASAN_VMALLOC */
+=20
+ #if (defined(CONFIG_KASAN_GENERIC) || defined(CONFIG_KASAN_SW_TAGS)) && \
+diff --git a/mm/kasan/common.c b/mm/kasan/common.c
+index d4c14359feaf..c63544a98c24 100644
+--- a/mm/kasan/common.c
++++ b/mm/kasan/common.c
+@@ -28,6 +28,7 @@
+ #include <linux/string.h>
+ #include <linux/types.h>
+ #include <linux/bug.h>
++#include <linux/vmalloc.h>
+=20
+ #include "kasan.h"
+ #include "../slab.h"
+@@ -582,3 +583,13 @@ bool __kasan_check_byte(const void *address, unsigned =
+long ip)
+ =09}
+ =09return true;
+ }
++
++void __kasan_unpoison_vmap_areas(struct vm_struct **vms, int nr_vms)
++{
++=09int area;
++
++=09for (area =3D 0 ; area < nr_vms ; area++) {
++=09=09kasan_poison(vms[area]->addr, vms[area]->size,
++=09=09=09     arch_kasan_get_tag(vms[area]->addr), false);
++=09}
++}
+diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+index 798b2ed21e46..934c8bfbcebf 100644
+--- a/mm/vmalloc.c
++++ b/mm/vmalloc.c
+@@ -4870,9 +4870,7 @@ struct vm_struct **pcpu_get_vm_areas(const unsigned l=
+ong *offsets,
+ =09 * With hardware tag-based KASAN, marking is skipped for
+ =09 * non-VM_ALLOC mappings, see __kasan_unpoison_vmalloc().
+ =09 */
+-=09for (area =3D 0; area < nr_vms; area++)
+-=09=09vms[area]->addr =3D kasan_unpoison_vmalloc(vms[area]->addr,
+-=09=09=09=09vms[area]->size, KASAN_VMALLOC_PROT_NORMAL);
++=09kasan_unpoison_vmap_areas(vms, nr_vms);
+=20
+ =09kfree(vas);
+ =09return vms;
+--=20
+2.51.0
+
+
 
