@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-192419-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192420-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBECFC31E5A
-	for <lists+stable@lfdr.de>; Tue, 04 Nov 2025 16:42:36 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE82CC31F59
+	for <lists+stable@lfdr.de>; Tue, 04 Nov 2025 17:03:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 724E64E0EE7
-	for <lists+stable@lfdr.de>; Tue,  4 Nov 2025 15:42:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 89F583A7B10
+	for <lists+stable@lfdr.de>; Tue,  4 Nov 2025 15:57:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F320632E6AD;
-	Tue,  4 Nov 2025 15:42:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A394727A92D;
+	Tue,  4 Nov 2025 15:57:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oocAw9TR"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lhIYInPy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4A352D29C7;
-	Tue,  4 Nov 2025 15:42:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54A8826B75B;
+	Tue,  4 Nov 2025 15:57:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762270930; cv=none; b=li6bvxkaHGoOwY9DVQwGybr5qKjkcRjh3SruDcLccsaJLdn7ANkkrqfvZ2lmrkEp7hXU/+OyVasBVPH6MazCrPsxOZTR7Slnmnpp/tA7aLEBMtQdxK9EHmyVY6Snv08oDMrMMyRGktkDgW2txDDNRT+LonGS6lIzS+U1nvUjTpE=
+	t=1762271873; cv=none; b=U6+nKPpHBUnBaN0Hl2ckpir2f9vtBvMp6puoBSbnW9J5GuYyJHbLDf2HdHFrGJs84JXT3t45HXj2ZhE0krs1Z7IVxa3ZLs+PD5jJtcAs0Zf5Nv2L64HqdEb14j3mjbUrOGIED9eL0bPjvB7o5M2fN/NSYHe4sbKAev9504W1XEw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762270930; c=relaxed/simple;
-	bh=zn1m5Yrbru0NFZYJtkCvLKEy/K3uEFrJ9Xpgegcq+/U=;
+	s=arc-20240116; t=1762271873; c=relaxed/simple;
+	bh=etPxiZ7rjP8VtgOg/n1V87qRxchqdEoQZ9KyI3fRorU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HI2k6K+ZopNZbXyln+tdjR7voVrPd+y14KYuVxNWOzwWRz4TLxYBW3hQ5THgo3f2J70uB/IvGDLLqkWP/lkRiHJ/kkhlQGQJcIRO7A5WmxxtX3oxhkCWCl/Kq+HwThbRFZ151fvnC8oB9Qtyw61yrsJ+fE6rHdcAbU8koWxSxbc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oocAw9TR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67AAFC4CEF7;
-	Tue,  4 Nov 2025 15:42:10 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=TUDpu0mv50tjiOPsi08K0dqR1+t0ogIVevrc4tSYhdpQ8JJPlINJp1f7ovJ/d/RAMllVzpx4P1bDdlmp0s81CmGQqGRJ8Uhv17rcSP/MLRwMW3qC+YSph2yCluHk6GxVu6LhQfPfLtNSO2QKfV17Cr9oJkkBsE1uip2OJkMn2ck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lhIYInPy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB013C4CEF7;
+	Tue,  4 Nov 2025 15:57:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762270930;
-	bh=zn1m5Yrbru0NFZYJtkCvLKEy/K3uEFrJ9Xpgegcq+/U=;
+	s=k20201202; t=1762271872;
+	bh=etPxiZ7rjP8VtgOg/n1V87qRxchqdEoQZ9KyI3fRorU=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=oocAw9TRzbKZDGx0kb70RwQtL6Cv5s5WstpdVwwAxl8sGO1daWPCUwBylVcnrmssZ
-	 a9neZiXhrdkGWZKbWBgN3nGMQtKI7w1qPnuD5hu6I2a2C0OOz2fCHcATvHspzu+uLt
-	 XaQo0TYXFkHWYlahZKXrJKnjuyyBRE8px0CRl68UM3qnbsUEoX8iqjr1rRra9Xw0i6
-	 KBEJ7nL702821ndOZRFYjXE8li5Syc5TdZgYo+A8BAwJC/sMKYak8mVQFI/vtf0Tlz
-	 tZc21Roa9XpYz54cqfBEPpTWeaSucVf9bcQU5WGwblGAEzSPsnGFyPLtPgg103bhV4
-	 aa7bOSfo+KA6g==
-Date: Tue, 4 Nov 2025 07:42:09 -0800
+	b=lhIYInPyIxnNY1EIllIQhhpfP0DP2/EeT3oIkIX3I5K0jheAHc3+3C16W4p9GJAB3
+	 qyJM5t9DGGOR+a1d2pRYrYHVBiHtZQXvRjN4ka+q5H5I8XIcY2iBsEILKp+3dERtxH
+	 P+xsYopX8bWUApscI9kNQKLnBfb1PO/vLa3MN4DRtMFXDIAdZXGYsz/a7dosKn4puZ
+	 G3dJQHVa41HF+WK8KZDHNNW6KAldY7z6faIj6DpnHl0RaYyUe6idw2hGOYupkrm+pK
+	 NgAhPZv/mp8b3HUD/zT1TyxYt5KN5Drgy9lju8+eQ9Jid6aXAt3izazhFpqk47PmZ3
+	 aMvhIN/ZvaIag==
+Date: Tue, 4 Nov 2025 07:57:52 -0800
 From: "Darrick J. Wong" <djwong@kernel.org>
 To: Yongpeng Yang <yangyongpeng.storage@gmail.com>
 Cc: Namjae Jeon <linkinjeon@kernel.org>,
@@ -57,61 +57,73 @@ Cc: Namjae Jeon <linkinjeon@kernel.org>,
 	linux-fsdevel@vger.kernel.org, linux-block@vger.kernel.org,
 	stable@vger.kernel.org, Matthew Wilcox <willy@infradead.org>,
 	Yongpeng Yang <yangyongpeng@xiaomi.com>
-Subject: Re: [PATCH v4 4/5] xfs: check the return value of sb_min_blocksize()
- in xfs_fs_fill_super
-Message-ID: <20251104154209.GA196362@frogsfrogsfrogs>
+Subject: Re: [PATCH v4 5/5] block: add __must_check attribute to
+ sb_min_blocksize()
+Message-ID: <20251104155752.GB196362@frogsfrogsfrogs>
 References: <20251103163617.151045-2-yangyongpeng.storage@gmail.com>
- <20251103163617.151045-5-yangyongpeng.storage@gmail.com>
+ <20251103163617.151045-6-yangyongpeng.storage@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20251103163617.151045-5-yangyongpeng.storage@gmail.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20251103163617.151045-6-yangyongpeng.storage@gmail.com>
 
-On Tue, Nov 04, 2025 at 12:36:17AM +0800, Yongpeng Yang wrote:
+On Tue, Nov 04, 2025 at 12:36:18AM +0800, Yongpeng Yang wrote:
 > From: Yongpeng Yang <yangyongpeng@xiaomi.com>
 > 
-> sb_min_blocksize() may return 0. Check its return value to avoid the
-> filesystem super block when sb->s_blocksize is 0.
+> When sb_min_blocksize() returns 0 and the return value is not checked,
+> it may lead to a situation where sb->s_blocksize is 0 when
+> accessing the filesystem super block. After commit a64e5a596067bd
+> ("bdev: add back PAGE_SIZE block size validation for
+> sb_set_blocksize()"), this becomes more likely to happen when the
+> block device’s logical_block_size is larger than PAGE_SIZE and the
+> filesystem is unformatted. Add the __must_check attribute to ensure
+> callers always check the return value.
 > 
-> Cc: <stable@vger.kernel.org> # v6.15
-> Fixes: a64e5a596067bd ("bdev: add back PAGE_SIZE block size validation
-> for sb_set_blocksize()")
-
-Odd line wrapping, does this actually work with $stablemaintainer
-scripts?
-
+> Suggested-by: Matthew Wilcox <willy@infradead.org>
 > Signed-off-by: Yongpeng Yang <yangyongpeng@xiaomi.com>
 
-Otherwise looks fine to me
+Looks good to me,
 Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
 
 --D
 
 > ---
->  fs/xfs/xfs_super.c | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
+>  block/bdev.c       | 2 +-
+>  include/linux/fs.h | 2 +-
+>  2 files changed, 2 insertions(+), 2 deletions(-)
 > 
-> diff --git a/fs/xfs/xfs_super.c b/fs/xfs/xfs_super.c
-> index 1067ebb3b001..bc71aa9dcee8 100644
-> --- a/fs/xfs/xfs_super.c
-> +++ b/fs/xfs/xfs_super.c
-> @@ -1693,7 +1693,10 @@ xfs_fs_fill_super(
->  	if (error)
->  		return error;
+> diff --git a/block/bdev.c b/block/bdev.c
+> index 810707cca970..638f0cd458ae 100644
+> --- a/block/bdev.c
+> +++ b/block/bdev.c
+> @@ -231,7 +231,7 @@ int sb_set_blocksize(struct super_block *sb, int size)
 >  
-> -	sb_min_blocksize(sb, BBSIZE);
-> +	if (!sb_min_blocksize(sb, BBSIZE)) {
-> +		xfs_err(mp, "unable to set blocksize");
-> +		return -EINVAL;
-> +	}
->  	sb->s_xattr = xfs_xattr_handlers;
->  	sb->s_export_op = &xfs_export_operations;
->  #ifdef CONFIG_XFS_QUOTA
+>  EXPORT_SYMBOL(sb_set_blocksize);
+>  
+> -int sb_min_blocksize(struct super_block *sb, int size)
+> +int __must_check sb_min_blocksize(struct super_block *sb, int size)
+>  {
+>  	int minsize = bdev_logical_block_size(sb->s_bdev);
+>  	if (size < minsize)
+> diff --git a/include/linux/fs.h b/include/linux/fs.h
+> index c895146c1444..26d4ca0f859a 100644
+> --- a/include/linux/fs.h
+> +++ b/include/linux/fs.h
+> @@ -3424,7 +3424,7 @@ extern void inode_sb_list_add(struct inode *inode);
+>  extern void inode_add_lru(struct inode *inode);
+>  
+>  extern int sb_set_blocksize(struct super_block *, int);
+> -extern int sb_min_blocksize(struct super_block *, int);
+> +extern int __must_check sb_min_blocksize(struct super_block *, int);
+>  
+>  int generic_file_mmap(struct file *, struct vm_area_struct *);
+>  int generic_file_mmap_prepare(struct vm_area_desc *desc);
 > -- 
 > 2.43.0
 > 
