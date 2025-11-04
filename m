@@ -1,77 +1,96 @@
-Return-Path: <stable+bounces-192343-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192344-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 629F8C3044A
-	for <lists+stable@lfdr.de>; Tue, 04 Nov 2025 10:29:59 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 418CBC3046B
+	for <lists+stable@lfdr.de>; Tue, 04 Nov 2025 10:33:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 877A74EC55D
-	for <lists+stable@lfdr.de>; Tue,  4 Nov 2025 09:25:44 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 68A6B4F7642
+	for <lists+stable@lfdr.de>; Tue,  4 Nov 2025 09:29:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C81A91DED5C;
-	Tue,  4 Nov 2025 09:25:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8911C23B61B;
+	Tue,  4 Nov 2025 09:29:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="mhKVgWde"
+	dkim=pass (2048-bit key) header.d=shopee.com header.i=@shopee.com header.b="b9RhNZVm"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB24C2116F4
-	for <stable@vger.kernel.org>; Tue,  4 Nov 2025 09:25:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9E2F23EA81
+	for <stable@vger.kernel.org>; Tue,  4 Nov 2025 09:29:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762248341; cv=none; b=aOAjj4yZpoFnLOg/bkaEIiuwYW02i/07AHEa7a0LyuRBiDOsbcY0VKMzxMGtqweZ6zBXLQiGgSWzVbcJLo0YVwUgFlWhU2imFe5bwS5aE9rIw0/Xa9q46/T+vyc7zahh+Q3Uoj4VyFTiIRv8MDrw3YfJ7tF0WO6pV0V+9gzeL3A=
+	t=1762248545; cv=none; b=FU05QwDoHMHfYzpBjvlmP7xntz7hMo+BZKUA1euXgf9lomPc1yArJrMKpqwBHqy7/bQuG9hln4MfeKIJUb/PWP/8uli/V+KuZmGmwXS/3tEr1oqvUj/JLI54MIPHWNyAJ7VdmAEgfZ2/ea3TBUgEOEA/raNZ8wci7cwjeM8ZqO8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762248341; c=relaxed/simple;
-	bh=iOdVHPf/377/FhinO7miMt0s/AvZdO5fUpCpLMrBQoM=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=WNEUtdACo5rUklbT8jhhnsMSgmOBUrKQKo//pO8/RvA4Ws8mPduru7qQnyv/i+k/uWbpO479BhZIgvzcWCf3PE013TQUbXhL/TnFR/KJCZYYiOLxvL/L9Zi0uaoubF1eN1Mi+rIVcVQysCHpT31mDbDXWMeU0lSqlPymw8JcOKA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=qualcomm.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=mhKVgWde; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qualcomm.com
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5A48giPl1545918
-	for <stable@vger.kernel.org>; Tue, 4 Nov 2025 09:25:39 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=qcppdkim1; bh=0BAfdC7hzP5
-	ehVu09EgzZpTPlj4KYvu9DoxbnvIYnpg=; b=mhKVgWdei/aLBIe6rs8DqIMQSSl
-	tbaIfmoIF5dfs8bcBhB5QMhDB4+yK5a2LeIhxc0qnID19lPWSy9ojAsjDPWQ5kKF
-	qmVkPhFEL/BdpXIHqaCSl+cI6nHQYWHsogWZpMXGTtGsyaLgXlkwinmXM1i1QFuy
-	1HfW6i41VTlBFkUAep6GcaQvV5jyRU4gcCTH6ju2Yq/j8JUFtFt3rS2dAOydesdQ
-	O5qVDfvOL7YGzV0v24WE4N8mKRWNmjWA5sM958EZaOvywCMjPH7+Tc0KcZRo9ril
-	zQFRcfAwtxROGBqLkEIpyIz5spEWBcSGRK5c4uQKm2+lZNMXPkMMp5eReZw==
-Received: from aptaippmta01.qualcomm.com (tpe-colo-wan-fw-bordernet.qualcomm.com [103.229.16.4])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4a6u8b3c9w-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <stable@vger.kernel.org>; Tue, 04 Nov 2025 09:25:38 +0000 (GMT)
-Received: from pps.filterd (APTAIPPMTA01.qualcomm.com [127.0.0.1])
-	by APTAIPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTP id 5A49PYjb001286
-	for <stable@vger.kernel.org>; Tue, 4 Nov 2025 09:25:34 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by APTAIPPMTA01.qualcomm.com (PPS) with ESMTPS id 4a5b9mqux8-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <stable@vger.kernel.org>; Tue, 04 Nov 2025 09:25:34 +0000
-Received: from APTAIPPMTA01.qualcomm.com (APTAIPPMTA01.qualcomm.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 5A49PYGf001278
-	for <stable@vger.kernel.org>; Tue, 4 Nov 2025 09:25:34 GMT
-Received: from bt-iot-sh02-lnx.ap.qualcomm.com (bt-iot-sh02-lnx.qualcomm.com [10.253.144.65])
-	by APTAIPPMTA01.qualcomm.com (PPS) with ESMTPS id 5A49PYb8001265
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 04 Nov 2025 09:25:34 +0000
-Received: by bt-iot-sh02-lnx.ap.qualcomm.com (Postfix, from userid 4467449)
-	id 66CC222D52; Tue,  4 Nov 2025 17:25:33 +0800 (CST)
-From: Shuai Zhang <quic_shuaz@quicinc.com>
-To: quic_shuaz@quicinc.com
-Cc: stable@vger.kernel.org
-Subject: [PATCH v3 1/1] Bluetooth: btusb: add default nvm file
-Date: Tue,  4 Nov 2025 17:25:31 +0800
-Message-Id: <20251104092531.2323503-2-quic_shuaz@quicinc.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20251104092531.2323503-1-quic_shuaz@quicinc.com>
-References: <20251104092531.2323503-1-quic_shuaz@quicinc.com>
+	s=arc-20240116; t=1762248545; c=relaxed/simple;
+	bh=9NZz8+0HjGiYkq9QMHNT4BbNht0YbASLljRV/7ufeE8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rx6k2eNtu9EtTNUR4cx9W0u32gCdfumE9basEXdjrgdYpVbK8HrpiB9IggGSfGH/wrLrZQhmCxsmn0Axa3ik0nk107JPOIAdtxvEiyWqkfGtMQmZ/Z4hqGikEZ+H4iJolA7rTtAyomKDY/kVopMH2rT2pGd8Czp4XZ2Gpa9vtaE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=shopee.com; spf=pass smtp.mailfrom=shopee.com; dkim=pass (2048-bit key) header.d=shopee.com header.i=@shopee.com header.b=b9RhNZVm; arc=none smtp.client-ip=209.85.214.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=shopee.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shopee.com
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-295247a814bso54768025ad.0
+        for <stable@vger.kernel.org>; Tue, 04 Nov 2025 01:29:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=shopee.com; s=shopee.com; t=1762248543; x=1762853343; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=2Hk3PYE38Zzgv3m8VQl8wYmuHsU1MqZfGLEy/1nq+zs=;
+        b=b9RhNZVmpTFrA5vL/Nmr3PaZ2aHcswxQaeLJqxgNmGUmuJaspv/fofl9LSjBKASwlx
+         DOuzg7pVy6R+VT8QfWn5s/KlaGoTD5zI0D4K1YO1oB48xT4JVP3CXIYwM03n2pPff+Ap
+         781IeBnfJJ2hB8YVXrB7jKZX1snSVKLHrjbZP0RBED5gnBygBENQWCMCVas68ZNPZtxj
+         Wa0sm3vPr5pb+UHlggw8k75h2f7jfqgKx5/AOXj3XUu0gk8xhqHutsSC/9ihNwhjYnE2
+         mxsMxveRZX1Lvp4zUTSrbgbJJLk6JFO7b5e6/W26gsVZUuESlGt4cnmXYubdkSuGgszh
+         wIgg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762248543; x=1762853343;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=2Hk3PYE38Zzgv3m8VQl8wYmuHsU1MqZfGLEy/1nq+zs=;
+        b=hbRFnHvuqcoe0vRv95t9j0NYCZvQhpMoyqp0ESag5Y+CJkgE4j1Qiavl3+n/IBEknY
+         LSuCi1DYy2r9FmNf7NuqCDkr8jx5xw+5hYFWSzNNN30JLHwoPvi5FO6B8offnDC302OQ
+         WfoKMVUJsphiy0LghQe8Y8mlhocTb3DJZhj6z32XYkmoHTKdULhMAwEzcc12a/jG8pt+
+         YOU2HZZxQi8pFI/YrXVi1WxwfN+9RAof+N0MC0Y7Gpi3XPtsQ5Ki8YMyYQs7MvySZIs6
+         i4/4iFHHIHjB9rLHnhS6sQeVXM7iGPrBwaq+BqIg1dNKwSoQDGbKpdfnLszHpcK+C9Ci
+         0O/w==
+X-Gm-Message-State: AOJu0YysNmiESSD9drNzeUmASE3f1i6bCWtQEVJzUvYL4hX+xLrjz6mS
+	0Nf4FyjFKTkVPREsv+nG6RFobflXpW2oeNEpNrO+vQRAp+JROn3vKl/ky/qxpP1UYpchZnjqpjZ
+	bzTtZNgZtS5Qr7N6LNB7Ht51p0PMZHMlq/oNFmUolp2K4sx/ZbDvtucA2bpre7FDSAqAJQTVIVu
+	aMX8iWWHBW39UXyw1w64y9Xox3A66dW26+TW7nH3bXlrM9J8tHrw==
+X-Gm-Gg: ASbGncuRs8ywrhP+coH0I6lF1uDj8UDr93wIk9UTcIzaXMLrsxObyAXKye4d9GWs4Q1
+	8fWDWrOWYW0SnMX84n82fTPXHtLrUWDPCLAl5j23I4NB/lVGBT7GEiUo0j1Q4iKbSsre3ivmgfn
+	9n6S6d7rWp3mGFXV5Zhltr2XOFCqIR8+YYsset9e76q0X0hCpLJCjqx3etSbBGgk1fTZdfKJzhw
+	pB0wBqC04Ym2ViFT9g/k+XgZVecqfnj/LNZnausGep1bg46sTLoIBatT0zZ6d8tUmXLYP6YX5lL
+	Q+kIYPHkCasnPWuRknpE+1kyECiFcpgb4nMX/yEeFhk1uW8OLuFc3JosnC7bOZiDrRuhiPJ7rJg
+	4Gms/6tAi+i7DsKPRl3Q+VP6DNUPT97y2G2G0mkMsnu5oy40iqdT5b/wmqmspSVZjN0tTlvSNaq
+	/j08C3CA42+D+G8r8=
+X-Google-Smtp-Source: AGHT+IG7RTH3tWAxCPZkbkFtzG+dpb0z6mVERYHnwx86lq/fCclFo6zqdFexGNibOW+avSxjFq5S2Q==
+X-Received: by 2002:a17:902:e749:b0:295:7f1d:b034 with SMTP id d9443c01a7336-2957f1db313mr114052945ad.4.1762248542808;
+        Tue, 04 Nov 2025 01:29:02 -0800 (PST)
+Received: from localhost.localdomain ([147.136.157.1])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3415c8b78f8sm3874700a91.20.2025.11.04.01.28.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 04 Nov 2025 01:29:02 -0800 (PST)
+From: "jingxian.li" <jingxian.li@shopee.com>
+To: stable@vger.kernel.org,
+	peterz@infradead.org,
+	mingo@redhat.com,
+	acme@kernel.org,
+	mark.rutland@arm.com,
+	alexander.shishkin@linux.intel.com,
+	jolsa@kernel.org,
+	namhyung@kernel.org,
+	adrian.hunter@intel.com,
+	sashal@kernel.org,
+	linux-perf-users@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: "jingxian.li" <jingxian.li@shopee.com>
+Subject: [PATCH 6.6.y] Revert "perf dso: Add missed dso__put to dso__load_kcore"
+Date: Tue,  4 Nov 2025 17:27:42 +0800
+Message-ID: <20251104092740.108928-3-jingxian.li@shopee.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -79,105 +98,40 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-QCInternal: smtphost
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTA0MDA3NiBTYWx0ZWRfX1XY2x14jnVJL
- p3UWLXhWvxiJUZiudjKoZJYhY722iVgtu2lSWUVHwfQTqup9os9j2asfdFw651Fr1hGDasJWitG
- hhy6PLt0NuwUyZQIzJD/u/P5MahIFqs4lUIPEkdM476wr7vJ4knRYNCEFuY8nETnWK8EWlqhKtW
- JtsejbrY2JJX29EN+tqByPx7xPvboLnUGCei/YhYQk0Nze7NyiWTlECck4z9jPVGXwarELHwqng
- Th2v0fGJuBu+TTCqKSq+r1xD7RygyTvj5BFET0oMXkYKSS2DU6AjCbTlMXTOzGvEbXK8r6wbkln
- 96K4VI5/rAJmpUEPsJGm2XN7UJBLqchdEvRdrBHSQcENPR2WYBCa1Q0zRyTC2kDVcdcgT2QmPZn
- FkBlNNTPevVM2G9Wjc90Nki2VflDiw==
-X-Proofpoint-GUID: ig6WuF6Wb1QfgbvDbKIszanwH0eCVu0F
-X-Authority-Analysis: v=2.4 cv=Ha8ZjyE8 c=1 sm=1 tr=0 ts=6909c692 cx=c_pps
- a=nuhDOHQX5FNHPW3J6Bj6AA==:117 a=nuhDOHQX5FNHPW3J6Bj6AA==:17
- a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=COk6AnOGAAAA:8
- a=J2RAPmYWl02GzY4tkNoA:9 a=TjNXssC_j7lpFel5tvFf:22
-X-Proofpoint-ORIG-GUID: ig6WuF6Wb1QfgbvDbKIszanwH0eCVu0F
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-11-03_06,2025-11-03_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 priorityscore=1501 spamscore=0 lowpriorityscore=0
- malwarescore=0 clxscore=1015 phishscore=0 suspectscore=0 adultscore=0
- bulkscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.22.0-2510240001
- definitions=main-2511040076
 
-If no NVM file matches the board_id, load the default NVM file.
+This reverts commit e5de9ea7796e79f3cd082624f788cc3442bff2a8.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Shuai Zhang <quic_shuaz@quicinc.com>
+The patch introduced `map__zput(new_node->map)` in the kcore load
+path, causing a segmentation fault when running `perf c2c report`.
+
+The issue arises because `maps__merge_in` directly modifies and
+inserts the caller's `new_map`, causing it to be freed prematurely
+while still referenced by kmaps.
+
+Later branchs (6.12, 6.15, 6.16) are not affected because they use
+a different merge approach with a lazily sorted array, which avoids
+modifying the original `new_map`.
+
+Fixes: e5de9ea7796e ("perf dso: Add missed dso__put to dso__load_kcore")
+
+Signed-off-by: jingxian.li <jingxian.li@shopee.com>
 ---
- drivers/bluetooth/btusb.c | 26 +++++++++++++++++---------
- 1 file changed, 17 insertions(+), 9 deletions(-)
+ tools/perf/util/symbol.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
-index dcbff7641..020dbb0ab 100644
---- a/drivers/bluetooth/btusb.c
-+++ b/drivers/bluetooth/btusb.c
-@@ -3482,15 +3482,14 @@ static int btusb_setup_qca_load_rampatch(struct hci_dev *hdev,
- }
+diff --git a/tools/perf/util/symbol.c b/tools/perf/util/symbol.c
+index 4f0bbebcb6d6..ea24f21aafc3 100644
+--- a/tools/perf/util/symbol.c
++++ b/tools/perf/util/symbol.c
+@@ -1366,7 +1366,6 @@ static int dso__load_kcore(struct dso *dso, struct map *map,
+ 				goto out_err;
+ 			}
+ 		}
+-		map__zput(new_node->map);
+ 		free(new_node);
+ 	}
  
- static void btusb_generate_qca_nvm_name(char *fwname, size_t max_size,
--					const struct qca_version *ver)
-+					const struct qca_version *ver,
-+					u16 board_id)
- {
- 	u32 rom_version = le32_to_cpu(ver->rom_version);
- 	const char *variant, *fw_subdir;
- 	int len;
--	u16 board_id;
- 
- 	fw_subdir = qca_get_fw_subdirectory(ver);
--	board_id = qca_extract_board_id(ver);
- 
- 	switch (le32_to_cpu(ver->ram_version)) {
- 	case WCN6855_2_0_RAM_VERSION_GF:
-@@ -3517,14 +3516,14 @@ static void btusb_generate_qca_nvm_name(char *fwname, size_t max_size,
- 
- static int btusb_setup_qca_load_nvm(struct hci_dev *hdev,
- 				    struct qca_version *ver,
--				    const struct qca_device_info *info)
-+				    const struct qca_device_info *info,
-+				    u16 board_id)
- {
- 	const struct firmware *fw;
- 	char fwname[80];
- 	int err;
- 
--	btusb_generate_qca_nvm_name(fwname, sizeof(fwname), ver);
--
-+	btusb_generate_qca_nvm_name(fwname, sizeof(fwname), ver, board_id);
- 	err = request_firmware(&fw, fwname, &hdev->dev);
- 	if (err) {
- 		bt_dev_err(hdev, "failed to request NVM file: %s (%d)",
-@@ -3606,10 +3605,19 @@ static int btusb_setup_qca(struct hci_dev *hdev)
- 	btdata->qca_dump.controller_id = le32_to_cpu(ver.rom_version);
- 
- 	if (!(status & QCA_SYSCFG_UPDATED)) {
--		err = btusb_setup_qca_load_nvm(hdev, &ver, info);
--		if (err < 0)
--			return err;
-+		u16 board_id = qca_extract_board_id(&ver);
- 
-+		err = btusb_setup_qca_load_nvm(hdev, &ver, info, board_id);
-+		if (err < 0) {
-+			// set baord_id to 0,and load default nvm file
-+			if (err == -ENOENT && board_id != 0) {
-+				err = btusb_setup_qca_load_nvm(hdev, &ver, info, 0);
-+				if (err < 0)
-+					return err;
-+			} else {
-+				return err;
-+			}
-+		}
- 		/* WCN6855 2.1 and later will reset to apply firmware downloaded here, so
- 		 * wait ~100ms for reset Done then go ahead, otherwise, it maybe
- 		 * cause potential enable failure.
 -- 
-2.34.1
+2.43.0
 
 
