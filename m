@@ -1,81 +1,81 @@
-Return-Path: <stable+bounces-192366-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192367-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02655C30BE6
-	for <lists+stable@lfdr.de>; Tue, 04 Nov 2025 12:32:34 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D116C30C28
+	for <lists+stable@lfdr.de>; Tue, 04 Nov 2025 12:36:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 43E234E9A4F
-	for <lists+stable@lfdr.de>; Tue,  4 Nov 2025 11:32:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE150189795A
+	for <lists+stable@lfdr.de>; Tue,  4 Nov 2025 11:36:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6BDE2DEA8C;
-	Tue,  4 Nov 2025 11:32:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E85B2E9722;
+	Tue,  4 Nov 2025 11:36:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kPdGemG0"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XhbQY4KH"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 001922E92A2
-	for <stable@vger.kernel.org>; Tue,  4 Nov 2025 11:32:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12D6F2E8DEA
+	for <stable@vger.kernel.org>; Tue,  4 Nov 2025 11:36:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762255936; cv=none; b=Lc5JvuZHVyXQFzHgQ94HSb59dY8KLyEx7aYib7U84iI+LVza8LbvBfv/3lQ0sFmC01j1GaWINDPbonvYiSIKEgDo1UMtO0mxALA8vkBoy5+PIsKtNPCdzelaKVMCpNSYoMEX2h4bB0LZ3DkMYzhMXrXFBW3oaeXaaPo1LGpXzpc=
+	t=1762256184; cv=none; b=UMhfPFUQtWSDqEW+DCc3fLc7xtMih5V9jFSGkIEBbFirqLUkKotQEx11XIm12RE7ORFsmSBzpNKdlnjtrnhLDTVGztqV5Iga1/7fRZb1zUrpCVuqKKj1ec5N32kquNZSDeBVy1+VNNqPZvN59EjZaUJbAGLuMDF4Kmq7yGXaCBs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762255936; c=relaxed/simple;
-	bh=Sw7bSqlGqr5IT9Xat5i0E71Exlf9sKUY61iDbp4a4t4=;
+	s=arc-20240116; t=1762256184; c=relaxed/simple;
+	bh=4Wn7QoWN8xCjPbayQz8lhEGh7Deb0qobPKG4uApIIcw=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=p2iPavC3hlrT+u0lYFSGZ6fhaqeJ/rTy2QYhb6vOOzBUCWZAJ/0KzGq9O9h7nFweTSYdpZc7l0xqgCxTSvGbc2KGbcpfQ2B8BvN+aLvQh5ESKqcJTDFgL0kgs32rY9nQUur0JRpk+syZdcBDVeD2agb3U/TgnBAy562lRlxjKlE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kPdGemG0; arc=none smtp.client-ip=209.85.215.180
+	 In-Reply-To:Content-Type; b=mo3FDPCuKvMaGrzUSzcE/91HbTKI5qh5/h5XuDVDElTIYXDOlBpe7b7Kw7rT/UBmAY/KV4wSlBo7Ch1K92hnbdpfMT3jJUnjoLwEn/rkc3rj2XFhzG8Qbsji5GXNCUMN7jhgmjn99v7q3CpXx4NDfdnA5XvvFDCN+Bv/InFjWcY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XhbQY4KH; arc=none smtp.client-ip=209.85.216.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-b6cf07258e3so3507458a12.0
-        for <stable@vger.kernel.org>; Tue, 04 Nov 2025 03:32:14 -0800 (PST)
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-34188ba5801so306186a91.3
+        for <stable@vger.kernel.org>; Tue, 04 Nov 2025 03:36:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762255934; x=1762860734; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1762256182; x=1762860982; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=aoSxDhxS90f6BeCfm1xZZ+x6pE+INoKbsN0wsldLLGc=;
-        b=kPdGemG0DCN+yk6LnPqF6SDXZwGjacksJbxEPAQ6EyolxXjOUZpfBzAn/Pl7k+Q4TT
-         jKVEBkLxw0PAc81bkRAnFi7ee4QAsf067QCz8f4AcbEorBk2zLOwDQS/8dwQU0Geg6pr
-         ZjL74Jy2o36rugOgpMQCs06r3+pDmoD0haJCSdRVtFNQnJgwSWivGxp/ojPt+9lo9+Po
-         8HgJJPsnLuQVKAzQReWRwAWcOfa64v9ZQqY24Ow1BfmfHgW0kDuAyNbF+DpehP0D0Gda
-         bArD5/LML6RZnxojefkB1q2i6FFih35tYVKmZYVfC6OOp5h4MgwabhkVxfOGHagJIMHS
-         zUwA==
+        bh=J90ejmNRDc/sJDDkigtmzgp7USpf0W7zUJJf8FzaScs=;
+        b=XhbQY4KHrdoXsiTDoo1psvWT9ZSFeWVbB5xRe+5H+LV2bxXwLsW8utoG6FhN3O7pLS
+         MyTifCLpcAzB2gdLFUOHbsmJdmA1iNd7y13djpmgOkb56IEJKWyJ8p9oukP3iKEc916s
+         pI5Wy49vXr1h40zQQ8yPTcnjJSwLLHYpPENUy0WW4kyk1yZByFshEtau2Sqn7YjckQ+B
+         409xSBuciVKOw1gE+zmOkxaBtr5NdTa4ozcH7bwdMbBbryv5CYF6vQiec4bdFlu5p5wm
+         LDlKiTcJAv09hb3OqZ8UwRzV7F8psluJz/bxkp1m8GdGmAlsOtYQwqX/Dk/tAfaEp0Na
+         XqDQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762255934; x=1762860734;
+        d=1e100.net; s=20230601; t=1762256182; x=1762860982;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=aoSxDhxS90f6BeCfm1xZZ+x6pE+INoKbsN0wsldLLGc=;
-        b=UeEUN6cUJ0MJFumLlPVYF4NfipfeVuWLEK0hbuMqoyZd3t00o0qdPfZnc0lpWZcOit
-         5+lnqBC2RReQUZ8HEtrRyihZ1xs7s+AxsYs+vDSswYQcTTAkbYHJfJaXbn+u2n0h55bU
-         CAiDaN70VI5sLTGG2zqfq7Xcrfker65B08ZNLOH0ht9/ygfysBOFNgFJYZq9FyJA4CWt
-         XloV7m9oO/0fKl6xkC+wI5ydsIKT29NQnk8w0aWPUDZmv4TjHf8pXNXuFlJlBdhFB+Ou
-         UGT5pdA6ds942hU4+S/StwT8KGrMNLNgPuVjBPHamYq8oeDLv5euR7tmXTW4nk3eCuus
-         PqAw==
-X-Forwarded-Encrypted: i=1; AJvYcCVOuH7p024xsd9Nx5HDLAt4YSajPLijdjRlgFMD/EDOR/CniRdjcLaS85tZ/9amzZ4bW5K0FsA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwYEbtD01IESQOwm4ZL/wjhOFmRnOqem6UQUfYWaKIOixdpKH5r
-	C2fBUJEkJ2S2AWB4zMvV8YYI8Kz4IdZhqOQk+NNz0WL853ETrX4NGPw4
-X-Gm-Gg: ASbGncvfwlQHoQI8gqgjYKMU+orTJc24+dlj1O3TfK6GfjqK6hADBelqvixoYPxjyHs
-	6msAGdpMYoL+KNZto5OoFhlBfelLLHxz3gVXHBEe8dNd6InccL7aSM+scju1lK0mVzJweAja+b2
-	bZq0ee4J5NTcfyVI7eTNwp9Z1voXQ/w5AqNRmY8Piicb3XB9GlREEq6Os2CrJd0ytv/Iq73nJ2n
-	4rVO+x1vSs3JZyqyYhI+r0ghBiyohGIBtX5Jx8xL5GQbKfLXnOBpUADfaa7Za3PP582rVDJ8nLL
-	zVm2KDzeGiN8k7Eb9arkfYEPcUT/jeGWqLf8Yjklm0zwscLUH5aDBH426jKlQsXaPC0Clp1ddh9
-	kJc0uEGhMeskldxsmC+cXCY+PNMKA7iBxcHfEZDXHSSjaFR1fUUuqUi0AeWskX4WuV6os70lB2C
-	NMxKFJYxXL2pY9MEzACzY=
-X-Google-Smtp-Source: AGHT+IFQi4sy7Pt+iNRc3yBEyf08yF9LpgtHzOpvhx7vFHjqpeB38ssLGuLoFfNxgUkcZVwLEr9mCA==
-X-Received: by 2002:a05:6300:8a03:b0:34e:865e:8a65 with SMTP id adf61e73a8af0-34e866de6cbmr2005737637.52.1762255934090;
-        Tue, 04 Nov 2025 03:32:14 -0800 (PST)
+        bh=J90ejmNRDc/sJDDkigtmzgp7USpf0W7zUJJf8FzaScs=;
+        b=dByrNtTZF6I35AGGQRZhM7xRCF/fPCqXG+mcfU3MNChX3aoGxi1w2oadV9QTPZHTf4
+         PHprlZOb/pxacAcIAJrbL7zqQ9oseQ8k2pfjj+HzgFDs0Y5+KI3CTPRfoMdPkUwMmiv0
+         62vGIa7GkeKCInrMbnUK7xq+m1TNJbig4bSID1j9oZGj3jd/fs39tUib4LebpKBK8CsQ
+         vSI0Kg9UUUXjkFZ2p1Ql615AqKu27jrp++rwT9fl6t5p/pbYz1Gcq5RaoXjNP8ox5XKw
+         oeLqBG1/LD2UNNdWZvoqk8VxZvsnIim7sMFcthXA/VbcKjahDXpXSYn+mgogpn/hgDah
+         10wg==
+X-Forwarded-Encrypted: i=1; AJvYcCWw/FBEAm/MxEVuQ71E7CFI4ELhmifpi92XHJE68XuQtspUqmfgoTtApemGbWJlK985P+LQ9P8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyQ1vADtj3BO6+RWltbUuHMNOy+CjBu9oBRo0h0fKhIaFeVmoNk
+	YEAVClVq6nKloCSKaRGdiL61EyQvtAC8206L+V4A4uBaJSPf0+nY/dHW
+X-Gm-Gg: ASbGnctYQ5s638RT/7RaW0JbEjn3ysn17OrMG4fdk+ZOTm5Ak9ntZfaFTknlNhmE9Su
+	SIficAId6r/Bz4mcdCucT1JdiL67dQ0CoNNUPReDgowzcq1hXprDmu9lOFJIsKjmUZTq6bcaHp/
+	p9owN8FC0LMnCxRf9tkXglOJ7TWp6/7yRT2881SIKNXrsRGHynJb0BlGxfJ5sX1FZjNdZguylG7
+	oqeUEnfQWp4e62e8xgYuFpQyupqG24xWBR4SIHjZ77lZt2Iw5iupxRHefzNrLla+4rOwl+U1FD4
+	njXvLkOGZk2GKZvioHW5TdHpeX3cFT8oAwkL/kZ8yeLWOZBte8CeQBHd3YRE11PysZkD8YlNd0Q
+	yFmlTRMyG5KDvcFGTSlUimjTlstzWb/GQGEC95u9upeexPiMYwk8Kgib+j4e5MRpeogvmpjb2ar
+	O1PTSMUF+dcDRyvWJdJQ4=
+X-Google-Smtp-Source: AGHT+IF5OrzuKARwkp1GVv+qC6PxEHYGj29XXgnA/RkKZqGw4wpxfHkO7e6iSIhsRiQeNJQp1sxCHw==
+X-Received: by 2002:a17:90b:17ca:b0:340:d569:d295 with SMTP id 98e67ed59e1d1-340d569d470mr13962469a91.24.1762256182197;
+        Tue, 04 Nov 2025 03:36:22 -0800 (PST)
 Received: from [10.189.138.37] ([43.224.245.241])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7acd6919401sm2618951b3a.65.2025.11.04.03.32.10
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3415c4aa89asm4228751a91.11.2025.11.04.03.36.18
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 04 Nov 2025 03:32:13 -0800 (PST)
-Message-ID: <8031227a-8a27-4aa0-8ca2-c44f494e9ad2@gmail.com>
-Date: Tue, 4 Nov 2025 19:32:09 +0800
+        Tue, 04 Nov 2025 03:36:21 -0800 (PST)
+Message-ID: <1abbf495-58b0-4f04-8494-6339640253f1@gmail.com>
+Date: Tue, 4 Nov 2025 19:36:16 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -83,62 +83,39 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 3/5] isofs: check the return value of
- sb_min_blocksize() in isofs_fill_super
-To: Christoph Hellwig <hch@infradead.org>,
+Subject: Re: [PATCH v5 1/5] vfat: fix missing sb_min_blocksize() return value
+ checks
+To: OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>,
  Yongpeng Yang <yangyongpeng.storage@gmail.com>
 Cc: Namjae Jeon <linkinjeon@kernel.org>, Sungjong Seo
- <sj1557.seo@samsung.com>, OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>,
- Jan Kara <jack@suse.cz>, Carlos Maiolino <cem@kernel.org>,
- Jens Axboe <axboe@kernel.dk>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, Sasha Levin <sashal@kernel.org>,
- Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>, linux-xfs@vger.kernel.org,
+ <sj1557.seo@samsung.com>, Jan Kara <jack@suse.cz>,
+ Carlos Maiolino <cem@kernel.org>, Jens Axboe <axboe@kernel.dk>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Sasha Levin <sashal@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>, Christoph Hellwig
+ <hch@infradead.org>, linux-xfs@vger.kernel.org,
  linux-fsdevel@vger.kernel.org, linux-block@vger.kernel.org,
  stable@vger.kernel.org, Matthew Wilcox <willy@infradead.org>,
  "Darrick J . Wong" <djwong@kernel.org>,
  Yongpeng Yang <yangyongpeng@xiaomi.com>
 References: <20251103164722.151563-2-yangyongpeng.storage@gmail.com>
- <20251103164722.151563-4-yangyongpeng.storage@gmail.com>
- <aQndM_Bq1HPRNyds@infradead.org>
+ <871pmfoy1m.fsf@mail.parknet.co.jp>
 Content-Language: en-US
 From: Yongpeng Yang <yangyongpeng.storage@gmail.com>
-In-Reply-To: <aQndM_Bq1HPRNyds@infradead.org>
+In-Reply-To: <871pmfoy1m.fsf@mail.parknet.co.jp>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 11/4/25 19:02, Christoph Hellwig wrote:
-> On Tue, Nov 04, 2025 at 12:47:21AM +0800, Yongpeng Yang wrote:
->> From: Yongpeng Yang <yangyongpeng@xiaomi.com>
->>
->> sb_min_blocksize() may return 0. Check its return value to avoid
->> opt->blocksize and sb->s_blocksize is 0.
->>
->> Cc: <stable@vger.kernel.org> # v6.15
->> Fixes: 1b17a46c9243e9 ("isofs: convert isofs to use the new mount API")
->> Reviewed-by: Jan Kara <jack@suse.cz>
->> Signed-off-by: Yongpeng Yang <yangyongpeng@xiaomi.com>
->> ---
->>   fs/isofs/inode.c | 5 +++++
->>   1 file changed, 5 insertions(+)
->>
->> diff --git a/fs/isofs/inode.c b/fs/isofs/inode.c
->> index 6f0e6b19383c..ad3143d4066b 100644
->> --- a/fs/isofs/inode.c
->> +++ b/fs/isofs/inode.c
->> @@ -610,6 +610,11 @@ static int isofs_fill_super(struct super_block *s, struct fs_context *fc)
->>   		goto out_freesbi;
->>   	}
->>   	opt->blocksize = sb_min_blocksize(s, opt->blocksize);
->> +	if (!opt->blocksize) {
->> +		printk(KERN_ERR
+On 11/4/25 00:56, OGAWA Hirofumi wrote:
+> Yongpeng Yang <yangyongpeng.storage@gmail.com> writes:
 > 
-> This should probably use pr_err instead.
+>> Fixes: a64e5a596067bd ("bdev: add back PAGE_SIZE block size validation
+>> for sb_set_blocksize()")
 > 
+> Looks like inserted a strange '\n'? Otherwise looks good.
 
-Thanks for the review. The other functions in fs/isofs/inode.c use 
-"printk(KERN_ERR|KERN_DEBUG|KERN_WARNING ...)", so I used 
-"printk(KERN_ERR ...)" for consistency.
+Thanks for the review. Sorry for the mistake. I copied the commit 
+message from my text editor, and it got automatically line-wrapped.
 
 Yongpeng,
 
