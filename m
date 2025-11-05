@@ -1,285 +1,139 @@
-Return-Path: <stable+bounces-192529-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192530-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 692DCC36EF4
-	for <lists+stable@lfdr.de>; Wed, 05 Nov 2025 18:07:53 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7C05C37051
+	for <lists+stable@lfdr.de>; Wed, 05 Nov 2025 18:18:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id E39EA348F89
-	for <lists+stable@lfdr.de>; Wed,  5 Nov 2025 17:07:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5030D1A271E3
+	for <lists+stable@lfdr.de>; Wed,  5 Nov 2025 17:11:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC770338F26;
-	Wed,  5 Nov 2025 17:06:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5B27214812;
+	Wed,  5 Nov 2025 17:10:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="2L1jxihu"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jnJUvHG1"
 X-Original-To: stable@vger.kernel.org
-Received: from 004.mia.mailroute.net (004.mia.mailroute.net [199.89.3.7])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7BED2222D0;
-	Wed,  5 Nov 2025 17:06:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.3.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84EFF331A4B
+	for <stable@vger.kernel.org>; Wed,  5 Nov 2025 17:10:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762362370; cv=none; b=rDVi5FagKKflrEDFJ48zqnyxRp4VDERdZPxGCap1a4UQ7U5pTqqGIOwy0rq4Sh7jffUv3EnG35dq7Vhl8/Rsbl1ILVAadcGVQQ0aLSrNuzXUunYC0ngOwIYRYvq4vi2PouE5ajz2X/Kn5Dddj5AUPnGm8yN77C+UMnohre5QkrQ=
+	t=1762362633; cv=none; b=Lg49CX2PCAHsIzOeaqb+VufOITOTXycoaBLwmplPQbivB0LjTesm+fYn3up0BwW3XqaQbHdgHmAf9/2FLWiymy5wNqj2Jt8Psp0i5VMKiQdx6m6zQ1wk+vYgF+IkhmmRtXfd+SfblmLyh8pL+mbJNd3wADZkPVnoLmoJYdQiLqI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762362370; c=relaxed/simple;
-	bh=Gk/CiOYKk/7fyEqA+IWuarZ1K1PjWKoryFhEXgHtH54=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=YM2aVIndXxC8e7uiHCprE3drP2BQQ0rsXnH9LLQRvpwSTvnSius57qPB+EtC7VOq5/HfhVhJfiQoXInwb0V08Di2EgEwh2sgPiA2rSkH+eIIo6TeWYcJCACVrtrWrcWYTiLIfOoMEBXzv86iWschTssgKv6ITzOAwo5SiSmdclc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=2L1jxihu; arc=none smtp.client-ip=199.89.3.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
-Received: from localhost (localhost [127.0.0.1])
-	by 004.mia.mailroute.net (Postfix) with ESMTP id 4d1sCw3Mm7zm88Hc;
-	Wed,  5 Nov 2025 17:06:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
-	content-transfer-encoding:mime-version:x-mailer:message-id:date
-	:date:subject:subject:from:from:received:received; s=mr01; t=
-	1762362362; x=1764954363; bh=9nUScaESm1FAqlqIpease1umCaDtIn+JtuA
-	1Ch7zeBQ=; b=2L1jxihudzu8/EOEvaribVA/vG+FKTPoo4qallD3fK5zpBZ7pA5
-	iBv6qMMzZ3bjFwMV7s9j5sQKsf/iOVQwh+dR/XHjg5dlTPykiz2A7ge2Kztouc7f
-	n8A4SrVIjrGgds0rU8j8pMcoN48mWRK5cuMXGssj1F545gP7tb7GzY4KKV85ly0Q
-	J94ujGPJzhoiE1oyuqHXLsSXD8FtKI9cHd/FG9Pal+VLxTOZbIcpJpnQiQBp91ak
-	lXUdfKjslfjJVapQvRbbjdMMNs+RwgnDcW34J+TBwOAIJ0LgeD1VJkXHkj0cV/QF
-	27uglQq3ruaDucfSp1HQIP6PznOumyif2Kw==
-X-Virus-Scanned: by MailRoute
-Received: from 004.mia.mailroute.net ([127.0.0.1])
- by localhost (004.mia [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
- id h0_T-8mBeTgK; Wed,  5 Nov 2025 17:06:02 +0000 (UTC)
-Received: from bvanassche.mtv.corp.google.com (unknown [104.135.180.219])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bvanassche@acm.org)
-	by 004.mia.mailroute.net (Postfix) with ESMTPSA id 4d1sCb747Jzm84w4;
-	Wed,  5 Nov 2025 17:05:46 +0000 (UTC)
-From: Bart Van Assche <bvanassche@acm.org>
-To: Jens Axboe <axboe@kernel.dk>
-Cc: linux-block@vger.kernel.org,
-	Christoph Hellwig <hch@lst.de>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Ming Lei <ming.lei@redhat.com>,
-	Nilay Shroff <nilay@linux.ibm.com>,
-	Martin Wilck <mwilck@suse.com>,
-	Benjamin Marzinski <bmarzins@redhat.com>,
-	stable@vger.kernel.org,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Hannes Reinecke <hare@suse.de>,
-	Damien Le Moal <dlemoal@kernel.org>
-Subject: [PATCH v4] block: Remove queue freezing from several sysfs store callbacks
-Date: Wed,  5 Nov 2025 09:05:33 -0800
-Message-ID: <20251105170534.2989596-1-bvanassche@acm.org>
-X-Mailer: git-send-email 2.51.2.1006.ga50a493c49-goog
+	s=arc-20240116; t=1762362633; c=relaxed/simple;
+	bh=e40xFR6tQfR7PJ5Wsjq2Qgq1xP5o8XykAqV6jk3uYIE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=XNEDfYVMBqt25OgfWrkRSzE7tv7BNssnwxVOj0BJ52umatSKna1IWtP3DTwrXa4ptDSN6+ZcdDL592+5pM3pwpT1oNxMhNbT1E8E3BQZFpFW7meeySub3ork8io5b3EFuwlrylhyeYzVr8Q+dqxsT7OvbAHJfFEq1Oi6msHctMQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jnJUvHG1; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1762362632; x=1793898632;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=e40xFR6tQfR7PJ5Wsjq2Qgq1xP5o8XykAqV6jk3uYIE=;
+  b=jnJUvHG1PXpe5HKoVUCb/kyQj61pf8cW9pZ0yPK9/zMLI5QEW7/iKQnu
+   VkrqO8jjsbqxYfMByVRseEDWZ0FoDINftEFbPktq47ccowPxbmgQPurL+
+   7GGeo7Ky6Md3EePNsdpDxFFoW+yEIZ2XBqJvN84H8J+3SIqjBW04sYoT8
+   M43hhhJs2WCi+0s5pno6zYrJtVUdb/3E/y7TcPKnxrERhJJdVYKWhhQ24
+   nGa+rMqzHncCaPCZ2uAqlX8dd8GyizAla3GbURIc2r4qO65ceqIL9DRoY
+   1dZos+q5NqFb+YcOFriz+HItxWaEkODQ0VgD0cwxK7ey0eQRr40eEf8qw
+   A==;
+X-CSE-ConnectionGUID: ZvrbjVWBTpik118kPu5N5Q==
+X-CSE-MsgGUID: FheYzmXFTB+Fo3macME+uQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="68323107"
+X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
+   d="scan'208";a="68323107"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2025 09:10:19 -0800
+X-CSE-ConnectionGUID: Slyr9WPCS9mkMWzl/9S0+g==
+X-CSE-MsgGUID: hXWzaHjIQL+9jfglbQ6EyQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,282,1754982000"; 
+   d="scan'208";a="187354703"
+Received: from rvuia-mobl.ger.corp.intel.com (HELO localhost) ([10.245.244.87])
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2025 09:10:17 -0800
+From: Ville Syrjala <ville.syrjala@linux.intel.com>
+To: intel-gfx@lists.freedesktop.org
+Cc: intel-xe@lists.freedesktop.org,
+	stable@vger.kernel.org
+Subject: [PATCH] drm/i915/psr: Reject async flips when selective fetch is enabled
+Date: Wed,  5 Nov 2025 19:10:15 +0200
+Message-ID: <20251105171015.22234-1-ville.syrjala@linux.intel.com>
+X-Mailer: git-send-email 2.49.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Transfer-Encoding: 8bit
 
-Freezing the request queue from inside sysfs store callbacks may cause a
-deadlock in combination with the dm-multipath driver and the
-queue_if_no_path option. Additionally, freezing the request queue slows
-down system boot on systems where sysfs attributes are set synchronously.
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-Fix this by removing the blk_mq_freeze_queue() / blk_mq_unfreeze_queue()
-calls from the store callbacks that do not strictly need these callbacks.
-This patch may cause a small delay in applying the new settings.
+The selective fetch code doesn't handle asycn flips correctly.
+There is a nonsense check for async flips in
+intel_psr2_sel_fetch_config_valid() but that only gets called
+for modesets/fastsets and thus does nothing for async flips.
 
-This patch affects the following sysfs attributes:
-* io_poll_delay
-* io_timeout
-* nomerges
-* read_ahead_kb
-* rq_affinity
+Currently intel_async_flip_check_hw() is very unhappy as the
+selective fetch code pulls in planes that are not even async
+flips capable.
 
-Here is an example of a deadlock triggered by running test srp/002:
+Reject async flips when selective fetch is enabled, until
+someone fixes this properly (ie. disable selective fetch while
+async flips are being issued).
 
-task:multipathd
-Call Trace:
- <TASK>
- __schedule+0x8c1/0x1bf0
- schedule+0xdd/0x270
- schedule_preempt_disabled+0x1c/0x30
- __mutex_lock+0xb89/0x1650
- mutex_lock_nested+0x1f/0x30
- dm_table_set_restrictions+0x823/0xdf0
- __bind+0x166/0x590
- dm_swap_table+0x2a7/0x490
- do_resume+0x1b1/0x610
- dev_suspend+0x55/0x1a0
- ctl_ioctl+0x3a5/0x7e0
- dm_ctl_ioctl+0x12/0x20
- __x64_sys_ioctl+0x127/0x1a0
- x64_sys_call+0xe2b/0x17d0
- do_syscall_64+0x96/0x3a0
- entry_SYSCALL_64_after_hwframe+0x4b/0x53
- </TASK>
-task:(udev-worker)
-Call Trace:
- <TASK>
- __schedule+0x8c1/0x1bf0
- schedule+0xdd/0x270
- blk_mq_freeze_queue_wait+0xf2/0x140
- blk_mq_freeze_queue_nomemsave+0x23/0x30
- queue_ra_store+0x14e/0x290
- queue_attr_store+0x23e/0x2c0
- sysfs_kf_write+0xde/0x140
- kernfs_fop_write_iter+0x3b2/0x630
- vfs_write+0x4fd/0x1390
- ksys_write+0xfd/0x230
- __x64_sys_write+0x76/0xc0
- x64_sys_call+0x276/0x17d0
- do_syscall_64+0x96/0x3a0
- entry_SYSCALL_64_after_hwframe+0x4b/0x53
- </TASK>
-
-Cc: Christoph Hellwig <hch@lst.de>
-Cc: Ming Lei <ming.lei@redhat.com>
-Cc: Nilay Shroff <nilay@linux.ibm.com>
-Cc: Martin Wilck <mwilck@suse.com>
-Cc: Benjamin Marzinski <bmarzins@redhat.com>
 Cc: stable@vger.kernel.org
-Fixes: af2814149883 ("block: freeze the queue in queue_attr_store")
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 ---
+ drivers/gpu/drm/i915/display/intel_display.c | 8 ++++++++
+ drivers/gpu/drm/i915/display/intel_psr.c     | 6 ------
+ 2 files changed, 8 insertions(+), 6 deletions(-)
 
-Changes compared to v3:
- - Added two data_race() annotations.
-
-Changes compared to v2:
- - Dropped the controversial patch "block: Restrict the duration of sysfs
-   attribute changes".
-
-Changes compared to v1:
- - Added patch "block: Restrict the duration of sysfs attribute changes".
- - Remove queue freezing from more sysfs callbacks.
-
-block/blk-sysfs.c | 20 +++-----------------
- 1 file changed, 3 insertions(+), 17 deletions(-)
-
-diff --git a/block/blk-sysfs.c b/block/blk-sysfs.c
-index 76c47fe9b8d6..6eaccd18d8b4 100644
---- a/block/blk-sysfs.c
-+++ b/block/blk-sysfs.c
-@@ -143,7 +143,6 @@ queue_ra_store(struct gendisk *disk, const char *page=
-, size_t count)
- {
- 	unsigned long ra_kb;
- 	ssize_t ret;
--	unsigned int memflags;
- 	struct request_queue *q =3D disk->queue;
-=20
- 	ret =3D queue_var_store(&ra_kb, page, count);
-@@ -154,10 +153,8 @@ queue_ra_store(struct gendisk *disk, const char *pag=
-e, size_t count)
- 	 * calculated from the queue limits by queue_limits_commit_update.
- 	 */
- 	mutex_lock(&q->limits_lock);
--	memflags =3D blk_mq_freeze_queue(q);
--	disk->bdi->ra_pages =3D ra_kb >> (PAGE_SHIFT - 10);
-+	data_race(disk->bdi->ra_pages =3D ra_kb >> (PAGE_SHIFT - 10));
- 	mutex_unlock(&q->limits_lock);
--	blk_mq_unfreeze_queue(q, memflags);
-=20
- 	return ret;
- }
-@@ -375,21 +372,18 @@ static ssize_t queue_nomerges_store(struct gendisk =
-*disk, const char *page,
- 				    size_t count)
- {
- 	unsigned long nm;
--	unsigned int memflags;
- 	struct request_queue *q =3D disk->queue;
- 	ssize_t ret =3D queue_var_store(&nm, page, count);
-=20
- 	if (ret < 0)
- 		return ret;
-=20
--	memflags =3D blk_mq_freeze_queue(q);
- 	blk_queue_flag_clear(QUEUE_FLAG_NOMERGES, q);
- 	blk_queue_flag_clear(QUEUE_FLAG_NOXMERGES, q);
- 	if (nm =3D=3D 2)
- 		blk_queue_flag_set(QUEUE_FLAG_NOMERGES, q);
- 	else if (nm)
- 		blk_queue_flag_set(QUEUE_FLAG_NOXMERGES, q);
--	blk_mq_unfreeze_queue(q, memflags);
-=20
- 	return ret;
- }
-@@ -409,7 +403,6 @@ queue_rq_affinity_store(struct gendisk *disk, const c=
-har *page, size_t count)
- #ifdef CONFIG_SMP
- 	struct request_queue *q =3D disk->queue;
- 	unsigned long val;
--	unsigned int memflags;
-=20
- 	ret =3D queue_var_store(&val, page, count);
- 	if (ret < 0)
-@@ -421,7 +414,6 @@ queue_rq_affinity_store(struct gendisk *disk, const c=
-har *page, size_t count)
- 	 * are accessed individually using atomic test_bit operation. So we
- 	 * don't grab any lock while updating these flags.
- 	 */
--	memflags =3D blk_mq_freeze_queue(q);
- 	if (val =3D=3D 2) {
- 		blk_queue_flag_set(QUEUE_FLAG_SAME_COMP, q);
- 		blk_queue_flag_set(QUEUE_FLAG_SAME_FORCE, q);
-@@ -432,7 +424,6 @@ queue_rq_affinity_store(struct gendisk *disk, const c=
-har *page, size_t count)
- 		blk_queue_flag_clear(QUEUE_FLAG_SAME_COMP, q);
- 		blk_queue_flag_clear(QUEUE_FLAG_SAME_FORCE, q);
- 	}
--	blk_mq_unfreeze_queue(q, memflags);
- #endif
- 	return ret;
- }
-@@ -446,11 +437,9 @@ static ssize_t queue_poll_delay_store(struct gendisk=
- *disk, const char *page,
- static ssize_t queue_poll_store(struct gendisk *disk, const char *page,
- 				size_t count)
- {
--	unsigned int memflags;
- 	ssize_t ret =3D count;
- 	struct request_queue *q =3D disk->queue;
-=20
--	memflags =3D blk_mq_freeze_queue(q);
- 	if (!(q->limits.features & BLK_FEAT_POLL)) {
- 		ret =3D -EINVAL;
- 		goto out;
-@@ -459,7 +448,6 @@ static ssize_t queue_poll_store(struct gendisk *disk,=
- const char *page,
- 	pr_info_ratelimited("writes to the poll attribute are ignored.\n");
- 	pr_info_ratelimited("please use driver specific parameters instead.\n")=
-;
- out:
--	blk_mq_unfreeze_queue(q, memflags);
- 	return ret;
- }
-=20
-@@ -472,7 +460,7 @@ static ssize_t queue_io_timeout_show(struct gendisk *=
-disk, char *page)
- static ssize_t queue_io_timeout_store(struct gendisk *disk, const char *=
-page,
- 				  size_t count)
- {
--	unsigned int val, memflags;
-+	unsigned int val;
- 	int err;
- 	struct request_queue *q =3D disk->queue;
-=20
-@@ -480,9 +468,7 @@ static ssize_t queue_io_timeout_store(struct gendisk =
-*disk, const char *page,
- 	if (err || val =3D=3D 0)
+diff --git a/drivers/gpu/drm/i915/display/intel_display.c b/drivers/gpu/drm/i915/display/intel_display.c
+index 42ec78798666..10583592fefe 100644
+--- a/drivers/gpu/drm/i915/display/intel_display.c
++++ b/drivers/gpu/drm/i915/display/intel_display.c
+@@ -6020,6 +6020,14 @@ static int intel_async_flip_check_uapi(struct intel_atomic_state *state,
  		return -EINVAL;
-=20
--	memflags =3D blk_mq_freeze_queue(q);
--	blk_queue_rq_timeout(q, msecs_to_jiffies(val));
--	blk_mq_unfreeze_queue(q, memflags);
-+	data_race((blk_queue_rq_timeout(q, msecs_to_jiffies(val)), 0));
-=20
- 	return count;
+ 	}
+ 
++	/* FIXME: selective fetch should be disabled for async flips */
++	if (new_crtc_state->enable_psr2_sel_fetch) {
++		drm_dbg_kms(display->drm,
++			    "[CRTC:%d:%s] async flip disallowed with PSR2 selective fetch\n",
++			    crtc->base.base.id, crtc->base.name);
++		return -EINVAL;
++	}
++
+ 	for_each_oldnew_intel_plane_in_state(state, plane, old_plane_state,
+ 					     new_plane_state, i) {
+ 		if (plane->pipe != crtc->pipe)
+diff --git a/drivers/gpu/drm/i915/display/intel_psr.c b/drivers/gpu/drm/i915/display/intel_psr.c
+index 05014ffe3ce1..65d77aea9536 100644
+--- a/drivers/gpu/drm/i915/display/intel_psr.c
++++ b/drivers/gpu/drm/i915/display/intel_psr.c
+@@ -1296,12 +1296,6 @@ static bool intel_psr2_sel_fetch_config_valid(struct intel_dp *intel_dp,
+ 		return false;
+ 	}
+ 
+-	if (crtc_state->uapi.async_flip) {
+-		drm_dbg_kms(display->drm,
+-			    "PSR2 sel fetch not enabled, async flip enabled\n");
+-		return false;
+-	}
+-
+ 	return crtc_state->enable_psr2_sel_fetch = true;
  }
+ 
+-- 
+2.49.1
+
 
