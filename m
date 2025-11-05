@@ -1,226 +1,137 @@
-Return-Path: <stable+bounces-192479-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192480-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48CB2C33FFC
-	for <lists+stable@lfdr.de>; Wed, 05 Nov 2025 06:47:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04F2CC34335
+	for <lists+stable@lfdr.de>; Wed, 05 Nov 2025 08:18:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id C3EEA34B35A
-	for <lists+stable@lfdr.de>; Wed,  5 Nov 2025 05:47:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 29592424965
+	for <lists+stable@lfdr.de>; Wed,  5 Nov 2025 07:18:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB82E26F2B6;
-	Wed,  5 Nov 2025 05:47:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D68812D23BF;
+	Wed,  5 Nov 2025 07:17:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="hP2v/6CJ";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="idzNo682"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="csmGWJq0";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="mzNQI/IZ"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3675026F289
-	for <stable@vger.kernel.org>; Wed,  5 Nov 2025 05:47:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5240C28A3F2
+	for <stable@vger.kernel.org>; Wed,  5 Nov 2025 07:17:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762321671; cv=none; b=cKhgO3qFzQRH4RIM8EtfxQPx+RoI1H04uoa+M72hgjlwztPcC7AnREluQv06qmlhR3meDSV+Lax6XwflRSy9UVXPaWXdfM1LBejv0af/9CXTq/51Iw/r9iKRQA1VfRJbFdRhtMMELTeHiAJmR2EJ67StmQcU90tnHQnXrJaBTXM=
+	t=1762327079; cv=none; b=dxSBYGUqDt6TVHkqG+nBMJeLg4jeQzpt2CxapV19JghLwyHj8sSuNMsU4OVnDtCVsEZPtSy9brsbxjeCCxUeYA8D32UcbeKrByhHvVbELmTttCt3XsMrt/d9a3FiWPAnPrffjN8SJtid3xkxcdKWvVWL6FMylP0MzOzXh84/n3M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762321671; c=relaxed/simple;
-	bh=CmCMkFGdjKimc4a8I9wySoXS+kBG+D4uHqlvimyNf3M=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=JSH4tLlIYH9gQ6rHpytzQojblH11v45SGb6YWOPfot8NSgrDlbfxUedZfGhU5w5nlmQ/dVBnVSDLTlEXbXzGRPZI30Grb2YybIQUVcHqrl2E0jn7akD5S+HCn8e+zk8DyapiSiASepDDE87QUt8yai7anCXjaKqqYk6IzwktQr4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=hP2v/6CJ; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=idzNo682; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5A4KfpEL2904354
-	for <stable@vger.kernel.org>; Wed, 5 Nov 2025 05:47:49 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=qcppdkim1; bh=83MHbwvzUZdEq/T0F1dNJV
-	sVheiPbFtUJACtWCcmOL0=; b=hP2v/6CJoe7LpamhAy8MczphHmxktuMddW8dJq
-	GH0RDq5yfTT9+Jcf/Uf1vyB6r8RJybUJhqetTLrO5TwWyc0fdC3eN93Mxg7iiMpY
-	2aLaxqPMPTyLiFzWlSxUjlhYIW5fLqsielQVtyvwJQfuCdyRPF8iA36DfwSssvFm
-	lQpTPwNQr273YTn7Lv+UMEYo5Ykvw9H3U9OhuacETCkx86XBcv94Owv2598dnuoH
-	UGqEl41oojuUpKWcQSx41MXSwbX34cRC1Bqup8x1URdc5yv+nF+52VCtPjl4C8bT
-	UdEqTblZ9CK5yMQzOIaQ9wqIupXOxnrmq6fiRiL/wGZDmH6g==
-Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4a7mbbt6mr-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Wed, 05 Nov 2025 05:47:49 +0000 (GMT)
-Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-b6ce1b57b3eso11360997a12.1
-        for <stable@vger.kernel.org>; Tue, 04 Nov 2025 21:47:49 -0800 (PST)
+	s=arc-20240116; t=1762327079; c=relaxed/simple;
+	bh=LXagqlSMvKmDxH5ta3oYe3mIclEopnmgdrr3vFPfBvo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=iDfZSdTWqVTXSXJ3PzV1vJnJ0w7OLL/qnXbbCt9LVEBDk1P5sVMrzZs+5EaVSRw8Hvirt0Suv+YzFr9dcG8o6caaIpBu3PthBpc/NocUIIehJINAmFqKGwQRmwu7JUIONXvPkb0vdlG2voDU6qe72D6ZUuzgMm27n24VVOreP2k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=csmGWJq0; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=mzNQI/IZ; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1762327076;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=j1zZvaCPuzafmpZP8ufdbcI4+grNXo2mhPKgg1GgDe0=;
+	b=csmGWJq0rYnCRBS1D6nkJ6Z1D+h9tboI87rTPdNu13W+EfduQQtGnx6awHD++KIvkdXGsk
+	eyyY9Mc14pySUq05PMQz2VPb/JJiEzjfIPksupU6If3ctCO4G/ZLvIqq2N2iGrocbwS2NU
+	gHR1kh3XD3X/Zf/BQLuN30CxWkQw6nU=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-90-JXq1otfUPnyPdnlMuNWE2Q-1; Wed, 05 Nov 2025 02:17:55 -0500
+X-MC-Unique: JXq1otfUPnyPdnlMuNWE2Q-1
+X-Mimecast-MFC-AGG-ID: JXq1otfUPnyPdnlMuNWE2Q_1762327074
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-429c5f1e9faso3056702f8f.3
+        for <stable@vger.kernel.org>; Tue, 04 Nov 2025 23:17:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1762321669; x=1762926469; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=83MHbwvzUZdEq/T0F1dNJVsVheiPbFtUJACtWCcmOL0=;
-        b=idzNo682smXfIO00ei/wDUjq/GoWumW0II3CfRpKF6l6QV5wUxaMJ6guDr2XRXA51D
-         8DTs2n6pHT8ep25Pn5l0d1d2JsNEwSWSGiQImev4gzQVndznlUJSguhlu6sK3mxc9TA3
-         3tra5Pr11RD53AZXvRJlJpz2TsHIPKPPr5g1Jb/iHdSQfNz95dTlQSO7xQawsg9MJJtv
-         mwdlik7lf3fa+dez35glUWFnQiQhxurs38GfjRJK4BAsbcIs5JY/+kF4mUsmtjgd7HTo
-         RSlfEaXj8fbNM0CVoWSSYZaJ7pS372LHA+9gPicGs8cRuH5TRs1lYwEP0hMN5ESPedW+
-         2+Xw==
+        d=redhat.com; s=google; t=1762327074; x=1762931874; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=j1zZvaCPuzafmpZP8ufdbcI4+grNXo2mhPKgg1GgDe0=;
+        b=mzNQI/IZyZlS94B69CpIpUfNlAZXhUA3bD1GHsZ39oTpRTTH3FRXaGpBRQgiWm+xDr
+         D3iOzylzkQ3y3V4lUpLqB8Y71cOc/NViPIJI8el+WC65KSe8XEo0dRcXUREgr2rLWFgN
+         tN0YvGPu2wfJWNku+6Dh2ImWui9imbABZbWmimc5SHgvlFUGiGghkdKDS7e0km3eL+GT
+         O1woCn5nNawvTHDSfLwAuglJziuDE16QpcEKbCZER0eHCtKFxhtSUaNd3OFNLHvvhIM0
+         fUak9rJePMOmY0KQ8NoqYCxeepy537fk+ma20uQj8gG8LtFinn46DmttVyu81SPD1TsW
+         eFjQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762321669; x=1762926469;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=83MHbwvzUZdEq/T0F1dNJVsVheiPbFtUJACtWCcmOL0=;
-        b=frkkuVvX35+1EKwDsGQTMEIJ1CnUsFeKnzuFPt8Kv171AVvAX/p3YetDEcU72+8BPU
-         m8zoYErI9/aNKRsI2jfBfyyRz7qKF2t52yZmfmajuXSqCpHFwtEF7dPBY3mbLP2RY8wK
-         pGwzp5hMu0B6n/mvGw9u5hsMQlHmC+8+o4aajNH1khrvJR16242H4MoDkP8WpFQu5R+Z
-         B4TiMCnlvO+uhRlF3luCunYyd23MF3EbPIHbU1QsNpsmORYrqJEgBvEuUD6smN+BMpD0
-         DNunptoFzoYRjfeFMUN9O7fNZmzr7mQX3cQRNct8nflnog7+uYxEMsXXzx/GCsCX1+dT
-         1NXQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVptc4aJH2366BZx+lqK/4JumQmDP09gATC2AGm+FfoE/661MT4y8TFFPULdtbUK5qFmQitORs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzOmWyKyoZrh7CAuPqxJSBpjYoTSdGYvpY6mdkb/0F4Ntl11p/3
-	r4ZFUZo/ir9mdyxPVvl46jJRwqR6FMsbSwYMsh2DUQWn9RZne5g/u1YWyi+a50TwHOmDpwIN3m5
-	lC8UYFqMbPsLE4GhkvCezCvllFjv78tLgIYRrE5FizrNXchXC1EpcrOxgyq4=
-X-Gm-Gg: ASbGncs+CbjDpoMyZVe/KeuzpQFMj000zBxxn+6TAO2+0yOSY+4kcWEb31CAl2Z1bNi
-	Qzbzt9YDnqjbm4CN2m9YsuGKBESmB3a9o1n+Hbge5RNKQspg19EL5ajftqgwNKTSR2n8kusHcKc
-	IW7v5Kdcrx56fmIQKwqR2t66aKkfVnNRDkVpsyji4YtrCnyviOP2ZJz8v7rb0Epk07hXEtlrl3L
-	trmegOx52ySzUY1u6/SNWRZatSHgBra0QHVP1HyPsObT9M1yb42UcFpECVAtM+mp1k5b8QEYPnh
-	59p600CK4DwadN/nB319zqiZWholppr2RiqdpgK988FGooNYTf6j9zw21PIUe7WOlwFIESWUHWd
-	mfUOWJL9kZmqJyFrO9bj2Mq9QYtqfpiJU+Wbo
-X-Received: by 2002:a05:6a21:338c:b0:343:70a2:bca9 with SMTP id adf61e73a8af0-34f863015bcmr2554578637.53.1762321668659;
-        Tue, 04 Nov 2025 21:47:48 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHox9k7eKy6idJXRpDoSZegqgrG1eKq8dcvVFuh9rbDGp7JdOle1rYXMTc1Nt5mZN8yZZBYzQ==
-X-Received: by 2002:a05:6a21:338c:b0:343:70a2:bca9 with SMTP id adf61e73a8af0-34f863015bcmr2554527637.53.1762321667890;
-        Tue, 04 Nov 2025 21:47:47 -0800 (PST)
-Received: from hu-dikshita-hyd.qualcomm.com ([202.46.23.25])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3417d40da83sm2090203a91.14.2025.11.04.21.47.44
+        d=1e100.net; s=20230601; t=1762327074; x=1762931874;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=j1zZvaCPuzafmpZP8ufdbcI4+grNXo2mhPKgg1GgDe0=;
+        b=EOH2QYRWOGgEJ9UaJ8QWntQbw22mLVqUGGz7VVCWIU/3un1uWk7Tiw1es42DwYk/ub
+         oTVvcirNhcyUZQ61bszpEI2UmN4CuKJxHgSRJ6GciwbhubNseHR28hJ/jG4cIpCC3sjI
+         64+y+ZKrsETRuAkGrzuo9WSLym6fV10phm7e4nIM2bMRWOHJeDq4yVpOsJ5pPX4IwyLR
+         C/K+2oGNKnXiqOKTP/4eMHfWxKrsL7W/vygPazoT/vgzsTGqtKUvpYLDJM1rn6YwdjF0
+         NallNrQtfONBKccwe4vW1GxSP1sTQL/ES62SFwvXfaC2RL3KAL+6WY5gN9Tpi2GSdQaq
+         cTIw==
+X-Forwarded-Encrypted: i=1; AJvYcCW7t2NzQqBBHQmz/fnQVGV+g9/ngNFYFKdya5unw5k5m3xMHbcxyYH5iUQEDOcGKVP1Zlg+wfY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyCfxfaayds+JT+kL+/5QAmGQR31zVF1XE3MKH37mBjl/m/Ayg7
+	iB2ltT5WDa4Z5RpNCr4J1fmMgrhLaUDteWs7oagwkAvpbbq8Xbco2n0z4eM9P9xLRytWN/9L3qa
+	sL0J9rDn1AWd8ulPx1zTVI6lKnqo16frJfF6vvFztggjlmvwUqIFvtlsU5Q==
+X-Gm-Gg: ASbGncsGKkjEel8wVy+w88SI09anwtRPermtwEJQRXhZY7Bl2MOe9jYCJNCksiRCXfr
+	yWzjfVVeLUZDA7cLPZf9j5drTlkOgbYLpEUytC0u7ihJAAsmukjJFWvuKYfEJX1y8PUf7eh8236
+	szVVY6/NZbkI5P1ITmqjMccO0L04+vbwiqgCh8DEx1De7/IRcJy3ysv4YdpTvROx/G5DJ8I/OB4
+	e/eiNjvqiBLsFcGpjZ7SH6M8WtFOTHWRyvsbT7Eys9uCZoc4jsoXJrd5VBAVZ32/hRvLKkbz/YR
+	tiOAbSNYM5mG2m7K/DlRFok04u2z6VmsFdAwoflJttl45zwC/u3DtyDiWM5oipEkHsY=
+X-Received: by 2002:a5d:584a:0:b0:429:d0f0:6dd1 with SMTP id ffacd0b85a97d-429e33396cemr1745698f8f.58.1762327073610;
+        Tue, 04 Nov 2025 23:17:53 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFWIh69cXdbIz7tujC891g3OcIjbNWMGhZSBD4SjmvD0oB/WuNR9hBtdPZG5O4EQq5uitEgNw==
+X-Received: by 2002:a5d:584a:0:b0:429:d0f0:6dd1 with SMTP id ffacd0b85a97d-429e33396cemr1745669f8f.58.1762327073093;
+        Tue, 04 Nov 2025 23:17:53 -0800 (PST)
+Received: from redhat.com ([2a0d:6fc0:1536:2700:9203:49b4:a0d:b580])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-429dc1fdae2sm8869350f8f.41.2025.11.04.23.17.51
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 04 Nov 2025 21:47:47 -0800 (PST)
-From: Dikshita Agarwal <dikshita.agarwal@oss.qualcomm.com>
-Date: Wed, 05 Nov 2025 11:17:37 +0530
-Subject: [PATCH v3] media: iris: Refine internal buffer reconfiguration
- logic for resolution change
+        Tue, 04 Nov 2025 23:17:52 -0800 (PST)
+Date: Wed, 5 Nov 2025 02:17:49 -0500
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Jason Wang <jasowang@redhat.com>
+Cc: xuanzhuo@linux.alibaba.com, eperezma@redhat.com, andrew+netdev@lunn.ch,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, virtualization@lists.linux.dev,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH net V2] virtio_net: fix alignment for
+ virtio_net_hdr_v1_hash
+Message-ID: <20251105021637-mutt-send-email-mst@kernel.org>
+References: <20251031060551.126-1-jasowang@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251105-iris-seek-fix-v3-1-279debaba37a@oss.qualcomm.com>
-X-B4-Tracking: v=1; b=H4sIAPjkCmkC/3XMQQ6CMBCF4auQri2hUyrBlfcwLko7lYlCtdVGQ
- 7i7hZUxupnkf8l8E4sYCCPbFRMLmCiSH3PITcFMr8cTcrK5GVSghKgkp0CRR8Qzd/TkjQalHYD
- TClj+uQbM8+odjrl7incfXiufxLL+k5Lggm9tp5xC0TQAex9jeXvoi/HDUObDFjDBJ1J/I5AR0
- 1ptULZdLe0PZJ7nN5K6X6H2AAAA
-X-Change-ID: 20251103-iris-seek-fix-7a25af22fa52
-To: Vikash Garodia <vikash.garodia@oss.qualcomm.com>,
-        Abhinav Kumar <abhinav.kumar@linux.dev>,
-        Bryan O'Donoghue <bod@kernel.org>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Hans Verkuil <hverkuil@kernel.org>,
-        Stefan Schmidt <stefan.schmidt@linaro.org>
-Cc: linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        Val Packett <val@packett.cool>,
-        Dikshita Agarwal <dikshita.agarwal@oss.qualcomm.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1762321664; l=3061;
- i=dikshita.agarwal@oss.qualcomm.com; s=20240917; h=from:subject:message-id;
- bh=CmCMkFGdjKimc4a8I9wySoXS+kBG+D4uHqlvimyNf3M=;
- b=/iFaMOhCzLvfIlk8VviJtF0/+OhwhDKTGibbWsNNI5IWpqKCpPs8jIxaHpqoL81h1K9ORp80m
- wtfel3d5xtbAbV3c2ILDXNRq7K3CcdT6BhZN7I/JWMbXqdVTj4NZM8p
-X-Developer-Key: i=dikshita.agarwal@oss.qualcomm.com; a=ed25519;
- pk=EEvKY6Ar1OI5SWf44FJ1Ebo1KuQEVbbf5UNPO+UHVhM=
-X-Proofpoint-ORIG-GUID: Pw_neJU_Lp7U_Do5N9TxFk-Wbe4XK8by
-X-Proofpoint-GUID: Pw_neJU_Lp7U_Do5N9TxFk-Wbe4XK8by
-X-Authority-Analysis: v=2.4 cv=MK1tWcZl c=1 sm=1 tr=0 ts=690ae505 cx=c_pps
- a=oF/VQ+ItUULfLr/lQ2/icg==:117 a=ZePRamnt/+rB5gQjfz0u9A==:17
- a=IkcTkHD0fZMA:10 a=6UeiqGixMTsA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=e5mUnYsNAAAA:8 a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8
- a=mRoNVkTk4HY_DrcNXJoA:9 a=QEXdDO2ut3YA:10 a=3WC7DwWrALyhR5TkjVHa:22
- a=Vxmtnl_E_bksehYqCbjh:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTA1MDAzOSBTYWx0ZWRfX7yKFtLK9wOZr
- hPAL/rn+AAce5fjSGwbjrcD/y1RSG2agjo3mVo4A3sOm35TBL1u/M+9zshgqnAihr9tDXSiuKMn
- oBCxNsEq8TFzyF87/L6zmMzKnyFcWEb4gtC6e4wCJuV3kuDOs8MC6AU9xGe1LQzVmrMd5cgBRck
- ybekO+4noEipzdLgyX0gGirD27qIpT40eGbsU3XAo2LN5QhMZDmQM1tSZE4j3LdtQxcqrqmAE7T
- sNCmikr2XUTSeIrDpcgeXnrng4i+cjTw+yMRehaw8Ll1JMweMxlxtDt52I26vYgtHDcRnMUzSL4
- j7r2IkiFlR3Lbn+H9DFA7CKixSiX4srqOGsBkwx0R8LhtZ5bZT1KhMc9XoTpDNKEP2WvEIlV3zk
- V+isybXMcq8JgfbTJA8G6MQ+G/+KWA==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-11-05_02,2025-11-03_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 impostorscore=0 phishscore=0 priorityscore=1501
- lowpriorityscore=0 adultscore=0 bulkscore=0 clxscore=1015 spamscore=0
- suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2510240001
- definitions=main-2511050039
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251031060551.126-1-jasowang@redhat.com>
 
-Improve the condition used to determine when input internal buffers need
-to be reconfigured during streamon on the capture port. Previously, the
-check relied on the INPUT_PAUSE sub-state, which was also being set
-during seek operations. This led to input buffers being queued multiple
-times to the firmware, causing session errors due to duplicate buffer
-submissions.
+On Fri, Oct 31, 2025 at 02:05:51PM +0800, Jason Wang wrote:
+> diff --git a/include/linux/virtio_net.h b/include/linux/virtio_net.h
+> index 4d1780848d0e..b673c31569f3 100644
+> --- a/include/linux/virtio_net.h
+> +++ b/include/linux/virtio_net.h
+> @@ -401,7 +401,8 @@ virtio_net_hdr_tnl_from_skb(const struct sk_buff *skb,
+>  	if (!tnl_hdr_negotiated)
+>  		return -EINVAL;
+>  
+> -        vhdr->hash_hdr.hash_value = 0;
+> +	vhdr->hash_hdr.hash_value_lo = 0;
+> +	vhdr->hash_hdr.hash_value_hi = 0;
+>          vhdr->hash_hdr.hash_report = 0;
+>          vhdr->hash_hdr.padding = 0;
+>  
 
-This change introduces a more accurate check using the FIRST_IPSC and
-DRC sub-states to ensure that input buffer reconfiguration is triggered
-only during resolution change scenarios, such as streamoff/on on the
-capture port. This avoids duplicate buffer queuing during seek
-operations.
+BTW is it just me or is old code space-indented here?
+We should probably switch it to tabs.
 
-Fixes: c1f8b2cc72ec ("media: iris: handle streamoff/on from client in dynamic resolution change")
-Cc: stable@vger.kernel.org
-Reported-by: Val Packett <val@packett.cool>
-Closes: https://gitlab.freedesktop.org/gstreamer/gstreamer/-/issues/4700
-Signed-off-by: Dikshita Agarwal <dikshita.agarwal@oss.qualcomm.com>
----
-Changes in v3:
-- Fixed the compilation issue
-- Added stable@vger.kernel.org in Cc
-- Link to v2: https://lore.kernel.org/r/20251104-iris-seek-fix-v2-1-c9dace39b43d@oss.qualcomm.com
-
-Changes in v2:
-- Removed spurious space and addressed other comments (Nicolas)
-- Remove the unnecessary initializations (Self) 
-- Link to v1: https://lore.kernel.org/r/20251103-iris-seek-fix-v1-1-6db5f5e17722@oss.qualcomm.com
----
- drivers/media/platform/qcom/iris/iris_common.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/media/platform/qcom/iris/iris_common.c b/drivers/media/platform/qcom/iris/iris_common.c
-index 9fc663bdaf3fc989fe1273b4d4280a87f68de85d..7f1c7fe144f707accc2e3da65ce37cd6d9dfeaff 100644
---- a/drivers/media/platform/qcom/iris/iris_common.c
-+++ b/drivers/media/platform/qcom/iris/iris_common.c
-@@ -91,12 +91,14 @@ int iris_process_streamon_input(struct iris_inst *inst)
- int iris_process_streamon_output(struct iris_inst *inst)
- {
- 	const struct iris_hfi_command_ops *hfi_ops = inst->core->hfi_ops;
--	bool drain_active = false, drc_active = false;
- 	enum iris_inst_sub_state clear_sub_state = 0;
-+	bool drain_active, drc_active, first_ipsc;
- 	int ret = 0;
- 
- 	iris_scale_power(inst);
- 
-+	first_ipsc = inst->sub_state & IRIS_INST_SUB_FIRST_IPSC;
-+
- 	drain_active = inst->sub_state & IRIS_INST_SUB_DRAIN &&
- 		inst->sub_state & IRIS_INST_SUB_DRAIN_LAST;
- 
-@@ -108,7 +110,8 @@ int iris_process_streamon_output(struct iris_inst *inst)
- 	else if (drain_active)
- 		clear_sub_state = IRIS_INST_SUB_DRAIN | IRIS_INST_SUB_DRAIN_LAST;
- 
--	if (inst->domain == DECODER && inst->sub_state & IRIS_INST_SUB_INPUT_PAUSE) {
-+	/* Input internal buffer reconfiguration required in case of resolution change */
-+	if (first_ipsc || drc_active) {
- 		ret = iris_alloc_and_queue_input_int_bufs(inst);
- 		if (ret)
- 			return ret;
-
----
-base-commit: 163917839c0eea3bdfe3620f27f617a55fd76302
-change-id: 20251103-iris-seek-fix-7a25af22fa52
-
-Best regards,
 -- 
-Dikshita Agarwal <dikshita.agarwal@oss.qualcomm.com>
+MST
 
 
