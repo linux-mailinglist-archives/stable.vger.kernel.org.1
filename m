@@ -1,81 +1,63 @@
-Return-Path: <stable+bounces-192471-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192472-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E923C33BF8
-	for <lists+stable@lfdr.de>; Wed, 05 Nov 2025 03:19:01 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2693CC33C3C
+	for <lists+stable@lfdr.de>; Wed, 05 Nov 2025 03:27:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B0A9A189A115
-	for <lists+stable@lfdr.de>; Wed,  5 Nov 2025 02:17:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E613F3B978B
+	for <lists+stable@lfdr.de>; Wed,  5 Nov 2025 02:26:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 318CB2192EA;
-	Wed,  5 Nov 2025 02:17:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 180E7221F13;
+	Wed,  5 Nov 2025 02:26:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MWkXTJSJ"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="p6085tZf"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 770DF15667D
-	for <stable@vger.kernel.org>; Wed,  5 Nov 2025 02:17:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1008F212548;
+	Wed,  5 Nov 2025 02:26:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762309045; cv=none; b=BolSHW3m0HgsV8fssHRv+T1vsLyJnk0Xmg17qVjdkGGkawZiYYHKpPt5FCT/eKseoa7BmVVztSwK/JppixHGpOCVLAu5qqE2Kpttkwj0TDTbstlv+lpNKugMemHcxnFSyI/opJ+18kfwt05Z4P7CwhwS52cs/Tx7sbvZig7iBhw=
+	t=1762309613; cv=none; b=ox1t8N9lW3rlFwpH2AwrNa6Oo6yJpblEo15CgUVK6A46w/wgZhMn4jaSSQ+Sg1Tt9UbyQ+6DbRN1YJe6BHW3XLWL7DHRA2iMLubhgRHJ604/5ZE8Tc3K8IOmWTbKCaVOBBNh1+b7GXV4LvjyWp7wEetYPqZ5z1uODiJQnj0BpnE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762309045; c=relaxed/simple;
-	bh=tIkUTPwyZxnsrTixu38fGF7ItfuUWaUD0A4ZjzU7nQw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=uUOEx5ITOGE5IGJKevk7md3BQ+fIJagz6PJwMmzgTOOdQSyunvPKidy+3fofNNqCj9Z+iFDvCcvSCQNMPfNPpYlQhbKYf9DShoGpGQjtna8vOhVMho8707CAkwDtBwM70Jo85qcqzu94TG7AToDV7HHGAzxVvOf24lv9X36DqpE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MWkXTJSJ; arc=none smtp.client-ip=209.85.214.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-29633fdb2bcso2299985ad.3
-        for <stable@vger.kernel.org>; Tue, 04 Nov 2025 18:17:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762309043; x=1762913843; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=H6BPDj3wavhdGIBE9zS61DdhM4idE+BoIHjh+Hrdzy4=;
-        b=MWkXTJSJ5ZL4ErTJIoUQo/iNguMVRjHrQanPorc4eTV5Rlv8QYjCLFiGHjKmRjpRwk
-         4xxxKav3v6eLPXwNtCrgTZC5Iop06bfiTf9kPSewONmGJ+UX3VxZGBJZVTEiU1924+1V
-         4L51dAELkUT1pCO7iX/m427VCRuBlmTdMnmF5/ZZYx241HwHFjtO0QFEiXdqd6lUticB
-         DgoAcy4oQ9r1QW+/ArBqc98iNqaLw9dNhJWssQoWMYA7q1jydTZm1+PQeJQ6i1VNs85H
-         d4la/h/hbfXqIDObtkaLHY8CZwI/g8N5hzXS1dVqxS0FJhVmaN/AwwasIxuBsi37d5O3
-         6EyQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762309043; x=1762913843;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=H6BPDj3wavhdGIBE9zS61DdhM4idE+BoIHjh+Hrdzy4=;
-        b=OzRCS8ZJ+J/Gdcz/+KyVV5VyF+fRUr1bAaXpVCodKL87hjsmJcT8duVpkl/FWzpvH0
-         K1sPANgOLq8DvuBJztuHaLhyFe2BPqVOlGOqIzJWatxzjZ7xXrimIcrYB7vMKnki2mQA
-         NcUEjE4BSR0fl8yEuOlSZVii/UnCTwleIVl0FqSYryz2wIVyvvALfw8Db/Aaul0QgDAY
-         iv6dppRSSItC2UXwULoXREgxI3hRRTcxih1CnOuy32vaJqJNR8a8U38XgpCr4ckinYN+
-         l4ujcq7vkYnMHCx9PKRATgtW1YDJNVxIbHMXh/Ecl3q2M2AH3pvCGQBha2sabUMGp9eK
-         Zaeg==
-X-Forwarded-Encrypted: i=1; AJvYcCUQpq/H+w+QA4I8mIW7HW0LL6ingXrkq8Sj3BptiWfcWquspwGX+O95uWWvE4mf2ammUQrhPxg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzUDlnND6YC0t42h6EMoJScxFohVgqhK/wPUCWA/B0UiuO1IaO8
-	TQMmg4DnbjwITGtTceCSAD1VftDcd+EG0Yk2Se/Kj1YR3v7uAgnZpA9i
-X-Gm-Gg: ASbGncuAts7gSYnEerFySLUompkY4MSwbHvUPsxJdcVgefqbEA1FnVrHEE5zDO1zwuK
-	W95dwCHwnD7QGEAebjPTKLj+Ikvc645zHAk5qCGGT33I2nOKVhKOudB6U9nD5HPaPGCjqstiXO7
-	KDRiX4rvvBMeiOS+YzzF9nnXroq30HaSdYNod6SNeZWQbFEiQouIDqeQCW1m/JDwrOwPIm/ZoZP
-	T2b3OJphnsYOiUYTI68JRGZ3qOtFXJQZctOodmYK/tGazthMxUeUxpN2LUY86UelNTs7zJHudcz
-	plCipp668NYAGq+5Lp37F/sAuEWCSvINsPWvcC3Vx1WJ6vfosmusjbRQr0sb2cTmCZGAVPwof9p
-	+ijMlPP4Uqr7DDC6hgbLSILZzdSKYUbaHwfG0X6AK3P7xf1Epa+UDF38pyLKuT98u6GFeTVBwbY
-	ZP2nuv8MXR9ZuY9+VNM7EbAPA=
-X-Google-Smtp-Source: AGHT+IEYmsytaR1mEiRZPjc6ohcI5FrMoE1+JkNMyyS9qC58igvtXBSkpPErsXNTO8SABAM2YSvmsQ==
-X-Received: by 2002:a17:902:f684:b0:24b:1625:5fa5 with SMTP id d9443c01a7336-2962acfd7e2mr27115905ad.11.1762309042615;
-        Tue, 04 Nov 2025 18:17:22 -0800 (PST)
-Received: from [10.189.138.37] ([43.224.245.241])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29601998336sm41935745ad.31.2025.11.04.18.17.18
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 04 Nov 2025 18:17:22 -0800 (PST)
-Message-ID: <ed736d06-3f91-43d9-b24f-60c54807a1c9@gmail.com>
-Date: Wed, 5 Nov 2025 10:17:17 +0800
+	s=arc-20240116; t=1762309613; c=relaxed/simple;
+	bh=cl329UhLvY1eUGySS9zOB0PA/vLb/1DVdgsoUdvcNMw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=qXVT1xUMqi3XgrNJubFyKzuM1F2BXq1PGjG7YTvsGAzR7t05DFgXjl8ZtCIHmLvwBtTPAu9sx54cZ7d86wUGPKLaxRlsoR9T6akOr/rXe+x1KhlzJeSFNyHzbzzImK6T1S0/I7LH8j7NU32cyG7mPo3rhZxUEPMWBYwdWIqGRcQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=p6085tZf; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5A4KfmEg2904307;
+	Wed, 5 Nov 2025 02:26:36 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	IEY0M6R23/BS8mR0Tg9Y8Wdg6If3RyMSXoF8BV/dzbI=; b=p6085tZf75yOTwhI
+	4V++P+/mUvwomrZ8BdRjan5lqG+CyM839T/Gfe3GJFyliEUX9sumkIM+c/JLwwUX
+	Y0FsEqzhvrqIvU1peyrIqYcWNiHA0nVcDfzh313lCX/fh2Pd/k95GmVK0I+yZSO4
+	0VW4RH2JB1CLUBltL9D6WgyP9saWRo1TRxBPPI5Od1rqf6ixcjsdDzClRDGhyHFa
+	dyvvEcx7uw3WL3HMj5f701IQmbmQ01eBmX4jEBTDVPUmuO+dpowUGpRTFAOzkRN/
+	8nYp4uoj6wnVa9PlIlj/CuDpV81kwj35KIpZiJB0B+iVZa2azo1udRlbXqlXHbut
+	f1IGVA==
+Received: from nasanppmta02.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4a7mbbsrre-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 05 Nov 2025 02:26:36 +0000 (GMT)
+Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
+	by NASANPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 5A52QZEV003415
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 5 Nov 2025 02:26:35 GMT
+Received: from [10.253.38.19] (10.80.80.8) by nasanex01a.na.qualcomm.com
+ (10.52.223.231) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.24; Tue, 4 Nov
+ 2025 18:26:32 -0800
+Message-ID: <e9facb3e-1f35-46e4-a1d4-a377ecdb6d4a@quicinc.com>
+Date: Wed, 5 Nov 2025 10:26:29 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -83,73 +65,134 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 3/5] isofs: check the return value of
- sb_min_blocksize() in isofs_fill_super
-To: Damien Le Moal <dlemoal@kernel.org>,
- Yongpeng Yang <yangyongpeng.storage@gmail.com>,
- Namjae Jeon <linkinjeon@kernel.org>, Sungjong Seo <sj1557.seo@samsung.com>,
- OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>, Jan Kara <jack@suse.cz>,
- Carlos Maiolino <cem@kernel.org>, Jens Axboe <axboe@kernel.dk>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Sasha Levin <sashal@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>, Christoph Hellwig <hch@infradead.org>
-Cc: linux-xfs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- linux-block@vger.kernel.org, stable@vger.kernel.org,
- Matthew Wilcox <willy@infradead.org>, "Darrick J . Wong"
- <djwong@kernel.org>, Yongpeng Yang <yangyongpeng@xiaomi.com>,
- Christoph Hellwig <hch@lst.de>
-References: <20251104125009.2111925-2-yangyongpeng.storage@gmail.com>
- <20251104125009.2111925-4-yangyongpeng.storage@gmail.com>
- <0a04e68d-5b2a-4f0b-8051-60a0b7381d17@kernel.org>
+Subject: Re: [PATCH v1] Bluetooth: hci_qca: Fix SSR unable to wake up bug
+To: Paul Menzel <pmenzel@molgen.mpg.de>
+CC: Bartosz Golaszewski <brgl@bgdev.pl>,
+        Marcel Holtmann
+	<marcel@holtmann.org>,
+        Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+        <linux-arm-msm@vger.kernel.org>, <linux-bluetooth@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>,
+        <quic_chejiang@quicinc.com>, <quic_jiaymao@quicinc.com>,
+        <quic_chezhou@quicinc.com>
+References: <20251104112601.2670019-1-quic_shuaz@quicinc.com>
+ <0c54ccc4-0526-4d7a-9ce3-42dde5539c7b@molgen.mpg.de>
 Content-Language: en-US
-From: Yongpeng Yang <yangyongpeng.storage@gmail.com>
-In-Reply-To: <0a04e68d-5b2a-4f0b-8051-60a0b7381d17@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+From: Shuai Zhang <quic_shuaz@quicinc.com>
+In-Reply-To: <0c54ccc4-0526-4d7a-9ce3-42dde5539c7b@molgen.mpg.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nasanex01a.na.qualcomm.com (10.52.223.231)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: Zk960QH5Zp8rsCGVjSXKMPswKoyO9AVG
+X-Proofpoint-GUID: Zk960QH5Zp8rsCGVjSXKMPswKoyO9AVG
+X-Authority-Analysis: v=2.4 cv=MK1tWcZl c=1 sm=1 tr=0 ts=690ab5dc cx=c_pps
+ a=JYp8KDb2vCoCEuGobkYCKw==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17
+ a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=6UeiqGixMTsA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=COk6AnOGAAAA:8
+ a=b0gxvoJzpcTEPALTQqYA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+ a=TjNXssC_j7lpFel5tvFf:22 a=cPQSjfK2_nFv0Q5t_7PE:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTA1MDAxMyBTYWx0ZWRfXzWw4wTuVVJlF
+ T3wHim4Z7bQaTuDTDJuEV8J9/guLy8aoR/ychn2995t/z+V24mI4+wyG2PgIJUsgM9jREQ/+PU8
+ 0l+B1+C8CYgLOZBPs2N/sXkri+790MTSBnks2c+OuJiN2vpQcmZBrH1rBYz7H30tLgkczmY/uHj
+ Qj1V3Ky8yaMsy/P2WNqFr9/ifbfBtkHsdikHYX81R2sSPlbfrIgiR1UnkivZqK913/lrIWbf2gS
+ /PQMJLCYQsa0y9d/mewsSpCE4sDUulbmLyV7EN7Ay0IrlN7xt1zn4aqCFFQMRd2Y5C2UD9dsmAD
+ 9XuBXjNGYKz2ajIMlNvpVGwFjuiFw0rTDXz9AqBfiPsj9t17L+3pVaFCfzEeSWysL724GP+Myws
+ cMVMo6jHbncm7cFBCU7zeDgXorTQYQ==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-11-05_01,2025-11-03_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 impostorscore=0 phishscore=0 priorityscore=1501
+ lowpriorityscore=0 adultscore=0 bulkscore=0 clxscore=1015 spamscore=0
+ suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2510240001
+ definitions=main-2511050013
 
-On 11/5/25 05:29, Damien Le Moal wrote:
-> On 11/4/25 21:50, Yongpeng Yang wrote:
->> From: Yongpeng Yang <yangyongpeng@xiaomi.com>
->>
->> sb_min_blocksize() may return 0. Check its return value to avoid
->> opt->blocksize and sb->s_blocksize is 0.
->>
->> Cc: <stable@vger.kernel.org> # v6.15
->> Fixes: 1b17a46c9243e9 ("isofs: convert isofs to use the new mount API")
->> Reviewed-by: Jan Kara <jack@suse.cz>
->> Reviewed-by: Christoph Hellwig <hch@lst.de>
->> Signed-off-by: Yongpeng Yang <yangyongpeng@xiaomi.com>
+Hi Paul
+
+Thanks for the feedback!
+
+On 11/4/2025 7:43 PM, Paul Menzel wrote:
+> Dear Shuai,
+> 
+> 
+> Thank you for your patch.
+> 
+> Am 04.11.25 um 12:26 schrieb Shuai Zhang:
+>> During SSR data collection period, the processing of hw_error events
+>> must wait until SSR data Collected or the timeout before it can proceed.
+> 
+> Collected → collected
+> 
+>> The wake_up_bit function has been added to address the issue
+> 
+> has been added → is added
+> 
+>> where hw_error events could only be processed after the timeout.
+> 
+> The problem is not totally clear to me. What is the current situation? Maybe start the commit message with that?
+> 
+>> The timeout unit has been changed from jiffies to milliseconds (ms).
+> 
+> Please give the numbers, and also document effect of this change. Is the timeout the same, or different?
+> 
+> Also, why not make that a separate commit?
+> 
+> Please document a test case.
+> 
+
+I’ll fix the grammar, add a commit message to describe the issue, 
+include a test case, and use clear_and_wake_up_bit for atomicity.
+
+Additionally, I will submit a new patch to explain the timeout unit issue.
+
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Shuai Zhang <quic_shuaz@quicinc.com>
 >> ---
->>   fs/isofs/inode.c | 5 +++++
->>   1 file changed, 5 insertions(+)
+>>   drivers/bluetooth/hci_qca.c | 4 +++-
+>>   1 file changed, 3 insertions(+), 1 deletion(-)
 >>
->> diff --git a/fs/isofs/inode.c b/fs/isofs/inode.c
->> index 6f0e6b19383c..ad3143d4066b 100644
->> --- a/fs/isofs/inode.c
->> +++ b/fs/isofs/inode.c
->> @@ -610,6 +610,11 @@ static int isofs_fill_super(struct super_block *s, struct fs_context *fc)
->>   		goto out_freesbi;
->>   	}
->>   	opt->blocksize = sb_min_blocksize(s, opt->blocksize);
->> +	if (!opt->blocksize) {
->> +		printk(KERN_ERR
->> +		       "ISOFS: unable to set blocksize\n");
+>> diff --git a/drivers/bluetooth/hci_qca.c b/drivers/bluetooth/hci_qca.c
+>> index 888176b0f..a2e3c97a8 100644
+>> --- a/drivers/bluetooth/hci_qca.c
+>> +++ b/drivers/bluetooth/hci_qca.c
+>> @@ -1105,6 +1105,7 @@ static void qca_controller_memdump(struct work_struct *work)
+>>                   cancel_delayed_work(&qca->ctrl_memdump_timeout);
+>>                   clear_bit(QCA_MEMDUMP_COLLECTION, &qca->flags);
+>>                   clear_bit(QCA_IBS_DISABLED, &qca->flags);
+>> +                wake_up_bit(&qca->flags, QCA_MEMDUMP_COLLECTION);
+>>                   mutex_unlock(&qca->hci_memdump_lock);
+>>                   return;
+>>               }
+>> @@ -1182,6 +1183,7 @@ static void qca_controller_memdump(struct work_struct *work)
+>>               qca->qca_memdump = NULL;
+>>               qca->memdump_state = QCA_MEMDUMP_COLLECTED;
+>>               clear_bit(QCA_MEMDUMP_COLLECTION, &qca->flags);
+>> +            wake_up_bit(&qca->flags, QCA_MEMDUMP_COLLECTION);
 > 
-> Nit: using pr_err() maybe better here ? Not sure what isofs prefers.
+> `include/linux/wait_bit.h` also contains `clear_and_wake_up_bit()`.
 > 
+>>           }
+>>             mutex_unlock(&qca->hci_memdump_lock);
+>> @@ -1602,7 +1604,7 @@ static void qca_wait_for_dump_collection(struct hci_dev *hdev)
+>>       struct qca_data *qca = hu->priv;
+>>         wait_on_bit_timeout(&qca->flags, QCA_MEMDUMP_COLLECTION,
+>> -                TASK_UNINTERRUPTIBLE, MEMDUMP_TIMEOUT_MS);
+>> +                TASK_UNINTERRUPTIBLE, msecs_to_jiffies(MEMDUMP_TIMEOUT_MS));
+>>         clear_bit(QCA_MEMDUMP_COLLECTION, &qca->flags);
+>>   }
+> 
+> 
+> Kind regards,
+> 
+> Paul
 
-Thanks for the review. I checked fs/isofs/inode.c, and other functions
-seem to prefer using "printk(KERN_ERR|KERN_DEBUG|KERN_WARNING ...)"
-rather than "pr_err|pr_debug|pr_warn".
+Kind regards,
 
-Yongpeng,
+Shuai
 
->> +		goto out_freesbi;
->> +	}
->>   
->>   	sbi->s_high_sierra = 0; /* default is iso9660 */
->>   	sbi->s_session = opt->session;
-> 
-> 
 
 
