@@ -1,153 +1,132 @@
-Return-Path: <stable+bounces-192475-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192476-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A51E2C33E2D
-	for <lists+stable@lfdr.de>; Wed, 05 Nov 2025 04:57:16 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 900C0C33ECA
+	for <lists+stable@lfdr.de>; Wed, 05 Nov 2025 05:21:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 357F218C0E59
-	for <lists+stable@lfdr.de>; Wed,  5 Nov 2025 03:57:41 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 690014E14B1
+	for <lists+stable@lfdr.de>; Wed,  5 Nov 2025 04:20:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DB3B25FA29;
-	Wed,  5 Nov 2025 03:57:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BCDF24A074;
+	Wed,  5 Nov 2025 04:20:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="W8yWVUdD"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E1A5207A0B;
-	Wed,  5 Nov 2025 03:57:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B0742F56;
+	Wed,  5 Nov 2025 04:20:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762315031; cv=none; b=NDs6sGtnNsoS2sY/g+Xe4enkcHQ2DbRSPaq+ALUwTYbg997fhZ7Fk+IHR7jXxd5S3pcmn7V765FqUCfFyFTKVp4lF+aRzk9zEos2tw6Z+htTGK41DyU8fPnnSdMBht0N4QCmgtSFwkGEJvl7b/AM8S9S8Z9juhPkLQgq3uTiqRw=
+	t=1762316455; cv=none; b=SHWjVo2DT6VXvv3uMtTQR4OE3ptKMd5msLO1Nu4dNI5o4TWkjOtrcjDJaXqyplp65a+r/xOpIzCL8IGOuiQuAP40Z7hFLHsoUj/+AyS59sV3mu843niL/7GvmMnGhp4eVuFnGLh6F5+Bcxj19z1raR11Qighw5bvkfwD5uzZFNs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762315031; c=relaxed/simple;
-	bh=roP89AMtaTLpPMYiuLN11KB4aUDrPhr49n3kX3iB0rk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=eWPR8MzyiCww77kr0yZI+jSKgvEUzJfEKLAXryhLsiH/4qDZNQJZJmFALW63ZSefNESp9pnIx2iAJCsFqRCrbHKditPZktXbN6wN6plYGb7KSZH1vps0dRQlz21zPca7S1chk4X8fziUT65HZauCqLYKhOXPdNTkhUEJ5CEhT0Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BF0EB16F2;
-	Tue,  4 Nov 2025 19:57:00 -0800 (PST)
-Received: from [10.164.136.37] (unknown [10.164.136.37])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 855B13F66E;
-	Tue,  4 Nov 2025 19:57:05 -0800 (PST)
-Message-ID: <586b8d19-a5d2-4248-869b-98f39b792acb@arm.com>
-Date: Wed, 5 Nov 2025 09:27:02 +0530
+	s=arc-20240116; t=1762316455; c=relaxed/simple;
+	bh=TZ/iCpQhqI2k8DgkkaFJpNQayv4Ws2h8B/Abzdxr+K8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=d7EBD2R3wd7V38AICl8pwI3O5noQZbxpiGwMcuYDQCvT+QvDyvH72JWFptQyhLGXUMLj8Fd+rvlI2cqTolbe10ED87Hrqd7z3GBrpFrnqJJu9cLMrJDpYcRX8rjusqAyUM0Wpk0NgYhyoJt00CFhD8Gwxr4Lb9uF7U+FoYAbMIg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=W8yWVUdD; arc=none smtp.client-ip=198.175.65.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1762316454; x=1793852454;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=TZ/iCpQhqI2k8DgkkaFJpNQayv4Ws2h8B/Abzdxr+K8=;
+  b=W8yWVUdD1FaY2RlBNXtU7S27+xqLYRMHtUcreWHJyrrGcOoYN8wKt4Kq
+   BRhiGPZCfCEKRQSp0VGlsxg3jQX3ZWFU25IujHK6Zam5Hcr9ODzxt3OM9
+   hYyhO5Dv7+HntsDIKoYBBcGqzCACHXIEahD2mGiKQ/z5N6C78Ou5tWlAA
+   MSv/RfYzlx6PaIfngAYhjyAwQmhCQ+Vsq2zuRClIhLTlntiAhcnchGWow
+   enuD8fjSyJaqsqJbJ4d8Ikk3jJJpF8047Rw8Shu7HhyoOrk8GzyEj3D2C
+   C7zi4WgWznUpGbDsGQ4iTHWCcMdkNk3QP8sNdzFeazWs1XzBpZEzEqy7x
+   A==;
+X-CSE-ConnectionGUID: EzyIoh2QTAqwrCHIPsJ7ug==
+X-CSE-MsgGUID: MJaRriBaT0GO0JRbX/ypmw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11603"; a="74716731"
+X-IronPort-AV: E=Sophos;i="6.19,280,1754982000"; 
+   d="scan'208";a="74716731"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Nov 2025 20:20:53 -0800
+X-CSE-ConnectionGUID: QYLtRUMnQEeRSfVzBGxQ5A==
+X-CSE-MsgGUID: FzSmdCbGRSq8R4gHd8Yy8w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,280,1754982000"; 
+   d="scan'208";a="191698524"
+Received: from lkp-server02.sh.intel.com (HELO 66d7546c76b2) ([10.239.97.151])
+  by orviesa004.jf.intel.com with ESMTP; 04 Nov 2025 20:20:48 -0800
+Received: from kbuild by 66d7546c76b2 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1vGV0e-000S9y-33;
+	Wed, 05 Nov 2025 04:20:38 +0000
+Date: Wed, 5 Nov 2025 12:20:07 +0800
+From: kernel test robot <lkp@intel.com>
+To: Maciej Wieczor-Retman <m.wieczorretman@pm.me>,
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+	Alexander Potapenko <glider@google.com>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	Dmitry Vyukov <dvyukov@google.com>,
+	Vincenzo Frascino <vincenzo.frascino@arm.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Uladzislau Rezki <urezki@gmail.com>, Marco Elver <elver@google.com>
+Cc: oe-kbuild-all@lists.linux.dev,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	m.wieczorretman@pm.me, stable@vger.kernel.org,
+	Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>,
+	Baoquan He <bhe@redhat.com>, kasan-dev@googlegroups.com,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1 1/2] kasan: Unpoison pcpu chunks with base address tag
+Message-ID: <202511051219.fmeaqcaq-lkp@intel.com>
+References: <821677dd824d003cc5b7a77891db4723e23518ea.1762267022.git.m.wieczorretman@pm.me>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] arm64/pageattr: Propagate return value from
- __change_memory_common
-To: Will Deacon <will@kernel.org>
-Cc: Yang Shi <yang@os.amperecomputing.com>, catalin.marinas@arm.com,
- ryan.roberts@arm.com, rppt@kernel.org, shijie@os.amperecomputing.com,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20251103061306.82034-1-dev.jain@arm.com>
- <aQjHQt2rYL6av4qw@willie-the-truck>
- <f594696b-ba33-4c04-9cf5-e88767221ae0@os.amperecomputing.com>
- <f8b899cf-d377-4dc7-a57c-82826ea5e1ea@arm.com>
- <aQn4EwKar66UZ7rz@willie-the-truck>
-Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <aQn4EwKar66UZ7rz@willie-the-truck>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <821677dd824d003cc5b7a77891db4723e23518ea.1762267022.git.m.wieczorretman@pm.me>
+
+Hi Maciej,
+
+kernel test robot noticed the following build warnings:
+
+[auto build test WARNING on akpm-mm/mm-everything]
+[also build test WARNING on linus/master v6.18-rc4 next-20251104]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Maciej-Wieczor-Retman/kasan-Unpoison-pcpu-chunks-with-base-address-tag/20251104-225204
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
+patch link:    https://lore.kernel.org/r/821677dd824d003cc5b7a77891db4723e23518ea.1762267022.git.m.wieczorretman%40pm.me
+patch subject: [PATCH v1 1/2] kasan: Unpoison pcpu chunks with base address tag
+config: x86_64-buildonly-randconfig-003-20251105 (https://download.01.org/0day-ci/archive/20251105/202511051219.fmeaqcaq-lkp@intel.com/config)
+compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251105/202511051219.fmeaqcaq-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202511051219.fmeaqcaq-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+>> mm/kasan/common.c:584:6: warning: no previous prototype for '__kasan_unpoison_vmap_areas' [-Wmissing-prototypes]
+     584 | void __kasan_unpoison_vmap_areas(struct vm_struct **vms, int nr_vms)
+         |      ^~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
-On 04/11/25 6:26 pm, Will Deacon wrote:
-> On Tue, Nov 04, 2025 at 09:06:12AM +0530, Dev Jain wrote:
->> On 04/11/25 12:15 am, Yang Shi wrote:
->>> On 11/3/25 7:16 AM, Will Deacon wrote:
->>>> On Mon, Nov 03, 2025 at 11:43:06AM +0530, Dev Jain wrote:
->>>>> Post a166563e7ec3 ("arm64: mm: support large block mapping when
->>>>> rodata=full"),
->>>>> __change_memory_common has a real chance of failing due to split
->>>>> failure.
->>>>> Before that commit, this line was introduced in c55191e96caa,
->>>>> still having
->>>>> a chance of failing if it needs to allocate pagetable memory in
->>>>> apply_to_page_range, although that has never been observed to be true.
->>>>> In general, we should always propagate the return value to the caller.
->>>>>
->>>>> Cc: stable@vger.kernel.org
->>>>> Fixes: c55191e96caa ("arm64: mm: apply r/o permissions of VM
->>>>> areas to its linear alias as well")
->>>>> Signed-off-by: Dev Jain <dev.jain@arm.com>
->>>>> ---
->>>>> Based on Linux 6.18-rc4.
->>>>>
->>>>>    arch/arm64/mm/pageattr.c | 5 ++++-
->>>>>    1 file changed, 4 insertions(+), 1 deletion(-)
->>>>>
->>>>> diff --git a/arch/arm64/mm/pageattr.c b/arch/arm64/mm/pageattr.c
->>>>> index 5135f2d66958..b4ea86cd3a71 100644
->>>>> --- a/arch/arm64/mm/pageattr.c
->>>>> +++ b/arch/arm64/mm/pageattr.c
->>>>> @@ -148,6 +148,7 @@ static int change_memory_common(unsigned
->>>>> long addr, int numpages,
->>>>>        unsigned long size = PAGE_SIZE * numpages;
->>>>>        unsigned long end = start + size;
->>>>>        struct vm_struct *area;
->>>>> +    int ret;
->>>>>        int i;
->>>>>          if (!PAGE_ALIGNED(addr)) {
->>>>> @@ -185,8 +186,10 @@ static int change_memory_common(unsigned
->>>>> long addr, int numpages,
->>>>>        if (rodata_full && (pgprot_val(set_mask) == PTE_RDONLY ||
->>>>>                    pgprot_val(clear_mask) == PTE_RDONLY)) {
->>>>>            for (i = 0; i < area->nr_pages; i++) {
->>>>> - __change_memory_common((u64)page_address(area->pages[i]),
->>>>> +            ret =
->>>>> __change_memory_common((u64)page_address(area->pages[i]),
->>>>>                               PAGE_SIZE, set_mask, clear_mask);
->>>>> +            if (ret)
->>>>> +                return ret;
->>>> Hmm, this means we can return failure half-way through the operation. Is
->>>> that something callers are expecting to handle? If so, how can they tell
->>>> how far we got?
->>> IIUC the callers don't have to know whether it is half-way or not
->>> because the callers will change the permission back (e.g. to RW) for the
->>> whole range when freeing memory.
->> Yes, it is the caller's responsibility to set VM_FLUSH_RESET_PERMS flag.
->> Upon vfree(), it will change the direct map permissions back to RW.
-> Ok, but vfree() ends up using update_range_prot() to do that and if we
-> need to worry about that failing (as per your commit message), then
-> we're in trouble because the calls to set_area_direct_map() are unchecked.
->
-> In other words, this patch is either not necessary or it is incomplete.
+vim +/__kasan_unpoison_vmap_areas +584 mm/kasan/common.c
 
-Here is the relevant email, in the discussion between Ryan and Yang:
+   583	
+ > 584	void __kasan_unpoison_vmap_areas(struct vm_struct **vms, int nr_vms)
 
-https://lore.kernel.org/all/fe52a1d8-5211-4962-afc8-c3f9caf64119@os.amperecomputing.com/
-
-We had concluded that all callers of set_memory_ro() or set_memory_rox() (which require the
-linear map perm change back to default, upon vfree() ) will call it for the entire region (vm_struct).
-So, when we do the set_direct_map_invalid_noflush, it is guaranteed that the region has already
-been split. So this call cannot fail.
-
-https://lore.kernel.org/all/f8898c87-8f49-4ef2-86ae-b60bcf67658c@os.amperecomputing.com/
-
-This email notes that there is some code doing set_memory_rw() and unnecessarily setting the VM_FLUSH_RESET_PERMS
-flag, but in that case we don't care about the set_direct_map_invalid_noflush call failing because the protections
-are already RW.
-
-Although we had also observed that all of this is fragile and depends on the caller doing the
-correct thing. The real solution should be somehow getting rid of the BBM style invalidation.
-Ryan had proposed some methods in that email thread.
-
-One solution which I had thought of, is that, observe that we are doing an overkill by
-setting the linear map to invalid and then default, for the *entire* region. What we
-can do is iterate over the linear map alias of the vm_struct *area and only change permission
-back to RW for the pages which are *not* RW. And, those relevant mappings are guaranteed to
-be split because they were changed from RW to not RW.
-
->
-> Will
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
