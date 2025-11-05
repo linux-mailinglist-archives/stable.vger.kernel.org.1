@@ -1,246 +1,129 @@
-Return-Path: <stable+bounces-192500-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192501-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F6A0C358BF
-	for <lists+stable@lfdr.de>; Wed, 05 Nov 2025 12:59:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EE06CC35908
+	for <lists+stable@lfdr.de>; Wed, 05 Nov 2025 13:10:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C84924EFCCA
-	for <lists+stable@lfdr.de>; Wed,  5 Nov 2025 11:58:38 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5DD324E6A58
+	for <lists+stable@lfdr.de>; Wed,  5 Nov 2025 12:10:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B537231283A;
-	Wed,  5 Nov 2025 11:58:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05AD62EC083;
+	Wed,  5 Nov 2025 12:10:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gydHe1az"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gqtNW8eb"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F10C8312800
-	for <stable@vger.kernel.org>; Wed,  5 Nov 2025 11:58:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16AF2309F1B
+	for <stable@vger.kernel.org>; Wed,  5 Nov 2025 12:10:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762343913; cv=none; b=RRn5FZ44Ri7otRUalJpKcxdj1BgA03I4X7JPyXSHms5YHhobMsR0L+gzsmMSF/XjmfMJoRoJV7R5xdjaWdB7Nd35QizfEmqS1KJrafS+xPlAvO/QdOmBamLhtZJUTHbL0f5tvLnHcIXw9oJxIPRpFopCZEtkahSLFOBZySfRb1I=
+	t=1762344606; cv=none; b=B/Kj5TUGKIMrn6IbrZbKvyLJTKfL/T2QGvRAhgSlWTudnd+XKN3hI18N0dq45AX96MI+VVxOSvfHW2jL9j7YoGbSoVfXELIl7PR9XwxRb7kEpcbIBiYrH64hBlUDCt6qICu20148JVFyNXNnNzG17GrrxUWtfe1H3+7bmmQ47Xw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762343913; c=relaxed/simple;
-	bh=eIENOMVlvTgUtIsFQ/3obVK+KyypwShHtyRs/gUjiDk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=CCSoLIWVf3C9gpsp6PAm4IXNduk/GeL8NuEIRvCTweFc8z6G6VbWoBKJYThIjMstKRldfulJjWzgRBy17MtmEMiTHlNEch/0i3gTHtGF/LuRGhC3zwmA23q04J13tlEe8Ccckd50/QrJ4i0Vh/Uux8m2AB5zL8d8XBysvAx8Py4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gydHe1az; arc=none smtp.client-ip=209.85.214.177
+	s=arc-20240116; t=1762344606; c=relaxed/simple;
+	bh=bnpQGzI4B5hGrp0wTon9oxArxPpXYiU4pYwtlgfUFDI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=k4NS0F5ShVZGh4XZfOHhxiTEmgRJ6+I75JauyAnkTg7MuZXrGlD/S3JLpMiDUF0LNUt/6jRZirf/Mx/lpYdfQtMRBOHHLfRzS7uEmJjl8lj0cCGkCGT0KKTazBD+S2StISr45p5WFTB33avZu0SeN/5CSdaHm8zyJ+vcQRsXEro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gqtNW8eb; arc=none smtp.client-ip=209.85.128.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-294fc62d7f4so63903435ad.2
-        for <stable@vger.kernel.org>; Wed, 05 Nov 2025 03:58:31 -0800 (PST)
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-47118259fd8so48609025e9.3
+        for <stable@vger.kernel.org>; Wed, 05 Nov 2025 04:10:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762343911; x=1762948711; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1762344603; x=1762949403; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=9/RiNKBRmnkSJkzhhg8RJuuCLAED/PQy6gI5C9KpT30=;
-        b=gydHe1az50+GWb8EE76fA3sA0QyFxJjB/omqfJSkcu1xaYMf1DcTM9Pb3pttFlq7Pl
-         FLRps5s9Or8CX5EW1G5NC5fZsO+j+jB7QgcZJbhIVb7fTB9bQqWm7yVvFEF+98cWwtyS
-         CMBr39b+ad7hzF8SmqVLSKeQXvt38eKIE0xT3HbyoIPTuAX6uj1SxpXrHVygqoiloNqf
-         OEXBsUK5mnzNaBXskzbhWnbcgpIg+ZwHMvXbqfyQp3M0dDDVMBZZaiLPQtbO8mtDtddr
-         xtgwBqI6nu7b6hfLiQeZ9lNlSWTm8kMGqvED+zx6zONdr+SedEkazdaCSF3DF+n55EFw
-         XmfA==
+        bh=U3J/NIy5xeeSdfSZQ6BlX/MI3fqUlXs6wtPy1sv0wyk=;
+        b=gqtNW8ebBMLON3eE/c3FMlZ84D/x8oUwqgtbYUesTmMBcuKhNXei8NISqsFLKymlvH
+         1IAPN9ewiff+PbO2s4xVBBWleS/qgOOkbbkmIpZdNXtQwVschchYi7YZ6E25AaFf8l1V
+         RTu+57Ugo3qAs7w8hDJrMcPC8zmfDVgMyFitaPoCtpMe7xMXge+4z9cglMXoj3ZI+M5U
+         0+kREgac7OgN4YFz2GfqglAF8NIj7VVtCPt07fiQm7b5g4uYgL94g+OO/JRengeQZjbO
+         RDOCpJ99jWFAFOduSCF0na1x/sWkf59eq9Ym6a++n8ptWWPHFPGvFFGGMCAYhhwkTNta
+         3Hjg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762343911; x=1762948711;
+        d=1e100.net; s=20230601; t=1762344603; x=1762949403;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=9/RiNKBRmnkSJkzhhg8RJuuCLAED/PQy6gI5C9KpT30=;
-        b=r1FHUFltX7TV5wESsFtT5YkFl02FkPc9L25SfIYJfwptayNu0V9Z9ljPEAH/KZzUuS
-         Z4tykOhRIAR2Tq/dzw4ngtGzAxDKridtfoIR1t94F+DwuRR6Sgs3insGZrqC2zdRqiZn
-         2nOzWw8DmpCjZ/Q6/e8tnESidswleS7x8Yo3htpStB0a6N6nUNgKzRuYmN0NImD4MwWQ
-         neOQ2dWAcf38x9hdml+hFLWKO3u4xj17E7jUJ5lFS5MFsEIyAZD+r5+cArrd0wPvX64r
-         YHY0xSbk+Y604SRbXmYdeE7X44I74gsxVNg/YihrUZl+i+SuYI77SExEvsb2QYYIvPZd
-         KSiw==
-X-Forwarded-Encrypted: i=1; AJvYcCUDf5OgXiZ+Hm9uBRem1nyjkydDm20ynk7oLujsmnEJqJpd9duioaDScxVBvXZmKB9woxBuYu0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz+x3JkF8cu3AgwXst2JCa2jIdaecFHyPx/ndk9k7kPH5ijIFoN
-	cJKJ1cMBsCOcXFHYJg2KgNEMtyjz9rFHXVqqCscxm9xF9AyW5ddzF4a0
-X-Gm-Gg: ASbGncvC+uTID0zgeJYfeV8r5gfxyLWNrouLPYba2O3edu/3XZzC6qAo0r+yLTklvf0
-	h0lugd2BORkeVoK7+qdBj/GmQ3p3DScHNiuno9lrGn9IcU/nIvYCUxUnxBF8vMjSowuKTm66xkR
-	k9cul54yxpsFmWo1E0KhAvN2z/US8qmgclNcgb5ji2DGtotyA28S8hlU8IVr5eTXs36x2QAnT1N
-	I0xWS9huUcVnupEv10XXaR7suyMOXu8tuVpxYtr/RZF+YGz8WX0UWol4mAqlUK00kCseB8xNrDH
-	A4wvyCDjBwJhQPpRNWU6h5kddk/oCnA3RHESnCa8MBaJivjclCpauOi4TMIKYHTmMb4emuWJCXe
-	wzNzsB8DqGe0Zzp+78FO+pB4G2TFoIxXt8RKWAJi/4TQQIGWWiScbCX7z+YZqnmAYEkUG/EjFW8
-	B7qQ==
-X-Google-Smtp-Source: AGHT+IGZ2HWIY2B6TdrBgHFBIW+Q/qnLcYpDWz/gdPqE3sljXu8cOFt0VQuunzihT+evp6YD/wP+RA==
-X-Received: by 2002:a17:903:2c0f:b0:295:a1a5:bb0f with SMTP id d9443c01a7336-2962add9f39mr39434405ad.18.1762343911172;
-        Wed, 05 Nov 2025 03:58:31 -0800 (PST)
-Received: from lgs.. ([103.86.77.131])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29601a5070fsm60041855ad.75.2025.11.05.03.58.29
+        bh=U3J/NIy5xeeSdfSZQ6BlX/MI3fqUlXs6wtPy1sv0wyk=;
+        b=GoSZZqgFc7nzpqmJWwPBXl2GwedKJs+Z7TavAMfOL3GoWaSYUtAb/uFMPXOQIVQgGB
+         8Ma5kVRUs5xWMLe3nZJX8vtC74b9FEY/+xzhea1C9C/hG5JVUfZ4fYIcdyiDRcpJIxqg
+         n9PUvsNKj4AAf1Na7XRdz2ek5jvy1V3V3lgNsNdrQBnRSMwmLeXr3rzRacs5T5AXE7X9
+         YfRKMzTcQqIwlw8LYciJfodCqSFWGvgcs8FF/MEuiXVw1F+jzhSpotTXZKYLcOMNZ1rJ
+         SR0rDHr9O6aTKfKRTP2cLNZk0Ffkx2N3X3yJP7gt8Ws7rFUqpC9lx7VwhGkQ3QOiD9if
+         ZYQQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWHy9EK7SrguDmxJGgt1AUQ3Y4+k+pw9GUpHSPHmY0UUQOLa3h9lyZU4QukyFkuD64x97I5y+c=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzwiKGWCp4aZQiJKNttWK3aQMCpBekSnvnYP08E4OF0YtZp1x3E
+	rAWY6SyH/SZNZXX9zx5FcJeQtIsx5PwXmLWvQBT1JUKf22z+lnd8rIZzgCgg0Q==
+X-Gm-Gg: ASbGncvuorDi3BP/KV867/IDGHkuD36DRsYv5S5qCQxuE/ytvU5bKafibQ0vyfxXPrt
+	3VEHW8gIHUP8E8eL5RXClLD/e8T+GmUoSL1yVAxBGBaQglec0zacoz6AGoOSm/GVH78XBz56qN5
+	wVdH980WSdu7xPd5IFAQ2LtciR/bVm3XpFAKEg8m6oQhERjcg57e0HfRMjkFP12Ejmg/Tpxh/dV
+	O0NuzAkuABKTKS/bBDkWG00Cxtzu+tzhigACFy1zODuPqSEBY6qE8a9S+gSeKDk2I2NgXjmp/sO
+	jvfannpiZ/SIopIuIaub8+iwaGtb609j3MNlu3NuqD5dz15en55ytPbRtdI7h90qnvllKp0b4Pu
+	vHzysbCLTeUjdQmzQr9xyZnJBrFSIL08GSyBufxUltz7Isb/+G4Jab0NrOa07CwsH3VqLZ0TbMM
+	GRYt0Hl04aUk9ih0hvaVoVfmgQkYXfK51H1d5y9tLDl34bcWyywR8m2nv8/RIrzmfO4JGU
+X-Google-Smtp-Source: AGHT+IEVMkfsi/TMQ5+j0mTFe69wny26XbcL9qotwvAht7k4HyToyOV6jdByqLiw8PySJXwST5xGCA==
+X-Received: by 2002:a05:600c:1e1d:b0:477:a9e:859a with SMTP id 5b1f17b1804b1-4775cdf54e7mr25560405e9.22.1762344603073;
+        Wed, 05 Nov 2025 04:10:03 -0800 (PST)
+Received: from GALAXY.zrh.enclustra.com (xcpe-178-82-9-56.dyn.res.sunrise.net. [178.82.9.56])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-429dc1f5f8csm9919165f8f.23.2025.11.05.04.10.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 05 Nov 2025 03:58:30 -0800 (PST)
-From: Guangshuo Li <lgs201920130244@gmail.com>
-To: Stefan Richter <stefanr@s5r6.in-berlin.de>,
-	linux1394-devel@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org
-Cc: Guangshuo Li <lgs201920130244@gmail.com>,
+        Wed, 05 Nov 2025 04:10:02 -0800 (PST)
+From: Ivan Vera <ivanverasantos@gmail.com>
+X-Google-Original-From: Ivan Vera <ivan.vera@enclustra.com>
+To: git@amd.com
+Cc: Ivan Vera <ivan.vera@enclustra.com>,
 	stable@vger.kernel.org
-Subject: [PATCH] firewire: nosy: break circular locking with misc_mtx in ->open()
-Date: Wed,  5 Nov 2025 19:58:18 +0800
-Message-ID: <20251105115819.1083201-1-lgs201920130244@gmail.com>
-X-Mailer: git-send-email 2.43.0
+Subject: [PATCH] nvmem: zynqmp_nvmem: fix DMA buffer size
+Date: Wed,  5 Nov 2025 13:09:58 +0100
+Message-Id: <20251105120958.16266-1-ivan.vera@enclustra.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Lockdep reports a circular dependency between card_mutex and misc_mtx:
+The efuse data buffer was allocated/freed with sizeof(bytes) instead of
+the requested length, resulting in an undersized DMA buffer and possible
+memory corruption. Allocate and free using the actual 'bytes' length.
 
-  misc_open() holds misc_mtx and calls ->open():
-    misc_mtx -> nosy_open()
-
-  add_card()/remove_card() hold card_mutex and (de)register the miscdev:
-    card_mutex -> misc_register()/misc_deregister() -> misc_mtx
-
-nosy_open() only used card_mutex to map the minor to the pcilynx instance
-by scanning card_list. However, misc_open() already sets file->private_data
-to the struct miscdevice of the opened minor, so we can obtain the pcilynx
-pointer via container_of() and take a kref, without taking card_mutex in
-the open path.
-
-This removes the misc_mtx -> card_mutex edge and breaks the cycle.
-
-The crash info is below：
-======================================================
-WARNING: possible circular locking dependency detected
-5.18.0-rc1 #1 Not tainted
-------------------------------------------------------
-syz-executor.1/1374 is trying to acquire lock:
-ffffffff8f8bb4e8 (card_mutex#2){+.+.}-{3:3}, at: nosy_open+0x55/0x480
-
-but task is already holding lock:
-ffffffff8ef78a88 (misc_mtx){+.+.}-{3:3}, at: misc_open+0x5a/0x3f0
-
-which lock already depends on the new lock.
-
-the existing dependency chain (in reverse order) is:
--> #1 (misc_mtx){+.+.}-{3:3}:
-       __mutex_lock_common+0x138/0x2450
-       mutex_lock_nested+0x17/0x20
-       misc_register+0x95/0x490
-       foo_misc_register+0x3a/0x50
-       add_card+0xd38/0x1250
-       local_pci_probe+0x140/0x200
-       pci_device_probe+0x345/0x770
-       really_probe+0x2d1/0x990
-       __driver_probe_device+0x1a7/0x270
-       driver_probe_device+0x54/0x370
-       __driver_attach+0x430/0x590
-       bus_for_each_dev+0x125/0x190
-       bus_add_driver+0x32c/0x530
-       driver_register+0x309/0x410
-       do_one_initcall+0x104/0x250
-       do_initcall_level+0x102/0x132
-       do_initcalls+0x46/0x74
-       kernel_init_freeable+0x28f/0x393
-       kernel_init+0x14/0x1a0
-       ret_from_fork+0x22/0x30
--> #0 (card_mutex#2){+.+.}-{3:3}:
-       __lock_acquire+0x3607/0x7930
-       lock_acquire+0xff/0x2d0
-       __mutex_lock_common+0x138/0x2450
-       mutex_lock_nested+0x17/0x20
-       nosy_open+0x55/0x480
-       misc_open+0x363/0x3f0
-       chrdev_open+0x407/0x490
-       do_dentry_open+0x5b4/0xc20
-       path_openat+0x1d7a/0x2300
-       do_filp_open+0x1cb/0x3e0
-       do_sys_openat2+0x96/0x350
-       __x64_sys_openat+0x186/0x1b0
-       do_syscall_64+0x43/0x90
-       entry_SYSCALL_64_after_hwframe+0x44/0xae
-other info that might help us debug this:
-
- Possible unsafe locking scenario:
-
-       CPU0                    CPU1
-       ----                    ----
-  lock(misc_mtx);
-                               lock(card_mutex#2);
-                               lock(misc_mtx);
-  lock(card_mutex#2);
-
- *** DEADLOCK ***
-
-1 lock held by syz-executor.1/1374:
- #0: ffffffff8ef78a88 (misc_mtx){+.+.}-{3:3}, at: misc_open+0x5a/0x3f0
-
-stack backtrace:
-CPU: 0 PID: 1374 Comm: syz-executor.1 Not tainted 5.18.0-rc1 #1
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.12.0-59-gc9ba5276e321-prebuilt.qemu.org 04/01/2014
-Call Trace:
- <TASK>
- dump_stack_lvl+0x5a/0x74
- check_noncircular+0x223/0x2d0
- __lock_acquire+0x3607/0x7930
- lock_acquire+0xff/0x2d0
- __mutex_lock_common+0x138/0x2450
- mutex_lock_nested+0x17/0x20
- nosy_open+0x55/0x480
- misc_open+0x363/0x3f0
- chrdev_open+0x407/0x490
- do_dentry_open+0x5b4/0xc20
- path_openat+0x1d7a/0x2300
- do_filp_open+0x1cb/0x3e0
- do_sys_openat2+0x96/0x350
- __x64_sys_openat+0x186/0x1b0
- do_syscall_64+0x43/0x90
- entry_SYSCALL_64_after_hwframe+0x44/0xae
-RIP: 0033:0x7fbaab4abbcd
-Code: 02 b8 ff ff ff ff c3 66 0f 1f 44 00 00 f3 0f 1e fa 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007fbaaac1cbe8 EFLAGS: 00000246 ORIG_RAX: 0000000000000101
-RAX: ffffffffffffffda RBX: 00007fbaab5c9f80 RCX: 00007fbaab4abbcd
-RDX: 0000000000062803 RSI: 0000000020003080 RDI: ffffffffffffff9c
-RBP: 00007fbaab519edb R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007ffe62540a6f R14: 00007ffe62540c10 R15: 00007fbaaac1cd80
- </TASK>
-======================================================
-Fixes: 424d66cedae8 ("firewire: nosy: fix device shutdown with active client")
+Fixes: 737c0c8d07b5 ("nvmem: zynqmp_nvmem: Add support to access efuse")
 Cc: stable@vger.kernel.org
-Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
----
- drivers/firewire/nosy.c | 16 +++++-----------
- 1 file changed, 5 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/firewire/nosy.c b/drivers/firewire/nosy.c
-index b0d671db178a..726d5f15ff08 100644
---- a/drivers/firewire/nosy.c
-+++ b/drivers/firewire/nosy.c
-@@ -263,19 +263,13 @@ set_phy_reg(struct pcilynx *lynx, int addr, int val)
- static int
- nosy_open(struct inode *inode, struct file *file)
- {
--	int minor = iminor(inode);
-+	struct miscdevice *misc = file->private_data;
- 	struct client *client;
--	struct pcilynx *tmp, *lynx = NULL;
-+	struct pcilynx *lynx;
+Signed-off-by: Ivan Vera <ivan.vera@enclustra.com>
+---
+ drivers/nvmem/zynqmp_nvmem.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/nvmem/zynqmp_nvmem.c b/drivers/nvmem/zynqmp_nvmem.c
+index 7da717d6c7fa..d909c8da747e 100644
+--- a/drivers/nvmem/zynqmp_nvmem.c
++++ b/drivers/nvmem/zynqmp_nvmem.c
+@@ -100,7 +100,7 @@ static int zynqmp_efuse_access(void *context, unsigned int offset,
+ 	if (!efuse)
+ 		return -ENOMEM;
  
--	mutex_lock(&card_mutex);
--	list_for_each_entry(tmp, &card_list, link)
--		if (tmp->misc.minor == minor) {
--			lynx = lynx_get(tmp);
--			break;
--		}
--	mutex_unlock(&card_mutex);
--	if (lynx == NULL)
--		return -ENODEV;
-+	/* misc_open() set file->private_data to the miscdevice already. */
-+	lynx = container_of(misc, struct pcilynx, misc);
-+	lynx_get(lynx);
- 
- 	client = kmalloc(sizeof *client, GFP_KERNEL);
- 	if (client == NULL)
+-	data = dma_alloc_coherent(dev, sizeof(bytes),
++	data = dma_alloc_coherent(dev, bytes,
+ 				  &dma_buf, GFP_KERNEL);
+ 	if (!data) {
+ 		ret = -ENOMEM;
+@@ -134,7 +134,7 @@ static int zynqmp_efuse_access(void *context, unsigned int offset,
+ 	if (flag == EFUSE_READ)
+ 		memcpy(val, data, bytes);
+ efuse_access_err:
+-	dma_free_coherent(dev, sizeof(bytes),
++	dma_free_coherent(dev, bytes,
+ 			  data, dma_buf);
+ efuse_data_fail:
+ 	dma_free_coherent(dev, sizeof(struct xilinx_efuse),
 -- 
-2.43.0
+2.25.1
 
 
