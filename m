@@ -1,99 +1,92 @@
-Return-Path: <stable+bounces-192544-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192545-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB477C37A11
-	for <lists+stable@lfdr.de>; Wed, 05 Nov 2025 21:07:56 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22A37C37ABD
+	for <lists+stable@lfdr.de>; Wed, 05 Nov 2025 21:17:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 713A33AB6D8
-	for <lists+stable@lfdr.de>; Wed,  5 Nov 2025 20:02:47 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 17E844E1252
+	for <lists+stable@lfdr.de>; Wed,  5 Nov 2025 20:17:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CCE8267714;
-	Wed,  5 Nov 2025 20:02:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFB66345CBD;
+	Wed,  5 Nov 2025 20:17:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="FJUlcpcv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tj/hHP3f"
 X-Original-To: stable@vger.kernel.org
-Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41EFE33FE39
-	for <stable@vger.kernel.org>; Wed,  5 Nov 2025 20:02:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6577C154BF5;
+	Wed,  5 Nov 2025 20:17:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762372957; cv=none; b=fdU+j1EZYGMcfLE77AFfBMe1B8LHor9etF3UvvFNd11QYjbGRiiX+Cpftj2a0hRv62YhqVd5G1dStBjqPv1fAqpwBYqe9pRL08Dn3GuF7CU5B6S7PUJ9YHVTbkgwcoArwd+r+QHhA8U+yaj6Fqu1TbosNcVdZvSzbiWj55KKoiw=
+	t=1762373868; cv=none; b=Ts18kaMDTIqbzC326YK5UVyristo4Wp6By2P4fVJDWJHEqrMWCaUOKa3fkxLWL4aDDN0Nqig7tS86mh4Fl7eSdw68bvrLmp2NQDqmycUrmkq8hm0N0+ih+JEHjLRVq+BxpM0YD4zJPFh7rxtFVj/7JsD7cNVmjQgmrv3f+dx8Ho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762372957; c=relaxed/simple;
-	bh=1UNkHAvIkZsKBsgCcM/AKzKDGjOH+HZN3yV5TRZ9kHY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=LL5wjkCKo0ikmX8wpjf+4kGh4S3+ekVMeWBK9sXZMutaNW5VdRsw/vokK496Iu+7mFALLgkfUoH/+y4dPOe6pevo4B01BJZ4TOc+RODpXFNDXEAoF4rDRXcZMVVXbBnA5/areyMwmyMulO3Q23YXqwGjEclD5KZI5KxLXzXsNiQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=FJUlcpcv; arc=none smtp.client-ip=91.218.175.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Message-ID: <de2f5da5-05db-4bd7-90c3-c51558e50545@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1762372953;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2gVnZSE22cVcS4rxgpdM9tTcUt8tL4gwGdnHKKtUPSY=;
-	b=FJUlcpcv9vjP5zo0RqEPDKGmnvz+b8Wcpn9xQgMLQwV7BE0ZnMyCSThhWWjkfs+lH2N12+
-	jnQC+PLDw3kZalXL+gyLaQQBjjFrevAwcwJrq/7xtiRiIM/fhSK7I1rJzN0I4lE+WT7Gpa
-	K9RBhAypCGBAemx5Gf3b1kXeUi4tYnw=
-Date: Wed, 5 Nov 2025 20:02:30 +0000
+	s=arc-20240116; t=1762373868; c=relaxed/simple;
+	bh=WK2n+MqYbpkY3Ap2OmbbUP70qaHyeaITrjrbKMCnnDE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=S1Wq15y3oaR/1Q2H98AfsH8WX4B8gip37RKb0Hmqfrm6IvNqZB1R8CpwmBbpjB4sWP9ZIhB/mjHDe+O+nj4qQQJKr7wSSxJB9hsXS2pUVw4Zhu/x/0MgCZChEH+3ROzv096e39ZE7ONdiVeR55FGJ9AFMNm0emDVE0CWpqButs8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tj/hHP3f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 637D1C116B1;
+	Wed,  5 Nov 2025 20:17:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762373867;
+	bh=WK2n+MqYbpkY3Ap2OmbbUP70qaHyeaITrjrbKMCnnDE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=tj/hHP3f9hSkcD1LIbu0U8532tJWTe2zQpS4ZuqdRQW+NLXRsPAm2QMTnshp+2MEG
+	 faalOFfnAaYM95P6TDBNwYAeib+xcBszn0WsiEV0hnk69H2TZgJORw9VOP9ZRJUXie
+	 kN0d1T6RasQDXCdCNd8BDFmRIqByt5Q+ECNX4YXA0YdmuVaG6vYxso2q8+3XJ67nMd
+	 Y5dxsQFPMVWn7t5y91pACrr9E+cHrmCz4CYlZcaH7FteccWZfJgEySou1eYUNiTGhb
+	 3wPRf+sSBJRyh47J/JxN1ELxUzpnFhG2eML71/A4dgigLYlnq6I9CML82K3DL0QePR
+	 E0M8R9UsB98+Q==
+Date: Wed, 5 Nov 2025 13:17:41 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: Alexey Gladkov <legion@kernel.org>
+Cc: Dimitri John Ledkov <dimitri.ledkov@surgut.co.uk>,
+	Omar Sandoval <osandov@osandov.com>, linux-kbuild@vger.kernel.org,
+	Samir M <samir@linux.ibm.com>, linux-kernel@vger.kernel.org,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	linuxppc-dev@lists.ozlabs.org, stable@vger.kernel.org,
+	Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
+	linux-debuggers@vger.kernel.org, Nicolas Schier <nsc@kernel.org>
+Subject: Re: [mainline]Error while running make modules_install command
+Message-ID: <20251105201741.GC3787308@ax162>
+References: <7fef7507-ad64-4e51-9bb8-c9fb6532e51e@linux.ibm.com>
+ <56905387-ec43-4f89-9146-0db6889e46ab@linux.ibm.com>
+ <aQpCE_XTU-bZHFbk@telecaster>
+ <CANBHLUhJ5UVsN4-JN2PG=jq63yGttB9BD6Qm8MgvYirTvg_stw@mail.gmail.com>
+ <20251105011548.GB769905@ax162>
+ <aQtISpMElVm7jQ4y@example.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH net] net: txgbe: remove wx_ptp_init() in device reset flow
-To: Jiawen Wu <jiawenwu@trustnetic.com>, netdev@vger.kernel.org,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Richard Cochran <richardcochran@gmail.com>, Simon Horman <horms@kernel.org>,
- Jacob Keller <jacob.e.keller@intel.com>
-Cc: Mengyuan Lou <mengyuanlou@net-swift.com>, stable@vger.kernel.org
-References: <17A4943B0AAA971B+20251105020752.57931-1-jiawenwu@trustnetic.com>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-In-Reply-To: <17A4943B0AAA971B+20251105020752.57931-1-jiawenwu@trustnetic.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aQtISpMElVm7jQ4y@example.org>
 
-On 05/11/2025 02:07, Jiawen Wu wrote:
-> The functions txgbe_up() and txgbe_down() are called in pairs to reset
-> hardware configurations. PTP stop function is not called in
-> txgbe_down(), so there is no need to call PTP init function in
-> txgbe_up().
+On Wed, Nov 05, 2025 at 01:51:22PM +0100, Alexey Gladkov wrote:
+> Nathan, if you see that my changes are creating more problems than they
+> are solving, feel free to revert them.
+
+Thanks for that permission! I will keep it in mind as we get closer to
+the end of the release cycle if these problems are too much to overcome.
+
+> My changes were based on Masahiro Yamada's patches. I didn't expect his
+> changes to cause many problems. Before his changes, I tried to use a
+> different approach. If you think it's worth it, we can return to
+> discussing it.
 > 
+> https://lore.kernel.org/all/cover.1748335606.git.legion@kernel.org/
 
-txgbe_reset() is called during txgbe_down(), and it calls
-wx_ptp_reset(), which I believe is the reason for wx_ptp_init() call
+Right, I had noticed that in the development history and wondered if we
+would want to revisit it. I will have to take a closer look at that
+depending on how things go here.
 
-> Fixes: 06e75161b9d4 ("net: wangxun: Add support for PTP clock")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
-> ---
->   drivers/net/ethernet/wangxun/txgbe/txgbe_main.c | 1 -
->   1 file changed, 1 deletion(-)
-> 
-> diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-> index daa761e48f9d..114d6f46139b 100644
-> --- a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-> +++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-> @@ -297,7 +297,6 @@ void txgbe_down(struct wx *wx)
->   void txgbe_up(struct wx *wx)
->   {
->   	wx_configure(wx);
-> -	wx_ptp_init(wx);
->   	txgbe_up_complete(wx);
->   }
->   
-
+Cheers,
+Nathan
 
