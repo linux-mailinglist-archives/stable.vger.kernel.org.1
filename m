@@ -1,41 +1,41 @@
-Return-Path: <stable+bounces-192518-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192519-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66A86C366AA
-	for <lists+stable@lfdr.de>; Wed, 05 Nov 2025 16:43:35 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25808C365C1
+	for <lists+stable@lfdr.de>; Wed, 05 Nov 2025 16:36:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 51C0E6414D9
-	for <lists+stable@lfdr.de>; Wed,  5 Nov 2025 15:25:19 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E76BD4FC194
+	for <lists+stable@lfdr.de>; Wed,  5 Nov 2025 15:25:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C99B32E698;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5181321F39;
 	Wed,  5 Nov 2025 15:19:13 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB484321F39
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB50232C92C
 	for <stable@vger.kernel.org>; Wed,  5 Nov 2025 15:19:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762355953; cv=none; b=jqewlBmYieTGIf7TNM1oPAK4XxrWe7COG+FAuaghJYUgNGXfMXuH6jvScD04OVMkml87bHC8GX4dVcs35TmIltxtFE3Uf7D9w1eFl0KbcqbUvQ+Q50OX5OwmOUUbX721RahUmcmh/TZsxocrn/MYlkRhFwzRrOuqZD0ZZqroZQs=
+	t=1762355953; cv=none; b=AI6ASR4iovGhoNZWKn8Zjnd4HeuuN0TGVOjF49H+uY+thr7flNcqVXTq3nBzeQiBv2wE5Xm1jMDIXyoVf5hkwBmbsK39Nnmlok4u5z0VyIFRkH0DSj5zvHRaiNlQloWGiSDhkU3iwqy8FTaJMtCJC2ZmOJgj+6EX+clojhizfqU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1762355953; c=relaxed/simple;
-	bh=ZgWPGx7mIkJ8YYrX3sMPKx3tm3HlevoxY+b8FqsxBXM=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=euBkIJCr9lMIsaSHIkAN5507cLckU9scg7Z8uS7mVEutwAhibWhfhNwTcNUtFqLlKadaOFQbxV6dxP3ssYtasnSLfCNN/JYIo8NYRgL7c2F6PMAk8kykKfoqfzA0Zih6He7qAfTTw7T1fOgUShXCo85eArSEWqs6bFqihWe4z8s=
+	bh=aDtRd1YbDn4OZAWtUGQbZix7GE3spO38WtrKr1DsKRM=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=PasXieo6xfff6n0kiq0cS3UsMTFyFzveiVWs/CAxgPBPaVYBbreXetmT+UBRfS8MUc/DAUadOGmMMvzQPQ1XurSZ+2mrLK/yo2MiT+uxilbKN5qo759nDrl8NsPUSx6k5P2y6grFz+/xt4yY3tC2xp6l76tWoTaw3xsfue0XqgQ=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <m.tretter@pengutronix.de>)
-	id 1vGfHy-0002IK-1b; Wed, 05 Nov 2025 16:19:10 +0100
+	id 1vGfHy-0002IK-3E; Wed, 05 Nov 2025 16:19:10 +0100
 From: Michael Tretter <m.tretter@pengutronix.de>
-Subject: [PATCH 0/2] media: staging: imx: fix multiple video input
-Date: Wed, 05 Nov 2025 16:18:48 +0100
-Message-Id: <20251105-media-imx-fixes-v1-0-99e48b4f5cbc@pengutronix.de>
+Date: Wed, 05 Nov 2025 16:18:49 +0100
+Subject: [PATCH 1/2] media: staging: imx: request mbus_config in csi_start
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -44,10 +44,9 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIANhqC2kC/x3LQQqAIBBA0avIrBtQQYSuEi1Mx5qFFgohiHdPW
- j4+v0OlwlRhFR0KvVz5zhNqEeAvl09CDtOgpTZKSYOJAjvk1DByo4rOU7TW28MpDfN6Cv1hTts
- +xge4w6S6YQAAAA==
-X-Change-ID: 20251105-media-imx-fixes-acef77c7ba12
+Message-Id: <20251105-media-imx-fixes-v1-1-99e48b4f5cbc@pengutronix.de>
+References: <20251105-media-imx-fixes-v1-0-99e48b4f5cbc@pengutronix.de>
+In-Reply-To: <20251105-media-imx-fixes-v1-0-99e48b4f5cbc@pengutronix.de>
 To: Steve Longerbeam <slongerbeam@gmail.com>, 
  Philipp Zabel <p.zabel@pengutronix.de>, 
  Mauro Carvalho Chehab <mchehab@kernel.org>, 
@@ -63,40 +62,166 @@ X-SA-Exim-Mail-From: m.tretter@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: stable@vger.kernel.org
 
-If the IMX media pipeline is configured to receive multiple video
-inputs, the second input stream may be broken on start. This happens if
-the IMX CSI hardware has to be reconfigured for the second stream, while
-the first stream is already running.
+Request the upstream mbus_config in csi_start, which starts the stream,
+instead of caching it in link_validate.
 
-The IMX CSI driver configures the IMX CSI in the link_validate callback.
-The media pipeline is only validated on the first start. Thus, any later
-start of the media pipeline skips the validation and directly starts
-streaming. This may leave the hardware in an inconsistent state compared
-to the driver configuration. Moving the hardware configuration to the
-stream start to make sure that the hardware is configured correctly.
+This allows to get rid of the mbus_cfg field in the struct csi_priv and
+avoids state in the driver.
 
-Patch 1 removes the caching of the upstream mbus_config in
-csi_link_validate and explicitly request the mbus_config in csi_start,
-to get rid of this implicit dependency.
-
-Patch 2 actually moves the hardware register setting from
-csi_link_validate to csi_start to fix the skipped hardware
-reconfiguration.
-
-Signed-off-by: Michael Tretter <michael.tretter@pengutronix.de>
+Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
+Fixes: 4a34ec8e470c ("[media] media: imx: Add CSI subdev driver")
+Cc: stable@vger.kernel.org
 ---
-Michael Tretter (2):
-      media: staging: imx: request mbus_config in csi_start
-      media: staging: imx: configure src_mux in csi_start
+ drivers/staging/media/imx/imx-media-csi.c | 40 ++++++++++++++++++-------------
+ 1 file changed, 24 insertions(+), 16 deletions(-)
 
- drivers/staging/media/imx/imx-media-csi.c | 84 ++++++++++++++++++-------------
- 1 file changed, 48 insertions(+), 36 deletions(-)
----
-base-commit: 27afd6e066cfd80ddbe22a4a11b99174ac89cced
-change-id: 20251105-media-imx-fixes-acef77c7ba12
+diff --git a/drivers/staging/media/imx/imx-media-csi.c b/drivers/staging/media/imx/imx-media-csi.c
+index fd7e37d803e7..55a7d8f38465 100644
+--- a/drivers/staging/media/imx/imx-media-csi.c
++++ b/drivers/staging/media/imx/imx-media-csi.c
+@@ -97,9 +97,6 @@ struct csi_priv {
+ 	/* the mipi virtual channel number at link validate */
+ 	int vc_num;
+ 
+-	/* media bus config of the upstream subdevice CSI is receiving from */
+-	struct v4l2_mbus_config mbus_cfg;
+-
+ 	spinlock_t irqlock; /* protect eof_irq handler */
+ 	struct timer_list eof_timeout_timer;
+ 	int eof_irq;
+@@ -403,7 +400,8 @@ static void csi_idmac_unsetup_vb2_buf(struct csi_priv *priv,
+ }
+ 
+ /* init the SMFC IDMAC channel */
+-static int csi_idmac_setup_channel(struct csi_priv *priv)
++static int csi_idmac_setup_channel(struct csi_priv *priv,
++				   struct v4l2_mbus_config *mbus_cfg)
+ {
+ 	struct imx_media_video_dev *vdev = priv->vdev;
+ 	const struct imx_media_pixfmt *incc;
+@@ -432,7 +430,7 @@ static int csi_idmac_setup_channel(struct csi_priv *priv)
+ 	image.phys0 = phys[0];
+ 	image.phys1 = phys[1];
+ 
+-	passthrough = requires_passthrough(&priv->mbus_cfg, infmt, incc);
++	passthrough = requires_passthrough(mbus_cfg, infmt, incc);
+ 	passthrough_cycles = 1;
+ 
+ 	/*
+@@ -572,11 +570,12 @@ static void csi_idmac_unsetup(struct csi_priv *priv,
+ 	csi_idmac_unsetup_vb2_buf(priv, state);
+ }
+ 
+-static int csi_idmac_setup(struct csi_priv *priv)
++static int csi_idmac_setup(struct csi_priv *priv,
++			   struct v4l2_mbus_config *mbus_cfg)
+ {
+ 	int ret;
+ 
+-	ret = csi_idmac_setup_channel(priv);
++	ret = csi_idmac_setup_channel(priv, mbus_cfg);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -595,7 +594,8 @@ static int csi_idmac_setup(struct csi_priv *priv)
+ 	return 0;
+ }
+ 
+-static int csi_idmac_start(struct csi_priv *priv)
++static int csi_idmac_start(struct csi_priv *priv,
++			   struct v4l2_mbus_config *mbus_cfg)
+ {
+ 	struct imx_media_video_dev *vdev = priv->vdev;
+ 	int ret;
+@@ -619,7 +619,7 @@ static int csi_idmac_start(struct csi_priv *priv)
+ 	priv->last_eof = false;
+ 	priv->nfb4eof = false;
+ 
+-	ret = csi_idmac_setup(priv);
++	ret = csi_idmac_setup(priv, mbus_cfg);
+ 	if (ret) {
+ 		v4l2_err(&priv->sd, "csi_idmac_setup failed: %d\n", ret);
+ 		goto out_free_dma_buf;
+@@ -701,7 +701,8 @@ static void csi_idmac_stop(struct csi_priv *priv)
+ }
+ 
+ /* Update the CSI whole sensor and active windows */
+-static int csi_setup(struct csi_priv *priv)
++static int csi_setup(struct csi_priv *priv,
++		     struct v4l2_mbus_config *mbus_cfg)
+ {
+ 	struct v4l2_mbus_framefmt *infmt, *outfmt;
+ 	const struct imx_media_pixfmt *incc;
+@@ -719,7 +720,7 @@ static int csi_setup(struct csi_priv *priv)
+ 	 * if cycles is set, we need to handle this over multiple cycles as
+ 	 * generic/bayer data
+ 	 */
+-	if (is_parallel_bus(&priv->mbus_cfg) && incc->cycles) {
++	if (is_parallel_bus(mbus_cfg) && incc->cycles) {
+ 		if_fmt.width *= incc->cycles;
+ 		crop.width *= incc->cycles;
+ 	}
+@@ -730,7 +731,7 @@ static int csi_setup(struct csi_priv *priv)
+ 			     priv->crop.width == 2 * priv->compose.width,
+ 			     priv->crop.height == 2 * priv->compose.height);
+ 
+-	ipu_csi_init_interface(priv->csi, &priv->mbus_cfg, &if_fmt, outfmt);
++	ipu_csi_init_interface(priv->csi, mbus_cfg, &if_fmt, outfmt);
+ 
+ 	ipu_csi_set_dest(priv->csi, priv->dest);
+ 
+@@ -745,9 +746,17 @@ static int csi_setup(struct csi_priv *priv)
+ 
+ static int csi_start(struct csi_priv *priv)
+ {
++	struct v4l2_mbus_config mbus_cfg = { .type = 0 };
+ 	struct v4l2_fract *input_fi, *output_fi;
+ 	int ret;
+ 
++	ret = csi_get_upstream_mbus_config(priv, &mbus_cfg);
++	if (ret) {
++		v4l2_err(&priv->sd,
++			 "failed to get upstream media bus configuration\n");
++		return ret;
++	}
++
+ 	input_fi = &priv->frame_interval[CSI_SINK_PAD];
+ 	output_fi = &priv->frame_interval[priv->active_output_pad];
+ 
+@@ -758,7 +767,7 @@ static int csi_start(struct csi_priv *priv)
+ 		return ret;
+ 
+ 	/* Skip first few frames from a BT.656 source */
+-	if (priv->mbus_cfg.type == V4L2_MBUS_BT656) {
++	if (mbus_cfg.type == V4L2_MBUS_BT656) {
+ 		u32 delay_usec, bad_frames = 20;
+ 
+ 		delay_usec = DIV_ROUND_UP_ULL((u64)USEC_PER_SEC *
+@@ -769,12 +778,12 @@ static int csi_start(struct csi_priv *priv)
+ 	}
+ 
+ 	if (priv->dest == IPU_CSI_DEST_IDMAC) {
+-		ret = csi_idmac_start(priv);
++		ret = csi_idmac_start(priv, &mbus_cfg);
+ 		if (ret)
+ 			goto stop_upstream;
+ 	}
+ 
+-	ret = csi_setup(priv);
++	ret = csi_setup(priv, &mbus_cfg);
+ 	if (ret)
+ 		goto idmac_stop;
+ 
+@@ -1138,7 +1147,6 @@ static int csi_link_validate(struct v4l2_subdev *sd,
+ 
+ 	mutex_lock(&priv->lock);
+ 
+-	priv->mbus_cfg = mbus_cfg;
+ 	is_csi2 = !is_parallel_bus(&mbus_cfg);
+ 	if (is_csi2) {
+ 		/*
 
-Best regards,
 -- 
-Michael Tretter <m.tretter@pengutronix.de>
+2.47.3
 
 
