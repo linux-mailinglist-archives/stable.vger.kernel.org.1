@@ -1,139 +1,111 @@
-Return-Path: <stable+bounces-192530-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192531-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7C05C37051
-	for <lists+stable@lfdr.de>; Wed, 05 Nov 2025 18:18:44 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28DBDC371C2
+	for <lists+stable@lfdr.de>; Wed, 05 Nov 2025 18:35:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5030D1A271E3
-	for <lists+stable@lfdr.de>; Wed,  5 Nov 2025 17:11:08 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 636CC503AC5
+	for <lists+stable@lfdr.de>; Wed,  5 Nov 2025 17:27:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5B27214812;
-	Wed,  5 Nov 2025 17:10:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D818B336EFB;
+	Wed,  5 Nov 2025 17:27:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jnJUvHG1"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Q0OMW6Ai"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84EFF331A4B
-	for <stable@vger.kernel.org>; Wed,  5 Nov 2025 17:10:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 874EC21A453
+	for <stable@vger.kernel.org>; Wed,  5 Nov 2025 17:27:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762362633; cv=none; b=Lg49CX2PCAHsIzOeaqb+VufOITOTXycoaBLwmplPQbivB0LjTesm+fYn3up0BwW3XqaQbHdgHmAf9/2FLWiymy5wNqj2Jt8Psp0i5VMKiQdx6m6zQ1wk+vYgF+IkhmmRtXfd+SfblmLyh8pL+mbJNd3wADZkPVnoLmoJYdQiLqI=
+	t=1762363650; cv=none; b=kBui5SfDpdx11o9FWbof0JZ4dJDMNU2e9XRLSbpVbSDjIWv6YX6sxZDKUdA0vFN3vzuYoSdlEG1T5sj+pzg0yBXlj5wmPY2ewb6k+apJ7Z55HqprV7mlBFnzj8lO7ps2WeYZ6ge/wzPKPq6OtFEuKviTA0I8uIFHgOH2r8GTVA0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762362633; c=relaxed/simple;
-	bh=e40xFR6tQfR7PJ5Wsjq2Qgq1xP5o8XykAqV6jk3uYIE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=XNEDfYVMBqt25OgfWrkRSzE7tv7BNssnwxVOj0BJ52umatSKna1IWtP3DTwrXa4ptDSN6+ZcdDL592+5pM3pwpT1oNxMhNbT1E8E3BQZFpFW7meeySub3ork8io5b3EFuwlrylhyeYzVr8Q+dqxsT7OvbAHJfFEq1Oi6msHctMQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jnJUvHG1; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1762362632; x=1793898632;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=e40xFR6tQfR7PJ5Wsjq2Qgq1xP5o8XykAqV6jk3uYIE=;
-  b=jnJUvHG1PXpe5HKoVUCb/kyQj61pf8cW9pZ0yPK9/zMLI5QEW7/iKQnu
-   VkrqO8jjsbqxYfMByVRseEDWZ0FoDINftEFbPktq47ccowPxbmgQPurL+
-   7GGeo7Ky6Md3EePNsdpDxFFoW+yEIZ2XBqJvN84H8J+3SIqjBW04sYoT8
-   M43hhhJs2WCi+0s5pno6zYrJtVUdb/3E/y7TcPKnxrERhJJdVYKWhhQ24
-   nGa+rMqzHncCaPCZ2uAqlX8dd8GyizAla3GbURIc2r4qO65ceqIL9DRoY
-   1dZos+q5NqFb+YcOFriz+HItxWaEkODQ0VgD0cwxK7ey0eQRr40eEf8qw
-   A==;
-X-CSE-ConnectionGUID: ZvrbjVWBTpik118kPu5N5Q==
-X-CSE-MsgGUID: FheYzmXFTB+Fo3macME+uQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="68323107"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
-   d="scan'208";a="68323107"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2025 09:10:19 -0800
-X-CSE-ConnectionGUID: Slyr9WPCS9mkMWzl/9S0+g==
-X-CSE-MsgGUID: hXWzaHjIQL+9jfglbQ6EyQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,282,1754982000"; 
-   d="scan'208";a="187354703"
-Received: from rvuia-mobl.ger.corp.intel.com (HELO localhost) ([10.245.244.87])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2025 09:10:17 -0800
-From: Ville Syrjala <ville.syrjala@linux.intel.com>
-To: intel-gfx@lists.freedesktop.org
-Cc: intel-xe@lists.freedesktop.org,
-	stable@vger.kernel.org
-Subject: [PATCH] drm/i915/psr: Reject async flips when selective fetch is enabled
-Date: Wed,  5 Nov 2025 19:10:15 +0200
-Message-ID: <20251105171015.22234-1-ville.syrjala@linux.intel.com>
-X-Mailer: git-send-email 2.49.1
+	s=arc-20240116; t=1762363650; c=relaxed/simple;
+	bh=is4eN6RpZt6sOERf8/HARwvHIOtBrjGvtYHglnRe/C8=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Ab5otr3rk3HhDcRvcLBfxc5xenMKt8m4EwIadAnzd3z3BFsBLsRLHq21oYYjwF6No179V1uCffL/IhZCtLN2PEOr1TOHuAipNkLy/kMDimWReIIv6ve6CGuRPsZ2aygduwkHwRjciyvq1eCofHIcriux7xcj0Z+dK8Jpw3MI4sQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Q0OMW6Ai; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 42F374E4153E;
+	Wed,  5 Nov 2025 17:27:25 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 1948E60693;
+	Wed,  5 Nov 2025 17:27:25 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id A58A710B50A4D;
+	Wed,  5 Nov 2025 18:27:19 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1762363644; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=HKjwLc9WMgewf//y7bZUVi151/7kk6WShUalaztiDao=;
+	b=Q0OMW6Aiio1vz08fxNMUflPROrTRHaX/bt1lUn+/6oEfHe82s1qDXLWwVrG5+kLHb36Z9l
+	MFyLK28rAViy0SKFM44ffzWqGsanwYQJFgdlKfqqUsqMWUEpxkdfDu9+/bPqjZ3gpan9XL
+	rWGbZAxWEGQWPrf3f8EV/dWenT1R/HAFP3N29Ba1q/4tWR3a5oVqfKo8MIVC3UQfyQHJGa
+	g8d/7iagjH6MvJp+OfVKpluEDldrdQkPbAwYBBknE0tB7/MWW4yAd1oaVlpKCiRW0vwxqc
+	AjN8/qB6u11M6Ei11ju2dRiGFmDmtGsvpPZn+dpfznaJtIteLFYW5oXpR2QICQ==
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 0/6] Hello,
+Date: Wed, 05 Nov 2025 18:26:59 +0100
+Message-Id: <20251105-winbond-v6-18-rc1-spi-nor-v1-0-42cc9fb46e1b@bootlin.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAOOIC2kC/x3MQQqEMAxA0atI1hMwhdriVYZZjG3UbFJJQQXx7
+ haXb/H/BZVNuMLYXWC8S5WiDfTpIK1/XRglN4PrnSfqPR6iU9GM+4AU0RJh3QS1GIY5xDS5EH0
+ eoPWb8Szn+/7+7vsBHCEDUGsAAAA=
+X-Change-ID: 20251105-winbond-v6-18-rc1-spi-nor-7f78cb2785d6
+To: Tudor Ambarus <tudor.ambarus@linaro.org>, 
+ Pratyush Yadav <pratyush@kernel.org>, Michael Walle <mwalle@kernel.org>, 
+ Miquel Raynal <miquel.raynal@bootlin.com>, 
+ Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ Steam Lin <STLin2@winbond.com>, linux-mtd@lists.infradead.org, 
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+X-Mailer: b4 0.14.2
+X-Last-TLS-Session-Version: TLSv1.3
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Here is a series adding support for 6 Winbond SPI NOR chips. Describing
+these chips is needed otherwise the block protection feature is not
+available. Everything else looks fine otherwise.
 
-The selective fetch code doesn't handle asycn flips correctly.
-There is a nonsense check for async flips in
-intel_psr2_sel_fetch_config_valid() but that only gets called
-for modesets/fastsets and thus does nothing for async flips.
+In practice I am only adding 6 very similar IDs but I split the commits
+because the amount of meta data to show proof that all the chips have
+been tested and work is pretty big.
 
-Currently intel_async_flip_check_hw() is very unhappy as the
-selective fetch code pulls in planes that are not even async
-flips capable.
+As the commits simply add an ID, I am Cc'ing stable with the hope to
+get these backported to LTS kernels as allowed by the stable rules (see
+link below, but I hope I am doing this right).
 
-Reject async flips when selective fetch is enabled, until
-someone fixes this properly (ie. disable selective fetch while
-async flips are being issued).
+Link: https://elixir.bootlin.com/linux/v6.17.7/source/Documentation/process/stable-kernel-rules.rst#L15
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Thanks,
+Miquèl
+
 ---
- drivers/gpu/drm/i915/display/intel_display.c | 8 ++++++++
- drivers/gpu/drm/i915/display/intel_psr.c     | 6 ------
- 2 files changed, 8 insertions(+), 6 deletions(-)
+Miquel Raynal (6):
+      mtd: spi-nor: winbond: Add support for W25Q01NWxxIQ chips
+      mtd: spi-nor: winbond: Add support for W25Q01NWxxIM chips
+      mtd: spi-nor: winbond: Add support for W25Q02NWxxIM chips
+      mtd: spi-nor: winbond: Add support for W25H512NWxxAM chips
+      mtd: spi-nor: winbond: Add support for W25H01NWxxAM chips
+      mtd: spi-nor: winbond: Add support for W25H02NWxxAM chips
 
-diff --git a/drivers/gpu/drm/i915/display/intel_display.c b/drivers/gpu/drm/i915/display/intel_display.c
-index 42ec78798666..10583592fefe 100644
---- a/drivers/gpu/drm/i915/display/intel_display.c
-+++ b/drivers/gpu/drm/i915/display/intel_display.c
-@@ -6020,6 +6020,14 @@ static int intel_async_flip_check_uapi(struct intel_atomic_state *state,
- 		return -EINVAL;
- 	}
- 
-+	/* FIXME: selective fetch should be disabled for async flips */
-+	if (new_crtc_state->enable_psr2_sel_fetch) {
-+		drm_dbg_kms(display->drm,
-+			    "[CRTC:%d:%s] async flip disallowed with PSR2 selective fetch\n",
-+			    crtc->base.base.id, crtc->base.name);
-+		return -EINVAL;
-+	}
-+
- 	for_each_oldnew_intel_plane_in_state(state, plane, old_plane_state,
- 					     new_plane_state, i) {
- 		if (plane->pipe != crtc->pipe)
-diff --git a/drivers/gpu/drm/i915/display/intel_psr.c b/drivers/gpu/drm/i915/display/intel_psr.c
-index 05014ffe3ce1..65d77aea9536 100644
---- a/drivers/gpu/drm/i915/display/intel_psr.c
-+++ b/drivers/gpu/drm/i915/display/intel_psr.c
-@@ -1296,12 +1296,6 @@ static bool intel_psr2_sel_fetch_config_valid(struct intel_dp *intel_dp,
- 		return false;
- 	}
- 
--	if (crtc_state->uapi.async_flip) {
--		drm_dbg_kms(display->drm,
--			    "PSR2 sel fetch not enabled, async flip enabled\n");
--		return false;
--	}
--
- 	return crtc_state->enable_psr2_sel_fetch = true;
- }
- 
+ drivers/mtd/spi-nor/winbond.c | 24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
+---
+base-commit: 479ba7fc704936b74a91ee352fe113d6391d562f
+change-id: 20251105-winbond-v6-18-rc1-spi-nor-7f78cb2785d6
+
+Best regards,
 -- 
-2.49.1
+Miquel Raynal <miquel.raynal@bootlin.com>
 
 
