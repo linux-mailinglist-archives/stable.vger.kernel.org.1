@@ -1,108 +1,143 @@
-Return-Path: <stable+bounces-192542-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192543-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C7CBC37789
-	for <lists+stable@lfdr.de>; Wed, 05 Nov 2025 20:27:13 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9827C377AA
+	for <lists+stable@lfdr.de>; Wed, 05 Nov 2025 20:29:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 898104E3121
-	for <lists+stable@lfdr.de>; Wed,  5 Nov 2025 19:26:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 29D9D3ADA67
+	for <lists+stable@lfdr.de>; Wed,  5 Nov 2025 19:28:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 332E9333426;
-	Wed,  5 Nov 2025 19:26:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE78933F389;
+	Wed,  5 Nov 2025 19:28:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="szZ7VTo5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qSBZwarw"
 X-Original-To: stable@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8AA4337B8A;
-	Wed,  5 Nov 2025 19:26:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67E1632D431;
+	Wed,  5 Nov 2025 19:28:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762370775; cv=none; b=WqRgG184IyXL+nyrCAAhjo8ZgCX267y1k9LxAS37N1os2qwMxM7vGtb+b21oeGX5Yl1KO99DDHTIbe76tVh/SYjE5zIrUgpPIt6F4KBVGmA1NQvHQ1ax2+4u+hrXI4+Jy7mfZImA/So9RBX4++eY9Ln7fGjhmZPMBMFjJKUdwk4=
+	t=1762370893; cv=none; b=YvB+iXVG27d+MrNhuqfR0s8Kr0k4eWk6YE9gITOd7MencC2glXER0VsSXPYd3aTZnCYEwN0XSaNWh9SuWHMHrMhxf8RvlHKJEY/4CCrwffVXay5vFcXibp5KKjhBFBAHt4NC2Ym4NsHaR+XdzFdxSgahE9EXVcvoop/0vGgLoHU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762370775; c=relaxed/simple;
-	bh=DnMeviyIHL9MNXlXL17dpbvtIa98MhYHZjzTmzW0aWM=;
-	h=From:To:Cc:Subject:Date:Message-Id; b=N5exhn0WduHQFjedX+2/SUvyKc00AdGw0uDwYeMXxcxi5l8Jhj1oiPsoA0S9at9CgYdmkybirUgB9qgR2lJqpjxiad/7MBGJdNK7WXQ5U+7x40X/ftmrWRBXjDh1TSrVCSjMusdqxWVi0XNbbebe8fTWAto3fmNxmEz4dN+6MZg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=szZ7VTo5; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: by linux.microsoft.com (Postfix, from userid 1216)
-	id 4BA64211D8C4; Wed,  5 Nov 2025 11:26:08 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 4BA64211D8C4
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1762370768;
-	bh=2lFtOpeRZk2+ajTE+dUyUaLdWRZFLKksVcvXucUYrk4=;
-	h=From:To:Cc:Subject:Date:From;
-	b=szZ7VTo5KvM5Pifk8KaY1RBndcR76cZc5QQASavvx0Q9gE337vW+MVoj1SGOg2al4
-	 1sor2OPtFMt17oAuAN03GMvcWsP7NhPZd8YXwpq+Y6q+aiaEUzvdcOJF7WzhRFsFDs
-	 yEQngRPdmZ6jR4QQ0cUneWuFokrj9vxL3c4n39FQ=
-From: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
-To: linux-kernel@vger.kernel.org
-Cc: "Martin K. Petersen" <martin.petersen@oracle.com>,
-	Guixin Liu <kanie@linux.alibaba.com>,
-	Nicholas Bellinger <nab@linux-iscsi.org>,
-	Sheng Yang <sheng@yasker.org>,
-	linux-scsi@vger.kernel.org,
-	target-devel@vger.kernel.org,
-	Allen Pais <apais@linux.microsoft.com>,
-	Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>,
+	s=arc-20240116; t=1762370893; c=relaxed/simple;
+	bh=IHr11CVMUl96Wf7pB/+uXQyisnt8qEF1vZ/qiyhjdBo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=rlBI1x/WSsVmltj2GCwXL1mjbhPZ4kjCeo5a3XCWjot7mkW6DOmQA3o8nuHGuJoMeBZmeW5I3FOBKxZWp/+hYP0UwyczIIcW1TC4Gxyt+VD4NAi5KvBh4Y0TmZ3x7m02Esf6lpeEwZbHuSWe5Bq2zowHkqJp7fZPoobUx84HGQY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qSBZwarw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7438C2BC86;
+	Wed,  5 Nov 2025 19:28:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762370891;
+	bh=IHr11CVMUl96Wf7pB/+uXQyisnt8qEF1vZ/qiyhjdBo=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=qSBZwarwKq2oZpjqjSnq0/v1DlJZ7D6N0ijNqG/si0cLffaToSXpZy3xmbAirGbDv
+	 uEy9dPkClf4RolqbU9iSnepmTVJB82JOkoNf2Rj8dafhmBNHlBdSkcUcfy+NQ95fel
+	 zzpXxmHlSJtDEy5a72RWPxMTXYzMIDFuEAFb0EgkBjIbAEBGpvitzc3taKWXdnXmU6
+	 7wY08FIrftJCTia4nz7TpFQCSi4hL85DwoDaSzXtrDOk0KSGXjfPIl+WurGTjIBgR4
+	 QK3qa8/9rBMK0Y9UJ4ohmpcv2jgPAqpsHgkyb6eIIkoN3eUR347njWDGjZxcSZaBx9
+	 y9zIJjvh7Hv7Q==
+From: Chuck Lever <cel@kernel.org>
+To: NeilBrown <neil@brown.name>,
+	Jeff Layton <jlayton@kernel.org>,
+	Olga Kornievskaia <okorniev@redhat.com>,
+	Dai Ngo <dai.ngo@oracle.com>,
+	Tom Talpey <tom@talpey.com>
+Cc: <linux-nfs@vger.kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Mike Snitzer <snitzer@kernel.org>,
 	stable@vger.kernel.org
-Subject: [PATCH] scsi: target: tcm_loop: fix segfault in tcm_loop_tpg_address_show()
-Date: Wed,  5 Nov 2025 11:25:46 -0800
-Message-Id: <1762370746-6304-1-git-send-email-hamzamahfooz@linux.microsoft.com>
-X-Mailer: git-send-email 1.8.3.1
+Subject: [PATCH v10 2/5] NFSD: Make FILE_SYNC WRITEs comply with spec
+Date: Wed,  5 Nov 2025 14:28:03 -0500
+Message-ID: <20251105192806.77093-3-cel@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20251105192806.77093-1-cel@kernel.org>
+References: <20251105192806.77093-1-cel@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-If the allocation of tl_hba->sh fails in tcm_loop_driver_probe() and we
-attempt to dereference it in tcm_loop_tpg_address_show() we will get a
-segfault, see below for an example. So, check tl_hba->sh before
-dereferencing it.
+From: Chuck Lever <chuck.lever@oracle.com>
 
-  Unable to allocate struct scsi_host
-  BUG: kernel NULL pointer dereference, address: 0000000000000194
-  #PF: supervisor read access in kernel mode
-  #PF: error_code(0x0000) - not-present page
-  PGD 0 P4D 0
-  Oops: 0000 [#1] PREEMPT SMP NOPTI
-  CPU: 1 PID: 8356 Comm: tokio-runtime-w Not tainted 6.6.104.2-4.azl3 #1
-  Hardware name: Microsoft Corporation Virtual Machine/Virtual Machine, BIOS Hyper-V UEFI Release v4.1 09/28/2024
-  RIP: 0010:tcm_loop_tpg_address_show+0x2e/0x50 [tcm_loop]
-...
-  Call Trace:
-   <TASK>
-   configfs_read_iter+0x12d/0x1d0 [configfs]
-   vfs_read+0x1b5/0x300
-   ksys_read+0x6f/0xf0
-...
+Mike noted that when NFSD responds to an NFS_FILE_SYNC WRITE, it
+does not also persist file time stamps. To wit, Section 18.32.3
+of RFC 8881 mandates:
 
+> The client specifies with the stable parameter the method of how
+> the data is to be processed by the server. If stable is
+> FILE_SYNC4, the server MUST commit the data written plus all file
+> system metadata to stable storage before returning results. This
+> corresponds to the NFSv2 protocol semantics. Any other behavior
+> constitutes a protocol violation. If stable is DATA_SYNC4, then
+> the server MUST commit all of the data to stable storage and
+> enough of the metadata to retrieve the data before returning.
+
+Commit 3f3503adb332 ("NFSD: Use vfs_iocb_iter_write()") replaced:
+
+-		flags |= RWF_SYNC;
+
+with:
+
++		kiocb.ki_flags |= IOCB_DSYNC;
+
+which appears to be correct given:
+
+	if (flags & RWF_SYNC)
+		kiocb_flags |= IOCB_DSYNC;
+
+in kiocb_set_rw_flags(). However the author of that commit did not
+appreciate that the previous line in kiocb_set_rw_flags() results
+in IOCB_SYNC also being set:
+
+	kiocb_flags |= (__force int) (flags & RWF_SUPPORTED);
+
+RWF_SUPPORTED contains RWF_SYNC, and RWF_SYNC is the same bit as
+IOCB_SYNC. Reviewers at the time did not catch the omission.
+
+Reported-by: Mike Snitzer <snitzer@kernel.org>
+Closes: https://lore.kernel.org/linux-nfs/20251018005431.3403-1-cel@kernel.org/T/#t
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Fixes: 3f3503adb332 ("NFSD: Use vfs_iocb_iter_write()")
 Cc: stable@vger.kernel.org
-Fixes: 2628b352c3d4 ("tcm_loop: Show address of tpg in configfs")
-Signed-off-by: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
- drivers/target/loopback/tcm_loop.c | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/nfsd/vfs.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/target/loopback/tcm_loop.c b/drivers/target/loopback/tcm_loop.c
-index c7b7da629741..01a8e349dc4d 100644
---- a/drivers/target/loopback/tcm_loop.c
-+++ b/drivers/target/loopback/tcm_loop.c
-@@ -894,6 +894,9 @@ static ssize_t tcm_loop_tpg_address_show(struct config_item *item,
- 			struct tcm_loop_tpg, tl_se_tpg);
- 	struct tcm_loop_hba *tl_hba = tl_tpg->tl_hba;
+diff --git a/fs/nfsd/vfs.c b/fs/nfsd/vfs.c
+index f537a7b4ee01..5333d49910d9 100644
+--- a/fs/nfsd/vfs.c
++++ b/fs/nfsd/vfs.c
+@@ -1314,8 +1314,18 @@ nfsd_vfs_write(struct svc_rqst *rqstp, struct svc_fh *fhp,
+ 		stable = NFS_UNSTABLE;
+ 	init_sync_kiocb(&kiocb, file);
+ 	kiocb.ki_pos = offset;
+-	if (stable && !fhp->fh_use_wgather)
+-		kiocb.ki_flags |= IOCB_DSYNC;
++	if (likely(!fhp->fh_use_wgather)) {
++		switch (stable) {
++		case NFS_FILE_SYNC:
++			/* persist data and timestamps */
++			kiocb.ki_flags |= IOCB_DSYNC | IOCB_SYNC;
++			break;
++		case NFS_DATA_SYNC:
++			/* persist data only */
++			kiocb.ki_flags |= IOCB_DSYNC;
++			break;
++		}
++	}
  
-+	if (!tl_hba->sh)
-+		return -ENODEV;
-+
- 	return snprintf(page, PAGE_SIZE, "%d:0:%d\n",
- 			tl_hba->sh->host_no, tl_tpg->tl_tpgt);
- }
+ 	nvecs = xdr_buf_to_bvec(rqstp->rq_bvec, rqstp->rq_maxpages, payload);
+ 	iov_iter_bvec(&iter, ITER_SOURCE, rqstp->rq_bvec, nvecs, *cnt);
 -- 
-2.49.0
+2.51.0
 
 
