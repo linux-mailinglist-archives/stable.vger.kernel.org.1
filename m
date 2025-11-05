@@ -1,152 +1,148 @@
-Return-Path: <stable+bounces-192491-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192492-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F7A4C3547E
-	for <lists+stable@lfdr.de>; Wed, 05 Nov 2025 12:03:18 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3F2DC354D2
+	for <lists+stable@lfdr.de>; Wed, 05 Nov 2025 12:13:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 61EB8622440
-	for <lists+stable@lfdr.de>; Wed,  5 Nov 2025 10:55:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0F6E21899AF6
+	for <lists+stable@lfdr.de>; Wed,  5 Nov 2025 11:13:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0B0C30DEDE;
-	Wed,  5 Nov 2025 10:53:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB0ED30F551;
+	Wed,  5 Nov 2025 11:13:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b="IynIMTyr"
 X-Original-To: stable@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from mail-10628.protonmail.ch (mail-10628.protonmail.ch [79.135.106.28])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49ABC30C617;
-	Wed,  5 Nov 2025 10:53:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADBA230FC00
+	for <stable@vger.kernel.org>; Wed,  5 Nov 2025 11:13:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.28
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762339998; cv=none; b=uexIENySkgynvAbtLY06s3qBIKWyYWPgZQBLh4qcCWHGeWBeBJiH1rYlxTFeo4BphmLvjomTO7w9QOVbbDbS5QO2JTAexkxymp4oQDYNxKkPitjwF2AqkF3ecCsAftmUPYjjR1oeoPwUDbxZcszTW34CUqEZz4u7oPVR98qspyQ=
+	t=1762341195; cv=none; b=Ipw1QG7llcdphIT2jgKTpkDaXcT9U2WD6bPKC6LH8oZqw6CYwOu+gYCBvlpqZ/FAJzyUMYx/eBgvtiqFSK8/xNlvDDulCGTVEdiUczWq6Ny76HT+mkdeBXyDUVZAvS7ffMyEN976vnBiLV8h5OChVA7sYmDxL2JmztV3KTs1w9E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762339998; c=relaxed/simple;
-	bh=65j2zQ0hirApoK50aZu6uaJJ4JmRrtmhk68goetJMtM=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uj7SCScfS5u0assKMyg935JClGMsJ2TcDTXOqiJHEMsKhfeIEmQtUSmlUREjplqTnz1iRN8ESo4FiA4km9r2HUypwK3zdCUAvqBlmDokJfcfxJWiRKOtyscf/pKkbCH/CawJG8f95nJARQ/EHW1K+pU77/OQQu9HyfHOqjrebE4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.31])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4d1hsF5jL3z6HJcR;
-	Wed,  5 Nov 2025 18:49:21 +0800 (CST)
-Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
-	by mail.maildlp.com (Postfix) with ESMTPS id D5CD61402A5;
-	Wed,  5 Nov 2025 18:53:13 +0800 (CST)
-Received: from localhost (10.203.177.15) by dubpeml100005.china.huawei.com
- (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Wed, 5 Nov
- 2025 10:53:13 +0000
-Date: Wed, 5 Nov 2025 10:53:11 +0000
-From: Jonathan Cameron <jonathan.cameron@huawei.com>
-To: Sasha Levin <sashal@kernel.org>
-CC: <stable@vger.kernel.org>, <stable-commits@vger.kernel.org>, Jonathan
- Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, Nuno
- =?ISO-8859-1?Q?S=E1?= <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>
-Subject: Re: Patch "iio: light: isl29125: Use iio_push_to_buffers_with_ts()
- to allow source size runtime check" has been added to the 6.17-stable tree
-Message-ID: <20251105105311.000045bb@huawei.com>
-In-Reply-To: <20251104233644.350147-1-sashal@kernel.org>
-References: <20251104233644.350147-1-sashal@kernel.org>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+	s=arc-20240116; t=1762341195; c=relaxed/simple;
+	bh=nQMee2/Jkv7M+Rcqa58Sh+4rIg8reEy8IZtYmf6VepA=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=qw3dkT/WEHiQhXctYSRQFCQuJkR1+l95RQfX4jvhi5iQWbO7FYmL9I7Hvf4119DMslB6YFfQ8cTRnpJkaCrznTXiIRO76Q80sC81uq63eY9J1cmlPp1bU5pFzPr1LwOBSwl51F3+ENlMeNf+qo6cip6br5+u3nIgtkAV8K8l2Cc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me; spf=pass smtp.mailfrom=pm.me; dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b=IynIMTyr; arc=none smtp.client-ip=79.135.106.28
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pm.me
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
+	s=protonmail3; t=1762341185; x=1762600385;
+	bh=MhOL772gDQt3HjlEW0CKt9Wxom0RYSxrQeQWZ+rjImo=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=IynIMTyrNWBlf4PhOmhXwPzcshBVn1bvwsGpIzoT+fFZDNBYsCY4t116aDu5ENCsc
+	 u9OIwrF5zikcMNOI4NqGkovwN0zaLpnRkdAi8buGUu73pc2/Lx2E8WX5oO+yea9aoQ
+	 Jy2u/U/p3nX5d7IeaKkUJWrgP2GiCNnwyU1Nu06Ej/WO2Wsa7jSSvRL1WJ7F0NOKiZ
+	 mWJD/b9C6YCsfwZIqlOUqqKmByhU1SzSAlsOWuMpaoyOBxMcPIsTZ/mOrIT9Vx+eLS
+	 KwGAJ9Vk6UVm3LoycXsk4/SVrr2juYIj0IrzoyNXaIdWOPk5qqNDZzq/L2wnbxUb/D
+	 RGQbgT+gxlcEQ==
+Date: Wed, 05 Nov 2025 11:13:00 +0000
+To: Andrey Konovalov <andreyknvl@gmail.com>
+From: Maciej Wieczor-Retman <m.wieczorretman@pm.me>
+Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>, Alexander Potapenko <glider@google.com>, Dmitry Vyukov <dvyukov@google.com>, Vincenzo Frascino <vincenzo.frascino@arm.com>, Andrew Morton <akpm@linux-foundation.org>, Marco Elver <elver@google.com>, stable@vger.kernel.org, Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>, Baoquan He <bhe@redhat.com>, kasan-dev@googlegroups.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1 2/2] kasan: Unpoison vms[area] addresses with a common tag
+Message-ID: <cc4xh64s47ftujtp76hizmjqaczbgpzvmpbtzjtya2tuqyc75x@3obiajea2eem>
+In-Reply-To: <CA+fCnZdUMTQNq=hgn8KbNwv2+LsRqoZ_R0CK0uWnjB41nHzvyg@mail.gmail.com>
+References: <cover.1762267022.git.m.wieczorretman@pm.me> <cf8fe0ffcdbf54e06d9df26c8473b123c4065f02.1762267022.git.m.wieczorretman@pm.me> <CA+fCnZdUMTQNq=hgn8KbNwv2+LsRqoZ_R0CK0uWnjB41nHzvyg@mail.gmail.com>
+Feedback-ID: 164464600:user:proton
+X-Pm-Message-ID: 9bc93b4823ad8fa97869a332ca0a7f37c2bec3e2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml100012.china.huawei.com (7.191.174.184) To
- dubpeml100005.china.huawei.com (7.214.146.113)
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Tue,  4 Nov 2025 18:36:44 -0500
-Sasha Levin <sashal@kernel.org> wrote:
+On 2025-11-05 at 02:13:22 +0100, Andrey Konovalov wrote:
+>On Tue, Nov 4, 2025 at 3:49=E2=80=AFPM Maciej Wieczor-Retman
+><m.wieczorretman@pm.me> wrote:
+>>
+>> From: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
+>>
+>> A KASAN tag mismatch, possibly causing a kernel panic, can be observed
+>> on systems with a tag-based KASAN enabled and with multiple NUMA nodes.
+>> It was reported on arm64 and reproduced on x86. It can be explained in
+>> the following points:
+>>
+>>         1. There can be more than one virtual memory chunk.
+>>         2. Chunk's base address has a tag.
+>>         3. The base address points at the first chunk and thus inherits
+>>            the tag of the first chunk.
+>>         4. The subsequent chunks will be accessed with the tag from the
+>>            first chunk.
+>>         5. Thus, the subsequent chunks need to have their tag set to
+>>            match that of the first chunk.
+>>
+>> Unpoison all vm_structs after allocating them for the percpu allocator.
+>> Use the same tag to resolve the pcpu chunk address mismatch.
+>>
+>> Fixes: 1d96320f8d53 ("kasan, vmalloc: add vmalloc tagging for SW_TAGS")
+>> Cc: <stable@vger.kernel.org> # 6.1+
+>> Signed-off-by: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
+>> Tested-by: Baoquan He <bhe@redhat.com>
+>> ---
+>> Changelog v1 (after splitting of from the KASAN series):
+>> - Rewrite the patch message to point at the user impact of the issue.
+>> - Move helper to common.c so it can be compiled in all KASAN modes.
+>>
+>>  mm/kasan/common.c | 10 +++++++++-
+>>  1 file changed, 9 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/mm/kasan/common.c b/mm/kasan/common.c
+>> index c63544a98c24..a6bbc68984cd 100644
+>> --- a/mm/kasan/common.c
+>> +++ b/mm/kasan/common.c
+>> @@ -584,12 +584,20 @@ bool __kasan_check_byte(const void *address, unsig=
+ned long ip)
+>>         return true;
+>>  }
+>>
+>> +/*
+>> + * A tag mismatch happens when calculating per-cpu chunk addresses, bec=
+ause
+>> + * they all inherit the tag from vms[0]->addr, even when nr_vms is bigg=
+er
+>> + * than 1. This is a problem because all the vms[]->addr come from sepa=
+rate
+>> + * allocations and have different tags so while the calculated address =
+is
+>> + * correct the tag isn't.
+>> + */
+>>  void __kasan_unpoison_vmap_areas(struct vm_struct **vms, int nr_vms)
+>>  {
+>>         int area;
+>>
+>>         for (area =3D 0 ; area < nr_vms ; area++) {
+>>                 kasan_poison(vms[area]->addr, vms[area]->size,
+>> -                            arch_kasan_get_tag(vms[area]->addr), false)=
+;
+>> +                            arch_kasan_get_tag(vms[0]->addr), false);
+>> +               arch_kasan_set_tag(vms[area]->addr, arch_kasan_get_tag(v=
+ms[0]->addr));
+>
+>set_tag() does not set the tag in place, its return value needs to be assi=
+gned.
 
-> This is a note to let you know that I've just added the patch titled
-> 
->     iio: light: isl29125: Use iio_push_to_buffers_with_ts() to allow source size runtime check
-> 
-> to the 6.17-stable tree which can be found at:
->     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
-> 
-> The filename of the patch is:
->      iio-light-isl29125-use-iio_push_to_buffers_with_ts-t.patch
-> and it can be found in the queue-6.17 subdirectory.
-> 
-> If you, or anyone else, feels it should not be added to the stable tree,
-> please let <stable@vger.kernel.org> know about it.
-> 
+Right, not sure how I missed that
 
-This isn't a fix.  Harmless if another fix needs it for context but
-in of itself not otherwise appropriate for stable.
+>
+>So if this patch fixes the issue, there's something off (is
+>vms[area]->addr never used for area !=3D 0)?
 
-The hardening is against code bugs and there isn't one here - longer
-term we want to deprecate and remove the old interface.
+Maybe there is something off with my tests then. I'll try to run them in a
+couple of different environments.
 
-J
-> 
-> 
-> commit 72afc12515b357d26a5ce4f0149379ef797e3e37
-> Author: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Date:   Sat Aug 2 17:44:29 2025 +0100
-> 
->     iio: light: isl29125: Use iio_push_to_buffers_with_ts() to allow source size runtime check
->     
->     [ Upstream commit f0ffec3b4fa7e430f92302ee233c79aeb021fe14 ]
->     
->     Also move the structure used as the source to the stack as it is only 16
->     bytes and not the target of an DMA or similar.
->     
->     Reviewed-by: Matti Vaittinen <mazziesaccount@gmail.com>
->     Reviewed-by: Andy Shevchenko <andy@kernel.org>
->     Link: https://patch.msgid.link/20250802164436.515988-10-jic23@kernel.org
->     Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
->     Signed-off-by: Sasha Levin <sashal@kernel.org>
-> 
-> diff --git a/drivers/iio/light/isl29125.c b/drivers/iio/light/isl29125.c
-> index 6bc23b164cc55..3acb8a4f1d120 100644
-> --- a/drivers/iio/light/isl29125.c
-> +++ b/drivers/iio/light/isl29125.c
-> @@ -51,11 +51,6 @@
->  struct isl29125_data {
->  	struct i2c_client *client;
->  	u8 conf1;
-> -	/* Ensure timestamp is naturally aligned */
-> -	struct {
-> -		u16 chans[3];
-> -		aligned_s64 timestamp;
-> -	} scan;
->  };
->  
->  #define ISL29125_CHANNEL(_color, _si) { \
-> @@ -179,6 +174,11 @@ static irqreturn_t isl29125_trigger_handler(int irq, void *p)
->  	struct iio_dev *indio_dev = pf->indio_dev;
->  	struct isl29125_data *data = iio_priv(indio_dev);
->  	int i, j = 0;
-> +	/* Ensure timestamp is naturally aligned */
-> +	struct {
-> +		u16 chans[3];
-> +		aligned_s64 timestamp;
-> +	} scan = { };
->  
->  	iio_for_each_active_channel(indio_dev, i) {
->  		int ret = i2c_smbus_read_word_data(data->client,
-> @@ -186,10 +186,10 @@ static irqreturn_t isl29125_trigger_handler(int irq, void *p)
->  		if (ret < 0)
->  			goto done;
->  
-> -		data->scan.chans[j++] = ret;
-> +		scan.chans[j++] = ret;
->  	}
->  
-> -	iio_push_to_buffers_with_timestamp(indio_dev, &data->scan,
-> +	iio_push_to_buffers_with_ts(indio_dev, &scan, sizeof(scan),
->  		iio_get_time_ns(indio_dev));
->  
->  done:
-> 
+--=20
+Kind regards
+Maciej Wiecz=C3=B3r-Retman
 
 
