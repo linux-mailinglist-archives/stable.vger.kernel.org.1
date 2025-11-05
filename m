@@ -1,59 +1,75 @@
-Return-Path: <stable+bounces-192514-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192515-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 359FCC362E9
-	for <lists+stable@lfdr.de>; Wed, 05 Nov 2025 15:56:18 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A215C3646F
+	for <lists+stable@lfdr.de>; Wed, 05 Nov 2025 16:17:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 3E1264FCF7C
-	for <lists+stable@lfdr.de>; Wed,  5 Nov 2025 14:51:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9D674622030
+	for <lists+stable@lfdr.de>; Wed,  5 Nov 2025 15:05:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A668329E4B;
-	Wed,  5 Nov 2025 14:51:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0F7432E746;
+	Wed,  5 Nov 2025 15:04:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LNUenzsE"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ir5jVHDN"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F66D3191B4;
-	Wed,  5 Nov 2025 14:51:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC623314B8E;
+	Wed,  5 Nov 2025 15:04:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762354272; cv=none; b=QVuqEiAjnB3dd64y41kA9tury9VltbKdiScsUxihCwBntU6cRIlHlvujvgx9LFGgWUZ10J3+MA9z7UcC2iUSeHdBgR7/VgSR0Nc9/Ugt63iWt1It9S8lWVI9710yurSvBeojCLUUk/2A/wBIvdQPs0UvAfK4fU9RbZOAga0IE5U=
+	t=1762355095; cv=none; b=JXJHyZEKgKWkPVgC7GczRfqxuvnnY1ZqoKRRq0hVjmBOeZr14DFEuXwCDzlF7YNM0NahmWdoWmaN/T0EZicBGQEeVE9TEdbVB1Sl15rSj16vUFQ8zFVdHSdEMKoPUDiz4OgMROwlpFKRzRBvyNztRPbZv/3zmjfT+nzF50N7GDo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762354272; c=relaxed/simple;
-	bh=tdq+4btkngSavv+5JwmO8S2wxZS26gc4wDaWkcIkJ48=;
+	s=arc-20240116; t=1762355095; c=relaxed/simple;
+	bh=E6z5Nc1ezh/OdyRJ8gbtV68Q6zNCbloIF2sx0XTu5sA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nMy/uyUKcXQ/dVOW4lO2YGj61ptjzf0SGHRKdCYT8HiVmIgHBTd88Cgyenrb3Gxi1uAuwwL/fhsjp2JcVRcA/ftzElZ1XBMW1nqCS0pph75hyCDmMIFPYfNbb9gpWMP6uRydE3kpICjV033yE1rIxA5M27Ua/cG7/JcdrW2ws+k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LNUenzsE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 366CBC4CEF8;
-	Wed,  5 Nov 2025 14:51:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762354271;
-	bh=tdq+4btkngSavv+5JwmO8S2wxZS26gc4wDaWkcIkJ48=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=LNUenzsEhK+PuJc2st3qaLUdjj07gX2BbrNJOw7m4oB+oaiSoTBJo5WWfXpi7314P
-	 CtkGW4cCqTU3e8HafSbKSHpOYxLTqpaoEoba8v7hZrfoTvs/ggrFqUq0BKIw6ecbbo
-	 6sOzyQ0BYbZUtMfqgbNgbiGhdGZmpSuTJnvnOKXc/oGy/F8ofw5hdHDzXjbM6xz9+Y
-	 WbDreNc5ckHBGe4lKpI10KfJH53SiOuJeyK6IC8uaBm8OddqENxB8wfAJpHT98giFE
-	 TY2PcVx9Pp76NvfAEjkhb9PaI0iNPIxgkWsJn5h9y2MfFCBgRaua6o25H2A9eSuZ2L
-	 l22NYgWGiRLHg==
-Date: Wed, 5 Nov 2025 16:51:06 +0200
-From: Leon Romanovsky <leon@kernel.org>
-To: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Ma Ke <make24@iscas.ac.cn>, haris.iqbal@ionos.com, jinpu.wang@ionos.com,
-	danil.kipnis@cloud.ionos.com, linux-rdma@vger.kernel.org,
+	 Content-Type:Content-Disposition:In-Reply-To; b=k7hsSIaGLqhdIInEZRl+gY537l2i6VvsvSicia/si3x8v7o17NYCwvB5QuWp0aVNV1mN+V+3BjzunZeiRnYmdLPRBerhmFY+kN8S0JgKp0PATvjgKOMfPU91oW+7/GcmXZw7X8MlPEpHzxlWjFKogZJVABvg9mNPd+n3ySJld24=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ir5jVHDN; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1762355094; x=1793891094;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=E6z5Nc1ezh/OdyRJ8gbtV68Q6zNCbloIF2sx0XTu5sA=;
+  b=Ir5jVHDNYqT6lYjWJis14I25+20/HbGavIgW90/huQ8dDzW/2ghf0Ir0
+   aH8/2nwrgxWv8IHAENZGncqhWvlJ3BsYqGPiKlM2Dvm0Jx6W4UMltRoKg
+   cqrekBvwNbUE1Sj16G7ecSajvktsdP8g+Jjs6W5DvHnjGdo098WHNuJSe
+   ukVVsKopxBktmwDmvDh0EsDtgxs8BHc9GcKTTthgVw0oVkUdomIrlarUJ
+   D0iQd5ttCtsBy6tS3rP8XYs46op46XuEoD5D8V1g9WInidACmjcuCr1cl
+   dNVhJYxPMEkjeFKFfCbkcBoMRelkx7ohl0oNG3qw4f0Wsccbq4XRb4lcU
+   A==;
+X-CSE-ConnectionGUID: SJ9P5oQsTqmyvK6Y7bvDSA==
+X-CSE-MsgGUID: R9ZKynswTKqZkQcDwCskdQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11603"; a="64505262"
+X-IronPort-AV: E=Sophos;i="6.19,282,1754982000"; 
+   d="scan'208";a="64505262"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2025 07:04:40 -0800
+X-CSE-ConnectionGUID: w425S8vVSC+co88XflheEA==
+X-CSE-MsgGUID: 51RPs0JpQ/++FXmpe2yhUA==
+X-ExtLoop1: 1
+Received: from ldmartin-desk2.corp.intel.com (HELO ashevche-desk.local) ([10.124.221.135])
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2025 07:04:38 -0800
+Received: from andy by ashevche-desk.local with local (Exim 4.98.2)
+	(envelope-from <andriy.shevchenko@intel.com>)
+	id 1vGf3o-00000005osw-3GAL;
+	Wed, 05 Nov 2025 17:04:32 +0200
+Date: Wed, 5 Nov 2025 17:04:31 +0200
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Ma Ke <make24@iscas.ac.cn>
+Cc: jic23@kernel.org, dlechner@baylibre.com, nuno.sa@analog.com,
+	andy@kernel.org, error27@gmail.com, linux-iio@vger.kernel.org,
 	linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
 	stable@vger.kernel.org
-Subject: Re: [PATCH] RDMA/rtrs: server: Fix error handling in
- get_or_create_srv
-Message-ID: <20251105145106.GG16832@unreal>
-References: <20251104021900.11896-1-make24@iscas.ac.cn>
- <20251105125713.GC16832@unreal>
- <20251105134659.GM1204670@ziepe.ca>
+Subject: Re: [PATCH] iio: trigger: Fix error handling in viio_trigger_alloc
+Message-ID: <aQtnfzUKHc0fY52_@smile.fi.intel.com>
+References: <20251105094714.28117-1-make24@iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,34 +78,31 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251105134659.GM1204670@ziepe.ca>
+In-Reply-To: <20251105094714.28117-1-make24@iscas.ac.cn>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Wed, Nov 05, 2025 at 09:46:59AM -0400, Jason Gunthorpe wrote:
-> On Wed, Nov 05, 2025 at 02:57:13PM +0200, Leon Romanovsky wrote:
-> > On Tue, Nov 04, 2025 at 10:19:00AM +0800, Ma Ke wrote:
-> > > get_or_create_srv() fails to call put_device() after
-> > > device_initialize() when memory allocation fails. This could cause
-> > > reference count leaks during error handling, preventing proper device
-> > > cleanup and resulting in memory leaks.
-> > 
-> > Nothing from above is true. put_device is preferable way to release
-> > memory after call to device_initialize(), but direct call to kfree is
-> > also fine.
+On Wed, Nov 05, 2025 at 05:47:14PM +0800, Ma Ke wrote:
+> viio_trigger_alloc() initializes the device with device_initialize()
+> but uses kfree() directly in error paths, which bypasses the device's
+> release callback iio_trig_release(). This could lead to memory leaks
+> and inconsistent device state.
 > 
-> Once device_initialize() happens you must call put_device(), it is one
-> of Greg's rules.
+> Replace kfree(trig) with put_device(&trig->dev) in error paths to
+> ensure proper cleanup through the device's release callback.
 
-According to the documentation it is not must, but is very good to have.
+Now when irq_alloc_descs() fails, trig->subirq_base becomes negative and
+in the release callback it will pass the
 
-This sentence from above commit message is wrong:
-"This could cause reference count leaks during error handling, preventing proper device
-cleanup and resulting in memory leaks."
+        if (trig->subirq_base) {
 
-It won't cause to reference count leaks and doesn't have memory leaks in
-this flow.
+Is it a problem?
 
-Thanks
+The release function also misses mutex_destroy().
 
-> 
-> Jason
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
 
