@@ -1,106 +1,193 @@
-Return-Path: <stable+bounces-192506-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192507-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C020C35BBD
-	for <lists+stable@lfdr.de>; Wed, 05 Nov 2025 13:58:28 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6825C35DAE
+	for <lists+stable@lfdr.de>; Wed, 05 Nov 2025 14:35:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6E87318949B3
-	for <lists+stable@lfdr.de>; Wed,  5 Nov 2025 12:57:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 539B63A6908
+	for <lists+stable@lfdr.de>; Wed,  5 Nov 2025 13:32:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CC503161BC;
-	Wed,  5 Nov 2025 12:57:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA8D532143A;
+	Wed,  5 Nov 2025 13:32:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uyVp+qtp"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="luapqlGx"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D1953128B4;
-	Wed,  5 Nov 2025 12:57:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93DAC320393
+	for <stable@vger.kernel.org>; Wed,  5 Nov 2025 13:32:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762347441; cv=none; b=dejmu6cTNSX+ZEmUn0F/LtuYpsWLmMbL+SdeI2NmGL4HuQ/agMkB/gFE88HaUZ60NDdEhjQmrCzawR8Inx2uSuxbJD/sMzjO4yKgjXaLapA6pI78CG0aRp9uo6y6tRh/1WBuum/pha1a3pksgsd06mudITBENkFoSbtzUCtrP/Y=
+	t=1762349544; cv=none; b=L8G8oD8ugh5zstIxF7vegFEfomQYqnnkuJxvCpEZuT71VJIMjcUdECTWvUXqdBTod6nUveaCNn14VjZ8e32JU7deSKquINp53JTCgSdCAi4FQf4szJo39KiC5+WYdLtusHcqkFeA5rsyPp+kr85Kf9AmykB7BWwniTR7ZuvU5+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762347441; c=relaxed/simple;
-	bh=hIATDbt/RsrH8ZIiC8JoCLILbqxUzH0/OZQz+Ym01Tw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aY1C71m+bSH9P9X9bpbNiQI5DRithDwuUQh8CNPW0CKQM/VKz4upAnMSewJi61bFF8FHIHnvwTixnFRPw4ucJNuYhfBQznU5DcBCBVzL2ctVGQwGPk3/rFgGom3mRYyhby3BHrfVvu//0du/1/yDkE81IbprldwPstPExPa9Zzk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uyVp+qtp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F873C4CEF8;
-	Wed,  5 Nov 2025 12:57:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762347440;
-	bh=hIATDbt/RsrH8ZIiC8JoCLILbqxUzH0/OZQz+Ym01Tw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=uyVp+qtp31l6qzqBBFg/KjZ/r3ewyocLtuGIKSTuRAtNZ56Kx7tGofQuowtlA6uGQ
-	 qHni5QDiVeZ1HxgesDoA2pjDrzTH/QHRs4e4NQznZPgMTltS9YPWu8oJ/tHsEHXMh/
-	 BvOfRNPbbd8ZVvwDBOgDTbgLrBIunisc4GCSeKcF1inNZTCo+KXX9dkKqRcRorq4lb
-	 bZeo74gn3u5LgxjXguB6c5thwN4C898ujDtCSPFlBirRdrplh5m2pOCw/gw4TmDL5U
-	 3HRnZDbTcBMVbuCIKmiutz5j23n8WyHxUYzUUdR3P70WfXBsvqhqnA83bMjLU9O3mT
-	 2eQoPEdtWUfMg==
-Date: Wed, 5 Nov 2025 14:57:13 +0200
-From: Leon Romanovsky <leon@kernel.org>
-To: Ma Ke <make24@iscas.ac.cn>
-Cc: haris.iqbal@ionos.com, jinpu.wang@ionos.com, jgg@ziepe.ca,
-	danil.kipnis@cloud.ionos.com, linux-rdma@vger.kernel.org,
-	linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] RDMA/rtrs: server: Fix error handling in
- get_or_create_srv
-Message-ID: <20251105125713.GC16832@unreal>
-References: <20251104021900.11896-1-make24@iscas.ac.cn>
+	s=arc-20240116; t=1762349544; c=relaxed/simple;
+	bh=WZqTjb689EoWjujrHonKsIfRrwGoZauuvVV3zjdR5KM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ZAeVVeyGht8NO4nXK6kajyy/5y895eP00ZtDtvUPpN8wCFAFu+w7v+sicowWOjqQwF+9+YEx0o6ezLD6orzVN3KEl0X3O0gZOWPDXKuEWWXw2AQwWKzax7y8cDSRwskABTnzValF94kgINXNmjazum7o8gQS0wPJnQRoJVq8xys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=luapqlGx; arc=none smtp.client-ip=209.85.128.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-47758595eecso9563005e9.0
+        for <stable@vger.kernel.org>; Wed, 05 Nov 2025 05:32:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1762349541; x=1762954341; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=TfYKsCgYtXAFMzfAlzEUUGBJt44vMEyp53EFHMiQJao=;
+        b=luapqlGxuGVnE7WvwlaxwNS5LZoFyPxjx66LWE1SKMr8TipUOr4oKRXEEDdJ8pVyUm
+         XJNo9luTEnnT9nrUnFzV1nYhFBQsfd8ruQeN3NjlbvZ1ns3DOl0AfbtElGnrYVQchfhV
+         UD7gtadXVinzGp7NivmcgEnnAYeCGjyCUr1xWyeMp2pDrzmQUOuxbQ+T7ZtYrcPE20mk
+         8IJ48/2U1Fm2IkYt+LKOs5qrNJX1xC10nyHv1sgSvtRLSUcDXqblV/7B7gFlT9rIR4Cw
+         CTPWJXALPBU6AV67A36yjNq9ZrFr3ASzxhrTJhQ51y9QHfSKffybsOhjU54tQw25bjk2
+         SzDQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762349541; x=1762954341;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=TfYKsCgYtXAFMzfAlzEUUGBJt44vMEyp53EFHMiQJao=;
+        b=bTAezB68fiu7F4/4CXzHKoYV7TrvoqhRfjKfDxJboGgYDYtIkwWF+r6boaj1Kw4Ma4
+         H8JZOe1xtuDzW93R7xTwOWjKs2oRV5DXN+AlnkRx7lNRy3N9JsytdFwdbJzVSCwNQ3ss
+         aZcyxDDVuaTYjQBOQdI7ksXv+ztcqS6b0GfePDtOX2uU8Qxspykw6K6RxquEDR5xeYVV
+         Lk7Ijo5E1dZfj5D4PRCeD6NrTYBtkMB0TlsJ3NSDbMN63AgywyNTUAKz+77EDARGbgsv
+         2+xVPC2d4dOM1UmJ/vxC7N1/JYN51mxDvgtfxGl1GEMBFewCMFbGZOO0biPF5s3G4V7c
+         gUuA==
+X-Forwarded-Encrypted: i=1; AJvYcCVlylX2SYp+H9EGu6RgVQrcLQ/RvkHOguzaDvwLKhF+zN0s4VTHk9VTfUw/qTvkOSOiKLzKGWU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxha7jtGzFBSS4MDbnFEzOxrmDZvqglT3TNkvQ1i0HjmkthdeAL
+	XfF0ptLPJocNsNXlDvSHFYU5PZKhNSp+MGopOjPrXX+KAXn6cuh86KMUF0ZcSkkI6qo=
+X-Gm-Gg: ASbGncvlFr7WRfnpKBY/S03G/SMswFL04Ats5ovIYyjLe+ecpZzD73JR96hoP6a62LH
+	lrPVQeB49ol+ZdS2pOT/fFJk23XhNbqjLHOhdyxJjs/3C/v3gGgswyQV4Zss+qBTlylTxBmK9TD
+	NlzDTPc6t2SZx7dBjUcsvZ/SIh5nB0puplqKPkOxK2ZC7ppedev+yENTsWVL3ZaRhVV5Tr5XWjI
+	EscUfFEdpnShjHRyYoh81WEY6Tk9qRdeFtJUAbmhfuFSJh8ryv+hjiGm6rMy7A9ewvAFKuCvZAW
+	r77qRdVV3cX9yqcJfljO0CGII+ZMENpJGvSS4GZfoZIZ7Rmhwa5xpb1rJmLnEs4iU7mDzCha25y
+	Pd0UBgN32d+H5+V5TcD2A2RKuLtjdudr92ZlgM5Dd3LV2q7qUYG2eDDqIvTNBcig2tvmT/fNBMP
+	TSa2gfLWEo+NhAnE8tqTZZJ8xFF9eOOEtoceVQ
+X-Google-Smtp-Source: AGHT+IHrQ5Ca/eXvqCH81m3o/jUTceHdPdQQWNSE7M8rzMniM4TuBgB5grmgh+HwfHdWHibHeGh8dg==
+X-Received: by 2002:a05:600c:5252:b0:475:dd9d:297b with SMTP id 5b1f17b1804b1-4775cdf46f0mr23240645e9.33.1762349540607;
+        Wed, 05 Nov 2025 05:32:20 -0800 (PST)
+Received: from [192.168.2.1] (146725694.box.freepro.com. [130.180.211.218])
+        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-4775cdc2d14sm49078345e9.1.2025.11.05.05.32.19
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 05 Nov 2025 05:32:20 -0800 (PST)
+Message-ID: <7ad2b976-3b0d-4823-a145-ceedf071450d@linaro.org>
+Date: Wed, 5 Nov 2025 14:32:18 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251104021900.11896-1-make24@iscas.ac.cn>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] clocksource/drivers/stm: Fix section mismatches
+To: Johan Hovold <johan@kernel.org>, Thomas Gleixner <tglx@linutronix.de>
+Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20251017054943.7195-1-johan@kernel.org>
+Content-Language: en-US
+From: Daniel Lezcano <daniel.lezcano@linaro.org>
+In-Reply-To: <20251017054943.7195-1-johan@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Tue, Nov 04, 2025 at 10:19:00AM +0800, Ma Ke wrote:
-> get_or_create_srv() fails to call put_device() after
-> device_initialize() when memory allocation fails. This could cause
-> reference count leaks during error handling, preventing proper device
-> cleanup and resulting in memory leaks.
 
-Nothing from above is true. put_device is preferable way to release
-memory after call to device_initialize(), but direct call to kfree is
-also fine.
+Hi Johan,
 
+thanks for your fix.
+
+You should replace __init by __init_or_module
+
+
+On 10/17/25 07:49, Johan Hovold wrote:
+> Platform drivers can be probed after their init sections have been
+> discarded (e.g. on probe deferral or manual rebind through sysfs) so the
+> probe function must not live in init. Device managed resource actions
+> similarly cannot be discarded.
 > 
-> Found by code review.
+> The "_probe" suffix of the driver structure name prevents modpost from
+> warning about this so replace it to catch any similar future issues.
 > 
-> Cc: stable@vger.kernel.org
-
-There is no need in this line at all, it is not fixing anything.
-
-Please rewrite commit message, thanks.
-
-> Fixes: 9cb837480424 ("RDMA/rtrs: server: main functionality")
-> Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+> Fixes: cec32ac75827 ("clocksource/drivers/nxp-timer: Add the System Timer Module for the s32gx platforms")
+> Cc: stable@vger.kernel.org	# 6.16
+> Cc: Daniel Lezcano <daniel.lezcano@linaro.org>
+> Signed-off-by: Johan Hovold <johan@kernel.org>
 > ---
->  drivers/infiniband/ulp/rtrs/rtrs-srv.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>   drivers/clocksource/timer-nxp-stm.c | 18 +++++++++---------
+>   1 file changed, 9 insertions(+), 9 deletions(-)
 > 
-> diff --git a/drivers/infiniband/ulp/rtrs/rtrs-srv.c b/drivers/infiniband/ulp/rtrs/rtrs-srv.c
-> index ef4abdea3c2d..9ecc6343455d 100644
-> --- a/drivers/infiniband/ulp/rtrs/rtrs-srv.c
-> +++ b/drivers/infiniband/ulp/rtrs/rtrs-srv.c
-> @@ -1450,7 +1450,7 @@ static struct rtrs_srv_sess *get_or_create_srv(struct rtrs_srv_ctx *ctx,
->  	kfree(srv->chunks);
->  
->  err_free_srv:
-> -	kfree(srv);
-> +	put_device(&srv->dev);
->  	return ERR_PTR(-ENOMEM);
->  }
->  
-> -- 
-> 2.17.1
-> 
+> diff --git a/drivers/clocksource/timer-nxp-stm.c b/drivers/clocksource/timer-nxp-stm.c
+> index bbc40623728f..ce10bdcfc76b 100644
+> --- a/drivers/clocksource/timer-nxp-stm.c
+> +++ b/drivers/clocksource/timer-nxp-stm.c
+> @@ -177,15 +177,15 @@ static void nxp_stm_clocksource_resume(struct clocksource *cs)
+>   	nxp_stm_clocksource_enable(cs);
+>   }
+>   
+> -static void __init devm_clocksource_unregister(void *data)
+> +static void devm_clocksource_unregister(void *data)
+>   {
+>   	struct stm_timer *stm_timer = data;
+>   
+>   	clocksource_unregister(&stm_timer->cs);
+>   }
+>   
+> -static int __init nxp_stm_clocksource_init(struct device *dev, struct stm_timer *stm_timer,
+> -					   const char *name, void __iomem *base, struct clk *clk)
+> +static int nxp_stm_clocksource_init(struct device *dev, struct stm_timer *stm_timer,
+> +				    const char *name, void __iomem *base, struct clk *clk)
+>   {
+>   	int ret;
+>   
+> @@ -298,9 +298,9 @@ static void nxp_stm_clockevent_resume(struct clock_event_device *ced)
+>   	nxp_stm_module_get(stm_timer);
+>   }
+>   
+> -static int __init nxp_stm_clockevent_per_cpu_init(struct device *dev, struct stm_timer *stm_timer,
+> -						  const char *name, void __iomem *base, int irq,
+> -						  struct clk *clk, int cpu)
+> +static int nxp_stm_clockevent_per_cpu_init(struct device *dev, struct stm_timer *stm_timer,
+> +					   const char *name, void __iomem *base, int irq,
+> +					   struct clk *clk, int cpu)
+>   {
+>   	stm_timer->base = base;
+>   	stm_timer->rate = clk_get_rate(clk);
+> @@ -388,7 +388,7 @@ static irqreturn_t nxp_stm_module_interrupt(int irq, void *dev_id)
+>   	return IRQ_HANDLED;
+>   }
+>   
+> -static int __init nxp_stm_timer_probe(struct platform_device *pdev)
+> +static int nxp_stm_timer_probe(struct platform_device *pdev)
+>   {
+>   	struct stm_timer *stm_timer;
+>   	struct device *dev = &pdev->dev;
+> @@ -484,14 +484,14 @@ static const struct of_device_id nxp_stm_of_match[] = {
+>   };
+>   MODULE_DEVICE_TABLE(of, nxp_stm_of_match);
+>   
+> -static struct platform_driver nxp_stm_probe = {
+> +static struct platform_driver nxp_stm_driver = {
+>   	.probe	= nxp_stm_timer_probe,
+>   	.driver	= {
+>   		.name		= "nxp-stm",
+>   		.of_match_table	= nxp_stm_of_match,
+>   	},
+>   };
+> -module_platform_driver(nxp_stm_probe);
+> +module_platform_driver(nxp_stm_driver);
+>   
+>   MODULE_DESCRIPTION("NXP System Timer Module driver");
+>   MODULE_LICENSE("GPL");
+
+
+-- 
+<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
+
+Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
+<http://twitter.com/#!/linaroorg> Twitter |
+<http://www.linaro.org/linaro-blog/> Blog
 
