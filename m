@@ -1,129 +1,115 @@
-Return-Path: <stable+bounces-192501-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192502-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE06CC35908
-	for <lists+stable@lfdr.de>; Wed, 05 Nov 2025 13:10:11 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4F02C35A14
+	for <lists+stable@lfdr.de>; Wed, 05 Nov 2025 13:25:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5DD324E6A58
-	for <lists+stable@lfdr.de>; Wed,  5 Nov 2025 12:10:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2531D462995
+	for <lists+stable@lfdr.de>; Wed,  5 Nov 2025 12:24:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05AD62EC083;
-	Wed,  5 Nov 2025 12:10:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 710F2314B6E;
+	Wed,  5 Nov 2025 12:24:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gqtNW8eb"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GR9KTWIJ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16AF2309F1B
-	for <stable@vger.kernel.org>; Wed,  5 Nov 2025 12:10:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E74A314D01;
+	Wed,  5 Nov 2025 12:24:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762344606; cv=none; b=B/Kj5TUGKIMrn6IbrZbKvyLJTKfL/T2QGvRAhgSlWTudnd+XKN3hI18N0dq45AX96MI+VVxOSvfHW2jL9j7YoGbSoVfXELIl7PR9XwxRb7kEpcbIBiYrH64hBlUDCt6qICu20148JVFyNXNnNzG17GrrxUWtfe1H3+7bmmQ47Xw=
+	t=1762345470; cv=none; b=OQTTswiaqlLq7489OugvZhS2XlUStekXi4P+J7yfAgOKhrtE1AVThRUUzUpa4VQvQPZAErj2Zklf9rF0lAZT2/QjO2mPeYEMy5W66RjihBQ9LZUrrpcpLnYQctLs5WG7dlS0NZUX+VaI3baL6aM1g3eDnl9xPLQK+kqcT0KB7uo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762344606; c=relaxed/simple;
-	bh=bnpQGzI4B5hGrp0wTon9oxArxPpXYiU4pYwtlgfUFDI=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=k4NS0F5ShVZGh4XZfOHhxiTEmgRJ6+I75JauyAnkTg7MuZXrGlD/S3JLpMiDUF0LNUt/6jRZirf/Mx/lpYdfQtMRBOHHLfRzS7uEmJjl8lj0cCGkCGT0KKTazBD+S2StISr45p5WFTB33avZu0SeN/5CSdaHm8zyJ+vcQRsXEro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gqtNW8eb; arc=none smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-47118259fd8so48609025e9.3
-        for <stable@vger.kernel.org>; Wed, 05 Nov 2025 04:10:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762344603; x=1762949403; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=U3J/NIy5xeeSdfSZQ6BlX/MI3fqUlXs6wtPy1sv0wyk=;
-        b=gqtNW8ebBMLON3eE/c3FMlZ84D/x8oUwqgtbYUesTmMBcuKhNXei8NISqsFLKymlvH
-         1IAPN9ewiff+PbO2s4xVBBWleS/qgOOkbbkmIpZdNXtQwVschchYi7YZ6E25AaFf8l1V
-         RTu+57Ugo3qAs7w8hDJrMcPC8zmfDVgMyFitaPoCtpMe7xMXge+4z9cglMXoj3ZI+M5U
-         0+kREgac7OgN4YFz2GfqglAF8NIj7VVtCPt07fiQm7b5g4uYgL94g+OO/JRengeQZjbO
-         RDOCpJ99jWFAFOduSCF0na1x/sWkf59eq9Ym6a++n8ptWWPHFPGvFFGGMCAYhhwkTNta
-         3Hjg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762344603; x=1762949403;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=U3J/NIy5xeeSdfSZQ6BlX/MI3fqUlXs6wtPy1sv0wyk=;
-        b=GoSZZqgFc7nzpqmJWwPBXl2GwedKJs+Z7TavAMfOL3GoWaSYUtAb/uFMPXOQIVQgGB
-         8Ma5kVRUs5xWMLe3nZJX8vtC74b9FEY/+xzhea1C9C/hG5JVUfZ4fYIcdyiDRcpJIxqg
-         n9PUvsNKj4AAf1Na7XRdz2ek5jvy1V3V3lgNsNdrQBnRSMwmLeXr3rzRacs5T5AXE7X9
-         YfRKMzTcQqIwlw8LYciJfodCqSFWGvgcs8FF/MEuiXVw1F+jzhSpotTXZKYLcOMNZ1rJ
-         SR0rDHr9O6aTKfKRTP2cLNZk0Ffkx2N3X3yJP7gt8Ws7rFUqpC9lx7VwhGkQ3QOiD9if
-         ZYQQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWHy9EK7SrguDmxJGgt1AUQ3Y4+k+pw9GUpHSPHmY0UUQOLa3h9lyZU4QukyFkuD64x97I5y+c=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzwiKGWCp4aZQiJKNttWK3aQMCpBekSnvnYP08E4OF0YtZp1x3E
-	rAWY6SyH/SZNZXX9zx5FcJeQtIsx5PwXmLWvQBT1JUKf22z+lnd8rIZzgCgg0Q==
-X-Gm-Gg: ASbGncvuorDi3BP/KV867/IDGHkuD36DRsYv5S5qCQxuE/ytvU5bKafibQ0vyfxXPrt
-	3VEHW8gIHUP8E8eL5RXClLD/e8T+GmUoSL1yVAxBGBaQglec0zacoz6AGoOSm/GVH78XBz56qN5
-	wVdH980WSdu7xPd5IFAQ2LtciR/bVm3XpFAKEg8m6oQhERjcg57e0HfRMjkFP12Ejmg/Tpxh/dV
-	O0NuzAkuABKTKS/bBDkWG00Cxtzu+tzhigACFy1zODuPqSEBY6qE8a9S+gSeKDk2I2NgXjmp/sO
-	jvfannpiZ/SIopIuIaub8+iwaGtb609j3MNlu3NuqD5dz15en55ytPbRtdI7h90qnvllKp0b4Pu
-	vHzysbCLTeUjdQmzQr9xyZnJBrFSIL08GSyBufxUltz7Isb/+G4Jab0NrOa07CwsH3VqLZ0TbMM
-	GRYt0Hl04aUk9ih0hvaVoVfmgQkYXfK51H1d5y9tLDl34bcWyywR8m2nv8/RIrzmfO4JGU
-X-Google-Smtp-Source: AGHT+IEVMkfsi/TMQ5+j0mTFe69wny26XbcL9qotwvAht7k4HyToyOV6jdByqLiw8PySJXwST5xGCA==
-X-Received: by 2002:a05:600c:1e1d:b0:477:a9e:859a with SMTP id 5b1f17b1804b1-4775cdf54e7mr25560405e9.22.1762344603073;
-        Wed, 05 Nov 2025 04:10:03 -0800 (PST)
-Received: from GALAXY.zrh.enclustra.com (xcpe-178-82-9-56.dyn.res.sunrise.net. [178.82.9.56])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-429dc1f5f8csm9919165f8f.23.2025.11.05.04.10.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 05 Nov 2025 04:10:02 -0800 (PST)
-From: Ivan Vera <ivanverasantos@gmail.com>
-X-Google-Original-From: Ivan Vera <ivan.vera@enclustra.com>
-To: git@amd.com
-Cc: Ivan Vera <ivan.vera@enclustra.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] nvmem: zynqmp_nvmem: fix DMA buffer size
-Date: Wed,  5 Nov 2025 13:09:58 +0100
-Message-Id: <20251105120958.16266-1-ivan.vera@enclustra.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1762345470; c=relaxed/simple;
+	bh=FrsBppbRUg1uqMKzbphvbtVwaExS+He7dxzOXm1SlDc=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=qL+wEI4XfFjqVdahG180dgD8jrVtBKzUk52naEK0yPCQ+/bkQueLe6HEEy3cziXlCaxoWFVHkgg4236eq49jh5PwIux+193ByvclcqpDgru7cipywoPVR2i334Z/JRnaivp+ktav7GzBgWmfCbREpE3sTtSxcoucFcV4hef0uSM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GR9KTWIJ; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1762345469; x=1793881469;
+  h=from:to:cc:in-reply-to:references:subject:message-id:
+   date:mime-version:content-transfer-encoding;
+  bh=FrsBppbRUg1uqMKzbphvbtVwaExS+He7dxzOXm1SlDc=;
+  b=GR9KTWIJgkySq0V+4m08FJmE2lb1Wdr16bBbup2rvgP1r8QKhvN8Gz5u
+   cEXrSAWvEdxImgMEmJEt30OMtykOBXJnp8wnAoUFyLiYH49OFT0QeBRKA
+   XchQlbeKNoVXUcF+ro3gs4VKCcXmVR2YON1JzZp/NJ24b+CFpDnFcQgp6
+   aN76fkhksFZDuPET+jLpWSfrxd+tXbrET1x6+LIklP8UWav3Y5/0TYTtJ
+   hXMDOqzNwbfZ6lVBOeBt1IfSoa2SJRRaZGauWwZ0nzLlB/qJm9dcJm4Fy
+   qP1cbRGHLW/PvJj2fgm57tfo7smci5jVS4lZQE1N3H8sdptmqtMYYz2oY
+   A==;
+X-CSE-ConnectionGUID: 0tN4tKP8TvK1IKXxnAhR+g==
+X-CSE-MsgGUID: YbWpceR9SLezDTgKaGQR7w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11603"; a="68110115"
+X-IronPort-AV: E=Sophos;i="6.19,281,1754982000"; 
+   d="scan'208";a="68110115"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2025 04:24:28 -0800
+X-CSE-ConnectionGUID: j+UqIEGXQt+wXdQWL113AQ==
+X-CSE-MsgGUID: DoUhTZ8AStKQekXMrF9tOg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,281,1754982000"; 
+   d="scan'208";a="186693105"
+Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.252])
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2025 04:24:25 -0800
+From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+To: Hans de Goede <hansg@kernel.org>, Armin Wolf <W_Armin@gmx.de>, 
+ Kurt Borja <kuurtb@gmail.com>
+Cc: platform-driver-x86@vger.kernel.org, Dell.Client.Kernel@dell.com, 
+ linux-kernel@vger.kernel.org, Cihan Ozakca <cozakca@outlook.com>, 
+ stable@vger.kernel.org
+In-Reply-To: <20251103-family-supp-v1-0-a241075d1787@gmail.com>
+References: <20251103-family-supp-v1-0-a241075d1787@gmail.com>
+Subject: Re: [PATCH 0/5] platform/x86: alienware-wmi-wmax: Add AWCC support
+ for most models
+Message-Id: <176234545988.15175.7415064699001825905.b4-ty@linux.intel.com>
+Date: Wed, 05 Nov 2025 14:24:19 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.13.0
 
-The efuse data buffer was allocated/freed with sizeof(bytes) instead of
-the requested length, resulting in an undersized DMA buffer and possible
-memory corruption. Allocate and free using the actual 'bytes' length.
+On Mon, 03 Nov 2025 14:01:43 -0500, Kurt Borja wrote:
 
-Fixes: 737c0c8d07b5 ("nvmem: zynqmp_nvmem: Add support to access efuse")
-Cc: stable@vger.kernel.org
+> This patchset adds support for almost all models listed as supported by
+> the AWCC windows tool.
+> 
+> This is important because the "old" interface, which this driver
+> defaults, is supported by very few and old models, while most Dell
+> gaming laptops support the newer AWCC interface.
+> 
+> [...]
 
-Signed-off-by: Ivan Vera <ivan.vera@enclustra.com>
----
- drivers/nvmem/zynqmp_nvmem.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/nvmem/zynqmp_nvmem.c b/drivers/nvmem/zynqmp_nvmem.c
-index 7da717d6c7fa..d909c8da747e 100644
---- a/drivers/nvmem/zynqmp_nvmem.c
-+++ b/drivers/nvmem/zynqmp_nvmem.c
-@@ -100,7 +100,7 @@ static int zynqmp_efuse_access(void *context, unsigned int offset,
- 	if (!efuse)
- 		return -ENOMEM;
- 
--	data = dma_alloc_coherent(dev, sizeof(bytes),
-+	data = dma_alloc_coherent(dev, bytes,
- 				  &dma_buf, GFP_KERNEL);
- 	if (!data) {
- 		ret = -ENOMEM;
-@@ -134,7 +134,7 @@ static int zynqmp_efuse_access(void *context, unsigned int offset,
- 	if (flag == EFUSE_READ)
- 		memcpy(val, data, bytes);
- efuse_access_err:
--	dma_free_coherent(dev, sizeof(bytes),
-+	dma_free_coherent(dev, bytes,
- 			  data, dma_buf);
- efuse_data_fail:
- 	dma_free_coherent(dev, sizeof(struct xilinx_efuse),
--- 
-2.25.1
+Thank you for your contribution, it has been applied to my local
+review-ilpo-fixes branch. Note it will show up in the public
+platform-drivers-x86/review-ilpo-fixes branch only once I've pushed my
+local branch there, which might take a while.
+
+The list of commits applied:
+[1/5] platform/x86: alienware-wmi-wmax: Fix "Alienware m16 R1 AMD" quirk order
+      commit: 6da381e2cd4ccf2df4bc1d37bf5a2843745e68d9
+[2/5] platform/x86: alienware-wmi-wmax: Drop redundant DMI entries
+      commit: 757dbe844903b53bbd32ab2ad6b0bcd76afab8a0
+[3/5] platform/x86: alienware-wmi-wmax: Add support for the whole "M" family
+      commit: 1931748058c5ef9c9dfad50483bb99cc645cbcb5
+[4/5] platform/x86: alienware-wmi-wmax: Add support for the whole "X" family
+      commit: 157a1f2d93d2e0416af386d67d1a3953796d0941
+[5/5] platform/x86: alienware-wmi-wmax: Add support for the whole "G" family
+      commit: 4f29ef0b522988fe41e2a080ce861b4deb1d976c
+
+--
+ i.
 
 
