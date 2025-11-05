@@ -1,164 +1,179 @@
-Return-Path: <stable+bounces-192511-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192512-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC886C36100
-	for <lists+stable@lfdr.de>; Wed, 05 Nov 2025 15:28:57 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FC71C361C0
+	for <lists+stable@lfdr.de>; Wed, 05 Nov 2025 15:40:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7F42E4F0052
-	for <lists+stable@lfdr.de>; Wed,  5 Nov 2025 14:26:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 368061A21ADA
+	for <lists+stable@lfdr.de>; Wed,  5 Nov 2025 14:40:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7C1A324B1C;
-	Wed,  5 Nov 2025 14:26:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B854032E75C;
+	Wed,  5 Nov 2025 14:39:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="uLWiJu/C"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BF+mmeds"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D063B314A83
-	for <stable@vger.kernel.org>; Wed,  5 Nov 2025 14:26:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C99232E734;
+	Wed,  5 Nov 2025 14:39:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762352796; cv=none; b=bSOqDFTZXDtRjsWBjZRpFVJnz4A54EYZ44Llk6b2w80tyH7OAkv8wgxVu1k9WZ/gQ47wiX1mXnNHJT5NY4bvTEDEHwwf06E4WvnQL391jrTBw0dUVWDrLyuVKW2zfMUj2Ono+U+m7roSZ65bUj+VBzvkfB7gWvDb3r51qHx+QDM=
+	t=1762353592; cv=none; b=smasg+hkCc6S8NXukrgnhdaYE36SfQ0eFtQMg8iSwjb+wIJ/+JMji3BlPtj3m1psZ5pVPu4yuqrUp7YkSSg3t+GnGxnxpULyFl+k0yKXMbz5YewKtUN85QlCpK38zDVPsxUVwK6cNsxbqxENAezW1252CLLKv+HcEvbpjEE7rGs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762352796; c=relaxed/simple;
-	bh=UNLeQYL51m+DVasBcWR7PNTrx8XW9tm4YcPbq3YJCTI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=rtbahLkNCcO+WfnME3U/86BmUDKb9LCDnMGfPhTI1hGefeFq06Gs/i3pIB/zlpRQTjBvDqMfNuYALgnOcsM2OMx2qbR1B1vy6mZyYQaVsC2IkiNEiC2v+BUFfOvDCm6FbnhiCrRofl7y1Q63iAv2s8saLX/tLHosuzio/mUuJbc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=uLWiJu/C; arc=none smtp.client-ip=209.85.160.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-4ed25b29595so70127891cf.2
-        for <stable@vger.kernel.org>; Wed, 05 Nov 2025 06:26:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1762352794; x=1762957594; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Yn1Akn56TAK9vxYVpNAmwzoyFjP8WhPaxNLUGZGYjkM=;
-        b=uLWiJu/CoXQzzp40yTT9Q02+Yr46Xz5hL6nHYdW8LNVCbBaT1XWa/CmfAcBlhLb1bg
-         77lz7tMA5pk12nds7S0eNIJ8PnapTj6d2LYNkYSTWSpfttWWg4UOGRsAKg/kv9XfIDq+
-         Zfd42QumaLkTDJD3dQ4PSmehIKfKkPfV2TiWLRenRLUMKS+oEBbsvaPWdfiPm9EDnhG0
-         uJzLbhoyha2mQOqitlyEjw8K9UEXFhdGUjWj6DuW7CHIj/2BxX1UQQexRkjfzg/WxI5W
-         Yt2IGmhBYbE8LqTJzbmWfFC15/a/xj/RhLDs8w7sBS5yFWu/klp4Ld4ciVlctYE5X6DH
-         tlbQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762352794; x=1762957594;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Yn1Akn56TAK9vxYVpNAmwzoyFjP8WhPaxNLUGZGYjkM=;
-        b=MtjIYIN/OwMFIbzyW4c2FaP3dvqaQdbRcGNpEzkGfrEzvdGjyBZ99tE5w7Fohl72L3
-         FhBK/3C1v/3NUHb2GJjd9MeHeW28MWNgOzWkF2VUF8hxpbjTMqNetV8eWokq35bbh+Ef
-         vaSujJYiG9ZVq9D/l4l3TlteEftzc9xAb0SEIFmXTl7xnOzXRlgjX1bTIiC/TNqZBC+l
-         Wj1KZrig2GUs+aScKyIWDWDQkhWoPiZvqGivMgzKDDv1ioOWXbZzrdyNMgO+YJXhsBtX
-         eE1LcMerPJ4vhxbBLIEyNGZuFgq1sPO3vUA0E0yAYHmnIsNFE5rLd2ZYuu+bwyDrpd/H
-         Z/sw==
-X-Gm-Message-State: AOJu0Yw1PUL4r1Winz5F9lbwtpkkiqGKwgbUDHdEOqrEqszLTKScN7d3
-	vFX1gSWgXP6XuP31V5NQRfDCS2Zyq2MJYJ93/ZN0aYy9V3HUUklc7X8HdINWJ70cPniaOSee7sq
-	gdnTtmWaej+dcsTbir5cvvt9RnzYIKkYgQw2dNR6glmuDVb9nH5AcbsEE
-X-Gm-Gg: ASbGnctUCVUKSyTJKwjzRRObLLfPhvfvgOrIdWp3QiFi1RF4RmglcLtAQo2NFWvP9y3
-	iNH8T7kLzy3tTcvHBG1os1gh7MBVlLZki6O+nAyNiYGcmPGFSbSkzHKTzi5EAojisVvxDIspbYA
-	yqca56i7Hv755X1LW6ucT1jpH2UL0DZoVFtu0ZpME4jDYdtv5ZmOth2McLy8k3g4RVZXbhFlP4O
-	CQvgNba40U8rIKG30/3wgM5fRweEd7/MEIS+D5Plv3iJUWpeLAjkByTslTV6Z0Dh1xNaL0v6IEF
-	Idx9ng==
-X-Google-Smtp-Source: AGHT+IEyRyguqmLTVuV/+p4rWmG9dIhs2YGO8hfZ3uT7d0TjJn2hFD71728jqAvX+zyf0Qlwg6ZcF52UU2ueLDMEGK4=
-X-Received: by 2002:a05:622a:1cc3:b0:4ed:42ba:9bd5 with SMTP id
- d75a77b69052e-4ed7262edbcmr35915681cf.72.1762352793343; Wed, 05 Nov 2025
- 06:26:33 -0800 (PST)
+	s=arc-20240116; t=1762353592; c=relaxed/simple;
+	bh=+mv6NfioSiuInevvVRb70iVEPo0SPK5TgrVbTAcEEVw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ErOxJNiiuRfh7ZTmloTgrPRDqIVU+No3aTkX22JvH++figWEPfgoGDy2awEFGWhRTYRjGSJqCnwoqL61f91Ih9tQWLCYU4dlP0eWdsNSWWMTPmqBBKnsLTD6W1SgMFj1RDQT4BK4iTnsELmogYMcI2xBuQBVIOP7gKRwnG29660=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BF+mmeds; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 582BAC4CEFB;
+	Wed,  5 Nov 2025 14:39:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762353591;
+	bh=+mv6NfioSiuInevvVRb70iVEPo0SPK5TgrVbTAcEEVw=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=BF+mmedsn7rXygxZ+LKjynR0FAIelUrh6mynAB6b+oZDeMuHxxH+gG4Nw+DPMz3hw
+	 5xDtMMkYrGdDC7TjeM+0A18SjFEhgTfOriSOm11yiJTBvO4C7WgOboXIiWU/dyHiPn
+	 2tTjDrp9kGo8hGz9XOi1ucA0Js4JKwdzbvz9vyVKT+Hu2pf6H8vQMTLM74WvoilJXK
+	 jAIoTZdUwY8gemEk0fa5vAGJorMi+Q/slZJmvgsiRnRn0SfWBb9jZK5PpYN7d4dmcr
+	 5eJRpqdMx0irin9hO4qaCB5v8EdsOdxs5txeLQ4nl7x651VQk5fjlDd3kc0kTQeas1
+	 pGhKuodBV77xw==
+Message-ID: <291e0c4c-fdd2-44dc-abe5-a4b7fb9f34be@kernel.org>
+Date: Wed, 5 Nov 2025 15:39:40 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CACueBy7yNo4jq4HbiLXn0ez14w8CUTtTpPHmpSB-Ou6jhhNypA@mail.gmail.com>
-In-Reply-To: <CACueBy7yNo4jq4HbiLXn0ez14w8CUTtTpPHmpSB-Ou6jhhNypA@mail.gmail.com>
-From: Eric Dumazet <edumazet@google.com>
-Date: Wed, 5 Nov 2025 06:26:22 -0800
-X-Gm-Features: AWmQ_bkdl5RhKS829nQ2M5b3RoWq2JzXUH6E0i1Wig8_xYGoL3cCA0DzQqGNDNg
-Message-ID: <CANn89iL9e9TZoOZ8KG66ea37bo=WztPqRPk8A9i0Ntx2KidYBw@mail.gmail.com>
-Subject: Re: [PATCH net] ipv4: route: Prevent rt_bind_exception() from
- rebinding stale fnhe
-To: chuang <nashuiliang@gmail.com>
-Cc: stable@vger.kernel.org, "David S. Miller" <davem@davemloft.net>, 
-	David Ahern <dsahern@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>, Networking <netdev@vger.kernel.org>, 
-	open list <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [PATCH net v4 1/3] mptcp: disallow MPTCP subflows from sockmap
+Content-Language: en-GB, fr-BE
+To: Jiayuan Chen <jiayuan.chen@linux.dev>, mptcp@lists.linux.dev
+Cc: stable@vger.kernel.org, Mat Martineau <martineau@kernel.org>,
+ Geliang Tang <geliang@kernel.org>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
+ Andrii Nakryiko <andrii@kernel.org>, Martin KaFai Lau
+ <martin.lau@linux.dev>, Eduard Zingerman <eddyz87@gmail.com>,
+ Song Liu <song@kernel.org>, Yonghong Song <yonghong.song@linux.dev>,
+ John Fastabend <john.fastabend@gmail.com>, KP Singh <kpsingh@kernel.org>,
+ Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>,
+ Jiri Olsa <jolsa@kernel.org>, Shuah Khan <shuah@kernel.org>,
+ Florian Westphal <fw@strlen.de>, linux-kernel@vger.kernel.org,
+ netdev@vger.kernel.org, bpf@vger.kernel.org, linux-kselftest@vger.kernel.org
+References: <20251105113625.148900-1-jiayuan.chen@linux.dev>
+ <20251105113625.148900-2-jiayuan.chen@linux.dev>
+From: Matthieu Baerts <matttbe@kernel.org>
+Autocrypt: addr=matttbe@kernel.org; keydata=
+ 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
+ lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
+Organization: NGI0 Core
+In-Reply-To: <20251105113625.148900-2-jiayuan.chen@linux.dev>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Mon, Nov 3, 2025 at 7:09=E2=80=AFPM chuang <nashuiliang@gmail.com> wrote=
-:
->
-> From 35dbc9abd8da820007391b707bd2c1a9c99ee67d Mon Sep 17 00:00:00 2001
-> From: Chuang Wang <nashuiliang@gmail.com>
-> Date: Tue, 4 Nov 2025 02:52:11 +0000
-> Subject: [PATCH net] ipv4: route: Prevent rt_bind_exception() from rebind=
-ing
->  stale fnhe
->
-> A race condition exists between fnhe_remove_oldest() and
-> rt_bind_exception() where a fnhe that is scheduled for removal can be
-> rebound to a new dst.
->
-> The issue occurs when fnhe_remove_oldest() selects an fnhe (fnheX)
-> for deletion, but before it can be flushed and freed via RCU,
-> CPU 0 enters rt_bind_exception() and attempts to reuse the entry.
->
-> CPU 0                             CPU 1
-> __mkroute_output()
->   find_exception() [fnheX]
->                                   update_or_create_fnhe()
->                                     fnhe_remove_oldest() [fnheX]
->   rt_bind_exception() [bind dst]
->                                   RCU callback [fnheX freed, dst leak]
->
-> If rt_bind_exception() successfully binds fnheX to a new dst, the
-> newly bound dst will never be properly freed because fnheX will
-> soon be released by the RCU callback, leading to a permanent
-> reference count leak on the old dst and the device.
->
-> This issue manifests as a device reference count leak and a
-> warning in dmesg when unregistering the net device:
->
->   unregister_netdevice: waiting for ethX to become free. Usage count =3D =
-N
->
-> Fix this race by clearing 'oldest->fnhe_daddr' before calling
-> fnhe_flush_routes(). Since rt_bind_exception() checks this field,
-> setting it to zero prevents the stale fnhe from being reused and
-> bound to a new dst just before it is freed.
->
-> Cc: stable@vger.kernel.org
-> Fixes: 67d6d681e15b ("ipv4: make exception cache less predictible")
+Hi Jiayuan,
 
-I do not see how this commit added the bug you are looking at ?
+On 05/11/2025 12:36, Jiayuan Chen wrote:
+> The sockmap feature allows bpf syscall from userspace using , or based
 
-> Signed-off-by: Chuang Wang <nashuiliang@gmail.com>
-> ---
->  net/ipv4/route.c | 5 +++++
->  1 file changed, 5 insertions(+)
->
-> diff --git a/net/ipv4/route.c b/net/ipv4/route.c
-> index 6d27d3610c1c..b549d6a57307 100644
-> --- a/net/ipv4/route.c
-> +++ b/net/ipv4/route.c
-> @@ -607,6 +607,11 @@ static void fnhe_remove_oldest(struct
-> fnhe_hash_bucket *hash)
->                         oldest_p =3D fnhe_p;
->                 }
->         }
-> +
-> +       /* Clear oldest->fnhe_daddr to prevent this fnhe from being
-> +        * rebound with new dsts in rt_bind_exception().
-> +        */
-> +       oldest->fnhe_daddr =3D 0;
->         fnhe_flush_routes(oldest);
->         *oldest_p =3D oldest->fnhe_next;
->         kfree_rcu(oldest, rcu);
-> --
+(is there a word missing before the ','?)
+
+> on bpf sockops, replacing the sk_prot of sockets during protocol stack
+> processing with sockmap's custom read/write interfaces.
+> '''
+> tcp_rcv_state_process()
+>   subflow_syn_recv_sock()
+>     tcp_init_transfer(BPF_SOCK_OPS_PASSIVE_ESTABLISHED_CB)
+>       bpf_skops_established       <== sockops
+>         bpf_sock_map_update(sk)   <== call bpf helper
+>           tcp_bpf_update_proto()  <== update sk_prot
+> '''
+> Consider two scenarios:
+> 
+> 1. When the server has MPTCP enabled and the client also requests MPTCP,
+>    the sk passed to the BPF program is a subflow sk. Since subflows only
+>    handle partial data, replacing their sk_prot is meaningless and will
+>    cause traffic disruption.
+> 
+> 2. When the server has MPTCP enabled but the client sends a TCP SYN
+>    without MPTCP, subflow_syn_recv_sock() performs a fallback on the
+>    subflow, replacing the subflow sk's sk_prot with the native sk_prot.
+>    '''
+>    subflow_ulp_fallback()
+>     subflow_drop_ctx()
+>       mptcp_subflow_ops_undo_override()
+>    '''
+>    Subsequently, accept::mptcp_stream_accept::mptcp_fallback_tcp_ops()
+>    converts the subflow to plain TCP.
+> 
+> For the first case, we should prevent it from being combined with sockmap
+> by setting sk_prot->psock_update_sk_prot to NULL, which will be blocked by
+> sockmap's own flow.
+> 
+> For the second case, since subflow_syn_recv_sock() has already restored
+> sk_prot to native tcp_prot/tcpv6_prot, no further action is needed.
+> 
+> Fixes: 0b4f33def7bb ("mptcp: fix tcp fallback crash")
+
+It should not change anything for the backport, but for this patch, the
+Fixes tag can be older I think, e.g.
+
+Fixes: cec37a6e41aa ("mptcp: Handle MP_CAPABLE options for outgoing
+connections")
+
+If you need to send a v5, please use this one.
+
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+
+Cheers,
+Matt
+-- 
+Sponsored by the NGI0 Core fund.
+
 
