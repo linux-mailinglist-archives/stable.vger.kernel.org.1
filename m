@@ -1,107 +1,84 @@
-Return-Path: <stable+bounces-192487-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192488-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAF7CC34F12
-	for <lists+stable@lfdr.de>; Wed, 05 Nov 2025 10:49:03 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DDE8EC35018
+	for <lists+stable@lfdr.de>; Wed, 05 Nov 2025 11:01:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DDE1A421CCD
-	for <lists+stable@lfdr.de>; Wed,  5 Nov 2025 09:47:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD077560CE3
+	for <lists+stable@lfdr.de>; Wed,  5 Nov 2025 09:59:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6327D3043D9;
-	Wed,  5 Nov 2025 09:47:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 990DC304BC2;
+	Wed,  5 Nov 2025 09:58:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LBCMeyAT"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02071304BC2;
-	Wed,  5 Nov 2025 09:47:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FFDE2FB09B;
+	Wed,  5 Nov 2025 09:58:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762336061; cv=none; b=DTcp9Yz9XN3PaSQjP5hr8rDDzjDJCwFOYLYIYZ7IVoq53G2W9MOe2GxP+/YrNxA9oFjdt5qk4a86vg7FKDspuZJQi2q34U0oziN7DkuzwXxkR/o5QnG8aDelSwc+qivacnSraEgD83kl9rbRPn/asNS+UPgBKArHL87KPuO7H/Y=
+	t=1762336735; cv=none; b=aMMqAMdPFiyL1nfEhaU8rmh2LtiuODU/8CejMYVMLxSUZD7yOdqsw1VNCIYzqboowaspbsv9CupVEGPhiciAeMgWWx4SL7VW17pyLDxAW2SXobaar6QgR7Vw3+e6gOekFlftH4FhQYpEUh7P+OWZRh0uu2k0zoyyCs8hw0TtBEs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762336061; c=relaxed/simple;
-	bh=k1tWbrj9M+uHbTZs67mYDrUUfWBdzxbLBbr+U38sZc0=;
-	h=From:To:Cc:Subject:Date:Message-Id; b=lckR/IhPznOlet7635Nno0160KbImZY8vmE2pbWY5+aq+LWe+IQnCZkwXQ6vuw+JgFqmy6k5GuXGR69zrWIWumKkfBaHchT+LANEa7v9A1g1DHWbMbNMLr+NdSNwo8vDK6f5IZSMLTsguGkJsdC3wx5B1HZr857UjOwHvKL0c+Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from localhost.localdomain (unknown [202.112.113.212])
-	by APP-01 (Coremail) with SMTP id qwCowADXQWwjHQtp27SKAQ--.284S2;
-	Wed, 05 Nov 2025 17:47:23 +0800 (CST)
-From: Ma Ke <make24@iscas.ac.cn>
-To: jic23@kernel.org,
-	dlechner@baylibre.com,
-	nuno.sa@analog.com,
-	andy@kernel.org,
-	error27@gmail.com
-Cc: linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	akpm@linux-foundation.org,
-	Ma Ke <make24@iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH] iio: trigger: Fix error handling in viio_trigger_alloc
-Date: Wed,  5 Nov 2025 17:47:14 +0800
-Message-Id: <20251105094714.28117-1-make24@iscas.ac.cn>
-X-Mailer: git-send-email 2.17.1
-X-CM-TRANSID:qwCowADXQWwjHQtp27SKAQ--.284S2
-X-Coremail-Antispam: 1UD129KBjvdXoWrKFy3uryUKFyUJw4DAr13Arb_yoWkCFgE9a
-	na9rn7uw1UAw4kKF1fAr4rZFWIkrW7Kr92yr4SqasYgry3Xrs5XFnrWrsxtF4UWr45GFn8
-	X3WY9rykJ3W3CjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUbDkFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
-	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
-	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr1j
-	6F4UJwA2z4x0Y4vEx4A2jsIE14v26F4UJVW0owA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
-	CE3s1lnxkEFVAIw20F6cxK64vIFxWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xv
-	F2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r
-	4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I
-	648v4I1lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAaw2AFwI0_Jw0_GFylc2xSY4AK67
-	AK6r4fMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAF
-	wI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc4
-	0Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AK
-	xVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr
-	1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUjWxR3UU
-	UUU==
-X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
+	s=arc-20240116; t=1762336735; c=relaxed/simple;
+	bh=e4YUe6uFCdEjtXnfOYkxvoxqraQGxaOlP2Ux54Vd/zQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hKEo3aSrbvpKD0Jxu2wlfw+XSVz1MeHe9IWVQoiljrkLklAkBD5YYBzAGiiAcW0RSVjN3YJzUsIitIn+Unib77kO1bghM4UvWUiTzHnd+mCyNeftR/epSSilvyqS4pHXKQ0QQYgB2/q1bNKyn5tTOYqjMfpHx2vWoRxRS82x9jI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LBCMeyAT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A515C4CEF8;
+	Wed,  5 Nov 2025 09:58:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762336734;
+	bh=e4YUe6uFCdEjtXnfOYkxvoxqraQGxaOlP2Ux54Vd/zQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=LBCMeyATv3O379YeQGuOE+iKkrUH/VLDzKOHjX3O5B8CkRSQy1UgoCdxwsWpSu6OC
+	 fDHWrK6jsOk4sVMSAbvG6fI+LwCv1QJbr3e+V6N5RUmDzNt9C5Muyfu9zqh6nc5Sgn
+	 CnSpwkSlO8WTGvakKwYQoJSV81xpsC9xX4cBLgr6XZ3GaGFqxR0fBIz9UhJJ2wIxmx
+	 cf5zWKL3gV/zLcYZWo8Iey9roc7AYvubSBPH8/+3WV/EivZ1J0KmNUaGF7GFsLKbsA
+	 UELqwrzed9o3wkjCCK/ZUILfZij7CRAiIDAEmsuJyaweQWNigwFWv5ucaNOyZyukIg
+	 vICVmLSLh62Cw==
+Date: Wed, 5 Nov 2025 09:58:50 +0000
+From: Simon Horman <horms@kernel.org>
+To: Jiawen Wu <jiawenwu@trustnetic.com>
+Cc: netdev@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Mengyuan Lou <mengyuanlou@net-swift.com>, stable@vger.kernel.org
+Subject: Re: [PATCH net] net: libwx: fix device bus LAN ID
+Message-ID: <aQsf2tTu3_FAeRic@horms.kernel.org>
+References: <B60A670C1F52CB8E+20251104062321.40059-1-jiawenwu@trustnetic.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <B60A670C1F52CB8E+20251104062321.40059-1-jiawenwu@trustnetic.com>
 
-viio_trigger_alloc() initializes the device with device_initialize()
-but uses kfree() directly in error paths, which bypasses the device's
-release callback iio_trig_release(). This could lead to memory leaks
-and inconsistent device state.
+On Tue, Nov 04, 2025 at 02:23:21PM +0800, Jiawen Wu wrote:
+> The device bus LAN ID was obtained from PCI_FUNC(), but when a PF
+> port is passthrough to a virtual machine, the function number may not
+> match the actual port index on the device. This could cause the driver
+> to perform operations such as LAN reset on the wrong port.
+> 
+> Fix this by reading the LAN ID from port status register.
+> 
+> Fixes: a34b3e6ed8fb ("net: txgbe: Store PCI info")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
 
-Replace kfree(trig) with put_device(&trig->dev) in error paths to
-ensure proper cleanup through the device's release callback.
+Hi Jiawen Wu,
 
-Found by code review.
+I am wondering if these devises also support port swapping (maybe LAN
+Function Select bit of FACTPS). And if so, does it need to be taken into
+account here?
 
-Cc: stable@vger.kernel.org
-Fixes: 2c99f1a09da3 ("iio: trigger: clean up viio_trigger_alloc()")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
----
- drivers/iio/industrialio-trigger.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/iio/industrialio-trigger.c b/drivers/iio/industrialio-trigger.c
-index 54416a384232..981e19757870 100644
---- a/drivers/iio/industrialio-trigger.c
-+++ b/drivers/iio/industrialio-trigger.c
-@@ -597,7 +597,7 @@ struct iio_trigger *viio_trigger_alloc(struct device *parent,
- free_descs:
- 	irq_free_descs(trig->subirq_base, CONFIG_IIO_CONSUMERS_PER_TRIGGER);
- free_trig:
--	kfree(trig);
-+	put_device(&trig->dev);
- 	return NULL;
- }
- 
--- 
-2.17.1
-
+...
 
