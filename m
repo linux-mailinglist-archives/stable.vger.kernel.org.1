@@ -1,128 +1,99 @@
-Return-Path: <stable+bounces-192466-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192467-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 048AFC339F4
-	for <lists+stable@lfdr.de>; Wed, 05 Nov 2025 02:17:56 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 531A9C33A9F
+	for <lists+stable@lfdr.de>; Wed, 05 Nov 2025 02:30:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 49A94464719
-	for <lists+stable@lfdr.de>; Wed,  5 Nov 2025 01:17:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8399A18C5FC4
+	for <lists+stable@lfdr.de>; Wed,  5 Nov 2025 01:31:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03A9C23AB90;
-	Wed,  5 Nov 2025 01:17:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D837233155;
+	Wed,  5 Nov 2025 01:30:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="hAV9E494"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I30xFna2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC51E2AF1D;
-	Wed,  5 Nov 2025 01:17:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFE7C22333B;
+	Wed,  5 Nov 2025 01:30:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762305426; cv=none; b=M+LSVfgevYduYvKD/V3APAsFze5IIhBqAjwzpqg4vJXczLU/6MUYgzVzAAxTx4vPKxeV206U7PRYUYaBeyJi9Qh6+O679fzeCEdr07A0PYi3od03NDTf7IiiAqKv/gRp+U3s7cK9pBiNwDyum52WIgmAqNxmS1wlc+XLESpjNcU=
+	t=1762306241; cv=none; b=pdYtRDpiqe2EXdX4ZDrGFrVcyL8C27ZU4CNnw5RPpvzWUibd44V6gRN08NrdBAnVwFLJRB4ZLmVUM1kStLPxV/VI20ErplcFNUu0NfPpl6ATxFOQ6IKF0DaoHHKTCWzlteXuwh3n8Aqe0rqxsNQzCcrHa52ONgFUnLFNY3Sit+Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762305426; c=relaxed/simple;
-	bh=7pUUe0TPmWjbaxIbMmv/d9IcXUJPlWjiZBweoyN3jeU=;
-	h=Date:To:From:Subject:Message-Id; b=mXAP2YwGXk9lpno8Ob23KAzSVFAJhz5TDZ/hq8cqsikJ6kVW67v1O95tRZKrLUHLmJBFU4GXLMEHIFPjph/qTYV5PVRT8pPpyknQYA5zHfLqe75lRVShni5lJwan3xUV+2gkXH1567n9KVTlLnpkH/JDRXRf6Rgh1CMFdwfdhbs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=hAV9E494; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 776A2C116D0;
-	Wed,  5 Nov 2025 01:17:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1762305426;
-	bh=7pUUe0TPmWjbaxIbMmv/d9IcXUJPlWjiZBweoyN3jeU=;
-	h=Date:To:From:Subject:From;
-	b=hAV9E494oCea6QQb3OKlxDXbT7CyEvLTZFHLNmjGd+A2q/xAtOETNdsnRUHlmC+sy
-	 SAEflOOWsTTcktV90BLsDNkr+xpY4l71rNa5aKmOJ37Li/QRQ0MEnTgJEKKxLO7vqk
-	 VYQ4KUltHxTluXL93NVaHOiNDlmkpIxLe6uUAPAs=
-Date: Tue, 04 Nov 2025 17:17:05 -0800
-To: mm-commits@vger.kernel.org,vincenzo.frascino@arm.com,urezki@gmail.com,stable@vger.kernel.org,ryabinin.a.a@gmail.com,glider@google.com,elver@google.com,dvyukov@google.com,bhe@redhat.com,andreyknvl@gmail.com,maciej.wieczor-retman@intel.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [to-be-updated] kasan-unpoison-vms-addresses-with-a-common-tag.patch removed from -mm tree
-Message-Id: <20251105011706.776A2C116D0@smtp.kernel.org>
+	s=arc-20240116; t=1762306241; c=relaxed/simple;
+	bh=m9CPZcYZOOI/nQBexZwcz/64lD79NljFqckfJOXcEjc=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=ffpx1cliqJse+DMN9DYfCRTc5+8gKdQRawkqgcrDeH25Fh1FBDgjTzoy0DYv5FoFLQpBw4mdC0vQr0/5iwpWJr7F36IZeaG5gDd/+BCviLk1RLdE+aiKH+JSxt2A1PV2g6YWLaOJx4LwP7YMUQMzndMRWOwVsaomD25taFgWKNo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I30xFna2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D69DC4CEF7;
+	Wed,  5 Nov 2025 01:30:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762306241;
+	bh=m9CPZcYZOOI/nQBexZwcz/64lD79NljFqckfJOXcEjc=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=I30xFna2DPSgdjczbL7e+ZdHQuM16VQfE3M3AS9DOOPrKbnTbCOp+2L223TWSl+4P
+	 WxtLNcE1fXma4eQRQWIdyLCJIfV4JeMAz97dNFc/8l4SSyQhMFdrIH0jSOd6ftWSch
+	 ZoACrXqSvGohdS/qOpw91p4KQ6PcEp80Aaw8ItAyBcvsPhSEgNRDEi0sIT8wBRItlG
+	 1ygXwb6HyaUBxbZOVt3XlmXJZV6DcrM8LFngL/KZdTEH2yv264K22S99mHiehnd5ZO
+	 IFB9WUYhGFinU5a65kWuTfRWHlbEhlnctZl1PfYeQhOEFRSngw8Iu/QGQj2sWxe41X
+	 VsvAD+lWao6tg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3412B380AA54;
+	Wed,  5 Nov 2025 01:30:16 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net V2] virtio_net: fix alignment for
+ virtio_net_hdr_v1_hash
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <176230621499.3052151.14134188371623590372.git-patchwork-notify@kernel.org>
+Date: Wed, 05 Nov 2025 01:30:14 +0000
+References: <20251031060551.126-1-jasowang@redhat.com>
+In-Reply-To: <20251031060551.126-1-jasowang@redhat.com>
+To: Jason Wang <jasowang@redhat.com>
+Cc: mst@redhat.com, xuanzhuo@linux.alibaba.com, eperezma@redhat.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, virtualization@lists.linux.dev,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
 
+Hello:
 
-The quilt patch titled
-     Subject: kasan: unpoison vms[area] addresses with a common tag
-has been removed from the -mm tree.  Its filename was
-     kasan-unpoison-vms-addresses-with-a-common-tag.patch
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-This patch was dropped because an updated version will be issued
+On Fri, 31 Oct 2025 14:05:51 +0800 you wrote:
+> From: "Michael S. Tsirkin" <mst@redhat.com>
+> 
+> Changing alignment of header would mean it's no longer safe to cast a
+> 2 byte aligned pointer between formats. Use two 16 bit fields to make
+> it 2 byte aligned as previously.
+> 
+> This fixes the performance regression since
+> commit ("virtio_net: enable gso over UDP tunnel support.") as it uses
+> virtio_net_hdr_v1_hash_tunnel which embeds
+> virtio_net_hdr_v1_hash. Pktgen in guest + XDP_DROP on TAP + vhost_net
+> shows the TX PPS is recovered from 2.4Mpps to 4.45Mpps.
+> 
+> [...]
 
-------------------------------------------------------
-From: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
-Subject: kasan: unpoison vms[area] addresses with a common tag
-Date: Tue, 04 Nov 2025 14:49:48 +0000
+Here is the summary with links:
+  - [net,V2] virtio_net: fix alignment for virtio_net_hdr_v1_hash
+    https://git.kernel.org/netdev/net/c/c3838262b824
 
-A KASAN tag mismatch, possibly causing a kernel panic, can be observed on
-systems with a tag-based KASAN enabled and with multiple NUMA nodes.  It
-was reported on arm64 and reproduced on x86.  It can be explained in the
-following points:
-
-1. There can be more than one virtual memory chunk.
-2. Chunk's base address has a tag.
-3. The base address points at the first chunk and thus inherits
-   the tag of the first chunk.
-4. The subsequent chunks will be accessed with the tag from the
-   first chunk.
-5. Thus, the subsequent chunks need to have their tag set to
-   match that of the first chunk.
-
-Unpoison all vm_structs after allocating them for the percpu allocator. 
-Use the same tag to resolve the pcpu chunk address mismatch.
-
-Link: https://lkml.kernel.org/r/cf8fe0ffcdbf54e06d9df26c8473b123c4065f02.1762267022.git.m.wieczorretman@pm.me
-Fixes: 1d96320f8d53 ("kasan, vmalloc: add vmalloc tagging for SW_TAGS")
-Signed-off-by: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
-Tested-by: Baoquan He <bhe@redhat.com>
-Cc: Alexander Potapenko <glider@google.com>
-Cc: Andrey Konovalov <andreyknvl@gmail.com>
-Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-Cc: Dmitriy Vyukov <dvyukov@google.com>
-Cc: Marco Elver <elver@google.com>
-Cc: "Uladzislau Rezki (Sony)" <urezki@gmail.com>
-Cc: Vincenzo Frascino <vincenzo.frascino@arm.com>
-Cc: <stable@vger.kernel.org>	[6.1+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/kasan/common.c |   10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
-
---- a/mm/kasan/common.c~kasan-unpoison-vms-addresses-with-a-common-tag
-+++ a/mm/kasan/common.c
-@@ -584,12 +584,20 @@ bool __kasan_check_byte(const void *addr
- 	return true;
- }
- 
-+/*
-+ * A tag mismatch happens when calculating per-cpu chunk addresses, because
-+ * they all inherit the tag from vms[0]->addr, even when nr_vms is bigger
-+ * than 1. This is a problem because all the vms[]->addr come from separate
-+ * allocations and have different tags so while the calculated address is
-+ * correct the tag isn't.
-+ */
- void __kasan_unpoison_vmap_areas(struct vm_struct **vms, int nr_vms)
- {
- 	int area;
- 
- 	for (area = 0 ; area < nr_vms ; area++) {
- 		kasan_poison(vms[area]->addr, vms[area]->size,
--			     arch_kasan_get_tag(vms[area]->addr), false);
-+			     arch_kasan_get_tag(vms[0]->addr), false);
-+		arch_kasan_set_tag(vms[area]->addr, arch_kasan_get_tag(vms[0]->addr));
- 	}
- }
-_
-
-Patches currently in -mm which might be from maciej.wieczor-retman@intel.com are
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
 
 
