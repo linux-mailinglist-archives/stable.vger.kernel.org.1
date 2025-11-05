@@ -1,193 +1,117 @@
-Return-Path: <stable+bounces-192507-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192508-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6825C35DAE
-	for <lists+stable@lfdr.de>; Wed, 05 Nov 2025 14:35:17 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4E1AC35EB3
+	for <lists+stable@lfdr.de>; Wed, 05 Nov 2025 14:49:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 539B63A6908
-	for <lists+stable@lfdr.de>; Wed,  5 Nov 2025 13:32:28 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C8DFF4F9748
+	for <lists+stable@lfdr.de>; Wed,  5 Nov 2025 13:47:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA8D532143A;
-	Wed,  5 Nov 2025 13:32:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B572F324B35;
+	Wed,  5 Nov 2025 13:47:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="luapqlGx"
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="N3pZ3d1Z"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93DAC320393
-	for <stable@vger.kernel.org>; Wed,  5 Nov 2025 13:32:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECE36311971
+	for <stable@vger.kernel.org>; Wed,  5 Nov 2025 13:47:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762349544; cv=none; b=L8G8oD8ugh5zstIxF7vegFEfomQYqnnkuJxvCpEZuT71VJIMjcUdECTWvUXqdBTod6nUveaCNn14VjZ8e32JU7deSKquINp53JTCgSdCAi4FQf4szJo39KiC5+WYdLtusHcqkFeA5rsyPp+kr85Kf9AmykB7BWwniTR7ZuvU5+g=
+	t=1762350423; cv=none; b=l1UPVF1mu4ah/hsPvH2AsBRzG373TbJaX3x0TFXSkO/wjV3vPFt1FDlfKLmHWynTQtY94DNIw/ZNqi+F+tHvpeax1jC78ACD30nll5SleaeCmjOSH3UDQoBag3srqu+fhJvEi0u8Y1CN/xhPAEXwdxjnfNUiRrVxsr7Ix5ZyhLA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762349544; c=relaxed/simple;
-	bh=WZqTjb689EoWjujrHonKsIfRrwGoZauuvVV3zjdR5KM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZAeVVeyGht8NO4nXK6kajyy/5y895eP00ZtDtvUPpN8wCFAFu+w7v+sicowWOjqQwF+9+YEx0o6ezLD6orzVN3KEl0X3O0gZOWPDXKuEWWXw2AQwWKzax7y8cDSRwskABTnzValF94kgINXNmjazum7o8gQS0wPJnQRoJVq8xys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=luapqlGx; arc=none smtp.client-ip=209.85.128.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-47758595eecso9563005e9.0
-        for <stable@vger.kernel.org>; Wed, 05 Nov 2025 05:32:22 -0800 (PST)
+	s=arc-20240116; t=1762350423; c=relaxed/simple;
+	bh=bvfb8EO/Jqx4CYfgIOHPa1nosqTQWDLTokUveNsd720=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=S6yAaEUm7dNbpd5+Pad5P8h7XknBxMiHEBcu5SHgd9otTVS3ZuSzCX1OYylgBeUaYiTymhVVCmBEyReaSF7iGJVj/bix1iSCHZM4D9wB7HNNiS+qFoQw9LvQwtaFLCaxzAnO7lG9QgmKx/TPwRbQJBSngHaGzP7TJFvBA0S9HYI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=N3pZ3d1Z; arc=none smtp.client-ip=209.85.160.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-4ed0d6d3144so61232801cf.0
+        for <stable@vger.kernel.org>; Wed, 05 Nov 2025 05:47:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1762349541; x=1762954341; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=TfYKsCgYtXAFMzfAlzEUUGBJt44vMEyp53EFHMiQJao=;
-        b=luapqlGxuGVnE7WvwlaxwNS5LZoFyPxjx66LWE1SKMr8TipUOr4oKRXEEDdJ8pVyUm
-         XJNo9luTEnnT9nrUnFzV1nYhFBQsfd8ruQeN3NjlbvZ1ns3DOl0AfbtElGnrYVQchfhV
-         UD7gtadXVinzGp7NivmcgEnnAYeCGjyCUr1xWyeMp2pDrzmQUOuxbQ+T7ZtYrcPE20mk
-         8IJ48/2U1Fm2IkYt+LKOs5qrNJX1xC10nyHv1sgSvtRLSUcDXqblV/7B7gFlT9rIR4Cw
-         CTPWJXALPBU6AV67A36yjNq9ZrFr3ASzxhrTJhQ51y9QHfSKffybsOhjU54tQw25bjk2
-         SzDQ==
+        d=ziepe.ca; s=google; t=1762350421; x=1762955221; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=2Zp2fLrlqJdhZLczeGkjeF6Ah1WqCYQgeoq7QTO4hMM=;
+        b=N3pZ3d1Z8mSqvUg0662RC8bZpvOpu1qb+bANagfhvp5hZFNgEHpxU2PahBcew+Pa/u
+         utZnfv9zIa9G34AoF7vaFOZoZ1gJsjSWlt+X1VCQX8Smq+blDDOCQWHW6MDWg+ww/wy1
+         VRwkhKVRJFydAxQNS/3lZw44TocdqEqYzKvXFK5VccnNTL+lznJkK3FZyzzvy4l/dVe7
+         ZDaDoa6p0vAbN8GraudRxwJEm72c9ML32aeyhrj7sOGy1Gq2OHxwLoot7zIQ4Bwma3V5
+         E9oI73lULX4bRzmH7Af+/3DcoDsTKaz7guepOdSAONKPqeWmfWvoCKuyKA56QhlMY1oK
+         HquA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762349541; x=1762954341;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=TfYKsCgYtXAFMzfAlzEUUGBJt44vMEyp53EFHMiQJao=;
-        b=bTAezB68fiu7F4/4CXzHKoYV7TrvoqhRfjKfDxJboGgYDYtIkwWF+r6boaj1Kw4Ma4
-         H8JZOe1xtuDzW93R7xTwOWjKs2oRV5DXN+AlnkRx7lNRy3N9JsytdFwdbJzVSCwNQ3ss
-         aZcyxDDVuaTYjQBOQdI7ksXv+ztcqS6b0GfePDtOX2uU8Qxspykw6K6RxquEDR5xeYVV
-         Lk7Ijo5E1dZfj5D4PRCeD6NrTYBtkMB0TlsJ3NSDbMN63AgywyNTUAKz+77EDARGbgsv
-         2+xVPC2d4dOM1UmJ/vxC7N1/JYN51mxDvgtfxGl1GEMBFewCMFbGZOO0biPF5s3G4V7c
-         gUuA==
-X-Forwarded-Encrypted: i=1; AJvYcCVlylX2SYp+H9EGu6RgVQrcLQ/RvkHOguzaDvwLKhF+zN0s4VTHk9VTfUw/qTvkOSOiKLzKGWU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxha7jtGzFBSS4MDbnFEzOxrmDZvqglT3TNkvQ1i0HjmkthdeAL
-	XfF0ptLPJocNsNXlDvSHFYU5PZKhNSp+MGopOjPrXX+KAXn6cuh86KMUF0ZcSkkI6qo=
-X-Gm-Gg: ASbGncvlFr7WRfnpKBY/S03G/SMswFL04Ats5ovIYyjLe+ecpZzD73JR96hoP6a62LH
-	lrPVQeB49ol+ZdS2pOT/fFJk23XhNbqjLHOhdyxJjs/3C/v3gGgswyQV4Zss+qBTlylTxBmK9TD
-	NlzDTPc6t2SZx7dBjUcsvZ/SIh5nB0puplqKPkOxK2ZC7ppedev+yENTsWVL3ZaRhVV5Tr5XWjI
-	EscUfFEdpnShjHRyYoh81WEY6Tk9qRdeFtJUAbmhfuFSJh8ryv+hjiGm6rMy7A9ewvAFKuCvZAW
-	r77qRdVV3cX9yqcJfljO0CGII+ZMENpJGvSS4GZfoZIZ7Rmhwa5xpb1rJmLnEs4iU7mDzCha25y
-	Pd0UBgN32d+H5+V5TcD2A2RKuLtjdudr92ZlgM5Dd3LV2q7qUYG2eDDqIvTNBcig2tvmT/fNBMP
-	TSa2gfLWEo+NhAnE8tqTZZJ8xFF9eOOEtoceVQ
-X-Google-Smtp-Source: AGHT+IHrQ5Ca/eXvqCH81m3o/jUTceHdPdQQWNSE7M8rzMniM4TuBgB5grmgh+HwfHdWHibHeGh8dg==
-X-Received: by 2002:a05:600c:5252:b0:475:dd9d:297b with SMTP id 5b1f17b1804b1-4775cdf46f0mr23240645e9.33.1762349540607;
-        Wed, 05 Nov 2025 05:32:20 -0800 (PST)
-Received: from [192.168.2.1] (146725694.box.freepro.com. [130.180.211.218])
-        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-4775cdc2d14sm49078345e9.1.2025.11.05.05.32.19
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 05 Nov 2025 05:32:20 -0800 (PST)
-Message-ID: <7ad2b976-3b0d-4823-a145-ceedf071450d@linaro.org>
-Date: Wed, 5 Nov 2025 14:32:18 +0100
+        d=1e100.net; s=20230601; t=1762350421; x=1762955221;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=2Zp2fLrlqJdhZLczeGkjeF6Ah1WqCYQgeoq7QTO4hMM=;
+        b=xVUt3RaydYZYfN08Cx4/HP72gbfoQmmkdHq8XrKb6hAAXs9bk4kOQ8WOAKueVWlecr
+         CwKu5UV/NgsDFrwa8OEggPSUBLy9VNcdR0iZQCzs44PT18iyQH41IZq+wcQ7J7p6y6DG
+         u7vEpXNAnY1alciaBRP5a0zC29vgE/2BBIn1h4aTjvkmXDMuhkrdKSEw3x/7Ni2VGLZG
+         ZdQaHX9Gmm7qL2LwdDCQJXEPkPZ+3hybPD/zit7zfrBa4vKDTM367S/eFiQvmlsvkL3n
+         8ORvAAqd13T9SmGjXVdgrrQX1sQ04ln5o6lfRH/O18FKLMu6j9Ymut6snbpFoL1hOJJS
+         TE+w==
+X-Forwarded-Encrypted: i=1; AJvYcCVSVt8WXUmdjGdPQuCKndMroEDytNRfTrcsBlM+/qQy39PTs9QhiSaZUjrAGGp7mDvNGh/d9/g=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzg18jFYAXBUW79fokzsw0smElsMnkoVYSRHNspP/6SJYelMk3h
+	AyfsZaYn2bh8Yzhr8vXq9xMjWk4vH6Wt8hy5zWfbnv0odctZvVgSKcMPJV6Rf2KBajE=
+X-Gm-Gg: ASbGnctfbAalCzbvU+mkqL7+tBvd/lMDkNEz2Os/XS97gkTikW98JNGN2sbvcDnzYa2
+	GXv4jmH4zfItc/62usGXUZ7Vf1Q0PB5C3VMRXVeyzad6XcsnSNpAHJnX8GOTp97kK5V22wFLUB1
+	T3LjSw8Ww6vL4xYDPc6/eM/GCNMrjjLbwVPbR7hxu5Ivbiz9cVBxHnMzc3WMZJ48tqZvjSjj7hy
+	su5eQvqGyImhr65RDLXEVEw7zOq/IxK1k4Wxz/Mb06PgRtwa53b3lFf+RFclgz0ZXI0pLfkhEoG
+	dxmCVqLv6EVVpYA3dhgI9RfSekx7nozpDdgCUnErWwW7cv0ubJVYE8X+HVW5hR5zz6qy7gMwcej
+	7rvg9mtugnUuddhhHHF3E+mB/Ron+q1i8ylTM+Wmnxo57Y4XLR0xde5L+rX5ZeD4443kIfSLq1C
+	sgBhdp79F6E/1vSCMPDhisDdmq8geqHTQwNpkfFbgkT9iJow==
+X-Google-Smtp-Source: AGHT+IHiV3DU9pUwV6yRzvNAkLqpA9Q0anM5JtolaRsT/xrM1GR0vgEGuAlaC/LkLUMiyZ6hyzBu1w==
+X-Received: by 2002:a05:622a:110b:b0:4ec:fafd:7607 with SMTP id d75a77b69052e-4ed72673eb5mr39574611cf.81.1762350420869;
+        Wed, 05 Nov 2025 05:47:00 -0800 (PST)
+Received: from ziepe.ca (hlfxns017vw-47-55-120-4.dhcp-dynamic.fibreop.ns.bellaliant.net. [47.55.120.4])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4ed5faf6038sm36924761cf.11.2025.11.05.05.47.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 05 Nov 2025 05:47:00 -0800 (PST)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1vGdql-000000079Nw-3Qc1;
+	Wed, 05 Nov 2025 09:46:59 -0400
+Date: Wed, 5 Nov 2025 09:46:59 -0400
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Leon Romanovsky <leon@kernel.org>
+Cc: Ma Ke <make24@iscas.ac.cn>, haris.iqbal@ionos.com, jinpu.wang@ionos.com,
+	danil.kipnis@cloud.ionos.com, linux-rdma@vger.kernel.org,
+	linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] RDMA/rtrs: server: Fix error handling in
+ get_or_create_srv
+Message-ID: <20251105134659.GM1204670@ziepe.ca>
+References: <20251104021900.11896-1-make24@iscas.ac.cn>
+ <20251105125713.GC16832@unreal>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] clocksource/drivers/stm: Fix section mismatches
-To: Johan Hovold <johan@kernel.org>, Thomas Gleixner <tglx@linutronix.de>
-Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20251017054943.7195-1-johan@kernel.org>
-Content-Language: en-US
-From: Daniel Lezcano <daniel.lezcano@linaro.org>
-In-Reply-To: <20251017054943.7195-1-johan@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251105125713.GC16832@unreal>
 
-
-Hi Johan,
-
-thanks for your fix.
-
-You should replace __init by __init_or_module
-
-
-On 10/17/25 07:49, Johan Hovold wrote:
-> Platform drivers can be probed after their init sections have been
-> discarded (e.g. on probe deferral or manual rebind through sysfs) so the
-> probe function must not live in init. Device managed resource actions
-> similarly cannot be discarded.
+On Wed, Nov 05, 2025 at 02:57:13PM +0200, Leon Romanovsky wrote:
+> On Tue, Nov 04, 2025 at 10:19:00AM +0800, Ma Ke wrote:
+> > get_or_create_srv() fails to call put_device() after
+> > device_initialize() when memory allocation fails. This could cause
+> > reference count leaks during error handling, preventing proper device
+> > cleanup and resulting in memory leaks.
 > 
-> The "_probe" suffix of the driver structure name prevents modpost from
-> warning about this so replace it to catch any similar future issues.
-> 
-> Fixes: cec32ac75827 ("clocksource/drivers/nxp-timer: Add the System Timer Module for the s32gx platforms")
-> Cc: stable@vger.kernel.org	# 6.16
-> Cc: Daniel Lezcano <daniel.lezcano@linaro.org>
-> Signed-off-by: Johan Hovold <johan@kernel.org>
-> ---
->   drivers/clocksource/timer-nxp-stm.c | 18 +++++++++---------
->   1 file changed, 9 insertions(+), 9 deletions(-)
-> 
-> diff --git a/drivers/clocksource/timer-nxp-stm.c b/drivers/clocksource/timer-nxp-stm.c
-> index bbc40623728f..ce10bdcfc76b 100644
-> --- a/drivers/clocksource/timer-nxp-stm.c
-> +++ b/drivers/clocksource/timer-nxp-stm.c
-> @@ -177,15 +177,15 @@ static void nxp_stm_clocksource_resume(struct clocksource *cs)
->   	nxp_stm_clocksource_enable(cs);
->   }
->   
-> -static void __init devm_clocksource_unregister(void *data)
-> +static void devm_clocksource_unregister(void *data)
->   {
->   	struct stm_timer *stm_timer = data;
->   
->   	clocksource_unregister(&stm_timer->cs);
->   }
->   
-> -static int __init nxp_stm_clocksource_init(struct device *dev, struct stm_timer *stm_timer,
-> -					   const char *name, void __iomem *base, struct clk *clk)
-> +static int nxp_stm_clocksource_init(struct device *dev, struct stm_timer *stm_timer,
-> +				    const char *name, void __iomem *base, struct clk *clk)
->   {
->   	int ret;
->   
-> @@ -298,9 +298,9 @@ static void nxp_stm_clockevent_resume(struct clock_event_device *ced)
->   	nxp_stm_module_get(stm_timer);
->   }
->   
-> -static int __init nxp_stm_clockevent_per_cpu_init(struct device *dev, struct stm_timer *stm_timer,
-> -						  const char *name, void __iomem *base, int irq,
-> -						  struct clk *clk, int cpu)
-> +static int nxp_stm_clockevent_per_cpu_init(struct device *dev, struct stm_timer *stm_timer,
-> +					   const char *name, void __iomem *base, int irq,
-> +					   struct clk *clk, int cpu)
->   {
->   	stm_timer->base = base;
->   	stm_timer->rate = clk_get_rate(clk);
-> @@ -388,7 +388,7 @@ static irqreturn_t nxp_stm_module_interrupt(int irq, void *dev_id)
->   	return IRQ_HANDLED;
->   }
->   
-> -static int __init nxp_stm_timer_probe(struct platform_device *pdev)
-> +static int nxp_stm_timer_probe(struct platform_device *pdev)
->   {
->   	struct stm_timer *stm_timer;
->   	struct device *dev = &pdev->dev;
-> @@ -484,14 +484,14 @@ static const struct of_device_id nxp_stm_of_match[] = {
->   };
->   MODULE_DEVICE_TABLE(of, nxp_stm_of_match);
->   
-> -static struct platform_driver nxp_stm_probe = {
-> +static struct platform_driver nxp_stm_driver = {
->   	.probe	= nxp_stm_timer_probe,
->   	.driver	= {
->   		.name		= "nxp-stm",
->   		.of_match_table	= nxp_stm_of_match,
->   	},
->   };
-> -module_platform_driver(nxp_stm_probe);
-> +module_platform_driver(nxp_stm_driver);
->   
->   MODULE_DESCRIPTION("NXP System Timer Module driver");
->   MODULE_LICENSE("GPL");
+> Nothing from above is true. put_device is preferable way to release
+> memory after call to device_initialize(), but direct call to kfree is
+> also fine.
 
+Once device_initialize() happens you must call put_device(), it is one
+of Greg's rules.
 
--- 
-<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
-
-Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
-<http://twitter.com/#!/linaroorg> Twitter |
-<http://www.linaro.org/linaro-blog/> Blog
+Jason
 
