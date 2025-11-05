@@ -1,143 +1,99 @@
-Return-Path: <stable+bounces-192543-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192544-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9827C377AA
-	for <lists+stable@lfdr.de>; Wed, 05 Nov 2025 20:29:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EB477C37A11
+	for <lists+stable@lfdr.de>; Wed, 05 Nov 2025 21:07:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 29D9D3ADA67
-	for <lists+stable@lfdr.de>; Wed,  5 Nov 2025 19:28:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 713A33AB6D8
+	for <lists+stable@lfdr.de>; Wed,  5 Nov 2025 20:02:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE78933F389;
-	Wed,  5 Nov 2025 19:28:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CCE8267714;
+	Wed,  5 Nov 2025 20:02:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qSBZwarw"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="FJUlcpcv"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67E1632D431;
-	Wed,  5 Nov 2025 19:28:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41EFE33FE39
+	for <stable@vger.kernel.org>; Wed,  5 Nov 2025 20:02:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762370893; cv=none; b=YvB+iXVG27d+MrNhuqfR0s8Kr0k4eWk6YE9gITOd7MencC2glXER0VsSXPYd3aTZnCYEwN0XSaNWh9SuWHMHrMhxf8RvlHKJEY/4CCrwffVXay5vFcXibp5KKjhBFBAHt4NC2Ym4NsHaR+XdzFdxSgahE9EXVcvoop/0vGgLoHU=
+	t=1762372957; cv=none; b=fdU+j1EZYGMcfLE77AFfBMe1B8LHor9etF3UvvFNd11QYjbGRiiX+Cpftj2a0hRv62YhqVd5G1dStBjqPv1fAqpwBYqe9pRL08Dn3GuF7CU5B6S7PUJ9YHVTbkgwcoArwd+r+QHhA8U+yaj6Fqu1TbosNcVdZvSzbiWj55KKoiw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762370893; c=relaxed/simple;
-	bh=IHr11CVMUl96Wf7pB/+uXQyisnt8qEF1vZ/qiyhjdBo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rlBI1x/WSsVmltj2GCwXL1mjbhPZ4kjCeo5a3XCWjot7mkW6DOmQA3o8nuHGuJoMeBZmeW5I3FOBKxZWp/+hYP0UwyczIIcW1TC4Gxyt+VD4NAi5KvBh4Y0TmZ3x7m02Esf6lpeEwZbHuSWe5Bq2zowHkqJp7fZPoobUx84HGQY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qSBZwarw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7438C2BC86;
-	Wed,  5 Nov 2025 19:28:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762370891;
-	bh=IHr11CVMUl96Wf7pB/+uXQyisnt8qEF1vZ/qiyhjdBo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qSBZwarwKq2oZpjqjSnq0/v1DlJZ7D6N0ijNqG/si0cLffaToSXpZy3xmbAirGbDv
-	 uEy9dPkClf4RolqbU9iSnepmTVJB82JOkoNf2Rj8dafhmBNHlBdSkcUcfy+NQ95fel
-	 zzpXxmHlSJtDEy5a72RWPxMTXYzMIDFuEAFb0EgkBjIbAEBGpvitzc3taKWXdnXmU6
-	 7wY08FIrftJCTia4nz7TpFQCSi4hL85DwoDaSzXtrDOk0KSGXjfPIl+WurGTjIBgR4
-	 QK3qa8/9rBMK0Y9UJ4ohmpcv2jgPAqpsHgkyb6eIIkoN3eUR347njWDGjZxcSZaBx9
-	 y9zIJjvh7Hv7Q==
-From: Chuck Lever <cel@kernel.org>
-To: NeilBrown <neil@brown.name>,
-	Jeff Layton <jlayton@kernel.org>,
-	Olga Kornievskaia <okorniev@redhat.com>,
-	Dai Ngo <dai.ngo@oracle.com>,
-	Tom Talpey <tom@talpey.com>
-Cc: <linux-nfs@vger.kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Mike Snitzer <snitzer@kernel.org>,
-	stable@vger.kernel.org
-Subject: [PATCH v10 2/5] NFSD: Make FILE_SYNC WRITEs comply with spec
-Date: Wed,  5 Nov 2025 14:28:03 -0500
-Message-ID: <20251105192806.77093-3-cel@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251105192806.77093-1-cel@kernel.org>
-References: <20251105192806.77093-1-cel@kernel.org>
+	s=arc-20240116; t=1762372957; c=relaxed/simple;
+	bh=1UNkHAvIkZsKBsgCcM/AKzKDGjOH+HZN3yV5TRZ9kHY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=LL5wjkCKo0ikmX8wpjf+4kGh4S3+ekVMeWBK9sXZMutaNW5VdRsw/vokK496Iu+7mFALLgkfUoH/+y4dPOe6pevo4B01BJZ4TOc+RODpXFNDXEAoF4rDRXcZMVVXbBnA5/areyMwmyMulO3Q23YXqwGjEclD5KZI5KxLXzXsNiQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=FJUlcpcv; arc=none smtp.client-ip=91.218.175.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Message-ID: <de2f5da5-05db-4bd7-90c3-c51558e50545@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1762372953;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2gVnZSE22cVcS4rxgpdM9tTcUt8tL4gwGdnHKKtUPSY=;
+	b=FJUlcpcv9vjP5zo0RqEPDKGmnvz+b8Wcpn9xQgMLQwV7BE0ZnMyCSThhWWjkfs+lH2N12+
+	jnQC+PLDw3kZalXL+gyLaQQBjjFrevAwcwJrq/7xtiRiIM/fhSK7I1rJzN0I4lE+WT7Gpa
+	K9RBhAypCGBAemx5Gf3b1kXeUi4tYnw=
+Date: Wed, 5 Nov 2025 20:02:30 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net] net: txgbe: remove wx_ptp_init() in device reset flow
+To: Jiawen Wu <jiawenwu@trustnetic.com>, netdev@vger.kernel.org,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Richard Cochran <richardcochran@gmail.com>, Simon Horman <horms@kernel.org>,
+ Jacob Keller <jacob.e.keller@intel.com>
+Cc: Mengyuan Lou <mengyuanlou@net-swift.com>, stable@vger.kernel.org
+References: <17A4943B0AAA971B+20251105020752.57931-1-jiawenwu@trustnetic.com>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+In-Reply-To: <17A4943B0AAA971B+20251105020752.57931-1-jiawenwu@trustnetic.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 
-From: Chuck Lever <chuck.lever@oracle.com>
+On 05/11/2025 02:07, Jiawen Wu wrote:
+> The functions txgbe_up() and txgbe_down() are called in pairs to reset
+> hardware configurations. PTP stop function is not called in
+> txgbe_down(), so there is no need to call PTP init function in
+> txgbe_up().
+> 
 
-Mike noted that when NFSD responds to an NFS_FILE_SYNC WRITE, it
-does not also persist file time stamps. To wit, Section 18.32.3
-of RFC 8881 mandates:
+txgbe_reset() is called during txgbe_down(), and it calls
+wx_ptp_reset(), which I believe is the reason for wx_ptp_init() call
 
-> The client specifies with the stable parameter the method of how
-> the data is to be processed by the server. If stable is
-> FILE_SYNC4, the server MUST commit the data written plus all file
-> system metadata to stable storage before returning results. This
-> corresponds to the NFSv2 protocol semantics. Any other behavior
-> constitutes a protocol violation. If stable is DATA_SYNC4, then
-> the server MUST commit all of the data to stable storage and
-> enough of the metadata to retrieve the data before returning.
-
-Commit 3f3503adb332 ("NFSD: Use vfs_iocb_iter_write()") replaced:
-
--		flags |= RWF_SYNC;
-
-with:
-
-+		kiocb.ki_flags |= IOCB_DSYNC;
-
-which appears to be correct given:
-
-	if (flags & RWF_SYNC)
-		kiocb_flags |= IOCB_DSYNC;
-
-in kiocb_set_rw_flags(). However the author of that commit did not
-appreciate that the previous line in kiocb_set_rw_flags() results
-in IOCB_SYNC also being set:
-
-	kiocb_flags |= (__force int) (flags & RWF_SUPPORTED);
-
-RWF_SUPPORTED contains RWF_SYNC, and RWF_SYNC is the same bit as
-IOCB_SYNC. Reviewers at the time did not catch the omission.
-
-Reported-by: Mike Snitzer <snitzer@kernel.org>
-Closes: https://lore.kernel.org/linux-nfs/20251018005431.3403-1-cel@kernel.org/T/#t
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Fixes: 3f3503adb332 ("NFSD: Use vfs_iocb_iter_write()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
----
- fs/nfsd/vfs.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
-
-diff --git a/fs/nfsd/vfs.c b/fs/nfsd/vfs.c
-index f537a7b4ee01..5333d49910d9 100644
---- a/fs/nfsd/vfs.c
-+++ b/fs/nfsd/vfs.c
-@@ -1314,8 +1314,18 @@ nfsd_vfs_write(struct svc_rqst *rqstp, struct svc_fh *fhp,
- 		stable = NFS_UNSTABLE;
- 	init_sync_kiocb(&kiocb, file);
- 	kiocb.ki_pos = offset;
--	if (stable && !fhp->fh_use_wgather)
--		kiocb.ki_flags |= IOCB_DSYNC;
-+	if (likely(!fhp->fh_use_wgather)) {
-+		switch (stable) {
-+		case NFS_FILE_SYNC:
-+			/* persist data and timestamps */
-+			kiocb.ki_flags |= IOCB_DSYNC | IOCB_SYNC;
-+			break;
-+		case NFS_DATA_SYNC:
-+			/* persist data only */
-+			kiocb.ki_flags |= IOCB_DSYNC;
-+			break;
-+		}
-+	}
- 
- 	nvecs = xdr_buf_to_bvec(rqstp->rq_bvec, rqstp->rq_maxpages, payload);
- 	iov_iter_bvec(&iter, ITER_SOURCE, rqstp->rq_bvec, nvecs, *cnt);
--- 
-2.51.0
+> Fixes: 06e75161b9d4 ("net: wangxun: Add support for PTP clock")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
+> ---
+>   drivers/net/ethernet/wangxun/txgbe/txgbe_main.c | 1 -
+>   1 file changed, 1 deletion(-)
+> 
+> diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
+> index daa761e48f9d..114d6f46139b 100644
+> --- a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
+> +++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
+> @@ -297,7 +297,6 @@ void txgbe_down(struct wx *wx)
+>   void txgbe_up(struct wx *wx)
+>   {
+>   	wx_configure(wx);
+> -	wx_ptp_init(wx);
+>   	txgbe_up_complete(wx);
+>   }
+>   
 
 
