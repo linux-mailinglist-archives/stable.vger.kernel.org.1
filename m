@@ -1,94 +1,99 @@
-Return-Path: <stable+bounces-192498-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192499-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCB37C3584B
-	for <lists+stable@lfdr.de>; Wed, 05 Nov 2025 12:54:09 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCB49C35859
+	for <lists+stable@lfdr.de>; Wed, 05 Nov 2025 12:54:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D1B4568004
-	for <lists+stable@lfdr.de>; Wed,  5 Nov 2025 11:47:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2ECC11A22E97
+	for <lists+stable@lfdr.de>; Wed,  5 Nov 2025 11:54:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E75930FC3A;
-	Wed,  5 Nov 2025 11:47:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C55003126AC;
+	Wed,  5 Nov 2025 11:54:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cg86LLZm"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XYchl2ma"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49912303C86;
-	Wed,  5 Nov 2025 11:47:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AB4B311979;
+	Wed,  5 Nov 2025 11:54:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762343253; cv=none; b=lPTaKXkJ6iU+aj1OiT+tLXOcLFOr4jhvwwTIHtrTNwZHkBqutZsbFnt24YTvaRgY8c7G98XB/84Uubyp/wtHAMHma/sECsLt8AH/1X+O6/V6LAHC8sX/z3t9oa7QSckJhGcm2vO6gmDqtjVX0OgMX9fg5L8sCqIGv6yVvhYWLUw=
+	t=1762343654; cv=none; b=CZcUDRPT/U5rvgVLa+VAsQgEXMD9bucMPyOLd9BcWaEHVdL34Mh4XpTZKuNcpECfqmLG7yshHaxJBRmViWxS3iI2YDE7Vy1/MLr9GTC2PZwbzgQyMxW7q1EiZcuGhINu62F7qnXWyb3QXmHzx/RY107TdqJLtP9+jGfkIBTf3SE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762343253; c=relaxed/simple;
-	bh=rByHzTDi8GNI4VjgdYw6keFPO0iICIg6fPIKaXxnABc=;
+	s=arc-20240116; t=1762343654; c=relaxed/simple;
+	bh=1yCSTLyQx+/w/apujRIHLWAJtkx3xpqUhrl0FfmC5Ck=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sBv7OAqipFCw/wMBSjsS6RMIZiI09VFU82CecTiUmRf/Tp74MmYrjuCL7y1MxcCfSwWUXJfbojgvYdYyYct4/B5atC494NTEt9xzsu2PoqaV9vCu+uamjVw5vvgiyiEIb/kiKwdFsR7X4qJ3xNaWMg3heKZBTmNMAJshTGhGdz4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cg86LLZm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07B72C4CEF8;
-	Wed,  5 Nov 2025 11:47:30 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=hWThmP7o5JvRnY3pO7Iy58cev9scM6qEi9F8SK7gdHuD9p/uxi7yVk8btlfdeAXDeBsytbk4jRj845hldU00/aw13IIlb/rC9GfrBB+dvX8mKOTzgw1PRhr9sijIyTUhTGfurRzorS7YgoXtlPY9UanjSKWspdEO3+UM3jcm1uA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XYchl2ma; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79463C4CEF8;
+	Wed,  5 Nov 2025 11:54:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762343252;
-	bh=rByHzTDi8GNI4VjgdYw6keFPO0iICIg6fPIKaXxnABc=;
+	s=k20201202; t=1762343654;
+	bh=1yCSTLyQx+/w/apujRIHLWAJtkx3xpqUhrl0FfmC5Ck=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=cg86LLZmZvaS640pryi2nqiIXgCYl+2loDa4wCmigGCPFYqxEfdcimuJQegQBKLAn
-	 JGstJyrE36Z4DWcgmjabR46+0HuqdLlqRni49TyrctQC1j4h4vpBFUJBR0FSZ0rVKA
-	 5Po69MmtyqZ9aLUudcv3EHLqYOUrGuf78Pu8h/wbMd2JJWDv/kOB9q5e04GWVidQrz
-	 VCQ8+Dg68EWSX772eUT2G/9LNmmGMPkFkh+2DCdQKikNpQFI6fr1N1PrhCeSCun97l
-	 Ro396elp4sC7nvfAmLsaTQJSPyWgw9SXl/kXx6Vy5MNioKQ2GtoXeosAXztX/pe9y7
-	 2PpLayzOKdcbA==
-Date: Wed, 5 Nov 2025 11:47:29 +0000
-From: Simon Horman <horms@kernel.org>
-To: Jiawen Wu <jiawenwu@trustnetic.com>
-Cc: netdev@vger.kernel.org, 'Andrew Lunn' <andrew+netdev@lunn.ch>,
-	"'David S. Miller'" <davem@davemloft.net>,
-	'Eric Dumazet' <edumazet@google.com>,
-	'Jakub Kicinski' <kuba@kernel.org>,
-	'Paolo Abeni' <pabeni@redhat.com>,
-	'Mengyuan Lou' <mengyuanlou@net-swift.com>, stable@vger.kernel.org
-Subject: Re: [PATCH net] net: libwx: fix device bus LAN ID
-Message-ID: <aQs5UeY214tiuL3f@horms.kernel.org>
-References: <B60A670C1F52CB8E+20251104062321.40059-1-jiawenwu@trustnetic.com>
- <aQsf2tTu3_FAeRic@horms.kernel.org>
- <093901dc4e3b$b753c630$25fb5290$@trustnetic.com>
+	b=XYchl2mafXql+860MVERf3aaXVigRjjVwePJ5W1kHiibyeG8JNxBTi9+y3jrAAP8z
+	 fGwcLTXnPr/yz0AzMVluwYln1marJaGIFUbOtRIvHfzEvRqWrpspd7gV2X8HZWJlu4
+	 kd5idylxMemsMOKJwpNJA2zhdKiisGxgyL6Vp6mRHXd+18NS5HFQO9k3alZFIccKU/
+	 8oZQICj2fJx0JiLVXanPB2VnGLpP8JtU/4PB6iQa+P5347D68/oU8P9XhMzp2kpbV6
+	 F8GSxRkjHM65u2mnYuEnulVwvV/PpfnXb+UEB5qYMeSw+pi8RvDAuaAWSAsl4HPWOa
+	 bTvG/2MoEcdKQ==
+Date: Wed, 5 Nov 2025 12:54:10 +0100
+From: Christian Brauner <brauner@kernel.org>
+To: Al Viro <viro@zeniv.linux.org.uk>
+Cc: GuangFei Luo <luogf2025@163.com>, jack@suse.cz, 
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] mount: fix duplicate mounts using the new mount API
+Message-ID: <20251105-abbaden-unmerklich-6682a021d5a8@brauner>
+References: <20251025024934.1350492-1-luogf2025@163.com>
+ <20251025033601.GJ2441659@ZenIV>
+ <788d8763-0c2c-458a-9b0b-a5634e50c029@163.com>
+ <20251031-gerufen-rotkohl-7d86b0c3dfe2@brauner>
+ <20251031184822.GC2441659@ZenIV>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <093901dc4e3b$b753c630$25fb5290$@trustnetic.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20251031184822.GC2441659@ZenIV>
 
-On Wed, Nov 05, 2025 at 06:05:29PM +0800, Jiawen Wu wrote:
-> On Wed, Nov 5, 2025 5:59 PM, Simon Horman wrote:
-> > On Tue, Nov 04, 2025 at 02:23:21PM +0800, Jiawen Wu wrote:
-> > > The device bus LAN ID was obtained from PCI_FUNC(), but when a PF
-> > > port is passthrough to a virtual machine, the function number may not
-> > > match the actual port index on the device. This could cause the driver
-> > > to perform operations such as LAN reset on the wrong port.
-> > >
-> > > Fix this by reading the LAN ID from port status register.
-> > >
-> > > Fixes: a34b3e6ed8fb ("net: txgbe: Store PCI info")
-> > > Cc: stable@vger.kernel.org
-> > > Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
-> > 
-> > Hi Jiawen Wu,
-> > 
-> > I am wondering if these devises also support port swapping (maybe LAN
-> > Function Select bit of FACTPS). And if so, does it need to be taken into
-> > account here?
+On Fri, Oct 31, 2025 at 06:48:22PM +0000, Al Viro wrote:
+> On Fri, Oct 31, 2025 at 01:54:27PM +0100, Christian Brauner wrote:
 > 
-> Does not support yet, thanks. :)
+> > > > I agree that it's a regression in mount(8) conversion to new API, but this
+> > > > is not a fix.
+> > > Thanks for the review. Perhaps fixing this in |move_mount| isn't the best
+> > > approach, and I don’t have a good solution yet.
+> > 
+> > Sorry, no. This restriction never made any sense in the old mount api
+> > and it certainly has no place in the new mount api. And it has been
+> > _years_ since the new mount api was released. Any fix is likely to break
+> > someone else that's already relying on that working.
+> 
+> Not quite...  I agree that it makes little sense to do that on syscall level,
+> but conversion of mount(8) to new API is a different story - that's more recent
+> than the introduction of new API itself and it does create a regression on
+> the userland side.
+> 
+> IIRC, the original rationale had been "what if somebody keeps clicking on
+> something in some kind of filemangler inturdface and gets a pile of overmounts
+> there?", but however weak that might be, it is an established behaviour of
+> mount(2), with userland callers of mount(2) expecting that semantics.
+> 
+> Blind conversion to new API has changed userland behaviour.  I would argue
+> that it's a problem on the userland side, and the only question kernel-side
+> is whether there is something we could provide to simplify the life of those
+> who do such userland conversions.  A move_mount(2) flag, perhaps, defaulting
+> to what we have move_mount(2) do now?
 
-Thanks, in that case this patch looks good to me.
-
-Reviewed-by: Simon Horman <horms@kernel.org>
-
+Maybe a flag but even then. I'm pretty sure that mount can just use
+statmount() to figure out that someone is trying to mount the same fs
+twice and simply abort. That should be close enough...
 
