@@ -1,95 +1,158 @@
-Return-Path: <stable+bounces-192581-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192582-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65CDEC396B4
-	for <lists+stable@lfdr.de>; Thu, 06 Nov 2025 08:38:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DC52C397E9
+	for <lists+stable@lfdr.de>; Thu, 06 Nov 2025 09:02:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9C0893AFCAE
-	for <lists+stable@lfdr.de>; Thu,  6 Nov 2025 07:38:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8BA0E1892956
+	for <lists+stable@lfdr.de>; Thu,  6 Nov 2025 08:02:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D36C7298CAF;
-	Thu,  6 Nov 2025 07:38:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3372E2FFF97;
+	Thu,  6 Nov 2025 08:01:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=purelymail.com header.i=@purelymail.com header.b="NorLj0cE"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="c5WE/Y+B"
 X-Original-To: stable@vger.kernel.org
-Received: from sendmail.purelymail.com (sendmail.purelymail.com [34.202.193.197])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9748E221DAD
-	for <stable@vger.kernel.org>; Thu,  6 Nov 2025 07:38:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=34.202.193.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AB612FFF83
+	for <stable@vger.kernel.org>; Thu,  6 Nov 2025 08:01:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762414716; cv=none; b=O1cHEudyP80hieAr4twKizQ9ebIse5GbkgTdWwuu8BeY7GeLOPoeZ1O2w/BsVxPG9LDtLKlME2MpuZ0+6H6FfwgKSMhBLusYfd1FsKUtHvLq8NyL679Aunwvfxo4mCQomNX598L8qOcqV+9eIlKVpINM1Ffw8du3KFht1M4BL4U=
+	t=1762416104; cv=none; b=eiivv/2t5JUozhhyB+OtaGdjkjgucd+tTN+5J1vgd8J5ZbiF1dcEvUeB7koxLHvk6AVeXSSxL1cgaxyejvBKLLF56HIPWSr+jpm9tcdHMPPfON3sO2T79PB+6qNgJqZXslKr1tPIBLH1wyPo34vHpSXLxmyYBKWbBZBKNu/h3Ww=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762414716; c=relaxed/simple;
-	bh=BJlr+nPTAYN5YsdsgVxazWRhHsecg7JTFTjgWQCBS8I=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=HwcBIDxuoXP1qzMO6EOZhyxyKuCN8Hsj5XMQv4eXR4jXy6jx7FFgz2puSFHSxak2Q1d3LFFKlH5f0sJdgsioXzAOa8DxA5QjBvIyfgh/bUoGRoE3sPtStmb73uaZ66epdst/u0gCSZZwlnZSMtN9AuZpugSPu6+XS8f8Jjqxwko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=korsgaard.com; spf=pass smtp.mailfrom=korsgaard.com; dkim=pass (2048-bit key) header.d=purelymail.com header.i=@purelymail.com header.b=NorLj0cE; arc=none smtp.client-ip=34.202.193.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=korsgaard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=korsgaard.com
-DKIM-Signature: a=rsa-sha256; b=NorLj0cEPbsh9Tj9vOkBdKYqn2SNGcsw9YrUGP5oFQ0yJbtHfQkT9x5mB9AZCn1QYg1/ZHh5MZ5QTC5rbp0O76YA6XY9IaBjG+2hDZvC+1CbKifz1bCSkkUl58IX5F1EMaEpmw06EN1j+TwC1hm6n/VOATWOaDs6ft2wKJN2dxGylcfNhS3iNsJOdaWywzWzjb4VBFwO7oNS4OR3kI3DQOkAt8zdS85NMiLMjPkDpSDeEQehecNCeVDGfG7L/t46rv3FpKbqoxnlWOSF+aRwhEd5RqkzbKHZqDOwO0o9nvgxz6mYqTK+pZuOe+pY3L34EGqjSrxr6Dw1CbzE64S+tA==; s=purelymail2; d=purelymail.com; v=1; bh=BJlr+nPTAYN5YsdsgVxazWRhHsecg7JTFTjgWQCBS8I=; h=Feedback-ID:Received:Received:From:To:Subject:Date;
-Feedback-ID: 21632:4007:null:purelymail
-X-Pm-Original-To: stable@vger.kernel.org
-Received: by smtp.purelymail.com (Purelymail SMTP) with ESMTPSA id 1624439273;
-          (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
-          Thu, 06 Nov 2025 07:38:29 +0000 (UTC)
-Received: from peko by dell.be.48ers.dk with local (Exim 4.96)
-	(envelope-from <peter@korsgaard.com>)
-	id 1vGuZg-006JF5-11;
-	Thu, 06 Nov 2025 08:38:28 +0100
-From: Peter Korsgaard <peter@korsgaard.com>
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: Ivan Vera <ivanverasantos@gmail.com>,  git@amd.com,
-  stable@vger.kernel.org,  Michal Simek <michal.simek@amd.com>,  Srinivas
- Kandagatla <srini@kernel.org>,  Ivan Vera <ivan.vera@enclustra.com>
-Subject: Re: [PATCH v6.6-LTS] nvmem: zynqmp_nvmem: unbreak driver after cleanup
-References: <20251105123619.18801-1-ivan.vera@enclustra.com>
-	<2025110655-imprecise-baton-f507@gregkh>
-Date: Thu, 06 Nov 2025 08:38:28 +0100
-In-Reply-To: <2025110655-imprecise-baton-f507@gregkh> (Greg KH's message of
-	"Thu, 6 Nov 2025 16:23:16 +0900")
-Message-ID: <87frar7gqz.fsf@dell.be.48ers.dk>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=arc-20240116; t=1762416104; c=relaxed/simple;
+	bh=O85Egr1mJZvNlhKo39WgVfPyqLr0DktDocrbfNSbOZo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PSgPwjN8DsXyom3O3ptOJn5yQ8kE+cfFmkIh6tBRO/CnHuMH4/vkJE7qMpwvpbFDOiEvxL1A4bRKBOujAzw7SXSGH5koJas+yunUz2eWIZLNZ9/vgnRPN7S8CZGptYFgmh3FBsNyR8GHLWvoIzR4+ayu+Lu5vcjXE3C2uN5+MDA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=c5WE/Y+B; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1762416101;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gq8OqVz4qr//bD4X0q0XpwbVxL8+9n9NL/5MFInAjSM=;
+	b=c5WE/Y+BQyznmhzQaN2qj0OzOumCnOQ+bD9cRygbZTkSDTceadGGEb8g33WHGPzVM9+u4H
+	6IUmpt9JhtEAglRcUyPbAwO/bcFmhL4It8jnxvZShRdLPomUwMwUp9BptcOEM7NfBcZZcx
+	7o/vpb+TxcteK0UfjXRfjDNYtFEM44U=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-638-5qD3198KNDifl4Mnks6ZAA-1; Thu,
+ 06 Nov 2025 03:01:38 -0500
+X-MC-Unique: 5qD3198KNDifl4Mnks6ZAA-1
+X-Mimecast-MFC-AGG-ID: 5qD3198KNDifl4Mnks6ZAA_1762416096
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id E80611954225;
+	Thu,  6 Nov 2025 08:01:35 +0000 (UTC)
+Received: from localhost (unknown [10.72.112.190])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 8049530044DC;
+	Thu,  6 Nov 2025 08:01:33 +0000 (UTC)
+Date: Thu, 6 Nov 2025 16:01:29 +0800
+From: Baoquan He <bhe@redhat.com>
+To: Pingfan Liu <piliu@redhat.com>
+Cc: kexec@lists.infradead.org, linux-integrity@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Mimi Zohar <zohar@linux.ibm.com>,
+	Roberto Sassu <roberto.sassu@huawei.com>,
+	Alexander Graf <graf@amazon.com>,
+	Steven Chen <chenste@linux.microsoft.com>, stable@vger.kernel.org
+Subject: Re: [PATCHv2 2/2] kernel/kexec: Fix IMA when allocation happens in
+ CMA area
+Message-ID: <aQxV2ULFzG/xrl7/@MiWiFi-R3L-srv>
+References: <20251106065904.10772-1-piliu@redhat.com>
+ <20251106065904.10772-2-piliu@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251106065904.10772-2-piliu@redhat.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
->>>>> "Greg" == Greg KH <gregkh@linuxfoundation.org> writes:
+On 11/06/25 at 02:59pm, Pingfan Liu wrote:
+> When I tested kexec with the latest kernel, I ran into the following warning:
+> 
+> [   40.712410] ------------[ cut here ]------------
+> [   40.712576] WARNING: CPU: 2 PID: 1562 at kernel/kexec_core.c:1001 kimage_map_segment+0x144/0x198
+> [...]
+> [   40.816047] Call trace:
+> [   40.818498]  kimage_map_segment+0x144/0x198 (P)
+> [   40.823221]  ima_kexec_post_load+0x58/0xc0
+> [   40.827246]  __do_sys_kexec_file_load+0x29c/0x368
+> [...]
+> [   40.855423] ---[ end trace 0000000000000000 ]---
+> 
+> This is caused by the fact that kexec allocates the destination directly
+> in the CMA area. In that case, the CMA kernel address should be exported
+> directly to the IMA component, instead of using the vmalloc'd address.
 
- > On Wed, Nov 05, 2025 at 01:36:19PM +0100, Ivan Vera wrote:
- >> From: Peter Korsgaard <peter@korsgaard.com>
- >> 
- >> Commit 29be47fcd6a0 ("nvmem: zynqmp_nvmem: zynqmp_nvmem_probe cleanup")
- >> changed the driver to expect the device pointer to be passed as the
- >> "context", but in nvmem the context parameter comes from nvmem_config.priv
- >> which is never set - Leading to null pointer exceptions when the device is
- >> accessed.
- >> 
- >> Fixes: 29be47fcd6a0 ("nvmem: zynqmp_nvmem: zynqmp_nvmem_probe cleanup")
- >> Cc: stable@vger.kernel.org
- >> Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
- >> Reviewed-by: Michal Simek <michal.simek@amd.com>
- >> Tested-by: Michal Simek <michal.simek@amd.com>
- >> Signed-off-by: Srinivas Kandagatla <srini@kernel.org>
- >> State: upstream (c708bbd57d158d9f20c2fcea5bcb6e0afac77bef)
- >> (cherry picked from commit 94c91acb3721403501bafcdd041bcd422c5b23c4)
+Well, you didn't update the log accordingly.
 
- > Neither of these git ids are valid, where did you get them from?
+Do you know why cma area can't be mapped into vmalloc?
 
-git describe --contains c708bbd57d158d9f20c2fcea5bcb6e0afac77bef
-next-20250505~21^2~1^2
+> 
+> Fixes: 07d24902977e ("kexec: enable CMA based contiguous allocation")
+> Signed-off-by: Pingfan Liu <piliu@redhat.com>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Baoquan He <bhe@redhat.com>
+> Cc: Alexander Graf <graf@amazon.com>
+> Cc: Steven Chen <chenste@linux.microsoft.com>
+> Cc: linux-integrity@vger.kernel.org
+> Cc: <stable@vger.kernel.org>
+> To: kexec@lists.infradead.org
+> ---
+> v1 -> v2:
+> return page_address(page) instead of *page
+> 
+>  kernel/kexec_core.c | 7 ++++++-
+>  1 file changed, 6 insertions(+), 1 deletion(-)
+> 
+> diff --git a/kernel/kexec_core.c b/kernel/kexec_core.c
+> index 9a1966207041..332204204e53 100644
+> --- a/kernel/kexec_core.c
+> +++ b/kernel/kexec_core.c
+> @@ -967,6 +967,7 @@ void *kimage_map_segment(struct kimage *image, int idx)
+>  	kimage_entry_t *ptr, entry;
+>  	struct page **src_pages;
+>  	unsigned int npages;
+> +	struct page *cma;
+>  	void *vaddr = NULL;
+>  	int i;
+>  
+> @@ -974,6 +975,9 @@ void *kimage_map_segment(struct kimage *image, int idx)
+>  	size = image->segment[idx].memsz;
+>  	eaddr = addr + size;
+>  
+> +	cma = image->segment_cma[idx];
+> +	if (cma)
+> +		return page_address(cma);
+>  	/*
+>  	 * Collect the source pages and map them in a contiguous VA range.
+>  	 */
+> @@ -1014,7 +1018,8 @@ void *kimage_map_segment(struct kimage *image, int idx)
+>  
+>  void kimage_unmap_segment(void *segment_buffer)
+>  {
+> -	vunmap(segment_buffer);
+> +	if (is_vmalloc_addr(segment_buffer))
+> +		vunmap(segment_buffer);
+>  }
+>  
+>  struct kexec_load_limit {
+> -- 
+> 2.49.0
+> 
 
-I guess it should have been fe8abdd175d7b547ae1a612757e7902bcd62e9cf
-instead, E.G. what ended up in master?
-
--- 
-Bye, Peter Korsgaard
 
