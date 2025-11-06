@@ -1,221 +1,153 @@
-Return-Path: <stable+bounces-192644-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192645-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8135C3D401
-	for <lists+stable@lfdr.de>; Thu, 06 Nov 2025 20:32:42 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id E07FBC3D42E
+	for <lists+stable@lfdr.de>; Thu, 06 Nov 2025 20:38:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 53A0918966B4
-	for <lists+stable@lfdr.de>; Thu,  6 Nov 2025 19:33:07 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 8455A4E208A
+	for <lists+stable@lfdr.de>; Thu,  6 Nov 2025 19:38:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E78D92D9EE2;
-	Thu,  6 Nov 2025 19:32:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0948133C532;
+	Thu,  6 Nov 2025 19:38:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OyAtUapj"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DGyOK8Rq"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BBF32192EE;
-	Thu,  6 Nov 2025 19:32:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3817033507F
+	for <stable@vger.kernel.org>; Thu,  6 Nov 2025 19:38:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762457556; cv=none; b=L0W7xB9G9HPloko5LGrmjjsUv623ClzZK7TPe9/SoPfWoNGaDgagSIRfMJEEJOI/I6v2RW4vKEtcnumT9ICNmoUQckDj4mbOXy0Wez3N7FU0balz9MfhVsad1Q6U7Q+CCCC00Zwpm8M9pvKsfxpiSu5HjapdkRk1C4piixj2P50=
+	t=1762457914; cv=none; b=AaLa5DozUinbIUt84Nrnrc5JxJeebV2hh5I5T5lZUBoZNHCWHZPb+tjZGKCqmqyUsiZqoMhibKUGqUU++VfxciFD4Y0tuLfQHyGkK8YGw4grZAwbIwvsF1vSRjGUZIIUxAbXP7Y6SqarlMHWkZzS7X1NKEp+WhyTZ29gHf03f9c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762457556; c=relaxed/simple;
-	bh=wihSTnkFXhy5/fis4z4HZGvN91Ktb4fLONbT7S8xWpE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=i1Ag5/IlfW+Li5S32NrtnSa+WQT7GICxgsCHeF9jUshC/H02wwpXG9zL0muHhQuYicXWY+j4U6pY9pHYfN0xXkqMxFOfliYkS+epIRA6XQIwyq7CSemN1X1Npv4eUWjr8XK9gpo9o48HjJtSQNMopajnoRcC5LvNl9tgRdq/YIA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OyAtUapj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7A77C116B1;
-	Thu,  6 Nov 2025 19:32:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762457556;
-	bh=wihSTnkFXhy5/fis4z4HZGvN91Ktb4fLONbT7S8xWpE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=OyAtUapjtDpyKFoDldaMJa+VnyboN2vy6fCqEDoy+3nWV13qJej4AVLFxuvU6/1BR
-	 04oC11JrryRpjtiol5Gs3KG3uELtZMPOHSsKHVIgVxBFBP+hZTR8nnAhg4d7ej/yTC
-	 LkZtEuyjfJA4EfzZx98rcAW23h6A7T2f8RiVVuXh15w4t8lVi3Bno93iGw3pe6Gp6e
-	 ePa4/tvq7lDzRi00FD39hWH1qIrudnAZXo7v2FGFn+AogjuKW+k1Dy9hPThTxgd7Sh
-	 ykE95u1AfnsJmFCBPFO0br2OJhAOBB9Y8+FPtwq23baxusCKIGZyaUcuGNfbXnTUZx
-	 h0SZjegJMEIxw==
-Message-ID: <8cf5dc85-dee8-4e83-8f83-6b3411dddbee@kernel.org>
-Date: Thu, 6 Nov 2025 14:32:34 -0500
+	s=arc-20240116; t=1762457914; c=relaxed/simple;
+	bh=htCCclXRRTSfNtzxMezZq4IR7RmLZZSdOeEpdNANtiE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=UXZWv8ebV2xukBLUYPK0lDllcy+axdW/7HqGHjdkRNDBtzI1oiVBqdtN//Bz31PgyOSBlmgYl/fSBt2AOddQfdFVKcQNWo3HqryBu/b6GLGSgG81J2+AMVpQZlEHloChGTDKV6rrxnI7TjFnYg3dnpAX/n0Rq+0wsKsvgfh289k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DGyOK8Rq; arc=none smtp.client-ip=209.85.160.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-4ed83ad277fso49271cf.0
+        for <stable@vger.kernel.org>; Thu, 06 Nov 2025 11:38:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1762457912; x=1763062712; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=au4yHmJ+eAAs4ru8qXuzKlpyKvxCeRwM44jREzgs70s=;
+        b=DGyOK8Rq7w8VqwKtyMJOyfJP22L769UOwq0InqRtkyjv08hO3Gbl6iLxC9JteYWSUJ
+         noNEAWYNKvtdy7/onk2fDsh/Up+y8AS95Bb/mpRBb6vgVZDEksCkn54E2gCRSIj1cqoG
+         a9BwLpGmWQlrt9PaRclIDNAR217BIf+kFciUNiDPrtPECHmKXiU7SSv5V8++3BK3QplY
+         NyyA09hdgkwOyPioRrEOsl6YU2fZlzEAzxkroT/aB5xyIyTwD7g8GLL6Y96R5pFHvb1V
+         66lNmIbq6g6G4nTgXSKvwO0V78xC0UOuaMgWca9Cq6yP+PY0nK50OUCz8JeRCUwINIoY
+         KIXA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762457912; x=1763062712;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=au4yHmJ+eAAs4ru8qXuzKlpyKvxCeRwM44jREzgs70s=;
+        b=fqxUR6w2EVmSqgc1EXAqScf5GDIGntcgTN8hoSVGBTx0jtnSg4tBQRr+6zvvohcEHn
+         kUAOhhJ0BoBL+Fp+0WUE3cvLg188lvyAIe9qETcCMo6wDv9sY+tu4lI2uyABLICsSGOe
+         NRGB0qKmNBxnkB2QtbyTZtQm42Nz5XQgvwLfI+btjjrB9qDGYvmijwIFdsIITz9EF2EV
+         ZmGgOqufWUSAwZyJGSfi/bLHJHiJ9RNsSll6n35xQxN3ZoQIAFH+vOYH3mEPGwY2/OG5
+         MkFFOjhC+oJxAF5SxumsWOS9culWL+NcKvt4B/EK0C0EFNmhVeQ8gzP7MHNYoamqbgCq
+         3F/Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXNgXHUrVc2ADuyDo6TxoquL7Mx9B8so1DF4SPEF81D+pGpNAiyEx2bEsH6H9iBwqLpgAjnNeU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yye6UbXVFHfRNYuzsrkPdREcojj1dooeQfyG9YCDEqqIkQLr7PG
+	tE6M3vgBpn1EPe+0iWCD1S3KzC0d0B1Gc3aGyPyaPHHcTrjbJAIlXCjLb2/WFZczF3RKLBWgW6H
+	bHZjUNo1inTAARuLhInlcUGfzxN2LKL0=
+X-Gm-Gg: ASbGncspvbDdhI47DrH9vyw+1goEOCW0MdhaPmkNLSW56+R11rqi0D9MqYPGLJbwAc1
+	S6zhQiTF0wq+VZjR02ecsb/UkXoetH1rGi4RNvGwBdcSsl4SiRlxbsZTqEDYW5QEWvkQpkAm+Qs
+	ZZlC6rng0UDizcHWGCmxxFUngubIgVl6M+Yno+ltB37p9NDN8HRbmtwW/yomeAaZsFZ4Wr262W8
+	t3RZ2u4Qh5/TVOdKd0n9ROPtImr2QCdgE/6ah8rDtLWWOVUZLt5jIqy3mMY6WeKWP4l2roH2K15
+	A81UWoy3Wy0/yUE=
+X-Google-Smtp-Source: AGHT+IEWuUwRQbyqGylienh6BMzwpg/JB6xpNoZMrM6WzCCEIgb/HTUw4nCIOtdkN6F8fo+kCYqfX8RwaSIpr2XFfOg=
+X-Received: by 2002:a05:622a:1187:b0:4e6:ee71:ee8f with SMTP id
+ d75a77b69052e-4ed9497824fmr6087251cf.23.1762457912044; Thu, 06 Nov 2025
+ 11:38:32 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Compile Error fs/nfsd/nfs4state.o - clamp() low limit slotsize
- greater than high limit total_avail/scale_factor
-To: David Laight <david.laight.linux@gmail.com>
-Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Laight <David.Laight@ACULAB.COM>,
- Linux NFS Mailing List <linux-nfs@vger.kernel.org>,
- Linux List Kernel Mailing <linux-kernel@vger.kernel.org>,
- speedcracker@hotmail.com
-References: <bbba88825d7b2b06031c1b085d76787a2502d70e.camel@kernel.org>
- <37bc1037-37d8-4168-afc9-da8e2d1dd26b@kernel.org>
- <20251106192210.1b6a3ca0@pumpkin>
-Content-Language: en-US
-From: Chuck Lever <cel@kernel.org>
-Organization: kernel.org
-In-Reply-To: <20251106192210.1b6a3ca0@pumpkin>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20251010220738.3674538-1-joannelkoong@gmail.com> <20251010220738.3674538-2-joannelkoong@gmail.com>
+In-Reply-To: <20251010220738.3674538-2-joannelkoong@gmail.com>
+From: Joanne Koong <joannelkoong@gmail.com>
+Date: Thu, 6 Nov 2025 11:38:21 -0800
+X-Gm-Features: AWmQ_bm5GPa9LFrjFiVAhIWylI3ld7gMo3TswYkPgcx-PpS_BfKG1fT-qAMdg0Y
+Message-ID: <CAJnrk1YemmKkgTN4a-T7Kc1vtUSJi3GO8bY1BfXWZUKcx6NBtQ@mail.gmail.com>
+Subject: Re: [PATCH v2 1/1] fuse: fix readahead reclaim deadlock
+To: miklos@szeredi.hu
+Cc: linux-fsdevel@vger.kernel.org, amir73il@gmail.com, osandov@fb.com, 
+	hsiangkao@linux.alibaba.com, kernel-team@meta.com, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 11/6/25 2:22 PM, David Laight wrote:
-> On Thu, 6 Nov 2025 09:33:28 -0500
-> Chuck Lever <cel@kernel.org> wrote:
-> 
->> FYI
->>
->> https://bugzilla.kernel.org/show_bug.cgi?id=220745
-> 
-> Ugg - that code is horrid.
-> It seems to have got deleted since, but it is:
-> 
-> 	u32 slotsize = slot_bytes(ca);
-> 	u32 num = ca->maxreqs;
-> 	unsigned long avail, total_avail;
-> 	unsigned int scale_factor;
-> 
-> 	spin_lock(&nfsd_drc_lock);
-> 	if (nfsd_drc_max_mem > nfsd_drc_mem_used)
-> 		total_avail = nfsd_drc_max_mem - nfsd_drc_mem_used;
-> 	else
-> 		/* We have handed out more space than we chose in
-> 		 * set_max_drc() to allow.  That isn't really a
-> 		 * problem as long as that doesn't make us think we
-> 		 * have lots more due to integer overflow.
-> 		 */
-> 		total_avail = 0;
-> 	avail = min((unsigned long)NFSD_MAX_MEM_PER_SESSION, total_avail);
-> 	/*
-> 	 * Never use more than a fraction of the remaining memory,
-> 	 * unless it's the only way to give this client a slot.
-> 	 * The chosen fraction is either 1/8 or 1/number of threads,
-> 	 * whichever is smaller.  This ensures there are adequate
-> 	 * slots to support multiple clients per thread.
-> 	 * Give the client one slot even if that would require
-> 	 * over-allocation--it is better than failure.
-> 	 */
-> 	scale_factor = max_t(unsigned int, 8, nn->nfsd_serv->sv_nrthreads);
-> 
-> 	avail = clamp_t(unsigned long, avail, slotsize,
-> 			total_avail/scale_factor);
-> 	num = min_t(int, num, avail / slotsize);
-> 	num = max_t(int, num, 1);
-> 
-> Lets rework it a bit...
-> 	if (nfsd_drc_max_mem > nfsd_drc_mem_used) {
-> 		total_avail = nfsd_drc_max_mem - nfsd_drc_mem_used;
-> 		avail = min(NFSD_MAX_MEM_PER_SESSION, total_avail);
-> 		avail = clamp(avail, n + sizeof(xxx), total_avail/8)
-> 	} else {
-> 		total_avail = 0;
-> 		avail = 0;
-> 		avail = clamp(0, n + sizeof(xxx), 0);
-> 	}
-> 
-> Neither of those clamp() are sane at all - should be clamp(val, lo, hi)
-> with 'lo <= hi' otherwise the result is dependant on the order of the
-> comparisons.
-> The compiler sees the second one and rightly bleats.
-> I can't even guess what the code is actually trying to calculate!
-> 
-> Maybe looking at where the code came from, or the current version might help.
+On Fri, Oct 10, 2025 at 3:08=E2=80=AFPM Joanne Koong <joannelkoong@gmail.co=
+m> wrote:
+>
+> Commit e26ee4efbc79 ("fuse: allocate ff->release_args only if release is
+> needed") skips allocating ff->release_args if the server does not
+> implement open. However in doing so, fuse_prepare_release() now skips
+> grabbing the reference on the inode, which makes it possible for an
+> inode to be evicted from the dcache while there are inflight readahead
+> requests. This causes a deadlock if the server triggers reclaim while
+> servicing the readahead request and reclaim attempts to evict the inode
+> of the file being read ahead. Since the folio is locked during
+> readahead, when reclaim evicts the fuse inode and fuse_evict_inode()
+> attempts to remove all folios associated with the inode from the page
+> cache (truncate_inode_pages_range()), reclaim will block forever waiting
+> for the lock since readahead cannot relinquish the lock because it is
+> itself blocked in reclaim:
+>
+> >>> stack_trace(1504735)
+>  folio_wait_bit_common (mm/filemap.c:1308:4)
+>  folio_lock (./include/linux/pagemap.h:1052:3)
+>  truncate_inode_pages_range (mm/truncate.c:336:10)
+>  fuse_evict_inode (fs/fuse/inode.c:161:2)
+>  evict (fs/inode.c:704:3)
+>  dentry_unlink_inode (fs/dcache.c:412:3)
+>  __dentry_kill (fs/dcache.c:615:3)
+>  shrink_kill (fs/dcache.c:1060:12)
+>  shrink_dentry_list (fs/dcache.c:1087:3)
+>  prune_dcache_sb (fs/dcache.c:1168:2)
+>  super_cache_scan (fs/super.c:221:10)
+>  do_shrink_slab (mm/shrinker.c:435:9)
+>  shrink_slab (mm/shrinker.c:626:10)
+>  shrink_node (mm/vmscan.c:5951:2)
+>  shrink_zones (mm/vmscan.c:6195:3)
+>  do_try_to_free_pages (mm/vmscan.c:6257:3)
+>  do_swap_page (mm/memory.c:4136:11)
+>  handle_pte_fault (mm/memory.c:5562:10)
+>  handle_mm_fault (mm/memory.c:5870:9)
+>  do_user_addr_fault (arch/x86/mm/fault.c:1338:10)
+>  handle_page_fault (arch/x86/mm/fault.c:1481:3)
+>  exc_page_fault (arch/x86/mm/fault.c:1539:2)
+>  asm_exc_page_fault+0x22/0x27
+>
+> Fix this deadlock by allocating ff->release_args and grabbing the
+> reference on the inode when preparing the file for release even if the
+> server does not implement open. The inode reference will be dropped when
+> the last reference on the fuse file is dropped (see fuse_file_put() ->
+> fuse_release_end()).
+>
+> Fixes: e26ee4efbc79 ("fuse: allocate ff->release_args only if release is =
+needed")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
+> Reported-by: Omar Sandoval <osandov@fb.com>
+> ---
+>  fs/fuse/file.c | 40 ++++++++++++++++++++++++++--------------
+>  1 file changed, 26 insertions(+), 14 deletions(-)
 
-The current upstream code is part of a new feature that is not
-appropriate to backport to LTS kernels. I consider that code out of
-play.
+Miklos, does this approach look okay to you?
 
-The compiler error showed up in 6.1.y with the recent minmax.h
-changes -- there have been no reported problems in any of the LTS
-kernels until now, including with 32-bit builds.
-
-The usual guidelines about regressions suggest that the most recent
-backports (ie, minmax.h) are the ones that should be removed or reworked
-to address the compile breakage. I don't think we should address this by
-writing special clean-ups to code that wasn't broken before the minmax.h
-changes. Cleaning that code up is more likely to introduce bugs than
-reverting the minmax.h changes.
-
-
-> It MIGHT be that the 'lo' of slotsize was an attempt to ensure that
-> the following 'avail / slotsize' was as least one.
-> Some software archaeology might show that the 'num = max(num, 1)' was added
-> because the code above didn't work.
-> In that case the clamp can be clamp(avail, 0, total_avail/scale_factor)
-> which is just min(avail, total_avail/scale_factor).
-> 
-> The person who rewrote it between 6.1 and 6.18 might now more.
-> 
-> 	David
-> 	
->>
->>
->> -------- Forwarded Message --------
->> Subject: Re: Compile Error fs/nfsd/nfs4state.o - clamp() low limit
->> slotsize greater than high limit total_avail/scale_factor
->> Date: Thu, 06 Nov 2025 07:29:25 -0500
->> From: Jeff Layton <jlayton@kernel.org>
->> To: Mike-SPC via Bugspray Bot <bugbot@kernel.org>, cel@kernel.org,
->> neilb@ownmail.net, trondmy@kernel.org, linux-nfs@vger.kernel.org,
->> anna@kernel.org, neilb@brown.name
->>
->> On Thu, 2025-11-06 at 11:30 +0000, Mike-SPC via Bugspray Bot wrote:
->>> Mike-SPC writes via Kernel.org Bugzilla:
->>>
->>> (In reply to Bugspray Bot from comment #5)  
->>>> Chuck Lever <cel@kernel.org> replies to comment #4:
->>>>
->>>> On 11/5/25 7:25 AM, Mike-SPC via Bugspray Bot wrote:  
->>>>> Mike-SPC writes via Kernel.org Bugzilla:
->>>>>   
->>>>>> Have you found a 6.1.y kernel for which the build doesn't fail?  
->>>>>
->>>>> Yes. Compiling Version 6.1.155 works without problems.
->>>>> Versions >= 6.1.156 aren't.  
->>>>
->>>> My analysis yesterday suggests that, because the nfs4state.c code hasn't
->>>> changed, it's probably something elsewhere that introduced this problem.
->>>> As we can't reproduce the issue, can you use "git bisect" between
->>>> v6.1.155 and v6.1.156 to find the culprit commit?
->>>>
->>>> (via https://msgid.link/ab235dbe-7949-4208-a21a-2cdd50347152@kernel.org)  
->>>
->>>
->>> Yes, your analysis is right (thanks for it).
->>> After some investigation, the issue appears to be caused by changes introduced in
->>> include/linux/minmax.h.
->>>
->>> I verified this by replacing minmax.h in 6.1.156 with the version from 6.1.155,
->>> and the kernel then compiles successfully.
->>>
->>> The relevant section in the 6.1.156 changelog (https://cdn.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.1.156) shows several modifications to minmax.h (notably around __clamp_once() and the use of
->>> BUILD_BUG_ON_MSG(statically_true(ulo > uhi), ...)), which seem to trigger a compile-time assertion when building NFSD.
->>>
->>> Replacing the updated header with the previous one resolves the issue, so this appears
->>> to be a regression introduced by the new clamp() logic.
->>>
->>> Could you please advise who is the right person or mailing list to report this issue to
->>> (minmax.h maintainers, kernel core, or stable tree)?
->>>   
->>
->> I'd let all 3 know, and I'd include the author of the patches that you
->> suspect are the problem. They'll probably want to revise the one that's
->> a problem.
->>
->> Cheers,
-> 
-
-
--- 
-Chuck Lever
+Thanks,
+Joanne
 
