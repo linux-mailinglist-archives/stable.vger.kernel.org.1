@@ -1,100 +1,74 @@
-Return-Path: <stable+bounces-192605-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192606-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9111EC3B1F9
-	for <lists+stable@lfdr.de>; Thu, 06 Nov 2025 14:14:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA0E5C3B25C
+	for <lists+stable@lfdr.de>; Thu, 06 Nov 2025 14:17:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C4785504AFC
-	for <lists+stable@lfdr.de>; Thu,  6 Nov 2025 13:06:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 06E5A1AA20C0
+	for <lists+stable@lfdr.de>; Thu,  6 Nov 2025 13:07:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A57733033A;
-	Thu,  6 Nov 2025 13:05:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DABA32D0E6;
+	Thu,  6 Nov 2025 13:05:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jzv8VfOt"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="pOXcvwb9"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B32CE2820AC;
-	Thu,  6 Nov 2025 13:05:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2C2632B98E;
+	Thu,  6 Nov 2025 13:05:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762434327; cv=none; b=bT4vB+HkhzmwuBseAh8bPQ67RXQ2EYP1sL/tXNoUjVUJMJzh7TCFY/g+7V391QR1X83ITTqnVe7HlW52mzYC7hs7XuGsAYL1l9IQ11Bl/BbQbjWRRfbX7t+e92PYTVYD35LA/HBPf+8ETVazdxeeklm1pkWlaLanP7o+0mu7Gyg=
+	t=1762434358; cv=none; b=t+rNVmpkcmQ28qvlGvDRhY0FU9x+XpGtKhznv5lV/N+v51xz8gtAiLpmqC8NOqD6QK4i/7AcYqq1GkdVE2Fh7X4seQfmycfOpowt5Fcehzy7A4RMoXwZdHzccvOBWvSXeO15aTka5UTG3NQvP8P5y0GBKLpOHgVJDPlG0Dbya7Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762434327; c=relaxed/simple;
-	bh=tyPnkBqS2IRKn0BX1hOVQKSWQFZ9GJ9UpVno1t1C2pM=;
+	s=arc-20240116; t=1762434358; c=relaxed/simple;
+	bh=M7NmYC/Iylm9myghHwqILim55SAUt9QrM+UZYk0eJlw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=toJ/rRBJ+n10U7zDGvSv3vBkkMSkxY+T338Y7BZWRK9vLiS9oyA6cXBXeVtQg8eyfO0GSciTo+aaGWOaR8qPO1DnAT/Nsi4TsCVGhowZVv6+BVoBff9acvPc12RycK/kPA196sgEHOxyOUJXvLAEuvEO8IO4EbkuHUgYcsWJ9qs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jzv8VfOt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7966C4CEF7;
-	Thu,  6 Nov 2025 13:05:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762434327;
-	bh=tyPnkBqS2IRKn0BX1hOVQKSWQFZ9GJ9UpVno1t1C2pM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=jzv8VfOtPdu1QaOc79gAmHKCNRM89n8eIfaAInyUzKUTTC4CDL/Ksag+0AptmdbOV
-	 DC99z6Z+xZsaMQgIgzIJq0Zb3lqdv9X4EWGcN7dCSpfei0WtgJnRELjPbmvqLDmBLD
-	 VRzd/BGOXItW/JukwgchgPbH5E+poy0YNT0A0bi1dPeFtHbVapGZS6bmFwMP1m/FY3
-	 OCrw0JHHQLx66mrEh1TsHiYlKC5axtEMEDJfraKP91RIxutIsP0nNPYlHNzRtOSDO3
-	 qDa85IO8JOEVM49mkT/utqkKZVwlyBSSozvOD/otR6j+rh8gfc6UjPbXX8D3h81Ons
-	 ZW9zLZZ3GL8/w==
-Date: Thu, 6 Nov 2025 13:05:23 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Hans de Goede <hansg@kernel.org>
-Cc: Andy Shevchenko <andy@kernel.org>, linux-spi@vger.kernel.org,
-	linux-acpi@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] spi: Try to get ACPI GPIO IRQ earlier
-Message-ID: <aQydE1pSmCcDwCPO@finisterre.sirena.org.uk>
-References: <20251102190921.30068-1-hansg@kernel.org>
- <176242886085.2357454.1138821772017853306.b4-ty@kernel.org>
- <935e8578-1c25-4015-bd6e-a41cd0f07c81@kernel.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=PZir/wOf2V/dtQVRJAs0UMPNmNSHGLpGxX6cY223L8o2r7zmNkQPMA6sfzSbaynJNzZFNOFBwuL6IwoQ9NSF0PYNO0SqdDqMp7T30oG9i8Eez7Tjzs4a4ogvslSHeR+qv2R5vDWcav8FVuKDSfNHg2Z64ryG9gVlRavZhuSPMnU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=pOXcvwb9; arc=none smtp.client-ip=198.137.202.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=M7NmYC/Iylm9myghHwqILim55SAUt9QrM+UZYk0eJlw=; b=pOXcvwb9uPUOEK4PkXs/ygjGP7
+	WCT9hXIzdjScCxMIF5mCrJcmFMn3V2N5x0VtE3il8sMcySrbzxz8PMuPKj0BYFneamVY0oUMGknjm
+	gjpBNGcrIsyxsq42RP7KNG/loMc9vmMTyoOZMIrDk1Omladsm8ry3/9OewCzBFPBawQuk2ViFHB0C
+	Kk9/bNhae0WEf8PoTuVjiKMYaUM99KuOrvQbfb9nluWF/BWaptUkww0AJ11KE79SnT8RgXrPH0YwF
+	6gEfDb0jfpjjvacEV//3OsmBTKp114g9ch2dlsGHiF+E5wl+o0MGZ94e3b9wPES+4M1tMQy+yp1eB
+	aa58PhZg==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vGzgT-0000000FX7l-3irk;
+	Thu, 06 Nov 2025 13:05:49 +0000
+Date: Thu, 6 Nov 2025 05:05:49 -0800
+From: Christoph Hellwig <hch@infradead.org>
+To: Chuck Lever <cel@kernel.org>
+Cc: NeilBrown <neil@brown.name>, Jeff Layton <jlayton@kernel.org>,
+	Olga Kornievskaia <okorniev@redhat.com>,
+	Dai Ngo <dai.ngo@oracle.com>, Tom Talpey <tom@talpey.com>,
+	linux-nfs@vger.kernel.org, Chuck Lever <chuck.lever@oracle.com>,
+	Mike Snitzer <snitzer@kernel.org>, stable@vger.kernel.org
+Subject: Re: [PATCH v10 2/5] NFSD: Make FILE_SYNC WRITEs comply with spec
+Message-ID: <aQydLQXd8VaiIp3Z@infradead.org>
+References: <20251105192806.77093-1-cel@kernel.org>
+ <20251105192806.77093-3-cel@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="FPjVcJTpgg+5Ndqb"
-Content-Disposition: inline
-In-Reply-To: <935e8578-1c25-4015-bd6e-a41cd0f07c81@kernel.org>
-X-Cookie: If in doubt, mumble.
-
-
---FPjVcJTpgg+5Ndqb
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <20251105192806.77093-3-cel@kernel.org>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 
-On Thu, Nov 06, 2025 at 01:23:21PM +0100, Hans de Goede wrote:
+Looks good:
 
-> I believe that Andy's Reviewed-by was intended for a v2 with extending
-> the comment with an extra paragraph with something like:
+Reviewed-by: Christoph Hellwig <hch@lst.de>
 
-Possibly, but that got sent well after I'd got things into CI anyway and
-I didn't see it till after the CI had run.
-
-> Since you've already merged this now l'll prepare a follow-up patch
-> to extend the comment with that info.
-
-Sure.
-
---FPjVcJTpgg+5Ndqb
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmkMnQ0ACgkQJNaLcl1U
-h9DUwQf9EvJuDvVEn1XNm633osZNAi4GjExAe/IwGNcXMzkbFi45RMWmr/SJrKvI
-mBxkUcPrBK15kI848zQcPPgXO3j34jSS4ne/6rF92EBk0tzEw5YZQenf2DfTde6I
-DzNysK3Hohje8jcd16WpJ4SDcRSWGFb4UudPe31G3e2t41b6HcMIXdeklwIk18Ga
-R1tiXBo8hOW+qkKXUZ5MRkXcX+LZnk/Ofh1HA10Xxq0o0qXnm3VzCN8pOJpZ7HQt
-Mjxv2cIlLuYnHH/qGIkXfuLPySm6s6uSOiJVELK2x1U5Ls6mKajNeixP1H+kUlek
-gzAQruJfutn62isNb/tGZPp9Lu5RFQ==
-=uVud
------END PGP SIGNATURE-----
-
---FPjVcJTpgg+5Ndqb--
 
