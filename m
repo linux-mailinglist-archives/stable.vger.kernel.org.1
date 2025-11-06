@@ -1,154 +1,129 @@
-Return-Path: <stable+bounces-192627-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192628-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id C73CBC3C04B
-	for <lists+stable@lfdr.de>; Thu, 06 Nov 2025 16:23:27 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5B80C3C355
+	for <lists+stable@lfdr.de>; Thu, 06 Nov 2025 16:59:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id A700F350CB9
-	for <lists+stable@lfdr.de>; Thu,  6 Nov 2025 15:23:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F2D923B4FAF
+	for <lists+stable@lfdr.de>; Thu,  6 Nov 2025 15:56:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3982326C3BE;
-	Thu,  6 Nov 2025 15:23:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E204833C503;
+	Thu,  6 Nov 2025 15:56:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fjgpfyVn"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="d+g5ukqv"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 349781EEA5D;
-	Thu,  6 Nov 2025 15:23:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CF2025B1C7;
+	Thu,  6 Nov 2025 15:56:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762442597; cv=none; b=mdAuTuE6pRpYtr+9rhFcNQ2ziLWqlX6GPJcvrEsQvPcyPE3ArVB9VSL2glbmzGOgzgROsOX/lUtbDBgSNylebO/dzCA7Fg41v3w3pkjawYG3M5UDJ92v4pGAGcz08/aS5tTKzu3b8yBwYHFMe1JmVhz+gl9Z3tzTPN5v0dzGf+E=
+	t=1762444598; cv=none; b=dBvYAIl1E+ihJq3EjFOeRIZr9uIsxlptR2N0MNcSg3bSUmlpIjVa8RuRxliIFjEnKT+VYn91azNrLrhZDMBzveXHRWCPNuLq/wepto4s607yqSauLZOT/86e70Cl9Il1rreLVwY/eUoIYlWg4Oi3jW7gufpIVdP2TIYZoVY/Hug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762442597; c=relaxed/simple;
-	bh=8rLgUPOR8E20yMDM0k3KiaiNTkBo2G8LCQ43Qy2tGr0=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=BwCAyAcsG8I0EZYO2MDVLg895dvHcnqwplMcpxUbl1yft3Jyw3ZRdxMBo6ey4ahbk7pv+QlcFM7VrxIpAnoLc7gEmf5pZf9cOCQyuvCgy86SSywgc+/KDDfT1xjFW9k3O7qQCFIK+8WW2rADH8I5MMSlqnKLs/y3FJFQT61cwi8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fjgpfyVn; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1762442595; x=1793978595;
-  h=message-id:subject:from:to:cc:date:in-reply-to:
-   references:mime-version;
-  bh=8rLgUPOR8E20yMDM0k3KiaiNTkBo2G8LCQ43Qy2tGr0=;
-  b=fjgpfyVnH58Qn+mr4e7R54K85g/UEW1sfSwo2Y2ghnaQiWgm7tTOTAG6
-   blHDOOgsuXFto66/Vy2qZz0/lY9KNVbATUI+GVTSv0w56kTo8nd/nZFq1
-   OcqJepw/BPbxKUZBNPX0h7PyDS9jbhyESlJosqnmHfE/QYtGhJl9Tn9UT
-   lxjjOApFgc4dYCCxEgf2iGk+DcdfTHWjgW4vfBp8bRpmxiFEdmKv4xY+N
-   t6THs+HrT7YIgdjFRHJ6pJonwmNqWHqtXQd6DNaEpxG3BATZE5lTHVVvR
-   OlUtn84B91wNo2aCunJl8yaLc4r5sqr9lzl2H7UGP9opsBPlCAOxaW3LB
-   g==;
-X-CSE-ConnectionGUID: P11XMnkRTfOQqs2J6FK1yg==
-X-CSE-MsgGUID: 3zk2MINYQVSkeLR8NCnykQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="68419838"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
-   d="scan'208,223";a="68419838"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Nov 2025 07:23:14 -0800
-X-CSE-ConnectionGUID: GVB1ZkyuTUSZtamOqDBi4w==
-X-CSE-MsgGUID: tivEWLwMRBWUdH7AlB1K/Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,284,1754982000"; 
-   d="scan'208,223";a="187941968"
-Received: from spandruv-desk2.jf.intel.com ([10.88.27.176])
-  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Nov 2025 07:23:15 -0800
-Message-ID: <db92b8a310d88214e2045a73d3da6d0ffe8606f7.camel@linux.intel.com>
-Subject: Re: [REGRESSION] Intel Turbo Boost stuck disabled on some Clevo
- machines (was: [PATCH] cpufreq: intel_pstate: Unchecked MSR aceess in
- legacy mode)
-From: srinivas pandruvada <srinivas.pandruvada@linux.intel.com>
-To: Aaron Rainbolt <arainbolt@kfocus.org>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, viresh.kumar@linaro.org, 
-	linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, 	mmikowski@kfocus.org
-Date: Thu, 06 Nov 2025 07:23:14 -0800
-In-Reply-To: <20250910153329.10dcef9d@kf-m2g5>
-References: <20250429210711.255185-1-srinivas.pandruvada@linux.intel.com>
-		<CAJZ5v0h99RFF26qAnJf07LS0t-6ATm9c2zrQVzdi96x3FAPXQg@mail.gmail.com>
-		<20250910113650.54eafc2b@kf-m2g5>
-		<dda1d8d23407623c99e2f22e60ada1872bca98fe.camel@linux.intel.com>
-	 <20250910153329.10dcef9d@kf-m2g5>
-Content-Type: multipart/mixed; boundary="=-v2j8C3jhV+V4YO2nDGiS"
-User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
+	s=arc-20240116; t=1762444598; c=relaxed/simple;
+	bh=ZIrAMRpKTwPwwGigH3+detINYuwsZkTlnKbiEXElk14=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=s5WIeoRzgl/C8pFplvWLZTVMJcE7Drt8oN5hcIC+0plzgjsHC1zYnRE3jH8/ywWynNTsZUZro9IgVmd+vahhZxR5C/LGjpOMMSiVLhvqogFSa4jGH6e1Cjh1mDe1tDci99VsLtPzNV3ARQ832IvaMUbUVUunj4S7Eew9rjHNa0Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=d+g5ukqv; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: from smtpclient.apple (d172-218-74-200.bchsia.telus.net [172.218.74.200])
+	by linux.microsoft.com (Postfix) with ESMTPSA id BFADA211FEB9;
+	Thu,  6 Nov 2025 07:56:35 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com BFADA211FEB9
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1762444596;
+	bh=Oz+gDVJqirbWPHrnV87yG/Sh6p36IVbnHT4ZPTHOSk8=;
+	h=Subject:From:In-Reply-To:Date:Cc:References:To:From;
+	b=d+g5ukqvR0RUqZJHihJNc2BRM5Vez0835DmJe36I0/SzdnjKXqpFt46HHoAX33d6t
+	 SU4yJUmSp+ht/tcbP6v+d6h9cKoI/wGMU/KySRS1Gjw+0J2re7ddp8NhvVHU5A7z3l
+	 Xr/n5Jb4gdMG2VFYrx8jNW0FGlOZVPjF5lL/0xzk=
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-
---=-v2j8C3jhV+V4YO2nDGiS
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
+Subject: Re: [PATCH] scsi: target: tcm_loop: fix segfault in
+ tcm_loop_tpg_address_show()
+From: Allen Pais <apais@linux.microsoft.com>
+In-Reply-To: <1762370746-6304-1-git-send-email-hamzamahfooz@linux.microsoft.com>
+Date: Thu, 6 Nov 2025 07:56:24 -0800
+Cc: linux-kernel@vger.kernel.org,
+ "Martin K. Petersen" <martin.petersen@oracle.com>,
+ Guixin Liu <kanie@linux.alibaba.com>,
+ Nicholas Bellinger <nab@linux-iscsi.org>,
+ Sheng Yang <sheng@yasker.org>,
+ linux-scsi@vger.kernel.org,
+ target-devel@vger.kernel.org,
+ stable@vger.kernel.org
 Content-Transfer-Encoding: quoted-printable
+Message-Id: <C4A5B08B-27E4-4ACF-96E4-9351F0BFF320@linux.microsoft.com>
+References: <1762370746-6304-1-git-send-email-hamzamahfooz@linux.microsoft.com>
+To: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
+X-Mailer: Apple Mail (2.3826.700.81)
 
-Hi Aaron,
 
-On Wed, 2025-09-10 at 15:33 -0500, Aaron Rainbolt wrote:
-> On Wed, 10 Sep 2025 10:15:00 -0700
-> srinivas pandruvada <srinivas.pandruvada@linux.intel.com> wrote:
+
+> On Nov 5, 2025, at 11:25=E2=80=AFAM, Hamza Mahfooz =
+<hamzamahfooz@linux.microsoft.com> wrote:
 >=20
-> > On Wed, 2025-09-10 at 11:36 -0500, Aaron Rainbolt wrote:
-> > > On Wed, 30 Apr 2025 16:29:09 +0200
-> > > "Rafael J. Wysocki" <rafael@kernel.org> wrote:
-> > > =C2=A0=20
-> > > > On Tue, Apr 29, 2025 at 11:07=E2=80=AFPM Srinivas Pandruvada
-> > > > <srinivas.pandruvada@linux.intel.com> wrote:=C2=A0=20
-> > > > >=20
-> > > > > When turbo mode is unavailable on a Skylake-X system,
-> > > > > executing
-> > > > > the
-> > > > > command:
-> > > > > "echo 1 > /sys/devices/system/cpu/intel_pstate/no_turbo"
-> > > > > results in an unchecked MSR access error: WRMSR to 0x199
-> > > > > (attempted to write 0x0000000100001300).
-Please try the attached patch, if this address this issue.
+> If the allocation of tl_hba->sh fails in tcm_loop_driver_probe() and =
+we
+> attempt to dereference it in tcm_loop_tpg_address_show() we will get a
+> segfault, see below for an example. So, check tl_hba->sh before
+> dereferencing it.
+>=20
+> Unable to allocate struct scsi_host
+> BUG: kernel NULL pointer dereference, address: 0000000000000194
+> #PF: supervisor read access in kernel mode
+> #PF: error_code(0x0000) - not-present page
+> PGD 0 P4D 0
+> Oops: 0000 [#1] PREEMPT SMP NOPTI
+> CPU: 1 PID: 8356 Comm: tokio-runtime-w Not tainted 6.6.104.2-4.azl3 #1
+> Hardware name: Microsoft Corporation Virtual Machine/Virtual Machine, =
+BIOS Hyper-V UEFI Release v4.1 09/28/2024
+> RIP: 0010:tcm_loop_tpg_address_show+0x2e/0x50 [tcm_loop]
+> ...
+> Call Trace:
+>  <TASK>
+>  configfs_read_iter+0x12d/0x1d0 [configfs]
+>  vfs_read+0x1b5/0x300
+>  ksys_read+0x6f/0xf0
+> ...
+>=20
+> Cc: stable@vger.kernel.org
+> Fixes: 2628b352c3d4 ("tcm_loop: Show address of tpg in configfs")
+> Signed-off-by: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
 
-Thanks,
-Srinivas
+Reviewed-by: Allen Pais <apais@linux.microsoft.com =
+<mailto:apais@linux.microsoft.com>>
 
---=-v2j8C3jhV+V4YO2nDGiS
-Content-Disposition: attachment;
-	filename*0=0001-cpufreq-intel_pstate-Reevaluate-IDA-presence-on-no_t.pat;
-	filename*1=ch
-Content-Type: text/x-patch;
-	name="0001-cpufreq-intel_pstate-Reevaluate-IDA-presence-on-no_t.patch";
-	charset="UTF-8"
-Content-Transfer-Encoding: base64
+> ---
+> drivers/target/loopback/tcm_loop.c | 3 +++
+> 1 file changed, 3 insertions(+)
+>=20
+> diff --git a/drivers/target/loopback/tcm_loop.c =
+b/drivers/target/loopback/tcm_loop.c
+> index c7b7da629741..01a8e349dc4d 100644
+> --- a/drivers/target/loopback/tcm_loop.c
+> +++ b/drivers/target/loopback/tcm_loop.c
+> @@ -894,6 +894,9 @@ static ssize_t tcm_loop_tpg_address_show(struct =
+config_item *item,
+> struct tcm_loop_tpg, tl_se_tpg);
+> struct tcm_loop_hba *tl_hba =3D tl_tpg->tl_hba;
+>=20
+> + if (!tl_hba->sh)
+> + return -ENODEV;
+> +
+> return snprintf(page, PAGE_SIZE, "%d:0:%d\n",
+> tl_hba->sh->host_no, tl_tpg->tl_tpgt);
+> }
+> --=20
+> 2.49.0
 
-RnJvbSA0MDVkMjdlODcxZjdiYzg1YTc4NmY4NDg3N2EzNWRhNTRjODEzYjM5IE1vbiBTZXAgMTcg
-MDA6MDA6MDAgMjAwMQpGcm9tOiBTcmluaXZhcyBQYW5kcnV2YWRhIDxzcmluaXZhcy5wYW5kcnV2
-YWRhQGxpbnV4LmludGVsLmNvbT4KRGF0ZTogV2VkLCA1IE5vdiAyMDI1IDA5OjU3OjAzIC0wODAw
-ClN1YmplY3Q6IFtQQVRDSF0gY3B1ZnJlcTogaW50ZWxfcHN0YXRlOiBSZWV2YWx1YXRlIElEQSBw
-cmVzZW5jZSBvbiBub190dXJibwogYXR0cmlidXRlIGNoYW5nZQoKSWYgaGFyZHdhcmUgZGlzYWJs
-ZWQgSURBIChJbnRlbCBEeW5hbWljIEFjY2VsZXJhdGlvbiB0ZWNobm9sb2d5KSBmZWF0dXJlCmJl
-Zm9yZSBPUyBib290LCB0dXJibyBtb2RlIHN1cHBvcnQgd2lsbCBiZSBkaXNhYmxlZCBwZXJtYW5l
-bnRseS4gSW4gdGhpcwpjYXNlIENQVUlELjA2SDogRUFYWzFdIHJlcG9ydHMgMCBhbmQgYXR0cmli
-dXRlCiIvc3lzL2RldmljZXMvc3lzdGVtL2NwdS9pbnRlbF9wc3RhdGUvbm9fdHVyYm8iIHdpbGwg
-c2hvdyAiMSIgYW5kIHN0YXR1cwpjYW4ndCBiZSBjaGFuZ2VkIHRvICIwIi4KCldoZW4gbm9fdHVy
-Ym8gaXMgd3JpdHRlbiB3aXRoIDAsIGluIHRoaXMgY2FzZSBldmFsdWF0ZSBDUFVJRC4wNkg6IEVB
-WFsxXQphZ2Fpbi4gSWYgdGhlIGZlYXR1cmUgc3RhdHVzIGlzIGNoYW5nZWQgdG8gMSBwb3N0IE9T
-IGJvb3QgdGhlbiBhbGxvdyB0bwplbmFibGUgdHVyYm8gbW9kZS4KClNpZ25lZC1vZmYtYnk6IFNy
-aW5pdmFzIFBhbmRydXZhZGEgPHNyaW5pdmFzLnBhbmRydXZhZGFAbGludXguaW50ZWwuY29tPgot
-LS0KIGRyaXZlcnMvY3B1ZnJlcS9pbnRlbF9wc3RhdGUuYyB8IDcgKysrKysrLQogMSBmaWxlIGNo
-YW5nZWQsIDYgaW5zZXJ0aW9ucygrKSwgMSBkZWxldGlvbigtKQoKZGlmZiAtLWdpdCBhL2RyaXZl
-cnMvY3B1ZnJlcS9pbnRlbF9wc3RhdGUuYyBiL2RyaXZlcnMvY3B1ZnJlcS9pbnRlbF9wc3RhdGUu
-YwppbmRleCA0M2U4NDdlOWY3NDEuLjBlYzQ1YTYxMGI0NSAxMDA2NDQKLS0tIGEvZHJpdmVycy9j
-cHVmcmVxL2ludGVsX3BzdGF0ZS5jCisrKyBiL2RyaXZlcnMvY3B1ZnJlcS9pbnRlbF9wc3RhdGUu
-YwpAQCAtNTk2LDEwICs1OTYsMTUgQEAgc3RhdGljIHZvaWQgaW50ZWxfcHN0YXRlX2h5YnJpZF9o
-d3BfYWRqdXN0KHN0cnVjdCBjcHVkYXRhICpjcHUpCiAKIHN0YXRpYyBib29sIHR1cmJvX2lzX2Rp
-c2FibGVkKHZvaWQpCiB7CisJdW5zaWduZWQgaW50IGVheCwgZWJ4LCBlY3gsIGVkeDsKIAl1NjQg
-bWlzY19lbjsKIAotCWlmICghY3B1X2ZlYXR1cmVfZW5hYmxlZChYODZfRkVBVFVSRV9JREEpKQor
-CWVheCA9IDA7CisJY3B1aWQoNiwgJmVheCwgJmVieCwgJmVjeCwgJmVkeCk7CisJaWYgKCEoZWF4
-ICYgQklUKDEpKSkgeworCQlwcl9pbmZvKCJUdXJibyBpcyBkaXNhYmxlZFxuIik7CiAJCXJldHVy
-biB0cnVlOworCX0KIAogCXJkbXNybChNU1JfSUEzMl9NSVNDX0VOQUJMRSwgbWlzY19lbik7CiAK
-LS0gCjIuNDMuMAoK
-
-
---=-v2j8C3jhV+V4YO2nDGiS--
 
