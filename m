@@ -1,118 +1,96 @@
-Return-Path: <stable+bounces-192648-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192649-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0923FC3D70C
-	for <lists+stable@lfdr.de>; Thu, 06 Nov 2025 21:59:55 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F154EC3D8A7
+	for <lists+stable@lfdr.de>; Thu, 06 Nov 2025 23:07:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 95BF818900BB
-	for <lists+stable@lfdr.de>; Thu,  6 Nov 2025 21:00:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F3E221884D3F
+	for <lists+stable@lfdr.de>; Thu,  6 Nov 2025 22:08:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23AF93016FC;
-	Thu,  6 Nov 2025 20:59:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58666309F18;
+	Thu,  6 Nov 2025 22:07:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=rosa.ru header.i=@rosa.ru header.b="a8gVwRda"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jJ9YhUyH"
 X-Original-To: stable@vger.kernel.org
-Received: from forward100b.mail.yandex.net (forward100b.mail.yandex.net [178.154.239.147])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD1B3301492;
-	Thu,  6 Nov 2025 20:59:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.147
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D6752773FE;
+	Thu,  6 Nov 2025 22:07:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762462787; cv=none; b=MyM4OgL7ixWQb7sNY28iykdWDtG+MNJPx8jHjq64Alu8Heu9o4TkBTyMC2zLMXu5f/CLz4uNgzZXoIFigQQrbUXnHZXdVuzMtcK1SU2+GLQ3QaTZxvaDw9fafcipwVS4U/GmI5M5dLlQK8Acc50d061lkQN7/oj6meY19r86hYQ=
+	t=1762466867; cv=none; b=EVHbzpeC9Pe9Jv6lzQMfDF63giA1SeNyPU1BthPQTngN29kiWnx3gefOZVHR/9s/3xruQLM4xL3bsrlM+PuW5FnZxQDMVFGW+0P4zOZut1W0B1MK0N5ImkdIy1EzWjI7EsFHxIheblQBMkMHONOJumQi59PbT07qt9tx13q6ExI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762462787; c=relaxed/simple;
-	bh=IC0x0oZUh4X2mLDEyPdhQd0SMBfCZdh7lBBnf0a64+0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XC9kWsY4HgeWgeDIli0D4QnYylKxFE9bUvraDVrbxIqFhZl4utVhaKpE4oRz8WNdNojL6d7z5SgShWNpDNPIDkLRtERphVpA6+XFIfKbvzSjTZcho31DhwJ40172ipRSAz/PeUiNcDwBqe1FmEw+FyBXITiYJDXzt2r4Qwrs+y4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=rosa.ru; spf=pass smtp.mailfrom=rosa.ru; dkim=pass (1024-bit key) header.d=rosa.ru header.i=@rosa.ru header.b=a8gVwRda; arc=none smtp.client-ip=178.154.239.147
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=rosa.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rosa.ru
-Received: from mail-nwsmtp-smtp-production-main-89.sas.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-89.sas.yp-c.yandex.net [IPv6:2a02:6b8:c08:ec27:0:640:5ac1:0])
-	by forward100b.mail.yandex.net (Yandex) with ESMTPS id 7738D806DA;
-	Thu, 06 Nov 2025 23:59:32 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-89.sas.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id SxtU1pGLB8c0-00FU0989;
-	Thu, 06 Nov 2025 23:59:31 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rosa.ru; s=mail;
-	t=1762462771; bh=I+5fGidXHttPZIAH5EDKfTztWLspei5KA1OZ0w7FGW0=;
-	h=Message-ID:Date:Cc:Subject:To:From;
-	b=a8gVwRdaYw2G7dQAosh0BHR1bg3IcXH6JpVIzYthGWR12rL7v86A2EPtRFm0VkSt0
-	 OQLoKub+R9qK7FmQxVzPwpPdAjIxKTCWlssGbVpVoDflFtnH54kyZCOUD59AlVqvYs
-	 ELs0u5fSgC7nFXcroRBVQX5x4Y5sSey3x9SuCnH8=
-Authentication-Results: mail-nwsmtp-smtp-production-main-89.sas.yp-c.yandex.net; dkim=pass header.i=@rosa.ru
-From: Alexei Safin <a.safin@rosa.ru>
-To: Alexei Starovoitov <ast@kernel.org>
-Cc: Alexei Safin <a.safin@rosa.ru>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	John Fastabend <john.fastabend@gmail.com>,
-	KP Singh <kpsingh@kernel.org>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Hao Luo <haoluo@google.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Yafang Shao <laoar.shao@gmail.com>,
-	bpf@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	lvc-patches@linuxtesting.org,
-	stable@vger.kernel.org
-Subject: [PATCH] bpf: hashtab: fix 32-bit overflow in memory usage calculation
-Date: Thu,  6 Nov 2025 23:58:44 +0300
-Message-ID: <20251106205852.45511-1-a.safin@rosa.ru>
-X-Mailer: git-send-email 2.50.1
+	s=arc-20240116; t=1762466867; c=relaxed/simple;
+	bh=gRPsRjzM6vLUG6pr47XDgUugAM8FFr90lWaQXYl15PE=;
+	h=Date:Message-ID:From:To:Cc:Subject; b=UpIPEUTUIeHP4c4VtExfe8O5R8cCaN0R6olyX4oU+ZwzMpptW4X/DlAElIJg0zmHzfInfAG2I9qSyOBxAtlmNcjmIjTZEdhC5npov7xIqXXp1bTjdH3vPcZtlCOsMyOQ00cY4dymTfpDCLs8adA663ljHKvCY1fzzSjoyAVs6II=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jJ9YhUyH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75275C4CEF7;
+	Thu,  6 Nov 2025 22:07:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762466866;
+	bh=gRPsRjzM6vLUG6pr47XDgUugAM8FFr90lWaQXYl15PE=;
+	h=Date:From:To:Cc:Subject:From;
+	b=jJ9YhUyHowqwxIsRwvnciX/DGVLhHYPtX1eQ4G6f5olzUr3XqV8EyxJoH+yUv8cHv
+	 N5e210zunKliB7anu7wiH/kB7bYqxuvMQEd8XVfHbbidkGz5L24fUY4a1obJKFfXNq
+	 P6MscJKe2gbi/DpLNZ+qrFx43jNgiSZuZNS7sCCxsZj6Rlgtq6sPp38F4mjkt1A/04
+	 UqBvDSDaz3Y3a9d4P8D9jI5kd3k6OJCnT0dA9/DVFxHcpwBRcF7rK+YTp2IB6m20Uu
+	 IBKatSGf6tODyCico+cktXBijptqJeUXx03BMx3bdUm4NgKcAvWfiVsCo+1xagupjv
+	 vpivCAm797xgw==
+Date: Thu, 06 Nov 2025 12:07:45 -1000
+Message-ID: <2016aece61b4da7ad86c6eca2dbcfd16@kernel.org>
+From: Tejun Heo <tj@kernel.org>
+To: Johannes Weiner <hannes@cmpxchg.org>, Michal Koutný <mkoutny@suse.com>
+Cc: cgroups@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: [PATCH cgroup/for-6.18-fixes] cgroup: Skip showing PID 0 in cgroup.procs and cgroup.threads
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-The intermediate product value_size * num_possible_cpus() is evaluated
-in 32-bit arithmetic and only then promoted to 64 bits. On systems with
-large value_size and many possible CPUs this can overflow and lead to
-an underestimated memory usage.
+css_task_iter_next() pins and returns a task, but the task can do whatever
+between that and cgroup_procs_show() being called, including dying and
+losing its PID. When that happens, task_pid_vnr() returns 0.
 
-Cast value_size to u64 before multiplying.
+d245698d727a ("cgroup: Defer task cgroup unlink until after the task is
+done switching out") makes this more likely as tasks now stay iterable with
+css_task_iter_next() until the last schedule is complete, which can be
+after the task has lost its PID.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+Showing "0" in cgroup.procs or cgroup.threads is confusing and can lead to
+surprising outcomes. For example, if a user tries to kill PID 0, it kills
+all processes in the current process group.
 
-Fixes: 304849a27b34 ("bpf: hashtab memory usage")
+Skip entries with PID 0 by returning SEQ_SKIP.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Alexei Safin <a.safin@rosa.ru>
+Signed-off-by: Tejun Heo <tj@kernel.org>
 ---
- kernel/bpf/hashtab.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ kernel/cgroup/cgroup.c |   11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/kernel/bpf/hashtab.c b/kernel/bpf/hashtab.c
-index 570e2f723144..7ad6b5137ba1 100644
---- a/kernel/bpf/hashtab.c
-+++ b/kernel/bpf/hashtab.c
-@@ -2269,7 +2269,7 @@ static u64 htab_map_mem_usage(const struct bpf_map *map)
- 		usage += htab->elem_size * num_entries;
- 
- 		if (percpu)
--			usage += value_size * num_possible_cpus() * num_entries;
-+			usage += (u64)value_size * num_possible_cpus() * num_entries;
- 		else if (!lru)
- 			usage += sizeof(struct htab_elem *) * num_possible_cpus();
- 	} else {
-@@ -2281,7 +2281,7 @@ static u64 htab_map_mem_usage(const struct bpf_map *map)
- 		usage += (htab->elem_size + LLIST_NODE_SZ) * num_entries;
- 		if (percpu) {
- 			usage += (LLIST_NODE_SZ + sizeof(void *)) * num_entries;
--			usage += value_size * num_possible_cpus() * num_entries;
-+			usage += (u64)value_size * num_possible_cpus() * num_entries;
- 		}
- 	}
- 	return usage;
--- 
-2.50.1 (Apple Git-155)
+--- a/kernel/cgroup/cgroup.c
++++ b/kernel/cgroup/cgroup.c
+@@ -5287,6 +5287,17 @@ static void *cgroup_procs_start(struct s
 
+ static int cgroup_procs_show(struct seq_file *s, void *v)
+ {
++	pid_t pid = task_pid_vnr(v);
++
++	/*
++	 * css_task_iter_next() could have visited a task which has already lost
++	 * its PID but is not dead yet or the task could have been unhashed
++	 * since css_task_iter_next(). In such cases, $pid would be 0 here.
++	 * Don't confuse userspace with it.
++	 */
++	if (unlikely(!pid))
++		return SEQ_SKIP;
++
+ 	seq_printf(s, "%d\n", task_pid_vnr(v));
+ 	return 0;
+ }
 
