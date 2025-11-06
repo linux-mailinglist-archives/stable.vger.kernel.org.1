@@ -1,188 +1,149 @@
-Return-Path: <stable+bounces-192597-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192598-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60518C3A611
-	for <lists+stable@lfdr.de>; Thu, 06 Nov 2025 11:53:11 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 836D6C3A883
+	for <lists+stable@lfdr.de>; Thu, 06 Nov 2025 12:23:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 593394FF03E
-	for <lists+stable@lfdr.de>; Thu,  6 Nov 2025 10:50:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 55CA2460498
+	for <lists+stable@lfdr.de>; Thu,  6 Nov 2025 11:17:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EC512F0C66;
-	Thu,  6 Nov 2025 10:50:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 540EA30E831;
+	Thu,  6 Nov 2025 11:16:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="p9qGzcI1"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pNIBL3u3"
 X-Original-To: stable@vger.kernel.org
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A0B42E8B7D
-	for <stable@vger.kernel.org>; Thu,  6 Nov 2025 10:50:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08AFB30F805;
+	Thu,  6 Nov 2025 11:16:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762426209; cv=none; b=qcT0p5tHbMIqBqROlDm8KZP+ODCieeybj26HTm+sh6IhnhBz0oY/GOD5+AfWLPa4deN7oTZDTEj2Hvv/fC6k6yqIv0melotJf1Xd7EjXvSyUjJbNw+wNuPvxjc+f+KnyflMib7FCWlsCuvHV6TgMkJTimtGf15RHUOzmHt/hahs=
+	t=1762427803; cv=none; b=aPci45kCM/Ojdg97ECSHYk7Q3gkkpB9fwhqZ/ZLMlZuQh6C5ZjLCn/NF6ezm0NMoIdGOomllZiISuL6ZAaG1QtU6EQqSV6bxT13xyESXRnysLIARoJkXkt9pJiXTfDEx+RKDnifRfT2UiIq/yMK9uu0d9oLJ5ebVVc5ewLY9Cb4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762426209; c=relaxed/simple;
-	bh=bMpmDPexMnRmoRfbcwDB/V8xNbFX+SFweSneoAFWRbM=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=GJvbLWhqdmbNQPMoBTR1Tuhl2Xx4OHl/Fo4IHYfxKoAmx3kcj2sl5xtcgwVoR5Z7ECpzNis9E41MiYSILNWsWbPTyb8KQP7iYrUVwcRlA+or0BYHc7LYqCX0iqFBwMwisJoISLj/cl01uESGvqpUiRmpekLSw13r+1DUyVFWtKg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=p9qGzcI1; arc=none smtp.client-ip=185.171.202.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id DA87BC0FA85;
-	Thu,  6 Nov 2025 10:49:44 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id E99E76068C;
-	Thu,  6 Nov 2025 10:50:05 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 16ACD11850847;
-	Thu,  6 Nov 2025 11:50:02 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1762426204; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=BCZNjXI9xyk576AAxj2NJhhOCZr9Ja0z36kOvr2HSIQ=;
-	b=p9qGzcI1jdYIGUrbwEudYHO9LS2wAc6nDyHbBu7v8HJdWW4zEZeNvd5eKRwIppQCy0+/pq
-	GfjAdqEMo+vpNKKzbw811p89r4/V5LEGOsSKWJMDoqLXDm1i0eFHNGkXpwEdt//VgstHq/
-	V2tkgRrJKIeJgJooQeEu8VVmh8Uv50i4AzRLc2wStyUrGDFwD8YTYmdLcRks6DCfBfRUL9
-	0FLwu+IRFK+VlCJ6MW0YEvk3W8shXJRpSCftSo26iXXtZJ7c61XOJyeeiGsKMP9wqtWjcT
-	F124BY1wveBqpjLgmbOgZV52h3mNDMJ1i2fFeRsRuI03miOhvMBzFxCouid6Cw==
-From: "Kory Maincent (TI.com)" <kory.maincent@bootlin.com>
-Date: Thu, 06 Nov 2025 11:49:02 +0100
-Subject: [PATCH v2 1/2] mfd: tps65219: Implement LOCK register handling for
- TPS65214
+	s=arc-20240116; t=1762427803; c=relaxed/simple;
+	bh=8cnDbTxQTbM8lcfQEMN460D5ylwQe2K609JbpAnX38A=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=j8D3QuVNhWuvJ8r/RCHs1TQmL3EfGmhshYhGBudVFVYVA5x9XICU2IYeK02Q6JZHcF3qpjJAcYmn3O0g2fWSFRnbkMkuemqsIf6oWKHIGqEn16XqM72rencCq0g+JTl0ZnQ/TPBjD0pekV0zGxcDppxHmDxsG+RLfgzySY3zyPk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pNIBL3u3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8B1CC16AAE;
+	Thu,  6 Nov 2025 11:16:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762427802;
+	bh=8cnDbTxQTbM8lcfQEMN460D5ylwQe2K609JbpAnX38A=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=pNIBL3u3EEjtdJUOBEkKSw9pgKm1DKIuwuAhXAGF61uu+g4vxWTiopAz9au9bPyWZ
+	 LlR+oCdBEexup/EKygNsFNvjID3HblLXFXz78unMmeM1MgpW8/aUaThhNIPaKH+nGV
+	 pCShx9dzuS3c5sBJSN96D0tIqukdM1KSl0W5hPXxK3mmyTME5zyPkF4hCSm+Oo4Of0
+	 UTeOlr1FN6o1H1EHaKrocMZ6B43YU1Wp0RzrsqMmuc5CDNgSkcec6XFODO7gfTvKbY
+	 GV6YgI4/vUNODAb8KG3Fxn2iGlUve6/sR4awUWbOesU7y/xNrw/EyuUwBbo+Cj/0Bj
+	 SigsL9PrJwEHQ==
+Message-ID: <0bc6a1ba-4f4f-4b04-b66c-b5d217faefab@kernel.org>
+Date: Thu, 6 Nov 2025 12:16:36 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251106-fix_tps65219-v2-1-a7d608c4272f@bootlin.com>
-References: <20251106-fix_tps65219-v2-0-a7d608c4272f@bootlin.com>
-In-Reply-To: <20251106-fix_tps65219-v2-0-a7d608c4272f@bootlin.com>
-To: Aaro Koskinen <aaro.koskinen@iki.fi>, 
- Andreas Kemnade <andreas@kemnade.info>, Kevin Hilman <khilman@baylibre.com>, 
- Roger Quadros <rogerq@kernel.org>, Tony Lindgren <tony@atomide.com>, 
- Lee Jones <lee@kernel.org>, Shree Ramamoorthy <s-ramamoorthy@ti.com>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>
-Cc: Andrew Davis <afd@ti.com>, Bajjuri Praneeth <praneeth@ti.com>, 
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>, linux-omap@vger.kernel.org, 
- linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, 
- "Kory Maincent (TI.com)" <kory.maincent@bootlin.com>, 
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/2] mm/ksm: fix flag-dropping behavior in ksm_madvise
+To: Vlastimil Babka <vbabka@suse.cz>, Jakub Acs <acsjakub@amazon.de>,
+ linux-mm@kvack.org, Hugh Dickins <hughd@google.com>,
+ Jann Horn <jannh@google.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: akpm@linux-foundation.org, xu.xin16@zte.com.cn, chengming.zhou@linux.dev,
+ peterx@redhat.com, axelrasmussen@google.com, linux-kernel@vger.kernel.org,
  stable@vger.kernel.org
-X-Mailer: b4 0.14.3
-X-Last-TLS-Session-Version: TLSv1.3
+References: <20251001090353.57523-1-acsjakub@amazon.de>
+ <20251001090353.57523-2-acsjakub@amazon.de>
+ <13c7242e-3a40-469b-9e99-8a65a21449bb@suse.cz>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Content-Language: en-US
+In-Reply-To: <13c7242e-3a40-469b-9e99-8a65a21449bb@suse.cz>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-The TPS65214 PMIC variant has a LOCK_REG register that prevents writes to
-nearly all registers.
+On 06.11.25 11:39, Vlastimil Babka wrote:
+> On 10/1/25 11:03, Jakub Acs wrote:
+>> syzkaller discovered the following crash: (kernel BUG)
+>>
+>> [   44.607039] ------------[ cut here ]------------
+>> [   44.607422] kernel BUG at mm/userfaultfd.c:2067!
+>> [   44.608148] Oops: invalid opcode: 0000 [#1] SMP DEBUG_PAGEALLOC KASAN NOPTI
+>> [   44.608814] CPU: 1 UID: 0 PID: 2475 Comm: reproducer Not tainted 6.16.0-rc6 #1 PREEMPT(none)
+>> [   44.609635] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
+>> [   44.610695] RIP: 0010:userfaultfd_release_all+0x3a8/0x460
+>>
+>> <snip other registers, drop unreliable trace>
+>>
+>> [   44.617726] Call Trace:
+>> [   44.617926]  <TASK>
+>> [   44.619284]  userfaultfd_release+0xef/0x1b0
+>> [   44.620976]  __fput+0x3f9/0xb60
+>> [   44.621240]  fput_close_sync+0x110/0x210
+>> [   44.622222]  __x64_sys_close+0x8f/0x120
+>> [   44.622530]  do_syscall_64+0x5b/0x2f0
+>> [   44.622840]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+>> [   44.623244] RIP: 0033:0x7f365bb3f227
+>>
+>> Kernel panics because it detects UFFD inconsistency during
+>> userfaultfd_release_all(). Specifically, a VMA which has a valid pointer
+>> to vma->vm_userfaultfd_ctx, but no UFFD flags in vma->vm_flags.
+>>
+>> The inconsistency is caused in ksm_madvise(): when user calls madvise()
+>> with MADV_UNMEARGEABLE on a VMA that is registered for UFFD in MINOR
+>> mode, it accidentally clears all flags stored in the upper 32 bits of
+>> vma->vm_flags.
+>>
+>> Assuming x86_64 kernel build, unsigned long is 64-bit and unsigned int
+>> and int are 32-bit wide. This setup causes the following mishap during
+>> the &= ~VM_MERGEABLE assignment.
+>>
+>> VM_MERGEABLE is a 32-bit constant of type unsigned int, 0x8000'0000.
+>> After ~ is applied, it becomes 0x7fff'ffff unsigned int, which is then
+>> promoted to unsigned long before the & operation. This promotion fills
+>> upper 32 bits with leading 0s, as we're doing unsigned conversion (and
+>> even for a signed conversion, this wouldn't help as the leading bit is
+>> 0). & operation thus ends up AND-ing vm_flags with 0x0000'0000'7fff'ffff
+>> instead of intended 0xffff'ffff'7fff'ffff and hence accidentally clears
+>> the upper 32-bits of its value.
+>>
+>> Fix it by changing `VM_MERGEABLE` constant to unsigned long, using the
+>> BIT() macro.
+>>
+>> Note: other VM_* flags are not affected:
+>> This only happens to the VM_MERGEABLE flag, as the other VM_* flags are
+>> all constants of type int and after ~ operation, they end up with
+>> leading 1 and are thus converted to unsigned long with leading 1s.
+>>
+>> Note 2:
+>> After commit 31defc3b01d9 ("userfaultfd: remove (VM_)BUG_ON()s"), this is
+>> no longer a kernel BUG, but a WARNING at the same place:
+>>
+>> [   45.595973] WARNING: CPU: 1 PID: 2474 at mm/userfaultfd.c:2067
+>>
+>> but the root-cause (flag-drop) remains the same.
+>>
+>> Fixes: 7677f7fd8be76 ("userfaultfd: add minor fault registration mode")
+> 
+> Late to the party, but it seems to me the correct Fixes: should be
+> f8af4da3b4c1 ("ksm: the mm interface to ksm")
+> which introduced the flag and the buggy clearing code, no?
+> 
+> Commit 7677f7fd8be76 is just one that notices it, right? But there are other
+> flags in >32 bit area, including pkeys etc. Sounds rather dangerous if they
+> can be cleared using a madvise.
+> 
+> So we can't amend the Fixes: now but maybe could advise stable to backport
+> for even older versions than based on 7677f7fd8be76 ?
 
-Implement custom regmap operations that automatically unlock before writes
-and re-lock afterwards for TPS65214, while leaving other chip variants
-unaffected.
-
-The implementation follows the regmap-i2c design pattern.
-
-Cc: <stable@vger.kernel.org>
-Fixes: 7947219ab1a2d ("mfd: tps65219: Add support for TI TPS65214 PMIC")
-Signed-off-by: Kory Maincent (TI.com) <kory.maincent@bootlin.com>
----
-
-Changes in v2:
-- Setup a custom regmap_bus only for the TPS65214 instead of checking
-  the chip_id every time reg_write is called.
----
- drivers/mfd/tps65219.c       | 51 +++++++++++++++++++++++++++++++++++++++++++-
- include/linux/mfd/tps65219.h |  2 ++
- 2 files changed, 52 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/mfd/tps65219.c b/drivers/mfd/tps65219.c
-index 65a952555218d..7e916a9ce2335 100644
---- a/drivers/mfd/tps65219.c
-+++ b/drivers/mfd/tps65219.c
-@@ -473,6 +473,50 @@ static const struct tps65219_chip_data chip_info_table[] = {
- 	},
- };
- 
-+static int tps65214_reg_write(void *context, unsigned int reg, unsigned int val)
-+{
-+	struct i2c_client *i2c = context;
-+	struct tps65219 *tps;
-+	int ret;
-+
-+	if (val > 0xff || reg > 0xff)
-+		return -EINVAL;
-+
-+	tps = i2c_get_clientdata(i2c);
-+	ret = i2c_smbus_write_byte_data(i2c, TPS65214_REG_LOCK,
-+					TPS65214_LOCK_ACCESS_CMD);
-+	if (ret)
-+		return ret;
-+
-+	ret = i2c_smbus_write_byte_data(i2c, reg, val);
-+	if (ret)
-+		return ret;
-+
-+	return i2c_smbus_write_byte_data(i2c, TPS65214_REG_LOCK, 0);
-+}
-+
-+static int tps65214_reg_read(void *context, unsigned int reg, unsigned int *val)
-+{
-+	struct i2c_client *i2c = context;
-+	int ret;
-+
-+	if (reg > 0xff)
-+		return -EINVAL;
-+
-+	ret = i2c_smbus_read_byte_data(i2c, reg);
-+	if (ret < 0)
-+		return ret;
-+
-+	*val = ret;
-+
-+	return 0;
-+}
-+
-+static const struct regmap_bus tps65214_regmap_bus = {
-+	.reg_write = tps65214_reg_write,
-+	.reg_read = tps65214_reg_read,
-+};
-+
- static int tps65219_probe(struct i2c_client *client)
- {
- 	struct tps65219 *tps;
-@@ -491,7 +535,12 @@ static int tps65219_probe(struct i2c_client *client)
- 	chip_id = (uintptr_t)i2c_get_match_data(client);
- 	pmic = &chip_info_table[chip_id];
- 
--	tps->regmap = devm_regmap_init_i2c(client, &tps65219_regmap_config);
-+	if (chip_id == TPS65214)
-+		tps->regmap = devm_regmap_init(&client->dev,
-+					       &tps65214_regmap_bus, client,
-+					       &tps65219_regmap_config);
-+	else
-+		tps->regmap = devm_regmap_init_i2c(client, &tps65219_regmap_config);
- 	if (IS_ERR(tps->regmap)) {
- 		ret = PTR_ERR(tps->regmap);
- 		dev_err(tps->dev, "Failed to allocate register map: %d\n", ret);
-diff --git a/include/linux/mfd/tps65219.h b/include/linux/mfd/tps65219.h
-index 55234e771ba73..198ee319dd1db 100644
---- a/include/linux/mfd/tps65219.h
-+++ b/include/linux/mfd/tps65219.h
-@@ -149,6 +149,8 @@ enum pmic_id {
- #define TPS65215_ENABLE_LDO2_EN_MASK                    BIT(5)
- #define TPS65214_ENABLE_LDO1_EN_MASK			BIT(5)
- #define TPS65219_ENABLE_LDO4_EN_MASK			BIT(6)
-+/* Register Lock */
-+#define TPS65214_LOCK_ACCESS_CMD			0x5a
- /* power ON-OFF sequence slot */
- #define TPS65219_BUCKS_LDOS_SEQUENCE_OFF_SLOT_MASK	GENMASK(3, 0)
- #define TPS65219_BUCKS_LDOS_SEQUENCE_ON_SLOT_MASK	GENMASK(7, 4)
+Yes, I agree.
 
 -- 
-2.43.0
+Cheers
 
+David
 
