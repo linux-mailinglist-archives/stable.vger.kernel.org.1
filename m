@@ -1,172 +1,132 @@
-Return-Path: <stable+bounces-192616-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192617-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A568BC3BA10
-	for <lists+stable@lfdr.de>; Thu, 06 Nov 2025 15:16:38 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6279C3B9D8
+	for <lists+stable@lfdr.de>; Thu, 06 Nov 2025 15:15:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0BFCE62615D
-	for <lists+stable@lfdr.de>; Thu,  6 Nov 2025 14:03:02 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 61781350B50
+	for <lists+stable@lfdr.de>; Thu,  6 Nov 2025 14:15:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CB6A33B6D2;
-	Thu,  6 Nov 2025 14:02:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 648A523816A;
+	Thu,  6 Nov 2025 14:13:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="V5l4V/kH"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="ihgSY8QO"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 791FA33A015
-	for <stable@vger.kernel.org>; Thu,  6 Nov 2025 14:02:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 956AF286408
+	for <stable@vger.kernel.org>; Thu,  6 Nov 2025 14:13:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762437774; cv=none; b=hYQtNyXdCbB8iRmhEYcCGQzTgTvTx0y4svHkGlEyZdA9S/iQDNxAbeVvTW8jswp+xM5gRjJEELNF3P62mq++qG7o6DrgqQwEQnDBhBVsC5PRiNYtTs/eDEP+raBFV3qb3YKmYT6TPsmV+VD/9Wt82r0KU5723NtH3SfXrm5UuWY=
+	t=1762438427; cv=none; b=YVE2EkieGu6SsbKJP58ZmdX2cFxr6L71hDypkglub5R3uNp6s+lwHaPTzvL9zRfzmcXXEPubXwho5K+mhIUI73d0KPW4L3GtE7kSDq2LW1UnXYXDTH+cuxbuRjoJWJ80I380M7SOWPXV3Kh2xg4dOQVL+SUGsQOWgizuxIFfI1c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762437774; c=relaxed/simple;
-	bh=WvSEkVsKHi18LbupKspxuUo3UwUMwfEICSlrjEE1bZ0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=PLc9zM0kcbZLxr6iku/F42juLChoZgALPY/mWWoM7CukWIvs3F2smmTCy5+qsz3ixO3owSstgnunwaVL3KJtmAXB6SAwK5emZ2b6leRbcjTwZ9cVPP5inzrRdHDpLGWBnUkjLQ5E8HRRGuCp1hCN19mu0slKIlQPQHUbjI453yo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=V5l4V/kH; arc=none smtp.client-ip=209.85.128.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-7864cef1976so30684467b3.0
-        for <stable@vger.kernel.org>; Thu, 06 Nov 2025 06:02:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762437771; x=1763042571; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=inUDTdZs9Vh0fPhADocRHvWqcynk3OywAFkuRGyh6uA=;
-        b=V5l4V/kHC41i3whnRC/eXu8RWcxU9IxGzqexoEkx5ZACrufgvAfwLD5foTzvRYGrSC
-         YxmbhRF/8OatLsnCHr/B+ZKLIwz9+MdrriUPGL06Du8IZCeKoLZGRNI4FDDpheKPGq0R
-         OFhO7vHKQgaA8lTPM/xUgdE2bhtJtNcCcKkaOnVSmME0/vQ4q6R+ili29qhUJXi5FRe/
-         OQE54b2u5K+EW0+hoH+ZZeuL4yJWGD3IM+/i6KY5UHiHLmoXPNe11S8KnH03MA3e2BJR
-         HCBXJYSrYUzV2zeYQgOGBJiuaNme8RNluOPSUbZgdo/R8G69+jJu4xCR6O5rav0vBsBd
-         AGHQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762437771; x=1763042571;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=inUDTdZs9Vh0fPhADocRHvWqcynk3OywAFkuRGyh6uA=;
-        b=n0D3izRZwzM0g/NHQZKezLbp4qpFnBfQe62cJniv948b3s39zLdn5qLnnrwVatZWxl
-         yy5z7f6RItVG8uRjavo5Q52xkGBfoLUo57xaOHAF4iAff2KkMh/TcnJGN8ANvGnNd8e9
-         RvyOzIx/YJn5GiN0+V7tox9p8JGZNedO6LOtku3zuD2xzbAvHs4UUcnjL5A1kC+wGA+v
-         6tfUVm9CZOrBTPzYTokiP3ZCGDOalDMcYWCqEe+/5UzXPY9ESKhvt8J8axrrxwQU12vJ
-         Gs5EI/yGfqu5ivjVNS3+EQSKNhyMFzsC7iRIg0r1OeJ1/yQO72pYjaDMtRGYH6xjAfnT
-         bSRQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW4pdf3DBWaIQa4AjWihHe/n3ChPn6TZEWjtjz6Tz4m3x6+EVdFQgwuA8HkowxKQb8DfXnl4Cs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyWmZ/12Iu2r75MgNfNgs232REJEqLxVn+Ocn1d605zknpstqjk
-	QmLdST/abwHOxlmsF6q6UisG493He6WW4D63O5+kctBm4Q67lnLe9flbVMpLpHJ1PoG5CnEYPgP
-	L0BJ6XSj10zGAtJoffMA7v96oRrzgZ00=
-X-Gm-Gg: ASbGncs8tLsxuX17D/wYTgT+Y2KpeRwUDJd9Pah6YXxcTcMB0vGyZ9Kj3JHZ+fUIZnv
-	GUnWopArZl0g4Bey5HWsYWuH/gCDZ8GQNxNdEnbQ2C0meZ+z7Hcs2WlWmJzOK41R9IuYADHYJEL
-	W3DKvkGP+4BXTTgQNF7aN2+B53Mb1NCpEF5cqG+LwymfwIZvY1vuuZRcKHAI7q2ghaT/o0bsvKo
-	Fa3k8LWtOz7P4ELlZTcBuNPK8A0Jjz51MGkGKmuulF29vQVkOg7tq1XIB2S1sHcOVoNUlrY
-X-Google-Smtp-Source: AGHT+IH5rRqBdd0h/d3zF3xb5h/Gzp7i9AdCeqJZxt2JD7xsPG0L9f8JF4omL+mDvX2gYJDASpEwCiiiUakTCt5oCqo=
-X-Received: by 2002:a05:690e:1402:b0:63f:ae5f:d7cb with SMTP id
- 956f58d0204a3-640b52ae4e7mr2498693d50.0.1762437770721; Thu, 06 Nov 2025
- 06:02:50 -0800 (PST)
+	s=arc-20240116; t=1762438427; c=relaxed/simple;
+	bh=X9R/ZQWOdt8n09fws3g4SuFInCqIiRcFmDI36CbBtDg=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=fhhxcPpGYWA7vCkECHbseOWqY1KVkeCgsiYt9dnXiSE6Wt/Au33TPavT+dI2BgYtxtdDbPa0DkUMVRyblSs34cOoS7pUFoqZ+BjPbSn7RNsvMdzjzKE6ZbjGplR10kCCKXpD9OcEwKwaxuolhkf/aAvHOXU0ksFhh3TcZwfDEWA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=qualcomm.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=ihgSY8QO; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qualcomm.com
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5A68je6Z3383378
+	for <stable@vger.kernel.org>; Thu, 6 Nov 2025 14:13:44 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=qcppdkim1; bh=yyShU7oxIVS1HxxAHS2zHkZ/mDoKpVXSN8H
+	N4DeKOtc=; b=ihgSY8QO037d4UV7b9MH0tsuUKErb2k4CGbBlyuYwJoEehlXNs5
+	IUxEO9WTxNRsBh5PFATyo0zTJ4zJIOR89i3jUZidaPu7qbGlLPRrEMByHQjnErU1
+	eQeGSSn/VQEBPcmf8lceeBcxrJzyynlEveLeXjBz5dZ/jOaugbEo090cEV+KwIRf
+	9C7VbgAI/9LUQGzTIDSOOkWzpYsb5FRzAovUydmFu/FV5ZfCAoqgZv9nUpqXYqKB
+	/qVkm6SVt+4ktF0VHi25bM4HbbJwIrAf6Qd07vERMr/FdWFCPf5KBnYaqUzj8oPb
+	EfuLnla8QWBE1UGjEnRl9CZv/I4wnWVETIg==
+Received: from aptaippmta01.qualcomm.com (tpe-colo-wan-fw-bordernet.qualcomm.com [103.229.16.4])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4a8reurv35-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+	for <stable@vger.kernel.org>; Thu, 06 Nov 2025 14:13:44 +0000 (GMT)
+Received: from pps.filterd (APTAIPPMTA01.qualcomm.com [127.0.0.1])
+	by APTAIPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTP id 5A6EDfxF003145
+	for <stable@vger.kernel.org>; Thu, 6 Nov 2025 14:13:41 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by APTAIPPMTA01.qualcomm.com (PPS) with ESMTPS id 4a5b9n7wne-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+	for <stable@vger.kernel.org>; Thu, 06 Nov 2025 14:13:41 +0000
+Received: from APTAIPPMTA01.qualcomm.com (APTAIPPMTA01.qualcomm.com [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 5A6EDfjf003139
+	for <stable@vger.kernel.org>; Thu, 6 Nov 2025 14:13:41 GMT
+Received: from bt-iot-sh02-lnx.ap.qualcomm.com (bt-iot-sh02-lnx.qualcomm.com [10.253.144.65])
+	by APTAIPPMTA01.qualcomm.com (PPS) with ESMTPS id 5A6EDfuu003138
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 06 Nov 2025 14:13:41 +0000
+Received: by bt-iot-sh02-lnx.ap.qualcomm.com (Postfix, from userid 4467449)
+	id 282F422BEC; Thu,  6 Nov 2025 22:13:40 +0800 (CST)
+From: Shuai Zhang <quic_shuaz@quicinc.com>
+To: quic_shuaz@quicinc.com
+Cc: stable@vger.kernel.org
+Subject: [PATCH v1] Bluetooth: btusb: add new custom firmwares
+Date: Thu,  6 Nov 2025 22:13:39 +0800
+Message-Id: <20251106141339.1422537-1-quic_shuaz@quicinc.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250710165040.3525304-1-henrique.carvalho@suse.com>
- <2944136.1752224518@warthog.procyon.org.uk> <aHE0--yUyFJqK6lb@precision>
-In-Reply-To: <aHE0--yUyFJqK6lb@precision>
-From: Bharath SM <bharathsm.hsk@gmail.com>
-Date: Thu, 6 Nov 2025 06:02:39 -0800
-X-Gm-Features: AWmQ_bmoYkmo6SDuLYq4N60l8-Fq8PbA7W5LXKJcb8BD7Nyh0avwRGwuCYHfANg
-Message-ID: <CAGypqWyyA6nUfH-bGhQxLYD74O7EcE_6_W15=AB8jvi6yZiV_Q@mail.gmail.com>
-Subject: Re: [PATCH 6.6.y] smb: client: support kvec iterators in async read path
-To: Henrique Carvalho <henrique.carvalho@suse.com>, gregkh@linuxfoundation.org, 
-	stable@vger.kernel.org, Shyam Prasad N <sprasad@microsoft.com>, apais@microsoft.com, 
-	Bharath S M <bharathsm@microsoft.com>
-Cc: David Howells <dhowells@redhat.com>, smfrench@gmail.com, linux-cifs@vger.kernel.org, 
-	Laura Kerner <laura.kerner@ichaus.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-QCInternal: smtphost
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTA2MDExMiBTYWx0ZWRfX+lF1yerSeZPj
+ MlsstSFTgcA3wNHMfK7sUKrqNr1LFm7Kts89gkVsD92mrxBpNXCAJugcMka9GUTNkwD78/XAwZX
+ H53GXnjFUg5e1My6CoOacnLNwrZm7gH7WQ1H0u2k9dr112/l9HejZEOe3lj0Zv8t8VtONZSXlVH
+ Mrtyj6/Agq1wpw90Zr8IHXY02xkwrBmZfI4iiT5zvWV6AGiIiM6JxJ6f8lW53mE5b8txEgiqxdt
+ cAeJvXtVDAOtHaS2iPDeYTmKruLF0WeJalQniaZl2BPAdNOOc4SH7A+IESDLFbJBhCQP+n+Mxjd
+ xu864s5sBXFGyxo7e/+M+q0CXdQgOjm8t9V6GZ2USKwDXBLmj22xVJHGvL8ZKPpy8+UojPiRVe0
+ 5K7gSXQ2GyRQM6k2cJNuUxMxn0PYMg==
+X-Proofpoint-ORIG-GUID: szrXAlhlRr8d9Gnfq5h3hu1AoAAOZS9w
+X-Authority-Analysis: v=2.4 cv=RrDI7SmK c=1 sm=1 tr=0 ts=690cad18 cx=c_pps
+ a=nuhDOHQX5FNHPW3J6Bj6AA==:117 a=nuhDOHQX5FNHPW3J6Bj6AA==:17
+ a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=COk6AnOGAAAA:8
+ a=FwBvamPKdgLavwmduaUA:9 a=zZCYzV9kfG8A:10 a=TjNXssC_j7lpFel5tvFf:22
+X-Proofpoint-GUID: szrXAlhlRr8d9Gnfq5h3hu1AoAAOZS9w
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-11-06_03,2025-11-06_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 bulkscore=0 clxscore=1015 suspectscore=0 lowpriorityscore=0
+ malwarescore=0 adultscore=0 priorityscore=1501 phishscore=0 impostorscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2511060112
 
-On Fri, Jul 11, 2025 at 9:01=E2=80=AFAM Henrique Carvalho
-<henrique.carvalho@suse.com> wrote:
->
-> On Fri, Jul 11, 2025 at 10:01:58AM +0100, David Howells wrote:
-> > Henrique Carvalho <henrique.carvalho@suse.com> wrote:
-> >
-> > > Add cifs_limit_kvec_subset() and select the appropriate limiter in
-> > > cifs_send_async_read() to handle kvec iterators in async read path,
-> > > fixing the EIO bug when running executables in cifs shares mounted
-> > > with nolease.
-> > >
-> > > This patch -- or equivalent patch, does not exist upstream, as the
-> > > upstream code has suffered considerable API changes. The affected pat=
-h
-> > > is currently handled by netfs lib and located under netfs/direct_read=
-.c.
-> >
-> > Are you saying that you do see this upstream too?
-> >
->
-> No, the patch only targets the 6.6.y stable tree. Since version 6.8,
-> this path has moved into the netfs layer, so the original bug no longer
-> exists.
->
-> The bug was fixed at least since the commit referred in the commit
-> message -- 3ee1a1fc3981. In this commit, the call to cifs_user_readv()
-> is replaced by a call to netfs_unbuffered_read_iter(), inside the
-> function cifs_strict_readv().
->
-> netfs_unbuffered_read_iter() itself was introduced in commit
-> 016dc8516aec8, along with other netfs api changes, present in kernel
-> versions 6.8+.
->
-> Backporting netfs directly would be non-trivial. Instead, I:
->
-> - add cifs_limit_kvec_subset(), modeled on the existing
->   cifs_limit_bvec_subset()
-> - choose between the kvec or bvec limiter function early in
->   cifs_write_from_iter().
->
-> The Fixes tag references d08089f649a0c, which implements
-> cifs_limit_bvec_subset() and uses it inside cifs_write_from_iter().
->
-> > > Reproducer:
-> > >
-> > > $ mount.cifs //server/share /mnt -o nolease
-> > > $ cat - > /mnt/test.sh <<EOL
-> > > echo hallo
-> > > EOL
-> > > $ chmod +x /mnt/test.sh
-> > > $ /mnt/test.sh
-> > > bash: /mnt/test.sh: /bin/bash: Defekter Interpreter: Eingabe-/Ausgabe=
-fehler
-> > > $ rm -f /mnt/test.sh
-> >
-> > Is this what you are expecting to see when it works or when it fails?
-> >
->
-> This is the reproducer for the observed bug. In english it reads "Bad
-> interpreter: Input/Output error".
->
-> FYI: I tried to follow Option 3 of the stable-kernel rules for submission=
-:
-> <https://www.kernel.org/doc/html/v6.15/process/stable-kernel-rules.html>
-> Please let me know if you'd prefer a different approach or any further
-> changes.
-Thanks Henrique.
+There are custom-made firmwares based on board ID for a given QCA BT
+chip sometimes, and they are different with existing firmwares and put
+in a separate subdirectory to avoid conflict, for example:
+QCA2066, as a variant of WCN6855, has firmwares under 'qca/QCA2066/'
+of linux-firmware repository.
 
-Hi Greg,
+Cc: stable@vger.kernel.org
+Signed-off-by: Shuai Zhang <quic_shuaz@quicinc.com>
+---
+ drivers/bluetooth/btusb.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-We are observing the same issue with the 6.6 Kernel, Can you please
-help include this patch in the 6.6 stable kernel.?
+diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
+index dcbff7641..7175e9b2d 100644
+--- a/drivers/bluetooth/btusb.c
++++ b/drivers/bluetooth/btusb.c
+@@ -3273,6 +3273,7 @@ static const struct qca_device_info qca_devices_table[] = {
+ 
+ static const struct qca_custom_firmware qca_custom_btfws[] = {
+ 	{ 0x00130201, 0x030A, "QCA2066" },
++	{ 0x00130201, 0x030B, "QCA2066" },
+ 	{ },
+ };
+ 
+-- 
+2.34.1
 
-Hi David and Steve,
-
-Can you please review this patch and share your comments.?
-
--Bharath
 
