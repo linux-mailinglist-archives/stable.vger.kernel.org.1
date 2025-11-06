@@ -1,238 +1,100 @@
-Return-Path: <stable+bounces-192604-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192605-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 906BDC3B240
-	for <lists+stable@lfdr.de>; Thu, 06 Nov 2025 14:16:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9111EC3B1F9
+	for <lists+stable@lfdr.de>; Thu, 06 Nov 2025 14:14:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7F98B5011F0
-	for <lists+stable@lfdr.de>; Thu,  6 Nov 2025 13:05:49 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C4785504AFC
+	for <lists+stable@lfdr.de>; Thu,  6 Nov 2025 13:06:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12C3D32D0ED;
-	Thu,  6 Nov 2025 13:02:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A57733033A;
+	Thu,  6 Nov 2025 13:05:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="e2of75u4"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jzv8VfOt"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45FE832C305;
-	Thu,  6 Nov 2025 13:02:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B32CE2820AC;
+	Thu,  6 Nov 2025 13:05:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762434124; cv=none; b=Z+f33vq25441VE54HApGBoz450RD1sGLxchR+jRXV38xt1d6n337brEjr4pPKU4msxAhRd6nlS69ZnOMksyXjCtntTJ24s414P6PRDVqg58fVKpzbFaSgl3osgcPJ9fKeeo5+HKtn2n6BDscpjzmY7p3pfQEaRpL4JAFrwGNdnQ=
+	t=1762434327; cv=none; b=bT4vB+HkhzmwuBseAh8bPQ67RXQ2EYP1sL/tXNoUjVUJMJzh7TCFY/g+7V391QR1X83ITTqnVe7HlW52mzYC7hs7XuGsAYL1l9IQ11Bl/BbQbjWRRfbX7t+e92PYTVYD35LA/HBPf+8ETVazdxeeklm1pkWlaLanP7o+0mu7Gyg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762434124; c=relaxed/simple;
-	bh=0Msik2psULPh2Ih/MH7/EDlaxGNgMadwtuVXfx6/Pcg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=XB+JAObrb0ZOnBYOsI2L78/DfM9JvI4K3aAWXn/pPYHmx0DfLn8P1sHfN317qFrfJLaoUVGpGbqFA388vJayMaVaEWf/VBwzj+tazaFs0h0N+JlmxCRg0YNSmEbPFU7iJNPp65FSdtWvoqUn+3Dpmh6nOH1ZQ5x/2vgCvzH9cOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=e2of75u4; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5A66bAHm013986;
-	Thu, 6 Nov 2025 13:01:35 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=lvIC7h
-	l8dkAf5eu01Joa5gEqrAJTNGfVUM9W00tHpwA=; b=e2of75u4f7xribouB6taMz
-	SNPQJSojlS2x7ovCwkVeRJrhs0zuY8/t/3v66vEiz99r3MP4EdhTRSRZf9eKAV7M
-	zkJ0PXt2q/8VDCAwLg3UA8v7evKo8qJej2RBQKx/1HZVUq+mTllX9klP2q/JwPtc
-	BcOnxrUK/K20lPEolM7JmTGnJDhq/gfg5uZ3xK856TXSNso2vVYpkF28GmdS1eNu
-	kMHZ4UE3ydU5OW8H80PctoQZmqGYOz937khzS9NOspjwUSdj+V3T9+B7LAFWfMEu
-	/u4BPO3b96SVzvQfJm8NKra7Nu4J/pNLGm0af2UtrzOdDDPa39q72m3UoEKC3ajg
-	==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a59q976jp-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 06 Nov 2025 13:01:34 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5A6C7gTS021467;
-	Thu, 6 Nov 2025 13:01:34 GMT
-Received: from smtprelay03.wdc07v.mail.ibm.com ([172.16.1.70])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4a5xrjwae8-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 06 Nov 2025 13:01:33 +0000
-Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com [10.39.53.231])
-	by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5A6D1Ja612780280
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 6 Nov 2025 13:01:19 GMT
-Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1F43458050;
-	Thu,  6 Nov 2025 13:01:33 +0000 (GMT)
-Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id CB5E158045;
-	Thu,  6 Nov 2025 13:01:28 +0000 (GMT)
-Received: from [9.61.3.251] (unknown [9.61.3.251])
-	by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Thu,  6 Nov 2025 13:01:28 +0000 (GMT)
-Message-ID: <b556d704-dc3b-4e6c-a158-69fb5b377dac@linux.ibm.com>
-Date: Thu, 6 Nov 2025 18:31:27 +0530
+	s=arc-20240116; t=1762434327; c=relaxed/simple;
+	bh=tyPnkBqS2IRKn0BX1hOVQKSWQFZ9GJ9UpVno1t1C2pM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=toJ/rRBJ+n10U7zDGvSv3vBkkMSkxY+T338Y7BZWRK9vLiS9oyA6cXBXeVtQg8eyfO0GSciTo+aaGWOaR8qPO1DnAT/Nsi4TsCVGhowZVv6+BVoBff9acvPc12RycK/kPA196sgEHOxyOUJXvLAEuvEO8IO4EbkuHUgYcsWJ9qs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jzv8VfOt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7966C4CEF7;
+	Thu,  6 Nov 2025 13:05:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762434327;
+	bh=tyPnkBqS2IRKn0BX1hOVQKSWQFZ9GJ9UpVno1t1C2pM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=jzv8VfOtPdu1QaOc79gAmHKCNRM89n8eIfaAInyUzKUTTC4CDL/Ksag+0AptmdbOV
+	 DC99z6Z+xZsaMQgIgzIJq0Zb3lqdv9X4EWGcN7dCSpfei0WtgJnRELjPbmvqLDmBLD
+	 VRzd/BGOXItW/JukwgchgPbH5E+poy0YNT0A0bi1dPeFtHbVapGZS6bmFwMP1m/FY3
+	 OCrw0JHHQLx66mrEh1TsHiYlKC5axtEMEDJfraKP91RIxutIsP0nNPYlHNzRtOSDO3
+	 qDa85IO8JOEVM49mkT/utqkKZVwlyBSSozvOD/otR6j+rh8gfc6UjPbXX8D3h81Ons
+	 ZW9zLZZ3GL8/w==
+Date: Thu, 6 Nov 2025 13:05:23 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Hans de Goede <hansg@kernel.org>
+Cc: Andy Shevchenko <andy@kernel.org>, linux-spi@vger.kernel.org,
+	linux-acpi@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] spi: Try to get ACPI GPIO IRQ earlier
+Message-ID: <aQydE1pSmCcDwCPO@finisterre.sirena.org.uk>
+References: <20251102190921.30068-1-hansg@kernel.org>
+ <176242886085.2357454.1138821772017853306.b4-ty@kernel.org>
+ <935e8578-1c25-4015-bd6e-a41cd0f07c81@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4] block: Remove queue freezing from several sysfs store
- callbacks
-To: Bart Van Assche <bvanassche@acm.org>, Jens Axboe <axboe@kernel.dk>
-Cc: linux-block@vger.kernel.org, Christoph Hellwig <hch@lst.de>,
-        Ming Lei <ming.lei@redhat.com>, Martin Wilck <mwilck@suse.com>,
-        Benjamin Marzinski <bmarzins@redhat.com>, stable@vger.kernel.org,
-        Chaitanya Kulkarni <kch@nvidia.com>, Hannes Reinecke <hare@suse.de>,
-        Damien Le Moal <dlemoal@kernel.org>
-References: <20251105170534.2989596-1-bvanassche@acm.org>
-Content-Language: en-US
-From: Nilay Shroff <nilay@linux.ibm.com>
-In-Reply-To: <20251105170534.2989596-1-bvanassche@acm.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=StmdKfO0 c=1 sm=1 tr=0 ts=690c9c2f cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=IkcTkHD0fZMA:10 a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=TFDWyf3hBjIInHEowKkA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
- a=cPQSjfK2_nFv0Q5t_7PE:22
-X-Proofpoint-ORIG-GUID: 3k6APeHdC5-T3Z9POxx8l4be3Qep7zlr
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTAxMDAxOCBTYWx0ZWRfX6nZ8Eqr3t9Pp
- zRx1m+WC1fti63D4vb49tTb0OxihIeoNwf5eJlhszsKmg3ELRkCWaV2LFq5zBu8pvJaaZ2GSEF+
- mN6Ojv8ArN/vYyCQLX1liNsCynfKCfPw58JDnA9Ghwy6J1zxllDg3HvweWiD5CxC/pWIjzIfzZ7
- nG6Q6Ci9IvUfUUUpaic8cKRiRzhZJZkP0xubuOpn3WFw/nDdWM6GVF4xTVDL/issGKqPJ2iOHDs
- 4Qc8BdVbqWfmOvweeD5HxIHEYPPQ3ca3NuZ40o/CNJLdqQJ/+OhoDtKl4u6HT9wWChE94y+NJbA
- EYk7F6BmtxBreqL9QOO5PcjVTRM1DjWI440iTrqtXM50Yq9uv1+DXm3w1VHrileDLrie2+vWh1q
- d718GrKJNY203l2S2WAy99uKnZr9nw==
-X-Proofpoint-GUID: 3k6APeHdC5-T3Z9POxx8l4be3Qep7zlr
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-11-06_03,2025-11-06_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 suspectscore=0 phishscore=0 impostorscore=0 priorityscore=1501
- malwarescore=0 clxscore=1015 adultscore=0 bulkscore=0 lowpriorityscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2510240000 definitions=main-2511010018
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="FPjVcJTpgg+5Ndqb"
+Content-Disposition: inline
+In-Reply-To: <935e8578-1c25-4015-bd6e-a41cd0f07c81@kernel.org>
+X-Cookie: If in doubt, mumble.
 
 
+--FPjVcJTpgg+5Ndqb
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-> diff --git a/block/blk-sysfs.c b/block/blk-sysfs.c
-> index 76c47fe9b8d6..6eaccd18d8b4 100644
-> --- a/block/blk-sysfs.c
-> +++ b/block/blk-sysfs.c
-> @@ -143,7 +143,6 @@ queue_ra_store(struct gendisk *disk, const char *page, size_t count)
->  {
->  	unsigned long ra_kb;
->  	ssize_t ret;
-> -	unsigned int memflags;
->  	struct request_queue *q = disk->queue;
->  
->  	ret = queue_var_store(&ra_kb, page, count);
-> @@ -154,10 +153,8 @@ queue_ra_store(struct gendisk *disk, const char *page, size_t count)
->  	 * calculated from the queue limits by queue_limits_commit_update.
->  	 */
->  	mutex_lock(&q->limits_lock);
-> -	memflags = blk_mq_freeze_queue(q);
-> -	disk->bdi->ra_pages = ra_kb >> (PAGE_SHIFT - 10);
-> +	data_race(disk->bdi->ra_pages = ra_kb >> (PAGE_SHIFT - 10));
->  	mutex_unlock(&q->limits_lock);
-> -	blk_mq_unfreeze_queue(q, memflags);
->  
->  	return ret;
->  }
+On Thu, Nov 06, 2025 at 01:23:21PM +0100, Hans de Goede wrote:
 
-I think we don't need data_race() here as disk->bdi->ra_pages is already
-protected by ->limits_lock. Furthermore, while you're at it, I’d suggest
-protecting the set/get access of ->ra_pages using ->limits_lock when it’s
-invoked from the ioctl context (BLKRASET/BLKRAGET).
+> I believe that Andy's Reviewed-by was intended for a v2 with extending
+> the comment with an extra paragraph with something like:
 
->  
-> @@ -472,7 +460,7 @@ static ssize_t queue_io_timeout_show(struct gendisk *disk, char *page)
->  static ssize_t queue_io_timeout_store(struct gendisk *disk, const char *page,
->  				  size_t count)
->  {
-> -	unsigned int val, memflags;
-> +	unsigned int val;
->  	int err;
->  	struct request_queue *q = disk->queue;
->  
-> @@ -480,9 +468,7 @@ static ssize_t queue_io_timeout_store(struct gendisk *disk, const char *page,
->  	if (err || val == 0)
->  		return -EINVAL;
->  
-> -	memflags = blk_mq_freeze_queue(q);
-> -	blk_queue_rq_timeout(q, msecs_to_jiffies(val));
-> -	blk_mq_unfreeze_queue(q, memflags);
-> +	data_race((blk_queue_rq_timeout(q, msecs_to_jiffies(val)), 0));
->  
->  	return count;
->  }
+Possibly, but that got sent well after I'd got things into CI anyway and
+I didn't see it till after the CI had run.
 
-The use of data_race() above seems redundant, since the update to q->rq_timeout
-is already marked with WRITE_ONCE(). However, the read access to q->rq_timeout
-in a few places within the I/O hotpath is not marked and instead accessed directly
-using plain C-language loads.
+> Since you've already merged this now l'll prepare a follow-up patch
+> to extend the comment with that info.
 
-When I ran this proposed change with KCSAN enabled on my system, I observed the following
-warning ( when one thread was running I/O and another thread was concurrently updating 
-q->rq_timeout):
+Sure.
 
-BUG: KCSAN: data-race in blk_add_timer+0x74/0x1f0
+--FPjVcJTpgg+5Ndqb
+Content-Type: application/pgp-signature; name="signature.asc"
 
-race at unknown origin, with read to 0xc000000143c9c568 of 4 bytes by task 3725 on cpu 16:
- blk_add_timer+0x74/0x1f0
- blk_mq_start_request+0xe0/0x558
- nvme_prep_rq.part.0+0x300/0x194c [nvme]
- nvme_queue_rqs+0x1f0/0x4e4 [nvme]
- blk_mq_dispatch_queue_requests+0x510/0x8e0
- blk_mq_flush_plug_list+0xc0/0x3d8
- __blk_flush_plug+0x29c/0x368
- __submit_bio+0x320/0x3bc
- submit_bio_noacct_nocheck+0x604/0x94c
- submit_bio_noacct+0x3b4/0xef8
- submit_bio+0x7c/0x310
- submit_bio_wait+0xd4/0x19c
- __blkdev_direct_IO_simple+0x290/0x484
- blkdev_direct_IO+0x658/0x1000
- blkdev_write_iter+0x530/0x67c
- vfs_write+0x698/0x894
- sys_pwrite64+0x140/0x17c
- system_call_exception+0x1ac/0x520
- system_call_vectored_common+0x15c/0x2ec
+-----BEGIN PGP SIGNATURE-----
 
-value changed: 0x00000bb8 -> 0x000005dc
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmkMnQ0ACgkQJNaLcl1U
+h9DUwQf9EvJuDvVEn1XNm633osZNAi4GjExAe/IwGNcXMzkbFi45RMWmr/SJrKvI
+mBxkUcPrBK15kI848zQcPPgXO3j34jSS4ne/6rF92EBk0tzEw5YZQenf2DfTde6I
+DzNysK3Hohje8jcd16WpJ4SDcRSWGFb4UudPe31G3e2t41b6HcMIXdeklwIk18Ga
+R1tiXBo8hOW+qkKXUZ5MRkXcX+LZnk/Ofh1HA10Xxq0o0qXnm3VzCN8pOJpZ7HQt
+Mjxv2cIlLuYnHH/qGIkXfuLPySm6s6uSOiJVELK2x1U5Ls6mKajNeixP1H+kUlek
+gzAQruJfutn62isNb/tGZPp9Lu5RFQ==
+=uVud
+-----END PGP SIGNATURE-----
 
-Reported by Kernel Concurrency Sanitizer on:
-CPU: 16 UID: 0 PID: 3725 Comm: fio Kdump: loaded Not tainted 6.18.0-rc3+ #47 VOLUNTARY
-Hardware name: IBM,9105-22A Power11 (architected) 0x820200 0xf000007 of:IBM,FW1120.00 (RB1120_115) hv:phyp pSeries
-==================================================================
-
-Based on the gdb trace:
-
-(gdb) info line *(blk_add_timer+0x74)
-Line 138 of "block/blk-timeout.c" starts at address 0xc000000000d5637c <blk_add_timer+108> and ends at 0xc000000000d5638c <blk_add_timer+124>.
-
-This corresponds to:
-
-128 void blk_add_timer(struct request *req)
-129 {
-130         struct request_queue *q = req->q;
-131         unsigned long expiry;
-132 
-133         /*
-134          * Some LLDs, like scsi, peek at the timeout to prevent a
-135          * command from being retried forever.
-136          */
-137         if (!req->timeout)
-138                 req->timeout = q->rq_timeout;
-
-As seen above, the read access to q->rq_timeout is unmarked. To avoid the reported
-data race, we should replace this plain access with READ_ONCE(q->rq_timeout).
-This is one instance in the I/O hotpath where q->rq_timeout is read without annotation,
-and there are likely a few more similar cases that should be updated in the same way.
-
-Thanks,
---Nilay
-
+--FPjVcJTpgg+5Ndqb--
 
