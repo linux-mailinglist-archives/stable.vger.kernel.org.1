@@ -1,34 +1,34 @@
-Return-Path: <stable+bounces-192608-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192609-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E43FC3B33C
-	for <lists+stable@lfdr.de>; Thu, 06 Nov 2025 14:27:28 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AACCC3B2D2
+	for <lists+stable@lfdr.de>; Thu, 06 Nov 2025 14:22:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8D0D64219D0
-	for <lists+stable@lfdr.de>; Thu,  6 Nov 2025 13:17:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 303981882A98
+	for <lists+stable@lfdr.de>; Thu,  6 Nov 2025 13:17:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBFF330F7EE;
-	Thu,  6 Nov 2025 13:17:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7B4A32C934;
+	Thu,  6 Nov 2025 13:17:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="IzWUthHK"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="XWtX5WTa"
 X-Original-To: stable@vger.kernel.org
 Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D75031411DE;
-	Thu,  6 Nov 2025 13:17:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97E6C22422A;
+	Thu,  6 Nov 2025 13:17:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.97.179.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762435030; cv=none; b=dRTXU7zQ0/uKqX92B6Rnw3oAuWeM2hbsMGsODHY1r5m0WY7WuVc9fNLFzg6UEG5TOt6q2+IbOsMj+ovbywlhkShChmuvxm8LWDVI2fciQkpivSUw0hIR3Phle1t789i9o1GkUVLqNhpiBX0p+Jhuf7SWF9y+1vHFMVBKBncy/NQ=
+	t=1762435046; cv=none; b=mAs84CwLSmw1arzavWhcIhRdnDMCF2c/9PFgbYQSBZZ21H5G6W+5iLSB6LODB/xhl3rZaWM/UfBP66QdnqxTY2rlWwwY/b2CSLD9onPi/d3FcMQ5cvGt7ReVxdTi4nIzOjm7MB71U1rnlXD3y/X9jagWrQ3XQz5z2g0DuOmEEZs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762435030; c=relaxed/simple;
-	bh=lW6R3buW1RqECzObR0BrTSpGZRw6svZs9eswTVzgB6c=;
+	s=arc-20240116; t=1762435046; c=relaxed/simple;
+	bh=IXa1i3A8NXJiYQDWMNHOGhYgHY3CQC49HK3blIHgKSc=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=DYISojN1JKxGAa0QkkFNRk/CdpEjV1gvNG1Z80oCkD3xks+/1IOFC8KqdMmluAoHjTP/kLvHi62GJIcMSyIBqULvXGVnfHPjInSG6v5yu/AinRMpOU/2ag67NY6AjOcZH/EgpP54D+IS5Q52Z5SYcILm+PhhiV4Th4fuJLxglkQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=IzWUthHK; arc=none smtp.client-ip=213.97.179.56
+	 In-Reply-To:Content-Type; b=lpa4ahaIAu/fwAesIpy0O+wKT78u5K2jTGi8pvtOU4kslbVIarz1v7Bqq0kyiQlZYFjfLVmwPUxK8Szq6MZTKj1Or0k+8/AHbwaSgEoQo9wRJNxTDFo/h4kyENDY7+sVJfAO7K0TfJgK4p8b2bveakXwWnWrSlGx+wD86Gjj/pc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=XWtX5WTa; arc=none smtp.client-ip=213.97.179.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
@@ -37,18 +37,18 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
 	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=CHUCC7zOpT7RyBCMzI5+F/e+EbtgZx+XUWpximkO6Mc=; b=IzWUthHKQbdpOMn+2lXHw4d7Z0
-	r1VNeYGxiIrjsL6RN4tqmEJL7mO9bS6XnI9m69KYoAQ8V0g0HbycKoolhrXsh5Rt18rOdmejUx+D5
-	asFedCMEiKbJPyN9GFslmXnIXuqMHu+EkukCW2TNUYarLjfx0Je/msV5rlwCiUDNUuMyCdd+E/fgd
-	G6eQY+8BpKQukP2dCZnbW32/xI9T1P5VkyOUur8vx06R75Ex3720VYxZJEfv7vGxRYhhdvwr7zxlr
-	8yMgUGzKjK5THpcLbSsFxlXtenWrcS6TYqMUI6cPA3d3UfbX/uNF+zgGp6QXqiUv5m6pTI8gGka+0
-	k9Ft1Mog==;
+	bh=H6vP8RSVqf2hz8E0hIyEhAsuLZ2rzeEouiAOCljNqeA=; b=XWtX5WTa0nHt5ZnaEzkeBwasMR
+	6BvVzz7LGAfgV1efz2CTzCELc2AbNwM3P0HoR1oLzNlyf2yY/AC6f9Mxfn6YbSOydx/Zj6go+YSnD
+	D9S8BnZCPUKHn/WoAjmBvXbr6GUZ4a4z5awgWyI7Ed6E1oIGF0tSim3h8FMbREh4C7qGVMlYAV+Dq
+	s2VOAWrPUXBuF0L8y2xJAc9Wuz7t7dk5bXNw1NN7sqfHBgvVbQhPMP5W4eqmsW3rHrim8jfIAUAP2
+	zsHtkU456aaEqzcyj1J4KsXrgVuQVOqxxpQI0+sdtfz4BB5obbu47bkXh4AyQbB6oNwoJWGrAe1RT
+	5dmk1T+g==;
 Received: from [186.208.74.26] (helo=[192.168.18.14])
 	by fanzine2.igalia.com with esmtpsa 
 	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
-	id 1vGzrF-0030M3-9S; Thu, 06 Nov 2025 14:16:57 +0100
-Message-ID: <298e0ecd-620b-4acc-9299-ab43b8331e92@igalia.com>
-Date: Thu, 6 Nov 2025 10:16:52 -0300
+	id 1vGzrc-0030NS-46; Thu, 06 Nov 2025 14:17:20 +0100
+Message-ID: <3aaf35bc-3595-45af-bd20-aaa5c9401959@igalia.com>
+Date: Thu, 6 Nov 2025 10:17:16 -0300
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -57,23 +57,23 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: Patch "drm/amd/display: change dc stream color settings only in
- atomic commit" has been added to the 6.12-stable tree
+ atomic commit" has been added to the 6.17-stable tree
 To: stable@vger.kernel.org, stable-commits@vger.kernel.org
 Cc: Harry Wentland <harry.wentland@amd.com>, Leo Li <sunpeng.li@amd.com>,
  Rodrigo Siqueira <siqueira@igalia.com>,
  Alex Deucher <alexander.deucher@amd.com>,
  =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
  David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>
-References: <20251105000745.400982-1-sashal@kernel.org>
+References: <20251104235338.370388-1-sashal@kernel.org>
 Content-Language: en-US
 From: Melissa Wen <mwen@igalia.com>
-In-Reply-To: <20251105000745.400982-1-sashal@kernel.org>
+In-Reply-To: <20251104235338.370388-1-sashal@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
 Hi Sasha,
 
-Can you backport the previous related commit (2f9c63883730 
+Same here, can you backport the previous related commit (2f9c63883730 
 "drm/amd/display: update color on atomic commit time" [1])  too?
 Otherwise, the commit below alone will cause regressions.
 
@@ -84,24 +84,24 @@ Melissa
 [1] 
 https://github.com/torvalds/linux/commit/2f9c63883730a0bfecb086e6e59246933f936ca1
 
-On 04/11/2025 21:07, Sasha Levin wrote:
+On 04/11/2025 20:53, Sasha Levin wrote:
 > This is a note to let you know that I've just added the patch titled
 >
 >      drm/amd/display: change dc stream color settings only in atomic commit
 >
-> to the 6.12-stable tree which can be found at:
+> to the 6.17-stable tree which can be found at:
 >      http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
 >
 > The filename of the patch is:
 >       drm-amd-display-change-dc-stream-color-settings-only.patch
-> and it can be found in the queue-6.12 subdirectory.
+> and it can be found in the queue-6.17 subdirectory.
 >
 > If you, or anyone else, feels it should not be added to the stable tree,
 > please let <stable@vger.kernel.org> know about it.
 >
 >
 >
-> commit fbdf5decdbe18e9488d0bf6ade60f63bf0348ee1
+> commit 87fe0b67d6d8340123e563e7156fbdf070a2954d
 > Author: Melissa Wen <mwen@igalia.com>
 > Date:   Thu Sep 11 14:21:20 2025 -0300
 >
@@ -130,10 +130,10 @@ On 04/11/2025 21:07, Sasha Levin wrote:
 >      Signed-off-by: Sasha Levin <sashal@kernel.org>
 >
 > diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-> index ea6bc9517ed86..c314c213c21c3 100644
+> index d66c9609efd8d..60eb2c2c79b77 100644
 > --- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
 > +++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-> @@ -10773,7 +10773,7 @@ static int dm_update_crtc_state(struct amdgpu_display_manager *dm,
+> @@ -11105,7 +11105,7 @@ static int dm_update_crtc_state(struct amdgpu_display_manager *dm,
 >   	if (dm_new_crtc_state->base.color_mgmt_changed ||
 >   	    dm_old_crtc_state->regamma_tf != dm_new_crtc_state->regamma_tf ||
 >   	    drm_atomic_crtc_needs_modeset(new_crtc_state)) {
@@ -143,10 +143,10 @@ On 04/11/2025 21:07, Sasha Levin wrote:
 >   			goto fail;
 >   	}
 > diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h
-> index 9603352ee0949..47f6569be54cb 100644
+> index c18a6b43c76f6..42801caf57b69 100644
 > --- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h
 > +++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h
-> @@ -971,6 +971,8 @@ void amdgpu_dm_init_color_mod(void);
+> @@ -1037,6 +1037,8 @@ void amdgpu_dm_init_color_mod(void);
 >   int amdgpu_dm_create_color_properties(struct amdgpu_device *adev);
 >   int amdgpu_dm_verify_lut_sizes(const struct drm_crtc_state *crtc_state);
 >   int amdgpu_dm_update_crtc_color_mgmt(struct dm_crtc_state *crtc);
@@ -156,7 +156,7 @@ On 04/11/2025 21:07, Sasha Levin wrote:
 >   				      struct drm_plane_state *plane_state,
 >   				      struct dc_plane_state *dc_plane_state);
 > diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_color.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_color.c
-> index ebabfe3a512f4..e9c765e1c17ce 100644
+> index c0dfe2d8b3bec..d4739b6334c24 100644
 > --- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_color.c
 > +++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_color.c
 > @@ -566,12 +566,11 @@ static int __set_output_tf(struct dc_transfer_func *func,
