@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-192554-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192555-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49349C386D8
-	for <lists+stable@lfdr.de>; Thu, 06 Nov 2025 00:58:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 506DDC38748
+	for <lists+stable@lfdr.de>; Thu, 06 Nov 2025 01:20:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 2CA854E287D
-	for <lists+stable@lfdr.de>; Wed,  5 Nov 2025 23:58:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DA0F53AD612
+	for <lists+stable@lfdr.de>; Thu,  6 Nov 2025 00:16:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73BF72F3C3F;
-	Wed,  5 Nov 2025 23:58:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B26D44D8CE;
+	Thu,  6 Nov 2025 00:16:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Rg0MkhP7"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="xnGxDBjP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BC241D5151;
-	Wed,  5 Nov 2025 23:58:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 668DA38DD8;
+	Thu,  6 Nov 2025 00:16:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762387133; cv=none; b=QKBlL4PCzWAHxLFymkTuX8z13SmuKTw9drU4YrRRw2Byf/zF1LxGb/0gB7oDXUlHsqfwVYNlVY5n437BNECAom0xr09qQJnuU5UaJccUZTAuwqXRJBGz+N3jA6+PfhS/UuUdNibh7nAZMofUg7UTNRBQnQN6kbnzOi4nty4bO+M=
+	t=1762388163; cv=none; b=EVaeNyUfp+8x6anUf/ZSzPPZ7/8bVkJDGevOpEpIU/ZH16zHuend+WNB7fdO1djuQm32wYJpVi0/Hnqbja8223I5ipE+taZRgZWaCgV0vjImxYG8nnh1CjBruOowtx9tVxFbkuY2bx5gJJdCHselNTyn4tlyAKVF6eOV+1qMKWY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762387133; c=relaxed/simple;
-	bh=twFpIo4KfTnKr3nXoYN9uYKscwGeun6j1FvX4UGvHgY=;
-	h=Date:To:From:Subject:Message-Id; b=Fp6D3g6DN0TLuqMtlGneSM1vgnuxDKXStPkth2PqKTU4fhlXKJ0knYyaYGWkHytHYI2K6Zu5PdhOaIVCrv+e0XqqRoQIpuFH9389Y4sKD4wD1BZ+RjW8Vpkoj/uptLm1kAMt3cxXZSvPOOqxRQVrV3soIS4QJsCYIiu88IuPoOk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Rg0MkhP7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFCC7C4CEF5;
-	Wed,  5 Nov 2025 23:58:52 +0000 (UTC)
+	s=arc-20240116; t=1762388163; c=relaxed/simple;
+	bh=vpvZSZzLzdraUQQ/g1o7QpFjj6rZwrlEdvaNOg+MtiM=;
+	h=Date:To:From:Subject:Message-Id; b=WjdNCjVkhZvaxGst4baz5JwgBW7BPTWOB3u9C9+jbhBgiiHPR5s60YzdkXSCwj638V2tqpWbL1fgzABM1oFFg7olx7fgjYV4Mm+M0Ij4OQ4FGELPYFuQFE583e5YJwnYKjCOlsMItn4WfIxzWVxZ/GpC/zRWKA0IwJR4g+Ja5Sk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=xnGxDBjP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6749C4CEF5;
+	Thu,  6 Nov 2025 00:16:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1762387132;
-	bh=twFpIo4KfTnKr3nXoYN9uYKscwGeun6j1FvX4UGvHgY=;
+	s=korg; t=1762388161;
+	bh=vpvZSZzLzdraUQQ/g1o7QpFjj6rZwrlEdvaNOg+MtiM=;
 	h=Date:To:From:Subject:From;
-	b=Rg0MkhP7Oc+c13iPVEA50KrILqNN7Eoy2rdPaOU41tIIe8qi+niQnicwvBjckXCYC
-	 a0xIg0EMV5KoGif8sQnj6F8w1Os971Hbt8eXPYlegI29jI0a5BODwgE4cY4q25AnlZ
-	 QxpNk7Bd8GqFH3tpqtJ7P17mPLHfM5g2IIjpiA0g=
-Date: Wed, 05 Nov 2025 15:58:52 -0800
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,ryan.roberts@arm.com,richard.weiyang@gmail.com,npache@redhat.com,lorenzo.stoakes@oracle.com,liam.howlett@oracle.com,lance.yang@linux.dev,dev.jain@arm.com,david@kernel.org,baolin.wang@linux.alibaba.com,baohua@kernel.org,ziy@nvidia.com,akpm@linux-foundation.org
+	b=xnGxDBjPL1VfEJLbVSTgwUaeiKEAEGPA2UyI7B2w55MU7oM6QjUfjRTz3GU+0zT2C
+	 BJzbntMmGg587TsAzmI5o894dT+zEUmi8Ho1UDlzdCkVPwCYsngiwwaZU0+r6tRBXi
+	 +cnVFFoOQ3rT3UZcPDr0IbPNnP4N/6rxeBZkrgXQ=
+Date: Wed, 05 Nov 2025 16:16:01 -0800
+To: mm-commits@vger.kernel.org,zohar@linux.ibm.com,stable@vger.kernel.org,roberto.sassu@huawei.com,graf@amazon.com,chenste@linux.microsoft.com,bhe@redhat.com,piliu@redhat.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-huge_memory-fix-folio-split-check-for-anon-folios-in-swapcache.patch added to mm-hotfixes-unstable branch
-Message-Id: <20251105235852.AFCC7C4CEF5@smtp.kernel.org>
+Subject: + kernel-kexec-change-the-prototype-of-kimage_map_segment.patch added to mm-hotfixes-unstable branch
+Message-Id: <20251106001601.C6749C4CEF5@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,12 +50,12 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The patch titled
-     Subject: mm/huge_memory: fix folio split check for anon folios in swapcache.
+     Subject: kernel/kexec: change the prototype of kimage_map_segment()
 has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-huge_memory-fix-folio-split-check-for-anon-folios-in-swapcache.patch
+     kernel-kexec-change-the-prototype-of-kimage_map_segment.patch
 
 This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-huge_memory-fix-folio-split-check-for-anon-folios-in-swapcache.patch
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/kernel-kexec-change-the-prototype-of-kimage_map_segment.patch
 
 This patch will later appear in the mm-hotfixes-unstable branch at
     git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
@@ -73,67 +73,96 @@ branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 and is updated there every 2-3 working days
 
 ------------------------------------------------------
-From: Zi Yan <ziy@nvidia.com>
-Subject: mm/huge_memory: fix folio split check for anon folios in swapcache.
-Date: Wed, 5 Nov 2025 11:29:10 -0500
+From: Pingfan Liu <piliu@redhat.com>
+Subject: kernel/kexec: change the prototype of kimage_map_segment()
+Date: Wed, 5 Nov 2025 21:09:21 +0800
 
-Both uniform and non uniform split check missed the check to prevent
-splitting anon folios in swapcache to non-zero order.  Fix the check.
+The kexec segment index will be required to extract the corresponding
+information for that segment in kimage_map_segment(). Additionally,
+kexec_segment already holds the kexec relocation destination address and
+size. Therefore, the prototype of kimage_map_segment() can be changed.
 
-Link: https://lkml.kernel.org/r/20251105162910.752266-1-ziy@nvidia.com
-Fixes: 58729c04cf10 ("mm/huge_memory: add buddy allocator like (non-uniform) folio_split()")
-Signed-off-by: Zi Yan <ziy@nvidia.com>
-Reported-by: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Closes: https://lore.kernel.org/all/dc0ecc2c-4089-484f-917f-920fdca4c898@kernel.org/
-Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Barry Song <baohua@kernel.org>
-Cc: Dev Jain <dev.jain@arm.com>
-Cc: Lance Yang <lance.yang@linux.dev>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Nico Pache <npache@redhat.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Wei Yang <richard.weiyang@gmail.com>
+Link: https://lkml.kernel.org/r/20251105130922.13321-1-piliu@redhat.com
+Fixes: 0091d9241ea2 ("kexec: define functions to map and unmap segments")
+Signed-off-by: Pingfan Liu <piliu@redhat.com>
+Cc: Baoquan He <bhe@redhat.com>
+Cc: Mimi Zohar <zohar@linux.ibm.com>
+Cc: Roberto Sassu <roberto.sassu@huawei.com>
+Cc: Alexander Graf <graf@amazon.com>
+Cc: Steven Chen <chenste@linux.microsoft.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- mm/huge_memory.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ include/linux/kexec.h              |    4 ++--
+ kernel/kexec_core.c                |    9 ++++++---
+ security/integrity/ima/ima_kexec.c |    4 +---
+ 3 files changed, 9 insertions(+), 8 deletions(-)
 
---- a/mm/huge_memory.c~mm-huge_memory-fix-folio-split-check-for-anon-folios-in-swapcache
-+++ a/mm/huge_memory.c
-@@ -3522,7 +3522,8 @@ bool non_uniform_split_supported(struct
- 		/* order-1 is not supported for anonymous THP. */
- 		VM_WARN_ONCE(warns && new_order == 1,
- 				"Cannot split to order-1 folio");
--		return new_order != 1;
-+		if (new_order == 1)
-+			return false;
- 	} else if (IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS) &&
- 	    !mapping_large_folio_support(folio->mapping)) {
- 		/*
-@@ -3553,7 +3554,8 @@ bool uniform_split_supported(struct foli
- 	if (folio_test_anon(folio)) {
- 		VM_WARN_ONCE(warns && new_order == 1,
- 				"Cannot split to order-1 folio");
--		return new_order != 1;
-+		if (new_order == 1)
-+			return false;
- 	} else  if (new_order) {
- 		if (IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS) &&
- 		    !mapping_large_folio_support(folio->mapping)) {
+--- a/include/linux/kexec.h~kernel-kexec-change-the-prototype-of-kimage_map_segment
++++ a/include/linux/kexec.h
+@@ -530,7 +530,7 @@ extern bool kexec_file_dbg_print;
+ #define kexec_dprintk(fmt, arg...) \
+         do { if (kexec_file_dbg_print) pr_info(fmt, ##arg); } while (0)
+ 
+-extern void *kimage_map_segment(struct kimage *image, unsigned long addr, unsigned long size);
++extern void *kimage_map_segment(struct kimage *image, int idx);
+ extern void kimage_unmap_segment(void *buffer);
+ #else /* !CONFIG_KEXEC_CORE */
+ struct pt_regs;
+@@ -540,7 +540,7 @@ static inline void __crash_kexec(struct
+ static inline void crash_kexec(struct pt_regs *regs) { }
+ static inline int kexec_should_crash(struct task_struct *p) { return 0; }
+ static inline int kexec_crash_loaded(void) { return 0; }
+-static inline void *kimage_map_segment(struct kimage *image, unsigned long addr, unsigned long size)
++static inline void *kimage_map_segment(struct kimage *image, int idx)
+ { return NULL; }
+ static inline void kimage_unmap_segment(void *buffer) { }
+ #define kexec_in_progress false
+--- a/kernel/kexec_core.c~kernel-kexec-change-the-prototype-of-kimage_map_segment
++++ a/kernel/kexec_core.c
+@@ -960,17 +960,20 @@ int kimage_load_segment(struct kimage *i
+ 	return result;
+ }
+ 
+-void *kimage_map_segment(struct kimage *image,
+-			 unsigned long addr, unsigned long size)
++void *kimage_map_segment(struct kimage *image, int idx)
+ {
++	unsigned long addr, size, eaddr;
+ 	unsigned long src_page_addr, dest_page_addr = 0;
+-	unsigned long eaddr = addr + size;
+ 	kimage_entry_t *ptr, entry;
+ 	struct page **src_pages;
+ 	unsigned int npages;
+ 	void *vaddr = NULL;
+ 	int i;
+ 
++	addr = image->segment[idx].mem;
++	size = image->segment[idx].memsz;
++	eaddr = addr + size;
++
+ 	/*
+ 	 * Collect the source pages and map them in a contiguous VA range.
+ 	 */
+--- a/security/integrity/ima/ima_kexec.c~kernel-kexec-change-the-prototype-of-kimage_map_segment
++++ a/security/integrity/ima/ima_kexec.c
+@@ -250,9 +250,7 @@ void ima_kexec_post_load(struct kimage *
+ 	if (!image->ima_buffer_addr)
+ 		return;
+ 
+-	ima_kexec_buffer = kimage_map_segment(image,
+-					      image->ima_buffer_addr,
+-					      image->ima_buffer_size);
++	ima_kexec_buffer = kimage_map_segment(image, image->ima_segment_index);
+ 	if (!ima_kexec_buffer) {
+ 		pr_err("Could not map measurements buffer.\n");
+ 		return;
 _
 
-Patches currently in -mm which might be from ziy@nvidia.com are
+Patches currently in -mm which might be from piliu@redhat.com are
 
-mm-huge_memory-do-not-change-split_huge_page-target-order-silently.patch
-mm-huge_memory-preserve-pg_has_hwpoisoned-if-a-folio-is-split-to-0-order.patch
-mm-huge_memory-fix-folio-split-check-for-anon-folios-in-swapcache.patch
-mm-huge_memory-add-split_huge_page_to_order.patch
-mm-memory-failure-improve-large-block-size-folio-handling.patch
-mm-huge_memory-fix-kernel-doc-comments-for-folio_split-and-related.patch
-mm-huge_memory-fix-kernel-doc-comments-for-folio_split-and-related-fix.patch
+kernel-kexec-change-the-prototype-of-kimage_map_segment.patch
+kernel-kexec-fix-ima-when-allocation-happens-in-cma-area.patch
 
 
