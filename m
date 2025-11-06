@@ -1,263 +1,127 @@
-Return-Path: <stable+bounces-192656-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192657-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EAEBC3DA2B
-	for <lists+stable@lfdr.de>; Thu, 06 Nov 2025 23:39:16 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A23ABC3DE4D
+	for <lists+stable@lfdr.de>; Fri, 07 Nov 2025 00:50:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 41ED43A59D7
-	for <lists+stable@lfdr.de>; Thu,  6 Nov 2025 22:39:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 48663188BAAB
+	for <lists+stable@lfdr.de>; Thu,  6 Nov 2025 23:51:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51E993446CB;
-	Thu,  6 Nov 2025 22:39:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9946234CFDF;
+	Thu,  6 Nov 2025 23:50:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fKKLEWGJ"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="WnLGc7xh"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28F9E3019A6
-	for <stable@vger.kernel.org>; Thu,  6 Nov 2025 22:39:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15B5C345CCE;
+	Thu,  6 Nov 2025 23:50:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762468746; cv=none; b=Gq0yWkc83gpaf+b7rXht5PExQnvUMPpSjewGT0y4pv2D+GL1lmbu2S1kcNfGfrCIr/xhTVtcN/QC1XmDbfpHPB3wwZbHftixFak0dob29U18y8Rp3agu6LR6vYncvdWArSw722P/jKYjqmvXahejMkP7rFT6LP3Q1naeDs265M0=
+	t=1762473031; cv=none; b=WjQWsyom7K3bRtniHT+fQgG082kC4rNNUBUqtlisB5N5zQwfc2ROX4q4JyLDueDtyZjJpf5b1o0svNAuQhnq8SMBNST/WCJ+lpM873RpD1QHC0/4vsWNK0tFOkJhELtUSLJoWypjYBA1YYb/Jn3bUXQ9yrUKOhFzWMXqABD/hTo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762468746; c=relaxed/simple;
-	bh=dQTtWWtvyzc2H7Lp6EdqwIpKqIiuFeQg6mnqpqIuOWQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DkMgyMnJvcDvelY2n5BPXi4Y/MPHhDPEbbWNoRLXVtJOB29wdgEK8LDMV0PcJNsHW+uWuDFR4S44S1aICVk6o2eP1tcrbBv+BIcFHWEfxTcqkq7rH+8yWZLx7GuhCsaS/Ev9Ihyviyh0UhdtGxUuQs0vqwHMlxkCAlUuhEa14kU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fKKLEWGJ; arc=none smtp.client-ip=209.85.128.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-470ffbf2150so477545e9.1
-        for <stable@vger.kernel.org>; Thu, 06 Nov 2025 14:39:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762468742; x=1763073542; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=MvmO56TQZyZt1WfBUK+dQBCPcTJ2tahvqZ92g11w3Cw=;
-        b=fKKLEWGJ/7fMoXWTubL8X9pvGzmsg4nOFuCC4yeDShjbzkLxFUOfXXvMjHtS0c9UU+
-         MIZpY4fObsWq6nPzeHss4IAfKDKx1FXZsDijTQr2/os0Ct2Bo87h8xBcYOvyJUnNSQgk
-         mjvCNPftz6EtaVJbNqSsGA6icjaq9h2bJY0RW5401PgiJQ7PQuXobqQiz5eeaNkAX7Yt
-         2mqV2pLsqWqG23HuWT0xeAca8WmO/nXGjqn9hiSaZSMic/ZxsGbCRJ5djKwTdooHcMkB
-         jzi9DvjPz8xIIv09bNPOL7yuncRdlH/R7eHL40cM8MMAhanEjX6cqRvMTmO9P1HvtSEY
-         3KGQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762468742; x=1763073542;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=MvmO56TQZyZt1WfBUK+dQBCPcTJ2tahvqZ92g11w3Cw=;
-        b=dFtoBd42BhNViaFXlBgHlGtYx65l3/vYDhnwOh6ofUQIaYB9B4LnrogtpPgmS/+q0d
-         le4qgE09dcDarP9t1ZtzVMqqRdFRUX2MNbAH1uGmcVK2cF8GOyDtWkthH/q+ly1/PN/+
-         vwBPfSz844nHaeyy3Ri/YdE4tQbxEVocRf/lqvGO33d9TBpkf27oje4BWDGOkfzYaLq3
-         eTKaEBF8UlyFrTSY/tpFkUAeZL2ffoB905jcwwqMRBDLKKjCInksbRsmYXyVjhALZTYO
-         dyiPcXC+fkE/dQbf26utNJDWk3AykgzWRhumcY0/BjsgTfAw5XzlAEknTHtSXZrf8/ez
-         MVvg==
-X-Gm-Message-State: AOJu0YyNTHGVGEWPpaoxM1FRDMSdHxEJgaMTLNi0Zm0wN8B0y9TqjT0a
-	lXu2CqHi6EL1wy0Ka2zSgUTyVek1OzRdFOId+u25zLQBsXcqODihoQSG
-X-Gm-Gg: ASbGnct+MqmDArxXgEAbF+0yu4pv7uB41zT65VGBb9CzM/mIABIZRoaIsP73EQ6dX/y
-	4ZxUlYPAL1rDt8oJ8swkYfMuMpSHq2ECCecfp5bfXS/MBbygXrUZO/HttI4lcrugh+3i4ysItUi
-	C7WUomlA7yoQiOBflIAnq0+78F0VoZN1+F4qpPjKNV2eOjCUCVir88TkLFOgEaUXePO+jtCqdj1
-	42hNZekeA1kqYGGQXPCL5PQ/fIO/C8VMb01HwA0YP+QQLg5Zr5C9SrFAlX0vAi+EjZTXULqTU2h
-	YKZi/CBEPuzwyrCYdh/3LH6dN2to5mum88jsHh2vvWb5OqxPsshUxlUA2Mf1VMpie394gGkXeGR
-	ZHpmJPfOD6dfmL6wav2uqZSN6pUHBlOnNX1nql7lTSa3xMReUL2o+Riph2cyzsguBXPr6/Vzh+N
-	t6QemIwI5kkIfWeh+8dEYIubWpu9oGDcBLMzno844YGL2u6UgoCsGz
-X-Google-Smtp-Source: AGHT+IGp9VK1FmwODmkxmuo6qaCaABfSmuo0fPuPW2x4aPOG29B3ENDgha+amSzqAdhMgYqm+thjug==
-X-Received: by 2002:a05:600c:a319:b0:471:611:c1e2 with SMTP id 5b1f17b1804b1-47761ffd202mr39663995e9.3.1762468742262;
-        Thu, 06 Nov 2025 14:39:02 -0800 (PST)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42abe64fd90sm1530134f8f.21.2025.11.06.14.39.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Nov 2025 14:39:01 -0800 (PST)
-Date: Thu, 6 Nov 2025 22:39:00 +0000
-From: David Laight <david.laight.linux@gmail.com>
-To: Chuck Lever <cel@kernel.org>
-Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>, Andrew Morton
- <akpm@linux-foundation.org>, David Laight <David.Laight@ACULAB.COM>, Linux
- NFS Mailing List <linux-nfs@vger.kernel.org>, Linux List Kernel Mailing
- <linux-kernel@vger.kernel.org>, speedcracker@hotmail.com
-Subject: Re: Compile Error fs/nfsd/nfs4state.o - clamp() low limit slotsize
- greater than high limit total_avail/scale_factor
-Message-ID: <20251106223900.3893d7d9@pumpkin>
-In-Reply-To: <8cf5dc85-dee8-4e83-8f83-6b3411dddbee@kernel.org>
-References: <bbba88825d7b2b06031c1b085d76787a2502d70e.camel@kernel.org>
-	<37bc1037-37d8-4168-afc9-da8e2d1dd26b@kernel.org>
-	<20251106192210.1b6a3ca0@pumpkin>
-	<8cf5dc85-dee8-4e83-8f83-6b3411dddbee@kernel.org>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	s=arc-20240116; t=1762473031; c=relaxed/simple;
+	bh=xBC6Hnm4q12qpMgYKu6iarDHwId//8HRoDyOwlnD8Go=;
+	h=Date:To:From:Subject:Message-Id; b=NX/Qu/Bmf/L/HZDw8TZ6ywxFhH/Wz0/nedBiyicXlkF58o39v+cJBnj1f3crG7HVChkqT4WxDl2Y29UqC4UoPaJBKf5rqoPls0GRuYZmjSBZ7eaPgfYy40fgeJilBUQivGDYk1zxAvFA5nyzRyGGtVNgYp7Frxa+2mb8BZWawqw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=WnLGc7xh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82FB0C19422;
+	Thu,  6 Nov 2025 23:50:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1762473030;
+	bh=xBC6Hnm4q12qpMgYKu6iarDHwId//8HRoDyOwlnD8Go=;
+	h=Date:To:From:Subject:From;
+	b=WnLGc7xhqWI2jUCCQiH00K3HSRkOKozaUg+6NAAtVR8c2R03QPBZptalC4vayhPw+
+	 gw+KUWJoWvzpdPorQWXcXhfj8PTPyBvGaPgD9TtZEb2tUtP0MH9AcClqGUsURDC+BK
+	 +21/rxev6WPixBFcw2FtBGq9xh1sfsCp8xJvmiWg=
+Date: Thu, 06 Nov 2025 15:50:29 -0800
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,rppt@kernel.org,pratyush@kernel.org,oliver.sang@intel.com,graf@amazon.com,pasha.tatashin@soleen.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + lib-test_kho-check-if-kho-is-enabled.patch added to mm-hotfixes-unstable branch
+Message-Id: <20251106235030.82FB0C19422@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
 
-On Thu, 6 Nov 2025 14:32:34 -0500
-Chuck Lever <cel@kernel.org> wrote:
 
-> On 11/6/25 2:22 PM, David Laight wrote:
-> > On Thu, 6 Nov 2025 09:33:28 -0500
-> > Chuck Lever <cel@kernel.org> wrote:
-> >   
-> >> FYI
-> >>
-> >> https://bugzilla.kernel.org/show_bug.cgi?id=220745  
-> > 
-> > Ugg - that code is horrid.
-> > It seems to have got deleted since, but it is:
-> > 
-> > 	u32 slotsize = slot_bytes(ca);
-> > 	u32 num = ca->maxreqs;
-> > 	unsigned long avail, total_avail;
-> > 	unsigned int scale_factor;
-> > 
-> > 	spin_lock(&nfsd_drc_lock);
-> > 	if (nfsd_drc_max_mem > nfsd_drc_mem_used)
-> > 		total_avail = nfsd_drc_max_mem - nfsd_drc_mem_used;
-> > 	else
-> > 		/* We have handed out more space than we chose in
-> > 		 * set_max_drc() to allow.  That isn't really a
-> > 		 * problem as long as that doesn't make us think we
-> > 		 * have lots more due to integer overflow.
-> > 		 */
-> > 		total_avail = 0;
-> > 	avail = min((unsigned long)NFSD_MAX_MEM_PER_SESSION, total_avail);
-> > 	/*
-> > 	 * Never use more than a fraction of the remaining memory,
-> > 	 * unless it's the only way to give this client a slot.
-> > 	 * The chosen fraction is either 1/8 or 1/number of threads,
-> > 	 * whichever is smaller.  This ensures there are adequate
-> > 	 * slots to support multiple clients per thread.
-> > 	 * Give the client one slot even if that would require
-> > 	 * over-allocation--it is better than failure.
-> > 	 */
-> > 	scale_factor = max_t(unsigned int, 8, nn->nfsd_serv->sv_nrthreads);
-> > 
-> > 	avail = clamp_t(unsigned long, avail, slotsize,
-> > 			total_avail/scale_factor);
-> > 	num = min_t(int, num, avail / slotsize);
-> > 	num = max_t(int, num, 1);
-> > 
-> > Lets rework it a bit...
-> > 	if (nfsd_drc_max_mem > nfsd_drc_mem_used) {
-> > 		total_avail = nfsd_drc_max_mem - nfsd_drc_mem_used;
-> > 		avail = min(NFSD_MAX_MEM_PER_SESSION, total_avail);
-> > 		avail = clamp(avail, n + sizeof(xxx), total_avail/8)
-> > 	} else {
-> > 		total_avail = 0;
-> > 		avail = 0;
-> > 		avail = clamp(0, n + sizeof(xxx), 0);
-> > 	}
-> > 
-> > Neither of those clamp() are sane at all - should be clamp(val, lo, hi)
-> > with 'lo <= hi' otherwise the result is dependant on the order of the
-> > comparisons.
-> > The compiler sees the second one and rightly bleats.
-> > I can't even guess what the code is actually trying to calculate!
-> > 
-> > Maybe looking at where the code came from, or the current version might help.  
-> 
-> The current upstream code is part of a new feature that is not
-> appropriate to backport to LTS kernels. I consider that code out of
-> play.
-> 
-> The compiler error showed up in 6.1.y with the recent minmax.h
-> changes -- there have been no reported problems in any of the LTS
-> kernels until now, including with 32-bit builds.
-> 
-> The usual guidelines about regressions suggest that the most recent
-> backports (ie, minmax.h) are the ones that should be removed or reworked
-> to address the compile breakage. I don't think we should address this by
-> writing special clean-ups to code that wasn't broken before the minmax.h
-> changes. Cleaning that code up is more likely to introduce bugs than
-> reverting the minmax.h changes.
+The patch titled
+     Subject: lib/test_kho: check if KHO is enabled
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     lib-test_kho-check-if-kho-is-enabled.patch
 
-No, that code needs fixing. It is broken.....
-The compiler warning/error is completely valid.
-The result of that clamp() has never been well defined.
-It is likely that it always generated the wrong result.
-It might be that a much older version of the function exists
-before someone changed a pair of conditionals to be a call to clamp().
-That old version may well be fine.
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/lib-test_kho-check-if-kho-is-enabled.patch
 
-	David
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-> 
-> 
-> > It MIGHT be that the 'lo' of slotsize was an attempt to ensure that
-> > the following 'avail / slotsize' was as least one.
-> > Some software archaeology might show that the 'num = max(num, 1)' was added
-> > because the code above didn't work.
-> > In that case the clamp can be clamp(avail, 0, total_avail/scale_factor)
-> > which is just min(avail, total_avail/scale_factor).
-> > 
-> > The person who rewrote it between 6.1 and 6.18 might now more.
-> > 
-> > 	David
-> > 	  
-> >>
-> >>
-> >> -------- Forwarded Message --------
-> >> Subject: Re: Compile Error fs/nfsd/nfs4state.o - clamp() low limit
-> >> slotsize greater than high limit total_avail/scale_factor
-> >> Date: Thu, 06 Nov 2025 07:29:25 -0500
-> >> From: Jeff Layton <jlayton@kernel.org>
-> >> To: Mike-SPC via Bugspray Bot <bugbot@kernel.org>, cel@kernel.org,
-> >> neilb@ownmail.net, trondmy@kernel.org, linux-nfs@vger.kernel.org,
-> >> anna@kernel.org, neilb@brown.name
-> >>
-> >> On Thu, 2025-11-06 at 11:30 +0000, Mike-SPC via Bugspray Bot wrote:  
-> >>> Mike-SPC writes via Kernel.org Bugzilla:
-> >>>
-> >>> (In reply to Bugspray Bot from comment #5)    
-> >>>> Chuck Lever <cel@kernel.org> replies to comment #4:
-> >>>>
-> >>>> On 11/5/25 7:25 AM, Mike-SPC via Bugspray Bot wrote:    
-> >>>>> Mike-SPC writes via Kernel.org Bugzilla:
-> >>>>>     
-> >>>>>> Have you found a 6.1.y kernel for which the build doesn't fail?    
-> >>>>>
-> >>>>> Yes. Compiling Version 6.1.155 works without problems.
-> >>>>> Versions >= 6.1.156 aren't.    
-> >>>>
-> >>>> My analysis yesterday suggests that, because the nfs4state.c code hasn't
-> >>>> changed, it's probably something elsewhere that introduced this problem.
-> >>>> As we can't reproduce the issue, can you use "git bisect" between
-> >>>> v6.1.155 and v6.1.156 to find the culprit commit?
-> >>>>
-> >>>> (via https://msgid.link/ab235dbe-7949-4208-a21a-2cdd50347152@kernel.org)    
-> >>>
-> >>>
-> >>> Yes, your analysis is right (thanks for it).
-> >>> After some investigation, the issue appears to be caused by changes introduced in
-> >>> include/linux/minmax.h.
-> >>>
-> >>> I verified this by replacing minmax.h in 6.1.156 with the version from 6.1.155,
-> >>> and the kernel then compiles successfully.
-> >>>
-> >>> The relevant section in the 6.1.156 changelog (https://cdn.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.1.156) shows several modifications to minmax.h (notably around __clamp_once() and the use of
-> >>> BUILD_BUG_ON_MSG(statically_true(ulo > uhi), ...)), which seem to trigger a compile-time assertion when building NFSD.
-> >>>
-> >>> Replacing the updated header with the previous one resolves the issue, so this appears
-> >>> to be a regression introduced by the new clamp() logic.
-> >>>
-> >>> Could you please advise who is the right person or mailing list to report this issue to
-> >>> (minmax.h maintainers, kernel core, or stable tree)?
-> >>>     
-> >>
-> >> I'd let all 3 know, and I'd include the author of the patches that you
-> >> suspect are the problem. They'll probably want to revise the one that's
-> >> a problem.
-> >>
-> >> Cheers,  
-> >   
-> 
-> 
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+Subject: lib/test_kho: check if KHO is enabled
+Date: Thu, 6 Nov 2025 17:06:35 -0500
+
+We must check whether KHO is enabled prior to issuing KHO commands,
+otherwise KHO internal data structures are not initialized.
+
+Link: https://lkml.kernel.org/r/20251106220635.2608494-1-pasha.tatashin@soleen.com
+Fixes: b753522bed0b ("kho: add test for kexec handover")
+Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+Reported-by: kernel test robot <oliver.sang@intel.com>
+Closes: https://lore.kernel.org/oe-lkp/202511061629.e242724-lkp@intel.com
+Cc: Alexander Graf <graf@amazon.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Pratyush Yadav <pratyush@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ lib/test_kho.c |    3 +++
+ 1 file changed, 3 insertions(+)
+
+--- a/lib/test_kho.c~lib-test_kho-check-if-kho-is-enabled
++++ a/lib/test_kho.c
+@@ -301,6 +301,9 @@ static int __init kho_test_init(void)
+ 	phys_addr_t fdt_phys;
+ 	int err;
+ 
++	if (!kho_is_enabled())
++		return 0;
++
+ 	err = kho_retrieve_subtree(KHO_TEST_FDT, &fdt_phys);
+ 	if (!err)
+ 		return kho_test_restore(fdt_phys);
+_
+
+Patches currently in -mm which might be from pasha.tatashin@soleen.com are
+
+liveupdate-kho-warn-and-fail-on-metadata-or-preserved-memory-in-scratch-area.patch
+liveupdate-kho-warn-and-fail-on-metadata-or-preserved-memory-in-scratch-area-fix-2.patch
+liveupdate-kho-increase-metadata-bitmap-size-to-page_size.patch
+liveupdate-kho-allocate-metadata-directly-from-the-buddy-allocator.patch
+lib-test_kho-check-if-kho-is-enabled.patch
+kho-make-debugfs-interface-optional.patch
+kho-add-interfaces-to-unpreserve-folios-page-ranges-and-vmalloc.patch
+memblock-unpreserve-memory-in-case-of-error.patch
+test_kho-unpreserve-memory-in-case-of-error.patch
+kho-dont-unpreserve-memory-during-abort.patch
+liveupdate-kho-move-to-kernel-liveupdate.patch
+maintainers-update-kho-maintainers.patch
 
 
