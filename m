@@ -1,158 +1,221 @@
-Return-Path: <stable+bounces-192643-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192644-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56EFEC3D3FB
-	for <lists+stable@lfdr.de>; Thu, 06 Nov 2025 20:32:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8135C3D401
+	for <lists+stable@lfdr.de>; Thu, 06 Nov 2025 20:32:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B99593AED78
-	for <lists+stable@lfdr.de>; Thu,  6 Nov 2025 19:32:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 53A0918966B4
+	for <lists+stable@lfdr.de>; Thu,  6 Nov 2025 19:33:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B63B2D8798;
-	Thu,  6 Nov 2025 19:32:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E78D92D9EE2;
+	Thu,  6 Nov 2025 19:32:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uhdO2rCK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OyAtUapj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E521929BDB4;
-	Thu,  6 Nov 2025 19:32:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BBF32192EE;
+	Thu,  6 Nov 2025 19:32:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762457540; cv=none; b=VnSxEprS4FA4AtTjCMRhoqSe2zNs7N5LRY1DId6iT8Vf0HJFfp+wExyD3iYZm7m/DbVePM55TXEw53fC6wN5WwsmX+Lt6MCiNrN1g4oPzQNqc3hQf+kisJoTw5+jNySzOTsDgwcwz2z/oiF6b+ch9tAfDw1wx/mCM155CAM8XZY=
+	t=1762457556; cv=none; b=L0W7xB9G9HPloko5LGrmjjsUv623ClzZK7TPe9/SoPfWoNGaDgagSIRfMJEEJOI/I6v2RW4vKEtcnumT9ICNmoUQckDj4mbOXy0Wez3N7FU0balz9MfhVsad1Q6U7Q+CCCC00Zwpm8M9pvKsfxpiSu5HjapdkRk1C4piixj2P50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762457540; c=relaxed/simple;
-	bh=Ni+Z5fTEF+YJcvFBiJo8VsFjNREBSsxC1Q0KaC1UIhc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=vB+X6trhKaGvS5Ykt9tqO6RVKDM0Zg3nYK97sVlFBlmwONeyWAQNTeD4iwiI0KNfgQ5JRIuDV6aTtN+napy1rhgempVmd87h1RenvtiERCLYEtxnTjOQN/uK58GJ+EL9nxaN1UTKMBNKfL6Hr40tYkkXbMdF5BsnVP2mVNQDzG4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uhdO2rCK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E8D4C4CEF7;
-	Thu,  6 Nov 2025 19:32:19 +0000 (UTC)
+	s=arc-20240116; t=1762457556; c=relaxed/simple;
+	bh=wihSTnkFXhy5/fis4z4HZGvN91Ktb4fLONbT7S8xWpE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=i1Ag5/IlfW+Li5S32NrtnSa+WQT7GICxgsCHeF9jUshC/H02wwpXG9zL0muHhQuYicXWY+j4U6pY9pHYfN0xXkqMxFOfliYkS+epIRA6XQIwyq7CSemN1X1Npv4eUWjr8XK9gpo9o48HjJtSQNMopajnoRcC5LvNl9tgRdq/YIA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OyAtUapj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7A77C116B1;
+	Thu,  6 Nov 2025 19:32:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762457539;
-	bh=Ni+Z5fTEF+YJcvFBiJo8VsFjNREBSsxC1Q0KaC1UIhc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=uhdO2rCKwc+m0T3GRreLTpCoc5sP9T/rvc7JdYXyMVyq9t2UIeMfwKwuGrCedb4mB
-	 IulL3ag5sFDPptex2EzW0EpD0C0vaHM4pFM9NJqPBFNscAzd1ENQpBWjb5Rtvk/aN5
-	 oXL/G0M/75n99PNK2nMXN/TnxshE1hxmrxDGghvhJt7jFBkXcdeSRoE/3mnmMfgcyi
-	 Wpmlp58KBHu2T1JC4KaisdmcrtrUpEFDYF0E1+w7LhE65Yr6GA4/4z+dwatO7Befqr
-	 u3ljs477WayN0WliI2TP/lfQ1Po/+bUuYbJTv8CgKgBAC9e+Cm3pSzB+ULcD2lDAG9
-	 EIXUKO2Dz1ljg==
-Date: Thu, 6 Nov 2025 11:32:18 -0800
-From: Kees Cook <kees@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Naresh Kamboju <naresh.kamboju@linaro.org>, stable@vger.kernel.org,
-	patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org, akpm@linux-foundation.org,
-	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
-	hargar@microsoft.com, broonie@kernel.org,
-	Russell King - ARM Linux <linux@armlinux.org.uk>,
-	"James E.J. Bottomley" <jejb@linux.ibm.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Valdis =?utf-8?Q?Kl=C4=93tnieks?= <valdis.kletnieks@vt.edu>
-Subject: Re: [PATCH 5.15 000/411] 5.15.186-rc1 review
-Message-ID: <202511061127.52ECA4AB40@keescook>
-References: <20250623130632.993849527@linuxfoundation.org>
- <CA+G9fYuU5uSG1MKdYPoaC6O=-w5z6BtLtwd=+QBzrtZ1uQ8VXg@mail.gmail.com>
- <2025062439-tamer-diner-68e9@gregkh>
- <CA+G9fYvUG9=yGCp1W9-9+dhA6xLRo7mrL=7x9kBNJmzg7TCn7w@mail.gmail.com>
- <2025062517-lucrative-justness-83fe@gregkh>
+	s=k20201202; t=1762457556;
+	bh=wihSTnkFXhy5/fis4z4HZGvN91Ktb4fLONbT7S8xWpE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=OyAtUapjtDpyKFoDldaMJa+VnyboN2vy6fCqEDoy+3nWV13qJej4AVLFxuvU6/1BR
+	 04oC11JrryRpjtiol5Gs3KG3uELtZMPOHSsKHVIgVxBFBP+hZTR8nnAhg4d7ej/yTC
+	 LkZtEuyjfJA4EfzZx98rcAW23h6A7T2f8RiVVuXh15w4t8lVi3Bno93iGw3pe6Gp6e
+	 ePa4/tvq7lDzRi00FD39hWH1qIrudnAZXo7v2FGFn+AogjuKW+k1Dy9hPThTxgd7Sh
+	 ykE95u1AfnsJmFCBPFO0br2OJhAOBB9Y8+FPtwq23baxusCKIGZyaUcuGNfbXnTUZx
+	 h0SZjegJMEIxw==
+Message-ID: <8cf5dc85-dee8-4e83-8f83-6b3411dddbee@kernel.org>
+Date: Thu, 6 Nov 2025 14:32:34 -0500
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2025062517-lucrative-justness-83fe@gregkh>
+User-Agent: Mozilla Thunderbird
+Subject: Re: Compile Error fs/nfsd/nfs4state.o - clamp() low limit slotsize
+ greater than high limit total_avail/scale_factor
+To: David Laight <david.laight.linux@gmail.com>
+Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Laight <David.Laight@ACULAB.COM>,
+ Linux NFS Mailing List <linux-nfs@vger.kernel.org>,
+ Linux List Kernel Mailing <linux-kernel@vger.kernel.org>,
+ speedcracker@hotmail.com
+References: <bbba88825d7b2b06031c1b085d76787a2502d70e.camel@kernel.org>
+ <37bc1037-37d8-4168-afc9-da8e2d1dd26b@kernel.org>
+ <20251106192210.1b6a3ca0@pumpkin>
+Content-Language: en-US
+From: Chuck Lever <cel@kernel.org>
+Organization: kernel.org
+In-Reply-To: <20251106192210.1b6a3ca0@pumpkin>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, Jun 25, 2025 at 09:39:45AM +0100, Greg Kroah-Hartman wrote:
-> On Wed, Jun 25, 2025 at 07:15:24AM +0530, Naresh Kamboju wrote:
-> > On Tue, 24 Jun 2025 at 15:48, Greg Kroah-Hartman
-> > <gregkh@linuxfoundation.org> wrote:
-> > >
-> > > On Tue, Jun 24, 2025 at 02:12:05AM +0530, Naresh Kamboju wrote:
-> > > > On Mon, 23 Jun 2025 at 18:39, Greg Kroah-Hartman
-> > > > <gregkh@linuxfoundation.org> wrote:
-> > > > >
-> > > > > This is the start of the stable review cycle for the 5.15.186 release.
-> > > > > There are 411 patches in this series, all will be posted as a response
-> > > > > to this one.  If anyone has any issues with these being applied, please
-> > > > > let me know.
-> > > > >
-> > > > > Responses should be made by Wed, 25 Jun 2025 13:05:51 +0000.
-> > > > > Anything received after that time might be too late.
-> > > > >
-> > > > > The whole patch series can be found in one patch at:
-> > > > >         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.186-rc1.gz
-> > > > > or in the git tree and branch at:
-> > > > >         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
-> > > > > and the diffstat can be found below.
-> > > > >
-> > > > > thanks,
-> > > > >
-> > > > > greg k-h
-> > > >
-> > > > Regressions on arm64 allyesconfig builds with gcc-12 and clang failed on
-> > > > the Linux stable-rc 5.15.186-rc1.
-> > > >
-> > > > Regressions found on arm64
-> > > > * arm64, build
-> > > >   - gcc-12-allyesconfig
-> > > >
-> > > > Regression Analysis:
-> > > >  - New regression? Yes
-> > > >  - Reproducibility? Yes
-> > > >
-> > > > Build regression: stable-rc 5.15.186-rc1 arm64
-> > > > drivers/scsi/qedf/qedf_main.c:702:9: error: positional initialization
-> > > > of field in 'struct' declared with 'designated_init' attribute
-> > > >
-> > > > Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-> > > >
-> > > > ## Build errors
-> > > > drivers/scsi/qedf/qedf_main.c:702:9: error: positional initialization
-> > > > of field in 'struct' declared with 'designated_init' attribute
-> > > > [-Werror=designated-init]
-> > > >   702 |         {
-> > > >       |         ^
-> > > > drivers/scsi/qedf/qedf_main.c:702:9: note: (near initialization for
-> > > > 'qedf_cb_ops')
-> > > > cc1: all warnings being treated as errors
-> > >
-> > > I saw this locally, at times, it's random, not always showing up.  Turn
-> > > off the gcc randconfig build option and it goes away, which explains the
-> > > randomness I guess.
-> > >
-> > > If you can bisect this to a real change that causes it, please let me
-> > > know, I couldn't figure it out and so just gave up as I doubt anyone is
-> > > really using that gcc plugin for that kernel version.
-> > 
-> > You are right !
-> > The reported arm64 allyesconfig build failures are due to,
-> > 
-> >   randstruct: gcc-plugin: Remove bogus void member
-> >   [ Upstream commit e136a4062174a9a8d1c1447ca040ea81accfa6a8 ]
+On 11/6/25 2:22 PM, David Laight wrote:
+> On Thu, 6 Nov 2025 09:33:28 -0500
+> Chuck Lever <cel@kernel.org> wrote:
 > 
-> Thanks for the bisection, for some reason that wasn't working for me.
-> I've dropped this, and the other randstruct change from 5.15.y and older
-> kernels now.
+>> FYI
+>>
+>> https://bugzilla.kernel.org/show_bug.cgi?id=220745
+> 
+> Ugg - that code is horrid.
+> It seems to have got deleted since, but it is:
+> 
+> 	u32 slotsize = slot_bytes(ca);
+> 	u32 num = ca->maxreqs;
+> 	unsigned long avail, total_avail;
+> 	unsigned int scale_factor;
+> 
+> 	spin_lock(&nfsd_drc_lock);
+> 	if (nfsd_drc_max_mem > nfsd_drc_mem_used)
+> 		total_avail = nfsd_drc_max_mem - nfsd_drc_mem_used;
+> 	else
+> 		/* We have handed out more space than we chose in
+> 		 * set_max_drc() to allow.  That isn't really a
+> 		 * problem as long as that doesn't make us think we
+> 		 * have lots more due to integer overflow.
+> 		 */
+> 		total_avail = 0;
+> 	avail = min((unsigned long)NFSD_MAX_MEM_PER_SESSION, total_avail);
+> 	/*
+> 	 * Never use more than a fraction of the remaining memory,
+> 	 * unless it's the only way to give this client a slot.
+> 	 * The chosen fraction is either 1/8 or 1/number of threads,
+> 	 * whichever is smaller.  This ensures there are adequate
+> 	 * slots to support multiple clients per thread.
+> 	 * Give the client one slot even if that would require
+> 	 * over-allocation--it is better than failure.
+> 	 */
+> 	scale_factor = max_t(unsigned int, 8, nn->nfsd_serv->sv_nrthreads);
+> 
+> 	avail = clamp_t(unsigned long, avail, slotsize,
+> 			total_avail/scale_factor);
+> 	num = min_t(int, num, avail / slotsize);
+> 	num = max_t(int, num, 1);
+> 
+> Lets rework it a bit...
+> 	if (nfsd_drc_max_mem > nfsd_drc_mem_used) {
+> 		total_avail = nfsd_drc_max_mem - nfsd_drc_mem_used;
+> 		avail = min(NFSD_MAX_MEM_PER_SESSION, total_avail);
+> 		avail = clamp(avail, n + sizeof(xxx), total_avail/8)
+> 	} else {
+> 		total_avail = 0;
+> 		avail = 0;
+> 		avail = clamp(0, n + sizeof(xxx), 0);
+> 	}
+> 
+> Neither of those clamp() are sane at all - should be clamp(val, lo, hi)
+> with 'lo <= hi' otherwise the result is dependant on the order of the
+> comparisons.
+> The compiler sees the second one and rightly bleats.
+> I can't even guess what the code is actually trying to calculate!
+> 
+> Maybe looking at where the code came from, or the current version might help.
 
-This thread got pointed out to me. You can put this back in if you want;
-you just need the other associated fix (which had a bit of an obscure
-Fixes tag):
+The current upstream code is part of a new feature that is not
+appropriate to backport to LTS kernels. I consider that code out of
+play.
 
-d8720235d5b5 ("scsi: qedf: Use designated initializer for struct qed_fcoe_cb_ops")
+The compiler error showed up in 6.1.y with the recent minmax.h
+changes -- there have been no reported problems in any of the LTS
+kernels until now, including with 32-bit builds.
 
--Kees
+The usual guidelines about regressions suggest that the most recent
+backports (ie, minmax.h) are the ones that should be removed or reworked
+to address the compile breakage. I don't think we should address this by
+writing special clean-ups to code that wasn't broken before the minmax.h
+changes. Cleaning that code up is more likely to introduce bugs than
+reverting the minmax.h changes.
+
+
+> It MIGHT be that the 'lo' of slotsize was an attempt to ensure that
+> the following 'avail / slotsize' was as least one.
+> Some software archaeology might show that the 'num = max(num, 1)' was added
+> because the code above didn't work.
+> In that case the clamp can be clamp(avail, 0, total_avail/scale_factor)
+> which is just min(avail, total_avail/scale_factor).
+> 
+> The person who rewrote it between 6.1 and 6.18 might now more.
+> 
+> 	David
+> 	
+>>
+>>
+>> -------- Forwarded Message --------
+>> Subject: Re: Compile Error fs/nfsd/nfs4state.o - clamp() low limit
+>> slotsize greater than high limit total_avail/scale_factor
+>> Date: Thu, 06 Nov 2025 07:29:25 -0500
+>> From: Jeff Layton <jlayton@kernel.org>
+>> To: Mike-SPC via Bugspray Bot <bugbot@kernel.org>, cel@kernel.org,
+>> neilb@ownmail.net, trondmy@kernel.org, linux-nfs@vger.kernel.org,
+>> anna@kernel.org, neilb@brown.name
+>>
+>> On Thu, 2025-11-06 at 11:30 +0000, Mike-SPC via Bugspray Bot wrote:
+>>> Mike-SPC writes via Kernel.org Bugzilla:
+>>>
+>>> (In reply to Bugspray Bot from comment #5)  
+>>>> Chuck Lever <cel@kernel.org> replies to comment #4:
+>>>>
+>>>> On 11/5/25 7:25 AM, Mike-SPC via Bugspray Bot wrote:  
+>>>>> Mike-SPC writes via Kernel.org Bugzilla:
+>>>>>   
+>>>>>> Have you found a 6.1.y kernel for which the build doesn't fail?  
+>>>>>
+>>>>> Yes. Compiling Version 6.1.155 works without problems.
+>>>>> Versions >= 6.1.156 aren't.  
+>>>>
+>>>> My analysis yesterday suggests that, because the nfs4state.c code hasn't
+>>>> changed, it's probably something elsewhere that introduced this problem.
+>>>> As we can't reproduce the issue, can you use "git bisect" between
+>>>> v6.1.155 and v6.1.156 to find the culprit commit?
+>>>>
+>>>> (via https://msgid.link/ab235dbe-7949-4208-a21a-2cdd50347152@kernel.org)  
+>>>
+>>>
+>>> Yes, your analysis is right (thanks for it).
+>>> After some investigation, the issue appears to be caused by changes introduced in
+>>> include/linux/minmax.h.
+>>>
+>>> I verified this by replacing minmax.h in 6.1.156 with the version from 6.1.155,
+>>> and the kernel then compiles successfully.
+>>>
+>>> The relevant section in the 6.1.156 changelog (https://cdn.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.1.156) shows several modifications to minmax.h (notably around __clamp_once() and the use of
+>>> BUILD_BUG_ON_MSG(statically_true(ulo > uhi), ...)), which seem to trigger a compile-time assertion when building NFSD.
+>>>
+>>> Replacing the updated header with the previous one resolves the issue, so this appears
+>>> to be a regression introduced by the new clamp() logic.
+>>>
+>>> Could you please advise who is the right person or mailing list to report this issue to
+>>> (minmax.h maintainers, kernel core, or stable tree)?
+>>>   
+>>
+>> I'd let all 3 know, and I'd include the author of the patches that you
+>> suspect are the problem. They'll probably want to revise the one that's
+>> a problem.
+>>
+>> Cheers,
+> 
+
 
 -- 
-Kees Cook
+Chuck Lever
 
