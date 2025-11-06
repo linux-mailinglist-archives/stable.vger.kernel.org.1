@@ -1,144 +1,130 @@
-Return-Path: <stable+bounces-192620-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192621-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CE0FC3BCA0
-	for <lists+stable@lfdr.de>; Thu, 06 Nov 2025 15:37:17 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A481C3BCC7
+	for <lists+stable@lfdr.de>; Thu, 06 Nov 2025 15:38:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2DD203AD2D1
-	for <lists+stable@lfdr.de>; Thu,  6 Nov 2025 14:30:55 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 040D64E6F88
+	for <lists+stable@lfdr.de>; Thu,  6 Nov 2025 14:35:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61ACA330B37;
-	Thu,  6 Nov 2025 14:30:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0ACE33FE39;
+	Thu,  6 Nov 2025 14:33:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EzuJ97SJ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U8u3gMiq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DE17316917;
-	Thu,  6 Nov 2025 14:30:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56FAD31A80D;
+	Thu,  6 Nov 2025 14:33:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762439452; cv=none; b=RDcZrekmbHUpQ045md21q/oAK8PPdVHhNzMV9S542kEmeVt9J2A+fYBvtS+W/dA5R10I6NQGd70nVCc6wbjLI0aYY4lPxe5AIqCK+wFQ/l28IDno1+x4pMl9K6unS1MiVgZEPh54TMuzMn5G1oLCSBaPd4hUO6zQT1U8CHRZQMI=
+	t=1762439610; cv=none; b=VigLvWoFi4D36LBM+zt7Cx/aPLeMs+rAzq/zoSYg3ItO2Or5w4QruSAP7w928pGd3UA5lnO1m15RURX4wkdOfiPYMTJV0hhO6tMD38/E7ZHTeDlBx85v2652JkAtJfasOCj9J8n+FbibTztx2RQBj5xhGlP2yruwPhOn1XdHAF4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762439452; c=relaxed/simple;
-	bh=L/D8ee34O53V0DNFftxrKG/q/JXHWIs1+rb2xlV45Us=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hdbUfcjf62LAxVKd+XWSiBRUOeO0NWfcosLr0RFPJUNti/H95EVftcgmGUaSRXQbCzRUmZGt7MmA8nE4RCxGAliCPxo4V+yWreUCpYs/vuYpMWIi/w5uHlaHU23bPdr4GHMxY8m2yy5WnBGdK88S8i0SdqZFQgBHbeICXibl0dg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EzuJ97SJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72A7DC4CEFB;
-	Thu,  6 Nov 2025 14:30:51 +0000 (UTC)
+	s=arc-20240116; t=1762439610; c=relaxed/simple;
+	bh=0wSHlM09iOhzFBw498LhHwkOc0mjGo5Tmr0ceb2EkkQ=;
+	h=Message-ID:Date:MIME-Version:Subject:References:To:Cc:From:
+	 In-Reply-To:Content-Type; b=M0sBXDZIySaDFCdZs3udkBdBfidqW5z3VVw6xE8rGEoL3M0Xf1YS6YP6a9KT2t2q0+KHwfVCyccDBWpzTzpBuA38EW60EZccbnudiCTxG4ErcQH/qQAgfcQdZndiDeztH1+hZq+7Q87Vr2qo5eruTHD/YemNUMawQI83xIEYe9c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U8u3gMiq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69460C116D0;
+	Thu,  6 Nov 2025 14:33:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762439451;
-	bh=L/D8ee34O53V0DNFftxrKG/q/JXHWIs1+rb2xlV45Us=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=EzuJ97SJvebkljU7wy0T9WyiO0+cKmTNAsjaLSUsbqaGEtC3ef0poAF5H3X38krR4
-	 eLHW6KMQFBuuaOYb3GEYuC2mBHeoO5yHG1YLFKxknuKlM9CeW1T3QsPlgsHVhbzWsd
-	 fCdtsvohOclb2YZh8aGSO9qdp2IQZNNfbVLOAhouDOINlT0uBvNPw7KTgy6f8B61ch
-	 sHPmkIj0vonaUsjCQbx1wJyORke6YiBgHy/05UtBuAE8FgTqJd101q3ZnWfjgx8ZO9
-	 FO0dUhGVYWFRy+S3kOOiRy57j64cEE3b6S+pXhXsYycU8redLZchPM/0R9Xw7lvsqj
-	 WpBh5NcRS2e3A==
-Date: Thu, 6 Nov 2025 09:30:50 -0500
-From: Sasha Levin <sashal@kernel.org>
-To: "Barry K. Nathan" <barryn@pobox.com>
-Cc: patches@lists.linux.dev, stable@vger.kernel.org,
-	Takashi Iwai <tiwai@suse.de>,
-	syzbot+c3dbc239259940ededba@syzkaller.appspotmail.com,
-	alexandre.f.demers@gmail.com, alexander.deucher@amd.com
-Subject: Re: [PATCH AUTOSEL 6.17-5.15] ALSA: seq: Fix KCSAN data-race warning
- at snd_seq_fifo_poll_wait()
-Message-ID: <aQyxGrttI4OERR96@laps>
-References: <20251025160905.3857885-1-sashal@kernel.org>
- <20251025160905.3857885-60-sashal@kernel.org>
- <4f94b13f-e1f8-49bc-b0c7-bcc3eed5cca9@pobox.com>
+	s=k20201202; t=1762439610;
+	bh=0wSHlM09iOhzFBw498LhHwkOc0mjGo5Tmr0ceb2EkkQ=;
+	h=Date:Subject:References:To:Cc:From:In-Reply-To:From;
+	b=U8u3gMiqvXcE1IVfbLOWbXBxDliYkBclkIbFGDvc5MONPdchzOilNcljsqoyDv0hR
+	 JpFKc4yim6QUNcoczIQvUPbIWNt+2xmDspxvTRy6VnWMDFYLZt78gifNCiKPg6D3tD
+	 3sSCfERfI6JAJMfb+SH6Zz0IpQpQYIsRC1eQWcd6IXmcVH+VT3ni9D1iiU5dvLoXJe
+	 Pk+ImE01klQuuCURJ0G2ToPr30+BpZ4Iew2RCXkDLWLDzL4buaPHWSawgTAdfIeF3j
+	 iBbysaiXiwJNxHSAG2qTwxpa3rm5COFBZ2HD0mB1XfvQhz5lRJPAt7rk9QKydaw5v7
+	 GYqlKi1oT/1XQ==
+Message-ID: <37bc1037-37d8-4168-afc9-da8e2d1dd26b@kernel.org>
+Date: Thu, 6 Nov 2025 09:33:28 -0500
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <4f94b13f-e1f8-49bc-b0c7-bcc3eed5cca9@pobox.com>
+User-Agent: Mozilla Thunderbird
+Subject: Fwd: Compile Error fs/nfsd/nfs4state.o - clamp() low limit slotsize
+ greater than high limit total_avail/scale_factor
+References: <bbba88825d7b2b06031c1b085d76787a2502d70e.camel@kernel.org>
+Content-Language: en-US
+To: "stable@vger.kernel.org" <stable@vger.kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Laight <David.Laight@ACULAB.COM>
+Cc: Linux NFS Mailing List <linux-nfs@vger.kernel.org>,
+ Linux List Kernel Mailing <linux-kernel@vger.kernel.org>,
+ speedcracker@hotmail.com
+From: Chuck Lever <cel@kernel.org>
+Organization: kernel.org
+In-Reply-To: <bbba88825d7b2b06031c1b085d76787a2502d70e.camel@kernel.org>
+X-Forwarded-Message-Id: <bbba88825d7b2b06031c1b085d76787a2502d70e.camel@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, Nov 06, 2025 at 12:49:37AM -0800, Barry K. Nathan wrote:
->On 10/25/25 08:54, Sasha Levin wrote:
->>From: Takashi Iwai <tiwai@suse.de>
->>
->>[ Upstream commit 1f9fc89cbbe8a7a8648ea2f827f7d8590e62e52c ]
->>
->>snd_seq_fifo_poll_wait() evaluates f->cells without locking after
->>poll_wait(), and KCSAN doesn't like it as it appears to be a
->>data-race.  Although this doesn't matter much in practice as the value
->>is volatile, it's still better to address it for the mind piece.
->>
->>Wrap it with f->lock spinlock for avoiding the potential data race.
->>
->>Reported-by: syzbot+c3dbc239259940ededba@syzkaller.appspotmail.com
->>Link: https://syzkaller.appspot.com/bug?extid=c3dbc239259940ededba
->>Signed-off-by: Takashi Iwai <tiwai@suse.de>
->>Signed-off-by: Sasha Levin <sashal@kernel.org>
->>---
->>
->>LLM Generated explanations, may be completely bogus:
->>
->>YES
->>- The only runtime change wraps the `f->cells` check in
->>   `snd_seq_fifo_poll_wait()` with `guard(spinlock_irq)(&f->lock)`
->>   (`sound/core/seq/seq_fifo.c:213`), aligning this reader with every
->>   writer of `f->cells`, each of which already holds `f->lock` via
->>   `scoped_guard(spinlock_irqsave)` or explicit `spin_lock_irqsave`
->>   (`sound/core/seq/seq_fifo.c:125`, `sound/core/seq/seq_fifo.c:183`).
->>   That removes the unlocked load which KCSAN flagged as a real data race
->>   on the non-atomic `int` counter.
->>- This race is user-visible: if `snd_seq_fifo_poll_wait()` races with a
->>   concurrent producer/consumer, the poll mask built in `snd_seq_poll()`
->>   (`sound/core/seq/seq_clientmgr.c:1092-1106`) can sporadically omit
->>   `EPOLLIN`, leaving sequencer clients to sleep despite queued events.
->>   On weakly ordered architectures that behavior is not just theoretical;
->>   racing non-atomic accesses are undefined in the kernel memory model
->>   and trigger syzbot reports.
->>- The fix is minimal, self-contained, and mirrors existing guard usage
->>   in this file, so it has negligible regression risk: the lock is
->>   already part of the FIFO hot path, RAII unlock occurs immediately on
->>   return, and there are no new dependencies or API changes.
->>- Because the bug allows incorrect poll readiness and trips KCSAN, it
->>   meets stable criteria (user-visible correctness plus sanitizer
->>   warning) and applies cleanly to older trees that already contain the
->>   guard helpers used elsewhere in this file.
->>
->>Suggested next step: run the targeted ALSA sequencer poll tests (or
->>reproducer from the linked syzbot report) on the backport branch to
->>confirm the warning disappears.
->>
->>  sound/core/seq/seq_fifo.c | 1 +
->>  1 file changed, 1 insertion(+)
->>
->>diff --git a/sound/core/seq/seq_fifo.c b/sound/core/seq/seq_fifo.c
->>index 3a10b081f129c..7dc2bd94cefc3 100644
->>--- a/sound/core/seq/seq_fifo.c
->>+++ b/sound/core/seq/seq_fifo.c
->>@@ -213,6 +213,7 @@ int snd_seq_fifo_poll_wait(struct snd_seq_fifo *f, struct file *file,
->>  			   poll_table *wait)
->>  {
->>  	poll_wait(file, &f->input_sleep, wait);
->>+	guard(spinlock_irq)(&f->lock);
->>  	return (f->cells > 0);
->>  }
->
->With CONFIG_WERROR enabled, 5.15.y fails to build for me now, and it 
->seems to be due to this patch introducing a new warning. This is with 
->Debian bookworm and its default gcc (12.2), building for amd64. I 
->didn't try building 6.12.y or 6.17.y yet, but this warning does not 
->happen on 6.1.y, 6.6.y, or 6.18-rc4.
+FYI
 
-Have you manually applied this patch on top of 5.15? This patch isn't in any
-released LTS kernel.
+https://bugzilla.kernel.org/show_bug.cgi?id=220745
 
+
+-------- Forwarded Message --------
+Subject: Re: Compile Error fs/nfsd/nfs4state.o - clamp() low limit
+slotsize greater than high limit total_avail/scale_factor
+Date: Thu, 06 Nov 2025 07:29:25 -0500
+From: Jeff Layton <jlayton@kernel.org>
+To: Mike-SPC via Bugspray Bot <bugbot@kernel.org>, cel@kernel.org,
+neilb@ownmail.net, trondmy@kernel.org, linux-nfs@vger.kernel.org,
+anna@kernel.org, neilb@brown.name
+
+On Thu, 2025-11-06 at 11:30 +0000, Mike-SPC via Bugspray Bot wrote:
+> Mike-SPC writes via Kernel.org Bugzilla:
+> 
+> (In reply to Bugspray Bot from comment #5)
+> > Chuck Lever <cel@kernel.org> replies to comment #4:
+> > 
+> > On 11/5/25 7:25 AM, Mike-SPC via Bugspray Bot wrote:
+> > > Mike-SPC writes via Kernel.org Bugzilla:
+> > > 
+> > > > Have you found a 6.1.y kernel for which the build doesn't fail?
+> > > 
+> > > Yes. Compiling Version 6.1.155 works without problems.
+> > > Versions >= 6.1.156 aren't.
+> > 
+> > My analysis yesterday suggests that, because the nfs4state.c code hasn't
+> > changed, it's probably something elsewhere that introduced this problem.
+> > As we can't reproduce the issue, can you use "git bisect" between
+> > v6.1.155 and v6.1.156 to find the culprit commit?
+> > 
+> > (via https://msgid.link/ab235dbe-7949-4208-a21a-2cdd50347152@kernel.org)
+> 
+> 
+> Yes, your analysis is right (thanks for it).
+> After some investigation, the issue appears to be caused by changes introduced in
+> include/linux/minmax.h.
+> 
+> I verified this by replacing minmax.h in 6.1.156 with the version from 6.1.155,
+> and the kernel then compiles successfully.
+> 
+> The relevant section in the 6.1.156 changelog (https://cdn.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.1.156) shows several modifications to minmax.h (notably around __clamp_once() and the use of
+> BUILD_BUG_ON_MSG(statically_true(ulo > uhi), ...)), which seem to trigger a compile-time assertion when building NFSD.
+> 
+> Replacing the updated header with the previous one resolves the issue, so this appears
+> to be a regression introduced by the new clamp() logic.
+> 
+> Could you please advise who is the right person or mailing list to report this issue to
+> (minmax.h maintainers, kernel core, or stable tree)?
+> 
+
+I'd let all 3 know, and I'd include the author of the patches that you
+suspect are the problem. They'll probably want to revise the one that's
+a problem.
+
+Cheers,
 -- 
-Thanks,
-Sasha
+Jeff Layton <jlayton@kernel.org>
 
