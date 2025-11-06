@@ -1,88 +1,128 @@
-Return-Path: <stable+bounces-192587-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192588-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E693FC39C1C
-	for <lists+stable@lfdr.de>; Thu, 06 Nov 2025 10:10:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0748EC39C22
+	for <lists+stable@lfdr.de>; Thu, 06 Nov 2025 10:10:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B11AD3BFE84
-	for <lists+stable@lfdr.de>; Thu,  6 Nov 2025 09:08:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 04C943B557F
+	for <lists+stable@lfdr.de>; Thu,  6 Nov 2025 09:09:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B25430AD11;
-	Thu,  6 Nov 2025 09:08:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2D1130B51B;
+	Thu,  6 Nov 2025 09:09:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=purelymail.com header.i=@purelymail.com header.b="J/w9+PqL"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fe4pQVrs"
 X-Original-To: stable@vger.kernel.org
-Received: from sendmail.purelymail.com (sendmail.purelymail.com [34.202.193.197])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC8CC30ACF4
-	for <stable@vger.kernel.org>; Thu,  6 Nov 2025 09:08:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=34.202.193.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F2C8309DCD;
+	Thu,  6 Nov 2025 09:09:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762420105; cv=none; b=nuGdhN2FirvVKqdIRv3lUs2w3DipdH9gFJpL2gdCS1XvDHkABx6qBzq+RDnpcrk6zlVgzMNJFhfgJdxAxNctiIfO+MxU9biJGArLmDiW5bpePB2O7T0QWoEWZ0EDuamNz7sJhl/RSvJryTVrWy/EK/WlZqT6PNgof9up0NJS9vs=
+	t=1762420175; cv=none; b=OigQARNaUF1seaFQ0doFX3Z0gAYD5fWTY+09isqOhh6xOBiBsDjUPl5w6iiU+JGK75aMeu3pwRDpicGArvHTo+fFnyLDEGDipUrRhk28avTqML88L/+h8D38nyXdmVFEBQlxRn9ZYoivUsP42WRCzqtVECEGW72tCu3lwGWTs3s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762420105; c=relaxed/simple;
-	bh=JIXwOROFpFq5zfTO3uWEheOGcc4zUa9HNY3XJUwU7W8=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=UUA4KVuhM/2uTg6faR32TCnSLRokPG52PLf3F/PEuLIkd77yDygwFdcwi7h7oaT1oJGiCV6+odHnmJzzPl7ljcKbspTm/LAi3GuLmGDHlubERLI8UYTJGw0NVGKsxE5K5h1UtBMmFCcP1gmYa48cwKf6MwrIqU+IC5Rjn4vFZiU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=korsgaard.com; spf=pass smtp.mailfrom=korsgaard.com; dkim=pass (2048-bit key) header.d=purelymail.com header.i=@purelymail.com header.b=J/w9+PqL; arc=none smtp.client-ip=34.202.193.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=korsgaard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=korsgaard.com
-DKIM-Signature: a=rsa-sha256; b=J/w9+PqLZV18SCTFHcCw+5OTEWNF+fARQe5tumH1CdTVYJIBv3ReFEds9Rlwi+n8DJ8ul7odnuGpv8lHFeWKJ/ABt361yaQj+IRN2y7O8w1zFHg4tLMGCVYdq8WShyB/O2aOAlkI422JVuiiOJ2rWZQnnKAUV39XAb3vhQ6aKqVOUTBEldqjZOtrcl0xArpcoLCzYj/EiBdjIVpOVXXjrjNiB9KkeNNF+E+3JfM731i/ExOkKv4T27gY7RGbULQ7CojCoAwik/9YNHzWwld4CmsstpigfmQgWUY4hUurZu7KXKFCqOJO+G9UYuopwtBy2a0tBUWOxlveMoWFB2C8Sg==; s=purelymail2; d=purelymail.com; v=1; bh=JIXwOROFpFq5zfTO3uWEheOGcc4zUa9HNY3XJUwU7W8=; h=Feedback-ID:Received:Received:From:To:Subject:Date;
-Feedback-ID: 21632:4007:null:purelymail
-X-Pm-Original-To: stable@vger.kernel.org
-Received: by smtp.purelymail.com (Purelymail SMTP) with ESMTPSA id -128070862;
-          (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
-          Thu, 06 Nov 2025 09:08:19 +0000 (UTC)
-Received: from peko by dell.be.48ers.dk with local (Exim 4.96)
-	(envelope-from <peter@korsgaard.com>)
-	id 1vGvyY-006Qev-13;
-	Thu, 06 Nov 2025 10:08:14 +0100
-From: Peter Korsgaard <peter@korsgaard.com>
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: Ivan Vera <ivanverasantos@gmail.com>,  git@amd.com,
-  stable@vger.kernel.org,  Michal Simek <michal.simek@amd.com>,  Srinivas
- Kandagatla <srini@kernel.org>,  Ivan Vera <ivan.vera@enclustra.com>
-Subject: Re: [PATCH v6.6-LTS] nvmem: zynqmp_nvmem: unbreak driver after cleanup
-References: <20251105123619.18801-1-ivan.vera@enclustra.com>
-	<2025110655-imprecise-baton-f507@gregkh>
-	<87frar7gqz.fsf@dell.be.48ers.dk>
-	<2025110624-huskiness-viewless-50fd@gregkh>
-Date: Thu, 06 Nov 2025 10:08:14 +0100
-In-Reply-To: <2025110624-huskiness-viewless-50fd@gregkh> (Greg KH's message of
-	"Thu, 6 Nov 2025 17:51:47 +0900")
-Message-ID: <87bjlf7cld.fsf@dell.be.48ers.dk>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=arc-20240116; t=1762420175; c=relaxed/simple;
+	bh=1xoEFGyLdYCbzgR/mVDatimumQJnCI1/RQddMt9KI0M=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=io5gvqzYB7Pdw9WuWA93E70+wE1TXY4lMjG9i1SQqODKIfKksL5ouavCPM/HHcWYBsXMWY5dOOvkFK/kgjUlLj4gxIPBc4P+PWy8yaB36P5eZpsCEKwMilE0UKbKitYYzKQEM7zwXIfzPFuImpfejr/xPsD002Bcjma6urPTsog=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fe4pQVrs; arc=none smtp.client-ip=198.175.65.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1762420174; x=1793956174;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=1xoEFGyLdYCbzgR/mVDatimumQJnCI1/RQddMt9KI0M=;
+  b=fe4pQVrsIzESqanmhiwe4OGTvixqgjaHfV62/HXZUfirC158fCbO4y9v
+   iAOeP3orC1qy86xZd8Y+zEKKwFIrFUw3w2x44AyByopesbCwOy+kwFPbo
+   tK+jlghgTpyLGKxxf1OTR4dIXxesdOGPLKwed/OcZYDXx1fMdMZyOnAPB
+   UZofGfmHM/gHsk+ef6f1EycESJVt5ljHqCmtWRibwY8kxssE1pODYggou
+   v8IYSnScG9E4j9xWWCCwYP1J9SI1sKb9A/dbP0rxkP1VXnza+vx8WnAWu
+   OxyDSfP3Lk0B0wkbpMKHFztQEUBpHGhjbrRpGYFXXRpuAfY0qPvxmgwub
+   w==;
+X-CSE-ConnectionGUID: Wew85tWLQ3Kt1CmgleZyyw==
+X-CSE-MsgGUID: Fv59igFNS8+rqGwO0eQccg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11604"; a="64702402"
+X-IronPort-AV: E=Sophos;i="6.19,284,1754982000"; 
+   d="scan'208";a="64702402"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Nov 2025 01:09:33 -0800
+X-CSE-ConnectionGUID: t4cXAYLeQBygry4nYTjgYQ==
+X-CSE-MsgGUID: 4YSN0rZrTeuWgvw94vin8w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,284,1754982000"; 
+   d="scan'208";a="186958588"
+Received: from jjgreens-desk21.amr.corp.intel.com (HELO ashevche-desk.local) ([10.124.221.229])
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Nov 2025 01:09:31 -0800
+Received: from andy by ashevche-desk.local with local (Exim 4.98.2)
+	(envelope-from <andriy.shevchenko@intel.com>)
+	id 1vGvzh-000000062aI-44dw;
+	Thu, 06 Nov 2025 11:09:25 +0200
+Date: Thu, 6 Nov 2025 11:09:25 +0200
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Ma Ke <make24@iscas.ac.cn>
+Cc: jic23@kernel.org, dlechner@baylibre.com, nuno.sa@analog.com,
+	andy@kernel.org, error27@gmail.com, linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2] iio: trigger: Fix error handling in viio_trigger_alloc
+Message-ID: <aQxlxTiq59zynioS@smile.fi.intel.com>
+References: <20251106082923.32688-1-make24@iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251106082923.32688-1-make24@iscas.ac.cn>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
->>>>> "Greg" == Greg KH <gregkh@linuxfoundation.org> writes:
+On Thu, Nov 06, 2025 at 04:29:23PM +0800, Ma Ke wrote:
+> viio_trigger_alloc() initializes the device with device_initialize()
+> but uses kfree() directly in error paths, which bypasses the device's
+> release callback iio_trig_release(). This could lead to memory leaks
+> and inconsistent device state.
+> 
+> Additionally, the current error handling has the following issues:
+> 1. Potential double-free of IRQ descriptors when kvasprintf fails.
 
-Hi,
+kvasprintf()
 
- >> > Neither of these git ids are valid, where did you get them from?
- >> 
- >> git describe --contains c708bbd57d158d9f20c2fcea5bcb6e0afac77bef
- >> next-20250505~21^2~1^2
- >> 
- >> I guess it should have been fe8abdd175d7b547ae1a612757e7902bcd62e9cf
- >> instead, E.G. what ended up in master?
+> 2. The release function may attempt to free negative subirq_base.
+> 3. Missing mutex_destroy in release function.
 
- > We can't take stuff in stable unless it is in Linus's tree.
+mutex_destroy()
 
-Sure, it was apparently just the wrong commit hash used, E.G.:
+> Fix these issues by:
+> 1. Replacing kfree(trig) with put_device(&trig->dev) in error paths.
+> 2. Setting subirq_base to 0 after freeing IRQ descriptors in error
+> path to prevent double-free in release callback.
+> 3. Modifying release function to properly handle negative subirq_base.
+> 4. Adding missing mutex_destroy().
+> 
+> Found by code review.
 
-git describe --contains fe8abdd175d7b547ae1a612757e7902bcd62e9cf
-v6.16-rc1~30^2~32
+This is better now, but giving a nature of the issue and the fix I would really
+appreciate some CIs and syzkaller (or alike) fuzzers to go with this first.
+
+...
+
+>  free_descs:
+>  	irq_free_descs(trig->subirq_base, CONFIG_IIO_CONSUMERS_PER_TRIGGER);
+> +	trig->subirq_base = 0;
+
+Why not getting rid of this label and accompanied code altogether?
 
 -- 
-Bye, Peter Korsgaard
+With Best Regards,
+Andy Shevchenko
+
+
 
