@@ -1,153 +1,114 @@
-Return-Path: <stable+bounces-192645-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192646-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id E07FBC3D42E
-	for <lists+stable@lfdr.de>; Thu, 06 Nov 2025 20:38:39 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 785BEC3D50F
+	for <lists+stable@lfdr.de>; Thu, 06 Nov 2025 21:00:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 8455A4E208A
-	for <lists+stable@lfdr.de>; Thu,  6 Nov 2025 19:38:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1D76E188E3EB
+	for <lists+stable@lfdr.de>; Thu,  6 Nov 2025 20:01:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0948133C532;
-	Thu,  6 Nov 2025 19:38:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 510953557EB;
+	Thu,  6 Nov 2025 20:00:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DGyOK8Rq"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jPcapbjS"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3817033507F
-	for <stable@vger.kernel.org>; Thu,  6 Nov 2025 19:38:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7F53355053
+	for <stable@vger.kernel.org>; Thu,  6 Nov 2025 20:00:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762457914; cv=none; b=AaLa5DozUinbIUt84Nrnrc5JxJeebV2hh5I5T5lZUBoZNHCWHZPb+tjZGKCqmqyUsiZqoMhibKUGqUU++VfxciFD4Y0tuLfQHyGkK8YGw4grZAwbIwvsF1vSRjGUZIIUxAbXP7Y6SqarlMHWkZzS7X1NKEp+WhyTZ29gHf03f9c=
+	t=1762459210; cv=none; b=eQY9VBq7Y47ea9nCfdUpRUVx9+TS3u7pIJbV5a1AYtSoDMyvVQEk60L/kjJJfzBEPOyPwQYtDwEs+3kMeIDNWhoS0yNlJ2TIl/grz+WS0wcULY3bJpAlTRA07Ym3pDqHaON7anGznM9LdzzQuBPMFb8LCZwV597oPy1KtRntPNI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762457914; c=relaxed/simple;
-	bh=htCCclXRRTSfNtzxMezZq4IR7RmLZZSdOeEpdNANtiE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=UXZWv8ebV2xukBLUYPK0lDllcy+axdW/7HqGHjdkRNDBtzI1oiVBqdtN//Bz31PgyOSBlmgYl/fSBt2AOddQfdFVKcQNWo3HqryBu/b6GLGSgG81J2+AMVpQZlEHloChGTDKV6rrxnI7TjFnYg3dnpAX/n0Rq+0wsKsvgfh289k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DGyOK8Rq; arc=none smtp.client-ip=209.85.160.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-4ed83ad277fso49271cf.0
-        for <stable@vger.kernel.org>; Thu, 06 Nov 2025 11:38:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762457912; x=1763062712; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=au4yHmJ+eAAs4ru8qXuzKlpyKvxCeRwM44jREzgs70s=;
-        b=DGyOK8Rq7w8VqwKtyMJOyfJP22L769UOwq0InqRtkyjv08hO3Gbl6iLxC9JteYWSUJ
-         noNEAWYNKvtdy7/onk2fDsh/Up+y8AS95Bb/mpRBb6vgVZDEksCkn54E2gCRSIj1cqoG
-         a9BwLpGmWQlrt9PaRclIDNAR217BIf+kFciUNiDPrtPECHmKXiU7SSv5V8++3BK3QplY
-         NyyA09hdgkwOyPioRrEOsl6YU2fZlzEAzxkroT/aB5xyIyTwD7g8GLL6Y96R5pFHvb1V
-         66lNmIbq6g6G4nTgXSKvwO0V78xC0UOuaMgWca9Cq6yP+PY0nK50OUCz8JeRCUwINIoY
-         KIXA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762457912; x=1763062712;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=au4yHmJ+eAAs4ru8qXuzKlpyKvxCeRwM44jREzgs70s=;
-        b=fqxUR6w2EVmSqgc1EXAqScf5GDIGntcgTN8hoSVGBTx0jtnSg4tBQRr+6zvvohcEHn
-         kUAOhhJ0BoBL+Fp+0WUE3cvLg188lvyAIe9qETcCMo6wDv9sY+tu4lI2uyABLICsSGOe
-         NRGB0qKmNBxnkB2QtbyTZtQm42Nz5XQgvwLfI+btjjrB9qDGYvmijwIFdsIITz9EF2EV
-         ZmGgOqufWUSAwZyJGSfi/bLHJHiJ9RNsSll6n35xQxN3ZoQIAFH+vOYH3mEPGwY2/OG5
-         MkFFOjhC+oJxAF5SxumsWOS9culWL+NcKvt4B/EK0C0EFNmhVeQ8gzP7MHNYoamqbgCq
-         3F/Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXNgXHUrVc2ADuyDo6TxoquL7Mx9B8so1DF4SPEF81D+pGpNAiyEx2bEsH6H9iBwqLpgAjnNeU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yye6UbXVFHfRNYuzsrkPdREcojj1dooeQfyG9YCDEqqIkQLr7PG
-	tE6M3vgBpn1EPe+0iWCD1S3KzC0d0B1Gc3aGyPyaPHHcTrjbJAIlXCjLb2/WFZczF3RKLBWgW6H
-	bHZjUNo1inTAARuLhInlcUGfzxN2LKL0=
-X-Gm-Gg: ASbGncspvbDdhI47DrH9vyw+1goEOCW0MdhaPmkNLSW56+R11rqi0D9MqYPGLJbwAc1
-	S6zhQiTF0wq+VZjR02ecsb/UkXoetH1rGi4RNvGwBdcSsl4SiRlxbsZTqEDYW5QEWvkQpkAm+Qs
-	ZZlC6rng0UDizcHWGCmxxFUngubIgVl6M+Yno+ltB37p9NDN8HRbmtwW/yomeAaZsFZ4Wr262W8
-	t3RZ2u4Qh5/TVOdKd0n9ROPtImr2QCdgE/6ah8rDtLWWOVUZLt5jIqy3mMY6WeKWP4l2roH2K15
-	A81UWoy3Wy0/yUE=
-X-Google-Smtp-Source: AGHT+IEWuUwRQbyqGylienh6BMzwpg/JB6xpNoZMrM6WzCCEIgb/HTUw4nCIOtdkN6F8fo+kCYqfX8RwaSIpr2XFfOg=
-X-Received: by 2002:a05:622a:1187:b0:4e6:ee71:ee8f with SMTP id
- d75a77b69052e-4ed9497824fmr6087251cf.23.1762457912044; Thu, 06 Nov 2025
- 11:38:32 -0800 (PST)
+	s=arc-20240116; t=1762459210; c=relaxed/simple;
+	bh=fL3c0z32jFUaN92k7QfLdHQCPMSLzrpgyjVR+Jsl5Fk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=WvA2fjOUaptNBoKTIRSd+UChwJDLKZn7ecQXaLn00nfpxjFx/Fmm3IdFfniDDPKAZEmHIGpr1sbDQn/dgCEP61vWB7uXiuwmOQiNK/ccTk5asZo6OUZNdf6xaWVtA+1Arp+X1zA+rRCfuVA6C+lfLpPVEinta9Y0VyR8OYyS/WQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jPcapbjS; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1762459208; x=1793995208;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=fL3c0z32jFUaN92k7QfLdHQCPMSLzrpgyjVR+Jsl5Fk=;
+  b=jPcapbjSCEChqTRAlmq6AxaxhZa2GPbLC/8dYyIw+hkbmxsmS+sGpWAk
+   nhgdJKuuqROTOmYcQxweqAU+M6VeI6ipu141plNA3gTo9kByXS3mcFlIL
+   Rj7SQ10+Nfak/Ut7xgV4p59gffut9JoiNQvg+UUy2opIdQLba/gyRejtf
+   UQ/CbsVqNM4iZTZeF5ME+75s7IH+NGZXabwXTVyQ/Mqecuh6YW0mKwZRU
+   OUvGfYhl84objbXLjb9KBMfm3LT6UOWLREC1ttVoxhS+cQxSbudMFmrWB
+   a8Z8A1cTiMwW4LoXW/E0+WdaeoR4Y2x//2Ns2lHiZKMF88okPHxNARfBs
+   g==;
+X-CSE-ConnectionGUID: suuxn5htTK+HEtUmFwULBw==
+X-CSE-MsgGUID: +5++l92ER+mJQSiVGcYRCg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11605"; a="64645483"
+X-IronPort-AV: E=Sophos;i="6.19,284,1754982000"; 
+   d="scan'208";a="64645483"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Nov 2025 12:00:07 -0800
+X-CSE-ConnectionGUID: djilhG0LTp2sfhGAFgE8SQ==
+X-CSE-MsgGUID: QOuSdItQThyXqNemjJXRHw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,284,1754982000"; 
+   d="scan'208";a="187106026"
+Received: from slindbla-desk.ger.corp.intel.com (HELO localhost) ([10.245.246.65])
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Nov 2025 12:00:04 -0800
+From: Jani Nikula <jani.nikula@intel.com>
+To: intel-gfx@lists.freedesktop.org,
+	intel-xe@lists.freedesktop.org
+Cc: jani.nikula@intel.com,
+	=?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] drm/i915/psr: fix pipe to vblank conversion
+Date: Thu,  6 Nov 2025 22:00:00 +0200
+Message-ID: <20251106200000.1455164-1-jani.nikula@intel.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251010220738.3674538-1-joannelkoong@gmail.com> <20251010220738.3674538-2-joannelkoong@gmail.com>
-In-Reply-To: <20251010220738.3674538-2-joannelkoong@gmail.com>
-From: Joanne Koong <joannelkoong@gmail.com>
-Date: Thu, 6 Nov 2025 11:38:21 -0800
-X-Gm-Features: AWmQ_bm5GPa9LFrjFiVAhIWylI3ld7gMo3TswYkPgcx-PpS_BfKG1fT-qAMdg0Y
-Message-ID: <CAJnrk1YemmKkgTN4a-T7Kc1vtUSJi3GO8bY1BfXWZUKcx6NBtQ@mail.gmail.com>
-Subject: Re: [PATCH v2 1/1] fuse: fix readahead reclaim deadlock
-To: miklos@szeredi.hu
-Cc: linux-fsdevel@vger.kernel.org, amir73il@gmail.com, osandov@fb.com, 
-	hsiangkao@linux.alibaba.com, kernel-team@meta.com, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Transfer-Encoding: 8bit
 
-On Fri, Oct 10, 2025 at 3:08=E2=80=AFPM Joanne Koong <joannelkoong@gmail.co=
-m> wrote:
->
-> Commit e26ee4efbc79 ("fuse: allocate ff->release_args only if release is
-> needed") skips allocating ff->release_args if the server does not
-> implement open. However in doing so, fuse_prepare_release() now skips
-> grabbing the reference on the inode, which makes it possible for an
-> inode to be evicted from the dcache while there are inflight readahead
-> requests. This causes a deadlock if the server triggers reclaim while
-> servicing the readahead request and reclaim attempts to evict the inode
-> of the file being read ahead. Since the folio is locked during
-> readahead, when reclaim evicts the fuse inode and fuse_evict_inode()
-> attempts to remove all folios associated with the inode from the page
-> cache (truncate_inode_pages_range()), reclaim will block forever waiting
-> for the lock since readahead cannot relinquish the lock because it is
-> itself blocked in reclaim:
->
-> >>> stack_trace(1504735)
->  folio_wait_bit_common (mm/filemap.c:1308:4)
->  folio_lock (./include/linux/pagemap.h:1052:3)
->  truncate_inode_pages_range (mm/truncate.c:336:10)
->  fuse_evict_inode (fs/fuse/inode.c:161:2)
->  evict (fs/inode.c:704:3)
->  dentry_unlink_inode (fs/dcache.c:412:3)
->  __dentry_kill (fs/dcache.c:615:3)
->  shrink_kill (fs/dcache.c:1060:12)
->  shrink_dentry_list (fs/dcache.c:1087:3)
->  prune_dcache_sb (fs/dcache.c:1168:2)
->  super_cache_scan (fs/super.c:221:10)
->  do_shrink_slab (mm/shrinker.c:435:9)
->  shrink_slab (mm/shrinker.c:626:10)
->  shrink_node (mm/vmscan.c:5951:2)
->  shrink_zones (mm/vmscan.c:6195:3)
->  do_try_to_free_pages (mm/vmscan.c:6257:3)
->  do_swap_page (mm/memory.c:4136:11)
->  handle_pte_fault (mm/memory.c:5562:10)
->  handle_mm_fault (mm/memory.c:5870:9)
->  do_user_addr_fault (arch/x86/mm/fault.c:1338:10)
->  handle_page_fault (arch/x86/mm/fault.c:1481:3)
->  exc_page_fault (arch/x86/mm/fault.c:1539:2)
->  asm_exc_page_fault+0x22/0x27
->
-> Fix this deadlock by allocating ff->release_args and grabbing the
-> reference on the inode when preparing the file for release even if the
-> server does not implement open. The inode reference will be dropped when
-> the last reference on the fuse file is dropped (see fuse_file_put() ->
-> fuse_release_end()).
->
-> Fixes: e26ee4efbc79 ("fuse: allocate ff->release_args only if release is =
-needed")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
-> Reported-by: Omar Sandoval <osandov@fb.com>
-> ---
->  fs/fuse/file.c | 40 ++++++++++++++++++++++++++--------------
->  1 file changed, 26 insertions(+), 14 deletions(-)
+First, we can't assume pipe == crtc index. If a pipe is fused off in
+between, it no longer holds. intel_crtc_for_pipe() is the only proper
+way to get from a pipe to the corresponding crtc.
 
-Miklos, does this approach look okay to you?
+Second, drivers aren't supposed to access or index drm->vblank[]
+directly. There's drm_crtc_vblank_crtc() for this.
 
-Thanks,
-Joanne
+Use both functions to fix the pipe to vblank conversion.
+
+Fixes: f02658c46cf7 ("drm/i915/psr: Add mechanism to notify PSR of pipe enable/disable")
+Cc: Jouni Högander <jouni.hogander@intel.com>
+Cc: <stable@vger.kernel.org> # v6.16+
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+---
+ drivers/gpu/drm/i915/display/intel_psr.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/gpu/drm/i915/display/intel_psr.c b/drivers/gpu/drm/i915/display/intel_psr.c
+index 05014ffe3ce1..c77a92ea7919 100644
+--- a/drivers/gpu/drm/i915/display/intel_psr.c
++++ b/drivers/gpu/drm/i915/display/intel_psr.c
+@@ -932,7 +932,8 @@ static bool is_dc5_dc6_blocked(struct intel_dp *intel_dp)
+ {
+ 	struct intel_display *display = to_intel_display(intel_dp);
+ 	u32 current_dc_state = intel_display_power_get_current_dc_state(display);
+-	struct drm_vblank_crtc *vblank = &display->drm->vblank[intel_dp->psr.pipe];
++	struct intel_crtc *crtc = intel_crtc_for_pipe(display, intel_dp->psr.pipe);
++	struct drm_vblank_crtc *vblank = drm_crtc_vblank_crtc(&crtc->base);
+ 
+ 	return (current_dc_state != DC_STATE_EN_UPTO_DC5 &&
+ 		current_dc_state != DC_STATE_EN_UPTO_DC6) ||
+-- 
+2.47.3
+
 
