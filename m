@@ -1,104 +1,144 @@
-Return-Path: <stable+bounces-192619-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192620-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 112DBC3BBCA
-	for <lists+stable@lfdr.de>; Thu, 06 Nov 2025 15:29:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CE0FC3BCA0
+	for <lists+stable@lfdr.de>; Thu, 06 Nov 2025 15:37:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id B1695350E69
-	for <lists+stable@lfdr.de>; Thu,  6 Nov 2025 14:29:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2DD203AD2D1
+	for <lists+stable@lfdr.de>; Thu,  6 Nov 2025 14:30:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FFDF33EAEF;
-	Thu,  6 Nov 2025 14:28:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61ACA330B37;
+	Thu,  6 Nov 2025 14:30:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EzuJ97SJ"
 X-Original-To: stable@vger.kernel.org
-Received: from mx3.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B53522D795;
-	Thu,  6 Nov 2025 14:28:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=141.14.17.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DE17316917;
+	Thu,  6 Nov 2025 14:30:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762439284; cv=none; b=R+0hfRrvWxym4nTV52Q0I9FYWLsf1Q4o2RGWp+IcyVhAKNI4+oBRWZLw4nRM00f4Esjs/e7eAnu1Du2bhP7p8Jo6/BxvKPdxj+taiHwupUooW9S2z/gR9B3P5GKf2U3Vpv8ohIk3ZX4dU1e0CFHXWPk7wjGzwlBxqeUT3tfgIeI=
+	t=1762439452; cv=none; b=RDcZrekmbHUpQ045md21q/oAK8PPdVHhNzMV9S542kEmeVt9J2A+fYBvtS+W/dA5R10I6NQGd70nVCc6wbjLI0aYY4lPxe5AIqCK+wFQ/l28IDno1+x4pMl9K6unS1MiVgZEPh54TMuzMn5G1oLCSBaPd4hUO6zQT1U8CHRZQMI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762439284; c=relaxed/simple;
-	bh=d6ciqkP+BTCwznKuF4GupZl6kfAo/zc3Ukdzi0JOdmw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lm1fJOIHeqYCd8B56wUrZsTj5HQ4OZToW/CUfYrxMr4Bkvd+ogL4FzSNBFKQ8VlCelGETAEtNHDc1LpbaVCCHT+K5p4ZtduvMMhgOY1Kp9vW2gJqqCHQKPDt685qPV7hTZchySbCXg+N5kW+sGsUa/G0qKMEYH5lpTw1T30aoiI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de; spf=pass smtp.mailfrom=molgen.mpg.de; arc=none smtp.client-ip=141.14.17.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=molgen.mpg.de
-Received: from [141.14.14.72] (v072.vpnx.molgen.mpg.de [141.14.14.72])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: pmenzel)
-	by mx.molgen.mpg.de (Postfix) with ESMTPSA id 20FAC61CC3FED;
-	Thu, 06 Nov 2025 15:27:48 +0100 (CET)
-Message-ID: <3676d7e4-5a28-4e8a-bc55-1386b4fbc58f@molgen.mpg.de>
-Date: Thu, 6 Nov 2025 15:27:46 +0100
+	s=arc-20240116; t=1762439452; c=relaxed/simple;
+	bh=L/D8ee34O53V0DNFftxrKG/q/JXHWIs1+rb2xlV45Us=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hdbUfcjf62LAxVKd+XWSiBRUOeO0NWfcosLr0RFPJUNti/H95EVftcgmGUaSRXQbCzRUmZGt7MmA8nE4RCxGAliCPxo4V+yWreUCpYs/vuYpMWIi/w5uHlaHU23bPdr4GHMxY8m2yy5WnBGdK88S8i0SdqZFQgBHbeICXibl0dg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EzuJ97SJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72A7DC4CEFB;
+	Thu,  6 Nov 2025 14:30:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762439451;
+	bh=L/D8ee34O53V0DNFftxrKG/q/JXHWIs1+rb2xlV45Us=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=EzuJ97SJvebkljU7wy0T9WyiO0+cKmTNAsjaLSUsbqaGEtC3ef0poAF5H3X38krR4
+	 eLHW6KMQFBuuaOYb3GEYuC2mBHeoO5yHG1YLFKxknuKlM9CeW1T3QsPlgsHVhbzWsd
+	 fCdtsvohOclb2YZh8aGSO9qdp2IQZNNfbVLOAhouDOINlT0uBvNPw7KTgy6f8B61ch
+	 sHPmkIj0vonaUsjCQbx1wJyORke6YiBgHy/05UtBuAE8FgTqJd101q3ZnWfjgx8ZO9
+	 FO0dUhGVYWFRy+S3kOOiRy57j64cEE3b6S+pXhXsYycU8redLZchPM/0R9Xw7lvsqj
+	 WpBh5NcRS2e3A==
+Date: Thu, 6 Nov 2025 09:30:50 -0500
+From: Sasha Levin <sashal@kernel.org>
+To: "Barry K. Nathan" <barryn@pobox.com>
+Cc: patches@lists.linux.dev, stable@vger.kernel.org,
+	Takashi Iwai <tiwai@suse.de>,
+	syzbot+c3dbc239259940ededba@syzkaller.appspotmail.com,
+	alexandre.f.demers@gmail.com, alexander.deucher@amd.com
+Subject: Re: [PATCH AUTOSEL 6.17-5.15] ALSA: seq: Fix KCSAN data-race warning
+ at snd_seq_fifo_poll_wait()
+Message-ID: <aQyxGrttI4OERR96@laps>
+References: <20251025160905.3857885-1-sashal@kernel.org>
+ <20251025160905.3857885-60-sashal@kernel.org>
+ <4f94b13f-e1f8-49bc-b0c7-bcc3eed5cca9@pobox.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] Bluetooth: hci_qca: Convert timeout from jiffies
- to ms
-To: Shuai Zhang <quic_shuaz@quicinc.com>
-Cc: dmitry.baryshkov@oss.qualcomm.com, marcel@holtmann.org,
- luiz.dentz@gmail.com, linux-bluetooth@vger.kernel.org,
- stable@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- linux-kernel@vger.kernel.org, quic_chejiang@quicinc.com
-References: <20251106140103.1406081-1-quic_shuaz@quicinc.com>
- <20251106140103.1406081-3-quic_shuaz@quicinc.com>
-Content-Language: en-US
-From: Paul Menzel <pmenzel@molgen.mpg.de>
-In-Reply-To: <20251106140103.1406081-3-quic_shuaz@quicinc.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <4f94b13f-e1f8-49bc-b0c7-bcc3eed5cca9@pobox.com>
 
-Dear Shuai,
+On Thu, Nov 06, 2025 at 12:49:37AM -0800, Barry K. Nathan wrote:
+>On 10/25/25 08:54, Sasha Levin wrote:
+>>From: Takashi Iwai <tiwai@suse.de>
+>>
+>>[ Upstream commit 1f9fc89cbbe8a7a8648ea2f827f7d8590e62e52c ]
+>>
+>>snd_seq_fifo_poll_wait() evaluates f->cells without locking after
+>>poll_wait(), and KCSAN doesn't like it as it appears to be a
+>>data-race.  Although this doesn't matter much in practice as the value
+>>is volatile, it's still better to address it for the mind piece.
+>>
+>>Wrap it with f->lock spinlock for avoiding the potential data race.
+>>
+>>Reported-by: syzbot+c3dbc239259940ededba@syzkaller.appspotmail.com
+>>Link: https://syzkaller.appspot.com/bug?extid=c3dbc239259940ededba
+>>Signed-off-by: Takashi Iwai <tiwai@suse.de>
+>>Signed-off-by: Sasha Levin <sashal@kernel.org>
+>>---
+>>
+>>LLM Generated explanations, may be completely bogus:
+>>
+>>YES
+>>- The only runtime change wraps the `f->cells` check in
+>>   `snd_seq_fifo_poll_wait()` with `guard(spinlock_irq)(&f->lock)`
+>>   (`sound/core/seq/seq_fifo.c:213`), aligning this reader with every
+>>   writer of `f->cells`, each of which already holds `f->lock` via
+>>   `scoped_guard(spinlock_irqsave)` or explicit `spin_lock_irqsave`
+>>   (`sound/core/seq/seq_fifo.c:125`, `sound/core/seq/seq_fifo.c:183`).
+>>   That removes the unlocked load which KCSAN flagged as a real data race
+>>   on the non-atomic `int` counter.
+>>- This race is user-visible: if `snd_seq_fifo_poll_wait()` races with a
+>>   concurrent producer/consumer, the poll mask built in `snd_seq_poll()`
+>>   (`sound/core/seq/seq_clientmgr.c:1092-1106`) can sporadically omit
+>>   `EPOLLIN`, leaving sequencer clients to sleep despite queued events.
+>>   On weakly ordered architectures that behavior is not just theoretical;
+>>   racing non-atomic accesses are undefined in the kernel memory model
+>>   and trigger syzbot reports.
+>>- The fix is minimal, self-contained, and mirrors existing guard usage
+>>   in this file, so it has negligible regression risk: the lock is
+>>   already part of the FIFO hot path, RAII unlock occurs immediately on
+>>   return, and there are no new dependencies or API changes.
+>>- Because the bug allows incorrect poll readiness and trips KCSAN, it
+>>   meets stable criteria (user-visible correctness plus sanitizer
+>>   warning) and applies cleanly to older trees that already contain the
+>>   guard helpers used elsewhere in this file.
+>>
+>>Suggested next step: run the targeted ALSA sequencer poll tests (or
+>>reproducer from the linked syzbot report) on the backport branch to
+>>confirm the warning disappears.
+>>
+>>  sound/core/seq/seq_fifo.c | 1 +
+>>  1 file changed, 1 insertion(+)
+>>
+>>diff --git a/sound/core/seq/seq_fifo.c b/sound/core/seq/seq_fifo.c
+>>index 3a10b081f129c..7dc2bd94cefc3 100644
+>>--- a/sound/core/seq/seq_fifo.c
+>>+++ b/sound/core/seq/seq_fifo.c
+>>@@ -213,6 +213,7 @@ int snd_seq_fifo_poll_wait(struct snd_seq_fifo *f, struct file *file,
+>>  			   poll_table *wait)
+>>  {
+>>  	poll_wait(file, &f->input_sleep, wait);
+>>+	guard(spinlock_irq)(&f->lock);
+>>  	return (f->cells > 0);
+>>  }
+>
+>With CONFIG_WERROR enabled, 5.15.y fails to build for me now, and it 
+>seems to be due to this patch introducing a new warning. This is with 
+>Debian bookworm and its default gcc (12.2), building for amd64. I 
+>didn't try building 6.12.y or 6.17.y yet, but this warning does not 
+>happen on 6.1.y, 6.6.y, or 6.18-rc4.
 
+Have you manually applied this patch on top of 5.15? This patch isn't in any
+released LTS kernel.
 
-Thank you for your patch.
-
-Am 06.11.25 um 15:01 schrieb Shuai Zhang:
-> Since the timer uses jiffies as its unit rather than ms, the timeout value
-> must be converted from ms to jiffies when configuring the timer. Otherwise,
-> the intended 8s timeout is incorrectly set to approximately 33s.
-> 
-> Cc: stable@vger.kernel.org
-
-A Fixes: tag is needed.
-
-> Signed-off-by: Shuai Zhang <quic_shuaz@quicinc.com>
-> ---
->   drivers/bluetooth/hci_qca.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/bluetooth/hci_qca.c b/drivers/bluetooth/hci_qca.c
-> index fa6be1992..c14b2fa9d 100644
-> --- a/drivers/bluetooth/hci_qca.c
-> +++ b/drivers/bluetooth/hci_qca.c
-> @@ -1602,7 +1602,7 @@ static void qca_wait_for_dump_collection(struct hci_dev *hdev)
->   	struct qca_data *qca = hu->priv;
->   
->   	wait_on_bit_timeout(&qca->flags, QCA_MEMDUMP_COLLECTION,
-> -			    TASK_UNINTERRUPTIBLE, MEMDUMP_TIMEOUT_MS);
-> +			    TASK_UNINTERRUPTIBLE, msecs_to_jiffies(MEMDUMP_TIMEOUT_MS));
->   
->   	clear_bit(QCA_MEMDUMP_COLLECTION, &qca->flags);
->   }
-
-With the Fixes: tag added, feel free to add:
-
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-
-
-Kind regards,
-
-Paul
+-- 
+Thanks,
+Sasha
 
