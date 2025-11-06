@@ -1,198 +1,204 @@
-Return-Path: <stable+bounces-192557-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192558-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 779F6C38754
-	for <lists+stable@lfdr.de>; Thu, 06 Nov 2025 01:22:02 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 940DAC387C0
+	for <lists+stable@lfdr.de>; Thu, 06 Nov 2025 01:31:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A0E013A57F2
-	for <lists+stable@lfdr.de>; Thu,  6 Nov 2025 00:20:04 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 883EE4EF36A
+	for <lists+stable@lfdr.de>; Thu,  6 Nov 2025 00:31:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E23D61940A1;
-	Thu,  6 Nov 2025 00:19:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1B261A0BD0;
+	Thu,  6 Nov 2025 00:31:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="qzlFUq7e"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="X3IBbOEv"
 X-Original-To: stable@vger.kernel.org
-Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012042.outbound.protection.outlook.com [40.93.195.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A2E818872A;
-	Thu,  6 Nov 2025 00:19:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.195.42
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762388396; cv=fail; b=FSMCaFq3vSeWSmj0PFgEuFa3JteWK0hyKxJ+2kHuzOAmS+wXi5JXqUw42+b+wMWOOGc9HGSsLtdhluCRRoVMXxio31XuD+cG6+o73uvUFhffDCOgQ253KUjCz9gWH9JVvQDGUxeFaCZOVJEWOLLLw8bSndJ64MeITQJWV8Rk4NI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762388396; c=relaxed/simple;
-	bh=r4ntPR3bNpe3RBTssep8ZpQGXVvuHVPuowPmLw46gsY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=WKGp84de900hOXHkjolJJftPLapAUZWryv8vPC5PTaRfE7jL7EKwNpUq47hx3pvgW0g4eFG5Oo7Y9JjStsEOS7nyhS3ZGZjGKqCaqdx3eyKWaiiPzh1qlm277cARkTdQn/qX+Lswn4wVI+brsfshFCTNlrx2+sQnvmu5i0PYfkI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=qzlFUq7e; arc=fail smtp.client-ip=40.93.195.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=hejDqzok+1x9mi/mfDnuayv75PHOI/pWxBoXj8FKOVcef0PuZVJKEqNjA7siV086gxaCYNZdq6C6ooNMcy9Q+s7nXuFNXbMWehtEPmaAlW+JhoV5j+zH5wZkXiNTvCtVONP7TeZxzQUhZ7QOLwnZfFAoKVSSLEfFg8DEZ8x6nAKI7nOI4oy9sebbBm7oHI7om6syyYcibbi4E99BhL+QXj7Y7dtZ6znMf9A7ecLpw8ncesU5Nr6WRIHkjkdWxUxr8zpthXGrRBT/TwPd/X7Q1L+ZTEiiHoaVdPKp/aAUhcX6LTMsJFfJUeWOzMqnKFaUIKnW7Cs7QMxgJgoDFdaZJQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=+v5ft7yKs6ph5QIJJP6+oJvJtID6GCAcYQK6qmHG0Us=;
- b=a6qYuaBvUk44GrH0pXdWWvD0yjZ3ZzKFyKyZvWECh7ZsOiqv8DawA3mE1IohMtvIpQJ1tUsLo6llrzIpw6SVJqjTmE9zHctR72gTlv3ivIEoCfQhXGqiuw1M4WYtkcPamJASAyn4E3D9f+iSHQKbjLHEG8Dorxfp9Qqjfjrv58g6onLdp919cpw4iwsIlYTOo0CV9v3uTGAoy6dYrvnJygftIcJ0yXn7HnxejVmj7m8lxoC/v7tSmzj8OrCdfxHndZQF37wglScP21bqIrL5wtN6lhiRncm1d/VyybbLrfe56koo5HU4fZey6jBkjTdHsJ9C7rvdXnVFNpPIdPg59Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=+v5ft7yKs6ph5QIJJP6+oJvJtID6GCAcYQK6qmHG0Us=;
- b=qzlFUq7eo8OtupjCeEc5Jp+gNeW9N54FkuJulm64zTU8OVYY4ZlUENeayWCqkDATvkqVtHY5mK8RUsAJ2fU575N90BdLIdYzd0DukYBN78Xg3gkii8/wntx0ikFG0yPX7JgeWPh8cRb3GPguO8PYvj09yHG1MgLSK3Lyxhtq3UVIHguepVzV4t11xt0UlDs1OgM/b97q3tJrD1A2yyIgn3+gqZ0ZJKLlCQ+zf5wALn6rYsi6vpzXSu8FBUDvTrTGSiSOueXS6CkQQvLJiUr4T/ynrzGt7oABUrz3kR1kRzibfOwv8eK8jTWI02nq2nr0OWLUTuU6CvcJUBehp24vrw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
- DS0PR12MB8443.namprd12.prod.outlook.com (2603:10b6:8:126::14) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9298.9; Thu, 6 Nov 2025 00:19:50 +0000
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::5189:ecec:d84a:133a]) by DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::5189:ecec:d84a:133a%5]) with mapi id 15.20.9298.006; Thu, 6 Nov 2025
- 00:19:50 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: David Hildenbrand <david@kernel.org>,
- Wei Yang <richard.weiyang@gmail.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] mm/huge_memory: fix folio split check for anon folios in
- swapcache.
-Date: Wed, 05 Nov 2025 19:19:47 -0500
-X-Mailer: MailMate (2.0r6283)
-Message-ID: <3DF5A0BA-D828-41BB-9E80-35EFC02D2ACC@nvidia.com>
-In-Reply-To: <20251105155752.fabace52f503424c64517735@linux-foundation.org>
-References: <20251105162910.752266-1-ziy@nvidia.com>
- <20251105155752.fabace52f503424c64517735@linux-foundation.org>
-Content-Type: text/plain
-Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: BL1PR13CA0270.namprd13.prod.outlook.com
- (2603:10b6:208:2ba::35) To DS7PR12MB9473.namprd12.prod.outlook.com
- (2603:10b6:8:252::5)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49ACB86359
+	for <stable@vger.kernel.org>; Thu,  6 Nov 2025 00:31:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1762389075; cv=none; b=XTDpHRZDa3+X/q9+zKJGmJeBOT3ojruss1nijwrm3Nm91dGUcdRUSiaWZi7kj1vKs5dJ0zx+AI/nXN5a+nQ2mv4JSFU7UJE9OeaZgsURh+/GB8IcORftfxn3RBIrkHwjneLEqXkdOsy5BEEo7SKRs1spAbGR4CUpZp7dd9B0b9M=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1762389075; c=relaxed/simple;
+	bh=YwK0dzjnIzie+cIro6blVg+02ewp8AJjSQ0wXem3n/g=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=jB2Ro5H/HizuMllTOR9FutcjHjdzx04nIRsyo+e9JTn1knJt/Gx+O/7/9NRkf0Cs2a+vkMeCVhxfzAyXwC/Z/aQNtOSjcnSKmH+OQxe00Ca5ZSOmVhPgzJI+QHb5PZhlCopVwPuP2XY/xIHHdy8188TTUiqgeRmtPcVdgjADS6s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=X3IBbOEv; arc=none smtp.client-ip=209.85.216.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-34188ba567eso376311a91.1
+        for <stable@vger.kernel.org>; Wed, 05 Nov 2025 16:31:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1762389071; x=1762993871; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=npZ4ZHY9IYcq8FuNNSe7GYz7F1gks+mG+CKUhrgqFF4=;
+        b=X3IBbOEvaTR0osHfmPIqFUzCc9w/RJRN5XyXUuJvI+tqfRELdSQ85gLuYe48PcXdAh
+         5/Bb4rfNKlTRgPrZwEqQduy1SrM1Eityac+3Erk4ZW3d9j7jg88nkwMeXayA/Nyz+yfs
+         TAUXYmBDhgT7TkD6QJ6O9F8xMTxOAP6DFNjecI/3FvCyD429ZTuGwYZl6iwONuIpbGsO
+         HxDSc3Fu/xj5zuft3ElTGekwKyA4/hfWGzw5QhkJ4+PBOAje++WJbzlggCWZ1WkcTK4d
+         klVZoOqzl7KA0ZqEtGL4Bvjf6raFfL31+v5q6Jd75OAZUmvAAsKNaI3rthdWSH+PeH2Y
+         8Qhg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762389071; x=1762993871;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=npZ4ZHY9IYcq8FuNNSe7GYz7F1gks+mG+CKUhrgqFF4=;
+        b=QPgVuuon74AJde4/GZ9uRuhakOJ8WD8KXlGRIACTkn1YkD4jqPFZizRjddzton8Uua
+         VCIAxOBTOLda3tC+RjgatBiHWc33AVsSIg4InKta+2fqC0BcHx2GHrxMy0gQNmUPUBL7
+         zsc3nNyDZ/kx/iYiRu+1Gb40Kgg+f2IHfDn3cAzkejp2MrXMPlToYlN+JAqpahgQWdA8
+         vnXnFgdrGkxu0b9ltYsmuXLDLvAw7sZKNcxqFHhUiKyL+jO1OjSoG32tjo8kroOnlg9c
+         m5EeLFjhF80jpvgEgL1G7GvUjmZFYO8XfVqFUt3MqjBlucoiH90rJwvp8X2ngFAUWrjG
+         eoXg==
+X-Forwarded-Encrypted: i=1; AJvYcCUrkVz9r62vvl0PAySwjkpApnf0NBDorIDQoTnHXLiBe2YFFMAS+9lw89PlcF+G8v+XBlTuoNM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YywVOTn+806BtAG6UUrbuWIuDQjbNr2bgknPgGrY+qaVKul2pBO
+	FuzeuRLo1oKXIgw22xEThf/J1DparlA78jGTgCo6xuODp6MjcV5bcBHBRRGEKIt10KChGZXexc8
+	77nzRkL8+gCvxZNYxwV73NdibCxaVGmg=
+X-Gm-Gg: ASbGncsWEV8BtwQS2SztRzySWzTK7XF+fyW7fFvA/vSaY+dGipITnNvlprtW8h18AJB
+	cUAV5uV6pj22RbbTIB0qTVd9wwVgoJEnh/zpd/npu62qheBEzFsFhxalWa0gglbj2miuvEuNdRN
+	6DHiSFAGlyloA50ELBYLKfmWwmLK5Q15Oc19Frb4yMmk5FAYvAa7CZ8pPRZrr8hKFDEvUtQfHHJ
+	kqwKxCQ3sWCS8i4Cy7RLLMCnw2XCD5pwILFN5e0hRswIiBkVEK8VSsw+5l7kA==
+X-Google-Smtp-Source: AGHT+IHwES9bDUP8SbFObycvgyOEk5THTTrkQ7ePguRlLgOcH2Ti5zcYIrhYryoX80izxcM+hg6IjqYm2Yv9QgPGk+4=
+X-Received: by 2002:a17:90b:1641:b0:32e:3830:65d5 with SMTP id
+ 98e67ed59e1d1-341a700a3bemr5949611a91.36.1762389071497; Wed, 05 Nov 2025
+ 16:31:11 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|DS0PR12MB8443:EE_
-X-MS-Office365-Filtering-Correlation-Id: 31337e21-7d59-40ae-81fd-08de1cca3327
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|366016|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?t+8CL1fZuxYLwyfrDr/cttBxKxazZhRJ5SrRs1L9LvUpVmd6+I5PfF9kScji?=
- =?us-ascii?Q?Hs0tRu5hm3U39QUmGVBPEFYSJ7ySoWKP8lxc/R2EQ/a5JBsVYuw5MYYXGeOJ?=
- =?us-ascii?Q?ShqOave9qwGxrGWHWBXghaSONwYu6l8EKFl9fs500RN1DKCQCB7idg7aXgKH?=
- =?us-ascii?Q?ndpQc/zjpqEeNZ13vJsKkIqrJDqlcpHRBd3I3lY5NbzuB1olOLgzyuRfDiHm?=
- =?us-ascii?Q?O4d7nHdLOtjz7GhhL63OFtXuQEwO17hWaZEhfHMIskiaSHqez/KL0IqoDfjN?=
- =?us-ascii?Q?4TkxuIPFFR9ZWb8s9z9uMSMMP5xgZhPdkk3bkwT1fkiL14WeJx9BBqJtwGUK?=
- =?us-ascii?Q?pf9pdQmiial1M01AYw1OiZkB/nUzpdZcsTKAoKA3dsVp+td1O0o+apxmcU33?=
- =?us-ascii?Q?or7QvPpXnYncAqZumC7SDNPNuwWPaql6SuKIlDJyV7gZo97nvrb8/j0VtVWy?=
- =?us-ascii?Q?4qjwWxoGUIKvxU2fc7RPjK+nS6Zpil7p3Sj7fOAYCAxiPVDk9Lr4qRkTPNX9?=
- =?us-ascii?Q?1VtUTwcl5HTdhwx3vlP68if1REMSx0kNT/Awx5cT3ylWjk6DIdiyV56Fia0/?=
- =?us-ascii?Q?IESGeMh0e9qgaph5saUIkf4cXL4hX+io8w5u+IUX3HqmNkBzx8YVSfZSy67q?=
- =?us-ascii?Q?WSQbOrKDyZOpviMUCzThN75MLOQx3Y8yC3rRsP7TRAdkeWwF9ypSb6pGB7CV?=
- =?us-ascii?Q?xm7NK1HHOx5OjoEdYEacTBZUPhe5HT9/dDcLuj3e3wKjXqKVisjkQN7c3NCJ?=
- =?us-ascii?Q?5Ybq2Apj17NCPgWd5uxfGSVPO7+gqw0lhdSzfKNA7tHy8loya6Oz+iMkmEPs?=
- =?us-ascii?Q?v22jYIvMu+VwgJ53AJmbuzJviDyCWMq1k1RdXG38s9t+t1QfhqIy3C5Jg5mu?=
- =?us-ascii?Q?ueo9dop8lJN3sQvnExQauUHU9ETgTxWUM0F5wpEUmGjU8okbNCFfFoqL7fR5?=
- =?us-ascii?Q?48EXYz0rR+ZFDT92UMiy2KZ84NjvhDsjJKFDGhOQSkH/ViLOQGpAA82biqwq?=
- =?us-ascii?Q?XPFAuJZ7REaHZRlWjMQmiTcxa/J6Kj+XeV+LniLq5zHp6LQM8ZOW8Ev5LlSa?=
- =?us-ascii?Q?vuUMsAio6HbW0DblS/WwsOrDacnlSCnvqov4dq+1zIbERl+tSxSACJP8Gb/s?=
- =?us-ascii?Q?R2bsOz8jSHi+25bnZ34u6MyvRcC3EKTDNzDI08ANbO6mVWmIll0Kh2jHXXE6?=
- =?us-ascii?Q?1bynNU40JJD8zGCewiX2tp0Td2z626MuFkUoo/uyR7JifbY4b1s7gtm8e7oR?=
- =?us-ascii?Q?xjsLfkwSiPT/cfboYBxkqf/GCgbnSXQvCEnmnSVAZK50SGHSQ+us8ENuZtEn?=
- =?us-ascii?Q?p//xoCzQ7t2rtRx2Nx4qewIt/LVm8PaVJyfmYp1HSurpqlk1G2XkFQzpyqsU?=
- =?us-ascii?Q?RCzuQwGegF0yE8RYAJfJmDLVutXLbsn/eArQfZwcvStwCX1+kudQBnGM9dXh?=
- =?us-ascii?Q?7xB5zViYoHZ0cmzEChCOqLyFXBywfKlGUgrDGYhXmlzvyA8xn6JQiQ=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?WO7PzOdzJRY/1pAaue6+Q++RCeUu7bDteuZaHwc66wzBeXYA+iptfTi0k2x3?=
- =?us-ascii?Q?Dh+VQITldulH0r4O+Fd9jNXjX42E9EAWJb0nl4RFHtsO+13Ytu//2vunGw2g?=
- =?us-ascii?Q?l8oLmdYA3vXB5METYnY7yXNvApuGqttEo9UnEN2JlA4np8OLmHjMh+bs66Ht?=
- =?us-ascii?Q?SxY54/F12+5cgpmKYh8Pxmd/KaaBShQ9wXw7HKbbRilwGVrPJKDXTVJtx5ok?=
- =?us-ascii?Q?ciujvOLxpywEC8ONCSl0Fq2Qosw5CA3D5F1T51yir/S2sIL5FEyJmVmD21L8?=
- =?us-ascii?Q?fHnxmWgQjb0jb8MrrwcnHYypRq2U5xN02MDWzhlGbGQAtI9LO0bLeHxzPlVi?=
- =?us-ascii?Q?YMrQjXVHO9WK6sjcBRByfsiF9dNYmKswR6xyWNgXQJxGH7dteRp3TZ00K12u?=
- =?us-ascii?Q?5nNkpOnWMqrRnSnHD6+/F8rrj8IEUeRsyfM4vFN8xrqnAK7byauV/m4QwruE?=
- =?us-ascii?Q?t/hIT06R4WG7aR2/IBo0ST/aa/E8W7t0L9OqH8Y7XtASbW0riYgpniod2sk9?=
- =?us-ascii?Q?ex4fc8G+EBJyTyh7HzS91l3W8Oo8NCtNtRaTBm2CxhAzi+O2EArmJtUDc5cG?=
- =?us-ascii?Q?W4Rjt/ojcz9mRsEgVfQp4bokvSpXR5QwRoNdgNdUVk3VmzdNBIPFhdX5m+Y4?=
- =?us-ascii?Q?LMLpH7sr0k+uPnEPMAEgb8eaOKilRl1yCsTvqYsZ0EboEp2DJOCAOa8P9ktR?=
- =?us-ascii?Q?MMJE/pm/5Bt3TDbO/XagQlq7Hs0TWJeqKjWdc4w+WzP1DvV5Z8BNU7HePl/m?=
- =?us-ascii?Q?ISYVFlABNMKKQ3JXYbTDMuU8QcSzb8v5XsX9lK0sw57b2jQdjBuyMvvEIxfQ?=
- =?us-ascii?Q?FBSraKwcJk/9YVtKB3IEP5+Tlc4xSNUGVVxQp+eHfoXynxw1Kd6BYwWWhJtT?=
- =?us-ascii?Q?oJWOrUFrGIx7jzYfA5Hn9/5lGVd0S/v3JNGAbRCpVkkjCYc/PixBgQDjIcuh?=
- =?us-ascii?Q?syRnUQujCGty8VJodiPcqminHv5A62xX1LY+ZmyMjfH1BH44bOcaeGg6MIu3?=
- =?us-ascii?Q?rV3+y2dQ3iJxI/lT1wGMlPKay4tQ7jc6psktUvBX3S2icvj3DQZHq96zIJ6d?=
- =?us-ascii?Q?3bdFDlGgn0PAKKojrqa2LPfH93uIMVCE+tt1anR4NxLLTp8V3O5n754AS7VG?=
- =?us-ascii?Q?dWH7ZTQaur5NXmr1urKLktiCqzwj5QPNRNSjbjb8YGcTLjgmalo+K7xBvGNv?=
- =?us-ascii?Q?HovcZaEobJGLhUi11u0jxOCHSfY+FEPz0aLOPK7NRII+TPG5rFBcGDo2zhBq?=
- =?us-ascii?Q?S9I4HQNIGQIqyEC742aTp+jib1cekU6Cpj3BHjYFgpR/L2gD2NQqKQ3se3v+?=
- =?us-ascii?Q?uLI8DWb2poFHEHKnnq3SFclD2n9uFDz6A/oKRQSS9GLyH00ghZi1Ij0mxzeX?=
- =?us-ascii?Q?Ay59QQ1guBgV0jY4msdKNX3lC+qoWJPQwRGglHkcirReznSthBx3ZaTghlH6?=
- =?us-ascii?Q?12g12qK4RuOnvQyOSOhWpBicLMXZFjB8+Cjy91jjFscmTtC6J65/jmJsWrKV?=
- =?us-ascii?Q?Xd8X3whclwZ7LAj45ujsdLZ//+3rzxPknTfpBOwlmqAQdDfoIfTnbOkqwBRw?=
- =?us-ascii?Q?wDL7Gynb8F1g3vNCI3sNcNTeQYbyEehO9kWvud0r?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 31337e21-7d59-40ae-81fd-08de1cca3327
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Nov 2025 00:19:50.2007
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: UdKiqi+dLmKmWvj386aYxGzBFlZfm7O1x3mjf9CW4EMH13pWbff6efhKSWbt65Y6
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB8443
+References: <CACueBy7yNo4jq4HbiLXn0ez14w8CUTtTpPHmpSB-Ou6jhhNypA@mail.gmail.com>
+ <CANn89iL9e9TZoOZ8KG66ea37bo=WztPqRPk8A9i0Ntx2KidYBw@mail.gmail.com> <aQtubP3V6tUOaEl5@shredder>
+In-Reply-To: <aQtubP3V6tUOaEl5@shredder>
+From: chuang <nashuiliang@gmail.com>
+Date: Thu, 6 Nov 2025 08:31:00 +0800
+X-Gm-Features: AWmQ_bmJbeEEhs1HgJzOSB3cbz-wmgiV7SpPt3It_0aKQ1KdQVVYbK5786sv_X4
+Message-ID: <CACueBy6LKYmusLjQPnQGCoSZQLEVAo5_X47B-gaH-2dSx6xDuw@mail.gmail.com>
+Subject: Re: [PATCH net] ipv4: route: Prevent rt_bind_exception() from
+ rebinding stale fnhe
+To: Ido Schimmel <idosch@idosch.org>
+Cc: Eric Dumazet <edumazet@google.com>, stable@vger.kernel.org, 
+	"David S. Miller" <davem@davemloft.net>, David Ahern <dsahern@kernel.org>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Networking <netdev@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 5 Nov 2025, at 18:57, Andrew Morton wrote:
+Thanks, your analysis is excellent and makes perfect sense. I can
+briefly describe the issue.
 
-> On Wed,  5 Nov 2025 11:29:10 -0500 Zi Yan <ziy@nvidia.com> wrote:
+This problem took quite some time to analyze overall =E2=80=94 we enabled
+netdev refcnt, added dst tracepoints, and eventually captured a race
+condition between fnhe deletion and rt_bind_exception.
+
+In our environment, we use the sit driver(ip tunnel). During the xmit
+path, it records the PMTU for each destination, creating or updating
+fnhe entries (even when the MTU is already appropriate). Because there
+are many data flows, the sit driver updates PMTU very frequently,
+which leads to the race condition mentioned above.
+
+Sorry for the brief summary =E2=80=94 I=E2=80=99ll provide a more detailed =
+explanation
+later, along with the patch verification method.
+
+On Wed, Nov 5, 2025 at 23:34 Ido Schimmel <idosch@idosch.org> wrote:
 >
->> Both uniform and non uniform split check missed the check to prevent
->> splitting anon folios in swapcache to non-zero order. Fix the check.
+> On Wed, Nov 05, 2025 at 06:26:22AM -0800, Eric Dumazet wrote:
+> > On Mon, Nov 3, 2025 at 7:09=E2=80=AFPM chuang <nashuiliang@gmail.com> w=
+rote:
+> > >
+> > > From 35dbc9abd8da820007391b707bd2c1a9c99ee67d Mon Sep 17 00:00:00 200=
+1
+> > > From: Chuang Wang <nashuiliang@gmail.com>
+> > > Date: Tue, 4 Nov 2025 02:52:11 +0000
+> > > Subject: [PATCH net] ipv4: route: Prevent rt_bind_exception() from re=
+binding
+> > >  stale fnhe
+> > >
+> > > A race condition exists between fnhe_remove_oldest() and
+> > > rt_bind_exception() where a fnhe that is scheduled for removal can be
+> > > rebound to a new dst.
+> > >
+> > > The issue occurs when fnhe_remove_oldest() selects an fnhe (fnheX)
+> > > for deletion, but before it can be flushed and freed via RCU,
+> > > CPU 0 enters rt_bind_exception() and attempts to reuse the entry.
+> > >
+> > > CPU 0                             CPU 1
+> > > __mkroute_output()
+> > >   find_exception() [fnheX]
+> > >                                   update_or_create_fnhe()
+> > >                                     fnhe_remove_oldest() [fnheX]
+> > >   rt_bind_exception() [bind dst]
+> > >                                   RCU callback [fnheX freed, dst leak=
+]
+> > >
+> > > If rt_bind_exception() successfully binds fnheX to a new dst, the
+> > > newly bound dst will never be properly freed because fnheX will
+> > > soon be released by the RCU callback, leading to a permanent
+> > > reference count leak on the old dst and the device.
+> > >
+> > > This issue manifests as a device reference count leak and a
+> > > warning in dmesg when unregistering the net device:
+> > >
+> > >   unregister_netdevice: waiting for ethX to become free. Usage count =
+=3D N
+> > >
+> > > Fix this race by clearing 'oldest->fnhe_daddr' before calling
+> > > fnhe_flush_routes(). Since rt_bind_exception() checks this field,
+> > > setting it to zero prevents the stale fnhe from being reused and
+> > > bound to a new dst just before it is freed.
+> > >
+> > > Cc: stable@vger.kernel.org
+> > > Fixes: 67d6d681e15b ("ipv4: make exception cache less predictible")
+> >
+> > I do not see how this commit added the bug you are looking at ?
 >
-> Please describe the possible userspace-visible effects of the bug
-> especially when proposing a -stable backport.
-
-Splitting anon folios in swapcache to non-zero order can cause data
-corruption since swapcache only support PMD order and order-0 entries.
-This can happen when one use split_huge_pages under debugfs to split
-anon folios in swapcache.
-
+> Not the author, but my understanding is that the issue is that an
+> exception entry which is queued for deletion allows a dst entry to be
+> bound to it. As such, nobody will ever release the reference from the
+> dst entry and the associated net device.
 >
->> Fixes: 58729c04cf10 ("mm/huge_memory: add buddy allocator like (non-un=
-iform) folio_split()")
->> Reported-by: "David Hildenbrand (Red Hat)" <david@kernel.org>
->> Closes: https://lore.kernel.org/all/dc0ecc2c-4089-484f-917f-920fdca4c8=
-98@kernel.org/
+> Before 67d6d681e15b, exception entries were only queued for deletion by
+> ip_del_fnhe() and it prevented dst entries from binding themselves to
+> the deleted exception entry by clearing 'fnhe->fnhe_daddr' which is
+> checked in rt_bind_exception(). See ee60ad219f5c7.
 >
-> I was hopeful, but that's "from code inspection".
-
-In-tree callers do not perform such an illegal operation. Only debugfs
-interface could trigger it. I will put adding a test case on my TODO
-list.
-
+> 67d6d681e15b added another point in the code that queues exception
+> entries for deletion, but without clearing 'fnhe->fnhe_daddr' first.
+> Therefore, it added another instance of the bug that was fixed in
+> ee60ad219f5c7.
 >
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Zi Yan <ziy@nvidia.com>
-
-
-Best Regards,
-Yan, Zi
+> >
+> > > Signed-off-by: Chuang Wang <nashuiliang@gmail.com>
+> > > ---
+> > >  net/ipv4/route.c | 5 +++++
+> > >  1 file changed, 5 insertions(+)
+> > >
+> > > diff --git a/net/ipv4/route.c b/net/ipv4/route.c
+> > > index 6d27d3610c1c..b549d6a57307 100644
+> > > --- a/net/ipv4/route.c
+> > > +++ b/net/ipv4/route.c
+> > > @@ -607,6 +607,11 @@ static void fnhe_remove_oldest(struct
+> > > fnhe_hash_bucket *hash)
+> > >                         oldest_p =3D fnhe_p;
+> > >                 }
+> > >         }
+> > > +
+> > > +       /* Clear oldest->fnhe_daddr to prevent this fnhe from being
+> > > +        * rebound with new dsts in rt_bind_exception().
+> > > +        */
+> > > +       oldest->fnhe_daddr =3D 0;
+> > >         fnhe_flush_routes(oldest);
+> > >         *oldest_p =3D oldest->fnhe_next;
+> > >         kfree_rcu(oldest, rcu);
+> > > --
+> >
 
