@@ -1,183 +1,131 @@
-Return-Path: <stable+bounces-192561-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192562-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8A4DC38A9F
-	for <lists+stable@lfdr.de>; Thu, 06 Nov 2025 02:12:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 039A9C38ACF
+	for <lists+stable@lfdr.de>; Thu, 06 Nov 2025 02:16:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E491C3B4D28
-	for <lists+stable@lfdr.de>; Thu,  6 Nov 2025 01:08:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3B1613AFADF
+	for <lists+stable@lfdr.de>; Thu,  6 Nov 2025 01:14:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C0F91DF26B;
-	Thu,  6 Nov 2025 01:08:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67B461EF38E;
+	Thu,  6 Nov 2025 01:14:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RznJW4KQ"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Mg6b+Jal"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8F0E1891AB;
-	Thu,  6 Nov 2025 01:08:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA992155C82
+	for <stable@vger.kernel.org>; Thu,  6 Nov 2025 01:14:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762391306; cv=none; b=QlyRQFd4FFJchyFC42a3GJY5GCZH7szbb9BdPEC1NRgT9xhXVRIy2t7fsx0dtfDQ9rzM5QDXEAUwB6KlwOb96ysF3bYCq+4n/NESZB1SMFKQf/YuIRle0MjzUfHfw0GhJRhAjJUiAWNYk0o7FdCpY/N9ApxsqoGPhDSWwaJqMfM=
+	t=1762391692; cv=none; b=ZD3YCuICZUCk/mp0cnRTfhETu/ozxrYeuyVFB2LVaGheeJSSbt6xv5Th28juKAcQcI0JS/RuZLVVwAA+TTYyl6oqQUVIy4zruZMkf6A5g/4dKkdzaxHPD12D2i8zO/WS6KExgoUvFAgpAXjXB+Hoo339YvdcHVahbkynjOsP1lo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762391306; c=relaxed/simple;
-	bh=C1CMXKhozu8LYFPbX6ylpFCy9Bm+8ecgB1ZjwnG2s6A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=d0PJBF928F/r3CGL9uWVK7a/5WT3kLzwrKylDdLjG2PqDWyZhtwN4RjcKFw1zOoxuoLJc1+iavR++RleKO7DAFhDJkQOs2ax3ARkhNq0h8FIyFGUWn35Y+RwH+Vqysb6x3OQ6Y6VRH9euL9ofbqdNS6ObEAZgyPhtKXUayeruA8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RznJW4KQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C62DC4CEF5;
-	Thu,  6 Nov 2025 01:08:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762391305;
-	bh=C1CMXKhozu8LYFPbX6ylpFCy9Bm+8ecgB1ZjwnG2s6A=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=RznJW4KQCN5afy0v0SrJz6ewkOwCFcTW5mT6gKEDRbByUJ/aXvmZOKgHub0HfGd8F
-	 C62tJ3ju+U+txK4vrh5547VZXBHPVZ6z1b9FWZlV02UTTcV4YzzmkRxBn8D96VkDv3
-	 i5DocrXEANqZcwu3Ue356M+VYoVdTckBOc6aIs0ShO3a3dzIVMXgXBOgbu53tyx4dJ
-	 49NwlzJdN7yZvJCUhFduK41LNPzVqrvC8dHhK0pyklkvM0fV+GM+TzNWz57AuMdUG5
-	 4Q6TgklWVOkAEMA4uUYP7eOqjiTioLhq6rtY/ec36qG0EkQSxMzx2xmXs5KxYvxu0P
-	 3y492NtCsA4vg==
-Date: Wed, 5 Nov 2025 18:08:20 -0700
-From: Nathan Chancellor <nathan@kernel.org>
-To: Omar Sandoval <osandov@osandov.com>
-Cc: Dimitri John Ledkov <dimitri.ledkov@surgut.co.uk>,
-	linux-kbuild@vger.kernel.org, Samir M <samir@linux.ibm.com>,
-	linux-kernel@vger.kernel.org,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	linuxppc-dev@lists.ozlabs.org, stable@vger.kernel.org,
-	Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
-	linux-debuggers@vger.kernel.org, Nicolas Schier <nsc@kernel.org>,
-	Alexey Gladkov <legion@kernel.org>
-Subject: Re: [mainline]Error while running make modules_install command
-Message-ID: <20251106010820.GA3031707@ax162>
-References: <7fef7507-ad64-4e51-9bb8-c9fb6532e51e@linux.ibm.com>
- <56905387-ec43-4f89-9146-0db6889e46ab@linux.ibm.com>
- <aQpCE_XTU-bZHFbk@telecaster>
- <CANBHLUhJ5UVsN4-JN2PG=jq63yGttB9BD6Qm8MgvYirTvg_stw@mail.gmail.com>
- <20251105011548.GB769905@ax162>
- <aQvHSVXbOdiN_J5D@telecaster>
+	s=arc-20240116; t=1762391692; c=relaxed/simple;
+	bh=GqiSEFjJpS60vknr4o7YkvEXtHCaMxx+InwVSzChCtY=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=JAfBP545or282kuZDNCuNzhNqw5Ors3901dAbS2+9D3MDXzrEsRwRfRWf0RYeoOP/A5VpQHEW8ai1o8B+k33dMngIq1XIRtN7yAScfWiCaX5fSjX0o45Q4Y09kw0RukTkOVLSTHYlsMZV+yQZBAd3Q1lEJ+cWJiFuIn42LkxZ/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jthies.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Mg6b+Jal; arc=none smtp.client-ip=209.85.210.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jthies.bounces.google.com
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-7ae220b9d18so391433b3a.2
+        for <stable@vger.kernel.org>; Wed, 05 Nov 2025 17:14:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1762391690; x=1762996490; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=39ivioua6pnMjSf3oDat2VB6KzK+NMcakhy3huJbtbA=;
+        b=Mg6b+JalVoK55gYj7KWr+vHIEhRFW2jczU3YZQZolgfaOLStelq/+gu4wcgCvewRXm
+         F00O6SsG9rH8E938T3kWelwnzji4ohv5qywMuVeSzwLfC/kzvngQrh34NB7C+PQ++WJP
+         i5zSY88fIhyUaqwc3HzZ56TIywyegbbl7ixUqOAE9nN+SZkqUsP/WnSAvF/50yoSnD/r
+         2KotY7vI62JCNhWUZ25mSoJs/MKvB10jV7JF3OnurzNPSRtdkZB1q/7417zGh9E2yyIm
+         6XKGFNUMmLdrJIh2fcWdcjhX+EYJ5VMJoZDh6uBHr2Mx6BfWTb1xrTBn3NvdVVrVN4kS
+         JIxg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762391690; x=1762996490;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=39ivioua6pnMjSf3oDat2VB6KzK+NMcakhy3huJbtbA=;
+        b=mz+ffj8iOCbVQZjJZh3jVPVEW48uR3lacu3tNH9Sob6qen0UeEaE0eYQEJhssUVLzi
+         KE78nfRV5h719hrSg4rldSm6XRi7LtfagxO4vCB7FgYnFpCqhqXVmbKoLeEXVUJA1fb2
+         TmsLUT6sT5KQh/ga7X5+cGAkIyehf9ANvCW4N1q03R1Zo6F5DjxTt6CmmB4B6bvtKOV6
+         D/RkSXoqQ4FqR+DYuuTUDYUwns2yJO9YBxlr5QXY+fyzcoyzd4FqG2AncUY1t4cbVRXi
+         q3dBM4RphFKX/ZwUmaChJ4dYXaDbS/ELcZgVnzF69ZekXCoXrveenQe1Ot6GoqfQb7hD
+         6TvQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWrbSzU1yC0wVXpWT7Mff1QbPn56yaOjo7vfP/XiUHKQEMg2Gwoxg71jN9ihJaEuzqskm3axgE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzbAQgIoBLzQBcJuXc5HXsCbLEifvfNLgZap4PfQ1BTQ4SQ2B6V
+	KDT3Q/4/i/LD+W2boJNmKaJxNAEEnJyc8wvdyyssfbO1nNqfdmXNAaWzW/ebkoLN1BTapmdGuGy
+	0Ji/TlQ==
+X-Google-Smtp-Source: AGHT+IGHknY9aqu1w+W4IBmjhbnbPVtNg3MS81ewEb5IJ6RCNy2Yl/JqwF6vF+FFSuv2t1tS8YOwfKaj34E=
+X-Received: from dlbqc8.prod.google.com ([2002:a05:7023:a88:b0:119:49ca:6ba4])
+ (user=jthies job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:3d8e:b0:343:68f2:3728
+ with SMTP id adf61e73a8af0-34f83f06e42mr7119443637.15.1762391689940; Wed, 05
+ Nov 2025 17:14:49 -0800 (PST)
+Date: Thu,  6 Nov 2025 01:14:46 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aQvHSVXbOdiN_J5D@telecaster>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.51.2.1041.gc1ab5b90ca-goog
+Message-ID: <20251106011446.2052583-1-jthies@google.com>
+Subject: [PATCH v3] usb: typec: ucsi: psy: Set max current to zero when disconnected
+From: Jameson Thies <jthies@google.com>
+To: heikki.krogerus@linux.intel.com, linux-usb@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Cc: dmitry.baryshkov@oss.qualcomm.com, bleung@chromium.org, 
+	gregkh@linuxfoundation.org, akuchynski@chromium.org, 
+	abhishekpandit@chromium.org, sebastian.reichel@collabora.com, kenny@panix.com, 
+	linux-pm@vger.kernel.org, stable@vger.kernel.org, 
+	Jameson Thies <jthies@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Wed, Nov 05, 2025 at 01:53:13PM -0800, Omar Sandoval wrote:
-> Here's a script that reproduces it:
-> 
-> ```
-> #!/bin/sh
-> 
-> set -e
-> 
-> host_arch=x86_64
-> compiler_version="12.4.0"
-> 
-> compiler_dir="/tmp/arm64-gcc-$compiler_version"
-> if [ ! -e "$compiler_dir" ]; then
-> 	rm -rf "$compiler_dir.tmp"
-> 	mkdir "$compiler_dir.tmp"
-> 	curl -L "https://mirrors.kernel.org/pub/tools/crosstool/files/bin/$host_arch/$compiler_version/$host_arch-gcc-$compiler_version-nolibc-aarch64-linux.tar.xz" | tar -C "$compiler_dir.tmp" -Jx
-> 	mv "$compiler_dir.tmp" "$compiler_dir"
-> fi
-> 
-> export PATH="$compiler_dir/gcc-$compiler_version-nolibc/aarch64-linux/bin:$PATH"
-> make ARCH=arm64 CROSS_COMPILE=aarch64-linux- tinyconfig
-> make ARCH=arm64 CROSS_COMPILE=aarch64-linux- -j$(nproc) vmlinux
-> readelf -W -l vmlinux | awk '$1 == "LOAD" && $6 ~ /0x0+\>/'
-> ```
-> 
-> It prints something like:
-> 
->   LOAD           0x1ef008 0x0000000000000000 0xffff800080220000 0x000000 0x000000 R   0x10000
-> 
-> I.e., a segment with FileSiz and MemSiz 0.
+The ucsi_psy_get_current_max function defaults to 0.1A when it is not
+clear how much current the partner device can support. But this does
+not check the port is connected, and will report 0.1A max current when
+nothing is connected. Update ucsi_psy_get_current_max to report 0A when
+there is no connection.
 
-Thank you, that was incredibly helpful.
+Fixes: af833e7f7db3 ("usb: typec: ucsi: psy: Set current max to 100mA for BC 1.2 and Default")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jameson Thies <jthies@google.com>
+Reviewed-by: Benson Leung <bleung@chromium.org>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Tested-by: Kenneth R. Crudup <kenny@panix.com>
+---
 
-> Using a newer crosstool version fixes it, so maybe this was a GCC or
-> binutils bug.
+v3 changes:
+- change log moved under "--"
 
-Good observation, as this was reproducible with GCC 12.4.0 from
-kernel.org but not GCC 12.5.0, which I noticed has a newer binutils
-version. I was able to reproduce it with a self compiled copy of
-binutils 2.42 but not with binutils 2.44 so I reverse bisected the fix
-to [1], which certainly makes sense :)
+v2 changes:
+ - added cc stable tag to commit message
 
-The diff of 'readelf -lW' before that change:
+ drivers/usb/typec/ucsi/psy.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/tmp/.psub.9QY0ZO b/tmp/.psub.6lHG9T
-index 7f7f4de7be8..ea3a9b4ffb0 100644
---- a/tmp/.psub.9QY0ZO
-+++ b/tmp/.psub.6lHG9T
-@@ -7,14 +7,14 @@ Program Headers:
-   Type           Offset   VirtAddr           PhysAddr           FileSiz  MemSiz   Flg Align
-   LOAD           0x010000 0xffff800080000000 0xffff800080000000 0x14f000 0x14f000 R E 0x10000
-   LOAD           0x160000 0xffff800080150000 0xffff800080150000 0x08f008 0x0c4c40 RWE 0x10000
--  LOAD           0x1f0000 0xffff800080220000 0xffff800080220000 0x000d08 0x000d08 R   0x10000
-+  LOAD           0x1ef008 0x0000000000000000 0xffff800080220000 0x000000 0x000000 R   0x10000
-   NOTE           0x1860f8 0xffff8000801760f8 0xffff8000801760f8 0x000054 0x000054 R   0x4
--  GNU_STACK      0x000000 0x0000000000000000 0x0000000000000000 0x000000 0x000000 RW  0x10
-+  GNU_STACK      0x000000 0x0000000000000000 0x0000000000000000 0x000000 0x000000 RW  0x8
+diff --git a/drivers/usb/typec/ucsi/psy.c b/drivers/usb/typec/ucsi/psy.c
+index 2b0225821502..3abe9370ffaa 100644
+--- a/drivers/usb/typec/ucsi/psy.c
++++ b/drivers/usb/typec/ucsi/psy.c
+@@ -169,6 +169,11 @@ static int ucsi_psy_get_current_max(struct ucsi_connector *con,
+ {
+ 	u32 pdo;
  
-  Section to Segment mapping:
-   Segment Sections...
-    00     .head.text .text 
-    01     .rodata __param __ex_table .notes .rodata.text .init.text .exit.text .altinstructions .init.data runtime_shift_d_hash_shift runtime_ptr_dentry_hashtable .data..percpu .data .mmuoff.data.write .mmuoff.data.read .bss 
--   02     .modinfo 
-+   02     
-    03     .notes 
-    04     
++	if (!UCSI_CONSTAT(con, CONNECTED)) {
++		val->intval = 0;
++		return 0;
++	}
++
+ 	switch (UCSI_CONSTAT(con, PWR_OPMODE)) {
+ 	case UCSI_CONSTAT_PWR_OPMODE_PD:
+ 		if (con->num_pdos > 0) {
 
-After:
+base-commit: 18514fd70ea4ca9de137bb3bceeac1bac4bcad75
+-- 
+2.51.2.1041.gc1ab5b90ca-goog
 
-diff --git a/tmp/.psub.x5uqM8 b/tmp/.psub.LHoP7d
-index 7f7f4de7be8..27bda6ea7cc 100644
---- a/tmp/.psub.x5uqM8
-+++ b/tmp/.psub.LHoP7d
-@@ -1,20 +1,18 @@
- 
- Elf file type is EXEC (Executable file)
- Entry point 0xffff800080000000
--There are 5 program headers, starting at offset 64
-+There are 4 program headers, starting at offset 64
- 
- Program Headers:
-   Type           Offset   VirtAddr           PhysAddr           FileSiz  MemSiz   Flg Align
-   LOAD           0x010000 0xffff800080000000 0xffff800080000000 0x14f000 0x14f000 R E 0x10000
-   LOAD           0x160000 0xffff800080150000 0xffff800080150000 0x08f008 0x0c4c40 RWE 0x10000
--  LOAD           0x1f0000 0xffff800080220000 0xffff800080220000 0x000d08 0x000d08 R   0x10000
-   NOTE           0x1860f8 0xffff8000801760f8 0xffff8000801760f8 0x000054 0x000054 R   0x4
--  GNU_STACK      0x000000 0x0000000000000000 0x0000000000000000 0x000000 0x000000 RW  0x10
-+  GNU_STACK      0x000000 0x0000000000000000 0x0000000000000000 0x000000 0x000000 RW  0x8
- 
-  Section to Segment mapping:
-   Segment Sections...
-    00     .head.text .text 
-    01     .rodata __param __ex_table .notes .rodata.text .init.text .exit.text .altinstructions .init.data runtime_shift_d_hash_shift runtime_ptr_dentry_hashtable .data..percpu .data .mmuoff.data.write .mmuoff.data.read .bss 
--   02     .modinfo 
--   03     .notes 
--   04     
-+   02     .notes 
-+   03     
-
-I am not really sure how to workaround this in a concise way... at least
-for arm64 since it does not seem to use PHDRS to describe ELF segments,
-it just relies on the default linker heuristics? It also seems seems
-like this is a generic problem not specific to .modinfo, we just so
-happen to see it with this section since it is in its own segment and we
-are removing it.
-
-[1]: https://sourceware.org/git/?p=binutils-gdb.git;a=commit;h=7f26d260ef76a4cb2873a7815bef187005528c19
-
-Cheers,
-Nathan
 
