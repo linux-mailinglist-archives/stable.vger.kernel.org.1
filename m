@@ -1,96 +1,74 @@
-Return-Path: <stable+bounces-192573-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192574-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AA27C394E8
-	for <lists+stable@lfdr.de>; Thu, 06 Nov 2025 07:58:26 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E5FBC394F2
+	for <lists+stable@lfdr.de>; Thu, 06 Nov 2025 07:59:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 899C14E3588
-	for <lists+stable@lfdr.de>; Thu,  6 Nov 2025 06:58:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3BB7E3B8E99
+	for <lists+stable@lfdr.de>; Thu,  6 Nov 2025 06:59:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B841027510B;
-	Thu,  6 Nov 2025 06:58:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBC8D273D68;
+	Thu,  6 Nov 2025 06:59:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hymehJ8d"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="K1xkw3BF"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 221C22745C
-	for <stable@vger.kernel.org>; Thu,  6 Nov 2025 06:58:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 339CE264619
+	for <stable@vger.kernel.org>; Thu,  6 Nov 2025 06:59:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762412300; cv=none; b=TylrF3VQa1MoVt8/cC8OJIiyT9q40rJuseQtnAPE3e4v17HIt0RNB+JLUoq+sdfrp8CP+QU1hiqhm12VO3eEGf+Ply28oM6Do1qYn5fmM7s3kAAkWPZrjwd2JPh1JiH5lCgGAwcTcwULzpD6a8mSYcSYgn2C7Rtezp1zVAs9s6Y=
+	t=1762412369; cv=none; b=M9WiBStducDWAI+f7BAx0G6pw9IsEqqlpqqy0uT40rrNOgCp8hEyvU8uMRMHepKuKn5x7yGEzc90W+EcZzyStGosyuJ/coYOg3B8fXRbe8nHq5sx0TjpBwjvTI/uVx/wx96wjBMvGnAhvqrnu/6g1mqyGShdpevKRInD701NWlc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762412300; c=relaxed/simple;
-	bh=3USn+kAKMYwPb5j0sZCxRjClOwX15xPhtud3sUz3LSU=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=pxmK+hNevsZwk43neFTMOwvI03noslhCBZTfMjWasonvUCoC8itt0Vlp9Kc6Q+md0uQNt8/ITFVJ8UhnES9ghV0wiSEEcAjLkyV6U1excZQRb5ck93LvNAXVaoO506svvYSklb0NVM3toHzAMQ9+xYyNoQbPQP+GL+JkfDltwM0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hymehJ8d; arc=none smtp.client-ip=209.85.216.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-340299fd35aso82799a91.1
-        for <stable@vger.kernel.org>; Wed, 05 Nov 2025 22:58:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762412298; x=1763017098; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=QkT3tsOZsMZ2+dYyU7EN69OYqrA2oFR+3YWlk36uRQo=;
-        b=hymehJ8dpblQda1a2LtR7j75brDh4th8OHJceoKb3SDzOW2NmIXcrOXxDyyDXe6b3O
-         6Q0HjEAY4jIcXt1RkyaQLRA/Msvt/KghIBKx8nl+/noxkTdY7TMeL9qxUy6V8AHOXJpO
-         LUJxD5zHq7WIVjF9TkoHi2CF1gJBT6gkLzQJikh8jHofEhDSyfVkhvlo53JmbA47rynt
-         /pkPLBVZC4BGe7DXo+DQzuKIFkCloZ5W8QIDMnZpdePR/CO1x3Ap5yjlnPBTjxZHeHkx
-         AUSwKZGt3L85kK/B7OQL4dkHzOStjuf45LCxxGNIOafXaUzX4rvvYXdfdNdMubCMwPT0
-         /Flw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762412298; x=1763017098;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=QkT3tsOZsMZ2+dYyU7EN69OYqrA2oFR+3YWlk36uRQo=;
-        b=uvufzqdYAVI/WAR5rrOVMi+Zf/hItPO8dwwNQlLgHQmTEMTzO3MGZZ2rFaIA4d8aFr
-         hRpkJYE7woUvMyDZUoFLdj/xfyG0f/eZSwUhy5MTqZWanTXaUlbtZCJWmyfaxKmhli13
-         O+mnxncjRKN7yjuLoS7yphRH4CTSgZX3HOHamhwN3nEvni/4nM+7sURh/xsGiL9610hU
-         bZg6AGfRaYPgvyBtQONckp4hVlW1TMDq6y8x22fcusveI8l48FWZ/LaVRm3C7lH4fz8i
-         LReEs0SriRiSvi2r8NO8A/wz3jeoyVVgmQS4MiAr2ujowlnk00C5zYLdzdbHq2XOWRby
-         QDuA==
-X-Forwarded-Encrypted: i=1; AJvYcCX7+HEb6hq4FeSKzCbhw9o+huXQeaV6km6wmEcsXlcXZqv5uN+NaYHcGYY5Aqfr+fpFZ2bCCXk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxGwReYw5SDNpGoE6SIq655G4TSbPTWlmezPD2F/WMxdLqxe4WM
-	YmyzUBmj+c6PS4JTGMFNdBwrewT32t7X0TYgK9QxNt87sm2ja/+rOzOb
-X-Gm-Gg: ASbGncsUcqb1oQHEL9ksoyyx1pkb0bCvYnHvJUlprjdpN6EbT1vwp69joMMGv7m4c+3
-	9Mu6Zl6UlIoJTC0J88TdWkOeO/EArgwHq3l3BkqvzFuP46RCsOKuEWL38+4OOvFRmEu3GruZE3q
-	v9KAFgVyAsnpJ8ikPbJ03pSto2HUYakI7tDK1aae3v+AURHptHTx1U2vMubXIi3OnOkT8QVQM39
-	HO8wrbgKjqsHNG2V7hbhf1egVDqnzfa2KuNqZJdgS579BADlAqK7EvtoUcYlEtf66fjXV2q2b0c
-	OREX26ZCeNHAgPcwV+nXiA00wOgVUa2/1s2hk8F06XjgNUX3hHPl0GnJM76OwDuv/MBYUbljETp
-	djXeIZ3mz0HvIA2xZB3Qlk2ZKrXjHhjAiL48RlW/EmljhY6eYpYPK9Nrjpc2evXcF2sut/2X2sZ
-	Z64dVg4tYLuw8W+Hjc8x/HCvBTGHTAvFG1dBhF6+AhppBurKhPE6MKRssOv3pQ6DqeWf95anvy
-X-Google-Smtp-Source: AGHT+IErOrBaCNdpSi7aBofzbjzItcvk/RGTQTtnd70szwBznVi23Y1OUlurbOHADjEnQEG0jggTrw==
-X-Received: by 2002:a17:90b:1e0f:b0:341:abd4:b9f5 with SMTP id 98e67ed59e1d1-341abd4c08emr4244793a91.6.1762412298444;
-        Wed, 05 Nov 2025 22:58:18 -0800 (PST)
-Received: from poi.localdomain (KD118158218050.ppp-bb.dion.ne.jp. [118.158.218.50])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-341d3e0b0b2sm702504a91.21.2025.11.05.22.58.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 05 Nov 2025 22:58:17 -0800 (PST)
-From: Qianchang Zhao <pioooooooooip@gmail.com>
-To: Namjae Jeon <linkinjeon@kernel.org>,
-	linux-cifs@vger.kernel.org
-Cc: Steve French <smfrench@gmail.com>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Tom Talpey <tom@talpey.com>,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	gregkh@linuxfoundation.org,
-	Qianchang Zhao <pioooooooooip@gmail.com>,
-	Zhitong Liu <liuzhitong1993@gmail.com>
-Subject: [PATCH v2] ksmbd: clear 'encrypted' on encrypt_resp() failure to send plaintext error
-Date: Thu,  6 Nov 2025 15:58:04 +0900
-Message-Id: <20251106065804.363242-1-pioooooooooip@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20251104141214.345175-1-pioooooooooip@gmail.com>
-References: <20251104141214.345175-1-pioooooooooip@gmail.com>
+	s=arc-20240116; t=1762412369; c=relaxed/simple;
+	bh=s6Sw7awMb0w+8EKb6S/cTDLwbwxSB9T9N52bqhhhVCo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BNqQ/m73khzlHh/5BpkGE14s9t8p1wR1doGts3kaTvtr+EaeiezjsFmswwmkjplqEfp2ZBHGQRPOlb74wbKQBOSOa04o6tf/mPs4DPfyWX7Jj74q3PvZ0D4YqPU89GpFVvxzPIQ4ZPpt5VTTbKdXP1KXBk4MLa45LjVmhjlZBdI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=K1xkw3BF; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1762412366;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=AR8zCu9He0hr0Ps1/Yt7ZPdaD105dTYO/pQr3EZq3BI=;
+	b=K1xkw3BFOGwLb3YqRnVtIyaqXMAalOwCyv6kE7zcVSGiDQNx6jWu8vyTyTuyTzwYkgnLad
+	65KVNp1qJf66nm4pPtrJBBEUJCTP9PWG8VK36s7i4vljmRqLMV52tmq4JUtsqm69TPKaDp
+	rCx9MmrRgNR7bi/Oh6YP+oA1t47Od0g=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-28-iYaUPKAfPv6_RvXWSa6UDQ-1; Thu,
+ 06 Nov 2025 01:59:23 -0500
+X-MC-Unique: iYaUPKAfPv6_RvXWSa6UDQ-1
+X-Mimecast-MFC-AGG-ID: iYaUPKAfPv6_RvXWSa6UDQ_1762412361
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B35E81800358;
+	Thu,  6 Nov 2025 06:59:20 +0000 (UTC)
+Received: from fedora.redhat.com (unknown [10.72.112.81])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id D4D92196B8F6;
+	Thu,  6 Nov 2025 06:59:14 +0000 (UTC)
+From: Pingfan Liu <piliu@redhat.com>
+To: kexec@lists.infradead.org,
+	linux-integrity@vger.kernel.org
+Cc: Pingfan Liu <piliu@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Baoquan He <bhe@redhat.com>,
+	Mimi Zohar <zohar@linux.ibm.com>,
+	Roberto Sassu <roberto.sassu@huawei.com>,
+	Alexander Graf <graf@amazon.com>,
+	Steven Chen <chenste@linux.microsoft.com>,
+	stable@vger.kernel.org
+Subject: [PATCHv2 1/2] kernel/kexec: Change the prototype of kimage_map_segment()
+Date: Thu,  6 Nov 2025 14:59:03 +0800
+Message-ID: <20251106065904.10772-1-piliu@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -98,45 +76,96 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-When encrypt_resp() fails in the send path, we set STATUS_DATA_ERROR but
-leave work->encrypted true. The send path then still assumes a valid
-transform buffer and tries to build/send an encrypted reply.
+The kexec segment index will be required to extract the corresponding
+information for that segment in kimage_map_segment(). Additionally,
+kexec_segment already holds the kexec relocation destination address and
+size. Therefore, the prototype of kimage_map_segment() can be changed.
 
-Clear work->encrypted on failure to force a plaintext error reply.
-The transform buffer (if allocated) is released by ksmbd_free_work_struct(),
-so no explicit kvfree(tr_buf) is needed.
-
-Reported-by: Qianchang Zhao <pioooooooooip@gmail.com>
-Reported-by: Zhitong Liu <liuzhitong1993@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Qianchang Zhao <pioooooooooip@gmail.com>
-
+Fixes: 07d24902977e ("kexec: enable CMA based contiguous allocation")
+Signed-off-by: Pingfan Liu <piliu@redhat.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Baoquan He <bhe@redhat.com>
+Cc: Mimi Zohar <zohar@linux.ibm.com>
+Cc: Roberto Sassu <roberto.sassu@huawei.com>
+Cc: Alexander Graf <graf@amazon.com>
+Cc: Steven Chen <chenste@linux.microsoft.com>
+Cc: <stable@vger.kernel.org>
+To: kexec@lists.infradead.org
+To: linux-integrity@vger.kernel.org
 ---
-v2:
-  - Drop explicit kvfree(tr_buf); it is freed in ksmbd_free_work_struct().
-  - Keep only 'work->encrypted = false' and update the commit message.
+ include/linux/kexec.h              | 4 ++--
+ kernel/kexec_core.c                | 9 ++++++---
+ security/integrity/ima/ima_kexec.c | 4 +---
+ 3 files changed, 9 insertions(+), 8 deletions(-)
 
- fs/smb/server/server.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/fs/smb/server/server.c b/fs/smb/server/server.c
-index 40420544c..a7444a78f 100644
---- a/fs/smb/server/server.c
-+++ b/fs/smb/server/server.c
-@@ -244,8 +244,10 @@ static void __handle_ksmbd_work(struct ksmbd_work *work,
- 	if (work->sess && work->sess->enc && work->encrypted &&
- 	    conn->ops->encrypt_resp) {
- 		rc = conn->ops->encrypt_resp(work);
--		if (rc < 0)
-+		if (rc < 0) {
- 			conn->ops->set_rsp_status(work, STATUS_DATA_ERROR);
-+			work->encrypted = false;
-+		}
- 	}
- 	if (work->sess)
- 		ksmbd_user_session_put(work->sess);
+diff --git a/include/linux/kexec.h b/include/linux/kexec.h
+index ff7e231b0485..8a22bc9b8c6c 100644
+--- a/include/linux/kexec.h
++++ b/include/linux/kexec.h
+@@ -530,7 +530,7 @@ extern bool kexec_file_dbg_print;
+ #define kexec_dprintk(fmt, arg...) \
+         do { if (kexec_file_dbg_print) pr_info(fmt, ##arg); } while (0)
+ 
+-extern void *kimage_map_segment(struct kimage *image, unsigned long addr, unsigned long size);
++extern void *kimage_map_segment(struct kimage *image, int idx);
+ extern void kimage_unmap_segment(void *buffer);
+ #else /* !CONFIG_KEXEC_CORE */
+ struct pt_regs;
+@@ -540,7 +540,7 @@ static inline void __crash_kexec(struct pt_regs *regs) { }
+ static inline void crash_kexec(struct pt_regs *regs) { }
+ static inline int kexec_should_crash(struct task_struct *p) { return 0; }
+ static inline int kexec_crash_loaded(void) { return 0; }
+-static inline void *kimage_map_segment(struct kimage *image, unsigned long addr, unsigned long size)
++static inline void *kimage_map_segment(struct kimage *image, int idx)
+ { return NULL; }
+ static inline void kimage_unmap_segment(void *buffer) { }
+ #define kexec_in_progress false
+diff --git a/kernel/kexec_core.c b/kernel/kexec_core.c
+index fa00b239c5d9..9a1966207041 100644
+--- a/kernel/kexec_core.c
++++ b/kernel/kexec_core.c
+@@ -960,17 +960,20 @@ int kimage_load_segment(struct kimage *image, int idx)
+ 	return result;
+ }
+ 
+-void *kimage_map_segment(struct kimage *image,
+-			 unsigned long addr, unsigned long size)
++void *kimage_map_segment(struct kimage *image, int idx)
+ {
++	unsigned long addr, size, eaddr;
+ 	unsigned long src_page_addr, dest_page_addr = 0;
+-	unsigned long eaddr = addr + size;
+ 	kimage_entry_t *ptr, entry;
+ 	struct page **src_pages;
+ 	unsigned int npages;
+ 	void *vaddr = NULL;
+ 	int i;
+ 
++	addr = image->segment[idx].mem;
++	size = image->segment[idx].memsz;
++	eaddr = addr + size;
++
+ 	/*
+ 	 * Collect the source pages and map them in a contiguous VA range.
+ 	 */
+diff --git a/security/integrity/ima/ima_kexec.c b/security/integrity/ima/ima_kexec.c
+index 7362f68f2d8b..5beb69edd12f 100644
+--- a/security/integrity/ima/ima_kexec.c
++++ b/security/integrity/ima/ima_kexec.c
+@@ -250,9 +250,7 @@ void ima_kexec_post_load(struct kimage *image)
+ 	if (!image->ima_buffer_addr)
+ 		return;
+ 
+-	ima_kexec_buffer = kimage_map_segment(image,
+-					      image->ima_buffer_addr,
+-					      image->ima_buffer_size);
++	ima_kexec_buffer = kimage_map_segment(image, image->ima_segment_index);
+ 	if (!ima_kexec_buffer) {
+ 		pr_err("Could not map measurements buffer.\n");
+ 		return;
 -- 
-2.34.1
+2.49.0
 
 
