@@ -1,130 +1,94 @@
-Return-Path: <stable+bounces-192583-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192584-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86ED0C39969
-	for <lists+stable@lfdr.de>; Thu, 06 Nov 2025 09:29:56 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48C52C399B4
+	for <lists+stable@lfdr.de>; Thu, 06 Nov 2025 09:40:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 261B61A2296B
-	for <lists+stable@lfdr.de>; Thu,  6 Nov 2025 08:30:21 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 28DB74E3589
+	for <lists+stable@lfdr.de>; Thu,  6 Nov 2025 08:40:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A623C302168;
-	Thu,  6 Nov 2025 08:29:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C79BC308F28;
+	Thu,  6 Nov 2025 08:40:07 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mail.3ffe.de (0001.3ffe.de [159.69.201.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AE2B302142;
-	Thu,  6 Nov 2025 08:29:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 123213019A3;
+	Thu,  6 Nov 2025 08:40:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.69.201.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762417791; cv=none; b=NBvyQEjL9/kSMA5X97wF9oi4smhzTEZvuNKZqp3bKpu+pkwJW9VPc65o8sEc+QZTiFyFsuAwZqVtU4iw19w8XsUqtmYDNFGEYQun3j8o68N93sukagYhNi3ObB3ORvC1USpGvsGorAqnDM4AA0JMktlvJG1XkQh4FxXse9DLsuA=
+	t=1762418407; cv=none; b=rfyjFOHnOVDoWriFWSbEXutfsZ26FYPFaxowC/noUHACzJn3fO8un215+U9fLWzU8UIApvFGL8XhXSe8TJy4AIfqjiu/3WMPb3FgV/emDr0qjSVKurfcrO1UiNS36MSKseKDg9p5LuovHVfQAwIyLIn5v5PnljUr2MMbb8MJ+Wo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762417791; c=relaxed/simple;
-	bh=UxbC1vicz9GSMfWV81A0ecke1oaKM6VqkOqImVMc98w=;
-	h=From:To:Cc:Subject:Date:Message-Id; b=WAFO+gfiBmjsGd5os09G+aSQkP72s/j+rzyWv6ZhV4SR1mReg41OY6SxJLBiwUtZYmLDw/khlyvR7OWXJ90By9MTuy0bI3Y3IWl52Nw8S5lA1GH6a+jbnFZReUqyv/J7bidQo+8e0eV8stpUMWhQc5ZrJ7WsXVLA6/2Ag2In7Y8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from localhost.localdomain (unknown [202.112.113.212])
-	by APP-03 (Coremail) with SMTP id rQCowAC3NOxkXAxpmp61AQ--.43240S2;
-	Thu, 06 Nov 2025 16:29:32 +0800 (CST)
-From: Ma Ke <make24@iscas.ac.cn>
-To: jic23@kernel.org,
-	dlechner@baylibre.com,
-	nuno.sa@analog.com,
-	andy@kernel.org,
-	error27@gmail.com,
-	andriy.shevchenko@intel.com
-Cc: linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	akpm@linux-foundation.org,
-	Ma Ke <make24@iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH v2] iio: trigger: Fix error handling in viio_trigger_alloc
-Date: Thu,  6 Nov 2025 16:29:23 +0800
-Message-Id: <20251106082923.32688-1-make24@iscas.ac.cn>
-X-Mailer: git-send-email 2.17.1
-X-CM-TRANSID:rQCowAC3NOxkXAxpmp61AQ--.43240S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7AFWkCF1kGF18ZryxKFy3Jwb_yoW8CFWfpa
-	n7ZayqkryDJF1kXw47Z3W8ZryfGa1rKa15KF48A3sI93y5XryrKFyIyrWjyw18Jry8XF42
-	qasrXa45Cr1DAFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUPj14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
-	Cq3wAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC
-	0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr
-	1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IE
-	rcIFxwACI402YVCY1x02628vn2kIc2xKxwCY1x0262kKe7AKxVWUtVW8ZwCY02Avz4vE14
-	v_GFyl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AK
-	xVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrx
-	kI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v2
-	6r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8Jw
-	CI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfUeYLvDUUU
-	U
-X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
+	s=arc-20240116; t=1762418407; c=relaxed/simple;
+	bh=CoMHpoUt4t3B8Wg7YF44ApjLkEw8IhP7xtMxZIucOQ4=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Subject:Cc:
+	 References:In-Reply-To; b=a7fv1KFtEIf2w2jEVybRd7N0a3uExd9DrIppdcxt90d1CHjX15B2h1DodQE6tAaEL6bxEDiKjtfOkHtqfhHJ2+zPYfajUyYlVyaPUyXc+joTfHnXQK4QUVgFdkIzP9cQRS8RaSqS9d33iqwlh/H4Zj4GLOQZTDy8h7NBI3v+HNY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=walle.cc; arc=none smtp.client-ip=159.69.201.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=walle.cc
+Received: from localhost (unknown [IPv6:2a02:810b:4320:1000:4685:ff:fe12:5967])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.3ffe.de (Postfix) with ESMTPSA id 579487D6;
+	Thu,  6 Nov 2025 09:30:08 +0100 (CET)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 06 Nov 2025 09:30:08 +0100
+Message-Id: <DE1GYZRTAAD7.1VHWUNF8N9RBZ@kernel.org>
+From: "Michael Walle" <mwalle@kernel.org>
+To: "Miquel Raynal" <miquel.raynal@bootlin.com>, "Tudor Ambarus"
+ <tudor.ambarus@linaro.org>, "Pratyush Yadav" <pratyush@kernel.org>,
+ "Richard Weinberger" <richard@nod.at>, "Vignesh Raghavendra"
+ <vigneshr@ti.com>
+Subject: Re: [PATCH 0/6] Hello,
+Cc: "Thomas Petazzoni" <thomas.petazzoni@bootlin.com>, "Steam Lin"
+ <STLin2@winbond.com>, <linux-mtd@lists.infradead.org>,
+ <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
+X-Mailer: aerc 0.20.0
+References: <20251105-winbond-v6-18-rc1-spi-nor-v1-0-42cc9fb46e1b@bootlin.com>
+In-Reply-To: <20251105-winbond-v6-18-rc1-spi-nor-v1-0-42cc9fb46e1b@bootlin.com>
 
-viio_trigger_alloc() initializes the device with device_initialize()
-but uses kfree() directly in error paths, which bypasses the device's
-release callback iio_trig_release(). This could lead to memory leaks
-and inconsistent device state.
+On Wed Nov 5, 2025 at 6:26 PM CET, Miquel Raynal wrote:
+> Here is a series adding support for 6 Winbond SPI NOR chips. Describing
+> these chips is needed otherwise the block protection feature is not
+> available. Everything else looks fine otherwise.
+>
+> In practice I am only adding 6 very similar IDs but I split the commits
+> because the amount of meta data to show proof that all the chips have
+> been tested and work is pretty big.
+>
+> As the commits simply add an ID, I am Cc'ing stable with the hope to
+> get these backported to LTS kernels as allowed by the stable rules (see
+> link below, but I hope I am doing this right).
+>
+> Link: https://elixir.bootlin.com/linux/v6.17.7/source/Documentation/proce=
+ss/stable-kernel-rules.rst#L15
+>
+> Thanks,
+> Miqu=C3=A8l
+>
+> ---
+> Miquel Raynal (6):
+>       mtd: spi-nor: winbond: Add support for W25Q01NWxxIQ chips
+>       mtd: spi-nor: winbond: Add support for W25Q01NWxxIM chips
+>       mtd: spi-nor: winbond: Add support for W25Q02NWxxIM chips
+>       mtd: spi-nor: winbond: Add support for W25H512NWxxAM chips
+>       mtd: spi-nor: winbond: Add support for W25H01NWxxAM chips
+>       mtd: spi-nor: winbond: Add support for W25H02NWxxAM chips
 
-Additionally, the current error handling has the following issues:
-1. Potential double-free of IRQ descriptors when kvasprintf fails.
-2. The release function may attempt to free negative subirq_base.
-3. Missing mutex_destroy in release function.
+Nice, for the whole series:
 
-Fix these issues by:
-1. Replacing kfree(trig) with put_device(&trig->dev) in error paths.
-2. Setting subirq_base to 0 after freeing IRQ descriptors in error
-path to prevent double-free in release callback.
-3. Modifying release function to properly handle negative subirq_base.
-4. Adding missing mutex_destroy().
+Reviewed-by: Michael Walle <mwalle@kernel.org>
 
-Found by code review.
-
-Cc: stable@vger.kernel.org
-Fixes: 2c99f1a09da3 ("iio: trigger: clean up viio_trigger_alloc()")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
----
-Changes in v2:
-- modified the patch, thanks for developer's suggestions.
----
- drivers/iio/industrialio-trigger.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/iio/industrialio-trigger.c b/drivers/iio/industrialio-trigger.c
-index 54416a384232..9f6d30a244d9 100644
---- a/drivers/iio/industrialio-trigger.c
-+++ b/drivers/iio/industrialio-trigger.c
-@@ -524,6 +524,7 @@ static void iio_trig_release(struct device *device)
- 			       CONFIG_IIO_CONSUMERS_PER_TRIGGER);
- 	}
- 	kfree(trig->name);
-+	mutex_destroy(&trig->pool_lock);
- 	kfree(trig);
- }
- 
-@@ -596,8 +597,9 @@ struct iio_trigger *viio_trigger_alloc(struct device *parent,
- 
- free_descs:
- 	irq_free_descs(trig->subirq_base, CONFIG_IIO_CONSUMERS_PER_TRIGGER);
-+	trig->subirq_base = 0;
- free_trig:
--	kfree(trig);
-+	put_device(&trig->dev);
- 	return NULL;
- }
- 
--- 
-2.17.1
-
+-michael
 
