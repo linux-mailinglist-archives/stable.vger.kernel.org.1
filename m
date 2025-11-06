@@ -1,82 +1,69 @@
-Return-Path: <stable+bounces-192603-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192623-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2996CC3B029
-	for <lists+stable@lfdr.de>; Thu, 06 Nov 2025 13:55:39 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FB11C3BEDB
+	for <lists+stable@lfdr.de>; Thu, 06 Nov 2025 16:01:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 50A484FCD51
-	for <lists+stable@lfdr.de>; Thu,  6 Nov 2025 12:51:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A8B6618986CC
+	for <lists+stable@lfdr.de>; Thu,  6 Nov 2025 14:56:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9E5A3321D2;
-	Thu,  6 Nov 2025 12:49:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MltggMR4"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEAAA33C526;
+	Thu,  6 Nov 2025 14:55:05 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from zpanel.taknet.net (unknown [130.185.75.60])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EF5332B9AF;
-	Thu,  6 Nov 2025 12:49:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97B6B339709
+	for <stable@vger.kernel.org>; Thu,  6 Nov 2025 14:55:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=130.185.75.60
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762433352; cv=none; b=Mfay81Y58tOx7nLv+GjcVW3XeAtoDIkbSwt5k2beH0aaZnSu4NVmGCdv9uuCDjQlfZe3+fdHXz2atIDdjqGLmwVU/B1XMo/JjAKb2UC4J7ODgIDdxFpP5mrJ0n4wDraFGSR0GPwVG7jca7RwGsgPlDwBtUzRCrs0CgKRO5t6emc=
+	t=1762440905; cv=none; b=dXRozy/dZwGlLae5UlLKQ49ZGLfwaGtDN6wkjRqAA6nSaON7bwCgJDgbOUblART78uvIgqEiYvs510AAFS3WEBJWWebX+t16EUZgRammntYGKzEengUKOBFtP0Re9MhjMLWDBlyzGAXd06U89Kr9Rva6srfIvz9c6z0SuX9RxmQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762433352; c=relaxed/simple;
-	bh=QDQywIaKu2zH70eH1xnpg06B3uDNQURKWA3m7AA4ORE=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=SGZMrGxpw1nML246rUz7CZR8mBg0yfeHHU0Ihy1k2Rsp9eBxEmsssTthVRAZM1U5BSWGzj287EjTBD8xnlGraPHejulJhdnAetlDmUJEAgWD9D7kEs+56SHUYOVgZNgss/8jt8Av4lRgKVtEW+OO3KiZJgJKXL6ZU8HuNZgEgT8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MltggMR4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A704C4CEF7;
-	Thu,  6 Nov 2025 12:49:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762433350;
-	bh=QDQywIaKu2zH70eH1xnpg06B3uDNQURKWA3m7AA4ORE=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=MltggMR4vgtGdsLCj/gzb+sebtOBZR1wBC5RNGodC7rZMnaW1LlzNzBlVF0UtlYhw
-	 Hv24uyvt5gq3Vbmxb66vBHEagw27oe/WocgXKDu+VOtEqJdfOdOsJYUsHcIBmN1yVi
-	 69rU+AgyMEIn4r7MFRty35ln9cXRd+TlqApp1o8gjz6TFKzUeI7XMRvCXuAB9rgBCO
-	 zyEYoyK0pa5Fst9R8GH4aaB4jqC7HzCGd/BDdDuCKdGlYoNUPf14lJk1bF05CUFklE
-	 v47JpFVmU4EPxXqNQdt8VPEsNItfl4LzSAEWuj7TVLck/rMK9zyd4XYfsKB8ny8V5S
-	 GQWhAx7BB2v2Q==
-From: Lee Jones <lee@kernel.org>
-To: Lee Jones <lee@kernel.org>, Pavel Machek <pavel@kernel.org>, 
- Jacek Anaszewski <jacek.anaszewski@gmail.com>, Dan Murphy <dmurphy@ti.com>, 
- Christian Hitz <christian@klarinett.li>
-Cc: Christian Hitz <christian.hitz@bbv.ch>, stable@vger.kernel.org, 
- Pavel Machek <pavel@ucw.cz>, linux-leds@vger.kernel.org, 
- linux-kernel@vger.kernel.org
-In-Reply-To: <20251022063305.972190-1-christian@klarinett.li>
-References: <20251022063305.972190-1-christian@klarinett.li>
-Subject: Re: (subset) [PATCH v2] leds: leds-lp50xx: LP5009 supports 3
- modules for a total of 9 LEDs
-Message-Id: <176243334879.1816120.5182924763211452993.b4-ty@kernel.org>
-Date: Thu, 06 Nov 2025 12:49:08 +0000
+	s=arc-20240116; t=1762440905; c=relaxed/simple;
+	bh=Ol7exvCQAqv6YpENP860vQiYxr5AQ7EuSItPTN/8a+0=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=DyCYtRzUbond7DwKRCktjb9Jw3A/PY6EcsAtTVv3RAZxioTuECADtnkDSUgrxIyDp2lh/JJtpzi2r32xdSqExyzZzdr153At83qx1j+z4nZC8CrUVrXLIO6Y4tiPrO4+qJstMgdAUjQnOEqk0O8PmN/xUymvXnU21/Apg3w9n5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=virakshop.com; spf=none smtp.mailfrom=virakshop.com; arc=none smtp.client-ip=130.185.75.60
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=virakshop.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=virakshop.com
+Received: from [36.255.98.22] (port=53647)
+	by zpanel.taknet.net with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96.2)
+	(envelope-from <supervisor@virakshop.com>)
+	id 1vGuWh-0002RA-12
+	for stable@vger.kernel.org;
+	Thu, 06 Nov 2025 08:35:30 +0100
+Reply-To: harry.schofield@lexcapital-group.com
+From: Harry Schofield ESQ <supervisor@virakshop.com>
+To: stable@vger.kernel.org
+Subject: /Re,
+Date: 5 Nov 2025 23:35:30 -0800
+Message-ID: <20251105233530.00EE963FFB665886@virakshop.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Mailer: b4 0.15-dev-52d38
+Content-Type: text/plain;
+	charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - zpanel.taknet.net
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - virakshop.com
+X-Get-Message-Sender-Via: zpanel.taknet.net: authenticated_id: supervisor@virakshop.com
+X-Authenticated-Sender: zpanel.taknet.net: supervisor@virakshop.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 
-On Wed, 22 Oct 2025 08:33:04 +0200, Christian Hitz wrote:
-> LP5009 supports 9 LED outputs that are grouped into 3 modules.
-> 
-> Fixes: 242b81170fb8 ("leds: lp50xx: Add the LP50XX family of the RGB LED driver")
-> 
-> 
-
-Applied, thanks!
-
-[1/1] leds: leds-lp50xx: LP5009 supports 3 modules for a total of 9 LEDs
-      commit: 5246e3673eeeccb4f5bf4f42375dd495d465ac15
-
---
-Lee Jones [李琼斯]
-
+Re: Good day,
+Hope you are well, my first email returned undelivered, please=20
+can I provide you with more information through this email?.
+Best regards,
+Harry Schofield
 
