@@ -1,91 +1,144 @@
-Return-Path: <stable+bounces-192577-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192578-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id E657DC3952B
-	for <lists+stable@lfdr.de>; Thu, 06 Nov 2025 08:04:55 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3FD9C39552
+	for <lists+stable@lfdr.de>; Thu, 06 Nov 2025 08:07:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 05AFC4FB99D
-	for <lists+stable@lfdr.de>; Thu,  6 Nov 2025 07:03:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 27CC53A8C58
+	for <lists+stable@lfdr.de>; Thu,  6 Nov 2025 07:07:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF75327EFE3;
-	Thu,  6 Nov 2025 07:03:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64C6C2C1596;
+	Thu,  6 Nov 2025 07:07:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gondor.apana.org.au header.i=@gondor.apana.org.au header.b="bOaniV1x"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kiDW6Dy1"
 X-Original-To: stable@vger.kernel.org
-Received: from abb.hmeau.com (abb.hmeau.com [180.181.231.80])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CBEE274650;
-	Thu,  6 Nov 2025 07:03:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=180.181.231.80
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E9302BDC34;
+	Thu,  6 Nov 2025 07:07:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762412601; cv=none; b=g/18gUCNchYXrbaf+rw3ubn+Pht/kD7XDSE8dOnq3YyiOVpin4peH/K2fj2rUWvZTWHVcTyt4LYlCe2vKIvCJwZ1fvvnhsyolT2o8IuTfhBQKpQdugeP9kqVATKsUgViOyHftC8lP3ZHWUa3V8NpOYVIo78qf4FT7vH6auNDnwk=
+	t=1762412821; cv=none; b=uNTJiDPPHF3O+NCGTZDvwLlY0u/0U/wtEder60an70hFD7tEY42fOTCpAEli9IbVK1tThxfCZuk876RhPacPkI9F87GgE8/YAsXVmlkBAFiMWQvvWFYcMVdZ/ifCISlQ3orX/QOHH/cnLel1+UCnwJfijua/aqaVs7C+NMKCp0A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762412601; c=relaxed/simple;
-	bh=luvKqG+/GOGOix4yPCkK+aLwwsGNwrlXQvts34ptKps=;
+	s=arc-20240116; t=1762412821; c=relaxed/simple;
+	bh=bqDZ7dmuCre8a9mGu2kDTQ6hkin7PcxZjdNHk50TiWs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=B3hXi8eHYwRTc/cnxbpqBsIgNOnbDXxTX/w4mDtd+dbP+K35ADrQXcKcEkYDLvK0pGdLQvUxidGAIUs4Y/5a6pyABXzqRMxkdA3WZH1YqsVoX0mOuxL7JI9zRaQeHGgbYtRrreqhM3tM4alLSX1Xn60xStyaZ6tcarhzoUlRA7M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; spf=pass smtp.mailfrom=gondor.apana.org.au; dkim=pass (2048-bit key) header.d=gondor.apana.org.au header.i=@gondor.apana.org.au header.b=bOaniV1x; arc=none smtp.client-ip=180.181.231.80
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gondor.apana.org.au
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=gondor.apana.org.au; s=h01; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:cc:to:subject:message-id:date:
-	from:content-type:reply-to; bh=ua/mlvlW15KKa4KYEb4RgZ+N+5du1S24gKV99lPqDpA=; 
-	b=bOaniV1xco/d37517Satw9EfqLfHooEcavMTeq9VX7Zd2JGNYenh6ezGfpx3qmvWCqPCjHo2+K8
-	W6iGaFnB0+gnC1TZC6IDoSHnFLqn+Ianu2JuqzKnGjfGhMIonb7hbzTcriFvWmHcOrs159nl67vvN
-	G6qhFpIC2mPDMSYoIl2866BsiheAg5UnWMZsT3J6jaePtXh04fk7fy3Dc50M5EyeN8IvnUau/Zvc/
-	KnMu04c8tiaR2Q3o+jeGryY/m8+0CO7CvGN67MKDJd+n5fHSPXQpPimUWS3/apfl3/OhoC2I7RlSs
-	BNkfUTAGUPA8w5BmzVmEjZhcqNSto41sNPWw==;
-Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
-	by formenos.hmeau.com with smtp (Exim 4.96 #2 (Debian))
-	id 1vGu1L-000rUI-2W;
-	Thu, 06 Nov 2025 15:03:00 +0800
-Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Thu, 06 Nov 2025 15:02:59 +0800
-Date: Thu, 6 Nov 2025 15:02:59 +0800
-From: Herbert Xu <herbert@gondor.apana.org.au>
-To: Miaoqian Lin <linmq006@gmail.com>
-Cc: Weili Qian <qianweili@huawei.com>, Zhou Wang <wangzhou1@hisilicon.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Kai Ye <yekai13@huawei.com>, linux-crypto@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] crypto: hisilicon/qm - Fix device reference leak in
- qm_get_qos_value
-Message-ID: <aQxII1gx0PbV_oLK@gondor.apana.org.au>
-References: <20251027150934.60013-1-linmq006@gmail.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=FG0ZDuL3arI0u8RAGKk/4oF7V35n8Miw4yVIZTYg4FT4vSq9enNo+HrnUdHeehdDsSRIRGOJCLfv25Ht+kM4Rv1G+yhcBu7MSBmaYW7mf9wrY1ALLrYyFThsY/ksmS3cO5u/mAaIF/kcV9ofMILpHIdKUmur56UxDjV1lENIHlo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kiDW6Dy1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA158C4CEF7;
+	Thu,  6 Nov 2025 07:06:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762412820;
+	bh=bqDZ7dmuCre8a9mGu2kDTQ6hkin7PcxZjdNHk50TiWs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=kiDW6Dy1rIG6NN+YGv8qsOLyDj/Z50R1sni61NB7SBu0+e9PLb9hRuawULnNetA+H
+	 Gzae9u4SrXbCDwLC2qOfW/QXRTyqRZBnsXfQKeOE4w6WyykOzQ/yJF8utKHGlv5h6+
+	 Had/D2JTRqvt+2gk5yxiIfVwsWgESP8SXYHdSLJdq/7YVQ3GGncikke5lrr2e5dlgx
+	 TxvT7m9VtQcdS50cZFJQEOJdcbSFxNtY5scKNCkri30xwH+BS0VTreB7bQqvh3Hv5b
+	 M+dOKk0JJnqhxGd55mIHk7grrBVtcg751Nea8zxyYbxDoekV/7w6BpW7kzRPSFlsP1
+	 xDvK7CEmgemyg==
+Date: Thu, 6 Nov 2025 12:36:41 +0530
+From: Manivannan Sadhasivam <mani@kernel.org>
+To: Bjorn Helgaas <helgaas@kernel.org>
+Cc: Shawn Lin <shawn.lin@rock-chips.com>, 
+	Lorenzo Pieralisi <lpieralisi@kernel.org>, Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
+	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
+	Heiko Stuebner <heiko@sntech.de>, Kever Yang <kever.yang@rock-chips.com>, 
+	Simon Xue <xxm@rock-chips.com>, Damien Le Moal <dlemoal@kernel.org>, 
+	Dragan Simic <dsimic@manjaro.org>, FUKAUMI Naoki <naoki@radxa.com>, 
+	Diederik de Haas <diederik@cknow-tech.com>, stable@vger.kernel.org, 
+	Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>, Daire McNamara <daire.mcnamara@microchip.com>, 
+	Karthikeyan Mitran <m.karthikeyan@mobiveil.co.in>, Hou Zhiqiang <Zhiqiang.Hou@nxp.com>, linux-pci@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-rockchip@lists.infradead.org, 
+	Niklas Cassel <cassel@kernel.org>
+Subject: Re: [PATCH v3] PCI: dw-rockchip: Prevent advertising L1 Substates
+ support
+Message-ID: <oa57mn3wrigno2kzigdo2lh46z5xmesv74nzjtg4jz4ea6urrh@icti3ewoll4r>
+References: <0e32766b-b951-4ab4-ae3d-c802cf649edf@rock-chips.com>
+ <20251104221724.GA1875081@bhelgaas>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20251027150934.60013-1-linmq006@gmail.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20251104221724.GA1875081@bhelgaas>
 
-On Mon, Oct 27, 2025 at 11:09:34PM +0800, Miaoqian Lin wrote:
-> The qm_get_qos_value() function calls bus_find_device_by_name() which
-> increases the device reference count, but fails to call put_device()
-> to balance the reference count and lead to a device reference leak.
+On Tue, Nov 04, 2025 at 04:17:24PM -0600, Bjorn Helgaas wrote:
+> On Tue, Nov 04, 2025 at 08:58:02AM +0800, Shawn Lin wrote:
+> > 在 2025/11/04 星期二 5:32, Bjorn Helgaas 写道:
+> > > On Tue, Oct 28, 2025 at 02:02:18PM -0500, Bjorn Helgaas wrote:
+> > > > On Fri, Oct 17, 2025 at 06:32:53PM +0200, Niklas Cassel wrote:
+> > > > > The L1 substates support requires additional steps to work, namely:
+> > > > > -Proper handling of the CLKREQ# sideband signal. (It is mostly handled by
+> > > > >   hardware, but software still needs to set the clkreq fields in the
+> > > > >   PCIE_CLIENT_POWER_CON register to match the hardware implementation.)
+> > > > > -Program the frequency of the aux clock into the
+> > > > >   DSP_PCIE_PL_AUX_CLK_FREQ_OFF register. (During L1 substates the core_clk
+> > > > >   is turned off and the aux_clk is used instead.)
+> > > > ...
+> > > 
+> > > > > +static void rockchip_pcie_disable_l1sub(struct dw_pcie *pci)
+> > > > > +{
+> > > > > +	u32 cap, l1subcap;
+> > > > > +
+> > > > > +	cap = dw_pcie_find_ext_capability(pci, PCI_EXT_CAP_ID_L1SS);
+> > > > > +	if (cap) {
+> > > > > +		l1subcap = dw_pcie_readl_dbi(pci, cap + PCI_L1SS_CAP);
+> > > > > +		l1subcap &= ~(PCI_L1SS_CAP_L1_PM_SS | PCI_L1SS_CAP_ASPM_L1_1 |
+> > > > > +			      PCI_L1SS_CAP_ASPM_L1_2 | PCI_L1SS_CAP_PCIPM_L1_1 |
+> > > > > +			      PCI_L1SS_CAP_PCIPM_L1_2);
+> > > > > +		dw_pcie_writel_dbi(pci, cap + PCI_L1SS_CAP, l1subcap);
+> > > > > +	}
+> > > > > +}
+> > > > 
+> > > > I like this.  But why should we do it just for dw-rockchip?  Is there
+> > > > something special about dw-rockchip that makes this a problem?  Maybe
+> > > > we should consider doing this in the dwc, cadence, mobiveil, and plda
+> > > > cores instead of trying to do it for every driver individually?
+> > > > 
+> > > > Advertising L1SS support via PCI_EXT_CAP_ID_L1SS means users can
+> > > > enable L1SS via CONFIG_PCIEASPM_POWER_SUPERSAVE=y or sysfs, and that
+> > > > seems likely to cause problems unless CLKREQ# is supported.
+> > > 
+> > > Any thoughts on this?  There's nothing rockchip-specific in this
+> > > patch.  What I'm proposing is something like this:
+> > 
+> > I like your idea, though. But could it be another form of regression
+> > that we may breaks the platform which have already support L1SS
+> > properly? It's even harder to detect because a functional break is easier to
+> > notice than increased power consumption. 
 > 
-> Add put_device() calls in both the error path and success path to
-> properly balance the reference count.
+> True, but I think it's unlikely because the PCI core never enabled
+> L1SS (except for CONFIG_PCIEASPM_POWER_SUPERSAVE=y or sysfs, which I
+> doubt anybody really uses).
 > 
-> Found via static analysis.
+> Devicetree platforms that use L1SS should have explicit code to enable
+> it, like qcom does, so we should be able to find them and make sure
+> they do what's needed to prevent the regression.
 > 
-> Fixes: 22d7a6c39cab ("crypto: hisilicon/qm - add pci bdf number check")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
-> ---
->  drivers/crypto/hisilicon/qm.c | 2 ++
->  1 file changed, 2 insertions(+)
+> > Or maybe we could
+> > just export dw_pcie_clear_l1ss_advert() in dwc for host drivers to
+> > call it?
+> 
+> I don't like the idea of host drivers having to opt in for this
+> because that requires changes to all of them, not just changes to
+> drivers that have done the work to actually support L1SS.
+> 
 
-Patch applied.  Thanks.
+Otherwise, we may have to introduce a flag for the controller drivers to opt-out
+of this disablement. Like, dw_pcie_rp::native_clkreq and bailing out early if
+this flag is set.
+
+- Mani
+
 -- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+மணிவண்ணன் சதாசிவம்
 
