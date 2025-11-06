@@ -1,179 +1,111 @@
-Return-Path: <stable+bounces-192630-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192631-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 619AFC3C337
-	for <lists+stable@lfdr.de>; Thu, 06 Nov 2025 16:57:57 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3137C3C3C1
+	for <lists+stable@lfdr.de>; Thu, 06 Nov 2025 17:03:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DEC6B1887FB8
-	for <lists+stable@lfdr.de>; Thu,  6 Nov 2025 15:57:45 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id F3E604EDA44
+	for <lists+stable@lfdr.de>; Thu,  6 Nov 2025 16:00:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C20C5345731;
-	Thu,  6 Nov 2025 15:57:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E87AD34887C;
+	Thu,  6 Nov 2025 16:00:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FQYtabMx"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3B7D33E345
-	for <stable@vger.kernel.org>; Thu,  6 Nov 2025 15:56:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A39DA32C92B;
+	Thu,  6 Nov 2025 15:59:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762444620; cv=none; b=qKxv82NUzR7Mk6ytqtrTAgOmv4bnmichbYAIr9MQhk4ep9V+vp6J0CRbcsOxJ9sHPn2ZTNGkTD9JeXAe0KwiytGoBtssVJvm+9vpuB/obfXknSG64327nlzisNHn+gsgLd189z2elkHSdN3jyoBYJT+9GCPRD/MVnlGtQ5BB52I=
+	t=1762444801; cv=none; b=jGWpN8TVwit0sZEQClRIu70Bq9O93SOxRiYQ47RvTrZsgSB+1W3r5Z6RqQP1Ekcv44lJsqmKaOGU7Yx1fxudaHfElI9Sd/wlaVX2j2v4y6k1KyBvpEN4gyhYgXdrdtOUP2Dwpbm8SCrkW4LIGMBaZZDWjz1qkZJPFb/bYn5mBg4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762444620; c=relaxed/simple;
-	bh=PBufnVhc0vYw6K1yqEtQER08QOskv29ELpqGFdftBe8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=oOH9RDuLbiFd5YA314IldsCxDZHoj2LGp77tnY24tA6n9vrSUjk2Icpy9VR3XCWMfKPK2ABkPAwwvZHsgUMVCZxWen9EFAWa9tjRTWxaZTuEvHXknka64bN9dhq23sEpei8ggsv21v7wuVLHGaSYGu2ptqOxaihxkEy8m+yLKDg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.218.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-b626a4cd9d6so188541466b.3
-        for <stable@vger.kernel.org>; Thu, 06 Nov 2025 07:56:58 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762444617; x=1763049417;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=GjGKFyPmmnOORJmfJYb79vkMgO3eaKsfbWlFTGwHffE=;
-        b=nzFWERNl4xFWEuOieGrVDa/u0vebK9IVybLhayvjFfd/bZcQc5cLoYb1qXAEY/RICi
-         Qw1wykcNj+FFXfi5LIuKI6zAL5BhYb8x39bNvKTxiyaj9JcBIFKsnKbVc9V4OOtCfner
-         M0VJy73HXqSqGc45wJSUPuLQOb7eeE+/D+RT3qMVEves3QNlll4LPxlP1dMRWYV5nNXV
-         W74mWyPfKRJL6ilRpH0REYGkrGx67p/DheQFpFCtH4E/H810kxhYs6sSzlPeO9l02EM5
-         TJmS3BiVuTLmEOXZ744Yg5hODPQLDboLohnAd+RFa1yxKWf06KSbLnkWq96JUBM9FiI1
-         jMVA==
-X-Forwarded-Encrypted: i=1; AJvYcCVWkJnT13xCKnKH82xmhbLgUFF/c6xumaKfouGjVRHd1PT/H27dnS67NmxxDHFVnWzMI9yXEMc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzL8GJznwzBbVfz8m93UrTs2Dri6kQTfztTwmcatrUttLd4JkNK
-	pXSdA+le1wpcFE0xpOs34J/ysrv9dARuhA4+FCsRU+U7CYozSS8s3mEa
-X-Gm-Gg: ASbGnctU8rkLEKut32VN4vuYWcyrBRsJF3HkjcFFlz8YwEjuPBg1x60dUEn8SuNf03I
-	ypI6ck+FpUnK13hHoJBsA3uQyUWOKm6mKwA6lUPHfWT8vCEOPxmR2UcIBpJ1k8CDcSWO+99vU9G
-	RD5TQxzeWEQ+12B+gVrk9kdyd7nwOAPqmJqSjjtU6BbW4s2qPCn27w5iNwExcv/sasa0aKAtB+w
-	/1Ynp3rUBPWOA/EOecPD3xZ79Ihrk+ZCgGoxvL6ZGO4yFeI7nCaEkVGAz93ejfRCLYOuRtuz+5x
-	sSkQaihDFsSDhd+02dTVmeJTR637zXX9vFXNWMXesLZRu1gbbuvFPy87Nd7/X+ia6gVxlt4/kxW
-	s9ULjFz/sMSsk3ucqm1Voh1aSyS3S/K4xuF5vi5GpK356W3hhE03ghu9LwNqpU6+7DWyxzCE3F3
-	OAoA==
-X-Google-Smtp-Source: AGHT+IE1I3KsdrFfPzR8ZbLblQmlN8xA2lL4chWTQNh9/e/sKcWfQSx/nPRWrqzoh4RnHnBtbfozTg==
-X-Received: by 2002:a17:906:f855:b0:b72:95ff:3996 with SMTP id a640c23a62f3a-b7295ff4f7amr227875066b.10.1762444616910;
-        Thu, 06 Nov 2025 07:56:56 -0800 (PST)
-Received: from localhost ([2a03:2880:30ff:73::])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b7289334090sm250482366b.13.2025.11.06.07.56.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Nov 2025 07:56:56 -0800 (PST)
-From: Breno Leitao <leitao@debian.org>
-Date: Thu, 06 Nov 2025 07:56:47 -0800
-Subject: [PATCH net v9 1/4] net: netpoll: fix incorrect refcount handling
- causing incorrect cleanup
+	s=arc-20240116; t=1762444801; c=relaxed/simple;
+	bh=kMevgBC3784Ru3EW9QJAXWDvODDi8xcAADr0sE14jHI=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=MN1Lprqt2lOFNBKdy6b0Ee1cbjFXDaGy4LWR987xBDAWx+17xT8CLBm8oxU0PL83h860yEMXuEzLm2+NDzFVJAHVxUg+Bl8UbHTE50joCv5SP0leu3ylKIr10lPJ5u2vR1fORZfOykheX/eq7EClDNqjuL3tB2Iw7v8OyJeZrDc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FQYtabMx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64129C116B1;
+	Thu,  6 Nov 2025 15:59:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762444799;
+	bh=kMevgBC3784Ru3EW9QJAXWDvODDi8xcAADr0sE14jHI=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=FQYtabMxQzNGwYpM1TktPaQ1EAJDPPduPQ2aWZqE/uG8noq7yWaBvbyTV2QIiDySb
+	 jmOgs9AOzFCBVLnzpMS8E0OaNRDRY7pj8Ju4kNh0wcmvWmhH3lyGpS3jvMgzgICo4N
+	 rzMuaWseYumZ+dMId44VqDVFGidHBM85erlClvmHC4kGSt5tY300GOzhKzzeqoKZDo
+	 91ie2XrHhy+OHzWl8ImmccbeCDu+Z1FFArrN3r9iOFkh8OmGRzr0ImYHEn2GKeYK9U
+	 z95X92OQw+Ujq2FATT+HOAR9qkHVlHnuxSAc3RLJN+7zI35PHHYIdnkldqLfxU37y2
+	 w0zVc/JsJT8ZQ==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Miquel Raynal <miquel.raynal@bootlin.com>
+Cc: Tudor Ambarus <tudor.ambarus@linaro.org>,  Pratyush Yadav
+ <pratyush@kernel.org>,  Michael Walle <mwalle@kernel.org>,  Richard
+ Weinberger <richard@nod.at>,  Vignesh Raghavendra <vigneshr@ti.com>,
+  Thomas Petazzoni <thomas.petazzoni@bootlin.com>,  Steam Lin
+ <STLin2@winbond.com>,  linux-mtd@lists.infradead.org,
+  linux-kernel@vger.kernel.org,  stable@vger.kernel.org
+Subject: Re: [PATCH 0/6] Hello,
+In-Reply-To: <20251105-winbond-v6-18-rc1-spi-nor-v1-0-42cc9fb46e1b@bootlin.com>
+ (Miquel
+	Raynal's message of "Wed, 05 Nov 2025 18:26:59 +0100")
+References: <20251105-winbond-v6-18-rc1-spi-nor-v1-0-42cc9fb46e1b@bootlin.com>
+Date: Thu, 06 Nov 2025 16:59:56 +0100
+Message-ID: <mafs0h5v7b18j.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251106-netconsole_torture-v9-1-f73cd147c13c@debian.org>
-References: <20251106-netconsole_torture-v9-0-f73cd147c13c@debian.org>
-In-Reply-To: <20251106-netconsole_torture-v9-0-f73cd147c13c@debian.org>
-To: Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Shuah Khan <shuah@kernel.org>, Simon Horman <horms@kernel.org>, 
- david decotigny <decot@googlers.com>
-Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
- linux-kselftest@vger.kernel.org, asantostc@gmail.com, efault@gmx.de, 
- calvin@wbinvd.org, kernel-team@meta.com, calvin@wbinvd.org, 
- jv@jvosburgh.net, Breno Leitao <leitao@debian.org>, stable@vger.kernel.org
-X-Mailer: b4 0.15-dev-dd21f
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2686; i=leitao@debian.org;
- h=from:subject:message-id; bh=PBufnVhc0vYw6K1yqEtQER08QOskv29ELpqGFdftBe8=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBpDMVFPcvHaEIvqY/K0FMrxc5XuLCG7DPYcVfKr
- zAJADuB4YiJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaQzFRQAKCRA1o5Of/Hh3
- baWiD/4+Jm/bGM23oRiaStiDbJzcHe9o+DQub4eeoFUmIU9ViAwTIOYJKC2Nqx44QF5Nx8VSWWf
- U55ww+CydeULqtsdCNc2D1LQf2uqpuVKSY2yEhgy416XNIB960v0vxXwc6PNUWqu9qNtn2GfXoO
- g1zIdEe3lPWnVzETl1lt8lsapfeQ21XNwWIY+QQbD3FICLeTGLhzEOsgFyRjw3M/tdbI5OetPef
- O7qwcMiXmdoZvQP1GpQfwZX+F0rLI4+vAVvI3gWMKlKqYRf33nCY8ErINNcKCcrPI3DVuIojB7G
- eLwPPnpn4RAcs6PAkaoU9Nof5DA50QAndSBbjLMr4E7ez3GtlUE6q5SjnS/HGs/OdgPyf4sL5sz
- lXQI6/GJgcCIhciHAFVD5vlOSderxZGNeEXfvkJGgqtVLnw7EAbH+u0UmQchNTlCixBV4VEpYi1
- 4BwLALvT6ST/xqAacz7ffxsGDAMiAAQ5wRy4y72V6kmBu4AvCFyZC9r7Ea4cFuorwtl+Vf3mVPF
- qN1Kwga41B9UVEe/YD9UeNdg+q8E06PtLpdLF96ocI0+VRK0Tt5lGoTpYZgq8ljGhglTbtF7fyN
- Hiaal6823bpg7LCdP7+xCRFdx98EpWj4VoWZWzBhYskGMkmosh1qJAQVUyoybopbHFQM+lXOe+t
- 8nTugHL0cqI6kRw==
-X-Developer-Key: i=leitao@debian.org; a=openpgp;
- fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-commit efa95b01da18 ("netpoll: fix use after free") incorrectly
-ignored the refcount and prematurely set dev->npinfo to NULL during
-netpoll cleanup, leading to improper behavior and memory leaks.
+On Wed, Nov 05 2025, Miquel Raynal wrote:
 
-Scenario causing lack of proper cleanup:
+> Here is a series adding support for 6 Winbond SPI NOR chips. Describing
+> these chips is needed otherwise the block protection feature is not
+> available. Everything else looks fine otherwise.
+>
+> In practice I am only adding 6 very similar IDs but I split the commits
+> because the amount of meta data to show proof that all the chips have
+> been tested and work is pretty big.
+>
+> As the commits simply add an ID, I am Cc'ing stable with the hope to
+> get these backported to LTS kernels as allowed by the stable rules (see
+> link below, but I hope I am doing this right).
+>
+> Link: https://elixir.bootlin.com/linux/v6.17.7/source/Documentation/proce=
+ss/stable-kernel-rules.rst#L15
+>
+> Thanks,
+> Miqu=C3=A8l
+>
+> ---
+> Miquel Raynal (6):
+>       mtd: spi-nor: winbond: Add support for W25Q01NWxxIQ chips
+>       mtd: spi-nor: winbond: Add support for W25Q01NWxxIM chips
+>       mtd: spi-nor: winbond: Add support for W25Q02NWxxIM chips
+>       mtd: spi-nor: winbond: Add support for W25H512NWxxAM chips
+>       mtd: spi-nor: winbond: Add support for W25H01NWxxAM chips
+>       mtd: spi-nor: winbond: Add support for W25H02NWxxAM chips
+>
+>  drivers/mtd/spi-nor/winbond.c | 24 ++++++++++++++++++++++++
+>  1 file changed, 24 insertions(+)
+> ---
+> base-commit: 479ba7fc704936b74a91ee352fe113d6391d562f
+> change-id: 20251105-winbond-v6-18-rc1-spi-nor-7f78cb2785d6
+>
+> Best regards,
 
-1) A netpoll is associated with a NIC (e.g., eth0) and netdev->npinfo is
-   allocated, and refcnt = 1
-   - Keep in mind that npinfo is shared among all netpoll instances. In
-     this case, there is just one.
+Applied to spi-nor/next. Thanks!
 
-2) Another netpoll is also associated with the same NIC and
-   npinfo->refcnt += 1.
-   - Now dev->npinfo->refcnt = 2;
-   - There is just one npinfo associated to the netdev.
-
-3) When the first netpolls goes to clean up:
-   - The first cleanup succeeds and clears np->dev->npinfo, ignoring
-     refcnt.
-     - It basically calls `RCU_INIT_POINTER(np->dev->npinfo, NULL);`
-   - Set dev->npinfo = NULL, without proper cleanup
-   - No ->ndo_netpoll_cleanup() is either called
-
-4) Now the second target tries to clean up
-   - The second cleanup fails because np->dev->npinfo is already NULL.
-     * In this case, ops->ndo_netpoll_cleanup() was never called, and
-       the skb pool is not cleaned as well (for the second netpoll
-       instance)
-  - This leaks npinfo and skbpool skbs, which is clearly reported by
-    kmemleak.
-
-Revert commit efa95b01da18 ("netpoll: fix use after free") and adds
-clarifying comments emphasizing that npinfo cleanup should only happen
-once the refcount reaches zero, ensuring stable and correct netpoll
-behavior.
-
-Cc: <stable@vger.kernel.org> # 3.17.x
-Cc: Jay Vosburgh <jv@jvosburgh.net>
-Fixes: efa95b01da18 ("netpoll: fix use after free")
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
----
- net/core/netpoll.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
-
-diff --git a/net/core/netpoll.c b/net/core/netpoll.c
-index c85f740065fc6..331764845e8fa 100644
---- a/net/core/netpoll.c
-+++ b/net/core/netpoll.c
-@@ -811,6 +811,10 @@ static void __netpoll_cleanup(struct netpoll *np)
- 	if (!npinfo)
- 		return;
- 
-+	/* At this point, there is a single npinfo instance per netdevice, and
-+	 * its refcnt tracks how many netpoll structures are linked to it. We
-+	 * only perform npinfo cleanup when the refcnt decrements to zero.
-+	 */
- 	if (refcount_dec_and_test(&npinfo->refcnt)) {
- 		const struct net_device_ops *ops;
- 
-@@ -820,8 +824,7 @@ static void __netpoll_cleanup(struct netpoll *np)
- 
- 		RCU_INIT_POINTER(np->dev->npinfo, NULL);
- 		call_rcu(&npinfo->rcu, rcu_cleanup_netpoll_info);
--	} else
--		RCU_INIT_POINTER(np->dev->npinfo, NULL);
-+	}
- 
- 	skb_pool_flush(np);
- }
-
--- 
-2.47.3
-
+--=20
+Regards,
+Pratyush Yadav
 
