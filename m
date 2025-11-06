@@ -1,228 +1,208 @@
-Return-Path: <stable+bounces-192589-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192590-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF0ACC3A056
-	for <lists+stable@lfdr.de>; Thu, 06 Nov 2025 11:04:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96E70C3A014
+	for <lists+stable@lfdr.de>; Thu, 06 Nov 2025 11:03:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 479754FD356
-	for <lists+stable@lfdr.de>; Thu,  6 Nov 2025 10:00:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1856E1886F32
+	for <lists+stable@lfdr.de>; Thu,  6 Nov 2025 10:02:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E13530CDBF;
-	Thu,  6 Nov 2025 10:00:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA6E42D8379;
+	Thu,  6 Nov 2025 10:01:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="YRXqBhMk"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XlxyrlLe";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="RSdWMr8A"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49F4130C639
-	for <stable@vger.kernel.org>; Thu,  6 Nov 2025 10:00:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6E15272E41
+	for <stable@vger.kernel.org>; Thu,  6 Nov 2025 10:01:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762423237; cv=none; b=SDpo7e21WKY9jSVl4aCvx+BCewSTx35VHKkGjOlm/ElTmDQEDvGz3zbecP4BL5EUl1LJkf3kdPmp2atZFQRmh6V9zB2O1AbdeD8Cdv4OSOiAr7opXLa8PzSpfXb3ELXW72uyI2bOb2sY6FaNA/oSlZ7Dmzy7hupELdWYgb8kQVM=
+	t=1762423318; cv=none; b=SLsC5g92t7WC7Xo5W/mfcg14GBYkk0uMtJcv0WSL1J87FCNxgIwGz7mcjA8sKHjZ3IjGMMRc8xqxcwldL/802kh9EnMBAt2VqK9GjKxAXUbM3jV7Nx5unNHzWPC6CpuJEIHUewt/2PUnlsyVsoeFCsRjqijtwpAuC2FtolgfJbo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762423237; c=relaxed/simple;
-	bh=I4H5qHab6Aj0C5LwJMaHRiYnjpVzkseYs1jdsdGDz1Y=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=qs+eJAEPQ2WQEILwrbLXGgQswvDfwYF9hLcGIDjCRQnUUvCTYqSmRr3u4FUWfP0py6ux15OzpbE0NSXQdJ/N/T3np/zCUn/VH3Q21uyzQOkeY4pM+ETR4fVQw6Ob4BjOna2wcqXt69CaVmHk1tizT2EKZq3AFST5hNMjUNRACf0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=YRXqBhMk; arc=none smtp.client-ip=209.85.128.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-477549b3082so6667945e9.0
-        for <stable@vger.kernel.org>; Thu, 06 Nov 2025 02:00:35 -0800 (PST)
+	s=arc-20240116; t=1762423318; c=relaxed/simple;
+	bh=8IDSztejrxf1pgSwvL7JvMJvidKceNfTqZOuRERcjzA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=dVl3js9ltRLEmwJqQufpJCbX9cjGVp+76vEEIsUNVmiLqCfW9GrWg2Fa9CRMXaHT1caNCMav4w4ju2XOGUyWkImg+V0pg12uElORlzyzsOJ5f5C5ND4j7TJOMJHrz0w16jV2FZBy/B6QgH0m4vl41zKtNdUKoFZdNSr9hXIksHo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XlxyrlLe; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=RSdWMr8A; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1762423315;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=hr+IrPZu54jtoYs0y4pJPw8+metTYxP5F0Z/JHnlZZI=;
+	b=XlxyrlLeGbKxLSNsaCRYfOqC0rpmOMmXtwNgeNb+a0HCqhGPlsaie/MKU5PxjmLxYaPPIr
+	1vsmFYARLp6jABC061BfLfimuv92QlAE+tXw3d9pYovNr27RabHs5K9mR+oPaRM99Zj5rP
+	ZC6TJT4jeI1KwTPwZTH0jFiJNg7gwVw=
+Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com
+ [209.85.214.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-374-PuoUfR2CN5GqeEbwXNbRdQ-1; Thu, 06 Nov 2025 05:01:54 -0500
+X-MC-Unique: PuoUfR2CN5GqeEbwXNbRdQ-1
+X-Mimecast-MFC-AGG-ID: PuoUfR2CN5GqeEbwXNbRdQ_1762423313
+Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-295592eb5dbso11435635ad.0
+        for <stable@vger.kernel.org>; Thu, 06 Nov 2025 02:01:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1762423233; x=1763028033; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:references:cc:to:subject:reply-to:from:user-agent
-         :mime-version:date:message-id:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=hotEei7lwkfLoPtTcXzDgl2xx83T+2l/lt8Evo2copA=;
-        b=YRXqBhMkOQZ8MSYcTZP/RasE+JNe2wuuwWQGUSbFZpl2TdFcnFda8HdJ0Htrr+zxnI
-         YGYjbD/bQWd5we/rwedzxS50IZ364NDCvqjMzpeLpe3sBgBei7sNfJZIIob0XUTHYbls
-         RnKRHwAF+VM/YdIGqHFJkc5QErHxYAZbpgeUfiKxP5WcOQD4JDN246sF0Sjjcdpx3HC3
-         9oQmkfsVwzfnemIGaiI36yTB48PLo2MrMGl1DuMIZnPZ3GQ+2VGCnmGJQLAEuC9Yx8lY
-         PzZSSl9ONQMGIrKN6hLo3ErbDQ38gYiu0hd1X9i40uNxEH0DdYmZGVKRr/bRIa++JbBS
-         1qUg==
+        d=redhat.com; s=google; t=1762423313; x=1763028113; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hr+IrPZu54jtoYs0y4pJPw8+metTYxP5F0Z/JHnlZZI=;
+        b=RSdWMr8AF/eyo7J+DiEeZHnRi1bxSGERVeQpzUaJiSc2uaQZX2kueHoveLE6xaUo6Y
+         1guGw8cLirJ8FjuNgjaXeqH2/fi2MLXsNz1jeseBTeJue4AirXQs9W+up1EuCAj9LMpX
+         QcfzO9v10UF+zMIu2Y74Wvs1kgBC5gJJt6T2zOvsYs9r5I9OurdTJNIx+mL9g5sgsf1T
+         oAvFTzWVnoK3nCDDMpH138nVJKEluuUKwNbwtFhj59eKEhimftyuJdLxsl5cPdGgD6tP
+         YRaB1k8Fd9+uCjnA6a4f3fqvtEicxdn4Fkggmkdw0UNRHuNkGVCN3d+MLI5MtY+dAHGZ
+         OAYA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762423233; x=1763028033;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:references:cc:to:subject:reply-to:from:user-agent
-         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=hotEei7lwkfLoPtTcXzDgl2xx83T+2l/lt8Evo2copA=;
-        b=ZVKlf8aNZSwzX92rIYPlbnQ6zeO74DGJQ0It169OdDUYvyedR7nKPLRlPL4C2ytrYq
-         11vTGPrdnIu/J782rDxg+7LWySMX78CMzY4JhlV8THORObsmjufq9D9AMPp0n4COdWdI
-         /EVZEZy0irHaNUktEpOVWqt5JDDw05/PM3ntuKlY5hUmS6AQfIPjgLJKgnD7KD8cvKmo
-         MNl5jRRTiFs+GBH165x9lZ7LApsRMKJ0ZVVOCWes8VGav9tNbw9tD5pUCmGiBHq3vIpz
-         2lidNYNR0W0MBkqRIRlce7th12CYnVjM41THKi4vAX10lbO09ORjoi8YWmHyDU2lbAOl
-         o4cg==
-X-Forwarded-Encrypted: i=1; AJvYcCXNWcMl2UR2PR9opyw00SnqdMBrp8gcY8KdAFTyvYXkge6AlRzA9T1e9z+nupb5YYKGoHi+zyw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxKMZTTMSZqvTr+Unx2A9rZHVNa0IO+nY626T0u8JPPJl2hRJO/
-	PC7+O037F9QmZP18Hvn+4YcieWA/yO/Pd2HFd/h8iwEdMj2dTK4fbl4uwPGCfP1NzyE=
-X-Gm-Gg: ASbGncuXIzDNw9ZuIvjpD30bzB7aokIXgwmlBoGYmgLq1f/J91eZrb6iGfc/qMyUyEA
-	bfmXI+5oeDeNT18Ai9c7QwLzPVSRj/mrFFQsjR13JW0KsvHMVo5qNAX2XlfKnBB5sCz6sC473Xr
-	LlSdZQ0HSW09yuiugDbo69NKJrjbowzRXos32cN0MjySPYBsQdZ1qXm98OFv4g3DCB33cDiU7Lf
-	pqPop8ENosQGH7wuaN9QHBWC2HL0jjPFPrapE4ZMwi8g+L9+NAjTNx4/PAPIr/YyuqQMc+hYAuU
-	e7CalulU0C7TzTA5VzObWppxyWJomkZ9EplvWv8oLyhHAWTXY3NFYI8yu6+/apQ9iX1yuC3NvMs
-	o23ZOz5mlWjxO+f1CoyX4zq6TvukA4Kh0P3wIISM0xP8tuNIy1FrqKwrxgNsCbd66drAu7EMnBu
-	avgdaQtoTocOCrd1kmfAesN+z5keVWNb1Bxg==
-X-Google-Smtp-Source: AGHT+IG+IVP2okOyZfO9efTEqK5kYK+g6r3W0Uym8vBYAKG016/w0MJyIa7e2e068PJnJ764TdjQ4Q==
-X-Received: by 2002:a05:600c:621a:b0:471:14f5:126f with SMTP id 5b1f17b1804b1-4775ce206f3mr49954515e9.33.1762423233373;
-        Thu, 06 Nov 2025 02:00:33 -0800 (PST)
-Received: from [192.168.27.65] (home.rastines.starnux.net. [82.64.67.166])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-477625e88fasm45340025e9.15.2025.11.06.02.00.30
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 06 Nov 2025 02:00:32 -0800 (PST)
-Message-ID: <1c31a5ef-39f6-460b-8046-3c7b2627e3ba@linaro.org>
-Date: Thu, 6 Nov 2025 11:00:29 +0100
+        d=1e100.net; s=20230601; t=1762423313; x=1763028113;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=hr+IrPZu54jtoYs0y4pJPw8+metTYxP5F0Z/JHnlZZI=;
+        b=YC/1z44GCFCniwX5o4i02gRDM+lmdXtrnNMVzIrvkDvIs1ATzTFVb5JMXLglPgjxqo
+         jvNNj/w7Rom52WES1DQXM8kO5xFX4CmIe3T2MrLdb/ui4213l7Ex6dRHm+FvtqUNjQGH
+         lHYVZLWp2jGGy3uwjUQCqMtdAL0Kg3QVvWxvM2wBG73zwA81YaxEh35uLfvj0j33W3jf
+         gmx47rymxaDje6V3G+Y0WYd+LtAoOJWMtON+feynHLkiW7v3Y4Fc1Jy56AtNd68ZPyF8
+         uD/M8+WTcU9qSGcnlYdG4CMevpl5p0dGDUszsEcF/F5He+c5t9IryMv7kSq0Jl1qir6a
+         sVxw==
+X-Forwarded-Encrypted: i=1; AJvYcCU1ujokCkZ3gGdLJ1p6kPEb0ZIa8IdrbLLXD9rAxlyuew+hjTQUQtgfkZfCtMm6UY4tAWZ/aFc=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz5z8tRUGmSWLlovnP+er8myYmGb1dhFDHVj+5qIzZUceR4b56T
+	1xxPXqLmjo26KJm4XvngZkTOMwGRIC0iv9gkoUfC+osTdWP9rqRfYdS5T9eLliGLvmM7QKbyJeS
+	Cp97v66+95MgsbLxPx4vdCL1S8Ux05Kf7WOLy0mEWrgspQ1YryEb8CHbRGiKOkAK/Gh81+oxF8x
+	T62ZmjxdvTxodADqP2QIZWi6Y/dXC/3dLW
+X-Gm-Gg: ASbGncu+ijAl2bq5ar82J3ZAeiFh6SXYhhpK2xeRWp6W5874S/j4oKUG76h4OQeB9Tq
+	VlGZ2h4uO9KWSeXwoKKphOMFiQgsyXlYptx83sm7xRB6KK3QySjB401SYGnsBBOvDX99Kie/wm/
+	DQdz39AJQsW4xLb6ugibrXwPssU6UTn8agQHWyzjuUvoVOJbDTynUTbcIe
+X-Received: by 2002:a17:902:d48c:b0:294:ccc6:ccfd with SMTP id d9443c01a7336-2962ad1bdffmr91649405ad.24.1762423313121;
+        Thu, 06 Nov 2025 02:01:53 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGW3KVhLVq482NdCe7C1dgbyTYFG/2bSxtBHpewavKdNS1gj51nLasKmnsU0eaoXCfCFgVktlKV3Z5WRrEjvJ4=
+X-Received: by 2002:a17:902:d48c:b0:294:ccc6:ccfd with SMTP id
+ d9443c01a7336-2962ad1bdffmr91649025ad.24.1762423312666; Thu, 06 Nov 2025
+ 02:01:52 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Neil Armstrong <neil.armstrong@linaro.org>
-Reply-To: Neil Armstrong <neil.armstrong@linaro.org>
-Subject: Re: [PATCH RESEND 3/3] PCI: meson: Fix parsing the DBI register
- region
-To: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
- Bjorn Helgaas <bhelgaas@google.com>,
- Lorenzo Pieralisi <lpieralisi@kernel.org>,
- =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
- Manivannan Sadhasivam <mani@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Hanjie Lin <hanjie.lin@amlogic.com>,
- Yue Wang <yue.wang@amlogic.com>, Kevin Hilman <khilman@baylibre.com>,
- Jerome Brunet <jbrunet@baylibre.com>,
- Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
- Andrew Murray <amurray@thegoodpenguin.co.uk>,
- Jingoo Han <jingoohan1@gmail.com>,
- Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
-Cc: linux-pci@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-amlogic@lists.infradead.org, stable@vger.kernel.org,
- Linnaea Lavia <linnaea-von-lavia@live.com>
-References: <20251101-pci-meson-fix-v1-0-c50dcc56ed6a@oss.qualcomm.com>
- <20251101-pci-meson-fix-v1-3-c50dcc56ed6a@oss.qualcomm.com>
-Content-Language: en-US, fr
-Autocrypt: addr=neil.armstrong@linaro.org; keydata=
- xsBNBE1ZBs8BCAD78xVLsXPwV/2qQx2FaO/7mhWL0Qodw8UcQJnkrWmgTFRobtTWxuRx8WWP
- GTjuhvbleoQ5Cxjr+v+1ARGCH46MxFP5DwauzPekwJUD5QKZlaw/bURTLmS2id5wWi3lqVH4
- BVF2WzvGyyeV1o4RTCYDnZ9VLLylJ9bneEaIs/7cjCEbipGGFlfIML3sfqnIvMAxIMZrvcl9
- qPV2k+KQ7q+aXavU5W+yLNn7QtXUB530Zlk/d2ETgzQ5FLYYnUDAaRl+8JUTjc0CNOTpCeik
- 80TZcE6f8M76Xa6yU8VcNko94Ck7iB4vj70q76P/J7kt98hklrr85/3NU3oti3nrIHmHABEB
- AAHNKk5laWwgQXJtc3Ryb25nIDxuZWlsLmFybXN0cm9uZ0BsaW5hcm8ub3JnPsLAkQQTAQoA
- OwIbIwULCQgHAwUVCgkICwUWAgMBAAIeAQIXgBYhBInsPQWERiF0UPIoSBaat7Gkz/iuBQJk
- Q5wSAhkBAAoJEBaat7Gkz/iuyhMIANiD94qDtUTJRfEW6GwXmtKWwl/mvqQtaTtZID2dos04
- YqBbshiJbejgVJjy+HODcNUIKBB3PSLaln4ltdsV73SBcwUNdzebfKspAQunCM22Mn6FBIxQ
- GizsMLcP/0FX4en9NaKGfK6ZdKK6kN1GR9YffMJd2P08EO8mHowmSRe/ExAODhAs9W7XXExw
- UNCY4pVJyRPpEhv373vvff60bHxc1k/FF9WaPscMt7hlkbFLUs85kHtQAmr8pV5Hy9ezsSRa
- GzJmiVclkPc2BY592IGBXRDQ38urXeM4nfhhvqA50b/nAEXc6FzqgXqDkEIwR66/Gbp0t3+r
- yQzpKRyQif3OwE0ETVkGzwEIALyKDN/OGURaHBVzwjgYq+ZtifvekdrSNl8TIDH8g1xicBYp
- QTbPn6bbSZbdvfeQPNCcD4/EhXZuhQXMcoJsQQQnO4vwVULmPGgtGf8PVc7dxKOeta+qUh6+
- SRh3vIcAUFHDT3f/Zdspz+e2E0hPV2hiSvICLk11qO6cyJE13zeNFoeY3ggrKY+IzbFomIZY
- 4yG6xI99NIPEVE9lNBXBKIlewIyVlkOaYvJWSV+p5gdJXOvScNN1epm5YHmf9aE2ZjnqZGoM
- Mtsyw18YoX9BqMFInxqYQQ3j/HpVgTSvmo5ea5qQDDUaCsaTf8UeDcwYOtgI8iL4oHcsGtUX
- oUk33HEAEQEAAcLAXwQYAQIACQUCTVkGzwIbDAAKCRAWmrexpM/4rrXiB/sGbkQ6itMrAIfn
- M7IbRuiSZS1unlySUVYu3SD6YBYnNi3G5EpbwfBNuT3H8//rVvtOFK4OD8cRYkxXRQmTvqa3
- 3eDIHu/zr1HMKErm+2SD6PO9umRef8V82o2oaCLvf4WeIssFjwB0b6a12opuRP7yo3E3gTCS
- KmbUuLv1CtxKQF+fUV1cVaTPMyT25Od+RC1K+iOR0F54oUJvJeq7fUzbn/KdlhA8XPGzwGRy
- 4zcsPWvwnXgfe5tk680fEKZVwOZKIEuJC3v+/yZpQzDvGYJvbyix0lHnrCzq43WefRHI5XTT
- QbM0WUIBIcGmq38+OgUsMYu4NzLu7uZFAcmp6h8g
-Organization: Linaro
-In-Reply-To: <20251101-pci-meson-fix-v1-3-c50dcc56ed6a@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20251106065904.10772-1-piliu@redhat.com> <20251106065904.10772-2-piliu@redhat.com>
+ <aQxV2ULFzG/xrl7/@MiWiFi-R3L-srv>
+In-Reply-To: <aQxV2ULFzG/xrl7/@MiWiFi-R3L-srv>
+From: Pingfan Liu <piliu@redhat.com>
+Date: Thu, 6 Nov 2025 18:01:41 +0800
+X-Gm-Features: AWmQ_bkaQwEAwJSjgkaHYwD9xdB2_CzxgOPAM8h5-6gfOG4JNmJZCcRMLtwCKcw
+Message-ID: <CAF+s44TyM7sBVmGn7kn5Cw+Ygm02F93hchiSBN0Q_qR=oA+DLg@mail.gmail.com>
+Subject: Re: [PATCHv2 2/2] kernel/kexec: Fix IMA when allocation happens in
+ CMA area
+To: Baoquan He <bhe@redhat.com>
+Cc: kexec@lists.infradead.org, linux-integrity@vger.kernel.org, 
+	Andrew Morton <akpm@linux-foundation.org>, Mimi Zohar <zohar@linux.ibm.com>, 
+	Roberto Sassu <roberto.sassu@huawei.com>, Alexander Graf <graf@amazon.com>, 
+	Steven Chen <chenste@linux.microsoft.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi,
+On Thu, Nov 6, 2025 at 4:01=E2=80=AFPM Baoquan He <bhe@redhat.com> wrote:
+>
+> On 11/06/25 at 02:59pm, Pingfan Liu wrote:
+> > When I tested kexec with the latest kernel, I ran into the following wa=
+rning:
+> >
+> > [   40.712410] ------------[ cut here ]------------
+> > [   40.712576] WARNING: CPU: 2 PID: 1562 at kernel/kexec_core.c:1001 ki=
+mage_map_segment+0x144/0x198
+> > [...]
+> > [   40.816047] Call trace:
+> > [   40.818498]  kimage_map_segment+0x144/0x198 (P)
+> > [   40.823221]  ima_kexec_post_load+0x58/0xc0
+> > [   40.827246]  __do_sys_kexec_file_load+0x29c/0x368
+> > [...]
+> > [   40.855423] ---[ end trace 0000000000000000 ]---
+> >
+> > This is caused by the fact that kexec allocates the destination directl=
+y
+> > in the CMA area. In that case, the CMA kernel address should be exporte=
+d
+> > directly to the IMA component, instead of using the vmalloc'd address.
+>
+> Well, you didn't update the log accordingly.
+>
 
-On 11/1/25 05:29, Manivannan Sadhasivam wrote:
-> First of all, the driver was parsing the 'dbi' register region as 'elbi'.
-> This was due to DT mistakenly passing 'dbi' as 'elbi'. Since the DT is
-> now fixed to supply 'dbi' region, this driver can rely on the DWC core
-> driver to parse and map it.
-> 
-> However, to support the old DTs, if the 'elbi' region is found in DT, parse
-> and map the region as both 'dw_pcie::elbi_base' as 'dw_pcie::dbi_base'.
-> This will allow the driver to work with both broken and fixed DTs.
-> 
-> Also, skip parsing the 'elbi' region in DWC core if 'pci->elbi_base' was
-> already populated.
-> 
-> Cc: <stable@vger.kernel.org> # 6.2
-> Reported-by: Linnaea Lavia <linnaea-von-lavia@live.com>
-> Closes: https://lore.kernel.org/linux-pci/DM4PR05MB102707B8CDF84D776C39F22F2C7F0A@DM4PR05MB10270.namprd05.prod.outlook.com/
-> Fixes: 9c0ef6d34fdb ("PCI: amlogic: Add the Amlogic Meson PCIe controller driver")
-> Fixes: c96992a24bec ("PCI: dwc: Add support for ELBI resource mapping")
-> Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
-> ---
->   drivers/pci/controller/dwc/pci-meson.c       | 18 +++++++++++++++---
->   drivers/pci/controller/dwc/pcie-designware.c | 12 +++++++-----
->   2 files changed, 22 insertions(+), 8 deletions(-)
-> 
-> diff --git a/drivers/pci/controller/dwc/pci-meson.c b/drivers/pci/controller/dwc/pci-meson.c
-> index 787469d1b396d4c7b3e28edfe276b7b997fb8aee..54b6a4196f1767a3c14c6c901bfee3505588134c 100644
-> --- a/drivers/pci/controller/dwc/pci-meson.c
-> +++ b/drivers/pci/controller/dwc/pci-meson.c
-> @@ -108,10 +108,22 @@ static int meson_pcie_get_mems(struct platform_device *pdev,
->   			       struct meson_pcie *mp)
->   {
->   	struct dw_pcie *pci = &mp->pci;
-> +	struct resource *res;
->   
-> -	pci->dbi_base = devm_platform_ioremap_resource_byname(pdev, "elbi");
-> -	if (IS_ERR(pci->dbi_base))
-> -		return PTR_ERR(pci->dbi_base);
-> +	/*
-> +	 * For the broken DTs that supply 'dbi' as 'elbi', parse the 'elbi'
-> +	 * region and assign it to both 'pci->elbi_base' and 'pci->dbi_space' so
-> +	 * that the DWC core can skip parsing both regions.
-> +	 */
-> +	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "elbi");
-> +	if (res) {
-> +		pci->elbi_base = devm_pci_remap_cfg_resource(pci->dev, res);
-> +		if (IS_ERR(pci->elbi_base))
-> +			return PTR_ERR(pci->elbi_base);
-> +
-> +		pci->dbi_base = pci->elbi_base;
-> +		pci->dbi_phys_addr = res->start;
-> +	}
->   
->   	mp->cfg_base = devm_platform_ioremap_resource_byname(pdev, "cfg");
->   	if (IS_ERR(mp->cfg_base))
-> diff --git a/drivers/pci/controller/dwc/pcie-designware.c b/drivers/pci/controller/dwc/pcie-designware.c
-> index c644216995f69cbf065e61a0392bf1e5e32cf56e..06eca858eb1b3c7a8a833df6616febcdbe854850 100644
-> --- a/drivers/pci/controller/dwc/pcie-designware.c
-> +++ b/drivers/pci/controller/dwc/pcie-designware.c
-> @@ -168,11 +168,13 @@ int dw_pcie_get_resources(struct dw_pcie *pci)
->   	}
->   
->   	/* ELBI is an optional resource */
-> -	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "elbi");
-> -	if (res) {
-> -		pci->elbi_base = devm_ioremap_resource(pci->dev, res);
-> -		if (IS_ERR(pci->elbi_base))
-> -			return PTR_ERR(pci->elbi_base);
-> +	if (!pci->elbi_base) {
-> +		res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "elbi");
-> +		if (res) {
-> +			pci->elbi_base = devm_ioremap_resource(pci->dev, res);
-> +			if (IS_ERR(pci->elbi_base))
-> +				return PTR_ERR(pci->elbi_base);
-> +		}
->   	}
->   
->   	/* LLDD is supposed to manually switch the clocks and resets state */
-> 
+I am not sure what you mean. Do you mean the earlier content which I
+replied to you?
 
-Tested with "old" and "new" DT worked fine with both:
-
-Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on Bananapi-M2S
+> Do you know why cma area can't be mapped into vmalloc?
+>
+Should not the kernel direct mapping be used?
 
 Thanks,
-Neil
+
+Pingfan
+> >
+> > Fixes: 07d24902977e ("kexec: enable CMA based contiguous allocation")
+> > Signed-off-by: Pingfan Liu <piliu@redhat.com>
+> > Cc: Andrew Morton <akpm@linux-foundation.org>
+> > Cc: Baoquan He <bhe@redhat.com>
+> > Cc: Alexander Graf <graf@amazon.com>
+> > Cc: Steven Chen <chenste@linux.microsoft.com>
+> > Cc: linux-integrity@vger.kernel.org
+> > Cc: <stable@vger.kernel.org>
+> > To: kexec@lists.infradead.org
+> > ---
+> > v1 -> v2:
+> > return page_address(page) instead of *page
+> >
+> >  kernel/kexec_core.c | 7 ++++++-
+> >  1 file changed, 6 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/kernel/kexec_core.c b/kernel/kexec_core.c
+> > index 9a1966207041..332204204e53 100644
+> > --- a/kernel/kexec_core.c
+> > +++ b/kernel/kexec_core.c
+> > @@ -967,6 +967,7 @@ void *kimage_map_segment(struct kimage *image, int =
+idx)
+> >       kimage_entry_t *ptr, entry;
+> >       struct page **src_pages;
+> >       unsigned int npages;
+> > +     struct page *cma;
+> >       void *vaddr =3D NULL;
+> >       int i;
+> >
+> > @@ -974,6 +975,9 @@ void *kimage_map_segment(struct kimage *image, int =
+idx)
+> >       size =3D image->segment[idx].memsz;
+> >       eaddr =3D addr + size;
+> >
+> > +     cma =3D image->segment_cma[idx];
+> > +     if (cma)
+> > +             return page_address(cma);
+> >       /*
+> >        * Collect the source pages and map them in a contiguous VA range=
+.
+> >        */
+> > @@ -1014,7 +1018,8 @@ void *kimage_map_segment(struct kimage *image, in=
+t idx)
+> >
+> >  void kimage_unmap_segment(void *segment_buffer)
+> >  {
+> > -     vunmap(segment_buffer);
+> > +     if (is_vmalloc_addr(segment_buffer))
+> > +             vunmap(segment_buffer);
+> >  }
+> >
+> >  struct kexec_load_limit {
+> > --
+> > 2.49.0
+> >
+>
+
 
