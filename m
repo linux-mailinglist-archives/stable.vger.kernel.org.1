@@ -1,230 +1,87 @@
-Return-Path: <stable+bounces-192638-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192639-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64FC8C3CBB7
-	for <lists+stable@lfdr.de>; Thu, 06 Nov 2025 18:10:20 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73263C3CC2B
+	for <lists+stable@lfdr.de>; Thu, 06 Nov 2025 18:15:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 840C33A9F27
-	for <lists+stable@lfdr.de>; Thu,  6 Nov 2025 17:02:43 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id DB5765057ED
+	for <lists+stable@lfdr.de>; Thu,  6 Nov 2025 17:09:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D84233F8A2;
-	Thu,  6 Nov 2025 17:02:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9C0234D93E;
+	Thu,  6 Nov 2025 17:09:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H7Gwrhbt"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7909F33A01E
-	for <stable@vger.kernel.org>; Thu,  6 Nov 2025 17:02:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A16A432D0E3;
+	Thu,  6 Nov 2025 17:09:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762448560; cv=none; b=eL0BRIHbjeSoMh6JsyoQRhzhJLW3wHyoBfdg0PjMFKegFRkfJ/BMZeio25Tat7vgNvuXCQN2h2ln6rFlhQcebWU/MzRkkAL5N2jAySGhGlAEQKNesK9ncS57R+C20W1C/6tSvuHWcLTbYFuAG1DunjqbHPYj4Yysx1vFI7dFrok=
+	t=1762448977; cv=none; b=OzpZ4tO9Ny0wjvYzb6R6zyst1094q4ibZBsSrqHnZfTdMHsUl+I71Xw8HvQ3sgMtimoDJ/9SDS7LY8eNrCJKWCQQNDnH3Gi6AV91QApg8hkfXRT83LIAB7REsU/aDIDZxlZOoWsLyiTI4Ie77tTtUygdaG4hLfFvmp1/OkmNlgU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762448560; c=relaxed/simple;
-	bh=Sz5yZDvrAqDWQ73BgqCKc6pgb4Y+o2NR2xbEM89iVfg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Vz7436TpYrgcJhHj0HUXLJYl+zq8sfLU0K5Wv8HZdQzwj4/fkrKRGrPRkDgd1N2ezeyqu00y0cwDx4kvk5/2AxTB587O6rHG5ESwq1f+1Zv6LNeXo+0wag4BoWAMo7vLaxZ6He5jOwVNq0aYRPfwFcpGqT5gffd9T083LOJ9BqE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.218.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-b7277324204so143408266b.0
-        for <stable@vger.kernel.org>; Thu, 06 Nov 2025 09:02:38 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762448554; x=1763053354;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=0HaYqdPsMXwfHzpR9yoIkvINZrh5vn/MQcKn5Y6oG5U=;
-        b=LocKH66ll9zcziONpsCeuuICmWB7DkVb4ack69xbVRhDhXVRiXBafS2cTUMegJr1oC
-         vGFywcAgESMhgdG//jMvICZ6jK+l7q823+fXSBU8OfLsioPGbDxi9IJ45Z3mSJb6PZ15
-         7WDKGnd7xCQr6iHTDghni59RniRnV4SdOz2ISfdU7GGgdd7eX+vYk4/7xo7SWwJVUJ6p
-         0y2TyRJGMSZG6V5LEsJMLvyBcZxaKoIVm8bzFq6mWa/vWqBqDh2caWo1IYfmsNmORr4O
-         peJYeTTYfArS/jbMWn8ErN/spPH4/RhGYjFxNyd/jesHt0wSonSBJ6CIBOXAtW7x7lCa
-         j6ew==
-X-Forwarded-Encrypted: i=1; AJvYcCUIG2zjWPvSnbexKrp/5GJ1gUNM/UPAHPjAK8D++kIfsIbwOXk954HmLTG9MHjPDb++ikufscs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxXhl66lO6OzjQWH3xonoCKRKewAheOK6DIrbQoeu69y7g2WO63
-	JJi7RFeOoYvDtrEiC5FAP93JcdW7jA5xWpBHTg7cPjgankCgRdrOGgCefpjBjKk/lHM=
-X-Gm-Gg: ASbGncv950Ej+lTULunbWNFdQD759g2CB92hzXu4T62HmIooSzqDvgIhw3o+VPWYj8d
-	Vke4TqLR/QdtYfPo8tO8xcgJ+VMgG+Mikn2ZjPTu2542DuOE9SGgxgXJq2K/Ni9ZuRfKRVNWjXg
-	j33HJkf50/N7xPe5d6AdxoNPftfRk9dc2paITkM6pXkMTrYMLPfzyhQnv0QoZiKu6WB5brIxw2G
-	q3QnZY2dIiV10OEayvrvmS46/IpDzeO6LaH6hVTB900Lsl8Fu+E/i3YdUQi/tYPmYJ034AKqZ0v
-	R1zSpMYxg46RuJFmDj1BOyU9viOvCFpZzmTnbefY1UB4JZuZkK1br7QE2ug2EtvlRZoKIq05tGV
-	Qod8/4YpMDeQC4hB7CXtJ3wZmk8wv0DP0o1SkyUlXqDN8YKWKsOgRHd6Eg6QPZH9/c/K0MRLiPW
-	qn6lAApA19l5eRY7KzEzbZ5dDce/6kVoRb/38kiA==
-X-Google-Smtp-Source: AGHT+IEpLKQ3j3PrDVWD1rdkObjQNOA92ZFyWcFtKO1SolW3/mossst0JL51KXnz29y2wtgW5oVCIg==
-X-Received: by 2002:a17:907:7e9b:b0:b70:f2c4:bdf7 with SMTP id a640c23a62f3a-b72654f66f2mr844427066b.31.1762448553955;
-        Thu, 06 Nov 2025 09:02:33 -0800 (PST)
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com. [209.85.208.48])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b72bc09629fsm9156266b.0.2025.11.06.09.02.33
-        for <stable@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 06 Nov 2025 09:02:33 -0800 (PST)
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-640860f97b5so1840980a12.2
-        for <stable@vger.kernel.org>; Thu, 06 Nov 2025 09:02:33 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCXykllNKlKhYPRP42Ykm2ylEgK/bVUUTkZ67pwAgP6l5/h1v5eeWFH3MtY+zdCQ/Xk5PT5xnFI=@vger.kernel.org
-X-Received: by 2002:a05:6402:5214:b0:637:dfb1:33a8 with SMTP id
- 4fb4d7f45d1cf-6413eec4a2cmr109416a12.3.1762448553296; Thu, 06 Nov 2025
- 09:02:33 -0800 (PST)
+	s=arc-20240116; t=1762448977; c=relaxed/simple;
+	bh=n3rKBJFqHLj8j8SKcpaSVVC9o3fpjgUcWalYVNmrkJ0=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=I3xzoR03wMLsjyokjiG2j0J3NzCYXHvblXFfXP19rkZfKHRqjCUxy54CWTkCeR+SFsfNn+9U13IpZLB/cZOuUBluSDYOOcZnpA9v2ub/oyMT9egRoahXLG+YAKva63HFZBy7lTb+Z4kOObZirm7AeTvZyzpH0f2qmGtubYTecUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H7Gwrhbt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42566C116B1;
+	Thu,  6 Nov 2025 17:09:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762448977;
+	bh=n3rKBJFqHLj8j8SKcpaSVVC9o3fpjgUcWalYVNmrkJ0=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=H7GwrhbtKhfAPbNhENaSpfpBIv7liICagz7GfXKpZCviP+uAVhmTl+Tqfr0euERgf
+	 8E6s9n3mPbrBQaYYeX///+24h+zUZrK5su9Xfc2upHJesnfxrC5kFOkn4dtVuDtnvX
+	 0FNIGAGMJAQrZv4ovenYy2kSGlcAwUve1mvn9fAMn29U2LYJYMwEjVfRb/dl+k2PUz
+	 iw4su63D65sKYpz+SXYHo0MX9nwd6+HTgRCdt3BJmY7MILnHxyku1OX2+g5gFDLff9
+	 4UK5Tozsc0qqO6E+/tp6tDNKNBc1/cKrQaRbWSAFswZKEVK3N7iJZED1gZNsayaQun
+	 Pl2BguQu1MtJw==
+From: Nathan Chancellor <nathan@kernel.org>
+To: Nicolas Schier <nsc@kernel.org>, Nathan Chancellor <nathan@kernel.org>
+Cc: Dimitri John Ledkov <dimitri.ledkov@surgut.co.uk>, 
+ linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org, Omar Sandoval <osandov@fb.com>, 
+ Samir M <samir@linux.ibm.com>, 
+ Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+In-Reply-To: <20251105-kbuild-fix-builtin-modinfo-for-kmod-v1-1-b419d8ad4606@kernel.org>
+References: <20251105-kbuild-fix-builtin-modinfo-for-kmod-v1-1-b419d8ad4606@kernel.org>
+Subject: Re: [PATCH] kbuild: Strip trailing padding bytes from
+ modules.builtin.modinfo
+Message-Id: <176244897498.1698854.1509769597718225621.b4-ty@kernel.org>
+Date: Thu, 06 Nov 2025 10:09:34 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250923154707.1089900-1-cosmin-gabriel.tanislav.xa@renesas.com> <CAMuHMdWRCGYLRK_WBmbB0cRP7PHiGPSi3U1jdWSVKaTSweruUw@mail.gmail.com>
-In-Reply-To: <CAMuHMdWRCGYLRK_WBmbB0cRP7PHiGPSi3U1jdWSVKaTSweruUw@mail.gmail.com>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Thu, 6 Nov 2025 18:02:20 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdXb0hPPR9feTVrHDvyzEbiOEG7Vy5ec_bnwdXTZ=9Cg8Q@mail.gmail.com>
-X-Gm-Features: AWmQ_blWAJjuL3S2mf-_klybP6MpuG6h9woX8spkwghV9sy5gQZ33dOTZbj4xGI
-Message-ID: <CAMuHMdXb0hPPR9feTVrHDvyzEbiOEG7Vy5ec_bnwdXTZ=9Cg8Q@mail.gmail.com>
-Subject: Re: [PATCH] tty: serial: sh-sci: fix RSCI FIFO overrun handling
-To: Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Jiri Slaby <jirislaby@kernel.org>, 
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>, 
-	Thierry Bultel <thierry.bultel.yh@bp.renesas.com>, 
-	Wolfram Sang <wsa+renesas@sang-engineering.com>, Nam Cao <namcao@linutronix.de>, 
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>, linux-kernel@vger.kernel.org, 
-	linux-serial@vger.kernel.org, stable@vger.kernel.org, 
-	Biju Das <biju.das.au@gmail.com>, Linux-Renesas <linux-renesas-soc@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15-dev
 
-CC Biju, linux-renesas-soc (let's hope for real)
 
-On Thu, 6 Nov 2025 at 17:54, Geert Uytterhoeven <geert@linux-m68k.org> wrote:
->
-> Hi Cosmin,
->
-> On Tue, 23 Sept 2025 at 17:47, Cosmin Tanislav
-> <cosmin-gabriel.tanislav.xa@renesas.com> wrote:
-> > The receive error handling code is shared between RSCI and all other
-> > SCIF port types, but the RSCI overrun_reg is specified as a memory
-> > offset, while for other SCIF types it is an enum value used to index
-> > into the sci_port_params->regs array, as mentioned above the
-> > sci_serial_in() function.
-> >
-> > For RSCI, the overrun_reg is CSR (0x48), causing the sci_getreg() call
-> > inside the sci_handle_fifo_overrun() function to index outside the
-> > bounds of the regs array, which currently has a size of 20, as specified
-> > by SCI_NR_REGS.
-> >
-> > Because of this, we end up accessing memory outside of RSCI's
-> > rsci_port_params structure, which, when interpreted as a plat_sci_reg,
-> > happens to have a non-zero size, causing the following WARN when
-> > sci_serial_in() is called, as the accidental size does not match the
-> > supported register sizes.
-> >
-> > The existence of the overrun_reg needs to be checked because
-> > SCIx_SH3_SCIF_REGTYPE has overrun_reg set to SCLSR, but SCLSR is not
-> > present in the regs array.
-> >
-> > Avoid calling sci_getreg() for port types which don't use standard
-> > register handling.
-> >
-> > Use the ops->read_reg() and ops->write_reg() functions to properly read
-> > and write registers for RSCI, and change the type of the status variable
-> > to accommodate the 32-bit CSR register.
-> >
-> > sci_getreg() and sci_serial_in() are also called with overrun_reg in the
-> > sci_mpxed_interrupt() interrupt handler, but that code path is not used
-> > for RSCI, as it does not have a muxed interrupt.
-> >
-> > ------------[ cut here ]------------
-> > Invalid register access
-> > WARNING: CPU: 0 PID: 0 at drivers/tty/serial/sh-sci.c:522 sci_serial_in+0x38/0xac
-> > Modules linked in: renesas_usbhs at24 rzt2h_adc industrialio_adc sha256 cfg80211 bluetooth ecdh_generic ecc rfkill fuse drm backlight ipv6
-> > CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Not tainted 6.17.0-rc1+ #30 PREEMPT
-> > Hardware name: Renesas RZ/T2H EVK Board based on r9a09g077m44 (DT)
-> > pstate: 604000c5 (nZCv daIF +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-> > pc : sci_serial_in+0x38/0xac
-> > lr : sci_serial_in+0x38/0xac
-> > sp : ffff800080003e80
-> > x29: ffff800080003e80 x28: ffff800082195b80 x27: 000000000000000d
-> > x26: ffff8000821956d0 x25: 0000000000000000 x24: ffff800082195b80
-> > x23: ffff000180e0d800 x22: 0000000000000010 x21: 0000000000000000
-> > x20: 0000000000000010 x19: ffff000180e72000 x18: 000000000000000a
-> > x17: ffff8002bcee7000 x16: ffff800080000000 x15: 0720072007200720
-> > x14: 0720072007200720 x13: 0720072007200720 x12: 0720072007200720
-> > x11: 0000000000000058 x10: 0000000000000018 x9 : ffff8000821a6a48
-> > x8 : 0000000000057fa8 x7 : 0000000000000406 x6 : ffff8000821fea48
-> > x5 : ffff00033ef88408 x4 : ffff8002bcee7000 x3 : ffff800082195b80
-> > x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff800082195b80
-> > Call trace:
-> >  sci_serial_in+0x38/0xac (P)
-> >  sci_handle_fifo_overrun.isra.0+0x70/0x134
-> >  sci_er_interrupt+0x50/0x39c
-> >  __handle_irq_event_percpu+0x48/0x140
-> >  handle_irq_event+0x44/0xb0
-> >  handle_fasteoi_irq+0xf4/0x1a0
-> >  handle_irq_desc+0x34/0x58
-> >  generic_handle_domain_irq+0x1c/0x28
-> >  gic_handle_irq+0x4c/0x140
-> >  call_on_irq_stack+0x30/0x48
-> >  do_interrupt_handler+0x80/0x84
-> >  el1_interrupt+0x34/0x68
-> >  el1h_64_irq_handler+0x18/0x24
-> >  el1h_64_irq+0x6c/0x70
-> >  default_idle_call+0x28/0x58 (P)
-> >  do_idle+0x1f8/0x250
-> >  cpu_startup_entry+0x34/0x3c
-> >  rest_init+0xd8/0xe0
-> >  console_on_rootfs+0x0/0x6c
-> >  __primary_switched+0x88/0x90
-> > ---[ end trace 0000000000000000 ]---
-> >
-> > Cc: stable@vger.kernel.org
-> > Fixes: 0666e3fe95ab ("serial: sh-sci: Add support for RZ/T2H SCI")
-> > Signed-off-by: Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>
->
-> Thanks for your patch, which is now commit ef8fef45c74b5a00 ("tty:
-> serial: sh-sci: fix RSCI FIFO overrun handling") in v6.18-rc3.
->
-> > --- a/drivers/tty/serial/sh-sci.c
-> > +++ b/drivers/tty/serial/sh-sci.c
-> > @@ -1014,16 +1014,18 @@ static int sci_handle_fifo_overrun(struct uart_port *port)
-> >         struct sci_port *s = to_sci_port(port);
-> >         const struct plat_sci_reg *reg;
-> >         int copied = 0;
-> > -       u16 status;
-> > +       u32 status;
-> >
-> > -       reg = sci_getreg(port, s->params->overrun_reg);
-> > -       if (!reg->size)
-> > -               return 0;
-> > +       if (s->type != SCI_PORT_RSCI) {
-> > +               reg = sci_getreg(port, s->params->overrun_reg);
-> > +               if (!reg->size)
-> > +                       return 0;
-> > +       }
-> >
-> > -       status = sci_serial_in(port, s->params->overrun_reg);
-> > +       status = s->ops->read_reg(port, s->params->overrun_reg);
-> >         if (status & s->params->overrun_mask) {
-> >                 status &= ~s->params->overrun_mask;
-> > -               sci_serial_out(port, s->params->overrun_reg, status);
-> > +               s->ops->write_reg(port, s->params->overrun_reg, status);
-> >
-> >                 port->icount.overrun++;
-> >
->
-> Ouch, this is really becoming fragile, and thus hard to maintain.
-> See also "[PATCH v2 2/2] serial: sh-sci: Fix deadlock during RSCI FIFO
-> overrun error".
-> Are you sure this is the only place where that can happen?
-> sci_getreg() and sci_serial_{in,out}() are used all over the place.
->
-> [1] https://lore.kernel.org/20251029082101.92156-3-biju.das.jz@bp.renesas.com/
+On Wed, 05 Nov 2025 15:30:27 -0700, Nathan Chancellor wrote:
+> After commit d50f21091358 ("kbuild: align modinfo section for Secureboot
+> Authenticode EDK2 compat"), running modules_install with certain
+> versions of kmod (such as 29.1 in Ubuntu Jammy) in certain
+> configurations may fail with:
+> 
+>   depmod: ERROR: kmod_builtin_iter_next: unexpected string without modname prefix
+> 
+> [...]
 
-Gr{oetje,eeting}s,
+Applied, thanks!
 
-                        Geert
+[1/1] kbuild: Strip trailing padding bytes from modules.builtin.modinfo
+      https://git.kernel.org/kbuild/c/a26a6c93edfee
 
+Best regards,
 -- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+Nathan Chancellor <nathan@kernel.org>
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
 
