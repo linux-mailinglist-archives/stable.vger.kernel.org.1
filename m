@@ -1,129 +1,107 @@
-Return-Path: <stable+bounces-192704-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192705-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41E73C3F590
-	for <lists+stable@lfdr.de>; Fri, 07 Nov 2025 11:11:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ACCF8C3F818
+	for <lists+stable@lfdr.de>; Fri, 07 Nov 2025 11:37:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 359F84EA544
-	for <lists+stable@lfdr.de>; Fri,  7 Nov 2025 10:11:24 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id CFBF64F3B88
+	for <lists+stable@lfdr.de>; Fri,  7 Nov 2025 10:35:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF48E302142;
-	Fri,  7 Nov 2025 10:11:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=aliyun.com header.i=@aliyun.com header.b="VnU5ZO1p"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D970232B9AC;
+	Fri,  7 Nov 2025 10:34:59 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from out30-84.freemail.mail.aliyun.com (out30-84.freemail.mail.aliyun.com [115.124.30.84])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86BD02DC33D
-	for <stable@vger.kernel.org>; Fri,  7 Nov 2025 10:11:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D959328627
+	for <stable@vger.kernel.org>; Fri,  7 Nov 2025 10:34:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762510281; cv=none; b=I2hqjGQaurmOygo7YfQbJZ49hCjq8eFRcZXp3FRTdli93oGngEi1f7qQ8SqjLApHTYdH5nJr5+rIMkVzCvG5fNT5JfIXgbmUver/u1HjrYUGAGqBHVBAETPiQ6d4gsJ2vcEYLdmfyASihkZ94UyCdkEqpUkSXiWt234s8vkZub8=
+	t=1762511699; cv=none; b=b/mr3gEXyha28EKB6PI0uuKa7inCI0aB93U8YxcGOMfRRmWCgIWZ0GaboXh6z3TU6hITZ/2oJu3dlFO5468Iwl8KBefX3yCpqOifSTuQHphcRWDmkWSJ95Zr86prge9KTxpzoBnD8lqhVEptfyYGqLCFtQVuUAk4yIW1K7AQvgs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762510281; c=relaxed/simple;
-	bh=yT9nuihvJknAzZYJaTFCSDupEvsjRgON1aE/eRr2QHg=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=t/zKl+68yhnt7WwRIgUXkmg9nPugINaG74NXTygU0kUSbmFc0d+bGon9ZKJa0PGO0HS1fNhzolJaoQq6PQ99uViQqMwde94qthm+eb6+nuqu2YICfUgFjIoyE7Yj1ZqYf14x8ABokxJGqGa3as9B0Txt4LJbarpTPcj4ofQcceg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aliyun.com; spf=pass smtp.mailfrom=aliyun.com; dkim=pass (1024-bit key) header.d=aliyun.com header.i=@aliyun.com header.b=VnU5ZO1p; arc=none smtp.client-ip=115.124.30.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aliyun.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aliyun.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=aliyun.com; s=s1024;
-	t=1762510277; h=From:To:Subject:Date:Message-Id:MIME-Version;
-	bh=cwwidkgGvAouO41YOuGUVCjBpbHey39Jel4rP+gZbb0=;
-	b=VnU5ZO1pdyxlsA2UhBL0wcyQHkeo8Z7tUcM6iwwZNDngSebIpfOFBf4UV9gHX/MEAwpI1bVmLROcskHQaXfl1XaSBWpEBERgPPZqYtKcD5mN5sRTgpwc3ghW0GYHEZd3cNtaYD/7tiisHMYO6daYHVsU9NMjVntiNKSWx4V395E=
-Received: from pek-blan-cn-l1.corp.ad.wrs.com(mailfrom:ruohanlan@aliyun.com fp:SMTPD_---0WrsfSqc_1762510261 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Fri, 07 Nov 2025 18:11:16 +0800
-From: ruohanlan@aliyun.com
-To: gregkh@linuxfoundation.org,
-	stable@vger.kernel.org
-Cc: Sabrina Dubroca <sd@queasysnail.net>,
-	Simon Horman <horms@kernel.org>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
-	Ruohan Lan <ruohanlan@aliyun.com>
-Subject: [PATCH 6.6.y] espintcp: fix skb leaks
-Date: Fri,  7 Nov 2025 18:11:00 +0800
-Message-Id: <20251107101100.1336-1-ruohanlan@aliyun.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1762511699; c=relaxed/simple;
+	bh=oQ5/oyVrQfuKOtcYvkat7Ovwmz/+jEdAHQRmwC+1FVk=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=QIDR3kpyWrlwKib6zXjY0p59XD7auB3KlqnXGT7YE4kRJ9yToSl4JEpOUaQnQiII1hIV2Sv7+VZ3qAb377bdCHJmHlBziasNV2M43IJJOFHglAc3Nx53mcggj9nxp9o7/sS16eZGrW+1wy8jtIU5lZUADolTgQZuSKmFwz0SsK8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <m.tretter@pengutronix.de>)
+	id 1vHJno-0007dI-Uo; Fri, 07 Nov 2025 11:34:44 +0100
+From: Michael Tretter <m.tretter@pengutronix.de>
+Subject: [PATCH v2 0/2] media: staging: imx: fix multiple video input
+Date: Fri, 07 Nov 2025 11:34:32 +0100
+Message-Id: <20251107-media-imx-fixes-v2-0-07d949964194@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIADjLDWkC/3WNwQ6DIBBEf8XsudsA0VB76n8YDwir7kEwYImN8
+ d9Lvff4ZvJmDkgUmRI8qwMiZU4cfAF1q8DOxk+E7AqDEqqRUjS4kGODvOw48k4JjaVRa6sHIxU
+ Ua410FUXq+sIzpy3Ez3WQ5S/9v5UlCmxbqh9DPTZ2sK+V/PTeYvC83x1Bf57nFzDIF6CzAAAA
+X-Change-ID: 20251105-media-imx-fixes-acef77c7ba12
+To: Steve Longerbeam <slongerbeam@gmail.com>, 
+ Philipp Zabel <p.zabel@pengutronix.de>, 
+ Mauro Carvalho Chehab <mchehab@kernel.org>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Hans Verkuil <hans.verkuil@cisco.com>
+Cc: linux-media@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org, 
+ Michael Tretter <michael.tretter@pengutronix.de>, 
+ Frank Li <Frank.Li@nxp.com>, Michael Tretter <m.tretter@pengutronix.de>
+X-Mailer: b4 0.14.3
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:1101:1d::54
+X-SA-Exim-Mail-From: m.tretter@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: stable@vger.kernel.org
 
-From: Sabrina Dubroca <sd@queasysnail.net>
+If the IMX media pipeline is configured to receive multiple video
+inputs, the second input stream may be broken on start. This happens if
+the IMX CSI hardware has to be reconfigured for the second stream, while
+the first stream is already running.
 
-[ Upstream commit 63c1f19a3be3169e51a5812d22a6d0c879414076 ]
+The IMX CSI driver configures the IMX CSI in the link_validate callback.
+The media pipeline is only validated on the first start. Thus, any later
+start of the media pipeline skips the validation and directly starts
+streaming. This may leave the hardware in an inconsistent state compared
+to the driver configuration. Moving the hardware configuration to the
+stream start to make sure that the hardware is configured correctly.
 
-A few error paths are missing a kfree_skb.
+Patch 1 removes the caching of the upstream mbus_config in
+csi_link_validate and explicitly request the mbus_config in csi_start,
+to get rid of this implicit dependency.
 
-Fixes: e27cca96cd68 ("xfrm: add espintcp (RFC 8229)")
-Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
-[ Minor context change fixed. ]
-Signed-off-by: Ruohan Lan <ruohanlan@aliyun.com>
+Patch 2 actually moves the hardware register setting from
+csi_link_validate to csi_start to fix the skipped hardware
+reconfiguration.
+
+Signed-off-by: Michael Tretter <michael.tretter@pengutronix.de>
 ---
- net/ipv4/esp4.c     | 4 +++-
- net/ipv6/esp6.c     | 4 +++-
- net/xfrm/espintcp.c | 4 +++-
- 3 files changed, 9 insertions(+), 3 deletions(-)
+Changes in v2:
+- Document changed locking in commit message
+- Link to v1: https://lore.kernel.org/r/20251105-media-imx-fixes-v1-0-99e48b4f5cbc@pengutronix.de
 
-diff --git a/net/ipv4/esp4.c b/net/ipv4/esp4.c
-index 49fd664f50fc..2caf6a2a819b 100644
---- a/net/ipv4/esp4.c
-+++ b/net/ipv4/esp4.c
-@@ -152,8 +152,10 @@ static int esp_output_tcp_finish(struct xfrm_state *x, struct sk_buff *skb)
- 
- 	sk = esp_find_tcp_sk(x);
- 	err = PTR_ERR_OR_ZERO(sk);
--	if (err)
-+	if (err) {
-+		kfree_skb(skb);
- 		goto out;
-+	}
- 
- 	bh_lock_sock(sk);
- 	if (sock_owned_by_user(sk))
-diff --git a/net/ipv6/esp6.c b/net/ipv6/esp6.c
-index 7e4c8628cf98..2caaab61b996 100644
---- a/net/ipv6/esp6.c
-+++ b/net/ipv6/esp6.c
-@@ -169,8 +169,10 @@ static int esp_output_tcp_finish(struct xfrm_state *x, struct sk_buff *skb)
- 
- 	sk = esp6_find_tcp_sk(x);
- 	err = PTR_ERR_OR_ZERO(sk);
--	if (err)
-+	if (err) {
-+		kfree_skb(skb);
- 		goto out;
-+	}
- 
- 	bh_lock_sock(sk);
- 	if (sock_owned_by_user(sk))
-diff --git a/net/xfrm/espintcp.c b/net/xfrm/espintcp.c
-index d3b3f9e720b3..427072285b8c 100644
---- a/net/xfrm/espintcp.c
-+++ b/net/xfrm/espintcp.c
-@@ -169,8 +169,10 @@ int espintcp_queue_out(struct sock *sk, struct sk_buff *skb)
- {
- 	struct espintcp_ctx *ctx = espintcp_getctx(sk);
- 
--	if (skb_queue_len(&ctx->out_queue) >= READ_ONCE(netdev_max_backlog))
-+	if (skb_queue_len(&ctx->out_queue) >= READ_ONCE(netdev_max_backlog)) {
-+		kfree_skb(skb);
- 		return -ENOBUFS;
-+	}
- 
- 	__skb_queue_tail(&ctx->out_queue, skb);
- 
+---
+Michael Tretter (2):
+      media: staging: imx: request mbus_config in csi_start
+      media: staging: imx: configure src_mux in csi_start
+
+ drivers/staging/media/imx/imx-media-csi.c | 84 ++++++++++++++++++-------------
+ 1 file changed, 48 insertions(+), 36 deletions(-)
+---
+base-commit: 27afd6e066cfd80ddbe22a4a11b99174ac89cced
+change-id: 20251105-media-imx-fixes-acef77c7ba12
+
+Best regards,
 -- 
-2.43.0
+Michael Tretter <m.tretter@pengutronix.de>
 
 
