@@ -1,100 +1,123 @@
-Return-Path: <stable+bounces-192680-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192681-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 522B4C3E62F
-	for <lists+stable@lfdr.de>; Fri, 07 Nov 2025 04:42:37 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5032CC3E68A
+	for <lists+stable@lfdr.de>; Fri, 07 Nov 2025 05:02:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 618794E88C7
-	for <lists+stable@lfdr.de>; Fri,  7 Nov 2025 03:41:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 84EA03A9F1E
+	for <lists+stable@lfdr.de>; Fri,  7 Nov 2025 04:02:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82C4828003A;
-	Fri,  7 Nov 2025 03:41:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F202A28750F;
+	Fri,  7 Nov 2025 04:02:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UzFuZOYY"
+	dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b="0C0Fsenp"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC032227599
-	for <stable@vger.kernel.org>; Fri,  7 Nov 2025 03:41:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+Received: from n169-112.mail.139.com (n169-112.mail.139.com [120.232.169.112])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08CA2214A97
+	for <stable@vger.kernel.org>; Fri,  7 Nov 2025 04:02:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=120.232.169.112
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762486872; cv=none; b=PvTRnu/QTl6QaxrQolgmmTuc094g0+G6tVH6XO7AQqRaHWsdFfztkv6Z5PGesvDLfNHAvp+rqYSOn4lrap3/gClYZh9MVBor5NxAhHQeG+wJAvX34KCpckDaWrYXjTpq1AbOh/9/vX4V94oXbBm2T/97h4cYJKmm7arzxgFOo/k=
+	t=1762488137; cv=none; b=SS+DIMoZbURn40jeUIbiImk6bgV5zJSY7h+JwgZjx8JLZKCz03m9Qdfm5afBL4jo0b51qtExM/oD31gYEIx8GmcnsvmbJgDtTHgrrD/UsSsRbxUxZ6RtfMpkD6oQiHckeltpahualftetljorb/zlANtaeRs+W0XOhbxkuSVyvQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762486872; c=relaxed/simple;
-	bh=s4gDsQXTGLmkO86GK80L1Mh9JJwBgH9BfFIwQ8B9k2M=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=pQ8bU4wW+lMysFryEryDXuLFVMYBSffL3ggLlmC9ashZ8RA31Lr0xW/zVHygNA1HHrljP3MkUDvLCsTzLh+//TwLPp/cyOzrffyd8+Yw3uR9VcsitWu7DwmXXKKbUZeAkSSRfmRGcx67G9JhFwQcr+JIU3Za7Xba0DKsCH0FOgQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UzFuZOYY; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1762486871; x=1794022871;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=s4gDsQXTGLmkO86GK80L1Mh9JJwBgH9BfFIwQ8B9k2M=;
-  b=UzFuZOYYWoCwn1nWyYdzEwdeh4zt1WkBmthbzUcdktzf67NuWi0KApWs
-   u4BbVypP5WUbYozn5ropY/C7rX4pcTxYEvU1YJCJyQAYKORVzO7HoOuHu
-   aBLbKBJgzBy4nbAJ9f5M+MOYXb+QcDsZ6k/gdDzhGK4FfKx0NMUEYTJzP
-   1zz0BOTh2M0K3ra1vto8Rt5/wwQAJLTatzNPI5otOA1TQxkQ6fZJotxQc
-   WRvQ9D6po7HnG1YXVVedjNFQ4RML0De3hDFczRx7l7tGD296LlB/PEbTN
-   Z6kPayH/1tyyM5nZYvKh3nteCNKDBFJZgvGcZls0ECIyAbM4vnuiP1V+q
-   Q==;
-X-CSE-ConnectionGUID: VgsoFDZZTFWBNBRqb3XpPg==
-X-CSE-MsgGUID: hwGlSqrNRjaalTKxGcwQuQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11605"; a="63844860"
-X-IronPort-AV: E=Sophos;i="6.19,285,1754982000"; 
-   d="scan'208";a="63844860"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Nov 2025 19:41:09 -0800
-X-CSE-ConnectionGUID: IcqZYJ5ZSXykh/6Za6enVg==
-X-CSE-MsgGUID: 3fFEqD7hQGeSAy3/e0nnfQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,285,1754982000"; 
-   d="scan'208";a="192200538"
-Received: from lkp-server02.sh.intel.com (HELO 66d7546c76b2) ([10.239.97.151])
-  by fmviesa005.fm.intel.com with ESMTP; 06 Nov 2025 19:41:07 -0800
-Received: from kbuild by 66d7546c76b2 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1vHDLW-000Ufg-0D;
-	Fri, 07 Nov 2025 03:41:06 +0000
-Date: Fri, 7 Nov 2025 11:40:59 +0800
-From: kernel test robot <lkp@intel.com>
-To: Shuai Zhang <quic_shuaz@quicinc.com>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH v3 1/2] Bluetooth: qca: Fix delayed hw_error handling due
- to missing wakeup during SSR
-Message-ID: <aQ1qS9-MyXH-N5Jx@4b976af397a4>
+	s=arc-20240116; t=1762488137; c=relaxed/simple;
+	bh=UUuenMYg9ocxnpNEOQdv6RBX2DzfhgqPqQJHBfqyat0=;
+	h=From:To:Cc:Subject:Date:Message-Id; b=QeytVJigQHrbtdrAk4Elno8HDU8WjzRfiEPAPpct1Y9xnoamwXudOEHNauw0H1N9zV5UO8pTYrAjQFUvlGurWEjLKklN3G8C+Mg5MHfQgtmZZuf2Yc0N9cUtWuJuxR42CPqEAN2eS9jujZ5R+QbfLpybTUtIzx21pvdiEdxjT44=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com; spf=pass smtp.mailfrom=139.com; dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b=0C0Fsenp; arc=none smtp.client-ip=120.232.169.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=139.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=139.com; s=dkim; l=0;
+	h=from:subject:message-id:to:cc;
+	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+	b=0C0FsenpEofFHcagG9lqooB1qz3rWBgCbz2sHhvzHg5agiJmzFin1YCK1CwuH8aR5MPf5T176D5ai
+	 Nv/NqJ+5HGmZY19nwsG0A45eo1qq40LC6Q1STVa24erwhaYVauqleL5X9aZQZI02UiQh/ya8Ju86k5
+	 QoxGsQMatMJtHDQY=
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM:                                                                                        
+X-RM-SPAM-FLAG:00000000
+Received:from NTT-kernel-dev (unknown[117.129.7.61])
+	by rmsmtp-lg-appmail-19-12022 (RichMail) with SMTP id 2ef6690d6e850fa-47440;
+	Fri, 07 Nov 2025 11:59:03 +0800 (CST)
+X-RM-TRANSID:2ef6690d6e850fa-47440
+From: Rajani Kantha <681739313@139.com>
+To: dsahern@kernel.org,
+	wangliang74@huawei.com,
+	horms@kernel.org,
+	kuba@kernel.org
+Cc: stable@vger.kernel.org
+Subject: [PATCH 6.6.y] net: fix NULL pointer dereference in l3mdev_l3_rcv
+Date: Fri,  7 Nov 2025 11:59:02 +0800
+Message-Id: <20251107035902.3695-1-681739313@139.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251107033924.3707495-2-quic_shuaz@quicinc.com>
 
-Hi,
+From: Wang Liang <wangliang74@huawei.com>
 
-Thanks for your patch.
+[ Upstream commit 0032c99e83b9ce6d5995d65900aa4b6ffb501cce ]
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
+When delete l3s ipvlan:
 
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
+    ip link del link eth0 ipvlan1 type ipvlan mode l3s
 
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH v3 1/2] Bluetooth: qca: Fix delayed hw_error handling due to missing wakeup during SSR
-Link: https://lore.kernel.org/stable/20251107033924.3707495-2-quic_shuaz%40quicinc.com
+This may cause a null pointer dereference:
 
+    Call trace:
+     ip_rcv_finish+0x48/0xd0
+     ip_rcv+0x5c/0x100
+     __netif_receive_skb_one_core+0x64/0xb0
+     __netif_receive_skb+0x20/0x80
+     process_backlog+0xb4/0x204
+     napi_poll+0xe8/0x294
+     net_rx_action+0xd8/0x22c
+     __do_softirq+0x12c/0x354
+
+This is because l3mdev_l3_rcv() visit dev->l3mdev_ops after
+ipvlan_l3s_unregister() assign the dev->l3mdev_ops to NULL. The process
+like this:
+
+    (CPU1)                     | (CPU2)
+    l3mdev_l3_rcv()            |
+      check dev->priv_flags:   |
+        master = skb->dev;     |
+                               |
+                               | ipvlan_l3s_unregister()
+                               |   set dev->priv_flags
+                               |   dev->l3mdev_ops = NULL;
+                               |
+      visit master->l3mdev_ops |
+
+To avoid this by do not set dev->l3mdev_ops when unregister l3s ipvlan.
+
+Suggested-by: David Ahern <dsahern@kernel.org>
+Fixes: c675e06a98a4 ("ipvlan: decouple l3s mode dependencies from other modes")
+Signed-off-by: Wang Liang <wangliang74@huawei.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250321090353.1170545-1-wangliang74@huawei.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Rajani Kantha <681739313@139.com>
+---
+ drivers/net/ipvlan/ipvlan_l3s.c | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/drivers/net/ipvlan/ipvlan_l3s.c b/drivers/net/ipvlan/ipvlan_l3s.c
+index d5b05e803219..ca35a50bb640 100644
+--- a/drivers/net/ipvlan/ipvlan_l3s.c
++++ b/drivers/net/ipvlan/ipvlan_l3s.c
+@@ -224,5 +224,4 @@ void ipvlan_l3s_unregister(struct ipvl_port *port)
+ 
+ 	dev->priv_flags &= ~IFF_L3MDEV_RX_HANDLER;
+ 	ipvlan_unregister_nf_hook(read_pnet(&port->pnet));
+-	dev->l3mdev_ops = NULL;
+ }
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
+2.17.1
 
 
 
