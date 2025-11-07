@@ -1,67 +1,67 @@
-Return-Path: <stable+bounces-192720-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192721-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD4BFC3FE1D
-	for <lists+stable@lfdr.de>; Fri, 07 Nov 2025 13:19:38 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5D71C3FE1A
+	for <lists+stable@lfdr.de>; Fri, 07 Nov 2025 13:19:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 40E5D3AA8F0
-	for <lists+stable@lfdr.de>; Fri,  7 Nov 2025 12:19:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3AD8D188FB10
+	for <lists+stable@lfdr.de>; Fri,  7 Nov 2025 12:20:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96A922C0269;
-	Fri,  7 Nov 2025 12:19:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 139D929AB05;
+	Fri,  7 Nov 2025 12:19:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b="Fwqkrix4"
+	dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b="iKKPifur"
 X-Original-To: stable@vger.kernel.org
-Received: from pdx-out-014.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-014.esa.us-west-2.outbound.mail-perimeter.amazon.com [35.83.148.184])
+Received: from pdx-out-006.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-006.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.26.1.71])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A10529CB3A
-	for <stable@vger.kernel.org>; Fri,  7 Nov 2025 12:19:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.83.148.184
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1823F28C014
+	for <stable@vger.kernel.org>; Fri,  7 Nov 2025 12:19:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.26.1.71
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762517961; cv=none; b=usnqGos+hpJf+iizApq0M6Ljw1UxJuKjMO1LTDrWIOfWDZjNVerjZDXi4is0s1YljytFdILIwT4c13tf0J6nHaS7Jszpa2mzCcWP/gyIcun1E1ag+mVMbKYXQ0ZY83x3K/SUJu5Im2Fd4st5N09rklYsgs8MEzS9U58Bv5rF+bU=
+	t=1762517973; cv=none; b=AlEhHiaHwHWCF/4LA3a4ezp23Yno3/il3T8lTDj1pqPHHWuoA90Q0X8QTJKCPnlnvn3TeKyDZo1MS3FldMKld8Oj/be5CDTbvOAM1TrvCY3avzKhtsVgbnDR7ZqZnoLz5zTZA965aQXuxlLX4UVfkIQvZ7htIRK0mqGGMS1+wgA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762517961; c=relaxed/simple;
-	bh=aJCa3+5aLqC9VLJXX6QQ21RAenKpvJwR7kddNfXy2ts=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=BypNmuJ+UPcrY5qVt1JashJ3HEncKS/Bi5/8xsFT4KBaWXzU717M5CvRzW6YU0b6c/DUKVHK3hKisxrnVII/nwDr4E/VCDaJJ+2Yt30Ei0NMBgX3K5oF17azq/JkMOuqiPObkwu+oQEcRXw0p2hXElt4SQ03UhMg0XclYk+a3jk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de; spf=pass smtp.mailfrom=amazon.de; dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b=Fwqkrix4; arc=none smtp.client-ip=35.83.148.184
+	s=arc-20240116; t=1762517973; c=relaxed/simple;
+	bh=ElNigRlMcZoy++NqhkJxE8eCSTjevM8ZAlSkkitYWGw=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=EGGQU1uS3Su6oqsRYPcsSgLXnmbkTDBQzr1Aps9O5HW2Y/tKdBoADZJbuw1o16YvbhMLpAPEAkIlIfIXvXW7zvNB0/Vx4gt5hbcn6n5ovDVayWM8LN3JaR1NGGnb5RXijLtPSuyytvtRPoSH8gzhJVEDYZeGfmIohR7HW92frr4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de; spf=pass smtp.mailfrom=amazon.de; dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b=iKKPifur; arc=none smtp.client-ip=52.26.1.71
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.de
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=amazon.de; i=@amazon.de; q=dns/txt; s=amazoncorp2;
-  t=1762517959; x=1794053959;
+  t=1762517972; x=1794053972;
   h=from:to:cc:subject:date:message-id:mime-version:
    content-transfer-encoding;
-  bh=kEWABMIzRq33ljFMG/0sk/hFucA2opQA3b6rurTcSe0=;
-  b=Fwqkrix4CbKrUcFGCe5FoPRPA6qx+Iz/Rzrwb/QPmYQ1BZdysxYzTmSg
-   9vEqtsSqstyLmZRtpVysA7W6TvVsjrGoqxrkZCMMObCHIUB9bAX5u6P4G
-   ldaa9oFDgtLDcejldb2mVNor0Yq86OSw8UuSiOdXDSEwbjvOQid6R8eYW
-   NXbqrUFQo5PdMIwcsMm2Bzo4gh/9UUsSxUdhGrWm87+maX6wgje/zA3hT
-   uCxUWt4gNu4wLvrilPOwS+b2/1hvyg7s2fTDsBaMUyIs4c2vJQ4w5j8De
-   AlWdUjvuP9dOMbcLJ4ksML5TsF9HTbZb5sEU8h0/TTaRStVLK71Hy9PFf
-   w==;
-X-CSE-ConnectionGUID: asRqN7NGQyu9jn2u2tBS2w==
-X-CSE-MsgGUID: cbxVeXJQTsOBkAEq1XGPiA==
+  bh=DnkWM9dhJbs73bRoXkT8yDW6Q+d1t3I0EKqVUz4HFkk=;
+  b=iKKPifurwsDY8JfouM5LGpbBvc0OqSqcSbp6TB+tMUmqCwDDn9mOuksc
+   MjWXfCVUlvgTxmRHD6sZeBLQDxUn+oyNyuRJTeRXqNx9a+uiBLvUmFww7
+   0NJdhVR7TzSrpINycWm+/1Rckq4bVTil5XWLTMaqqYIg27sLGIoq9ncD8
+   zuwUTIlgup2BCWbaMxMZfNtU8HP/076GaijIFWoBntnsOtid17NhSY2jM
+   4zGE9jGE5jEXhCVdzcqRRq1cpQFjuO441Op1ELXQLdxNSRbLS38QbL6sJ
+   LM1nLl1iv1Tcikam87iYhvbgnSaYt+QaDhbysLkahxn2gx//CuwJlcWsn
+   Q==;
+X-CSE-ConnectionGUID: e8SlEJ3lRYW8EcDPsuJhpA==
+X-CSE-MsgGUID: 2f5NE+7+RWObmWrXFdNgPg==
 X-IronPort-AV: E=Sophos;i="6.19,286,1754956800"; 
-   d="scan'208";a="6413960"
-Received: from ip-10-5-9-48.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.9.48])
-  by internal-pdx-out-014.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Nov 2025 12:19:13 +0000
-Received: from EX19MTAUWA002.ant.amazon.com [205.251.233.234:11701]
+   d="scan'208";a="6617457"
+Received: from ip-10-5-6-203.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.6.203])
+  by internal-pdx-out-006.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Nov 2025 12:19:29 +0000
+Received: from EX19MTAUWB001.ant.amazon.com [205.251.233.104:4737]
  by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.27.195:2525] with esmtp (Farcaster)
- id 3529c8cf-10fd-4dfd-9bc4-a9a34e6873d0; Fri, 7 Nov 2025 12:19:13 +0000 (UTC)
-X-Farcaster-Flow-ID: 3529c8cf-10fd-4dfd-9bc4-a9a34e6873d0
+ id 5575f960-87ee-4976-b26b-3b2bd3a33540; Fri, 7 Nov 2025 12:19:29 +0000 (UTC)
+X-Farcaster-Flow-ID: 5575f960-87ee-4976-b26b-3b2bd3a33540
 Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWA002.ant.amazon.com (10.250.64.202) with Microsoft SMTP Server
+ EX19MTAUWB001.ant.amazon.com (10.250.64.248) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.29;
- Fri, 7 Nov 2025 12:19:13 +0000
+ Fri, 7 Nov 2025 12:19:29 +0000
 Received: from dev-dsk-acsjakub-1b-6f9934e2.eu-west-1.amazon.com
  (172.19.75.107) by EX19D001UWA001.ant.amazon.com (10.13.138.214) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.29; Fri, 7 Nov 2025
- 12:19:11 +0000
+ 12:19:27 +0000
 From: Jakub Acs <acsjakub@amazon.de>
 To: <stable@vger.kernel.org>
 CC: <acsjakub@amazon.de>, <vbabka@suse.cz>, Miguel Ojeda
@@ -70,9 +70,9 @@ CC: <acsjakub@amazon.de>, <vbabka@suse.cz>, Miguel Ojeda
 	<xu.xin16@zte.com.cn>, Chengming Zhou <chengming.zhou@linux.dev>, Peter Xu
 	<peterx@redhat.com>, Axel Rasmussen <axelrasmussen@google.com>, Andrew Morton
 	<akpm@linux-foundation.org>
-Subject: [PATCH 5.10.y] mm/ksm: fix flag-dropping behavior in ksm_madvise
-Date: Fri, 7 Nov 2025 12:19:05 +0000
-Message-ID: <20251107121905.18132-1-acsjakub@amazon.de>
+Subject: [PATCH 5.4.y] mm/ksm: fix flag-dropping behavior in ksm_madvise
+Date: Fri, 7 Nov 2025 12:19:20 +0000
+Message-ID: <20251107121920.19211-1-acsjakub@amazon.de>
 X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -80,7 +80,7 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ClientProxiedBy: EX19D037UWB004.ant.amazon.com (10.13.138.84) To
+X-ClientProxiedBy: EX19D036UWB001.ant.amazon.com (10.13.139.133) To
  EX19D001UWA001.ant.amazon.com (10.13.138.214)
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -162,7 +162,7 @@ Cc: Peter Xu <peterx@redhat.com>
 Cc: Axel Rasmussen <axelrasmussen@google.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-[ acsjakub: drop rust-compatibility change (no rust in 5.10) ]
+[ acsjakub: drop rust-compatibility change (no rust in 5.4) ]
 Signed-off-by: Jakub Acs <acsjakub@amazon.de>
 ---
 Why sending to stable version from before "fixes"?
@@ -184,10 +184,10 @@ backport to older kernels.
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/include/linux/mm.h b/include/linux/mm.h
-index e168d87d6f2e..4787d39bbad4 100644
+index 57cba6e4fdcd..be8c793233d3 100644
 --- a/include/linux/mm.h
 +++ b/include/linux/mm.h
-@@ -296,7 +296,7 @@ extern unsigned int kobjsize(const void *objp);
+@@ -293,7 +293,7 @@ extern unsigned int kobjsize(const void *objp);
  #define VM_MIXEDMAP	0x10000000	/* Can contain "struct page" and pure PFN pages */
  #define VM_HUGEPAGE	0x20000000	/* MADV_HUGEPAGE marked this vma */
  #define VM_NOHUGEPAGE	0x40000000	/* MADV_NOHUGEPAGE marked this vma */
