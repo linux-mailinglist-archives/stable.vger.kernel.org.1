@@ -1,220 +1,184 @@
-Return-Path: <stable+bounces-192712-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192713-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A7A5C3FA50
-	for <lists+stable@lfdr.de>; Fri, 07 Nov 2025 12:06:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 72625C3FB1D
+	for <lists+stable@lfdr.de>; Fri, 07 Nov 2025 12:17:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF34F3B6A58
-	for <lists+stable@lfdr.de>; Fri,  7 Nov 2025 11:06:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 52DBB3A6C16
+	for <lists+stable@lfdr.de>; Fri,  7 Nov 2025 11:17:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB10531C58A;
-	Fri,  7 Nov 2025 11:06:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DEDB321445;
+	Fri,  7 Nov 2025 11:17:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=ownmail.net header.i=@ownmail.net header.b="CIxH4+JH";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="ghCBnvDO"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-io1-f72.google.com (mail-io1-f72.google.com [209.85.166.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fout-b6-smtp.messagingengine.com (fout-b6-smtp.messagingengine.com [202.12.124.149])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E715F31AF1D
-	for <stable@vger.kernel.org>; Fri,  7 Nov 2025 11:06:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 833641F5821;
+	Fri,  7 Nov 2025 11:17:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.149
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762513579; cv=none; b=CJJAfb2vlT+Yl3HHWgOtbPIbtF6vt4ZLNWLJy7ZVZehQyDVwn+niMadQ/CevAt6I8b6F4GomoMS+vcauRDf07tuJGP0smGJBvaPc+Fdsb0vBEzxrfX3gKKLqfTN1fOfl7AWfaS3/fvJIyi4Xq8XXeuV4HtRfxMk2nsBsdDQh05o=
+	t=1762514259; cv=none; b=i5gJwBuTS72sdWBhfJwpHwfYkFpPJ3QXI6SdaxxM+nsWQd+0pbrSfheJnTj0YIPMGTDxrNo0HOv+2i6IwSFBYfiTF6iXkm/clow1Uom8kGbyhSjugtR/4G1HwkYatmC4WCh4tr09w11ndAX290aAQSG37WwJyfqSOyIFi4Z9DsY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762513579; c=relaxed/simple;
-	bh=3vB+SlHxUbkkRzKoqMns9VRF4uBIh29actxYlHhBAMI=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:Cc:
-	 Content-Type; b=Ti6uCv+MN1XzNSaTHU3Sh87bZc44C5qcUOzICfiLKZWw0UGIXI0M5Dcm3pOa+keJl2jU5oei2gycQbIbrbNksvjawimX3xnh6pJ7wXfM60yBKNkvKFrByEvVJEN/3UqOLZSzjPBtTW2+JoNHGZafaJrBqnAqfHK0JnpQh5PxiRI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-io1-f72.google.com with SMTP id ca18e2360f4ac-93e8839f138so49567639f.2
-        for <stable@vger.kernel.org>; Fri, 07 Nov 2025 03:06:16 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762513576; x=1763118376;
-        h=cc:to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=BlZiSo9idK2j7S97qoxkiQFU6gD7Ty00a+sM4XvvUvQ=;
-        b=QaBNF74UlOFd6kw3Yh7H1iEgONYPvbcP6D56UMqfFrYEuh/c1GsDNt5ztnpp++OUku
-         O55/JbmIoa4WK/rAbxY63/rQh6jbG3H1WEQk3LJDVj8FA8UKW9HCOXP5BkZxPBZLaBhn
-         KNTAAALI8cR9Mt1K7Z/vg+N4bOFHgwitW3tJXPSR4grQxA+lCBpCaXTi0rDj0N1yvjiS
-         mZmcsVkKeH9xwhr0Pj5SavFx0gRXBo5B9B+oJ+Vzk40zKQZSXpite9syhxGDA6N6xUPY
-         d0574cFJ8kIwekEy+CcQw3S6s43lEMN7AOt3oYalwqMZuz0KqQeJBWIPVrpm5zXUCvEQ
-         4ctw==
-X-Forwarded-Encrypted: i=1; AJvYcCXpvJUyqsykOUie9sG0Lk8obpZEFLu3OT6scf9enVN2VQN5VsFCjHh74iZE+wKIyCQE/Ab5e4I=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzpsFlqHYbbvRiJ7aiGODA1Ce/lOjZfCfBGO7edVEy2khlShaNA
-	Tf+k9GZj9KRpaB5Z431aG/5kLN1TcHR7R9CDO05dtVIeVzp6oNMl8q4Dx9vyhmkj16xXoYzHKwI
-	8jWcqLk5aO+JUsd/QCf4X5P56q4FilBOL0ofUpF5yVqO8hqPqeLwyfJYKTY8=
-X-Google-Smtp-Source: AGHT+IFtq8vti0VVMqqLFM0bv4gUTSBe4hTPp5evTjvIF5wiTxqgsOFnnguZogDuOBM7v8Hwi4ZtDTN1tvpIai1XWk5jXBtYFQJY
+	s=arc-20240116; t=1762514259; c=relaxed/simple;
+	bh=Y9pUCfcFi4AsEJHJltTCRril7hFnOkYG0tyEo8NBeFg=;
+	h=Content-Type:MIME-Version:From:To:Cc:Subject:In-reply-to:
+	 References:Date:Message-id; b=tfCunUB9VUgJ6YTiLHtqWqyvhj/PsxKg7OIjKdAWX51jgsCrlHf7aNijX/Zx+dfafCYhXGD63fIde5dwS3CuMAeiPbROEWxGHUqcgzny/ElILwlQujHHj4nFN1KAW4i7JEbopaiYQvk/oEx53dzZBROrPqhjUfFMWuPe2C+nIH0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ownmail.net; spf=pass smtp.mailfrom=ownmail.net; dkim=pass (2048-bit key) header.d=ownmail.net header.i=@ownmail.net header.b=CIxH4+JH; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=ghCBnvDO; arc=none smtp.client-ip=202.12.124.149
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ownmail.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ownmail.net
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfout.stl.internal (Postfix) with ESMTP id 4F60B1D00149;
+	Fri,  7 Nov 2025 06:17:35 -0500 (EST)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-04.internal (MEProxy); Fri, 07 Nov 2025 06:17:35 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ownmail.net; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:reply-to:subject:subject:to:to; s=fm3; t=
+	1762514255; x=1762600655; bh=BBzJnnctCnq4Fcyhvxggl9CB8DYe4i8BJNv
+	opXA2dBs=; b=CIxH4+JHa2AOTOyFspUql3H/vqlFrzbrSO/NjyqXPiC2sdj8AVB
+	maNeRVlSZAcLLc/VsqivXSGEcf94YBo1Newtl90xemViH4OYbYXJU7vyft23yjkS
+	KSjj4I9tbY7Tpxcpbb4gxrQik45Tm42kRyWos+sQ34GMWHdwpQ5xuzHYWGynvuoF
+	Iq2CZw8PKEaFhP/IHfWXxqPjyQQQdaFRSilliOepB1/F+gSTsTUEIsDc9SsTXyfO
+	4hkVVlj4918R3u0tyDXj0y0GvpRA9duTM8jWsgNkNT6ktlVhVaWb8fZie9nIZkRd
+	+CEP12CdDW/XreIeBlEk/Y/+1Mi5WW86KMQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1762514255; x=
+	1762600655; bh=BBzJnnctCnq4Fcyhvxggl9CB8DYe4i8BJNvopXA2dBs=; b=g
+	hCBnvDOJ4EuRX5QTbG9wrnoQXEoGLPEWjdom+5QjeYOXzhQ/Z8WvcaU6tlFtoJm+
+	7jjbgYTroGPrqngoFE147RZsbhrtRJF3yPWlnTsODstodSzyLYX2Oelu3hjKjvia
+	QuEMDAoZIZL32HyzbPHLbpOklMzkwoSeXkTLFS5RL9wYkpjz1Df+YfIhVJTRSIfU
+	bj450jcs/BpLb4WJz1eLDO/pbTzrZVKrN8XazAne5YGNjcQu5dvJjU4XSIrnOJxF
+	cYwcrh2IPkjre2WpuUdM07pfqLTa4Cffrd8/U9SHW/Apcthqnfmcpf9/Fv/ngfh1
+	E6e9YZC0QZhAcRYMC11ZA==
+X-ME-Sender: <xms:TtUNaYs0uvLVFFCyvD_8DfaSdGHQ-37Sf9L55YaURw3jXyY2deyViA>
+    <xme:TtUNaRc_WX-_83TnheJz7KtwST_KrnfE9Qk89OiznRBWE3SKx_1YZ5RrxqTyOpOqq
+    g6RuSzxs3swrh8tLBmJWHZivhNGreWbdAJkSYEVRrmJUGfODQ>
+X-ME-Received: <xmr:TtUNaV_XpQVM1AH9oe-T2sDfB_qirhgiaxNgtGjaAeJfewzRrmM5F2_Ly6RtpX-vck8ayhwAbYqEgb-AKoCCQqXiBjfekVLVispmOjkwvDGb>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddukeelhedvucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurheptgfgggfhvfevufgjfhffkfhrsehtjeertddttdejnecuhfhrohhmpefpvghilheu
+    rhhofihnuceonhgvihhlsgesohifnhhmrghilhdrnhgvtheqnecuggftrfgrthhtvghrnh
+    epgeehfeevheehteetudehjeduiefhueehieevvdejkeeufeevkeelieffffduhfevnecu
+    ffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpedtnecurf
+    grrhgrmhepmhgrihhlfhhrohhmpehnvghilhgssehofihnmhgrihhlrdhnvghtpdhnsggp
+    rhgtphhtthhopeekpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehsthgrsghlvg
+    esvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhnfhhssehv
+    ghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlse
+    hvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghkphhmsehlihhnuhigqdhf
+    ohhunhgurghtihhonhdrohhrghdprhgtphhtthhopegtvghlsehkvghrnhgvlhdrohhrgh
+    dprhgtphhtthhopehsphgvvggutghrrggtkhgvrheshhhothhmrghilhdrtghomhdprhgt
+    phhtthhopegurghvihgurdhlrghighhhthdrlhhinhhugiesghhmrghilhdrtghomhdprh
+    gtphhtthhopegurghvihgurdhlrghighhhthesrggtuhhlrggsrdgtohhm
+X-ME-Proxy: <xmx:TtUNacTtY4f33CCyCn7XaQghQ8b0lqIHX9-ooYPf8lRWqp4KxxROZw>
+    <xmx:TtUNaWop-ByXFOldZ-xsyF5cp7mdV5n-KujEEwrMGwVOv4HthesJ_w>
+    <xmx:TtUNaZmTI3IkTimhuisxgGiLwx3y-4IWqCg0zBCbzASnqihUygUzjA>
+    <xmx:TtUNafd9TdB4ll859qYjl6MA9tvEmbDVTV89LfuBik2ycadxRkLZUg>
+    <xmx:T9UNaRmvNsoXUjsACfHe8Ip7M8Xg3XEdNZC716U44UxJOZgDT5iuATIz>
+Feedback-ID: iab3e480c:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 7 Nov 2025 06:17:32 -0500 (EST)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:3485:b0:433:2943:3a78 with SMTP id
- e9e14a558f8ab-4335f478e35mr38087315ab.31.1762513576045; Fri, 07 Nov 2025
- 03:06:16 -0800 (PST)
-Date: Fri, 07 Nov 2025 03:06:16 -0800
-In-Reply-To: <20251107080117.15099-1-make24@iscas.ac.cn>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <690dd2a8.a70a0220.22f260.003d.GAE@google.com>
-Subject: [syzbot ci] Re: net: Fix error handling in netdev_register_kobject
-From: syzbot ci <syzbot+ci348771c1c9b7511f@syzkaller.appspotmail.com>
-To: akpm@linux-foundation.org, atenart@kernel.org, davem@davemloft.net, 
-	ebiederm@xmission.com, edumazet@google.com, gregkh@suse.de, horms@kernel.org, 
-	kuba@kernel.org, kuniyu@google.com, linux-kernel@vger.kernel.org, 
-	make24@iscas.ac.cn, netdev@vger.kernel.org, pabeni@redhat.com, 
-	sdf@fomichev.me, stable@vger.kernel.org, yajun.deng@linux.dev
-Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+From: NeilBrown <neilb@ownmail.net>
+To: "David Laight" <david.laight.linux@gmail.com>
+Cc: "Chuck Lever" <cel@kernel.org>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>,
+ "Andrew Morton" <akpm@linux-foundation.org>,
+ "David Laight" <David.Laight@ACULAB.COM>,
+ "Linux NFS Mailing List" <linux-nfs@vger.kernel.org>,
+ "Linux List Kernel Mailing" <linux-kernel@vger.kernel.org>,
+ speedcracker@hotmail.com
+Subject: Re: Compile Error fs/nfsd/nfs4state.o - clamp() low limit slotsize
+ greater than high limit total_avail/scale_factor
+In-reply-to: <20251106192210.1b6a3ca0@pumpkin>
+References: <bbba88825d7b2b06031c1b085d76787a2502d70e.camel@kernel.org>,
+ <37bc1037-37d8-4168-afc9-da8e2d1dd26b@kernel.org>,
+ <20251106192210.1b6a3ca0@pumpkin>
+Date: Fri, 07 Nov 2025 22:17:20 +1100
+Message-id: <176251424056.634289.13464296772500147856@noble.neil.brown.name>
+Reply-To: NeilBrown <neil@brown.name>
 
-syzbot ci has tested the following series
+On Fri, 07 Nov 2025, David Laight wrote:
+> On Thu, 6 Nov 2025 09:33:28 -0500
+> Chuck Lever <cel@kernel.org> wrote:
+> 
+> > FYI
+> > 
+> > https://bugzilla.kernel.org/show_bug.cgi?id=220745
+> 
+> Ugg - that code is horrid.
+> It seems to have got deleted since, but it is:
+> 
+> 	u32 slotsize = slot_bytes(ca);
+> 	u32 num = ca->maxreqs;
+> 	unsigned long avail, total_avail;
+> 	unsigned int scale_factor;
+> 
+> 	spin_lock(&nfsd_drc_lock);
+> 	if (nfsd_drc_max_mem > nfsd_drc_mem_used)
+> 		total_avail = nfsd_drc_max_mem - nfsd_drc_mem_used;
+> 	else
+> 		/* We have handed out more space than we chose in
+> 		 * set_max_drc() to allow.  That isn't really a
+> 		 * problem as long as that doesn't make us think we
+> 		 * have lots more due to integer overflow.
+> 		 */
+> 		total_avail = 0;
+> 	avail = min((unsigned long)NFSD_MAX_MEM_PER_SESSION, total_avail);
+> 	/*
+> 	 * Never use more than a fraction of the remaining memory,
+> 	 * unless it's the only way to give this client a slot.
+> 	 * The chosen fraction is either 1/8 or 1/number of threads,
+> 	 * whichever is smaller.  This ensures there are adequate
+> 	 * slots to support multiple clients per thread.
+> 	 * Give the client one slot even if that would require
+> 	 * over-allocation--it is better than failure.
+> 	 */
+> 	scale_factor = max_t(unsigned int, 8, nn->nfsd_serv->sv_nrthreads);
+> 
+> 	avail = clamp_t(unsigned long, avail, slotsize,
+> 			total_avail/scale_factor);
+> 	num = min_t(int, num, avail / slotsize);
+> 	num = max_t(int, num, 1);
+> 
+> Lets rework it a bit...
+> 	if (nfsd_drc_max_mem > nfsd_drc_mem_used) {
+> 		total_avail = nfsd_drc_max_mem - nfsd_drc_mem_used;
+> 		avail = min(NFSD_MAX_MEM_PER_SESSION, total_avail);
+> 		avail = clamp(avail, n + sizeof(xxx), total_avail/8)
+> 	} else {
+> 		total_avail = 0;
+> 		avail = 0;
+> 		avail = clamp(0, n + sizeof(xxx), 0);
+> 	}
+> 
+> Neither of those clamp() are sane at all - should be clamp(val, lo, hi)
+> with 'lo <= hi' otherwise the result is dependant on the order of the
+> comparisons.
+> The compiler sees the second one and rightly bleats.
 
-[v1] net: Fix error handling in netdev_register_kobject
-https://lore.kernel.org/all/20251107080117.15099-1-make24@iscas.ac.cn
-* [PATCH] net: Fix error handling in netdev_register_kobject
+In fact only gcc-9 bleats.
 
-and found the following issue:
-KASAN: slab-use-after-free Read in netdev_run_todo
+gcc-7 gcc-10 gcc-13 gcc-15
+all seem to think it is fine.
 
-Full report is available here:
-https://ci.syzbot.org/series/29bd058e-ea85-48e2-9bb9-ff9c0214f12e
-
-***
-
-KASAN: slab-use-after-free Read in netdev_run_todo
-
-tree:      net-next
-URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/netdev/net-next.git
-base:      8a25a2e34157d882032112e4194ccdfb29c499e8
-arch:      amd64
-compiler:  Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
-config:    https://ci.syzbot.org/builds/2f985280-f9ef-47c8-b4ec-80d44968222b/config
-
-==================================================================
-BUG: KASAN: slab-use-after-free in kobject_put+0x2ab/0x480
-Read of size 1 at addr ffff888113992714 by task kworker/u8:0/12
-
-CPU: 0 UID: 0 PID: 12 Comm: kworker/u8:0 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
-Workqueue: netns cleanup_net
-Call Trace:
- <TASK>
- dump_stack_lvl+0x189/0x250
- print_report+0xca/0x240
- kasan_report+0x118/0x150
- kobject_put+0x2ab/0x480
- netdev_run_todo+0xd2e/0xea0
- ops_undo_list+0x3e1/0x990
- cleanup_net+0x4d8/0x820
- process_scheduled_works+0xae1/0x17b0
- worker_thread+0x8a0/0xda0
- kthread+0x711/0x8a0
- ret_from_fork+0x4bc/0x870
- ret_from_fork_asm+0x1a/0x30
- </TASK>
-
-Allocated by task 5810:
- kasan_save_track+0x3e/0x80
- __kasan_kmalloc+0x93/0xb0
- __kvmalloc_node_noprof+0x5cd/0x910
- alloc_netdev_mqs+0xa6/0x11b0
- ip6gre_init_net+0xb5/0x3c0
- ops_init+0x35c/0x5c0
- setup_net+0xfe/0x320
- copy_net_ns+0x34e/0x4e0
- create_new_namespaces+0x3f3/0x720
- unshare_nsproxy_namespaces+0x11c/0x170
- ksys_unshare+0x4c8/0x8c0
- __x64_sys_unshare+0x38/0x50
- do_syscall_64+0xfa/0xfa0
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Freed by task 12:
- kasan_save_track+0x3e/0x80
- __kasan_save_free_info+0x46/0x50
- __kasan_slab_free+0x5c/0x80
- kfree+0x19a/0x6d0
- device_release+0x9c/0x1c0
- kobject_put+0x22b/0x480
- netdev_run_todo+0xd0c/0xea0
- ops_undo_list+0x3e1/0x990
- cleanup_net+0x4d8/0x820
- process_scheduled_works+0xae1/0x17b0
- worker_thread+0x8a0/0xda0
- kthread+0x711/0x8a0
- ret_from_fork+0x4bc/0x870
- ret_from_fork_asm+0x1a/0x30
-
-The buggy address belongs to the object at ffff888113992000
- which belongs to the cache kmalloc-cg-4k of size 4096
-The buggy address is located 1812 bytes inside of
- freed 4096-byte region [ffff888113992000, ffff888113993000)
-
-The buggy address belongs to the physical page:
-page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x113990
-head: order:3 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
-flags: 0x17ff00000000040(head|node=0|zone=2|lastcpupid=0x7ff)
-page_type: f5(slab)
-raw: 017ff00000000040 ffff88810004b500 dead000000000122 0000000000000000
-raw: 0000000000000000 0000000000040004 00000000f5000000 0000000000000000
-head: 017ff00000000040 ffff88810004b500 dead000000000122 0000000000000000
-head: 0000000000000000 0000000000040004 00000000f5000000 0000000000000000
-head: 017ff00000000003 ffffea00044e6401 00000000ffffffff 00000000ffffffff
-head: ffffffffffffffff 0000000000000000 00000000ffffffff 0000000000000008
-page dumped because: kasan: bad access detected
-page_owner tracks the page as allocated
-page last allocated via order 3, migratetype Unmovable, gfp_mask 0xd20c0(__GFP_IO|__GFP_FS|__GFP_NOWARN|__GFP_NORETRY|__GFP_COMP|__GFP_NOMEMALLOC), pid 5810, tgid 5810 (syz-executor), ts 65154411256, free_ts 60842795356
- post_alloc_hook+0x240/0x2a0
- get_page_from_freelist+0x2365/0x2440
- __alloc_frozen_pages_noprof+0x181/0x370
- alloc_pages_mpol+0x232/0x4a0
- allocate_slab+0x96/0x350
- ___slab_alloc+0xe94/0x18a0
- __slab_alloc+0x65/0x100
- __kmalloc_noprof+0x471/0x7f0
- __register_sysctl_table+0x72/0x1340
- __addrconf_sysctl_register+0x328/0x4c0
- addrconf_sysctl_register+0x168/0x1c0
- ipv6_add_dev+0xd46/0x1370
- addrconf_notify+0x794/0x1010
- notifier_call_chain+0x1b6/0x3e0
- register_netdevice+0x1608/0x1ae0
- register_netdev+0x40/0x60
-page last free pid 15 tgid 15 stack trace:
- __free_frozen_pages+0xbc4/0xd30
- __folio_put+0x21b/0x2c0
- skb_release_data+0x49a/0x7c0
- napi_consume_skb+0x158/0x1e0
- skb_defer_free_flush+0x18f/0x250
- net_rx_action+0x804/0xe50
- handle_softirqs+0x286/0x870
- run_ksoftirqd+0x9b/0x100
- smpboot_thread_fn+0x542/0xa60
- kthread+0x711/0x8a0
- ret_from_fork+0x4bc/0x870
- ret_from_fork_asm+0x1a/0x30
-
-Memory state around the buggy address:
- ffff888113992600: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
- ffff888113992680: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
->ffff888113992700: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-                         ^
- ffff888113992780: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
- ffff888113992800: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-==================================================================
-
-
-***
-
-If these findings have caused you to resend the series or submit a
-separate fix, please add the following tag to your commit message:
-  Tested-by: syzbot@syzkaller.appspotmail.com
-
----
-This report is generated by a bot. It may contain errors.
-syzbot ci engineers can be reached at syzkaller@googlegroups.com.
+NeilBrown
 
