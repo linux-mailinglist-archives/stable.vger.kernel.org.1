@@ -1,158 +1,173 @@
-Return-Path: <stable+bounces-192735-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192736-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0C8FC40451
-	for <lists+stable@lfdr.de>; Fri, 07 Nov 2025 15:14:48 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C03C5C40671
+	for <lists+stable@lfdr.de>; Fri, 07 Nov 2025 15:39:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A75C84E3D44
-	for <lists+stable@lfdr.de>; Fri,  7 Nov 2025 14:14:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 183E13AA5D5
+	for <lists+stable@lfdr.de>; Fri,  7 Nov 2025 14:38:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCEA4328612;
-	Fri,  7 Nov 2025 14:14:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A04931AF2C;
+	Fri,  7 Nov 2025 14:38:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Bjh5494M";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="c+hYZNX/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Drs7e/FB"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ECEE31AF1A
-	for <stable@vger.kernel.org>; Fri,  7 Nov 2025 14:14:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D82A3261588;
+	Fri,  7 Nov 2025 14:38:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762524884; cv=none; b=HvKZEDQRbQDnY6vfO84mLXtiv0U09zNGpVf4VfTlOlF/1bnKhxoW2sAitOUSMqK5DeK0StsksM1m06zq99tj20lfcmgptakNxo2faL8+AGZm6xz8NX2ULAmSojZxYOvIa10wfjxP/t1cFPdTKOBOLcgCH8Vyw2HgDQ8Z75VSPqE=
+	t=1762526324; cv=none; b=ASh0fewbmjq0OdZqqqNvEb1H30Ib/keMR+apvbvL12YDlWKdcoa3AQ+ad0aWnAVJ3pMrOrcrqwdvbDRbO5/UmRMTU7w0Dy3qGqn5EBOYqAGlUIOXl54UK8pc5csiacSLCpoAiHelknz7bfLoNg1Ov5MCThleiSzCKnCcaws2rNQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762524884; c=relaxed/simple;
-	bh=RvPQxgIgtwop9B2He8NTdcqhJ7VIGmyJd05aqc1U+Xw=;
+	s=arc-20240116; t=1762526324; c=relaxed/simple;
+	bh=so4gfNSYqIzhDfeimFIQKyBgFhD4Jyl0pWhIEM8LbvA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WQc8iE/nGjvGiMyLhQDrcpap4yzQ1lLLfCOLH+bLFXcWRrikIojuvSzIiE6Qz+hScr8YJZNQP0ZWcs3RtVwtUkerqAIWYl2jDv5vf624qEIy8SpEt6fzdLBHmZJrGhwIdquZCklfIYzd1CZ5A0Ih+w8R2WPnSgnk8YDmrKscDU4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Bjh5494M; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=c+hYZNX/; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5A77CGwm630895
-	for <stable@vger.kernel.org>; Fri, 7 Nov 2025 14:14:42 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=SmS3Q7L4A3dg/6fm+d7u4/uz
-	7vXGdzANJKFOfiokV5I=; b=Bjh5494MsS6Sk0DJGfkDLCDoysY3bFCW5F2R/eRK
-	Iyu39AzYTmWDp6Key2rEag9eNZYJSm/zVM1W7uOxcHJMzmYRgflBckSSsvPOyqcD
-	i0vgzH8Y3diCVQzO6X03IorfVO6LQK5sTqLNLcUl3CSWLYqT0Zsb2Fq9VkiehWDv
-	qBrXyfMtwGfNeXj+AW2xvGiefDPGczF5axJCS/oiXxahnUlmWcVU/A+GlClU3I5F
-	sk3HGkvbc49koe0zSIGarEpycMHqtQ7OTrKDVHrjaAY6yJFkVqqPmh0oJkp/lG43
-	6c+rw5CBEEfGTEvZ3fUkO/NLBM5sBU+O80YkFCJ2f8Lprg==
-Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com [209.85.160.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4a92232uad-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Fri, 07 Nov 2025 14:14:41 +0000 (GMT)
-Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-4e8b33c1d8eso21889431cf.2
-        for <stable@vger.kernel.org>; Fri, 07 Nov 2025 06:14:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1762524881; x=1763129681; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=SmS3Q7L4A3dg/6fm+d7u4/uz7vXGdzANJKFOfiokV5I=;
-        b=c+hYZNX/slc8NsKT93h8pFbTk2VFZG1K3fUchLbNAO4OcotXCEBmPO5MA7ge5SOaVf
-         pi6jIV6nWiNrxddXLLXIeV0+QNiwBWUDOOYOiP5cNvsOVThD36NjBfNohoZn472utLzA
-         kYeyGnqUA2nhub/W9KY45DXBVb2oqi7kRSzy+Aoe4PJA475GM5glJTvr76owLag/nGhh
-         G7uGeslYyhPYKUBz7AaYwkiTV5Emx6mcJhGnImVOiXWnXqG1KcGy68NVzz77WsreJPek
-         Q6fzqP6UnP+t3fJT3D1d83pA/cCzqwXVXCFIu4vxbsT367l57ceim5na2fXUh7SZKqz+
-         3Q2w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762524881; x=1763129681;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=SmS3Q7L4A3dg/6fm+d7u4/uz7vXGdzANJKFOfiokV5I=;
-        b=vjo8Bw56Kk//W3V06owtfFzLz3bRsGnXASG4B2inMfpsNGR+6peo8ZlHGNj1mfn6pg
-         USAne2r1TkDJ5GTHaFgUlEWiPZGxXT9I1NfEaUsMjxzCXJIumpr+ZhXYEbPnrR7rqBWb
-         HXx9nwPBWSH2jEmlxw5HFnPs1QOOJ7L4zuRnWS7hI4cCzZNcBLnUfUn8MS8fzSPt6ZOl
-         uu1kw/mzo6ATNwqBhfDr5DB7fDqeDYpOUHenDebXch4Y2tZTEHOZ880NuVlvz8/xO9vg
-         RM2bHq5k0lEsndvA/pxZ2ObOQ90QU2KOgJdS/2kVk/WmqGXI4jQ90sOAmBaq/pa/ZHla
-         I4vA==
-X-Forwarded-Encrypted: i=1; AJvYcCW+1mzMi8Tmgg4XBv8y1eYsNDGlnldfgjfKQNYzXaYP68A8Sh+f4ryBPOrXd8TzDmtN/TfR0Js=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxYMEORr46VudAjUdR/NLOY824ywBt/wzaKwdeb+Z6d9GIaKGMI
-	NZfkn8BTXuRF3rF3W6mLnY7DmPQf6NgygtEWtiCTiyUICqkohXhVE8aGNQChgiNU2kYPYIcbs2v
-	7CmQYphAW+s/30EM7Ktl4z0uct2ziUblnRpMLdjGW9lZMcSDECOWj1o9nZ9Y=
-X-Gm-Gg: ASbGncv1Vr70jiegc0k0CeO0MlSrpGf72XeP0vFOEaI4mAYTK9u/rmS6MOjC1uhRMd4
-	Jdreyyemrfqd5PyqiqbHqkOhh/uItCqIbtDRpEOTnZvZB+tHgowk4BHMjD/9KV5/lLGhp+q8uqo
-	2HOfxTqLA9n8GitsiguSrBIQRS82pOxhWCymdqK/vrnop46C0mySA8iTzp+QP1eCUVNGTk1cP6l
-	xdEtRzPAvvkdmLTd1zM3G/eOcvJoHQa4z1LGGeggMHJXIRrQ3efb51GI8fNQAkuWN/oVJasaq5E
-	MhEo9qKApoJsY0+yQLCtIIV2rgRsmqexO47jIPhZBY+esWugH331YLUHJyERjgMJ1BSbPEAx2dR
-	A1W3fmZPEStbmfwP2EssejKWHAd9PlD/9nJ6MALKLiSShbpjSVtWtpp31CQOsKCq/7kIwdbWyfj
-	P1fRhQNw5fyWj5
-X-Received: by 2002:a05:622a:206:b0:4ed:66bd:95ea with SMTP id d75a77b69052e-4ed94963e22mr44319071cf.29.1762524881200;
-        Fri, 07 Nov 2025 06:14:41 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEBnY5MD4wdoLvWeRk7iLw84FFclEfzHbsf58yd7Jn6ByFyHQib5KMoXl14FvsPrPr2Dh2gbA==
-X-Received: by 2002:a05:622a:206:b0:4ed:66bd:95ea with SMTP id d75a77b69052e-4ed94963e22mr44317521cf.29.1762524879844;
-        Fri, 07 Nov 2025 06:14:39 -0800 (PST)
-Received: from umbar.lan (2001-14ba-a0c3-3a00-264b-feff-fe8b-be8a.rev.dnainternet.fi. [2001:14ba:a0c3:3a00:264b:feff:fe8b:be8a])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5944a013cf3sm1484499e87.12.2025.11.07.06.14.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Nov 2025 06:14:39 -0800 (PST)
-Date: Fri, 7 Nov 2025 16:14:37 +0200
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-To: kernel test robot <lkp@intel.com>
-Cc: Shuai Zhang <quic_shuaz@quicinc.com>, stable@vger.kernel.org,
-        oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH v2 1/1] Bluetooth: btusb: add new custom firmwares
-Message-ID: <66bjkpos6ul2gnh4ezmtidjguv3qx6bedhlihbg4vtdkmnvsrb@jmojegj6ijf3>
-References: <20251107125405.1632663-2-quic_shuaz@quicinc.com>
- <aQ3sbHDGL4DQAE8J@4b976af397a4>
+	 Content-Type:Content-Disposition:In-Reply-To; b=CvTBeio26UJiWOL/GOzti5eiQcqWCDgv5zNMwf0y0aIp+HMKPFniirFCHkZVkfsWTTT2qOq2QCpqUTa/Ce3VzY/KPPfpBYRVvhlGEVQtTMvCeDWaOwX7yzSb93J1CAILD1CCzDNhVB/M0wtC4rqRncfFrmKaAJEhgeMgI4GzBJg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Drs7e/FB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BCA9C4CEF5;
+	Fri,  7 Nov 2025 14:38:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762526324;
+	bh=so4gfNSYqIzhDfeimFIQKyBgFhD4Jyl0pWhIEM8LbvA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Drs7e/FBrjH2ENxd86AVQdspdQcVTxSWQ1R7B+l8hKNnekm7X/WBFkPkGI/UxQJNg
+	 IY4iVCnHMaPwTmdeFIRMJIbPQFOTRJjfNQsYrSpnHrCdmOnJ9W5s1BPf12NETk5Bnk
+	 cII53rGzGm1MDS/5i/J+XBQpHXn0buUlYiBwY99CVwe4Vg+i4LHAneaAi0jLUlYz6g
+	 yKbjHbpN7MWY3xY5TLeFXONYXKdhrCKuNYcdQiP88YlC5Y8wgeVZYmkpAp/XKW6WZM
+	 cSZboINLIXdLkxSF2rF7Z+DW36xP4DPCayRP+QlKuuub2BNSr23oEFaRqeu9nCpNGA
+	 GMESL9VaVzFzQ==
+Date: Fri, 7 Nov 2025 09:38:43 -0500
+From: Sasha Levin <sashal@kernel.org>
+To: "Barry K. Nathan" <barryn@pobox.com>
+Cc: patches@lists.linux.dev, stable@vger.kernel.org,
+	Takashi Iwai <tiwai@suse.de>,
+	syzbot+c3dbc239259940ededba@syzkaller.appspotmail.com,
+	alexandre.f.demers@gmail.com, alexander.deucher@amd.com
+Subject: Re: [PATCH AUTOSEL 6.17-5.15] ALSA: seq: Fix KCSAN data-race warning
+ at snd_seq_fifo_poll_wait()
+Message-ID: <aQ4Ec03iLOg23_hd@laps>
+References: <20251025160905.3857885-1-sashal@kernel.org>
+ <20251025160905.3857885-60-sashal@kernel.org>
+ <4f94b13f-e1f8-49bc-b0c7-bcc3eed5cca9@pobox.com>
+ <aQyxGrttI4OERR96@laps>
+ <36f043b1-c27a-4b93-b9ed-c5a3691ba639@pobox.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1; format=flowed
 Content-Disposition: inline
-In-Reply-To: <aQ3sbHDGL4DQAE8J@4b976af397a4>
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTA3MDExNyBTYWx0ZWRfX3gZmFuRQHDaw
- kSOBFVIf+ifIzODnejtpsgSn9rNduJy4RQ6Lf+UrwMRwmvZTJVmCj+Hs/EvQSnrNnv3E4+P5FjY
- z8PdsHe/GMFkkQhRMC345ypZQ26nn/SxY9mwVNDY1yD40FARjseU4lEn08AyL/PRKq0USY2E8Xa
- euoTyK0gcdig3dJHWBNx2JZFqWcnJ3i1JBfYnAYIFknDvyNa/ymmqMKRVSpTMLCCn4CUIKdRgSv
- LoUeyUjJEFDlhMuB2A7UqYUvg008kxccWdaPFhQZ/45WeW1Nt4TqnJfuticPSF3MVSe99znPhoX
- YNtYJzlBJRth1HdLaN01Y98n490W6n16cy9dF6ZAUC99BUNugUnfFfFXrHkMqpwDVP0dE6YccXG
- EI95hiXgrPLnztQNMIUmWCllUWVQSQ==
-X-Authority-Analysis: v=2.4 cv=Csmys34D c=1 sm=1 tr=0 ts=690dfed1 cx=c_pps
- a=EVbN6Ke/fEF3bsl7X48z0g==:117 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=6UeiqGixMTsA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VwQbUJbxAAAA:8 a=COk6AnOGAAAA:8 a=zWZEkmIZHcL_vKng5HoA:9 a=CjuIK1q_8ugA:10
- a=1R1Xb7_w0-cA:10 a=OREKyDgYLcYA:10 a=a_PwQJl-kcHnX1M80qC6:22
- a=TjNXssC_j7lpFel5tvFf:22 a=HhbK4dLum7pmb74im6QT:22
-X-Proofpoint-GUID: vYg5DL_gZy-nABc7UTKblve1fRLf-4_M
-X-Proofpoint-ORIG-GUID: vYg5DL_gZy-nABc7UTKblve1fRLf-4_M
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-11-07_03,2025-11-06_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 suspectscore=0 spamscore=0 lowpriorityscore=0 impostorscore=0
- priorityscore=1501 malwarescore=0 bulkscore=0 clxscore=1015 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2511070117
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <36f043b1-c27a-4b93-b9ed-c5a3691ba639@pobox.com>
 
-On Fri, Nov 07, 2025 at 08:56:12PM +0800, kernel test robot wrote:
-> Hi,
-> 
-> Thanks for your patch.
-> 
-> FYI: kernel test robot notices the stable kernel rule is not satisfied.
-> 
-> The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
-> 
-> Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-> Subject: [PATCH v2 1/1] Bluetooth: btusb: add new custom firmwares
-> Link: https://lore.kernel.org/stable/20251107125405.1632663-2-quic_shuaz%40quicinc.com
+On Thu, Nov 06, 2025 at 03:57:33PM -0800, Barry K. Nathan wrote:
+>On 11/6/25 06:30, Sasha Levin wrote:
+>>On Thu, Nov 06, 2025 at 12:49:37AM -0800, Barry K. Nathan wrote:
+>>>On 10/25/25 08:54, Sasha Levin wrote:
+>>>>From: Takashi Iwai <tiwai@suse.de>
+>>>>
+>>>>[ Upstream commit 1f9fc89cbbe8a7a8648ea2f827f7d8590e62e52c ]
+>>>>
+>>>>snd_seq_fifo_poll_wait() evaluates f->cells without locking after
+>>>>poll_wait(), and KCSAN doesn't like it as it appears to be a
+>>>>data-race.  Although this doesn't matter much in practice as the value
+>>>>is volatile, it's still better to address it for the mind piece.
+>>>>
+>>>>Wrap it with f->lock spinlock for avoiding the potential data race.
+>>>>
+>>>>Reported-by: syzbot+c3dbc239259940ededba@syzkaller.appspotmail.com
+>>>>Link: https://syzkaller.appspot.com/bug?extid=c3dbc239259940ededba
+>>>>Signed-off-by: Takashi Iwai <tiwai@suse.de>
+>>>>Signed-off-by: Sasha Levin <sashal@kernel.org>
+>>>>---
+>>>>
+>>>>LLM Generated explanations, may be completely bogus:
+>>>>
+>>>>YES
+>>>>- The only runtime change wraps the `f->cells` check in
+>>>>  `snd_seq_fifo_poll_wait()` with `guard(spinlock_irq)(&f->lock)`
+>>>>  (`sound/core/seq/seq_fifo.c:213`), aligning this reader with every
+>>>>  writer of `f->cells`, each of which already holds `f->lock` via
+>>>>  `scoped_guard(spinlock_irqsave)` or explicit `spin_lock_irqsave`
+>>>>  (`sound/core/seq/seq_fifo.c:125`, `sound/core/seq/seq_fifo.c:183`).
+>>>>  That removes the unlocked load which KCSAN flagged as a real data race
+>>>>  on the non-atomic `int` counter.
+>>>>- This race is user-visible: if `snd_seq_fifo_poll_wait()` races with a
+>>>>  concurrent producer/consumer, the poll mask built in `snd_seq_poll()`
+>>>>  (`sound/core/seq/seq_clientmgr.c:1092-1106`) can sporadically omit
+>>>>  `EPOLLIN`, leaving sequencer clients to sleep despite queued events.
+>>>>  On weakly ordered architectures that behavior is not just theoretical;
+>>>>  racing non-atomic accesses are undefined in the kernel memory model
+>>>>  and trigger syzbot reports.
+>>>>- The fix is minimal, self-contained, and mirrors existing guard usage
+>>>>  in this file, so it has negligible regression risk: the lock is
+>>>>  already part of the FIFO hot path, RAII unlock occurs immediately on
+>>>>  return, and there are no new dependencies or API changes.
+>>>>- Because the bug allows incorrect poll readiness and trips KCSAN, it
+>>>>  meets stable criteria (user-visible correctness plus sanitizer
+>>>>  warning) and applies cleanly to older trees that already contain the
+>>>>  guard helpers used elsewhere in this file.
+>>>>
+>>>>Suggested next step: run the targeted ALSA sequencer poll tests (or
+>>>>reproducer from the linked syzbot report) on the backport branch to
+>>>>confirm the warning disappears.
+>>>>
+>>>> sound/core/seq/seq_fifo.c | 1 +
+>>>> 1 file changed, 1 insertion(+)
+>>>>
+>>>>diff --git a/sound/core/seq/seq_fifo.c b/sound/core/seq/seq_fifo.c
+>>>>index 3a10b081f129c..7dc2bd94cefc3 100644
+>>>>--- a/sound/core/seq/seq_fifo.c
+>>>>+++ b/sound/core/seq/seq_fifo.c
+>>>>@@ -213,6 +213,7 @@ int snd_seq_fifo_poll_wait(struct 
+>>>>snd_seq_fifo *f, struct file *file,
+>>>>                poll_table *wait)
+>>>> {
+>>>>     poll_wait(file, &f->input_sleep, wait);
+>>>>+    guard(spinlock_irq)(&f->lock);
+>>>>     return (f->cells > 0);
+>>>> }
+>>>
+>>>With CONFIG_WERROR enabled, 5.15.y fails to build for me now, and 
+>>>it seems to be due to this patch introducing a new warning. This 
+>>>is with Debian bookworm and its default gcc (12.2), building for 
+>>>amd64. I didn't try building 6.12.y or 6.17.y yet, but this 
+>>>warning does not happen on 6.1.y, 6.6.y, or 6.18-rc4.
+>>
+>>Have you manually applied this patch on top of 5.15? This patch 
+>>isn't in any
+>>released LTS kernel.
+>>
+>
+>Yes, I cloned the stable-queue git repo then applied the queue-5.15 
+>patches on top of 5.15.196. I figured I'd do some testing and try to 
+>find and report problems prior to release. Once I ran into this 
+>problem, I looked into it further and narrowed it down to this patch, 
+>then I searched the stable mailing list archive to see if anyone else 
+>reported it already or if the patch had been posted to the list. The 
+>only relevant email I found was the patch itself, so that's what I 
+>replied to.
+>
+>If I made any mistakes in how I reported this, or if I jumped the gun 
+>and should've waited until 5.15.197-rc1 before reporting anything, 
+>please let me know. (Maybe I should have explicitly mentioned that the 
+>patch is present in the queue as 
+>"alsa-seq-fix-kcsan-data-race-warning-at-snd_seq_fifo.patch"?)
 
-Shuai, why are you sending a patch which is not a fix for inclusion into
-the stable tree? Why do you cc:stable in your headers? Do you understand
-what stable kernels are for?
+No, you did all the right things, it just so very rare to see that :)
+
+I've dropped that patch from all branches.
+
+Thanks for your review!
 
 -- 
-With best wishes
-Dmitry
+Thanks,
+Sasha
 
